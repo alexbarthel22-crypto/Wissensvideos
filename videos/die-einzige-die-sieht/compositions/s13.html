@@ -25,26 +25,20 @@
       font-weight: 900; text-align: center; padding: 22px 26px; font-size: 40px; line-height: 1.1; opacity: 0; }
     .rule { position: absolute; left: 0; width: 1080px; top: 440px; text-align: center; font-family: "Inter", sans-serif; font-weight: 900;
       font-size: 120px; color: #ffd43b; text-shadow: 0 0 40px rgba(255,212,59,.5), 0 8px 0 rgba(0,0,0,.5); opacity: 0; }
-    .s13-btn { position: absolute; top: 760px; width: 420px; height: 150px; border-radius: 26px; font-family: "Inter", sans-serif; font-weight: 900;
-      font-size: 54px; line-height: 150px; text-align: center; color: #0b0e22; opacity: 0; }
-    #s13-a { left: 80px; background: #39e27a; box-shadow: 0 0 40px rgba(57,226,122,.45); } #s13-b { left: 580px; background: #ff3b55; color: #fff; box-shadow: 0 0 40px rgba(255,59,85,.45); }
-    #s13-q { position: absolute; left: 0; width: 1080px; top: 520px; text-align: center; font-family: "Inter", sans-serif; font-weight: 900; font-size: 84px; color: #fff; opacity: 0; }
-    #s13-dark { background: #05060f; opacity: 0; }
-    #s13-fin { position: absolute; left: 0; width: 1080px; top: 640px; text-align: center; font-family: "Space Mono", monospace; font-weight: 700;
-      font-size: 64px; letter-spacing: .14em; color: #ff4fb0; text-shadow: 0 0 30px rgba(255,79,176,.6); opacity: 0; }
+    .s13-k { position: absolute; font-family: "Inter", sans-serif; font-weight: 900; font-size: 64px; color: #ffd43b; text-shadow: 0 0 24px rgba(255,212,59,.5); opacity: 0; }
+    #s13-vig { background: radial-gradient(ellipse 60% 45% at 50% 42%, rgba(0,0,0,0) 40%, rgba(160,0,20,.75) 100%); opacity: 0; }
   </style>
-  <div id="root" data-composition-id="s13" data-start="0" data-duration="6.960" data-width="1080" data-height="1920">
-    <div id="s13-stage" class="clip stage" data-start="0" data-duration="6.960" data-track-index="0">
-      <div id="s13-q" class="abs">TÜR ÖFFNEN?</div>
-      <div id="s13-a" class="s13-btn">JA</div><div id="s13-b" class="s13-btn">NIEMALS</div>
-      <div id="s13-dark" class="full"></div>
-      <div id="s13-fin" class="abs">FORTSETZUNG FOLGT ...</div>
+  <div id="root" data-composition-id="s13" data-start="0" data-duration="13.286" data-width="1080" data-height="1920">
+    <div id="s13-stage" class="clip stage" data-start="0" data-duration="13.286" data-track-index="0">
+      <svg id="s13-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s13-k1" class="s13-k" style="left:90px;top:560px">KLOPF</div><div id="s13-k2" class="s13-k" style="left:800px;top:700px">KLOPF</div><div id="s13-k3" class="s13-k" style="left:100px;top:860px">KLOPF</div>
+      <div id="s13-vig" class="full"></div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 6.96, "L38": [0.2, 3.96], "L38.words": [["würdest", 0.2, 0.502], ["du", 0.502, 0.646], ["die", 0.646, 0.794], ["tür", 0.794, 0.943], ["öffnen", 0.943, 1.24], ["schreibs", 1.62, 1.782], ["in", 1.782, 1.914], ["die", 1.914, 2.051], ["kommentare", 2.051, 2.59], ["fortsetzung", 3.14, 3.64], ["folgt", 3.64, 3.815], ["", 3.815, 3.96]]};
+      const C = {"__dur": 13.286, "L39": [0.2, 2.33], "L39.words": [["schritte", 0.2, 0.556], ["im", 0.556, 0.722], ["treppenhaus", 0.722, 1.25], ["langsam", 1.8, 2.33]], "L40": [2.55, 4.85], "L40.words": [["dann", 2.55, 2.82], ["drei", 3.36, 3.532], ["leise", 3.532, 3.859], ["schläge", 3.859, 4.197], ["an", 4.197, 4.357], ["ihrer", 4.357, 4.684], ["tür", 4.684, 4.85]], "L41": [5.07, 6.55], "L41.words": [["sina", 5.07, 5.468], ["schaut", 5.468, 5.696], ["durch", 5.696, 5.917], ["den", 5.917, 6.123], ["türspion", 6.123, 6.55]], "L42": [6.77, 10.6], "L42.words": [["ein", 6.77, 6.981], ["mann", 6.981, 7.2], ["seine", 7.75, 8.05], ["augen", 8.05, 8.35], ["weit", 8.54, 8.726], ["offen", 8.726, 9.08], ["er", 9.62, 9.776], ["schaut", 9.776, 9.954], ["direkt", 9.954, 10.277], ["zurück", 10.277, 10.6]], "L43": [11.12, 12.806], "L43.words": [["sina", 11.12, 11.528], ["", 11.528, 11.717], ["ich", 11.717, 11.929], ["weiß", 11.929, 12.148], ["dass", 12.148, 12.367], ["du", 12.367, 12.571], ["siehst", 12.571, 12.805]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -150,13 +144,57 @@
 
       const tl = gsap.timeline({ paused: true });
       const sv = document.querySelector("#s13-svg");
-      const du = at("L38", "du"), oe = at("L38", "öffnen"), fo = at("L38", "Fortsetzung");
-      tl.fromTo("#s13-q", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.35, ease: "back.out(2)" }, 0.1);
-      tl.fromTo(".s13-btn", { opacity: 0, y: 80, rotation: (i) => [-6, 6][i] }, { opacity: 1, y: 0, rotation: 0, duration: 0.4, stagger: 0.12, ease: "back.out(2)" }, oe - 0.1);
-      tl.to(".s13-btn", { y: -14, duration: 0.3, yoyo: true, repeat: 5, stagger: 0.1, ease: "sine.inOut" }, oe + 0.6);
-      tl.to("#s13-dark", { opacity: 0.94, duration: 0.5 }, fo - 0.2);
-      tl.to(["#s13-q", ".s13-btn"], { opacity: 0, duration: 0.3 }, fo - 0.2);
-      tl.fromTo("#s13-fin", { opacity: 0, scale: 1.3 }, { opacity: 1, scale: 1, duration: 0.9, ease: "expo.out" }, fo);
+      const room = el("g", {}, sv);
+      el("rect", { x: 300, y: 450, width: 480, height: 680, rx: 10, fill: "#3a2614" }, room);
+      const door = el("g", {}, room);
+      el("rect", { x: 330, y: 480, width: 420, height: 640, rx: 6, fill: "#7a4b22" }, door);
+      el("rect", { x: 370, y: 540, width: 340, height: 220, rx: 10, fill: "#6b3f1d" }, door);
+      el("rect", { x: 370, y: 800, width: 340, height: 260, rx: 10, fill: "#6b3f1d" }, door);
+      el("circle", { cx: 700, cy: 820, r: 18, fill: "#ffd43b" }, door);
+      el("circle", { cx: 540, cy: 620, r: 22, fill: "#161a36" }, door);
+      const strip = el("rect", { x: 330, y: 1112, width: 420, height: 12, fill: "#ffd43b", opacity: 0.15 }, room);
+      const feet = el("g", { opacity: 0 }, room);
+      el("rect", { x: 450, y: 1112, width: 60, height: 12, fill: "#0b0e22" }, feet); el("rect", { x: 570, y: 1112, width: 60, height: 12, fill: "#0b0e22" }, feet);
+      // Blick durch den Spion: runder Fischaugen-Ausschnitt
+      const defs = el("defs", {}, sv); const cp = el("clipPath", { id: "s13-clip" }, defs); el("circle", { cx: 540, cy: 780, r: 340 }, cp);
+      const pv = el("g", { opacity: 0 }, sv);
+      el("rect", { x: 0, y: 400, width: 1080, height: 760, fill: "#05060f" }, pv);
+      const inner = el("g", { "clip-path": "url(#s13-clip)" }, pv);
+      el("rect", { x: 200, y: 440, width: 680, height: 680, fill: "#1a1530" }, inner);
+      el("ellipse", { cx: 540, cy: 1110, rx: 300, ry: 160, fill: "#ffd43b", opacity: 0.35 }, inner);
+      const face = el("g", {}, inner);
+      el("rect", { x: 380, y: 900, width: 320, height: 260, rx: 90, fill: "#2a2f55" }, face);
+      el("circle", { cx: 540, cy: 760, r: 170, fill: "#d9a77f" }, face);
+      el("path", { d: "M370 740 C360 560 720 560 710 740 C680 640 420 640 370 740Z", fill: "#161a36" }, face);
+      el("ellipse", { cx: 540, cy: 900, rx: 150, ry: 50, fill: "#ffd43b", opacity: 0.25 }, face);
+      const eyesW = el("g", {}, face), pups = [];
+      [470, 610].forEach((x) => { el("ellipse", { cx: x, cy: 750, rx: 44, ry: 30, fill: "#f3f1ea" }, eyesW); pups.push(el("circle", { cx: x - 14, cy: 752, r: 17, fill: "#0b0e22" }, eyesW)); });
+      el("path", { d: "M500 850 q40 10 80 0", stroke: "#6b3f1d", "stroke-width": 8, fill: "none", "stroke-linecap": "round" }, face);
+      el("circle", { cx: 540, cy: 780, r: 350, fill: "none", stroke: "#0b0e22", "stroke-width": 30 }, pv);
+      el("circle", { cx: 540, cy: 780, r: 336, fill: "none", stroke: "#3a3f7a", "stroke-width": 6 }, pv);
+      const sr = at("L39", "Schritte"), la = at("L39", "Langsam"), dr = at("L40", "drei"), l41 = line("L41")[0], ts = at("L41", "Türspion"),
+            l42 = line("L42")[0], we = at("L42", "weit"), di = at("L42", "direkt"), l43 = line("L43")[0], si = at("L43", "siehst");
+      tl.fromTo(room, { opacity: 0, scale: 0.92, svgOrigin: "540 800" }, { opacity: 1, scale: 1, svgOrigin: "540 800", duration: 0.5, ease: "expo.out" }, 0.05);
+      tl.to(strip, { opacity: 0.85, duration: 0.8 }, sr);
+      tl.to(feet, { opacity: 0.5, duration: 0.2 }, la);
+      tl.to(feet, { opacity: 1, duration: 0.6 }, la + 0.3);
+      tl.to(room, { scale: 1.04, svgOrigin: "540 800", duration: dr - sr, ease: "none" }, sr);
+      [0, 0.45, 0.9].forEach((d, i) => {
+        tl.to(door, { x: 7, duration: 0.04, repeat: 3, yoyo: true }, dr + d);
+        tl.fromTo(`#s13-k${i + 1}`, { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.18, ease: "back.out(3)" }, dr + d); });
+      tl.to(".s13-k", { opacity: 0, duration: 0.25 }, l41 - 0.1);
+      tl.to(room, { scale: 3.2, svgOrigin: "540 620", duration: 0.6, ease: "power2.in" }, ts - 0.4);
+      tl.to(room, { opacity: 0, duration: 0.15 }, ts + 0.1);
+      tl.fromTo(pv, { opacity: 0 }, { opacity: 1, duration: 0.25 }, ts + 0.05);
+      tl.fromTo(face, { y: 40, scale: 0.9, svgOrigin: "540 780" }, { y: 0, scale: 1, svgOrigin: "540 780", duration: 1.2, ease: "power2.out" }, ts + 0.1);
+      tl.to(eyesW, { scaleY: 1.4, svgOrigin: "540 750", duration: 0.2, ease: "back.out(3)" }, we);
+      tl.to(pups, { attr: { cx: (i) => [470, 610][i] }, duration: 0.3, ease: "power3.out" }, di - 0.1);
+      tl.to(face, { scale: 1.45, svgOrigin: "540 750", duration: 0.35, ease: "power4.out" }, di);
+      tl.to("#s13-vig", { opacity: 1, duration: 0.15 }, di);
+      tl.to("#s13-vig", { opacity: 0.4, duration: 0.5, repeat: 5, yoyo: true }, di + 0.2);
+      tl.to(face, { scale: 1.7, svgOrigin: "540 750", duration: si - l43, ease: "none" }, l43);
+      tl.to(pv, { x: 10, duration: 0.04, repeat: 7, yoyo: true }, si);
+      tl.to("#s13-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
       window.__timelines["s13"] = tl;
     })();
   </script>

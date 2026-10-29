@@ -8,14 +8,16 @@
       font-weight: 900; text-align: center; padding: 22px 26px; font-size: 40px; line-height: 1.1; opacity: 0; }
     .rule { position: absolute; left: 0; width: 1080px; top: 440px; text-align: center; font-family: "Inter", sans-serif; font-weight: 900;
       font-size: 120px; color: #ffd43b; text-shadow: 0 0 40px rgba(255,212,59,.5), 0 8px 0 rgba(0,0,0,.5); opacity: 0; }
-    #s06-x { left: 190px; top: 560px; width: 700px; height: 420px; border: 8px solid #ff3b55; border-radius: 30px; box-shadow: 0 0 60px rgba(255,59,85,.5); opacity: 0; }
-    #s06-lab { left: 340px; top: 1010px; width: 400px; height: 90px; border: 4px solid #ff3b55; color: #ff3b55; font-size: 48px; line-height: 82px; opacity: 0; }
+    .s06-lab { left: 260px; width: 560px; height: 96px; border: 5px solid #ff3b55; color: #ff3b55; font-size: 52px; line-height: 86px;
+      box-shadow: 0 0 40px rgba(255,59,85,.5); opacity: 0; }
+    #s06-val { top: 450px; border-color: #ffd43b; color: #ffd43b; box-shadow: 0 0 40px rgba(255,212,59,.5); }
+    #s06-gang { top: 450px; } #s06-lab2 { top: 450px; } #s06-back { top: 1010px; left: 200px; width: 680px; }
   </style>
   <div id="root" data-composition-id="s06" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
     <div id="s06-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
-      <div id="s06-rule" class="rule">REGEL 1</div>
       <svg id="s06-svg" class="full" viewBox="0 0 1080 1920"></svg>
-      <div id="s06-x" class="abs"></div><div id="s06-lab" class="panel">FÄLLT AUF!</div>
+      <div id="s06-val" class="panel s06-lab">UNBEZAHLBAR</div><div id="s06-gang" class="panel s06-lab">BANDEN</div>
+      <div id="s06-lab2" class="panel s06-lab">LABOR</div><div id="s06-back" class="panel s06-lab">KEIN ZURÜCK</div>
     </div>
   </div>
   <script>
@@ -24,20 +26,43 @@
 /*__COMMON_JS__*/
       const tl = gsap.timeline({ paused: true });
       const sv = document.querySelector("#s06-svg");
-      const E = bigEye(sv, 540, 770, 1.05);
-      const fly = el("circle", { cx: 200, cy: 1040, r: 22, fill: "#ffd43b", opacity: 0 }, sv);
-      const rg = at("L16", "Regel"), bk = at("L16", "Blickkontakt"), l17 = line("L17")[0], fa = at("L17", "fällt");
-      tl.fromTo("#s06-rule", { opacity: 0, scale: 1.8 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2.2)" }, rg - 0.05);
-      tl.to("#s06-rule", { opacity: 0, y: -40, duration: 0.25 }, bk + 0.4);
-      tl.fromTo(E.g, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1.05, duration: 0.45, ease: "back.out(1.8)" }, 0.1);
-      tl.to(fly, { opacity: 1, duration: 0.2 }, l17);
-      tl.to(fly, { attr: { cx: 880 }, duration: 0.9, repeat: 2, yoyo: true, ease: "sine.inOut" }, l17);
-      tl.to(E.iris, { x: -110, duration: 0.3 }, l17 - 0.3);
-      tl.to(E.iris, { x: 110, duration: 0.9, repeat: 1, yoyo: true, ease: "sine.inOut" }, l17);
-      tl.to(E.iris, { x: 0, duration: 0.2 }, fa);
-      tl.fromTo("#s06-x", { opacity: 0, scale: 1.3 }, { opacity: 1, scale: 1, duration: 0.25, ease: "power4.out" }, fa - 0.05);
-      tl.fromTo("#s06-lab", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.25, ease: "back.out(2)" }, fa + 0.05);
-      tl.to(["#s06-x", E.g], { x: "+=10", duration: 0.04, repeat: 7, yoyo: true }, fa);
+      const E = bigEye(sv, 540, 780, 1.0);
+      const sp = [[300, 640], [800, 620], [820, 930], [270, 920]].map(([x, y]) => el("path", { d: `M${x} ${y - 30} l9 21 l21 9 l-21 9 l-9 21 l-9 -21 l-21 -9 l21 -9Z`, fill: "#ffd43b", opacity: 0 }, sv));
+      const gang = el("g", { opacity: 0 }, sv), G = [];
+      [[300, 1.0], [540, 1.1], [780, 1.0]].forEach(([x, s], i) => { const p = person(gang, "s06-g" + i, x, 720 - (s - 1) * 60, s, { blind: true, shirt: "#2a2f55", hair: "#161a36", pants: "#161a36", arms: [16, -16] });
+        el("rect", { x: -48, y: -96, width: 96, height: 30, rx: 10, fill: "#161a36" }, p.g); G.push(p); });
+      const bag = el("g", { opacity: 0 }, sv);
+      el("circle", { cx: 880, cy: 900, r: 70, fill: "#8a5a2b" }, bag); el("path", { d: "M850 836 l30 -30 l30 30Z", fill: "#6b3f1d" }, bag);
+      const lab = el("g", { opacity: 0 }, sv);
+      el("rect", { x: 380, y: 600, width: 320, height: 420, rx: 40, fill: "#a9d2ff", opacity: 0.35 }, lab);
+      el("rect", { x: 360, y: 580, width: 360, height: 40, rx: 12, fill: "#c9cde6" }, lab);
+      el("rect", { x: 360, y: 1010, width: 360, height: 40, rx: 12, fill: "#c9cde6" }, lab);
+      const bub = [0, 1, 2, 3].map((i) => el("circle", { cx: 450 + i * 60, cy: 980, r: 10 + (i % 2) * 6, fill: "#e5e9f7", opacity: 0.7 }, lab));
+      const E2 = bigEye(lab, 540, 800, 0.5);
+      const van = el("g", { opacity: 0 }, sv);
+      el("rect", { x: 260, y: 700, width: 480, height: 240, rx: 30, fill: "#e5e9f7" }, van);
+      el("path", { d: "M740 740 L840 790 L840 940 L740 940Z", fill: "#e5e9f7" }, van);
+      el("path", { d: "M746 752 L828 794 L828 850 L746 850Z", fill: "#161a36" }, van);
+      el("rect", { x: 260, y: 840, width: 580, height: 22, fill: "#ff3b55" }, van);
+      [360, 760].forEach((x) => el("circle", { cx: x, cy: 950, r: 46, fill: "#161a36" }, van));
+      const we = at("L16", "Wertvollste"), l17 = line("L17")[0], ba = at("L17", "Banden"), ra = at("L17", "Raubzüge"), l18 = line("L18")[0], lb = at("L18", "Labor"), l19 = line("L19")[0], ni = at("L19", "nicht");
+      tl.fromTo(E.g, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.45, ease: "back.out(1.8)" }, 0.05);
+      tl.fromTo("#s06-val", { opacity: 0, scale: 1.5 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(2.4)" }, we - 0.05);
+      sp.forEach((s, i) => tl.fromTo(s, { opacity: 0, scale: 0.3, svgOrigin: s.getAttribute("d").slice(1).split(" ").slice(0, 2).join(" ") }, { opacity: 1, scale: 1.3, duration: 0.25, repeat: 3, yoyo: true }, we + i * 0.08));
+      tl.to([E.g, "#s06-val"], { opacity: 0, duration: 0.2 }, l17 - 0.15);
+      tl.fromTo(gang, { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.35, ease: "expo.out" }, l17 - 0.05);
+      tl.fromTo("#s06-gang", { opacity: 0, scale: 1.5 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(2.4)" }, ba);
+      G.forEach((p, i) => tl.to(p.a2, { rotation: -100, duration: 0.25, ease: "back.out(2)" }, ba + 0.3 + i * 0.1));
+      tl.fromTo(bag, { opacity: 0, y: -60 }, { opacity: 1, y: 0, duration: 0.3, ease: "bounce.out" }, ra - 0.2);
+      tl.to([gang, bag, "#s06-gang"], { opacity: 0, duration: 0.2 }, l18 - 0.15);
+      tl.fromTo(lab, { opacity: 0, scale: 0.8, svgOrigin: "540 800" }, { opacity: 1, scale: 1, svgOrigin: "540 800", duration: 0.35, ease: "back.out(1.8)" }, l18);
+      tl.to(bub, { attr: { cy: 640 }, opacity: 0, duration: 1.2, stagger: 0.15, ease: "power1.in" }, l18 + 0.2);
+      tl.fromTo("#s06-lab2", { opacity: 0, scale: 1.5 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(2.4)" }, lb - 0.05);
+      tl.to(E2.iris, { x: -50, duration: 0.25, repeat: 3, yoyo: true }, lb);
+      tl.to([lab, "#s06-lab2"], { opacity: 0, duration: 0.2 }, l19 - 0.15);
+      tl.fromTo(van, { opacity: 0 }, { opacity: 1, duration: 0.2 }, l19);
+      tl.to(van, { x: 900, duration: 0.8, ease: "power2.in" }, ni);
+      tl.fromTo("#s06-back", { opacity: 0, scale: 1.5 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(2.4)" }, ni);
       tl.to("#s06-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
       window.__timelines["s06"] = tl;
     })();

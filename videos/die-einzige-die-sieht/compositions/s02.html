@@ -28,8 +28,8 @@
     #s02-name { left: 640px; top: 450px; width: 360px; height: 120px; border: 4px solid #ff4fb0; box-shadow: 0 0 30px rgba(255,79,176,.4); opacity: 0; }
     #s02-name .a { margin-top: 12px; font-size: 52px; color: #ff4fb0; } #s02-name .b { font-size: 30px; color: #dfe2f5; letter-spacing: .14em; font-family: "Space Mono", monospace; }
   </style>
-  <div id="root" data-composition-id="s02" data-start="0" data-duration="9.400" data-width="1080" data-height="1920">
-    <div id="s02-stage" class="clip stage" data-start="0" data-duration="9.400" data-track-index="0">
+  <div id="root" data-composition-id="s02" data-start="0" data-duration="5.284" data-width="1080" data-height="1920">
+    <div id="s02-stage" class="clip stage" data-start="0" data-duration="5.284" data-track-index="0">
       <svg id="s02-svg" class="full" viewBox="0 0 1080 1920"></svg>
       <div id="s02-name" class="panel"><div class="a">SINA</div><div class="b">27 JAHRE</div></div>
     </div>
@@ -37,7 +37,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 9.4, "L4": [0.2, 3.96], "L4.words": [["das", 0.2, 0.64], ["ist", 0.64, 1.081], ["sina", 1.081, 1.93], ["27", 2.39, 2.915], ["ihr", 2.915, 3.019], ["wecker", 3.019, 3.227], ["klingelt", 3.227, 3.443], ["wie", 3.443, 3.547], ["jeden", 3.547, 3.752], ["morgen", 3.752, 3.96]], "L5": [4.18, 7.52], "L5.words": [["sie", 4.18, 4.323], ["öffnet", 4.323, 4.608], ["die", 4.608, 4.75], ["augen", 4.75, 5.03], ["alles", 5.32, 5.624], ["ist", 5.624, 5.779], ["scharf", 5.779, 5.95], ["hell", 6.5, 6.71], ["bunt", 7.26, 7.52]], "L6": [7.94, 9.22], "L6.words": [["doch", 7.94, 8.142], ["draußen", 8.142, 8.54], ["schreie", 8.85, 9.219]]};
+      const C = {"__dur": 5.284, "L4": [0.2, 3.68], "L4.words": [["das", 0.2, 0.561], ["ist", 0.561, 0.923], ["sina", 0.923, 1.62], ["27", 1.96, 2.317], ["sie", 2.317, 2.388], ["öffnet", 2.388, 2.53], ["die", 2.53, 2.601], ["augen", 2.601, 2.74], ["alles", 2.98, 3.318], ["ist", 3.318, 3.49], ["scharf", 3.49, 3.68]], "L6": [3.9, 5.104], "L6.words": [["doch", 3.9, 4.085], ["draußen", 4.085, 4.45], ["schreie", 4.74, 5.104]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -157,15 +157,15 @@
       el("path", { d: "M995 905 V875 M995 905 L1015 912", stroke: "#161a36", "stroke-width": 6, "stroke-linecap": "round" }, clk);
       const rings = ["#39e27a", "#ffd43b", "#4da3ff", "#ff4fb0"].map((c, i) => el("circle", { cx: 600, cy: 693, r: 60, fill: "none", stroke: c, "stroke-width": 12, opacity: 0 }, sv));
       const ex = el("text", { x: 690, y: 600, "font-family": "Inter", "font-weight": 900, "font-size": 120, fill: "#ff3b55", opacity: 0 }, sv); ex.textContent = "!";
-      const sina = at("L4", "Sina"), wk = at("L4", "Wecker"), auf = at("L5", "Augen"), sch = at("L5", "scharf"), hell = at("L5", "Hell"), bunt = at("L5", "Bunt"), schr = at("L6", "Schreie");
+      const sina = at("L4", "Sina"), wk = at("L4", "27"), auf = at("L4", "Augen"), sch = at("L4", "scharf"), schr = at("L6", "Schreie");
       tl.fromTo(P.g, { opacity: 0, y: 820 }, { opacity: 1, y: 760, duration: 0.5, ease: "expo.out" }, 0.05);
       tl.fromTo("#s02-name", { opacity: 0, x: 80 }, { opacity: 1, x: 0, duration: 0.35, ease: "back.out(2)" }, sina);
       tl.to(clk, { rotation: 10, svgOrigin: "995 950", duration: 0.05, repeat: 15, yoyo: true }, wk);
-      tl.to("#s02-name", { opacity: 0, duration: 0.2 }, auf - 0.6);
+      tl.to("#s02-name", { opacity: 0, duration: 0.2 }, auf - 0.3);
       tl.to(P.lids, { opacity: 0, duration: 0.05 }, auf);
       tl.to(P.eyes, { opacity: 1, duration: 0.05 }, auf);
       tl.fromTo(P.eyes, { scaleY: 0.2, svgOrigin: "0 -56" }, { scaleY: 1, svgOrigin: "0 -56", duration: 0.25, ease: "back.out(3)" }, auf);
-      [sch, hell, bunt, bunt + 0.25].forEach((t, i) => tl.set(rings[i], { opacity: 1 }, t).to(rings[i], { attr: { r: 380 }, opacity: 0, duration: 0.7, ease: "power2.out" }, t));
+      [sch, sch + 0.2, sch + 0.4, sch + 0.6].forEach((t, i) => tl.set(rings[i], { opacity: 1 }, t).to(rings[i], { attr: { r: 380 }, opacity: 0, duration: 0.7, ease: "power2.out" }, t));
       tl.to(glass, { fill: "#ffe9a8", duration: 0.4 }, sch);
       tl.to(red, { opacity: 0.8, duration: 0.08, repeat: 5, yoyo: true }, schr);
       tl.to(P.g, { x: 610, duration: 0.04, repeat: 7, yoyo: true }, schr);

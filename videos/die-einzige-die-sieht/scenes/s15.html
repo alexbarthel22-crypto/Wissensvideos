@@ -1,0 +1,52 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .bub { position: absolute; border-radius: 26px; background: #f3f1ea; color: #161a36; font-family: "Inter", sans-serif;
+      font-weight: 900; text-align: center; padding: 22px 26px; font-size: 40px; line-height: 1.1; opacity: 0; }
+    .rule { position: absolute; left: 0; width: 1080px; top: 440px; text-align: center; font-family: "Inter", sans-serif; font-weight: 900;
+      font-size: 120px; color: #ffd43b; text-shadow: 0 0 40px rgba(255,212,59,.5), 0 8px 0 rgba(0,0,0,.5); opacity: 0; }
+    #s15-bg { background: #000; }
+    #s15-q { position: absolute; left: 0; width: 1080px; top: 470px; text-align: center; font-family: "Inter", sans-serif; font-weight: 900; font-size: 300px;
+      color: #ff3b55; text-shadow: 0 0 60px rgba(255,59,85,.7); opacity: 0; }
+    #s15-cta { left: 90px; top: 470px; width: 900px; height: 600px; border: 6px solid #ff4fb0; box-shadow: 0 0 70px rgba(255,79,176,.5); opacity: 0; }
+    #s15-cta .a { margin-top: 300px; font-size: 54px; line-height: 1.1; color: #fff; }
+    #s15-btn { position: absolute; left: 290px; top: 440px; width: 320px; height: 100px; border-radius: 50px; background: #ff4fb0; color: #fff;
+      font-size: 54px; line-height: 100px; }
+    #s15-p2 { position: absolute; left: 620px; top: 36px; width: 240px; height: 76px; border-radius: 14px; background: #ffd43b; color: #0b0e22;
+      font-size: 44px; line-height: 76px; transform: rotate(6deg); }
+  </style>
+  <div id="root" data-composition-id="s15" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s15-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s15-bg" class="full"></div>
+      <div id="s15-cta" class="panel"><div id="s15-p2">PART 2</div><div class="a">WENN DU DAS<br>SEHEN KANNST …</div><div id="s15-btn">+ FOLGEN</div></div>
+      <svg id="s15-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s15-q" class="abs">?</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s15-svg");
+      const sil = el("g", { opacity: 0 }, sv);
+      const H = person(sil, "s15-h", 540, 760, 1.4, { skin: "#05060f", shirt: "#05060f", hair: "#05060f", pants: "#05060f" });
+      gsap.set([H.eyes, H.mouth], { opacity: 0 });
+      sil.style.filter = "drop-shadow(0 0 18px rgba(255,59,85,.8))";
+      const E = bigEye(sv, 540, 640, 0.75); gsap.set(E.g, { opacity: 0 });
+      const hi = at("L49", "hinter"), l50 = line("L50")[0], se = at("L50", "sehen"), fo = at("L50", "folge"), pa = at("L50", "Part");
+      tl.fromTo(sil, { opacity: 0 }, { opacity: 1, duration: 0.6 }, 0.1);
+      tl.fromTo("#s15-q", { opacity: 0, scale: 0.5 }, { opacity: 0.9, scale: 1, duration: 0.3, ease: "back.out(2.4)" }, hi);
+      tl.to([sil, "#s15-q"], { opacity: 0, duration: 0.25 }, l50 - 0.2);
+      tl.fromTo("#s15-cta", { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(1.8)" }, l50);
+      tl.to(E.g, { opacity: 1, duration: 0.3 }, l50 + 0.1);
+      tl.to(E.iris, { x: -60, duration: 0.3, yoyo: true, repeat: 1 }, se);
+      tl.fromTo("#s15-btn", { scale: 1 }, { scale: 1.15, duration: 0.25, yoyo: true, repeat: 7, ease: "sine.inOut" }, fo);
+      tl.fromTo("#s15-p2", { scale: 0.4, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: "back.out(3)" }, pa);
+      window.__timelines["s15"] = tl;
+    })();
+  </script>
+</template>

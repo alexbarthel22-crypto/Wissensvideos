@@ -8,16 +8,15 @@
       font-weight: 900; text-align: center; padding: 22px 26px; font-size: 40px; line-height: 1.1; opacity: 0; }
     .rule { position: absolute; left: 0; width: 1080px; top: 440px; text-align: center; font-family: "Inter", sans-serif; font-weight: 900;
       font-size: 120px; color: #ffd43b; text-shadow: 0 0 40px rgba(255,212,59,.5), 0 8px 0 rgba(0,0,0,.5); opacity: 0; }
-    .s04-st { position: absolute; left: 140px; top: 500px; width: 800px; height: 190px; border: 7px solid #ff3b55; border-radius: 20px;
-      color: #ff3b55; font-family: "Inter", sans-serif; font-weight: 900; font-size: 100px; line-height: 176px; text-align: center;
+    .s04-st { position: absolute; left: 120px; top: 470px; width: 840px; height: 180px; border: 7px solid #ff3b55; border-radius: 20px;
+      color: #ff3b55; font-family: "Inter", sans-serif; font-weight: 900; font-size: 96px; line-height: 166px; text-align: center;
       background: rgba(13,16,38,.92); box-shadow: 0 0 50px rgba(255,59,85,.45); opacity: 0; }
-    #s04-box { opacity: 0; }
   </style>
   <div id="root" data-composition-id="s04" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
     <div id="s04-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
-      <div id="s04-box" class="cbox y"><div class="lab">SEHENDE MENSCHEN</div><div class="num">1</div></div>
       <svg id="s04-svg" class="full" viewBox="0 0 1080 1920"></svg>
-      <div id="s04-a" class="s04-st">WELTWEIT.</div><div id="s04-b" class="s04-st">ALLE.</div><div id="s04-c" class="s04-st" style="font-size:84px">OHNE AUSNAHME.</div>
+      <div id="s04-a" class="s04-st" style="background:#ff3b55;color:#fff">EILMELDUNG</div><div id="s04-b" class="s04-st">WELTWEIT</div><div id="s04-c" class="s04-st">ALLE</div>
+      <div id="s04-d" class="s04-st">ERBLINDET</div><div id="s04-e" class="s04-st" style="font-size:80px">OHNE AUSNAHME</div><div id="s04-f" class="s04-st" style="font-size:64px;color:#ffd43b;border-color:#ffd43b">BLEIBEN SIE ZU HAUSE</div>
     </div>
   </div>
   <script>
@@ -26,27 +25,16 @@
 /*__COMMON_JS__*/
       const tl = gsap.timeline({ paused: true });
       const sv = document.querySelector("#s04-svg");
-      const R = radio(sv, 540, 880, 1.05);
-      const waves = [0, 1, 2].map((i) => el("path", { d: `M${780 + i * 40} ${620 - i * 30} q40 60 0 120`, fill: "none", stroke: "#ffd43b", "stroke-width": 10, "stroke-linecap": "round", opacity: 0 }, sv));
-      const hands = el("g", { opacity: 0 }, sv), lines = [];
-      [[360, -1], [720, 1]].forEach(([cx, d]) => {
-        el("rect", { x: cx - 120, y: 700, width: 240, height: 260, rx: 90, fill: "#f2c9a5" }, hands);
-        [-84, -30, 24, 78].forEach((fx, k) => el("rect", { x: cx + fx * d - 22, y: 540 + Math.abs(k - 1.5) * 26, width: 44, height: 200, rx: 22, fill: "#f2c9a5" }, hands));
-        ["M-90 800 q80 -30 170 10", "M-90 850 q90 10 180 -20", "M-60 900 q40 -40 30 -150"].forEach((p) => {
-          const pa = el("path", { d: p, transform: `translate(${cx} 0) scale(${d} 1)`, fill: "none", stroke: "#ffd43b", "stroke-width": 7, "stroke-linecap": "round", "stroke-dasharray": 400, "stroke-dashoffset": 400 }, hands);
-          lines.push(pa); }); });
-      const ra = at("L9", "Radio"), w1 = at("L10", "Weltweit"), w2 = at("L10", "Alle"), w3 = at("L10", "Ohne"), l11 = line("L11")[0], jl = at("L11", "jede");
+      const R = radio(sv, 540, 900, 1.05);
+      const waves = [0, 1, 2].map((i) => el("path", { d: `M${880 + i * 40} ${760 - i * 30} q40 60 0 120`, fill: "none", stroke: "#ffd43b", "stroke-width": 10, "stroke-linecap": "round", opacity: 0 }, sv));
+      const T = [["#s04-a", at("L10", "Eilmeldung")], ["#s04-b", at("L10", "weltweit")], ["#s04-d", at("L10", "erblindet")], ["#s04-e", at("L10", "Ausnahme")], ["#s04-f", at("L10", "Bleiben")]];
       tl.fromTo(R.g, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1.05, duration: 0.45, ease: "back.out(1.8)" }, 0.05);
-      tl.to(R.needle, { x: 120, duration: 0.6, ease: "power2.inOut" }, ra);
-      waves.forEach((w, i) => tl.fromTo(w, { opacity: 0 }, { opacity: 1, duration: 0.25, repeat: 7, yoyo: true }, ra + 0.2 + i * 0.12));
-      [["#s04-a", w1], ["#s04-b", w2], ["#s04-c", w3]].forEach(([s, t], i, a) => {
-        tl.fromTo(s, { opacity: 0, scale: 1.6, rotation: -6 }, { opacity: 1, scale: 1, rotation: [-4, 3, -2][i], duration: 0.22, ease: "power4.out" }, t - 0.05);
-        tl.to(s, { opacity: 0, duration: 0.12 }, i < 2 ? a[i + 1][1] - 0.08 : l11 - 0.25); });
-      tl.to(R.g, { x: "+=8", duration: 0.04, repeat: 5, yoyo: true }, w3);
-      tl.to([R.g, ...waves], { opacity: 0, duration: 0.25 }, l11 - 0.25);
-      tl.fromTo(hands, { opacity: 0, y: 80 }, { opacity: 1, y: 0, duration: 0.45, ease: "expo.out" }, l11);
-      tl.to(lines, { attr: { "stroke-dashoffset": 0 }, duration: 0.6, stagger: 0.05, ease: "power2.out" }, jl - 0.2);
-      tl.fromTo("#s04-box", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(2)" }, jl);
+      tl.to(R.needle, { x: 120, duration: 0.6, ease: "power2.inOut" }, 0.1);
+      waves.forEach((w, i) => tl.fromTo(w, { opacity: 0 }, { opacity: 1, duration: 0.3, repeat: 15, yoyo: true }, 0.4 + i * 0.12));
+      T.forEach(([s, t], i) => {
+        tl.fromTo(s, { opacity: 0, scale: 1.6, rotation: -6 }, { opacity: 1, scale: 1, rotation: [-4, 3, 4, -3, 2][i], duration: 0.22, ease: "power4.out" }, t - 0.05);
+        if (i < T.length - 1) tl.to(s, { opacity: 0, duration: 0.12 }, T[i + 1][1] - 0.08); });
+      tl.to(R.g, { x: "+=8", duration: 0.04, repeat: 5, yoyo: true }, T[3][1]);
       tl.to("#s04-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
       window.__timelines["s04"] = tl;
     })();

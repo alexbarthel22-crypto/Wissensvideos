@@ -231,6 +231,8 @@ def build_hud(project, script, windows, total):
         tags, checks, js = build_hud_big(project, script, windows, total)
     for i, (sc, s, e) in enumerate(windows if not big else []):
         tid = f"tag{i}"
+        if not sc["tag"]:  # leere Marke = keine Kapitel-Marke in dieser Szene
+            continue
         tags.append(f'      <div id="{tid}" class="clip tag" data-start="{s:.3f}" data-duration="{e - s:.3f}" data-track-index="1">'
                     f'<span id="{tid}t" class="tagt">{esc(sc["tag"])}</span></div>')
         if i > 0:  # erste Marke steht ab Frame 0 (Thumbnail/Hook)
