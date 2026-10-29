@@ -1,0 +1,41 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; }
+    .tag { position: absolute; left: 0; width: 100%; top: 176px; height: 64px; }
+    .tagt { position: absolute; left: 0; right: 0; top: 0; margin: 0 auto; width: fit-content; min-width: 420px; padding: 0 26px; height: 62px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: "Space Mono", monospace; font-weight: 700; font-size: 30px; letter-spacing: 0.12em;
+      color: #f4d27a; border: 3px solid #b8944a; border-radius: 8px; background: rgba(14,17,36,.65); }
+    .chk { position: absolute; left: 0; width: 100%; height: 34px; }
+    .chkt { position: absolute; left: 30px; top: 0; padding: 2px 10px;
+      font-family: "Space Mono", monospace; font-weight: 700; font-size: 22px; letter-spacing: 0.04em;
+      color: #ff7a8c; border: 2px solid #c8314a; border-radius: 6px; background: rgba(40,10,24,.55); }
+    .chkt b { color: #ff3b55; margin-left: 6px; }
+    .chkt.ok { color: #8affb6; border-color: #1f9a52; background: rgba(8,40,22,.6); }
+    .chkt.ok b { color: #39e27a; }
+  </style>
+  <div id="root" data-composition-id="hud" data-start="0" data-duration="119.387" data-width="1080" data-height="1920">
+      <div id="tag0" class="clip tag" data-start="0.000" data-duration="9.985" data-track-index="1"><span id="tag0t" class="tagt">TAG 1 · 06:47</span></div>
+      <div id="tag1" class="clip tag" data-start="9.985" data-duration="9.400" data-track-index="1"><span id="tag1t" class="tagt">TAG 1 · 06:47</span></div>
+      <div id="tag2" class="clip tag" data-start="19.385" data-duration="6.780" data-track-index="1"><span id="tag2t" class="tagt">TAG 1 · 07:02</span></div>
+      <div id="tag3" class="clip tag" data-start="26.165" data-duration="8.410" data-track-index="1"><span id="tag3t" class="tagt">TAG 1 · 07:30</span></div>
+      <div id="tag4" class="clip tag" data-start="34.575" data-duration="13.820" data-track-index="1"><span id="tag4t" class="tagt">TAG 1 · 09:15</span></div>
+      <div id="tag5" class="clip tag" data-start="48.395" data-duration="5.660" data-track-index="1"><span id="tag5t" class="tagt">REGEL 1 · AUGEN</span></div>
+      <div id="tag6" class="clip tag" data-start="54.055" data-duration="6.259" data-track-index="1"><span id="tag6t" class="tagt">REGEL 2 · LICHT</span></div>
+      <div id="tag7" class="clip tag" data-start="60.314" data-duration="6.830" data-track-index="1"><span id="tag7t" class="tagt">REGEL 3 · TASTEN</span></div>
+      <div id="tag8" class="clip tag" data-start="67.144" data-duration="12.727" data-track-index="1"><span id="tag8t" class="tagt">TAG 4 · KREUZUNG</span></div>
+      <div id="tag9" class="clip tag" data-start="79.871" data-duration="7.716" data-track-index="1"><span id="tag9t" class="tagt">TAG 4 · 20:00</span></div>
+      <div id="tag10" class="clip tag" data-start="87.587" data-duration="15.720" data-track-index="1"><span id="tag10t" class="tagt">TAG 8 · 03:14</span></div>
+      <div id="tag11" class="clip tag" data-start="103.307" data-duration="9.120" data-track-index="1"><span id="tag11t" class="tagt">TAG 8 · 03:17</span></div>
+      <div id="tag12" class="clip tag" data-start="112.427" data-duration="6.960" data-track-index="1"><span id="tag12t" class="tagt">TAG 8 · 03:18</span></div>
+      <div id="chk1" class="clip chk" data-start="48.895" data-duration="70.492" data-track-index="2" data-layout-ignore style="top:258px"><span id="chk1t" class="chkt">1. AUGEN <b>✕</b></span></div>
+      <div id="chk2" class="clip chk" data-start="54.555" data-duration="64.832" data-track-index="2" data-layout-ignore style="top:295px"><span id="chk2t" class="chkt">2. LICHT <b>✕</b></span></div>
+      <div id="chk3" class="clip chk" data-start="60.814" data-duration="58.573" data-track-index="2" data-layout-ignore style="top:332px"><span id="chk3t" class="chkt">3. TASTEN <b>✕</b></span></div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    
+tl.fromTo("#tag1t", { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.22, ease: "power3.out" }, 9.985);    tl.fromTo("#tag2t", { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.22, ease: "power3.out" }, 19.385);    tl.fromTo("#tag3t", { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.22, ease: "power3.out" }, 26.165);    tl.fromTo("#tag4t", { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.22, ease: "power3.out" }, 34.575);    tl.fromTo("#tag5t", { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.22, ease: "power3.out" }, 48.395);    tl.fromTo("#chk1t", { opacity: 0, x: -24 }, { opacity: 1, x: 0, duration: 0.25, ease: "power3.out" }, 48.895);    tl.fromTo("#tag6t", { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.22, ease: "power3.out" }, 54.055);    tl.fromTo("#chk2t", { opacity: 0, x: -24 }, { opacity: 1, x: 0, duration: 0.25, ease: "power3.out" }, 54.555);    tl.fromTo("#tag7t", { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.22, ease: "power3.out" }, 60.314);    tl.fromTo("#chk3t", { opacity: 0, x: -24 }, { opacity: 1, x: 0, duration: 0.25, ease: "power3.out" }, 60.814);    tl.fromTo("#tag8t", { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.22, ease: "power3.out" }, 67.144);    tl.fromTo("#tag9t", { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.22, ease: "power3.out" }, 79.871);    tl.fromTo("#tag10t", { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.22, ease: "power3.out" }, 87.587);    tl.fromTo("#tag11t", { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.22, ease: "power3.out" }, 103.307);    tl.fromTo("#tag12t", { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.22, ease: "power3.out" }, 112.427);
+    window.__timelines["hud"] = tl;
+  </script>
+</template>

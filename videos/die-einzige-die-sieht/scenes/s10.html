@@ -1,0 +1,59 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .bub { position: absolute; border-radius: 26px; background: #f3f1ea; color: #161a36; font-family: "Inter", sans-serif;
+      font-weight: 900; text-align: center; padding: 22px 26px; font-size: 40px; line-height: 1.1; opacity: 0; }
+    .rule { position: absolute; left: 0; width: 1080px; top: 440px; text-align: center; font-family: "Inter", sans-serif; font-weight: 900;
+      font-size: 120px; color: #ffd43b; text-shadow: 0 0 40px rgba(255,212,59,.5), 0 8px 0 rgba(0,0,0,.5); opacity: 0; }
+    #s10-post { left: 260px; top: 450px; width: 560px; height: 620px; border: 6px solid #ff3b55; box-shadow: 0 0 60px rgba(255,59,85,.45); overflow: hidden; opacity: 0; background: #f3f1ea; color: #161a36; }
+    #s10-post .bar { height: 96px; background: #ff3b55; color: #fff; font-size: 64px; line-height: 96px; letter-spacing: .06em; }
+    #s10-post .sil { margin: 28px auto 0; width: 200px; height: 200px; border-radius: 100px; background: #2a2f55; color: #ffd43b; font-size: 150px; line-height: 200px; }
+    #s10-post .t { margin-top: 22px; font-size: 44px; line-height: 1.1; }
+    #s10-post .rw { margin: 22px 34px 0; padding: 16px 0; border-radius: 16px; background: #ffd43b; font-size: 40px; line-height: 1.1; }
+    #s10-box { opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="s10" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s10-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s10-box" class="cbox y"><div class="lab">BELOHNUNG</div><div id="s10-n" class="num">0 TAGE ESSEN</div></div>
+      <svg id="s10-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s10-post" class="panel"><div class="bar">GESUCHT</div><div class="sil">?</div><div class="t">FRAU, DIE<br>SEHEN KANN</div><div class="rw">ESSEN FÜR 1 JAHR</div></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s10-svg");
+      const van = el("g", {}, sv); gsap.set(van, { x: -700 });
+      el("rect", { x: 280, y: 820, width: 520, height: 220, rx: 30, fill: "#e5e9f7" }, van);
+      el("path", { d: "M800 860 L900 900 L900 1040 L800 1040Z", fill: "#e5e9f7" }, van);
+      el("path", { d: "M806 872 L888 906 L888 960 L806 960Z", fill: "#a9d2ff" }, van);
+      el("rect", { x: 280, y: 940, width: 620, height: 20, fill: "#ff3b55" }, van);
+      [380, 790].forEach((x) => el("circle", { cx: x, cy: 1050, r: 46, fill: "#161a36" }, van));
+      el("rect", { x: 500, y: 780, width: 30, height: 44, fill: "#8fa2ff" }, van);
+      el("path", { d: "M470 790 L560 740 L560 830Z", fill: "#c9cde6" }, van);
+      const waves = [0, 1, 2].map((i) => el("path", { d: `M${600 + i * 40} ${720 - i * 20} q40 60 0 130`, fill: "none", stroke: "#ffd43b", "stroke-width": 10, "stroke-linecap": "round", opacity: 0 }, sv));
+      const T = person(sv, "s10-t", 860, 780, 1.0, { blind: true, shirt: "#4da3ff", hair: "#2a2f55", arms: [12, -150] });
+      gsap.set(T.g, { opacity: 0 });
+      const ear = el("circle", { cx: 906, cy: 722, r: 34, fill: "none", stroke: "#4da3ff", "stroke-width": 6, opacity: 0 }, sv);
+      const du = at("L28", "Durchsage"), na = at("L29", "Namen"), es = at("L29", "Essen"), ja = at("L29", "Jahr"), l30 = line("L30")[0], tom = at("L30", "Tom"), ge = at("L30", "ganz");
+      tl.to(van, { x: 0, duration: 0.8, ease: "power3.out" }, 0.05);
+      waves.forEach((w, i) => tl.fromTo(w, { opacity: 0 }, { opacity: 1, duration: 0.2, repeat: 9, yoyo: true }, du + i * 0.1));
+      tl.to(van, { opacity: 0, y: 60, duration: 0.3 }, na - 0.6);
+      tl.to(waves, { opacity: 0, duration: 0.1 }, na - 0.6);
+      tl.fromTo("#s10-post", { opacity: 0, scale: 0.5, rotation: -8 }, { opacity: 1, scale: 1, rotation: -2, duration: 0.4, ease: "back.out(1.8)" }, na - 0.4);
+      tl.to("#s10-box", { opacity: 1, duration: 0.25 }, es - 0.3);
+      count(tl, "#s10-n", 0, 365, es - 0.2, ja - es + 0.2, "", " TAGE ESSEN", "power2.out");
+      tl.fromTo("#s10-post .rw", { scale: 1 }, { scale: 1.12, duration: 0.15, yoyo: true, repeat: 1 }, ja);
+      tl.to("#s10-post", { x: -150, scale: 0.75, duration: 0.4, ease: "power3.inOut" }, l30 - 0.1);
+      tl.fromTo(T.g, { opacity: 0, x: 1000 }, { opacity: 1, x: 860, duration: 0.4, ease: "expo.out" }, tom - 0.2);
+      tl.fromTo(ear, { opacity: 0, attr: { r: 34 } }, { opacity: 1, attr: { r: 80 }, duration: 0.4, repeat: 3, ease: "power1.out" }, ge - 0.1);
+      tl.to("#s10-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s10"] = tl;
+    })();
+  </script>
+</template>

@@ -1,0 +1,50 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .bub { position: absolute; border-radius: 26px; background: #f3f1ea; color: #161a36; font-family: "Inter", sans-serif;
+      font-weight: 900; text-align: center; padding: 22px 26px; font-size: 40px; line-height: 1.1; opacity: 0; }
+    .rule { position: absolute; left: 0; width: 1080px; top: 440px; text-align: center; font-family: "Inter", sans-serif; font-weight: 900;
+      font-size: 120px; color: #ffd43b; text-shadow: 0 0 40px rgba(255,212,59,.5), 0 8px 0 rgba(0,0,0,.5); opacity: 0; }
+    #s08-burst { opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="s08" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s08-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s08-rule" class="rule">REGEL 3</div>
+      <svg id="s08-svg" class="full" viewBox="0 0 1080 1920"></svg>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s08-svg");
+      el("rect", { x: 0, y: 1060, width: 1080, height: 70, fill: "#2a2f55" }, sv);
+      const shard = el("path", { d: "M640 1066 L690 990 L720 1066Z", fill: "#a9d2ff" }, sv);
+      const spark = el("path", { d: "M690 960 l8 -24 l8 24 l24 8 l-24 8 l-8 24 l-8 -24 l-24 -8Z", fill: "#fff", opacity: 0 }, sv);
+      const P = person(sv, "s08-p", 330, 828, 1.0, { long: true, hair: "#4a2c1d", shirt: "#ff4fb0", arms: [80, -80] });
+      const sight = el("path", { d: "M350 770 L680 1000", stroke: "#ffd43b", "stroke-width": 6, "stroke-dasharray": "16 14", fill: "none", opacity: 0 }, sv);
+      const burst = el("path", { d: "M680 1050 l20 -70 l20 60 l50 -40 l-20 60 l60 10 l-60 20", fill: "#ff3b55", opacity: 0 }, sv);
+      const rg = at("L20", "Regel"), ta = at("L20", "Tasten"), sc = at("L21", "Scherbe"), si = at("L21", "siehst"), l22 = line("L22")[0], ab = at("L22", "absichtlich");
+      tl.fromTo("#s08-rule", { opacity: 0, scale: 1.8 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2.2)" }, rg - 0.05);
+      tl.to("#s08-rule", { opacity: 0, y: -40, duration: 0.25 }, ta + 0.6);
+      tl.fromTo(P.g, { opacity: 0, x: 200 }, { opacity: 1, x: 330, duration: 0.5, ease: "expo.out" }, 0.1);
+      tl.to(P.a1, { rotation: 95, duration: 0.3, repeat: 3, yoyo: true, ease: "sine.inOut" }, ta);
+      tl.to(P.a2, { rotation: -65, duration: 0.3, repeat: 3, yoyo: true, ease: "sine.inOut" }, ta + 0.15);
+      tl.to(spark, { opacity: 1, scale: 1.4, svgOrigin: "698 968", duration: 0.2, repeat: 3, yoyo: true }, sc);
+      tl.to(P.eyes, { x: 6, y: 5, duration: 0.15 }, si - 0.4);
+      tl.to(sight, { opacity: 1, duration: 0.2 }, si - 0.3);
+      tl.to(sight, { opacity: 0, duration: 0.15 }, l22);
+      tl.to(P.eyes, { x: 0, y: 0, duration: 0.15 }, l22);
+      tl.to(P.g, { x: 640, duration: 0.7, ease: "power1.inOut" }, l22);
+      tl.fromTo(burst, { opacity: 0, scale: 0.4, svgOrigin: "700 1050" }, { opacity: 1, scale: 1, svgOrigin: "700 1050", duration: 0.2, ease: "back.out(3)" }, ab + 0.05);
+      tl.to(P.mouth, { attr: { d: "M-12 -26 q12 -10 24 0" }, duration: 0.1 }, ab + 0.05);
+      tl.to(P.g, { y: 836, duration: 0.05, repeat: 5, yoyo: true }, ab + 0.1);
+      tl.to("#s08-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s08"] = tl;
+    })();
+  </script>
+</template>

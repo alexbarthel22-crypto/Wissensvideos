@@ -1,0 +1,56 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .bub { position: absolute; border-radius: 26px; background: #f3f1ea; color: #161a36; font-family: "Inter", sans-serif;
+      font-weight: 900; text-align: center; padding: 22px 26px; font-size: 40px; line-height: 1.1; opacity: 0; }
+    .rule { position: absolute; left: 0; width: 1080px; top: 440px; text-align: center; font-family: "Inter", sans-serif; font-weight: 900;
+      font-size: 120px; color: #ffd43b; text-shadow: 0 0 40px rgba(255,212,59,.5), 0 8px 0 rgba(0,0,0,.5); opacity: 0; }
+    .s12-k { position: absolute; font-family: "Inter", sans-serif; font-weight: 900; font-size: 64px; color: #ffd43b; text-shadow: 0 0 24px rgba(255,212,59,.5); opacity: 0; }
+    #s12-box { opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="s12" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s12-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s12-box" class="cbox r"><div class="lab">SEHENDE MENSCHEN</div><div class="num">2</div></div>
+      <svg id="s12-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s12-k1" class="s12-k" style="left:110px;top:560px">KLOPF</div><div id="s12-k2" class="s12-k" style="left:790px;top:700px">KLOPF</div><div id="s12-k3" class="s12-k" style="left:120px;top:860px">KLOPF</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s12-svg");
+      el("rect", { x: 300, y: 450, width: 480, height: 680, rx: 10, fill: "#3a2614" }, sv);
+      const door = el("g", {}, sv);
+      el("rect", { x: 330, y: 480, width: 420, height: 640, rx: 6, fill: "#7a4b22" }, door);
+      el("rect", { x: 370, y: 540, width: 340, height: 220, rx: 10, fill: "#6b3f1d" }, door);
+      el("rect", { x: 370, y: 800, width: 340, height: 260, rx: 10, fill: "#6b3f1d" }, door);
+      el("circle", { cx: 700, cy: 820, r: 18, fill: "#ffd43b" }, door);
+      const peep = el("circle", { cx: 540, cy: 620, r: 22, fill: "#161a36" }, door);
+      const pg = el("circle", { cx: 540, cy: 620, r: 60, fill: "#ffd43b", opacity: 0 }, sv);
+      const pupil = el("circle", { cx: 540, cy: 620, r: 9, fill: "#161a36", opacity: 0 }, sv);
+      const strip = el("rect", { x: 330, y: 1112, width: 420, height: 12, fill: "#ffd43b", opacity: 0.2 }, sv);
+      const feet = el("g", { opacity: 0 }, sv);
+      el("rect", { x: 450, y: 1112, width: 60, height: 12, fill: "#0b0e22" }, feet); el("rect", { x: 570, y: 1112, width: 60, height: 12, fill: "#0b0e22" }, feet);
+      const sr = at("L36", "Schritte"), dr = at("L36", "drei"), fl = at("L37", "flüstert"), si = at("L37", "siehst");
+      tl.fromTo(door, { opacity: 0, scale: 0.92, svgOrigin: "540 800" }, { opacity: 1, scale: 1, svgOrigin: "540 800", duration: 0.5, ease: "expo.out" }, 0.05);
+      tl.to(strip, { opacity: 0.8, duration: 0.6 }, sr);
+      tl.to(feet, { opacity: 1, duration: 0.3 }, sr + 0.9);
+      [0, 0.45, 0.9].forEach((d, i) => {
+        tl.to(door, { x: 7, duration: 0.04, repeat: 3, yoyo: true }, dr + d);
+        tl.fromTo(`#s12-k${i + 1}`, { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.18, ease: "back.out(3)" }, dr + d); });
+      tl.to(".s12-k", { opacity: 0, duration: 0.3 }, fl);
+      tl.to(pg, { opacity: 0.6, duration: 0.25 }, si - 0.1);
+      tl.to(peep, { fill: "#f3f1ea", duration: 0.1 }, si - 0.1);
+      tl.to(pupil, { opacity: 1, duration: 0.1 }, si - 0.1);
+      tl.to(pupil, { attr: { cx: 548 }, duration: 0.4, repeat: 1, yoyo: true }, si + 0.3);
+      tl.fromTo("#s12-box", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2)" }, si);
+      tl.to("#s12-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s12"] = tl;
+    })();
+  </script>
+</template>

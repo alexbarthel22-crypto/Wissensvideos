@@ -1,0 +1,179 @@
+<template>
+  <style>
+        #root { position: absolute; inset: 0; }
+    .stage { position: absolute; inset: 0; overflow: hidden; }
+    .abs { position: absolute; }
+    svg { overflow: visible; }
+    /* Zähler-Box wie in der Referenz: Rahmen in Akzentfarbe, Label in Mono-Versalien, große Zahl */
+    .cbox { position: absolute; left: 290px; width: 500px; top: 268px; height: 126px; border: 3px solid #ff4fb0;
+      border-radius: 14px; background: rgba(13,16,38,.88); text-align: center; box-shadow: 0 0 28px rgba(255,79,176,.35); }
+    .cbox .lab { margin-top: 16px; font-family: "Space Mono", monospace; font-weight: 700; font-size: 28px;
+      letter-spacing: .16em; color: #dfe2f5; }
+    .cbox .num { margin-top: 2px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 56px; color: #fff;
+      letter-spacing: .01em; }
+    .cbox.y { border-color: #ffd43b; box-shadow: 0 0 28px rgba(255,212,59,.3); }
+    .cbox.r { border-color: #ff3b55; box-shadow: 0 0 28px rgba(255,59,85,.35); }
+    .cbox.b { border-color: #4da3ff; box-shadow: 0 0 28px rgba(77,163,255,.3); }
+    .cbox.g { border-color: #39e27a; box-shadow: 0 0 28px rgba(57,226,122,.3); }
+    .mono { font-family: "Space Mono", monospace; font-weight: 700; letter-spacing: .12em; }
+    .heavy { font-family: "Inter", sans-serif; font-weight: 900; }
+
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .bub { position: absolute; border-radius: 26px; background: #f3f1ea; color: #161a36; font-family: "Inter", sans-serif;
+      font-weight: 900; text-align: center; padding: 22px 26px; font-size: 40px; line-height: 1.1; opacity: 0; }
+    .rule { position: absolute; left: 0; width: 1080px; top: 440px; text-align: center; font-family: "Inter", sans-serif; font-weight: 900;
+      font-size: 120px; color: #ffd43b; text-shadow: 0 0 40px rgba(255,212,59,.5), 0 8px 0 rgba(0,0,0,.5); opacity: 0; }
+    #s10-post { left: 260px; top: 450px; width: 560px; height: 620px; border: 6px solid #ff3b55; box-shadow: 0 0 60px rgba(255,59,85,.45); overflow: hidden; opacity: 0; background: #f3f1ea; color: #161a36; }
+    #s10-post .bar { height: 96px; background: #ff3b55; color: #fff; font-size: 64px; line-height: 96px; letter-spacing: .06em; }
+    #s10-post .sil { margin: 28px auto 0; width: 200px; height: 200px; border-radius: 100px; background: #2a2f55; color: #ffd43b; font-size: 150px; line-height: 200px; }
+    #s10-post .t { margin-top: 22px; font-size: 44px; line-height: 1.1; }
+    #s10-post .rw { margin: 22px 34px 0; padding: 16px 0; border-radius: 16px; background: #ffd43b; font-size: 40px; line-height: 1.1; }
+    #s10-box { opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="s10" data-start="0" data-duration="7.716" data-width="1080" data-height="1920">
+    <div id="s10-stage" class="clip stage" data-start="0" data-duration="7.716" data-track-index="0">
+      <div id="s10-box" class="cbox y"><div class="lab">BELOHNUNG</div><div id="s10-n" class="num">0 TAGE ESSEN</div></div>
+      <svg id="s10-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s10-post" class="panel"><div class="bar">GESUCHT</div><div class="sil">?</div><div class="t">FRAU, DIE<br>SEHEN KANN</div><div class="rw">ESSEN FÜR 1 JAHR</div></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      
+      const C = {"__dur": 7.716, "L28": [0.2, 2.22], "L28.words": [["am", 0.2, 0.351], ["abend", 0.351, 0.659], ["eine", 0.659, 0.961], ["durchsage", 0.961, 1.431], ["in", 1.431, 1.582], ["der", 1.582, 1.739], ["ganzen", 1.739, 2.052], ["stadt", 2.052, 2.22]], "L29": [2.44, 5.13], "L29.words": [["wer", 2.44, 2.613], ["den", 2.613, 2.787], ["namen", 2.787, 3.128], ["dieser", 3.128, 3.475], ["frau", 3.475, 3.654], ["kennt", 3.654, 3.84], ["bekommt", 4.03, 4.348], ["essen", 4.348, 4.655], ["für", 4.655, 4.812], ["ein", 4.812, 4.968], ["jahr", 4.968, 5.13]], "L30": [5.35, 7.536], "L30.words": [["und", 5.35, 5.57], ["nebenan", 5.57, 6.215], ["hört", 6.215, 6.443], ["tom", 6.443, 6.663], ["ganz", 6.663, 6.891], ["genau", 6.891, 7.323], ["zu", 7.323, 7.535]]};
+      const line = (id) => C[id];
+      const at = (id, word, which = 0) => {
+        const ws = C[id + ".words"];
+        if (typeof word === "number") return ws[word][1 + which];
+        const key = String(word).toLowerCase().replace(/[^\p{L}\p{N}_]/gu, "");
+        const hit = ws.find((w) => w[0].startsWith(key));
+        if (!hit) throw new Error("cue not found: " + id + " " + word);
+        return hit[1 + which];
+      };
+      // Zähler: schreibt Zahlen im deutschen Format (4.100.000.000) als Funktion der Timeline-Zeit
+      const fmt = (n) => Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      const count = (tl, sel, from, to, t, d, pre = "", post = "", ease = "power2.out") => {
+        const el = document.querySelector(sel);
+        const o = { v: from };
+        el.textContent = pre + fmt(from) + post;
+        tl.to(o, { v: to, duration: d, ease, onUpdate: () => { el.textContent = pre + fmt(o.v) + post; } }, t);
+      };
+      // deterministischer Zufall
+      const rng = (seed) => () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let x = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+        x = (x + Math.imul(x ^ (x >>> 7), 61 | x)) ^ x; return ((x ^ (x >>> 14)) >>> 0) / 4294967296; };
+
+      // ---- Gemeinsame Zeichenhelfer (flacher Stil wie Referenz) ----
+      const NS = "http://www.w3.org/2000/svg";
+      const el = (n, a, p) => { const e = document.createElementNS(NS, n); for (const k in a) e.setAttribute(k, a[k]); if (p) p.appendChild(e); return e; };
+      // Arm als Gruppe, dreht um die Schulter (sx, sy); 0° = hängt nach unten
+      function arm(g, sx, sy, deg, skin, sleeve) {
+        const a = el("g", {}, g);
+        el("rect", { x: sx - 12, y: sy - 4, width: 24, height: 60, rx: 12, fill: sleeve }, a);
+        el("rect", { x: sx - 10, y: sy + 40, width: 20, height: 56, rx: 10, fill: skin }, a);
+        el("circle", { cx: sx, cy: sy + 100, r: 14, fill: skin }, a);
+        gsap.set(a, { rotation: deg, svgOrigin: `${sx} ${sy}` });
+        return a;
+      }
+      // Figur: Ursprung = Mitte des Oberkörpers oben. o.long = lange Haare, o.blind = trübe Augen, o.closed = Augen zu
+      function person(parent, id, x, y, s = 1, o = {}) {
+        const skin = o.skin || "#f2c9a5", shirt = o.shirt || "#4da3ff", hair = o.hair || "#5b3a26", pants = o.pants || "#2a3170";
+        const g = el("g", { id }, parent);
+        gsap.set(g, { x, y, scale: s, transformOrigin: "0 0" });
+        const ang = o.arms || [12, -12];
+        el("rect", { x: -34, y: 118, width: 28, height: 110, rx: 12, fill: pants }, g);
+        el("rect", { x: 6, y: 118, width: 28, height: 110, rx: 12, fill: pants }, g);
+        el("rect", { x: -40, y: 222, width: 36, height: 16, rx: 8, fill: "#1a1f45" }, g);
+        el("rect", { x: 4, y: 222, width: 36, height: 16, rx: 8, fill: "#1a1f45" }, g);
+        const a1 = arm(g, -52, 18, ang[0], skin, shirt), a2 = arm(g, 52, 18, ang[1], skin, shirt);
+        el("rect", { x: -56, y: 0, width: 112, height: 132, rx: 40, fill: shirt }, g);
+        if (o.long) el("path", { d: "M-52 -60 C-56 -128 56 -128 52 -60 L60 34 Q30 48 0 30 Q-30 48 -60 34Z", fill: hair }, g);
+        el("rect", { x: -12, y: -18, width: 24, height: 22, fill: skin }, g);
+        el("circle", { cx: 0, cy: -58, r: 46, fill: skin }, g);
+        el("path", { d: o.long ? "M-48 -54 C-52 -122 52 -122 48 -54 C40 -92 -10 -98 -48 -54Z" : "M-46 -60 C-46 -118 46 -118 46 -60 C30 -84 -20 -88 -46 -60Z", fill: hair }, g);
+        const eyes = el("g", {}, g);
+        if (o.blind) { [-16, 16].forEach((cx) => { el("circle", { cx, cy: -56, r: 9, fill: "#e4e8f6" }, eyes); el("circle", { cx, cy: -56, r: 5, fill: "#b4bbd6" }, eyes); }); }
+        else { el("circle", { cx: -16, cy: -56, r: 7, fill: "#161a36" }, eyes); el("circle", { cx: 16, cy: -56, r: 7, fill: "#161a36" }, eyes); }
+        const lids = el("path", { d: "M-24 -56 q8 6 16 0 M8 -56 q8 6 16 0", fill: "none", stroke: "#161a36", "stroke-width": 4, "stroke-linecap": "round", opacity: o.closed ? 1 : 0 }, g);
+        if (o.closed) gsap.set(eyes, { opacity: 0 });
+        const mouth = el("path", { d: o.sad ? "M-14 -26 q14 -10 28 0" : "M-12 -30 q12 8 24 0", fill: "none", stroke: "#8a3b2a", "stroke-width": 5, "stroke-linecap": "round" }, g);
+        return { g, a1, a2, eyes, lids, mouth };
+      }
+      // kleine Figur (Menge), Arme tastend nach vorn/außen
+      function mini(parent, x, y, c, glow) {
+        const g = el("g", { opacity: 0 }, parent);
+        if (glow) g.style.filter = "drop-shadow(0 0 18px rgba(255,212,59,.9))";
+        el("path", { d: `M${x - 14} ${y + 22} l-22 -14 M${x + 14} ${y + 22} l22 -14`, stroke: glow ? "#f2c9a5" : "#9aa1c4", "stroke-width": 7, "stroke-linecap": "round" }, g);
+        el("circle", { cx: x, cy: y, r: 14, fill: glow ? "#f2c9a5" : "#9aa1c4" }, g);
+        el("rect", { x: x - 15, y: y + 15, width: 30, height: 42, rx: 11, fill: c }, g);
+        return g;
+      }
+      // großes Auge (Mandelform), Pupille separat beweglich
+      function bigEye(parent, cx, cy, s = 1) {
+        const g = el("g", {}, parent); gsap.set(g, { x: cx, y: cy, scale: s, transformOrigin: "0 0" });
+        const glow = null; g.style.filter = "drop-shadow(0 0 40px rgba(255,212,59,.6))";
+        el("path", { d: "M-240 0 Q0 -175 240 0 Q0 175 -240 0Z", fill: "#f3f1ea" }, g);
+        const iris = el("g", {}, g);
+        el("circle", { cx: 0, cy: 0, r: 86, fill: "#4da3ff" }, iris);
+        el("circle", { cx: 0, cy: 0, r: 60, fill: "#2b6fd1" }, iris);
+        el("circle", { cx: 0, cy: 0, r: 38, fill: "#0b0e22" }, iris);
+        el("circle", { cx: 26, cy: -26, r: 16, fill: "#fff" }, iris);
+        el("path", { d: "M-240 0 Q0 -175 240 0", fill: "none", stroke: "#161a36", "stroke-width": 14, "stroke-linecap": "round" }, g);
+        return { g, iris, glow };
+      }
+      function radio(parent, x, y, s = 1) {
+        const g = el("g", {}, parent); gsap.set(g, { x, y, scale: s, transformOrigin: "0 0" });
+        el("path", { d: "M180 -150 L260 -300", stroke: "#c9cde6", "stroke-width": 10, "stroke-linecap": "round" }, g);
+        el("rect", { x: -300, y: -160, width: 600, height: 320, rx: 40, fill: "#8a5a2b" }, g);
+        el("rect", { x: -280, y: -140, width: 560, height: 280, rx: 28, fill: "#a86b2c" }, g);
+        el("circle", { cx: -140, cy: 0, r: 110, fill: "#5e3b1a" }, g);
+        for (let i = -3; i <= 3; i++) el("rect", { x: -230, y: i * 26 - 4, width: 180, height: 8, rx: 4, fill: "#8a5a2b" }, g);
+        el("rect", { x: 20, y: -100, width: 240, height: 90, rx: 12, fill: "#ffe9a8" }, g);
+        for (let i = 0; i < 9; i++) el("rect", { x: 40 + i * 24, y: -84, width: 4, height: i % 2 ? 20 : 34, fill: "#8a5a2b" }, g);
+        const needle = el("rect", { x: 90, y: -96, width: 6, height: 82, fill: "#ff3b55" }, g);
+        el("circle", { cx: 80, cy: 70, r: 38, fill: "#5e3b1a" }, g); el("circle", { cx: 200, cy: 70, r: 38, fill: "#5e3b1a" }, g);
+        return { g, needle };
+      }
+      function car(parent, x, y, c, rot = 0) {
+        const g = el("g", {}, parent); gsap.set(g, { x, y, rotation: rot, transformOrigin: "0 0" });
+        el("rect", { x: -130, y: -40, width: 260, height: 70, rx: 22, fill: c }, g);
+        el("path", { d: "M-70 -40 L-40 -90 L50 -90 L80 -40Z", fill: c }, g);
+        el("path", { d: "M-56 -44 L-34 -80 L0 -80 L0 -44Z M10 -44 L10 -80 L44 -80 L64 -44Z", fill: "#a9d2ff" }, g);
+        el("circle", { cx: -70, cy: 34, r: 26, fill: "#161a36" }, g); el("circle", { cx: 70, cy: 34, r: 26, fill: "#161a36" }, g);
+        const blink = el("g", { opacity: 0 }, g);
+        el("circle", { cx: -124, cy: -10, r: 12, fill: "#ffb020" }, blink); el("circle", { cx: 124, cy: -10, r: 12, fill: "#ffb020" }, blink);
+        return { g, blink };
+      }
+
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s10-svg");
+      const van = el("g", {}, sv); gsap.set(van, { x: -700 });
+      el("rect", { x: 280, y: 820, width: 520, height: 220, rx: 30, fill: "#e5e9f7" }, van);
+      el("path", { d: "M800 860 L900 900 L900 1040 L800 1040Z", fill: "#e5e9f7" }, van);
+      el("path", { d: "M806 872 L888 906 L888 960 L806 960Z", fill: "#a9d2ff" }, van);
+      el("rect", { x: 280, y: 940, width: 620, height: 20, fill: "#ff3b55" }, van);
+      [380, 790].forEach((x) => el("circle", { cx: x, cy: 1050, r: 46, fill: "#161a36" }, van));
+      el("rect", { x: 500, y: 780, width: 30, height: 44, fill: "#8fa2ff" }, van);
+      el("path", { d: "M470 790 L560 740 L560 830Z", fill: "#c9cde6" }, van);
+      const waves = [0, 1, 2].map((i) => el("path", { d: `M${600 + i * 40} ${720 - i * 20} q40 60 0 130`, fill: "none", stroke: "#ffd43b", "stroke-width": 10, "stroke-linecap": "round", opacity: 0 }, sv));
+      const T = person(sv, "s10-t", 860, 780, 1.0, { blind: true, shirt: "#4da3ff", hair: "#2a2f55", arms: [12, -150] });
+      gsap.set(T.g, { opacity: 0 });
+      const ear = el("circle", { cx: 906, cy: 722, r: 34, fill: "none", stroke: "#4da3ff", "stroke-width": 6, opacity: 0 }, sv);
+      const du = at("L28", "Durchsage"), na = at("L29", "Namen"), es = at("L29", "Essen"), ja = at("L29", "Jahr"), l30 = line("L30")[0], tom = at("L30", "Tom"), ge = at("L30", "ganz");
+      tl.to(van, { x: 0, duration: 0.8, ease: "power3.out" }, 0.05);
+      waves.forEach((w, i) => tl.fromTo(w, { opacity: 0 }, { opacity: 1, duration: 0.2, repeat: 9, yoyo: true }, du + i * 0.1));
+      tl.to(van, { opacity: 0, y: 60, duration: 0.3 }, na - 0.6);
+      tl.to(waves, { opacity: 0, duration: 0.1 }, na - 0.6);
+      tl.fromTo("#s10-post", { opacity: 0, scale: 0.5, rotation: -8 }, { opacity: 1, scale: 1, rotation: -2, duration: 0.4, ease: "back.out(1.8)" }, na - 0.4);
+      tl.to("#s10-box", { opacity: 1, duration: 0.25 }, es - 0.3);
+      count(tl, "#s10-n", 0, 365, es - 0.2, ja - es + 0.2, "", " TAGE ESSEN", "power2.out");
+      tl.fromTo("#s10-post .rw", { scale: 1 }, { scale: 1.12, duration: 0.15, yoyo: true, repeat: 1 }, ja);
+      tl.to("#s10-post", { x: -150, scale: 0.75, duration: 0.4, ease: "power3.inOut" }, l30 - 0.1);
+      tl.fromTo(T.g, { opacity: 0, x: 1000 }, { opacity: 1, x: 860, duration: 0.4, ease: "expo.out" }, tom - 0.2);
+      tl.fromTo(ear, { opacity: 0, attr: { r: 34 } }, { opacity: 1, attr: { r: 80 }, duration: 0.4, repeat: 3, ease: "power1.out" }, ge - 0.1);
+      tl.to("#s10-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s10"] = tl;
+    })();
+  </script>
+</template>
