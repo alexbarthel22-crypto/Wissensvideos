@@ -29,8 +29,8 @@
     #s09-stars { position: absolute; right: 26px; top: 18px; color: #ffd43b; font-size: 48px; letter-spacing: 4px;
       font-family: "Inter", sans-serif; font-weight: 900; }
   </style>
-  <div id="root" data-composition-id="s09" data-start="0" data-duration="7.433" data-width="1080" data-height="1920">
-    <div id="s09-stage" class="clip stage" data-start="0" data-duration="7.433" data-track-index="0">
+  <div id="root" data-composition-id="s09" data-start="0" data-duration="6.050" data-width="1080" data-height="1920">
+    <div id="s09-stage" class="clip stage" data-start="0" data-duration="6.050" data-track-index="0">
       <div id="s09-traffic" class="cbox b">
         <div class="lab">VERKEHR</div>
         <div id="s09-tnum" class="num">100 %</div>
@@ -80,7 +80,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 7.433, "L16": [0.2, 1.833], "L16.words": [["und", 0.2, 0.408], ["draußen", 0.408, 0.83], ["leere", 1.02, 1.419], ["straßen", 1.419, 1.833]], "L17": [2.113, 3.998], "L17.words": [["kaum", 2.113, 2.423], ["verkehr", 2.423, 3.033], ["kaum", 3.253, 3.448], ["unfälle", 3.448, 3.999]], "L18": [4.278, 7.183], "L18.words": [["in", 4.278, 4.489], ["vicecity", 4.489, 5.155], ["herrscht", 5.155, 5.413], ["chaos", 5.413, 5.648], ["in", 5.648, 5.859], ["echten", 5.859, 6.298], ["städten", 6.298, 6.744], ["stille", 6.744, 7.183]]};
+      const C = {"__dur": 6.05, "L16": [0.2, 2.16], "L16.words": [["und", 0.2, 0.431], ["draußen", 0.431, 0.9], ["leere", 1.2, 1.671], ["straßen", 1.671, 2.16]], "L18": [2.38, 5.87], "L18.words": [["in", 2.38, 2.634], ["vicecity", 2.634, 3.434], ["herrscht", 3.434, 3.744], ["chaos", 3.744, 4.026], ["in", 4.026, 4.28], ["echten", 4.28, 4.807], ["städten", 4.807, 5.343], ["stille", 5.343, 5.87]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -103,13 +103,13 @@
         x = (x + Math.imul(x ^ (x >>> 7), 61 | x)) ^ x; return ((x ^ (x >>> 14)) >>> 0) / 4294967296; };
 
       const tl = gsap.timeline({ paused: true });
-      const leere = at("L16", "Leere"), l17 = line("L17")[0], unf = at("L17", "Unfälle"), l18 = line("L18")[0];
+      const leere = at("L16", "Leere"), l18 = line("L18")[0];
       const chaos = at("L18", "Chaos"), echt = at("L18", "echten"), stille = at("L18", "Stille");
       tl.fromTo("#s09-street", { opacity: 0, scale: 1.08 }, { opacity: 1, scale: 1, duration: 0.8, ease: "power2.out" }, 0.05);
       for (let i = 0; i < 8; i++) tl.to("#s09-amber", { opacity: i % 2 ? 1 : 0.15, duration: 0.05 }, 0.4 + i * 0.5);
       tl.fromTo("#s09-traffic", { opacity: 0, y: -14 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, leere - 0.1);
       count(tl, "#s09-tnum", 100, 8, leere, 1.4, "", " %", "power2.out");
-      tl.to("#s09-tnum", { color: "#4da3ff", duration: 0.2 }, l17);
+      tl.to("#s09-tnum", { color: "#4da3ff", duration: 0.2 }, leere + 1.2);
       // Vice City vs. echte Stadt
       tl.to(["#s09-street", "#s09-traffic"], { opacity: 0, filter: "blur(8px)", duration: 0.2, ease: "power2.in" }, l18 - 0.15);
       tl.fromTo("#s09-vice", { opacity: 0, y: -40 }, { opacity: 1, y: 0, duration: 0.4, ease: "expo.out" }, l18);

@@ -54,8 +54,8 @@
     #s01-q { color: #ff3b55; font-family: "Inter", sans-serif; font-weight: 900; font-size: 120px; line-height: 130px;
       text-shadow: 0 0 30px rgba(255,59,85,.5); }
   </style>
-  <div id="root" data-composition-id="s01" data-start="0" data-duration="12.459" data-width="1080" data-height="1920">
-    <div id="s01-stage" class="clip stage" data-start="0" data-duration="12.459" data-track-index="0">
+  <div id="root" data-composition-id="s01" data-start="0" data-duration="12.400" data-width="1080" data-height="1920">
+    <div id="s01-stage" class="clip stage" data-start="0" data-duration="12.400" data-track-index="0">
       <div id="s01-count" class="cbox">
         <div class="lab">SPIELER ONLINE</div>
         <div id="s01-num" class="num" style="color:#ff4fb0">4.100.000.000</div>
@@ -132,7 +132,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 12.459, "L1": [0.25, 3.669], "L1.words": [["am", 0.25, 0.267], ["19", 0.267, 0.32], ["november", 0.43, 1.285], ["passiert", 1.285, 1.883], ["etwas", 1.883, 2.45], ["das", 2.7, 2.894], ["es", 2.894, 3.081], ["noch", 3.081, 3.281], ["nie", 3.281, 3.475], ["gab", 3.475, 3.669]], "L2": [3.949, 8.78], "L2.words": [["die", 3.949, 4.188], ["hälfte", 4.188, 4.665], ["aller", 4.665, 5.134], ["menschen", 5.134, 5.629], ["spielt", 5.629, 5.893], ["gta6", 5.893, 6.857], ["gleichzeitig", 6.857, 7.599], ["den", 7.799, 8.044], ["ganzen", 8.044, 8.535], ["tag", 8.535, 8.78]], "L2b": [9.06, 12.209], "L2b.words": [["und", 9.06, 9.241], ["um", 9.241, 9.415], ["mitternacht", 9.415, 9.97], ["passiert", 9.97, 10.345], ["etwas", 10.345, 10.7], ["womit", 11.06, 11.434], ["niemand", 11.434, 11.822], ["rechnet", 11.822, 12.21]]};
+      const C = {"__dur": 12.4, "L1": [0.25, 3.79], "L1.words": [["am", 0.25, 0.463], ["19", 0.463, 1.141], ["november", 1.141, 1.795], ["passiert", 1.795, 2.253], ["etwas", 2.253, 2.686], ["das", 2.686, 2.907], ["es", 2.907, 3.12], ["noch", 3.12, 3.348], ["nie", 3.348, 3.569], ["gab", 3.569, 3.79]], "L2": [4.01, 8.77], "L2.words": [["die", 4.01, 4.18], ["hälfte", 4.18, 4.52], ["aller", 4.52, 4.854], ["menschen", 4.854, 5.207], ["spielt", 5.207, 5.395], ["gta6", 5.395, 6.081], ["gleichzeitig", 6.081, 6.61], ["den", 6.91, 7.375], ["ganzen", 7.375, 8.305], ["tag", 8.305, 8.77]], "L2b": [8.99, 12.22], "L2b.words": [["und", 8.99, 9.175], ["um", 9.175, 9.354], ["mitternacht", 9.354, 9.923], ["passiert", 9.923, 10.306], ["etwas", 10.306, 10.67], ["womit", 10.97, 11.377], ["niemand", 11.377, 11.798], ["rechnet", 11.798, 12.22]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -169,7 +169,7 @@
         dots.appendChild(c);
         made.push(c);
       }
-      const cal = at("L1", "passiert"), nie = at("L1", "nie");
+      const cal = at("L1", "das"), nie = at("L1", "nie");
       const half = at("L2", "Hälfte"), gta = at("L2", "GTA"), ganz = at("L2", "ganzen");
       const l2b = line("L2b")[0], nacht = at("L2b", "Mitternacht"), niemand = at("L2b", "niemand");
 

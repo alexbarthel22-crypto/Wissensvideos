@@ -11,10 +11,10 @@ Vorher den HyperFrames-Skill laden (`/hyperframes:hyperframes`); dessen Contract
 
 ## Ablauf für ein neues Video
 
-1. **Setup** (einmal pro Sitzung): `bash tools/setup.sh` (Piper-Stimme). Für die natürlichere Stimme `bash tools/setup.sh --coqui` (lädt PyTorch, ~5 GB, im Hintergrund starten).
+1. **Setup** (einmal pro Sitzung): `bash tools/setup.sh --coqui` im Hintergrund starten (PyTorch ~5 GB, ~40 min bei 1 MB/s). Bis dahin mit Piper (`voice-de-kerstin-low`) bauen und prüfen, am Ende mit Coqui neu vertonen.
 2. **Projekt anlegen**: `cd videos && ../tools/hf.sh init <slug> --example blank --resolution portrait --non-interactive --skip-skills --skill hyperframes`
 3. **Skript** `videos/<slug>/script.json` schreiben (Format unten). ~150–170 Wörter ergeben ~60 s. Aufbau siehe `references/stil.md` → Dramaturgie.
-4. **Stimme**: `python3 tools/tts_de.py videos/<slug> --backend coqui` (oder `--backend piper`). Schreibt `assets/voice/narration.wav` + `timings.json` (Wortzeiten).
+4. **Stimme**: immer **weiblich**. `python3 tools/tts_de.py videos/<slug> --backend coqui --voice css10 --speed 1.25` (Fallback: `--backend piper --voice voice-de-kerstin-low --speed 1.15`). Schreibt `assets/voice/narration.wav` + `timings.json`. Klarheits-Filter, Pausen-Kürzung (`--max-gap`) und Ausdruck (`--noise`, Standard 0.75) sind eingebaut. Ziel: 2,6–2,9 Wörter/s pro Zeile, Gesamtlänge 60–75 s. Pro Zeile `"speed": 0.92` für dramatische Sätze, `"pause": 0.4` vor einer Pointe.
 5. **Szenen** `videos/<slug>/scenes/sNN.html` schreiben, eine pro Szene im Skript (Vorlage: jede Szene aus dem Beispielprojekt; `scenes/_common.css` mitkopieren). Animationen hängen an Wörtern: `at("L3", "Start")`, `line("L3")`, `count(...)`.
 6. **Bauen**: `python3 tools/build_video.py videos/<slug>` → `index.html`, `compositions/*` (HUD, Untertitel, Szenen, Ton).
 7. **Prüfen**: `cd videos/<slug> && ../../tools/hf.sh check --json > /tmp/c.json; python3 ../../tools/check_summary.py /tmp/c.json` – alle Fehler beheben, Warnungen abwägen. Dann `../../tools/hf.sh snapshot --review -o <scratchpad>` und gezielt `--at` auf die Schlüsselmomente; Bilder ansehen und nach `references/stil.md` → QA korrigieren.
@@ -52,9 +52,16 @@ Nach Skriptänderungen immer Schritt 4 → 6 neu ausführen (Timings ändern sic
 - Jede Szene endet mit Blur-Out (0,18 s) ihrer Elemente auf `C.__dur - 0.18`.
 - Zufall nur über `rng(seed)`, keine `Math.random()`/`Date.now()`; Zahlen über `count()` (deutsches Format 4.100.000.000).
 
+## Hook und Schluss (Pflicht)
+
+- **Frame 0** muss allein als Thumbnail funktionieren und zum Stoppen bringen: Eilmeldungs-Karte mit roter Leiste („● EILMELDUNG · LIVE“) und einer Schlagzeile mit Zahl + Thema (Inter Black 84 px), darüber Kapitel-Marke und Zähler-Box mit der Endzahl, dahinter das leuchtende Hauptmotiv. Alles ab t = 0 sichtbar, Schlagzeile ≥ 2,5 s stehen lassen.
+- **Offene Schleife** im Hook: ein Satz, der eine Auflösung am Ende verspricht („Und um Mitternacht passiert etwas, womit niemand rechnet.“) – die Auflösung kommt in der vorletzten Szene.
+- **Schluss**: direkte Frage an die Zuschauer, ob sie selbst dazugehören („Gehörst du am 19. November zu den vier Milliarden?“) + zwei Antwort-Buttons + „Schreib's in die Kommentare!“. Die letzte Untertitel-Zeile bleibt bis zum Ende stehen.
+
 ## Bekannte Grenzen
 
 - Keine Musik verfügbar (HeyGen-Katalog braucht Login). Video kommt mit Stimme + Effekten; der Creator legt in TikTok einen Trend-Sound darunter (Lautstärke dort ~10–20 %).
 - Hugging Face ist im Container gesperrt; Stimmen kommen von GitHub-Releases (setup.sh).
-- Wortzeiten sind geschätzt (Pausen-Erkennung + Silben) – Karaoke kann um ~0,1 s abweichen.
+- Wortzeiten sind geschätzt (Pausen-Erkennung + Silben) – Karaoke kann um ~0,1 s abweichen. Whisper/Vosk-Modelle sind im Container nicht ladbar.
+- CSS10 kennt kein „…“ (wird verworfen) und spricht Anglizismen deutsch aus – Aussprache im Skript lautschriftlich schreiben.
 - Das „TikTok @handle“-Wasserzeichen und die TikTok-Endkarte in den Referenzen stammen vom TikTok-Download, **nicht** ins Video einbauen.

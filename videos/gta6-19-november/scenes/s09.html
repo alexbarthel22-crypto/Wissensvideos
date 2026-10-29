@@ -64,13 +64,13 @@
     (() => {
       /*__CUE_HELPERS__*/
       const tl = gsap.timeline({ paused: true });
-      const leere = at("L16", "Leere"), l17 = line("L17")[0], unf = at("L17", "Unfälle"), l18 = line("L18")[0];
+      const leere = at("L16", "Leere"), l18 = line("L18")[0];
       const chaos = at("L18", "Chaos"), echt = at("L18", "echten"), stille = at("L18", "Stille");
       tl.fromTo("#s09-street", { opacity: 0, scale: 1.08 }, { opacity: 1, scale: 1, duration: 0.8, ease: "power2.out" }, 0.05);
       for (let i = 0; i < 8; i++) tl.to("#s09-amber", { opacity: i % 2 ? 1 : 0.15, duration: 0.05 }, 0.4 + i * 0.5);
       tl.fromTo("#s09-traffic", { opacity: 0, y: -14 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, leere - 0.1);
       count(tl, "#s09-tnum", 100, 8, leere, 1.4, "", " %", "power2.out");
-      tl.to("#s09-tnum", { color: "#4da3ff", duration: 0.2 }, l17);
+      tl.to("#s09-tnum", { color: "#4da3ff", duration: 0.2 }, leere + 1.2);
       // Vice City vs. echte Stadt
       tl.to(["#s09-street", "#s09-traffic"], { opacity: 0, filter: "blur(8px)", duration: 0.2, ease: "power2.in" }, l18 - 0.15);
       tl.fromTo("#s09-vice", { opacity: 0, y: -40 }, { opacity: 1, y: 0, duration: 0.4, ease: "expo.out" }, l18);

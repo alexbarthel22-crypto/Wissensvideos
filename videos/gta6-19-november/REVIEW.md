@@ -1,5 +1,14 @@
 # Review: GTA VI – 19. November
 
+## Fassung 2 (aktuell)
+- Weibliche Stimme: Coqui CSS10 VITS (22 kHz), Tempo 1,25, Klarheits-EQ + Kompressor, Pausen ≤ 0,3 s. ~2,8 Wörter/s.
+- Frame 0: Eilmeldung „4,1 Milliarden Menschen spielen GTA 6 – gleichzeitig“ + Zähler + pinker Globus; offene Schleife „Um Mitternacht passiert etwas, womit niemand rechnet“ → Auflösung „Noch eine Runde!“.
+- Schluss: „Gehörst du am 19. November zu den vier Milliarden? Schreib's in die Kommentare!“ mit Buttons ICH ZOCKE / NEIN.
+- Länge 75 s, −16,1 LUFS, Spitze −1,5 dBFS. Zeile „Kaum Verkehr. Kaum Unfälle.“ gestrichen.
+- Behaltene Warnung: „24 STUNDEN · 0 PAUSEN“ steht 1,24 s (Untertitel sagt dasselbe).
+
+## Fassung 1
+
 ## Kreative Entscheidungen
 - Stil B (2D-Neon, deutsch, Karaoke-Untertitel) aus der „Greta“-Referenz, kombiniert mit der Zeitleiter-Dramaturgie der 3D-Referenzen (Kapitel-Marke = Uhrzeit am 19. Nov, 00:00 → 23:59 → 20. Nov 00:00).
 - Running Gag: Checkliste oben links füllt sich mit allem, was kaputtgeht (Server, Internet, Stromnetz, Arbeit, Wirtschaft).

@@ -29,19 +29,18 @@
     #s11-kom { position: absolute; left: 0; width: 100%; top: 990px; text-align: center; color: #ffd43b;
       font-family: "Space Mono", monospace; font-weight: 700; font-size: 30px; letter-spacing: .12em; }
   </style>
-  <div id="root" data-composition-id="s11" data-start="0" data-duration="7.770" data-width="1080" data-height="1920">
-    <div id="s11-stage" class="clip stage" data-start="0" data-duration="7.770" data-track-index="0">
+  <div id="root" data-composition-id="s11" data-start="0" data-duration="8.480" data-width="1080" data-height="1920">
+    <div id="s11-stage" class="clip stage" data-start="0" data-duration="8.480" data-track-index="0">
       <div id="s11-time">00:00</div>
       <div id="s11-sub">GEHÖRST DU DAZU?</div>
       <div id="s11-ja" class="s11-b">ICH ZOCKE</div>
       <div id="s11-nein" class="s11-b">NEIN</div>
-      <div id="s11-kom">↓ SCHREIB'S IN DIE KOMMENTARE</div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 7.77, "L21": [0.2, 3.427], "L21.words": [["und", 0.2, 0.379], ["du", 0.379, 0.552], ["gehörst", 0.552, 0.917], ["du", 0.917, 1.09], ["am", 1.09, 1.263], ["19", 1.263, 1.814], ["november", 1.814, 2.345], ["zu", 2.345, 2.518], ["den", 2.518, 2.697], ["vier", 2.697, 2.883], ["milliarden", 2.883, 3.427]], "L22": [3.707, 4.97], "L22.words": [["schreibs", 3.707, 3.917], ["in", 3.917, 4.09], ["die", 4.09, 4.268], ["kommentare", 4.268, 4.969]]};
+      const C = {"__dur": 8.48, "L21": [0.2, 3.89], "L21.words": [["und", 0.2, 0.405], ["du", 0.405, 0.603], ["gehörst", 0.603, 1.02], ["du", 1.02, 1.218], ["am", 1.218, 1.415], ["19", 1.415, 2.045], ["november", 2.045, 2.653], ["zu", 2.653, 2.85], ["den", 2.85, 3.055], ["vier", 3.055, 3.268], ["milliarden", 3.268, 3.89]], "L22": [4.11, 5.68], "L22.words": [["schreibs", 4.11, 4.372], ["in", 4.372, 4.586], ["die", 4.586, 4.808], ["kommentare", 4.808, 5.68]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -64,12 +63,11 @@
         x = (x + Math.imul(x ^ (x >>> 7), 61 | x)) ^ x; return ((x ^ (x >>> 14)) >>> 0) / 4294967296; };
 
       const tl = gsap.timeline({ paused: true });
-      const du = at("L21", "du?"), mrd = at("L21", "Milliarden"), kom = at("L22", "Kommentare");
+      const du = at("L21", "du?"), mrd = at("L21", "Milliarden");
       tl.fromTo("#s11-time", { opacity: 0, scale: 1.2 }, { opacity: 1, scale: 1, duration: 0.35, ease: "expo.out" }, 0.05);
       tl.fromTo("#s11-sub", { opacity: 0 }, { opacity: 1, duration: 0.3 }, du);
       tl.fromTo("#s11-ja", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.4, ease: "back.out(1.7)" }, mrd - 0.1);
       tl.fromTo("#s11-nein", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.4, ease: "back.out(1.7)" }, mrd + 0.05);
-      tl.fromTo("#s11-kom", { opacity: 0 }, { opacity: 1, duration: 0.3 }, kom - 0.3);
       window.__timelines["s11"] = tl;
     })();
   </script>

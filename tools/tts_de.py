@@ -25,8 +25,8 @@ import soundfile as sf
 
 CACHE = Path(os.environ.get("TIKTOK_CACHE", Path.home() / ".cache" / "tiktok-tts"))
 SR = 44100
-GAP_LINE = 0.28      # Pause zwischen Zeilen derselben Szene
-GAP_SCENE = 0.45     # Pause zwischen Szenen
+GAP_LINE = 0.22      # Pause zwischen Zeilen derselben Szene
+GAP_SCENE = 0.38     # Pause zwischen Szenen
 LEAD_IN = 0.25       # Stille am Anfang
 COLOR_RE = re.compile(r"^\*([yrpgb]):")
 PUNCT_RE = re.compile(r"[,.;:?!…]+[\"“”]?$")
@@ -86,9 +86,12 @@ tts = TTS(model_path={str(model)!r}, config_path={str(Path(model_dir) / 'config.
 m = tts.synthesizer.tts_model
 m.inference_noise_scale = {noise}
 m.inference_noise_scale_dp = 0.9
+kw = {{}}
+if tts.is_multi_speaker and tts.speakers: kw["speaker"] = tts.speakers[0]
+if tts.is_multi_lingual and tts.languages: kw["language"] = tts.languages[0]
 for i, (t, ls) in enumerate(zip(job["texts"], job["scales"])):
     m.length_scale = ls
-    tts.tts_to_file(text=t, file_path={str(tmp)!r} + f'/{{i:03d}}.wav')
+    tts.tts_to_file(text=t, file_path={str(tmp)!r} + f'/{{i:03d}}.wav', **kw)
 """
     subprocess.run([python, "-c", code], check=True)
     out = []
@@ -123,29 +126,59 @@ def clarity(audio):
     return a
 
 
-def trim(audio, thresh=0.012):
-    idx = np.where(np.abs(audio) > thresh)[0]
-    if len(idx) == 0:
-        return audio
-    a, b = max(0, idx[0] - int(0.02 * SR)), min(len(audio), idx[-1] + int(0.06 * SR))
-    return audio[a:b]
-
-
-def pauses(audio, min_len=0.11, thresh_db=-38):
-    """Stille-Abschnitte innerhalb der Zeile: [(start, end), ...] in Sekunden."""
+def voiced_frames(audio, thresh_db=-36, min_blip=4):
+    """Pro 10-ms-Frame: Sprache ja/nein. Ausreißer kürzer als min_blip Frames (Knackser, Atem) zählen als Stille."""
     hop = int(0.01 * SR)
-    frames = len(audio) // hop
-    rms = np.array([np.sqrt(np.mean(audio[i * hop:(i + 1) * hop] ** 2) + 1e-12) for i in range(frames)])
-    silent = 20 * np.log10(rms + 1e-9) < thresh_db
+    n = len(audio) // hop
+    rms = np.sqrt(np.mean(audio[: n * hop].reshape(n, hop) ** 2, axis=1) + 1e-12)
+    v = 20 * np.log10(rms) > thresh_db
+    i = 0
+    while i < n:
+        if v[i]:
+            j = i
+            while j < n and v[j]:
+                j += 1
+            if j - i < min_blip:
+                v[i:j] = False
+            i = j
+        else:
+            i += 1
+    return v
+
+
+def trim(audio):
+    v = np.where(voiced_frames(audio))[0]
+    if len(v) == 0:
+        return audio
+    hop = int(0.01 * SR)
+    return audio[max(0, v[0] * hop - int(0.03 * SR)): min(len(audio), (v[-1] + 1) * hop + int(0.08 * SR))]
+
+
+def pauses(audio, min_len=0.11):
+    """Stille-Abschnitte innerhalb der Zeile: [(start, end), ...] in Sekunden."""
+    v = voiced_frames(audio)
     res, start = [], None
-    for i, s in enumerate(silent):
-        if s and start is None:
+    for i, voiced in enumerate(v):
+        if not voiced and start is None:
             start = i
-        elif not s and start is not None:
+        elif voiced and start is not None:
             if (i - start) * 0.01 >= min_len and start > 3:
                 res.append((start * 0.01, i * 0.01))
             start = None
     return res
+
+
+def compress_pauses(audio, max_gap=0.3):
+    """Kürzt Sprechpausen innerhalb einer Zeile auf max_gap (Coqui setzt ~0,5–1 s zwischen Sätze)."""
+    out, last = [], 0
+    for a, b in pauses(audio, min_len=max_gap):
+        cut_a = int((a + max_gap / 2) * SR)
+        cut_b = int((b - max_gap / 2) * SR)
+        if cut_b > cut_a:
+            out.append(audio[last:cut_a])
+            last = cut_b
+    out.append(audio[last:])
+    return np.concatenate(out)
 
 
 def word_times(words, duration, audio):
@@ -187,6 +220,7 @@ def main():
     ap.add_argument("--speed", type=float, default=1.0, help="Grundtempo (>1 = schneller); pro Zeile mit 'speed' feinjustierbar")
     ap.add_argument("--voice", default="css10", help="Stimme im Cache: css10 (weiblich, coqui), thorsten-vits (männlich, coqui), "
                     "voice-de-kerstin-low / voice-de-ramona-low (weiblich, piper), voice-de-thorsten-low")
+    ap.add_argument("--max-gap", type=float, default=0.3, help="längste Pause innerhalb einer Zeile in Sekunden")
     ap.add_argument("--noise", type=float, default=0.75, help="Ausdruck/Variation der Stimme (0.33 monoton … 0.9 lebhaft)")
     args = ap.parse_args()
 
@@ -214,7 +248,7 @@ def main():
     out_dir.mkdir(parents=True, exist_ok=True)
     pieces, t = [np.zeros(int(LEAD_IN * SR), dtype="float32")], LEAD_IN
     for line, (audio, sr) in zip(lines, raw):
-        audio = trim(clarity(resample(audio.astype("float32"), sr)))
+        audio = compress_pauses(trim(clarity(resample(audio.astype("float32"), sr))), args.max_gap)
         if line["new_scene"]:
             gap = GAP_SCENE
         elif len(pieces) > 1:

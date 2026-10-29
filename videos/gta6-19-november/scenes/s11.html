@@ -18,19 +18,17 @@
       <div id="s11-sub">GEHÖRST DU DAZU?</div>
       <div id="s11-ja" class="s11-b">ICH ZOCKE</div>
       <div id="s11-nein" class="s11-b">NEIN</div>
-      <div id="s11-kom">↓ SCHREIB'S IN DIE KOMMENTARE</div>
     </div>
   </div>
   <script>
     (() => {
       /*__CUE_HELPERS__*/
       const tl = gsap.timeline({ paused: true });
-      const du = at("L21", "du?"), mrd = at("L21", "Milliarden"), kom = at("L22", "Kommentare");
+      const du = at("L21", "du?"), mrd = at("L21", "Milliarden");
       tl.fromTo("#s11-time", { opacity: 0, scale: 1.2 }, { opacity: 1, scale: 1, duration: 0.35, ease: "expo.out" }, 0.05);
       tl.fromTo("#s11-sub", { opacity: 0 }, { opacity: 1, duration: 0.3 }, du);
       tl.fromTo("#s11-ja", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.4, ease: "back.out(1.7)" }, mrd - 0.1);
       tl.fromTo("#s11-nein", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.4, ease: "back.out(1.7)" }, mrd + 0.05);
-      tl.fromTo("#s11-kom", { opacity: 0 }, { opacity: 1, duration: 0.3 }, kom - 0.3);
       window.__timelines["s11"] = tl;
     })();
   </script>
