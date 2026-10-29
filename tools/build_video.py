@@ -18,10 +18,12 @@ import shutil
 import sys
 from pathlib import Path
 
+import soundfile as sf
+
 SFX_DIR = Path("/root/.claude/plugins/cache/hyperframes/hyperframes/0.8.217/skills/media-use/audio/assets/sfx")
 W, H = 1080, 1920
 COLORS = {"y": "#ffd43b", "r": "#ff3b55", "p": "#ff4fb0", "g": "#39e27a", "b": "#4da3ff"}
-WHOOSHES = ["whoosh-short", "whoosh", "whoosh-cinematic"]
+WHOOSHES = ["whoosh-short", "whoosh"]  # nur kurze; lange Whooshes/Glitches rauschen unter der Stimme
 MANIFEST = json.loads((SFX_DIR / "manifest.json").read_text())
 VENDOR = Path(__file__).resolve().parent / "vendor"
 
@@ -245,15 +247,19 @@ def build_index(project, script, windows, lines, total):
     sfx_dir = project / "assets" / "sfx"
     sfx_dir.mkdir(parents=True, exist_ok=True)
     audio, k = [], 0
-    placements = [(WHOOSHES[i % 3], s - 0.12, 0.35) for i, (sc, s, e) in enumerate(windows) if i > 0]
+    placements = [(WHOOSHES[i % 2], s - 0.12, 0.25) for i, (sc, s, e) in enumerate(windows) if i > 0]
     for sc, s, e in windows:
         for fx in sc.get("sfx", []):
             placements.append((fx["name"], resolve_sfx_time(fx["at"], windows, lines), fx.get("volume", 0.5)))
     for name, t, vol in sorted(placements, key=lambda p: p[1]):
-        shutil.copy(SFX_DIR / f"{name}.mp3", sfx_dir / f"{name}.mp3")
+        if name in MANIFEST:
+            shutil.copy(SFX_DIR / f"{name}.mp3", sfx_dir / f"{name}.mp3")
+            fname, dur = f"{name}.mp3", MANIFEST[name]["duration"]
+        else:  # eigener Sound im Projekt, z. B. assets/sfx/purge-siren.wav (tools/make_siren.py)
+            fname = next(p.name for p in sfx_dir.glob(name + ".*"))
+            dur = round(sf.info(sfx_dir / fname).duration, 3)
         k += 1
-        dur = MANIFEST[name]["duration"]
-        audio.append(f'      <audio id="fx{k}" class="clip" src="assets/sfx/{name}.mp3" data-start="{max(0, t):.3f}" data-duration="{dur}" '
+        audio.append(f'      <audio id="fx{k}" class="clip" src="assets/sfx/{fname}" data-start="{max(0, t):.3f}" data-duration="{dur}" '
                      f'data-track-index="{10 + k}" data-volume="{vol}"></audio>')
     doc = f"""<!doctype html>
 <html lang="de" data-resolution="portrait">

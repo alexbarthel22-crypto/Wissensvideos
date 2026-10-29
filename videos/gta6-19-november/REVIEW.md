@@ -1,6 +1,12 @@
 # Review: GTA VI – 19. November
 
-## Fassung 2 (aktuell)
+## Fassung 3 (aktuell)
+- Stimme: Thorsten VITS (männlich, Phonem-basiert) statt CSS10 – CSS10 klang abgehackt („Mitternacht“). Jede Zeile in einem Durchgang, keine harten Pausen-Schnitte, sanfter EQ + De-Esser, -16 LUFS.
+- Rauschen behoben: `glitch-2` (3,5 s, bei „flackert“) und `whoosh-cinematic` (5,5 s, bei „Schreibtisch leer“) entfernt; nur kurze Whooshes.
+- Purge-Sirene (selbst synthetisiert, tools/make_siren.py) auf Frame 0, Stimme setzt nach 0,9 s ein, Sirene danach ~16 dB leiser.
+- Länge 68 s, -16,6 LUFS, Spitze -1,6 dBFS.
+
+## Fassung 2
 - Weibliche Stimme: Coqui CSS10 VITS (22 kHz), Tempo 1,25, Klarheits-EQ + Kompressor, Pausen ≤ 0,3 s. ~2,8 Wörter/s.
 - Frame 0: Eilmeldung „4,1 Milliarden Menschen spielen GTA 6 – gleichzeitig“ + Zähler + pinker Globus; offene Schleife „Um Mitternacht passiert etwas, womit niemand rechnet“ → Auflösung „Noch eine Runde!“.
 - Schluss: „Gehörst du am 19. November zu den vier Milliarden? Schreib's in die Kommentare!“ mit Buttons ICH ZOCKE / NEIN.

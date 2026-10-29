@@ -73,7 +73,7 @@ def synth_piper(texts, voice_dir, scales, noise):
     return out
 
 
-def synth_coqui(texts, model_dir, python, scales, noise):
+def synth_coqui(texts, model_dir, python, scales, noise, noise_dp=0.8):
     """Läuft im separaten venv; schreibt WAVs in ein Temp-Verzeichnis."""
     tmp = Path(tempfile.mkdtemp())
     (tmp / "lines.json").write_text(json.dumps({"texts": texts, "scales": scales}, ensure_ascii=False))
@@ -85,13 +85,14 @@ job = json.load(open({str(tmp / 'lines.json')!r}))
 tts = TTS(model_path={str(model)!r}, config_path={str(Path(model_dir) / 'config.json')!r})
 m = tts.synthesizer.tts_model
 m.inference_noise_scale = {noise}
-m.inference_noise_scale_dp = 0.9
+m.inference_noise_scale_dp = {noise_dp}
 kw = {{}}
 if tts.is_multi_speaker and tts.speakers: kw["speaker"] = tts.speakers[0]
 if tts.is_multi_lingual and tts.languages: kw["language"] = tts.languages[0]
 for i, (t, ls) in enumerate(zip(job["texts"], job["scales"])):
     m.length_scale = ls
-    tts.tts_to_file(text=t, file_path={str(tmp)!r} + f'/{{i:03d}}.wav', **kw)
+    # ganze Zeile in einem Durchgang: natürliche Satzmelodie, keine harten Satz-Schnitte
+    tts.tts_to_file(text=t, file_path={str(tmp)!r} + f'/{{i:03d}}.wav', split_sentences=False, **kw)
 """
     subprocess.run([python, "-c", code], check=True)
     out = []
@@ -113,8 +114,8 @@ def resample(audio, sr):
 
 
 # Sprachverständlichkeit: Rumpeln weg, Präsenz (2–4 kHz) und Luft anheben, gleichmäßige Lautstärke
-CLARITY = ("highpass=f=80,equalizer=f=250:t=q:w=1:g=-2,equalizer=f=3000:t=q:w=1.2:g=4,"
-           "equalizer=f=7500:t=q:w=1:g=2,acompressor=threshold=-20dB:ratio=3:attack=5:release=90:makeup=2")
+CLARITY = ("highpass=f=70,equalizer=f=220:t=q:w=1:g=-1.5,equalizer=f=3200:t=q:w=1.4:g=2,"
+           "deesser=i=0.4,acompressor=threshold=-18dB:ratio=2:attack=20:release=250")
 
 
 def clarity(audio):
@@ -218,10 +219,10 @@ def main():
     ap.add_argument("--voice-dir", help="Piper-Stimmenordner oder Coqui-Modellordner (Standard: aus tools/setup.sh)")
     ap.add_argument("--coqui-python", default=str(CACHE / "coqui" / "bin" / "python"))
     ap.add_argument("--speed", type=float, default=1.0, help="Grundtempo (>1 = schneller); pro Zeile mit 'speed' feinjustierbar")
-    ap.add_argument("--voice", default="css10", help="Stimme im Cache: css10 (weiblich, coqui), thorsten-vits (männlich, coqui), "
+    ap.add_argument("--voice", default="thorsten-vits", help="Stimme im Cache: css10 (weiblich, coqui), thorsten-vits (männlich, coqui), "
                     "voice-de-kerstin-low / voice-de-ramona-low (weiblich, piper), voice-de-thorsten-low")
-    ap.add_argument("--max-gap", type=float, default=0.3, help="längste Pause innerhalb einer Zeile in Sekunden")
-    ap.add_argument("--noise", type=float, default=0.75, help="Ausdruck/Variation der Stimme (0.33 monoton … 0.9 lebhaft)")
+    ap.add_argument("--max-gap", type=float, default=0.55, help="längste Pause innerhalb einer Zeile in Sekunden")
+    ap.add_argument("--noise", type=float, default=0.667, help="Ausdruck/Variation der Stimme (0.33 monoton … 0.9 lebhaft)")
     args = ap.parse_args()
 
     if not args.voice_dir:
@@ -246,7 +247,8 @@ def main():
 
     out_dir = project / "assets" / "voice"
     out_dir.mkdir(parents=True, exist_ok=True)
-    pieces, t = [np.zeros(int(LEAD_IN * SR), dtype="float32")], LEAD_IN
+    lead = script.get("lead_in", LEAD_IN)
+    pieces, t = [np.zeros(int(lead * SR), dtype="float32")], lead
     for line, (audio, sr) in zip(lines, raw):
         audio = compress_pauses(trim(clarity(resample(audio.astype("float32"), sr))), args.max_gap)
         if line["new_scene"]:
@@ -267,7 +269,12 @@ def main():
     pieces.append(np.zeros(int(0.5 * SR), dtype="float32"))
     audio = np.concatenate(pieces)
     audio = audio / max(1e-6, np.max(np.abs(audio))) * 0.89  # ~ -1 dBFS Spitze
-    sf.write(out_dir / "narration.wav", audio, SR)
+    raw_path = out_dir / "narration_raw.wav"
+    sf.write(raw_path, audio, SR)
+    # Lautheit für Social Media: -16 LUFS, True Peak -1.5 dB
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", raw_path, "-af", "loudnorm=I=-16:TP=-1.5:LRA=11",
+                    "-ar", str(SR), out_dir / "narration.wav"], check=True)
+    raw_path.unlink()
     for l in lines:
         for k in ("new_scene", "pause", "scale"):
             l.pop(k)

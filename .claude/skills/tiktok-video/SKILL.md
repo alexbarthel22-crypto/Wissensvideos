@@ -14,7 +14,7 @@ Vorher den HyperFrames-Skill laden (`/hyperframes:hyperframes`); dessen Contract
 1. **Setup** (einmal pro Sitzung): `bash tools/setup.sh --coqui` im Hintergrund starten (PyTorch ~5 GB, ~40 min bei 1 MB/s). Bis dahin mit Piper (`voice-de-kerstin-low`) bauen und prüfen, am Ende mit Coqui neu vertonen.
 2. **Projekt anlegen**: `cd videos && ../tools/hf.sh init <slug> --example blank --resolution portrait --non-interactive --skip-skills --skill hyperframes`
 3. **Skript** `videos/<slug>/script.json` schreiben (Format unten). ~150–170 Wörter ergeben ~60 s. Aufbau siehe `references/stil.md` → Dramaturgie.
-4. **Stimme**: immer **weiblich**. `python3 tools/tts_de.py videos/<slug> --backend coqui --voice css10 --speed 1.25` (Fallback: `--backend piper --voice voice-de-kerstin-low --speed 1.15`). Schreibt `assets/voice/narration.wav` + `timings.json`. Klarheits-Filter, Pausen-Kürzung (`--max-gap`) und Ausdruck (`--noise`, Standard 0.75) sind eingebaut. Ziel: 2,6–2,9 Wörter/s pro Zeile, Gesamtlänge 60–75 s. Pro Zeile `"speed": 0.92` für dramatische Sätze, `"pause": 0.4` vor einer Pointe.
+4. **Stimme**: `python3 tools/tts_de.py videos/<slug> --backend coqui --voice thorsten-vits --speed 1.1`. Thorsten VITS (Phonem-basiert, 22 kHz) klingt am natürlichsten; CSS10 (weiblich, buchstabenbasiert) klingt abgehackt und spricht Wörter wie „Mitternacht“ falsch – nicht verwenden. Jede Zeile wird in einem Durchgang erzeugt (`split_sentences=False`), sanfter EQ + De-Esser, Lautheit auf -16 LUFS. Ziel: ~2,7 Wörter/s, Gesamtlänge 60–70 s. Pro Zeile `"speed": 0.92` für dramatische Sätze, `"pause": 0.4` vor einer Pointe. Fallback ohne PyTorch: `--backend piper --voice voice-de-thorsten-low`.
 5. **Szenen** `videos/<slug>/scenes/sNN.html` schreiben, eine pro Szene im Skript (Vorlage: jede Szene aus dem Beispielprojekt; `scenes/_common.css` mitkopieren). Animationen hängen an Wörtern: `at("L3", "Start")`, `line("L3")`, `count(...)`.
 6. **Bauen**: `python3 tools/build_video.py videos/<slug>` → `index.html`, `compositions/*` (HUD, Untertitel, Szenen, Ton).
 7. **Prüfen**: `cd videos/<slug> && ../../tools/hf.sh check --json > /tmp/c.json; python3 ../../tools/check_summary.py /tmp/c.json` – alle Fehler beheben, Warnungen abwägen. Dann `../../tools/hf.sh snapshot --review -o <scratchpad>` und gezielt `--at` auf die Schlüsselmomente; Bilder ansehen und nach `references/stil.md` → QA korrigieren.
@@ -42,7 +42,7 @@ Nach Skriptänderungen immer Schritt 4 → 6 neu ausführen (Timings ändern sic
 - Token: `Anzeige|Aussprache` (Zahlen und Anglizismen ausschreiben bzw. eindeutschen: `GTA_6|Ge-Te-A-sechs`, `Vice_City|Weiss-Sitti`, `800|achthundert`). `_` = Leerzeichen innerhalb eines Tokens.
 - Farbe für Schlüsselwörter: `*y:` gelb, `*r:` rot (Gefahr/Verlust), `*p:` pink (Hauptthema), `*g:` grün (positiv/Start), `*b:` blau (Technik/Ruhe). 1–3 Wörter pro Zeile, nicht mehr.
 - `/` trennt Untertitel-Gruppen: 2–4 Wörter, höchstens zwei Zeilen.
-- `sfx.at`: `L4:Server` (Wortbeginn), `L13:100-0.2` (mit Versatz) oder `s03+0.4`. Verfügbare Effekte: `pop, click, click-soft, whoosh*, glitch-1/2/3, impact-bass-1/2, error, notification, ping, riser, sparkle, typing`. Whoosh auf Szenenwechseln setzt der Build automatisch.
+- `sfx.at`: `L4:Server` (Wortbeginn), `L13:100-0.2` (mit Versatz) oder `s03+0.4`. Verfügbare Effekte: `pop, click, click-soft, whoosh, whoosh-short, glitch-1, impact-bass-1/2, error, notification, ping`, eigene Dateien in `assets/sfx/` per Dateiname. **Keine** langen Rausch-Effekte (`whoosh-cinematic`, `glitch-2/3`, `riser`) – sie rauschen hörbar unter der Stimme. Glitches höchstens 0.25 Lautstärke. Whoosh auf Szenenwechseln setzt der Build automatisch.
 
 ## Szenen-Vorlage (Regeln)
 
@@ -56,6 +56,7 @@ Nach Skriptänderungen immer Schritt 4 → 6 neu ausführen (Timings ändern sic
 
 - **Frame 0** muss allein als Thumbnail funktionieren und zum Stoppen bringen: Eilmeldungs-Karte mit roter Leiste („● EILMELDUNG · LIVE“) und einer Schlagzeile mit Zahl + Thema (Inter Black 84 px), darüber Kapitel-Marke und Zähler-Box mit der Endzahl, dahinter das leuchtende Hauptmotiv. Alles ab t = 0 sichtbar, Schlagzeile ≥ 2,5 s stehen lassen.
 - **Offene Schleife** im Hook: ein Satz, der eine Auflösung am Ende verspricht („Und um Mitternacht passiert etwas, womit niemand rechnet.“) – die Auflösung kommt in der vorletzten Szene.
+- **Aufmerksamkeits-Sound** auf Frame 0: Purge-Sirene (`python3 tools/make_siren.py videos/<slug>/assets/sfx/purge-siren.wav`), im Skript `"lead_in": 0.9` und als sfx `{"name": "purge-siren", "at": "s01+0.0", "volume": 0.85}`. Die Sirene steht 0,85 s allein und wird dann unter die Stimme abgesenkt.
 - **Schluss**: direkte Frage an die Zuschauer, ob sie selbst dazugehören („Gehörst du am 19. November zu den vier Milliarden?“) + zwei Antwort-Buttons + „Schreib's in die Kommentare!“. Die letzte Untertitel-Zeile bleibt bis zum Ende stehen.
 
 ## Bekannte Grenzen

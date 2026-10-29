@@ -1,6 +1,6 @@
 {
   "title": "Was wäre, wenn die Hälfte aller Menschen am 19. November GTA 6 spielt?",
-  "voice": "css10 (weiblich)",
+  "voice": "thorsten-vits (männlich, coqui)",
   "notes": "Token-Syntax: 'Anzeige|Aussprache'. Farbe als Präfix: *y: gelb, *r: rot, *p: pink, *g: grün, *b: blau. '/' trennt Untertitel-Gruppen. Leerzeichen innerhalb eines Tokens mit '_' schreiben. Optionale Felder pro Zeile: 'speed' (0.85 langsam/dramatisch … 1.1 schnell), 'pause' (Sekunden Pause davor).",
   "scenes": [
     {
@@ -24,19 +24,24 @@
       ],
       "sfx": [
         {
+          "name": "purge-siren",
+          "at": "s01+0.0",
+          "volume": 0.85
+        },
+        {
           "name": "impact-bass-2",
           "at": "s01+0.0",
-          "volume": 0.5
+          "volume": 0.25
         },
         {
           "name": "pop",
-          "at": "L1:19.",
-          "volume": 0.45
+          "at": "L1:das",
+          "volume": 0.4
         },
         {
           "name": "pop",
           "at": "L2:GTA",
-          "volume": 0.5
+          "volume": 0.45
         }
       ]
     },
@@ -75,12 +80,12 @@
         {
           "name": "glitch-1",
           "at": "L4:Server",
-          "volume": 0.5
+          "volume": 0.25
         },
         {
           "name": "error",
           "at": "L4:zusammen",
-          "volume": 0.35
+          "volume": 0.3
         }
       ]
     },
@@ -100,9 +105,9 @@
       ],
       "sfx": [
         {
-          "name": "glitch-3",
+          "name": "error",
           "at": "L7:frieren",
-          "volume": 0.45
+          "volume": 0.25
         }
       ]
     },
@@ -128,12 +133,17 @@
         {
           "name": "impact-bass-1",
           "at": "L8:Strom",
-          "volume": 0.6
+          "volume": 0.55
         },
         {
-          "name": "glitch-2",
+          "name": "click-soft",
           "at": "L10:flackert",
-          "volume": 0.35
+          "volume": 0.5
+        },
+        {
+          "name": "click-soft",
+          "at": "L10:flackert+0.34",
+          "volume": 0.4
         }
       ]
     },
@@ -275,5 +285,6 @@
         }
       ]
     }
-  ]
+  ],
+  "lead_in": 0.9
 }

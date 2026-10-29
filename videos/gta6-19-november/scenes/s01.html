@@ -108,7 +108,6 @@
         <circle id="s01-arc" cx="300" cy="300" r="282" fill="none" stroke="#ffd43b" stroke-width="10" stroke-linecap="round"
                 stroke-dasharray="1772" stroke-dashoffset="1772" transform="rotate(-90 300 300)" />
       </svg>
-      <div id="s01-ringlab">24 STUNDEN · 0 PAUSEN</div>
       <div id="s01-mid"><div id="s01-midt">00:00</div><div id="s01-q">???</div></div>
     </div>
   </div>
@@ -154,9 +153,8 @@
       // "Den ganzen Tag": 24h-Ring
       tl.fromTo("#s01-ring", { opacity: 0 }, { opacity: 1, duration: 0.2 }, ganz - 0.1);
       tl.fromTo("#s01-arc", { attr: { "stroke-dashoffset": 1772 } }, { attr: { "stroke-dashoffset": 0 }, duration: 1.1, ease: "power2.inOut" }, ganz);
-      tl.fromTo("#s01-ringlab", { opacity: 0 }, { opacity: 1, duration: 0.25 }, ganz + 0.3);
       // Offene Schleife: "Um Mitternacht passiert etwas …"
-      tl.to(["#s01-cover", "#s01-ring", "#s01-ringlab", "#s01-globe"], { opacity: 0, filter: "blur(8px)", duration: 0.2, ease: "power2.in" }, l2b - 0.15);
+      tl.to(["#s01-cover", "#s01-ring", "#s01-globe"], { opacity: 0, filter: "blur(8px)", duration: 0.2, ease: "power2.in" }, l2b - 0.15);
       tl.fromTo("#s01-mid", { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.4, ease: "expo.out" }, nacht - 0.15);
       tl.fromTo("#s01-q", { opacity: 0 }, { opacity: 1, duration: 0.15 }, niemand - 0.1);
       tl.to("#s01-mid", { x: 8, duration: 0.04, repeat: 5, yoyo: true }, niemand);

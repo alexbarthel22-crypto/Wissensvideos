@@ -54,8 +54,8 @@
     #s01-q { color: #ff3b55; font-family: "Inter", sans-serif; font-weight: 900; font-size: 120px; line-height: 130px;
       text-shadow: 0 0 30px rgba(255,59,85,.5); }
   </style>
-  <div id="root" data-composition-id="s01" data-start="0" data-duration="12.400" data-width="1080" data-height="1920">
-    <div id="s01-stage" class="clip stage" data-start="0" data-duration="12.400" data-track-index="0">
+  <div id="root" data-composition-id="s01" data-start="0" data-duration="11.960" data-width="1080" data-height="1920">
+    <div id="s01-stage" class="clip stage" data-start="0" data-duration="11.960" data-track-index="0">
       <div id="s01-count" class="cbox">
         <div class="lab">SPIELER ONLINE</div>
         <div id="s01-num" class="num" style="color:#ff4fb0">4.100.000.000</div>
@@ -125,14 +125,13 @@
         <circle id="s01-arc" cx="300" cy="300" r="282" fill="none" stroke="#ffd43b" stroke-width="10" stroke-linecap="round"
                 stroke-dasharray="1772" stroke-dashoffset="1772" transform="rotate(-90 300 300)" />
       </svg>
-      <div id="s01-ringlab">24 STUNDEN · 0 PAUSEN</div>
       <div id="s01-mid"><div id="s01-midt">00:00</div><div id="s01-q">???</div></div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 12.4, "L1": [0.25, 3.79], "L1.words": [["am", 0.25, 0.463], ["19", 0.463, 1.141], ["november", 1.141, 1.795], ["passiert", 1.795, 2.253], ["etwas", 2.253, 2.686], ["das", 2.686, 2.907], ["es", 2.907, 3.12], ["noch", 3.12, 3.348], ["nie", 3.348, 3.569], ["gab", 3.569, 3.79]], "L2": [4.01, 8.77], "L2.words": [["die", 4.01, 4.18], ["hälfte", 4.18, 4.52], ["aller", 4.52, 4.854], ["menschen", 4.854, 5.207], ["spielt", 5.207, 5.395], ["gta6", 5.395, 6.081], ["gleichzeitig", 6.081, 6.61], ["den", 6.91, 7.375], ["ganzen", 7.375, 8.305], ["tag", 8.305, 8.77]], "L2b": [8.99, 12.22], "L2b.words": [["und", 8.99, 9.175], ["um", 9.175, 9.354], ["mitternacht", 9.354, 9.923], ["passiert", 9.923, 10.306], ["etwas", 10.306, 10.67], ["womit", 10.97, 11.377], ["niemand", 11.377, 11.798], ["rechnet", 11.798, 12.22]]};
+      const C = {"__dur": 11.96, "L1": [0.9, 3.93], "L1.words": [["am", 0.9, 1.082], ["19", 1.082, 1.663], ["november", 1.663, 2.223], ["passiert", 2.223, 2.614], ["etwas", 2.614, 2.985], ["das", 2.985, 3.174], ["es", 3.174, 3.356], ["noch", 3.356, 3.552], ["nie", 3.552, 3.741], ["gab", 3.741, 3.93]], "L2": [4.15, 8.53], "L2.words": [["die", 4.15, 4.318], ["hälfte", 4.318, 4.654], ["aller", 4.654, 4.985], ["menschen", 4.985, 5.333], ["spielt", 5.333, 5.519], ["gta6", 5.519, 6.198], ["gleichzeitig", 6.198, 6.72], ["den", 6.96, 7.353], ["ganzen", 7.353, 8.137], ["tag", 8.137, 8.53]], "L2b": [8.75, 11.78], "L2b.words": [["und", 8.75, 8.948], ["um", 8.948, 9.14], ["mitternacht", 9.14, 9.749], ["passiert", 9.749, 10.16], ["etwas", 10.16, 10.55], ["womit", 10.77, 11.099], ["niemand", 11.099, 11.439], ["rechnet", 11.439, 11.78]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -193,9 +192,8 @@
       // "Den ganzen Tag": 24h-Ring
       tl.fromTo("#s01-ring", { opacity: 0 }, { opacity: 1, duration: 0.2 }, ganz - 0.1);
       tl.fromTo("#s01-arc", { attr: { "stroke-dashoffset": 1772 } }, { attr: { "stroke-dashoffset": 0 }, duration: 1.1, ease: "power2.inOut" }, ganz);
-      tl.fromTo("#s01-ringlab", { opacity: 0 }, { opacity: 1, duration: 0.25 }, ganz + 0.3);
       // Offene Schleife: "Um Mitternacht passiert etwas …"
-      tl.to(["#s01-cover", "#s01-ring", "#s01-ringlab", "#s01-globe"], { opacity: 0, filter: "blur(8px)", duration: 0.2, ease: "power2.in" }, l2b - 0.15);
+      tl.to(["#s01-cover", "#s01-ring", "#s01-globe"], { opacity: 0, filter: "blur(8px)", duration: 0.2, ease: "power2.in" }, l2b - 0.15);
       tl.fromTo("#s01-mid", { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.4, ease: "expo.out" }, nacht - 0.15);
       tl.fromTo("#s01-q", { opacity: 0 }, { opacity: 1, duration: 0.15 }, niemand - 0.1);
       tl.to("#s01-mid", { x: 8, duration: 0.04, repeat: 5, yoyo: true }, niemand);
