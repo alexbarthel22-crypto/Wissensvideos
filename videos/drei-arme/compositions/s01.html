@@ -1,0 +1,151 @@
+<template>
+  <style>
+        #root { position: absolute; inset: 0; }
+    .stage { position: absolute; inset: 0; overflow: hidden; }
+    .abs { position: absolute; }
+    svg { overflow: visible; }
+    /* Zähler-Box wie in der Referenz: Rahmen in Akzentfarbe, Label in Mono-Versalien, große Zahl */
+    .cbox { position: absolute; left: 290px; width: 500px; top: 268px; height: 126px; border: 3px solid #ff4fb0;
+      border-radius: 14px; background: rgba(13,16,38,.88); text-align: center; box-shadow: 0 0 28px rgba(255,79,176,.35); }
+    .cbox .lab { margin-top: 16px; font-family: "Space Mono", monospace; font-weight: 700; font-size: 28px;
+      letter-spacing: .16em; color: #dfe2f5; }
+    .cbox .num { margin-top: 2px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 56px; color: #fff;
+      letter-spacing: .01em; }
+    .cbox.y { border-color: #ffd43b; box-shadow: 0 0 28px rgba(255,212,59,.3); }
+    .cbox.r { border-color: #ff3b55; box-shadow: 0 0 28px rgba(255,59,85,.35); }
+    .cbox.b { border-color: #4da3ff; box-shadow: 0 0 28px rgba(77,163,255,.3); }
+    .cbox.g { border-color: #39e27a; box-shadow: 0 0 28px rgba(57,226,122,.3); }
+    .mono { font-family: "Space Mono", monospace; font-weight: 700; letter-spacing: .12em; }
+    .heavy { font-family: "Inter", sans-serif; font-weight: 900; }
+
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    #s01-news { position: absolute; left: 70px; top: 700px; width: 940px; height: 400px; border-radius: 24px;
+      background: rgba(14,10,30,.94); border: 5px solid #ff3b55; box-shadow: 0 0 60px rgba(255,59,85,.55); overflow: hidden; }
+    #s01-news .bar { height: 88px; background: #ff3b55; color: #fff; display: flex; align-items: center; padding-left: 34px;
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 46px; letter-spacing: .06em; }
+    #s01-news .dot { width: 24px; height: 24px; border-radius: 50%; background: #fff; margin-right: 18px; }
+    #s01-news .hl { padding: 26px 40px 0; color: #fff; font-family: "Inter", sans-serif; font-weight: 900; font-size: 92px; line-height: 1.02; letter-spacing: -.015em; }
+    #s01-news .hl em { font-style: normal; color: #ff4fb0; text-shadow: 0 0 26px rgba(255,79,176,.6); }
+    #s01-q { position: absolute; left: 240px; top: 520px; width: 600px; height: 380px; border-radius: 30px; opacity: 0;
+      background: #0b0e22; border: 5px solid #2e3670; text-align: center; color: #ff3b55; font-family: "Inter", sans-serif;
+      font-weight: 900; font-size: 220px; line-height: 370px; text-shadow: 0 0 30px rgba(255,59,85,.5); }
+  </style>
+  <div id="root" data-composition-id="s01" data-start="0" data-duration="9.990" data-width="1080" data-height="1920">
+    <div id="s01-stage" class="clip stage" data-start="0" data-duration="9.990" data-track-index="0">
+      <div id="s01-count" class="cbox"><div class="lab">MENSCHEN MIT 3 ARMEN</div><div class="num" style="color:#ff4fb0">8.200.000.000</div></div>
+      <svg id="s01-svg" class="full" viewBox="0 0 1080 1920"><g id="s01-crowd"></g><g id="s01-hero"></g></svg>
+      <div id="s01-news"><div class="bar"><span class="dot"></span>WAS WÄRE, WENN …</div>
+        <div class="hl">JEDER MENSCH <em>3&nbsp;ARME</em> HÄTTE?</div></div>
+      <div id="s01-q">?</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      
+      const C = {"__dur": 9.99, "L1": [0.9, 3.98], "L1.words": [["stell", 0.9, 1.172], ["dir", 1.172, 1.426], ["vor", 1.426, 1.68], ["du", 1.94, 2.074], ["wachst", 2.074, 2.227], ["auf", 2.227, 2.366], ["", 2.366, 2.49], ["und", 2.66, 2.848], ["hast", 2.848, 3.042], ["einen", 3.042, 3.41], ["dritten", 3.41, 3.792], ["arm", 3.792, 3.98]], "L2": [4.2, 6.7], "L2.words": [["und", 4.2, 4.465], ["nicht", 4.465, 4.749], ["nur", 4.749, 5.014], ["du", 5.014, 5.27], ["acht", 5.52, 5.719], ["milliarden", 5.719, 6.302], ["menschen", 6.302, 6.7]], "L2b": [6.92, 9.81], "L2b.words": [["was", 6.92, 7.146], ["dann", 7.146, 7.381], ["passiert", 7.381, 7.85], ["ist", 8.18, 8.304], ["verrückter", 8.304, 8.68], ["als", 8.81, 9.136], ["du", 9.136, 9.45], ["denkst", 9.45, 9.81]]};
+      const line = (id) => C[id];
+      const at = (id, word, which = 0) => {
+        const ws = C[id + ".words"];
+        if (typeof word === "number") return ws[word][1 + which];
+        const key = String(word).toLowerCase().replace(/[^\wäöüß]/g, "");
+        const hit = ws.find((w) => w[0].startsWith(key));
+        if (!hit) throw new Error("cue not found: " + id + " " + word);
+        return hit[1 + which];
+      };
+      // Zähler: schreibt Zahlen im deutschen Format (4.100.000.000) als Funktion der Timeline-Zeit
+      const fmt = (n) => Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      const count = (tl, sel, from, to, t, d, pre = "", post = "", ease = "power2.out") => {
+        const el = document.querySelector(sel);
+        const o = { v: from };
+        el.textContent = pre + fmt(from) + post;
+        tl.to(o, { v: to, duration: d, ease, onUpdate: () => { el.textContent = pre + fmt(o.v) + post; } }, t);
+      };
+      // deterministischer Zufall
+      const rng = (seed) => () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let x = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+        x = (x + Math.imul(x ^ (x >>> 7), 61 | x)) ^ x; return ((x ^ (x >>> 14)) >>> 0) / 4294967296; };
+
+      // ---- Gemeinsame Zeichenhelfer (flacher Stil wie Referenz) ----
+      const NS = "http://www.w3.org/2000/svg";
+      const el = (n, a, p) => { const e = document.createElementNS(NS, n); for (const k in a) e.setAttribute(k, a[k]); if (p) p.appendChild(e); return e; };
+      // Gegenstände für die Hände (Koordinaten relativ zur Hand)
+      const ITEMS = {
+        cup: (g) => { el("rect", { x: -16, y: -6, width: 32, height: 38, rx: 6, fill: "#fff" }, g); el("rect", { x: -12, y: -2, width: 24, height: 8, fill: "#6b3f1d" }, g);
+                      el("path", { d: "M16 4 q16 0 16 12 q0 12 -16 12", fill: "none", stroke: "#fff", "stroke-width": 6 }, g); },
+        phone: (g) => { el("rect", { x: -15, y: -8, width: 30, height: 54, rx: 6, fill: "#1b2150", stroke: "#8fa2ff", "stroke-width": 3 }, g);
+                        el("rect", { x: -10, y: -2, width: 20, height: 34, rx: 3, fill: "#4da3ff" }, g); },
+        bread: (g) => { el("ellipse", { cx: 0, cy: 10, rx: 30, ry: 20, fill: "#e0a35a" }, g); el("path", { d: "M-14 2 l8 10 M0 0 l8 10 M14 2 l8 10", stroke: "#a86b2c", "stroke-width": 4 }, g); },
+        knife: (g) => { el("rect", { x: -4, y: -4, width: 8, height: 26, rx: 3, fill: "#6b3f1d" }, g); el("path", { d: "M-5 22 L5 22 L3 70 L-6 64Z", fill: "#dfe3f5" }, g); },
+        spoon: (g) => { el("rect", { x: -3, y: -4, width: 6, height: 50, rx: 3, fill: "#c9cde6" }, g); el("ellipse", { cx: 0, cy: 54, rx: 11, ry: 15, fill: "#c9cde6" }, g); },
+        salt: (g) => { el("rect", { x: -12, y: -6, width: 24, height: 40, rx: 6, fill: "#fff" }, g); el("rect", { x: -12, y: -10, width: 24, height: 10, rx: 4, fill: "#8fa2ff" }, g); },
+        pen: (g) => { el("rect", { x: -4, y: -6, width: 8, height: 46, rx: 3, fill: "#ffd43b" }, g); el("path", { d: "M-4 40 L4 40 L0 52Z", fill: "#333" }, g); },
+        glove: (g) => { el("path", { d: "M-16 30 L-16 0 q0 -8 6 -8 L-10 -22 q4 -6 8 0 L-2 -26 q4 -6 8 0 L6 -20 q4 -6 8 0 L14 0 q8 -6 10 2 L16 30Z", fill: "#39e27a" }, g); },
+      };
+      // Arm als Gruppe, dreht um die Schulter (sx, sy); 0° = hängt nach unten
+      function arm(g, id, sx, sy, deg, skin, sleeve, item) {
+        const a = el("g", { id }, g);
+        el("rect", { x: sx - 12, y: sy - 4, width: 24, height: 60, rx: 12, fill: sleeve }, a);
+        el("rect", { x: sx - 10, y: sy + 40, width: 20, height: 56, rx: 10, fill: skin }, a);
+        el("circle", { cx: sx, cy: sy + 100, r: 14, fill: skin }, a);
+        if (item) { const h = el("g", { transform: `translate(${sx} ${sy + 104}) rotate(180)` }, a); ITEMS[item](h); }
+        gsap.set(a, { rotation: deg, svgOrigin: `${sx} ${sy}` });
+        return a;
+      }
+      // Figur: Ursprung = Mitte des Oberkörpers oben. o.arms = [Winkel links, rechts, dritter], o.items = [..3]
+      function person(parent, id, x, y, s = 1, o = {}) {
+        const skin = o.skin || "#f2c9a5", shirt = o.shirt || "#4da3ff", hair = o.hair || "#5b3a26", pants = o.pants || "#2a3170";
+        const g = el("g", { id }, parent);
+        gsap.set(g, { x, y, scale: s, transformOrigin: "0 0" });
+        const ang = o.arms || [12, -12, -150], it = o.items || [];
+        el("rect", { x: -34, y: 118, width: 28, height: 110, rx: 12, fill: pants }, g);
+        el("rect", { x: 6, y: 118, width: 28, height: 110, rx: 12, fill: pants }, g);
+        el("rect", { x: -40, y: 222, width: 36, height: 16, rx: 8, fill: "#1a1f45" }, g);
+        el("rect", { x: 4, y: 222, width: 36, height: 16, rx: 8, fill: "#1a1f45" }, g);
+        const back = [arm(g, id + "-a1", -52, 18, ang[0], skin, shirt, it[0]), arm(g, id + "-a2", 52, 18, ang[1], skin, shirt, it[1])];
+        el("rect", { x: -56, y: 0, width: 112, height: 132, rx: 40, fill: shirt }, g);
+        const third = o.three === false ? null : arm(g, id + "-a3", 0, 46, ang[2], skin, o.shirt3 || shirt, it[2]);
+        el("rect", { x: -12, y: -18, width: 24, height: 22, fill: skin }, g);
+        el("circle", { cx: 0, cy: -58, r: 46, fill: skin }, g);
+        el("path", { d: "M-46 -60 C-46 -118 46 -118 46 -60 C30 -84 -20 -88 -46 -60Z", fill: hair }, g);
+        const eyes = el("g", { id: id + "-eyes" }, g);
+        el("circle", { cx: -16, cy: -56, r: 6, fill: "#161a36" }, eyes); el("circle", { cx: 16, cy: -56, r: 6, fill: "#161a36" }, eyes);
+        el("path", { id: id + "-mouth", d: o.sad ? "M-14 -26 q14 -10 28 0" : "M-14 -32 q14 14 28 0", fill: "none", stroke: "#8a3b2a", "stroke-width": 5, "stroke-linecap": "round" }, g);
+        return { g, a1: back[0], a2: back[1], a3: third, eyes };
+      }
+      // kleine Figur (Menge): Kopf, Körper, drei Arme als Striche
+      function mini(parent, x, y, c) {
+        const g = el("g", { opacity: 0 }, parent);
+        el("circle", { cx: x, cy: y, r: 12, fill: "#f2c9a5" }, g);
+        el("rect", { x: x - 14, y: y + 14, width: 28, height: 40, rx: 10, fill: c }, g);
+        el("path", { d: `M${x - 14} ${y + 22} l-14 22 M${x + 14} ${y + 22} l14 22 M${x} ${y + 30} l10 -26`, stroke: "#f2c9a5", "stroke-width": 6, "stroke-linecap": "round" }, g);
+        return g;
+      }
+      // Arm winken lassen (endlich viele Wiederholungen)
+      const wave = (tl, a, from, to, t, n = 3, d = 0.18) => tl.to(a, { rotation: to, duration: d, repeat: n * 2 - 1, yoyo: true, ease: "sine.inOut" }, t);
+
+      const tl = gsap.timeline({ paused: true });
+      const crowd = document.querySelector("#s01-crowd"), cols = ["#4da3ff", "#ff4fb0", "#39e27a", "#ffd43b", "#8fa2ff"], minis = [];
+      for (let r = 0; r < 5; r++) for (let i = 0; i < 9; i++) minis.push(mini(crowd, 110 + i * 108 + (r % 2) * 54, 460 + r * 128, cols[(i + r) % 5]));
+      gsap.set(minis, { opacity: 1 });
+      const P = person(document.querySelector("#s01-hero"), "s01-p", 540, 640, 1.5, { arms: [10, -10, 0], shirt: "#ff4fb0" });
+      gsap.set(P.g, { opacity: 0 }); gsap.set(P.a3, { scale: 0, svgOrigin: "0 46" }); gsap.set(P.eyes, { scaleY: 0.15, svgOrigin: "0 -56" });
+      const du = at("L1", "du"), drit = at("L1", "dritten"), acht = at("L2", "acht"), l2b = line("L2b")[0], verr = at("L2b", "verrückter");
+      tl.fromTo("#s01-news", { scale: 1.04 }, { scale: 1, duration: 0.5, ease: "expo.out" }, 0);
+      tl.fromTo("#s01-news .dot", { opacity: 1 }, { opacity: 0.2, duration: 0.25, repeat: 3, yoyo: true, ease: "none" }, 0.1);
+      minis.forEach((m, i) => tl.fromTo(m, { y: 0 }, { y: -10, duration: 0.2, yoyo: true, repeat: 3, ease: "sine.inOut" }, 0.05 + (i % 9) * 0.03));
+      tl.to(["#s01-news", "#s01-crowd", "#s01-count"], { opacity: 0, y: 60, duration: 0.3, ease: "power3.in" }, du - 0.3);
+      tl.to(P.g, { opacity: 1, duration: 0.3 }, du - 0.1);
+      tl.to(P.eyes, { scaleY: 1, duration: 0.15, svgOrigin: "0 -56" }, drit - 0.6);
+      tl.to(P.a3, { scale: 1, rotation: -128, duration: 0.45, ease: "back.out(2.4)", svgOrigin: "0 46" }, drit);
+      tl.to(P.eyes, { scale: 1.35, duration: 0.15, svgOrigin: "0 -56" }, drit + 0.1);
+      wave(tl, P.a3, -128, -105, drit + 0.5, 2);
+      tl.to(P.g, { opacity: 0, duration: 0.25 }, acht - 0.2);
+      tl.to(["#s01-crowd", "#s01-count"], { opacity: 1, y: 0, duration: 0.3, ease: "expo.out" }, acht - 0.1);
+      tl.fromTo("#s01-count", { scale: 1 }, { scale: 1.1, duration: 0.15, yoyo: true, repeat: 1 }, acht + 0.3);
+      tl.to(["#s01-crowd", "#s01-count"], { opacity: 0, filter: "blur(8px)", duration: 0.2 }, l2b - 0.15);
+      tl.fromTo("#s01-q", { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(2)" }, l2b);
+      tl.to("#s01-q", { x: 10, duration: 0.04, repeat: 5, yoyo: true }, verr);
+      tl.to("#s01-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s01"] = tl;
+    })();
+  </script>
+</template>

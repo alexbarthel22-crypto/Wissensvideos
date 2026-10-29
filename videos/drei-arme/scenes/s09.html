@@ -1,0 +1,35 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+
+  </style>
+  <div id="root" data-composition-id="s09" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s09-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <svg id="s09-svg" class="full" viewBox="0 0 1080 1920">
+        <ellipse cx="540" cy="900" rx="380" ry="120" fill="#dfe3f5" /><ellipse cx="540" cy="890" rx="300" ry="86" fill="#c9cde6" />
+        <g id="s09-food"></g></svg>
+      <div id="s09-box" class="cbox r" style="opacity:0"><div class="lab">KALORIEN PRO TAG</div><div id="s09-n" class="num">2.000</div></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const F = document.querySelector("#s09-food"), food = [];
+      const burger = (x, y, s) => { const g = el("g", {}, F); const h = el("g", { transform: `translate(${x} ${y}) scale(${s})` }, g);
+        el("path", { d: "M-80 0 q80 -90 160 0z", fill: "#e0a35a" }, h); el("rect", { x: -84, y: 0, width: 168, height: 18, rx: 8, fill: "#39e27a" }, h);
+        el("rect", { x: -86, y: 16, width: 172, height: 26, rx: 12, fill: "#7a3b1a" }, h); el("rect", { x: -80, y: 40, width: 160, height: 26, rx: 10, fill: "#e0a35a" }, h); return g; };
+      food.push(burger(400, 820, 1), burger(680, 820, 1), burger(540, 760, 1.15));
+      gsap.set(food, { opacity: 0, y: -60 });
+      const mu = at("L13", "Muskeln"), hu = at("L13", "Hunger"), de = at("L13", "deutlich");
+      tl.to(food.slice(0, 2), { opacity: 1, y: 0, duration: 0.35, stagger: 0.15, ease: "bounce.out" }, mu - 0.1);
+      tl.to("#s09-box", { opacity: 1, duration: 0.25 }, hu - 0.2);
+      tl.to(food[2], { opacity: 1, y: 0, duration: 0.4, ease: "bounce.out" }, de - 0.1);
+      count(tl, "#s09-n", 2000, 2300, de - 0.1, 0.7, "", "", "power3.out");
+      tl.to("#s09-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s09"] = tl;
+    })();
+  </script>
+</template>

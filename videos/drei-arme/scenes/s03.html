@@ -1,0 +1,31 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+
+  </style>
+  <div id="root" data-composition-id="s03" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s03-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <svg id="s03-svg" class="full" viewBox="0 0 1080 1920"><g id="s03-hero"></g></svg>
+      <div id="s03-box" class="cbox g" style="opacity:0"><div class="lab">MULTITASKING</div><div id="s03-n" class="num">100 %</div></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const P = person(document.querySelector("#s03-hero"), "s03-p", 540, 640, 1.45, { arms: [70, -60, -132], items: ["cup", "phone", "bread"], shirt: "#ffd43b" });
+      const items = [P.a1, P.a2, P.a3].map((a) => a.lastChild);
+      gsap.set(items, { opacity: 0, scale: 0, transformOrigin: "50% 50%" });
+      tl.fromTo(P.g, { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0.05);
+      ["Kaffee", "Handy", "Brötchen"].forEach((w, i) => tl.to(items[i], { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2.5)" }, at("L5", w) - 0.05));
+      const g = at("L5", "gleichzeitig");
+      tl.to("#s03-box", { opacity: 1, duration: 0.25 }, g - 0.1);
+      count(tl, "#s03-n", 100, 300, g, 0.6, "", " %", "power3.out");
+      [P.a1, P.a2, P.a3].forEach((a, i) => wave(tl, a, 0, [55, -45, -115][i], g + 0.1 + i * 0.05, 2, 0.15));
+      tl.to("#s03-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s03"] = tl;
+    })();
+  </script>
+</template>

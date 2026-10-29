@@ -1,0 +1,36 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    #s10-case { position: absolute; left: 330px; top: 430px; width: 420px; height: 640px; border-radius: 12px;
+      border: 6px solid #a9d2ff; background: rgba(77,163,255,.08); box-shadow: 0 0 40px rgba(77,163,255,.3); }
+    #s10-plate { position: absolute; left: 240px; top: 1080px; width: 600px; height: 70px; border-radius: 10px; background: #b8944a;
+      color: #1a1205; text-align: center; line-height: 70px; font-family: "Space Mono", monospace; font-weight: 700; font-size: 28px; letter-spacing: .06em; }
+  </style>
+  <div id="root" data-composition-id="s10" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s10-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <svg id="s10-svg" class="full" viewBox="0 0 1080 1920"><g id="s10-in"></g><g id="s10-out"></g></svg>
+      <div id="s10-case"></div>
+      <div id="s10-plate">MENSCH · 2026 · NUR 2 ARME</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const P = person(document.querySelector("#s10-in"), "s10-p", 540, 640, 1.2, { three: false, arms: [8, -8], shirt: "#8fa2ff" });
+      const V1 = person(document.querySelector("#s10-out"), "s10-v1", 160, 860, 0.9, { arms: [20, -30, -132], shirt: "#ff4fb0", hair: "#e8c26a" });
+      const V2 = person(document.querySelector("#s10-out"), "s10-v2", 920, 860, 0.9, { arms: [40, -20, -135], shirt: "#39e27a", hair: "#222" });
+      const nur = at("L14", "nur"), fr = at("L14", "fragt");
+      tl.fromTo(["#s10-case", "#s10-in"], { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.45, ease: "expo.out" }, 0.05);
+      tl.fromTo("#s10-plate", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0.5);
+      tl.fromTo([V1.g, V2.g], { opacity: 0 }, { opacity: 1, duration: 0.3, stagger: 0.15 }, fr - 0.2);
+      wave(tl, V1.a3, -132, -110, fr + 0.2, 2);
+      tl.fromTo("#s10-plate", { scale: 1 }, { scale: 1.12, duration: 0.18, yoyo: true, repeat: 1 }, nur);
+      wave(tl, V2.a3, -135, -110, nur + 0.3, 2);
+      tl.to("#s10-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s10"] = tl;
+    })();
+  </script>
+</template>

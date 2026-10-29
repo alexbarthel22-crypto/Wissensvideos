@@ -221,6 +221,7 @@ def main():
     ap.add_argument("--speed", type=float, default=1.0, help="Grundtempo (>1 = schneller); pro Zeile mit 'speed' feinjustierbar")
     ap.add_argument("--voice", default="thorsten-vits", help="Stimme im Cache: css10 (weiblich, coqui), thorsten-vits (männlich, coqui), "
                     "voice-de-kerstin-low / voice-de-ramona-low (weiblich, piper), voice-de-thorsten-low")
+    ap.add_argument("--noise-dp", type=float, default=0.8, help="Variation im Sprechrhythmus/Betonung (coqui), höher = lebendiger")
     ap.add_argument("--max-gap", type=float, default=0.55, help="längste Pause innerhalb einer Zeile in Sekunden")
     ap.add_argument("--noise", type=float, default=0.667, help="Ausdruck/Variation der Stimme (0.33 monoton … 0.9 lebhaft)")
     args = ap.parse_args()
@@ -243,7 +244,7 @@ def main():
     if args.backend == "piper":
         raw = synth_piper(texts, args.voice_dir, scales, args.noise)
     else:
-        raw = synth_coqui(texts, args.voice_dir, args.coqui_python, scales, args.noise)
+        raw = synth_coqui(texts, args.voice_dir, args.coqui_python, scales, args.noise, args.noise_dp)
 
     out_dir = project / "assets" / "voice"
     out_dir.mkdir(parents=True, exist_ok=True)

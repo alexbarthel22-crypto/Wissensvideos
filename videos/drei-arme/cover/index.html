@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="de" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: #0a0c1d; }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden;
+        background: radial-gradient(ellipse 85% 50% at 50% 46%, #2a1f5c 0%, #141838 50%, #090b1a 100%); }
+      .abs { position: absolute; }
+
+      /* Hintergrund: riesiger pinker Globus = "die halbe Welt spielt" */
+      #globe { left: 40px; top: 560px; width: 1000px; height: 1000px; }
+
+      /* Eilmeldungs-Leiste oben (sichtbar auch im 3:4-Ausschnitt des Profilrasters) */
+      #bar { left: 60px; top: 250px; width: 960px; height: 104px; border-radius: 18px; background: #ff3b55;
+        display: flex; align-items: center; padding: 0 34px; color: #fff; box-shadow: 0 0 60px rgba(255,59,85,.55);
+        font-family: "Inter", sans-serif; font-weight: 900; font-size: 56px; letter-spacing: .06em; }
+      #bar .dot { width: 30px; height: 30px; border-radius: 50%; background: #fff; margin-right: 22px; box-shadow: 0 0 18px #fff; }
+      #bar .live { margin-left: auto; font-family: "Space Mono", monospace; font-weight: 700; font-size: 34px;
+        letter-spacing: .14em; padding: 2px 16px; border: 4px solid #fff; border-radius: 10px; }
+
+      /* Schlagzeile */
+      #h1 { left: 0; width: 1080px; top: 392px; text-align: center; font-family: "Inter", sans-serif; font-weight: 900; white-space: nowrap;
+        font-size: 108px; line-height: 1; letter-spacing: -.03em; color: #ffd43b;
+        text-shadow: 0 8px 0 rgba(0,0,0,.55), 0 0 40px rgba(255,212,59,.35); }
+      #h2 { left: 0; width: 1080px; top: 508px; white-space: nowrap; text-align: center; font-family: "Inter", sans-serif; font-weight: 900;
+        font-size: 92px; line-height: 1; letter-spacing: -.01em; color: #fff; text-shadow: 0 7px 0 rgba(0,0,0,.55); }
+      #gta { left: 0; width: 1080px; top: 520px; white-space: nowrap; text-align: center; font-family: "Inter", sans-serif; font-weight: 900;
+        font-size: 250px; line-height: 1; letter-spacing: -.04em; color: #ff4fb0;
+        text-shadow: 0 12px 0 #8a1450, 0 0 70px rgba(255,79,176,.75); }
+      #h3 { left: 0; width: 1080px; top: 780px; white-space: nowrap; text-align: center; font-family: "Inter", sans-serif; font-weight: 900;
+        font-size: 96px; line-height: 1; color: #fff; letter-spacing: -.01em; text-shadow: 0 7px 0 rgba(0,0,0,.55); }
+
+      /* Kalenderblatt, schräg */
+      #cal { left: 760px; top: 1120px; width: 240px; height: 262px; border-radius: 20px; background: #f3f1ea; overflow: hidden;
+        transform: rotate(8deg); box-shadow: 0 24px 60px rgba(0,0,0,.6); }
+      #cal .hd { height: 70px; background: #ff3b55; color: #fff; text-align: center; line-height: 70px;
+        font-family: "Inter", sans-serif; font-weight: 900; font-size: 34px; letter-spacing: .06em; }
+      #cal .d { text-align: center; font-family: "Inter", sans-serif; font-weight: 900; font-size: 150px; line-height: 186px; color: #161a36; }
+
+      /* Was kaputtgeht: Teaser-Chips */
+      .chip { padding: 10px 22px; border: 4px solid #39e27a; border-radius: 12px; background: rgba(8,40,22,.85);
+        color: #8affb6; font-family: "Space Mono", monospace; font-weight: 700; font-size: 40px; letter-spacing: .06em; }
+      .chip b { color: #39e27a; margin-left: 10px; }
+      #c1 { left: 70px; top: 1040px; transform: rotate(-4deg); }
+      #c2 { left: 110px; top: 1150px; transform: rotate(2deg); }
+      #c3 { left: 70px; top: 1260px; transform: rotate(-2deg); }
+
+      /* Frage unten */
+      #q { left: 60px; width: 960px; top: 1470px; height: 150px; border-radius: 24px; background: #0b0e22;
+        border: 5px solid #ffd43b; box-shadow: 0 0 50px rgba(255,212,59,.4); text-align: center; color: #fff;
+        font-family: "Inter", sans-serif; font-weight: 900; font-size: 70px; line-height: 140px; }
+      #q span { color: #ffd43b; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="cover" data-start="0" data-duration="1" data-width="1080" data-height="1920" data-no-timeline>
+      <svg id="fig" class="abs" style="left:560px;top:930px;width:480px;height:560px" viewBox="-240 -200 480 560">
+        <g transform="scale(1.45)">
+          <rect x="-34" y="118" width="28" height="110" rx="12" fill="#2a3170"/><rect x="6" y="118" width="28" height="110" rx="12" fill="#2a3170"/>
+          <g transform="rotate(140 -52 18)"><rect x="-64" y="14" width="24" height="60" rx="12" fill="#ff4fb0"/><rect x="-62" y="58" width="20" height="56" rx="10" fill="#f2c9a5"/><circle cx="-52" cy="118" r="14" fill="#f2c9a5"/></g>
+          <g transform="rotate(-150 52 18)"><rect x="40" y="14" width="24" height="60" rx="12" fill="#ff4fb0"/><rect x="42" y="58" width="20" height="56" rx="10" fill="#f2c9a5"/><circle cx="52" cy="118" r="14" fill="#f2c9a5"/></g>
+          <rect x="-56" y="0" width="112" height="132" rx="40" fill="#ff4fb0"/>
+          <g transform="rotate(-95 0 46)"><rect x="-12" y="42" width="24" height="60" rx="12" fill="#ff4fb0"/><rect x="-10" y="86" width="20" height="56" rx="10" fill="#f2c9a5"/><circle cx="0" cy="146" r="14" fill="#f2c9a5"/></g>
+          <circle cx="0" cy="-58" r="46" fill="#f2c9a5"/><path d="M-46 -60 C-46 -118 46 -118 46 -60 C30 -84 -20 -88 -46 -60Z" fill="#5b3a26"/>
+          <circle cx="-16" cy="-56" r="7" fill="#161a36"/><circle cx="16" cy="-56" r="7" fill="#161a36"/>
+          <ellipse cx="0" cy="-30" rx="12" ry="10" fill="#8a3b2a"/>
+        </g></svg>
+
+      <div id="bar" class="abs"><span class="dot"></span>WAS WÄRE, WENN …</div>
+      <div id="h1" class="abs">JEDER MENSCH</div>
+      <div id="h2" class="abs" style="opacity:0">.</div>
+      <div id="gta" class="abs">3 ARME</div>
+      <div id="h3" class="abs">HÄTTE?</div>
+
+      <div id="c1" class="abs chip">KLEIDUNG<b>✓</b></div>
+      <div id="c2" class="abs chip">SPORT<b>✓</b></div>
+      <div id="c3" class="abs chip">ESSEN<b>✓</b></div>
+
+      <div id="q" class="abs">WAS WÜRDEST <span>DU</span> TUN?</div>
+    </div>
+    
+  </body>
+</html>

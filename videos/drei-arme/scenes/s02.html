@@ -1,0 +1,42 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    #s02-x { position: absolute; left: 290px; top: 520px; width: 500px; height: 500px; opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="s02" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s02-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <svg id="s02-svg" class="full" viewBox="0 0 1080 1920">
+        <g id="s02-shirt"><path d="M380 470 L460 440 Q540 480 620 440 L700 470 L800 560 L740 630 L700 600 L700 1010 L380 1010 L380 600 L340 630 L280 560Z" fill="#4da3ff" />
+          <path d="M460 440 Q540 500 620 440" fill="none" stroke="#2f73c4" stroke-width="10" /></g>
+        <circle id="s02-hole" cx="540" cy="700" r="0" fill="#0e1124" />
+        <g id="s02-sc"><circle cx="0" cy="0" r="26" fill="none" stroke="#dfe3f5" stroke-width="10" /><circle cx="0" cy="70" r="26" fill="none" stroke="#dfe3f5" stroke-width="10" />
+          <path d="M20 14 L140 60 M20 56 L140 10" stroke="#dfe3f5" stroke-width="14" stroke-linecap="round" /></g>
+        <g id="s02-arm"><rect x="528" y="560" width="24" height="140" rx="12" fill="#f2c9a5" /><circle cx="540" cy="556" r="16" fill="#f2c9a5" /></g>
+      </svg>
+      <svg id="s02-x" viewBox="0 0 500 500"><g stroke="#ff3b55" stroke-width="40" stroke-linecap="round"><line x1="60" y1="60" x2="440" y2="440" /><line x1="440" y1="60" x2="60" y2="440" /></g></svg>
+      <div id="s02-box" class="cbox y" style="opacity:0"><div class="lab">NEUE LÖCHER</div><div id="s02-n" class="num">0</div></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const kein = at("L3", "kein"), l4 = line("L4")[0], loch = at("L4", "Loch");
+      gsap.set("#s02-sc", { x: 900, y: 1000, rotation: -20 }); gsap.set("#s02-arm", { scaleY: 0, svgOrigin: "540 700" });
+      tl.fromTo("#s02-shirt", { opacity: 0, y: 80 }, { opacity: 1, y: 0, duration: 0.45, ease: "expo.out" }, 0.05);
+      tl.fromTo("#s02-x", { opacity: 0, scale: 1.6 }, { opacity: 1, scale: 1, duration: 0.25, ease: "expo.out" }, kein);
+      tl.to("#s02-x", { opacity: 0, duration: 0.2 }, l4 - 0.1);
+      tl.to("#s02-box", { opacity: 1, duration: 0.25 }, l4);
+      count(tl, "#s02-n", 0, 8200000000, l4, loch - l4 + 0.4, "", "", "power2.in");
+      tl.to("#s02-sc", { x: 560, y: 650, rotation: 0, duration: 0.5, ease: "power3.out" }, loch - 0.6);
+      tl.to("#s02-sc", { rotation: 12, duration: 0.08, repeat: 5, yoyo: true }, loch - 0.1);
+      tl.to("#s02-hole", { attr: { r: 30 }, duration: 0.2, ease: "back.out(2)" }, loch + 0.1);
+      tl.to("#s02-sc", { opacity: 0, x: 900, duration: 0.3, ease: "power2.in" }, loch + 0.4);
+      tl.to("#s02-arm", { scaleY: 1, duration: 0.35, ease: "back.out(2.2)", svgOrigin: "540 700" }, loch + 0.5);
+      tl.to("#s02-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s02"] = tl;
+    })();
+  </script>
+</template>

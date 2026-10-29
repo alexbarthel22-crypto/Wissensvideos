@@ -1,0 +1,141 @@
+<template>
+  <style>
+        #root { position: absolute; inset: 0; }
+    .stage { position: absolute; inset: 0; overflow: hidden; }
+    .abs { position: absolute; }
+    svg { overflow: visible; }
+    /* Zähler-Box wie in der Referenz: Rahmen in Akzentfarbe, Label in Mono-Versalien, große Zahl */
+    .cbox { position: absolute; left: 290px; width: 500px; top: 268px; height: 126px; border: 3px solid #ff4fb0;
+      border-radius: 14px; background: rgba(13,16,38,.88); text-align: center; box-shadow: 0 0 28px rgba(255,79,176,.35); }
+    .cbox .lab { margin-top: 16px; font-family: "Space Mono", monospace; font-weight: 700; font-size: 28px;
+      letter-spacing: .16em; color: #dfe2f5; }
+    .cbox .num { margin-top: 2px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 56px; color: #fff;
+      letter-spacing: .01em; }
+    .cbox.y { border-color: #ffd43b; box-shadow: 0 0 28px rgba(255,212,59,.3); }
+    .cbox.r { border-color: #ff3b55; box-shadow: 0 0 28px rgba(255,59,85,.35); }
+    .cbox.b { border-color: #4da3ff; box-shadow: 0 0 28px rgba(77,163,255,.3); }
+    .cbox.g { border-color: #39e27a; box-shadow: 0 0 28px rgba(57,226,122,.3); }
+    .mono { font-family: "Space Mono", monospace; font-weight: 700; letter-spacing: .12em; }
+    .heavy { font-family: "Inter", sans-serif; font-weight: 900; }
+
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    #s08-paper { position: absolute; left: 140px; top: 440px; width: 800px; height: 360px; border-radius: 16px; background: #f3f1ea; }
+  </style>
+  <div id="root" data-composition-id="s08" data-start="0" data-duration="4.260" data-width="1080" data-height="1920">
+    <div id="s08-stage" class="clip stage" data-start="0" data-duration="4.260" data-track-index="0">
+      <div id="s08-paper"></div>
+      <svg id="s08-svg" class="full" viewBox="0 0 1080 1920">
+        <g id="s08-lines" fill="none" stroke-width="10" stroke-linecap="round">
+          <path id="s08-l0" d="M200 530 q40 -30 80 0 t80 0 t80 0 t80 0 t80 0 t80 0 t80 0" stroke="#4da3ff" />
+          <path id="s08-l1" d="M200 620 q40 -30 80 0 t80 0 t80 0 t80 0 t80 0 t80 0 t80 0" stroke="#ff4fb0" />
+          <path id="s08-l2" d="M200 710 q40 -30 80 0 t80 0 t80 0 t80 0 t80 0 t80 0 t80 0" stroke="#39e27a" /></g>
+        <g id="s08-pens"></g><g id="s08-piano"></g></svg>
+    </div>
+  </div>
+  <script>
+    (() => {
+      
+      const C = {"__dur": 4.26, "L12": [0.2, 4.08], "L12.words": [["kinder", 0.2, 0.65], ["lernen", 0.65, 1.1], ["dreihändig", 1.27, 1.827], ["zu", 1.827, 2.004], ["schreiben", 2.004, 2.39], ["klaviere", 2.59, 3.083], ["bekommen", 3.083, 3.575], ["mehr", 3.575, 3.748], ["tasten", 3.748, 4.08]]};
+      const line = (id) => C[id];
+      const at = (id, word, which = 0) => {
+        const ws = C[id + ".words"];
+        if (typeof word === "number") return ws[word][1 + which];
+        const key = String(word).toLowerCase().replace(/[^\wäöüß]/g, "");
+        const hit = ws.find((w) => w[0].startsWith(key));
+        if (!hit) throw new Error("cue not found: " + id + " " + word);
+        return hit[1 + which];
+      };
+      // Zähler: schreibt Zahlen im deutschen Format (4.100.000.000) als Funktion der Timeline-Zeit
+      const fmt = (n) => Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      const count = (tl, sel, from, to, t, d, pre = "", post = "", ease = "power2.out") => {
+        const el = document.querySelector(sel);
+        const o = { v: from };
+        el.textContent = pre + fmt(from) + post;
+        tl.to(o, { v: to, duration: d, ease, onUpdate: () => { el.textContent = pre + fmt(o.v) + post; } }, t);
+      };
+      // deterministischer Zufall
+      const rng = (seed) => () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let x = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+        x = (x + Math.imul(x ^ (x >>> 7), 61 | x)) ^ x; return ((x ^ (x >>> 14)) >>> 0) / 4294967296; };
+
+      // ---- Gemeinsame Zeichenhelfer (flacher Stil wie Referenz) ----
+      const NS = "http://www.w3.org/2000/svg";
+      const el = (n, a, p) => { const e = document.createElementNS(NS, n); for (const k in a) e.setAttribute(k, a[k]); if (p) p.appendChild(e); return e; };
+      // Gegenstände für die Hände (Koordinaten relativ zur Hand)
+      const ITEMS = {
+        cup: (g) => { el("rect", { x: -16, y: -6, width: 32, height: 38, rx: 6, fill: "#fff" }, g); el("rect", { x: -12, y: -2, width: 24, height: 8, fill: "#6b3f1d" }, g);
+                      el("path", { d: "M16 4 q16 0 16 12 q0 12 -16 12", fill: "none", stroke: "#fff", "stroke-width": 6 }, g); },
+        phone: (g) => { el("rect", { x: -15, y: -8, width: 30, height: 54, rx: 6, fill: "#1b2150", stroke: "#8fa2ff", "stroke-width": 3 }, g);
+                        el("rect", { x: -10, y: -2, width: 20, height: 34, rx: 3, fill: "#4da3ff" }, g); },
+        bread: (g) => { el("ellipse", { cx: 0, cy: 10, rx: 30, ry: 20, fill: "#e0a35a" }, g); el("path", { d: "M-14 2 l8 10 M0 0 l8 10 M14 2 l8 10", stroke: "#a86b2c", "stroke-width": 4 }, g); },
+        knife: (g) => { el("rect", { x: -4, y: -4, width: 8, height: 26, rx: 3, fill: "#6b3f1d" }, g); el("path", { d: "M-5 22 L5 22 L3 70 L-6 64Z", fill: "#dfe3f5" }, g); },
+        spoon: (g) => { el("rect", { x: -3, y: -4, width: 6, height: 50, rx: 3, fill: "#c9cde6" }, g); el("ellipse", { cx: 0, cy: 54, rx: 11, ry: 15, fill: "#c9cde6" }, g); },
+        salt: (g) => { el("rect", { x: -12, y: -6, width: 24, height: 40, rx: 6, fill: "#fff" }, g); el("rect", { x: -12, y: -10, width: 24, height: 10, rx: 4, fill: "#8fa2ff" }, g); },
+        pen: (g) => { el("rect", { x: -4, y: -6, width: 8, height: 46, rx: 3, fill: "#ffd43b" }, g); el("path", { d: "M-4 40 L4 40 L0 52Z", fill: "#333" }, g); },
+        glove: (g) => { el("path", { d: "M-16 30 L-16 0 q0 -8 6 -8 L-10 -22 q4 -6 8 0 L-2 -26 q4 -6 8 0 L6 -20 q4 -6 8 0 L14 0 q8 -6 10 2 L16 30Z", fill: "#39e27a" }, g); },
+      };
+      // Arm als Gruppe, dreht um die Schulter (sx, sy); 0° = hängt nach unten
+      function arm(g, id, sx, sy, deg, skin, sleeve, item) {
+        const a = el("g", { id }, g);
+        el("rect", { x: sx - 12, y: sy - 4, width: 24, height: 60, rx: 12, fill: sleeve }, a);
+        el("rect", { x: sx - 10, y: sy + 40, width: 20, height: 56, rx: 10, fill: skin }, a);
+        el("circle", { cx: sx, cy: sy + 100, r: 14, fill: skin }, a);
+        if (item) { const h = el("g", { transform: `translate(${sx} ${sy + 104}) rotate(180)` }, a); ITEMS[item](h); }
+        gsap.set(a, { rotation: deg, svgOrigin: `${sx} ${sy}` });
+        return a;
+      }
+      // Figur: Ursprung = Mitte des Oberkörpers oben. o.arms = [Winkel links, rechts, dritter], o.items = [..3]
+      function person(parent, id, x, y, s = 1, o = {}) {
+        const skin = o.skin || "#f2c9a5", shirt = o.shirt || "#4da3ff", hair = o.hair || "#5b3a26", pants = o.pants || "#2a3170";
+        const g = el("g", { id }, parent);
+        gsap.set(g, { x, y, scale: s, transformOrigin: "0 0" });
+        const ang = o.arms || [12, -12, -150], it = o.items || [];
+        el("rect", { x: -34, y: 118, width: 28, height: 110, rx: 12, fill: pants }, g);
+        el("rect", { x: 6, y: 118, width: 28, height: 110, rx: 12, fill: pants }, g);
+        el("rect", { x: -40, y: 222, width: 36, height: 16, rx: 8, fill: "#1a1f45" }, g);
+        el("rect", { x: 4, y: 222, width: 36, height: 16, rx: 8, fill: "#1a1f45" }, g);
+        const back = [arm(g, id + "-a1", -52, 18, ang[0], skin, shirt, it[0]), arm(g, id + "-a2", 52, 18, ang[1], skin, shirt, it[1])];
+        el("rect", { x: -56, y: 0, width: 112, height: 132, rx: 40, fill: shirt }, g);
+        const third = o.three === false ? null : arm(g, id + "-a3", 0, 46, ang[2], skin, o.shirt3 || shirt, it[2]);
+        el("rect", { x: -12, y: -18, width: 24, height: 22, fill: skin }, g);
+        el("circle", { cx: 0, cy: -58, r: 46, fill: skin }, g);
+        el("path", { d: "M-46 -60 C-46 -118 46 -118 46 -60 C30 -84 -20 -88 -46 -60Z", fill: hair }, g);
+        const eyes = el("g", { id: id + "-eyes" }, g);
+        el("circle", { cx: -16, cy: -56, r: 6, fill: "#161a36" }, eyes); el("circle", { cx: 16, cy: -56, r: 6, fill: "#161a36" }, eyes);
+        el("path", { id: id + "-mouth", d: o.sad ? "M-14 -26 q14 -10 28 0" : "M-14 -32 q14 14 28 0", fill: "none", stroke: "#8a3b2a", "stroke-width": 5, "stroke-linecap": "round" }, g);
+        return { g, a1: back[0], a2: back[1], a3: third, eyes };
+      }
+      // kleine Figur (Menge): Kopf, Körper, drei Arme als Striche
+      function mini(parent, x, y, c) {
+        const g = el("g", { opacity: 0 }, parent);
+        el("circle", { cx: x, cy: y, r: 12, fill: "#f2c9a5" }, g);
+        el("rect", { x: x - 14, y: y + 14, width: 28, height: 40, rx: 10, fill: c }, g);
+        el("path", { d: `M${x - 14} ${y + 22} l-14 22 M${x + 14} ${y + 22} l14 22 M${x} ${y + 30} l10 -26`, stroke: "#f2c9a5", "stroke-width": 6, "stroke-linecap": "round" }, g);
+        return g;
+      }
+      // Arm winken lassen (endlich viele Wiederholungen)
+      const wave = (tl, a, from, to, t, n = 3, d = 0.18) => tl.to(a, { rotation: to, duration: d, repeat: n * 2 - 1, yoyo: true, ease: "sine.inOut" }, t);
+
+      const tl = gsap.timeline({ paused: true });
+      const L = [0, 1, 2].map((i) => document.querySelector("#s08-l" + i)), len = L[0].getTotalLength();
+      L.forEach((p) => gsap.set(p, { attr: { "stroke-dasharray": len, "stroke-dashoffset": len } }));
+      const pens = [0, 1, 2].map(() => { const g = el("g", {}, document.querySelector("#s08-pens")); const h = el("g", { transform: "rotate(200) scale(1.6)" }, g); ITEMS.pen(h); return g; });
+      const pi = document.querySelector("#s08-piano"), keys = [];
+      for (let i = 0; i < 16; i++) keys.push(el("rect", { x: 100 + i * 55, y: 880, width: 50, height: 220, rx: 6, fill: "#fff", opacity: i < 10 ? 1 : 0 }, pi));
+      for (let i = 0; i < 15; i++) if (i % 7 !== 2 && i % 7 !== 6) el("rect", { x: 138 + i * 55, y: 880, width: 30, height: 130, rx: 4, fill: "#161a36", opacity: 0, class: i < 9 ? "s08-bk" : "s08-bkx" }, pi);
+      const dr = at("L12", "dreihändig"), kl = at("L12", "Klaviere"), ta = at("L12", "Tasten");
+      gsap.set(pi, { opacity: 0 });
+      tl.fromTo(["#s08-paper", "#s08-lines", "#s08-pens"], { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.4, ease: "expo.out" }, 0.05);
+      L.forEach((p, i) => {
+        tl.to(p, { attr: { "stroke-dashoffset": 0 }, duration: 1.4, ease: "none" }, dr - 0.2 + i * 0.05);
+        tl.fromTo(pens[i], { x: 200, y: 460 + i * 90 }, { x: 760, y: 460 + i * 90, duration: 1.4, ease: "none" }, dr - 0.2 + i * 0.05);
+      });
+      tl.fromTo(pi, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.35, ease: "expo.out" }, kl - 0.1);
+      tl.to(".s08-bk", { opacity: 1, duration: 0.01 }, kl - 0.1);
+      tl.to(keys.slice(10), { opacity: 1, duration: 0.15, stagger: 0.06, ease: "back.out(2)" }, ta - 0.1);
+      tl.to(".s08-bkx", { opacity: 1, duration: 0.15, stagger: 0.06 }, ta);
+      tl.to(keys.slice(10), { attr: { fill: "#ff9fd2" }, duration: 0.2 }, ta + 0.4);
+      tl.to("#s08-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s08"] = tl;
+    })();
+  </script>
+</template>

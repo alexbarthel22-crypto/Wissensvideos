@@ -107,6 +107,9 @@ def build_scene(project, scene, start, end, lines):
     common = project / "scenes" / "_common.css"
     if common.exists():
         text = text.replace("/*__COMMON_CSS__*/", common.read_text())
+    common_js = project / "scenes" / "_common.js"
+    if common_js.exists():
+        text = text.replace("/*__COMMON_JS__*/", common_js.read_text())
     text = text.replace("__CUES__", json.dumps(cues_for(scene, start, end, lines), ensure_ascii=False))
     text = text.replace("__DUR__", f"{end - start:.3f}")
     (project / "compositions" / f"{scene['id']}.html").write_text(text)
@@ -170,7 +173,7 @@ def build_captions(project, timings, windows, total):
     (project / "compositions" / "captions.html").write_text(doc)
 
 
-def build_hud(project, windows, total):
+def build_hud(project, script, windows, total):
     tags, checks, js, n = [], [], [], 0
     for i, (sc, s, e) in enumerate(windows):
         tid = f"tag{i}"
@@ -183,7 +186,7 @@ def build_hud(project, windows, total):
             cid = f"chk{n}"
             checks.append(f'      <div id="{cid}" class="clip chk" data-start="{s + 0.5:.3f}" data-duration="{total - s - 0.5:.3f}" '
                           f'data-track-index="2" data-layout-ignore style="top:{258 + (n - 1) * 37}px">'
-                          f'<span id="{cid}t" class="chkt">{n}. {esc(sc["check"])} <b>✕</b></span></div>')
+                          f'<span id="{cid}t" class="chkt{" ok" if script.get("check_ok") else ""}">{n}. {esc(sc["check"])} <b>{"✓" if script.get("check_ok") else "✕"}</b></span></div>')
             js.append(f'tl.fromTo("#{cid}t", {{ opacity: 0, x: -24 }}, {{ opacity: 1, x: 0, duration: 0.25, ease: "power3.out" }}, {s + 0.5:.3f});')
     doc = f"""<template>
   <style>
@@ -198,6 +201,8 @@ def build_hud(project, windows, total):
       font-family: "Space Mono", monospace; font-weight: 700; font-size: 22px; letter-spacing: 0.04em;
       color: #ff7a8c; border: 2px solid #c8314a; border-radius: 6px; background: rgba(40,10,24,.55); }}
     .chkt b {{ color: #ff3b55; margin-left: 6px; }}
+    .chkt.ok {{ color: #8affb6; border-color: #1f9a52; background: rgba(8,40,22,.6); }}
+    .chkt.ok b {{ color: #39e27a; }}
   </style>
   <div id="root" data-composition-id="hud" data-start="0" data-duration="{total:.3f}" data-width="{W}" data-height="{H}">
 {chr(10).join(tags)}
@@ -309,7 +314,7 @@ def main():
     for sc, s, e in windows:
         build_scene(project, sc, s, e, lines)
     build_captions(project, timings, windows, total)
-    build_hud(project, windows, total)
+    build_hud(project, script, windows, total)
     build_index(project, script, windows, lines, total)
     for sc, s, e in windows:
         print(f"{sc['id']}: {s:6.2f} – {e:6.2f}  ({e - s:4.2f} s)  {sc['tag']}")

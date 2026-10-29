@@ -1,0 +1,32 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+
+  </style>
+  <div id="root" data-composition-id="s05" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s05-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <svg id="s05-svg" class="full" viewBox="0 0 1080 1920">
+        <rect x="160" y="1000" width="760" height="40" rx="10" fill="#6b4f2a" />
+        <rect x="200" y="960" width="200" height="40" rx="6" fill="#d9b07a" /><ellipse cx="760" cy="960" rx="120" ry="34" fill="#2c3470" />
+        <g id="s05-hero"></g></svg>
+      <div id="s05-box" class="cbox b" style="opacity:0"><div class="lab">OP-DAUER</div><div id="s05-n" class="num">180 MIN</div></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const P = person(document.querySelector("#s05-hero"), "s05-p", 540, 600, 1.35, { arms: [40, -40, -128], items: ["knife", "spoon", "salt"], shirt: "#ffffff", hair: "#222" });
+      tl.fromTo(P.g, { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0.05);
+      [["schneiden", P.a1, 40, 70], ["rühren", P.a2, -40, -70], ["würzen", P.a3, -128, -105]].forEach(([w, a, f, t]) => wave(tl, a, f, t, at("L8", w) - 0.05, 2, 0.12));
+      const ch = at("L8", "Chirurgen"), sch = at("L8", "schneller");
+      tl.to("#s05-box", { opacity: 1, duration: 0.25 }, ch - 0.1);
+      count(tl, "#s05-n", 180, 120, sch - 0.2, 0.7, "", " MIN", "power3.out");
+      tl.to("#s05-box", { borderColor: "#39e27a", duration: 0.2 }, sch + 0.4);
+      tl.to("#s05-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s05"] = tl;
+    })();
+  </script>
+</template>

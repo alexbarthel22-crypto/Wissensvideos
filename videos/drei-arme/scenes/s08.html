@@ -1,0 +1,45 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    #s08-paper { position: absolute; left: 140px; top: 440px; width: 800px; height: 360px; border-radius: 16px; background: #f3f1ea; }
+  </style>
+  <div id="root" data-composition-id="s08" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s08-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s08-paper"></div>
+      <svg id="s08-svg" class="full" viewBox="0 0 1080 1920">
+        <g id="s08-lines" fill="none" stroke-width="10" stroke-linecap="round">
+          <path id="s08-l0" d="M200 530 q40 -30 80 0 t80 0 t80 0 t80 0 t80 0 t80 0 t80 0" stroke="#4da3ff" />
+          <path id="s08-l1" d="M200 620 q40 -30 80 0 t80 0 t80 0 t80 0 t80 0 t80 0 t80 0" stroke="#ff4fb0" />
+          <path id="s08-l2" d="M200 710 q40 -30 80 0 t80 0 t80 0 t80 0 t80 0 t80 0 t80 0" stroke="#39e27a" /></g>
+        <g id="s08-pens"></g><g id="s08-piano"></g></svg>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const L = [0, 1, 2].map((i) => document.querySelector("#s08-l" + i)), len = L[0].getTotalLength();
+      L.forEach((p) => gsap.set(p, { attr: { "stroke-dasharray": len, "stroke-dashoffset": len } }));
+      const pens = [0, 1, 2].map(() => { const g = el("g", {}, document.querySelector("#s08-pens")); const h = el("g", { transform: "rotate(200) scale(1.6)" }, g); ITEMS.pen(h); return g; });
+      const pi = document.querySelector("#s08-piano"), keys = [];
+      for (let i = 0; i < 16; i++) keys.push(el("rect", { x: 100 + i * 55, y: 880, width: 50, height: 220, rx: 6, fill: "#fff", opacity: i < 10 ? 1 : 0 }, pi));
+      for (let i = 0; i < 15; i++) if (i % 7 !== 2 && i % 7 !== 6) el("rect", { x: 138 + i * 55, y: 880, width: 30, height: 130, rx: 4, fill: "#161a36", opacity: 0, class: i < 9 ? "s08-bk" : "s08-bkx" }, pi);
+      const dr = at("L12", "dreihändig"), kl = at("L12", "Klaviere"), ta = at("L12", "Tasten");
+      gsap.set(pi, { opacity: 0 });
+      tl.fromTo(["#s08-paper", "#s08-lines", "#s08-pens"], { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.4, ease: "expo.out" }, 0.05);
+      L.forEach((p, i) => {
+        tl.to(p, { attr: { "stroke-dashoffset": 0 }, duration: 1.4, ease: "none" }, dr - 0.2 + i * 0.05);
+        tl.fromTo(pens[i], { x: 200, y: 460 + i * 90 }, { x: 760, y: 460 + i * 90, duration: 1.4, ease: "none" }, dr - 0.2 + i * 0.05);
+      });
+      tl.fromTo(pi, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.35, ease: "expo.out" }, kl - 0.1);
+      tl.to(".s08-bk", { opacity: 1, duration: 0.01 }, kl - 0.1);
+      tl.to(keys.slice(10), { opacity: 1, duration: 0.15, stagger: 0.06, ease: "back.out(2)" }, ta - 0.1);
+      tl.to(".s08-bkx", { opacity: 1, duration: 0.15, stagger: 0.06 }, ta);
+      tl.to(keys.slice(10), { attr: { fill: "#ff9fd2" }, duration: 0.2 }, ta + 0.4);
+      tl.to("#s08-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s08"] = tl;
+    })();
+  </script>
+</template>
