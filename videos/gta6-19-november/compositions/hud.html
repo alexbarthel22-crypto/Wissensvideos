@@ -1,0 +1,39 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; }
+    .tag { position: absolute; left: 0; width: 100%; top: 176px; height: 64px; }
+    .tagt { position: absolute; left: 50%; top: 0; margin-left: -210px; width: 420px; height: 62px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: "Space Mono", monospace; font-weight: 700; font-size: 30px; letter-spacing: 0.12em;
+      color: #f4d27a; border: 3px solid #b8944a; border-radius: 8px; background: rgba(14,17,36,.65); }
+    .chk { position: absolute; left: 0; width: 100%; height: 34px; }
+    .chkt { position: absolute; left: 30px; top: 0; padding: 2px 10px;
+      font-family: "Space Mono", monospace; font-weight: 700; font-size: 22px; letter-spacing: 0.04em;
+      color: #ff7a8c; border: 2px solid #c8314a; border-radius: 6px; background: rgba(40,10,24,.55); }
+    .chkt b { color: #ff3b55; margin-left: 6px; }
+  </style>
+  <div id="root" data-composition-id="hud" data-start="0" data-duration="61.185" data-width="1080" data-height="1920">
+      <div id="tag0" class="clip tag" data-start="0.000" data-duration="7.742" data-track-index="1"><span id="tag0t" class="tagt">WAS WÄRE WENN</span></div>
+      <div id="tag1" class="clip tag" data-start="7.742" data-duration="3.985" data-track-index="1"><span id="tag1t" class="tagt">19. NOV · 00:00</span></div>
+      <div id="tag2" class="clip tag" data-start="11.727" data-duration="5.150" data-track-index="1"><span id="tag2t" class="tagt">19. NOV · 00:01</span></div>
+      <div id="tag3" class="clip tag" data-start="16.877" data-duration="4.473" data-track-index="1"><span id="tag3t" class="tagt">19. NOV · 03:00</span></div>
+      <div id="tag4" class="clip tag" data-start="21.350" data-duration="9.549" data-track-index="1"><span id="tag4t" class="tagt">19. NOV · 07:00</span></div>
+      <div id="tag5" class="clip tag" data-start="30.899" data-duration="4.678" data-track-index="1"><span id="tag5t" class="tagt">19. NOV · 08:00</span></div>
+      <div id="tag6" class="clip tag" data-start="35.577" data-duration="3.843" data-track-index="1"><span id="tag6t" class="tagt">19. NOV · 12:00</span></div>
+      <div id="tag7" class="clip tag" data-start="39.420" data-duration="5.120" data-track-index="1"><span id="tag7t" class="tagt">19. NOV · 16:00</span></div>
+      <div id="tag8" class="clip tag" data-start="44.540" data-duration="7.619" data-track-index="1"><span id="tag8t" class="tagt">19. NOV · 20:00</span></div>
+      <div id="tag9" class="clip tag" data-start="52.159" data-duration="5.182" data-track-index="1"><span id="tag9t" class="tagt">19. NOV · 23:59</span></div>
+      <div id="tag10" class="clip tag" data-start="57.341" data-duration="3.844" data-track-index="1"><span id="tag10t" class="tagt">20. NOV · 00:00</span></div>
+      <div id="chk1" class="clip chk" data-start="12.227" data-duration="48.958" data-track-index="2" data-layout-ignore style="top:258px"><span id="chk1t" class="chkt">1. SERVER <b>✕</b></span></div>
+      <div id="chk2" class="clip chk" data-start="17.377" data-duration="43.808" data-track-index="2" data-layout-ignore style="top:295px"><span id="chk2t" class="chkt">2. INTERNET <b>✕</b></span></div>
+      <div id="chk3" class="clip chk" data-start="21.850" data-duration="39.335" data-track-index="2" data-layout-ignore style="top:332px"><span id="chk3t" class="chkt">3. STROMNETZ <b>✕</b></span></div>
+      <div id="chk4" class="clip chk" data-start="31.399" data-duration="29.786" data-track-index="2" data-layout-ignore style="top:369px"><span id="chk4t" class="chkt">4. ARBEIT <b>✕</b></span></div>
+      <div id="chk5" class="clip chk" data-start="36.077" data-duration="25.108" data-track-index="2" data-layout-ignore style="top:406px"><span id="chk5t" class="chkt">5. WIRTSCHAFT <b>✕</b></span></div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    
+tl.fromTo("#tag0t", { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.22, ease: "power3.out" }, 0.000);    tl.fromTo("#tag1t", { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.22, ease: "power3.out" }, 7.742);    tl.fromTo("#tag2t", { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.22, ease: "power3.out" }, 11.727);    tl.fromTo("#chk1t", { opacity: 0, x: -24 }, { opacity: 1, x: 0, duration: 0.25, ease: "power3.out" }, 12.227);    tl.fromTo("#tag3t", { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.22, ease: "power3.out" }, 16.877);    tl.fromTo("#chk2t", { opacity: 0, x: -24 }, { opacity: 1, x: 0, duration: 0.25, ease: "power3.out" }, 17.377);    tl.fromTo("#tag4t", { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.22, ease: "power3.out" }, 21.350);    tl.fromTo("#chk3t", { opacity: 0, x: -24 }, { opacity: 1, x: 0, duration: 0.25, ease: "power3.out" }, 21.850);    tl.fromTo("#tag5t", { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.22, ease: "power3.out" }, 30.899);    tl.fromTo("#chk4t", { opacity: 0, x: -24 }, { opacity: 1, x: 0, duration: 0.25, ease: "power3.out" }, 31.399);    tl.fromTo("#tag6t", { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.22, ease: "power3.out" }, 35.577);    tl.fromTo("#chk5t", { opacity: 0, x: -24 }, { opacity: 1, x: 0, duration: 0.25, ease: "power3.out" }, 36.077);    tl.fromTo("#tag7t", { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.22, ease: "power3.out" }, 39.420);    tl.fromTo("#tag8t", { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.22, ease: "power3.out" }, 44.540);    tl.fromTo("#tag9t", { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.22, ease: "power3.out" }, 52.159);    tl.fromTo("#tag10t", { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.22, ease: "power3.out" }, 57.341);
+    window.__timelines["hud"] = tl;
+  </script>
+</template>

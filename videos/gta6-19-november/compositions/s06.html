@@ -1,0 +1,113 @@
+<template>
+  <style>
+        #root { position: absolute; inset: 0; }
+    .stage { position: absolute; inset: 0; overflow: hidden; }
+    .abs { position: absolute; }
+    svg { overflow: visible; }
+    /* Zähler-Box wie in der Referenz: Rahmen in Akzentfarbe, Label in Mono-Versalien, große Zahl */
+    .cbox { position: absolute; left: 290px; width: 500px; top: 268px; height: 126px; border: 3px solid #ff4fb0;
+      border-radius: 14px; background: rgba(13,16,38,.88); text-align: center; box-shadow: 0 0 28px rgba(255,79,176,.35); }
+    .cbox .lab { margin-top: 16px; font-family: "Space Mono", monospace; font-weight: 700; font-size: 28px;
+      letter-spacing: .16em; color: #dfe2f5; }
+    .cbox .num { margin-top: 2px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 56px; color: #fff;
+      letter-spacing: .01em; }
+    .cbox.y { border-color: #ffd43b; box-shadow: 0 0 28px rgba(255,212,59,.3); }
+    .cbox.r { border-color: #ff3b55; box-shadow: 0 0 28px rgba(255,59,85,.35); }
+    .cbox.b { border-color: #4da3ff; box-shadow: 0 0 28px rgba(77,163,255,.3); }
+    .cbox.g { border-color: #39e27a; box-shadow: 0 0 28px rgba(57,226,122,.3); }
+    .mono { font-family: "Space Mono", monospace; font-weight: 700; letter-spacing: .12em; }
+    .heavy { font-family: "Inter", sans-serif; font-weight: 900; }
+
+    #s06-office { position: absolute; left: 90px; top: 460px; width: 900px; height: 620px; }
+    #s06-icons { position: absolute; left: 90px; top: 520px; width: 900px; height: 420px; }
+  </style>
+  <div id="root" data-composition-id="s06" data-start="0" data-duration="4.678" data-width="1080" data-height="1920">
+    <div id="s06-stage" class="clip stage" data-start="0" data-duration="4.678" data-track-index="0">
+      <div id="s06-box" class="cbox g">
+        <div class="lab">ANWESEND</div>
+        <div id="s06-num" class="num">100 %</div>
+      </div>
+      <svg id="s06-office" viewBox="0 0 900 620"></svg>
+      <svg id="s06-icons" viewBox="0 0 900 420">
+        <g id="s06-i0" opacity="0">
+          <rect x="40" y="110" width="220" height="160" rx="18" fill="#4da3ff" /><rect x="110" y="80" width="80" height="40" rx="10" fill="none" stroke="#4da3ff" stroke-width="14" />
+          <rect x="40" y="170" width="220" height="14" fill="#1d4f8a" />
+          <text x="150" y="340" text-anchor="middle" fill="#dfe2f5" font-family="Space Mono" font-weight="700" font-size="30" letter-spacing="3">BÜROS</text>
+        </g>
+        <g id="s06-i1" opacity="0">
+          <path d="M450 60 L570 130 L330 130Z" fill="#ffd43b" /><rect x="350" y="130" width="200" height="140" fill="#e0b92e" />
+          <rect x="430" y="190" width="40" height="80" fill="#6b4f10" /><rect x="370" y="160" width="40" height="34" fill="#fff3b0" /><rect x="490" y="160" width="40" height="34" fill="#fff3b0" />
+          <text x="450" y="340" text-anchor="middle" fill="#dfe2f5" font-family="Space Mono" font-weight="700" font-size="30" letter-spacing="3">SCHULEN</text>
+        </g>
+        <g id="s06-i2" opacity="0">
+          <path d="M750 70 L820 270 L680 270Z" fill="#ff8a3d" /><rect x="700" y="150" width="100" height="22" fill="#fff" /><rect x="690" y="210" width="120" height="22" fill="#fff" />
+          <rect x="660" y="266" width="180" height="16" rx="6" fill="#ff8a3d" />
+          <text x="750" y="340" text-anchor="middle" fill="#dfe2f5" font-family="Space Mono" font-weight="700" font-size="30" letter-spacing="3">BAUSTELLEN</text>
+        </g>
+        <g id="s06-x" opacity="0" stroke="#ff3b55" stroke-width="16" stroke-linecap="round">
+          <line x1="70" y1="390" x2="830" y2="390" />
+        </g>
+      </svg>
+    </div>
+  </div>
+  <script>
+    (() => {
+      
+      const C = {"__dur": 4.678, "L11": [0.2, 2.31], "L11.words": [["um", 0.2, 0.397], ["acht", 0.397, 0.609], ["bleibt", 0.609, 0.835], ["jeder", 0.835, 1.237], ["zweite", 1.237, 1.645], ["schreibtisch", 1.645, 2.098], ["leer", 2.098, 2.31]], "L12": [2.59, 4.428], "L12.words": [["büros", 2.59, 3.103], ["schulen", 3.103, 3.635], ["baustellen", 3.635, 4.428]]};
+      const line = (id) => C[id];
+      const at = (id, word, which = 0) => {
+        const ws = C[id + ".words"];
+        if (typeof word === "number") return ws[word][1 + which];
+        const key = String(word).toLowerCase().replace(/[^\wäöüß]/g, "");
+        const hit = ws.find((w) => w[0].startsWith(key));
+        if (!hit) throw new Error("cue not found: " + id + " " + word);
+        return hit[1 + which];
+      };
+      // Zähler: schreibt Zahlen im deutschen Format (4.100.000.000) als Funktion der Timeline-Zeit
+      const fmt = (n) => Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      const count = (tl, sel, from, to, t, d, pre = "", post = "", ease = "power2.out") => {
+        const el = document.querySelector(sel);
+        const o = { v: from };
+        el.textContent = pre + fmt(from) + post;
+        tl.to(o, { v: to, duration: d, ease, onUpdate: () => { el.textContent = pre + fmt(o.v) + post; } }, t);
+      };
+      // deterministischer Zufall
+      const rng = (seed) => () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let x = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+        x = (x + Math.imul(x ^ (x >>> 7), 61 | x)) ^ x; return ((x ^ (x >>> 14)) >>> 0) / 4294967296; };
+
+      const tl = gsap.timeline({ paused: true });
+      const ns = "http://www.w3.org/2000/svg", el = (n, a, p) => { const e = document.createElementNS(ns, n); for (const k in a) e.setAttribute(k, a[k]); p.appendChild(e); return e; };
+      // 3 x 4 Schreibtische mit Menschen; jeder zweite verschwindet
+      const of = document.querySelector("#s06-office"), people = [], rnd = rng(800);
+      const shirts = ["#4da3ff", "#ff4fb0", "#39e27a", "#ffd43b", "#8fa2ff"], skins = ["#f2c9a5", "#d9a27c", "#a8734f"];
+      for (let i = 0; i < 12; i++) {
+        const cx = 120 + (i % 4) * 220, cy = 60 + Math.floor(i / 4) * 200;
+        const p = el("g", {}, of);
+        el("circle", { cx, cy: cy + 20, r: 26, fill: skins[i % 3] }, p);
+        el("rect", { x: cx - 36, y: cy + 50, width: 72, height: 70, rx: 26, fill: shirts[i % 5] }, p);
+        people.push(p);
+        el("rect", { x: cx - 90, y: cy + 100, width: 180, height: 22, rx: 6, fill: "#2c3470" }, of);
+        el("rect", { x: cx - 50, y: cy + 52, width: 100, height: 56, rx: 6, fill: "#161b40", stroke: "#4a55a8", "stroke-width": 4 }, of);
+        el("rect", { x: cx - 8, y: cy + 108, width: 16, height: 10, fill: "#4a55a8" }, of);
+      }
+      const order = [0, 3, 5, 6, 9, 10];
+      const zweite = at("L11", "zweite"), leer = at("L11", "leer"), l12 = line("L12")[0];
+      tl.fromTo("#s06-box", { opacity: 0, y: -14 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0.05);
+      tl.fromTo("#s06-office", { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.5, ease: "expo.out" }, 0.05);
+      order.forEach((k, i) => {
+        tl.to(people[k], { opacity: 0, scale: 0.4, transformOrigin: "50% 100%", duration: 0.22, ease: "back.in(2)" }, zweite + i * 0.11);
+      });
+      count(tl, "#s06-num", 100, 50, zweite, 0.7, "", " %", "power1.out");
+      tl.to("#s06-num", { color: "#ff3b55", duration: 0.2 }, leer);
+      tl.to("#s06-box", { borderColor: "#ff3b55", duration: 0.2 }, leer);
+      // Büros, Schulen, Baustellen
+      tl.to("#s06-office", { opacity: 0, filter: "blur(8px)", duration: 0.2, ease: "power2.in" }, l12 - 0.15);
+      ["Büros", "Schulen", "Baustellen"].forEach((w, i) => {
+        tl.fromTo("#s06-i" + i, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.3, ease: "back.out(1.8)" }, at("L12", w) - 0.05);
+      });
+      tl.fromTo("#s06-x", { opacity: 0 }, { opacity: 1, duration: 0.2 }, at("L12", "Baustellen") + 0.4);
+      tl.to(["#s06-icons", "#s06-box"], { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s06"] = tl;
+    })();
+  </script>
+</template>

@@ -1,0 +1,109 @@
+<template>
+  <style>
+        #root { position: absolute; inset: 0; }
+    .stage { position: absolute; inset: 0; overflow: hidden; }
+    .abs { position: absolute; }
+    svg { overflow: visible; }
+    /* Zähler-Box wie in der Referenz: Rahmen in Akzentfarbe, Label in Mono-Versalien, große Zahl */
+    .cbox { position: absolute; left: 290px; width: 500px; top: 268px; height: 126px; border: 3px solid #ff4fb0;
+      border-radius: 14px; background: rgba(13,16,38,.88); text-align: center; box-shadow: 0 0 28px rgba(255,79,176,.35); }
+    .cbox .lab { margin-top: 16px; font-family: "Space Mono", monospace; font-weight: 700; font-size: 28px;
+      letter-spacing: .16em; color: #dfe2f5; }
+    .cbox .num { margin-top: 2px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 56px; color: #fff;
+      letter-spacing: .01em; }
+    .cbox.y { border-color: #ffd43b; box-shadow: 0 0 28px rgba(255,212,59,.3); }
+    .cbox.r { border-color: #ff3b55; box-shadow: 0 0 28px rgba(255,59,85,.35); }
+    .cbox.b { border-color: #4da3ff; box-shadow: 0 0 28px rgba(77,163,255,.3); }
+    .cbox.g { border-color: #39e27a; box-shadow: 0 0 28px rgba(57,226,122,.3); }
+    .mono { font-family: "Space Mono", monospace; font-weight: 700; letter-spacing: .12em; }
+    .heavy { font-family: "Inter", sans-serif; font-weight: 900; }
+
+    #s02-grid { position: absolute; left: 90px; top: 440px; width: 900px; height: 640px; }
+    #s02-tv { position: absolute; left: 240px; top: 440px; width: 600px; height: 360px; border-radius: 22px;
+      background: #1a1f45; border: 10px solid #2c3470; box-shadow: 0 20px 60px rgba(0,0,0,.5); }
+    #s02-tvscreen { position: absolute; inset: 0; border-radius: 12px; background: #10132e; }
+    #s02-press { position: absolute; left: 0; width: 100%; top: 140px; text-align: center; color: #fff;
+      font-family: "Space Mono", monospace; font-weight: 700; font-size: 44px; letter-spacing: .2em; }
+    #s02-pad { position: absolute; left: 260px; top: 800px; width: 560px; height: 330px; }
+  </style>
+  <div id="root" data-composition-id="s02" data-start="0" data-duration="3.985" data-width="1080" data-height="1920">
+    <div id="s02-stage" class="clip stage" data-start="0" data-duration="3.985" data-track-index="0">
+      <div id="s02-clock" class="cbox y">
+        <div class="lab">ORTSZEIT</div>
+        <div class="num">00:00</div>
+      </div>
+      <svg id="s02-grid" viewBox="0 0 900 640"></svg>
+      <div id="s02-tv">
+        <div id="s02-tvscreen"></div>
+        <div id="s02-press">PRESS START</div>
+      </div>
+      <svg id="s02-pad" viewBox="0 0 560 330">
+        <path d="M120 40 C180 20 380 20 440 40 C520 64 560 170 550 250 C542 310 490 330 450 300 C420 278 400 240 370 236 L190 236 C160 240 140 278 110 300 C70 330 18 310 10 250 C0 170 40 64 120 40Z"
+              fill="#2a3168" stroke="#3a4490" stroke-width="6" />
+        <rect x="90" y="120" width="30" height="90" rx="6" fill="#151a3d" />
+        <rect x="60" y="150" width="90" height="30" rx="6" fill="#151a3d" />
+        <circle cx="200" cy="230" r="34" fill="#151a3d" /><circle cx="360" cy="230" r="34" fill="#151a3d" />
+        <circle cx="440" cy="120" r="20" fill="#4da3ff" /><circle cx="480" cy="160" r="20" fill="#ff3b55" />
+        <circle cx="400" cy="160" r="20" fill="#ffd43b" /><circle cx="440" cy="200" r="20" fill="#ff4fb0" />
+        <rect x="245" y="104" width="70" height="30" rx="15" fill="#151a3d" />
+        <rect id="s02-start" x="245" y="104" width="70" height="30" rx="15" fill="#39e27a" />
+      </svg>
+      <svg id="s02-hand" class="abs" style="left:465px;top:898px;width:220px;height:260px" viewBox="0 0 220 260">
+        <path d="M60 40 C60 20 90 20 90 40 L90 120 L150 128 C190 134 200 160 196 200 L188 250 L70 250 L40 170 C30 150 50 136 60 150Z" fill="#f2c9a5" />
+      </svg>
+    </div>
+  </div>
+  <script>
+    (() => {
+      
+      const C = {"__dur": 3.985, "L3": [0.2, 3.735], "L3.words": [["mitternacht", 0.2, 0.71], ["vier", 1.08, 1.286], ["milliarden", 1.286, 1.889], ["menschen", 1.889, 2.301], ["drücken", 2.301, 2.705], ["gleichzeitig", 2.705, 3.323], ["auf", 3.323, 3.522], ["start", 3.522, 3.735]]};
+      const line = (id) => C[id];
+      const at = (id, word, which = 0) => {
+        const ws = C[id + ".words"];
+        if (typeof word === "number") return ws[word][1 + which];
+        const key = String(word).toLowerCase().replace(/[^\wäöüß]/g, "");
+        const hit = ws.find((w) => w[0].startsWith(key));
+        if (!hit) throw new Error("cue not found: " + id + " " + word);
+        return hit[1 + which];
+      };
+      // Zähler: schreibt Zahlen im deutschen Format (4.100.000.000) als Funktion der Timeline-Zeit
+      const fmt = (n) => Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      const count = (tl, sel, from, to, t, d, pre = "", post = "", ease = "power2.out") => {
+        const el = document.querySelector(sel);
+        const o = { v: from };
+        el.textContent = pre + fmt(from) + post;
+        tl.to(o, { v: to, duration: d, ease, onUpdate: () => { el.textContent = pre + fmt(o.v) + post; } }, t);
+      };
+      // deterministischer Zufall
+      const rng = (seed) => () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let x = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+        x = (x + Math.imul(x ^ (x >>> 7), 61 | x)) ^ x; return ((x ^ (x >>> 14)) >>> 0) / 4294967296; };
+
+      const tl = gsap.timeline({ paused: true });
+      // viele kleine Bildschirme = Milliarden Spieler
+      const g = document.querySelector("#s02-grid"), ns = "http://www.w3.org/2000/svg", scr = [];
+      for (let y = 0; y < 6; y++) for (let x = 0; x < 8; x++) {
+        const r = document.createElementNS(ns, "rect");
+        r.setAttribute("x", 6 + x * 112); r.setAttribute("y", 6 + y * 106);
+        r.setAttribute("width", 96); r.setAttribute("height", 72); r.setAttribute("rx", 8);
+        r.setAttribute("fill", "#232a5e"); r.setAttribute("stroke", "#3a4490"); r.setAttribute("stroke-width", 3);
+        r.setAttribute("opacity", 0);
+        g.appendChild(r); scr.push(r);
+      }
+      const vier = at("L3", "Vier"), start = at("L3", "Start");
+      tl.fromTo("#s02-clock", { opacity: 0, y: -14 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0.05);
+      tl.fromTo("#s02-tv", { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.45, ease: "expo.out" }, 0.05);
+      tl.fromTo("#s02-pad", { opacity: 0, y: 80 }, { opacity: 1, y: 0, duration: 0.5, ease: "expo.out" }, 0.2);
+      tl.fromTo("#s02-press", { opacity: 1 }, { opacity: 0.25, duration: 0.3, repeat: 3, yoyo: true, ease: "none" }, 0.4);
+      // "Vier Milliarden": die Wand aus Bildschirmen
+      tl.to("#s02-tv", { opacity: 0, scale: 0.6, duration: 0.3, ease: "power3.in" }, vier - 0.05);
+      tl.to(scr, { opacity: 1, duration: 0.15, stagger: { each: 0.018, from: "center" } }, vier);
+      // "Start": Finger drückt, alle Bildschirme springen auf Grün
+      tl.fromTo("#s02-hand", { opacity: 0, x: 120, y: 120 }, { opacity: 1, x: 0, y: 0, duration: 0.45, ease: "power3.out" }, start - 0.6);
+      tl.to("#s02-hand", { y: 18, duration: 0.08, ease: "power2.in" }, start - 0.05);
+      tl.to("#s02-pad", { scale: 0.97, duration: 0.08, yoyo: true, repeat: 1 }, start - 0.05);
+      tl.to(scr, { attr: { fill: "#39e27a", stroke: "#8affb6" }, duration: 0.12, stagger: { each: 0.01, from: "center" } }, start);
+      tl.to(["#s02-grid", "#s02-pad", "#s02-hand", "#s02-clock"], { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s02"] = tl;
+    })();
+  </script>
+</template>

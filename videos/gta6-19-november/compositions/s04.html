@@ -1,0 +1,116 @@
+<template>
+  <style>
+        #root { position: absolute; inset: 0; }
+    .stage { position: absolute; inset: 0; overflow: hidden; }
+    .abs { position: absolute; }
+    svg { overflow: visible; }
+    /* Zähler-Box wie in der Referenz: Rahmen in Akzentfarbe, Label in Mono-Versalien, große Zahl */
+    .cbox { position: absolute; left: 290px; width: 500px; top: 268px; height: 126px; border: 3px solid #ff4fb0;
+      border-radius: 14px; background: rgba(13,16,38,.88); text-align: center; box-shadow: 0 0 28px rgba(255,79,176,.35); }
+    .cbox .lab { margin-top: 16px; font-family: "Space Mono", monospace; font-weight: 700; font-size: 28px;
+      letter-spacing: .16em; color: #dfe2f5; }
+    .cbox .num { margin-top: 2px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 56px; color: #fff;
+      letter-spacing: .01em; }
+    .cbox.y { border-color: #ffd43b; box-shadow: 0 0 28px rgba(255,212,59,.3); }
+    .cbox.r { border-color: #ff3b55; box-shadow: 0 0 28px rgba(255,59,85,.35); }
+    .cbox.b { border-color: #4da3ff; box-shadow: 0 0 28px rgba(77,163,255,.3); }
+    .cbox.g { border-color: #39e27a; box-shadow: 0 0 28px rgba(57,226,122,.3); }
+    .mono { font-family: "Space Mono", monospace; font-weight: 700; letter-spacing: .12em; }
+    .heavy { font-family: "Inter", sans-serif; font-weight: 900; }
+
+    #s04-phone { position: absolute; left: 300px; top: 330px; width: 480px; height: 800px; border-radius: 56px;
+      background: #0b0e22; border: 12px solid #2c3470; box-shadow: 0 30px 80px rgba(0,0,0,.6); overflow: hidden; }
+    #s04-bar { position: absolute; left: 0; width: 100%; top: 22px; text-align: center; color: #c9cde6;
+      font-family: "Space Mono", monospace; font-weight: 700; font-size: 28px; }
+    #s04-video { position: absolute; left: 24px; right: 24px; top: 110px; height: 300px; border-radius: 18px; background: #1b2150; }
+    #s04-spin { position: absolute; left: 140px; top: 70px; width: 160px; height: 160px; }
+    #s04-load { position: absolute; left: 24px; right: 24px; top: 440px; height: 14px; border-radius: 7px; background: #232a5e; }
+    #s04-fill { position: absolute; left: 0; top: 0; height: 14px; width: 12%; border-radius: 7px; background: #ff3b55; }
+    #s04-pct { position: absolute; left: 0; width: 100%; top: 474px; text-align: center; color: #ff7a8c;
+      font-family: "Space Mono", monospace; font-weight: 700; font-size: 30px; letter-spacing: .1em; }
+    #s04-call { position: absolute; left: 0; top: 0; width: 100%; height: 100%; background: #0b0e22; }
+    .s04-tile { position: absolute; width: 204px; height: 300px; border-radius: 18px; background: #1d2350; overflow: hidden; }
+    #s04-warn { position: absolute; left: 24px; right: 24px; top: 670px; height: 70px; border-radius: 14px;
+      background: #0f2240; border: 3px solid #4da3ff; color: #a9d2ff; text-align: center; line-height: 64px;
+      font-family: "Space Mono", monospace; font-weight: 700; font-size: 28px; letter-spacing: .06em; }
+  </style>
+  <div id="root" data-composition-id="s04" data-start="0" data-duration="4.473" data-width="1080" data-height="1920">
+    <div id="s04-stage" class="clip stage" data-start="0" data-duration="4.473" data-track-index="0">
+      <div id="s04-phone">
+        <div id="s04-bar">03:00 · ▂▁▁ 4G</div>
+        <div id="s04-video">
+          <svg id="s04-spin" viewBox="0 0 160 160">
+            <circle cx="80" cy="80" r="60" fill="none" stroke="#2f3778" stroke-width="14" />
+            <path d="M80 20 A60 60 0 0 1 140 80" fill="none" stroke="#4da3ff" stroke-width="14" stroke-linecap="round" />
+          </svg>
+        </div>
+        <div id="s04-load"><div id="s04-fill"></div></div>
+        <div id="s04-pct">LÄDT … 12 %</div>
+        <div id="s04-call">
+          <div class="s04-tile" style="left:24px;top:110px">
+            <svg width="204" height="300" viewBox="0 0 204 300"><circle cx="102" cy="120" r="46" fill="#f2c9a5" /><rect x="40" y="180" width="124" height="140" rx="50" fill="#4da3ff" /><path d="M56 110 C56 60 148 60 148 110 C130 90 80 90 56 110Z" fill="#5b3a26" /></svg>
+          </div>
+          <div class="s04-tile" style="left:252px;top:110px">
+            <svg width="204" height="300" viewBox="0 0 204 300"><circle cx="102" cy="120" r="46" fill="#d9a27c" /><rect x="40" y="180" width="124" height="140" rx="50" fill="#ff4fb0" /><path d="M52 130 C46 50 158 50 152 130 C150 90 60 90 52 130Z" fill="#e8c26a" /></svg>
+          </div>
+          <div class="s04-tile" style="left:24px;top:430px">
+            <svg width="204" height="300" viewBox="0 0 204 300"><circle cx="102" cy="120" r="46" fill="#a8734f" /><rect x="40" y="180" width="124" height="140" rx="50" fill="#39e27a" /></svg>
+          </div>
+          <div class="s04-tile" style="left:252px;top:430px">
+            <svg width="204" height="300" viewBox="0 0 204 300"><circle cx="102" cy="120" r="46" fill="#f2c9a5" /><rect x="40" y="180" width="124" height="140" rx="50" fill="#ffd43b" /><path d="M58 104 C70 64 136 64 146 104Z" fill="#222" /></svg>
+          </div>
+          <div id="s04-pix" class="abs" style="left:24px;top:110px;width:432px;height:620px"></div>
+          <div id="s04-warn">VERBINDUNG INSTABIL</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      
+      const C = {"__dur": 4.473, "L6": [0.2, 1.362], "L6.words": [["das", 0.2, 0.394], ["internet", 0.394, 0.968], ["wird", 0.968, 1.168], ["zäh", 1.168, 1.362]], "L7": [1.642, 4.223], "L7.words": [["videos", 1.642, 1.955], ["laden", 1.955, 2.262], ["nicht", 2.262, 2.43], ["mehr", 2.43, 2.592], ["videocalls", 2.702, 3.463], ["frieren", 3.463, 3.973], ["ein", 3.973, 4.223]]};
+      const line = (id) => C[id];
+      const at = (id, word, which = 0) => {
+        const ws = C[id + ".words"];
+        if (typeof word === "number") return ws[word][1 + which];
+        const key = String(word).toLowerCase().replace(/[^\wäöüß]/g, "");
+        const hit = ws.find((w) => w[0].startsWith(key));
+        if (!hit) throw new Error("cue not found: " + id + " " + word);
+        return hit[1 + which];
+      };
+      // Zähler: schreibt Zahlen im deutschen Format (4.100.000.000) als Funktion der Timeline-Zeit
+      const fmt = (n) => Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      const count = (tl, sel, from, to, t, d, pre = "", post = "", ease = "power2.out") => {
+        const el = document.querySelector(sel);
+        const o = { v: from };
+        el.textContent = pre + fmt(from) + post;
+        tl.to(o, { v: to, duration: d, ease, onUpdate: () => { el.textContent = pre + fmt(o.v) + post; } }, t);
+      };
+      // deterministischer Zufall
+      const rng = (seed) => () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let x = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+        x = (x + Math.imul(x ^ (x >>> 7), 61 | x)) ^ x; return ((x ^ (x >>> 14)) >>> 0) / 4294967296; };
+
+      const tl = gsap.timeline({ paused: true });
+      // Pixel-Raster über dem eingefrorenen Videocall
+      const pix = document.querySelector("#s04-pix"), rnd = rng(304), blocks = [];
+      for (let i = 0; i < 60; i++) {
+        const b = document.createElement("div");
+        b.style.cssText = `position:absolute;left:${Math.floor(rnd() * 12) * 36}px;top:${Math.floor(rnd() * 17) * 36}px;width:36px;height:36px;background:${["#4da3ff", "#1d2350", "#8fa2ff", "#0b0e22"][i % 4]};opacity:0`;
+        pix.appendChild(b); blocks.push(b);
+      }
+      const zaeh = at("L6", "zäh"), calls = at("L7", "Videocalls"), frieren = at("L7", "frieren");
+      tl.fromTo("#s04-phone", { opacity: 0, y: 120, rotation: 4 }, { opacity: 1, y: 0, rotation: 0, duration: 0.55, ease: "expo.out" }, 0.05);
+      tl.fromTo("#s04-spin", { rotation: 0 }, { rotation: 360 * 5, duration: 4.2, ease: "none", transformOrigin: "50% 50%" }, 0);
+      tl.fromTo("#s04-call", { opacity: 0 }, { opacity: 0, duration: 0.01 }, 0);
+      tl.fromTo("#s04-fill", { width: "4%" }, { width: "12%", duration: 0.8, ease: "power2.out" }, 0.3);
+      tl.to("#s04-pct", { color: "#ff3b55", duration: 0.1 }, zaeh);
+      tl.to("#s04-phone", { x: -6, duration: 0.05, repeat: 3, yoyo: true }, zaeh);
+      // Videocall friert ein
+      tl.to("#s04-call", { opacity: 1, duration: 0.2 }, calls - 0.1);
+      tl.to(blocks, { opacity: 0.85, duration: 0.05, stagger: 0.012 }, frieren);
+      tl.fromTo("#s04-warn", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.25, ease: "power3.out" }, frieren + 0.1);
+      tl.to("#s04-phone", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s04"] = tl;
+    })();
+  </script>
+</template>

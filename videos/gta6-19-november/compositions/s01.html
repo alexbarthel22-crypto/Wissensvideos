@@ -1,0 +1,172 @@
+<template>
+  <style>
+        #root { position: absolute; inset: 0; }
+    .stage { position: absolute; inset: 0; overflow: hidden; }
+    .abs { position: absolute; }
+    svg { overflow: visible; }
+    /* Zähler-Box wie in der Referenz: Rahmen in Akzentfarbe, Label in Mono-Versalien, große Zahl */
+    .cbox { position: absolute; left: 290px; width: 500px; top: 268px; height: 126px; border: 3px solid #ff4fb0;
+      border-radius: 14px; background: rgba(13,16,38,.88); text-align: center; box-shadow: 0 0 28px rgba(255,79,176,.35); }
+    .cbox .lab { margin-top: 16px; font-family: "Space Mono", monospace; font-weight: 700; font-size: 28px;
+      letter-spacing: .16em; color: #dfe2f5; }
+    .cbox .num { margin-top: 2px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 56px; color: #fff;
+      letter-spacing: .01em; }
+    .cbox.y { border-color: #ffd43b; box-shadow: 0 0 28px rgba(255,212,59,.3); }
+    .cbox.r { border-color: #ff3b55; box-shadow: 0 0 28px rgba(255,59,85,.35); }
+    .cbox.b { border-color: #4da3ff; box-shadow: 0 0 28px rgba(77,163,255,.3); }
+    .cbox.g { border-color: #39e27a; box-shadow: 0 0 28px rgba(57,226,122,.3); }
+    .mono { font-family: "Space Mono", monospace; font-weight: 700; letter-spacing: .12em; }
+    .heavy { font-family: "Inter", sans-serif; font-weight: 900; }
+
+    #s01-globe { position: absolute; left: 190px; top: 420px; width: 700px; height: 700px; }
+    #s01-cal { position: absolute; left: 380px; top: 520px; width: 320px; height: 350px; border-radius: 22px;
+      background: #f3f1ea; overflow: hidden; box-shadow: 0 24px 60px rgba(0,0,0,.55); }
+    #s01-cal .hd { height: 92px; background: #ff3b55; color: #fff; text-align: center; line-height: 92px;
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 44px; letter-spacing: .08em; }
+    #s01-cal .day { text-align: center; font-family: "Inter", sans-serif; font-weight: 900; font-size: 190px;
+      line-height: 240px; color: #161a36; }
+    #s01-cover { position: absolute; left: 330px; top: 470px; width: 420px; height: 560px; border-radius: 18px;
+      overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,.6); border: 4px solid #ffffff22; }
+    #s01-cover .t { position: absolute; left: 0; width: 100%; top: 300px; text-align: center;
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 118px; color: #fff; letter-spacing: -.02em;
+      text-shadow: 0 6px 0 #c2185b; }
+    #s01-cover .s { position: absolute; left: 0; width: 100%; top: 448px; text-align: center; color: #fff;
+      font-family: "Space Mono", monospace; font-weight: 700; font-size: 28px; letter-spacing: .3em; opacity: .9; }
+    #s01-ring { opacity: 0; position: absolute; left: 240px; top: 450px; width: 600px; height: 600px; }
+    #s01-ringlab { opacity: 0; position: absolute; left: 0; width: 100%; top: 1062px; text-align: center; color: #ffd43b;
+      font-family: "Space Mono", monospace; font-weight: 700; font-size: 30px; letter-spacing: .18em; }
+  </style>
+  <div id="root" data-composition-id="s01" data-start="0" data-duration="7.742" data-width="1080" data-height="1920">
+    <div id="s01-stage" class="clip stage" data-start="0" data-duration="7.742" data-track-index="0">
+      <div id="s01-count" class="cbox">
+        <div class="lab">SPIELER ONLINE</div>
+        <div id="s01-num" class="num">0</div>
+      </div>
+      <svg id="s01-globe" viewBox="0 0 700 700">
+        <defs>
+          <radialGradient id="s01-g" cx="42%" cy="38%" r="70%">
+            <stop offset="0" stop-color="#4a63d6" />
+            <stop offset=".65" stop-color="#2b3b9c" />
+            <stop offset="1" stop-color="#1a2366" />
+          </radialGradient>
+          <clipPath id="s01-clip"><circle cx="350" cy="350" r="318" /></clipPath>
+        </defs>
+        <circle cx="350" cy="350" r="346" fill="#3d56c9" opacity=".12" />
+        <circle cx="350" cy="350" r="318" fill="url(#s01-g)" />
+        <g clip-path="url(#s01-clip)" fill="#5f78e6" opacity=".55">
+          <path d="M120 170 C170 120 260 120 300 160 C330 190 300 240 260 250 C230 258 230 300 200 320 C160 340 110 300 100 250 C92 215 100 190 120 170Z" />
+          <path d="M230 360 C270 350 300 380 300 430 C300 480 270 540 240 560 C215 575 205 530 210 490 C214 450 200 400 230 360Z" />
+          <path d="M360 150 C410 130 470 140 520 170 C570 200 600 250 580 290 C560 330 500 320 470 300 C450 330 420 340 400 320 C380 300 390 270 370 250 C345 225 330 175 360 150Z" />
+          <path d="M400 340 C440 330 470 360 470 410 C470 460 440 500 410 500 C385 500 375 460 380 420 C383 390 375 350 400 340Z" />
+          <path d="M520 440 C560 430 600 450 600 480 C600 510 560 520 530 510 C505 502 498 450 520 440Z" />
+        </g>
+        <g clip-path="url(#s01-clip)" fill="none" stroke="#8fa2ff" stroke-opacity=".18" stroke-width="2">
+          <ellipse cx="350" cy="350" rx="318" ry="110" />
+          <ellipse cx="350" cy="350" rx="318" ry="230" />
+          <ellipse cx="350" cy="350" rx="110" ry="318" />
+          <ellipse cx="350" cy="350" rx="230" ry="318" />
+          <line x1="32" y1="350" x2="668" y2="350" />
+        </g>
+        <g id="s01-dots"></g>
+      </svg>
+      <div id="s01-cal">
+        <div class="hd">NOVEMBER</div>
+        <div class="day">19</div>
+      </div>
+      <div id="s01-cover">
+        <svg width="420" height="560" viewBox="0 0 420 560">
+          <defs>
+            <linearGradient id="s01-sun" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#2a1052" />
+              <stop offset=".45" stop-color="#d6337f" />
+              <stop offset=".75" stop-color="#ff8a3d" />
+              <stop offset="1" stop-color="#ffc85a" />
+            </linearGradient>
+          </defs>
+          <rect width="420" height="560" fill="url(#s01-sun)" />
+          <circle cx="210" cy="330" r="120" fill="#ffd36b" opacity=".85" />
+          <g fill="#2a0d3d">
+            <rect x="0" y="420" width="420" height="140" />
+            <rect x="40" y="350" width="40" height="80" /><rect x="90" y="320" width="34" height="110" />
+            <rect x="300" y="300" width="44" height="130" /><rect x="350" y="360" width="36" height="70" />
+            <path d="M70 430 C74 330 82 260 96 200 L104 202 C92 262 86 330 84 430Z" />
+            <path d="M100 200 C60 190 30 200 10 220 C50 205 80 208 100 206Z M100 200 C130 180 160 182 186 196 C150 190 124 196 102 206Z M100 200 C90 170 70 150 44 140 C70 160 86 178 98 204Z M100 200 C120 168 140 156 166 150 C140 166 122 182 104 206Z" />
+            <path d="M330 430 C334 350 340 290 352 240 L360 242 C350 292 344 350 344 430Z" />
+            <path d="M356 240 C320 232 296 240 280 256 C312 244 336 246 356 246Z M356 240 C384 224 410 226 430 238 C400 232 378 238 358 248Z M356 240 C348 214 332 198 310 190 C332 206 346 222 354 246Z" />
+          </g>
+        </svg>
+        <div class="t">GTA VI</div>
+        <div class="s">19 · 11</div>
+      </div>
+      <svg id="s01-ring" viewBox="0 0 600 600">
+        <circle cx="300" cy="300" r="282" fill="none" stroke="#ffd43b" stroke-opacity=".18" stroke-width="10" />
+        <circle id="s01-arc" cx="300" cy="300" r="282" fill="none" stroke="#ffd43b" stroke-width="10" stroke-linecap="round"
+                stroke-dasharray="1772" stroke-dashoffset="1772" transform="rotate(-90 300 300)" />
+      </svg>
+      <div id="s01-ringlab">24 STUNDEN · 0 PAUSEN</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      
+      const C = {"__dur": 7.742, "L1": [0.25, 5.418], "L1.words": [["was", 0.25, 0.454], ["passiert", 0.454, 0.875], ["wenn", 0.875, 1.086], ["am", 1.086, 1.282], ["19", 1.282, 1.907], ["november", 1.907, 2.51], ["die", 2.51, 2.714], ["hälfte", 2.714, 3.121], ["aller", 3.121, 3.521], ["menschen", 3.521, 3.942], ["gleichzeitig", 3.942, 4.575], ["gta6", 4.575, 5.192], ["spielt", 5.192, 5.418]], "L2": [5.698, 7.492], "L2.words": [["den", 5.698, 5.913], ["ganzen", 5.913, 6.343], ["tag", 6.343, 6.558], ["ohne", 6.758, 7.122], ["pause", 7.122, 7.493]]};
+      const line = (id) => C[id];
+      const at = (id, word, which = 0) => {
+        const ws = C[id + ".words"];
+        if (typeof word === "number") return ws[word][1 + which];
+        const key = String(word).toLowerCase().replace(/[^\wäöüß]/g, "");
+        const hit = ws.find((w) => w[0].startsWith(key));
+        if (!hit) throw new Error("cue not found: " + id + " " + word);
+        return hit[1 + which];
+      };
+      // Zähler: schreibt Zahlen im deutschen Format (4.100.000.000) als Funktion der Timeline-Zeit
+      const fmt = (n) => Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      const count = (tl, sel, from, to, t, d, pre = "", post = "", ease = "power2.out") => {
+        const el = document.querySelector(sel);
+        const o = { v: from };
+        el.textContent = pre + fmt(from) + post;
+        tl.to(o, { v: to, duration: d, ease, onUpdate: () => { el.textContent = pre + fmt(o.v) + post; } }, t);
+      };
+      // deterministischer Zufall
+      const rng = (seed) => () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let x = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+        x = (x + Math.imul(x ^ (x >>> 7), 61 | x)) ^ x; return ((x ^ (x >>> 14)) >>> 0) / 4294967296; };
+
+      const tl = gsap.timeline({ paused: true });
+      // Punkte auf den Kontinenten (deterministisch)
+      const r = rng(1911), dots = document.querySelector("#s01-dots"), ns = "http://www.w3.org/2000/svg";
+      const zones = [[200, 220, 110, 80], [255, 460, 45, 90], [470, 230, 110, 70], [425, 420, 45, 70], [560, 478, 40, 20]];
+      const made = [];
+      for (let i = 0; i < 170; i++) {
+        const z = zones[i % zones.length], a = r() * Math.PI * 2, d = Math.sqrt(r());
+        const c = document.createElementNS(ns, "circle");
+        c.setAttribute("cx", (z[0] + Math.cos(a) * z[2] * d).toFixed(1));
+        c.setAttribute("cy", (z[1] + Math.sin(a) * z[3] * d).toFixed(1));
+        c.setAttribute("r", (3 + r() * 3).toFixed(1));
+        c.setAttribute("fill", "#ff4fb0");
+        c.setAttribute("opacity", "0");
+        dots.appendChild(c);
+        made.push(c);
+      }
+      const half = at("L1", "Hälfte"), gta = at("L1", "GTA"), ganz = at("L2", "ganzen");
+
+      tl.fromTo("#s01-globe", { scale: 0.94, opacity: 0.85 }, { scale: 1, opacity: 1, duration: 1.2, ease: "power2.out" }, 0);
+      tl.fromTo("#s01-count", { opacity: 0, y: -14 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0.15);
+      // Kalenderblatt auf "19. November"
+      tl.fromTo("#s01-cal", { opacity: 0, scale: 0.6, rotation: -8 }, { opacity: 1, scale: 1, rotation: -4, duration: 0.4, ease: "back.out(1.8)" }, at("L1", "19.") - 0.05);
+      tl.to("#s01-cal", { opacity: 0, scale: 0.85, y: -40, duration: 0.2, ease: "power2.in" }, half - 0.25);
+      // Hälfte der Menschheit: Punkte + Zähler
+      tl.to(made, { opacity: 0.95, duration: 0.12, stagger: { each: (gta - half) / made.length } }, half);
+      count(tl, "#s01-num", 0, 4100000000, half, gta - half + 0.35, "", "", "power1.inOut");
+      tl.to("#s01-num", { color: "#ff4fb0", duration: 0.2 }, gta + 0.3);
+      // Spiel-Cover auf "GTA 6"
+      tl.to("#s01-globe", { opacity: 0.35, scale: 0.92, duration: 0.4, ease: "power2.out" }, gta - 0.05);
+      tl.fromTo("#s01-cover", { opacity: 0, y: 160, rotation: 6, scale: 0.8 }, { opacity: 1, y: 0, rotation: -2, scale: 1, duration: 0.5, ease: "back.out(1.6)" }, gta - 0.05);
+      // "Den ganzen Tag": 24h-Ring
+      tl.fromTo("#s01-ring", { opacity: 0 }, { opacity: 1, duration: 0.2 }, ganz - 0.1);
+      tl.fromTo("#s01-arc", { attr: { "stroke-dashoffset": 1772 } }, { attr: { "stroke-dashoffset": 0 }, duration: 1.3, ease: "power2.inOut" }, ganz);
+      tl.fromTo("#s01-ringlab", { opacity: 0 }, { opacity: 1, duration: 0.25 }, ganz + 0.3);
+      tl.to(["#s01-cover", "#s01-ring", "#s01-ringlab", "#s01-count", "#s01-globe"], { opacity: 0, filter: "blur(8px)", duration: 0.2, ease: "power2.in" }, C.__dur - 0.2);
+      window.__timelines["s01"] = tl;
+    })();
+  </script>
+</template>

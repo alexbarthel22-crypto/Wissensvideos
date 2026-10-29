@@ -1,0 +1,54 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    #s07-panel { position: absolute; left: 110px; top: 450px; width: 860px; height: 620px; border-radius: 22px;
+      background: rgba(20,24,56,.9); border: 3px solid #2e3670; }
+    #s07-title { position: absolute; left: 40px; top: 30px; color: #dfe2f5; font-family: "Space Mono", monospace;
+      font-weight: 700; font-size: 28px; letter-spacing: .14em; }
+    #s07-chart { position: absolute; left: 30px; top: 90px; width: 800px; height: 500px; }
+    #s07-loss { left: 300px; width: 600px; }
+  </style>
+  <div id="root" data-composition-id="s07" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s07-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s07-loss" class="cbox r">
+        <div class="lab">VERLUST AN EINEM TAG</div>
+        <div id="s07-num" class="num" style="font-size:44px;margin-top:8px">0 $</div>
+      </div>
+      <div id="s07-panel">
+        <div id="s07-title">WELTWIRTSCHAFT · 19.11.</div>
+        <svg id="s07-chart" viewBox="0 0 800 500">
+          <g stroke="#2a3170" stroke-width="2">
+            <line x1="0" y1="100" x2="800" y2="100" /><line x1="0" y1="220" x2="800" y2="220" />
+            <line x1="0" y1="340" x2="800" y2="340" /><line x1="0" y1="460" x2="800" y2="460" />
+          </g>
+          <path id="s07-up" d="M0 260 L80 240 L160 250 L240 215 L320 225 L400 190" fill="none" stroke="#39e27a" stroke-width="10" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="460" stroke-dashoffset="460" />
+          <path id="s07-down" d="M400 190 L460 260 L520 240 L590 340 L650 320 L720 420 L790 450" fill="none" stroke="#ff3b55" stroke-width="10" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="560" stroke-dashoffset="560" />
+          <circle id="s07-dot" cx="790" cy="450" r="16" fill="#ff3b55" opacity="0" />
+          <g id="s07-bills" opacity="0">
+            <g transform="translate(560 120) rotate(-14)"><rect width="110" height="56" rx="6" fill="#39e27a" /><circle cx="55" cy="28" r="16" fill="#1d8a4a" /></g>
+            <g transform="translate(680 60) rotate(12)"><rect width="110" height="56" rx="6" fill="#39e27a" /><circle cx="55" cy="28" r="16" fill="#1d8a4a" /></g>
+            <g transform="translate(620 200) rotate(-4)"><rect width="110" height="56" rx="6" fill="#39e27a" /><circle cx="55" cy="28" r="16" fill="#1d8a4a" /></g>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      const tl = gsap.timeline({ paused: true });
+      const verliert = at("L13", "verliert"), hundert = at("L13", "100");
+      tl.fromTo("#s07-panel", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.5, ease: "expo.out" }, 0.05);
+      tl.to("#s07-up", { attr: { "stroke-dashoffset": 0 }, duration: 0.8, ease: "power1.inOut" }, 0.2);
+      tl.to("#s07-down", { attr: { "stroke-dashoffset": 0 }, duration: 1.1, ease: "power2.in" }, verliert - 0.05);
+      tl.to("#s07-dot", { opacity: 1, duration: 0.1 }, verliert + 1.05);
+      tl.fromTo("#s07-bills", { opacity: 0, y: 0 }, { opacity: 1, y: -40, duration: 0.8, ease: "power2.out" }, verliert + 0.4);
+      tl.to("#s07-bills", { opacity: 0, y: -120, duration: 0.6, ease: "power2.in" }, verliert + 1.2);
+      tl.fromTo("#s07-loss", { opacity: 0, y: -14 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, hundert - 0.5);
+      count(tl, "#s07-num", 0, 100000000000, hundert - 0.4, 1.0, "−", " $", "power3.out");
+      tl.to("#s07-num", { color: "#ff3b55", duration: 0.2 }, hundert + 0.6);
+      tl.to(["#s07-panel", "#s07-loss"], { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s07"] = tl;
+    })();
+  </script>
+</template>

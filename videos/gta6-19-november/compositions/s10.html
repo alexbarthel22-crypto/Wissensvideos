@@ -1,0 +1,98 @@
+<template>
+  <style>
+        #root { position: absolute; inset: 0; }
+    .stage { position: absolute; inset: 0; overflow: hidden; }
+    .abs { position: absolute; }
+    svg { overflow: visible; }
+    /* Zähler-Box wie in der Referenz: Rahmen in Akzentfarbe, Label in Mono-Versalien, große Zahl */
+    .cbox { position: absolute; left: 290px; width: 500px; top: 268px; height: 126px; border: 3px solid #ff4fb0;
+      border-radius: 14px; background: rgba(13,16,38,.88); text-align: center; box-shadow: 0 0 28px rgba(255,79,176,.35); }
+    .cbox .lab { margin-top: 16px; font-family: "Space Mono", monospace; font-weight: 700; font-size: 28px;
+      letter-spacing: .16em; color: #dfe2f5; }
+    .cbox .num { margin-top: 2px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 56px; color: #fff;
+      letter-spacing: .01em; }
+    .cbox.y { border-color: #ffd43b; box-shadow: 0 0 28px rgba(255,212,59,.3); }
+    .cbox.r { border-color: #ff3b55; box-shadow: 0 0 28px rgba(255,59,85,.35); }
+    .cbox.b { border-color: #4da3ff; box-shadow: 0 0 28px rgba(77,163,255,.3); }
+    .cbox.g { border-color: #39e27a; box-shadow: 0 0 28px rgba(57,226,122,.3); }
+    .mono { font-family: "Space Mono", monospace; font-weight: 700; letter-spacing: .12em; }
+    .heavy { font-family: "Inter", sans-serif; font-weight: 900; }
+
+    #s10-clock { position: absolute; left: 240px; top: 440px; width: 600px; height: 250px; border-radius: 26px;
+      background: #0b0e22; border: 5px solid #2e3670; text-align: center; }
+    #s10-time { margin-top: 18px; color: #ffd43b; font-family: "Space Mono", monospace; font-weight: 700; font-size: 170px;
+      line-height: 210px; letter-spacing: .02em; text-shadow: 0 0 30px rgba(255,212,59,.45); }
+    #s10-crowd { position: absolute; left: 90px; top: 730px; width: 900px; height: 380px; }
+    #s10-btn { position: absolute; left: 190px; top: 560px; width: 700px; height: 190px; border-radius: 30px;
+      background: #ff4fb0; box-shadow: 0 14px 0 #a3226b, 0 0 60px rgba(255,79,176,.55); color: #fff; text-align: center;
+      line-height: 190px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 76px; letter-spacing: -.01em; }
+    #s10-hand { position: absolute; left: 600px; top: 660px; width: 220px; height: 260px; }
+  </style>
+  <div id="root" data-composition-id="s10" data-start="0" data-duration="5.182" data-width="1080" data-height="1920">
+    <div id="s10-stage" class="clip stage" data-start="0" data-duration="5.182" data-track-index="0">
+      <div id="s10-online" class="cbox">
+        <div class="lab">SPIELER ONLINE</div>
+        <div class="num" style="color:#ff4fb0">4.100.000.000</div>
+      </div>
+      <div id="s10-clock"><div id="s10-time">23:59</div></div>
+      <svg id="s10-crowd" viewBox="0 0 900 380"></svg>
+      <div id="s10-btn">NOCH EINE RUNDE</div>
+      <svg id="s10-hand" viewBox="0 0 220 260">
+        <path d="M60 40 C60 20 90 20 90 40 L90 120 L150 128 C190 134 200 160 196 200 L188 250 L70 250 L40 170 C30 150 50 136 60 150Z" fill="#f2c9a5" />
+      </svg>
+    </div>
+  </div>
+  <script>
+    (() => {
+      
+      const C = {"__dur": 5.182, "L19": [0.2, 3.018], "L19.words": [["kurz", 0.2, 0.379], ["vor", 0.379, 0.552], ["mitternacht", 0.552, 1.084], ["schauen", 1.084, 1.282], ["vier", 1.282, 1.461], ["milliarden", 1.461, 1.986], ["menschen", 1.986, 2.345], ["auf", 2.345, 2.518], ["die", 2.518, 2.691], ["uhr", 2.691, 2.864], ["", 2.864, 3.019]], "L20": [3.298, 4.932], "L20.words": [["und", 3.298, 3.459], ["drücken", 3.459, 3.787], ["auf", 3.787, 3.948], ["noch", 4.188, 4.344], ["eine", 4.344, 4.635], ["runde", 4.635, 4.932]]};
+      const line = (id) => C[id];
+      const at = (id, word, which = 0) => {
+        const ws = C[id + ".words"];
+        if (typeof word === "number") return ws[word][1 + which];
+        const key = String(word).toLowerCase().replace(/[^\wäöüß]/g, "");
+        const hit = ws.find((w) => w[0].startsWith(key));
+        if (!hit) throw new Error("cue not found: " + id + " " + word);
+        return hit[1 + which];
+      };
+      // Zähler: schreibt Zahlen im deutschen Format (4.100.000.000) als Funktion der Timeline-Zeit
+      const fmt = (n) => Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      const count = (tl, sel, from, to, t, d, pre = "", post = "", ease = "power2.out") => {
+        const el = document.querySelector(sel);
+        const o = { v: from };
+        el.textContent = pre + fmt(from) + post;
+        tl.to(o, { v: to, duration: d, ease, onUpdate: () => { el.textContent = pre + fmt(o.v) + post; } }, t);
+      };
+      // deterministischer Zufall
+      const rng = (seed) => () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let x = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+        x = (x + Math.imul(x ^ (x >>> 7), 61 | x)) ^ x; return ((x ^ (x >>> 14)) >>> 0) / 4294967296; };
+
+      const tl = gsap.timeline({ paused: true });
+      const ns = "http://www.w3.org/2000/svg", el = (n, a, p) => { const e = document.createElementNS(ns, n); for (const k in a) e.setAttribute(k, a[k]); p.appendChild(e); return e; };
+      // Reihen von Köpfen, die alle zur Uhr schauen (Bildschirm-Licht im Gesicht)
+      const cr = document.querySelector("#s10-crowd"), heads = [];
+      for (let r = 0; r < 4; r++) for (let i = 0; i < 12; i++) {
+        const x = 40 + i * 74 + (r % 2) * 37, y = 50 + r * 86, s = 0.8 + r * 0.12;
+        const g = el("g", { opacity: 0 }, cr);
+        el("rect", { x: x - 26 * s, y: y + 22 * s, width: 52 * s, height: 60 * s, rx: 20 * s, fill: "#2a3170" }, g);
+        el("circle", { cx: x, cy: y, r: 22 * s, fill: "#3a4490" }, g);
+        el("circle", { cx: x - 7 * s, cy: y - 2 * s, r: 3.5 * s, fill: "#ff9fd2" }, g);
+        el("circle", { cx: x + 7 * s, cy: y - 2 * s, r: 3.5 * s, fill: "#ff9fd2" }, g);
+        heads.push(g);
+      }
+      const uhr = at("L19", "Uhr"), l20 = line("L20")[0], noch = at("L20", "Noch"), runde = at("L20", "Runde");
+      tl.fromTo("#s10-online", { opacity: 0, y: -14 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0.05);
+      tl.fromTo("#s10-clock", { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.45, ease: "expo.out" }, 0.05);
+      tl.fromTo("#s10-time", { opacity: 1 }, { opacity: 0.35, duration: 0.25, repeat: 5, yoyo: true, ease: "none" }, 0.6);
+      tl.to(heads, { opacity: 1, duration: 0.12, stagger: { each: 0.025, from: "center" } }, at("L19", "vier") - 0.1);
+      tl.to("#s10-clock", { scale: 1.06, duration: 0.25, ease: "power2.out" }, uhr);
+      // "Noch eine Runde": Knopf, Finger drückt, Uhr springt auf 00:00
+      tl.to(["#s10-clock", "#s10-crowd"], { opacity: 0, filter: "blur(8px)", duration: 0.2, ease: "power2.in" }, l20 - 0.1);
+      tl.fromTo("#s10-btn", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(1.8)" }, noch - 0.15);
+      tl.fromTo("#s10-hand", { opacity: 0, x: 140, y: 160 }, { opacity: 1, x: 0, y: 0, duration: 0.4, ease: "power3.out" }, noch);
+      tl.to("#s10-hand", { y: 22, duration: 0.08, ease: "power2.in" }, runde);
+      tl.to("#s10-btn", { y: 12, boxShadow: "0 2px 0 #a3226b, 0 0 90px rgba(255,79,176,.8)", duration: 0.08, ease: "power2.in" }, runde);
+      window.__timelines["s10"] = tl;
+    })();
+  </script>
+</template>

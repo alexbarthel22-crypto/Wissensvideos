@@ -1,0 +1,255 @@
+{
+  "title": "Was wäre, wenn die Hälfte aller Menschen am 19. November GTA 6 spielt?",
+  "voice": "thorsten",
+  "notes": "Token-Syntax: 'Anzeige|Aussprache'. Farbe als Präfix: *y: gelb, *r: rot, *p: pink, *g: grün, *b: blau. '/' trennt Untertitel-Gruppen. Leerzeichen innerhalb eines Tokens mit '_' schreiben.",
+  "scenes": [
+    {
+      "id": "s01",
+      "tag": "WAS WÄRE WENN",
+      "lines": [
+        {
+          "id": "L1",
+          "text": "Was passiert, / wenn am *y:19.|neunzehnten *y:November / die *p:Hälfte aller *p:Menschen / gleichzeitig *p:GTA_6|Ge-Te-A-sechs spielt?"
+        },
+        {
+          "id": "L2",
+          "text": "Den *y:ganzen *y:Tag. / Ohne Pause."
+        }
+      ],
+      "sfx": [
+        {
+          "name": "pop",
+          "at": "L1:19.",
+          "volume": 0.45
+        },
+        {
+          "name": "pop",
+          "at": "L1:GTA",
+          "volume": 0.5
+        }
+      ]
+    },
+    {
+      "id": "s02",
+      "tag": "19. NOV · 00:00",
+      "lines": [
+        {
+          "id": "L3",
+          "text": "*y:Mitternacht. / *p:Vier *p:Milliarden Menschen / drücken gleichzeitig / auf *g:Start."
+        }
+      ],
+      "sfx": [
+        {
+          "name": "click",
+          "at": "L3:Start",
+          "volume": 0.6
+        }
+      ]
+    },
+    {
+      "id": "s03",
+      "tag": "19. NOV · 00:01",
+      "check": "SERVER",
+      "lines": [
+        {
+          "id": "L4",
+          "text": "Eine Minute später / brechen die *r:Server / *r:zusammen."
+        },
+        {
+          "id": "L5",
+          "text": "*y:Warteschlange: / Platz *y:zwei *y:Milliarden."
+        }
+      ],
+      "sfx": [
+        {
+          "name": "glitch-1",
+          "at": "L4:Server",
+          "volume": 0.5
+        },
+        {
+          "name": "error",
+          "at": "L4:zusammen",
+          "volume": 0.35
+        }
+      ]
+    },
+    {
+      "id": "s04",
+      "tag": "19. NOV · 03:00",
+      "check": "INTERNET",
+      "lines": [
+        {
+          "id": "L6",
+          "text": "Das *b:Internet / wird *r:zäh."
+        },
+        {
+          "id": "L7",
+          "text": "Videos laden / nicht mehr, / Videocalls|Video-Kolls *b:frieren *b:ein."
+        }
+      ],
+      "sfx": [
+        {
+          "name": "glitch-3",
+          "at": "L7:frieren",
+          "volume": 0.45
+        }
+      ]
+    },
+    {
+      "id": "s05",
+      "tag": "19. NOV · 07:00",
+      "check": "STROMNETZ",
+      "lines": [
+        {
+          "id": "L8",
+          "text": "Um *y:sieben *y:Uhr / ziehen vier Milliarden / Konsolen *y:Strom."
+        },
+        {
+          "id": "L9",
+          "text": "Rund *y:800|achthundert *y:Gigawatt. / So viel wie / *r:800|achthundert *r:Atomkraftwerke."
+        },
+        {
+          "id": "L10",
+          "text": "In vielen Ländern / *r:flackert das *r:Licht."
+        }
+      ],
+      "sfx": [
+        {
+          "name": "impact-bass-1",
+          "at": "L8:Strom",
+          "volume": 0.6
+        },
+        {
+          "name": "glitch-2",
+          "at": "L10:flackert",
+          "volume": 0.35
+        }
+      ]
+    },
+    {
+      "id": "s06",
+      "tag": "19. NOV · 08:00",
+      "check": "ARBEIT",
+      "lines": [
+        {
+          "id": "L11",
+          "text": "Um acht bleibt / *y:jeder *y:zweite / Schreibtisch *r:leer."
+        },
+        {
+          "id": "L12",
+          "text": "Büros, Schulen, / Baustellen."
+        }
+      ],
+      "sfx": [
+        {
+          "name": "pop",
+          "at": "L11:zweite",
+          "volume": 0.4
+        }
+      ]
+    },
+    {
+      "id": "s07",
+      "tag": "19. NOV · 12:00",
+      "check": "WIRTSCHAFT",
+      "lines": [
+        {
+          "id": "L13",
+          "text": "Die *b:Weltwirtschaft / verliert an diesem Tag / über *r:100|hundert *r:Milliarden *r:Dollar."
+        }
+      ],
+      "sfx": [
+        {
+          "name": "impact-bass-2",
+          "at": "L13:100-0.2",
+          "volume": 0.55
+        }
+      ]
+    },
+    {
+      "id": "s08",
+      "tag": "19. NOV · 16:00",
+      "lines": [
+        {
+          "id": "L14",
+          "text": "*y:Pizzadienste erleben / den größten Tag / ihrer *y:Geschichte."
+        },
+        {
+          "id": "L15",
+          "text": "*g:Energy-Drinks|Änner-dschi-Drinks / sind *r:ausverkauft."
+        }
+      ],
+      "sfx": [
+        {
+          "name": "pop",
+          "at": "L15:ausverkauft",
+          "volume": 0.55
+        }
+      ]
+    },
+    {
+      "id": "s09",
+      "tag": "19. NOV · 20:00",
+      "lines": [
+        {
+          "id": "L16",
+          "text": "Und draußen? / *b:Leere *b:Straßen."
+        },
+        {
+          "id": "L17",
+          "text": "Kaum Verkehr. / Kaum *g:Unfälle."
+        },
+        {
+          "id": "L18",
+          "text": "In *p:Vice_City|Weiss-Sitti / herrscht *r:Chaos. / In echten Städten: / *b:Stille."
+        }
+      ],
+      "sfx": [
+        {
+          "name": "impact-bass-1",
+          "at": "L18:Chaos",
+          "volume": 0.5
+        }
+      ]
+    },
+    {
+      "id": "s10",
+      "tag": "19. NOV · 23:59",
+      "lines": [
+        {
+          "id": "L19",
+          "text": "Kurz vor Mitternacht / schauen vier Milliarden / Menschen auf die *y:Uhr …"
+        },
+        {
+          "id": "L20",
+          "text": "und drücken auf: / *p:Noch *p:eine *p:Runde."
+        }
+      ],
+      "sfx": [
+        {
+          "name": "click",
+          "at": "L20:Runde",
+          "volume": 0.6
+        }
+      ]
+    },
+    {
+      "id": "s11",
+      "tag": "20. NOV · 00:00",
+      "hold": 2.6,
+      "lines": [
+        {
+          "id": "L21",
+          "text": "Würdest du *y:mitspielen?"
+        }
+      ],
+      "sfx": [
+        {
+          "name": "notification",
+          "at": "L21:mitspielen",
+          "volume": 0.4
+        }
+      ]
+    }
+  ]
+}

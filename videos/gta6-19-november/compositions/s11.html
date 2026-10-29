@@ -1,0 +1,76 @@
+<template>
+  <style>
+        #root { position: absolute; inset: 0; }
+    .stage { position: absolute; inset: 0; overflow: hidden; }
+    .abs { position: absolute; }
+    svg { overflow: visible; }
+    /* Zähler-Box wie in der Referenz: Rahmen in Akzentfarbe, Label in Mono-Versalien, große Zahl */
+    .cbox { position: absolute; left: 290px; width: 500px; top: 268px; height: 126px; border: 3px solid #ff4fb0;
+      border-radius: 14px; background: rgba(13,16,38,.88); text-align: center; box-shadow: 0 0 28px rgba(255,79,176,.35); }
+    .cbox .lab { margin-top: 16px; font-family: "Space Mono", monospace; font-weight: 700; font-size: 28px;
+      letter-spacing: .16em; color: #dfe2f5; }
+    .cbox .num { margin-top: 2px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 56px; color: #fff;
+      letter-spacing: .01em; }
+    .cbox.y { border-color: #ffd43b; box-shadow: 0 0 28px rgba(255,212,59,.3); }
+    .cbox.r { border-color: #ff3b55; box-shadow: 0 0 28px rgba(255,59,85,.35); }
+    .cbox.b { border-color: #4da3ff; box-shadow: 0 0 28px rgba(77,163,255,.3); }
+    .cbox.g { border-color: #39e27a; box-shadow: 0 0 28px rgba(57,226,122,.3); }
+    .mono { font-family: "Space Mono", monospace; font-weight: 700; letter-spacing: .12em; }
+    .heavy { font-family: "Inter", sans-serif; font-weight: 900; }
+
+    #s11-time { position: absolute; left: 0; width: 100%; top: 420px; text-align: center; color: #ff4fb0;
+      font-family: "Space Mono", monospace; font-weight: 700; font-size: 150px; text-shadow: 0 0 30px rgba(255,79,176,.5); }
+    #s11-sub { position: absolute; left: 0; width: 100%; top: 620px; text-align: center; color: #dfe2f5;
+      font-family: "Space Mono", monospace; font-weight: 700; font-size: 30px; letter-spacing: .16em; }
+    .s11-b { position: absolute; top: 760px; width: 380px; height: 170px; border-radius: 28px; text-align: center;
+      line-height: 170px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 84px; color: #fff; }
+    #s11-ja { left: 110px; background: #39e27a; box-shadow: 0 12px 0 #1d8a4a; color: #0b2a17; }
+    #s11-nein { left: 590px; background: #2c3470; box-shadow: 0 12px 0 #1a1f45; color: #c9cde6; }
+    #s11-kom { position: absolute; left: 0; width: 100%; top: 990px; text-align: center; color: #ffd43b;
+      font-family: "Space Mono", monospace; font-weight: 700; font-size: 30px; letter-spacing: .12em; }
+  </style>
+  <div id="root" data-composition-id="s11" data-start="0" data-duration="3.844" data-width="1080" data-height="1920">
+    <div id="s11-stage" class="clip stage" data-start="0" data-duration="3.844" data-track-index="0">
+      <div id="s11-time">00:00</div>
+      <div id="s11-sub">DER 19. NOVEMBER IST VORBEI</div>
+      <div id="s11-ja" class="s11-b">JA</div>
+      <div id="s11-nein" class="s11-b">NEIN</div>
+      <div id="s11-kom">↓ SCHREIB'S IN DIE KOMMENTARE</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      
+      const C = {"__dur": 3.844, "L21": [0.2, 1.244], "L21.words": [["würdest", 0.2, 0.552], ["du", 0.552, 0.719], ["mitspielen", 0.719, 1.244]]};
+      const line = (id) => C[id];
+      const at = (id, word, which = 0) => {
+        const ws = C[id + ".words"];
+        if (typeof word === "number") return ws[word][1 + which];
+        const key = String(word).toLowerCase().replace(/[^\wäöüß]/g, "");
+        const hit = ws.find((w) => w[0].startsWith(key));
+        if (!hit) throw new Error("cue not found: " + id + " " + word);
+        return hit[1 + which];
+      };
+      // Zähler: schreibt Zahlen im deutschen Format (4.100.000.000) als Funktion der Timeline-Zeit
+      const fmt = (n) => Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      const count = (tl, sel, from, to, t, d, pre = "", post = "", ease = "power2.out") => {
+        const el = document.querySelector(sel);
+        const o = { v: from };
+        el.textContent = pre + fmt(from) + post;
+        tl.to(o, { v: to, duration: d, ease, onUpdate: () => { el.textContent = pre + fmt(o.v) + post; } }, t);
+      };
+      // deterministischer Zufall
+      const rng = (seed) => () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let x = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+        x = (x + Math.imul(x ^ (x >>> 7), 61 | x)) ^ x; return ((x ^ (x >>> 14)) >>> 0) / 4294967296; };
+
+      const tl = gsap.timeline({ paused: true });
+      const mit = at("L21", "mitspielen");
+      tl.fromTo("#s11-time", { opacity: 0, scale: 1.2 }, { opacity: 1, scale: 1, duration: 0.35, ease: "expo.out" }, 0.05);
+      tl.fromTo("#s11-sub", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0.35);
+      tl.fromTo("#s11-ja", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.4, ease: "back.out(1.7)" }, mit - 0.1);
+      tl.fromTo("#s11-nein", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.4, ease: "back.out(1.7)" }, mit);
+      tl.fromTo("#s11-kom", { opacity: 0 }, { opacity: 1, duration: 0.3 }, mit + 0.7);
+      window.__timelines["s11"] = tl;
+    })();
+  </script>
+</template>

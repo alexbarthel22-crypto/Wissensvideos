@@ -1,0 +1,93 @@
+<template>
+  <style>
+        #root { position: absolute; inset: 0; }
+    .stage { position: absolute; inset: 0; overflow: hidden; }
+    .abs { position: absolute; }
+    svg { overflow: visible; }
+    /* Zähler-Box wie in der Referenz: Rahmen in Akzentfarbe, Label in Mono-Versalien, große Zahl */
+    .cbox { position: absolute; left: 290px; width: 500px; top: 268px; height: 126px; border: 3px solid #ff4fb0;
+      border-radius: 14px; background: rgba(13,16,38,.88); text-align: center; box-shadow: 0 0 28px rgba(255,79,176,.35); }
+    .cbox .lab { margin-top: 16px; font-family: "Space Mono", monospace; font-weight: 700; font-size: 28px;
+      letter-spacing: .16em; color: #dfe2f5; }
+    .cbox .num { margin-top: 2px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 56px; color: #fff;
+      letter-spacing: .01em; }
+    .cbox.y { border-color: #ffd43b; box-shadow: 0 0 28px rgba(255,212,59,.3); }
+    .cbox.r { border-color: #ff3b55; box-shadow: 0 0 28px rgba(255,59,85,.35); }
+    .cbox.b { border-color: #4da3ff; box-shadow: 0 0 28px rgba(77,163,255,.3); }
+    .cbox.g { border-color: #39e27a; box-shadow: 0 0 28px rgba(57,226,122,.3); }
+    .mono { font-family: "Space Mono", monospace; font-weight: 700; letter-spacing: .12em; }
+    .heavy { font-family: "Inter", sans-serif; font-weight: 900; }
+
+    #s07-panel { position: absolute; left: 110px; top: 450px; width: 860px; height: 620px; border-radius: 22px;
+      background: rgba(20,24,56,.9); border: 3px solid #2e3670; }
+    #s07-title { position: absolute; left: 40px; top: 30px; color: #dfe2f5; font-family: "Space Mono", monospace;
+      font-weight: 700; font-size: 28px; letter-spacing: .14em; }
+    #s07-chart { position: absolute; left: 30px; top: 90px; width: 800px; height: 500px; }
+    #s07-loss { left: 300px; width: 600px; }
+  </style>
+  <div id="root" data-composition-id="s07" data-start="0" data-duration="3.843" data-width="1080" data-height="1920">
+    <div id="s07-stage" class="clip stage" data-start="0" data-duration="3.843" data-track-index="0">
+      <div id="s07-loss" class="cbox r">
+        <div class="lab">VERLUST AN EINEM TAG</div>
+        <div id="s07-num" class="num" style="font-size:44px;margin-top:8px">0 $</div>
+      </div>
+      <div id="s07-panel">
+        <div id="s07-title">WELTWIRTSCHAFT · 19.11.</div>
+        <svg id="s07-chart" viewBox="0 0 800 500">
+          <g stroke="#2a3170" stroke-width="2">
+            <line x1="0" y1="100" x2="800" y2="100" /><line x1="0" y1="220" x2="800" y2="220" />
+            <line x1="0" y1="340" x2="800" y2="340" /><line x1="0" y1="460" x2="800" y2="460" />
+          </g>
+          <path id="s07-up" d="M0 260 L80 240 L160 250 L240 215 L320 225 L400 190" fill="none" stroke="#39e27a" stroke-width="10" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="460" stroke-dashoffset="460" />
+          <path id="s07-down" d="M400 190 L460 260 L520 240 L590 340 L650 320 L720 420 L790 450" fill="none" stroke="#ff3b55" stroke-width="10" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="560" stroke-dashoffset="560" />
+          <circle id="s07-dot" cx="790" cy="450" r="16" fill="#ff3b55" opacity="0" />
+          <g id="s07-bills" opacity="0">
+            <g transform="translate(560 120) rotate(-14)"><rect width="110" height="56" rx="6" fill="#39e27a" /><circle cx="55" cy="28" r="16" fill="#1d8a4a" /></g>
+            <g transform="translate(680 60) rotate(12)"><rect width="110" height="56" rx="6" fill="#39e27a" /><circle cx="55" cy="28" r="16" fill="#1d8a4a" /></g>
+            <g transform="translate(620 200) rotate(-4)"><rect width="110" height="56" rx="6" fill="#39e27a" /><circle cx="55" cy="28" r="16" fill="#1d8a4a" /></g>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      
+      const C = {"__dur": 3.843, "L13": [0.2, 3.593], "L13.words": [["die", 0.2, 0.377], ["weltwirtschaft", 0.377, 0.938], ["verliert", 0.938, 1.304], ["an", 1.304, 1.474], ["diesem", 1.474, 1.827], ["tag", 1.827, 2.004], ["über", 2.004, 2.345], ["100", 2.345, 2.704], ["milliarden", 2.704, 3.24], ["dollar", 3.24, 3.594]]};
+      const line = (id) => C[id];
+      const at = (id, word, which = 0) => {
+        const ws = C[id + ".words"];
+        if (typeof word === "number") return ws[word][1 + which];
+        const key = String(word).toLowerCase().replace(/[^\wäöüß]/g, "");
+        const hit = ws.find((w) => w[0].startsWith(key));
+        if (!hit) throw new Error("cue not found: " + id + " " + word);
+        return hit[1 + which];
+      };
+      // Zähler: schreibt Zahlen im deutschen Format (4.100.000.000) als Funktion der Timeline-Zeit
+      const fmt = (n) => Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      const count = (tl, sel, from, to, t, d, pre = "", post = "", ease = "power2.out") => {
+        const el = document.querySelector(sel);
+        const o = { v: from };
+        el.textContent = pre + fmt(from) + post;
+        tl.to(o, { v: to, duration: d, ease, onUpdate: () => { el.textContent = pre + fmt(o.v) + post; } }, t);
+      };
+      // deterministischer Zufall
+      const rng = (seed) => () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let x = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+        x = (x + Math.imul(x ^ (x >>> 7), 61 | x)) ^ x; return ((x ^ (x >>> 14)) >>> 0) / 4294967296; };
+
+      const tl = gsap.timeline({ paused: true });
+      const verliert = at("L13", "verliert"), hundert = at("L13", "100");
+      tl.fromTo("#s07-panel", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.5, ease: "expo.out" }, 0.05);
+      tl.to("#s07-up", { attr: { "stroke-dashoffset": 0 }, duration: 0.8, ease: "power1.inOut" }, 0.2);
+      tl.to("#s07-down", { attr: { "stroke-dashoffset": 0 }, duration: 1.1, ease: "power2.in" }, verliert - 0.05);
+      tl.to("#s07-dot", { opacity: 1, duration: 0.1 }, verliert + 1.05);
+      tl.fromTo("#s07-bills", { opacity: 0, y: 0 }, { opacity: 1, y: -40, duration: 0.8, ease: "power2.out" }, verliert + 0.4);
+      tl.to("#s07-bills", { opacity: 0, y: -120, duration: 0.6, ease: "power2.in" }, verliert + 1.2);
+      tl.fromTo("#s07-loss", { opacity: 0, y: -14 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, hundert - 0.5);
+      count(tl, "#s07-num", 0, 100000000000, hundert - 0.4, 1.0, "−", " $", "power3.out");
+      tl.to("#s07-num", { color: "#ff3b55", duration: 0.2 }, hundert + 0.6);
+      tl.to(["#s07-panel", "#s07-loss"], { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s07"] = tl;
+    })();
+  </script>
+</template>

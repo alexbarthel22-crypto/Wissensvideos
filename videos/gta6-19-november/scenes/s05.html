@@ -1,0 +1,93 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    #s05-sky { position: absolute; inset: 0; background: linear-gradient(180deg, #1a1f4a 0%, #3b2a5c 38%, #b5577a 58.5%, #1a1f4a 59.6%); opacity: 0; }
+    #s05-city { position: absolute; left: 0; top: 680px; width: 1080px; height: 460px; }
+    #s05-gauge { position: absolute; left: 240px; top: 290px; width: 600px; height: 340px; }
+    #s05-glab { position: absolute; left: 0; width: 100%; top: 640px; text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 64px; }
+    #s05-gw { position: absolute; left: 290px; top: 268px; }
+    #s05-plants { position: absolute; left: 90px; top: 440px; width: 900px; height: 640px; }
+    #s05-plab { position: absolute; left: 0; width: 100%; top: 1060px; text-align: center; color: #ff7a8c;
+      font-family: "Space Mono", monospace; font-weight: 700; font-size: 28px; letter-spacing: .12em; }
+    #s05-dim { position: absolute; inset: 0; background: #05060f; opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="s05" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s05-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s05-sky"></div>
+      <svg id="s05-city" viewBox="0 0 1080 460"><g id="s05-bld"></g><g id="s05-win"></g></svg>
+      <svg id="s05-gauge" viewBox="0 0 600 340">
+        <path d="M60 300 A240 240 0 0 1 540 300" fill="none" stroke="#232a5e" stroke-width="44" />
+        <path d="M60 300 A240 240 0 0 1 380 73" fill="none" stroke="#39e27a" stroke-width="44" />
+        <path d="M380 73 A240 240 0 0 1 480 150" fill="none" stroke="#ffd43b" stroke-width="44" />
+        <path d="M480 150 A240 240 0 0 1 540 300" fill="none" stroke="#ff3b55" stroke-width="44" />
+        <g id="s05-needle"><rect x="296" y="90" width="8" height="214" rx="4" fill="#fff" /></g>
+        <circle cx="300" cy="300" r="22" fill="#fff" />
+        <text x="300" y="30" text-anchor="middle" fill="#dfe2f5" font-family="Space Mono" font-weight="700" font-size="28" letter-spacing="4">NETZLAST</text>
+      </svg>
+      <div id="s05-glab">72 %</div>
+      <div id="s05-gw" class="cbox y">
+        <div class="lab">ZUSÄTZLICHER STROM</div>
+        <div id="s05-gwn" class="num">0 GW</div>
+      </div>
+      <svg id="s05-plants" viewBox="0 0 900 640"></svg>
+      <div id="s05-plab">1 SYMBOL = 20 ATOMKRAFTWERKE</div>
+      <div id="s05-dim"></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      const tl = gsap.timeline({ paused: true });
+      const ns = "http://www.w3.org/2000/svg", el = (n, a, p) => { const e = document.createElementNS(ns, n); for (const k in a) e.setAttribute(k, a[k]); p.appendChild(e); return e; };
+      // Skyline mit Fenstern
+      const rnd = rng(700), bld = document.querySelector("#s05-bld"), win = document.querySelector("#s05-win"), wins = [];
+      let x = 0;
+      while (x < 1080) {
+        const w = 90 + rnd() * 70, h = 180 + rnd() * 250;
+        el("rect", { x, y: 460 - h, width: w - 8, height: h, fill: "#151a3d" }, bld);
+        for (let yy = 460 - h + 22; yy < 440; yy += 34) for (let xx = x + 14; xx < x + w - 30; xx += 28)
+          if (rnd() > 0.35) wins.push(el("rect", { x: xx, y: yy, width: 14, height: 18, fill: "#ffd86b", opacity: 0.9 }, win));
+        x += w;
+      }
+      // Kühltürme: 40 Symbole x 20 = 800
+      const pl = document.querySelector("#s05-plants"), towers = [];
+      for (let i = 0; i < 40; i++) {
+        const cx = 60 + (i % 8) * 112, cy = 40 + Math.floor(i / 8) * 120;
+        const gg = el("g", { opacity: 0 }, pl);
+        el("path", { d: `M${cx - 40} ${cy + 92} C${cx - 20} ${cy + 60} ${cx - 16} ${cy + 46} ${cx - 22} ${cy + 26} L${cx + 22} ${cy + 26} C${cx + 16} ${cy + 46} ${cx + 20} ${cy + 60} ${cx + 40} ${cy + 92}Z`, fill: "#c9cde6" }, gg);
+        el("rect", { x: cx - 30, y: cy + 70, width: 60, height: 6, fill: "#ff3b55", opacity: 0.8 }, gg);
+        el("circle", { cx: cx - 8, cy: cy + 12, r: 14, fill: "#ffffff", opacity: 0.75 }, gg);
+        el("circle", { cx: cx + 10, cy: cy + 2, r: 18, fill: "#ffffff", opacity: 0.6 }, gg);
+        el("circle", { cx: cx + 24, cy: cy - 14, r: 12, fill: "#ffffff", opacity: 0.45 }, gg);
+        towers.push(gg);
+      }
+      const strom = at("L8", "Strom"), gw = at("L9", "800"), akw = at("L9", "Atomkraftwerke", 0), flack = at("L10", "flackert");
+      const l9 = line("L9")[0];
+      tl.fromTo("#s05-sky", { opacity: 0 }, { opacity: 1, duration: 0.6 }, 0);
+      tl.fromTo("#s05-city", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.6, ease: "expo.out" }, 0.05);
+      tl.fromTo("#s05-gauge", { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.45, ease: "expo.out" }, 0.3);
+      tl.fromTo("#s05-glab", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0.4);
+      tl.fromTo("#s05-needle", { rotation: -40, svgOrigin: "300 300" }, { rotation: -40, svgOrigin: "300 300", duration: 0.01 }, 0);
+      // "Strom": Nadel schlägt in den roten Bereich
+      tl.to("#s05-needle", { rotation: 82, svgOrigin: "300 300", duration: 0.7, ease: "back.out(1.4)" }, strom - 0.1);
+      const g = { v: 72 }, glab = document.querySelector("#s05-glab");
+      tl.to(g, { v: 124, duration: 0.7, ease: "power2.out", onUpdate: () => { glab.textContent = Math.round(g.v) + " %"; } }, strom - 0.1);
+      tl.to("#s05-glab", { color: "#ff3b55", duration: 0.2 }, strom + 0.3);
+      tl.to("#s05-needle", { rotation: 78, svgOrigin: "300 300", duration: 0.06, repeat: 9, yoyo: true }, strom + 0.6);
+      // 800 Gigawatt
+      tl.to(["#s05-gauge", "#s05-glab", "#s05-city", "#s05-sky"], { opacity: 0, filter: "blur(8px)", duration: 0.2, ease: "power2.in" }, l9 - 0.1);
+      tl.fromTo("#s05-gw", { opacity: 0, y: -14 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, l9);
+      count(tl, "#s05-gwn", 0, 800, gw - 0.1, 0.7, "", " GW", "power3.out");
+      tl.to(towers, { opacity: 1, duration: 0.1, stagger: (akw - gw - 0.2) / 40 }, gw + 0.5);
+      tl.fromTo("#s05-plab", { opacity: 0 }, { opacity: 1, duration: 0.25 }, akw + 0.2);
+      // "flackert das Licht": Stadt zurück, Fenster gehen aus und an
+      tl.to(["#s05-plants", "#s05-plab", "#s05-gw"], { opacity: 0, duration: 0.2 }, flack - 0.75);
+      tl.to(["#s05-city", "#s05-sky"], { opacity: 1, filter: "blur(0px)", duration: 0.25 }, flack - 0.7);
+      const fl = [0, 0.12, 0.2, 0.34, 0.42, 0.6, 0.7];
+      fl.forEach((d, i) => tl.to("#s05-dim", { opacity: i % 2 ? 0.1 : 0.75, duration: 0.03 }, flack + d));
+      wins.forEach((w, i) => { if (i % 3 === 0) tl.to(w, { opacity: 0.08, duration: 0.03 }, flack + 0.2 + (i % 11) * 0.06); });
+      window.__timelines["s05"] = tl;
+    })();
+  </script>
+</template>

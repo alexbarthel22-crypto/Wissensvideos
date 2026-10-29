@@ -1,0 +1,66 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    #s08-stack { position: absolute; left: 290px; top: 430px; width: 500px; height: 680px; }
+    #s08-shelf { position: absolute; left: 140px; top: 470px; width: 800px; height: 600px; }
+    #s08-sold { position: absolute; left: 230px; top: 680px; width: 620px; height: 170px; border: 8px solid #ff3b55;
+      border-radius: 14px; color: #ff3b55; text-align: center; line-height: 154px; background: rgba(20,8,16,.85);
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 84px; letter-spacing: .02em; }
+  </style>
+  <div id="root" data-composition-id="s08" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s08-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s08-box" class="cbox y">
+        <div class="lab">PIZZA-BESTELLUNGEN</div>
+        <div id="s08-num" class="num">0</div>
+      </div>
+      <svg id="s08-stack" viewBox="0 0 500 680"></svg>
+      <svg id="s08-shelf" viewBox="0 0 800 600">
+        <rect x="0" y="0" width="800" height="600" rx="18" fill="#1a1f45" stroke="#2e3670" stroke-width="5" />
+        <rect x="20" y="180" width="760" height="16" fill="#2e3670" /><rect x="20" y="380" width="760" height="16" fill="#2e3670" />
+        <rect x="20" y="570" width="760" height="16" fill="#2e3670" />
+        <g id="s08-cans"></g>
+      </svg>
+      <div id="s08-sold">AUSVERKAUFT</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      const tl = gsap.timeline({ paused: true });
+      const ns = "http://www.w3.org/2000/svg", el = (n, a, p) => { const e = document.createElementNS(ns, n); for (const k in a) e.setAttribute(k, a[k]); p.appendChild(e); return e; };
+      // Turm aus Pizzakartons
+      const st = document.querySelector("#s08-stack"), boxes = [];
+      for (let i = 0; i < 11; i++) {
+        const y = 620 - i * 56, dx = ((i * 37) % 5 - 2) * 6;
+        const g = el("g", { opacity: 0 }, st);
+        el("rect", { x: 80 + dx, y, width: 340, height: 50, rx: 6, fill: "#f1e3c6", stroke: "#c9b48c", "stroke-width": 3 }, g);
+        el("rect", { x: 210 + dx, y: y + 14, width: 80, height: 22, rx: 4, fill: "#ff3b55" }, g);
+        boxes.push(g);
+      }
+      // Dosen im Regal
+      const cans = document.querySelector("#s08-cans"), canEls = [];
+      const cols = ["#39e27a", "#4da3ff", "#ff4fb0", "#ffd43b"];
+      for (let r = 0; r < 3; r++) for (let i = 0; i < 9; i++) {
+        const x = 46 + i * 82, y = 60 + r * 200;
+        const g = el("g", {}, cans);
+        el("rect", { x, y, width: 56, height: 118, rx: 10, fill: cols[(i + r) % 4] }, g);
+        el("rect", { x: x + 8, y: y + 40, width: 40, height: 30, rx: 4, fill: "#0b0e22", opacity: 0.6 }, g);
+        canEls.push(g);
+      }
+      const l14 = line("L14"), gesch = at("L14", "Geschichte"), l15 = line("L15")[0], aus = at("L15", "ausverkauft");
+      tl.fromTo("#s08-box", { opacity: 0, y: -14 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0.05);
+      tl.fromTo("#s08-shelf", { opacity: 0 }, { opacity: 0, duration: 0.01 }, 0);
+      tl.fromTo("#s08-sold", { opacity: 0 }, { opacity: 0, duration: 0.01 }, 0);
+      boxes.forEach((b, i) => tl.fromTo(b, { opacity: 0, y: -140 }, { opacity: 1, y: 0, duration: 0.28, ease: "bounce.out" }, 0.15 + i * ((gesch - 0.2) / boxes.length)));
+      count(tl, "#s08-num", 0, 940000000, 0.15, l14[1] - 0.1, "", "", "power1.in");
+      tl.to("#s08-num", { color: "#ffd43b", duration: 0.2 }, gesch);
+      // Energy-Drinks: Regal leert sich
+      tl.to(["#s08-stack", "#s08-box"], { opacity: 0, filter: "blur(8px)", duration: 0.2, ease: "power2.in" }, l15 - 0.15);
+      tl.to("#s08-shelf", { opacity: 1, duration: 0.25 }, l15 - 0.05);
+      tl.to(canEls, { opacity: 0, y: 30, duration: 0.12, stagger: { each: 0.025, from: "random" } }, l15 + 0.3);
+      tl.fromTo("#s08-sold", { opacity: 0, scale: 1.6, rotation: -14 }, { opacity: 1, scale: 1, rotation: -8, duration: 0.28, ease: "expo.out" }, aus);
+      tl.to(["#s08-shelf", "#s08-sold"], { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s08"] = tl;
+    })();
+  </script>
+</template>
