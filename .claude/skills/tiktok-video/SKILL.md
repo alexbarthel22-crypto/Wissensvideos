@@ -68,3 +68,13 @@ Nach Skriptänderungen immer Schritt 4 → 6 neu ausführen (Timings ändern sic
 - Wortzeiten sind geschätzt (Pausen-Erkennung + Silben) – Karaoke kann um ~0,1 s abweichen. Whisper/Vosk-Modelle sind im Container nicht ladbar.
 - CSS10 kennt kein „…“ (wird verworfen) und spricht Anglizismen deutsch aus – Aussprache im Skript lautschriftlich schreiben.
 - Das „TikTok @handle“-Wasserzeichen und die TikTok-Endkarte in den Referenzen stammen vom TikTok-Download, **nicht** ins Video einbauen.
+
+## Effizient arbeiten (wenig Tokens, gleiche Qualität)
+
+- Den HyperFrames-Skill **nicht** jedes Mal komplett laden – die nötigen Regeln stehen hier. Nur bei neuen Effekten/Fehlern gezielt nachlesen.
+- Neue Videos von `videos/gta6-19-november/` kopieren und nur `script.json`, Szenen-Inhalte und Cover ändern – Pipeline, CSS, HUD und Untertitel nicht neu schreiben.
+- Szenen klein ändern: Edit statt komplett neu schreiben; nicht gelesene Dateien nicht vollständig ausgeben.
+- Prüfen gezielt: `check` nur über `tools/check_summary.py`; Snapshots nur an den 6–10 Schlüsselmomenten (`--at`), Kontaktbogen statt Einzelbilder; nach Fixes nur die betroffenen Zeitpunkte erneut.
+- Rendern erst, wenn Check + Snapshots sauber sind (ein Render pro Fassung, ~3 min).
+- Lange Installationen (PyTorch) im Hintergrund, ohne Polling; Ergebnis per Benachrichtigung abwarten.
+- Antworten an den Nutzer kurz: was geändert wurde, was er prüfen soll.
