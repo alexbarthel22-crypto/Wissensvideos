@@ -102,6 +102,28 @@ for i, (t, ls) in enumerate(zip(job["texts"], job["scales"])):
     return out
 
 
+def synth_google(texts, voice, scales):
+    """Google Cloud TTS (Chirp 3 HD): echte, natürliche Stimmen. Schlüssel aus $GOOGLE_TTS_API_KEY."""
+    import base64
+    import io
+    import urllib.request
+    key = os.environ.get("GOOGLE_TTS_API_KEY")
+    if not key:
+        raise SystemExit("GOOGLE_TTS_API_KEY fehlt (in den Umgebungs-Einstellungen hinterlegen).")
+    out = []
+    for t, ls in zip(texts, scales):
+        body = {"input": {"text": t}, "voice": {"languageCode": "de-DE", "name": voice},
+                "audioConfig": {"audioEncoding": "LINEAR16", "sampleRateHertz": 24000, "speakingRate": round(1 / ls, 3)}}
+        req = urllib.request.Request(
+            f"https://texttospeech.googleapis.com/v1/text:synthesize?key={key}",
+            data=json.dumps(body).encode(), headers={"Content-Type": "application/json"})
+        with urllib.request.urlopen(req, timeout=60) as r:
+            wav = base64.b64decode(json.loads(r.read())["audioContent"])
+        a, sr = sf.read(io.BytesIO(wav), dtype="float32")
+        out.append((a, sr))
+    return out
+
+
 def resample(audio, sr):
     if sr == SR:
         return audio
@@ -215,7 +237,7 @@ def word_times(words, duration, audio):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("project")
-    ap.add_argument("--backend", choices=["coqui", "piper"], default="coqui")
+    ap.add_argument("--backend", choices=["google", "coqui", "piper"], default="coqui")
     ap.add_argument("--voice-dir", help="Piper-Stimmenordner oder Coqui-Modellordner (Standard: aus tools/setup.sh)")
     ap.add_argument("--coqui-python", default=str(CACHE / "coqui" / "bin" / "python"))
     ap.add_argument("--speed", type=float, default=1.0, help="Grundtempo (>1 = schneller); pro Zeile mit 'speed' feinjustierbar")
@@ -227,7 +249,7 @@ def main():
     args = ap.parse_args()
 
     if not args.voice_dir:
-        args.voice_dir = str(CACHE / (args.voice if args.voice != "css10" else "css10-vits"))
+        args.voice_dir = "" if args.backend == "google" else str(CACHE / (args.voice if args.voice != "css10" else "css10-vits"))
     project = Path(args.project)
     script = json.loads((project / "script.json").read_text())
     lines = []
@@ -241,7 +263,9 @@ def main():
 
     texts = [l["spoken"] for l in lines]
     scales = [l["scale"] for l in lines]
-    if args.backend == "piper":
+    if args.backend == "google":
+        raw = synth_google(texts, args.voice if args.voice.startswith("de-DE") else "de-DE-Chirp3-HD-Puck", scales)
+    elif args.backend == "piper":
         raw = synth_piper(texts, args.voice_dir, scales, args.noise)
     else:
         raw = synth_coqui(texts, args.voice_dir, args.coqui_python, scales, args.noise, args.noise_dp)
@@ -251,7 +275,10 @@ def main():
     lead = script.get("lead_in", LEAD_IN)
     pieces, t = [np.zeros(int(lead * SR), dtype="float32")], lead
     for line, (audio, sr) in zip(lines, raw):
-        audio = compress_pauses(trim(clarity(resample(audio.astype("float32"), sr))), args.max_gap)
+        audio = resample(audio.astype("float32"), sr)
+        if args.backend != "google":  # echte Stimme braucht keine Klang-Reparatur
+            audio = clarity(audio)
+        audio = compress_pauses(trim(audio), args.max_gap)
         if line["new_scene"]:
             gap = GAP_SCENE
         elif len(pieces) > 1:

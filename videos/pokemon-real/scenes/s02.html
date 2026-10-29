@@ -1,0 +1,40 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+
+  </style>
+  <div id="root" data-composition-id="s02" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s02-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s02-box" class="cbox r" style="opacity:0"><div class="lab">ESSEN PRO TAG</div><div id="s02-n" class="num">0 KG</div></div>
+      <svg id="s02-svg" class="full" viewBox="0 0 1080 1920"></svg>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s02-svg");
+      const R = blob(sv, 540, 760, 1.2);
+      const Z = el("text", { x: 760, y: 520, fill: "#a9d2ff", "font-family": "Inter", "font-weight": 900, "font-size": 90 }, sv); Z.textContent = "Z z";
+      const tiny = []; for (let i = 0; i < 48; i++) tiny.push(blob(sv, 150 + (i % 8) * 112, 520 + Math.floor(i / 8) * 105, 0.22));
+      gsap.set(tiny, { opacity: 0 });
+      const vier = at("L3", "400"), l4 = line("L4")[0], hn = at("L4", "Hungersnot");
+      tl.fromTo(R, { opacity: 0, y: 820 }, { opacity: 1, y: 760, duration: 0.5, ease: "expo.out" }, 0.05);
+      tl.fromTo(Z, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, repeat: 2, yoyo: true }, 0.4);
+      tl.to("#s02-box", { opacity: 1, duration: 0.25 }, vier - 0.4);
+      count(tl, "#s02-n", 0, 400, vier - 0.2, 0.7, "", " KG", "power3.out");
+      tl.to([R, Z], { opacity: 0, scale: 0.4, duration: 0.3, ease: "power3.in" }, l4 - 0.1);
+      tl.to(tiny, { opacity: 1, duration: 0.1, stagger: 0.02 }, l4);
+      tl.to("#s02-box .lab", { textContent: "× 1 MILLION", duration: 0.01 }, l4);
+      count(tl, "#s02-n", 400, 400000, l4 + 0.1, 0.9, "", " T", "power2.in");
+      tl.to(tiny, { attr: { opacity: 1 }, x: "+=0", duration: 0.01 }, hn);
+      tl.to("#s02-box", { scale: 1.12, duration: 0.15, yoyo: true, repeat: 1 }, hn);
+      tl.to("#s02-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s02"] = tl;
+    })();
+  </script>
+</template>

@@ -1,0 +1,107 @@
+      // ---- Gemeinsame Zeichenhelfer (flacher Stil wie Referenz) ----
+      const NS = "http://www.w3.org/2000/svg";
+      const el = (n, a, p) => { const e = document.createElementNS(NS, n); for (const k in a) e.setAttribute(k, a[k]); if (p) p.appendChild(e); return e; };
+      // Gegenstände für die Hände (Koordinaten relativ zur Hand)
+      const ITEMS = {
+        cup: (g) => { el("rect", { x: -16, y: -6, width: 32, height: 38, rx: 6, fill: "#fff" }, g); el("rect", { x: -12, y: -2, width: 24, height: 8, fill: "#6b3f1d" }, g);
+                      el("path", { d: "M16 4 q16 0 16 12 q0 12 -16 12", fill: "none", stroke: "#fff", "stroke-width": 6 }, g); },
+        phone: (g) => { el("rect", { x: -15, y: -8, width: 30, height: 54, rx: 6, fill: "#1b2150", stroke: "#8fa2ff", "stroke-width": 3 }, g);
+                        el("rect", { x: -10, y: -2, width: 20, height: 34, rx: 3, fill: "#4da3ff" }, g); },
+        bread: (g) => { el("ellipse", { cx: 0, cy: 10, rx: 30, ry: 20, fill: "#e0a35a" }, g); el("path", { d: "M-14 2 l8 10 M0 0 l8 10 M14 2 l8 10", stroke: "#a86b2c", "stroke-width": 4 }, g); },
+        knife: (g) => { el("rect", { x: -4, y: -4, width: 8, height: 26, rx: 3, fill: "#6b3f1d" }, g); el("path", { d: "M-5 22 L5 22 L3 70 L-6 64Z", fill: "#dfe3f5" }, g); },
+        spoon: (g) => { el("rect", { x: -3, y: -4, width: 6, height: 50, rx: 3, fill: "#c9cde6" }, g); el("ellipse", { cx: 0, cy: 54, rx: 11, ry: 15, fill: "#c9cde6" }, g); },
+        salt: (g) => { el("rect", { x: -12, y: -6, width: 24, height: 40, rx: 6, fill: "#fff" }, g); el("rect", { x: -12, y: -10, width: 24, height: 10, rx: 4, fill: "#8fa2ff" }, g); },
+        pen: (g) => { el("rect", { x: -4, y: -6, width: 8, height: 46, rx: 3, fill: "#ffd43b" }, g); el("path", { d: "M-4 40 L4 40 L0 52Z", fill: "#333" }, g); },
+        glove: (g) => { el("path", { d: "M-16 30 L-16 0 q0 -8 6 -8 L-10 -22 q4 -6 8 0 L-2 -26 q4 -6 8 0 L6 -20 q4 -6 8 0 L14 0 q8 -6 10 2 L16 30Z", fill: "#39e27a" }, g); },
+      };
+      // Arm als Gruppe, dreht um die Schulter (sx, sy); 0° = hängt nach unten
+      function arm(g, id, sx, sy, deg, skin, sleeve, item) {
+        const a = el("g", { id }, g);
+        el("rect", { x: sx - 12, y: sy - 4, width: 24, height: 60, rx: 12, fill: sleeve }, a);
+        el("rect", { x: sx - 10, y: sy + 40, width: 20, height: 56, rx: 10, fill: skin }, a);
+        el("circle", { cx: sx, cy: sy + 100, r: 14, fill: skin }, a);
+        if (item) { const h = el("g", { transform: `translate(${sx} ${sy + 104}) rotate(180)` }, a); ITEMS[item](h); }
+        gsap.set(a, { rotation: deg, svgOrigin: `${sx} ${sy}` });
+        return a;
+      }
+      // Figur: Ursprung = Mitte des Oberkörpers oben. o.arms = [Winkel links, rechts, dritter], o.items = [..3]
+      function person(parent, id, x, y, s = 1, o = {}) {
+        const skin = o.skin || "#f2c9a5", shirt = o.shirt || "#4da3ff", hair = o.hair || "#5b3a26", pants = o.pants || "#2a3170";
+        const g = el("g", { id }, parent);
+        gsap.set(g, { x, y, scale: s, transformOrigin: "0 0" });
+        const ang = o.arms || [12, -12, -150], it = o.items || [];
+        el("rect", { x: -34, y: 118, width: 28, height: 110, rx: 12, fill: pants }, g);
+        el("rect", { x: 6, y: 118, width: 28, height: 110, rx: 12, fill: pants }, g);
+        el("rect", { x: -40, y: 222, width: 36, height: 16, rx: 8, fill: "#1a1f45" }, g);
+        el("rect", { x: 4, y: 222, width: 36, height: 16, rx: 8, fill: "#1a1f45" }, g);
+        const back = [arm(g, id + "-a1", -52, 18, ang[0], skin, shirt, it[0]), arm(g, id + "-a2", 52, 18, ang[1], skin, shirt, it[1])];
+        el("rect", { x: -56, y: 0, width: 112, height: 132, rx: 40, fill: shirt }, g);
+        const third = o.three === false ? null : arm(g, id + "-a3", 0, 46, ang[2], skin, o.shirt3 || shirt, it[2]);
+        el("rect", { x: -12, y: -18, width: 24, height: 22, fill: skin }, g);
+        el("circle", { cx: 0, cy: -58, r: 46, fill: skin }, g);
+        el("path", { d: "M-46 -60 C-46 -118 46 -118 46 -60 C30 -84 -20 -88 -46 -60Z", fill: hair }, g);
+        const eyes = el("g", { id: id + "-eyes" }, g);
+        el("circle", { cx: -16, cy: -56, r: 6, fill: "#161a36" }, eyes); el("circle", { cx: 16, cy: -56, r: 6, fill: "#161a36" }, eyes);
+        el("path", { id: id + "-mouth", d: o.sad ? "M-14 -26 q14 -10 28 0" : "M-14 -32 q14 14 28 0", fill: "none", stroke: "#8a3b2a", "stroke-width": 5, "stroke-linecap": "round" }, g);
+        return { g, a1: back[0], a2: back[1], a3: third, eyes };
+      }
+      // kleine Figur (Menge): Kopf, Körper, drei Arme als Striche
+      function mini(parent, x, y, c) {
+        const g = el("g", { opacity: 0 }, parent);
+        el("circle", { cx: x, cy: y, r: 12, fill: "#f2c9a5" }, g);
+        el("rect", { x: x - 14, y: y + 14, width: 28, height: 40, rx: 10, fill: c }, g);
+        el("path", { d: `M${x - 14} ${y + 22} l-14 22 M${x + 14} ${y + 22} l14 22 M${x} ${y + 30} l10 -26`, stroke: "#f2c9a5", "stroke-width": 6, "stroke-linecap": "round" }, g);
+        return g;
+      }
+      // Arm winken lassen (endlich viele Wiederholungen)
+      const wave = (tl, a, from, to, t, n = 3, d = 0.18) => tl.to(a, { rotation: to, duration: d, repeat: n * 2 - 1, yoyo: true, ease: "sine.inOut" }, t);
+      // ---- Pokémon-Helfer (bewusst vereinfachte Silhouetten, keine Original-Artworks) ----
+      function ball(parent, x, y, r) {
+        const g = el("g", {}, parent); gsap.set(g, { x, y });
+        const top = el("g", {}, g);
+        el("path", { d: `M${-r} 0 A${r} ${r} 0 0 1 ${r} 0Z`, fill: "#ff3b55" }, top);
+        el("path", { d: `M${-r} 0 A${r} ${r} 0 0 0 ${r} 0Z`, fill: "#f3f1ea" }, g);
+        el("rect", { x: -r, y: -r * 0.08, width: 2 * r, height: r * 0.16, fill: "#161a36" }, g);
+        el("circle", { cx: 0, cy: 0, r: r * 0.28, fill: "#161a36" }, g); el("circle", { cx: 0, cy: 0, r: r * 0.17, fill: "#f3f1ea" }, g);
+        g.appendChild(top);
+        return { g, top };
+      }
+      function blob(parent, x, y, s) { // großes schlafendes Ess-Monster
+        const g = el("g", {}, parent); gsap.set(g, { x, y, scale: s, transformOrigin: "0 0" });
+        el("ellipse", { cx: 0, cy: 0, rx: 190, ry: 170, fill: "#2f6b78" }, g);
+        el("ellipse", { cx: 0, cy: 40, rx: 130, ry: 120, fill: "#efe0c4" }, g);
+        el("path", { d: "M-120 -140 l20 -50 l30 40Z M120 -140 l-20 -50 l-30 40Z", fill: "#2f6b78" }, g);
+        el("ellipse", { cx: 0, cy: -90, rx: 120, ry: 70, fill: "#efe0c4" }, g);
+        el("path", { d: "M-60 -100 h36 M24 -100 h36", stroke: "#161a36", "stroke-width": 8, "stroke-linecap": "round" }, g);
+        el("path", { d: "M-30 -62 q30 12 60 0", stroke: "#161a36", "stroke-width": 6, fill: "none" }, g);
+        return g;
+      }
+      function mouse(parent, x, y, s) { // gelbe Elektro-Maus
+        const g = el("g", {}, parent); gsap.set(g, { x, y, scale: s, transformOrigin: "0 0" });
+        el("path", { d: "M90 40 l60 -30 l-20 50 l60 -20 l-40 70 l-60 -40Z", fill: "#e8b32a" }, g);
+        el("ellipse", { cx: 0, cy: 60, rx: 90, ry: 100, fill: "#ffd43b" }, g);
+        el("path", { d: "M-60 -60 l-50 -150 l70 110Z M60 -60 l50 -150 l-70 110Z", fill: "#ffd43b" }, g);
+        el("path", { d: "M-110 -210 l20 60 l18 -26Z M110 -210 l-20 60 l-18 -26Z", fill: "#161a36" }, g);
+        el("circle", { cx: 0, cy: -40, r: 80, fill: "#ffd43b" }, g);
+        el("circle", { cx: -30, cy: -55, r: 10, fill: "#161a36" }, g); el("circle", { cx: 30, cy: -55, r: 10, fill: "#161a36" }, g);
+        el("circle", { cx: -55, cy: -20, r: 16, fill: "#ff3b55" }, g); el("circle", { cx: 55, cy: -20, r: 16, fill: "#ff3b55" }, g);
+        el("path", { d: "M-10 -28 q10 8 20 0", stroke: "#161a36", "stroke-width": 4, fill: "none" }, g);
+        return g;
+      }
+      function dragon(parent, x, y, s) { // oranger Feuer-Drache
+        const g = el("g", {}, parent); gsap.set(g, { x, y, scale: s, transformOrigin: "0 0" });
+        el("path", { d: "M-40 -40 L-200 -160 L-150 10Z M40 -40 L200 -160 L150 10Z", fill: "#2f6b78" }, g);
+        el("path", { d: "M60 90 q90 20 110 -60", stroke: "#ff8a3d", "stroke-width": 26, fill: "none", "stroke-linecap": "round" }, g);
+        el("path", { d: "M170 -40 q-14 -40 4 -70 q22 30 8 70Z", fill: "#ffd43b" }, g);
+        el("ellipse", { cx: 0, cy: 40, rx: 80, ry: 100, fill: "#ff8a3d" }, g);
+        el("ellipse", { cx: 0, cy: 60, rx: 50, ry: 70, fill: "#ffe0a3" }, g);
+        el("ellipse", { cx: 0, cy: -90, rx: 60, ry: 55, fill: "#ff8a3d" }, g);
+        el("path", { d: "M-30 -140 l-10 -40 l26 26Z M30 -140 l10 -40 l-26 26Z", fill: "#ff8a3d" }, g);
+        el("circle", { cx: -20, cy: -98, r: 8, fill: "#161a36" }, g); el("circle", { cx: 20, cy: -98, r: 8, fill: "#161a36" }, g);
+        return g;
+      }
+      function zigzag(parent, x1, y1, x2, y2, c = "#ffd43b") {
+        const n = 6, pts = [];
+        for (let i = 0; i <= n; i++) { const t = i / n; pts.push(`${x1 + (x2 - x1) * t + (i % 2 ? 18 : -18)},${y1 + (y2 - y1) * t}`); }
+        return el("polyline", { points: pts.join(" "), fill: "none", stroke: c, "stroke-width": 12, "stroke-linejoin": "round" }, parent);
+      }

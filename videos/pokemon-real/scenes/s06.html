@@ -1,0 +1,40 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    #s06-sec { left: 250px; top: 460px; width: 580px; height: 90px; border: 5px solid #ff3b55; color: #ff3b55; font-size: 52px; line-height: 80px; letter-spacing: .1em; opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="s06" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s06-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <svg id="s06-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s06-sec" class="panel">STRENG GEHEIM</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s06-svg");
+      const aura = el("circle", { cx: 540, cy: 800, r: 220, fill: "#b06bff", opacity: 0 }, sv);
+      const leg = el("g", { opacity: 0 }, sv); el("path", { d: "M540 600 q-120 60 -110 200 q10 120 110 140 q100 -20 110 -140 q10 -140 -110 -200Z", fill: "#e9d6ff" }, leg);
+      el("path", { d: "M560 940 q160 40 180 -120", stroke: "#e9d6ff", "stroke-width": 30, fill: "none", "stroke-linecap": "round" }, leg);
+      el("circle", { cx: 510, cy: 700, r: 10, fill: "#7a2fd0" }, leg); el("circle", { cx: 570, cy: 700, r: 10, fill: "#7a2fd0" }, leg);
+      const warn = el("g", { opacity: 0 }, sv); el("path", { d: "M540 1000 l60 100 h-120Z", fill: "#ffd43b" }, warn); el("text", { x: 540, y: 1090, "text-anchor": "middle", "font-family": "Inter", "font-weight": 900, "font-size": 60, fill: "#161a36" }, warn).textContent = "!";
+      const door = el("g", {}, sv); el("circle", { cx: 0, cy: 0, r: 330, fill: "#3a3f6e", stroke: "#8a8fa8", "stroke-width": 24 }, door);
+      for (let i = 0; i < 6; i++) el("rect", { x: -12, y: -300, width: 24, height: 120, fill: "#8a8fa8", transform: `rotate(${i * 60})` }, door);
+      el("circle", { cx: 0, cy: 0, r: 90, fill: "#5b607a" }, door);
+      gsap.set(door, { x: 1500, y: 800 });
+      const lg = at("L10", "Legendäre"), aw = at("L10", "Atomwaffen"), vs = at("L10", "verstecken");
+      tl.to([aura, leg], { opacity: 1, duration: 0.4 }, lg - 0.1);
+      tl.to(aura, { attr: { r: 300, opacity: 0.35 }, duration: 0.5, repeat: 3, yoyo: true }, lg + 0.2);
+      tl.to(warn, { opacity: 1, duration: 0.2 }, aw - 0.1);
+      tl.to("#s06-sec", { opacity: 1, duration: 0.25 }, aw + 0.3);
+      tl.to(door, { x: 540, rotation: -180, duration: 0.6, ease: "power3.inOut" }, vs - 0.3);
+      tl.to("#s06-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s06"] = tl;
+    })();
+  </script>
+</template>

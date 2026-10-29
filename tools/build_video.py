@@ -77,7 +77,7 @@ CUE_HELPERS = r"""
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
         if (typeof word === "number") return ws[word][1 + which];
-        const key = String(word).toLowerCase().replace(/[^\wäöüß]/g, "");
+        const key = String(word).toLowerCase().replace(/[^\p{L}\p{N}_]/gu, "");
         const hit = ws.find((w) => w[0].startsWith(key));
         if (!hit) throw new Error("cue not found: " + id + " " + word);
         return hit[1 + which];
@@ -192,7 +192,7 @@ def build_hud(project, script, windows, total):
   <style>
     #root {{ position: absolute; inset: 0; }}
     .tag {{ position: absolute; left: 0; width: 100%; top: 176px; height: 64px; }}
-    .tagt {{ position: absolute; left: 50%; top: 0; margin-left: -210px; width: 420px; height: 62px;
+    .tagt {{ position: absolute; left: 0; right: 0; top: 0; margin: 0 auto; width: fit-content; min-width: 420px; padding: 0 26px; height: 62px;
       display: flex; align-items: center; justify-content: center;
       font-family: "Space Mono", monospace; font-weight: 700; font-size: 30px; letter-spacing: 0.12em;
       color: #f4d27a; border: 3px solid #b8944a; border-radius: 8px; background: rgba(14,17,36,.65); }}
