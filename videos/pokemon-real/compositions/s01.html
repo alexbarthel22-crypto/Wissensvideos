@@ -21,7 +21,8 @@
     .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
     .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
       font-family: "Inter", sans-serif; font-weight: 900; }
-    #s01-news { left: 70px; top: 760px; width: 940px; height: 360px; border: 5px solid #ffd43b; box-shadow: 0 0 60px rgba(255,212,59,.45); overflow: hidden; text-align: left; }
+    .cbox { top: 398px; } /* unter der großen Kapitel-Überschrift */
+    #s01-news { left: 70px; top: 700px; width: 940px; height: 360px; border: 5px solid #ffd43b; box-shadow: 0 0 60px rgba(255,212,59,.45); overflow: hidden; text-align: left; }
     #s01-news .bar { height: 84px; background: #ffd43b; color: #161a36; display: flex; align-items: center; padding-left: 34px; font-size: 44px; letter-spacing: .06em; }
     #s01-news .hl { padding: 22px 40px 0; font-size: 96px; line-height: 1.02; letter-spacing: -.015em; }
     #s01-news .hl em { font-style: normal; color: #ff3b55; text-shadow: 0 0 26px rgba(255,59,85,.6); }
@@ -38,7 +39,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 9.95, "L1": [0.9, 6.02], "L1.words": [["was", 0.9, 1.182], ["wäre", 1.182, 1.725], ["wenn", 1.725, 2.017], ["pokémon", 2.017, 2.58], ["wirklich", 2.58, 3.163], ["existieren", 3.163, 4.27], ["nicht", 4.27, 4.572], ["niedlich", 4.572, 5.155], ["sondern", 5.155, 5.728], ["echt", 5.728, 6.02]], "L2": [6.24, 9.77], "L2.words": [["1025", 6.24, 7.337], ["arten", 7.337, 7.69], ["und", 8.2, 8.373], ["an", 8.373, 8.54], ["das", 8.54, 8.713], ["hier", 8.713, 8.892], ["hat", 8.892, 9.065], ["niemand", 9.065, 9.418], ["gedacht", 9.418, 9.77]]};
+      const C = {"__dur": 9.95, "L1": [0.9, 6.11], "L1.words": [["was", 0.9, 1.525], ["wäre", 1.525, 2.73], ["wenn", 2.84, 2.869], ["pokémon", 2.869, 2.924], ["wirklich", 2.924, 2.981], ["existieren", 2.981, 3.09], ["nicht", 3.52, 3.694], ["im", 3.694, 3.851], ["fernsehen", 3.851, 4.34], ["sondern", 4.89, 5.245], ["in", 5.245, 5.413], ["deinem", 5.413, 5.761], ["alltag", 5.761, 6.11]], "L2": [6.33, 9.77], "L2.words": [["1025", 6.33, 7.495], ["arten", 7.495, 7.87], ["und", 8.39, 8.583], ["es", 8.583, 8.77], ["wird", 8.77, 8.97], ["komplett", 8.97, 9.37], ["verrückt", 9.37, 9.77]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -174,7 +175,7 @@
       const bolts = [zigzag(sv, 230, 500, 300, 820), zigzag(sv, 850, 500, 780, 820), zigzag(sv, 160, 740, 260, 980, "#4da3ff"), zigzag(sv, 920, 740, 820, 980, "#4da3ff")];
       const B = ball(sv, 540, 720, 210);
       const M = mouse(sv, 540, 700, 0.8); gsap.set(M, { opacity: 0, scale: 0.2 });
-      const echt = at("L1", "echt"), l2 = line("L2")[0], nie = at("L2", "niemand");
+      const echt = at("L1", "Alltag"), l2 = line("L2")[0], nie = at("L2", "komplett");
       tl.fromTo(B.g, { scale: 1.08 }, { scale: 1, duration: 0.5, ease: "expo.out" }, 0);
       bolts.forEach((b, i) => tl.fromTo(b, { opacity: 1 }, { opacity: 0.15, duration: 0.07, repeat: 7, yoyo: true, ease: "none" }, 0.02 + i * 0.05));
       tl.fromTo(glow, { attr: { opacity: 0.18 } }, { attr: { opacity: 0.4 }, duration: 0.3, repeat: 3, yoyo: true }, 0);

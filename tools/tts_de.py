@@ -102,8 +102,9 @@ for i, (t, ls) in enumerate(zip(job["texts"], job["scales"])):
     return out
 
 
-def synth_google(texts, voice, scales):
-    """Google Cloud TTS (Chirp 3 HD): echte, natürliche Stimmen. Schlüssel aus $GOOGLE_TTS_API_KEY."""
+def synth_google(texts, voice, scales, prons=None):
+    """Google Cloud TTS (Chirp 3 HD): echte, natürliche Stimmen. Schlüssel aus $GOOGLE_TTS_API_KEY.
+    prons: {"Relaxo": "ʁeˈlakso"} – Aussprache in IPA für Namen, die die Stimme falsch liest."""
     import base64
     import io
     import urllib.request
@@ -112,7 +113,11 @@ def synth_google(texts, voice, scales):
         raise SystemExit("GOOGLE_TTS_API_KEY fehlt (in den Umgebungs-Einstellungen hinterlegen).")
     out = []
     for t, ls in zip(texts, scales):
-        body = {"input": {"text": t}, "voice": {"languageCode": "de-DE", "name": voice},
+        inp = {"text": t}
+        used = [{"phrase": w, "phoneticEncoding": "PHONETIC_ENCODING_IPA", "pronunciation": ipa} for w, ipa in (prons or {}).items() if w in t]
+        if used:
+            inp["customPronunciations"] = {"pronunciations": used}
+        body = {"input": inp, "voice": {"languageCode": "de-DE", "name": voice},
                 "audioConfig": {"audioEncoding": "LINEAR16", "sampleRateHertz": 24000, "speakingRate": round(1 / ls, 3)}}
         req = urllib.request.Request(
             f"https://texttospeech.googleapis.com/v1/text:synthesize?key={key}",
@@ -264,7 +269,8 @@ def main():
     texts = [l["spoken"] for l in lines]
     scales = [l["scale"] for l in lines]
     if args.backend == "google":
-        raw = synth_google(texts, args.voice if args.voice.startswith("de-DE") else "de-DE-Chirp3-HD-Puck", scales)
+        raw = synth_google(texts, args.voice if args.voice.startswith("de-DE") else "de-DE-Chirp3-HD-Puck", scales,
+                           script.get("pronunciations"))
     elif args.backend == "piper":
         raw = synth_piper(texts, args.voice_dir, scales, args.noise)
     else:

@@ -21,10 +21,11 @@
     .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
     .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
       font-family: "Inter", sans-serif; font-weight: 900; }
+    .cbox { top: 398px; } /* unter der großen Kapitel-Überschrift */
 
   </style>
-  <div id="root" data-composition-id="s02" data-start="0" data-duration="7.130" data-width="1080" data-height="1920">
-    <div id="s02-stage" class="clip stage" data-start="0" data-duration="7.130" data-track-index="0">
+  <div id="root" data-composition-id="s02" data-start="0" data-duration="8.420" data-width="1080" data-height="1920">
+    <div id="s02-stage" class="clip stage" data-start="0" data-duration="8.420" data-track-index="0">
       <div id="s02-box" class="cbox r" style="opacity:0"><div class="lab">ESSEN PRO TAG</div><div id="s02-n" class="num">0 KG</div></div>
       <svg id="s02-svg" class="full" viewBox="0 0 1080 1920"></svg>
     </div>
@@ -32,7 +33,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 7.13, "L3": [0.2, 3.37], "L3.words": [["ein", 0.2, 0.411], ["relaxo", 0.411, 1.023], ["frisst", 1.023, 1.257], ["laut", 1.257, 1.476], ["pokédex", 1.476, 1.898], ["400", 1.898, 2.547], ["kilo", 2.547, 2.955], ["am", 2.955, 3.159], ["tag", 3.159, 3.37]], "L4": [3.59, 6.95], "L4.words": [["eine", 3.59, 3.977], ["million", 3.977, 4.385], ["relaxo", 4.385, 4.966], ["", 4.966, 5.145], ["und", 5.145, 5.345], ["die", 5.345, 5.546], ["welt", 5.546, 5.754], ["hat", 5.754, 5.954], ["eine", 5.954, 6.341], ["hungersnot", 6.341, 6.95]]};
+      const C = {"__dur": 8.42, "L3": [0.2, 3.45], "L3.words": [["ein", 0.2, 0.417], ["relaxo", 0.417, 1.043], ["frisst", 1.043, 1.283], ["laut", 1.283, 1.508], ["pokédex", 1.508, 1.941], ["400", 1.941, 2.607], ["kilo", 2.607, 3.024], ["am", 3.024, 3.233], ["tag", 3.233, 3.45]], "L4": [3.67, 8.24], "L4.words": [["dein", 3.67, 3.918], ["kühlschrank", 3.918, 4.44], ["in", 4.95, 5.135], ["zehn", 5.135, 5.333], ["sekunden", 5.333, 5.901], ["leer", 5.901, 6.1], ["und", 6.57, 6.738], ["dein", 6.738, 6.911], ["pizzabote", 6.911, 7.564], ["wird", 7.564, 7.737], ["millionär", 7.737, 8.24]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -164,21 +165,43 @@
 
       const tl = gsap.timeline({ paused: true });
       const sv = document.querySelector("#s02-svg");
-      const R = blob(sv, 540, 760, 1.2);
-      const Z = el("text", { x: 760, y: 520, fill: "#a9d2ff", "font-family": "Inter", "font-weight": 900, "font-size": 90 }, sv); Z.textContent = "Z z";
-      const tiny = []; for (let i = 0; i < 48; i++) tiny.push(blob(sv, 150 + (i % 8) * 112, 520 + Math.floor(i / 8) * 105, 0.22));
-      gsap.set(tiny, { opacity: 0 });
-      const vier = at("L3", "400"), l4 = line("L4")[0], hn = at("L4", "Hungersnot");
-      tl.fromTo(R, { opacity: 0, y: 820 }, { opacity: 1, y: 760, duration: 0.5, ease: "expo.out" }, 0.05);
+      const R = blob(sv, 540, 820, 1.2);
+      const Z = el("text", { x: 770, y: 640, fill: "#a9d2ff", "font-family": "Inter", "font-weight": 900, "font-size": 90 }, sv); Z.textContent = "Z z";
+      const fr = el("g", { opacity: 0 }, sv);
+      el("rect", { x: 600, y: 560, width: 320, height: 520, rx: 26, fill: "#dfe6f5" }, fr);
+      el("rect", { x: 622, y: 582, width: 276, height: 476, rx: 14, fill: "#9fb3d9" }, fr);
+      [740, 900].forEach((y) => el("rect", { x: 622, y, width: 276, height: 10, fill: "#dfe6f5" }, fr));
+      el("rect", { x: 920, y: 580, width: 34, height: 480, rx: 10, fill: "#c9cde6" }, fr);
+      const FOOD = ["#ff3b55", "#ffd43b", "#39e27a", "#ff8a3d", "#ff4fb0", "#4da3ff", "#ffd43b", "#ff3b55", "#39e27a"];
+      const foods = FOOD.map((c, i) => { const x = 670 + (i % 3) * 90, y = 700 + Math.floor(i / 3) * 160;
+        return i % 2 ? el("rect", { x: x - 30, y: y - 50, width: 60, height: 50, rx: 10, fill: c }, fr) : el("circle", { cx: x, cy: y - 28, r: 30, fill: c }, fr); });
+      const pz = el("g", {}, sv), boxes = [];
+      for (let i = 0; i < 8; i++) { const b = el("g", { opacity: 0 }, pz); const y = 1050 - i * 54;
+        el("rect", { x: 340, y, width: 400, height: 46, rx: 6, fill: "#e0a458", stroke: "#8a5a2b", "stroke-width": 5 }, b);
+        el("text", { x: 540, y: y + 34, "text-anchor": "middle", "font-family": "Inter", "font-weight": 900, "font-size": 30, fill: "#8a3b2a" }, b).textContent = "PIZZA";
+        boxes.push(b); }
+      const r = rng(7), coins = [], cg = el("g", { "data-layout-allow-overlap": "" }, sv);
+      for (let i = 0; i < 16; i++) { const c = el("text", { x: 120 + r() * 840, y: 620, "text-anchor": "middle", "font-family": "Inter", "font-weight": 900, "font-size": 70 + r() * 40, fill: "#ffd43b", opacity: 0 }, cg); c.textContent = "€"; coins.push(c); }
+      const vier = at("L3", "400"), l4 = line("L4")[0], sek = at("L4", "Sekunden"), bote = at("L4", "Pizzabote"), mil = at("L4", "Millionär");
+      tl.fromTo(R, { opacity: 0, y: 880 }, { opacity: 1, y: 820, duration: 0.5, ease: "expo.out" }, 0.05);
       tl.fromTo(Z, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, repeat: 2, yoyo: true }, 0.4);
       tl.to("#s02-box", { opacity: 1, duration: 0.25 }, vier - 0.4);
       count(tl, "#s02-n", 0, 400, vier - 0.2, 0.7, "", " KG", "power3.out");
-      tl.to([R, Z], { opacity: 0, scale: 0.4, duration: 0.3, ease: "power3.in" }, l4 - 0.1);
-      tl.to(tiny, { opacity: 1, duration: 0.1, stagger: 0.02 }, l4);
-      tl.to("#s02-box .lab", { textContent: "× 1 MILLION", duration: 0.01 }, l4);
-      count(tl, "#s02-n", 400, 400000, l4 + 0.1, 0.9, "", " T", "power2.in");
-      tl.to(tiny, { attr: { opacity: 1 }, x: "+=0", duration: 0.01 }, hn);
-      tl.to("#s02-box", { scale: 1.12, duration: 0.15, yoyo: true, repeat: 1 }, hn);
+      tl.to(R, { scale: 1.32, duration: 0.14, yoyo: true, repeat: 3 }, vier + 0.4);
+      tl.to(Z, { opacity: 0, duration: 0.2 }, l4 - 0.3);
+      tl.to(R, { x: 300, y: 860, scale: 0.85, duration: 0.4, ease: "power3.inOut" }, l4 - 0.2);
+      tl.fromTo(fr, { opacity: 0, x: 200 }, { opacity: 1, x: 0, duration: 0.35, ease: "back.out(1.6)" }, l4 - 0.1);
+      tl.to("#s02-box .lab", { textContent: "KÜHLSCHRANK", duration: 0.01 }, l4);
+      tl.set("#s02-n", { textContent: "100 %" }, l4);
+      foods.forEach((f, i) => tl.to(f, { x: 300 - (670 + (i % 3) * 90), y: 760 - (700 + Math.floor(i / 3) * 160), scale: 0.2, opacity: 0, duration: 0.22, ease: "power2.in" }, sek - 0.3 + i * 0.07));
+      tl.to(R, { scaleY: 0.78, duration: 0.08, yoyo: true, repeat: 9 }, sek - 0.3);
+      count(tl, "#s02-n", 100, 0, sek - 0.3, 0.7, "", " %", "none");
+      tl.to([R, fr], { opacity: 0, scale: 0.5, duration: 0.25, ease: "power3.in" }, bote - 0.3);
+      boxes.forEach((b, i) => tl.fromTo(b, { opacity: 0, y: -700 }, { opacity: 1, y: 0, duration: 0.3, ease: "bounce.out" }, bote - 0.05 + i * 0.07));
+      tl.to("#s02-box .lab", { textContent: "TRINKGELD", duration: 0.01 }, mil - 0.3);
+      count(tl, "#s02-n", 0, 1000000, mil - 0.3, 0.8, "", " €", "power2.in");
+      coins.forEach((c, i) => tl.set(c, { opacity: 1 }, mil - 0.2 + i * 0.05).to(c, { y: 560 + (i % 4) * 30, rotation: (i % 2 ? 1 : -1) * 200, duration: 1.1, ease: "power1.in" }, mil - 0.2 + i * 0.05));
+      tl.to(pz, { rotation: 4, svgOrigin: "540 1100", duration: 0.12, yoyo: true, repeat: 5 }, mil);
       tl.to("#s02-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
       window.__timelines["s02"] = tl;
     })();

@@ -134,7 +134,7 @@ def caption_groups(timings, windows):
     return groups
 
 
-def build_captions(project, timings, windows, total):
+def build_captions(project, timings, windows, total, big=False):
     groups = caption_groups(timings, windows)
     groups[-1]["end"] = round(total - 0.05, 3)  # letzte Zeile (Frage an die Zuschauer) bleibt stehen
     rows, js = [], []
@@ -147,9 +147,11 @@ def build_captions(project, timings, windows, total):
             target = COLORS[col] if col else "#ffffff"
             glow = f"0 0 26px {COLORS[col]}aa, 0 5px 0 rgba(0,0,0,.55)" if col else "0 5px 0 rgba(0,0,0,.55)"
             js.append(f'tl.to("#{wid}", {{ color: "{target}", textShadow: "{glow}", duration: 0.08, ease: "power1.out" }}, {w["start"] - 0.02:.3f});')
+            if big:  # Wort hüpft beim Sprechen kurz an
+                js.append(f'tl.fromTo("#{wid}", {{ scale: 1.16, y: -8, rotation: {(-4, 3, -2, 4)[wi % 4]} }}, {{ scale: 1, y: 0, rotation: 0, duration: 0.28, ease: "back.out(3)", immediateRender: false }}, {w["start"] - 0.02:.3f});')
         dur = round(g["end"] - g["start"], 3)
         rows.append(f'    <div id="cg{gi}" class="clip grp" data-start="{g["start"]:.3f}" data-duration="{dur}" data-track-index="{gi % 2}">'
-                    f'<div id="cgi{gi}" class="inner">{" ".join(spans)}</div></div>')
+                    f'<div id="cgi{gi}" class="inner"{" data-layout-allow-overlap" if big else ""}>{" ".join(spans)}</div></div>')
         js.append(f'tl.fromTo("#cgi{gi}", {{ scale: 0.86, opacity: 0 }}, {{ scale: 1, opacity: 1, duration: 0.16, ease: "back.out(2.2)" }}, {g["start"]:.3f});')
         js.append(f'tl.to("#cgi{gi}", {{ opacity: 0, duration: 0.08, ease: "power2.in" }}, {g["end"] - 0.08:.3f});')
         js.append(f'tl.set("#cgi{gi}", {{ opacity: 0 }}, {g["end"]:.3f});')
@@ -160,7 +162,7 @@ def build_captions(project, timings, windows, total):
     .inner {{ position: absolute; left: 70px; right: 70px; top: 0; text-align: center;
       font-family: "Inter", sans-serif; font-weight: 900; font-size: 80px; line-height: 1.04;
       letter-spacing: -0.01em; transform-origin: 50% 40%; }}
-    .w {{ color: #7d8197; text-shadow: 0 5px 0 rgba(0,0,0,.55); }}
+    .w {{ color: #7d8197; text-shadow: 0 5px 0 rgba(0,0,0,.55); }}{BIG_CAP if big else ""}
   </style>
   <div id="root" data-composition-id="captions" data-start="0" data-duration="{total:.3f}" data-width="{W}" data-height="{H}"
        data-layout-allow-caption-zone>
@@ -176,9 +178,58 @@ def build_captions(project, timings, windows, total):
     (project / "compositions" / "captions.html").write_text(doc)
 
 
-def build_hud(project, script, windows, total):
+BIG_CAP = """
+    .inner {{ font-size: 92px; line-height: 1.06; }}
+    .w {{ display: inline-block; transform-origin: 50% 70%; }}""".replace("{{", "{").replace("}}", "}")
+TITLE_COLS = ["#ffd43b", "#ff4fb0", "#4da3ff", "#39e27a", "#ff8a3d", "#b06bff"]
+BIG_HUD = """
+    .btag { position: absolute; left: 0; width: 100%; top: 130px; height: 250px; }
+    .kick { position: absolute; left: 0; right: 0; top: 0; margin: 0 auto; width: fit-content; padding: 4px 24px;
+      font-family: "Space Mono", monospace; font-weight: 700; font-size: 36px; letter-spacing: .14em; color: #0b0e22;
+      background: #ffd43b; border-radius: 10px; box-shadow: 0 0 30px rgba(255,212,59,.5); }
+    .ttl { position: absolute; left: 0; right: 0; top: 100px; text-align: center; white-space: nowrap;
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 136px; line-height: 1; letter-spacing: -.02em; }
+    .ttl span { display: inline-block; -webkit-text-stroke: 4px #0b0e22; paint-order: stroke fill; }
+"""
+
+
+def build_hud_big(project, script, windows, total):
+    """Große Kapitel-Überschrift: Kicker-Pille + riesiger Titel, Buchstaben fallen hüpfend ein und wippen weiter."""
     tags, checks, js, n = [], [], [], 0
     for i, (sc, s, e) in enumerate(windows):
+        kick, _, title = (p.strip() for p in sc["tag"].partition("·")) if "·" in sc["tag"] else ("", "", sc["tag"])
+        col = TITLE_COLS[i % len(TITLE_COLS)]
+        letters = "".join(f'<span id="t{i}l{k}" style="color:{col};text-shadow:0 0 34px {col}99,0 8px 0 rgba(0,0,0,.5)">{esc(ch) if ch != " " else "&nbsp;"}</span>'
+                          for k, ch in enumerate(title))
+        tags.append(f'      <div id="tag{i}" class="clip btag" data-start="{s:.3f}" data-duration="{e - s:.3f}" data-track-index="1">'
+                    + (f'<div id="tag{i}k" class="kick">{esc(kick)}</div>' if kick else "")
+                    + (f'<div id="tag{i}t" class="ttl">{letters}</div>' if title else "") + '</div>')
+        t0 = s if i > 0 else 0.0
+        if kick:
+            js.append(f'tl.fromTo("#tag{i}k", {{ opacity: 0, x: -260, skewX: -20 }}, {{ opacity: 1, x: 0, skewX: 0, duration: 0.35, ease: "back.out(2)" }}, {t0:.3f});')
+        if title:
+            ls = f'"#tag{i}t span"'
+            js.append(f'tl.fromTo({ls}, {{ opacity: 0, y: -120, scale: 1.8, rotation: (k) => [-14, 10, -8, 12][k % 4] }}, '
+                      f'{{ opacity: 1, y: 0, scale: 1, rotation: 0, duration: 0.45, ease: "back.out(2.4)", stagger: 0.04 }}, {t0 + 0.08:.3f});')
+            reps = max(1, int((e - s - 1.0) / 0.5))
+            js.append(f'tl.to({ls}, {{ y: -14, duration: 0.25, ease: "sine.inOut", yoyo: true, repeat: {reps * 2 - 1}, stagger: {{ each: 0.06 }} }}, {t0 + 0.75:.3f});')
+            js.append(f'tl.fromTo("#tag{i}t", {{ scale: 1 }}, {{ scale: 1.07, duration: 0.12, yoyo: true, repeat: 1, ease: "power2.out" }}, {t0 + 0.55:.3f});')
+        if sc.get("check"):
+            n += 1
+            cid = f"chk{n}"
+            checks.append(f'      <div id="{cid}" class="clip chk" data-start="{s + 0.5:.3f}" data-duration="{total - s - 0.5:.3f}" '
+                          f'data-track-index="2" data-layout-ignore style="top:{416 + (n - 1) * 37}px">'
+                          f'<span id="{cid}t" class="chkt ok">{n}. {esc(sc["check"])} <b>✓</b></span></div>')
+            js.append(f'tl.fromTo("#{cid}t", {{ opacity: 0, x: -24 }}, {{ opacity: 1, x: 0, duration: 0.25, ease: "power3.out" }}, {s + 0.5:.3f});')
+    return tags, checks, js
+
+
+def build_hud(project, script, windows, total):
+    tags, checks, js, n = [], [], [], 0
+    big = script.get("hud") == "big"
+    if big:
+        tags, checks, js = build_hud_big(project, script, windows, total)
+    for i, (sc, s, e) in enumerate(windows if not big else []):
         tid = f"tag{i}"
         tags.append(f'      <div id="{tid}" class="clip tag" data-start="{s:.3f}" data-duration="{e - s:.3f}" data-track-index="1">'
                     f'<span id="{tid}t" class="tagt">{esc(sc["tag"])}</span></div>')
@@ -205,7 +256,7 @@ def build_hud(project, script, windows, total):
       color: #ff7a8c; border: 2px solid #c8314a; border-radius: 6px; background: rgba(40,10,24,.55); }}
     .chkt b {{ color: #ff3b55; margin-left: 6px; }}
     .chkt.ok {{ color: #8affb6; border-color: #1f9a52; background: rgba(8,40,22,.6); }}
-    .chkt.ok b {{ color: #39e27a; }}
+    .chkt.ok b {{ color: #39e27a; }}{BIG_HUD if big else ""}
   </style>
   <div id="root" data-composition-id="hud" data-start="0" data-duration="{total:.3f}" data-width="{W}" data-height="{H}">
 {chr(10).join(tags)}
@@ -316,7 +367,7 @@ def main():
     shutil.copy(VENDOR / "gsap.min.js", project / "assets" / "vendor" / "gsap.min.js")
     for sc, s, e in windows:
         build_scene(project, sc, s, e, lines)
-    build_captions(project, timings, windows, total)
+    build_captions(project, timings, windows, total, script.get("hud") == "big")
     build_hud(project, script, windows, total)
     build_index(project, script, windows, lines, total)
     for sc, s, e in windows:

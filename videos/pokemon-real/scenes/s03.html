@@ -4,13 +4,13 @@
     .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
     .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
       font-family: "Inter", sans-serif; font-weight: 900; }
-    #s03-farm { left: 140px; top: 470px; width: 800px; height: 120px; border: 5px solid #ff3b55; color: #ff3b55; font-size: 70px; line-height: 108px; opacity: 0; }
+    .cbox { top: 398px; } /* unter der großen Kapitel-Überschrift */
+
   </style>
   <div id="root" data-composition-id="s03" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
     <div id="s03-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
-      <div id="s03-box" class="cbox y" style="opacity:0"><div class="lab">LEISTUNG</div><div id="s03-n" class="num">0 %</div></div>
+      <div id="s03-box" class="cbox g" style="opacity:0"><div class="lab">AKKU</div><div id="s03-n" class="num">1 %</div></div>
       <svg id="s03-svg" class="full" viewBox="0 0 1080 1920"></svg>
-      <div id="s03-farm" class="panel">PIKACHU-FARM</div>
     </div>
   </div>
   <script>
@@ -19,32 +19,40 @@
 /*__COMMON_JS__*/
       const tl = gsap.timeline({ paused: true });
       const sv = document.querySelector("#s03-svg");
-      const M = mouse(sv, 360, 820, 1.0);
-      const bulb = el("g", {}, sv); el("circle", { cx: 820, cy: 640, r: 90, fill: "#3a3f6e" }, bulb); el("rect", { x: 780, y: 720, width: 80, height: 60, rx: 8, fill: "#8fa2ff" }, bulb);
-      const lit = el("circle", { cx: 820, cy: 640, r: 90, fill: "#ffd43b", opacity: 0 }, sv);
-      const bolt = zigzag(sv, 470, 740, 760, 660); gsap.set(bolt, { opacity: 0 });
-      const minis = []; for (let i = 0; i < 18; i++) minis.push(mouse(sv, 190 + (i % 6) * 140, 700 + Math.floor(i / 6) * 150, 0.28));
-      gsap.set(minis, { opacity: 0 });
-      const prot = el("g", {}, sv), people = [];
-      for (let i = 0; i < 3; i++) {
-        const P = person(prot, "s03-p" + i, 250 + i * 290, 820, 0.85, { three: false, arms: [10, -160], shirt: ["#39e27a", "#4da3ff", "#ff4fb0"][i] });
-        const sign = el("g", {}, P.a2); el("rect", { x: 10, y: 130, width: 150, height: 90, rx: 8, fill: "#f3f1ea" }, sign);
-        const tx = el("text", { x: 85, y: 186, "text-anchor": "middle", "font-family": "Inter", "font-weight": 900, "font-size": 36, fill: "#ff3b55", transform: "rotate(180 85 175)" }, sign); tx.textContent = "FREI!";
-        people.push(P.g);
-      }
-      gsap.set(people, { opacity: 0 });
-      const kw = at("L5", "Kraftwerk"), farm = at("L6", "Pikachu-Farmen"), ts = at("L6", "Tierschützer"), st = at("L6", "Straße");
-      tl.fromTo([M, bulb], { opacity: 0 }, { opacity: 1, duration: 0.35 }, 0.05);
-      tl.to(bolt, { opacity: 1, duration: 0.05, repeat: 5, yoyo: true }, kw - 0.2);
-      tl.to(lit, { opacity: 1, duration: 0.15 }, kw);
-      tl.to("#s03-box", { opacity: 1, duration: 0.25 }, kw - 0.3);
-      count(tl, "#s03-n", 0, 100, kw - 0.2, 0.5, "", " %");
-      tl.to([M, bulb, lit, bolt], { opacity: 0, duration: 0.25 }, farm - 0.6);
-      tl.to("#s03-farm", { opacity: 1, duration: 0.25 }, farm - 0.4);
-      tl.to(minis, { opacity: 1, duration: 0.1, stagger: 0.03 }, farm - 0.3);
-      tl.to([minis, "#s03-farm"], { opacity: 0.2, duration: 0.25 }, ts - 0.1);
-      tl.to(people, { opacity: 1, duration: 0.25, stagger: 0.12 }, ts);
-      people.forEach((p, i) => tl.to(p, { y: "-=24", duration: 0.15, yoyo: true, repeat: 3 }, st - 0.1 + i * 0.08));
+      const ph = el("g", { opacity: 0 }, sv);
+      el("rect", { x: 640, y: 560, width: 270, height: 500, rx: 40, fill: "#161a36", stroke: "#8fa2ff", "stroke-width": 8 }, ph);
+      el("rect", { x: 664, y: 600, width: 222, height: 420, rx: 16, fill: "#232a5a" }, ph);
+      el("rect", { x: 745, y: 690, width: 60, height: 22, rx: 6, fill: "#fff" }, ph);
+      el("rect", { x: 705, y: 710, width: 140, height: 240, rx: 16, fill: "none", stroke: "#fff", "stroke-width": 9 }, ph);
+      const bar = el("rect", { x: 718, y: 922, width: 114, height: 16, rx: 8, fill: "#ff3b55" }, ph);
+      const M = mouse(sv, 330, 830, 0.95); gsap.set(M, { opacity: 0 });
+      const fea = el("path", { d: "M420 640 q60 -40 90 -120 q-10 80 -70 140Z", fill: "#f3f1ea", stroke: "#c9cde6", "stroke-width": 4, opacity: 0 }, sv);
+      const bolts = [zigzag(sv, 430, 760, 650, 760), zigzag(sv, 430, 860, 650, 900, "#4da3ff")]; gsap.set(bolts, { opacity: 0 });
+      const ha = el("text", { x: 180, y: 620, fill: "#ffd43b", "font-family": "Inter", "font-weight": 900, "font-size": 64, opacity: 0 }, sv); ha.textContent = "HIHI!";
+      const P = person(sv, "s03-p", 540, 760, 1.35, { three: false, arms: [24, -24], shirt: "#ff4fb0" }); gsap.set(P.g, { opacity: 0 });
+      const spikes = el("g", {}, P.g);
+      for (let i = 0; i < 7; i++) { const x = -48 + i * 16; el("polyline", { points: `${x},-96 ${x * 1.5 - 8},-150 ${x * 1.6 + 8},-180 ${x * 2.2},-235`, fill: "none", stroke: "#5b3a26", "stroke-width": 14, "stroke-linecap": "round", "stroke-linejoin": "round" }, spikes); }
+      gsap.set(spikes, { scaleY: 0, transformOrigin: "50% 100%" });
+      const sparks = [zigzag(sv, 300, 560, 360, 660), zigzag(sv, 780, 560, 720, 660), zigzag(sv, 260, 760, 330, 820, "#4da3ff"), zigzag(sv, 820, 760, 750, 820, "#4da3ff")]; gsap.set(sparks, { opacity: 0 });
+      const kz = at("L5", "kitzeln"), hu = at("L5", "hundert"), l6 = line("L6")[0], hr = at("L6", "Haare"), sk = at("L6", "senkrecht");
+      tl.fromTo(ph, { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.35, ease: "back.out(1.6)" }, 0.05);
+      tl.to(bar, { opacity: 0.2, duration: 0.15, yoyo: true, repeat: 5 }, 0.3);
+      tl.to("#s03-box", { opacity: 1, duration: 0.25 }, 0.4);
+      tl.fromTo(M, { opacity: 0, x: 150 }, { opacity: 1, x: 330, duration: 0.35, ease: "back.out(1.6)" }, at("L5", "Pikachu") - 0.3);
+      tl.to(fea, { opacity: 1, duration: 0.1 }, kz - 0.2);
+      tl.to(fea, { rotation: 25, svgOrigin: "460 600", duration: 0.08, yoyo: true, repeat: 9 }, kz - 0.1);
+      tl.to(M, { rotation: 8, svgOrigin: "330 930", duration: 0.07, yoyo: true, repeat: 11 }, kz);
+      tl.to(ha, { opacity: 1, duration: 0.1 }, kz + 0.1);
+      tl.to(bolts, { opacity: 1, duration: 0.05, repeat: 9, yoyo: true }, kz + 0.1);
+      tl.to(bar, { opacity: 1, attr: { y: 722, height: 216 }, fill: "#39e27a", duration: 0.55, ease: "power2.out" }, hu - 0.35);
+      count(tl, "#s03-n", 1, 100, hu - 0.35, 0.55, "", " %", "power2.out");
+      tl.to("#s03-box", { scale: 1.14, duration: 0.12, yoyo: true, repeat: 1 }, hu + 0.2);
+      tl.to([ph, M, fea, ha, ...bolts, "#s03-box"], { opacity: 0, duration: 0.22 }, l6 - 0.2);
+      tl.fromTo(P.g, { opacity: 0, scale: 1.0 }, { opacity: 1, scale: 1.35, duration: 0.3, ease: "back.out(1.8)" }, l6);
+      tl.to(spikes, { scaleY: 1, duration: 0.25, ease: "back.out(3)" }, hr);
+      tl.to(sparks, { opacity: 1, duration: 0.05, repeat: 11, yoyo: true }, hr + 0.1);
+      tl.to(P.g, { x: 560, duration: 0.05, yoyo: true, repeat: 15 }, sk - 0.2);
+      tl.to(spikes, { scaleY: 1.15, duration: 0.1, yoyo: true, repeat: 7 }, sk);
       tl.to("#s03-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
       window.__timelines["s03"] = tl;
     })();

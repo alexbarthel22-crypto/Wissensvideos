@@ -68,6 +68,8 @@ Nach Skriptänderungen immer Schritt 4 → 6 neu ausführen (Timings ändern sic
 - Hugging Face ist im Container gesperrt; Stimmen kommen von GitHub-Releases (setup.sh).
 - Wortzeiten sind geschätzt (Pausen-Erkennung + Silben) – Karaoke kann um ~0,1 s abweichen. Whisper/Vosk-Modelle sind im Container nicht ladbar.
 - CSS10 kennt kein „…“ (wird verworfen) und spricht Anglizismen deutsch aus – Aussprache im Skript lautschriftlich schreiben.
+- Google-Stimme liest Namen falsch (z. B. „Relexo“): in script.json `"pronunciations": {"Relaxo": "ʁeˈlakso"}` (IPA) setzen.
+- Große, hüpfende Kapitel-Überschriften + springende Untertitel-Wörter: `"hud": "big"` in script.json, Tag als `"KICKER · TITEL"` (Titel ≤ 8 Zeichen); Szenen-Inhalt dann ab y ≈ 520, `.cbox { top: 398px; }`.
 - Das „TikTok @handle“-Wasserzeichen und die TikTok-Endkarte in den Referenzen stammen vom TikTok-Download, **nicht** ins Video einbauen.
 
 ## Effizient arbeiten (wenig Tokens, gleiche Qualität)

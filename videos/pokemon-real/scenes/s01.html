@@ -4,7 +4,8 @@
     .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
     .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
       font-family: "Inter", sans-serif; font-weight: 900; }
-    #s01-news { left: 70px; top: 760px; width: 940px; height: 360px; border: 5px solid #ffd43b; box-shadow: 0 0 60px rgba(255,212,59,.45); overflow: hidden; text-align: left; }
+    .cbox { top: 398px; } /* unter der großen Kapitel-Überschrift */
+    #s01-news { left: 70px; top: 700px; width: 940px; height: 360px; border: 5px solid #ffd43b; box-shadow: 0 0 60px rgba(255,212,59,.45); overflow: hidden; text-align: left; }
     #s01-news .bar { height: 84px; background: #ffd43b; color: #161a36; display: flex; align-items: center; padding-left: 34px; font-size: 44px; letter-spacing: .06em; }
     #s01-news .hl { padding: 22px 40px 0; font-size: 96px; line-height: 1.02; letter-spacing: -.015em; }
     #s01-news .hl em { font-style: normal; color: #ff3b55; text-shadow: 0 0 26px rgba(255,59,85,.6); }
@@ -28,7 +29,7 @@
       const bolts = [zigzag(sv, 230, 500, 300, 820), zigzag(sv, 850, 500, 780, 820), zigzag(sv, 160, 740, 260, 980, "#4da3ff"), zigzag(sv, 920, 740, 820, 980, "#4da3ff")];
       const B = ball(sv, 540, 720, 210);
       const M = mouse(sv, 540, 700, 0.8); gsap.set(M, { opacity: 0, scale: 0.2 });
-      const echt = at("L1", "echt"), l2 = line("L2")[0], nie = at("L2", "niemand");
+      const echt = at("L1", "Alltag"), l2 = line("L2")[0], nie = at("L2", "komplett");
       tl.fromTo(B.g, { scale: 1.08 }, { scale: 1, duration: 0.5, ease: "expo.out" }, 0);
       bolts.forEach((b, i) => tl.fromTo(b, { opacity: 1 }, { opacity: 0.15, duration: 0.07, repeat: 7, yoyo: true, ease: "none" }, 0.02 + i * 0.05));
       tl.fromTo(glow, { attr: { opacity: 0.18 } }, { attr: { opacity: 0.4 }, duration: 0.3, repeat: 3, yoyo: true }, 0);

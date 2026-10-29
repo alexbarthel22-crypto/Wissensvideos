@@ -21,18 +21,19 @@
     .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
     .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
       font-family: "Inter", sans-serif; font-weight: 900; }
+    .cbox { top: 398px; } /* unter der großen Kapitel-Überschrift */
 
   </style>
-  <div id="root" data-composition-id="s05" data-start="0" data-duration="6.080" data-width="1080" data-height="1920">
-    <div id="s05-stage" class="clip stage" data-start="0" data-duration="6.080" data-track-index="0">
-      <div id="s05-box" class="cbox g" style="opacity:0"><div class="lab">LASTWAGEN NÖTIG</div><div id="s05-n" class="num">100 %</div></div>
+  <div id="root" data-composition-id="s05" data-start="0" data-duration="5.910" data-width="1080" data-height="1920">
+    <div id="s05-stage" class="clip stage" data-start="0" data-duration="5.910" data-track-index="0">
+      <div id="s05-box" class="cbox g" style="opacity:0"><div class="lab">UMZUGSWAGEN NÖTIG</div><div id="s05-n" class="num">100 %</div></div>
       <svg id="s05-svg" class="full" viewBox="0 0 1080 1920"></svg>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 6.08, "L8": [0.2, 2.84], "L8.words": [["ein", 0.2, 0.417], ["pokéball", 0.417, 0.858], ["schrumpft", 0.858, 1.121], ["ein", 1.121, 1.338], ["onix", 1.338, 1.756], ["auf", 1.756, 1.973], ["taschengröße", 1.973, 2.84]], "L9": [3.06, 5.9], "L9.words": [["mit", 3.06, 3.248], ["dieser", 3.248, 3.623], ["technik", 3.623, 4.004], ["bräuchte", 4.004, 4.393], ["die", 4.393, 4.58], ["welt", 4.58, 4.775], ["keine", 4.775, 5.143], ["lastwagen", 5.143, 5.706], ["mehr", 5.706, 5.9]]};
+      const C = {"__dur": 5.91, "L9": [0.2, 2.82], "L9.words": [["ein", 0.2, 0.415], ["pokéball", 0.415, 0.853], ["schrumpft", 0.853, 1.114], ["ein", 1.114, 1.329], ["onix", 1.329, 1.744], ["auf", 1.744, 1.959], ["taschengröße", 1.959, 2.82]], "L10": [3.04, 5.73], "L10.words": [["dein", 3.04, 3.224], ["ganzer", 3.224, 3.58], ["umzug", 3.58, 3.93], ["passt", 4.48, 4.671], ["in", 4.671, 4.844], ["die", 4.844, 5.022], ["hosentasche", 5.022, 5.73]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -171,7 +172,7 @@
       const T = el("g", { opacity: 0 }, sv); el("rect", { x: 300, y: 700, width: 360, height: 200, rx: 12, fill: "#c9cde6" }, T); el("rect", { x: 660, y: 760, width: 140, height: 140, rx: 12, fill: "#4da3ff" }, T);
       el("circle", { cx: 380, cy: 910, r: 40, fill: "#161a36" }, T); el("circle", { cx: 720, cy: 910, r: 40, fill: "#161a36" }, T);
       const X = el("g", { opacity: 0, stroke: "#ff3b55", "stroke-width": 30, "stroke-linecap": "round" }, sv); el("line", { x1: 280, y1: 640, x2: 820, y2: 980 }, X); el("line", { x1: 820, y1: 640, x2: 280, y2: 980 }, X);
-      const pb = at("L8", "Pokéball"), tg = at("L8", "Taschengröße"), l9 = line("L9")[0], ke = at("L9", "keine");
+      const pb = at("L9", "Pokéball"), tg = at("L9", "Taschengröße"), l9 = line("L10")[0], ke = at("L10", "Hosentasche");
       tl.fromTo(O, { opacity: 0 }, { opacity: 1, duration: 0.35 }, 0.05);
       tl.to(B.g, { opacity: 1, duration: 0.25 }, pb);
       tl.to(B.top, { rotation: -50, svgOrigin: "-70 0", duration: 0.2 }, tg - 0.5);

@@ -4,11 +4,17 @@
     .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
     .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
       font-family: "Inter", sans-serif; font-weight: 900; }
-
+    .cbox { top: 398px; } /* unter der großen Kapitel-Überschrift */
+    .s07-c { position: absolute; top: 930px; width: 300px; height: 150px; border-radius: 24px; text-align: center;
+      font-family: "Inter", sans-serif; font-weight: 900; color: #0b0e22; }
+    .s07-c .n { margin-top: 18px; font-size: 52px; line-height: 1; } .s07-c .w { margin-top: 12px; font-size: 32px; letter-spacing: .04em; color: #2a2f55; }
+    .s07-c .n, .s07-c .w { background: inherit; }
+    #s07-c1 { left: 60px; background: #ffd43b; } #s07-c2 { left: 390px; background: #ff8a3d; } #s07-c3 { left: 720px; background: #39e27a; }
   </style>
   <div id="root" data-composition-id="s07" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
     <div id="s07-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
       <svg id="s07-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s07-c1" class="s07-c"><div class="n">PIKACHU</div><div class="w">ALS …?</div></div><div id="s07-c2" class="s07-c"><div class="n">GLURAK</div><div class="w">ALS …?</div></div><div id="s07-c3" class="s07-c"><div class="n">ABRA</div><div class="w">ALS …?</div></div>
     </div>
   </div>
   <script>
@@ -17,24 +23,14 @@
 /*__COMMON_JS__*/
       const tl = gsap.timeline({ paused: true });
       const sv = document.querySelector("#s07-svg");
-      const M = mouse(sv, 540, 780, 0.95);
-      const bars = el("g", { opacity: 0 }, sv); for (let i = 0; i < 7; i++) el("rect", { x: 300 + i * 80, y: 470, width: 20, height: 640, rx: 8, fill: "#8a8fa8" }, bars);
-      el("rect", { x: 280, y: 450, width: 520, height: 30, rx: 10, fill: "#8a8fa8" }, bars); el("rect", { x: 280, y: 1100, width: 520, height: 30, rx: 10, fill: "#8a8fa8" }, bars);
-      const D = dragon(sv, 820, 820, 0.8); gsap.set(D, { opacity: 0 });
-      const H = person(sv, "s07-h", 540, 640, 1.4, { three: false, arms: [8, -8], shirt: "#161a36", sad: false }); gsap.set(H.g, { opacity: 0 });
-      const red = el("circle", { cx: 540, cy: 700, r: 360, fill: "#ff3b55", opacity: 0 }, sv); sv.insertBefore(red, sv.firstChild);
-      const se = at("L12", "sperren"), ka = at("L12", "kämpfen"), wir = at("L12", "wir"), bo = at("L12", "Bösen");
-      tl.fromTo(M, { opacity: 0 }, { opacity: 1, duration: 0.35 }, 0.05);
-      tl.fromTo(bars, { opacity: 0, y: -80 }, { opacity: 1, y: 0, duration: 0.3, ease: "bounce.out" }, se);
-      tl.to(bars, { opacity: 0, duration: 0.2 }, ka - 0.3);
-      tl.to(M, { x: 260, duration: 0.3 }, ka - 0.3);
-      tl.to(D, { opacity: 1, duration: 0.25 }, ka - 0.3);
-      tl.to(M, { x: 420, duration: 0.12, yoyo: true, repeat: 3 }, ka);
-      tl.to(D, { x: 680, duration: 0.12, yoyo: true, repeat: 3 }, ka);
-      tl.to([M, D], { opacity: 0, duration: 0.2 }, wir - 0.25);
-      tl.to(H.g, { opacity: 1, duration: 0.25 }, wir - 0.1);
-      tl.to(red, { opacity: 0.35, duration: 0.3 }, bo - 0.1);
-      tl.to("#s07-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      const B = ball(sv, 540, 680, 200);
+      const du = at("L13", "du?"), wo = at("L13", "wofür?");
+      tl.fromTo(B.g, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.45, ease: "back.out(1.8)" }, 0.05);
+      tl.to(B.g, { rotation: 10, svgOrigin: "540 880", duration: 0.08, repeat: 5, yoyo: true }, du - 0.2);
+      tl.fromTo(".s07-c", { opacity: 0, y: 80, rotation: (i) => [-8, 6, -6][i] }, { opacity: 1, y: 0, rotation: 0, duration: 0.4, stagger: 0.12, ease: "back.out(2)" }, du + 0.3);
+      tl.to(".s07-c", { y: -16, duration: 0.3, yoyo: true, repeat: 11, stagger: 0.1, ease: "sine.inOut" }, du + 1.0);
+      tl.to(".s07-c .w", { scale: 1.25, duration: 0.15, yoyo: true, repeat: 1, stagger: 0.08 }, wo - 0.1);
+      tl.to(B.g, { rotation: -10, svgOrigin: "540 880", duration: 0.08, repeat: 5, yoyo: true }, wo);
       window.__timelines["s07"] = tl;
     })();
   </script>

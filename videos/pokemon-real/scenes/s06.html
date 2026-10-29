@@ -4,12 +4,14 @@
     .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
     .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
       font-family: "Inter", sans-serif; font-weight: 900; }
-    #s06-sec { left: 250px; top: 460px; width: 580px; height: 90px; border: 5px solid #ff3b55; color: #ff3b55; font-size: 52px; line-height: 80px; letter-spacing: .1em; opacity: 0; }
+    .cbox { top: 398px; } /* unter der großen Kapitel-Überschrift */
+    #s06-boss { left: 770px; top: 500px; width: 140px; height: 120px; color: #ff3b55; font-size: 120px; line-height: 120px; background: none; opacity: 0; }
   </style>
   <div id="root" data-composition-id="s06" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
     <div id="s06-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s06-box" class="cbox g" style="opacity:0"><div class="lab">STAU</div><div id="s06-n" class="num">45 MIN</div></div>
       <svg id="s06-svg" class="full" viewBox="0 0 1080 1920"></svg>
-      <div id="s06-sec" class="panel">STRENG GEHEIM</div>
+      <div id="s06-boss" class="panel">!</div>
     </div>
   </div>
   <script>
@@ -18,21 +20,45 @@
 /*__COMMON_JS__*/
       const tl = gsap.timeline({ paused: true });
       const sv = document.querySelector("#s06-svg");
-      const aura = el("circle", { cx: 540, cy: 800, r: 220, fill: "#b06bff", opacity: 0 }, sv);
-      const leg = el("g", { opacity: 0 }, sv); el("path", { d: "M540 600 q-120 60 -110 200 q10 120 110 140 q100 -20 110 -140 q10 -140 -110 -200Z", fill: "#e9d6ff" }, leg);
-      el("path", { d: "M560 940 q160 40 180 -120", stroke: "#e9d6ff", "stroke-width": 30, fill: "none", "stroke-linecap": "round" }, leg);
-      el("circle", { cx: 510, cy: 700, r: 10, fill: "#7a2fd0" }, leg); el("circle", { cx: 570, cy: 700, r: 10, fill: "#7a2fd0" }, leg);
-      const warn = el("g", { opacity: 0 }, sv); el("path", { d: "M540 1000 l60 100 h-120Z", fill: "#ffd43b" }, warn); el("text", { x: 540, y: 1090, "text-anchor": "middle", "font-family": "Inter", "font-weight": 900, "font-size": 60, fill: "#161a36" }, warn).textContent = "!";
-      const door = el("g", {}, sv); el("circle", { cx: 0, cy: 0, r: 330, fill: "#3a3f6e", stroke: "#8a8fa8", "stroke-width": 24 }, door);
-      for (let i = 0; i < 6; i++) el("rect", { x: -12, y: -300, width: 24, height: 120, fill: "#8a8fa8", transform: `rotate(${i * 60})` }, door);
-      el("circle", { cx: 0, cy: 0, r: 90, fill: "#5b607a" }, door);
-      gsap.set(door, { x: 1500, y: 800 });
-      const lg = at("L10", "Legendäre"), aw = at("L10", "Atomwaffen"), vs = at("L10", "verstecken");
-      tl.to([aura, leg], { opacity: 1, duration: 0.4 }, lg - 0.1);
-      tl.to(aura, { attr: { r: 300, opacity: 0.35 }, duration: 0.5, repeat: 3, yoyo: true }, lg + 0.2);
-      tl.to(warn, { opacity: 1, duration: 0.2 }, aw - 0.1);
-      tl.to("#s06-sec", { opacity: 1, duration: 0.25 }, aw + 0.3);
-      tl.to(door, { x: 540, rotation: -180, duration: 0.6, ease: "power3.inOut" }, vs - 0.3);
+      const A = el("g", {}, sv); gsap.set(A, { x: 250, y: 860, scale: 0.9, transformOrigin: "0 0" });
+      el("path", { d: "M60 60 q120 -10 110 -120 q-40 70 -110 80Z", fill: "#e8b32a" }, A);
+      el("ellipse", { cx: 0, cy: 40, rx: 90, ry: 110, fill: "#e8b32a" }, A);
+      el("ellipse", { cx: 0, cy: 50, rx: 66, ry: 64, fill: "#8a5a2b" }, A);
+      el("path", { d: "M-60 -150 l-20 -90 l60 60Z M60 -150 l20 -90 l-60 60Z", fill: "#e8b32a" }, A);
+      el("circle", { cx: 0, cy: -110, r: 78, fill: "#e8b32a" }, A);
+      el("path", { d: "M-44 -118 q14 8 28 0 M16 -118 q14 8 28 0", stroke: "#161a36", "stroke-width": 7, fill: "none", "stroke-linecap": "round" }, A);
+      const office = el("g", { opacity: 0 }, sv);
+      el("rect", { x: 740, y: 950, width: 310, height: 70, rx: 8, fill: "#8a5a2b" }, office);
+      el("rect", { x: 770, y: 1020, width: 20, height: 80, fill: "#6b4f2a" }, office); el("rect", { x: 1000, y: 1020, width: 20, height: 80, fill: "#6b4f2a" }, office);
+      el("rect", { x: 940, y: 860, width: 100, height: 84, rx: 10, fill: "#161a36", stroke: "#8fa2ff", "stroke-width": 6 }, office);
+      el("text", { x: 895, y: 1000, "text-anchor": "middle", "font-family": "Space Mono", "font-weight": 700, "font-size": 40, fill: "#ffe0a3" }, office).textContent = "BÜRO";
+      const B = person(office, "s06-b", 840, 740, 1.0, { three: false, arms: [14, -14], shirt: "#3a3f6e", hair: "#8a8fa8" });
+      const P = person(sv, "s06-p", 560, 760, 1.05, { three: false, arms: [16, -16], shirt: "#7fd1ff", pants: "#7fd1ff" });
+      const str = el("g", {}, P.g); for (let i = 0; i < 4; i++) el("rect", { x: -56, y: 14 + i * 30, width: 112, height: 10, fill: "#fff", opacity: 0.8 }, str);
+      for (let i = 0; i < 3; i++) el("rect", { x: -34 + (i % 2) * 40, y: 140 + i * 26, width: 28, height: 8, fill: "#fff", opacity: 0.8 }, P.g);
+      const cap = el("path", { d: "M-46 -84 q46 -70 92 0 q20 -10 40 10 l-10 20Z", fill: "#ff4fb0" }, P.g);
+      const blush = [el("circle", { cx: -28, cy: -36, r: 12, fill: "#ff3b55", opacity: 0 }, P.g), el("circle", { cx: 28, cy: -36, r: 12, fill: "#ff3b55", opacity: 0 }, P.g)];
+      const fl1 = el("circle", { cx: 560, cy: 800, r: 20, fill: "#fff", opacity: 0 }, sv), fl2 = el("circle", { cx: 600, cy: 800, r: 20, fill: "#e9d6ff", opacity: 0 }, sv);
+      const tp = at("L11", "teleportiert"), bu = at("L11", "Büro"), stau = at("L11", "Stau"), l12 = line("L12")[0], sa = at("L12", "Schlafanzug");
+      tl.fromTo([A, P.g], { opacity: 0 }, { opacity: 1, duration: 0.35, stagger: 0.1 }, 0.05);
+      tl.to(A, { y: 840, duration: 0.5, yoyo: true, repeat: 3, ease: "sine.inOut" }, 0.4);
+      tl.to("#s06-box", { opacity: 1, duration: 0.25 }, tp - 0.4);
+      tl.to(fl1, { attr: { r: 300 }, opacity: 1, duration: 0.15 }, tp + 0.1);
+      tl.set(P.g, { opacity: 0 }, tp + 0.25);
+      tl.to(fl1, { opacity: 0, duration: 0.3 }, tp + 0.25);
+      tl.to(A, { x: 180, scale: 0.7, duration: 0.3 }, tp + 0.25);
+      tl.to(office, { opacity: 1, duration: 0.3 }, bu - 0.35);
+      tl.set(P.g, { x: 600, scale: 1.05, opacity: 1 }, bu - 0.05);
+      tl.fromTo(fl2, { attr: { r: 20 }, opacity: 1 }, { attr: { r: 260 }, opacity: 0, duration: 0.35 }, bu - 0.1);
+      count(tl, "#s06-n", 45, 0, stau - 0.3, 0.6, "", " MIN", "power3.out");
+      tl.to("#s06-box", { scale: 1.14, duration: 0.12, yoyo: true, repeat: 1 }, stau + 0.25);
+      tl.to("#s06-box", { opacity: 0, duration: 0.2 }, l12 - 0.1);
+      tl.to(P.g, { scale: 1.25, x: 580, duration: 0.3, ease: "back.out(2)" }, sa - 0.3);
+      tl.to(blush, { opacity: 0.8, duration: 0.2 }, sa);
+      tl.to(str, { opacity: 0.3, duration: 0.1, yoyo: true, repeat: 5 }, sa);
+      tl.fromTo("#s06-boss", { opacity: 0, scale: 0.3 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(3)" }, sa - 0.05);
+      tl.to(B.g, { x: 852, duration: 0.05, yoyo: true, repeat: 11 }, sa);
+      tl.to(cap, { rotation: 20, svgOrigin: "0 -84", duration: 0.12, yoyo: true, repeat: 5 }, sa + 0.1);
       tl.to("#s06-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
       window.__timelines["s06"] = tl;
     })();

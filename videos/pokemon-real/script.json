@@ -1,37 +1,37 @@
 {
   "title": "Was wäre, wenn Pokémon real wären?",
-  "voice": "Google Chirp 3 HD (de-DE-Chirp3-HD-Puck), Platzhalter bis Schlüssel da: thorsten-vits",
+  "voice": "Google Chirp 3 HD (de-DE-Chirp3-HD-Leda, jung, weiblich)",
+  "hud": "big",
+  "pronunciations": { "Relaxo": "ʁeˈlakso" },
   "lead_in": 0.9,
   "check_ok": true,
   "scenes": [
-    { "id": "s01", "tag": "WAS WÄRE WENN", "lines": [
-        { "id": "L1", "text": "Was wäre, wenn *y:Pokémon / *r:wirklich existieren? / Nicht *p:niedlich. / Sondern *r:echt.", "speed": 0.96 },
-        { "id": "L2", "text": "*y:1.025|Tausendfünfundzwanzig *y:Arten. / Und an das hier / hat *r:niemand gedacht." } ],
-      "sfx": [ { "name": "zap-sting", "at": "s01+0.0", "volume": 0.8 }, { "name": "pop", "at": "L1:echt", "volume": 0.5 } ] },
+    { "id": "s01", "tag": "WAS WÄRE WENN ·", "lines": [
+        { "id": "L1", "text": "Was wäre, wenn *y:Pokémon / *r:wirklich existieren? / Nicht im Fernsehen. / Sondern in *r:deinem *r:Alltag.", "speed": 0.96 },
+        { "id": "L2", "text": "*y:1.025|Tausendfünfundzwanzig *y:Arten. / Und es wird / *r:komplett *r:verrückt." } ],
+      "sfx": [ { "name": "zap-sting", "at": "s01+0.0", "volume": 0.3 }, { "name": "pop", "at": "L1:Alltag", "volume": 0.5 } ] },
     { "id": "s02", "tag": "PERSPEKTIVE 1 · ESSEN", "check": "ESSEN", "lines": [
         { "id": "L3", "text": "Ein *y:Relaxo / frisst laut Pokédex / *r:400|vierhundert *r:Kilo am Tag." },
-        { "id": "L4", "text": "Eine Million Relaxo – / und die Welt / hat eine *r:Hungersnot." } ],
-      "sfx": [ { "name": "impact-bass-1", "at": "L4:Hungersnot", "volume": 0.45 } ] },
+        { "id": "L4", "text": "Dein Kühlschrank? / In *r:zehn *r:Sekunden leer. / Und dein Pizzabote / wird *g:Millionär." } ],
+      "sfx": [ { "name": "glitch-1", "at": "L4:Sekunden", "volume": 0.25 }, { "name": "notification", "at": "L4:Millionär", "volume": 0.35 } ] },
     { "id": "s03", "tag": "PERSPEKTIVE 2 · STROM", "check": "STROM", "lines": [
-        { "id": "L5", "text": "Ein *y:Pikachu / ist ein *y:lebendes *y:Kraftwerk." },
-        { "id": "L6", "text": "Stromkonzerne würden / *r:Pikachu-Farmen bauen. / Tierschützer / gehen auf die *r:Straße." } ],
-      "sfx": [ { "name": "glitch-1", "at": "L5:Kraftwerk", "volume": 0.25 }, { "name": "notification", "at": "L6:Tierschützer", "volume": 0.3 } ] },
-    { "id": "s04", "tag": "PERSPEKTIVE 3 · VERSICHERUNG", "check": "RECHT", "lines": [
-        { "id": "L7", "text": "Dein *y:Glurak / fackelt das Nachbarhaus ab? / Willkommen bei der / *b:Glurak-Haftpflicht." } ],
-      "sfx": [ { "name": "impact-bass-2", "at": "L7:fackelt", "volume": 0.35 }, { "name": "pop", "at": "L7:Glurak-Haftpflicht", "volume": 0.45 } ] },
-    { "id": "s05", "tag": "PERSPEKTIVE 4 · LOGISTIK", "check": "TRANSPORT", "lines": [
-        { "id": "L8", "text": "Ein *y:Pokéball / schrumpft ein *y:Onix / auf Taschengröße." },
-        { "id": "L9", "text": "Mit dieser Technik / bräuchte die Welt / *g:keine *g:Lastwagen mehr." } ],
-      "sfx": [ { "name": "whoosh-short", "at": "L8:Taschengröße", "volume": 0.35 }, { "name": "pop", "at": "L9:keine", "volume": 0.45 } ] },
-    { "id": "s06", "tag": "PERSPEKTIVE 5 · POLITIK", "check": "POLITIK", "lines": [
-        { "id": "L10", "text": "*r:Legendäre Pokémon / wären wie *r:Atomwaffen. / Staaten würden sie / *b:verstecken." } ],
-      "sfx": [ { "name": "impact-bass-1", "at": "L10:Atomwaffen", "volume": 0.45 } ] },
-    { "id": "s07", "tag": "PERSPEKTIVE 6 · POKÉMON", "lines": [
-        { "id": "L11", "text": "Und aus Sicht / der *p:Pokémon?", "speed": 0.95 },
-        { "id": "L12", "text": "Wir *r:sperren sie ein / und lassen sie *r:kämpfen. / Wären *p:wir / die *r:Bösen?", "pause": 0.35, "speed": 0.93 } ],
-      "sfx": [ { "name": "error", "at": "L12:Bösen", "volume": 0.3 } ] },
-    { "id": "s08", "tag": "UND DU?", "hold": 2.8, "lines": [
-        { "id": "L13", "text": "Welches Pokémon / hättest *y:du? / Schreib's in die *y:Kommentare!", "pause": 0.3 } ],
+        { "id": "L5", "text": "Handy-Akku leer? / Einmal *y:Pikachu *y:kitzeln – / *g:hundert *g:Prozent." },
+        { "id": "L6", "text": "Kleiner Nachteil: / Deine *r:Haare stehen / eine *r:Woche lang *r:senkrecht." } ],
+      "sfx": [ { "name": "zap-sting", "at": "L5:kitzeln", "volume": 0.25 }, { "name": "glitch-1", "at": "L6:senkrecht", "volume": 0.3 } ] },
+    { "id": "s04", "tag": "PERSPEKTIVE 3 · GRILLEN", "check": "GRILLEN", "lines": [
+        { "id": "L7", "text": "*y:Glurak grillt / deine Würstchen / in *r:zwei *r:Sekunden. / Leider auch / das *r:Nachbarhaus." },
+        { "id": "L8", "text": "Willkommen bei der / *b:Glurak-Haftpflicht!" } ],
+      "sfx": [ { "name": "impact-bass-2", "at": "L7:Nachbarhaus", "volume": 0.35 }, { "name": "pop", "at": "L8:Glurak-Haftpflicht", "volume": 0.45 } ] },
+    { "id": "s05", "tag": "PERSPEKTIVE 4 · UMZUG", "check": "UMZUG", "lines": [
+        { "id": "L9", "text": "Ein *y:Pokéball / schrumpft ein *y:Onix / auf Taschengröße." },
+        { "id": "L10", "text": "Dein *g:ganzer *g:Umzug? / Passt in die *g:Hosentasche." } ],
+      "sfx": [ { "name": "whoosh-short", "at": "L9:Taschengröße", "volume": 0.35 }, { "name": "pop", "at": "L10:Hosentasche", "volume": 0.45 } ] },
+    { "id": "s06", "tag": "PERSPEKTIVE 5 · BÜRO", "check": "BÜRO", "lines": [
+        { "id": "L11", "text": "*y:Abra teleportiert dich / morgens *g:direkt ins Büro. / *g:Nie *g:wieder *g:Stau." },
+        { "id": "L12", "text": "Blöd nur, / wenn du noch / im *r:Schlafanzug bist.", "pause": 0.3 } ],
+      "sfx": [ { "name": "zap-sting", "at": "L11:teleportiert", "volume": 0.25 }, { "name": "error", "at": "L12:Schlafanzug", "volume": 0.3 } ] },
+    { "id": "s07", "tag": "UND DU?", "hold": 2.8, "lines": [
+        { "id": "L13", "text": "Und *y:du? / Welches Pokémon / würdest du am liebsten / in deinem Alltag nutzen – / und *y:wofür? / Schreib's in die *y:Kommentare!", "pause": 0.3 } ],
       "sfx": [ { "name": "notification", "at": "L13:Kommentare", "volume": 0.4 } ] }
   ]
 }
