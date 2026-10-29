@@ -1,0 +1,71 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .bub { position: absolute; border-radius: 26px; background: #f3f1ea; color: #161a36; font-family: "Inter", sans-serif;
+      font-weight: 900; text-align: center; padding: 22px 26px; font-size: 40px; line-height: 1.1; opacity: 0; }
+    .rule { position: absolute; left: 0; width: 1080px; top: 440px; text-align: center; font-family: "Inter", sans-serif; font-weight: 900;
+      font-size: 120px; color: #ffd43b; text-shadow: 0 0 40px rgba(255,212,59,.5), 0 8px 0 rgba(0,0,0,.5); opacity: 0; }
+    #s03-lab { left: 240px; top: 440px; width: 600px; height: 100px; border: 5px solid #ff3b55; color: #ff3b55; font-size: 58px; line-height: 90px; box-shadow: 0 0 40px rgba(255,59,85,.5); opacity: 0; }
+    #s03-late { left: 300px; top: 450px; width: 480px; height: 96px; border: 5px solid #39e27a; color: #39e27a; font-size: 52px; line-height: 86px; box-shadow: 0 0 40px rgba(57,226,122,.45); opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="s03" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s03-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <svg id="s03-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s03-lab" class="panel">DER SAMMLER</div><div id="s03-late" class="panel">ZU SPÄT!</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s03-svg");
+      const A = el("g", {}, sv);
+      el("rect", { x: 300, y: 560, width: 480, height: 570, rx: 10, fill: "#3a2614" }, A);
+      const door = el("rect", { x: 330, y: 590, width: 420, height: 540, rx: 6, fill: "#7a4b22" }, A);
+      el("circle", { cx: 700, cy: 860, r: 18, fill: "#ffd43b" }, A);
+      const pg = el("circle", { cx: 540, cy: 700, r: 70, fill: "#ffd43b", opacity: 0.6 }, A);
+      el("circle", { cx: 540, cy: 700, r: 26, fill: "#f3f1ea" }, A);
+      const pu = el("circle", { cx: 540, cy: 700, r: 11, fill: "#161a36" }, A);
+      const key = el("g", { opacity: 0 }, A);
+      el("rect", { x: 690, y: 896, width: 70, height: 10, rx: 4, fill: "#ffd43b" }, key);
+      el("circle", { cx: 774, cy: 901, r: 22, fill: "none", stroke: "#ffd43b", "stroke-width": 10 }, key);
+      const B = el("g", { opacity: 0 }, sv);
+      el("rect", { x: 0, y: 420, width: 1080, height: 710, fill: "#141838" }, B);
+      el("circle", { cx: 900, cy: 520, r: 50, fill: "#f3f1ea", opacity: 0.8 }, B);
+      const win = el("rect", { x: 80, y: 600, width: 260, height: 380, rx: 8, fill: "#10142f" }, B);
+      el("rect", { x: 0, y: 980, width: 1080, height: 26, fill: "#3a3f7a" }, B);
+      for (let i = 0; i < 22; i++) el("rect", { x: 10 + i * 50, y: 880, width: 10, height: 100, fill: "#3a3f7a" }, B);
+      el("rect", { x: 0, y: 872, width: 1080, height: 16, rx: 6, fill: "#3a3f7a" }, B);
+      const run = el("g", {}, B);
+      const P = person(run, "s03-p", 480, 700, 0.9, { long: true, hair: "#4a2c1d", shirt: "#ff4fb0", arms: [40, -40] });
+      const Sp = person(run, "s03-s", 640, 690, 0.95, { shades: true, blind: true, shirt: "#39a06a", hair: "#2a2f55", arms: [40, -40] });
+      const beam = el("path", { d: "M210 760 L1100 560 L1100 980Z", fill: "#ffe680", opacity: 0 }, B);
+      const debris = [0, 1, 2, 3, 4, 5].map((i) => el("rect", { x: 200, y: 760, width: 26, height: 12, rx: 3, fill: "#a86b2c", opacity: 0 }, B));
+      const sa = at("L6", "sammelt"), l7 = line("L7")[0], ba = at("L7", "Balkon"), sp = at("L29", "splittert"), li = at("L29", "Lichtkegel"), zs = at("L29", "zu");
+      tl.fromTo(A, { opacity: 0, scale: 0.94, svgOrigin: "540 840" }, { opacity: 1, scale: 1, svgOrigin: "540 840", duration: 0.4, ease: "expo.out" }, 0.05);
+      tl.to(pg, { attr: { r: 110 }, opacity: 0.9, duration: 0.4, repeat: 5, yoyo: true }, 0.4);
+      tl.to(pu, { attr: { cx: 552 }, duration: 0.3, repeat: 3, yoyo: true }, 1.0);
+      tl.fromTo("#s03-lab", { opacity: 0, scale: 1.5 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(2.4)" }, sa - 0.1);
+      tl.to("#s03-lab", { opacity: 0, duration: 0.2 }, l7 - 0.15);
+      tl.fromTo(key, { opacity: 0, x: 60 }, { opacity: 1, x: 0, duration: 0.3, ease: "power3.out" }, l7);
+      tl.to(key, { scaleY: -1, svgOrigin: "700 901", duration: 0.25 }, l7 + 0.5);
+      tl.to(door, { x: 6, duration: 0.04, repeat: 5, yoyo: true }, l7 + 0.5);
+      tl.to(A, { opacity: 0, duration: 0.2 }, ba - 0.6);
+      tl.to(B, { opacity: 1, duration: 0.2 }, ba - 0.6);
+      tl.to(run, { x: 700, duration: 1.4, ease: "power2.in" }, ba - 0.3);
+      tl.to([P.g, Sp.g], { y: "-=14", duration: 0.12, repeat: 9, yoyo: true }, ba - 0.3);
+      tl.to(win, { fill: "#ffd43b", duration: 0.05 }, sp - 0.05);
+      debris.forEach((d, i) => tl.fromTo(d, { opacity: 1, x: 0, y: 0, rotation: 0 }, { x: 80 + i * 60, y: -120 + i * 50, rotation: 200 + i * 40, opacity: 0, duration: 0.6, ease: "power2.out", immediateRender: false }, sp));
+      tl.to(B, { x: 12, duration: 0.04, repeat: 5, yoyo: true }, sp);
+      tl.to(beam, { opacity: 0.45, duration: 0.15 }, li - 0.1);
+      tl.fromTo(beam, { rotation: -10 }, { rotation: 12, svgOrigin: "210 760", duration: 1.6, ease: "sine.inOut" }, li - 0.1);
+      tl.fromTo("#s03-late", { opacity: 0, scale: 1.5 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(2.4)" }, zs);
+      tl.to("#s03-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s03"] = tl;
+    })();
+  </script>
+</template>

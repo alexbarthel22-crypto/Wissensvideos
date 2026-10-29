@@ -1,0 +1,42 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .bub { position: absolute; border-radius: 26px; background: #f3f1ea; color: #161a36; font-family: "Inter", sans-serif;
+      font-weight: 900; text-align: center; padding: 22px 26px; font-size: 40px; line-height: 1.1; opacity: 0; }
+    .rule { position: absolute; left: 0; width: 1080px; top: 440px; text-align: center; font-family: "Inter", sans-serif; font-weight: 900;
+      font-size: 120px; color: #ffd43b; text-shadow: 0 0 40px rgba(255,212,59,.5), 0 8px 0 rgba(0,0,0,.5); opacity: 0; }
+
+  </style>
+  <div id="root" data-composition-id="s08" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s08-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <svg id="s08-svg" class="full" viewBox="0 0 1080 1920"></svg>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s08-svg");
+      el("rect", { x: 0, y: 1040, width: 1080, height: 90, fill: "#3a3f5c" }, sv);
+      const M = person(sv, "s08-m", 260, 800, 1.0, { blind: true, shirt: "#ff8a3d", hair: "#2a2f55", arms: [12, -130] });
+      const notes = [0, 1, 2].map((i) => el("text", { x: 330 + i * 40, y: 600 - i * 30, "font-family": "Inter", "font-weight": 900, "font-size": 50, fill: "#ffd43b", opacity: 0 }, sv));
+      notes.forEach((n) => (n.textContent = "♪"));
+      const D = [["#a86b2c", 600, 980], ["#f3f1ea", 760, 960], ["#2a2f55", 920, 990]].map(([c, x, y], i) => { const d = dog(sv, x + 500, y, c, 0.8); return { d, x, y }; });
+      const leashes = D.map((o, i) => el("path", { d: `M350 830 L${o.x + 60 - 120} ${o.y - 20}`, stroke: "#ff3b55", "stroke-width": 5, opacity: 0 }, sv));
+      const hearts = [0, 1, 2].map((i) => el("text", { x: 220 + i * 70, y: 640, "font-size": 60, fill: "#ff4fb0", opacity: 0 }, sv));
+      hearts.forEach((h) => (h.textContent = "♥"));
+      const ru = at("L30", "ruft"), dr = at("L30", "Drei"), al = at("L30", "alle");
+      notes.forEach((n, i) => tl.fromTo(n, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.25, repeat: 1, yoyo: true }, ru + i * 0.15));
+      D.forEach((o, i) => { tl.to(o.d.g, { x: o.x - 120, duration: 0.45, ease: "power3.out" }, dr - 0.1 + i * 0.15);
+        tl.to(o.d.tail, { rotation: 25, svgOrigin: "-70 -10", duration: 0.1, repeat: 13, yoyo: true }, dr + i * 0.15); });
+      tl.to(leashes, { opacity: 1, duration: 0.15, stagger: 0.1 }, al - 0.1);
+      hearts.forEach((h, i) => tl.fromTo(h, { opacity: 0, y: 0 }, { opacity: 1, y: -60, duration: 0.6, ease: "power2.out" }, al + i * 0.12));
+      tl.to("#s08-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s08"] = tl;
+    })();
+  </script>
+</template>

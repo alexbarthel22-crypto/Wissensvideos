@@ -1,0 +1,62 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .bub { position: absolute; border-radius: 26px; background: #f3f1ea; color: #161a36; font-family: "Inter", sans-serif;
+      font-weight: 900; text-align: center; padding: 22px 26px; font-size: 40px; line-height: 1.1; opacity: 0; }
+    .rule { position: absolute; left: 0; width: 1080px; top: 440px; text-align: center; font-family: "Inter", sans-serif; font-weight: 900;
+      font-size: 120px; color: #ffd43b; text-shadow: 0 0 40px rgba(255,212,59,.5), 0 8px 0 rgba(0,0,0,.5); opacity: 0; }
+    #s11-q { position: absolute; left: 0; width: 1080px; top: 520px; text-align: center; font-family: "Inter", sans-serif; font-weight: 900; font-size: 300px;
+      color: #ff3b55; text-shadow: 0 0 60px rgba(255,59,85,.7); opacity: 0; }
+    #s11-vig { background: radial-gradient(ellipse 60% 45% at 50% 42%, rgba(0,0,0,0) 40%, rgba(160,0,20,.75) 100%); opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="s11" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s11-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <svg id="s11-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s11-q" class="abs">?</div><div id="s11-vig" class="full"></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s11-svg");
+      const wall = el("g", {}, sv);
+      el("rect", { x: 0, y: 420, width: 1080, height: 710, fill: "#2b2440" }, wall);
+      for (let r = 0; r < 9; r++) el("path", { d: `M0 ${440 + r * 76} h1080`, stroke: "#3a3158", "stroke-width": 4 }, wall);
+      const posters = [[110, 500, -5], [410, 470, 3], [710, 510, -2]].map(([x, y, rot], i) => {
+        const g = el("g", { opacity: 0 }, wall); gsap.set(g, { rotation: rot, svgOrigin: `${x + 130} ${y + 180}` });
+        el("rect", { x, y, width: 260, height: 360, rx: 8, fill: "#f3f1ea" }, g);
+        el("rect", { x, y, width: 260, height: 64, fill: "#ff3b55" }, g);
+        el("text", { x: x + 130, y: y + 46, "text-anchor": "middle", "font-family": "Inter", "font-weight": 900, "font-size": 38, fill: "#fff" }, g).textContent = "GESUCHT";
+        el("path", { d: `M${x + 70} ${y + 250} C${x + 64} ${y + 120} ${x + 196} ${y + 120} ${x + 190} ${y + 250}Z`, fill: "#4a2c1d" }, g);
+        el("circle", { cx: x + 130, cy: y + 180, r: 48, fill: "#f2c9a5" }, g);
+        el("path", { d: `M${x + 82} ${y + 172} C${x + 82} ${y + 112} ${x + 178} ${y + 112} ${x + 178} ${y + 172} C${x + 160} ${y + 140} ${x + 110} ${y + 136} ${x + 82} ${y + 172}Z`, fill: "#4a2c1d" }, g);
+        el("rect", { x: x + 70, y: y + 250, width: 120, height: 40, rx: 14, fill: "#ff4fb0" }, g);
+        el("text", { x: x + 130, y: y + 336, "text-anchor": "middle", "font-family": "Inter", "font-weight": 900, "font-size": 36, fill: "#161a36" }, g).textContent = "SINA";
+        return g; });
+      const F = face(sv, 540, 790, 230, { blind: true, hair: "#161a36", skin: "#d9a77f" }); gsap.set(F.g, { opacity: 0 });
+      const pl = at("L16", "Plakate"), ge = at("L16", "Gesicht"), l17 = line("L17")[0], fw = at("L17", "Für"), l31 = line("L31")[0], zu = at("L31", "zurück"), ta = at("L31", "tastet");
+      posters.forEach((p, i) => tl.fromTo(p, { opacity: 0, scale: 1.5 }, { opacity: 1, scale: 1, duration: 0.25, ease: "power4.out" }, pl - 0.1 + i * 0.2));
+      tl.to(posters, { y: -6, duration: 0.05, repeat: 5, yoyo: true }, ge);
+      tl.to(wall, { opacity: 0.25, duration: 0.3 }, fw - 0.3);
+      tl.fromTo("#s11-q", { opacity: 0, scale: 0.4 }, { opacity: 0.95, scale: 1, duration: 0.35, ease: "back.out(2.4)" }, fw);
+      tl.to("#s11-q", { opacity: 0, duration: 0.2 }, l31 - 0.2);
+      tl.to(wall, { opacity: 0, duration: 0.2 }, l31 - 0.2);
+      tl.fromTo(F.g, { opacity: 0, scale: 0.9, svgOrigin: "540 790" }, { opacity: 1, scale: 1, svgOrigin: "540 790", duration: 0.4 }, l31);
+      tl.to(F.cloud, { opacity: 0, duration: 0.08 }, zu - 0.15);
+      tl.to(F.pup, { opacity: 1, duration: 0.08 }, zu - 0.15);
+      tl.fromTo(F.g, { scale: 1 }, { scale: 1.3, svgOrigin: "540 790", duration: 0.3, ease: "power4.out" }, zu - 0.15);
+      tl.to("#s11-vig", { opacity: 1, duration: 0.12 }, zu - 0.15);
+      tl.to(F.cloud, { opacity: 1, duration: 0.2 }, ta - 0.1);
+      tl.to(F.pup, { opacity: 0, duration: 0.2 }, ta - 0.1);
+      tl.to("#s11-vig", { opacity: 0, duration: 0.4 }, ta);
+      tl.to(F.g, { x: -400, opacity: 0, duration: 1.0, ease: "power1.in" }, ta + 0.2);
+      tl.to("#s11-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s11"] = tl;
+    })();
+  </script>
+</template>

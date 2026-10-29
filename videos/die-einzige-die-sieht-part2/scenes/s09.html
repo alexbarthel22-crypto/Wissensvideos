@@ -1,0 +1,52 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .bub { position: absolute; border-radius: 26px; background: #f3f1ea; color: #161a36; font-family: "Inter", sans-serif;
+      font-weight: 900; text-align: center; padding: 22px 26px; font-size: 40px; line-height: 1.1; opacity: 0; }
+    .rule { position: absolute; left: 0; width: 1080px; top: 440px; text-align: center; font-family: "Inter", sans-serif; font-weight: 900;
+      font-size: 120px; color: #ffd43b; text-shadow: 0 0 40px rgba(255,212,59,.5), 0 8px 0 rgba(0,0,0,.5); opacity: 0; }
+    #s09-lab { left: 560px; top: 470px; width: 440px; height: 100px; border: 5px solid #ff3b55; color: #ff3b55; font-size: 50px; line-height: 90px; box-shadow: 0 0 40px rgba(255,59,85,.5); opacity: 0; }
+    #s09-box { opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="s09" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s09-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s09-box" class="cbox p"><div class="lab">DATE LÄUFT SEIT</div><div id="s09-n" class="num">0 MIN</div></div>
+      <svg id="s09-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s09-lab" class="panel">MÜLLTONNE</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s09-svg");
+      el("circle", { cx: 160, cy: 560, r: 110, fill: "#2f7a4a" }, sv); el("rect", { x: 145, y: 640, width: 30, height: 200, fill: "#6b3f1d" }, sv);
+      el("rect", { x: 200, y: 880, width: 460, height: 30, rx: 10, fill: "#a86b2c" }, sv);
+      el("rect", { x: 200, y: 820, width: 460, height: 22, rx: 8, fill: "#a86b2c" }, sv);
+      [230, 610].forEach((x) => el("rect", { x, y: 910, width: 22, height: 130, fill: "#6b3f1d" }, sv));
+      el("rect", { x: 0, y: 1040, width: 1080, height: 90, fill: "#2a5a3a" }, sv);
+      const M = person(sv, "s09-m", 360, 700, 1.0, { blind: true, shirt: "#4da3ff", hair: "#e0a35a", arms: [12, -120] });
+      el("rect", { x: -34, y: 118, width: 68, height: 40, rx: 14, fill: "#2a3170" }, M.g);
+      const fl = el("g", {}, M.a2); el("rect", { x: 49, y: 110, width: 6, height: 60, fill: "#39e27a" }, fl); el("circle", { cx: 52, cy: 108, r: 18, fill: "#ff4fb0" }, fl);
+      const bin = el("g", {}, sv);
+      el("rect", { x: 560, y: 790, width: 170, height: 250, rx: 16, fill: "#2f7a4a" }, bin);
+      const lid = el("rect", { x: 548, y: 770, width: 194, height: 34, rx: 10, fill: "#256a3e" }, bin);
+      el("path", { d: "M600 840 v160 M645 840 v160 M690 840 v160", stroke: "#256a3e", "stroke-width": 8 }, bin);
+      const hearts = [0, 1, 2, 3].map((i) => el("text", { x: 420 + i * 50, y: 640, "font-size": 56, fill: "#ff4fb0", opacity: 0 }, sv));
+      hearts.forEach((h) => (h.textContent = "♥"));
+      const da = at("L12", "Date"), st = at("L12", "Stunde"), mu = at("L12", "Mülltonne");
+      tl.to(M.mouth, { attr: { d: "M-12 -32 q12 12 24 0" }, duration: 0.1 }, 0.3);
+      hearts.forEach((h, i) => tl.fromTo(h, { opacity: 0, y: 0 }, { opacity: 1, y: -90, duration: 0.8, ease: "power1.out" }, da - 0.2 + i * 0.15));
+      tl.fromTo("#s09-box", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2)" }, st - 0.6);
+      count(tl, "#s09-n", 0, 60, st - 0.5, 0.8, "", " MIN", "power2.out");
+      tl.to(lid, { rotation: -25, svgOrigin: "548 787", duration: 0.12, repeat: 3, yoyo: true }, mu - 0.1);
+      tl.fromTo("#s09-lab", { opacity: 0, scale: 1.6 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(2.4)" }, mu);
+      tl.to("#s09-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s09"] = tl;
+    })();
+  </script>
+</template>

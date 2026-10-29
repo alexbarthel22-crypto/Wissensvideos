@@ -1,0 +1,62 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .bub { position: absolute; border-radius: 26px; background: #f3f1ea; color: #161a36; font-family: "Inter", sans-serif;
+      font-weight: 900; text-align: center; padding: 22px 26px; font-size: 40px; line-height: 1.1; opacity: 0; }
+    .rule { position: absolute; left: 0; width: 1080px; top: 440px; text-align: center; font-family: "Inter", sans-serif; font-weight: 900;
+      font-size: 120px; color: #ffd43b; text-shadow: 0 0 40px rgba(255,212,59,.5), 0 8px 0 rgba(0,0,0,.5); opacity: 0; }
+    #s12-b { left: 420px; top: 430px; width: 600px; background: #ff3b55; color: #fff; }
+    #s12-lab { left: 200px; top: 450px; width: 680px; height: 100px; border: 5px solid #ff3b55; color: #ff3b55; font-size: 52px; line-height: 90px; box-shadow: 0 0 40px rgba(255,59,85,.5); opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="s12" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s12-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <svg id="s12-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s12-b" class="bub">„ICH HABE SIE. 6 UHR. BAHNHOF.“</div><div id="s12-lab" class="panel">VON AUSSEN ZU!</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s12-svg");
+      const A = el("g", {}, sv);
+      el("rect", { x: 0, y: 420, width: 1080, height: 710, fill: "#0b0d20" }, A);
+      el("rect", { x: 620, y: 560, width: 300, height: 360, rx: 8, fill: "#1c2250" }, A);
+      el("circle", { cx: 860, cy: 620, r: 34, fill: "#f3f1ea", opacity: 0.7 }, A);
+      const Sp = person(A, "s12-s", 760, 760, 1.05, { blind: true, shades: true, shirt: "#39a06a", hair: "#2a2f55", arms: [12, -150] });
+      const ph = el("rect", { x: 800, y: 640, width: 26, height: 48, rx: 6, fill: "#4da3ff" }, A);
+      const glow = el("circle", { cx: 812, cy: 664, r: 60, fill: "#4da3ff", opacity: 0.25 }, A);
+      el("rect", { x: 80, y: 520, width: 200, height: 600, fill: "#3a2614" }, A);
+      el("rect", { x: 280, y: 520, width: 40, height: 600, fill: "#05060f" }, A);
+      const P = person(A, "s12-p", 300, 780, 1.0, { long: true, hair: "#4a2c1d", shirt: "#ff4fb0" }); gsap.set(P.g, { x: 250 });
+      const B = el("g", { opacity: 0 }, sv);
+      el("rect", { x: 0, y: 420, width: 1080, height: 710, fill: "#0b0d20" }, B);
+      const door = el("g", {}, B);
+      el("rect", { x: 330, y: 560, width: 420, height: 560, rx: 6, fill: "#7a4b22" }, door);
+      const handle = el("rect", { x: 660, y: 830, width: 70, height: 18, rx: 8, fill: "#ffd43b" }, door);
+      const lock = el("g", { opacity: 0 }, B);
+      el("rect", { x: 500, y: 760, width: 80, height: 70, rx: 12, fill: "#ff3b55" }, lock);
+      el("path", { d: "M515 760 v-26 q25 -40 50 0 v26", stroke: "#ff3b55", "stroke-width": 12, fill: "none" }, lock);
+      const te = at("L18", "telefoniert"), ha = at("L19", "habe"), l32 = line("L32")[0], ab = at("L32", "abgeschlossen"), au = at("L32", "außen");
+      tl.fromTo(glow, { attr: { r: 50 } }, { attr: { r: 80 }, duration: 0.5, repeat: 9, yoyo: true }, 0);
+      tl.to(P.g, { x: 290, duration: 0.6, ease: "power2.out" }, te - 0.4);
+      tl.to(P.eyes, { x: 7, duration: 0.2 }, te);
+      tl.fromTo("#s12-b", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2)" }, ha - 0.4);
+      tl.to(P.mouth, { attr: { d: "M-10 -30 q10 -12 20 0 q-10 12 -20 0" }, duration: 0.1 }, ha);
+      tl.to(P.g, { x: 296, duration: 0.04, repeat: 5, yoyo: true }, ha);
+      tl.to("#s12-b", { opacity: 0, duration: 0.2 }, l32 - 0.2);
+      tl.to(A, { opacity: 0, duration: 0.2 }, l32 - 0.2);
+      tl.to(B, { opacity: 1, duration: 0.2 }, l32 - 0.2);
+      tl.to(handle, { rotation: 25, svgOrigin: "668 839", duration: 0.08, repeat: 9, yoyo: true }, ab - 0.4);
+      tl.to(door, { x: 6, duration: 0.04, repeat: 7, yoyo: true }, ab);
+      tl.fromTo(lock, { opacity: 0, scale: 1.8, svgOrigin: "540 780" }, { opacity: 1, scale: 1, svgOrigin: "540 780", duration: 0.25, ease: "power4.out" }, au - 0.1);
+      tl.fromTo("#s12-lab", { opacity: 0, scale: 1.5 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(2.4)" }, au);
+      tl.to("#s12-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s12"] = tl;
+    })();
+  </script>
+</template>

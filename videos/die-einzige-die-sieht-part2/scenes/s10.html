@@ -1,0 +1,50 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .bub { position: absolute; border-radius: 26px; background: #f3f1ea; color: #161a36; font-family: "Inter", sans-serif;
+      font-weight: 900; text-align: center; padding: 22px 26px; font-size: 40px; line-height: 1.1; opacity: 0; }
+    .rule { position: absolute; left: 0; width: 1080px; top: 440px; text-align: center; font-family: "Inter", sans-serif; font-weight: 900;
+      font-size: 120px; color: #ffd43b; text-shadow: 0 0 40px rgba(255,212,59,.5), 0 8px 0 rgba(0,0,0,.5); opacity: 0; }
+    #s10-b { left: 60px; top: 440px; width: 420px; background: #ff4fb0; color: #fff; }
+  </style>
+  <div id="root" data-composition-id="s10" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s10-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <svg id="s10-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s10-b" class="bub">GLÜCK …?</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s10-svg");
+      const scr = el("rect", { x: 140, y: 440, width: 800, height: 260, rx: 10, fill: "#4da3ff", opacity: 0.18 }, sv);
+      for (let r = 0; r < 2; r++) for (let c = 0; c < 7; c++) el("rect", { x: 90 + c * 130 + r * 40, y: 960 + r * 70, width: 110, height: 60, rx: 14, fill: "#8a1f35" }, sv);
+      const P = person(sv, "s10-p", 300, 760, 1.0, { long: true, hair: "#4a2c1d", shirt: "#ff4fb0" });
+      const Sp = person(sv, "s10-s", 720, 750, 1.05, { blind: true, shades: true, shirt: "#39a06a", hair: "#2a2f55", arms: [12, -12] });
+      el("rect", { x: 830, y: 880, width: 140, height: 16, rx: 6, fill: "#6b3f1d" }, sv); el("rect", { x: 890, y: 896, width: 18, height: 140, fill: "#6b3f1d" }, sv);
+      const cup = el("g", {}, sv);
+      el("rect", { x: 900, y: 836, width: 40, height: 44, rx: 6, fill: "#f3f1ea" }, cup);
+      el("path", { d: "M940 846 q14 0 14 12 q0 12 -14 12", stroke: "#f3f1ea", "stroke-width": 5, fill: "none" }, cup);
+      const ring = el("circle", { cx: 860, cy: 960, r: 90, fill: "none", stroke: "#ffd43b", "stroke-width": 8, opacity: 0 }, sv);
+      const fa = at("L14", "fällt"), fn = at("L14", "fängt"), oh = at("L14", "Ohne"), gl = at("L15", "Glück");
+      tl.fromTo(scr, { attr: { opacity: 0.1 } }, { attr: { opacity: 0.3 }, duration: 0.6, repeat: 5, yoyo: true }, 0);
+      tl.fromTo([P.g, Sp.g], { opacity: 0 }, { opacity: 1, duration: 0.4, stagger: 0.15 }, 0.1);
+      tl.to(cup, { x: -30, rotation: -70, svgOrigin: "920 880", duration: 0.25, ease: "power1.in" }, fa - 0.1);
+      tl.to(cup, { y: 90, duration: 0.3, ease: "power2.in" }, fa + 0.15);
+      tl.to(Sp.a2, { rotation: -55, duration: 0.12, ease: "power4.out" }, fn - 0.15);
+      tl.set(cup, { x: -60, y: -20, rotation: 0 }, fn - 0.03);
+      tl.fromTo(ring, { opacity: 1, attr: { r: 40 } }, { opacity: 0, attr: { r: 160 }, duration: 0.5, immediateRender: false }, fn);
+      tl.to(Sp.g, { x: 726, duration: 0.03, repeat: 3, yoyo: true }, fn);
+      tl.to(P.eyes, { x: 7, duration: 0.15 }, oh - 0.2);
+      tl.to(P.mouth, { attr: { d: "M-10 -30 q10 -12 20 0 q-10 12 -20 0" }, duration: 0.1 }, oh);
+      tl.fromTo("#s10-b", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2)" }, gl - 0.1);
+      tl.to("#s10-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s10"] = tl;
+    })();
+  </script>
+</template>

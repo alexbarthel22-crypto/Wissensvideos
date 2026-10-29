@@ -1,0 +1,42 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .bub { position: absolute; border-radius: 26px; background: #f3f1ea; color: #161a36; font-family: "Inter", sans-serif;
+      font-weight: 900; text-align: center; padding: 22px 26px; font-size: 40px; line-height: 1.1; opacity: 0; }
+    .rule { position: absolute; left: 0; width: 1080px; top: 440px; text-align: center; font-family: "Inter", sans-serif; font-weight: 900;
+      font-size: 120px; color: #ffd43b; text-shadow: 0 0 40px rgba(255,212,59,.5), 0 8px 0 rgba(0,0,0,.5); opacity: 0; }
+
+  </style>
+  <div id="root" data-composition-id="s05" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s05-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s05-box" class="cbox p"><div class="lab">SCHAL</div><div id="s05-n" class="num">0 M</div></div>
+      <svg id="s05-svg" class="full" viewBox="0 0 1080 1920"></svg>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s05-svg");
+      el("rect", { x: 140, y: 760, width: 300, height: 320, rx: 40, fill: "#6d55a8" }, sv);
+      el("rect", { x: 100, y: 860, width: 80, height: 220, rx: 30, fill: "#5d4598" }, sv); el("rect", { x: 400, y: 860, width: 80, height: 220, rx: 30, fill: "#5d4598" }, sv);
+      const O = person(sv, "s05-o", 290, 790, 1.0, { blind: true, shirt: "#ff8fb0", hair: "#d8dbe8", pants: "#5d4598", arms: [-40, 40] });
+      el("circle", { cx: 0, cy: -118, r: 22, fill: "#d8dbe8" }, O.g);
+      const scarf = el("path", { d: "M300 960 C420 1000 520 900 620 960 S780 1060 860 960 S980 820 860 760 S600 700 520 620 S700 470 880 520 S1060 640 1040 760", stroke: "#ff3b55", "stroke-width": 34, fill: "none", "stroke-linecap": "round", "stroke-dasharray": "2400", "stroke-dashoffset": "2400" }, sv);
+      const stripes = el("path", { d: "M300 960 C420 1000 520 900 620 960 S780 1060 860 960 S980 820 860 760 S600 700 520 620 S700 470 880 520 S1060 640 1040 760", stroke: "#ffd43b", "stroke-width": 34, fill: "none", "stroke-dasharray": "20 40", opacity: 0 }, sv);
+      const ndl = [el("path", { d: "M250 900 l60 -60", stroke: "#c9cde6", "stroke-width": 7 }, sv), el("path", { d: "M330 900 l-60 -60", stroke: "#c9cde6", "stroke-width": 7 }, sv)];
+      const vi = at("L33", "vierzig");
+      tl.to(ndl, { rotation: 15, svgOrigin: "290 880", duration: 0.1, repeat: Math.floor(C.__dur / 0.1) - 3, yoyo: true }, 0);
+      tl.to(scarf, { attr: { "stroke-dashoffset": 0 }, duration: vi + 0.4, ease: "power1.in" }, 0.1);
+      tl.to(stripes, { opacity: 0.6, duration: 0.3 }, vi);
+      count(tl, "#s05-n", 0, 40, 0.2, vi + 0.3, "", " M", "power2.in");
+      tl.to("#s05-box", { scale: 1.15, duration: 0.12, yoyo: true, repeat: 1 }, vi + 0.3);
+      tl.to("#s05-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s05"] = tl;
+    })();
+  </script>
+</template>
