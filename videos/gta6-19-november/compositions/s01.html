@@ -19,13 +19,25 @@
     .heavy { font-family: "Inter", sans-serif; font-weight: 900; }
 
     #s01-globe { position: absolute; left: 190px; top: 420px; width: 700px; height: 700px; }
+    /* Frame-0-Hook: Eilmeldung über dem leuchtenden Globus */
+    #s01-news { position: absolute; left: 70px; top: 610px; width: 940px; height: 470px; border-radius: 24px;
+      background: rgba(14,10,30,.94); border: 5px solid #ff3b55; box-shadow: 0 0 60px rgba(255,59,85,.55), 0 30px 80px rgba(0,0,0,.6); overflow: hidden; }
+    #s01-news .bar { height: 92px; background: #ff3b55; color: #fff; display: flex; align-items: center; padding-left: 34px;
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 48px; letter-spacing: .06em; }
+    #s01-news .dot { width: 26px; height: 26px; border-radius: 50%; background: #fff; margin-right: 20px; }
+    #s01-news .live { margin-left: auto; margin-right: 30px; font-family: "Space Mono", monospace; font-size: 30px; font-weight: 700;
+      letter-spacing: .14em; padding: 2px 14px; border: 3px solid #fff; border-radius: 8px; }
+    #s01-news .hl { padding: 30px 40px 0 40px; color: #fff; font-family: "Inter", sans-serif; font-weight: 900; font-size: 84px;
+      line-height: 1.02; letter-spacing: -.015em; text-transform: uppercase; }
+    #s01-news .hl em { font-style: normal; color: #ff4fb0; text-shadow: 0 0 26px rgba(255,79,176,.6); }
+    #s01-news .hl b { color: #ffd43b; }
     #s01-cal { position: absolute; left: 380px; top: 520px; width: 320px; height: 350px; border-radius: 22px;
-      background: #f3f1ea; overflow: hidden; box-shadow: 0 24px 60px rgba(0,0,0,.55); }
+      background: #f3f1ea; overflow: hidden; box-shadow: 0 24px 60px rgba(0,0,0,.55); opacity: 0; }
     #s01-cal .hd { height: 92px; background: #ff3b55; color: #fff; text-align: center; line-height: 92px;
       font-family: "Inter", sans-serif; font-weight: 900; font-size: 44px; letter-spacing: .08em; }
     #s01-cal .day { text-align: center; font-family: "Inter", sans-serif; font-weight: 900; font-size: 190px;
       line-height: 240px; color: #161a36; }
-    #s01-cover { position: absolute; left: 330px; top: 470px; width: 420px; height: 560px; border-radius: 18px;
+    #s01-cover { position: absolute; left: 330px; top: 470px; width: 420px; height: 560px; border-radius: 18px; opacity: 0;
       overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,.6); border: 4px solid #ffffff22; }
     #s01-cover .t { position: absolute; left: 0; width: 100%; top: 300px; text-align: center;
       font-family: "Inter", sans-serif; font-weight: 900; font-size: 118px; color: #fff; letter-spacing: -.02em;
@@ -35,12 +47,18 @@
     #s01-ring { opacity: 0; position: absolute; left: 240px; top: 450px; width: 600px; height: 600px; }
     #s01-ringlab { opacity: 0; position: absolute; left: 0; width: 100%; top: 1062px; text-align: center; color: #ffd43b;
       font-family: "Space Mono", monospace; font-weight: 700; font-size: 30px; letter-spacing: .18em; }
+    #s01-mid { position: absolute; left: 240px; top: 500px; width: 600px; height: 420px; border-radius: 30px; opacity: 0;
+      background: #0b0e22; border: 5px solid #2e3670; text-align: center; }
+    #s01-midt { margin-top: 40px; color: #ffd43b; font-family: "Space Mono", monospace; font-weight: 700; font-size: 150px;
+      line-height: 190px; text-shadow: 0 0 30px rgba(255,212,59,.45); }
+    #s01-q { color: #ff3b55; font-family: "Inter", sans-serif; font-weight: 900; font-size: 120px; line-height: 130px;
+      text-shadow: 0 0 30px rgba(255,59,85,.5); }
   </style>
-  <div id="root" data-composition-id="s01" data-start="0" data-duration="7.742" data-width="1080" data-height="1920">
-    <div id="s01-stage" class="clip stage" data-start="0" data-duration="7.742" data-track-index="0">
+  <div id="root" data-composition-id="s01" data-start="0" data-duration="12.459" data-width="1080" data-height="1920">
+    <div id="s01-stage" class="clip stage" data-start="0" data-duration="12.459" data-track-index="0">
       <div id="s01-count" class="cbox">
         <div class="lab">SPIELER ONLINE</div>
-        <div id="s01-num" class="num">0</div>
+        <div id="s01-num" class="num" style="color:#ff4fb0">4.100.000.000</div>
       </div>
       <svg id="s01-globe" viewBox="0 0 700 700">
         <defs>
@@ -51,7 +69,7 @@
           </radialGradient>
           <clipPath id="s01-clip"><circle cx="350" cy="350" r="318" /></clipPath>
         </defs>
-        <circle cx="350" cy="350" r="346" fill="#3d56c9" opacity=".12" />
+        <circle id="s01-halo" cx="350" cy="350" r="346" fill="#ff4fb0" opacity=".22" />
         <circle cx="350" cy="350" r="318" fill="url(#s01-g)" />
         <g clip-path="url(#s01-clip)" fill="#5f78e6" opacity=".55">
           <path d="M120 170 C170 120 260 120 300 160 C330 190 300 240 260 250 C230 258 230 300 200 320 C160 340 110 300 100 250 C92 215 100 190 120 170Z" />
@@ -69,6 +87,10 @@
         </g>
         <g id="s01-dots"></g>
       </svg>
+      <div id="s01-news">
+        <div class="bar"><span class="dot"></span>EILMELDUNG<span class="live">LIVE</span></div>
+        <div class="hl"><b>4,1 Milliarden</b> Menschen spielen <em>GTA&nbsp;6</em> – gleichzeitig</div>
+      </div>
       <div id="s01-cal">
         <div class="hd">NOVEMBER</div>
         <div class="day">19</div>
@@ -104,12 +126,13 @@
                 stroke-dasharray="1772" stroke-dashoffset="1772" transform="rotate(-90 300 300)" />
       </svg>
       <div id="s01-ringlab">24 STUNDEN · 0 PAUSEN</div>
+      <div id="s01-mid"><div id="s01-midt">00:00</div><div id="s01-q">???</div></div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 7.742, "L1": [0.25, 5.418], "L1.words": [["was", 0.25, 0.454], ["passiert", 0.454, 0.875], ["wenn", 0.875, 1.086], ["am", 1.086, 1.282], ["19", 1.282, 1.907], ["november", 1.907, 2.51], ["die", 2.51, 2.714], ["hälfte", 2.714, 3.121], ["aller", 3.121, 3.521], ["menschen", 3.521, 3.942], ["gleichzeitig", 3.942, 4.575], ["gta6", 4.575, 5.192], ["spielt", 5.192, 5.418]], "L2": [5.698, 7.492], "L2.words": [["den", 5.698, 5.913], ["ganzen", 5.913, 6.343], ["tag", 6.343, 6.558], ["ohne", 6.758, 7.122], ["pause", 7.122, 7.493]]};
+      const C = {"__dur": 12.459, "L1": [0.25, 3.669], "L1.words": [["am", 0.25, 0.267], ["19", 0.267, 0.32], ["november", 0.43, 1.285], ["passiert", 1.285, 1.883], ["etwas", 1.883, 2.45], ["das", 2.7, 2.894], ["es", 2.894, 3.081], ["noch", 3.081, 3.281], ["nie", 3.281, 3.475], ["gab", 3.475, 3.669]], "L2": [3.949, 8.78], "L2.words": [["die", 3.949, 4.188], ["hälfte", 4.188, 4.665], ["aller", 4.665, 5.134], ["menschen", 5.134, 5.629], ["spielt", 5.629, 5.893], ["gta6", 5.893, 6.857], ["gleichzeitig", 6.857, 7.599], ["den", 7.799, 8.044], ["ganzen", 8.044, 8.535], ["tag", 8.535, 8.78]], "L2b": [9.06, 12.209], "L2b.words": [["und", 9.06, 9.241], ["um", 9.241, 9.415], ["mitternacht", 9.415, 9.97], ["passiert", 9.97, 10.345], ["etwas", 10.345, 10.7], ["womit", 11.06, 11.434], ["niemand", 11.434, 11.822], ["rechnet", 11.822, 12.21]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -132,40 +155,51 @@
         x = (x + Math.imul(x ^ (x >>> 7), 61 | x)) ^ x; return ((x ^ (x >>> 14)) >>> 0) / 4294967296; };
 
       const tl = gsap.timeline({ paused: true });
-      // Punkte auf den Kontinenten (deterministisch)
+      // Punkte auf den Kontinenten (deterministisch) – im ersten Frame schon alle sichtbar
       const r = rng(1911), dots = document.querySelector("#s01-dots"), ns = "http://www.w3.org/2000/svg";
       const zones = [[200, 220, 110, 80], [255, 460, 45, 90], [470, 230, 110, 70], [425, 420, 45, 70], [560, 478, 40, 20]];
       const made = [];
-      for (let i = 0; i < 170; i++) {
+      for (let i = 0; i < 190; i++) {
         const z = zones[i % zones.length], a = r() * Math.PI * 2, d = Math.sqrt(r());
         const c = document.createElementNS(ns, "circle");
         c.setAttribute("cx", (z[0] + Math.cos(a) * z[2] * d).toFixed(1));
         c.setAttribute("cy", (z[1] + Math.sin(a) * z[3] * d).toFixed(1));
         c.setAttribute("r", (3 + r() * 3).toFixed(1));
         c.setAttribute("fill", "#ff4fb0");
-        c.setAttribute("opacity", "0");
         dots.appendChild(c);
         made.push(c);
       }
-      const half = at("L1", "Hälfte"), gta = at("L1", "GTA"), ganz = at("L2", "ganzen");
+      const cal = at("L1", "passiert"), nie = at("L1", "nie");
+      const half = at("L2", "Hälfte"), gta = at("L2", "GTA"), ganz = at("L2", "ganzen");
+      const l2b = line("L2b")[0], nacht = at("L2b", "Mitternacht"), niemand = at("L2b", "niemand");
 
-      tl.fromTo("#s01-globe", { scale: 0.94, opacity: 0.85 }, { scale: 1, opacity: 1, duration: 1.2, ease: "power2.out" }, 0);
-      tl.fromTo("#s01-count", { opacity: 0, y: -14 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0.15);
-      // Kalenderblatt auf "19. November"
-      tl.fromTo("#s01-cal", { opacity: 0, scale: 0.6, rotation: -8 }, { opacity: 1, scale: 1, rotation: -4, duration: 0.4, ease: "back.out(1.8)" }, at("L1", "19.") - 0.05);
+      // Frame 0: alles steht schon. Kurzer Ruck, damit der Hook "lebt".
+      tl.fromTo("#s01-news", { scale: 1.04 }, { scale: 1, duration: 0.5, ease: "expo.out" }, 0);
+      tl.fromTo("#s01-news .dot", { opacity: 1 }, { opacity: 0.2, duration: 0.25, repeat: 3, yoyo: true, ease: "none" }, 0.1);
+      tl.fromTo("#s01-halo", { attr: { opacity: 0.22 } }, { attr: { opacity: 0.4 }, duration: 0.35, repeat: 3, yoyo: true, ease: "sine.inOut" }, 0);
+      // Kalender auf "19. November", Eilmeldung räumt den Platz
+      tl.to("#s01-news", { opacity: 0, y: 120, scale: 0.9, duration: 0.3, ease: "power3.in" }, cal - 0.3);
+      tl.to("#s01-globe", { opacity: 0.35, duration: 0.3 }, cal - 0.1);
+      tl.fromTo("#s01-cal", { opacity: 0, scale: 0.6, rotation: -8 }, { opacity: 1, scale: 1, rotation: -4, duration: 0.4, ease: "back.out(1.8)" }, cal - 0.05);
+      tl.to("#s01-cal", { rotation: 3, duration: 0.05, repeat: 5, yoyo: true }, nie);
+      // "Die Hälfte aller Menschen": Globus zurück, Punkte blitzen auf
       tl.to("#s01-cal", { opacity: 0, scale: 0.85, y: -40, duration: 0.2, ease: "power2.in" }, half - 0.25);
-      // Hälfte der Menschheit: Punkte + Zähler
-      tl.to(made, { opacity: 0.95, duration: 0.12, stagger: { each: (gta - half) / made.length } }, half);
-      count(tl, "#s01-num", 0, 4100000000, half, gta - half + 0.35, "", "", "power1.inOut");
-      tl.to("#s01-num", { color: "#ff4fb0", duration: 0.2 }, gta + 0.3);
+      tl.to("#s01-globe", { opacity: 1, scale: 1.04, duration: 0.35, ease: "expo.out" }, half - 0.1);
+      tl.fromTo(made, { opacity: 0.2 }, { opacity: 1, duration: 0.1, stagger: { each: 0.004, from: "random" } }, half);
+      tl.fromTo("#s01-count", { scale: 1 }, { scale: 1.08, duration: 0.15, yoyo: true, repeat: 1 }, half + 0.2);
       // Spiel-Cover auf "GTA 6"
-      tl.to("#s01-globe", { opacity: 0.35, scale: 0.92, duration: 0.4, ease: "power2.out" }, gta - 0.05);
+      tl.to("#s01-globe", { opacity: 0.3, scale: 0.92, duration: 0.4, ease: "power2.out" }, gta - 0.05);
       tl.fromTo("#s01-cover", { opacity: 0, y: 160, rotation: 6, scale: 0.8 }, { opacity: 1, y: 0, rotation: -2, scale: 1, duration: 0.5, ease: "back.out(1.6)" }, gta - 0.05);
       // "Den ganzen Tag": 24h-Ring
       tl.fromTo("#s01-ring", { opacity: 0 }, { opacity: 1, duration: 0.2 }, ganz - 0.1);
-      tl.fromTo("#s01-arc", { attr: { "stroke-dashoffset": 1772 } }, { attr: { "stroke-dashoffset": 0 }, duration: 1.3, ease: "power2.inOut" }, ganz);
+      tl.fromTo("#s01-arc", { attr: { "stroke-dashoffset": 1772 } }, { attr: { "stroke-dashoffset": 0 }, duration: 1.1, ease: "power2.inOut" }, ganz);
       tl.fromTo("#s01-ringlab", { opacity: 0 }, { opacity: 1, duration: 0.25 }, ganz + 0.3);
-      tl.to(["#s01-cover", "#s01-ring", "#s01-ringlab", "#s01-count", "#s01-globe"], { opacity: 0, filter: "blur(8px)", duration: 0.2, ease: "power2.in" }, C.__dur - 0.2);
+      // Offene Schleife: "Um Mitternacht passiert etwas …"
+      tl.to(["#s01-cover", "#s01-ring", "#s01-ringlab", "#s01-globe"], { opacity: 0, filter: "blur(8px)", duration: 0.2, ease: "power2.in" }, l2b - 0.15);
+      tl.fromTo("#s01-mid", { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.4, ease: "expo.out" }, nacht - 0.15);
+      tl.fromTo("#s01-q", { opacity: 0 }, { opacity: 1, duration: 0.15 }, niemand - 0.1);
+      tl.to("#s01-mid", { x: 8, duration: 0.04, repeat: 5, yoyo: true }, niemand);
+      tl.to(["#s01-mid", "#s01-count"], { opacity: 0, filter: "blur(8px)", duration: 0.2, ease: "power2.in" }, C.__dur - 0.2);
       window.__timelines["s01"] = tl;
     })();
   </script>

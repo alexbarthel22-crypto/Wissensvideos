@@ -29,8 +29,8 @@
       font-family: "Space Mono", monospace; font-weight: 700; font-size: 28px; letter-spacing: .12em; }
     #s05-dim { position: absolute; inset: 0; background: #05060f; opacity: 0; }
   </style>
-  <div id="root" data-composition-id="s05" data-start="0" data-duration="9.549" data-width="1080" data-height="1920">
-    <div id="s05-stage" class="clip stage" data-start="0" data-duration="9.549" data-track-index="0">
+  <div id="root" data-composition-id="s05" data-start="0" data-duration="9.980" data-width="1080" data-height="1920">
+    <div id="s05-stage" class="clip stage" data-start="0" data-duration="9.980" data-track-index="0">
       <div id="s05-sky"></div>
       <svg id="s05-city" viewBox="0 0 1080 460"><g id="s05-bld"></g><g id="s05-win"></g></svg>
       <svg id="s05-gauge" viewBox="0 0 600 340">
@@ -55,7 +55,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 9.549, "L8": [0.2, 3.027], "L8.words": [["um", 0.2, 0.394], ["sieben", 0.394, 0.796], ["uhr", 0.796, 0.996], ["ziehen", 0.996, 1.398], ["vier", 1.398, 1.606], ["milliarden", 1.606, 2.216], ["konsolen", 2.216, 2.812], ["strom", 2.812, 3.027]], "L9": [3.307, 7.266], "L9.words": [["rund", 3.307, 3.521], ["800", 3.521, 4.155], ["gigawatt", 4.155, 4.767], ["so", 4.877, 5.086], ["viel", 5.086, 5.31], ["wie", 5.31, 5.527], ["800", 5.527, 6.192], ["atomkraftwerke", 6.192, 7.267]], "L10": [7.546, 9.299], "L10.words": [["in", 7.546, 7.731], ["vielen", 7.731, 8.114], ["ländern", 8.114, 8.504], ["flackert", 8.504, 8.901], ["das", 8.901, 9.093], ["licht", 9.093, 9.298]]};
+      const C = {"__dur": 9.98, "L8": [0.2, 3.176], "L8.words": [["um", 0.2, 0.404], ["sieben", 0.404, 0.827], ["uhr", 0.827, 1.039], ["ziehen", 1.039, 1.462], ["vier", 1.462, 1.681], ["milliarden", 1.681, 2.323], ["konsolen", 2.323, 2.95], ["strom", 2.95, 3.176]], "L9": [3.456, 7.387], "L9.words": [["rund", 3.456, 3.668], ["800", 3.668, 4.298], ["gigawatt", 4.298, 4.906], ["so", 5.176, 5.369], ["viel", 5.369, 5.577], ["wie", 5.577, 5.777], ["800", 5.777, 6.392], ["atomkraftwerke", 6.392, 7.387]], "L10": [7.667, 9.73], "L10.words": [["in", 7.667, 7.885], ["vielen", 7.885, 8.336], ["ländern", 8.336, 8.795], ["flackert", 8.795, 9.263], ["das", 9.263, 9.488], ["licht", 9.488, 9.73]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];

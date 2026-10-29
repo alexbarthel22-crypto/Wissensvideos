@@ -1,22 +1,33 @@
 {
   "title": "Was wäre, wenn die Hälfte aller Menschen am 19. November GTA 6 spielt?",
-  "voice": "thorsten",
-  "notes": "Token-Syntax: 'Anzeige|Aussprache'. Farbe als Präfix: *y: gelb, *r: rot, *p: pink, *g: grün, *b: blau. '/' trennt Untertitel-Gruppen. Leerzeichen innerhalb eines Tokens mit '_' schreiben.",
+  "voice": "css10 (weiblich)",
+  "notes": "Token-Syntax: 'Anzeige|Aussprache'. Farbe als Präfix: *y: gelb, *r: rot, *p: pink, *g: grün, *b: blau. '/' trennt Untertitel-Gruppen. Leerzeichen innerhalb eines Tokens mit '_' schreiben. Optionale Felder pro Zeile: 'speed' (0.85 langsam/dramatisch … 1.1 schnell), 'pause' (Sekunden Pause davor).",
   "scenes": [
     {
       "id": "s01",
-      "tag": "WAS WÄRE WENN",
+      "tag": "EILMELDUNG",
       "lines": [
         {
           "id": "L1",
-          "text": "Was passiert, / wenn am *y:19.|neunzehnten *y:November / die *p:Hälfte aller *p:Menschen / gleichzeitig *p:GTA_6|Ge-Te-A-sechs spielt?"
+          "text": "Am *y:19.|neunzehnten *y:November / passiert etwas, / das es *r:noch *r:nie gab.",
+          "speed": 0.95
         },
         {
           "id": "L2",
-          "text": "Den *y:ganzen *y:Tag. / Ohne Pause."
+          "text": "Die *p:Hälfte aller *p:Menschen / spielt *p:GTA_6|Geh-Teh-Ah-sechs. / *y:Gleichzeitig. / Den *y:ganzen *y:Tag!"
+        },
+        {
+          "id": "L2b",
+          "text": "Und um *y:Mitternacht / passiert etwas, / womit *r:niemand *r:rechnet.",
+          "speed": 0.92
         }
       ],
       "sfx": [
+        {
+          "name": "impact-bass-2",
+          "at": "s01+0.0",
+          "volume": 0.5
+        },
         {
           "name": "pop",
           "at": "L1:19.",
@@ -24,7 +35,7 @@
         },
         {
           "name": "pop",
-          "at": "L1:GTA",
+          "at": "L2:GTA",
           "volume": 0.5
         }
       ]
@@ -84,7 +95,7 @@
         },
         {
           "id": "L7",
-          "text": "Videos laden / nicht mehr, / Videocalls|Video-Kolls *b:frieren *b:ein."
+          "text": "Videocalls|Video-Kolls *b:frieren *b:ein."
         }
       ],
       "sfx": [
@@ -218,35 +229,52 @@
       "lines": [
         {
           "id": "L19",
-          "text": "Kurz vor Mitternacht / schauen vier Milliarden / Menschen auf die *y:Uhr …"
+          "text": "Kurz vor Mitternacht / starren vier Milliarden / Menschen auf die *y:Uhr …",
+          "speed": 0.95
         },
         {
           "id": "L20",
-          "text": "und drücken auf: / *p:Noch *p:eine *p:Runde."
+          "text": "Und dann? / Drückt *r:niemand / auf *r:Aus.",
+          "pause": 0.4,
+          "speed": 0.92
+        },
+        {
+          "id": "L20b",
+          "text": "Sondern auf: / *p:Noch *p:eine *p:Runde!"
         }
       ],
       "sfx": [
         {
+          "name": "error",
+          "at": "L20:Aus",
+          "volume": 0.35
+        },
+        {
           "name": "click",
-          "at": "L20:Runde",
+          "at": "L20b:Runde",
           "volume": 0.6
         }
       ]
     },
     {
       "id": "s11",
-      "tag": "20. NOV · 00:00",
-      "hold": 2.6,
+      "tag": "UND DU?",
+      "hold": 2.8,
       "lines": [
         {
           "id": "L21",
-          "text": "Würdest du *y:mitspielen?"
+          "text": "Und *y:du? / Gehörst du am *y:19.|neunzehnten *y:November / zu den *p:vier *p:Milliarden?",
+          "pause": 0.35
+        },
+        {
+          "id": "L22",
+          "text": "Schreib's in die *y:Kommentare!"
         }
       ],
       "sfx": [
         {
           "name": "notification",
-          "at": "L21:mitspielen",
+          "at": "L22:Kommentare",
           "volume": 0.4
         }
       ]

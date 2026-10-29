@@ -60,27 +60,34 @@ def syllables(word):
     return max(1, n) + len(w) * 0.04
 
 
-def synth_piper(texts, voice_dir):
+def synth_piper(texts, voice_dir, scales, noise):
     from piper import PiperVoice
+    from piper.config import SynthesisConfig
     model = next(Path(voice_dir).glob("*.onnx"))
     voice = PiperVoice.load(str(model))
     out = []
-    for t in texts:
-        chunks = [c.audio_float_array for c in voice.synthesize(t)]
+    for t, ls in zip(texts, scales):
+        cfg = SynthesisConfig(length_scale=ls, noise_scale=noise, noise_w_scale=0.9)
+        chunks = [c.audio_float_array for c in voice.synthesize(t, syn_config=cfg)]
         out.append((np.concatenate(chunks), voice.config.sample_rate))
     return out
 
 
-def synth_coqui(texts, model_dir, python):
+def synth_coqui(texts, model_dir, python, scales, noise):
     """Läuft im separaten venv; schreibt WAVs in ein Temp-Verzeichnis."""
     tmp = Path(tempfile.mkdtemp())
-    (tmp / "lines.json").write_text(json.dumps(texts, ensure_ascii=False))
+    (tmp / "lines.json").write_text(json.dumps({"texts": texts, "scales": scales}, ensure_ascii=False))
+    model = next(p for p in Path(model_dir).iterdir() if p.name.startswith("model_file"))
     code = f"""
 import json
 from TTS.api import TTS
-texts = json.load(open({str(tmp / 'lines.json')!r}))
-tts = TTS(model_path={str(Path(model_dir) / 'model_file.pth')!r}, config_path={str(Path(model_dir) / 'config.json')!r})
-for i, t in enumerate(texts):
+job = json.load(open({str(tmp / 'lines.json')!r}))
+tts = TTS(model_path={str(model)!r}, config_path={str(Path(model_dir) / 'config.json')!r})
+m = tts.synthesizer.tts_model
+m.inference_noise_scale = {noise}
+m.inference_noise_scale_dp = 0.9
+for i, (t, ls) in enumerate(zip(job["texts"], job["scales"])):
+    m.length_scale = ls
     tts.tts_to_file(text=t, file_path={str(tmp)!r} + f'/{{i:03d}}.wav')
 """
     subprocess.run([python, "-c", code], check=True)
@@ -98,6 +105,20 @@ def resample(audio, sr):
         src, dst = Path(d) / "a.wav", Path(d) / "b.wav"
         sf.write(src, audio, sr)
         subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", src, "-ar", str(SR), "-ac", "1", dst], check=True)
+        a, _ = sf.read(dst, dtype="float32")
+    return a
+
+
+# Sprachverständlichkeit: Rumpeln weg, Präsenz (2–4 kHz) und Luft anheben, gleichmäßige Lautstärke
+CLARITY = ("highpass=f=80,equalizer=f=250:t=q:w=1:g=-2,equalizer=f=3000:t=q:w=1.2:g=4,"
+           "equalizer=f=7500:t=q:w=1:g=2,acompressor=threshold=-20dB:ratio=3:attack=5:release=90:makeup=2")
+
+
+def clarity(audio):
+    with tempfile.TemporaryDirectory() as d:
+        src, dst = Path(d) / "a.wav", Path(d) / "b.wav"
+        sf.write(src, audio, SR)
+        subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", src, "-af", CLARITY, dst], check=True)
         a, _ = sf.read(dst, dtype="float32")
     return a
 
@@ -163,11 +184,14 @@ def main():
     ap.add_argument("--backend", choices=["coqui", "piper"], default="coqui")
     ap.add_argument("--voice-dir", help="Piper-Stimmenordner oder Coqui-Modellordner (Standard: aus tools/setup.sh)")
     ap.add_argument("--coqui-python", default=str(CACHE / "coqui" / "bin" / "python"))
-    ap.add_argument("--speed", type=float, default=1.0, help=">1 = schneller (atempo)")
+    ap.add_argument("--speed", type=float, default=1.0, help="Grundtempo (>1 = schneller); pro Zeile mit 'speed' feinjustierbar")
+    ap.add_argument("--voice", default="css10", help="Stimme im Cache: css10 (weiblich, coqui), thorsten-vits (männlich, coqui), "
+                    "voice-de-kerstin-low / voice-de-ramona-low (weiblich, piper), voice-de-thorsten-low")
+    ap.add_argument("--noise", type=float, default=0.75, help="Ausdruck/Variation der Stimme (0.33 monoton … 0.9 lebhaft)")
     args = ap.parse_args()
 
     if not args.voice_dir:
-        args.voice_dir = str(CACHE / ("thorsten-vits" if args.backend == "coqui" else "voice-de-thorsten-low"))
+        args.voice_dir = str(CACHE / (args.voice if args.voice != "css10" else "css10-vits"))
     project = Path(args.project)
     script = json.loads((project / "script.json").read_text())
     lines = []
@@ -176,31 +200,28 @@ def main():
             words = parse_tokens(line["text"])
             spoken = " ".join(w["spoken"] for w in words)
             lines.append({"scene": scene["id"], "id": line["id"], "words": words, "spoken": spoken,
-                          "new_scene": li == 0 and si > 0})
+                          "new_scene": li == 0 and si > 0, "pause": line.get("pause", 0.0),
+                          "scale": round(1.0 / (args.speed * line.get("speed", 1.0)), 3)})
 
     texts = [l["spoken"] for l in lines]
+    scales = [l["scale"] for l in lines]
     if args.backend == "piper":
-        raw = synth_piper(texts, args.voice_dir)
+        raw = synth_piper(texts, args.voice_dir, scales, args.noise)
     else:
-        raw = synth_coqui(texts, args.voice_dir, args.coqui_python)
+        raw = synth_coqui(texts, args.voice_dir, args.coqui_python, scales, args.noise)
 
     out_dir = project / "assets" / "voice"
     out_dir.mkdir(parents=True, exist_ok=True)
     pieces, t = [np.zeros(int(LEAD_IN * SR), dtype="float32")], LEAD_IN
     for line, (audio, sr) in zip(lines, raw):
-        audio = trim(resample(audio.astype("float32"), sr))
-        if args.speed != 1.0:
-            with tempfile.TemporaryDirectory() as d:
-                src, dst = Path(d) / "a.wav", Path(d) / "b.wav"
-                sf.write(src, audio, SR)
-                subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", src, "-filter:a", f"atempo={args.speed}", dst], check=True)
-                audio, _ = sf.read(dst, dtype="float32")
+        audio = trim(clarity(resample(audio.astype("float32"), sr)))
         if line["new_scene"]:
             gap = GAP_SCENE
         elif len(pieces) > 1:
             gap = GAP_LINE
         else:
             gap = 0
+        gap += line["pause"]
         pieces.append(np.zeros(int(gap * SR), dtype="float32"))
         t += gap
         dur = len(audio) / SR
@@ -214,7 +235,8 @@ def main():
     audio = audio / max(1e-6, np.max(np.abs(audio))) * 0.89  # ~ -1 dBFS Spitze
     sf.write(out_dir / "narration.wav", audio, SR)
     for l in lines:
-        l.pop("new_scene")
+        for k in ("new_scene", "pause", "scale"):
+            l.pop(k)
     (out_dir / "timings.json").write_text(json.dumps({"duration": round(len(audio) / SR, 3), "lines": lines},
                                                      ensure_ascii=False, indent=1))
     print(f"narration.wav: {len(audio) / SR:.2f} s, {len(lines)} Zeilen")

@@ -128,6 +128,7 @@ def caption_groups(timings, windows):
 
 def build_captions(project, timings, windows, total):
     groups = caption_groups(timings, windows)
+    groups[-1]["end"] = round(total - 0.05, 3)  # letzte Zeile (Frage an die Zuschauer) bleibt stehen
     rows, js = [], []
     for gi, g in enumerate(groups):
         spans = []
@@ -173,7 +174,8 @@ def build_hud(project, windows, total):
         tid = f"tag{i}"
         tags.append(f'      <div id="{tid}" class="clip tag" data-start="{s:.3f}" data-duration="{e - s:.3f}" data-track-index="1">'
                     f'<span id="{tid}t" class="tagt">{esc(sc["tag"])}</span></div>')
-        js.append(f'tl.fromTo("#{tid}t", {{ opacity: 0, y: -8 }}, {{ opacity: 1, y: 0, duration: 0.22, ease: "power3.out" }}, {s:.3f});')
+        if i > 0:  # erste Marke steht ab Frame 0 (Thumbnail/Hook)
+            js.append(f'tl.fromTo("#{tid}t", {{ opacity: 0, y: -8 }}, {{ opacity: 1, y: 0, duration: 0.22, ease: "power3.out" }}, {s:.3f});')
         if sc.get("check"):
             n += 1
             cid = f"chk{n}"
@@ -211,7 +213,7 @@ def build_hud(project, windows, total):
 
 def resolve_sfx_time(spec, windows, lines):
     """'L4:Server' -> absolute Zeit des Wortes; 's03+0.4' -> Szenenstart + Offset."""
-    m = re.match(r"^(L\d+):(.+?)([+-][\d.]+)?$", spec)
+    m = re.match(r"^(L\d+[a-z]?):(.+?)([+-][\d.]+)?$", spec)
     if m:
         l = lines[m.group(1)]
         key = norm(m.group(2))
