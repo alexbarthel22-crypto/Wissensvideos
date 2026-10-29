@@ -25,8 +25,8 @@
     #s04-card .t1 { margin-top: 140px; font-size: 72px; color: #4da3ff; }
     #s04-card .t2 { margin-top: 18px; font-family: "Space Mono", monospace; font-weight: 700; font-size: 34px; color: #dfe2f5; letter-spacing: .08em; }
   </style>
-  <div id="root" data-composition-id="s04" data-start="0" data-duration="4.560" data-width="1080" data-height="1920">
-    <div id="s04-stage" class="clip stage" data-start="0" data-duration="4.560" data-track-index="0">
+  <div id="root" data-composition-id="s04" data-start="0" data-duration="4.570" data-width="1080" data-height="1920">
+    <div id="s04-stage" class="clip stage" data-start="0" data-duration="4.570" data-track-index="0">
       <svg id="s04-svg" class="full" viewBox="0 0 1080 1920"></svg>
       <div id="s04-card" class="panel"><div class="t1">GLURAK-HAFTPFLICHT</div><div class="t2">AB 49 € IM MONAT</div></div>
     </div>
@@ -34,7 +34,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 4.56, "L7": [0.2, 4.38], "L7.words": [["dein", 0.2, 0.413], ["glurak", 0.413, 0.825], ["fackelt", 0.825, 1.244], ["das", 1.244, 1.449], ["nachbarhaus", 1.449, 2.082], ["ab", 2.082, 2.28], ["willkommen", 2.62, 3.2], ["bei", 3.2, 3.391], ["der", 3.391, 3.582], ["glurakhaftpflicht", 3.582, 4.38]]};
+      const C = {"__dur": 4.57, "L7": [0.2, 4.39], "L7.words": [["dein", 0.2, 0.387], ["glurak", 0.387, 0.747], ["fackelt", 0.747, 1.113], ["das", 1.113, 1.293], ["nachbarhaus", 1.293, 1.846], ["ab", 1.846, 2.02], ["willkommen", 2.57, 3.17], ["bei", 3.17, 3.367], ["der", 3.367, 3.565], ["glurakhaftpflicht", 3.565, 4.39]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -173,13 +173,13 @@
       const fire = el("path", { d: "M350 720 Q480 660 640 720 Q480 700 350 740Z", fill: "#ff8a3d", opacity: 0 }, sv);
       const sh = el("g", { opacity: 0 }, sv); el("path", { d: "M540 420 l120 40 v90 q0 90 -120 140 q-120 -50 -120 -140 v-90Z", fill: "#4da3ff" }, sh);
       el("path", { d: "M490 540 l40 40 l70 -80", stroke: "#fff", "stroke-width": 18, fill: "none", "stroke-linecap": "round" }, sh);
-      const fk = at("L7", "fackelt"), hp = at("L7", "Glurak-Haftpflicht");
+      const fk = at("L7", "fackelt"), hp = at("L7", "Glurak-Haftpflicht"), wk = at("L7", "Willkommen");
       tl.fromTo([H, D], { opacity: 0 }, { opacity: 1, duration: 0.35 }, 0.05);
       tl.to(fire, { opacity: 1, duration: 0.1 }, fk - 0.1);
       tl.to(flames, { opacity: 1, duration: 0.15, stagger: 0.06 }, fk);
       flames.forEach((f, i) => tl.to(f, { scaleY: 1.25, transformOrigin: "50% 100%", duration: 0.12, repeat: 5, yoyo: true }, fk + 0.2 + i * 0.03));
-      tl.to([H, D, fire, ...flames], { opacity: 0.15, duration: 0.25 }, hp - 0.35);
-      tl.to("#s04-card", { opacity: 1, duration: 0.3, ease: "back.out(1.6)" }, hp - 0.2);
+      tl.to([H, D, fire, ...flames], { opacity: 0.15, duration: 0.25 }, wk - 0.25);
+      tl.to("#s04-card", { opacity: 1, duration: 0.3, ease: "back.out(1.6)" }, wk);
       tl.fromTo(sh, { opacity: 0, scale: 0.5, transformOrigin: "50% 50%" }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(2)" }, hp - 0.1);
       tl.to("#s04-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
       window.__timelines["s04"] = tl;

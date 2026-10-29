@@ -21,14 +21,14 @@
     .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
     .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
       font-family: "Inter", sans-serif; font-weight: 900; }
-    #s01-news { left: 70px; top: 800px; width: 940px; height: 360px; border: 5px solid #ffd43b; box-shadow: 0 0 60px rgba(255,212,59,.45); overflow: hidden; text-align: left; }
+    #s01-news { left: 70px; top: 760px; width: 940px; height: 360px; border: 5px solid #ffd43b; box-shadow: 0 0 60px rgba(255,212,59,.45); overflow: hidden; text-align: left; }
     #s01-news .bar { height: 84px; background: #ffd43b; color: #161a36; display: flex; align-items: center; padding-left: 34px; font-size: 44px; letter-spacing: .06em; }
     #s01-news .hl { padding: 22px 40px 0; font-size: 96px; line-height: 1.02; letter-spacing: -.015em; }
     #s01-news .hl em { font-style: normal; color: #ff3b55; text-shadow: 0 0 26px rgba(255,59,85,.6); }
     #s01-q { left: 240px; top: 520px; width: 600px; height: 380px; border: 5px solid #2e3670; color: #ff3b55; font-size: 220px; line-height: 370px; opacity: 0; }
   </style>
-  <div id="root" data-composition-id="s01" data-start="0" data-duration="8.820" data-width="1080" data-height="1920">
-    <div id="s01-stage" class="clip stage" data-start="0" data-duration="8.820" data-track-index="0">
+  <div id="root" data-composition-id="s01" data-start="0" data-duration="9.950" data-width="1080" data-height="1920">
+    <div id="s01-stage" class="clip stage" data-start="0" data-duration="9.950" data-track-index="0">
       <div id="s01-count" class="cbox y"><div class="lab">BEKANNTE ARTEN</div><div class="num">1.025</div></div>
       <svg id="s01-svg" class="full" viewBox="0 0 1080 1920"></svg>
       <div id="s01-news" class="panel"><div class="bar">WAS WÄRE, WENN …</div><div class="hl">POKÉMON <em>REAL</em> WÄREN?</div></div>
@@ -38,7 +38,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 8.82, "L1": [0.9, 5.01], "L1.words": [["was", 0.9, 1.122], ["wäre", 1.122, 1.55], ["wenn", 1.69, 1.88], ["pokémon", 1.88, 2.248], ["wirklich", 2.248, 2.628], ["existieren", 2.628, 3.35], ["nicht", 3.46, 3.712], ["niedlich", 3.712, 4.2], ["sondern", 4.41, 4.808], ["echt", 4.808, 5.01]], "L2": [5.23, 8.64], "L2.words": [["1025", 5.23, 6.456], ["arten", 6.456, 6.85], ["und", 7.0, 7.181], ["an", 7.181, 7.355], ["das", 7.355, 7.536], ["hier", 7.536, 7.723], ["hat", 7.723, 7.904], ["niemand", 7.904, 8.272], ["gedacht", 8.272, 8.64]]};
+      const C = {"__dur": 9.95, "L1": [0.9, 6.02], "L1.words": [["was", 0.9, 1.182], ["wäre", 1.182, 1.725], ["wenn", 1.725, 2.017], ["pokémon", 2.017, 2.58], ["wirklich", 2.58, 3.163], ["existieren", 3.163, 4.27], ["nicht", 4.27, 4.572], ["niedlich", 4.572, 5.155], ["sondern", 5.155, 5.728], ["echt", 5.728, 6.02]], "L2": [6.24, 9.77], "L2.words": [["1025", 6.24, 7.337], ["arten", 7.337, 7.69], ["und", 8.2, 8.373], ["an", 8.373, 8.54], ["das", 8.54, 8.713], ["hier", 8.713, 8.892], ["hat", 8.892, 9.065], ["niemand", 9.065, 9.418], ["gedacht", 9.418, 9.77]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -183,7 +183,7 @@
       tl.to(B.top, { rotation: -35, svgOrigin: "-210 0", duration: 0.3, ease: "back.out(2)" }, echt);
       tl.to(glow, { attr: { r: 700, opacity: 0.9 }, duration: 0.18 }, echt);
       tl.to(glow, { attr: { r: 280, opacity: 0.2 }, duration: 0.4 }, echt + 0.18);
-      tl.to(M, { opacity: 1, scale: 0.8, y: 560, duration: 0.45, ease: "back.out(1.8)" }, echt + 0.05);
+      tl.to(M, { opacity: 1, scale: 0.8, y: 610, duration: 0.45, ease: "back.out(1.8)" }, echt + 0.05);
       tl.to([B.g, M, ...bolts, glow], { opacity: 0, filter: "blur(8px)", duration: 0.2 }, nie - 0.25);
       tl.fromTo("#s01-count", { scale: 1 }, { scale: 1.12, duration: 0.15, yoyo: true, repeat: 1 }, l2);
       tl.fromTo("#s01-q", { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(2)" }, nie - 0.1);

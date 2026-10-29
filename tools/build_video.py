@@ -20,7 +20,10 @@ from pathlib import Path
 
 import soundfile as sf
 
-SFX_DIR = Path("/root/.claude/plugins/cache/hyperframes/hyperframes/0.8.217/skills/media-use/audio/assets/sfx")
+SFX_DIR = next((p for p in [*Path("/root/.claude/plugins/cache/hyperframes").glob("*/*/skills/media-use/audio/assets/sfx"),
+                            *Path("/root/.npm/_npx").glob("*/node_modules/hyperframes/dist/skills/media-use/audio/assets/sfx")]
+                if (p / "manifest.json").exists()),
+               Path("/root/.claude/plugins/cache/hyperframes/hyperframes/0.8.217/skills/media-use/audio/assets/sfx"))
 W, H = 1080, 1920
 COLORS = {"y": "#ffd43b", "r": "#ff3b55", "p": "#ff4fb0", "g": "#39e27a", "b": "#4da3ff"}
 WHOOSHES = ["whoosh-short", "whoosh"]  # nur kurze; lange Whooshes/Glitches rauschen unter der Stimme
