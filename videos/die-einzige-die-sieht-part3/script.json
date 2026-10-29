@@ -1,0 +1,416 @@
+{
+ "title": "Die Einzige, die sieht – Part 3 (Finale)",
+ "voice": "Google Chirp 3 HD (de-DE-Chirp3-HD-Leda, jung, weiblich), --speed 1.12",
+ "notes": "Finale. Wendungen: 1) Die Blindheit war Absicht (Signal der Sehenden). 2) Sinas Blut ist das Gegenmittel. 3) Spartakus verrät die Verräter (Hauptschalter, Dunkelheit). 4) Spartakus hat das Signal gebaut. 5) Das Licht nimmt dem Sammler die Augen. 6) Alle sehen wieder – nur Sina nicht. Schluss mit dem Running Gag 'Sieht ja keiner'.",
+ "lead_in": 0.9,
+ "hud": "pop",
+ "scenes": [
+  {
+   "id": "s01",
+   "tag": "",
+   "lines": [
+    {
+     "id": "L1",
+     "text": "*r:Acht *r:Milliarden Menschen sind blind. / Hundert Fremde / können sehen. / Und *b:Spartakus / ist *r:einer von ihnen."
+    },
+    {
+     "id": "L2",
+     "text": "Heute erfährt Sina / die *y:Wahrheit. / Und die ist *r:schlimmer / als Blindheit.",
+     "pause": 0.2
+    }
+   ],
+   "sfx": [
+    {
+     "name": "alarm",
+     "at": "s01+0.0",
+     "volume": 0.75
+    },
+    {
+     "name": "impact-bass-1",
+     "at": "L1:einer",
+     "volume": 0.45
+    },
+    {
+     "name": "glitch-1",
+     "at": "L2:schlimmer",
+     "volume": 0.22
+    }
+   ]
+  },
+  {
+   "id": "s02",
+   "tag": "TAG 11 · 06:02",
+   "lines": [
+    {
+     "id": "L3",
+     "text": "Der Sammler lächelt: / „Niemand ist / *r:zufällig erblindet."
+    },
+    {
+     "id": "L4",
+     "text": "Wir waren das. / Ein *r:Signal. / Drei Uhr nachts. / Für eine Welt, / in der nur *r:wir sehen.“",
+     "speed": 0.94
+    }
+   ],
+   "sfx": [
+    {
+     "name": "impact-bass-2",
+     "at": "L4:Signal.",
+     "volume": 0.45
+    },
+    {
+     "name": "glitch-1",
+     "at": "L4:wir",
+     "volume": 0.22
+    }
+   ]
+  },
+  {
+   "id": "s03",
+   "tag": "TAG 11 · 06:03",
+   "lines": [
+    {
+     "id": "L5",
+     "text": "„Und du, Sina? / Du bist kein Glück. / Du bist ein *r:Fehler."
+    },
+    {
+     "id": "L6",
+     "text": "In deinem Blut / steckt das *g:Gegenmittel. / Mit dir / sieht die *g:ganze *g:Welt wieder."
+    },
+    {
+     "id": "L7",
+     "text": "Ohne dich: / *r:niemand. / *r:Nie *r:wieder.“",
+     "speed": 0.9
+    }
+   ],
+   "sfx": [
+    {
+     "name": "ping",
+     "at": "L6:Gegenmittel.",
+     "volume": 0.4
+    },
+    {
+     "name": "impact-bass-1",
+     "at": "L7:Nie",
+     "volume": 0.45
+    }
+   ]
+  },
+  {
+   "id": "s04",
+   "tag": "TAG 11 · 06:04",
+   "lines": [
+    {
+     "id": "L8",
+     "text": "Die Wachen packen Sina. / Spartakus / *r:schaut weg."
+    },
+    {
+     "id": "L9",
+     "text": "Dann flüstert er: / *y:„Augen zu, Sina.“",
+     "speed": 0.92
+    },
+    {
+     "id": "L10",
+     "text": "Und reißt / den *y:Hauptschalter runter."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "heartbeat",
+     "at": "s04+0.0",
+     "volume": 0.55
+    },
+    {
+     "name": "impact-bass-2",
+     "at": "L10:Hauptschalter",
+     "volume": 0.5
+    }
+   ]
+  },
+  {
+   "id": "s05",
+   "tag": "TAG 11 · DUNKEL",
+   "lines": [
+    {
+     "id": "L11",
+     "text": "*r:Totale *r:Dunkelheit. / Jetzt sind *r:alle blind."
+    },
+    {
+     "id": "L12",
+     "text": "Und Blinde / sind darin / seit elf Tagen *g:Profis."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "glitch-1",
+     "at": "L11:Totale",
+     "volume": 0.25
+    },
+    {
+     "name": "notification",
+     "at": "L12:Profis.",
+     "volume": 0.35
+    }
+   ]
+  },
+  {
+   "id": "s06",
+   "tag": "TAG 11 · CHAOS",
+   "lines": [
+    {
+     "id": "L13",
+     "text": "Die Wachen / laufen gegen Säulen. / Einer entschuldigt sich / bei einem *y:Getränkeautomaten."
+    },
+    {
+     "id": "L14",
+     "text": "Ein anderer / legt seinem *r:eigenen *r:Chef / Handschellen an."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "impact-bass-2",
+     "at": "L13:Säulen.",
+     "volume": 0.35
+    },
+    {
+     "name": "pop",
+     "at": "L13:Getränkeautomaten.",
+     "volume": 0.45
+    },
+    {
+     "name": "click",
+     "at": "L14:Handschellen",
+     "volume": 0.6
+    }
+   ]
+  },
+  {
+   "id": "s07",
+   "tag": "TAG 11 · 06:05",
+   "lines": [
+    {
+     "id": "L15",
+     "text": "Hundert blinde Hände / greifen nach Sina. / Nicht, um sie festzuhalten. / Sie *g:führen sie *g:hinaus."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "ping",
+     "at": "L15:führen",
+     "volume": 0.35
+    }
+   ]
+  },
+  {
+   "id": "s08",
+   "tag": "TAG 11 · 06:30",
+   "lines": [
+    {
+     "id": "L16",
+     "text": "Draußen wartet Spartakus. / „Der *y:Sendeturm. / Dort kann man / das Signal *g:umkehren.“"
+    },
+    {
+     "id": "L17",
+     "text": "„Warum hilfst du mir?“ / „Weil *r:ich / das Signal / *r:gebaut habe.“",
+     "speed": 0.92,
+     "pause": 0.2
+    },
+    {
+     "id": "L33",
+     "text": "„Ich dachte, / eine Welt ohne Augen / wäre *g:gerechter. / Ich habe mich *r:geirrt.“",
+     "speed": 0.94
+    }
+   ],
+   "sfx": [
+    {
+     "name": "impact-bass-1",
+     "at": "L17:gebaut",
+     "volume": 0.5
+    }
+   ]
+  },
+  {
+   "id": "s09",
+   "tag": "TAG 11 · 07:00",
+   "lines": [
+    {
+     "id": "L18",
+     "text": "Dreihundert Stufen. / Oben: die *y:Maschine. / Und der *r:Sammler."
+    },
+    {
+     "id": "L19",
+     "text": "Er hält Spartakus / über die Kante. / „Noch ein Schritt, Sina – / und er *r:fällt.“",
+     "speed": 0.94
+    },
+    {
+     "id": "L34",
+     "text": "Unten: Schritte. / Die Wachen / kommen *r:die *r:Treppe hoch.",
+     "speed": 0.96
+    }
+   ],
+   "sfx": [
+    {
+     "name": "heartbeat-fast",
+     "at": "L18:Sammler.",
+     "volume": 0.65
+    },
+    {
+     "name": "impact-bass-2",
+     "at": "L19:fällt.“",
+     "volume": 0.45
+    },
+    {
+     "name": "impact-bass-2",
+     "at": "L34:Treppe",
+     "volume": 0.4
+    }
+   ]
+  },
+  {
+   "id": "s10",
+   "tag": "TAG 11 · 07:01",
+   "lines": [
+    {
+     "id": "L20",
+     "text": "Sina hat *y:eine Sekunde. / Spartakus – / oder *g:acht *g:Milliarden Menschen.",
+     "speed": 0.92
+    },
+    {
+     "id": "L21",
+     "text": "Sie drückt ihre Hand / auf die Maschine.",
+     "pause": 0.2
+    },
+    {
+     "id": "L22",
+     "text": "*y:Weißes *y:Licht."
+    },
+    {
+     "id": "L23",
+     "text": "Der Sammler schreit. / Das Licht / nimmt *r:ihm die Augen. / *r:Für *r:immer."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "impact-bass-1",
+     "at": "L21:Maschine.",
+     "volume": 0.55
+    },
+    {
+     "name": "whoosh",
+     "at": "L22:Weißes",
+     "volume": 0.45
+    },
+    {
+     "name": "glitch-1",
+     "at": "L23:immer.",
+     "volume": 0.25
+    }
+   ]
+  },
+  {
+   "id": "s11",
+   "tag": "TAG 12 · MORGEN",
+   "lines": [
+    {
+     "id": "L24",
+     "text": "Am nächsten Morgen / öffnen *g:acht *g:Milliarden Menschen / die Augen. / Und *g:sehen."
+    },
+    {
+     "id": "L25",
+     "text": "Der Mann in Unterhose / sieht seine *r:Unterhose. / Die Oma / sieht *y:vierzig Meter Schal."
+    },
+    {
+     "id": "L26",
+     "text": "Und die Mülltonne / wartet noch immer / auf ihr *p:zweites Date."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "notification",
+     "at": "L24:sehen.",
+     "volume": 0.4
+    },
+    {
+     "name": "pop",
+     "at": "L25:seine+0.4",
+     "volume": 0.45
+    },
+    {
+     "name": "pop",
+     "at": "L25:vierzig",
+     "volume": 0.4
+    },
+    {
+     "name": "ping",
+     "at": "L26:zweites",
+     "volume": 0.35
+    }
+   ]
+  },
+  {
+   "id": "s12",
+   "tag": "TAG 12 · ENDE",
+   "lines": [
+    {
+     "id": "L27",
+     "text": "Nur *r:eine Person / sieht *r:nichts mehr.",
+     "pause": 0.3
+    },
+    {
+     "id": "L28",
+     "text": "*p:Sina. / Das Gegenmittel / hat *r:ihre Augen genommen.",
+     "speed": 0.9
+    },
+    {
+     "id": "L29",
+     "text": "Spartakus / hält ihre Hand. / „Du weinst“, / sagt er."
+    },
+    {
+     "id": "L30",
+     "text": "Sina lächelt. / *g:„Sieht ja keiner.“",
+     "speed": 0.9,
+     "pause": 0.3
+    }
+   ],
+   "sfx": [
+    {
+     "name": "impact-bass-2",
+     "at": "L27:nichts",
+     "volume": 0.4
+    },
+    {
+     "name": "ping",
+     "at": "L30:Sieht",
+     "volume": 0.35
+    }
+   ]
+  },
+  {
+   "id": "s13",
+   "tag": "DAS FINALE · ENDE",
+   "hold": 2.6,
+   "lines": [
+    {
+     "id": "L31",
+     "text": "Wie hat dir / das *y:Finale gefallen? / Schreib's in die *y:Kommentare.",
+     "pause": 0.4
+    },
+    {
+     "id": "L32",
+     "text": "Und *p:folge mir / für die *p:nächste Story."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "notification",
+     "at": "L31:Kommentare.",
+     "volume": 0.4
+    },
+    {
+     "name": "pop",
+     "at": "L32:folge",
+     "volume": 0.45
+    }
+   ]
+  }
+ ]
+}

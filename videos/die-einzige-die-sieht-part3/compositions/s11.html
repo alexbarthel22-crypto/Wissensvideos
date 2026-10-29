@@ -1,0 +1,234 @@
+<template>
+  <style>
+        #root { position: absolute; inset: 0; }
+    .stage { position: absolute; inset: 0; overflow: hidden; }
+    .abs { position: absolute; }
+    svg { overflow: visible; }
+    /* Zähler-Box wie in der Referenz: Rahmen in Akzentfarbe, Label in Mono-Versalien, große Zahl */
+    .cbox { position: absolute; left: 290px; width: 500px; top: 268px; height: 126px; border: 3px solid #ff4fb0;
+      border-radius: 14px; background: rgba(13,16,38,.88); text-align: center; box-shadow: 0 0 28px rgba(255,79,176,.35); }
+    .cbox .lab { margin-top: 16px; font-family: "Space Mono", monospace; font-weight: 700; font-size: 28px;
+      letter-spacing: .16em; color: #dfe2f5; }
+    .cbox .num { margin-top: 2px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 56px; color: #fff;
+      letter-spacing: .01em; }
+    .cbox.y { border-color: #ffd43b; box-shadow: 0 0 28px rgba(255,212,59,.3); }
+    .cbox.r { border-color: #ff3b55; box-shadow: 0 0 28px rgba(255,59,85,.35); }
+    .cbox.b { border-color: #4da3ff; box-shadow: 0 0 28px rgba(77,163,255,.3); }
+    .cbox.g { border-color: #39e27a; box-shadow: 0 0 28px rgba(57,226,122,.3); }
+    .mono { font-family: "Space Mono", monospace; font-weight: 700; letter-spacing: .12em; }
+    .heavy { font-family: "Inter", sans-serif; font-weight: 900; }
+
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .bub { position: absolute; border-radius: 26px; background: #f3f1ea; color: #161a36; font-family: "Inter", sans-serif;
+      font-weight: 900; text-align: center; padding: 22px 26px; font-size: 40px; line-height: 1.1; opacity: 0; }
+    .rule { position: absolute; left: 0; width: 1080px; top: 440px; text-align: center; font-family: "Inter", sans-serif; font-weight: 900;
+      font-size: 120px; color: #ffd43b; text-shadow: 0 0 40px rgba(255,212,59,.5), 0 8px 0 rgba(0,0,0,.5); opacity: 0; }
+    #s11-box .num { font-size: 44px; }
+    #s11-box { opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="s11" data-start="0" data-duration="10.660" data-width="1080" data-height="1920">
+    <div id="s11-stage" class="clip stage" data-start="0" data-duration="10.660" data-track-index="0">
+      <div id="s11-box" class="cbox g"><div class="lab">SEHEN WIEDER</div><div id="s11-n" class="num">0</div></div>
+      <svg id="s11-svg" class="full" viewBox="0 0 1080 1920"></svg>
+    </div>
+  </div>
+  <script>
+    (() => {
+      
+      const C = {"__dur": 10.66, "L24": [0.2, 3.52], "L24.words": [["am", 0.2, 0.338], ["nächsten", 0.338, 0.634], ["morgen", 0.634, 0.921], ["öffnen", 0.921, 1.207], ["acht", 1.207, 1.355], ["milliarden", 1.355, 1.789], ["menschen", 1.789, 2.086], ["die", 2.086, 2.229], ["augen", 2.229, 2.51], ["und", 3.06, 3.215], ["sehen", 3.215, 3.52]], "L25": [3.74, 7.74], "L25.words": [["der", 3.74, 3.883], ["mann", 3.883, 4.032], ["in", 4.032, 4.17], ["unterhose", 4.17, 4.727], ["sieht", 4.727, 4.881], ["seine", 4.881, 5.162], ["unterhose", 5.162, 5.72], ["die", 6.27, 6.433], ["oma", 6.433, 6.741], ["sieht", 6.741, 6.915], ["vierzig", 6.915, 7.246], ["meter", 7.246, 7.566], ["schal", 7.566, 7.74]], "L26": [7.96, 10.18], "L26.words": [["und", 7.96, 8.099], ["die", 8.099, 8.238], ["mülltonne", 8.238, 8.655], ["wartet", 8.655, 8.933], ["noch", 8.933, 9.077], ["immer", 9.077, 9.351], ["auf", 9.351, 9.49], ["ihr", 9.49, 9.629], ["zweites", 9.629, 9.912], ["date", 9.912, 10.18]]};
+      const line = (id) => C[id];
+      const at = (id, word, which = 0) => {
+        const ws = C[id + ".words"];
+        if (typeof word === "number") return ws[word][1 + which];
+        const key = String(word).toLowerCase().replace(/[^\p{L}\p{N}_]/gu, "");
+        const hit = ws.find((w) => w[0].startsWith(key));
+        if (!hit) throw new Error("cue not found: " + id + " " + word);
+        return hit[1 + which];
+      };
+      // Zähler: schreibt Zahlen im deutschen Format (4.100.000.000) als Funktion der Timeline-Zeit
+      const fmt = (n) => Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      const count = (tl, sel, from, to, t, d, pre = "", post = "", ease = "power2.out") => {
+        const el = document.querySelector(sel);
+        const o = { v: from };
+        el.textContent = pre + fmt(from) + post;
+        tl.to(o, { v: to, duration: d, ease, onUpdate: () => { el.textContent = pre + fmt(o.v) + post; } }, t);
+      };
+      // deterministischer Zufall
+      const rng = (seed) => () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let x = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+        x = (x + Math.imul(x ^ (x >>> 7), 61 | x)) ^ x; return ((x ^ (x >>> 14)) >>> 0) / 4294967296; };
+
+      // ---- Gemeinsame Zeichenhelfer (flacher Stil wie Referenz) ----
+      const NS = "http://www.w3.org/2000/svg";
+      const el = (n, a, p) => { const e = document.createElementNS(NS, n); for (const k in a) e.setAttribute(k, a[k]); if (p) p.appendChild(e); return e; };
+      // Arm als Gruppe, dreht um die Schulter (sx, sy); 0° = hängt nach unten
+      function arm(g, sx, sy, deg, skin, sleeve) {
+        const a = el("g", {}, g);
+        el("rect", { x: sx - 12, y: sy - 4, width: 24, height: 60, rx: 12, fill: sleeve }, a);
+        el("rect", { x: sx - 10, y: sy + 40, width: 20, height: 56, rx: 10, fill: skin }, a);
+        el("circle", { cx: sx, cy: sy + 100, r: 14, fill: skin }, a);
+        gsap.set(a, { rotation: deg, svgOrigin: `${sx} ${sy}` });
+        return a;
+      }
+      // Figur: Ursprung = Mitte des Oberkörpers oben. o.long = lange Haare, o.blind = trübe Augen, o.closed = Augen zu
+      function person(parent, id, x, y, s = 1, o = {}) {
+        const skin = o.skin || "#f2c9a5", shirt = o.shirt || "#4da3ff", hair = o.hair || "#5b3a26", pants = o.pants || "#2a3170";
+        const g = el("g", { id }, parent);
+        gsap.set(g, { x, y, scale: s, transformOrigin: "0 0" });
+        const ang = o.arms || [12, -12];
+        el("rect", { x: -34, y: 118, width: 28, height: 110, rx: 12, fill: pants }, g);
+        el("rect", { x: 6, y: 118, width: 28, height: 110, rx: 12, fill: pants }, g);
+        el("rect", { x: -40, y: 222, width: 36, height: 16, rx: 8, fill: "#1a1f45" }, g);
+        el("rect", { x: 4, y: 222, width: 36, height: 16, rx: 8, fill: "#1a1f45" }, g);
+        const a1 = arm(g, -52, 18, ang[0], skin, shirt), a2 = arm(g, 52, 18, ang[1], skin, shirt);
+        el("rect", { x: -56, y: 0, width: 112, height: 132, rx: 40, fill: shirt }, g);
+        if (o.long) el("path", { d: "M-52 -60 C-56 -128 56 -128 52 -60 L60 34 Q30 48 0 30 Q-30 48 -60 34Z", fill: hair }, g);
+        el("rect", { x: -12, y: -18, width: 24, height: 22, fill: skin }, g);
+        el("circle", { cx: 0, cy: -58, r: 46, fill: skin }, g);
+        el("path", { d: o.long ? "M-48 -54 C-52 -122 52 -122 48 -54 C40 -92 -10 -98 -48 -54Z" : "M-46 -60 C-46 -118 46 -118 46 -60 C30 -84 -20 -88 -46 -60Z", fill: hair }, g);
+        const eyes = el("g", {}, g);
+        if (o.blind) { [-16, 16].forEach((cx) => { el("circle", { cx, cy: -56, r: 9, fill: "#e4e8f6" }, eyes); el("circle", { cx, cy: -56, r: 5, fill: "#b4bbd6" }, eyes); }); }
+        else { el("circle", { cx: -16, cy: -56, r: 7, fill: "#161a36" }, eyes); el("circle", { cx: 16, cy: -56, r: 7, fill: "#161a36" }, eyes); }
+        const lids = el("path", { d: "M-24 -56 q8 6 16 0 M8 -56 q8 6 16 0", fill: "none", stroke: "#161a36", "stroke-width": 4, "stroke-linecap": "round", opacity: o.closed ? 1 : 0 }, g);
+        if (o.closed) gsap.set(eyes, { opacity: 0 });
+        const shades = el("g", { opacity: o.shades ? 1 : 0 }, g);
+        el("rect", { x: -34, y: -68, width: 30, height: 22, rx: 8, fill: "#0b0e22" }, shades); el("rect", { x: 4, y: -68, width: 30, height: 22, rx: 8, fill: "#0b0e22" }, shades);
+        el("rect", { x: -6, y: -62, width: 12, height: 5, fill: "#0b0e22" }, shades);
+        el("path", { d: "M-28 -64 l10 0 M10 -64 l10 0", stroke: "#4da3ff", "stroke-width": 3, opacity: 0.8 }, shades);
+        const mouth = el("path", { d: o.sad ? "M-14 -26 q14 -10 28 0" : "M-12 -30 q12 8 24 0", fill: "none", stroke: "#8a3b2a", "stroke-width": 5, "stroke-linecap": "round" }, g);
+        return { g, a1, a2, eyes, lids, mouth, shades };
+      }
+      // kleine Figur (Menge), Arme tastend nach vorn/außen
+      function mini(parent, x, y, c, glow) {
+        const g = el("g", { opacity: 0 }, parent);
+        if (glow) g.style.filter = "drop-shadow(0 0 18px rgba(255,212,59,.9))";
+        el("path", { d: `M${x - 14} ${y + 22} l-22 -14 M${x + 14} ${y + 22} l22 -14`, stroke: glow ? "#f2c9a5" : "#9aa1c4", "stroke-width": 7, "stroke-linecap": "round" }, g);
+        el("circle", { cx: x, cy: y, r: 14, fill: glow ? "#f2c9a5" : "#9aa1c4" }, g);
+        el("rect", { x: x - 15, y: y + 15, width: 30, height: 42, rx: 11, fill: c }, g);
+        return g;
+      }
+      // großes Auge (Mandelform), Pupille separat beweglich
+      function bigEye(parent, cx, cy, s = 1) {
+        const g = el("g", {}, parent); gsap.set(g, { x: cx, y: cy, scale: s, transformOrigin: "0 0" });
+        const glow = null; g.style.filter = "drop-shadow(0 0 40px rgba(255,212,59,.6))";
+        el("path", { d: "M-240 0 Q0 -175 240 0 Q0 175 -240 0Z", fill: "#f3f1ea" }, g);
+        const iris = el("g", {}, g);
+        el("circle", { cx: 0, cy: 0, r: 86, fill: "#4da3ff" }, iris);
+        el("circle", { cx: 0, cy: 0, r: 60, fill: "#2b6fd1" }, iris);
+        el("circle", { cx: 0, cy: 0, r: 38, fill: "#0b0e22" }, iris);
+        el("circle", { cx: 26, cy: -26, r: 16, fill: "#fff" }, iris);
+        el("path", { d: "M-240 0 Q0 -175 240 0", fill: "none", stroke: "#161a36", "stroke-width": 14, "stroke-linecap": "round" }, g);
+        return { g, iris, glow };
+      }
+      function radio(parent, x, y, s = 1) {
+        const g = el("g", {}, parent); gsap.set(g, { x, y, scale: s, transformOrigin: "0 0" });
+        el("path", { d: "M180 -150 L260 -300", stroke: "#c9cde6", "stroke-width": 10, "stroke-linecap": "round" }, g);
+        el("rect", { x: -300, y: -160, width: 600, height: 320, rx: 40, fill: "#8a5a2b" }, g);
+        el("rect", { x: -280, y: -140, width: 560, height: 280, rx: 28, fill: "#a86b2c" }, g);
+        el("circle", { cx: -140, cy: 0, r: 110, fill: "#5e3b1a" }, g);
+        for (let i = -3; i <= 3; i++) el("rect", { x: -230, y: i * 26 - 4, width: 180, height: 8, rx: 4, fill: "#8a5a2b" }, g);
+        el("rect", { x: 20, y: -100, width: 240, height: 90, rx: 12, fill: "#ffe9a8" }, g);
+        for (let i = 0; i < 9; i++) el("rect", { x: 40 + i * 24, y: -84, width: 4, height: i % 2 ? 20 : 34, fill: "#8a5a2b" }, g);
+        const needle = el("rect", { x: 90, y: -96, width: 6, height: 82, fill: "#ff3b55" }, g);
+        el("circle", { cx: 80, cy: 70, r: 38, fill: "#5e3b1a" }, g); el("circle", { cx: 200, cy: 70, r: 38, fill: "#5e3b1a" }, g);
+        return { g, needle };
+      }
+      function car(parent, x, y, c, rot = 0) {
+        const g = el("g", {}, parent); gsap.set(g, { x, y, rotation: rot, transformOrigin: "0 0" });
+        el("rect", { x: -130, y: -40, width: 260, height: 70, rx: 22, fill: c }, g);
+        el("path", { d: "M-70 -40 L-40 -90 L50 -90 L80 -40Z", fill: c }, g);
+        el("path", { d: "M-56 -44 L-34 -80 L0 -80 L0 -44Z M10 -44 L10 -80 L44 -80 L64 -44Z", fill: "#a9d2ff" }, g);
+        el("circle", { cx: -70, cy: 34, r: 26, fill: "#161a36" }, g); el("circle", { cx: 70, cy: 34, r: 26, fill: "#161a36" }, g);
+        const blink = el("g", { opacity: 0 }, g);
+        el("circle", { cx: -124, cy: -10, r: 12, fill: "#ffb020" }, blink); el("circle", { cx: 124, cy: -10, r: 12, fill: "#ffb020" }, blink);
+        return { g, blink };
+      }
+      // Hund, Ursprung = Körpermitte
+      function dog(parent, x, y, c = "#a86b2c", s = 1) {
+        const g = el("g", {}, parent); gsap.set(g, { x, y, scale: s, transformOrigin: "0 0" });
+        const tail = el("path", { d: "M-70 -10 q-40 -30 -30 -70", stroke: c, "stroke-width": 14, fill: "none", "stroke-linecap": "round" }, g);
+        el("ellipse", { cx: 0, cy: 0, rx: 80, ry: 40, fill: c }, g);
+        [-50, -25, 30, 55].forEach((lx) => el("rect", { x: lx - 8, y: 20, width: 16, height: 54, rx: 8, fill: c }, g));
+        el("circle", { cx: 84, cy: -36, r: 36, fill: c }, g);
+        el("ellipse", { cx: 118, cy: -26, rx: 22, ry: 15, fill: "#f3d9b8", opacity: 0.6 }, g);
+        el("circle", { cx: 136, cy: -30, r: 7, fill: "#161a36" }, g); el("circle", { cx: 92, cy: -44, r: 6, fill: "#161a36" }, g);
+        el("path", { d: "M62 -62 q-14 30 6 44Z", fill: "#161a36", opacity: 0.4 }, g);
+        return { g, tail };
+      }
+      // großes Gesicht (für Nahaufnahmen); blind = trübe Augen, sonst klare Pupillen
+      function face(parent, x, y, r, o = {}) {
+        const g = el("g", {}, parent);
+        el("circle", { cx: x, cy: y, r, fill: o.skin || "#f2c9a5" }, g);
+        el("path", { d: `M${x - r} ${y - r * 0.1} C${x - r} ${y - r * 1.3} ${x + r} ${y - r * 1.3} ${x + r} ${y - r * 0.1} C${x + r * 0.6} ${y - r * 0.7} ${x - r * 0.4} ${y - r * 0.76} ${x - r} ${y - r * 0.1}Z`, fill: o.hair || "#2a2f55" }, g);
+        const eyes = el("g", {}, g), pup = [], cloud = [];
+        [-0.34, 0.34].forEach((dx) => { el("circle", { cx: x + dx * r, cy: y + r * 0.1, r: r * 0.18, fill: "#f3f1ea" }, eyes);
+          cloud.push(el("circle", { cx: x + dx * r, cy: y + r * 0.1, r: r * 0.1, fill: "#b4bbd6" }, eyes));
+          pup.push(el("circle", { cx: x + dx * r, cy: y + r * 0.1, r: r * 0.1, fill: "#0b0e22", opacity: o.blind ? 0 : 1 }, eyes)); });
+        if (!o.blind) gsap.set(cloud, { opacity: 0 });
+        el("path", { d: `M${x - r * 0.2} ${y + r * 0.56} h${r * 0.4}`, stroke: "#8a3b2a", "stroke-width": r * 0.07, "stroke-linecap": "round" }, g);
+        return { g, eyes, pup, cloud };
+      }
+
+      function sammler(parent, id, x, y, s) {
+        const p = person(parent, id, x, y, s, { shirt: "#0b0e22", hair: "#0b0e22", pants: "#0b0e22", skin: "#c9b49a" });
+        el("path", { d: "M-70 0 L70 0 L95 230 L-95 230Z", fill: "#161a36" }, p.g);
+        el("rect", { x: -70, y: -122, width: 140, height: 20, rx: 6, fill: "#05060f" }, p.g); el("rect", { x: -44, y: -170, width: 88, height: 54, rx: 10, fill: "#05060f" }, p.g);
+        return p;
+      }
+      function tower(parent, x, y, s) {
+        const g = el("g", {}, parent); gsap.set(g, { x, y, scale: s, transformOrigin: "0 0" });
+        el("path", { d: "M-90 0 L-12 -520 L12 -520 L90 0", fill: "none", stroke: "#8fa2ff", "stroke-width": 12 }, g);
+        for (let i = 1; i < 6; i++) { const yy = -i * 86, w = 90 - i * 15; el("path", { d: `M${-w} ${yy} L${w - 15} ${yy - 86} M${w} ${yy} L${-w + 15} ${yy - 86}`, stroke: "#5d6db8", "stroke-width": 6 }, g); }
+        el("rect", { x: -40, y: -560, width: 80, height: 40, rx: 8, fill: "#8fa2ff" }, g);
+        const lamp = el("circle", { cx: 0, cy: -580, r: 16, fill: "#ff3b55" }, g);
+        return { g, lamp };
+      }
+      function globe(parent, x, y, r) {
+        const g = el("g", {}, parent);
+        const sea = el("circle", { cx: x, cy: y, r, fill: "#2b6fd1" }, g);
+        [[-0.4, -0.3, 0.35, 0.25], [0.3, -0.1, 0.3, 0.4], [-0.1, 0.45, 0.25, 0.15]].forEach(([dx, dy, rx, ry]) => el("ellipse", { cx: x + dx * r, cy: y + dy * r, rx: rx * r, ry: ry * r, fill: "#39a06a" }, g));
+        return { g, sea };
+      }
+
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s11-svg");
+      const sky = el("rect", { x: 0, y: 420, width: 1080, height: 710, fill: "#2a2350" }, sv);
+      const sun = el("circle", { cx: 540, cy: 1060, r: 130, fill: "#ffd43b", opacity: 0.8 }, sv);
+      const A = el("g", {}, sv), eyes = [];
+      for (let i = 0; i < 12; i++) { const e = bigEye(A, 140 + (i % 4) * 270, 560 + Math.floor(i / 4) * 170, 0.32); gsap.set(e.g, { scaleY: 0.05, transformOrigin: "50% 50%" }); eyes.push(e.g); }
+      const B = el("g", { opacity: 0 }, sv);
+      el("rect", { x: 0, y: 1040, width: 1080, height: 90, fill: "#3a3f5c" }, B);
+      const M = person(B, "s11-m", 260, 790, 1.0, { shirt: "#e5e9f7", hair: "#5b3a26", pants: "#f2c9a5", arms: [10, -25] });
+      el("path", { d: "M-34 112 h68 v40 h-68Z", fill: "#ff4fb0" }, M.g);
+      gsap.set(M.eyes, { y: 6 });
+      const blush = el("g", { opacity: 0 }, M.g); el("circle", { cx: -28, cy: -40, r: 10, fill: "#ff4fb0", opacity: 0.6 }, blush); el("circle", { cx: 28, cy: -40, r: 10, fill: "#ff4fb0", opacity: 0.6 }, blush);
+      const O = person(B, "s11-o", 760, 800, 0.95, { shirt: "#ff8fb0", hair: "#d8dbe8", pants: "#5d4598", arms: [-40, 40] });
+      el("circle", { cx: 0, cy: -118, r: 22, fill: "#d8dbe8" }, O.g);
+      const scarf = el("path", { d: "M760 920 C880 960 980 880 1040 980 S900 1100 700 1060 S480 960 560 900", stroke: "#ff3b55", "stroke-width": 30, fill: "none", "stroke-linecap": "round", opacity: 0 }, B);
+      const C2 = el("g", { opacity: 0 }, sv);
+      el("rect", { x: 0, y: 1040, width: 1080, height: 90, fill: "#2a5a3a" }, C2);
+      el("rect", { x: 380, y: 760, width: 210, height: 280, rx: 18, fill: "#2f7a4a" }, C2);
+      el("rect", { x: 366, y: 740, width: 238, height: 36, rx: 10, fill: "#256a3e" }, C2);
+      el("rect", { x: 600, y: 700, width: 6, height: 70, fill: "#39e27a" }, C2); el("circle", { cx: 603, cy: 696, r: 20, fill: "#ff4fb0" }, C2);
+      const hrt = el("text", { x: 640, y: 690, "font-size": 70, fill: "#ff4fb0", opacity: 0 }, C2); hrt.textContent = "♥";
+      const se = at("L24", "sehen"), l25 = line("L25")[0], un = at("L25", "Unterhose", 0), vi = at("L25", "vierzig"), l26 = line("L26")[0], zw = at("L26", "zweites");
+      tl.to(sky, { fill: "#4a6fb8", duration: 3 }, 0);
+      tl.to(sun, { attr: { cy: 990 }, duration: 3 }, 0);
+      eyes.forEach((e, i) => tl.to(e, { scaleY: 1, transformOrigin: "50% 50%", duration: 0.25, ease: "back.out(2)" }, 0.5 + i * 0.12));
+      tl.to("#s11-box", { opacity: 1, duration: 0.3 }, 0.4);
+      count(tl, "#s11-n", 0, 8199999999, 0.5, se - 0.3, "", "", "power2.out");
+      tl.to(A, { opacity: 0, duration: 0.25 }, l25 - 0.2);
+      tl.to(B, { opacity: 1, duration: 0.25 }, l25 - 0.1);
+      tl.to(blush, { opacity: 1, duration: 0.2 }, un + 0.6);
+      tl.to(M.mouth, { attr: { d: "M-10 -30 q10 -12 20 0 q-10 12 -20 0" }, duration: 0.1 }, un + 0.6);
+      tl.to(scarf, { opacity: 1, duration: 0.2 }, vi - 0.2);
+      tl.to(O.mouth, { attr: { d: "M-12 -32 q12 14 24 0" }, duration: 0.1 }, vi);
+      tl.to(B, { opacity: 0, duration: 0.25 }, l26 - 0.2);
+      tl.to(C2, { opacity: 1, duration: 0.25 }, l26 - 0.1);
+      tl.fromTo(hrt, { opacity: 0, y: 0 }, { opacity: 1, y: -50, duration: 0.6 }, zw - 0.1);
+      tl.to("#s11-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s11"] = tl;
+    })();
+  </script>
+</template>

@@ -1,0 +1,65 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .bub { position: absolute; border-radius: 26px; background: #f3f1ea; color: #161a36; font-family: "Inter", sans-serif;
+      font-weight: 900; text-align: center; padding: 22px 26px; font-size: 40px; line-height: 1.1; opacity: 0; }
+    .rule { position: absolute; left: 0; width: 1080px; top: 440px; text-align: center; font-family: "Inter", sans-serif; font-weight: 900;
+      font-size: 120px; color: #ffd43b; text-shadow: 0 0 40px rgba(255,212,59,.5), 0 8px 0 rgba(0,0,0,.5); opacity: 0; }
+    #s07-bg { background: #05060f; }
+    #s07-exit { left: 760px; top: 450px; width: 260px; height: 90px; border-radius: 12px; background: #39e27a; color: #0b0e22; font-size: 48px; line-height: 90px; box-shadow: 0 0 50px rgba(57,226,122,.7); opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="s07" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s07-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s07-bg" class="full"></div>
+      <svg id="s07-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s07-exit" class="panel">AUSGANG →</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      function sammler(parent, id, x, y, s) {
+        const p = person(parent, id, x, y, s, { shirt: "#0b0e22", hair: "#0b0e22", pants: "#0b0e22", skin: "#c9b49a" });
+        el("path", { d: "M-70 0 L70 0 L95 230 L-95 230Z", fill: "#161a36" }, p.g);
+        el("rect", { x: -70, y: -122, width: 140, height: 20, rx: 6, fill: "#05060f" }, p.g); el("rect", { x: -44, y: -170, width: 88, height: 54, rx: 10, fill: "#05060f" }, p.g);
+        return p;
+      }
+      function tower(parent, x, y, s) {
+        const g = el("g", {}, parent); gsap.set(g, { x, y, scale: s, transformOrigin: "0 0" });
+        el("path", { d: "M-90 0 L-12 -520 L12 -520 L90 0", fill: "none", stroke: "#8fa2ff", "stroke-width": 12 }, g);
+        for (let i = 1; i < 6; i++) { const yy = -i * 86, w = 90 - i * 15; el("path", { d: `M${-w} ${yy} L${w - 15} ${yy - 86} M${w} ${yy} L${-w + 15} ${yy - 86}`, stroke: "#5d6db8", "stroke-width": 6 }, g); }
+        el("rect", { x: -40, y: -560, width: 80, height: 40, rx: 8, fill: "#8fa2ff" }, g);
+        const lamp = el("circle", { cx: 0, cy: -580, r: 16, fill: "#ff3b55" }, g);
+        return { g, lamp };
+      }
+      function globe(parent, x, y, r) {
+        const g = el("g", {}, parent);
+        const sea = el("circle", { cx: x, cy: y, r, fill: "#2b6fd1" }, g);
+        [[-0.4, -0.3, 0.35, 0.25], [0.3, -0.1, 0.3, 0.4], [-0.1, 0.45, 0.25, 0.15]].forEach(([dx, dy, rx, ry]) => el("ellipse", { cx: x + dx * r, cy: y + dy * r, rx: rx * r, ry: ry * r, fill: "#39a06a" }, g));
+        return { g, sea };
+      }
+
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s07-svg");
+      const P = person(sv, "s07-p", 300, 760, 1.0, { long: true, hair: "#4a2c1d", shirt: "#ff4fb0", closed: true });
+      const hands = [], r = rng(12);
+      for (let i = 0; i < 14; i++) { const left = i % 2 === 0, y = 560 + Math.floor(i / 2) * 70, x = left ? -60 : 1140;
+        const h = el("g", {}, sv); gsap.set(h, { x, y });
+        el("rect", { x: left ? -400 : 0, y: -14, width: 400, height: 28, rx: 14, fill: ["#f2c9a5", "#d9a77f", "#b9835a"][i % 3] }, h);
+        el("circle", { cx: left ? 10 : -10, cy: 0, r: 26, fill: ["#f2c9a5", "#d9a77f", "#b9835a"][i % 3] }, h);
+        hands.push({ h, left }); }
+      const gr = at("L15", "greifen"), fe = at("L15", "festzuhalten"), fu = at("L15", "führen"), hi = at("L15", "hinaus");
+      hands.forEach(({ h, left }, i) => tl.to(h, { x: left ? 220 + (i % 4) * 20 : 860 - (i % 4) * 20, duration: 0.4, ease: "power3.out" }, gr - 0.2 + i * 0.05));
+      tl.to(P.g, { y: 754, duration: 0.05, repeat: 5, yoyo: true }, fe);
+      tl.fromTo("#s07-exit", { opacity: 0, scale: 1.4 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(2.4)" }, fu - 0.1);
+      tl.to(P.g, { x: 820, duration: hi - fu + 0.8, ease: "power1.inOut" }, fu);
+      hands.forEach(({ h }, i) => tl.to(h, { x: "+=320", duration: hi - fu + 0.8, ease: "power1.inOut" }, fu + (i % 3) * 0.05));
+      tl.to("#s07-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s07"] = tl;
+    })();
+  </script>
+</template>

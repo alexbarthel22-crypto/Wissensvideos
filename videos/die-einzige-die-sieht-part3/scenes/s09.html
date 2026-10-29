@@ -1,0 +1,78 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .bub { position: absolute; border-radius: 26px; background: #f3f1ea; color: #161a36; font-family: "Inter", sans-serif;
+      font-weight: 900; text-align: center; padding: 22px 26px; font-size: 40px; line-height: 1.1; opacity: 0; }
+    .rule { position: absolute; left: 0; width: 1080px; top: 440px; text-align: center; font-family: "Inter", sans-serif; font-weight: 900;
+      font-size: 120px; color: #ffd43b; text-shadow: 0 0 40px rgba(255,212,59,.5), 0 8px 0 rgba(0,0,0,.5); opacity: 0; }
+    #s09-vig { background: radial-gradient(ellipse 60% 45% at 50% 42%, rgba(0,0,0,0) 35%, rgba(160,0,20,.8) 100%); opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="s09" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s09-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <svg id="s09-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s09-vig" class="full"></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      function sammler(parent, id, x, y, s) {
+        const p = person(parent, id, x, y, s, { shirt: "#0b0e22", hair: "#0b0e22", pants: "#0b0e22", skin: "#c9b49a" });
+        el("path", { d: "M-70 0 L70 0 L95 230 L-95 230Z", fill: "#161a36" }, p.g);
+        el("rect", { x: -70, y: -122, width: 140, height: 20, rx: 6, fill: "#05060f" }, p.g); el("rect", { x: -44, y: -170, width: 88, height: 54, rx: 10, fill: "#05060f" }, p.g);
+        return p;
+      }
+      function tower(parent, x, y, s) {
+        const g = el("g", {}, parent); gsap.set(g, { x, y, scale: s, transformOrigin: "0 0" });
+        el("path", { d: "M-90 0 L-12 -520 L12 -520 L90 0", fill: "none", stroke: "#8fa2ff", "stroke-width": 12 }, g);
+        for (let i = 1; i < 6; i++) { const yy = -i * 86, w = 90 - i * 15; el("path", { d: `M${-w} ${yy} L${w - 15} ${yy - 86} M${w} ${yy} L${-w + 15} ${yy - 86}`, stroke: "#5d6db8", "stroke-width": 6 }, g); }
+        el("rect", { x: -40, y: -560, width: 80, height: 40, rx: 8, fill: "#8fa2ff" }, g);
+        const lamp = el("circle", { cx: 0, cy: -580, r: 16, fill: "#ff3b55" }, g);
+        return { g, lamp };
+      }
+      function globe(parent, x, y, r) {
+        const g = el("g", {}, parent);
+        const sea = el("circle", { cx: x, cy: y, r, fill: "#2b6fd1" }, g);
+        [[-0.4, -0.3, 0.35, 0.25], [0.3, -0.1, 0.3, 0.4], [-0.1, 0.45, 0.25, 0.15]].forEach(([dx, dy, rx, ry]) => el("ellipse", { cx: x + dx * r, cy: y + dy * r, rx: rx * r, ry: ry * r, fill: "#39a06a" }, g));
+        return { g, sea };
+      }
+
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s09-svg");
+      el("rect", { x: 0, y: 420, width: 1080, height: 710, fill: "#1a1f45" }, sv);
+      const r = rng(2); for (let i = 0; i < 26; i++) el("rect", { x: r() * 1080, y: 980 + r() * 130, width: 8, height: 8, fill: "#ffe9a8", opacity: 0.6 }, sv);
+      el("rect", { x: 0, y: 960, width: 780, height: 24, fill: "#5d6db8" }, sv);
+      for (let i = 0; i < 16; i++) el("rect", { x: 10 + i * 48, y: 880, width: 8, height: 80, fill: "#5d6db8" }, sv);
+      el("rect", { x: 0, y: 874, width: 780, height: 12, rx: 5, fill: "#5d6db8" }, sv);
+      const mach = el("g", {}, sv);
+      el("rect", { x: 380, y: 640, width: 220, height: 320, rx: 16, fill: "#2a2f55", stroke: "#8fa2ff", "stroke-width": 6 }, mach);
+      const scr = el("rect", { x: 405, y: 670, width: 170, height: 100, rx: 8, fill: "#39e27a", opacity: 0.6 }, mach);
+      el("rect", { x: 440, y: 800, width: 100, height: 120, rx: 14, fill: "#0b0e22", stroke: "#ffd43b", "stroke-width": 4 }, mach);
+      el("path", { d: "M470 900 v-60 M490 900 v-74 M510 900 v-66 M530 900 v-50", stroke: "#ffd43b", "stroke-width": 8, "stroke-linecap": "round", opacity: 0.6 }, mach);
+      const P = person(sv, "s09-p", 190, 720, 0.95, { long: true, hair: "#4a2c1d", shirt: "#ff4fb0" });
+      const SM = sammler(sv, "s09-m", 740, 700, 1.15);
+      gsap.set(SM.a1, { rotation: 70, svgOrigin: "-52 18" });
+      const Sp = person(sv, "s09-s", 900, 720, 1.0, { shirt: "#39a06a", hair: "#2a2f55", arms: [150, -150] });
+      gsap.set(Sp.g, { rotation: 18, svgOrigin: "900 900" });
+      const beams = [0, 1].map((i) => el("path", { d: `M${120 + i * 200} 1130 L${60 + i * 200} 980 L${180 + i * 200} 980Z`, fill: "#ffe680", opacity: 0 }, sv));
+      const sa = at("L18", "Sammler"), ka = at("L19", "Kante"), fa = at("L19", "fällt"), l34 = line("L34")[0], tr = at("L34", "Treppe");
+      tl.to(scr, { opacity: 0.25, duration: 0.3, repeat: 25, yoyo: true }, 0);
+      tl.fromTo([P.g, mach], { opacity: 0 }, { opacity: 1, duration: 0.4, stagger: 0.2 }, 0.1);
+      tl.fromTo([SM.g, Sp.g], { opacity: 0 }, { opacity: 1, duration: 0.3 }, sa - 0.2);
+      tl.to(Sp.g, { rotation: 32, svgOrigin: "900 900", duration: 0.4, ease: "power2.inOut" }, ka - 0.2);
+      tl.to(Sp.g, { rotation: 26, svgOrigin: "900 900", duration: 0.2, repeat: 5, yoyo: true }, ka + 0.3);
+      tl.to("#s09-vig", { opacity: 1, duration: 0.15 }, fa - 0.1);
+      tl.to(P.g, { x: 210, duration: 0.3 }, fa - 0.6);
+      tl.to(P.g, { x: 190, duration: 0.15 }, fa);
+      tl.to(beams, { opacity: 0.5, duration: 0.2, stagger: 0.2 }, l34);
+      tl.to(beams, { y: -60, duration: 0.5, repeat: 3, yoyo: true }, l34);
+      tl.to("#s09-vig", { opacity: 0.5, duration: 0.4, repeat: 5, yoyo: true }, tr);
+      tl.to("#s09-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s09"] = tl;
+    })();
+  </script>
+</template>

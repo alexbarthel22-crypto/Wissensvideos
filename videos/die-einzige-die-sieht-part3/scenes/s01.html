@@ -1,0 +1,85 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .bub { position: absolute; border-radius: 26px; background: #f3f1ea; color: #161a36; font-family: "Inter", sans-serif;
+      font-weight: 900; text-align: center; padding: 22px 26px; font-size: 40px; line-height: 1.1; opacity: 0; }
+    .rule { position: absolute; left: 0; width: 1080px; top: 440px; text-align: center; font-family: "Inter", sans-serif; font-weight: 900;
+      font-size: 120px; color: #ffd43b; text-shadow: 0 0 40px rgba(255,212,59,.5), 0 8px 0 rgba(0,0,0,.5); opacity: 0; }
+    #s01-news { left: 60px; top: 690px; width: 960px; height: 420px; border: 5px solid #ff3b55; box-shadow: 0 0 60px rgba(255,59,85,.45); overflow: hidden; text-align: left; }
+    #s01-news .bar { height: 84px; background: #ff3b55; color: #fff; display: flex; align-items: center; padding-left: 34px; font-size: 44px; letter-spacing: .06em; }
+    #s01-news .hl { padding: 22px 40px 0; font-size: 84px; line-height: 1.04; letter-spacing: -.015em; }
+    #s01-news .hl em { font-style: normal; color: #ff3b55; text-shadow: 0 0 26px rgba(255,59,85,.6); }
+    #s01-vig { background: radial-gradient(ellipse 60% 45% at 50% 42%, rgba(0,0,0,0) 40%, rgba(160,0,20,.75) 100%); opacity: 0; }
+    #s01-dark { background: #05060f; opacity: 0; }
+    #s01-title { left: 0; width: 1080px; top: 500px; height: 340px; overflow: hidden; text-align: center; opacity: 0; }
+    #s01-title .k { margin-top: 20px; font-family: "Space Mono", monospace; font-weight: 700; font-size: 54px; letter-spacing: .3em; color: #ff4fb0; text-shadow: 0 0 26px rgba(255,79,176,.7); }
+    #s01-title .t { margin-top: 18px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 124px; line-height: 1; color: #ffd43b; text-shadow: 0 0 50px rgba(255,212,59,.5), 0 8px 0 rgba(0,0,0,.5); }
+    #s01-sweep { position: absolute; left: -300px; top: -40px; width: 200px; height: 420px; transform: skewX(-20deg);
+      background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.45), rgba(255,255,255,0)); }
+    .s01-bar { position: absolute; left: 0; width: 1080px; height: 150px; background: #000; }
+  </style>
+  <div id="root" data-composition-id="s01" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s01-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <svg id="s01-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s01-vig" class="full"></div>
+      <div id="s01-news" class="panel"><div class="bar">● EILMELDUNG · FINALE</div><div class="hl">SPARTAKUS IST <em>EINER VON IHNEN</em></div></div>
+      <div id="s01-dark" class="full"></div>
+      <div id="s01-title" class="abs"><div class="k">PART 3</div><div class="t">DAS FINALE</div><div id="s01-sweep"></div></div>
+      <div id="s01-bar1" class="s01-bar" style="top:0;transform:translateY(-150px)"></div><div id="s01-bar2" class="s01-bar" style="top:1770px;transform:translateY(150px)"></div>
+      <svg id="s01-iris" class="full" viewBox="0 0 1080 1920"><circle id="s01-ir" cx="540" cy="760" r="2600" fill="none" stroke="#000" stroke-width="2400"/></svg>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      function sammler(parent, id, x, y, s) {
+        const p = person(parent, id, x, y, s, { shirt: "#0b0e22", hair: "#0b0e22", pants: "#0b0e22", skin: "#c9b49a" });
+        el("path", { d: "M-70 0 L70 0 L95 230 L-95 230Z", fill: "#161a36" }, p.g);
+        el("rect", { x: -70, y: -122, width: 140, height: 20, rx: 6, fill: "#05060f" }, p.g); el("rect", { x: -44, y: -170, width: 88, height: 54, rx: 10, fill: "#05060f" }, p.g);
+        return p;
+      }
+      function tower(parent, x, y, s) {
+        const g = el("g", {}, parent); gsap.set(g, { x, y, scale: s, transformOrigin: "0 0" });
+        el("path", { d: "M-90 0 L-12 -520 L12 -520 L90 0", fill: "none", stroke: "#8fa2ff", "stroke-width": 12 }, g);
+        for (let i = 1; i < 6; i++) { const yy = -i * 86, w = 90 - i * 15; el("path", { d: `M${-w} ${yy} L${w - 15} ${yy - 86} M${w} ${yy} L${-w + 15} ${yy - 86}`, stroke: "#5d6db8", "stroke-width": 6 }, g); }
+        el("rect", { x: -40, y: -560, width: 80, height: 40, rx: 8, fill: "#8fa2ff" }, g);
+        const lamp = el("circle", { cx: 0, cy: -580, r: 16, fill: "#ff3b55" }, g);
+        return { g, lamp };
+      }
+      function globe(parent, x, y, r) {
+        const g = el("g", {}, parent);
+        const sea = el("circle", { cx: x, cy: y, r, fill: "#2b6fd1" }, g);
+        [[-0.4, -0.3, 0.35, 0.25], [0.3, -0.1, 0.3, 0.4], [-0.1, 0.45, 0.25, 0.15]].forEach(([dx, dy, rx, ry]) => el("ellipse", { cx: x + dx * r, cy: y + dy * r, rx: rx * r, ry: ry * r, fill: "#39a06a" }, g));
+        return { g, sea };
+      }
+
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s01-svg");
+      const F = face(sv, 540, 570, 130, { hair: "#2a2f55" }); F.g.style.filter = "drop-shadow(0 0 30px rgba(255,212,59,.6))";
+      const glints = F.pup.map((p) => el("circle", { cx: +p.getAttribute("cx") + 5, cy: +p.getAttribute("cy") - 5, r: 5, fill: "#ffd43b" }, F.g));
+      const sp = at("L1", "Spartakus"), ei = at("L1", "einer"), l2 = line("L2")[0], sc = at("L2", "schlimmer");
+      tl.fromTo("#s01-news", { scale: 1.06 }, { scale: 1, duration: 0.5, ease: "expo.out" }, 0);
+      tl.to("#s01-news", { x: 8, duration: 0.04, repeat: 5, yoyo: true }, 0.9);
+      tl.to(F.pup, { attr: { cx: (i) => [495, 585][i] - 14 }, duration: 0.3, repeat: 3, yoyo: true }, 1.2);
+      tl.to("#s01-news", { opacity: 0, y: 160, duration: 0.3, ease: "power3.in" }, sp - 0.4);
+      tl.to(F.g, { scale: 1.9, svgOrigin: "540 570", y: 200, duration: 0.6, ease: "expo.out" }, sp - 0.1);
+      tl.fromTo("#s01-vig", { opacity: 0 }, { opacity: 1, duration: 0.12 }, ei);
+      tl.fromTo(glints, { scale: 0.5 }, { scale: 2.4, transformOrigin: "50% 50%", duration: 0.2, yoyo: true, repeat: 3 }, ei);
+      tl.to("#s01-dark", { opacity: 0.9, duration: 0.4 }, l2 - 0.1);
+      tl.to(F.g, { opacity: 0, duration: 0.35 }, l2 - 0.1);
+      tl.fromTo("#s01-bar1", { y: -150 }, { y: 0, duration: 0.5, ease: "power3.out" }, l2 - 0.1);
+      tl.fromTo("#s01-bar2", { y: 150 }, { y: 0, duration: 0.5, ease: "power3.out" }, l2 - 0.1);
+      tl.fromTo("#s01-title", { opacity: 0, scale: 1.4, filter: "blur(16px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.7, ease: "expo.out" }, l2 + 0.1);
+      tl.fromTo("#s01-sweep", { x: 0 }, { x: 1700, duration: 0.9, ease: "power2.inOut" }, l2 + 0.6);
+      tl.to("#s01-title .t", { color: "#ff3b55", duration: 0.05, repeat: 5, yoyo: true }, sc);
+      tl.to("#s01-title", { x: 10, duration: 0.04, repeat: 7, yoyo: true }, sc);
+      tl.to("#s01-ir", { attr: { r: 1200 }, duration: 0.45, ease: "power2.in" }, C.__dur - 0.5);
+      tl.to("#s01-stage > *:not(#s01-iris)", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s01"] = tl;
+    })();
+  </script>
+</template>

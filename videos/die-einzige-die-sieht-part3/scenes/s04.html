@@ -1,0 +1,79 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .bub { position: absolute; border-radius: 26px; background: #f3f1ea; color: #161a36; font-family: "Inter", sans-serif;
+      font-weight: 900; text-align: center; padding: 22px 26px; font-size: 40px; line-height: 1.1; opacity: 0; }
+    .rule { position: absolute; left: 0; width: 1080px; top: 440px; text-align: center; font-family: "Inter", sans-serif; font-weight: 900;
+      font-size: 120px; color: #ffd43b; text-shadow: 0 0 40px rgba(255,212,59,.5), 0 8px 0 rgba(0,0,0,.5); opacity: 0; }
+    #s04-b { left: 470px; top: 440px; width: 540px; background: #ffd43b; }
+    #s04-black { background: #000; opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="s04" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s04-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <svg id="s04-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s04-b" class="bub">„AUGEN ZU, SINA.“</div><div id="s04-black" class="full"></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      function sammler(parent, id, x, y, s) {
+        const p = person(parent, id, x, y, s, { shirt: "#0b0e22", hair: "#0b0e22", pants: "#0b0e22", skin: "#c9b49a" });
+        el("path", { d: "M-70 0 L70 0 L95 230 L-95 230Z", fill: "#161a36" }, p.g);
+        el("rect", { x: -70, y: -122, width: 140, height: 20, rx: 6, fill: "#05060f" }, p.g); el("rect", { x: -44, y: -170, width: 88, height: 54, rx: 10, fill: "#05060f" }, p.g);
+        return p;
+      }
+      function tower(parent, x, y, s) {
+        const g = el("g", {}, parent); gsap.set(g, { x, y, scale: s, transformOrigin: "0 0" });
+        el("path", { d: "M-90 0 L-12 -520 L12 -520 L90 0", fill: "none", stroke: "#8fa2ff", "stroke-width": 12 }, g);
+        for (let i = 1; i < 6; i++) { const yy = -i * 86, w = 90 - i * 15; el("path", { d: `M${-w} ${yy} L${w - 15} ${yy - 86} M${w} ${yy} L${-w + 15} ${yy - 86}`, stroke: "#5d6db8", "stroke-width": 6 }, g); }
+        el("rect", { x: -40, y: -560, width: 80, height: 40, rx: 8, fill: "#8fa2ff" }, g);
+        const lamp = el("circle", { cx: 0, cy: -580, r: 16, fill: "#ff3b55" }, g);
+        return { g, lamp };
+      }
+      function globe(parent, x, y, r) {
+        const g = el("g", {}, parent);
+        const sea = el("circle", { cx: x, cy: y, r, fill: "#2b6fd1" }, g);
+        [[-0.4, -0.3, 0.35, 0.25], [0.3, -0.1, 0.3, 0.4], [-0.1, 0.45, 0.25, 0.15]].forEach(([dx, dy, rx, ry]) => el("ellipse", { cx: x + dx * r, cy: y + dy * r, rx: rx * r, ry: ry * r, fill: "#39a06a" }, g));
+        return { g, sea };
+      }
+
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s04-svg");
+      el("rect", { x: 0, y: 420, width: 1080, height: 710, fill: "#141838" }, sv);
+      el("rect", { x: 0, y: 1040, width: 1080, height: 90, fill: "#2a2f55" }, sv);
+      const lamps = [180, 540, 900].map((x) => el("circle", { cx: x, cy: 450, r: 26, fill: "#ffe9a8" }, sv));
+      const box = el("g", {}, sv);
+      el("rect", { x: 900, y: 600, width: 140, height: 220, rx: 12, fill: "#5d6db8" }, box);
+      el("path", { d: "M935 640 l20 -30 l-6 24 l20 -2 l-24 34 l6 -24Z", fill: "#ffd43b" }, box);
+      const lever = el("rect", { x: 962, y: 680, width: 16, height: 100, rx: 8, fill: "#ff3b55" }, box);
+      el("circle", { cx: 970, cy: 780, r: 16, fill: "#c9cde6" }, box);
+      const G1 = person(sv, "s04-g1", 180, 760, 1.05, { shirt: "#0b0e22", hair: "#0b0e22", pants: "#0b0e22", arms: [12, -70] });
+      const P = person(sv, "s04-p", 340, 770, 1.0, { long: true, hair: "#4a2c1d", shirt: "#ff4fb0", arms: [20, -20] });
+      const G2 = person(sv, "s04-g2", 500, 760, 1.05, { shirt: "#0b0e22", hair: "#0b0e22", pants: "#0b0e22", arms: [70, -12] });
+      const Sp = person(sv, "s04-s", 780, 750, 1.05, { shirt: "#39a06a", hair: "#2a2f55", arms: [12, -12] });
+      const sparks = [0, 1, 2, 3, 4].map((i) => el("circle", { cx: 970, cy: 700, r: 6, fill: "#ffd43b", opacity: 0 }, sv));
+      const pa = at("L8", "packen"), sw = at("L8", "schaut"), l9 = line("L9")[0], az = at("L9", "Augen"), ha = at("L10", "Hauptschalter"), ru = at("L10", "runter");
+      tl.fromTo([G1.g, G2.g], { opacity: 0 }, { opacity: 1, duration: 0.3 }, pa - 0.3);
+      tl.to(P.g, { y: 760, duration: 0.05, repeat: 5, yoyo: true }, pa);
+      tl.to(Sp.eyes, { x: 9, duration: 0.25 }, sw);
+      tl.to(Sp.mouth, { attr: { d: "M-12 -26 q12 -10 24 0" }, duration: 0.2 }, sw);
+      tl.fromTo("#s04-b", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2)" }, l9 + 0.2);
+      tl.to(P.lids, { opacity: 1, duration: 0.05 }, az + 0.6);
+      tl.to(P.eyes, { opacity: 0, duration: 0.05 }, az + 0.6);
+      tl.to("#s04-b", { opacity: 0, duration: 0.2 }, ha - 0.6);
+      tl.to(Sp.g, { x: 860, duration: 0.3, ease: "power3.out" }, ha - 0.6);
+      tl.to(Sp.a2, { rotation: -150, duration: 0.25 }, ha - 0.4);
+      tl.to(Sp.a2, { rotation: -60, duration: 0.15, ease: "power4.in" }, ru - 0.1);
+      tl.to(lever, { rotation: 180, svgOrigin: "970 780", duration: 0.15, ease: "power4.in" }, ru - 0.1);
+      sparks.forEach((s, i) => tl.fromTo(s, { opacity: 1, x: 0, y: 0 }, { opacity: 0, x: (i - 2) * 50, y: -60 + i * 20, duration: 0.4, immediateRender: false }, ru + 0.05));
+      tl.to(lamps, { fill: "#2a2f55", duration: 0.05, stagger: 0.06 }, ru);
+      tl.to("#s04-black", { opacity: 1, duration: 0.05 }, ru + 0.25);
+      window.__timelines["s04"] = tl;
+    })();
+  </script>
+</template>
