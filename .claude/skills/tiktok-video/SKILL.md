@@ -19,7 +19,8 @@ Vorher den HyperFrames-Skill laden (`/hyperframes:hyperframes`); dessen Contract
 6. **Bauen**: `python3 tools/build_video.py videos/<slug>` → `index.html`, `compositions/*` (HUD, Untertitel, Szenen, Ton).
 7. **Prüfen**: `cd videos/<slug> && ../../tools/hf.sh check --json > /tmp/c.json; python3 ../../tools/check_summary.py /tmp/c.json` – alle Fehler beheben, Warnungen abwägen. Dann `../../tools/hf.sh snapshot --review -o <scratchpad>` und gezielt `--at` auf die Schlüsselmomente; Bilder ansehen und nach `references/stil.md` → QA korrigieren.
 8. **Rendern**: `../../tools/hf.sh render --output renders/<slug>.mp4` (1080×1920, 30 fps). Danach `../../tools/hf.sh audio renders/<slug>.mp4 --json` (Lautheit, Ton vorhanden).
-9. Ergebnis committen und pushen, MP4 dem Nutzer schicken.
+9. **Cover** (Vorschaubild): `videos/<slug>/cover/index.html` als HyperFrames-Standbild (`data-no-timeline`, 1080×1920) – Vorlage: `videos/gta6-19-november/cover/`. Aufbau: rote EILMELDUNG-Leiste, Zahl in Gelb, Thema riesig in Pink mit Glow, Hauptmotiv dahinter, 2–3 Teaser-Chips (was kaputtgeht), Datum, unten eine Frage in gelbem Rahmen. Alles Wichtige im 3:4-Ausschnitt (y 240–1680), weil das TikTok-Profilraster nur diesen zeigt. Rendern: `cd videos/<slug>/cover && ../../../tools/hf.sh snapshot --at 0 --no-end -o <tmp>` → `renders/cover.png` + `.jpg`.
+10. Ergebnis committen und pushen, MP4 und Cover dem Nutzer schicken.
 
 Nach Skriptänderungen immer Schritt 4 → 6 neu ausführen (Timings ändern sich).
 
