@@ -40,7 +40,7 @@
       const T = person(sv, "s11-t", 860, 780, 1.0, { blind: true, shirt: "#4da3ff", hair: "#2a2f55", arms: [12, -150] });
       gsap.set(T.g, { opacity: 0 });
       const ear = el("circle", { cx: 906, cy: 722, r: 34, fill: "none", stroke: "#4da3ff", "stroke-width": 6, opacity: 0 }, sv);
-      const du = at("L32", "Durchsage"), na = at("L33", "Namen"), es = at("L33", "Jahr"), ja = at("L33", "Kino"), l30 = line("L34")[0], tom = at("L34", "Alex"), ge = at("L34", "ganz");
+      const du = at("L32", "Durchsage"), na = at("L33", "Namen"), es = at("L33", "Jahr"), ja = at("L33", "Kino"), l30 = line("L34")[0], tom = at("L34", "Spartakus"), ge = at("L34", "ganz");
       tl.to(van, { x: 0, duration: 0.8, ease: "power3.out" }, 0.05);
       waves.forEach((w, i) => tl.fromTo(w, { opacity: 0 }, { opacity: 1, duration: 0.2, repeat: 9, yoyo: true }, du + i * 0.1));
       tl.to(van, { opacity: 0, y: 60, duration: 0.3 }, na - 0.6);

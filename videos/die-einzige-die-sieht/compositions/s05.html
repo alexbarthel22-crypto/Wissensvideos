@@ -31,8 +31,8 @@
     #s05-alert .bar { height: 70px; background: #ff3b55; font-size: 38px; line-height: 70px; letter-spacing: .08em; }
     #s05-alert .t { margin-top: 26px; font-size: 56px; line-height: 1.12; } #s05-alert em { font-style: normal; color: #ff3b55; }
   </style>
-  <div id="root" data-composition-id="s05" data-start="0" data-duration="10.495" data-width="1080" data-height="1920">
-    <div id="s05-stage" class="clip stage" data-start="0" data-duration="10.495" data-track-index="0">
+  <div id="root" data-composition-id="s05" data-start="0" data-duration="11.188" data-width="1080" data-height="1920">
+    <div id="s05-stage" class="clip stage" data-start="0" data-duration="11.188" data-track-index="0">
       <svg id="s05-svg" class="full" viewBox="0 0 1080 1920"></svg>
       <div id="s05-b1" class="bub">„SINA? KANNST DU WAS SEHEN?“</div>
       <div id="s05-b2" class="bub">„NEIN. ICH SEHE NICHTS.“</div>
@@ -42,7 +42,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 10.495, "L12": [0.2, 4.08], "L12.words": [["es", 0.2, 0.335], ["klopft", 0.335, 0.49], ["ihr", 1.04, 1.203], ["nachbar", 1.203, 1.535], ["alex", 1.535, 1.85], ["sina", 2.32, 2.66], ["kannst", 3.19, 3.33], ["du", 3.33, 3.452], ["irgendwas", 3.452, 3.832], ["sehen", 3.832, 4.08]], "L13": [4.3, 5.42], "L13.words": [["da", 4.3, 4.53], ["eine", 4.74, 5.006], ["durchsage", 5.006, 5.42]], "L14": [5.64, 8.17], "L14.words": [["wir", 5.64, 5.904], ["suchen", 5.904, 6.433], ["menschen", 6.433, 6.98], ["die", 7.29, 7.393], ["noch", 7.393, 7.499], ["sehen", 7.499, 7.7], ["sie", 7.83, 7.887], ["werden", 7.887, 8.001], ["abgeholt", 8.001, 8.17]], "L15": [8.39, 10.315], "L15.words": [["nein", 8.39, 8.675], ["alex", 8.675, 9.205], ["ich", 9.205, 9.48], ["sehe", 9.48, 10.01], ["nichts", 10.01, 10.314]]};
+      const C = {"__dur": 11.188, "L12": [0.2, 4.27], "L12.words": [["es", 0.2, 0.354], ["klopft", 0.354, 0.53], ["ihr", 1.08, 1.261], ["nachbar", 1.261, 1.628], ["spartakus", 1.628, 2.17], ["sina", 2.72, 3.12], ["kannst", 3.3, 3.453], ["du", 3.453, 3.586], ["irgendwas", 3.586, 3.999], ["sehen", 3.999, 4.27]], "L13": [4.49, 5.788], "L13.words": [["da", 4.49, 4.75], ["eine", 4.96, 5.284], ["durchsage", 5.284, 5.788]], "L14": [6.008, 8.718], "L14.words": [["wir", 6.008, 6.188], ["suchen", 6.188, 6.549], ["menschen", 6.549, 6.922], ["die", 6.922, 7.102], ["noch", 7.102, 7.289], ["sehen", 7.289, 7.643], ["sie", 7.643, 7.823], ["werden", 7.823, 8.184], ["abgeholt", 8.184, 8.718]], "L15": [8.938, 11.008], "L15.words": [["nein", 8.938, 9.204], ["spartakus", 9.204, 9.973], ["ich", 9.973, 10.229], ["sehe", 10.229, 10.724], ["nichts", 10.724, 11.008]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -155,7 +155,7 @@
       gsap.set(T.g, { opacity: 0 });
       const P = person(sv, "s05-p", 790, 780, 1.1, { long: true, hair: "#4a2c1d", shirt: "#ff4fb0" });
       const sweat = el("path", { d: "M850 650 q-14 22 0 30 q14 -8 0 -30Z", fill: "#a9d2ff", opacity: 0 }, sv);
-      const kl = at("L12", "klopft"), tom = at("L12", "Alex"), sn = at("L12", "Sina"), ja = at("L13", "Da"), du = at("L13", "Durchsage"), ab = at("L14", "abgeholt"), l15 = line("L15")[0], nein = at("L15", "Nein");
+      const kl = at("L12", "klopft"), tom = at("L12", "Spartakus"), sn = at("L12", "Sina"), ja = at("L13", "Da"), du = at("L13", "Durchsage"), ab = at("L14", "abgeholt"), l15 = line("L15")[0], nein = at("L15", "Nein");
       tl.fromTo(P.g, { opacity: 0, x: 860 }, { opacity: 1, x: 790, duration: 0.4, ease: "expo.out" }, 0.05);
       tl.to(door, { x: 6, duration: 0.05, repeat: 5, yoyo: true }, kl);
       tl.to(door, { scaleX: 0.08, svgOrigin: "130 840", duration: 0.4, ease: "power2.inOut" }, tom - 0.35);

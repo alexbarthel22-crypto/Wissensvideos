@@ -28,16 +28,17 @@
     #s02-name { left: 640px; top: 450px; width: 360px; height: 120px; border: 4px solid #ff4fb0; box-shadow: 0 0 30px rgba(255,79,176,.4); opacity: 0; }
     #s02-name .a { margin-top: 12px; font-size: 52px; color: #ff4fb0; } #s02-name .b { font-size: 30px; color: #dfe2f5; letter-spacing: .14em; font-family: "Space Mono", monospace; }
   </style>
-  <div id="root" data-composition-id="s02" data-start="0" data-duration="5.284" data-width="1080" data-height="1920">
-    <div id="s02-stage" class="clip stage" data-start="0" data-duration="5.284" data-track-index="0">
+  <div id="root" data-composition-id="s02" data-start="0" data-duration="5.976" data-width="1080" data-height="1920">
+    <div id="s02-stage" class="clip stage" data-start="0" data-duration="5.976" data-track-index="0">
       <svg id="s02-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <svg class="full" viewBox="0 0 1080 1920" style="pointer-events:none"><circle id="s02-ir" cx="540" cy="760" r="1200" fill="none" stroke="#000" stroke-width="2400"/></svg>
       <div id="s02-name" class="panel"><div class="a">SINA</div><div class="b">27 JAHRE</div></div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 5.284, "L4": [0.2, 3.68], "L4.words": [["das", 0.2, 0.561], ["ist", 0.561, 0.923], ["sina", 0.923, 1.62], ["27", 1.96, 2.317], ["sie", 2.317, 2.388], ["öffnet", 2.388, 2.53], ["die", 2.53, 2.601], ["augen", 2.601, 2.74], ["alles", 2.98, 3.318], ["ist", 3.318, 3.49], ["scharf", 3.49, 3.68]], "L6": [3.9, 5.104], "L6.words": [["doch", 3.9, 4.085], ["draußen", 4.085, 4.45], ["schreie", 4.74, 5.104]]};
+      const C = {"__dur": 5.976, "L4": [0.2, 4.32], "L4.words": [["das", 0.2, 0.62], ["ist", 0.62, 1.04], ["sina", 1.04, 1.85], ["27", 2.4, 2.789], ["sie", 2.789, 2.866], ["öffnet", 2.866, 3.021], ["die", 3.021, 3.098], ["augen", 3.098, 3.25], ["alles", 3.56, 3.927], ["ist", 3.927, 4.113], ["scharf", 4.113, 4.32]], "L6": [4.54, 5.796], "L6.words": [["doch", 4.54, 4.739], ["draußen", 4.739, 5.13], ["schreie", 5.43, 5.795]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -144,6 +145,7 @@
       const tl = gsap.timeline({ paused: true });
       const sv = document.querySelector("#s02-svg");
       const win = el("g", {}, sv);
+      tl.fromTo("#s02-ir", { attr: { r: 1200 } }, { attr: { r: 2600 }, duration: 0.6, ease: "power2.out" }, 0);
       el("rect", { x: 110, y: 480, width: 280, height: 320, rx: 14, fill: "#6d55a8" }, win);
       const glass = el("rect", { x: 130, y: 500, width: 240, height: 280, rx: 8, fill: "#9db4ff" }, win);
       el("path", { d: "M250 500 V780 M130 640 H370", stroke: "#6d55a8", "stroke-width": 12 }, win);

@@ -23,9 +23,9 @@
    ],
    "sfx": [
     {
-     "name": "purge-siren",
+     "name": "alarm",
      "at": "s01+0.0",
-     "volume": 0.7
+     "volume": 0.75
     },
     {
      "name": "impact-bass-1",
@@ -76,14 +76,19 @@
    "lines": [
     {
      "id": "L8",
-     "text": "Ein Mann im Bademantel / lässt sich von seinem *y:Hund führen. / Der Hund hat nur *y:ein *y:Ziel: / die *r:Metzgerei."
+     "text": "Ein Mann / gießt sich *y:Kaffee ein – / *r:direkt in seinen *r:Schuh. / Und *r:trinkt ihn aus."
     }
    ],
    "sfx": [
     {
      "name": "pop",
-     "at": "L8:Metzgerei.",
+     "at": "L8:Schuh.",
      "volume": 0.45
+    },
+    {
+     "name": "glitch-1",
+     "at": "L8:trinkt",
+     "volume": 0.22
     }
    ]
   },
@@ -126,7 +131,7 @@
    "lines": [
     {
      "id": "L12",
-     "text": "Es klopft. / Ihr Nachbar *b:Alex. / „Sina? / Kannst du *y:irgendwas sehen?“"
+     "text": "Es klopft. / Ihr Nachbar *b:Spartakus. / „Sina? / Kannst du *y:irgendwas sehen?“"
     },
     {
      "id": "L13",
@@ -139,7 +144,7 @@
     },
     {
      "id": "L15",
-     "text": "*r:„Nein, Alex. / Ich sehe *r:nichts.“"
+     "text": "*r:„Nein, Spartakus. / Ich sehe *r:nichts.“"
     }
    ],
    "sfx": [
@@ -203,7 +208,6 @@
   {
    "id": "s07",
    "tag": "REGEL 1 · AUSWEICHEN",
-   "check": "AUSWEICHEN",
    "lines": [
     {
      "id": "L20",
@@ -235,7 +239,6 @@
   {
    "id": "s08",
    "tag": "REGEL 2 · LICHT",
-   "check": "LICHT",
    "lines": [
     {
      "id": "L22",
@@ -267,7 +270,6 @@
   {
    "id": "s09",
    "tag": "REGEL 3 · TASTEN",
-   "check": "TASTEN",
    "lines": [
     {
      "id": "L24",
@@ -350,7 +352,7 @@
     },
     {
      "id": "L34",
-     "text": "Und nebenan / hört *b:Alex / *r:ganz genau zu."
+     "text": "Und nebenan / hört *b:Spartakus / *r:ganz genau zu."
     }
    ],
    "sfx": [
@@ -381,7 +383,7 @@
     },
     {
      "id": "L36",
-     "text": "Draußen: / ein *y:Lichtkegel. / Eine *r:Taschenlampe."
+     "text": "Draußen: / eine *r:Taschenlampe."
     },
     {
      "id": "L37",
@@ -397,7 +399,7 @@
    "sfx": [
     {
      "name": "click",
-     "at": "L36:Lichtkegel.",
+     "at": "L36:Taschenlampe.",
      "volume": 0.4
     },
     {
@@ -497,7 +499,7 @@
     },
     {
      "id": "L48",
-     "text": "*r:„Psst. / Mach. / Nicht. / *r:Auf.“",
+     "text": "*r:„Still. / Mach. / Nicht. / *r:Auf.“",
      "speed": 0.85,
      "pause": 0.2
     }
@@ -528,7 +530,7 @@
   {
    "id": "s15",
    "tag": "PART 1 · ENDE",
-   "hold": 2.6,
+   "hold": 2.5,
    "lines": [
     {
      "id": "L49",
@@ -548,5 +550,6 @@
     }
    ]
   }
- ]
+ ],
+ "hud": "pop"
 }

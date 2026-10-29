@@ -30,8 +30,8 @@
     #s06-val { top: 450px; border-color: #ffd43b; color: #ffd43b; box-shadow: 0 0 40px rgba(255,212,59,.5); }
     #s06-gang { top: 450px; } #s06-lab2 { top: 450px; } #s06-back { top: 1010px; left: 200px; width: 680px; }
   </style>
-  <div id="root" data-composition-id="s06" data-start="0" data-duration="8.490" data-width="1080" data-height="1920">
-    <div id="s06-stage" class="clip stage" data-start="0" data-duration="8.490" data-track-index="0">
+  <div id="root" data-composition-id="s06" data-start="0" data-duration="9.070" data-width="1080" data-height="1920">
+    <div id="s06-stage" class="clip stage" data-start="0" data-duration="9.070" data-track-index="0">
       <svg id="s06-svg" class="full" viewBox="0 0 1080 1920"></svg>
       <div id="s06-val" class="panel s06-lab">UNBEZAHLBAR</div><div id="s06-gang" class="panel s06-lab">BANDEN</div>
       <div id="s06-lab2" class="panel s06-lab">LABOR</div><div id="s06-back" class="panel s06-lab">KEIN ZURÜCK</div>
@@ -40,7 +40,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 8.49, "L16": [0.2, 2.78], "L16.words": [["denn", 0.2, 0.408], ["wer", 0.408, 0.608], ["sehen", 0.608, 1.002], ["kann", 1.002, 1.21], ["ist", 1.32, 1.478], ["plötzlich", 1.478, 1.812], ["das", 1.812, 1.971], ["wertvollste", 1.971, 2.457], ["der", 2.457, 2.616], ["welt", 2.616, 2.78]], "L17": [3.0, 4.76], "L17.words": [["banden", 3.0, 3.294], ["wollen", 3.294, 3.588], ["dich", 3.588, 3.741], ["als", 3.741, 3.888], ["augen", 3.888, 4.177], ["für", 4.177, 4.324], ["raubzüge", 4.324, 4.76]], "L18": [4.98, 6.28], "L18.words": [["die", 4.98, 5.124], ["regierung", 5.124, 5.558], ["will", 5.558, 5.707], ["dich", 5.707, 5.857], ["im", 5.857, 5.996], ["labor", 5.996, 6.28]], "L19": [6.5, 8.31], "L19.words": [["wer", 6.5, 6.672], ["abgeholt", 6.672, 7.182], ["wird", 7.182, 7.36], ["kommt", 7.5, 7.709], ["nicht", 7.709, 7.919], ["zurück", 7.919, 8.31]]};
+      const C = {"__dur": 9.07, "L16": [0.2, 2.96], "L16.words": [["denn", 0.2, 0.424], ["wer", 0.424, 0.641], ["sehen", 0.641, 1.066], ["kann", 1.066, 1.29], ["ist", 1.45, 1.614], ["plötzlich", 1.614, 1.959], ["das", 1.959, 2.123], ["wertvollste", 2.123, 2.626], ["der", 2.626, 2.79], ["welt", 2.79, 2.96]], "L17": [3.18, 5.32], "L17.words": [["banden", 3.18, 3.538], ["wollen", 3.538, 3.895], ["dich", 3.895, 4.081], ["als", 4.081, 4.26], ["augen", 4.26, 4.611], ["für", 4.611, 4.79], ["raubzüge", 4.79, 5.32]], "L18": [5.54, 6.93], "L18.words": [["die", 5.54, 5.694], ["regierung", 5.694, 6.158], ["will", 6.158, 6.318], ["dich", 6.318, 6.478], ["im", 6.478, 6.627], ["labor", 6.627, 6.93]], "L19": [7.15, 8.89], "L19.words": [["wer", 7.15, 7.314], ["abgeholt", 7.314, 7.8], ["wird", 7.8, 7.97], ["kommt", 8.24, 8.408], ["nicht", 8.408, 8.576], ["zurück", 8.576, 8.89]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];

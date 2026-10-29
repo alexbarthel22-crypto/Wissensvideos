@@ -14,6 +14,7 @@
   <div id="root" data-composition-id="s02" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
     <div id="s02-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
       <svg id="s02-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <svg class="full" viewBox="0 0 1080 1920" style="pointer-events:none"><circle id="s02-ir" cx="540" cy="760" r="1200" fill="none" stroke="#000" stroke-width="2400"/></svg>
       <div id="s02-name" class="panel"><div class="a">SINA</div><div class="b">27 JAHRE</div></div>
     </div>
   </div>
@@ -24,6 +25,7 @@
       const tl = gsap.timeline({ paused: true });
       const sv = document.querySelector("#s02-svg");
       const win = el("g", {}, sv);
+      tl.fromTo("#s02-ir", { attr: { r: 1200 } }, { attr: { r: 2600 }, duration: 0.6, ease: "power2.out" }, 0);
       el("rect", { x: 110, y: 480, width: 280, height: 320, rx: 14, fill: "#6d55a8" }, win);
       const glass = el("rect", { x: 130, y: 500, width: 240, height: 280, rx: 8, fill: "#9db4ff" }, win);
       el("path", { d: "M250 500 V780 M130 640 H370", stroke: "#6d55a8", "stroke-width": 12 }, win);

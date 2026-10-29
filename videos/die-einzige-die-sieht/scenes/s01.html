@@ -12,13 +12,23 @@
     #s01-news .bar { height: 84px; background: #ff3b55; color: #fff; display: flex; align-items: center; padding-left: 34px; font-size: 44px; letter-spacing: .06em; }
     #s01-news .hl { padding: 22px 40px 0; font-size: 84px; line-height: 1.04; letter-spacing: -.015em; }
     #s01-news .hl em { font-style: normal; color: #ffd43b; text-shadow: 0 0 26px rgba(255,212,59,.6); }
+,
     #s01-dark { background: #05060f; opacity: 0; }
+    #s01-title { left: 0; width: 1080px; top: 470px; height: 400px; overflow: hidden; text-align: center; opacity: 0; }
+    #s01-title .k { margin-top: 20px; font-family: "Space Mono", monospace; font-weight: 700; font-size: 54px; letter-spacing: .3em; color: #ff4fb0; text-shadow: 0 0 26px rgba(255,79,176,.7); }
+    #s01-title .t { margin-top: 18px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 116px; line-height: 1; color: #fff; text-shadow: 0 0 40px rgba(255,255,255,.3), 0 8px 0 rgba(0,0,0,.5); }
+    #s01-sweep { position: absolute; left: -300px; top: -40px; width: 200px; height: 480px; transform: skewX(-20deg);
+      background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.45), rgba(255,255,255,0)); }
+    .s01-bar { position: absolute; left: 0; width: 1080px; height: 150px; background: #000; }
   </style>
   <div id="root" data-composition-id="s01" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
     <div id="s01-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
       <div id="s01-dark" class="full"></div>
       <svg id="s01-svg" class="full" viewBox="0 0 1080 1920"></svg>
       <div id="s01-news" class="panel"><div class="bar">● EILMELDUNG · LIVE</div><div class="hl">8 MILLIARDEN MENSCHEN ÜBER NACHT <em>BLIND</em></div></div>
+      <div id="s01-title" class="abs"><div class="k">PART 1</div><div class="t">DIE EINZIGE,<br>DIE SIEHT</div><div id="s01-sweep"></div></div>
+      <div id="s01-bar1" class="s01-bar" style="top:0;transform:translateY(-150px)"></div><div id="s01-bar2" class="s01-bar" style="top:1770px;transform:translateY(150px)"></div>
+      <svg id="s01-iris" class="full" viewBox="0 0 1080 1920"><circle id="s01-ir" cx="540" cy="760" r="2600" fill="none" stroke="#000" stroke-width="2400"/></svg>
     </div>
   </div>
   <script>
@@ -34,8 +44,7 @@
         const hero = row === 1 && i === 4;
         ms.push(mini(crowd, hero ? 540 : x, y, hero ? "#ff4fb0" : ["#3a4280", "#47508f", "#2f366e"][(i + row) % 3], hero));
       }
-      const beam = el("path", { d: "M540 1130 L380 520 L700 520Z", fill: "#ffd43b", opacity: 0 }, sv);
-      const q = el("text", { x: 540, y: 820, "text-anchor": "middle", "font-family": "Inter", "font-weight": 900, "font-size": 260, fill: "#ff3b55", opacity: 0 }, sv); q.textContent = "?";
+      const q = el("text", { x: 540, y: 1080, "text-anchor": "middle", "font-family": "Inter", "font-weight": 900, "font-size": 260, fill: "#ff3b55", opacity: 0 }, sv); q.textContent = "?";
       const ein = at("L1", "einzige"), acht = at("L2", "Acht"), erb = at("L2", "erblindet"), l3 = line("L3")[0], unm = at("L3", "unmöglich");
       tl.fromTo(E.g, { filter: "drop-shadow(0 0 20px rgba(255,212,59,.5))" }, { filter: "drop-shadow(0 0 60px rgba(255,212,59,.9))", duration: 0.35, repeat: 5, yoyo: true }, 0);
       tl.fromTo("#s01-news", { scale: 1.06 }, { scale: 1, duration: 0.5, ease: "expo.out" }, 0);
@@ -51,12 +60,15 @@
       tl.fromTo(ms[13], { scale: 1 }, { scale: 1.35, svgOrigin: "540 880", duration: 0.25, yoyo: true, repeat: 1 }, erb);
       tl.to("#s01-dark", { opacity: 0.85, duration: 0.5 }, l3 - 0.1);
       tl.to([crowd, E.g], { opacity: 0, duration: 0.4 }, l3 - 0.1);
-      tl.to(beam, { opacity: 0.35, duration: 0.2 }, l3 + 0.5);
-      tl.fromTo(beam, { rotation: -25 }, { rotation: 25, svgOrigin: "540 1130", duration: 1.4, ease: "sine.inOut" }, l3 + 0.5);
-      tl.to(beam, { opacity: 0, duration: 0.2 }, unm - 0.2);
-      tl.fromTo(q, { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, transformOrigin: "50% 50%", duration: 0.35, ease: "back.out(2.4)" }, unm - 0.1);
-      tl.to(q, { x: 10, duration: 0.04, repeat: 7, yoyo: true }, unm + 0.3);
-      tl.to("#s01-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      tl.fromTo("#s01-bar1", { y: -150 }, { y: 0, duration: 0.5, ease: "power3.out" }, l3 - 0.1);
+      tl.fromTo("#s01-bar2", { y: 150 }, { y: 0, duration: 0.5, ease: "power3.out" }, l3 - 0.1);
+      tl.fromTo("#s01-title", { opacity: 0, scale: 1.4, filter: "blur(16px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.7, ease: "expo.out" }, l3 + 0.1);
+      tl.fromTo("#s01-sweep", { x: 0 }, { x: 1700, duration: 0.9, ease: "power2.inOut" }, l3 + 0.6);
+      tl.to("#s01-title .t", { color: "#ff3b55", duration: 0.05, repeat: 5, yoyo: true }, unm);
+      tl.to("#s01-title", { x: 10, duration: 0.04, repeat: 7, yoyo: true }, unm);
+      tl.to("#s01-ir", { attr: { r: 1200 }, duration: 0.45, ease: "power2.in" }, C.__dur - 0.5);
+
+      tl.to("#s01-stage > *:not(#s01-iris)", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
       window.__timelines["s01"] = tl;
     })();
   </script>

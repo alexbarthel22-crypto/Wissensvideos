@@ -182,6 +182,13 @@ BIG_CAP = """
     .inner {{ font-size: 92px; line-height: 1.06; }}
     .w {{ display: inline-block; transform-origin: 50% 70%; }}""".replace("{{", "{").replace("}}", "}")
 TITLE_COLS = ["#ffd43b", "#ff4fb0", "#4da3ff", "#39e27a", "#ff8a3d", "#b06bff"]
+POP_HUD = """
+    .tag { top: 150px; height: 104px; }
+    .tagt { height: 100px; min-width: 520px; padding: 0 34px; font-size: 54px; letter-spacing: 0.08em; color: #ffd43b;
+      border: 4px solid #ffd43b; border-radius: 14px; background: rgba(10,12,29,.88);
+      text-shadow: 0 0 22px rgba(255,212,59,.6); box-shadow: 0 0 26px rgba(255,212,59,.4); }
+"""
+
 BIG_HUD = """
     .btag { position: absolute; left: 0; width: 100%; top: 130px; height: 250px; }
     .kick { position: absolute; left: 0; right: 0; top: 0; margin: 0 auto; width: fit-content; padding: 4px 24px;
@@ -227,6 +234,7 @@ def build_hud_big(project, script, windows, total):
 def build_hud(project, script, windows, total):
     tags, checks, js, n = [], [], [], 0
     big = script.get("hud") == "big"
+    pop = script.get("hud") == "pop"
     if big:
         tags, checks, js = build_hud_big(project, script, windows, total)
     for i, (sc, s, e) in enumerate(windows if not big else []):
@@ -235,7 +243,11 @@ def build_hud(project, script, windows, total):
             continue
         tags.append(f'      <div id="{tid}" class="clip tag" data-start="{s:.3f}" data-duration="{e - s:.3f}" data-track-index="1">'
                     f'<span id="{tid}t" class="tagt">{esc(sc["tag"])}</span></div>')
-        if i > 0:  # erste Marke steht ab Frame 0 (Thumbnail/Hook)
+        if pop:  # große Marke, knallt mit Zoom/Unschärfe/Zittern + Glow-Blitz herein
+            js.append(f'tl.fromTo("#{tid}t", {{ opacity: 0, scale: 2.4, filter: "blur(14px)" }}, {{ opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.45, ease: "expo.out" }}, {s:.3f});')
+            js.append(f'tl.fromTo("#{tid}t", {{ x: -10 }}, {{ x: 0, duration: 0.05, repeat: 4, yoyo: true, ease: "none" }}, {s + 0.42:.3f});')
+            js.append(f'tl.fromTo("#{tid}t", {{ boxShadow: "0 0 80px rgba(255,212,59,.95)" }}, {{ boxShadow: "0 0 26px rgba(255,212,59,.4)", duration: 0.7, ease: "power2.out" }}, {s + 0.42:.3f});')
+        elif i > 0:  # erste Marke steht ab Frame 0 (Thumbnail/Hook)
             js.append(f'tl.fromTo("#{tid}t", {{ opacity: 0, y: -8 }}, {{ opacity: 1, y: 0, duration: 0.22, ease: "power3.out" }}, {s:.3f});')
         if sc.get("check"):
             n += 1
@@ -258,7 +270,7 @@ def build_hud(project, script, windows, total):
       color: #ff7a8c; border: 2px solid #c8314a; border-radius: 6px; background: rgba(40,10,24,.55); }}
     .chkt b {{ color: #ff3b55; margin-left: 6px; }}
     .chkt.ok {{ color: #8affb6; border-color: #1f9a52; background: rgba(8,40,22,.6); }}
-    .chkt.ok b {{ color: #39e27a; }}{BIG_HUD if big else ""}
+    .chkt.ok b {{ color: #39e27a; }}{BIG_HUD if big else POP_HUD if pop else ""}
   </style>
   <div id="root" data-composition-id="hud" data-start="0" data-duration="{total:.3f}" data-width="{W}" data-height="{H}">
 {chr(10).join(tags)}

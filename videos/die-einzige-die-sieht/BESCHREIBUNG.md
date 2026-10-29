@@ -18,4 +18,4 @@ Würdest du verraten, dass du als Einzige noch sehen kannst? 🤫 Sina hat 3 Reg
 
 ## Angepinnter Kommentar
 
-Wer steht hinter Sina – Alex, der Mann vom Türspion oder jemand ganz anderes? 🔦 Eure Theorien in die Kommentare, Part 2 kommt bald!
+Wer steht hinter Sina – Spartakus, der Mann vom Türspion oder jemand ganz anderes? 🔦 Eure Theorien in die Kommentare, Part 2 kommt bald!

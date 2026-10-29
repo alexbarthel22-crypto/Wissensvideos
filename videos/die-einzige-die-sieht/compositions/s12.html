@@ -27,15 +27,15 @@
       font-size: 120px; color: #ffd43b; text-shadow: 0 0 40px rgba(255,212,59,.5), 0 8px 0 rgba(0,0,0,.5); opacity: 0; }
 
   </style>
-  <div id="root" data-composition-id="s12" data-start="0" data-duration="9.750" data-width="1080" data-height="1920">
-    <div id="s12-stage" class="clip stage" data-start="0" data-duration="9.750" data-track-index="0">
+  <div id="root" data-composition-id="s12" data-start="0" data-duration="9.040" data-width="1080" data-height="1920">
+    <div id="s12-stage" class="clip stage" data-start="0" data-duration="9.040" data-track-index="0">
       <svg id="s12-svg" class="full" viewBox="0 0 1080 1920"></svg>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 9.75, "L35": [0.2, 0.84], "L35.words": [["nacht", 0.2, 0.525], ["acht", 0.525, 0.84]], "L36": [1.06, 3.78], "L36.words": [["draußen", 1.06, 1.47], ["ein", 1.76, 1.926], ["lichtkegel", 1.926, 2.43], ["eine", 2.98, 3.24], ["taschenlampe", 3.24, 3.78]], "L37": [4.2, 7.21], "L37.words": [["aber", 4.2, 4.478], ["wer", 4.478, 4.622], ["braucht", 4.622, 4.787], ["eine", 4.787, 5.065], ["taschenlampe", 5.065, 5.641], ["", 5.641, 5.77], ["in", 5.9, 6.058], ["einer", 6.058, 6.38], ["welt", 6.38, 6.549], ["voller", 6.549, 6.877], ["blinder", 6.877, 7.21]], "L38": [7.43, 9.57], "L38.words": [["der", 7.43, 7.589], ["lichtkegel", 7.589, 8.073], ["stoppt", 8.073, 8.25], ["auf", 8.8, 8.954], ["ihrem", 8.954, 9.257], ["fenster", 9.257, 9.57]]};
+      const C = {"__dur": 9.04, "L35": [0.2, 0.84], "L35.words": [["nacht", 0.2, 0.525], ["acht", 0.525, 0.84]], "L36": [1.06, 2.85], "L36.words": [["draußen", 1.06, 1.62], ["eine", 1.89, 2.202], ["taschenlampe", 2.202, 2.85]], "L37": [3.27, 6.4], "L37.words": [["aber", 3.27, 3.532], ["wer", 3.532, 3.668], ["braucht", 3.668, 3.823], ["eine", 3.823, 4.085], ["taschenlampe", 4.085, 4.629], ["", 4.629, 4.75], ["in", 5.19, 5.336], ["einer", 5.336, 5.633], ["welt", 5.633, 5.79], ["voller", 5.79, 6.092], ["blinder", 6.092, 6.4]], "L38": [6.62, 8.86], "L38.words": [["der", 6.62, 6.789], ["lichtkegel", 6.789, 7.303], ["stoppt", 7.303, 7.49], ["auf", 8.04, 8.204], ["ihrem", 8.204, 8.526], ["fenster", 8.526, 8.86]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -163,7 +163,7 @@
       const spot = el("ellipse", { cx: O[0], cy: O[1] - 760, rx: 90, ry: 70, fill: "#fff3b0", opacity: 0 }, sv);
       const bm = el("g", {}, sv); bm.appendChild(beam); bm.appendChild(spot);
       const q = el("text", { x: 540, y: 900, "text-anchor": "middle", "font-family": "Inter", "font-weight": 900, "font-size": 300, fill: "#ff3b55", opacity: 0 }, sv); q.textContent = "?";
-      const t0 = at("L35", "Nacht"), lk = at("L36", "Lichtkegel"), l33 = at("L36", "Taschenlampe"), wb = at("L37", "wer"), bl = at("L37", "Blinder"), l35 = line("L38")[0], ih = at("L38", "ihrem");
+      const t0 = at("L35", "Nacht"), lk = at("L36", "Taschenlampe"), l33 = at("L36", "Taschenlampe"), wb = at("L37", "wer"), bl = at("L37", "Blinder"), l35 = line("L38")[0], ih = at("L38", "ihrem");
       const aim = (p) => { const dy = O[1] - p[1]; return { rotation: ang(p), scaleY: Math.hypot(p[0] - O[0], dy) / 760, svgOrigin: `${O[0]} ${O[1]}` }; };
       tl.to(ey, { x: -6, duration: 0.3, repeat: 3, yoyo: true }, t0 + 0.6);
       tl.set(bm, aim(W[6]), 0);

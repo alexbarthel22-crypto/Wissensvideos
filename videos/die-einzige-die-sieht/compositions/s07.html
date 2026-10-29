@@ -30,8 +30,8 @@
     #s07-bum { left: 380px; top: 560px; width: 320px; text-align: center; font-family: "Inter", sans-serif; font-weight: 900; font-size: 96px; color: #ffd43b;
       text-shadow: 0 0 30px rgba(255,212,59,.5), 0 6px 0 rgba(0,0,0,.5); opacity: 0; }
   </style>
-  <div id="root" data-composition-id="s07" data-start="0" data-duration="4.964" data-width="1080" data-height="1920">
-    <div id="s07-stage" class="clip stage" data-start="0" data-duration="4.964" data-track-index="0">
+  <div id="root" data-composition-id="s07" data-start="0" data-duration="5.990" data-width="1080" data-height="1920">
+    <div id="s07-stage" class="clip stage" data-start="0" data-duration="5.990" data-track-index="0">
       <div id="s07-rule" class="rule">REGEL 1</div>
       <svg id="s07-svg" class="full" viewBox="0 0 1080 1920"></svg>
       <div id="s07-bum" class="abs">BUMM!</div><div id="s07-lab" class="panel">VERDÄCHTIG</div>
@@ -40,7 +40,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 4.964, "L20": [0.2, 2.064], "L20.words": [["regel", 0.2, 0.573], ["eins", 0.573, 0.77], ["niemals", 1.07, 1.469], ["ausweichen", 1.469, 2.064]], "L21": [2.284, 4.784], "L21.words": [["blinde", 2.284, 2.534], ["laufen", 2.534, 2.783], ["ineinander", 2.783, 3.274], ["wer", 3.764, 3.902], ["ausweicht", 3.902, 4.194], ["verrät", 4.344, 4.634], ["sich", 4.634, 4.784]]};
+      const C = {"__dur": 5.99, "L20": [0.2, 2.32], "L20.words": [["regel", 0.2, 0.645], ["eins", 0.645, 0.88], ["niemals", 1.22, 1.662], ["ausweichen", 1.662, 2.32]], "L21": [2.54, 5.81], "L21.words": [["blinde", 2.54, 2.84], ["laufen", 2.84, 3.14], ["ineinander", 3.14, 3.73], ["wer", 4.28, 4.489], ["ausweicht", 4.489, 4.93], ["verrät", 5.34, 5.65], ["sich", 5.65, 5.81]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];

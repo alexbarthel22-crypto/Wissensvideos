@@ -40,10 +40,20 @@ S['s01'] = ('''    #s01-news { left: 60px; top: 690px; width: 960px; height: 420
     #s01-news .bar { height: 84px; background: #ff3b55; color: #fff; display: flex; align-items: center; padding-left: 34px; font-size: 44px; letter-spacing: .06em; }
     #s01-news .hl { padding: 22px 40px 0; font-size: 84px; line-height: 1.04; letter-spacing: -.015em; }
     #s01-news .hl em { font-style: normal; color: #ffd43b; text-shadow: 0 0 26px rgba(255,212,59,.6); }
-    #s01-dark { background: #05060f; opacity: 0; }''',
+,
+    #s01-dark { background: #05060f; opacity: 0; }
+    #s01-title { left: 0; width: 1080px; top: 470px; height: 400px; overflow: hidden; text-align: center; opacity: 0; }
+    #s01-title .k { margin-top: 20px; font-family: "Space Mono", monospace; font-weight: 700; font-size: 54px; letter-spacing: .3em; color: #ff4fb0; text-shadow: 0 0 26px rgba(255,79,176,.7); }
+    #s01-title .t { margin-top: 18px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 116px; line-height: 1; color: #fff; text-shadow: 0 0 40px rgba(255,255,255,.3), 0 8px 0 rgba(0,0,0,.5); }
+    #s01-sweep { position: absolute; left: -300px; top: -40px; width: 200px; height: 480px; transform: skewX(-20deg);
+      background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.45), rgba(255,255,255,0)); }
+    .s01-bar { position: absolute; left: 0; width: 1080px; height: 150px; background: #000; }''',
 '''      <div id="s01-dark" class="full"></div>
 ''' + SVG + '''
-      <div id="s01-news" class="panel"><div class="bar">● EILMELDUNG · LIVE</div><div class="hl">8 MILLIARDEN MENSCHEN ÜBER NACHT <em>BLIND</em></div></div>''',
+      <div id="s01-news" class="panel"><div class="bar">● EILMELDUNG · LIVE</div><div class="hl">8 MILLIARDEN MENSCHEN ÜBER NACHT <em>BLIND</em></div></div>
+      <div id="s01-title" class="abs"><div class="k">PART 1</div><div class="t">DIE EINZIGE,<br>DIE SIEHT</div><div id="s01-sweep"></div></div>
+      <div id="s01-bar1" class="s01-bar" style="top:0;transform:translateY(-150px)"></div><div id="s01-bar2" class="s01-bar" style="top:1770px;transform:translateY(150px)"></div>
+      <svg id="s01-iris" class="full" viewBox="0 0 1080 1920"><circle id="s01-ir" cx="540" cy="760" r="2600" fill="none" stroke="#000" stroke-width="2400"/></svg>''',
 '''      const E = bigEye(sv, 540, 560, 0.9);
       const crowd = el("g", {}, sv), r = rng(3), ms = [];
       for (let row = 0; row < 4; row++) for (let i = 0; i < 9; i++) {
@@ -51,8 +61,7 @@ S['s01'] = ('''    #s01-news { left: 60px; top: 690px; width: 960px; height: 420
         const hero = row === 1 && i === 4;
         ms.push(mini(crowd, hero ? 540 : x, y, hero ? "#ff4fb0" : ["#3a4280", "#47508f", "#2f366e"][(i + row) % 3], hero));
       }
-      const beam = el("path", { d: "M540 1130 L380 520 L700 520Z", fill: "#ffd43b", opacity: 0 }, sv);
-      const q = el("text", { x: 540, y: 820, "text-anchor": "middle", "font-family": "Inter", "font-weight": 900, "font-size": 260, fill: "#ff3b55", opacity: 0 }, sv); q.textContent = "?";
+      const q = el("text", { x: 540, y: 1080, "text-anchor": "middle", "font-family": "Inter", "font-weight": 900, "font-size": 260, fill: "#ff3b55", opacity: 0 }, sv); q.textContent = "?";
       const ein = at("L1", "einzige"), acht = at("L2", "Acht"), erb = at("L2", "erblindet"), l3 = line("L3")[0], unm = at("L3", "unmöglich");
       tl.fromTo(E.g, { filter: "drop-shadow(0 0 20px rgba(255,212,59,.5))" }, { filter: "drop-shadow(0 0 60px rgba(255,212,59,.9))", duration: 0.35, repeat: 5, yoyo: true }, 0);
       tl.fromTo("#s01-news", { scale: 1.06 }, { scale: 1, duration: 0.5, ease: "expo.out" }, 0);
@@ -68,19 +77,24 @@ S['s01'] = ('''    #s01-news { left: 60px; top: 690px; width: 960px; height: 420
       tl.fromTo(ms[13], { scale: 1 }, { scale: 1.35, svgOrigin: "540 880", duration: 0.25, yoyo: true, repeat: 1 }, erb);
       tl.to("#s01-dark", { opacity: 0.85, duration: 0.5 }, l3 - 0.1);
       tl.to([crowd, E.g], { opacity: 0, duration: 0.4 }, l3 - 0.1);
-      tl.to(beam, { opacity: 0.35, duration: 0.2 }, l3 + 0.5);
-      tl.fromTo(beam, { rotation: -25 }, { rotation: 25, svgOrigin: "540 1130", duration: 1.4, ease: "sine.inOut" }, l3 + 0.5);
-      tl.to(beam, { opacity: 0, duration: 0.2 }, unm - 0.2);
-      tl.fromTo(q, { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, transformOrigin: "50% 50%", duration: 0.35, ease: "back.out(2.4)" }, unm - 0.1);
-      tl.to(q, { x: 10, duration: 0.04, repeat: 7, yoyo: true }, unm + 0.3);''' + OUT)
+      tl.fromTo("#s01-bar1", { y: -150 }, { y: 0, duration: 0.5, ease: "power3.out" }, l3 - 0.1);
+      tl.fromTo("#s01-bar2", { y: 150 }, { y: 0, duration: 0.5, ease: "power3.out" }, l3 - 0.1);
+      tl.fromTo("#s01-title", { opacity: 0, scale: 1.4, filter: "blur(16px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.7, ease: "expo.out" }, l3 + 0.1);
+      tl.fromTo("#s01-sweep", { x: 0 }, { x: 1700, duration: 0.9, ease: "power2.inOut" }, l3 + 0.6);
+      tl.to("#s01-title .t", { color: "#ff3b55", duration: 0.05, repeat: 5, yoyo: true }, unm);
+      tl.to("#s01-title", { x: 10, duration: 0.04, repeat: 7, yoyo: true }, unm);
+      tl.to("#s01-ir", { attr: { r: 1200 }, duration: 0.45, ease: "power2.in" }, C.__dur - 0.5);
+''' + OUT.replace('#@@ID@@-stage > *', '#@@ID@@-stage > *:not(#s01-iris)'))
 
 
 # ---------- s02 Schlafzimmer: Sina wacht auf ----------
 S['s02'] = ('''    #s02-name { left: 640px; top: 450px; width: 360px; height: 120px; border: 4px solid #ff4fb0; box-shadow: 0 0 30px rgba(255,79,176,.4); opacity: 0; }
     #s02-name .a { margin-top: 12px; font-size: 52px; color: #ff4fb0; } #s02-name .b { font-size: 30px; color: #dfe2f5; letter-spacing: .14em; font-family: "Space Mono", monospace; }''',
 SVG + '''
+      <svg class="full" viewBox="0 0 1080 1920" style="pointer-events:none"><circle id="s02-ir" cx="540" cy="760" r="1200" fill="none" stroke="#000" stroke-width="2400"/></svg>
       <div id="s02-name" class="panel"><div class="a">SINA</div><div class="b">27 JAHRE</div></div>''',
 '''      const win = el("g", {}, sv);
+      tl.fromTo("#s02-ir", { attr: { r: 1200 } }, { attr: { r: 2600 }, duration: 0.6, ease: "power2.out" }, 0);
       el("rect", { x: 110, y: 480, width: 280, height: 320, rx: 14, fill: "#6d55a8" }, win);
       const glass = el("rect", { x: 130, y: 500, width: 240, height: 280, rx: 8, fill: "#9db4ff" }, win);
       el("path", { d: "M250 500 V780 M130 640 H370", stroke: "#6d55a8", "stroke-width": 12 }, win);
@@ -110,51 +124,52 @@ SVG + '''
       tl.fromTo(ex, { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, svgOrigin: "710 560", duration: 0.3, ease: "back.out(3)" }, schr);''' + OUT)
 
 
-# ---------- s03 Straße: Mann im Bademantel, Hund will zur Metzgerei ----------
+# ---------- s03 Mann gießt Kaffee in seinen Schuh – und trinkt ----------
 S['s03'] = ('''    #s03-box .num { font-size: 44px; }
-    #s03-sign { left: 700px; top: 560px; width: 340px; height: 84px; border: 5px solid #ff3b55; color: #ff3b55; font-size: 44px; line-height: 74px;
-      box-shadow: 0 0 40px rgba(255,59,85,.5); opacity: 0; }''',
+    #s03-sl { left: 560px; top: 520px; width: 440px; text-align: center; font-family: "Inter", sans-serif; font-weight: 900; font-size: 76px; color: #ffd43b;
+      text-shadow: 0 0 30px rgba(255,212,59,.5), 0 6px 0 rgba(0,0,0,.5); opacity: 0; }''',
 '''      <div id="s03-box" class="cbox r"><div class="lab">ERBLINDET</div><div id="s03-n" class="num">0</div></div>
 ''' + SVG + '''
-      <div id="s03-sign" class="panel">METZGEREI</div>''',
-'''      const city = el("g", {}, sv);
-      [[40, 600, 200, 400], [260, 540, 220, 460], [500, 620, 180, 380]].forEach(([x, y, w, h], i) => {
-        el("rect", { x, y, width: w, height: h, fill: ["#232a5a", "#2b3368", "#1f2550"][i] }, city);
-        for (let r = 0; r < 4; r++) for (let c = 0; c < 2; c++) el("rect", { x: x + 30 + c * (w / 2 - 10), y: y + 40 + r * 80, width: 40, height: 44, rx: 4, fill: "#151a3d" }, city); });
-      const shop = el("g", {}, sv);
-      el("rect", { x: 720, y: 660, width: 300, height: 340, fill: "#3a3f7a" }, shop);
-      for (let i = 0; i < 6; i++) el("rect", { x: 720 + i * 50, y: 660, width: 50, height: 60, fill: i % 2 ? "#f3f1ea" : "#ff3b55" }, shop);
-      el("rect", { x: 750, y: 760, width: 240, height: 150, rx: 10, fill: "#a9d2ff" }, shop);
-      const saus = [0, 1, 2, 3].map((i) => el("rect", { x: 768 + i * 56, y: 780, width: 34, height: 110, rx: 17, fill: "#e46a7a" }, shop));
-      el("rect", { x: 0, y: 1000, width: 1080, height: 130, fill: "#3a3f5c" }, sv);
-      const pair = el("g", {}, sv);
-      const M = person(pair, "s03-m", 300, 712, 1.0, { blind: true, shirt: "#e5e9f7", hair: "#8a8fa8", pants: "#c9cde6", arms: [12, -60] });
-      el("path", { d: "M-40 70 h80", stroke: "#9aa1c4", "stroke-width": 8 }, M.g);
-      const dog = el("g", {}, pair); gsap.set(dog, { x: 600, y: 930 });
-      const tail = el("path", { d: "M-70 -10 q-40 -30 -30 -70", stroke: "#a86b2c", "stroke-width": 14, fill: "none", "stroke-linecap": "round" }, dog);
-      el("ellipse", { cx: 0, cy: 0, rx: 80, ry: 40, fill: "#a86b2c" }, dog);
-      [-50, -25, 30, 55].forEach((x) => el("rect", { x: x - 8, y: 20, width: 16, height: 54, rx: 8, fill: "#8a5a2b" }, dog));
-      el("circle", { cx: 84, cy: -36, r: 36, fill: "#a86b2c" }, dog);
-      el("ellipse", { cx: 118, cy: -26, rx: 22, ry: 15, fill: "#c98a4a" }, dog);
-      el("circle", { cx: 136, cy: -30, r: 7, fill: "#161a36" }, dog);
-      el("circle", { cx: 92, cy: -44, r: 6, fill: "#161a36" }, dog);
-      el("path", { d: "M62 -62 q-14 30 6 44Z", fill: "#6b3f1d" }, dog);
-      el("rect", { x: 60, y: -16, width: 40, height: 10, rx: 5, fill: "#ff3b55" }, dog);
-      el("path", { d: "M439 780 Q560 850 680 920", stroke: "#ff3b55", "stroke-width": 6, fill: "none" }, pair);
-      const nose = el("g", { opacity: 0 }, sv);
-      [0, 1, 2].forEach((i) => el("path", { d: `M${760 + i * 26} ${860 - i * 22} q14 -14 0 -28`, stroke: "#ffd43b", "stroke-width": 7, fill: "none", "stroke-linecap": "round" }, nose));
-      const ma = at("L8", "Mann"), hu = at("L8", "Hund"), zi = at("L8", "Ziel"), me = at("L8", "Metzgerei");
-      tl.from(city, { y: 40, opacity: 0, duration: 0.5, ease: "expo.out" }, 0);
-      count(tl, "#s03-n", 0, 8199999999, 0.1, me - 0.2, "", "", "power2.out");
-      tl.fromTo(pair, { x: -400 }, { x: 0, duration: 0.8, ease: "power2.out" }, ma - 0.2);
-      tl.to(M.g, { y: 718, duration: 0.15, repeat: 7, yoyo: true }, ma - 0.2);
-      tl.to(tail, { rotation: 25, svgOrigin: "-70 -10", duration: 0.1, repeat: 15, yoyo: true }, hu);
-      tl.fromTo(dog, { rotation: 0 }, { rotation: -6, svgOrigin: "0 40", duration: 0.12, repeat: 7, yoyo: true }, hu);
-      tl.to(nose, { opacity: 1, duration: 0.15, repeat: 5, yoyo: true }, zi - 0.1);
-      tl.fromTo("#s03-sign", { opacity: 0, scale: 1.5 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(2.4)" }, me - 0.1);
-      tl.to(saus, { y: -10, duration: 0.12, repeat: 5, yoyo: true, stagger: 0.05 }, me);
-      tl.to(pair, { x: 260, duration: 0.6, ease: "power3.in" }, me + 0.1);
-      tl.to(M.g, { rotation: 12, svgOrigin: "0 238", duration: 0.3 }, me + 0.1);''' + OUT)
+      <div id="s03-sl" class="abs">SCHLÜRF!</div>''',
+'''      el("rect", { x: 90, y: 430, width: 900, height: 690, rx: 16, fill: "#4a3f9a" }, sv);
+      el("rect", { x: 120, y: 460, width: 840, height: 630, rx: 8, fill: "#2b2f66" }, sv);
+      el("path", { d: "M120 460 h120 q-20 300 0 630 h-120Z M960 460 h-120 q20 300 0 630 h120Z", fill: "#7a5bd0" }, sv);
+      el("rect", { x: 300, y: 960, width: 560, height: 30, rx: 8, fill: "#8a5a2b" }, sv);
+      el("rect", { x: 330, y: 990, width: 24, height: 100, fill: "#6b3f1d" }, sv); el("rect", { x: 806, y: 990, width: 24, height: 100, fill: "#6b3f1d" }, sv);
+      const P = person(sv, "s03-m", 400, 690, 1.05, { blind: true, shirt: "#39a06a", hair: "#8a8fa8", arms: [12, -110] });
+      const pot = el("g", {}, sv);
+      el("rect", { x: 500, y: 600, width: 84, height: 96, rx: 14, fill: "#c9cde6" }, pot);
+      el("rect", { x: 500, y: 640, width: 84, height: 56, rx: 10, fill: "#5e3b1a" }, pot);
+      el("path", { d: "M584 616 l34 -8 l-6 22Z", fill: "#c9cde6" }, pot);
+      el("path", { d: "M500 620 q-26 22 0 50", stroke: "#c9cde6", "stroke-width": 9, fill: "none" }, pot);
+      const shoe = el("g", {}, sv);
+      el("path", { d: "M600 958 L600 900 Q600 880 625 880 L665 880 Q680 905 715 912 Q760 918 765 940 L765 958Z", fill: "#ff3b55" }, shoe);
+      el("rect", { x: 598, y: 950, width: 170, height: 12, rx: 5, fill: "#f3f1ea" }, shoe);
+      el("path", { d: "M640 900 l18 0 M645 912 l22 2", stroke: "#f3f1ea", "stroke-width": 5 }, shoe);
+      const fill = el("ellipse", { cx: 640, cy: 884, rx: 20, ry: 6, fill: "#5e3b1a", opacity: 0 }, shoe);
+      const mug = el("g", {}, sv);
+      el("rect", { x: 800, y: 900, width: 54, height: 60, rx: 8, fill: "#f3f1ea" }, mug);
+      el("path", { d: "M854 912 q20 0 20 16 q0 16 -20 16", stroke: "#f3f1ea", "stroke-width": 7, fill: "none" }, mug);
+      const stream = el("path", { d: "M616 614 Q640 700 640 884", stroke: "#7a4a22", "stroke-width": 12, fill: "none", "stroke-linecap": "round", "stroke-dasharray": 300, "stroke-dashoffset": 300 }, sv);
+      const spill = el("ellipse", { cx: 690, cy: 960, rx: 10, ry: 5, fill: "#5e3b1a", opacity: 0 }, sv);
+      const steam = [0, 1, 2].map((i) => el("path", { d: `M${615 + i * 18} 860 q-10 -20 0 -40 q10 -20 0 -40`, stroke: "#c9cde6", "stroke-width": 5, fill: "none", opacity: 0 }, sv));
+      const ka = at("L8", "Kaffee"), sc = at("L8", "Schuh"), tr = at("L8", "trinkt");
+      tl.fromTo(P.g, { opacity: 0, y: 720 }, { opacity: 1, y: 690, duration: 0.4, ease: "expo.out" }, 0.05);
+      tl.fromTo([pot, shoe, mug], { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.4, stagger: 0.06, ease: "expo.out" }, 0.1);
+      count(tl, "#s03-n", 0, 8199999999, 0.1, sc, "", "", "power2.out");
+      tl.to(pot, { rotation: 40, svgOrigin: "542 648", duration: 0.35, ease: "power2.out" }, ka - 0.2);
+      tl.to(stream, { attr: { "stroke-dashoffset": 0 }, duration: 0.3, ease: "power1.in" }, ka + 0.1);
+      tl.to(fill, { opacity: 1, duration: 0.2 }, ka + 0.4);
+      tl.to(steam, { opacity: 0.8, y: -20, duration: 0.5, stagger: 0.12 }, ka + 0.5);
+      tl.to(spill, { opacity: 1, attr: { rx: 120, ry: 12 }, duration: 0.6, ease: "power2.out" }, sc - 0.1);
+      tl.to(shoe, { x: 4, duration: 0.05, repeat: 5, yoyo: true }, sc);
+      tl.to(stream, { opacity: 0, duration: 0.15 }, tr - 0.5);
+      tl.to(pot, { rotation: 0, opacity: 0, duration: 0.25 }, tr - 0.5);
+      tl.to(steam, { opacity: 0, duration: 0.2 }, tr - 0.5);
+      tl.to(shoe, { x: -230, y: -270, rotation: -35, svgOrigin: "680 920", duration: 0.45, ease: "power2.inOut" }, tr - 0.45);
+      tl.to(P.a2, { rotation: -150, duration: 0.45, ease: "power2.inOut" }, tr - 0.45);
+      tl.fromTo("#s03-sl", { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(3)" }, tr + 0.05);
+      tl.to(P.g, { y: 696, duration: 0.08, repeat: 7, yoyo: true }, tr + 0.05);''' + OUT)
 
 # ---------- s04 Radio: die Meldung ----------
 S['s04'] = ('''    .s04-st { position: absolute; left: 120px; top: 470px; width: 840px; height: 180px; border: 7px solid #ff3b55; border-radius: 20px;
@@ -191,7 +206,7 @@ SVG + '''
       gsap.set(T.g, { opacity: 0 });
       const P = person(sv, "s05-p", 790, 780, 1.1, { long: true, hair: "#4a2c1d", shirt: "#ff4fb0" });
       const sweat = el("path", { d: "M850 650 q-14 22 0 30 q14 -8 0 -30Z", fill: "#a9d2ff", opacity: 0 }, sv);
-      const kl = at("L12", "klopft"), tom = at("L12", "Alex"), sn = at("L12", "Sina"), ja = at("L13", "Da"), du = at("L13", "Durchsage"), ab = at("L14", "abgeholt"), l15 = line("L15")[0], nein = at("L15", "Nein");
+      const kl = at("L12", "klopft"), tom = at("L12", "Spartakus"), sn = at("L12", "Sina"), ja = at("L13", "Da"), du = at("L13", "Durchsage"), ab = at("L14", "abgeholt"), l15 = line("L15")[0], nein = at("L15", "Nein");
       tl.fromTo(P.g, { opacity: 0, x: 860 }, { opacity: 1, x: 790, duration: 0.4, ease: "expo.out" }, 0.05);
       tl.to(door, { x: 6, duration: 0.05, repeat: 5, yoyo: true }, kl);
       tl.to(door, { scaleX: 0.08, svgOrigin: "130 840", duration: 0.4, ease: "power2.inOut" }, tom - 0.35);
@@ -409,7 +424,7 @@ S['s11'] = ('''    #s11-post { left: 260px; top: 450px; width: 560px; height: 62
       const T = person(sv, "s11-t", 860, 780, 1.0, { blind: true, shirt: "#4da3ff", hair: "#2a2f55", arms: [12, -150] });
       gsap.set(T.g, { opacity: 0 });
       const ear = el("circle", { cx: 906, cy: 722, r: 34, fill: "none", stroke: "#4da3ff", "stroke-width": 6, opacity: 0 }, sv);
-      const du = at("L32", "Durchsage"), na = at("L33", "Namen"), es = at("L33", "Jahr"), ja = at("L33", "Kino"), l30 = line("L34")[0], tom = at("L34", "Alex"), ge = at("L34", "ganz");
+      const du = at("L32", "Durchsage"), na = at("L33", "Namen"), es = at("L33", "Jahr"), ja = at("L33", "Kino"), l30 = line("L34")[0], tom = at("L34", "Spartakus"), ge = at("L34", "ganz");
       tl.to(van, { x: 0, duration: 0.8, ease: "power3.out" }, 0.05);
       waves.forEach((w, i) => tl.fromTo(w, { opacity: 0 }, { opacity: 1, duration: 0.2, repeat: 9, yoyo: true }, du + i * 0.1));
       tl.to(van, { opacity: 0, y: 60, duration: 0.3 }, na - 0.6);
@@ -448,7 +463,7 @@ SVG,
       const spot = el("ellipse", { cx: O[0], cy: O[1] - 760, rx: 90, ry: 70, fill: "#fff3b0", opacity: 0 }, sv);
       const bm = el("g", {}, sv); bm.appendChild(beam); bm.appendChild(spot);
       const q = el("text", { x: 540, y: 900, "text-anchor": "middle", "font-family": "Inter", "font-weight": 900, "font-size": 300, fill: "#ff3b55", opacity: 0 }, sv); q.textContent = "?";
-      const t0 = at("L35", "Nacht"), lk = at("L36", "Lichtkegel"), l33 = at("L36", "Taschenlampe"), wb = at("L37", "wer"), bl = at("L37", "Blinder"), l35 = line("L38")[0], ih = at("L38", "ihrem");
+      const t0 = at("L35", "Nacht"), lk = at("L36", "Taschenlampe"), l33 = at("L36", "Taschenlampe"), wb = at("L37", "wer"), bl = at("L37", "Blinder"), l35 = line("L38")[0], ih = at("L38", "ihrem");
       const aim = (p) => { const dy = O[1] - p[1]; return { rotation: ang(p), scaleY: Math.hypot(p[0] - O[0], dy) / 760, svgOrigin: `${O[0]} ${O[1]}` }; };
       tl.to(ey, { x: -6, duration: 0.3, repeat: 3, yoyo: true }, t0 + 0.6);
       tl.set(bm, aim(W[6]), 0);
@@ -528,7 +543,7 @@ S['s14'] = ('''    #s14-vig { background: radial-gradient(ellipse 60% 45% at 50%
       color: #ff3b55; text-shadow: 0 0 50px rgba(255,59,85,.7), 0 10px 0 rgba(0,0,0,.6); opacity: 0; }''',
 SVG + '''
       <div id="s14-vig" class="full"></div>
-      <div id="s14-w1" class="s14-w">PSST.</div><div id="s14-w2" class="s14-w">MACH.</div><div id="s14-w3" class="s14-w">NICHT.</div><div id="s14-w4" class="s14-w">AUF.</div>
+      <div id="s14-w1" class="s14-w">STILL.</div><div id="s14-w2" class="s14-w">MACH.</div><div id="s14-w3" class="s14-w">NICHT.</div><div id="s14-w4" class="s14-w">AUF.</div>
       <div id="s14-black" class="full"></div>''',
 '''      el("rect", { x: 0, y: 400, width: 1080, height: 740, fill: "#0b0d20" }, sv);
       el("rect", { x: 0, y: 1060, width: 1080, height: 80, fill: "#151833" }, sv);
@@ -547,7 +562,7 @@ SVG + '''
       const P = person(sv, "s14-p", 560, 770, 1.1, { long: true, hair: "#4a2c1d", shirt: "#ff4fb0" });
       const hand = el("ellipse", { cx: 330, cy: 760, rx: 46, ry: 34, fill: "#020309", opacity: 0 }, sv);
       const sch = at("L44", "Schlüssel"), slo = at("L44", "Schloss"), zu = at("L45", "zurück"), je = at("L45", "jemanden"), l46 = line("L46")[0],
-            ha = at("L47", "Hand"), mu = at("L47", "Mund"), w1 = at("L48", "Psst"), w2 = at("L48", "Mach"), w3 = at("L48", "Nicht"), w4 = at("L48", "Auf");
+            ha = at("L47", "Hand"), mu = at("L47", "Mund"), w1 = at("L48", "Still"), w2 = at("L48", "Mach"), w3 = at("L48", "Nicht"), w4 = at("L48", "Auf");
       tl.fromTo(P.g, { opacity: 0, x: 600 }, { opacity: 1, x: 560, duration: 0.4, ease: "expo.out" }, 0.05);
       tl.to(P.eyes, { x: 8, duration: 0.2 }, 0.3);
       tl.fromTo(key, { opacity: 0, x: 60 }, { opacity: 1, x: 0, duration: 0.3, ease: "power3.out" }, sch - 0.1);

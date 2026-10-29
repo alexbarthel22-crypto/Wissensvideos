@@ -43,7 +43,7 @@
       const spot = el("ellipse", { cx: O[0], cy: O[1] - 760, rx: 90, ry: 70, fill: "#fff3b0", opacity: 0 }, sv);
       const bm = el("g", {}, sv); bm.appendChild(beam); bm.appendChild(spot);
       const q = el("text", { x: 540, y: 900, "text-anchor": "middle", "font-family": "Inter", "font-weight": 900, "font-size": 300, fill: "#ff3b55", opacity: 0 }, sv); q.textContent = "?";
-      const t0 = at("L35", "Nacht"), lk = at("L36", "Lichtkegel"), l33 = at("L36", "Taschenlampe"), wb = at("L37", "wer"), bl = at("L37", "Blinder"), l35 = line("L38")[0], ih = at("L38", "ihrem");
+      const t0 = at("L35", "Nacht"), lk = at("L36", "Taschenlampe"), l33 = at("L36", "Taschenlampe"), wb = at("L37", "wer"), bl = at("L37", "Blinder"), l35 = line("L38")[0], ih = at("L38", "ihrem");
       const aim = (p) => { const dy = O[1] - p[1]; return { rotation: ang(p), scaleY: Math.hypot(p[0] - O[0], dy) / 760, svgOrigin: `${O[0]} ${O[1]}` }; };
       tl.to(ey, { x: -6, duration: 0.3, repeat: 3, yoyo: true }, t0 + 0.6);
       tl.set(bm, aim(W[6]), 0);
