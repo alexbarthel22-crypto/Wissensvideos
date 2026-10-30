@@ -21,19 +21,23 @@
     .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
     .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
       font-family: "Inter", sans-serif; font-weight: 900; }
-    .cbox { top: 398px; } /* unter der großen Kapitel-Überschrift */
-    #s07-box .num { font-size: 44px; }
+    .cbox { top: 440px; } /* unter der großen Kapitel-Überschrift */
+    #s07-box .num { font-size: 50px; }
+    .s07-c { position: absolute; top: 620px; width: 290px; height: 330px; border-radius: 24px; background: rgba(20,24,56,.92); border: 4px solid #ff3b55; box-shadow: 0 0 30px rgba(255,59,85,.3); }
+    .s07-c b { position: absolute; left: 0; right: 0; bottom: 22px; text-align: center; font: 900 34px Inter, sans-serif; color: #fff; }
+    #s07-c1 { left: 60px; } #s07-c2 { left: 395px; } #s07-c3 { left: 730px; }
   </style>
-  <div id="root" data-composition-id="s07" data-start="0" data-duration="10.580" data-width="1080" data-height="1920">
-    <div id="s07-stage" class="clip stage" data-start="0" data-duration="10.580" data-track-index="0">
-      <div id="s07-box" class="cbox r" style="opacity:0"><div class="lab">OHNE SICHERE TOILETTE</div><div id="s07-n" class="num">0</div></div>
+  <div id="root" data-composition-id="s07" data-start="0" data-duration="9.770" data-width="1080" data-height="1920">
+    <div id="s07-stage" class="clip stage" data-start="0" data-duration="9.770" data-track-index="0">
+      <div id="s07-box" class="cbox r" style="opacity:0"><div class="lab">TOURISMUS</div><div id="s07-n" class="num">0 €</div></div>
+      <div id="s07-c1" class="s07-c abs"><b>BADEVERBOT</b></div><div id="s07-c2" class="s07-c abs"><b>FISCHFANG</b></div><div id="s07-c3" class="s07-c abs"><b>URLAUB</b></div>
       <svg id="s07-svg" class="full" viewBox="0 0 1080 1920"></svg>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 10.58, "L14": [0.2, 4.73], "L14.words": [["aber", 0.2, 0.509], ["der", 0.509, 0.669], ["echte", 0.669, 0.983], ["schock", 0.983, 1.16], ["35", 1.66, 2.051], ["milliarden", 2.051, 2.596], ["menschen", 2.596, 2.967], ["haben", 2.967, 3.32], ["keine", 3.32, 3.672], ["sichere", 3.672, 4.198], ["toilette", 4.198, 4.73]], "L15": [5.15, 10.1], "L15.words": [["419", 5.15, 6.086], ["millionen", 6.086, 6.633], ["haben", 6.633, 6.99], ["gar", 6.99, 7.172], ["keine", 7.172, 7.53], ["fast", 7.7, 7.905], ["die", 7.905, 8.104], ["halbe", 8.104, 8.493], ["welt", 8.493, 8.698], ["könnte", 8.698, 9.095], ["gar", 9.095, 9.293], ["nicht", 9.293, 9.505], ["mitspülen", 9.505, 10.1]]};
+      const C = {"__dur": 9.77, "L15": [0.2, 5.57], "L15.words": [["und", 0.2, 0.431], ["dann", 0.431, 0.67], ["badeverbot", 1.03, 1.771], ["an", 1.771, 1.953], ["allen", 1.953, 2.323], ["küsten", 2.323, 2.7], ["fischfang", 3.25, 3.643], ["gestoppt", 3.643, 4.03], ["urlaub", 4.58, 5.062], ["storniert", 5.062, 5.57]], "L16": [5.79, 9.29], "L16.words": [["ein", 5.79, 5.985], ["paar", 5.985, 6.187], ["sekunden", 6.187, 6.764], ["spülen", 6.764, 7.154], ["", 7.154, 7.328], ["milliarden", 7.328, 7.919], ["verlust", 7.919, 8.316], ["für", 8.316, 8.511], ["den", 8.511, 8.706], ["tourismus", 8.706, 9.29]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -159,26 +163,35 @@
 
       const tl = gsap.timeline({ paused: true });
       const sv = document.querySelector("#s07-svg");
-      const ppl = [], xs = [];
-      for (let i = 0; i < 50; i++) { const x = 200 + (i % 10) * 76, y = 640 + Math.floor(i / 10) * 100; const g = el("g", { opacity: 0 }, sv);
-        const h = el("circle", { cx: x, cy: y, r: 17, fill: "#dfe2f5" }, g); const b = el("rect", { x: x - 24, y: y + 21, width: 48, height: 40, rx: 18, fill: "#dfe2f5" }, g); ppl.push({ g, h, b }); }
-      const r = rng(5), idx = [...Array(50).keys()].sort(() => r() - 0.5), red = idx.slice(0, 22), none = red.slice(0, 3);
-      none.forEach((i) => xs.push(txt(sv, 200 + (i % 10) * 76, 640 + Math.floor(i / 10) * 100 + 36, "✕", 80, "#ffd43b", { opacity: 0 })));
-      const mt = el("g", { opacity: 0 }, sv); const T = toilet(mt, 540, 870, 0.75);
-      el("circle", { cx: 540, cy: 780, r: 250, fill: "none", stroke: "#ff3b55", "stroke-width": 30 }, mt);
-      el("path", { d: "M363 957 L717 603", stroke: "#ff3b55", "stroke-width": 30 }, mt);
-      const ec = at("L14", "echte"), d35 = at("L14", "3,5"), kt = at("L14", "keine"), m419 = at("L15", "419"), gk = at("L15", "gar"), hw = at("L15", "halbe"), mi = at("L15", "mitspülen");
-      ppl.forEach((p, i) => tl.fromTo(p.g, { opacity: 0, scale: 0.3, svgOrigin: `${200 + (i % 10) * 76} ${660 + Math.floor(i / 10) * 100}` }, { opacity: 1, scale: 1, duration: 0.2, ease: "back.out(2)" }, 0.05 + i * 0.02));
-      tl.to(sv, { x: 8, duration: 0.04, repeat: 5, yoyo: true }, ec);
-      tl.to("#s07-box", { opacity: 1, duration: 0.25 }, d35 - 0.3);
-      count(tl, "#s07-n", 0, 3500000000, d35 - 0.2, 1.2, "", "", "power3.out");
-      red.forEach((i, k) => tl.to([ppl[i].h, ppl[i].b], { attr: { fill: "#ff3b55" }, duration: 0.12 }, d35 + k * 0.05));
-      tl.to("#s07-box .lab", { textContent: "GAR KEINE TOILETTE", duration: 0.01 }, m419 - 0.2);
-      count(tl, "#s07-n", 0, 419000000, m419 - 0.1, 1.0, "", "", "power3.out");
-      tl.to(xs, { opacity: 1, duration: 0.15, stagger: 0.08 }, gk - 0.1);
-      tl.to(red.map((i) => ppl[i].g), { opacity: 0.4, duration: 0.15, yoyo: true, repeat: 3 }, hw);
-      tl.to([...ppl.map((p) => p.g), ...xs], { opacity: 0.15, duration: 0.3 }, mi - 0.6);
-      tl.fromTo(mt, { opacity: 0, scale: 0.5, svgOrigin: "540 780" }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(2)" }, mi - 0.4);
+      const ic = el("g", {}, sv);
+      const g1 = el("g", { opacity: 0 }, ic); el("circle", { cx: 205, cy: 760, r: 95, fill: "#fff", stroke: "#ff3b55", "stroke-width": 18 }, g1);
+      el("circle", { cx: 175, cy: 735, r: 16, fill: "#161a36" }, g1); el("path", { d: "M150 790 q25 -20 50 0 t50 0", stroke: "#4da3ff", "stroke-width": 10, fill: "none" }, g1);
+      el("path", { d: "M160 760 l50 -20", stroke: "#161a36", "stroke-width": 12, "stroke-linecap": "round" }, g1);
+      el("path", { d: "M138 693 L272 827", stroke: "#ff3b55", "stroke-width": 18 }, g1);
+      const g2 = el("g", {}, ic); const F = fish(g2, 540, 760, 1.6, "#ff8a3d"); gsap.set(g2, { opacity: 0 });
+      const x2 = txt(g2, 540, 800, "✕", 150, "#ff3b55");
+      const g3 = el("g", { opacity: 0 }, ic); el("rect", { x: 805, y: 700, width: 150, height: 120, rx: 16, fill: "#ff8a3d" }, g3);
+      el("path", { d: "M845 700 v-26 h70 v26", stroke: "#ff8a3d", "stroke-width": 12, fill: "none" }, g3); el("rect", { x: 805, y: 748, width: 150, height: 14, fill: "#c9611f" }, g3);
+      const x3 = txt(g3, 880, 810, "✕", 150, "#ff3b55");
+      const ch = el("g", { opacity: 0 }, sv);
+      el("path", { d: "M160 620 V1060 H940", stroke: "#8f9bc4", "stroke-width": 8, fill: "none" }, ch);
+      const ln = el("path", { d: "M180 680 L360 700 L480 690 L560 900 L700 960 L900 1030", stroke: "#ff3b55", "stroke-width": 16, fill: "none", "stroke-linejoin": "round", "stroke-dasharray": 1000, "stroke-dashoffset": 1000 }, ch);
+      const r = rng(9), cg = el("g", { "data-layout-allow-overlap": "" }, sv), coins = []; for (let i = 0; i < 14; i++) coins.push(txt(cg, 120 + r() * 840, 600, "€", 70 + r() * 40, "#ffd43b", { opacity: 0 }));
+      const bv = at("L15", "Badeverbot"), ff = at("L15", "Fischfang"), ur = at("L15", "Urlaub"), l16 = line("L16")[0], mv = at("L16", "Milliarden");
+      [["#s07-c1", g1, bv], ["#s07-c2", g2, ff], ["#s07-c3", g3, ur]].forEach(([c, g, t]) => {
+        tl.fromTo(c, { opacity: 0, y: 80 }, { opacity: 1, y: 0, duration: 0.35, ease: "back.out(1.8)" }, t - 0.15);
+        tl.fromTo(g, { opacity: 0, y: 80 }, { opacity: 1, y: 0, duration: 0.35, ease: "back.out(1.8)" }, t - 0.15); });
+      tl.fromTo([x2, x3], { opacity: 0 }, { opacity: 1, duration: 0.1 }, ff + 0.3);
+      tl.set(x3, { opacity: 0 }, ff + 0.3); tl.to(x3, { opacity: 1, duration: 0.1 }, ur + 0.3);
+      tl.to(F.g, { rotation: 180, svgOrigin: "540 760", duration: 0.4 }, ff + 0.3);
+      tl.to([".s07-c", ic], { opacity: 0, filter: "blur(8px)", duration: 0.25 }, l16 - 0.3);
+      tl.to(ch, { opacity: 1, duration: 0.3 }, l16 - 0.1);
+      tl.to(ln, { attr: { "stroke-dashoffset": 0 }, duration: 1.4, ease: "power2.in" }, l16);
+      tl.to("#s07-box", { opacity: 1, duration: 0.25 }, mv - 0.4);
+      count(tl, "#s07-n", 0, 999000000, mv - 0.3, 0.8, "– ", " €", "power2.in");
+      tl.set("#s07-n", { textContent: "– MILLIARDEN €" }, mv + 0.55);
+      tl.to("#s07-box", { scale: 1.14, duration: 0.12, yoyo: true, repeat: 1 }, mv + 0.55);
+      coins.forEach((c, i) => tl.set(c, { opacity: 1 }, mv + i * 0.04).to(c, { y: 500 + (i % 4) * 30, rotation: (i % 2 ? 1 : -1) * 200, svgOrigin: `${c.getAttribute("x")} 600`, duration: 1.0, ease: "power1.in" }, mv + i * 0.04).to(c, { opacity: 0, duration: 0.2 }, mv + 1 + i * 0.04));
       tl.to("#s07-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
       window.__timelines["s07"] = tl;
     })();

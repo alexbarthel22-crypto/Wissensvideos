@@ -4,7 +4,7 @@
     .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
     .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
       font-family: "Inter", sans-serif; font-weight: 900; }
-    .cbox { top: 398px; } /* unter der großen Kapitel-Überschrift */
+    .cbox { top: 440px; } /* unter der großen Kapitel-Überschrift */
     #s02-box .num { font-size: 44px; }
   </style>
   <div id="root" data-composition-id="s02" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
@@ -24,12 +24,12 @@
       const fcl = el("clipPath", { id: "s02-clip" }, sv); el("rect", { x: 0, y: 0, width: 1080, height: 1130 }, fcl);
       const fg = el("g", { "clip-path": "url(#s02-clip)" }, sv);
       const F = flood(fg, 1180, "#2f7fe0"); const F2 = flood(fg, 1210, "#4da3ff");
-      const fall = el("g", { opacity: 0 }, sv);
+      const fall = el("g", { opacity: 0, transform: "translate(0 50)" }, sv);
       el("path", { d: "M80 520 H1000 V600 H80Z", fill: "#2d6b4f" }, fall);
       el("path", { d: "M60 600 H1020 V640 H60Z", fill: "#3b4b6e" }, fall);
       const strands = [];
       for (let i = 0; i < 18; i++) strands.push(el("path", { d: `M${105 + i * 51} 640 V1060`, stroke: i % 2 ? "#cfe8ff" : "#4da3ff", "stroke-width": 52, "stroke-dasharray": `${220 + (i % 3) * 60} 26`, fill: "none" }, fall));
-      const mist = []; for (let i = 0; i < 7; i++) mist.push(el("circle", { cx: 120 + i * 140, cy: 1060, r: 70, fill: "#e6f2ff", opacity: 0.85 }, fall));
+      const mist = []; for (let i = 0; i < 7; i++) mist.push(el("circle", { cx: 120 + i * 140, cy: 1020, r: 70, fill: "#e6f2ff", opacity: 0.85 }, fall));
       const sechs = at("L3", "sechs"), z = at("L3", "24"), l4 = line("L4")[0], nia = at("L4", "Niagarafälle"), ue = at("L4", "über");
       tl.fromTo(D, { opacity: 0, y: 300 }, { opacity: 1, y: 800, duration: 0.6, ease: "bounce.out" }, 0.05);
       tl.to("#s02-box", { opacity: 1, duration: 0.25 }, sechs - 0.3);
@@ -37,13 +37,13 @@
       tl.fromTo(L6, { opacity: 0, scale: 0.4, svgOrigin: "540 850" }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(2)" }, sechs);
       tl.to([D, L6], { scale: 0.25, y: "+=200", opacity: 0, duration: 0.4, ease: "power3.in" }, z - 0.5);
       count(tl, "#s02-n", 6, 24000000000, z - 0.3, 1.4, "", " L", "power3.in");
-      tl.fromTo(F, { y: 0 }, { y: -660, duration: 1.6, ease: "power2.inOut" }, z - 0.3);
-      tl.fromTo(F2, { y: 0 }, { y: -640, duration: 1.7, ease: "power2.inOut" }, z - 0.2);
+      tl.fromTo(F, { y: 0 }, { y: -600, duration: 1.6, ease: "power2.inOut" }, z - 0.3);
+      tl.fromTo(F2, { y: 0 }, { y: -580, duration: 1.7, ease: "power2.inOut" }, z - 0.2);
       tl.to([F, F2], { x: -135, duration: 0.6, repeat: 3, yoyo: true, ease: "sine.inOut" }, z);
       tl.to([F, F2], { y: 200, opacity: 0, duration: 0.4, ease: "power3.in" }, l4 - 0.1);
       tl.to(fall, { opacity: 1, duration: 0.35 }, nia - 0.4);
       tl.fromTo(strands, { attr: { "stroke-dashoffset": 0 } }, { attr: { "stroke-dashoffset": -1300 }, duration: 3.5, ease: "none" }, nia - 0.4);
-      tl.fromTo(mist, { scale: 0.8, svgOrigin: "540 1060" }, { scale: 1.15, duration: 0.5, repeat: 5, yoyo: true, stagger: 0.08 }, nia - 0.3);
+      tl.fromTo(mist, { scale: 0.8, svgOrigin: "540 1020" }, { scale: 1.15, duration: 0.5, repeat: 5, yoyo: true, stagger: 0.08 }, nia - 0.3);
       tl.to("#s02-box .lab", { textContent: "SO LANGE FÄLLT NIAGARA", duration: 0.01 }, ue - 0.2);
       tl.set("#s02-n", { textContent: "> 2 STUNDEN" }, ue - 0.2);
       tl.to("#s02-box", { scale: 1.14, duration: 0.12, yoyo: true, repeat: 1 }, ue);

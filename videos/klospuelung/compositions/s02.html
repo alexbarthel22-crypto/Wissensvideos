@@ -21,11 +21,11 @@
     .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
     .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
       font-family: "Inter", sans-serif; font-weight: 900; }
-    .cbox { top: 398px; } /* unter der großen Kapitel-Überschrift */
+    .cbox { top: 440px; } /* unter der großen Kapitel-Überschrift */
     #s02-box .num { font-size: 44px; }
   </style>
-  <div id="root" data-composition-id="s02" data-start="0" data-duration="9.010" data-width="1080" data-height="1920">
-    <div id="s02-stage" class="clip stage" data-start="0" data-duration="9.010" data-track-index="0">
+  <div id="root" data-composition-id="s02" data-start="0" data-duration="10.300" data-width="1080" data-height="1920">
+    <div id="s02-stage" class="clip stage" data-start="0" data-duration="10.300" data-track-index="0">
       <div id="s02-box" class="cbox b" style="opacity:0"><div class="lab">WASSER</div><div id="s02-n" class="num">0 L</div></div>
       <svg id="s02-svg" class="full" viewBox="0 0 1080 1920"></svg>
     </div>
@@ -33,7 +33,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 9.01, "L3": [0.2, 4.81], "L3.words": [["jede", 0.2, 0.623], ["spülung", 0.623, 1.07], ["rund", 1.28, 1.499], ["sechs", 1.499, 1.725], ["liter", 1.725, 2.14], ["zusammen", 2.53, 3.03], ["24", 3.34, 4.0], ["milliarden", 4.0, 4.492], ["liter", 4.492, 4.81]], "L4": [5.03, 8.83], "L4.words": [["so", 5.03, 5.215], ["viel", 5.215, 5.413], ["wie", 5.413, 5.604], ["die", 5.604, 5.795], ["niagarafälle", 5.795, 6.732], ["in", 6.732, 6.916], ["über", 6.916, 7.285], ["zwei", 7.285, 7.484], ["stunden", 7.484, 7.873], ["hinunterstürzen", 7.873, 8.83]]};
+      const C = {"__dur": 10.3, "L3": [0.2, 5.3], "L3.words": [["jede", 0.2, 0.599], ["spülung", 0.599, 1.02], ["rund", 1.57, 1.768], ["sechs", 1.768, 1.974], ["liter", 1.974, 2.35], ["zusammen", 2.9, 3.36], ["24", 3.84, 4.495], ["milliarden", 4.495, 4.984], ["liter", 4.984, 5.3]], "L4": [5.52, 10.12], "L4.words": [["so", 5.52, 5.833], ["viel", 5.833, 6.17], ["wie", 6.43, 6.637], ["die", 6.637, 6.843], ["niagarafälle", 6.843, 7.854], ["in", 7.854, 8.054], ["über", 8.054, 8.452], ["zwei", 8.452, 8.666], ["stunden", 8.666, 9.087], ["hinunterstürzen", 9.087, 10.12]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -164,12 +164,12 @@
       const fcl = el("clipPath", { id: "s02-clip" }, sv); el("rect", { x: 0, y: 0, width: 1080, height: 1130 }, fcl);
       const fg = el("g", { "clip-path": "url(#s02-clip)" }, sv);
       const F = flood(fg, 1180, "#2f7fe0"); const F2 = flood(fg, 1210, "#4da3ff");
-      const fall = el("g", { opacity: 0 }, sv);
+      const fall = el("g", { opacity: 0, transform: "translate(0 50)" }, sv);
       el("path", { d: "M80 520 H1000 V600 H80Z", fill: "#2d6b4f" }, fall);
       el("path", { d: "M60 600 H1020 V640 H60Z", fill: "#3b4b6e" }, fall);
       const strands = [];
       for (let i = 0; i < 18; i++) strands.push(el("path", { d: `M${105 + i * 51} 640 V1060`, stroke: i % 2 ? "#cfe8ff" : "#4da3ff", "stroke-width": 52, "stroke-dasharray": `${220 + (i % 3) * 60} 26`, fill: "none" }, fall));
-      const mist = []; for (let i = 0; i < 7; i++) mist.push(el("circle", { cx: 120 + i * 140, cy: 1060, r: 70, fill: "#e6f2ff", opacity: 0.85 }, fall));
+      const mist = []; for (let i = 0; i < 7; i++) mist.push(el("circle", { cx: 120 + i * 140, cy: 1020, r: 70, fill: "#e6f2ff", opacity: 0.85 }, fall));
       const sechs = at("L3", "sechs"), z = at("L3", "24"), l4 = line("L4")[0], nia = at("L4", "Niagarafälle"), ue = at("L4", "über");
       tl.fromTo(D, { opacity: 0, y: 300 }, { opacity: 1, y: 800, duration: 0.6, ease: "bounce.out" }, 0.05);
       tl.to("#s02-box", { opacity: 1, duration: 0.25 }, sechs - 0.3);
@@ -177,13 +177,13 @@
       tl.fromTo(L6, { opacity: 0, scale: 0.4, svgOrigin: "540 850" }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(2)" }, sechs);
       tl.to([D, L6], { scale: 0.25, y: "+=200", opacity: 0, duration: 0.4, ease: "power3.in" }, z - 0.5);
       count(tl, "#s02-n", 6, 24000000000, z - 0.3, 1.4, "", " L", "power3.in");
-      tl.fromTo(F, { y: 0 }, { y: -660, duration: 1.6, ease: "power2.inOut" }, z - 0.3);
-      tl.fromTo(F2, { y: 0 }, { y: -640, duration: 1.7, ease: "power2.inOut" }, z - 0.2);
+      tl.fromTo(F, { y: 0 }, { y: -600, duration: 1.6, ease: "power2.inOut" }, z - 0.3);
+      tl.fromTo(F2, { y: 0 }, { y: -580, duration: 1.7, ease: "power2.inOut" }, z - 0.2);
       tl.to([F, F2], { x: -135, duration: 0.6, repeat: 3, yoyo: true, ease: "sine.inOut" }, z);
       tl.to([F, F2], { y: 200, opacity: 0, duration: 0.4, ease: "power3.in" }, l4 - 0.1);
       tl.to(fall, { opacity: 1, duration: 0.35 }, nia - 0.4);
       tl.fromTo(strands, { attr: { "stroke-dashoffset": 0 } }, { attr: { "stroke-dashoffset": -1300 }, duration: 3.5, ease: "none" }, nia - 0.4);
-      tl.fromTo(mist, { scale: 0.8, svgOrigin: "540 1060" }, { scale: 1.15, duration: 0.5, repeat: 5, yoyo: true, stagger: 0.08 }, nia - 0.3);
+      tl.fromTo(mist, { scale: 0.8, svgOrigin: "540 1020" }, { scale: 1.15, duration: 0.5, repeat: 5, yoyo: true, stagger: 0.08 }, nia - 0.3);
       tl.to("#s02-box .lab", { textContent: "SO LANGE FÄLLT NIAGARA", duration: 0.01 }, ue - 0.2);
       tl.set("#s02-n", { textContent: "> 2 STUNDEN" }, ue - 0.2);
       tl.to("#s02-box", { scale: 1.14, duration: 0.12, yoyo: true, repeat: 1 }, ue);

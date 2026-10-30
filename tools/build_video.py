@@ -199,6 +199,13 @@ BIG_HUD = """
     .ttl span { display: inline-block; -webkit-text-stroke: 4px #0b0e22; paint-order: stroke fill; }
 """
 
+# "hud_low": true – Überschrift tiefer und etwas kleiner, damit TikToks Suchleiste oben sie nicht verdeckt
+# (Szenen dann mit .cbox { top: 440px; } und Inhalt ab y ≈ 590)
+BIG_HUD_LOW = """
+    .btag { top: 236px; }
+    .ttl { top: 72px; font-size: 112px; }
+"""
+
 
 def build_hud_big(project, script, windows, total):
     """Große Kapitel-Überschrift: Kicker-Pille + riesiger Titel, Buchstaben fallen hüpfend ein und wippen weiter."""
@@ -270,7 +277,7 @@ def build_hud(project, script, windows, total):
       color: #ff7a8c; border: 2px solid #c8314a; border-radius: 6px; background: rgba(40,10,24,.55); }}
     .chkt b {{ color: #ff3b55; margin-left: 6px; }}
     .chkt.ok {{ color: #8affb6; border-color: #1f9a52; background: rgba(8,40,22,.6); }}
-    .chkt.ok b {{ color: #39e27a; }}{BIG_HUD if big else POP_HUD if pop else ""}
+    .chkt.ok b {{ color: #39e27a; }}{BIG_HUD if big else POP_HUD if pop else ""}{BIG_HUD_LOW if big and script.get("hud_low") else ""}
   </style>
   <div id="root" data-composition-id="hud" data-start="0" data-duration="{total:.3f}" data-width="{W}" data-height="{H}">
 {chr(10).join(tags)}

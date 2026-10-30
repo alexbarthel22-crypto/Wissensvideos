@@ -4,26 +4,13 @@
     .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
     .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
       font-family: "Inter", sans-serif; font-weight: 900; }
-    .cbox { top: 398px; } /* unter der großen Kapitel-Überschrift */
-    #s06-box .num { font-size: 50px; }
-    .s06-c { position: absolute; top: 600px; width: 290px; height: 330px; border-radius: 24px; background: rgba(20,24,56,.92); border: 4px solid #2e3670; }
-    .s06-c b { position: absolute; left: 0; right: 0; bottom: 22px; text-align: center; font: 900 36px Inter, sans-serif; color: #fff; }
-    #s06-c1 { left: 60px; } #s06-c2 { left: 395px; } #s06-c3 { left: 730px; }
-    #s06-doc { left: 300px; top: 560px; width: 480px; height: 560px; background: #eef2fb; border-radius: 18px; opacity: 0; }
-    #s06-doc h3 { margin: 40px 0 26px; text-align: center; font: 900 46px Inter, sans-serif; color: #161a36; }
-    #s06-doc i { display: block; margin: 0 50px 24px; height: 18px; border-radius: 9px; background: #c3cbe4; }
-    #s06-st { left: 320px; top: 760px; width: 440px; height: 140px; border: 10px solid #ff3b55; border-radius: 18px; color: #ff3b55; font: 900 70px/120px Inter, sans-serif; text-align: center; opacity: 0; }
-    #s06-v { left: 610px; top: 620px; width: 400px; height: 420px; border-radius: 24px; background: rgba(20,24,56,.3); border: 5px solid #ffd43b; box-shadow: 0 0 40px rgba(255,212,59,.4); opacity: 0; text-align: center; }
-    #s06-v b { position: absolute; left: 0; right: 0; bottom: 26px; font: 900 40px/1.05 Inter, sans-serif; color: #ffd43b; }
+    .cbox { top: 440px; } /* unter der großen Kapitel-Überschrift */
+    #s06-box .num { font-size: 44px; }
   </style>
   <div id="root" data-composition-id="s06" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
     <div id="s06-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
-      <div id="s06-box" class="cbox r" style="opacity:0"><div class="lab">SCHÄDEN</div><div id="s06-n" class="num">0 €</div></div>
-      <div id="s06-c1" class="s06-c abs"><b>PUMPEN</b></div><div id="s06-c2" class="s06-c abs"><b>ROHRE</b></div><div id="s06-c3" class="s06-c abs"><b>KELLER</b></div>
+      <div id="s06-box" class="cbox b" style="opacity:0"><div class="lab">MENSCHEN AM MEER</div><div id="s06-n" class="num">0</div></div>
       <svg id="s06-svg" class="full" viewBox="0 0 1080 1920"></svg>
-      <div id="s06-doc" class="abs"><h3>VERSICHERUNG</h3><i></i><i></i><i style="width:60%"></i><i></i><i></i><i style="width:50%"></i></div>
-      <div id="s06-st" class="abs">ABGELEHNT</div>
-      <div id="s06-v" class="abs"><b>RÜCKSTAU-<br>KLAPPE?</b></div>
     </div>
   </div>
   <script>
@@ -32,41 +19,40 @@
 /*__COMMON_JS__*/
       const tl = gsap.timeline({ paused: true });
       const sv = document.querySelector("#s06-svg");
-      const ic = el("g", {}, sv);
-      const pump = el("g", { opacity: 0 }, ic); el("circle", { cx: 205, cy: 740, r: 90, fill: "#4a5590" }, pump);
-      const blades = el("g", {}, pump); [0, 120, 240].forEach((a) => el("path", { d: "M205 740 L205 670 Q240 690 215 740Z", fill: "#cfe8ff", transform: `rotate(${a} 205 740)` }, blades));
-      el("circle", { cx: 205, cy: 740, r: 16, fill: "#161a36" }, pump);
-      const pipe = el("g", { opacity: 0 }, ic);
-      el("rect", { x: 430, y: 710, width: 100, height: 60, rx: 10, fill: "#8f9bc4", transform: "rotate(-12 480 740)" }, pipe);
-      el("rect", { x: 560, y: 720, width: 100, height: 60, rx: 10, fill: "#8f9bc4", transform: "rotate(14 610 750)" }, pipe);
-      const spr = el("path", { d: "M545 735 l-20 -90 M545 735 l10 -100 M545 735 l40 -80", stroke: "#4da3ff", "stroke-width": 12, "stroke-linecap": "round" }, pipe);
-      const kel = el("g", { opacity: 0 }, ic); el("rect", { x: 780, y: 650, width: 190, height: 170, rx: 8, fill: "#3a3f78" }, kel);
-      el("path", { d: "M765 655 L875 590 L985 655Z", fill: "#ff3b55" }, kel);
-      const kf = el("rect", { x: 780, y: 780, width: 190, height: 40, fill: "#7a5c34" }, kel);
-      const r = rng(9), coins = [], cg = el("g", { "data-layout-allow-overlap": "" }, sv); for (let i = 0; i < 16; i++) coins.push(txt(cg, 100 + r() * 880, 560, "€", 70 + r() * 40, "#ffd43b", { opacity: 0 }));
-      const vl = el("g", { opacity: 0 }, sv);
-      el("rect", { x: 650, y: 760, width: 320, height: 70, rx: 14, fill: "#8f9bc4" }, vl);
-      const flap = el("rect", { x: 800, y: 742, width: 18, height: 106, rx: 6, fill: "#ffd43b" }, vl);
-      const ms = at("L12", "Milliardenschäden"), pu = at("L12", "Pumpen"), ro = at("L12", "Rohre"), ke = at("L12", "geflutete"), l13 = line("L13")[0], kc = at("L13", "keinen"), rk = at("L13", "Rückstauklappe");
-      tl.to("#s06-box", { opacity: 1, duration: 0.25 }, ms - 0.3);
-      count(tl, "#s06-n", 0, 999000000, ms - 0.2, 0.9, "", " €", "power2.in");
-      tl.set("#s06-n", { textContent: "MILLIARDEN €" }, ms + 0.75);
-      coins.forEach((c, i) => tl.set(c, { opacity: 1 }, ms + i * 0.04).to(c, { y: 560 + (i % 4) * 40, rotation: (i % 2 ? 1 : -1) * 200, svgOrigin: `${c.getAttribute("x")} 560`, duration: 1.0, ease: "power1.in" }, ms + i * 0.04).to(c, { opacity: 0, duration: 0.2 }, ms + 1 + i * 0.04));
-      [["#s06-c1", pump, pu], ["#s06-c2", pipe, ro], ["#s06-c3", kel, ke]].forEach(([c, g, t]) => {
-        tl.fromTo(c, { opacity: 0, y: 80 }, { opacity: 1, y: 0, duration: 0.35, ease: "back.out(1.8)" }, t - 0.15);
-        tl.fromTo(g, { opacity: 0, y: 80 }, { opacity: 1, y: 0, duration: 0.35, ease: "back.out(1.8)" }, t - 0.15); });
-      tl.to(blades, { rotation: 720, svgOrigin: "205 740", duration: 1.2, ease: "power2.out" }, pu);
-      tl.to(blades, { x: 6, duration: 0.04, repeat: 7, yoyo: true }, pu + 1.2);
-      tl.fromTo(spr, { opacity: 1 }, { opacity: 0.3, duration: 0.08, repeat: 9, yoyo: true }, ro);
-      tl.fromTo(kf, { attr: { y: 820, height: 0 } }, { attr: { y: 720, height: 100 }, duration: 0.9 }, ke);
-      tl.to([".s06-c", ic], { opacity: 0, filter: "blur(8px)", duration: 0.25 }, l13 - 0.3);
-      tl.fromTo("#s06-doc", { opacity: 0, y: 60, rotation: -4 }, { opacity: 1, y: 0, rotation: 0, duration: 0.4, ease: "back.out(1.8)" }, l13 - 0.1);
-      tl.fromTo("#s06-st", { opacity: 0, scale: 2.4, rotation: -14 }, { opacity: 1, scale: 1, rotation: -14, duration: 0.25, ease: "power4.in" }, kc - 0.2);
-      tl.to("#s06-doc", { x: 8, duration: 0.04, repeat: 5, yoyo: true }, kc + 0.05);
-      tl.to(["#s06-doc", "#s06-st"], { x: -240, scale: 0.75, duration: 0.4, ease: "power3.inOut" }, rk - 0.4);
-      tl.to("#s06-v", { opacity: 1, duration: 0.3 }, rk - 0.2);
-      tl.to(vl, { opacity: 1, duration: 0.3 }, rk - 0.2);
-      tl.to(flap, { rotation: 70, svgOrigin: "809 742", duration: 0.25, repeat: 3, yoyo: true }, rk + 0.2);
+      const beach = el("g", {}, sv);
+      const sea = el("rect", { x: 0, y: 700, width: 1080, height: 300, fill: "#2f7fe0" }, beach);
+      const wave = el("path", { d: "M-40 700 q65 -22 135 0 t135 0 t135 0 t135 0 t135 0 t135 0 t135 0 t135 0 t135 0 V740 H-40Z", fill: "#4da3ff" }, beach);
+      el("rect", { x: 0, y: 990, width: 1080, height: 140, fill: "#e8c77a" }, beach);
+      el("circle", { cx: 860, cy: 630, r: 56, fill: "#ffd43b" }, beach);
+      const r = rng(11), crowd = el("g", { "data-layout-allow-overlap": "" }, beach), ppl = [];
+      const COL = ["#ff4fb0", "#4da3ff", "#39e27a", "#ffd43b", "#ff8a3d"];
+      for (let i = 0; i < 60; i++) ppl.push(mini(crowd, 40 + r() * 1000, 900 + r() * 150, COL[i % 5]));
+      const algae = []; for (let i = 0; i < 14; i++) algae.push(el("circle", { cx: 60 + i * 74, cy: 760 + (i % 3) * 70, r: 60, fill: "#39e27a", opacity: 0 }, beach));
+      const road = el("g", { opacity: 0 }, sv);
+      el("path", { d: "M440 580 H640 L1000 1130 H80Z", fill: "#2a2f55" }, road);
+      el("path", { d: "M540 600 V1130", stroke: "#ffd43b", "stroke-width": 8, "stroke-dasharray": "40 30" }, road);
+      const cars = []; for (let k = 0; k < 18; k++) { const row = Math.floor(k / 3), t = row / 5, y = 620 + t * 460, w = 50 + t * 90, x = 540 + ((k % 3) - 1) * (110 + t * 220) - w / 2;
+        const c = el("g", {}, road); el("rect", { x, y, width: w, height: w * 0.6, rx: 10, fill: COL[k % 5] }, c); el("rect", { x: x + w * 0.1, y: y + w * 0.6 - 6, width: w * 0.8, height: 8, fill: "#ff3b55" }, c); cars.push(c); }
+      const me = at("L12", "Meer"), vm = at("L12", "Vier"), l13 = line("L13")[0], st = at("L13", "Stau"), l14 = line("L14")[0], t8 = at("L14", "800.000"), al = at("L14", "Algen");
+      tl.fromTo(beach, { opacity: 0 }, { opacity: 1, duration: 0.4 }, 0.05);
+      tl.to(wave, { x: -135, duration: 0.8, repeat: 9, yoyo: true, ease: "sine.inOut" }, 0.1);
+      tl.to("#s06-box", { opacity: 1, duration: 0.25 }, vm - 0.3);
+      count(tl, "#s06-n", 0, 4000000000, vm - 0.2, 1.2, "", "", "power3.out");
+      ppl.forEach((p, i) => tl.to(p, { opacity: 1, duration: 0.15 }, vm + i * 0.02));
+      ppl.forEach((p, i) => tl.to(p, { y: -150 - (i % 4) * 25, duration: 0.6, ease: "power2.inOut" }, me - 0.2 + (i % 10) * 0.03));
+      tl.to(beach, { opacity: 0, duration: 0.25 }, l13 - 0.3);
+      tl.to(road, { opacity: 1, duration: 0.3 }, l13 - 0.1);
+      cars.forEach((c, i) => tl.fromTo(c, { opacity: 0, y: -40 }, { opacity: 1, y: 0, duration: 0.25, ease: "back.out(2)" }, l13 + i * 0.05));
+      tl.to("#s06-box .lab", { textContent: "STAU ZUM STRAND", duration: 0.01 }, st - 0.2);
+      tl.set("#s06-n", { textContent: "ENDLOS" }, st - 0.2);
+      tl.to("#s06-box", { borderColor: "#ff3b55", scale: 1.12, duration: 0.12, yoyo: true, repeat: 1 }, st);
+      tl.to(road, { x: 6, duration: 0.05, repeat: 7, yoyo: true }, st + 0.1);
+      tl.to(road, { opacity: 0, duration: 0.25 }, l14 - 0.3);
+      tl.to(beach, { opacity: 1, duration: 0.3 }, l14 - 0.1);
+      tl.to("#s06-box .lab", { textContent: "AUF EINEN SCHLAG", duration: 0.01 }, t8 - 0.3);
+      count(tl, "#s06-n", 0, 800000, t8 - 0.2, 0.8, "", " T", "power3.out");
+      tl.to([sea, wave], { attr: { fill: "#6b6a3a" }, duration: 1.0 }, t8);
+      algae.forEach((a, i) => tl.fromTo(a, { opacity: 0, scale: 0.1, svgOrigin: `${60 + i * 74} ${760 + (i % 3) * 70}` }, { opacity: 0.9, scale: 1, duration: 0.4, ease: "back.out(2)" }, al - 0.1 + i * 0.05));
       tl.to("#s06-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
       window.__timelines["s06"] = tl;
     })();

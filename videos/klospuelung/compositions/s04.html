@@ -21,11 +21,11 @@
     .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
     .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
       font-family: "Inter", sans-serif; font-weight: 900; }
-    .cbox { top: 398px; } /* unter der großen Kapitel-Überschrift */
+    .cbox { top: 440px; } /* unter der großen Kapitel-Überschrift */
     #s04-box .num { font-size: 52px; }
   </style>
-  <div id="root" data-composition-id="s04" data-start="0" data-duration="11.480" data-width="1080" data-height="1920">
-    <div id="s04-stage" class="clip stage" data-start="0" data-duration="11.480" data-track-index="0">
+  <div id="root" data-composition-id="s04" data-start="0" data-duration="11.570" data-width="1080" data-height="1920">
+    <div id="s04-stage" class="clip stage" data-start="0" data-duration="11.570" data-track-index="0">
       <div id="s04-box" class="cbox g" style="opacity:0"><div class="lab">KANAL-AUSLASTUNG</div><div id="s04-n" class="num">0 %</div></div>
       <svg id="s04-svg" class="full" viewBox="0 0 1080 1920"></svg>
     </div>
@@ -33,7 +33,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 11.48, "L8": [0.2, 5.07], "L8.words": [["dann", 0.2, 0.379], ["die", 0.379, 0.553], ["kanalisation", 0.553, 1.4], ["gebaut", 1.95, 2.346], ["für", 2.346, 2.544], ["normale", 2.544, 3.124], ["tage", 3.124, 3.506], ["", 3.506, 3.683], ["nicht", 3.683, 3.896], ["für", 3.896, 4.094], ["alle", 4.094, 4.476], ["auf", 4.476, 4.674], ["einmal", 4.674, 5.07]], "L9": [5.29, 11.1], "L9.words": [["klärwerke", 5.29, 5.849], ["laufen", 5.849, 6.221], ["über", 6.221, 6.58], ["ungeklärtes", 7.13, 7.923], ["abwasser", 7.923, 8.516], ["fließt", 8.516, 8.737], ["direkt", 8.737, 9.137], ["in", 9.137, 9.33], ["flüsse", 9.33, 9.73], ["fische", 10.28, 10.686], ["sterben", 10.686, 11.1]]};
+      const C = {"__dur": 11.57, "L8": [0.2, 5.12], "L8.words": [["dann", 0.2, 0.394], ["die", 0.394, 0.582], ["kanalisation", 0.582, 1.5], ["gebaut", 2.05, 2.44], ["für", 2.44, 2.635], ["normale", 2.635, 3.206], ["tage", 3.206, 3.582], ["", 3.582, 3.756], ["nicht", 3.756, 3.964], ["für", 3.964, 4.159], ["alle", 4.159, 4.535], ["auf", 4.535, 4.73], ["einmal", 4.73, 5.12]], "L9": [5.34, 11.39], "L9.words": [["klärwerke", 5.34, 5.946], ["laufen", 5.946, 6.35], ["über", 6.35, 6.74], ["ungeklärtes", 7.29, 8.129], ["abwasser", 8.129, 8.756], ["fließt", 8.756, 8.99], ["direkt", 8.99, 9.413], ["in", 9.413, 9.617], ["flüsse", 9.617, 10.04], ["fische", 10.59, 10.986], ["sterben", 10.986, 11.39]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -162,21 +162,21 @@
       const top = el("g", {}, sv);
       el("rect", { x: 0, y: 600, width: 1080, height: 540, fill: "#2a2140" }, top);
       el("rect", { x: 0, y: 580, width: 1080, height: 26, fill: "#3b4b6e" }, top);
-      [[90, 70], [330, 90], [570, 80], [810, 95]].forEach(([x, h]) => { el("rect", { x, y: 580 - h, width: 180, height: h, fill: "#4a5590" }, top); el("path", { d: `M${x - 10} ${580 - h} L${x + 90} ${540 - h} L${x + 190} ${580 - h}Z`, fill: "#ff3b55" }, top); });
+      [[90, 50], [330, 60], [570, 55], [810, 60]].forEach(([x, h]) => { el("rect", { x, y: 580 - h, width: 180, height: h, fill: "#4a5590" }, top); el("path", { d: `M${x - 10} ${580 - h} L${x + 90} ${540 - h} L${x + 190} ${580 - h}Z`, fill: "#ff3b55" }, top); });
       const dps = [];
       [180, 420, 660, 900].forEach((x) => { el("rect", { x: x - 18, y: 606, width: 36, height: 170, fill: "#161a36" }, top);
         dps.push(el("path", { d: `M${x} 600 V780`, stroke: "#8a6a3c", "stroke-width": 22, "stroke-dasharray": "24 18", opacity: 0 }, top)); });
       el("rect", { x: 40, y: 770, width: 1000, height: 150, rx: 75, fill: "#161a36", stroke: "#4a5590", "stroke-width": 10 }, top);
       const wtr = el("rect", { x: 50, y: 880, width: 980, height: 30, rx: 15, fill: "#8a6a3c" }, top);
       const pl = el("g", { opacity: 0 }, sv);
-      el("rect", { x: 0, y: 560, width: 1080, height: 600, fill: "#16234a" }, pl);
+      el("rect", { x: 0, y: 590, width: 1080, height: 560, fill: "#16234a" }, pl);
       [280, 760].forEach((x) => { el("ellipse", { cx: x, cy: 760, rx: 200, ry: 60, fill: "#8f9bc4" }, pl); el("ellipse", { cx: x, cy: 740, rx: 180, ry: 44, fill: "#6b5a3a" }, pl); });
       const spill = [280, 760].map((x) => el("path", { d: `M${x - 186} 752 q-40 100 -14 210 h44 q-24 -100 14 -210Z M${x + 186} 752 q40 100 14 210 h-44 q24 -100 -14 -210Z`, fill: "#7a5c34", opacity: 0 }, pl));
       txt(pl, 540, 640, "KLÄRWERK", 48, "#dfe2f5");
       const river = el("rect", { x: 0, y: 960, width: 1080, height: 170, fill: "#2f7fe0" }, pl);
       const fishes = [fish(pl, 220, 1040, 1), fish(pl, 560, 1060, 0.9, "#ffd43b"), fish(pl, 870, 1030, 1)];
       const nt = at("L8", "normale"), alle = at("L8", "alle"), l9 = line("L9")[0], fl = at("L9", "Flüsse"), fi = at("L9", "Fische");
-      tl.fromTo(top, { opacity: 0, y: 140 }, { opacity: 1, y: 60, duration: 0.45, ease: "expo.out" }, 0.05);
+      tl.fromTo(top, { opacity: 0, y: 190 }, { opacity: 1, y: 110, duration: 0.45, ease: "expo.out" }, 0.05);
       tl.to("#s04-box", { opacity: 1, duration: 0.25 }, nt - 0.4);
       count(tl, "#s04-n", 0, 30, nt - 0.2, 0.5, "", " %");
       tl.to(dps, { opacity: 1, duration: 0.2, stagger: 0.08 }, alle - 0.4);

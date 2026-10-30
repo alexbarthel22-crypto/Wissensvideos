@@ -21,19 +21,22 @@
     .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
     .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
       font-family: "Inter", sans-serif; font-weight: 900; }
-    .cbox { top: 398px; } /* unter der großen Kapitel-Überschrift */
+    .cbox { top: 440px; } /* unter der großen Kapitel-Überschrift */
     #s05-box .num { font-size: 52px; }
+    #s05-med { left: 700px; top: 600px; width: 300px; height: 150px; border-radius: 22px; background: rgba(20,24,56,.94); border: 5px solid #ffd43b; opacity: 0;
+      text-align: center; font: 900 40px/1.1 Inter, sans-serif; color: #ffd43b; padding-top: 22px; box-sizing: border-box; box-shadow: 0 0 40px rgba(255,212,59,.4); }
   </style>
-  <div id="root" data-composition-id="s05" data-start="0" data-duration="8.180" data-width="1080" data-height="1920">
-    <div id="s05-stage" class="clip stage" data-start="0" data-duration="8.180" data-track-index="0">
-      <div id="s05-box" class="cbox r" style="opacity:0"><div class="lab">WASSER IM KELLER</div><div id="s05-n" class="num">0 CM</div></div>
+  <div id="root" data-composition-id="s05" data-start="0" data-duration="9.370" data-width="1080" data-height="1920">
+    <div id="s05-stage" class="clip stage" data-start="0" data-duration="9.370" data-track-index="0">
+      <div id="s05-box" class="cbox r" style="opacity:0"><div class="lab">ABWASSER-PEGEL</div><div id="s05-n" class="num">0 CM</div></div>
       <svg id="s05-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s05-med" class="abs">OLYMPIA<br>2024</div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 8.18, "L10": [0.2, 3.67], "L10.words": [["und", 0.2, 0.438], ["jetzt", 0.438, 0.693], ["das", 0.693, 0.93], ["schlimmste", 0.93, 1.44], ["das", 1.99, 2.2], ["wasser", 2.2, 2.62], ["muss", 2.62, 2.837], ["irgendwohin", 2.837, 3.67]], "L11": [3.89, 8.0], "L11.words": [["in", 3.89, 4.059], ["tiefen", 4.059, 4.41], ["kellern", 4.41, 4.766], ["drückt", 4.766, 4.96], ["es", 4.96, 5.129], ["zurück", 5.129, 5.48], ["aus", 6.03, 6.183], ["der", 6.183, 6.336], ["toilette", 6.336, 6.79], ["nach", 7.34, 7.571], ["oben", 7.571, 8.0]]};
+      const C = {"__dur": 9.37, "L10": [0.2, 5.21], "L10.words": [["und", 0.2, 0.444], ["in", 0.444, 0.68], ["paris", 0.68, 1.16], ["gullydeckel", 1.71, 2.45], ["fliegen", 2.45, 2.83], ["abwasser", 3.38, 4.058], ["flutet", 4.058, 4.516], ["die", 4.516, 4.744], ["straßen", 4.744, 5.21]], "L11": [5.43, 9.19], "L11.words": [["die", 5.43, 5.639], ["seine", 5.639, 6.05], ["wird", 6.05, 6.267], ["zur", 6.267, 6.477], ["kloake", 6.477, 6.895], ["", 6.895, 7.082], ["wie", 7.082, 7.291], ["schon", 7.291, 7.516], ["bei", 7.516, 7.725], ["den", 7.725, 7.934], ["olympischen", 7.934, 8.764], ["spielen", 8.764, 9.19]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -159,34 +162,38 @@
 
       const tl = gsap.timeline({ paused: true });
       const sv = document.querySelector("#s05-svg");
-      el("rect", { x: 0, y: 640, width: 1080, height: 500, fill: "#2a2140" }, sv);
-      el("rect", { x: 0, y: 620, width: 1080, height: 24, fill: "#3b4b6e" }, sv);
-      el("rect", { x: 180, y: 540, width: 720, height: 80, fill: "#4a5590" }, sv);
-      el("rect", { x: 200, y: 660, width: 680, height: 330, rx: 8, fill: "#3a3f78" }, sv);
-      txt(sv, 300, 710, "KELLER", 36, "#8f9bc4");
-      el("rect", { x: 520, y: 990, width: 40, height: 70, fill: "#161a36" }, sv);
-      el("rect", { x: 30, y: 1050, width: 1020, height: 70, rx: 35, fill: "#161a36", stroke: "#4a5590", "stroke-width": 8 }, sv);
-      const sew = el("path", { d: "M60 1085 H1020", stroke: "#8a6a3c", "stroke-width": 36, "stroke-dasharray": "50 30" }, sv);
-      const up = el("path", { d: "M540 1060 V1000 M516 1024 L540 996 L564 1024", stroke: "#ff3b55", "stroke-width": 10, fill: "none", opacity: 0 }, sv);
-      const T = toilet(sv, 540, 900, 0.42, "#4da3ff");
-      const fount = el("path", { d: "M540 860 C470 760 420 720 380 820 M540 860 C540 740 540 700 540 690 M540 860 C610 760 660 720 700 820", stroke: "#8a6a3c", "stroke-width": 28, "stroke-linecap": "round", fill: "none", opacity: 0 }, sv);
-      const cl = el("clipPath", { id: "s05-clip" }, sv); el("rect", { x: 200, y: 660, width: 680, height: 330 }, cl);
-      const fg = el("g", { "clip-path": "url(#s05-clip)" }, sv); const F = flood(fg, 1000, "#7a5c34");
-      const q = txt(sv, 540, 760, "?", 140, "#ffd43b", { opacity: 0 });
-      const iw = at("L10", "irgendwohin"), zu = at("L11", "zurück"), aus = at("L11", "Aus"), ob = at("L11", "oben");
-      tl.fromTo(sew, { attr: { "stroke-dashoffset": 0 } }, { attr: { "stroke-dashoffset": -600 }, duration: 3, ease: "power1.in" }, 0);
-      tl.fromTo(q, { opacity: 0, scale: 0.4, svgOrigin: "540 720" }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(2)" }, iw - 0.1);
-      tl.to(q, { opacity: 0, duration: 0.2 }, zu - 0.4);
-      tl.to(sew, { attr: { "stroke-dashoffset": -200 }, duration: 0.6, ease: "power2.in" }, zu - 0.5);
-      tl.to(up, { opacity: 1, duration: 0.1, repeat: 5, yoyo: true }, zu - 0.1);
-      tl.to("#s05-box", { opacity: 1, duration: 0.25 }, zu - 0.2);
-      tl.to(T.water, { attr: { fill: "#7a5c34" }, duration: 0.2 }, zu);
-      tl.to(T.g, { x: 548, duration: 0.04, repeat: 9, yoyo: true }, zu + 0.1);
-      tl.fromTo(fount, { opacity: 0, scale: 0.2, svgOrigin: "540 860" }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(2)" }, aus);
-      tl.to(fount, { scaleY: 1.12, svgOrigin: "540 860", duration: 0.12, repeat: 9, yoyo: true }, aus + 0.35);
-      tl.fromTo(F, { y: 0 }, { y: -160, duration: 2.2, ease: "power1.in" }, aus + 0.1);
-      count(tl, "#s05-n", 0, 40, aus + 0.1, 2.2, "", " CM", "power1.in");
-      tl.to("#s05-box", { scale: 1.14, duration: 0.12, yoyo: true, repeat: 1 }, ob);
+      const city = el("g", {}, sv);
+      el("circle", { cx: 880, cy: 660, r: 50, fill: "#f4d27a", opacity: 0.8 }, city);
+      const tw = el("g", {}, city);
+      el("path", { d: "M540 600 L556 700 L590 860 L640 1060 H596 Q568 960 540 960 Q512 960 484 1060 H440 L490 860 L524 700Z", fill: "#c9a46a" }, tw);
+      el("rect", { x: 486, y: 850, width: 108, height: 18, fill: "#8a6a3c" }, tw); el("rect", { x: 515, y: 700, width: 50, height: 14, fill: "#8a6a3c" }, tw);
+      el("path", { d: "M540 600 V560", stroke: "#c9a46a", "stroke-width": 8 }, tw);
+      const lights = []; for (let i = 0; i < 10; i++) lights.push(el("circle", { cx: 500 + (i % 5) * 20, cy: 760 + Math.floor(i / 5) * 140 + (i % 2) * 20, r: 5, fill: "#fff3c0" }, tw));
+      [[40, 760, 300, 300], [790, 780, 250, 280]].forEach(([x, y, w, h]) => { el("rect", { x, y, width: w, height: h, fill: "#3a4078" }, city);
+        el("path", { d: `M${x - 10} ${y} L${x + 20} ${y - 50} H${x + w - 20} L${x + w + 10} ${y}Z`, fill: "#4f5a9a" }, city);
+        for (let r = 0; r < 4; r++) for (let c = 0; c < 4; c++) el("rect", { x: x + 22 + c * (w - 40) / 4, y: y + 30 + r * 64, width: 34, height: 44, rx: 4, fill: "#ffd43b", opacity: 0.85 }, city); });
+      el("rect", { x: 0, y: 1060, width: 1080, height: 70, fill: "#2a2f55" }, city);
+      const covers = [200, 540, 880].map((x) => el("ellipse", { cx: x, cy: 1092, rx: 70, ry: 18, fill: "#8f9bc4", stroke: "#161a36", "stroke-width": 6 }, city));
+      const jets = [200, 540, 880].map((x) => el("path", { d: `M${x - 30} 1100 Q${x} 860 ${x + 30} 1100Z`, fill: "#7a5c34", opacity: 0 }, city));
+      const cl = el("clipPath", { id: "s05-clip" }, sv); el("rect", { x: 0, y: 0, width: 1080, height: 1130 }, cl);
+      const fg = el("g", { "clip-path": "url(#s05-clip)" }, sv); const F = flood(fg, 1140, "#7a5c34");
+      const lab = txt(sv, 540, 1010, "SEINE", 64, "#ffd43b", { opacity: 0 });
+      const gd = at("L10", "Gullydeckel"), fs = at("L10", "flutet"), se = at("L11", "Seine"), kl = at("L11", "Kloake"), ol = at("L11", "Olympischen");
+      tl.fromTo(city, { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.45, ease: "expo.out" }, 0.05);
+      tl.fromTo(lights, { opacity: 1 }, { opacity: 0.2, duration: 0.15, repeat: 9, yoyo: true, stagger: 0.05 }, 0.3);
+      covers.forEach((c, i) => { tl.to(c, { y: -360 - i * 40, rotation: 300 + i * 90, svgOrigin: `${[200, 540, 880][i]} 1092`, duration: 0.6, ease: "power2.out" }, gd + i * 0.08);
+        tl.to(c, { y: 0, opacity: 0, duration: 0.4, ease: "power2.in" }, gd + 0.6 + i * 0.08); });
+      tl.fromTo(jets, { opacity: 0, scaleY: 0.1, svgOrigin: "540 1100" }, { opacity: 1, scaleY: 1, duration: 0.3, ease: "back.out(2)", stagger: 0.08 }, gd + 0.02);
+      tl.to(jets, { scaleY: 1.15, svgOrigin: "540 1100", duration: 0.12, repeat: 9, yoyo: true }, gd + 0.35);
+      tl.to("#s05-box", { opacity: 1, duration: 0.25 }, fs - 0.3);
+      tl.to(F, { y: -150, duration: 1.6, ease: "power1.inOut" }, fs - 0.2);
+      tl.to(F, { x: -135, duration: 0.6, repeat: 5, yoyo: true, ease: "sine.inOut" }, fs);
+      count(tl, "#s05-n", 0, 20, fs - 0.2, 1.6, "", " CM", "power1.inOut");
+      tl.fromTo(lab, { opacity: 0, scale: 0.4, svgOrigin: "540 990" }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2)" }, se - 0.1);
+      tl.to("#s05-box .lab", { textContent: "SEINE · KEIME", duration: 0.01 }, kl - 0.2);
+      tl.set("#s05-n", { textContent: "ALARM!" }, kl - 0.2);
+      tl.to("#s05-box", { scale: 1.14, duration: 0.12, yoyo: true, repeat: 1 }, kl);
+      tl.fromTo("#s05-med", { opacity: 0, y: 60, rotation: 8 }, { opacity: 1, y: 0, rotation: 0, duration: 0.4, ease: "back.out(2)" }, ol - 0.2);
       tl.to("#s05-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
       window.__timelines["s05"] = tl;
     })();
