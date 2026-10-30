@@ -24,8 +24,8 @@
     .cbox { top: 440px; } /* unter der großen Kapitel-Überschrift */
     #s03-box .num, #s03-box2 .num { font-size: 52px; }
   </style>
-  <div id="root" data-composition-id="s03" data-start="0" data-duration="8.230" data-width="1080" data-height="1920">
-    <div id="s03-stage" class="clip stage" data-start="0" data-duration="8.230" data-track-index="0">
+  <div id="root" data-composition-id="s03" data-start="0" data-duration="8.390" data-width="1080" data-height="1920">
+    <div id="s03-stage" class="clip stage" data-start="0" data-duration="8.390" data-track-index="0">
       <div id="s03-box" class="cbox r" style="opacity:0"><div class="lab">WASSERDRUCK</div><div id="s03-n" class="num">4 BAR</div></div>
       <div id="s03-box2" class="cbox b" style="opacity:0"><div class="lab">DUSCHE</div><div id="s03-n2" class="num">38 °C</div></div>
       <svg id="s03-svg" class="full" viewBox="0 0 1080 1920"></svg>
@@ -34,7 +34,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 8.23, "L5": [0.2, 3.82], "L5.words": [["alle", 0.2, 0.561], ["spülkästen", 0.561, 1.13], ["füllen", 1.13, 1.504], ["sich", 1.504, 1.698], ["gleichzeitig", 1.698, 2.28], ["der", 2.67, 2.856], ["wasserdruck", 2.856, 3.428], ["bricht", 3.428, 3.634], ["ein", 3.634, 3.82]], "L6": [4.24, 5.66], "L6.words": [["und", 4.24, 4.36], ["wer", 4.36, 4.48], ["gerade", 4.48, 4.828], ["unter", 4.828, 5.064], ["der", 5.064, 5.184], ["dusche", 5.184, 5.424], ["steht", 5.424, 5.553], ["", 5.553, 5.66]], "L7": [6.18, 8.05], "L7.words": [["", 6.18, 6.318], ["steht", 6.318, 6.484], ["plötzlich", 6.484, 6.811], ["unter", 6.811, 7.115], ["brühend", 7.115, 7.43], ["heißem", 7.43, 7.74], ["wasser", 7.74, 8.05]]};
+      const C = {"__dur": 8.39, "L5": [0.2, 3.73], "L5.words": [["alle", 0.2, 0.525], ["spülkästen", 0.525, 1.036], ["füllen", 1.036, 1.373], ["sich", 1.373, 1.547], ["gleichzeitig", 1.547, 2.07], ["der", 2.62, 2.8], ["wasserdruck", 2.8, 3.351], ["bricht", 3.351, 3.55], ["ein", 3.55, 3.73]], "L6": [4.15, 5.88], "L6.words": [["und", 4.15, 4.296], ["wer", 4.296, 4.443], ["gerade", 4.443, 4.866], ["unter", 4.866, 5.154], ["der", 5.154, 5.3], ["dusche", 5.3, 5.593], ["steht", 5.593, 5.749], ["", 5.749, 5.88]], "L7": [6.4, 8.21], "L7.words": [["", 6.4, 6.534], ["steht", 6.534, 6.695], ["plötzlich", 6.695, 7.01], ["unter", 7.01, 7.305], ["brühend", 7.305, 7.61], ["heißem", 7.61, 7.91], ["wasser", 7.91, 8.21]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -165,7 +165,7 @@
       const arc = (a0, a1, c) => { const p = (a) => [540 + 150 * Math.cos(a * Math.PI / 180), 800 + 150 * Math.sin(a * Math.PI / 180)];
         const [x0, y0] = p(a0), [x1, y1] = p(a1); el("path", { d: `M${x0} ${y0} A150 150 0 0 1 ${x1} ${y1}`, stroke: c, "stroke-width": 26, fill: "none" }, gg); };
       arc(150, 210, "#ff3b55"); arc(212, 270, "#ffd43b"); arc(272, 390, "#39e27a");
-      const needle = el("path", { d: "M764 800 L540 660 L776 800Z", fill: "#ffffff" }, gg);
+      const needle = el("path", { d: "M534 800 L540 660 L546 800Z", fill: "#ffffff" }, gg);
       el("circle", { cx: 540, cy: 800, r: 20, fill: "#ffffff" }, gg);
       txt(gg, 540, 930, "DRUCK", 40, "#dfe2f5");
       gsap.set(needle, { rotation: 60, svgOrigin: "540 800" });

@@ -25,7 +25,7 @@
       const arc = (a0, a1, c) => { const p = (a) => [540 + 150 * Math.cos(a * Math.PI / 180), 800 + 150 * Math.sin(a * Math.PI / 180)];
         const [x0, y0] = p(a0), [x1, y1] = p(a1); el("path", { d: `M${x0} ${y0} A150 150 0 0 1 ${x1} ${y1}`, stroke: c, "stroke-width": 26, fill: "none" }, gg); };
       arc(150, 210, "#ff3b55"); arc(212, 270, "#ffd43b"); arc(272, 390, "#39e27a");
-      const needle = el("path", { d: "M764 800 L540 660 L776 800Z", fill: "#ffffff" }, gg);
+      const needle = el("path", { d: "M534 800 L540 660 L546 800Z", fill: "#ffffff" }, gg);
       el("circle", { cx: 540, cy: 800, r: 20, fill: "#ffffff" }, gg);
       txt(gg, 540, 930, "DRUCK", 40, "#dfe2f5");
       gsap.set(needle, { rotation: 60, svgOrigin: "540 800" });

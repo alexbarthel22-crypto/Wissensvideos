@@ -24,8 +24,8 @@
     .cbox { top: 440px; } /* unter der großen Kapitel-Überschrift */
     #s04-box .num { font-size: 52px; }
   </style>
-  <div id="root" data-composition-id="s04" data-start="0" data-duration="15.130" data-width="1080" data-height="1920">
-    <div id="s04-stage" class="clip stage" data-start="0" data-duration="15.130" data-track-index="0">
+  <div id="root" data-composition-id="s04" data-start="0" data-duration="14.570" data-width="1080" data-height="1920">
+    <div id="s04-stage" class="clip stage" data-start="0" data-duration="14.570" data-track-index="0">
       <div id="s04-box" class="cbox g" style="opacity:0"><div class="lab">KANAL-AUSLASTUNG</div><div id="s04-n" class="num">0 %</div></div>
       <div id="s04-box2" class="cbox r" style="opacity:0"><div class="lab">TRINKWASSER</div><div class="num">IN GEFAHR</div></div>
       <svg id="s04-svg" class="full" viewBox="0 0 1080 1920"></svg>
@@ -34,7 +34,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 15.13, "L8": [0.2, 4.55], "L8.words": [["dann", 0.2, 0.36], ["die", 0.36, 0.514], ["kanalisation", 0.514, 1.27], ["gebaut", 1.82, 2.167], ["für", 2.167, 2.34], ["normale", 2.34, 2.848], ["tage", 2.848, 3.182], ["", 3.182, 3.337], ["nicht", 3.337, 3.522], ["für", 3.522, 3.696], ["alle", 3.696, 4.03], ["auf", 4.03, 4.203], ["einmal", 4.203, 4.55]], "L9": [4.77, 9.79], "L9.words": [["klärwerke", 4.77, 5.238], ["laufen", 5.238, 5.549], ["über", 5.549, 5.85], ["abwasser", 6.4, 6.898], ["voller", 6.898, 7.233], ["fäkalien", 7.233, 7.731], ["fließt", 7.731, 7.917], ["direkt", 7.917, 8.252], ["in", 8.252, 8.414], ["flüsse", 8.414, 8.75], ["fische", 9.07, 9.427], ["sterben", 9.427, 9.79]], "L9b": [10.01, 14.95], "L9b.words": [["die", 10.01, 10.216], ["folge", 10.216, 10.62], ["der", 11.1, 11.291], ["fluss", 11.291, 11.496], ["kippt", 11.496, 11.701], ["um", 11.701, 11.885], ["", 11.885, 12.056], ["und", 12.056, 12.247], ["millionen", 12.247, 12.82], ["menschen", 12.82, 13.216], ["trinken", 13.216, 13.605], ["wasser", 13.605, 13.988], ["aus", 13.988, 14.179], ["diesen", 14.179, 14.561], ["flüssen", 14.561, 14.95]]};
+      const C = {"__dur": 14.57, "L8": [0.2, 4.2], "L8.words": [["dann", 0.2, 0.36], ["die", 0.36, 0.514], ["kanalisation", 0.514, 1.27], ["gebaut", 1.82, 2.122], ["für", 2.122, 2.273], ["normale", 2.273, 2.716], ["tage", 2.716, 3.007], ["", 3.007, 3.142], ["nicht", 3.142, 3.304], ["für", 3.304, 3.455], ["alle", 3.455, 3.747], ["auf", 3.747, 3.898], ["einmal", 3.898, 4.2]], "L9": [4.42, 10.13], "L9.words": [["klärwerke", 4.42, 4.888], ["laufen", 4.888, 5.199], ["über", 5.199, 5.5], ["abwasser", 5.99, 6.449], ["voller", 6.449, 6.759], ["fäkalien", 6.759, 7.219], ["fließt", 7.219, 7.391], ["direkt", 7.391, 7.701], ["in", 7.701, 7.85], ["flüsse", 7.85, 8.16], ["fische", 8.7, 9.059], ["sterben", 9.059, 9.425], ["", 9.425, 9.585], ["massenhaft", 9.585, 10.13]], "L9b": [10.35, 14.39], "L9b.words": [["die", 10.35, 10.913], ["folge", 10.913, 12.02], ["der", 12.17, 12.28], ["fluss", 12.28, 12.398], ["kippt", 12.398, 12.516], ["um", 12.516, 12.623], ["", 12.623, 12.721], ["und", 12.721, 12.831], ["millionen", 12.831, 13.162], ["menschen", 13.162, 13.39], ["trinken", 13.39, 13.615], ["wasser", 13.615, 13.835], ["aus", 13.835, 13.945], ["diesen", 13.945, 14.166], ["flüssen", 14.166, 14.39]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
