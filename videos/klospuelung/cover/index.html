@@ -7,79 +7,59 @@
       * { margin: 0; padding: 0; box-sizing: border-box; }
       html, body { width: 1080px; height: 1920px; overflow: hidden; background: #0a0c1d; }
       #root { position: relative; width: 100%; height: 100%; overflow: hidden;
-        background: radial-gradient(ellipse 85% 50% at 50% 46%, #2a1f5c 0%, #141838 50%, #090b1a 100%); }
+        background: radial-gradient(ellipse 85% 50% at 50% 52%, #2a1f5c 0%, #141838 50%, #090b1a 100%); }
       .abs { position: absolute; }
-
-      /* Cover: Klospülung */
-      #globe { left: 40px; top: 560px; width: 1000px; height: 1000px; }
-
-      /* Eilmeldungs-Leiste oben (sichtbar auch im 3:4-Ausschnitt des Profilrasters) */
-      #bar { left: 60px; top: 250px; width: 960px; height: 104px; border-radius: 18px; background: #ffd43b; color: #161a36 !important;
-        display: flex; align-items: center; padding: 0 34px; color: #fff; box-shadow: 0 0 60px rgba(255,59,85,.55);
-        font-family: "Inter", sans-serif; font-weight: 900; font-size: 46px; letter-spacing: .03em; }
-      #bar .dot { width: 30px; height: 30px; border-radius: 50%; background: #fff; margin-right: 22px; box-shadow: 0 0 18px #fff; }
-      #bar .live { margin-left: auto; font-family: "Space Mono", monospace; font-weight: 700; font-size: 34px;
-        letter-spacing: .14em; padding: 2px 16px; border: 4px solid #fff; border-radius: 10px; }
-
-      /* Schlagzeile */
-      #h1 { left: 0; width: 1080px; top: 392px; text-align: center; font-family: "Inter", sans-serif; font-weight: 900; white-space: nowrap;
-        font-size: 108px; line-height: 1; letter-spacing: -.03em; color: #ffd43b;
-        text-shadow: 0 8px 0 rgba(0,0,0,.55), 0 0 40px rgba(255,212,59,.35); }
-      #h2 { left: 0; width: 1080px; top: 508px; white-space: nowrap; text-align: center; font-family: "Inter", sans-serif; font-weight: 900;
-        font-size: 92px; line-height: 1; letter-spacing: -.01em; color: #fff; text-shadow: 0 7px 0 rgba(0,0,0,.55); }
-      #gta { left: 0; width: 1080px; top: 530px; white-space: nowrap; text-align: center; font-family: "Inter", sans-serif; font-weight: 900;
-        font-size: 190px; line-height: 1; letter-spacing: -.03em; color: #ff4fb0;
-        text-shadow: 0 12px 0 #8a1450, 0 0 70px rgba(255,79,176,.75); }
-      #h3 { left: 0; width: 1080px; top: 740px; white-space: nowrap; text-align: center; font-family: "Inter", sans-serif; font-weight: 900;
-        font-size: 96px; line-height: 1; color: #fff; letter-spacing: -.01em; text-shadow: 0 7px 0 rgba(0,0,0,.55); }
-
-      /* Kalenderblatt, schräg */
-      #cal { left: 760px; top: 1120px; width: 240px; height: 262px; border-radius: 20px; background: #f3f1ea; overflow: hidden;
-        transform: rotate(8deg); box-shadow: 0 24px 60px rgba(0,0,0,.6); }
-      #cal .hd { height: 70px; background: #ff3b55; color: #fff; text-align: center; line-height: 70px;
-        font-family: "Inter", sans-serif; font-weight: 900; font-size: 34px; letter-spacing: .06em; }
-      #cal .d { text-align: center; font-family: "Inter", sans-serif; font-weight: 900; font-size: 150px; line-height: 186px; color: #161a36; }
-
-      /* Was kaputtgeht: Teaser-Chips */
-      .chip { padding: 10px 22px; border: 4px solid #ff3b55; border-radius: 12px; background: rgba(40,10,24,.85);
-        color: #ff8a9a; font-family: "Space Mono", monospace; font-weight: 700; font-size: 40px; letter-spacing: .06em; }
-      .chip b { color: #ff3b55; margin-left: 10px; }
-      #c1 { left: 60px; top: 1010px; transform: rotate(-4deg); }
-      #c2 { left: 90px; top: 1120px; transform: rotate(2deg); }
-      #c3 { left: 60px; top: 1230px; transform: rotate(-2deg); }
-
-      /* Frage unten */
-      #q { left: 60px; width: 960px; top: 1470px; height: 150px; border-radius: 24px; background: #0b0e22;
-        border: 5px solid #ffd43b; box-shadow: 0 0 50px rgba(255,212,59,.4); text-align: center; color: #fff;
-        font-family: "Inter", sans-serif; font-weight: 900; font-size: 70px; line-height: 140px; }
-      #q span { color: #ffd43b; }
+      .c { left: 0; width: 1080px; text-align: center; white-space: nowrap; font-family: "Inter", sans-serif; font-weight: 900; line-height: 1; }
+      #bar { left: 60px; top: 250px; width: 960px; height: 96px; border-radius: 18px; background: #ff3b55; color: #fff; display: flex; align-items: center; padding: 0 30px;
+        box-shadow: 0 0 60px rgba(255,59,85,.6); font: 900 44px Inter, sans-serif; letter-spacing: .04em; }
+      #bar .dot { width: 28px; height: 28px; border-radius: 50%; background: #fff; margin-right: 20px; box-shadow: 0 0 18px #fff; }
+      #bar .live { margin-left: auto; font: 700 32px "Space Mono", monospace; letter-spacing: .14em; padding: 2px 14px; border: 4px solid #fff; border-radius: 10px; }
+      #h1 { top: 384px; font-size: 76px; color: #fff; text-shadow: 0 7px 0 rgba(0,0,0,.55); }
+      #h2 { top: 470px; font-size: 200px; letter-spacing: -.03em; color: #ffd43b; text-shadow: 0 12px 0 #8a6a00, 0 0 70px rgba(255,212,59,.6); }
+      #h3 { top: 690px; font-size: 86px; letter-spacing: -.02em; color: #ff4fb0; text-shadow: 0 9px 0 #8a1450, 0 0 60px rgba(255,79,176,.7); }
+      .chip { padding: 10px 20px; border: 4px solid #ff3b55; border-radius: 12px; background: rgba(40,10,24,.9);
+        color: #ffb3bf; font: 700 38px "Space Mono", monospace; letter-spacing: .04em; white-space: nowrap; }
+      .chip b { color: #ff3b55; }
+      #c1 { left: 50px; top: 1000px; transform: rotate(-4deg); }
+      #c2 { left: 70px; top: 1110px; transform: rotate(2deg); }
+      #c3 { left: 50px; top: 1220px; transform: rotate(-2deg); }
+      #q { left: 60px; width: 960px; top: 1440px; height: 170px; border-radius: 26px; background: #0b0e22; border: 6px solid #ffd43b;
+        box-shadow: 0 0 60px rgba(255,212,59,.45); text-align: center; color: #fff; font: 900 74px/158px Inter, sans-serif; }
+      #q span { color: #ff3b55; }
     </style>
   </head>
   <body>
     <div id="root" data-composition-id="cover" data-start="0" data-duration="1" data-width="1080" data-height="1920" data-no-timeline>
-      <svg id="pb" class="abs" style="left:560px;top:930px;width:480px;height:520px" viewBox="-240 -320 480 520">
-        <circle cx="0" cy="-60" r="235" fill="#4da3ff" opacity=".22"/>
-        <rect x="-72" y="90" width="144" height="64" rx="16" fill="#b9c2e0"/>
-        <path d="M-150 -60 C-150 40 -96 96 -72 110 L72 110 C96 96 150 40 150 -60Z" fill="#dfe5f5"/>
-        <rect x="-34" y="-112" width="68" height="60" fill="#cfd6ec"/>
-        <rect x="-118" y="-272" width="236" height="172" rx="22" fill="#eef2fb"/><rect x="-130" y="-292" width="260" height="32" rx="14" fill="#fff"/>
-        <rect x="46" y="-238" width="56" height="18" rx="9" fill="#8f9bc4" transform="rotate(25 46 -229)"/>
-        <ellipse cx="0" cy="-60" rx="166" ry="54" fill="#fff"/><ellipse cx="0" cy="-58" rx="128" ry="36" fill="#4da3ff"/>
-        <g transform="translate(0 -58) scale(1 0.28)"><path id="sp" fill="none" stroke="#cfe8ff" stroke-width="16" stroke-linecap="round"/></g>
-        <path d="M-200 -300 l14 40 M200 -300 l-14 40 M-230 -150 l40 10 M230 -150 l-40 10" stroke="#ffd43b" stroke-width="12" stroke-linecap="round"/></svg>
-      <script>(()=>{const p=[];for(let i=0;i<=60;i++){const a=i/60*2.2*2*Math.PI,r=112*(1-i/66);p.push((r*Math.cos(a)).toFixed(1)+","+(r*Math.sin(a)).toFixed(1));}document.getElementById("sp").setAttribute("d","M"+p.join(" L"));})();</script>
+      <svg class="abs" style="left:0;top:0;width:1080px;height:1920px" viewBox="0 0 1080 1920">
+        <path id="boom" fill="#ffd43b" opacity=".95"/>
+        <circle cx="790" cy="1130" r="200" fill="#ff8a3d"/>
+        <g transform="translate(790 1190) scale(1.12)">
+          <rect x="-72" y="90" width="144" height="64" rx="16" fill="#b9c2e0"/>
+          <path d="M-150 -60 C-150 40 -96 96 -72 110 L72 110 C96 96 150 40 150 -60Z" fill="#dfe5f5"/>
+          <rect x="-34" y="-112" width="68" height="60" fill="#cfd6ec"/>
+          <rect x="-118" y="-272" width="236" height="172" rx="22" fill="#eef2fb"/><rect x="-130" y="-292" width="260" height="32" rx="14" fill="#fff"/>
+          <rect x="46" y="-238" width="56" height="18" rx="9" fill="#8f9bc4" transform="rotate(25 46 -229)"/>
+          <ellipse cx="0" cy="-60" rx="166" ry="54" fill="#fff"/><ellipse cx="0" cy="-58" rx="128" ry="36" fill="#7a5c34"/>
+          <g transform="translate(0 -58) scale(1 0.28)"><path id="sp" fill="none" stroke="#c9a46a" stroke-width="16" stroke-linecap="round"/></g>
+        </g>
+        <g transform="translate(560 900)"><path d="M0 -70 L80 60 H-80Z" fill="#ffd43b" stroke="#ff3b55" stroke-width="14" stroke-linejoin="round"/>
+          <text x="0" y="48" text-anchor="middle" font-family="Inter" font-weight="900" font-size="90" fill="#161a36">!</text></g>
+      </svg>
+      <script>(()=>{const p=[];for(let i=0;i<=60;i++){const a=i/60*2.2*2*Math.PI,r=112*(1-i/66);p.push((r*Math.cos(a)).toFixed(1)+","+(r*Math.sin(a)).toFixed(1));}
+        document.getElementById("sp").setAttribute("d","M"+p.join(" L"));
+        const b=[];for(let i=0;i<28;i++){const a=i/28*Math.PI*2,r=i%2?190:330;b.push((790+r*Math.cos(a)).toFixed(1)+","+(1130+r*Math.sin(a)).toFixed(1));}
+        document.getElementById("boom").setAttribute("d","M"+b.join(" L")+"Z");})();</script>
 
-      <div id="bar" class="abs" style="background:#ff3b55;color:#fff !important;font-size:46px;white-space:nowrap;letter-spacing:.04em"><span class="dot"></span>EILMELDUNG<span class="live">LIVE</span></div>
-      <div id="h1" class="abs">ALLE MENSCHEN</div>
-      <div id="gta" class="abs">SPÜLEN</div>
-      <div id="h3" class="abs"><span style="color:#ff3b55">GLEICHZEITIG</span>?</div>
+      <div id="bar" class="abs"><span class="dot"></span>EILMELDUNG<span class="live">LIVE</span></div>
+      <div id="h1" class="abs c">WAS PASSIERT, WENN</div>
+      <div id="h2" class="abs c">ALLE</div>
+      <div id="h3" class="abs c">GLEICHZEITIG SPÜLEN?</div>
 
-      <div id="c1" class="abs chip">KOCHENDE DUSCHE<b>!</b></div>
-      <div id="c2" class="abs chip">FÄKALIEN-REGEN<b>!</b></div>
-      <div id="c3" class="abs chip">4 MRD. IM MEER<b>!</b></div>
+      <div id="c1" class="abs chip">FÄKALIEN-REGEN<b>!</b></div>
+      <div id="c2" class="abs chip">60 °C DUSCHE<b>!</b></div>
+      <div id="c3" class="abs chip">800.000 T IM MEER<b>!</b></div>
 
-      <div id="q" class="abs" style="font-size:62px">SPÜLST <span>DU</span> JEDES MAL?</div>
+      <div id="q" class="abs">STERBEN <span>MENSCHEN</span>?</div>
     </div>
-    
   </body>
 </html>
