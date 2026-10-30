@@ -24,8 +24,8 @@
     .cbox { top: 440px; } /* unter der großen Kapitel-Überschrift */
     #s03-box .num, #s03-box2 .num { font-size: 52px; }
   </style>
-  <div id="root" data-composition-id="s03" data-start="0" data-duration="10.670" data-width="1080" data-height="1920">
-    <div id="s03-stage" class="clip stage" data-start="0" data-duration="10.670" data-track-index="0">
+  <div id="root" data-composition-id="s03" data-start="0" data-duration="10.850" data-width="1080" data-height="1920">
+    <div id="s03-stage" class="clip stage" data-start="0" data-duration="10.850" data-track-index="0">
       <div id="s03-box" class="cbox r" style="opacity:0"><div class="lab">WASSERDRUCK</div><div id="s03-n" class="num">4 BAR</div></div>
       <div id="s03-box2" class="cbox b" style="opacity:0"><div class="lab">DUSCHE</div><div id="s03-n2" class="num">38 °C</div></div>
       <svg id="s03-svg" class="full" viewBox="0 0 1080 1920"></svg>
@@ -34,7 +34,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 10.67, "L5": [0.2, 3.81], "L5.words": [["alle", 0.2, 0.533], ["spülkästen", 0.533, 1.058], ["füllen", 1.058, 1.404], ["sich", 1.404, 1.583], ["gleichzeitig", 1.583, 2.12], ["der", 2.67, 2.855], ["wasserdruck", 2.855, 3.421], ["bricht", 3.421, 3.625], ["ein", 3.625, 3.81]], "L6": [4.23, 7.95], "L6.words": [["im", 4.23, 4.417], ["hochhaus", 4.417, 4.817], ["kommt", 4.817, 5.024], ["ab", 5.024, 5.211], ["dem", 5.211, 5.404], ["zehnten", 5.404, 5.798], ["stock", 5.798, 6.005], ["nichts", 6.005, 6.22], ["mehr", 6.22, 6.42], ["und", 6.97, 7.112], ["wer", 7.112, 7.254], ["gerade", 7.254, 7.666], ["duscht", 7.666, 7.823], ["", 7.823, 7.95]], "L7": [8.47, 10.49], "L7.words": [["", 8.47, 8.619], ["steht", 8.619, 8.799], ["plötzlich", 8.799, 9.151], ["unter", 9.151, 9.48], ["brühend", 9.48, 9.821], ["heißem", 9.821, 10.155], ["wasser", 10.155, 10.49]]};
+      const C = {"__dur": 10.85, "L5": [0.2, 3.75], "L5.words": [["alle", 0.2, 0.544], ["spülkästen", 0.544, 1.085], ["füllen", 1.085, 1.441], ["sich", 1.441, 1.626], ["gleichzeitig", 1.626, 2.18], ["der", 2.55, 2.744], ["wasserdruck", 2.744, 3.341], ["bricht", 3.341, 3.556], ["ein", 3.556, 3.75]], "L6": [4.17, 8.27], "L6.words": [["im", 4.17, 4.379], ["hochhaus", 4.379, 4.827], ["kommt", 4.827, 5.059], ["ab", 5.059, 5.267], ["dem", 5.267, 5.484], ["zehnten", 5.484, 5.924], ["stock", 5.924, 6.156], ["nichts", 6.156, 6.396], ["mehr", 6.396, 6.62], ["und", 7.17, 7.33], ["wer", 7.33, 7.489], ["gerade", 7.489, 7.951], ["duscht", 7.951, 8.128], ["", 8.128, 8.27]], "L7": [8.79, 10.67], "L7.words": [["", 8.79, 8.929], ["steht", 8.929, 9.096], ["plötzlich", 9.096, 9.424], ["unter", 9.424, 9.73], ["brühend", 9.73, 10.047], ["heißem", 10.047, 10.359], ["wasser", 10.359, 10.67]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];

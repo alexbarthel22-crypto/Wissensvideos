@@ -24,8 +24,8 @@
     .cbox { top: 440px; } /* unter der großen Kapitel-Überschrift */
     #s02-box .num, #s02-box2 .num { font-size: 44px; }
   </style>
-  <div id="root" data-composition-id="s02" data-start="0" data-duration="9.100" data-width="1080" data-height="1920">
-    <div id="s02-stage" class="clip stage" data-start="0" data-duration="9.100" data-track-index="0">
+  <div id="root" data-composition-id="s02" data-start="0" data-duration="8.840" data-width="1080" data-height="1920">
+    <div id="s02-stage" class="clip stage" data-start="0" data-duration="8.840" data-track-index="0">
       <div id="s02-box" class="cbox b" style="opacity:0"><div class="lab">WASSER</div><div id="s02-n" class="num">0 L</div></div>
       <div id="s02-box2" class="cbox y" style="opacity:0"><div class="lab">OLYMPIA-BECKEN</div><div id="s02-n2" class="num">0</div></div>
       <svg id="s02-svg" class="full" viewBox="0 0 1080 1920"></svg>
@@ -34,7 +34,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 9.1, "L3": [0.2, 5.25], "L3.words": [["jede", 0.2, 0.575], ["spülung", 0.575, 0.97], ["rund", 1.42, 1.634], ["sechs", 1.634, 1.855], ["liter", 1.855, 2.26], ["zusammen", 2.78, 3.24], ["24", 3.76, 4.429], ["milliarden", 4.429, 4.927], ["liter", 4.927, 5.25]], "L4": [5.47, 8.92], "L4.words": [["das", 5.47, 5.634], ["sind", 5.634, 5.804], ["9600", 5.804, 6.817], ["olympiaschwimmbecken", 6.817, 7.813], ["", 7.813, 7.959], ["in", 7.959, 8.118], ["einer", 8.118, 8.44], ["sekunde", 8.44, 8.92]]};
+      const C = {"__dur": 8.84, "L3": [0.2, 4.96], "L3.words": [["jede", 0.2, 0.56], ["spülung", 0.56, 0.94], ["rund", 1.47, 1.656], ["sechs", 1.656, 1.848], ["liter", 1.848, 2.2], ["zusammen", 2.75, 3.16], ["24", 3.6, 4.21], ["milliarden", 4.21, 4.666], ["liter", 4.666, 4.96]], "L4": [5.18, 8.66], "L4.words": [["das", 5.18, 5.345], ["sind", 5.345, 5.517], ["9600", 5.517, 6.539], ["olympiaschwimmbecken", 6.539, 7.543], ["", 7.543, 7.691], ["in", 7.691, 7.851], ["einer", 7.851, 8.176], ["sekunde", 8.176, 8.66]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];

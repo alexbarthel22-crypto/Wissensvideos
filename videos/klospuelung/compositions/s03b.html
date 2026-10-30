@@ -24,8 +24,8 @@
     .cbox { top: 440px; } /* unter der großen Kapitel-Überschrift */
     #s03b-box .num { font-size: 52px; }
   </style>
-  <div id="root" data-composition-id="s03b" data-start="0" data-duration="7.700" data-width="1080" data-height="1920">
-    <div id="s03b-stage" class="clip stage" data-start="0" data-duration="7.700" data-track-index="0">
+  <div id="root" data-composition-id="s03b" data-start="0" data-duration="8.200" data-width="1080" data-height="1920">
+    <div id="s03b-stage" class="clip stage" data-start="0" data-duration="8.200" data-track-index="0">
       <div id="s03b-box" class="cbox b" style="opacity:0"><div class="lab">DUSCHE</div><div id="s03b-n" class="num">38 °C</div></div>
       <svg id="s03b-svg" class="full" viewBox="0 0 1080 1920"></svg>
     </div>
@@ -33,7 +33,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 7.7, "L7b": [0.2, 3.18], "L7b.words": [["warum", 0.2, 0.74], ["deine", 1.07, 1.413], ["dusche", 1.413, 1.763], ["mischt", 1.763, 1.956], ["kaltes", 1.956, 2.306], ["und", 2.306, 2.481], ["heißes", 2.481, 2.83], ["wasser", 2.83, 3.18]], "L7c": [3.4, 7.52], "L7c.words": [["bricht", 3.4, 3.765], ["der", 3.765, 4.095], ["druck", 4.095, 4.449], ["beim", 4.449, 4.79], ["kalten", 4.79, 5.45], ["wasser", 5.45, 6.11], ["ein", 6.11, 6.44], ["kommt", 6.75, 6.809], ["nur", 6.809, 6.863], ["noch", 6.863, 6.92], ["heißes", 6.92, 7.029], ["aus", 7.029, 7.084], ["dem", 7.084, 7.139], ["boiler", 7.139, 7.248], ["", 7.248, 7.297], ["bis", 7.297, 7.352], ["60", 7.352, 7.463], ["grad", 7.463, 7.52]]};
+      const C = {"__dur": 8.2, "L7b": [0.2, 3.17], "L7b.words": [["warum", 0.2, 0.64], ["deine", 1.09, 1.428], ["dusche", 1.428, 1.773], ["mischt", 1.773, 1.964], ["kaltes", 1.964, 2.308], ["und", 2.308, 2.481], ["heißes", 2.481, 2.825], ["wasser", 2.825, 3.17]], "L7c": [3.39, 8.02], "L7c.words": [["bricht", 3.39, 3.782], ["der", 3.782, 4.136], ["druck", 4.136, 4.515], ["beim", 4.515, 4.881], ["kalten", 4.881, 5.589], ["wasser", 5.589, 6.296], ["ein", 6.296, 6.65], ["kommt", 7.2, 7.262], ["nur", 7.262, 7.321], ["noch", 7.321, 7.381], ["heißes", 7.381, 7.498], ["aus", 7.498, 7.556], ["dem", 7.556, 7.614], ["boiler", 7.614, 7.731], ["", 7.731, 7.783], ["bis", 7.783, 7.841], ["60", 7.841, 7.96], ["grad", 7.96, 8.02]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];

@@ -31,25 +31,25 @@ OUT = '\n      tl.to("#@@ID@@-stage > *", { opacity: 0, filter: "blur(8px)", dur
 SVG = '      <svg id="@@ID@@-svg" class="full" viewBox="0 0 1080 1920"></svg>'
 S = {}
 
-S['s01'] = ('''    #s01-news { left: 60px; top: 972px; width: 960px; height: 172px; border: 5px solid #ff3b55; box-shadow: 0 0 60px rgba(255,59,85,.5); overflow: hidden; text-align: left; }
-    #s01-news .bar { height: 58px; background: #ff3b55; color: #fff; display: flex; align-items: center; padding-left: 30px; font-size: 36px; letter-spacing: .08em; }
-    #s01-news .hl { padding: 6px 36px 0; text-align: center; font-size: 84px; line-height: 1.0; letter-spacing: -.015em; }
+S['s01'] = ('''    #s01-news { left: 60px; top: 952px; width: 960px; height: 196px; border: 5px solid #ff3b55; box-shadow: 0 0 60px rgba(255,59,85,.5); overflow: hidden; text-align: left; }
+    #s01-news .bar { height: 50px; background: #ff3b55; color: #fff; display: flex; align-items: center; padding-left: 30px; font-size: 36px; letter-spacing: .08em; }
+    #s01-news .hl { padding: 6px 36px 0; text-align: center; font-size: 68px; line-height: 1.0; letter-spacing: -.015em; }
     #s01-news .hl em { font-style: normal; color: #ff4fb0; text-shadow: 0 0 26px rgba(255,79,176,.7); }
     #s01-count .num { font-size: 50px; }
     #s01-q { left: 240px; top: 600px; width: 600px; height: 420px; border: 5px solid #ff3b55; color: #ff3b55; font-size: 150px; line-height: 1.05; padding-top: 40px; box-sizing: border-box; opacity: 0; box-shadow: 0 0 50px rgba(255,59,85,.45); }
     #s01-q small { display: block; font-size: 52px; color: #fff; letter-spacing: .04em; }''',
-'''      <div id="s01-count" class="cbox p"><div class="lab">SPÜLUNGEN</div><div class="num">4.000.000.000</div></div>
+'''      <div id="s01-count" class="cbox p" style="opacity:0"><div class="lab">SPÜLUNGEN</div><div class="num">4.000.000.000</div></div>
 ''' + SVG + '''
-      <div id="s01-news" class="panel"><div class="bar">● EILMELDUNG · LIVE</div><div class="hl">ALLE <em>SPÜLEN!</em></div></div>
+      <div id="s01-news" class="panel"><div class="bar">● EILMELDUNG · LIVE</div><div class="hl">ALLE SPÜLEN<br><em>GLEICHZEITIG!</em></div></div>
       <div id="s01-q" class="panel">?!<small>NICHT IM KLO</small></div>''',
 '''      const sv = document.querySelector("#s01-svg");
-      const glow = el("circle", { cx: 540, cy: 790, r: 225, fill: "#4da3ff", opacity: 0.25 }, sv);
-      const T = toilet(sv, 540, 840, 0.92);
+      const glow = el("circle", { cx: 540, cy: 740, r: 290, fill: "#4da3ff", opacity: 0.25 }, sv);
+      const T = toilet(sv, 540, 790, 1.1);
       const warn = (x) => { const g = el("g", {}, sv);
-        const t = el("path", { d: `M${x} 600 L${x + 80} 720 H${x - 80}Z`, fill: "#ffd43b", stroke: "#ff3b55", "stroke-width": 12, "stroke-linejoin": "round" }, g);
-        const e = txt(g, x, 708, "!", 80, "#161a36"); return { g, t, e }; };
-      const W = [warn(150), warn(930)];
-      const r = rng(4), drops = []; for (let i = 0; i < 8; i++) drops.push(drop(sv, 330 + r() * 420, 650 + r() * 110, 0.12 + r() * 0.08));
+        const t = el("path", { d: `M${x} 560 L${x + 70} 665 H${x - 70}Z`, fill: "#ffd43b", stroke: "#ff3b55", "stroke-width": 12, "stroke-linejoin": "round" }, g);
+        const e = txt(g, x, 655, "!", 70, "#161a36"); return { g, t, e }; };
+      const W = [warn(110), warn(970)];
+      const r = rng(4), drops = []; for (let i = 0; i < 8; i++) drops.push(drop(sv, 300 + r() * 480, 520 + r() * 120, 0.12 + r() * 0.08));
       const mg = el("g", {}, sv), minis = [];
       for (let i = 0; i < 35; i++) minis.push(miniToilet(mg, 150 + (i % 7) * 130, 650 + Math.floor(i / 7) * 100, 1));
       const sp = at("L1", "spülen"), vier = at("L2", "Vier"), sek = at("L2", "Sekunde"), nicht = at("L2", "nicht");
@@ -59,13 +59,14 @@ S['s01'] = ('''    #s01-news { left: 60px; top: 972px; width: 960px; height: 172
       drops.forEach((d, i) => tl.fromTo(d, { y: "-=30", opacity: 0.9 }, { y: "+=120", opacity: 0, duration: 1.1, ease: "power1.in", repeat: 2 }, 0.1 * i));
       W.forEach((w) => { tl.to(w.t, { attr: { fill: "#ff3b55", stroke: "#ffd43b" }, duration: 0.01, repeat: 13, yoyo: true, repeatDelay: 0.22 }, 0.2);
         tl.to(w.e, { attr: { fill: "#ffffff" }, duration: 0.01, repeat: 13, yoyo: true, repeatDelay: 0.22 }, 0.2); });
-      tl.to("#s01-news", { opacity: 0, y: 160, duration: 0.3, ease: "power3.in" }, Math.max(sp - 0.7, 2.6));
-      tl.to(T.g, { y: 860, scale: 0.95, duration: 0.4, ease: "expo.out" }, Math.max(sp - 0.4, 2.9));
+      tl.to("#s01-news", { opacity: 0, scale: 0.85, duration: 0.25, ease: "power3.in" }, 2.6);
       tl.to(T.handle, { rotation: 28, svgOrigin: "46 -229", duration: 0.12, yoyo: true, repeat: 1 }, sp);
       tl.to(glow, { attr: { r: 600, opacity: 0.8 }, duration: 0.2 }, sp + 0.05);
-      tl.to(glow, { attr: { r: 240, cy: 840, opacity: 0.25 }, duration: 0.4 }, sp + 0.25);
+      tl.to(glow, { attr: { r: 290, opacity: 0.25 }, duration: 0.4 }, sp + 0.25);
       tl.to(T.g, { x: 548, duration: 0.04, repeat: 7, yoyo: true }, sp + 0.05);
-      tl.to([T.g, glow, ...W.map((w) => w.g)], { opacity: 0, scale: 0.3, svgOrigin: "540 760", duration: 0.3, ease: "power3.in" }, vier - 0.3);
+      tl.to([glow, ...W.map((w) => w.g)], { opacity: 0, scale: 0.3, svgOrigin: "540 760", duration: 0.3, ease: "power3.in" }, vier - 0.3);
+      tl.to(T.g, { opacity: 0, scale: 0.3, duration: 0.3, ease: "power3.in" }, vier - 0.3);
+      tl.to("#s01-count", { opacity: 1, duration: 0.2 }, vier - 0.25);
       tl.fromTo("#s01-count", { scale: 1 }, { scale: 1.12, duration: 0.15, yoyo: true, repeat: 1 }, vier);
       minis.forEach((m, i) => tl.fromTo(m.g, { opacity: 0, scale: 0.2 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(2)" }, vier + i * 0.025));
       tl.to(minis.map((m) => m.w), { attr: { fill: "#cfe8ff" }, duration: 0.1, yoyo: true, repeat: 3 }, sek);
@@ -320,7 +321,7 @@ S['s07'] = ('''    #s07-box .num { font-size: 50px; }
         tl.fromTo(g, { opacity: 0, y: 80 }, { opacity: 1, y: 0, duration: 0.35, ease: "back.out(1.8)" }, t - 0.15); });
       tl.fromTo([x2, x3], { opacity: 0 }, { opacity: 1, duration: 0.1 }, ff + 0.3);
       tl.set(x3, { opacity: 0 }, ff + 0.3); tl.to(x3, { opacity: 1, duration: 0.1 }, ur + 0.3);
-      tl.to(F.g, { rotation: 180, svgOrigin: "540 760", duration: 0.4 }, ff + 0.3);
+      tl.to(F.g, { rotation: 180, svgOrigin: "0 0", duration: 0.4 }, ff + 0.3);
       tl.to([".s07-c", ic], { opacity: 0, filter: "blur(8px)", duration: 0.25 }, l16 - 0.3);
       tl.to(ch, { opacity: 1, duration: 0.3 }, l16 - 0.1);
       tl.to(ln, { attr: { "stroke-dashoffset": 0 }, duration: 1.4, ease: "power2.in" }, l16);
@@ -345,20 +346,36 @@ SVG + '''
       const du = at("L17", "du?"), na = at("L17", "nach"), se = at("L17", "seltener"), ko = at("L17", "Kommentare"), l18 = line("L18")[0], fo = at("L18", "folg"), ex = at("L18", "explodiert"), ab = at("L18", "Abend");
       tl.fromTo(T.g, { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 0.8, duration: 0.45, ease: "back.out(1.8)" }, 0.05);
       tl.to(T.swirl, { rotation: -1440, svgOrigin: "0 0", duration: 10, ease: "none" }, 0.1);
-      tl.to(T.g, { rotation: 6, svgOrigin: "540 960", duration: 0.08, repeat: 5, yoyo: true }, du - 0.1);
+      tl.to(T.g, { rotation: 6, svgOrigin: "0 150", duration: 0.08, repeat: 5, yoyo: true }, du - 0.1);
       tl.fromTo("#s08-b1", { opacity: 0, y: 80, rotation: -6 }, { opacity: 1, y: 0, rotation: 0, duration: 0.4, ease: "back.out(2)" }, na - 0.15);
       tl.fromTo("#s08-b2", { opacity: 0, y: 80, rotation: 6 }, { opacity: 1, y: 0, rotation: 0, duration: 0.4, ease: "back.out(2)" }, se - 0.15);
       tl.to(".s08-b", { scale: 1.08, duration: 0.3, yoyo: true, repeat: 3, stagger: 0.3, ease: "sine.inOut" }, ko - 0.3);
       tl.to(".s08-b", { opacity: 0, y: 60, duration: 0.25, ease: "power3.in" }, l18 - 0.2);
       tl.fromTo("#s08-f", { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(2.4)" }, fo - 0.1);
       tl.to("#s08-f", { scale: 1.08, duration: 0.3, yoyo: true, repeat: 9, ease: "sine.inOut" }, fo + 0.4);
-      tl.to(T.g, { x: 10, duration: 0.04, repeat: 15, yoyo: true }, ex - 0.6);
+      tl.to(T.g, { x: 550, duration: 0.04, repeat: 15, yoyo: true }, ex - 0.6);
       tl.to(T.water, { attr: { fill: "#ff3b55" }, duration: 0.2 }, ex - 0.3);
       tl.fromTo(boom, { opacity: 0, scale: 0.2, svgOrigin: "540 760" }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(3)" }, ex);
       tl.fromTo(boom2, { opacity: 0, scale: 0.2, svgOrigin: "540 760" }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(3)" }, ex + 0.05);
       tl.to(glow, { opacity: 0, duration: 0.2 }, ex);
       tl.to([boom, boom2], { rotation: 15, svgOrigin: "540 760", duration: 0.3, yoyo: true, repeat: 5 }, ex + 0.3);
-      tl.to(T.g, { y: -30, duration: 0.15, yoyo: true, repeat: 5, ease: "power2.out" }, ab);''')
+      tl.to(T.g, { y: 800, duration: 0.15, yoyo: true, repeat: 3, ease: "power2.out" }, ab);
+      // Schluss: Blick von oben ins Klo – alles wird hinuntergespült
+      const fl = el("g", { opacity: 0 }, sv), t0 = ab + 0.55;
+      const dark = el("rect", { x: -200, y: -200, width: 1480, height: 2320, fill: "#05060f" }, fl);
+      const bowl = el("g", {}, fl);
+      el("ellipse", { cx: 540, cy: 800, rx: 430, ry: 500, fill: "#eef2fb" }, bowl);
+      el("ellipse", { cx: 540, cy: 800, rx: 330, ry: 400, fill: "#c9d1ea" }, bowl);
+      el("ellipse", { cx: 540, cy: 820, rx: 270, ry: 330, fill: "#2f7fe0" }, bowl);
+      const sw2 = el("g", {}, bowl);
+      [260, 190, 120].forEach((r0, k) => el("path", { d: spiral(r0, 1.6), fill: "none", stroke: k % 2 ? "#4da3ff" : "#cfe8ff", "stroke-width": 26 - k * 6, "stroke-linecap": "round", transform: "translate(540 820)" }, sw2));
+      const hole = el("circle", { cx: 540, cy: 820, r: 30, fill: "#05060f" }, bowl);
+      tl.to(fl, { opacity: 1, duration: 0.2 }, t0);
+      tl.to("#s08-f", { opacity: 0, scale: 0.6, duration: 0.2 }, t0);
+      tl.fromTo(bowl, { scale: 0.3, svgOrigin: "540 820" }, { scale: 1, duration: 0.45, ease: "back.out(1.6)" }, t0);
+      tl.to(sw2, { rotation: -1440, svgOrigin: "540 820", duration: 2.6, ease: "power2.in" }, t0);
+      tl.to(bowl, { rotation: -540, scale: 7, svgOrigin: "540 820", duration: 1.8, ease: "power3.in" }, t0 + 0.75);
+      tl.to(hole, { attr: { r: 60 }, duration: 1.8, ease: "power3.in" }, t0 + 0.75);''')
 
 
 S['s03b'] = ('''    #s03b-box .num { font-size: 52px; }''',
@@ -435,24 +452,29 @@ S['s07b'] = ('''    #s07b-box .num { font-size: 50px; }
       tl.to("#s07b-box", { scale: 1.14, duration: 0.12, yoyo: true, repeat: 1 }, dm);''' + OUT)
 
 
-S['s07c'] = ('''    .s07c-c { position: absolute; left: 140px; width: 800px; height: 86px; border-radius: 16px; background: rgba(40,10,24,.92); border: 4px solid #ff3b55;
-      box-shadow: 0 0 26px rgba(255,59,85,.35); font: 900 44px/78px Inter, sans-serif; color: #fff; text-align: center; opacity: 0; }
-    #s07c-big { left: 140px; top: 690px; width: 800px; height: 260px; border-radius: 30px; background: #0b0e22; border: 6px solid #ff4fb0; box-shadow: 0 0 60px rgba(255,79,176,.6);
-      text-align: center; font: 900 120px/1 Inter, sans-serif; color: #ff4fb0; padding-top: 34px; box-sizing: border-box; opacity: 0; }
-    #s07c-big small { display: block; margin-top: 14px; font-size: 56px; color: #fff; }''',
-'''      <div id="s07c-c1" class="s07c-c" style="top:590px">KEIN WASSER IM HOCHHAUS</div>
-      <div id="s07c-c2" class="s07c-c" style="top:696px">FÄKALIEN AUF DEN STRASSEN</div>
-      <div id="s07c-c3" class="s07c-c" style="top:802px">TOTE FLÜSSE</div>
-      <div id="s07c-c4" class="s07c-c" style="top:908px">GESPERRTE KÜSTEN</div>
-      <div id="s07c-c5" class="s07c-c" style="top:1014px">KRANKHEITEN WELTWEIT</div>
-      <div id="s07c-big" class="abs">1 SEKUNDE<small>SPÜLEN</small></div>''',
-'''      const ts = [at("L16e", "Kein"), at("L16e", "Fäkalien"), at("L16e", "Tote"), at("L16e", "Gesperrte"), at("L16e", "Krankheiten")], ei = at("L16f", "einer");
-      ts.forEach((t, i) => tl.fromTo("#s07c-c" + (i + 1), { opacity: 0, x: i % 2 ? 300 : -300, rotation: i % 2 ? 4 : -4 }, { opacity: 1, x: 0, rotation: 0, duration: 0.3, ease: "back.out(2)" }, t - 0.1));
-      tl.to(".s07c-c", { opacity: 0, scale: 0.9, duration: 0.25 }, ei - 0.45);
-      tl.fromTo("#s07c-big", { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(2.4)" }, ei - 0.2);
-      tl.to("#s07c-big", { x: 10, duration: 0.04, repeat: 7, yoyo: true }, ei + 0.3);''' + OUT)
-
-
+S['s07c'] = ('''    .s07c-k { position: absolute; left: 90px; width: 900px; border-radius: 28px; background: rgba(13,16,38,.94); text-align: center; opacity: 0; }
+    .s07c-k .n { font: 900 150px/1 Inter, sans-serif; letter-spacing: -.02em; }
+    .s07c-k .t { margin-top: 12px; font: 700 36px/1.2 "Space Mono", monospace; letter-spacing: .1em; color: #dfe2f5; }
+    #s07c-k1 { top: 600px; height: 340px; padding-top: 50px; box-sizing: border-box; border: 5px solid #ffd43b; box-shadow: 0 0 50px rgba(255,212,59,.35); }
+    #s07c-k1 .n { color: #ffd43b; }
+    #s07c-k2 { top: 590px; height: 420px; padding-top: 46px; box-sizing: border-box; border: 6px solid #ff4fb0; box-shadow: 0 0 60px rgba(255,79,176,.5); overflow: hidden; }
+    #s07c-k2 .n { color: #ff4fb0; font-size: 140px; }
+    #s07c-k2 .z { position: absolute; left: 0; top: 330px; white-space: nowrap; font: 900 56px/1 Inter, sans-serif; color: #39e27a; opacity: .8; }''',
+'''      <div id="s07c-k1" class="s07c-k"><div id="s07c-n1" class="n">0</div><div class="t">SPÜLUNGEN PRO LEBEN</div></div>
+      <div id="s07c-q" class="abs" style="left:340px;top:600px;width:400px;height:400px;border-radius:50%;background:rgba(13,16,38,.94);border:6px solid #ff4fb0;box-shadow:0 0 60px rgba(255,79,176,.5);text-align:center;font:900 300px/390px Inter,sans-serif;color:#ff4fb0;opacity:0">?</div>
+      <div id="s07c-k2" class="s07c-k"><div class="n">0,000…%</div><div class="t">17 MILLIARDEN NULLEN</div><div id="s07c-z" class="z">0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000</div></div>''',
+'''      const n14 = at("L16e", "140.000"), l16f = line("L16f")[0], pr = at("L16f", "0,000…%"), nu = at("L16f", "Nullen");
+      tl.fromTo("#s07c-k1", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(2)" }, 0.1);
+      count(tl, "#s07c-n1", 0, 140000, n14 - 0.6, 1.0, "", "", "power3.out");
+      tl.to("#s07c-k1", { scale: 1.08, duration: 0.12, yoyo: true, repeat: 1 }, n14 + 0.4);
+      tl.to("#s07c-k1", { opacity: 0, y: -60, filter: "blur(8px)", duration: 0.25 }, l16f - 0.2);
+      tl.fromTo("#s07c-q", { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(2.4)" }, l16f);
+      tl.to("#s07c-q", { rotation: 12, duration: 0.15, yoyo: true, repeat: 5 }, l16f + 0.5);
+      tl.to("#s07c-q", { opacity: 0, scale: 0.5, duration: 0.2 }, pr - 0.4);
+      tl.fromTo("#s07c-k2", { opacity: 0, scale: 0.4, rotation: -6 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.4, ease: "back.out(2.4)" }, pr - 0.25);
+      tl.to("#s07c-k2", { x: 10, duration: 0.04, repeat: 7, yoyo: true }, pr + 0.3);
+      tl.fromTo("#s07c-z", { x: 0 }, { x: -1500, duration: 4, ease: "none" }, pr - 0.2);
+      tl.to("#s07c-k2", { scale: 1.08, duration: 0.15, yoyo: true, repeat: 1 }, nu);''' + OUT)
 
 here = Path(__file__).parent
 for sid, (css, html, js) in S.items():

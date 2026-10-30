@@ -27,8 +27,8 @@
     .s07-c b { position: absolute; left: 0; right: 0; bottom: 22px; text-align: center; font: 900 34px Inter, sans-serif; color: #fff; }
     #s07-c1 { left: 60px; } #s07-c2 { left: 395px; } #s07-c3 { left: 730px; }
   </style>
-  <div id="root" data-composition-id="s07" data-start="0" data-duration="7.904" data-width="1080" data-height="1920">
-    <div id="s07-stage" class="clip stage" data-start="0" data-duration="7.904" data-track-index="0">
+  <div id="root" data-composition-id="s07" data-start="0" data-duration="7.680" data-width="1080" data-height="1920">
+    <div id="s07-stage" class="clip stage" data-start="0" data-duration="7.680" data-track-index="0">
       <div id="s07-box" class="cbox r" style="opacity:0"><div class="lab">TOURISMUS</div><div id="s07-n" class="num">0 €</div></div>
       <div id="s07-c1" class="s07-c abs"><b>BADEVERBOT</b></div><div id="s07-c2" class="s07-c abs"><b>FISCHFANG</b></div><div id="s07-c3" class="s07-c abs"><b>URLAUB</b></div>
       <svg id="s07-svg" class="full" viewBox="0 0 1080 1920"></svg>
@@ -37,7 +37,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 7.904, "L15": [0.2, 5.18], "L15.words": [["und", 0.2, 0.406], ["dann", 0.406, 0.62], ["badeverbot", 1.17, 1.809], ["an", 1.809, 1.965], ["allen", 1.965, 2.285], ["küsten", 2.285, 2.61], ["fischfang", 3.16, 3.518], ["gestoppt", 3.518, 3.87], ["urlaub", 4.37, 4.764], ["storniert", 4.764, 5.18]], "L16": [5.4, 7.724], "L16.words": [["milliarden", 5.4, 6.101], ["verlust", 6.101, 6.57], ["für", 6.57, 6.801], ["den", 6.801, 7.032], ["tourismus", 7.032, 7.724]]};
+      const C = {"__dur": 7.68, "L15": [0.2, 5.05], "L15.words": [["und", 0.2, 0.406], ["dann", 0.406, 0.62], ["badeverbot", 0.95, 1.606], ["an", 1.606, 1.768], ["allen", 1.768, 2.096], ["küsten", 2.096, 2.43], ["fischfang", 2.98, 3.333], ["gestoppt", 3.333, 3.68], ["urlaub", 4.23, 4.629], ["storniert", 4.629, 5.05]], "L16": [5.27, 7.5], "L16.words": [["milliarden", 5.27, 5.942], ["verlust", 5.942, 6.393], ["für", 6.393, 6.614], ["den", 6.614, 6.836], ["tourismus", 6.836, 7.5]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -183,7 +183,7 @@
         tl.fromTo(g, { opacity: 0, y: 80 }, { opacity: 1, y: 0, duration: 0.35, ease: "back.out(1.8)" }, t - 0.15); });
       tl.fromTo([x2, x3], { opacity: 0 }, { opacity: 1, duration: 0.1 }, ff + 0.3);
       tl.set(x3, { opacity: 0 }, ff + 0.3); tl.to(x3, { opacity: 1, duration: 0.1 }, ur + 0.3);
-      tl.to(F.g, { rotation: 180, svgOrigin: "540 760", duration: 0.4 }, ff + 0.3);
+      tl.to(F.g, { rotation: 180, svgOrigin: "0 0", duration: 0.4 }, ff + 0.3);
       tl.to([".s07-c", ic], { opacity: 0, filter: "blur(8px)", duration: 0.25 }, l16 - 0.3);
       tl.to(ch, { opacity: 1, duration: 0.3 }, l16 - 0.1);
       tl.to(ln, { attr: { "stroke-dashoffset": 0 }, duration: 1.4, ease: "power2.in" }, l16);

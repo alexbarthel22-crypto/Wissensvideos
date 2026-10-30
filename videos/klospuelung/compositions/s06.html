@@ -24,8 +24,8 @@
     .cbox { top: 440px; } /* unter der großen Kapitel-Überschrift */
     #s06-box .num, #s06-box2 .num { font-size: 44px; }
   </style>
-  <div id="root" data-composition-id="s06" data-start="0" data-duration="14.310" data-width="1080" data-height="1920">
-    <div id="s06-stage" class="clip stage" data-start="0" data-duration="14.310" data-track-index="0">
+  <div id="root" data-composition-id="s06" data-start="0" data-duration="13.720" data-width="1080" data-height="1920">
+    <div id="s06-stage" class="clip stage" data-start="0" data-duration="13.720" data-track-index="0">
       <div id="s06-box" class="cbox b" style="opacity:0"><div class="lab">OHNE SPÜLUNG</div><div id="s06-n" class="num">0</div></div>
       <div id="s06-box2" class="cbox r" style="opacity:0"><div class="lab">FÄKALIEN</div><div id="s06-n2" class="num">0 T</div></div>
       <svg id="s06-svg" class="full" viewBox="0 0 1080 1920"></svg>
@@ -34,7 +34,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 14.31, "L12": [0.2, 4.58], "L12.words": [["und", 0.2, 0.339], ["die", 0.339, 0.479], ["andere", 0.479, 0.881], ["hälfte", 0.881, 1.16], ["rund", 1.71, 1.884], ["vier", 1.884, 2.058], ["milliarden", 2.058, 2.567], ["menschen", 2.567, 2.914], ["haben", 2.914, 3.244], ["keine", 3.244, 3.573], ["toilette", 3.573, 4.071], ["mit", 4.071, 4.238], ["spülung", 4.238, 4.58]], "L12b": [4.8, 7.58], "L12b.words": [["sie", 4.8, 4.942], ["gehen", 4.942, 5.22], ["an", 5.22, 5.357], ["flüsse", 5.357, 5.64], ["seen", 5.98, 6.19], ["", 6.19, 6.371], ["oder", 6.371, 6.762], ["direkt", 6.762, 7.167], ["ins", 7.167, 7.37], ["meer", 7.37, 7.58]], "L14": [7.8, 14.13], "L14.words": [["das", 7.8, 7.999], ["ergebnis", 7.999, 8.59], ["800000", 9.03, 9.947], ["tonnen", 9.947, 10.306], ["fäkalien", 10.306, 10.839], ["auf", 10.839, 11.018], ["einen", 11.018, 11.371], ["schlag", 11.371, 11.57], ["so", 12.09, 12.268], ["schwer", 12.268, 12.473], ["wie", 12.473, 12.658], ["über", 12.658, 13.014], ["5000", 13.014, 13.582], ["blauwale", 13.582, 14.13]]};
+      const C = {"__dur": 13.72, "L12": [0.2, 4.58], "L12.words": [["und", 0.2, 0.339], ["die", 0.339, 0.479], ["andere", 0.479, 0.881], ["hälfte", 0.881, 1.16], ["rund", 1.71, 1.884], ["vier", 1.884, 2.058], ["milliarden", 2.058, 2.567], ["menschen", 2.567, 2.914], ["haben", 2.914, 3.244], ["keine", 3.244, 3.573], ["toilette", 3.573, 4.071], ["mit", 4.071, 4.238], ["spülung", 4.238, 4.58]], "L12b": [4.8, 7.64], "L12b.words": [["sie", 4.8, 4.942], ["gehen", 4.942, 5.22], ["an", 5.22, 5.357], ["flüsse", 5.357, 5.64], ["seen", 6.09, 6.293], ["", 6.293, 6.469], ["oder", 6.469, 6.847], ["direkt", 6.847, 7.24], ["ins", 7.24, 7.437], ["meer", 7.437, 7.64]], "L14": [7.86, 13.54], "L14.words": [["das", 7.86, 8.039], ["ergebnis", 8.039, 8.57], ["800000", 8.88, 9.689], ["tonnen", 9.689, 10.006], ["fäkalien", 10.006, 10.475], ["auf", 10.475, 10.634], ["einen", 10.634, 10.945], ["schlag", 10.945, 11.12], ["so", 11.62, 11.788], ["schwer", 11.788, 11.98], ["wie", 11.98, 12.154], ["über", 12.154, 12.49], ["5000", 12.49, 13.024], ["blauwale", 13.024, 13.54]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];

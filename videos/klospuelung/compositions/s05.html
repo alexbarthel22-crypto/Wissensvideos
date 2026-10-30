@@ -24,8 +24,8 @@
     .cbox { top: 440px; } /* unter der großen Kapitel-Überschrift */
     #s05-box .num, #s05-box2 .num { font-size: 52px; }
   </style>
-  <div id="root" data-composition-id="s05" data-start="0" data-duration="10.900" data-width="1080" data-height="1920">
-    <div id="s05-stage" class="clip stage" data-start="0" data-duration="10.900" data-track-index="0">
+  <div id="root" data-composition-id="s05" data-start="0" data-duration="11.170" data-width="1080" data-height="1920">
+    <div id="s05-stage" class="clip stage" data-start="0" data-duration="11.170" data-track-index="0">
       <div id="s05-box" class="cbox r" style="opacity:0"><div class="lab">ABWASSER-PEGEL</div><div id="s05-n" class="num">0 CM</div></div>
       <div id="s05-box2" class="cbox r" style="opacity:0"><div class="lab">GESUNDHEIT</div><div class="num">GEFAHR!</div></div>
       <svg id="s05-svg" class="full" viewBox="0 0 1080 1920"></svg>
@@ -34,7 +34,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 10.9, "L10": [0.2, 4.91], "L10.words": [["und", 0.2, 0.366], ["was", 0.366, 0.532], ["passiert", 0.532, 0.877], ["in", 0.877, 1.037], ["großen", 1.037, 1.369], ["städten", 1.369, 1.707], ["wie", 1.707, 1.874], ["paris", 1.874, 2.2], ["gullydeckel", 2.75, 3.326], ["fliegen", 3.326, 3.622], ["", 3.622, 3.752], ["und", 3.752, 3.897], ["es", 3.897, 4.038], ["regnet", 4.038, 4.328], ["kurz", 4.328, 4.479], ["fäkalien", 4.479, 4.91]], "L11": [5.13, 10.72], "L11.words": [["darin", 5.13, 5.51], ["keime", 6.04, 6.283], ["wie", 6.283, 6.406], ["ecoli", 6.406, 6.76], ["durchfall", 6.76, 7.02], ["infektionen", 7.57, 8.604], ["", 8.604, 8.837], ["und", 8.837, 9.098], ["die", 9.098, 9.359], ["stadt", 9.359, 9.639], ["stinkt", 9.639, 9.928], ["wochenlang", 9.928, 10.72]]};
+      const C = {"__dur": 11.17, "L10": [0.2, 5.18], "L10.words": [["und", 0.2, 0.364], ["was", 0.364, 0.527], ["passiert", 0.527, 0.866], ["in", 0.866, 1.024], ["großen", 1.024, 1.352], ["städten", 1.352, 1.685], ["wie", 1.685, 1.848], ["paris", 1.848, 2.17], ["gullydeckel", 2.54, 3.244], ["fliegen", 3.244, 3.606], ["", 3.606, 3.765], ["und", 3.765, 3.943], ["es", 3.943, 4.114], ["regnet", 4.114, 4.469], ["kurz", 4.469, 4.653], ["fäkalien", 4.653, 5.18]], "L11": [5.4, 10.99], "L11.words": [["darin", 5.4, 5.78], ["keime", 6.31, 6.553], ["wie", 6.553, 6.676], ["ecoli", 6.676, 7.03], ["durchfall", 7.03, 7.29], ["infektionen", 7.84, 8.874], ["", 8.874, 9.107], ["und", 9.107, 9.368], ["die", 9.368, 9.629], ["stadt", 9.629, 9.909], ["stinkt", 9.909, 10.198], ["wochenlang", 10.198, 10.99]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
