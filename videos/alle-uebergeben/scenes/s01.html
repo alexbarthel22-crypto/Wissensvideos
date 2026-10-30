@@ -41,8 +41,7 @@
       const ub = at("L1", "übergeben"), n82 = at("L2", "8,2"), sek = at("L2", "Sekunde"), ri = at("L2", "richtig");
       tl.to(F.g, { x: 548, duration: 0.05, repeat: 21, yoyo: true }, 0.2);
       tl.fromTo(glow, { attr: { opacity: 0.18 } }, { attr: { opacity: 0.45 }, duration: 0.35, repeat: 7, yoyo: true }, 0);
-      W.forEach((w) => { tl.to(w.t, { attr: { fill: "#ff3b55", stroke: "#ffd43b" }, duration: 0.01, repeat: 13, yoyo: true, repeatDelay: 0.22 }, 0.2);
-        tl.to(w.e, { attr: { fill: "#ffffff" }, duration: 0.01, repeat: 13, yoyo: true, repeatDelay: 0.22 }, 0.2); });
+      W.forEach((w) => { tl.to(w.t, { attr: { fill: "#ff3b55", stroke: "#ffd43b" }, duration: 0.01, repeat: 13, yoyo: true, repeatDelay: 0.22 }, 0.2); });
       tl.to("#s01-news", { opacity: 0, scale: 0.85, duration: 0.25, ease: "power3.in" }, 2.6);
       tl.to(F.head, { attr: { fill: "#9fd35a" }, duration: 0.4 }, ub - 0.5);
       tl.fromTo(F.puke, { scaleY: 0.92, scaleX: 0.95, transformOrigin: "50% 0%" }, { scaleY: 1.06, scaleX: 1.08, duration: 0.18, yoyo: true, repeat: 15, ease: "sine.inOut" }, 0);
