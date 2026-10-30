@@ -25,8 +25,8 @@
     .s04b .num { font-size: 50px; }
     #s04-ap { left: 330px; top: 900px; width: 420px; height: 90px; border-radius: 45px; background: #39e27a; color: #0b0e22; text-align: center; font: 900 46px/90px Inter, sans-serif; opacity: 0; }
   </style>
-  <div id="root" data-composition-id="s04" data-start="0" data-duration="11.590" data-width="1080" data-height="1920">
-    <div id="s04-stage" class="clip stage" data-start="0" data-duration="11.590" data-track-index="0">
+  <div id="root" data-composition-id="s04" data-start="0" data-duration="12.130" data-width="1080" data-height="1920">
+    <div id="s04-stage" class="clip stage" data-start="0" data-duration="12.130" data-track-index="0">
       <div id="s04-box" class="cbox b s04b" style="opacity:0"><div class="lab">FLUGZEUGE IN DER LUFT</div><div id="s04-n" class="num">0</div></div>
       <div id="s04-box2" class="cbox y s04b" style="opacity:0"><div class="lab">MENSCHEN AN BORD</div><div id="s04-n2" class="num">0</div></div>
       <svg id="s04-svg" class="full" viewBox="0 0 1080 1920"></svg>
@@ -36,7 +36,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 11.59, "L7": [0.2, 3.97], "L7.words": [["über", 0.2, 0.556], ["uns", 0.556, 0.74], ["rund", 1.04, 1.218], ["10000", 1.218, 1.745], ["flugzeuge", 1.745, 2.26], ["", 2.26, 2.413], ["mit", 2.413, 2.585], ["einer", 2.585, 2.922], ["million", 2.922, 3.271], ["menschen", 3.271, 3.627], ["an", 3.627, 3.792], ["bord", 3.792, 3.97]], "L8": [4.19, 7.67], "L8.words": [["der", 4.19, 4.365], ["autopilot", 4.365, 5.047], ["fliegt", 5.047, 5.242], ["weiter", 5.242, 5.592], ["aber", 5.592, 5.93], ["wer", 5.93, 6.105], ["gerade", 6.105, 6.612], ["landet", 6.612, 6.963], ["hat", 6.963, 7.138], ["ein", 7.138, 7.313], ["problem", 7.313, 7.67]], "L8b": [7.89, 11.41], "L8b.words": [["und", 7.89, 8.098], ["auf", 8.098, 8.305], ["der", 8.305, 8.513], ["raumstation", 8.513, 9.15], ["schwebt", 9.7, 9.915], ["alles", 9.915, 10.283], ["quer", 10.283, 10.478], ["durch", 10.478, 10.679], ["die", 10.679, 10.867], ["kabine", 10.867, 11.41]]};
+      const C = {"__dur": 12.13, "L7": [0.2, 3.78], "L7.words": [["über", 0.2, 0.503], ["uns", 0.503, 0.66], ["rund", 0.97, 1.14], ["10000", 1.14, 1.646], ["flugzeuge", 1.646, 2.14], ["", 2.14, 2.287], ["mit", 2.287, 2.451], ["einer", 2.451, 2.775], ["million", 2.775, 3.11], ["menschen", 3.11, 3.451], ["an", 3.451, 3.61], ["bord", 3.61, 3.78]], "L8": [4.0, 8.21], "L8.words": [["der", 4.0, 4.094], ["autopilot", 4.094, 4.459], ["fliegt", 4.459, 4.562], ["weiter", 4.562, 4.75], ["aber", 5.0, 5.145], ["wer", 5.145, 5.221], ["gerade", 5.221, 5.439], ["landet", 5.439, 5.59], ["hat", 6.14, 6.653], ["ein", 6.653, 7.166], ["problem", 7.166, 8.209]], "L8b": [8.43, 11.95], "L8b.words": [["und", 8.43, 8.638], ["auf", 8.638, 8.845], ["der", 8.845, 9.053], ["raumstation", 9.053, 9.69], ["schwebt", 10.24, 10.455], ["alles", 10.455, 10.823], ["quer", 10.823, 11.018], ["durch", 11.018, 11.219], ["die", 11.219, 11.407], ["kabine", 11.407, 11.95]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];

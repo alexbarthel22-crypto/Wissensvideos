@@ -25,8 +25,8 @@
     #s08-box .num, #s08-box2 .num { font-size: 50px; }
     #s08-st { left: 260px; top: 760px; width: 560px; height: 140px; border: 10px solid #ff3b55; border-radius: 18px; color: #ff3b55; font: 900 70px/120px Inter, sans-serif; text-align: center; opacity: 0; background: rgba(13,16,38,.7); }
   </style>
-  <div id="root" data-composition-id="s08" data-start="0" data-duration="9.330" data-width="1080" data-height="1920">
-    <div id="s08-stage" class="clip stage" data-start="0" data-duration="9.330" data-track-index="0">
+  <div id="root" data-composition-id="s08" data-start="0" data-duration="9.870" data-width="1080" data-height="1920">
+    <div id="s08-stage" class="clip stage" data-start="0" data-duration="9.870" data-track-index="0">
       <div id="s08-box" class="cbox r" style="opacity:0"><div class="lab">MAHLZEIT DER WELT</div><div class="num">MILLIARDEN €</div></div>
       <div id="s08-box2" class="cbox g" style="opacity:0"><div class="lab">REINIGUNGSFIRMEN</div><div class="num">+ REKORD</div></div>
       <svg id="s08-svg" class="full" viewBox="0 0 1080 1920"></svg>
@@ -36,7 +36,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 9.33, "L14": [0.2, 4.8], "L14.words": [["für", 0.2, 0.35], ["die", 0.35, 0.499], ["wirtschaft", 0.499, 0.82], ["eine", 1.18, 1.38], ["mahlzeit", 1.38, 1.595], ["der", 1.595, 1.698], ["ganzen", 1.698, 1.906], ["welt", 1.906, 2.013], ["", 2.013, 2.105], ["milliarden", 2.105, 2.42], ["euro", 2.42, 2.62], ["einfach", 2.85, 3.504], ["wieder", 3.504, 4.146], ["draußen", 4.146, 4.8]], "L15": [5.02, 9.15], "L15.words": [["putzmittel", 5.02, 5.52], ["ausverkauft", 5.85, 6.23], ["und", 6.78, 6.937], ["reinigungsfirmen", 6.937, 7.729], ["machen", 7.729, 8.044], ["das", 8.044, 8.201], ["geschäft", 8.201, 8.527], ["ihres", 8.527, 8.835], ["lebens", 8.835, 9.15]]};
+      const C = {"__dur": 9.87, "L14": [0.2, 5.37], "L14.words": [["für", 0.2, 0.352], ["die", 0.352, 0.504], ["wirtschaft", 0.504, 0.83], ["eine", 1.38, 1.745], ["mahlzeit", 1.745, 2.137], ["der", 2.137, 2.327], ["ganzen", 2.327, 2.705], ["welt", 2.705, 2.901], ["", 2.901, 3.07], ["milliarden", 3.07, 3.645], ["euro", 3.645, 4.01], ["einfach", 4.34, 4.685], ["wieder", 4.685, 5.025], ["draußen", 5.025, 5.37]], "L15": [5.59, 9.69], "L15.words": [["putzmittel", 5.59, 6.1], ["ausverkauft", 6.36, 6.93], ["und", 7.48, 7.627], ["reinigungsfirmen", 7.627, 8.365], ["machen", 8.365, 8.658], ["das", 8.658, 8.805], ["geschäft", 8.805, 9.109], ["ihres", 9.109, 9.397], ["lebens", 9.397, 9.69]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];

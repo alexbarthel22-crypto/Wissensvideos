@@ -24,8 +24,8 @@
     .cbox { top: 440px; } /* unter der großen Kapitel-Überschrift */
     #s06-box .num { font-size: 44px; }
   </style>
-  <div id="root" data-composition-id="s06" data-start="0" data-duration="10.640" data-width="1080" data-height="1920">
-    <div id="s06-stage" class="clip stage" data-start="0" data-duration="10.640" data-track-index="0">
+  <div id="root" data-composition-id="s06" data-start="0" data-duration="10.440" data-width="1080" data-height="1920">
+    <div id="s06-stage" class="clip stage" data-start="0" data-duration="10.440" data-track-index="0">
       <div id="s06-box" class="cbox b" style="opacity:0"><div class="lab">SCHLAFEN GERADE</div><div id="s06-n" class="num">0</div></div>
       <svg id="s06-svg" class="full" viewBox="0 0 1080 1920"></svg>
     </div>
@@ -33,7 +33,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 10.64, "L11": [0.2, 3.81], "L11.words": [["das", 0.2, 0.332], ["gefährlichste", 0.332, 0.865], ["aber", 0.865, 1.12], ["rund", 1.58, 1.785], ["ein", 1.785, 1.984], ["drittel", 1.984, 2.387], ["der", 2.387, 2.585], ["menschheit", 2.585, 3.01], ["schläft", 3.01, 3.237], ["gerade", 3.237, 3.81]], "L12": [4.23, 8.06], "L12.words": [["wer", 4.23, 4.418], ["auf", 4.418, 4.606], ["dem", 4.606, 4.794], ["rücken", 4.794, 5.17], ["liegt", 5.17, 5.371], ["und", 5.371, 5.559], ["nicht", 5.559, 5.761], ["aufwacht", 5.761, 6.15], ["kann", 6.59, 6.759], ["sein", 6.759, 6.928], ["erbrochenes", 6.928, 7.576], ["einatmen", 7.576, 8.06]], "L12b": [8.28, 10.46], "L12b.words": [["darum", 8.28, 8.575], ["gilt", 8.575, 8.73], ["stabile", 9.25, 9.767], ["seitenlage", 9.767, 10.46]]};
+      const C = {"__dur": 10.44, "L11": [0.2, 3.52], "L11.words": [["das", 0.2, 0.335], ["gefährlichste", 0.335, 0.88], ["aber", 0.88, 1.14], ["rund", 1.64, 1.813], ["ein", 1.813, 1.98], ["drittel", 1.98, 2.32], ["der", 2.32, 2.487], ["menschheit", 2.487, 2.846], ["schläft", 2.846, 3.037], ["gerade", 3.037, 3.52]], "L12": [3.94, 7.88], "L12.words": [["wer", 3.94, 4.147], ["auf", 4.147, 4.353], ["dem", 4.353, 4.56], ["rücken", 4.56, 4.973], ["liegt", 4.973, 5.194], ["und", 5.194, 5.401], ["nicht", 5.401, 5.622], ["aufwacht", 5.622, 6.05], ["kann", 6.26, 6.446], ["sein", 6.446, 6.633], ["erbrochenes", 6.633, 7.346], ["einatmen", 7.346, 7.88]], "L12b": [8.1, 10.26], "L12b.words": [["darum", 8.1, 8.545], ["gilt", 8.545, 8.78], ["stabile", 9.22, 9.664], ["seitenlage", 9.664, 10.26]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];

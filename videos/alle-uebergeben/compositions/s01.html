@@ -22,16 +22,16 @@
     .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
       font-family: "Inter", sans-serif; font-weight: 900; }
     .cbox { top: 440px; } /* unter der großen Kapitel-Überschrift */
-    #s01-news { left: 60px; top: 952px; width: 960px; height: 196px; border: 5px solid #ff3b55; box-shadow: 0 0 60px rgba(255,59,85,.5); overflow: hidden; text-align: left; }
-    #s01-news .bar { height: 50px; background: #ff3b55; color: #fff; display: flex; align-items: center; padding-left: 30px; font-size: 36px; letter-spacing: .08em; }
-    #s01-news .hl { padding: 6px 36px 0; text-align: center; font-size: 68px; line-height: 1.0; letter-spacing: -.015em; }
+    #s01-news { left: 60px; top: 975px; width: 960px; height: 172px; border: 5px solid #ff3b55; box-shadow: 0 0 60px rgba(255,59,85,.5); overflow: hidden; text-align: left; }
+    #s01-news .bar { height: 44px; background: #ff3b55; color: #fff; display: flex; align-items: center; padding-left: 30px; font-size: 36px; letter-spacing: .08em; }
+    #s01-news .hl { padding: 4px 36px 0; text-align: center; font-size: 60px; line-height: 1.0; letter-spacing: -.015em; }
     #s01-news .hl em { font-style: normal; color: #9be27a; text-shadow: 0 0 26px rgba(155,226,122,.7); }
     #s01-count .num { font-size: 50px; }
     #s01-q { left: 240px; top: 600px; width: 600px; height: 420px; border: 5px solid #ff3b55; color: #ff3b55; font-size: 150px; line-height: 1.05; padding-top: 40px; box-sizing: border-box; opacity: 0; box-shadow: 0 0 50px rgba(255,59,85,.45); }
     #s01-q small { display: block; font-size: 52px; color: #fff; letter-spacing: .04em; }
   </style>
-  <div id="root" data-composition-id="s01" data-start="0" data-duration="10.670" data-width="1080" data-height="1920">
-    <div id="s01-stage" class="clip stage" data-start="0" data-duration="10.670" data-track-index="0">
+  <div id="root" data-composition-id="s01" data-start="0" data-duration="10.960" data-width="1080" data-height="1920">
+    <div id="s01-stage" class="clip stage" data-start="0" data-duration="10.960" data-track-index="0">
       <div id="s01-count" class="cbox p" style="opacity:0"><div class="lab">MÄGEN</div><div class="num">8.200.000.000</div></div>
       <svg id="s01-svg" class="full" viewBox="0 0 1080 1920"></svg>
       <div id="s01-news" class="panel"><div class="bar">● EILMELDUNG · LIVE</div><div class="hl">ALLE MÜSSEN SICH<br><em>ÜBERGEBEN!</em></div></div>
@@ -41,7 +41,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 10.67, "L1": [0.9, 4.76], "L1.words": [["was", 0.9, 1.277], ["würde", 1.277, 2.018], ["passieren", 2.018, 3.15], ["wenn", 3.26, 3.351], ["sich", 3.351, 3.441], ["alle", 3.441, 3.61], ["menschen", 3.61, 3.791], ["der", 3.791, 3.879], ["welt", 3.879, 3.969], ["gleichzeitig", 3.969, 4.241], ["übergeben", 4.241, 4.582], ["müssten", 4.582, 4.76]], "L2": [4.98, 10.49], "L2.words": [["82", 4.98, 5.708], ["milliarden", 5.708, 6.256], ["mägen", 6.256, 6.61], ["in", 7.16, 7.297], ["einer", 7.297, 7.575], ["sekunde", 7.575, 7.99], ["und", 8.54, 8.701], ["für", 8.701, 8.862], ["milliarden", 8.862, 9.351], ["wird", 9.351, 9.518], ["es", 9.518, 9.673], ["richtig", 9.673, 10.001], ["gefährlich", 10.001, 10.49]]};
+      const C = {"__dur": 10.96, "L1": [0.9, 5.19], "L1.words": [["was", 0.9, 1.068], ["würde", 1.068, 1.397], ["passieren", 1.397, 1.9], ["wenn", 2.34, 2.512], ["sich", 2.512, 2.684], ["alle", 2.684, 3.005], ["menschen", 3.005, 3.349], ["der", 3.349, 3.516], ["welt", 3.516, 3.688], ["gleichzeitig", 3.688, 4.204], ["übergeben", 4.204, 4.852], ["müssten", 4.852, 5.19]], "L2": [5.41, 10.78], "L2.words": [["82", 5.41, 6.125], ["milliarden", 6.125, 6.662], ["mägen", 6.662, 7.01], ["in", 7.56, 7.697], ["einer", 7.697, 7.975], ["sekunde", 7.975, 8.39], ["und", 8.94, 9.092], ["für", 9.092, 9.244], ["milliarden", 9.244, 9.705], ["wird", 9.705, 9.863], ["es", 9.863, 10.009], ["richtig", 10.009, 10.319], ["gefährlich", 10.319, 10.78]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -199,8 +199,11 @@
 
       const tl = gsap.timeline({ paused: true });
       const sv = document.querySelector("#s01-svg");
-      const glow = el("circle", { cx: 540, cy: 760, r: 280, fill: "#9be27a", opacity: 0.18 }, sv);
-      const F = sick(sv, 540, 760, 1.55);
+      const glow = el("circle", { cx: 540, cy: 700, r: 260, fill: "#9be27a", opacity: 0.18 }, sv);
+      const pud = el("ellipse", { cx: 540, cy: 962, rx: 190, ry: 26, fill: "#a8b83a" }, sv);
+      const F = sick(sv, 540, 680, 1.3);
+      gsap.set(F.puke, { opacity: 1 }); gsap.set(F.mouth, { attr: { rx: 46, ry: 34 } });
+      const sp = []; for (let i = 0; i < 8; i++) sp.push(el("circle", { cx: 380 + i * 46, cy: 950, r: 10 + (i % 3) * 4, fill: "#c9d94a" }, sv));
       const warn = (x) => { const g = el("g", {}, sv);
         const t = el("path", { d: `M${x} 560 L${x + 70} 665 H${x - 70}Z`, fill: "#ffd43b", stroke: "#ff3b55", "stroke-width": 12, "stroke-linejoin": "round" }, g);
         const e = txt(g, x, 655, "!", 70, "#161a36"); return { g, t, e }; };
@@ -208,17 +211,18 @@
       const mg = el("g", {}, sv), minis = [];
       for (let i = 0; i < 35; i++) { const m = sick(mg, 150 + (i % 7) * 130, 640 + Math.floor(i / 7) * 100, 0.3); gsap.set(m.g, { opacity: 0 }); minis.push(m); }
       const ub = at("L1", "übergeben"), n82 = at("L2", "8,2"), sek = at("L2", "Sekunde"), ri = at("L2", "richtig");
-      tl.to(F.cheeks, { scale: 1.35, transformOrigin: "50% 50%", duration: 0.25, yoyo: true, repeat: 9, ease: "sine.inOut" }, 0.1);
       tl.to(F.g, { x: 548, duration: 0.05, repeat: 21, yoyo: true }, 0.2);
       tl.fromTo(glow, { attr: { opacity: 0.18 } }, { attr: { opacity: 0.45 }, duration: 0.35, repeat: 7, yoyo: true }, 0);
       W.forEach((w) => { tl.to(w.t, { attr: { fill: "#ff3b55", stroke: "#ffd43b" }, duration: 0.01, repeat: 13, yoyo: true, repeatDelay: 0.22 }, 0.2);
         tl.to(w.e, { attr: { fill: "#ffffff" }, duration: 0.01, repeat: 13, yoyo: true, repeatDelay: 0.22 }, 0.2); });
       tl.to("#s01-news", { opacity: 0, scale: 0.85, duration: 0.25, ease: "power3.in" }, 2.6);
       tl.to(F.head, { attr: { fill: "#9fd35a" }, duration: 0.4 }, ub - 0.5);
-      tl.to(F.mouth, { attr: { rx: 46, ry: 34 }, duration: 0.15 }, ub);
-      tl.fromTo(F.puke, { opacity: 0, scaleY: 0.1, transformOrigin: "50% 0%" }, { opacity: 1, scaleY: 1, duration: 0.35, ease: "power2.out" }, ub + 0.05);
-      tl.to(F.g, { y: 740, duration: 0.12, yoyo: true, repeat: 3 }, ub);
-      tl.to([F.g, glow, ...W.map((w) => w.g)], { opacity: 0, duration: 0.3 }, n82 - 0.35);
+      tl.fromTo(F.puke, { scaleY: 0.92, scaleX: 0.95, transformOrigin: "50% 0%" }, { scaleY: 1.06, scaleX: 1.08, duration: 0.18, yoyo: true, repeat: 15, ease: "sine.inOut" }, 0);
+      sp.forEach((d, i) => tl.fromTo(d, { y: 0, x: 0, opacity: 1 }, { y: -60 - (i % 3) * 30, x: (i - 3.5) * 22, opacity: 0, duration: 0.45, ease: "power2.out", repeat: 5, repeatDelay: 0.05 }, 0.05 + i * 0.04));
+      tl.fromTo(pud, { attr: { rx: 120 } }, { attr: { rx: 230 }, duration: 2.5, ease: "power1.out" }, 0);
+      tl.to(F.puke, { scaleX: 1.35, scaleY: 1.12, transformOrigin: "50% 0%", duration: 0.2, yoyo: true, repeat: 3 }, ub);
+      tl.to(F.g, { y: 668, duration: 0.12, yoyo: true, repeat: 3 }, ub);
+      tl.to([F.g, glow, pud, ...sp, ...W.map((w) => w.g)], { opacity: 0, duration: 0.3 }, n82 - 0.35);
       tl.to("#s01-count", { opacity: 1, duration: 0.2 }, n82 - 0.25);
       tl.fromTo("#s01-count", { scale: 1 }, { scale: 1.12, duration: 0.15, yoyo: true, repeat: 1 }, n82);
       minis.forEach((m, i) => tl.fromTo(m.g, { opacity: 0, scale: 0.1 }, { opacity: 1, scale: 0.3, duration: 0.25, ease: "back.out(2)" }, n82 + i * 0.025));

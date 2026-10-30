@@ -4,7 +4,7 @@
  "hud": "big",
  "hud_low": true,
  "lead_in": 0.9,
- "_zahlen": "8,2 Mrd. Menschen x ~0,5 L = ~4 Mrd. L = 1.600 Olympiabecken (2,5 Mio. L). ~10.000 Flugzeuge / ~1 Mio. Menschen gleichzeitig in der Luft. ~310 Mio. OPs/Jahr x ~2 h -> ~70.000 gleichzeitig. ~1/3 schläft (Zeitzonen, ~8 h). Leicester-Studie 2015: Erbrochenes bis zu 3 m. Magen: ~2 L Magensaft/Tag, pH 1-2 (Salzsäure).",
+ "_zahlen": "8,2 Mrd. Menschen x ~0,5 L = ~4 Mrd. L / 0,33 L = ~12,1 Mrd. Dosen. ~10.000 Flugzeuge / ~1 Mio. Menschen gleichzeitig in der Luft. ~310 Mio. OPs/Jahr x ~2 h -> ~70.000 gleichzeitig. ~1/3 schläft (Zeitzonen, ~8 h). Leicester-Studie 2015: Erbrochenes bis zu 3 m. Magen: ~2 L Magensaft/Tag, pH 1-2 (Salzsäure).",
  "scenes": [
   {
    "id": "s01",
@@ -48,7 +48,7 @@
     },
     {
      "id": "L4",
-     "text": "Das füllt / *b:1.600|sechzehnhundert / *b:Olympia-Schwimmbecken."
+     "text": "Das sind über / *y:12|zwölf *y:Milliarden Dosen / *b:Cola *b:Vanille *b:Zero."
     }
    ],
    "sfx": [
@@ -59,7 +59,7 @@
     },
     {
      "name": "pop",
-     "at": "L4:1.600",
+     "at": "L4:12",
      "volume": 0.45
     }
    ]
@@ -268,7 +268,7 @@
    "lines": [
     {
      "id": "L18",
-     "text": "Und *y:du? / Wo wäre es *r:am *r:schlimmsten: / im *b:Flugzeug – / oder im *p:Bus? / Schreib's in die *y:Kommentare!",
+     "text": "Und *y:du? / Wurdest du schon mal / *r:angekotzt? / Schreib's in die *y:Kommentare – / und *p:markiere *p:den *p:Schuldigen!",
      "pause": 0.3
     },
     {
@@ -279,8 +279,13 @@
    ],
    "sfx": [
     {
+     "name": "error",
+     "at": "L18:angekotzt",
+     "volume": 0.3
+    },
+    {
      "name": "notification",
-     "at": "L18:Kommentare",
+     "at": "L18:markiere",
      "volume": 0.4
     },
     {

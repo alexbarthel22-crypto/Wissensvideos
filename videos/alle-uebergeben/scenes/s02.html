@@ -11,7 +11,7 @@
     <div id="s02-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
       <div id="s02-box" class="cbox g s02b" style="opacity:0"><div class="lab">PRO PERSON</div><div class="num">0,5 LITER</div></div>
       <div id="s02-box2" class="cbox g s02b" style="opacity:0"><div class="lab">ZUSAMMEN</div><div id="s02-n2" class="num">0 L</div></div>
-      <div id="s02-box3" class="cbox y s02b" style="opacity:0"><div class="lab">OLYMPIA-BECKEN</div><div id="s02-n3" class="num">0</div></div>
+      <div id="s02-box3" class="cbox y s02b" style="opacity:0"><div class="lab">DOSEN À 0,33 L</div><div id="s02-n3" class="num">0</div></div>
       <svg id="s02-svg" class="full" viewBox="0 0 1080 1920"></svg>
     </div>
   </div>
@@ -29,11 +29,14 @@
       const fg = el("g", { "clip-path": "url(#s02-clip)" }, sv);
       const Fl = flood(fg, 1180, "#a8b83a"); const F2 = flood(fg, 1210, "#c9d94a");
       const pools = [];
-      for (let i = 0; i < 16; i++) { const x = 70 + (i % 4) * 240, y = 600 + Math.floor(i / 4) * 128, g = el("g", { opacity: 0 }, sv);
-        el("rect", { x, y, width: 220, height: 110, rx: 10, fill: "#dfe5f5" }, g); el("rect", { x: x + 10, y: y + 10, width: 200, height: 90, rx: 6, fill: "#b5c43e" }, g);
-        for (let k = 1; k < 4; k++) el("path", { d: `M${x + 14} ${y + 10 + k * 22.5} H${x + 206}`, stroke: "#ffffff", "stroke-width": 4, "stroke-dasharray": "10 8" }, g);
+      for (let i = 0; i < 12; i++) { const x = 115 + (i % 6) * 170, y = 600 + Math.floor(i / 6) * 250, g = el("g", { opacity: 0 }, sv);
+        el("rect", { x: x - 55, y, width: 110, height: 200, rx: 18, fill: "#1d1d24" }, g);
+        el("ellipse", { cx: x, cy: y + 4, rx: 50, ry: 12, fill: "#c9cde6" }, g);
+        el("rect", { x: x - 55, y: y + 70, width: 110, height: 64, fill: "#f3e3c3" }, g);
+        txt(g, x, y + 114, "ZERO", 28, "#1d1d24");
+        el("rect", { x: x - 55, y: y + 186, width: 110, height: 14, rx: 7, fill: "#8f9bc4" }, g);
         pools.push(g); }
-      const ha = at("L3", "halber"), v4 = at("L3", "4"), l4 = line("L4")[0], n16 = at("L4", "1.600");
+      const ha = at("L3", "halber"), v4 = at("L3", "4"), l4 = line("L4")[0], n16 = at("L4", "12");
       tl.fromTo(cup, { opacity: 0, y: 80 }, { opacity: 1, y: 0, duration: 0.45, ease: "back.out(1.8)" }, 0.05);
       tl.to("#s02-box", { opacity: 1, duration: 0.25 }, ha - 0.3);
       tl.fromTo(liq, { scaleY: 0, transformOrigin: "50% 100%" }, { scaleY: 1, duration: 0.6, ease: "power2.out" }, ha - 0.2);
@@ -47,8 +50,9 @@
       tl.to([Fl, F2], { y: 200, opacity: 0, duration: 0.4, ease: "power3.in" }, l4 - 0.1);
       tl.to("#s02-box2", { opacity: 0, duration: 0.15 }, n16 - 0.45);
       tl.to("#s02-box3", { opacity: 1, duration: 0.2 }, n16 - 0.35);
-      count(tl, "#s02-n3", 0, 1600, n16 - 0.3, 1.1, "", "", "power2.out");
-      pools.forEach((p, i) => tl.fromTo(p, { opacity: 0, scale: 0.3, svgOrigin: `${180 + (i % 4) * 240} ${655 + Math.floor(i / 4) * 128}` }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(2)" }, n16 - 0.2 + i * 0.06));
+      count(tl, "#s02-n3", 0, 12000000000, n16 - 0.3, 1.3, "", "", "power3.out");
+      pools.forEach((p, i) => tl.fromTo(p, { opacity: 0, y: -300 }, { opacity: 1, y: 0, duration: 0.35, ease: "bounce.out" }, n16 - 0.2 + i * 0.07));
+      tl.to(pools, { rotation: 6, svgOrigin: "540 1050", duration: 0.12, yoyo: true, repeat: 5 }, at("L4", "Zero"));
       tl.to("#s02-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
       window.__timelines["s02"] = tl;
     })();

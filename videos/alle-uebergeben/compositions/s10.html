@@ -23,21 +23,23 @@
       font-family: "Inter", sans-serif; font-weight: 900; }
     .cbox { top: 440px; } /* unter der großen Kapitel-Überschrift */
     .s10-b { position: absolute; top: 950px; width: 450px; height: 150px; border-radius: 26px; text-align: center; font: 900 50px/150px Inter, sans-serif; color: #0b0e22; }
-    #s10-b1 { left: 50px; background: #4da3ff; box-shadow: 0 0 40px rgba(77,163,255,.5); } #s10-b2 { left: 580px; background: #ff4fb0; box-shadow: 0 0 40px rgba(255,79,176,.5); }
+    #s10-tag { left: 560px; top: 560px; width: 470px; height: 96px; border-radius: 48px; background: #ff4fb0; color: #fff; text-align: center; font: 900 46px/96px Inter, sans-serif; opacity: 0; box-shadow: 0 0 40px rgba(255,79,176,.6); }
+    #s10-b1 { left: 50px; background: #9be27a; box-shadow: 0 0 40px rgba(77,163,255,.5); } #s10-b2 { left: 580px; background: #4da3ff; box-shadow: 0 0 40px rgba(77,163,255,.5); }
     #s10-f { left: 290px; top: 950px; width: 500px; height: 150px; border-radius: 75px; background: #ff3b55; box-shadow: 0 0 50px rgba(255,59,85,.6); opacity: 0;
       text-align: center; font: 900 64px/150px Inter, sans-serif; color: #fff; }
   </style>
-  <div id="root" data-composition-id="s10" data-start="0" data-duration="11.330" data-width="1080" data-height="1920">
-    <div id="s10-stage" class="clip stage" data-start="0" data-duration="11.330" data-track-index="0">
+  <div id="root" data-composition-id="s10" data-start="0" data-duration="10.960" data-width="1080" data-height="1920">
+    <div id="s10-stage" class="clip stage" data-start="0" data-duration="10.960" data-track-index="0">
       <svg id="s10-svg" class="full" viewBox="0 0 1080 1920"></svg>
-      <div id="s10-b1" class="s10-b">FLUGZEUG</div><div id="s10-b2" class="s10-b">BUS</div>
+      <div id="s10-b1" class="s10-b">JA, LEIDER</div><div id="s10-b2" class="s10-b">ZUM GLÜCK NIE</div>
+      <div id="s10-tag" class="abs">@ DER SCHULDIGE</div>
       <div id="s10-f" class="abs">+ FOLGEN</div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 11.33, "L18": [0.2, 5.36], "L18.words": [["und", 0.2, 0.46], ["du", 0.46, 0.71], ["wo", 0.97, 1.236], ["wäre", 1.236, 1.768], ["es", 1.768, 2.033], ["am", 2.033, 2.299], ["schlimmsten", 2.299, 2.9], ["im", 3.3, 3.37], ["flugzeug", 3.37, 3.521], ["", 3.521, 3.586], ["oder", 3.586, 3.727], ["im", 3.727, 3.797], ["bus", 3.797, 3.87], ["schreibs", 4.23, 4.418], ["in", 4.418, 4.572], ["die", 4.572, 4.732], ["kommentare", 4.732, 5.36]], "L19": [5.88, 8.93], "L19.words": [["und", 5.88, 6.079], ["folg", 6.079, 6.285], ["mir", 6.285, 6.484], ["für", 6.484, 6.683], ["mehr", 6.683, 6.89], ["", 6.89, 7.067], ["sonst", 7.067, 7.281], ["wird", 7.281, 7.487], ["dir", 7.487, 7.686], ["heute", 7.686, 8.077], ["nacht", 8.077, 8.29], ["richtig", 8.29, 8.695], ["schlecht", 8.695, 8.93]]};
+      const C = {"__dur": 10.96, "L18": [0.2, 5.13], "L18.words": [["und", 0.2, 0.429], ["du", 0.429, 0.65], ["wurdest", 1.07, 1.685], ["du", 1.685, 1.977], ["schon", 1.977, 2.301], ["mal", 2.301, 2.603], ["angekotzt", 2.603, 3.51], ["schreibs", 3.9, 3.991], ["in", 3.991, 4.065], ["die", 4.065, 4.142], ["kommentare", 4.142, 4.445], ["", 4.445, 4.514], ["und", 4.514, 4.591], ["markiere", 4.591, 4.819], ["den", 4.819, 4.896], ["schuldigen", 4.896, 5.13]], "L19": [5.65, 8.56], "L19.words": [["und", 5.65, 5.84], ["folg", 5.84, 6.037], ["mir", 6.037, 6.227], ["für", 6.227, 6.417], ["mehr", 6.417, 6.613], ["", 6.613, 6.783], ["sonst", 6.783, 6.986], ["wird", 6.986, 7.183], ["dir", 7.183, 7.373], ["heute", 7.373, 7.746], ["nacht", 7.746, 7.95], ["richtig", 7.95, 8.336], ["schlecht", 8.336, 8.56]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -197,12 +199,14 @@
       const sv = document.querySelector("#s10-svg");
       const glow = el("circle", { cx: 540, cy: 760, r: 250, fill: "#9be27a", opacity: 0.2 }, sv);
       const F = sick(sv, 540, 750, 1.25, "#f2c9a5");
-      const du = at("L18", "du?"), fl = at("L18", "Flugzeug"), bu = at("L18", "Bus?"), ko = at("L18", "Kommentare"), l19 = line("L19")[0], fo = at("L19", "folg"), sc = at("L19", "schlecht");
+      const du = at("L18", "du?"), fl = at("L18", "angekotzt"), bu = at("L18", "angekotzt") + 0.35, ko = at("L18", "Kommentare"), mk = at("L18", "markiere"), l19 = line("L19")[0], fo = at("L19", "folg"), sc = at("L19", "schlecht");
       tl.fromTo(F.g, { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1.25, duration: 0.45, ease: "back.out(1.8)" }, 0.05);
       tl.to(F.g, { rotation: 5, svgOrigin: "540 900", duration: 0.08, repeat: 5, yoyo: true }, du - 0.1);
       tl.fromTo("#s10-b1", { opacity: 0, y: 80, rotation: -6 }, { opacity: 1, y: 0, rotation: 0, duration: 0.4, ease: "back.out(2)" }, fl - 0.15);
       tl.fromTo("#s10-b2", { opacity: 0, y: 80, rotation: 6 }, { opacity: 1, y: 0, rotation: 0, duration: 0.4, ease: "back.out(2)" }, bu - 0.15);
       tl.to(".s10-b", { scale: 1.08, duration: 0.3, yoyo: true, repeat: 3, stagger: 0.3, ease: "sine.inOut" }, ko - 0.3);
+      tl.fromTo("#s10-tag", { opacity: 0, scale: 0.4, rotation: -8 }, { opacity: 1, scale: 1, rotation: 4, duration: 0.4, ease: "back.out(2.4)" }, mk - 0.1);
+      tl.to("#s10-tag", { y: -20, duration: 0.4, yoyo: true, repeat: 7, ease: "sine.inOut" }, mk + 0.4);
       tl.to(".s10-b", { opacity: 0, y: 60, duration: 0.25, ease: "power3.in" }, l19 - 0.2);
       tl.fromTo("#s10-f", { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(2.4)" }, fo - 0.1);
       tl.to("#s10-f", { scale: 1.08, duration: 0.3, yoyo: true, repeat: 9, ease: "sine.inOut" }, fo + 0.4);

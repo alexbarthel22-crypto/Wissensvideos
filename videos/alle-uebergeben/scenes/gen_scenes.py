@@ -30,9 +30,9 @@ HEAD = '''<template>
 OUT = '\n      tl.to("#@@ID@@-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);'
 SVG = '      <svg id="@@ID@@-svg" class="full" viewBox="0 0 1080 1920"></svg>'
 S = {}
-NEWS = '''    #@@ID@@-news { left: 60px; top: 952px; width: 960px; height: 196px; border: 5px solid #ff3b55; box-shadow: 0 0 60px rgba(255,59,85,.5); overflow: hidden; text-align: left; }
-    #@@ID@@-news .bar { height: 50px; background: #ff3b55; color: #fff; display: flex; align-items: center; padding-left: 30px; font-size: 36px; letter-spacing: .08em; }
-    #@@ID@@-news .hl { padding: 6px 36px 0; text-align: center; font-size: 68px; line-height: 1.0; letter-spacing: -.015em; }
+NEWS = '''    #@@ID@@-news { left: 60px; top: 975px; width: 960px; height: 172px; border: 5px solid #ff3b55; box-shadow: 0 0 60px rgba(255,59,85,.5); overflow: hidden; text-align: left; }
+    #@@ID@@-news .bar { height: 44px; background: #ff3b55; color: #fff; display: flex; align-items: center; padding-left: 30px; font-size: 36px; letter-spacing: .08em; }
+    #@@ID@@-news .hl { padding: 4px 36px 0; text-align: center; font-size: 60px; line-height: 1.0; letter-spacing: -.015em; }
     #@@ID@@-news .hl em { font-style: normal; color: #9be27a; text-shadow: 0 0 26px rgba(155,226,122,.7); }'''
 
 S['s01'] = (NEWS + '''
@@ -44,8 +44,11 @@ S['s01'] = (NEWS + '''
       <div id="s01-news" class="panel"><div class="bar">● EILMELDUNG · LIVE</div><div class="hl">ALLE MÜSSEN SICH<br><em>ÜBERGEBEN!</em></div></div>
       <div id="s01-q" class="panel">?!<small>LEBENSGEFAHR</small></div>''',
 '''      const sv = document.querySelector("#s01-svg");
-      const glow = el("circle", { cx: 540, cy: 760, r: 280, fill: "#9be27a", opacity: 0.18 }, sv);
-      const F = sick(sv, 540, 760, 1.55);
+      const glow = el("circle", { cx: 540, cy: 700, r: 260, fill: "#9be27a", opacity: 0.18 }, sv);
+      const pud = el("ellipse", { cx: 540, cy: 962, rx: 190, ry: 26, fill: "#a8b83a" }, sv);
+      const F = sick(sv, 540, 680, 1.3);
+      gsap.set(F.puke, { opacity: 1 }); gsap.set(F.mouth, { attr: { rx: 46, ry: 34 } });
+      const sp = []; for (let i = 0; i < 8; i++) sp.push(el("circle", { cx: 380 + i * 46, cy: 950, r: 10 + (i % 3) * 4, fill: "#c9d94a" }, sv));
       const warn = (x) => { const g = el("g", {}, sv);
         const t = el("path", { d: `M${x} 560 L${x + 70} 665 H${x - 70}Z`, fill: "#ffd43b", stroke: "#ff3b55", "stroke-width": 12, "stroke-linejoin": "round" }, g);
         const e = txt(g, x, 655, "!", 70, "#161a36"); return { g, t, e }; };
@@ -53,17 +56,18 @@ S['s01'] = (NEWS + '''
       const mg = el("g", {}, sv), minis = [];
       for (let i = 0; i < 35; i++) { const m = sick(mg, 150 + (i % 7) * 130, 640 + Math.floor(i / 7) * 100, 0.3); gsap.set(m.g, { opacity: 0 }); minis.push(m); }
       const ub = at("L1", "übergeben"), n82 = at("L2", "8,2"), sek = at("L2", "Sekunde"), ri = at("L2", "richtig");
-      tl.to(F.cheeks, { scale: 1.35, transformOrigin: "50% 50%", duration: 0.25, yoyo: true, repeat: 9, ease: "sine.inOut" }, 0.1);
       tl.to(F.g, { x: 548, duration: 0.05, repeat: 21, yoyo: true }, 0.2);
       tl.fromTo(glow, { attr: { opacity: 0.18 } }, { attr: { opacity: 0.45 }, duration: 0.35, repeat: 7, yoyo: true }, 0);
       W.forEach((w) => { tl.to(w.t, { attr: { fill: "#ff3b55", stroke: "#ffd43b" }, duration: 0.01, repeat: 13, yoyo: true, repeatDelay: 0.22 }, 0.2);
         tl.to(w.e, { attr: { fill: "#ffffff" }, duration: 0.01, repeat: 13, yoyo: true, repeatDelay: 0.22 }, 0.2); });
       tl.to("#s01-news", { opacity: 0, scale: 0.85, duration: 0.25, ease: "power3.in" }, 2.6);
       tl.to(F.head, { attr: { fill: "#9fd35a" }, duration: 0.4 }, ub - 0.5);
-      tl.to(F.mouth, { attr: { rx: 46, ry: 34 }, duration: 0.15 }, ub);
-      tl.fromTo(F.puke, { opacity: 0, scaleY: 0.1, transformOrigin: "50% 0%" }, { opacity: 1, scaleY: 1, duration: 0.35, ease: "power2.out" }, ub + 0.05);
-      tl.to(F.g, { y: 740, duration: 0.12, yoyo: true, repeat: 3 }, ub);
-      tl.to([F.g, glow, ...W.map((w) => w.g)], { opacity: 0, duration: 0.3 }, n82 - 0.35);
+      tl.fromTo(F.puke, { scaleY: 0.92, scaleX: 0.95, transformOrigin: "50% 0%" }, { scaleY: 1.06, scaleX: 1.08, duration: 0.18, yoyo: true, repeat: 15, ease: "sine.inOut" }, 0);
+      sp.forEach((d, i) => tl.fromTo(d, { y: 0, x: 0, opacity: 1 }, { y: -60 - (i % 3) * 30, x: (i - 3.5) * 22, opacity: 0, duration: 0.45, ease: "power2.out", repeat: 5, repeatDelay: 0.05 }, 0.05 + i * 0.04));
+      tl.fromTo(pud, { attr: { rx: 120 } }, { attr: { rx: 230 }, duration: 2.5, ease: "power1.out" }, 0);
+      tl.to(F.puke, { scaleX: 1.35, scaleY: 1.12, transformOrigin: "50% 0%", duration: 0.2, yoyo: true, repeat: 3 }, ub);
+      tl.to(F.g, { y: 668, duration: 0.12, yoyo: true, repeat: 3 }, ub);
+      tl.to([F.g, glow, pud, ...sp, ...W.map((w) => w.g)], { opacity: 0, duration: 0.3 }, n82 - 0.35);
       tl.to("#s01-count", { opacity: 1, duration: 0.2 }, n82 - 0.25);
       tl.fromTo("#s01-count", { scale: 1 }, { scale: 1.12, duration: 0.15, yoyo: true, repeat: 1 }, n82);
       minis.forEach((m, i) => tl.fromTo(m.g, { opacity: 0, scale: 0.1 }, { opacity: 1, scale: 0.3, duration: 0.25, ease: "back.out(2)" }, n82 + i * 0.025));
@@ -76,7 +80,7 @@ S['s01'] = (NEWS + '''
 S['s02'] = ('''    .s02b .num { font-size: 44px; }''',
 '''      <div id="s02-box" class="cbox g s02b" style="opacity:0"><div class="lab">PRO PERSON</div><div class="num">0,5 LITER</div></div>
       <div id="s02-box2" class="cbox g s02b" style="opacity:0"><div class="lab">ZUSAMMEN</div><div id="s02-n2" class="num">0 L</div></div>
-      <div id="s02-box3" class="cbox y s02b" style="opacity:0"><div class="lab">OLYMPIA-BECKEN</div><div id="s02-n3" class="num">0</div></div>
+      <div id="s02-box3" class="cbox y s02b" style="opacity:0"><div class="lab">DOSEN À 0,33 L</div><div id="s02-n3" class="num">0</div></div>
 ''' + SVG,
 '''      const sv = document.querySelector("#s02-svg");
       const cup = el("g", {}, sv);
@@ -87,11 +91,14 @@ S['s02'] = ('''    .s02b .num { font-size: 44px; }''',
       const fg = el("g", { "clip-path": "url(#s02-clip)" }, sv);
       const Fl = flood(fg, 1180, "#a8b83a"); const F2 = flood(fg, 1210, "#c9d94a");
       const pools = [];
-      for (let i = 0; i < 16; i++) { const x = 70 + (i % 4) * 240, y = 600 + Math.floor(i / 4) * 128, g = el("g", { opacity: 0 }, sv);
-        el("rect", { x, y, width: 220, height: 110, rx: 10, fill: "#dfe5f5" }, g); el("rect", { x: x + 10, y: y + 10, width: 200, height: 90, rx: 6, fill: "#b5c43e" }, g);
-        for (let k = 1; k < 4; k++) el("path", { d: `M${x + 14} ${y + 10 + k * 22.5} H${x + 206}`, stroke: "#ffffff", "stroke-width": 4, "stroke-dasharray": "10 8" }, g);
+      for (let i = 0; i < 12; i++) { const x = 115 + (i % 6) * 170, y = 600 + Math.floor(i / 6) * 250, g = el("g", { opacity: 0 }, sv);
+        el("rect", { x: x - 55, y, width: 110, height: 200, rx: 18, fill: "#1d1d24" }, g);
+        el("ellipse", { cx: x, cy: y + 4, rx: 50, ry: 12, fill: "#c9cde6" }, g);
+        el("rect", { x: x - 55, y: y + 70, width: 110, height: 64, fill: "#f3e3c3" }, g);
+        txt(g, x, y + 114, "ZERO", 28, "#1d1d24");
+        el("rect", { x: x - 55, y: y + 186, width: 110, height: 14, rx: 7, fill: "#8f9bc4" }, g);
         pools.push(g); }
-      const ha = at("L3", "halber"), v4 = at("L3", "4"), l4 = line("L4")[0], n16 = at("L4", "1.600");
+      const ha = at("L3", "halber"), v4 = at("L3", "4"), l4 = line("L4")[0], n16 = at("L4", "12");
       tl.fromTo(cup, { opacity: 0, y: 80 }, { opacity: 1, y: 0, duration: 0.45, ease: "back.out(1.8)" }, 0.05);
       tl.to("#s02-box", { opacity: 1, duration: 0.25 }, ha - 0.3);
       tl.fromTo(liq, { scaleY: 0, transformOrigin: "50% 100%" }, { scaleY: 1, duration: 0.6, ease: "power2.out" }, ha - 0.2);
@@ -105,8 +112,9 @@ S['s02'] = ('''    .s02b .num { font-size: 44px; }''',
       tl.to([Fl, F2], { y: 200, opacity: 0, duration: 0.4, ease: "power3.in" }, l4 - 0.1);
       tl.to("#s02-box2", { opacity: 0, duration: 0.15 }, n16 - 0.45);
       tl.to("#s02-box3", { opacity: 1, duration: 0.2 }, n16 - 0.35);
-      count(tl, "#s02-n3", 0, 1600, n16 - 0.3, 1.1, "", "", "power2.out");
-      pools.forEach((p, i) => tl.fromTo(p, { opacity: 0, scale: 0.3, svgOrigin: `${180 + (i % 4) * 240} ${655 + Math.floor(i / 4) * 128}` }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(2)" }, n16 - 0.2 + i * 0.06));''' + OUT)
+      count(tl, "#s02-n3", 0, 12000000000, n16 - 0.3, 1.3, "", "", "power3.out");
+      pools.forEach((p, i) => tl.fromTo(p, { opacity: 0, y: -300 }, { opacity: 1, y: 0, duration: 0.35, ease: "bounce.out" }, n16 - 0.2 + i * 0.07));
+      tl.to(pools, { rotation: 6, svgOrigin: "540 1050", duration: 0.12, yoyo: true, repeat: 5 }, at("L4", "Zero"));''' + OUT)
 
 S['s03'] = ('''    #s03-box .num { font-size: 52px; }''',
 '''      <div id="s03-box" class="cbox r" style="opacity:0"><div class="lab">AM STEUER</div><div class="num">MILLIONEN</div></div>
@@ -305,21 +313,25 @@ S['s09'] = ('''    .s09-k { position: absolute; left: 90px; width: 900px; border
       tl.to("#s09-k2", { x: 10, duration: 0.04, repeat: 7, yoyo: true }, me);''' + OUT)
 
 S['s10'] = ('''    .s10-b { position: absolute; top: 950px; width: 450px; height: 150px; border-radius: 26px; text-align: center; font: 900 50px/150px Inter, sans-serif; color: #0b0e22; }
-    #s10-b1 { left: 50px; background: #4da3ff; box-shadow: 0 0 40px rgba(77,163,255,.5); } #s10-b2 { left: 580px; background: #ff4fb0; box-shadow: 0 0 40px rgba(255,79,176,.5); }
+    #s10-tag { left: 560px; top: 560px; width: 470px; height: 96px; border-radius: 48px; background: #ff4fb0; color: #fff; text-align: center; font: 900 46px/96px Inter, sans-serif; opacity: 0; box-shadow: 0 0 40px rgba(255,79,176,.6); }
+    #s10-b1 { left: 50px; background: #9be27a; box-shadow: 0 0 40px rgba(77,163,255,.5); } #s10-b2 { left: 580px; background: #4da3ff; box-shadow: 0 0 40px rgba(77,163,255,.5); }
     #s10-f { left: 290px; top: 950px; width: 500px; height: 150px; border-radius: 75px; background: #ff3b55; box-shadow: 0 0 50px rgba(255,59,85,.6); opacity: 0;
       text-align: center; font: 900 64px/150px Inter, sans-serif; color: #fff; }''',
 SVG + '''
-      <div id="s10-b1" class="s10-b">FLUGZEUG</div><div id="s10-b2" class="s10-b">BUS</div>
+      <div id="s10-b1" class="s10-b">JA, LEIDER</div><div id="s10-b2" class="s10-b">ZUM GLÜCK NIE</div>
+      <div id="s10-tag" class="abs">@ DER SCHULDIGE</div>
       <div id="s10-f" class="abs">+ FOLGEN</div>''',
 '''      const sv = document.querySelector("#s10-svg");
       const glow = el("circle", { cx: 540, cy: 760, r: 250, fill: "#9be27a", opacity: 0.2 }, sv);
       const F = sick(sv, 540, 750, 1.25, "#f2c9a5");
-      const du = at("L18", "du?"), fl = at("L18", "Flugzeug"), bu = at("L18", "Bus?"), ko = at("L18", "Kommentare"), l19 = line("L19")[0], fo = at("L19", "folg"), sc = at("L19", "schlecht");
+      const du = at("L18", "du?"), fl = at("L18", "angekotzt"), bu = at("L18", "angekotzt") + 0.35, ko = at("L18", "Kommentare"), mk = at("L18", "markiere"), l19 = line("L19")[0], fo = at("L19", "folg"), sc = at("L19", "schlecht");
       tl.fromTo(F.g, { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1.25, duration: 0.45, ease: "back.out(1.8)" }, 0.05);
       tl.to(F.g, { rotation: 5, svgOrigin: "540 900", duration: 0.08, repeat: 5, yoyo: true }, du - 0.1);
       tl.fromTo("#s10-b1", { opacity: 0, y: 80, rotation: -6 }, { opacity: 1, y: 0, rotation: 0, duration: 0.4, ease: "back.out(2)" }, fl - 0.15);
       tl.fromTo("#s10-b2", { opacity: 0, y: 80, rotation: 6 }, { opacity: 1, y: 0, rotation: 0, duration: 0.4, ease: "back.out(2)" }, bu - 0.15);
       tl.to(".s10-b", { scale: 1.08, duration: 0.3, yoyo: true, repeat: 3, stagger: 0.3, ease: "sine.inOut" }, ko - 0.3);
+      tl.fromTo("#s10-tag", { opacity: 0, scale: 0.4, rotation: -8 }, { opacity: 1, scale: 1, rotation: 4, duration: 0.4, ease: "back.out(2.4)" }, mk - 0.1);
+      tl.to("#s10-tag", { y: -20, duration: 0.4, yoyo: true, repeat: 7, ease: "sine.inOut" }, mk + 0.4);
       tl.to(".s10-b", { opacity: 0, y: 60, duration: 0.25, ease: "power3.in" }, l19 - 0.2);
       tl.fromTo("#s10-f", { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(2.4)" }, fo - 0.1);
       tl.to("#s10-f", { scale: 1.08, duration: 0.3, yoyo: true, repeat: 9, ease: "sine.inOut" }, fo + 0.4);
