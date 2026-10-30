@@ -1,0 +1,61 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .cbox { top: 398px; } /* unter der großen Kapitel-Überschrift */
+    #s04-box .num { font-size: 52px; }
+  </style>
+  <div id="root" data-composition-id="s04" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s04-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s04-box" class="cbox g" style="opacity:0"><div class="lab">KANAL-AUSLASTUNG</div><div id="s04-n" class="num">0 %</div></div>
+      <svg id="s04-svg" class="full" viewBox="0 0 1080 1920"></svg>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s04-svg");
+      const top = el("g", {}, sv);
+      el("rect", { x: 0, y: 600, width: 1080, height: 540, fill: "#2a2140" }, top);
+      el("rect", { x: 0, y: 580, width: 1080, height: 26, fill: "#3b4b6e" }, top);
+      [[90, 70], [330, 90], [570, 80], [810, 95]].forEach(([x, h]) => { el("rect", { x, y: 580 - h, width: 180, height: h, fill: "#4a5590" }, top); el("path", { d: `M${x - 10} ${580 - h} L${x + 90} ${540 - h} L${x + 190} ${580 - h}Z`, fill: "#ff3b55" }, top); });
+      const dps = [];
+      [180, 420, 660, 900].forEach((x) => { el("rect", { x: x - 18, y: 606, width: 36, height: 170, fill: "#161a36" }, top);
+        dps.push(el("path", { d: `M${x} 600 V780`, stroke: "#8a6a3c", "stroke-width": 22, "stroke-dasharray": "24 18", opacity: 0 }, top)); });
+      el("rect", { x: 40, y: 770, width: 1000, height: 150, rx: 75, fill: "#161a36", stroke: "#4a5590", "stroke-width": 10 }, top);
+      const wtr = el("rect", { x: 50, y: 880, width: 980, height: 30, rx: 15, fill: "#8a6a3c" }, top);
+      const pl = el("g", { opacity: 0 }, sv);
+      el("rect", { x: 0, y: 560, width: 1080, height: 600, fill: "#16234a" }, pl);
+      [280, 760].forEach((x) => { el("ellipse", { cx: x, cy: 760, rx: 200, ry: 60, fill: "#8f9bc4" }, pl); el("ellipse", { cx: x, cy: 740, rx: 180, ry: 44, fill: "#6b5a3a" }, pl); });
+      const spill = [280, 760].map((x) => el("path", { d: `M${x - 186} 752 q-40 100 -14 210 h44 q-24 -100 14 -210Z M${x + 186} 752 q40 100 14 210 h-44 q24 -100 -14 -210Z`, fill: "#7a5c34", opacity: 0 }, pl));
+      txt(pl, 540, 640, "KLÄRWERK", 48, "#dfe2f5");
+      const river = el("rect", { x: 0, y: 960, width: 1080, height: 170, fill: "#2f7fe0" }, pl);
+      const fishes = [fish(pl, 220, 1040, 1), fish(pl, 560, 1060, 0.9, "#ffd43b"), fish(pl, 870, 1030, 1)];
+      const nt = at("L8", "normale"), alle = at("L8", "alle"), l9 = line("L9")[0], fl = at("L9", "Flüsse"), fi = at("L9", "Fische");
+      tl.fromTo(top, { opacity: 0, y: 140 }, { opacity: 1, y: 60, duration: 0.45, ease: "expo.out" }, 0.05);
+      tl.to("#s04-box", { opacity: 1, duration: 0.25 }, nt - 0.4);
+      count(tl, "#s04-n", 0, 30, nt - 0.2, 0.5, "", " %");
+      tl.to(dps, { opacity: 1, duration: 0.2, stagger: 0.08 }, alle - 0.4);
+      tl.fromTo(dps, { attr: { "stroke-dashoffset": 0 } }, { attr: { "stroke-dashoffset": -400 }, duration: 2.5, ease: "none" }, alle - 0.4);
+      tl.to(wtr, { attr: { y: 780, height: 130 }, duration: 0.8, ease: "power2.in" }, alle - 0.2);
+      count(tl, "#s04-n", 30, 100, alle - 0.2, 0.8, "", " %", "power2.in");
+      tl.to("#s04-box", { borderColor: "#ff3b55", duration: 0.01 }, alle + 0.6);
+      tl.set("#s04-n", { textContent: "ÜBERLAST!" }, alle + 0.7);
+      tl.to(top, { x: 10, duration: 0.04, repeat: 9, yoyo: true }, alle + 0.6);
+      tl.to(top, { opacity: 0, filter: "blur(8px)", duration: 0.25 }, l9 - 0.35);
+      tl.to(pl, { opacity: 1, duration: 0.3 }, l9 - 0.2);
+      tl.to(spill, { opacity: 1, duration: 0.4, stagger: 0.15 }, l9 + 0.2);
+      tl.to(river, { attr: { fill: "#6b5a3a" }, duration: 0.8 }, fl - 0.2);
+      fishes.forEach((f, i) => { tl.to(f.g, { rotation: 180, y: 975, duration: 0.5, ease: "back.out(2)" }, fi + i * 0.15); tl.to(f.g, { attr: { opacity: 0.8 }, duration: 0.2 }, fi + i * 0.15); });
+      tl.set(fishes.map((f) => f.eye), { attr: { r: 0 } }, fi);
+      fishes.forEach((f, i) => txt(pl, [220, 560, 870][i], 1002, "✕", 34, "#ff3b55", { opacity: 0, class: "s04-x" }));
+      tl.to(".s04-x", { opacity: 1, duration: 0.15, stagger: 0.15 }, fi + 0.3);
+      tl.to("#s04-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s04"] = tl;
+    })();
+  </script>
+</template>

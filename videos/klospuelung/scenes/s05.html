@@ -1,0 +1,54 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .cbox { top: 398px; } /* unter der großen Kapitel-Überschrift */
+    #s05-box .num { font-size: 52px; }
+  </style>
+  <div id="root" data-composition-id="s05" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s05-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s05-box" class="cbox r" style="opacity:0"><div class="lab">WASSER IM KELLER</div><div id="s05-n" class="num">0 CM</div></div>
+      <svg id="s05-svg" class="full" viewBox="0 0 1080 1920"></svg>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s05-svg");
+      el("rect", { x: 0, y: 640, width: 1080, height: 500, fill: "#2a2140" }, sv);
+      el("rect", { x: 0, y: 620, width: 1080, height: 24, fill: "#3b4b6e" }, sv);
+      el("rect", { x: 180, y: 540, width: 720, height: 80, fill: "#4a5590" }, sv);
+      el("rect", { x: 200, y: 660, width: 680, height: 330, rx: 8, fill: "#3a3f78" }, sv);
+      txt(sv, 300, 710, "KELLER", 36, "#8f9bc4");
+      el("rect", { x: 520, y: 990, width: 40, height: 70, fill: "#161a36" }, sv);
+      el("rect", { x: 30, y: 1050, width: 1020, height: 70, rx: 35, fill: "#161a36", stroke: "#4a5590", "stroke-width": 8 }, sv);
+      const sew = el("path", { d: "M60 1085 H1020", stroke: "#8a6a3c", "stroke-width": 36, "stroke-dasharray": "50 30" }, sv);
+      const up = el("path", { d: "M540 1060 V1000 M516 1024 L540 996 L564 1024", stroke: "#ff3b55", "stroke-width": 10, fill: "none", opacity: 0 }, sv);
+      const T = toilet(sv, 540, 900, 0.42, "#4da3ff");
+      const fount = el("path", { d: "M540 860 C470 760 420 720 380 820 M540 860 C540 740 540 700 540 690 M540 860 C610 760 660 720 700 820", stroke: "#8a6a3c", "stroke-width": 28, "stroke-linecap": "round", fill: "none", opacity: 0 }, sv);
+      const cl = el("clipPath", { id: "s05-clip" }, sv); el("rect", { x: 200, y: 660, width: 680, height: 330 }, cl);
+      const fg = el("g", { "clip-path": "url(#s05-clip)" }, sv); const F = flood(fg, 1000, "#7a5c34");
+      const q = txt(sv, 540, 760, "?", 140, "#ffd43b", { opacity: 0 });
+      const iw = at("L10", "irgendwohin"), zu = at("L11", "zurück"), aus = at("L11", "Aus"), ob = at("L11", "oben");
+      tl.fromTo(sew, { attr: { "stroke-dashoffset": 0 } }, { attr: { "stroke-dashoffset": -600 }, duration: 3, ease: "power1.in" }, 0);
+      tl.fromTo(q, { opacity: 0, scale: 0.4, svgOrigin: "540 720" }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(2)" }, iw - 0.1);
+      tl.to(q, { opacity: 0, duration: 0.2 }, zu - 0.4);
+      tl.to(sew, { attr: { "stroke-dashoffset": -200 }, duration: 0.6, ease: "power2.in" }, zu - 0.5);
+      tl.to(up, { opacity: 1, duration: 0.1, repeat: 5, yoyo: true }, zu - 0.1);
+      tl.to("#s05-box", { opacity: 1, duration: 0.25 }, zu - 0.2);
+      tl.to(T.water, { attr: { fill: "#7a5c34" }, duration: 0.2 }, zu);
+      tl.to(T.g, { x: 548, duration: 0.04, repeat: 9, yoyo: true }, zu + 0.1);
+      tl.fromTo(fount, { opacity: 0, scale: 0.2, svgOrigin: "540 860" }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(2)" }, aus);
+      tl.to(fount, { scaleY: 1.12, svgOrigin: "540 860", duration: 0.12, repeat: 9, yoyo: true }, aus + 0.35);
+      tl.fromTo(F, { y: 0 }, { y: -160, duration: 2.2, ease: "power1.in" }, aus + 0.1);
+      count(tl, "#s05-n", 0, 40, aus + 0.1, 2.2, "", " CM", "power1.in");
+      tl.to("#s05-box", { scale: 1.14, duration: 0.12, yoyo: true, repeat: 1 }, ob);
+      tl.to("#s05-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s05"] = tl;
+    })();
+  </script>
+</template>

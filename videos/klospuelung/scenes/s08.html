@@ -1,0 +1,36 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .cbox { top: 398px; } /* unter der großen Kapitel-Überschrift */
+    .s08-b { position: absolute; top: 940px; width: 450px; height: 150px; border-radius: 26px; text-align: center; font: 900 48px/150px Inter, sans-serif; color: #0b0e22; }
+    #s08-b1 { left: 50px; background: #ff4fb0; box-shadow: 0 0 40px rgba(255,79,176,.5); } #s08-b2 { left: 580px; background: #39e27a; box-shadow: 0 0 40px rgba(57,226,122,.5); }
+  </style>
+  <div id="root" data-composition-id="s08" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s08-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <svg id="s08-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s08-b1" class="s08-b">MITSPÜLEN</div><div id="s08-b2" class="s08-b">KELLER SICHERN</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s08-svg");
+      const glow = el("circle", { cx: 540, cy: 700, r: 260, fill: "#ff4fb0", opacity: 0.2 }, sv);
+      const T = toilet(sv, 540, 790, 0.8);
+      const du = at("L16", "du?"), mi = at("L16", "mitspülen"), ks = at("L16", "vorher"), ko = at("L16", "Kommentare");
+      tl.fromTo(T.g, { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 0.8, duration: 0.45, ease: "back.out(1.8)" }, 0.05);
+      tl.to(T.swirl, { rotation: -1080, svgOrigin: "0 0", duration: 8, ease: "none" }, 0.1);
+      tl.to(T.g, { rotation: 6, svgOrigin: "540 920", duration: 0.08, repeat: 5, yoyo: true }, du - 0.1);
+      tl.fromTo("#s08-b1", { opacity: 0, y: 80, rotation: -6 }, { opacity: 1, y: 0, rotation: 0, duration: 0.4, ease: "back.out(2)" }, mi - 0.15);
+      tl.fromTo("#s08-b2", { opacity: 0, y: 80, rotation: 6 }, { opacity: 1, y: 0, rotation: 0, duration: 0.4, ease: "back.out(2)" }, ks - 0.15);
+      tl.to(".s08-b", { scale: 1.08, duration: 0.3, yoyo: true, repeat: 7, stagger: 0.3, ease: "sine.inOut" }, ko - 0.3);
+      tl.fromTo(glow, { attr: { opacity: 0.2 } }, { attr: { opacity: 0.45 }, duration: 0.4, repeat: 7, yoyo: true }, ko - 0.3);
+      window.__timelines["s08"] = tl;
+    })();
+  </script>
+</template>

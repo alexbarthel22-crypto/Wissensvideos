@@ -1,0 +1,42 @@
+{
+  "title": "Was wäre, wenn alle gleichzeitig spülen?",
+  "voice": "Google Chirp 3 HD (de-DE-Chirp3-HD-Puck)",
+  "hud": "big",
+  "lead_in": 0.9,
+  "check_ok": false,
+  "_zahlen": "~4 Mrd. Menschen nutzen Spültoiletten (WHO/UNICEF JMP: 3,5 Mrd. ohne sichere Sanitärversorgung, 419 Mio. ohne Toilette, 2022). 4 Mrd. x 6 L = 24 Mrd. L = 24 Mio. m3; Niagara ~2.400-2.800 m3/s -> ~2,5 h.",
+  "scenes": [
+    { "id": "s01", "tag": "WAS WÄRE WENN · ALLE?", "lines": [
+        { "id": "L1", "text": "Was passiert, / wenn *y:alle *y:Menschen / *p:gleichzeitig *p:abziehen?", "speed": 0.96 },
+        { "id": "L2", "text": "*y:Vier *y:Milliarden Spülungen. / In *r:einer *r:Sekunde. / Und das Schlimmste / passiert *r:nicht *r:im *r:Klo." } ],
+      "sfx": [ { "name": "flush-sting", "at": "s01+0.0", "volume": 0.7 }, { "name": "pop", "at": "L2:Vier", "volume": 0.45 }, { "name": "impact-bass-1", "at": "L2:nicht", "volume": 0.35 } ] },
+    { "id": "s02", "tag": "SEKUNDE 0 · WASSER", "check": "WASSER", "lines": [
+        { "id": "L3", "text": "Jede Spülung: / rund *b:sechs *b:Liter. / Zusammen: / *y:24|vierundzwanzig *y:Milliarden *y:Liter." },
+        { "id": "L4", "text": "So viel, / wie die *b:Niagarafälle / in *r:über *r:zwei *r:Stunden / hinunterstürzen." } ],
+      "sfx": [ { "name": "pop", "at": "L3:24", "volume": 0.45 }, { "name": "impact-bass-2", "at": "L4:über", "volume": 0.3 } ] },
+    { "id": "s03", "tag": "SEKUNDE 5 · DRUCK", "check": "DRUCK", "lines": [
+        { "id": "L5", "text": "Alle Spülkästen / füllen sich *r:gleichzeitig. / Der *r:Wasserdruck / bricht ein." },
+        { "id": "L6", "text": "Im Hochhaus / kommt ab dem *r:zehnten *r:Stock / *r:nichts *r:mehr. / Und wer gerade duscht …", "pause": 0.2 },
+        { "id": "L7", "text": "… bekommt plötzlich / *r:brühend *r:heißes Wasser.", "pause": 0.3 } ],
+      "sfx": [ { "name": "error", "at": "L5:bricht", "volume": 0.3 }, { "name": "glitch-1", "at": "L7:brühend", "volume": 0.25 } ] },
+    { "id": "s04", "tag": "MINUTE 2 · KANAL", "check": "KANAL", "lines": [
+        { "id": "L8", "text": "Dann die Kanalisation. / Gebaut für *y:normale *y:Tage – / nicht für *r:alle *r:auf *r:einmal." },
+        { "id": "L9", "text": "*r:Klärwerke laufen über. / Ungeklärtes Abwasser / fließt *r:direkt *r:in *r:Flüsse. / *r:Fische *r:sterben." } ],
+      "sfx": [ { "name": "impact-bass-1", "at": "L9:Klärwerke", "volume": 0.3 }, { "name": "error", "at": "L9:Fische", "volume": 0.25 } ] },
+    { "id": "s05", "tag": "MINUTE 10 · KELLER", "check": "KELLER", "lines": [
+        { "id": "L10", "text": "Und jetzt / das *r:Schlimmste: / Das Wasser / muss *y:irgendwohin.", "pause": 0.2 },
+        { "id": "L11", "text": "In tiefen Kellern / drückt es *r:zurück. / *r:Aus *r:der *r:Toilette. / Nach *r:oben.", "speed": 0.95 } ],
+      "sfx": [ { "name": "impact-bass-2", "at": "L11:zurück", "volume": 0.35 }, { "name": "glitch-1", "at": "L11:oben", "volume": 0.25 } ] },
+    { "id": "s06", "tag": "TAG 1 · GELD", "check": "GELD", "lines": [
+        { "id": "L12", "text": "Für die Wirtschaft: / *r:Milliardenschäden. / Pumpen, Rohre, / geflutete Keller." },
+        { "id": "L13", "text": "Und viele Versicherungen / zahlen *r:keinen *r:Cent – / wenn die *y:Rückstauklappe fehlt." } ],
+      "sfx": [ { "name": "notification", "at": "L12:Milliardenschäden", "volume": 0.3 }, { "name": "error", "at": "L13:keinen", "volume": 0.3 } ] },
+    { "id": "s07", "tag": "DER SCHOCK · WELT", "check": "WELT", "lines": [
+        { "id": "L14", "text": "Aber der *y:echte *y:Schock: / *r:3,5|Dreieinhalb *r:Milliarden Menschen / haben *r:keine *r:sichere *r:Toilette." },
+        { "id": "L15", "text": "*r:419|Vierhundertneunzehn *r:Millionen / haben *r:gar *r:keine. / Fast die *y:halbe *y:Welt / könnte *y:gar *y:nicht *y:mitspülen.", "pause": 0.2 } ],
+      "sfx": [ { "name": "impact-bass-1", "at": "L14:3,5", "volume": 0.35 }, { "name": "pop", "at": "L15:mitspülen", "volume": 0.4 } ] },
+    { "id": "s08", "tag": "UND DU?", "hold": 2.8, "lines": [
+        { "id": "L16", "text": "Und *y:du? / Würdest du *p:mitspülen – / oder *g:vorher *g:den *g:Keller *g:sichern? / Schreib's in die *y:Kommentare!", "pause": 0.3 } ],
+      "sfx": [ { "name": "notification", "at": "L16:Kommentare", "volume": 0.4 } ] }
+  ]
+}

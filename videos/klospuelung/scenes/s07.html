@@ -1,0 +1,46 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .cbox { top: 398px; } /* unter der großen Kapitel-Überschrift */
+    #s07-box .num { font-size: 44px; }
+  </style>
+  <div id="root" data-composition-id="s07" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s07-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s07-box" class="cbox r" style="opacity:0"><div class="lab">OHNE SICHERE TOILETTE</div><div id="s07-n" class="num">0</div></div>
+      <svg id="s07-svg" class="full" viewBox="0 0 1080 1920"></svg>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s07-svg");
+      const ppl = [], xs = [];
+      for (let i = 0; i < 50; i++) { const x = 200 + (i % 10) * 76, y = 640 + Math.floor(i / 10) * 100; const g = el("g", { opacity: 0 }, sv);
+        const h = el("circle", { cx: x, cy: y, r: 17, fill: "#dfe2f5" }, g); const b = el("rect", { x: x - 24, y: y + 21, width: 48, height: 40, rx: 18, fill: "#dfe2f5" }, g); ppl.push({ g, h, b }); }
+      const r = rng(5), idx = [...Array(50).keys()].sort(() => r() - 0.5), red = idx.slice(0, 22), none = red.slice(0, 3);
+      none.forEach((i) => xs.push(txt(sv, 200 + (i % 10) * 76, 640 + Math.floor(i / 10) * 100 + 36, "✕", 80, "#ffd43b", { opacity: 0 })));
+      const mt = el("g", { opacity: 0 }, sv); const T = toilet(mt, 540, 870, 0.75);
+      el("circle", { cx: 540, cy: 780, r: 250, fill: "none", stroke: "#ff3b55", "stroke-width": 30 }, mt);
+      el("path", { d: "M363 957 L717 603", stroke: "#ff3b55", "stroke-width": 30 }, mt);
+      const ec = at("L14", "echte"), d35 = at("L14", "3,5"), kt = at("L14", "keine"), m419 = at("L15", "419"), gk = at("L15", "gar"), hw = at("L15", "halbe"), mi = at("L15", "mitspülen");
+      ppl.forEach((p, i) => tl.fromTo(p.g, { opacity: 0, scale: 0.3, svgOrigin: `${200 + (i % 10) * 76} ${660 + Math.floor(i / 10) * 100}` }, { opacity: 1, scale: 1, duration: 0.2, ease: "back.out(2)" }, 0.05 + i * 0.02));
+      tl.to(sv, { x: 8, duration: 0.04, repeat: 5, yoyo: true }, ec);
+      tl.to("#s07-box", { opacity: 1, duration: 0.25 }, d35 - 0.3);
+      count(tl, "#s07-n", 0, 3500000000, d35 - 0.2, 1.2, "", "", "power3.out");
+      red.forEach((i, k) => tl.to([ppl[i].h, ppl[i].b], { attr: { fill: "#ff3b55" }, duration: 0.12 }, d35 + k * 0.05));
+      tl.to("#s07-box .lab", { textContent: "GAR KEINE TOILETTE", duration: 0.01 }, m419 - 0.2);
+      count(tl, "#s07-n", 0, 419000000, m419 - 0.1, 1.0, "", "", "power3.out");
+      tl.to(xs, { opacity: 1, duration: 0.15, stagger: 0.08 }, gk - 0.1);
+      tl.to(red.map((i) => ppl[i].g), { opacity: 0.4, duration: 0.15, yoyo: true, repeat: 3 }, hw);
+      tl.to([...ppl.map((p) => p.g), ...xs], { opacity: 0.15, duration: 0.3 }, mi - 0.6);
+      tl.fromTo(mt, { opacity: 0, scale: 0.5, svgOrigin: "540 780" }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(2)" }, mi - 0.4);
+      tl.to("#s07-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s07"] = tl;
+    })();
+  </script>
+</template>
