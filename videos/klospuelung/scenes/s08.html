@@ -30,7 +30,7 @@
       const du = at("L17", "du?"), na = at("L17", "nach"), se = at("L17", "seltener"), ko = at("L17", "Kommentare"), l18 = line("L18")[0], fo = at("L18", "folg"), ex = at("L18", "explodiert"), ab = at("L18", "Abend");
       tl.fromTo(T.g, { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 0.8, duration: 0.45, ease: "back.out(1.8)" }, 0.05);
       tl.to(T.swirl, { rotation: -1440, svgOrigin: "0 0", duration: 10, ease: "none" }, 0.1);
-      tl.to(T.g, { rotation: 6, svgOrigin: "0 150", duration: 0.08, repeat: 5, yoyo: true }, du - 0.1);
+      tl.to(T.g, { rotation: 6, svgOrigin: "540 950", duration: 0.08, repeat: 5, yoyo: true }, du - 0.1);
       tl.fromTo("#s08-b1", { opacity: 0, y: 80, rotation: -6 }, { opacity: 1, y: 0, rotation: 0, duration: 0.4, ease: "back.out(2)" }, na - 0.15);
       tl.fromTo("#s08-b2", { opacity: 0, y: 80, rotation: 6 }, { opacity: 1, y: 0, rotation: 0, duration: 0.4, ease: "back.out(2)" }, se - 0.15);
       tl.to(".s08-b", { scale: 1.08, duration: 0.3, yoyo: true, repeat: 3, stagger: 0.3, ease: "sine.inOut" }, ko - 0.3);
@@ -44,22 +44,9 @@
       tl.to(glow, { opacity: 0, duration: 0.2 }, ex);
       tl.to([boom, boom2], { rotation: 15, svgOrigin: "540 760", duration: 0.3, yoyo: true, repeat: 5 }, ex + 0.3);
       tl.to(T.g, { y: 800, duration: 0.15, yoyo: true, repeat: 3, ease: "power2.out" }, ab);
-      // Schluss: Blick von oben ins Klo – alles wird hinuntergespült
-      const fl = el("g", { opacity: 0 }, sv), t0 = ab + 0.55;
-      const dark = el("rect", { x: -200, y: -200, width: 1480, height: 2320, fill: "#05060f" }, fl);
-      const bowl = el("g", {}, fl);
-      el("ellipse", { cx: 540, cy: 800, rx: 430, ry: 500, fill: "#eef2fb" }, bowl);
-      el("ellipse", { cx: 540, cy: 800, rx: 330, ry: 400, fill: "#c9d1ea" }, bowl);
-      el("ellipse", { cx: 540, cy: 820, rx: 270, ry: 330, fill: "#2f7fe0" }, bowl);
-      const sw2 = el("g", {}, bowl);
-      [260, 190, 120].forEach((r0, k) => el("path", { d: spiral(r0, 1.6), fill: "none", stroke: k % 2 ? "#4da3ff" : "#cfe8ff", "stroke-width": 26 - k * 6, "stroke-linecap": "round", transform: "translate(540 820)" }, sw2));
-      const hole = el("circle", { cx: 540, cy: 820, r: 30, fill: "#05060f" }, bowl);
-      tl.to(fl, { opacity: 1, duration: 0.2 }, t0);
-      tl.to("#s08-f", { opacity: 0, scale: 0.6, duration: 0.2 }, t0);
-      tl.fromTo(bowl, { scale: 0.3, svgOrigin: "540 820" }, { scale: 1, duration: 0.45, ease: "back.out(1.6)" }, t0);
-      tl.to(sw2, { rotation: -1440, svgOrigin: "540 820", duration: 2.6, ease: "power2.in" }, t0);
-      tl.to(bowl, { rotation: -540, scale: 7, svgOrigin: "540 820", duration: 1.8, ease: "power3.in" }, t0 + 0.75);
-      tl.to(hole, { attr: { r: 60 }, duration: 1.8, ease: "power3.in" }, t0 + 0.75);
+      const en = at("L18", "entleerst");
+      tl.to(T.g, { x: 552, duration: 0.04, repeat: 11, yoyo: true }, en);
+      tl.to([boom, boom2], { scale: 1.2, svgOrigin: "540 760", duration: 0.15, yoyo: true, repeat: 3 }, en);
       window.__timelines["s08"] = tl;
     })();
   </script>

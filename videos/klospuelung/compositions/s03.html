@@ -24,8 +24,8 @@
     .cbox { top: 440px; } /* unter der großen Kapitel-Überschrift */
     #s03-box .num, #s03-box2 .num { font-size: 52px; }
   </style>
-  <div id="root" data-composition-id="s03" data-start="0" data-duration="10.850" data-width="1080" data-height="1920">
-    <div id="s03-stage" class="clip stage" data-start="0" data-duration="10.850" data-track-index="0">
+  <div id="root" data-composition-id="s03" data-start="0" data-duration="8.230" data-width="1080" data-height="1920">
+    <div id="s03-stage" class="clip stage" data-start="0" data-duration="8.230" data-track-index="0">
       <div id="s03-box" class="cbox r" style="opacity:0"><div class="lab">WASSERDRUCK</div><div id="s03-n" class="num">4 BAR</div></div>
       <div id="s03-box2" class="cbox b" style="opacity:0"><div class="lab">DUSCHE</div><div id="s03-n2" class="num">38 °C</div></div>
       <svg id="s03-svg" class="full" viewBox="0 0 1080 1920"></svg>
@@ -34,7 +34,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 10.85, "L5": [0.2, 3.75], "L5.words": [["alle", 0.2, 0.544], ["spülkästen", 0.544, 1.085], ["füllen", 1.085, 1.441], ["sich", 1.441, 1.626], ["gleichzeitig", 1.626, 2.18], ["der", 2.55, 2.744], ["wasserdruck", 2.744, 3.341], ["bricht", 3.341, 3.556], ["ein", 3.556, 3.75]], "L6": [4.17, 8.27], "L6.words": [["im", 4.17, 4.379], ["hochhaus", 4.379, 4.827], ["kommt", 4.827, 5.059], ["ab", 5.059, 5.267], ["dem", 5.267, 5.484], ["zehnten", 5.484, 5.924], ["stock", 5.924, 6.156], ["nichts", 6.156, 6.396], ["mehr", 6.396, 6.62], ["und", 7.17, 7.33], ["wer", 7.33, 7.489], ["gerade", 7.489, 7.951], ["duscht", 7.951, 8.128], ["", 8.128, 8.27]], "L7": [8.79, 10.67], "L7.words": [["", 8.79, 8.929], ["steht", 8.929, 9.096], ["plötzlich", 9.096, 9.424], ["unter", 9.424, 9.73], ["brühend", 9.73, 10.047], ["heißem", 10.047, 10.359], ["wasser", 10.359, 10.67]]};
+      const C = {"__dur": 8.23, "L5": [0.2, 3.82], "L5.words": [["alle", 0.2, 0.561], ["spülkästen", 0.561, 1.13], ["füllen", 1.13, 1.504], ["sich", 1.504, 1.698], ["gleichzeitig", 1.698, 2.28], ["der", 2.67, 2.856], ["wasserdruck", 2.856, 3.428], ["bricht", 3.428, 3.634], ["ein", 3.634, 3.82]], "L6": [4.24, 5.66], "L6.words": [["und", 4.24, 4.36], ["wer", 4.36, 4.48], ["gerade", 4.48, 4.828], ["unter", 4.828, 5.064], ["der", 5.064, 5.184], ["dusche", 5.184, 5.424], ["steht", 5.424, 5.553], ["", 5.553, 5.66]], "L7": [6.18, 8.05], "L7.words": [["", 6.18, 6.318], ["steht", 6.318, 6.484], ["plötzlich", 6.484, 6.811], ["unter", 6.811, 7.115], ["brühend", 7.115, 7.43], ["heißem", 7.43, 7.74], ["wasser", 7.74, 8.05]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -160,38 +160,29 @@
 
       const tl = gsap.timeline({ paused: true });
       const sv = document.querySelector("#s03-svg");
-      const bld = el("g", {}, sv), wins = [];
-      el("rect", { x: 110, y: 600, width: 330, height: 540, rx: 10, fill: "#262d63" }, bld);
-      for (let f = 0; f < 13; f++) { const row = []; for (let c = 0; c < 4; c++) row.push(el("rect", { x: 132 + c * 76, y: 1100 - f * 40, width: 56, height: 26, rx: 4, fill: "#ffd43b" }, bld)); wins.push(row); }
-      const ten = el("g", { opacity: 0 }, bld);
-      el("path", { d: "M90 721 H460", stroke: "#ff3b55", "stroke-width": 8, "stroke-dasharray": "22 12" }, ten);
-      txt(ten, 400, 706, "10.", 40, "#ff3b55");
       const gg = el("g", {}, sv);
-      el("circle", { cx: 770, cy: 800, r: 190, fill: "#141838", stroke: "#2e3670", "stroke-width": 10 }, gg);
-      const arc = (a0, a1, c) => { const p = (a) => [770 + 150 * Math.cos(a * Math.PI / 180), 800 + 150 * Math.sin(a * Math.PI / 180)];
+      el("circle", { cx: 540, cy: 800, r: 190, fill: "#141838", stroke: "#2e3670", "stroke-width": 10 }, gg);
+      const arc = (a0, a1, c) => { const p = (a) => [540 + 150 * Math.cos(a * Math.PI / 180), 800 + 150 * Math.sin(a * Math.PI / 180)];
         const [x0, y0] = p(a0), [x1, y1] = p(a1); el("path", { d: `M${x0} ${y0} A150 150 0 0 1 ${x1} ${y1}`, stroke: c, "stroke-width": 26, fill: "none" }, gg); };
       arc(150, 210, "#ff3b55"); arc(212, 270, "#ffd43b"); arc(272, 390, "#39e27a");
-      const needle = el("path", { d: "M764 800 L770 660 L776 800Z", fill: "#ffffff" }, gg);
-      el("circle", { cx: 770, cy: 800, r: 20, fill: "#ffffff" }, gg);
-      txt(gg, 770, 930, "DRUCK", 40, "#dfe2f5");
-      gsap.set(needle, { rotation: 60, svgOrigin: "770 800" });
+      const needle = el("path", { d: "M764 800 L540 660 L776 800Z", fill: "#ffffff" }, gg);
+      el("circle", { cx: 540, cy: 800, r: 20, fill: "#ffffff" }, gg);
+      txt(gg, 540, 930, "DRUCK", 40, "#dfe2f5");
+      gsap.set(needle, { rotation: 60, svgOrigin: "540 800" });
       const sh = el("g", { opacity: 0 }, sv);
       el("rect", { x: 520, y: 590, width: 40, height: 100, fill: "#8f9bc4" }, sh);
       el("path", { d: "M420 710 Q540 650 660 710Z", fill: "#c9cde6" }, sh);
       const P = person(sh, "s03p", 540, 900, 1, { three: false, arms: [150, -150], shirt: "#f2c9a5", pants: "#4da3ff" });
       const jets = []; for (let i = 0; i < 9; i++) jets.push(el("path", { d: `M${452 + i * 22} 720 V850`, stroke: "#4da3ff", "stroke-width": 7, "stroke-dasharray": "26 22", "stroke-linecap": "round" }, sh));
       const steam = []; for (let i = 0; i < 6; i++) steam.push(el("circle", { cx: 390 + i * 60, cy: 800 - (i % 2) * 60, r: 50, fill: "#e6eaf5", opacity: 0 }, sh));
-      const gl = at("L5", "gleichzeitig"), br = at("L5", "bricht"), zs = at("L6", "zehnten"), du = at("L6", "duscht"), heiss = at("L7", "brühend");
-      tl.fromTo(bld, { opacity: 0, x: -200 }, { opacity: 1, x: 0, duration: 0.45, ease: "expo.out" }, 0.05);
-      tl.fromTo(gg, { opacity: 0, scale: 0.5, svgOrigin: "770 800" }, { opacity: 1, scale: 1, duration: 0.45, ease: "back.out(1.8)" }, 0.2);
+      const gl = at("L5", "gleichzeitig"), br = at("L5", "bricht"), du = at("L6", "Dusche"), heiss = at("L7", "brühend");
+      tl.fromTo(gg, { opacity: 0, scale: 0.5, svgOrigin: "540 800" }, { opacity: 1, scale: 1, duration: 0.45, ease: "back.out(1.8)" }, 0.2);
       tl.to("#s03-box", { opacity: 1, duration: 0.25 }, gl - 0.4);
-      tl.to(needle, { rotation: 40, svgOrigin: "770 800", duration: 0.1, repeat: 5, yoyo: true }, gl);
-      tl.to(needle, { rotation: -95, svgOrigin: "770 800", duration: 0.5, ease: "back.out(2)" }, br - 0.1);
+      tl.to(needle, { rotation: 40, svgOrigin: "540 800", duration: 0.1, repeat: 5, yoyo: true }, gl);
+      tl.to(needle, { rotation: -95, svgOrigin: "540 800", duration: 0.5, ease: "back.out(2)" }, br - 0.1);
       count(tl, "#s03-n", 4, 1, br - 0.1, 0.6, "", " BAR");
       tl.to(gg, { x: 10, duration: 0.04, repeat: 7, yoyo: true }, br + 0.1);
-      wins.forEach((row, f) => { if (f >= 9) tl.to(row, { attr: { fill: "#3a2140" }, duration: 0.15 }, zs + (12 - f) * 0.06); });
-      tl.to(ten, { opacity: 1, duration: 0.2 }, zs);
-      tl.to([bld, gg], { opacity: 0, filter: "blur(8px)", duration: 0.25 }, du - 0.6);
+      tl.to(gg, { opacity: 0, filter: "blur(8px)", duration: 0.25 }, du - 0.6);
       tl.to("#s03-box", { opacity: 0, duration: 0.2 }, du - 0.45);
       tl.to("#s03-box2", { opacity: 1, duration: 0.2 }, du - 0.3);
       tl.to(sh, { opacity: 1, duration: 0.3 }, du - 0.3);

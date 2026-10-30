@@ -35,7 +35,7 @@
       const kl = txt(sys, 250, 920, "KALT", 52, "#4da3ff"), hl = txt(sys, 760, 920, "HEISS", 52, "#ff3b55");
       const xc = txt(sys, 270, 850, "✕", 150, "#ffd43b", { opacity: 0 });
       const steam = []; for (let i = 0; i < 5; i++) steam.push(el("circle", { cx: 440 + i * 50, cy: 720 - (i % 2) * 40, r: 40, fill: "#e6eaf5", opacity: 0 }, sys));
-      const mi = at("L7b", "mischt"), ka = at("L7b", "kaltes"), he = at("L7b", "heißes"), dr = at("L7c", "Druck"), kw = at("L7c", "kalten"), hb = at("L7c", "heißes"), g60 = at("L7c", "60");
+      const mi = at("L7b", "mischt"), ka = at("L7b", "kaltes"), he = at("L7b", "heißes"), kw = at("L7c", "kalte"), hb = at("L7c", "heißes"), g60 = at("L7c", "60");
       tl.fromTo(sys, { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.45, ease: "expo.out" }, 0.05);
       tl.to("#s03b-box", { opacity: 1, duration: 0.25 }, 0.3);
       tl.fromTo([cf, hf], { attr: { "stroke-dashoffset": 0 } }, { attr: { "stroke-dashoffset": -560 }, duration: 4, ease: "none" }, 0.1);

@@ -27,8 +27,8 @@
     #s08-f { left: 290px; top: 950px; width: 500px; height: 150px; border-radius: 75px; background: #ff3b55; box-shadow: 0 0 50px rgba(255,59,85,.6); opacity: 0;
       text-align: center; font: 900 64px/150px Inter, sans-serif; color: #fff; }
   </style>
-  <div id="root" data-composition-id="s08" data-start="0" data-duration="11.170" data-width="1080" data-height="1920">
-    <div id="s08-stage" class="clip stage" data-start="0" data-duration="11.170" data-track-index="0">
+  <div id="root" data-composition-id="s08" data-start="0" data-duration="12.280" data-width="1080" data-height="1920">
+    <div id="s08-stage" class="clip stage" data-start="0" data-duration="12.280" data-track-index="0">
       <svg id="s08-svg" class="full" viewBox="0 0 1080 1920"></svg>
       <div id="s08-b1" class="s08-b">JEDES MAL</div><div id="s08-b2" class="s08-b">SELTENER</div>
       <div id="s08-f" class="abs">+ FOLGEN</div>
@@ -37,7 +37,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 11.17, "L17": [0.2, 4.36], "L17.words": [["und", 0.2, 0.409], ["du", 0.409, 0.61], ["spülst", 0.89, 1.065], ["du", 1.065, 1.217], ["nach", 1.217, 1.381], ["jedem", 1.381, 1.692], ["gang", 1.692, 1.855], ["", 1.855, 1.997], ["oder", 1.997, 2.301], ["seltener", 2.301, 2.77], ["schreibs", 3.25, 3.435], ["in", 3.435, 3.586], ["die", 3.586, 3.743], ["kommentare", 3.743, 4.36]], "L18": [4.88, 7.97], "L18.words": [["und", 4.88, 5.073], ["folg", 5.073, 5.272], ["mir", 5.272, 5.465], ["für", 5.465, 5.658], ["mehr", 5.658, 5.857], ["", 5.857, 6.029], ["sonst", 6.029, 6.236], ["explodiert", 6.236, 6.821], ["dein", 6.821, 7.02], ["klo", 7.02, 7.213], ["heute", 7.213, 7.591], ["abend", 7.591, 7.97]]};
+      const C = {"__dur": 12.28, "L17": [0.2, 5.21], "L17.words": [["und", 0.2, 0.46], ["du", 0.46, 0.71], ["spülst", 1.25, 1.368], ["du", 1.368, 1.471], ["nach", 1.471, 1.582], ["jedem", 1.582, 1.792], ["gang", 1.792, 1.902], ["", 1.902, 1.998], ["oder", 1.998, 2.203], ["seltener", 2.203, 2.52], ["schreibs", 3.01, 3.377], ["in", 3.377, 3.677], ["die", 3.677, 3.988], ["kommentare", 3.988, 5.21]], "L18": [5.73, 9.98], "L18.words": [["und", 5.73, 5.914], ["folg", 5.914, 6.105], ["mir", 6.105, 6.289], ["für", 6.289, 6.473], ["mehr", 6.473, 6.664], ["", 6.664, 6.829], ["sonst", 6.829, 7.026], ["explodiert", 7.026, 7.585], ["dein", 7.585, 7.776], ["klo", 7.776, 7.96], ["heute", 7.96, 8.322], ["abend", 8.322, 8.684], ["", 8.684, 8.848], ["während", 8.848, 9.223], ["du", 9.223, 9.401], ["dich", 9.401, 9.592], ["entleerst", 9.592, 9.98]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -170,7 +170,7 @@
       const du = at("L17", "du?"), na = at("L17", "nach"), se = at("L17", "seltener"), ko = at("L17", "Kommentare"), l18 = line("L18")[0], fo = at("L18", "folg"), ex = at("L18", "explodiert"), ab = at("L18", "Abend");
       tl.fromTo(T.g, { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 0.8, duration: 0.45, ease: "back.out(1.8)" }, 0.05);
       tl.to(T.swirl, { rotation: -1440, svgOrigin: "0 0", duration: 10, ease: "none" }, 0.1);
-      tl.to(T.g, { rotation: 6, svgOrigin: "0 150", duration: 0.08, repeat: 5, yoyo: true }, du - 0.1);
+      tl.to(T.g, { rotation: 6, svgOrigin: "540 950", duration: 0.08, repeat: 5, yoyo: true }, du - 0.1);
       tl.fromTo("#s08-b1", { opacity: 0, y: 80, rotation: -6 }, { opacity: 1, y: 0, rotation: 0, duration: 0.4, ease: "back.out(2)" }, na - 0.15);
       tl.fromTo("#s08-b2", { opacity: 0, y: 80, rotation: 6 }, { opacity: 1, y: 0, rotation: 0, duration: 0.4, ease: "back.out(2)" }, se - 0.15);
       tl.to(".s08-b", { scale: 1.08, duration: 0.3, yoyo: true, repeat: 3, stagger: 0.3, ease: "sine.inOut" }, ko - 0.3);
@@ -184,22 +184,9 @@
       tl.to(glow, { opacity: 0, duration: 0.2 }, ex);
       tl.to([boom, boom2], { rotation: 15, svgOrigin: "540 760", duration: 0.3, yoyo: true, repeat: 5 }, ex + 0.3);
       tl.to(T.g, { y: 800, duration: 0.15, yoyo: true, repeat: 3, ease: "power2.out" }, ab);
-      // Schluss: Blick von oben ins Klo – alles wird hinuntergespült
-      const fl = el("g", { opacity: 0 }, sv), t0 = ab + 0.55;
-      const dark = el("rect", { x: -200, y: -200, width: 1480, height: 2320, fill: "#05060f" }, fl);
-      const bowl = el("g", {}, fl);
-      el("ellipse", { cx: 540, cy: 800, rx: 430, ry: 500, fill: "#eef2fb" }, bowl);
-      el("ellipse", { cx: 540, cy: 800, rx: 330, ry: 400, fill: "#c9d1ea" }, bowl);
-      el("ellipse", { cx: 540, cy: 820, rx: 270, ry: 330, fill: "#2f7fe0" }, bowl);
-      const sw2 = el("g", {}, bowl);
-      [260, 190, 120].forEach((r0, k) => el("path", { d: spiral(r0, 1.6), fill: "none", stroke: k % 2 ? "#4da3ff" : "#cfe8ff", "stroke-width": 26 - k * 6, "stroke-linecap": "round", transform: "translate(540 820)" }, sw2));
-      const hole = el("circle", { cx: 540, cy: 820, r: 30, fill: "#05060f" }, bowl);
-      tl.to(fl, { opacity: 1, duration: 0.2 }, t0);
-      tl.to("#s08-f", { opacity: 0, scale: 0.6, duration: 0.2 }, t0);
-      tl.fromTo(bowl, { scale: 0.3, svgOrigin: "540 820" }, { scale: 1, duration: 0.45, ease: "back.out(1.6)" }, t0);
-      tl.to(sw2, { rotation: -1440, svgOrigin: "540 820", duration: 2.6, ease: "power2.in" }, t0);
-      tl.to(bowl, { rotation: -540, scale: 7, svgOrigin: "540 820", duration: 1.8, ease: "power3.in" }, t0 + 0.75);
-      tl.to(hole, { attr: { r: 60 }, duration: 1.8, ease: "power3.in" }, t0 + 0.75);
+      const en = at("L18", "entleerst");
+      tl.to(T.g, { x: 552, duration: 0.04, repeat: 11, yoyo: true }, en);
+      tl.to([boom, boom2], { scale: 1.2, svgOrigin: "540 760", duration: 0.15, yoyo: true, repeat: 3 }, en);
       window.__timelines["s08"] = tl;
     })();
   </script>

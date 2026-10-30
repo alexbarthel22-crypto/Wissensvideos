@@ -24,8 +24,8 @@
     .cbox { top: 440px; } /* unter der großen Kapitel-Überschrift */
     #s06-box .num, #s06-box2 .num { font-size: 44px; }
   </style>
-  <div id="root" data-composition-id="s06" data-start="0" data-duration="13.720" data-width="1080" data-height="1920">
-    <div id="s06-stage" class="clip stage" data-start="0" data-duration="13.720" data-track-index="0">
+  <div id="root" data-composition-id="s06" data-start="0" data-duration="23.350" data-width="1080" data-height="1920">
+    <div id="s06-stage" class="clip stage" data-start="0" data-duration="23.350" data-track-index="0">
       <div id="s06-box" class="cbox b" style="opacity:0"><div class="lab">OHNE SPÜLUNG</div><div id="s06-n" class="num">0</div></div>
       <div id="s06-box2" class="cbox r" style="opacity:0"><div class="lab">FÄKALIEN</div><div id="s06-n2" class="num">0 T</div></div>
       <svg id="s06-svg" class="full" viewBox="0 0 1080 1920"></svg>
@@ -34,7 +34,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 13.72, "L12": [0.2, 4.58], "L12.words": [["und", 0.2, 0.339], ["die", 0.339, 0.479], ["andere", 0.479, 0.881], ["hälfte", 0.881, 1.16], ["rund", 1.71, 1.884], ["vier", 1.884, 2.058], ["milliarden", 2.058, 2.567], ["menschen", 2.567, 2.914], ["haben", 2.914, 3.244], ["keine", 3.244, 3.573], ["toilette", 3.573, 4.071], ["mit", 4.071, 4.238], ["spülung", 4.238, 4.58]], "L12b": [4.8, 7.64], "L12b.words": [["sie", 4.8, 4.942], ["gehen", 4.942, 5.22], ["an", 5.22, 5.357], ["flüsse", 5.357, 5.64], ["seen", 6.09, 6.293], ["", 6.293, 6.469], ["oder", 6.469, 6.847], ["direkt", 6.847, 7.24], ["ins", 7.24, 7.437], ["meer", 7.437, 7.64]], "L14": [7.86, 13.54], "L14.words": [["das", 7.86, 8.039], ["ergebnis", 8.039, 8.57], ["800000", 8.88, 9.689], ["tonnen", 9.689, 10.006], ["fäkalien", 10.006, 10.475], ["auf", 10.475, 10.634], ["einen", 10.634, 10.945], ["schlag", 10.945, 11.12], ["so", 11.62, 11.788], ["schwer", 11.788, 11.98], ["wie", 11.98, 12.154], ["über", 12.154, 12.49], ["5000", 12.49, 13.024], ["blauwale", 13.024, 13.54]]};
+      const C = {"__dur": 23.35, "L12": [0.2, 4.16], "L12.words": [["und", 0.2, 0.322], ["die", 0.322, 0.444], ["andere", 0.444, 0.796], ["hälfte", 0.796, 1.04], ["rund", 1.59, 1.746], ["vier", 1.746, 1.901], ["milliarden", 1.901, 2.357], ["menschen", 2.357, 2.668], ["haben", 2.668, 2.964], ["keine", 2.964, 3.259], ["toilette", 3.259, 3.704], ["mit", 3.704, 3.854], ["spülung", 3.854, 4.16]], "L12b": [4.38, 7.28], "L12b.words": [["sie", 4.38, 4.652], ["gehen", 4.652, 5.185], ["an", 5.185, 5.447], ["flüsse", 5.447, 5.99], ["seen", 6.37, 6.489], ["", 6.489, 6.592], ["oder", 6.592, 6.815], ["direkt", 6.815, 7.045], ["ins", 7.045, 7.161], ["meer", 7.161, 7.28]], "L14": [7.5, 13.91], "L14.words": [["das", 7.5, 7.687], ["ergebnis", 7.687, 8.24], ["800000", 8.66, 9.588], ["tonnen", 9.588, 9.951], ["fäkalien", 9.951, 10.49], ["auf", 10.49, 10.672], ["einen", 10.672, 11.029], ["schlag", 11.029, 11.23], ["so", 11.78, 11.966], ["schwer", 11.966, 12.18], ["wie", 12.18, 12.373], ["über", 12.373, 12.745], ["5000", 12.745, 13.338], ["blauwale", 13.338, 13.91]], "L14b": [14.13, 17.18], "L14b.words": [["der", 14.13, 14.283], ["meeresspiegel", 14.283, 14.9], ["steigt", 15.4, 15.596], ["nur", 15.596, 15.772], ["um", 15.772, 15.943], ["millionstel", 15.943, 16.486], ["millimeter", 16.486, 17.18]], "L14c": [17.4, 23.17], "L14c.words": [["aber", 17.4, 17.691], ["die", 17.691, 17.843], ["flut", 17.843, 17.999], ["spült", 17.999, 18.161], ["alles", 18.161, 18.458], ["zurück", 18.458, 18.76], ["fäkalien", 19.31, 19.789], ["überschwemmen", 19.789, 20.441], ["die", 20.441, 20.602], ["strände", 20.602, 20.931], ["", 20.931, 21.076], ["und", 21.076, 21.237], ["keime", 21.237, 21.554], ["landen", 21.554, 21.878], ["im", 21.878, 22.033], ["brunnenwasser", 22.033, 22.685], ["der", 22.685, 22.847], ["dörfer", 22.847, 23.17]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -190,6 +190,30 @@
       tl.to(wg, { opacity: 1, duration: 0.2 }, bw - 0.4);
       whales.forEach((w, i) => tl.fromTo(w, { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.35, ease: "back.out(2)" }, bw - 0.4 + i * 0.1));
       tl.fromTo(wl, { opacity: 0, scale: 0.5, svgOrigin: "540 640" }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(2)" }, bw);
+      const l14b = line("L14b")[0], mm = at("L14b", "Millionstel"), l14c = line("L14c")[0], fu = at("L14c", "Flut"), fk = at("L14c", "Fäkalien"), br = at("L14c", "Brunnenwasser");
+      const sand = beach.querySelector('rect[fill="#e8c77a"]');
+      const ruler = el("g", { opacity: 0 }, sv);
+      el("rect", { x: 900, y: 560, width: 90, height: 420, rx: 12, fill: "#dfe5f5" }, ruler);
+      for (let k = 0; k < 9; k++) el("path", { d: `M900 ${590 + k * 45} h${k % 2 ? 26 : 46}`, stroke: "#161a36", "stroke-width": 6 }, ruler);
+      const tick = el("path", { d: "M870 770 l-34 -18 v36Z", fill: "#39e27a" }, ruler);
+      const tiny = txt(sv, 450, 640, "+ 0,000005 MM", 70, "#39e27a", { opacity: 0 });
+      const wv = el("path", { d: "M1180 990 q-120 -260 -320 -200 q-160 50 -260 -10 q-140 -80 -300 30 q-120 80 -320 40 V1130 H1180Z", fill: "#6b5a3a", opacity: 0 }, sv);
+      const well = el("g", { opacity: 0 }, sv);
+      el("rect", { x: 440, y: 860, width: 200, height: 110, rx: 10, fill: "#8f9bc4" }, well);
+      el("path", { d: "M420 860 L540 780 L660 860Z", fill: "#ff8a3d" }, well);
+      el("ellipse", { cx: 540, cy: 860, rx: 90, ry: 18, fill: "#6b5a3a" }, well);
+      txt(well, 540, 960, "✕", 120, "#ff3b55");
+      tl.to([wg, wl, crowd], { opacity: 0, duration: 0.25 }, l14b - 0.3);
+      tl.to("#s06-box2", { opacity: 0, duration: 0.2 }, l14b - 0.2);
+      tl.fromTo(ruler, { opacity: 0, x: 100 }, { opacity: 1, x: 0, duration: 0.35, ease: "back.out(1.8)" }, l14b);
+      tl.to(tick, { y: -4, duration: 0.6, ease: "power2.out" }, mm);
+      tl.fromTo(tiny, { opacity: 0, scale: 0.5, svgOrigin: "450 620" }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2)" }, mm);
+      tl.to([ruler, tiny], { opacity: 0, duration: 0.25 }, l14c - 0.2);
+      tl.fromTo(wv, { opacity: 1, x: 1200 }, { x: 0, duration: 1.2, ease: "power2.out" }, fu - 0.1);
+      tl.to(sand, { attr: { fill: "#8a6a3c" }, duration: 0.6 }, fk - 0.2);
+      tl.to(wv, { y: -40, duration: 0.5, yoyo: true, repeat: 5, ease: "sine.inOut" }, fu + 1.1);
+      tl.fromTo(well, { opacity: 0, scale: 0.4, svgOrigin: "540 920" }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(2.2)" }, br - 0.3);
+      tl.to(well, { x: 8, duration: 0.04, repeat: 7, yoyo: true }, br + 0.2);
       tl.to("#s06-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
       window.__timelines["s06"] = tl;
     })();

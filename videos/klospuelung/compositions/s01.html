@@ -30,8 +30,8 @@
     #s01-q { left: 240px; top: 600px; width: 600px; height: 420px; border: 5px solid #ff3b55; color: #ff3b55; font-size: 150px; line-height: 1.05; padding-top: 40px; box-sizing: border-box; opacity: 0; box-shadow: 0 0 50px rgba(255,59,85,.45); }
     #s01-q small { display: block; font-size: 52px; color: #fff; letter-spacing: .04em; }
   </style>
-  <div id="root" data-composition-id="s01" data-start="0" data-duration="9.360" data-width="1080" data-height="1920">
-    <div id="s01-stage" class="clip stage" data-start="0" data-duration="9.360" data-track-index="0">
+  <div id="root" data-composition-id="s01" data-start="0" data-duration="8.860" data-width="1080" data-height="1920">
+    <div id="s01-stage" class="clip stage" data-start="0" data-duration="8.860" data-track-index="0">
       <div id="s01-count" class="cbox p" style="opacity:0"><div class="lab">SPÜLUNGEN</div><div class="num">4.000.000.000</div></div>
       <svg id="s01-svg" class="full" viewBox="0 0 1080 1920"></svg>
       <div id="s01-news" class="panel"><div class="bar">● EILMELDUNG · LIVE</div><div class="hl">ALLE SPÜLEN<br><em>GLEICHZEITIG!</em></div></div>
@@ -41,7 +41,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 9.36, "L1": [0.9, 4.28], "L1.words": [["was", 0.9, 1.077], ["würde", 1.077, 1.423], ["passieren", 1.423, 1.953], ["wenn", 1.953, 2.136], ["alle", 2.136, 2.476], ["menschen", 2.476, 2.842], ["auf", 2.842, 3.019], ["der", 3.019, 3.195], ["welt", 3.195, 3.378], ["gleichzeitig", 3.378, 3.927], ["spülen", 3.927, 4.28]], "L2": [4.5, 9.18], "L2.words": [["vier", 4.5, 4.749], ["milliarden", 4.749, 5.481], ["klos", 5.481, 5.73], ["in", 6.28, 6.415], ["einer", 6.415, 6.69], ["sekunde", 6.69, 7.1], ["und", 7.65, 7.815], ["das", 7.815, 7.981], ["schlimmste", 7.981, 8.335], ["passiert", 8.335, 8.678], ["nicht", 8.678, 8.855], ["im", 8.855, 9.015], ["klo", 9.015, 9.18]]};
+      const C = {"__dur": 8.86, "L1": [0.9, 3.93], "L1.words": [["was", 0.9, 1.058], ["würde", 1.058, 1.369], ["passieren", 1.369, 1.844], ["wenn", 1.844, 2.008], ["alle", 2.008, 2.313], ["menschen", 2.313, 2.641], ["auf", 2.641, 2.799], ["der", 2.799, 2.958], ["welt", 2.958, 3.122], ["gleichzeitig", 3.122, 3.613], ["spülen", 3.613, 3.93]], "L2": [4.15, 8.68], "L2.words": [["vier", 4.15, 4.347], ["milliarden", 4.347, 4.923], ["klos", 4.923, 5.12], ["in", 5.65, 5.788], ["einer", 5.788, 6.07], ["sekunde", 6.07, 6.49], ["und", 7.04, 7.217], ["das", 7.217, 7.395], ["schlimmste", 7.395, 7.775], ["passiert", 7.775, 8.142], ["nicht", 8.142, 8.332], ["im", 8.332, 8.503], ["klo", 8.503, 8.68]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
