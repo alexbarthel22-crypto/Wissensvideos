@@ -1,0 +1,139 @@
+<template>
+  <style>
+        #root { position: absolute; inset: 0; }
+    .stage { position: absolute; inset: 0; overflow: hidden; }
+    .abs { position: absolute; }
+    svg { overflow: visible; }
+    /* Zähler-Box wie in der Referenz: Rahmen in Akzentfarbe, Label in Mono-Versalien, große Zahl */
+    .cbox { position: absolute; left: 290px; width: 500px; top: 268px; height: 126px; border: 3px solid #ff4fb0;
+      border-radius: 14px; background: rgba(13,16,38,.88); text-align: center; box-shadow: 0 0 28px rgba(255,79,176,.35); }
+    .cbox .lab { margin-top: 16px; font-family: "Space Mono", monospace; font-weight: 700; font-size: 28px;
+      letter-spacing: .16em; color: #dfe2f5; }
+    .cbox .num { margin-top: 2px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 56px; color: #fff;
+      letter-spacing: .01em; }
+    .cbox.y { border-color: #ffd43b; box-shadow: 0 0 28px rgba(255,212,59,.3); }
+    .cbox.r { border-color: #ff3b55; box-shadow: 0 0 28px rgba(255,59,85,.35); }
+    .cbox.b { border-color: #4da3ff; box-shadow: 0 0 28px rgba(77,163,255,.3); }
+    .cbox.g { border-color: #39e27a; box-shadow: 0 0 28px rgba(57,226,122,.3); }
+    .mono { font-family: "Space Mono", monospace; font-weight: 700; letter-spacing: .12em; }
+    .heavy { font-family: "Inter", sans-serif; font-weight: 900; }
+
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .vig { position: absolute; left: 0; right: 0; top: 1040px; height: 880px; background: linear-gradient(rgba(10,12,30,0), rgba(10,12,30,.5) 45%, rgba(10,12,30,.55)); pointer-events: none; }
+
+  </style>
+  <div id="root" data-composition-id="s02" data-start="0" data-duration="10.928" data-width="1080" data-height="1920">
+    <div id="s02-stage" class="clip stage" data-start="0" data-duration="10.928" data-track-index="0">
+      <svg id="s02-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div class="vig"></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      
+      const C = {"__dur": 10.928, "L3": [0.2, 3.16], "L3.words": [["dein", 0.2, 0.401], ["daumen", 0.401, 0.789], ["wischt", 0.789, 1.004], ["trotzdem", 1.004, 1.406], ["weiter", 1.406, 1.794], ["", 1.794, 1.968], ["über", 1.968, 2.342], ["den", 2.342, 2.536], ["frühstückstisch", 2.536, 3.16]], "L4": [3.58, 6.76], "L4.words": [["und", 3.58, 3.74], ["dein", 3.74, 3.905], ["handy", 3.905, 4.219], ["vibriert", 4.219, 4.551], ["in", 4.551, 4.705], ["der", 4.705, 4.865], ["hosentasche", 4.865, 5.498], ["", 5.498, 5.641], ["obwohl", 5.641, 5.961], ["es", 5.961, 6.115], ["gar", 6.115, 6.275], ["nicht", 6.275, 6.446], ["da", 6.446, 6.6], ["ist", 6.6, 6.76]], "L5": [6.98, 10.748], "L5.words": [["das", 6.98, 7.198], ["nennt", 7.198, 7.432], ["man", 7.432, 7.651], ["phantomvibration", 7.651, 8.75], ["die", 9.3, 9.445], ["meisten", 9.445, 9.74], ["handynutzer", 9.74, 10.314], ["kennen", 10.314, 10.604], ["sie", 10.604, 10.748]]};
+      const line = (id) => C[id];
+      const at = (id, word, which = 0) => {
+        const ws = C[id + ".words"];
+        if (typeof word === "number") return ws[word][1 + which];
+        const key = String(word).toLowerCase().replace(/[^\p{L}\p{N}_]/gu, "");
+        const hit = ws.find((w) => w[0].startsWith(key));
+        if (!hit) throw new Error("cue not found: " + id + " " + word);
+        return hit[1 + which];
+      };
+      // Zähler: schreibt Zahlen im deutschen Format (4.100.000.000) als Funktion der Timeline-Zeit
+      const fmt = (n) => Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      const count = (tl, sel, from, to, t, d, pre = "", post = "", ease = "power2.out") => {
+        const el = document.querySelector(sel);
+        const o = { v: from };
+        el.textContent = pre + fmt(from) + post;
+        tl.to(o, { v: to, duration: d, ease, onUpdate: () => { el.textContent = pre + fmt(o.v) + post; } }, t);
+      };
+      // deterministischer Zufall
+      const rng = (seed) => () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let x = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+        x = (x + Math.imul(x ^ (x >>> 7), 61 | x)) ^ x; return ((x ^ (x >>> 14)) >>> 0) / 4294967296; };
+
+      // ---- Isometrische Low-Poly-Helfer (Stil Referenz A: Klötzchen-Welt, weiche Farben) ----
+      const NS = "http://www.w3.org/2000/svg";
+      const el = (n, a, p) => { const e = document.createElementNS(NS, n); for (const k in a) e.setAttribute(k, a[k]); if (p) p.appendChild(e); return e; };
+      const txt = (p, x, y, s, size, fill, a = {}) => { const t = el("text", Object.assign({ x, y, "text-anchor": "middle", "font-family": "Inter", "font-weight": 800, "font-size": size, fill }, a), p); t.textContent = s; return t; };
+      const shade = (hex, f) => { const n = parseInt(hex.slice(1), 16); const c = [n >> 16, (n >> 8) & 255, n & 255].map((v) => Math.max(0, Math.min(255, Math.round(f > 1 ? v + (255 - v) * (f - 1) : v * f))));
+        return "#" + c.map((v) => v.toString(16).padStart(2, "0")).join(""); };
+      // Kamera: Ursprung (ox, oy), Einheit u
+      const iso = (ox, oy, u) => (x, y, z = 0) => [ox + (x - y) * u * 0.866, oy + (x + y) * u * 0.5 - z * u];
+      const poly = (pts) => pts.map((p) => p.map((v) => v.toFixed(1)).join(",")).join(" ");
+      function box(P, p, x, y, z, w, d, h, col, a = {}) {
+        const g = el("g", a, p);
+        el("polygon", { points: poly([P(x + w, y, z), P(x + w, y + d, z), P(x + w, y + d, z + h), P(x + w, y, z + h)]), fill: shade(col, 0.78) }, g);
+        el("polygon", { points: poly([P(x, y + d, z), P(x + w, y + d, z), P(x + w, y + d, z + h), P(x, y + d, z + h)]), fill: col }, g);
+        el("polygon", { points: poly([P(x, y, z + h), P(x + w, y, z + h), P(x + w, y + d, z + h), P(x, y + d, z + h)]), fill: shade(col, 1.18) }, g);
+        return g;
+      }
+      // Fläche auf der hinteren Wand (y = 0) bzw. linken Wand (x = 0)
+      const wallY = (P, p, x0, x1, z0, z1, fill, a = {}) => el("polygon", Object.assign({ points: poly([P(x0, 0, z0), P(x1, 0, z0), P(x1, 0, z1), P(x0, 0, z1)]), fill }, a), p);
+      const wallX = (P, p, y0, y1, z0, z1, fill, a = {}) => el("polygon", Object.assign({ points: poly([P(0, y0, z0), P(0, y1, z0), P(0, y1, z1), P(0, y0, z1)]), fill }, a), p);
+      function room(P, p, W, D, H, o = {}) {
+        const g = el("g", {}, p);
+        box(P, g, 0, 0, -0.25, W, D, 0.25, o.floor || "#c9a982");
+        for (let k = 1; k < W; k++) el("polyline", { points: poly([P(k, 0, 0), P(k, D, 0)]), stroke: shade(o.floor || "#c9a982", 0.9), "stroke-width": 2, fill: "none" }, g);
+        wallY(P, g, 0, W, 0, H, o.wall || "#ece6dc"); wallX(P, g, 0, D, 0, H, shade(o.wall || "#ece6dc", 0.9));
+        el("polyline", { points: poly([P(0, D, 0), P(0, 0, 0), P(W, 0, 0)]), stroke: shade(o.wall || "#ece6dc", 0.75), "stroke-width": 6, fill: "none" }, g);
+        return g;
+      }
+      // Klötzchen-Figur; Ursprung = Fußpunkt (x, y, z). o.pose: "stand" | "sit" | "lie"
+      function person(P, p, x, y, z, o = {}) {
+        const g = el("g", {}, p), skin = o.skin || "#f0c8a0", shirt = o.shirt || "#e85d5d", pants = o.pants || "#3d4a7a", hair = o.hair || "#4a3020";
+        if (o.pose === "lie") {
+          box(P, g, x, y, z, 1.0, 0.45, 0.3, pants); box(P, g, x + 1.0, y, z, 0.9, 0.5, 0.36, shirt);
+          box(P, g, x + 1.9, y + 0.05, z, 0.45, 0.4, 0.4, skin); box(P, g, x + 2.25, y + 0.05, z, 0.12, 0.4, 0.42, hair);
+        } else if (o.pose === "sit") {
+          box(P, g, x - 0.25, y, z, 0.25, 0.5, 0.5, pants); box(P, g, x, y, z + 0.5, 0.45, 0.5, 0.28, pants);
+          box(P, g, x, y + 0.02, z + 0.78, 0.38, 0.46, 0.75, shirt); box(P, g, x + 0.02, y + 0.06, z + 1.53, 0.36, 0.36, 0.38, skin);
+          box(P, g, x + 0.02, y + 0.06, z + 1.85, 0.36, 0.36, 0.1, hair);
+        } else {
+          box(P, g, x, y, z, 0.36, 0.42, 0.75, pants); box(P, g, x - 0.02, y - 0.02, z + 0.75, 0.4, 0.46, 0.75, shirt);
+          box(P, g, x + 0.02, y + 0.03, z + 1.5, 0.34, 0.38, 0.38, skin); box(P, g, x + 0.02, y + 0.03, z + 1.82, 0.34, 0.38, 0.1, hair);
+        }
+        return g;
+      }
+      function sky(p, id, c1, c2) {
+        const d = el("defs", {}, p), lg = el("linearGradient", { id, x1: 0, y1: 0, x2: 0, y2: 1 }, d);
+        el("stop", { offset: 0, "stop-color": c1 }, lg); el("stop", { offset: 1, "stop-color": c2 }, lg);
+        return el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: `url(#${id})` }, p);
+      }
+
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s02-svg");
+      const P = iso(540, 770, 80);
+      sky(sv, "s02-sky", "#bfe3ff", "#f6f1e6");
+      room(P, sv, 6, 6, 4.2, { wall: "#f3ead8", floor: "#c9a982" });
+      wallY(P, sv, 3.4, 5.4, 1.6, 3.3, "#cdeaff"); wallY(P, sv, 3.4, 5.4, 1.6, 3.3, "none", { stroke: "#fff", "stroke-width": 10 });
+      box(P, sv, 0.2, 0.2, 0, 3.0, 0.8, 1.0, "#9fb7c9"); box(P, sv, 0.2, 0.2, 2.2, 3.0, 0.6, 0.9, "#b8cbd8");
+      box(P, sv, 2.2, 2.0, 0, 1.9, 1.5, 0.9, "#b98a5e");
+      box(P, sv, 2.7, 2.4, 0.9, 0.7, 0.7, 0.05, "#ffffff"); box(P, sv, 2.85, 2.55, 0.95, 0.35, 0.35, 0.1, "#e2a85a");
+      const ghost = box(P, sv, 2.4, 3.0, 0.9, 0.3, 0.16, 0.03, "#ffffff", { opacity: 0 });
+      box(P, sv, 4.45, 2.35, 0, 0.6, 0.6, 0.5, "#8a6a4a");
+      const me = person(P, sv, 4.5, 2.4, 0, { pose: "sit", shirt: "#ff8fd0" });
+      const hand = box(P, sv, 3.75, 2.6, 0.9, 0.3, 0.2, 0.1, "#f0c8a0");
+      box(P, sv, 5.0, 2.35, 0.5, 0.12, 0.6, 0.95, "#8a6a4a");
+      const [px, py] = P(4.6, 2.9, 0.65);
+      const vib = el("g", { opacity: 0 }, sv);
+      [24, 44, 64].forEach((r) => el("path", { d: `M${px + r} ${py - r * 0.8} q${r * 0.5} ${r * 0.8} 0 ${r * 1.6}`, stroke: "#ff5a5f", "stroke-width": 7, fill: "none", "stroke-linecap": "round" }, vib));
+      const bz = txt(sv, px + 120, py - 30, "BZZZ", 40, "#ff5a5f", { opacity: 0, "font-weight": 900 });
+      const [qx, qy] = P(2.55, 3.1, 1.1); const q = txt(sv, qx, qy, "?", 90, "#ff5a5f", { opacity: 0, "font-family": "EB Garamond" });
+      const wi = at("L3", "wischt"), vi = at("L4", "vibriert"), ga = at("L4", "gar"), pv = at("L5", "Phantomvibration");
+      tl.to(hand, { x: -26, y: -14, duration: 0.22, yoyo: true, repeat: 9, ease: "sine.inOut" }, wi - 0.1);
+      tl.to(vib, { opacity: 1, duration: 0.05, repeat: 9, yoyo: true }, vi);
+      tl.to(bz, { opacity: 1, x: 6, duration: 0.06, repeat: 9, yoyo: true }, vi);
+      tl.to(me, { x: 4, duration: 0.05, repeat: 9, yoyo: true }, vi);
+      tl.to([vib, bz], { opacity: 0, duration: 0.2 }, ga + 0.6);
+      tl.to(ghost, { opacity: 0.6, duration: 0.2 }, ga);
+      tl.fromTo(q, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.3, ease: "back.out(2)" }, ga + 0.2);
+      tl.to([vib, bz], { opacity: 1, duration: 0.05, repeat: 5, yoyo: true }, pv);
+      tl.to("#s02-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s02"] = tl;
+    })();
+  </script>
+</template>

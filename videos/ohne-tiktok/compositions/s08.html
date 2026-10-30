@@ -1,0 +1,130 @@
+<template>
+  <style>
+        #root { position: absolute; inset: 0; }
+    .stage { position: absolute; inset: 0; overflow: hidden; }
+    .abs { position: absolute; }
+    svg { overflow: visible; }
+    /* Zähler-Box wie in der Referenz: Rahmen in Akzentfarbe, Label in Mono-Versalien, große Zahl */
+    .cbox { position: absolute; left: 290px; width: 500px; top: 268px; height: 126px; border: 3px solid #ff4fb0;
+      border-radius: 14px; background: rgba(13,16,38,.88); text-align: center; box-shadow: 0 0 28px rgba(255,79,176,.35); }
+    .cbox .lab { margin-top: 16px; font-family: "Space Mono", monospace; font-weight: 700; font-size: 28px;
+      letter-spacing: .16em; color: #dfe2f5; }
+    .cbox .num { margin-top: 2px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 56px; color: #fff;
+      letter-spacing: .01em; }
+    .cbox.y { border-color: #ffd43b; box-shadow: 0 0 28px rgba(255,212,59,.3); }
+    .cbox.r { border-color: #ff3b55; box-shadow: 0 0 28px rgba(255,59,85,.35); }
+    .cbox.b { border-color: #4da3ff; box-shadow: 0 0 28px rgba(77,163,255,.3); }
+    .cbox.g { border-color: #39e27a; box-shadow: 0 0 28px rgba(57,226,122,.3); }
+    .mono { font-family: "Space Mono", monospace; font-weight: 700; letter-spacing: .12em; }
+    .heavy { font-family: "Inter", sans-serif; font-weight: 900; }
+
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .vig { position: absolute; left: 0; right: 0; top: 1040px; height: 880px; background: linear-gradient(rgba(10,12,30,0), rgba(10,12,30,.5) 45%, rgba(10,12,30,.55)); pointer-events: none; }
+    #s08-phone { left: 250px; top: 430px; width: 580px; height: 760px; border: 22px solid #15161c; border-radius: 70px; box-shadow: 0 0 0 4px #3a3c48, 0 30px 80px rgba(0,0,0,.5); opacity: 0; }
+    #s08-f { left: 340px; top: 1060px; width: 400px; height: 110px; border-radius: 55px; background: #ff3b5c; color: #fff; text-align: center; font: 800 52px/110px Inter, sans-serif; opacity: 0; box-shadow: 0 10px 40px rgba(255,59,92,.5); }
+  </style>
+  <div id="root" data-composition-id="s08" data-start="0" data-duration="16.108" data-width="1080" data-height="1920">
+    <div id="s08-stage" class="clip stage" data-start="0" data-duration="16.108" data-track-index="0">
+      <svg id="s08-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s08-phone" class="abs"></div>
+      <div id="s08-f" class="abs">+ Folgen</div>
+      <div class="vig"></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      
+      const C = {"__dur": 16.108, "L18": [0.2, 6.55], "L18.words": [["und", 0.2, 0.419], ["jetzt", 0.419, 0.654], ["ehrlich", 0.654, 1.1], ["wie", 1.65, 1.81], ["viele", 1.81, 2.125], ["stunden", 2.125, 2.451], ["warst", 2.451, 2.623], ["du", 2.623, 2.778], ["heute", 2.778, 3.092], ["schon", 3.092, 3.264], ["hier", 3.264, 3.43], ["schau", 3.98, 4.151], ["in", 4.151, 4.304], ["deine", 4.304, 4.617], ["bildschirmzeit", 4.617, 5.123], ["", 5.123, 5.265], ["und", 5.265, 5.424], ["schreibs", 5.424, 5.612], ["in", 5.612, 5.765], ["die", 5.765, 5.925], ["kommentare", 5.925, 6.55]], "L19": [7.07, 9.988], "L19.words": [["und", 7.07, 7.264], ["ja", 7.264, 7.451], ["mir", 7.451, 7.645], ["ist", 7.645, 7.839], ["klar", 7.839, 8.04], ["dass", 8.04, 8.241], ["du", 8.241, 8.429], ["das", 8.429, 8.623], ["gerade", 8.623, 9.184], ["auf", 9.184, 9.378], ["tiktok", 9.378, 9.767], ["schaust", 9.767, 9.988]], "L20": [10.208, 13.708], "L20.words": [["also", 10.208, 10.605], ["folg", 10.605, 10.818], ["mir", 10.818, 11.024], ["", 11.024, 11.208], ["dann", 11.208, 11.421], ["wars", 11.421, 11.634], ["wenigstens", 11.634, 12.259], ["keine", 12.259, 12.664], ["verschwendete", 12.664, 13.495], ["zeit", 13.495, 13.708]]};
+      const line = (id) => C[id];
+      const at = (id, word, which = 0) => {
+        const ws = C[id + ".words"];
+        if (typeof word === "number") return ws[word][1 + which];
+        const key = String(word).toLowerCase().replace(/[^\p{L}\p{N}_]/gu, "");
+        const hit = ws.find((w) => w[0].startsWith(key));
+        if (!hit) throw new Error("cue not found: " + id + " " + word);
+        return hit[1 + which];
+      };
+      // Zähler: schreibt Zahlen im deutschen Format (4.100.000.000) als Funktion der Timeline-Zeit
+      const fmt = (n) => Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      const count = (tl, sel, from, to, t, d, pre = "", post = "", ease = "power2.out") => {
+        const el = document.querySelector(sel);
+        const o = { v: from };
+        el.textContent = pre + fmt(from) + post;
+        tl.to(o, { v: to, duration: d, ease, onUpdate: () => { el.textContent = pre + fmt(o.v) + post; } }, t);
+      };
+      // deterministischer Zufall
+      const rng = (seed) => () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let x = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+        x = (x + Math.imul(x ^ (x >>> 7), 61 | x)) ^ x; return ((x ^ (x >>> 14)) >>> 0) / 4294967296; };
+
+      // ---- Isometrische Low-Poly-Helfer (Stil Referenz A: Klötzchen-Welt, weiche Farben) ----
+      const NS = "http://www.w3.org/2000/svg";
+      const el = (n, a, p) => { const e = document.createElementNS(NS, n); for (const k in a) e.setAttribute(k, a[k]); if (p) p.appendChild(e); return e; };
+      const txt = (p, x, y, s, size, fill, a = {}) => { const t = el("text", Object.assign({ x, y, "text-anchor": "middle", "font-family": "Inter", "font-weight": 800, "font-size": size, fill }, a), p); t.textContent = s; return t; };
+      const shade = (hex, f) => { const n = parseInt(hex.slice(1), 16); const c = [n >> 16, (n >> 8) & 255, n & 255].map((v) => Math.max(0, Math.min(255, Math.round(f > 1 ? v + (255 - v) * (f - 1) : v * f))));
+        return "#" + c.map((v) => v.toString(16).padStart(2, "0")).join(""); };
+      // Kamera: Ursprung (ox, oy), Einheit u
+      const iso = (ox, oy, u) => (x, y, z = 0) => [ox + (x - y) * u * 0.866, oy + (x + y) * u * 0.5 - z * u];
+      const poly = (pts) => pts.map((p) => p.map((v) => v.toFixed(1)).join(",")).join(" ");
+      function box(P, p, x, y, z, w, d, h, col, a = {}) {
+        const g = el("g", a, p);
+        el("polygon", { points: poly([P(x + w, y, z), P(x + w, y + d, z), P(x + w, y + d, z + h), P(x + w, y, z + h)]), fill: shade(col, 0.78) }, g);
+        el("polygon", { points: poly([P(x, y + d, z), P(x + w, y + d, z), P(x + w, y + d, z + h), P(x, y + d, z + h)]), fill: col }, g);
+        el("polygon", { points: poly([P(x, y, z + h), P(x + w, y, z + h), P(x + w, y + d, z + h), P(x, y + d, z + h)]), fill: shade(col, 1.18) }, g);
+        return g;
+      }
+      // Fläche auf der hinteren Wand (y = 0) bzw. linken Wand (x = 0)
+      const wallY = (P, p, x0, x1, z0, z1, fill, a = {}) => el("polygon", Object.assign({ points: poly([P(x0, 0, z0), P(x1, 0, z0), P(x1, 0, z1), P(x0, 0, z1)]), fill }, a), p);
+      const wallX = (P, p, y0, y1, z0, z1, fill, a = {}) => el("polygon", Object.assign({ points: poly([P(0, y0, z0), P(0, y1, z0), P(0, y1, z1), P(0, y0, z1)]), fill }, a), p);
+      function room(P, p, W, D, H, o = {}) {
+        const g = el("g", {}, p);
+        box(P, g, 0, 0, -0.25, W, D, 0.25, o.floor || "#c9a982");
+        for (let k = 1; k < W; k++) el("polyline", { points: poly([P(k, 0, 0), P(k, D, 0)]), stroke: shade(o.floor || "#c9a982", 0.9), "stroke-width": 2, fill: "none" }, g);
+        wallY(P, g, 0, W, 0, H, o.wall || "#ece6dc"); wallX(P, g, 0, D, 0, H, shade(o.wall || "#ece6dc", 0.9));
+        el("polyline", { points: poly([P(0, D, 0), P(0, 0, 0), P(W, 0, 0)]), stroke: shade(o.wall || "#ece6dc", 0.75), "stroke-width": 6, fill: "none" }, g);
+        return g;
+      }
+      // Klötzchen-Figur; Ursprung = Fußpunkt (x, y, z). o.pose: "stand" | "sit" | "lie"
+      function person(P, p, x, y, z, o = {}) {
+        const g = el("g", {}, p), skin = o.skin || "#f0c8a0", shirt = o.shirt || "#e85d5d", pants = o.pants || "#3d4a7a", hair = o.hair || "#4a3020";
+        if (o.pose === "lie") {
+          box(P, g, x, y, z, 1.0, 0.45, 0.3, pants); box(P, g, x + 1.0, y, z, 0.9, 0.5, 0.36, shirt);
+          box(P, g, x + 1.9, y + 0.05, z, 0.45, 0.4, 0.4, skin); box(P, g, x + 2.25, y + 0.05, z, 0.12, 0.4, 0.42, hair);
+        } else if (o.pose === "sit") {
+          box(P, g, x - 0.25, y, z, 0.25, 0.5, 0.5, pants); box(P, g, x, y, z + 0.5, 0.45, 0.5, 0.28, pants);
+          box(P, g, x, y + 0.02, z + 0.78, 0.38, 0.46, 0.75, shirt); box(P, g, x + 0.02, y + 0.06, z + 1.53, 0.36, 0.36, 0.38, skin);
+          box(P, g, x + 0.02, y + 0.06, z + 1.85, 0.36, 0.36, 0.1, hair);
+        } else {
+          box(P, g, x, y, z, 0.36, 0.42, 0.75, pants); box(P, g, x - 0.02, y - 0.02, z + 0.75, 0.4, 0.46, 0.75, shirt);
+          box(P, g, x + 0.02, y + 0.03, z + 1.5, 0.34, 0.38, 0.38, skin); box(P, g, x + 0.02, y + 0.03, z + 1.82, 0.34, 0.38, 0.1, hair);
+        }
+        return g;
+      }
+      function sky(p, id, c1, c2) {
+        const d = el("defs", {}, p), lg = el("linearGradient", { id, x1: 0, y1: 0, x2: 0, y2: 1 }, d);
+        el("stop", { offset: 0, "stop-color": c1 }, lg); el("stop", { offset: 1, "stop-color": c2 }, lg);
+        return el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: `url(#${id})` }, p);
+      }
+
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s08-svg");
+      const P = iso(540, 770, 80);
+      sky(sv, "s08-sky", "#ff9a6b", "#ffd9a0");
+      const sun = el("circle", { cx: 780, cy: 520, r: 110, fill: "#fff1b8", opacity: 0.9 }, sv);
+      const w = el("g", {}, sv);
+      box(P, w, -1, -1, -0.3, 8, 8, 0.3, "#7cc77f");
+      box(P, w, 2.5, -1, 0, 1.2, 8, 0.03, "#e6d2a8");
+      box(P, w, 0.6, 1.0, 0, 0.5, 0.5, 1.6, "#8a5a3a"); box(P, w, 0.0, 0.4, 1.6, 1.7, 1.7, 1.5, "#4aa35a");
+      box(P, w, 4.2, 2.0, 0, 0.9, 2.6, 0.45, "#a07a55"); box(P, w, 4.95, 2.0, 0.45, 0.15, 2.6, 0.7, "#8a6a4a");
+      person(P, w, 4.3, 2.6, 0.0, { pose: "sit", shirt: "#ff8fd0" }); person(P, w, 4.3, 3.6, 0.0, { pose: "sit", shirt: "#6aa8e8", hair: "#c9a050" });
+      const l18 = line("L18")[0], ti = at("L19", "TikTok"), fo = at("L20", "folg");
+      tl.to(sun, { attr: { cy: 560 }, duration: 6, ease: "none" }, 0);
+      tl.to([w, sun], { scale: 0.62, svgOrigin: "540 800", duration: 0.6, ease: "power3.inOut" }, ti - 0.5);
+      tl.fromTo("#s08-phone", { opacity: 0, scale: 1.6 }, { opacity: 1, scale: 1, duration: 0.6, ease: "power3.inOut" }, ti - 0.5);
+      tl.fromTo("#s08-f", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.4, ease: "back.out(2)" }, fo - 0.1);
+      tl.to("#s08-f", { scale: 1.06, duration: 0.3, yoyo: true, repeat: 9, ease: "sine.inOut" }, fo + 0.4);
+      window.__timelines["s08"] = tl;
+    })();
+  </script>
+</template>

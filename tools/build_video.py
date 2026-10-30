@@ -127,18 +127,28 @@ def caption_groups(timings, windows):
             by.setdefault(w["group"], []).append(w)
         for g in sorted(by):
             ws = by[g]
-            groups.append({"words": ws, "start": round(ws[0]["start"] - 0.06, 3), "end": round(ws[-1]["end"] + 0.25, 3)})
+            groups.append({"words": ws, "line": l["id"], "start": round(ws[0]["start"] - 0.06, 3), "end": round(ws[-1]["end"] + 0.25, 3)})
     for a, b in zip(groups, groups[1:]):
         a["end"] = min(a["end"], b["start"])
     groups[0]["start"] = max(groups[0]["start"], 0.15)
     return groups
 
 
-def build_captions(project, timings, windows, total, big=False):
+def build_captions(project, timings, windows, total, big=False, cin=False, nocap=()):
     groups = caption_groups(timings, windows)
     groups[-1]["end"] = round(total - 0.05, 3)  # letzte Zeile (Frage an die Zuschauer) bleibt stehen
     rows, js = [], []
     for gi, g in enumerate(groups):
+        if g["line"] in nocap:  # Zeile steht schon groß im Bild (z. B. Titelfrage)
+            continue
+        if cin:  # Kino-Stil wie Referenz A: ganzer Satz in Serifenschrift, Schlüsselwörter farbig, sanftes Ein-/Ausblenden
+            spans = [f'<span class="c{" k-" + w["color"] if w["color"] else ""}"{" style=" + chr(34) + "color:" + CIN_COLORS[w["color"]] + chr(34) if w["color"] else ""}>{esc(w["display"])}</span>' for w in g["words"]]
+            rows.append(f'    <div id="cg{gi}" class="clip grp" data-start="{g["start"]:.3f}" data-duration="{round(g["end"] - g["start"], 3)}" data-track-index="{gi % 2}">'
+                        f'<div id="cgi{gi}" class="inner">{" ".join(spans)}</div></div>')
+            js.append(f'tl.fromTo("#cgi{gi}", {{ opacity: 0, y: 12 }}, {{ opacity: 1, y: 0, duration: 0.25, ease: "power2.out" }}, {g["start"]:.3f});')
+            js.append(f'tl.to("#cgi{gi}", {{ opacity: 0, duration: 0.12, ease: "power2.in" }}, {g["end"] - 0.12:.3f});')
+            js.append(f'tl.set("#cgi{gi}", {{ opacity: 0 }}, {g["end"]:.3f});')
+            continue
         spans = []
         for wi, w in enumerate(g["words"]):
             wid = f"cw{gi}-{wi}"
@@ -162,7 +172,7 @@ def build_captions(project, timings, windows, total, big=False):
     .inner {{ position: absolute; left: 70px; right: 70px; top: 0; text-align: center;
       font-family: "Inter", sans-serif; font-weight: 900; font-size: 80px; line-height: 1.04;
       letter-spacing: -0.01em; transform-origin: 50% 40%; }}
-    .w {{ color: #7d8197; text-shadow: 0 5px 0 rgba(0,0,0,.55); }}{BIG_CAP if big else ""}
+    .w {{ color: #7d8197; text-shadow: 0 5px 0 rgba(0,0,0,.55); }}{BIG_CAP if big else ""}{CIN_CAP if cin else ""}
   </style>
   <div id="root" data-composition-id="captions" data-start="0" data-duration="{total:.3f}" data-width="{W}" data-height="{H}"
        data-layout-allow-caption-zone>
@@ -178,6 +188,12 @@ def build_captions(project, timings, windows, total, big=False):
     (project / "compositions" / "captions.html").write_text(doc)
 
 
+CIN_COLORS = {"y": "#ffd56b", "r": "#ff5a5f", "p": "#ff8fd0", "g": "#6be3a0", "b": "#9dbcff"}
+CIN_CAP = """
+    .grp { top: 1215px; }
+    .inner { left: 80px; right: 80px; font-family: "EB Garamond", "Liberation Serif", serif; font-weight: 500; font-size: 56px; line-height: 1.22;
+      letter-spacing: 0; color: #ffffff; text-shadow: 0 2px 14px rgba(0,0,0,.6), 0 1px 2px rgba(0,0,0,.5); }
+    .c { color: #ffffff; }"""
 BIG_CAP = """
     .inner {{ font-size: 92px; line-height: 1.06; }}
     .w {{ display: inline-block; transform-origin: 50% 70%; }}""".replace("{{", "{").replace("}}", "}")
@@ -238,7 +254,51 @@ def build_hud_big(project, script, windows, total):
     return tags, checks, js
 
 
+def build_hud_cinema(project, script, windows, total):
+    """Kino-Stil (Referenz A): links Messwert + Tag/Uhrzeit, Zeitsprung groß in der Mitte."""
+    rows, js = [], []
+    for i, (sc, s, e) in enumerate(windows):
+        st = sc.get("stat")
+        if st:
+            rows.append(f'      <div id="st{i}" class="clip stat" data-start="{s:.3f}" data-duration="{e - s:.3f}" data-track-index="1">'
+                        f'<div class="sl">{esc(st[0])}</div><div id="sv{i}" class="sv">{esc(st[1])}</div><div class="ss">{esc(st[2])}</div></div>')
+            if i > 0:
+                js.append(f'tl.fromTo("#st{i}", {{ opacity: 0 }}, {{ opacity: 1, duration: 0.3 }}, {s:.3f});')
+        jp = sc.get("jump")
+        if jp:
+            d = min(1.8, e - s)
+            rows.append(f'      <div id="jp{i}" class="clip jump" data-start="{s:.3f}" data-duration="{d:.3f}" data-track-index="2">'
+                        f'<div class="jn">{esc(jp[0])}</div><div class="jl">{esc(jp[1])}</div></div>')
+            js.append(f'tl.fromTo("#jp{i}", {{ opacity: 0, scale: 1.15, filter: "blur(6px)" }}, {{ opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.4, ease: "power3.out" }}, {s:.3f});')
+            js.append(f'tl.to("#jp{i}", {{ opacity: 0, duration: 0.3 }}, {s + d - 0.3:.3f});')
+    doc = f"""<template>
+  <style>
+    #root {{ position: absolute; inset: 0; }}
+    .stat {{ position: absolute; left: 30px; top: 750px; width: auto; min-width: 300px; height: auto; padding: 14px 22px 16px; border-radius: 18px;
+      background: rgba(18,22,44,.38); color: #fff; text-shadow: 0 2px 10px rgba(0,0,0,.55); }}
+    .sl {{ font: 600 28px "Inter", sans-serif; letter-spacing: .18em; opacity: .9; }}
+    .sv {{ margin-top: 2px; font: 500 68px/1 "EB Garamond", "Liberation Serif", serif; }}
+    .ss {{ margin-top: 8px; font: 600 28px "Inter", sans-serif; letter-spacing: .14em; opacity: .75; }}
+    .jump {{ position: absolute; left: 0; width: 100%; top: 330px; height: 220px; text-align: center; color: #fff; text-shadow: 0 2px 18px rgba(0,0,0,.55); }}
+    .jn {{ font: 500 132px/1 "EB Garamond", "Liberation Serif", serif; }}
+    .jl {{ margin-top: 6px; font: 600 30px "Inter", sans-serif; letter-spacing: .3em; }}
+  </style>
+  <div id="root" data-composition-id="hud" data-start="0" data-duration="{total:.3f}" data-width="{W}" data-height="{H}">
+{chr(10).join(rows)}
+  </div>
+  <script>
+    const tl = gsap.timeline({{ paused: true }});
+    {chr(10) + "    ".join(js)}
+    window.__timelines["hud"] = tl;
+  </script>
+</template>
+"""
+    (project / "compositions" / "hud.html").write_text(doc)
+
+
 def build_hud(project, script, windows, total):
+    if script.get("style") == "cinema":
+        return build_hud_cinema(project, script, windows, total)
     tags, checks, js, n = [], [], [], 0
     big = script.get("hud") == "big"
     pop = script.get("hud") == "pop"
@@ -388,7 +448,7 @@ def main():
     shutil.copy(VENDOR / "gsap.min.js", project / "assets" / "vendor" / "gsap.min.js")
     for sc, s, e in windows:
         build_scene(project, sc, s, e, lines)
-    build_captions(project, timings, windows, total, script.get("hud") == "big")
+    build_captions(project, timings, windows, total, script.get("hud") == "big", script.get("style") == "cinema", set(script.get("nocap", [])))
     build_hud(project, script, windows, total)
     build_index(project, script, windows, lines, total)
     for sc, s, e in windows:

@@ -1,0 +1,46 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .vig { position: absolute; left: 0; right: 0; top: 1040px; height: 880px; background: linear-gradient(rgba(10,12,30,0), rgba(10,12,30,.5) 45%, rgba(10,12,30,.55)); pointer-events: none; }
+    .flat { position: absolute; border-radius: 26px; background: rgba(255,255,255,.94); box-shadow: 0 18px 50px rgba(0,0,0,.35); opacity: 0; text-align: center; color: #22283f; }
+    #s05-bub { left: 560px; top: 520px; width: 440px; height: 190px; padding: 24px 26px; box-sizing: border-box; font: 500 40px/1.15 "EB Garamond", serif; color: #22283f; }
+  </style>
+  <div id="root" data-composition-id="s05" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s05-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <svg id="s05-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s05-bub" class="flat">„Kennst du schon den neuen Trend?“</div>
+      <div class="vig"></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s05-svg");
+      const P = iso(540, 770, 80);
+      sky(sv, "s05-sky", "#ffe2c4", "#f6efe6");
+      room(P, sv, 6, 6, 4.2, { wall: "#f1e4d4", floor: "#b98f6a" });
+      const cal = []; for (let k = 0; k < 4; k++) cal.push(wallY(P, sv, 0.8, 1.9, 1.9, 3.1, k % 2 ? "#ffffff" : "#fff6e0", { stroke: "#d9cbb4", "stroke-width": 3 }));
+      const [cx, cy] = P(1.35, 0, 2.6); const ct = txt(sv, cx, cy, "MAI", 30, "#ff5a5f");
+      box(P, sv, 2.0, 0.6, 0, 3.4, 1.0, 0.5, "#8fa36a"); box(P, sv, 2.0, 0.4, 0.5, 3.4, 0.25, 0.8, "#7d915a");
+      const me = person(P, sv, 2.8, 2.4, 0, { shirt: "#ff8fd0" });
+      const oma = person(P, sv, 4.0, 2.9, 0, { shirt: "#9a7bd6", hair: "#e3e3e3", skin: "#f2cfaf" });
+      const ph = box(P, sv, 3.85, 2.85, 1.25, 0.08, 0.26, 0.42, "#1d1d24");
+      const [gx, gy] = P(3.85, 2.98, 1.46); const glow = el("circle", { cx: gx, cy: gy, r: 40, fill: "#ff8fd0", opacity: 0 }, sv);
+      const [qx, qy] = P(3.0, 2.6, 2.4); const q = txt(sv, qx, qy, "?", 80, "#22283f", { opacity: 0, "font-family": "EB Garamond" });
+      const dr = at("L12", "drei"), om = at("L13", "Oma");
+      cal.slice(1).forEach((c, i) => tl.to(c, { y: -200, x: 80 + i * 40, rotation: 30, opacity: 0, svgOrigin: `${cx} ${cy}`, duration: 0.5, ease: "power2.in" }, dr - 0.2 + i * 0.25));
+      tl.to(ct, { opacity: 0, duration: 0.1 }, dr - 0.2); tl.set(ct, { textContent: "JUNI" }, dr + 0.6); tl.to(ct, { opacity: 1, duration: 0.2 }, dr + 0.6);
+      tl.to(glow, { opacity: 0.7, duration: 0.2 }, om - 0.6);
+      tl.to(oma, { y: -26, duration: 0.18, yoyo: true, repeat: 5, ease: "power2.out" }, om - 0.1);
+      tl.fromTo("#s05-bub", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(2)" }, line("L12")[0] + 0.2);
+      tl.fromTo(q, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.3, ease: "back.out(2)" }, om + 0.4);
+      tl.to("#s05-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s05"] = tl;
+    })();
+  </script>
+</template>

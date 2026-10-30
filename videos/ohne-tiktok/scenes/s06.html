@@ -1,0 +1,46 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .vig { position: absolute; left: 0; right: 0; top: 1040px; height: 880px; background: linear-gradient(rgba(10,12,30,0), rgba(10,12,30,.5) 45%, rgba(10,12,30,.55)); pointer-events: none; }
+    .flat { position: absolute; border-radius: 26px; background: rgba(255,255,255,.94); box-shadow: 0 18px 50px rgba(0,0,0,.35); opacity: 0; text-align: center; color: #22283f; }
+    .s06-b { padding: 10px 22px; font: 500 40px "EB Garamond", serif; border-radius: 20px; }
+  </style>
+  <div id="root" data-composition-id="s06" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s06-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <svg id="s06-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s06-b1" class="flat s06-b" style="left:600px;top:520px">¡Hola!</div><div id="s06-b2" class="flat s06-b" style="left:760px;top:610px">Bonjour</div><div id="s06-b3" class="flat s06-b" style="left:620px;top:700px">Ciao</div>
+      <div class="vig"></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s06-svg");
+      const P = iso(540, 770, 80);
+      sky(sv, "s06-sky", "#2c3360", "#5b4a7a");
+      room(P, sv, 6, 6, 4.2, { wall: "#e9dfd0", floor: "#a8825e" });
+      wallX(P, sv, 1.3, 3.3, 1.6, 3.4, "#1f2550"); wallX(P, sv, 1.3, 3.3, 1.6, 3.4, "none", { stroke: "#f4efe6", "stroke-width": 10 });
+      box(P, sv, 1.8, 0.4, 0, 2.6, 1.2, 1.0, "#a07a55");
+      box(P, sv, 2.0, 0.6, 1.0, 0.25, 0.25, 0.55, "#f2d06b");
+      const lamp = el("circle", { cx: P(2.12, 0.72, 1.6)[0], cy: P(2.12, 0.72, 1.6)[1], r: 90, fill: "#ffe9a8", opacity: 0.35 }, sv);
+      const COL = ["#e85d5d", "#4da3ff", "#6be3a0", "#ffd56b", "#ff8fd0", "#9a7bd6"], books = [];
+      for (let k = 0; k < 12; k++) books.push(box(P, sv, 3.3 + (k % 2) * 0.05, 0.7, 1.0 + k * 0.16, 0.8, 0.55, 0.15, COL[k % 6], { opacity: 0 }));
+      box(P, sv, 2.4, 2.0, 0, 0.6, 0.6, 0.5, "#8a6a4a");
+      person(P, sv, 2.5, 2.05, 0, { pose: "sit", shirt: "#ff8fd0" });
+      box(P, sv, 3.0, 2.0, 0.5, 0.12, 0.6, 0.95, "#8a6a4a");
+      const n578 = at("L14", "578"), sp = at("L15", "Sprache"), bu = at("L15", "Bücher");
+      tl.fromTo(lamp, { attr: { opacity: 0.25 } }, { attr: { opacity: 0.45 }, duration: 0.6, repeat: 7, yoyo: true }, 0);
+      books.slice(0, 3).forEach((b, i) => tl.to(b, { opacity: 1, duration: 0.15 }, n578 + i * 0.2));
+      ["#s06-b1", "#s06-b2", "#s06-b3"].forEach((b, i) => tl.fromTo(b, { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2.4)" }, sp - 0.1 + i * 0.18));
+      tl.to(["#s06-b1", "#s06-b2", "#s06-b3"], { opacity: 0, duration: 0.25 }, bu - 0.6);
+      books.slice(3).forEach((b, i) => tl.fromTo(b, { opacity: 0, y: -60 }, { opacity: 1, y: 0, duration: 0.2, ease: "bounce.out" }, bu - 0.4 + i * 0.07));
+      tl.to("#s06-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s06"] = tl;
+    })();
+  </script>
+</template>

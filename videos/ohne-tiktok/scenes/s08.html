@@ -1,0 +1,43 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .vig { position: absolute; left: 0; right: 0; top: 1040px; height: 880px; background: linear-gradient(rgba(10,12,30,0), rgba(10,12,30,.5) 45%, rgba(10,12,30,.55)); pointer-events: none; }
+    #s08-phone { left: 250px; top: 430px; width: 580px; height: 760px; border: 22px solid #15161c; border-radius: 70px; box-shadow: 0 0 0 4px #3a3c48, 0 30px 80px rgba(0,0,0,.5); opacity: 0; }
+    #s08-f { left: 340px; top: 1060px; width: 400px; height: 110px; border-radius: 55px; background: #ff3b5c; color: #fff; text-align: center; font: 800 52px/110px Inter, sans-serif; opacity: 0; box-shadow: 0 10px 40px rgba(255,59,92,.5); }
+  </style>
+  <div id="root" data-composition-id="s08" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s08-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <svg id="s08-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s08-phone" class="abs"></div>
+      <div id="s08-f" class="abs">+ Folgen</div>
+      <div class="vig"></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s08-svg");
+      const P = iso(540, 770, 80);
+      sky(sv, "s08-sky", "#ff9a6b", "#ffd9a0");
+      const sun = el("circle", { cx: 780, cy: 520, r: 110, fill: "#fff1b8", opacity: 0.9 }, sv);
+      const w = el("g", {}, sv);
+      box(P, w, -1, -1, -0.3, 8, 8, 0.3, "#7cc77f");
+      box(P, w, 2.5, -1, 0, 1.2, 8, 0.03, "#e6d2a8");
+      box(P, w, 0.6, 1.0, 0, 0.5, 0.5, 1.6, "#8a5a3a"); box(P, w, 0.0, 0.4, 1.6, 1.7, 1.7, 1.5, "#4aa35a");
+      box(P, w, 4.2, 2.0, 0, 0.9, 2.6, 0.45, "#a07a55"); box(P, w, 4.95, 2.0, 0.45, 0.15, 2.6, 0.7, "#8a6a4a");
+      person(P, w, 4.3, 2.6, 0.0, { pose: "sit", shirt: "#ff8fd0" }); person(P, w, 4.3, 3.6, 0.0, { pose: "sit", shirt: "#6aa8e8", hair: "#c9a050" });
+      const l18 = line("L18")[0], ti = at("L19", "TikTok"), fo = at("L20", "folg");
+      tl.to(sun, { attr: { cy: 560 }, duration: 6, ease: "none" }, 0);
+      tl.to([w, sun], { scale: 0.62, svgOrigin: "540 800", duration: 0.6, ease: "power3.inOut" }, ti - 0.5);
+      tl.fromTo("#s08-phone", { opacity: 0, scale: 1.6 }, { opacity: 1, scale: 1, duration: 0.6, ease: "power3.inOut" }, ti - 0.5);
+      tl.fromTo("#s08-f", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.4, ease: "back.out(2)" }, fo - 0.1);
+      tl.to("#s08-f", { scale: 1.06, duration: 0.3, yoyo: true, repeat: 9, ease: "sine.inOut" }, fo + 0.4);
+      window.__timelines["s08"] = tl;
+    })();
+  </script>
+</template>

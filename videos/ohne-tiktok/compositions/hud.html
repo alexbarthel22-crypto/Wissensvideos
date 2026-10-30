@@ -1,0 +1,34 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; }
+    .stat { position: absolute; left: 30px; top: 750px; width: auto; min-width: 300px; height: auto; padding: 14px 22px 16px; border-radius: 18px;
+      background: rgba(18,22,44,.38); color: #fff; text-shadow: 0 2px 10px rgba(0,0,0,.55); }
+    .sl { font: 600 28px "Inter", sans-serif; letter-spacing: .18em; opacity: .9; }
+    .sv { margin-top: 2px; font: 500 68px/1 "EB Garamond", "Liberation Serif", serif; }
+    .ss { margin-top: 8px; font: 600 28px "Inter", sans-serif; letter-spacing: .14em; opacity: .75; }
+    .jump { position: absolute; left: 0; width: 100%; top: 330px; height: 220px; text-align: center; color: #fff; text-shadow: 0 2px 18px rgba(0,0,0,.55); }
+    .jn { font: 500 132px/1 "EB Garamond", "Liberation Serif", serif; }
+    .jl { margin-top: 6px; font: 600 30px "Inter", sans-serif; letter-spacing: .3em; }
+  </style>
+  <div id="root" data-composition-id="hud" data-start="0" data-duration="79.335" data-width="1080" data-height="1920">
+      <div id="st0" class="clip stat" data-start="0.000" data-duration="8.830" data-track-index="1"><div class="sl">BILDSCHIRMZEIT</div><div id="sv0" class="sv">95 Min.</div><div class="ss">TAG 1 · 07:00 UHR</div></div>
+      <div id="st1" class="clip stat" data-start="8.830" data-duration="10.928" data-track-index="1"><div class="sl">ZEIT OHNE TIKTOK</div><div id="sv1" class="sv">1 Std.</div><div class="ss">TAG 1 · 08:00 UHR</div></div>
+      <div id="jp1" class="clip jump" data-start="8.830" data-duration="1.800" data-track-index="2"><div class="jn">+1</div><div class="jl">STUNDE</div></div>
+      <div id="st2" class="clip stat" data-start="19.758" data-duration="6.189" data-track-index="1"><div class="sl">ZEIT OHNE TIKTOK</div><div id="sv2" class="sv">4 Std.</div><div class="ss">TAG 1 · 11:00 UHR</div></div>
+      <div id="jp2" class="clip jump" data-start="19.758" data-duration="1.800" data-track-index="2"><div class="jn">+3</div><div class="jl">STUNDEN</div></div>
+      <div id="st3" class="clip stat" data-start="25.947" data-duration="13.030" data-track-index="1"><div class="sl">AUFMERKSAMKEIT</div><div id="sv3" class="sv">47 Sek.</div><div class="ss">TAG 8 · 18:30 UHR</div></div>
+      <div id="jp3" class="clip jump" data-start="25.947" data-duration="1.800" data-track-index="2"><div class="jn">+1</div><div class="jl">WOCHE</div></div>
+      <div id="st4" class="clip stat" data-start="38.977" data-duration="3.790" data-track-index="1"><div class="sl">ZEIT OHNE TIKTOK</div><div id="sv4" class="sv">48 Std.</div><div class="ss">TAG 30 · 16:00 UHR</div></div>
+      <div id="jp4" class="clip jump" data-start="38.977" data-duration="1.800" data-track-index="2"><div class="jn">+1</div><div class="jl">MONAT</div></div>
+      <div id="st5" class="clip stat" data-start="42.767" data-duration="10.030" data-track-index="1"><div class="sl">ZEIT ZURÜCK</div><div id="sv5" class="sv">578 Std.</div><div class="ss">TAG 365 · 20:00 UHR</div></div>
+      <div id="jp5" class="clip jump" data-start="42.767" data-duration="1.800" data-track-index="2"><div class="jn">+1</div><div class="jl">JAHR</div></div>
+      <div id="st6" class="clip stat" data-start="52.797" data-duration="10.430" data-track-index="1"><div class="sl">DEIN DAUMEN</div><div id="sv6" class="sv">10 km</div><div class="ss">PRO JAHR · GEWISCHT</div></div>
+      <div id="st7" class="clip stat" data-start="63.227" data-duration="16.108" data-track-index="1"><div class="sl">BILDSCHIRMZEIT</div><div id="sv7" class="sv">? Std.</div><div class="ss">HEUTE · JETZT</div></div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    
+tl.fromTo("#st1", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 8.830);    tl.fromTo("#jp1", { opacity: 0, scale: 1.15, filter: "blur(6px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.4, ease: "power3.out" }, 8.830);    tl.to("#jp1", { opacity: 0, duration: 0.3 }, 10.330);    tl.fromTo("#st2", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 19.758);    tl.fromTo("#jp2", { opacity: 0, scale: 1.15, filter: "blur(6px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.4, ease: "power3.out" }, 19.758);    tl.to("#jp2", { opacity: 0, duration: 0.3 }, 21.258);    tl.fromTo("#st3", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 25.947);    tl.fromTo("#jp3", { opacity: 0, scale: 1.15, filter: "blur(6px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.4, ease: "power3.out" }, 25.947);    tl.to("#jp3", { opacity: 0, duration: 0.3 }, 27.447);    tl.fromTo("#st4", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 38.977);    tl.fromTo("#jp4", { opacity: 0, scale: 1.15, filter: "blur(6px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.4, ease: "power3.out" }, 38.977);    tl.to("#jp4", { opacity: 0, duration: 0.3 }, 40.477);    tl.fromTo("#st5", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 42.767);    tl.fromTo("#jp5", { opacity: 0, scale: 1.15, filter: "blur(6px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.4, ease: "power3.out" }, 42.767);    tl.to("#jp5", { opacity: 0, duration: 0.3 }, 44.267);    tl.fromTo("#st6", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 52.797);    tl.fromTo("#st7", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 63.227);
+    window.__timelines["hud"] = tl;
+  </script>
+</template>

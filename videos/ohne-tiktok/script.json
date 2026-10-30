@@ -1,0 +1,271 @@
+{
+ "title": "Was wäre, wenn du nicht mehr stundenlang auf TikTok wärst?",
+ "voice": "Google Chirp 3 HD (de-DE-Chirp3-HD-Puck), --speed 1.08",
+ "style": "cinema",
+ "lead_in": 0.3,
+ "nocap": [
+  "L1"
+ ],
+ "_zahlen": "Ø TikTok-Nutzung ~95 Min./Tag (data.ai/Sensor Tower). 95 x 365 = 578 Std. = 24 Tage. Sprache lernen ~600 Std. (FSI, Spanisch). Buch ~6 Std. -> ~90 Bücher. Phantomvibration: Studien 68-89 % der Nutzer. Aufmerksamkeit am Bildschirm Ø 47 Sek. (Gloria Mark). ~285 Videos/Tag (95 Min./~20 s) -> ~100.000/Jahr x ~10 cm Wisch -> ~10 km.",
+ "scenes": [
+  {
+   "id": "s01",
+   "tag": "",
+   "stat": [
+    "BILDSCHIRMZEIT",
+    "95 Min.",
+    "TAG 1 · 07:00 UHR"
+   ],
+   "lines": [
+    {
+     "id": "L1",
+     "text": "Was wäre, wenn du nicht mehr / stundenlang auf TikTok wärst?",
+     "speed": 0.95
+    },
+    {
+     "id": "L2",
+     "text": "Tag eins: Du löschst die App – / und merkst als Erstes: / Dein Zimmer hat ja *y:Fenster."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "pop",
+     "at": "L2:Fenster",
+     "volume": 0.4
+    }
+   ]
+  },
+  {
+   "id": "s02",
+   "tag": "",
+   "jump": [
+    "+1",
+    "STUNDE"
+   ],
+   "stat": [
+    "ZEIT OHNE TIKTOK",
+    "1 Std.",
+    "TAG 1 · 08:00 UHR"
+   ],
+   "lines": [
+    {
+     "id": "L3",
+     "text": "Dein Daumen wischt trotzdem weiter – / über den *r:Frühstückstisch."
+    },
+    {
+     "id": "L4",
+     "text": "Und dein Handy vibriert in der Hosentasche – / obwohl es *r:gar *r:nicht *r:da *r:ist.",
+     "pause": 0.2
+    },
+    {
+     "id": "L5",
+     "text": "Das nennt man *b:Phantomvibration. / Die *r:meisten Handynutzer kennen sie."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "notification",
+     "at": "L4:vibriert",
+     "volume": 0.3
+    }
+   ]
+  },
+  {
+   "id": "s03",
+   "tag": "",
+   "jump": [
+    "+3",
+    "STUNDEN"
+   ],
+   "stat": [
+    "ZEIT OHNE TIKTOK",
+    "4 Std.",
+    "TAG 1 · 11:00 UHR"
+   ],
+   "lines": [
+    {
+     "id": "L6",
+     "text": "Im Wartezimmer gibt es nichts zu scrollen."
+    },
+    {
+     "id": "L7",
+     "text": "Also liest du die Inhaltsstoffe / vom *y:Desinfektionsmittel.",
+     "pause": 0.2
+    },
+    {
+     "id": "L8",
+     "text": "*y:Zweimal."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "pop",
+     "at": "L8:Zweimal",
+     "volume": 0.4
+    }
+   ]
+  },
+  {
+   "id": "s04",
+   "tag": "",
+   "jump": [
+    "+1",
+    "WOCHE"
+   ],
+   "stat": [
+    "AUFMERKSAMKEIT",
+    "47 Sek.",
+    "TAG 8 · 18:30 UHR"
+   ],
+   "lines": [
+    {
+     "id": "L9",
+     "text": "Du musst wieder mit Menschen reden. / Im *r:Aufzug. / Mit *r:Augenkontakt."
+    },
+    {
+     "id": "L10",
+     "text": "Kein Wunder: Am Bildschirm hält unsere Aufmerksamkeit / im Schnitt nur noch *r:47|siebenundvierzig *r:Sekunden."
+    },
+    {
+     "id": "L11",
+     "text": "Ohne TikTok schaust du zum ersten Mal / einen Film – *g:ohne *g:Handy *g:daneben."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "error",
+     "at": "L9:Augenkontakt",
+     "volume": 0.25
+    },
+    {
+     "name": "pop",
+     "at": "L10:47",
+     "volume": 0.4
+    }
+   ]
+  },
+  {
+   "id": "s05",
+   "tag": "",
+   "jump": [
+    "+1",
+    "MONAT"
+   ],
+   "stat": [
+    "ZEIT OHNE TIKTOK",
+    "48 Std.",
+    "TAG 30 · 16:00 UHR"
+   ],
+   "lines": [
+    {
+     "id": "L12",
+     "text": "Neue Trends erfährst du jetzt / *y:drei *y:Wochen später."
+    },
+    {
+     "id": "L13",
+     "text": "Von deiner *p:Oma."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "pop",
+     "at": "L13:Oma",
+     "volume": 0.45
+    }
+   ]
+  },
+  {
+   "id": "s06",
+   "tag": "",
+   "jump": [
+    "+1",
+    "JAHR"
+   ],
+   "stat": [
+    "ZEIT ZURÜCK",
+    "578 Std.",
+    "TAG 365 · 20:00 UHR"
+   ],
+   "lines": [
+    {
+     "id": "L14",
+     "text": "Nach einem Jahr hast du / *g:578|fünfhundertachtundsiebzig *g:Stunden zurück – / über *g:24|vierundzwanzig *g:Tage am Stück."
+    },
+    {
+     "id": "L15",
+     "text": "Genug, um eine *b:neue *b:Sprache zu lernen. / Oder rund *b:90|neunzig *b:Bücher zu lesen."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "notification",
+     "at": "L14:578",
+     "volume": 0.3
+    }
+   ]
+  },
+  {
+   "id": "s07",
+   "tag": "",
+   "stat": [
+    "DEIN DAUMEN",
+    "10 km",
+    "PRO JAHR · GEWISCHT"
+   ],
+   "lines": [
+    {
+     "id": "L16",
+     "text": "Und dein Daumen? / Der wischt sonst rund *r:100.000|hunderttausend *r:Videos im Jahr weg."
+    },
+    {
+     "id": "L17",
+     "text": "Aneinandergereiht: *r:zehn *r:Kilometer. / Ein ganzer *r:Zehn-Kilometer-Lauf – / nur mit dem Daumen."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "pop",
+     "at": "L16:100.000",
+     "volume": 0.4
+    },
+    {
+     "name": "impact-bass-2",
+     "at": "L17:Zehn-Kilometer-Lauf",
+     "volume": 0.3
+    }
+   ]
+  },
+  {
+   "id": "s08",
+   "tag": "",
+   "stat": [
+    "BILDSCHIRMZEIT",
+    "? Std.",
+    "HEUTE · JETZT"
+   ],
+   "hold": 2.4,
+   "lines": [
+    {
+     "id": "L18",
+     "text": "Und jetzt ehrlich: / Wie viele Stunden warst du *y:heute schon hier? / Schau in deine *y:Bildschirmzeit – / und schreib's in die *y:Kommentare."
+    },
+    {
+     "id": "L19",
+     "text": "Und ja, mir ist klar, / dass du das gerade *p:auf *p:TikTok schaust.",
+     "pause": 0.3
+    },
+    {
+     "id": "L20",
+     "text": "Also folg mir – / dann war's wenigstens *g:keine *g:verschwendete *g:Zeit."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "notification",
+     "at": "L18:Kommentare",
+     "volume": 0.35
+    }
+   ]
+  }
+ ]
+}

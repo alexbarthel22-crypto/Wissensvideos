@@ -1,0 +1,52 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .vig { position: absolute; left: 0; right: 0; top: 1040px; height: 880px; background: linear-gradient(rgba(10,12,30,0), rgba(10,12,30,.5) 45%, rgba(10,12,30,.55)); pointer-events: none; }
+
+  </style>
+  <div id="root" data-composition-id="s02" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s02-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <svg id="s02-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div class="vig"></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s02-svg");
+      const P = iso(540, 770, 80);
+      sky(sv, "s02-sky", "#bfe3ff", "#f6f1e6");
+      room(P, sv, 6, 6, 4.2, { wall: "#f3ead8", floor: "#c9a982" });
+      wallY(P, sv, 3.4, 5.4, 1.6, 3.3, "#cdeaff"); wallY(P, sv, 3.4, 5.4, 1.6, 3.3, "none", { stroke: "#fff", "stroke-width": 10 });
+      box(P, sv, 0.2, 0.2, 0, 3.0, 0.8, 1.0, "#9fb7c9"); box(P, sv, 0.2, 0.2, 2.2, 3.0, 0.6, 0.9, "#b8cbd8");
+      box(P, sv, 2.2, 2.0, 0, 1.9, 1.5, 0.9, "#b98a5e");
+      box(P, sv, 2.7, 2.4, 0.9, 0.7, 0.7, 0.05, "#ffffff"); box(P, sv, 2.85, 2.55, 0.95, 0.35, 0.35, 0.1, "#e2a85a");
+      const ghost = box(P, sv, 2.4, 3.0, 0.9, 0.3, 0.16, 0.03, "#ffffff", { opacity: 0 });
+      box(P, sv, 4.45, 2.35, 0, 0.6, 0.6, 0.5, "#8a6a4a");
+      const me = person(P, sv, 4.5, 2.4, 0, { pose: "sit", shirt: "#ff8fd0" });
+      const hand = box(P, sv, 3.75, 2.6, 0.9, 0.3, 0.2, 0.1, "#f0c8a0");
+      box(P, sv, 5.0, 2.35, 0.5, 0.12, 0.6, 0.95, "#8a6a4a");
+      const [px, py] = P(4.6, 2.9, 0.65);
+      const vib = el("g", { opacity: 0 }, sv);
+      [24, 44, 64].forEach((r) => el("path", { d: `M${px + r} ${py - r * 0.8} q${r * 0.5} ${r * 0.8} 0 ${r * 1.6}`, stroke: "#ff5a5f", "stroke-width": 7, fill: "none", "stroke-linecap": "round" }, vib));
+      const bz = txt(sv, px + 120, py - 30, "BZZZ", 40, "#ff5a5f", { opacity: 0, "font-weight": 900 });
+      const [qx, qy] = P(2.55, 3.1, 1.1); const q = txt(sv, qx, qy, "?", 90, "#ff5a5f", { opacity: 0, "font-family": "EB Garamond" });
+      const wi = at("L3", "wischt"), vi = at("L4", "vibriert"), ga = at("L4", "gar"), pv = at("L5", "Phantomvibration");
+      tl.to(hand, { x: -26, y: -14, duration: 0.22, yoyo: true, repeat: 9, ease: "sine.inOut" }, wi - 0.1);
+      tl.to(vib, { opacity: 1, duration: 0.05, repeat: 9, yoyo: true }, vi);
+      tl.to(bz, { opacity: 1, x: 6, duration: 0.06, repeat: 9, yoyo: true }, vi);
+      tl.to(me, { x: 4, duration: 0.05, repeat: 9, yoyo: true }, vi);
+      tl.to([vib, bz], { opacity: 0, duration: 0.2 }, ga + 0.6);
+      tl.to(ghost, { opacity: 0.6, duration: 0.2 }, ga);
+      tl.fromTo(q, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.3, ease: "back.out(2)" }, ga + 0.2);
+      tl.to([vib, bz], { opacity: 1, duration: 0.05, repeat: 5, yoyo: true }, pv);
+      tl.to("#s02-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s02"] = tl;
+    })();
+  </script>
+</template>
