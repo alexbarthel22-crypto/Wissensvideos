@@ -27,8 +27,8 @@
     #s08-f { left: 290px; top: 950px; width: 500px; height: 150px; border-radius: 75px; background: #ff3b55; box-shadow: 0 0 50px rgba(255,59,85,.6); opacity: 0;
       text-align: center; font: 900 64px/150px Inter, sans-serif; color: #fff; }
   </style>
-  <div id="root" data-composition-id="s08" data-start="0" data-duration="12.100" data-width="1080" data-height="1920">
-    <div id="s08-stage" class="clip stage" data-start="0" data-duration="12.100" data-track-index="0">
+  <div id="root" data-composition-id="s08" data-start="0" data-duration="10.990" data-width="1080" data-height="1920">
+    <div id="s08-stage" class="clip stage" data-start="0" data-duration="10.990" data-track-index="0">
       <svg id="s08-svg" class="full" viewBox="0 0 1080 1920"></svg>
       <div id="s08-b1" class="s08-b">JEDES MAL</div><div id="s08-b2" class="s08-b">SELTENER</div>
       <div id="s08-f" class="abs">+ FOLGEN</div>
@@ -37,7 +37,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 12.1, "L17": [0.2, 5.33], "L17.words": [["und", 0.2, 0.434], ["du", 0.434, 0.66], ["spülst", 1.21, 1.422], ["du", 1.422, 1.607], ["nach", 1.607, 1.806], ["jedem", 1.806, 2.182], ["gang", 2.182, 2.381], ["", 2.381, 2.552], ["oder", 2.552, 2.922], ["seltener", 2.922, 3.49], ["schreibs", 4.04, 4.255], ["in", 4.255, 4.431], ["die", 4.431, 4.613], ["kommentare", 4.613, 5.33]], "L18": [5.85, 9.3], "L18.words": [["und", 5.85, 6.065], ["folg", 6.065, 6.288], ["mir", 6.288, 6.503], ["für", 6.503, 6.718], ["mehr", 6.718, 6.941], ["", 6.941, 7.133], ["sonst", 7.133, 7.364], ["explodiert", 7.364, 8.017], ["dein", 8.017, 8.24], ["klo", 8.24, 8.455], ["heute", 8.455, 8.877], ["abend", 8.877, 9.3]]};
+      const C = {"__dur": 10.99, "L17": [0.2, 4.36], "L17.words": [["und", 0.2, 0.409], ["du", 0.409, 0.61], ["spülst", 0.89, 1.065], ["du", 1.065, 1.217], ["nach", 1.217, 1.381], ["jedem", 1.381, 1.692], ["gang", 1.692, 1.855], ["", 1.855, 1.997], ["oder", 1.997, 2.301], ["seltener", 2.301, 2.77], ["schreibs", 3.25, 3.435], ["in", 3.435, 3.586], ["die", 3.586, 3.743], ["kommentare", 3.743, 4.36]], "L18": [4.88, 8.19], "L18.words": [["und", 4.88, 5.086], ["folg", 5.086, 5.3], ["mir", 5.3, 5.507], ["für", 5.507, 5.713], ["mehr", 5.713, 5.927], ["", 5.927, 6.111], ["sonst", 6.111, 6.332], ["explodiert", 6.332, 6.959], ["dein", 6.959, 7.173], ["klo", 7.173, 7.379], ["heute", 7.379, 7.785], ["abend", 7.785, 8.19]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];

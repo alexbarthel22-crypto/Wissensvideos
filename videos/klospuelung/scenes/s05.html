@@ -5,15 +5,13 @@
     .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
       font-family: "Inter", sans-serif; font-weight: 900; }
     .cbox { top: 440px; } /* unter der großen Kapitel-Überschrift */
-    #s05-box .num { font-size: 52px; }
-    #s05-med { left: 700px; top: 600px; width: 300px; height: 150px; border-radius: 22px; background: rgba(20,24,56,.94); border: 5px solid #ffd43b; opacity: 0;
-      text-align: center; font: 900 40px/1.1 Inter, sans-serif; color: #ffd43b; padding-top: 22px; box-sizing: border-box; box-shadow: 0 0 40px rgba(255,212,59,.4); }
+    #s05-box .num, #s05-box2 .num { font-size: 52px; }
   </style>
   <div id="root" data-composition-id="s05" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
     <div id="s05-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
       <div id="s05-box" class="cbox r" style="opacity:0"><div class="lab">ABWASSER-PEGEL</div><div id="s05-n" class="num">0 CM</div></div>
+      <div id="s05-box2" class="cbox r" style="opacity:0"><div class="lab">GESUNDHEIT</div><div class="num">GEFAHR!</div></div>
       <svg id="s05-svg" class="full" viewBox="0 0 1080 1920"></svg>
-      <div id="s05-med" class="abs">OLYMPIA<br>2024</div>
     </div>
   </div>
   <script>
@@ -35,25 +33,35 @@
       el("rect", { x: 0, y: 1060, width: 1080, height: 70, fill: "#2a2f55" }, city);
       const covers = [200, 540, 880].map((x) => el("ellipse", { cx: x, cy: 1092, rx: 70, ry: 18, fill: "#8f9bc4", stroke: "#161a36", "stroke-width": 6 }, city));
       const jets = [200, 540, 880].map((x) => el("path", { d: `M${x - 30} 1100 Q${x} 860 ${x + 30} 1100Z`, fill: "#7a5c34", opacity: 0 }, city));
+      const r = rng(21), rain = el("g", { "data-layout-allow-overlap": "" }, sv), rd = [];
+      for (let i = 0; i < 26; i++) { const d = drop(rain, 60 + r() * 960, 560 + r() * 80, 0.14 + r() * 0.08, "#7a5c34"); gsap.set(d, { opacity: 0 }); rd.push(d); }
       const cl = el("clipPath", { id: "s05-clip" }, sv); el("rect", { x: 0, y: 0, width: 1080, height: 1130 }, cl);
       const fg = el("g", { "clip-path": "url(#s05-clip)" }, sv); const F = flood(fg, 1140, "#7a5c34");
-      const lab = txt(sv, 540, 1010, "SEINE", 64, "#ffd43b", { opacity: 0 });
-      const gd = at("L10", "Gullydeckel"), fs = at("L10", "flutet"), se = at("L11", "Seine"), kl = at("L11", "Kloake"), ol = at("L11", "Olympischen");
+      const germ = (x, y, s) => { const g = el("g", { opacity: 0 }, sv); gsap.set(g, { x, y, scale: s, transformOrigin: "0 0" });
+        for (let k = 0; k < 8; k++) el("path", { d: "M0 0 L0 -70", stroke: "#39e27a", "stroke-width": 10, "stroke-linecap": "round", transform: `rotate(${k * 45})` }, g);
+        el("ellipse", { cx: 0, cy: 0, rx: 58, ry: 44, fill: "#39e27a" }, g); el("circle", { cx: -18, cy: -8, r: 9, fill: "#161a36" }, g); el("circle", { cx: 18, cy: -8, r: 9, fill: "#161a36" }, g);
+        el("path", { d: "M-18 18 q18 -12 36 0", stroke: "#161a36", "stroke-width": 6, fill: "none" }, g); return g; };
+      const germs = [germ(200, 700, 0.9), germ(540, 640, 1.2), germ(870, 720, 0.8), germ(360, 900, 0.7), germ(740, 920, 0.75)];
+      const stink = []; for (let i = 0; i < 5; i++) stink.push(el("path", { d: `M${140 + i * 200} 1000 q30 -40 0 -80 t0 -80 t0 -80`, stroke: "#9be27a", "stroke-width": 12, fill: "none", "stroke-linecap": "round", opacity: 0 }, sv));
+      const gd = at("L10", "Gullydeckel"), rg = at("L10", "regnet"), fk = at("L10", "Fäkalien"), l11 = line("L11")[0], ke = at("L11", "Keime"), du = at("L11", "Durchfall"), sti = at("L11", "stinkt");
       tl.fromTo(city, { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.45, ease: "expo.out" }, 0.05);
       tl.fromTo(lights, { opacity: 1 }, { opacity: 0.2, duration: 0.15, repeat: 9, yoyo: true, stagger: 0.05 }, 0.3);
       covers.forEach((c, i) => { tl.to(c, { y: -360 - i * 40, rotation: 300 + i * 90, svgOrigin: `${[200, 540, 880][i]} 1092`, duration: 0.6, ease: "power2.out" }, gd + i * 0.08);
         tl.to(c, { y: 0, opacity: 0, duration: 0.4, ease: "power2.in" }, gd + 0.6 + i * 0.08); });
       tl.fromTo(jets, { opacity: 0, scaleY: 0.1, svgOrigin: "540 1100" }, { opacity: 1, scaleY: 1, duration: 0.3, ease: "back.out(2)", stagger: 0.08 }, gd + 0.02);
       tl.to(jets, { scaleY: 1.15, svgOrigin: "540 1100", duration: 0.12, repeat: 9, yoyo: true }, gd + 0.35);
-      tl.to("#s05-box", { opacity: 1, duration: 0.25 }, fs - 0.3);
-      tl.to(F, { y: -150, duration: 1.6, ease: "power1.inOut" }, fs - 0.2);
-      tl.to(F, { x: -135, duration: 0.6, repeat: 5, yoyo: true, ease: "sine.inOut" }, fs);
-      count(tl, "#s05-n", 0, 20, fs - 0.2, 1.6, "", " CM", "power1.inOut");
-      tl.fromTo(lab, { opacity: 0, scale: 0.4, svgOrigin: "540 990" }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2)" }, se - 0.1);
-      tl.to("#s05-box .lab", { textContent: "SEINE · KEIME", duration: 0.01 }, kl - 0.2);
-      tl.set("#s05-n", { textContent: "ALARM!" }, kl - 0.2);
-      tl.to("#s05-box", { scale: 1.14, duration: 0.12, yoyo: true, repeat: 1 }, kl);
-      tl.fromTo("#s05-med", { opacity: 0, y: 60, rotation: 8 }, { opacity: 1, y: 0, rotation: 0, duration: 0.4, ease: "back.out(2)" }, ol - 0.2);
+      rd.forEach((d, i) => tl.set(d, { opacity: 1 }, rg - 0.1 + i * 0.03).to(d, { y: "+=480", duration: 0.7, ease: "power1.in" }, rg - 0.1 + i * 0.03).to(d, { opacity: 0, duration: 0.1 }, rg + 0.6 + i * 0.03));
+      tl.to("#s05-box", { opacity: 1, duration: 0.25 }, fk - 0.3);
+      tl.to(F, { y: -150, duration: 1.6, ease: "power1.inOut" }, fk - 0.2);
+      tl.to(F, { x: -135, duration: 0.6, repeat: 7, yoyo: true, ease: "sine.inOut" }, fk);
+      count(tl, "#s05-n", 0, 20, fk - 0.2, 1.6, "", " CM", "power1.inOut");
+      germs.forEach((g, i) => tl.fromTo(g, { opacity: 0, scale: 0.1 }, { opacity: 1, scale: [0.9, 1.2, 0.8, 0.7, 0.75][i], duration: 0.35, ease: "back.out(2.4)" }, ke - 0.1 + i * 0.1));
+      tl.to(germs, { rotation: 15, duration: 0.25, yoyo: true, repeat: 7 }, ke + 0.6);
+      tl.to("#s05-box", { opacity: 0, duration: 0.15 }, du - 0.6);
+      tl.fromTo("#s05-box2", { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2)" }, du - 0.3);
+      tl.to(germs, { opacity: 0.25, duration: 0.3 }, sti - 0.4);
+      tl.fromTo(stink, { opacity: 0, y: 40 }, { opacity: 0.9, y: 0, duration: 0.5, stagger: 0.08 }, sti - 0.2);
+      tl.to(stink, { x: 14, duration: 0.3, yoyo: true, repeat: 5 }, sti + 0.4);
       tl.to("#s05-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
       window.__timelines["s05"] = tl;
     })();

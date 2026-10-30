@@ -1,0 +1,54 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .cbox { top: 440px; } /* unter der großen Kapitel-Überschrift */
+    #s07b-box .num { font-size: 50px; }
+    .s07b-p { position: absolute; top: 600px; width: 450px; height: 470px; border-radius: 26px; background: rgba(20,24,56,.94); text-align: center; opacity: 0; }
+    .s07b-p b { position: absolute; left: 0; right: 0; top: 290px; font: 900 40px/1.1 Inter, sans-serif; color: #fff; }
+    #s07b-p1 { left: 50px; border: 5px solid #39e27a; } #s07b-p2 { left: 580px; border: 5px solid #ff3b55; box-shadow: 0 0 40px rgba(255,59,85,.4); }
+  </style>
+  <div id="root" data-composition-id="s07b" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s07b-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s07b-box" class="cbox r" style="opacity:0"><div class="lab">TOTE PRO JAHR · HEUTE</div><div id="s07b-n" class="num">0</div></div>
+      <div id="s07b-p1" class="s07b-p"><b>DURCHS<br>SPÜLEN</b></div><div id="s07b-p2" class="s07b-p"><b>DRECKIGES<br>WASSER</b></div>
+      <svg id="s07b-svg" class="full" viewBox="0 0 1080 1920"></svg>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s07b-svg");
+      const q = txt(sv, 540, 900, "?", 300, "#ff3b55", { opacity: 0 });
+      const ok = el("g", { opacity: 0 }, sv); el("circle", { cx: 275, cy: 770, r: 100, fill: "#39e27a" }, ok);
+      el("path", { d: "M225 772 L262 810 L330 735", stroke: "#0b0e22", "stroke-width": 24, fill: "none", "stroke-linecap": "round", "stroke-linejoin": "round" }, ok);
+      const kaum = txt(sv, 275, 1052, "KAUM", 50, "#39e27a", { opacity: 0 });
+      const sk = el("g", { opacity: 0 }, sv);
+      el("circle", { cx: 805, cy: 750, r: 95, fill: "#f3f1ea" }, sk); el("rect", { x: 750, y: 800, width: 110, height: 70, rx: 18, fill: "#f3f1ea" }, sk);
+      el("circle", { cx: 770, cy: 750, r: 26, fill: "#161a36" }, sk); el("circle", { cx: 840, cy: 750, r: 26, fill: "#161a36" }, sk);
+      el("path", { d: "M805 785 l-14 26 h28Z", fill: "#161a36" }, sk);
+      [775, 805, 835].forEach((x) => el("rect", { x: x - 6, y: 835, width: 12, height: 30, fill: "#161a36" }, sk));
+      const up = txt(sv, 805, 1052, "▲ MEHR", 56, "#ff3b55", { opacity: 0 });
+      const st = at("L16b", "Sterben"), l16c = line("L16c")[0], ka = at("L16c", "kaum"), n5 = at("L16c", "500.000"), dm = at("L16d", "deutlich");
+      tl.fromTo(q, { opacity: 0, scale: 0.4, svgOrigin: "540 800" }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(2)" }, st - 0.2);
+      tl.to(q, { x: 10, duration: 0.04, repeat: 7, yoyo: true }, st + 0.2);
+      tl.to(q, { opacity: 0, duration: 0.2 }, l16c - 0.2);
+      tl.fromTo("#s07b-p1", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.35, ease: "back.out(1.8)" }, l16c - 0.05);
+      tl.fromTo(ok, { opacity: 0, scale: 0.3, svgOrigin: "275 770" }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(2.4)" }, ka - 0.1);
+      tl.to(kaum, { opacity: 1, duration: 0.2 }, ka);
+      tl.fromTo("#s07b-p2", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.35, ease: "back.out(1.8)" }, n5 - 1.2);
+      tl.fromTo(sk, { opacity: 0, scale: 0.3, svgOrigin: "805 790" }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(2.4)" }, n5 - 0.9);
+      tl.to("#s07b-box", { opacity: 1, duration: 0.25 }, n5 - 0.3);
+      count(tl, "#s07b-n", 0, 500000, n5 - 0.2, 1.0, "", "", "power3.out");
+      tl.fromTo(up, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.3, ease: "back.out(2)" }, dm - 0.1);
+      tl.to(sk, { x: 8, duration: 0.04, repeat: 7, yoyo: true }, dm);
+      tl.to("#s07b-box", { scale: 1.14, duration: 0.12, yoyo: true, repeat: 1 }, dm);
+      tl.to("#s07b-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s07b"] = tl;
+    })();
+  </script>
+</template>

@@ -5,11 +5,12 @@
     .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
       font-family: "Inter", sans-serif; font-weight: 900; }
     .cbox { top: 440px; } /* unter der großen Kapitel-Überschrift */
-    #s03-box .num { font-size: 52px; }
+    #s03-box .num, #s03-box2 .num { font-size: 52px; }
   </style>
   <div id="root" data-composition-id="s03" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
     <div id="s03-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
       <div id="s03-box" class="cbox r" style="opacity:0"><div class="lab">WASSERDRUCK</div><div id="s03-n" class="num">4 BAR</div></div>
+      <div id="s03-box2" class="cbox b" style="opacity:0"><div class="lab">DUSCHE</div><div id="s03-n2" class="num">38 °C</div></div>
       <svg id="s03-svg" class="full" viewBox="0 0 1080 1920"></svg>
     </div>
   </div>
@@ -51,14 +52,13 @@
       wins.forEach((row, f) => { if (f >= 9) tl.to(row, { attr: { fill: "#3a2140" }, duration: 0.15 }, zs + (12 - f) * 0.06); });
       tl.to(ten, { opacity: 1, duration: 0.2 }, zs);
       tl.to([bld, gg], { opacity: 0, filter: "blur(8px)", duration: 0.25 }, du - 0.6);
-      tl.to("#s03-box .lab", { textContent: "DUSCHE", duration: 0.01 }, du - 0.35);
-      tl.set("#s03-n", { textContent: "38 °C" }, du - 0.35);
-      tl.to("#s03-box", { borderColor: "#4da3ff", duration: 0.01 }, du - 0.35);
+      tl.to("#s03-box", { opacity: 0, duration: 0.2 }, du - 0.45);
+      tl.to("#s03-box2", { opacity: 1, duration: 0.2 }, du - 0.3);
       tl.to(sh, { opacity: 1, duration: 0.3 }, du - 0.3);
       tl.fromTo(jets, { attr: { "stroke-dashoffset": 0 } }, { attr: { "stroke-dashoffset": -480 }, duration: 4, ease: "none" }, du - 0.3);
       tl.to(jets, { attr: { stroke: "#ff3b55" }, duration: 0.15 }, heiss - 0.1);
-      tl.to("#s03-box", { borderColor: "#ff3b55", duration: 0.01 }, heiss);
-      count(tl, "#s03-n", 38, 60, heiss - 0.1, 0.5, "", " °C");
+      tl.to("#s03-box2", { borderColor: "#ff3b55", duration: 0.2 }, heiss);
+      count(tl, "#s03-n2", 38, 60, heiss - 0.1, 0.5, "", " °C");
       tl.to(steam, { opacity: 0.8, y: -60, duration: 0.6, stagger: 0.05 }, heiss);
       tl.to(P.g, { y: 830, duration: 0.15, yoyo: true, repeat: 3, ease: "power2.out" }, heiss);
       tl.to("#s03p-mouth", { attr: { d: "M-16 -24 q16 -22 32 0" }, duration: 0.1 }, heiss);

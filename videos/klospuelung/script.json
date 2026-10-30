@@ -1,44 +1,354 @@
 {
-  "title": "Was wäre, wenn alle gleichzeitig spülen?",
-  "voice": "Google Chirp 3 HD (de-DE-Chirp3-HD-Puck)",
-  "hud": "big",
-  "hud_low": true,
-  "lead_in": 0.9,
-  "_zahlen": "~4 Mrd. Menschen nutzen Spültoiletten, ~4 Mrd. nicht (WHO/UNICEF JMP 2023: 3,5 Mrd. ohne sichere Sanitärversorgung). 4 Mrd. x 6 L = 24 Mrd. L; Niagara ~2.400-2.800 m3/s -> ~2,5 h. Meer: 4 Mrd. x ~200 g = 800.000 t. Paris: Mischkanalisation läuft in die Seine über (Olympia 2024).",
-  "scenes": [
-    { "id": "s01", "tag": "WAS WÄRE WENN · ALLE?", "lines": [
-        { "id": "L1", "text": "Was passiert, / wenn *y:alle *y:Menschen / *p:gleichzeitig *p:spülen?", "speed": 0.96 },
-        { "id": "L2", "text": "*y:Vier *y:Milliarden Klos. / In *r:einer *r:Sekunde. / Und das Schlimmste / passiert *r:nicht *r:im *r:Klo." } ],
-      "sfx": [ { "name": "alarm", "at": "s01+0.0", "volume": 0.6 }, { "name": "pop", "at": "L2:Vier", "volume": 0.45 }, { "name": "impact-bass-1", "at": "L2:nicht", "volume": 0.35 } ] },
-    { "id": "s02", "tag": "SEKUNDE 0 · WASSER", "lines": [
-        { "id": "L3", "text": "Jede Spülung: / rund *b:sechs *b:Liter. / Zusammen: / *y:24|vierundzwanzig *y:Milliarden *y:Liter." },
-        { "id": "L4", "text": "So viel, / wie die *b:Niagarafälle / in *r:über *r:zwei *r:Stunden / hinunterstürzen." } ],
-      "sfx": [ { "name": "pop", "at": "L3:24", "volume": 0.45 }, { "name": "impact-bass-2", "at": "L4:über", "volume": 0.3 } ] },
-    { "id": "s03", "tag": "SEKUNDE 5 · DRUCK", "lines": [
-        { "id": "L5", "text": "Alle Spülkästen / füllen sich *r:gleichzeitig. / Der *r:Wasserdruck / bricht ein." },
-        { "id": "L6", "text": "Im Hochhaus / kommt ab dem *r:zehnten *r:Stock / *r:nichts *r:mehr. / Und wer gerade duscht …", "pause": 0.2 },
-        { "id": "L7", "text": "… bekommt plötzlich / *r:brühend *r:heißes Wasser.", "pause": 0.3 } ],
-      "sfx": [ { "name": "error", "at": "L5:bricht", "volume": 0.3 }, { "name": "glitch-1", "at": "L7:brühend", "volume": 0.25 } ] },
-    { "id": "s04", "tag": "MINUTE 2 · KANAL", "lines": [
-        { "id": "L8", "text": "Dann die Kanalisation. / Gebaut für *y:normale *y:Tage – / nicht für *r:alle *r:auf *r:einmal." },
-        { "id": "L9", "text": "*r:Klärwerke laufen über. / Ungeklärtes Abwasser / fließt *r:direkt *r:in *r:Flüsse. / *r:Fische *r:sterben." } ],
-      "sfx": [ { "name": "impact-bass-1", "at": "L9:Klärwerke", "volume": 0.3 }, { "name": "error", "at": "L9:Fische", "volume": 0.25 } ] },
-    { "id": "s05", "tag": "MINUTE 10 · PARIS", "lines": [
-        { "id": "L10", "text": "Und in *y:Paris? / *r:Gullydeckel *r:fliegen. / Abwasser / *r:flutet *r:die *r:Straßen." },
-        { "id": "L11", "text": "Die *b:Seine wird / zur *r:Kloake – / wie schon bei den / *y:Olympischen *y:Spielen." } ],
-      "sfx": [ { "name": "impact-bass-2", "at": "L10:Gullydeckel", "volume": 0.35 }, { "name": "glitch-1", "at": "L11:Kloake", "volume": 0.25 } ] },
-    { "id": "s06", "tag": "GLEICHZEITIG · MEER", "lines": [
-        { "id": "L12", "text": "Und die *y:andere *y:Hälfte? / *y:Vier *y:Milliarden Menschen / ohne Spülung / gehen *b:ins *b:Meer." },
-        { "id": "L13", "text": "Wer im Inland wohnt, / steht im *r:größten *r:Stau / der Geschichte." },
-        { "id": "L14", "text": "Am Strand: / *r:800.000|achthunderttausend *r:Tonnen / auf *r:einen *r:Schlag. / Die *g:Algen *r:explodieren." } ],
-      "sfx": [ { "name": "whoosh-short", "at": "L12:Meer", "volume": 0.35 }, { "name": "error", "at": "L13:Stau", "volume": 0.3 }, { "name": "impact-bass-1", "at": "L14:800.000", "volume": 0.35 } ] },
-    { "id": "s07", "tag": "WOCHE 1 · GELD", "lines": [
-        { "id": "L15", "text": "Und dann: / *r:Badeverbot an allen Küsten. / *r:Fischfang *r:gestoppt. / *r:Urlaub *r:storniert." },
-        { "id": "L16", "text": "Ein paar Sekunden Spülen – / *r:Milliarden *r:Verlust / für den *y:Tourismus." } ],
-      "sfx": [ { "name": "error", "at": "L15:Badeverbot", "volume": 0.3 }, { "name": "notification", "at": "L16:Milliarden", "volume": 0.3 } ] },
-    { "id": "s08", "tag": "UND DU?", "hold": 2.8, "lines": [
-        { "id": "L17", "text": "Und *y:du? / Spülst du / *p:nach *p:jedem *p:Gang – / oder *g:seltener? / Schreib's in die *y:Kommentare!", "pause": 0.3 },
-        { "id": "L18", "text": "Und *p:folg *p:mir / für mehr – / sonst *r:explodiert *r:dein *r:Klo / *r:heute *r:Abend.", "pause": 0.3 } ],
-      "sfx": [ { "name": "notification", "at": "L17:Kommentare", "volume": 0.4 }, { "name": "impact-bass-2", "at": "L18:explodiert", "volume": 0.4 } ] }
-  ]
+ "title": "Was wäre, wenn alle gleichzeitig spülen?",
+ "voice": "Google Chirp 3 HD (de-DE-Chirp3-HD-Puck), --speed 1.12",
+ "hud": "big",
+ "hud_low": true,
+ "lead_in": 0.9,
+ "_zahlen": "~4 Mrd. mit Spültoilette, ~4 Mrd. ohne (WHO/UNICEF JMP 2023). 4 Mrd. x 6 L = 24 Mrd. L = 9.600 Olympiabecken (2,5 Mio. L). Fäkalien: 4 Mrd. x ~200 g = 800.000 t; Blauwal ~100-150 t -> über 5.000. WHO: verschmutztes Trinkwasser -> ~505.000 Durchfall-Tote/Jahr.",
+ "scenes": [
+  {
+   "id": "s01",
+   "tag": "WAS WÄRE WENN · ALLE?",
+   "lines": [
+    {
+     "id": "L1",
+     "text": "Was würde passieren, / wenn *y:alle *y:Menschen *y:auf *y:der *y:Welt / *p:gleichzeitig *p:spülen?",
+     "speed": 0.96
+    },
+    {
+     "id": "L2",
+     "text": "*y:Vier *y:Milliarden Klos. / In *r:einer *r:Sekunde. / Und das Schlimmste / passiert *r:nicht *r:im *r:Klo."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "alarm",
+     "at": "s01+0.0",
+     "volume": 0.6
+    },
+    {
+     "name": "pop",
+     "at": "L2:Vier",
+     "volume": 0.45
+    },
+    {
+     "name": "impact-bass-1",
+     "at": "L2:nicht",
+     "volume": 0.35
+    }
+   ]
+  },
+  {
+   "id": "s02",
+   "tag": "SEKUNDE 0 · WASSER",
+   "lines": [
+    {
+     "id": "L3",
+     "text": "Jede Spülung: / rund *b:sechs *b:Liter. / Zusammen: / *y:24|vierundzwanzig *y:Milliarden *y:Liter."
+    },
+    {
+     "id": "L4",
+     "text": "Das sind *b:9.600|neuntausendsechshundert / *b:Olympia-Schwimmbecken – / *r:in *r:einer *r:Sekunde."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "pop",
+     "at": "L3:24",
+     "volume": 0.45
+    },
+    {
+     "name": "impact-bass-2",
+     "at": "L4:in",
+     "volume": 0.3
+    }
+   ]
+  },
+  {
+   "id": "s03",
+   "tag": "SEKUNDE 5 · DRUCK",
+   "lines": [
+    {
+     "id": "L5",
+     "text": "Alle Spülkästen / füllen sich *r:gleichzeitig. / Der *r:Wasserdruck / bricht ein."
+    },
+    {
+     "id": "L6",
+     "text": "Im Hochhaus / kommt ab dem *r:zehnten *r:Stock / *r:nichts *r:mehr. / Und wer gerade duscht …",
+     "pause": 0.2
+    },
+    {
+     "id": "L7",
+     "text": "… steht plötzlich unter / *r:brühend *r:heißem Wasser.",
+     "pause": 0.3
+    }
+   ],
+   "sfx": [
+    {
+     "name": "error",
+     "at": "L5:bricht",
+     "volume": 0.3
+    },
+    {
+     "name": "glitch-1",
+     "at": "L7:brühend",
+     "volume": 0.25
+    }
+   ]
+  },
+  {
+   "id": "s03b",
+   "tag": "WARUM? · HEISS",
+   "lines": [
+    {
+     "id": "L7b",
+     "text": "Warum? / Deine Dusche *y:mischt / *b:kaltes und *r:heißes Wasser."
+    },
+    {
+     "id": "L7c",
+     "text": "Bricht der Druck / beim *b:kalten *b:Wasser ein, / kommt nur noch / *r:heißes aus dem Boiler – / bis *r:60|sechzig *r:Grad."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "error",
+     "at": "L7c:kalten",
+     "volume": 0.3
+    },
+    {
+     "name": "glitch-1",
+     "at": "L7c:60",
+     "volume": 0.25
+    }
+   ]
+  },
+  {
+   "id": "s04",
+   "tag": "MINUTE 2 · KANAL",
+   "lines": [
+    {
+     "id": "L8",
+     "text": "Dann die Kanalisation. / Gebaut für *y:normale *y:Tage – / nicht für *r:alle *r:auf *r:einmal."
+    },
+    {
+     "id": "L9",
+     "text": "*r:Klärwerke laufen über. / Abwasser voller *r:Fäkalien / fließt *r:direkt *r:in *r:Flüsse. / *r:Fische *r:sterben."
+    },
+    {
+     "id": "L9b",
+     "text": "Die Folge: / Der Fluss *r:kippt *r:um – / und *y:Millionen Menschen / trinken *b:Wasser aus diesen Flüssen."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "impact-bass-1",
+     "at": "L9:Klärwerke",
+     "volume": 0.3
+    },
+    {
+     "name": "error",
+     "at": "L9:Fische",
+     "volume": 0.25
+    }
+   ]
+  },
+  {
+   "id": "s05",
+   "tag": "MINUTE 10 · PARIS",
+   "lines": [
+    {
+     "id": "L10",
+     "text": "Und was passiert / in großen Städten wie *y:Paris? / *r:Gullydeckel *r:fliegen – / und es *r:regnet *r:kurz *r:Fäkalien."
+    },
+    {
+     "id": "L11",
+     "text": "Darin: *r:Keime wie *r:E._coli|E-Koli. / *r:Durchfall, *r:Infektionen – / und die Stadt *r:stinkt *r:wochenlang."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "impact-bass-2",
+     "at": "L10:Gullydeckel",
+     "volume": 0.35
+    },
+    {
+     "name": "glitch-1",
+     "at": "L10:Fäkalien",
+     "volume": 0.25
+    },
+    {
+     "name": "error",
+     "at": "L11:Durchfall",
+     "volume": 0.25
+    }
+   ]
+  },
+  {
+   "id": "s06",
+   "tag": "GLEICHZEITIG · MEER",
+   "lines": [
+    {
+     "id": "L12",
+     "text": "Und *y:die *y:andere *y:Hälfte? / *r:Rund *r:vier *r:Milliarden Menschen / haben *r:keine *r:Toilette *r:mit *r:Spülung."
+    },
+    {
+     "id": "L12b",
+     "text": "Sie gehen *b:an *b:Flüsse, / *b:Seen – / oder *b:direkt *b:ins *b:Meer."
+    },
+    {
+     "id": "L14",
+     "text": "Das Ergebnis: / *r:800.000|achthunderttausend *r:Tonnen *r:Fäkalien / auf *r:einen *r:Schlag. / So schwer wie / *y:über *y:5.000|fünftausend *y:Blauwale."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "whoosh-short",
+     "at": "L12b:Meer",
+     "volume": 0.35
+    },
+    {
+     "name": "impact-bass-1",
+     "at": "L14:800.000",
+     "volume": 0.35
+    },
+    {
+     "name": "pop",
+     "at": "L14:5.000",
+     "volume": 0.45
+    }
+   ]
+  },
+  {
+   "id": "s07",
+   "tag": "WOCHE 1 · GELD",
+   "lines": [
+    {
+     "id": "L15",
+     "text": "Und dann: / *r:Badeverbot an allen Küsten. / *r:Fischfang *r:gestoppt. / *r:Urlaub *r:storniert."
+    },
+    {
+     "id": "L16",
+     "text": "*r:Milliarden *r:Verlust / für den *y:Tourismus."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "error",
+     "at": "L15:Badeverbot",
+     "volume": 0.3
+    },
+    {
+     "name": "notification",
+     "at": "L16:Milliarden",
+     "volume": 0.3
+    }
+   ]
+  },
+  {
+   "id": "s07b",
+   "tag": "DIE FRAGE · TOTE?",
+   "lines": [
+    {
+     "id": "L16b",
+     "text": "Und die große Frage: / *r:Sterben *r:Menschen?"
+    },
+    {
+     "id": "L16c",
+     "text": "Durchs Spülen selbst: / *g:kaum. / Aber schon heute sterben / jedes Jahr rund *r:500.000|fünfhunderttausend Menschen / an *r:verschmutztem *r:Trinkwasser.",
+     "pause": 0.2
+    },
+    {
+     "id": "L16d",
+     "text": "Nach so einem Tag / wären es *r:deutlich *r:mehr."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "impact-bass-1",
+     "at": "L16b:Sterben",
+     "volume": 0.35
+    },
+    {
+     "name": "error",
+     "at": "L16d:deutlich",
+     "volume": 0.3
+    }
+   ]
+  },
+  {
+   "id": "s07c",
+   "tag": "DIE BILANZ · FOLGEN",
+   "lines": [
+    {
+     "id": "L16e",
+     "text": "*r:Kein *r:Wasser im Hochhaus. / *r:Fäkalien auf den Straßen. / *r:Tote *r:Flüsse. / *r:Gesperrte *r:Küsten. / *r:Krankheiten weltweit."
+    },
+    {
+     "id": "L16f",
+     "text": "Alles wegen / *p:einer *p:Sekunde *p:Spülen."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "pop",
+     "at": "L16e:Kein",
+     "volume": 0.4
+    },
+    {
+     "name": "pop",
+     "at": "L16e:Fäkalien",
+     "volume": 0.4
+    },
+    {
+     "name": "pop",
+     "at": "L16e:Tote",
+     "volume": 0.4
+    },
+    {
+     "name": "pop",
+     "at": "L16e:Gesperrte",
+     "volume": 0.4
+    },
+    {
+     "name": "pop",
+     "at": "L16e:Krankheiten",
+     "volume": 0.4
+    },
+    {
+     "name": "impact-bass-2",
+     "at": "L16f:einer",
+     "volume": 0.35
+    }
+   ]
+  },
+  {
+   "id": "s08",
+   "tag": "UND DU?",
+   "hold": 2.8,
+   "lines": [
+    {
+     "id": "L17",
+     "text": "Und *y:du? / Spülst du / *p:nach *p:jedem *p:Gang – / oder *g:seltener? / Schreib's in die *y:Kommentare!",
+     "pause": 0.3
+    },
+    {
+     "id": "L18",
+     "text": "Und *p:folg *p:mir / für mehr – / sonst *r:explodiert *r:dein *r:Klo / *r:heute *r:Abend.",
+     "pause": 0.3
+    }
+   ],
+   "sfx": [
+    {
+     "name": "notification",
+     "at": "L17:Kommentare",
+     "volume": 0.4
+    },
+    {
+     "name": "impact-bass-2",
+     "at": "L18:explodiert",
+     "volume": 0.4
+    }
+   ]
+  }
+ ]
 }

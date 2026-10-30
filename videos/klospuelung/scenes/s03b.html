@@ -1,0 +1,60 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .cbox { top: 440px; } /* unter der großen Kapitel-Überschrift */
+    #s03b-box .num { font-size: 52px; }
+  </style>
+  <div id="root" data-composition-id="s03b" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s03b-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s03b-box" class="cbox b" style="opacity:0"><div class="lab">DUSCHE</div><div id="s03b-n" class="num">38 °C</div></div>
+      <svg id="s03b-svg" class="full" viewBox="0 0 1080 1920"></svg>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s03b-svg");
+      const sys = el("g", {}, sv);
+      const boiler = el("g", {}, sys); el("rect", { x: 830, y: 600, width: 200, height: 170, rx: 24, fill: "#c9cde6" }, boiler);
+      txt(boiler, 930, 700, "BOILER", 40, "#161a36"); el("circle", { cx: 930, cy: 740, r: 12, fill: "#ff3b55" }, boiler);
+      const cp = el("rect", { x: 40, y: 800, width: 470, height: 50, rx: 25, fill: "#4da3ff" }, sys);
+      const hp = el("rect", { x: 570, y: 800, width: 360, height: 50, rx: 25, fill: "#ff3b55" }, sys);
+      el("rect", { x: 905, y: 760, width: 50, height: 70, fill: "#ff3b55" }, sys);
+      const cf = el("path", { d: "M60 825 H500", stroke: "#cfe8ff", "stroke-width": 10, "stroke-dasharray": "30 26" }, sys);
+      const hf = el("path", { d: "M920 825 H580", stroke: "#ffd0d6", "stroke-width": 10, "stroke-dasharray": "30 26" }, sys);
+      const out = el("rect", { x: 515, y: 600, width: 50, height: 230, fill: "#a56bff" }, sys);
+      const mix = el("circle", { cx: 540, cy: 825, r: 64, fill: "#2e3670", stroke: "#dfe2f5", "stroke-width": 8 }, sys);
+      txt(sys, 540, 838, "MIX", 36, "#ffffff");
+      el("path", { d: "M440 600 Q540 540 640 600Z", fill: "#c9cde6" }, sys);
+      const jets = []; for (let i = 0; i < 7; i++) jets.push(el("path", { d: `M${474 + i * 22} 610 V720`, stroke: "#a56bff", "stroke-width": 7, "stroke-dasharray": "22 18", "stroke-linecap": "round" }, sys));
+      const kl = txt(sys, 250, 920, "KALT", 52, "#4da3ff"), hl = txt(sys, 760, 920, "HEISS", 52, "#ff3b55");
+      const xc = txt(sys, 270, 850, "✕", 150, "#ffd43b", { opacity: 0 });
+      const steam = []; for (let i = 0; i < 5; i++) steam.push(el("circle", { cx: 440 + i * 50, cy: 720 - (i % 2) * 40, r: 40, fill: "#e6eaf5", opacity: 0 }, sys));
+      const mi = at("L7b", "mischt"), ka = at("L7b", "kaltes"), he = at("L7b", "heißes"), dr = at("L7c", "Druck"), kw = at("L7c", "kalten"), hb = at("L7c", "heißes"), g60 = at("L7c", "60");
+      tl.fromTo(sys, { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.45, ease: "expo.out" }, 0.05);
+      tl.to("#s03b-box", { opacity: 1, duration: 0.25 }, 0.3);
+      tl.fromTo([cf, hf], { attr: { "stroke-dashoffset": 0 } }, { attr: { "stroke-dashoffset": -560 }, duration: 4, ease: "none" }, 0.1);
+      tl.fromTo(jets, { attr: { "stroke-dashoffset": 0 } }, { attr: { "stroke-dashoffset": -400 }, duration: 8, ease: "none" }, 0.1);
+      tl.to(mix, { scale: 1.2, svgOrigin: "540 825", duration: 0.15, yoyo: true, repeat: 3 }, mi);
+      tl.fromTo(kl, { scale: 1 }, { scale: 1.3, svgOrigin: "250 905", duration: 0.15, yoyo: true, repeat: 1 }, ka);
+      tl.fromTo(hl, { scale: 1 }, { scale: 1.3, svgOrigin: "760 905", duration: 0.15, yoyo: true, repeat: 1 }, he);
+      tl.to(cp, { attr: { fill: "#2a3170" }, duration: 0.3 }, kw);
+      tl.to(cf, { opacity: 0, duration: 0.3 }, kw);
+      tl.fromTo(xc, { opacity: 0, scale: 2, svgOrigin: "270 800" }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(2)" }, kw);
+      tl.to(sys, { x: 8, duration: 0.04, repeat: 5, yoyo: true }, kw);
+      tl.to([out, ...jets], { attr: { fill: "#ff3b55", stroke: "#ff3b55" }, duration: 0.4 }, hb - 0.2);
+      tl.to(hf, { attr: { "stroke-dashoffset": -1400 }, duration: 2, ease: "none" }, hb);
+      tl.to("#s03b-box", { borderColor: "#ff3b55", duration: 0.2 }, g60 - 0.3);
+      count(tl, "#s03b-n", 38, 60, g60 - 0.3, 0.6, "", " °C");
+      tl.to(steam, { opacity: 0.8, y: -60, duration: 0.6, stagger: 0.05 }, g60);
+      tl.to("#s03b-box", { scale: 1.14, duration: 0.12, yoyo: true, repeat: 1 }, g60 + 0.3);
+      tl.to("#s03b-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s03b"] = tl;
+    })();
+  </script>
+</template>

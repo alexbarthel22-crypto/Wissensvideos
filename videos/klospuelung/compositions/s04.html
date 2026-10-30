@@ -24,16 +24,17 @@
     .cbox { top: 440px; } /* unter der großen Kapitel-Überschrift */
     #s04-box .num { font-size: 52px; }
   </style>
-  <div id="root" data-composition-id="s04" data-start="0" data-duration="11.570" data-width="1080" data-height="1920">
-    <div id="s04-stage" class="clip stage" data-start="0" data-duration="11.570" data-track-index="0">
+  <div id="root" data-composition-id="s04" data-start="0" data-duration="14.590" data-width="1080" data-height="1920">
+    <div id="s04-stage" class="clip stage" data-start="0" data-duration="14.590" data-track-index="0">
       <div id="s04-box" class="cbox g" style="opacity:0"><div class="lab">KANAL-AUSLASTUNG</div><div id="s04-n" class="num">0 %</div></div>
+      <div id="s04-box2" class="cbox r" style="opacity:0"><div class="lab">TRINKWASSER</div><div class="num">IN GEFAHR</div></div>
       <svg id="s04-svg" class="full" viewBox="0 0 1080 1920"></svg>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 11.57, "L8": [0.2, 5.12], "L8.words": [["dann", 0.2, 0.394], ["die", 0.394, 0.582], ["kanalisation", 0.582, 1.5], ["gebaut", 2.05, 2.44], ["für", 2.44, 2.635], ["normale", 2.635, 3.206], ["tage", 3.206, 3.582], ["", 3.582, 3.756], ["nicht", 3.756, 3.964], ["für", 3.964, 4.159], ["alle", 4.159, 4.535], ["auf", 4.535, 4.73], ["einmal", 4.73, 5.12]], "L9": [5.34, 11.39], "L9.words": [["klärwerke", 5.34, 5.946], ["laufen", 5.946, 6.35], ["über", 6.35, 6.74], ["ungeklärtes", 7.29, 8.129], ["abwasser", 8.129, 8.756], ["fließt", 8.756, 8.99], ["direkt", 8.99, 9.413], ["in", 9.413, 9.617], ["flüsse", 9.617, 10.04], ["fische", 10.59, 10.986], ["sterben", 10.986, 11.39]]};
+      const C = {"__dur": 14.59, "L8": [0.2, 4.25], "L8.words": [["dann", 0.2, 0.364], ["die", 0.364, 0.523], ["kanalisation", 0.523, 1.3], ["gebaut", 1.7, 2.024], ["für", 2.024, 2.186], ["normale", 2.186, 2.66], ["tage", 2.66, 2.972], ["", 2.972, 3.117], ["nicht", 3.117, 3.29], ["für", 3.29, 3.452], ["alle", 3.452, 3.764], ["auf", 3.764, 3.926], ["einmal", 3.926, 4.25]], "L9": [4.47, 9.95], "L9.words": [["klärwerke", 4.47, 5.003], ["laufen", 5.003, 5.358], ["über", 5.358, 5.7], ["abwasser", 6.25, 6.756], ["voller", 6.756, 7.097], ["fäkalien", 7.097, 7.604], ["fließt", 7.604, 7.793], ["direkt", 7.793, 8.134], ["in", 8.134, 8.299], ["flüsse", 8.299, 8.64], ["fische", 9.19, 9.567], ["sterben", 9.567, 9.95]], "L9b": [10.17, 14.41], "L9b.words": [["die", 10.17, 10.764], ["folge", 10.764, 11.93], ["der", 12.19, 12.3], ["fluss", 12.3, 12.418], ["kippt", 12.418, 12.536], ["um", 12.536, 12.643], ["", 12.643, 12.741], ["und", 12.741, 12.851], ["millionen", 12.851, 13.182], ["menschen", 13.182, 13.41], ["trinken", 13.41, 13.635], ["wasser", 13.635, 13.855], ["aus", 13.855, 13.965], ["diesen", 13.965, 14.186], ["flüssen", 14.186, 14.41]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -194,6 +195,18 @@
       tl.set(fishes.map((f) => f.eye), { attr: { r: 0 } }, fi);
       fishes.forEach((f, i) => txt(pl, [220, 560, 870][i], 1002, "✕", 34, "#ff3b55", { opacity: 0, class: "s04-x" }));
       tl.to(".s04-x", { opacity: 1, duration: 0.15, stagger: 0.15 }, fi + 0.3);
+      const gl = el("g", { opacity: 0 }, sv);
+      el("path", { d: "M400 620 L680 620 L650 940 L430 940Z", fill: "#dfe5f5", opacity: 0.35 }, gl);
+      const liq = el("path", { d: "M412 720 L668 720 L650 930 L432 930Z", fill: "#7a5c34" }, gl);
+      txt(gl, 540, 860, "✕", 180, "#ff3b55");
+      const ki = at("L9b", "kippt"), mm = at("L9b", "Millionen");
+      tl.to(river, { attr: { fill: "#4a3d2a" }, duration: 0.5 }, ki - 0.1);
+      tl.to(fishes.map((f) => f.g), { opacity: 0.35, duration: 0.4 }, ki);
+      tl.to("#s04-box", { opacity: 0, duration: 0.2 }, mm - 0.4);
+      tl.to("#s04-box2", { opacity: 1, duration: 0.2 }, mm - 0.3);
+      tl.to(pl.querySelectorAll("ellipse, path"), { opacity: 0.15, duration: 0.3 }, mm - 0.4);
+      tl.fromTo(gl, { opacity: 0, scale: 0.5, svgOrigin: "540 800" }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(2)" }, mm - 0.2);
+      tl.to(gl, { rotation: 6, svgOrigin: "540 940", duration: 0.08, yoyo: true, repeat: 5 }, mm + 0.4);
       tl.to("#s04-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
       window.__timelines["s04"] = tl;
     })();

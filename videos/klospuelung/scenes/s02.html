@@ -5,11 +5,12 @@
     .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
       font-family: "Inter", sans-serif; font-weight: 900; }
     .cbox { top: 440px; } /* unter der großen Kapitel-Überschrift */
-    #s02-box .num { font-size: 44px; }
+    #s02-box .num, #s02-box2 .num { font-size: 44px; }
   </style>
   <div id="root" data-composition-id="s02" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
     <div id="s02-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
       <div id="s02-box" class="cbox b" style="opacity:0"><div class="lab">WASSER</div><div id="s02-n" class="num">0 L</div></div>
+      <div id="s02-box2" class="cbox y" style="opacity:0"><div class="lab">OLYMPIA-BECKEN</div><div id="s02-n2" class="num">0</div></div>
       <svg id="s02-svg" class="full" viewBox="0 0 1080 1920"></svg>
     </div>
   </div>
@@ -24,13 +25,12 @@
       const fcl = el("clipPath", { id: "s02-clip" }, sv); el("rect", { x: 0, y: 0, width: 1080, height: 1130 }, fcl);
       const fg = el("g", { "clip-path": "url(#s02-clip)" }, sv);
       const F = flood(fg, 1180, "#2f7fe0"); const F2 = flood(fg, 1210, "#4da3ff");
-      const fall = el("g", { opacity: 0, transform: "translate(0 50)" }, sv);
-      el("path", { d: "M80 520 H1000 V600 H80Z", fill: "#2d6b4f" }, fall);
-      el("path", { d: "M60 600 H1020 V640 H60Z", fill: "#3b4b6e" }, fall);
-      const strands = [];
-      for (let i = 0; i < 18; i++) strands.push(el("path", { d: `M${105 + i * 51} 640 V1060`, stroke: i % 2 ? "#cfe8ff" : "#4da3ff", "stroke-width": 52, "stroke-dasharray": `${220 + (i % 3) * 60} 26`, fill: "none" }, fall));
-      const mist = []; for (let i = 0; i < 7; i++) mist.push(el("circle", { cx: 120 + i * 140, cy: 1020, r: 70, fill: "#e6f2ff", opacity: 0.85 }, fall));
-      const sechs = at("L3", "sechs"), z = at("L3", "24"), l4 = line("L4")[0], nia = at("L4", "Niagarafälle"), ue = at("L4", "über");
+      const pools = [];
+      for (let i = 0; i < 16; i++) { const x = 70 + (i % 4) * 240, y = 600 + Math.floor(i / 4) * 128, g = el("g", { opacity: 0 }, sv);
+        el("rect", { x, y, width: 220, height: 110, rx: 10, fill: "#dfe5f5" }, g); el("rect", { x: x + 10, y: y + 10, width: 200, height: 90, rx: 6, fill: "#2f9be0" }, g);
+        for (let k = 1; k < 4; k++) el("path", { d: `M${x + 14} ${y + 10 + k * 22.5} H${x + 206}`, stroke: "#ffffff", "stroke-width": 4, "stroke-dasharray": "10 8" }, g);
+        pools.push(g); }
+      const sechs = at("L3", "sechs"), z = at("L3", "24"), l4 = line("L4")[0], n96 = at("L4", "9.600"), sek = at("L4", "Sekunde");
       tl.fromTo(D, { opacity: 0, y: 300 }, { opacity: 1, y: 800, duration: 0.6, ease: "bounce.out" }, 0.05);
       tl.to("#s02-box", { opacity: 1, duration: 0.25 }, sechs - 0.3);
       count(tl, "#s02-n", 0, 6, sechs - 0.1, 0.5, "", " LITER");
@@ -41,12 +41,12 @@
       tl.fromTo(F2, { y: 0 }, { y: -580, duration: 1.7, ease: "power2.inOut" }, z - 0.2);
       tl.to([F, F2], { x: -135, duration: 0.6, repeat: 3, yoyo: true, ease: "sine.inOut" }, z);
       tl.to([F, F2], { y: 200, opacity: 0, duration: 0.4, ease: "power3.in" }, l4 - 0.1);
-      tl.to(fall, { opacity: 1, duration: 0.35 }, nia - 0.4);
-      tl.fromTo(strands, { attr: { "stroke-dashoffset": 0 } }, { attr: { "stroke-dashoffset": -1300 }, duration: 3.5, ease: "none" }, nia - 0.4);
-      tl.fromTo(mist, { scale: 0.8, svgOrigin: "540 1020" }, { scale: 1.15, duration: 0.5, repeat: 5, yoyo: true, stagger: 0.08 }, nia - 0.3);
-      tl.to("#s02-box .lab", { textContent: "SO LANGE FÄLLT NIAGARA", duration: 0.01 }, ue - 0.2);
-      tl.set("#s02-n", { textContent: "> 2 STUNDEN" }, ue - 0.2);
-      tl.to("#s02-box", { scale: 1.14, duration: 0.12, yoyo: true, repeat: 1 }, ue);
+      tl.to("#s02-box", { opacity: 0, duration: 0.2 }, n96 - 0.4);
+      tl.to("#s02-box2", { opacity: 1, duration: 0.2 }, n96 - 0.3);
+      count(tl, "#s02-n2", 0, 9600, n96 - 0.2, 1.2, "", "", "power2.out");
+      pools.forEach((p, i) => tl.fromTo(p, { opacity: 0, scale: 0.3, svgOrigin: `${180 + (i % 4) * 240} ${655 + Math.floor(i / 4) * 128}` }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(2)" }, n96 - 0.1 + i * 0.06));
+      tl.to(pools, { y: 8, duration: 0.05, yoyo: true, repeat: 7 }, sek);
+      tl.to("#s02-box2", { scale: 1.14, duration: 0.12, yoyo: true, repeat: 1 }, sek);
       tl.to("#s02-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
       window.__timelines["s02"] = tl;
     })();

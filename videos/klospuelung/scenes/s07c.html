@@ -1,0 +1,38 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .cbox { top: 440px; } /* unter der großen Kapitel-Überschrift */
+    .s07c-c { position: absolute; left: 140px; width: 800px; height: 86px; border-radius: 16px; background: rgba(40,10,24,.92); border: 4px solid #ff3b55;
+      box-shadow: 0 0 26px rgba(255,59,85,.35); font: 900 44px/78px Inter, sans-serif; color: #fff; text-align: center; opacity: 0; }
+    #s07c-big { left: 140px; top: 690px; width: 800px; height: 260px; border-radius: 30px; background: #0b0e22; border: 6px solid #ff4fb0; box-shadow: 0 0 60px rgba(255,79,176,.6);
+      text-align: center; font: 900 120px/1 Inter, sans-serif; color: #ff4fb0; padding-top: 34px; box-sizing: border-box; opacity: 0; }
+    #s07c-big small { display: block; margin-top: 14px; font-size: 56px; color: #fff; }
+  </style>
+  <div id="root" data-composition-id="s07c" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s07c-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s07c-c1" class="s07c-c" style="top:590px">KEIN WASSER IM HOCHHAUS</div>
+      <div id="s07c-c2" class="s07c-c" style="top:696px">FÄKALIEN AUF DEN STRASSEN</div>
+      <div id="s07c-c3" class="s07c-c" style="top:802px">TOTE FLÜSSE</div>
+      <div id="s07c-c4" class="s07c-c" style="top:908px">GESPERRTE KÜSTEN</div>
+      <div id="s07c-c5" class="s07c-c" style="top:1014px">KRANKHEITEN WELTWEIT</div>
+      <div id="s07c-big" class="abs">1 SEKUNDE<small>SPÜLEN</small></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const ts = [at("L16e", "Kein"), at("L16e", "Fäkalien"), at("L16e", "Tote"), at("L16e", "Gesperrte"), at("L16e", "Krankheiten")], ei = at("L16f", "einer");
+      ts.forEach((t, i) => tl.fromTo("#s07c-c" + (i + 1), { opacity: 0, x: i % 2 ? 300 : -300, rotation: i % 2 ? 4 : -4 }, { opacity: 1, x: 0, rotation: 0, duration: 0.3, ease: "back.out(2)" }, t - 0.1));
+      tl.to(".s07c-c", { opacity: 0, scale: 0.9, duration: 0.25 }, ei - 0.45);
+      tl.fromTo("#s07c-big", { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(2.4)" }, ei - 0.2);
+      tl.to("#s07c-big", { x: 10, duration: 0.04, repeat: 7, yoyo: true }, ei + 0.3);
+      tl.to("#s07c-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s07c"] = tl;
+    })();
+  </script>
+</template>
