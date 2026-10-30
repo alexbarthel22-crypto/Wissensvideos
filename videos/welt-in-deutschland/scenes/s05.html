@@ -1,0 +1,50 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .cbox { top: 440px; } /* unter der großen Kapitel-Überschrift */
+    .bx .num { font-size: 44px; }
+  </style>
+  <div id="root" data-composition-id="s05" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s05-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s05-box1" class="cbox r bx" style="opacity:0"><div class="lab">SATT WERDEN</div><div class="num">1 VON 100</div></div>
+      <svg id="s05-svg" class="full" viewBox="0 0 1080 1920"></svg>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s05-svg");
+      const field = el("g", {}, sv);
+      for (let k = 0; k < 6; k++) el("rect", { x: 60, y: 590 + k * 22, width: 960, height: 14, rx: 7, fill: k % 2 ? "#e0b84a" : "#c9a43a" }, field);
+      const ppl = [];
+      for (let i = 0; i < 100; i++) { const x = 104 + (i % 20) * 46, y = 760 + Math.floor(i / 20) * 64; const g = el("g", { opacity: 0 }, sv);
+        el("circle", { cx: x, cy: y, r: 9, fill: "#8f9bc4" }, g); el("rect", { x: x - 11, y: y + 10, width: 22, height: 14, rx: 6, fill: "#8f9bc4" }, g); ppl.push(g); }
+      const one = ppl[44];
+      const ship = el("g", { opacity: 0 }, sv); el("path", { d: "M300 900 H780 L720 990 H360Z", fill: "#ff3b55" }, ship);
+      [[380, 840], [460, 840], [540, 840], [620, 840], [420, 790], [500, 790]].forEach(([x, y], i) => el("rect", { x, y, width: 76, height: 48, fill: ["#4da3ff", "#ffd43b", "#39e27a"][i % 3] }, ship));
+      const xx = txt(sv, 540, 960, "✕", 260, "#ff3b55", { opacity: 0 });
+      const plate = el("g", { opacity: 0 }, sv); el("ellipse", { cx: 540, cy: 860, rx: 230, ry: 70, fill: "#eef2fb" }, plate); el("ellipse", { cx: 540, cy: 852, rx: 165, ry: 46, fill: "#dfe5f5" }, plate);
+      const er = at("L9", "ernähren"), ei = at("L9", "einen"), l10 = line("L10")[0], im = at("L10", "Importe"), hu = at("L10", "Hungersnot");
+      tl.fromTo(field, { opacity: 0, y: -40 }, { opacity: 1, y: 0, duration: 0.4 }, 0.05);
+      ppl.forEach((p, i) => tl.to(p, { opacity: 1, duration: 0.1 }, er - 0.5 + i * 0.01));
+      tl.to("#s05-box1", { opacity: 1, duration: 0.2 }, ei - 0.3);
+      tl.to(one.querySelectorAll("circle, rect"), { attr: { fill: "#39e27a" }, duration: 0.2 }, ei);
+      tl.to(one, { scale: 1.8, svgOrigin: `${104 + 4 * 46} 912`, duration: 0.3, ease: "back.out(2)" }, ei);
+      tl.to(ppl.filter((p) => p !== one), { opacity: 0.35, duration: 0.3 }, ei + 0.2);
+      tl.to([field, ...ppl], { opacity: 0, duration: 0.25 }, l10 - 0.3);
+      tl.to("#s05-box1", { opacity: 0, duration: 0.2 }, l10 - 0.3);
+      tl.fromTo(ship, { opacity: 0, x: -600 }, { opacity: 1, x: 0, duration: 0.6, ease: "power3.out" }, l10 - 0.2);
+      tl.fromTo(xx, { opacity: 0, scale: 2, svgOrigin: "540 880" }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(2)" }, im);
+      tl.to([ship, xx], { opacity: 0, duration: 0.2 }, hu - 0.4);
+      tl.fromTo(plate, { opacity: 0, scale: 0.5, svgOrigin: "540 860" }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(2)" }, hu - 0.3);
+      tl.to(plate, { x: 8, duration: 0.04, repeat: 9, yoyo: true }, hu + 0.2);
+      tl.to("#s05-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s05"] = tl;
+    })();
+  </script>
+</template>

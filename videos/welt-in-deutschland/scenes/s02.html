@@ -1,0 +1,58 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .cbox { top: 440px; } /* unter der großen Kapitel-Überschrift */
+    .bx .num { font-size: 44px; }
+  </style>
+  <div id="root" data-composition-id="s02" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s02-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s02-box1" class="cbox b bx" style="opacity:0"><div class="lab">FLÄCHE</div><div id="s02-n1" class="num">0 KM²</div></div>
+      <div id="s02-box2" class="cbox r bx" style="opacity:0"><div class="lab">PRO PERSON</div><div id="s02-n2" class="num">0 M²</div></div>
+      <div id="s02-box3" class="cbox r bx" style="opacity:0"><div class="lab">MENSCHEN PRO KM²</div><div id="s02-n3" class="num">0</div></div>
+      <svg id="s02-svg" class="full" viewBox="0 0 1080 1920"></svg>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s02-svg");
+      const map = germany(sv, 540, 830, 520, { fill: "#2e3670", stroke: "#4da3ff" });
+      const room = el("g", { opacity: 0 }, sv);
+      el("rect", { x: 240, y: 600, width: 600, height: 480, rx: 10, fill: "#262d63", stroke: "#dfe2f5", "stroke-width": 8 }, room);
+      for (let k = 1; k < 6; k++) el("path", { d: `M${240 + k * 100} 600 V1080`, stroke: "#3a4280", "stroke-width": 3 }, room);
+      for (let k = 1; k < 5; k++) el("path", { d: `M240 ${600 + k * 96} H840`, stroke: "#3a4280", "stroke-width": 3 }, room);
+      const tree = el("g", { opacity: 0 }, room); el("rect", { x: 312, y: 760, width: 22, height: 70, fill: "#8a5a2b" }, tree); el("circle", { cx: 323, cy: 735, r: 55, fill: "#39e27a" }, tree);
+      const lake = el("ellipse", { cx: 700, cy: 700, rx: 100, ry: 55, fill: "#4da3ff", opacity: 0 }, room);
+      const road = el("g", { opacity: 0 }, room); el("rect", { x: 240, y: 940, width: 600, height: 80, fill: "#3b4b6e" }, road); el("path", { d: "M250 980 H830", stroke: "#ffd43b", "stroke-width": 6, "stroke-dasharray": "30 22" }, road);
+      const me = mini(room, 560, 820, "#ff4fb0"); gsap.set(me, { opacity: 1, scale: 2.2, svgOrigin: "560 840" });
+      const sky = el("g", { opacity: 0 }, sv), r = rng(12);
+      for (let i = 0; i < 14; i++) { const w = 60 + r() * 30, h = 220 + r() * 300, x = 20 + i * 75; el("rect", { x, y: 1130 - h, width: w, height: h, fill: ["#3a4078", "#4f5a9a", "#2e3670"][i % 3] }, sky);
+        for (let k = 0; k < Math.floor(h / 60); k++) el("rect", { x: x + 10, y: 1110 - h + 30 + k * 60, width: w - 20, height: 14, fill: "#ffd43b", opacity: 0.7 }, sky); }
+      const qk = at("L3", "357.000"), n44 = at("L4", "44"), wa = at("L4", "Wald"), se = at("L4", "Seen"), au = at("L4", "Autobahn"), l4b = line("L4b")[0], ma = at("L4b", "Manhattan"), ue = at("L4b", "Überall");
+      tl.fromTo(map, { opacity: 0, scale: 0.8, svgOrigin: "540 830" }, { opacity: 1, scale: 1, duration: 0.45, ease: "back.out(1.6)" }, 0.05);
+      tl.to("#s02-box1", { opacity: 1, duration: 0.2 }, qk - 0.3);
+      count(tl, "#s02-n1", 0, 357000, qk - 0.2, 1.2, "", " KM²", "power3.out");
+      tl.to(map, { opacity: 0, scale: 3, svgOrigin: "540 830", duration: 0.4, ease: "power3.in" }, n44 - 0.6);
+      tl.to("#s02-box1", { opacity: 0, duration: 0.15 }, n44 - 0.5);
+      tl.to("#s02-box2", { opacity: 1, duration: 0.2 }, n44 - 0.4);
+      count(tl, "#s02-n2", 0, 44, n44 - 0.3, 0.8, "", " M²", "power3.out");
+      tl.fromTo(room, { opacity: 0, scale: 0.4, svgOrigin: "540 840" }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(1.8)" }, n44 - 0.3);
+      tl.fromTo(tree, { opacity: 0, scale: 0.2, svgOrigin: "323 830" }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2.4)" }, wa - 0.1);
+      tl.to(lake, { opacity: 1, duration: 0.25 }, se - 0.1);
+      tl.fromTo(road, { opacity: 0, x: -300 }, { opacity: 1, x: 0, duration: 0.3, ease: "power3.out" }, au - 0.1);
+      tl.to(room, { opacity: 0, duration: 0.25 }, l4b - 0.3);
+      tl.to("#s02-box2", { opacity: 0, duration: 0.15 }, l4b - 0.3);
+      tl.to("#s02-box3", { opacity: 1, duration: 0.2 }, ma - 0.5);
+      count(tl, "#s02-n3", 0, 22900, ma - 0.4, 1.0, "", "", "power3.out");
+      tl.fromTo(sky, { opacity: 0, y: 300 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, ma - 0.3);
+      tl.to(sky, { x: 8, duration: 0.04, repeat: 7, yoyo: true }, ue);
+      tl.to("#s02-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s02"] = tl;
+    })();
+  </script>
+</template>

@@ -1,0 +1,264 @@
+{
+ "title": "Was wäre, wenn die gesamte Weltbevölkerung in Deutschland lebt?",
+ "voice": "Google Chirp 3 HD (de-DE-Chirp3-HD-Puck), --speed 1.12, erste Zeile +3 dB",
+ "hud": "big",
+ "hud_low": true,
+ "lead_in": 0.25,
+ "_zahlen": "Welt 8,2 Mrd.; DE 357.600 km2 -> 22.900 Menschen/km2 (Manhattan ~28.000), 43,6 m2/Person. Städte proportional: Berlin 3,8/84 -> ~370 Mio. (USA ~335 Mio.), Hamburg 1,9/84 -> ~185 Mio. Wohnungen: 43 Mio. heute; 8,2 Mrd./2,1 Pers. -> ~3,9 Mrd. Äcker: DE versorgt heute ~84 Mio. -> ~1 % von 8,2 Mrd. Wasser: 8,2 Mrd. x 125 L x 365 = 374 km3 vs. ~188 km3 erneuerbar. Strom: Welt ~30.000 TWh / DE ~500 TWh = 60x. Autos: ~1,5 Mrd. x 4,5 m = 6,75 Mio. km vs. ~830.000 km Straßen -> ~8x. Deutsch: ~130 Mio. Sprecher -> ~1 von 60. Medianalter DE ~45, Welt ~31. DE = 0,24 % der Landfläche (149 Mio. km2).",
+ "scenes": [
+  {
+   "id": "s01",
+   "tag": "WAS WÄRE WENN · ALLE?",
+   "lines": [
+    {
+     "id": "L1",
+     "text": "Was wäre, wenn die *y:gesamte *y:Weltbevölkerung / plötzlich *p:in *p:Deutschland lebt?",
+     "speed": 0.95
+    },
+    {
+     "id": "L2",
+     "text": "*y:8,2|Acht-komma-zwei *y:Milliarden Menschen / auf *r:einem *r:Fleck. / Und am Ende passiert etwas / mit dem *g:Rest *g:der *g:Welt, / womit niemand rechnet."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "pop",
+     "at": "L2:8,2",
+     "volume": 0.45
+    },
+    {
+     "name": "impact-bass-1",
+     "at": "L2:einem",
+     "volume": 0.35
+    }
+   ]
+  },
+  {
+   "id": "s02",
+   "tag": "TAG 1 · PLATZ",
+   "lines": [
+    {
+     "id": "L3",
+     "text": "Deutschland hat / *b:357.000|dreihundertsiebenundfünfzigtausend *b:km²|Quadratkilometer."
+    },
+    {
+     "id": "L4",
+     "text": "Pro Person bleiben: / *r:44|vierundvierzig *r:Quadratmeter. / Inklusive *g:Wald, *b:Seen – / und *r:Autobahn."
+    },
+    {
+     "id": "L4b",
+     "text": "Das ganze Land wird / fast so dicht wie *r:Manhattan. / *r:Überall."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "pop",
+     "at": "L4:44",
+     "volume": 0.45
+    },
+    {
+     "name": "impact-bass-2",
+     "at": "L4b:Manhattan",
+     "volume": 0.35
+    }
+   ]
+  },
+  {
+   "id": "s03",
+   "tag": "DIE STÄDTE · BERLIN",
+   "lines": [
+    {
+     "id": "L5",
+     "text": "*y:Berlin hätte / *r:370|dreihundertsiebzig *r:Millionen Einwohner – / *r:mehr *r:als *r:die *r:USA."
+    },
+    {
+     "id": "L6",
+     "text": "*y:Hamburg: / *r:185|hundertfünfundachtzig *r:Millionen. / Jede Großstadt wird / zur *r:größten *r:Stadt *r:der *r:Welt."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "pop",
+     "at": "L5:370",
+     "volume": 0.45
+    },
+    {
+     "name": "pop",
+     "at": "L6:185",
+     "volume": 0.45
+    }
+   ]
+  },
+  {
+   "id": "s04",
+   "tag": "WOHNEN · MIETE",
+   "lines": [
+    {
+     "id": "L7",
+     "text": "Heute gibt es / *b:43|dreiundvierzig *b:Millionen Wohnungen. / Gebraucht würden: / *r:fast *r:4|vier *r:Milliarden."
+    },
+    {
+     "id": "L8",
+     "text": "Die Mieten: / *r:explodieren. / Und eine WG / mit *r:zehn *r:Fremden / wird ganz normal."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "error",
+     "at": "L8:explodieren",
+     "volume": 0.3
+    },
+    {
+     "name": "pop",
+     "at": "L8:zehn",
+     "volume": 0.4
+    }
+   ]
+  },
+  {
+   "id": "s05",
+   "tag": "ESSEN · HUNGER",
+   "lines": [
+    {
+     "id": "L9",
+     "text": "Deutschlands Äcker / ernähren dann nur noch / *r:einen *r:von *r:hundert Menschen."
+    },
+    {
+     "id": "L10",
+     "text": "Ohne Importe: / *r:Hungersnot / in *r:wenigen *r:Wochen."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "impact-bass-1",
+     "at": "L10:Hungersnot",
+     "volume": 0.35
+    }
+   ]
+  },
+  {
+   "id": "s06",
+   "tag": "WASSER & STROM · KNAPP",
+   "lines": [
+    {
+     "id": "L11",
+     "text": "Wasser: / Braucht jeder so viel / wie ein Deutscher heute, / fehlt *r:die *r:Hälfte."
+    },
+    {
+     "id": "L12",
+     "text": "Und der Strombedarf: / *r:sechzigmal so hoch / wie heute."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "error",
+     "at": "L11:Hälfte",
+     "volume": 0.3
+    },
+    {
+     "name": "glitch-1",
+     "at": "L12:sechzigmal",
+     "volume": 0.25
+    }
+   ]
+  },
+  {
+   "id": "s07",
+   "tag": "VERKEHR · STAU",
+   "lines": [
+    {
+     "id": "L13",
+     "text": "Alle Autos der Welt / würden das deutsche Straßennetz / *r:achtmal *r:komplett füllen – / *r:Stoßstange *r:an *r:Stoßstange."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "error",
+     "at": "L13:Stoßstange",
+     "volume": 0.3
+    }
+   ]
+  },
+  {
+   "id": "s08",
+   "tag": "GESELLSCHAFT · DEUTSCH",
+   "lines": [
+    {
+     "id": "L14",
+     "text": "Und die Sprache? / Nur *r:einer *r:von *r:sechzig / spricht Deutsch. / Deutsch wird zur *r:Minderheit – / *r:im *r:eigenen *r:Land."
+    },
+    {
+     "id": "L15",
+     "text": "Dafür sinkt das Durchschnittsalter / von *y:45|fünfundvierzig auf *g:31|einunddreißig Jahre. / Das *g:Rentenproblem? / Plötzlich *g:kleiner."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "pop",
+     "at": "L14:Minderheit",
+     "volume": 0.4
+    },
+    {
+     "name": "notification",
+     "at": "L15:Rentenproblem",
+     "volume": 0.3
+    }
+   ]
+  },
+  {
+   "id": "s09",
+   "tag": "DER REST · WELT",
+   "lines": [
+    {
+     "id": "L16",
+     "text": "Und jetzt das Verrückte: / Deutschland ist nicht mal / *y:ein *y:Viertel *y:Prozent / der Landfläche der Erde."
+    },
+    {
+     "id": "L17",
+     "text": "Der *g:ganze *g:Rest: / *g:menschenleer. / Städte verfallen, / Wälder wachsen zurück – / und *g:Wildtiere erobern / *g:Paris, *g:New *g:York *g:und *g:Tokio."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "impact-bass-2",
+     "at": "L17:menschenleer",
+     "volume": 0.35
+    },
+    {
+     "name": "pop",
+     "at": "L17:Wildtiere",
+     "volume": 0.4
+    }
+   ]
+  },
+  {
+   "id": "s10",
+   "tag": "UND DU?",
+   "hold": 2.4,
+   "lines": [
+    {
+     "id": "L18",
+     "text": "Und *y:du? / Wohin würdest du ziehen: / nach *p:Berlin mit *p:370|dreihundertsiebzig *p:Millionen – / oder *g:aufs *g:Land? / Schreib's in die *y:Kommentare!",
+     "pause": 0.3
+    },
+    {
+     "id": "L19",
+     "text": "Und *p:folg *p:mir für mehr – / sonst zieht *r:heute *r:Abend / *r:jemand *r:bei *r:dir *r:ein.",
+     "pause": 0.3
+    }
+   ],
+   "sfx": [
+    {
+     "name": "notification",
+     "at": "L18:Kommentare",
+     "volume": 0.4
+    },
+    {
+     "name": "impact-bass-1",
+     "at": "L19:ein",
+     "volume": 0.35
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,40 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .cbox { top: 440px; } /* unter der großen Kapitel-Überschrift */
+    .bx .num { font-size: 44px; }
+  </style>
+  <div id="root" data-composition-id="s07" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s07-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s07-box1" class="cbox r bx" style="opacity:0"><div class="lab">STRASSENNETZ</div><div id="s07-n1" class="num">× 0</div></div>
+      <svg id="s07-svg" class="full" viewBox="0 0 1080 1920"></svg>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s07-svg");
+      const road = el("g", {}, sv);
+      el("path", { d: "M440 580 H640 L1040 1130 H40Z", fill: "#2a2f55" }, road);
+      el("path", { d: "M540 590 V1130", stroke: "#ffd43b", "stroke-width": 8, "stroke-dasharray": "50 40" }, road);
+      const COL = ["#ff4fb0", "#4da3ff", "#39e27a", "#ffd43b", "#ff8a3d"], cars = [];
+      for (let row = 0; row < 7; row++) { const t = row / 6, y = 640 + t * 430, s = 0.3 + t * 0.6, half = 100 + t * 400, n = 2 + Math.round(t * 3);
+        for (let k = 0; k < n; k++) cars.push(car(road, 540 - half + (k + 0.5) * (2 * half / n), y, s, COL[(row + k) % 5])); }
+      gsap.set(cars, { opacity: 0 });
+      const st = at("L13", "Straßennetz"), ac = at("L13", "achtmal"), sb = at("L13", "Stoßstange");
+      tl.fromTo(road, { opacity: 0 }, { opacity: 1, duration: 0.35 }, 0.05);
+      cars.forEach((c, i) => tl.to(c, { opacity: 1, duration: 0.12 }, st - 0.6 + i * 0.03));
+      tl.to("#s07-box1", { opacity: 1, duration: 0.2 }, ac - 0.4);
+      count(tl, "#s07-n1", 0, 8, ac - 0.3, 0.8, "× ", " VOLL", "power2.out");
+      tl.to(cars, { y: "-=8", duration: 0.1, yoyo: true, repeat: 7, stagger: 0.01 }, sb);
+      tl.to(road, { x: 6, duration: 0.05, repeat: 9, yoyo: true }, sb + 0.2);
+      tl.to("#s07-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s07"] = tl;
+    })();
+  </script>
+</template>

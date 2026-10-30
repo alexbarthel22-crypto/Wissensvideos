@@ -1,0 +1,51 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .cbox { top: 440px; } /* unter der großen Kapitel-Überschrift */
+    .bx .num { font-size: 44px; }
+    .s08-a { position: absolute; top: 640px; width: 380px; height: 380px; border-radius: 28px; background: rgba(13,16,38,.94); text-align: center; opacity: 0; }
+    .s08-a .n { margin-top: 70px; font: 900 170px/1 Inter, sans-serif; } .s08-a .t { margin-top: 26px; font: 700 34px "Space Mono", monospace; letter-spacing: .1em; color: #dfe2f5; }
+    #s08-a1 { left: 70px; border: 6px solid #ffd43b; } #s08-a1 .n { color: #ffd43b; } #s08-a2 { left: 630px; border: 6px solid #39e27a; } #s08-a2 .n { color: #39e27a; }
+  </style>
+  <div id="root" data-composition-id="s08" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s08-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s08-box1" class="cbox r bx" style="opacity:0"><div class="lab">SPRECHEN DEUTSCH</div><div class="num">1 VON 60</div></div>
+      <svg id="s08-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s08-a1" class="s08-a"><div class="n">45</div><div class="t">HEUTE</div></div><div id="s08-a2" class="s08-a"><div class="n">31</div><div class="t">DANN</div></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s08-svg");
+      const ppl = [], W = ["HELLO", "HOLA", "OLÁ", "BONJOUR", "CIAO", "MERHABA"];
+      for (let i = 0; i < 60; i++) { const x = 130 + (i % 10) * 91, y = 640 + Math.floor(i / 10) * 70; const g = el("g", { opacity: 0 }, sv);
+        el("circle", { cx: x, cy: y, r: 12, fill: "#8f9bc4" }, g); el("rect", { x: x - 15, y: y + 14, width: 30, height: 20, rx: 8, fill: "#8f9bc4" }, g); ppl.push(g); }
+      const de = ppl[34];
+      const bub = el("g", { opacity: 0 }, sv); el("rect", { x: 380, y: 740, width: 230, height: 70, rx: 20, fill: "#ffd43b" }, bub); txt(bub, 495, 790, "HALLO!", 40, "#161a36");
+      const others = W.map((w, i) => { const g = el("g", { opacity: 0 }, sv); const x = 120 + (i % 3) * 330, y = i < 3 ? 1000 : 1080;
+        el("rect", { x: x - 10, y: y - 40, width: 230, height: 56, rx: 16, fill: "#2e3670" }, g); txt(g, x + 105, y - 2, w, 32, "#dfe2f5"); return g; });
+      const arr = txt(sv, 540, 870, "→", 140, "#ffffff", { opacity: 0 });
+      const ei = at("L14", "einer"), mi = at("L14", "Minderheit"), l15 = line("L15")[0], n45 = at("L15", "45"), n31 = at("L15", "31"), re = at("L15", "Rentenproblem");
+      ppl.forEach((p, i) => tl.to(p, { opacity: 1, duration: 0.1 }, 0.1 + i * 0.012));
+      tl.to("#s08-box1", { opacity: 1, duration: 0.2 }, ei - 0.3);
+      tl.to(de.querySelectorAll("circle, rect"), { attr: { fill: "#ffd43b" }, duration: 0.2 }, ei);
+      tl.fromTo(bub, { opacity: 0, scale: 0.4, svgOrigin: "495 810" }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2.4)" }, ei + 0.2);
+      tl.to(ppl.filter((p) => p !== de), { opacity: 0.3, duration: 0.3 }, mi - 0.3);
+      others.forEach((o, i) => tl.fromTo(o, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.25, ease: "back.out(2)" }, mi - 0.2 + i * 0.08));
+      tl.to([...ppl, bub, ...others], { opacity: 0, duration: 0.25 }, l15 - 0.3);
+      tl.to("#s08-box1", { opacity: 0, duration: 0.2 }, l15 - 0.3);
+      tl.fromTo("#s08-a1", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(2)" }, n45 - 0.2);
+      tl.to(arr, { opacity: 1, duration: 0.2 }, n31 - 0.3);
+      tl.fromTo("#s08-a2", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(2)" }, n31 - 0.2);
+      tl.to("#s08-a2", { scale: 1.1, duration: 0.15, yoyo: true, repeat: 3 }, re);
+      tl.to("#s08-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s08"] = tl;
+    })();
+  </script>
+</template>

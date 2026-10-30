@@ -1,0 +1,49 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .cbox { top: 440px; } /* unter der großen Kapitel-Überschrift */
+    .bx .num { font-size: 44px; }
+  </style>
+  <div id="root" data-composition-id="s06" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s06-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s06-box1" class="cbox r bx" style="opacity:0"><div class="lab">WASSER</div><div class="num">– 50 %</div></div>
+      <div id="s06-box2" class="cbox y bx" style="opacity:0"><div class="lab">STROMBEDARF</div><div id="s06-n2" class="num">× 0</div></div>
+      <svg id="s06-svg" class="full" viewBox="0 0 1080 1920"></svg>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s06-svg");
+      const tanks = el("g", {}, sv);
+      [[300, "BEDARF"], [780, "VORHANDEN"]].forEach(([x, l]) => { el("rect", { x: x - 150, y: 620, width: 300, height: 420, rx: 20, fill: "none", stroke: "#dfe2f5", "stroke-width": 8 }, tanks); txt(tanks, x, 1092, l, 40, "#dfe2f5"); });
+      const w1 = el("rect", { x: 156, y: 1036, width: 288, height: 0, rx: 12, fill: "#4da3ff" }, tanks);
+      const w2 = el("rect", { x: 636, y: 1036, width: 288, height: 0, rx: 12, fill: "#4da3ff" }, tanks);
+      const miss = el("rect", { x: 636, y: 628, width: 288, height: 204, fill: "#ff3b55", opacity: 0 }, tanks);
+      const pw = el("g", { opacity: 0 }, sv), cells = [];
+      for (let i = 0; i < 60; i++) cells.push(el("rect", { x: 120 + (i % 10) * 86, y: 640 + Math.floor(i / 10) * 70, width: 70, height: 54, rx: 8, fill: "#2e3670" }, pw));
+      const bolt = el("path", { d: "M560 560 L470 760 H540 L500 900 L640 680 H570 L620 560Z", fill: "#ffd43b", opacity: 0 }, sv);
+      const de = at("L11", "Deutscher"), ha = at("L11", "Hälfte"), l12 = line("L12")[0], sm = at("L12", "sechzigmal");
+      tl.fromTo(tanks, { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.4 }, 0.05);
+      tl.to(w1, { attr: { y: 628, height: 408 }, duration: 1.0, ease: "power2.out" }, de - 0.6);
+      tl.to(w2, { attr: { y: 832, height: 204 }, duration: 1.0, ease: "power2.out" }, de - 0.4);
+      tl.to("#s06-box1", { opacity: 1, duration: 0.2 }, ha - 0.3);
+      tl.to(miss, { opacity: 0.7, duration: 0.15, yoyo: true, repeat: 5 }, ha);
+      tl.to(tanks, { opacity: 0, duration: 0.25 }, l12 - 0.3);
+      tl.to("#s06-box1", { opacity: 0, duration: 0.15 }, l12 - 0.3);
+      tl.to("#s06-box2", { opacity: 1, duration: 0.2 }, l12 - 0.2);
+      tl.to(pw, { opacity: 1, duration: 0.2 }, l12 - 0.1);
+      tl.to(cells[0], { attr: { fill: "#ffd43b" }, duration: 0.1 }, l12);
+      count(tl, "#s06-n2", 1, 60, sm - 0.2, 1.2, "× ", "", "power2.in");
+      cells.slice(1).forEach((c, i) => tl.to(c, { attr: { fill: "#ffd43b" }, duration: 0.05 }, sm - 0.2 + i * 0.02));
+      tl.fromTo(bolt, { opacity: 0, scale: 0.4, svgOrigin: "545 730" }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2.4)" }, sm + 1.0);
+      tl.to("#s06-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s06"] = tl;
+    })();
+  </script>
+</template>
