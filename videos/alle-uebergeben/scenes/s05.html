@@ -1,0 +1,50 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .cbox { top: 440px; } /* unter der großen Kapitel-Überschrift */
+    #s05-box .num { font-size: 52px; }
+  </style>
+  <div id="root" data-composition-id="s05" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s05-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s05-box" class="cbox y" style="opacity:0"><div class="lab">OPERATIONEN · JETZT</div><div id="s05-n" class="num">0</div></div>
+      <svg id="s05-svg" class="full" viewBox="0 0 1080 1920"></svg>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s05-svg");
+      const room = el("g", {}, sv);
+      const lamp = el("g", {}, room); el("path", { d: "M540 560 V610", stroke: "#8f9bc4", "stroke-width": 10 }, lamp);
+      el("path", { d: "M420 660 Q540 580 660 660Z", fill: "#dfe5f5" }, lamp); const beam = el("path", { d: "M440 660 L300 960 H780 L640 660Z", fill: "#fff7c0", opacity: 0.18 }, lamp);
+      el("rect", { x: 200, y: 940, width: 680, height: 40, rx: 12, fill: "#8f9bc4" }, room); el("rect", { x: 520, y: 980, width: 40, height: 120, fill: "#6b7399" }, room);
+      el("rect", { x: 300, y: 890, width: 460, height: 60, rx: 30, fill: "#4da3ff" }, room); el("circle", { cx: 260, cy: 905, r: 46, fill: "#f2c9a5" }, room);
+      const mon = el("g", {}, room); el("rect", { x: 820, y: 700, width: 200, height: 150, rx: 14, fill: "#141838", stroke: "#8f9bc4", "stroke-width": 6 }, mon);
+      const ecg = el("path", { d: "M835 780 h40 l12 -30 l14 60 l12 -30 h40 l12 -30 l14 60 l12 -30 h15", stroke: "#39e27a", "stroke-width": 6, fill: "none" }, mon);
+      const S1 = sick(room, 640, 760, 0.62, "#f2c9a5");
+      el("rect", { x: -62, y: 34, width: 124, height: 50, rx: 14, fill: "#39b3a0" }, S1.g); // Mundschutz
+      gsap.set(S1.g, { opacity: 1 });
+      const alarm = el("rect", { x: 0, y: 560, width: 1080, height: 570, fill: "#ff3b55", opacity: 0 }, sv);
+      const n7 = at("L9", "70.000"), ch = at("L10", "Chirurgen"), wu = at("L10", "Wunden"), na = at("L10", "Narkose"), er = at("L10", "ersticken");
+      tl.fromTo(room, { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.45, ease: "expo.out" }, 0.05);
+      tl.fromTo(beam, { attr: { opacity: 0.12 } }, { attr: { opacity: 0.3 }, duration: 0.5, repeat: 5, yoyo: true }, 0.3);
+      tl.to("#s05-box", { opacity: 1, duration: 0.25 }, n7 - 0.3);
+      count(tl, "#s05-n", 0, 70000, n7 - 0.2, 1.0, "", "", "power3.out");
+      tl.to(S1.head, { attr: { fill: "#b9e07a" }, duration: 0.4 }, ch - 0.2);
+      tl.to(S1.cheeks, { scale: 1.4, transformOrigin: "50% 50%", duration: 0.15, yoyo: true, repeat: 5 }, ch);
+      tl.to(S1.g, { x: 648, duration: 0.05, repeat: 11, yoyo: true }, ch + 0.1);
+      tl.fromTo(alarm, { attr: { opacity: 0 } }, { attr: { opacity: 0.18 }, duration: 0.15, repeat: 5, yoyo: true }, wu);
+      tl.to(ecg, { attr: { stroke: "#ffd43b" }, duration: 0.2 }, na);
+      tl.to(ecg, { attr: { stroke: "#ff3b55", d: "M835 780 h40 l6 -50 l8 90 l8 -60 l8 50 l8 -70 l8 60 l8 -40 h70" }, duration: 0.2 }, er - 0.1);
+      tl.to(mon, { x: 8, duration: 0.04, repeat: 9, yoyo: true }, er);
+      tl.to("#s05-box", { borderColor: "#ff3b55", duration: 0.2 }, er);
+      tl.to("#s05-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s05"] = tl;
+    })();
+  </script>
+</template>

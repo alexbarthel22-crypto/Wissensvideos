@@ -1,0 +1,56 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .cbox { top: 440px; } /* unter der großen Kapitel-Überschrift */
+    .s02b .num { font-size: 44px; }
+  </style>
+  <div id="root" data-composition-id="s02" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s02-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s02-box" class="cbox g s02b" style="opacity:0"><div class="lab">PRO PERSON</div><div class="num">0,5 LITER</div></div>
+      <div id="s02-box2" class="cbox g s02b" style="opacity:0"><div class="lab">ZUSAMMEN</div><div id="s02-n2" class="num">0 L</div></div>
+      <div id="s02-box3" class="cbox y s02b" style="opacity:0"><div class="lab">OLYMPIA-BECKEN</div><div id="s02-n3" class="num">0</div></div>
+      <svg id="s02-svg" class="full" viewBox="0 0 1080 1920"></svg>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s02-svg");
+      const cup = el("g", {}, sv);
+      el("path", { d: "M400 640 H680 L650 980 H430Z", fill: "#dfe5f5", opacity: 0.35 }, cup);
+      const liq = el("path", { d: "M418 800 H662 L650 970 H430Z", fill: "#c9d94a" }, cup);
+      txt(cup, 540, 900, "½ L", 90, "#161a36");
+      const fcl = el("clipPath", { id: "s02-clip" }, sv); el("rect", { x: 0, y: 0, width: 1080, height: 1130 }, fcl);
+      const fg = el("g", { "clip-path": "url(#s02-clip)" }, sv);
+      const Fl = flood(fg, 1180, "#a8b83a"); const F2 = flood(fg, 1210, "#c9d94a");
+      const pools = [];
+      for (let i = 0; i < 16; i++) { const x = 70 + (i % 4) * 240, y = 600 + Math.floor(i / 4) * 128, g = el("g", { opacity: 0 }, sv);
+        el("rect", { x, y, width: 220, height: 110, rx: 10, fill: "#dfe5f5" }, g); el("rect", { x: x + 10, y: y + 10, width: 200, height: 90, rx: 6, fill: "#b5c43e" }, g);
+        for (let k = 1; k < 4; k++) el("path", { d: `M${x + 14} ${y + 10 + k * 22.5} H${x + 206}`, stroke: "#ffffff", "stroke-width": 4, "stroke-dasharray": "10 8" }, g);
+        pools.push(g); }
+      const ha = at("L3", "halber"), v4 = at("L3", "4"), l4 = line("L4")[0], n16 = at("L4", "1.600");
+      tl.fromTo(cup, { opacity: 0, y: 80 }, { opacity: 1, y: 0, duration: 0.45, ease: "back.out(1.8)" }, 0.05);
+      tl.to("#s02-box", { opacity: 1, duration: 0.25 }, ha - 0.3);
+      tl.fromTo(liq, { scaleY: 0, transformOrigin: "50% 100%" }, { scaleY: 1, duration: 0.6, ease: "power2.out" }, ha - 0.2);
+      tl.to(cup, { opacity: 0, y: 120, scale: 0.5, svgOrigin: "540 900", duration: 0.35, ease: "power3.in" }, v4 - 0.5);
+      tl.to("#s02-box", { opacity: 0, duration: 0.15 }, v4 - 0.45);
+      tl.to("#s02-box2", { opacity: 1, duration: 0.2 }, v4 - 0.35);
+      count(tl, "#s02-n2", 0, 4000000000, v4 - 0.3, 1.3, "", " L", "power3.in");
+      tl.fromTo(Fl, { y: 0 }, { y: -600, duration: 1.6, ease: "power2.inOut" }, v4 - 0.3);
+      tl.fromTo(F2, { y: 0 }, { y: -580, duration: 1.7, ease: "power2.inOut" }, v4 - 0.2);
+      tl.to([Fl, F2], { x: -135, duration: 0.6, repeat: 3, yoyo: true, ease: "sine.inOut" }, v4);
+      tl.to([Fl, F2], { y: 200, opacity: 0, duration: 0.4, ease: "power3.in" }, l4 - 0.1);
+      tl.to("#s02-box2", { opacity: 0, duration: 0.15 }, n16 - 0.45);
+      tl.to("#s02-box3", { opacity: 1, duration: 0.2 }, n16 - 0.35);
+      count(tl, "#s02-n3", 0, 1600, n16 - 0.3, 1.1, "", "", "power2.out");
+      pools.forEach((p, i) => tl.fromTo(p, { opacity: 0, scale: 0.3, svgOrigin: `${180 + (i % 4) * 240} ${655 + Math.floor(i / 4) * 128}` }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(2)" }, n16 - 0.2 + i * 0.06));
+      tl.to("#s02-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s02"] = tl;
+    })();
+  </script>
+</template>

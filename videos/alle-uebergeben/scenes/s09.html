@@ -1,0 +1,43 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .cbox { top: 440px; } /* unter der großen Kapitel-Überschrift */
+    .s09-k { position: absolute; left: 90px; width: 900px; border-radius: 28px; background: rgba(13,16,38,.94); text-align: center; opacity: 0; }
+    .s09-k .n { font: 900 150px/1 Inter, sans-serif; letter-spacing: -.02em; }
+    .s09-k .t { margin-top: 12px; font: 700 36px/1.2 "Space Mono", monospace; letter-spacing: .1em; color: #dfe2f5; }
+    #s09-k1 { top: 600px; height: 340px; padding-top: 50px; box-sizing: border-box; border: 5px solid #ff3b55; box-shadow: 0 0 50px rgba(255,59,85,.35); }
+    #s09-k1 .n { color: #ff3b55; }
+    #s09-k2 { top: 600px; height: 400px; padding-top: 46px; box-sizing: border-box; border: 6px solid #4da3ff; box-shadow: 0 0 60px rgba(77,163,255,.45); }
+    #s09-k2 .n { color: #4da3ff; } #s09-k2 .ph { margin-top: 14px; font: 900 64px Inter, sans-serif; color: #ffd43b; }
+  </style>
+  <div id="root" data-composition-id="s09" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s09-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s09-k1" class="s09-k"><div id="s09-n1" class="n">0 M</div><div class="t">SO WEIT FLIEGT ES</div></div>
+      <div id="s09-k2" class="s09-k"><div id="s09-n2" class="n">0 L</div><div class="t">MAGENSÄURE PRO TAG</div><div class="ph">pH 1 – WIE SALZSÄURE</div></div>
+      <svg id="s09-svg" class="full" viewBox="0 0 1080 1920"></svg>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s09-svg");
+      const arr = el("path", { d: "M160 1040 H920 M880 1010 L920 1040 L880 1070", stroke: "#ff3b55", "stroke-width": 12, fill: "none", "stroke-linecap": "round", "stroke-dasharray": 900, "stroke-dashoffset": 900 }, sv);
+      const m3 = at("L16", "3"), l17 = line("L17")[0], z2 = at("L17", "2"), me = at("L17", "Metall");
+      tl.fromTo("#s09-k1", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(2)" }, 0.1);
+      count(tl, "#s09-n1", 0, 3, m3 - 0.4, 0.6, "", " METER", "power3.out");
+      tl.to(arr, { attr: { "stroke-dashoffset": 0 }, duration: 0.6, ease: "power2.out" }, m3 - 0.3);
+      tl.to("#s09-k1", { scale: 1.08, duration: 0.12, yoyo: true, repeat: 1 }, m3 + 0.3);
+      tl.to(["#s09-k1", arr], { opacity: 0, y: -60, filter: "blur(8px)", duration: 0.25 }, l17 - 0.2);
+      tl.fromTo("#s09-k2", { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(2)" }, l17);
+      count(tl, "#s09-n2", 0, 2, z2 - 0.4, 0.6, "", " LITER", "power3.out");
+      tl.to("#s09-k2", { x: 10, duration: 0.04, repeat: 7, yoyo: true }, me);
+      tl.to("#s09-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s09"] = tl;
+    })();
+  </script>
+</template>

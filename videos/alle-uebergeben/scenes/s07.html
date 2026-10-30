@@ -1,0 +1,37 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .cbox { top: 440px; } /* unter der großen Kapitel-Überschrift */
+    #s07-box .num { font-size: 42px; }
+  </style>
+  <div id="root" data-composition-id="s07" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s07-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s07-box" class="cbox r" style="opacity:0"><div class="lab">ZWEITE WELLE</div><div class="num">KETTENREAKTION</div></div>
+      <svg id="s07-svg" class="full" viewBox="0 0 1080 1920"></svg>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s07-svg");
+      const fs = [0, 1, 2, 3, 4].map((i) => sick(sv, 140 + i * 200, 820 + (i % 2) * 40, 0.62, "#f2c9a5"));
+      const waves = [0, 1, 2, 3].map((i) => el("path", { d: `M${200 + i * 200} 770 q20 -20 40 0 t40 0`, stroke: "#9be27a", "stroke-width": 10, fill: "none", "stroke-linecap": "round", opacity: 0 }, sv));
+      const zw = at("L13", "zweite"), si = at("L13", "sieht"), se = at("L13", "selbst"), re = at("L13", "Reflex");
+      fs.forEach((f, i) => tl.fromTo(f.g, { opacity: 0, y: "+=40" }, { opacity: 1, y: "-=40", duration: 0.3, ease: "back.out(2)" }, 0.05 + i * 0.06));
+      tl.to(fs[0].head, { attr: { fill: "#9fd35a" }, duration: 0.2 }, zw - 0.2);
+      tl.to("#s07-box", { opacity: 1, duration: 0.25 }, zw);
+      fs.slice(1).forEach((f, i) => { const t = si + i * ((se - si) / 4);
+        tl.to(waves[i], { opacity: 1, duration: 0.1 }, t - 0.15); tl.to(waves[i], { x: 30, duration: 0.3 }, t - 0.15); tl.to(waves[i], { opacity: 0, duration: 0.1 }, t + 0.2);
+        tl.to(f.head, { attr: { fill: "#9fd35a" }, duration: 0.2 }, t);
+        tl.to(f.cheeks, { scale: 1.4, transformOrigin: "50% 50%", duration: 0.12, yoyo: true, repeat: 3 }, t); });
+      tl.to(fs.map((f) => f.g), { y: "-=20", duration: 0.12, yoyo: true, repeat: 3, stagger: 0.05 }, re);
+      tl.to("#s07-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s07"] = tl;
+    })();
+  </script>
+</template>

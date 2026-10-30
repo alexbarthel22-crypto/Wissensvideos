@@ -1,0 +1,63 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .cbox { top: 440px; } /* unter der großen Kapitel-Überschrift */
+    .s04b .num { font-size: 50px; }
+    #s04-ap { left: 330px; top: 900px; width: 420px; height: 90px; border-radius: 45px; background: #39e27a; color: #0b0e22; text-align: center; font: 900 46px/90px Inter, sans-serif; opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="s04" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s04-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s04-box" class="cbox b s04b" style="opacity:0"><div class="lab">FLUGZEUGE IN DER LUFT</div><div id="s04-n" class="num">0</div></div>
+      <div id="s04-box2" class="cbox y s04b" style="opacity:0"><div class="lab">MENSCHEN AN BORD</div><div id="s04-n2" class="num">0</div></div>
+      <svg id="s04-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s04-ap" class="abs">AUTOPILOT ✓</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s04-svg");
+      const sky = el("g", {}, sv);
+      const r = rng(8); for (let i = 0; i < 6; i++) el("ellipse", { cx: 100 + r() * 880, cy: 620 + r() * 420, rx: 90, ry: 30, fill: "#2e3670", opacity: 0.8 }, sky);
+      const P = plane(sky, 560, 760, 1.25);
+      const rw = el("g", { opacity: 0 }, sv); el("path", { d: "M380 1130 L500 990 H580 L700 1130Z", fill: "#3b4b6e" }, rw); el("path", { d: "M540 1000 V1130", stroke: "#fff", "stroke-width": 6, "stroke-dasharray": "20 16" }, rw);
+      const bag = el("g", { opacity: 0 }, sv); el("rect", { x: 140, y: 880, width: 120, height: 150, rx: 10, fill: "#f3f1ea" }, bag); txt(bag, 200, 970, "🤢", 1, "#fff");
+      el("path", { d: "M140 900 l20 -20 l20 20 l20 -20 l20 20 l20 -20 l20 20", stroke: "#f3f1ea", "stroke-width": 8, fill: "none" }, bag);
+      const iss = el("g", { opacity: 0 }, sv);
+      el("rect", { x: 140, y: 740, width: 260, height: 90, fill: "#4da3ff" }, iss); el("rect", { x: 680, y: 740, width: 260, height: 90, fill: "#4da3ff" }, iss);
+      for (let k = 1; k < 4; k++) { el("path", { d: `M${140 + k * 65} 740 V830`, stroke: "#1b2150", "stroke-width": 4 }, iss); el("path", { d: `M${680 + k * 65} 740 V830`, stroke: "#1b2150", "stroke-width": 4 }, iss); }
+      el("rect", { x: 400, y: 772, width: 280, height: 26, fill: "#8f9bc4" }, iss);
+      el("rect", { x: 450, y: 700, width: 180, height: 170, rx: 30, fill: "#dfe5f5" }, iss);
+      el("circle", { cx: 540, cy: 785, r: 40, fill: "#1b2150" }, iss);
+      const blobs = []; for (let i = 0; i < 9; i++) blobs.push(blob(sv, 200 + (i % 3) * 330 + r() * 60, 640 + Math.floor(i / 3) * 170 + r() * 40, 22 + r() * 12));
+      gsap.set(blobs, { opacity: 0 });
+      const zt = at("L7", "10.000"), mil = at("L7", "Million"), ap = at("L8", "Autopilot"), la = at("L8", "landet"), ra = at("L8b", "Raumstation"), qu = at("L8b", "quer");
+      tl.fromTo(P, { x: -300 }, { x: 560, duration: 0.8, ease: "power3.out" }, 0.05);
+      tl.to(P, { y: 745, duration: 0.6, yoyo: true, repeat: 5, ease: "sine.inOut" }, 0.9);
+      tl.to("#s04-box", { opacity: 1, duration: 0.25 }, zt - 0.3);
+      count(tl, "#s04-n", 0, 10000, zt - 0.2, 0.9, "", "", "power3.out");
+      tl.to("#s04-box", { opacity: 0, duration: 0.15 }, mil - 0.45);
+      tl.to("#s04-box2", { opacity: 1, duration: 0.2 }, mil - 0.35);
+      count(tl, "#s04-n2", 0, 1000000, mil - 0.3, 0.9, "", "", "power3.out");
+      tl.fromTo(bag, { opacity: 0, scale: 0.5, svgOrigin: "200 950" }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2)" }, mil);
+      tl.fromTo("#s04-ap", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2)" }, ap - 0.1);
+      tl.to("#s04-ap", { opacity: 0, duration: 0.2 }, la - 0.4);
+      tl.to(bag, { opacity: 0, duration: 0.2 }, la - 0.4);
+      tl.to(rw, { opacity: 1, duration: 0.3 }, la - 0.3);
+      tl.to(P, { rotation: 14, svgOrigin: "560 760", y: 860, duration: 0.6, ease: "power2.in" }, la - 0.2);
+      tl.to(P, { rotation: 8, svgOrigin: "560 760", duration: 0.08, yoyo: true, repeat: 9 }, la + 0.4);
+      tl.to([sky, rw], { opacity: 0, duration: 0.25 }, ra - 0.4);
+      tl.to("#s04-box2", { opacity: 0, duration: 0.2 }, ra - 0.4);
+      tl.fromTo(iss, { opacity: 0, scale: 0.7, svgOrigin: "540 785" }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(1.8)" }, ra - 0.2);
+      tl.to(iss, { rotation: 6, svgOrigin: "540 785", duration: 3, ease: "sine.inOut" }, ra);
+      blobs.forEach((b, i) => { tl.to(b, { opacity: 1, duration: 0.2 }, qu - 0.2 + i * 0.06); tl.to(b, { x: (i % 2 ? 1 : -1) * (40 + i * 8), y: (i % 3 - 1) * 50, rotation: 120, svgOrigin: `${200 + (i % 3) * 330} ${640 + Math.floor(i / 3) * 170}`, duration: 2, ease: "sine.inOut" }, qu - 0.2 + i * 0.06); });
+      tl.to("#s04-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s04"] = tl;
+    })();
+  </script>
+</template>

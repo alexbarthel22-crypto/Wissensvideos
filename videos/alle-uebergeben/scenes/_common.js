@@ -1,0 +1,133 @@
+      // ---- Gemeinsame Zeichenhelfer (flacher Stil wie Referenz) ----
+      const NS = "http://www.w3.org/2000/svg";
+      const el = (n, a, p) => { const e = document.createElementNS(NS, n); for (const k in a) e.setAttribute(k, a[k]); if (p) p.appendChild(e); return e; };
+      const ITEMS = {
+        cup: (g) => { el("rect", { x: -16, y: -6, width: 32, height: 38, rx: 6, fill: "#fff" }, g); el("rect", { x: -12, y: -2, width: 24, height: 8, fill: "#6b3f1d" }, g);
+                      el("path", { d: "M16 4 q16 0 16 12 q0 12 -16 12", fill: "none", stroke: "#fff", "stroke-width": 6 }, g); },
+        phone: (g) => { el("rect", { x: -15, y: -8, width: 30, height: 54, rx: 6, fill: "#1b2150", stroke: "#8fa2ff", "stroke-width": 3 }, g);
+                        el("rect", { x: -10, y: -2, width: 20, height: 34, rx: 3, fill: "#4da3ff" }, g); },
+        bread: (g) => { el("ellipse", { cx: 0, cy: 10, rx: 30, ry: 20, fill: "#e0a35a" }, g); el("path", { d: "M-14 2 l8 10 M0 0 l8 10 M14 2 l8 10", stroke: "#a86b2c", "stroke-width": 4 }, g); },
+        knife: (g) => { el("rect", { x: -4, y: -4, width: 8, height: 26, rx: 3, fill: "#6b3f1d" }, g); el("path", { d: "M-5 22 L5 22 L3 70 L-6 64Z", fill: "#dfe3f5" }, g); },
+        spoon: (g) => { el("rect", { x: -3, y: -4, width: 6, height: 50, rx: 3, fill: "#c9cde6" }, g); el("ellipse", { cx: 0, cy: 54, rx: 11, ry: 15, fill: "#c9cde6" }, g); },
+        salt: (g) => { el("rect", { x: -12, y: -6, width: 24, height: 40, rx: 6, fill: "#fff" }, g); el("rect", { x: -12, y: -10, width: 24, height: 10, rx: 4, fill: "#8fa2ff" }, g); },
+        pen: (g) => { el("rect", { x: -4, y: -6, width: 8, height: 46, rx: 3, fill: "#ffd43b" }, g); el("path", { d: "M-4 40 L4 40 L0 52Z", fill: "#333" }, g); },
+        glove: (g) => { el("path", { d: "M-16 30 L-16 0 q0 -8 6 -8 L-10 -22 q4 -6 8 0 L-2 -26 q4 -6 8 0 L6 -20 q4 -6 8 0 L14 0 q8 -6 10 2 L16 30Z", fill: "#39e27a" }, g); },
+      };
+      // Arm als Gruppe, dreht um die Schulter (sx, sy); 0° = hängt nach unten
+      function arm(g, id, sx, sy, deg, skin, sleeve, item) {
+        const a = el("g", { id }, g);
+        el("rect", { x: sx - 12, y: sy - 4, width: 24, height: 60, rx: 12, fill: sleeve }, a);
+        el("rect", { x: sx - 10, y: sy + 40, width: 20, height: 56, rx: 10, fill: skin }, a);
+        el("circle", { cx: sx, cy: sy + 100, r: 14, fill: skin }, a);
+        if (item) { const h = el("g", { transform: `translate(${sx} ${sy + 104}) rotate(180)` }, a); ITEMS[item](h); }
+        gsap.set(a, { rotation: deg, svgOrigin: `${sx} ${sy}` });
+        return a;
+      }
+      // Figur: Ursprung = Mitte des Oberkörpers oben. o.arms = [Winkel links, rechts, dritter], o.items = [..3]
+      function person(parent, id, x, y, s = 1, o = {}) {
+        const skin = o.skin || "#f2c9a5", shirt = o.shirt || "#4da3ff", hair = o.hair || "#5b3a26", pants = o.pants || "#2a3170";
+        const g = el("g", { id }, parent);
+        gsap.set(g, { x, y, scale: s, transformOrigin: "0 0" });
+        const ang = o.arms || [12, -12, -150], it = o.items || [];
+        el("rect", { x: -34, y: 118, width: 28, height: 110, rx: 12, fill: pants }, g);
+        el("rect", { x: 6, y: 118, width: 28, height: 110, rx: 12, fill: pants }, g);
+        el("rect", { x: -40, y: 222, width: 36, height: 16, rx: 8, fill: "#1a1f45" }, g);
+        el("rect", { x: 4, y: 222, width: 36, height: 16, rx: 8, fill: "#1a1f45" }, g);
+        const back = [arm(g, id + "-a1", -52, 18, ang[0], skin, shirt, it[0]), arm(g, id + "-a2", 52, 18, ang[1], skin, shirt, it[1])];
+        el("rect", { x: -56, y: 0, width: 112, height: 132, rx: 40, fill: shirt }, g);
+        const third = o.three === false ? null : arm(g, id + "-a3", 0, 46, ang[2], skin, o.shirt3 || shirt, it[2]);
+        el("rect", { x: -12, y: -18, width: 24, height: 22, fill: skin }, g);
+        el("circle", { cx: 0, cy: -58, r: 46, fill: skin }, g);
+        el("path", { d: "M-46 -60 C-46 -118 46 -118 46 -60 C30 -84 -20 -88 -46 -60Z", fill: hair }, g);
+        const eyes = el("g", { id: id + "-eyes" }, g);
+        el("circle", { cx: -16, cy: -56, r: 6, fill: "#161a36" }, eyes); el("circle", { cx: 16, cy: -56, r: 6, fill: "#161a36" }, eyes);
+        el("path", { id: id + "-mouth", d: o.sad ? "M-14 -26 q14 -10 28 0" : "M-14 -32 q14 14 28 0", fill: "none", stroke: "#8a3b2a", "stroke-width": 5, "stroke-linecap": "round" }, g);
+        return { g, a1: back[0], a2: back[1], a3: third, eyes };
+      }
+      // kleine Figur (Menge): Kopf, Körper, drei Arme als Striche
+      function mini(parent, x, y, c) {
+        const g = el("g", { opacity: 0 }, parent);
+        el("circle", { cx: x, cy: y, r: 12, fill: "#f2c9a5" }, g);
+        el("rect", { x: x - 14, y: y + 14, width: 28, height: 40, rx: 10, fill: c }, g);
+        el("path", { d: `M${x - 14} ${y + 22} l-14 22 M${x + 14} ${y + 22} l14 22 M${x} ${y + 30} l10 -26`, stroke: "#f2c9a5", "stroke-width": 6, "stroke-linecap": "round" }, g);
+        return g;
+      }
+      // ---- Klo-Helfer ----
+      const spiral = (r0, turns = 2.2) => { const p = []; for (let i = 0; i <= 60; i++) { const a = (i / 60) * turns * 2 * Math.PI, r = r0 * (1 - i / 66);
+        p.push(`${(r * Math.cos(a)).toFixed(1)},${(r * Math.sin(a)).toFixed(1)}`); } return "M" + p.join(" L"); };
+      // Toilette frontal; Ursprung = Mitte der Brille. Liefert g, handle, water, swirl (drehen mit svgOrigin "0 0")
+      function toilet(p, x, y, s = 1, wc = "#4da3ff") {
+        const g = el("g", {}, p); gsap.set(g, { x, y, scale: s, transformOrigin: "0 0" });
+        el("rect", { x: -72, y: 90, width: 144, height: 64, rx: 16, fill: "#b9c2e0" }, g);
+        el("path", { d: "M-150 -60 C-150 40 -96 96 -72 110 L72 110 C96 96 150 40 150 -60Z", fill: "#dfe5f5" }, g);
+        el("rect", { x: -34, y: -112, width: 68, height: 60, fill: "#cfd6ec" }, g);
+        el("rect", { x: -118, y: -272, width: 236, height: 172, rx: 22, fill: "#eef2fb" }, g);
+        el("rect", { x: -130, y: -292, width: 260, height: 32, rx: 14, fill: "#ffffff" }, g);
+        const handle = el("rect", { x: 46, y: -238, width: 56, height: 18, rx: 9, fill: "#8f9bc4" }, g);
+        el("ellipse", { cx: 0, cy: -60, rx: 166, ry: 54, fill: "#ffffff" }, g);
+        const water = el("ellipse", { cx: 0, cy: -58, rx: 128, ry: 36, fill: wc }, g);
+        const sw = el("g", { transform: "translate(0 -58) scale(1 0.28)" }, g);
+        const swirl = el("g", {}, sw);
+        el("path", { d: spiral(112), fill: "none", stroke: "#cfe8ff", "stroke-width": 16, "stroke-linecap": "round", opacity: 0.9 }, swirl);
+        return { g, handle, water, swirl };
+      }
+      function miniToilet(p, x, y, s = 1) {
+        const g = el("g", { opacity: 0 }, p); gsap.set(g, { x, y, scale: s, transformOrigin: "0 0" });
+        el("rect", { x: -26, y: -58, width: 52, height: 36, rx: 8, fill: "#eef2fb" }, g);
+        el("path", { d: "M-36 -16 C-36 10 -20 22 -14 26 L14 26 C20 22 36 10 36 -16Z", fill: "#dfe5f5" }, g);
+        el("ellipse", { cx: 0, cy: -16, rx: 38, ry: 12, fill: "#fff" }, g);
+        const w = el("ellipse", { cx: 0, cy: -15, rx: 28, ry: 8, fill: "#4da3ff" }, g);
+        return { g, w };
+      }
+      function drop(p, x, y, s, c = "#4da3ff") {
+        const g = el("g", {}, p); gsap.set(g, { x, y, scale: s, transformOrigin: "0 0" });
+        el("path", { d: "M0 -120 C40 -60 80 -10 80 30 A80 80 0 0 1 -80 30 C-80 -10 -40 -60 0 -120Z", fill: c }, g);
+        el("ellipse", { cx: -34, cy: 20, rx: 14, ry: 26, fill: "#ffffff", opacity: 0.45 }, g);
+        return g;
+      }
+      // Wasserfläche mit Welle; Oberkante bei y (per gsap y verschieben)
+      function flood(p, y, c, h = 1400) {
+        const g = el("g", {}, p);
+        el("path", { d: `M-40 ${y} q65 -26 135 0 t135 0 t135 0 t135 0 t135 0 t135 0 t135 0 t135 0 t135 0 V${y + h} H-40Z`, fill: c }, g);
+        return g;
+      }
+      function fish(p, x, y, s, c = "#ff8a3d") {
+        const g = el("g", {}, p); gsap.set(g, { x, y, scale: s, transformOrigin: "0 0" });
+        el("path", { d: "M40 0 L80 -30 L80 30Z", fill: c }, g);
+        el("ellipse", { cx: 0, cy: 0, rx: 52, ry: 30, fill: c }, g);
+        const eye = el("circle", { cx: -26, cy: -6, r: 7, fill: "#161a36" }, g);
+        return { g, eye };
+      }
+      const txt = (p, x, y, s, size, fill, a = {}) => { const t = el("text", Object.assign({ x, y, "text-anchor": "middle", "font-family": "Inter", "font-weight": 900, "font-size": size, fill }, a), p); t.textContent = s; return t; };
+      // ---- Übel-Helfer ----
+      // Gesicht, dem schlecht ist; Ursprung = Kopfmitte. Liefert g, head, cheeks, mouth, eyes, puke
+      function sick(p, x, y, s = 1, skin = "#b9e07a") {
+        const g = el("g", {}, p); gsap.set(g, { x, y, scale: s, transformOrigin: "0 0" });
+        const puke = el("path", { d: "M-28 66 C-40 110 -70 150 -110 200 Q-60 236 0 222 Q60 236 110 200 C70 150 40 110 28 66Z", fill: "#c9d94a", opacity: 0 }, g);
+        const head = el("circle", { cx: 0, cy: 0, r: 120, fill: skin }, g);
+        el("path", { d: "M-120 -20 C-120 -150 120 -150 120 -20 C90 -80 -60 -100 -120 -20Z", fill: "#5b3a26" }, g);
+        const eyes = el("g", {}, g);
+        [-44, 44].forEach((ex) => el("path", { d: `M${ex - 18} -8 l36 0`, stroke: "#161a36", "stroke-width": 9, "stroke-linecap": "round" }, eyes));
+        el("path", { d: "M-66 -36 l40 12 M66 -36 l-40 12", stroke: "#161a36", "stroke-width": 7, "stroke-linecap": "round" }, eyes);
+        const cheeks = [el("ellipse", { cx: -70, cy: 44, rx: 34, ry: 28, fill: "#a6d65e" }, g), el("ellipse", { cx: 70, cy: 44, rx: 34, ry: 28, fill: "#a6d65e" }, g)];
+        const mouth = el("ellipse", { cx: 0, cy: 62, rx: 30, ry: 10, fill: "#4a2a2a" }, g);
+        return { g, head, cheeks, mouth, eyes, puke };
+      }
+      function car(p, x, y, s, c) {
+        const g = el("g", {}, p); gsap.set(g, { x, y, scale: s, transformOrigin: "0 0" });
+        el("rect", { x: -90, y: -40, width: 180, height: 60, rx: 18, fill: c }, g);
+        el("path", { d: "M-55 -40 L-35 -78 H35 L55 -40Z", fill: c }, g);
+        el("path", { d: "M-42 -44 L-28 -70 H28 L42 -44Z", fill: "#a9d2ff" }, g);
+        [-55, 55].forEach((wx) => el("circle", { cx: wx, cy: 22, r: 22, fill: "#161a36" }, g));
+        return g;
+      }
+      function plane(p, x, y, s) {
+        const g = el("g", {}, p); gsap.set(g, { x, y, scale: s, transformOrigin: "0 0" });
+        el("path", { d: "M-40 0 L-150 90 H-100 L20 10Z M-40 0 L-150 -90 H-100 L20 -10Z", fill: "#8f9bc4" }, g);
+        el("path", { d: "M-250 -10 L-280 -70 H-245 L-200 -16Z", fill: "#ff3b55" }, g);
+        el("rect", { x: -270, y: -26, width: 470, height: 52, rx: 26, fill: "#eef2fb" }, g);
+        el("path", { d: "M200 -26 Q250 0 200 26Z", fill: "#eef2fb" }, g);
+        for (let i = 0; i < 8; i++) el("circle", { cx: -190 + i * 44, cy: -6, r: 8, fill: "#4da3ff" }, g);
+        return g;
+      }
+      function blob(p, x, y, r, c = "#c9d94a") { return el("path", { d: `M${x - r} ${y} q0 -${r} ${r} -${r} q${r * 1.2} 0 ${r} ${r} q-${r * 0.2} ${r} -${r} ${r * 0.9} q-${r} 0 -${r} -${r * 0.9}Z`, fill: c }, p); }

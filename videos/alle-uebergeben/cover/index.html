@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="de" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: #0a0c1d; }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden;
+        background: radial-gradient(ellipse 85% 50% at 50% 52%, #2a1f5c 0%, #141838 50%, #090b1a 100%); }
+      .abs { position: absolute; }
+      .c { left: 0; width: 1080px; text-align: center; white-space: nowrap; font-family: "Inter", sans-serif; font-weight: 900; line-height: 1; }
+      #bar { left: 60px; top: 250px; width: 960px; height: 96px; border-radius: 18px; background: #ff3b55; color: #fff; display: flex; align-items: center; padding: 0 30px;
+        box-shadow: 0 0 60px rgba(255,59,85,.6); font: 900 44px Inter, sans-serif; letter-spacing: .04em; }
+      #bar .dot { width: 28px; height: 28px; border-radius: 50%; background: #fff; margin-right: 20px; box-shadow: 0 0 18px #fff; }
+      #bar .live { margin-left: auto; font: 700 32px "Space Mono", monospace; letter-spacing: .14em; padding: 2px 14px; border: 4px solid #fff; border-radius: 10px; }
+      #h1 { top: 384px; font-size: 76px; color: #fff; text-shadow: 0 7px 0 rgba(0,0,0,.55); }
+      #h2 { top: 470px; font-size: 200px; letter-spacing: -.03em; color: #ffd43b; text-shadow: 0 12px 0 #8a6a00, 0 0 70px rgba(255,212,59,.6); }
+      #h3 { top: 690px; font-size: 100px; letter-spacing: -.02em; color: #9be27a; text-shadow: 0 9px 0 #3d6b1e, 0 0 60px rgba(155,226,122,.7); }
+      .chip { padding: 10px 20px; border: 4px solid #ff3b55; border-radius: 12px; background: rgba(40,10,24,.9);
+        color: #ffb3bf; font: 700 38px "Space Mono", monospace; letter-spacing: .04em; white-space: nowrap; }
+      .chip b { color: #ff3b55; }
+      #c1 { left: 50px; top: 1000px; transform: rotate(-4deg); }
+      #c2 { left: 70px; top: 1110px; transform: rotate(2deg); }
+      #c3 { left: 50px; top: 1220px; transform: rotate(-2deg); }
+      #q { left: 60px; width: 960px; top: 1440px; height: 170px; border-radius: 26px; background: #0b0e22; border: 6px solid #ffd43b;
+        box-shadow: 0 0 60px rgba(255,212,59,.45); text-align: center; color: #fff; font: 900 74px/158px Inter, sans-serif; }
+      #q span { color: #ff3b55; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="cover" data-start="0" data-duration="1" data-width="1080" data-height="1920" data-no-timeline>
+      <svg class="abs" style="left:0;top:0;width:1080px;height:1920px" viewBox="0 0 1080 1920">
+        <circle cx="770" cy="1120" r="260" fill="#9be27a" opacity=".25"/>
+        <g transform="translate(770 1060) scale(1.6)">
+          <path d="M-28 66 C-40 110 -70 150 -110 200 Q-60 236 0 222 Q60 236 110 200 C70 150 40 110 28 66Z" fill="#c9d94a"/>
+          <circle r="120" fill="#9fd35a"/>
+          <path d="M-120 -20 C-120 -150 120 -150 120 -20 C90 -80 -60 -100 -120 -20Z" fill="#5b3a26"/>
+          <path d="M-62 -8 h36 M26 -8 h36" stroke="#161a36" stroke-width="9" stroke-linecap="round"/>
+          <path d="M-66 -36 l40 12 M66 -36 l-40 12" stroke="#161a36" stroke-width="7" stroke-linecap="round"/>
+          <ellipse cx="-70" cy="44" rx="40" ry="32" fill="#86c24a"/><ellipse cx="70" cy="44" rx="40" ry="32" fill="#86c24a"/>
+          <ellipse cx="0" cy="62" rx="46" ry="34" fill="#4a2a2a"/>
+        </g>
+        <g transform="translate(560 880)"><path d="M0 -70 L80 60 H-80Z" fill="#ffd43b" stroke="#ff3b55" stroke-width="14" stroke-linejoin="round"/>
+          <text x="0" y="48" text-anchor="middle" font-family="Inter" font-weight="900" font-size="90" fill="#161a36">!</text></g>
+      </svg>
+
+      <div id="bar" class="abs"><span class="dot"></span>EILMELDUNG<span class="live">LIVE</span></div>
+      <div id="h1" class="abs c">WAS PASSIERT, WENN</div>
+      <div id="h2" class="abs c">ALLE</div>
+      <div id="h3" class="abs c">SICH ÜBERGEBEN?</div>
+
+      <div id="c1" class="abs chip">MASSENUNFÄLLE<b>!</b></div>
+      <div id="c2" class="abs chip">OP-SAAL-CHAOS<b>!</b></div>
+      <div id="c3" class="abs chip">4 MRD. LITER<b>!</b></div>
+
+      <div id="q" class="abs">GEFAHR IM <span>SCHLAF</span>?</div>
+    </div>
+  </body>
+</html>

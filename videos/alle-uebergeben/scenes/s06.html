@@ -1,0 +1,51 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .cbox { top: 440px; } /* unter der großen Kapitel-Überschrift */
+    #s06-box .num { font-size: 44px; }
+  </style>
+  <div id="root" data-composition-id="s06" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s06-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s06-box" class="cbox b" style="opacity:0"><div class="lab">SCHLAFEN GERADE</div><div id="s06-n" class="num">0</div></div>
+      <svg id="s06-svg" class="full" viewBox="0 0 1080 1920"></svg>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s06-svg");
+      const moon = el("circle", { cx: 880, cy: 640, r: 60, fill: "#f4d27a" }, sv); el("circle", { cx: 905, cy: 625, r: 52, fill: "#121634" }, sv);
+      const bed = el("g", {}, sv);
+      el("rect", { x: 140, y: 900, width: 800, height: 90, rx: 20, fill: "#6b5aa8" }, bed); el("rect", { x: 140, y: 820, width: 40, height: 260, rx: 10, fill: "#4a3f7a" }, bed);
+      el("rect", { x: 900, y: 860, width: 40, height: 220, rx: 10, fill: "#4a3f7a" }, bed); el("rect", { x: 190, y: 860, width: 170, height: 50, rx: 25, fill: "#eef2fb" }, bed);
+      const sl = el("g", {}, bed);
+      el("rect", { x: 330, y: 850, width: 520, height: 70, rx: 35, fill: "#4da3ff" }, sl);
+      const hd = el("circle", { cx: 300, cy: 840, r: 52, fill: "#b9e07a" }, sl);
+      el("path", { d: "M280 830 h-16 M330 830 h-16", stroke: "#161a36", "stroke-width": 6, "stroke-linecap": "round" }, sl);
+      const zz = txt(sv, 380, 760, "Z z z", 64, "#a9d2ff");
+      const danger = el("circle", { cx: 300, cy: 840, r: 90, fill: "none", stroke: "#ff3b55", "stroke-width": 12, opacity: 0 }, sv);
+      const ok = el("g", { opacity: 0 }, sv); el("circle", { cx: 780, cy: 700, r: 70, fill: "#39e27a" }, ok);
+      el("path", { d: "M745 702 L772 730 L820 678", stroke: "#0b0e22", "stroke-width": 18, fill: "none", "stroke-linecap": "round", "stroke-linejoin": "round" }, ok);
+      const dr = at("L11", "Drittel"), ru = at("L12", "Rücken"), ei = at("L12", "einatmen"), st = at("L12b", "Stabile");
+      tl.fromTo(bed, { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.45, ease: "expo.out" }, 0.05);
+      tl.fromTo(zz, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, repeat: 5, yoyo: true }, 0.3);
+      tl.to("#s06-box", { opacity: 1, duration: 0.25 }, dr - 0.3);
+      count(tl, "#s06-n", 0, 2700000000, dr - 0.2, 1.2, "", "", "power3.out");
+      tl.to(danger, { opacity: 1, duration: 0.15, yoyo: true, repeat: 5 }, ru);
+      tl.to(hd, { attr: { fill: "#9fd35a" }, duration: 0.3 }, ru);
+      tl.to(sv, { x: 8, duration: 0.04, repeat: 9, yoyo: true }, ei);
+      tl.to("#s06-box", { borderColor: "#ff3b55", duration: 0.2 }, ei);
+      tl.to(danger, { opacity: 0, duration: 0.2 }, st - 0.4);
+      tl.to(sl, { rotation: -8, svgOrigin: "590 885", y: -10, duration: 0.4, ease: "back.out(2)" }, st - 0.3);
+      tl.fromTo(ok, { opacity: 0, scale: 0.3, svgOrigin: "780 700" }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(2.4)" }, st);
+      tl.to("#s06-box", { borderColor: "#39e27a", duration: 0.2 }, st);
+      tl.to("#s06-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s06"] = tl;
+    })();
+  </script>
+</template>

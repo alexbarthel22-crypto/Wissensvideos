@@ -1,0 +1,51 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .cbox { top: 440px; } /* unter der großen Kapitel-Überschrift */
+    #s08-box .num, #s08-box2 .num { font-size: 50px; }
+    #s08-st { left: 260px; top: 760px; width: 560px; height: 140px; border: 10px solid #ff3b55; border-radius: 18px; color: #ff3b55; font: 900 70px/120px Inter, sans-serif; text-align: center; opacity: 0; background: rgba(13,16,38,.7); }
+  </style>
+  <div id="root" data-composition-id="s08" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s08-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s08-box" class="cbox r" style="opacity:0"><div class="lab">MAHLZEIT DER WELT</div><div class="num">MILLIARDEN €</div></div>
+      <div id="s08-box2" class="cbox g" style="opacity:0"><div class="lab">REINIGUNGSFIRMEN</div><div class="num">+ REKORD</div></div>
+      <svg id="s08-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s08-st" class="abs">AUSVERKAUFT</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s08-svg");
+      const plate = el("g", {}, sv); el("ellipse", { cx: 540, cy: 860, rx: 260, ry: 80, fill: "#eef2fb" }, plate); el("ellipse", { cx: 540, cy: 850, rx: 190, ry: 52, fill: "#dfe5f5" }, plate);
+      const food = [el("circle", { cx: 470, cy: 820, r: 40, fill: "#ff8a3d" }, plate), el("rect", { x: 520, y: 790, width: 110, height: 50, rx: 18, fill: "#c9611f" }, plate), el("circle", { cx: 600, cy: 835, r: 26, fill: "#39e27a" }, plate)];
+      const r = rng(9), cg = el("g", { "data-layout-allow-overlap": "" }, sv), coins = []; for (let i = 0; i < 14; i++) coins.push(txt(cg, 120 + r() * 840, 600, "€", 70 + r() * 40, "#ffd43b", { opacity: 0 }));
+      const shelf = el("g", { opacity: 0 }, sv);
+      [700, 900].forEach((y) => el("rect", { x: 140, y, width: 800, height: 18, rx: 6, fill: "#8f9bc4" }, shelf));
+      const bottles = []; for (let i = 0; i < 6; i++) { const b = el("g", {}, shelf); const x = 200 + i * 130;
+        el("rect", { x: x - 30, y: 600, width: 60, height: 100, rx: 12, fill: ["#4da3ff", "#ff4fb0", "#39e27a"][i % 3] }, b); el("rect", { x: x - 12, y: 570, width: 30, height: 30, fill: "#dfe5f5" }, b); bottles.push(b); }
+      const mop = el("g", { opacity: 0 }, sv); el("path", { d: "M540 600 L600 1000", stroke: "#c9a46a", "stroke-width": 16 }, mop); el("path", { d: "M540 990 h130 l-20 70 h-90Z", fill: "#dfe5f5" }, mop);
+      const mi = at("L14", "Milliarden"), dr = at("L14", "draußen"), l15 = line("L15")[0], au = at("L15", "ausverkauft"), ge = at("L15", "Geschäft");
+      tl.fromTo(plate, { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.45, ease: "back.out(1.8)" }, 0.05);
+      tl.to("#s08-box", { opacity: 1, duration: 0.25 }, mi - 0.3);
+      coins.forEach((c, i) => tl.set(c, { opacity: 1 }, mi + i * 0.04).to(c, { y: 500 + (i % 4) * 30, rotation: (i % 2 ? 1 : -1) * 200, svgOrigin: `${c.getAttribute("x")} 600`, duration: 1.0, ease: "power1.in" }, mi + i * 0.04).to(c, { opacity: 0, duration: 0.2 }, mi + 1 + i * 0.04));
+      food.forEach((f, i) => tl.to(f, { y: -400, x: (i - 1) * 200, rotation: 200, opacity: 0, duration: 0.6, ease: "power2.in" }, dr - 0.2 + i * 0.08));
+      tl.to(plate, { opacity: 0, duration: 0.25 }, l15 - 0.3);
+      tl.to("#s08-box", { opacity: 0, duration: 0.2 }, l15 - 0.3);
+      tl.to(shelf, { opacity: 1, duration: 0.3 }, l15 - 0.1);
+      bottles.forEach((b, i) => tl.to(b, { y: -500, opacity: 0, duration: 0.35, ease: "power2.in" }, au - 0.6 + i * 0.07));
+      tl.fromTo("#s08-st", { opacity: 0, scale: 2.4, rotation: -10 }, { opacity: 1, scale: 1, rotation: -10, duration: 0.25, ease: "power4.in" }, au);
+      tl.to(["#s08-st", shelf], { opacity: 0, duration: 0.2 }, ge - 0.5);
+      tl.to("#s08-box2", { opacity: 1, duration: 0.25 }, ge - 0.3);
+      tl.fromTo(mop, { opacity: 0, x: -200 }, { opacity: 1, x: 0, duration: 0.35, ease: "back.out(1.8)" }, ge - 0.3);
+      tl.to(mop, { rotation: 12, svgOrigin: "540 600", duration: 0.25, yoyo: true, repeat: 7, ease: "sine.inOut" }, ge + 0.1);
+      tl.to("#s08-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s08"] = tl;
+    })();
+  </script>
+</template>
