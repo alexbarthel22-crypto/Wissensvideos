@@ -9,14 +9,14 @@
    "gemini": "Leda",
    "label": "Neraya",
    "rate": 0.9,
-   "persona": "Neraya, siebzehn, erzählt ihre eigene Geschichte. Hochintelligent, aber schüchtern, unbeholfen und tollpatschig: kleine verlegene Zögerer, ein nervöses Ähm, dann wieder trockener, bissiger Sarkasmus. Zügiges, lebendiges Erzähltempo, nah wie in einem Hörbuch."
+   "persona": "Neraya, siebzehn, erzählt ihre eigene Geschichte. Hochintelligent, aber schüchtern, unbeholfen und tollpatschig: kleine verlegene Zögerer, ein nervöses Ähm, dann wieder trockener, bissiger Sarkasmus. Zügiges, lebendiges Erzähltempo, nah wie in einem Hörbuch. Spricht immer mit normaler, klarer, voller Sprechstimme – niemals flüstern, auch nicht in leisen oder traurigen Momenten."
   },
   "LUNARA": {
    "name": "de-DE-Chirp3-HD-Leda",
    "gemini": "Leda",
    "label": "Neraya",
    "rate": 0.93,
-   "persona": "Neraya, siebzehn, klug, schüchtern, tollpatschig und sarkastisch, aber warmherzig und verletzlich. Zügiges Tempo."
+   "persona": "Neraya, siebzehn, klug, schüchtern, tollpatschig und sarkastisch, aber warmherzig und verletzlich. Zügiges Tempo. Spricht immer mit normaler, klarer, voller Sprechstimme – niemals flüstern, auch nicht in leisen oder traurigen Momenten."
   },
   "KAEL": {
    "name": "de-DE-Chirp3-HD-Orus",
@@ -54,7 +54,7 @@
    "label": "Der Stern",
    "rate": 0.92,
    "fx": "stern",
-   "persona": "Ein uraltes Wesen aus Licht, sanft, verführerisch, flüsternd."
+   "persona": "Ein uraltes Wesen aus Licht, sanft, verführerisch."
   },
   "STERN_DUNKEL": {
    "name": "de-DE-Chirp3-HD-Charon",
@@ -90,14 +90,14 @@
     {
      "who": "ICH",
      "text": "Hey, du! Ja, genau du. Nicht weiterscrollen!",
-     "style": "laut, direkt, eindringlich, ein wenig atemlos, als würde sie jemanden auf der Straße anhalten",
+     "style": "laut, direkt, eindringlich, ein wenig atemlos, als würde sie jemanden auf der Straße anhalten, normale Sprechstimme, nicht flüstern",
      "hook": "HEY, DU!",
      "hook_fly": true
     },
     {
      "who": "ICH",
      "text": "Hast du in letzter Zeit mal in den Sternenhimmel geschaut? Ist dir aufgefallen, dass … einer fehlt?",
-     "style": "schnell, verschwörerisch, dann leise und bedeutungsvoll",
+     "style": "schnell, verschwörerisch, dann ruhig und bedeutungsvoll, normale Sprechstimme, nicht flüstern",
      "pre": 0.4,
      "hook": "EINER FEHLT.",
      "hook_at": 0.72
@@ -105,21 +105,21 @@
     {
      "who": "ICH",
      "text": "Was wäre, wenn das gar keine Sterne sind? Wenn sie etwas gefangen halten … oder jemanden?",
-     "style": "leise, unheimlich, eindringlich, Spannung aufbauend",
+     "style": "ruhig, unheimlich, eindringlich, Spannung aufbauend, normale Sprechstimme, nicht flüstern",
      "pre": 0.5,
      "hook": "GEFANGEN?",
      "hook_at": 0.55
     },
     {
      "who": "ICH",
-     "text": "Ich weiß es. Denn ich habe einen davon geöffnet. Großartige Idee, ich weiß.",
-     "style": "ehrlich, normal laut, am Ende trocken sarkastisch über sich selbst",
+     "text": "Ich weiß es. Denn ich habe einen davon geöffnet. Und genau das war mein größter Fehler … aber von Anfang an.",
+     "style": "ehrlich, normale Sprechstimme, schuldbewusst, dann entschlossen weitererzählend, nicht flüstern",
      "pre": 0.9
     },
     {
      "who": "ICH",
-     "text": "Aber komm mit. Ich zeige dir eine Welt jenseits von allem, was du kennst.",
-     "style": "warm, einladend, geheimnisvoll, Neugier weckend",
+     "text": "Aber komm mit. Ich zeige dir eine Welt jenseits von allem, was du kennst. Bleib dran!",
+     "style": "warm, einladend, Neugier weckend, am Ende energisch und direkt zum Zuschauer, normale Sprechstimme, nicht flüstern",
      "pre": 0.9
     }
    ]
@@ -138,30 +138,30 @@
     {
      "who": "ICH",
      "text": "Das ist meine Welt: Valdoria. Im Jahr 1137 nach dem Sternenbund.",
-     "style": "warm, stolz"
+     "style": "warm, stolz, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "ICH",
      "text": "Hier wachsen die Bäume so hoch, dass ihre Kronen über den Wolken liegen.",
      "pre": 0.56,
-     "style": "staunend, verträumt"
+     "style": "staunend, verträumt, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "ICH",
      "text": "Nachts rieselt Sternenstaub vom Himmel. Davon leben die Himmelswale: uralte Riesen, geboren in den Sturmwolken am Rand der Welt.",
      "pre": 0.56,
-     "style": "verträumt, staunend"
+     "style": "verträumt, staunend, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "ICH",
      "text": "Ihr Gesang trägt die schwebenden Inseln durch die Luft. Ohne ihn würde alles in die Tiefe stürzen.",
      "pre": 0.3,
-     "style": "ehrfürchtig"
+     "style": "ehrfürchtig, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "ICH",
      "text": "Unter die Wolken. Dorthin, wo noch nie jemand war … und von wo niemand zurückkehrt.",
-     "style": "leise, unheimlich, warnend",
+     "style": "ruhig, unheimlich, warnend, normale Sprechstimme, nicht flüstern",
      "pre": 0.4
     }
    ]
@@ -174,13 +174,13 @@
     {
      "who": "ICH",
      "text": "In den Kronen der Riesenbäume liegt Aurelion. Die Stadt der tausend Laternen.",
-     "style": "erzählend, liebevoll"
+     "style": "erzählend, liebevoll, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "ICH",
      "text": "Ganz oben, in der Lichtkrone, herrscht der Orden der Hohen Flamme. Sehr bescheidener Name.",
      "pre": 0.52,
-     "style": "ernst, dann trocken und lustig sarkastisch"
+     "style": "ernst, dann beim letzten Satz sehr sarkastisch, trocken, mit hörbarem Augenrollen und spöttischer Betonung auf 'bescheiden', normale Sprechstimme"
     }
    ]
   },
@@ -192,30 +192,30 @@
     {
      "who": "ICH",
      "text": "Seine Priester sammeln das Licht der Sterne. Nur sie dürfen Magie wirken.",
-     "style": "kühl, mit leiser Bitterkeit"
+     "style": "kühl, mit leiser Bitterkeit, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "ICH",
      "text": "Und wir hier unten, in den Tiefen Ästen? Uns bleibt nur der Rest: ein paar Laternen. Und Gesetze.",
      "pre": 0.38,
-     "style": "bitter, trocken"
+     "style": "bitter, trocken, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "ICH",
      "text": "Das wichtigste Gesetz: Jeder Stern, der fällt, gehört dem Orden. Und wer ein Sternenherz berührt … stirbt.",
      "pre": 0.38,
-     "style": "ernst, langsam"
+     "style": "ernst, langsam, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "ICH",
      "text": "Denn vor tausend Jahren hat ein Mensch genau das getan.",
      "pre": 0.38,
-     "style": "düster, langsam"
+     "style": "düster, langsam, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "ICH",
      "text": "Und Valdoria … brannte.",
-     "style": "langsam, düster, schwer; nach einer kurzen Pause das letzte Wort 'brannte' deutlich und betont aussprechen",
+     "style": "langsam, düster, schwer; nach einer kurzen Pause das letzte Wort 'brannte' deutlich und betont aussprechen, normale Sprechstimme, nicht flüstern",
      "pre": 1.4,
      "keep_tail": true
     }
@@ -229,39 +229,39 @@
     {
      "who": "ICH",
      "text": "Und ich? Ich bin Neraja, siebzehn. Ich kann die Bahnen von zwölf Monden berechnen … aber mit Fremden reden? Lieber nicht.",
-     "style": "schüchtern, leicht verlegen, ehrlich, ohne Sarkasmus",
+     "style": "schüchtern, leicht verlegen, ehrlich, ohne Sarkasmus, normale Sprechstimme, nicht flüstern",
      "display": "Und ich? Ich bin Neraya, siebzehn. Ich kann die Bahnen von zwölf Monden berechnen … aber mit Fremden reden? Lieber nicht."
     },
     {
      "who": "ICH",
      "text": "Jede Nacht zünde ich Laternen an. Für drei Kupfermünzen. Genau der Preis einer Schale Mondweizen-Ramen. Zufall? Nein. Planung.",
      "pre": 0.45,
-     "style": "nüchtern, bei den Ramen schwärmerisch, am Ende trocken und witzig"
+     "style": "nüchtern, bei den Ramen schwärmerisch; 'Zufall? Nein. Planung.' sehr trocken und sarkastisch, mit spöttisch-selbstzufriedenem Unterton, normale Sprechstimme"
     },
     {
      "who": "ICH",
      "text": "Und manchmal klettere ich dorthin, wo niemand klettern darf: auf die Dächer des Ordens. Dort glitzert der Mondstaub.",
      "pre": 0.52,
-     "style": "leise, verschwörerisch, ein bisschen stolz"
+     "style": "ruhig, verschwörerisch, ein bisschen stolz, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "ICH",
      "text": "Für Lunara, meine Mond-Maus. Mondstaub ist ihr Lieblingssnack. Sie ist klein wie ein Daumen … und fest überzeugt, ein Drache zu sein.",
      "pre": 0.45,
-     "style": "liebevoll, amüsiert, mit einem Lächeln in der Stimme",
+     "style": "liebevoll, amüsiert, mit einem Lächeln in der Stimme, normale Sprechstimme, nicht flüstern",
      "display": "Für Lunara, meine Mondmaus. Mondstaub ist ihr Lieblingssnack. Sie ist klein wie ein Daumen … und fest überzeugt, ein Drache zu sein."
     },
     {
      "who": "BO",
      "text": "He! Du kleine Mondwurst! Das ist schon deine dritte Nudel heute!",
-     "style": "empört, aber gutmütig, brummig, komisch",
+     "style": "empört, aber gutmütig, brummig, komisch, normale Sprechstimme, nicht flüstern",
      "pre": 0.3
     },
     {
      "who": "ICH",
      "text": "Höhe macht mir keine Angst. Menschen … ein bisschen. Aber am meisten fürchte ich eine einzige Sache …",
      "pre": 0.8,
-     "style": "schüchtern, dann leiser und ernst"
+     "style": "schüchtern, dann leiser und ernst, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "ICH",
@@ -269,7 +269,7 @@
      "pre": 1.0,
      "rate": 0.8,
      "fx": "zittern",
-     "style": "stockend, den Tränen nahe"
+     "style": "stockend, den Tränen nahe, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "LUNARA",
@@ -277,19 +277,19 @@
      "pre": 1.0,
      "rate": 0.85,
      "fx": "zittern",
-     "style": "leise, mit Tränen in der Stimme, verletzlich"
+     "style": "ruhig, mit Tränen in der Stimme, verletzlich, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "ICH",
      "text": "Sie verschwand vor zwölf Jahren. In der Nacht, in der zuletzt ein Stern fiel.",
      "pre": 0.68,
-     "style": "leise, traurig"
+     "style": "ruhig, traurig, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "ICH",
      "text": "Alles, was mir von ihr blieb, ist dieser Anhänger. Seine Nadel zeigt immer auf denselben Stern.",
      "pre": 0.52,
-     "style": "zärtlich, geheimnisvoll"
+     "style": "zärtlich, geheimnisvoll, normale Sprechstimme, nicht flüstern"
     }
    ],
    "cues": {
@@ -310,14 +310,14 @@
     {
      "who": "ICH",
      "text": "Dann kam diese Nacht. Mitten beim Ramen-Essen begann die Nadel zu zittern.",
-     "style": "spannungsgeladen, leise"
+     "style": "spannungsgeladen, ruhig, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "LUNARA",
      "text": "Nein …",
      "pre": 4.2,
      "rate": 0.8,
-     "style": "atemlos, fassungslos"
+     "style": "atemlos, fassungslos, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "LUNARA",
@@ -325,7 +325,7 @@
      "pre": 0.3,
      "rate": 0.88,
      "fx": "entsetzen",
-     "style": "entsetzt, laut"
+     "style": "entsetzt, laut, normale Sprechstimme, nicht flüstern"
     }
    ]
   },
@@ -338,7 +338,7 @@
      "who": "LUNARA",
      "text": "Folge mir … und du siehst als Erstes, wie meine Geschichte weitergeht.",
      "rate": 0.93,
-     "style": "direkt zum Zuschauer, warm, eindringlich, ein Hauch Lächeln"
+     "style": "direkt zum Zuschauer, warm, eindringlich, ein Hauch Lächeln, normale Sprechstimme, nicht flüstern"
     }
    ],
    "cues": {

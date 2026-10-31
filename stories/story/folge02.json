@@ -9,14 +9,14 @@
    "gemini": "Leda",
    "label": "Neraya",
    "rate": 0.9,
-   "persona": "Neraya, siebzehn, erzählt ihre eigene Geschichte. Hochintelligent, aber schüchtern, unbeholfen und tollpatschig: kleine verlegene Zögerer, ein nervöses Ähm, dann wieder trockener, bissiger Sarkasmus. Zügiges, lebendiges Erzähltempo, nah wie in einem Hörbuch."
+   "persona": "Neraya, siebzehn, erzählt ihre eigene Geschichte. Hochintelligent, aber schüchtern, unbeholfen und tollpatschig: kleine verlegene Zögerer, ein nervöses Ähm, dann wieder trockener, bissiger Sarkasmus. Zügiges, lebendiges Erzähltempo, nah wie in einem Hörbuch. Spricht immer mit normaler, klarer, voller Sprechstimme – niemals flüstern, auch nicht in leisen oder traurigen Momenten."
   },
   "LUNARA": {
    "name": "de-DE-Chirp3-HD-Leda",
    "gemini": "Leda",
    "label": "Neraya",
    "rate": 0.93,
-   "persona": "Neraya, siebzehn, klug, schüchtern, tollpatschig und sarkastisch, aber warmherzig und verletzlich. Zügiges Tempo."
+   "persona": "Neraya, siebzehn, klug, schüchtern, tollpatschig und sarkastisch, aber warmherzig und verletzlich. Zügiges Tempo. Spricht immer mit normaler, klarer, voller Sprechstimme – niemals flüstern, auch nicht in leisen oder traurigen Momenten."
   },
   "KAEL": {
    "name": "de-DE-Chirp3-HD-Orus",
@@ -54,7 +54,7 @@
    "label": "Der Stern",
    "rate": 0.92,
    "fx": "stern",
-   "persona": "Ein uraltes Wesen aus Licht, sanft, verführerisch, flüsternd."
+   "persona": "Ein uraltes Wesen aus Licht, sanft, verführerisch."
   },
   "STERN_DUNKEL": {
    "name": "de-DE-Chirp3-HD-Charon",
@@ -89,37 +89,37 @@
     {
      "who": "ICH",
      "text": "Letztes Mal fiel ein Stern vom Himmel. Aber bevor ich erzähle, was dann geschah … musst du Kael kennen. Meinen großen Bruder.",
-     "style": "schnell zusammenfassend, dann warm und verletzt"
+     "style": "schnell zusammenfassend, dann warm und verletzt, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "ICH",
      "text": "Nachdem Mama verschwand, hat er mich großgezogen. Er hat mir das Klettern beigebracht.",
      "pre": 0.8,
-     "style": "liebevolle Erinnerung"
+     "style": "liebevolle Erinnerung, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "ICH",
      "text": "Bis er eines Morgens in die Lichtkrone ging. Zum Orden. Ohne ein Wort der Erklärung.",
      "pre": 0.8,
-     "style": "bitter, verletzt"
+     "style": "bitter, verletzt, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "KAEL_ERINNERUNG",
      "text": "Ich komme zurück, Nera. Versprochen.",
      "pre": 1.0,
-     "style": "warm, tröstend"
+     "style": "warm, tröstend, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "ICH",
      "text": "Heute ist er Hauptmann der Flammenwache. Seraphines treuester Soldat.",
      "pre": 1.0,
-     "style": "kühl"
+     "style": "kühl, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "ICH",
      "text": "Jeden Monat schickt er mir einen Brief. Ich habe keinen einzigen geöffnet.",
      "pre": 0.8,
-     "style": "trotzig, mit unterdrückter Traurigkeit"
+     "style": "trotzig, mit unterdrückter Traurigkeit, normale Sprechstimme, nicht flüstern"
     }
    ]
   },
@@ -131,56 +131,56 @@
     {
      "who": "ICH",
      "text": "Der Stern schlug in den verbotenen Ruinen ein.",
-     "style": "spannend"
+     "style": "spannend, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "ICH",
      "text": "Eine tote Insel, tief unter der Stadt. Dort begann vor tausend Jahren das große Feuer.",
      "pre": 0.8,
-     "style": "unheimlich"
+     "style": "unheimlich, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "ICH",
      "text": "Die Bäume dort sind zu Stein geworden. Und zwischen ihnen liegen die Knochen von Walen.",
      "pre": 0.8,
-     "style": "flüsternd, gruselig"
+     "style": "ruhig, gruselig, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "ICH",
      "text": "Seit tausend Jahren hat niemand sie betreten. Ich ging trotzdem. Mit zitternden Knien.",
      "pre": 0.9,
-     "style": "entschlossen, dann leise und ehrlich"
+     "style": "entschlossen, dann ruhig und ehrlich, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "STERN",
      "text": "Neraja.",
      "pre": 1.4,
-     "style": "geflüstert, lockend",
+     "style": "ruhig, lockend, normale Sprechstimme, nicht flüstern",
      "display": "Neraya."
     },
     {
      "who": "LUNARA",
      "text": "Wer … wer ist da? … Bitte sei ein Eichhörnchen.",
      "pre": 0.6,
-     "style": "ängstlich, leise, nervöser Galgenhumor"
+     "style": "ängstlich, ruhig, nervöser Galgenhumor, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "STERN",
      "text": "Du hast lange gebraucht. Zwölf Jahre, um genau zu sein.",
      "pre": 0.6,
-     "style": "sanft, amüsiert"
+     "style": "sanft, amüsiert, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "LUNARA",
      "text": "Woher kennst du meinen Namen?",
      "pre": 0.5,
-     "style": "misstrauisch"
+     "style": "misstrauisch, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "STERN",
      "text": "Deine Mutter hat ihn mir verraten. Kurz bevor sie mich an den Himmel gekettet hat.",
      "pre": 0.7,
-     "style": "sanft, mit verborgener Bitterkeit"
+     "style": "sanft, mit verborgener Bitterkeit, normale Sprechstimme, nicht flüstern"
     }
    ]
   },
@@ -195,13 +195,13 @@
     {
      "who": "ICH",
      "text": "Ich hätte weglaufen sollen. Stattdessen streckte ich die Hand aus.",
-     "style": "eindringlich, reuevoll"
+     "style": "eindringlich, reuevoll, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "STERN",
      "text": "Jetzt gehören wir zusammen. Für immer.",
      "pre": 2.6,
-     "style": "zufrieden, hallend"
+     "style": "zufrieden, hallend, normale Sprechstimme, nicht flüstern"
     }
    ]
   },
@@ -217,19 +217,19 @@
      "who": "ICH",
      "text": "In derselben Sekunde begannen oben in der Lichtkrone die Wachglocken zu läuten.",
      "pre": 1.4,
-     "style": "erschrocken"
+     "style": "erschrocken, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "ICH",
      "text": "Sie läuten nur, wenn ein Sternenherz berührt wird. Tausend Jahre lang hatten sie geschwiegen.",
      "pre": 0.7,
-     "style": "angstvoll"
+     "style": "angstvoll, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "ICH",
      "text": "Jetzt wusste ganz Aurelion: Jemand hatte das Gesetz gebrochen. Und der Orden würde kommen.",
      "pre": 0.7,
-     "style": "panisch, schnell"
+     "style": "panisch, schnell, normale Sprechstimme, nicht flüstern"
     }
    ]
   },
@@ -241,26 +241,26 @@
     {
      "who": "ICH",
      "text": "An der Spitze des Ordens steht sie: Seraphine. Die Hohepriesterin. Die mächtigste Magierin von Valdoria.",
-     "style": "respektvoll, etwas ängstlich"
+     "style": "respektvoll, etwas ängstlich, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "SERAPHINE_HALLE",
      "text": "Der Himmel gibt. Der Orden bewahrt. Wer nimmt … verbrennt.",
      "pre": 1.0,
-     "style": "feierlich, drohend"
+     "style": "feierlich, drohend, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "ICH",
      "text": "Man sagt, sie war einmal die engste Freundin meiner Mutter. Und dass sie seit zwölf Jahren nicht mehr gelächelt hat. Vermutlich eingerostet.",
      "pre": 1.0,
-     "style": "nachdenklich, misstrauisch, am Ende trocken sarkastisch"
+     "style": "nachdenklich, misstrauisch, am Ende trocken sarkastisch, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "ICH",
      "text": "Heute Nacht … kam sie, um mich zu holen.",
      "pre": 1.2,
      "rate": 0.86,
-     "style": "leise, unheilvoll"
+     "style": "ruhig, unheilvoll, normale Sprechstimme, nicht flüstern"
     }
    ]
   },
@@ -273,7 +273,7 @@
      "who": "LUNARA",
      "text": "Folge mir … und du siehst als Erstes, wie meine Geschichte weitergeht.",
      "rate": 0.93,
-     "style": "direkt zum Zuschauer, warm, eindringlich, ein Hauch Lächeln"
+     "style": "direkt zum Zuschauer, warm, eindringlich, ein Hauch Lächeln, normale Sprechstimme, nicht flüstern"
     }
    ]
   }

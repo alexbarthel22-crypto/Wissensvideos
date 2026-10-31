@@ -9,14 +9,14 @@
    "gemini": "Leda",
    "label": "Neraya",
    "rate": 0.9,
-   "persona": "Neraya, siebzehn, erzählt ihre eigene Geschichte. Hochintelligent, aber schüchtern, unbeholfen und tollpatschig: kleine verlegene Zögerer, ein nervöses Ähm, dann wieder trockener, bissiger Sarkasmus. Zügiges, lebendiges Erzähltempo, nah wie in einem Hörbuch."
+   "persona": "Neraya, siebzehn, erzählt ihre eigene Geschichte. Hochintelligent, aber schüchtern, unbeholfen und tollpatschig: kleine verlegene Zögerer, ein nervöses Ähm, dann wieder trockener, bissiger Sarkasmus. Zügiges, lebendiges Erzähltempo, nah wie in einem Hörbuch. Spricht immer mit normaler, klarer, voller Sprechstimme – niemals flüstern, auch nicht in leisen oder traurigen Momenten."
   },
   "LUNARA": {
    "name": "de-DE-Chirp3-HD-Leda",
    "gemini": "Leda",
    "label": "Neraya",
    "rate": 0.93,
-   "persona": "Neraya, siebzehn, klug, schüchtern, tollpatschig und sarkastisch, aber warmherzig und verletzlich. Zügiges Tempo."
+   "persona": "Neraya, siebzehn, klug, schüchtern, tollpatschig und sarkastisch, aber warmherzig und verletzlich. Zügiges Tempo. Spricht immer mit normaler, klarer, voller Sprechstimme – niemals flüstern, auch nicht in leisen oder traurigen Momenten."
   },
   "KAEL": {
    "name": "de-DE-Chirp3-HD-Orus",
@@ -54,7 +54,7 @@
    "label": "Der Stern",
    "rate": 0.92,
    "fx": "stern",
-   "persona": "Ein uraltes Wesen aus Licht, sanft, verführerisch, flüsternd."
+   "persona": "Ein uraltes Wesen aus Licht, sanft, verführerisch."
   },
   "STERN_DUNKEL": {
    "name": "de-DE-Chirp3-HD-Charon",
@@ -90,14 +90,14 @@
      "who": "SERAPHINE",
      "text": "Tritt zurück, Kind.",
      "pre": 0.4,
-     "style": "kalt, gebieterisch"
+     "style": "kalt, gebieterisch, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "SERAPHINE",
      "text": "Was du da in der Hand hältst …",
      "pre": 0.6,
      "rate": 0.88,
-     "style": "leise, mit Entsetzen"
+     "style": "ruhig, mit Entsetzen, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "SERAPHINE",
@@ -105,31 +105,31 @@
      "pre": 0.3,
      "rate": 0.86,
      "fx": "entsetzen",
-     "style": "voller Entsetzen, laut, die Stimme bricht fast"
+     "style": "voller Entsetzen, laut, die Stimme bricht fast, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "LUNARA",
      "text": "Es kennt meine Mutter!",
      "pre": 0.5,
-     "style": "verzweifelt, laut"
+     "style": "verzweifelt, laut, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "SERAPHINE",
      "text": "Natürlich kennt es sie.",
      "pre": 0.6,
-     "style": "ruhig, fast mitleidig"
+     "style": "ruhig, fast mitleidig, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "SERAPHINE",
      "text": "Es hat sie getötet.",
      "pre": 0.8,
-     "style": "eiskalt, langsam"
+     "style": "eiskalt, langsam, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "STERN",
      "text": "Sie lügt, Neraja.",
      "pre": 0.7,
-     "style": "geflüstert, drängend",
+     "style": "ruhig, drängend, normale Sprechstimme, nicht flüstern",
      "display": "Sie lügt, Neraya."
     }
    ]
@@ -142,43 +142,43 @@
     {
      "who": "SERAPHINE",
      "text": "Hauptmann. Tu deine Pflicht.",
-     "style": "scharf, befehlend"
+     "style": "scharf, befehlend, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "ICH",
      "text": "Und aus der Reihe der Flammenwache trat der einzige Mensch, den ich noch hatte.",
      "pre": 0.7,
-     "style": "erschüttert"
+     "style": "erschüttert, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "LUNARA",
      "text": "Kael …? Du … du gehörst wirklich zu ihnen?",
      "pre": 1.0,
-     "style": "ungläubig, verletzt"
+     "style": "ungläubig, verletzt, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "KAEL",
      "text": "Es tut mir leid, Nera. Das war der Handel.",
      "pre": 0.7,
-     "style": "gequält"
+     "style": "gequält, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "KAEL",
      "text": "Wenn der Stern fällt, und du berührst ihn … muss ich es tun. Nur deshalb haben sie dich zwölf Jahre in Ruhe gelassen.",
      "pre": 0.5,
-     "style": "gequält, mit erstickter Stimme"
+     "style": "gequält, mit erstickter Stimme, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "LUNARA",
      "text": "Du hast es gewusst. Die ganze Zeit.",
      "pre": 0.6,
-     "style": "bitter, den Tränen nahe"
+     "style": "bitter, den Tränen nahe, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "KAEL",
      "text": "Ich habe es gewusst.",
      "pre": 0.6,
-     "style": "leise, schuldbewusst"
+     "style": "ruhig, schuldbewusst, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "KAEL",
@@ -186,7 +186,7 @@
      "pre": 0.9,
      "rate": 0.95,
      "fx": "zittern",
-     "style": "völlig verzweifelt, schreiend, mit Tränen"
+     "style": "völlig verzweifelt, schreiend, mit Tränen, normale Sprechstimme, nicht flüstern"
     }
    ]
   },
@@ -202,13 +202,13 @@
     {
      "who": "ICH",
      "text": "Er senkte sein Schwert. Seraphine zögerte keine Sekunde.",
-     "style": "schnell, angespannt"
+     "style": "schnell, angespannt, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "LUNARA",
      "text": "Kael! Nein!",
      "pre": 1.6,
-     "style": "schreiend, panisch"
+     "style": "schreiend, panisch, normale Sprechstimme, nicht flüstern"
     }
    ]
   },
@@ -222,7 +222,7 @@
      "text": "Nera … Mama hat keinen Stern eingesperrt …",
      "rate": 0.85,
      "fx": "schwach",
-     "style": "schwer verletzt, schwach, flüsternd"
+     "style": "schwer verletzt, schwach, ruhig, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "KAEL",
@@ -230,14 +230,14 @@
      "pre": 0.8,
      "rate": 0.85,
      "fx": "schwach",
-     "style": "schwer verletzt, flüsternd"
+     "style": "schwer verletzt, ruhig, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "LUNARA",
      "text": "Warum?",
      "pre": 0.5,
      "fx": "zittern",
-     "style": "weinend"
+     "style": "weinend, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "KAEL",
@@ -245,7 +245,7 @@
      "pre": 0.6,
      "rate": 0.83,
      "fx": "schwach",
-     "style": "mit letzter Kraft, kaum hörbar"
+     "style": "mit letzter Kraft, schwach, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "LUNARA",
@@ -253,14 +253,14 @@
      "pre": 1.4,
      "rate": 0.92,
      "fx": "zittern",
-     "style": "schluchzend, verzweifelt"
+     "style": "schluchzend, verzweifelt, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "ICH",
      "text": "Seine Hand wurde schlaff. Ich dachte, ich hätte ihn für immer verloren.",
      "pre": 1.6,
      "rate": 0.86,
-     "style": "gebrochen, leise"
+     "style": "gebrochen, ruhig, normale Sprechstimme, nicht flüstern"
     }
    ]
   },
@@ -276,20 +276,20 @@
     {
      "who": "STERN_DUNKEL",
      "text": "Weine nicht, Neraja. Du hast ihn nicht verloren. Du hast mich gewonnen.",
-     "style": "tief, triumphierend, langsam",
+     "style": "tief, triumphierend, langsam, normale Sprechstimme, nicht flüstern",
      "display": "Weine nicht, Neraya. Du hast ihn nicht verloren. Du hast mich gewonnen."
     },
     {
      "who": "SERAPHINE",
      "text": "Bei allen Göttern … es ist zu spät.",
      "pre": 0.6,
-     "style": "entsetzt, zum ersten Mal ängstlich"
+     "style": "entsetzt, zum ersten Mal ängstlich, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "ICH",
      "text": "Und einer nach dem anderen erloschen die Sterne über Valdoria. Die Himmelswale hörten auf zu singen.",
      "pre": 0.6,
-     "style": "düster, langsam"
+     "style": "düster, langsam, normale Sprechstimme, nicht flüstern"
     }
    ]
   },
@@ -304,32 +304,32 @@
     {
      "who": "ICH",
      "text": "Alle Sterne … bis auf einen. Den, auf den die Nadel meines Anhängers zeigt.",
-     "style": "leise"
+     "style": "ruhig, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "MUTTER",
      "text": "Neraja. Hör mir zu. Lass ihn nicht los, was auch immer er dir verspricht.",
      "pre": 1.2,
-     "style": "eindringlich, liebevoll, aus weiter Ferne",
+     "style": "eindringlich, liebevoll, aus weiter Ferne, normale Sprechstimme, nicht flüstern",
      "display": "Neraya. Hör mir zu. Lass ihn nicht los, was auch immer er dir verspricht."
     },
     {
      "who": "MUTTER",
      "text": "Sonst stirbt die Welt.",
      "pre": 0.6,
-     "style": "ernst, flehend"
+     "style": "ernst, flehend, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "STERN_DUNKEL",
      "text": "Hallo … Schwester.",
      "pre": 1.8,
-     "style": "leise, genüsslich, bedrohlich"
+     "style": "ruhig, genüsslich, bedrohlich, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "LUNARA",
      "text": "Schwester …?",
      "pre": 0.9,
-     "style": "fassungslos, leise"
+     "style": "fassungslos, ruhig, normale Sprechstimme, nicht flüstern"
     }
    ]
   },
@@ -341,13 +341,13 @@
     {
      "who": "ICH",
      "text": "In dieser Nacht erfuhr ich, dass meine Mutter kein Mensch war.",
-     "style": "langsam, schwer"
+     "style": "langsam, schwer, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "ICH",
      "text": "Und ich … bin es nur zur Hälfte.",
      "pre": 0.9,
-     "style": "leise, die größte Enthüllung"
+     "style": "ruhig, die größte Enthüllung, normale Sprechstimme, nicht flüstern"
     }
    ]
   },
@@ -359,7 +359,7 @@
     {
      "who": "SERAPHINE",
      "text": "Findet das Mädchen. Tot oder lebendig.",
-     "style": "geflüstert, eiskalt"
+     "style": "ruhig, eiskalt, normale Sprechstimme, nicht flüstern"
     }
    ]
   },
@@ -372,7 +372,7 @@
      "who": "LUNARA",
      "text": "Halb Mensch. Halb Stern. Null Plan. Folge mir … und du siehst, wie ich das überlebe.",
      "rate": 0.93,
-     "style": "direkt zum Zuschauer, trocken sarkastisch, ein Hauch Lächeln"
+     "style": "direkt zum Zuschauer, trocken sarkastisch, ein Hauch Lächeln, normale Sprechstimme, nicht flüstern"
     }
    ]
   }
