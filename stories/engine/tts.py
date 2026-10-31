@@ -24,6 +24,7 @@ SR = 48000
 API = "https://texttospeech.googleapis.com/v1/text:synthesize"
 GEMINI_API = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
 GEMINI_MODEL = os.environ.get("GEMINI_TTS_MODEL", "gemini-2.5-pro-preview-tts")
+FALLBACK = os.environ.get("GEMINI_TTS_FALLBACK")
 ENGINE = "gemini" if os.environ.get("GEMINI_API_KEY") else "chirp"
 
 # Presence boost and gentle compression for intelligibility under music
@@ -66,7 +67,7 @@ def synth(text, voice, rate, path):
         f.write(audio)
 
 
-def synth_gemini(text, voice, line, path):
+def synth_gemini(text, voice, line, path, model=None):
     direction = f"{voice.get('persona', '')} Sprich auf Hochdeutsch mit sehr klarer, deutlicher Aussprache."
     if line.get("style"):
         direction += f" Spielweise: {line['style']}."
@@ -80,17 +81,17 @@ def synth_gemini(text, voice, line, path):
     max_dur = 3.0 + len(text) / 7.0  # far slower than any real reading: the model read extra text
     for attempt in range(12):
         req = urllib.request.Request(
-            GEMINI_API.format(model=GEMINI_MODEL), data=json.dumps(body).encode(),
+            GEMINI_API.format(model=model or GEMINI_MODEL), data=json.dumps(body).encode(),
             headers={"Content-Type": "application/json", "x-goog-api-key": os.environ["GEMINI_API_KEY"]})
         try:
             with urllib.request.urlopen(req, timeout=120) as r:
                 pcm = base64.b64decode(json.load(r)["candidates"][0]["content"]["parts"][0]["inlineData"]["data"])
-        except urllib.error.HTTPError as e:
-            # rate limit / transient server error: back off and retry
-            if e.code not in (429, 500, 503) or attempt == 11:
+        except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError) as e:
+            # rate limit / transient server or network error: back off and retry
+            if getattr(e, "code", 503) not in (429, 500, 503) or attempt == 11:
                 raise
             wait = min(90, 15 * (attempt + 1))
-            print(f"  Gemini {e.code}, neuer Versuch in {wait}s", flush=True)
+            print(f"  Gemini {getattr(e, 'code', 'Timeout')}, neuer Versuch in {wait}s", flush=True)
             time.sleep(wait)
             continue
         dur = len(pcm) / 2 / 24000
@@ -186,6 +187,12 @@ def main(story_path, out_dir):
                 ident = f"{v['name']}|{rate}|{line['text']}"
             key = hashlib.sha1(ident.encode()).hexdigest()[:12]
             raw = os.path.join(vdir, f"{key}.raw.wav")
+            model = None
+            if ENGINE == "gemini" and FALLBACK and not os.path.exists(raw):
+                # main model unavailable (e.g. daily quota): use the fallback model, cached under its own key
+                model = FALLBACK
+                key = hashlib.sha1(ident.replace(GEMINI_MODEL, FALLBACK, 1).encode()).hexdigest()[:12]
+                raw = os.path.join(vdir, f"{key}.raw.wav")
             fx = line.get("fx", v.get("fx"))
             tempo = float(story.get("tempo", 1.0)) if ENGINE == "gemini" else 1.0
             ttag = f".t{tempo:g}" if tempo != 1.0 else ""
@@ -199,7 +206,7 @@ def main(story_path, out_dir):
                         n = int(24000 * len(line["text"]) / 15.5)
                         w.writeframes((np.sin(np.arange(n) / 9) * 3000).astype(np.int16).tobytes())
                 elif ENGINE == "gemini":
-                    synth_gemini(line["text"], v, line, raw)
+                    synth_gemini(line["text"], v, line, raw, model)
                 else:
                     synth(line["text"], v["name"], rate, raw)
             if not os.path.exists(fin):

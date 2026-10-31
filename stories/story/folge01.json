@@ -84,8 +84,8 @@
  "scenes": [
   {
    "id": "kalt",
-   "pre": 0.6,
-   "post": 0.4,
+   "pre": 0.42,
+   "post": 0.28,
    "lines": [
     {
      "who": "ICH",
@@ -97,27 +97,27 @@
      "who": "ICH",
      "text": "Hast du in letzter Zeit mal in den Sternenhimmel geschaut? Ist dir aufgefallen, dass … einer fehlt?",
      "style": "schnell, verschwörerisch, dann leise und bedeutungsvoll",
-     "pre": 0.4,
+     "pre": 0.3,
      "hook": "EINER FEHLT."
     },
     {
      "who": "ICH",
      "text": "Was wäre, wenn das gar keine Sterne sind? Wenn sie etwas gefangen halten … oder jemanden?",
      "style": "flüsternd, unheimlich, Spannung aufbauend",
-     "pre": 0.5,
+     "pre": 0.38,
      "hook": "GEFANGEN?"
     },
     {
      "who": "ICH",
      "text": "Ich weiß es. Denn ich … habe einen davon geöffnet.",
      "style": "flüsternd, schuldbewusst",
-     "pre": 0.6
+     "pre": 0.45
     },
     {
      "who": "ICH",
      "text": "Aber komm mit. Ich zeige dir eine Welt jenseits von allem, was du kennst.",
      "style": "warm, einladend, geheimnisvoll, Neugier weckend",
-     "pre": 0.6
+     "pre": 0.45
     }
    ]
   },
@@ -129,8 +129,8 @@
   },
   {
    "id": "welt",
-   "pre": 0.7,
-   "post": 0.5,
+   "pre": 0.49,
+   "post": 0.35,
    "lines": [
     {
      "who": "ICH",
@@ -140,33 +140,33 @@
     {
      "who": "ICH",
      "text": "Hier wachsen die Bäume so hoch, dass ihre Kronen über den Wolken liegen.",
-     "pre": 0.56,
+     "pre": 0.42,
      "style": "staunend, verträumt"
     },
     {
      "who": "ICH",
      "text": "Nachts rieselt Sternenstaub vom Himmel. Davon leben die Himmelswale: uralte Riesen, geboren in den Sturmwolken am Rand der Welt.",
-     "pre": 0.56,
+     "pre": 0.42,
      "style": "verträumt, staunend"
     },
     {
      "who": "ICH",
      "text": "Ihr Gesang trägt die schwebenden Inseln durch die Luft. Ohne ihn würde alles in die Tiefe stürzen.",
-     "pre": 0.3,
+     "pre": 0.25,
      "style": "ehrfürchtig"
     },
     {
      "who": "ICH",
      "text": "Unter die Wolken. Dorthin, wo noch nie jemand war … und von wo niemand zurückkehrt.",
      "style": "leise, unheimlich, warnend",
-     "pre": 0.4
+     "pre": 0.3
     }
    ]
   },
   {
    "id": "stadt",
-   "pre": 0.6,
-   "post": 0.5,
+   "pre": 0.42,
+   "post": 0.35,
    "lines": [
     {
      "who": "ICH",
@@ -176,15 +176,15 @@
     {
      "who": "ICH",
      "text": "Ganz oben, in der Lichtkrone, herrscht der Orden der Hohen Flamme. Sehr bescheidener Name.",
-     "pre": 0.52,
+     "pre": 0.39,
      "style": "ernst, dann trocken und lustig sarkastisch"
     }
    ]
   },
   {
    "id": "lichtkrone",
-   "pre": 0.5,
-   "post": 0.6,
+   "pre": 0.35,
+   "post": 0.42,
    "lines": [
     {
      "who": "ICH",
@@ -194,33 +194,33 @@
     {
      "who": "ICH",
      "text": "Und wir hier unten, in den Tiefen Ästen? Uns bleibt nur der Rest: ein paar Laternen. Und Gesetze.",
-     "pre": 0.38,
+     "pre": 0.29,
      "style": "bitter, trocken"
     },
     {
      "who": "ICH",
      "text": "Das wichtigste Gesetz: Jeder Stern, der fällt, gehört dem Orden. Und wer ein Sternenherz berührt … stirbt.",
-     "pre": 0.38,
+     "pre": 0.29,
      "style": "ernst, langsam"
     },
     {
      "who": "ICH",
      "text": "Denn vor tausend Jahren hat ein Mensch genau das getan.",
-     "pre": 0.38,
+     "pre": 0.29,
      "style": "düster, langsam"
     },
     {
      "who": "ICH",
      "text": "Und Valdoria … brannte.",
      "style": "sehr langsam, düster, schwer, mit einer langen Pause vor dem letzten Wort",
-     "pre": 1.1
+     "pre": 0.83
     }
    ]
   },
   {
    "id": "lunara",
-   "pre": 0.8,
-   "post": 0.5,
+   "pre": 0.56,
+   "post": 0.35,
    "lines": [
     {
      "who": "ICH",
@@ -230,19 +230,19 @@
     {
      "who": "ICH",
      "text": "Jede Nacht zünde ich Laternen an. Für drei Kupfermünzen. Genau der Preis einer Schale Mondweizen-Ramen. Zufall? Nein. Planung.",
-     "pre": 0.45,
+     "pre": 0.34,
      "style": "nüchtern, bei den Ramen schwärmerisch, am Ende trocken und witzig"
     },
     {
      "who": "ICH",
      "text": "Und manchmal klettere ich dorthin, wo niemand klettern darf: auf die Dächer des Ordens. Dort glitzert der Mondstaub.",
-     "pre": 0.52,
+     "pre": 0.39,
      "style": "leise, verschwörerisch, ein bisschen stolz"
     },
     {
      "who": "ICH",
      "text": "Für Lunara, meine Mond-Maus. Mondstaub ist ihr Lieblingssnack. Sie ist klein wie ein Daumen … und fest überzeugt, ein Drache zu sein.",
-     "pre": 0.45,
+     "pre": 0.34,
      "style": "liebevoll, amüsiert, mit einem Lächeln in der Stimme",
      "display": "Für Lunara, meine Mondmaus. Mondstaub ist ihr Lieblingssnack. Sie ist klein wie ein Daumen … und fest überzeugt, ein Drache zu sein."
     },
@@ -250,18 +250,18 @@
      "who": "BO",
      "text": "He! Du kleiner Drache! Das ist schon meine dritte Nudel heute!",
      "style": "empört, aber gutmütig, brummig, komisch",
-     "pre": 0.3
+     "pre": 0.25
     },
     {
      "who": "ICH",
      "text": "Höhe macht mir keine Angst. Menschen … ein bisschen. Aber am meisten fürchte ich eine einzige Sache …",
-     "pre": 0.8,
+     "pre": 0.6,
      "style": "schüchtern, dann leiser und ernst"
     },
     {
      "who": "ICH",
      "text": "… zu vergessen, wie die Stimme meiner Mutter geklungen hat.",
-     "pre": 0.7,
+     "pre": 0.52,
      "rate": 0.8,
      "fx": "zittern",
      "style": "stockend, den Tränen nahe"
@@ -269,7 +269,7 @@
     {
      "who": "LUNARA",
      "text": "Mama … ich höre dich nicht mehr. Jeden Tag ein bisschen weniger.",
-     "pre": 0.52,
+     "pre": 0.39,
      "rate": 0.85,
      "fx": "zittern",
      "style": "flüsternd, weinend"
@@ -277,13 +277,13 @@
     {
      "who": "ICH",
      "text": "Sie verschwand vor zwölf Jahren. In der Nacht, in der zuletzt ein Stern fiel.",
-     "pre": 0.68,
+     "pre": 0.51,
      "style": "leise, traurig"
     },
     {
      "who": "ICH",
      "text": "Alles, was mir von ihr blieb, ist dieser Anhänger. Seine Nadel zeigt immer auf denselben Stern.",
-     "pre": 0.52,
+     "pre": 0.39,
      "style": "zärtlich, geheimnisvoll"
     }
    ],
@@ -294,8 +294,8 @@
   },
   {
    "id": "fall",
-   "pre": 0.6,
-   "post": 0.5,
+   "pre": 0.42,
+   "post": 0.35,
    "cues": {
     "streak": "L0+4.2",
     "impact": "L0+6.9",
@@ -317,7 +317,7 @@
     {
      "who": "LUNARA",
      "text": "Das ist unmöglich!",
-     "pre": 0.3,
+     "pre": 0.25,
      "rate": 0.88,
      "fx": "entsetzen",
      "style": "entsetzt, laut"
@@ -327,7 +327,7 @@
   {
    "id": "outro",
    "pre": 2.2,
-   "post": 9.0,
+   "post": 6.5,
    "lines": [
     {
      "who": "LUNARA",
@@ -341,7 +341,7 @@
    }
   }
  ],
- "tempo": 1.2,
+ "tempo": 1.33,
  "naechste_folge": "Folge 2",
  "naechste_titel": "Das Herz, das vom Himmel fiel"
 }
