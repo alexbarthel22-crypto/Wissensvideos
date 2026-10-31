@@ -1,0 +1,57 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .vig { position: absolute; left: 0; right: 0; top: 1040px; height: 880px; background: linear-gradient(rgba(10,12,30,0), rgba(10,12,30,.5) 45%, rgba(10,12,30,.55)); pointer-events: none; }
+    .big { position: absolute; left: 0; width: 1080px; top: 560px; text-align: center; color: #fff; opacity: 0; text-shadow: 0 2px 18px rgba(0,0,0,.6); }
+    .big b { display: block; font: 600 150px/1 "EB Garamond", serif; color: #1f5fb8; text-shadow: 0 0 30px rgba(255,255,255,.9); } .big i { color: #1d2b4a; text-shadow: 0 0 12px rgba(255,255,255,.9); } .big i { display: block; margin-top: 6px; font: 600 28px Inter, sans-serif; font-style: normal; letter-spacing: .18em; }
+    #s03-ch { left: 140px; top: 760px; width: 800px; height: 380px; opacity: 0; }    .flat { position: absolute; border-radius: 26px; background: rgba(255,255,255,.94); box-shadow: 0 18px 50px rgba(0,0,0,.35); opacity: 0; text-align: center; color: #22283f; }
+    .fc { position: absolute; border-radius: 24px; background: rgba(255,255,255,.94); box-shadow: 0 18px 50px rgba(0,0,0,.35); opacity: 0; text-align: center; color: #22283f; padding: 22px 30px; font: 500 46px/1.15 "EB Garamond", serif; }
+    .fc b { color: #e0484f; }
+  </style>
+  <div id="root" data-composition-id="s03" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s03-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <svg id="s03-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s03-big" class="big"><b>90 %</b><i>ÜBERLEBEN DIE ERSTEN 15 MINUTEN</i></div>
+      <svg id="s03-ch" class="abs" viewBox="0 0 800 380"><rect x="0" y="0" width="800" height="380" rx="24" fill="rgba(13,16,38,.75)"/>
+        <path d="M80 320 H740 M80 320 V40" stroke="#fff" stroke-opacity=".5" stroke-width="4" fill="none"/>
+        <path id="s03-cv" d="M80 70 L280 80 Q380 100 430 220 Q520 300 740 305" stroke="#ff5a5f" stroke-width="10" fill="none" stroke-dasharray="900" stroke-dashoffset="900" stroke-linecap="round"/>
+        <text x="80" y="360" font-family="Inter" font-size="28" fill="#fff">0</text><text x="400" y="360" font-family="Inter" font-size="28" fill="#fff">35 MIN</text><text x="690" y="360" font-family="Inter" font-size="28" fill="#fff">2 STD</text></svg>
+      <div id="s03-ph" class="fc" style="left:290px;top:640px;width:500px">📵<br><b>KEIN NETZ</b></div>
+      <div class="vig"></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s03-svg");
+      sky(sv, "s03-s", "#a9c2dc", "#eef3f8");
+      const P = iso(540, 820, 70), w = el("g", {}, sv);
+      box(P, w, -1, -1, -0.4, 8, 8, 0.4, "#f2f7fc");
+      for (let k = 0; k < 7; k++) box(P, w, 0.5 + (k % 3) * 1.6, 3.6 + Math.floor(k / 3) * 1.2, 0, 0.9, 0.9, 0.35 + (k % 2) * 0.2, "#e6eef7");
+      const hole = el("ellipse", { cx: P(3, 3, 0)[0], cy: P(3, 3, 0)[1], rx: 30, ry: 16, fill: "#b9c9dc" }, w);
+      const me = person(P, w, 3.4, 3.2, 0, { shirt: "#e8484f", pants: "#2a3060" });
+      const chunks = []; const r = rng(4); for (let i = 0; i < 12; i++) chunks.push(el("circle", { cx: P(3, 3, 0)[0], cy: P(3, 3, 0)[1], r: 6 + r() * 6, fill: "#ffffff" }, w));
+      const sf = snowfall(sv, 60, 9, -200, 1300);
+      const br = at("L6", "Bleib"), l7 = line("L7")[0], n90 = at("L7", "90"), ra = at("L7", "rapide"), l8 = line("L8")[0], kv = at("L8", "keine"), l8b = line("L8b")[0], kn = at("L8b", "Kein");
+      fall(tl, sf, C.__dur);
+      tl.to(me, { y: -6, duration: 0.6, yoyo: true, repeat: 3, ease: "sine.inOut" }, br);
+      tl.fromTo("#s03-big", { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(2)" }, n90 - 0.3);
+      tl.to(w, { opacity: 0.25, duration: 0.3 }, n90);
+      tl.to("#s03-ch", { opacity: 1, duration: 0.3 }, n90 + 0.2);
+      tl.to("#s03-cv", { attr: { "stroke-dashoffset": 0 }, duration: 2.0, ease: "power1.inOut" }, n90 + 0.3);
+      tl.to(["#s03-big", "#s03-ch"], { opacity: 0, duration: 0.3 }, l8 - 0.3);
+      tl.to(w, { opacity: 1, duration: 0.3 }, l8 - 0.3);
+      chunks.forEach((c, i) => tl.fromTo(c, { x: 0, y: 0, opacity: 1 }, { x: (i % 2 ? 1 : -1) * (40 + i * 8), y: -80 - (i % 3) * 30, opacity: 0, duration: 0.5, ease: "power2.out", repeat: 3 }, l8 + i * 0.05));
+      tl.to(hole, { attr: { rx: 60, ry: 32 }, duration: 2 }, l8);
+      tl.to(me, { y: 8, duration: 0.15, yoyo: true, repeat: 11 }, l8);
+      tl.fromTo("#s03-ph", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(2)" }, kn - 0.2);
+      tl.to("#s03-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s03"] = tl;
+    })();
+  </script>
+</template>

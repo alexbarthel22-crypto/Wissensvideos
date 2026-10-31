@@ -1,0 +1,330 @@
+{
+ "title": "Die ganze Welt unter einer Lawine – nur du überlebst",
+ "voice": "Google Chirp 3 HD (de-DE-Chirp3-HD-Puck), --speed 1.1",
+ "style": "cinema",
+ "lead_in": 0.3,
+ "nocap": [
+  "L1"
+ ],
+ "_zahlen": "Lawinenverschüttete: ~90 % überleben die ersten ~15–18 Min., nach 35 Min. nur noch ~30–35 % (Brugger/Falk). Nasse Kleidung: Wärmeverlust bis ~25x schneller. Schneehöhle: innen um 0 °C. Schnee essen kühlt aus und kostet Energie.",
+ "scenes": [
+  {
+   "id": "s01",
+   "tag": "",
+   "stat": [
+    "ÜBERLEBENDE",
+    "1",
+    "TAG 1 · 07:42 UHR"
+   ],
+   "lines": [
+    {
+     "id": "L1",
+     "text": "Eine Lawine begräbt die ganze Welt. / Nur einer überlebt: du."
+    },
+    {
+     "id": "L2",
+     "text": "Alex, *y:24|vierundzwanzig. / Der *r:letzte *r:Mensch / über dem Schnee."
+    },
+    {
+     "id": "L3",
+     "text": "Was du in den nächsten Stunden tust, / entscheidet über *r:alles."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "impact-bass-1",
+     "at": "s01+0.0",
+     "volume": 0.6
+    },
+    {
+     "name": "whoosh",
+     "at": "s01+0.1",
+     "volume": 0.4
+    },
+    {
+     "name": "pop",
+     "at": "L2:24",
+     "volume": 0.35
+    }
+   ]
+  },
+  {
+   "id": "s02",
+   "tag": "",
+   "jump": [
+    "0",
+    "SEKUNDE"
+   ],
+   "stat": [
+    "SCHNEEHÖHE",
+    "0 m",
+    "TAG 1 · 07:43 UHR"
+   ],
+   "lines": [
+    {
+     "id": "L4",
+     "text": "Es beginnt mit einem *b:Grollen. / Dann rollt eine *r:weiße *r:Wand / über die Stadt."
+    },
+    {
+     "id": "L5",
+     "text": "Du stehst zufällig / auf dem *y:Dach eines Hochhauses. / Unter dir: *r:alles *r:weg."
+    },
+    {
+     "id": "L5b",
+     "text": "In weniger als einer Minute / liegt die Welt unter / *r:vierzig *r:Metern *r:Schnee."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "impact-bass-2",
+     "at": "L4:Grollen",
+     "volume": 0.5
+    },
+    {
+     "name": "whoosh",
+     "at": "L4:weiße",
+     "volume": 0.5
+    },
+    {
+     "name": "impact-bass-1",
+     "at": "L5:alles",
+     "volume": 0.45
+    }
+   ]
+  },
+  {
+   "id": "s03",
+   "tag": "",
+   "jump": [
+    "+15",
+    "MINUTEN"
+   ],
+   "stat": [
+    "SCHNEEHÖHE",
+    "40 m",
+    "TAG 1 · 07:58 UHR"
+   ],
+   "lines": [
+    {
+     "id": "L6",
+     "text": "Regel eins: *g:Bleib *g:ruhig – / und check, ob du verletzt bist."
+    },
+    {
+     "id": "L7",
+     "text": "Verschüttete überleben / die ersten *y:15|fünfzehn *y:Minuten / zu rund *g:90|neunzig *g:Prozent. / Danach sinkt die Chance *r:rapide."
+    },
+    {
+     "id": "L8",
+     "text": "Du gräbst wie verrückt. / Aber allein / schaffst du *r:keine *r:vierzig *r:Meter Schnee."
+    },
+    {
+     "id": "L8b",
+     "text": "Und dein Handy? / *r:Kein *r:Netz. / Die Sendemasten / liegen unter dem Schnee."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "pop",
+     "at": "L7:90",
+     "volume": 0.35
+    },
+    {
+     "name": "impact-bass-2",
+     "at": "L8:keine",
+     "volume": 0.35
+    }
+   ]
+  },
+  {
+   "id": "s04",
+   "tag": "",
+   "jump": [
+    "+1",
+    "STUNDE"
+   ],
+   "stat": [
+    "KÖRPERTEMPERATUR",
+    "36,1 °C",
+    "TAG 1 · 08:45 UHR"
+   ],
+   "lines": [
+    {
+     "id": "L9",
+     "text": "Regel zwei: *b:Wärme. / Nasse Kleidung kühlt dich / bis zu *r:25|fünfundzwanzig-mal *r:schneller aus."
+    },
+    {
+     "id": "L10",
+     "text": "Also: *g:Schicht *g:für *g:Schicht anziehen, / *g:nicht *g:schwitzen – / und raus aus dem Wind."
+    },
+    {
+     "id": "L10b",
+     "text": "Achte auf die Warnzeichen: / *r:Zittern, *r:Verwirrung, / *r:blaue *r:Lippen. / Hört das Zittern plötzlich auf, / wird es *r:lebensgefährlich."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "pop",
+     "at": "L9:25",
+     "volume": 0.35
+    }
+   ]
+  },
+  {
+   "id": "s05",
+   "tag": "",
+   "jump": [
+    "+6",
+    "STUNDEN"
+   ],
+   "stat": [
+    "STROMNETZ",
+    "0 %",
+    "TAG 1 · 14:00 UHR"
+   ],
+   "lines": [
+    {
+     "id": "L11",
+     "text": "Ohne Menschen in den Leitstellen / *r:fällt *r:der *r:Strom *r:aus. / Erst die Ampeln. / Dann die Heizungen."
+    },
+    {
+     "id": "L12",
+     "text": "Regel drei: *y:Bau *y:dir *y:eine *y:Schneehöhle. / Schnee isoliert. / Drinnen bleibt es um *g:null *g:Grad – / draußen sind es *r:minus *r:zwanzig."
+    },
+    {
+     "id": "L12b",
+     "text": "Aber: Stich ein *y:Luftloch in die Decke. / Eine Kerze ohne Luft / kann dich mit *r:Kohlenmonoxid *r:vergiften."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "error",
+     "at": "L11:Strom",
+     "volume": 0.3
+    },
+    {
+     "name": "pop",
+     "at": "L12:Schneehöhle",
+     "volume": 0.35
+    }
+   ]
+  },
+  {
+   "id": "s06",
+   "tag": "",
+   "jump": [
+    "+1",
+    "TAG"
+   ],
+   "stat": [
+    "WASSER",
+    "0,5 L",
+    "TAG 2 · 09:00 UHR"
+   ],
+   "lines": [
+    {
+     "id": "L13",
+     "text": "Regel vier: *r:Iss *r:keinen *r:Schnee. / Er *r:kühlt *r:dich *r:aus / und kostet Energie."
+    },
+    {
+     "id": "L14",
+     "text": "Schmelz ihn lieber – / über einer Kerze, / einem Gaskocher, / irgendwas."
+    },
+    {
+     "id": "L15",
+     "text": "Das Gute: / Die ganze Welt ist jetzt / ein *g:riesiger *g:Gefrierschrank. / Essen *g:verdirbt *g:nicht."
+    },
+    {
+     "id": "L15b",
+     "text": "Und iss *g:viel. / In der Kälte verbrennt dein Körper / bis zu *r:4.000|viertausend *r:Kalorien am Tag."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "error",
+     "at": "L13:Iss",
+     "volume": 0.3
+    },
+    {
+     "name": "pop",
+     "at": "L15:Gefrierschrank",
+     "volume": 0.35
+    }
+   ]
+  },
+  {
+   "id": "s07",
+   "tag": "",
+   "jump": [
+    "+3",
+    "TAGE"
+   ],
+   "stat": [
+    "ÜBERLEBENDE",
+    "1 ?",
+    "TAG 4 · 02:13 UHR"
+   ],
+   "lines": [
+    {
+     "id": "L16",
+     "text": "Regel fünf: *y:Such *y:nach *y:anderen. / Mit einem Radio. / Mit Licht auf dem Dach."
+    },
+    {
+     "id": "L17",
+     "text": "Drei Tage lang: / *r:Stille.",
+     "pause": 0.2
+    },
+    {
+     "id": "L18",
+     "text": "Dann, in der vierten Nacht, / siehst du *r:Fußspuren im Schnee.",
+     "pause": 0.4
+    },
+    {
+     "id": "L19",
+     "text": "Sie führen *r:direkt / *r:zu *r:deiner *r:Höhle.",
+     "pause": 0.4
+    },
+    {
+     "id": "L20",
+     "text": "Und es sind / *r:nicht *r:deine.",
+     "pause": 0.6,
+     "speed": 0.92
+    }
+   ],
+   "sfx": [
+    {
+     "name": "heartbeat",
+     "at": "L18:Fußspuren",
+     "volume": 0.7
+    },
+    {
+     "name": "impact-bass-1",
+     "at": "L20:nicht",
+     "volume": 0.6
+    }
+   ]
+  },
+  {
+   "id": "s08",
+   "tag": "",
+   "hold": 2.8,
+   "lines": [
+    {
+     "id": "L21",
+     "text": "Wenn *y:Teil *y:2 kommen soll – / *p:folg *p:mir.",
+     "pause": 0.5
+    },
+    {
+     "id": "L22",
+     "text": "Und schreib in die Kommentare: / *r:Wer *r:steht *r:da *r:draußen?"
+    }
+   ],
+   "sfx": [
+    {
+     "name": "notification",
+     "at": "L21:folg",
+     "volume": 0.35
+    }
+   ]
+  }
+ ]
+}

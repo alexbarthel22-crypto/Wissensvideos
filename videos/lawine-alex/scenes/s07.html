@@ -1,0 +1,49 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .vig { position: absolute; left: 0; right: 0; top: 1040px; height: 880px; background: linear-gradient(rgba(10,12,30,0), rgba(10,12,30,.5) 45%, rgba(10,12,30,.55)); pointer-events: none; }
+
+  </style>
+  <div id="root" data-composition-id="s07" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s07-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <svg id="s07-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div class="vig"></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s07-svg");
+      sky(sv, "s07-s", "#05070f", "#141a2e");
+      const roof = el("g", {}, sv);
+      el("rect", { x: 0, y: 1000, width: 1080, height: 600, fill: "#cfd9e6" }, roof);
+      const rad = el("g", {}, roof); el("rect", { x: 300, y: 900, width: 160, height: 100, rx: 14, fill: "#2a2f40" }, rad); el("path", { d: "M440 900 L500 790", stroke: "#8a8f9c", "stroke-width": 8 }, rad);
+      const waves = [1, 2, 3].map((i) => el("path", { d: `M${500 + i * 30} ${790 - i * 10} q${20 + i * 10} ${20 + i * 10} 0 ${40 + i * 20}`, stroke: "#9dbcff", "stroke-width": 6, fill: "none", opacity: 0 }, rad));
+      const beam = el("path", { d: "M640 940 L1080 600 L1080 780Z", fill: "#fff6c8", opacity: 0 }, roof);
+      alex(roof, 600, 1000, 1.3);
+      const yard = el("g", { opacity: 0 }, sv);
+      el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: "#9eacbf" }, yard);
+      el("path", { d: "M640 1240 Q640 1040 860 1030 Q1080 1040 1080 1240Z", fill: "#e6eef7" }, yard); el("path", { d: "M780 1240 Q780 1150 860 1145 Q940 1150 940 1240Z", fill: "#0b0f1c" }, yard);
+      const prints = []; for (let i = 0; i < 9; i++) { const x = 120 + i * 78, y = 760 + i * 52 + (i % 2 ? 22 : -22);
+        prints.push(el("ellipse", { cx: x, cy: y, rx: 18, ry: 30, fill: "#6d7f98", opacity: 0, transform: `rotate(-40 ${x} ${y})` }, yard)); }
+      const dark = el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: "#000", opacity: 0 }, sv);
+      const red = el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: "#8a0f1c", opacity: 0 }, sv);
+      const ra = at("L16", "Radio"), li = at("L16", "Licht"), l17 = line("L17")[0], st = at("L17", "Stille"), l18 = line("L18")[0], fu = at("L18", "Fußspuren"), l19 = line("L19")[0], hoe = at("L19", "Höhle"), l20 = line("L20")[0], ni = at("L20", "nicht");
+      waves.forEach((w, i) => tl.fromTo(w, { opacity: 0 }, { opacity: 1, duration: 0.2, repeat: 7, yoyo: true }, ra + i * 0.12));
+      tl.to(beam, { opacity: 0.5, duration: 0.1, repeat: 9, yoyo: true }, li);
+      tl.to(dark, { opacity: 0.85, duration: 0.8 }, st - 0.3);
+      tl.set(roof, { opacity: 0 }, l18 - 0.1); tl.to(dark, { opacity: 0.35, duration: 0.6 }, l18 - 0.1); tl.set(yard, { opacity: 1 }, l18 - 0.1);
+      tl.fromTo(yard, { scale: 1.3, svgOrigin: "540 1000" }, { scale: 1, svgOrigin: "540 1000", duration: 3, ease: "power1.out", immediateRender: false }, l18 - 0.1);
+      prints.forEach((p, i) => tl.to(p, { opacity: 1, duration: 0.15 }, fu + i * ((hoe - fu) / 9)));
+      tl.to(yard, { scale: 1.25, svgOrigin: "860 1200", duration: 2.4, ease: "power2.in" }, hoe);
+      tl.fromTo(red, { opacity: 0 }, { opacity: 0.55, duration: 0.15, repeat: 3, yoyo: true }, ni);
+      tl.to(dark, { opacity: 1, duration: 0.6 }, C.__dur - 0.6);
+      window.__timelines["s07"] = tl;
+    })();
+  </script>
+</template>

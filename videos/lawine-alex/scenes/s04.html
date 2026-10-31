@@ -1,0 +1,50 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .vig { position: absolute; left: 0; right: 0; top: 1040px; height: 880px; background: linear-gradient(rgba(10,12,30,0), rgba(10,12,30,.5) 45%, rgba(10,12,30,.55)); pointer-events: none; }
+    .big { position: absolute; left: 0; width: 1080px; top: 560px; text-align: center; color: #fff; opacity: 0; text-shadow: 0 2px 18px rgba(0,0,0,.6); }
+    .big b { display: block; font: 600 150px/1 "EB Garamond", serif; color: #1f5fb8; text-shadow: 0 0 30px rgba(255,255,255,.9); } .big i { color: #1d2b4a; text-shadow: 0 0 12px rgba(255,255,255,.9); } .big i { display: block; margin-top: 6px; font: 600 28px Inter, sans-serif; font-style: normal; letter-spacing: .18em; }    .flat { position: absolute; border-radius: 26px; background: rgba(255,255,255,.94); box-shadow: 0 18px 50px rgba(0,0,0,.35); opacity: 0; text-align: center; color: #22283f; }
+    .fc { position: absolute; border-radius: 24px; background: rgba(255,255,255,.94); box-shadow: 0 18px 50px rgba(0,0,0,.35); opacity: 0; text-align: center; color: #22283f; padding: 22px 30px; font: 500 46px/1.15 "EB Garamond", serif; }
+    .fc b { color: #e0484f; }
+    .s04-w { left: 340px; width: 660px; padding: 14px 20px; }
+  </style>
+  <div id="root" data-composition-id="s04" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s04-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <svg id="s04-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s04-big" class="big"><b>25×</b><i>SCHNELLER AUSGEKÜHLT · NASSE KLEIDUNG</i></div>
+      <div id="s04-w1" class="fc s04-w" style="top:580px"><b>Zittern</b></div><div id="s04-w2" class="fc s04-w" style="top:700px"><b>Verwirrung</b></div><div id="s04-w3" class="fc s04-w" style="top:820px"><b>Blaue Lippen</b></div>
+      <div class="vig"></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s04-svg");
+      sky(sv, "s04-s", "#8ea6c4", "#dfe7f0");
+      const P = iso(540, 900, 110), w = el("g", {}, sv);
+      box(P, w, -2, -2, -0.3, 7, 7, 0.3, "#f2f7fc");
+      const me = person(P, w, 1.2, 1.2, 0, { shirt: "#e8484f", pants: "#2a3060" });
+      const l2 = box(P, w, 1.14, 1.14, 0.7, 0.52, 0.58, 0.82, "#5a7bd6", { opacity: 0 }), l3 = box(P, w, 1.1, 1.1, 0.72, 0.6, 0.66, 0.82, "#3d4a7a", { opacity: 0 });
+      const wind = []; for (let i = 0; i < 6; i++) wind.push(el("path", { d: `M${-200} ${620 + i * 90} q200 -30 400 0 t400 0`, stroke: "#ffffff", "stroke-width": 6, fill: "none", opacity: 0.6, "stroke-linecap": "round" }, sv));
+      const sf = snowfall(sv, 70, 11, -200, 1300);
+      const n25 = at("L9", "25"), l10 = line("L10")[0], sc = at("L10", "Schicht"), wi = at("L10", "Wind"), l10b = line("L10b")[0], zi = at("L10b", "Zittern"), ve = at("L10b", "Verwirrung"), bl = at("L10b", "blaue"), le = at("L10b", "lebensgefährlich");
+      fall(tl, sf, C.__dur);
+      wind.forEach((wl, i) => tl.fromTo(wl, { x: 0 }, { x: 1300, duration: 1.6, repeat: 3, ease: "none" }, i * 0.2));
+      tl.to(me, { x: 4, duration: 0.05, repeat: 21, yoyo: true }, 0.2);
+      tl.fromTo("#s04-big", { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(2)" }, n25 - 0.3);
+      tl.to("#s04-big", { opacity: 0, duration: 0.3 }, l10 - 0.2);
+      tl.to(l2, { opacity: 1, duration: 0.2 }, sc); tl.to(l3, { opacity: 1, duration: 0.2 }, sc + 0.5);
+      tl.to(wind, { opacity: 0, duration: 0.4 }, wi);
+      tl.to(w, { opacity: 0.3, duration: 0.3 }, l10b);
+      [["#s04-w1", zi], ["#s04-w2", ve], ["#s04-w3", bl]].forEach(([id, t]) => tl.fromTo(id, { opacity: 0, x: -60 }, { opacity: 1, x: 0, duration: 0.3, ease: "back.out(2)" }, t - 0.1));
+      tl.to([".s04-w"], { x: 8, duration: 0.04, repeat: 7, yoyo: true }, le);
+      tl.to("#s04-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s04"] = tl;
+    })();
+  </script>
+</template>

@@ -1,0 +1,162 @@
+<template>
+  <style>
+        #root { position: absolute; inset: 0; }
+    .stage { position: absolute; inset: 0; overflow: hidden; }
+    .abs { position: absolute; }
+    svg { overflow: visible; }
+    /* Zähler-Box wie in der Referenz: Rahmen in Akzentfarbe, Label in Mono-Versalien, große Zahl */
+    .cbox { position: absolute; left: 290px; width: 500px; top: 268px; height: 126px; border: 3px solid #ff4fb0;
+      border-radius: 14px; background: rgba(13,16,38,.88); text-align: center; box-shadow: 0 0 28px rgba(255,79,176,.35); }
+    .cbox .lab { margin-top: 16px; font-family: "Space Mono", monospace; font-weight: 700; font-size: 28px;
+      letter-spacing: .16em; color: #dfe2f5; }
+    .cbox .num { margin-top: 2px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 56px; color: #fff;
+      letter-spacing: .01em; }
+    .cbox.y { border-color: #ffd43b; box-shadow: 0 0 28px rgba(255,212,59,.3); }
+    .cbox.r { border-color: #ff3b55; box-shadow: 0 0 28px rgba(255,59,85,.35); }
+    .cbox.b { border-color: #4da3ff; box-shadow: 0 0 28px rgba(77,163,255,.3); }
+    .cbox.g { border-color: #39e27a; box-shadow: 0 0 28px rgba(57,226,122,.3); }
+    .mono { font-family: "Space Mono", monospace; font-weight: 700; letter-spacing: .12em; }
+    .heavy { font-family: "Inter", sans-serif; font-weight: 900; }
+
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .vig { position: absolute; left: 0; right: 0; top: 1040px; height: 880px; background: linear-gradient(rgba(10,12,30,0), rgba(10,12,30,.5) 45%, rgba(10,12,30,.55)); pointer-events: none; }
+    .big { position: absolute; left: 0; width: 1080px; top: 560px; text-align: center; color: #fff; opacity: 0; text-shadow: 0 2px 18px rgba(0,0,0,.6); }
+    .big b { display: block; font: 600 150px/1 "EB Garamond", serif; color: #1f5fb8; text-shadow: 0 0 30px rgba(255,255,255,.9); } .big i { color: #1d2b4a; text-shadow: 0 0 12px rgba(255,255,255,.9); } .big i { display: block; margin-top: 6px; font: 600 28px Inter, sans-serif; font-style: normal; letter-spacing: .18em; }
+    #s03-ch { left: 140px; top: 760px; width: 800px; height: 380px; opacity: 0; }    .flat { position: absolute; border-radius: 26px; background: rgba(255,255,255,.94); box-shadow: 0 18px 50px rgba(0,0,0,.35); opacity: 0; text-align: center; color: #22283f; }
+    .fc { position: absolute; border-radius: 24px; background: rgba(255,255,255,.94); box-shadow: 0 18px 50px rgba(0,0,0,.35); opacity: 0; text-align: center; color: #22283f; padding: 22px 30px; font: 500 46px/1.15 "EB Garamond", serif; }
+    .fc b { color: #e0484f; }
+  </style>
+  <div id="root" data-composition-id="s03" data-start="0" data-duration="17.180" data-width="1080" data-height="1920">
+    <div id="s03-stage" class="clip stage" data-start="0" data-duration="17.180" data-track-index="0">
+      <svg id="s03-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s03-big" class="big"><b>90 %</b><i>ÜBERLEBEN DIE ERSTEN 15 MINUTEN</i></div>
+      <svg id="s03-ch" class="abs" viewBox="0 0 800 380"><rect x="0" y="0" width="800" height="380" rx="24" fill="rgba(13,16,38,.75)"/>
+        <path d="M80 320 H740 M80 320 V40" stroke="#fff" stroke-opacity=".5" stroke-width="4" fill="none"/>
+        <path id="s03-cv" d="M80 70 L280 80 Q380 100 430 220 Q520 300 740 305" stroke="#ff5a5f" stroke-width="10" fill="none" stroke-dasharray="900" stroke-dashoffset="900" stroke-linecap="round"/>
+        <text x="80" y="360" font-family="Inter" font-size="28" fill="#fff">0</text><text x="400" y="360" font-family="Inter" font-size="28" fill="#fff">35 MIN</text><text x="690" y="360" font-family="Inter" font-size="28" fill="#fff">2 STD</text></svg>
+      <div id="s03-ph" class="fc" style="left:290px;top:640px;width:500px">📵<br><b>KEIN NETZ</b></div>
+      <div class="vig"></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      
+      const C = {"__dur": 17.18, "L6": [0.2, 3.31], "L6.words": [["regel", 0.2, 0.554], ["eins", 0.554, 0.74], ["bleib", 1.12, 1.224], ["ruhig", 1.224, 1.413], ["", 1.413, 1.5], ["und", 1.5, 1.596], ["check", 1.596, 1.7], ["ob", 2.05, 2.291], ["du", 2.291, 2.533], ["verletzt", 2.533, 3.051], ["bist", 3.051, 3.31]], "L7": [3.53, 8.83], "L7.words": [["verschüttete", 3.53, 4.126], ["überleben", 4.126, 4.705], ["die", 4.705, 4.854], ["ersten", 4.854, 5.152], ["15", 5.152, 5.46], ["minuten", 5.46, 5.896], ["zu", 5.896, 6.04], ["rund", 6.04, 6.194], ["90", 6.194, 6.497], ["prozent", 6.497, 6.8], ["danach", 7.33, 7.665], ["sinkt", 7.665, 7.844], ["die", 7.844, 8.011], ["chance", 8.011, 8.346], ["rapide", 8.346, 8.83]], "L8": [9.05, 12.72], "L8.words": [["du", 9.05, 9.219], ["gräbst", 9.219, 9.413], ["wie", 9.413, 9.588], ["verrückt", 9.588, 9.95], ["aber", 10.5, 10.826], ["allein", 10.826, 11.164], ["schaffst", 11.164, 11.363], ["du", 11.363, 11.526], ["keine", 11.526, 11.857], ["vierzig", 11.857, 12.201], ["meter", 12.201, 12.533], ["schnee", 12.533, 12.72]], "L8b": [12.94, 17.0], "L8b.words": [["und", 12.94, 13.11], ["dein", 13.11, 13.286], ["handy", 13.286, 13.62], ["kein", 14.17, 14.435], ["netz", 14.435, 14.7], ["die", 15.25, 15.409], ["sendemasten", 15.409, 16.037], ["liegen", 16.037, 16.354], ["unter", 16.354, 16.666], ["dem", 16.666, 16.824], ["schnee", 16.824, 17.0]]};
+      const line = (id) => C[id];
+      const at = (id, word, which = 0) => {
+        const ws = C[id + ".words"];
+        if (typeof word === "number") return ws[word][1 + which];
+        const key = String(word).toLowerCase().replace(/[^\p{L}\p{N}_]/gu, "");
+        const hit = ws.find((w) => w[0].startsWith(key));
+        if (!hit) throw new Error("cue not found: " + id + " " + word);
+        return hit[1 + which];
+      };
+      // Zähler: schreibt Zahlen im deutschen Format (4.100.000.000) als Funktion der Timeline-Zeit
+      const fmt = (n) => Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      const count = (tl, sel, from, to, t, d, pre = "", post = "", ease = "power2.out") => {
+        const el = document.querySelector(sel);
+        const o = { v: from };
+        el.textContent = pre + fmt(from) + post;
+        tl.to(o, { v: to, duration: d, ease, onUpdate: () => { el.textContent = pre + fmt(o.v) + post; } }, t);
+      };
+      // deterministischer Zufall
+      const rng = (seed) => () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let x = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+        x = (x + Math.imul(x ^ (x >>> 7), 61 | x)) ^ x; return ((x ^ (x >>> 14)) >>> 0) / 4294967296; };
+
+      // ---- Isometrische Low-Poly-Helfer (Stil Referenz A: Klötzchen-Welt, weiche Farben) ----
+      const NS = "http://www.w3.org/2000/svg";
+      const el = (n, a, p) => { const e = document.createElementNS(NS, n); for (const k in a) e.setAttribute(k, a[k]); if (p) p.appendChild(e); return e; };
+      const txt = (p, x, y, s, size, fill, a = {}) => { const t = el("text", Object.assign({ x, y, "text-anchor": "middle", "font-family": "Inter", "font-weight": 800, "font-size": size, fill }, a), p); t.textContent = s; return t; };
+      const shade = (hex, f) => { const n = parseInt(hex.slice(1), 16); const c = [n >> 16, (n >> 8) & 255, n & 255].map((v) => Math.max(0, Math.min(255, Math.round(f > 1 ? v + (255 - v) * (f - 1) : v * f))));
+        return "#" + c.map((v) => v.toString(16).padStart(2, "0")).join(""); };
+      // Kamera: Ursprung (ox, oy), Einheit u
+      const iso = (ox, oy, u) => (x, y, z = 0) => [ox + (x - y) * u * 0.866, oy + (x + y) * u * 0.5 - z * u];
+      const poly = (pts) => pts.map((p) => p.map((v) => v.toFixed(1)).join(",")).join(" ");
+      function box(P, p, x, y, z, w, d, h, col, a = {}) {
+        const g = el("g", a, p);
+        el("polygon", { points: poly([P(x + w, y, z), P(x + w, y + d, z), P(x + w, y + d, z + h), P(x + w, y, z + h)]), fill: shade(col, 0.78) }, g);
+        el("polygon", { points: poly([P(x, y + d, z), P(x + w, y + d, z), P(x + w, y + d, z + h), P(x, y + d, z + h)]), fill: col }, g);
+        el("polygon", { points: poly([P(x, y, z + h), P(x + w, y, z + h), P(x + w, y + d, z + h), P(x, y + d, z + h)]), fill: shade(col, 1.18) }, g);
+        return g;
+      }
+      // Fläche auf der hinteren Wand (y = 0) bzw. linken Wand (x = 0)
+      const wallY = (P, p, x0, x1, z0, z1, fill, a = {}) => el("polygon", Object.assign({ points: poly([P(x0, 0, z0), P(x1, 0, z0), P(x1, 0, z1), P(x0, 0, z1)]), fill }, a), p);
+      const wallX = (P, p, y0, y1, z0, z1, fill, a = {}) => el("polygon", Object.assign({ points: poly([P(0, y0, z0), P(0, y1, z0), P(0, y1, z1), P(0, y0, z1)]), fill }, a), p);
+      function room(P, p, W, D, H, o = {}) {
+        const g = el("g", {}, p);
+        box(P, g, 0, 0, -0.25, W, D, 0.25, o.floor || "#c9a982");
+        for (let k = 1; k < W; k++) el("polyline", { points: poly([P(k, 0, 0), P(k, D, 0)]), stroke: shade(o.floor || "#c9a982", 0.9), "stroke-width": 2, fill: "none" }, g);
+        wallY(P, g, 0, W, 0, H, o.wall || "#ece6dc"); wallX(P, g, 0, D, 0, H, shade(o.wall || "#ece6dc", 0.9));
+        el("polyline", { points: poly([P(0, D, 0), P(0, 0, 0), P(W, 0, 0)]), stroke: shade(o.wall || "#ece6dc", 0.75), "stroke-width": 6, fill: "none" }, g);
+        return g;
+      }
+      // Klötzchen-Figur; Ursprung = Fußpunkt (x, y, z). o.pose: "stand" | "sit" | "lie"
+      function person(P, p, x, y, z, o = {}) {
+        const g = el("g", {}, p), skin = o.skin || "#f0c8a0", shirt = o.shirt || "#e85d5d", pants = o.pants || "#3d4a7a", hair = o.hair || "#4a3020";
+        if (o.pose === "lie") {
+          box(P, g, x, y, z, 1.0, 0.45, 0.3, pants); box(P, g, x + 1.0, y, z, 0.9, 0.5, 0.36, shirt);
+          box(P, g, x + 1.9, y + 0.05, z, 0.45, 0.4, 0.4, skin); box(P, g, x + 2.25, y + 0.05, z, 0.12, 0.4, 0.42, hair);
+        } else if (o.pose === "sit") {
+          box(P, g, x - 0.25, y, z, 0.25, 0.5, 0.5, pants); box(P, g, x, y, z + 0.5, 0.45, 0.5, 0.28, pants);
+          box(P, g, x, y + 0.02, z + 0.78, 0.38, 0.46, 0.75, shirt); box(P, g, x + 0.02, y + 0.06, z + 1.53, 0.36, 0.36, 0.38, skin);
+          box(P, g, x + 0.02, y + 0.06, z + 1.85, 0.36, 0.36, 0.1, hair);
+        } else {
+          box(P, g, x, y, z, 0.36, 0.42, 0.75, pants); box(P, g, x - 0.02, y - 0.02, z + 0.75, 0.4, 0.46, 0.75, shirt);
+          box(P, g, x + 0.02, y + 0.03, z + 1.5, 0.34, 0.38, 0.38, skin); box(P, g, x + 0.02, y + 0.03, z + 1.82, 0.34, 0.38, 0.1, hair);
+        }
+        return g;
+      }
+      function sky(p, id, c1, c2) {
+        const d = el("defs", {}, p), lg = el("linearGradient", { id, x1: 0, y1: 0, x2: 0, y2: 1 }, d);
+        el("stop", { offset: 0, "stop-color": c1 }, lg); el("stop", { offset: 1, "stop-color": c2 }, lg);
+        return el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: `url(#${id})` }, p);
+      }
+      // ---- Schnee-Welt ----
+      function skyline(p, by, seed, cols, n = 9, hmin = 260, hmax = 620) {
+        const r = rng(seed), out = [], g = el("g", {}, p);
+        for (let i = 0; i < n; i++) { const w = 90 + r() * 70, x = i * (1080 / n) - 20 + r() * 20, h = hmin + r() * (hmax - hmin), c = cols[i % cols.length];
+          const b = el("g", {}, g); el("rect", { x, y: by - h, width: w, height: h, fill: c }, b);
+          const wins = []; for (let k = 0; k < Math.floor(h / 46); k++) for (let m = 0; m < 3; m++) wins.push(el("rect", { x: x + 12 + m * (w - 24) / 3, y: by - h + 16 + k * 46, width: (w - 24) / 3 - 10, height: 22, fill: "#ffe7a3", opacity: r() > 0.45 ? 0.85 : 0.12 }, b));
+          out.push({ x, w, h, b, wins }); }
+        return { g, out };
+      }
+      function snowfall(p, n, seed, y0 = 0, y1 = 1500) { const r = rng(seed), fl = [], g = el("g", { "data-layout-allow-overlap": "" }, p);
+        for (let i = 0; i < n; i++) fl.push(el("circle", { cx: r() * 1080, cy: y0 + r() * (y1 - y0), r: 2 + r() * 4, fill: "#ffffff", opacity: 0.5 + r() * 0.5 }, g)); return { g, fl }; }
+      const fall = (tl, sf, dur, t0 = 0) => sf.fl.forEach((f, i) => tl.to(f, { y: 900 + (i % 5) * 60, x: (i % 2 ? 1 : -1) * 40, duration: dur, ease: "none" }, t0));
+      // flache Figur (Alex): Fußpunkt x, y
+      function alex(p, x, y, s = 1) { const g = el("g", {}, p); gsap.set(g, { x, y, scale: s, transformOrigin: "0 0" });
+        el("rect", { x: -14, y: -40, width: 12, height: 40, rx: 5, fill: "#2a3060" }, g); el("rect", { x: 2, y: -40, width: 12, height: 40, rx: 5, fill: "#2a3060" }, g);
+        el("rect", { x: -20, y: -92, width: 40, height: 56, rx: 14, fill: "#e8484f" }, g); el("circle", { cx: 0, cy: -108, r: 17, fill: "#f0c8a0" }, g);
+        el("path", { d: "M-18 -112 Q0 -136 18 -112 Q0 -122 -18 -112Z", fill: "#3a3f6e" }, g); return g; }
+      function snowLayer(p, y, c = "#eef4fb") { return el("path", { d: `M-60 ${y} q90 -30 180 0 t180 0 t180 0 t180 0 t180 0 t180 0 t180 0 V2000 H-60Z`, fill: c }, p); }
+
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s03-svg");
+      sky(sv, "s03-s", "#a9c2dc", "#eef3f8");
+      const P = iso(540, 820, 70), w = el("g", {}, sv);
+      box(P, w, -1, -1, -0.4, 8, 8, 0.4, "#f2f7fc");
+      for (let k = 0; k < 7; k++) box(P, w, 0.5 + (k % 3) * 1.6, 3.6 + Math.floor(k / 3) * 1.2, 0, 0.9, 0.9, 0.35 + (k % 2) * 0.2, "#e6eef7");
+      const hole = el("ellipse", { cx: P(3, 3, 0)[0], cy: P(3, 3, 0)[1], rx: 30, ry: 16, fill: "#b9c9dc" }, w);
+      const me = person(P, w, 3.4, 3.2, 0, { shirt: "#e8484f", pants: "#2a3060" });
+      const chunks = []; const r = rng(4); for (let i = 0; i < 12; i++) chunks.push(el("circle", { cx: P(3, 3, 0)[0], cy: P(3, 3, 0)[1], r: 6 + r() * 6, fill: "#ffffff" }, w));
+      const sf = snowfall(sv, 60, 9, -200, 1300);
+      const br = at("L6", "Bleib"), l7 = line("L7")[0], n90 = at("L7", "90"), ra = at("L7", "rapide"), l8 = line("L8")[0], kv = at("L8", "keine"), l8b = line("L8b")[0], kn = at("L8b", "Kein");
+      fall(tl, sf, C.__dur);
+      tl.to(me, { y: -6, duration: 0.6, yoyo: true, repeat: 3, ease: "sine.inOut" }, br);
+      tl.fromTo("#s03-big", { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(2)" }, n90 - 0.3);
+      tl.to(w, { opacity: 0.25, duration: 0.3 }, n90);
+      tl.to("#s03-ch", { opacity: 1, duration: 0.3 }, n90 + 0.2);
+      tl.to("#s03-cv", { attr: { "stroke-dashoffset": 0 }, duration: 2.0, ease: "power1.inOut" }, n90 + 0.3);
+      tl.to(["#s03-big", "#s03-ch"], { opacity: 0, duration: 0.3 }, l8 - 0.3);
+      tl.to(w, { opacity: 1, duration: 0.3 }, l8 - 0.3);
+      chunks.forEach((c, i) => tl.fromTo(c, { x: 0, y: 0, opacity: 1 }, { x: (i % 2 ? 1 : -1) * (40 + i * 8), y: -80 - (i % 3) * 30, opacity: 0, duration: 0.5, ease: "power2.out", repeat: 3 }, l8 + i * 0.05));
+      tl.to(hole, { attr: { rx: 60, ry: 32 }, duration: 2 }, l8);
+      tl.to(me, { y: 8, duration: 0.15, yoyo: true, repeat: 11 }, l8);
+      tl.fromTo("#s03-ph", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(2)" }, kn - 0.2);
+      tl.to("#s03-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s03"] = tl;
+    })();
+  </script>
+</template>

@@ -1,0 +1,34 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; }
+    .stat { position: absolute; left: 30px; top: 750px; width: auto; min-width: 300px; height: auto; padding: 14px 22px 16px; border-radius: 18px;
+      background: rgba(18,22,44,.38); color: #fff; text-shadow: 0 2px 10px rgba(0,0,0,.55); }
+    .sl { font: 600 28px "Inter", sans-serif; letter-spacing: .18em; opacity: .9; }
+    .sv { margin-top: 2px; font: 500 68px/1 "EB Garamond", "Liberation Serif", serif; }
+    .ss { margin-top: 8px; font: 600 28px "Inter", sans-serif; letter-spacing: .14em; opacity: .75; }
+    .jump { position: absolute; left: 0; width: 100%; top: 330px; height: 220px; text-align: center; color: #fff; text-shadow: 0 2px 18px rgba(0,0,0,.55); }
+    .jn { font: 500 132px/1 "EB Garamond", "Liberation Serif", serif; }
+    .jl { margin-top: 6px; font: 600 30px "Inter", sans-serif; letter-spacing: .3em; }
+  </style>
+  <div id="root" data-composition-id="hud" data-start="0" data-duration="115.120" data-width="1080" data-height="1920">
+      <div id="st0" class="clip stat" data-start="0.000" data-duration="10.050" data-track-index="1"><div class="sl">ÜBERLEBENDE</div><div id="sv0" class="sv">1</div><div class="ss">TAG 1 · 07:42 UHR</div></div>
+      <div id="st1" class="clip stat" data-start="10.050" data-duration="12.020" data-track-index="1"><div class="sl">SCHNEEHÖHE</div><div id="sv1" class="sv">0 m</div><div class="ss">TAG 1 · 07:43 UHR</div></div>
+      <div id="jp1" class="clip jump" data-start="10.050" data-duration="1.800" data-track-index="2"><div class="jn">0</div><div class="jl">SEKUNDE</div></div>
+      <div id="st2" class="clip stat" data-start="22.070" data-duration="17.180" data-track-index="1"><div class="sl">SCHNEEHÖHE</div><div id="sv2" class="sv">40 m</div><div class="ss">TAG 1 · 07:58 UHR</div></div>
+      <div id="jp2" class="clip jump" data-start="22.070" data-duration="1.800" data-track-index="2"><div class="jn">+15</div><div class="jl">MINUTEN</div></div>
+      <div id="st3" class="clip stat" data-start="39.250" data-duration="15.930" data-track-index="1"><div class="sl">KÖRPERTEMPERATUR</div><div id="sv3" class="sv">36,1 °C</div><div class="ss">TAG 1 · 08:45 UHR</div></div>
+      <div id="jp3" class="clip jump" data-start="39.250" data-duration="1.800" data-track-index="2"><div class="jn">+1</div><div class="jl">STUNDE</div></div>
+      <div id="st4" class="clip stat" data-start="55.180" data-duration="18.670" data-track-index="1"><div class="sl">STROMNETZ</div><div id="sv4" class="sv">0 %</div><div class="ss">TAG 1 · 14:00 UHR</div></div>
+      <div id="jp4" class="clip jump" data-start="55.180" data-duration="1.800" data-track-index="2"><div class="jn">+6</div><div class="jl">STUNDEN</div></div>
+      <div id="st5" class="clip stat" data-start="73.850" data-duration="17.605" data-track-index="1"><div class="sl">WASSER</div><div id="sv5" class="sv">0,5 L</div><div class="ss">TAG 2 · 09:00 UHR</div></div>
+      <div id="jp5" class="clip jump" data-start="73.850" data-duration="1.800" data-track-index="2"><div class="jn">+1</div><div class="jl">TAG</div></div>
+      <div id="st6" class="clip stat" data-start="91.455" data-duration="15.395" data-track-index="1"><div class="sl">ÜBERLEBENDE</div><div id="sv6" class="sv">1 ?</div><div class="ss">TAG 4 · 02:13 UHR</div></div>
+      <div id="jp6" class="clip jump" data-start="91.455" data-duration="1.800" data-track-index="2"><div class="jn">+3</div><div class="jl">TAGE</div></div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    
+tl.fromTo("#st1", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 10.050);    tl.fromTo("#jp1", { opacity: 0, scale: 1.15, filter: "blur(6px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.4, ease: "power3.out" }, 10.050);    tl.to("#jp1", { opacity: 0, duration: 0.3 }, 11.550);    tl.fromTo("#st2", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 22.070);    tl.fromTo("#jp2", { opacity: 0, scale: 1.15, filter: "blur(6px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.4, ease: "power3.out" }, 22.070);    tl.to("#jp2", { opacity: 0, duration: 0.3 }, 23.570);    tl.fromTo("#st3", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 39.250);    tl.fromTo("#jp3", { opacity: 0, scale: 1.15, filter: "blur(6px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.4, ease: "power3.out" }, 39.250);    tl.to("#jp3", { opacity: 0, duration: 0.3 }, 40.750);    tl.fromTo("#st4", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 55.180);    tl.fromTo("#jp4", { opacity: 0, scale: 1.15, filter: "blur(6px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.4, ease: "power3.out" }, 55.180);    tl.to("#jp4", { opacity: 0, duration: 0.3 }, 56.680);    tl.fromTo("#st5", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 73.850);    tl.fromTo("#jp5", { opacity: 0, scale: 1.15, filter: "blur(6px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.4, ease: "power3.out" }, 73.850);    tl.to("#jp5", { opacity: 0, duration: 0.3 }, 75.350);    tl.fromTo("#st6", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 91.455);    tl.fromTo("#jp6", { opacity: 0, scale: 1.15, filter: "blur(6px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.4, ease: "power3.out" }, 91.455);    tl.to("#jp6", { opacity: 0, duration: 0.3 }, 92.955);
+    window.__timelines["hud"] = tl;
+  </script>
+</template>

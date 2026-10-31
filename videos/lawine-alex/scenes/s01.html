@@ -1,0 +1,54 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .vig { position: absolute; left: 0; right: 0; top: 1040px; height: 880px; background: linear-gradient(rgba(10,12,30,0), rgba(10,12,30,.5) 45%, rgba(10,12,30,.55)); pointer-events: none; }
+    #s01-t { left: 50px; right: 50px; top: 230px; text-align: center; color: #fff; font: 500 92px/1.08 "EB Garamond", serif; text-shadow: 0 3px 22px rgba(0,0,0,.7); }
+    #s01-t em { font-style: normal; color: #9dd6ff; text-shadow: 0 0 40px rgba(157,214,255,.9), 0 3px 22px rgba(0,0,0,.6); } #s01-t b { font-weight: 600; color: #ff5a5f; text-shadow: 0 0 40px rgba(255,90,95,.9); }
+    #s01-live { left: 0; right: 0; top: 160px; margin: 0 auto; width: fit-content; padding: 6px 18px; border-radius: 10px; background: #e0484f; color: #fff; font: 700 30px Inter, sans-serif; letter-spacing: .12em; }
+    #s01-tag { left: 600px; top: 520px; padding: 8px 18px; border-radius: 12px; background: rgba(255,255,255,.95); color: #22283f; font: 600 40px "EB Garamond", serif; opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="s01" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s01-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <svg id="s01-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s01-live" class="abs">● 1 ÜBERLEBENDER</div>
+      <div id="s01-t" class="abs">Die ganze Welt unter <em>Schnee</em>.<br>Nur <b>du</b> überlebst.</div>
+      <div id="s01-tag" class="abs">Alex · 24</div>
+      <div class="vig"></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s01-svg");
+      sky(sv, "s01-s", "#1c2748", "#7d8fb5");
+      const W = el("g", {}, sv);
+      skyline(W, 1080, 3, ["#33405f", "#3b4a6c"], 8, 200, 420);
+      const S2 = skyline(W, 1120, 5, ["#4e5b7e", "#5b6a8f"], 7, 260, 520);
+      snowLayer(W, 960, "#dfe9f5");
+      el("rect", { x: 470, y: 860, width: 140, height: 420, fill: "#3b4766" }, W); el("rect", { x: 462, y: 850, width: 156, height: 22, fill: "#f4f8fc" }, W);
+      snowLayer(W, 1050, "#f2f7fc");
+      const beam = el("path", { d: "M555 800 L760 700 L780 780Z", fill: "#fff6c8", opacity: 0.55 }, W);
+      const A = alex(W, 540, 852, 1.1);
+      const sf = snowfall(sv, 90, 7, -200, 1400);
+      const al = at("L2", "Alex"), le = at("L2", "letzte"), l3 = line("L3")[0], al2 = at("L3", "alles");
+      fall(tl, sf, C.__dur);
+      tl.fromTo(W, { scale: 1, svgOrigin: "540 850" }, { scale: 1.35, svgOrigin: "540 850", duration: C.__dur, ease: "power1.inOut" }, 0);
+      tl.fromTo("#s01-t em", { opacity: 1 }, { opacity: 0.45, duration: 0.08, repeat: 9, yoyo: true }, 0.2);
+      tl.fromTo("#s01-t", { scale: 1.12 }, { scale: 1, duration: 0.6, ease: "power3.out" }, 0);
+      tl.to("#s01-t b", { scale: 1.2, duration: 0.25, repeat: 7, yoyo: true, ease: "sine.inOut", display: "inline-block" }, 0.4);
+      tl.fromTo("#s01-live", { opacity: 1 }, { opacity: 0.3, duration: 0.3, repeat: 13, yoyo: true }, 0);
+      tl.fromTo(beam, { attr: { opacity: 0.55 } }, { attr: { opacity: 0.25 }, duration: 0.5, repeat: 9, yoyo: true }, 0);
+      tl.to(["#s01-t", "#s01-live"], { opacity: 0, y: -30, duration: 0.35 }, al - 0.3);
+      tl.fromTo("#s01-tag", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(2)" }, al);
+      tl.to(A, { y: 840, duration: 0.15, yoyo: true, repeat: 1 }, le);
+      tl.to("#s01-tag", { opacity: 0, duration: 0.3 }, l3);
+      tl.to("#s01-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s01"] = tl;
+    })();
+  </script>
+</template>

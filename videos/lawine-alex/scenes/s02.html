@@ -1,0 +1,48 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .vig { position: absolute; left: 0; right: 0; top: 1040px; height: 880px; background: linear-gradient(rgba(10,12,30,0), rgba(10,12,30,.5) 45%, rgba(10,12,30,.55)); pointer-events: none; }
+    .big { position: absolute; left: 0; width: 1080px; top: 560px; text-align: center; color: #fff; opacity: 0; text-shadow: 0 2px 18px rgba(0,0,0,.6); }
+    .big b { display: block; font: 600 150px/1 "EB Garamond", serif; color: #1f5fb8; text-shadow: 0 0 30px rgba(255,255,255,.9); } .big i { color: #1d2b4a; text-shadow: 0 0 12px rgba(255,255,255,.9); } .big i { display: block; margin-top: 6px; font: 600 28px Inter, sans-serif; font-style: normal; letter-spacing: .18em; }
+  </style>
+  <div id="root" data-composition-id="s02" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s02-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <svg id="s02-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s02-big" class="big"><b>40 m</b><i>SCHNEE IN UNTER 1 MINUTE</i></div>
+      <div class="vig"></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s02-svg");
+      sky(sv, "s02-s", "#9cc4e8", "#e4eef7");
+      const W = el("g", {}, sv);
+      skyline(W, 1150, 3, ["#8090b4", "#8a9abd"], 8, 260, 480);
+      const back = skyline(W, 1200, 5, ["#5b6a8f", "#6f7da3", "#4e5b7e", "#7c88ad"], 7, 300, 560);
+      el("rect", { x: 470, y: 760, width: 140, height: 460, fill: "#55627f" }, W); el("rect", { x: 462, y: 750, width: 156, height: 20, fill: "#7c88ad" }, W);
+      el("rect", { x: 0, y: 1200, width: 1080, height: 400, fill: "#4a4f60" }, W);
+      const cars = []; for (let i = 0; i < 6; i++) cars.push(el("rect", { x: 60 + i * 170, y: 1180, width: 90, height: 34, rx: 10, fill: ["#e8484f", "#4da3ff", "#ffd56b"][i % 3] }, W));
+      const A = alex(W, 540, 752, 0.9);
+      const wave = el("path", { d: "M-1400 1300 Q-900 600 -500 760 Q-300 820 -200 740 L-200 1600 L-1400 1600Z", fill: "#f4f8fc" }, sv);
+      const fill = el("rect", { x: 0, y: 1600, width: 1080, height: 1500, fill: "#eef4fb" }, sv);
+      const mist = el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: "#ffffff", opacity: 0 }, sv);
+      const gr = at("L4", "Grollen"), ww = at("L4", "weiße"), da = at("L5", "Dach"), aw = at("L5", "alles"), l5b = line("L5b")[0], vm = at("L5b", "vierzig");
+      cars.forEach((c, i) => tl.to(c, { x: (i % 2 ? -1 : 1) * 200, duration: 3, ease: "none" }, 0));
+      tl.to(W, { x: 8, duration: 0.05, repeat: 19, yoyo: true }, gr);
+      tl.to(wave, { x: 2600, duration: 2.6, ease: "power1.in" }, ww - 0.2);
+      tl.to(fill, { attr: { y: 770 }, duration: 2.2, ease: "power2.inOut" }, ww + 0.3);
+      tl.to(mist, { opacity: 0.45, duration: 0.6, yoyo: true, repeat: 1 }, ww + 0.8);
+      tl.to(W, { scale: 1.25, svgOrigin: "540 760", duration: 1.5, ease: "power2.inOut" }, da - 0.4);
+      tl.to(A, { y: 742, duration: 0.15, yoyo: true, repeat: 3 }, aw);
+      tl.fromTo("#s02-big", { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(2)" }, vm - 0.2);
+      tl.to("#s02-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s02"] = tl;
+    })();
+  </script>
+</template>
