@@ -8,6 +8,22 @@ Neraya muss durch ganz Valdoria reisen – bis hinunter unter die Wolken –, um
 
 **Thema:** Vom schüchternen, klugen Tollpatsch zur starken, selbstbewussten Frau. Ihr Sarkasmus ist am Anfang ein Schutzschild und am Ende echte Stärke.
 
+## Zeitstrahl (Vorgeschichte)
+| Wann | Ereignis |
+|---|---|
+| vor 1000 Jahren | Ein Mensch berührt ein Sternenherz, der Stern bricht aus, Valdoria brennt. Danach gründet sich der Orden der Hohen Flamme und sperrt die Sternwesen in die Sterne. |
+| vor ca. 40 Jahren | Ein Sternwesen nimmt Menschengestalt an: Nerayas Mutter. Sie freundet sich mit der jungen Seraphine an. |
+| vor 21 Jahren | Kael wird geboren. |
+| vor 18 Jahren | Joren (Mutter: Schmugglerin) und Taren (Mutter: Ordensdienerin) werden von Hauptmann Varn gezeugt, im Abstand weniger Monate. |
+| vor 17 Jahren | Neraya wird geboren, halb Mensch, halb Sternwesen. |
+| vor 16 Jahren | Mira wird in den Tiefen Ästen geboren. |
+| vor 12 Jahren | Der letzte Stern fällt. Varn verrät die Mutter an den Orden. Sie sperrt sich selbst in einen Stern, um den gefallenen Stern aufzuhalten. Seraphine glaubt, sie sei tot. |
+| vor 4 Jahren | Kael tritt dem Orden bei, um Neraya zu schützen. |
+| vor 2 Jahren | Taren berührt ein Sternenherz, um seine Schwester zu retten, und beginnt zu versteinern. |
+| Folge 1 | Neraya ist 17 und zündet Laternen an. Der Stern fällt. |
+
+**Dauer der Reise:** Folgen 4–19 umfassen etwa drei Monate. Das passt zu Tarens „nur noch Monate“.
+
 ## Figuren
 
 | Figur | Alter | Kurzprofil |
