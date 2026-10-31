@@ -1,7 +1,7 @@
 # Beschreibung – Die ganze Welt unter einer Lawine, nur du überlebst
 
 ## Hauptversion (empfohlen)
-Eine Lawine begräbt die GANZE Welt – nur du überlebst ❄️ Alex, 30, versteckt sich vor seiner toxischen Ex auf dem Dach … und wird zum letzten Menschen der Welt. 5 Regeln zum Überleben – und dann riesige Fußspuren aus Blut 😨 Teil 2? Folg mir 👇
+Eine Lawine begräbt die GANZE Welt – nur du überlebst ❄️ Alex, 30, versteckt sich vor seiner toxischen Ex auf dem Dach … und wird zum letzten Menschen der Welt. 5 Regeln zum Überleben – und dann riesige Fußspuren aus Blut 😨 Wer ist das in der Höhle? Teil 2? Folg mir 👇
 #waswärewenn #survival #lawine #storytime #fyp
 
 ## Alternative 1 (Fakt vorne)
