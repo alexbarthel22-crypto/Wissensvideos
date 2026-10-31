@@ -104,8 +104,10 @@ def load_wav(path):
         return np.frombuffer(w.readframes(w.getnframes()), dtype=np.int16).astype(np.float32) / 32768
 
 
-def process(raw, fx, path):
+def process(raw, fx, path, tempo=1.0):
     filters = "aresample=48000," + CLARITY + ("," + FX[fx] if fx else "")
+    if tempo != 1.0:
+        filters += f",atempo={tempo}"  # faster/slower speech without pitch change
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", raw, "-af", filters,
                     "-ac", "1", "-ar", str(SR), path], check=True)
 
@@ -180,7 +182,9 @@ def main(story_path, out_dir):
             key = hashlib.sha1(ident.encode()).hexdigest()[:12]
             raw = os.path.join(vdir, f"{key}.raw.wav")
             fx = line.get("fx", v.get("fx"))
-            fin = os.path.join(vdir, f"{key}.{fx or 'clean'}.v2.wav")
+            tempo = float(story.get("tempo", 1.0)) if ENGINE == "gemini" else 1.0
+            ttag = f".t{tempo:g}" if tempo != 1.0 else ""
+            fin = os.path.join(vdir, f"{key}.{fx or 'clean'}{ttag}.v2.wav")
             if not os.path.exists(raw):
                 print("TTS", line["who"], line["text"][:50])
                 if ENGINE == "gemini":
@@ -188,7 +192,7 @@ def main(story_path, out_dir):
                 else:
                     synth(line["text"], v["name"], rate, raw)
             if not os.path.exists(fin):
-                process(raw, fx, fin)
+                process(raw, fx, fin, tempo)
             audio = load_wav(fin)
             cut = stray_tail(raw, line['text'])
             if cut:

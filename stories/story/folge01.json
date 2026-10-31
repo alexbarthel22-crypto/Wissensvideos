@@ -9,14 +9,14 @@
    "gemini": "Leda",
    "label": "Neraya",
    "rate": 0.9,
-   "persona": "Neraya, siebzehn, erzählt ihre eigene Geschichte im Rückblick. Ruhig, nah, verletzlich und trotzig zugleich, wie in einem Hörbuch."
+   "persona": "Neraya, siebzehn, erzählt ihre eigene Geschichte. Hochintelligent, aber schüchtern, unbeholfen und tollpatschig: kleine verlegene Zögerer, ein nervöses Ähm, dann wieder trockener, bissiger Sarkasmus. Zügiges, lebendiges Erzähltempo, nah wie in einem Hörbuch."
   },
   "LUNARA": {
    "name": "de-DE-Chirp3-HD-Leda",
    "gemini": "Leda",
    "label": "Neraya",
    "rate": 0.93,
-   "persona": "Neraya, siebzehn, mutig, frech, verletzlich, warmherzig."
+   "persona": "Neraya, siebzehn, klug, schüchtern, tollpatschig und sarkastisch, aber warmherzig und verletzlich. Zügiges Tempo."
   },
   "KAEL": {
    "name": "de-DE-Chirp3-HD-Orus",
@@ -82,9 +82,9 @@
    "lines": [
     {
      "who": "ICH",
-     "text": "Sieh nach oben. Was siehst du? … Sterne?",
+     "text": "Sieh nach oben. Was siehst du? … Sterne? Ja. Das dachte ich auch mal.",
      "rate": 0.88,
-     "style": "leise, direkt zum Zuschauer, geheimnisvoll"
+     "style": "leise, direkt zum Zuschauer, geheimnisvoll, am Ende trocken"
     },
     {
      "who": "ICH",
@@ -95,10 +95,10 @@
     },
     {
      "who": "ICH",
-     "text": "Ich zeige dir, was dort oben eingesperrt ist. Denn ich … habe eines davon geöffnet.",
+     "text": "Ich zeige dir, was dort oben eingesperrt ist. Denn ich … ähm … habe eines davon geöffnet. Aus Versehen. Größtenteils.",
      "pre": 0.8,
      "rate": 0.88,
-     "style": "eindringlich, dann flüsternd und schuldbewusst"
+     "style": "eindringlich, dann verlegen stockend, schuldbewusst, das Ende trocken sarkastisch"
     }
    ]
   },
@@ -120,9 +120,9 @@
     },
     {
      "who": "ICH",
-     "text": "Hier wachsen die Bäume so hoch, dass ihre Kronen über den Wolken liegen.",
+     "text": "Die Bäume hier sind so hoch, dass ihre Kronen über den Wolken liegen. Dreitausend Meter. Ich hab nachgerechnet. Zweimal.",
      "pre": 0.75,
-     "style": "staunend, verträumt"
+     "style": "staunend, dann leise nerdig-stolz"
     },
     {
      "who": "ICH",
@@ -132,9 +132,9 @@
     },
     {
      "who": "ICH",
-     "text": "… und ihr Gesang trägt die schwebenden Inseln durch die Luft. Ohne die Wale würde alles in die Tiefe stürzen.",
+     "text": "… und ihr Gesang trägt die schwebenden Inseln. Ohne die Wale stürzt alles in die Tiefe. Also … kein Druck.",
      "pre": 0.4,
-     "style": "ehrfürchtig"
+     "style": "ehrfürchtig, am Ende trocken sarkastisch"
     }
    ]
   },
@@ -150,9 +150,9 @@
     },
     {
      "who": "ICH",
-     "text": "Ganz oben, in der Lichtkrone, herrscht der Orden der Hohen Flamme.",
+     "text": "Ganz oben, in der Lichtkrone, herrscht der Orden der Hohen Flamme. Sehr bescheidener Name.",
      "pre": 0.7,
-     "style": "ernst"
+     "style": "ernst, dann bissig sarkastisch"
     }
    ]
   },
@@ -168,9 +168,9 @@
     },
     {
      "who": "ICH",
-     "text": "Und wir hier unten, in den Tiefen Ästen? Uns bleibt nur der Rest: ein paar Laternen. Und Gesetze.",
+     "text": "Und wir hier unten, in den Tiefen Ästen? Wir kriegen den Rest: ein paar Laternen. Und Gesetze. Wie großzügig.",
      "pre": 0.5,
-     "style": "bitter, trocken"
+     "style": "bitter, trocken sarkastisch"
     },
     {
      "who": "ICH",
@@ -193,20 +193,20 @@
    "lines": [
     {
      "who": "ICH",
-     "text": "Und ich? Ich bin Neraya, siebzehn. Die Leute sagen, ich habe die Augen meiner Mutter … und ihren Dickkopf.",
-     "style": "warm, ein Hauch Selbstironie"
+     "text": "Und ich? Ich bin Neraya, siebzehn. Ich kann die Bahnen von zwölf Monden berechnen … und stolpere trotzdem über meine eigenen Füße.",
+     "style": "schüchtern, leicht verlegen, mit Selbstironie"
     },
     {
      "who": "ICH",
-     "text": "Jede Nacht zünde ich Laternen an. Für drei Kupfermünzen. Das reicht gerade für ein Stück Brot.",
+     "text": "Jede Nacht zünde ich Laternen an. Für drei Kupfermünzen. Genau der Preis einer Schale Mondweizen-Ramen. Zufall? Nein. Planung.",
      "pre": 0.6,
-     "style": "nüchtern, ein wenig bitter"
+     "style": "nüchtern, bei den Ramen schwärmerisch, dann trocken"
     },
     {
      "who": "ICH",
-     "text": "Ich klettere dorthin, wo niemand klettern darf. Ich stehle Sternenstaub von den Dächern des Ordens.",
+     "text": "Ich klettere dorthin, wo niemand klettern darf, und stehle Sternenstaub vom Dach des Ordens. Elegant? Nicht wirklich. Aber effektiv.",
      "pre": 0.7,
-     "style": "frech, stolz"
+     "style": "frech, tollpatschig-selbstironisch"
     },
     {
      "who": "ICH",
@@ -216,9 +216,9 @@
     },
     {
      "who": "ICH",
-     "text": "Ich habe keine Angst vor der Höhe. Nur vor einer einzigen Sache …",
+     "text": "Höhe macht mir keine Angst. Menschen … ein bisschen. Aber wirklich fürchte ich nur eine einzige Sache …",
      "pre": 0.7,
-     "style": "selbstbewusst, dann leiser"
+     "style": "schüchtern, dann leiser"
     },
     {
      "who": "ICH",
@@ -266,7 +266,7 @@
    "lines": [
     {
      "who": "ICH",
-     "text": "Dann kam diese Nacht. Die Nadel meines Anhängers begann zu zittern.",
+     "text": "Dann kam diese Nacht. Mitten beim Ramen-Essen begann die Nadel zu zittern.",
      "style": "spannungsgeladen, leise"
     },
     {
@@ -293,14 +293,15 @@
    "lines": [
     {
      "who": "LUNARA",
-     "text": "Folge mir … und du siehst als Erstes, wie meine Geschichte weitergeht.",
+     "text": "Folge mir … und du siehst, ob ich diesmal alles rette. Oder ruiniere. Eins von beiden.",
      "rate": 0.93,
-     "style": "direkt zum Zuschauer, eindringlich, ein Hauch Lächeln"
+     "style": "direkt zum Zuschauer, trocken sarkastisch, ein Hauch Lächeln"
     }
    ],
    "cues": {
     "knopf": "L0+2.4"
    }
   }
- ]
+ ],
+ "tempo": 1.0
 }
