@@ -77,7 +77,7 @@
  "scenes": [
   {
    "id": "kalt",
-   "pre": 0.8,
+   "pre": 0.6,
    "post": 0.4,
    "lines": [
     {
@@ -95,29 +95,23 @@
     },
     {
      "who": "ICH",
-     "text": "Bleib bei mir. Ich zeige dir, was dort oben eingesperrt ist.",
-     "pre": 0.7,
-     "style": "eindringlich, direkt zum Zuschauer"
-    },
-    {
-     "who": "ICH",
-     "text": "Denn ich … habe eines dieser Gefängnisse geöffnet.",
-     "pre": 0.7,
-     "rate": 0.86,
-     "style": "flüsternd, schuldbewusst"
+     "text": "Ich zeige dir, was dort oben eingesperrt ist. Denn ich … habe eines davon geöffnet.",
+     "pre": 0.8,
+     "rate": 0.88,
+     "style": "eindringlich, dann flüsternd und schuldbewusst"
     }
    ]
   },
   {
    "id": "intro",
-   "pre": 18.5,
+   "pre": 18.0,
    "post": 0,
    "lines": []
   },
   {
    "id": "welt",
-   "pre": 1.0,
-   "post": 0.7,
+   "pre": 0.7,
+   "post": 0.5,
    "lines": [
     {
      "who": "ICH",
@@ -146,8 +140,8 @@
   },
   {
    "id": "stadt",
-   "pre": 0.8,
-   "post": 0.7,
+   "pre": 0.6,
+   "post": 0.5,
    "lines": [
     {
      "who": "ICH",
@@ -164,8 +158,8 @@
   },
   {
    "id": "lichtkrone",
-   "pre": 0.6,
-   "post": 0.7,
+   "pre": 0.5,
+   "post": 0.6,
    "lines": [
     {
      "who": "ICH",
@@ -175,19 +169,19 @@
     {
      "who": "ICH",
      "text": "Und wir hier unten, in den Tiefen Ästen? Uns bleibt nur der Rest: ein paar Laternen. Und Gesetze.",
-     "pre": 0.6,
+     "pre": 0.5,
      "style": "bitter, trocken"
     },
     {
      "who": "ICH",
      "text": "Das wichtigste Gesetz: Jeder Stern, der fällt, gehört dem Orden. Und wer ein Sternenherz berührt … stirbt.",
-     "pre": 0.6,
+     "pre": 0.5,
      "style": "ernst, langsam"
     },
     {
      "who": "ICH",
      "text": "Denn vor tausend Jahren hat ein Mensch genau das getan. Und Valdoria brannte.",
-     "pre": 0.6,
+     "pre": 0.5,
      "style": "düster"
     }
    ]
@@ -195,11 +189,11 @@
   {
    "id": "lunara",
    "pre": 0.8,
-   "post": 0.7,
+   "post": 0.5,
    "lines": [
     {
      "who": "ICH",
-     "text": "Und ich? Ich bin Neraya. Siebzehn Jahre alt. Die Leute sagen, ich habe die Augen meiner Mutter … und ihren Dickkopf.",
+     "text": "Und ich? Ich bin Neraya, siebzehn. Die Leute sagen, ich habe die Augen meiner Mutter … und ihren Dickkopf.",
      "style": "warm, ein Hauch Selbstironie"
     },
     {
@@ -213,6 +207,12 @@
      "text": "Ich klettere dorthin, wo niemand klettern darf. Ich stehle Sternenstaub von den Dächern des Ordens.",
      "pre": 0.7,
      "style": "frech, stolz"
+    },
+    {
+     "who": "ICH",
+     "text": "Für Lunara, meine Mondmaus. Klein wie ein Daumen … und fest überzeugt, ein Drache zu sein.",
+     "pre": 0.6,
+     "style": "liebevoll, amüsiert, mit einem Lächeln in der Stimme"
     },
     {
      "who": "ICH",
@@ -248,15 +248,20 @@
      "pre": 0.7,
      "style": "zärtlich, geheimnisvoll"
     }
-   ]
+   ],
+   "cues": {
+    "maus_hallo": "L3+0.2",
+    "hicks": "L4-0.5"
+   }
   },
   {
    "id": "fall",
    "pre": 0.6,
-   "post": 0.6,
+   "post": 0.5,
    "cues": {
     "streak": "L0+4.2",
-    "impact": "L0+6.9"
+    "impact": "L0+6.9",
+    "schreck": "L0+4.0"
    },
    "lines": [
     {
@@ -284,15 +289,18 @@
   {
    "id": "outro",
    "pre": 2.2,
-   "post": 7.5,
+   "post": 9.0,
    "lines": [
     {
      "who": "LUNARA",
-     "text": "Wenn du wissen willst, wie meine Geschichte weitergeht … folge mir. Dann siehst du die nächste Folge als Erstes.",
+     "text": "Folge mir … und du siehst als Erstes, wie meine Geschichte weitergeht.",
      "rate": 0.93,
      "style": "direkt zum Zuschauer, eindringlich, ein Hauch Lächeln"
     }
-   ]
+   ],
+   "cues": {
+    "knopf": "L0+2.4"
+   }
   }
  ]
 }

@@ -117,13 +117,36 @@ function particles(t, n, o) {
 }
 
 // Silhouette figure. (x,y) = feet, h = height in px. Returns hand position.
+// Draw a silhouette made of several overlapping shapes as ONE shape, so the rim light only traces
+// the outer outline (no glowing seams where arms, hair and body overlap).
+let SIL = null;
+function silhouette(rim, blur, draw) {
+  if (!SIL) {
+    const c = document.createElement('canvas'); c.width = W; c.height = H;
+    SIL = c.getContext('2d');
+    Object.defineProperty(SIL, 'shadowBlur', { set() {}, get() { return 0; } });
+  }
+  const main = ctx, m = main.getTransform();
+  SIL.setTransform(1, 0, 0, 1, 0, 0); SIL.clearRect(0, 0, W, H);
+  SIL.setTransform(m); SIL.globalAlpha = 1; SIL.globalCompositeOperation = 'source-over';
+  ctx = SIL;
+  let ret;
+  try { ret = draw(); } finally { ctx = main; }
+  main.save(); main.setTransform(1, 0, 0, 1, 0, 0);
+  if (rim) { main.shadowColor = rim; main.shadowBlur = blur; }
+  main.drawImage(SIL.canvas, 0, 0);
+  main.restore();
+  return ret;
+}
+
 function figure(x, y, h, o = {}) {
+  if (o.rim && !o._inner) return silhouette(o.rim, o.rimBlur ?? 26, () => figure(x, y, h, { ...o, _inner: true }));
   const s = h / 100, dir = o.dir ?? 1, wind = o.wind ?? 0;
   const t = o.t ?? 0;
   ctx.save();
   ctx.translate(x, y);
-  if (o.rot) ctx.rotate(o.rot);
-  ctx.scale(dir * s, s);
+  ctx.rotate((o.rot ?? 0) + (o.still ? 0 : 0.007 * Math.sin(t * 0.8 + x * 0.01)));
+  ctx.scale(dir * s, s * (1 + (o.still ? 0 : 0.005 * Math.sin(t * 1.6 + x * 0.02))));
   if (o.rim) { ctx.shadowColor = o.rim; ctx.shadowBlur = o.rimBlur ?? 26; }
   ctx.fillStyle = o.color ?? '#05060b';
   const flap = Math.sin(t * 2.3) * 2 + wind;
@@ -169,8 +192,12 @@ function figure(x, y, h, o = {}) {
     const a = o.arm, sx = 6, sy = -77, len = o.armLen ?? 34;
     const ex = sx + Math.cos(a + 0.3) * len * 0.5, ey = sy + Math.sin(a + 0.3) * len * 0.5;
     const hx = ex + Math.cos(a - 0.2) * len * 0.5, hy = ey + Math.sin(a - 0.2) * len * 0.5;
-    ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.strokeStyle = ctx.fillStyle; ctx.lineWidth = o.hair ? 3.4 : 5.2;
-    ctx.beginPath(); ctx.moveTo(sx - 2, sy + 1); ctx.lineTo(ex, ey); ctx.lineTo(hx, hy); ctx.stroke();
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.strokeStyle = ctx.fillStyle;
+    ctx.lineWidth = o.hair ? 3.3 : 5.4;
+    ctx.beginPath(); ctx.moveTo(sx - 2, sy + 1); ctx.lineTo(ex, ey); ctx.stroke();
+    ctx.lineWidth = o.hair ? 2.4 : 4.4;
+    ctx.beginPath(); ctx.moveTo(ex, ey); ctx.lineTo(hx, hy); ctx.stroke();
+    ctx.beginPath(); ctx.ellipse(hx + Math.cos(a - 0.2) * 1.2, hy + Math.sin(a - 0.2) * 1.2, o.hair ? 1.5 : 2.4, o.hair ? 1.1 : 1.8, a - 0.2, 0, 7); ctx.fill();
     hand = [x + dir * hx * s, y + hy * s];
     if (o.sword !== undefined) {
       const b = o.sword;
@@ -312,21 +339,49 @@ function sittingHeroine(x, y, s, t, o = {}) {
 }
 
 function swingHeroine(px, py, L, t, SX, SY) {
-  const th = 0.22 * Math.sin(t * 1.15), om = Math.cos(t * 1.15); // angle and its velocity
-  const s = 6, Lu = L / s, f = 2.0 - 1.6 * om;                      // hair streams against the motion
-  const rope = (x) => { ctx.save(); ctx.lineWidth = 0.55; ctx.strokeStyle = '#0b0c16'; ctx.shadowColor = 'rgba(190,210,255,0.7)'; ctx.shadowBlur = 6;
-    ctx.beginPath(); ctx.moveTo(x, -Lu); ctx.lineTo(x, 0.6); ctx.stroke(); ctx.restore(); };
-  ctx.save(); ctx.translate(px, py); ctx.rotate(-th); ctx.scale(s, s); ctx.translate(-3, Lu);
-  // the head looks up towards the star (computed in this rotated frame)
+  return silhouette('rgba(200,220,255,0.95)', 28, () => swingHeroineInner(px, py, L, t, SX, SY));
+}
+
+function swingHeroineInner(px, py, L, t, SX, SY) {
+  // side view of a real swing: both ropes run past her hips, her hands hold them at chest height,
+  // she leans back on the way forward and stretches her legs, tucks them on the way back
+  const ph = t * 1.15, th = 0.22 * Math.sin(ph), om = Math.cos(ph);
+  const s = 6, Lu = L / s, f = 1.8 - 1.5 * om, lean = -0.13 * om;
+  const RX = -1.5;                                   // rope position in the seat frame
+  const rot = (x, y, a, cx = 0, cy = -2) => [cx + (x - cx) * Math.cos(a) - (y - cy) * Math.sin(a), cy + (x - cx) * Math.sin(a) + (y - cy) * Math.cos(a)];
+  ctx.save(); ctx.translate(px, py); ctx.rotate(-th); ctx.scale(s, s); ctx.translate(0, Lu);
+  const C = '#05060d';
+  const rope = (x, a = 1) => { ctx.save(); ctx.lineWidth = 0.5; ctx.strokeStyle = `rgba(14,15,26,${a})`; ctx.shadowColor = 'rgba(190,210,255,0.7)'; ctx.shadowBlur = 5;
+    ctx.beginPath(); ctx.moveTo(x, -Lu); ctx.lineTo(x, 1.2); ctx.stroke(); ctx.restore(); };
+  rope(RX + 1.2, 0.8);                               // far rope, behind her
+  ctx.shadowColor = 'rgba(200,220,255,0.95)'; ctx.shadowBlur = 28;
+  ctx.fillStyle = C; ctx.strokeStyle = C; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  // look up towards the star
+  const neck = rot(0, -36, lean);
+  const wx = px + ((neck[0]) * Math.cos(-th) - (neck[1] + Lu) * Math.sin(-th)) * s, wy = py + ((neck[0]) * Math.sin(-th) + (neck[1] + Lu) * Math.cos(-th)) * s;
+  const look = clamp((Math.atan2(SY - wy, SX - wx) + th - lean) * 0.7, -0.75, -0.2);
+  // lower legs and the skirt falling from the knees
+  const knee = [13.5, -1.2], phi = 0.12 + 0.42 * om;
+  const K = (x, y) => [knee[0] + x * Math.cos(-phi) - y * Math.sin(-phi), knee[1] + x * Math.sin(-phi) + y * Math.cos(-phi)];
+  const k1 = K(2.6, -1.4), h1 = K(4.4 + om, 25.5), h2 = K(1.2, 26.6), h3 = K(-2.2, 25.4), h4 = K(-5.4, 26.4), k2 = K(-4.2, 3);
+  ctx.beginPath();
+  ctx.moveTo(-6.5, -5); ctx.lineTo(knee[0], -4.6); ctx.quadraticCurveTo(k1[0] + 1, k1[1] - 1, k1[0], k1[1]);
+  ctx.quadraticCurveTo(h1[0] + 1, (k1[1] + h1[1]) / 2, h1[0], h1[1]);
+  ctx.quadraticCurveTo((h1[0] + h2[0]) / 2, h1[1] + 1.6, h2[0], h2[1]);
+  ctx.quadraticCurveTo((h2[0] + h3[0]) / 2, h2[1] - 1.4, h3[0], h3[1]);
+  ctx.quadraticCurveTo((h3[0] + h4[0]) / 2, h3[1] + 1.6, h4[0], h4[1]);
+  ctx.quadraticCurveTo(k2[0] - 1, (k2[1] + h4[1]) / 2, k2[0], k2[1]);
+  ctx.lineTo(-6.5, 2); ctx.closePath(); ctx.fill();
+  const toe = K(1.2, 26.4);
+  ctx.beginPath(); ctx.ellipse(toe[0] + 1.2, toe[1], 2.4, 0.85, -phi + 0.25, 0, 7); ctx.fill();
+  // back of the gown draping behind the seat
+  ctx.beginPath(); ctx.moveTo(-6.6, -1); ctx.bezierCurveTo(-7.6 - f * 0.5, 5, -9 - f, 10, -11.5 - f * 1.6, 15.5); ctx.quadraticCurveTo(-6, 12, -1.5, 3); ctx.closePath(); ctx.fill();
+  // seat plank (seen end-on)
+  ctx.fillRect(-6, 0.8, 12.5, 1.6);
+  // upper body, leaning with the swing
+  ctx.save(); ctx.translate(0, -2); ctx.rotate(lean); ctx.translate(0, 2);
   const nx = 0, ny = -36;
-  const lx = nx + 3, ly = ny + Lu;
-  const hx = px + (lx * Math.cos(-th) - ly * Math.sin(-th)) * s, hy = py + (lx * Math.sin(-th) + ly * Math.cos(-th)) * s;
-  const look = clamp((Math.atan2(SY - hy, SX - hx) + th) * 0.7, -0.75, -0.2);
   const R = (x, y) => { const dx = x, dy = y + 86; return [nx + dx * Math.cos(look) - dy * Math.sin(look), ny + dx * Math.sin(look) + dy * Math.cos(look)]; };
-  rope(-10);
-  ctx.shadowColor = 'rgba(200,220,255,0.95)'; ctx.shadowBlur = 30;
-  ctx.fillStyle = '#05060d'; ctx.strokeStyle = '#05060d'; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-  // long hair flowing from the back of her head, lifted by the wind
   const top = R(-1, -102.6), back = R(-7.2, -97), nape = R(-5.5, -89);
   ctx.beginPath();
   ctx.moveTo(top[0], top[1]);
@@ -336,29 +391,17 @@ function swingHeroine(px, py, L, t, SX, SY) {
   ctx.bezierCurveTo(back[0] + 2.5, back[1] + 9, nape[0] + 2, nape[1] + 3, -1.5, -35);
   ctx.lineTo(top[0] + 4, top[1] + 6);
   ctx.closePath(); ctx.fill();
-  // seat plank
-  ctx.fillRect(-11, 0.6, 29, 1.6);
-  // gown: fitted bodice and narrow waist like the standing figure, a long skirt flowing from the knees
   ctx.beginPath();
   ctx.moveTo(-1.6, -36);
   ctx.bezierCurveTo(-4.5, -34.5, -7.2, -33, -7.0, -29);
   ctx.bezierCurveTo(-6.8, -23, -5.0, -17, -4.4, -11);
-  ctx.bezierCurveTo(-5.4, -7, -7.4, -3.5, -7.0, 0.6);
-  ctx.bezierCurveTo(-8 - f * 0.4, 6, -10 - f, 12, -13.5 - f * 1.6, 19);
-  ctx.quadraticCurveTo(-7, 15, -2.5, 8.5);
-  ctx.quadraticCurveTo(3, 11, 7 + om * 0.8, 15);
-  ctx.bezierCurveTo(7.6 + om, 20, 7.2 + om * 1.2, 24, 6.6 + om * 1.4, 28);
-  ctx.quadraticCurveTo(10 + om * 1.6, 26.6, 13 + om * 1.8, 28.6);
-  ctx.quadraticCurveTo(17 + om * 2.0, 26.4, 20 + om * 2.2, 28.4);
-  ctx.quadraticCurveTo(23 + om * 2.4, 26.8, 26 + om * 2.8, 27.6);
-  ctx.bezierCurveTo(24 + om * 1.6, 18, 22, 6, 20.2, -1.4);
-  ctx.bezierCurveTo(19.2, -5.4, 13, -5.8, 8, -6.4);
-  ctx.bezierCurveTo(5.4, -7, 4.6, -9, 4.4, -11);
+  ctx.bezierCurveTo(-5.4, -7, -7.2, -4, -7.0, 1);
+  ctx.lineTo(6, 1); ctx.lineTo(6.5, -5.5);
+  ctx.bezierCurveTo(5.0, -7.5, 4.4, -9, 4.4, -11);
   ctx.bezierCurveTo(5.0, -14, 7.8, -17.5, 7.8, -21.5);
   ctx.bezierCurveTo(7.8, -25.5, 6.0, -27, 5.8, -29.5);
   ctx.bezierCurveTo(5.0, -33, 3.4, -34.6, 1.6, -36);
   ctx.closePath(); ctx.fill();
-  // neck, head and profile tilted up towards the star
   ctx.save(); ctx.translate(nx, ny); ctx.rotate(look); ctx.translate(0, 86);
   ctx.fillRect(-1.6, -91, 3.2, 6);
   ctx.beginPath(); ctx.ellipse(0.6, -93.6, 4.7, 5.9, 0.12, 0, 7); ctx.fill();
@@ -371,16 +414,101 @@ function swingHeroine(px, py, L, t, SX, SY) {
   ctx.bezierCurveTo(1, -95, 3, -96.8, 4.8, -97.6);
   ctx.closePath(); ctx.fill();
   ctx.restore();
-  // front rope, and her arm reaching out to hold it
-  rope(17);
-  ctx.shadowColor = 'rgba(200,220,255,0.95)'; ctx.shadowBlur = 22;
-  ctx.fillStyle = '#05060d'; ctx.strokeStyle = '#05060d';
-  ctx.lineWidth = 2.1;
-  ctx.beginPath(); ctx.moveTo(4.2, -32.5); ctx.quadraticCurveTo(10, -30, 12, -26.5); ctx.stroke();
-  ctx.lineWidth = 1.6;
-  ctx.beginPath(); ctx.moveTo(12, -26.5); ctx.quadraticCurveTo(14.5, -23.5, 16.8, -22.5); ctx.stroke();
-  ctx.beginPath(); ctx.ellipse(17, -22.4, 1.0, 1.4, 0, 0, 7); ctx.fill();
   ctx.restore();
+  // near rope in front of her, and her arm: elbow bent down and forward, hand closed around the rope
+  rope(RX);
+  ctx.shadowColor = 'rgba(200,220,255,0.95)'; ctx.shadowBlur = 20;
+  const sh = rot(2.6, -32.5, lean), hand = [RX + 0.4, -26.5];
+  const el = [(sh[0] + hand[0]) / 2 + 3.6, (sh[1] + hand[1]) / 2 + 4.2];
+  ctx.lineWidth = 2.5; ctx.beginPath(); ctx.moveTo(sh[0], sh[1]); ctx.lineTo(el[0], el[1]); ctx.stroke();
+  ctx.lineWidth = 1.9; ctx.beginPath(); ctx.moveTo(el[0], el[1]); ctx.lineTo(hand[0], hand[1]); ctx.stroke();
+  ctx.beginPath(); ctx.ellipse(hand[0], hand[1], 1.2, 1.6, 0.2, 0, 7); ctx.fill();
+  ctx.restore();
+}
+
+// ---------- Lunara, the moon mouse: thumb-sized, silver, glowing, with tiny fluttering wings ----------
+function moonMouse(x, y, sz, t, o = {}) {
+  const dir = o.dir ?? 1, mood = o.mood ?? 'happy', a = o.a ?? 1;
+  if (a <= 0) return;
+  const shake = mood === 'scared' ? Math.sin(t * 60) * 0.06 : 0;
+  ctx.save(); ctx.globalAlpha = a; ctx.translate(x, y); ctx.scale(dir * sz, sz); ctx.rotate((o.tilt ?? 0) + shake);
+  // soft moonlight aura
+  ctx.save(); ctx.globalCompositeOperation = 'lighter';
+  const ag = ctx.createRadialGradient(0, 0, 0.2, 0, 0, 3.2); ag.addColorStop(0, 'rgba(200,215,255,0.45)'); ag.addColorStop(1, 'rgba(200,215,255,0)');
+  ctx.fillStyle = ag; ctx.beginPath(); ctx.arc(0, 0, 3.2, 0, 7); ctx.fill();
+  ctx.restore();
+  // wings (fluttering fast while flying)
+  if (o.fly !== false) {
+    const w = Math.sin(t * 34) * 0.55;
+    [[-0.25, -0.55, -0.9 + w, 1.0], [0.05, -0.6, -0.55 + w * 0.8, 0.85]].forEach(([wx, wy, ang, k]) => {
+      ctx.save(); ctx.translate(wx, wy); ctx.rotate(ang);
+      const wg = ctx.createLinearGradient(0, 0, -1.4, -0.4);
+      wg.addColorStop(0, 'rgba(225,240,255,0.75)'); wg.addColorStop(0.6, 'rgba(190,170,255,0.45)'); wg.addColorStop(1, 'rgba(160,230,255,0.25)');
+      ctx.fillStyle = wg; ctx.strokeStyle = 'rgba(240,248,255,0.8)'; ctx.lineWidth = 0.05;
+      ctx.beginPath(); ctx.ellipse(-0.75 * k, 0, 0.8 * k, 0.42 * k, 0, 0, 7); ctx.fill(); ctx.stroke();
+      ctx.restore();
+    });
+  }
+  // tail with a glowing star tip
+  const tw = Math.sin(t * 3) * 0.25;
+  ctx.strokeStyle = '#cfc8f0'; ctx.lineWidth = 0.09; ctx.lineCap = 'round';
+  ctx.beginPath(); ctx.moveTo(-0.85, 0.35); ctx.bezierCurveTo(-1.5, 0.6, -1.9, 0.1 + tw, -1.7, -0.4 + tw); ctx.stroke();
+  ctx.save(); ctx.globalCompositeOperation = 'lighter';
+  const tg = ctx.createRadialGradient(-1.7, -0.45 + tw, 0, -1.7, -0.45 + tw, 0.35); tg.addColorStop(0, 'rgba(255,240,200,1)'); tg.addColorStop(1, 'rgba(255,240,200,0)');
+  ctx.fillStyle = tg; ctx.beginPath(); ctx.arc(-1.7, -0.45 + tw, 0.35, 0, 7); ctx.fill(); ctx.restore();
+  // ears
+  const ear = mood === 'sad' ? 0.5 : mood === 'scared' ? -0.15 : 0;
+  [[-0.42, -0.78, -0.35 - ear], [0.32, -0.88, 0.2 + ear * 0.6]].forEach(([ex, ey, r]) => {
+    ctx.save(); ctx.translate(ex, ey); ctx.rotate(r);
+    ctx.fillStyle = '#ddd8f6'; ctx.beginPath(); ctx.ellipse(0, 0, 0.5, 0.55, 0, 0, 7); ctx.fill();
+    ctx.fillStyle = '#f7b8d2'; ctx.beginPath(); ctx.ellipse(0, 0.04, 0.32, 0.36, 0, 0, 7); ctx.fill();
+    ctx.restore();
+  });
+  // round, fluffy body
+  const puff = mood === 'scared' ? 1.12 : 1;
+  const bg = ctx.createRadialGradient(0.25, -0.3, 0.1, 0, 0, 1.1 * puff);
+  bg.addColorStop(0, '#ffffff'); bg.addColorStop(0.6, '#e6e2fb'); bg.addColorStop(1, '#a9a2dc');
+  ctx.fillStyle = bg; ctx.beginPath(); ctx.ellipse(0, 0, 1.0 * puff, 0.86 * puff, 0, 0, 7); ctx.fill();
+  if (mood === 'scared') { ctx.strokeStyle = '#e6e2fb'; ctx.lineWidth = 0.07; for (let k = 0; k < 9; k++) { const an = -2.6 + k * 0.4; ctx.beginPath(); ctx.moveTo(Math.cos(an) * 1.05, Math.sin(an) * 0.9); ctx.lineTo(Math.cos(an) * 1.25, Math.sin(an) * 1.08); ctx.stroke(); } }
+  ctx.fillStyle = 'rgba(255,255,255,0.7)'; ctx.beginPath(); ctx.ellipse(0.25, 0.35, 0.5, 0.35, 0, 0, 7); ctx.fill();
+  // golden crescent on the forehead
+  ctx.fillStyle = '#ffd98a'; ctx.beginPath(); ctx.arc(0.2, -0.52, 0.17, 0, 7); ctx.fill();
+  ctx.fillStyle = '#e6e2fb'; ctx.beginPath(); ctx.arc(0.27, -0.56, 0.15, 0, 7); ctx.fill();
+  // big shiny eyes (blinking now and then)
+  const blink = mood === 'happy' && fract(t * 0.31 + (o.seed ?? 0)) < 0.04;
+  [[0.12, -0.12], [0.62, -0.14]].forEach(([ex, ey]) => {
+    if (blink || mood === 'chew') { ctx.strokeStyle = '#2a2140'; ctx.lineWidth = 0.08; ctx.beginPath(); ctx.arc(ex, ey + 0.02, 0.15, Math.PI * 1.1, Math.PI * 1.9); ctx.stroke(); return; }
+    const r = mood === 'scared' ? 0.23 : 0.2;
+    ctx.fillStyle = '#1b1530'; ctx.beginPath(); ctx.ellipse(ex, ey, r * 0.85, r, 0, 0, 7); ctx.fill();
+    ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.arc(ex + 0.06, ey - 0.08, r * 0.35, 0, 7); ctx.fill();
+    ctx.beginPath(); ctx.arc(ex - 0.06, ey + 0.07, r * 0.15, 0, 7); ctx.fill();
+  });
+  // blush, nose, mouth, whiskers
+  const cheek = mood === 'chew' ? 0.3 + 0.05 * Math.sin(t * 22) : 0.15;
+  ctx.fillStyle = 'rgba(255,150,190,0.55)'; ctx.beginPath(); ctx.ellipse(0.82, 0.16, cheek, cheek * 0.7, 0, 0, 7); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(-0.08, 0.14, cheek * 0.8, cheek * 0.55, 0, 0, 7); ctx.fill();
+  ctx.fillStyle = '#f48fb4'; ctx.beginPath(); ctx.ellipse(0.98, 0.02, 0.1, 0.08, 0, 0, 7); ctx.fill();
+  ctx.strokeStyle = '#5a4a70'; ctx.lineWidth = 0.05;
+  ctx.beginPath(); if (mood === 'scared') ctx.ellipse(0.78, 0.3, 0.07, 0.1, 0, 0, 7); else ctx.arc(0.8, 0.2, 0.1, 0.2, Math.PI - 0.2); ctx.stroke();
+  ctx.strokeStyle = 'rgba(255,255,255,0.6)'; ctx.lineWidth = 0.03;
+  [[0.1, -0.05], [0.18, 0.05], [0.12, 0.15]].forEach(([dx, dy]) => { ctx.beginPath(); ctx.moveTo(1.0, 0.05); ctx.lineTo(1.0 + 0.5 + dx, 0.05 + dy - 0.05); ctx.stroke(); });
+  // tiny paws
+  ctx.fillStyle = '#f2eefe';
+  ctx.beginPath(); ctx.ellipse(0.35, 0.78, 0.16, 0.11, 0, 0, 7); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(-0.25, 0.8, 0.16, 0.11, 0, 0, 7); ctx.fill();
+  if (o.crumb) { ctx.save(); ctx.globalCompositeOperation = 'lighter'; const cg = ctx.createRadialGradient(0.95, 0.45, 0, 0.95, 0.45, 0.4); cg.addColorStop(0, 'rgba(255,235,170,1)'); cg.addColorStop(1, 'rgba(255,235,170,0)'); ctx.fillStyle = cg; ctx.beginPath(); ctx.arc(0.95, 0.45, 0.4, 0, 7); ctx.fill(); ctx.restore(); }
+  ctx.restore();
+}
+
+// a small "hic!" of sparkles when the moon mouse has eaten too much star dust
+function hiccup(x, y, t0, t) {
+  const p = (t - t0) / 1.2;
+  if (p < 0 || p > 1) return;
+  ctx.save(); ctx.globalCompositeOperation = 'lighter';
+  for (let k = 0; k < 7; k++) { const an = -Math.PI / 2 + (k - 3) * 0.35, r = 20 + p * 90; glow(x + Math.cos(an) * r, y + Math.sin(an) * r, 10 * (1 - p), 'rgba(255,230,160,A)', 1 - p); }
+  ctx.restore();
+  ctx.save(); ctx.textAlign = 'center'; ctx.font = 'italic 600 40px "Cormorant Garamond"'; ctx.fillStyle = `rgba(255,240,215,${1 - p})`;
+  ctx.shadowColor = 'rgba(0,0,0,0.8)'; ctx.shadowBlur = 8; ctx.fillText('hicks!', x + 40, y - 50 - p * 40); ctx.restore();
 }
 
 function ground(y, color, rough = 18, seed = 1) {
@@ -1242,13 +1370,13 @@ const SCENES = {
 
   lunara(t) {
     const L = i => lineOf('lunara', i), lt = local('lunara', t);
-    const close = smooth(L(6).start - 0.6, L(6).start + 0.6, t);
+    const close = smooth(L(7).start - 0.6, L(7).start + 0.6, t);
     const A = () => {
-      const push = smooth(L(3).start, L(5).end, t);
+      const push = smooth(L(4).start, L(6).end, t);
       ctx.save(); camera(1.0 + 0.35 * push, -120 * push, -260 * push);
       const lit = lerp(1, 7, clamp((t - SC.lunara.start) / (L(1).end - SC.lunara.start + 1)));
       this._branchScene(t, { lit });
-      const look = smooth(L(5).start - 0.8, L(5).start, t);
+      const look = smooth(L(6).start - 0.8, L(6).start, t);
       const hand = figure(380, 1610, 500, { hair: true, t, arm: lerp(-0.9, -1.4, look), armLen: 36, rim: 'rgba(255,170,90,0.85)', rimBlur: 30 });
       ctx.strokeStyle = '#04050a'; ctx.lineWidth = 6;
       ctx.beginPath(); ctx.moveTo(hand[0] - 30, hand[1] + 80); ctx.lineTo(hand[0] + 60, hand[1] - 170); ctx.stroke();
@@ -1258,10 +1386,29 @@ const SCENES = {
       if (dust > 0) { glow(330, 1330, 70, 'rgba(255,230,160,A)', 0.8 * dust); glow(330, 1330, 14, 'rgba(255,250,230,A)', dust); }
       ctx.restore();
       particles(t, 50, { y0: 1800, dy: -1200, a: 0.6, color: 'rgba(255,190,110,A)', r: 2, life: 9, glowR: 8 });
+      // Lunara the moon mouse: hovers around Neraya, steals a crumb of star dust, introduces herself, then settles on her shoulder
+      const hover = [440 + 60 * Math.sin(t * 0.9), 1200 + 25 * Math.sin(t * 2.1)];
+      const toDust = smooth(L(2).start + 0.8, L(2).start + 2.0, t), toFront = smooth(L(3).start - 0.3, L(3).start + 0.9, t), toShoulder = smooth(L(4).start + 0.5, L(4).start + 2.0, t);
+      let mx = lerp(hover[0], 345, toDust), my = lerp(hover[1], 1300 + 6 * Math.sin(t * 3), toDust);
+      mx = lerp(mx, 600 + 18 * Math.sin(t * 1.7), toFront); my = lerp(my, 1150 + 14 * Math.sin(t * 2.6), toFront);
+      mx = lerp(mx, 412, toShoulder); my = lerp(my, 1196, toShoulder);
+      const chewing = toDust > 0.9 && toFront < 0.2, sitting = toShoulder > 0.95;
+      const mood = sitting ? 'sad' : chewing ? 'chew' : 'happy';
+      moonMouse(mx, my, lerp(16, 26, toFront * (1 - toShoulder)) + 0, t, { dir: toShoulder > 0.5 ? 1 : (Math.cos(t * 0.9) > 0 ? 1 : -1) * (toFront > 0.5 ? -1 : 1), mood, fly: !sitting, crumb: chewing, seed: 0.3 });
+      const tag = smooth(L(3).start + 0.3, L(3).start + 1.0, t) * (1 - smooth(L(3).end - 0.2, L(3).end + 0.5, t));
+      if (tag > 0) {
+        ctx.save(); ctx.textAlign = 'center'; ctx.shadowColor = 'rgba(0,0,0,0.9)'; ctx.shadowBlur = 12;
+        if (ctx.letterSpacing !== undefined) ctx.letterSpacing = '6px';
+        ctx.font = '700 34px Cinzel'; ctx.fillStyle = `rgba(230,225,255,${tag})`; ctx.fillText('LUNARA', mx, my - 90);
+        if (ctx.letterSpacing !== undefined) ctx.letterSpacing = '0px';
+        ctx.font = 'italic 600 28px "Cormorant Garamond"'; ctx.fillStyle = `rgba(240,235,255,${tag})`; ctx.fillText('Mondmaus · daumengroß · fliegt', mx, my - 58);
+        ctx.restore();
+      }
+      hiccup(mx, my, CUE.hicks, t);
       ctx.restore();
     };
     const B = () => {
-      ctx.save(); camera(1.0 + 0.06 * clamp((t - L(6).start) / 8), 0, 0);
+      ctx.save(); camera(1.0 + 0.06 * clamp((t - L(7).start) / 8), 0, 0);
       vgrad([[0, '#03021a'], [0.6, '#151446'], [1, '#08061a']]);
       stars(t, { alpha: 1 });
       ctx.save(); ctx.globalCompositeOperation = 'lighter';
@@ -1269,6 +1416,7 @@ const SCENES = {
       glow(STARS[0].x * W + 160, STARS[0].y * H - 60, 90, 'rgba(255,230,190,A)', 0.8 + 0.2 * Math.sin(t * 3));
       ctx.restore();
       pendant(540, 1000, 220, t, { angle: Math.atan2(STARS[0].y * H - 60 - 1000, STARS[0].x * W + 160 - 540) });
+      moonMouse(745, 1215 + 3 * Math.sin(t * 1.5), 30, t, { dir: -1, mood: 'sad', fly: false, tilt: -0.1 });
       ctx.restore();
     };
     crossfade(close, A, B);
@@ -1329,6 +1477,7 @@ const SCENES = {
       vgrad([[0, '#03021a'], [1, '#08061a']]);
       stars(t, { alpha: 1 });
       pendant(540, 1000, 240, t, { angle: -1.2, tremble: smooth(SC.fall.start, SC.fall.start + 3, t) });
+      moonMouse(760, 1230, 30, t, { dir: -1, mood: t > SC.fall.start + 1.5 ? 'scared' : 'happy', fly: false, tilt: -0.25 });
       ctx.restore();
     };
     const V = () => {
@@ -1357,6 +1506,8 @@ const SCENES = {
       }
       const lit = smooth(imp - 0.3, imp + 0.2, t);
       figure(330, 1610, 480, { hair: true, t, arm: -0.4, rim: `rgba(200,220,255,${0.3 + 0.7 * lit})`, rimBlur: 40 });
+      const jump = smooth(CUE.schreck, CUE.schreck + 0.4, t);
+      moonMouse(lerp(470, 352, jump), lerp(1150, 1218, jump) - 40 * Math.sin(Math.PI * jump), 20, t, { dir: -1 + 2 * jump, mood: t > CUE.schreck ? 'scared' : 'happy', fly: jump < 0.95, seed: 0.7 });
       ctx.restore();
     };
     crossfade(city, P, V);
@@ -1480,7 +1631,18 @@ const SCENES = {
     ctx.restore();
     const cta = LINES.find(l => l.scene === 'outro');
     const fa = smooth(cta.start + 1.5, cta.start + 2.3, t);
+    const press = smooth(CUE.knopf - 0.15, CUE.knopf, t) * (1 - smooth(CUE.knopf + 0.1, CUE.knopf + 0.35, t));
+    ctx.save(); ctx.translate(540, 1700); ctx.scale(1 - 0.06 * press, 1 - 0.1 * press); ctx.translate(-540, -1700);
     followButton(540, 1700, fa, t);
+    ctx.restore();
+    {
+      const orbit = [600 + 150 * Math.cos(t * 1.3), 1000 + 60 * Math.sin(t * 2.6)];
+      const go = smooth(CUE.knopf - 1.6, CUE.knopf - 0.1, t);
+      const bx = lerp(orbit[0], 470, go), by = lerp(orbit[1], 1612, go) - 120 * Math.sin(Math.PI * go) * 0.5;
+      const land = go > 0.98;
+      moonMouse(bx, by + (land ? 6 * press : 0), 22, t, { dir: land ? 1 : (-Math.sin(t * 1.3) > 0 ? 1 : -1), mood: 'happy', fly: !land || t < CUE.knopf + 0.3, seed: 0.5 });
+      if (t > CUE.knopf && t < CUE.knopf + 0.6) { ctx.save(); ctx.globalCompositeOperation = 'lighter'; glow(540, 1700, 260, 'rgba(255,220,150,A)', 0.6 * (1 - (t - CUE.knopf) / 0.6)); ctx.restore(); }
+    }
     ctx.save(); ctx.textAlign = 'center'; ctx.shadowColor = 'rgba(0,0,0,0.9)'; ctx.shadowBlur = 14;
     ctx.font = 'italic 600 46px "Cormorant Garamond"'; ctx.fillStyle = `rgba(245,235,220,${fa})`;
     ctx.fillText('… und sieh die nächste Folge als Erstes', 540, 1815);

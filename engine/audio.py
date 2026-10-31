@@ -375,6 +375,20 @@ def epic_intro(music, fx, t0, beat=0.6):
     return hit
 
 
+def squeak(n=2, base=2600, gap=0.11, seed=0):
+    """Tiny, cute squeak of the moon mouse."""
+    r = np.random.default_rng(seed)
+    out = np.zeros(int((n * gap + 0.2) * SR), dtype=np.float32)
+    for k in range(n):
+        d = 0.08 + 0.03 * r.random()
+        t = np.arange(int(d * SR)) / SR
+        f = base * (1 + 0.15 * r.random()) * (1 + 0.5 * t / d) * (1 + 0.03 * np.sin(2 * np.pi * 40 * t))
+        x = np.sin(2 * np.pi * np.cumsum(f) / SR) * np.sin(np.pi * t / d) ** 2
+        i = int(k * gap * SR)
+        out[i:i + len(x)] += x.astype(np.float32) * 0.25
+    return out
+
+
 def epic_outro(music, fx, t0, t1):
     """Distinct closing theme: heroic I-V-vi-IV in F, soaring strings, turning to D major with the motif's head.
     Everything resolves and decays before t1, so nothing is cut off at the end of the video."""
@@ -489,7 +503,7 @@ def score(tl):
         for k, c in enumerate(["F", "C", "Dm", "Bb", "F", "C", "Bb", "A"]):
             for j in range(8):
                 music.add(bell(arp[c][j % 4], 1.6, 0.6), s["start"] + k * each + j * each / 8, 0.18, 0.3 * (-1) ** j)
-        motif(music, LN("lunara", 6)["start"], 0.7, voice="bell", transpose=12, gain=0.28, upto=8)
+        motif(music, LN("lunara", 7)["start"], 0.7, voice="bell", transpose=12, gain=0.28, upto=8)
 
     # Kael: nostalgic strings, then cold
     if "kael_vor" in S:
@@ -711,6 +725,13 @@ def score(tl):
             t += 1.6
         stab("Eb", None, C["schrei"], music, 1.3)
         fx.add(boom(5, 90, 28, 1.0), C["schrei"], 1.2)
+
+    # The moon mouse
+    for name, n, base in (("maus_hallo", 3, 2800), ("hicks", 1, 3400), ("schreck", 2, 3600), ("knopf", 2, 3000)):
+        if name in C:
+            fx.add(squeak(n, base, seed=len(name)), C[name], 0.9, 0.2)
+            if name == "hicks":
+                fx.add(bell("E7", 0.8, 0.2), C[name] + 0.05, 0.25)
 
     # Outro
     if "outro" in S:
