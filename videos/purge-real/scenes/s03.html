@@ -1,0 +1,60 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .cbox { top: 440px; } /* unter der großen Kapitel-Überschrift */
+    .s03-ch { position: absolute; left: 0; right: 0; top: 540px; margin: 0 auto; width: fit-content; padding: 8px 22px; border: 4px solid #ffd43b; border-radius: 12px; background: rgba(8,8,16,.85);
+      font: 700 42px Oswald, sans-serif; color: #ffd43b; letter-spacing: .04em; opacity: 0; }
+    .s03-ch b { display: inline-block; margin-right: 12px; padding: 0 12px; border-radius: 8px; background: #ffd43b; color: #0b0c14; }
+  </style>
+  <div id="root" data-composition-id="s03" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s03-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <svg id="s03-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s03-c1" class="s03-ch"><b>1</b>LICHT AUS</div><div id="s03-c2" class="s03-ch"><b>2</b>RAUM OHNE FENSTER</div>
+      <div id="s03-c3" class="s03-ch"><b>3</b>VORRÄTE</div><div id="s03-c4" class="s03-ch"><b>4</b>NACHBARN</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s03-svg");
+      night(sv, "s03-n", "#0c1022", "#1f1830", null);
+      const step = (fill) => { const g = el("g", { opacity: 0 }, sv); fill(g); return g; };
+      const ground = (g) => el("rect", { x: 0, y: 1240, width: 1080, height: 300, fill: "#141320" }, g);
+      let wins = [], M1;
+      const g1 = step((g) => { const h = house(g, 260, 1240, 560, 520, "#4a4258", { n: 3, lit: [1, 1, 1] }); wins = h.wins;
+        const h2 = el("g", {}, g); h2.appendChild(el("rect", O({ x: 300, y: 860, width: 480, height: 4, fill: "none", stroke: "none" })));
+        ground(g); M1 = masked(g, 980, 1420, 0.8); });
+      const g2 = step((g) => { el("rect", O({ x: 180, y: 640, width: 720, height: 600, fill: "#3a3448" }), g);
+        el("path", O({ d: "M540 640 V1240 M180 940 H900", fill: "none" }), g);
+        [[300, 760, "SCHLAFZ."], [720, 760, "KÜCHE"], [300, 1060, "FLUR"]].forEach(([x, y, t]) => { el("rect", O({ x: x - 50, y: y - 40, width: 100, height: 70, fill: "#1a2033", "stroke-width": 4 }), g); txt(g, x, y + 100, t, 36, "#8d93a3"); });
+        const safe = el("rect", { x: 545, y: 945, width: 350, height: 290, fill: "#39e27a", opacity: 0.25 }, g); g.safe = safe;
+        txt(g, 720, 1210, "BAD", 40, "#39e27a");
+        [660, 720, 780].forEach((x, i) => { el("circle", O({ cx: x, cy: 1060, r: 22, fill: "#f0c8a0", "stroke-width": 4 }), g); el("rect", O({ x: x - 26, y: 1084, width: 52, height: 70, rx: 18, fill: ["#ff8fd0", "#7fd0ff", "#ffd43b"][i], "stroke-width": 4 }), g); }); ground(g); });
+      const items = [];
+      const g3 = step((g) => { const it = (x, y, draw) => { const s = el("g", { opacity: 0 }, g); draw(s, x, y); items.push(s); };
+        it(300, 820, (s, x, y) => { el("rect", O({ x: x - 50, y: y - 120, width: 100, height: 220, rx: 30, fill: "#7fd0ff" }), s); el("rect", O({ x: x - 22, y: y - 150, width: 44, height: 36, fill: "#2f5bd6" }), s); txt(s, x, y + 160, "WASSER", 38, "#fff"); });
+        it(780, 820, (s, x, y) => { el("rect", O({ x: x - 80, y: y - 90, width: 160, height: 180, rx: 14, fill: "#c9cfe6" }), s); el("rect", { x: x - 80, y: y - 30, width: 160, height: 60, fill: "#ff8a3d" }, s); txt(s, x, y + 160, "ESSEN", 38, "#fff"); });
+        it(300, 1130, (s, x, y) => { el("rect", O({ x: x - 90, y: y - 70, width: 180, height: 140, rx: 18, fill: "#ece6d6" }), s); el("path", { d: `M${x} ${y - 40} v80 M${x - 40} ${y} h80`, stroke: "#ff3b55", "stroke-width": 22 }, s); txt(s, x, y + 120, "ERSTE HILFE", 36, "#fff"); });
+        it(780, 1130, (s, x, y) => { el("path", { d: `M${x + 40} ${y - 20} L${x + 190} ${y - 90} L${x + 190} ${y + 50}Z`, fill: "#ffe7a3", opacity: 0.5 }, s); el("rect", O({ x: x - 100, y: y - 34, width: 150, height: 68, rx: 14, fill: "#2a2f40" }), s); el("rect", O({ x: x + 40, y: y - 46, width: 30, height: 92, rx: 8, fill: "#8a8f9c" }), s); txt(s, x, y + 120, "LAMPE", 36, "#fff"); }); });
+      const ppl = [];
+      const g4 = step((g) => { house(g, 60, 1240, 360, 380, "#4a4258", { n: 2, lit: [0, 0] }); house(g, 660, 1240, 360, 380, "#3e3a4e", { n: 2, lit: [0, 0] }); ground(g);
+        for (let i = 0; i < 6; i++) { const x = 330 + i * 84, p = el("g", { opacity: 0 }, g); el("circle", O({ cx: x, cy: 1130, r: 24, fill: "#f0c8a0", "stroke-width": 4 }), p); el("rect", O({ x: x - 28, y: 1156, width: 56, height: 74, rx: 18, fill: ["#ff8fd0", "#7fd0ff", "#ffd43b", "#39e27a", "#ff8a3d", "#c9cfe6"][i], "stroke-width": 4 }), p); ppl.push(p); } });
+      const s1 = at("L5b", "Schritt"), la = at("L5b", "Licht"), ke = at("L5b", "kein"), s2 = at("L5c", "Schritt"), oh = at("L5c", "ohne"), s3 = at("L5d", "Schritt"), wa = at("L5d", "Wasser"), es = at("L5d", "Essen"), eh = at("L5d", "Erste"), ta = at("L5d", "Taschenlampe"), s4 = at("L5e", "Schritt"), na = at("L5e", "Nachbarn");
+      const show = (g, c, t, end) => { tl.set(g, { opacity: 1 }, t - 0.1); tl.fromTo(g, { scale: 1.2, svgOrigin: "540 1000" }, { scale: 1, svgOrigin: "540 1000", duration: 0.45, ease: "power3.out" }, t - 0.1);
+        tl.fromTo(c, { opacity: 0, y: -20 }, { opacity: 1, y: 0, duration: 0.3, ease: "back.out(2)" }, t - 0.05); if (end) { tl.set(g, { opacity: 0 }, end - 0.1); tl.set(c, { opacity: 0 }, end - 0.1); } };
+      show(g1, "#s03-c1", s1, s2); show(g2, "#s03-c2", s2, s3); show(g3, "#s03-c3", s3, s4); show(g4, "#s03-c4", s4, 0);
+      tl.to(wins, { attr: { fill: "#1a2033" }, duration: 0.05, stagger: 0.12 }, la);
+      tl.to(M1.g, { x: 100, duration: 2.4, ease: "none" }, la + 0.2);
+      tl.to(g2.safe, { opacity: 0.6, duration: 0.25, yoyo: true, repeat: 3 }, oh);
+      [wa, es, eh, ta].forEach((t, i) => tl.fromTo(items[i], { opacity: 0, scale: 0.4, svgOrigin: i % 2 ? "780 1000" : "300 1000" }, { opacity: 1, scale: 1, svgOrigin: i % 2 ? "780 1000" : "300 1000", duration: 0.3, ease: "back.out(2.4)" }, t - 0.1));
+      ppl.forEach((p, i) => tl.fromTo(p, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.3, ease: "back.out(2)" }, na - 0.6 + i * 0.1));
+      tl.to("#s03-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s03"] = tl;
+    })();
+  </script>
+</template>

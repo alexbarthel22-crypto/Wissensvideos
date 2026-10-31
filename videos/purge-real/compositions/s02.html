@@ -24,8 +24,8 @@
     .cbox { top: 440px; } /* unter der großen Kapitel-Überschrift */
     #s02-st { left: 230px; top: 760px; width: 620px; height: 150px; border: 10px solid #ff3b55; border-radius: 18px; color: #ff3b55; font: 700 90px/130px Oswald, sans-serif; text-align: center; opacity: 0; background: rgba(10,10,16,.6); }
   </style>
-  <div id="root" data-composition-id="s02" data-start="0" data-duration="10.040" data-width="1080" data-height="1920">
-    <div id="s02-stage" class="clip stage" data-start="0" data-duration="10.040" data-track-index="0">
+  <div id="root" data-composition-id="s02" data-start="0" data-duration="10.030" data-width="1080" data-height="1920">
+    <div id="s02-stage" class="clip stage" data-start="0" data-duration="10.030" data-track-index="0">
       <svg id="s02-svg" class="full" viewBox="0 0 1080 1920"></svg>
       <div id="s02-st" class="abs">AUSVERKAUFT</div>
     </div>
@@ -33,7 +33,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 10.04, "L4": [0.2, 5.95], "L4.words": [["eine", 0.2, 0.535], ["stunde", 0.535, 0.883], ["vorher", 0.883, 1.23], ["baumärkte", 1.78, 2.363], ["leergekauft", 2.363, 2.96], ["schlösser", 3.27, 3.8], ["gitter", 4.22, 5.22], ["sperrholz", 5.63, 5.799], ["", 5.799, 5.87], ["weg", 5.87, 5.95]], "L5": [6.17, 9.86], "L5.words": [["wer", 6.17, 6.412], ["geld", 6.412, 6.663], ["hat", 6.663, 6.905], ["verbarrikadiert", 6.905, 8.114], ["sich", 8.114, 8.365], ["wer", 8.365, 8.607], ["keins", 8.607, 8.866], ["hat", 8.866, 9.108], ["ist", 9.108, 9.35], ["schutzlos", 9.35, 9.86]]};
+      const C = {"__dur": 10.03, "L4": [0.2, 5.95], "L4.words": [["eine", 0.2, 0.535], ["stunde", 0.535, 0.883], ["vorher", 0.883, 1.23], ["baumärkte", 1.78, 2.363], ["leergekauft", 2.363, 2.96], ["schlösser", 3.27, 3.8], ["gitter", 4.22, 5.22], ["sperrholz", 5.63, 5.799], ["", 5.799, 5.87], ["weg", 5.87, 5.95]], "L5": [6.17, 9.85], "L5.words": [["wer", 6.17, 6.411], ["geld", 6.411, 6.661], ["hat", 6.661, 6.903], ["verbarrikadiert", 6.903, 8.109], ["sich", 8.109, 8.359], ["wer", 8.359, 8.6], ["keins", 8.6, 8.859], ["hat", 8.859, 9.1], ["ist", 9.1, 9.342], ["schutzlos", 9.342, 9.85]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -127,15 +127,15 @@
       const crack = B.wins.map((w) => { const x = +w.getAttribute("x"), y = +w.getAttribute("y"); return el("path", { d: `M${x + 26} ${y + 28} l-18 -20 M${x + 26} ${y + 28} l20 -22 M${x + 26} ${y + 28} l-14 26 M${x + 26} ${y + 28} l22 16`, stroke: "#fff", "stroke-width": 3, opacity: 0 }, st); });
       const ok = txt(st, 310, 760, "✓", 120, "#39e27a", { opacity: 0 }), no = txt(st, 780, 760, "✕", 120, "#ff3b55", { opacity: 0 });
       const le = at("L4", "leergekauft"), sl = at("L4", "Schlösser"), gi = at("L4", "Gitter"), sp = at("L4", "Sperrholz"), we = at("L4", "weg"), l5 = line("L5")[0], ve = at("L5", "verbarrikadiert"), sc = at("L5", "schutzlos");
-      tl.fromTo(shop, { scale: 1.2 }, { scale: 1, svgOrigin: "540 940", duration: 1.2, ease: "power2.out" }, 0);
+      tl.fromTo(shop, { scale: 1.2, svgOrigin: "540 940" }, { scale: 1, svgOrigin: "540 940", duration: 1.2, ease: "power2.out" }, 0);
       items.forEach((it, i) => tl.to(it, { opacity: 0, y: -40, duration: 0.18 }, le - 0.6 + (i % 27) * 0.03));
-      [[lock, sl], [grid, gi], [wood, sp]].forEach(([g, t], i, arr) => { tl.set(g, { opacity: 1 }, t - 0.1); tl.fromTo(g, { scale: 1.3 }, { scale: 1, svgOrigin: "540 900", duration: 0.35, ease: "power3.out" }, t - 0.1);
+      [[lock, sl], [grid, gi], [wood, sp]].forEach(([g, t], i, arr) => { tl.set(g, { opacity: 1 }, t - 0.1); tl.fromTo(g, { scale: 1.3, svgOrigin: "540 900" }, { scale: 1, svgOrigin: "540 900", duration: 0.35, ease: "power3.out" }, t - 0.1);
         tl.set(g, { opacity: 0 }, i < 2 ? arr[i + 1][1] - 0.1 : we - 0.1); });
       tl.to(wood.hammer, { rotation: -40, svgOrigin: "740 800", duration: 0.12, yoyo: true, repeat: 5 }, sp);
       tl.fromTo("#s02-st", { opacity: 0, scale: 2.2, rotation: -8 }, { opacity: 1, scale: 1, rotation: -8, duration: 0.25, ease: "power4.in" }, we - 0.15);
       tl.to(["#s02-st", shop], { opacity: 0, duration: 0.2 }, l5 - 0.25);
       tl.to(st, { opacity: 1, duration: 0.2 }, l5 - 0.15);
-      tl.fromTo(st, { scale: 1.25 }, { scale: 1, svgOrigin: "540 1100", duration: 1.0, ease: "power2.out" }, l5 - 0.15);
+      tl.fromTo(st, { scale: 1.25, svgOrigin: "540 1100" }, { scale: 1, svgOrigin: "540 1100", duration: 1.0, ease: "power2.out" }, l5 - 0.15);
       planks.forEach((pl, i) => tl.fromTo(pl, { opacity: 0, x: -200 }, { opacity: 1, x: 0, duration: 0.2, ease: "back.out(2)" }, ve - 0.2 + i * 0.12));
       tl.to(ok, { opacity: 1, duration: 0.2 }, ve + 0.5);
       tl.to(st, { x: -160, duration: 0.6, ease: "power2.inOut" }, sc - 0.6);

@@ -31,8 +31,8 @@
     #s05-lt { left: 190px; top: 620px; width: 700px; height: 480px; border-radius: 16px; background: #efe8d6; border: 5px solid #0b0c14; opacity: 0; text-align: center; color: #22283f; }
     #s05-lt b { display: block; margin-top: 40px; font: 700 54px Oswald, sans-serif; } #s05-lt p { margin: 20px 60px; font: 500 34px/1.4 "EB Garamond", serif; }
   </style>
-  <div id="root" data-composition-id="s05" data-start="0" data-duration="14.905" data-width="1080" data-height="1920">
-    <div id="s05-stage" class="clip stage" data-start="0" data-duration="14.905" data-track-index="0">
+  <div id="root" data-composition-id="s05" data-start="0" data-duration="14.714" data-width="1080" data-height="1920">
+    <div id="s05-stage" class="clip stage" data-start="0" data-duration="14.714" data-track-index="0">
       <svg id="s05-svg" class="full" viewBox="0 0 1080 1920"></svg>
       <div id="s05-card" class="abs"><div class="nm">NACHTFALKE</div><div class="st">★★★</div><div class="art"></div><div class="tx"></div></div>
       <div id="s05-price" class="abs">2.500 €</div>
@@ -43,7 +43,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 14.905, "L11": [0.2, 5.27], "L11.words": [["wer", 0.2, 0.47], ["geht", 0.47, 0.75], ["raus", 0.75, 1.03], ["banden", 1.44, 1.89], ["menschen", 2.18, 2.416], ["mit", 2.416, 2.53], ["rachegelüsten", 2.53, 3.091], ["", 3.091, 3.192], ["und", 3.192, 3.306], ["leute", 3.306, 3.53], ["die", 3.74, 3.991], ["nur", 3.991, 4.241], ["zuschauen", 4.241, 4.769], ["wollen", 4.769, 5.27]], "L12": [5.49, 8.97], "L12.words": [["juweliere", 5.49, 6.15], ["banken", 6.56, 6.891], ["", 6.891, 7.038], ["und", 7.038, 7.204], ["sammelkartenläden", 7.204, 8.19], ["geplündert", 8.46, 8.97]], "L12b": [9.19, 12.09], "L12b.words": [["eine", 9.19, 9.506], ["einzige", 9.506, 9.987], ["seltene", 9.987, 10.467], ["karte", 10.467, 10.789], ["ist", 10.789, 10.953], ["oft", 10.953, 11.117], ["tausende", 11.117, 11.604], ["euro", 11.604, 11.92], ["wert", 11.92, 12.09]], "L12c": [12.31, 14.725], "L12c.words": [["und", 12.31, 12.495], ["die", 12.495, 12.68], ["versicherung", 12.68, 13.419], ["zahlt", 13.419, 13.617], ["nichts", 13.617, 13.821], ["es", 13.821, 13.999], ["war", 13.999, 14.184], ["ja", 14.184, 14.362], ["legal", 14.362, 14.725]]};
+      const C = {"__dur": 14.714, "L11": [0.2, 5.27], "L11.words": [["wer", 0.2, 0.47], ["geht", 0.47, 0.75], ["raus", 0.75, 1.03], ["banden", 1.44, 1.89], ["menschen", 2.18, 2.416], ["mit", 2.416, 2.53], ["rachegelüsten", 2.53, 3.091], ["", 3.091, 3.192], ["und", 3.192, 3.306], ["leute", 3.306, 3.53], ["die", 3.74, 3.991], ["nur", 3.991, 4.241], ["zuschauen", 4.241, 4.769], ["wollen", 4.769, 5.27]], "L12": [5.49, 8.99], "L12.words": [["juweliere", 5.49, 6.16], ["banken", 6.43, 6.515], ["", 6.515, 6.553], ["und", 6.553, 6.596], ["sammelkartenläden", 6.596, 6.85], ["geplündert", 7.11, 8.99]], "L12b": [9.21, 11.68], "L12b.words": [["eine", 9.21, 9.479], ["einzige", 9.479, 9.889], ["seltene", 9.889, 10.298], ["karte", 10.298, 10.572], ["ist", 10.572, 10.712], ["oft", 10.712, 10.852], ["tausende", 10.852, 11.266], ["euro", 11.266, 11.535], ["wert", 11.535, 11.68]], "L12c": [11.9, 14.534], "L12c.words": [["und", 11.9, 12.015], ["die", 12.015, 12.13], ["versicherung", 12.13, 12.59], ["zahlt", 13.06, 13.345], ["nichts", 13.345, 13.64], ["es", 13.87, 14.001], ["war", 14.001, 14.136], ["ja", 14.136, 14.267], ["legal", 14.267, 14.533]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -136,7 +136,7 @@
         const r = rng(i + 3); for (let k = 0; k < 9; k++) shards.push([i, el("path", { d: `M${x + 120 + r() * 560} ${820 + r() * 340} l${20 + r() * 30} ${-10 - r() * 20} l-10 ${30 + r() * 20}Z`, fill: "#e6f6ff", opacity: 0 }, row)]); });
       const red = el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: "#c8102e", opacity: 0 }, sv);
       const ba = at("L11", "Banden"), ra = at("L11", "Rachegelüsten"), zu = at("L11", "zuschauen"), l12 = line("L12")[0], ju = at("L12", "Juweliere"), bk = at("L12", "Banken"), sk = at("L12", "Sammelkartenläden"), l12b = line("L12b")[0], te = at("L12b", "tausende"), l12c = line("L12c")[0], le = at("L12c", "legal");
-      tl.fromTo(W, { scale: 1.3 }, { scale: 1, svgOrigin: "540 1250", duration: 1.5, ease: "power2.out" }, 0);
+      tl.fromTo(W, { scale: 1.3, svgOrigin: "540 1250" }, { scale: 1, svgOrigin: "540 1250", duration: 1.5, ease: "power2.out" }, 0);
       gang.forEach((m, i) => tl.fromTo(m.g, { x: `-=${300}`, opacity: 0 }, { x: `+=${300}`, opacity: 1, duration: 1.2, ease: "power2.out" }, ba - 0.4 + i * 0.25));
       tl.to(gang.map((m) => m.g), { y: "-=10", duration: 0.3, yoyo: true, repeat: 9, stagger: 0.1 }, ba + 1.0);
       tl.to(fg, { x: -80, duration: 8, ease: "none" }, 0);

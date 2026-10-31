@@ -20,7 +20,7 @@
     },
     {
      "id": "L2",
-     "text": "Zwölf Stunden lang: / *r:alle *r:Verbrechen / *r:legal. / Auch *r:Mord."
+     "text": "Zwölf Stunden lang: / *r:alle *r:Verbrechen *r:legal. / *r:Raub, *r:Einbruch, / *r:Brandstiftung – / und *r:Mord."
     },
     {
      "id": "L3",
@@ -34,11 +34,6 @@
      "volume": 0.85
     },
     {
-     "name": "impact-bass-1",
-     "at": "L2:Mord",
-     "volume": 0.45
-    },
-    {
      "name": "whoosh-short",
      "at": "L2:Zwölf",
      "volume": 0.3
@@ -47,6 +42,26 @@
      "name": "whoosh-short",
      "at": "L3:Polizei",
      "volume": 0.3
+    },
+    {
+     "name": "impact-bass-2",
+     "at": "L2:Raub",
+     "volume": 0.3
+    },
+    {
+     "name": "impact-bass-2",
+     "at": "L2:Einbruch",
+     "volume": 0.3
+    },
+    {
+     "name": "impact-bass-2",
+     "at": "L2:Brandstiftung",
+     "volume": 0.3
+    },
+    {
+     "name": "impact-bass-1",
+     "at": "L2:Mord",
+     "volume": 0.5
     }
    ]
   },
@@ -77,6 +92,55 @@
     {
      "name": "impact-bass-2",
      "at": "L5:schutzlos",
+     "volume": 0.4
+    }
+   ]
+  },
+  {
+   "id": "s03",
+   "tag": "",
+   "top": [
+    "18:30",
+    "SO SCHÜTZT DU DICH",
+    "g"
+   ],
+   "lines": [
+    {
+     "id": "L5b",
+     "text": "So schützt du dich: / *g:Schritt *g:eins – / Licht aus. / Wer dunkel ist, / ist *g:kein *g:Ziel."
+    },
+    {
+     "id": "L5c",
+     "text": "*g:Schritt *g:zwei: / ein Raum / *g:ohne *g:Fenster – / Keller oder Bad."
+    },
+    {
+     "id": "L5d",
+     "text": "*g:Schritt *g:drei: / Wasser, Essen, / Erste Hilfe, / Taschenlampe."
+    },
+    {
+     "id": "L5e",
+     "text": "Und *g:Schritt *g:vier: / tu dich mit / deinen *g:Nachbarn / zusammen."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "pop",
+     "at": "L5b:Schritt",
+     "volume": 0.4
+    },
+    {
+     "name": "pop",
+     "at": "L5c:Schritt",
+     "volume": 0.4
+    },
+    {
+     "name": "pop",
+     "at": "L5d:Schritt",
+     "volume": 0.4
+    },
+    {
+     "name": "pop",
+     "at": "L5e:Schritt",
      "volume": 0.4
     }
    ]

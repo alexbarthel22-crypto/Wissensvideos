@@ -24,8 +24,8 @@
     .cbox { top: 440px; } /* unter der großen Kapitel-Überschrift */
     #s07-n { left: 0; width: 1080px; top: 640px; text-align: center; font: 700 170px/1 Oswald, sans-serif; color: #ff3b55; text-shadow: 0 0 50px rgba(255,59,85,.6), 0 8px 0 rgba(0,0,0,.6); opacity: 0; }
   </style>
-  <div id="root" data-composition-id="s07" data-start="0" data-duration="11.480" data-width="1080" data-height="1920">
-    <div id="s07-stage" class="clip stage" data-start="0" data-duration="11.480" data-track-index="0">
+  <div id="root" data-composition-id="s07" data-start="0" data-duration="11.700" data-width="1080" data-height="1920">
+    <div id="s07-stage" class="clip stage" data-start="0" data-duration="11.700" data-track-index="0">
       <svg id="s07-svg" class="full" viewBox="0 0 1080 1920"></svg>
       <div id="s07-n" class="abs">0</div>
     </div>
@@ -33,7 +33,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 11.48, "L16": [0.2, 4.69], "L16.words": [["um", 0.2, 0.355], ["sieben", 0.355, 0.678], ["uhr", 0.678, 0.839], ["heult", 0.839, 1.012], ["die", 1.012, 1.173], ["sirene", 1.173, 1.639], ["zum", 1.639, 1.801], ["zweiten", 1.801, 2.129], ["mal", 2.129, 2.29], ["städte", 2.58, 2.927], ["brennen", 2.927, 3.28], ["kliniken", 3.56, 4.039], ["sind", 4.039, 4.206], ["überfüllt", 4.206, 4.69]], "L17": [4.91, 11.0], "L17.words": [["und", 4.91, 5.082], ["die", 5.082, 5.254], ["schockierendste", 5.254, 5.962], ["zahl", 5.962, 6.14], ["selbst", 6.57, 6.77], ["wenn", 6.77, 6.958], ["nur", 6.958, 7.139], ["ein", 7.139, 7.32], ["prozent", 7.32, 7.689], ["mitmacht", 7.689, 8.064], ["", 8.064, 8.226], ["wären", 8.226, 8.581], ["das", 8.581, 8.762], ["in", 8.762, 8.937], ["deutschland", 8.937, 9.331], ["840000", 9.331, 10.625], ["menschen", 10.625, 11.0]]};
+      const C = {"__dur": 11.7, "L16": [0.2, 4.9], "L16.words": [["um", 0.2, 0.384], ["sieben", 0.384, 0.765], ["uhr", 0.765, 0.955], ["heult", 0.955, 1.159], ["die", 1.159, 1.35], ["sirene", 1.35, 1.901], ["zum", 1.901, 2.092], ["zweiten", 2.092, 2.479], ["mal", 2.479, 2.67], ["städte", 2.86, 3.237], ["brennen", 3.237, 3.62], ["kliniken", 3.79, 4.26], ["sind", 4.26, 4.424], ["überfüllt", 4.424, 4.9]], "L17": [5.12, 11.22], "L17.words": [["und", 5.12, 5.288], ["die", 5.288, 5.456], ["schockierendste", 5.456, 6.146], ["zahl", 6.146, 6.32], ["selbst", 6.87, 7.067], ["wenn", 7.067, 7.251], ["nur", 7.251, 7.429], ["ein", 7.429, 7.607], ["prozent", 7.607, 7.969], ["mitmacht", 7.969, 8.337], ["", 8.337, 8.496], ["wären", 8.496, 8.845], ["das", 8.845, 9.023], ["in", 9.023, 9.194], ["deutschland", 9.194, 9.582], ["840000", 9.582, 10.852], ["menschen", 10.852, 11.22]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];

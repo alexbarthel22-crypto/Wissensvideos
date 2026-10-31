@@ -34,6 +34,11 @@ RED = '      const red = el("rect", { x: 0, y: 0, width: 1080, height: 1920, fil
 
 S['s01'] = ('''    #s01-call { left: 290px; top: 640px; width: 500px; height: 300px; border-radius: 30px; background: #12131c; border: 5px solid #ff3b55; text-align: center; opacity: 0; box-shadow: 0 0 60px rgba(255,59,85,.45); }
     #s01-call b { display: block; margin-top: 40px; font: 700 110px/1 Oswald, sans-serif; color: #fff; } #s01-call i { display: block; margin-top: 16px; font: 700 40px Oswald, sans-serif; font-style: normal; color: #ff3b55; letter-spacing: .06em; }
+    #s01-ttl { left: 0; width: 1080px; top: 560px; text-align: center; }
+    #s01-ttl .a { font: 700 70px/1 Oswald, sans-serif; color: #fff; letter-spacing: .04em; text-shadow: 0 6px 0 rgba(0,0,0,.7); }
+    #s01-ttl .b { margin-top: 6px; font: 700 168px/1 Oswald, sans-serif; color: #ff3b55; letter-spacing: .02em; text-shadow: 0 0 60px rgba(255,59,85,.9), 0 10px 0 rgba(0,0,0,.7); }
+    #s01-ttl .c { margin-top: 4px; font: 700 80px/1 Oswald, sans-serif; color: #fff; letter-spacing: .04em; text-shadow: 0 6px 0 rgba(0,0,0,.7); }
+    .s01-cr { position: absolute; left: 0; width: 1080px; top: 1060px; text-align: center; font: 700 120px/1 Oswald, sans-serif; color: #ff3b55; letter-spacing: .03em; opacity: 0; text-shadow: 0 0 40px rgba(255,59,85,.7), 0 8px 0 rgba(0,0,0,.7); }
     #s01-tv { left: 140px; top: 600px; width: 800px; height: 560px; border-radius: 30px; background: #1a1c26; border: 6px solid #0b0c14; opacity: 0; }
     #s01-tv .scr { position: absolute; left: 34px; top: 34px; right: 34px; bottom: 90px; border-radius: 14px; background: #2a0d14; text-align: center; overflow: hidden; }
     #s01-tv .scr b { display: block; margin-top: 40px; font: 700 40px Oswald, sans-serif; color: #ff3b55; letter-spacing: .1em; }
@@ -41,6 +46,8 @@ S['s01'] = ('''    #s01-call { left: 290px; top: 640px; width: 500px; height: 30
     #s01-tv .tk { position: absolute; left: 0; right: 0; bottom: 0; height: 64px; background: #ff3b55; color: #fff; font: 700 36px/64px Oswald, sans-serif; white-space: nowrap; }''',
 SVG + '''
       <div id="s01-tv" class="abs"><div class="scr"><b>NOTFALL-DURCHSAGE</b><i id="s01-cd">12:00:00</i><div class="tk"><span id="s01-tk">ALLE VERBRECHEN LEGAL · 12 STUNDEN · KEINE RETTUNGSDIENSTE · ALLE VERBRECHEN LEGAL ·</span></div></div></div>
+      <div id="s01-cr1" class="s01-cr">RAUB</div><div id="s01-cr2" class="s01-cr">EINBRUCH</div><div id="s01-cr3" class="s01-cr">BRANDSTIFTUNG</div>
+      <div id="s01-ttl" class="abs"><div class="a">WAS WÄRE, WENN</div><div id="s01-tb" class="b">THE PURGE</div><div class="c">ECHT WÄRE?</div></div>
       <div id="s01-call" class="abs"><b>112</b><i>NICHT ERREICHBAR</i></div>''',
 '''      const sv = document.querySelector("#s01-svg");
       night(sv, "s01-n", "#07091a", "#2a1630", [850, 660]);
@@ -61,9 +68,15 @@ SVG + '''
         el("rect", { x: x - 40, y: y - 116, width: 80, height: 18, rx: 6, fill: i === 0 ? "#4da3ff" : "#ff3b55" }, g);
         txt(g, x, y + 160, l, 44, "#fff"); const xx = txt(g, x, y + 50, "✕", 230, "#ff3b55", { opacity: 0 }); icons.push({ g, xx }); });
       const Q = txt(sv, 540, 1000, "?", 420, "#ff3b55", { opacity: 0 });
+      const CR = el("g", { opacity: 0 }, sv); el("rect", { x: 0, y: 500, width: 1080, height: 1000, fill: "#0b0c14" }, CR);
+      const cr = [];
+      cr.push(el("g", { opacity: 0 }, CR)); el("path", O({ d: "M440 760 Q540 640 640 760 L680 960 H400Z", fill: "#a87a4a" }), cr[0]); txt(cr[0], 540, 900, "€", 130, "#ffd43b");
+      cr.push(el("g", { opacity: 0 }, CR)); el("rect", O({ x: 420, y: 620, width: 240, height: 380, fill: "#3a2a22" }), cr[1]); el("circle", { cx: 620, cy: 820, r: 12, fill: "#ffd43b" }, cr[1]);
+        el("path", { d: "M440 640 l60 120 l-40 60 l70 100 l-50 80", stroke: "#0b0c14", "stroke-width": 10, fill: "none" }, cr[1]); el("path", O({ d: "M700 700 L560 900 l-20 -10 l140 -200Z", fill: "#8a8f9c" }), cr[1]);
+      cr.push(el("g", { opacity: 0 }, CR)); house(cr[2], 380, 1000, 320, 300, "#4a4258", { lit: [1, 1] }); const crf = flames(cr[2], 540, 790, 1.6);
 ''' + RED + '''      const l2 = line("L2")[0], ve = at("L2", "Verbrechen"), mo = at("L2", "Mord"), l3 = line("L3")[0], po = at("L3", "Polizei"), fe = at("L3", "Feuerwehr"), no = at("L3", "Notarzt"), ni = at("L3", "nicht"), ue = at("L3", "Und"), sz = at("L3", "schockierendste");
       // Einstellung 1: Straße, Kamera fährt langsam ran, Figur läuft ins Bild
-      tl.fromTo(A, { scale: 1 }, { scale: 1.15, svgOrigin: "540 1100", duration: l2, ease: "none" }, 0);
+      tl.fromTo(A, { scale: 1, svgOrigin: "540 1100" }, { scale: 1.15, svgOrigin: "540 1100", duration: l2, ease: "none" }, 0);
       tl.to(M.g, { x: 560, duration: 2.6, ease: "power1.out" }, 0.2);
       tl.to(M.g, { y: 1352, duration: 0.3, repeat: 7, yoyo: true, ease: "sine.inOut" }, 0.2);
       tl.fromTo(red, { opacity: 0 }, { opacity: 0.32, duration: 0.25, repeat: 7, yoyo: true, ease: "sine.inOut" }, 0);
@@ -71,14 +84,27 @@ SVG + '''
       tl.to(fg, { x: 80, duration: 6, ease: "none" }, 0);
       tl.to(L.cone, { attr: { opacity: 0.04 }, duration: 0.06, repeat: 5, yoyo: true }, 1.5);
       tl.to(M.mask, { rotation: -8, svgOrigin: "0 -345", duration: 0.4, yoyo: true, repeat: 1 }, 2.9);
+      // Titel ab Bild 0: blinkt rot/weiß, flackert wie ein Störsignal
+      tl.fromTo("#s01-tb", { color: "#ff3b55" }, { color: "#ffffff", duration: 0.01, repeat: 15, yoyo: true, repeatDelay: 0.16 }, 0.1);
+      tl.fromTo("#s01-ttl", { opacity: 1 }, { opacity: 0.35, duration: 0.04, repeat: 5, yoyo: true }, 0.05);
+      tl.fromTo("#s01-tb", { scale: 1 }, { scale: 1.08, duration: 0.18, repeat: 9, yoyo: true, ease: "sine.inOut" }, 0.1);
+      tl.to("#s01-ttl", { x: 10, duration: 0.03, repeat: 5, yoyo: true }, 1.6);
+      tl.to("#s01-ttl", { opacity: 0, y: -40, duration: 0.25, ease: "power2.in" }, l2 - 0.3);
       // Einstellung 2: Fernseher mit Notfall-Durchsage
       tl.set(A, { opacity: 0 }, l2 - 0.05); tl.set("#s01-tv", { opacity: 1 }, l2 - 0.05);
       tl.fromTo("#s01-tv", { scale: 1.25 }, { scale: 1, duration: 0.5, ease: "power3.out" }, l2 - 0.05);
       tl.fromTo("#s01-tk", { x: 900 }, { x: -1400, duration: 4, ease: "none" }, l2);
       tl.to("#s01-tv .scr", { backgroundColor: "#5a0d1c", duration: 0.12, repeat: 5, yoyo: true }, ve);
-      // Einstellung 3: Nahaufnahme Maske
-      tl.set("#s01-tv", { opacity: 0 }, mo - 0.25); tl.set(CU, { opacity: 1 }, mo - 0.25);
-      tl.fromTo(CU, { scale: 1.2 }, { scale: 1, svgOrigin: "540 900", duration: 0.4, ease: "power3.out" }, mo - 0.25);
+      // Straftaten im Schnellschnitt
+      const rb = at("L2", "Raub"), eb = at("L2", "Einbruch"), bs = at("L2", "Brandstiftung");
+      tl.set("#s01-tv", { opacity: 0 }, rb - 0.1); tl.set(CR, { opacity: 1 }, rb - 0.1);
+      [rb, eb, bs].forEach((tt, i, arr) => { tl.set(cr[i], { opacity: 1 }, tt - 0.1); tl.fromTo(cr[i], { scale: 1.3, svgOrigin: "540 850" }, { scale: 1, svgOrigin: "540 850", duration: 0.3, ease: "power3.out" }, tt - 0.1);
+        tl.set("#s01-cr" + (i + 1), { opacity: 1 }, tt - 0.1); tl.fromTo("#s01-cr" + (i + 1), { scale: 1.6 }, { scale: 1, duration: 0.25, ease: "power4.out" }, tt - 0.1);
+        const nx = i < 2 ? arr[i + 1] : mo; tl.set([cr[i], "#s01-cr" + (i + 1)], { opacity: 0 }, nx - 0.1); });
+      tl.to(crf, { scaleY: 1.3, duration: 0.12, yoyo: true, repeat: 5 }, bs);
+      tl.set(CR, { opacity: 0 }, mo - 0.25);
+      // Einstellung 3: Nahaufnahme Maske tl.set(CU, { opacity: 1 }, mo - 0.25);
+      tl.fromTo(CU, { scale: 1.2, svgOrigin: "540 900" }, { scale: 1, svgOrigin: "540 900", duration: 0.4, ease: "power3.out" }, mo - 0.25);
       tl.fromTo(red, { opacity: 0.7 }, { opacity: 0, duration: 0.5 }, mo);
       tl.to(MC.g, { x: 552, duration: 0.04, repeat: 9, yoyo: true }, mo);
       // Einstellung 4: Polizei, Feuerwehr, Notarzt durchgestrichen
@@ -116,15 +142,15 @@ SVG + '''
       const crack = B.wins.map((w) => { const x = +w.getAttribute("x"), y = +w.getAttribute("y"); return el("path", { d: `M${x + 26} ${y + 28} l-18 -20 M${x + 26} ${y + 28} l20 -22 M${x + 26} ${y + 28} l-14 26 M${x + 26} ${y + 28} l22 16`, stroke: "#fff", "stroke-width": 3, opacity: 0 }, st); });
       const ok = txt(st, 310, 760, "✓", 120, "#39e27a", { opacity: 0 }), no = txt(st, 780, 760, "✕", 120, "#ff3b55", { opacity: 0 });
       const le = at("L4", "leergekauft"), sl = at("L4", "Schlösser"), gi = at("L4", "Gitter"), sp = at("L4", "Sperrholz"), we = at("L4", "weg"), l5 = line("L5")[0], ve = at("L5", "verbarrikadiert"), sc = at("L5", "schutzlos");
-      tl.fromTo(shop, { scale: 1.2 }, { scale: 1, svgOrigin: "540 940", duration: 1.2, ease: "power2.out" }, 0);
+      tl.fromTo(shop, { scale: 1.2, svgOrigin: "540 940" }, { scale: 1, svgOrigin: "540 940", duration: 1.2, ease: "power2.out" }, 0);
       items.forEach((it, i) => tl.to(it, { opacity: 0, y: -40, duration: 0.18 }, le - 0.6 + (i % 27) * 0.03));
-      [[lock, sl], [grid, gi], [wood, sp]].forEach(([g, t], i, arr) => { tl.set(g, { opacity: 1 }, t - 0.1); tl.fromTo(g, { scale: 1.3 }, { scale: 1, svgOrigin: "540 900", duration: 0.35, ease: "power3.out" }, t - 0.1);
+      [[lock, sl], [grid, gi], [wood, sp]].forEach(([g, t], i, arr) => { tl.set(g, { opacity: 1 }, t - 0.1); tl.fromTo(g, { scale: 1.3, svgOrigin: "540 900" }, { scale: 1, svgOrigin: "540 900", duration: 0.35, ease: "power3.out" }, t - 0.1);
         tl.set(g, { opacity: 0 }, i < 2 ? arr[i + 1][1] - 0.1 : we - 0.1); });
       tl.to(wood.hammer, { rotation: -40, svgOrigin: "740 800", duration: 0.12, yoyo: true, repeat: 5 }, sp);
       tl.fromTo("#s02-st", { opacity: 0, scale: 2.2, rotation: -8 }, { opacity: 1, scale: 1, rotation: -8, duration: 0.25, ease: "power4.in" }, we - 0.15);
       tl.to(["#s02-st", shop], { opacity: 0, duration: 0.2 }, l5 - 0.25);
       tl.to(st, { opacity: 1, duration: 0.2 }, l5 - 0.15);
-      tl.fromTo(st, { scale: 1.25 }, { scale: 1, svgOrigin: "540 1100", duration: 1.0, ease: "power2.out" }, l5 - 0.15);
+      tl.fromTo(st, { scale: 1.25, svgOrigin: "540 1100" }, { scale: 1, svgOrigin: "540 1100", duration: 1.0, ease: "power2.out" }, l5 - 0.15);
       planks.forEach((pl, i) => tl.fromTo(pl, { opacity: 0, x: -200 }, { opacity: 1, x: 0, duration: 0.2, ease: "back.out(2)" }, ve - 0.2 + i * 0.12));
       tl.to(ok, { opacity: 1, duration: 0.2 }, ve + 0.5);
       tl.to(st, { x: -160, duration: 0.6, ease: "power2.inOut" }, sc - 0.6);
@@ -196,7 +222,7 @@ SVG + '''
         glass.push(el("rect", O({ x: x + 60, y: 780, width: 680, height: 420, fill: "#7fd0ff", opacity: 0.55 }), row));
         const r = rng(i + 3); for (let k = 0; k < 9; k++) shards.push([i, el("path", { d: `M${x + 120 + r() * 560} ${820 + r() * 340} l${20 + r() * 30} ${-10 - r() * 20} l-10 ${30 + r() * 20}Z`, fill: "#e6f6ff", opacity: 0 }, row)]); });
 ''' + RED + '''      const ba = at("L11", "Banden"), ra = at("L11", "Rachegelüsten"), zu = at("L11", "zuschauen"), l12 = line("L12")[0], ju = at("L12", "Juweliere"), bk = at("L12", "Banken"), sk = at("L12", "Sammelkartenläden"), l12b = line("L12b")[0], te = at("L12b", "tausende"), l12c = line("L12c")[0], le = at("L12c", "legal");
-      tl.fromTo(W, { scale: 1.3 }, { scale: 1, svgOrigin: "540 1250", duration: 1.5, ease: "power2.out" }, 0);
+      tl.fromTo(W, { scale: 1.3, svgOrigin: "540 1250" }, { scale: 1, svgOrigin: "540 1250", duration: 1.5, ease: "power2.out" }, 0);
       gang.forEach((m, i) => tl.fromTo(m.g, { x: `-=${300}`, opacity: 0 }, { x: `+=${300}`, opacity: 1, duration: 1.2, ease: "power2.out" }, ba - 0.4 + i * 0.25));
       tl.to(gang.map((m) => m.g), { y: "-=10", duration: 0.3, yoyo: true, repeat: 9, stagger: 0.1 }, ba + 1.0);
       tl.to(fg, { x: -80, duration: 8, ease: "none" }, 0);
@@ -287,6 +313,45 @@ SVG + '''
       tl.to("#s08-f", { scale: 1.07, duration: 0.3, yoyo: true, repeat: 9, ease: "sine.inOut" }, fo + 0.4);
       tl.fromTo(red, { opacity: 0 }, { opacity: 0.35, duration: 0.25, repeat: 9, yoyo: true, ease: "sine.inOut" }, si - 0.2);
       tl.to(M.mask, { scale: 1.12, svgOrigin: "0 -345", duration: 0.3, yoyo: true, repeat: 3 }, si);''')
+
+S['s03'] = ('''    .s03-ch { position: absolute; left: 0; right: 0; top: 540px; margin: 0 auto; width: fit-content; padding: 8px 22px; border: 4px solid #ffd43b; border-radius: 12px; background: rgba(8,8,16,.85);
+      font: 700 42px Oswald, sans-serif; color: #ffd43b; letter-spacing: .04em; opacity: 0; }
+    .s03-ch b { display: inline-block; margin-right: 12px; padding: 0 12px; border-radius: 8px; background: #ffd43b; color: #0b0c14; }''',
+SVG + '''
+      <div id="s03-c1" class="s03-ch"><b>1</b>LICHT AUS</div><div id="s03-c2" class="s03-ch"><b>2</b>RAUM OHNE FENSTER</div>
+      <div id="s03-c3" class="s03-ch"><b>3</b>VORRÄTE</div><div id="s03-c4" class="s03-ch"><b>4</b>NACHBARN</div>''',
+'''      const sv = document.querySelector("#s03-svg");
+      night(sv, "s03-n", "#0c1022", "#1f1830", null);
+      const step = (fill) => { const g = el("g", { opacity: 0 }, sv); fill(g); return g; };
+      const ground = (g) => el("rect", { x: 0, y: 1240, width: 1080, height: 300, fill: "#141320" }, g);
+      let wins = [], M1;
+      const g1 = step((g) => { const h = house(g, 260, 1240, 560, 520, "#4a4258", { n: 3, lit: [1, 1, 1] }); wins = h.wins;
+        const h2 = el("g", {}, g); h2.appendChild(el("rect", O({ x: 300, y: 860, width: 480, height: 4, fill: "none", stroke: "none" })));
+        ground(g); M1 = masked(g, 980, 1420, 0.8); });
+      const g2 = step((g) => { el("rect", O({ x: 180, y: 640, width: 720, height: 600, fill: "#3a3448" }), g);
+        el("path", O({ d: "M540 640 V1240 M180 940 H900", fill: "none" }), g);
+        [[300, 760, "SCHLAFZ."], [720, 760, "KÜCHE"], [300, 1060, "FLUR"]].forEach(([x, y, t]) => { el("rect", O({ x: x - 50, y: y - 40, width: 100, height: 70, fill: "#1a2033", "stroke-width": 4 }), g); txt(g, x, y + 100, t, 36, "#8d93a3"); });
+        const safe = el("rect", { x: 545, y: 945, width: 350, height: 290, fill: "#39e27a", opacity: 0.25 }, g); g.safe = safe;
+        txt(g, 720, 1210, "BAD", 40, "#39e27a");
+        [660, 720, 780].forEach((x, i) => { el("circle", O({ cx: x, cy: 1060, r: 22, fill: "#f0c8a0", "stroke-width": 4 }), g); el("rect", O({ x: x - 26, y: 1084, width: 52, height: 70, rx: 18, fill: ["#ff8fd0", "#7fd0ff", "#ffd43b"][i], "stroke-width": 4 }), g); }); ground(g); });
+      const items = [];
+      const g3 = step((g) => { const it = (x, y, draw) => { const s = el("g", { opacity: 0 }, g); draw(s, x, y); items.push(s); };
+        it(300, 820, (s, x, y) => { el("rect", O({ x: x - 50, y: y - 120, width: 100, height: 220, rx: 30, fill: "#7fd0ff" }), s); el("rect", O({ x: x - 22, y: y - 150, width: 44, height: 36, fill: "#2f5bd6" }), s); txt(s, x, y + 160, "WASSER", 38, "#fff"); });
+        it(780, 820, (s, x, y) => { el("rect", O({ x: x - 80, y: y - 90, width: 160, height: 180, rx: 14, fill: "#c9cfe6" }), s); el("rect", { x: x - 80, y: y - 30, width: 160, height: 60, fill: "#ff8a3d" }, s); txt(s, x, y + 160, "ESSEN", 38, "#fff"); });
+        it(300, 1130, (s, x, y) => { el("rect", O({ x: x - 90, y: y - 70, width: 180, height: 140, rx: 18, fill: "#ece6d6" }), s); el("path", { d: `M${x} ${y - 40} v80 M${x - 40} ${y} h80`, stroke: "#ff3b55", "stroke-width": 22 }, s); txt(s, x, y + 120, "ERSTE HILFE", 36, "#fff"); });
+        it(780, 1130, (s, x, y) => { el("path", { d: `M${x + 40} ${y - 20} L${x + 190} ${y - 90} L${x + 190} ${y + 50}Z`, fill: "#ffe7a3", opacity: 0.5 }, s); el("rect", O({ x: x - 100, y: y - 34, width: 150, height: 68, rx: 14, fill: "#2a2f40" }), s); el("rect", O({ x: x + 40, y: y - 46, width: 30, height: 92, rx: 8, fill: "#8a8f9c" }), s); txt(s, x, y + 120, "LAMPE", 36, "#fff"); }); });
+      const ppl = [];
+      const g4 = step((g) => { house(g, 60, 1240, 360, 380, "#4a4258", { n: 2, lit: [0, 0] }); house(g, 660, 1240, 360, 380, "#3e3a4e", { n: 2, lit: [0, 0] }); ground(g);
+        for (let i = 0; i < 6; i++) { const x = 330 + i * 84, p = el("g", { opacity: 0 }, g); el("circle", O({ cx: x, cy: 1130, r: 24, fill: "#f0c8a0", "stroke-width": 4 }), p); el("rect", O({ x: x - 28, y: 1156, width: 56, height: 74, rx: 18, fill: ["#ff8fd0", "#7fd0ff", "#ffd43b", "#39e27a", "#ff8a3d", "#c9cfe6"][i], "stroke-width": 4 }), p); ppl.push(p); } });
+      const s1 = at("L5b", "Schritt"), la = at("L5b", "Licht"), ke = at("L5b", "kein"), s2 = at("L5c", "Schritt"), oh = at("L5c", "ohne"), s3 = at("L5d", "Schritt"), wa = at("L5d", "Wasser"), es = at("L5d", "Essen"), eh = at("L5d", "Erste"), ta = at("L5d", "Taschenlampe"), s4 = at("L5e", "Schritt"), na = at("L5e", "Nachbarn");
+      const show = (g, c, t, end) => { tl.set(g, { opacity: 1 }, t - 0.1); tl.fromTo(g, { scale: 1.2, svgOrigin: "540 1000" }, { scale: 1, svgOrigin: "540 1000", duration: 0.45, ease: "power3.out" }, t - 0.1);
+        tl.fromTo(c, { opacity: 0, y: -20 }, { opacity: 1, y: 0, duration: 0.3, ease: "back.out(2)" }, t - 0.05); if (end) { tl.set(g, { opacity: 0 }, end - 0.1); tl.set(c, { opacity: 0 }, end - 0.1); } };
+      show(g1, "#s03-c1", s1, s2); show(g2, "#s03-c2", s2, s3); show(g3, "#s03-c3", s3, s4); show(g4, "#s03-c4", s4, 0);
+      tl.to(wins, { attr: { fill: "#1a2033" }, duration: 0.05, stagger: 0.12 }, la);
+      tl.to(M1.g, { x: 100, duration: 2.4, ease: "none" }, la + 0.2);
+      tl.to(g2.safe, { opacity: 0.6, duration: 0.25, yoyo: true, repeat: 3 }, oh);
+      [wa, es, eh, ta].forEach((t, i) => tl.fromTo(items[i], { opacity: 0, scale: 0.4, svgOrigin: i % 2 ? "780 1000" : "300 1000" }, { opacity: 1, scale: 1, svgOrigin: i % 2 ? "780 1000" : "300 1000", duration: 0.3, ease: "back.out(2.4)" }, t - 0.1));
+      ppl.forEach((p, i) => tl.fromTo(p, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.3, ease: "back.out(2)" }, na - 0.6 + i * 0.1));''' + OUT)
 
 here = Path(__file__).parent
 for sid, (css, html, js) in S.items():

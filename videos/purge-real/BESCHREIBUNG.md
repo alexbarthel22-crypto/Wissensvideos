@@ -1,7 +1,7 @@
 # Beschreibung – Was wäre, wenn The Purge echt wäre?
 
 ## Hauptversion (empfohlen)
-Was wäre, wenn die Säuberung aus The Purge WIRKLICH stattfindet? 🩸 12 Stunden, alle Verbrechen legal, kein Notruf … und am Ende kommt die schockierendste Zahl 😨 Würdest du teilnehmen oder dich zuhause verschanzen? 👇
+Was wäre, wenn die Säuberung aus The Purge WIRKLICH stattfindet? 🩸 12 Stunden: Raub, Einbruch, Brandstiftung, Mord – alles legal, kein Notruf. Plus: 4 Schritte, wie du dich schützt 😨 Würdest du teilnehmen oder dich zuhause verschanzen? 👇
 #thepurge #halloween #waswärewenn #gruselig #fyp
 
 ## Alternative 1 (Plünderung vorne)
@@ -11,6 +11,10 @@ Juweliere, Banken – und Sammelkartenläden: In der Purge-Nacht wird alles gepl
 ## Alternative 2 (Zahl vorne)
 In Deutschland gibt es alle 12 Stunden rund 20.000 Rettungseinsätze. In der Purge-Nacht: keinen einzigen 🚑❌ Teilnehmen oder verschanzen? 👇
 #thepurge #halloween #gedankenexperiment #gruselig #fyp
+
+## Alternative 3 (Schutz vorne)
+Licht aus, Raum ohne Fenster, Vorräte, Nachbarn: So würdest du eine echte Purge-Nacht überstehen 🔦 Teilnehmen oder verschanzen? 👇
+#thepurge #halloween #survival #waswärewenn #fyp
 
 ## Angepinnter Kommentar
 19:00 – die Sirene heult 🚨 Was machst du: 🔒 zuhause verschanzen oder 🎭 teilnehmen? 👇

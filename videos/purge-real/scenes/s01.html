@@ -7,6 +7,11 @@
     .cbox { top: 440px; } /* unter der großen Kapitel-Überschrift */
     #s01-call { left: 290px; top: 640px; width: 500px; height: 300px; border-radius: 30px; background: #12131c; border: 5px solid #ff3b55; text-align: center; opacity: 0; box-shadow: 0 0 60px rgba(255,59,85,.45); }
     #s01-call b { display: block; margin-top: 40px; font: 700 110px/1 Oswald, sans-serif; color: #fff; } #s01-call i { display: block; margin-top: 16px; font: 700 40px Oswald, sans-serif; font-style: normal; color: #ff3b55; letter-spacing: .06em; }
+    #s01-ttl { left: 0; width: 1080px; top: 560px; text-align: center; }
+    #s01-ttl .a { font: 700 70px/1 Oswald, sans-serif; color: #fff; letter-spacing: .04em; text-shadow: 0 6px 0 rgba(0,0,0,.7); }
+    #s01-ttl .b { margin-top: 6px; font: 700 168px/1 Oswald, sans-serif; color: #ff3b55; letter-spacing: .02em; text-shadow: 0 0 60px rgba(255,59,85,.9), 0 10px 0 rgba(0,0,0,.7); }
+    #s01-ttl .c { margin-top: 4px; font: 700 80px/1 Oswald, sans-serif; color: #fff; letter-spacing: .04em; text-shadow: 0 6px 0 rgba(0,0,0,.7); }
+    .s01-cr { position: absolute; left: 0; width: 1080px; top: 1060px; text-align: center; font: 700 120px/1 Oswald, sans-serif; color: #ff3b55; letter-spacing: .03em; opacity: 0; text-shadow: 0 0 40px rgba(255,59,85,.7), 0 8px 0 rgba(0,0,0,.7); }
     #s01-tv { left: 140px; top: 600px; width: 800px; height: 560px; border-radius: 30px; background: #1a1c26; border: 6px solid #0b0c14; opacity: 0; }
     #s01-tv .scr { position: absolute; left: 34px; top: 34px; right: 34px; bottom: 90px; border-radius: 14px; background: #2a0d14; text-align: center; overflow: hidden; }
     #s01-tv .scr b { display: block; margin-top: 40px; font: 700 40px Oswald, sans-serif; color: #ff3b55; letter-spacing: .1em; }
@@ -17,6 +22,8 @@
     <div id="s01-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
       <svg id="s01-svg" class="full" viewBox="0 0 1080 1920"></svg>
       <div id="s01-tv" class="abs"><div class="scr"><b>NOTFALL-DURCHSAGE</b><i id="s01-cd">12:00:00</i><div class="tk"><span id="s01-tk">ALLE VERBRECHEN LEGAL · 12 STUNDEN · KEINE RETTUNGSDIENSTE · ALLE VERBRECHEN LEGAL ·</span></div></div></div>
+      <div id="s01-cr1" class="s01-cr">RAUB</div><div id="s01-cr2" class="s01-cr">EINBRUCH</div><div id="s01-cr3" class="s01-cr">BRANDSTIFTUNG</div>
+      <div id="s01-ttl" class="abs"><div class="a">WAS WÄRE, WENN</div><div id="s01-tb" class="b">THE PURGE</div><div class="c">ECHT WÄRE?</div></div>
       <div id="s01-call" class="abs"><b>112</b><i>NICHT ERREICHBAR</i></div>
     </div>
   </div>
@@ -44,10 +51,16 @@
         el("rect", { x: x - 40, y: y - 116, width: 80, height: 18, rx: 6, fill: i === 0 ? "#4da3ff" : "#ff3b55" }, g);
         txt(g, x, y + 160, l, 44, "#fff"); const xx = txt(g, x, y + 50, "✕", 230, "#ff3b55", { opacity: 0 }); icons.push({ g, xx }); });
       const Q = txt(sv, 540, 1000, "?", 420, "#ff3b55", { opacity: 0 });
+      const CR = el("g", { opacity: 0 }, sv); el("rect", { x: 0, y: 500, width: 1080, height: 1000, fill: "#0b0c14" }, CR);
+      const cr = [];
+      cr.push(el("g", { opacity: 0 }, CR)); el("path", O({ d: "M440 760 Q540 640 640 760 L680 960 H400Z", fill: "#a87a4a" }), cr[0]); txt(cr[0], 540, 900, "€", 130, "#ffd43b");
+      cr.push(el("g", { opacity: 0 }, CR)); el("rect", O({ x: 420, y: 620, width: 240, height: 380, fill: "#3a2a22" }), cr[1]); el("circle", { cx: 620, cy: 820, r: 12, fill: "#ffd43b" }, cr[1]);
+        el("path", { d: "M440 640 l60 120 l-40 60 l70 100 l-50 80", stroke: "#0b0c14", "stroke-width": 10, fill: "none" }, cr[1]); el("path", O({ d: "M700 700 L560 900 l-20 -10 l140 -200Z", fill: "#8a8f9c" }), cr[1]);
+      cr.push(el("g", { opacity: 0 }, CR)); house(cr[2], 380, 1000, 320, 300, "#4a4258", { lit: [1, 1] }); const crf = flames(cr[2], 540, 790, 1.6);
       const red = el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: "#c8102e", opacity: 0 }, sv);
       const l2 = line("L2")[0], ve = at("L2", "Verbrechen"), mo = at("L2", "Mord"), l3 = line("L3")[0], po = at("L3", "Polizei"), fe = at("L3", "Feuerwehr"), no = at("L3", "Notarzt"), ni = at("L3", "nicht"), ue = at("L3", "Und"), sz = at("L3", "schockierendste");
       // Einstellung 1: Straße, Kamera fährt langsam ran, Figur läuft ins Bild
-      tl.fromTo(A, { scale: 1 }, { scale: 1.15, svgOrigin: "540 1100", duration: l2, ease: "none" }, 0);
+      tl.fromTo(A, { scale: 1, svgOrigin: "540 1100" }, { scale: 1.15, svgOrigin: "540 1100", duration: l2, ease: "none" }, 0);
       tl.to(M.g, { x: 560, duration: 2.6, ease: "power1.out" }, 0.2);
       tl.to(M.g, { y: 1352, duration: 0.3, repeat: 7, yoyo: true, ease: "sine.inOut" }, 0.2);
       tl.fromTo(red, { opacity: 0 }, { opacity: 0.32, duration: 0.25, repeat: 7, yoyo: true, ease: "sine.inOut" }, 0);
@@ -55,14 +68,27 @@
       tl.to(fg, { x: 80, duration: 6, ease: "none" }, 0);
       tl.to(L.cone, { attr: { opacity: 0.04 }, duration: 0.06, repeat: 5, yoyo: true }, 1.5);
       tl.to(M.mask, { rotation: -8, svgOrigin: "0 -345", duration: 0.4, yoyo: true, repeat: 1 }, 2.9);
+      // Titel ab Bild 0: blinkt rot/weiß, flackert wie ein Störsignal
+      tl.fromTo("#s01-tb", { color: "#ff3b55" }, { color: "#ffffff", duration: 0.01, repeat: 15, yoyo: true, repeatDelay: 0.16 }, 0.1);
+      tl.fromTo("#s01-ttl", { opacity: 1 }, { opacity: 0.35, duration: 0.04, repeat: 5, yoyo: true }, 0.05);
+      tl.fromTo("#s01-tb", { scale: 1 }, { scale: 1.08, duration: 0.18, repeat: 9, yoyo: true, ease: "sine.inOut" }, 0.1);
+      tl.to("#s01-ttl", { x: 10, duration: 0.03, repeat: 5, yoyo: true }, 1.6);
+      tl.to("#s01-ttl", { opacity: 0, y: -40, duration: 0.25, ease: "power2.in" }, l2 - 0.3);
       // Einstellung 2: Fernseher mit Notfall-Durchsage
       tl.set(A, { opacity: 0 }, l2 - 0.05); tl.set("#s01-tv", { opacity: 1 }, l2 - 0.05);
       tl.fromTo("#s01-tv", { scale: 1.25 }, { scale: 1, duration: 0.5, ease: "power3.out" }, l2 - 0.05);
       tl.fromTo("#s01-tk", { x: 900 }, { x: -1400, duration: 4, ease: "none" }, l2);
       tl.to("#s01-tv .scr", { backgroundColor: "#5a0d1c", duration: 0.12, repeat: 5, yoyo: true }, ve);
-      // Einstellung 3: Nahaufnahme Maske
-      tl.set("#s01-tv", { opacity: 0 }, mo - 0.25); tl.set(CU, { opacity: 1 }, mo - 0.25);
-      tl.fromTo(CU, { scale: 1.2 }, { scale: 1, svgOrigin: "540 900", duration: 0.4, ease: "power3.out" }, mo - 0.25);
+      // Straftaten im Schnellschnitt
+      const rb = at("L2", "Raub"), eb = at("L2", "Einbruch"), bs = at("L2", "Brandstiftung");
+      tl.set("#s01-tv", { opacity: 0 }, rb - 0.1); tl.set(CR, { opacity: 1 }, rb - 0.1);
+      [rb, eb, bs].forEach((tt, i, arr) => { tl.set(cr[i], { opacity: 1 }, tt - 0.1); tl.fromTo(cr[i], { scale: 1.3, svgOrigin: "540 850" }, { scale: 1, svgOrigin: "540 850", duration: 0.3, ease: "power3.out" }, tt - 0.1);
+        tl.set("#s01-cr" + (i + 1), { opacity: 1 }, tt - 0.1); tl.fromTo("#s01-cr" + (i + 1), { scale: 1.6 }, { scale: 1, duration: 0.25, ease: "power4.out" }, tt - 0.1);
+        const nx = i < 2 ? arr[i + 1] : mo; tl.set([cr[i], "#s01-cr" + (i + 1)], { opacity: 0 }, nx - 0.1); });
+      tl.to(crf, { scaleY: 1.3, duration: 0.12, yoyo: true, repeat: 5 }, bs);
+      tl.set(CR, { opacity: 0 }, mo - 0.25);
+      // Einstellung 3: Nahaufnahme Maske tl.set(CU, { opacity: 1 }, mo - 0.25);
+      tl.fromTo(CU, { scale: 1.2, svgOrigin: "540 900" }, { scale: 1, svgOrigin: "540 900", duration: 0.4, ease: "power3.out" }, mo - 0.25);
       tl.fromTo(red, { opacity: 0.7 }, { opacity: 0, duration: 0.5 }, mo);
       tl.to(MC.g, { x: 552, duration: 0.04, repeat: 9, yoyo: true }, mo);
       // Einstellung 4: Polizei, Feuerwehr, Notarzt durchgestrichen
