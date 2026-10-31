@@ -29,10 +29,11 @@ Neraya muss durch ganz Valdoria reisen – bis hinunter unter die Wolken –, um
 | Figur | Alter | Kurzprofil |
 |---|---|---|
 | **Neraya** | 17 | Erzählerin. Hochintelligent (rechnet Mondbahnen), schüchtern, unbeholfen, tollpatschig, sehr sarkastisch. Große Schwäche: Mondweizen-Ramen. Halb Mensch, halb Sternwesen. |
-| **Lunara** | – | Ihre daumengroße Mondmaus, hält sich für einen Drachen. |
+| **Lunara** | – | Ihre daumengroße Mondmaus, hält sich für einen Drachen. Liebt Mondstaub. |
 | **Joren** | 18 | Himmelsschmuggler. Genauso sarkastisch wie Neraya, lässig, insgeheim loyal bis zur Selbstaufgabe. Lernt sie in Folge 4 kennen. Am Ende ihre Liebe. |
 | **Taren** | 18 | Sternenjäger. Kalt, abweisend, hochkompetent. Tritt in Folge 6 auf, jagt sie zuerst. |
 | **Mira** | 16 | Jünger als Neraya, aber tapferer und selbstbewusster. Ein Kind der Tiefen Äste, das sich allein durchschlägt. Ab Folge 9 dabei. Treibt Nerayas Entwicklung an, wird ihre allerbeste Freundin. |
+| **Ramen-Bo** | – | Brummiger, gutmütiger Ramen-Koch in den Tiefen Ästen. Lunara klaut ihm ständig Nudeln. |
 | **Kael** | 21 | Nerayas Bruder, Hauptmann der Flammenwache. Verschwindet in Folge 3 und kehrt in Folge 17 zurück. |
 | **Seraphine** | – | Hohepriesterin des Ordens, einst die beste Freundin der Mutter. Antagonistin mit eigenem tragischem Grund. |
 | **Der Stern** | – | Uraltes Lichtwesen, nennt Neraya „Schwester“. Verführerisch, dann bedrohlich. |
@@ -99,6 +100,11 @@ Die Enthüllung hat Gewicht für die Hauptgeschichte: Ihr Vater hat Nerayas Mutt
 ## Regeln pro Folge
 - Haken in den ersten 3 Sekunden, Rückblick höchstens 10 Sekunden (ab Folge 2).
 - Ein großes Ereignis pro Folge, ein klarer Cliffhanger.
-- Nerayas Sarkasmus in jeder Folge mindestens einmal hörbar. Je weiter die Serie, desto selbstbewusster und weniger stockend.
+- Sarkasmus sparsam: 1–2 Mal pro Folge, dann aber wirklich lustig und passend. Schüchternheit und Tollpatschigkeit zeigen sich eher im Tonfall. Je weiter die Serie, desto selbstbewusster und weniger stockend.
+- Lunara hat pro Folge genau einen lustigen Moment mit einer anderen Figur (Folge 1: klaut Ramen-Bo eine Nudel). Ihr Lieblingssnack ist Mondstaub.
+- Folge 1 beginnt mit großem, mittigem Text und direkter Ansprache („Hey, du!“). Ab Folge 2 beginnt jede Folge mit einem kurzen Rückblick.
+- Dramatische Sätze („Und Valdoria … brannte.“) bekommen eine Sprechpause davor, als eigene Zeile mit `pre`.
+- Musik: Herausstechende Szenen (ernst, dramatisch, romantisch, spannend, lustig) bekommen eigene Musik. Die Musik bleibt leise unter der Stimme.
+- Neraya bewegt sich passend zur Erzählung (gehen, Laterne anzünden, Hand senken) und posiert nicht starr.
 - Ramen als roter Faden: Gag (Folgen 1–5), Trost (Folge 11, Joren kocht), Zuhause (Folge 20).
 - Dauer 2:51–3:09. Tempo über `"tempo"` im Folgen-JSON, Gemini-Stimmen.

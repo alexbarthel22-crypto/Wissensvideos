@@ -1089,7 +1089,7 @@ const SCENES = {
     nebula(t, ['rgba(110,60,200,A)', 'rgba(40,120,200,A)', 'rgba(200,80,140,A)'], smooth(0, 3, lt));
     stars(t, { alpha: smooth(0, 2.5, lt), drift: 1 });
     // cage constellations appear on "Gefängnisse"
-    const cage = smooth(lineOf('kalt', 1).start + 1.0, lineOf('kalt', 1).start + 3, t);
+    const cage = smooth(lineOf('kalt', 2).start + 1.0, lineOf('kalt', 2).start + 3, t);
     if (cage > 0) {
       ctx.save(); ctx.globalCompositeOperation = 'lighter';
       ctx.strokeStyle = `rgba(180,200,255,${cage * 0.45})`; ctx.lineWidth = 1.5;
@@ -1104,7 +1104,7 @@ const SCENES = {
       ctx.restore();
     }
     // "... oder jemanden?": a woman's silhouette glows inside the brightest star prison
-    const who = smooth(lineOf('kalt', 1).end - 1.4, lineOf('kalt', 1).end + 0.6, t) * (1 - 0.6 * smooth(lineOf('kalt', 3).start, lineOf('kalt', 3).end, t));
+    const who = smooth(lineOf('kalt', 2).end - 1.4, lineOf('kalt', 2).end + 0.6, t) * (1 - 0.6 * smooth(lineOf('kalt', 4).start, lineOf('kalt', 4).end, t));
     if (who > 0) {
       ctx.save(); ctx.globalCompositeOperation = 'lighter';
       glow(540, 880, 150, 'rgba(200,215,255,A)', 0.5 * who);
@@ -1117,6 +1117,11 @@ const SCENES = {
   },
 
   intro(t) {
+    const xf = smooth(SC.intro.start, SC.intro.start + 1.8, t);
+    crossfade(xf, () => { ctx.save(); this.kalt(t); ctx.restore(); }, () => this._intro(t));
+  },
+
+  _intro(t) {
     const lt = local('intro', t), hit = CUE.title_hit - SC.intro.start, d = SC.intro.end - SC.intro.start;
     vgrad([[0, '#000003'], [1, '#04030c']]);
     // warp flight through the stars
@@ -1281,7 +1286,7 @@ const SCENES = {
   lichtkrone(t) {
     const L = i => lineOf('lichtkrone', i), lt = local('lichtkrone', t);
     const low = smooth(L(1).start - 0.6, L(1).start + 0.4, t) * (1 - smooth(L(2).start - 0.6, L(2).start + 0.2, t));
-    const fire = smooth(L(3).start + 2.0, L(3).start + 3.0, t);
+    const fire = smooth(L(4).start - 0.2, L(4).start + 0.8, t);
     ctx.save(); camera(1.05 + 0.04 * lt / 20, 0, 0);
     if (fire < 1) {
       crossfade(low, () => this._palaceView(t), () => this._lowerView(t));
@@ -1289,7 +1294,7 @@ const SCENES = {
     if (fire > 0) { ctx.save(); ctx.globalAlpha = fire; this._fireView(t, fire); ctx.restore(); }
     ctx.restore();
     // the law as an inscription
-    const law = smooth(L(2).start, L(2).start + 0.8, t) * (1 - smooth(L(3).start + 1.6, L(3).start + 2.4, t));
+    const law = smooth(L(2).start, L(2).start + 0.8, t) * (1 - smooth(L(3).start + 0.6, L(3).start + 1.4, t));
     if (law > 0) {
       ctx.save(); ctx.textAlign = 'center';
       const bg = ctx.createRadialGradient(540, 560, 40, 540, 560, 560);
@@ -1341,6 +1346,32 @@ const SCENES = {
     crossfade(mem, A, B);
   },
 
+  _ramenStand(t, x, y, speak) {
+    // small wooden stall: roof, paper lantern, steaming bowls, Bo with his ladle
+    const c = '#05040c';
+    ctx.save(); ctx.fillStyle = c; ctx.strokeStyle = c; ctx.lineCap = 'round';
+    ctx.fillRect(x - 120, y - 70, 240, 70);                         // counter
+    ctx.fillRect(x - 112, y - 250, 10, 190); ctx.fillRect(x + 102, y - 250, 10, 190);
+    ctx.beginPath(); ctx.moveTo(x - 150, y - 240); ctx.quadraticCurveTo(x, y - 300, x + 150, y - 240); ctx.lineTo(x + 140, y - 225); ctx.quadraticCurveTo(x, y - 275, x - 140, y - 225); ctx.fill();
+    // Bo behind the counter: broad, round, waving the ladle when he shouts
+    const bob = 4 * Math.sin(t * 2) + 6 * speak * Math.sin(t * 14);
+    ctx.beginPath(); ctx.ellipse(x + 40, y - 105 + bob * 0.3, 58, 62, 0, 0, 7); ctx.fill();
+    ctx.beginPath(); ctx.arc(x + 40, y - 185 + bob * 0.3, 27, 0, 7); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(x + 40, y - 214 + bob * 0.3, 24, 9, 0, 0, 7); ctx.fill();     // cook's cap band
+    const la = -0.5 - 1.1 * speak + 0.25 * speak * Math.sin(t * 16);
+    ctx.lineWidth = 13; ctx.beginPath(); ctx.moveTo(x - 2, y - 135); ctx.lineTo(x - 2 + Math.cos(Math.PI + la) * 55, y - 135 + Math.sin(Math.PI + la) * 55); ctx.stroke();
+    const lx = x - 2 + Math.cos(Math.PI + la) * 55, ly = y - 135 + Math.sin(Math.PI + la) * 55;
+    ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(lx, ly); ctx.lineTo(lx + Math.cos(Math.PI + la - 0.3) * 60, ly + Math.sin(Math.PI + la - 0.3) * 60); ctx.stroke();
+    ctx.beginPath(); ctx.arc(lx + Math.cos(Math.PI + la - 0.3) * 66, ly + Math.sin(Math.PI + la - 0.3) * 66, 10, 0, 7); ctx.fill();
+    // bowls
+    [[-70, 0], [-15, 1]].forEach(([dx, k]) => { ctx.beginPath(); ctx.ellipse(x + dx, y - 74, 26, 14, 0, 0, Math.PI); ctx.fill(); });
+    ctx.restore();
+    ctx.save(); ctx.globalCompositeOperation = 'lighter';
+    glow(x - 100, y - 205, 70, 'rgba(255,140,80,A)', 0.75 + 0.1 * Math.sin(t * 7)); glow(x - 100, y - 205, 12, 'rgba(255,220,170,A)', 1);
+    for (let k = 0; k < 5; k++) { const f = fract(t * 0.35 + k / 5); glow(x - 70 + 55 * (k % 2) + 10 * Math.sin(t + k), y - 90 - 120 * f, 22 + 20 * f, 'rgba(230,230,255,A)', 0.18 * (1 - f)); }
+    ctx.restore();
+  },
+
   _branchScene(t, o = {}) {
     vgrad([[0, '#04031a'], [0.4, '#141c4c'], [0.65, '#2e2e66'], [0.8, '#5e4a88'], [1, '#2a2048']]);
     stars(t, { alpha: 0.9, h: 1100 });
@@ -1370,45 +1401,90 @@ const SCENES = {
 
   lunara(t) {
     const L = i => lineOf('lunara', i), lt = local('lunara', t);
-    const close = smooth(L(7).start - 0.6, L(7).start + 0.6, t);
+    const close = smooth(L(8).start - 0.6, L(8).start + 0.6, t);
     const A = () => {
-      const push = smooth(L(4).start, L(6).end, t);
+      const push = smooth(L(5).start, L(7).end, t);
       ctx.save(); camera(1.0 + 0.35 * push, -120 * push, -260 * push);
       const lit = lerp(1, 7, clamp((t - SC.lunara.start) / (L(1).end - SC.lunara.start + 1)));
       this._branchScene(t, { lit });
-      const look = smooth(L(6).start - 0.8, L(6).start, t);
-      const hand = figure(380, 1610, 500, { hair: true, t, arm: lerp(-0.9, -1.4, look), armLen: 36, rim: 'rgba(255,170,90,0.85)', rimBlur: 30 });
-      ctx.strokeStyle = '#04050a'; ctx.lineWidth = 6;
-      ctx.beginPath(); ctx.moveTo(hand[0] - 30, hand[1] + 80); ctx.lineTo(hand[0] + 60, hand[1] - 170); ctx.stroke();
-      ctx.save(); ctx.globalCompositeOperation = 'lighter';
-      glow(hand[0] + 60, hand[1] - 175, 60, 'rgba(255,180,90,A)', 0.9);
-      const dust = smooth(L(2).start, L(2).start + 1, t);
-      if (dust > 0) { glow(330, 1330, 70, 'rgba(255,230,160,A)', 0.8 * dust); glow(330, 1330, 14, 'rgba(255,250,230,A)', dust); }
+      // Bo's little ramen stand further along the branch
+      this._ramenStand(t, 840, 1515, speaking('BO', t));
+      // Neraya: walks in with her lantern pole, lights the lanterns, sets the pole aside,
+      // offers Lunara a pinch of moon dust, then just stands and listens to her own memories
+      const walk = smooth(SC.lunara.start, L(0).end, t);
+      const nx = lerp(150, 380, walk), moving = walk > 0 && walk < 1;
+      const ny = 1610 - (nx - 380) * 0.09 - (moving ? 6 * Math.abs(Math.sin(t * 5.5)) : 0);
+      const raise = smooth(L(1).start - 0.3, L(1).start + 0.5, t) * (1 - smooth(L(1).end - 0.6, L(1).end + 0.1, t));
+      const offer = smooth(L(2).start - 0.2, L(2).start + 0.6, t) * (1 - smooth(L(3).end - 0.3, L(3).end + 0.5, t));
+      const putAway = smooth(L(1).end - 0.3, L(1).end + 0.3, t);
+      const look = smooth(L(7).start - 0.8, L(7).start, t);
+      let arm = lerp(0.95, -1.1, raise);
+      arm = lerp(arm, 0.05, offer);
+      arm = lerp(arm, lerp(1.15, 1.25, look), putAway * (1 - offer));
+      const turn = smooth(L(4).start - 0.2, L(4).start + 0.4, t) * (1 - smooth(L(4).end, L(4).end + 0.5, t));
+      const hand = figure(nx, ny, 500, { hair: true, t, arm, armLen: 36, rot: (moving ? 0.03 * Math.sin(t * 5.5) : 0) + 0.04 * look - 0.02 * turn, rim: 'rgba(255,170,90,0.85)', rimBlur: 30 });
+      const held = 1 - putAway;
+      ctx.save(); ctx.strokeStyle = '#04050a'; ctx.lineWidth = 6; ctx.lineCap = 'round';
+      if (held > 0) {
+        // pole: vertical like a staff while walking, diagonal up while lighting
+        ctx.globalAlpha = held;
+        const bx = lerp(hand[0] + 6, hand[0] - 30, raise), by = lerp(hand[1] + 150, hand[1] + 80, raise);
+        const tx = lerp(hand[0] - 4, hand[0] + 60, raise), ty = lerp(hand[1] - 210, hand[1] - 170, raise);
+        ctx.beginPath(); ctx.moveTo(bx, by); ctx.lineTo(tx, ty); ctx.stroke();
+        ctx.globalCompositeOperation = 'lighter'; glow(tx, ty - 5, 60, 'rgba(255,180,90,A)', 0.9 * held);
+      }
+      if (putAway > 0) {
+        // pole leaning against the lantern post behind her
+        ctx.globalAlpha = putAway; ctx.globalCompositeOperation = 'source-over';
+        ctx.beginPath(); ctx.moveTo(nx - 150, 1630); ctx.lineTo(nx - 95, 1230); ctx.stroke();
+        ctx.globalCompositeOperation = 'lighter'; glow(nx - 95, 1225, 45, 'rgba(255,180,90,A)', 0.6 * putAway);
+      }
       ctx.restore();
+      // moon dust glittering in her open palm
+      const dust = offer * (1 - smooth(L(3).start + 0.5, L(3).start + 1.5, t) * 0.7);
+      if (dust > 0) {
+        ctx.save(); ctx.globalCompositeOperation = 'lighter';
+        glow(hand[0] + 6, hand[1] - 8, 55, 'rgba(210,225,255,A)', 0.7 * dust); glow(hand[0] + 6, hand[1] - 8, 10, 'rgba(250,252,255,A)', dust);
+        for (let k = 0; k < 6; k++) glow(hand[0] + 6 + 22 * Math.sin(t * 2 + k * 1.7), hand[1] - 20 - 20 * fract(t * 0.6 + k / 6), 5, 'rgba(230,240,255,A)', dust * (1 - fract(t * 0.6 + k / 6)));
+        ctx.restore();
+      }
       particles(t, 50, { y0: 1800, dy: -1200, a: 0.6, color: 'rgba(255,190,110,A)', r: 2, life: 9, glowR: 8 });
-      // Lunara the moon mouse: hovers around Neraya, steals a crumb of star dust, introduces herself, then settles on her shoulder
-      const hover = [440 + 60 * Math.sin(t * 0.9), 1200 + 25 * Math.sin(t * 2.1)];
-      const toDust = smooth(L(2).start + 0.8, L(2).start + 2.0, t), toFront = smooth(L(3).start - 0.3, L(3).start + 0.9, t), toShoulder = smooth(L(4).start + 0.5, L(4).start + 2.0, t);
-      let mx = lerp(hover[0], 345, toDust), my = lerp(hover[1], 1300 + 6 * Math.sin(t * 3), toDust);
+      // Lunara the moon mouse: nibbles moon dust from Neraya's palm, introduces herself,
+      // steals a noodle from Bo's bowl, hiccups and settles on Neraya's shoulder
+      const hover = [470 + 60 * Math.sin(t * 0.9), 1200 + 25 * Math.sin(t * 2.1)];
+      const toDust = smooth(L(2).start + 0.8, L(2).start + 2.0, t), toFront = smooth(L(3).start - 0.3, L(3).start + 0.9, t);
+      const toBo = smooth(L(4).start - 1.0, L(4).start + 0.1, t), toShoulder = smooth(L(5).start + 0.3, L(5).start + 1.8, t);
+      let mx = lerp(hover[0], hand[0] + 14, toDust), my = lerp(hover[1], hand[1] - 34 + 5 * Math.sin(t * 3), toDust);
       mx = lerp(mx, 600 + 18 * Math.sin(t * 1.7), toFront); my = lerp(my, 1150 + 14 * Math.sin(t * 2.6), toFront);
-      mx = lerp(mx, 412, toShoulder); my = lerp(my, 1196, toShoulder);
-      const chewing = toDust > 0.9 && toFront < 0.2, sitting = toShoulder > 0.95;
+      mx = lerp(mx, 775, toBo); my = lerp(my, 1405 + 4 * Math.sin(t * 7), toBo);
+      mx = lerp(mx, nx + 32, toShoulder); my = lerp(my, ny - 414, toShoulder);
+      const chewing = (toDust > 0.9 && toFront < 0.2) || (toBo > 0.9 && toShoulder < 0.6), sitting = toShoulder > 0.95;
       const mood = sitting ? 'sad' : chewing ? 'chew' : 'happy';
-      moonMouse(mx, my, lerp(16, 26, toFront * (1 - toShoulder)) + 0, t, { dir: toShoulder > 0.5 ? 1 : (Math.cos(t * 0.9) > 0 ? 1 : -1) * (toFront > 0.5 ? -1 : 1), mood, fly: !sitting, crumb: chewing, seed: 0.3 });
+      moonMouse(mx, my, lerp(lerp(16, 26, toFront), 22, toBo), t, { dir: sitting ? 1 : toBo > 0.5 ? 1 : (Math.cos(t * 0.9) > 0 ? 1 : -1) * (toFront > 0.5 ? -1 : 1), mood, fly: !sitting, crumb: chewing && toBo < 0.5, seed: 0.3 });
+      // the stolen noodle dangling from her mouth
+      const nood = toBo > 0.9 ? 1 - smooth(L(5).start - 0.6, L(5).start - 0.1, t) : 0;
+      if (nood > 0) {
+        ctx.save(); ctx.globalAlpha = nood; ctx.strokeStyle = 'rgba(255,226,160,0.95)'; ctx.lineWidth = 3; ctx.lineCap = 'round';
+        ctx.shadowColor = 'rgba(255,200,120,0.8)'; ctx.shadowBlur = 8;
+        const sl = smooth(L(4).start - 0.1, L(4).end, t);
+        ctx.beginPath(); ctx.moveTo(mx + 14, my + 6);
+        for (let k = 1; k <= 8; k++) ctx.lineTo(mx + 14 + 3 * Math.sin(k * 1.4 + t * 9), my + 6 + k * 9 * (1 - 0.8 * sl));
+        ctx.stroke(); ctx.restore();
+      }
       const tag = smooth(L(3).start + 0.3, L(3).start + 1.0, t) * (1 - smooth(L(3).end - 0.2, L(3).end + 0.5, t));
       if (tag > 0) {
         ctx.save(); ctx.textAlign = 'center'; ctx.shadowColor = 'rgba(0,0,0,0.9)'; ctx.shadowBlur = 12;
         if (ctx.letterSpacing !== undefined) ctx.letterSpacing = '6px';
         ctx.font = '700 34px Cinzel'; ctx.fillStyle = `rgba(230,225,255,${tag})`; ctx.fillText('LUNARA', mx, my - 90);
         if (ctx.letterSpacing !== undefined) ctx.letterSpacing = '0px';
-        ctx.font = 'italic 600 28px "Cormorant Garamond"'; ctx.fillStyle = `rgba(240,235,255,${tag})`; ctx.fillText('Mondmaus · daumengroß · fliegt', mx, my - 58);
+        ctx.font = 'italic 600 28px "Cormorant Garamond"'; ctx.fillStyle = `rgba(240,235,255,${tag})`; ctx.fillText('Mondmaus · daumengroß · liebt Mondstaub', mx, my - 58);
         ctx.restore();
       }
       hiccup(mx, my, CUE.hicks, t);
       ctx.restore();
     };
     const B = () => {
-      ctx.save(); camera(1.0 + 0.06 * clamp((t - L(7).start) / 8), 0, 0);
+      ctx.save(); camera(1.0 + 0.06 * clamp((t - L(8).start) / 8), 0, 0);
       vgrad([[0, '#03021a'], [0.6, '#151446'], [1, '#08061a']]);
       stars(t, { alpha: 1 });
       ctx.save(); ctx.globalCompositeOperation = 'lighter';
@@ -1625,33 +1701,38 @@ const SCENES = {
       glow(ex, ey + 18, 90, 'rgba(255,170,90,A)', 0.55); glow(ex, ey + 18, 12, 'rgba(255,225,170,A)', 1);
       ctx.restore();
     });
-    // Neraya on a swing, gliding back and forth in the moonlight, looking up at the brightest star
-    swingHeroine(560, 806, 330, t, SX, SY);
+    // Neraya sits on the branch, back leaning against the trunk, legs dangling, gazing at the moon
+    silhouette('rgba(200,220,255,0.95)', 28, () => {
+      ctx.save(); ctx.translate(905, 752); ctx.rotate(0.1); ctx.scale(-1, 1);
+      sittingHeroine(0, 0, 5.2, t, { look: -0.32 + 0.04 * Math.sin(t * 0.5), color: '#04050c' });
+      ctx.restore();
+    });
     particles(t, 50, { y0: 1900, dy: -1600, a: 0.55, color: 'rgba(200,220,255,A)', r: 2, life: 9, glowR: 6 });
     ctx.restore();
-    const cta = LINES.find(l => l.scene === 'outro');
+    const cta = LINES.find(l => l.scene === 'outro'), BTN_Y = 1130;
     const fa = smooth(cta.start + 1.5, cta.start + 2.3, t);
     const press = smooth(CUE.knopf - 0.15, CUE.knopf, t) * (1 - smooth(CUE.knopf + 0.1, CUE.knopf + 0.35, t));
-    ctx.save(); ctx.translate(540, 1700); ctx.scale(1 - 0.06 * press, 1 - 0.1 * press); ctx.translate(-540, -1700);
-    followButton(540, 1700, fa, t);
+    ctx.save(); ctx.translate(540, BTN_Y); ctx.scale(1 - 0.06 * press, 1 - 0.1 * press); ctx.translate(-540, -BTN_Y);
+    followButton(540, BTN_Y, fa, t);
     ctx.restore();
     {
       const orbit = [600 + 150 * Math.cos(t * 1.3), 1000 + 60 * Math.sin(t * 2.6)];
       const go = smooth(CUE.knopf - 1.6, CUE.knopf - 0.1, t);
-      const bx = lerp(orbit[0], 470, go), by = lerp(orbit[1], 1612, go) - 120 * Math.sin(Math.PI * go) * 0.5;
+      const bx = lerp(orbit[0], 470, go), by = lerp(orbit[1], BTN_Y - 88, go) - 120 * Math.sin(Math.PI * go) * 0.5;
       const land = go > 0.98;
       moonMouse(bx, by + (land ? 6 * press : 0), 22, t, { dir: land ? 1 : (-Math.sin(t * 1.3) > 0 ? 1 : -1), mood: 'happy', fly: !land || t < CUE.knopf + 0.3, seed: 0.5 });
-      if (t > CUE.knopf && t < CUE.knopf + 0.6) { ctx.save(); ctx.globalCompositeOperation = 'lighter'; glow(540, 1700, 260, 'rgba(255,220,150,A)', 0.6 * (1 - (t - CUE.knopf) / 0.6)); ctx.restore(); }
+      if (t > CUE.knopf && t < CUE.knopf + 0.6) { ctx.save(); ctx.globalCompositeOperation = 'lighter'; glow(540, BTN_Y, 260, 'rgba(255,220,150,A)', 0.6 * (1 - (t - CUE.knopf) / 0.6)); ctx.restore(); }
     }
     ctx.save(); ctx.textAlign = 'center'; ctx.shadowColor = 'rgba(0,0,0,0.9)'; ctx.shadowBlur = 14;
     ctx.font = 'italic 600 46px "Cormorant Garamond"'; ctx.fillStyle = `rgba(245,235,220,${fa})`;
-    ctx.fillText('… und sieh die nächste Folge als Erstes', 540, 1815);
+    ctx.fillText(`… und sieh ${TL.naechste_folge || 'die nächste Folge'} als Erstes:`, 540, BTN_Y + 120);
+    if (TL.naechste_titel) { ctx.font = 'italic 700 50px "Cormorant Garamond"'; ctx.fillStyle = `rgba(255,225,170,${fa})`; ctx.fillText('„' + TL.naechste_titel + '“', 540, BTN_Y + 178); }
     ctx.restore();
     // next episode: shown big and long
     const [nf, nt] = (TL.naechste || '').split(' · ');
     const na = smooth(cta.end - 1.2, cta.end - 0.2, t), nz = 1.06 - 0.06 * easeOut((t - cta.end + 1.2) / 3);
     if (na > 0 && nt) {
-      ctx.save(); ctx.translate(540, 0); ctx.textAlign = 'center'; ctx.shadowColor = 'rgba(0,0,0,0.95)'; ctx.shadowBlur = 18;
+      ctx.save(); ctx.translate(455, 0); ctx.textAlign = 'center'; ctx.shadowColor = 'rgba(0,0,0,0.95)'; ctx.shadowBlur = 18;
       if (ctx.letterSpacing !== undefined) ctx.letterSpacing = '8px';
       ctx.font = '400 34px Cinzel'; ctx.fillStyle = `rgba(230,200,150,${na})`; ctx.fillText('ALS NÄCHSTES', 0, 500);
       ctx.font = '700 50px Cinzel'; ctx.fillStyle = `rgba(255,225,170,${na})`; ctx.fillText(nf, 0, 568);
@@ -1660,7 +1741,7 @@ const SCENES = {
       const tg = ctx.createLinearGradient(0, 600, 0, 760);
       tg.addColorStop(0, `rgba(255,240,200,${na})`); tg.addColorStop(1, `rgba(228,170,90,${na})`);
       ctx.font = '700 64px Cinzel'; ctx.fillStyle = tg; ctx.shadowColor = `rgba(255,170,80,${0.7 * na})`; ctx.shadowBlur = 30;
-      wrap(nt, 960).forEach((line, i) => ctx.fillText(line, 0, (650 + i * 76) / nz));
+      wrap(nt, 740).forEach((line, i) => ctx.fillText(line, 0, (650 + i * 76) / nz));
       ctx.restore();
     }
     const card = smooth(hit - 0.1, hit + 0.8, t);
@@ -2059,7 +2140,7 @@ const SCENES = {
 };
 
 // ---------- overlays ----------
-const SPEAKER_COL = { LUNARA: '#a8c8ff', KAEL_ERINNERUNG: '#ffc09a', SERAPHINE_HALLE: '#ff6f6f', KAEL: '#ff9b78', SERAPHINE: '#ff6f6f', STERN: '#d9e6ff', STERN_DUNKEL: '#c08cff', MUTTER: '#ffd59a' };
+const SPEAKER_COL = { BO: '#ffcf8a', LUNARA: '#a8c8ff', KAEL_ERINNERUNG: '#ffc09a', SERAPHINE_HALLE: '#ff6f6f', KAEL: '#ff9b78', SERAPHINE: '#ff6f6f', STERN: '#d9e6ff', STERN_DUNKEL: '#c08cff', MUTTER: '#ffd59a' };
 
 function wrap(text, maxW) {
   const words = text.split(' '), out = [];
@@ -2072,16 +2153,44 @@ function wrap(text, maxW) {
   return out;
 }
 
+// cold open: big, centred text that talks straight to the viewer, with a punchy keyword on top
+function hookText(l, t, a) {
+  const pop = 1 + 0.18 * (1 - easeOut(clamp((t - l.start + 0.12) / 0.35)));
+  ctx.save(); ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
+  const bg = ctx.createRadialGradient(540, 900, 60, 540, 900, 760);
+  bg.addColorStop(0, `rgba(0,0,0,${0.55 * a})`); bg.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = bg; ctx.fillRect(0, 300, W, 1300);
+  ctx.translate(540, 900); ctx.scale(pop, pop);
+  let y = 40;
+  if (l.hook) {
+    if (ctx.letterSpacing !== undefined) ctx.letterSpacing = '6px';
+    const size = l.hook.length > 9 ? 112 : 150;
+    ctx.font = `700 ${size}px Cinzel`;
+    const g = ctx.createLinearGradient(0, -size, 0, 10);
+    g.addColorStop(0, `rgba(255,246,220,${a})`); g.addColorStop(1, `rgba(240,180,95,${a})`);
+    ctx.shadowColor = `rgba(255,160,70,${0.8 * a})`; ctx.shadowBlur = 40;
+    ctx.fillStyle = g; ctx.fillText(l.hook, 0, -60);
+    if (ctx.letterSpacing !== undefined) ctx.letterSpacing = '0px';
+    y = 70;
+  }
+  ctx.shadowColor = 'rgba(0,0,0,0.95)'; ctx.shadowBlur = 20; ctx.shadowOffsetY = 3;
+  ctx.font = 'italic 600 70px "Cormorant Garamond"'; ctx.fillStyle = `rgba(250,244,232,${a})`;
+  const lines = wrap(l.text, 920);
+  lines.forEach((s, i) => ctx.fillText(s, 0, y + i * 80));
+  ctx.restore();
+}
+
 function subtitles(t) {
   const l = LINES.find(l => t >= l.start - 0.12 && t <= l.end + 0.35);
   if (!l) return;
   const a = smooth(l.start - 0.12, l.start + 0.08, t) * (1 - smooth(l.end + 0.1, l.end + 0.35, t));
   const narr = l.who === 'ICH';
+  if (l.scene === 'kalt') return hookText(l, t, a);
   ctx.save();
   ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
   ctx.font = narr ? 'italic 500 58px "Cormorant Garamond"' : '600 60px "Cormorant Garamond"';
   const lines = wrap(l.text, 900);
-  const lh = 68, y0 = 1460 - (lines.length - 1) * lh / 2;
+  const lh = 68, y0 = (l.who === 'BO' ? 640 : 1460) - (lines.length - 1) * lh / 2;
   const band = ctx.createLinearGradient(0, y0 - 190, 0, y0 + lines.length * lh + 80);
   band.addColorStop(0, 'rgba(0,0,0,0)'); band.addColorStop(0.35, `rgba(0,0,0,${0.5 * a})`);
   band.addColorStop(0.75, `rgba(0,0,0,${0.5 * a})`); band.addColorStop(1, 'rgba(0,0,0,0)');

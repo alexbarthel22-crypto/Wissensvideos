@@ -440,7 +440,19 @@ def score(tl):
         melody(music, 1.2, ["A5", None, "F5", None, "E5", None, "D5"], 1.2, 0.3, 4)
         sparkles(music, 0.5, s["end"], 0.8, 0.25)
         kl = [l for l in tl["lines"] if l["scene"] == "kalt"]
-        fx.add(boom(4, 70, 26, 0.6), kl[-1]["end"] + 0.1, 0.7)
+        invite = kl[-1]["start"] if len(kl) >= 5 else s["end"]
+        t = s["start"] + 0.4
+        while t < invite - 0.6:
+            fx.add(drum(48, 0.7), t, 0.32)
+            fx.add(drum(48, 0.7), t + 0.28, 0.2)
+            fx.add(bell("A6", 0.25, 0.2), t + 0.7, 0.08, 0.5)
+            t += 1.4
+        if len(kl) >= 5:
+            music.add(pad("D", s["end"] - invite + 2.5, bright=5, attack=1.5, release=2.0), invite - 0.3, 0.8)
+            music.add(choir("D", s["end"] - invite + 2, attack=1.8, release=2.0, vowel="o"), invite, 0.45)
+            fx.add(riser(s["end"] - invite + 0.6), invite, 0.45)
+        else:
+            fx.add(boom(4, 70, 26, 0.6), kl[-1]["end"] + 0.1, 0.7)
 
     # Main title
     if "intro" in S:
@@ -472,14 +484,26 @@ def score(tl):
     # The Order of the High Flame: solemn choir and organ
     if "lichtkrone" in S:
         s = S["lichtkrone"]
-        each = dur("lichtkrone") / 4
+        kl = [l for l in tl["lines"] if l["scene"] == "lichtkrone"]
+        burn = kl[4] if len(kl) > 4 else None
+        quiet = (burn["start"] - 0.9) if burn else s["end"]
+        each = (quiet - s["start"]) / 4
         for i, c in enumerate(["Dm", "Gm", "A", "Dm"]):
-            music.add(choir(c, each + 0.3, attack=1.5, release=2.0), s["start"] + i * each, 0.8)
-            music.add(pad(c, each + 0.3, bright=6, attack=1.0), s["start"] + i * each, 0.6)
-        music.add(drone(dur("lichtkrone") + 1, "D1"), s["start"], 1.0)
-        burn = LN("lichtkrone", 3)
-        fx.add(boom(5, 80, 26, 0.9), burn["end"] - 0.4, 1.0)
-        music.add(drone(3, "Eb1", grit=1.0), burn["end"] - 0.4, 1.3)
+            music.add(choir(c, each + 0.3, attack=1.5, release=0.8 if i == 3 else 2.0), s["start"] + i * each, 0.8)
+            music.add(pad(c, each + 0.3, bright=6, attack=1.0, release=0.8 if i == 3 else 2.4), s["start"] + i * each, 0.6)
+        music.add(drone(quiet - s["start"] + 0.5, "D1"), s["start"], 1.0)
+        if burn:
+            hit = burn["start"] + (burn["end"] - burn["start"]) * 0.55
+            fx.add(boom(6, 80, 24, 1.0), hit, 1.2)
+            fx.add(drum(42, 2.5), hit, 1.0)
+            fx.add(cymbal(4), hit, 0.6)
+            stab("Eb", None, hit, music, 1.1)
+            music.add(drone(s["end"] - hit + 1.5, "Eb1", grit=1.0), hit, 1.2)
+            music.add(choir("Dm", s["end"] - hit + 1, attack=0.05, release=1.5, vowel="o"), hit, 0.8)
+        else:
+            b = kl[3]
+            fx.add(boom(5, 80, 26, 0.9), b["end"] - 0.4, 1.0)
+            music.add(drone(3, "Eb1", grit=1.0), b["end"] - 0.4, 1.3)
 
     # Seraphine: ominous hall, heartbeat
     if "seraphine_vor" in S:
@@ -497,13 +521,35 @@ def score(tl):
     # Lunara's theme: hopeful and fragile
     if "lunara" in S:
         s = S["lunara"]
-        each = dur("lunara") / 8
-        progression(music, s["start"], ["F", "C", "Dm", "Bb", "F", "C", "Bb", "A"], each, bright=4, gain=0.75, attack=1.5)
-        arp = {"F": ["F4", "A4", "C5", "A4"], "C": ["C4", "E4", "G4", "E4"], "Dm": ["D4", "F4", "A4", "F4"], "Bb": ["Bb3", "D4", "F4", "D4"], "A": ["A3", "C#4", "E4", "C#4"]}
-        for k, c in enumerate(["F", "C", "Dm", "Bb", "F", "C", "Bb", "A"]):
+        ll = [l for l in tl["lines"] if l["scene"] == "lunara"]
+        arp = {"F": ["F4", "A4", "C5", "A4"], "C": ["C4", "E4", "G4", "E4"], "Dm": ["D4", "F4", "A4", "F4"], "Bb": ["Bb3", "D4", "F4", "D4"], "A": ["A3", "C#4", "E4", "C#4"], "Gm": ["G3", "Bb3", "D4", "Bb3"]}
+        bo = next((l for l in ll if l["who"] == "BO"), None)
+        sad0 = ll[5]["start"] - 0.4 if bo else s["start"] + dur("lunara") / 2
+        happy = ["F", "C", "Dm", "Bb"]
+        each = (sad0 - s["start"]) / len(happy)
+        progression(music, s["start"], happy, each, bright=4, gain=0.7, attack=1.5)
+        for k, c in enumerate(happy):
             for j in range(8):
-                music.add(bell(arp[c][j % 4], 1.6, 0.6), s["start"] + k * each + j * each / 8, 0.18, 0.3 * (-1) ** j)
-        motif(music, LN("lunara", 7)["start"], 0.7, voice="bell", transpose=12, gain=0.28, upto=8)
+                tt = s["start"] + k * each + j * each / 8
+                if bo and bo["start"] - 0.5 < tt < bo["end"] + 0.3:
+                    continue
+                music.add(bell(arp[c][j % 4], 1.6, 0.6), tt, 0.16, 0.3 * (-1) ** j)
+        if bo:
+            # comic pizzicato: short, bouncy plucks while Bo grumbles
+            notes = ["C5", "G4", "C5", "E5", "D5", "B4", "G4", "C5", "G5", "C5"]
+            step = (bo["end"] - bo["start"] + 0.4) / len(notes)
+            for j, n in enumerate(notes):
+                music.add(bell(n, 0.35, 1.4), bo["start"] - 0.2 + j * step, 0.3, 0.5 * (-1) ** j)
+            fx.add(bell("C7", 0.3, 0.3), bo["end"] + 0.2, 0.12)
+        # the mother: sparse, minor, a soft choir
+        sad = ["Dm", "Bb", "Gm", "A"]
+        each2 = (s["end"] - sad0) / len(sad)
+        for k, c in enumerate(sad):
+            music.add(pad(c, each2 + 0.4, bright=2, attack=2.0), sad0 + k * each2, 0.55)
+            music.add(choir(c, each2, attack=2.0, release=2.0, vowel="o"), sad0 + k * each2, 0.3)
+            for j in range(3):
+                music.add(bell(arp[c][j], 2.4, 0.35), sad0 + k * each2 + j * each2 / 3, 0.12, 0.25 * (-1) ** j)
+        motif(music, ll[-2]["start"], 0.75, voice="bell", transpose=12, gain=0.24, upto=8)
 
     # Kael: nostalgic strings, then cold
     if "kael_vor" in S:
@@ -770,7 +816,7 @@ def main(out_dir):
     f = reverb(fx.buf, 2.2, 0.25, 2) * (1 - 0.3 * np.clip(e * 14, 0, 1))
     v = np.vstack([voice, voice])
     v = reverb(v, 1.2, 0.06, 3)
-    mix = v * 1.0 + m * 0.5 + f * 0.45
+    mix = v * 1.0 + m * 0.36 + f * 0.4
     mix = mix[:, :int((tl["duration"] + 0.2) * SR)]
     # gentle master fade so the last chord never stops abruptly
     nf = int(1.5 * SR)

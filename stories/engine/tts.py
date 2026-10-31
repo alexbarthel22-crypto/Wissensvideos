@@ -165,7 +165,7 @@ def main(story_path, out_dir):
     os.makedirs(vdir, exist_ok=True)
 
     t = 0.0
-    timeline = {k: story.get(k, "") for k in ("serie", "folge", "titel", "tagline", "naechste")}
+    timeline = {k: story.get(k, "") for k in ("serie", "folge", "titel", "tagline", "naechste", "naechste_folge", "naechste_titel")}
     timeline["scenes"], timeline["lines"], timeline["cues"] = [], [], {}
     clips = []
     for scene in story["scenes"]:
@@ -187,7 +187,13 @@ def main(story_path, out_dir):
             fin = os.path.join(vdir, f"{key}.{fx or 'clean'}{ttag}.v2.wav")
             if not os.path.exists(raw):
                 print("TTS", line["who"], line["text"][:50])
-                if ENGINE == "gemini":
+                if os.environ.get("TTS_DRY"):
+                    # layout preview: silence sized like the spoken line, no API call
+                    with wave.open(raw, "wb") as w:
+                        w.setnchannels(1); w.setsampwidth(2); w.setframerate(24000)
+                        n = int(24000 * len(line["text"]) / 15.5)
+                        w.writeframes((np.sin(np.arange(n) / 9) * 3000).astype(np.int16).tobytes())
+                elif ENGINE == "gemini":
                     synth_gemini(line["text"], v, line, raw)
                 else:
                     synth(line["text"], v["name"], rate, raw)
@@ -207,7 +213,8 @@ def main(story_path, out_dir):
             dur = len(audio) / SR
             clips.append((t, audio))
             timeline["lines"].append({"scene": scene["id"], "who": line["who"], "label": v["label"],
-                                      "text": line.get("display", line["text"]), "start": round(t, 3), "end": round(t + dur, 3)})
+                                      "text": line.get("display", line["text"]), "start": round(t, 3), "end": round(t + dur, 3),
+                                      **({"hook": line["hook"]} if line.get("hook") else {})})
             t += dur
         t += scene.get("post", 0.5)
         timeline["scenes"].append({"id": scene["id"], "start": round(start, 3), "end": round(t, 3)})

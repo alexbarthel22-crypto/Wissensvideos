@@ -88,14 +88,14 @@
    "lines": [
     {
      "who": "ICH",
-     "text": "Letztes Mal fiel ein Stern vom Himmel. Mitten in meine Ramen. Aber bevor ich erzähle, was dann geschah … musst du Kael kennen. Meinen großen Bruder.",
-     "style": "schnell zusammenfassend, trocken, dann warm und verletzt"
+     "text": "Letztes Mal fiel ein Stern vom Himmel. Aber bevor ich erzähle, was dann geschah … musst du Kael kennen. Meinen großen Bruder.",
+     "style": "schnell zusammenfassend, dann warm und verletzt"
     },
     {
      "who": "ICH",
-     "text": "Nachdem Mama verschwand, hat er mich großgezogen. Er hat mir das Klettern beigebracht. Und das Fallen. Darin war ich talentierter.",
+     "text": "Nachdem Mama verschwand, hat er mich großgezogen. Er hat mir das Klettern beigebracht.",
      "pre": 0.8,
-     "style": "liebevolle Erinnerung, am Ende selbstironisch"
+     "style": "liebevolle Erinnerung"
     },
     {
      "who": "ICH",
@@ -117,9 +117,9 @@
     },
     {
      "who": "ICH",
-     "text": "Jeden Monat schickt er mir einen Brief. Ich habe keinen einzigen geöffnet. Sie liegen unter meinem Bett. Sortiert. Nach Datum.",
+     "text": "Jeden Monat schickt er mir einen Brief. Ich habe keinen einzigen geöffnet.",
      "pre": 0.8,
-     "style": "trotzig, dann verlegen, unterdrückte Traurigkeit"
+     "style": "trotzig, mit unterdrückter Traurigkeit"
     }
    ]
   },
@@ -270,12 +270,14 @@
    "lines": [
     {
      "who": "LUNARA",
-     "text": "Folge mir … und du siehst, ob ich den Orden überlebe. Kleiner Hinweis: Ich bin nicht besonders sportlich.",
+     "text": "Folge mir … und du siehst als Erstes, wie meine Geschichte weitergeht.",
      "rate": 0.93,
-     "style": "direkt zum Zuschauer, trocken sarkastisch, ein Hauch Lächeln"
+     "style": "direkt zum Zuschauer, warm, eindringlich, ein Hauch Lächeln"
     }
    ]
   }
  ],
- "tempo": 1.2
+ "tempo": 1.2,
+ "naechste_folge": "Folge 3",
+ "naechste_titel": "Das Versprechen"
 }
