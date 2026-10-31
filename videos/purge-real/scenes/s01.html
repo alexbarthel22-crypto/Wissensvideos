@@ -81,16 +81,17 @@
       tl.to("#s01-tv .scr", { backgroundColor: "#5a0d1c", duration: 0.12, repeat: 5, yoyo: true }, ve);
       // Straftaten im Schnellschnitt
       const rb = at("L2", "Raub"), eb = at("L2", "Einbruch"), bs = at("L2", "Brandstiftung");
-      tl.set("#s01-tv", { opacity: 0 }, rb - 0.1); tl.set(CR, { opacity: 1 }, rb - 0.1);
-      [rb, eb, bs].forEach((tt, i, arr) => { tl.set(cr[i], { opacity: 1 }, tt - 0.1); tl.fromTo(cr[i], { scale: 1.3, svgOrigin: "540 850" }, { scale: 1, svgOrigin: "540 850", duration: 0.3, ease: "power3.out" }, tt - 0.1);
-        tl.set("#s01-cr" + (i + 1), { opacity: 1 }, tt - 0.1); tl.fromTo("#s01-cr" + (i + 1), { scale: 1.6 }, { scale: 1, duration: 0.25, ease: "power4.out" }, tt - 0.1);
-        const nx = i < 2 ? arr[i + 1] - 0.1 : mo - 0.05; tl.set([cr[i], "#s01-cr" + (i + 1)], { opacity: 0 }, nx); });
+      tl.set("#s01-tv", { opacity: 0 }, rb - 0.02); tl.set(CR, { opacity: 1 }, rb - 0.02);
+      [rb, eb, bs].forEach((tt, i, arr) => { const st = tt - 0.02, nx = (i < 2 ? arr[i + 1] : mo) - 0.02;
+        tl.set([cr[i], "#s01-cr" + (i + 1)], { opacity: 1 }, st); tl.fromTo(cr[i], { scale: 1.25, svgOrigin: "540 850" }, { scale: 1, svgOrigin: "540 850", duration: Math.min(0.35, nx - st), ease: "power3.out", immediateRender: false }, st);
+        tl.fromTo("#s01-cr" + (i + 1), { scale: 1.5 }, { scale: 1, duration: Math.min(0.25, nx - st), ease: "power4.out", immediateRender: false }, st);
+        tl.set([cr[i], "#s01-cr" + (i + 1)], { opacity: 0 }, nx); });
       tl.to(crf, { scaleY: 1.3, duration: 0.12, yoyo: true, repeat: 5 }, bs);
-      tl.to(CR, { opacity: 0, duration: 0.25 }, mo - 0.3);
+      tl.set(CR, { opacity: 0 }, mo - 0.02);
       // Einstellung 3: Nahaufnahme Maske (weicher Übergang)
-      tl.fromTo(CU, { opacity: 0 }, { opacity: 1, duration: 0.25 }, mo - 0.3);
-      tl.fromTo(CU, { scale: 1.35, svgOrigin: "540 900" }, { scale: 1, svgOrigin: "540 900", duration: 0.6, ease: "power3.out" }, mo - 0.3);
-      tl.set("#s01-cr4", { opacity: 1 }, mo - 0.3); tl.fromTo("#s01-cr4", { scale: 1.8 }, { scale: 1, duration: 0.3, ease: "power4.out" }, mo - 0.3);
+      tl.set([CU, "#s01-cr4"], { opacity: 1 }, mo - 0.02);
+      tl.fromTo(CU, { scale: 1.35, svgOrigin: "540 900" }, { scale: 1, svgOrigin: "540 900", duration: 0.6, ease: "power3.out", immediateRender: false }, mo - 0.02);
+      tl.fromTo("#s01-cr4", { scale: 1.8 }, { scale: 1, duration: 0.3, ease: "power4.out", immediateRender: false }, mo - 0.02);
       tl.set("#s01-cr4", { opacity: 0 }, l3 - 0.1);
       tl.fromTo(red, { opacity: 0.7 }, { opacity: 0, duration: 0.5 }, mo);
       tl.to(MC.g, { x: 552, duration: 0.04, repeat: 9, yoyo: true }, mo);

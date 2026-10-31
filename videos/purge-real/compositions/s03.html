@@ -26,8 +26,8 @@
       font: 700 42px Oswald, sans-serif; color: #ffd43b; letter-spacing: .04em; opacity: 0; }
     .s03-ch b { display: inline-block; margin-right: 12px; padding: 0 12px; border-radius: 8px; background: #ffd43b; color: #0b0c14; }
   </style>
-  <div id="root" data-composition-id="s03" data-start="0" data-duration="16.230" data-width="1080" data-height="1920">
-    <div id="s03-stage" class="clip stage" data-start="0" data-duration="16.230" data-track-index="0">
+  <div id="root" data-composition-id="s03" data-start="0" data-duration="16.530" data-width="1080" data-height="1920">
+    <div id="s03-stage" class="clip stage" data-start="0" data-duration="16.530" data-track-index="0">
       <svg id="s03-svg" class="full" viewBox="0 0 1080 1920"></svg>
       <div id="s03-c1" class="s03-ch"><b>1</b>LICHT AUS</div><div id="s03-c2" class="s03-ch"><b>2</b>RAUM OHNE FENSTER</div>
       <div id="s03-c3" class="s03-ch"><b>3</b>VORRÄTE</div><div id="s03-c4" class="s03-ch"><b>4</b>NACHBARN</div>
@@ -36,7 +36,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 16.23, "L5b": [0.2, 5.53], "L5b.words": [["so", 0.2, 0.388], ["schützt", 0.388, 0.61], ["du", 0.61, 0.798], ["dich", 0.798, 1.0], ["schritt", 1.51, 1.63], ["eins", 1.63, 1.739], ["", 1.739, 1.833], ["licht", 1.833, 1.945], ["aus", 1.945, 2.05], ["wer", 2.6, 2.742], ["dunkel", 2.742, 3.028], ["ist", 3.028, 3.17], ["ist", 3.72, 4.309], ["kein", 4.309, 4.92], ["ziel", 4.92, 5.53]], "L5c": [5.75, 9.18], "L5c.words": [["schritt", 5.75, 6.049], ["zwei", 6.049, 6.32], ["ein", 6.86, 7.056], ["raum", 7.056, 7.26], ["ohne", 7.26, 7.638], ["fenster", 7.638, 8.038], ["", 8.038, 8.213], ["keller", 8.213, 8.605], ["oder", 8.605, 8.984], ["bad", 8.984, 9.18]], "L5d": [9.4, 13.06], "L5d.words": [["schritt", 9.4, 9.657], ["drei", 9.657, 9.89], ["wasser", 10.36, 10.78], ["essen", 10.94, 11.3], ["erste", 11.5, 11.84], ["hilfe", 11.84, 12.18], ["taschenlampe", 12.34, 13.06]], "L5e": [13.28, 16.05], "L5e.words": [["und", 13.28, 13.488], ["schritt", 13.488, 13.725], ["vier", 13.725, 13.94], ["tu", 14.49, 14.64], ["dich", 14.64, 14.801], ["mit", 14.801, 14.956], ["deinen", 14.956, 15.267], ["nachbarn", 15.267, 15.589], ["zusammen", 15.589, 16.05]]};
+      const C = {"__dur": 16.53, "L5b": [0.2, 5.12], "L5b.words": [["so", 0.2, 0.395], ["schützt", 0.395, 0.626], ["du", 0.626, 0.821], ["dich", 0.821, 1.03], ["schritt", 1.29, 1.441], ["eins", 1.441, 1.578], ["", 1.578, 1.696], ["licht", 1.696, 1.838], ["aus", 1.838, 1.97], ["wer", 2.29, 2.455], ["dunkel", 2.455, 2.785], ["ist", 2.785, 2.95], ["ist", 3.38, 3.947], ["kein", 3.947, 4.533], ["ziel", 4.533, 5.12]], "L5c": [5.34, 9.19], "L5c.words": [["schritt", 5.34, 5.67], ["zwei", 5.67, 5.97], ["ein", 6.35, 6.59], ["raum", 6.59, 6.839], ["ohne", 6.839, 7.302], ["fenster", 7.302, 7.791], ["", 7.791, 8.006], ["keller", 8.006, 8.486], ["oder", 8.486, 8.95], ["bad", 8.95, 9.19]], "L5d": [9.41, 13.42], "L5d.words": [["schritt", 9.41, 9.688], ["drei", 9.688, 9.94], ["wasser", 10.24, 10.64], ["essen", 10.95, 11.33], ["erste", 11.55, 11.915], ["hilfe", 11.915, 12.28], ["taschenlampe", 12.76, 13.42]], "L5e": [13.64, 16.35], "L5e.words": [["und", 13.64, 13.86], ["schritt", 13.86, 14.112], ["vier", 14.112, 14.34], ["tu", 14.64, 14.804], ["dich", 14.804, 14.981], ["mit", 14.981, 15.151], ["deinen", 15.151, 15.492], ["nachbarn", 15.492, 15.845], ["zusammen", 15.845, 16.35]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];

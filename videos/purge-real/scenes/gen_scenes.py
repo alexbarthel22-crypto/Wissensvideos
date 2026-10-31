@@ -97,16 +97,17 @@ SVG + '''
       tl.to("#s01-tv .scr", { backgroundColor: "#5a0d1c", duration: 0.12, repeat: 5, yoyo: true }, ve);
       // Straftaten im Schnellschnitt
       const rb = at("L2", "Raub"), eb = at("L2", "Einbruch"), bs = at("L2", "Brandstiftung");
-      tl.set("#s01-tv", { opacity: 0 }, rb - 0.1); tl.set(CR, { opacity: 1 }, rb - 0.1);
-      [rb, eb, bs].forEach((tt, i, arr) => { tl.set(cr[i], { opacity: 1 }, tt - 0.1); tl.fromTo(cr[i], { scale: 1.3, svgOrigin: "540 850" }, { scale: 1, svgOrigin: "540 850", duration: 0.3, ease: "power3.out" }, tt - 0.1);
-        tl.set("#s01-cr" + (i + 1), { opacity: 1 }, tt - 0.1); tl.fromTo("#s01-cr" + (i + 1), { scale: 1.6 }, { scale: 1, duration: 0.25, ease: "power4.out" }, tt - 0.1);
-        const nx = i < 2 ? arr[i + 1] - 0.1 : mo - 0.05; tl.set([cr[i], "#s01-cr" + (i + 1)], { opacity: 0 }, nx); });
+      tl.set("#s01-tv", { opacity: 0 }, rb - 0.02); tl.set(CR, { opacity: 1 }, rb - 0.02);
+      [rb, eb, bs].forEach((tt, i, arr) => { const st = tt - 0.02, nx = (i < 2 ? arr[i + 1] : mo) - 0.02;
+        tl.set([cr[i], "#s01-cr" + (i + 1)], { opacity: 1 }, st); tl.fromTo(cr[i], { scale: 1.25, svgOrigin: "540 850" }, { scale: 1, svgOrigin: "540 850", duration: Math.min(0.35, nx - st), ease: "power3.out", immediateRender: false }, st);
+        tl.fromTo("#s01-cr" + (i + 1), { scale: 1.5 }, { scale: 1, duration: Math.min(0.25, nx - st), ease: "power4.out", immediateRender: false }, st);
+        tl.set([cr[i], "#s01-cr" + (i + 1)], { opacity: 0 }, nx); });
       tl.to(crf, { scaleY: 1.3, duration: 0.12, yoyo: true, repeat: 5 }, bs);
-      tl.to(CR, { opacity: 0, duration: 0.25 }, mo - 0.3);
+      tl.set(CR, { opacity: 0 }, mo - 0.02);
       // Einstellung 3: Nahaufnahme Maske (weicher Übergang)
-      tl.fromTo(CU, { opacity: 0 }, { opacity: 1, duration: 0.25 }, mo - 0.3);
-      tl.fromTo(CU, { scale: 1.35, svgOrigin: "540 900" }, { scale: 1, svgOrigin: "540 900", duration: 0.6, ease: "power3.out" }, mo - 0.3);
-      tl.set("#s01-cr4", { opacity: 1 }, mo - 0.3); tl.fromTo("#s01-cr4", { scale: 1.8 }, { scale: 1, duration: 0.3, ease: "power4.out" }, mo - 0.3);
+      tl.set([CU, "#s01-cr4"], { opacity: 1 }, mo - 0.02);
+      tl.fromTo(CU, { scale: 1.35, svgOrigin: "540 900" }, { scale: 1, svgOrigin: "540 900", duration: 0.6, ease: "power3.out", immediateRender: false }, mo - 0.02);
+      tl.fromTo("#s01-cr4", { scale: 1.8 }, { scale: 1, duration: 0.3, ease: "power4.out", immediateRender: false }, mo - 0.02);
       tl.set("#s01-cr4", { opacity: 0 }, l3 - 0.1);
       tl.fromTo(red, { opacity: 0.7 }, { opacity: 0, duration: 0.5 }, mo);
       tl.to(MC.g, { x: 552, duration: 0.04, repeat: 9, yoyo: true }, mo);
@@ -147,12 +148,13 @@ SVG + '''
       const le = at("L4", "leergekauft"), sl = at("L4", "Schlösser"), gi = at("L4", "Gitter"), sp = at("L4", "Sperrholz"), we = at("L4", "weg"), l5 = line("L5")[0], ve = at("L5", "verbarrikadiert"), sc = at("L5", "schutzlos");
       tl.fromTo(shop, { scale: 1.2, svgOrigin: "540 940" }, { scale: 1, svgOrigin: "540 940", duration: 1.2, ease: "power2.out" }, 0);
       items.forEach((it, i) => tl.to(it, { opacity: 0, y: -40, duration: 0.18 }, le - 0.6 + (i % 27) * 0.03));
-      [[lock, sl], [grid, gi], [wood, sp]].forEach(([g, t], i, arr) => { tl.set(g, { opacity: 1 }, t - 0.1); tl.fromTo(g, { scale: 1.3, svgOrigin: "540 900" }, { scale: 1, svgOrigin: "540 900", duration: 0.35, ease: "power3.out" }, t - 0.1);
-        tl.set(g, { opacity: 0 }, i < 2 ? arr[i + 1][1] - 0.1 : l5 - 0.25); });
-      tl.set(shop, { opacity: 0 }, sl - 0.1);
+      [[lock, sl], [grid, gi], [wood, sp]].forEach(([g, t], i, arr) => { const st = t - 0.02, nx = i < 2 ? arr[i + 1][1] - 0.02 : l5 - 0.25;
+        tl.set(g, { opacity: 1 }, st); tl.fromTo(g, { scale: 1.25, svgOrigin: "540 900" }, { scale: 1, svgOrigin: "540 900", duration: 0.35, ease: "power3.out", immediateRender: false }, st);
+        tl.set(g, { opacity: 0 }, nx); });
+      tl.set(shop, { opacity: 0 }, sl - 0.02);
       tl.to(wood.hammer, { rotation: -40, svgOrigin: "740 800", duration: 0.14, yoyo: true, repeat: 13 }, sp);
       tl.to(wood.querySelectorAll("rect"), { x: 4, duration: 0.05, yoyo: true, repeat: 9 }, sp + 0.2);
-      tl.fromTo("#s02-st", { opacity: 0, scale: 2.2, rotation: -8 }, { opacity: 1, scale: 1, rotation: -8, duration: 0.25, ease: "power4.in" }, we - 0.15);
+      tl.fromTo("#s02-st", { opacity: 0, scale: 2.2, rotation: -8 }, { opacity: 1, scale: 1, rotation: -8, duration: 0.25, ease: "power4.in" }, we - 0.02);
       tl.to("#s02-st", { opacity: 0, duration: 0.2 }, l5 - 0.25);
       tl.to(st, { opacity: 1, duration: 0.2 }, l5 - 0.15);
       tl.fromTo(st, { scale: 1.25, svgOrigin: "540 1100" }, { scale: 1, svgOrigin: "540 1100", duration: 1.0, ease: "power2.out" }, l5 - 0.15);

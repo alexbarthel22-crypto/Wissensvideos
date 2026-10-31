@@ -24,8 +24,8 @@
     .cbox { top: 440px; } /* unter der großen Kapitel-Überschrift */
     #s02-st { left: 230px; top: 760px; width: 620px; height: 150px; border: 10px solid #ff3b55; border-radius: 18px; color: #ff3b55; font: 700 90px/130px Oswald, sans-serif; text-align: center; opacity: 0; background: rgba(10,10,16,.6); }
   </style>
-  <div id="root" data-composition-id="s02" data-start="0" data-duration="9.120" data-width="1080" data-height="1920">
-    <div id="s02-stage" class="clip stage" data-start="0" data-duration="9.120" data-track-index="0">
+  <div id="root" data-composition-id="s02" data-start="0" data-duration="10.870" data-width="1080" data-height="1920">
+    <div id="s02-stage" class="clip stage" data-start="0" data-duration="10.870" data-track-index="0">
       <svg id="s02-svg" class="full" viewBox="0 0 1080 1920"></svg>
       <div id="s02-st" class="abs">AUSVERKAUFT</div>
     </div>
@@ -33,7 +33,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 9.12, "L4": [0.2, 4.94], "L4.words": [["eine", 0.2, 0.506], ["stunde", 0.506, 0.823], ["vorher", 0.823, 1.14], ["baumärkte", 1.36, 1.884], ["leergekauft", 1.884, 2.42], ["schlösser", 2.75, 3.23], ["gitter", 3.39, 4.36], ["sperrholz", 4.58, 4.77], ["", 4.77, 4.85], ["weg", 4.85, 4.94]], "L5": [5.16, 8.94], "L5.words": [["wer", 5.16, 5.338], ["geld", 5.338, 5.522], ["hat", 5.522, 5.7], ["verbarrikadiert", 5.89, 6.66], ["sich", 6.66, 6.82], ["wer", 7.37, 7.591], ["keins", 7.591, 7.829], ["hat", 7.829, 8.05], ["ist", 8.19, 8.431], ["schutzlos", 8.431, 8.94]]};
+      const C = {"__dur": 10.87, "L4": [0.2, 6.78], "L4.words": [["eine", 0.2, 0.496], ["stunde", 0.496, 0.803], ["vorher", 0.803, 1.11], ["baumärkte", 1.66, 2.169], ["leergekauft", 2.169, 2.69], ["schlösser", 3.24, 3.67], ["gitter", 4.22, 4.54], ["sperrholz", 5.09, 5.71], ["alles", 6.26, 6.605], ["weg", 6.605, 6.78]], "L5": [7.0, 10.69], "L5.words": [["wer", 7.0, 7.242], ["geld", 7.242, 7.493], ["hat", 7.493, 7.735], ["verbarrikadiert", 7.735, 8.944], ["sich", 8.944, 9.195], ["wer", 9.195, 9.437], ["keins", 9.437, 9.696], ["hat", 9.696, 9.938], ["ist", 9.938, 10.18], ["schutzlos", 10.18, 10.69]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -129,12 +129,13 @@
       const le = at("L4", "leergekauft"), sl = at("L4", "Schlösser"), gi = at("L4", "Gitter"), sp = at("L4", "Sperrholz"), we = at("L4", "weg"), l5 = line("L5")[0], ve = at("L5", "verbarrikadiert"), sc = at("L5", "schutzlos");
       tl.fromTo(shop, { scale: 1.2, svgOrigin: "540 940" }, { scale: 1, svgOrigin: "540 940", duration: 1.2, ease: "power2.out" }, 0);
       items.forEach((it, i) => tl.to(it, { opacity: 0, y: -40, duration: 0.18 }, le - 0.6 + (i % 27) * 0.03));
-      [[lock, sl], [grid, gi], [wood, sp]].forEach(([g, t], i, arr) => { tl.set(g, { opacity: 1 }, t - 0.1); tl.fromTo(g, { scale: 1.3, svgOrigin: "540 900" }, { scale: 1, svgOrigin: "540 900", duration: 0.35, ease: "power3.out" }, t - 0.1);
-        tl.set(g, { opacity: 0 }, i < 2 ? arr[i + 1][1] - 0.1 : l5 - 0.25); });
-      tl.set(shop, { opacity: 0 }, sl - 0.1);
+      [[lock, sl], [grid, gi], [wood, sp]].forEach(([g, t], i, arr) => { const st = t - 0.02, nx = i < 2 ? arr[i + 1][1] - 0.02 : l5 - 0.25;
+        tl.set(g, { opacity: 1 }, st); tl.fromTo(g, { scale: 1.25, svgOrigin: "540 900" }, { scale: 1, svgOrigin: "540 900", duration: 0.35, ease: "power3.out", immediateRender: false }, st);
+        tl.set(g, { opacity: 0 }, nx); });
+      tl.set(shop, { opacity: 0 }, sl - 0.02);
       tl.to(wood.hammer, { rotation: -40, svgOrigin: "740 800", duration: 0.14, yoyo: true, repeat: 13 }, sp);
       tl.to(wood.querySelectorAll("rect"), { x: 4, duration: 0.05, yoyo: true, repeat: 9 }, sp + 0.2);
-      tl.fromTo("#s02-st", { opacity: 0, scale: 2.2, rotation: -8 }, { opacity: 1, scale: 1, rotation: -8, duration: 0.25, ease: "power4.in" }, we - 0.15);
+      tl.fromTo("#s02-st", { opacity: 0, scale: 2.2, rotation: -8 }, { opacity: 1, scale: 1, rotation: -8, duration: 0.25, ease: "power4.in" }, we - 0.02);
       tl.to("#s02-st", { opacity: 0, duration: 0.2 }, l5 - 0.25);
       tl.to(st, { opacity: 1, duration: 0.2 }, l5 - 0.15);
       tl.fromTo(st, { scale: 1.25, svgOrigin: "540 1100" }, { scale: 1, svgOrigin: "540 1100", duration: 1.0, ease: "power2.out" }, l5 - 0.15);
