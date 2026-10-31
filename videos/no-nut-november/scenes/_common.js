@@ -1,0 +1,118 @@
+      // ---- Isometrische Low-Poly-Helfer (Stil Referenz A: Klötzchen-Welt, weiche Farben) ----
+      const NS = "http://www.w3.org/2000/svg";
+      const el = (n, a, p) => { const e = document.createElementNS(NS, n); for (const k in a) e.setAttribute(k, a[k]); if (p) p.appendChild(e); return e; };
+      const txt = (p, x, y, s, size, fill, a = {}) => { const t = el("text", Object.assign({ x, y, "text-anchor": "middle", "font-family": "Inter", "font-weight": 800, "font-size": size, fill }, a), p); t.textContent = s; return t; };
+      const shade = (hex, f) => { const n = parseInt(hex.slice(1), 16); const c = [n >> 16, (n >> 8) & 255, n & 255].map((v) => Math.max(0, Math.min(255, Math.round(f > 1 ? v + (255 - v) * (f - 1) : v * f))));
+        return "#" + c.map((v) => v.toString(16).padStart(2, "0")).join(""); };
+      // Kamera: Ursprung (ox, oy), Einheit u
+      const iso = (ox, oy, u) => (x, y, z = 0) => [ox + (x - y) * u * 0.866, oy + (x + y) * u * 0.5 - z * u];
+      const poly = (pts) => pts.map((p) => p.map((v) => v.toFixed(1)).join(",")).join(" ");
+      function box(P, p, x, y, z, w, d, h, col, a = {}) {
+        const g = el("g", a, p);
+        el("polygon", { points: poly([P(x + w, y, z), P(x + w, y + d, z), P(x + w, y + d, z + h), P(x + w, y, z + h)]), fill: shade(col, 0.78) }, g);
+        el("polygon", { points: poly([P(x, y + d, z), P(x + w, y + d, z), P(x + w, y + d, z + h), P(x, y + d, z + h)]), fill: col }, g);
+        el("polygon", { points: poly([P(x, y, z + h), P(x + w, y, z + h), P(x + w, y + d, z + h), P(x, y + d, z + h)]), fill: shade(col, 1.18) }, g);
+        return g;
+      }
+      // Fläche auf der hinteren Wand (y = 0) bzw. linken Wand (x = 0)
+      const wallY = (P, p, x0, x1, z0, z1, fill, a = {}) => el("polygon", Object.assign({ points: poly([P(x0, 0, z0), P(x1, 0, z0), P(x1, 0, z1), P(x0, 0, z1)]), fill }, a), p);
+      const wallX = (P, p, y0, y1, z0, z1, fill, a = {}) => el("polygon", Object.assign({ points: poly([P(0, y0, z0), P(0, y1, z0), P(0, y1, z1), P(0, y0, z1)]), fill }, a), p);
+      function room(P, p, W, D, H, o = {}) {
+        const g = el("g", {}, p);
+        box(P, g, 0, 0, -0.25, W, D, 0.25, o.floor || "#c9a982");
+        for (let k = 1; k < W; k++) el("polyline", { points: poly([P(k, 0, 0), P(k, D, 0)]), stroke: shade(o.floor || "#c9a982", 0.9), "stroke-width": 2, fill: "none" }, g);
+        wallY(P, g, 0, W, 0, H, o.wall || "#ece6dc"); wallX(P, g, 0, D, 0, H, shade(o.wall || "#ece6dc", 0.9));
+        el("polyline", { points: poly([P(0, D, 0), P(0, 0, 0), P(W, 0, 0)]), stroke: shade(o.wall || "#ece6dc", 0.75), "stroke-width": 6, fill: "none" }, g);
+        return g;
+      }
+      // Klötzchen-Figur; Ursprung = Fußpunkt (x, y, z). o.pose: "stand" | "sit" | "lie"
+      function person(P, p, x, y, z, o = {}) {
+        const g = el("g", {}, p), skin = o.skin || "#f0c8a0", shirt = o.shirt || "#e85d5d", pants = o.pants || "#3d4a7a", hair = o.hair || "#4a3020";
+        if (o.pose === "lie") {
+          box(P, g, x, y, z, 1.0, 0.45, 0.3, pants); box(P, g, x + 1.0, y, z, 0.9, 0.5, 0.36, shirt);
+          box(P, g, x + 1.9, y + 0.05, z, 0.45, 0.4, 0.4, skin); box(P, g, x + 2.25, y + 0.05, z, 0.12, 0.4, 0.42, hair);
+        } else if (o.pose === "sit") {
+          box(P, g, x - 0.25, y, z, 0.25, 0.5, 0.5, pants); box(P, g, x, y, z + 0.5, 0.45, 0.5, 0.28, pants);
+          box(P, g, x, y + 0.02, z + 0.78, 0.38, 0.46, 0.75, shirt); box(P, g, x + 0.02, y + 0.06, z + 1.53, 0.36, 0.36, 0.38, skin);
+          box(P, g, x + 0.02, y + 0.06, z + 1.85, 0.36, 0.36, 0.1, hair);
+        } else if (o.big) {
+          box(P, g, x + 0.02, y, z, 0.38, 0.46, 0.95, pants); box(P, g, x - 0.06, y - 0.08, z + 0.95, 0.54, 0.62, 0.85, shirt);
+          box(P, g, x + 0.06, y + 0.06, z + 1.8, 0.34, 0.38, 0.4, skin); box(P, g, x + 0.06, y + 0.06, z + 2.14, 0.34, 0.38, 0.1, hair);
+        } else {
+          box(P, g, x, y, z, 0.36, 0.42, 0.75, pants); box(P, g, x - 0.02, y - 0.02, z + 0.75, 0.4, 0.46, 0.75, shirt);
+          box(P, g, x + 0.02, y + 0.03, z + 1.5, 0.34, 0.38, 0.38, skin); box(P, g, x + 0.02, y + 0.03, z + 1.82, 0.34, 0.38, 0.1, hair);
+        }
+        return g;
+      }
+      function sky(p, id, c1, c2) {
+        const d = el("defs", {}, p), lg = el("linearGradient", { id, x1: 0, y1: 0, x2: 0, y2: 1 }, d);
+        el("stop", { offset: 0, "stop-color": c1 }, lg); el("stop", { offset: 1, "stop-color": c2 }, lg);
+        return el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: `url(#${id})` }, p);
+      }
+      // ---- Schnee-Welt ----
+      function skyline(p, by, seed, cols, n = 9, hmin = 260, hmax = 620) {
+        const r = rng(seed), out = [], g = el("g", {}, p);
+        for (let i = 0; i < n; i++) { const w = 90 + r() * 70, x = i * (1080 / n) - 20 + r() * 20, h = hmin + r() * (hmax - hmin), c = cols[i % cols.length];
+          const b = el("g", {}, g); el("rect", { x, y: by - h, width: w, height: h, fill: c }, b);
+          const wins = []; for (let k = 0; k < Math.floor(h / 46); k++) for (let m = 0; m < 3; m++) wins.push(el("rect", { x: x + 12 + m * (w - 24) / 3, y: by - h + 16 + k * 46, width: (w - 24) / 3 - 10, height: 22, fill: "#ffe7a3", opacity: r() > 0.45 ? 0.85 : 0.12 }, b));
+          out.push({ x, w, h, b, wins }); }
+        return { g, out };
+      }
+      function snowfall(p, n, seed, y0 = 0, y1 = 1500) { const r = rng(seed), fl = [], g = el("g", { "data-layout-allow-overlap": "" }, p);
+        for (let i = 0; i < n; i++) fl.push(el("circle", { cx: r() * 1080, cy: y0 + r() * (y1 - y0), r: 2 + r() * 4, fill: "#ffffff", opacity: 0.5 + r() * 0.5 }, g)); return { g, fl }; }
+      const fall = (tl, sf, dur, t0 = 0) => sf.fl.forEach((f, i) => tl.to(f, { y: 900 + (i % 5) * 60, x: (i % 2 ? 1 : -1) * 40, duration: dur, ease: "none" }, t0));
+      // flache Figur (Alex): Fußpunkt x, y
+      // Alex: groß, sportlich (Fußpunkt x, y)
+      function alex(p, x, y, s = 1) { const g = el("g", {}, p); gsap.set(g, { x, y, scale: s, transformOrigin: "0 0" });
+        el("rect", { x: -17, y: -62, width: 15, height: 62, rx: 6, fill: "#22284d" }, g); el("rect", { x: 2, y: -62, width: 15, height: 62, rx: 6, fill: "#22284d" }, g);
+        el("rect", { x: -20, y: -6, width: 18, height: 8, rx: 4, fill: "#111" }, g); el("rect", { x: 2, y: -6, width: 18, height: 8, rx: 4, fill: "#111" }, g);
+        el("path", { d: "M-34 -128 Q-36 -134 -26 -136 L26 -136 Q36 -134 34 -128 L22 -60 L-22 -60Z", fill: "#e8484f" }, g);
+        el("rect", { x: -44, y: -130, width: 13, height: 58, rx: 6, fill: "#d03c43", transform: "rotate(8 -38 -130)" }, g); el("rect", { x: 31, y: -130, width: 13, height: 58, rx: 6, fill: "#d03c43", transform: "rotate(-8 38 -130)" }, g);
+        el("rect", { x: -6, y: -146, width: 12, height: 12, fill: "#e0b48c" }, g);
+        el("circle", { cx: 0, cy: -160, r: 17, fill: "#f0c8a0" }, g);
+        el("path", { d: "M-18 -164 Q-14 -184 4 -182 Q18 -180 18 -164 Q8 -172 -18 -164Z", fill: "#3a2a1a" }, g);
+        el("path", { d: "M-10 -150 Q0 -146 10 -150", stroke: "#3a2a1a", "stroke-width": 3, fill: "none" }, g);
+        return g; }
+      function snowLayer(p, y, c = "#eef4fb") { return el("path", { d: `M-60 ${y} q90 -30 180 0 t180 0 t180 0 t180 0 t180 0 t180 0 t180 0 V2000 H-60Z`, fill: c }, p); }
+      // ---- No Nut November: Finn (18), Zimmer, Handy ----
+      // Finn: Fußpunkt x, y; gibt {g, aL, aR, head} zurück. Arme drehen um Schulter (lokal -36/36, -128)
+      function finn(p, x, y, s = 1) { const g = el("g", {}, p); gsap.set(g, { x, y, scale: s, transformOrigin: "0 0" });
+        el("rect", { x: -16, y: -62, width: 14, height: 62, rx: 6, fill: "#2d3e6b" }, g); el("rect", { x: 2, y: -62, width: 14, height: 62, rx: 6, fill: "#2d3e6b" }, g);
+        el("rect", { x: -21, y: -7, width: 20, height: 9, rx: 4, fill: "#f4f4f8" }, g); el("rect", { x: 1, y: -7, width: 20, height: 9, rx: 4, fill: "#f4f4f8" }, g);
+        const aL = el("rect", { x: -44, y: -130, width: 13, height: 58, rx: 6, fill: "#17998c" }, g), aR = el("rect", { x: 31, y: -130, width: 13, height: 58, rx: 6, fill: "#17998c" }, g);
+        el("path", { d: "M-33 -128 Q-34 -136 -24 -137 L24 -137 Q34 -136 33 -128 L24 -58 L-24 -58Z", fill: "#1fb5a5" }, g);
+        el("path", { d: "M-14 -100 H14 V-82 H-14Z", fill: "#17998c" }, g);
+        el("line", { x1: -5, y1: -134, x2: -6, y2: -112, stroke: "#eaf7f5", "stroke-width": 2.5 }, g); el("line", { x1: 5, y1: -134, x2: 6, y2: -112, stroke: "#eaf7f5", "stroke-width": 2.5 }, g);
+        const head = el("g", {}, g);
+        el("rect", { x: -6, y: -146, width: 12, height: 12, fill: "#e6b88f" }, head);
+        el("circle", { cx: 0, cy: -160, r: 17, fill: "#f2cba5" }, head);
+        el("path", { d: "M-19 -161 Q-20 -182 -2 -183 Q16 -184 19 -166 Q20 -158 17 -156 Q14 -168 4 -168 Q-6 -164 -14 -170 Q-16 -164 -19 -161Z", fill: "#6b4423" }, head);
+        el("circle", { cx: -6, cy: -158, r: 2, fill: "#2a1a10" }, head); el("circle", { cx: 7, cy: -158, r: 2, fill: "#2a1a10" }, head);
+        const mouth = el("path", { d: "M-7 -150 Q0 -145 7 -150", stroke: "#7a3b2a", "stroke-width": 2.5, fill: "none", "stroke-linecap": "round" }, head);
+        return { g, aL, aR, head, mouth }; }
+      // Arme hoch (Jubel/Flex) bzw. zurück
+      const armsUp = (tl, f, t, d = 0.25, a = 150) => { tl.to(f.aL, { rotation: a, svgOrigin: "-37 -126", duration: d, ease: "back.out(2)" }, t); tl.to(f.aR, { rotation: -a, svgOrigin: "37 -126", duration: d, ease: "back.out(2)" }, t); };
+      const armsDown = (tl, f, t, d = 0.25) => { tl.to(f.aL, { rotation: 0, svgOrigin: "-37 -126", duration: d }, t); tl.to(f.aR, { rotation: 0, svgOrigin: "37 -126", duration: d }, t); };
+      // Jugendzimmer bei Nacht: Wand, Fenster, Poster, Bett, Schreibtisch, Boden ab y 1100
+      function bedroom(p, id, o = {}) { const g = el("g", {}, p);
+        sky(g, id, o.w1 || "#2d2356", o.w2 || "#1a1436");
+        const win = el("g", {}, g); el("rect", { x: 690, y: 430, width: 290, height: 250, rx: 10, fill: "#0d1030", stroke: "#4a3d7a", "stroke-width": 12 }, win);
+        el("circle", { cx: 900, cy: 500, r: 34, fill: "#fff6c9", opacity: 0.95 }, win); el("circle", { cx: 915, cy: 492, r: 30, fill: "#0d1030" }, win);
+        const r = rng(7); for (let i = 0; i < 14; i++) el("circle", { cx: 705 + r() * 260, cy: 445 + r() * 220, r: 1.5 + r() * 2, fill: "#fff", opacity: 0.4 + r() * 0.5 }, win);
+        el("line", { x1: 835, y1: 430, x2: 835, y2: 680, stroke: "#4a3d7a", "stroke-width": 8 }, win);
+        const poster = el("g", { "data-layout-allow-overlap": "" }, g); el("rect", { x: 110, y: 450, width: 170, height: 230, rx: 6, fill: "#ff4fb0", opacity: 0.85 }, poster);
+        txt(poster, 195, 560, "NO", 54, "#fff"); txt(poster, 195, 620, "LIMITS", 38, "#fff");
+        el("rect", { x: 0, y: 1100, width: 1080, height: 820, fill: o.floor || "#2a2142" }, g);
+        el("ellipse", { cx: 560, cy: 1170, rx: 330, ry: 46, fill: "#3b2f62" }, g);
+        const bed = el("g", {}, g); el("rect", { x: 40, y: 930, width: 420, height: 170, rx: 14, fill: "#4b3b6e" }, bed);
+        el("rect", { x: 50, y: 900, width: 400, height: 70, rx: 18, fill: "#ece8f7" }, bed); el("rect", { x: 140, y: 890, width: 320, height: 90, rx: 22, fill: "#5865c8" }, bed);
+        el("rect", { x: 58, y: 880, width: 95, height: 46, rx: 16, fill: "#ffffff" }, bed); el("rect", { x: 30, y: 820, width: 26, height: 280, rx: 8, fill: "#3a2d58" }, bed);
+        const desk = el("g", {}, g); el("rect", { x: 760, y: 950, width: 280, height: 22, rx: 6, fill: "#6b5596" }, desk);
+        el("rect", { x: 780, y: 972, width: 18, height: 128, fill: "#4f3f73" }, desk); el("rect", { x: 1000, y: 972, width: 18, height: 128, fill: "#4f3f73" }, desk);
+        el("rect", { x: 940, y: 870, width: 10, height: 80, fill: "#cfc8e6" }, desk); el("path", { d: "M910 880 L980 880 L960 840 L930 840Z", fill: "#ffd43b" }, desk);
+        return { g, win, poster, bed, desk }; }
+      // Handy: Mitte x, y; Breite w
+      function phone(p, x, y, w = 120, glow = "#4da3ff") { const g = el("g", {}, p), h = w * 2;
+        el("rect", { x: x - w / 2, y: y - h / 2, width: w, height: h, rx: w * 0.14, fill: "#111322", stroke: "#3a3f5c", "stroke-width": w * 0.04 }, g);
+        const scr = el("rect", { x: x - w / 2 + w * 0.07, y: y - h / 2 + w * 0.12, width: w * 0.86, height: h - w * 0.24, rx: w * 0.08, fill: glow }, g);
+        return { g, scr }; }

@@ -1,0 +1,52 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .vig { position: absolute; left: 0; right: 0; top: 1040px; height: 880px; background: linear-gradient(rgba(10,12,30,0), rgba(10,12,30,.5) 45%, rgba(10,12,30,.55)); pointer-events: none; }
+    #s04-pk { left: 400px; top: 470px; width: 280px; text-align: center; font: 900 76px Inter, sans-serif; color: #ffd43b; text-shadow: 0 0 40px rgba(255,212,59,.8); opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="s04" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s04-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <svg id="s04-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s04-pk" class="abs">145 %</div>
+      <div class="vig"></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s04-svg"); sky(sv, "s04g", "#10224a", "#0a1230");
+      const G = el("g", {}, sv), X = (d) => 150 + (d - 1) * (800 / 13), Y = (v) => 1060 - (v - 90) * 6.4;
+      for (let v = 100; v <= 150; v += 25) el("line", { x1: 130, y1: Y(v), x2: 970, y2: Y(v), stroke: "#2f4a8a", "stroke-width": 2, "stroke-dasharray": v === 100 ? "" : "10 10" }, G);
+      txt(G, 92, Y(100) + 10, "100 %", 28, "#8fb3ff"); txt(G, 92, Y(150) + 10, "150 %", 28, "#8fb3ff");
+      for (let d = 1; d <= 14; d += 1) txt(G, X(d), 1110, String(d), 28, d === 7 ? "#ffd43b" : "#8fb3ff");
+      txt(G, 540, 1150, "TAG IM NOVEMBER", 28, "#8fb3ff", { "letter-spacing": "4" });
+      const up = [[1, 100], [2, 102], [3, 104], [4, 107], [5, 112], [6, 122], [7, 145.7]], dn = [[7, 145.7], [8, 101], [9, 99], [10, 101], [11, 100], [12, 99], [13, 101], [14, 100]];
+      const pth = (a) => "M" + a.map(([d, v]) => `${X(d).toFixed(1)} ${Y(v).toFixed(1)}`).join(" L");
+      const pu = el("path", { d: pth(up), stroke: "#ffd43b", "stroke-width": 12, fill: "none", "stroke-linejoin": "round", "stroke-linecap": "round", "stroke-dasharray": 2000, "stroke-dashoffset": 2000 }, G);
+      const pd = el("path", { d: pth(dn), stroke: "#ff3b55", "stroke-width": 12, fill: "none", "stroke-linejoin": "round", "stroke-linecap": "round", "stroke-dasharray": 2000, "stroke-dashoffset": 2000 }, G);
+      const dot = el("circle", { cx: X(7), cy: Y(145.7), r: 20, fill: "#ffd43b", opacity: 0 }, G);
+      const glow = el("circle", { cx: 860, cy: 960, r: 170, fill: "#ffd43b", opacity: 0 }, sv);
+      const F = finn(sv, 860, 1060, 1.5); gsap.set(F.g, { opacity: 0 });
+      const st = at("L10", "steigt"), pc = at("L10", "Prozent"), l11 = line("L11")[0], gl = at("L11", "Gladiator"), ha = at("L12", "Haken"), we = at("L12", "wieder");
+      tl.fromTo(G, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 1.0);
+      tl.to(pu, { attr: { "stroke-dashoffset": 0 }, duration: pc - st + 0.3, ease: "power2.in" }, st - 0.2);
+      tl.fromTo(dot, { opacity: 0, scale: 0, svgOrigin: `${X(7)} ${Y(145.7)}` }, { opacity: 1, scale: 1, svgOrigin: `${X(7)} ${Y(145.7)}`, duration: 0.3, ease: "back.out(3)" }, pc - 0.4);
+      tl.fromTo("#s04-pk", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.3 }, pc - 0.4);
+      gsap.set("#s04-pk", { left: X(7) - 140, top: Y(145.7) - 120 });
+      tl.fromTo(F.g, { opacity: 0 }, { opacity: 1, duration: 0.3 }, l11 - 0.1);
+      armsUp(tl, F, gl - 0.1, 0.25, 160); tl.to(glow, { opacity: 0.35, duration: 0.3 }, gl - 0.1);
+      tl.to(F.g, { scale: 1.75, duration: 0.3, ease: "back.out(2)" }, gl - 0.1);
+      tl.to(sv, { x: 6, duration: 0.04, repeat: 5, yoyo: true }, gl);
+      tl.to(pd, { attr: { "stroke-dashoffset": 0 }, duration: 1.4, ease: "power1.out" }, we - 0.3);
+      tl.to(glow, { opacity: 0, duration: 0.4 }, we - 0.2); armsDown(tl, F, we - 0.1, 0.4); tl.to(F.g, { scale: 1.5, duration: 0.4 }, we - 0.1);
+      tl.to("#s04-pk", { color: "#9aa3c0", textShadow: "0 0 0 rgba(0,0,0,0)", duration: 0.4 }, we);
+      tl.to("#s04-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s04"] = tl;
+    })();
+  </script>
+</template>

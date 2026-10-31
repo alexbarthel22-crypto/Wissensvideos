@@ -1,0 +1,64 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .vig { position: absolute; left: 0; right: 0; top: 1040px; height: 880px; background: linear-gradient(rgba(10,12,30,0), rgba(10,12,30,.5) 45%, rgba(10,12,30,.55)); pointer-events: none; }
+    #s05-fyp { left: 330px; top: 470px; width: 420px; height: 640px; border-radius: 50px; background: #0b0d1c; border: 10px solid #3a3f5c; overflow: hidden; opacity: 0; box-shadow: 0 0 80px rgba(77,163,255,.5); }
+    #s05-fyp .h { margin-top: 30px; text-align: center; color: #fff; font: 800 34px Inter, sans-serif; }
+    #s05-fyp .h u { text-decoration: none; border-bottom: 4px solid #fff; padding-bottom: 4px; }
+    #s05-fyp .f { position: absolute; left: 30px; right: 30px; top: 110px; bottom: 30px; border-radius: 24px; background: linear-gradient(160deg, #ff4fb0, #6b3bff); filter: blur(14px); }
+    #s05-fyp .e { position: absolute; left: 0; right: 0; top: 230px; text-align: center; font: 900 120px Inter, sans-serif; color: #fff; text-shadow: 0 0 30px rgba(0,0,0,.6); }
+  </style>
+  <div id="root" data-composition-id="s05" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s05-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <svg id="s05-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s05-fyp" class="abs"><div class="h"><u>Für dich</u></div><div class="f"></div><div class="e">?!</div></div>
+      <div class="vig"></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s05-svg"), W = el("g", {}, sv);
+      const R = bedroom(W, "s05g", { w1: "#1a1436", w2: "#0b0920", floor: "#1c1630" });
+      // Finn liegt im Bett, Handy leuchtet
+      const lie = el("g", {}, W); el("circle", { cx: 120, cy: 870, r: 34, fill: "#f2cba5" }, lie); el("path", { d: "M86 866 Q90 830 124 834 Q150 838 154 862 Q130 850 86 866Z", fill: "#6b4423" }, lie);
+      el("rect", { x: 140, y: 862, width: 330, height: 110, rx: 40, fill: "#5865c8" }, lie);
+      const ph = phone(lie, 190, 800, 46, "#9fd0ff"); gsap.set(ph.g, { rotation: -20, svgOrigin: "190 800" });
+      const faceGlow = el("circle", { cx: 150, cy: 830, r: 120, fill: "#4da3ff", opacity: 0.25 }, lie);
+      const red = el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: "#c4123a", opacity: 0 }, sv);
+      // stehender Finn (Strategie)
+      const F = finn(W, 560, 1130, 2.5); gsap.set(F.g, { opacity: 0 });
+      const big = phone(W, 900, 760, 140, "#4da3ff"); gsap.set(big.g, { opacity: 0 });
+      const shower = el("g", { opacity: 0 }, W); el("rect", { x: 520, y: 420, width: 16, height: 120, fill: "#b9c3d9" }, shower); el("path", { d: "M470 540 H600 L580 580 H490Z", fill: "#cfd8ea" }, shower);
+      const drops = [], rd = rng(9); for (let i = 0; i < 40; i++) { const dx = 490 + rd() * 100; drops.push(el("line", { x1: dx, y1: 590 + rd() * 40, x2: dx, y2: 625 + rd() * 40, stroke: "#9fd8ff", "stroke-width": 5, "stroke-linecap": "round", opacity: 0 }, W)); }
+      const blue = el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: "#2b7cff", opacity: 0 }, sv);
+      const sweat = [el("circle", { cx: 610, cy: 680, r: 9, fill: "#9fd8ff", opacity: 0 }, W), el("circle", { cx: 470, cy: 700, r: 8, fill: "#9fd8ff", opacity: 0 }, W)];
+      const na = at("L14", "Nachts"), l14b = at("L14", "Handy"), fu = at("L14", "Für"), ve = at("L14", "verdächtig"), l15 = line("L15")[0], ha = at("L15", "Handy"), l16 = line("L16")[0], ka = at("L17", "kalt"), wi = at("L17", "wirklich"), ex = at("L17", "extrem");
+      tl.fromTo(W, { scale: 1.25, svgOrigin: "200 880" }, { scale: 1.1, svgOrigin: "200 880", duration: l15, ease: "none" }, 0);
+      tl.to(faceGlow, { opacity: 0.45, duration: 0.3, yoyo: true, repeat: 9 }, 0.5);
+      tl.fromTo(red, { opacity: 0 }, { opacity: 0.22, duration: 0.45, yoyo: true, repeat: 7, ease: "sine.inOut" }, na - 0.1);
+      tl.fromTo("#s05-fyp", { opacity: 0, scale: 0.6, y: 120 }, { opacity: 1, scale: 1, y: 0, duration: 0.4, ease: "back.out(1.6)" }, fu - 0.35);
+      tl.fromTo("#s05-fyp .e", { scale: 0.3, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: "back.out(3)" }, ve);
+      tl.to("#s05-fyp", { rotation: 3, duration: 0.06, repeat: 7, yoyo: true }, ve + 0.2);
+      tl.to("#s05-fyp", { x: 900, rotation: 40, opacity: 0, duration: 0.55, ease: "power2.in" }, ha);
+      tl.set(lie, { opacity: 0 }, l16 - 0.05); tl.set(W, { scale: 1, svgOrigin: "540 900" }, l16 - 0.05); tl.set(F.g, { opacity: 1 }, l16 - 0.05);
+      tl.set(red, { opacity: 0 }, l15);
+      // Hampelmann
+      for (let k = 0; k < 4; k++) { const t = l16 + k * 0.42; armsUp(tl, F, t, 0.2, 165); armsDown(tl, F, t + 0.21, 0.2); tl.to(F.g, { y: 1095, duration: 0.2, yoyo: true, repeat: 1 }, t); }
+      tl.to(sweat, { opacity: 1, y: 40, duration: 0.5, stagger: 0.2 }, l16 + 0.6);
+      tl.to(sweat, { opacity: 0, duration: 0.2 }, ka - 0.3);
+      tl.fromTo(shower, { opacity: 0, y: -60 }, { opacity: 1, y: 0, duration: 0.3 }, ka - 0.25);
+      drops.forEach((d, i) => tl.fromTo(d, { opacity: 0.9, y: 0 }, { y: 520, opacity: 0.9, duration: 0.5, repeat: 6, ease: "none", immediateRender: false }, ka + (i % 10) * 0.05));
+      tl.to(blue, { opacity: 0.25, duration: 0.3 }, ka);
+      tl.to(F.g, { x: 568, duration: 0.04, repeat: 40, yoyo: true }, ka + 0.2);
+      tl.to(F.mouth, { attr: { d: "M-8 -149 L-4 -152 L0 -149 L4 -152 L8 -149" }, duration: 0.1 }, ka + 0.2);
+      tl.to("#s05-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s05"] = tl;
+    })();
+  </script>
+</template>

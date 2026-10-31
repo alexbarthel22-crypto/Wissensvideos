@@ -1,0 +1,58 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .vig { position: absolute; left: 0; right: 0; top: 1040px; height: 880px; background: linear-gradient(rgba(10,12,30,0), rgba(10,12,30,.5) 45%, rgba(10,12,30,.55)); pointer-events: none; }
+    .cd { position: absolute; left: 140px; width: 800px; height: 130px; border-radius: 24px; background: rgba(255,255,255,.95); box-shadow: 0 18px 50px rgba(0,0,0,.4);
+      color: #22283f; font: 900 64px/130px Inter, sans-serif; text-align: center; opacity: 0; }
+    .cd s { position: absolute; left: 60px; right: 60px; top: 62px; height: 10px; border-radius: 5px; background: #ff3b55; transform: scaleX(0); transform-origin: 0 50%; }
+    .bdg { position: absolute; left: 190px; width: 700px; height: 92px; border-radius: 46px; background: rgba(12,40,30,.92); border: 4px solid #39e27a; color: #fff;
+      font: 800 46px/84px Inter, sans-serif; text-align: center; opacity: 0; box-shadow: 0 0 34px rgba(57,226,122,.45); }
+    .bdg b { color: #39e27a; }
+    #s02-big { left: 0; width: 1080px; top: 560px; text-align: center; font: 900 220px/1 Inter, sans-serif; color: #ffd43b; text-shadow: 0 0 60px rgba(255,212,59,.7); opacity: 0; }
+    #s02-sub { left: 0; width: 1080px; top: 800px; text-align: center; font: 700 44px Inter, sans-serif; color: #fff; letter-spacing: .14em; opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="s02" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s02-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <svg id="s02-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s02-c1" class="cd" style="top:540px">ALLEIN<s></s></div><div id="s02-c2" class="cd" style="top:710px">ZU ZWEIT<s></s></div><div id="s02-c3" class="cd" style="top:880px">GAR NICHT<s></s></div>
+      <div id="s02-big" class="abs">2011</div><div id="s02-sub" class="abs">ALS INTERNET-WITZ</div>
+      <div class="vig"></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s02-svg"); sky(sv, "s02g", "#2a1f4f", "#120e28");
+      const cal = el("g", {}, sv), cells = [];
+      el("rect", { x: 130, y: 560, width: 820, height: 560, rx: 26, fill: "#f4f1fb" }, cal); el("rect", { x: 130, y: 560, width: 820, height: 86, rx: 26, fill: "#ff4fb0" }, cal);
+      el("rect", { x: 130, y: 610, width: 820, height: 36, fill: "#ff4fb0" }, cal); txt(cal, 540, 620, "NOVEMBER", 50, "#fff");
+      for (let d = 0; d < 30; d++) { const c = d % 7, r = Math.floor(d / 7), x = 150 + c * 112, y = 662 + r * 88;
+        const g = el("g", {}, cal); const b = el("rect", { x, y, width: 104, height: 80, rx: 12, fill: "#e4def3" }, g); txt(g, x + 52, y + 54, String(d + 1), 36, "#4a4170");
+        cells.push(b); }
+      const ban = el("g", { opacity: 0 }, sv); el("circle", { cx: 540, cy: 840, r: 250, fill: "none", stroke: "#ff3b55", "stroke-width": 40 }, ban); el("line", { x1: 363, y1: 663, x2: 717, y2: 1017, stroke: "#ff3b55", "stroke-width": 40 }, ban);
+      const ppl = el("g", {}, sv), rp = rng(5), crowd = [];
+      for (let i = 0; i < 84; i++) { const c = i % 12, r = Math.floor(i / 12), x = 120 + c * 76 + (r % 2) * 30, y = 990 + r * 28 + rp() * 8, col = ["#ff4fb0", "#4da3ff", "#39e27a", "#ffd43b", "#1fb5a5"][i % 5];
+        const g = el("g", { opacity: 0 }, ppl); el("circle", { cx: x, cy: y - 34, r: 13, fill: "#f2cba5" }, g); el("rect", { x: x - 15, y: y - 20, width: 30, height: 36, rx: 10, fill: col }, g); crowd.push(g); }
+      const ga = at("L4", "ganzen"), kh = at("L4", "kein"), al = at("L5", "allein"), zw = at("L5", "zweit"), ga2 = at("L5", "gar"), l6 = line("L6")[0], wi = at("L6", "Internet"), mi = at("L6", "Millionen");
+      tl.fromTo(cal, { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, 0.4);
+      tl.to(cells, { attr: { fill: "#ff9fd4" }, duration: 0.15, stagger: 0.035 }, ga - 0.1);
+      tl.fromTo(ban, { opacity: 0, scale: 1.6, svgOrigin: "540 840" }, { opacity: 1, scale: 1, svgOrigin: "540 840", duration: 0.3, ease: "power3.out" }, kh);
+      tl.to([cal, ban], { opacity: 0.12, duration: 0.3 }, al - 0.35);
+      [["#s02-c1", al], ["#s02-c2", zw], ["#s02-c3", ga2]].forEach(([id, t]) => { tl.fromTo(id, { opacity: 0, x: -80 }, { opacity: 1, x: 0, duration: 0.25, ease: "back.out(2)" }, t - 0.15);
+        tl.to(id + " s", { scaleX: 1, duration: 0.2 }, t + 0.25); });
+      tl.to("#s02-c3", { scale: 1.08, duration: 0.15, yoyo: true, repeat: 1 }, ga2 + 0.3);
+      tl.to(["#s02-c1", "#s02-c2", "#s02-c3"], { opacity: 0, duration: 0.25 }, l6 - 0.3); tl.to([cal, ban], { opacity: 0, duration: 0.25 }, l6 - 0.3);
+      tl.fromTo("#s02-big", { opacity: 0, scale: 1.5 }, { opacity: 1, scale: 1, duration: 0.35, ease: "power3.out" }, l6 + 0.4);
+      tl.fromTo("#s02-sub", { opacity: 0 }, { opacity: 1, duration: 0.3 }, wi - 0.1);
+      tl.to("#s02-sub", { opacity: 0, duration: 0.2 }, mi - 0.3); tl.to("#s02-big", { y: -200, scale: 0.7, duration: 0.4, ease: "power2.inOut" }, mi - 0.3);
+      tl.to(crowd, { opacity: 1, duration: 0.12, stagger: { each: 0.012, from: "random" } }, mi - 0.1);
+      tl.to("#s02-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s02"] = tl;
+    })();
+  </script>
+</template>

@@ -1,0 +1,51 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .vig { position: absolute; left: 0; right: 0; top: 1040px; height: 880px; background: linear-gradient(rgba(10,12,30,0), rgba(10,12,30,.5) 45%, rgba(10,12,30,.55)); pointer-events: none; }
+    #s03-easy { left: 610px; top: 560px; padding: 12px 26px; border-radius: 30px 30px 30px 6px; background: #fff; color: #22283f; font: 900 60px Inter, sans-serif; opacity: 0; box-shadow: 0 16px 40px rgba(0,0,0,.4); }
+    #s03-easy b { color: #39b86b; }
+  </style>
+  <div id="root" data-composition-id="s03" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s03-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <svg id="s03-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s03-easy" class="abs">„<b>easy</b>“</div>
+      <div class="vig"></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s03-svg"), W = el("g", {}, sv);
+      const R = bedroom(W, "s03g", { w1: "#3a2f6e", w2: "#221a48" });
+      const halo = el("ellipse", { cx: 540, cy: 0, rx: 80, ry: 20, fill: "none", stroke: "#ffd43b", "stroke-width": 10, opacity: 0 }, W);
+      const glow = el("circle", { cx: 540, cy: 860, r: 260, fill: "#ffd43b", opacity: 0 }, W);
+      const F = finn(W, 540, 1130, 2.6);
+      gsap.set(halo, { attr: { cy: 1130 - 192 * 2.6 } });
+      const P = phone(W, 260, 760, 170, "#1b1f3a"), apps = [], ra = rng(3);
+      for (let i = 0; i < 9; i++) { const c = i % 3, r = Math.floor(i / 3); apps.push(el("rect", { x: 197 + c * 44, y: 610 + r * 52, width: 36, height: 36, rx: 9, fill: ["#ff4fb0", "#4da3ff", "#ffd43b", "#39e27a", "#ff7a3b", "#a06bff"][i % 6] }, P.g)); }
+      const clock = el("g", { opacity: 0 }, W); el("circle", { cx: 880, cy: 905, r: 40, fill: "#ff3b55" }, clock); el("circle", { cx: 880, cy: 905, r: 30, fill: "#fff" }, clock);
+      el("line", { x1: 880, y1: 905, x2: 880, y2: 885, stroke: "#22283f", "stroke-width": 5 }, clock); el("line", { x1: 880, y1: 905, x2: 895, y2: 912, stroke: "#22283f", "stroke-width": 4 }, clock);
+      el("circle", { cx: 852, cy: 868, r: 12, fill: "#ff3b55" }, clock); el("circle", { cx: 908, cy: 868, r: 12, fill: "#ff3b55" }, clock);
+      const ea = at("L7", "easy"), ap = at("L8", "Apps"), we = at("L8", "Wecker"), mo = at("L8", "Mönch");
+      tl.fromTo(W, { scale: 1.05, svgOrigin: "540 900" }, { scale: 1, svgOrigin: "540 900", duration: C.__dur, ease: "none" }, 0);
+      tl.fromTo("#s03-easy", { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2.5)" }, ea - 0.05);
+      tl.to(F.mouth, { attr: { d: "M-9 -151 Q0 -141 9 -151" }, duration: 0.2 }, ea);
+      tl.to("#s03-easy", { opacity: 0, duration: 0.2 }, ap - 0.5);
+      tl.fromTo(P.g, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.3 }, ap - 0.45);
+      apps.forEach((a, i) => tl.to(a, { y: -260 - ra() * 200, x: (ra() - 0.5) * 300, rotation: (ra() - 0.5) * 120, svgOrigin: "260 700", opacity: 0, duration: 0.45, ease: "power2.in" }, ap + i * 0.05));
+      tl.to(P.g, { opacity: 0, duration: 0.25 }, we - 0.2);
+      tl.fromTo(clock, { opacity: 0, scale: 0.4, svgOrigin: "880 905" }, { opacity: 1, scale: 1, svgOrigin: "880 905", duration: 0.25, ease: "back.out(2)" }, we - 0.1);
+      tl.to(clock, { x: 5, duration: 0.04, repeat: 11, yoyo: true }, we + 0.15);
+      tl.to(glow, { opacity: 0.28, duration: 0.5 }, mo - 0.1);
+      tl.fromTo(halo, { opacity: 0, y: -40 }, { opacity: 1, y: 0, duration: 0.4, ease: "back.out(2)" }, mo - 0.1);
+      tl.to(halo, { y: -8, duration: 0.6, yoyo: true, repeat: 3, ease: "sine.inOut" }, mo + 0.3);
+      tl.to("#s03-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s03"] = tl;
+    })();
+  </script>
+</template>
