@@ -109,9 +109,10 @@ Die Enthüllung hat Gewicht für die Hauptgeschichte: Ihr Vater hat Nerayas Mutt
 - Kein Flüstern. Immer normale, klare Sprechstimme; Gefahr und Trauer zeigen sich im Tonfall, nicht durch Flüstern.
 - Sarkastische Stellen deutlich sarkastisch spielen (trocken, Augenrollen hörbar).
 - Name „Neraya“ deutsch aussprechen („Ne-ra-ja“): im TTS-Text `Neraja`, im Untertitel `Neraya` (Feld `display`).
+- Moderne Jugendsprache selten und nur, wenn es passt (höchstens 1–2 Mal pro Folge, z. B. „Main-Character-Energy eben“).
 - Sarkasmus sparsam: 1–2 Mal pro Folge, dann aber wirklich lustig und passend. Schüchternheit und Tollpatschigkeit zeigen sich eher im Tonfall. Je weiter die Serie, desto selbstbewusster und weniger stockend.
 - Lunara hat pro Folge genau einen lustigen Moment mit einer anderen Figur (Folge 1: klaut Ramen-Bo eine Nudel). Ihr Lieblingssnack ist Mondstaub.
-- Folge 1 beginnt mit einem knalligen Einstieg von etwa 10 Sekunden: „Mein Ex war ein Stern. Ich meine das wörtlich. Und das ist nicht mal das Verrückteste an meiner Geschichte.“ Großer, blinkender Text, danach das Intro. Ab Folge 2 beginnt jede Folge mit einem kurzen Rückblick.
+- Folge 1 beginnt mit einem knalligen Einstieg von etwa 10 Sekunden: „Mein Ex war ein Stern.“ – „Kein Spaß! Und das ist gerade erst der Anfang meiner Geschichte.“ Großer, poppiger, blinkender Text (Luckiest Guy) ab dem ersten Bild, danach das Intro. Ab Folge 2 beginnt jede Folge mit einem kurzen Rückblick.
 - Dramatische Sätze („Und Valdoria … brannte.“) bekommen eine Sprechpause davor, als eigene Zeile mit `pre`.
 - Musik: Herausstechende Szenen (ernst, dramatisch, romantisch, spannend, lustig) bekommen eigene Musik. Die Musik bleibt leise unter der Stimme.
 - Neraya bewegt sich passend zur Erzählung (gehen, Laterne anzünden, Hand senken) und posiert nicht starr.

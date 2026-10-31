@@ -443,13 +443,12 @@ def score(tl):
         kl = [l for l in tl["lines"] if l["scene"] == "kalt"]
         if "ex_hit" in C:
             # the hook line: a whoosh that lands with a hit and a crash right when the text slams in
-            fx.add(riser(0.75), 0.0, 0.7)
-            fx.add(boom(5, 120, 28, 1.0), 0.75, 1.2)
-            fx.add(cymbal(3), 0.75, 0.8)
-            fx.add(tone(hz("A6"), 2.5, 0.01, 2.2, 0.04), 0.78, 1.0, 0.3)
-        if "woertlich" in C:
-            fx.add(drum(55, 0.9), C["woertlich"], 0.8)
-            fx.add(bell("D6", 1.2, 0.8), C["woertlich"] + 0.05, 0.25)
+            fx.add(boom(5, 120, 28, 1.0), 0.0, 1.2)
+            fx.add(cymbal(3), 0.0, 0.8)
+            fx.add(tone(hz("A6"), 2.5, 0.01, 2.2, 0.04), 0.03, 1.0, 0.3)
+        if "spass" in C:
+            fx.add(drum(55, 0.9), C["spass"], 0.9)
+            fx.add(cymbal(1.5), C["spass"], 0.4)
         invite = kl[-1]["start"] if len(kl) >= 5 else s["end"]
         t = s["start"] + 0.4
         while t < invite - 0.6:

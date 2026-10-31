@@ -2234,55 +2234,52 @@ function hookText(l, t, a) {
   bg.addColorStop(0, `rgba(0,0,0,${0.55 * a})`); bg.addColorStop(1, 'rgba(0,0,0,0)');
   ctx.fillStyle = bg; ctx.fillRect(0, 300, W, 1300);
   ctx.translate(540, 900);
-  // keyword: either flies in like a shooting star from second 0, or pops in while it is spoken
+  // keyword: poppy TikTok-style lettering (Luckiest Guy, thick outline), either on screen from the very
+  // first frame (hook_static) or popping in while it is spoken; blinks between hot pink/white and yellow
   if (l.hook) {
-    ctx.font = '700 120px Cinzel';
-    const hl = l.hook.length > 12 ? wrap(l.hook, 900) : [l.hook];
-    const size = hl.length > 1 ? 120 : l.hook.length > 9 ? 112 : 150;
-    const t0 = l.hook_fly ? 0 : l.start + (l.hook_at ?? 0) * (l.end - l.start);
-    const fly = l.hook_fly ? 0.75 : 0.18, p = clamp((t - t0) / fly);
+    const size = l.hook.length > 12 ? 150 : 170;
+    ctx.font = `400 ${size}px "Luckiest Guy"`;
+    const hl = l.hook.length > 12 ? wrap(l.hook, 960) : [l.hook];
+    const t0 = l.hook_static ? 0 : l.start + (l.hook_at ?? 0) * (l.end - l.start);
     if (t >= t0) {
-      const k = easeOut(p), hx = lerp(l.hook_fly ? 640 : 0, 0, k), hy = lerp(l.hook_fly ? -1000 : -60, -60, k);
-      if (l.hook_fly && p < 1) {
-        ctx.save(); ctx.globalCompositeOperation = 'lighter';
-        for (let i = 0; i < 30; i++) { const q = easeOut(clamp(p - i * 0.02)); glow(lerp(640, 0, q), lerp(-1000, -60, q), 46 - i, 'rgba(255,225,170,A)', 0.55 * (1 - i / 30)); }
-        ctx.restore();
-      }
-      const since = t - t0 - fly, landed = l.hook_fly && since > 0;
+      const since = t - t0, p = l.hook_static ? 1 : clamp(since / 0.16);
+      const blinking = l.hook_static ? t <= l.end + 0.35 : since < 1.3;
+      const on = blinking && Math.floor(since / 0.14) % 2 === 0;
       // light rays turning behind the keyword
-      if (landed) {
-        ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.rotate(t * 0.25);
-        const ra = 0.22 * a * smooth(0, 0.4, since);
-        for (let k = 0; k < 18; k++) {
-          ctx.rotate(Math.PI * 2 / 18);
-          const g2 = ctx.createLinearGradient(0, 0, 900, 0);
-          g2.addColorStop(0, `rgba(255,200,120,${ra})`); g2.addColorStop(1, 'rgba(255,200,120,0)');
-          ctx.fillStyle = g2; ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(900, -40); ctx.lineTo(900, 40); ctx.closePath(); ctx.fill();
-        }
-        ctx.restore();
+      ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.rotate(t * 0.35);
+      const ra = (on ? 0.32 : 0.2) * a * p;
+      for (let k = 0; k < 18; k++) {
+        ctx.rotate(Math.PI * 2 / 18);
+        const g2 = ctx.createLinearGradient(0, 0, 950, 0);
+        g2.addColorStop(0, on ? `rgba(255,120,200,${ra})` : `rgba(255,210,90,${ra})`); g2.addColorStop(1, 'rgba(255,200,120,0)');
+        ctx.fillStyle = g2; ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(950, -45); ctx.lineTo(950, 45); ctx.closePath(); ctx.fill();
       }
-      // white impact flash when it lands
-      if (landed && since < 0.35) { ctx.save(); ctx.fillStyle = `rgba(255,248,235,${0.8 * (1 - since / 0.35)})`; ctx.fillRect(-600, -1000, 1200, 2000); ctx.restore(); }
-      const land = l.hook_fly ? 1 + 0.25 * Math.exp(-since * 9) * (since > 0 ? 1 : 0) + (since > 1.4 ? 0.025 * Math.sin(t * 5) : 0) : 1 + 0.35 * (1 - easeOut(p));
-      ctx.save(); ctx.translate(hx, hy); ctx.scale(land * (l.hook_fly ? lerp(0.4, 1, k) : 1), land * (l.hook_fly ? lerp(0.4, 1, k) : 1));
-      if (ctx.letterSpacing !== undefined) ctx.letterSpacing = '6px';
-      ctx.font = `700 ${size}px Cinzel`;
-      // blinking right after the impact, alternating hot white and gold
-      const blink = landed && since < 1.4 ? (Math.sin(since * 22) > 0 ? 1 : 0) : 0;
-      const ha = a * (l.hook_fly ? (landed && since < 1.4 ? (blink ? 1 : 0.55) : 1) : p);
-      const g = ctx.createLinearGradient(0, -size, 0, 10);
-      g.addColorStop(0, blink ? `rgba(255,255,255,${ha})` : `rgba(255,248,200,${ha})`); g.addColorStop(1, blink ? `rgba(255,150,190,${ha})` : `rgba(255,196,60,${ha})`);
-      ctx.shadowColor = blink ? `rgba(255,120,180,${0.95 * ha})` : `rgba(255,190,60,${0.85 * ha})`; ctx.shadowBlur = blink ? 60 : 44;
-      ctx.fillStyle = g;
-      hl.forEach((h, i) => ctx.fillText(h, 0, size * 0.35 - 30 + (i - (hl.length - 1)) * size * 1.05 + (hl.length > 1 ? size * 0.5 : 0)));
-      if (ctx.letterSpacing !== undefined) ctx.letterSpacing = '0px';
       ctx.restore();
-      if (l.hook_fly && p >= 1 && t < t0 + fly + 0.5) { ctx.save(); ctx.globalCompositeOperation = 'lighter'; glow(0, -90, 420, 'rgba(255,220,160,A)', 0.5 * (1 - (t - t0 - fly) / 0.5)); ctx.restore(); }
-      glitter(0, -100, 760, 220, t, ha * 0.9, 12, 3);
+      const pop = l.hook_static ? 1 + 0.06 * Math.abs(Math.sin(t * 7.5)) : 1 + 0.4 * (1 - easeOut(p));
+      ctx.save(); ctx.translate(0, -70); ctx.rotate(-0.045); ctx.scale(pop, pop);
+      ctx.lineJoin = 'round'; ctx.textBaseline = 'middle';
+      const lh = size * 1.0, y0 = -(hl.length - 1) * lh / 2;
+      const fillA = on ? ['#ffffff', '#ff4fa8'] : ['#fff38a', '#ffb700'];
+      hl.forEach((h, i) => {
+        const y = y0 + i * lh;
+        // hard drop shadow + thick dark outline, then a bright gradient fill
+        ctx.globalAlpha = a * p;
+        ctx.fillStyle = '#1a0630'; ctx.fillText(h, 8, y + 10);
+        ctx.strokeStyle = '#1a0630'; ctx.lineWidth = 18; ctx.strokeText(h, 0, y);
+        const g = ctx.createLinearGradient(0, y - size / 2, 0, y + size / 2);
+        g.addColorStop(0, fillA[0]); g.addColorStop(1, fillA[1]);
+        ctx.shadowColor = on ? 'rgba(255,80,180,0.9)' : 'rgba(255,200,40,0.8)'; ctx.shadowBlur = on ? 70 : 40;
+        ctx.fillStyle = g; ctx.fillText(h, 0, y);
+        ctx.shadowBlur = 0;
+      });
+      ctx.globalAlpha = 1;
+      ctx.restore();
+      glitter(0, -70, 980, 160 * hl.length + 120, t, a * p, 16, 3);
     }
   }
   if (l.hook_only) { ctx.restore(); return; }
   // sentence: revealed left to right with star glitter at the edge
+  if (l.hook) ctx.translate(0, 70);
   ctx.font = 'italic 600 70px "Cormorant Garamond"';
   const lines = wrap(l.text, 920), tw = 960;
   const rp = clamp((t - l.start + 0.1) / 1.1);
@@ -2305,7 +2302,7 @@ function hookText(l, t, a) {
 }
 
 function subtitles(t) {
-  if (LINES[0] && LINES[0].hook_fly && t < LINES[0].start) return hookText(LINES[0], t, 1);
+  if (LINES[0] && (LINES[0].hook_fly || LINES[0].hook_static) && t < LINES[0].start) return hookText(LINES[0], t, 1);
   const l = LINES.find(l => t >= l.start - 0.12 && t <= l.end + 0.35);
   if (!l) return;
   const a = smooth(l.start - 0.12, l.start + 0.08, t) * (1 - smooth(l.end + 0.1, l.end + 0.35, t));
@@ -2369,7 +2366,7 @@ function overlays(t, frame) {
 
 function shakeAt(t) {
   let s = 0;
-  [[CUE.impact, 1.3, 22], [CUE.touch, 1.0, 16], [CUE.fallen, 1.2, 24], [CUE.schwarz, 0.8, 12], [CUE.title_hit, 0.9, 18], [CUE.schwester, 0.8, 14], [SC.sting ? SC.sting.start - 0.05 : -9, 0.5, 10], [CUE.hieb, 0.6, 26], [CUE.schrei, 0.7, 14], [lineOf('orden', 2).start + 0.2, 0.7, 12], [CUE.outro_hit, 0.8, 12], [(CUE.ex_hit ?? -9) - 0.25 + 0.75, 0.6, 22], [CUE.woertlich ?? -9, 0.4, 10]].forEach(([c, d, a]) => {
+  [[CUE.impact, 1.3, 22], [CUE.touch, 1.0, 16], [CUE.fallen, 1.2, 24], [CUE.schwarz, 0.8, 12], [CUE.title_hit, 0.9, 18], [CUE.schwester, 0.8, 14], [SC.sting ? SC.sting.start - 0.05 : -9, 0.5, 10], [CUE.hieb, 0.6, 26], [CUE.schrei, 0.7, 14], [lineOf('orden', 2).start + 0.2, 0.7, 12], [CUE.outro_hit, 0.8, 12], [CUE.ex_hit !== undefined ? 0 : -9, 0.5, 16], [CUE.spass ?? -9, 0.45, 14]].forEach(([c, d, a]) => {
     if (t >= c && t < c + d) s += a * Math.pow(1 - (t - c) / d, 2);
   });
   return s;

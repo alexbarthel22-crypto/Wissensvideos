@@ -84,36 +84,31 @@
  "scenes": [
   {
    "id": "kalt",
-   "pre": 0.25,
+   "pre": 0.2,
    "post": 0.5,
    "lines": [
     {
      "who": "ICH",
      "text": "Mein Ex war ein Stern.",
-     "style": "direkt zum Zuschauer, trocken, selbstbewusst, wie ein Geständnis, das man nicht glauben kann, normale Sprechstimme, nicht flüstern",
+     "style": "direkt zum Zuschauer, trocken, selbstbewusst, lebendig, normale Sprechstimme, nicht flüstern",
      "hook": "MEIN EX WAR EIN STERN.",
-     "hook_fly": true,
+     "hook_static": true,
      "hook_only": true
     },
     {
      "who": "ICH",
-     "text": "Ich meine das wörtlich.",
+     "text": "Kein Spaß! Und das ist gerade erst der Anfang meiner Geschichte.",
      "pre": 0.5,
-     "style": "trocken, todernst, mit Nachdruck, normale Sprechstimme, nicht flüstern",
-     "hook": "WÖRTLICH.",
-     "hook_at": 0.45
-    },
-    {
-     "who": "ICH",
-     "text": "Und das ist nicht mal das Verrückteste an meiner Geschichte.",
-     "pre": 0.5,
-     "style": "mit einem schiefen Lächeln, geheimnisvoll, Neugier weckend, normale Sprechstimme, nicht flüstern"
+     "style": "direkt zum Zuschauer, trocken, selbstbewusst, lebendig, normale Sprechstimme, nicht flüstern, am Ende geheimnisvoll",
+     "hook": "KEIN SPASS!",
+     "hook_at": 0.0,
+     "hook_blink": true
     }
    ],
    "tempo": 1.0,
    "cues": {
     "ex_hit": "L0+0.0",
-    "woertlich": "L1+0.0"
+    "spass": "L1+0.0"
    }
   },
   {
@@ -239,10 +234,10 @@
     },
     {
      "who": "ICH",
-     "text": "Für Lunara, meine Mond-Maus. Mondstaub ist ihr Lieblingssnack. Sie ist klein wie ein Daumen … und fest überzeugt, ein Drache zu sein.",
+     "text": "Für Lunara, meine Mond-Maus. Mondstaub ist ihr Lieblingssnack. Sie ist klein wie ein Daumen … und fest überzeugt, ein Drache zu sein. Main-Character-Energy eben.",
      "pre": 0.45,
      "style": "liebevoll, amüsiert, mit einem Lächeln in der Stimme, normale Sprechstimme, nicht flüstern",
-     "display": "Für Lunara, meine Mondmaus. Mondstaub ist ihr Lieblingssnack. Sie ist klein wie ein Daumen … und fest überzeugt, ein Drache zu sein."
+     "display": "Für Lunara, meine Mondmaus. Mondstaub ist ihr Lieblingssnack. Sie ist klein wie ein Daumen … und fest überzeugt, ein Drache zu sein. Main-Character-Energy eben."
     },
     {
      "who": "BO",
