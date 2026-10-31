@@ -1,4 +1,4 @@
-// Profilbild "Leben in Valdoria": Neraya im Mondlicht auf einem Ast, Lunara daneben, ein Himmelswal.
+// Profilbild "Leben in Valdoria": Lunara auf einem Ast vor dem Vollmond, ein Himmelswal, eine Laterne.
 // Usage: NODE_PATH=$(npm root -g) node branding/profilbild.js  -> branding/profilbild.png (1080x1080)
 const { chromium } = require('playwright');
 const path = require('path'), fs = require('fs');
@@ -39,14 +39,8 @@ const path = require('path'), fs = require('fs');
     c.strokeStyle = col; c.lineWidth = 2; c.beginPath(); c.moveTo(360, 1094); c.lineTo(360, 1170); c.stroke();
     c.fillStyle = col; c.fillRect(348, 1170, 24, 6); c.fillRect(350, 1200, 20, 5);
     c.save(); c.globalCompositeOperation = 'lighter'; glow(360, 1188, 90, 'rgba(255,170,90,A)', 0.6); glow(360, 1188, 12, 'rgba(255,225,170,A)', 1); c.restore();
-    // Neraya, silhouetted against the moon, looking up at the brightest star
-    silhouette('rgba(200,220,255,0.95)', 30, () => {
-      ctx.save(); ctx.translate(560, 1090); ctx.scale(7.2, 7.2);
-      sittingHeroine(0, 0, 1, t, { look: -0.5, color: '#04050c' });
-      ctx.restore();
-    });
-    // Lunara on the branch beside her
-    moonMouse(700, 1052, 26, t, { dir: -1, mood: 'happy', fly: false, seed: 0.4 });
+    // Lunara on the branch in front of the moon
+    moonMouse(870, 1032, 36, t, { dir: -1, mood: 'happy', fly: false, seed: 0.4 });
     particles(t, 40, { y0: 1500, dy: -1100, a: 0.5, color: 'rgba(200,220,255,A)', r: 2, life: 9, glowR: 6 });
     // crop to the square around the subject
     const sq = document.createElement('canvas'); sq.width = 1080; sq.height = 1080;

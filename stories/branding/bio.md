@@ -2,12 +2,12 @@
 
 **Name:** Leben in Valdoria
 
-**Bio (max. 80 Zeichen):**
-Hier leuchten Laternen über den Wolken – und die Sterne verbergen etwas. ✨
+**Bio (max. 80 Zeichen, empfohlen):**
+Willkommen in Valdoria. Schau nach oben … einer fehlt. ✨
 
 **Alternativen:**
+- Hier leuchten Laternen über den Wolken – und die Sterne verbergen etwas. ✨
 - Neraya, 17. Eine Mondmaus. Und ein Stern, der nie hätte fallen dürfen. 🌙
-- Willkommen in Valdoria. Schau nach oben … einer fehlt. ✨
 - Eine Welt über den Wolken. 20 Folgen. Die Wahrheit liegt darunter. 🌙
 
 **Angepinnter Kommentar unter Folge 1:**
