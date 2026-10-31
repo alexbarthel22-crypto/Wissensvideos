@@ -8,11 +8,13 @@ each line's "style" as acting direction; otherwise Cloud TTS Chirp 3 HD voices a
 """
 import hashlib
 import json
+import time
 import os
 import re
 import subprocess
 import sys
 import urllib.request
+import urllib.error
 import base64
 import wave
 
@@ -78,8 +80,18 @@ def synth_gemini(text, voice, line, path):
     req = urllib.request.Request(
         GEMINI_API.format(model=GEMINI_MODEL), data=json.dumps(body).encode(),
         headers={"Content-Type": "application/json", "x-goog-api-key": os.environ["GEMINI_API_KEY"]})
-    with urllib.request.urlopen(req, timeout=120) as r:
-        part = json.load(r)["candidates"][0]["content"]["parts"][0]["inlineData"]
+    for attempt in range(8):
+        try:
+            with urllib.request.urlopen(req, timeout=120) as r:
+                part = json.load(r)["candidates"][0]["content"]["parts"][0]["inlineData"]
+            break
+        except urllib.error.HTTPError as e:
+            # rate limit / transient server error: back off and retry
+            if e.code not in (429, 500, 503) or attempt == 7:
+                raise
+            wait = min(90, 15 * (attempt + 1))
+            print(f"  Gemini {e.code}, neuer Versuch in {wait}s", flush=True)
+            time.sleep(wait)
     with wave.open(path, "wb") as w:
         w.setnchannels(1)
         w.setsampwidth(2)
