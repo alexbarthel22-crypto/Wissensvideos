@@ -46,7 +46,7 @@ S['s01'] = ('''    #s01-call { left: 290px; top: 640px; width: 500px; height: 30
     #s01-tv .tk { position: absolute; left: 0; right: 0; bottom: 0; height: 64px; background: #ff3b55; color: #fff; font: 700 36px/64px Oswald, sans-serif; white-space: nowrap; }''',
 SVG + '''
       <div id="s01-tv" class="abs"><div class="scr"><b>NOTFALL-DURCHSAGE</b><i id="s01-cd">12:00:00</i><div class="tk"><span id="s01-tk">ALLE VERBRECHEN LEGAL · 12 STUNDEN · KEINE RETTUNGSDIENSTE · ALLE VERBRECHEN LEGAL ·</span></div></div></div>
-      <div id="s01-cr1" class="s01-cr">RAUB</div><div id="s01-cr2" class="s01-cr">EINBRUCH</div><div id="s01-cr3" class="s01-cr">BRANDSTIFTUNG</div>
+      <div id="s01-cr1" class="s01-cr">RAUB</div><div id="s01-cr2" class="s01-cr">EINBRUCH</div><div id="s01-cr3" class="s01-cr">BRANDSTIFTUNG</div><div id="s01-cr4" class="s01-cr" style="top:1120px">MORD</div>
       <div id="s01-ttl" class="abs"><div class="a">WAS WÄRE, WENN</div><div id="s01-tb" class="b">THE PURGE</div><div class="c">ECHT WÄRE?</div></div>
       <div id="s01-call" class="abs"><b>112</b><i>NICHT ERREICHBAR</i></div>''',
 '''      const sv = document.querySelector("#s01-svg");
@@ -100,11 +100,14 @@ SVG + '''
       tl.set("#s01-tv", { opacity: 0 }, rb - 0.1); tl.set(CR, { opacity: 1 }, rb - 0.1);
       [rb, eb, bs].forEach((tt, i, arr) => { tl.set(cr[i], { opacity: 1 }, tt - 0.1); tl.fromTo(cr[i], { scale: 1.3, svgOrigin: "540 850" }, { scale: 1, svgOrigin: "540 850", duration: 0.3, ease: "power3.out" }, tt - 0.1);
         tl.set("#s01-cr" + (i + 1), { opacity: 1 }, tt - 0.1); tl.fromTo("#s01-cr" + (i + 1), { scale: 1.6 }, { scale: 1, duration: 0.25, ease: "power4.out" }, tt - 0.1);
-        const nx = i < 2 ? arr[i + 1] : mo; tl.set([cr[i], "#s01-cr" + (i + 1)], { opacity: 0 }, nx - 0.1); });
+        const nx = i < 2 ? arr[i + 1] - 0.1 : mo - 0.05; tl.set([cr[i], "#s01-cr" + (i + 1)], { opacity: 0 }, nx); });
       tl.to(crf, { scaleY: 1.3, duration: 0.12, yoyo: true, repeat: 5 }, bs);
-      tl.set(CR, { opacity: 0 }, mo - 0.25);
-      // Einstellung 3: Nahaufnahme Maske tl.set(CU, { opacity: 1 }, mo - 0.25);
-      tl.fromTo(CU, { scale: 1.2, svgOrigin: "540 900" }, { scale: 1, svgOrigin: "540 900", duration: 0.4, ease: "power3.out" }, mo - 0.25);
+      tl.to(CR, { opacity: 0, duration: 0.25 }, mo - 0.3);
+      // Einstellung 3: Nahaufnahme Maske (weicher Übergang)
+      tl.fromTo(CU, { opacity: 0 }, { opacity: 1, duration: 0.25 }, mo - 0.3);
+      tl.fromTo(CU, { scale: 1.35, svgOrigin: "540 900" }, { scale: 1, svgOrigin: "540 900", duration: 0.6, ease: "power3.out" }, mo - 0.3);
+      tl.set("#s01-cr4", { opacity: 1 }, mo - 0.3); tl.fromTo("#s01-cr4", { scale: 1.8 }, { scale: 1, duration: 0.3, ease: "power4.out" }, mo - 0.3);
+      tl.set("#s01-cr4", { opacity: 0 }, l3 - 0.1);
       tl.fromTo(red, { opacity: 0.7 }, { opacity: 0, duration: 0.5 }, mo);
       tl.to(MC.g, { x: 552, duration: 0.04, repeat: 9, yoyo: true }, mo);
       // Einstellung 4: Polizei, Feuerwehr, Notarzt durchgestrichen
@@ -145,10 +148,12 @@ SVG + '''
       tl.fromTo(shop, { scale: 1.2, svgOrigin: "540 940" }, { scale: 1, svgOrigin: "540 940", duration: 1.2, ease: "power2.out" }, 0);
       items.forEach((it, i) => tl.to(it, { opacity: 0, y: -40, duration: 0.18 }, le - 0.6 + (i % 27) * 0.03));
       [[lock, sl], [grid, gi], [wood, sp]].forEach(([g, t], i, arr) => { tl.set(g, { opacity: 1 }, t - 0.1); tl.fromTo(g, { scale: 1.3, svgOrigin: "540 900" }, { scale: 1, svgOrigin: "540 900", duration: 0.35, ease: "power3.out" }, t - 0.1);
-        tl.set(g, { opacity: 0 }, i < 2 ? arr[i + 1][1] - 0.1 : we - 0.1); });
-      tl.to(wood.hammer, { rotation: -40, svgOrigin: "740 800", duration: 0.12, yoyo: true, repeat: 5 }, sp);
+        tl.set(g, { opacity: 0 }, i < 2 ? arr[i + 1][1] - 0.1 : l5 - 0.25); });
+      tl.set(shop, { opacity: 0 }, sl - 0.1);
+      tl.to(wood.hammer, { rotation: -40, svgOrigin: "740 800", duration: 0.14, yoyo: true, repeat: 13 }, sp);
+      tl.to(wood.querySelectorAll("rect"), { x: 4, duration: 0.05, yoyo: true, repeat: 9 }, sp + 0.2);
       tl.fromTo("#s02-st", { opacity: 0, scale: 2.2, rotation: -8 }, { opacity: 1, scale: 1, rotation: -8, duration: 0.25, ease: "power4.in" }, we - 0.15);
-      tl.to(["#s02-st", shop], { opacity: 0, duration: 0.2 }, l5 - 0.25);
+      tl.to("#s02-st", { opacity: 0, duration: 0.2 }, l5 - 0.25);
       tl.to(st, { opacity: 1, duration: 0.2 }, l5 - 0.15);
       tl.fromTo(st, { scale: 1.25, svgOrigin: "540 1100" }, { scale: 1, svgOrigin: "540 1100", duration: 1.0, ease: "power2.out" }, l5 - 0.15);
       planks.forEach((pl, i) => tl.fromTo(pl, { opacity: 0, x: -200 }, { opacity: 1, x: 0, duration: 0.2, ease: "back.out(2)" }, ve - 0.2 + i * 0.12));
@@ -193,15 +198,12 @@ SVG + '''
       tl.to(glow, { opacity: 0.22, duration: 0.6 }, fr);''' + OUT)
 
 S['s05'] = ('''    #s05-st { left: 300px; top: 640px; width: 480px; height: 150px; border: 10px solid #ff3b55; border-radius: 18px; color: #ff3b55; font: 700 100px/130px Oswald, sans-serif; text-align: center; opacity: 0; background: rgba(10,10,16,.6); }
-    #s05-card { left: 330px; top: 560px; width: 420px; height: 600px; border-radius: 26px; background: linear-gradient(135deg, #ffd43b, #ff8fd0 45%, #7fd0ff); border: 8px solid #0b0c14; opacity: 0; box-shadow: 0 0 80px rgba(255,212,59,.5); }
-    #s05-card .art { position: absolute; left: 30px; top: 80px; right: 30px; height: 300px; border-radius: 14px; background: #1a1c28; border: 5px solid #0b0c14; }
-    #s05-card .nm { position: absolute; left: 30px; top: 22px; font: 700 40px Oswald, sans-serif; color: #0b0c14; } #s05-card .st { position: absolute; right: 30px; top: 18px; font: 700 46px Oswald, sans-serif; color: #0b0c14; }
-    #s05-card .tx { position: absolute; left: 30px; right: 30px; top: 400px; height: 150px; border-radius: 12px; background: rgba(255,255,255,.7); }
+    #s05-card { left: 290px; top: 540px; width: 500px; height: 690px; border-radius: 24px; opacity: 0; box-shadow: 0 0 90px rgba(255,212,59,.6), 0 30px 60px rgba(0,0,0,.6); }
     #s05-price { left: 640px; top: 1050px; width: 330px; height: 120px; border-radius: 18px; background: #ff3b55; color: #fff; text-align: center; font: 700 70px/120px Oswald, sans-serif; opacity: 0; transform: rotate(-8deg); }
     #s05-lt { left: 190px; top: 620px; width: 700px; height: 480px; border-radius: 16px; background: #efe8d6; border: 5px solid #0b0c14; opacity: 0; text-align: center; color: #22283f; }
     #s05-lt b { display: block; margin-top: 40px; font: 700 54px Oswald, sans-serif; } #s05-lt p { margin: 20px 60px; font: 500 34px/1.4 "EB Garamond", serif; }''',
 SVG + '''
-      <div id="s05-card" class="abs"><div class="nm">NACHTFALKE</div><div class="st">★★★</div><div class="art"></div><div class="tx"></div></div>
+      <img id="s05-card" class="abs" src="assets/img/karte.jpg" alt="Sammelkarte">
       <div id="s05-price" class="abs">2.500 €</div>
       <div id="s05-lt" class="abs"><b>VERSICHERUNG</b><p>Schaden während der Säuberung: keine Leistung.</p></div>
       <div id="s05-st" class="abs" data-layout-allow-overlap>LEGAL</div>''',
@@ -212,15 +214,18 @@ SVG + '''
       el("rect", { x: -200, y: 1180, width: 1480, height: 300, fill: "#141320" }, W);
       const fg = fog(W, 1150, 0.28, 11);
       const gang = [[160, 1360, 0.95, "#1d1f2b"], [330, 1330, 0.85, "#2a1c26"], [470, 1380, 1.05, "#1a2230"], [60, 1340, 0.8, "#231d2b"]].map(([x, y, s, c], i) => masked(W, x, y, s, c, i === 2));
-      const row = el("g", { opacity: 0 }, sv); el("rect", { x: 0, y: 500, width: 3300, height: 1000, fill: "#0f1020" }, row);
-      const glass = [], shards = [];
-      [["JUWELIER", "#ffd43b"], ["BANK", "#7fd0ff"], ["KARTEN-SHOP", "#ff8fd0"]].forEach(([n, c], i) => { const x = 140 + i * 1080;
-        el("rect", O({ x, y: 620, width: 800, height: 640, fill: "#2c2f3e" }), row); el("rect", O({ x: x + 60, y: 650, width: 680, height: 90, rx: 10, fill: c }), row); txt(row, x + 400, 718, n, 60, K);
-        if (i === 2) for (let k = 0; k < 6; k++) el("rect", O({ x: x + 110 + k * 100, y: 880, width: 80, height: 115, rx: 8, fill: ["#ffd43b", "#ff8fd0", "#7fd0ff"][k % 3], "stroke-width": 3 }), row);
-        if (i === 0) for (let k = 0; k < 5; k++) el("path", O({ d: `M${x + 150 + k * 120} 960 l30 -40 l30 40 l-30 30Z`, fill: "#bfe7ff", "stroke-width": 3 }), row);
-        if (i === 1) txt(row, x + 400, 1000, "€ € €", 120, "#39e27a");
-        glass.push(el("rect", O({ x: x + 60, y: 780, width: 680, height: 420, fill: "#7fd0ff", opacity: 0.55 }), row));
-        const r = rng(i + 3); for (let k = 0; k < 9; k++) shards.push([i, el("path", { d: `M${x + 120 + r() * 560} ${820 + r() * 340} l${20 + r() * 30} ${-10 - r() * 20} l-10 ${30 + r() * 20}Z`, fill: "#e6f6ff", opacity: 0 }, row)]); });
+      const row = el("g", { opacity: 0 }, sv); el("rect", { x: 0, y: 500, width: 1080, height: 1000, fill: "#0f1020" }, row);
+      const glass = [], cracks = [], shops = [];
+      [["JUWELIER", "#ffd43b"], ["BANK", "#7fd0ff"], ["KARTEN", "#ff8fd0"]].forEach(([n, c], i) => { const x = 30 + i * 345, g = el("g", {}, row); shops.push(g);
+        el("rect", O({ x, y: 640, width: 330, height: 600, fill: "#2c2f3e" }), g); el("rect", O({ x: x + 20, y: 665, width: 290, height: 80, rx: 10, fill: c }), g); txt(g, x + 165, 722, n, 50, K);
+        if (i === 0) for (let k = 0; k < 3; k++) el("path", O({ d: `M${x + 75 + k * 90} 960 l25 -34 l25 34 l-25 26Z`, fill: "#bfe7ff", "stroke-width": 3 }), g);
+        if (i === 1) { el("rect", O({ x: x + 85, y: 860, width: 160, height: 180, rx: 12, fill: "#8a8f9c" }), g); el("circle", O({ cx: x + 165, cy: 950, r: 40, fill: "#c9cfe6" }), g); }
+        if (i === 2) for (let k = 0; k < 3; k++) el("rect", O({ x: x + 50 + k * 80, y: 890, width: 64, height: 92, rx: 6, fill: ["#ffd43b", "#ff8fd0", "#7fd0ff"][k], "stroke-width": 3 }), g);
+        glass.push(el("rect", O({ x: x + 20, y: 780, width: 290, height: 420, fill: "#9fdcff", opacity: 0.5 }), g));
+        const cx = x + 165, cy = 960, cg = el("g", { opacity: 0 }, g), r = rng(i + 5);
+        for (let k = 0; k < 9; k++) { const a = k / 9 * Math.PI * 2 + r() * 0.4, l1 = 60 + r() * 60, l2 = 130 + r() * 90;
+          el("path", { d: `M${cx} ${cy} L${cx + Math.cos(a) * l1} ${cy + Math.sin(a) * l1} L${cx + Math.cos(a + 0.15) * l2} ${cy + Math.sin(a + 0.15) * l2}`, stroke: "#ffffff", "stroke-width": 4, fill: "none" }, cg); }
+        el("circle", { cx, cy, r: 16, fill: "#0b0c14" }, cg); cracks.push(cg); });
 ''' + RED + '''      const ba = at("L11", "Banden"), ra = at("L11", "Rachegelüsten"), zu = at("L11", "zuschauen"), l12 = line("L12")[0], ju = at("L12", "Juweliere"), bk = at("L12", "Banken"), sk = at("L12", "Sammelkartenläden"), l12b = line("L12b")[0], te = at("L12b", "tausende"), l12c = line("L12c")[0], le = at("L12c", "legal");
       tl.fromTo(W, { scale: 1.3, svgOrigin: "540 1250" }, { scale: 1, svgOrigin: "540 1250", duration: 1.5, ease: "power2.out" }, 0);
       gang.forEach((m, i) => tl.fromTo(m.g, { x: `-=${300}`, opacity: 0 }, { x: `+=${300}`, opacity: 1, duration: 1.2, ease: "power2.out" }, ba - 0.4 + i * 0.25));
@@ -228,11 +233,16 @@ SVG + '''
       tl.to(fg, { x: -80, duration: 8, ease: "none" }, 0);
       tl.fromTo(red, { opacity: 0 }, { opacity: 0.25, duration: 0.2, repeat: 3, yoyo: true }, ra);
       tl.to(W, { scale: 1.6, svgOrigin: "300 1100", duration: 0.8, ease: "power2.in" }, zu);
-      tl.set(W, { opacity: 0 }, l12 - 0.1); tl.set(row, { opacity: 1 }, l12 - 0.1);
-      [ju, bk, sk].forEach((t, i) => { tl.to(row, { x: -1080 * i, duration: i ? 0.35 : 0.01, ease: "power3.inOut" }, t - (i ? 0.45 : 0.1));
-        tl.to(glass[i], { opacity: 0, duration: 0.05 }, t);
-        shards.filter((s) => s[0] === i).forEach(([_, sh], k) => tl.fromTo(sh, { opacity: 1, x: 0, y: 0 }, { x: (k % 2 ? 1 : -1) * (40 + k * 12), y: 220 + k * 10, rotation: 140, opacity: 0, svgOrigin: `${540 + 1080 * i} 1000`, duration: 0.7, ease: "power2.in" }, t));
-        tl.fromTo(red, { opacity: 0.35 }, { opacity: 0, duration: 0.3 }, t); });
+      tl.set(W, { opacity: 0 }, l12 - 0.2); tl.set(row, { opacity: 1 }, l12 - 0.2);
+      tl.fromTo(row, { scale: 1.15, svgOrigin: "540 940" }, { scale: 1, svgOrigin: "540 940", duration: 0.5, ease: "power3.out" }, l12 - 0.2);
+      [ju, bk, sk].forEach((t, i) => { const c = 195 + i * 345;
+        tl.to(shops[i], { scale: 1.06, svgOrigin: `${c} 940`, duration: 0.2, yoyo: true, repeat: 1 }, t - 0.05);
+        tl.to(cracks[i], { opacity: 1, duration: 0.05 }, t);
+        tl.fromTo(cracks[i], { scale: 0.3, svgOrigin: `${c} 960` }, { scale: 1, svgOrigin: `${c} 960`, duration: 0.25, ease: "power4.out" }, t);
+        tl.to(glass[i], { opacity: 0.18, duration: 0.3 }, t + 0.1);
+        tl.to(shops[i], { x: 6, duration: 0.04, repeat: 5, yoyo: true }, t);
+        tl.fromTo(red, { opacity: 0.3 }, { opacity: 0, duration: 0.35 }, t); });
+      tl.to(row, { scale: 1.1, svgOrigin: "540 940", duration: 0.6, ease: "power2.in" }, at("L12", "geplündert") - 0.1);
       tl.set(row, { opacity: 0 }, l12b - 0.1);
       tl.fromTo("#s05-card", { opacity: 0, rotationY: 90, scale: 0.7 }, { opacity: 1, rotationY: 0, scale: 1, duration: 0.5, ease: "back.out(1.6)" }, l12b - 0.1);
       tl.to("#s05-card", { rotation: 4, duration: 0.8, yoyo: true, repeat: 3, ease: "sine.inOut" }, l12b + 0.4);

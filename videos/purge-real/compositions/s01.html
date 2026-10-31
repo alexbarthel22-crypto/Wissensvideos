@@ -35,11 +35,11 @@
     #s01-tv .scr i { display: block; margin-top: 10px; font: 700 120px/1 Oswald, sans-serif; font-style: normal; color: #fff; }
     #s01-tv .tk { position: absolute; left: 0; right: 0; bottom: 0; height: 64px; background: #ff3b55; color: #fff; font: 700 36px/64px Oswald, sans-serif; white-space: nowrap; }
   </style>
-  <div id="root" data-composition-id="s01" data-start="0" data-duration="15.871" data-width="1080" data-height="1920">
-    <div id="s01-stage" class="clip stage" data-start="0" data-duration="15.871" data-track-index="0">
+  <div id="root" data-composition-id="s01" data-start="0" data-duration="16.970" data-width="1080" data-height="1920">
+    <div id="s01-stage" class="clip stage" data-start="0" data-duration="16.970" data-track-index="0">
       <svg id="s01-svg" class="full" viewBox="0 0 1080 1920"></svg>
       <div id="s01-tv" class="abs"><div class="scr"><b>NOTFALL-DURCHSAGE</b><i id="s01-cd">12:00:00</i><div class="tk"><span id="s01-tk">ALLE VERBRECHEN LEGAL · 12 STUNDEN · KEINE RETTUNGSDIENSTE · ALLE VERBRECHEN LEGAL ·</span></div></div></div>
-      <div id="s01-cr1" class="s01-cr">RAUB</div><div id="s01-cr2" class="s01-cr">EINBRUCH</div><div id="s01-cr3" class="s01-cr">BRANDSTIFTUNG</div>
+      <div id="s01-cr1" class="s01-cr">RAUB</div><div id="s01-cr2" class="s01-cr">EINBRUCH</div><div id="s01-cr3" class="s01-cr">BRANDSTIFTUNG</div><div id="s01-cr4" class="s01-cr" style="top:1120px">MORD</div>
       <div id="s01-ttl" class="abs"><div class="a">WAS WÄRE, WENN</div><div id="s01-tb" class="b">THE PURGE</div><div class="c">ECHT WÄRE?</div></div>
       <div id="s01-call" class="abs"><b>112</b><i>NICHT ERREICHBAR</i></div>
     </div>
@@ -47,7 +47,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 15.871, "L1": [0.9, 4.31], "L1.words": [["was", 0.9, 1.119], ["wäre", 1.119, 1.54], ["wenn", 1.74, 1.887], ["thepurge", 1.887, 2.309], ["wirklich", 2.309, 2.603], ["stattfindet", 2.603, 3.04], ["die", 3.59, 3.77], ["säuberung", 3.77, 4.31]], "L2": [4.53, 9.59], "L2.words": [["zwölf", 4.53, 4.724], ["stunden", 4.724, 5.092], ["lang", 5.092, 5.28], ["alle", 5.64, 5.916], ["verbrechen", 5.916, 6.349], ["legal", 6.349, 6.63], ["raub", 6.95, 7.14], ["einbruch", 7.43, 7.85], ["brandstiftung", 8.12, 8.881], ["", 8.881, 9.097], ["und", 9.097, 9.339], ["mord", 9.339, 9.59]], "L3": [9.81, 15.691], "L3.words": [["polizei", 9.81, 10.49], ["feuerwehr", 10.68, 11.28], ["notarzt", 11.51, 12.08], ["nicht", 12.39, 12.604], ["erreichbar", 12.604, 13.21], ["und", 13.73, 13.893], ["am", 13.893, 14.05], ["ende", 14.05, 14.364], ["wartet", 14.364, 14.69], ["die", 14.69, 14.853], ["schockierendste", 14.853, 15.523], ["zahl", 15.523, 15.691]]};
+      const C = {"__dur": 16.97, "L1": [0.9, 4.54], "L1.words": [["was", 0.9, 1.108], ["wäre", 1.108, 1.51], ["wenn", 1.81, 1.98], ["thepurge", 1.98, 2.466], ["wirklich", 2.466, 2.806], ["stattfindet", 2.806, 3.31], ["die", 3.86, 4.03], ["säuberung", 4.03, 4.54]], "L2": [4.76, 10.48], "L2.words": [["zwölf", 4.76, 4.995], ["stunden", 4.995, 5.442], ["lang", 5.442, 5.67], ["alle", 6.05, 6.353], ["verbrechen", 6.353, 6.831], ["legal", 6.831, 7.14], ["raub", 7.58, 8.53], ["einbruch", 8.85, 9.5], ["brandstiftung", 9.81, 10.157], ["", 10.157, 10.255], ["und", 10.255, 10.366], ["mord", 10.366, 10.48]], "L3": [10.7, 16.79], "L3.words": [["polizei", 10.7, 12.06], ["feuerwehr", 12.31, 12.9], ["notarzt", 13.27, 14.01], ["nicht", 14.56, 14.727], ["erreichbar", 14.727, 15.2], ["und", 15.4, 15.515], ["am", 15.515, 15.627], ["ende", 15.627, 15.85], ["wartet", 15.85, 16.081], ["die", 16.081, 16.196], ["schockierendste", 16.196, 16.67], ["zahl", 16.67, 16.79]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -174,11 +174,14 @@
       tl.set("#s01-tv", { opacity: 0 }, rb - 0.1); tl.set(CR, { opacity: 1 }, rb - 0.1);
       [rb, eb, bs].forEach((tt, i, arr) => { tl.set(cr[i], { opacity: 1 }, tt - 0.1); tl.fromTo(cr[i], { scale: 1.3, svgOrigin: "540 850" }, { scale: 1, svgOrigin: "540 850", duration: 0.3, ease: "power3.out" }, tt - 0.1);
         tl.set("#s01-cr" + (i + 1), { opacity: 1 }, tt - 0.1); tl.fromTo("#s01-cr" + (i + 1), { scale: 1.6 }, { scale: 1, duration: 0.25, ease: "power4.out" }, tt - 0.1);
-        const nx = i < 2 ? arr[i + 1] : mo; tl.set([cr[i], "#s01-cr" + (i + 1)], { opacity: 0 }, nx - 0.1); });
+        const nx = i < 2 ? arr[i + 1] - 0.1 : mo - 0.05; tl.set([cr[i], "#s01-cr" + (i + 1)], { opacity: 0 }, nx); });
       tl.to(crf, { scaleY: 1.3, duration: 0.12, yoyo: true, repeat: 5 }, bs);
-      tl.set(CR, { opacity: 0 }, mo - 0.25);
-      // Einstellung 3: Nahaufnahme Maske tl.set(CU, { opacity: 1 }, mo - 0.25);
-      tl.fromTo(CU, { scale: 1.2, svgOrigin: "540 900" }, { scale: 1, svgOrigin: "540 900", duration: 0.4, ease: "power3.out" }, mo - 0.25);
+      tl.to(CR, { opacity: 0, duration: 0.25 }, mo - 0.3);
+      // Einstellung 3: Nahaufnahme Maske (weicher Übergang)
+      tl.fromTo(CU, { opacity: 0 }, { opacity: 1, duration: 0.25 }, mo - 0.3);
+      tl.fromTo(CU, { scale: 1.35, svgOrigin: "540 900" }, { scale: 1, svgOrigin: "540 900", duration: 0.6, ease: "power3.out" }, mo - 0.3);
+      tl.set("#s01-cr4", { opacity: 1 }, mo - 0.3); tl.fromTo("#s01-cr4", { scale: 1.8 }, { scale: 1, duration: 0.3, ease: "power4.out" }, mo - 0.3);
+      tl.set("#s01-cr4", { opacity: 0 }, l3 - 0.1);
       tl.fromTo(red, { opacity: 0.7 }, { opacity: 0, duration: 0.5 }, mo);
       tl.to(MC.g, { x: 552, duration: 0.04, repeat: 9, yoyo: true }, mo);
       // Einstellung 4: Polizei, Feuerwehr, Notarzt durchgestrichen

@@ -195,7 +195,7 @@
     },
     {
      "id": "L12",
-     "text": "Juweliere, Banken – / und *y:Sammelkartenläden: / *r:geplündert."
+     "text": "*r:Juweliere. / *r:Banken. / Und *y:Sammelkartenläden: / *r:geplündert."
     },
     {
      "id": "L12b",
@@ -213,6 +213,11 @@
      "volume": 0.25
     },
     {
+     "name": "impact-bass-1",
+     "at": "L12c:legal",
+     "volume": 0.4
+    },
+    {
      "name": "impact-bass-2",
      "at": "L12:Juweliere",
      "volume": 0.3
@@ -226,11 +231,6 @@
      "name": "impact-bass-2",
      "at": "L12:Sammelkartenläden",
      "volume": 0.3
-    },
-    {
-     "name": "impact-bass-1",
-     "at": "L12c:legal",
-     "volume": 0.4
     }
    ]
   },

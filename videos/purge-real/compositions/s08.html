@@ -26,8 +26,8 @@
     #s08-b1 { left: 50px; background: #39e27a; } #s08-b2 { left: 580px; background: #ff3b55; color: #fff; }
     #s08-f { left: 330px; top: 1170px; width: 420px; height: 120px; border-radius: 60px; background: #ff3b55; color: #fff; text-align: center; font: 700 60px/120px Oswald, sans-serif; opacity: 0; box-shadow: 0 0 50px rgba(255,59,85,.6); }
   </style>
-  <div id="root" data-composition-id="s08" data-start="0" data-duration="11.750" data-width="1080" data-height="1920">
-    <div id="s08-stage" class="clip stage" data-start="0" data-duration="11.750" data-track-index="0">
+  <div id="root" data-composition-id="s08" data-start="0" data-duration="11.470" data-width="1080" data-height="1920">
+    <div id="s08-stage" class="clip stage" data-start="0" data-duration="11.470" data-track-index="0">
       <svg id="s08-svg" class="full" viewBox="0 0 1080 1920"></svg>
       <div id="s08-b1" class="s08-b">VERSCHANZEN</div><div id="s08-b2" class="s08-b">TEILNEHMEN</div>
       <div id="s08-f" class="abs">+ FOLGEN</div>
@@ -36,7 +36,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 11.75, "L18": [0.2, 6.04], "L18.words": [["und", 0.2, 0.439], ["du", 0.439, 0.67], ["würdest", 1.22, 1.538], ["du", 1.538, 1.689], ["an", 1.689, 1.84], ["der", 1.84, 1.996], ["purge", 1.996, 2.304], ["teilnehmen", 2.304, 2.778], ["", 2.778, 2.918], ["oder", 2.918, 3.22], ["dich", 3.22, 3.382], ["zuhause", 3.382, 3.84], ["verschanzen", 3.84, 4.32], ["schreibs", 4.87, 5.065], ["in", 5.065, 5.225], ["die", 5.225, 5.39], ["kommentare", 5.39, 6.04]], "L19": [6.56, 9.35], "L19.words": [["und", 6.56, 6.761], ["folg", 6.761, 6.969], ["mir", 6.969, 7.17], ["", 7.17, 7.349], ["bevor", 7.349, 7.743], ["heute", 7.743, 8.138], ["nacht", 8.138, 8.353], ["die", 8.353, 8.554], ["sirene", 8.554, 9.135], ["heult", 9.135, 9.35]]};
+      const C = {"__dur": 11.47, "L18": [0.2, 6.04], "L18.words": [["und", 0.2, 0.439], ["du", 0.439, 0.67], ["würdest", 1.22, 1.538], ["du", 1.538, 1.689], ["an", 1.689, 1.84], ["der", 1.84, 1.996], ["purge", 1.996, 2.304], ["teilnehmen", 2.304, 2.778], ["", 2.778, 2.918], ["oder", 2.918, 3.22], ["dich", 3.22, 3.382], ["zuhause", 3.382, 3.84], ["verschanzen", 3.84, 4.32], ["schreibs", 4.87, 5.065], ["in", 5.065, 5.225], ["die", 5.225, 5.39], ["kommentare", 5.39, 6.04]], "L19": [6.56, 9.07], "L19.words": [["und", 6.56, 6.741], ["folg", 6.741, 6.928], ["mir", 6.928, 7.108], ["", 7.108, 7.27], ["bevor", 7.27, 7.625], ["heute", 7.625, 7.98], ["nacht", 7.98, 8.173], ["die", 8.173, 8.354], ["sirene", 8.354, 8.876], ["heult", 8.876, 9.07]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
