@@ -311,6 +311,78 @@ function sittingHeroine(x, y, s, t, o = {}) {
   ctx.restore();
 }
 
+function swingHeroine(px, py, L, t, SX, SY) {
+  const th = 0.22 * Math.sin(t * 1.15), om = Math.cos(t * 1.15); // angle and its velocity
+  const s = 6, Lu = L / s, f = 2.0 - 1.6 * om;                      // hair streams against the motion
+  const rope = (x) => { ctx.save(); ctx.lineWidth = 0.55; ctx.strokeStyle = '#0b0c16'; ctx.shadowColor = 'rgba(190,210,255,0.7)'; ctx.shadowBlur = 6;
+    ctx.beginPath(); ctx.moveTo(x, -Lu); ctx.lineTo(x, 0.6); ctx.stroke(); ctx.restore(); };
+  ctx.save(); ctx.translate(px, py); ctx.rotate(-th); ctx.scale(s, s); ctx.translate(-3, Lu);
+  // the head looks up towards the star (computed in this rotated frame)
+  const nx = 0, ny = -36;
+  const lx = nx + 3, ly = ny + Lu;
+  const hx = px + (lx * Math.cos(-th) - ly * Math.sin(-th)) * s, hy = py + (lx * Math.sin(-th) + ly * Math.cos(-th)) * s;
+  const look = clamp((Math.atan2(SY - hy, SX - hx) + th) * 0.7, -0.75, -0.2);
+  const R = (x, y) => { const dx = x, dy = y + 86; return [nx + dx * Math.cos(look) - dy * Math.sin(look), ny + dx * Math.sin(look) + dy * Math.cos(look)]; };
+  rope(-10);
+  ctx.shadowColor = 'rgba(200,220,255,0.95)'; ctx.shadowBlur = 30;
+  ctx.fillStyle = '#05060d'; ctx.strokeStyle = '#05060d'; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  // long hair flowing from the back of her head, lifted by the wind
+  const top = R(-1, -102.6), back = R(-7.2, -97), nape = R(-5.5, -89);
+  ctx.beginPath();
+  ctx.moveTo(top[0], top[1]);
+  ctx.bezierCurveTo(back[0] - 1, back[1] - 2, back[0] - 2.5 - f * 0.5, back[1] + 4, back[0] - 3 - f * 0.9, back[1] + 10);
+  ctx.bezierCurveTo(back[0] - 3.5 - f * 1.4, back[1] + 16, back[0] - 2 - f * 1.6, back[1] + 21, back[0] - 6 - f * 2.4, back[1] + 28);
+  ctx.bezierCurveTo(back[0] - 2 - f * 1.4, back[1] + 25, back[0] + 0.5 - f * 0.8, back[1] + 20, back[0] + 1.5 - f * 0.4, back[1] + 14);
+  ctx.bezierCurveTo(back[0] + 2.5, back[1] + 9, nape[0] + 2, nape[1] + 3, -1.5, -35);
+  ctx.lineTo(top[0] + 4, top[1] + 6);
+  ctx.closePath(); ctx.fill();
+  // seat plank
+  ctx.fillRect(-11, 0.6, 29, 1.6);
+  // gown: fitted bodice and narrow waist like the standing figure, a long skirt flowing from the knees
+  ctx.beginPath();
+  ctx.moveTo(-1.6, -36);
+  ctx.bezierCurveTo(-4.5, -34.5, -7.2, -33, -7.0, -29);
+  ctx.bezierCurveTo(-6.8, -23, -5.0, -17, -4.4, -11);
+  ctx.bezierCurveTo(-5.4, -7, -7.4, -3.5, -7.0, 0.6);
+  ctx.bezierCurveTo(-8 - f * 0.4, 6, -10 - f, 12, -13.5 - f * 1.6, 19);
+  ctx.quadraticCurveTo(-7, 15, -2.5, 8.5);
+  ctx.quadraticCurveTo(3, 11, 7 + om * 0.8, 15);
+  ctx.bezierCurveTo(7.6 + om, 20, 7.2 + om * 1.2, 24, 6.6 + om * 1.4, 28);
+  ctx.quadraticCurveTo(10 + om * 1.6, 26.6, 13 + om * 1.8, 28.6);
+  ctx.quadraticCurveTo(17 + om * 2.0, 26.4, 20 + om * 2.2, 28.4);
+  ctx.quadraticCurveTo(23 + om * 2.4, 26.8, 26 + om * 2.8, 27.6);
+  ctx.bezierCurveTo(24 + om * 1.6, 18, 22, 6, 20.2, -1.4);
+  ctx.bezierCurveTo(19.2, -5.4, 13, -5.8, 8, -6.4);
+  ctx.bezierCurveTo(5.4, -7, 4.6, -9, 4.4, -11);
+  ctx.bezierCurveTo(5.0, -14, 7.8, -17.5, 7.8, -21.5);
+  ctx.bezierCurveTo(7.8, -25.5, 6.0, -27, 5.8, -29.5);
+  ctx.bezierCurveTo(5.0, -33, 3.4, -34.6, 1.6, -36);
+  ctx.closePath(); ctx.fill();
+  // neck, head and profile tilted up towards the star
+  ctx.save(); ctx.translate(nx, ny); ctx.rotate(look); ctx.translate(0, 86);
+  ctx.fillRect(-1.6, -91, 3.2, 6);
+  ctx.beginPath(); ctx.ellipse(0.6, -93.6, 4.7, 5.9, 0.12, 0, 7); ctx.fill();
+  femFace();
+  ctx.beginPath();
+  ctx.moveTo(4.8, -97.6);
+  ctx.bezierCurveTo(4.4, -102.2, -2.5, -103.6, -5.8, -100.2);
+  ctx.bezierCurveTo(-7.6, -98, -7.6, -93, -6, -89.5);
+  ctx.lineTo(-1, -92);
+  ctx.bezierCurveTo(1, -95, 3, -96.8, 4.8, -97.6);
+  ctx.closePath(); ctx.fill();
+  ctx.restore();
+  // front rope, and her arm reaching out to hold it
+  rope(17);
+  ctx.shadowColor = 'rgba(200,220,255,0.95)'; ctx.shadowBlur = 22;
+  ctx.fillStyle = '#05060d'; ctx.strokeStyle = '#05060d';
+  ctx.lineWidth = 2.1;
+  ctx.beginPath(); ctx.moveTo(4.2, -32.5); ctx.quadraticCurveTo(10, -30, 12, -26.5); ctx.stroke();
+  ctx.lineWidth = 1.6;
+  ctx.beginPath(); ctx.moveTo(12, -26.5); ctx.quadraticCurveTo(14.5, -23.5, 16.8, -22.5); ctx.stroke();
+  ctx.beginPath(); ctx.ellipse(17, -22.4, 1.0, 1.4, 0, 0, 7); ctx.fill();
+  ctx.restore();
+}
+
 function ground(y, color, rough = 18, seed = 1) {
   ctx.fillStyle = color;
   ctx.beginPath(); ctx.moveTo(-200, H + 200); ctx.lineTo(-200, y);
@@ -952,7 +1024,7 @@ const SCENES = {
       ctx.font = 'italic 600 50px "Cormorant Garamond"'; ctx.fillStyle = `rgba(240,228,210,${smooth(hit + 0.9, hit + 1.8, lt)})`;
       ctx.shadowColor = 'rgba(0,0,0,0.9)'; ctx.shadowBlur = 12;
       ctx.fillText(TL.tagline, 540, 1060);
-      const ea = smooth(hit + 2.0, hit + 3.0, lt), ez = 1.08 - 0.08 * easeOut((lt - hit - 2.0) / 2.5);
+      const ea = smooth(hit + 1.3, hit + 2.2, lt), ez = 1.08 - 0.08 * easeOut((lt - hit - 1.3) / 3.5);
       ctx.save(); ctx.translate(540, 1200); ctx.scale(ez, ez);
       if (ctx.letterSpacing !== undefined) ctx.letterSpacing = '8px';
       ctx.font = '700 46px Cinzel'; ctx.fillStyle = `rgba(230,200,150,${ea})`; ctx.shadowColor = 'rgba(0,0,0,0.95)'; ctx.shadowBlur = 16;
@@ -1356,32 +1428,62 @@ const SCENES = {
 
   outro(t) {
     const lt = local('outro', t), d = SC.outro.end - SC.outro.start, hit = CUE.outro_hit;
-    const dawn = smooth(hit - 0.2, hit + 2.5, t);
-    ctx.save(); camera(1.05 + 0.08 * lt / d, 0, 0);
-    vgrad([[0, '#020108'], [0.45, `rgb(${18 + 50 * dawn},${10 + 30 * dawn},${40 + 30 * dawn})`], [0.7, `rgb(${60 + 150 * dawn},${30 + 90 * dawn},${70 + 40 * dawn})`], [1, '#160c22']]);
-    stars(t, { alpha: 1 });
+    ctx.save(); camera(1.0 + 0.04 * lt / d, 0, 0);
+    // moonlit night above the cloud sea
+    vgrad([[0, '#02030d'], [0.35, '#0a1233'], [0.62, '#1c2a5a'], [0.78, '#3a4a7e'], [1, '#0c1028']]);
+    stars(t, { alpha: 1, noLast: true });
+    const SX = 850, SY = 400;
     ctx.save(); ctx.globalCompositeOperation = 'lighter';
-    glow(STARS[0].x * W, STARS[0].y * H, 220, 'rgba(255,205,140,A)', 0.6);
-    glow(540, 1350, 900, 'rgba(255,190,120,A)', 0.5 * dawn);
+    glow(210, 420, 520, 'rgba(170,195,255,A)', 0.35);
+    glow(SX, SY, 240, 'rgba(255,225,180,A)', 0.55 + 0.1 * Math.sin(t * 2));
+    glow(SX, SY, 22, 'rgba(255,250,235,A)', 1);
+    ctx.strokeStyle = 'rgba(255,240,215,0.5)'; ctx.lineWidth = 2;
+    for (let k = 0; k < 4; k++) { const ang = k * Math.PI / 4 + 0.2 * Math.sin(t * 0.5), r = 70 + 12 * Math.sin(t * 2 + k); ctx.beginPath(); ctx.moveTo(SX - Math.cos(ang) * r, SY - Math.sin(ang) * r); ctx.lineTo(SX + Math.cos(ang) * r, SY + Math.sin(ang) * r); ctx.stroke(); }
     ctx.restore();
-    whale(lerp(1300, -300, lt / (d + 4)), 900, 0.7, t, 0.8, -1);
-    cloudSea(t, 1380, 0.9);
-    // Neraya sitting on the end of a branch, looking up at the last star
-    ctx.fillStyle = '#05030a';
-    ctx.beginPath(); ctx.moveTo(-200, 1500); ctx.quadraticCurveTo(300, 1460, 640, 1420); ctx.lineTo(650, 1450); ctx.quadraticCurveTo(300, 1520, -200, 1620); ctx.fill();
-    const reach = 0.5 + 0.5 * Math.sin(t * 0.6);
-    const oh = figure(470, 1446, 430, { hair: true, t, wind: 2, arm: lerp(-1.05, -1.2, reach), armLen: 36, rim: 'rgba(255,200,150,0.95)', rimBlur: 30 });
-    ctx.save(); ctx.globalCompositeOperation = 'lighter'; glow(oh[0], oh[1], 50, 'rgba(255,220,170,A)', 0.5); ctx.restore();
-    ctx.save(); ctx.globalCompositeOperation = 'lighter'; glow(470, 1100, 180, 'rgba(255,210,160,A)', 0.2); ctx.restore();
-    particles(t, 60, { y0: 1900, dy: -1700, a: 0.6, color: 'rgba(255,210,150,A)', r: 2, life: 8 });
+    moon(210, 420, 105);
+    whale(lerp(1350, -350, lt / (d + 4)), 760, 0.55, t, 0.6, -1);
+    cloudSea(t, 1560, 0.95);
+    // moonlight shimmer on the clouds
+    ctx.save(); ctx.globalCompositeOperation = 'lighter'; glow(260, 1600, 600, 'rgba(170,200,255,A)', 0.25); ctx.restore();
+    // the great tree on the right, its long curving branch, leaves and lanterns
+    const c = '#04050c';
+    ctx.fillStyle = c;
+    ctx.beginPath(); ctx.moveTo(900, 1920); ctx.bezierCurveTo(950, 1500, 900, 1100, 945, 760); ctx.bezierCurveTo(965, 520, 990, 280, 1000, -40); ctx.lineTo(1140, -40); ctx.lineTo(1140, 1920); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(960, 740);
+    ctx.bezierCurveTo(720, 752, 420, 790, 110, 768); ctx.quadraticCurveTo(96, 772, 112, 780);
+    ctx.bezierCurveTo(420, 812, 720, 800, 955, 830); ctx.fill();
+    // a few drooping vines with small leaves
+    [[180, 772, 90], [380, 790, 140], [700, 784, 70], [880, 760, 160]].forEach(([vx, vy, len], k) => {
+      const sw2 = Math.sin(t * 1.2 + k) * 6;
+      ctx.strokeStyle = c; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(vx, vy); ctx.quadraticCurveTo(vx + sw2 * 0.5, vy + len * 0.5, vx + sw2, vy + len); ctx.stroke();
+      for (let j = 1; j <= 5; j++) {
+        const q = j / 5.5, lx = vx + sw2 * q * q, ly = vy + len * q;
+        ctx.beginPath(); ctx.ellipse(lx + (j % 2 ? 5 : -5), ly, 3.5, 8, j % 2 ? 0.7 : -0.7, 0, 7); ctx.fill();
+      }
+    });
+    ctx.save(); ctx.strokeStyle = 'rgba(175,200,255,0.45)'; ctx.lineWidth = 2.5;
+    ctx.beginPath(); ctx.moveTo(955, 741); ctx.bezierCurveTo(720, 753, 420, 791, 112, 769); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(901, 1920); ctx.bezierCurveTo(951, 1500, 901, 1100, 946, 760); ctx.bezierCurveTo(966, 520, 991, 280, 1001, -40); ctx.stroke();
     ctx.restore();
-    // call to action, then the end card
+    [[250, 86], [790, 120]].forEach(([lx, len], k) => {
+      const sway = Math.sin(t * 1.1 + k * 2) * 0.06, ex = lx + Math.sin(sway) * len, ey = 790 + Math.cos(sway) * len;
+      ctx.strokeStyle = c; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(lx, 790); ctx.lineTo(ex, ey); ctx.stroke();
+      ctx.fillStyle = c; ctx.fillRect(ex - 12, ey, 24, 6); ctx.fillRect(ex - 10, ey + 30, 20, 5);
+      ctx.save(); ctx.globalCompositeOperation = 'lighter';
+      glow(ex, ey + 18, 90, 'rgba(255,170,90,A)', 0.55); glow(ex, ey + 18, 12, 'rgba(255,225,170,A)', 1);
+      ctx.restore();
+    });
+    // Neraya on a swing, gliding back and forth in the moonlight, looking up at the brightest star
+    swingHeroine(560, 806, 330, t, SX, SY);
+    particles(t, 50, { y0: 1900, dy: -1600, a: 0.55, color: 'rgba(200,220,255,A)', r: 2, life: 9, glowR: 6 });
+    ctx.restore();
     const cta = LINES.find(l => l.scene === 'outro');
     const fa = smooth(cta.start + 1.5, cta.start + 2.3, t);
-    followButton(540, 840, fa, t);
+    followButton(540, 1700, fa, t);
     ctx.save(); ctx.textAlign = 'center'; ctx.shadowColor = 'rgba(0,0,0,0.9)'; ctx.shadowBlur = 14;
     ctx.font = 'italic 600 46px "Cormorant Garamond"'; ctx.fillStyle = `rgba(245,235,220,${fa})`;
-    ctx.fillText('… und sieh die nächste Folge als Erstes', 540, 965);
+    ctx.fillText('… und sieh die nächste Folge als Erstes', 540, 1815);
     ctx.restore();
     // next episode: shown big and long
     const [nf, nt] = (TL.naechste || '').split(' · ');
