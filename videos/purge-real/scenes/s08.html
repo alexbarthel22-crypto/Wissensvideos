@@ -12,7 +12,7 @@
   <div id="root" data-composition-id="s08" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
     <div id="s08-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
       <svg id="s08-svg" class="full" viewBox="0 0 1080 1920"></svg>
-      <div id="s08-b1" class="s08-b">EINSCHLIESSEN</div><div id="s08-b2" class="s08-b">RAUSGEHEN</div>
+      <div id="s08-b1" class="s08-b">VERSCHANZEN</div><div id="s08-b2" class="s08-b">TEILNEHMEN</div>
       <div id="s08-f" class="abs">+ FOLGEN</div>
     </div>
   </div>
@@ -34,11 +34,11 @@
       el("rect", O({ x: 280, y: 580, width: 520, height: 480, fill: "none", stroke: "#a87a4a", "stroke-width": 20 }), room);
       const beam = el("path", { d: "M470 790 L300 1040 H640Z", fill: "#fff7c0", opacity: 0 }, room);
       const red = el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: "#c8102e", opacity: 0 }, sv);
-      const du = at("L18", "du?"), ei = at("L18", "einschließen"), ra = at("L18", "rausgehen"), ko = at("L18", "Kommentare"), l19 = line("L19")[0], fo = at("L19", "folg"), si = at("L19", "Sirene");
+      const du = at("L18", "du?"), ei = at("L18", "verschanzen"), ra = at("L18", "teilnehmen"), ko = at("L18", "Kommentare"), l19 = line("L19")[0], fo = at("L19", "folg"), si = at("L19", "Sirene");
       tl.fromTo(M.g, { opacity: 0, x: 380 }, { opacity: 1, x: 470, duration: 1.2, ease: "power2.out" }, du);
       tl.to(beam, { opacity: 0.35, duration: 0.2, repeat: 3, yoyo: true }, du + 1.0);
-      tl.fromTo("#s08-b1", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.35, ease: "back.out(2)" }, ei - 0.15);
       tl.fromTo("#s08-b2", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.35, ease: "back.out(2)" }, ra - 0.15);
+      tl.fromTo("#s08-b1", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.35, ease: "back.out(2)" }, ei - 0.15);
       tl.to(".s08-b", { opacity: 0, y: 40, duration: 0.25 }, l19 - 0.2);
       tl.fromTo("#s08-f", { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(2.4)" }, fo - 0.1);
       tl.to("#s08-f", { scale: 1.07, duration: 0.3, yoyo: true, repeat: 9, ease: "sine.inOut" }, fo + 0.4);

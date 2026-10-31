@@ -1,9 +1,9 @@
 {
  "title": "Was wäre, wenn The Purge wirklich stattfinden würde?",
- "voice": "Google Chirp 3 HD (de-DE-Chirp3-HD-Charon), --speed 1.08",
+ "voice": "Google Chirp 3 HD (de-DE-Chirp3-HD-Puck), --speed 1.1",
  "style": "story",
  "lead_in": 0.9,
- "_zahlen": "Rettungsdienst DE ~14 Mio. Einsätze/Jahr -> ~19.000 pro 12 h. Montreal 7.10.1969: Polizei-/Feuerwehrstreik ~16 h, Banküberfälle, >100 Geschäfte geplündert, 2 Tote. 1 % von 84 Mio. = 840.000.",
+ "_zahlen": "Rettungsdienst DE ~14 Mio. Einsätze/Jahr -> ~19.000 pro 12 h. Seltene Sammelkarten: oft vier- bis fünfstellige Euro-Beträge. 1 % von 84 Mio. = 840.000.",
  "scenes": [
   {
    "id": "s01",
@@ -16,8 +16,7 @@
    "lines": [
     {
      "id": "L1",
-     "text": "Was wäre, / wenn die *r:Säuberung / aus *r:The_Purge|The-Pörtsch / wirklich stattfindet?",
-     "speed": 0.95
+     "text": "Was wäre, wenn / *r:The_Purge / wirklich stattfindet? / Die *r:Säuberung."
     },
     {
      "id": "L2",
@@ -32,12 +31,22 @@
     {
      "name": "purge-siren",
      "at": "s01+0.0",
-     "volume": 0.8
+     "volume": 0.85
     },
     {
      "name": "impact-bass-1",
      "at": "L2:Mord",
      "volume": 0.45
+    },
+    {
+     "name": "whoosh-short",
+     "at": "L2:Zwölf",
+     "volume": 0.3
+    },
+    {
+     "name": "whoosh-short",
+     "at": "L3:Polizei",
+     "volume": 0.3
     }
    ]
   },
@@ -68,37 +77,6 @@
     {
      "name": "impact-bass-2",
      "at": "L5:schutzlos",
-     "volume": 0.4
-    }
-   ]
-  },
-  {
-   "id": "s03",
-   "tag": "",
-   "top": [
-    "1969",
-    "ECHTES BEISPIEL · MONTREAL",
-    "y"
-   ],
-   "lines": [
-    {
-     "id": "L6",
-     "text": "Klingt nach Film? / Montreal, *y:1969|neunzehnhundertneunundsechzig: / Die Polizei streikt / *y:16|sechzehn *y:Stunden."
-    },
-    {
-     "id": "L7",
-     "text": "Ergebnis: / *r:Banküberfälle, / *r:über *r:100|hundert *r:Geschäfte / geplündert – / und *r:zwei *r:Tote."
-    }
-   ],
-   "sfx": [
-    {
-     "name": "pop",
-     "at": "L6:1969",
-     "volume": 0.4
-    },
-    {
-     "name": "impact-bass-1",
-     "at": "L7:Tote",
      "volume": 0.4
     }
    ]
@@ -153,7 +131,15 @@
     },
     {
      "id": "L12",
-     "text": "Juweliere, Banken: / *r:geplündert. / Und die Versicherung? / Zahlt *r:nichts. / Es war ja *r:legal."
+     "text": "Juweliere, Banken – / und *y:Sammelkartenläden: / *r:geplündert."
+    },
+    {
+     "id": "L12b",
+     "text": "Eine einzige seltene Karte / ist oft *r:tausende *r:Euro wert."
+    },
+    {
+     "id": "L12c",
+     "text": "Und die Versicherung? / Zahlt *r:nichts. / Es war ja *r:legal."
     }
    ],
    "sfx": [
@@ -163,8 +149,23 @@
      "volume": 0.25
     },
     {
+     "name": "impact-bass-2",
+     "at": "L12:Juweliere",
+     "volume": 0.3
+    },
+    {
+     "name": "impact-bass-2",
+     "at": "L12:Banken",
+     "volume": 0.3
+    },
+    {
+     "name": "impact-bass-2",
+     "at": "L12:Sammelkartenläden",
+     "volume": 0.3
+    },
+    {
      "name": "impact-bass-1",
-     "at": "L12:legal",
+     "at": "L12c:legal",
      "volume": 0.4
     }
    ]
@@ -224,9 +225,9 @@
    ],
    "sfx": [
     {
-     "name": "purge-siren",
-     "at": "L16:heult",
-     "volume": 0.45
+     "name": "purge-siren-2",
+     "at": "L16:heult-0.4",
+     "volume": 0.7
     },
     {
      "name": "impact-bass-1",
@@ -247,7 +248,7 @@
    "lines": [
     {
      "id": "L18",
-     "text": "Und *y:du? / Würdest du dich / *g:einschließen – / oder *r:rausgehen? / Schreib's in die / *y:Kommentare.",
+     "text": "Und *y:du? / Würdest du an der Purge / *r:teilnehmen – / oder dich zuhause / *g:verschanzen? / Schreib's in die / *y:Kommentare.",
      "pause": 0.3
     },
     {
@@ -261,13 +262,12 @@
      "name": "notification",
      "at": "L18:Kommentare",
      "volume": 0.35
-    },
-    {
-     "name": "purge-siren",
-     "at": "L19:folg",
-     "volume": 0.4
     }
    ]
   }
- ]
+ ],
+ "pronunciations": {
+  "The Purge": "ðə ˈpœʁdʒ",
+  "Purge": "ˈpœʁdʒ"
+ }
 }

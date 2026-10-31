@@ -26,17 +26,17 @@
     #s08-b1 { left: 50px; background: #39e27a; } #s08-b2 { left: 580px; background: #ff3b55; color: #fff; }
     #s08-f { left: 330px; top: 1170px; width: 420px; height: 120px; border-radius: 60px; background: #ff3b55; color: #fff; text-align: center; font: 700 60px/120px Oswald, sans-serif; opacity: 0; box-shadow: 0 0 50px rgba(255,59,85,.6); }
   </style>
-  <div id="root" data-composition-id="s08" data-start="0" data-duration="10.640" data-width="1080" data-height="1920">
-    <div id="s08-stage" class="clip stage" data-start="0" data-duration="10.640" data-track-index="0">
+  <div id="root" data-composition-id="s08" data-start="0" data-duration="11.740" data-width="1080" data-height="1920">
+    <div id="s08-stage" class="clip stage" data-start="0" data-duration="11.740" data-track-index="0">
       <svg id="s08-svg" class="full" viewBox="0 0 1080 1920"></svg>
-      <div id="s08-b1" class="s08-b">EINSCHLIESSEN</div><div id="s08-b2" class="s08-b">RAUSGEHEN</div>
+      <div id="s08-b1" class="s08-b">VERSCHANZEN</div><div id="s08-b2" class="s08-b">TEILNEHMEN</div>
       <div id="s08-f" class="abs">+ FOLGEN</div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 10.64, "L18": [0.2, 4.84], "L18.words": [["und", 0.2, 0.455], ["du", 0.455, 0.7], ["würdest", 1.11, 1.433], ["du", 1.433, 1.587], ["dich", 1.587, 1.751], ["einschließen", 1.751, 2.245], ["", 2.245, 2.387], ["oder", 2.387, 2.693], ["rausgehen", 2.693, 3.17], ["schreibs", 3.67, 3.865], ["in", 3.865, 4.025], ["die", 4.025, 4.19], ["kommentare", 4.19, 4.84]], "L19": [5.36, 8.24], "L19.words": [["und", 5.36, 5.567], ["folg", 5.567, 5.782], ["mir", 5.782, 5.989], ["", 5.989, 6.174], ["bevor", 6.174, 6.582], ["heute", 6.582, 6.989], ["nacht", 6.989, 7.211], ["die", 7.211, 7.418], ["sirene", 7.418, 8.018], ["heult", 8.018, 8.24]]};
+      const C = {"__dur": 11.74, "L18": [0.2, 5.92], "L18.words": [["und", 0.2, 0.434], ["du", 0.434, 0.66], ["würdest", 1.21, 1.522], ["du", 1.522, 1.67], ["an", 1.67, 1.818], ["der", 1.818, 1.971], ["purge", 1.971, 2.273], ["teilnehmen", 2.273, 2.738], ["", 2.738, 2.875], ["oder", 2.875, 3.171], ["dich", 3.171, 3.33], ["zuhause", 3.33, 3.779], ["verschanzen", 3.779, 4.25], ["schreibs", 4.78, 4.97], ["in", 4.97, 5.125], ["die", 5.125, 5.287], ["kommentare", 5.287, 5.92]], "L19": [6.44, 9.34], "L19.words": [["und", 6.44, 6.649], ["folg", 6.649, 6.865], ["mir", 6.865, 7.074], ["", 7.074, 7.26], ["bevor", 7.26, 7.67], ["heute", 7.67, 8.08], ["nacht", 8.08, 8.304], ["die", 8.304, 8.512], ["sirene", 8.512, 9.116], ["heult", 9.116, 9.34]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -124,11 +124,11 @@
       el("rect", O({ x: 280, y: 580, width: 520, height: 480, fill: "none", stroke: "#a87a4a", "stroke-width": 20 }), room);
       const beam = el("path", { d: "M470 790 L300 1040 H640Z", fill: "#fff7c0", opacity: 0 }, room);
       const red = el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: "#c8102e", opacity: 0 }, sv);
-      const du = at("L18", "du?"), ei = at("L18", "einschließen"), ra = at("L18", "rausgehen"), ko = at("L18", "Kommentare"), l19 = line("L19")[0], fo = at("L19", "folg"), si = at("L19", "Sirene");
+      const du = at("L18", "du?"), ei = at("L18", "verschanzen"), ra = at("L18", "teilnehmen"), ko = at("L18", "Kommentare"), l19 = line("L19")[0], fo = at("L19", "folg"), si = at("L19", "Sirene");
       tl.fromTo(M.g, { opacity: 0, x: 380 }, { opacity: 1, x: 470, duration: 1.2, ease: "power2.out" }, du);
       tl.to(beam, { opacity: 0.35, duration: 0.2, repeat: 3, yoyo: true }, du + 1.0);
-      tl.fromTo("#s08-b1", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.35, ease: "back.out(2)" }, ei - 0.15);
       tl.fromTo("#s08-b2", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.35, ease: "back.out(2)" }, ra - 0.15);
+      tl.fromTo("#s08-b1", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.35, ease: "back.out(2)" }, ei - 0.15);
       tl.to(".s08-b", { opacity: 0, y: 40, duration: 0.25 }, l19 - 0.2);
       tl.fromTo("#s08-f", { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(2.4)" }, fo - 0.1);
       tl.to("#s08-f", { scale: 1.07, duration: 0.3, yoyo: true, repeat: 9, ease: "sine.inOut" }, fo + 0.4);

@@ -24,17 +24,23 @@
     .cbox { top: 440px; } /* unter der großen Kapitel-Überschrift */
     #s01-call { left: 290px; top: 640px; width: 500px; height: 300px; border-radius: 30px; background: #12131c; border: 5px solid #ff3b55; text-align: center; opacity: 0; box-shadow: 0 0 60px rgba(255,59,85,.45); }
     #s01-call b { display: block; margin-top: 40px; font: 700 110px/1 Oswald, sans-serif; color: #fff; } #s01-call i { display: block; margin-top: 16px; font: 700 40px Oswald, sans-serif; font-style: normal; color: #ff3b55; letter-spacing: .06em; }
+    #s01-tv { left: 140px; top: 600px; width: 800px; height: 560px; border-radius: 30px; background: #1a1c26; border: 6px solid #0b0c14; opacity: 0; }
+    #s01-tv .scr { position: absolute; left: 34px; top: 34px; right: 34px; bottom: 90px; border-radius: 14px; background: #2a0d14; text-align: center; overflow: hidden; }
+    #s01-tv .scr b { display: block; margin-top: 40px; font: 700 40px Oswald, sans-serif; color: #ff3b55; letter-spacing: .1em; }
+    #s01-tv .scr i { display: block; margin-top: 10px; font: 700 120px/1 Oswald, sans-serif; font-style: normal; color: #fff; }
+    #s01-tv .tk { position: absolute; left: 0; right: 0; bottom: 0; height: 64px; background: #ff3b55; color: #fff; font: 700 36px/64px Oswald, sans-serif; white-space: nowrap; }
   </style>
-  <div id="root" data-composition-id="s01" data-start="0" data-duration="13.490" data-width="1080" data-height="1920">
-    <div id="s01-stage" class="clip stage" data-start="0" data-duration="13.490" data-track-index="0">
+  <div id="root" data-composition-id="s01" data-start="0" data-duration="14.230" data-width="1080" data-height="1920">
+    <div id="s01-stage" class="clip stage" data-start="0" data-duration="14.230" data-track-index="0">
       <svg id="s01-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s01-tv" class="abs"><div class="scr"><b>NOTFALL-DURCHSAGE</b><i id="s01-cd">12:00:00</i><div class="tk"><span id="s01-tk">ALLE VERBRECHEN LEGAL · 12 STUNDEN · KEINE RETTUNGSDIENSTE · ALLE VERBRECHEN LEGAL ·</span></div></div></div>
       <div id="s01-call" class="abs"><b>112</b><i>NICHT ERREICHBAR</i></div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 13.49, "L1": [0.9, 3.9], "L1.words": [["was", 0.9, 1.781], ["wäre", 1.781, 3.48], ["wenn", 3.61, 3.633], ["die", 3.633, 3.654], ["säuberung", 3.654, 3.72], ["aus", 3.72, 3.741], ["thepurge", 3.741, 3.788], ["wirklich", 3.788, 3.833], ["stattfindet", 3.833, 3.9]], "L2": [4.12, 7.16], "L2.words": [["zwölf", 4.12, 4.337], ["stunden", 4.337, 4.75], ["lang", 4.75, 4.96], ["alle", 5.3, 5.562], ["verbrechen", 5.562, 5.974], ["legal", 5.974, 6.24], ["auch", 6.68, 6.92], ["mord", 6.92, 7.16]], "L3": [7.38, 13.31], "L3.words": [["polizei", 7.38, 7.95], ["feuerwehr", 8.15, 8.64], ["notarzt", 8.81, 9.35], ["nicht", 9.81, 10.006], ["erreichbar", 10.006, 10.56], ["und", 11.11, 11.293], ["am", 11.293, 11.469], ["ende", 11.469, 11.822], ["wartet", 11.822, 12.187], ["die", 12.187, 12.37], ["schockierendste", 12.37, 13.121], ["zahl", 13.121, 13.31]]};
+      const C = {"__dur": 14.23, "L1": [0.9, 4.39], "L1.words": [["was", 0.9, 1.122], ["wäre", 1.122, 1.55], ["wenn", 1.78, 1.95], ["thepurge", 1.95, 2.436], ["wirklich", 2.436, 2.776], ["stattfindet", 2.776, 3.28], ["die", 3.7, 3.873], ["säuberung", 3.873, 4.39]], "L2": [4.61, 8.54], "L2.words": [["zwölf", 4.61, 4.861], ["stunden", 4.861, 5.338], ["lang", 5.338, 5.58], ["alle", 6.1, 6.44], ["verbrechen", 6.44, 6.974], ["legal", 6.974, 7.32], ["auch", 7.87, 8.205], ["mord", 8.205, 8.54]], "L3": [8.76, 14.05], "L3.words": [["polizei", 8.76, 9.427], ["feuerwehr", 9.427, 9.908], ["notarzt", 9.908, 10.371], ["nicht", 10.371, 10.616], ["erreichbar", 10.616, 11.307], ["und", 11.307, 11.535], ["am", 11.535, 11.755], ["ende", 11.755, 12.194], ["wartet", 12.194, 12.65], ["die", 12.65, 12.878], ["schockierendste", 12.878, 13.814], ["zahl", 13.814, 14.05]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -111,25 +117,56 @@
       const tl = gsap.timeline({ paused: true });
       const sv = document.querySelector("#s01-svg");
       night(sv, "s01-n", "#07091a", "#2a1630", [850, 660]);
-      pines(sv, 1010, "#0f1424", 4);
-      const H = [[20, 230, 250, "#3b3550", [1, 0]], [300, 200, 230, "#45405c", [0, 1]], [560, 240, 260, "#37324a", [1, 1]], [850, 220, 240, "#423b56", [0, 1]]].map(([x, w, h, c, lit]) => house(sv, x, 1150, w, h, c, { lit }));
-      el("rect", { x: 0, y: 1150, width: 1080, height: 300, fill: "#141320" }, sv);
-      const L = lamp(sv, 230, 1200);
-      const pk = [pumpkin(sv, 130, 1175, 0.9), pumpkin(sv, 690, 1172, 0.8), pumpkin(sv, 960, 1176, 0.85)];
-      const fg = fog(sv, 1110, 0.3, 6);
-      const M = masked(sv, 560, 1360, 1.15, "#1d1f2b", true);
+      const A = el("g", {}, sv);
+      pines(A, 1010, "#0f1424", 4);
+      [[20, 230, 250, "#3b3550", [1, 0]], [300, 200, 230, "#45405c", [0, 1]], [560, 240, 260, "#37324a", [1, 1]], [850, 220, 240, "#423b56", [0, 1]]].forEach(([x, w, h, c, lit]) => house(A, x, 1150, w, h, c, { lit }));
+      el("rect", { x: -200, y: 1150, width: 1480, height: 400, fill: "#141320" }, A);
+      const L = lamp(A, 230, 1200);
+      const pk = [pumpkin(A, 130, 1175, 0.9), pumpkin(A, 690, 1172, 0.8), pumpkin(A, 960, 1176, 0.85)];
+      const fg = fog(A, 1110, 0.3, 6);
+      const M = masked(A, 900, 1360, 1.15, "#1d1f2b", true);
+      const CU = el("g", { opacity: 0 }, sv); el("rect", { x: 0, y: 500, width: 1080, height: 1000, fill: "#0b0c14" }, CU);
+      const MC = masked(CU, 540, 2050, 3.6, "#1d1f2b");
+      const D = el("g", { opacity: 0 }, sv), icons = [];
+      [["#2f5bd6", "POLIZEI"], ["#d63a2f", "FEUERWEHR"], ["#ece6d6", "NOTARZT"]].forEach(([c, l], i) => { const g = el("g", { opacity: 0 }, D), x = 190 + i * 350, y = 860;
+        el("rect", O({ x: x - 130, y: y - 60, width: 260, height: 130, rx: 24, fill: c }), g); el("rect", O({ x: x - 50, y: y - 100, width: 100, height: 46, rx: 10, fill: c }), g);
+        [x - 80, x + 80].forEach((wx) => el("circle", O({ cx: wx, cy: y + 72, r: 30, fill: "#22232e" }), g));
+        el("rect", { x: x - 40, y: y - 116, width: 80, height: 18, rx: 6, fill: i === 0 ? "#4da3ff" : "#ff3b55" }, g);
+        txt(g, x, y + 160, l, 44, "#fff"); const xx = txt(g, x, y + 50, "✕", 230, "#ff3b55", { opacity: 0 }); icons.push({ g, xx }); });
+      const Q = txt(sv, 540, 1000, "?", 420, "#ff3b55", { opacity: 0 });
       const red = el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: "#c8102e", opacity: 0 }, sv);
-      const mo = at("L2", "Mord"), ni = at("L3", "nicht"), sz = at("L3", "schockierendste");
+      const l2 = line("L2")[0], ve = at("L2", "Verbrechen"), mo = at("L2", "Mord"), l3 = line("L3")[0], po = at("L3", "Polizei"), fe = at("L3", "Feuerwehr"), no = at("L3", "Notarzt"), ni = at("L3", "nicht"), ue = at("L3", "Und"), sz = at("L3", "schockierendste");
+      // Einstellung 1: Straße, Kamera fährt langsam ran, Figur läuft ins Bild
+      tl.fromTo(A, { scale: 1 }, { scale: 1.15, svgOrigin: "540 1100", duration: l2, ease: "none" }, 0);
+      tl.to(M.g, { x: 560, duration: 2.6, ease: "power1.out" }, 0.2);
+      tl.to(M.g, { y: 1352, duration: 0.3, repeat: 7, yoyo: true, ease: "sine.inOut" }, 0.2);
       tl.fromTo(red, { opacity: 0 }, { opacity: 0.32, duration: 0.25, repeat: 7, yoyo: true, ease: "sine.inOut" }, 0);
       pk.forEach((k, i) => tl.fromTo(k.face, { opacity: 1 }, { opacity: 0.5, duration: 0.12, repeat: 9, yoyo: true }, 0.3 + i * 0.2));
-      tl.to(fg, { x: 60, duration: 8, ease: "none" }, 0);
+      tl.to(fg, { x: 80, duration: 6, ease: "none" }, 0);
       tl.to(L.cone, { attr: { opacity: 0.04 }, duration: 0.06, repeat: 5, yoyo: true }, 1.5);
-      tl.to(M.g, { scale: 1.45, y: 1450, duration: 0.5, ease: "power3.in" }, mo - 0.3);
-      tl.fromTo(red, { opacity: 0.6 }, { opacity: 0, duration: 0.5 }, mo);
-      tl.fromTo("#s01-call", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(2)" }, ni - 0.4);
+      tl.to(M.mask, { rotation: -8, svgOrigin: "0 -345", duration: 0.4, yoyo: true, repeat: 1 }, 2.9);
+      // Einstellung 2: Fernseher mit Notfall-Durchsage
+      tl.set(A, { opacity: 0 }, l2 - 0.05); tl.set("#s01-tv", { opacity: 1 }, l2 - 0.05);
+      tl.fromTo("#s01-tv", { scale: 1.25 }, { scale: 1, duration: 0.5, ease: "power3.out" }, l2 - 0.05);
+      tl.fromTo("#s01-tk", { x: 900 }, { x: -1400, duration: 4, ease: "none" }, l2);
+      tl.to("#s01-tv .scr", { backgroundColor: "#5a0d1c", duration: 0.12, repeat: 5, yoyo: true }, ve);
+      // Einstellung 3: Nahaufnahme Maske
+      tl.set("#s01-tv", { opacity: 0 }, mo - 0.25); tl.set(CU, { opacity: 1 }, mo - 0.25);
+      tl.fromTo(CU, { scale: 1.2 }, { scale: 1, svgOrigin: "540 900", duration: 0.4, ease: "power3.out" }, mo - 0.25);
+      tl.fromTo(red, { opacity: 0.7 }, { opacity: 0, duration: 0.5 }, mo);
+      tl.to(MC.g, { x: 552, duration: 0.04, repeat: 9, yoyo: true }, mo);
+      // Einstellung 4: Polizei, Feuerwehr, Notarzt durchgestrichen
+      tl.set(CU, { opacity: 0 }, l3 - 0.1); tl.set(D, { opacity: 1 }, l3 - 0.1);
+      [po, fe, no].forEach((t, i) => { tl.fromTo(icons[i].g, { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.3, ease: "back.out(2)" }, t - 0.15);
+        tl.fromTo(icons[i].xx, { opacity: 0, scale: 2, svgOrigin: `${190 + i * 350} 860` }, { opacity: 1, scale: 1, duration: 0.2, ease: "back.out(2)" }, t + 0.25); });
+      // Einstellung 5: Notruf tot
+      tl.to(D, { opacity: 0, duration: 0.2 }, ni + 0.25);
+      tl.fromTo("#s01-call", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2)" }, ni + 0.1);
       tl.to("#s01-call", { x: 10, duration: 0.04, repeat: 7, yoyo: true }, ni + 0.2);
-      tl.to("#s01-call", { opacity: 0, duration: 0.25 }, sz - 0.6);
-      tl.to(M.mask, { scaleY: 0.92, svgOrigin: "0 -345", duration: 0.15, yoyo: true, repeat: 3 }, sz);
+      // Einstellung 6: dunkle Straße, Frage
+      tl.set("#s01-call", { opacity: 0 }, ue - 0.1); tl.set(A, { opacity: 1, scale: 1.4 }, ue - 0.1); tl.set(M.g, { opacity: 0 }, ue - 0.1);
+      tl.to(A, { scale: 1.2, duration: 2, ease: "power1.out" }, ue - 0.1);
+      tl.fromTo(Q, { opacity: 0, scale: 0.4, svgOrigin: "540 900" }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(2)" }, sz - 0.1);
       tl.to("#s01-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
       window.__timelines["s01"] = tl;
     })();

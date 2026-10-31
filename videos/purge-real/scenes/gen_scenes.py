@@ -33,29 +33,66 @@ S = {}
 RED = '      const red = el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: "#c8102e", opacity: 0 }, sv);\n'
 
 S['s01'] = ('''    #s01-call { left: 290px; top: 640px; width: 500px; height: 300px; border-radius: 30px; background: #12131c; border: 5px solid #ff3b55; text-align: center; opacity: 0; box-shadow: 0 0 60px rgba(255,59,85,.45); }
-    #s01-call b { display: block; margin-top: 40px; font: 700 110px/1 Oswald, sans-serif; color: #fff; } #s01-call i { display: block; margin-top: 16px; font: 700 40px Oswald, sans-serif; font-style: normal; color: #ff3b55; letter-spacing: .06em; }''',
+    #s01-call b { display: block; margin-top: 40px; font: 700 110px/1 Oswald, sans-serif; color: #fff; } #s01-call i { display: block; margin-top: 16px; font: 700 40px Oswald, sans-serif; font-style: normal; color: #ff3b55; letter-spacing: .06em; }
+    #s01-tv { left: 140px; top: 600px; width: 800px; height: 560px; border-radius: 30px; background: #1a1c26; border: 6px solid #0b0c14; opacity: 0; }
+    #s01-tv .scr { position: absolute; left: 34px; top: 34px; right: 34px; bottom: 90px; border-radius: 14px; background: #2a0d14; text-align: center; overflow: hidden; }
+    #s01-tv .scr b { display: block; margin-top: 40px; font: 700 40px Oswald, sans-serif; color: #ff3b55; letter-spacing: .1em; }
+    #s01-tv .scr i { display: block; margin-top: 10px; font: 700 120px/1 Oswald, sans-serif; font-style: normal; color: #fff; }
+    #s01-tv .tk { position: absolute; left: 0; right: 0; bottom: 0; height: 64px; background: #ff3b55; color: #fff; font: 700 36px/64px Oswald, sans-serif; white-space: nowrap; }''',
 SVG + '''
+      <div id="s01-tv" class="abs"><div class="scr"><b>NOTFALL-DURCHSAGE</b><i id="s01-cd">12:00:00</i><div class="tk"><span id="s01-tk">ALLE VERBRECHEN LEGAL · 12 STUNDEN · KEINE RETTUNGSDIENSTE · ALLE VERBRECHEN LEGAL ·</span></div></div></div>
       <div id="s01-call" class="abs"><b>112</b><i>NICHT ERREICHBAR</i></div>''',
 '''      const sv = document.querySelector("#s01-svg");
       night(sv, "s01-n", "#07091a", "#2a1630", [850, 660]);
-      pines(sv, 1010, "#0f1424", 4);
-      const H = [[20, 230, 250, "#3b3550", [1, 0]], [300, 200, 230, "#45405c", [0, 1]], [560, 240, 260, "#37324a", [1, 1]], [850, 220, 240, "#423b56", [0, 1]]].map(([x, w, h, c, lit]) => house(sv, x, 1150, w, h, c, { lit }));
-      el("rect", { x: 0, y: 1150, width: 1080, height: 300, fill: "#141320" }, sv);
-      const L = lamp(sv, 230, 1200);
-      const pk = [pumpkin(sv, 130, 1175, 0.9), pumpkin(sv, 690, 1172, 0.8), pumpkin(sv, 960, 1176, 0.85)];
-      const fg = fog(sv, 1110, 0.3, 6);
-      const M = masked(sv, 560, 1360, 1.15, "#1d1f2b", true);
-''' + RED + '''      const mo = at("L2", "Mord"), ni = at("L3", "nicht"), sz = at("L3", "schockierendste");
+      const A = el("g", {}, sv);
+      pines(A, 1010, "#0f1424", 4);
+      [[20, 230, 250, "#3b3550", [1, 0]], [300, 200, 230, "#45405c", [0, 1]], [560, 240, 260, "#37324a", [1, 1]], [850, 220, 240, "#423b56", [0, 1]]].forEach(([x, w, h, c, lit]) => house(A, x, 1150, w, h, c, { lit }));
+      el("rect", { x: -200, y: 1150, width: 1480, height: 400, fill: "#141320" }, A);
+      const L = lamp(A, 230, 1200);
+      const pk = [pumpkin(A, 130, 1175, 0.9), pumpkin(A, 690, 1172, 0.8), pumpkin(A, 960, 1176, 0.85)];
+      const fg = fog(A, 1110, 0.3, 6);
+      const M = masked(A, 900, 1360, 1.15, "#1d1f2b", true);
+      const CU = el("g", { opacity: 0 }, sv); el("rect", { x: 0, y: 500, width: 1080, height: 1000, fill: "#0b0c14" }, CU);
+      const MC = masked(CU, 540, 2050, 3.6, "#1d1f2b");
+      const D = el("g", { opacity: 0 }, sv), icons = [];
+      [["#2f5bd6", "POLIZEI"], ["#d63a2f", "FEUERWEHR"], ["#ece6d6", "NOTARZT"]].forEach(([c, l], i) => { const g = el("g", { opacity: 0 }, D), x = 190 + i * 350, y = 860;
+        el("rect", O({ x: x - 130, y: y - 60, width: 260, height: 130, rx: 24, fill: c }), g); el("rect", O({ x: x - 50, y: y - 100, width: 100, height: 46, rx: 10, fill: c }), g);
+        [x - 80, x + 80].forEach((wx) => el("circle", O({ cx: wx, cy: y + 72, r: 30, fill: "#22232e" }), g));
+        el("rect", { x: x - 40, y: y - 116, width: 80, height: 18, rx: 6, fill: i === 0 ? "#4da3ff" : "#ff3b55" }, g);
+        txt(g, x, y + 160, l, 44, "#fff"); const xx = txt(g, x, y + 50, "✕", 230, "#ff3b55", { opacity: 0 }); icons.push({ g, xx }); });
+      const Q = txt(sv, 540, 1000, "?", 420, "#ff3b55", { opacity: 0 });
+''' + RED + '''      const l2 = line("L2")[0], ve = at("L2", "Verbrechen"), mo = at("L2", "Mord"), l3 = line("L3")[0], po = at("L3", "Polizei"), fe = at("L3", "Feuerwehr"), no = at("L3", "Notarzt"), ni = at("L3", "nicht"), ue = at("L3", "Und"), sz = at("L3", "schockierendste");
+      // Einstellung 1: Straße, Kamera fährt langsam ran, Figur läuft ins Bild
+      tl.fromTo(A, { scale: 1 }, { scale: 1.15, svgOrigin: "540 1100", duration: l2, ease: "none" }, 0);
+      tl.to(M.g, { x: 560, duration: 2.6, ease: "power1.out" }, 0.2);
+      tl.to(M.g, { y: 1352, duration: 0.3, repeat: 7, yoyo: true, ease: "sine.inOut" }, 0.2);
       tl.fromTo(red, { opacity: 0 }, { opacity: 0.32, duration: 0.25, repeat: 7, yoyo: true, ease: "sine.inOut" }, 0);
       pk.forEach((k, i) => tl.fromTo(k.face, { opacity: 1 }, { opacity: 0.5, duration: 0.12, repeat: 9, yoyo: true }, 0.3 + i * 0.2));
-      tl.to(fg, { x: 60, duration: 8, ease: "none" }, 0);
+      tl.to(fg, { x: 80, duration: 6, ease: "none" }, 0);
       tl.to(L.cone, { attr: { opacity: 0.04 }, duration: 0.06, repeat: 5, yoyo: true }, 1.5);
-      tl.to(M.g, { scale: 1.45, y: 1450, duration: 0.5, ease: "power3.in" }, mo - 0.3);
-      tl.fromTo(red, { opacity: 0.6 }, { opacity: 0, duration: 0.5 }, mo);
-      tl.fromTo("#s01-call", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(2)" }, ni - 0.4);
+      tl.to(M.mask, { rotation: -8, svgOrigin: "0 -345", duration: 0.4, yoyo: true, repeat: 1 }, 2.9);
+      // Einstellung 2: Fernseher mit Notfall-Durchsage
+      tl.set(A, { opacity: 0 }, l2 - 0.05); tl.set("#s01-tv", { opacity: 1 }, l2 - 0.05);
+      tl.fromTo("#s01-tv", { scale: 1.25 }, { scale: 1, duration: 0.5, ease: "power3.out" }, l2 - 0.05);
+      tl.fromTo("#s01-tk", { x: 900 }, { x: -1400, duration: 4, ease: "none" }, l2);
+      tl.to("#s01-tv .scr", { backgroundColor: "#5a0d1c", duration: 0.12, repeat: 5, yoyo: true }, ve);
+      // Einstellung 3: Nahaufnahme Maske
+      tl.set("#s01-tv", { opacity: 0 }, mo - 0.25); tl.set(CU, { opacity: 1 }, mo - 0.25);
+      tl.fromTo(CU, { scale: 1.2 }, { scale: 1, svgOrigin: "540 900", duration: 0.4, ease: "power3.out" }, mo - 0.25);
+      tl.fromTo(red, { opacity: 0.7 }, { opacity: 0, duration: 0.5 }, mo);
+      tl.to(MC.g, { x: 552, duration: 0.04, repeat: 9, yoyo: true }, mo);
+      // Einstellung 4: Polizei, Feuerwehr, Notarzt durchgestrichen
+      tl.set(CU, { opacity: 0 }, l3 - 0.1); tl.set(D, { opacity: 1 }, l3 - 0.1);
+      [po, fe, no].forEach((t, i) => { tl.fromTo(icons[i].g, { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.3, ease: "back.out(2)" }, t - 0.15);
+        tl.fromTo(icons[i].xx, { opacity: 0, scale: 2, svgOrigin: `${190 + i * 350} 860` }, { opacity: 1, scale: 1, duration: 0.2, ease: "back.out(2)" }, t + 0.25); });
+      // Einstellung 5: Notruf tot
+      tl.to(D, { opacity: 0, duration: 0.2 }, ni + 0.25);
+      tl.fromTo("#s01-call", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2)" }, ni + 0.1);
       tl.to("#s01-call", { x: 10, duration: 0.04, repeat: 7, yoyo: true }, ni + 0.2);
-      tl.to("#s01-call", { opacity: 0, duration: 0.25 }, sz - 0.6);
-      tl.to(M.mask, { scaleY: 0.92, svgOrigin: "0 -345", duration: 0.15, yoyo: true, repeat: 3 }, sz);''' + OUT)
+      // Einstellung 6: dunkle Straße, Frage
+      tl.set("#s01-call", { opacity: 0 }, ue - 0.1); tl.set(A, { opacity: 1, scale: 1.4 }, ue - 0.1); tl.set(M.g, { opacity: 0 }, ue - 0.1);
+      tl.to(A, { scale: 1.2, duration: 2, ease: "power1.out" }, ue - 0.1);
+      tl.fromTo(Q, { opacity: 0, scale: 0.4, svgOrigin: "540 900" }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(2)" }, sz - 0.1);''' + OUT)
 
 S['s02'] = ('''    #s02-st { left: 230px; top: 760px; width: 620px; height: 150px; border: 10px solid #ff3b55; border-radius: 18px; color: #ff3b55; font: 700 90px/130px Oswald, sans-serif; text-align: center; opacity: 0; background: rgba(10,10,16,.6); }''',
 SVG + '''
@@ -65,45 +102,35 @@ SVG + '''
       const shop = el("g", {}, sv);
       el("rect", O({ x: 80, y: 560, width: 920, height: 760, fill: "#2c2f3e" }), shop);
       [700, 900, 1100].forEach((y) => el("rect", O({ x: 110, y, width: 860, height: 20, fill: "#8a8f9c", "stroke-width": 4 }), shop));
-      const items = []; const r = rng(2);
+      const items = [];
       [680, 880, 1080].forEach((y) => { for (let i = 0; i < 9; i++) items.push(el("rect", O({ x: 130 + i * 92, y: y - 70, width: 70, height: 70, rx: 6, fill: ["#ffd43b", "#ff8a3d", "#7fd0ff", "#a87a4a"][i % 4], "stroke-width": 4 }), shop)); });
       el("rect", O({ x: 360, y: 590, width: 360, height: 70, rx: 10, fill: "#ffd43b" }), shop); txt(shop, 540, 642, "BAUMARKT", 46, K);
+      const big = (draw) => { const g = el("g", { opacity: 0 }, sv); el("rect", { x: 0, y: 500, width: 1080, height: 1000, fill: "#1a1c28" }, g); draw(g); return g; };
+      const lock = big((g) => { el("path", O({ d: "M440 820 V720 Q540 600 640 720 V820", fill: "none", "stroke-width": 34, stroke: "#8a8f9c" }), g); el("rect", O({ x: 400, y: 810, width: 280, height: 240, rx: 30, fill: "#ffd43b" }), g); el("circle", { cx: 540, cy: 920, r: 26, fill: K }, g); });
+      const grid = big((g) => { for (let k = 0; k < 7; k++) { el("path", O({ d: `M${300 + k * 80} 640 V1180`, stroke: "#8a8f9c", "stroke-width": 18 }), g); el("path", O({ d: `M260 ${680 + k * 80} H820`, stroke: "#8a8f9c", "stroke-width": 18 }), g); } });
+      const wood = big((g) => { for (let k = 0; k < 4; k++) plank(g, 200, 700 + k * 110, 680, k % 2 ? 4 : -4); const h = el("g", {}, g); el("rect", O({ x: 720, y: 560, width: 40, height: 260, rx: 10, fill: "#8a5a3a", transform: "rotate(30 740 690)" }), h); el("rect", O({ x: 650, y: 540, width: 170, height: 70, rx: 14, fill: "#8a8f9c", transform: "rotate(30 740 690)" }), h); g.hammer = h; });
       const st = el("g", { opacity: 0 }, sv);
       const A = house(st, 120, 1250, 380, 420, "#4a4258", { lit: [0, 0], n: 2 }), B = house(st, 600, 1250, 360, 400, "#3e3a4e", { lit: [1, 1], n: 2 });
       el("rect", { x: 0, y: 1250, width: 1080, height: 200, fill: "#141320" }, st);
       const planks = []; A.wins.forEach((w) => { const x = +w.getAttribute("x"), y = +w.getAttribute("y"); planks.push(plank(st, x - 14, y + 4, 80, -14), plank(st, x - 14, y + 30, 80, 12)); });
-      const shut = el("rect", O({ x: A.wins[0].getAttribute("x") - 0, y: 0, width: 0, height: 0, fill: "none" }), st);
       const crack = B.wins.map((w) => { const x = +w.getAttribute("x"), y = +w.getAttribute("y"); return el("path", { d: `M${x + 26} ${y + 28} l-18 -20 M${x + 26} ${y + 28} l20 -22 M${x + 26} ${y + 28} l-14 26 M${x + 26} ${y + 28} l22 16`, stroke: "#fff", "stroke-width": 3, opacity: 0 }, st); });
       const ok = txt(st, 310, 760, "✓", 120, "#39e27a", { opacity: 0 }), no = txt(st, 780, 760, "✕", 120, "#ff3b55", { opacity: 0 });
-      const le = at("L4", "leergekauft"), we = at("L4", "weg"), l5 = line("L5")[0], ve = at("L5", "verbarrikadiert"), sc = at("L5", "schutzlos");
+      const le = at("L4", "leergekauft"), sl = at("L4", "Schlösser"), gi = at("L4", "Gitter"), sp = at("L4", "Sperrholz"), we = at("L4", "weg"), l5 = line("L5")[0], ve = at("L5", "verbarrikadiert"), sc = at("L5", "schutzlos");
+      tl.fromTo(shop, { scale: 1.2 }, { scale: 1, svgOrigin: "540 940", duration: 1.2, ease: "power2.out" }, 0);
       items.forEach((it, i) => tl.to(it, { opacity: 0, y: -40, duration: 0.18 }, le - 0.6 + (i % 27) * 0.03));
+      [[lock, sl], [grid, gi], [wood, sp]].forEach(([g, t], i, arr) => { tl.set(g, { opacity: 1 }, t - 0.1); tl.fromTo(g, { scale: 1.3 }, { scale: 1, svgOrigin: "540 900", duration: 0.35, ease: "power3.out" }, t - 0.1);
+        tl.set(g, { opacity: 0 }, i < 2 ? arr[i + 1][1] - 0.1 : we - 0.1); });
+      tl.to(wood.hammer, { rotation: -40, svgOrigin: "740 800", duration: 0.12, yoyo: true, repeat: 5 }, sp);
       tl.fromTo("#s02-st", { opacity: 0, scale: 2.2, rotation: -8 }, { opacity: 1, scale: 1, rotation: -8, duration: 0.25, ease: "power4.in" }, we - 0.15);
-      tl.to(["#s02-st", shop], { opacity: 0, duration: 0.25 }, l5 - 0.3);
-      tl.to(st, { opacity: 1, duration: 0.3 }, l5 - 0.2);
+      tl.to(["#s02-st", shop], { opacity: 0, duration: 0.2 }, l5 - 0.25);
+      tl.to(st, { opacity: 1, duration: 0.2 }, l5 - 0.15);
+      tl.fromTo(st, { scale: 1.25 }, { scale: 1, svgOrigin: "540 1100", duration: 1.0, ease: "power2.out" }, l5 - 0.15);
       planks.forEach((pl, i) => tl.fromTo(pl, { opacity: 0, x: -200 }, { opacity: 1, x: 0, duration: 0.2, ease: "back.out(2)" }, ve - 0.2 + i * 0.12));
       tl.to(ok, { opacity: 1, duration: 0.2 }, ve + 0.5);
+      tl.to(st, { x: -160, duration: 0.6, ease: "power2.inOut" }, sc - 0.6);
       tl.to(crack, { opacity: 1, duration: 0.1 }, sc - 0.2);
       tl.to(no, { opacity: 1, duration: 0.2 }, sc);
       tl.to(B.g, { x: 6, duration: 0.04, repeat: 7, yoyo: true }, sc);''' + OUT)
-
-S['s03'] = ('''    #s03-np { left: 140px; top: 580px; width: 800px; height: 560px; background: #e8dfc8; border: 5px solid #0b0c14; border-radius: 10px; opacity: 0; transform: rotate(-3deg); color: #1a1a1a; text-align: center; box-shadow: 0 30px 70px rgba(0,0,0,.5); }
-    #s03-np h3 { margin: 30px 30px 10px; padding-bottom: 12px; border-bottom: 4px double #1a1a1a; font: 700 64px/1 "EB Garamond", serif; }
-    #s03-np h4 { margin: 14px 40px; font: 700 70px/1.05 Oswald, sans-serif; }
-    #s03-np p { margin: 0 50px; font: 500 30px/1.3 "EB Garamond", serif; color: #444; }
-    #s03-np small { position: absolute; left: 0; right: 0; bottom: 14px; font: 500 22px Inter, sans-serif; color: #777; }
-    .s03-i { position: absolute; top: 1160px; width: 260px; height: 190px; border-radius: 20px; background: rgba(10,10,16,.85); border: 4px solid #ff3b55; text-align: center; opacity: 0; color: #fff; }
-    .s03-i b { display: block; margin-top: 18px; font: 700 80px/1 Oswald, sans-serif; color: #ff3b55; } .s03-i i { display: block; margin-top: 10px; font: 700 30px Oswald, sans-serif; font-style: normal; }''',
-SVG + '''
-      <div id="s03-np" class="abs"><h3>Montreal · 1969</h3><h4>POLIZEI STREIKT<br>16 STUNDEN</h4><p>Plünderungen, Überfälle und Brände in der Innenstadt.</p><small data-layout-ignore>vereinfachte Darstellung</small></div>
-      <div id="s03-i1" class="s03-i" style="left:60px"><b>$</b><i>BANKÜBERFÄLLE</i></div><div id="s03-i2" class="s03-i" style="left:410px"><b>100+</b><i>GESCHÄFTE</i></div><div id="s03-i3" class="s03-i" style="left:760px"><b>2</b><i>TOTE</i></div>''',
-'''      const sv = document.querySelector("#s03-svg");
-      night(sv, "s03-n", "#1c1a24", "#2e2430", null);
-      const r = rng(9); for (let i = 0; i < 30; i++) el("circle", { cx: r() * 1080, cy: 500 + r() * 900, r: 2 + r() * 3, fill: "#ffb36b", opacity: 0.3 + r() * 0.4 }, sv);
-      const n69 = at("L6", "1969"), st = at("L6", "streikt"), ba = at("L7", "Banküberfälle"), hu = at("L7", "100"), to = at("L7", "Tote");
-      tl.fromTo("#s03-np", { opacity: 0, scale: 1.4, rotation: 8 }, { opacity: 1, scale: 1, rotation: -3, duration: 0.5, ease: "power3.out" }, Math.min(n69 - 0.3, at("L6", "Montreal") - 0.2));
-      tl.to("#s03-np", { y: -150, scale: 0.8, duration: 0.4, ease: "power2.inOut" }, ba - 0.6);
-      [["#s03-i1", ba], ["#s03-i2", hu], ["#s03-i3", to]].forEach(([id, t]) => tl.fromTo(id, { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.3, ease: "back.out(2)" }, t - 0.15));
-      tl.to("#s03-i3", { x: 8, duration: 0.04, repeat: 7, yoyo: true }, to + 0.2);''' + OUT)
 
 S['s04'] = ('''    #s04-c { left: 600px; top: 600px; width: 400px; height: 200px; border-radius: 22px; background: rgba(10,10,16,.85); border: 4px solid #ff3b55; text-align: center; color: #fff; opacity: 0; }
     #s04-c b { display: block; margin-top: 22px; font: 700 96px/1 Oswald, sans-serif; } #s04-c i { display: block; margin-top: 8px; font: 700 30px Oswald, sans-serif; font-style: normal; color: #ff3b55; letter-spacing: .05em; }''',
@@ -139,42 +166,74 @@ SVG + '''
       fl.forEach((f, i) => { tl.fromTo(f, { opacity: 0, scale: 0.2 }, { opacity: 1, scale: 1.4, duration: 0.35, ease: "back.out(2)" }, kb + 0.2 + i * 0.5); tl.to(f, { scaleY: 1.6, duration: 0.15, yoyo: true, repeat: 9 }, kb + 0.6 + i * 0.5); });
       tl.to(glow, { opacity: 0.22, duration: 0.6 }, fr);''' + OUT)
 
-S['s05'] = ('''    #s05-st { left: 300px; top: 640px; width: 480px; height: 150px; border: 10px solid #ff3b55; border-radius: 18px; color: #ff3b55; font: 700 100px/130px Oswald, sans-serif; text-align: center; opacity: 0; background: rgba(10,10,16,.6); }''',
+S['s05'] = ('''    #s05-st { left: 300px; top: 640px; width: 480px; height: 150px; border: 10px solid #ff3b55; border-radius: 18px; color: #ff3b55; font: 700 100px/130px Oswald, sans-serif; text-align: center; opacity: 0; background: rgba(10,10,16,.6); }
+    #s05-card { left: 330px; top: 560px; width: 420px; height: 600px; border-radius: 26px; background: linear-gradient(135deg, #ffd43b, #ff8fd0 45%, #7fd0ff); border: 8px solid #0b0c14; opacity: 0; box-shadow: 0 0 80px rgba(255,212,59,.5); }
+    #s05-card .art { position: absolute; left: 30px; top: 80px; right: 30px; height: 300px; border-radius: 14px; background: #1a1c28; border: 5px solid #0b0c14; }
+    #s05-card .nm { position: absolute; left: 30px; top: 22px; font: 700 40px Oswald, sans-serif; color: #0b0c14; } #s05-card .st { position: absolute; right: 30px; top: 18px; font: 700 46px Oswald, sans-serif; color: #0b0c14; }
+    #s05-card .tx { position: absolute; left: 30px; right: 30px; top: 400px; height: 150px; border-radius: 12px; background: rgba(255,255,255,.7); }
+    #s05-price { left: 640px; top: 1050px; width: 330px; height: 120px; border-radius: 18px; background: #ff3b55; color: #fff; text-align: center; font: 700 70px/120px Oswald, sans-serif; opacity: 0; transform: rotate(-8deg); }
+    #s05-lt { left: 190px; top: 620px; width: 700px; height: 480px; border-radius: 16px; background: #efe8d6; border: 5px solid #0b0c14; opacity: 0; text-align: center; color: #22283f; }
+    #s05-lt b { display: block; margin-top: 40px; font: 700 54px Oswald, sans-serif; } #s05-lt p { margin: 20px 60px; font: 500 34px/1.4 "EB Garamond", serif; }''',
 SVG + '''
-      <div id="s05-st" class="abs">LEGAL</div>''',
+      <div id="s05-card" class="abs"><div class="nm">NACHTFALKE</div><div class="st">★★★</div><div class="art"></div><div class="tx"></div></div>
+      <div id="s05-price" class="abs">2.500 €</div>
+      <div id="s05-lt" class="abs"><b>VERSICHERUNG</b><p>Schaden während der Säuberung: keine Leistung.</p></div>
+      <div id="s05-st" class="abs" data-layout-allow-overlap>LEGAL</div>''',
 '''      const sv = document.querySelector("#s05-svg");
       night(sv, "s05-n", "#08091a", "#24122a", [180, 660]);
-      pines(sv, 1050, "#0f1424", 8);
-      const shop = el("g", {}, sv); el("rect", O({ x: 560, y: 760, width: 460, height: 420, fill: "#2c2f3e" }), shop);
-      el("rect", O({ x: 600, y: 790, width: 380, height: 60, rx: 8, fill: "#ffd43b" }), shop); txt(shop, 790, 836, "JUWELIER", 44, K);
-      const win = el("rect", O({ x: 600, y: 880, width: 380, height: 220, fill: "#7fd0ff", opacity: 0.85 }), shop);
-      const shards = []; const r = rng(4); for (let i = 0; i < 10; i++) shards.push(el("path", { d: `M${650 + r() * 280} ${900 + r() * 180} l${20 + r() * 30} ${-10 - r() * 20} l${-10} ${30 + r() * 20}Z`, fill: "#bfe7ff", opacity: 0 }, sv));
-      el("rect", { x: 0, y: 1180, width: 1080, height: 260, fill: "#141320" }, sv);
-      const fg = fog(sv, 1150, 0.28, 11);
-      const gang = [[160, 1360, 0.95, "#1d1f2b"], [330, 1330, 0.85, "#2a1c26"], [470, 1380, 1.05, "#1a2230"], [60, 1340, 0.8, "#231d2b"]].map(([x, y, s, c], i) => masked(sv, x, y, s, c, i === 2));
-''' + RED + '''      const ba = at("L11", "Banden"), ra = at("L11", "Rachegelüsten"), zu = at("L11", "zuschauen"), l12 = line("L12")[0], ge = at("L12", "geplündert"), ni = at("L12", "nichts"), le = at("L12", "legal");
+      const W = el("g", {}, sv);
+      pines(W, 1050, "#0f1424", 8);
+      el("rect", { x: -200, y: 1180, width: 1480, height: 300, fill: "#141320" }, W);
+      const fg = fog(W, 1150, 0.28, 11);
+      const gang = [[160, 1360, 0.95, "#1d1f2b"], [330, 1330, 0.85, "#2a1c26"], [470, 1380, 1.05, "#1a2230"], [60, 1340, 0.8, "#231d2b"]].map(([x, y, s, c], i) => masked(W, x, y, s, c, i === 2));
+      const row = el("g", { opacity: 0 }, sv); el("rect", { x: 0, y: 500, width: 3300, height: 1000, fill: "#0f1020" }, row);
+      const glass = [], shards = [];
+      [["JUWELIER", "#ffd43b"], ["BANK", "#7fd0ff"], ["KARTEN-SHOP", "#ff8fd0"]].forEach(([n, c], i) => { const x = 140 + i * 1080;
+        el("rect", O({ x, y: 620, width: 800, height: 640, fill: "#2c2f3e" }), row); el("rect", O({ x: x + 60, y: 650, width: 680, height: 90, rx: 10, fill: c }), row); txt(row, x + 400, 718, n, 60, K);
+        if (i === 2) for (let k = 0; k < 6; k++) el("rect", O({ x: x + 110 + k * 100, y: 880, width: 80, height: 115, rx: 8, fill: ["#ffd43b", "#ff8fd0", "#7fd0ff"][k % 3], "stroke-width": 3 }), row);
+        if (i === 0) for (let k = 0; k < 5; k++) el("path", O({ d: `M${x + 150 + k * 120} 960 l30 -40 l30 40 l-30 30Z`, fill: "#bfe7ff", "stroke-width": 3 }), row);
+        if (i === 1) txt(row, x + 400, 1000, "€ € €", 120, "#39e27a");
+        glass.push(el("rect", O({ x: x + 60, y: 780, width: 680, height: 420, fill: "#7fd0ff", opacity: 0.55 }), row));
+        const r = rng(i + 3); for (let k = 0; k < 9; k++) shards.push([i, el("path", { d: `M${x + 120 + r() * 560} ${820 + r() * 340} l${20 + r() * 30} ${-10 - r() * 20} l-10 ${30 + r() * 20}Z`, fill: "#e6f6ff", opacity: 0 }, row)]); });
+''' + RED + '''      const ba = at("L11", "Banden"), ra = at("L11", "Rachegelüsten"), zu = at("L11", "zuschauen"), l12 = line("L12")[0], ju = at("L12", "Juweliere"), bk = at("L12", "Banken"), sk = at("L12", "Sammelkartenläden"), l12b = line("L12b")[0], te = at("L12b", "tausende"), l12c = line("L12c")[0], le = at("L12c", "legal");
+      tl.fromTo(W, { scale: 1.3 }, { scale: 1, svgOrigin: "540 1250", duration: 1.5, ease: "power2.out" }, 0);
       gang.forEach((m, i) => tl.fromTo(m.g, { x: `-=${300}`, opacity: 0 }, { x: `+=${300}`, opacity: 1, duration: 1.2, ease: "power2.out" }, ba - 0.4 + i * 0.25));
       tl.to(gang.map((m) => m.g), { y: "-=10", duration: 0.3, yoyo: true, repeat: 9, stagger: 0.1 }, ba + 1.0);
       tl.to(fg, { x: -80, duration: 8, ease: "none" }, 0);
       tl.fromTo(red, { opacity: 0 }, { opacity: 0.25, duration: 0.2, repeat: 3, yoyo: true }, ra);
-      tl.to(win, { opacity: 0, duration: 0.05 }, ge - 0.1);
-      shards.forEach((s, i) => tl.fromTo(s, { opacity: 1, x: 0, y: 0 }, { x: (i % 2 ? 1 : -1) * (40 + i * 10), y: 160 + i * 8, rotation: 120, opacity: 0, svgOrigin: "790 990", duration: 0.7, ease: "power2.in" }, ge - 0.1));
-      tl.fromTo("#s05-st", { opacity: 0, scale: 2.4, rotation: -10 }, { opacity: 1, scale: 1, rotation: -10, duration: 0.25, ease: "power4.in" }, at("L12", "Zahlt"));''' + OUT)
+      tl.to(W, { scale: 1.6, svgOrigin: "300 1100", duration: 0.8, ease: "power2.in" }, zu);
+      tl.set(W, { opacity: 0 }, l12 - 0.1); tl.set(row, { opacity: 1 }, l12 - 0.1);
+      [ju, bk, sk].forEach((t, i) => { tl.to(row, { x: -1080 * i, duration: i ? 0.35 : 0.01, ease: "power3.inOut" }, t - (i ? 0.45 : 0.1));
+        tl.to(glass[i], { opacity: 0, duration: 0.05 }, t);
+        shards.filter((s) => s[0] === i).forEach(([_, sh], k) => tl.fromTo(sh, { opacity: 1, x: 0, y: 0 }, { x: (k % 2 ? 1 : -1) * (40 + k * 12), y: 220 + k * 10, rotation: 140, opacity: 0, svgOrigin: `${540 + 1080 * i} 1000`, duration: 0.7, ease: "power2.in" }, t));
+        tl.fromTo(red, { opacity: 0.35 }, { opacity: 0, duration: 0.3 }, t); });
+      tl.set(row, { opacity: 0 }, l12b - 0.1);
+      tl.fromTo("#s05-card", { opacity: 0, rotationY: 90, scale: 0.7 }, { opacity: 1, rotationY: 0, scale: 1, duration: 0.5, ease: "back.out(1.6)" }, l12b - 0.1);
+      tl.to("#s05-card", { rotation: 4, duration: 0.8, yoyo: true, repeat: 3, ease: "sine.inOut" }, l12b + 0.4);
+      tl.fromTo("#s05-price", { opacity: 0, scale: 2 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2)" }, te - 0.1);
+      tl.to(["#s05-card", "#s05-price"], { opacity: 0, duration: 0.2 }, l12c - 0.2);
+      tl.fromTo("#s05-lt", { opacity: 0, y: 60, rotation: -3 }, { opacity: 1, y: 0, rotation: -3, duration: 0.35, ease: "back.out(1.8)" }, l12c - 0.1);
+      tl.fromTo("#s05-st", { opacity: 0, scale: 2.4, rotation: -10 }, { opacity: 1, scale: 1, rotation: -10, duration: 0.25, ease: "power4.in" }, at("L12c", "Zahlt"));
+      tl.to("#s05-st", { x: 8, duration: 0.04, repeat: 7, yoyo: true }, le);''' + OUT)
 
-S['s06'] = ('''    .s06-k { position: absolute; top: 600px; width: 450px; height: 640px; border-radius: 24px; background: rgba(12,12,20,.88); text-align: center; opacity: 0; color: #fff; }
-    .s06-k h3 { margin-top: 30px; font: 700 52px Oswald, sans-serif; letter-spacing: .04em; } .s06-k p { margin: 30px 26px 0; font: 700 40px/1.35 Oswald, sans-serif; }
-    #s06-k1 { left: 50px; border: 5px solid #39e27a; } #s06-k1 h3 { color: #39e27a; } #s06-k2 { left: 580px; border: 5px solid #ff3b55; } #s06-k2 h3 { color: #ff3b55; }
-    #s06-w { left: 140px; top: 760px; width: 800px; height: 300px; border-radius: 26px; background: rgba(12,12,20,.9); border: 5px solid #ffd43b; text-align: center; color: #ffd43b; opacity: 0; font: 700 70px/1.25 Oswald, sans-serif; padding-top: 50px; box-sizing: border-box; }''',
+S['s06'] = ('''    .s06-k { position: absolute; top: 640px; width: 470px; border-radius: 24px; background: rgba(12,12,20,.9); text-align: center; opacity: 0; color: #fff; padding: 26px 22px 30px; box-sizing: border-box; }
+    .s06-k h3 { font: 700 52px Oswald, sans-serif; letter-spacing: .04em; margin-bottom: 18px; }
+    .s06-k p { font: 700 44px/1.25 Oswald, sans-serif; margin-top: 14px; } .s06-k small { display: block; font: 500 30px/1.25 Inter, sans-serif; color: #b9bdcc; margin-top: 4px; }
+    #s06-k1 { left: 40px; border: 5px solid #39e27a; } #s06-k1 h3 { color: #39e27a; } #s06-k2 { left: 570px; border: 5px solid #ff3b55; } #s06-k2 h3 { color: #ff3b55; }
+    #s06-w { left: 140px; top: 760px; width: 800px; border-radius: 26px; background: rgba(12,12,20,.9); border: 5px solid #ffd43b; text-align: center; color: #ffd43b; opacity: 0; font: 700 70px/1.25 Oswald, sans-serif; padding: 40px 20px; box-sizing: border-box; }''',
 SVG + '''
-      <div id="s06-k1" class="s06-k"><h3>IM FILM</h3><p>KRIMINALITÄT ↓<br>ARBEITSLOSIGKEIT ↓</p></div>
-      <div id="s06-k2" class="s06-k"><h3>IN WAHRHEIT</h3><p id="s06-p2">GEWALT →<br>MEHR GEWALT<br>RACHE ↻</p></div>
+      <div id="s06-k1" class="s06-k"><h3>IM FILM</h3><p>Kriminalität ↓<small>das ganze Jahr ruhig</small></p><p>Arbeitslosigkeit ↓<small>„Ventil“ für Wut</small></p></div>
+      <div id="s06-k2" class="s06-k"><h3>IN WAHRHEIT</h3><p>Gewalt → mehr Gewalt<small>Rache am nächsten Tag</small></p><p>Traumata<small>für Millionen</small></p></div>
       <div id="s06-w" class="abs">🛡 SICHERHEITSFIRMEN<br>WAFFENHÄNDLER ↑</div>''',
 '''      const sv = document.querySelector("#s06-svg");
       night(sv, "s06-n", "#0c0f1e", "#1c1626", null);
       const im = at("L13", "Im"), wa = at("L14", "Wahrheit"), ra = at("L14", "Rache"), l15 = line("L15")[0], si = at("L15", "Sicherheitsfirmen");
       tl.fromTo("#s06-k1", { opacity: 0, x: -80 }, { opacity: 1, x: 0, duration: 0.4, ease: "back.out(1.6)" }, im - 0.1);
+      tl.fromTo("#s06-k1 p", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.3, stagger: 0.5 }, im + 0.4);
       tl.fromTo("#s06-k2", { opacity: 0, x: 80 }, { opacity: 1, x: 0, duration: 0.4, ease: "back.out(1.6)" }, wa - 0.2);
-      tl.to("#s06-k1", { opacity: 0.35, duration: 0.3 }, wa);
+      tl.fromTo("#s06-k2 p", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.3, stagger: 0.8 }, wa + 0.3);
+      tl.to("#s06-k1", { opacity: 0.35, scale: 0.95, duration: 0.3 }, wa);
+      tl.to("#s06-k2", { scale: 1.05, duration: 0.3 }, wa);
       tl.to("#s06-k2", { x: 8, duration: 0.04, repeat: 7, yoyo: true }, ra);
       tl.to([".s06-k"], { opacity: 0, duration: 0.25 }, l15 - 0.3);
       tl.fromTo("#s06-w", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(2)" }, si - 0.2);''' + OUT)
@@ -204,7 +263,7 @@ S['s08'] = ('''    .s08-b { position: absolute; top: 1150px; width: 450px; heigh
     #s08-b1 { left: 50px; background: #39e27a; } #s08-b2 { left: 580px; background: #ff3b55; color: #fff; }
     #s08-f { left: 330px; top: 1170px; width: 420px; height: 120px; border-radius: 60px; background: #ff3b55; color: #fff; text-align: center; font: 700 60px/120px Oswald, sans-serif; opacity: 0; box-shadow: 0 0 50px rgba(255,59,85,.6); }''',
 SVG + '''
-      <div id="s08-b1" class="s08-b">EINSCHLIESSEN</div><div id="s08-b2" class="s08-b">RAUSGEHEN</div>
+      <div id="s08-b1" class="s08-b">VERSCHANZEN</div><div id="s08-b2" class="s08-b">TEILNEHMEN</div>
       <div id="s08-f" class="abs">+ FOLGEN</div>''',
 '''      const sv = document.querySelector("#s08-svg");
       night(sv, "s08-n", "#06071a", "#200f22", null);
@@ -218,11 +277,11 @@ SVG + '''
       el("path", O({ d: "M540 600 V1040 M300 820 H780", fill: "none", stroke: "#a87a4a", "stroke-width": 16 }), room);
       el("rect", O({ x: 280, y: 580, width: 520, height: 480, fill: "none", stroke: "#a87a4a", "stroke-width": 20 }), room);
       const beam = el("path", { d: "M470 790 L300 1040 H640Z", fill: "#fff7c0", opacity: 0 }, room);
-''' + RED + '''      const du = at("L18", "du?"), ei = at("L18", "einschließen"), ra = at("L18", "rausgehen"), ko = at("L18", "Kommentare"), l19 = line("L19")[0], fo = at("L19", "folg"), si = at("L19", "Sirene");
+''' + RED + '''      const du = at("L18", "du?"), ei = at("L18", "verschanzen"), ra = at("L18", "teilnehmen"), ko = at("L18", "Kommentare"), l19 = line("L19")[0], fo = at("L19", "folg"), si = at("L19", "Sirene");
       tl.fromTo(M.g, { opacity: 0, x: 380 }, { opacity: 1, x: 470, duration: 1.2, ease: "power2.out" }, du);
       tl.to(beam, { opacity: 0.35, duration: 0.2, repeat: 3, yoyo: true }, du + 1.0);
-      tl.fromTo("#s08-b1", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.35, ease: "back.out(2)" }, ei - 0.15);
       tl.fromTo("#s08-b2", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.35, ease: "back.out(2)" }, ra - 0.15);
+      tl.fromTo("#s08-b1", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.35, ease: "back.out(2)" }, ei - 0.15);
       tl.to(".s08-b", { opacity: 0, y: 40, duration: 0.25 }, l19 - 0.2);
       tl.fromTo("#s08-f", { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(2.4)" }, fo - 0.1);
       tl.to("#s08-f", { scale: 1.07, duration: 0.3, yoyo: true, repeat: 9, ease: "sine.inOut" }, fo + 0.4);
