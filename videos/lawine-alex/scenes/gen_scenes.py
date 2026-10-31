@@ -66,7 +66,7 @@ SVG + '''
       const sf = snowfall(sv, 120, 7, -300, 1500);
       const burst = []; const r = rng(17); for (let i = 0; i < 26; i++) burst.push(el("circle", { cx: 540, cy: 660, r: 6 + r() * 10, fill: "#ffffff", opacity: 0 }, sv));
       const flash = el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: "#ffffff", opacity: 0 }, sv);
-      const l1b = line("L1y")[0], du = at("L1y", "Du"), al = at("L2", "Alex"), le = at("L2", "letzte"), l3 = line("L3")[0];
+      const l1b = line("L1y")[0], du = at("L1y", 3), al = at("L2", "Alex"), le = at("L2", "letzte"), l3 = line("L3")[0];
       fall(tl, sf, C.__dur);
       tl.fromTo(flash, { opacity: 1 }, { opacity: 0, duration: 0.5, ease: "power2.out" }, 0);
       tl.fromTo("#s01-t", { scale: 1.6, filter: "blur(10px)" }, { scale: 1, filter: "blur(0px)", duration: 0.5, ease: "expo.out" }, 0);

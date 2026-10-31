@@ -28,8 +28,8 @@
     .fc { position: absolute; border-radius: 24px; background: rgba(255,255,255,.94); box-shadow: 0 18px 50px rgba(0,0,0,.35); opacity: 0; text-align: center; color: #22283f; padding: 22px 30px; font: 500 46px/1.15 "EB Garamond", serif; }
     .fc b { color: #e0484f; }
   </style>
-  <div id="root" data-composition-id="s03" data-start="0" data-duration="17.300" data-width="1080" data-height="1920">
-    <div id="s03-stage" class="clip stage" data-start="0" data-duration="17.300" data-track-index="0">
+  <div id="root" data-composition-id="s03" data-start="0" data-duration="16.320" data-width="1080" data-height="1920">
+    <div id="s03-stage" class="clip stage" data-start="0" data-duration="16.320" data-track-index="0">
       <svg id="s03-svg" class="full" viewBox="0 0 1080 1920"></svg>
       <div id="s03-big" class="big"><b>90 %</b><i>ÜBERLEBEN DIE ERSTEN 15 MINUTEN</i></div>
       <svg id="s03-ch" class="abs" viewBox="0 0 800 380"><rect x="0" y="0" width="800" height="380" rx="24" fill="rgba(13,16,38,.75)"/>
@@ -43,7 +43,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 17.3, "L6": [0.2, 3.05], "L6.words": [["regel", 0.2, 0.626], ["eins", 0.626, 0.851], ["bleib", 0.851, 1.083], ["ruhig", 1.083, 1.509], ["und", 1.509, 1.726], ["check", 1.726, 1.958], ["ob", 1.958, 2.167], ["du", 2.167, 2.376], ["verletzt", 2.376, 2.825], ["bist", 2.825, 3.05]], "L7": [3.27, 8.75], "L7.words": [["verschüttete", 3.27, 3.907], ["überleben", 3.907, 4.528], ["die", 4.528, 4.687], ["ersten", 4.687, 5.006], ["15", 5.006, 5.336], ["minuten", 5.336, 5.803], ["zu", 5.803, 5.956], ["rund", 5.956, 6.121], ["90", 6.121, 6.446], ["prozent", 6.446, 6.77], ["danach", 7.31, 7.631], ["sinkt", 7.631, 7.803], ["die", 7.803, 7.964], ["chance", 7.964, 8.285], ["rapide", 8.285, 8.75]], "L8": [8.97, 12.77], "L8.words": [["du", 8.97, 9.167], ["gräbst", 9.167, 9.393], ["wie", 9.393, 9.597], ["verrückt", 9.597, 10.02], ["aber", 10.5, 10.833], ["allein", 10.833, 11.179], ["schaffst", 11.179, 11.382], ["du", 11.382, 11.549], ["keine", 11.549, 11.888], ["vierzig", 11.888, 12.24], ["meter", 12.24, 12.579], ["schnee", 12.579, 12.77]], "L8b": [12.99, 17.12], "L8b.words": [["und", 12.99, 13.178], ["dein", 13.178, 13.372], ["handy", 13.372, 13.74], ["kein", 14.29, 14.545], ["netz", 14.545, 14.8], ["die", 15.35, 15.51], ["sendemasten", 15.51, 16.146], ["liegen", 16.146, 16.467], ["unter", 16.467, 16.782], ["dem", 16.782, 16.942], ["schnee", 16.942, 17.12]]};
+      const C = {"__dur": 16.32, "L6": [0.2, 3.06], "L6.words": [["regel", 0.2, 0.627], ["eins", 0.627, 0.853], ["bleib", 0.853, 1.086], ["ruhig", 1.086, 1.513], ["und", 1.513, 1.731], ["check", 1.731, 1.964], ["ob", 1.964, 2.174], ["du", 2.174, 2.384], ["verletzt", 2.384, 2.835], ["bist", 2.835, 3.06]], "L7": [3.28, 8.16], "L7.words": [["verschüttete", 3.28, 3.825], ["überleben", 3.825, 4.354], ["die", 4.354, 4.491], ["ersten", 4.491, 4.763], ["15", 4.763, 5.045], ["minuten", 5.045, 5.443], ["zu", 5.443, 5.575], ["rund", 5.575, 5.716], ["90", 5.716, 5.993], ["prozent", 5.993, 6.27], ["danach", 6.82, 7.119], ["sinkt", 7.119, 7.279], ["die", 7.279, 7.429], ["chance", 7.429, 7.728], ["rapide", 7.728, 8.16]], "L8": [8.38, 12.01], "L8.words": [["du", 8.38, 8.558], ["gräbst", 8.558, 8.763], ["wie", 8.763, 8.947], ["verrückt", 8.947, 9.33], ["aber", 9.88, 10.193], ["allein", 10.193, 10.517], ["schaffst", 10.517, 10.708], ["du", 10.708, 10.864], ["keine", 10.864, 11.182], ["vierzig", 11.182, 11.512], ["meter", 11.512, 11.831], ["schnee", 11.831, 12.01]], "L8b": [12.23, 16.14], "L8b.words": [["und", 12.23, 12.407], ["dein", 12.407, 12.591], ["handy", 12.591, 12.94], ["kein", 13.49, 13.74], ["netz", 13.74, 13.99], ["die", 14.54, 14.685], ["sendemasten", 14.685, 15.26], ["liegen", 15.26, 15.55], ["unter", 15.55, 15.834], ["dem", 15.834, 15.979], ["schnee", 15.979, 16.14]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
