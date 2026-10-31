@@ -1,0 +1,306 @@
+{
+ "serie": "STERNENFALL",
+ "folge": "Folge 1",
+ "titel": "Die Stadt über den Wolken",
+ "tagline": "Wenn die Sterne fallen, erwacht die Wahrheit.",
+ "voices": {
+  "ICH": {
+   "name": "de-DE-Chirp3-HD-Leda",
+   "gemini": "Leda",
+   "label": "Neraya",
+   "rate": 0.9,
+   "persona": "Neraya, siebzehn, erzählt ihre eigene Geschichte im Rückblick. Ruhig, nah, verletzlich und trotzig zugleich, wie in einem Hörbuch."
+  },
+  "LUNARA": {
+   "name": "de-DE-Chirp3-HD-Leda",
+   "gemini": "Leda",
+   "label": "Neraya",
+   "rate": 0.93,
+   "persona": "Neraya, siebzehn, mutig, frech, verletzlich, warmherzig."
+  },
+  "KAEL": {
+   "name": "de-DE-Chirp3-HD-Orus",
+   "gemini": "Orus",
+   "label": "Kael",
+   "rate": 0.92,
+   "persona": "Kael, einundzwanzig, Nerayas großer Bruder, Hauptmann der Flammenwache, innerlich zerrissen."
+  },
+  "KAEL_ERINNERUNG": {
+   "name": "de-DE-Chirp3-HD-Orus",
+   "gemini": "Orus",
+   "label": "Kael",
+   "rate": 0.92,
+   "fx": "erinnerung",
+   "persona": "Kael, vier Jahre jünger, warm und tröstend."
+  },
+  "SERAPHINE": {
+   "name": "de-DE-Chirp3-HD-Gacrux",
+   "gemini": "Gacrux",
+   "label": "Seraphine",
+   "rate": 0.92,
+   "persona": "Seraphine, Hohepriesterin, kalt, beherrscht, gefährlich."
+  },
+  "SERAPHINE_HALLE": {
+   "name": "de-DE-Chirp3-HD-Gacrux",
+   "gemini": "Gacrux",
+   "label": "Seraphine",
+   "rate": 0.88,
+   "fx": "halle",
+   "persona": "Seraphine spricht feierlich zu einer Menschenmenge in einem gewaltigen Tempel."
+  },
+  "STERN": {
+   "name": "de-DE-Chirp3-HD-Achernar",
+   "gemini": "Achernar",
+   "label": "Der Stern",
+   "rate": 0.92,
+   "fx": "stern",
+   "persona": "Ein uraltes Wesen aus Licht, sanft, verführerisch, flüsternd."
+  },
+  "STERN_DUNKEL": {
+   "name": "de-DE-Chirp3-HD-Charon",
+   "gemini": "Charon",
+   "label": "Der Stern",
+   "rate": 0.88,
+   "fx": "dunkel",
+   "persona": "Dasselbe Wesen, jetzt entlarvt: tief, ruhig, triumphierend, bedrohlich."
+  },
+  "MUTTER": {
+   "name": "de-DE-Chirp3-HD-Sulafat",
+   "gemini": "Sulafat",
+   "label": "Mutter",
+   "rate": 0.9,
+   "fx": "fern",
+   "persona": "Nerayas Mutter, liebevoll und eindringlich, ihre Stimme kommt von sehr weit her."
+  }
+ },
+ "naechste": "FOLGE 2 · DAS HERZ, DAS VOM HIMMEL FIEL",
+ "scenes": [
+  {
+   "id": "kalt",
+   "pre": 0.6,
+   "post": 0.4,
+   "lines": [
+    {
+     "who": "ICH",
+     "text": "Sieh nach oben. Was siehst du? … Sterne?",
+     "rate": 0.88,
+     "style": "leise, direkt zum Zuschauer, geheimnisvoll"
+    },
+    {
+     "who": "ICH",
+     "text": "Was wäre, wenn das gar keine Sterne sind? Wenn sie etwas gefangen halten … oder jemanden?",
+     "pre": 0.7,
+     "rate": 0.88,
+     "style": "flüsternd, unheimlich, Spannung aufbauend"
+    },
+    {
+     "who": "ICH",
+     "text": "Ich zeige dir, was dort oben eingesperrt ist. Denn ich … habe eines davon geöffnet.",
+     "pre": 0.8,
+     "rate": 0.88,
+     "style": "eindringlich, dann flüsternd und schuldbewusst"
+    }
+   ]
+  },
+  {
+   "id": "intro",
+   "pre": 18.0,
+   "post": 0,
+   "lines": []
+  },
+  {
+   "id": "welt",
+   "pre": 0.7,
+   "post": 0.5,
+   "lines": [
+    {
+     "who": "ICH",
+     "text": "Das ist meine Welt: Valdoria.",
+     "style": "warm, stolz"
+    },
+    {
+     "who": "ICH",
+     "text": "Hier wachsen die Bäume so hoch, dass ihre Kronen über den Wolken liegen.",
+     "pre": 0.75,
+     "style": "staunend, verträumt"
+    },
+    {
+     "who": "ICH",
+     "text": "Nachts rieselt Sternenstaub vom Himmel. Die Himmelswale fressen ihn …",
+     "pre": 0.75,
+     "style": "verträumt"
+    },
+    {
+     "who": "ICH",
+     "text": "… und ihr Gesang trägt die schwebenden Inseln durch die Luft. Ohne die Wale würde alles in die Tiefe stürzen.",
+     "pre": 0.4,
+     "style": "ehrfürchtig"
+    }
+   ]
+  },
+  {
+   "id": "stadt",
+   "pre": 0.6,
+   "post": 0.5,
+   "lines": [
+    {
+     "who": "ICH",
+     "text": "In den Kronen der Riesenbäume liegt Aurelion. Die Stadt der tausend Laternen.",
+     "style": "erzählend, liebevoll"
+    },
+    {
+     "who": "ICH",
+     "text": "Ganz oben, in der Lichtkrone, herrscht der Orden der Hohen Flamme.",
+     "pre": 0.7,
+     "style": "ernst"
+    }
+   ]
+  },
+  {
+   "id": "lichtkrone",
+   "pre": 0.5,
+   "post": 0.6,
+   "lines": [
+    {
+     "who": "ICH",
+     "text": "Seine Priester sammeln das Licht der Sterne. Nur sie dürfen Magie wirken.",
+     "style": "kühl, mit leiser Bitterkeit"
+    },
+    {
+     "who": "ICH",
+     "text": "Und wir hier unten, in den Tiefen Ästen? Uns bleibt nur der Rest: ein paar Laternen. Und Gesetze.",
+     "pre": 0.5,
+     "style": "bitter, trocken"
+    },
+    {
+     "who": "ICH",
+     "text": "Das wichtigste Gesetz: Jeder Stern, der fällt, gehört dem Orden. Und wer ein Sternenherz berührt … stirbt.",
+     "pre": 0.5,
+     "style": "ernst, langsam"
+    },
+    {
+     "who": "ICH",
+     "text": "Denn vor tausend Jahren hat ein Mensch genau das getan. Und Valdoria brannte.",
+     "pre": 0.5,
+     "style": "düster"
+    }
+   ]
+  },
+  {
+   "id": "lunara",
+   "pre": 0.8,
+   "post": 0.5,
+   "lines": [
+    {
+     "who": "ICH",
+     "text": "Und ich? Ich bin Neraya, siebzehn. Die Leute sagen, ich habe die Augen meiner Mutter … und ihren Dickkopf.",
+     "style": "warm, ein Hauch Selbstironie"
+    },
+    {
+     "who": "ICH",
+     "text": "Jede Nacht zünde ich Laternen an. Für drei Kupfermünzen. Das reicht gerade für ein Stück Brot.",
+     "pre": 0.6,
+     "style": "nüchtern, ein wenig bitter"
+    },
+    {
+     "who": "ICH",
+     "text": "Ich klettere dorthin, wo niemand klettern darf. Ich stehle Sternenstaub von den Dächern des Ordens.",
+     "pre": 0.7,
+     "style": "frech, stolz"
+    },
+    {
+     "who": "ICH",
+     "text": "Für Lunara, meine Mondmaus. Klein wie ein Daumen … und fest überzeugt, ein Drache zu sein.",
+     "pre": 0.6,
+     "style": "liebevoll, amüsiert, mit einem Lächeln in der Stimme"
+    },
+    {
+     "who": "ICH",
+     "text": "Ich habe keine Angst vor der Höhe. Nur vor einer einzigen Sache …",
+     "pre": 0.7,
+     "style": "selbstbewusst, dann leiser"
+    },
+    {
+     "who": "ICH",
+     "text": "… zu vergessen, wie die Stimme meiner Mutter klang.",
+     "pre": 0.6,
+     "rate": 0.8,
+     "fx": "zittern",
+     "style": "stockend, den Tränen nahe"
+    },
+    {
+     "who": "LUNARA",
+     "text": "Mama … ich höre dich nicht mehr. Jeden Tag ein bisschen weniger.",
+     "pre": 0.7,
+     "rate": 0.85,
+     "fx": "zittern",
+     "style": "flüsternd, weinend"
+    },
+    {
+     "who": "ICH",
+     "text": "Sie verschwand vor zwölf Jahren. In der Nacht, in der zuletzt ein Stern fiel.",
+     "pre": 0.9,
+     "style": "leise, traurig"
+    },
+    {
+     "who": "ICH",
+     "text": "Alles, was mir von ihr blieb, ist dieser Anhänger. Seine Nadel zeigt immer auf denselben Stern.",
+     "pre": 0.7,
+     "style": "zärtlich, geheimnisvoll"
+    }
+   ],
+   "cues": {
+    "maus_hallo": "L3+0.2",
+    "hicks": "L4-0.5"
+   }
+  },
+  {
+   "id": "fall",
+   "pre": 0.6,
+   "post": 0.5,
+   "cues": {
+    "streak": "L0+4.2",
+    "impact": "L0+6.9",
+    "schreck": "L0+4.0"
+   },
+   "lines": [
+    {
+     "who": "ICH",
+     "text": "Dann kam diese Nacht. Die Nadel meines Anhängers begann zu zittern.",
+     "style": "spannungsgeladen, leise"
+    },
+    {
+     "who": "LUNARA",
+     "text": "Nein …",
+     "pre": 4.2,
+     "rate": 0.8,
+     "style": "atemlos, fassungslos"
+    },
+    {
+     "who": "LUNARA",
+     "text": "Das ist unmöglich!",
+     "pre": 0.4,
+     "rate": 0.88,
+     "fx": "entsetzen",
+     "style": "entsetzt, laut"
+    }
+   ]
+  },
+  {
+   "id": "outro",
+   "pre": 2.2,
+   "post": 9.0,
+   "lines": [
+    {
+     "who": "LUNARA",
+     "text": "Folge mir … und du siehst als Erstes, wie meine Geschichte weitergeht.",
+     "rate": 0.93,
+     "style": "direkt zum Zuschauer, eindringlich, ein Hauch Lächeln"
+    }
+   ],
+   "cues": {
+    "knopf": "L0+2.4"
+   }
+  }
+ ]
+}
