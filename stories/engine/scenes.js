@@ -2293,7 +2293,7 @@ function subtitles(t) {
   ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
   ctx.font = narr ? 'italic 500 58px "Cormorant Garamond"' : '600 60px "Cormorant Garamond"';
   const lines = wrap(l.text, 900);
-  const lh = 68, y0 = (l.who === 'BO' ? 640 : 1460) - (lines.length - 1) * lh / 2;
+  const lh = 68, y0 = (l.who === 'BO' ? 640 : l.scene === 'outro' ? 1610 : 1460) - (lines.length - 1) * lh / 2;
   const band = ctx.createLinearGradient(0, y0 - 190, 0, y0 + lines.length * lh + 80);
   band.addColorStop(0, 'rgba(0,0,0,0)'); band.addColorStop(0.35, `rgba(0,0,0,${0.5 * a})`);
   band.addColorStop(0.75, `rgba(0,0,0,${0.5 * a})`); band.addColorStop(1, 'rgba(0,0,0,0)');

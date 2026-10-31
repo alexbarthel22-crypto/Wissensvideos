@@ -194,7 +194,7 @@ def main(story_path, out_dir):
                 key = hashlib.sha1(ident.replace(GEMINI_MODEL, FALLBACK, 1).encode()).hexdigest()[:12]
                 raw = os.path.join(vdir, f"{key}.raw.wav")
             fx = line.get("fx", v.get("fx"))
-            tempo = float(story.get("tempo", 1.0)) if ENGINE == "gemini" else 1.0
+            tempo = float(line.get("tempo", scene.get("tempo", story.get("tempo", 1.0)))) if ENGINE == "gemini" else 1.0
             ttag = f".t{tempo:g}" if tempo != 1.0 else ""
             fin = os.path.join(vdir, f"{key}.{fx or 'clean'}{ttag}.v2.wav")
             if not os.path.exists(raw):

@@ -118,11 +118,12 @@
     },
     {
      "who": "ICH",
-     "text": "Aber komm mit. Ich zeige dir eine Welt jenseits von allem, was du kennst. Bleib dran!",
+     "text": "Komm mit. Ich zeige dir eine Welt jenseits von allem, was du kennst. Bleib dran!",
      "style": "warm, einladend, Neugier weckend, am Ende energisch und direkt zum Zuschauer, normale Sprechstimme, nicht flüstern",
      "pre": 0.9
     }
-   ]
+   ],
+   "tempo": 1.0
   },
   {
    "id": "intro",
@@ -164,7 +165,8 @@
      "style": "ruhig, unheimlich, warnend, normale Sprechstimme, nicht flüstern",
      "pre": 0.4
     }
-   ]
+   ],
+   "tempo": 1.0
   },
   {
    "id": "stadt",
@@ -178,7 +180,7 @@
     },
     {
      "who": "ICH",
-     "text": "Ganz oben, in der Lichtkrone, herrscht der Orden der Hohen Flamme. Sehr bescheidener Name.",
+     "text": "Ganz oben, in der Lichtkrone, herrscht der Orden der Hohen Flamme. Sehr bescheidener Name, wenn ihr mich fragt.",
      "pre": 0.52,
      "style": "ernst, dann beim letzten Satz sehr sarkastisch, trocken, mit hörbarem Augenrollen und spöttischer Betonung auf 'bescheiden', normale Sprechstimme"
     }
@@ -204,7 +206,7 @@
      "who": "ICH",
      "text": "Das wichtigste Gesetz: Jeder Stern, der fällt, gehört dem Orden. Und wer ein Sternenherz berührt … stirbt.",
      "pre": 0.38,
-     "style": "ernst, langsam, normale Sprechstimme, nicht flüstern"
+     "style": "'Das wichtigste Gesetz:' feierlich und schwer betont, dann eine kurze Pause; den Rest ernst und langsam, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "ICH",
@@ -346,7 +348,7 @@
    }
   }
  ],
- "tempo": 1.2,
+ "tempo": 1.1,
  "naechste_folge": "Folge 2",
  "naechste_titel": "Das Herz, das vom Himmel fiel"
 }

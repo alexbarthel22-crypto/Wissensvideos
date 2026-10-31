@@ -338,8 +338,9 @@ def epic_intro(music, fx, t0, beat=0.6):
     m0 = t0 + 3.0
     music.add(drone(17, "D1", grit=0.4), t0, 1.4)
     music.add(choir("Dm", 3.0, attack=2.6, release=0.6, vowel="o"), t0, 0.9)
-    fx.add(cymbal(3.0, swell=True), t0, 0.8)
-    fx.add(riser(3.0), t0, 0.6)
+    # one continuous swell that starts under the end of the previous scene and carries into the title
+    fx.add(cymbal(4.0, swell=True), t0 - 1.0, 0.8)
+    fx.add(riser(4.0), t0 - 1.0, 0.6)
     fx.add(boom(6, 100, 28, 1.0), m0, 1.3)
     fx.add(cymbal(4), m0, 1.0)
     for i, (c, at, ln) in enumerate((("Dm", 0, 4), ("Bb", 4, 3), ("Gm", 7, 3), ("A", 10, 3))):
@@ -450,7 +451,6 @@ def score(tl):
         if len(kl) >= 5:
             music.add(pad("D", s["end"] - invite + 2.5, bright=5, attack=1.5, release=2.0), invite - 0.3, 0.8)
             music.add(choir("D", s["end"] - invite + 2, attack=1.8, release=2.0, vowel="o"), invite, 0.45)
-            fx.add(riser(s["end"] - invite + 0.6), invite, 0.45)
         else:
             fx.add(boom(4, 70, 26, 0.6), kl[-1]["end"] + 0.1, 0.7)
 
