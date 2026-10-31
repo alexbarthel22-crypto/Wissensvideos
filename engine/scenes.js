@@ -889,7 +889,7 @@ const SCENES = {
     nebula(t, ['rgba(110,60,200,A)', 'rgba(40,120,200,A)', 'rgba(200,80,140,A)'], smooth(0, 3, lt));
     stars(t, { alpha: smooth(0, 2.5, lt), drift: 1 });
     // cage constellations appear on "Gefängnisse"
-    const cage = smooth(lineOf('kalt', 2).start, lineOf('kalt', 2).start + 2, t);
+    const cage = smooth(lineOf('kalt', 1).start + 1.0, lineOf('kalt', 1).start + 3, t);
     if (cage > 0) {
       ctx.save(); ctx.globalCompositeOperation = 'lighter';
       ctx.strokeStyle = `rgba(180,200,255,${cage * 0.45})`; ctx.lineWidth = 1.5;
@@ -901,6 +901,14 @@ const SCENES = {
         ctx.stroke();
         glow(cx, cy, 40, 'rgba(220,230,255,A)', cage * (0.6 + 0.4 * Math.sin(t * 3 + k)));
       });
+      ctx.restore();
+    }
+    // "... oder jemanden?": a woman's silhouette glows inside the brightest star prison
+    const who = smooth(lineOf('kalt', 1).end - 1.4, lineOf('kalt', 1).end + 0.6, t) * (1 - 0.6 * smooth(lineOf('kalt', 3).start, lineOf('kalt', 3).end, t));
+    if (who > 0) {
+      ctx.save(); ctx.globalCompositeOperation = 'lighter';
+      glow(540, 880, 150, 'rgba(200,215,255,A)', 0.5 * who);
+      figure(540, 950, 120, { hair: true, t, color: `rgba(210,225,255,${0.55 * who})`, arm: -0.2, armLen: 30 });
       ctx.restore();
     }
     // the star that is about to fall
@@ -1361,8 +1369,10 @@ const SCENES = {
     // Neraya sitting on the end of a branch, looking up at the last star
     ctx.fillStyle = '#05030a';
     ctx.beginPath(); ctx.moveTo(-200, 1500); ctx.quadraticCurveTo(300, 1460, 640, 1420); ctx.lineTo(650, 1450); ctx.quadraticCurveTo(300, 1520, -200, 1620); ctx.fill();
-    sittingHeroine(430, 1452, 7.5, t, { rim: 'rgba(255,200,150,0.95)', rimBlur: 34, look: -0.7 });
-    ctx.save(); ctx.globalCompositeOperation = 'lighter'; glow(470, 1080, 160, 'rgba(255,210,160,A)', 0.25); ctx.restore();
+    const reach = 0.5 + 0.5 * Math.sin(t * 0.6);
+    const oh = figure(470, 1446, 430, { hair: true, t, wind: 2, arm: lerp(-1.05, -1.2, reach), armLen: 36, rim: 'rgba(255,200,150,0.95)', rimBlur: 30 });
+    ctx.save(); ctx.globalCompositeOperation = 'lighter'; glow(oh[0], oh[1], 50, 'rgba(255,220,170,A)', 0.5); ctx.restore();
+    ctx.save(); ctx.globalCompositeOperation = 'lighter'; glow(470, 1100, 180, 'rgba(255,210,160,A)', 0.2); ctx.restore();
     particles(t, 60, { y0: 1900, dy: -1700, a: 0.6, color: 'rgba(255,210,150,A)', r: 2, life: 8 });
     ctx.restore();
     // call to action, then the end card

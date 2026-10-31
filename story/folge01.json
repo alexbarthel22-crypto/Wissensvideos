@@ -78,24 +78,32 @@
   {
    "id": "kalt",
    "pre": 0.8,
-   "post": 0.6,
+   "post": 0.4,
    "lines": [
     {
      "who": "ICH",
-     "text": "Warte … bleib einen Moment.",
+     "text": "Sieh nach oben. Was siehst du? … Sterne?",
      "rate": 0.88,
-     "style": "leise, vertraut, als würde sie dem Zuschauer ein Geheimnis anvertrauen"
+     "style": "leise, direkt zum Zuschauer, geheimnisvoll"
     },
     {
      "who": "ICH",
-     "text": "Lass dich entführen in eine Welt hoch über den Wolken. Wo Wale am Himmel singen … und jeder Stern ein Geheimnis hütet.",
-     "pre": 0.6,
-     "style": "verzaubernd, einladend"
+     "text": "Was wäre, wenn das gar keine Sterne sind? Wenn sie etwas gefangen halten … oder jemanden?",
+     "pre": 0.7,
+     "rate": 0.88,
+     "style": "flüsternd, unheimlich, Spannung aufbauend"
     },
     {
      "who": "ICH",
-     "text": "Die Sterne sind Gefängnisse. Und ich … habe eines davon geöffnet.",
-     "pre": 0.9,
+     "text": "Bleib bei mir. Ich zeige dir, was dort oben eingesperrt ist.",
+     "pre": 0.7,
+     "style": "eindringlich, direkt zum Zuschauer"
+    },
+    {
+     "who": "ICH",
+     "text": "Denn ich … habe eines dieser Gefängnisse geöffnet.",
+     "pre": 0.7,
+     "rate": 0.86,
      "style": "flüsternd, schuldbewusst"
     }
    ]
@@ -119,13 +127,13 @@
     {
      "who": "ICH",
      "text": "Hier wachsen die Bäume so hoch, dass ihre Kronen über den Wolken liegen.",
-     "pre": 0.9,
+     "pre": 0.75,
      "style": "staunend, verträumt"
     },
     {
      "who": "ICH",
      "text": "Nachts rieselt Sternenstaub vom Himmel. Die Himmelswale fressen ihn …",
-     "pre": 1.0,
+     "pre": 0.75,
      "style": "verträumt"
     },
     {
@@ -149,7 +157,7 @@
     {
      "who": "ICH",
      "text": "Ganz oben, in der Lichtkrone, herrscht der Orden der Hohen Flamme.",
-     "pre": 0.9,
+     "pre": 0.7,
      "style": "ernst"
     }
    ]
@@ -167,19 +175,19 @@
     {
      "who": "ICH",
      "text": "Und wir hier unten, in den Tiefen Ästen? Uns bleibt nur der Rest: ein paar Laternen. Und Gesetze.",
-     "pre": 0.8,
+     "pre": 0.6,
      "style": "bitter, trocken"
     },
     {
      "who": "ICH",
      "text": "Das wichtigste Gesetz: Jeder Stern, der fällt, gehört dem Orden. Und wer ein Sternenherz berührt … stirbt.",
-     "pre": 0.9,
+     "pre": 0.6,
      "style": "ernst, langsam"
     },
     {
      "who": "ICH",
      "text": "Denn vor tausend Jahren hat ein Mensch genau das getan. Und Valdoria brannte.",
-     "pre": 0.9,
+     "pre": 0.6,
      "style": "düster"
     }
    ]
@@ -197,25 +205,25 @@
     {
      "who": "ICH",
      "text": "Jede Nacht zünde ich Laternen an. Für drei Kupfermünzen. Das reicht gerade für ein Stück Brot.",
-     "pre": 0.7,
+     "pre": 0.6,
      "style": "nüchtern, ein wenig bitter"
     },
     {
      "who": "ICH",
      "text": "Ich klettere dorthin, wo niemand klettern darf. Ich stehle Sternenstaub von den Dächern des Ordens.",
-     "pre": 0.8,
+     "pre": 0.7,
      "style": "frech, stolz"
     },
     {
      "who": "ICH",
      "text": "Ich habe keine Angst vor der Höhe. Nur vor einer einzigen Sache …",
-     "pre": 0.8,
+     "pre": 0.7,
      "style": "selbstbewusst, dann leiser"
     },
     {
      "who": "ICH",
      "text": "… zu vergessen, wie die Stimme meiner Mutter klang.",
-     "pre": 0.7,
+     "pre": 0.6,
      "rate": 0.8,
      "fx": "zittern",
      "style": "stockend, den Tränen nahe"
@@ -223,7 +231,7 @@
     {
      "who": "LUNARA",
      "text": "Mama … ich höre dich nicht mehr. Jeden Tag ein bisschen weniger.",
-     "pre": 0.8,
+     "pre": 0.7,
      "rate": 0.85,
      "fx": "zittern",
      "style": "flüsternd, weinend"
@@ -231,13 +239,13 @@
     {
      "who": "ICH",
      "text": "Sie verschwand vor zwölf Jahren. In der Nacht, in der zuletzt ein Stern fiel.",
-     "pre": 1.0,
+     "pre": 0.9,
      "style": "leise, traurig"
     },
     {
      "who": "ICH",
      "text": "Alles, was mir von ihr blieb, ist dieser Anhänger. Seine Nadel zeigt immer auf denselben Stern.",
-     "pre": 0.8,
+     "pre": 0.7,
      "style": "zärtlich, geheimnisvoll"
     }
    ]
@@ -276,7 +284,7 @@
   {
    "id": "outro",
    "pre": 2.2,
-   "post": 9.0,
+   "post": 8.5,
    "lines": [
     {
      "who": "LUNARA",

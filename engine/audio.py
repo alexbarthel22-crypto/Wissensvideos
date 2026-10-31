@@ -376,40 +376,37 @@ def epic_intro(music, fx, t0, beat=0.6):
 
 
 def epic_outro(music, fx, t0, t1):
-    """Distinct closing theme: heroic I-V-vi-IV in F, soaring strings, turning to D major with the motif's head."""
+    """Distinct closing theme: heroic I-V-vi-IV in F, soaring strings, turning to D major with the motif's head.
+    Everything resolves and decays before t1, so nothing is cut off at the end of the video."""
     beat = 0.62
-    prog = ["F", "C", "Dm", "Bb", "F", "C"]
-    t = t0
-    for c in prog:
-        music.add(pad(c, 4 * beat, bright=6, attack=0.6), t, 0.9)
-        music.add(choir(c, 4 * beat, attack=0.8, release=1.5), t, 0.7)
-        t += 4 * beat
+    prog = ["F", "C", "Dm", "Bb"]
+    for k, c in enumerate(prog):
+        music.add(pad(c, 4 * beat, bright=6, attack=0.6, release=1.2), t0 + k * 4 * beat, 0.9)
+        music.add(choir(c, 4 * beat, attack=0.8, release=1.2), t0 + k * 4 * beat, 0.7)
     arp = {"F": ["F4", "A4", "C5", "A4"], "C": ["C4", "E4", "G4", "E4"], "Dm": ["D4", "F4", "A4", "F4"], "Bb": ["Bb3", "D4", "F4", "D4"]}
     for k, c in enumerate(prog):
         for j in range(8):
             music.add(bell(arp[c][j % 4], 1.6, 0.6), t0 + k * 4 * beat + j * beat / 2, 0.22, 0.3 * (-1) ** j)
-    tune = [("A4", 2), ("C5", 1), ("F5", 1), ("E5", 3), ("C5", 1), ("D5", 2), ("C5", 1), ("A4", 1), ("Bb4", 3), ("A4", 1),
-            ("A4", 2), ("C5", 1), ("F5", 1), ("G5", 3), ("E5", 1), ("F5", 2), ("A5", 2), ("G5", 4)]
-    tt = t0 + 16 * beat
+    fin = t0 + 16 * beat
+    tune = [("A4", 2), ("C5", 1), ("F5", 1), ("E5", 2), ("D5", 1), ("C5", 1)]
+    tt = t0 + 8 * beat
     for n, bts in tune:
-        if tt >= t0 + 24 * beat:
-            break
-        music.add(lead(n, bts * beat * 0.95, bright=6, attack=0.15), tt, 0.8)
+        music.add(lead(n, bts * beat * 0.95, bright=6, attack=0.15, release=0.3), tt, 0.8)
         tt += bts * beat
-    t = t0 + 16 * beat
-    while t < t0 + 24 * beat:
+    t = t0 + 8 * beat
+    while t < fin - 2 * beat:
         fx.add(drum(58), t, 0.45)
         fx.add(drum(72), t + beat * 1.5, 0.3)
         t += 2 * beat
-    fin = t0 + 24 * beat
     fx.add(snare_roll(2 * beat), fin - 2 * beat, 0.7)
-    fx.add(boom(7, 100, 26, 1.0), fin, 1.3)
-    fx.add(cymbal(5), fin, 1.0)
-    music.add(choir("D", max(1.0, t1 - fin - 2.5), attack=0.05, release=3.5), fin, 1.4)
-    music.add(pad("D", max(1.0, t1 - fin - 2.5), bright=10, attack=0.05, release=3.5), fin, 1.2)
+    fx.add(boom(5, 100, 26, 1.0), fin, 1.2)
+    fx.add(cymbal(4), fin, 0.9)
+    hold = max(2.0, t1 - fin - 2.4)
+    music.add(choir("D", hold, attack=0.05, release=2.2), fin, 1.3)
+    music.add(pad("D", hold, bright=10, attack=0.05, release=2.2), fin, 1.1)
     th = fin
     for n, bts in [("D4", 1), ("A4", 1), ("G4", 0.5), ("F#4", 0.5), ("A4", 3)]:
-        music.add(lead(n, bts * 0.6 * 0.95), th, 1.1)
+        music.add(lead(n, bts * 0.6 * 0.95, release=0.6), th, 1.1)
         th += bts * 0.6
     return fin
 
@@ -428,7 +425,8 @@ def score(tl):
         music.add(pad("Dm", dur("kalt"), bright=2, attack=4), s["start"], 0.5)
         melody(music, 1.2, ["A5", None, "F5", None, "E5", None, "D5"], 1.2, 0.3, 4)
         sparkles(music, 0.5, s["end"], 0.8, 0.25)
-        fx.add(boom(4, 70, 26, 0.6), LN("kalt", 2)["end"] + 0.1, 0.7)
+        kl = [l for l in tl["lines"] if l["scene"] == "kalt"]
+        fx.add(boom(4, 70, 26, 0.6), kl[-1]["end"] + 0.1, 0.7)
 
     # Main title
     if "intro" in S:
@@ -753,6 +751,9 @@ def main(out_dir):
     v = reverb(v, 1.2, 0.06, 3)
     mix = v * 1.0 + m * 0.5 + f * 0.45
     mix = mix[:, :int((tl["duration"] + 0.2) * SR)]
+    # gentle master fade so the last chord never stops abruptly
+    nf = int(1.5 * SR)
+    mix[:, -nf:] *= np.linspace(1, 0, nf) ** 1.5
     mix = np.tanh(mix * 1.1) / np.tanh(1.1)
     mix /= max(1e-6, np.abs(mix).max()) / 0.95
     pcm = (mix.T * 32767).astype(np.int16)
