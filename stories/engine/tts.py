@@ -77,26 +77,31 @@ def synth_gemini(text, voice, line, path):
             "speechConfig": {"voiceConfig": {"prebuiltVoiceConfig": {"voiceName": voice["gemini"]}}},
         },
     }
-    req = urllib.request.Request(
-        GEMINI_API.format(model=GEMINI_MODEL), data=json.dumps(body).encode(),
-        headers={"Content-Type": "application/json", "x-goog-api-key": os.environ["GEMINI_API_KEY"]})
-    for attempt in range(8):
+    max_dur = 3.0 + len(text) / 7.0  # far slower than any real reading: the model read extra text
+    for attempt in range(12):
+        req = urllib.request.Request(
+            GEMINI_API.format(model=GEMINI_MODEL), data=json.dumps(body).encode(),
+            headers={"Content-Type": "application/json", "x-goog-api-key": os.environ["GEMINI_API_KEY"]})
         try:
             with urllib.request.urlopen(req, timeout=120) as r:
-                part = json.load(r)["candidates"][0]["content"]["parts"][0]["inlineData"]
-            break
+                pcm = base64.b64decode(json.load(r)["candidates"][0]["content"]["parts"][0]["inlineData"]["data"])
         except urllib.error.HTTPError as e:
             # rate limit / transient server error: back off and retry
-            if e.code not in (429, 500, 503) or attempt == 7:
+            if e.code not in (429, 500, 503) or attempt == 11:
                 raise
             wait = min(90, 15 * (attempt + 1))
             print(f"  Gemini {e.code}, neuer Versuch in {wait}s", flush=True)
             time.sleep(wait)
+            continue
+        dur = len(pcm) / 2 / 24000
+        if dur <= max_dur or attempt >= 3:
+            break
+        print(f"  zu lang ({dur:.1f}s > {max_dur:.1f}s), neu erzeugen", flush=True)
     with wave.open(path, "wb") as w:
         w.setnchannels(1)
         w.setsampwidth(2)
         w.setframerate(24000)
-        w.writeframes(base64.b64decode(part["data"]))
+        w.writeframes(pcm)
 
 
 def load_wav(path):
@@ -203,7 +208,7 @@ def main(story_path, out_dir):
             cut = stray_tail(raw, line['text'])
             if cut:
                 print(f"  Nachzügler entfernt nach {cut:.2f}s: {line['text'][:40]}")
-                n, fade = int(cut * SR), int(0.3 * SR)
+                n, fade = min(int(cut / tempo * SR), len(audio)), int(0.3 * SR)  # raw time -> tempo-stretched time
                 audio = audio[:n + fade].copy()
                 audio[n:] *= np.linspace(1, 0, len(audio) - n)
             audio = trim_silence(audio)
