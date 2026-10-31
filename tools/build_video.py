@@ -261,8 +261,28 @@ def build_hud_big(project, script, windows, total):
 def build_hud_cinema(project, script, windows, total):
     """Kino-Stil (Referenz A): links Messwert + Tag/Uhrzeit, Zeitsprung groß in der Mitte."""
     rows, js = [], []
+    # Messwert pro Satz: "stat" an einer Zeile ersetzt die Box ab Zeilenstart (immer nur das gerade Relevante)
+    tim = json.loads((project / "assets" / "voice" / "timings.json").read_text())
+    lstart = {l["id"]: l["start"] for l in tim["lines"]}
+    ev = []
+    for sc, s, e in windows:
+        if sc.get("stat"):
+            ev.append((s, sc["stat"]))
+        for l in sc["lines"]:
+            if l.get("stat") is not None:
+                ev.append((max(s, lstart[l["id"]] - 0.15), l["stat"]))
+        ev.append((e, None))
+    ev.sort(key=lambda a: a[0])
+    for k, (t0, st) in enumerate(ev):
+        if not st:
+            continue
+        t1 = next((t for t, _ in ev[k + 1:] if t > t0 + 0.01), total)
+        rows.append(f'      <div id="sl{k}" class="clip stat" data-start="{t0:.3f}" data-duration="{t1 - t0:.3f}" data-track-index="1">'
+                    f'<div class="sl">{esc(st[0])}</div><div class="sv">{esc(st[1])}</div><div class="ss">{esc(st[2])}</div></div>')
+        if t0 > 0.05:
+            js.append(f'tl.fromTo("#sl{k}", {{ opacity: 0, x: -20 }}, {{ opacity: 1, x: 0, duration: 0.3, ease: "power2.out" }}, {t0:.3f});')
     for i, (sc, s, e) in enumerate(windows):
-        st = sc.get("stat")
+        st = None
         if st:
             rows.append(f'      <div id="st{i}" class="clip stat" data-start="{s:.3f}" data-duration="{e - s:.3f}" data-track-index="1">'
                         f'<div class="sl">{esc(st[0])}</div><div id="sv{i}" class="sv">{esc(st[1])}</div><div class="ss">{esc(st[2])}</div></div>')

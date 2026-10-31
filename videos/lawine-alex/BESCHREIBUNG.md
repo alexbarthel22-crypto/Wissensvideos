@@ -1,7 +1,7 @@
 # Beschreibung – Die ganze Welt unter einer Lawine, nur du überlebst
 
 ## Hauptversion (empfohlen)
-Eine Lawine begräbt die ganze Welt – nur du überlebst ❄️ Alex, 24, der letzte Mensch über dem Schnee. 5 Regeln, die dein Leben retten … und dann diese Fußspuren 😨 Teil 2? Folg mir 👇
+Eine Lawine begräbt die GANZE Welt – nur du überlebst ❄️ Alex, 30, versteckt sich vor seiner toxischen Ex auf dem Dach … und wird zum letzten Menschen der Welt. 5 Regeln zum Überleben – und dann riesige Fußspuren aus Blut 😨 Teil 2? Folg mir 👇
 #waswärewenn #survival #lawine #storytime #fyp
 
 ## Alternative 1 (Fakt vorne)
@@ -9,8 +9,12 @@ Unter einer Lawine überleben 90 % die ersten 15 Minuten – danach sinkt die Ch
 #waswärewenn #survival #wissen #lawine #fyp
 
 ## Alternative 2 (Cliffhanger vorne)
-Tag 4, 02:13 Uhr: Fußspuren im Schnee. Sie führen zu deiner Höhle. Und es sind nicht deine 😳 Wer steht da draußen? Schreib's in die Kommentare 👇
+Tag 4, 02:13 Uhr: Fußspuren im Schnee. Doppelt so groß wie deine. Aus Blut. Und du bist der letzte Mensch der Welt 😳 Wer steht da draußen? 👇
 #waswärewenn #storytime #gruselig #survival #fyp
+
+## Alternative 3 (Ex-Hook)
+Alex hat sich nur vor seiner toxischen Ex auf dem Dach versteckt – und überlebt dadurch als Einziger das Ende der Welt 💀❄️ Was würdest du tun? 👇
+#waswärewenn #toxischeex #storytime #survival #fyp
 
 ## Angepinnter Kommentar
 Wer steht da draußen? 👀 Die beste Theorie kommt in Teil 2 vor – folg mir, damit du ihn nicht verpasst ❄️👇

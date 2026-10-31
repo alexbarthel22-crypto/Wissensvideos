@@ -28,7 +28,7 @@
       sky(sv, "s04-s", "#8ea6c4", "#dfe7f0");
       const P = iso(540, 900, 110), w = el("g", {}, sv);
       box(P, w, -2, -2, -0.3, 7, 7, 0.3, "#f2f7fc");
-      const me = person(P, w, 1.2, 1.2, 0, { shirt: "#e8484f", pants: "#2a3060" });
+      const me = person(P, w, 1.2, 1.2, 0, { shirt: "#e8484f", pants: "#22284d", big: true });
       const l2 = box(P, w, 1.14, 1.14, 0.7, 0.52, 0.58, 0.82, "#5a7bd6", { opacity: 0 }), l3 = box(P, w, 1.1, 1.1, 0.72, 0.6, 0.66, 0.82, "#3d4a7a", { opacity: 0 });
       const wind = []; for (let i = 0; i < 6; i++) wind.push(el("path", { d: `M${-200} ${620 + i * 90} q200 -30 400 0 t400 0`, stroke: "#ffffff", "stroke-width": 6, fill: "none", opacity: 0.6, "stroke-linecap": "round" }, sv));
       const sf = snowfall(sv, 70, 11, -200, 1300);

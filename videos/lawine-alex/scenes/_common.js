@@ -35,6 +35,9 @@
           box(P, g, x - 0.25, y, z, 0.25, 0.5, 0.5, pants); box(P, g, x, y, z + 0.5, 0.45, 0.5, 0.28, pants);
           box(P, g, x, y + 0.02, z + 0.78, 0.38, 0.46, 0.75, shirt); box(P, g, x + 0.02, y + 0.06, z + 1.53, 0.36, 0.36, 0.38, skin);
           box(P, g, x + 0.02, y + 0.06, z + 1.85, 0.36, 0.36, 0.1, hair);
+        } else if (o.big) {
+          box(P, g, x + 0.02, y, z, 0.38, 0.46, 0.95, pants); box(P, g, x - 0.06, y - 0.08, z + 0.95, 0.54, 0.62, 0.85, shirt);
+          box(P, g, x + 0.06, y + 0.06, z + 1.8, 0.34, 0.38, 0.4, skin); box(P, g, x + 0.06, y + 0.06, z + 2.14, 0.34, 0.38, 0.1, hair);
         } else {
           box(P, g, x, y, z, 0.36, 0.42, 0.75, pants); box(P, g, x - 0.02, y - 0.02, z + 0.75, 0.4, 0.46, 0.75, shirt);
           box(P, g, x + 0.02, y + 0.03, z + 1.5, 0.34, 0.38, 0.38, skin); box(P, g, x + 0.02, y + 0.03, z + 1.82, 0.34, 0.38, 0.1, hair);
@@ -59,8 +62,15 @@
         for (let i = 0; i < n; i++) fl.push(el("circle", { cx: r() * 1080, cy: y0 + r() * (y1 - y0), r: 2 + r() * 4, fill: "#ffffff", opacity: 0.5 + r() * 0.5 }, g)); return { g, fl }; }
       const fall = (tl, sf, dur, t0 = 0) => sf.fl.forEach((f, i) => tl.to(f, { y: 900 + (i % 5) * 60, x: (i % 2 ? 1 : -1) * 40, duration: dur, ease: "none" }, t0));
       // flache Figur (Alex): Fußpunkt x, y
+      // Alex: groß, sportlich (Fußpunkt x, y)
       function alex(p, x, y, s = 1) { const g = el("g", {}, p); gsap.set(g, { x, y, scale: s, transformOrigin: "0 0" });
-        el("rect", { x: -14, y: -40, width: 12, height: 40, rx: 5, fill: "#2a3060" }, g); el("rect", { x: 2, y: -40, width: 12, height: 40, rx: 5, fill: "#2a3060" }, g);
-        el("rect", { x: -20, y: -92, width: 40, height: 56, rx: 14, fill: "#e8484f" }, g); el("circle", { cx: 0, cy: -108, r: 17, fill: "#f0c8a0" }, g);
-        el("path", { d: "M-18 -112 Q0 -136 18 -112 Q0 -122 -18 -112Z", fill: "#3a3f6e" }, g); return g; }
+        el("rect", { x: -17, y: -62, width: 15, height: 62, rx: 6, fill: "#22284d" }, g); el("rect", { x: 2, y: -62, width: 15, height: 62, rx: 6, fill: "#22284d" }, g);
+        el("rect", { x: -20, y: -6, width: 18, height: 8, rx: 4, fill: "#111" }, g); el("rect", { x: 2, y: -6, width: 18, height: 8, rx: 4, fill: "#111" }, g);
+        el("path", { d: "M-34 -128 Q-36 -134 -26 -136 L26 -136 Q36 -134 34 -128 L22 -60 L-22 -60Z", fill: "#e8484f" }, g);
+        el("rect", { x: -44, y: -130, width: 13, height: 58, rx: 6, fill: "#d03c43", transform: "rotate(8 -38 -130)" }, g); el("rect", { x: 31, y: -130, width: 13, height: 58, rx: 6, fill: "#d03c43", transform: "rotate(-8 38 -130)" }, g);
+        el("rect", { x: -6, y: -146, width: 12, height: 12, fill: "#e0b48c" }, g);
+        el("circle", { cx: 0, cy: -160, r: 17, fill: "#f0c8a0" }, g);
+        el("path", { d: "M-18 -164 Q-14 -184 4 -182 Q18 -180 18 -164 Q8 -172 -18 -164Z", fill: "#3a2a1a" }, g);
+        el("path", { d: "M-10 -150 Q0 -146 10 -150", stroke: "#3a2a1a", "stroke-width": 3, fill: "none" }, g);
+        return g; }
       function snowLayer(p, y, c = "#eef4fb") { return el("path", { d: `M-60 ${y} q90 -30 180 0 t180 0 t180 0 t180 0 t180 0 t180 0 t180 0 V2000 H-60Z`, fill: c }, p); }

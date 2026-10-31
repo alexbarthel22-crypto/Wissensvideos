@@ -24,18 +24,25 @@
     .vig { position: absolute; left: 0; right: 0; top: 1040px; height: 880px; background: linear-gradient(rgba(10,12,30,0), rgba(10,12,30,.5) 45%, rgba(10,12,30,.55)); pointer-events: none; }
     .big { position: absolute; left: 0; width: 1080px; top: 560px; text-align: center; color: #fff; opacity: 0; text-shadow: 0 2px 18px rgba(0,0,0,.6); }
     .big b { display: block; font: 600 150px/1 "EB Garamond", serif; color: #1f5fb8; text-shadow: 0 0 30px rgba(255,255,255,.9); } .big i { color: #1d2b4a; text-shadow: 0 0 12px rgba(255,255,255,.9); } .big i { display: block; margin-top: 6px; font: 600 28px Inter, sans-serif; font-style: normal; letter-spacing: .18em; }
+    #s02-ph { left: 300px; top: 560px; width: 480px; height: 760px; border-radius: 60px; background: #111522; border: 10px solid #2a2f40; opacity: 0; text-align: center; color: #fff; box-shadow: 0 30px 70px rgba(0,0,0,.5); }
+    #s02-ph .av { width: 150px; height: 150px; margin: 90px auto 20px; border-radius: 50%; background: #ff8fd0; font: 600 80px/150px "EB Garamond", serif; color: #fff; }
+    #s02-ph b { display: block; font: 600 60px "EB Garamond", serif; } #s02-ph i { display: block; margin-top: 18px; font: 700 34px Inter, sans-serif; font-style: normal; color: #ff5a5f; }
+    #s02-ph .bt { position: absolute; left: 0; right: 0; bottom: 70px; display: flex; justify-content: space-around; }
+    #s02-ph .bt span { width: 120px; height: 120px; border-radius: 50%; font: 700 60px/120px Inter, sans-serif; }
+    .s02-c { position: absolute; font: 600 48px "EB Garamond", serif; color: #fff; opacity: 0; text-shadow: 0 2px 12px rgba(0,0,0,.8); }
   </style>
-  <div id="root" data-composition-id="s02" data-start="0" data-duration="12.020" data-width="1080" data-height="1920">
-    <div id="s02-stage" class="clip stage" data-start="0" data-duration="12.020" data-track-index="0">
+  <div id="root" data-composition-id="s02" data-start="0" data-duration="17.620" data-width="1080" data-height="1920">
+    <div id="s02-stage" class="clip stage" data-start="0" data-duration="17.620" data-track-index="0">
       <svg id="s02-svg" class="full" viewBox="0 0 1080 1920"></svg>
-      <div id="s02-big" class="big"><b>40 m</b><i>SCHNEE IN UNTER 1 MINUTE</i></div>
+      <div id="s02-ph" class="abs"><div class="av">E</div><b>Ex 💔</b><i>47 verpasste Anrufe</i><div class="bt"><span style="background:#e0484f">✕</span><span style="background:#39b36a">✆</span></div></div>
+      <div id="s02-c1" class="s02-c" style="left:640px;top:690px">Tokio</div><div id="s02-c2" class="s02-c" style="left:330px;top:940px">New York</div><div id="s02-c3" class="s02-c" style="left:470px;top:640px">Berlin</div>
       <div class="vig"></div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 12.02, "L4": [0.2, 3.84], "L4.words": [["es", 0.2, 0.349], ["beginnt", 0.349, 0.665], ["mit", 0.665, 0.82], ["einem", 0.82, 1.124], ["grollen", 1.124, 1.44], ["dann", 1.99, 2.164], ["rollt", 2.164, 2.343], ["eine", 2.343, 2.667], ["weiße", 2.667, 2.996], ["wand", 2.996, 3.169], ["über", 3.169, 3.493], ["die", 3.493, 3.66], ["stadt", 3.66, 3.84]], "L5": [4.06, 8.35], "L5.words": [["du", 4.06, 4.23], ["stehst", 4.23, 4.424], ["zufällig", 4.424, 4.946], ["auf", 4.946, 5.122], ["dem", 5.122, 5.298], ["dach", 5.298, 5.48], ["eines", 5.48, 5.826], ["hochhauses", 5.826, 6.36], ["unter", 6.91, 7.288], ["dir", 7.288, 7.48], ["alles", 7.88, 8.191], ["weg", 8.191, 8.35]], "L5b": [8.57, 11.84], "L5b.words": [["in", 8.57, 8.728], ["weniger", 8.728, 9.208], ["als", 9.208, 9.371], ["einer", 9.371, 9.693], ["minute", 9.693, 10.167], ["liegt", 10.167, 10.342], ["die", 10.342, 10.506], ["welt", 10.506, 10.676], ["unter", 10.676, 10.998], ["vierzig", 10.998, 11.331], ["metern", 11.331, 11.659], ["schnee", 11.659, 11.84]]};
+      const C = {"__dur": 17.62, "L4": [0.2, 3.68], "L4.words": [["es", 0.2, 0.349], ["beginnt", 0.349, 0.665], ["mit", 0.665, 0.82], ["einem", 0.82, 1.124], ["grollen", 1.124, 1.44], ["dann", 1.99, 2.149], ["rollt", 2.149, 2.313], ["eine", 2.313, 2.608], ["weiße", 2.608, 2.909], ["wand", 2.909, 3.067], ["über", 3.067, 3.363], ["die", 3.363, 3.516], ["stadt", 3.516, 3.68]], "L5": [3.9, 6.35], "L5.words": [["du", 3.9, 4.058], ["stehst", 4.058, 4.239], ["nur", 4.239, 4.403], ["zufällig", 4.403, 4.888], ["auf", 4.888, 5.052], ["dem", 5.052, 5.216], ["dach", 5.216, 5.385], ["eines", 5.385, 5.707], ["hochhauses", 5.707, 6.204], ["", 6.204, 6.35]], "L5x": [6.57, 8.56], "L5x.words": [["weil", 6.57, 6.726], ["du", 6.726, 6.872], ["dich", 6.872, 7.028], ["dort", 7.028, 7.185], ["vor", 7.185, 7.336], ["deiner", 7.336, 7.638], ["toxischen", 7.638, 8.091], ["ex", 8.091, 8.236], ["versteckst", 8.236, 8.56]], "L5b": [8.78, 12.86], "L5b.words": [["unter", 8.78, 9.158], ["dir", 9.158, 9.35], ["alles", 9.66, 9.899], ["weg", 9.899, 10.02], ["in", 10.51, 10.644], ["weniger", 10.644, 11.053], ["als", 11.053, 11.192], ["einer", 11.192, 11.466], ["minute", 11.466, 11.869], ["liegen", 11.869, 12.148], ["vierzig", 12.148, 12.432], ["meter", 12.432, 12.706], ["schnee", 12.706, 12.86]], "L5c": [13.08, 17.44], "L5c.words": [["und", 13.08, 13.27], ["nicht", 13.27, 13.473], ["nur", 13.473, 13.663], ["hier", 13.663, 13.86], ["tokio", 14.41, 14.8], ["new", 15.26, 15.422], ["york", 15.422, 15.59], ["berlin", 16.14, 16.48], ["überall", 17.03, 17.44]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -94,6 +101,9 @@
           box(P, g, x - 0.25, y, z, 0.25, 0.5, 0.5, pants); box(P, g, x, y, z + 0.5, 0.45, 0.5, 0.28, pants);
           box(P, g, x, y + 0.02, z + 0.78, 0.38, 0.46, 0.75, shirt); box(P, g, x + 0.02, y + 0.06, z + 1.53, 0.36, 0.36, 0.38, skin);
           box(P, g, x + 0.02, y + 0.06, z + 1.85, 0.36, 0.36, 0.1, hair);
+        } else if (o.big) {
+          box(P, g, x + 0.02, y, z, 0.38, 0.46, 0.95, pants); box(P, g, x - 0.06, y - 0.08, z + 0.95, 0.54, 0.62, 0.85, shirt);
+          box(P, g, x + 0.06, y + 0.06, z + 1.8, 0.34, 0.38, 0.4, skin); box(P, g, x + 0.06, y + 0.06, z + 2.14, 0.34, 0.38, 0.1, hair);
         } else {
           box(P, g, x, y, z, 0.36, 0.42, 0.75, pants); box(P, g, x - 0.02, y - 0.02, z + 0.75, 0.4, 0.46, 0.75, shirt);
           box(P, g, x + 0.02, y + 0.03, z + 1.5, 0.34, 0.38, 0.38, skin); box(P, g, x + 0.02, y + 0.03, z + 1.82, 0.34, 0.38, 0.1, hair);
@@ -118,10 +128,17 @@
         for (let i = 0; i < n; i++) fl.push(el("circle", { cx: r() * 1080, cy: y0 + r() * (y1 - y0), r: 2 + r() * 4, fill: "#ffffff", opacity: 0.5 + r() * 0.5 }, g)); return { g, fl }; }
       const fall = (tl, sf, dur, t0 = 0) => sf.fl.forEach((f, i) => tl.to(f, { y: 900 + (i % 5) * 60, x: (i % 2 ? 1 : -1) * 40, duration: dur, ease: "none" }, t0));
       // flache Figur (Alex): Fußpunkt x, y
+      // Alex: groß, sportlich (Fußpunkt x, y)
       function alex(p, x, y, s = 1) { const g = el("g", {}, p); gsap.set(g, { x, y, scale: s, transformOrigin: "0 0" });
-        el("rect", { x: -14, y: -40, width: 12, height: 40, rx: 5, fill: "#2a3060" }, g); el("rect", { x: 2, y: -40, width: 12, height: 40, rx: 5, fill: "#2a3060" }, g);
-        el("rect", { x: -20, y: -92, width: 40, height: 56, rx: 14, fill: "#e8484f" }, g); el("circle", { cx: 0, cy: -108, r: 17, fill: "#f0c8a0" }, g);
-        el("path", { d: "M-18 -112 Q0 -136 18 -112 Q0 -122 -18 -112Z", fill: "#3a3f6e" }, g); return g; }
+        el("rect", { x: -17, y: -62, width: 15, height: 62, rx: 6, fill: "#22284d" }, g); el("rect", { x: 2, y: -62, width: 15, height: 62, rx: 6, fill: "#22284d" }, g);
+        el("rect", { x: -20, y: -6, width: 18, height: 8, rx: 4, fill: "#111" }, g); el("rect", { x: 2, y: -6, width: 18, height: 8, rx: 4, fill: "#111" }, g);
+        el("path", { d: "M-34 -128 Q-36 -134 -26 -136 L26 -136 Q36 -134 34 -128 L22 -60 L-22 -60Z", fill: "#e8484f" }, g);
+        el("rect", { x: -44, y: -130, width: 13, height: 58, rx: 6, fill: "#d03c43", transform: "rotate(8 -38 -130)" }, g); el("rect", { x: 31, y: -130, width: 13, height: 58, rx: 6, fill: "#d03c43", transform: "rotate(-8 38 -130)" }, g);
+        el("rect", { x: -6, y: -146, width: 12, height: 12, fill: "#e0b48c" }, g);
+        el("circle", { cx: 0, cy: -160, r: 17, fill: "#f0c8a0" }, g);
+        el("path", { d: "M-18 -164 Q-14 -184 4 -182 Q18 -180 18 -164 Q8 -172 -18 -164Z", fill: "#3a2a1a" }, g);
+        el("path", { d: "M-10 -150 Q0 -146 10 -150", stroke: "#3a2a1a", "stroke-width": 3, fill: "none" }, g);
+        return g; }
       function snowLayer(p, y, c = "#eef4fb") { return el("path", { d: `M-60 ${y} q90 -30 180 0 t180 0 t180 0 t180 0 t180 0 t180 0 t180 0 V2000 H-60Z`, fill: c }, p); }
 
       const tl = gsap.timeline({ paused: true });
@@ -129,23 +146,41 @@
       sky(sv, "s02-s", "#9cc4e8", "#e4eef7");
       const W = el("g", {}, sv);
       skyline(W, 1150, 3, ["#8090b4", "#8a9abd"], 8, 260, 480);
-      const back = skyline(W, 1200, 5, ["#5b6a8f", "#6f7da3", "#4e5b7e", "#7c88ad"], 7, 300, 560);
-      el("rect", { x: 470, y: 760, width: 140, height: 460, fill: "#55627f" }, W); el("rect", { x: 462, y: 750, width: 156, height: 20, fill: "#7c88ad" }, W);
+      skyline(W, 1200, 5, ["#5b6a8f", "#6f7da3", "#4e5b7e", "#7c88ad"], 7, 300, 560);
+      el("rect", { x: 450, y: 760, width: 180, height: 460, fill: "#55627f" }, W); el("rect", { x: 440, y: 750, width: 200, height: 20, fill: "#7c88ad" }, W);
+      const vent = el("rect", { x: 580, y: 700, width: 50, height: 50, rx: 6, fill: "#9aa6c4" }, W);
       el("rect", { x: 0, y: 1200, width: 1080, height: 400, fill: "#4a4f60" }, W);
       const cars = []; for (let i = 0; i < 6; i++) cars.push(el("rect", { x: 60 + i * 170, y: 1180, width: 90, height: 34, rx: 10, fill: ["#e8484f", "#4da3ff", "#ffd56b"][i % 3] }, W));
-      const A = alex(W, 540, 752, 0.9);
+      const A = alex(W, 520, 752, 1.0);
       const wave = el("path", { d: "M-1400 1300 Q-900 600 -500 760 Q-300 820 -200 740 L-200 1600 L-1400 1600Z", fill: "#f4f8fc" }, sv);
       const fill = el("rect", { x: 0, y: 1600, width: 1080, height: 1500, fill: "#eef4fb" }, sv);
       const mist = el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: "#ffffff", opacity: 0 }, sv);
-      const gr = at("L4", "Grollen"), ww = at("L4", "weiße"), da = at("L5", "Dach"), aw = at("L5", "alles"), l5b = line("L5b")[0], vm = at("L5b", "vierzig");
+      const globe = el("g", { opacity: 0 }, sv); el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: "#0b1022" }, globe);
+      el("circle", { cx: 540, cy: 800, r: 300, fill: "#2f6fb8" }, globe);
+      [["M380 650 q60 -60 140 -20 q40 60 -20 110 q-80 30 -120 -20Z"], ["M560 600 q80 -20 140 40 q30 80 -40 100 q-60 -10 -100 -60Z"], ["M420 860 q60 -30 100 20 q10 90 -60 110 q-60 -40 -40 -130Z"], ["M600 860 q90 -10 130 60 q-20 70 -100 60 q-50 -50 -30 -120Z"]].forEach(([d]) => el("path", { d, fill: "#4caf6a", class: "s02-land" }, globe));
+      const ice = el("circle", { cx: 540, cy: 800, r: 300, fill: "#f2f7fc", opacity: 0 }, globe);
+      const dots = [[760, 715], [420, 920], [560, 665]].map(([x, y]) => el("circle", { cx: x, cy: y, r: 14, fill: "#ff4b52", opacity: 0 }, globe));
+      const gr = at("L4", "Grollen"), ww = at("L4", "weiße"), l5 = line("L5")[0], da = at("L5", "Dach"), l5x = line("L5x")[0], tx = at("L5x", "toxischen"), l5b = line("L5b")[0], aw = at("L5b", "alles"), vm = at("L5b", "vierzig"), l5c = line("L5c")[0], to = at("L5c", "Tokio"), ny = at("L5c", "New"), be = at("L5c", "Berlin"), ue = at("L5c", "Überall");
       cars.forEach((c, i) => tl.to(c, { x: (i % 2 ? -1 : 1) * 200, duration: 3, ease: "none" }, 0));
       tl.to(W, { x: 8, duration: 0.05, repeat: 19, yoyo: true }, gr);
       tl.to(wave, { x: 2600, duration: 2.6, ease: "power1.in" }, ww - 0.2);
       tl.to(fill, { attr: { y: 770 }, duration: 2.2, ease: "power2.inOut" }, ww + 0.3);
       tl.to(mist, { opacity: 0.45, duration: 0.6, yoyo: true, repeat: 1 }, ww + 0.8);
-      tl.to(W, { scale: 1.25, svgOrigin: "540 760", duration: 1.5, ease: "power2.inOut" }, da - 0.4);
+      tl.to(W, { scale: 1.7, svgOrigin: "540 740", duration: 1.0, ease: "power2.inOut" }, da - 0.4);
+      tl.to(A, { x: 590, duration: 0.5, ease: "power2.inOut" }, da + 0.2);
+      tl.set("#s02-ph", { opacity: 1 }, l5x - 0.1);
+      tl.fromTo("#s02-ph", { scale: 1.3, rotation: -6 }, { scale: 1, rotation: 0, duration: 0.4, ease: "back.out(2)", immediateRender: false }, l5x - 0.1);
+      tl.to("#s02-ph", { x: 10, duration: 0.05, repeat: 15, yoyo: true }, tx - 0.2);
+      tl.set("#s02-ph", { opacity: 0 }, l5b - 0.1);
+      tl.to(W, { scale: 1, svgOrigin: "540 740", duration: 0.6, ease: "power2.out" }, l5b - 0.1);
       tl.to(A, { y: 742, duration: 0.15, yoyo: true, repeat: 3 }, aw);
       tl.fromTo("#s02-big", { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(2)" }, vm - 0.2);
+      tl.set("#s02-big", { opacity: 0 }, l5c - 0.1);
+      tl.set(globe, { opacity: 1 }, l5c - 0.1);
+      tl.fromTo(globe, { scale: 1.3, svgOrigin: "540 800" }, { scale: 1, svgOrigin: "540 800", duration: 0.8, ease: "power3.out", immediateRender: false }, l5c - 0.1);
+      [to, ny, be].forEach((t, i) => { tl.to(dots[i], { opacity: 1, duration: 0.1 }, t - 0.05); tl.fromTo("#s02-c" + (i + 1), { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.2 }, t - 0.05); });
+      tl.to(ice, { opacity: 1, duration: 0.8 }, ue - 0.2);
+      tl.to(dots, { attr: { fill: "#9aa6c4" }, duration: 0.6 }, ue);
       tl.to("#s02-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
       window.__timelines["s02"] = tl;
     })();

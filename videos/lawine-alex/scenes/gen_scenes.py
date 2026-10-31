@@ -39,61 +39,102 @@ FLAT2 = FLAT + '''
     .fc b { color: #e0484f; }'''
 COLS = '["#5b6a8f", "#6f7da3", "#4e5b7e", "#7c88ad"]'
 
-S['s01'] = ('''    #s01-t { left: 50px; right: 50px; top: 230px; text-align: center; color: #fff; font: 500 92px/1.08 "EB Garamond", serif; text-shadow: 0 3px 22px rgba(0,0,0,.7); }
-    #s01-t em { font-style: normal; color: #9dd6ff; text-shadow: 0 0 40px rgba(157,214,255,.9), 0 3px 22px rgba(0,0,0,.6); } #s01-t b { font-weight: 600; color: #ff5a5f; text-shadow: 0 0 40px rgba(255,90,95,.9); }
-    #s01-live { left: 0; right: 0; top: 160px; margin: 0 auto; width: fit-content; padding: 6px 18px; border-radius: 10px; background: #e0484f; color: #fff; font: 700 30px Inter, sans-serif; letter-spacing: .12em; }
-    #s01-tag { left: 600px; top: 520px; padding: 8px 18px; border-radius: 12px; background: rgba(255,255,255,.95); color: #22283f; font: 600 40px "EB Garamond", serif; opacity: 0; }''',
+S['s01'] = ('''    #s01-t { left: 30px; right: 30px; top: 190px; text-align: center; color: #fff; font: 600 128px/0.98 "EB Garamond", serif; text-shadow: 0 6px 30px rgba(0,0,0,.8); }
+    #s01-t em { font-style: normal; color: #9dd6ff; text-shadow: 0 0 50px rgba(157,214,255,1), 0 6px 30px rgba(0,0,0,.7); }
+    #s01-t small { display: block; margin-top: 26px; font-size: 78px; } #s01-t b { display: block; font-size: 138px; color: #ff4b52; text-shadow: 0 0 60px rgba(255,75,82,1), 0 6px 30px rgba(0,0,0,.7); }
+    #s01-live { left: 0; right: 0; top: 120px; margin: 0 auto; width: fit-content; padding: 8px 22px; border-radius: 12px; background: #e0484f; color: #fff; font: 800 34px Inter, sans-serif; letter-spacing: .12em; box-shadow: 0 0 40px rgba(224,72,79,.8); }
+    .s01-w { position: absolute; left: 0; width: 1080px; top: 420px; text-align: center; font: 700 140px/1 "EB Garamond", serif; color: #fff; opacity: 0; text-shadow: 0 0 50px rgba(255,75,82,.9), 0 6px 30px rgba(0,0,0,.8); }
+    #s01-tag { left: 610px; top: 560px; padding: 10px 22px; border-radius: 14px; background: rgba(255,255,255,.96); color: #22283f; font: 600 48px "EB Garamond", serif; opacity: 0; box-shadow: 0 16px 40px rgba(0,0,0,.4); }''',
 SVG + '''
-      <div id="s01-live" class="abs">● 1 ÜBERLEBENDER</div>
-      <div id="s01-t" class="abs">Die ganze Welt unter <em>Schnee</em>.<br>Nur <b>du</b> überlebst.</div>
-      <div id="s01-tag" class="abs">Alex · 24</div>''',
+      <div id="s01-live" class="abs">● 1 ÜBERLEBENDER WELTWEIT</div>
+      <div id="s01-t" class="abs">Die ganze <em>Welt</em><br>unter Schnee.<small>Du bist der</small><b>letzte Mensch.</b></div>
+      <div id="s01-w1" class="s01-w">Jedes Land.</div><div id="s01-w2" class="s01-w">Jede Stadt.</div><div id="s01-w3" class="s01-w">Jeder Mensch.</div>
+      <div id="s01-tag" class="abs">Alex · 30</div>''',
 '''      const sv = document.querySelector("#s01-svg");
-      sky(sv, "s01-s", "#1c2748", "#7d8fb5");
+      sky(sv, "s01-s", "#141d3a", "#6f82ab");
       const W = el("g", {}, sv);
-      skyline(W, 1080, 3, ["#33405f", "#3b4a6c"], 8, 200, 420);
-      const S2 = skyline(W, 1120, 5, ["#4e5b7e", "#5b6a8f"], 7, 260, 520);
-      snowLayer(W, 960, "#dfe9f5");
-      el("rect", { x: 470, y: 860, width: 140, height: 420, fill: "#3b4766" }, W); el("rect", { x: 462, y: 850, width: 156, height: 22, fill: "#f4f8fc" }, W);
-      snowLayer(W, 1050, "#f2f7fc");
-      const beam = el("path", { d: "M555 800 L760 700 L780 780Z", fill: "#fff6c8", opacity: 0.55 }, W);
-      const A = alex(W, 540, 852, 1.1);
-      const sf = snowfall(sv, 90, 7, -200, 1400);
-      const al = at("L2", "Alex"), le = at("L2", "letzte"), l3 = line("L3")[0], al2 = at("L3", "alles");
+      skyline(W, 1100, 3, ["#2c3858", "#344263"], 8, 220, 440);
+      skyline(W, 1140, 5, ["#45537a", "#516089"], 7, 280, 540);
+      snowLayer(W, 990, "#dfe9f5");
+      el("rect", { x: 450, y: 900, width: 180, height: 420, fill: "#36425f" }, W); el("rect", { x: 440, y: 890, width: 200, height: 24, fill: "#f4f8fc" }, W);
+      snowLayer(W, 1080, "#f2f7fc");
+      const beam = el("path", { d: "M570 760 L860 630 L880 730Z", fill: "#fff6c8", opacity: 0.6 }, W);
+      const A = alex(W, 540, 892, 1.35);
+      const sf = snowfall(sv, 120, 7, -300, 1500);
+      const burst = []; const r = rng(17); for (let i = 0; i < 26; i++) burst.push(el("circle", { cx: 540, cy: 760, r: 6 + r() * 10, fill: "#ffffff", opacity: 0 }, sv));
+      const flash = el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: "#ffffff", opacity: 0 }, sv);
+      const l1b = line("L1b")[0], w1 = at("L1b", 0), w2 = at("L1b", 2), w3 = at("L1b", 4), al = at("L2", "Alex"), le = at("L2", "letzte"), l3 = line("L3")[0];
       fall(tl, sf, C.__dur);
-      tl.fromTo(W, { scale: 1, svgOrigin: "540 850" }, { scale: 1.35, svgOrigin: "540 850", duration: C.__dur, ease: "power1.inOut" }, 0);
-      tl.fromTo("#s01-t em", { opacity: 1 }, { opacity: 0.45, duration: 0.08, repeat: 9, yoyo: true }, 0.2);
-      tl.fromTo("#s01-t", { scale: 1.12 }, { scale: 1, duration: 0.6, ease: "power3.out" }, 0);
-      tl.to("#s01-t b", { scale: 1.2, duration: 0.25, repeat: 7, yoyo: true, ease: "sine.inOut", display: "inline-block" }, 0.4);
-      tl.fromTo("#s01-live", { opacity: 1 }, { opacity: 0.3, duration: 0.3, repeat: 13, yoyo: true }, 0);
-      tl.fromTo(beam, { attr: { opacity: 0.55 } }, { attr: { opacity: 0.25 }, duration: 0.5, repeat: 9, yoyo: true }, 0);
-      tl.to(["#s01-t", "#s01-live"], { opacity: 0, y: -30, duration: 0.35 }, al - 0.3);
+      tl.fromTo(flash, { opacity: 1 }, { opacity: 0, duration: 0.5, ease: "power2.out" }, 0);
+      tl.fromTo("#s01-t", { scale: 1.6, filter: "blur(10px)" }, { scale: 1, filter: "blur(0px)", duration: 0.5, ease: "expo.out" }, 0);
+      tl.to("#s01-t", { x: 12, duration: 0.04, repeat: 9, yoyo: true }, 0.45);
+      burst.forEach((b, i) => { const a = i / 26 * Math.PI * 2; tl.fromTo(b, { opacity: 1, x: 0, y: 0 }, { x: Math.cos(a) * (500 + (i % 4) * 120), y: Math.sin(a) * (600 + (i % 3) * 140), opacity: 0, scale: 3, duration: 1.1, ease: "power2.out" }, 0.05); });
+      tl.to("#s01-t em", { opacity: 0.35, duration: 0.07, repeat: 11, yoyo: true }, 0.6);
+      tl.fromTo("#s01-t b", { scale: 1 }, { scale: 1.1, duration: 0.22, repeat: 9, yoyo: true, ease: "sine.inOut" }, 0.6);
+      tl.fromTo("#s01-live", { opacity: 1 }, { opacity: 0.25, duration: 0.25, repeat: 21, yoyo: true }, 0);
+      tl.fromTo(W, { scale: 1, svgOrigin: "540 880" }, { scale: 1.15, svgOrigin: "540 880", duration: l1b, ease: "power1.inOut" }, 0);
+      tl.to(W, { x: 8, duration: 0.05, repeat: 11, yoyo: true }, 0.1);
+      tl.to(["#s01-t", "#s01-live"], { opacity: 0, scale: 0.9, duration: 0.25 }, w1 - 0.25);
+      [w1, w2, w3].forEach((t, i, arr) => { tl.set("#s01-w" + (i + 1), { opacity: 1 }, t - 0.02);
+        tl.fromTo("#s01-w" + (i + 1), { scale: 1.7 }, { scale: 1, duration: 0.25, ease: "power4.out", immediateRender: false }, t - 0.02);
+        tl.fromTo(flash, { opacity: 0.5 }, { opacity: 0, duration: 0.3 }, t - 0.02); tl.to(W, { x: 10, duration: 0.04, repeat: 5, yoyo: true }, t);
+        tl.set("#s01-w" + (i + 1), { opacity: 0 }, i < 2 ? arr[i + 1] - 0.02 : al - 0.2); });
+      tl.to(W, { scale: 1.6, svgOrigin: "540 860", duration: 1.0, ease: "power3.inOut" }, al - 0.4);
       tl.fromTo("#s01-tag", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(2)" }, al);
-      tl.to(A, { y: 840, duration: 0.15, yoyo: true, repeat: 1 }, le);
-      tl.to("#s01-tag", { opacity: 0, duration: 0.3 }, l3);''' + OUT)
+      tl.to(A, { y: 880, duration: 0.15, yoyo: true, repeat: 1 }, le);
+      tl.fromTo(beam, { attr: { opacity: 0.6 } }, { attr: { opacity: 0.25 }, duration: 0.5, repeat: 11, yoyo: true }, 0);
+      tl.to("#s01-tag", { opacity: 0, duration: 0.3 }, l3);
+      tl.to(W, { scale: 1.25, svgOrigin: "540 860", duration: 1.6, ease: "power2.inOut" }, l3);''' + OUT)
 
-S['s02'] = (BIG, SVG + '''
-      <div id="s02-big" class="big"><b>40 m</b><i>SCHNEE IN UNTER 1 MINUTE</i></div>''',
+S['s02'] = (BIG + '''
+    #s02-ph { left: 300px; top: 560px; width: 480px; height: 760px; border-radius: 60px; background: #111522; border: 10px solid #2a2f40; opacity: 0; text-align: center; color: #fff; box-shadow: 0 30px 70px rgba(0,0,0,.5); }
+    #s02-ph .av { width: 150px; height: 150px; margin: 90px auto 20px; border-radius: 50%; background: #ff8fd0; font: 600 80px/150px "EB Garamond", serif; color: #fff; }
+    #s02-ph b { display: block; font: 600 60px "EB Garamond", serif; } #s02-ph i { display: block; margin-top: 18px; font: 700 34px Inter, sans-serif; font-style: normal; color: #ff5a5f; }
+    #s02-ph .bt { position: absolute; left: 0; right: 0; bottom: 70px; display: flex; justify-content: space-around; }
+    #s02-ph .bt span { width: 120px; height: 120px; border-radius: 50%; font: 700 60px/120px Inter, sans-serif; }
+    .s02-c { position: absolute; font: 600 48px "EB Garamond", serif; color: #fff; opacity: 0; text-shadow: 0 2px 12px rgba(0,0,0,.8); }''',
+SVG + '''
+      <div id="s02-ph" class="abs"><div class="av">E</div><b>Ex 💔</b><i>47 verpasste Anrufe</i><div class="bt"><span style="background:#e0484f">✕</span><span style="background:#39b36a">✆</span></div></div>
+      <div id="s02-c1" class="s02-c" style="left:640px;top:690px">Tokio</div><div id="s02-c2" class="s02-c" style="left:330px;top:940px">New York</div><div id="s02-c3" class="s02-c" style="left:470px;top:640px">Berlin</div>''',
 '''      const sv = document.querySelector("#s02-svg");
       sky(sv, "s02-s", "#9cc4e8", "#e4eef7");
       const W = el("g", {}, sv);
       skyline(W, 1150, 3, ["#8090b4", "#8a9abd"], 8, 260, 480);
-      const back = skyline(W, 1200, 5, ''' + COLS + ''', 7, 300, 560);
-      el("rect", { x: 470, y: 760, width: 140, height: 460, fill: "#55627f" }, W); el("rect", { x: 462, y: 750, width: 156, height: 20, fill: "#7c88ad" }, W);
+      skyline(W, 1200, 5, ''' + COLS + ''', 7, 300, 560);
+      el("rect", { x: 450, y: 760, width: 180, height: 460, fill: "#55627f" }, W); el("rect", { x: 440, y: 750, width: 200, height: 20, fill: "#7c88ad" }, W);
+      const vent = el("rect", { x: 580, y: 700, width: 50, height: 50, rx: 6, fill: "#9aa6c4" }, W);
       el("rect", { x: 0, y: 1200, width: 1080, height: 400, fill: "#4a4f60" }, W);
       const cars = []; for (let i = 0; i < 6; i++) cars.push(el("rect", { x: 60 + i * 170, y: 1180, width: 90, height: 34, rx: 10, fill: ["#e8484f", "#4da3ff", "#ffd56b"][i % 3] }, W));
-      const A = alex(W, 540, 752, 0.9);
+      const A = alex(W, 520, 752, 1.0);
       const wave = el("path", { d: "M-1400 1300 Q-900 600 -500 760 Q-300 820 -200 740 L-200 1600 L-1400 1600Z", fill: "#f4f8fc" }, sv);
       const fill = el("rect", { x: 0, y: 1600, width: 1080, height: 1500, fill: "#eef4fb" }, sv);
       const mist = el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: "#ffffff", opacity: 0 }, sv);
-      const gr = at("L4", "Grollen"), ww = at("L4", "weiße"), da = at("L5", "Dach"), aw = at("L5", "alles"), l5b = line("L5b")[0], vm = at("L5b", "vierzig");
+      const globe = el("g", { opacity: 0 }, sv); el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: "#0b1022" }, globe);
+      el("circle", { cx: 540, cy: 800, r: 300, fill: "#2f6fb8" }, globe);
+      [["M380 650 q60 -60 140 -20 q40 60 -20 110 q-80 30 -120 -20Z"], ["M560 600 q80 -20 140 40 q30 80 -40 100 q-60 -10 -100 -60Z"], ["M420 860 q60 -30 100 20 q10 90 -60 110 q-60 -40 -40 -130Z"], ["M600 860 q90 -10 130 60 q-20 70 -100 60 q-50 -50 -30 -120Z"]].forEach(([d]) => el("path", { d, fill: "#4caf6a", class: "s02-land" }, globe));
+      const ice = el("circle", { cx: 540, cy: 800, r: 300, fill: "#f2f7fc", opacity: 0 }, globe);
+      const dots = [[760, 715], [420, 920], [560, 665]].map(([x, y]) => el("circle", { cx: x, cy: y, r: 14, fill: "#ff4b52", opacity: 0 }, globe));
+      const gr = at("L4", "Grollen"), ww = at("L4", "weiße"), l5 = line("L5")[0], da = at("L5", "Dach"), l5x = line("L5x")[0], tx = at("L5x", "toxischen"), l5b = line("L5b")[0], aw = at("L5b", "alles"), vm = at("L5b", "vierzig"), l5c = line("L5c")[0], to = at("L5c", "Tokio"), ny = at("L5c", "New"), be = at("L5c", "Berlin"), ue = at("L5c", "Überall");
       cars.forEach((c, i) => tl.to(c, { x: (i % 2 ? -1 : 1) * 200, duration: 3, ease: "none" }, 0));
       tl.to(W, { x: 8, duration: 0.05, repeat: 19, yoyo: true }, gr);
       tl.to(wave, { x: 2600, duration: 2.6, ease: "power1.in" }, ww - 0.2);
       tl.to(fill, { attr: { y: 770 }, duration: 2.2, ease: "power2.inOut" }, ww + 0.3);
       tl.to(mist, { opacity: 0.45, duration: 0.6, yoyo: true, repeat: 1 }, ww + 0.8);
-      tl.to(W, { scale: 1.25, svgOrigin: "540 760", duration: 1.5, ease: "power2.inOut" }, da - 0.4);
+      tl.to(W, { scale: 1.7, svgOrigin: "540 740", duration: 1.0, ease: "power2.inOut" }, da - 0.4);
+      tl.to(A, { x: 590, duration: 0.5, ease: "power2.inOut" }, da + 0.2);
+      tl.set("#s02-ph", { opacity: 1 }, l5x - 0.1);
+      tl.fromTo("#s02-ph", { scale: 1.3, rotation: -6 }, { scale: 1, rotation: 0, duration: 0.4, ease: "back.out(2)", immediateRender: false }, l5x - 0.1);
+      tl.to("#s02-ph", { x: 10, duration: 0.05, repeat: 15, yoyo: true }, tx - 0.2);
+      tl.set("#s02-ph", { opacity: 0 }, l5b - 0.1);
+      tl.to(W, { scale: 1, svgOrigin: "540 740", duration: 0.6, ease: "power2.out" }, l5b - 0.1);
       tl.to(A, { y: 742, duration: 0.15, yoyo: true, repeat: 3 }, aw);
-      tl.fromTo("#s02-big", { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(2)" }, vm - 0.2);''' + OUT)
+      tl.fromTo("#s02-big", { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(2)" }, vm - 0.2);
+      tl.set("#s02-big", { opacity: 0 }, l5c - 0.1);
+      tl.set(globe, { opacity: 1 }, l5c - 0.1);
+      tl.fromTo(globe, { scale: 1.3, svgOrigin: "540 800" }, { scale: 1, svgOrigin: "540 800", duration: 0.8, ease: "power3.out", immediateRender: false }, l5c - 0.1);
+      [to, ny, be].forEach((t, i) => { tl.to(dots[i], { opacity: 1, duration: 0.1 }, t - 0.05); tl.fromTo("#s02-c" + (i + 1), { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.2 }, t - 0.05); });
+      tl.to(ice, { opacity: 1, duration: 0.8 }, ue - 0.2);
+      tl.to(dots, { attr: { fill: "#9aa6c4" }, duration: 0.6 }, ue);''' + OUT)
 
 S['s03'] = (BIG + '''
     #s03-ch { left: 140px; top: 760px; width: 800px; height: 380px; opacity: 0; }''' + FLAT2, SVG + '''
@@ -109,7 +150,7 @@ S['s03'] = (BIG + '''
       box(P, w, -1, -1, -0.4, 8, 8, 0.4, "#f2f7fc");
       for (let k = 0; k < 7; k++) box(P, w, 0.5 + (k % 3) * 1.6, 3.6 + Math.floor(k / 3) * 1.2, 0, 0.9, 0.9, 0.35 + (k % 2) * 0.2, "#e6eef7");
       const hole = el("ellipse", { cx: P(3, 3, 0)[0], cy: P(3, 3, 0)[1], rx: 30, ry: 16, fill: "#b9c9dc" }, w);
-      const me = person(P, w, 3.4, 3.2, 0, { shirt: "#e8484f", pants: "#2a3060" });
+      const me = person(P, w, 3.4, 3.2, 0, { shirt: "#e8484f", pants: "#22284d", big: true });
       const chunks = []; const r = rng(4); for (let i = 0; i < 12; i++) chunks.push(el("circle", { cx: P(3, 3, 0)[0], cy: P(3, 3, 0)[1], r: 6 + r() * 6, fill: "#ffffff" }, w));
       const sf = snowfall(sv, 60, 9, -200, 1300);
       const br = at("L6", "Bleib"), l7 = line("L7")[0], n90 = at("L7", "90"), ra = at("L7", "rapide"), l8 = line("L8")[0], kv = at("L8", "keine"), l8b = line("L8b")[0], kn = at("L8b", "Kein");
@@ -134,7 +175,7 @@ S['s04'] = (BIG + FLAT2 + '''
       sky(sv, "s04-s", "#8ea6c4", "#dfe7f0");
       const P = iso(540, 900, 110), w = el("g", {}, sv);
       box(P, w, -2, -2, -0.3, 7, 7, 0.3, "#f2f7fc");
-      const me = person(P, w, 1.2, 1.2, 0, { shirt: "#e8484f", pants: "#2a3060" });
+      const me = person(P, w, 1.2, 1.2, 0, { shirt: "#e8484f", pants: "#22284d", big: true });
       const l2 = box(P, w, 1.14, 1.14, 0.7, 0.52, 0.58, 0.82, "#5a7bd6", { opacity: 0 }), l3 = box(P, w, 1.1, 1.1, 0.72, 0.6, 0.66, 0.82, "#3d4a7a", { opacity: 0 });
       const wind = []; for (let i = 0; i < 6; i++) wind.push(el("path", { d: `M${-200} ${620 + i * 90} q200 -30 400 0 t400 0`, stroke: "#ffffff", "stroke-width": 6, fill: "none", opacity: 0.6, "stroke-linecap": "round" }, sv));
       const sf = snowfall(sv, 70, 11, -200, 1300);
@@ -214,28 +255,39 @@ S['s07'] = ('', SVG,
 '''      const sv = document.querySelector("#s07-svg");
       sky(sv, "s07-s", "#05070f", "#141a2e");
       const roof = el("g", {}, sv);
-      el("rect", { x: 0, y: 1000, width: 1080, height: 600, fill: "#cfd9e6" }, roof);
-      const rad = el("g", {}, roof); el("rect", { x: 300, y: 900, width: 160, height: 100, rx: 14, fill: "#2a2f40" }, rad); el("path", { d: "M440 900 L500 790", stroke: "#8a8f9c", "stroke-width": 8 }, rad);
-      const waves = [1, 2, 3].map((i) => el("path", { d: `M${500 + i * 30} ${790 - i * 10} q${20 + i * 10} ${20 + i * 10} 0 ${40 + i * 20}`, stroke: "#9dbcff", "stroke-width": 6, fill: "none", opacity: 0 }, rad));
-      const beam = el("path", { d: "M640 940 L1080 600 L1080 780Z", fill: "#fff6c8", opacity: 0 }, roof);
-      alex(roof, 600, 1000, 1.3);
+      el("rect", { x: 0, y: 1000, width: 1080, height: 920, fill: "#cfd9e6" }, roof);
+      const rad = el("g", {}, roof); el("rect", { x: 260, y: 900, width: 160, height: 100, rx: 14, fill: "#2a2f40" }, rad); el("path", { d: "M400 900 L460 790", stroke: "#8a8f9c", "stroke-width": 8 }, rad);
+      const waves = [1, 2, 3].map((i) => el("path", { d: `M${460 + i * 30} ${790 - i * 10} q${20 + i * 10} ${20 + i * 10} 0 ${40 + i * 20}`, stroke: "#9dbcff", "stroke-width": 6, fill: "none", opacity: 0 }, rad));
+      const beam = el("path", { d: "M660 880 L1080 560 L1080 740Z", fill: "#fff6c8", opacity: 0 }, roof);
+      alex(roof, 600, 1000, 1.4);
       const yard = el("g", { opacity: 0 }, sv);
-      el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: "#9eacbf" }, yard);
-      el("path", { d: "M640 1240 Q640 1040 860 1030 Q1080 1040 1080 1240Z", fill: "#e6eef7" }, yard); el("path", { d: "M780 1240 Q780 1150 860 1145 Q940 1150 940 1240Z", fill: "#0b0f1c" }, yard);
-      const prints = []; for (let i = 0; i < 9; i++) { const x = 120 + i * 78, y = 760 + i * 52 + (i % 2 ? 22 : -22);
-        prints.push(el("ellipse", { cx: x, cy: y, rx: 18, ry: 30, fill: "#6d7f98", opacity: 0, transform: `rotate(-40 ${x} ${y})` }, yard)); }
+      el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: "#7f8ca0" }, yard);
+      el("rect", { x: 0, y: 0, width: 1080, height: 600, fill: "#0b0f1c" }, yard);
+      el("path", { d: "M620 1260 Q620 1020 860 1010 Q1100 1020 1100 1260Z", fill: "#dfe7f1" }, yard); const hole = el("path", { d: "M770 1260 Q770 1150 860 1145 Q950 1150 950 1260Z", fill: "#05070f" }, yard);
+      const prints = []; for (let i = 0; i < 7; i++) { const x = 90 + i * 100, y = 700 + i * 78 + (i % 2 ? 30 : -30);
+        const g = el("g", { opacity: 0 }, yard); el("ellipse", { cx: x, cy: y, rx: 26, ry: 46, fill: "#4a5468", transform: `rotate(-38 ${x} ${y})` }, g);
+        [-1, 0, 1].forEach((k) => el("circle", { cx: x + 30 + k * 14, cy: y - 40 + k * 10, r: 9, fill: "#4a5468" }, g)); prints.push({ g, x, y }); }
+      const sf = snowfall(sv, 70, 21, -300, 1500);
+      const shadow = el("path", { d: "M860 1145 Q850 900 870 860 Q900 820 930 860 Q960 900 950 1145Z", fill: "#000", opacity: 0 }, yard);
       const dark = el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: "#000", opacity: 0 }, sv);
       const red = el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: "#8a0f1c", opacity: 0 }, sv);
-      const ra = at("L16", "Radio"), li = at("L16", "Licht"), l17 = line("L17")[0], st = at("L17", "Stille"), l18 = line("L18")[0], fu = at("L18", "Fußspuren"), l19 = line("L19")[0], hoe = at("L19", "Höhle"), l20 = line("L20")[0], ni = at("L20", "nicht");
+      const ra = at("L16", "Radio"), li = at("L16", "Licht"), l17 = line("L17")[0], st = at("L17", "Stille"), l18 = line("L18")[0], fu = at("L18", "Fußspuren"), ri = at("L18b", "Riesig"), dg = at("L18b", "Doppelt"), ro = at("L19", "rot"), bl = at("L19", "Blut"), l19b = line("L19b")[0], hoe = at("L19b", "Höhle"), l20 = line("L20")[0], l20b = line("L20b")[0];
+      fall(tl, sf, C.__dur);
       waves.forEach((w, i) => tl.fromTo(w, { opacity: 0 }, { opacity: 1, duration: 0.2, repeat: 7, yoyo: true }, ra + i * 0.12));
       tl.to(beam, { opacity: 0.5, duration: 0.1, repeat: 9, yoyo: true }, li);
       tl.to(dark, { opacity: 0.85, duration: 0.8 }, st - 0.3);
-      tl.set(roof, { opacity: 0 }, l18 - 0.1); tl.to(dark, { opacity: 0.35, duration: 0.6 }, l18 - 0.1); tl.set(yard, { opacity: 1 }, l18 - 0.1);
-      tl.fromTo(yard, { scale: 1.3, svgOrigin: "540 1000" }, { scale: 1, svgOrigin: "540 1000", duration: 3, ease: "power1.out", immediateRender: false }, l18 - 0.1);
-      prints.forEach((p, i) => tl.to(p, { opacity: 1, duration: 0.15 }, fu + i * ((hoe - fu) / 9)));
-      tl.to(yard, { scale: 1.25, svgOrigin: "860 1200", duration: 2.4, ease: "power2.in" }, hoe);
-      tl.fromTo(red, { opacity: 0 }, { opacity: 0.55, duration: 0.15, repeat: 3, yoyo: true }, ni);
-      tl.to(dark, { opacity: 1, duration: 0.6 }, C.__dur - 0.6);''')
+      tl.set(roof, { opacity: 0 }, l18 - 0.1); tl.to(dark, { opacity: 0.25, duration: 0.6 }, l18 - 0.1); tl.set(yard, { opacity: 1 }, l18 - 0.1);
+      tl.fromTo(yard, { scale: 1.35, svgOrigin: "300 900" }, { scale: 1.1, svgOrigin: "300 900", duration: 3, ease: "power1.out", immediateRender: false }, l18 - 0.1);
+      prints.forEach((p, i) => tl.to(p.g, { opacity: 1, duration: 0.12 }, fu + i * 0.25));
+      prints.forEach((p, i) => tl.to(p.g, { scale: 1.9, svgOrigin: `${p.x} ${p.y}`, duration: 0.35, ease: "back.out(2)" }, ri + i * 0.05));
+      tl.to(yard, { x: 8, duration: 0.04, repeat: 7, yoyo: true }, dg);
+      prints.forEach((p, i) => tl.to(p.g.querySelectorAll("ellipse, circle"), { attr: { fill: "#8a0f1c" }, duration: 0.25 }, ro + i * 0.08));
+      tl.fromTo(red, { opacity: 0 }, { opacity: 0.6, duration: 0.12, repeat: 3, yoyo: true }, bl);
+      tl.to(yard, { scale: 1.6, svgOrigin: "860 1200", duration: 2.2, ease: "power2.in" }, l19b);
+      tl.to(dark, { opacity: 0.55, duration: 1.2 }, l20);
+      tl.to(shadow, { opacity: 0.85, duration: 1.4, ease: "power1.in" }, l20b - 0.5);
+      tl.fromTo(red, { opacity: 0 }, { opacity: 0.7, duration: 0.1, repeat: 5, yoyo: true }, l20b);
+      tl.to(dark, { opacity: 1, duration: 0.5 }, C.__dur - 0.5);''')
 
 S['s08'] = ('''    #s08-t { left: 0; width: 1080px; top: 620px; text-align: center; color: #fff; font: 500 170px/1 "EB Garamond", serif; text-shadow: 0 0 40px rgba(255,90,95,.6); opacity: 0; }
     #s08-s { left: 0; width: 1080px; top: 820px; text-align: center; color: #ff8fd0; font: 600 34px Inter, sans-serif; letter-spacing: .3em; opacity: 0; }

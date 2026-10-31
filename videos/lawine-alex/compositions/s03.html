@@ -28,8 +28,8 @@
     .fc { position: absolute; border-radius: 24px; background: rgba(255,255,255,.94); box-shadow: 0 18px 50px rgba(0,0,0,.35); opacity: 0; text-align: center; color: #22283f; padding: 22px 30px; font: 500 46px/1.15 "EB Garamond", serif; }
     .fc b { color: #e0484f; }
   </style>
-  <div id="root" data-composition-id="s03" data-start="0" data-duration="17.180" data-width="1080" data-height="1920">
-    <div id="s03-stage" class="clip stage" data-start="0" data-duration="17.180" data-track-index="0">
+  <div id="root" data-composition-id="s03" data-start="0" data-duration="17.060" data-width="1080" data-height="1920">
+    <div id="s03-stage" class="clip stage" data-start="0" data-duration="17.060" data-track-index="0">
       <svg id="s03-svg" class="full" viewBox="0 0 1080 1920"></svg>
       <div id="s03-big" class="big"><b>90 %</b><i>ÜBERLEBEN DIE ERSTEN 15 MINUTEN</i></div>
       <svg id="s03-ch" class="abs" viewBox="0 0 800 380"><rect x="0" y="0" width="800" height="380" rx="24" fill="rgba(13,16,38,.75)"/>
@@ -43,7 +43,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 17.18, "L6": [0.2, 3.31], "L6.words": [["regel", 0.2, 0.554], ["eins", 0.554, 0.74], ["bleib", 1.12, 1.224], ["ruhig", 1.224, 1.413], ["", 1.413, 1.5], ["und", 1.5, 1.596], ["check", 1.596, 1.7], ["ob", 2.05, 2.291], ["du", 2.291, 2.533], ["verletzt", 2.533, 3.051], ["bist", 3.051, 3.31]], "L7": [3.53, 8.83], "L7.words": [["verschüttete", 3.53, 4.126], ["überleben", 4.126, 4.705], ["die", 4.705, 4.854], ["ersten", 4.854, 5.152], ["15", 5.152, 5.46], ["minuten", 5.46, 5.896], ["zu", 5.896, 6.04], ["rund", 6.04, 6.194], ["90", 6.194, 6.497], ["prozent", 6.497, 6.8], ["danach", 7.33, 7.665], ["sinkt", 7.665, 7.844], ["die", 7.844, 8.011], ["chance", 8.011, 8.346], ["rapide", 8.346, 8.83]], "L8": [9.05, 12.72], "L8.words": [["du", 9.05, 9.219], ["gräbst", 9.219, 9.413], ["wie", 9.413, 9.588], ["verrückt", 9.588, 9.95], ["aber", 10.5, 10.826], ["allein", 10.826, 11.164], ["schaffst", 11.164, 11.363], ["du", 11.363, 11.526], ["keine", 11.526, 11.857], ["vierzig", 11.857, 12.201], ["meter", 12.201, 12.533], ["schnee", 12.533, 12.72]], "L8b": [12.94, 17.0], "L8b.words": [["und", 12.94, 13.11], ["dein", 13.11, 13.286], ["handy", 13.286, 13.62], ["kein", 14.17, 14.435], ["netz", 14.435, 14.7], ["die", 15.25, 15.409], ["sendemasten", 15.409, 16.037], ["liegen", 16.037, 16.354], ["unter", 16.354, 16.666], ["dem", 16.666, 16.824], ["schnee", 16.824, 17.0]]};
+      const C = {"__dur": 17.06, "L6": [0.2, 3.6], "L6.words": [["regel", 0.2, 0.606], ["eins", 0.606, 0.82], ["bleib", 1.37, 1.454], ["ruhig", 1.454, 1.608], ["", 1.608, 1.678], ["und", 1.678, 1.756], ["check", 1.756, 1.84], ["ob", 2.16, 2.436], ["du", 2.436, 2.711], ["verletzt", 2.711, 3.304], ["bist", 3.304, 3.6]], "L7": [3.82, 8.9], "L7.words": [["verschüttete", 3.82, 4.383], ["überleben", 4.383, 4.93], ["die", 4.93, 5.071], ["ersten", 5.071, 5.352], ["15", 5.352, 5.644], ["minuten", 5.644, 6.056], ["zu", 6.056, 6.192], ["rund", 6.192, 6.337], ["90", 6.337, 6.624], ["prozent", 6.624, 6.91], ["danach", 7.46, 7.781], ["sinkt", 7.781, 7.953], ["die", 7.953, 8.114], ["chance", 8.114, 8.435], ["rapide", 8.435, 8.9]], "L8": [9.12, 12.75], "L8.words": [["du", 9.12, 9.298], ["gräbst", 9.298, 9.503], ["wie", 9.503, 9.687], ["verrückt", 9.687, 10.07], ["aber", 10.62, 10.933], ["allein", 10.933, 11.257], ["schaffst", 11.257, 11.448], ["du", 11.448, 11.604], ["keine", 11.604, 11.922], ["vierzig", 11.922, 12.252], ["meter", 12.252, 12.571], ["schnee", 12.571, 12.75]], "L8b": [12.97, 16.88], "L8b.words": [["und", 12.97, 13.147], ["dein", 13.147, 13.331], ["handy", 13.331, 13.68], ["kein", 14.23, 14.48], ["netz", 14.48, 14.73], ["die", 15.28, 15.425], ["sendemasten", 15.425, 16.0], ["liegen", 16.0, 16.29], ["unter", 16.29, 16.574], ["dem", 16.574, 16.719], ["schnee", 16.719, 16.88]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -102,6 +102,9 @@
           box(P, g, x - 0.25, y, z, 0.25, 0.5, 0.5, pants); box(P, g, x, y, z + 0.5, 0.45, 0.5, 0.28, pants);
           box(P, g, x, y + 0.02, z + 0.78, 0.38, 0.46, 0.75, shirt); box(P, g, x + 0.02, y + 0.06, z + 1.53, 0.36, 0.36, 0.38, skin);
           box(P, g, x + 0.02, y + 0.06, z + 1.85, 0.36, 0.36, 0.1, hair);
+        } else if (o.big) {
+          box(P, g, x + 0.02, y, z, 0.38, 0.46, 0.95, pants); box(P, g, x - 0.06, y - 0.08, z + 0.95, 0.54, 0.62, 0.85, shirt);
+          box(P, g, x + 0.06, y + 0.06, z + 1.8, 0.34, 0.38, 0.4, skin); box(P, g, x + 0.06, y + 0.06, z + 2.14, 0.34, 0.38, 0.1, hair);
         } else {
           box(P, g, x, y, z, 0.36, 0.42, 0.75, pants); box(P, g, x - 0.02, y - 0.02, z + 0.75, 0.4, 0.46, 0.75, shirt);
           box(P, g, x + 0.02, y + 0.03, z + 1.5, 0.34, 0.38, 0.38, skin); box(P, g, x + 0.02, y + 0.03, z + 1.82, 0.34, 0.38, 0.1, hair);
@@ -126,10 +129,17 @@
         for (let i = 0; i < n; i++) fl.push(el("circle", { cx: r() * 1080, cy: y0 + r() * (y1 - y0), r: 2 + r() * 4, fill: "#ffffff", opacity: 0.5 + r() * 0.5 }, g)); return { g, fl }; }
       const fall = (tl, sf, dur, t0 = 0) => sf.fl.forEach((f, i) => tl.to(f, { y: 900 + (i % 5) * 60, x: (i % 2 ? 1 : -1) * 40, duration: dur, ease: "none" }, t0));
       // flache Figur (Alex): Fußpunkt x, y
+      // Alex: groß, sportlich (Fußpunkt x, y)
       function alex(p, x, y, s = 1) { const g = el("g", {}, p); gsap.set(g, { x, y, scale: s, transformOrigin: "0 0" });
-        el("rect", { x: -14, y: -40, width: 12, height: 40, rx: 5, fill: "#2a3060" }, g); el("rect", { x: 2, y: -40, width: 12, height: 40, rx: 5, fill: "#2a3060" }, g);
-        el("rect", { x: -20, y: -92, width: 40, height: 56, rx: 14, fill: "#e8484f" }, g); el("circle", { cx: 0, cy: -108, r: 17, fill: "#f0c8a0" }, g);
-        el("path", { d: "M-18 -112 Q0 -136 18 -112 Q0 -122 -18 -112Z", fill: "#3a3f6e" }, g); return g; }
+        el("rect", { x: -17, y: -62, width: 15, height: 62, rx: 6, fill: "#22284d" }, g); el("rect", { x: 2, y: -62, width: 15, height: 62, rx: 6, fill: "#22284d" }, g);
+        el("rect", { x: -20, y: -6, width: 18, height: 8, rx: 4, fill: "#111" }, g); el("rect", { x: 2, y: -6, width: 18, height: 8, rx: 4, fill: "#111" }, g);
+        el("path", { d: "M-34 -128 Q-36 -134 -26 -136 L26 -136 Q36 -134 34 -128 L22 -60 L-22 -60Z", fill: "#e8484f" }, g);
+        el("rect", { x: -44, y: -130, width: 13, height: 58, rx: 6, fill: "#d03c43", transform: "rotate(8 -38 -130)" }, g); el("rect", { x: 31, y: -130, width: 13, height: 58, rx: 6, fill: "#d03c43", transform: "rotate(-8 38 -130)" }, g);
+        el("rect", { x: -6, y: -146, width: 12, height: 12, fill: "#e0b48c" }, g);
+        el("circle", { cx: 0, cy: -160, r: 17, fill: "#f0c8a0" }, g);
+        el("path", { d: "M-18 -164 Q-14 -184 4 -182 Q18 -180 18 -164 Q8 -172 -18 -164Z", fill: "#3a2a1a" }, g);
+        el("path", { d: "M-10 -150 Q0 -146 10 -150", stroke: "#3a2a1a", "stroke-width": 3, fill: "none" }, g);
+        return g; }
       function snowLayer(p, y, c = "#eef4fb") { return el("path", { d: `M-60 ${y} q90 -30 180 0 t180 0 t180 0 t180 0 t180 0 t180 0 t180 0 V2000 H-60Z`, fill: c }, p); }
 
       const tl = gsap.timeline({ paused: true });
@@ -139,7 +149,7 @@
       box(P, w, -1, -1, -0.4, 8, 8, 0.4, "#f2f7fc");
       for (let k = 0; k < 7; k++) box(P, w, 0.5 + (k % 3) * 1.6, 3.6 + Math.floor(k / 3) * 1.2, 0, 0.9, 0.9, 0.35 + (k % 2) * 0.2, "#e6eef7");
       const hole = el("ellipse", { cx: P(3, 3, 0)[0], cy: P(3, 3, 0)[1], rx: 30, ry: 16, fill: "#b9c9dc" }, w);
-      const me = person(P, w, 3.4, 3.2, 0, { shirt: "#e8484f", pants: "#2a3060" });
+      const me = person(P, w, 3.4, 3.2, 0, { shirt: "#e8484f", pants: "#22284d", big: true });
       const chunks = []; const r = rng(4); for (let i = 0; i < 12; i++) chunks.push(el("circle", { cx: P(3, 3, 0)[0], cy: P(3, 3, 0)[1], r: 6 + r() * 6, fill: "#ffffff" }, w));
       const sf = snowfall(sv, 60, 9, -200, 1300);
       const br = at("L6", "Bleib"), l7 = line("L7")[0], n90 = at("L7", "90"), ra = at("L7", "rapide"), l8 = line("L8")[0], kv = at("L8", "keine"), l8b = line("L8b")[0], kn = at("L8b", "Kein");

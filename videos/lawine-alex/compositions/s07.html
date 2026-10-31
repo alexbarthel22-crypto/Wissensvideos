@@ -24,8 +24,8 @@
     .vig { position: absolute; left: 0; right: 0; top: 1040px; height: 880px; background: linear-gradient(rgba(10,12,30,0), rgba(10,12,30,.5) 45%, rgba(10,12,30,.55)); pointer-events: none; }
 
   </style>
-  <div id="root" data-composition-id="s07" data-start="0" data-duration="15.395" data-width="1080" data-height="1920">
-    <div id="s07-stage" class="clip stage" data-start="0" data-duration="15.395" data-track-index="0">
+  <div id="root" data-composition-id="s07" data-start="0" data-duration="23.225" data-width="1080" data-height="1920">
+    <div id="s07-stage" class="clip stage" data-start="0" data-duration="23.225" data-track-index="0">
       <svg id="s07-svg" class="full" viewBox="0 0 1080 1920"></svg>
       <div class="vig"></div>
     </div>
@@ -33,7 +33,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 15.395, "L16": [0.2, 4.674], "L16.words": [["regel", 0.2, 0.724], ["fünf", 0.724, 1.0], ["such", 1.23, 1.404], ["nach", 1.404, 1.578], ["anderen", 1.578, 2.07], ["mit", 2.62, 2.778], ["einem", 2.778, 3.089], ["radio", 3.089, 3.4], ["mit", 3.75, 3.931], ["licht", 3.931, 4.124], ["auf", 4.124, 4.305], ["dem", 4.305, 4.486], ["dach", 4.486, 4.673]], "L17": [5.094, 6.785], "L17.words": [["drei", 5.094, 5.293], ["tage", 5.293, 5.665], ["lang", 5.665, 5.864], ["stille", 6.414, 6.785]], "L18": [7.405, 10.385], "L18.words": [["dann", 7.405, 7.805], ["in", 8.015, 8.146], ["der", 8.146, 8.282], ["vierten", 8.282, 8.559], ["nacht", 8.559, 8.705], ["siehst", 9.015, 9.227], ["du", 9.227, 9.412], ["fußspuren", 9.412, 9.988], ["im", 9.988, 10.173], ["schnee", 10.173, 10.385]], "L19": [11.005, 12.885], "L19.words": [["sie", 11.005, 11.194], ["führen", 11.194, 11.573], ["direkt", 11.573, 11.952], ["zu", 11.952, 12.134], ["deiner", 12.134, 12.513], ["höhle", 12.513, 12.885]], "L20": [13.705, 14.715], "L20.words": [["und", 13.705, 13.872], ["es", 13.872, 14.034], ["sind", 14.034, 14.207], ["nicht", 14.207, 14.386], ["deine", 14.386, 14.715]]};
+      const C = {"__dur": 23.225, "L16": [0.2, 4.79], "L16.words": [["regel", 0.2, 0.645], ["fünf", 0.645, 0.88], ["such", 1.21, 1.372], ["nach", 1.372, 1.533], ["anderen", 1.533, 1.99], ["mit", 2.39, 2.548], ["einem", 2.548, 2.859], ["radio", 2.859, 3.17], ["mit", 3.67, 3.889], ["licht", 3.889, 4.124], ["auf", 4.124, 4.344], ["dem", 4.344, 4.563], ["dach", 4.563, 4.79]], "L17": [5.21, 6.71], "L17.words": [["drei", 5.21, 5.433], ["tage", 5.433, 5.847], ["lang", 5.847, 6.07], ["stille", 6.25, 6.71]], "L18": [7.33, 9.95], "L18.words": [["dann", 7.33, 7.535], ["in", 7.535, 7.725], ["der", 7.725, 7.923], ["vierten", 7.923, 8.326], ["nacht", 8.326, 8.538], ["siehst", 8.538, 8.757], ["du", 8.757, 8.947], ["fußspuren", 8.947, 9.54], ["im", 9.54, 9.731], ["schnee", 9.731, 9.95]], "L18b": [10.47, 12.65], "L18b.words": [["riesig", 10.47, 10.94], ["doppelt", 11.49, 11.827], ["so", 11.827, 11.987], ["groß", 11.987, 12.159], ["wie", 12.159, 12.324], ["deine", 12.324, 12.65]], "L19": [13.37, 15.44], "L19.words": [["und", 13.37, 13.64], ["sie", 13.64, 13.91], ["sind", 13.91, 14.19], ["rot", 14.19, 14.46], ["blut", 15.01, 15.44]], "L19b": [16.06, 17.59], "L19b.words": [["sie", 16.06, 16.214], ["führen", 16.214, 16.522], ["direkt", 16.522, 16.831], ["zu", 16.831, 16.979], ["deiner", 16.979, 17.287], ["höhle", 17.287, 17.59]], "L20": [18.21, 20.975], "L20.words": [["du", 18.21, 18.364], ["bist", 18.364, 18.529], ["der", 18.529, 18.689], ["letzte", 18.689, 19.008], ["mensch", 19.008, 19.185], ["der", 19.185, 19.345], ["welt", 19.345, 19.51], ["also", 20.06, 20.686], ["", 20.686, 20.975]], "L20b": [21.695, 22.545], "L20b.words": [["wer", 21.695, 21.978], ["ist", 21.978, 22.262], ["das", 22.262, 22.545]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -92,6 +92,9 @@
           box(P, g, x - 0.25, y, z, 0.25, 0.5, 0.5, pants); box(P, g, x, y, z + 0.5, 0.45, 0.5, 0.28, pants);
           box(P, g, x, y + 0.02, z + 0.78, 0.38, 0.46, 0.75, shirt); box(P, g, x + 0.02, y + 0.06, z + 1.53, 0.36, 0.36, 0.38, skin);
           box(P, g, x + 0.02, y + 0.06, z + 1.85, 0.36, 0.36, 0.1, hair);
+        } else if (o.big) {
+          box(P, g, x + 0.02, y, z, 0.38, 0.46, 0.95, pants); box(P, g, x - 0.06, y - 0.08, z + 0.95, 0.54, 0.62, 0.85, shirt);
+          box(P, g, x + 0.06, y + 0.06, z + 1.8, 0.34, 0.38, 0.4, skin); box(P, g, x + 0.06, y + 0.06, z + 2.14, 0.34, 0.38, 0.1, hair);
         } else {
           box(P, g, x, y, z, 0.36, 0.42, 0.75, pants); box(P, g, x - 0.02, y - 0.02, z + 0.75, 0.4, 0.46, 0.75, shirt);
           box(P, g, x + 0.02, y + 0.03, z + 1.5, 0.34, 0.38, 0.38, skin); box(P, g, x + 0.02, y + 0.03, z + 1.82, 0.34, 0.38, 0.1, hair);
@@ -116,38 +119,56 @@
         for (let i = 0; i < n; i++) fl.push(el("circle", { cx: r() * 1080, cy: y0 + r() * (y1 - y0), r: 2 + r() * 4, fill: "#ffffff", opacity: 0.5 + r() * 0.5 }, g)); return { g, fl }; }
       const fall = (tl, sf, dur, t0 = 0) => sf.fl.forEach((f, i) => tl.to(f, { y: 900 + (i % 5) * 60, x: (i % 2 ? 1 : -1) * 40, duration: dur, ease: "none" }, t0));
       // flache Figur (Alex): Fußpunkt x, y
+      // Alex: groß, sportlich (Fußpunkt x, y)
       function alex(p, x, y, s = 1) { const g = el("g", {}, p); gsap.set(g, { x, y, scale: s, transformOrigin: "0 0" });
-        el("rect", { x: -14, y: -40, width: 12, height: 40, rx: 5, fill: "#2a3060" }, g); el("rect", { x: 2, y: -40, width: 12, height: 40, rx: 5, fill: "#2a3060" }, g);
-        el("rect", { x: -20, y: -92, width: 40, height: 56, rx: 14, fill: "#e8484f" }, g); el("circle", { cx: 0, cy: -108, r: 17, fill: "#f0c8a0" }, g);
-        el("path", { d: "M-18 -112 Q0 -136 18 -112 Q0 -122 -18 -112Z", fill: "#3a3f6e" }, g); return g; }
+        el("rect", { x: -17, y: -62, width: 15, height: 62, rx: 6, fill: "#22284d" }, g); el("rect", { x: 2, y: -62, width: 15, height: 62, rx: 6, fill: "#22284d" }, g);
+        el("rect", { x: -20, y: -6, width: 18, height: 8, rx: 4, fill: "#111" }, g); el("rect", { x: 2, y: -6, width: 18, height: 8, rx: 4, fill: "#111" }, g);
+        el("path", { d: "M-34 -128 Q-36 -134 -26 -136 L26 -136 Q36 -134 34 -128 L22 -60 L-22 -60Z", fill: "#e8484f" }, g);
+        el("rect", { x: -44, y: -130, width: 13, height: 58, rx: 6, fill: "#d03c43", transform: "rotate(8 -38 -130)" }, g); el("rect", { x: 31, y: -130, width: 13, height: 58, rx: 6, fill: "#d03c43", transform: "rotate(-8 38 -130)" }, g);
+        el("rect", { x: -6, y: -146, width: 12, height: 12, fill: "#e0b48c" }, g);
+        el("circle", { cx: 0, cy: -160, r: 17, fill: "#f0c8a0" }, g);
+        el("path", { d: "M-18 -164 Q-14 -184 4 -182 Q18 -180 18 -164 Q8 -172 -18 -164Z", fill: "#3a2a1a" }, g);
+        el("path", { d: "M-10 -150 Q0 -146 10 -150", stroke: "#3a2a1a", "stroke-width": 3, fill: "none" }, g);
+        return g; }
       function snowLayer(p, y, c = "#eef4fb") { return el("path", { d: `M-60 ${y} q90 -30 180 0 t180 0 t180 0 t180 0 t180 0 t180 0 t180 0 V2000 H-60Z`, fill: c }, p); }
 
       const tl = gsap.timeline({ paused: true });
       const sv = document.querySelector("#s07-svg");
       sky(sv, "s07-s", "#05070f", "#141a2e");
       const roof = el("g", {}, sv);
-      el("rect", { x: 0, y: 1000, width: 1080, height: 600, fill: "#cfd9e6" }, roof);
-      const rad = el("g", {}, roof); el("rect", { x: 300, y: 900, width: 160, height: 100, rx: 14, fill: "#2a2f40" }, rad); el("path", { d: "M440 900 L500 790", stroke: "#8a8f9c", "stroke-width": 8 }, rad);
-      const waves = [1, 2, 3].map((i) => el("path", { d: `M${500 + i * 30} ${790 - i * 10} q${20 + i * 10} ${20 + i * 10} 0 ${40 + i * 20}`, stroke: "#9dbcff", "stroke-width": 6, fill: "none", opacity: 0 }, rad));
-      const beam = el("path", { d: "M640 940 L1080 600 L1080 780Z", fill: "#fff6c8", opacity: 0 }, roof);
-      alex(roof, 600, 1000, 1.3);
+      el("rect", { x: 0, y: 1000, width: 1080, height: 920, fill: "#cfd9e6" }, roof);
+      const rad = el("g", {}, roof); el("rect", { x: 260, y: 900, width: 160, height: 100, rx: 14, fill: "#2a2f40" }, rad); el("path", { d: "M400 900 L460 790", stroke: "#8a8f9c", "stroke-width": 8 }, rad);
+      const waves = [1, 2, 3].map((i) => el("path", { d: `M${460 + i * 30} ${790 - i * 10} q${20 + i * 10} ${20 + i * 10} 0 ${40 + i * 20}`, stroke: "#9dbcff", "stroke-width": 6, fill: "none", opacity: 0 }, rad));
+      const beam = el("path", { d: "M660 880 L1080 560 L1080 740Z", fill: "#fff6c8", opacity: 0 }, roof);
+      alex(roof, 600, 1000, 1.4);
       const yard = el("g", { opacity: 0 }, sv);
-      el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: "#9eacbf" }, yard);
-      el("path", { d: "M640 1240 Q640 1040 860 1030 Q1080 1040 1080 1240Z", fill: "#e6eef7" }, yard); el("path", { d: "M780 1240 Q780 1150 860 1145 Q940 1150 940 1240Z", fill: "#0b0f1c" }, yard);
-      const prints = []; for (let i = 0; i < 9; i++) { const x = 120 + i * 78, y = 760 + i * 52 + (i % 2 ? 22 : -22);
-        prints.push(el("ellipse", { cx: x, cy: y, rx: 18, ry: 30, fill: "#6d7f98", opacity: 0, transform: `rotate(-40 ${x} ${y})` }, yard)); }
+      el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: "#7f8ca0" }, yard);
+      el("rect", { x: 0, y: 0, width: 1080, height: 600, fill: "#0b0f1c" }, yard);
+      el("path", { d: "M620 1260 Q620 1020 860 1010 Q1100 1020 1100 1260Z", fill: "#dfe7f1" }, yard); const hole = el("path", { d: "M770 1260 Q770 1150 860 1145 Q950 1150 950 1260Z", fill: "#05070f" }, yard);
+      const prints = []; for (let i = 0; i < 7; i++) { const x = 90 + i * 100, y = 700 + i * 78 + (i % 2 ? 30 : -30);
+        const g = el("g", { opacity: 0 }, yard); el("ellipse", { cx: x, cy: y, rx: 26, ry: 46, fill: "#4a5468", transform: `rotate(-38 ${x} ${y})` }, g);
+        [-1, 0, 1].forEach((k) => el("circle", { cx: x + 30 + k * 14, cy: y - 40 + k * 10, r: 9, fill: "#4a5468" }, g)); prints.push({ g, x, y }); }
+      const sf = snowfall(sv, 70, 21, -300, 1500);
+      const shadow = el("path", { d: "M860 1145 Q850 900 870 860 Q900 820 930 860 Q960 900 950 1145Z", fill: "#000", opacity: 0 }, yard);
       const dark = el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: "#000", opacity: 0 }, sv);
       const red = el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: "#8a0f1c", opacity: 0 }, sv);
-      const ra = at("L16", "Radio"), li = at("L16", "Licht"), l17 = line("L17")[0], st = at("L17", "Stille"), l18 = line("L18")[0], fu = at("L18", "Fußspuren"), l19 = line("L19")[0], hoe = at("L19", "Höhle"), l20 = line("L20")[0], ni = at("L20", "nicht");
+      const ra = at("L16", "Radio"), li = at("L16", "Licht"), l17 = line("L17")[0], st = at("L17", "Stille"), l18 = line("L18")[0], fu = at("L18", "Fußspuren"), ri = at("L18b", "Riesig"), dg = at("L18b", "Doppelt"), ro = at("L19", "rot"), bl = at("L19", "Blut"), l19b = line("L19b")[0], hoe = at("L19b", "Höhle"), l20 = line("L20")[0], l20b = line("L20b")[0];
+      fall(tl, sf, C.__dur);
       waves.forEach((w, i) => tl.fromTo(w, { opacity: 0 }, { opacity: 1, duration: 0.2, repeat: 7, yoyo: true }, ra + i * 0.12));
       tl.to(beam, { opacity: 0.5, duration: 0.1, repeat: 9, yoyo: true }, li);
       tl.to(dark, { opacity: 0.85, duration: 0.8 }, st - 0.3);
-      tl.set(roof, { opacity: 0 }, l18 - 0.1); tl.to(dark, { opacity: 0.35, duration: 0.6 }, l18 - 0.1); tl.set(yard, { opacity: 1 }, l18 - 0.1);
-      tl.fromTo(yard, { scale: 1.3, svgOrigin: "540 1000" }, { scale: 1, svgOrigin: "540 1000", duration: 3, ease: "power1.out", immediateRender: false }, l18 - 0.1);
-      prints.forEach((p, i) => tl.to(p, { opacity: 1, duration: 0.15 }, fu + i * ((hoe - fu) / 9)));
-      tl.to(yard, { scale: 1.25, svgOrigin: "860 1200", duration: 2.4, ease: "power2.in" }, hoe);
-      tl.fromTo(red, { opacity: 0 }, { opacity: 0.55, duration: 0.15, repeat: 3, yoyo: true }, ni);
-      tl.to(dark, { opacity: 1, duration: 0.6 }, C.__dur - 0.6);
+      tl.set(roof, { opacity: 0 }, l18 - 0.1); tl.to(dark, { opacity: 0.25, duration: 0.6 }, l18 - 0.1); tl.set(yard, { opacity: 1 }, l18 - 0.1);
+      tl.fromTo(yard, { scale: 1.35, svgOrigin: "300 900" }, { scale: 1.1, svgOrigin: "300 900", duration: 3, ease: "power1.out", immediateRender: false }, l18 - 0.1);
+      prints.forEach((p, i) => tl.to(p.g, { opacity: 1, duration: 0.12 }, fu + i * 0.25));
+      prints.forEach((p, i) => tl.to(p.g, { scale: 1.9, svgOrigin: `${p.x} ${p.y}`, duration: 0.35, ease: "back.out(2)" }, ri + i * 0.05));
+      tl.to(yard, { x: 8, duration: 0.04, repeat: 7, yoyo: true }, dg);
+      prints.forEach((p, i) => tl.to(p.g.querySelectorAll("ellipse, circle"), { attr: { fill: "#8a0f1c" }, duration: 0.25 }, ro + i * 0.08));
+      tl.fromTo(red, { opacity: 0 }, { opacity: 0.6, duration: 0.12, repeat: 3, yoyo: true }, bl);
+      tl.to(yard, { scale: 1.6, svgOrigin: "860 1200", duration: 2.2, ease: "power2.in" }, l19b);
+      tl.to(dark, { opacity: 0.55, duration: 1.2 }, l20);
+      tl.to(shadow, { opacity: 0.85, duration: 1.4, ease: "power1.in" }, l20b - 0.5);
+      tl.fromTo(red, { opacity: 0 }, { opacity: 0.7, duration: 0.1, repeat: 5, yoyo: true }, l20b);
+      tl.to(dark, { opacity: 1, duration: 0.5 }, C.__dur - 0.5);
       window.__timelines["s07"] = tl;
     })();
   </script>
