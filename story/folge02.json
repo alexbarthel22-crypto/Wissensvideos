@@ -7,23 +7,23 @@
   "ICH": {
    "name": "de-DE-Chirp3-HD-Leda",
    "gemini": "Leda",
-   "label": "Lunara",
+   "label": "Neraya",
    "rate": 0.9,
-   "persona": "Lunara, siebzehn, erzählt ihre eigene Geschichte im Rückblick. Ruhig, nah, verletzlich und trotzig zugleich, wie in einem Hörbuch."
+   "persona": "Neraya, siebzehn, erzählt ihre eigene Geschichte im Rückblick. Ruhig, nah, verletzlich und trotzig zugleich, wie in einem Hörbuch."
   },
   "LUNARA": {
    "name": "de-DE-Chirp3-HD-Leda",
    "gemini": "Leda",
-   "label": "Lunara",
+   "label": "Neraya",
    "rate": 0.93,
-   "persona": "Lunara, siebzehn, mutig, frech, verletzlich."
+   "persona": "Neraya, siebzehn, mutig, frech, verletzlich, warmherzig."
   },
   "KAEL": {
    "name": "de-DE-Chirp3-HD-Orus",
    "gemini": "Orus",
    "label": "Kael",
    "rate": 0.92,
-   "persona": "Kael, einundzwanzig, Lunaras großer Bruder, Hauptmann der Flammenwache, innerlich zerrissen."
+   "persona": "Kael, einundzwanzig, Nerayas großer Bruder, Hauptmann der Flammenwache, innerlich zerrissen."
   },
   "KAEL_ERINNERUNG": {
    "name": "de-DE-Chirp3-HD-Orus",
@@ -70,7 +70,7 @@
    "label": "Mutter",
    "rate": 0.9,
    "fx": "fern",
-   "persona": "Lunaras Mutter, liebevoll und eindringlich, ihre Stimme kommt von sehr weit her."
+   "persona": "Nerayas Mutter, liebevoll und eindringlich, ihre Stimme kommt von sehr weit her."
   }
  },
  "naechste": "FOLGE 3 · DAS VERSPRECHEN",
@@ -105,7 +105,7 @@
     },
     {
      "who": "KAEL_ERINNERUNG",
-     "text": "Ich komme zurück, Luna. Versprochen.",
+     "text": "Ich komme zurück, Nera. Versprochen.",
      "pre": 1.0,
      "style": "warm, tröstend"
     },
@@ -153,7 +153,7 @@
     },
     {
      "who": "STERN",
-     "text": "Lunara.",
+     "text": "Neraya.",
      "pre": 1.4,
      "style": "geflüstert, lockend"
     },

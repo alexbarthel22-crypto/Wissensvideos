@@ -7,23 +7,23 @@
   "ICH": {
    "name": "de-DE-Chirp3-HD-Leda",
    "gemini": "Leda",
-   "label": "Lunara",
+   "label": "Neraya",
    "rate": 0.9,
-   "persona": "Lunara, siebzehn, erzählt ihre eigene Geschichte im Rückblick. Ruhig, nah, verletzlich und trotzig zugleich, wie in einem Hörbuch."
+   "persona": "Neraya, siebzehn, erzählt ihre eigene Geschichte im Rückblick. Ruhig, nah, verletzlich und trotzig zugleich, wie in einem Hörbuch."
   },
   "LUNARA": {
    "name": "de-DE-Chirp3-HD-Leda",
    "gemini": "Leda",
-   "label": "Lunara",
+   "label": "Neraya",
    "rate": 0.93,
-   "persona": "Lunara, siebzehn, mutig, frech, verletzlich."
+   "persona": "Neraya, siebzehn, mutig, frech, verletzlich, warmherzig."
   },
   "KAEL": {
    "name": "de-DE-Chirp3-HD-Orus",
    "gemini": "Orus",
    "label": "Kael",
    "rate": 0.92,
-   "persona": "Kael, einundzwanzig, Lunaras großer Bruder, Hauptmann der Flammenwache, innerlich zerrissen."
+   "persona": "Kael, einundzwanzig, Nerayas großer Bruder, Hauptmann der Flammenwache, innerlich zerrissen."
   },
   "KAEL_ERINNERUNG": {
    "name": "de-DE-Chirp3-HD-Orus",
@@ -70,7 +70,7 @@
    "label": "Mutter",
    "rate": 0.9,
    "fx": "fern",
-   "persona": "Lunaras Mutter, liebevoll und eindringlich, ihre Stimme kommt von sehr weit her."
+   "persona": "Nerayas Mutter, liebevoll und eindringlich, ihre Stimme kommt von sehr weit her."
   }
  },
  "naechste": "FOLGE 2 · DAS HERZ, DAS VOM HIMMEL FIEL",
@@ -78,41 +78,42 @@
   {
    "id": "kalt",
    "pre": 0.8,
-   "post": 1.0,
+   "post": 0.6,
    "lines": [
     {
      "who": "ICH",
-     "text": "Man hat uns erzählt, die Sterne seien Lichter, die über uns wachen.",
-     "style": "leise, geheimnisvoll"
+     "text": "Warte … bleib einen Moment.",
+     "rate": 0.88,
+     "style": "leise, vertraut, als würde sie dem Zuschauer ein Geheimnis anvertrauen"
     },
     {
      "who": "ICH",
-     "text": "Das ist eine Lüge.",
-     "pre": 0.8,
-     "style": "langsam, mit Gewicht"
+     "text": "Lass dich entführen in eine Welt hoch über den Wolken. Wo Wale am Himmel singen … und jeder Stern ein Geheimnis hütet.",
+     "pre": 0.6,
+     "style": "verzaubernd, einladend"
     },
     {
      "who": "ICH",
      "text": "Die Sterne sind Gefängnisse. Und ich … habe eines davon geöffnet.",
-     "pre": 0.8,
+     "pre": 0.9,
      "style": "flüsternd, schuldbewusst"
     }
    ]
   },
   {
    "id": "intro",
-   "pre": 17.0,
+   "pre": 17.5,
    "post": 0,
    "lines": []
   },
   {
    "id": "welt",
    "pre": 1.0,
-   "post": 1.0,
+   "post": 0.7,
    "lines": [
     {
      "who": "ICH",
-     "text": "Mein Name ist Lunara. Und das ist meine Welt: Valdoria.",
+     "text": "Das ist meine Welt: Valdoria.",
      "style": "warm, stolz"
     },
     {
@@ -120,12 +121,6 @@
      "text": "Hier wachsen die Bäume so hoch, dass ihre Kronen über den Wolken liegen.",
      "pre": 0.9,
      "style": "staunend, verträumt"
-    },
-    {
-     "who": "ICH",
-     "text": "Unter uns: nur ein endloses Meer aus Wolken. Niemand, der je hinabgestiegen ist, kam zurück.",
-     "pre": 0.8,
-     "style": "leiser, unheimlich"
     },
     {
      "who": "ICH",
@@ -144,18 +139,12 @@
   {
    "id": "stadt",
    "pre": 0.8,
-   "post": 1.0,
+   "post": 0.7,
    "lines": [
     {
      "who": "ICH",
      "text": "In den Kronen der Riesenbäume liegt Aurelion. Die Stadt der tausend Laternen.",
      "style": "erzählend, liebevoll"
-    },
-    {
-     "who": "ICH",
-     "text": "Brücken aus Seilen verbinden die Äste. Und jeder Ast ist eine Straße.",
-     "pre": 0.8,
-     "style": "erzählend"
     },
     {
      "who": "ICH",
@@ -168,7 +157,7 @@
   {
    "id": "lichtkrone",
    "pre": 0.6,
-   "post": 1.0,
+   "post": 0.7,
    "lines": [
     {
      "who": "ICH",
@@ -177,7 +166,7 @@
     },
     {
      "who": "ICH",
-     "text": "Wir unten in den Tiefen Ästen bekommen, was übrig bleibt: Laternen. Und Gesetze.",
+     "text": "Und wir hier unten, in den Tiefen Ästen? Uns bleibt nur der Rest: ein paar Laternen. Und Gesetze.",
      "pre": 0.8,
      "style": "bitter, trocken"
     },
@@ -198,12 +187,18 @@
   {
    "id": "lunara",
    "pre": 0.8,
-   "post": 0.8,
+   "post": 0.7,
    "lines": [
     {
      "who": "ICH",
-     "text": "Und ich? Ich bin siebzehn. Ich zünde Laternen an, für drei Kupfermünzen pro Nacht.",
-     "style": "trocken, mit leichtem Humor"
+     "text": "Und ich? Ich bin Neraya. Siebzehn Jahre alt. Die Leute sagen, ich habe die Augen meiner Mutter … und ihren Dickkopf.",
+     "style": "warm, ein Hauch Selbstironie"
+    },
+    {
+     "who": "ICH",
+     "text": "Jede Nacht zünde ich Laternen an. Für drei Kupfermünzen. Das reicht gerade für ein Stück Brot.",
+     "pre": 0.7,
+     "style": "nüchtern, ein wenig bitter"
     },
     {
      "who": "ICH",
@@ -213,21 +208,25 @@
     },
     {
      "who": "ICH",
-     "text": "Ich habe keine Angst vor der Höhe. Nur vor einer einzigen Sache:",
-     "pre": 0.7,
+     "text": "Ich habe keine Angst vor der Höhe. Nur vor einer einzigen Sache …",
+     "pre": 0.8,
      "style": "selbstbewusst, dann leiser"
     },
     {
      "who": "ICH",
-     "text": "zu vergessen, wie die Stimme meiner Mutter klang.",
-     "pre": 0.5,
-     "style": "sehr leise, verletzlich"
+     "text": "… zu vergessen, wie die Stimme meiner Mutter klang.",
+     "pre": 0.7,
+     "rate": 0.8,
+     "fx": "zittern",
+     "style": "stockend, den Tränen nahe"
     },
     {
      "who": "LUNARA",
-     "text": "Siehst du, Mama? Alle Laternen brennen. Genau wie du es wolltest.",
-     "pre": 1.2,
-     "style": "sanft, sehnsüchtig, zum Himmel sprechend"
+     "text": "Mama … ich höre dich nicht mehr. Jeden Tag ein bisschen weniger.",
+     "pre": 0.8,
+     "rate": 0.85,
+     "fx": "zittern",
+     "style": "flüsternd, weinend"
     },
     {
      "who": "ICH",
@@ -259,16 +258,25 @@
     },
     {
      "who": "LUNARA",
-     "text": "Nein … das ist unmöglich.",
+     "text": "Nein …",
      "pre": 4.2,
-     "style": "fassungslos, atemlos"
+     "rate": 0.8,
+     "style": "atemlos, fassungslos"
+    },
+    {
+     "who": "LUNARA",
+     "text": "Das ist unmöglich!",
+     "pre": 0.4,
+     "rate": 0.88,
+     "fx": "entsetzen",
+     "style": "entsetzt, laut"
     }
    ]
   },
   {
    "id": "outro",
    "pre": 2.2,
-   "post": 10.0,
+   "post": 9.0,
    "lines": [
     {
      "who": "LUNARA",

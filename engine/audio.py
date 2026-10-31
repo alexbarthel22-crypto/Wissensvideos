@@ -442,7 +442,7 @@ def score(tl):
         music.add(choir("D", dur("welt") - 2, attack=4, release=3, vowel="o"), s["start"] + 1, 0.35)
         motif(music, s["start"] + 2.0, 0.85, voice="bell", transpose=12, gain=0.3)
         sparkles(music, s["start"], s["end"], 1.5, 0.28)
-        wl = LN("welt", 3)
+        wl = LN("welt", 2)
         for k, base in enumerate((170, 210, 150)):
             music.add(whale_song(6, base), wl["start"] - 1 + k * 3.2, 1.0, 0.5 * (-1) ** k)
         music.add(wind(dur("welt"), 0.05), s["start"], 1.0)
@@ -746,12 +746,12 @@ def main(out_dir):
     e = np.abs(voice)
     k = int(0.25 * SR)
     e = np.convolve(e, np.ones(k) / k, mode="same")
-    duck = 1 - 0.65 * np.clip(e * 14, 0, 1)
+    duck = 1 - 0.75 * np.clip(e * 14, 0, 1)
     m = reverb(music.buf, 3.2, 0.45, 1) * duck
     f = reverb(fx.buf, 2.2, 0.25, 2) * (1 - 0.3 * np.clip(e * 14, 0, 1))
     v = np.vstack([voice, voice])
     v = reverb(v, 1.2, 0.06, 3)
-    mix = v * 1.0 + m * 0.75 + f * 0.6
+    mix = v * 1.0 + m * 0.5 + f * 0.45
     mix = mix[:, :int((tl["duration"] + 0.2) * SR)]
     mix = np.tanh(mix * 1.1) / np.tanh(1.1)
     mix /= max(1e-6, np.abs(mix).max()) / 0.95

@@ -7,23 +7,23 @@
   "ICH": {
    "name": "de-DE-Chirp3-HD-Leda",
    "gemini": "Leda",
-   "label": "Lunara",
+   "label": "Neraya",
    "rate": 0.9,
-   "persona": "Lunara, siebzehn, erzählt ihre eigene Geschichte im Rückblick. Ruhig, nah, verletzlich und trotzig zugleich, wie in einem Hörbuch."
+   "persona": "Neraya, siebzehn, erzählt ihre eigene Geschichte im Rückblick. Ruhig, nah, verletzlich und trotzig zugleich, wie in einem Hörbuch."
   },
   "LUNARA": {
    "name": "de-DE-Chirp3-HD-Leda",
    "gemini": "Leda",
-   "label": "Lunara",
+   "label": "Neraya",
    "rate": 0.93,
-   "persona": "Lunara, siebzehn, mutig, frech, verletzlich."
+   "persona": "Neraya, siebzehn, mutig, frech, verletzlich, warmherzig."
   },
   "KAEL": {
    "name": "de-DE-Chirp3-HD-Orus",
    "gemini": "Orus",
    "label": "Kael",
    "rate": 0.92,
-   "persona": "Kael, einundzwanzig, Lunaras großer Bruder, Hauptmann der Flammenwache, innerlich zerrissen."
+   "persona": "Kael, einundzwanzig, Nerayas großer Bruder, Hauptmann der Flammenwache, innerlich zerrissen."
   },
   "KAEL_ERINNERUNG": {
    "name": "de-DE-Chirp3-HD-Orus",
@@ -70,7 +70,7 @@
    "label": "Mutter",
    "rate": 0.9,
    "fx": "fern",
-   "persona": "Lunaras Mutter, liebevoll und eindringlich, ihre Stimme kommt von sehr weit her."
+   "persona": "Nerayas Mutter, liebevoll und eindringlich, ihre Stimme kommt von sehr weit her."
   }
  },
  "naechste": "FOLGE 4 · DIE STADT OHNE STERNE",
@@ -127,7 +127,7 @@
     },
     {
      "who": "STERN",
-     "text": "Sie lügt, Lunara.",
+     "text": "Sie lügt, Neraya.",
      "pre": 0.7,
      "style": "geflüstert, drängend"
     }
@@ -157,7 +157,7 @@
     },
     {
      "who": "KAEL",
-     "text": "Es tut mir leid, Luna. Das war der Handel.",
+     "text": "Es tut mir leid, Nera. Das war der Handel.",
      "pre": 0.7,
      "style": "gequält"
     },
@@ -181,7 +181,7 @@
     },
     {
      "who": "KAEL",
-     "text": "Und ich … ich kann es trotzdem nicht! Ich kann es nicht, Luna!",
+     "text": "Und ich … ich kann es trotzdem nicht! Ich kann es nicht, Nera!",
      "pre": 0.9,
      "rate": 0.95,
      "fx": "zittern",
@@ -218,7 +218,7 @@
    "lines": [
     {
      "who": "KAEL",
-     "text": "Luna … Mama hat keinen Stern eingesperrt …",
+     "text": "Nera … Mama hat keinen Stern eingesperrt …",
      "rate": 0.85,
      "fx": "schwach",
      "style": "sterbend, schwach, flüsternd"
@@ -274,7 +274,7 @@
    "lines": [
     {
      "who": "STERN_DUNKEL",
-     "text": "Weine nicht, Lunara. Du hast ihn nicht verloren. Du hast mich gewonnen.",
+     "text": "Weine nicht, Neraya. Du hast ihn nicht verloren. Du hast mich gewonnen.",
      "style": "tief, triumphierend, langsam"
     },
     {
@@ -306,7 +306,7 @@
     },
     {
      "who": "MUTTER",
-     "text": "Lunara. Hör mir zu. Lass ihn nicht los, was auch immer er dir verspricht.",
+     "text": "Neraya. Hör mir zu. Lass ihn nicht los, was auch immer er dir verspricht.",
      "pre": 1.2,
      "style": "eindringlich, liebevoll, aus weiter Ferne"
     },

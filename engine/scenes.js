@@ -127,33 +127,36 @@ function figure(x, y, h, o = {}) {
   if (o.rim) { ctx.shadowColor = o.rim; ctx.shadowBlur = o.rimBlur ?? 26; }
   ctx.fillStyle = o.color ?? '#05060b';
   const flap = Math.sin(t * 2.3) * 2 + wind;
-  // body + cloak
-  ctx.beginPath();
-  ctx.moveTo(-3, -85);
-  ctx.lineTo(-11, -80);
-  ctx.bezierCurveTo(-15, -77, -15, -66, -13.5, -56);
-  ctx.bezierCurveTo(-13, -40, -17 - flap * 0.5, -18, -24 - flap * 1.6, 0);
-  ctx.lineTo(21 + flap * 0.4, 0);
-  ctx.bezierCurveTo(16, -18, 12, -40, 11.5, -56);
-  ctx.bezierCurveTo(11.5, -66, 13, -76, 10, -80);
-  ctx.lineTo(3, -85);
-  ctx.closePath(); ctx.fill();
-  ctx.fillRect(-2.6, -90, 5.2, 7);
-  // head
-  ctx.beginPath(); ctx.ellipse(1.2, -92.5, 5.8, 7.2, 0.12, 0, 7); ctx.fill();
-  if (o.hood) {
+  if (o.hair) femBody(flap);
+  else {
+    // body + cloak
     ctx.beginPath();
-    ctx.moveTo(-12, -80); ctx.bezierCurveTo(-12, -96, -6, -104, 2, -103);
-    ctx.bezierCurveTo(9, -102, 11, -94, 10, -80); ctx.closePath(); ctx.fill();
-  }
-  if (o.hair) {
-    ctx.beginPath();
-    ctx.moveTo(3, -99);
-    ctx.bezierCurveTo(-6, -102, -10, -94, -10, -86);
-    ctx.bezierCurveTo(-12, -76, -15 - flap, -66, -18 - flap * 1.8, -56);
-    ctx.lineTo(-11, -60);
-    ctx.bezierCurveTo(-8, -70, -5, -80, -4, -88);
+    ctx.moveTo(-3, -85);
+    ctx.lineTo(-11, -80);
+    ctx.bezierCurveTo(-15, -77, -15, -66, -13.5, -56);
+    ctx.bezierCurveTo(-13, -40, -17 - flap * 0.5, -18, -24 - flap * 1.6, 0);
+    ctx.lineTo(21 + flap * 0.4, 0);
+    ctx.bezierCurveTo(16, -18, 12, -40, 11.5, -56);
+    ctx.bezierCurveTo(11.5, -66, 13, -76, 10, -80);
+    ctx.lineTo(3, -85);
     ctx.closePath(); ctx.fill();
+    ctx.fillRect(-2.6, -90, 5.2, 7);
+    // head
+    ctx.beginPath(); ctx.ellipse(1.2, -92.5, 5.8, 7.2, 0.12, 0, 7); ctx.fill();
+    if (o.hood) {
+      ctx.beginPath();
+      ctx.moveTo(-12, -80); ctx.bezierCurveTo(-12, -96, -6, -104, 2, -103);
+      ctx.bezierCurveTo(9, -102, 11, -94, 10, -80); ctx.closePath(); ctx.fill();
+    }
+    if (false) {
+      ctx.beginPath();
+      ctx.moveTo(3, -99);
+      ctx.bezierCurveTo(-6, -102, -10, -94, -10, -86);
+      ctx.bezierCurveTo(-12, -76, -15 - flap, -66, -18 - flap * 1.8, -56);
+      ctx.lineTo(-11, -60);
+      ctx.bezierCurveTo(-8, -70, -5, -80, -4, -88);
+      ctx.closePath(); ctx.fill();
+    }
   }
   if (o.cape) {
     ctx.beginPath();
@@ -166,7 +169,7 @@ function figure(x, y, h, o = {}) {
     const a = o.arm, sx = 6, sy = -77, len = o.armLen ?? 34;
     const ex = sx + Math.cos(a + 0.3) * len * 0.5, ey = sy + Math.sin(a + 0.3) * len * 0.5;
     const hx = ex + Math.cos(a - 0.2) * len * 0.5, hy = ey + Math.sin(a - 0.2) * len * 0.5;
-    ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.strokeStyle = ctx.fillStyle; ctx.lineWidth = 5.2;
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.strokeStyle = ctx.fillStyle; ctx.lineWidth = o.hair ? 3.4 : 5.2;
     ctx.beginPath(); ctx.moveTo(sx - 2, sy + 1); ctx.lineTo(ex, ey); ctx.lineTo(hx, hy); ctx.stroke();
     hand = [x + dir * hx * s, y + hy * s];
     if (o.sword !== undefined) {
@@ -185,6 +188,127 @@ function figure(x, y, h, o = {}) {
   }
   ctx.restore();
   return hand;
+}
+
+// ---------- the heroine: slender, graceful silhouette with a clear profile and long flowing hair ----------
+function femFace() {
+  // profile: brow, small nose, full lips, delicate chin
+  ctx.beginPath();
+  ctx.moveTo(2.5, -99.2);
+  ctx.bezierCurveTo(4.6, -98.9, 5.6, -97.6, 5.6, -95.9);
+  ctx.lineTo(5.5, -95.2);
+  ctx.bezierCurveTo(6.1, -94.4, 6.7, -93.4, 7.0, -92.6);
+  ctx.lineTo(5.8, -92.1);
+  ctx.bezierCurveTo(6.4, -91.8, 6.5, -91.3, 6.2, -91.0);
+  ctx.lineTo(5.8, -90.8);
+  ctx.bezierCurveTo(6.3, -90.5, 6.3, -89.9, 5.8, -89.6);
+  ctx.bezierCurveTo(5.6, -88.6, 4.6, -87.9, 3.4, -87.8);
+  ctx.lineTo(0.5, -88.6); ctx.lineTo(0.5, -98); ctx.closePath(); ctx.fill();
+}
+
+function femHead(flap) {
+  // drawn in standing-figure units: neck base at (0,-86), facing +x
+  ctx.fillRect(-1.7, -91, 3.4, 6);
+  ctx.beginPath(); ctx.ellipse(0.6, -93.6, 4.7, 5.9, 0.12, 0, 7); ctx.fill();
+  femFace();
+  // long wavy hair falling down the back to the hips
+  const f = flap;
+  ctx.beginPath();
+  ctx.moveTo(4.8, -97.6);
+  ctx.bezierCurveTo(4.4, -102.2, -2.5, -103.6, -5.8, -100.2);
+  ctx.bezierCurveTo(-8.8, -97, -8.6, -90, -8.4, -84);
+  ctx.bezierCurveTo(-9.2 - f * 0.4, -76, -7.8 - f * 0.7, -70, -10.5 - f * 1.1, -63);
+  ctx.bezierCurveTo(-12.5 - f * 1.5, -58, -10.5 - f * 1.6, -54, -13.5 - f * 2.0, -49);
+  ctx.bezierCurveTo(-9.5 - f * 1.2, -52, -7.2 - f * 0.8, -57, -6.6 - f * 0.5, -63);
+  ctx.bezierCurveTo(-5.4, -70, -5.4, -77, -4.2, -83);
+  ctx.bezierCurveTo(-3.4, -88, -1.5, -92, 0.2, -94.5);
+  ctx.bezierCurveTo(1.8, -96.5, 3.4, -97.2, 4.8, -97.6);
+  ctx.closePath(); ctx.fill();
+  // a loose strand framing the face
+  ctx.lineWidth = 0.9; ctx.strokeStyle = ctx.fillStyle;
+  ctx.beginPath(); ctx.moveTo(3.6, -98); ctx.bezierCurveTo(2.0, -95, 2.6, -91, 1.4 - f * 0.3, -86); ctx.stroke();
+}
+
+function femBody(flap) {
+  // fitted bodice, narrow waist, long flowing gown with a train
+  ctx.beginPath();
+  ctx.moveTo(-1.6, -86);
+  ctx.bezierCurveTo(-4.5, -84.5, -7.5, -83, -7.4, -79);
+  ctx.bezierCurveTo(-7.2, -73, -5.2, -67, -4.6, -61);
+  ctx.bezierCurveTo(-5.5, -57, -8.2, -54, -8.4, -50);
+  ctx.bezierCurveTo(-11 - flap * 0.6, -32, -16 - flap * 1.3, -14, -27 - flap * 2.2, 0);
+  ctx.quadraticCurveTo(-14, 1.6, -4, 0.2);
+  ctx.quadraticCurveTo(7, 1.4, 19 + flap * 0.6, 0);
+  ctx.bezierCurveTo(14, -16, 9.5, -36, 7.4, -50);
+  ctx.bezierCurveTo(7, -55, 5, -58, 4.4, -61);
+  ctx.bezierCurveTo(5.2, -64, 8.6, -67.5, 8.6, -71.5);
+  ctx.bezierCurveTo(8.6, -75.5, 6.4, -77, 6.2, -79.5);
+  ctx.bezierCurveTo(5.2, -83, 3.4, -84.6, 1.6, -86);
+  ctx.closePath(); ctx.fill();
+  femHead(flap);
+}
+
+function sittingHeroine(x, y, s, t, o = {}) {
+  // Neraya sitting on a branch, legs dangling, chin raised towards the last star
+  const f = Math.sin(t * 1.3) * 1.2 + 1.2, look = o.look ?? -0.55, sw = Math.sin(t * 1.4);
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+  if (o.rim) { ctx.shadowColor = o.rim; ctx.shadowBlur = o.rimBlur ?? 30; }
+  ctx.fillStyle = o.color ?? '#05030a'; ctx.strokeStyle = ctx.fillStyle;
+  ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  // long, full hair flowing down her back, lifted by the wind
+  ctx.beginPath();
+  ctx.moveTo(-1, -35);
+  ctx.bezierCurveTo(-3, -40, -8, -43, -10.5, -40);
+  ctx.bezierCurveTo(-12.5, -36, -11, -31, -12 - f * 0.5, -26);
+  ctx.bezierCurveTo(-13.5 - f, -21, -12 - f * 1.2, -17, -14.5 - f * 1.8, -11);
+  ctx.bezierCurveTo(-11 - f * 1.2, -13, -9.5 - f * 0.8, -16, -9 - f * 0.5, -19);
+  ctx.bezierCurveTo(-8.6 - f * 0.4, -16, -9.6 - f * 0.8, -12, -11.5 - f * 1.4, -8);
+  ctx.bezierCurveTo(-7.5 - f, -11, -6, -17, -5.4, -22);
+  ctx.bezierCurveTo(-4.6, -27, -3, -31, -1, -35);
+  ctx.closePath(); ctx.fill();
+  // slender lower legs and pointed feet below the hem
+  ctx.lineWidth = 2.1;
+  ctx.beginPath(); ctx.moveTo(15.2, 2); ctx.bezierCurveTo(16.2 + sw * 0.3, 6, 16.4 + sw * 0.6, 10, 15.8 + sw * 0.8, 14.2); ctx.lineTo(17.6 + sw * 0.8, 16.4); ctx.stroke();
+  ctx.lineWidth = 1.9;
+  ctx.beginPath(); ctx.moveTo(13, 2); ctx.bezierCurveTo(13.4 - sw * 0.2, 6, 13.2 - sw * 0.4, 10, 12.4 - sw * 0.5, 13.4); ctx.lineTo(14 - sw * 0.5, 15.6); ctx.stroke();
+  // gown: fitted bodice, narrow waist, skirt over the lap, draping over the branch
+  ctx.beginPath();
+  ctx.moveTo(-3.6, -31);
+  ctx.bezierCurveTo(-4.8, -27, -4.4, -21, -3.0, -15.5);
+  ctx.bezierCurveTo(-4.4, -11, -6.6, -6, -6.4, -1);
+  ctx.bezierCurveTo(-7.4 - f * 0.6, 3, -8.6 - f * 1.4, 7, -10.5 - f * 2.0, 10.5);
+  ctx.quadraticCurveTo(-6, 9, -2.5, 4);
+  ctx.lineTo(8, 1.5);
+  ctx.bezierCurveTo(9.5, 5, 10.5, 7.5, 10.2, 9.5);
+  ctx.quadraticCurveTo(14, 8.6, 18.6 + f * 0.3, 9.4);
+  ctx.bezierCurveTo(18.2, 5, 17.6, 0, 16.2, -3);
+  ctx.bezierCurveTo(14.5, -5.4, 9, -5.2, 5.5, -6.2);
+  ctx.bezierCurveTo(3.4, -7.2, 2.6, -10.5, 2.4, -14.5);
+  ctx.bezierCurveTo(2.6, -16.5, 4.6, -18.5, 4.8, -21.5);
+  ctx.bezierCurveTo(5.0, -24.5, 3.6, -26, 3.2, -28);
+  ctx.bezierCurveTo(2.6, -30.2, 1.4, -31.4, 0.4, -31.8);
+  ctx.closePath(); ctx.fill();
+  // arms: one hand resting on the branch behind her, one gracefully on her knee
+  ctx.lineWidth = 2.4;
+  ctx.beginPath(); ctx.moveTo(-2.4, -29); ctx.quadraticCurveTo(-6.2, -21, -6.6, -14); ctx.quadraticCurveTo(-7.6, -6, -9.6, -0.6); ctx.stroke();
+  ctx.lineWidth = 2.2;
+  ctx.beginPath(); ctx.moveTo(2.2, -28.5); ctx.quadraticCurveTo(4.6, -21, 6.4, -16.5); ctx.quadraticCurveTo(9.5, -10, 12.6, -6.4); ctx.stroke();
+  // neck, head and profile, tilted up towards the star
+  ctx.save(); ctx.translate(0.2, -31); ctx.rotate(look); ctx.translate(0, 86);
+  ctx.fillRect(-1.5, -91, 3.0, 6.5);
+  ctx.beginPath(); ctx.ellipse(0.6, -93.6, 4.7, 5.9, 0.12, 0, 7); ctx.fill();
+  femFace();
+  // hair framing the crown and falling behind the neck
+  ctx.beginPath();
+  ctx.moveTo(4.8, -97.6);
+  ctx.bezierCurveTo(4.4, -102.2, -2.5, -103.6, -5.8, -100.2);
+  ctx.bezierCurveTo(-8.4, -97, -8.2, -91, -6.8, -86);
+  ctx.lineTo(-2, -86.5);
+  ctx.bezierCurveTo(-1.5, -90, -0.4, -93, 1.2, -95.5);
+  ctx.bezierCurveTo(2.4, -96.8, 3.6, -97.3, 4.8, -97.6);
+  ctx.closePath(); ctx.fill();
+  ctx.restore();
+  ctx.restore();
 }
 
 function ground(y, color, rough = 18, seed = 1) {
@@ -463,8 +587,8 @@ const CAPTIONS = [
   { scene: 'stadt', at: 0.6, dur: 7, title: 'AURELION', sub: 'Die Stadt der tausend Laternen · Jahr 1137 nach dem Sternenbund' },
   { scene: 'lichtkrone', at: 0.5, dur: 6, title: 'DIE LICHTKRONE', sub: 'Sitz des Ordens der Hohen Flamme' },
   { scene: 'seraphine_vor', at: 0.5, dur: 6, title: 'SERAPHINE', sub: 'Hohepriesterin des Ordens der Hohen Flamme' },
-  { scene: 'lunara', at: 0.6, dur: 6.5, title: 'LUNARA', sub: '17 · Laternenanzünderin der Tiefen Äste' },
-  { scene: 'kael_vor', at: 0.6, dur: 6, title: 'KAEL', sub: '21 · Lunaras Bruder · Hauptmann der Flammenwache' },
+  { scene: 'lunara', at: 0.6, dur: 6.5, title: 'NERAYA', sub: '17 · Laternenanzünderin der Tiefen Äste' },
+  { scene: 'kael_vor', at: 0.6, dur: 6, title: 'KAEL', sub: '21 · Nerayas Bruder · Hauptmann der Flammenwache' },
   { scene: 'ruinen', at: 0.5, dur: 6, title: 'DIE VERBOTENEN RUINEN', sub: 'Tempel der Ersten Sterne · Ursprung des großen Feuers' },
 ];
 
@@ -764,10 +888,6 @@ const SCENES = {
     vgrad([[0, '#010208'], [0.6, '#060b1f'], [1, '#0d1430']]);
     nebula(t, ['rgba(110,60,200,A)', 'rgba(40,120,200,A)', 'rgba(200,80,140,A)'], smooth(0, 3, lt));
     stars(t, { alpha: smooth(0, 2.5, lt), drift: 1 });
-    // "Das ist eine Lüge": the sky shivers red
-    const lie = lineOf('kalt', 1);
-    const red = smooth(lie.start - 0.1, lie.start + 0.3, t) * (1 - smooth(lie.end + 0.2, lie.end + 1.2, t));
-    if (red > 0) { ctx.fillStyle = `rgba(120,0,20,${red * 0.25})`; ctx.fillRect(-200, -200, W + 400, H + 400); }
     // cage constellations appear on "Gefängnisse"
     const cage = smooth(lineOf('kalt', 2).start, lineOf('kalt', 2).start + 2, t);
     if (cage > 0) {
@@ -824,9 +944,15 @@ const SCENES = {
       ctx.font = 'italic 600 50px "Cormorant Garamond"'; ctx.fillStyle = `rgba(240,228,210,${smooth(hit + 0.9, hit + 1.8, lt)})`;
       ctx.shadowColor = 'rgba(0,0,0,0.9)'; ctx.shadowBlur = 12;
       ctx.fillText(TL.tagline, 540, 1060);
-      if (ctx.letterSpacing !== undefined) ctx.letterSpacing = '6px';
-      ctx.font = '400 36px Cinzel'; ctx.fillStyle = `rgba(230,205,165,${smooth(hit + 1.6, hit + 2.5, lt)})`;
-      ctx.fillText(`${TL.folge} · ${TL.titel}`.toUpperCase(), 540, 1150);
+      const ea = smooth(hit + 2.0, hit + 3.0, lt), ez = 1.08 - 0.08 * easeOut((lt - hit - 2.0) / 2.5);
+      ctx.save(); ctx.translate(540, 1200); ctx.scale(ez, ez);
+      if (ctx.letterSpacing !== undefined) ctx.letterSpacing = '8px';
+      ctx.font = '700 46px Cinzel'; ctx.fillStyle = `rgba(230,200,150,${ea})`; ctx.shadowColor = 'rgba(0,0,0,0.95)'; ctx.shadowBlur = 16;
+      ctx.fillText(TL.folge.toUpperCase(), 0, 0);
+      if (ctx.letterSpacing !== undefined) ctx.letterSpacing = '0px';
+      ctx.font = 'italic 600 78px "Cormorant Garamond"'; ctx.fillStyle = `rgba(255,240,215,${ea})`;
+      wrap(TL.titel, 960).forEach((line, i) => ctx.fillText(line, 0, 92 + i * 84));
+      ctx.restore();
       ctx.restore();
     }
     particles(t, 60, { y0: 1700, dy: -1400, a: 0.6 * ta, color: 'rgba(255,190,120,A)', r: 2, life: 4 });
@@ -842,7 +968,7 @@ const SCENES = {
     moon(820, 330, 150);
     pinkMoon(220, 230, 55);
     // star dust drifting down - stronger when it is explained
-    const dust = 0.35 + 0.65 * smooth(L(3).start - 0.5, L(3).start + 1, t);
+    const dust = 0.35 + 0.65 * smooth(L(2).start - 0.5, L(2).start + 1, t);
     particles(t, 140, { y0: -100, dy: 1800, a: dust, color: 'rgba(255,225,170,A)', r: 2, life: 11, sway: 25, glowR: 7 });
     // far giant trees rising out of the clouds
     giantTree(130, 120, 820, t, 0.35, 11, { lights: 10, lightA: 0.6 });
@@ -851,7 +977,7 @@ const SCENES = {
     const wx = lerp(-350, 1350, (lt + 2) / (d + 6));
     whale(wx, 620, 0.6, t, 0.6);
     // whale song carries the islands
-    const song = smooth(L(4).start - 0.3, L(4).start + 0.8, t);
+    const song = smooth(L(3).start - 0.3, L(3).start + 0.8, t);
     if (song > 0) {
       ctx.save(); ctx.globalCompositeOperation = 'lighter';
       for (let k = 0; k < 4; k++) {
@@ -864,7 +990,7 @@ const SCENES = {
     giantTree(420, 230, 980, t, 0.65, 13, { lights: 16, lightA: 0.8 });
     island(880, 1000, 230, t, 4, 0.75);
     whale(lerp(1400, -400, (lt + 1) / (d + 4)), 1080, 1.0, t, 0.9, -1);
-    const sea = 0.85 + 0.15 * smooth(L(2).start, L(2).start + 1, t);
+    const sea = 0.85 + 0.15 * smooth(L(1).start, L(1).start + 1, t);
     cloudSea(t, 1380, sea);
     particles(t, 50, { y0: 1900, dy: -900, a: 0.5, color: 'rgba(255,220,240,A)', r: 2.4, life: 9, sway: 80 });
   },
@@ -897,7 +1023,7 @@ const SCENES = {
   },
 
   stadt(t) {
-    const lt = local('stadt', t), d = SC.stadt.end - SC.stadt.start, up = lineOf('stadt', 2);
+    const lt = local('stadt', t), d = SC.stadt.end - SC.stadt.start, up = lineOf('stadt', 1);
     const tilt = easeInOut(clamp((t - up.start + 0.6) / (up.end - up.start + 0.6)));
     camera(1.04 + 0.04 * lt / d, -30 + 60 * lt / d, 700 * tilt);
     this._treeCity(t);
@@ -1036,26 +1162,26 @@ const SCENES = {
 
   lunara(t) {
     const L = i => lineOf('lunara', i), lt = local('lunara', t);
-    const close = smooth(L(5).start - 0.6, L(5).start + 0.6, t);
+    const close = smooth(L(6).start - 0.6, L(6).start + 0.6, t);
     const A = () => {
-      const push = smooth(L(2).start, L(4).end, t);
+      const push = smooth(L(3).start, L(5).end, t);
       ctx.save(); camera(1.0 + 0.35 * push, -120 * push, -260 * push);
-      const lit = lerp(1, 7, clamp((t - SC.lunara.start) / (L(0).end - SC.lunara.start + 1)));
+      const lit = lerp(1, 7, clamp((t - SC.lunara.start) / (L(1).end - SC.lunara.start + 1)));
       this._branchScene(t, { lit });
-      const look = smooth(L(4).start - 0.8, L(4).start, t);
+      const look = smooth(L(5).start - 0.8, L(5).start, t);
       const hand = figure(380, 1610, 500, { hair: true, t, arm: lerp(-0.9, -1.4, look), armLen: 36, rim: 'rgba(255,170,90,0.85)', rimBlur: 30 });
       ctx.strokeStyle = '#04050a'; ctx.lineWidth = 6;
       ctx.beginPath(); ctx.moveTo(hand[0] - 30, hand[1] + 80); ctx.lineTo(hand[0] + 60, hand[1] - 170); ctx.stroke();
       ctx.save(); ctx.globalCompositeOperation = 'lighter';
       glow(hand[0] + 60, hand[1] - 175, 60, 'rgba(255,180,90,A)', 0.9);
-      const dust = smooth(L(1).start, L(1).start + 1, t);
+      const dust = smooth(L(2).start, L(2).start + 1, t);
       if (dust > 0) { glow(330, 1330, 70, 'rgba(255,230,160,A)', 0.8 * dust); glow(330, 1330, 14, 'rgba(255,250,230,A)', dust); }
       ctx.restore();
       particles(t, 50, { y0: 1800, dy: -1200, a: 0.6, color: 'rgba(255,190,110,A)', r: 2, life: 9, glowR: 8 });
       ctx.restore();
     };
     const B = () => {
-      ctx.save(); camera(1.0 + 0.06 * clamp((t - L(5).start) / 8), 0, 0);
+      ctx.save(); camera(1.0 + 0.06 * clamp((t - L(6).start) / 8), 0, 0);
       vgrad([[0, '#03021a'], [0.6, '#151446'], [1, '#08061a']]);
       stars(t, { alpha: 1 });
       ctx.save(); ctx.globalCompositeOperation = 'lighter';
@@ -1232,39 +1358,43 @@ const SCENES = {
     ctx.restore();
     whale(lerp(1300, -300, lt / (d + 4)), 900, 0.7, t, 0.8, -1);
     cloudSea(t, 1380, 0.9);
-    // Lunara sitting on the end of a branch, looking out
-    const c = '#05030a';
-    ctx.fillStyle = c;
+    // Neraya sitting on the end of a branch, looking up at the last star
+    ctx.fillStyle = '#05030a';
     ctx.beginPath(); ctx.moveTo(-200, 1500); ctx.quadraticCurveTo(300, 1460, 640, 1420); ctx.lineTo(650, 1450); ctx.quadraticCurveTo(300, 1520, -200, 1620); ctx.fill();
-    ctx.shadowColor = 'rgba(255,190,130,0.9)'; ctx.shadowBlur = 26;
-    ctx.beginPath(); ctx.ellipse(540, 1310, 26, 32, 0, 0, 7); ctx.fill();
-    ctx.beginPath(); ctx.moveTo(520, 1342); ctx.bezierCurveTo(470, 1380, 480, 1430, 500, 1440); ctx.lineTo(590, 1440); ctx.bezierCurveTo(600, 1400, 580, 1360, 560, 1342); ctx.fill();
-    ctx.beginPath(); ctx.moveTo(500, 1300); ctx.bezierCurveTo(470, 1340, 450, 1380, 430 - Math.sin(t * 2) * 8, 1410); ctx.lineTo(500, 1350); ctx.fill();
-    ctx.lineCap = 'round'; ctx.lineWidth = 16; ctx.strokeStyle = c;
-    ctx.beginPath(); ctx.moveTo(560, 1440); ctx.lineTo(600, 1500 + Math.sin(t * 1.5) * 6); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(580, 1440); ctx.lineTo(625, 1495 + Math.sin(t * 1.5 + 1) * 6); ctx.stroke();
-    ctx.shadowBlur = 0;
-    ctx.save(); ctx.globalCompositeOperation = 'lighter'; glow(575, 1400, 40, 'rgba(255,215,150,A)', 0.8); ctx.restore();
+    sittingHeroine(430, 1452, 7.5, t, { rim: 'rgba(255,200,150,0.95)', rimBlur: 34, look: -0.7 });
+    ctx.save(); ctx.globalCompositeOperation = 'lighter'; glow(470, 1080, 160, 'rgba(255,210,160,A)', 0.25); ctx.restore();
     particles(t, 60, { y0: 1900, dy: -1700, a: 0.6, color: 'rgba(255,210,150,A)', r: 2, life: 8 });
     ctx.restore();
     // call to action, then the end card
     const cta = LINES.find(l => l.scene === 'outro');
     const fa = smooth(cta.start + 1.5, cta.start + 2.3, t);
-    followButton(540, 980, fa, t);
+    followButton(540, 840, fa, t);
     ctx.save(); ctx.textAlign = 'center'; ctx.shadowColor = 'rgba(0,0,0,0.9)'; ctx.shadowBlur = 14;
     ctx.font = 'italic 600 46px "Cormorant Garamond"'; ctx.fillStyle = `rgba(245,235,220,${fa})`;
-    ctx.fillText('… und sieh die nächste Folge als Erstes', 540, 1110);
+    ctx.fillText('… und sieh die nächste Folge als Erstes', 540, 965);
     ctx.restore();
+    // next episode: shown big and long
+    const [nf, nt] = (TL.naechste || '').split(' · ');
+    const na = smooth(cta.end - 1.2, cta.end - 0.2, t), nz = 1.06 - 0.06 * easeOut((t - cta.end + 1.2) / 3);
+    if (na > 0 && nt) {
+      ctx.save(); ctx.translate(540, 0); ctx.textAlign = 'center'; ctx.shadowColor = 'rgba(0,0,0,0.95)'; ctx.shadowBlur = 18;
+      if (ctx.letterSpacing !== undefined) ctx.letterSpacing = '8px';
+      ctx.font = '400 34px Cinzel'; ctx.fillStyle = `rgba(230,200,150,${na})`; ctx.fillText('ALS NÄCHSTES', 0, 500);
+      ctx.font = '700 50px Cinzel'; ctx.fillStyle = `rgba(255,225,170,${na})`; ctx.fillText(nf, 0, 568);
+      if (ctx.letterSpacing !== undefined) ctx.letterSpacing = '2px';
+      ctx.scale(nz, nz);
+      const tg = ctx.createLinearGradient(0, 600, 0, 760);
+      tg.addColorStop(0, `rgba(255,240,200,${na})`); tg.addColorStop(1, `rgba(228,170,90,${na})`);
+      ctx.font = '700 64px Cinzel'; ctx.fillStyle = tg; ctx.shadowColor = `rgba(255,170,80,${0.7 * na})`; ctx.shadowBlur = 30;
+      wrap(nt, 960).forEach((line, i) => ctx.fillText(line, 0, (650 + i * 76) / nz));
+      ctx.restore();
+    }
     const card = smooth(hit - 0.1, hit + 0.8, t);
     if (card > 0) {
-      titleText(540, 470, 100, card, 1.05 - 0.05 * easeOut((t - hit) / 3));
+      titleText(540, 175, 88, card, 1.05 - 0.05 * easeOut((t - hit) / 3));
       ctx.save(); ctx.textAlign = 'center'; ctx.shadowColor = 'rgba(0,0,0,0.9)'; ctx.shadowBlur = 14;
-      if (ctx.letterSpacing !== undefined) ctx.letterSpacing = '6px';
-      ctx.font = '400 36px Cinzel'; ctx.fillStyle = `rgba(230,205,165,${smooth(hit + 0.6, hit + 1.4, t)})`;
-      ctx.fillText(TL.naechste, 540, 600);
-      if (ctx.letterSpacing !== undefined) ctx.letterSpacing = '0px';
-      ctx.font = 'italic 600 54px "Cormorant Garamond"'; ctx.fillStyle = `rgba(245,235,220,${smooth(hit + 1.2, hit + 2.0, t)})`;
-      ctx.fillText('Fortsetzung folgt …', 540, 700);
+      ctx.font = 'italic 600 50px "Cormorant Garamond"'; ctx.fillStyle = `rgba(245,235,220,${smooth(hit + 0.6, hit + 1.4, t)})`;
+      ctx.fillText('Fortsetzung folgt …', 540, 255);
       ctx.restore();
     }
   },
