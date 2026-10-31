@@ -470,6 +470,7 @@ const CAPTIONS = [
 
 function captions(t) {
   for (const c of CAPTIONS) {
+    if (!SC[c.scene]) continue;
     const t0 = SC[c.scene].start + c.at, a = smooth(t0, t0 + 0.8, t) * (1 - smooth(t0 + c.dur - 0.8, t0 + c.dur, t));
     if (a <= 0) continue;
     ctx.save();
@@ -744,7 +745,8 @@ function crossfade(k, drawA, drawB) {
 
 // ---------- scene helpers ----------
 const local = (id, t) => t - SC[id].start;
-const lineOf = (scene, idx) => LINES.filter(l => l.scene === scene)[idx];
+const NOLINE = { start: 1e9, end: 1e9 };
+const lineOf = (scene, idx) => LINES.filter(l => l.scene === scene)[idx] ?? NOLINE;
 function speaking(who, t) {
   const l = LINES.find(l => l.who === who && t >= l.start && t <= l.end);
   return l ? Math.sin(clamp((t - l.start) / (l.end - l.start)) * Math.PI) : 0;
@@ -822,6 +824,9 @@ const SCENES = {
       ctx.font = 'italic 600 50px "Cormorant Garamond"'; ctx.fillStyle = `rgba(240,228,210,${smooth(hit + 0.9, hit + 1.8, lt)})`;
       ctx.shadowColor = 'rgba(0,0,0,0.9)'; ctx.shadowBlur = 12;
       ctx.fillText(TL.tagline, 540, 1060);
+      if (ctx.letterSpacing !== undefined) ctx.letterSpacing = '6px';
+      ctx.font = '400 36px Cinzel'; ctx.fillStyle = `rgba(230,205,165,${smooth(hit + 1.6, hit + 2.5, lt)})`;
+      ctx.fillText(`${TL.folge} · ${TL.titel}`.toUpperCase(), 540, 1150);
       ctx.restore();
     }
     particles(t, 60, { y0: 1700, dy: -1400, a: 0.6 * ta, color: 'rgba(255,190,120,A)', r: 2, life: 4 });
@@ -1256,7 +1261,7 @@ const SCENES = {
       ctx.save(); ctx.textAlign = 'center'; ctx.shadowColor = 'rgba(0,0,0,0.9)'; ctx.shadowBlur = 14;
       if (ctx.letterSpacing !== undefined) ctx.letterSpacing = '6px';
       ctx.font = '400 36px Cinzel'; ctx.fillStyle = `rgba(230,205,165,${smooth(hit + 0.6, hit + 1.4, t)})`;
-      ctx.fillText('FOLGE 2 · DIE STADT OHNE STERNE', 540, 600);
+      ctx.fillText(TL.naechste, 540, 600);
       if (ctx.letterSpacing !== undefined) ctx.letterSpacing = '0px';
       ctx.font = 'italic 600 54px "Cormorant Garamond"'; ctx.fillStyle = `rgba(245,235,220,${smooth(hit + 1.2, hit + 2.0, t)})`;
       ctx.fillText('Fortsetzung folgt …', 540, 700);
@@ -1569,6 +1574,68 @@ const SCENES = {
     ctx.restore();
   },
 
+  klinge(t) {
+    // Kael raises his sword over his sister; the world slows down
+    const lt = local('klinge', t), d = SC.klinge.end - SC.klinge.start, hit = CUE.hieb;
+    const raise = easeInOut(clamp((t - lineOf('klinge', 1).start) / (hit - 0.4 - lineOf('klinge', 1).start)));
+    camera(1.0 + 0.22 * easeInOut(lt / d), 60 * easeInOut(lt / d), 120 * easeInOut(lt / d));
+    this._ridge(t, 0.6 + 0.3 * raise);
+    ctx.save(); ctx.filter = 'blur(6px)'; ctx.globalAlpha = 0.6; this._order(t, { skip: 6 }); ctx.restore();
+    particles(t * (1 - 0.8 * raise), 40, { y0: 1500, dy: -1100, a: 0.5, color: 'rgba(255,140,70,A)', r: 2, life: 6 });
+    this._elaraFg(t, { arm: 0.3 });
+    const blade = figure(760, 1760, 600, { dir: -1, t, cape: true, rim: 'rgba(255,110,70,0.85)', rimBlur: 28, arm: lerp(-0.35, -1.85, raise), armLen: 34, sword: lerp(-0.25, -2.0, raise) });
+    // a glint running along the raised blade
+    const g = smooth(hit - 1.4, hit - 0.3, t);
+    if (g > 0 && blade) { ctx.save(); ctx.globalCompositeOperation = 'lighter'; glow(blade[0], blade[1] - 160 * g, 90, 'rgba(255,240,220,A)', g); ctx.restore(); }
+    // a tear of light on "Vergib mir"
+    const v = lineOf('klinge', 3);
+    const k = smooth(v.start, v.end, t);
+    if (k > 0) { ctx.save(); ctx.globalCompositeOperation = 'lighter'; glow(540, 1200, 700, 'rgba(255,180,140,A)', 0.12 * k); ctx.restore(); }
+    // after the strike: black
+    if (t > hit) { ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.fillStyle = '#000'; ctx.fillRect(0, 0, W, H); }
+  },
+
+  nacht(t) {
+    // darkness, only the star heart pulsing in Lunara's hand
+    const lt = local('nacht', t), sc = CUE.schrei;
+    vgrad([[0, '#000000'], [1, '#030106']]);
+    const beat = Math.pow(Math.max(0, Math.sin(lt * 2.4)), 6);
+    ctx.save(); ctx.globalCompositeOperation = 'lighter';
+    glow(540, 980, 140 + 60 * beat, 'rgba(190,220,255,A)', smooth(1.0, 3.0, lt) * (0.25 + 0.3 * beat) * (1 - smooth(sc, sc + 0.4, t)));
+    const r = smooth(sc, sc + 0.3, t) * (1 - smooth(sc + 1.5, SC.nacht.end, t));
+    glow(540, 900, 900, 'rgba(200,30,20,A)', 0.4 * r);
+    ctx.restore();
+  },
+
+  rueckblick(t) {
+    // "Previously": memories in warm, faded light
+    const L = i => lineOf('rueckblick', i), lt = local('rueckblick', t);
+    const p1 = smooth(L(1).start - 0.6, L(1).start + 0.4, t), p3 = smooth(L(3).start - 0.6, L(3).start + 0.4, t);
+    const A = () => { ctx.save(); camera(1.0 + 0.04 * lt / 10, 0, 80); this._treeCity(t, { beams: true }); ctx.restore(); };
+    const B = () => {
+      ctx.save(); camera(1.05 + 0.1 * smooth(L(2).start, L(3).start, t), 0, 0);
+      vgrad([[0, '#02030a'], [0.6, '#0a1030'], [1, '#04050c']]);
+      stars(t, { alpha: 0.8 });
+      ruins(t, { color: '#0b0812' });
+      const hand = this._elaraFg(t, { x: 540, h: 760, arm: 0.6 });
+      heart(hand[0], hand[1], 26, t, { pulse: 0.6 + 0.4 * smooth(L(2).start, L(2).start + 0.5, t) });
+      ctx.restore();
+    };
+    const C = () => { ctx.save(); camera(1.0, 0, 0); this._ridge(t, 0.6); this._order(t, { skip: 6 }); this._elaraFg(t, { arm: 0.3 });
+      figure(750, 1262, 192, { dir: -1, t, cape: true, rim: 'rgba(255,110,70,0.95)', rimBlur: 30, arm: -0.35, armLen: 34, sword: -0.25 }); ctx.restore(); };
+    ctx.save(); ctx.filter = 'sepia(0.35) saturate(0.8)';
+    if (p1 < 1) crossfade(p1, A, B); else crossfade(p3, B, C);
+    ctx.restore();
+    memoryHaze(0.35);
+    // label
+    const a = smooth(0.3, 1.3, lt) * (1 - smooth(SC.rueckblick.end - SC.rueckblick.start - 1.2, SC.rueckblick.end - SC.rueckblick.start - 0.3, lt));
+    ctx.save(); ctx.textAlign = 'center'; ctx.shadowColor = 'rgba(0,0,0,0.9)'; ctx.shadowBlur = 14;
+    if (ctx.letterSpacing !== undefined) ctx.letterSpacing = '10px';
+    ctx.font = '700 44px Cinzel'; ctx.fillStyle = `rgba(255,228,180,${a})`; ctx.fillText('BISHER BEI', 540, 250);
+    ctx.font = '700 70px Cinzel'; ctx.fillText('STERNENFALL', 540, 335);
+    ctx.restore();
+  },
+
   abspann(t) {
     const lt = local('abspann', t), hit = CUE.end_hit - SC.abspann.start;
     vgrad([[0, '#010103'], [1, '#05040c']]);
@@ -1642,11 +1709,13 @@ function overlays(t, frame) {
   flash(CUE.title_hit, 'rgba(255,225,180,A)', 0.8, 0.85);
   flash(CUE.schwester, 'rgba(150,60,255,A)', 0.6, 0.5);
   flash(CUE.outro_hit, 'rgba(255,225,180,A)', 0.7, 0.5);
+  flash(CUE.hieb - 0.12, 'rgba(255,245,235,A)', 0.25, 1.0);
+  flash(CUE.schrei, 'rgba(200,30,30,A)', 0.9, 0.5);
   flash(lineOf('orden', 2).start + 0.2, 'rgba(255,70,40,A)', 0.5, 0.35);
   // dip to black between scenes
   for (const s of TL.scenes.slice(1)) {
     const dd = Math.abs(t - s.start);
-    if (dd < 0.4 && !['fall', 'angriff', 'intro', 'glocken'].includes(s.id)) { ctx.fillStyle = `rgba(0,0,0,${1 - smooth(0, 0.4, dd)})`; ctx.fillRect(0, 0, W, H); }
+    if (dd < 0.4 && !['fall', 'angriff', 'intro', 'glocken', 'klinge', 'nacht'].includes(s.id)) { ctx.fillStyle = `rgba(0,0,0,${1 - smooth(0, 0.4, dd)})`; ctx.fillRect(0, 0, W, H); }
   }
   const fi = 1 - smooth(0, 0.8, t);
   if (fi > 0) { ctx.fillStyle = `rgba(0,0,0,${fi})`; ctx.fillRect(0, 0, W, H); }
@@ -1662,7 +1731,7 @@ function overlays(t, frame) {
 
 function shakeAt(t) {
   let s = 0;
-  [[CUE.impact, 1.3, 22], [CUE.touch, 1.0, 16], [CUE.fallen, 1.2, 24], [CUE.schwarz, 0.8, 12], [CUE.title_hit, 0.9, 18], [CUE.schwester, 0.8, 14], [SC.sting.start - 0.05, 0.5, 10], [lineOf('orden', 2).start + 0.2, 0.7, 12], [CUE.outro_hit, 0.8, 12]].forEach(([c, d, a]) => {
+  [[CUE.impact, 1.3, 22], [CUE.touch, 1.0, 16], [CUE.fallen, 1.2, 24], [CUE.schwarz, 0.8, 12], [CUE.title_hit, 0.9, 18], [CUE.schwester, 0.8, 14], [SC.sting ? SC.sting.start - 0.05 : -9, 0.5, 10], [CUE.hieb, 0.6, 26], [CUE.schrei, 0.7, 14], [lineOf('orden', 2).start + 0.2, 0.7, 12], [CUE.outro_hit, 0.8, 12]].forEach(([c, d, a]) => {
     if (t >= c && t < c + d) s += a * Math.pow(1 - (t - c) / d, 2);
   });
   return s;

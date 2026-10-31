@@ -6,6 +6,7 @@ die Stimmen kommen von Google Cloud Text-to-Speech, Musik und Soundeffekte werde
 
 ## Serie: STERNENFALL
 - `story/folge01.json`: Folge 1 „Das Herz, das vom Himmel fiel“ (Drehbuch mit Regieanweisungen, Stimmen, Timing-Cues)
+- `story/folge02.json`: Folge 2 „Das Versprechen“ (Rückblick, Fortsetzung des Cliffhangers)
 
 ## Bauen
 Voraussetzungen: `GOOGLE_TTS_API_KEY` (Chirp-3-HD-Stimmen) oder `GEMINI_API_KEY` (Gemini-Stimmen mit Emotionsregie aus den `style`-Feldern), Python 3 mit `numpy` und `scipy`, Node mit `playwright`, `ffmpeg`.

@@ -151,7 +151,7 @@ def main(story_path, out_dir):
     os.makedirs(vdir, exist_ok=True)
 
     t = 0.0
-    timeline = {k: story[k] for k in ("serie", "folge", "titel", "tagline")}
+    timeline = {k: story.get(k, "") for k in ("serie", "folge", "titel", "tagline", "naechste")}
     timeline["scenes"], timeline["lines"], timeline["cues"] = [], [], {}
     clips = []
     for scene in story["scenes"]:
