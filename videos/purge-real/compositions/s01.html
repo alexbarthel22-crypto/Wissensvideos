@@ -1,0 +1,137 @@
+<template>
+  <style>
+        #root { position: absolute; inset: 0; }
+    .stage { position: absolute; inset: 0; overflow: hidden; }
+    .abs { position: absolute; }
+    svg { overflow: visible; }
+    /* Zähler-Box wie in der Referenz: Rahmen in Akzentfarbe, Label in Mono-Versalien, große Zahl */
+    .cbox { position: absolute; left: 290px; width: 500px; top: 268px; height: 126px; border: 3px solid #ff4fb0;
+      border-radius: 14px; background: rgba(13,16,38,.88); text-align: center; box-shadow: 0 0 28px rgba(255,79,176,.35); }
+    .cbox .lab { margin-top: 16px; font-family: "Space Mono", monospace; font-weight: 700; font-size: 28px;
+      letter-spacing: .16em; color: #dfe2f5; }
+    .cbox .num { margin-top: 2px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 56px; color: #fff;
+      letter-spacing: .01em; }
+    .cbox.y { border-color: #ffd43b; box-shadow: 0 0 28px rgba(255,212,59,.3); }
+    .cbox.r { border-color: #ff3b55; box-shadow: 0 0 28px rgba(255,59,85,.35); }
+    .cbox.b { border-color: #4da3ff; box-shadow: 0 0 28px rgba(77,163,255,.3); }
+    .cbox.g { border-color: #39e27a; box-shadow: 0 0 28px rgba(57,226,122,.3); }
+    .mono { font-family: "Space Mono", monospace; font-weight: 700; letter-spacing: .12em; }
+    .heavy { font-family: "Inter", sans-serif; font-weight: 900; }
+
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .cbox { top: 440px; } /* unter der großen Kapitel-Überschrift */
+    #s01-call { left: 290px; top: 640px; width: 500px; height: 300px; border-radius: 30px; background: #12131c; border: 5px solid #ff3b55; text-align: center; opacity: 0; box-shadow: 0 0 60px rgba(255,59,85,.45); }
+    #s01-call b { display: block; margin-top: 40px; font: 700 110px/1 Oswald, sans-serif; color: #fff; } #s01-call i { display: block; margin-top: 16px; font: 700 40px Oswald, sans-serif; font-style: normal; color: #ff3b55; letter-spacing: .06em; }
+  </style>
+  <div id="root" data-composition-id="s01" data-start="0" data-duration="13.490" data-width="1080" data-height="1920">
+    <div id="s01-stage" class="clip stage" data-start="0" data-duration="13.490" data-track-index="0">
+      <svg id="s01-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s01-call" class="abs"><b>112</b><i>NICHT ERREICHBAR</i></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      
+      const C = {"__dur": 13.49, "L1": [0.9, 3.9], "L1.words": [["was", 0.9, 1.781], ["wäre", 1.781, 3.48], ["wenn", 3.61, 3.633], ["die", 3.633, 3.654], ["säuberung", 3.654, 3.72], ["aus", 3.72, 3.741], ["thepurge", 3.741, 3.788], ["wirklich", 3.788, 3.833], ["stattfindet", 3.833, 3.9]], "L2": [4.12, 7.16], "L2.words": [["zwölf", 4.12, 4.337], ["stunden", 4.337, 4.75], ["lang", 4.75, 4.96], ["alle", 5.3, 5.562], ["verbrechen", 5.562, 5.974], ["legal", 5.974, 6.24], ["auch", 6.68, 6.92], ["mord", 6.92, 7.16]], "L3": [7.38, 13.31], "L3.words": [["polizei", 7.38, 7.95], ["feuerwehr", 8.15, 8.64], ["notarzt", 8.81, 9.35], ["nicht", 9.81, 10.006], ["erreichbar", 10.006, 10.56], ["und", 11.11, 11.293], ["am", 11.293, 11.469], ["ende", 11.469, 11.822], ["wartet", 11.822, 12.187], ["die", 12.187, 12.37], ["schockierendste", 12.37, 13.121], ["zahl", 13.121, 13.31]]};
+      const line = (id) => C[id];
+      const at = (id, word, which = 0) => {
+        const ws = C[id + ".words"];
+        if (typeof word === "number") return ws[word][1 + which];
+        const key = String(word).toLowerCase().replace(/[^\p{L}\p{N}_]/gu, "");
+        const hit = ws.find((w) => w[0].startsWith(key));
+        if (!hit) throw new Error("cue not found: " + id + " " + word);
+        return hit[1 + which];
+      };
+      // Zähler: schreibt Zahlen im deutschen Format (4.100.000.000) als Funktion der Timeline-Zeit
+      const fmt = (n) => Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      const count = (tl, sel, from, to, t, d, pre = "", post = "", ease = "power2.out") => {
+        const el = document.querySelector(sel);
+        const o = { v: from };
+        el.textContent = pre + fmt(from) + post;
+        tl.to(o, { v: to, duration: d, ease, onUpdate: () => { el.textContent = pre + fmt(o.v) + post; } }, t);
+      };
+      // deterministischer Zufall
+      const rng = (seed) => () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let x = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+        x = (x + Math.imul(x ^ (x >>> 7), 61 | x)) ^ x; return ((x ^ (x >>> 14)) >>> 0) / 4294967296; };
+
+      // ---- Flache Grusel-Vektorwelt (Stil Referenz B2: dunkle Konturen, Nacht, Nebel) ----
+      const NS = "http://www.w3.org/2000/svg", K = "#0b0c14";
+      const el = (n, a, p) => { const e = document.createElementNS(NS, n); for (const k in a) e.setAttribute(k, a[k]); if (p) p.appendChild(e); return e; };
+      const txt = (p, x, y, s, size, fill, a = {}) => { const t = el("text", Object.assign({ x, y, "text-anchor": "middle", "font-family": "Oswald", "font-weight": 700, "font-size": size, fill }, a), p); t.textContent = s; return t; };
+      const O = (a) => Object.assign({ stroke: K, "stroke-width": 5, "stroke-linejoin": "round" }, a);
+      function night(p, id, c1, c2, moon = [820, 640]) {
+        const d = el("defs", {}, p), lg = el("linearGradient", { id, x1: 0, y1: 0, x2: 0, y2: 1 }, d);
+        el("stop", { offset: 0, "stop-color": c1 }, lg); el("stop", { offset: 1, "stop-color": c2 }, lg);
+        el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: `url(#${id})` }, p);
+        const r = rng(id.length * 7); for (let i = 0; i < 40; i++) el("circle", { cx: r() * 1080, cy: r() * 900, r: 1 + r() * 2, fill: "#fff", opacity: 0.25 + r() * 0.4 }, p);
+        if (moon) { el("circle", { cx: moon[0], cy: moon[1], r: 120, fill: "#f4e9c8", opacity: 0.12 }, p); el("circle", { cx: moon[0], cy: moon[1], r: 64, fill: "#efe6c8" }, p); }
+      }
+      function pines(p, y, col = "#121a2a", seed = 3) { const r = rng(seed), g = el("g", {}, p);
+        for (let i = 0; i < 16; i++) { const x = i * 72 + r() * 30 - 20, h = 140 + r() * 90; el("path", { d: `M${x} ${y} L${x + 40} ${y - h} L${x + 80} ${y}Z`, fill: col }, g); } return g; }
+      function house(p, x, by, w, h, col, o = {}) {
+        const g = el("g", {}, p), wins = [];
+        el("rect", O({ x, y: by - h, width: w, height: h, fill: col }), g);
+        el("path", O({ d: `M${x - 18} ${by - h + 4} L${x + w / 2} ${by - h - w * 0.42} L${x + w + 18} ${by - h + 4}Z`, fill: o.roof || "#2a2236" }), g);
+        const n = o.n || 2; for (let i = 0; i < n; i++) { const wx = x + (i + 0.5) * w / n - 26; wins.push(el("rect", O({ x: wx, y: by - h + 30, width: 52, height: 56, fill: o.lit && o.lit[i] ? "#ffcf6b" : "#1a2033", "stroke-width": 4 }), g)); }
+        if (o.door !== false) el("rect", O({ x: x + w / 2 - 24, y: by - 92, width: 48, height: 92, fill: "#3a2a22", "stroke-width": 4 }), g);
+        return { g, wins };
+      }
+      function lamp(p, x, by, on = true) { const g = el("g", {}, p);
+        const cone = el("path", { d: `M${x + 40} ${by - 330} L${x - 70} ${by} L${x + 150} ${by}Z`, fill: "#ffe7a3", opacity: on ? 0.16 : 0 }, g);
+        el("rect", O({ x: x - 7, y: by - 340, width: 14, height: 340, fill: "#2a2f40", "stroke-width": 4 }), g);
+        el("path", O({ d: `M${x} ${by - 340} q20 -30 50 -10`, fill: "none", "stroke-width": 8, stroke: "#2a2f40" }), g);
+        el("circle", { cx: x + 46, cy: by - 334, r: 14, fill: "#ffe7a3" }, g); return { g, cone }; }
+      function fog(p, y, op = 0.35, seed = 5) { const r = rng(seed), g = el("g", {}, p);
+        for (let i = 0; i < 9; i++) el("ellipse", { cx: r() * 1080, cy: y + r() * 80, rx: 220 + r() * 160, ry: 40 + r() * 30, fill: "#c9cfe6", opacity: op * (0.4 + r() * 0.6) }, g); return g; }
+      // Maskierte Figur (Fußpunkt x, by)
+      function masked(p, x, by, s = 1, coat = "#1d1f2b", tool = false) {
+        const g = el("g", {}, p); gsap.set(g, { x, y: by, scale: s, transformOrigin: "0 0" });
+        el("path", O({ d: "M-46 0 L-40 -150 L40 -150 L46 0Z", fill: "#14151d" }), g);
+        el("path", O({ d: "M-70 -140 Q-74 -300 0 -310 Q74 -300 70 -140Z", fill: coat }), g);
+        if (tool) el("path", O({ d: "M64 -200 L120 -60 M104 -90 l30 -12 l10 24 l-30 12Z", fill: "#8a8f9c", "stroke-width": 6 }), g);
+        el("path", O({ d: "M-58 -300 Q-62 -400 0 -404 Q62 -400 58 -300 Q40 -290 0 -290 Q-40 -290 -58 -300Z", fill: "#2a2c38" }), g);
+        const mask = el("g", {}, g);
+        el("ellipse", O({ cx: 0, cy: -345, rx: 40, ry: 50, fill: "#ece6d6", "stroke-width": 4 }), mask);
+        el("ellipse", { cx: -15, cy: -355, rx: 9, ry: 6, fill: K }, mask); el("ellipse", { cx: 15, cy: -355, rx: 9, ry: 6, fill: K }, mask);
+        el("path", { d: "M-20 -322 Q0 -310 20 -322", stroke: "#c8102e", "stroke-width": 4, fill: "none" }, mask);
+        [-14, -5, 5, 14].forEach((sx) => el("path", { d: `M${sx} -326 v8`, stroke: "#c8102e", "stroke-width": 3 }, mask));
+        return { g, mask };
+      }
+      function pumpkin(p, x, y, s = 1) { const g = el("g", {}, p); gsap.set(g, { x, y, scale: s, transformOrigin: "0 0" });
+        el("ellipse", O({ cx: 0, cy: 0, rx: 46, ry: 36, fill: "#e8761f", "stroke-width": 4 }), g); el("rect", O({ x: -5, y: -46, width: 10, height: 14, fill: "#3d6b1e", "stroke-width": 3 }), g);
+        const face = el("path", { d: "M-24 -8 l8 -10 l8 10Z M8 -8 l8 -10 l8 10Z M-22 12 q22 14 44 0 l-6 -6 l-6 6 l-8 -6 l-8 6 l-8 -6Z", fill: "#ffd76b" }, g); return { g, face }; }
+      function flames(p, x, y, s = 1) { const g = el("g", {}, p); gsap.set(g, { x, y, scale: s, transformOrigin: "0 0" });
+        el("path", { d: "M-60 0 Q-70 -80 -30 -120 Q-20 -70 0 -150 Q30 -90 40 -130 Q80 -70 60 0Z", fill: "#ff5a1f" }, g);
+        el("path", { d: "M-34 0 Q-40 -50 -12 -80 Q0 -40 12 -96 Q40 -50 34 0Z", fill: "#ffc53a" }, g); return g; }
+      function plank(p, x, y, w, rot) { return el("rect", O({ x, y, width: w, height: 22, rx: 4, fill: "#a87a4a", "stroke-width": 4, transform: `rotate(${rot} ${x + w / 2} ${y + 11})` }), p); }
+      function flatCard(p, x, y, w, h, fill = "#efe8d6") { return el("rect", O({ x, y, width: w, height: h, rx: 18, fill }), p); }
+
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s01-svg");
+      night(sv, "s01-n", "#07091a", "#2a1630", [850, 660]);
+      pines(sv, 1010, "#0f1424", 4);
+      const H = [[20, 230, 250, "#3b3550", [1, 0]], [300, 200, 230, "#45405c", [0, 1]], [560, 240, 260, "#37324a", [1, 1]], [850, 220, 240, "#423b56", [0, 1]]].map(([x, w, h, c, lit]) => house(sv, x, 1150, w, h, c, { lit }));
+      el("rect", { x: 0, y: 1150, width: 1080, height: 300, fill: "#141320" }, sv);
+      const L = lamp(sv, 230, 1200);
+      const pk = [pumpkin(sv, 130, 1175, 0.9), pumpkin(sv, 690, 1172, 0.8), pumpkin(sv, 960, 1176, 0.85)];
+      const fg = fog(sv, 1110, 0.3, 6);
+      const M = masked(sv, 560, 1360, 1.15, "#1d1f2b", true);
+      const red = el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: "#c8102e", opacity: 0 }, sv);
+      const mo = at("L2", "Mord"), ni = at("L3", "nicht"), sz = at("L3", "schockierendste");
+      tl.fromTo(red, { opacity: 0 }, { opacity: 0.32, duration: 0.25, repeat: 7, yoyo: true, ease: "sine.inOut" }, 0);
+      pk.forEach((k, i) => tl.fromTo(k.face, { opacity: 1 }, { opacity: 0.5, duration: 0.12, repeat: 9, yoyo: true }, 0.3 + i * 0.2));
+      tl.to(fg, { x: 60, duration: 8, ease: "none" }, 0);
+      tl.to(L.cone, { attr: { opacity: 0.04 }, duration: 0.06, repeat: 5, yoyo: true }, 1.5);
+      tl.to(M.g, { scale: 1.45, y: 1450, duration: 0.5, ease: "power3.in" }, mo - 0.3);
+      tl.fromTo(red, { opacity: 0.6 }, { opacity: 0, duration: 0.5 }, mo);
+      tl.fromTo("#s01-call", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(2)" }, ni - 0.4);
+      tl.to("#s01-call", { x: 10, duration: 0.04, repeat: 7, yoyo: true }, ni + 0.2);
+      tl.to("#s01-call", { opacity: 0, duration: 0.25 }, sz - 0.6);
+      tl.to(M.mask, { scaleY: 0.92, svgOrigin: "0 -345", duration: 0.15, yoyo: true, repeat: 3 }, sz);
+      tl.to("#s01-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s01"] = tl;
+    })();
+  </script>
+</template>

@@ -1,0 +1,273 @@
+{
+ "title": "Was wäre, wenn The Purge wirklich stattfinden würde?",
+ "voice": "Google Chirp 3 HD (de-DE-Chirp3-HD-Charon), --speed 1.08",
+ "style": "story",
+ "lead_in": 0.9,
+ "_zahlen": "Rettungsdienst DE ~14 Mio. Einsätze/Jahr -> ~19.000 pro 12 h. Montreal 7.10.1969: Polizei-/Feuerwehrstreik ~16 h, Banküberfälle, >100 Geschäfte geplündert, 2 Tote. 1 % von 84 Mio. = 840.000.",
+ "scenes": [
+  {
+   "id": "s01",
+   "tag": "",
+   "top": [
+    "19:00",
+    "DIE SÄUBERUNG BEGINNT",
+    "r"
+   ],
+   "lines": [
+    {
+     "id": "L1",
+     "text": "Was wäre, / wenn die *r:Säuberung / aus *r:The_Purge|The-Pörtsch / wirklich stattfindet?",
+     "speed": 0.95
+    },
+    {
+     "id": "L2",
+     "text": "Zwölf Stunden lang: / *r:alle *r:Verbrechen / *r:legal. / Auch *r:Mord."
+    },
+    {
+     "id": "L3",
+     "text": "Polizei, Feuerwehr, / Notarzt: / *r:nicht *r:erreichbar. / Und am Ende wartet / die *r:schockierendste *r:Zahl."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "purge-siren",
+     "at": "s01+0.0",
+     "volume": 0.8
+    },
+    {
+     "name": "impact-bass-1",
+     "at": "L2:Mord",
+     "volume": 0.45
+    }
+   ]
+  },
+  {
+   "id": "s02",
+   "tag": "",
+   "top": [
+    "18:00",
+    "EINE STUNDE VORHER",
+    "y"
+   ],
+   "lines": [
+    {
+     "id": "L4",
+     "text": "Eine Stunde vorher: / *y:Baumärkte / *r:leergekauft. / Schlösser, Gitter, / Sperrholz – / *r:weg."
+    },
+    {
+     "id": "L5",
+     "text": "Wer Geld hat, / *g:verbarrikadiert sich. / Wer keins hat, / ist *r:schutzlos."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "error",
+     "at": "L4:leergekauft",
+     "volume": 0.3
+    },
+    {
+     "name": "impact-bass-2",
+     "at": "L5:schutzlos",
+     "volume": 0.4
+    }
+   ]
+  },
+  {
+   "id": "s03",
+   "tag": "",
+   "top": [
+    "1969",
+    "ECHTES BEISPIEL · MONTREAL",
+    "y"
+   ],
+   "lines": [
+    {
+     "id": "L6",
+     "text": "Klingt nach Film? / Montreal, *y:1969|neunzehnhundertneunundsechzig: / Die Polizei streikt / *y:16|sechzehn *y:Stunden."
+    },
+    {
+     "id": "L7",
+     "text": "Ergebnis: / *r:Banküberfälle, / *r:über *r:100|hundert *r:Geschäfte / geplündert – / und *r:zwei *r:Tote."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "pop",
+     "at": "L6:1969",
+     "volume": 0.4
+    },
+    {
+     "name": "impact-bass-1",
+     "at": "L7:Tote",
+     "volume": 0.4
+    }
+   ]
+  },
+  {
+   "id": "s04",
+   "tag": "",
+   "top": [
+    "21:00",
+    "KEIN NOTRUF",
+    "r"
+   ],
+   "lines": [
+    {
+     "id": "L8",
+     "text": "Das größte Problem / sind aber nicht / die Täter."
+    },
+    {
+     "id": "L9",
+     "text": "In Deutschland gibt es / alle zwölf Stunden / rund *r:20.000|zwanzigtausend / *r:Rettungseinsätze."
+    },
+    {
+     "id": "L10",
+     "text": "In dieser Nacht: / *r:keinen. / Ein Herzinfarkt / wird *r:tödlich. / Ein Küchenbrand / *r:frisst *r:ganze *r:Straßen."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "error",
+     "at": "L10:keinen",
+     "volume": 0.35
+    },
+    {
+     "name": "impact-bass-2",
+     "at": "L10:Straßen",
+     "volume": 0.4
+    }
+   ]
+  },
+  {
+   "id": "s05",
+   "tag": "",
+   "top": [
+    "00:00",
+    "MITTERNACHT",
+    "r"
+   ],
+   "lines": [
+    {
+     "id": "L11",
+     "text": "Wer geht raus? / *r:Banden, / Menschen mit / *r:Rachegelüsten – / und Leute, / die nur *r:zuschauen / wollen."
+    },
+    {
+     "id": "L12",
+     "text": "Juweliere, Banken: / *r:geplündert. / Und die Versicherung? / Zahlt *r:nichts. / Es war ja *r:legal."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "glitch-1",
+     "at": "L11:Banden",
+     "volume": 0.25
+    },
+    {
+     "name": "impact-bass-1",
+     "at": "L12:legal",
+     "volume": 0.4
+    }
+   ]
+  },
+  {
+   "id": "s06",
+   "tag": "",
+   "top": [
+    "PRO?",
+    "DIE ANGEBLICHEN VORTEILE",
+    "g"
+   ],
+   "lines": [
+    {
+     "id": "L13",
+     "text": "Und die Vorteile? / Im Film sinken danach / *g:Kriminalität / und *g:Arbeitslosigkeit."
+    },
+    {
+     "id": "L14",
+     "text": "In Wahrheit / zeigt die Forschung: / Gewalt erzeugt / *r:mehr *r:Gewalt. / Die Rache geht / *r:am *r:nächsten *r:Tag weiter."
+    },
+    {
+     "id": "L15",
+     "text": "Gewinnen würden nur: / *y:Sicherheitsfirmen / und *y:Waffenhändler."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "error",
+     "at": "L14:Gewalt.",
+     "volume": 0.3
+    },
+    {
+     "name": "notification",
+     "at": "L15:Sicherheitsfirmen",
+     "volume": 0.3
+    }
+   ]
+  },
+  {
+   "id": "s07",
+   "tag": "",
+   "top": [
+    "07:00",
+    "DER MORGEN DANACH",
+    "y"
+   ],
+   "lines": [
+    {
+     "id": "L16",
+     "text": "Um sieben Uhr / heult die Sirene / zum zweiten Mal. / Städte *r:brennen, / Kliniken sind / *r:überfüllt."
+    },
+    {
+     "id": "L17",
+     "text": "Und die *r:schockierendste *r:Zahl? / Selbst wenn nur / *r:ein *r:Prozent mitmacht – / wären das in Deutschland / *r:840.000|achthundertvierzigtausend / *r:Menschen."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "purge-siren",
+     "at": "L16:heult",
+     "volume": 0.45
+    },
+    {
+     "name": "impact-bass-1",
+     "at": "L17:840.000",
+     "volume": 0.5
+    }
+   ]
+  },
+  {
+   "id": "s08",
+   "tag": "",
+   "top": [
+    "UND DU?",
+    "",
+    "w"
+   ],
+   "hold": 2.4,
+   "lines": [
+    {
+     "id": "L18",
+     "text": "Und *y:du? / Würdest du dich / *g:einschließen – / oder *r:rausgehen? / Schreib's in die / *y:Kommentare.",
+     "pause": 0.3
+    },
+    {
+     "id": "L19",
+     "text": "Und folg mir – / bevor *r:heute *r:Nacht / die *r:Sirene heult.",
+     "pause": 0.3
+    }
+   ],
+   "sfx": [
+    {
+     "name": "notification",
+     "at": "L18:Kommentare",
+     "volume": 0.35
+    },
+    {
+     "name": "purge-siren",
+     "at": "L19:folg",
+     "volume": 0.4
+    }
+   ]
+  }
+ ]
+}

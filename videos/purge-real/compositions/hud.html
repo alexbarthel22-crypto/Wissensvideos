@@ -1,0 +1,25 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; }
+    .top { position: absolute; left: 0; width: 100%; top: 250px; height: 260px; text-align: center; }
+    .tv { font: 700 150px/1 "Oswald", "Inter", sans-serif; letter-spacing: .01em; }
+    .tc { display: inline-block; margin-top: 14px; padding: 6px 20px; border: 3px solid; border-radius: 10px; background: rgba(8,8,16,.72);
+      font: 700 34px "Oswald", "Inter", sans-serif; letter-spacing: .06em; }
+  </style>
+  <div id="root" data-composition-id="hud" data-start="0" data-duration="93.323" data-width="1080" data-height="1920">
+      <div id="tp0" class="clip top" data-start="0.000" data-duration="13.490" data-track-index="1"><div class="tv" style="color:#ff3b55;text-shadow:0 0 34px #ff3b5588, 0 6px 0 rgba(0,0,0,.6)">19:00</div><div class="tc" style="border-color:#ff3b55;color:#ff3b55">DIE SÄUBERUNG BEGINNT</div></div>
+      <div id="tp1" class="clip top" data-start="13.490" data-duration="9.810" data-track-index="1"><div class="tv" style="color:#ffd43b;text-shadow:0 0 34px #ffd43b88, 0 6px 0 rgba(0,0,0,.6)">18:00</div><div class="tc" style="border-color:#ffd43b;color:#ffd43b">EINE STUNDE VORHER</div></div>
+      <div id="tp2" class="clip top" data-start="23.300" data-duration="10.690" data-track-index="1"><div class="tv" style="color:#ffd43b;text-shadow:0 0 34px #ffd43b88, 0 6px 0 rgba(0,0,0,.6)">1969</div><div class="tc" style="border-color:#ffd43b;color:#ffd43b">ECHTES BEISPIEL · MONTREAL</div></div>
+      <div id="tp3" class="clip top" data-start="33.990" data-duration="12.673" data-track-index="1"><div class="tv" style="color:#ff3b55;text-shadow:0 0 34px #ff3b5588, 0 6px 0 rgba(0,0,0,.6)">21:00</div><div class="tc" style="border-color:#ff3b55;color:#ff3b55">KEIN NOTRUF</div></div>
+      <div id="tp4" class="clip top" data-start="46.663" data-duration="10.470" data-track-index="1"><div class="tv" style="color:#ff3b55;text-shadow:0 0 34px #ff3b5588, 0 6px 0 rgba(0,0,0,.6)">00:00</div><div class="tc" style="border-color:#ff3b55;color:#ff3b55">MITTERNACHT</div></div>
+      <div id="tp5" class="clip top" data-start="57.133" data-duration="13.100" data-track-index="1"><div class="tv" style="color:#39e27a;text-shadow:0 0 34px #39e27a88, 0 6px 0 rgba(0,0,0,.6)">PRO?</div><div class="tc" style="border-color:#39e27a;color:#39e27a">DIE ANGEBLICHEN VORTEILE</div></div>
+      <div id="tp6" class="clip top" data-start="70.233" data-duration="12.450" data-track-index="1"><div class="tv" style="color:#ffd43b;text-shadow:0 0 34px #ffd43b88, 0 6px 0 rgba(0,0,0,.6)">07:00</div><div class="tc" style="border-color:#ffd43b;color:#ffd43b">DER MORGEN DANACH</div></div>
+      <div id="tp7" class="clip top" data-start="82.683" data-duration="10.640" data-track-index="1"><div class="tv" style="color:#ffffff;text-shadow:0 0 34px #ffffff88, 0 6px 0 rgba(0,0,0,.6)">UND DU?</div></div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    
+tl.fromTo("#tp1 .tv", { opacity: 0, y: -30, scale: 1.2 }, { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "back.out(2)" }, 13.490);    tl.fromTo("#tp1 .tc", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }, 13.690);    tl.fromTo("#tp2 .tv", { opacity: 0, y: -30, scale: 1.2 }, { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "back.out(2)" }, 23.300);    tl.fromTo("#tp2 .tc", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }, 23.500);    tl.fromTo("#tp3 .tv", { opacity: 0, y: -30, scale: 1.2 }, { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "back.out(2)" }, 33.990);    tl.fromTo("#tp3 .tc", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }, 34.190);    tl.fromTo("#tp4 .tv", { opacity: 0, y: -30, scale: 1.2 }, { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "back.out(2)" }, 46.663);    tl.fromTo("#tp4 .tc", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }, 46.863);    tl.fromTo("#tp5 .tv", { opacity: 0, y: -30, scale: 1.2 }, { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "back.out(2)" }, 57.133);    tl.fromTo("#tp5 .tc", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }, 57.333);    tl.fromTo("#tp6 .tv", { opacity: 0, y: -30, scale: 1.2 }, { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "back.out(2)" }, 70.233);    tl.fromTo("#tp6 .tc", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }, 70.433);    tl.fromTo("#tp7 .tv", { opacity: 0, y: -30, scale: 1.2 }, { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "back.out(2)" }, 82.683);    tl.fromTo("#tp7 .tc", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }, 82.883);
+    window.__timelines["hud"] = tl;
+  </script>
+</template>

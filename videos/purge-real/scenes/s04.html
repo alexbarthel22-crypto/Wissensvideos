@@ -1,0 +1,55 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .cbox { top: 440px; } /* unter der großen Kapitel-Überschrift */
+    #s04-c { left: 600px; top: 600px; width: 400px; height: 200px; border-radius: 22px; background: rgba(10,10,16,.85); border: 4px solid #ff3b55; text-align: center; color: #fff; opacity: 0; }
+    #s04-c b { display: block; margin-top: 22px; font: 700 96px/1 Oswald, sans-serif; } #s04-c i { display: block; margin-top: 8px; font: 700 30px Oswald, sans-serif; font-style: normal; color: #ff3b55; letter-spacing: .05em; }
+  </style>
+  <div id="root" data-composition-id="s04" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s04-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <svg id="s04-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s04-c" class="abs"><b id="s04-n">0</b><i>EINSÄTZE · 12 STD.</i></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s04-svg");
+      night(sv, "s04-n2", "#0a0c1c", "#301424", [200, 640]);
+      const amb = el("g", {}, sv);
+      el("rect", O({ x: 120, y: 900, width: 520, height: 230, rx: 26, fill: "#ece6d6" }), amb); el("rect", O({ x: 520, y: 940, width: 120, height: 90, rx: 12, fill: "#9bb7d6" }), amb);
+      el("rect", { x: 120, y: 1010, width: 400, height: 30, fill: "#ff3b55" }, amb); el("path", { d: "M300 940 v50 M275 965 h50", stroke: "#ff3b55", "stroke-width": 14 }, amb);
+      const bl = el("rect", O({ x: 260, y: 870, width: 80, height: 30, rx: 8, fill: "#4da3ff" }), amb);
+      [210, 560].forEach((x) => el("circle", O({ cx: x, cy: 1130, r: 46, fill: "#22232e" }), amb));
+      const xx = txt(sv, 380, 1090, "✕", 300, "#ff3b55", { opacity: 0 });
+      const ecg = el("g", { opacity: 0 }, sv); flatCard(ecg, 140, 620, 800, 300, "#0e1a14");
+      const line1 = el("path", { d: "M170 780 h120 l20 -60 l25 120 l20 -60 h120 l20 -60 l25 120 l20 -60 h300", stroke: "#39e27a", "stroke-width": 8, fill: "none" }, ecg);
+      const st2 = el("g", { opacity: 0 }, sv);
+      const hs = [house(st2, 60, 1300, 300, 300, "#4a4258", { lit: [1, 0] }), house(st2, 400, 1300, 300, 320, "#3e3a4e", { lit: [0, 1] }), house(st2, 740, 1300, 300, 290, "#45405c", { lit: [1, 1] })];
+      const fl = [flames(st2, 210, 1010, 1.4), flames(st2, 550, 990, 1.5), flames(st2, 890, 1020, 1.4)]; gsap.set(fl, { opacity: 0 });
+      const glow = el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: "#ff5a1f", opacity: 0 }, sv);
+      const l9 = line("L9")[0], n2 = at("L9", "20.000"), ke = at("L10", "keinen"), he = at("L10", "Herzinfarkt"), kb = at("L10", "Küchenbrand"), fr = at("L10", "frisst");
+      tl.fromTo(amb, { opacity: 0, x: -300 }, { opacity: 1, x: 0, duration: 0.6, ease: "power3.out" }, 0.1);
+      tl.to(bl, { attr: { fill: "#ff3b55" }, duration: 0.15, repeat: 15, yoyo: true }, 0.2);
+      tl.to("#s04-c", { opacity: 1, duration: 0.25 }, n2 - 0.4);
+      count(tl, "#s04-n", 0, 20000, n2 - 0.3, 0.9, "", "", "power3.out");
+      count(tl, "#s04-n", 20000, 0, ke - 0.3, 0.5, "", "", "power3.in");
+      tl.fromTo(xx, { opacity: 0, scale: 2, svgOrigin: "380 1000" }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(2)" }, ke);
+      tl.to([amb, xx, "#s04-c"], { opacity: 0, duration: 0.25 }, he - 0.4);
+      tl.to(ecg, { opacity: 1, duration: 0.2 }, he - 0.3);
+      tl.to(line1, { attr: { d: "M170 780 h120 l20 -60 l25 120 l20 -60 h120 l10 -20 l10 30 h500" }, duration: 0.5 }, he + 0.3);
+      tl.to(line1, { attr: { stroke: "#ff3b55" }, duration: 0.2 }, he + 0.6);
+      tl.to(ecg, { opacity: 0, duration: 0.2 }, kb - 0.4);
+      tl.to(st2, { opacity: 1, duration: 0.3 }, kb - 0.3);
+      fl.forEach((f, i) => { tl.fromTo(f, { opacity: 0, scale: 0.2 }, { opacity: 1, scale: 1.4, duration: 0.35, ease: "back.out(2)" }, kb + 0.2 + i * 0.5); tl.to(f, { scaleY: 1.6, duration: 0.15, yoyo: true, repeat: 9 }, kb + 0.6 + i * 0.5); });
+      tl.to(glow, { opacity: 0.22, duration: 0.6 }, fr);
+      tl.to("#s04-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s04"] = tl;
+    })();
+  </script>
+</template>

@@ -134,7 +134,7 @@ def caption_groups(timings, windows):
     return groups
 
 
-def build_captions(project, timings, windows, total, big=False, cin=False, nocap=()):
+def build_captions(project, timings, windows, total, big=False, cin=False, nocap=(), story=False):
     groups = caption_groups(timings, windows)
     groups[-1]["end"] = round(total - 0.05, 3)  # letzte Zeile (Frage an die Zuschauer) bleibt stehen
     rows, js = [], []
@@ -172,7 +172,7 @@ def build_captions(project, timings, windows, total, big=False, cin=False, nocap
     .inner {{ position: absolute; left: 70px; right: 70px; top: 0; text-align: center;
       font-family: "Inter", sans-serif; font-weight: 900; font-size: 80px; line-height: 1.04;
       letter-spacing: -0.01em; transform-origin: 50% 40%; }}
-    .w {{ color: #7d8197; text-shadow: 0 5px 0 rgba(0,0,0,.55); }}{BIG_CAP if big else ""}{CIN_CAP if cin else ""}
+    .w {{ color: #7d8197; text-shadow: 0 5px 0 rgba(0,0,0,.55); }}{BIG_CAP if big else ""}{CIN_CAP if cin else ""}{STORY_CAP if story else ""}
   </style>
   <div id="root" data-composition-id="captions" data-start="0" data-duration="{total:.3f}" data-width="{W}" data-height="{H}"
        data-layout-allow-caption-zone>
@@ -188,6 +188,10 @@ def build_captions(project, timings, windows, total, big=False, cin=False, nocap
     (project / "compositions" / "captions.html").write_text(doc)
 
 
+STORY_CAP = """
+    .grp { top: 1400px; }
+    .inner { left: 60px; right: 60px; font-family: "Oswald", "Inter", sans-serif; font-weight: 700; font-size: 84px; line-height: 1.04; letter-spacing: .005em; }
+    .w { color: #8d93a3; text-shadow: 0 4px 0 rgba(0,0,0,.65), 0 0 18px rgba(0,0,0,.5); }"""
 CIN_COLORS = {"y": "#ffd56b", "r": "#ff5a5f", "p": "#ff8fd0", "g": "#6be3a0", "b": "#9dbcff"}
 CIN_CAP = """
     .grp { top: 1215px; }
@@ -296,9 +300,47 @@ def build_hud_cinema(project, script, windows, total):
     (project / "compositions" / "hud.html").write_text(doc)
 
 
+def build_hud_story(project, script, windows, total):
+    """Story-Stil (Referenz B2): große Zahl/Uhrzeit oben mittig + kleiner Chip darunter (z. B. „19:00“ · „SIRENE“)."""
+    rows, js = [], []
+    COL = {"r": "#ff3b55", "y": "#ffd43b", "b": "#7fd0ff", "g": "#39e27a", "w": "#ffffff"}
+    for i, (sc, s, e) in enumerate(windows):
+        tp = sc.get("top")
+        if not tp:
+            continue
+        c = COL[tp[2] if len(tp) > 2 else "w"]
+        rows.append(f'      <div id="tp{i}" class="clip top" data-start="{s:.3f}" data-duration="{e - s:.3f}" data-track-index="1">'
+                    f'<div class="tv" style="color:{c};text-shadow:0 0 34px {c}88, 0 6px 0 rgba(0,0,0,.6)">{esc(tp[0])}</div>'
+                    + (f'<div class="tc" style="border-color:{c};color:{c}">{esc(tp[1])}</div>' if tp[1] else "") + '</div>')
+        if i > 0:
+            js.append(f'tl.fromTo("#tp{i} .tv", {{ opacity: 0, y: -30, scale: 1.2 }}, {{ opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "back.out(2)" }}, {s:.3f});')
+            js.append(f'tl.fromTo("#tp{i} .tc", {{ opacity: 0, y: 10 }}, {{ opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }}, {s + 0.2:.3f});')
+    doc = f"""<template>
+  <style>
+    #root {{ position: absolute; inset: 0; }}
+    .top {{ position: absolute; left: 0; width: 100%; top: 250px; height: 260px; text-align: center; }}
+    .tv {{ font: 700 150px/1 "Oswald", "Inter", sans-serif; letter-spacing: .01em; }}
+    .tc {{ display: inline-block; margin-top: 14px; padding: 6px 20px; border: 3px solid; border-radius: 10px; background: rgba(8,8,16,.72);
+      font: 700 34px "Oswald", "Inter", sans-serif; letter-spacing: .06em; }}
+  </style>
+  <div id="root" data-composition-id="hud" data-start="0" data-duration="{total:.3f}" data-width="{W}" data-height="{H}">
+{chr(10).join(rows)}
+  </div>
+  <script>
+    const tl = gsap.timeline({{ paused: true }});
+    {chr(10) + "    ".join(js)}
+    window.__timelines["hud"] = tl;
+  </script>
+</template>
+"""
+    (project / "compositions" / "hud.html").write_text(doc)
+
+
 def build_hud(project, script, windows, total):
     if script.get("style") == "cinema":
         return build_hud_cinema(project, script, windows, total)
+    if script.get("style") == "story":
+        return build_hud_story(project, script, windows, total)
     tags, checks, js, n = [], [], [], 0
     big = script.get("hud") == "big"
     pop = script.get("hud") == "pop"
@@ -448,7 +490,7 @@ def main():
     shutil.copy(VENDOR / "gsap.min.js", project / "assets" / "vendor" / "gsap.min.js")
     for sc, s, e in windows:
         build_scene(project, sc, s, e, lines)
-    build_captions(project, timings, windows, total, script.get("hud") == "big", script.get("style") == "cinema", set(script.get("nocap", [])))
+    build_captions(project, timings, windows, total, script.get("hud") == "big", script.get("style") == "cinema", set(script.get("nocap", [])), script.get("style") == "story")
     build_hud(project, script, windows, total)
     build_index(project, script, windows, lines, total)
     for sc, s, e in windows:

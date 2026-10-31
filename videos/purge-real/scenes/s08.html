@@ -1,0 +1,50 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .cbox { top: 440px; } /* unter der großen Kapitel-Überschrift */
+    .s08-b { position: absolute; top: 1150px; width: 450px; height: 140px; border-radius: 22px; text-align: center; font: 700 56px/140px Oswald, sans-serif; color: #0b0c14; opacity: 0; }
+    #s08-b1 { left: 50px; background: #39e27a; } #s08-b2 { left: 580px; background: #ff3b55; color: #fff; }
+    #s08-f { left: 330px; top: 1170px; width: 420px; height: 120px; border-radius: 60px; background: #ff3b55; color: #fff; text-align: center; font: 700 60px/120px Oswald, sans-serif; opacity: 0; box-shadow: 0 0 50px rgba(255,59,85,.6); }
+  </style>
+  <div id="root" data-composition-id="s08" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s08-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <svg id="s08-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s08-b1" class="s08-b">EINSCHLIESSEN</div><div id="s08-b2" class="s08-b">RAUSGEHEN</div>
+      <div id="s08-f" class="abs">+ FOLGEN</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s08-svg");
+      night(sv, "s08-n", "#06071a", "#200f22", null);
+      const room = el("g", {}, sv);
+      el("rect", { x: 0, y: 520, width: 1080, height: 1400, fill: "#3a2a22" }, room);
+      for (let k = 0; k < 20; k++) el("path", { d: `M0 ${540 + k * 70} H1080`, stroke: "#2a1d18", "stroke-width": 5 }, room);
+      const wf = el("rect", O({ x: 300, y: 600, width: 480, height: 440, fill: "#0d1428" }), room);
+      el("circle", { cx: 680, cy: 700, r: 40, fill: "#efe6c8" }, room);
+      const wcl = el("clipPath", { id: "s08-wc" }, sv); el("rect", { x: 300, y: 600, width: 480, height: 440 }, wcl);
+      const wg = el("g", { "clip-path": "url(#s08-wc)" }, room); const M = masked(wg, 470, 1130, 0.9, "#1d1f2b"); gsap.set(M.g, { opacity: 0 });
+      el("path", O({ d: "M540 600 V1040 M300 820 H780", fill: "none", stroke: "#a87a4a", "stroke-width": 16 }), room);
+      el("rect", O({ x: 280, y: 580, width: 520, height: 480, fill: "none", stroke: "#a87a4a", "stroke-width": 20 }), room);
+      const beam = el("path", { d: "M470 790 L300 1040 H640Z", fill: "#fff7c0", opacity: 0 }, room);
+      const red = el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: "#c8102e", opacity: 0 }, sv);
+      const du = at("L18", "du?"), ei = at("L18", "einschließen"), ra = at("L18", "rausgehen"), ko = at("L18", "Kommentare"), l19 = line("L19")[0], fo = at("L19", "folg"), si = at("L19", "Sirene");
+      tl.fromTo(M.g, { opacity: 0, x: 380 }, { opacity: 1, x: 470, duration: 1.2, ease: "power2.out" }, du);
+      tl.to(beam, { opacity: 0.35, duration: 0.2, repeat: 3, yoyo: true }, du + 1.0);
+      tl.fromTo("#s08-b1", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.35, ease: "back.out(2)" }, ei - 0.15);
+      tl.fromTo("#s08-b2", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.35, ease: "back.out(2)" }, ra - 0.15);
+      tl.to(".s08-b", { opacity: 0, y: 40, duration: 0.25 }, l19 - 0.2);
+      tl.fromTo("#s08-f", { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(2.4)" }, fo - 0.1);
+      tl.to("#s08-f", { scale: 1.07, duration: 0.3, yoyo: true, repeat: 9, ease: "sine.inOut" }, fo + 0.4);
+      tl.fromTo(red, { opacity: 0 }, { opacity: 0.35, duration: 0.25, repeat: 9, yoyo: true, ease: "sine.inOut" }, si - 0.2);
+      tl.to(M.mask, { scale: 1.12, svgOrigin: "0 -345", duration: 0.3, yoyo: true, repeat: 3 }, si);
+      window.__timelines["s08"] = tl;
+    })();
+  </script>
+</template>

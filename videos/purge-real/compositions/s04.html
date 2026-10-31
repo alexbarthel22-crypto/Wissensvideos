@@ -1,0 +1,145 @@
+<template>
+  <style>
+        #root { position: absolute; inset: 0; }
+    .stage { position: absolute; inset: 0; overflow: hidden; }
+    .abs { position: absolute; }
+    svg { overflow: visible; }
+    /* Zähler-Box wie in der Referenz: Rahmen in Akzentfarbe, Label in Mono-Versalien, große Zahl */
+    .cbox { position: absolute; left: 290px; width: 500px; top: 268px; height: 126px; border: 3px solid #ff4fb0;
+      border-radius: 14px; background: rgba(13,16,38,.88); text-align: center; box-shadow: 0 0 28px rgba(255,79,176,.35); }
+    .cbox .lab { margin-top: 16px; font-family: "Space Mono", monospace; font-weight: 700; font-size: 28px;
+      letter-spacing: .16em; color: #dfe2f5; }
+    .cbox .num { margin-top: 2px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 56px; color: #fff;
+      letter-spacing: .01em; }
+    .cbox.y { border-color: #ffd43b; box-shadow: 0 0 28px rgba(255,212,59,.3); }
+    .cbox.r { border-color: #ff3b55; box-shadow: 0 0 28px rgba(255,59,85,.35); }
+    .cbox.b { border-color: #4da3ff; box-shadow: 0 0 28px rgba(77,163,255,.3); }
+    .cbox.g { border-color: #39e27a; box-shadow: 0 0 28px rgba(57,226,122,.3); }
+    .mono { font-family: "Space Mono", monospace; font-weight: 700; letter-spacing: .12em; }
+    .heavy { font-family: "Inter", sans-serif; font-weight: 900; }
+
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .cbox { top: 440px; } /* unter der großen Kapitel-Überschrift */
+    #s04-c { left: 600px; top: 600px; width: 400px; height: 200px; border-radius: 22px; background: rgba(10,10,16,.85); border: 4px solid #ff3b55; text-align: center; color: #fff; opacity: 0; }
+    #s04-c b { display: block; margin-top: 22px; font: 700 96px/1 Oswald, sans-serif; } #s04-c i { display: block; margin-top: 8px; font: 700 30px Oswald, sans-serif; font-style: normal; color: #ff3b55; letter-spacing: .05em; }
+  </style>
+  <div id="root" data-composition-id="s04" data-start="0" data-duration="12.673" data-width="1080" data-height="1920">
+    <div id="s04-stage" class="clip stage" data-start="0" data-duration="12.673" data-track-index="0">
+      <svg id="s04-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s04-c" class="abs"><b id="s04-n">0</b><i>EINSÄTZE · 12 STD.</i></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      
+      const C = {"__dur": 12.673, "L8": [0.2, 2.333], "L8.words": [["das", 0.2, 0.377], ["größte", 0.377, 0.732], ["problem", 0.732, 1.093], ["sind", 1.093, 1.276], ["aber", 1.276, 1.618], ["nicht", 1.618, 1.808], ["die", 1.808, 1.985], ["täter", 1.985, 2.333]], "L9": [2.553, 6.463], "L9.words": [["in", 2.553, 2.739], ["deutschland", 2.739, 3.158], ["gibt", 3.158, 3.357], ["es", 3.357, 3.543], ["alle", 3.543, 3.914], ["zwölf", 3.914, 4.12], ["stunden", 4.12, 4.511], ["rund", 4.511, 4.711], ["20000", 4.711, 5.494], ["rettungseinsätze", 5.494, 6.463]], "L10": [6.683, 12.493], "L10.words": [["in", 6.683, 6.829], ["dieser", 6.829, 7.131], ["nacht", 7.131, 7.293], ["keinen", 7.683, 8.093], ["ein", 8.643, 8.835], ["herzinfarkt", 8.835, 9.424], ["wird", 9.424, 9.623], ["tödlich", 9.623, 10.013], ["ein", 10.563, 10.773], ["küchenbrand", 10.773, 11.419], ["frisst", 11.419, 11.652], ["ganze", 11.652, 12.065], ["straßen", 12.065, 12.493]]};
+      const line = (id) => C[id];
+      const at = (id, word, which = 0) => {
+        const ws = C[id + ".words"];
+        if (typeof word === "number") return ws[word][1 + which];
+        const key = String(word).toLowerCase().replace(/[^\p{L}\p{N}_]/gu, "");
+        const hit = ws.find((w) => w[0].startsWith(key));
+        if (!hit) throw new Error("cue not found: " + id + " " + word);
+        return hit[1 + which];
+      };
+      // Zähler: schreibt Zahlen im deutschen Format (4.100.000.000) als Funktion der Timeline-Zeit
+      const fmt = (n) => Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      const count = (tl, sel, from, to, t, d, pre = "", post = "", ease = "power2.out") => {
+        const el = document.querySelector(sel);
+        const o = { v: from };
+        el.textContent = pre + fmt(from) + post;
+        tl.to(o, { v: to, duration: d, ease, onUpdate: () => { el.textContent = pre + fmt(o.v) + post; } }, t);
+      };
+      // deterministischer Zufall
+      const rng = (seed) => () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let x = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+        x = (x + Math.imul(x ^ (x >>> 7), 61 | x)) ^ x; return ((x ^ (x >>> 14)) >>> 0) / 4294967296; };
+
+      // ---- Flache Grusel-Vektorwelt (Stil Referenz B2: dunkle Konturen, Nacht, Nebel) ----
+      const NS = "http://www.w3.org/2000/svg", K = "#0b0c14";
+      const el = (n, a, p) => { const e = document.createElementNS(NS, n); for (const k in a) e.setAttribute(k, a[k]); if (p) p.appendChild(e); return e; };
+      const txt = (p, x, y, s, size, fill, a = {}) => { const t = el("text", Object.assign({ x, y, "text-anchor": "middle", "font-family": "Oswald", "font-weight": 700, "font-size": size, fill }, a), p); t.textContent = s; return t; };
+      const O = (a) => Object.assign({ stroke: K, "stroke-width": 5, "stroke-linejoin": "round" }, a);
+      function night(p, id, c1, c2, moon = [820, 640]) {
+        const d = el("defs", {}, p), lg = el("linearGradient", { id, x1: 0, y1: 0, x2: 0, y2: 1 }, d);
+        el("stop", { offset: 0, "stop-color": c1 }, lg); el("stop", { offset: 1, "stop-color": c2 }, lg);
+        el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: `url(#${id})` }, p);
+        const r = rng(id.length * 7); for (let i = 0; i < 40; i++) el("circle", { cx: r() * 1080, cy: r() * 900, r: 1 + r() * 2, fill: "#fff", opacity: 0.25 + r() * 0.4 }, p);
+        if (moon) { el("circle", { cx: moon[0], cy: moon[1], r: 120, fill: "#f4e9c8", opacity: 0.12 }, p); el("circle", { cx: moon[0], cy: moon[1], r: 64, fill: "#efe6c8" }, p); }
+      }
+      function pines(p, y, col = "#121a2a", seed = 3) { const r = rng(seed), g = el("g", {}, p);
+        for (let i = 0; i < 16; i++) { const x = i * 72 + r() * 30 - 20, h = 140 + r() * 90; el("path", { d: `M${x} ${y} L${x + 40} ${y - h} L${x + 80} ${y}Z`, fill: col }, g); } return g; }
+      function house(p, x, by, w, h, col, o = {}) {
+        const g = el("g", {}, p), wins = [];
+        el("rect", O({ x, y: by - h, width: w, height: h, fill: col }), g);
+        el("path", O({ d: `M${x - 18} ${by - h + 4} L${x + w / 2} ${by - h - w * 0.42} L${x + w + 18} ${by - h + 4}Z`, fill: o.roof || "#2a2236" }), g);
+        const n = o.n || 2; for (let i = 0; i < n; i++) { const wx = x + (i + 0.5) * w / n - 26; wins.push(el("rect", O({ x: wx, y: by - h + 30, width: 52, height: 56, fill: o.lit && o.lit[i] ? "#ffcf6b" : "#1a2033", "stroke-width": 4 }), g)); }
+        if (o.door !== false) el("rect", O({ x: x + w / 2 - 24, y: by - 92, width: 48, height: 92, fill: "#3a2a22", "stroke-width": 4 }), g);
+        return { g, wins };
+      }
+      function lamp(p, x, by, on = true) { const g = el("g", {}, p);
+        const cone = el("path", { d: `M${x + 40} ${by - 330} L${x - 70} ${by} L${x + 150} ${by}Z`, fill: "#ffe7a3", opacity: on ? 0.16 : 0 }, g);
+        el("rect", O({ x: x - 7, y: by - 340, width: 14, height: 340, fill: "#2a2f40", "stroke-width": 4 }), g);
+        el("path", O({ d: `M${x} ${by - 340} q20 -30 50 -10`, fill: "none", "stroke-width": 8, stroke: "#2a2f40" }), g);
+        el("circle", { cx: x + 46, cy: by - 334, r: 14, fill: "#ffe7a3" }, g); return { g, cone }; }
+      function fog(p, y, op = 0.35, seed = 5) { const r = rng(seed), g = el("g", {}, p);
+        for (let i = 0; i < 9; i++) el("ellipse", { cx: r() * 1080, cy: y + r() * 80, rx: 220 + r() * 160, ry: 40 + r() * 30, fill: "#c9cfe6", opacity: op * (0.4 + r() * 0.6) }, g); return g; }
+      // Maskierte Figur (Fußpunkt x, by)
+      function masked(p, x, by, s = 1, coat = "#1d1f2b", tool = false) {
+        const g = el("g", {}, p); gsap.set(g, { x, y: by, scale: s, transformOrigin: "0 0" });
+        el("path", O({ d: "M-46 0 L-40 -150 L40 -150 L46 0Z", fill: "#14151d" }), g);
+        el("path", O({ d: "M-70 -140 Q-74 -300 0 -310 Q74 -300 70 -140Z", fill: coat }), g);
+        if (tool) el("path", O({ d: "M64 -200 L120 -60 M104 -90 l30 -12 l10 24 l-30 12Z", fill: "#8a8f9c", "stroke-width": 6 }), g);
+        el("path", O({ d: "M-58 -300 Q-62 -400 0 -404 Q62 -400 58 -300 Q40 -290 0 -290 Q-40 -290 -58 -300Z", fill: "#2a2c38" }), g);
+        const mask = el("g", {}, g);
+        el("ellipse", O({ cx: 0, cy: -345, rx: 40, ry: 50, fill: "#ece6d6", "stroke-width": 4 }), mask);
+        el("ellipse", { cx: -15, cy: -355, rx: 9, ry: 6, fill: K }, mask); el("ellipse", { cx: 15, cy: -355, rx: 9, ry: 6, fill: K }, mask);
+        el("path", { d: "M-20 -322 Q0 -310 20 -322", stroke: "#c8102e", "stroke-width": 4, fill: "none" }, mask);
+        [-14, -5, 5, 14].forEach((sx) => el("path", { d: `M${sx} -326 v8`, stroke: "#c8102e", "stroke-width": 3 }, mask));
+        return { g, mask };
+      }
+      function pumpkin(p, x, y, s = 1) { const g = el("g", {}, p); gsap.set(g, { x, y, scale: s, transformOrigin: "0 0" });
+        el("ellipse", O({ cx: 0, cy: 0, rx: 46, ry: 36, fill: "#e8761f", "stroke-width": 4 }), g); el("rect", O({ x: -5, y: -46, width: 10, height: 14, fill: "#3d6b1e", "stroke-width": 3 }), g);
+        const face = el("path", { d: "M-24 -8 l8 -10 l8 10Z M8 -8 l8 -10 l8 10Z M-22 12 q22 14 44 0 l-6 -6 l-6 6 l-8 -6 l-8 6 l-8 -6Z", fill: "#ffd76b" }, g); return { g, face }; }
+      function flames(p, x, y, s = 1) { const g = el("g", {}, p); gsap.set(g, { x, y, scale: s, transformOrigin: "0 0" });
+        el("path", { d: "M-60 0 Q-70 -80 -30 -120 Q-20 -70 0 -150 Q30 -90 40 -130 Q80 -70 60 0Z", fill: "#ff5a1f" }, g);
+        el("path", { d: "M-34 0 Q-40 -50 -12 -80 Q0 -40 12 -96 Q40 -50 34 0Z", fill: "#ffc53a" }, g); return g; }
+      function plank(p, x, y, w, rot) { return el("rect", O({ x, y, width: w, height: 22, rx: 4, fill: "#a87a4a", "stroke-width": 4, transform: `rotate(${rot} ${x + w / 2} ${y + 11})` }), p); }
+      function flatCard(p, x, y, w, h, fill = "#efe8d6") { return el("rect", O({ x, y, width: w, height: h, rx: 18, fill }), p); }
+
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s04-svg");
+      night(sv, "s04-n2", "#0a0c1c", "#301424", [200, 640]);
+      const amb = el("g", {}, sv);
+      el("rect", O({ x: 120, y: 900, width: 520, height: 230, rx: 26, fill: "#ece6d6" }), amb); el("rect", O({ x: 520, y: 940, width: 120, height: 90, rx: 12, fill: "#9bb7d6" }), amb);
+      el("rect", { x: 120, y: 1010, width: 400, height: 30, fill: "#ff3b55" }, amb); el("path", { d: "M300 940 v50 M275 965 h50", stroke: "#ff3b55", "stroke-width": 14 }, amb);
+      const bl = el("rect", O({ x: 260, y: 870, width: 80, height: 30, rx: 8, fill: "#4da3ff" }), amb);
+      [210, 560].forEach((x) => el("circle", O({ cx: x, cy: 1130, r: 46, fill: "#22232e" }), amb));
+      const xx = txt(sv, 380, 1090, "✕", 300, "#ff3b55", { opacity: 0 });
+      const ecg = el("g", { opacity: 0 }, sv); flatCard(ecg, 140, 620, 800, 300, "#0e1a14");
+      const line1 = el("path", { d: "M170 780 h120 l20 -60 l25 120 l20 -60 h120 l20 -60 l25 120 l20 -60 h300", stroke: "#39e27a", "stroke-width": 8, fill: "none" }, ecg);
+      const st2 = el("g", { opacity: 0 }, sv);
+      const hs = [house(st2, 60, 1300, 300, 300, "#4a4258", { lit: [1, 0] }), house(st2, 400, 1300, 300, 320, "#3e3a4e", { lit: [0, 1] }), house(st2, 740, 1300, 300, 290, "#45405c", { lit: [1, 1] })];
+      const fl = [flames(st2, 210, 1010, 1.4), flames(st2, 550, 990, 1.5), flames(st2, 890, 1020, 1.4)]; gsap.set(fl, { opacity: 0 });
+      const glow = el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: "#ff5a1f", opacity: 0 }, sv);
+      const l9 = line("L9")[0], n2 = at("L9", "20.000"), ke = at("L10", "keinen"), he = at("L10", "Herzinfarkt"), kb = at("L10", "Küchenbrand"), fr = at("L10", "frisst");
+      tl.fromTo(amb, { opacity: 0, x: -300 }, { opacity: 1, x: 0, duration: 0.6, ease: "power3.out" }, 0.1);
+      tl.to(bl, { attr: { fill: "#ff3b55" }, duration: 0.15, repeat: 15, yoyo: true }, 0.2);
+      tl.to("#s04-c", { opacity: 1, duration: 0.25 }, n2 - 0.4);
+      count(tl, "#s04-n", 0, 20000, n2 - 0.3, 0.9, "", "", "power3.out");
+      count(tl, "#s04-n", 20000, 0, ke - 0.3, 0.5, "", "", "power3.in");
+      tl.fromTo(xx, { opacity: 0, scale: 2, svgOrigin: "380 1000" }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(2)" }, ke);
+      tl.to([amb, xx, "#s04-c"], { opacity: 0, duration: 0.25 }, he - 0.4);
+      tl.to(ecg, { opacity: 1, duration: 0.2 }, he - 0.3);
+      tl.to(line1, { attr: { d: "M170 780 h120 l20 -60 l25 120 l20 -60 h120 l10 -20 l10 30 h500" }, duration: 0.5 }, he + 0.3);
+      tl.to(line1, { attr: { stroke: "#ff3b55" }, duration: 0.2 }, he + 0.6);
+      tl.to(ecg, { opacity: 0, duration: 0.2 }, kb - 0.4);
+      tl.to(st2, { opacity: 1, duration: 0.3 }, kb - 0.3);
+      fl.forEach((f, i) => { tl.fromTo(f, { opacity: 0, scale: 0.2 }, { opacity: 1, scale: 1.4, duration: 0.35, ease: "back.out(2)" }, kb + 0.2 + i * 0.5); tl.to(f, { scaleY: 1.6, duration: 0.15, yoyo: true, repeat: 9 }, kb + 0.6 + i * 0.5); });
+      tl.to(glow, { opacity: 0.22, duration: 0.6 }, fr);
+      tl.to("#s04-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s04"] = tl;
+    })();
+  </script>
+</template>

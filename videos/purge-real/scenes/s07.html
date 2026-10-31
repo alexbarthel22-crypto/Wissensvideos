@@ -1,0 +1,42 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .cbox { top: 440px; } /* unter der großen Kapitel-Überschrift */
+    #s07-n { left: 0; width: 1080px; top: 640px; text-align: center; font: 700 170px/1 Oswald, sans-serif; color: #ff3b55; text-shadow: 0 0 50px rgba(255,59,85,.6), 0 8px 0 rgba(0,0,0,.6); opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="s07" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s07-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <svg id="s07-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s07-n" class="abs">0</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s07-svg");
+      night(sv, "s07-n2", "#3a1420", "#e8743a", [540, 1020]);
+      const smoke = []; const r = rng(3); for (let i = 0; i < 6; i++) smoke.push(el("ellipse", { cx: 120 + i * 170, cy: 900, rx: 70, ry: 140, fill: "#2a2228", opacity: 0.55 }, sv));
+      const city = el("g", {}, sv); for (let i = 0; i < 9; i++) { const h = 200 + r() * 260; el("rect", O({ x: i * 125 - 10, y: 1250 - h, width: 120, height: h, fill: "#1c1418" }), city); }
+      el("rect", { x: 0, y: 1250, width: 1080, height: 200, fill: "#140e12" }, sv);
+      const crowd = el("g", { opacity: 0 }, sv); const ms = [];
+      for (let i = 0; i < 40; i++) { const x = 90 + (i % 10) * 100, y = 980 + Math.floor(i / 10) * 90; const g = el("g", {}, crowd);
+        el("ellipse", O({ cx: x, cy: y, rx: 26, ry: 32, fill: "#ece6d6", "stroke-width": 3 }), g); el("ellipse", { cx: x - 9, cy: y - 6, rx: 5, ry: 4, fill: K }, g); el("ellipse", { cx: x + 9, cy: y - 6, rx: 5, ry: 4, fill: K }, g);
+        el("path", { d: `M${x - 12} ${y + 12} q12 8 24 0`, stroke: "#c8102e", "stroke-width": 3, fill: "none" }, g); ms.push(g); }
+      const he = at("L16", "heult"), br = at("L16", "brennen"), l17 = line("L17")[0], ep = at("L17", "ein"), n84 = at("L17", "840.000");
+      smoke.forEach((s, i) => tl.to(s, { attr: { cy: 760, ry: 200 }, duration: 5, ease: "none" }, i * 0.2));
+      tl.to(city, { x: 6, duration: 0.05, repeat: 5, yoyo: true }, br);
+      tl.to(crowd, { opacity: 1, duration: 0.01 }, ep - 0.2);
+      ms.forEach((m, i) => tl.fromTo(m, { opacity: 0, scale: 0.3, svgOrigin: `${90 + (i % 10) * 100} ${980 + Math.floor(i / 10) * 90}` }, { opacity: 1, scale: 1, duration: 0.2, ease: "back.out(2)" }, ep - 0.2 + i * 0.04));
+      tl.to("#s07-n", { opacity: 1, duration: 0.2 }, n84 - 0.6);
+      count(tl, "#s07-n", 0, 840000, n84 - 0.5, 1.2, "", "", "power3.out");
+      tl.to("#s07-n", { scale: 1.1, duration: 0.15, yoyo: true, repeat: 3 }, n84 + 0.8);
+      tl.to("#s07-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s07"] = tl;
+    })();
+  </script>
+</template>
