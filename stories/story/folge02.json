@@ -9,14 +9,14 @@
    "gemini": "Leda",
    "label": "Neraya",
    "rate": 0.9,
-   "persona": "Neraya, siebzehn, erzählt ihre eigene Geschichte im Rückblick. Ruhig, nah, verletzlich und trotzig zugleich, wie in einem Hörbuch."
+   "persona": "Neraya, siebzehn, erzählt ihre eigene Geschichte. Hochintelligent, aber schüchtern, unbeholfen und tollpatschig: kleine verlegene Zögerer, ein nervöses Ähm, dann wieder trockener, bissiger Sarkasmus. Zügiges, lebendiges Erzähltempo, nah wie in einem Hörbuch."
   },
   "LUNARA": {
    "name": "de-DE-Chirp3-HD-Leda",
    "gemini": "Leda",
    "label": "Neraya",
    "rate": 0.93,
-   "persona": "Neraya, siebzehn, mutig, frech, verletzlich, warmherzig."
+   "persona": "Neraya, siebzehn, klug, schüchtern, tollpatschig und sarkastisch, aber warmherzig und verletzlich. Zügiges Tempo."
   },
   "KAEL": {
    "name": "de-DE-Chirp3-HD-Orus",
@@ -88,14 +88,14 @@
    "lines": [
     {
      "who": "ICH",
-     "text": "Bevor ich dir erzähle, was in dieser Nacht geschah … musst du Kael kennen. Meinen großen Bruder.",
-     "style": "warm, aber verletzt"
+     "text": "Letztes Mal fiel ein Stern vom Himmel. Mitten in meine Ramen. Aber bevor ich erzähle, was dann geschah … musst du Kael kennen. Meinen großen Bruder.",
+     "style": "schnell zusammenfassend, trocken, dann warm und verletzt"
     },
     {
      "who": "ICH",
-     "text": "Nachdem Mama verschwand, hat er mich großgezogen. Er hat mir das Klettern beigebracht.",
+     "text": "Nachdem Mama verschwand, hat er mich großgezogen. Er hat mir das Klettern beigebracht. Und das Fallen. Darin war ich talentierter.",
      "pre": 0.8,
-     "style": "liebevolle Erinnerung"
+     "style": "liebevolle Erinnerung, am Ende selbstironisch"
     },
     {
      "who": "ICH",
@@ -117,9 +117,9 @@
     },
     {
      "who": "ICH",
-     "text": "Jeden Monat schickt er mir einen Brief. Ich habe keinen einzigen geöffnet.",
+     "text": "Jeden Monat schickt er mir einen Brief. Ich habe keinen einzigen geöffnet. Sie liegen unter meinem Bett. Sortiert. Nach Datum.",
      "pre": 0.8,
-     "style": "trotzig, mit unterdrückter Traurigkeit"
+     "style": "trotzig, dann verlegen, unterdrückte Traurigkeit"
     }
    ]
   },
@@ -147,9 +147,9 @@
     },
     {
      "who": "ICH",
-     "text": "Seit tausend Jahren hat niemand sie betreten. Ich ging trotzdem.",
+     "text": "Seit tausend Jahren hat niemand sie betreten. Ich ging trotzdem. Mit zitternden Knien.",
      "pre": 0.9,
-     "style": "entschlossen"
+     "style": "entschlossen, dann leise und ehrlich"
     },
     {
      "who": "STERN",
@@ -159,9 +159,9 @@
     },
     {
      "who": "LUNARA",
-     "text": "Wer … wer ist da?",
+     "text": "Wer … wer ist da? … Bitte sei ein Eichhörnchen.",
      "pre": 0.6,
-     "style": "ängstlich, leise"
+     "style": "ängstlich, leise, nervöser Galgenhumor"
     },
     {
      "who": "STERN",
@@ -250,9 +250,9 @@
     },
     {
      "who": "ICH",
-     "text": "Man sagt, sie war einmal die engste Freundin meiner Mutter. Und dass sie seit zwölf Jahren nicht mehr gelächelt hat.",
+     "text": "Man sagt, sie war einmal die engste Freundin meiner Mutter. Und dass sie seit zwölf Jahren nicht mehr gelächelt hat. Vermutlich eingerostet.",
      "pre": 1.0,
-     "style": "nachdenklich, misstrauisch"
+     "style": "nachdenklich, misstrauisch, am Ende trocken sarkastisch"
     },
     {
      "who": "ICH",
@@ -270,11 +270,12 @@
    "lines": [
     {
      "who": "LUNARA",
-     "text": "Wenn du wissen willst, wie meine Geschichte weitergeht … folge mir. Dann siehst du die nächste Folge als Erstes.",
+     "text": "Folge mir … und du siehst, ob ich den Orden überlebe. Kleiner Hinweis: Ich bin nicht besonders sportlich.",
      "rate": 0.93,
-     "style": "direkt zum Zuschauer, eindringlich, ein Hauch Lächeln"
+     "style": "direkt zum Zuschauer, trocken sarkastisch, ein Hauch Lächeln"
     }
    ]
   }
- ]
+ ],
+ "tempo": 1.2
 }

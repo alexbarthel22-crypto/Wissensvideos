@@ -9,14 +9,14 @@
    "gemini": "Leda",
    "label": "Neraya",
    "rate": 0.9,
-   "persona": "Neraya, siebzehn, erzählt ihre eigene Geschichte im Rückblick. Ruhig, nah, verletzlich und trotzig zugleich, wie in einem Hörbuch."
+   "persona": "Neraya, siebzehn, erzählt ihre eigene Geschichte. Hochintelligent, aber schüchtern, unbeholfen und tollpatschig: kleine verlegene Zögerer, ein nervöses Ähm, dann wieder trockener, bissiger Sarkasmus. Zügiges, lebendiges Erzähltempo, nah wie in einem Hörbuch."
   },
   "LUNARA": {
    "name": "de-DE-Chirp3-HD-Leda",
    "gemini": "Leda",
    "label": "Neraya",
    "rate": 0.93,
-   "persona": "Neraya, siebzehn, mutig, frech, verletzlich, warmherzig."
+   "persona": "Neraya, siebzehn, klug, schüchtern, tollpatschig und sarkastisch, aber warmherzig und verletzlich. Zügiges Tempo."
   },
   "KAEL": {
    "name": "de-DE-Chirp3-HD-Orus",
@@ -73,7 +73,7 @@
    "persona": "Nerayas Mutter, liebevoll und eindringlich, ihre Stimme kommt von sehr weit her."
   }
  },
- "naechste": "FOLGE 4 · DIE STADT OHNE STERNE",
+ "naechste": "FOLGE 4 · DER SCHMUGGLER",
  "scenes": [
   {
    "id": "intro",
@@ -221,7 +221,7 @@
      "text": "Nera … Mama hat keinen Stern eingesperrt …",
      "rate": 0.85,
      "fx": "schwach",
-     "style": "sterbend, schwach, flüsternd"
+     "style": "schwer verletzt, schwach, flüsternd"
     },
     {
      "who": "KAEL",
@@ -229,7 +229,7 @@
      "pre": 0.8,
      "rate": 0.85,
      "fx": "schwach",
-     "style": "sterbend, flüsternd"
+     "style": "schwer verletzt, flüsternd"
     },
     {
      "who": "LUNARA",
@@ -240,15 +240,15 @@
     },
     {
      "who": "KAEL",
-     "text": "Um ihn aufzuhalten. Den, den du gerade … in deiner Hand hältst.",
+     "text": "Um ihn aufzuhalten. Den, den du … in deiner Hand hältst. Lauf, Nera.",
      "pre": 0.6,
      "rate": 0.83,
      "fx": "schwach",
-     "style": "letzter Atemzug, kaum hörbar"
+     "style": "mit letzter Kraft, kaum hörbar"
     },
     {
      "who": "LUNARA",
-     "text": "Bleib bei mir. Bitte! Du hast es versprochen. Du hast versprochen, dass du zurückkommst!",
+     "text": "Nicht ohne dich! Du hast versprochen, dass du zurückkommst!",
      "pre": 1.4,
      "rate": 0.92,
      "fx": "zittern",
@@ -256,7 +256,7 @@
     },
     {
      "who": "ICH",
-     "text": "Er ist zurückgekommen. Nur, um für mich zu sterben.",
+     "text": "Seine Hand wurde schlaff. Ich dachte, ich hätte ihn für immer verloren.",
      "pre": 1.6,
      "rate": 0.86,
      "style": "gebrochen, leise"
@@ -367,11 +367,12 @@
    "lines": [
     {
      "who": "LUNARA",
-     "text": "Wenn du wissen willst, wie meine Geschichte weitergeht … folge mir. Dann siehst du die nächste Folge als Erstes.",
+     "text": "Halb Mensch. Halb Stern. Null Plan. Folge mir … und du siehst, wie ich das überlebe.",
      "rate": 0.93,
-     "style": "direkt zum Zuschauer, eindringlich, ein Hauch Lächeln"
+     "style": "direkt zum Zuschauer, trocken sarkastisch, ein Hauch Lächeln"
     }
    ]
   }
- ]
+ ],
+ "tempo": 1.2
 }
