@@ -89,26 +89,26 @@
    "lines": [
     {
      "who": "ICH",
-     "text": "Mein Ex war ein Stern.",
-     "style": "direkt zum Zuschauer, trocken, selbstbewusst, lebendig, normale Sprechstimme, nicht flüstern",
-     "hook": "MEIN EX WAR EIN STERN.",
+     "text": "Ich habe mich in einen Stern verliebt.",
+     "style": "direkt zum Zuschauer, ehrlich, ein bisschen verlegen, als würde sie ein Geheimnis gestehen, normale Sprechstimme, nicht flüstern",
+     "hook": "ICH HABE MICH IN EINEN STERN VERLIEBT.",
      "hook_static": true,
      "hook_only": true
     },
     {
      "who": "ICH",
-     "text": "Kein Spaß! Und das ist gerade erst der Anfang meiner Geschichte.",
+     "text": "Wie das passiert ist? Mach's dir gemütlich … ich erzähle dir alles.",
      "pre": 0.5,
-     "style": "direkt zum Zuschauer, trocken, selbstbewusst, lebendig, normale Sprechstimme, nicht flüstern, am Ende geheimnisvoll",
-     "hook": "KEIN SPASS!",
+     "style": "warm, einladend, mit einem Lächeln, ruhig erzählend, normale Sprechstimme, nicht flüstern",
+     "hook": "WIE DAS PASSIERT IST?",
      "hook_at": 0.0,
-     "hook_blink": true
+     "display": "Mach's dir gemütlich … ich erzähle dir alles."
     }
    ],
    "tempo": 1.0,
    "cues": {
     "ex_hit": "L0+0.0",
-    "spass": "L1+0.0"
+    "frage": "L1+0.0"
    }
   },
   {

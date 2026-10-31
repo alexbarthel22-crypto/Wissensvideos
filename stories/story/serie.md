@@ -82,7 +82,7 @@ Die Enthüllung hat Gewicht für die Hauptgeschichte: Ihr Vater hat Nerayas Mutt
 
 | # | Titel (Arbeitstitel) | Kern | Cliffhanger |
 |---|---|---|---|
-| 1 | Die Stadt über den Wolken | Einstieg „Mein Ex war ein Stern …“. Welt, Neraya, Ramen, Lunara, der Stern fällt | „Das ist unmöglich!“ |
+| 1 | Die Stadt über den Wolken | Einstieg „Ich habe mich in einen Stern verliebt …“. Welt, Neraya, Ramen, Lunara, der Stern fällt | „Das ist unmöglich!“ |
 | 2 | Das Herz, das vom Himmel fiel | Kael, die Ruinen, der Stern kennt ihren Namen, Herz berührt, Glocken, Seraphine | Der Orden kommt |
 | 3 | Das Versprechen | Kael schützt sie und wird schwer verletzt. Mama hat sich selbst eingesperrt, die Sterne erlöschen, die Warnung der Mutter | „Hallo, Neraya. Ich habe auf dich gewartet.“ Neraya ist halb Stern |
 | 4 | Der Schmuggler | Flucht, Joren nimmt sie widerwillig mit | Sein Schiff wird abgeschossen |
@@ -112,7 +112,7 @@ Die Enthüllung hat Gewicht für die Hauptgeschichte: Ihr Vater hat Nerayas Mutt
 - Moderne Jugendsprache selten und nur, wenn es passt (höchstens 1–2 Mal pro Folge, z. B. „Main-Character-Energy eben“).
 - Sarkasmus sparsam: 1–2 Mal pro Folge, dann aber wirklich lustig und passend. Schüchternheit und Tollpatschigkeit zeigen sich eher im Tonfall. Je weiter die Serie, desto selbstbewusster und weniger stockend.
 - Lunara hat pro Folge genau einen lustigen Moment mit einer anderen Figur (Folge 1: klaut Ramen-Bo eine Nudel). Ihr Lieblingssnack ist Mondstaub.
-- Folge 1 beginnt mit einem knalligen Einstieg von etwa 10 Sekunden: „Mein Ex war ein Stern.“ – „Kein Spaß! Und das ist gerade erst der Anfang meiner Geschichte.“ Großer, poppiger, blinkender Text (Luckiest Guy) ab dem ersten Bild, danach das Intro. Ab Folge 2 beginnt jede Folge mit einem kurzen Rückblick.
+- Folge 1 beginnt mit einem Prolog von höchstens 10 Sekunden: „Ich habe mich in einen Stern verliebt.“ – „Wie das passiert ist? Mach's dir gemütlich … ich erzähle dir alles.“ Schrift in Rot und Blau, in den Serienschriften (Cinzel, Cormorant Garamond), danach ein glatter Übergang ins Intro.
 - Dramatische Sätze („Und Valdoria … brannte.“) bekommen eine Sprechpause davor, als eigene Zeile mit `pre`.
 - Musik: Herausstechende Szenen (ernst, dramatisch, romantisch, spannend, lustig) bekommen eigene Musik. Die Musik bleibt leise unter der Stimme.
 - Neraya bewegt sich passend zur Erzählung (gehen, Laterne anzünden, Hand senken) und posiert nicht starr.

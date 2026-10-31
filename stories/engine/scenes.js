@@ -2234,47 +2234,39 @@ function hookText(l, t, a) {
   bg.addColorStop(0, `rgba(0,0,0,${0.55 * a})`); bg.addColorStop(1, 'rgba(0,0,0,0)');
   ctx.fillStyle = bg; ctx.fillRect(0, 300, W, 1300);
   ctx.translate(540, 900);
-  // keyword: poppy TikTok-style lettering (Luckiest Guy, thick outline), either on screen from the very
-  // first frame (hook_static) or popping in while it is spoken; blinks between hot pink/white and yellow
+  // keyword: series lettering (Cinzel) in blue and red, on screen from the very first frame (hook_static)
+  // or rising in while it is spoken; the glow alternates gently between blue and red
   if (l.hook) {
-    const size = l.hook.length > 12 ? 150 : 170;
-    ctx.font = `400 ${size}px "Luckiest Guy"`;
-    const hl = l.hook.length > 12 ? wrap(l.hook, 960) : [l.hook];
+    const size = l.hook.length > 22 ? 96 : 104;
+    if (ctx.letterSpacing !== undefined) ctx.letterSpacing = '4px';
+    ctx.font = `700 ${size}px Cinzel`;
+    const hl = l.hook.length > 16 ? wrap(l.hook, 940) : [l.hook];
     const t0 = l.hook_static ? 0 : l.start + (l.hook_at ?? 0) * (l.end - l.start);
     if (t >= t0) {
-      const since = t - t0, p = l.hook_static ? 1 : clamp(since / 0.16);
-      const blinking = l.hook_static ? t <= l.end + 0.35 : since < 1.3;
-      const on = blinking && Math.floor(since / 0.14) % 2 === 0;
-      // light rays turning behind the keyword
-      ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.rotate(t * 0.35);
-      const ra = (on ? 0.32 : 0.2) * a * p;
-      for (let k = 0; k < 18; k++) {
-        ctx.rotate(Math.PI * 2 / 18);
-        const g2 = ctx.createLinearGradient(0, 0, 950, 0);
-        g2.addColorStop(0, on ? `rgba(255,120,200,${ra})` : `rgba(255,210,90,${ra})`); g2.addColorStop(1, 'rgba(255,200,120,0)');
-        ctx.fillStyle = g2; ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(950, -45); ctx.lineTo(950, 45); ctx.closePath(); ctx.fill();
-      }
-      ctx.restore();
-      const pop = l.hook_static ? 1 + 0.06 * Math.abs(Math.sin(t * 7.5)) : 1 + 0.4 * (1 - easeOut(p));
-      ctx.save(); ctx.translate(0, -70); ctx.rotate(-0.045); ctx.scale(pop, pop);
-      ctx.lineJoin = 'round'; ctx.textBaseline = 'middle';
-      const lh = size * 1.0, y0 = -(hl.length - 1) * lh / 2;
-      const fillA = on ? ['#ffffff', '#ff4fa8'] : ['#fff38a', '#ffb700'];
+      const since = t - t0, p = l.hook_static ? 1 : easeOut(clamp(since / 0.5));
+      const phase = Math.floor(t / 0.35) % 2, pulse = 1 + 0.015 * Math.sin(t * 4);
+      ctx.save(); ctx.translate(0, -90 + 30 * (1 - p)); ctx.scale(pulse, pulse);
+      ctx.textBaseline = 'middle'; ctx.lineJoin = 'round';
+      const lh = size * 1.12, y0 = -(hl.length - 1) * lh / 2;
+      const BLUE = ['#d6ecff', '#3f8cff'], RED = ['#ffd2d2', '#ff2e4d'];
       hl.forEach((h, i) => {
         const y = y0 + i * lh;
-        // hard drop shadow + thick dark outline, then a bright gradient fill
+        // the heart of the line ("STERN", "VERLIEBT", the question) in red, the rest in blue
+        const red = /STERN|VERLIEBT|\?/.test(h);
+        const col = red ? RED : BLUE;
         ctx.globalAlpha = a * p;
-        ctx.fillStyle = '#1a0630'; ctx.fillText(h, 8, y + 10);
-        ctx.strokeStyle = '#1a0630'; ctx.lineWidth = 18; ctx.strokeText(h, 0, y);
+        ctx.strokeStyle = 'rgba(5,6,20,0.9)'; ctx.lineWidth = 8; ctx.strokeText(h, 0, y);
         const g = ctx.createLinearGradient(0, y - size / 2, 0, y + size / 2);
-        g.addColorStop(0, fillA[0]); g.addColorStop(1, fillA[1]);
-        ctx.shadowColor = on ? 'rgba(255,80,180,0.9)' : 'rgba(255,200,40,0.8)'; ctx.shadowBlur = on ? 70 : 40;
+        g.addColorStop(0, col[0]); g.addColorStop(1, col[1]);
+        const glowCol = (red ? phase === 0 : phase === 1) ? (red ? 'rgba(255,40,80,0.95)' : 'rgba(60,140,255,0.95)') : (red ? 'rgba(255,40,80,0.45)' : 'rgba(60,140,255,0.45)');
+        ctx.shadowColor = glowCol; ctx.shadowBlur = 46;
         ctx.fillStyle = g; ctx.fillText(h, 0, y);
         ctx.shadowBlur = 0;
       });
       ctx.globalAlpha = 1;
+      if (ctx.letterSpacing !== undefined) ctx.letterSpacing = '0px';
       ctx.restore();
-      glitter(0, -70, 980, 160 * hl.length + 120, t, a * p, 16, 3);
+      glitter(0, -90, 980, lh * hl.length + 100, t, 0.8 * a * p, 14, 3);
     }
   }
   if (l.hook_only) { ctx.restore(); return; }
@@ -2287,7 +2279,7 @@ function hookText(l, t, a) {
     ctx.save();
     ctx.beginPath(); ctx.rect(-tw / 2 - 40, 0, (tw + 80) * rp, 80 * lines.length + 40); ctx.clip();
     ctx.shadowColor = 'rgba(0,0,0,0.95)'; ctx.shadowBlur = 20; ctx.shadowOffsetY = 3;
-    ctx.fillStyle = `rgba(250,244,232,${a})`;
+    ctx.fillStyle = l.hook ? `rgba(200,224,255,${a})` : `rgba(250,244,232,${a})`;
     lines.forEach((s, i) => ctx.fillText(s, 0, 70 + i * 80));
     ctx.restore();
     if (rp < 1) {
@@ -2366,7 +2358,7 @@ function overlays(t, frame) {
 
 function shakeAt(t) {
   let s = 0;
-  [[CUE.impact, 1.3, 22], [CUE.touch, 1.0, 16], [CUE.fallen, 1.2, 24], [CUE.schwarz, 0.8, 12], [CUE.title_hit, 0.9, 18], [CUE.schwester, 0.8, 14], [SC.sting ? SC.sting.start - 0.05 : -9, 0.5, 10], [CUE.hieb, 0.6, 26], [CUE.schrei, 0.7, 14], [lineOf('orden', 2).start + 0.2, 0.7, 12], [CUE.outro_hit, 0.8, 12], [CUE.ex_hit !== undefined ? 0 : -9, 0.5, 16], [CUE.spass ?? -9, 0.45, 14]].forEach(([c, d, a]) => {
+  [[CUE.impact, 1.3, 22], [CUE.touch, 1.0, 16], [CUE.fallen, 1.2, 24], [CUE.schwarz, 0.8, 12], [CUE.title_hit, 0.9, 18], [CUE.schwester, 0.8, 14], [SC.sting ? SC.sting.start - 0.05 : -9, 0.5, 10], [CUE.hieb, 0.6, 26], [CUE.schrei, 0.7, 14], [lineOf('orden', 2).start + 0.2, 0.7, 12], [CUE.outro_hit, 0.8, 12], [CUE.ex_hit !== undefined ? 0 : -9, 0.4, 8]].forEach(([c, d, a]) => {
     if (t >= c && t < c + d) s += a * Math.pow(1 - (t - c) / d, 2);
   });
   return s;
