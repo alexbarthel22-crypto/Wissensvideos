@@ -14,13 +14,20 @@
    "lines": [
     {
      "id": "L1",
-     "text": "Eine Lawine begräbt die ganze Welt. / Nur einer überlebt: du.",
+     "text": "Eine Lawine begräbt die ganze Welt.",
      "speed": 0.84
     },
     {
-     "id": "L1b",
-     "text": "*r:Jedes *r:Land. / *r:Jede *r:Stadt. / *r:Jeder *r:Mensch, / außer dir.",
-     "speed": 0.84
+     "id": "L1x",
+     "text": "Nur *r:einer überlebt.",
+     "speed": 0.78,
+     "pause": 0.35
+    },
+    {
+     "id": "L1y",
+     "text": "*r:Du.",
+     "speed": 0.72,
+     "pause": 0.55
     },
     {
      "id": "L2",
@@ -30,7 +37,8 @@
       "30 Jahre",
       "DER LETZTE MENSCH"
      ],
-     "speed": 0.84
+     "speed": 0.84,
+     "pause": 0.5
     },
     {
      "id": "L3",
@@ -50,14 +58,9 @@
      "volume": 0.5
     },
     {
-     "name": "impact-bass-2",
-     "at": "L1b:Jedes",
-     "volume": 0.35
-    },
-    {
-     "name": "impact-bass-2",
-     "at": "L1b:Jeder",
-     "volume": 0.4
+     "name": "impact-bass-1",
+     "at": "L1y:Du",
+     "volume": 0.7
     },
     {
      "name": "pop",
@@ -459,7 +462,7 @@
     },
     {
      "id": "L22",
-     "text": "Und schreib in die Kommentare: / *r:Wer *r:steht *r:da *r:draußen?"
+     "text": "Und schreib in die Kommentare: / *r:Wer *r:ist *r:das *r:in *r:der *r:Höhle? / Und was will *r:er, / oder *r:sie?"
     }
    ],
    "sfx": [

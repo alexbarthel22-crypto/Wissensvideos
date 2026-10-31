@@ -26,16 +26,16 @@
     #s08-s { left: 0; width: 1080px; top: 820px; text-align: center; color: #ff8fd0; font: 600 34px Inter, sans-serif; letter-spacing: .3em; opacity: 0; }
     #s08-f { left: 330px; top: 960px; width: 420px; height: 110px; border-radius: 55px; background: #ff3b5c; color: #fff; text-align: center; font: 800 52px/110px Inter, sans-serif; opacity: 0; box-shadow: 0 10px 40px rgba(255,59,92,.5); }
   </style>
-  <div id="root" data-composition-id="s08" data-start="0" data-duration="7.690" data-width="1080" data-height="1920">
-    <div id="s08-stage" class="clip stage" data-start="0" data-duration="7.690" data-track-index="0">
-      <div id="s08-t" class="abs">Teil 2?</div><div id="s08-s" class="abs">WER STEHT DA DRAUSSEN</div><div id="s08-f" class="abs">+ Folgen</div>
+  <div id="root" data-composition-id="s08" data-start="0" data-duration="9.630" data-width="1080" data-height="1920">
+    <div id="s08-stage" class="clip stage" data-start="0" data-duration="9.630" data-track-index="0">
+      <div id="s08-t" class="abs">Teil 2?</div><div id="s08-s" class="abs">WER IST IN DER HÖHLE?</div><div id="s08-f" class="abs">+ Folgen</div>
       <div class="vig"></div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 7.69, "L21": [0.2, 2.16], "L21.words": [["wenn", 0.2, 0.411], ["teil", 0.411, 0.621], ["2", 0.621, 0.803], ["kommen", 0.803, 1.209], ["soll", 1.209, 1.42], ["folg", 1.67, 1.919], ["mir", 1.919, 2.16]], "L22": [2.38, 4.89], "L22.words": [["und", 2.38, 2.519], ["schreib", 2.519, 2.679], ["in", 2.679, 2.813], ["die", 2.813, 2.952], ["kommentare", 2.952, 3.5], ["wer", 3.82, 4.031], ["steht", 4.031, 4.257], ["da", 4.257, 4.46], ["draußen", 4.46, 4.89]]};
+      const C = {"__dur": 9.63, "L21": [0.2, 1.95], "L21.words": [["wenn", 0.2, 0.426], ["teil", 0.426, 0.651], ["2", 0.651, 0.846], ["kommen", 0.846, 1.281], ["soll", 1.281, 1.507], ["folg", 1.507, 1.732], ["mir", 1.732, 1.95]], "L22": [2.17, 6.83], "L22.words": [["und", 2.17, 2.304], ["schreib", 2.304, 2.458], ["in", 2.458, 2.588], ["die", 2.588, 2.722], ["kommentare", 2.722, 3.25], ["wer", 3.62, 3.75], ["ist", 3.75, 3.88], ["das", 3.88, 4.01], ["in", 4.01, 4.135], ["der", 4.135, 4.265], ["höhle", 4.265, 4.52], ["und", 5.07, 5.235], ["was", 5.235, 5.4], ["will", 5.4, 5.571], ["er", 5.571, 5.73], ["oder", 6.28, 6.642], ["sie", 6.642, 6.83]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];

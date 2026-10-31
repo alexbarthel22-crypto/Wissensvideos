@@ -52,7 +52,6 @@ SVG + '''
       <svg id="s01-warn" class="abs" viewBox="0 0 200 180"><path id="s01-tri" d="M100 10 L190 168 H10Z" fill="#ffd43b" stroke="#e0484f" stroke-width="14" stroke-linejoin="round"/><rect x="91" y="62" width="18" height="62" rx="9" fill="#141a32"/><circle cx="100" cy="144" r="11" fill="#141a32"/></svg>
       <div id="s01-live" class="abs">● 1 ÜBERLEBENDER WELTWEIT</div>
       <div id="s01-t" class="abs">Die ganze <em>Welt</em><br>unter Schnee.<small>Du bist der</small><b>letzte Mensch.</b></div>
-      <div id="s01-w1" class="s01-w">Jedes Land.</div><div id="s01-w2" class="s01-w">Jede Stadt.</div><div id="s01-w3" class="s01-w">Jeder Mensch.</div>
       <div id="s01-tag" class="abs">Alex · 30</div>''',
 '''      const sv = document.querySelector("#s01-svg");
       sky(sv, "s01-s", "#141d3a", "#6f82ab");
@@ -67,7 +66,7 @@ SVG + '''
       const sf = snowfall(sv, 120, 7, -300, 1500);
       const burst = []; const r = rng(17); for (let i = 0; i < 26; i++) burst.push(el("circle", { cx: 540, cy: 660, r: 6 + r() * 10, fill: "#ffffff", opacity: 0 }, sv));
       const flash = el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: "#ffffff", opacity: 0 }, sv);
-      const l1b = line("L1b")[0], w1 = at("L1b", 0), w2 = at("L1b", 2), w3 = at("L1b", 4), al = at("L2", "Alex"), le = at("L2", "letzte"), l3 = line("L3")[0];
+      const l1b = line("L1y")[0], du = at("L1y", "Du"), al = at("L2", "Alex"), le = at("L2", "letzte"), l3 = line("L3")[0];
       fall(tl, sf, C.__dur);
       tl.fromTo(flash, { opacity: 1 }, { opacity: 0, duration: 0.5, ease: "power2.out" }, 0);
       tl.fromTo("#s01-t", { scale: 1.6, filter: "blur(10px)" }, { scale: 1, filter: "blur(0px)", duration: 0.5, ease: "expo.out" }, 0);
@@ -81,12 +80,10 @@ SVG + '''
       tl.fromTo("#s01-warn", { scale: 1 }, { scale: 1.15, duration: 0.2, repeat: 23, yoyo: true, ease: "sine.inOut" }, 0.05);
       tl.fromTo("#s01-frame", { opacity: 0 }, { opacity: 1, duration: 0.2, repeat: 23, yoyo: true, ease: "sine.inOut" }, 0.05);
       tl.to(W, { x: 8, duration: 0.05, repeat: 11, yoyo: true }, 0.1);
-      tl.to(["#s01-t", "#s01-live", "#s01-warn"], { opacity: 0, scale: 0.9, duration: 0.25 }, w1 - 0.25);
+      tl.to("#s01-t b", { scale: 1.25, duration: 0.18, yoyo: true, repeat: 1, ease: "power2.out" }, du);
+      tl.fromTo(flash, { opacity: 0.6 }, { opacity: 0, duration: 0.4 }, du); tl.to(W, { x: 12, duration: 0.04, repeat: 7, yoyo: true }, du);
+      tl.to(["#s01-t", "#s01-live", "#s01-warn"], { opacity: 0, scale: 0.9, duration: 0.25 }, al - 0.35);
       tl.to("#s01-frame", { opacity: 0, duration: 0.3 }, al - 0.3);
-      [w1, w2, w3].forEach((t, i, arr) => { tl.set("#s01-w" + (i + 1), { opacity: 1 }, t - 0.02);
-        tl.fromTo("#s01-w" + (i + 1), { scale: 1.7 }, { scale: 1, duration: 0.25, ease: "power4.out", immediateRender: false }, t - 0.02);
-        tl.fromTo(flash, { opacity: 0.5 }, { opacity: 0, duration: 0.3 }, t - 0.02); tl.to(W, { x: 10, duration: 0.04, repeat: 5, yoyo: true }, t);
-        tl.set("#s01-w" + (i + 1), { opacity: 0 }, i < 2 ? arr[i + 1] - 0.02 : al - 0.2); });
       tl.to(W, { scale: 1.6, svgOrigin: "540 1100", duration: 1.0, ease: "power3.inOut" }, al - 0.4);
       tl.fromTo("#s01-tag", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(2)" }, al);
       tl.to(A, { y: 1130, duration: 0.15, yoyo: true, repeat: 1 }, le);
@@ -311,7 +308,7 @@ S['s07'] = ('', SVG,
 S['s08'] = ('''    #s08-t { left: 0; width: 1080px; top: 620px; text-align: center; color: #fff; font: 500 170px/1 "EB Garamond", serif; text-shadow: 0 0 40px rgba(255,90,95,.6); opacity: 0; }
     #s08-s { left: 0; width: 1080px; top: 820px; text-align: center; color: #ff8fd0; font: 600 34px Inter, sans-serif; letter-spacing: .3em; opacity: 0; }
     #s08-f { left: 330px; top: 960px; width: 420px; height: 110px; border-radius: 55px; background: #ff3b5c; color: #fff; text-align: center; font: 800 52px/110px Inter, sans-serif; opacity: 0; box-shadow: 0 10px 40px rgba(255,59,92,.5); }''',
-'''      <div id="s08-t" class="abs">Teil 2?</div><div id="s08-s" class="abs">WER STEHT DA DRAUSSEN</div><div id="s08-f" class="abs">+ Folgen</div>''',
+'''      <div id="s08-t" class="abs">Teil 2?</div><div id="s08-s" class="abs">WER IST IN DER HÖHLE?</div><div id="s08-f" class="abs">+ Folgen</div>''',
 '''      // Schneesturm hinter dem Text: dicht, schräg, gedämpft
       const st8 = document.querySelector("#s08-stage"), sv8 = el("svg", { class: "full", viewBox: "0 0 1080 1920" }); st8.insertBefore(sv8, st8.firstChild);
       const storm = el("g", { opacity: 0.42, "data-layout-allow-overlap": "" }, sv8), rs = rng(88);

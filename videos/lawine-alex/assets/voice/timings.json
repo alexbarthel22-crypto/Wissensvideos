@@ -1,5 +1,5 @@
 {
- "duration": 129.376,
+ "duration": 129.296,
  "lines": [
   {
    "scene": "s01",
@@ -11,157 +11,102 @@
      "color": null,
      "group": 0,
      "start": 0.3,
-     "end": 0.582
+     "end": 0.758
     },
     {
      "display": "Lawine",
      "spoken": "Lawine",
      "color": null,
      "group": 0,
-     "start": 0.582,
-     "end": 1.006
+     "start": 0.758,
+     "end": 1.446
     },
     {
      "display": "begräbt",
      "spoken": "begräbt",
      "color": null,
      "group": 0,
-     "start": 1.006,
-     "end": 1.304
+     "start": 1.446,
+     "end": 1.929
     },
     {
      "display": "die",
      "spoken": "die",
      "color": null,
      "group": 0,
-     "start": 1.304,
-     "end": 1.451
+     "start": 1.929,
+     "end": 2.167
     },
     {
      "display": "ganze",
      "spoken": "ganze",
      "color": null,
      "group": 0,
-     "start": 1.451,
-     "end": 1.738
+     "start": 2.167,
+     "end": 2.634
     },
     {
      "display": "Welt.",
      "spoken": "Welt.",
      "color": null,
      "group": 0,
-     "start": 1.738,
-     "end": 1.89
-    },
+     "start": 2.634,
+     "end": 2.88
+    }
+   ],
+   "spoken": "Eine Lawine begräbt die ganze Welt.",
+   "start": 0.3,
+   "end": 2.88
+  },
+  {
+   "scene": "s01",
+   "id": "L1x",
+   "words": [
     {
      "display": "Nur",
      "spoken": "Nur",
      "color": null,
-     "group": 1,
-     "start": 2.39,
-     "end": 2.51
+     "group": 0,
+     "start": 3.45,
+     "end": 3.691
     },
     {
      "display": "einer",
      "spoken": "einer",
-     "color": null,
-     "group": 1,
-     "start": 2.51,
-     "end": 2.745
+     "color": "r",
+     "group": 0,
+     "start": 3.691,
+     "end": 4.165
     },
     {
-     "display": "überlebt:",
-     "spoken": "überlebt:",
+     "display": "überlebt.",
+     "spoken": "überlebt.",
      "color": null,
-     "group": 1,
-     "start": 2.745,
-     "end": 3.1
-    },
-    {
-     "display": "du.",
-     "spoken": "du.",
-     "color": null,
-     "group": 1,
-     "start": 3.65,
-     "end": 3.92
+     "group": 0,
+     "start": 4.165,
+     "end": 4.88
     }
    ],
-   "spoken": "Eine Lawine begräbt die ganze Welt. Nur einer überlebt: du.",
-   "start": 0.3,
-   "end": 3.92
+   "spoken": "Nur einer überlebt.",
+   "start": 3.45,
+   "end": 4.88
   },
   {
    "scene": "s01",
-   "id": "L1b",
+   "id": "L1y",
    "words": [
     {
-     "display": "Jedes",
-     "spoken": "Jedes",
+     "display": "Du.",
+     "spoken": "Du.",
      "color": "r",
      "group": 0,
-     "start": 4.14,
-     "end": 4.618
-    },
-    {
-     "display": "Land.",
-     "spoken": "Land.",
-     "color": "r",
-     "group": 0,
-     "start": 4.618,
-     "end": 4.87
-    },
-    {
-     "display": "Jede",
-     "spoken": "Jede",
-     "color": "r",
-     "group": 1,
-     "start": 5.42,
-     "end": 5.786
-    },
-    {
-     "display": "Stadt.",
-     "spoken": "Stadt.",
-     "color": "r",
-     "group": 1,
-     "start": 5.786,
-     "end": 5.99
-    },
-    {
-     "display": "Jeder",
-     "spoken": "Jeder",
-     "color": "r",
-     "group": 2,
-     "start": 6.54,
-     "end": 6.956
-    },
-    {
-     "display": "Mensch,",
-     "spoken": "Mensch,",
-     "color": "r",
-     "group": 2,
-     "start": 6.956,
-     "end": 7.19
-    },
-    {
-     "display": "außer",
-     "spoken": "außer",
-     "color": null,
-     "group": 3,
-     "start": 7.74,
-     "end": 8.197
-    },
-    {
-     "display": "dir.",
-     "spoken": "dir.",
-     "color": null,
-     "group": 3,
-     "start": 8.197,
-     "end": 8.43
+     "start": 5.65,
+     "end": 5.829
     }
    ],
-   "spoken": "Jedes Land. Jede Stadt. Jeder Mensch, außer dir.",
-   "start": 4.14,
-   "end": 8.43
+   "spoken": "Du.",
+   "start": 5.65,
+   "end": 5.829
   },
   {
    "scene": "s01",
@@ -172,77 +117,77 @@
      "spoken": "Alex,",
      "color": null,
      "group": 0,
-     "start": 8.65,
-     "end": 9.98
+     "start": 6.549,
+     "end": 7.969
     },
     {
      "display": "30",
      "spoken": "dreißig.",
      "color": "y",
      "group": 0,
-     "start": 10.53,
-     "end": 10.82
+     "start": 8.389,
+     "end": 8.686
     },
     {
      "display": "Der",
      "spoken": "Der",
      "color": null,
      "group": 1,
-     "start": 10.82,
-     "end": 10.962
+     "start": 8.686,
+     "end": 8.832
     },
     {
      "display": "letzte",
      "spoken": "letzte",
      "color": "r",
      "group": 1,
-     "start": 10.962,
-     "end": 11.246
+     "start": 8.832,
+     "end": 9.123
     },
     {
      "display": "Mensch",
      "spoken": "Mensch",
      "color": "r",
      "group": 1,
-     "start": 11.246,
-     "end": 11.404
+     "start": 9.123,
+     "end": 9.285
     },
     {
      "display": "auf",
      "spoken": "auf",
      "color": null,
      "group": 2,
-     "start": 11.404,
-     "end": 11.546
+     "start": 9.285,
+     "end": 9.431
     },
     {
      "display": "der",
      "spoken": "der",
      "color": null,
      "group": 2,
-     "start": 11.546,
-     "end": 11.688
+     "start": 9.431,
+     "end": 9.576
     },
     {
      "display": "ganzen",
      "spoken": "ganzen",
      "color": "r",
      "group": 2,
-     "start": 11.688,
-     "end": 11.973
+     "start": 9.576,
+     "end": 9.868
     },
     {
      "display": "Welt.",
      "spoken": "Welt.",
      "color": "r",
      "group": 2,
-     "start": 11.973,
-     "end": 12.12
+     "start": 9.868,
+     "end": 10.019
     }
    ],
    "spoken": "Alex, dreißig. Der letzte Mensch auf der ganzen Welt.",
-   "start": 8.65,
-   "end": 12.12
+   "start": 6.549,
+   "end": 10.019
   },
   {
    "scene": "s01",
@@ -253,85 +198,85 @@
      "spoken": "Was",
      "color": null,
      "group": 0,
-     "start": 12.34,
-     "end": 12.538
+     "start": 10.239,
+     "end": 10.424
     },
     {
      "display": "du",
      "spoken": "du",
      "color": null,
      "group": 0,
-     "start": 12.538,
-     "end": 12.73
+     "start": 10.424,
+     "end": 10.603
     },
     {
      "display": "in",
      "spoken": "in",
      "color": null,
      "group": 0,
-     "start": 12.73,
-     "end": 12.921
+     "start": 10.603,
+     "end": 10.781
     },
     {
      "display": "den",
      "spoken": "den",
      "color": null,
      "group": 0,
-     "start": 12.921,
-     "end": 13.12
+     "start": 10.781,
+     "end": 10.967
     },
     {
      "display": "nächsten",
      "spoken": "nächsten",
      "color": null,
      "group": 0,
-     "start": 13.12,
-     "end": 13.531
+     "start": 10.967,
+     "end": 11.35
     },
     {
      "display": "Stunden",
      "spoken": "Stunden",
      "color": null,
      "group": 0,
-     "start": 13.531,
-     "end": 13.934
+     "start": 11.35,
+     "end": 11.727
     },
     {
      "display": "tust,",
      "spoken": "tust,",
      "color": null,
      "group": 0,
-     "start": 13.934,
-     "end": 14.14
+     "start": 11.727,
+     "end": 11.919
     },
     {
      "display": "entscheidet",
      "spoken": "entscheidet",
      "color": null,
      "group": 1,
-     "start": 14.25,
-     "end": 14.819
+     "start": 12.029,
+     "end": 12.519
     },
     {
      "display": "über",
      "spoken": "über",
      "color": null,
      "group": 1,
-     "start": 14.819,
-     "end": 15.176
+     "start": 12.519,
+     "end": 12.826
     },
     {
      "display": "alles.",
      "spoken": "alles.",
      "color": "r",
      "group": 1,
-     "start": 15.176,
-     "end": 15.54
+     "start": 12.826,
+     "end": 13.139
     }
    ],
    "spoken": "Was du in den nächsten Stunden tust, entscheidet über alles.",
-   "start": 12.34,
-   "end": 15.54
+   "start": 10.239,
+   "end": 13.139
   },
   {
    "scene": "s02",
@@ -342,109 +287,109 @@
      "spoken": "Es",
      "color": null,
      "group": 0,
-     "start": 15.92,
-     "end": 16.055
+     "start": 13.519,
+     "end": 13.664
     },
     {
      "display": "beginnt",
      "spoken": "beginnt",
      "color": null,
      "group": 0,
-     "start": 16.055,
-     "end": 16.34
+     "start": 13.664,
+     "end": 13.969
     },
     {
      "display": "mit",
      "spoken": "mit",
      "color": null,
      "group": 0,
-     "start": 16.34,
-     "end": 16.48
+     "start": 13.969,
+     "end": 14.119
     },
     {
      "display": "einem",
      "spoken": "einem",
      "color": null,
      "group": 0,
-     "start": 16.48,
-     "end": 16.755
+     "start": 14.119,
+     "end": 14.414
     },
     {
      "display": "Grollen.",
      "spoken": "Grollen.",
      "color": "b",
      "group": 0,
-     "start": 16.755,
-     "end": 17.04
+     "start": 14.414,
+     "end": 14.719
     },
     {
      "display": "Dann",
      "spoken": "Dann",
      "color": null,
      "group": 1,
-     "start": 17.59,
-     "end": 17.75
+     "start": 15.079,
+     "end": 15.225
     },
     {
      "display": "rollt",
      "spoken": "rollt",
      "color": null,
      "group": 1,
-     "start": 17.75,
-     "end": 17.917
+     "start": 15.225,
+     "end": 15.377
     },
     {
      "display": "eine",
      "spoken": "eine",
      "color": null,
      "group": 1,
-     "start": 17.917,
-     "end": 18.215
+     "start": 15.377,
+     "end": 15.649
     },
     {
      "display": "weiße",
      "spoken": "weiße",
      "color": "r",
      "group": 1,
-     "start": 18.215,
-     "end": 18.52
+     "start": 15.649,
+     "end": 15.927
     },
     {
      "display": "Wand",
      "spoken": "Wand",
      "color": "r",
      "group": 1,
-     "start": 18.52,
-     "end": 18.68
+     "start": 15.927,
+     "end": 16.074
     },
     {
      "display": "über",
      "spoken": "über",
      "color": null,
      "group": 2,
-     "start": 18.68,
-     "end": 18.979
+     "start": 16.074,
+     "end": 16.346
     },
     {
      "display": "die",
      "spoken": "die",
      "color": null,
      "group": 2,
-     "start": 18.979,
-     "end": 19.134
+     "start": 16.346,
+     "end": 16.488
     },
     {
      "display": "Stadt.",
      "spoken": "Stadt.",
      "color": null,
      "group": 2,
-     "start": 19.134,
-     "end": 19.3
+     "start": 16.488,
+     "end": 16.639
     }
    ],
    "spoken": "Es beginnt mit einem Grollen. Dann rollt eine weiße Wand über die Stadt.",
-   "start": 15.92,
-   "end": 19.3
+   "start": 13.519,
+   "end": 16.639
   },
   {
    "scene": "s02",
@@ -455,77 +400,77 @@
      "spoken": "Du",
      "color": null,
      "group": 0,
-     "start": 19.52,
-     "end": 19.683
+     "start": 16.859,
+     "end": 17.008
     },
     {
      "display": "stehst",
      "spoken": "stehst",
      "color": null,
      "group": 0,
-     "start": 19.683,
-     "end": 19.87
+     "start": 17.008,
+     "end": 17.178
     },
     {
      "display": "nur",
      "spoken": "nur",
      "color": null,
      "group": 0,
-     "start": 19.87,
-     "end": 20.039
+     "start": 17.178,
+     "end": 17.333
     },
     {
      "display": "zufällig",
      "spoken": "zufällig",
      "color": null,
      "group": 0,
-     "start": 20.039,
-     "end": 20.541
+     "start": 17.333,
+     "end": 17.79
     },
     {
      "display": "auf",
      "spoken": "auf",
      "color": null,
      "group": 1,
-     "start": 20.541,
-     "end": 20.71
+     "start": 17.79,
+     "end": 17.944
     },
     {
      "display": "dem",
      "spoken": "dem",
      "color": null,
      "group": 1,
-     "start": 20.71,
-     "end": 20.879
+     "start": 17.944,
+     "end": 18.098
     },
     {
      "display": "Dach",
      "spoken": "Dach",
      "color": "y",
      "group": 1,
-     "start": 20.879,
-     "end": 21.054
+     "start": 18.098,
+     "end": 18.258
     },
     {
      "display": "eines",
      "spoken": "eines",
      "color": null,
      "group": 1,
-     "start": 21.054,
-     "end": 21.387
+     "start": 18.258,
+     "end": 18.561
     },
     {
      "display": "Hochhauses,",
      "spoken": "Hochhauses,",
      "color": null,
      "group": 1,
-     "start": 21.387,
-     "end": 21.9
+     "start": 18.561,
+     "end": 19.029
     }
    ],
    "spoken": "Du stehst nur zufällig auf dem Dach eines Hochhauses,",
-   "start": 19.52,
-   "end": 21.9
+   "start": 16.859,
+   "end": 19.029
   },
   {
    "scene": "s02",
@@ -536,77 +481,77 @@
      "spoken": "weil",
      "color": null,
      "group": 0,
-     "start": 22.12,
-     "end": 22.292
+     "start": 19.249,
+     "end": 19.431
     },
     {
      "display": "du",
      "spoken": "du",
      "color": null,
      "group": 0,
-     "start": 22.292,
-     "end": 22.452
+     "start": 19.431,
+     "end": 19.601
     },
     {
      "display": "dich",
      "spoken": "dich",
      "color": null,
      "group": 0,
-     "start": 22.452,
-     "end": 22.624
+     "start": 19.601,
+     "end": 19.783
     },
     {
      "display": "dort",
      "spoken": "dort",
      "color": null,
      "group": 0,
-     "start": 22.624,
-     "end": 22.797
+     "start": 19.783,
+     "end": 19.966
     },
     {
      "display": "vor",
      "spoken": "vor",
      "color": null,
      "group": 1,
-     "start": 22.797,
-     "end": 22.963
+     "start": 19.966,
+     "end": 20.142
     },
     {
      "display": "deiner",
      "spoken": "deiner",
      "color": null,
      "group": 1,
-     "start": 22.963,
-     "end": 23.295
+     "start": 20.142,
+     "end": 20.494
     },
     {
      "display": "toxischen",
      "spoken": "toxischen",
      "color": "p",
      "group": 1,
-     "start": 23.295,
-     "end": 23.794
+     "start": 20.494,
+     "end": 21.022
     },
     {
      "display": "Ex",
      "spoken": "Ex",
      "color": "p",
      "group": 1,
-     "start": 23.794,
-     "end": 23.954
+     "start": 21.022,
+     "end": 21.192
     },
     {
      "display": "versteckst.",
      "spoken": "versteckst.",
      "color": null,
      "group": 1,
-     "start": 23.954,
-     "end": 24.31
+     "start": 21.192,
+     "end": 21.569
     }
    ],
    "spoken": "weil du dich dort vor deiner toxischen Ex versteckst.",
-   "start": 22.12,
-   "end": 24.31
+   "start": 19.249,
+   "end": 21.569
   },
   {
    "scene": "s02",
@@ -617,109 +562,109 @@
      "spoken": "Unter",
      "color": null,
      "group": 0,
-     "start": 24.53,
-     "end": 24.861
+     "start": 21.789,
+     "end": 22.134
     },
     {
      "display": "dir:",
      "spoken": "dir:",
      "color": null,
      "group": 0,
-     "start": 24.861,
-     "end": 25.03
+     "start": 22.134,
+     "end": 22.309
     },
     {
      "display": "alles",
      "spoken": "alles",
      "color": "r",
      "group": 0,
-     "start": 25.4,
-     "end": 25.672
+     "start": 22.609,
+     "end": 22.867
     },
     {
      "display": "weg.",
      "spoken": "weg.",
      "color": "r",
      "group": 0,
-     "start": 25.672,
-     "end": 25.81
+     "start": 22.867,
+     "end": 22.999
     },
     {
      "display": "In",
      "spoken": "In",
      "color": null,
      "group": 1,
-     "start": 26.36,
-     "end": 26.503
+     "start": 23.549,
+     "end": 23.701
     },
     {
      "display": "weniger",
      "spoken": "weniger",
      "color": null,
      "group": 1,
-     "start": 26.503,
-     "end": 26.937
+     "start": 23.701,
+     "end": 24.161
     },
     {
      "display": "als",
      "spoken": "als",
      "color": null,
      "group": 1,
-     "start": 26.937,
-     "end": 27.086
+     "start": 24.161,
+     "end": 24.318
     },
     {
      "display": "einer",
      "spoken": "einer",
      "color": null,
      "group": 1,
-     "start": 27.086,
-     "end": 27.377
+     "start": 24.318,
+     "end": 24.627
     },
     {
      "display": "Minute",
      "spoken": "Minute",
      "color": null,
      "group": 1,
-     "start": 27.377,
-     "end": 27.806
+     "start": 24.627,
+     "end": 25.082
     },
     {
      "display": "liegen",
      "spoken": "liegen",
      "color": null,
      "group": 2,
-     "start": 27.806,
-     "end": 28.103
+     "start": 25.082,
+     "end": 25.396
     },
     {
      "display": "vierzig",
      "spoken": "vierzig",
      "color": "r",
      "group": 2,
-     "start": 28.103,
-     "end": 28.404
+     "start": 25.396,
+     "end": 25.716
     },
     {
      "display": "Meter",
      "spoken": "Meter",
      "color": "r",
      "group": 2,
-     "start": 28.404,
-     "end": 28.696
+     "start": 25.716,
+     "end": 26.025
     },
     {
      "display": "Schnee.",
      "spoken": "Schnee.",
      "color": "r",
      "group": 2,
-     "start": 28.696,
-     "end": 28.86
+     "start": 26.025,
+     "end": 26.199
     }
    ],
    "spoken": "Unter dir: alles weg. In weniger als einer Minute liegen vierzig Meter Schnee.",
-   "start": 24.53,
-   "end": 28.86
+   "start": 21.789,
+   "end": 26.199
   },
   {
    "scene": "s02",
@@ -730,77 +675,77 @@
      "spoken": "Und",
      "color": null,
      "group": 0,
-     "start": 29.08,
-     "end": 29.265
+     "start": 26.419,
+     "end": 26.604
     },
     {
      "display": "nicht",
      "spoken": "nicht",
      "color": null,
      "group": 0,
-     "start": 29.265,
-     "end": 29.463
+     "start": 26.604,
+     "end": 26.802
     },
     {
      "display": "nur",
      "spoken": "nur",
      "color": null,
      "group": 0,
-     "start": 29.463,
-     "end": 29.648
+     "start": 26.802,
+     "end": 26.987
     },
     {
      "display": "hier.",
      "spoken": "hier.",
      "color": null,
      "group": 0,
-     "start": 29.648,
-     "end": 29.84
+     "start": 26.987,
+     "end": 27.179
     },
     {
      "display": "Tokio.",
      "spoken": "Tokio.",
      "color": "r",
      "group": 1,
-     "start": 30.39,
-     "end": 30.81
+     "start": 27.729,
+     "end": 28.149
     },
     {
      "display": "New",
      "spoken": "New",
      "color": "r",
      "group": 1,
-     "start": 31.36,
-     "end": 31.566
+     "start": 28.699,
+     "end": 28.905
     },
     {
      "display": "York.",
      "spoken": "York.",
      "color": "r",
      "group": 1,
-     "start": 31.566,
-     "end": 31.78
+     "start": 28.905,
+     "end": 29.119
     },
     {
      "display": "Berlin.",
      "spoken": "Berlin.",
      "color": "r",
      "group": 1,
-     "start": 32.33,
-     "end": 32.75
+     "start": 29.669,
+     "end": 30.089
     },
     {
      "display": "Überall.",
      "spoken": "Überall.",
      "color": "r",
      "group": 2,
-     "start": 33.3,
-     "end": 33.84
+     "start": 30.639,
+     "end": 31.179
     }
    ],
    "spoken": "Und nicht nur hier. Tokio. New York. Berlin. Überall.",
-   "start": 29.08,
-   "end": 33.84
+   "start": 26.419,
+   "end": 31.179
   },
   {
    "scene": "s03",
@@ -811,85 +756,85 @@
      "spoken": "Regel",
      "color": null,
      "group": 0,
-     "start": 34.22,
-     "end": 34.632
+     "start": 31.559,
+     "end": 31.985
     },
     {
      "display": "eins:",
      "spoken": "eins:",
      "color": null,
      "group": 0,
-     "start": 34.632,
-     "end": 34.85
+     "start": 31.985,
+     "end": 32.21
     },
     {
      "display": "Bleib",
      "spoken": "Bleib",
      "color": "g",
      "group": 0,
-     "start": 35.1,
-     "end": 35.305
+     "start": 32.21,
+     "end": 32.442
     },
     {
      "display": "ruhig,",
      "spoken": "ruhig,",
      "color": "g",
      "group": 0,
-     "start": 35.305,
-     "end": 35.68
+     "start": 32.442,
+     "end": 32.868
     },
     {
      "display": "und",
      "spoken": "und",
      "color": null,
      "group": 1,
-     "start": 35.93,
-     "end": 36.374
+     "start": 32.868,
+     "end": 33.085
     },
     {
      "display": "check,",
      "spoken": "check,",
      "color": null,
      "group": 1,
-     "start": 36.374,
-     "end": 36.85
+     "start": 33.085,
+     "end": 33.317
     },
     {
      "display": "ob",
      "spoken": "ob",
      "color": null,
      "group": 1,
-     "start": 36.96,
-     "end": 37.002
+     "start": 33.317,
+     "end": 33.526
     },
     {
      "display": "du",
      "spoken": "du",
      "color": null,
      "group": 1,
-     "start": 37.002,
-     "end": 37.044
+     "start": 33.526,
+     "end": 33.735
     },
     {
      "display": "verletzt",
      "spoken": "verletzt",
      "color": null,
      "group": 1,
-     "start": 37.044,
-     "end": 37.135
+     "start": 33.735,
+     "end": 34.184
     },
     {
      "display": "bist.",
      "spoken": "bist.",
      "color": null,
      "group": 1,
-     "start": 37.135,
-     "end": 37.18
+     "start": 34.184,
+     "end": 34.409
     }
    ],
    "spoken": "Regel eins: Bleib ruhig, und check, ob du verletzt bist.",
-   "start": 34.22,
-   "end": 37.18
+   "start": 31.559,
+   "end": 34.409
   },
   {
    "scene": "s03",
@@ -900,125 +845,125 @@
      "spoken": "Verschüttete",
      "color": null,
      "group": 0,
-     "start": 37.4,
-     "end": 38.037
+     "start": 34.629,
+     "end": 35.266
     },
     {
      "display": "überleben",
      "spoken": "überleben",
      "color": null,
      "group": 0,
-     "start": 38.037,
-     "end": 38.658
+     "start": 35.266,
+     "end": 35.887
     },
     {
      "display": "die",
      "spoken": "die",
      "color": null,
      "group": 1,
-     "start": 38.658,
-     "end": 38.817
+     "start": 35.887,
+     "end": 36.046
     },
     {
      "display": "ersten",
      "spoken": "ersten",
      "color": null,
      "group": 1,
-     "start": 38.817,
-     "end": 39.136
+     "start": 36.046,
+     "end": 36.365
     },
     {
      "display": "15",
      "spoken": "fünfzehn",
      "color": "y",
      "group": 1,
-     "start": 39.136,
-     "end": 39.466
+     "start": 36.365,
+     "end": 36.695
     },
     {
      "display": "Minuten",
      "spoken": "Minuten",
      "color": "y",
      "group": 1,
-     "start": 39.466,
-     "end": 39.933
+     "start": 36.695,
+     "end": 37.162
     },
     {
      "display": "zu",
      "spoken": "zu",
      "color": null,
      "group": 2,
-     "start": 39.933,
-     "end": 40.086
+     "start": 37.162,
+     "end": 37.315
     },
     {
      "display": "rund",
      "spoken": "rund",
      "color": null,
      "group": 2,
-     "start": 40.086,
-     "end": 40.251
+     "start": 37.315,
+     "end": 37.48
     },
     {
      "display": "90",
      "spoken": "neunzig",
      "color": "g",
      "group": 2,
-     "start": 40.251,
-     "end": 40.576
+     "start": 37.48,
+     "end": 37.805
     },
     {
      "display": "Prozent.",
      "spoken": "Prozent.",
      "color": "g",
      "group": 2,
-     "start": 40.576,
-     "end": 40.9
+     "start": 37.805,
+     "end": 38.129
     },
     {
      "display": "Danach",
      "spoken": "Danach",
      "color": null,
      "group": 3,
-     "start": 41.44,
-     "end": 41.761
+     "start": 38.669,
+     "end": 38.99
     },
     {
      "display": "sinkt",
      "spoken": "sinkt",
      "color": null,
      "group": 3,
-     "start": 41.761,
-     "end": 41.933
+     "start": 38.99,
+     "end": 39.162
     },
     {
      "display": "die",
      "spoken": "die",
      "color": null,
      "group": 3,
-     "start": 41.933,
-     "end": 42.094
+     "start": 39.162,
+     "end": 39.323
     },
     {
      "display": "Chance",
      "spoken": "Chance",
      "color": null,
      "group": 3,
-     "start": 42.094,
-     "end": 42.415
+     "start": 39.323,
+     "end": 39.644
     },
     {
      "display": "rapide.",
      "spoken": "rapide.",
      "color": "r",
      "group": 3,
-     "start": 42.415,
-     "end": 42.88
+     "start": 39.644,
+     "end": 40.109
     }
    ],
    "spoken": "Verschüttete überleben die ersten fünfzehn Minuten zu rund neunzig Prozent. Danach sinkt die Chance rapide.",
-   "start": 37.4,
-   "end": 42.88
+   "start": 34.629,
+   "end": 40.109
   },
   {
    "scene": "s03",
@@ -1029,101 +974,101 @@
      "spoken": "Du",
      "color": null,
      "group": 0,
-     "start": 43.1,
-     "end": 43.297
+     "start": 40.329,
+     "end": 40.526
     },
     {
      "display": "gräbst",
      "spoken": "gräbst",
      "color": null,
      "group": 0,
-     "start": 43.297,
-     "end": 43.523
+     "start": 40.526,
+     "end": 40.752
     },
     {
      "display": "wie",
      "spoken": "wie",
      "color": null,
      "group": 0,
-     "start": 43.523,
-     "end": 43.727
+     "start": 40.752,
+     "end": 40.956
     },
     {
      "display": "verrückt.",
      "spoken": "verrückt.",
      "color": null,
      "group": 0,
-     "start": 43.727,
-     "end": 44.15
+     "start": 40.956,
+     "end": 41.379
     },
     {
      "display": "Aber",
      "spoken": "Aber",
      "color": null,
      "group": 1,
-     "start": 44.63,
-     "end": 44.963
+     "start": 41.859,
+     "end": 42.192
     },
     {
      "display": "allein",
      "spoken": "allein",
      "color": null,
      "group": 1,
-     "start": 44.963,
-     "end": 45.309
+     "start": 42.192,
+     "end": 42.538
     },
     {
      "display": "schaffst",
      "spoken": "schaffst",
      "color": null,
      "group": 2,
-     "start": 45.309,
-     "end": 45.512
+     "start": 42.538,
+     "end": 42.741
     },
     {
      "display": "du",
      "spoken": "du",
      "color": null,
      "group": 2,
-     "start": 45.512,
-     "end": 45.679
+     "start": 42.741,
+     "end": 42.908
     },
     {
      "display": "keine",
      "spoken": "keine",
      "color": "r",
      "group": 2,
-     "start": 45.679,
-     "end": 46.018
+     "start": 42.908,
+     "end": 43.247
     },
     {
      "display": "vierzig",
      "spoken": "vierzig",
      "color": "r",
      "group": 2,
-     "start": 46.018,
-     "end": 46.37
+     "start": 43.247,
+     "end": 43.599
     },
     {
      "display": "Meter",
      "spoken": "Meter",
      "color": "r",
      "group": 2,
-     "start": 46.37,
-     "end": 46.709
+     "start": 43.599,
+     "end": 43.938
     },
     {
      "display": "Schnee.",
      "spoken": "Schnee.",
      "color": null,
      "group": 2,
-     "start": 46.709,
-     "end": 46.9
+     "start": 43.938,
+     "end": 44.129
     }
    ],
    "spoken": "Du gräbst wie verrückt. Aber allein schaffst du keine vierzig Meter Schnee.",
-   "start": 43.1,
-   "end": 46.9
+   "start": 40.329,
+   "end": 44.129
   },
   {
    "scene": "s03",
@@ -1134,93 +1079,93 @@
      "spoken": "Und",
      "color": null,
      "group": 0,
-     "start": 47.12,
-     "end": 47.308
+     "start": 44.349,
+     "end": 44.537
     },
     {
      "display": "dein",
      "spoken": "dein",
      "color": null,
      "group": 0,
-     "start": 47.308,
-     "end": 47.502
+     "start": 44.537,
+     "end": 44.731
     },
     {
      "display": "Handy?",
      "spoken": "Handy?",
      "color": null,
      "group": 0,
-     "start": 47.502,
-     "end": 47.87
+     "start": 44.731,
+     "end": 45.099
     },
     {
      "display": "Kein",
      "spoken": "Kein",
      "color": "r",
      "group": 1,
-     "start": 48.42,
-     "end": 48.675
+     "start": 45.649,
+     "end": 45.904
     },
     {
      "display": "Netz.",
      "spoken": "Netz.",
      "color": "r",
      "group": 1,
-     "start": 48.675,
-     "end": 48.93
+     "start": 45.904,
+     "end": 46.159
     },
     {
      "display": "Die",
      "spoken": "Die",
      "color": null,
      "group": 2,
-     "start": 49.48,
-     "end": 49.64
+     "start": 46.709,
+     "end": 46.869
     },
     {
      "display": "Sendemasten",
      "spoken": "Sendemasten",
      "color": null,
      "group": 2,
-     "start": 49.64,
-     "end": 50.276
+     "start": 46.869,
+     "end": 47.505
     },
     {
      "display": "liegen",
      "spoken": "liegen",
      "color": null,
      "group": 3,
-     "start": 50.276,
-     "end": 50.597
+     "start": 47.505,
+     "end": 47.826
     },
     {
      "display": "unter",
      "spoken": "unter",
      "color": null,
      "group": 3,
-     "start": 50.597,
-     "end": 50.912
+     "start": 47.826,
+     "end": 48.141
     },
     {
      "display": "dem",
      "spoken": "dem",
      "color": null,
      "group": 3,
-     "start": 50.912,
-     "end": 51.072
+     "start": 48.141,
+     "end": 48.301
     },
     {
      "display": "Schnee.",
      "spoken": "Schnee.",
      "color": null,
      "group": 3,
-     "start": 51.072,
-     "end": 51.25
+     "start": 48.301,
+     "end": 48.479
     }
    ],
    "spoken": "Und dein Handy? Kein Netz. Die Sendemasten liegen unter dem Schnee.",
-   "start": 47.12,
-   "end": 51.25
+   "start": 44.349,
+   "end": 48.479
   },
   {
    "scene": "s04",
@@ -1231,101 +1176,101 @@
      "spoken": "Regel",
      "color": null,
      "group": 0,
-     "start": 51.63,
-     "end": 52.003
+     "start": 48.859,
+     "end": 49.232
     },
     {
      "display": "zwei:",
      "spoken": "zwei:",
      "color": null,
      "group": 0,
-     "start": 52.003,
-     "end": 52.2
+     "start": 49.232,
+     "end": 49.429
     },
     {
      "display": "Wärme.",
      "spoken": "Wärme.",
      "color": "b",
      "group": 0,
-     "start": 52.71,
-     "end": 53.08
+     "start": 49.939,
+     "end": 50.309
     },
     {
      "display": "Nasse",
      "spoken": "Nasse",
      "color": null,
      "group": 1,
-     "start": 53.56,
-     "end": 53.913
+     "start": 50.789,
+     "end": 51.142
     },
     {
      "display": "Kleidung",
      "spoken": "Kleidung",
      "color": null,
      "group": 1,
-     "start": 53.913,
-     "end": 54.286
+     "start": 51.142,
+     "end": 51.515
     },
     {
      "display": "kühlt",
      "spoken": "kühlt",
      "color": null,
      "group": 1,
-     "start": 54.286,
-     "end": 54.479
+     "start": 51.515,
+     "end": 51.708
     },
     {
      "display": "dich",
      "spoken": "dich",
      "color": null,
      "group": 1,
-     "start": 54.479,
-     "end": 54.665
+     "start": 51.708,
+     "end": 51.894
     },
     {
      "display": "bis",
      "spoken": "bis",
      "color": null,
      "group": 2,
-     "start": 54.665,
-     "end": 54.845
+     "start": 51.894,
+     "end": 52.074
     },
     {
      "display": "zu",
      "spoken": "zu",
      "color": null,
      "group": 2,
-     "start": 54.845,
-     "end": 55.019
+     "start": 52.074,
+     "end": 52.248
     },
     {
      "display": "25",
      "spoken": "fünfundzwanzig mal",
      "color": "r",
      "group": 2,
-     "start": 55.019,
-     "end": 55.931
+     "start": 52.248,
+     "end": 53.16
     },
     {
      "display": "schneller",
      "spoken": "schneller",
      "color": "r",
      "group": 2,
-     "start": 55.931,
-     "end": 56.31
+     "start": 53.16,
+     "end": 53.539
     },
     {
      "display": "aus.",
      "spoken": "aus.",
      "color": null,
      "group": 2,
-     "start": 56.31,
-     "end": 56.49
+     "start": 53.539,
+     "end": 53.719
     }
    ],
    "spoken": "Regel zwei: Wärme. Nasse Kleidung kühlt dich bis zu fünfundzwanzig mal schneller aus.",
-   "start": 51.63,
-   "end": 56.49
+   "start": 48.859,
+   "end": 53.719
   },
   {
    "scene": "s04",
@@ -1336,101 +1281,101 @@
      "spoken": "Also:",
      "color": null,
      "group": 0,
-     "start": 56.71,
-     "end": 57.16
+     "start": 53.939,
+     "end": 54.299
     },
     {
      "display": "Schicht",
      "spoken": "Schicht",
      "color": "g",
      "group": 0,
-     "start": 57.61,
-     "end": 57.857
+     "start": 54.559,
+     "end": 54.771
     },
     {
      "display": "für",
      "spoken": "für",
      "color": "g",
      "group": 0,
-     "start": 57.857,
-     "end": 58.073
+     "start": 54.771,
+     "end": 54.957
     },
     {
      "display": "Schicht",
      "spoken": "Schicht",
      "color": "g",
      "group": 0,
-     "start": 58.073,
-     "end": 58.32
+     "start": 54.957,
+     "end": 55.169
     },
     {
      "display": "anziehen,",
      "spoken": "anziehen,",
      "color": null,
      "group": 0,
-     "start": 58.32,
-     "end": 58.96
+     "start": 55.169,
+     "end": 55.719
     },
     {
      "display": "nicht",
      "spoken": "nicht",
      "color": "g",
      "group": 1,
-     "start": 59.2,
-     "end": 59.443
+     "start": 55.849,
+     "end": 56.061
     },
     {
      "display": "schwitzen,",
      "spoken": "schwitzen,",
      "color": "g",
      "group": 1,
-     "start": 59.443,
-     "end": 59.92
+     "start": 56.061,
+     "end": 56.479
     },
     {
      "display": "und",
      "spoken": "und",
      "color": null,
      "group": 2,
-     "start": 60.27,
-     "end": 60.475
+     "start": 56.699,
+     "end": 56.874
     },
     {
      "display": "raus",
      "spoken": "raus",
      "color": null,
      "group": 2,
-     "start": 60.475,
-     "end": 60.687
+     "start": 56.874,
+     "end": 57.056
     },
     {
      "display": "aus",
      "spoken": "aus",
      "color": null,
      "group": 2,
-     "start": 60.687,
-     "end": 60.893
+     "start": 57.056,
+     "end": 57.232
     },
     {
      "display": "dem",
      "spoken": "dem",
      "color": null,
      "group": 2,
-     "start": 60.893,
-     "end": 61.098
+     "start": 57.232,
+     "end": 57.407
     },
     {
      "display": "Wind.",
      "spoken": "Wind.",
      "color": null,
      "group": 2,
-     "start": 61.098,
-     "end": 61.31
+     "start": 57.407,
+     "end": 57.589
     }
    ],
    "spoken": "Also: Schicht für Schicht anziehen, nicht schwitzen, und raus aus dem Wind.",
-   "start": 56.71,
-   "end": 61.31
+   "start": 53.939,
+   "end": 57.589
   },
   {
    "scene": "s04",
@@ -1441,133 +1386,133 @@
      "spoken": "Achte",
      "color": null,
      "group": 0,
-     "start": 61.53,
-     "end": 61.936
+     "start": 57.809,
+     "end": 58.108
     },
     {
      "display": "auf",
      "spoken": "auf",
      "color": null,
      "group": 0,
-     "start": 61.936,
-     "end": 62.142
+     "start": 58.108,
+     "end": 58.26
     },
     {
      "display": "die",
      "spoken": "die",
      "color": null,
      "group": 0,
-     "start": 62.142,
-     "end": 62.349
+     "start": 58.26,
+     "end": 58.412
     },
     {
      "display": "Warnzeichen:",
      "spoken": "Warnzeichen:",
      "color": null,
      "group": 0,
-     "start": 62.349,
-     "end": 62.983
+     "start": 58.412,
+     "end": 58.879
     },
     {
      "display": "Zittern,",
      "spoken": "Zittern,",
      "color": "r",
      "group": 1,
-     "start": 62.983,
-     "end": 63.403
+     "start": 59.429,
+     "end": 59.809
     },
     {
      "display": "Verwirrung,",
      "spoken": "Verwirrung,",
      "color": "r",
      "group": 1,
-     "start": 63.403,
-     "end": 64.03
+     "start": 60.279,
+     "end": 60.749
     },
     {
      "display": "blaue",
      "spoken": "blaue",
      "color": "r",
      "group": 2,
-     "start": 64.03,
-     "end": 64.252
+     "start": 61.179,
+     "end": 61.385
     },
     {
      "display": "Lippen.",
      "spoken": "Lippen.",
      "color": "r",
      "group": 2,
-     "start": 64.252,
-     "end": 64.665
+     "start": 61.385,
+     "end": 61.769
     },
     {
      "display": "Hört",
      "spoken": "Hört",
      "color": null,
      "group": 3,
-     "start": 64.665,
-     "end": 64.878
+     "start": 62.319,
+     "end": 62.504
     },
     {
      "display": "das",
      "spoken": "das",
      "color": null,
      "group": 3,
-     "start": 64.878,
-     "end": 65.085
+     "start": 62.504,
+     "end": 62.682
     },
     {
      "display": "Zittern",
      "spoken": "Zittern",
      "color": null,
      "group": 3,
-     "start": 65.085,
-     "end": 65.505
+     "start": 62.682,
+     "end": 63.045
     },
     {
      "display": "plötzlich",
      "spoken": "plötzlich",
      "color": null,
      "group": 3,
-     "start": 65.505,
-     "end": 65.941
+     "start": 63.045,
+     "end": 63.421
     },
     {
      "display": "auf,",
      "spoken": "auf,",
      "color": null,
      "group": 3,
-     "start": 65.941,
-     "end": 66.147
+     "start": 63.421,
+     "end": 63.599
     },
     {
      "display": "wird",
      "spoken": "wird",
      "color": null,
      "group": 4,
-     "start": 66.147,
-     "end": 66.361
+     "start": 63.829,
+     "end": 63.992
     },
     {
      "display": "es",
      "spoken": "es",
      "color": null,
      "group": 4,
-     "start": 66.361,
-     "end": 66.56
+     "start": 63.992,
+     "end": 64.145
     },
     {
      "display": "lebensgefährlich.",
      "spoken": "lebensgefährlich.",
      "color": "r",
      "group": 4,
-     "start": 66.56,
-     "end": 67.6
+     "start": 64.145,
+     "end": 64.939
     }
    ],
    "spoken": "Achte auf die Warnzeichen: Zittern, Verwirrung, blaue Lippen. Hört das Zittern plötzlich auf, wird es lebensgefährlich.",
-   "start": 61.53,
-   "end": 67.6
+   "start": 57.809,
+   "end": 64.939
   },
   {
    "scene": "s05",
@@ -1578,125 +1523,125 @@
      "spoken": "Ohne",
      "color": null,
      "group": 0,
-     "start": 67.98,
-     "end": 68.325
+     "start": 65.319,
+     "end": 65.659
     },
     {
      "display": "Menschen",
      "spoken": "Menschen",
      "color": null,
      "group": 0,
-     "start": 68.325,
-     "end": 68.696
+     "start": 65.659,
+     "end": 66.023
     },
     {
      "display": "in",
      "spoken": "in",
      "color": null,
      "group": 0,
-     "start": 68.696,
-     "end": 68.869
+     "start": 66.023,
+     "end": 66.193
     },
     {
      "display": "den",
      "spoken": "den",
      "color": null,
      "group": 0,
-     "start": 68.869,
-     "end": 69.048
+     "start": 66.193,
+     "end": 66.369
     },
     {
      "display": "Leitstellen",
      "spoken": "Leitstellen",
      "color": null,
      "group": 0,
-     "start": 69.048,
-     "end": 69.598
+     "start": 66.369,
+     "end": 66.91
     },
     {
      "display": "fällt",
      "spoken": "fällt",
      "color": "r",
      "group": 1,
-     "start": 69.598,
-     "end": 69.79
+     "start": 66.91,
+     "end": 67.098
     },
     {
      "display": "der",
      "spoken": "der",
      "color": "r",
      "group": 1,
-     "start": 69.79,
-     "end": 69.969
+     "start": 67.098,
+     "end": 67.274
     },
     {
      "display": "Strom",
      "spoken": "Strom",
      "color": "r",
      "group": 1,
-     "start": 69.969,
-     "end": 70.161
+     "start": 67.274,
+     "end": 67.463
     },
     {
      "display": "aus.",
      "spoken": "aus.",
      "color": "r",
      "group": 1,
-     "start": 70.161,
-     "end": 70.34
+     "start": 67.463,
+     "end": 67.639
     },
     {
      "display": "Erst",
      "spoken": "Erst",
      "color": null,
      "group": 2,
-     "start": 70.89,
-     "end": 71.106
+     "start": 68.169,
+     "end": 68.359
     },
     {
      "display": "die",
      "spoken": "die",
      "color": null,
      "group": 2,
-     "start": 71.106,
-     "end": 71.314
+     "start": 68.359,
+     "end": 68.542
     },
     {
      "display": "Ampeln.",
      "spoken": "Ampeln.",
      "color": null,
      "group": 2,
-     "start": 71.314,
-     "end": 71.73
+     "start": 68.542,
+     "end": 68.909
     },
     {
      "display": "Dann",
      "spoken": "Dann",
      "color": null,
      "group": 3,
-     "start": 72.28,
-     "end": 72.492
+     "start": 69.459,
+     "end": 69.642
     },
     {
      "display": "die",
      "spoken": "die",
      "color": null,
      "group": 3,
-     "start": 72.492,
-     "end": 72.696
+     "start": 69.642,
+     "end": 69.819
     },
     {
      "display": "Heizungen.",
      "spoken": "Heizungen.",
      "color": null,
      "group": 3,
-     "start": 72.696,
-     "end": 73.31
+     "start": 69.819,
+     "end": 70.349
     }
    ],
    "spoken": "Ohne Menschen in den Leitstellen fällt der Strom aus. Erst die Ampeln. Dann die Heizungen.",
-   "start": 67.98,
-   "end": 73.31
+   "start": 65.319,
+   "end": 70.349
   },
   {
    "scene": "s05",
@@ -1707,157 +1652,157 @@
      "spoken": "Regel",
      "color": null,
      "group": 0,
-     "start": 73.53,
-     "end": 73.903
+     "start": 70.569,
+     "end": 70.942
     },
     {
      "display": "drei:",
      "spoken": "drei:",
      "color": null,
      "group": 0,
-     "start": 73.903,
-     "end": 74.1
+     "start": 70.942,
+     "end": 71.139
     },
     {
      "display": "Bau",
      "spoken": "Bau",
      "color": "y",
      "group": 0,
-     "start": 74.55,
-     "end": 74.693
+     "start": 71.589,
+     "end": 71.732
     },
     {
      "display": "dir",
      "spoken": "dir",
      "color": "y",
      "group": 0,
-     "start": 74.693,
-     "end": 74.836
+     "start": 71.732,
+     "end": 71.875
     },
     {
      "display": "eine",
      "spoken": "eine",
      "color": "y",
      "group": 0,
-     "start": 74.836,
-     "end": 75.111
+     "start": 71.875,
+     "end": 72.15
     },
     {
      "display": "Schneehöhle.",
      "spoken": "Schneehöhle.",
      "color": "y",
      "group": 0,
-     "start": 75.111,
-     "end": 75.55
+     "start": 72.15,
+     "end": 72.589
     },
     {
      "display": "Schnee",
      "spoken": "Schnee",
      "color": null,
      "group": 1,
-     "start": 76.1,
-     "end": 76.318
+     "start": 73.139,
+     "end": 73.357
     },
     {
      "display": "isoliert.",
      "spoken": "isoliert.",
      "color": null,
      "group": 1,
-     "start": 76.318,
-     "end": 76.9
+     "start": 73.357,
+     "end": 73.939
     },
     {
      "display": "Drinnen",
      "spoken": "Drinnen",
      "color": null,
      "group": 2,
-     "start": 77.34,
-     "end": 77.685
+     "start": 74.379,
+     "end": 74.724
     },
     {
      "display": "bleibt",
      "spoken": "bleibt",
      "color": null,
      "group": 2,
-     "start": 77.685,
-     "end": 77.872
+     "start": 74.724,
+     "end": 74.911
     },
     {
      "display": "es",
      "spoken": "es",
      "color": null,
      "group": 2,
-     "start": 77.872,
-     "end": 78.036
+     "start": 74.911,
+     "end": 75.075
     },
     {
      "display": "um",
      "spoken": "um",
      "color": null,
      "group": 2,
-     "start": 78.036,
-     "end": 78.199
+     "start": 75.075,
+     "end": 75.238
     },
     {
      "display": "null",
      "spoken": "null",
      "color": "g",
      "group": 2,
-     "start": 78.199,
-     "end": 78.375
+     "start": 75.238,
+     "end": 75.414
     },
     {
      "display": "Grad,",
      "spoken": "Grad,",
      "color": "g",
      "group": 2,
-     "start": 78.375,
-     "end": 78.55
+     "start": 75.414,
+     "end": 75.589
     },
     {
      "display": "draußen",
      "spoken": "draußen",
      "color": null,
      "group": 3,
-     "start": 78.8,
-     "end": 79.172
+     "start": 75.839,
+     "end": 76.211
     },
     {
      "display": "sind",
      "spoken": "sind",
      "color": null,
      "group": 3,
-     "start": 79.172,
-     "end": 79.361
+     "start": 76.211,
+     "end": 76.4
     },
     {
      "display": "es",
      "spoken": "es",
      "color": null,
      "group": 3,
-     "start": 79.361,
-     "end": 79.537
+     "start": 76.4,
+     "end": 76.576
     },
     {
      "display": "minus",
      "spoken": "minus",
      "color": "r",
      "group": 3,
-     "start": 79.537,
-     "end": 79.896
+     "start": 76.576,
+     "end": 76.935
     },
     {
      "display": "zwanzig.",
      "spoken": "zwanzig.",
      "color": "r",
      "group": 3,
-     "start": 79.896,
-     "end": 80.268
+     "start": 76.935,
+     "end": 77.307
     }
    ],
    "spoken": "Regel drei: Bau dir eine Schneehöhle. Schnee isoliert. Drinnen bleibt es um null Grad, draußen sind es minus zwanzig.",
-   "start": 73.53,
-   "end": 80.268
+   "start": 70.569,
+   "end": 77.308
   },
   {
    "scene": "s05",
@@ -1868,133 +1813,133 @@
      "spoken": "Aber:",
      "color": null,
      "group": 0,
-     "start": 80.488,
-     "end": 80.818
+     "start": 77.528,
+     "end": 77.898
     },
     {
      "display": "Stich",
      "spoken": "Stich",
      "color": null,
      "group": 0,
-     "start": 81.108,
-     "end": 81.266
+     "start": 78.128,
+     "end": 78.285
     },
     {
      "display": "ein",
      "spoken": "ein",
      "color": null,
      "group": 0,
-     "start": 81.266,
-     "end": 81.413
+     "start": 78.285,
+     "end": 78.431
     },
     {
      "display": "Luftloch",
      "spoken": "Luftloch",
      "color": "y",
      "group": 0,
-     "start": 81.413,
-     "end": 81.719
+     "start": 78.431,
+     "end": 78.734
     },
     {
      "display": "in",
      "spoken": "in",
      "color": null,
      "group": 0,
-     "start": 81.719,
-     "end": 81.861
+     "start": 78.734,
+     "end": 78.875
     },
     {
      "display": "die",
      "spoken": "die",
      "color": null,
      "group": 0,
-     "start": 81.861,
-     "end": 82.008
+     "start": 78.875,
+     "end": 79.021
     },
     {
      "display": "Decke.",
      "spoken": "Decke.",
      "color": null,
      "group": 0,
-     "start": 82.008,
-     "end": 82.298
+     "start": 79.021,
+     "end": 79.308
     },
     {
      "display": "Eine",
      "spoken": "Eine",
      "color": null,
      "group": 1,
-     "start": 82.848,
-     "end": 83.154
+     "start": 79.818,
+     "end": 80.105
     },
     {
      "display": "Kerze",
      "spoken": "Kerze",
      "color": null,
      "group": 1,
-     "start": 83.154,
-     "end": 83.465
+     "start": 80.105,
+     "end": 80.397
     },
     {
      "display": "ohne",
      "spoken": "ohne",
      "color": null,
      "group": 1,
-     "start": 83.465,
-     "end": 83.771
+     "start": 80.397,
+     "end": 80.684
     },
     {
      "display": "Luft",
      "spoken": "Luft",
      "color": null,
      "group": 1,
-     "start": 83.771,
-     "end": 83.935
+     "start": 80.684,
+     "end": 80.838
     },
     {
      "display": "kann",
      "spoken": "kann",
      "color": null,
      "group": 2,
-     "start": 83.935,
-     "end": 84.099
+     "start": 80.838,
+     "end": 80.993
     },
     {
      "display": "dich",
      "spoken": "dich",
      "color": null,
      "group": 2,
-     "start": 84.099,
-     "end": 84.263
+     "start": 80.993,
+     "end": 81.147
     },
     {
      "display": "mit",
      "spoken": "mit",
      "color": null,
      "group": 2,
-     "start": 84.263,
-     "end": 84.421
+     "start": 81.147,
+     "end": 81.295
     },
     {
      "display": "Kohlenmonoxid",
      "spoken": "Kohlenmonoxid",
      "color": "r",
      "group": 2,
-     "start": 84.421,
-     "end": 85.203
+     "start": 81.295,
+     "end": 82.029
     },
     {
      "display": "vergiften.",
      "spoken": "vergiften.",
      "color": "r",
      "group": 2,
-     "start": 85.203,
-     "end": 85.678
+     "start": 82.029,
+     "end": 82.475
     }
    ],
    "spoken": "Aber: Stich ein Luftloch in die Decke. Eine Kerze ohne Luft kann dich mit Kohlenmonoxid vergiften.",
-   "start": 80.488,
-   "end": 85.678
+   "start": 77.528,
+   "end": 82.475
   },
   {
    "scene": "s06",
@@ -2005,101 +1950,101 @@
      "spoken": "Regel",
      "color": null,
      "group": 0,
-     "start": 86.058,
-     "end": 86.451
+     "start": 82.855,
+     "end": 83.248
     },
     {
      "display": "vier:",
      "spoken": "vier:",
      "color": null,
      "group": 0,
-     "start": 86.451,
-     "end": 86.658
+     "start": 83.248,
+     "end": 83.455
     },
     {
      "display": "Iss",
      "spoken": "Iss",
      "color": "r",
      "group": 0,
-     "start": 87.008,
-     "end": 87.186
+     "start": 83.805,
+     "end": 83.983
     },
     {
      "display": "keinen",
      "spoken": "keinen",
      "color": "r",
      "group": 0,
-     "start": 87.186,
-     "end": 87.541
+     "start": 83.983,
+     "end": 84.338
     },
     {
      "display": "Schnee.",
      "spoken": "Schnee.",
      "color": "r",
      "group": 0,
-     "start": 87.541,
-     "end": 87.738
+     "start": 84.338,
+     "end": 84.535
     },
     {
      "display": "Er",
      "spoken": "Er",
      "color": null,
      "group": 1,
-     "start": 88.028,
-     "end": 88.179
+     "start": 84.825,
+     "end": 84.976
     },
     {
      "display": "kühlt",
      "spoken": "kühlt",
      "color": "r",
      "group": 1,
-     "start": 88.179,
-     "end": 88.346
+     "start": 84.976,
+     "end": 85.143
     },
     {
      "display": "dich",
      "spoken": "dich",
      "color": "r",
      "group": 1,
-     "start": 88.346,
-     "end": 88.508
+     "start": 85.143,
+     "end": 85.305
     },
     {
      "display": "aus",
      "spoken": "aus",
      "color": "r",
      "group": 1,
-     "start": 88.508,
-     "end": 88.664
+     "start": 85.305,
+     "end": 85.461
     },
     {
      "display": "und",
      "spoken": "und",
      "color": null,
      "group": 2,
-     "start": 88.664,
-     "end": 88.82
+     "start": 85.461,
+     "end": 85.617
     },
     {
      "display": "kostet",
      "spoken": "kostet",
      "color": null,
      "group": 2,
-     "start": 88.82,
-     "end": 89.132
+     "start": 85.617,
+     "end": 85.929
     },
     {
      "display": "Energie.",
      "spoken": "Energie.",
      "color": null,
      "group": 2,
-     "start": 89.132,
-     "end": 89.589
+     "start": 85.929,
+     "end": 86.386
     }
    ],
    "spoken": "Regel vier: Iss keinen Schnee. Er kühlt dich aus und kostet Energie.",
-   "start": 86.058,
-   "end": 89.59
+   "start": 82.855,
+   "end": 86.386
   },
   {
    "scene": "s06",
@@ -2110,77 +2055,77 @@
      "spoken": "Schmelz",
      "color": null,
      "group": 0,
-     "start": 89.81,
-     "end": 90.02
+     "start": 86.606,
+     "end": 86.805
     },
     {
      "display": "ihn",
      "spoken": "ihn",
      "color": null,
      "group": 0,
-     "start": 90.02,
-     "end": 90.204
+     "start": 86.805,
+     "end": 86.979
     },
     {
      "display": "lieber,",
      "spoken": "lieber,",
      "color": null,
      "group": 0,
-     "start": 90.204,
-     "end": 90.571
+     "start": 86.979,
+     "end": 87.328
     },
     {
      "display": "über",
      "spoken": "über",
      "color": null,
      "group": 1,
-     "start": 90.571,
-     "end": 90.925
+     "start": 87.328,
+     "end": 87.664
     },
     {
      "display": "einer",
      "spoken": "einer",
      "color": null,
      "group": 1,
-     "start": 90.925,
-     "end": 91.286
+     "start": 87.664,
+     "end": 88.006
     },
     {
      "display": "Kerze,",
      "spoken": "Kerze,",
      "color": null,
      "group": 1,
-     "start": 91.286,
-     "end": 91.647
+     "start": 88.006,
+     "end": 88.348
     },
     {
      "display": "einem",
      "spoken": "einem",
      "color": null,
      "group": 2,
-     "start": 91.647,
-     "end": 92.008
+     "start": 88.348,
+     "end": 88.691
     },
     {
      "display": "Gaskocher,",
      "spoken": "Gaskocher,",
      "color": null,
      "group": 2,
-     "start": 92.008,
-     "end": 92.559
+     "start": 88.691,
+     "end": 89.213
     },
     {
      "display": "irgendwas.",
      "spoken": "irgendwas.",
      "color": null,
      "group": 3,
-     "start": 92.559,
-     "end": 93.11
+     "start": 89.213,
+     "end": 89.736
     }
    ],
    "spoken": "Schmelz ihn lieber, über einer Kerze, einem Gaskocher, irgendwas.",
-   "start": 89.81,
-   "end": 93.11
+   "start": 86.606,
+   "end": 89.736
   },
   {
    "scene": "s06",
@@ -2191,109 +2136,109 @@
      "spoken": "Das",
      "color": null,
      "group": 0,
-     "start": 93.33,
-     "end": 93.501
+     "start": 89.956,
+     "end": 90.147
     },
     {
      "display": "Gute:",
      "spoken": "Gute:",
      "color": null,
      "group": 0,
-     "start": 93.501,
-     "end": 93.83
+     "start": 90.147,
+     "end": 90.516
     },
     {
      "display": "Die",
      "spoken": "Die",
      "color": null,
      "group": 1,
-     "start": 94.08,
-     "end": 94.234
+     "start": 91.066,
+     "end": 91.226
     },
     {
      "display": "ganze",
      "spoken": "ganze",
      "color": null,
      "group": 1,
-     "start": 94.234,
-     "end": 94.535
+     "start": 91.226,
+     "end": 91.542
     },
     {
      "display": "Welt",
      "spoken": "Welt",
      "color": null,
      "group": 1,
-     "start": 94.535,
-     "end": 94.694
+     "start": 91.542,
+     "end": 91.708
     },
     {
      "display": "ist",
      "spoken": "ist",
      "color": null,
      "group": 1,
-     "start": 94.694,
-     "end": 94.848
+     "start": 91.708,
+     "end": 91.868
     },
     {
      "display": "jetzt",
      "spoken": "jetzt",
      "color": null,
      "group": 1,
-     "start": 94.848,
-     "end": 95.013
+     "start": 91.868,
+     "end": 92.04
     },
     {
      "display": "ein",
      "spoken": "ein",
      "color": null,
      "group": 2,
-     "start": 95.013,
-     "end": 95.166
+     "start": 92.04,
+     "end": 92.2
     },
     {
      "display": "riesiger",
      "spoken": "riesiger",
      "color": "g",
      "group": 2,
-     "start": 95.166,
-     "end": 95.622
+     "start": 92.2,
+     "end": 92.676
     },
     {
      "display": "Gefrierschrank.",
      "spoken": "Gefrierschrank.",
      "color": "g",
      "group": 2,
-     "start": 95.622,
-     "end": 96.11
+     "start": 92.676,
+     "end": 93.186
     },
     {
      "display": "Essen",
      "spoken": "Essen",
      "color": null,
      "group": 3,
-     "start": 96.56,
-     "end": 96.902
+     "start": 93.736,
+     "end": 94.121
     },
     {
      "display": "verdirbt",
      "spoken": "verdirbt",
      "color": "g",
      "group": 3,
-     "start": 96.902,
-     "end": 97.263
+     "start": 94.121,
+     "end": 94.526
     },
     {
      "display": "nicht.",
      "spoken": "nicht.",
      "color": "g",
      "group": 3,
-     "start": 97.263,
-     "end": 97.45
+     "start": 94.526,
+     "end": 94.736
     }
    ],
    "spoken": "Das Gute: Die ganze Welt ist jetzt ein riesiger Gefrierschrank. Essen verdirbt nicht.",
-   "start": 93.33,
-   "end": 97.45
+   "start": 89.956,
+   "end": 94.736
   },
   {
    "scene": "s06",
@@ -2304,125 +2249,125 @@
      "spoken": "Und",
      "color": null,
      "group": 0,
-     "start": 97.67,
-     "end": 97.874
+     "start": 94.956,
+     "end": 95.164
     },
     {
      "display": "iss",
      "spoken": "iss",
      "color": null,
      "group": 0,
-     "start": 97.874,
-     "end": 98.078
+     "start": 95.164,
+     "end": 95.371
     },
     {
      "display": "viel.",
      "spoken": "viel.",
      "color": "g",
      "group": 0,
-     "start": 98.078,
-     "end": 98.29
+     "start": 95.371,
+     "end": 95.586
     },
     {
      "display": "In",
      "spoken": "In",
      "color": null,
      "group": 1,
-     "start": 98.84,
-     "end": 98.994
+     "start": 96.136,
+     "end": 96.288
     },
     {
      "display": "der",
      "spoken": "der",
      "color": null,
      "group": 1,
-     "start": 98.994,
-     "end": 99.154
+     "start": 96.288,
+     "end": 96.446
     },
     {
      "display": "Kälte",
      "spoken": "Kälte",
      "color": null,
      "group": 1,
-     "start": 99.154,
-     "end": 99.467
+     "start": 96.446,
+     "end": 96.755
     },
     {
      "display": "verbrennt",
      "spoken": "verbrennt",
      "color": null,
      "group": 1,
-     "start": 99.467,
-     "end": 99.804
+     "start": 96.755,
+     "end": 97.087
     },
     {
      "display": "dein",
      "spoken": "dein",
      "color": null,
      "group": 1,
-     "start": 99.804,
-     "end": 99.969
+     "start": 97.087,
+     "end": 97.25
     },
     {
      "display": "Körper",
      "spoken": "Körper",
      "color": null,
      "group": 1,
-     "start": 99.969,
-     "end": 100.289
+     "start": 97.25,
+     "end": 97.566
     },
     {
      "display": "bis",
      "spoken": "bis",
      "color": null,
      "group": 2,
-     "start": 100.289,
-     "end": 100.448
+     "start": 97.566,
+     "end": 97.723
     },
     {
      "display": "zu",
      "spoken": "zu",
      "color": null,
      "group": 2,
-     "start": 100.448,
-     "end": 100.602
+     "start": 97.723,
+     "end": 97.875
     },
     {
      "display": "4.000",
      "spoken": "viertausend",
      "color": "r",
      "group": 2,
-     "start": 100.602,
-     "end": 101.093
+     "start": 97.875,
+     "end": 98.359
     },
     {
      "display": "Kalorien",
      "spoken": "Kalorien",
      "color": "r",
      "group": 2,
-     "start": 101.093,
-     "end": 101.566
+     "start": 98.359,
+     "end": 98.826
     },
     {
      "display": "am",
      "spoken": "am",
      "color": null,
      "group": 2,
-     "start": 101.566,
-     "end": 101.72
+     "start": 98.826,
+     "end": 98.978
     },
     {
      "display": "Tag.",
      "spoken": "Tag.",
      "color": null,
      "group": 2,
-     "start": 101.72,
-     "end": 101.88
+     "start": 98.978,
+     "end": 99.136
     }
    ],
    "spoken": "Und iss viel. In der Kälte verbrennt dein Körper bis zu viertausend Kalorien am Tag.",
-   "start": 97.67,
-   "end": 101.88
+   "start": 94.956,
+   "end": 99.136
   },
   {
    "scene": "s07",
@@ -2433,109 +2378,109 @@
      "spoken": "Regel",
      "color": null,
      "group": 0,
-     "start": 102.26,
-     "end": 102.64
+     "start": 99.516,
+     "end": 99.948
     },
     {
      "display": "fünf:",
      "spoken": "fünf:",
      "color": null,
      "group": 0,
-     "start": 102.64,
-     "end": 102.84
+     "start": 99.948,
+     "end": 100.176
     },
     {
      "display": "Such",
      "spoken": "Such",
      "color": "y",
      "group": 0,
-     "start": 103.21,
-     "end": 103.367
+     "start": 100.446,
+     "end": 100.593
     },
     {
      "display": "nach",
      "spoken": "nach",
      "color": "y",
      "group": 0,
-     "start": 103.367,
-     "end": 103.525
+     "start": 100.593,
+     "end": 100.74
     },
     {
      "display": "anderen.",
      "spoken": "anderen.",
      "color": "y",
      "group": 0,
-     "start": 103.525,
-     "end": 103.97
+     "start": 100.74,
+     "end": 101.156
     },
     {
      "display": "Mit",
      "spoken": "Mit",
      "color": null,
      "group": 1,
-     "start": 104.42,
-     "end": 104.582
+     "start": 101.616,
+     "end": 101.766
     },
     {
      "display": "einem",
      "spoken": "einem",
      "color": null,
      "group": 1,
-     "start": 104.582,
-     "end": 104.901
+     "start": 101.766,
+     "end": 102.061
     },
     {
      "display": "Radio.",
      "spoken": "Radio.",
      "color": null,
      "group": 1,
-     "start": 104.901,
-     "end": 105.22
+     "start": 102.061,
+     "end": 102.356
     },
     {
      "display": "Mit",
      "spoken": "Mit",
      "color": null,
      "group": 2,
-     "start": 105.54,
-     "end": 105.717
+     "start": 102.896,
+     "end": 103.07
     },
     {
      "display": "Licht",
      "spoken": "Licht",
      "color": null,
      "group": 2,
-     "start": 105.717,
-     "end": 105.906
+     "start": 103.07,
+     "end": 103.257
     },
     {
      "display": "auf",
      "spoken": "auf",
      "color": null,
      "group": 2,
-     "start": 105.906,
-     "end": 106.083
+     "start": 103.257,
+     "end": 103.431
     },
     {
      "display": "dem",
      "spoken": "dem",
      "color": null,
      "group": 2,
-     "start": 106.083,
-     "end": 106.259
+     "start": 103.431,
+     "end": 103.606
     },
     {
      "display": "Dach.",
      "spoken": "Dach.",
      "color": null,
      "group": 2,
-     "start": 106.259,
-     "end": 106.442
+     "start": 103.606,
+     "end": 103.786
     }
    ],
    "spoken": "Regel fünf: Such nach anderen. Mit einem Radio. Mit Licht auf dem Dach.",
-   "start": 102.26,
-   "end": 106.442
+   "start": 99.516,
+   "end": 103.786
   },
   {
    "scene": "s07",
@@ -2546,37 +2491,37 @@
      "spoken": "Drei",
      "color": null,
      "group": 0,
-     "start": 106.862,
-     "end": 107.051
+     "start": 104.206,
+     "end": 104.403
     },
     {
      "display": "Tage",
      "spoken": "Tage",
      "color": null,
      "group": 0,
-     "start": 107.051,
-     "end": 107.403
+     "start": 104.403,
+     "end": 104.769
     },
     {
      "display": "lang:",
      "spoken": "lang:",
      "color": null,
      "group": 0,
-     "start": 107.403,
-     "end": 107.592
+     "start": 104.769,
+     "end": 104.966
     },
     {
      "display": "Stille.",
      "spoken": "Stille.",
      "color": "r",
      "group": 1,
-     "start": 108.142,
-     "end": 108.536
+     "start": 105.366,
+     "end": 105.726
     }
    ],
    "spoken": "Drei Tage lang: Stille.",
-   "start": 106.862,
-   "end": 108.536
+   "start": 104.206,
+   "end": 105.726
   },
   {
    "scene": "s07",
@@ -2587,85 +2532,85 @@
      "spoken": "Dann,",
      "color": null,
      "group": 0,
-     "start": 109.156,
-     "end": 109.361
+     "start": 106.346,
+     "end": 106.636
     },
     {
      "display": "in",
      "spoken": "in",
      "color": null,
      "group": 0,
-     "start": 109.361,
-     "end": 109.551
+     "start": 107.076,
+     "end": 107.209
     },
     {
      "display": "der",
      "spoken": "der",
      "color": null,
      "group": 0,
-     "start": 109.551,
-     "end": 109.749
+     "start": 107.209,
+     "end": 107.347
     },
     {
      "display": "vierten",
      "spoken": "vierten",
      "color": null,
      "group": 0,
-     "start": 109.749,
-     "end": 110.152
+     "start": 107.347,
+     "end": 107.628
     },
     {
      "display": "Nacht,",
      "spoken": "Nacht,",
      "color": null,
      "group": 0,
-     "start": 110.152,
-     "end": 110.364
+     "start": 107.628,
+     "end": 107.776
     },
     {
      "display": "siehst",
      "spoken": "siehst",
      "color": null,
      "group": 1,
-     "start": 110.364,
-     "end": 110.583
+     "start": 108.096,
+     "end": 108.332
     },
     {
      "display": "du",
      "spoken": "du",
      "color": null,
      "group": 1,
-     "start": 110.583,
-     "end": 110.773
+     "start": 108.332,
+     "end": 108.537
     },
     {
      "display": "Fußspuren",
      "spoken": "Fußspuren",
      "color": "r",
      "group": 1,
-     "start": 110.773,
-     "end": 111.366
+     "start": 108.537,
+     "end": 109.175
     },
     {
      "display": "im",
      "spoken": "im",
      "color": null,
      "group": 1,
-     "start": 111.366,
-     "end": 111.557
+     "start": 109.175,
+     "end": 109.38
     },
     {
      "display": "Schnee.",
      "spoken": "Schnee.",
      "color": null,
      "group": 1,
-     "start": 111.557,
-     "end": 111.776
+     "start": 109.38,
+     "end": 109.616
     }
    ],
    "spoken": "Dann, in der vierten Nacht, siehst du Fußspuren im Schnee.",
-   "start": 109.156,
-   "end": 111.776
+   "start": 106.346,
+   "end": 109.616
   },
   {
    "scene": "s07",
@@ -2676,53 +2621,53 @@
      "spoken": "Riesig.",
      "color": "r",
      "group": 0,
-     "start": 112.296,
-     "end": 112.716
+     "start": 110.136,
+     "end": 110.636
     },
     {
      "display": "Doppelt",
      "spoken": "Doppelt",
      "color": "r",
      "group": 1,
-     "start": 113.096,
-     "end": 113.407
+     "start": 111.186,
+     "end": 111.486
     },
     {
      "display": "so",
      "spoken": "so",
      "color": "r",
      "group": 1,
-     "start": 113.407,
-     "end": 113.555
+     "start": 111.486,
+     "end": 111.627
     },
     {
      "display": "groß",
      "spoken": "groß",
      "color": "r",
      "group": 1,
-     "start": 113.555,
-     "end": 113.713
+     "start": 111.627,
+     "end": 111.78
     },
     {
      "display": "wie",
      "spoken": "wie",
      "color": null,
      "group": 1,
-     "start": 113.713,
-     "end": 113.866
+     "start": 111.78,
+     "end": 111.927
     },
     {
      "display": "deine.",
      "spoken": "deine.",
      "color": null,
      "group": 1,
-     "start": 113.866,
-     "end": 114.166
+     "start": 111.927,
+     "end": 112.216
     }
    ],
    "spoken": "Riesig. Doppelt so groß wie deine.",
-   "start": 112.296,
-   "end": 114.166
+   "start": 110.136,
+   "end": 112.216
   },
   {
    "scene": "s07",
@@ -2733,45 +2678,45 @@
      "spoken": "Und",
      "color": null,
      "group": 0,
-     "start": 114.886,
-     "end": 115.109
+     "start": 112.936,
+     "end": 113.169
     },
     {
      "display": "sie",
      "spoken": "sie",
      "color": null,
      "group": 0,
-     "start": 115.109,
-     "end": 115.332
+     "start": 113.169,
+     "end": 113.402
     },
     {
      "display": "sind",
      "spoken": "sind",
      "color": null,
      "group": 0,
-     "start": 115.332,
-     "end": 115.563
+     "start": 113.402,
+     "end": 113.643
     },
     {
      "display": "rot.",
      "spoken": "rot.",
      "color": "r",
      "group": 0,
-     "start": 115.563,
-     "end": 115.786
+     "start": 113.643,
+     "end": 113.876
     },
     {
      "display": "Blut.",
      "spoken": "Blut.",
      "color": "r",
      "group": 1,
-     "start": 116.336,
-     "end": 116.736
+     "start": 114.426,
+     "end": 114.836
     }
    ],
    "spoken": "Und sie sind rot. Blut.",
-   "start": 114.886,
-   "end": 116.736
+   "start": 112.936,
+   "end": 114.836
   },
   {
    "scene": "s07",
@@ -2782,53 +2727,53 @@
      "spoken": "Sie",
      "color": null,
      "group": 0,
-     "start": 117.356,
-     "end": 117.51
+     "start": 115.456,
+     "end": 115.615
     },
     {
      "display": "führen",
      "spoken": "führen",
      "color": null,
      "group": 0,
-     "start": 117.51,
-     "end": 117.818
+     "start": 115.615,
+     "end": 115.933
     },
     {
      "display": "direkt",
      "spoken": "direkt",
      "color": "r",
      "group": 0,
-     "start": 117.818,
-     "end": 118.127
+     "start": 115.933,
+     "end": 116.251
     },
     {
      "display": "zu",
      "spoken": "zu",
      "color": "r",
      "group": 1,
-     "start": 118.127,
-     "end": 118.275
+     "start": 116.251,
+     "end": 116.405
     },
     {
      "display": "deiner",
      "spoken": "deiner",
      "color": "r",
      "group": 1,
-     "start": 118.275,
-     "end": 118.583
+     "start": 116.405,
+     "end": 116.723
     },
     {
      "display": "Höhle.",
      "spoken": "Höhle.",
      "color": "r",
      "group": 1,
-     "start": 118.583,
-     "end": 118.886
+     "start": 116.723,
+     "end": 117.035
     }
    ],
    "spoken": "Sie führen direkt zu deiner Höhle.",
-   "start": 117.356,
-   "end": 118.886
+   "start": 115.456,
+   "end": 117.036
   },
   {
    "scene": "s07",
@@ -2839,61 +2784,61 @@
      "spoken": "Du",
      "color": null,
      "group": 0,
-     "start": 119.506,
-     "end": 119.685
+     "start": 117.656,
+     "end": 117.838
     },
     {
      "display": "bist",
      "spoken": "bist",
      "color": null,
      "group": 0,
-     "start": 119.685,
-     "end": 119.877
+     "start": 117.838,
+     "end": 118.034
     },
     {
      "display": "der",
      "spoken": "der",
      "color": null,
      "group": 0,
-     "start": 119.877,
-     "end": 120.062
+     "start": 118.034,
+     "end": 118.223
     },
     {
      "display": "letzte",
      "spoken": "letzte",
      "color": "r",
      "group": 0,
-     "start": 120.062,
-     "end": 120.433
+     "start": 118.223,
+     "end": 118.602
     },
     {
      "display": "Mensch",
      "spoken": "Mensch",
      "color": "r",
      "group": 0,
-     "start": 120.433,
-     "end": 120.638
+     "start": 118.602,
+     "end": 118.811
     },
     {
      "display": "der",
      "spoken": "der",
      "color": null,
      "group": 0,
-     "start": 120.638,
-     "end": 120.824
+     "start": 118.811,
+     "end": 119.0
     },
     {
      "display": "Welt.",
      "spoken": "Welt.",
      "color": null,
      "group": 0,
-     "start": 120.824,
-     "end": 121.016
+     "start": 119.0,
+     "end": 119.196
     }
    ],
    "spoken": "Du bist der letzte Mensch der Welt.",
-   "start": 119.506,
-   "end": 121.016
+   "start": 117.656,
+   "end": 119.196
   },
   {
    "scene": "s07",
@@ -2904,37 +2849,37 @@
      "spoken": "Also:",
      "color": null,
      "group": 0,
-     "start": 121.736,
-     "end": 122.086
+     "start": 119.916,
+     "end": 120.196
     },
     {
      "display": "wer",
      "spoken": "wer",
      "color": "r",
      "group": 1,
-     "start": 122.526,
-     "end": 122.786
+     "start": 120.476,
+     "end": 120.746
     },
     {
      "display": "ist",
      "spoken": "ist",
      "color": "r",
      "group": 1,
-     "start": 122.786,
-     "end": 123.046
+     "start": 120.746,
+     "end": 121.016
     },
     {
      "display": "das?",
      "spoken": "das?",
      "color": "r",
      "group": 1,
-     "start": 123.046,
-     "end": 123.306
+     "start": 121.016,
+     "end": 121.286
     }
    ],
    "spoken": "Also: wer ist das?",
-   "start": 121.736,
-   "end": 123.306
+   "start": 119.916,
+   "end": 121.286
   },
   {
    "scene": "s08",
@@ -2945,61 +2890,61 @@
      "spoken": "Wenn",
      "color": null,
      "group": 0,
-     "start": 124.186,
-     "end": 124.397
+     "start": 122.166,
+     "end": 122.392
     },
     {
      "display": "Teil",
      "spoken": "Teil",
      "color": "y",
      "group": 0,
-     "start": 124.397,
-     "end": 124.607
+     "start": 122.392,
+     "end": 122.617
     },
     {
      "display": "2",
      "spoken": "2",
      "color": "y",
      "group": 0,
-     "start": 124.607,
-     "end": 124.789
+     "start": 122.617,
+     "end": 122.812
     },
     {
      "display": "kommen",
      "spoken": "kommen",
      "color": null,
      "group": 0,
-     "start": 124.789,
-     "end": 125.195
+     "start": 122.812,
+     "end": 123.247
     },
     {
      "display": "soll,",
      "spoken": "soll,",
      "color": null,
      "group": 0,
-     "start": 125.195,
-     "end": 125.406
+     "start": 123.247,
+     "end": 123.473
     },
     {
      "display": "folg",
      "spoken": "folg",
      "color": "p",
      "group": 1,
-     "start": 125.656,
-     "end": 125.905
+     "start": 123.473,
+     "end": 123.698
     },
     {
      "display": "mir.",
      "spoken": "mir.",
      "color": "p",
      "group": 1,
-     "start": 125.905,
-     "end": 126.146
+     "start": 123.698,
+     "end": 123.916
     }
    ],
    "spoken": "Wenn Teil 2 kommen soll, folg mir.",
-   "start": 124.186,
-   "end": 126.146
+   "start": 122.166,
+   "end": 123.916
   },
   {
    "scene": "s08",
@@ -3010,77 +2955,141 @@
      "spoken": "Und",
      "color": null,
      "group": 0,
-     "start": 126.366,
-     "end": 126.505
+     "start": 124.136,
+     "end": 124.27
     },
     {
      "display": "schreib",
      "spoken": "schreib",
      "color": null,
      "group": 0,
-     "start": 126.505,
-     "end": 126.665
+     "start": 124.27,
+     "end": 124.424
     },
     {
      "display": "in",
      "spoken": "in",
      "color": null,
      "group": 0,
-     "start": 126.665,
-     "end": 126.799
+     "start": 124.424,
+     "end": 124.554
     },
     {
      "display": "die",
      "spoken": "die",
      "color": null,
      "group": 0,
-     "start": 126.799,
-     "end": 126.938
+     "start": 124.554,
+     "end": 124.688
     },
     {
      "display": "Kommentare:",
      "spoken": "Kommentare:",
      "color": null,
      "group": 0,
-     "start": 126.938,
-     "end": 127.486
+     "start": 124.688,
+     "end": 125.216
     },
     {
      "display": "Wer",
      "spoken": "Wer",
      "color": "r",
      "group": 1,
-     "start": 127.806,
-     "end": 128.017
+     "start": 125.586,
+     "end": 125.716
     },
     {
-     "display": "steht",
-     "spoken": "steht",
+     "display": "ist",
+     "spoken": "ist",
      "color": "r",
      "group": 1,
-     "start": 128.017,
-     "end": 128.243
+     "start": 125.716,
+     "end": 125.846
     },
     {
-     "display": "da",
-     "spoken": "da",
+     "display": "das",
+     "spoken": "das",
      "color": "r",
      "group": 1,
-     "start": 128.243,
-     "end": 128.446
+     "start": 125.846,
+     "end": 125.976
     },
     {
-     "display": "draußen?",
-     "spoken": "draußen?",
+     "display": "in",
+     "spoken": "in",
      "color": "r",
      "group": 1,
-     "start": 128.446,
-     "end": 128.876
+     "start": 125.976,
+     "end": 126.101
+    },
+    {
+     "display": "der",
+     "spoken": "der",
+     "color": "r",
+     "group": 1,
+     "start": 126.101,
+     "end": 126.231
+    },
+    {
+     "display": "Höhle?",
+     "spoken": "Höhle?",
+     "color": "r",
+     "group": 1,
+     "start": 126.231,
+     "end": 126.486
+    },
+    {
+     "display": "Und",
+     "spoken": "Und",
+     "color": null,
+     "group": 2,
+     "start": 127.036,
+     "end": 127.201
+    },
+    {
+     "display": "was",
+     "spoken": "was",
+     "color": null,
+     "group": 2,
+     "start": 127.201,
+     "end": 127.366
+    },
+    {
+     "display": "will",
+     "spoken": "will",
+     "color": null,
+     "group": 2,
+     "start": 127.366,
+     "end": 127.537
+    },
+    {
+     "display": "er,",
+     "spoken": "er,",
+     "color": "r",
+     "group": 2,
+     "start": 127.537,
+     "end": 127.696
+    },
+    {
+     "display": "oder",
+     "spoken": "oder",
+     "color": null,
+     "group": 3,
+     "start": 128.246,
+     "end": 128.608
+    },
+    {
+     "display": "sie?",
+     "spoken": "sie?",
+     "color": "r",
+     "group": 3,
+     "start": 128.608,
+     "end": 128.796
     }
    ],
-   "spoken": "Und schreib in die Kommentare: Wer steht da draußen?",
-   "start": 126.366,
-   "end": 128.876
+   "spoken": "Und schreib in die Kommentare: Wer ist das in der Höhle? Und was will er, oder sie?",
+   "start": 124.136,
+   "end": 128.796
   }
  ]
 }

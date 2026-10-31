@@ -9,7 +9,7 @@ Unter einer Lawine überleben 90 % die ersten 15 Minuten – danach sinkt die Ch
 #waswärewenn #survival #wissen #lawine #fyp
 
 ## Alternative 2 (Cliffhanger vorne)
-Tag 4, 02:13 Uhr: Fußspuren im Schnee. Doppelt so groß wie deine. Aus Blut. Und du bist der letzte Mensch der Welt 😳 Wer steht da draußen? 👇
+Tag 4, 02:13 Uhr: Fußspuren im Schnee. Doppelt so groß wie deine. Aus Blut. Und du bist der letzte Mensch der Welt 😳 Wer ist das in der Höhle? Und was will er oder sie? 👇
 #waswärewenn #storytime #gruselig #survival #fyp
 
 ## Alternative 3 (Ex-Hook)
@@ -17,7 +17,7 @@ Alex hat sich nur vor seiner toxischen Ex auf dem Dach versteckt – und überle
 #waswärewenn #toxischeex #storytime #survival #fyp
 
 ## Angepinnter Kommentar
-Wer steht da draußen? 👀 Die beste Theorie kommt in Teil 2 vor – folg mir, damit du ihn nicht verpasst ❄️👇
+Wer ist das in der Höhle? Und was will er oder sie? 👀 Die beste Theorie kommt in Teil 2 vor – folg mir, damit du ihn nicht verpasst ❄️👇
 
 ## Antwort-Vorlage für Kommentare
 „Regel 4 rettet Leben: Schnee nicht essen – er kühlt dich aus. Immer schmelzen 🔥“
