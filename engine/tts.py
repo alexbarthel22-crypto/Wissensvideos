@@ -36,6 +36,16 @@ FX = {
               "aecho=0.9:0.65:80|190|380:0.28|0.18|0.1,lowpass=f=7500",
     # a voice from very far away
     "fern": "highpass=f=200,lowpass=f=6500,aecho=0.9:0.7:110|300|620:0.3|0.2|0.12",
+    # a memory: softened, dreamy echo
+    "erinnerung": "lowpass=f=4200,highpass=f=180,aecho=0.85:0.7:90|240:0.3|0.18",
+    # speaking to a crowd in a vast temple
+    "halle": "aecho=0.9:0.8:140|320|560|900:0.35|0.25|0.18|0.1",
+    # horror: pushed, trembling, slightly higher
+    "entsetzen": "asetrate=48000*1.04,aresample=48000,atempo=0.9615,vibrato=f=7:d=0.12,volume=1.3",
+    # desperation / crying: trembling voice
+    "zittern": "vibrato=f=6.5:d=0.18,volume=1.15",
+    # dying: weak, close, breathy
+    "schwach": "lowpass=f=5500,volume=0.85,vibrato=f=4:d=0.06",
 }
 
 
@@ -97,6 +107,37 @@ def trim_silence(x, thresh=0.01):
     return x[a:b]
 
 
+def stray_tail(path, text):
+    """Seconds at which to cut a short stray syllable the TTS sometimes appends after a long pause."""
+    x = load_wav(path)
+    sr = 24000 if len(x) and wave.open(path).getframerate() == 24000 else wave.open(path).getframerate()
+    hop = int(0.02 * sr)
+    rms = np.array([np.sqrt(np.mean(x[i:i + hop] ** 2)) for i in range(0, len(x) - hop, hop)])
+    if not len(rms):
+        return None
+    voiced = rms > max(0.008, 0.08 * rms.max())
+    segs, start, gap = [], None, 0
+    for i, v in enumerate(voiced):
+        if v:
+            if start is None:
+                start = i
+            gap = 0
+        elif start is not None:
+            gap += 1
+            if gap * 0.02 >= 0.5:
+                segs.append((start, i - gap + 1))
+                start, gap = None, 0
+    if start is not None:
+        segs.append((start, len(voiced) - gap))
+    # one spoken chunk per sentence or pause mark is expected; an extra short one at the end is a stray
+    allowed = max(1, len(re.findall(r"[.!?:…]+", text.strip())) + (0 if re.search(r"[.!?…]$", text.strip()) else 1))
+    if len(segs) > allowed:
+        (a0, a1), (b0, b1) = segs[-2], segs[-1]
+        if (b1 - b0) * 0.02 < 0.6:
+            return a1 * 0.02 + 0.15
+    return None
+
+
 def resolve_cue(spec, scene_start, line_starts):
     if isinstance(spec, (int, float)):
         return scene_start + spec
@@ -126,7 +167,8 @@ def main(story_path, out_dir):
                 ident = f"{v['name']}|{rate}|{line['text']}"
             key = hashlib.sha1(ident.encode()).hexdigest()[:12]
             raw = os.path.join(vdir, f"{key}.raw.wav")
-            fin = os.path.join(vdir, f"{key}.{v.get('fx', 'clean')}.v2.wav")
+            fx = line.get("fx", v.get("fx"))
+            fin = os.path.join(vdir, f"{key}.{fx or 'clean'}.v2.wav")
             if not os.path.exists(raw):
                 print("TTS", line["who"], line["text"][:50])
                 if ENGINE == "gemini":
@@ -134,8 +176,15 @@ def main(story_path, out_dir):
                 else:
                     synth(line["text"], v["name"], rate, raw)
             if not os.path.exists(fin):
-                process(raw, v.get("fx"), fin)
-            audio = trim_silence(load_wav(fin))
+                process(raw, fx, fin)
+            audio = load_wav(fin)
+            cut = stray_tail(raw, line['text'])
+            if cut:
+                print(f"  Nachzügler entfernt nach {cut:.2f}s: {line['text'][:40]}")
+                n, fade = int(cut * SR), int(0.3 * SR)
+                audio = audio[:n + fade].copy()
+                audio[n:] *= np.linspace(1, 0, len(audio) - n)
+            audio = trim_silence(audio)
             if i > 0:
                 t += line.get("pre", 0.45)
             line_starts.append(t)

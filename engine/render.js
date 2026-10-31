@@ -61,7 +61,7 @@ async function full() {
   fs.writeFileSync(list, files.map(f => `file '${f}'`).join('\n'));
   const out = path.join(outDir, 'folge.mp4');
   execFileSync('ffmpeg', ['-v', 'error', '-y', '-f', 'concat', '-safe', '0', '-i', list, '-i', path.join(outDir, 'mix.wav'),
-    '-c:v', 'copy', '-c:a', 'aac', '-b:a', '192k', '-shortest', '-movflags', '+faststart', out], { stdio: 'inherit' });
+    '-c:v', 'copy', '-af', 'loudnorm=I=-14:TP=-1.0:LRA=11', '-ar', '48000', '-c:a', 'aac', '-b:a', '192k', '-shortest', '-movflags', '+faststart', out], { stdio: 'inherit' });
   files.forEach(f => fs.unlinkSync(f)); fs.unlinkSync(list);
   console.log('fertig:', out);
 }

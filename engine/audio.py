@@ -46,7 +46,8 @@ class Bus:
             sig = np.vstack([sig * np.sqrt((1 - pan) / 2), sig * np.sqrt((1 + pan) / 2)]) * np.sqrt(2)
         i = int(max(t, 0) * SR)
         n = min(sig.shape[1], self.buf.shape[1] - i)
-        self.buf[:, i:i + n] += sig[:, :n] * gain
+        if n > 0:
+            self.buf[:, i:i + n] += sig[:, :n] * gain
 
 
 def env(n, attack, release, total=None):
@@ -252,95 +253,327 @@ def melody(bus, t0, notes, step, gain=0.5, length=2.5):
             bus.add(bell(n, length, 0.8), t0 + i * step, gain, 0.15 * np.sin(i))
 
 
+def choir(chord, dur, attack=1.2, release=2.5, vowel="a"):
+    """Formant-shaped choir 'aah' on a chord, stereo."""
+    formants = {"a": [(800, 80), (1150, 90), (2900, 120)], "o": [(450, 70), (800, 80), (2830, 100)]}[vowel]
+    total = dur + release
+    t = np.arange(int(total * SR)) / SR
+    out = np.zeros((2, len(t)), dtype=np.float32)
+    for k, note in enumerate(CHORDS[chord][1:]):
+        f0 = hz(note) * (2 if hz(note) < 150 else 1)
+        for side in (0, 1):
+            for voice in range(3):
+                det = 1 + (voice - 1) * 0.0035 + side * 0.0012
+                vib = 1 + 0.005 * np.sin(2 * np.pi * (5 + voice * 0.4) * t + voice + k)
+                ph = 2 * np.pi * f0 * det * np.cumsum(vib) / SR
+                s = np.zeros_like(t, dtype=np.float32)
+                for h in range(1, 30):
+                    fh = f0 * h
+                    if fh > 5000:
+                        break
+                    amp = sum(np.exp(-((fh - fc) / bw) ** 2 / 2) * (1.0 if i == 0 else 0.6 / i) for i, (fc, bw) in enumerate(formants))
+                    if amp > 0.01:
+                        s += amp * np.sin(h * ph).astype(np.float32)
+                out[side] += s / 3
+    e = env(len(t), attack, release)
+    e[int(dur * SR):] = np.linspace(e[int(dur * SR)], 0, len(t) - int(dur * SR))
+    return out * e * 0.035
+
+
+def cymbal(dur, swell=False):
+    t = np.arange(int(dur * SR)) / SR
+    n = highpass(rng.standard_normal(len(t)).astype(np.float32), 5000)
+    if swell:
+        e = (t / dur) ** 2.5
+    else:
+        e = np.exp(-t * 1.8) * env(len(t), 0.002, 0.3)
+    return np.vstack([n * e, np.roll(n, 997) * e]) * 0.25
+
+
+def snare_roll(dur, start_amp=0.1):
+    t = np.arange(int(dur * SR)) / SR
+    out = np.zeros(len(t), dtype=np.float32)
+    k, gap = 0.0, 0.11
+    while k < dur:
+        i = int(k * SR)
+        hit = highpass(rng.standard_normal(int(0.12 * SR)).astype(np.float32), 1500) * np.exp(-np.arange(int(0.12 * SR)) / SR * 35)
+        n = min(len(hit), len(out) - i)
+        out[i:i + n] += hit[:n] * (start_amp + (1 - start_amp) * (k / dur) ** 2)
+        k += gap
+        gap = max(0.035, gap * 0.95)
+    return out * 0.35
+
+
+def big_bell(note, dur=6.0):
+    t = np.arange(int(dur * SR)) / SR
+    f = hz(note)
+    s = np.zeros_like(t)
+    for ratio, amp, dec in ((0.5, 0.6, 0.5), (1, 1.0, 0.8), (1.19, 0.5, 1.2), (1.5, 0.4, 1.5), (2.0, 0.35, 1.8), (2.74, 0.25, 2.5), (3.76, 0.15, 3.5)):
+        s += amp * np.sin(2 * np.pi * f * ratio * t) * np.exp(-t * dec)
+    s += lowpass(rng.standard_normal(len(t)).astype(np.float32), 3000) * np.exp(-t * 40) * 0.3
+    return (s * 0.25).astype(np.float32)
+
+
+def whale_song(dur, base=180):
+    t = np.arange(int(dur * SR)) / SR
+    f = base * (1 + 0.45 * np.sin(2 * np.pi * t / dur * 1.5) ** 2 - 0.15 * (t / dur))
+    ph = 2 * np.pi * np.cumsum(f * (1 + 0.01 * np.sin(2 * np.pi * 6 * t))) / SR
+    s = np.sin(ph) + 0.4 * np.sin(2 * ph) + 0.15 * np.sin(3 * ph)
+    return (lowpass(s.astype(np.float32), 1500) * env(len(t), dur * 0.3, dur * 0.4) * 0.12).astype(np.float32)
+
+
+def wind(dur, amp=0.1):
+    t = np.arange(int(dur * SR)) / SR
+    n = rng.standard_normal(len(t)).astype(np.float32)
+    s = lowpass(highpass(n, 300), 900) * (0.6 + 0.4 * np.sin(2 * np.pi * 0.17 * t))
+    return (s * env(len(t), 2, 2) * amp).astype(np.float32)
+
+
+def stab(chord, gain_bus, t, bus, gain=1.0):
+    bus.add(pad(chord, 0.25, bright=11, attack=0.01, release=0.6), t, gain)
+
+
+def epic_intro(music, fx, t0, beat=0.6):
+    """Main title: choir swell, crash, leitmotif over drums and ostinato, snare build, title hit."""
+    m0 = t0 + 3.0
+    music.add(drone(17, "D1", grit=0.4), t0, 1.4)
+    music.add(choir("Dm", 3.0, attack=2.6, release=0.6, vowel="o"), t0, 0.9)
+    fx.add(cymbal(3.0, swell=True), t0, 0.8)
+    fx.add(riser(3.0), t0, 0.6)
+    fx.add(boom(6, 100, 28, 1.0), m0, 1.3)
+    fx.add(cymbal(4), m0, 1.0)
+    for i, (c, at, ln) in enumerate((("Dm", 0, 4), ("Bb", 4, 3), ("Gm", 7, 3), ("A", 10, 3))):
+        music.add(choir(c, ln * beat, attack=0.25, release=1.0), m0 + at * beat, 1.0)
+        music.add(pad(c, ln * beat * 0.95, bright=7, attack=0.2), m0 + at * beat, 0.8)
+    ostinato(music, m0, m0 + 17 * beat, ["D", "Bb", "G", "A"], beat / 2, 0.6)
+    t, i = m0, 0
+    while t < m0 + 13 * beat - 0.05:
+        if i % 4 in (0, 3) or i % 8 == 6:
+            fx.add(drum(56 if i % 4 == 0 else 70), t, 0.6 if i % 4 == 0 else 0.4, 0.2 * np.sin(i))
+        if i % 8 == 4:
+            fx.add(drum(110, 0.5), t, 0.3)
+        t += beat / 2
+        i += 1
+    end = motif(music, m0, beat, gain=1.2)
+    # build: snare roll, rising choir, brass stabs
+    b0 = end
+    fx.add(snare_roll(4 * beat), b0, 0.9)
+    fx.add(cymbal(4 * beat, swell=True), b0, 0.7)
+    for k, c in enumerate(["Bb", "C", "Asus", "A"]):
+        music.add(choir(c, beat * 0.95, attack=0.05, release=0.3), b0 + k * beat, 1.0)
+        stab(c, None, b0 + k * beat, music, 1.0)
+        fx.add(drum(60), b0 + k * beat, 0.6)
+    hit = b0 + 4 * beat
+    fx.add(boom(7, 110, 26, 1.0), hit, 1.5)
+    fx.add(cymbal(5), hit, 1.2)
+    fx.add(drum(44, 3), hit, 1.0)
+    music.add(choir("Dm", 2.5, attack=0.03, release=3.5), hit, 1.5)
+    music.add(pad("Dm", 2.5, bright=11, attack=0.02, release=3.5), hit, 1.3)
+    music.add(lead("D4", 2.5), hit, 1.0)
+    music.add(lead("A4", 2.5), hit, 0.8)
+    melody(music, hit, ["D5", "A5", "D6", "F6", "A6"], 0.1, 0.45, 4)
+    return hit
+
+
+def epic_outro(music, fx, t0, t1):
+    """Distinct closing theme: heroic I-V-vi-IV in F, soaring strings, turning to D major with the motif's head."""
+    beat = 0.75
+    prog = ["F", "C", "Dm", "Bb", "F", "C"]
+    t = t0
+    for c in prog:
+        music.add(pad(c, 4 * beat, bright=6, attack=0.6), t, 0.9)
+        music.add(choir(c, 4 * beat, attack=0.8, release=1.5), t, 0.7)
+        t += 4 * beat
+    arp = {"F": ["F4", "A4", "C5", "A4"], "C": ["C4", "E4", "G4", "E4"], "Dm": ["D4", "F4", "A4", "F4"], "Bb": ["Bb3", "D4", "F4", "D4"]}
+    for k, c in enumerate(prog):
+        for j in range(8):
+            music.add(bell(arp[c][j % 4], 1.6, 0.6), t0 + k * 4 * beat + j * beat / 2, 0.22, 0.3 * (-1) ** j)
+    tune = [("A4", 2), ("C5", 1), ("F5", 1), ("E5", 3), ("C5", 1), ("D5", 2), ("C5", 1), ("A4", 1), ("Bb4", 3), ("A4", 1),
+            ("A4", 2), ("C5", 1), ("F5", 1), ("G5", 3), ("E5", 1), ("F5", 2), ("A5", 2), ("G5", 4)]
+    tt = t0 + 16 * beat
+    for n, bts in tune:
+        if tt >= t0 + 24 * beat:
+            break
+        music.add(lead(n, bts * beat * 0.95, bright=6, attack=0.15), tt, 0.8)
+        tt += bts * beat
+    t = t0 + 16 * beat
+    while t < t0 + 24 * beat:
+        fx.add(drum(58), t, 0.45)
+        fx.add(drum(72), t + beat * 1.5, 0.3)
+        t += 2 * beat
+    fin = t0 + 24 * beat
+    fx.add(snare_roll(2 * beat), fin - 2 * beat, 0.7)
+    fx.add(boom(7, 100, 26, 1.0), fin, 1.3)
+    fx.add(cymbal(5), fin, 1.0)
+    music.add(choir("D", max(1.0, t1 - fin - 2.5), attack=0.05, release=3.5), fin, 1.4)
+    music.add(pad("D", max(1.0, t1 - fin - 2.5), bright=10, attack=0.05, release=3.5), fin, 1.2)
+    th = fin
+    for n, bts in [("D4", 1), ("A4", 1), ("G4", 0.5), ("F#4", 0.5), ("A4", 3)]:
+        music.add(lead(n, bts * 0.6 * 0.95), th, 1.1)
+        th += bts * 0.6
+    return fin
+
+
 def score(tl):
     S = {s["id"]: s for s in tl["scenes"]}
     C = tl["cues"]
+    LN = lambda sc, i: [l for l in tl["lines"] if l["scene"] == sc][i]
     music, fx = Bus(tl["duration"]), Bus(tl["duration"])
+    dur = lambda sc: S[sc]["end"] - S[sc]["start"]
 
-    # Cold open: low drone, distant bells, sparkles
+    # Cold open
     s = S["kalt"]
-    music.add(drone(s["end"] - s["start"] + 1, "D1"), s["start"], 1.0)
-    music.add(pad("Dm", s["end"] - s["start"], bright=2, attack=4), s["start"], 0.5)
-    melody(music, 1.2, ["A5", None, "F5", None, "E5", None, "D5"], 1.1, 0.3, 4)
+    music.add(drone(dur("kalt") + 1, "D1"), s["start"], 1.0)
+    music.add(pad("Dm", dur("kalt"), bright=2, attack=4), s["start"], 0.5)
+    melody(music, 1.2, ["A5", None, "F5", None, "E5", None, "D5"], 1.2, 0.3, 4)
     sparkles(music, 0.5, s["end"], 0.8, 0.25)
+    fx.add(boom(4, 70, 26, 0.6), LN("kalt", 2)["end"] + 0.1, 0.7)
 
-    # Main title with the leitmotif
-    s = S["intro"]
-    tl["cues"]["title_hit"] = round(theme(music, fx, s["start"]), 3)
+    # Main title
+    C["title_hit"] = round(epic_intro(music, fx, S["intro"]["start"]), 3)
 
-    # Dream world: shimmering major harmonies, music-box leitmotif, choir
+    # Valdoria: dreamy, whale song, music-box leitmotif
     s = S["welt"]
-    each = (s["end"] - s["start"]) / 4
-    progression(music, s["start"], ["D", "G", "Bm", "A"], each, bright=3, gain=0.85, attack=2.0)
-    motif(music, s["start"] + 1.0, (s["end"] - s["start"] - 4) / 13, voice="bell", transpose=12, gain=0.35)
-    sparkles(music, s["start"], s["end"], 2.0, 0.3)
-    for k in range(4):
-        music.add(tone(hz("A5") * [1, 1.5, 1.25, 2][k], 6, 2, 3, 0.02), s["start"] + k * 4.5, 1.0, 0.5 * (-1) ** k)
+    each = dur("welt") / 6
+    progression(music, s["start"], ["D", "G", "Bm", "A", "G", "D"], each, bright=3, gain=0.85, attack=2.0)
+    music.add(choir("D", dur("welt") - 2, attack=4, release=3, vowel="o"), s["start"] + 1, 0.35)
+    motif(music, s["start"] + 2.0, 0.85, voice="bell", transpose=12, gain=0.3)
+    sparkles(music, s["start"], s["end"], 1.5, 0.28)
+    wl = LN("welt", 3)
+    for k, base in enumerate((170, 210, 150)):
+        music.add(whale_song(6, base), wl["start"] - 1 + k * 3.2, 1.0, 0.5 * (-1) ** k)
+    music.add(wind(dur("welt"), 0.05), s["start"], 1.0)
 
-    # City of lanterns: gentle progression and music box
+    # Aurelion in the treetops
     s = S["stadt"]
-    each = (s["end"] - s["start"]) / 4
+    each = dur("stadt") / 4
     progression(music, s["start"], ["Dm", "Bb", "F", "C"], each, bright=4, gain=0.8)
-    mb = ["D5", "F5", "A5", "F5", "D5", "A4", "C5", "D5",
-          "D5", "F5", "Bb5", "A5", "F5", "D5", "C5", "Bb4",
-          "C5", "F5", "A5", "G5", "F5", "C5", "A4", "C5",
-          "E5", "G5", "C6", "G5", "E5", "D5", "C5", "A4"]
-    melody(music, s["start"] + 0.3, mb, each / 8, 0.25, 2.2)
-    music.add(drone(s["end"] - s["start"], "D1"), s["start"], 0.6)
-    last = [l for l in tl["lines"] if l["scene"] == "stadt"][-1]
-    fx.add(riser(s["end"] - last["start"] + 0.5), last["start"], 0.5)
+    mb = ["D5", "F5", "A5", "F5", "D5", "A4", "C5", "D5", "D5", "F5", "Bb5", "A5", "F5", "D5", "C5", "Bb4",
+          "C5", "F5", "A5", "G5", "F5", "C5", "A4", "C5", "E5", "G5", "C6", "G5", "E5", "D5", "C5", "A4"]
+    melody(music, s["start"] + 0.3, mb, each / 8, 0.24, 2.2)
+    music.add(drone(dur("stadt"), "D1"), s["start"], 0.6)
 
-    # Falling star: riser, impact, ringing
-    rise = C["impact"] - C["streak"]
-    fx.add(riser(rise), C["streak"], 0.9)
+    # The Order of the High Flame: solemn choir and organ
+    s = S["lichtkrone"]
+    each = dur("lichtkrone") / 4
+    for i, c in enumerate(["Dm", "Gm", "A", "Dm"]):
+        music.add(choir(c, each + 0.3, attack=1.5, release=2.0), s["start"] + i * each, 0.8)
+        music.add(pad(c, each + 0.3, bright=6, attack=1.0), s["start"] + i * each, 0.6)
+    music.add(drone(dur("lichtkrone") + 1, "D1"), s["start"], 1.0)
+    burn = LN("lichtkrone", 3)
+    fx.add(boom(5, 80, 26, 0.9), burn["end"] - 0.4, 1.0)
+    music.add(drone(3, "Eb1", grit=1.0), burn["end"] - 0.4, 1.3)
+
+    # Seraphine: ominous hall, heartbeat
+    s = S["seraphine_vor"]
+    music.add(drone(dur("seraphine_vor") + 1, "D1", grit=0.4), s["start"], 1.2)
+    music.add(choir("Eb", 6, attack=2, release=3, vowel="o"), s["start"] + 2, 0.6)
+    music.add(choir("Dm", dur("seraphine_vor") - 8, attack=2, release=3, vowel="o"), s["start"] + 8, 0.6)
+    t = s["start"] + 1
+    while t < s["end"]:
+        fx.add(drum(46, 0.8), t, 0.3)
+        fx.add(drum(46, 0.8), t + 0.32, 0.2)
+        t += 1.6
+    fx.add(big_bell("D3", 7), LN("seraphine_vor", 1)["start"] - 0.6, 0.6)
+
+    # Lunara's theme: hopeful and fragile
+    s = S["lunara"]
+    each = dur("lunara") / 8
+    progression(music, s["start"], ["F", "C", "Dm", "Bb", "F", "C", "Bb", "A"], each, bright=4, gain=0.75, attack=1.5)
+    arp = {"F": ["F4", "A4", "C5", "A4"], "C": ["C4", "E4", "G4", "E4"], "Dm": ["D4", "F4", "A4", "F4"], "Bb": ["Bb3", "D4", "F4", "D4"], "A": ["A3", "C#4", "E4", "C#4"]}
+    for k, c in enumerate(["F", "C", "Dm", "Bb", "F", "C", "Bb", "A"]):
+        for j in range(8):
+            music.add(bell(arp[c][j % 4], 1.6, 0.6), s["start"] + k * each + j * each / 8, 0.18, 0.3 * (-1) ** j)
+    motif(music, LN("lunara", 6)["start"], 0.7, voice="bell", transpose=12, gain=0.28, upto=8)
+
+    # Kael: nostalgic strings, then cold
+    s = S["kael_vor"]
+    cold = LN("kael_vor", 4)["start"]
+    each = (cold - s["start"]) / 4
+    progression(music, s["start"], ["Bb", "F", "Gm", "Dm"], each, bright=3, gain=0.75, attack=2.0)
+    m = LN("kael_vor", 3)
+    music.add(tone(hz("D6"), m["end"] - m["start"] + 2, 0.5, 1.5, 0.02), m["start"] - 0.5, 1.0)
+    progression(music, cold, ["Dm", "Eb"], (s["end"] - cold) / 2, bright=5, gain=0.7, attack=1.0)
+    music.add(drone(s["end"] - cold + 1, "D1", grit=0.3), cold, 1.0)
+
+    # Falling star: trembling pendant, riser, impact
+    s = S["fall"]
+    music.add(drone(dur("fall"), "D1", grit=0.5), s["start"], 1.2)
+    t = s["start"] + 1.5
+    while t < C["impact"]:
+        fx.add(bell("A6", 0.4, 0.3), t, 0.25, 0.4)
+        t += max(0.08, 0.35 * (C["impact"] - t) / (C["impact"] - s["start"]))
+    fx.add(riser(C["impact"] - C["streak"] + 1.5), C["streak"] - 1.5, 1.0)
     fx.add(boom(6, 110, 28, 1.0), C["impact"], 1.3)
     fx.add(drum(45, 3), C["impact"], 1.0)
+    fx.add(cymbal(4), C["impact"], 0.8)
     fx.add(tone(hz("A6"), 4, 0.01, 3.5, 0.04), C["impact"] + 0.1, 1.0, 0.3)
-    s = S["fall"]
-    music.add(pad("Asus", s["end"] - C["impact"], bright=3, attack=1.0), C["impact"] + 0.4, 0.6)
+    music.add(pad("Asus", s["end"] - C["impact"] + 1, bright=3, attack=1.0), C["impact"] + 0.4, 0.6)
 
-    # Ruins: modal tension Dm/Eb, sparkles around the star
+    # Forbidden ruins: wind among stone trees, modal tension
     s = S["ruinen"]
-    each = (s["end"] - s["start"]) / 4
-    progression(music, s["start"], ["Dm", "Eb", "Dm", "Eb"], each, bright=3, gain=0.75, attack=2.5)
-    music.add(drone(s["end"] - s["start"] + 1, "D1"), s["start"], 1.0)
-    sparkles(music, s["start"] + 3, s["end"], 1.2, 0.3)
+    each = dur("ruinen") / 6
+    progression(music, s["start"], ["Dm", "Eb", "Dm", "Eb", "Dm", "Eb"], each, bright=3, gain=0.7, attack=2.5)
+    music.add(drone(dur("ruinen") + 1, "D1"), s["start"], 1.0)
+    music.add(wind(dur("ruinen"), 0.08), s["start"], 1.0)
+    sparkles(music, LN("ruinen", 4)["start"] - 1, s["end"], 1.2, 0.3)
 
-    # Bond: swell to the touch, then bright D major
+    # Bond
     s = S["bund"]
     music.add(pad("Asus", C["touch"] - s["start"] + 0.2, bright=6, attack=C["touch"] - s["start"] - 0.5), s["start"], 1.0)
+    music.add(choir("Asus", C["touch"] - s["start"], attack=C["touch"] - s["start"] - 0.3, release=0.3), s["start"], 0.8)
     fx.add(riser(C["touch"] - s["start"]), s["start"], 0.5)
     fx.add(boom(5, 95, 30, 0.7), C["touch"], 1.0)
+    fx.add(cymbal(4), C["touch"], 0.7)
     music.add(pad("D", s["end"] - C["touch"] + 0.5, bright=10, attack=0.08, release=3), C["touch"], 1.2)
+    music.add(choir("D", s["end"] - C["touch"], attack=0.1, release=3), C["touch"], 1.0)
     melody(music, C["touch"], ["D6", "A5", "F#5", "D5", "A5", "D6", "F#6", "A6"], 0.18, 0.4, 3)
     sparkles(music, C["touch"], s["end"], 3, 0.35)
 
-    # The Order: war drums, darker progression
+    # Alarm bells of the High Flame
+    s = S["glocken"]
+    t, k = C["glocke"], 0
+    while t < s["end"] + 1:
+        fx.add(big_bell(["D3", "A2"][k % 2], 5), t, 0.9 - 0.3 * (k % 2), 0.4 * (-1) ** k)
+        t += 1.5
+        k += 1
+    music.add(drone(dur("glocken") + 1, "D1", grit=0.6), s["start"], 1.3)
+    t, gap = s["start"] + 4, 0.6
+    while t < s["end"]:
+        fx.add(drum(62), t, 0.45)
+        t += gap
+        gap = max(0.25, gap * 0.97)
+    fx.add(riser(6), s["end"] - 6, 0.6)
+
+    # The Order arrives: war drums, brass; horror stab on "eine ganze Welt verbrannt"
     s = S["orden"]
-    each = (s["end"] - s["start"]) / 4
+    each = dur("orden") / 4
     progression(music, s["start"], ["Dm", "Bb", "Gm", "A"], each, bright=7, gain=0.8)
     beat = 60 / 84
-    t = s["start"]
-    pattern = [1, 0, 0, 1, 1, 0, 1, 0]
-    i = 0
-    while t < S["kael"]["start"]:
-        if pattern[i % 8]:
-            fx.add(drum(62 if i % 8 == 0 else 78), t, 0.55 if i % 8 == 0 else 0.35, 0.2 * np.sin(i))
+    t, i = s["start"], 0
+    while t < s["end"]:
+        if [1, 0, 0, 1, 1, 0, 1, 0][i % 8]:
+            fx.add(drum(62 if i % 8 == 0 else 78), t, 0.5 if i % 8 == 0 else 0.32, 0.2 * np.sin(i))
         t += beat / 2
         i += 1
-    music.add(drone(s["end"] - s["start"] + 1, "D1", grit=0.3), s["start"], 1.0)
+    horror = LN("orden", 2)
+    stab("Eb", None, horror["start"] + 0.2, music, 1.3)
+    fx.add(boom(4, 90, 30, 0.8), horror["start"] + 0.2, 0.9)
+    music.add(drone(dur("orden") + 1, "D1", grit=0.3), s["start"], 1.0)
 
-    # Kael: heartbeat pulse under strings
+    # Kael: heartbeat; the desperate refusal swells
     s = S["kael"]
-    each = (s["end"] - s["start"]) / 4
-    progression(music, s["start"], ["Dm", "Bb", "F", "A"], each, bright=4, gain=0.75, attack=2.0)
+    each = dur("kael") / 6
+    progression(music, s["start"], ["Dm", "Bb", "F", "A", "Dm", "Bb"], each, bright=4, gain=0.75, attack=2.0)
     t = s["start"]
     while t < s["end"]:
         fx.add(drum(48, 0.8), t, 0.35)
         fx.add(drum(48, 0.8), t + 0.32, 0.22)
         t += 1.45
+    cry = LN("kael", 7)
+    music.add(choir("Bb", cry["end"] - cry["start"] + 2, attack=0.6, release=2), cry["start"] - 0.3, 1.0)
 
-    # Attack: drums accelerate, zap, the fall, then silence
+    # Attack
     s = S["angriff"]
     t, gap = s["start"], 0.42
     while t < C["fallen"] - 0.2:
@@ -353,19 +586,20 @@ def score(tl):
     fx.add(boom(7, 100, 26, 1.0), C["fallen"], 1.4)
     fx.add(tone(3400, 3.5, 0.02, 3.2, 0.025), C["fallen"] + 0.2, 1.0)
 
-    # Farewell: sad progression, sparse piano-like bells
+    # Farewell
     s = S["abschied"]
-    each = (s["end"] - s["start"] - 1.0) / 4
-    progression(music, s["start"] + 1.0, ["Bb", "F", "Gm", "Dm"], each, bright=3, gain=0.7, attack=3.0)
+    each = (dur("abschied") - 1.0) / 6
+    progression(music, s["start"] + 1.0, ["Bb", "F", "Gm", "Dm", "Bb", "A"], each, bright=3, gain=0.7, attack=3.0)
+    music.add(choir("Dm", dur("abschied") - 4, attack=5, release=3, vowel="o"), s["start"] + 3, 0.4)
     melody(music, s["start"] + 1.5, ["D5", None, "C5", "Bb4", None, "A4", None, None,
                                       "Bb4", None, "A4", "G4", None, "F4", None, None,
                                       "G4", None, "A4", "Bb4", None, "D5", None, None,
-                                      "A4", None, None, None, "D4"], each / 7, 0.3, 3.5)
+                                      "A4", None, None, None, "D4"], each / 5, 0.28, 3.5)
 
-    # Awakening: corrupted drone, black runes, stars going out
+    # Awakening
     s = S["erwachen"]
-    music.add(drone(s["end"] - s["start"] + 1.5, "D1", grit=1.0), s["start"], 1.6)
-    music.add(drone(s["end"] - s["start"] + 1.5, "Eb1", grit=0.8), s["start"] + 1.0, 0.9)
+    music.add(drone(dur("erwachen") + 1.5, "D1", grit=1.0), s["start"], 1.6)
+    music.add(drone(dur("erwachen") + 1.5, "Eb1", grit=0.8), s["start"] + 1.0, 0.9)
     fx.add(riser(C["schwarz"] - s["start"]), s["start"], 0.5)
     fx.add(boom(5, 80, 25, 0.9), C["schwarz"], 1.1)
     t, k = C["erloeschen"], 0
@@ -373,10 +607,11 @@ def score(tl):
     while t < s["end"] + 0.4 and k < len(notes):
         fx.add(bell(notes[k], 1.6, 0.4), t, 0.5, (-1) ** k * 0.5)
         fx.add(drum(40, 1.0), t, 0.3)
-        t += 0.42
+        t += 0.5
         k += 1
+    music.add(whale_song(4, 140), LN("erwachen", 2)["end"] - 3.5, 0.8)
 
-    # The last star: near silence, warm hope under the mother, then the reveal
+    # Last star
     s = S["letzter"]
     mother = [l for l in tl["lines"] if l["who"] == "MUTTER"]
     sis = C["schwester"]
@@ -387,11 +622,12 @@ def score(tl):
     music.add(drone(s["end"] - sis + 2, "Eb1", grit=1.0), sis, 1.5)
     music.add(pad("Eb", s["end"] - sis + 1, bright=5, attack=0.05), sis, 0.7)
 
-    # Revelation: drums and riser build relentlessly
+    # Revelation
     s = S["ende"]
-    music.add(drone(s["end"] - s["start"] + 1, "D1", grit=0.6), s["start"], 1.3)
-    progression(music, s["start"], ["Dm", "Bb"], (s["end"] - s["start"]) / 2, bright=8, gain=0.8, attack=0.5)
-    fx.add(riser(s["end"] - s["start"]), s["start"], 0.9)
+    music.add(drone(dur("ende") + 1, "D1", grit=0.6), s["start"], 1.3)
+    progression(music, s["start"], ["Dm", "Bb"], dur("ende") / 2, bright=8, gain=0.8, attack=0.5)
+    music.add(choir("Dm", dur("ende"), attack=1.5, release=0.5), s["start"], 0.8)
+    fx.add(riser(dur("ende")), s["start"], 0.9)
     t, gap = s["start"], 0.5
     while t < s["end"] - 0.1:
         fx.add(drum(60), t, 0.5)
@@ -399,26 +635,18 @@ def score(tl):
         gap = max(0.13, gap * 0.9)
     fx.add(boom(5, 100, 30, 1.0), s["end"], 1.2)
 
-    # Sting: silence, a heartbeat, Seraphine's order
+    # Sting
     s = S["sting"]
     t = s["start"] + 0.3
     while t < s["end"]:
         fx.add(drum(44, 0.8), t, 0.45)
         fx.add(drum(44, 0.8), t + 0.3, 0.3)
         t += 1.2
-    music.add(tone(hz("D6") * 1.06, s["end"] - s["start"], 0.5, 0.5, 0.02), s["start"], 1.0)
+    music.add(tone(hz("D6") * 1.06, dur("sting"), 0.5, 0.5, 0.02), s["start"], 1.0)
 
-    # End card: leitmotif reprise, final hit
-    s = S["abspann"]
-    beat = 0.5
-    for i, c in enumerate(["Dm", "Bb"]):
-        music.add(pad(c, 4 * beat, bright=8, attack=0.2), s["start"] + i * 4 * beat, 1.0)
-    end = motif(music, s["start"], beat, gain=1.1, upto=8)
-    ostinato(music, s["start"], end, ["D", "Bb"], beat / 2, 0.5)
-    fx.add(boom(6, 100, 28, 1.0), s["start"], 1.0)
-    fx.add(boom(6, 110, 26, 1.0), end, 1.3)
-    music.add(pad("Dm", 2.0, bright=10, attack=0.03, release=3.0), end, 1.3)
-    tl["cues"]["end_hit"] = round(end, 3)
+    # Outro
+    s = S["outro"]
+    C["outro_hit"] = round(epic_outro(music, fx, s["start"] + 0.2, s["end"]), 3)
     return music, fx
 
 

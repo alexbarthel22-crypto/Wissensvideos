@@ -4,33 +4,49 @@
   "titel": "Das Herz, das vom Himmel fiel",
   "tagline": "Wenn die Sterne fallen, erwacht die Wahrheit.",
   "voices": {
-    "ERZ": {
-      "name": "de-DE-Chirp3-HD-Algenib",
-      "gemini": "Algenib",
-      "label": "Erzähler",
-      "rate": 0.93,
-      "persona": "Ein alter, weiser Erzähler mit tiefer, warmer Stimme, wie in einem epischen Fantasy-Hörbuch. Deutliche Aussprache, ruhiges Tempo, geheimnisvoll."
-    },
-    "ELARA": {
+    "ICH": {
       "name": "de-DE-Chirp3-HD-Leda",
       "gemini": "Leda",
-      "label": "Elara",
-      "rate": 0.95,
-      "persona": "Elara, eine junge Frau von siebzehn Jahren, mutig aber verletzlich."
+      "label": "Lunara",
+      "rate": 0.9,
+      "persona": "Lunara, siebzehn, erzählt ihre eigene Geschichte im Rückblick. Ruhig, nah, verletzlich und trotzig zugleich, wie in einem Hörbuch."
+    },
+    "LUNARA": {
+      "name": "de-DE-Chirp3-HD-Leda",
+      "gemini": "Leda",
+      "label": "Lunara",
+      "rate": 0.93,
+      "persona": "Lunara, siebzehn, mutig, frech, verletzlich."
     },
     "KAEL": {
       "name": "de-DE-Chirp3-HD-Orus",
       "gemini": "Orus",
       "label": "Kael",
-      "rate": 0.94,
-      "persona": "Kael, ein junger Soldat, Elaras älterer Bruder, innerlich zerrissen."
+      "rate": 0.92,
+      "persona": "Kael, einundzwanzig, Lunaras großer Bruder, Hauptmann der Flammenwache, innerlich zerrissen."
+    },
+    "KAEL_ERINNERUNG": {
+      "name": "de-DE-Chirp3-HD-Orus",
+      "gemini": "Orus",
+      "label": "Kael",
+      "rate": 0.92,
+      "fx": "erinnerung",
+      "persona": "Kael, vier Jahre jünger, warm und tröstend."
     },
     "SERAPHINE": {
       "name": "de-DE-Chirp3-HD-Gacrux",
       "gemini": "Gacrux",
       "label": "Seraphine",
-      "rate": 0.93,
-      "persona": "Seraphine, eine mächtige, kalte Hohepriesterin. Beherrscht, gefährlich, jedes Wort ein Urteil."
+      "rate": 0.92,
+      "persona": "Seraphine, Hohepriesterin, kalt, beherrscht, gefährlich."
+    },
+    "SERAPHINE_HALLE": {
+      "name": "de-DE-Chirp3-HD-Gacrux",
+      "gemini": "Gacrux",
+      "label": "Seraphine",
+      "rate": 0.88,
+      "fx": "halle",
+      "persona": "Seraphine spricht feierlich zu einer Menschenmenge in einem gewaltigen Tempel."
     },
     "STERN": {
       "name": "de-DE-Chirp3-HD-Achernar",
@@ -52,216 +68,433 @@
       "name": "de-DE-Chirp3-HD-Sulafat",
       "gemini": "Sulafat",
       "label": "Mutter",
-      "rate": 0.92,
+      "rate": 0.9,
       "fx": "fern",
-      "persona": "Elaras Mutter, liebevoll und eindringlich, ihre Stimme kommt von sehr weit her."
+      "persona": "Lunaras Mutter, liebevoll und eindringlich, ihre Stimme kommt von sehr weit her."
     }
   },
   "scenes": [
     {
       "id": "kalt",
       "pre": 0.8,
-      "post": 0.9,
+      "post": 1.0,
       "lines": [
         {
-          "who": "ERZ",
-          "text": "Man hat euch erzählt, die Sterne seien Lichter, die über uns wachen.",
+          "who": "ICH",
+          "text": "Man hat uns erzählt, die Sterne seien Lichter, die über uns wachen.",
           "style": "leise, geheimnisvoll"
         },
         {
-          "who": "ERZ",
+          "who": "ICH",
           "text": "Das ist eine Lüge.",
-          "pre": 0.7,
+          "pre": 0.8,
           "style": "langsam, mit Gewicht"
         },
         {
-          "who": "ERZ",
-          "text": "Die Sterne sind Gefängnisse.",
-          "pre": 0.6,
-          "style": "flüsternd, unheilvoll"
+          "who": "ICH",
+          "text": "Die Sterne sind Gefängnisse. Und ich … habe eines davon geöffnet.",
+          "pre": 0.8,
+          "style": "flüsternd, schuldbewusst"
         }
       ]
     },
     {
       "id": "intro",
-      "pre": 12.5,
+      "pre": 17.0,
       "post": 0,
       "lines": []
     },
     {
       "id": "welt",
-      "pre": 0.8,
-      "post": 0.6,
+      "pre": 1.0,
+      "post": 1.0,
       "lines": [
         {
-          "who": "ERZ",
-          "text": "Dies ist Valdoria. Eine Welt, in der die Sterne so nah sind, dass man sie singen hört.",
+          "who": "ICH",
+          "text": "Mein Name ist Lunara. Und das ist meine Welt: Valdoria.",
+          "style": "warm, stolz"
+        },
+        {
+          "who": "ICH",
+          "text": "Hier wachsen die Bäume so hoch, dass ihre Kronen über den Wolken liegen.",
+          "pre": 0.9,
           "style": "staunend, verträumt"
         },
         {
-          "who": "ERZ",
-          "text": "Inseln schweben über den Wolken. Himmelswale ziehen durch die Nacht.",
-          "pre": 0.6,
-          "style": "verträumt, sanft"
+          "who": "ICH",
+          "text": "Unter uns: nur ein endloses Meer aus Wolken. Niemand, der je hinabgestiegen ist, kam zurück.",
+          "pre": 0.8,
+          "style": "leiser, unheimlich"
         },
         {
-          "who": "ERZ",
-          "text": "Und alle hundert Jahre … fällt ein Stern. Wer sein Licht berührt, erhält Macht über Leben und Tod.",
-          "pre": 0.6,
-          "style": "ernster werdend, mit Ehrfurcht"
+          "who": "ICH",
+          "text": "Nachts rieselt Sternenstaub vom Himmel. Die Himmelswale fressen ihn …",
+          "pre": 1.0,
+          "style": "verträumt"
+        },
+        {
+          "who": "ICH",
+          "text": "… und ihr Gesang trägt die schwebenden Inseln durch die Luft. Ohne die Wale würde alles in die Tiefe stürzen.",
+          "pre": 0.4,
+          "style": "ehrfürchtig"
         }
       ]
     },
     {
       "id": "stadt",
-      "pre": 0.6,
-      "post": 0.6,
+      "pre": 0.8,
+      "post": 1.0,
       "lines": [
         {
-          "who": "ERZ",
-          "text": "Aurelion, im Jahr elfhundertsiebenunddreißig nach dem Sternenbund. Die Stadt der tausend Laternen.",
-          "style": "erzählend",
-          "display": "Aurelion, im Jahr 1137 nach dem Sternenbund. Die Stadt der tausend Laternen."
+          "who": "ICH",
+          "text": "In den Kronen der Riesenbäume liegt Aurelion. Die Stadt der tausend Laternen.",
+          "style": "erzählend, liebevoll"
         },
         {
-          "who": "ERZ",
-          "text": "Oben herrscht der Orden der Hohen Flamme. Unten lebt Elara.",
+          "who": "ICH",
+          "text": "Brücken aus Seilen verbinden die Äste. Und jeder Ast ist eine Straße.",
+          "pre": 0.8,
+          "style": "erzählend"
+        },
+        {
+          "who": "ICH",
+          "text": "Ganz oben, in der Lichtkrone, herrscht der Orden der Hohen Flamme.",
+          "pre": 0.9,
+          "style": "ernst"
+        }
+      ]
+    },
+    {
+      "id": "lichtkrone",
+      "pre": 0.6,
+      "post": 1.0,
+      "lines": [
+        {
+          "who": "ICH",
+          "text": "Seine Priester sammeln das Licht der Sterne. Nur sie dürfen Magie wirken.",
+          "style": "kühl, mit leiser Bitterkeit"
+        },
+        {
+          "who": "ICH",
+          "text": "Wir unten in den Tiefen Ästen bekommen, was übrig bleibt: Laternen. Und Gesetze.",
+          "pre": 0.8,
+          "style": "bitter, trocken"
+        },
+        {
+          "who": "ICH",
+          "text": "Das wichtigste Gesetz: Jeder Stern, der fällt, gehört dem Orden. Und wer ein Sternenherz berührt … stirbt.",
+          "pre": 0.9,
+          "style": "ernst, langsam"
+        },
+        {
+          "who": "ICH",
+          "text": "Denn vor tausend Jahren hat ein Mensch genau das getan. Und Valdoria brannte.",
+          "pre": 0.9,
+          "style": "düster"
+        }
+      ]
+    },
+    {
+      "id": "seraphine_vor",
+      "pre": 0.6,
+      "post": 1.0,
+      "lines": [
+        {
+          "who": "ICH",
+          "text": "Über allen steht sie: Seraphine. Die Hohepriesterin. Die mächtigste Magierin von Valdoria.",
+          "style": "respektvoll, etwas ängstlich"
+        },
+        {
+          "who": "SERAPHINE_HALLE",
+          "text": "Der Himmel gibt. Der Orden bewahrt. Wer nimmt … verbrennt.",
+          "pre": 1.0,
+          "style": "feierlich, drohend"
+        },
+        {
+          "who": "ICH",
+          "text": "Man sagt, sie war einmal die engste Freundin meiner Mutter. Und dass sie seit zwölf Jahren nicht mehr gelächelt hat.",
+          "pre": 1.0,
+          "style": "nachdenklich, misstrauisch"
+        }
+      ]
+    },
+    {
+      "id": "lunara",
+      "pre": 0.8,
+      "post": 0.8,
+      "lines": [
+        {
+          "who": "ICH",
+          "text": "Und ich? Ich bin siebzehn. Ich zünde Laternen an, für drei Kupfermünzen pro Nacht.",
+          "style": "trocken, mit leichtem Humor"
+        },
+        {
+          "who": "ICH",
+          "text": "Ich klettere dorthin, wo niemand klettern darf. Ich stehle Sternenstaub von den Dächern des Ordens.",
+          "pre": 0.8,
+          "style": "frech, stolz"
+        },
+        {
+          "who": "ICH",
+          "text": "Ich habe keine Angst vor der Höhe. Nur vor einer einzigen Sache:",
+          "pre": 0.7,
+          "style": "selbstbewusst, dann leiser"
+        },
+        {
+          "who": "ICH",
+          "text": "zu vergessen, wie die Stimme meiner Mutter klang.",
           "pre": 0.5,
-          "style": "erzählend, mit leiser Bitterkeit"
+          "style": "sehr leise, verletzlich"
         },
         {
-          "who": "ELARA",
-          "text": "Siehst du, Mama? Alle Laternen brennen.",
-          "pre": 0.6,
+          "who": "LUNARA",
+          "text": "Siehst du, Mama? Alle Laternen brennen. Genau wie du es wolltest.",
+          "pre": 1.2,
           "style": "sanft, sehnsüchtig, zum Himmel sprechend"
         },
         {
-          "who": "ERZ",
-          "text": "Ihre Mutter verschwand vor zwölf Jahren. In der Nacht, in der zuletzt ein Stern fiel.",
-          "pre": 0.5,
+          "who": "ICH",
+          "text": "Sie verschwand vor zwölf Jahren. In der Nacht, in der zuletzt ein Stern fiel.",
+          "pre": 1.0,
           "style": "leise, traurig"
         },
         {
-          "who": "ERZ",
-          "text": "Heute Nacht … ist es wieder so weit.",
-          "pre": 0.5,
-          "style": "flüsternd, spannungsgeladen"
+          "who": "ICH",
+          "text": "Alles, was mir von ihr blieb, ist dieser Anhänger. Seine Nadel zeigt immer auf denselben Stern.",
+          "pre": 0.8,
+          "style": "zärtlich, geheimnisvoll"
+        }
+      ]
+    },
+    {
+      "id": "kael_vor",
+      "pre": 0.8,
+      "post": 1.0,
+      "lines": [
+        {
+          "who": "ICH",
+          "text": "Und dann ist da Kael. Mein großer Bruder.",
+          "style": "warm, aber verletzt"
+        },
+        {
+          "who": "ICH",
+          "text": "Nachdem Mama verschwand, hat er mich großgezogen. Er hat mir das Klettern beigebracht.",
+          "pre": 0.8,
+          "style": "liebevolle Erinnerung"
+        },
+        {
+          "who": "ICH",
+          "text": "Bis er eines Morgens in die Lichtkrone ging. Zum Orden. Ohne ein Wort der Erklärung.",
+          "pre": 0.8,
+          "style": "bitter, verletzt"
+        },
+        {
+          "who": "KAEL_ERINNERUNG",
+          "text": "Ich komme zurück, Luna. Versprochen.",
+          "pre": 1.0,
+          "style": "warm, tröstend"
+        },
+        {
+          "who": "ICH",
+          "text": "Heute ist er Hauptmann der Flammenwache. Seraphines treuester Soldat.",
+          "pre": 1.0,
+          "style": "kühl"
+        },
+        {
+          "who": "ICH",
+          "text": "Jeden Monat schickt er mir einen Brief. Ich habe keinen einzigen geöffnet.",
+          "pre": 0.8,
+          "style": "trotzig, mit unterdrückter Traurigkeit"
         }
       ]
     },
     {
       "id": "fall",
-      "pre": 4.6,
-      "post": 0.4,
+      "pre": 0.6,
+      "post": 0.6,
       "cues": {
-        "streak": 0.3,
-        "impact": 3.0
+        "streak": "L0+4.2",
+        "impact": "L0+6.9"
       },
       "lines": [
         {
-          "who": "ELARA",
+          "who": "ICH",
+          "text": "Dann kam diese Nacht. Die Nadel meines Anhängers begann zu zittern.",
+          "style": "spannungsgeladen, leise"
+        },
+        {
+          "who": "LUNARA",
           "text": "Nein … das ist unmöglich.",
+          "pre": 4.2,
           "style": "fassungslos, atemlos"
         }
       ]
     },
     {
       "id": "ruinen",
-      "pre": 0.4,
-      "post": 0.5,
+      "pre": 0.6,
+      "post": 0.8,
       "lines": [
         {
-          "who": "ERZ",
-          "text": "Er schlug in den verbotenen Ruinen ein. Elara ging trotzdem.",
+          "who": "ICH",
+          "text": "Der Stern schlug in den verbotenen Ruinen ein.",
           "style": "spannend"
         },
         {
+          "who": "ICH",
+          "text": "Eine tote Insel, tief unter der Stadt. Dort begann vor tausend Jahren das große Feuer.",
+          "pre": 0.8,
+          "style": "unheimlich"
+        },
+        {
+          "who": "ICH",
+          "text": "Die Bäume dort sind zu Stein geworden. Und zwischen ihnen liegen die Knochen von Walen.",
+          "pre": 0.8,
+          "style": "flüsternd, gruselig"
+        },
+        {
+          "who": "ICH",
+          "text": "Seit tausend Jahren hat niemand sie betreten. Ich ging trotzdem.",
+          "pre": 0.9,
+          "style": "entschlossen"
+        },
+        {
           "who": "STERN",
-          "text": "Elara.",
-          "pre": 1.0,
+          "text": "Lunara.",
+          "pre": 1.4,
           "style": "geflüstert, lockend"
         },
         {
-          "who": "ELARA",
+          "who": "LUNARA",
           "text": "Wer … wer ist da?",
-          "pre": 0.5,
+          "pre": 0.6,
           "style": "ängstlich, leise"
         },
         {
           "who": "STERN",
-          "text": "Deine Mutter hat mir deinen Namen verraten. Kurz bevor sie mich an den Himmel gekettet hat.",
+          "text": "Du hast lange gebraucht. Zwölf Jahre, um genau zu sein.",
+          "pre": 0.6,
+          "style": "sanft, amüsiert"
+        },
+        {
+          "who": "LUNARA",
+          "text": "Woher kennst du meinen Namen?",
           "pre": 0.5,
+          "style": "misstrauisch"
+        },
+        {
+          "who": "STERN",
+          "text": "Deine Mutter hat ihn mir verraten. Kurz bevor sie mich an den Himmel gekettet hat.",
+          "pre": 0.7,
           "style": "sanft, mit verborgener Bitterkeit"
         }
       ]
     },
     {
       "id": "bund",
-      "pre": 0.3,
-      "post": 0.6,
+      "pre": 0.4,
+      "post": 0.8,
       "cues": {
-        "touch": "L1-0.2"
+        "touch": "L1-0.3"
       },
       "lines": [
         {
-          "who": "ERZ",
-          "text": "Sie hätte weglaufen sollen. Stattdessen berührte sie das Herz des Sterns.",
-          "style": "eindringlich"
+          "who": "ICH",
+          "text": "Ich hätte weglaufen sollen. Stattdessen streckte ich die Hand aus.",
+          "style": "eindringlich, reuevoll"
         },
         {
           "who": "STERN",
           "text": "Jetzt gehören wir zusammen. Für immer.",
-          "pre": 2.2,
+          "pre": 2.6,
           "style": "zufrieden, hallend"
         }
       ]
     },
     {
-      "id": "orden",
-      "pre": 0.3,
-      "post": 0.5,
+      "id": "glocken",
+      "pre": 0.6,
+      "post": 0.8,
+      "cues": {
+        "glocke": 0.4
+      },
       "lines": [
         {
-          "who": "ERZ",
-          "text": "Dann kam der Orden.",
-          "style": "düster"
+          "who": "ICH",
+          "text": "In derselben Sekunde begannen oben in der Lichtkrone die Wachglocken zu läuten.",
+          "pre": 1.4,
+          "style": "erschrocken"
         },
         {
+          "who": "ICH",
+          "text": "Sie läuten nur, wenn ein Sternenherz berührt wird. Tausend Jahre lang hatten sie geschwiegen.",
+          "pre": 0.7,
+          "style": "angstvoll"
+        },
+        {
+          "who": "ICH",
+          "text": "Jetzt wusste ganz Aurelion: Jemand hatte das Gesetz gebrochen. Und der Orden würde kommen.",
+          "pre": 0.7,
+          "style": "panisch, schnell"
+        }
+      ]
+    },
+    {
+      "id": "orden",
+      "pre": 0.4,
+      "post": 0.6,
+      "lines": [
+        {
           "who": "SERAPHINE",
-          "text": "Tritt zurück, Kind. Was du da hältst, hat einst eine ganze Welt verbrannt.",
-          "pre": 0.5,
+          "text": "Tritt zurück, Kind.",
+          "pre": 0.4,
           "style": "kalt, gebieterisch"
         },
         {
-          "who": "ELARA",
-          "text": "Es kennt meine Mutter!",
+          "who": "SERAPHINE",
+          "text": "Was du da in der Hand hältst …",
+          "pre": 0.6,
+          "rate": 0.88,
+          "style": "leise, mit Entsetzen"
+        },
+        {
+          "who": "SERAPHINE",
+          "text": "Es hat eine ganze Welt verbrannt!",
           "pre": 0.3,
+          "rate": 0.86,
+          "fx": "entsetzen",
+          "style": "voller Entsetzen, laut, die Stimme bricht fast"
+        },
+        {
+          "who": "LUNARA",
+          "text": "Es kennt meine Mutter!",
+          "pre": 0.5,
           "style": "verzweifelt, laut"
         },
         {
           "who": "SERAPHINE",
           "text": "Natürlich kennt es sie.",
-          "pre": 0.4,
+          "pre": 0.6,
           "style": "ruhig, fast mitleidig"
         },
         {
           "who": "SERAPHINE",
           "text": "Es hat sie getötet.",
-          "pre": 0.6,
+          "pre": 0.8,
           "style": "eiskalt, langsam"
         },
         {
           "who": "STERN",
-          "text": "Sie lügt, Elara.",
-          "pre": 0.5,
+          "text": "Sie lügt, Lunara.",
+          "pre": 0.7,
           "style": "geflüstert, drängend"
         }
       ]
     },
     {
       "id": "kael",
-      "pre": 0.3,
-      "post": 0.4,
+      "pre": 0.4,
+      "post": 0.6,
       "lines": [
         {
           "who": "SERAPHINE",
@@ -269,53 +502,67 @@
           "style": "scharf, befehlend"
         },
         {
-          "who": "ELARA",
-          "text": "Kael? Du … du gehörst zu ihnen?",
-          "pre": 1.4,
+          "who": "ICH",
+          "text": "Und aus der Reihe der Flammenwache trat der einzige Mensch, den ich noch hatte.",
+          "pre": 0.7,
+          "style": "erschüttert"
+        },
+        {
+          "who": "LUNARA",
+          "text": "Kael …? Du … du gehörst wirklich zu ihnen?",
+          "pre": 1.0,
           "style": "ungläubig, verletzt"
         },
         {
           "who": "KAEL",
-          "text": "Es tut mir leid, Elara. Wenn der Stern fällt, soll ich dich töten. Das war der Preis für zwölf Jahre Frieden.",
+          "text": "Es tut mir leid, Luna. Das war der Handel.",
+          "pre": 0.7,
+          "style": "gequält"
+        },
+        {
+          "who": "KAEL",
+          "text": "Wenn der Stern fällt, und du berührst ihn … muss ich es tun. Nur deshalb haben sie dich zwölf Jahre in Ruhe gelassen.",
           "pre": 0.5,
           "style": "gequält, mit erstickter Stimme"
         },
         {
-          "who": "ELARA",
+          "who": "LUNARA",
           "text": "Du hast es gewusst. Die ganze Zeit.",
-          "pre": 0.4,
+          "pre": 0.6,
           "style": "bitter, den Tränen nahe"
         },
         {
           "who": "KAEL",
           "text": "Ich habe es gewusst.",
-          "pre": 0.4,
+          "pre": 0.6,
           "style": "leise, schuldbewusst"
         },
         {
           "who": "KAEL",
-          "text": "Und ich kann es trotzdem nicht.",
-          "pre": 0.7,
-          "style": "entschlossen, mit brechender Stimme"
+          "text": "Und ich … ich kann es trotzdem nicht! Ich kann es nicht, Luna!",
+          "pre": 0.9,
+          "rate": 0.95,
+          "fx": "zittern",
+          "style": "völlig verzweifelt, schreiend, mit Tränen"
         }
       ]
     },
     {
       "id": "angriff",
-      "pre": 0.2,
-      "post": 0.4,
+      "pre": 0.3,
+      "post": 0.5,
       "cues": {
         "bolt": "L1-1.3",
         "fallen": "L1-0.15"
       },
       "lines": [
         {
-          "who": "ERZ",
+          "who": "ICH",
           "text": "Er senkte sein Schwert. Seraphine zögerte keine Sekunde.",
           "style": "schnell, angespannt"
         },
         {
-          "who": "ELARA",
+          "who": "LUNARA",
           "text": "Kael! Nein!",
           "pre": 1.6,
           "style": "schreiend, panisch"
@@ -324,48 +571,60 @@
     },
     {
       "id": "abschied",
-      "pre": 0.8,
-      "post": 0.8,
+      "pre": 1.0,
+      "post": 1.0,
       "lines": [
         {
           "who": "KAEL",
-          "text": "Mama hat keinen Stern eingesperrt …",
-          "rate": 0.88,
+          "text": "Luna … Mama hat keinen Stern eingesperrt …",
+          "rate": 0.85,
+          "fx": "schwach",
           "style": "sterbend, schwach, flüsternd"
         },
         {
           "who": "KAEL",
           "text": "Sie hat sich selbst eingesperrt.",
-          "pre": 0.6,
-          "rate": 0.88,
+          "pre": 0.8,
+          "rate": 0.85,
+          "fx": "schwach",
           "style": "sterbend, flüsternd"
         },
         {
-          "who": "ELARA",
+          "who": "LUNARA",
           "text": "Warum?",
-          "pre": 0.4,
+          "pre": 0.5,
+          "fx": "zittern",
           "style": "weinend"
         },
         {
           "who": "KAEL",
           "text": "Um ihn aufzuhalten. Den, den du gerade … in deiner Hand hältst.",
-          "pre": 0.5,
-          "rate": 0.86,
+          "pre": 0.6,
+          "rate": 0.83,
+          "fx": "schwach",
           "style": "letzter Atemzug, kaum hörbar"
         },
         {
-          "who": "ELARA",
-          "text": "Bleib bei mir. Bitte. Du bist alles, was ich noch habe.",
-          "pre": 1.2,
-          "rate": 0.9,
+          "who": "LUNARA",
+          "text": "Bleib bei mir. Bitte! Du hast es versprochen. Du hast versprochen, dass du zurückkommst!",
+          "pre": 1.4,
+          "rate": 0.92,
+          "fx": "zittern",
           "style": "schluchzend, verzweifelt"
+        },
+        {
+          "who": "ICH",
+          "text": "Er ist zurückgekommen. Nur, um für mich zu sterben.",
+          "pre": 1.6,
+          "rate": 0.86,
+          "style": "gebrochen, leise"
         }
       ]
     },
     {
       "id": "erwachen",
-      "pre": 0.6,
-      "post": 0.5,
+      "pre": 0.8,
+      "post": 0.6,
       "cues": {
         "schwarz": "L0+2.5",
         "erloeschen": "L2+0.0"
@@ -373,84 +632,84 @@
       "lines": [
         {
           "who": "STERN_DUNKEL",
-          "text": "Weine nicht, Elara. Du hast ihn nicht verloren. Du hast mich gewonnen.",
+          "text": "Weine nicht, Lunara. Du hast ihn nicht verloren. Du hast mich gewonnen.",
           "style": "tief, triumphierend, langsam"
         },
         {
           "who": "SERAPHINE",
           "text": "Bei allen Göttern … es ist zu spät.",
-          "pre": 0.4,
+          "pre": 0.6,
           "style": "entsetzt, zum ersten Mal ängstlich"
         },
         {
-          "who": "ERZ",
-          "text": "Und einer nach dem anderen erloschen die Sterne über Valdoria.",
-          "pre": 0.4,
+          "who": "ICH",
+          "text": "Und einer nach dem anderen erloschen die Sterne über Valdoria. Die Himmelswale hörten auf zu singen.",
+          "pre": 0.6,
           "style": "düster, langsam"
         }
       ]
     },
     {
       "id": "letzter",
-      "pre": 0.8,
-      "post": 0.5,
+      "pre": 1.0,
+      "post": 0.6,
       "cues": {
         "schwester": "L3-0.4"
       },
       "lines": [
         {
-          "who": "ERZ",
-          "text": "Alle … bis auf einen.",
+          "who": "ICH",
+          "text": "Alle Sterne … bis auf einen. Den, auf den die Nadel meines Anhängers zeigt.",
           "style": "geflüstert"
         },
         {
           "who": "MUTTER",
-          "text": "Elara. Hör mir zu. Lass ihn nicht los, was auch immer er dir verspricht.",
-          "pre": 1.0,
+          "text": "Lunara. Hör mir zu. Lass ihn nicht los, was auch immer er dir verspricht.",
+          "pre": 1.2,
           "style": "eindringlich, liebevoll, aus weiter Ferne"
         },
         {
           "who": "MUTTER",
           "text": "Sonst stirbt die Welt.",
-          "pre": 0.5,
+          "pre": 0.6,
           "style": "ernst, flehend"
         },
         {
           "who": "STERN_DUNKEL",
           "text": "Hallo … Schwester.",
-          "pre": 1.6,
+          "pre": 1.8,
           "style": "leise, genüsslich, bedrohlich"
         },
         {
-          "who": "ELARA",
+          "who": "LUNARA",
           "text": "Schwester …?",
-          "pre": 0.8,
+          "pre": 0.9,
           "style": "fassungslos, geflüstert"
         }
       ]
     },
     {
       "id": "ende",
-      "pre": 0.5,
-      "post": 0.6,
+      "pre": 0.6,
+      "post": 0.8,
       "lines": [
         {
-          "who": "ERZ",
-          "text": "Ihre Mutter war kein Mensch.",
+          "who": "ICH",
+          "text": "In dieser Nacht erfuhr ich, dass meine Mutter kein Mensch war.",
           "style": "langsam, schwer"
         },
         {
-          "who": "ERZ",
-          "text": "Und Elara … war es nur zur Hälfte.",
-          "pre": 0.7,
+          "who": "ICH",
+          "text": "Und ich … bin es nur zur Hälfte.",
+          "pre": 0.9,
           "style": "flüsternd, die größte Enthüllung"
         }
       ]
     },
     {
       "id": "sting",
-      "pre": 0.9,
-      "post": 0.8,
+      "pre": 1.0,
+      "post": 1.0,
       "lines": [
         {
           "who": "SERAPHINE",
@@ -460,10 +719,17 @@
       ]
     },
     {
-      "id": "abspann",
-      "pre": 7.5,
-      "post": 0,
-      "lines": []
+      "id": "outro",
+      "pre": 2.2,
+      "post": 13.5,
+      "lines": [
+        {
+          "who": "LUNARA",
+          "text": "Wenn du wissen willst, wie meine Geschichte weitergeht … folge mir. Dann siehst du die nächste Folge als Erstes.",
+          "rate": 0.93,
+          "style": "direkt zum Zuschauer, eindringlich, ein Hauch Lächeln"
+        }
+      ]
     }
   ]
 }
