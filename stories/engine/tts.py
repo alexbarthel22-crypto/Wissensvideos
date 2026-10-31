@@ -226,7 +226,7 @@ def main(story_path, out_dir):
             clips.append((t, audio))
             timeline["lines"].append({"scene": scene["id"], "who": line["who"], "label": v["label"],
                                       "text": line.get("display", line["text"]), "start": round(t, 3), "end": round(t + dur, 3),
-                                      **{k: line[k] for k in ("hook", "hook_at", "hook_fly") if k in line}})
+                                      **{k: line[k] for k in ("hook", "hook_at", "hook_fly", "hook_only") if k in line}})
             t += dur
         t += scene.get("post", 0.5)
         timeline["scenes"].append({"id": scene["id"], "start": round(start, 3), "end": round(t, 3)})

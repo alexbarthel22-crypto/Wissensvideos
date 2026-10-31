@@ -30,19 +30,20 @@ Neraya muss durch ganz Valdoria reisen – bis hinunter unter die Wolken –, um
 |---|---|---|
 | **Neraya** | 17 | Erzählerin. Hochintelligent (rechnet Mondbahnen), schüchtern, unbeholfen, tollpatschig, sehr sarkastisch. Große Schwäche: Mondweizen-Ramen. Halb Mensch, halb Sternwesen. |
 | **Lunara** | – | Ihre daumengroße Mondmaus, hält sich für einen Drachen. Liebt Mondstaub. |
-| **Joren** | 18 | Himmelsschmuggler. Genauso sarkastisch wie Neraya, lässig, insgeheim loyal bis zur Selbstaufgabe. Lernt sie in Folge 4 kennen. Am Ende ihre Liebe. |
+| **Joren** | 18 | Himmelsschmuggler. Genauso sarkastisch wie Neraya, lässig, insgeheim loyal bis zur Selbstaufgabe. Lernt sie in Folge 4 kennen. Durchschaut Elian als Erster. Am Ende ihre echte Liebe. |
 | **Taren** | 18 | Sternenjäger. Kalt, abweisend, hochkompetent. Tritt in Folge 6 auf, jagt sie zuerst. |
 | **Mira** | 16 | Jünger als Neraya, aber tapferer und selbstbewusster. Ein Kind der Tiefen Äste, das sich allein durchschlägt. Ab Folge 9 dabei. Treibt Nerayas Entwicklung an, wird ihre allerbeste Freundin. |
 | **Ramen-Bo** | – | Brummiger, gutmütiger Ramen-Koch in den Tiefen Ästen. Lunara klaut ihm ständig Nudeln. |
 | **Kael** | 21 | Nerayas Bruder, Hauptmann der Flammenwache. Verschwindet in Folge 3 und kehrt in Folge 17 zurück. |
 | **Seraphine** | – | Hohepriesterin des Ordens, einst die beste Freundin der Mutter. Antagonistin mit eigenem tragischem Grund. |
-| **Der Stern** | – | Uraltes Lichtwesen, nennt Neraya „Schwester“. Verführerisch, dann bedrohlich. |
+| **Der Stern / Elian** | – (wirkt 18) | Uraltes Lichtwesen. Kennt Nerayas Namen. Ab Folge 5 in Menschengestalt als **Elian**: charmant, versteht sie als Einziger, verspricht, ihre Mutter zu finden. Nerayas erste Liebe, benutzt sie aber, um ganz frei zu kommen. Wird in Folge 14 entlarvt. Die Romanze bleibt zart. |
 | **Die Mutter** | – | Ein Sternwesen in Menschengestalt, hat sich selbst eingesperrt, um den Stern aufzuhalten. |
 | **Hauptmann Varn** | – | Jorens und Tarens gemeinsamer Vater. Hat Nerayas Mutter vor zwölf Jahren an den Orden verraten. Wird erst in Folge 18 enthüllt. |
 
 ### Tarens Geheimnis (Enthüllung in Folge 12)
-Taren hat einmal ein Sternenherz berührt, um seine kleine Schwester zu retten. Seitdem wird er langsam zu Stein, wie die Bäume in den verbotenen Ruinen. Er stößt alle von sich, damit niemand um ihn trauern muss.
-Hinweise ab Folge 6: Er trägt immer Handschuhe, zuckt bei Berührungen zurück und hat graue Adern am Handgelenk.
+Ein Sternwesen in Menschengestalt hat Taren vor zwei Jahren getäuscht: Es versprach, seine kleine Schwester zu retten. Er berührte dessen Sternenherz und wird seitdem langsam zu Stein, wie die Bäume in den verbotenen Ruinen.
+Er erkennt bei Elian sofort dasselbe Muster, schweigt aber aus Scham. Er stößt alle von sich, damit niemand um ihn trauern muss.
+Hinweise ab Folge 6: Er trägt immer Handschuhe, zuckt bei Berührungen zurück und erstarrt, wenn Elian auftaucht.
 
 ### Halbbrüder (Enthüllung in Folge 18)
 Joren und Taren haben denselben Vater, Varn, aber verschiedene Mütter, und wissen nichts voneinander.
@@ -50,52 +51,57 @@ Die Enthüllung hat Gewicht für die Hauptgeschichte: Ihr Vater hat Nerayas Mutt
 
 ## Entwicklungsbögen
 - **Neraya:**
-  - Folgen 1–5: stottert, versteckt sich hinter Witzen
+  - Folgen 1–5: schüchtern, versteckt sich hinter Witzen
   - Folge 10: führt das erste Mal selbst
-  - Folgen 14–15: Tiefpunkt, gibt sich die Schuld an allem
-  - Folge 16: steht allein wieder auf
-  - Folge 19: sagt Seraphine einen trockenen Satz ins Gesicht, ohne zu zögern
-- **Neraya × Joren:**
+  - Folgen 14–15: Herzschmerz und Tiefpunkt
+  - Folge 16: bricht Elians Bann selbst
+  - Folge 19: selbstbewusst im Finale
+- **Neraya × Elian (falsche Liebe):**
+  - Folge 5: erste Begegnung
+  - Folge 7: sie verliebt sich
+  - Folge 14: Entlarvung, Herzschmerz
+- **Neraya × Joren (echte Liebe):**
   - ab Folge 4: Wortgefechte
+  - Folge 7: Joren merkt, dass Elian zu viel weiß
   - Folge 8: erster ehrlicher Moment
-  - Folge 11: Fast-Kuss, der unterbrochen wird
-  - Folge 17: kommen zusammen
-  - Folge 18: Krise durch die Enthüllung
-  - Folge 20: gefestigt
+  - Folge 11: Warnung, „Du bist doch nur eifersüchtig.“ (kein Fast-Kuss)
+  - Folge 13: Joren geht
+  - Folge 15: er kommt zurück, ohne Vorwurf
+  - Folge 16: hält ihre Hand, rettet sie aber nicht: „Ich hab nie gedacht, dass du gerettet werden musst. Nur, dass du's vergessen hast.“
+  - Folge 18: sie kommen trotz der Krise zusammen
 - **Mira × Neraya:**
-  - Folge 9: Rivalität, Neraya fühlt sich klein
+  - Folge 9: Rivalität
   - ab Folge 10: Freundschaft
-  - Folge 15: Mira wird verletzt, weil Neraya versagt
+  - Folge 15: Mira wird verletzt
   - ab Folge 16: allerbeste Freundinnen
-- **Mira × Taren:** Die Annäherung beginnt erst, nachdem Neraya und Joren zusammen sind.
-  - Folgen 18–19: zarte Blicke, Mira zieht Taren einen Handschuh aus
-  - Folge 20: Andeutung, kein Kuss
-- **Taren:** von kalt (Folgen 6–11) über offenbart (Folge 12) und verletzlich bis zum Opfermoment im Finale. Ob er geheilt wird, entscheidet die Mutter.
+  - Mira mag Elian und durchschaut ihn nicht
+- **Mira × Taren:** erst nachdem Neraya und Joren zusammen sind, zart in den Folgen 19 und 20.
+- **Taren:** kalt (Folgen 6–11), Geheimnis offenbart (Folge 12), verletzlich, Opfermoment im Finale.
 
 ## Folgenplan
 
 | # | Titel (Arbeitstitel) | Kern | Cliffhanger |
 |---|---|---|---|
-| 1 | Die Stadt über den Wolken | Welt, Neraya, Ramen, der Stern fällt | „Das ist unmöglich!“ |
-| 2 | Das Herz, das vom Himmel fiel | Herz berührt, Glocken, Seraphine | Der Orden kommt |
-| 3 | Das Versprechen | Kael verrät sie und rettet sie dann, die Sterne erlöschen | „Hallo … Schwester.“ |
-| 4 | Der Schmuggler | Flucht aus Aurelion, Joren nimmt sie widerwillig mit | Sein Schiff wird abgeschossen |
-| 5 | Die stummen Wale | Absturz auf eine Walinsel, die Wale sterben, Hinweis auf die Mutter | Ein Sternenjäger ist auf ihrer Spur |
-| 6 | Der Jäger | Taren stellt sie, Kampf, Zwangsbündnis | Taren zieht nie die Handschuhe aus |
-| 7 | Die Insel der verlorenen Lieder | Wahrheit: Die Sterne sind Gefängnisse | Der Stern flüstert, Neraya gehorcht kurz |
-| 8 | Feuer im Nebel | Der Orden greift an, Neraya trifft ihre erste eigene Entscheidung | Neraya stürzt ab |
-| 9 | Mira | Mira rettet Neraya, Rivalität | Mira kennt einen Weg nach unten |
-| 10 | Unter die Wolken | Abstieg, Neraya führt das erste Mal (Mitte der Serie) | Unten ist es nicht leer |
-| 11 | Die Vergessenen | Volk der vom Orden Verbannten, Fast-Kuss | Taren bricht zusammen |
-| 12 | Stein | Tarens Geheimnis | Er hat nur noch Monate |
-| 13 | Die Stimme der Mutter | Botschaft der Mutter, Wahrheit über die halbmenschliche Herkunft | Der Stern kennt den Weg zur Mutter |
-| 14 | Der Handel | Neraya lässt den Stern zu viel Macht nehmen | Ihre Augen leuchten fremd |
-| 15 | Bruch | Mira wird verletzt, die Gruppe zerbricht (Tiefpunkt) | Neraya ist allein |
-| 16 | Aufstehen | Neraya allein, findet ihre Stärke, holt die anderen zurück | Ein Signal von oben: Kael |
-| 17 | Rückkehr | Aufstieg, Kael lebt, Neraya und Joren kommen zusammen | Kael erkennt Jorens Gesicht |
-| 18 | Varns Söhne | Halbbrüder-Enthüllung, Verrat an der Mutter, Krise | Seraphine öffnet den letzten Stern |
-| 19 | Sternenfall | Finale: Seraphine, der Stern, die Mutter, Valdoria gerettet | Ein Licht erlischt (Opfermoment) |
-| 20 | Ramen für vier | Epilog: Heimat, Wale singen, Ramen zu viert, Mira und Taren angedeutet | Optional ein Haken für Staffel 2 |
+| 1 | Die Stadt über den Wolken | Einstieg „Mein Ex war ein Stern …“. Welt, Neraya, Ramen, Lunara, der Stern fällt | „Das ist unmöglich!“ |
+| 2 | Das Herz, das vom Himmel fiel | Kael, die Ruinen, der Stern kennt ihren Namen, Herz berührt, Glocken, Seraphine | Der Orden kommt |
+| 3 | Das Versprechen | Kael schützt sie und wird schwer verletzt. Mama hat sich selbst eingesperrt, die Sterne erlöschen, die Warnung der Mutter | „Hallo, Neraya. Ich habe auf dich gewartet.“ Neraya ist halb Stern |
+| 4 | Der Schmuggler | Flucht, Joren nimmt sie widerwillig mit | Sein Schiff wird abgeschossen |
+| 5 | Die stummen Wale | Walinsel, die Wale sterben. Elian zeigt sich in Menschengestalt | Er reicht ihr die Hand |
+| 6 | Der Jäger | Taren jagt sie, Zwangsbündnis. Taren erstarrt bei Elian | Die Handschuhe |
+| 7 | Die Insel der verlorenen Lieder | Die Sterne sind Gefängnisse. Neraya verliebt sich in Elian, Joren wird misstrauisch | Neraya verliebt sich |
+| 8 | Feuer im Nebel | Angriff des Ordens, ihre erste eigene Entscheidung, ehrlicher Moment mit Joren | Neraya stürzt ab |
+| 9 | Mira | Mira rettet sie, Rivalität, Mira mag Elian | Ein Weg nach unten |
+| 10 | Unter die Wolken | Abstieg, Neraya führt (Mitte der Serie) | Unten ist es nicht leer |
+| 11 | Die Vergessenen | Volk der Verbannten. Joren warnt: „Du bist doch nur eifersüchtig.“ | Taren bricht zusammen |
+| 12 | Stein | Tarens Geheimnis, dasselbe Muster wie bei Elian | Neraya will es nicht glauben |
+| 13 | Die Stimme der Mutter | Botschaft der Mutter, Herkunft. Joren geht | Elian kennt den Weg zur Mutter |
+| 14 | Der Handel | Elians wahres Gesicht, Herzschmerz | Ihre Augen leuchten fremd |
+| 15 | Bruch | Mira verletzt, die Gruppe zerbricht, Joren kommt zurück (Tiefpunkt) | Allein mit Elians Stimme |
+| 16 | Aufstehen | Neraya bricht den Bann selbst und wird zur starken Frau | Signal von oben: Kael lebt |
+| 17 | Rückkehr | Aufstieg, Wiedersehen mit Kael | Kael erkennt Jorens Gesicht |
+| 18 | Varns Söhne | Halbbrüder-Enthüllung, Krise, Neraya und Joren kommen zusammen | Seraphine öffnet den letzten Stern |
+| 19 | Sternenfall | Finale gegen Elian und Seraphine, die Mutter befreit, Valdoria gerettet, Mira und Taren nähern sich zart | Ein Licht erlischt |
+| 20 | Ramen für vier | Ausklang: Die Wale singen, Ramen zu viert | Optional ein Haken für Staffel 2 |
 
 ## Regeln pro Folge
 - Haken in den ersten 3 Sekunden, Rückblick höchstens 10 Sekunden (ab Folge 2).
@@ -105,7 +111,7 @@ Die Enthüllung hat Gewicht für die Hauptgeschichte: Ihr Vater hat Nerayas Mutt
 - Name „Neraya“ deutsch aussprechen („Ne-ra-ja“): im TTS-Text `Neraja`, im Untertitel `Neraya` (Feld `display`).
 - Sarkasmus sparsam: 1–2 Mal pro Folge, dann aber wirklich lustig und passend. Schüchternheit und Tollpatschigkeit zeigen sich eher im Tonfall. Je weiter die Serie, desto selbstbewusster und weniger stockend.
 - Lunara hat pro Folge genau einen lustigen Moment mit einer anderen Figur (Folge 1: klaut Ramen-Bo eine Nudel). Ihr Lieblingssnack ist Mondstaub.
-- Folge 1 beginnt mit großem, mittigem Text und direkter Ansprache („Hey, du!“). Ab Folge 2 beginnt jede Folge mit einem kurzen Rückblick.
+- Folge 1 beginnt mit einem knalligen Einstieg von etwa 10 Sekunden: „Mein Ex war ein Stern. Ich meine das wörtlich. Und das ist nicht mal das Verrückteste an meiner Geschichte.“ Großer, blinkender Text, danach das Intro. Ab Folge 2 beginnt jede Folge mit einem kurzen Rückblick.
 - Dramatische Sätze („Und Valdoria … brannte.“) bekommen eine Sprechpause davor, als eigene Zeile mit `pre`.
 - Musik: Herausstechende Szenen (ernst, dramatisch, romantisch, spannend, lustig) bekommen eigene Musik. Die Musik bleibt leise unter der Stimme.
 - Neraya bewegt sich passend zur Erzählung (gehen, Laterne anzünden, Hand senken) und posiert nicht starr.

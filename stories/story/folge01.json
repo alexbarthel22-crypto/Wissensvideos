@@ -84,46 +84,37 @@
  "scenes": [
   {
    "id": "kalt",
-   "pre": 0.6,
-   "post": 0.4,
+   "pre": 0.25,
+   "post": 0.5,
    "lines": [
     {
      "who": "ICH",
-     "text": "Hey, du! Ja, genau du. Nicht weiterscrollen!",
-     "style": "laut, direkt, eindringlich, ein wenig atemlos, als würde sie jemanden auf der Straße anhalten, normale Sprechstimme, nicht flüstern",
-     "hook": "HEY, DU!",
-     "hook_fly": true
+     "text": "Mein Ex war ein Stern.",
+     "style": "direkt zum Zuschauer, trocken, selbstbewusst, wie ein Geständnis, das man nicht glauben kann, normale Sprechstimme, nicht flüstern",
+     "hook": "MEIN EX WAR EIN STERN.",
+     "hook_fly": true,
+     "hook_only": true
     },
     {
      "who": "ICH",
-     "text": "Hast du in letzter Zeit mal in den Sternenhimmel geschaut? Ist dir aufgefallen, dass … einer fehlt?",
-     "style": "schnell, verschwörerisch, dann ruhig und bedeutungsvoll, normale Sprechstimme, nicht flüstern",
-     "pre": 0.4,
-     "hook": "EINER FEHLT.",
-     "hook_at": 0.72
-    },
-    {
-     "who": "ICH",
-     "text": "Was wäre, wenn das gar keine Sterne sind? Wenn sie etwas gefangen halten … oder jemanden?",
-     "style": "ruhig, unheimlich, eindringlich, Spannung aufbauend, normale Sprechstimme, nicht flüstern",
+     "text": "Ich meine das wörtlich.",
      "pre": 0.5,
-     "hook": "GEFANGEN?",
-     "hook_at": 0.55
+     "style": "trocken, todernst, mit Nachdruck, normale Sprechstimme, nicht flüstern",
+     "hook": "WÖRTLICH.",
+     "hook_at": 0.45
     },
     {
      "who": "ICH",
-     "text": "Ich weiß es. Denn ich habe einen davon geöffnet. Und genau das war mein größter Fehler … aber von Anfang an.",
-     "style": "ehrlich, normale Sprechstimme, schuldbewusst, dann entschlossen weitererzählend, nicht flüstern",
-     "pre": 0.9
-    },
-    {
-     "who": "ICH",
-     "text": "Komm mit. Ich zeige dir eine Welt jenseits von allem, was du kennst. Bleib dran!",
-     "style": "warm, einladend, Neugier weckend, am Ende energisch und direkt zum Zuschauer, normale Sprechstimme, nicht flüstern",
-     "pre": 0.9
+     "text": "Und das ist nicht mal das Verrückteste an meiner Geschichte.",
+     "pre": 0.5,
+     "style": "mit einem schiefen Lächeln, geheimnisvoll, Neugier weckend, normale Sprechstimme, nicht flüstern"
     }
    ],
-   "tempo": 1.0
+   "tempo": 1.0,
+   "cues": {
+    "ex_hit": "L0+0.0",
+    "woertlich": "L1+0.0"
+   }
   },
   {
    "id": "intro",
