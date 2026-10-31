@@ -28,8 +28,8 @@
     .fc b { color: #e0484f; }
     .s04-w { left: 340px; width: 660px; padding: 14px 20px; }
   </style>
-  <div id="root" data-composition-id="s04" data-start="0" data-duration="15.320" data-width="1080" data-height="1920">
-    <div id="s04-stage" class="clip stage" data-start="0" data-duration="15.320" data-track-index="0">
+  <div id="root" data-composition-id="s04" data-start="0" data-duration="15.630" data-width="1080" data-height="1920">
+    <div id="s04-stage" class="clip stage" data-start="0" data-duration="15.630" data-track-index="0">
       <svg id="s04-svg" class="full" viewBox="0 0 1080 1920"></svg>
       <div id="s04-big" class="big"><b>25×</b><i>SCHNELLER AUSGEKÜHLT · NASSE KLEIDUNG</i></div>
       <div id="s04-w1" class="fc s04-w" style="top:580px"><b>Zittern</b></div><div id="s04-w2" class="fc s04-w" style="top:700px"><b>Verwirrung</b></div><div id="s04-w3" class="fc s04-w" style="top:820px"><b>Blaue Lippen</b></div>
@@ -39,7 +39,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 15.32, "L9": [0.2, 4.82], "L9.words": [["regel", 0.2, 0.671], ["zwei", 0.671, 0.92], ["wärme", 1.12, 1.54], ["nasse", 1.98, 2.323], ["kleidung", 2.323, 2.684], ["kühlt", 2.684, 2.871], ["dich", 2.871, 3.051], ["bis", 3.051, 3.226], ["zu", 3.226, 3.394], ["25", 3.394, 4.278], ["schneller", 4.278, 4.646], ["aus", 4.646, 4.82]], "L10": [5.04, 8.85], "L10.words": [["also", 5.04, 5.41], ["schicht", 5.65, 6.016], ["für", 6.016, 6.336], ["schicht", 6.336, 6.701], ["anziehen", 6.701, 7.65], ["nicht", 7.87, 7.985], ["schwitzen", 7.985, 8.211], ["", 8.211, 8.306], ["und", 8.306, 8.414], ["raus", 8.414, 8.525], ["aus", 8.525, 8.632], ["dem", 8.632, 8.739], ["wind", 8.739, 8.85]], "L10b": [9.07, 15.14], "L10b.words": [["achte", 9.07, 9.476], ["auf", 9.476, 9.682], ["die", 9.682, 9.889], ["warnzeichen", 9.889, 10.523], ["zittern", 10.523, 10.943], ["verwirrung", 10.943, 11.57], ["blaue", 11.57, 11.792], ["lippen", 11.792, 12.205], ["hört", 12.205, 12.418], ["das", 12.418, 12.625], ["zittern", 12.625, 13.045], ["plötzlich", 13.045, 13.481], ["auf", 13.481, 13.687], ["wird", 13.687, 13.901], ["es", 13.901, 14.1], ["lebensgefährlich", 14.1, 15.14]]};
+      const C = {"__dur": 15.63, "L9": [0.2, 5.06], "L9.words": [["regel", 0.2, 0.573], ["zwei", 0.573, 0.77], ["wärme", 1.28, 1.65], ["nasse", 2.13, 2.483], ["kleidung", 2.483, 2.856], ["kühlt", 2.856, 3.049], ["dich", 3.049, 3.235], ["bis", 3.235, 3.415], ["zu", 3.415, 3.589], ["25", 3.589, 4.501], ["schneller", 4.501, 4.88], ["aus", 4.88, 5.06]], "L10": [5.28, 9.16], "L10.words": [["also", 5.28, 5.71], ["schicht", 5.99, 6.325], ["für", 6.325, 6.617], ["schicht", 6.617, 6.952], ["anziehen", 6.952, 7.82], ["nicht", 8.19, 8.304], ["schwitzen", 8.304, 8.527], ["", 8.527, 8.622], ["und", 8.622, 8.728], ["raus", 8.728, 8.838], ["aus", 8.838, 8.944], ["dem", 8.944, 9.05], ["wind", 9.05, 9.16]], "L10b": [9.38, 15.45], "L10b.words": [["achte", 9.38, 9.786], ["auf", 9.786, 9.992], ["die", 9.992, 10.199], ["warnzeichen", 10.199, 10.833], ["zittern", 10.833, 11.253], ["verwirrung", 11.253, 11.88], ["blaue", 11.88, 12.102], ["lippen", 12.102, 12.515], ["hört", 12.515, 12.728], ["das", 12.728, 12.935], ["zittern", 12.935, 13.355], ["plötzlich", 13.355, 13.791], ["auf", 13.791, 13.997], ["wird", 13.997, 14.211], ["es", 14.211, 14.41], ["lebensgefährlich", 14.41, 15.45]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];

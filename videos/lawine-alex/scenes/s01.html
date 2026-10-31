@@ -5,16 +5,20 @@
     .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
       font-family: "Inter", sans-serif; font-weight: 900; }
     .vig { position: absolute; left: 0; right: 0; top: 1040px; height: 880px; background: linear-gradient(rgba(10,12,30,0), rgba(10,12,30,.5) 45%, rgba(10,12,30,.55)); pointer-events: none; }
-    #s01-t { left: 30px; right: 30px; top: 190px; text-align: center; color: #fff; font: 600 128px/0.98 "EB Garamond", serif; text-shadow: 0 6px 30px rgba(0,0,0,.8); }
+    #s01-t { left: 20px; right: 20px; top: 360px; text-align: center; color: #fff; font: 600 150px/0.96 "EB Garamond", serif; text-shadow: 0 0 6px rgba(0,0,0,.9), 0 6px 34px rgba(0,0,0,.9); }
     #s01-t em { font-style: normal; color: #9dd6ff; text-shadow: 0 0 50px rgba(157,214,255,1), 0 6px 30px rgba(0,0,0,.7); }
-    #s01-t small { display: block; margin-top: 26px; font-size: 78px; } #s01-t b { display: block; font-size: 138px; color: #ff4b52; text-shadow: 0 0 60px rgba(255,75,82,1), 0 6px 30px rgba(0,0,0,.7); }
-    #s01-live { left: 0; right: 0; top: 120px; margin: 0 auto; width: fit-content; padding: 8px 22px; border-radius: 12px; background: #e0484f; color: #fff; font: 800 34px Inter, sans-serif; letter-spacing: .12em; box-shadow: 0 0 40px rgba(224,72,79,.8); }
-    .s01-w { position: absolute; left: 0; width: 1080px; top: 420px; text-align: center; font: 700 140px/1 "EB Garamond", serif; color: #fff; opacity: 0; text-shadow: 0 0 50px rgba(255,75,82,.9), 0 6px 30px rgba(0,0,0,.8); }
-    #s01-tag { left: 610px; top: 560px; padding: 10px 22px; border-radius: 14px; background: rgba(255,255,255,.96); color: #22283f; font: 600 48px "EB Garamond", serif; opacity: 0; box-shadow: 0 16px 40px rgba(0,0,0,.4); }
+    #s01-t small { display: block; margin-top: 24px; font-size: 84px; } #s01-t b { display: block; font-size: 128px; color: #ff4b52; text-shadow: 0 0 60px rgba(255,75,82,1), 0 6px 30px rgba(0,0,0,.7); }
+    #s01-frame { left: 0; top: 0; width: 1080px; height: 1920px; box-shadow: inset 0 0 0 16px rgba(224,72,79,.9), inset 0 0 120px rgba(224,72,79,.6); opacity: 0; }
+    #s01-warn { left: 455px; top: 110px; width: 170px; height: 153px; filter: drop-shadow(0 0 24px rgba(255,212,59,.8)); }
+    #s01-live { left: 0; right: 0; top: 290px; margin: 0 auto; width: fit-content; padding: 8px 22px; border-radius: 12px; background: #e0484f; color: #fff; font: 800 34px Inter, sans-serif; letter-spacing: .12em; box-shadow: 0 0 40px rgba(224,72,79,.8); }
+    .s01-w { position: absolute; left: 0; width: 1080px; top: 560px; text-align: center; font: 700 140px/1 "EB Garamond", serif; color: #fff; opacity: 0; text-shadow: 0 0 50px rgba(255,75,82,.9), 0 6px 30px rgba(0,0,0,.8); }
+    #s01-tag { left: 600px; top: 860px; padding: 10px 22px; border-radius: 14px; background: rgba(255,255,255,.96); color: #22283f; font: 600 48px "EB Garamond", serif; opacity: 0; box-shadow: 0 16px 40px rgba(0,0,0,.4); }
   </style>
   <div id="root" data-composition-id="s01" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
     <div id="s01-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
       <svg id="s01-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s01-frame" class="abs"></div>
+      <svg id="s01-warn" class="abs" viewBox="0 0 200 180"><path id="s01-tri" d="M100 10 L190 168 H10Z" fill="#ffd43b" stroke="#e0484f" stroke-width="14" stroke-linejoin="round"/><rect x="91" y="62" width="18" height="62" rx="9" fill="#141a32"/><circle cx="100" cy="144" r="11" fill="#141a32"/></svg>
       <div id="s01-live" class="abs">● 1 ÜBERLEBENDER WELTWEIT</div>
       <div id="s01-t" class="abs">Die ganze <em>Welt</em><br>unter Schnee.<small>Du bist der</small><b>letzte Mensch.</b></div>
       <div id="s01-w1" class="s01-w">Jedes Land.</div><div id="s01-w2" class="s01-w">Jede Stadt.</div><div id="s01-w3" class="s01-w">Jeder Mensch.</div>
@@ -30,15 +34,15 @@
       const sv = document.querySelector("#s01-svg");
       sky(sv, "s01-s", "#141d3a", "#6f82ab");
       const W = el("g", {}, sv);
-      skyline(W, 1100, 3, ["#2c3858", "#344263"], 8, 220, 440);
-      skyline(W, 1140, 5, ["#45537a", "#516089"], 7, 280, 540);
-      snowLayer(W, 990, "#dfe9f5");
-      el("rect", { x: 450, y: 900, width: 180, height: 420, fill: "#36425f" }, W); el("rect", { x: 440, y: 890, width: 200, height: 24, fill: "#f4f8fc" }, W);
-      snowLayer(W, 1080, "#f2f7fc");
-      const beam = el("path", { d: "M570 760 L860 630 L880 730Z", fill: "#fff6c8", opacity: 0.6 }, W);
-      const A = alex(W, 540, 892, 1.35);
+      skyline(W, 1280, 3, ["#2c3858", "#344263"], 8, 260, 480);
+      skyline(W, 1320, 5, ["#45537a", "#516089"], 7, 320, 580);
+      snowLayer(W, 1180, "#dfe9f5");
+      el("rect", { x: 450, y: 1150, width: 180, height: 420, fill: "#36425f" }, W); el("rect", { x: 440, y: 1140, width: 200, height: 24, fill: "#f4f8fc" }, W);
+      snowLayer(W, 1260, "#f2f7fc");
+      const beam = el("path", { d: "M570 1010 L860 880 L880 980Z", fill: "#fff6c8", opacity: 0.6 }, W);
+      const A = alex(W, 540, 1142, 1.05);
       const sf = snowfall(sv, 120, 7, -300, 1500);
-      const burst = []; const r = rng(17); for (let i = 0; i < 26; i++) burst.push(el("circle", { cx: 540, cy: 760, r: 6 + r() * 10, fill: "#ffffff", opacity: 0 }, sv));
+      const burst = []; const r = rng(17); for (let i = 0; i < 26; i++) burst.push(el("circle", { cx: 540, cy: 660, r: 6 + r() * 10, fill: "#ffffff", opacity: 0 }, sv));
       const flash = el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: "#ffffff", opacity: 0 }, sv);
       const l1b = line("L1b")[0], w1 = at("L1b", 0), w2 = at("L1b", 2), w3 = at("L1b", 4), al = at("L2", "Alex"), le = at("L2", "letzte"), l3 = line("L3")[0];
       fall(tl, sf, C.__dur);
@@ -49,19 +53,23 @@
       tl.to("#s01-t em", { opacity: 0.35, duration: 0.07, repeat: 11, yoyo: true }, 0.6);
       tl.fromTo("#s01-t b", { scale: 1 }, { scale: 1.1, duration: 0.22, repeat: 9, yoyo: true, ease: "sine.inOut" }, 0.6);
       tl.fromTo("#s01-live", { opacity: 1 }, { opacity: 0.25, duration: 0.25, repeat: 21, yoyo: true }, 0);
-      tl.fromTo(W, { scale: 1, svgOrigin: "540 880" }, { scale: 1.15, svgOrigin: "540 880", duration: l1b, ease: "power1.inOut" }, 0);
+      tl.fromTo(W, { scale: 1, svgOrigin: "540 1140" }, { scale: 1.12, svgOrigin: "540 1140", duration: l1b, ease: "power1.inOut" }, 0);
+      tl.fromTo("#s01-tri", { attr: { fill: "#ffd43b" } }, { attr: { fill: "#e0484f" }, duration: 0.01, repeat: 23, yoyo: true, repeatDelay: 0.2 }, 0.05);
+      tl.fromTo("#s01-warn", { scale: 1 }, { scale: 1.15, duration: 0.2, repeat: 23, yoyo: true, ease: "sine.inOut" }, 0.05);
+      tl.fromTo("#s01-frame", { opacity: 0 }, { opacity: 1, duration: 0.2, repeat: 23, yoyo: true, ease: "sine.inOut" }, 0.05);
       tl.to(W, { x: 8, duration: 0.05, repeat: 11, yoyo: true }, 0.1);
-      tl.to(["#s01-t", "#s01-live"], { opacity: 0, scale: 0.9, duration: 0.25 }, w1 - 0.25);
+      tl.to(["#s01-t", "#s01-live", "#s01-warn"], { opacity: 0, scale: 0.9, duration: 0.25 }, w1 - 0.25);
+      tl.to("#s01-frame", { opacity: 0, duration: 0.3 }, al - 0.3);
       [w1, w2, w3].forEach((t, i, arr) => { tl.set("#s01-w" + (i + 1), { opacity: 1 }, t - 0.02);
         tl.fromTo("#s01-w" + (i + 1), { scale: 1.7 }, { scale: 1, duration: 0.25, ease: "power4.out", immediateRender: false }, t - 0.02);
         tl.fromTo(flash, { opacity: 0.5 }, { opacity: 0, duration: 0.3 }, t - 0.02); tl.to(W, { x: 10, duration: 0.04, repeat: 5, yoyo: true }, t);
         tl.set("#s01-w" + (i + 1), { opacity: 0 }, i < 2 ? arr[i + 1] - 0.02 : al - 0.2); });
-      tl.to(W, { scale: 1.6, svgOrigin: "540 860", duration: 1.0, ease: "power3.inOut" }, al - 0.4);
+      tl.to(W, { scale: 1.6, svgOrigin: "540 1100", duration: 1.0, ease: "power3.inOut" }, al - 0.4);
       tl.fromTo("#s01-tag", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(2)" }, al);
-      tl.to(A, { y: 880, duration: 0.15, yoyo: true, repeat: 1 }, le);
+      tl.to(A, { y: 1130, duration: 0.15, yoyo: true, repeat: 1 }, le);
       tl.fromTo(beam, { attr: { opacity: 0.6 } }, { attr: { opacity: 0.25 }, duration: 0.5, repeat: 11, yoyo: true }, 0);
       tl.to("#s01-tag", { opacity: 0, duration: 0.3 }, l3);
-      tl.to(W, { scale: 1.25, svgOrigin: "540 860", duration: 1.6, ease: "power2.inOut" }, l3);
+      tl.to(W, { scale: 1.25, svgOrigin: "540 1100", duration: 1.6, ease: "power2.inOut" }, l3);
       tl.to("#s01-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
       window.__timelines["s01"] = tl;
     })();

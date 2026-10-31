@@ -27,7 +27,7 @@
       snowLayer(W, 1010, "#dfe9f5");
       const tls = []; [180, 540, 900].forEach((x) => { el("rect", { x: x - 12, y: 900, width: 24, height: 120, fill: "#2a2f40" }, W); tls.push(el("circle", { cx: x, cy: 900, r: 16, fill: "#39e27a" }, W)); });
       const cave = el("g", { opacity: 0 }, sv);
-      el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: "#e8f0f8" }, cave);
+      el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: "#8293b3" }, cave); const sfc = snowfall(cave, 60, 33, -300, 1400); fall(tl, sfc, C.__dur);
       el("path", { d: "M160 1180 Q160 760 540 740 Q920 760 920 1180Z", fill: "#3a4566" }, cave);
       el("path", { d: "M200 1180 Q210 800 540 785 Q870 800 880 1180Z", fill: "#56628a" }, cave);
       const cand = el("g", {}, cave); el("rect", { x: 620, y: 1110, width: 26, height: 60, fill: "#f4f0e6" }, cand); const fl = el("ellipse", { cx: 633, cy: 1098, rx: 10, ry: 18, fill: "#ffcf6b" }, cand);
@@ -35,6 +35,7 @@
       alex(cave, 440, 1180, 1.4);
       const hole = el("path", { d: "M540 740 V600", stroke: "#e8f0f8", "stroke-width": 26, opacity: 0 }, cave);
       const air = []; for (let i = 0; i < 4; i++) air.push(el("circle", { cx: 540, cy: 720, r: 10 + i * 4, fill: "#ffffff", opacity: 0 }, cave));
+      const sfw = snowfall(W, 60, 31, -300, 1400); fall(tl, sfw, C.__dur);
       const dark = el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: "#060814", opacity: 0 }, sv);
       const am = at("L11", "Ampeln"), he = at("L11", "Heizungen"), l12 = line("L12")[0], nu = at("L12", "null"), mz = at("L12", "minus"), l12b = line("L12b")[0], lu = at("L12b", "Luftloch"), ko = at("L12b", "Kohlenmonoxid");
       const wins = sk.out.flatMap((b) => b.wins).filter((w) => +w.getAttribute("opacity") > 0.5);

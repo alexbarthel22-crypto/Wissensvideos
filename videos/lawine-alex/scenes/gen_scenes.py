@@ -39,13 +39,17 @@ FLAT2 = FLAT + '''
     .fc b { color: #e0484f; }'''
 COLS = '["#5b6a8f", "#6f7da3", "#4e5b7e", "#7c88ad"]'
 
-S['s01'] = ('''    #s01-t { left: 30px; right: 30px; top: 190px; text-align: center; color: #fff; font: 600 128px/0.98 "EB Garamond", serif; text-shadow: 0 6px 30px rgba(0,0,0,.8); }
+S['s01'] = ('''    #s01-t { left: 20px; right: 20px; top: 360px; text-align: center; color: #fff; font: 600 150px/0.96 "EB Garamond", serif; text-shadow: 0 0 6px rgba(0,0,0,.9), 0 6px 34px rgba(0,0,0,.9); }
     #s01-t em { font-style: normal; color: #9dd6ff; text-shadow: 0 0 50px rgba(157,214,255,1), 0 6px 30px rgba(0,0,0,.7); }
-    #s01-t small { display: block; margin-top: 26px; font-size: 78px; } #s01-t b { display: block; font-size: 138px; color: #ff4b52; text-shadow: 0 0 60px rgba(255,75,82,1), 0 6px 30px rgba(0,0,0,.7); }
-    #s01-live { left: 0; right: 0; top: 120px; margin: 0 auto; width: fit-content; padding: 8px 22px; border-radius: 12px; background: #e0484f; color: #fff; font: 800 34px Inter, sans-serif; letter-spacing: .12em; box-shadow: 0 0 40px rgba(224,72,79,.8); }
-    .s01-w { position: absolute; left: 0; width: 1080px; top: 420px; text-align: center; font: 700 140px/1 "EB Garamond", serif; color: #fff; opacity: 0; text-shadow: 0 0 50px rgba(255,75,82,.9), 0 6px 30px rgba(0,0,0,.8); }
-    #s01-tag { left: 610px; top: 560px; padding: 10px 22px; border-radius: 14px; background: rgba(255,255,255,.96); color: #22283f; font: 600 48px "EB Garamond", serif; opacity: 0; box-shadow: 0 16px 40px rgba(0,0,0,.4); }''',
+    #s01-t small { display: block; margin-top: 24px; font-size: 84px; } #s01-t b { display: block; font-size: 128px; color: #ff4b52; text-shadow: 0 0 60px rgba(255,75,82,1), 0 6px 30px rgba(0,0,0,.7); }
+    #s01-frame { left: 0; top: 0; width: 1080px; height: 1920px; box-shadow: inset 0 0 0 16px rgba(224,72,79,.9), inset 0 0 120px rgba(224,72,79,.6); opacity: 0; }
+    #s01-warn { left: 455px; top: 110px; width: 170px; height: 153px; filter: drop-shadow(0 0 24px rgba(255,212,59,.8)); }
+    #s01-live { left: 0; right: 0; top: 290px; margin: 0 auto; width: fit-content; padding: 8px 22px; border-radius: 12px; background: #e0484f; color: #fff; font: 800 34px Inter, sans-serif; letter-spacing: .12em; box-shadow: 0 0 40px rgba(224,72,79,.8); }
+    .s01-w { position: absolute; left: 0; width: 1080px; top: 560px; text-align: center; font: 700 140px/1 "EB Garamond", serif; color: #fff; opacity: 0; text-shadow: 0 0 50px rgba(255,75,82,.9), 0 6px 30px rgba(0,0,0,.8); }
+    #s01-tag { left: 600px; top: 860px; padding: 10px 22px; border-radius: 14px; background: rgba(255,255,255,.96); color: #22283f; font: 600 48px "EB Garamond", serif; opacity: 0; box-shadow: 0 16px 40px rgba(0,0,0,.4); }''',
 SVG + '''
+      <div id="s01-frame" class="abs"></div>
+      <svg id="s01-warn" class="abs" viewBox="0 0 200 180"><path id="s01-tri" d="M100 10 L190 168 H10Z" fill="#ffd43b" stroke="#e0484f" stroke-width="14" stroke-linejoin="round"/><rect x="91" y="62" width="18" height="62" rx="9" fill="#141a32"/><circle cx="100" cy="144" r="11" fill="#141a32"/></svg>
       <div id="s01-live" class="abs">● 1 ÜBERLEBENDER WELTWEIT</div>
       <div id="s01-t" class="abs">Die ganze <em>Welt</em><br>unter Schnee.<small>Du bist der</small><b>letzte Mensch.</b></div>
       <div id="s01-w1" class="s01-w">Jedes Land.</div><div id="s01-w2" class="s01-w">Jede Stadt.</div><div id="s01-w3" class="s01-w">Jeder Mensch.</div>
@@ -53,15 +57,15 @@ SVG + '''
 '''      const sv = document.querySelector("#s01-svg");
       sky(sv, "s01-s", "#141d3a", "#6f82ab");
       const W = el("g", {}, sv);
-      skyline(W, 1100, 3, ["#2c3858", "#344263"], 8, 220, 440);
-      skyline(W, 1140, 5, ["#45537a", "#516089"], 7, 280, 540);
-      snowLayer(W, 990, "#dfe9f5");
-      el("rect", { x: 450, y: 900, width: 180, height: 420, fill: "#36425f" }, W); el("rect", { x: 440, y: 890, width: 200, height: 24, fill: "#f4f8fc" }, W);
-      snowLayer(W, 1080, "#f2f7fc");
-      const beam = el("path", { d: "M570 760 L860 630 L880 730Z", fill: "#fff6c8", opacity: 0.6 }, W);
-      const A = alex(W, 540, 892, 1.35);
+      skyline(W, 1280, 3, ["#2c3858", "#344263"], 8, 260, 480);
+      skyline(W, 1320, 5, ["#45537a", "#516089"], 7, 320, 580);
+      snowLayer(W, 1180, "#dfe9f5");
+      el("rect", { x: 450, y: 1150, width: 180, height: 420, fill: "#36425f" }, W); el("rect", { x: 440, y: 1140, width: 200, height: 24, fill: "#f4f8fc" }, W);
+      snowLayer(W, 1260, "#f2f7fc");
+      const beam = el("path", { d: "M570 1010 L860 880 L880 980Z", fill: "#fff6c8", opacity: 0.6 }, W);
+      const A = alex(W, 540, 1142, 1.05);
       const sf = snowfall(sv, 120, 7, -300, 1500);
-      const burst = []; const r = rng(17); for (let i = 0; i < 26; i++) burst.push(el("circle", { cx: 540, cy: 760, r: 6 + r() * 10, fill: "#ffffff", opacity: 0 }, sv));
+      const burst = []; const r = rng(17); for (let i = 0; i < 26; i++) burst.push(el("circle", { cx: 540, cy: 660, r: 6 + r() * 10, fill: "#ffffff", opacity: 0 }, sv));
       const flash = el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: "#ffffff", opacity: 0 }, sv);
       const l1b = line("L1b")[0], w1 = at("L1b", 0), w2 = at("L1b", 2), w3 = at("L1b", 4), al = at("L2", "Alex"), le = at("L2", "letzte"), l3 = line("L3")[0];
       fall(tl, sf, C.__dur);
@@ -72,19 +76,23 @@ SVG + '''
       tl.to("#s01-t em", { opacity: 0.35, duration: 0.07, repeat: 11, yoyo: true }, 0.6);
       tl.fromTo("#s01-t b", { scale: 1 }, { scale: 1.1, duration: 0.22, repeat: 9, yoyo: true, ease: "sine.inOut" }, 0.6);
       tl.fromTo("#s01-live", { opacity: 1 }, { opacity: 0.25, duration: 0.25, repeat: 21, yoyo: true }, 0);
-      tl.fromTo(W, { scale: 1, svgOrigin: "540 880" }, { scale: 1.15, svgOrigin: "540 880", duration: l1b, ease: "power1.inOut" }, 0);
+      tl.fromTo(W, { scale: 1, svgOrigin: "540 1140" }, { scale: 1.12, svgOrigin: "540 1140", duration: l1b, ease: "power1.inOut" }, 0);
+      tl.fromTo("#s01-tri", { attr: { fill: "#ffd43b" } }, { attr: { fill: "#e0484f" }, duration: 0.01, repeat: 23, yoyo: true, repeatDelay: 0.2 }, 0.05);
+      tl.fromTo("#s01-warn", { scale: 1 }, { scale: 1.15, duration: 0.2, repeat: 23, yoyo: true, ease: "sine.inOut" }, 0.05);
+      tl.fromTo("#s01-frame", { opacity: 0 }, { opacity: 1, duration: 0.2, repeat: 23, yoyo: true, ease: "sine.inOut" }, 0.05);
       tl.to(W, { x: 8, duration: 0.05, repeat: 11, yoyo: true }, 0.1);
-      tl.to(["#s01-t", "#s01-live"], { opacity: 0, scale: 0.9, duration: 0.25 }, w1 - 0.25);
+      tl.to(["#s01-t", "#s01-live", "#s01-warn"], { opacity: 0, scale: 0.9, duration: 0.25 }, w1 - 0.25);
+      tl.to("#s01-frame", { opacity: 0, duration: 0.3 }, al - 0.3);
       [w1, w2, w3].forEach((t, i, arr) => { tl.set("#s01-w" + (i + 1), { opacity: 1 }, t - 0.02);
         tl.fromTo("#s01-w" + (i + 1), { scale: 1.7 }, { scale: 1, duration: 0.25, ease: "power4.out", immediateRender: false }, t - 0.02);
         tl.fromTo(flash, { opacity: 0.5 }, { opacity: 0, duration: 0.3 }, t - 0.02); tl.to(W, { x: 10, duration: 0.04, repeat: 5, yoyo: true }, t);
         tl.set("#s01-w" + (i + 1), { opacity: 0 }, i < 2 ? arr[i + 1] - 0.02 : al - 0.2); });
-      tl.to(W, { scale: 1.6, svgOrigin: "540 860", duration: 1.0, ease: "power3.inOut" }, al - 0.4);
+      tl.to(W, { scale: 1.6, svgOrigin: "540 1100", duration: 1.0, ease: "power3.inOut" }, al - 0.4);
       tl.fromTo("#s01-tag", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(2)" }, al);
-      tl.to(A, { y: 880, duration: 0.15, yoyo: true, repeat: 1 }, le);
+      tl.to(A, { y: 1130, duration: 0.15, yoyo: true, repeat: 1 }, le);
       tl.fromTo(beam, { attr: { opacity: 0.6 } }, { attr: { opacity: 0.25 }, duration: 0.5, repeat: 11, yoyo: true }, 0);
       tl.to("#s01-tag", { opacity: 0, duration: 0.3 }, l3);
-      tl.to(W, { scale: 1.25, svgOrigin: "540 860", duration: 1.6, ease: "power2.inOut" }, l3);''' + OUT)
+      tl.to(W, { scale: 1.25, svgOrigin: "540 1100", duration: 1.6, ease: "power2.inOut" }, l3);''' + OUT)
 
 S['s02'] = (BIG + '''
     #s02-ph { left: 300px; top: 560px; width: 480px; height: 760px; border-radius: 60px; background: #111522; border: 10px solid #2a2f40; opacity: 0; text-align: center; color: #fff; box-shadow: 0 30px 70px rgba(0,0,0,.5); }
@@ -109,7 +117,8 @@ SVG + '''
       const wave = el("path", { d: "M-1400 1300 Q-900 600 -500 760 Q-300 820 -200 740 L-200 1600 L-1400 1600Z", fill: "#f4f8fc" }, sv);
       const fill = el("rect", { x: 0, y: 1600, width: 1080, height: 1500, fill: "#eef4fb" }, sv);
       const mist = el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: "#ffffff", opacity: 0 }, sv);
-      const globe = el("g", { opacity: 0 }, sv); el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: "#0b1022" }, globe);
+      const globe = el("g", { opacity: 0 }, sv);
+      const sfg = [];  el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: "#0b1022" }, globe);
       el("circle", { cx: 540, cy: 800, r: 300, fill: "#2f6fb8" }, globe);
       [["M380 650 q60 -60 140 -20 q40 60 -20 110 q-80 30 -120 -20Z"], ["M560 600 q80 -20 140 40 q30 80 -40 100 q-60 -10 -100 -60Z"], ["M420 860 q60 -30 100 20 q10 90 -60 110 q-60 -40 -40 -130Z"], ["M600 860 q90 -10 130 60 q-20 70 -100 60 q-50 -50 -30 -120Z"]].forEach(([d]) => el("path", { d, fill: "#4caf6a", class: "s02-land" }, globe));
       const ice = el("circle", { cx: 540, cy: 800, r: 300, fill: "#f2f7fc", opacity: 0 }, globe);
@@ -134,7 +143,8 @@ SVG + '''
       tl.fromTo(globe, { scale: 1.3, svgOrigin: "540 800" }, { scale: 1, svgOrigin: "540 800", duration: 0.8, ease: "power3.out", immediateRender: false }, l5c - 0.1);
       [to, ny, be].forEach((t, i) => { tl.to(dots[i], { opacity: 1, duration: 0.1 }, t - 0.05); tl.fromTo("#s02-c" + (i + 1), { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.2 }, t - 0.05); });
       tl.to(ice, { opacity: 1, duration: 0.8 }, ue - 0.2);
-      tl.to(dots, { attr: { fill: "#9aa6c4" }, duration: 0.6 }, ue);''' + OUT)
+      tl.to(dots, { attr: { fill: "#9aa6c4" }, duration: 0.6 }, ue);
+      const sfa = snowfall(sv, 60, 41, -300, 1500); gsap.set(sfa.g, { opacity: 0 }); fall(tl, sfa, C.__dur); tl.to(sfa.g, { opacity: 0.85, duration: 0.8 }, ww + 1.2);''' + OUT)
 
 S['s03'] = (BIG + '''
     #s03-ch { left: 140px; top: 760px; width: 800px; height: 380px; opacity: 0; }''' + FLAT2, SVG + '''
@@ -201,7 +211,7 @@ S['s05'] = ('''    .tl { position: absolute; font: 600 44px "EB Garamond", serif
       snowLayer(W, 1010, "#dfe9f5");
       const tls = []; [180, 540, 900].forEach((x) => { el("rect", { x: x - 12, y: 900, width: 24, height: 120, fill: "#2a2f40" }, W); tls.push(el("circle", { cx: x, cy: 900, r: 16, fill: "#39e27a" }, W)); });
       const cave = el("g", { opacity: 0 }, sv);
-      el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: "#e8f0f8" }, cave);
+      el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: "#8293b3" }, cave); const sfc = snowfall(cave, 60, 33, -300, 1400); fall(tl, sfc, C.__dur);
       el("path", { d: "M160 1180 Q160 760 540 740 Q920 760 920 1180Z", fill: "#3a4566" }, cave);
       el("path", { d: "M200 1180 Q210 800 540 785 Q870 800 880 1180Z", fill: "#56628a" }, cave);
       const cand = el("g", {}, cave); el("rect", { x: 620, y: 1110, width: 26, height: 60, fill: "#f4f0e6" }, cand); const fl = el("ellipse", { cx: 633, cy: 1098, rx: 10, ry: 18, fill: "#ffcf6b" }, cand);
@@ -209,6 +219,7 @@ S['s05'] = ('''    .tl { position: absolute; font: 600 44px "EB Garamond", serif
       alex(cave, 440, 1180, 1.4);
       const hole = el("path", { d: "M540 740 V600", stroke: "#e8f0f8", "stroke-width": 26, opacity: 0 }, cave);
       const air = []; for (let i = 0; i < 4; i++) air.push(el("circle", { cx: 540, cy: 720, r: 10 + i * 4, fill: "#ffffff", opacity: 0 }, cave));
+      const sfw = snowfall(W, 60, 31, -300, 1400); fall(tl, sfw, C.__dur);
       const dark = el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: "#060814", opacity: 0 }, sv);
       const am = at("L11", "Ampeln"), he = at("L11", "Heizungen"), l12 = line("L12")[0], nu = at("L12", "null"), mz = at("L12", "minus"), l12b = line("L12b")[0], lu = at("L12b", "Luftloch"), ko = at("L12b", "Kohlenmonoxid");
       const wins = sk.out.flatMap((b) => b.wins).filter((w) => +w.getAttribute("opacity") > 0.5);
@@ -240,6 +251,7 @@ S['s06'] = (BIG + FLAT2, SVG + '''
       [760, 920, 1080].forEach((y) => el("rect", { x: 140, y, width: 800, height: 12, fill: "#9aa6c4" }, fr));
       for (let i = 0; i < 18; i++) el("rect", { x: 160 + (i % 6) * 128, y: 680 + Math.floor(i / 6) * 160, width: 100, height: 70, rx: 10, fill: ["#e8484f", "#ffd56b", "#6be3a0", "#ff8fd0", "#9dbcff", "#ffffff"][i % 6] }, fr);
       el("rect", { x: 120, y: 600, width: 840, height: 560, rx: 20, fill: "#dff1ff", opacity: 0.35 }, fr);
+      const sfk = snowfall(sv, 55, 51, -300, 1400); fall(tl, sfk, C.__dur);
       const is = at("L13", "Iss"), l14 = line("L14")[0], ke = at("L14", "Kerze"), l15 = line("L15")[0], ge = at("L15", "Gefrierschrank"), l15b = line("L15b")[0], n4 = at("L15b", "4.000");
       tl.fromTo(sb, { opacity: 0, scale: 0.5, svgOrigin: "300 760" }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(2)" }, is);
       tl.to(sb, { opacity: 0, duration: 0.2 }, l14 - 0.2);
@@ -264,9 +276,15 @@ S['s07'] = ('', SVG,
       el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: "#7f8ca0" }, yard);
       el("rect", { x: 0, y: 0, width: 1080, height: 600, fill: "#0b0f1c" }, yard);
       el("path", { d: "M620 1260 Q620 1020 860 1010 Q1100 1020 1100 1260Z", fill: "#dfe7f1" }, yard); const hole = el("path", { d: "M770 1260 Q770 1150 860 1145 Q950 1150 950 1260Z", fill: "#05070f" }, yard);
-      const prints = []; for (let i = 0; i < 7; i++) { const x = 90 + i * 100, y = 700 + i * 78 + (i % 2 ? 30 : -30);
-        const g = el("g", { opacity: 0 }, yard); el("ellipse", { cx: x, cy: y, rx: 26, ry: 46, fill: "#4a5468", transform: `rotate(-38 ${x} ${y})` }, g);
-        [-1, 0, 1].forEach((k) => el("circle", { cx: x + 30 + k * 14, cy: y - 40 + k * 10, r: 9, fill: "#4a5468" }, g)); prints.push({ g, x, y }); }
+      const SOLE = "M-20 -58 Q-24 -74 -10 -80 Q8 -84 19 -70 Q27 -55 23 -32 Q19 -12 15 2 Q10 12 -9 11 Q-22 5 -22 -12 Q-24 -32 -20 -58Z", HEEL = "M-17 22 Q-19 48 0 52 Q19 48 17 22 Q0 15 -17 22Z";
+      const prints = [], rp = rng(77);
+      for (let i = 0; i < 6; i++) { const x = 70 + i * 150, y = 640 + i * 112 + (i % 2 ? 46 : -46), m = i % 2 ? -1 : 1;
+        const g = el("g", { opacity: 0 }, yard), inner = el("g", { transform: `translate(${x} ${y}) rotate(128) scale(${m} 1)` }, g);
+        const parts = [el("path", { d: SOLE, fill: "#4c576b" }, inner), el("path", { d: HEEL, fill: "#4c576b" }, inner)];
+        const tread = el("g", { opacity: 0.3 }, inner); for (let k = 0; k < 5; k++) el("rect", { x: -15, y: -64 + k * 14, width: 30, height: 3, rx: 1.5, fill: "#2a0306" }, tread);
+        const spl = []; for (let k = 0; k < 7; k++) { const a = rp() * Math.PI * 2, d = 48 + rp() * 40; spl.push(el("circle", { cx: Math.cos(a) * d * 0.55, cy: Math.sin(a) * d - 10, r: 2 + rp() * 6, fill: "#7a0b14", opacity: 0 }, inner)); }
+        const drip = el("path", { d: `M0 54 q${6 * m} 30 0 ${56 + rp() * 30}`, stroke: "#7a0b14", "stroke-width": 5, fill: "none", "stroke-linecap": "round", opacity: 0 }, inner);
+        prints.push({ g, x, y, parts, tread, spl, drip }); }
       const sf = snowfall(sv, 70, 21, -300, 1500);
       const shadow = el("path", { d: "M860 1145 Q850 900 870 860 Q900 820 930 860 Q960 900 950 1145Z", fill: "#000", opacity: 0 }, yard);
       const dark = el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: "#000", opacity: 0 }, sv);
@@ -278,10 +296,11 @@ S['s07'] = ('', SVG,
       tl.to(dark, { opacity: 0.85, duration: 0.8 }, st - 0.3);
       tl.set(roof, { opacity: 0 }, l18 - 0.1); tl.to(dark, { opacity: 0.25, duration: 0.6 }, l18 - 0.1); tl.set(yard, { opacity: 1 }, l18 - 0.1);
       tl.fromTo(yard, { scale: 1.35, svgOrigin: "300 900" }, { scale: 1.1, svgOrigin: "300 900", duration: 3, ease: "power1.out", immediateRender: false }, l18 - 0.1);
-      prints.forEach((p, i) => tl.to(p.g, { opacity: 1, duration: 0.12 }, fu + i * 0.25));
-      prints.forEach((p, i) => tl.to(p.g, { scale: 1.9, svgOrigin: `${p.x} ${p.y}`, duration: 0.35, ease: "back.out(2)" }, ri + i * 0.05));
+      prints.forEach((p, i) => tl.to(p.g, { opacity: 1, duration: 0.12 }, fu + i * 0.3));
+      prints.forEach((p, i) => tl.to(p.g, { scale: 1.45, svgOrigin: `${p.x} ${p.y}`, duration: 0.35, ease: "back.out(2)" }, ri + i * 0.05));
       tl.to(yard, { x: 8, duration: 0.04, repeat: 7, yoyo: true }, dg);
-      prints.forEach((p, i) => tl.to(p.g.querySelectorAll("ellipse, circle"), { attr: { fill: "#8a0f1c" }, duration: 0.25 }, ro + i * 0.08));
+      prints.forEach((p, i) => { tl.to(p.parts, { attr: { fill: "#6e0911" }, duration: 0.25 }, ro + i * 0.08); tl.to(p.tread, { opacity: 0.5, duration: 0.25 }, ro + i * 0.08);
+        tl.to(p.spl, { opacity: 0.9, duration: 0.15, stagger: 0.02 }, bl - 0.1 + i * 0.06); tl.to(p.drip, { opacity: 0.85, duration: 0.3 }, bl + i * 0.06); });
       tl.fromTo(red, { opacity: 0 }, { opacity: 0.6, duration: 0.12, repeat: 3, yoyo: true }, bl);
       tl.to(yard, { scale: 1.6, svgOrigin: "860 1200", duration: 2.2, ease: "power2.in" }, l19b);
       tl.to(dark, { opacity: 0.55, duration: 1.2 }, l20);
@@ -293,7 +312,8 @@ S['s08'] = ('''    #s08-t { left: 0; width: 1080px; top: 620px; text-align: cent
     #s08-s { left: 0; width: 1080px; top: 820px; text-align: center; color: #ff8fd0; font: 600 34px Inter, sans-serif; letter-spacing: .3em; opacity: 0; }
     #s08-f { left: 330px; top: 960px; width: 420px; height: 110px; border-radius: 55px; background: #ff3b5c; color: #fff; text-align: center; font: 800 52px/110px Inter, sans-serif; opacity: 0; box-shadow: 0 10px 40px rgba(255,59,92,.5); }''',
 '''      <div id="s08-t" class="abs">Teil 2?</div><div id="s08-s" class="abs">WER STEHT DA DRAUSSEN</div><div id="s08-f" class="abs">+ Folgen</div>''',
-'''      const fo = at("L21", "folg"), l22 = line("L22")[0];
+'''      const sv8 = el("svg", { class: "full", viewBox: "0 0 1080 1920" }, document.querySelector("#s08-stage")); const sf8 = snowfall(sv8, 55, 61, -300, 1400); fall(tl, sf8, C.__dur);
+      const fo = at("L21", "folg"), l22 = line("L22")[0];
       tl.fromTo("#s08-t", { opacity: 0, scale: 1.3 }, { opacity: 1, scale: 1, duration: 0.6, ease: "power3.out" }, 0.1);
       tl.fromTo("#s08-f", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.4, ease: "back.out(2)" }, fo - 0.1);
       tl.to("#s08-f", { scale: 1.06, duration: 0.3, yoyo: true, repeat: 13, ease: "sine.inOut" }, fo + 0.4);

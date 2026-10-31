@@ -30,9 +30,15 @@
       el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: "#7f8ca0" }, yard);
       el("rect", { x: 0, y: 0, width: 1080, height: 600, fill: "#0b0f1c" }, yard);
       el("path", { d: "M620 1260 Q620 1020 860 1010 Q1100 1020 1100 1260Z", fill: "#dfe7f1" }, yard); const hole = el("path", { d: "M770 1260 Q770 1150 860 1145 Q950 1150 950 1260Z", fill: "#05070f" }, yard);
-      const prints = []; for (let i = 0; i < 7; i++) { const x = 90 + i * 100, y = 700 + i * 78 + (i % 2 ? 30 : -30);
-        const g = el("g", { opacity: 0 }, yard); el("ellipse", { cx: x, cy: y, rx: 26, ry: 46, fill: "#4a5468", transform: `rotate(-38 ${x} ${y})` }, g);
-        [-1, 0, 1].forEach((k) => el("circle", { cx: x + 30 + k * 14, cy: y - 40 + k * 10, r: 9, fill: "#4a5468" }, g)); prints.push({ g, x, y }); }
+      const SOLE = "M-20 -58 Q-24 -74 -10 -80 Q8 -84 19 -70 Q27 -55 23 -32 Q19 -12 15 2 Q10 12 -9 11 Q-22 5 -22 -12 Q-24 -32 -20 -58Z", HEEL = "M-17 22 Q-19 48 0 52 Q19 48 17 22 Q0 15 -17 22Z";
+      const prints = [], rp = rng(77);
+      for (let i = 0; i < 6; i++) { const x = 70 + i * 150, y = 640 + i * 112 + (i % 2 ? 46 : -46), m = i % 2 ? -1 : 1;
+        const g = el("g", { opacity: 0 }, yard), inner = el("g", { transform: `translate(${x} ${y}) rotate(128) scale(${m} 1)` }, g);
+        const parts = [el("path", { d: SOLE, fill: "#4c576b" }, inner), el("path", { d: HEEL, fill: "#4c576b" }, inner)];
+        const tread = el("g", { opacity: 0.3 }, inner); for (let k = 0; k < 5; k++) el("rect", { x: -15, y: -64 + k * 14, width: 30, height: 3, rx: 1.5, fill: "#2a0306" }, tread);
+        const spl = []; for (let k = 0; k < 7; k++) { const a = rp() * Math.PI * 2, d = 48 + rp() * 40; spl.push(el("circle", { cx: Math.cos(a) * d * 0.55, cy: Math.sin(a) * d - 10, r: 2 + rp() * 6, fill: "#7a0b14", opacity: 0 }, inner)); }
+        const drip = el("path", { d: `M0 54 q${6 * m} 30 0 ${56 + rp() * 30}`, stroke: "#7a0b14", "stroke-width": 5, fill: "none", "stroke-linecap": "round", opacity: 0 }, inner);
+        prints.push({ g, x, y, parts, tread, spl, drip }); }
       const sf = snowfall(sv, 70, 21, -300, 1500);
       const shadow = el("path", { d: "M860 1145 Q850 900 870 860 Q900 820 930 860 Q960 900 950 1145Z", fill: "#000", opacity: 0 }, yard);
       const dark = el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: "#000", opacity: 0 }, sv);
@@ -44,10 +50,11 @@
       tl.to(dark, { opacity: 0.85, duration: 0.8 }, st - 0.3);
       tl.set(roof, { opacity: 0 }, l18 - 0.1); tl.to(dark, { opacity: 0.25, duration: 0.6 }, l18 - 0.1); tl.set(yard, { opacity: 1 }, l18 - 0.1);
       tl.fromTo(yard, { scale: 1.35, svgOrigin: "300 900" }, { scale: 1.1, svgOrigin: "300 900", duration: 3, ease: "power1.out", immediateRender: false }, l18 - 0.1);
-      prints.forEach((p, i) => tl.to(p.g, { opacity: 1, duration: 0.12 }, fu + i * 0.25));
-      prints.forEach((p, i) => tl.to(p.g, { scale: 1.9, svgOrigin: `${p.x} ${p.y}`, duration: 0.35, ease: "back.out(2)" }, ri + i * 0.05));
+      prints.forEach((p, i) => tl.to(p.g, { opacity: 1, duration: 0.12 }, fu + i * 0.3));
+      prints.forEach((p, i) => tl.to(p.g, { scale: 1.45, svgOrigin: `${p.x} ${p.y}`, duration: 0.35, ease: "back.out(2)" }, ri + i * 0.05));
       tl.to(yard, { x: 8, duration: 0.04, repeat: 7, yoyo: true }, dg);
-      prints.forEach((p, i) => tl.to(p.g.querySelectorAll("ellipse, circle"), { attr: { fill: "#8a0f1c" }, duration: 0.25 }, ro + i * 0.08));
+      prints.forEach((p, i) => { tl.to(p.parts, { attr: { fill: "#6e0911" }, duration: 0.25 }, ro + i * 0.08); tl.to(p.tread, { opacity: 0.5, duration: 0.25 }, ro + i * 0.08);
+        tl.to(p.spl, { opacity: 0.9, duration: 0.15, stagger: 0.02 }, bl - 0.1 + i * 0.06); tl.to(p.drip, { opacity: 0.85, duration: 0.3 }, bl + i * 0.06); });
       tl.fromTo(red, { opacity: 0 }, { opacity: 0.6, duration: 0.12, repeat: 3, yoyo: true }, bl);
       tl.to(yard, { scale: 1.6, svgOrigin: "860 1200", duration: 2.2, ease: "power2.in" }, l19b);
       tl.to(dark, { opacity: 0.55, duration: 1.2 }, l20);

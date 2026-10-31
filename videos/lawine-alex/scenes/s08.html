@@ -20,6 +20,7 @@
       /*__CUE_HELPERS__*/
 /*__COMMON_JS__*/
       const tl = gsap.timeline({ paused: true });
+      const sv8 = el("svg", { class: "full", viewBox: "0 0 1080 1920" }, document.querySelector("#s08-stage")); const sf8 = snowfall(sv8, 55, 61, -300, 1400); fall(tl, sf8, C.__dur);
       const fo = at("L21", "folg"), l22 = line("L22")[0];
       tl.fromTo("#s08-t", { opacity: 0, scale: 1.3 }, { opacity: 1, scale: 1, duration: 0.6, ease: "power3.out" }, 0.1);
       tl.fromTo("#s08-f", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.4, ease: "back.out(2)" }, fo - 0.1);

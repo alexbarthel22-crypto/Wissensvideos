@@ -40,7 +40,8 @@
       const wave = el("path", { d: "M-1400 1300 Q-900 600 -500 760 Q-300 820 -200 740 L-200 1600 L-1400 1600Z", fill: "#f4f8fc" }, sv);
       const fill = el("rect", { x: 0, y: 1600, width: 1080, height: 1500, fill: "#eef4fb" }, sv);
       const mist = el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: "#ffffff", opacity: 0 }, sv);
-      const globe = el("g", { opacity: 0 }, sv); el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: "#0b1022" }, globe);
+      const globe = el("g", { opacity: 0 }, sv);
+      const sfg = [];  el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: "#0b1022" }, globe);
       el("circle", { cx: 540, cy: 800, r: 300, fill: "#2f6fb8" }, globe);
       [["M380 650 q60 -60 140 -20 q40 60 -20 110 q-80 30 -120 -20Z"], ["M560 600 q80 -20 140 40 q30 80 -40 100 q-60 -10 -100 -60Z"], ["M420 860 q60 -30 100 20 q10 90 -60 110 q-60 -40 -40 -130Z"], ["M600 860 q90 -10 130 60 q-20 70 -100 60 q-50 -50 -30 -120Z"]].forEach(([d]) => el("path", { d, fill: "#4caf6a", class: "s02-land" }, globe));
       const ice = el("circle", { cx: 540, cy: 800, r: 300, fill: "#f2f7fc", opacity: 0 }, globe);
@@ -66,6 +67,7 @@
       [to, ny, be].forEach((t, i) => { tl.to(dots[i], { opacity: 1, duration: 0.1 }, t - 0.05); tl.fromTo("#s02-c" + (i + 1), { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.2 }, t - 0.05); });
       tl.to(ice, { opacity: 1, duration: 0.8 }, ue - 0.2);
       tl.to(dots, { attr: { fill: "#9aa6c4" }, duration: 0.6 }, ue);
+      const sfa = snowfall(sv, 60, 41, -300, 1500); gsap.set(sfa.g, { opacity: 0 }); fall(tl, sfa, C.__dur); tl.to(sfa.g, { opacity: 0.85, duration: 0.8 }, ww + 1.2);
       tl.to("#s02-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
       window.__timelines["s02"] = tl;
     })();
