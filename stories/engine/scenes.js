@@ -2237,10 +2237,10 @@ function hookText(l, t, a) {
   // keyword: series lettering (Cinzel) in blue and red, on screen from the very first frame (hook_static)
   // or rising in while it is spoken; the glow alternates gently between blue and red
   if (l.hook) {
-    const size = l.hook.length > 22 ? 96 : 104;
+    const size = l.hook_big ? 128 : l.hook.length > 22 ? 96 : 104;
     if (ctx.letterSpacing !== undefined) ctx.letterSpacing = '4px';
     ctx.font = `700 ${size}px Cinzel`;
-    const hl = l.hook.length > 16 ? wrap(l.hook, 940) : [l.hook];
+    const hl = l.hook.length > 16 ? wrap(l.hook, 980) : [l.hook];
     const t0 = l.hook_static ? 0 : l.start + (l.hook_at ?? 0) * (l.end - l.start);
     if (t >= t0) {
       const since = t - t0, p = l.hook_static ? 1 : easeOut(clamp(since / 0.5));
@@ -2267,6 +2267,24 @@ function hookText(l, t, a) {
       if (ctx.letterSpacing !== undefined) ctx.letterSpacing = '0px';
       ctx.restore();
       glitter(0, -90, 980, lh * hl.length + 100, t, 0.8 * a * p, 14, 3);
+      // emojis above the keyword: a beating heart next to a twinkling star
+      if (l.hook_emoji) {
+        const beat = 1 + 0.12 * Math.max(0, Math.sin(t * 7.5)) ** 4 + 0.06 * Math.max(0, Math.sin(t * 7.5 - 1.2)) ** 4;
+        const ems = [...new Intl.Segmenter().segment(l.hook_emoji)].map(x => x.segment).filter(x => x.trim());
+        ctx.save(); ctx.translate(0, -90 - (hl.length - 1) * lh / 2 - lh * 1.15);
+        ctx.font = '130px "Noto Color Emoji"'; ctx.textBaseline = 'middle'; ctx.textAlign = 'center';
+        if (ctx.letterSpacing !== undefined) ctx.letterSpacing = '0px';
+        ems.forEach((e, i) => {
+          const x = (i - (ems.length - 1) / 2) * 190;
+          ctx.save(); ctx.translate(x, 0);
+          const sc = i === 0 ? beat : 1 + 0.05 * Math.sin(t * 3), rot = i === 0 ? 0 : 0.15 * Math.sin(t * 1.5);
+          ctx.rotate(rot); ctx.scale(sc, sc);
+          ctx.shadowColor = i === 0 ? 'rgba(255,40,80,0.9)' : 'rgba(80,150,255,0.9)'; ctx.shadowBlur = 40;
+          ctx.globalAlpha = a * p; ctx.fillText(e, 0, 0);
+          ctx.restore();
+        });
+        ctx.restore();
+      }
     }
   }
   if (l.hook_only) { ctx.restore(); return; }
