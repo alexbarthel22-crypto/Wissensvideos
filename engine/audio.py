@@ -377,7 +377,7 @@ def epic_intro(music, fx, t0, beat=0.6):
 
 def epic_outro(music, fx, t0, t1):
     """Distinct closing theme: heroic I-V-vi-IV in F, soaring strings, turning to D major with the motif's head."""
-    beat = 0.75
+    beat = 0.62
     prog = ["F", "C", "Dm", "Bb", "F", "C"]
     t = t0
     for c in prog:
