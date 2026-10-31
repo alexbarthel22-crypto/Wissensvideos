@@ -212,7 +212,7 @@ def main(story_path, out_dir):
             if not os.path.exists(fin):
                 process(raw, fx, fin, tempo)
             audio = load_wav(fin)
-            cut = stray_tail(raw, line['text'])
+            cut = None if line.get("keep_tail") else stray_tail(raw, line['text'])
             if cut:
                 print(f"  Nachzügler entfernt nach {cut:.2f}s: {line['text'][:40]}")
                 n, fade = min(int(cut / tempo * SR), len(audio)), int(0.3 * SR)  # raw time -> tempo-stretched time
@@ -226,7 +226,7 @@ def main(story_path, out_dir):
             clips.append((t, audio))
             timeline["lines"].append({"scene": scene["id"], "who": line["who"], "label": v["label"],
                                       "text": line.get("display", line["text"]), "start": round(t, 3), "end": round(t + dur, 3),
-                                      **({"hook": line["hook"]} if line.get("hook") else {})})
+                                      **{k: line[k] for k in ("hook", "hook_at", "hook_fly") if k in line}})
             t += dur
         t += scene.get("post", 0.5)
         timeline["scenes"].append({"id": scene["id"], "start": round(start, 3), "end": round(t, 3)})

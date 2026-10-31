@@ -100,6 +100,8 @@ Die Enthüllung hat Gewicht für die Hauptgeschichte: Ihr Vater hat Nerayas Mutt
 ## Regeln pro Folge
 - Haken in den ersten 3 Sekunden, Rückblick höchstens 10 Sekunden (ab Folge 2).
 - Ein großes Ereignis pro Folge, ein klarer Cliffhanger.
+- Flüstern nur bei Gefahr. Sonst normale, lebendige Sprechstimme.
+- Name „Neraya“ deutsch aussprechen („Ne-ra-ja“): im TTS-Text `Neraja`, im Untertitel `Neraya` (Feld `display`).
 - Sarkasmus sparsam: 1–2 Mal pro Folge, dann aber wirklich lustig und passend. Schüchternheit und Tollpatschigkeit zeigen sich eher im Tonfall. Je weiter die Serie, desto selbstbewusster und weniger stockend.
 - Lunara hat pro Folge genau einen lustigen Moment mit einer anderen Figur (Folge 1: klaut Ramen-Bo eine Nudel). Ihr Lieblingssnack ist Mondstaub.
 - Folge 1 beginnt mit großem, mittigem Text und direkter Ansprache („Hey, du!“). Ab Folge 2 beginnt jede Folge mit einem kurzen Rückblick.

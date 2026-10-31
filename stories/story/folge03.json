@@ -127,9 +127,10 @@
     },
     {
      "who": "STERN",
-     "text": "Sie lügt, Neraya.",
+     "text": "Sie lügt, Neraja.",
      "pre": 0.7,
-     "style": "geflüstert, drängend"
+     "style": "geflüstert, drängend",
+     "display": "Sie lügt, Neraya."
     }
    ]
   },
@@ -274,8 +275,9 @@
    "lines": [
     {
      "who": "STERN_DUNKEL",
-     "text": "Weine nicht, Neraya. Du hast ihn nicht verloren. Du hast mich gewonnen.",
-     "style": "tief, triumphierend, langsam"
+     "text": "Weine nicht, Neraja. Du hast ihn nicht verloren. Du hast mich gewonnen.",
+     "style": "tief, triumphierend, langsam",
+     "display": "Weine nicht, Neraya. Du hast ihn nicht verloren. Du hast mich gewonnen."
     },
     {
      "who": "SERAPHINE",
@@ -302,13 +304,14 @@
     {
      "who": "ICH",
      "text": "Alle Sterne … bis auf einen. Den, auf den die Nadel meines Anhängers zeigt.",
-     "style": "geflüstert"
+     "style": "leise"
     },
     {
      "who": "MUTTER",
-     "text": "Neraya. Hör mir zu. Lass ihn nicht los, was auch immer er dir verspricht.",
+     "text": "Neraja. Hör mir zu. Lass ihn nicht los, was auch immer er dir verspricht.",
      "pre": 1.2,
-     "style": "eindringlich, liebevoll, aus weiter Ferne"
+     "style": "eindringlich, liebevoll, aus weiter Ferne",
+     "display": "Neraya. Hör mir zu. Lass ihn nicht los, was auch immer er dir verspricht."
     },
     {
      "who": "MUTTER",
@@ -326,7 +329,7 @@
      "who": "LUNARA",
      "text": "Schwester …?",
      "pre": 0.9,
-     "style": "fassungslos, geflüstert"
+     "style": "fassungslos, leise"
     }
    ]
   },
@@ -344,7 +347,7 @@
      "who": "ICH",
      "text": "Und ich … bin es nur zur Hälfte.",
      "pre": 0.9,
-     "style": "flüsternd, die größte Enthüllung"
+     "style": "leise, die größte Enthüllung"
     }
    ]
   },

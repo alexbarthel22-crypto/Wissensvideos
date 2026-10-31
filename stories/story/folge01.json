@@ -91,26 +91,29 @@
      "who": "ICH",
      "text": "Hey, du! Ja, genau du. Nicht weiterscrollen!",
      "style": "laut, direkt, eindringlich, ein wenig atemlos, als würde sie jemanden auf der Straße anhalten",
-     "hook": "HEY, DU!"
+     "hook": "HEY, DU!",
+     "hook_fly": true
     },
     {
      "who": "ICH",
      "text": "Hast du in letzter Zeit mal in den Sternenhimmel geschaut? Ist dir aufgefallen, dass … einer fehlt?",
      "style": "schnell, verschwörerisch, dann leise und bedeutungsvoll",
      "pre": 0.4,
-     "hook": "EINER FEHLT."
+     "hook": "EINER FEHLT.",
+     "hook_at": 0.72
     },
     {
      "who": "ICH",
      "text": "Was wäre, wenn das gar keine Sterne sind? Wenn sie etwas gefangen halten … oder jemanden?",
-     "style": "flüsternd, unheimlich, Spannung aufbauend",
+     "style": "leise, unheimlich, eindringlich, Spannung aufbauend",
      "pre": 0.5,
-     "hook": "GEFANGEN?"
+     "hook": "GEFANGEN?",
+     "hook_at": 0.55
     },
     {
      "who": "ICH",
-     "text": "Ich weiß es. Denn ich … habe einen davon geöffnet.",
-     "style": "flüsternd, schuldbewusst",
+     "text": "Ich weiß es. Denn ich habe einen davon geöffnet. Großartige Idee, ich weiß.",
+     "style": "ehrlich, normal laut, am Ende trocken sarkastisch über sich selbst",
      "pre": 0.9
     },
     {
@@ -134,7 +137,7 @@
    "lines": [
     {
      "who": "ICH",
-     "text": "Das ist meine Welt: Valdoria.",
+     "text": "Das ist meine Welt: Valdoria. Im Jahr 1137 nach dem Sternenbund.",
      "style": "warm, stolz"
     },
     {
@@ -212,8 +215,9 @@
     {
      "who": "ICH",
      "text": "Und Valdoria … brannte.",
-     "style": "sehr langsam, düster, schwer, mit einer langen Pause vor dem letzten Wort",
-     "pre": 1.4
+     "style": "langsam, düster, schwer; nach einer kurzen Pause das letzte Wort 'brannte' deutlich und betont aussprechen",
+     "pre": 1.4,
+     "keep_tail": true
     }
    ]
   },
@@ -224,8 +228,9 @@
    "lines": [
     {
      "who": "ICH",
-     "text": "Und ich? Ich bin Neraya, siebzehn. Ich kann die Bahnen von zwölf Monden berechnen … und stolpere trotzdem über meine eigenen Füße.",
-     "style": "schüchtern, verlegen, mit kleinem verlegenen Lachen"
+     "text": "Und ich? Ich bin Neraja, siebzehn. Ich kann die Bahnen von zwölf Monden berechnen … aber mit Fremden reden? Lieber nicht.",
+     "style": "schüchtern, leicht verlegen, ehrlich, ohne Sarkasmus",
+     "display": "Und ich? Ich bin Neraya, siebzehn. Ich kann die Bahnen von zwölf Monden berechnen … aber mit Fremden reden? Lieber nicht."
     },
     {
      "who": "ICH",
@@ -248,7 +253,7 @@
     },
     {
      "who": "BO",
-     "text": "He! Du kleiner Drache! Das ist schon meine dritte Nudel heute!",
+     "text": "He! Du kleine Mondwurst! Das ist schon deine dritte Nudel heute!",
      "style": "empört, aber gutmütig, brummig, komisch",
      "pre": 0.3
     },
@@ -272,7 +277,7 @@
      "pre": 1.0,
      "rate": 0.85,
      "fx": "zittern",
-     "style": "flüsternd, weinend"
+     "style": "leise, mit Tränen in der Stimme, verletzlich"
     },
     {
      "who": "ICH",
