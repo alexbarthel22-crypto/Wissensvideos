@@ -18,7 +18,7 @@
     <div id="s02-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
       <svg id="s02-svg" class="full" viewBox="0 0 1080 1920"></svg>
       <div id="s02-c1" class="cd" style="top:540px">ALLEIN<s></s></div><div id="s02-c2" class="cd" style="top:710px">ZU ZWEIT<s></s></div><div id="s02-c3" class="cd" style="top:880px">GAR NICHT<s></s></div>
-      <div id="s02-big" class="abs">2011</div><div id="s02-sub" class="abs">ALS INTERNET-WITZ</div>
+
       <div class="vig"></div>
     </div>
   </div>
@@ -38,7 +38,7 @@
       const ppl = el("g", {}, sv), rp = rng(5), crowd = [];
       for (let i = 0; i < 84; i++) { const c = i % 12, r = Math.floor(i / 12), x = 120 + c * 76 + (r % 2) * 30, y = 990 + r * 28 + rp() * 8, col = ["#ff4fb0", "#4da3ff", "#39e27a", "#ffd43b", "#1fb5a5"][i % 5];
         const g = el("g", { opacity: 0 }, ppl); el("circle", { cx: x, cy: y - 34, r: 13, fill: "#f2cba5" }, g); el("rect", { x: x - 15, y: y - 20, width: 30, height: 36, rx: 10, fill: col }, g); crowd.push(g); }
-      const ga = at("L4", "ganzen"), kh = at("L4", "kein"), al = at("L5", "allein"), zw = at("L5", "zweit"), ga2 = at("L5", "gar"), l6 = line("L6")[0], wi = at("L6", "Internet"), mi = at("L6", "Millionen");
+      const ga = at("L4", "ganzen"), kh = at("L4", "kein"), al = at("L5", "allein"), zw = at("L5", "zweit"), ga2 = at("L5", "gar");
       tl.fromTo(cal, { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, 0.4);
       tl.to(cells, { attr: { fill: "#ff9fd4" }, duration: 0.15, stagger: 0.035 }, ga - 0.1);
       tl.fromTo(ban, { opacity: 0, scale: 1.6, svgOrigin: "540 840" }, { opacity: 1, scale: 1, svgOrigin: "540 840", duration: 0.3, ease: "power3.out" }, kh);
@@ -46,11 +46,6 @@
       [["#s02-c1", al], ["#s02-c2", zw], ["#s02-c3", ga2]].forEach(([id, t]) => { tl.fromTo(id, { opacity: 0, x: -80 }, { opacity: 1, x: 0, duration: 0.25, ease: "back.out(2)" }, t - 0.15);
         tl.to(id + " s", { scaleX: 1, duration: 0.2 }, t + 0.25); });
       tl.to("#s02-c3", { scale: 1.08, duration: 0.15, yoyo: true, repeat: 1 }, ga2 + 0.3);
-      tl.to(["#s02-c1", "#s02-c2", "#s02-c3"], { opacity: 0, duration: 0.25 }, l6 - 0.3); tl.to([cal, ban], { opacity: 0, duration: 0.25 }, l6 - 0.3);
-      tl.fromTo("#s02-big", { opacity: 0, scale: 1.5 }, { opacity: 1, scale: 1, duration: 0.35, ease: "power3.out" }, l6 + 0.4);
-      tl.fromTo("#s02-sub", { opacity: 0 }, { opacity: 1, duration: 0.3 }, wi - 0.1);
-      tl.to("#s02-sub", { opacity: 0, duration: 0.2 }, mi - 0.3); tl.to("#s02-big", { y: -200, scale: 0.7, duration: 0.4, ease: "power2.inOut" }, mi - 0.3);
-      tl.to(crowd, { opacity: 1, duration: 0.12, stagger: { each: 0.012, from: "random" } }, mi - 0.1);
       tl.to("#s02-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
       window.__timelines["s02"] = tl;
     })();

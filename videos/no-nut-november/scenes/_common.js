@@ -77,18 +77,26 @@
       // ---- No Nut November: Finn (18), Zimmer, Handy ----
       // Finn: Fußpunkt x, y; gibt {g, aL, aR, head} zurück. Arme drehen um Schulter (lokal -36/36, -128)
       function finn(p, x, y, s = 1) { const g = el("g", {}, p); gsap.set(g, { x, y, scale: s, transformOrigin: "0 0" });
-        el("rect", { x: -16, y: -62, width: 14, height: 62, rx: 6, fill: "#2d3e6b" }, g); el("rect", { x: 2, y: -62, width: 14, height: 62, rx: 6, fill: "#2d3e6b" }, g);
-        el("rect", { x: -21, y: -7, width: 20, height: 9, rx: 4, fill: "#f4f4f8" }, g); el("rect", { x: 1, y: -7, width: 20, height: 9, rx: 4, fill: "#f4f4f8" }, g);
-        const aL = el("rect", { x: -44, y: -130, width: 13, height: 58, rx: 6, fill: "#17998c" }, g), aR = el("rect", { x: 31, y: -130, width: 13, height: 58, rx: 6, fill: "#17998c" }, g);
-        el("path", { d: "M-33 -128 Q-34 -136 -24 -137 L24 -137 Q34 -136 33 -128 L24 -58 L-24 -58Z", fill: "#1fb5a5" }, g);
-        el("path", { d: "M-14 -100 H14 V-82 H-14Z", fill: "#17998c" }, g);
-        el("line", { x1: -5, y1: -134, x2: -6, y2: -112, stroke: "#eaf7f5", "stroke-width": 2.5 }, g); el("line", { x1: 5, y1: -134, x2: 6, y2: -112, stroke: "#eaf7f5", "stroke-width": 2.5 }, g);
+        // Jugendlicher: weite Jogginghose, dicke Sneaker, Oversize-Hoodie, großer Kopf, Cap verkehrt rum, Kopfhörer um den Hals
+        el("path", { d: "M-19 -60 H-1 L-3 -6 H-17Z", fill: "#3c4357" }, g); el("path", { d: "M1 -60 H19 L17 -6 H3Z", fill: "#3c4357" }, g);
+        el("rect", { x: -26, y: -10, width: 26, height: 13, rx: 6, fill: "#ffffff" }, g); el("rect", { x: 0, y: -10, width: 26, height: 13, rx: 6, fill: "#ffffff" }, g);
+        el("rect", { x: -26, y: -1, width: 26, height: 4, rx: 2, fill: "#ff4fb0" }, g); el("rect", { x: 0, y: -1, width: 26, height: 4, rx: 2, fill: "#ff4fb0" }, g);
+        const aL = el("rect", { x: -46, y: -130, width: 16, height: 62, rx: 8, fill: "#e5562e" }, g), aR = el("rect", { x: 30, y: -130, width: 16, height: 62, rx: 8, fill: "#e5562e" }, g);
+        el("path", { d: "M-36 -126 Q-37 -136 -26 -137 L26 -137 Q37 -136 36 -126 L30 -54 L-30 -54Z", fill: "#ff6a3d" }, g);
+        el("path", { d: "M-16 -96 H16 V-78 H-16Z", fill: "#e5562e" }, g); txt(g, 0, -106, "NNN", 11, "#fff", { "data-layout-allow-overlap": "" });
+        el("path", { d: "M-22 -138 Q0 -122 22 -138", stroke: "#1b1d2b", "stroke-width": 6, fill: "none" }, g);
+        el("circle", { cx: -22, cy: -138, r: 8, fill: "#1b1d2b" }, g); el("circle", { cx: 22, cy: -138, r: 8, fill: "#1b1d2b" }, g);
         const head = el("g", {}, g);
-        el("rect", { x: -6, y: -146, width: 12, height: 12, fill: "#e6b88f" }, head);
-        el("circle", { cx: 0, cy: -160, r: 17, fill: "#f2cba5" }, head);
-        el("path", { d: "M-19 -161 Q-20 -182 -2 -183 Q16 -184 19 -166 Q20 -158 17 -156 Q14 -168 4 -168 Q-6 -164 -14 -170 Q-16 -164 -19 -161Z", fill: "#6b4423" }, head);
-        el("circle", { cx: -6, cy: -158, r: 2, fill: "#2a1a10" }, head); el("circle", { cx: 7, cy: -158, r: 2, fill: "#2a1a10" }, head);
-        const mouth = el("path", { d: "M-7 -150 Q0 -145 7 -150", stroke: "#7a3b2a", "stroke-width": 2.5, fill: "none", "stroke-linecap": "round" }, head);
+        el("rect", { x: -6, y: -148, width: 12, height: 12, fill: "#e6b88f" }, head);
+        el("circle", { cx: 0, cy: -166, r: 23, fill: "#f2cba5" }, head);
+        el("path", { d: "M-23 -170 Q-22 -194 0 -194 Q22 -194 23 -172 Q12 -178 0 -178 Q-12 -178 -23 -170Z", fill: "#2f6fe0" }, head);
+        el("rect", { x: -9, y: -198, width: 18, height: 7, rx: 3, fill: "#2f6fe0" }, head);
+        el("path", { d: "M-14 -176 Q-8 -166 -2 -175 Q4 -165 10 -176 Q4 -180 -14 -176Z", fill: "#6b4423" }, head);
+        el("ellipse", { cx: -8, cy: -163, rx: 3.2, ry: 3.8, fill: "#2a1a10" }, head); el("ellipse", { cx: 8, cy: -163, rx: 3.2, ry: 3.8, fill: "#2a1a10" }, head);
+        el("circle", { cx: -7, cy: -164.5, r: 1.1, fill: "#fff" }, head); el("circle", { cx: 9, cy: -164.5, r: 1.1, fill: "#fff" }, head);
+        el("circle", { cx: -14, cy: -155, r: 3.5, fill: "#ff8f8f", opacity: 0.5 }, head); el("circle", { cx: 14, cy: -155, r: 3.5, fill: "#ff8f8f", opacity: 0.5 }, head);
+        el("circle", { cx: 11, cy: -175, r: 1.4, fill: "#e0736a" }, head);
+        const mouth = el("path", { d: "M-7 -152 Q0 -147 7 -152", stroke: "#7a3b2a", "stroke-width": 2.5, fill: "none", "stroke-linecap": "round" }, head);
         return { g, aL, aR, head, mouth }; }
       // Arme hoch (Jubel/Flex) bzw. zurück
       const armsUp = (tl, f, t, d = 0.25, a = 150) => { tl.to(f.aL, { rotation: a, svgOrigin: "-37 -126", duration: d, ease: "back.out(2)" }, t); tl.to(f.aR, { rotation: -a, svgOrigin: "37 -126", duration: d, ease: "back.out(2)" }, t); };
