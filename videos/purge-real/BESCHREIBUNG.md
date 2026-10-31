@@ -1,31 +1,33 @@
 # Beschreibung – Was wäre, wenn The Purge echt wäre?
 
 ## Hauptversion (empfohlen)
-Was wäre, wenn die Säuberung aus The Purge WIRKLICH stattfindet? 🩸 12 Stunden: Raub, Einbruch, Brandstiftung, Mord – alles legal, kein Notruf. Plus: 4 Schritte, wie du dich schützt 😨 Würdest du teilnehmen oder dich zuhause verschanzen? 👇
+Was wäre, wenn The Purge WIRKLICH stattfindet? 🩸 12 Stunden: Raub, Einbruch, Brandstiftung, Mord – alles legal, kein Notruf. Bleib bis zum Ende für die schockierendste Zahl 😨 Würdest du teilnehmen oder dich verschanzen? 👇
 #thepurge #halloween #waswärewenn #gruselig #fyp
 
-## Alternative 1 (Plünderung vorne)
-Juweliere, Banken – und Sammelkartenläden: In der Purge-Nacht wird alles geplündert, und die Versicherung zahlt nichts 😳 Teilnehmen oder verschanzen? 👇
-#thepurge #halloween #waswärewenn #pokemonkarten #fyp
-
-## Alternative 2 (Zahl vorne)
-In Deutschland gibt es alle 12 Stunden rund 20.000 Rettungseinsätze. In der Purge-Nacht: keinen einzigen 🚑❌ Teilnehmen oder verschanzen? 👇
-#thepurge #halloween #gedankenexperiment #gruselig #fyp
-
-## Alternative 3 (Schutz vorne)
-Licht aus, Raum ohne Fenster, Vorräte, Nachbarn: So würdest du eine echte Purge-Nacht überstehen 🔦 Teilnehmen oder verschanzen? 👇
+## Alternative 1 (Überleben vorne)
+So würdest du eine echte Purge-Nacht überleben 🔦 Licht aus, Raum ohne Fenster, Vorräte, Nachbarn … aber Schritt 1 machen fast alle falsch 😳 Teilnehmen oder verschanzen? 👇
 #thepurge #halloween #survival #waswärewenn #fyp
 
-## Angepinnter Kommentar
-19:00 – die Sirene heult 🚨 Was machst du: 🔒 zuhause verschanzen oder 🎭 teilnehmen? 👇
+## Alternative 2 (Zahl vorne)
+Alle 12 Stunden gibt es in Deutschland rund 20.000 Rettungseinsätze. In der Purge-Nacht: keinen einzigen 🚑❌ Und das ist noch nicht das Schlimmste … Teilnehmen oder verschanzen? 👇
+#thepurge #halloween #gedankenexperiment #gruselig #fyp
 
-## Antwort-Vorlage für Kommentare
-„Die Zahl am Ende: Schon 1 % von 84 Millionen Menschen wären 840.000 – mehr als die Einwohner von Frankfurt 😶“
+## Alternative 3 (Sammelkarten-Hook)
+Juweliere, Banken – und Sammelkartenläden 🃏 In der Purge-Nacht wird alles geplündert, und die Versicherung zahlt nichts. Teilnehmen oder verschanzen? 👇
+#thepurge #halloween #pokemonkarten #waswärewenn #fyp
+
+## Angepinnter Kommentar
+🚨 19:00 – die Sirene heult. Was machst du? 🔒 VERSCHANZEN oder 🎭 TEILNEHMEN? Antworte nur mit einem Wort 👇
+
+## Antwort-Vorlagen für Kommentare
+- „Die Zahl am Ende: Schon 1 % von 84 Millionen wären 840.000 Menschen – mehr als ganz Frankfurt 😶“
+- „Schritt 1 ist wirklich der wichtigste: Wer dunkel ist, fällt nicht auf 🔦“
 
 ## Posting-Tipps
-- Heute posten (Halloween, 31.10.) – am besten zwischen 18 und 20 Uhr, kurz vor „19:00“.
-- Cover: `renders/cover.jpg` als Titelbild.
-- Düsterer Trend-Sound leise darunter (10–20 %); die Sirene (Anfang + 07:00 Uhr) ist schon im Video.
+- Heute posten (Halloween, 31.10.), ideal 18:00–19:00 Uhr – kurz bevor im Video „19:00“ schlägt.
+- Cover: `renders/cover.jpg` als Titelbild wählen.
+- Düsterer Trend-Sound leise darunter (10–20 %); die Sirene ist schon im Video.
+- Den Ein-Wort-Kommentar sofort anpinnen und in der ersten Stunde auf möglichst viele Antworten reagieren.
 
 ---
-Zahlen: seltene Sammelkarten erzielen oft vier- bis fünfstellige Preise; Rettungsdienst DE ~14 Mio. Einsätze/Jahr → ~19.000–20.000 pro 12 Std.; 1 % von 84 Mio. = 840.000 (Frankfurt am Main ~775.000 Einw.).
+Zahlen: Rettungsdienst DE ~14 Mio. Einsätze/Jahr → ~19.000–20.000 pro 12 Std.; seltene Sammelkarten erzielen oft vier- bis fünfstellige Preise; 1 % von 84 Mio. = 840.000 (Frankfurt am Main ~775.000 Einw.).
