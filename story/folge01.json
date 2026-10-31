@@ -2,73 +2,115 @@
   "serie": "STERNENFALL",
   "folge": "Folge 1",
   "titel": "Das Herz, das vom Himmel fiel",
+  "tagline": "Wenn die Sterne fallen, erwacht die Wahrheit.",
   "voices": {
     "ERZ": {
       "name": "de-DE-Chirp3-HD-Algenib",
+      "gemini": "Algenib",
       "label": "Erzähler",
-      "rate": 1.0
+      "rate": 0.93,
+      "persona": "Ein alter, weiser Erzähler mit tiefer, warmer Stimme, wie in einem epischen Fantasy-Hörbuch. Deutliche Aussprache, ruhiges Tempo, geheimnisvoll."
     },
     "ELARA": {
       "name": "de-DE-Chirp3-HD-Leda",
+      "gemini": "Leda",
       "label": "Elara",
-      "rate": 1.0
+      "rate": 0.95,
+      "persona": "Elara, eine junge Frau von siebzehn Jahren, mutig aber verletzlich."
     },
     "KAEL": {
       "name": "de-DE-Chirp3-HD-Orus",
+      "gemini": "Orus",
       "label": "Kael",
-      "rate": 0.97
+      "rate": 0.94,
+      "persona": "Kael, ein junger Soldat, Elaras älterer Bruder, innerlich zerrissen."
     },
     "SERAPHINE": {
       "name": "de-DE-Chirp3-HD-Gacrux",
+      "gemini": "Gacrux",
       "label": "Seraphine",
-      "rate": 0.97
+      "rate": 0.93,
+      "persona": "Seraphine, eine mächtige, kalte Hohepriesterin. Beherrscht, gefährlich, jedes Wort ein Urteil."
     },
     "STERN": {
       "name": "de-DE-Chirp3-HD-Achernar",
+      "gemini": "Achernar",
       "label": "Der Stern",
-      "rate": 0.95,
-      "fx": "stern"
+      "rate": 0.92,
+      "fx": "stern",
+      "persona": "Ein uraltes Wesen aus Licht, sanft, verführerisch, flüsternd."
     },
     "STERN_DUNKEL": {
       "name": "de-DE-Chirp3-HD-Charon",
+      "gemini": "Charon",
       "label": "Der Stern",
-      "rate": 0.86,
-      "fx": "dunkel"
+      "rate": 0.88,
+      "fx": "dunkel",
+      "persona": "Dasselbe Wesen, jetzt entlarvt: tief, ruhig, triumphierend, bedrohlich."
     },
     "MUTTER": {
       "name": "de-DE-Chirp3-HD-Sulafat",
+      "gemini": "Sulafat",
       "label": "Mutter",
-      "rate": 0.95,
-      "fx": "fern"
+      "rate": 0.92,
+      "fx": "fern",
+      "persona": "Elaras Mutter, liebevoll und eindringlich, ihre Stimme kommt von sehr weit her."
     }
   },
   "scenes": [
     {
       "id": "kalt",
       "pre": 0.8,
-      "post": 0.8,
+      "post": 0.9,
       "lines": [
         {
           "who": "ERZ",
-          "text": "Man hat euch erzählt, die Sterne seien Lichter. Dass sie über uns wachen."
+          "text": "Man hat euch erzählt, die Sterne seien Lichter, die über uns wachen.",
+          "style": "leise, geheimnisvoll"
         },
         {
           "who": "ERZ",
           "text": "Das ist eine Lüge.",
-          "pre": 0.7
+          "pre": 0.7,
+          "style": "langsam, mit Gewicht"
         },
         {
           "who": "ERZ",
-          "text": "Die Sterne sind Gefängnisse. Und in dieser Nacht … fiel eines davon herab.",
-          "pre": 0.8
+          "text": "Die Sterne sind Gefängnisse.",
+          "pre": 0.6,
+          "style": "flüsternd, unheilvoll"
         }
       ]
     },
     {
-      "id": "titel",
-      "pre": 4.0,
+      "id": "intro",
+      "pre": 12.5,
       "post": 0,
       "lines": []
+    },
+    {
+      "id": "welt",
+      "pre": 0.8,
+      "post": 0.6,
+      "lines": [
+        {
+          "who": "ERZ",
+          "text": "Dies ist Valdoria. Eine Welt, in der die Sterne so nah sind, dass man sie singen hört.",
+          "style": "staunend, verträumt"
+        },
+        {
+          "who": "ERZ",
+          "text": "Inseln schweben über den Wolken. Himmelswale ziehen durch die Nacht.",
+          "pre": 0.6,
+          "style": "verträumt, sanft"
+        },
+        {
+          "who": "ERZ",
+          "text": "Und alle hundert Jahre … fällt ein Stern. Wer sein Licht berührt, erhält Macht über Leben und Tod.",
+          "pre": 0.6,
+          "style": "ernster werdend, mit Ehrfurcht"
+        }
+      ]
     },
     {
       "id": "stadt",
@@ -77,22 +119,33 @@
       "lines": [
         {
           "who": "ERZ",
-          "text": "Aurelion. Die Stadt der tausend Laternen. Magie gab es hier nur für jene, die oben wohnten."
+          "text": "Aurelion, im Jahr elfhundertsiebenunddreißig nach dem Sternenbund. Die Stadt der tausend Laternen.",
+          "style": "erzählend",
+          "display": "Aurelion, im Jahr 1137 nach dem Sternenbund. Die Stadt der tausend Laternen."
         },
         {
           "who": "ERZ",
-          "text": "Elara wohnte unten.",
-          "pre": 0.4
+          "text": "Oben herrscht der Orden der Hohen Flamme. Unten lebt Elara.",
+          "pre": 0.5,
+          "style": "erzählend, mit leiser Bitterkeit"
         },
         {
           "who": "ELARA",
           "text": "Siehst du, Mama? Alle Laternen brennen.",
-          "pre": 0.6
+          "pre": 0.6,
+          "style": "sanft, sehnsüchtig, zum Himmel sprechend"
         },
         {
           "who": "ERZ",
-          "text": "Ihre Mutter war vor zwölf Jahren verschwunden. In der letzten Nacht, in der ein Stern gefallen war.",
-          "pre": 0.5
+          "text": "Ihre Mutter verschwand vor zwölf Jahren. In der Nacht, in der zuletzt ein Stern fiel.",
+          "pre": 0.5,
+          "style": "leise, traurig"
+        },
+        {
+          "who": "ERZ",
+          "text": "Heute Nacht … ist es wieder so weit.",
+          "pre": 0.5,
+          "style": "flüsternd, spannungsgeladen"
         }
       ]
     },
@@ -107,7 +160,8 @@
       "lines": [
         {
           "who": "ELARA",
-          "text": "Nein … das ist unmöglich."
+          "text": "Nein … das ist unmöglich.",
+          "style": "fassungslos, atemlos"
         }
       ]
     },
@@ -118,37 +172,26 @@
       "lines": [
         {
           "who": "ERZ",
-          "text": "Er schlug in den Ruinen des alten Tempels ein."
-        },
-        {
-          "who": "ERZ",
-          "text": "Elara ging trotzdem.",
-          "pre": 0.3
+          "text": "Er schlug in den verbotenen Ruinen ein. Elara ging trotzdem.",
+          "style": "spannend"
         },
         {
           "who": "STERN",
           "text": "Elara.",
-          "pre": 1.0
+          "pre": 1.0,
+          "style": "geflüstert, lockend"
         },
         {
           "who": "ELARA",
           "text": "Wer … wer ist da?",
-          "pre": 0.5
+          "pre": 0.5,
+          "style": "ängstlich, leise"
         },
         {
           "who": "STERN",
-          "text": "Du hast lange gebraucht. Zwölf Jahre, um genau zu sein.",
-          "pre": 0.4
-        },
-        {
-          "who": "ELARA",
-          "text": "Woher kennst du meinen Namen?",
-          "pre": 0.3
-        },
-        {
-          "who": "STERN",
-          "text": "Deine Mutter hat ihn mir verraten. Kurz bevor sie mich an den Himmel gekettet hat.",
-          "pre": 0.5
+          "text": "Deine Mutter hat mir deinen Namen verraten. Kurz bevor sie mich an den Himmel gekettet hat.",
+          "pre": 0.5,
+          "style": "sanft, mit verborgener Bitterkeit"
         }
       ]
     },
@@ -162,12 +205,14 @@
       "lines": [
         {
           "who": "ERZ",
-          "text": "Sie hätte weglaufen sollen. Stattdessen berührte sie das Herz des Sterns."
+          "text": "Sie hätte weglaufen sollen. Stattdessen berührte sie das Herz des Sterns.",
+          "style": "eindringlich"
         },
         {
           "who": "STERN",
           "text": "Jetzt gehören wir zusammen. Für immer.",
-          "pre": 2.2
+          "pre": 2.2,
+          "style": "zufrieden, hallend"
         }
       ]
     },
@@ -178,32 +223,38 @@
       "lines": [
         {
           "who": "ERZ",
-          "text": "Dann kam der Orden der Hohen Flamme."
+          "text": "Dann kam der Orden.",
+          "style": "düster"
         },
         {
           "who": "SERAPHINE",
           "text": "Tritt zurück, Kind. Was du da hältst, hat einst eine ganze Welt verbrannt.",
-          "pre": 0.5
+          "pre": 0.5,
+          "style": "kalt, gebieterisch"
         },
         {
           "who": "ELARA",
-          "text": "Es kennt meinen Namen. Es kennt meine Mutter!",
-          "pre": 0.3
+          "text": "Es kennt meine Mutter!",
+          "pre": 0.3,
+          "style": "verzweifelt, laut"
         },
         {
           "who": "SERAPHINE",
           "text": "Natürlich kennt es sie.",
-          "pre": 0.4
+          "pre": 0.4,
+          "style": "ruhig, fast mitleidig"
         },
         {
           "who": "SERAPHINE",
           "text": "Es hat sie getötet.",
-          "pre": 0.6
+          "pre": 0.6,
+          "style": "eiskalt, langsam"
         },
         {
           "who": "STERN",
           "text": "Sie lügt, Elara.",
-          "pre": 0.5
+          "pre": 0.5,
+          "style": "geflüstert, drängend"
         }
       ]
     },
@@ -214,37 +265,38 @@
       "lines": [
         {
           "who": "SERAPHINE",
-          "text": "Hauptmann. Tu deine Pflicht."
-        },
-        {
-          "who": "ERZ",
-          "text": "Aus den Reihen des Ordens trat der einzige Mensch, dem Elara je vertraut hatte.",
-          "pre": 0.4
+          "text": "Hauptmann. Tu deine Pflicht.",
+          "style": "scharf, befehlend"
         },
         {
           "who": "ELARA",
-          "text": "Kael …?",
-          "pre": 0.5
+          "text": "Kael? Du … du gehörst zu ihnen?",
+          "pre": 1.4,
+          "style": "ungläubig, verletzt"
         },
         {
           "who": "KAEL",
           "text": "Es tut mir leid, Elara. Wenn der Stern fällt, soll ich dich töten. Das war der Preis für zwölf Jahre Frieden.",
-          "pre": 0.5
+          "pre": 0.5,
+          "style": "gequält, mit erstickter Stimme"
         },
         {
           "who": "ELARA",
           "text": "Du hast es gewusst. Die ganze Zeit.",
-          "pre": 0.4
+          "pre": 0.4,
+          "style": "bitter, den Tränen nahe"
         },
         {
           "who": "KAEL",
           "text": "Ich habe es gewusst.",
-          "pre": 0.4
+          "pre": 0.4,
+          "style": "leise, schuldbewusst"
         },
         {
           "who": "KAEL",
           "text": "Und ich kann es trotzdem nicht.",
-          "pre": 0.5
+          "pre": 0.7,
+          "style": "entschlossen, mit brechender Stimme"
         }
       ]
     },
@@ -259,12 +311,14 @@
       "lines": [
         {
           "who": "ERZ",
-          "text": "Er senkte sein Schwert. Seraphine zögerte keine Sekunde."
+          "text": "Er senkte sein Schwert. Seraphine zögerte keine Sekunde.",
+          "style": "schnell, angespannt"
         },
         {
           "who": "ELARA",
           "text": "Kael! Nein!",
-          "pre": 1.6
+          "pre": 1.6,
+          "style": "schreiend, panisch"
         }
       ]
     },
@@ -275,31 +329,36 @@
       "lines": [
         {
           "who": "KAEL",
-          "text": "Elara … Mama hat keinen Stern eingesperrt.",
-          "rate": 0.9
+          "text": "Mama hat keinen Stern eingesperrt …",
+          "rate": 0.88,
+          "style": "sterbend, schwach, flüsternd"
         },
         {
           "who": "KAEL",
-          "text": "Sie hat sich selbst eingesperrt. Damit er niemals freikommt.",
+          "text": "Sie hat sich selbst eingesperrt.",
           "pre": 0.6,
-          "rate": 0.9
+          "rate": 0.88,
+          "style": "sterbend, flüsternd"
         },
         {
           "who": "ELARA",
-          "text": "Wer, Kael? Wer?",
-          "pre": 0.4
+          "text": "Warum?",
+          "pre": 0.4,
+          "style": "weinend"
         },
         {
           "who": "KAEL",
-          "text": "Der, den du gerade … in deiner Hand hältst.",
+          "text": "Um ihn aufzuhalten. Den, den du gerade … in deiner Hand hältst.",
           "pre": 0.5,
-          "rate": 0.87
+          "rate": 0.86,
+          "style": "letzter Atemzug, kaum hörbar"
         },
         {
           "who": "ELARA",
           "text": "Bleib bei mir. Bitte. Du bist alles, was ich noch habe.",
           "pre": 1.2,
-          "rate": 0.92
+          "rate": 0.9,
+          "style": "schluchzend, verzweifelt"
         }
       ]
     },
@@ -314,51 +373,97 @@
       "lines": [
         {
           "who": "STERN_DUNKEL",
-          "text": "Weine nicht, Elara. Du hast ihn nicht verloren. Du hast mich gewonnen."
+          "text": "Weine nicht, Elara. Du hast ihn nicht verloren. Du hast mich gewonnen.",
+          "style": "tief, triumphierend, langsam"
         },
         {
           "who": "SERAPHINE",
           "text": "Bei allen Göttern … es ist zu spät.",
-          "pre": 0.4
+          "pre": 0.4,
+          "style": "entsetzt, zum ersten Mal ängstlich"
         },
         {
           "who": "ERZ",
-          "text": "Und einer nach dem anderen erloschen die Sterne über Aurelion.",
-          "pre": 0.4
+          "text": "Und einer nach dem anderen erloschen die Sterne über Valdoria.",
+          "pre": 0.4,
+          "style": "düster, langsam"
         }
       ]
     },
     {
       "id": "letzter",
       "pre": 0.8,
-      "post": 0.6,
+      "post": 0.5,
+      "cues": {
+        "schwester": "L3-0.4"
+      },
       "lines": [
         {
           "who": "ERZ",
-          "text": "Alle … bis auf einen."
+          "text": "Alle … bis auf einen.",
+          "style": "geflüstert"
         },
         {
           "who": "MUTTER",
-          "text": "Elara. Hör mir zu. Lass ihn nicht los. Was auch immer er dir verspricht.",
-          "pre": 1.0
+          "text": "Elara. Hör mir zu. Lass ihn nicht los, was auch immer er dir verspricht.",
+          "pre": 1.0,
+          "style": "eindringlich, liebevoll, aus weiter Ferne"
         },
         {
           "who": "MUTTER",
           "text": "Sonst stirbt die Welt.",
-          "pre": 0.5
+          "pre": 0.5,
+          "style": "ernst, flehend"
+        },
+        {
+          "who": "STERN_DUNKEL",
+          "text": "Hallo … Schwester.",
+          "pre": 1.6,
+          "style": "leise, genüsslich, bedrohlich"
+        },
+        {
+          "who": "ELARA",
+          "text": "Schwester …?",
+          "pre": 0.8,
+          "style": "fassungslos, geflüstert"
         }
       ]
     },
     {
       "id": "ende",
       "pre": 0.5,
-      "post": 3.2,
+      "post": 0.6,
       "lines": [
         {
           "who": "ERZ",
-          "text": "Manche Gefängnisse halten Monster fest. Andere … die Einzigen, die sie besiegen können."
+          "text": "Ihre Mutter war kein Mensch.",
+          "style": "langsam, schwer"
+        },
+        {
+          "who": "ERZ",
+          "text": "Und Elara … war es nur zur Hälfte.",
+          "pre": 0.7,
+          "style": "flüsternd, die größte Enthüllung"
         }
       ]
+    },
+    {
+      "id": "sting",
+      "pre": 0.9,
+      "post": 0.8,
+      "lines": [
+        {
+          "who": "SERAPHINE",
+          "text": "Findet das Mädchen. Tot oder lebendig.",
+          "style": "geflüstert, eiskalt"
+        }
+      ]
+    },
+    {
+      "id": "abspann",
+      "pre": 7.5,
+      "post": 0,
+      "lines": []
     }
   ]
 }

@@ -1,7 +1,10 @@
 """Synthesize every line of an episode with Google Cloud TTS and build the timeline.
 
 Usage: python3 engine/tts.py story/folge01.json out/folge01
-Writes <out>/voice/*.wav (cached), <out>/timeline.json and <out>/voice.wav.
+Writes <out>/voice/*.wav (cached), <out>/timeline.json and <out>/voice.npy.
+
+With GEMINI_API_KEY set, lines are voiced by Gemini TTS using each voice's persona and
+each line's "style" as acting direction; otherwise Cloud TTS Chirp 3 HD voices are used.
 """
 import hashlib
 import json
@@ -17,16 +20,22 @@ import numpy as np
 
 SR = 48000
 API = "https://texttospeech.googleapis.com/v1/text:synthesize"
+GEMINI_API = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
+GEMINI_MODEL = os.environ.get("GEMINI_TTS_MODEL", "gemini-2.5-pro-preview-tts")
+ENGINE = "gemini" if os.environ.get("GEMINI_API_KEY") else "chirp"
+
+# Presence boost and gentle compression for intelligibility under music
+CLARITY = "highpass=f=75,equalizer=f=3200:t=q:w=1.2:g=3,equalizer=f=250:t=q:w=1:g=-2,acompressor=threshold=-20dB:ratio=2.5:attack=8:release=120"
 
 FX = {
     # ethereal, slightly higher, shimmering echo
-    "stern": "asetrate=48000*1.05,aresample=48000,atempo=0.9524,"
-             "aecho=0.8:0.75:70|140|260:0.35|0.25|0.15,highpass=f=140",
+    "stern": "asetrate=48000*1.03,aresample=48000,atempo=0.9709,"
+             "aecho=0.9:0.6:60|130|240:0.22|0.14|0.08,highpass=f=120",
     # the star unmasked: deeper, heavier, darker tail
-    "dunkel": "asetrate=48000*0.84,aresample=48000,atempo=1.19,"
-              "aecho=0.8:0.8:90|210|420:0.4|0.28|0.18,lowpass=f=6500",
+    "dunkel": "asetrate=48000*0.88,aresample=48000,atempo=1.1364,"
+              "aecho=0.9:0.65:80|190|380:0.28|0.18|0.1,lowpass=f=7500",
     # a voice from very far away
-    "fern": "highpass=f=260,lowpass=f=5200,aecho=0.8:0.85:120|340|700:0.45|0.3|0.2",
+    "fern": "highpass=f=200,lowpass=f=6500,aecho=0.9:0.7:110|300|620:0.3|0.2|0.12",
 }
 
 
@@ -45,13 +54,36 @@ def synth(text, voice, rate, path):
         f.write(audio)
 
 
+def synth_gemini(text, voice, line, path):
+    direction = f"{voice.get('persona', '')} Sprich auf Hochdeutsch mit sehr klarer, deutlicher Aussprache."
+    if line.get("style"):
+        direction += f" Spielweise: {line['style']}."
+    body = {
+        "contents": [{"parts": [{"text": f"{direction}\nSprich genau diesen Text:\n{text}"}]}],
+        "generationConfig": {
+            "responseModalities": ["AUDIO"],
+            "speechConfig": {"voiceConfig": {"prebuiltVoiceConfig": {"voiceName": voice["gemini"]}}},
+        },
+    }
+    req = urllib.request.Request(
+        GEMINI_API.format(model=GEMINI_MODEL), data=json.dumps(body).encode(),
+        headers={"Content-Type": "application/json", "x-goog-api-key": os.environ["GEMINI_API_KEY"]})
+    with urllib.request.urlopen(req, timeout=120) as r:
+        part = json.load(r)["candidates"][0]["content"]["parts"][0]["inlineData"]
+    with wave.open(path, "wb") as w:
+        w.setnchannels(1)
+        w.setsampwidth(2)
+        w.setframerate(24000)
+        w.writeframes(base64.b64decode(part["data"]))
+
+
 def load_wav(path):
     with wave.open(path) as w:
         return np.frombuffer(w.readframes(w.getnframes()), dtype=np.int16).astype(np.float32) / 32768
 
 
 def process(raw, fx, path):
-    filters = "aresample=48000" + ("," + FX[fx] if fx else "") + ",apad=pad_dur=0.0"
+    filters = "aresample=48000," + CLARITY + ("," + FX[fx] if fx else "")
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", raw, "-af", filters,
                     "-ac", "1", "-ar", str(SR), path], check=True)
 
@@ -78,7 +110,7 @@ def main(story_path, out_dir):
     os.makedirs(vdir, exist_ok=True)
 
     t = 0.0
-    timeline = {k: story[k] for k in ("serie", "folge", "titel")}
+    timeline = {k: story[k] for k in ("serie", "folge", "titel", "tagline")}
     timeline["scenes"], timeline["lines"], timeline["cues"] = [], [], {}
     clips = []
     for scene in story["scenes"]:
@@ -88,12 +120,19 @@ def main(story_path, out_dir):
         for i, line in enumerate(scene["lines"]):
             v = story["voices"][line["who"]]
             rate = line.get("rate", v.get("rate", 1.0))
-            key = hashlib.sha1(f"{v['name']}|{rate}|{line['text']}".encode()).hexdigest()[:12]
+            if ENGINE == "gemini":
+                ident = f"gemini|{GEMINI_MODEL}|{v['gemini']}|{v.get('persona')}|{line.get('style')}|{line['text']}"
+            else:
+                ident = f"{v['name']}|{rate}|{line['text']}"
+            key = hashlib.sha1(ident.encode()).hexdigest()[:12]
             raw = os.path.join(vdir, f"{key}.raw.wav")
-            fin = os.path.join(vdir, f"{key}.{v.get('fx', 'clean')}.wav")
+            fin = os.path.join(vdir, f"{key}.{v.get('fx', 'clean')}.v2.wav")
             if not os.path.exists(raw):
                 print("TTS", line["who"], line["text"][:50])
-                synth(line["text"], v["name"], rate, raw)
+                if ENGINE == "gemini":
+                    synth_gemini(line["text"], v, line, raw)
+                else:
+                    synth(line["text"], v["name"], rate, raw)
             if not os.path.exists(fin):
                 process(raw, v.get("fx"), fin)
             audio = trim_silence(load_wav(fin))
@@ -103,7 +142,7 @@ def main(story_path, out_dir):
             dur = len(audio) / SR
             clips.append((t, audio))
             timeline["lines"].append({"scene": scene["id"], "who": line["who"], "label": v["label"],
-                                      "text": line["text"], "start": round(t, 3), "end": round(t + dur, 3)})
+                                      "text": line.get("display", line["text"]), "start": round(t, 3), "end": round(t + dur, 3)})
             t += dur
         t += scene.get("post", 0.5)
         timeline["scenes"].append({"id": scene["id"], "start": round(start, 3), "end": round(t, 3)})

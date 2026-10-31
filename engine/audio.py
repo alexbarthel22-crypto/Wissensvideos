@@ -32,6 +32,8 @@ CHORDS = {
     "A": ["A1", "A2", "E3", "A3", "C#4", "E4"],
     "Asus": ["A1", "A2", "E3", "A3", "D4", "E4"],
     "Eb": ["Eb2", "Eb3", "G3", "Bb3", "Eb4"],
+    "G": ["G1", "G2", "D3", "G3", "B3", "D4"],
+    "Bm": ["B1", "B2", "F#3", "B3", "D4", "F#4"],
 }
 
 
@@ -146,6 +148,91 @@ def drone(dur, root="D1", grit=0.0):
     return (lowpass(s.astype(np.float32), 900) * env(len(t), 2.0, 2.5) * 0.12).astype(np.float32)
 
 
+def lead(note, dur, bright=9, attack=0.06, release=0.5):
+    """Brass/horn-like lead voice with vibrato, doubled an octave below."""
+    total = dur + release
+    t = np.arange(int(total * SR)) / SR
+    f0 = hz(note)
+    out = np.zeros((2, len(t)), dtype=np.float32)
+    vib = 1 + 0.004 * np.sin(2 * np.pi * 5.2 * t) * np.clip(t / 0.4, 0, 1)
+    for side, det in ((0, -0.002), (1, 0.002)):
+        for mult, amp in ((1, 1.0), (0.5, 0.55)):
+            ph = 2 * np.pi * f0 * mult * (1 + det) * np.cumsum(vib) / SR
+            for h in range(1, bright + 1):
+                if f0 * mult * h > 8000:
+                    break
+                out[side] += amp * np.sin(h * ph).astype(np.float32) / h ** 1.1
+    e = env(len(t), attack, release)
+    e[int(dur * SR):] = np.linspace(e[int(dur * SR)], 0, len(t) - int(dur * SR))
+    swell = 0.75 + 0.25 * np.clip(t / max(dur, 0.1), 0, 1)
+    return out * e * swell * 0.05
+
+
+def ostinato(bus, t0, t1, roots, step, gain=0.5):
+    """Driving staccato low strings."""
+    t, i = t0, 0
+    while t < t1:
+        r = roots[int((t - t0) / (step * 8)) % len(roots)]
+        note = r + ("2" if i % 2 == 0 else "3")
+        bus.add(pad_note(note, step * 0.7, 7), t, gain * (1.0 if i % 4 == 0 else 0.7), 0.3 * (-1) ** i)
+        t += step
+        i += 1
+
+
+def pad_note(note, dur, bright):
+    t = np.arange(int((dur + 0.15) * SR)) / SR
+    f = hz(note)
+    s = np.zeros_like(t, dtype=np.float32)
+    for h in range(1, bright + 1):
+        s += np.sin(2 * np.pi * f * h * t).astype(np.float32) / h
+    return s * env(len(t), 0.01, 0.15) * 0.12
+
+
+# The series' leitmotif: (note, beats)
+MOTIF = [("D4", 1), ("A4", 1), ("G4", 0.5), ("F4", 0.5), ("E4", 1), ("F4", 0.5), ("G4", 0.5), ("A4", 2),
+         ("Bb4", 1), ("A4", 0.5), ("G4", 0.5), ("F4", 1), ("E4", 1), ("D4", 2)]
+
+
+def motif(bus, t0, beat, voice="lead", transpose=0, gain=1.0, upto=None):
+    t = t0
+    names = ["C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B"]
+    for k, (n, b) in enumerate(MOTIF[:upto]):
+        f = hz(n) * 2 ** (transpose / 12)
+        midi = int(round(69 + 12 * np.log2(f / 440)))
+        note = names[midi % 12] + str(midi // 12 - 1)
+        if voice == "lead":
+            bus.add(lead(note, b * beat * 0.95), t, gain, 0.1 * np.sin(k))
+        else:
+            bus.add(bell(note, 2.5 + b, 0.8), t, gain, 0.2 * np.sin(k))
+        t += b * beat
+    return t
+
+
+def theme(music, fx, t0, beat=0.6, intro=2.2):
+    """Main title: build-up, leitmotif over drums and ostinato, ignition hit."""
+    fx.add(riser(intro), t0, 0.7)
+    music.add(drone(intro + 10, "D1", grit=0.3), t0, 1.2)
+    m0 = t0 + intro
+    fx.add(boom(5, 90, 30, 0.9), m0, 1.1)
+    fx.add(drum(50, 2), m0, 1.0)
+    for i, c in enumerate(["Dm", "Bb", "Gm", "A"]):
+        music.add(pad(c, 4 * beat * 0.95 if i < 3 else 1 * beat, bright=7, attack=0.3), m0 + [0, 4, 7, 10][i] * beat, 1.0)
+    ostinato(music, m0, m0 + 13 * beat, ["D", "Bb", "G", "A"], beat / 2, 0.55)
+    t, i = m0, 0
+    while t < m0 + 13 * beat - 0.05:
+        if i % 4 in (0, 3) or (i % 8 == 6):
+            fx.add(drum(58 if i % 4 == 0 else 72), t, 0.55 if i % 4 == 0 else 0.35, 0.2 * np.sin(i))
+        t += beat / 2
+        i += 1
+    end = motif(music, m0, beat, gain=1.1)
+    hit = end - 2 * beat
+    fx.add(boom(6, 110, 28, 1.0), hit, 1.3)
+    fx.add(drum(46, 3), hit, 1.0)
+    music.add(pad("Dm", 2.2, bright=10, attack=0.03, release=3.5), hit, 1.4)
+    melody(music, hit, ["D5", "A5", "D6", "F6", "A6"], 0.12, 0.45, 4)
+    return hit
+
+
 def sparkles(bus, t0, t1, density=1.5, gain=0.5):
     notes = ["D6", "F6", "A6", "C7", "E6", "A5", "D7"]
     t = t0
@@ -174,16 +261,21 @@ def score(tl):
     s = S["kalt"]
     music.add(drone(s["end"] - s["start"] + 1, "D1"), s["start"], 1.0)
     music.add(pad("Dm", s["end"] - s["start"], bright=2, attack=4), s["start"], 0.5)
-    melody(music, 1.5, ["A5", None, "F5", None, "E5", None, "D5", None, "A4"], 1.2, 0.35, 4)
+    melody(music, 1.2, ["A5", None, "F5", None, "E5", None, "D5"], 1.1, 0.3, 4)
     sparkles(music, 0.5, s["end"], 0.8, 0.25)
 
-    # Title: hit + big swell
-    s = S["titel"]
-    fx.add(boom(5), s["start"], 0.9)
-    fx.add(drum(55, 2), s["start"], 0.8)
-    fx.add(drum(55, 2), s["start"] + 0.45, 0.6)
-    music.add(pad("Dm", 3.6, bright=9, attack=0.05, release=3), s["start"], 1.3)
-    melody(music, s["start"] + 0.1, ["D5", "A5", "D6"], 0.35, 0.5, 4)
+    # Main title with the leitmotif
+    s = S["intro"]
+    tl["cues"]["title_hit"] = round(theme(music, fx, s["start"]), 3)
+
+    # Dream world: shimmering major harmonies, music-box leitmotif, choir
+    s = S["welt"]
+    each = (s["end"] - s["start"]) / 4
+    progression(music, s["start"], ["D", "G", "Bm", "A"], each, bright=3, gain=0.85, attack=2.0)
+    motif(music, s["start"] + 1.0, (s["end"] - s["start"] - 4) / 13, voice="bell", transpose=12, gain=0.35)
+    sparkles(music, s["start"], s["end"], 2.0, 0.3)
+    for k in range(4):
+        music.add(tone(hz("A5") * [1, 1.5, 1.25, 2][k], 6, 2, 3, 0.02), s["start"] + k * 4.5, 1.0, 0.5 * (-1) ** k)
 
     # City of lanterns: gentle progression and music box
     s = S["stadt"]
@@ -193,8 +285,10 @@ def score(tl):
           "D5", "F5", "Bb5", "A5", "F5", "D5", "C5", "Bb4",
           "C5", "F5", "A5", "G5", "F5", "C5", "A4", "C5",
           "E5", "G5", "C6", "G5", "E5", "D5", "C5", "A4"]
-    melody(music, s["start"] + 0.3, mb, each / 8, 0.28, 2.2)
+    melody(music, s["start"] + 0.3, mb, each / 8, 0.25, 2.2)
     music.add(drone(s["end"] - s["start"], "D1"), s["start"], 0.6)
+    last = [l for l in tl["lines"] if l["scene"] == "stadt"][-1]
+    fx.add(riser(s["end"] - last["start"] + 0.5), last["start"], 0.5)
 
     # Falling star: riser, impact, ringing
     rise = C["impact"] - C["streak"]
@@ -282,27 +376,49 @@ def score(tl):
         t += 0.42
         k += 1
 
-    # The last star: near silence, then warm hope under the mother
+    # The last star: near silence, warm hope under the mother, then the reveal
     s = S["letzter"]
-    music.add(tone(hz("A5"), s["end"] - s["start"] + 1, 2.0, 2.5, 0.035), s["start"], 1.0)
-    mother = [l for l in tl["lines"] if l["who"] == "MUTTER"][0]
-    music.add(pad("D", s["end"] - mother["start"] + 1, bright=3, attack=3.0, release=3.0), mother["start"] - 1.0, 0.75)
-    sparkles(music, mother["start"], s["end"], 0.7, 0.25)
+    mother = [l for l in tl["lines"] if l["who"] == "MUTTER"]
+    sis = C["schwester"]
+    music.add(tone(hz("A5"), sis - s["start"], 2.0, 0.6, 0.035), s["start"], 1.0)
+    music.add(pad("D", sis - mother[0]["start"] + 0.6, bright=3, attack=3.0, release=0.4), mother[0]["start"] - 1.0, 0.75)
+    motif(music, mother[0]["start"] - 0.5, 0.75, voice="bell", transpose=12, gain=0.25, upto=8)
+    fx.add(boom(6, 70, 24, 1.0), sis, 1.3)
+    music.add(drone(s["end"] - sis + 2, "Eb1", grit=1.0), sis, 1.5)
+    music.add(pad("Eb", s["end"] - sis + 1, bright=5, attack=0.05), sis, 0.7)
 
-    # Finale: drums return, epic progression, final hit on the end card
+    # Revelation: drums and riser build relentlessly
     s = S["ende"]
-    last = tl["lines"][-1]
-    each = (last["end"] - s["start"]) / 4
-    progression(music, s["start"], ["Dm", "Bb", "F", "C"], each, bright=8, gain=0.9, attack=0.8)
-    t = s["start"]
-    while t < last["end"] - 0.1:
-        fx.add(drum(60), t, 0.45)
-        fx.add(drum(75), t + 0.36, 0.3)
-        t += 0.72
-    fx.add(boom(6, 100, 28, 1.0), last["end"] + 0.15, 1.3)
-    fx.add(drum(50, 3), last["end"] + 0.15, 1.0)
-    music.add(pad("Dm", 2.6, bright=10, attack=0.05, release=3.5), last["end"] + 0.15, 1.3)
-    melody(music, last["end"] + 0.15, ["D5", "A5", "D6", "F6", "A6"], 0.2, 0.45, 4)
+    music.add(drone(s["end"] - s["start"] + 1, "D1", grit=0.6), s["start"], 1.3)
+    progression(music, s["start"], ["Dm", "Bb"], (s["end"] - s["start"]) / 2, bright=8, gain=0.8, attack=0.5)
+    fx.add(riser(s["end"] - s["start"]), s["start"], 0.9)
+    t, gap = s["start"], 0.5
+    while t < s["end"] - 0.1:
+        fx.add(drum(60), t, 0.5)
+        t += gap
+        gap = max(0.13, gap * 0.9)
+    fx.add(boom(5, 100, 30, 1.0), s["end"], 1.2)
+
+    # Sting: silence, a heartbeat, Seraphine's order
+    s = S["sting"]
+    t = s["start"] + 0.3
+    while t < s["end"]:
+        fx.add(drum(44, 0.8), t, 0.45)
+        fx.add(drum(44, 0.8), t + 0.3, 0.3)
+        t += 1.2
+    music.add(tone(hz("D6") * 1.06, s["end"] - s["start"], 0.5, 0.5, 0.02), s["start"], 1.0)
+
+    # End card: leitmotif reprise, final hit
+    s = S["abspann"]
+    beat = 0.5
+    for i, c in enumerate(["Dm", "Bb"]):
+        music.add(pad(c, 4 * beat, bright=8, attack=0.2), s["start"] + i * 4 * beat, 1.0)
+    end = motif(music, s["start"], beat, gain=1.1, upto=8)
+    ostinato(music, s["start"], end, ["D", "Bb"], beat / 2, 0.5)
+    fx.add(boom(6, 100, 28, 1.0), s["start"], 1.0)
+    fx.add(boom(6, 110, 26, 1.0), end, 1.3)
+    music.add(pad("Dm", 2.0, bright=10, attack=0.03, release=3.0), end, 1.3)
+    tl["cues"]["end_hit"] = round(end, 3)
     return music, fx
 
 
@@ -323,6 +439,7 @@ def main(out_dir):
     tl = json.load(open(os.path.join(out_dir, "timeline.json")))
     voice = np.load(os.path.join(out_dir, "voice.npy"))
     music, fx = score(tl)
+    json.dump(tl, open(os.path.join(out_dir, "timeline.json"), "w"), ensure_ascii=False, indent=1)
     n = music.buf.shape[1]
     voice = np.pad(voice, (0, max(0, n - len(voice))))[:n]
 
@@ -330,11 +447,11 @@ def main(out_dir):
     e = np.abs(voice)
     k = int(0.25 * SR)
     e = np.convolve(e, np.ones(k) / k, mode="same")
-    duck = 1 - 0.55 * np.clip(e * 14, 0, 1)
+    duck = 1 - 0.65 * np.clip(e * 14, 0, 1)
     m = reverb(music.buf, 3.2, 0.45, 1) * duck
     f = reverb(fx.buf, 2.2, 0.25, 2) * (1 - 0.3 * np.clip(e * 14, 0, 1))
     v = np.vstack([voice, voice])
-    v = reverb(v, 1.4, 0.10, 3)
+    v = reverb(v, 1.2, 0.06, 3)
     mix = v * 1.0 + m * 0.75 + f * 0.6
     mix = mix[:, :int((tl["duration"] + 0.2) * SR)]
     mix = np.tanh(mix * 1.1) / np.tanh(1.1)
