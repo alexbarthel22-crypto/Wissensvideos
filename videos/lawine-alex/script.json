@@ -14,11 +14,13 @@
    "lines": [
     {
      "id": "L1",
-     "text": "Eine Lawine begräbt die ganze Welt. / Nur einer überlebt: du."
+     "text": "Eine Lawine begräbt die ganze Welt. / Nur einer überlebt: du.",
+     "speed": 0.84
     },
     {
      "id": "L1b",
-     "text": "*r:Jedes *r:Land. / *r:Jede *r:Stadt. / *r:Jeder *r:Mensch – / außer dir."
+     "text": "*r:Jedes *r:Land. / *r:Jede *r:Stadt. / *r:Jeder *r:Mensch, / außer dir.",
+     "speed": 0.84
     },
     {
      "id": "L2",
@@ -27,11 +29,13 @@
       "ALEX",
       "30 Jahre",
       "DER LETZTE MENSCH"
-     ]
+     ],
+     "speed": 0.84
     },
     {
      "id": "L3",
-     "text": "Was du in den nächsten Stunden tust, / entscheidet über *r:alles."
+     "text": "Was du in den nächsten Stunden tust, / entscheidet über *r:alles.",
+     "speed": 0.84
     }
    ],
    "sfx": [
@@ -149,7 +153,7 @@
    "lines": [
     {
      "id": "L6",
-     "text": "Regel eins: *g:Bleib *g:ruhig – / und check, ob du verletzt bist.",
+     "text": "Regel eins: *g:Bleib *g:ruhig, / und check, ob du verletzt bist.",
      "stat": [
       "VERLETZUNGEN",
       "Keine",
@@ -216,7 +220,7 @@
     },
     {
      "id": "L10",
-     "text": "Also: *g:Schicht *g:für *g:Schicht anziehen, / *g:nicht *g:schwitzen – / und raus aus dem Wind.",
+     "text": "Also: *g:Schicht *g:für *g:Schicht anziehen, / *g:nicht *g:schwitzen, / und raus aus dem Wind.",
      "stat": [
       "KLEIDUNG",
       "3 Schichten",
@@ -260,7 +264,7 @@
     },
     {
      "id": "L12",
-     "text": "Regel drei: *y:Bau *y:dir *y:eine *y:Schneehöhle. / Schnee isoliert. / Drinnen bleibt es um *g:null *g:Grad – / draußen sind es *r:minus *r:zwanzig.",
+     "text": "Regel drei: *y:Bau *y:dir *y:eine *y:Schneehöhle. / Schnee isoliert. / Drinnen bleibt es um *g:null *g:Grad, / draußen sind es *r:minus *r:zwanzig.",
      "stat": [
       "IN DER HÖHLE",
       "0 °C",
@@ -309,7 +313,7 @@
     },
     {
      "id": "L14",
-     "text": "Schmelz ihn lieber – / über einer Kerze, / einem Gaskocher, / irgendwas."
+     "text": "Schmelz ihn lieber, / über einer Kerze, / einem Gaskocher, / irgendwas."
     },
     {
      "id": "L15",
@@ -450,7 +454,7 @@
    "lines": [
     {
      "id": "L21",
-     "text": "Wenn *y:Teil *y:2 kommen soll – / *p:folg *p:mir.",
+     "text": "Wenn *y:Teil *y:2 kommen soll, / *p:folg *p:mir.",
      "pause": 0.5
     },
     {

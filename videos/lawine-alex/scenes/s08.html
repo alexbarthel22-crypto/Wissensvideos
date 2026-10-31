@@ -20,13 +20,20 @@
       /*__CUE_HELPERS__*/
 /*__COMMON_JS__*/
       const tl = gsap.timeline({ paused: true });
-      const sv8 = el("svg", { class: "full", viewBox: "0 0 1080 1920" }, document.querySelector("#s08-stage")); const sf8 = snowfall(sv8, 55, 61, -300, 1400); fall(tl, sf8, C.__dur);
+      // Schneesturm hinter dem Text: dicht, schräg, gedämpft
+      const st8 = document.querySelector("#s08-stage"), sv8 = el("svg", { class: "full", viewBox: "0 0 1080 1920" }); st8.insertBefore(sv8, st8.firstChild);
+      const storm = el("g", { opacity: 0.42, "data-layout-allow-overlap": "" }, sv8), rs = rng(88);
+      for (let i = 0; i < 18; i++) { const y0 = rs() * 1920, ln = el("path", { d: `M-200 ${y0} l260 ${60 + rs() * 40}`, stroke: "#dfe9f5", "stroke-width": 2 + rs() * 3, opacity: 0.35, "stroke-linecap": "round" }, storm);
+        tl.fromTo(ln, { x: -300 }, { x: 1500, duration: 0.9 + rs() * 0.6, repeat: Math.ceil(C.__dur / 0.9), ease: "none" }, rs() * 0.8); }
+      for (let i = 0; i < 160; i++) { const f = el("circle", { cx: rs() * 1300 - 200, cy: rs() * 1920 - 400, r: 2 + rs() * 5, fill: "#ffffff", opacity: 0.4 + rs() * 0.5 }, storm), d = 1.6 + rs() * 1.4;
+        tl.fromTo(f, { x: 0, y: 0 }, { x: 520, y: 900, duration: d, repeat: Math.ceil(C.__dur / d), ease: "none" }, -rs() * d); }
       const fo = at("L21", "folg"), l22 = line("L22")[0];
       tl.fromTo("#s08-t", { opacity: 0, scale: 1.3 }, { opacity: 1, scale: 1, duration: 0.6, ease: "power3.out" }, 0.1);
       tl.fromTo("#s08-f", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.4, ease: "back.out(2)" }, fo - 0.1);
       tl.to("#s08-f", { scale: 1.06, duration: 0.3, yoyo: true, repeat: 13, ease: "sine.inOut" }, fo + 0.4);
       tl.fromTo("#s08-s", { opacity: 0 }, { opacity: 1, duration: 0.5 }, l22);
-      tl.to("#s08-t", { opacity: 0.6, duration: 0.08, repeat: 5, yoyo: true }, l22 + 0.5);
+      tl.fromTo("#s08-t", { opacity: 1 }, { opacity: 0.55, duration: 0.08, repeat: 7, yoyo: true, immediateRender: false }, l22 + 0.5);
+      tl.set("#s08-t", { opacity: 1 }, l22 + 1.2);
       window.__timelines["s08"] = tl;
     })();
   </script>
