@@ -2,7 +2,7 @@
 
 **Beschreibung (zum Kopieren):**
 
-Hast du dich schon mal in einen Stern verliebt? ⭐❤️ Ich schon. Leider.
+Hilfe! Ich habe mich in einen Stern verliebt! ❤️⭐
 Folge 1/20 von STERNENFALL 🌙 Valdoria – eine Stadt über den Wolken, in der jeder fallende Stern dem Orden gehört … und wer ihn berührt, stirbt.
 Würdest du ihn anfassen? 👇 Ja oder nein?
 Teil 2 kommt bald – folg mir, damit du ihn nicht verpasst.

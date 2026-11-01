@@ -2333,8 +2333,41 @@ function glitter(cx, cy, w, h, t, a, n = 14, seed = 0) {
   ctx.restore();
 }
 
+// clean, glossy emoji-style icons (drawn as vectors, in the style of modern phone emojis)
+function glossyHeart(x, y, r) {
+  ctx.save(); ctx.translate(x, y);
+  const path = () => { ctx.beginPath(); ctx.moveTo(0, r * 0.95); ctx.bezierCurveTo(-r * 1.25, r * 0.15, -r * 1.05, -r * 0.95, -r * 0.5, -r * 0.95); ctx.bezierCurveTo(-r * 0.2, -r * 0.95, 0, -r * 0.72, 0, -r * 0.5); ctx.bezierCurveTo(0, -r * 0.72, r * 0.2, -r * 0.95, r * 0.5, -r * 0.95); ctx.bezierCurveTo(r * 1.05, -r * 0.95, r * 1.25, r * 0.15, 0, r * 0.95); ctx.closePath(); };
+  ctx.shadowColor = 'rgba(255,40,80,0.75)'; ctx.shadowBlur = r * 0.6;
+  const g = ctx.createRadialGradient(-r * 0.35, -r * 0.45, r * 0.1, 0, 0, r * 1.25);
+  g.addColorStop(0, '#ff8a96'); g.addColorStop(0.45, '#ff2d4a'); g.addColorStop(1, '#c4001f');
+  path(); ctx.fillStyle = g; ctx.fill(); ctx.shadowBlur = 0;
+  // glossy highlight
+  const h = ctx.createLinearGradient(0, -r, 0, 0);
+  h.addColorStop(0, 'rgba(255,255,255,0.75)'); h.addColorStop(1, 'rgba(255,255,255,0)');
+  ctx.fillStyle = h; ctx.beginPath(); ctx.ellipse(-r * 0.48, -r * 0.5, r * 0.28, r * 0.18, -0.6, 0, 7); ctx.fill();
+  ctx.restore();
+}
+function glossyStar(x, y, r, rot = 0) {
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot);
+  const path = () => { ctx.beginPath(); for (let i = 0; i < 10; i++) { const a = -Math.PI / 2 + i * Math.PI / 5, rr = i % 2 ? r * 0.48 : r; ctx.lineTo(Math.cos(a) * rr, Math.sin(a) * rr); } ctx.closePath(); };
+  ctx.lineJoin = 'round'; ctx.shadowColor = 'rgba(255,190,40,0.8)'; ctx.shadowBlur = r * 0.6;
+  const g = ctx.createRadialGradient(-r * 0.2, -r * 0.35, r * 0.1, 0, 0, r * 1.1);
+  g.addColorStop(0, '#fff3a6'); g.addColorStop(0.5, '#ffd23a'); g.addColorStop(1, '#f59e00');
+  path(); ctx.fillStyle = g; ctx.strokeStyle = g; ctx.lineWidth = r * 0.16; ctx.fill(); ctx.stroke(); ctx.shadowBlur = 0;
+  const h = ctx.createLinearGradient(0, -r, 0, 0);
+  h.addColorStop(0, 'rgba(255,255,255,0.7)'); h.addColorStop(1, 'rgba(255,255,255,0)');
+  ctx.fillStyle = h; ctx.beginPath(); ctx.ellipse(-r * 0.12, -r * 0.42, r * 0.16, r * 0.3, 0.3, 0, 7); ctx.fill();
+  ctx.restore();
+}
+
 // cold open: big, centred text that talks straight to the viewer
 function hookText(l, t, a) {
+  if (l.hook_alarm && t < l.end + 0.3) {
+    const pulse = 0.5 + 0.5 * Math.sin(t * Math.PI / 0.32);
+    const rv = ctx.createRadialGradient(540, 960, 420, 540, 960, 1150);
+    rv.addColorStop(0, 'rgba(255,0,30,0)'); rv.addColorStop(1, `rgba(255,0,30,${0.35 * pulse})`);
+    ctx.fillStyle = rv; ctx.fillRect(0, 0, W, H);
+  }
   ctx.save(); ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
   const bg = ctx.createRadialGradient(540, 900, 60, 540, 900, 760);
   bg.addColorStop(0, `rgba(0,0,0,${0.55 * a})`); bg.addColorStop(1, 'rgba(0,0,0,0)');
@@ -2362,7 +2395,25 @@ function hookText(l, t, a) {
       const phase = Math.floor(t / 0.35) % 2, pulse = 1 + 0.015 * Math.sin(t * 4);
       ctx.save(); ctx.translate(0, -90 + 30 * (1 - p)); ctx.scale(pulse, pulse);
       ctx.textBaseline = 'middle'; ctx.lineJoin = 'round';
+      if (l.hook_alarm) ctx.translate(0, size * 1.05);
       const lh = size * 1.12, y0 = -(hl.length - 1) * lh / 2;
+      // alarm: blinking red "HILFE!" above the sentence, emoji-style heart and star above that
+      if (l.hook_alarm) {
+        const blinkOn = Math.floor(t / 0.16) % 2 === 0 || t > l.end + 0.2;
+        ctx.globalAlpha = blinkOn ? 1 : 0.8;
+        ctx.save(); ctx.font = `700 ${Math.round(size * 1.45)}px Cinzel`;
+        ctx.strokeStyle = 'rgba(20,0,6,0.95)'; ctx.lineWidth = 10; ctx.strokeText(l.hook_alarm, 0, y0 - lh * 1.35);
+        const rg = ctx.createLinearGradient(0, y0 - lh * 2, 0, y0 - lh * 0.8);
+        rg.addColorStop(0, blinkOn ? '#ffb3bd' : '#7a0d1c'); rg.addColorStop(1, blinkOn ? '#ff1e3c' : '#4a0010');
+        ctx.shadowColor = blinkOn ? 'rgba(255,20,50,1)' : 'rgba(255,20,50,0.2)'; ctx.shadowBlur = blinkOn ? 70 : 10;
+        ctx.fillStyle = rg; ctx.fillText(l.hook_alarm, 0, y0 - lh * 1.35);
+        ctx.restore();
+        if (l.hook_icons) {
+          const beat = 1 + 0.12 * Math.max(0, Math.sin(t * 7.5)) ** 4 + 0.06 * Math.max(0, Math.sin(t * 7.5 - 1.2)) ** 4;
+          glossyHeart(-95, y0 - lh * 2.75, 62 * beat);
+          glossyStar(95, y0 - lh * 2.75, 66 * (1 + 0.05 * Math.sin(t * 3)), 0.12 * Math.sin(t * 1.5));
+        }
+      }
       const BLUE = ['#d6ecff', '#3f8cff'], RED = ['#ffd2d2', '#ff2e4d'];
       hl.forEach((h, i) => {
         const y = y0 + i * lh;

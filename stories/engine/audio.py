@@ -463,6 +463,11 @@ def score(tl):
             fx.add(boom(5, 100, 28, 0.8), 0.0, 0.8)
             fx.add(cymbal(3), 0.0, 0.5)
             fx.add(tone(hz("A6"), 2.5, 0.01, 2.2, 0.04), 0.03, 1.0, 0.3)
+        if "alarm" in C:
+            # short two-tone alarm under "Hilfe!"
+            for i in range(6):
+                fx.add(tone(hz("A5") if i % 2 == 0 else hz("E5"), 0.16, 0.005, 0.06, 0.1), C["alarm"] + i * 0.18, 1.0, 0.25 * (-1) ** i)
+            fx.add(boom(4, 100, 30, 0.7), C["alarm"], 0.7)
         if "frage" in C:
             fx.add(bell("A5", 2.0, 0.8), C["frage"], 0.3, -0.3)
             fx.add(bell("E6", 2.0, 0.8), C["frage"] + 0.12, 0.25, 0.3)
