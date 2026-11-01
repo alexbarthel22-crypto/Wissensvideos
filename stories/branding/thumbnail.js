@@ -88,7 +88,10 @@ const name = path.basename(storyPath, '.json');
     c.shadowColor = 'rgba(0,0,0,0.95)'; c.shadowBlur = 18;
     const tg = c.createLinearGradient(0, 1500, 0, 1660); tg.addColorStop(0, '#fff6e6'); tg.addColorStop(1, '#ffd79a');
     c.fillStyle = tg;
-    wrap(st.titel || '', 940).forEach((ln, i) => c.fillText(ln, 540, 1580 + i * 92));
+    // keep the title on one line when possible (shrink before wrapping)
+    let ts = 86; c.font = `italic 700 ${ts}px "Cormorant Garamond"`;
+    while (c.measureText(st.titel || '').width > 960 && ts > 66) { ts -= 2; c.font = `italic 700 ${ts}px "Cormorant Garamond"`; }
+    wrap(st.titel || '', 960).forEach((ln, i) => c.fillText(ln, 540, 1580 + i * (ts + 6)));
     c.restore();
     return document.getElementById('c').toDataURL('image/png');
   }, story);
