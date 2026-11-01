@@ -39,8 +39,8 @@
     #s01-eb { left: 0; width: 760px; top: 720px; text-align: center; font: 900 110px Inter, sans-serif; color: #ff3b55; opacity: 0; text-shadow: 0 0 40px rgba(255,59,85,.9); }
     #s01-flash { left: 0; top: 0; width: 1080px; height: 1920px; background: #fff; opacity: 0; }
   </style>
-  <div id="root" data-composition-id="s01" data-start="0" data-duration="14.243" data-width="1080" data-height="1920">
-    <div id="s01-stage" class="clip stage" data-start="0" data-duration="14.243" data-track-index="0">
+  <div id="root" data-composition-id="s01" data-start="0" data-duration="14.350" data-width="1080" data-height="1920">
+    <div id="s01-stage" class="clip stage" data-start="0" data-duration="14.350" data-track-index="0">
       <svg id="s01-svg" class="full" viewBox="0 0 1080 1920"></svg>
       <div id="s01-ad" class="abs">📢 ACHTUNG, DURCHSAGE!</div>
       <div id="s01-t" class="abs" data-layout-allow-overlap><div class="a">NO NUT</div><div class="b">NOVEMBER<s></s></div></div>
@@ -58,7 +58,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 14.243, "L0": [1.1, 2.39], "L0.words": [["achtung", 1.1, 1.54], ["durchsage", 1.81, 2.39]], "L1": [2.76, 4.59], "L1.words": [["der", 2.76, 2.927], ["nonutnovember", 2.927, 3.753], ["wurde", 3.753, 4.082], ["verlängert", 4.082, 4.59]], "L2": [4.96, 8.96], "L2.words": [["auf", 4.96, 5.129], ["ein", 5.129, 5.298], ["ganzes", 5.298, 5.635], ["jahr", 5.635, 5.81], ["365", 6.36, 7.45], ["tage", 7.45, 7.744], ["kein", 7.744, 7.903], ["kronjuwelenkatapult", 7.903, 8.96]], "L3": [9.18, 11.123], "L3.words": [["georg", 9.18, 9.51], ["18", 9.82, 10.338], ["zieht", 10.338, 10.606], ["das", 10.606, 10.856], ["durch", 10.856, 11.123]], "L3b": [11.343, 14.063], "L3b.words": [["und", 11.343, 11.515], ["am", 11.515, 11.681], ["ende", 11.681, 12.012], ["bebt", 12.012, 12.19], ["die", 12.19, 12.362], ["erde", 12.362, 12.693], ["wortwörtlich", 13.243, 14.063]]};
+      const C = {"__dur": 14.35, "L0": [1.1, 2.39], "L0.words": [["achtung", 1.1, 1.54], ["durchsage", 1.81, 2.39]], "L1": [2.76, 3.92], "L1.words": [["nonutnovember", 2.76, 3.92]], "L1b": [4.14, 5.05], "L1b.words": [["wurde", 4.14, 4.498], ["verlängert", 4.498, 5.05]], "L2": [5.42, 9.42], "L2.words": [["auf", 5.42, 5.589], ["ein", 5.589, 5.758], ["ganzes", 5.758, 6.095], ["jahr", 6.095, 6.27], ["365", 6.82, 7.91], ["tage", 7.91, 8.204], ["kein", 8.204, 8.363], ["kronjuwelenkatapult", 8.363, 9.42]], "L3": [9.64, 11.58], "L3.words": [["georg", 9.64, 10.0], ["18", 10.34, 10.833], ["zieht", 10.833, 11.087], ["das", 11.087, 11.325], ["durch", 11.325, 11.58]], "L3b": [11.8, 14.17], "L3b.words": [["und", 11.8, 11.936], ["am", 11.936, 12.068], ["ende", 12.068, 12.33], ["bebt", 12.33, 12.471], ["die", 12.471, 12.607], ["erde", 12.607, 12.87], ["wortwörtlich", 13.42, 14.17]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -158,15 +158,16 @@
       function snowLayer(p, y, c = "#eef4fb") { return el("path", { d: `M-60 ${y} q90 -30 180 0 t180 0 t180 0 t180 0 t180 0 t180 0 t180 0 V2000 H-60Z`, fill: c }, p); }
       // ---- No Nut November: Finn (18), Zimmer, Handy ----
       // Finn: Fußpunkt x, y; gibt {g, aL, aR, head} zurück. Arme drehen um Schulter (lokal -36/36, -128)
-      function finn(p, x, y, s = 1, o = {}) { const HC = o.hood || "#ff6a3d", AC = o.arm || "#e5562e", CC = o.cap || "#2f6fe0"; const g = el("g", {}, p); gsap.set(g, { x, y, scale: s, transformOrigin: "0 0" });
+      function finn(p, x, y, s = 1, o = {}) { if (o.swim) o = Object.assign({ hood: "#f2cba5", arm: "#e9bf98", pants: "#f2cba5", trunks: "#ff4fb0" }, o); const HC = o.hood || "#ff6a3d", AC = o.arm || "#e5562e", CC = o.cap || "#2f6fe0", PC = o.pants || "#3c4357"; const g = el("g", {}, p); gsap.set(g, { x, y, scale: s, transformOrigin: "0 0" });
         // Jugendlicher: weite Jogginghose, dicke Sneaker, Oversize-Hoodie, großer Kopf, Cap verkehrt rum, Kopfhörer um den Hals
-        el("path", { d: "M-19 -60 H-1 L-3 -6 H-17Z", fill: "#3c4357" }, g); el("path", { d: "M1 -60 H19 L17 -6 H3Z", fill: "#3c4357" }, g);
+        el("path", { d: "M-19 -60 H-1 L-3 -6 H-17Z", fill: PC }, g); el("path", { d: "M1 -60 H19 L17 -6 H3Z", fill: PC }, g);
+        if (o.trunks) { el("path", { d: "M-31 -62 H31 L28 -26 H3 L0 -40 L-3 -26 H-28Z", fill: o.trunks }, g); for (let k = 0; k < 3; k++) el("circle", { cx: -18 + k * 18, cy: -46, r: 4, fill: "#ffd43b" }, g); }
         el("rect", { x: -26, y: -10, width: 26, height: 13, rx: 6, fill: "#ffffff" }, g); el("rect", { x: 0, y: -10, width: 26, height: 13, rx: 6, fill: "#ffffff" }, g);
         el("rect", { x: -26, y: -1, width: 26, height: 4, rx: 2, fill: "#ff4fb0" }, g); el("rect", { x: 0, y: -1, width: 26, height: 4, rx: 2, fill: "#ff4fb0" }, g);
         const aL = el("rect", { x: -46, y: -130, width: 16, height: 62, rx: 8, fill: AC }, g), aR = el("g", {}, g); el("rect", { x: 30, y: -130, width: 16, height: 62, rx: 8, fill: AC }, aR);
         if (o.can) { el("rect", { x: 31, y: -86, width: 15, height: 28, rx: 3, fill: "#2a4fa8" }, aR); el("rect", { x: 31, y: -86, width: 7.5, height: 28, fill: "#c9d2e0" }, aR); el("circle", { cx: 38.5, cy: -73, r: 3.5, fill: "#e0202f" }, aR); }
         el("path", { d: "M-36 -126 Q-37 -136 -26 -137 L26 -137 Q37 -136 36 -126 L30 -54 L-30 -54Z", fill: HC }, g);
-        el("path", { d: "M-16 -96 H16 V-78 H-16Z", fill: AC }, g); if (o.label !== "") txt(g, 0, -106, o.label || "NNN", 11, "#fff", { "data-layout-allow-overlap": "" });
+        if (!o.swim) el("path", { d: "M-16 -96 H16 V-78 H-16Z", fill: AC }, g); else { el("path", { d: "M-6 -112 Q0 -106 6 -112", stroke: "#d9a77a", "stroke-width": 2, fill: "none" }, g); el("line", { x1: 0, y1: -100, x2: 0, y2: -72, stroke: "#d9a77a", "stroke-width": 2 }, g); } if (o.label !== "") txt(g, 0, -106, o.label || "NNN", 11, "#fff", { "data-layout-allow-overlap": "" });
         if (o.tee) el("path", { d: "M-12 -137 L0 -118 L12 -137Z", fill: o.tee }, g);
         if (o.chain) el("path", { d: "M-11 -136 Q0 -112 11 -136", stroke: "#ffd43b", "stroke-width": 3, fill: "none" }, g);
         if (!o.noPhones) { el("path", { d: "M-22 -138 Q0 -122 22 -138", stroke: "#1b1d2b", "stroke-width": 6, fill: "none" }, g);
@@ -268,7 +269,7 @@
       el("rect", { x: 0, y: 1130, width: 1080, height: 790, fill: "#4a4f63" }, sv); el("rect", { x: 0, y: 1130, width: 1080, height: 22, fill: "#ffd43b" }, sv);
       const G = finn(sv, 860, 1150, 2.1, { hood: "#1d1f2b", arm: "#15161f", undercut: "#f0d060", noPhones: true, tee: "#ffffff", chain: true, can: true, label: "" });
       const cs = el("g", {}, sv); el("rect", { x: 950, y: 1060, width: 90, height: 80, rx: 10, fill: "#7a4ad6" }, cs);
-      const ad = at("L0", "Achtung"), ve = at("L1", "verlängert"), ja = at("L2", "Jahr"), d3 = at("L2", "365"), ka = at("L2", "Kronjuwelen"), l3 = line("L3")[0], ge = at("L3", "Georg"), be = at("L3b", "bebt");
+      const ad = at("L0", "Achtung"), ve = at("L1b", "verlängert"), ja = at("L2", "Jahr"), d3 = at("L2", "365"), ka = at("L2", "Kronjuwelen"), l3 = line("L3")[0], ge = at("L3", "Georg"), be = at("L3b", "bebt");
       tl.to("#s01-ad", { scale: 1.08, duration: 0.18, yoyo: true, repeat: 13 }, 0);
       tl.to("#s01-ad", { backgroundColor: "#ff4b5a", boxShadow: "0 0 100px rgba(255,45,75,1)", duration: 0.18, yoyo: true, repeat: 13 }, 0);
       tl.fromTo("#s01-flash", { opacity: 0.6 }, { opacity: 0, duration: 0.3, immediateRender: false }, ad - 0.05);

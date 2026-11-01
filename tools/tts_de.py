@@ -102,7 +102,7 @@ for i, (t, ls) in enumerate(zip(job["texts"], job["scales"])):
     return out
 
 
-def synth_google(texts, voice, scales, prons=None):
+def synth_google(texts, voice, scales, prons=None, voices=None):
     """Google Cloud TTS (Chirp 3 HD): echte, natürliche Stimmen. Schlüssel aus $GOOGLE_TTS_API_KEY.
     prons: {"Relaxo": "ʁeˈlakso"} – Aussprache in IPA für Namen, die die Stimme falsch liest."""
     import base64
@@ -112,12 +112,13 @@ def synth_google(texts, voice, scales, prons=None):
     if not key:
         raise SystemExit("GOOGLE_TTS_API_KEY fehlt (in den Umgebungs-Einstellungen hinterlegen).")
     out = []
-    for t, ls in zip(texts, scales):
+    for i, (t, ls) in enumerate(zip(texts, scales)):
+        v = (voices[i] if voices and voices[i] else voice)  # Zeile mit eigener Stimme, z. B. englischer Begriff
         inp = {"text": t}
         used = [{"phrase": w, "phoneticEncoding": "PHONETIC_ENCODING_IPA", "pronunciation": ipa} for w, ipa in (prons or {}).items() if w in t]
         if used:
             inp["customPronunciations"] = {"pronunciations": used}
-        body = {"input": inp, "voice": {"languageCode": "de-DE", "name": voice},
+        body = {"input": inp, "voice": {"languageCode": v[:5], "name": v},
                 "audioConfig": {"audioEncoding": "LINEAR16", "sampleRateHertz": 24000, "speakingRate": round(1 / ls, 3)}}
         req = urllib.request.Request(
             f"https://texttospeech.googleapis.com/v1/text:synthesize?key={key}",
@@ -263,14 +264,14 @@ def main():
             words = parse_tokens(line["text"])
             spoken = " ".join(w["spoken"] for w in words)
             lines.append({"scene": scene["id"], "id": line["id"], "words": words, "spoken": spoken,
-                          "new_scene": li == 0 and si > 0, "pause": line.get("pause", 0.0), "gain": line.get("gain", 1.0),
+                          "new_scene": li == 0 and si > 0, "pause": line.get("pause", 0.0), "gain": line.get("gain", 1.0), "voice": line.get("voice"),
                           "scale": round(1.0 / (args.speed * line.get("speed", 1.0)), 3)})
 
     texts = [l["spoken"] for l in lines]
     scales = [l["scale"] for l in lines]
     if args.backend == "google":
         raw = synth_google(texts, args.voice if args.voice.startswith("de-DE") else "de-DE-Chirp3-HD-Puck", scales,
-                           script.get("pronunciations"))
+                           script.get("pronunciations"), [l.get("voice") for l in lines])
     elif args.backend == "piper":
         raw = synth_piper(texts, args.voice_dir, scales, args.noise)
     else:
@@ -312,7 +313,7 @@ def main():
                     "-ar", str(SR), out_dir / "narration.wav"], check=True)
     raw_path.unlink()
     for l in lines:
-        for k in ("new_scene", "pause", "scale", "gain"):
+        for k in ("new_scene", "pause", "scale", "gain", "voice"):
             l.pop(k)
     (out_dir / "timings.json").write_text(json.dumps({"duration": round(len(audio) / SR, 3), "lines": lines},
                                                      ensure_ascii=False, indent=1))

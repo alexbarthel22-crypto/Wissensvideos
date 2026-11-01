@@ -90,7 +90,7 @@ SVG + '''
       el("rect", { x: 0, y: 1130, width: 1080, height: 790, fill: "#4a4f63" }, sv); el("rect", { x: 0, y: 1130, width: 1080, height: 22, fill: "#ffd43b" }, sv);
       const G = finn(sv, 860, 1150, 2.1, ''' + GEO + ''');
       const cs = el("g", {}, sv); el("rect", { x: 950, y: 1060, width: 90, height: 80, rx: 10, fill: "#7a4ad6" }, cs);
-      const ad = at("L0", "Achtung"), ve = at("L1", "verlängert"), ja = at("L2", "Jahr"), d3 = at("L2", "365"), ka = at("L2", "Kronjuwelen"), l3 = line("L3")[0], ge = at("L3", "Georg"), be = at("L3b", "bebt");
+      const ad = at("L0", "Achtung"), ve = at("L1b", "verlängert"), ja = at("L2", "Jahr"), d3 = at("L2", "365"), ka = at("L2", "Kronjuwelen"), l3 = line("L3")[0], ge = at("L3", "Georg"), be = at("L3b", "bebt");
       tl.to("#s01-ad", { scale: 1.08, duration: 0.18, yoyo: true, repeat: 13 }, 0);
       tl.to("#s01-ad", { backgroundColor: "#ff4b5a", boxShadow: "0 0 100px rgba(255,45,75,1)", duration: 0.18, yoyo: true, repeat: 13 }, 0);
       tl.fromTo("#s01-flash", { opacity: 0.6 }, { opacity: 0, duration: 0.3, immediateRender: false }, ad - 0.05);
@@ -209,7 +209,7 @@ S['s05'] = (CHIP, SVG + '''
       el("rect", { x: 0, y: 900, width: 1080, height: 1020, fill: "#f2dca6" }, sv);
       [[140, "#ff4fb0"], [760, "#39e27a"]].forEach(([x, c]) => { el("rect", { x: x + 46, y: 760, width: 8, height: 260, fill: "#8a6a44" }, sv); el("path", { d: `M${x - 70} 790 Q${x + 50} 680 ${x + 170} 790Z`, fill: c }, sv);
         const t = el("rect", { x: x - 40, y: 1010, width: 180, height: 60, rx: 10, fill: c, opacity: 0.6 }, sv); });
-      const G = finn(sv, 540, 1150, 2.3, ''' + GEO + ''');
+      const G = finn(sv, 540, 1150, 2.3, { swim: true, undercut: "#f0d060", noPhones: true, chain: true, can: true, label: "" });
       const mound = el("path", { d: "M260 1300 Q540 720 820 1300Z", fill: "#dcbd78", opacity: 0 }, sv);
       const l13 = line("L13")[0], bu = at("L13", "buddelt"), hu = at("L13", "Hüfte"), lu = at("L14", "Lust");
       waves.forEach((w) => tl.to(w, { x: -120, duration: 2, repeat: Math.ceil(C.__dur / 2), ease: "none" }, 0));

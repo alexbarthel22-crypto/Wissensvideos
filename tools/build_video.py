@@ -143,8 +143,10 @@ def build_captions(project, timings, windows, total, big=False, cin=False, nocap
             continue
         if cin:  # Kino-Stil wie Referenz A: ganzer Satz in Serifenschrift, Schlüsselwörter farbig, sanftes Ein-/Ausblenden
             spans = [f'<span class="c{" k-" + w["color"] if w["color"] else ""}"{" style=" + chr(34) + "color:" + CIN_COLORS[w["color"]] + chr(34) if w["color"] else ""}>{esc(w["display"])}</span>' for w in g["words"]]
+            bc = json.loads((project / "script.json").read_text()).get("bigcap", {}).get(g.get("line"))  # einzelne Zeilen extra groß (Hook)
+            st = f' style="font-size:{bc}px;line-height:1.02;font-weight:700"' if bc else ""
             rows.append(f'    <div id="cg{gi}" class="clip grp" data-start="{g["start"]:.3f}" data-duration="{round(g["end"] - g["start"], 3)}" data-track-index="{gi % 2}">'
-                        f'<div id="cgi{gi}" class="inner">{" ".join(spans)}</div></div>')
+                        f'<div id="cgi{gi}" class="inner"{st}>{" ".join(spans)}</div></div>')
             js.append(f'tl.fromTo("#cgi{gi}", {{ opacity: 0, y: 12 }}, {{ opacity: 1, y: 0, duration: 0.25, ease: "power2.out" }}, {g["start"]:.3f});')
             js.append(f'tl.to("#cgi{gi}", {{ opacity: 0, duration: 0.12, ease: "power2.in" }}, {g["end"] - 0.12:.3f});')
             js.append(f'tl.set("#cgi{gi}", {{ opacity: 0 }}, {g["end"]:.3f});')

@@ -26,8 +26,8 @@
     #s07-l h3 { font: 700 30px Inter, sans-serif; letter-spacing: .14em; color: #7a5a2a; margin: 0 0 14px; } #s07-l b { color: #b0262f; } #s07-l u { text-decoration: none; color: #1f7a3a; font-weight: 700; }
     #s07-l .seal { position: absolute; right: 46px; bottom: 34px; width: 110px; height: 110px; border-radius: 50%; background: #b0262f; color: #f6efdc; font: 900 52px/110px "EB Garamond", serif; text-align: center; }
   </style>
-  <div id="root" data-composition-id="s07" data-start="0" data-duration="8.936" data-width="1080" data-height="1920">
-    <div id="s07-stage" class="clip stage" data-start="0" data-duration="8.936" data-track-index="0">
+  <div id="root" data-composition-id="s07" data-start="0" data-duration="9.430" data-width="1080" data-height="1920">
+    <div id="s07-stage" class="clip stage" data-start="0" data-duration="9.430" data-track-index="0">
       <svg id="s07-svg" class="full" viewBox="0 0 1080 1920"></svg>
       <div id="s07-l" class="abs"><h3>KLOSTER ST. BENNO · BAYERN</h3>Lieber Georg,<br><span id="s07-a">mit Stolz haben wir gehört, dass du seit fast einem Jahr</span> <b id="s07-b">nicht mehr den Pilz gepflückt hast.</b><br><br><u id="s07-c">Wir hätten da eine Stelle frei.</u><div class="seal">✝</div></div>
       <div class="vig"></div>
@@ -36,7 +36,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 8.936, "L17": [0.2, 2.25], "L17.words": [["oktober", 0.2, 0.68], ["ein", 1.23, 1.43], ["brief", 1.43, 1.644], ["vom", 1.644, 1.843], ["kloster", 1.843, 2.25]], "L18": [2.47, 7.02], "L18.words": [["lieber", 2.47, 2.822], ["georg", 2.822, 3.01], ["mit", 3.37, 3.508], ["stolz", 3.508, 3.656], ["haben", 3.656, 3.926], ["wir", 3.926, 4.064], ["gehört", 4.064, 4.34], ["dass", 4.53, 4.71], ["du", 4.71, 4.877], ["seit", 4.877, 5.056], ["fast", 5.056, 5.236], ["einem", 5.236, 5.577], ["jahr", 5.577, 5.756], ["nicht", 5.756, 5.942], ["mehr", 5.942, 6.122], ["den", 6.122, 6.295], ["pilz", 6.295, 6.475], ["gepflückt", 6.475, 6.84], ["hast", 6.84, 7.02]], "L18c": [7.39, 8.756], "L18c.words": [["wir", 7.39, 7.543], ["hätten", 7.543, 7.849], ["da", 7.849, 7.997], ["eine", 7.997, 8.292], ["stelle", 8.292, 8.598], ["frei", 8.598, 8.756]]};
+      const C = {"__dur": 9.43, "L17": [0.2, 2.48], "L17.words": [["oktober", 0.2, 0.77], ["ein", 1.32, 1.547], ["brief", 1.547, 1.79], ["vom", 1.79, 2.018], ["kloster", 2.018, 2.48]], "L18": [2.7, 7.55], "L18.words": [["lieber", 2.7, 3.052], ["georg", 3.052, 3.24], ["mit", 3.78, 3.926], ["stolz", 3.926, 4.083], ["haben", 4.083, 4.371], ["wir", 4.371, 4.517], ["gehört", 4.517, 4.81], ["dass", 5.1, 5.277], ["du", 5.277, 5.441], ["seit", 5.441, 5.618], ["fast", 5.618, 5.795], ["einem", 5.795, 6.13], ["jahr", 6.13, 6.307], ["nicht", 6.307, 6.49], ["mehr", 6.49, 6.666], ["den", 6.666, 6.837], ["pilz", 6.837, 7.014], ["gepflückt", 7.014, 7.373], ["hast", 7.373, 7.55]], "L18c": [7.92, 9.25], "L18c.words": [["wir", 7.92, 8.069], ["hätten", 8.069, 8.367], ["da", 8.367, 8.51], ["eine", 8.51, 8.797], ["stelle", 8.797, 9.095], ["frei", 9.095, 9.249]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -136,15 +136,16 @@
       function snowLayer(p, y, c = "#eef4fb") { return el("path", { d: `M-60 ${y} q90 -30 180 0 t180 0 t180 0 t180 0 t180 0 t180 0 t180 0 V2000 H-60Z`, fill: c }, p); }
       // ---- No Nut November: Finn (18), Zimmer, Handy ----
       // Finn: Fußpunkt x, y; gibt {g, aL, aR, head} zurück. Arme drehen um Schulter (lokal -36/36, -128)
-      function finn(p, x, y, s = 1, o = {}) { const HC = o.hood || "#ff6a3d", AC = o.arm || "#e5562e", CC = o.cap || "#2f6fe0"; const g = el("g", {}, p); gsap.set(g, { x, y, scale: s, transformOrigin: "0 0" });
+      function finn(p, x, y, s = 1, o = {}) { if (o.swim) o = Object.assign({ hood: "#f2cba5", arm: "#e9bf98", pants: "#f2cba5", trunks: "#ff4fb0" }, o); const HC = o.hood || "#ff6a3d", AC = o.arm || "#e5562e", CC = o.cap || "#2f6fe0", PC = o.pants || "#3c4357"; const g = el("g", {}, p); gsap.set(g, { x, y, scale: s, transformOrigin: "0 0" });
         // Jugendlicher: weite Jogginghose, dicke Sneaker, Oversize-Hoodie, großer Kopf, Cap verkehrt rum, Kopfhörer um den Hals
-        el("path", { d: "M-19 -60 H-1 L-3 -6 H-17Z", fill: "#3c4357" }, g); el("path", { d: "M1 -60 H19 L17 -6 H3Z", fill: "#3c4357" }, g);
+        el("path", { d: "M-19 -60 H-1 L-3 -6 H-17Z", fill: PC }, g); el("path", { d: "M1 -60 H19 L17 -6 H3Z", fill: PC }, g);
+        if (o.trunks) { el("path", { d: "M-31 -62 H31 L28 -26 H3 L0 -40 L-3 -26 H-28Z", fill: o.trunks }, g); for (let k = 0; k < 3; k++) el("circle", { cx: -18 + k * 18, cy: -46, r: 4, fill: "#ffd43b" }, g); }
         el("rect", { x: -26, y: -10, width: 26, height: 13, rx: 6, fill: "#ffffff" }, g); el("rect", { x: 0, y: -10, width: 26, height: 13, rx: 6, fill: "#ffffff" }, g);
         el("rect", { x: -26, y: -1, width: 26, height: 4, rx: 2, fill: "#ff4fb0" }, g); el("rect", { x: 0, y: -1, width: 26, height: 4, rx: 2, fill: "#ff4fb0" }, g);
         const aL = el("rect", { x: -46, y: -130, width: 16, height: 62, rx: 8, fill: AC }, g), aR = el("g", {}, g); el("rect", { x: 30, y: -130, width: 16, height: 62, rx: 8, fill: AC }, aR);
         if (o.can) { el("rect", { x: 31, y: -86, width: 15, height: 28, rx: 3, fill: "#2a4fa8" }, aR); el("rect", { x: 31, y: -86, width: 7.5, height: 28, fill: "#c9d2e0" }, aR); el("circle", { cx: 38.5, cy: -73, r: 3.5, fill: "#e0202f" }, aR); }
         el("path", { d: "M-36 -126 Q-37 -136 -26 -137 L26 -137 Q37 -136 36 -126 L30 -54 L-30 -54Z", fill: HC }, g);
-        el("path", { d: "M-16 -96 H16 V-78 H-16Z", fill: AC }, g); if (o.label !== "") txt(g, 0, -106, o.label || "NNN", 11, "#fff", { "data-layout-allow-overlap": "" });
+        if (!o.swim) el("path", { d: "M-16 -96 H16 V-78 H-16Z", fill: AC }, g); else { el("path", { d: "M-6 -112 Q0 -106 6 -112", stroke: "#d9a77a", "stroke-width": 2, fill: "none" }, g); el("line", { x1: 0, y1: -100, x2: 0, y2: -72, stroke: "#d9a77a", "stroke-width": 2 }, g); } if (o.label !== "") txt(g, 0, -106, o.label || "NNN", 11, "#fff", { "data-layout-allow-overlap": "" });
         if (o.tee) el("path", { d: "M-12 -137 L0 -118 L12 -137Z", fill: o.tee }, g);
         if (o.chain) el("path", { d: "M-11 -136 Q0 -112 11 -136", stroke: "#ffd43b", "stroke-width": 3, fill: "none" }, g);
         if (!o.noPhones) { el("path", { d: "M-22 -138 Q0 -122 22 -138", stroke: "#1b1d2b", "stroke-width": 6, fill: "none" }, g);

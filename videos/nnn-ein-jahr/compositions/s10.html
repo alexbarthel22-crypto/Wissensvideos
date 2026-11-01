@@ -31,8 +31,8 @@
     #s10-dl { position: absolute; left: 40px; right: 40px; top: 360px; padding: 20px; border-radius: 22px; background: #f1eefa; text-align: center; color: #22283f; font: 800 30px Inter, sans-serif; opacity: 0; }
     #s10-dl b { display: block; margin-top: 14px; padding: 10px; border-radius: 14px; background: #ff3b55; color: #fff; }
   </style>
-  <div id="root" data-composition-id="s10" data-start="0" data-duration="5.680" data-width="1080" data-height="1920">
-    <div id="s10-stage" class="clip stage" data-start="0" data-duration="5.680" data-track-index="0">
+  <div id="root" data-composition-id="s10" data-start="0" data-duration="5.570" data-width="1080" data-height="1920">
+    <div id="s10-stage" class="clip stage" data-start="0" data-duration="5.570" data-track-index="0">
       <svg id="s10-svg" class="full" viewBox="0 0 1080 1920"></svg>
       <div id="s10-ph" class="abs"><div class="s10-a" style="left:50px;top:80px;background:#ff4fb0"></div><div class="s10-a" style="left:190px;top:80px;background:#4da3ff"></div><div class="s10-a" style="left:330px;top:80px;background:#39e27a"></div>
         <div id="s10-sc" class="abs"></div><div id="s10-sl">Snapchat</div><div class="s10-a" style="left:50px;top:210px;background:#ff8a3d"></div><div class="s10-a" style="left:330px;top:210px;background:#a06bff"></div>
@@ -44,7 +44,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 5.68, "L6b": [0.2, 2.49], "L6b.words": [["januar", 0.2, 0.65], ["georg", 1.2, 1.525], ["löscht", 1.525, 1.861], ["snapchat", 1.861, 2.49]], "L6c": [2.71, 5.5], "L6c.words": [["zu", 2.71, 2.881], ["viele", 2.881, 3.23], ["snaps", 3.23, 3.42], ["um", 3.42, 3.592], ["zwei", 3.592, 3.776], ["uhr", 3.776, 3.953], ["nachts", 3.953, 4.15], ["zu", 4.7, 4.858], ["viel", 4.858, 5.027], ["risiko", 5.027, 5.5]]};
+      const C = {"__dur": 5.57, "L6b": [0.2, 2.19], "L6b.words": [["januar", 0.2, 0.62], ["georg", 1.17, 1.427], ["löscht", 1.427, 1.693], ["snapchat", 1.693, 2.19]], "L6c": [2.41, 5.39], "L6c.words": [["zu", 2.41, 2.593], ["viele", 2.593, 2.966], ["snaps", 2.966, 3.17], ["um", 3.17, 3.353], ["zwei", 3.353, 3.55], ["uhr", 3.55, 3.74], ["nachts", 3.74, 3.95], ["zu", 4.5, 4.675], ["viel", 4.675, 4.864], ["risiko", 4.864, 5.39]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -144,15 +144,16 @@
       function snowLayer(p, y, c = "#eef4fb") { return el("path", { d: `M-60 ${y} q90 -30 180 0 t180 0 t180 0 t180 0 t180 0 t180 0 t180 0 V2000 H-60Z`, fill: c }, p); }
       // ---- No Nut November: Finn (18), Zimmer, Handy ----
       // Finn: Fußpunkt x, y; gibt {g, aL, aR, head} zurück. Arme drehen um Schulter (lokal -36/36, -128)
-      function finn(p, x, y, s = 1, o = {}) { const HC = o.hood || "#ff6a3d", AC = o.arm || "#e5562e", CC = o.cap || "#2f6fe0"; const g = el("g", {}, p); gsap.set(g, { x, y, scale: s, transformOrigin: "0 0" });
+      function finn(p, x, y, s = 1, o = {}) { if (o.swim) o = Object.assign({ hood: "#f2cba5", arm: "#e9bf98", pants: "#f2cba5", trunks: "#ff4fb0" }, o); const HC = o.hood || "#ff6a3d", AC = o.arm || "#e5562e", CC = o.cap || "#2f6fe0", PC = o.pants || "#3c4357"; const g = el("g", {}, p); gsap.set(g, { x, y, scale: s, transformOrigin: "0 0" });
         // Jugendlicher: weite Jogginghose, dicke Sneaker, Oversize-Hoodie, großer Kopf, Cap verkehrt rum, Kopfhörer um den Hals
-        el("path", { d: "M-19 -60 H-1 L-3 -6 H-17Z", fill: "#3c4357" }, g); el("path", { d: "M1 -60 H19 L17 -6 H3Z", fill: "#3c4357" }, g);
+        el("path", { d: "M-19 -60 H-1 L-3 -6 H-17Z", fill: PC }, g); el("path", { d: "M1 -60 H19 L17 -6 H3Z", fill: PC }, g);
+        if (o.trunks) { el("path", { d: "M-31 -62 H31 L28 -26 H3 L0 -40 L-3 -26 H-28Z", fill: o.trunks }, g); for (let k = 0; k < 3; k++) el("circle", { cx: -18 + k * 18, cy: -46, r: 4, fill: "#ffd43b" }, g); }
         el("rect", { x: -26, y: -10, width: 26, height: 13, rx: 6, fill: "#ffffff" }, g); el("rect", { x: 0, y: -10, width: 26, height: 13, rx: 6, fill: "#ffffff" }, g);
         el("rect", { x: -26, y: -1, width: 26, height: 4, rx: 2, fill: "#ff4fb0" }, g); el("rect", { x: 0, y: -1, width: 26, height: 4, rx: 2, fill: "#ff4fb0" }, g);
         const aL = el("rect", { x: -46, y: -130, width: 16, height: 62, rx: 8, fill: AC }, g), aR = el("g", {}, g); el("rect", { x: 30, y: -130, width: 16, height: 62, rx: 8, fill: AC }, aR);
         if (o.can) { el("rect", { x: 31, y: -86, width: 15, height: 28, rx: 3, fill: "#2a4fa8" }, aR); el("rect", { x: 31, y: -86, width: 7.5, height: 28, fill: "#c9d2e0" }, aR); el("circle", { cx: 38.5, cy: -73, r: 3.5, fill: "#e0202f" }, aR); }
         el("path", { d: "M-36 -126 Q-37 -136 -26 -137 L26 -137 Q37 -136 36 -126 L30 -54 L-30 -54Z", fill: HC }, g);
-        el("path", { d: "M-16 -96 H16 V-78 H-16Z", fill: AC }, g); if (o.label !== "") txt(g, 0, -106, o.label || "NNN", 11, "#fff", { "data-layout-allow-overlap": "" });
+        if (!o.swim) el("path", { d: "M-16 -96 H16 V-78 H-16Z", fill: AC }, g); else { el("path", { d: "M-6 -112 Q0 -106 6 -112", stroke: "#d9a77a", "stroke-width": 2, fill: "none" }, g); el("line", { x1: 0, y1: -100, x2: 0, y2: -72, stroke: "#d9a77a", "stroke-width": 2 }, g); } if (o.label !== "") txt(g, 0, -106, o.label || "NNN", 11, "#fff", { "data-layout-allow-overlap": "" });
         if (o.tee) el("path", { d: "M-12 -137 L0 -118 L12 -137Z", fill: o.tee }, g);
         if (o.chain) el("path", { d: "M-11 -136 Q0 -112 11 -136", stroke: "#ffd43b", "stroke-width": 3, fill: "none" }, g);
         if (!o.noPhones) { el("path", { d: "M-22 -138 Q0 -122 22 -138", stroke: "#1b1d2b", "stroke-width": 6, fill: "none" }, g);

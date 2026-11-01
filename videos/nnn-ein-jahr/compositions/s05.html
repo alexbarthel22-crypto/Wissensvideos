@@ -25,8 +25,8 @@
     .chip { position: absolute; padding: 12px 26px; border-radius: 22px; background: rgba(255,255,255,.96); color: #22283f; font: 900 52px Inter, sans-serif; opacity: 0; box-shadow: 0 16px 40px rgba(0,0,0,.4); white-space: nowrap; }
     .chip b { color: #e0484f; } .chip i { font-style: normal; color: #1fa65a; }
   </style>
-  <div id="root" data-composition-id="s05" data-start="0" data-duration="10.530" data-width="1080" data-height="1920">
-    <div id="s05-stage" class="clip stage" data-start="0" data-duration="10.530" data-track-index="0">
+  <div id="root" data-composition-id="s05" data-start="0" data-duration="10.110" data-width="1080" data-height="1920">
+    <div id="s05-stage" class="clip stage" data-start="0" data-duration="10.110" data-track-index="0">
       <svg id="s05-svg" class="full" viewBox="0 0 1080 1920"></svg>
       <div id="s05-sp" class="chip" style="left:120px;top:500px;background:#ffd43b">SPERRZONE ⚠</div>
       <div class="vig"></div>
@@ -35,7 +35,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 10.53, "L12": [0.2, 4.7], "L12.words": [["juli", 0.2, 0.67], ["strand", 0.99, 1.5], ["vierunddreißig", 1.97, 2.735], ["grad", 2.735, 2.93], ["überall", 3.4, 3.83], ["knappe", 3.83, 4.123], ["badesachen", 4.123, 4.7]], "L13": [4.92, 8.59], "L13.words": [["georg", 4.92, 5.107], ["geht", 5.107, 5.288], ["auf", 5.288, 5.462], ["nummer", 5.462, 5.811], ["sicher", 5.811, 6.16], ["er", 6.71, 6.875], ["buddelt", 6.875, 7.223], ["sich", 7.223, 7.4], ["bis", 7.4, 7.571], ["zur", 7.571, 7.742], ["hüfte", 7.742, 8.077], ["im", 8.077, 8.242], ["sand", 8.242, 8.419], ["ein", 8.419, 8.59]], "L14": [8.81, 10.35], "L14.words": [["damit", 8.81, 9.111], ["niemand", 9.111, 9.424], ["seine", 9.424, 9.725], ["lustlanze", 9.725, 10.185], ["sieht", 10.185, 10.349]]};
+      const C = {"__dur": 10.11, "L12": [0.2, 4.33], "L12.words": [["juli", 0.2, 0.6], ["strand", 1.07, 1.44], ["vierunddreißig", 1.99, 2.644], ["grad", 2.644, 2.81], ["überall", 3.15, 3.54], ["knappe", 3.54, 3.807], ["badesachen", 3.807, 4.33]], "L13": [4.55, 8.16], "L13.words": [["georg", 4.55, 4.72], ["geht", 4.72, 4.885], ["auf", 4.885, 5.044], ["nummer", 5.044, 5.362], ["sicher", 5.362, 5.68], ["er", 6.23, 6.399], ["buddelt", 6.399, 6.756], ["sich", 6.756, 6.938], ["bis", 6.938, 7.114], ["zur", 7.114, 7.289], ["hüfte", 7.289, 7.634], ["im", 7.634, 7.803], ["sand", 7.803, 7.985], ["ein", 7.985, 8.16]], "L14": [8.38, 9.93], "L14.words": [["damit", 8.38, 8.683], ["niemand", 8.683, 8.998], ["seine", 8.998, 9.301], ["lustlanze", 9.301, 9.765], ["sieht", 9.765, 9.93]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -135,15 +135,16 @@
       function snowLayer(p, y, c = "#eef4fb") { return el("path", { d: `M-60 ${y} q90 -30 180 0 t180 0 t180 0 t180 0 t180 0 t180 0 t180 0 V2000 H-60Z`, fill: c }, p); }
       // ---- No Nut November: Finn (18), Zimmer, Handy ----
       // Finn: Fußpunkt x, y; gibt {g, aL, aR, head} zurück. Arme drehen um Schulter (lokal -36/36, -128)
-      function finn(p, x, y, s = 1, o = {}) { const HC = o.hood || "#ff6a3d", AC = o.arm || "#e5562e", CC = o.cap || "#2f6fe0"; const g = el("g", {}, p); gsap.set(g, { x, y, scale: s, transformOrigin: "0 0" });
+      function finn(p, x, y, s = 1, o = {}) { if (o.swim) o = Object.assign({ hood: "#f2cba5", arm: "#e9bf98", pants: "#f2cba5", trunks: "#ff4fb0" }, o); const HC = o.hood || "#ff6a3d", AC = o.arm || "#e5562e", CC = o.cap || "#2f6fe0", PC = o.pants || "#3c4357"; const g = el("g", {}, p); gsap.set(g, { x, y, scale: s, transformOrigin: "0 0" });
         // Jugendlicher: weite Jogginghose, dicke Sneaker, Oversize-Hoodie, großer Kopf, Cap verkehrt rum, Kopfhörer um den Hals
-        el("path", { d: "M-19 -60 H-1 L-3 -6 H-17Z", fill: "#3c4357" }, g); el("path", { d: "M1 -60 H19 L17 -6 H3Z", fill: "#3c4357" }, g);
+        el("path", { d: "M-19 -60 H-1 L-3 -6 H-17Z", fill: PC }, g); el("path", { d: "M1 -60 H19 L17 -6 H3Z", fill: PC }, g);
+        if (o.trunks) { el("path", { d: "M-31 -62 H31 L28 -26 H3 L0 -40 L-3 -26 H-28Z", fill: o.trunks }, g); for (let k = 0; k < 3; k++) el("circle", { cx: -18 + k * 18, cy: -46, r: 4, fill: "#ffd43b" }, g); }
         el("rect", { x: -26, y: -10, width: 26, height: 13, rx: 6, fill: "#ffffff" }, g); el("rect", { x: 0, y: -10, width: 26, height: 13, rx: 6, fill: "#ffffff" }, g);
         el("rect", { x: -26, y: -1, width: 26, height: 4, rx: 2, fill: "#ff4fb0" }, g); el("rect", { x: 0, y: -1, width: 26, height: 4, rx: 2, fill: "#ff4fb0" }, g);
         const aL = el("rect", { x: -46, y: -130, width: 16, height: 62, rx: 8, fill: AC }, g), aR = el("g", {}, g); el("rect", { x: 30, y: -130, width: 16, height: 62, rx: 8, fill: AC }, aR);
         if (o.can) { el("rect", { x: 31, y: -86, width: 15, height: 28, rx: 3, fill: "#2a4fa8" }, aR); el("rect", { x: 31, y: -86, width: 7.5, height: 28, fill: "#c9d2e0" }, aR); el("circle", { cx: 38.5, cy: -73, r: 3.5, fill: "#e0202f" }, aR); }
         el("path", { d: "M-36 -126 Q-37 -136 -26 -137 L26 -137 Q37 -136 36 -126 L30 -54 L-30 -54Z", fill: HC }, g);
-        el("path", { d: "M-16 -96 H16 V-78 H-16Z", fill: AC }, g); if (o.label !== "") txt(g, 0, -106, o.label || "NNN", 11, "#fff", { "data-layout-allow-overlap": "" });
+        if (!o.swim) el("path", { d: "M-16 -96 H16 V-78 H-16Z", fill: AC }, g); else { el("path", { d: "M-6 -112 Q0 -106 6 -112", stroke: "#d9a77a", "stroke-width": 2, fill: "none" }, g); el("line", { x1: 0, y1: -100, x2: 0, y2: -72, stroke: "#d9a77a", "stroke-width": 2 }, g); } if (o.label !== "") txt(g, 0, -106, o.label || "NNN", 11, "#fff", { "data-layout-allow-overlap": "" });
         if (o.tee) el("path", { d: "M-12 -137 L0 -118 L12 -137Z", fill: o.tee }, g);
         if (o.chain) el("path", { d: "M-11 -136 Q0 -112 11 -136", stroke: "#ffd43b", "stroke-width": 3, fill: "none" }, g);
         if (!o.noPhones) { el("path", { d: "M-22 -138 Q0 -122 22 -138", stroke: "#1b1d2b", "stroke-width": 6, fill: "none" }, g);
@@ -248,7 +249,7 @@
       el("rect", { x: 0, y: 900, width: 1080, height: 1020, fill: "#f2dca6" }, sv);
       [[140, "#ff4fb0"], [760, "#39e27a"]].forEach(([x, c]) => { el("rect", { x: x + 46, y: 760, width: 8, height: 260, fill: "#8a6a44" }, sv); el("path", { d: `M${x - 70} 790 Q${x + 50} 680 ${x + 170} 790Z`, fill: c }, sv);
         const t = el("rect", { x: x - 40, y: 1010, width: 180, height: 60, rx: 10, fill: c, opacity: 0.6 }, sv); });
-      const G = finn(sv, 540, 1150, 2.3, { hood: "#1d1f2b", arm: "#15161f", undercut: "#f0d060", noPhones: true, tee: "#ffffff", chain: true, can: true, label: "" });
+      const G = finn(sv, 540, 1150, 2.3, { swim: true, undercut: "#f0d060", noPhones: true, chain: true, can: true, label: "" });
       const mound = el("path", { d: "M260 1300 Q540 720 820 1300Z", fill: "#dcbd78", opacity: 0 }, sv);
       const l13 = line("L13")[0], bu = at("L13", "buddelt"), hu = at("L13", "Hüfte"), lu = at("L14", "Lust");
       waves.forEach((w) => tl.to(w, { x: -120, duration: 2, repeat: Math.ceil(C.__dur / 2), ease: "none" }, 0));

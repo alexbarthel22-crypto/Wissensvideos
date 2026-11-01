@@ -27,8 +27,8 @@
     #s06-h { left: 0; width: 1080px; top: 470px; text-align: center; font: 900 96px Inter, sans-serif; color: #fff; opacity: 0; text-shadow: 0 0 40px rgba(255,79,176,.9); }
     #s06-sp { left: 380px; top: 500px; width: 520px; padding: 18px 26px; border-radius: 28px 28px 28px 6px; background: #fff; color: #22283f; font: 700 38px/1.25 Inter, sans-serif; opacity: 0; box-shadow: 0 16px 40px rgba(0,0,0,.4); }
   </style>
-  <div id="root" data-composition-id="s06" data-start="0" data-duration="10.940" data-width="1080" data-height="1920">
-    <div id="s06-stage" class="clip stage" data-start="0" data-duration="10.940" data-track-index="0">
+  <div id="root" data-composition-id="s06" data-start="0" data-duration="10.596" data-width="1080" data-height="1920">
+    <div id="s06-stage" class="clip stage" data-start="0" data-duration="10.596" data-track-index="0">
       <svg id="s06-svg" class="full" viewBox="0 0 1080 1920"></svg>
       <div id="s06-h" class="abs">72 STUNDEN</div>
       <div id="s06-sp" class="abs">Wollen wir mal kurz … <b style="color:#ff4fb0">aufs Klo?</b> 😉</div>
@@ -39,7 +39,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 10.94, "L15": [0.2, 3.48], "L15.words": [["august", 0.2, 0.56], ["festival", 1.11, 1.51], ["georg", 2.05, 2.298], ["tanzt", 2.298, 2.546], ["drei", 2.546, 2.786], ["tage", 2.786, 3.232], ["durch", 3.232, 3.48]], "L16": [3.7, 7.78], "L16.words": [["dann", 3.7, 3.862], ["fragt", 3.862, 4.031], ["ihn", 4.031, 4.187], ["eine", 4.187, 4.49], ["süße", 4.49, 4.792], ["securitydame", 4.792, 5.7], ["ob", 5.91, 6.072], ["die", 6.072, 6.24], ["beiden", 6.24, 6.575], ["mal", 6.575, 6.743], ["kurz", 6.743, 6.917], ["aufs", 6.917, 7.091], ["klo", 7.091, 7.259], ["verschwinden", 7.259, 7.78]], "L16b": [8.0, 10.66], "L16b.words": [["sehr", 8.0, 8.227], ["kritisch", 8.227, 8.68], ["georg", 9.23, 9.399], ["flüchtet", 9.399, 9.725], ["zurück", 9.725, 10.041], ["in", 10.041, 10.193], ["die", 10.193, 10.35], ["menge", 10.35, 10.66]]};
+      const C = {"__dur": 10.596, "L15": [0.2, 3.59], "L15.words": [["august", 0.2, 0.57], ["festival", 1.12, 1.48], ["georg", 2.03, 2.301], ["tanzt", 2.301, 2.571], ["drei", 2.571, 2.833], ["tage", 2.833, 3.319], ["durch", 3.319, 3.59]], "L16": [3.81, 7.78], "L16.words": [["dann", 3.81, 3.974], ["fragt", 3.974, 4.144], ["ihn", 4.144, 4.302], ["eine", 4.302, 4.608], ["süße", 4.608, 4.913], ["securitydame", 4.913, 5.83], ["ob", 6.03, 6.181], ["die", 6.181, 6.338], ["beiden", 6.338, 6.653], ["mal", 6.653, 6.81], ["kurz", 6.81, 6.972], ["aufs", 6.972, 7.135], ["klo", 7.135, 7.292], ["verschwinden", 7.292, 7.78]], "L16b": [8.0, 10.316], "L16b.words": [["sehr", 8.0, 8.203], ["kritisch", 8.203, 8.61], ["georg", 9.16, 9.297], ["flüchtet", 9.297, 9.561], ["zurück", 9.561, 9.816], ["in", 9.816, 9.938], ["die", 9.938, 10.066], ["menge", 10.066, 10.316]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -139,15 +139,16 @@
       function snowLayer(p, y, c = "#eef4fb") { return el("path", { d: `M-60 ${y} q90 -30 180 0 t180 0 t180 0 t180 0 t180 0 t180 0 t180 0 V2000 H-60Z`, fill: c }, p); }
       // ---- No Nut November: Finn (18), Zimmer, Handy ----
       // Finn: Fußpunkt x, y; gibt {g, aL, aR, head} zurück. Arme drehen um Schulter (lokal -36/36, -128)
-      function finn(p, x, y, s = 1, o = {}) { const HC = o.hood || "#ff6a3d", AC = o.arm || "#e5562e", CC = o.cap || "#2f6fe0"; const g = el("g", {}, p); gsap.set(g, { x, y, scale: s, transformOrigin: "0 0" });
+      function finn(p, x, y, s = 1, o = {}) { if (o.swim) o = Object.assign({ hood: "#f2cba5", arm: "#e9bf98", pants: "#f2cba5", trunks: "#ff4fb0" }, o); const HC = o.hood || "#ff6a3d", AC = o.arm || "#e5562e", CC = o.cap || "#2f6fe0", PC = o.pants || "#3c4357"; const g = el("g", {}, p); gsap.set(g, { x, y, scale: s, transformOrigin: "0 0" });
         // Jugendlicher: weite Jogginghose, dicke Sneaker, Oversize-Hoodie, großer Kopf, Cap verkehrt rum, Kopfhörer um den Hals
-        el("path", { d: "M-19 -60 H-1 L-3 -6 H-17Z", fill: "#3c4357" }, g); el("path", { d: "M1 -60 H19 L17 -6 H3Z", fill: "#3c4357" }, g);
+        el("path", { d: "M-19 -60 H-1 L-3 -6 H-17Z", fill: PC }, g); el("path", { d: "M1 -60 H19 L17 -6 H3Z", fill: PC }, g);
+        if (o.trunks) { el("path", { d: "M-31 -62 H31 L28 -26 H3 L0 -40 L-3 -26 H-28Z", fill: o.trunks }, g); for (let k = 0; k < 3; k++) el("circle", { cx: -18 + k * 18, cy: -46, r: 4, fill: "#ffd43b" }, g); }
         el("rect", { x: -26, y: -10, width: 26, height: 13, rx: 6, fill: "#ffffff" }, g); el("rect", { x: 0, y: -10, width: 26, height: 13, rx: 6, fill: "#ffffff" }, g);
         el("rect", { x: -26, y: -1, width: 26, height: 4, rx: 2, fill: "#ff4fb0" }, g); el("rect", { x: 0, y: -1, width: 26, height: 4, rx: 2, fill: "#ff4fb0" }, g);
         const aL = el("rect", { x: -46, y: -130, width: 16, height: 62, rx: 8, fill: AC }, g), aR = el("g", {}, g); el("rect", { x: 30, y: -130, width: 16, height: 62, rx: 8, fill: AC }, aR);
         if (o.can) { el("rect", { x: 31, y: -86, width: 15, height: 28, rx: 3, fill: "#2a4fa8" }, aR); el("rect", { x: 31, y: -86, width: 7.5, height: 28, fill: "#c9d2e0" }, aR); el("circle", { cx: 38.5, cy: -73, r: 3.5, fill: "#e0202f" }, aR); }
         el("path", { d: "M-36 -126 Q-37 -136 -26 -137 L26 -137 Q37 -136 36 -126 L30 -54 L-30 -54Z", fill: HC }, g);
-        el("path", { d: "M-16 -96 H16 V-78 H-16Z", fill: AC }, g); if (o.label !== "") txt(g, 0, -106, o.label || "NNN", 11, "#fff", { "data-layout-allow-overlap": "" });
+        if (!o.swim) el("path", { d: "M-16 -96 H16 V-78 H-16Z", fill: AC }, g); else { el("path", { d: "M-6 -112 Q0 -106 6 -112", stroke: "#d9a77a", "stroke-width": 2, fill: "none" }, g); el("line", { x1: 0, y1: -100, x2: 0, y2: -72, stroke: "#d9a77a", "stroke-width": 2 }, g); } if (o.label !== "") txt(g, 0, -106, o.label || "NNN", 11, "#fff", { "data-layout-allow-overlap": "" });
         if (o.tee) el("path", { d: "M-12 -137 L0 -118 L12 -137Z", fill: o.tee }, g);
         if (o.chain) el("path", { d: "M-11 -136 Q0 -112 11 -136", stroke: "#ffd43b", "stroke-width": 3, fill: "none" }, g);
         if (!o.noPhones) { el("path", { d: "M-22 -138 Q0 -122 22 -138", stroke: "#1b1d2b", "stroke-width": 6, fill: "none" }, g);
