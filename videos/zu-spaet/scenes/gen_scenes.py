@@ -1,3 +1,4 @@
+import json
 #!/usr/bin/env python3
 """Erzeugt die Szenen s01–s08 für „Alle Männer NNN“ (danach Szenen direkt editieren oder hier ändern und neu erzeugen)."""
 from pathlib import Path
@@ -12,6 +13,7 @@ HEAD = '''<template>
 @@CSS@@
   </style>
   <div id="root" data-composition-id="@@ID@@" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+@@MEDIA@@
     <div id="@@ID@@-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
 @@HTML@@
       <div class="vig"></div>
@@ -53,26 +55,25 @@ CHIP = '''    .chip { position: absolute; padding: 12px 26px; border-radius: 22p
     .chip b { color: #e0484f; } .chip i { font-style: normal; color: #1fa65a; }'''
 NIGHT = 'sky(sv, "@@ID@@g", "#241c48", "#0e0b22");'
 
-LAB = '''    .sh { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover; opacity: 0; }
+LAB = '''    .shv { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover; }
+    .sh { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover; opacity: 0; }
     .lab { position: absolute; padding: 10px 26px; border-radius: 18px; background: rgba(20,10,50,.85); border: 3px solid #8ff4ff; color: #fff; font: 900 56px Inter, sans-serif; opacity: 0; box-shadow: 0 0 30px rgba(143,244,255,.4); white-space: nowrap; }
     .lab.r { border-color: #ff6b8a; box-shadow: 0 0 30px rgba(255,107,138,.5); } .lab.g { border-color: #7dffb0; box-shadow: 0 0 30px rgba(125,255,176,.5); } .lab.y { border-color: #ffd84a; }'''
 def popin(sel, t, d=0.25): return f'\n      tl.fromTo("{sel}", {{ opacity: 0, scale: 0.5 }}, {{ opacity: 1, scale: 1, duration: {d}, ease: "back.out(2.5)" }}, {t});'
 
+MEDIA = {}
+SHOTJ = json.loads((Path(__file__).parent.parent / "shots.json").read_text())
+
+
 def scene(sid, shots, extra_css="", extra_html="", extra_js="", outro=True):
-    """shots: [(bildname, JS-Zeitpunkt)] – harte Schnitte wie in der Referenz, jedes Bild mit langsamem Ken-Burns-Zoom."""
-    html = "\n".join(f'      <img id="{sid}-i{k}" class="sh" src="assets/img/{n}.png" alt="">' for k, (n, _) in enumerate(shots)) + extra_html
-    js = "      const T = [" + ", ".join(t for _, t in shots) + "];\n"
-    js += f'''      T.forEach((t, k) => {{ const e = "#{sid}-i" + k, t2 = k + 1 < T.length ? T[k + 1] : C.__dur;
-        tl.set(e, {{ opacity: 1 }}, t); if (k) tl.set("#{sid}-i" + (k - 1), {{ opacity: 0 }}, t);
-        tl.fromTo(e, {{ scale: 1.02, x: 0, y: 0 }}, {{ scale: 1.12, x: (k % 2 ? -18 : 18), y: (k % 3 ? -14 : 10), duration: Math.max(0.3, t2 - t + 0.2), ease: "none", immediateRender: false }}, t); }});'''
-    return (LAB + extra_css, html, js + extra_js + (OUT if outro else ""))
+    """Animierte Einstellungen (Gemini-Omni-Clips) als Video-Clips mit harten Schnitten wie in der Referenz."""
+    MEDIA[sid] = "\n".join(f'    <video id="{sid}-v{k}" class="clip shv" data-start="{v["start"]:.3f}" data-duration="{v["dur"]:.3f}" data-track-index="{1 + k % 2}" src="{v["src"]}" muted playsinline></video>'
+                     for k, v in enumerate(SHOTJ[sid]))
+    return (LAB + extra_css, extra_html, extra_js + (OUT if outro else ""))
 
 # Uhr tickt wie in der Referenz (45 → 48, wieder von vorn), dann Schnitt aufs Gehirn
 clk = ["c45", "c46", "c47", "c48"]
-S['s01'] = scene("s01", [(clk[k % 4], f"{k * 0.75:.2f}") for k in range(int(5.0 / 0.75))] + [("brain", 'at("L2", "Gehirn") - 0.05')],
-  extra_js='''
-      const br = document.querySelector("#s01-i''' + str(int(5.0 / 0.75)) + '''");
-      tl.fromTo(br, { filter: "brightness(1)" }, { filter: "brightness(1.35)", duration: 0.35, yoyo: true, repeat: 3, immediateRender: false }, at("L2", "Gehirn"));''')
+S['s01'] = scene("s01", [])
 S['s02'] = scene("s02", [("watch", "0"), ("typing", 'at("L3", "Und") - 0.05'), ("panic", 'at("L4", "plötzlich") - 0.1')])
 S['s03'] = scene("s03", [("waiting", "0"), ("stopwatch", 'line("L6")[0] - 0.05')],
   extra_html='\n      <div id="s03-pf" class="lab r" style="left:250px;top:1330px">PUFFER: 0 MIN</div>',
@@ -118,5 +119,5 @@ S['s09'] = scene("s09", [("point", "0")], outro=False,
 
 here = Path(__file__).parent
 for sid, (css, html, js) in S.items():
-    (here / f"{sid}.html").write_text(HEAD.replace("@@CSS@@", css).replace("@@HTML@@", html).replace("@@JS@@", js).replace("@@ID@@", sid))
+    (here / f"{sid}.html").write_text(HEAD.replace("@@CSS@@", css).replace("@@HTML@@", html).replace("@@JS@@", js).replace("@@MEDIA@@", MEDIA.get(sid, "")).replace("@@ID@@", sid))
 print(sorted(S))

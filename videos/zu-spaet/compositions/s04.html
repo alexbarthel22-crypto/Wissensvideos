@@ -22,14 +22,16 @@
     .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
       font-family: "Inter", sans-serif; font-weight: 900; }
     .vig { position: absolute; left: 0; right: 0; top: 1040px; height: 880px; background: linear-gradient(rgba(10,12,30,0), rgba(10,12,30,.5) 45%, rgba(10,12,30,.55)); pointer-events: none; }
+    .shv { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover; }
     .sh { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover; opacity: 0; }
     .lab { position: absolute; padding: 10px 26px; border-radius: 18px; background: rgba(20,10,50,.85); border: 3px solid #8ff4ff; color: #fff; font: 900 56px Inter, sans-serif; opacity: 0; box-shadow: 0 0 30px rgba(143,244,255,.4); white-space: nowrap; }
     .lab.r { border-color: #ff6b8a; box-shadow: 0 0 30px rgba(255,107,138,.5); } .lab.g { border-color: #7dffb0; box-shadow: 0 0 30px rgba(125,255,176,.5); } .lab.y { border-color: #ffd84a; }
   </style>
   <div id="root" data-composition-id="s04" data-start="0" data-duration="10.000" data-width="1080" data-height="1920">
+    <video id="s04-v0" class="clip shv" data-start="0.000" data-duration="3.480" data-track-index="1" src="assets/vid/s04_0.mp4" muted playsinline></video>
+    <video id="s04-v1" class="clip shv" data-start="3.480" data-duration="6.520" data-track-index="2" src="assets/vid/s04_1.mp4" muted playsinline></video>
     <div id="s04-stage" class="clip stage" data-start="0" data-duration="10.000" data-track-index="0">
-      <img id="s04-i0" class="sh" src="assets/img/neurons.png" alt="">
-      <img id="s04-i1" class="sh" src="assets/img/student.png" alt="">
+
       <div id="s04-a" class="lab g" style="left:90px;top:330px">GESCHÄTZT: 34 TAGE</div><div id="s04-b" class="lab r" style="left:90px;top:450px">ECHT: 55 TAGE</div>
       <div class="vig"></div>
     </div>
@@ -295,10 +297,7 @@
         const l = el("path", { d, stroke: col, "stroke-width": w, fill: "none", "stroke-linecap": "round", "stroke-linejoin": "round", "stroke-dasharray": 3000, "stroke-dashoffset": 3000 }, g); g.l = l; return g; }
 
       const tl = gsap.timeline({ paused: true });
-      const T = [0, line("L8")[0] - 0.05];
-      T.forEach((t, k) => { const e = "#s04-i" + k, t2 = k + 1 < T.length ? T[k + 1] : C.__dur;
-        tl.set(e, { opacity: 1 }, t); if (k) tl.set("#s04-i" + (k - 1), { opacity: 0 }, t);
-        tl.fromTo(e, { scale: 1.02, x: 0, y: 0 }, { scale: 1.12, x: (k % 2 ? -18 : 18), y: (k % 3 ? -14 : 10), duration: Math.max(0.3, t2 - t + 0.2), ease: "none", immediateRender: false }, t); });
+
       tl.fromTo("#s04-a", { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(2.5)" }, at("L8", "34") - 0.1);
       tl.fromTo("#s04-b", { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(2.5)" }, at("L8", "55") - 0.1);
       tl.to("#s04-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);

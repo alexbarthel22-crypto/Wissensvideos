@@ -22,15 +22,17 @@
     .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
       font-family: "Inter", sans-serif; font-weight: 900; }
     .vig { position: absolute; left: 0; right: 0; top: 1040px; height: 880px; background: linear-gradient(rgba(10,12,30,0), rgba(10,12,30,.5) 45%, rgba(10,12,30,.55)); pointer-events: none; }
+    .shv { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover; }
     .sh { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover; opacity: 0; }
     .lab { position: absolute; padding: 10px 26px; border-radius: 18px; background: rgba(20,10,50,.85); border: 3px solid #8ff4ff; color: #fff; font: 900 56px Inter, sans-serif; opacity: 0; box-shadow: 0 0 30px rgba(143,244,255,.4); white-space: nowrap; }
     .lab.r { border-color: #ff6b8a; box-shadow: 0 0 30px rgba(255,107,138,.5); } .lab.g { border-color: #7dffb0; box-shadow: 0 0 30px rgba(125,255,176,.5); } .lab.y { border-color: #ffd84a; }
   </style>
   <div id="root" data-composition-id="s10" data-start="0" data-duration="12.310" data-width="1080" data-height="1920">
+    <video id="s10-v0" class="clip shv" data-start="0.000" data-duration="2.940" data-track-index="1" src="assets/vid/s10_0.mp4" muted playsinline></video>
+    <video id="s10-v1" class="clip shv" data-start="2.940" data-duration="4.610" data-track-index="2" src="assets/vid/s10_1.mp4" muted playsinline></video>
+    <video id="s10-v2" class="clip shv" data-start="7.550" data-duration="4.760" data-track-index="1" src="assets/vid/s10_2.mp4" muted playsinline></video>
     <div id="s10-stage" class="clip stage" data-start="0" data-duration="12.310" data-track-index="0">
-      <img id="s10-i0" class="sh" src="assets/img/shower.png" alt="">
-      <img id="s10-i1" class="sh" src="assets/img/dress.png" alt="">
-      <img id="s10-i2" class="sh" src="assets/img/door.png" alt="">
+
       <div id="s10-a" class="lab g" style="left:90px;top:330px">DUSCHEN: 3 MIN</div><div id="s10-b" class="lab g" style="left:90px;top:450px">ANZIEHEN: 1 MIN</div>
       <div id="s10-c" class="lab r" style="left:220px;top:1330px;font-size:84px">REAL: 20 MIN</div><div id="s10-d" class="lab y" style="left:300px;top:1330px;font-size:90px">+5 MIN</div>
       <div class="vig"></div>
@@ -297,10 +299,7 @@
         const l = el("path", { d, stroke: col, "stroke-width": w, fill: "none", "stroke-linecap": "round", "stroke-linejoin": "round", "stroke-dasharray": 3000, "stroke-dashoffset": 3000 }, g); g.l = l; return g; }
 
       const tl = gsap.timeline({ paused: true });
-      const T = [0, at("L13b", "Anziehen") - 0.1, line("L13d")[0] - 0.05];
-      T.forEach((t, k) => { const e = "#s10-i" + k, t2 = k + 1 < T.length ? T[k + 1] : C.__dur;
-        tl.set(e, { opacity: 1 }, t); if (k) tl.set("#s10-i" + (k - 1), { opacity: 0 }, t);
-        tl.fromTo(e, { scale: 1.02, x: 0, y: 0 }, { scale: 1.12, x: (k % 2 ? -18 : 18), y: (k % 3 ? -14 : 10), duration: Math.max(0.3, t2 - t + 0.2), ease: "none", immediateRender: false }, t); });
+
       tl.fromTo("#s10-a", { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(2.5)" }, at("L13b", "Duschen") + 0.4);
       tl.fromTo("#s10-b", { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(2.5)" }, at("L13b", "Anziehen"));
       tl.fromTo("#s10-c", { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(2.5)" }, at("L13c", "zwanzig") - 0.1);
