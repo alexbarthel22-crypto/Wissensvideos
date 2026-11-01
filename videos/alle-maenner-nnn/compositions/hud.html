@@ -1,0 +1,36 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; }
+    .stat { position: absolute; left: 30px; top: 750px; width: auto; min-width: 300px; height: auto; padding: 14px 22px 16px; border-radius: 18px;
+      background: rgba(18,22,44,.38); color: #fff; text-shadow: 0 2px 10px rgba(0,0,0,.55); }
+    .sl { font: 600 28px "Inter", sans-serif; letter-spacing: .18em; opacity: .9; }
+    .sv { margin-top: 2px; font: 500 68px/1 "EB Garamond", "Liberation Serif", serif; }
+    .ss { margin-top: 8px; font: 600 28px "Inter", sans-serif; letter-spacing: .14em; opacity: .75; }
+    .jump { position: absolute; left: 0; width: 100%; top: 330px; height: 220px; text-align: center; color: #fff; text-shadow: 0 2px 18px rgba(0,0,0,.55); }
+    .jn { font: 500 132px/1 "EB Garamond", "Liberation Serif", serif; }
+    .jl { margin-top: 6px; font: 600 30px "Inter", sans-serif; letter-spacing: .3em; }
+  </style>
+  <div id="root" data-composition-id="hud" data-start="0" data-duration="126.369" data-width="1080" data-height="1920">
+      <div id="sl6" class="clip stat" data-start="44.319" data-duration="4.550" data-track-index="1"><div class="sl">TESTOSTERON</div><div class="sv">145 %</div><div class="ss">TAG 7 · STUDIE 2003</div></div>
+      <div id="sl10" class="clip stat" data-start="65.849" data-duration="4.600" data-track-index="1"><div class="sl">NOCH DABEI</div><div class="sv">4,1 Mrd.</div><div class="ss">TAG 1</div></div>
+      <div id="sl11" class="clip stat" data-start="70.449" data-duration="2.490" data-track-index="1"><div class="sl">NOCH DABEI</div><div class="sv">2,05 Mrd.</div><div class="ss">TAG 13</div></div>
+      <div id="sl15" class="clip stat" data-start="85.419" data-duration="3.150" data-track-index="1"><div class="sl">KLASSE 11B</div><div class="sv">2 / 11</div><div class="ss">NOCH DABEI</div></div>
+      <div id="jp1" class="clip jump" data-start="11.600" data-duration="1.800" data-track-index="2"><div class="jn">TAG 1</div><div class="jl">WELTWEIT</div></div>
+      <div id="jp2" class="clip jump" data-start="19.850" data-duration="1.800" data-track-index="2"><div class="jn">TAG 2</div><div class="jl">DAS INTERNET</div></div>
+      <div id="jp3" class="clip jump" data-start="30.209" data-duration="1.800" data-track-index="2"><div class="jn">LENA, 17</div><div class="jl">IHRE SICHT</div></div>
+      <div id="jp4" class="clip jump" data-start="44.269" data-duration="1.800" data-track-index="2"><div class="jn">TAG 7</div><div class="jl">TESTOSTERON</div></div>
+      <div id="jp5" class="clip jump" data-start="56.179" data-duration="1.800" data-track-index="2"><div class="jn">TAG 9</div><div class="jl">DIE SCHULE</div></div>
+      <div id="jp6" class="clip jump" data-start="63.459" data-duration="1.800" data-track-index="2"><div class="jn">TAG 13</div><div class="jl">GEFAHRENZONE</div></div>
+      <div id="jp7" class="clip jump" data-start="72.939" data-duration="1.800" data-track-index="2"><div class="jn">TAG 18</div><div class="jl">DIE MÜTTER</div></div>
+      <div id="jp8" class="clip jump" data-start="80.869" data-duration="1.800" data-track-index="2"><div class="jn">TAG 21</div><div class="jl">DIE WETTE</div></div>
+      <div id="jp9" class="clip jump" data-start="91.449" data-duration="1.800" data-track-index="2"><div class="jn">TAG 25</div><div class="jl">REALITÄTS-CHECK</div></div>
+      <div id="jp10" class="clip jump" data-start="100.369" data-duration="1.800" data-track-index="2"><div class="jn">TAG 29</div><div class="jl">DIE LETZTEN</div></div>
+      <div id="jp11" class="clip jump" data-start="107.859" data-duration="1.800" data-track-index="2"><div class="jn">01.12.</div><div class="jl">00:00 UHR</div></div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    
+tl.fromTo("#sl6", { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.3, ease: "power2.out" }, 44.319);    tl.fromTo("#sl10", { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.3, ease: "power2.out" }, 65.849);    tl.fromTo("#sl11", { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.3, ease: "power2.out" }, 70.449);    tl.fromTo("#sl15", { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.3, ease: "power2.out" }, 85.419);    tl.fromTo("#jp1", { opacity: 0, scale: 1.15, filter: "blur(6px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.4, ease: "power3.out" }, 11.600);    tl.to("#jp1", { opacity: 0, duration: 0.3 }, 13.100);    tl.fromTo("#jp2", { opacity: 0, scale: 1.15, filter: "blur(6px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.4, ease: "power3.out" }, 19.850);    tl.to("#jp2", { opacity: 0, duration: 0.3 }, 21.350);    tl.fromTo("#jp3", { opacity: 0, scale: 1.15, filter: "blur(6px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.4, ease: "power3.out" }, 30.209);    tl.to("#jp3", { opacity: 0, duration: 0.3 }, 31.709);    tl.fromTo("#jp4", { opacity: 0, scale: 1.15, filter: "blur(6px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.4, ease: "power3.out" }, 44.269);    tl.to("#jp4", { opacity: 0, duration: 0.3 }, 45.769);    tl.fromTo("#jp5", { opacity: 0, scale: 1.15, filter: "blur(6px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.4, ease: "power3.out" }, 56.179);    tl.to("#jp5", { opacity: 0, duration: 0.3 }, 57.679);    tl.fromTo("#jp6", { opacity: 0, scale: 1.15, filter: "blur(6px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.4, ease: "power3.out" }, 63.459);    tl.to("#jp6", { opacity: 0, duration: 0.3 }, 64.959);    tl.fromTo("#jp7", { opacity: 0, scale: 1.15, filter: "blur(6px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.4, ease: "power3.out" }, 72.939);    tl.to("#jp7", { opacity: 0, duration: 0.3 }, 74.439);    tl.fromTo("#jp8", { opacity: 0, scale: 1.15, filter: "blur(6px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.4, ease: "power3.out" }, 80.869);    tl.to("#jp8", { opacity: 0, duration: 0.3 }, 82.369);    tl.fromTo("#jp9", { opacity: 0, scale: 1.15, filter: "blur(6px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.4, ease: "power3.out" }, 91.449);    tl.to("#jp9", { opacity: 0, duration: 0.3 }, 92.949);    tl.fromTo("#jp10", { opacity: 0, scale: 1.15, filter: "blur(6px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.4, ease: "power3.out" }, 100.369);    tl.to("#jp10", { opacity: 0, duration: 0.3 }, 101.869);    tl.fromTo("#jp11", { opacity: 0, scale: 1.15, filter: "blur(6px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.4, ease: "power3.out" }, 107.859);    tl.to("#jp11", { opacity: 0, duration: 0.3 }, 109.359);
+    window.__timelines["hud"] = tl;
+  </script>
+</template>

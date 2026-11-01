@@ -1,0 +1,51 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .vig { position: absolute; left: 0; right: 0; top: 1040px; height: 880px; background: linear-gradient(rgba(10,12,30,0), rgba(10,12,30,.5) 45%, rgba(10,12,30,.55)); pointer-events: none; }
+    .chip { position: absolute; padding: 12px 26px; border-radius: 22px; background: rgba(255,255,255,.96); color: #22283f; font: 900 52px Inter, sans-serif; opacity: 0; box-shadow: 0 16px 40px rgba(0,0,0,.4); white-space: nowrap; }
+    .chip b { color: #e0484f; } .chip i { font-style: normal; color: #1fa65a; }
+    #s07-sock { left: 540px; top: 470px; width: 470px; text-align: center; padding: 14px 0; border-radius: 22px; background: rgba(255,255,255,.96); color: #22283f; font: 800 34px Inter, sans-serif; opacity: 0; box-shadow: 0 16px 40px rgba(0,0,0,.4); }
+    #s07-sock b { display: block; font: 900 84px Inter, sans-serif; color: #1fa65a; }
+  </style>
+  <div id="root" data-composition-id="s07" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s07-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <svg id="s07-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s07-cl" class="chip" style="left:560px;top:480px"><i>✓</i> freiwillig</div>
+      <div id="s07-sock" class="abs">SOCKEN IM WÄSCHEKORB<b id="s07-sn">27</b></div>
+      <div class="vig"></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s07-svg"), W = el("g", {}, sv);
+      const R = bedroom(W, "s07g", { w1: "#3b5b8f", w2: "#24385e", floor: "#3a3350" });
+      const mess = [], rm = rng(14); for (let i = 0; i < 12; i++) mess.push(el("rect", { x: 120 + rm() * 820, y: 1120 + rm() * 120, width: 60 + rm() * 40, height: 26, rx: 8, fill: ["#ff6a3d", "#4da3ff", "#ffd43b", "#39e27a", "#fff"][i % 5], transform: `rotate(${(rm() - 0.5) * 60} ${540} ${1180})` }, W));
+      const Mo = woman(W, 820, 1150, 2.3, "#3aa37a");
+      const S = finn(W, 360, 1150, 2.3, { label: "" });
+      const sparkle = [0, 1, 2, 3, 4].map((k) => txt(W, 200 + k * 170, 900 - (k % 2) * 80, "✦", 60, "#ffd43b", { opacity: 0 }));
+      const bask = el("g", { opacity: 0 }, sv); el("path", { d: "M380 820 H700 L670 1060 H410Z", fill: "#c9a46b" }, bask); for (let k = 0; k < 5; k++) el("line", { x1: 400 + k * 60, y1: 830, x2: 420 + k * 50, y2: 1050, stroke: "#a8834c", "stroke-width": 6 }, bask);
+      const socks = [0, 1, 2].map((k) => el("path", { d: `M${470 + k * 60} 800 v50 q0 20 24 20 h20 v-20 h-10 v-50z`, fill: "#fff", stroke: "#22283f", "stroke-width": 3 }, bask));
+      const fr = at("L21", "Freiwillig"), au = at("L21", "auf"), l22 = line("L22")[0], so = at("L22", "Socken");
+      tl.to(Mo.mouth, { attr: { d: "M-6 -147 Q0 -153 6 -147" }, duration: 0.2 }, 1.2);
+      tl.to(Mo.head, { rotation: 8, svgOrigin: "0 -150", duration: 0.3, yoyo: true, repeat: 3 }, 1.3);
+      mess.forEach((m, i) => tl.to(m, { x: 360 - (+m.getAttribute("x")), y: 980 - (+m.getAttribute("y")), opacity: 0, duration: 0.3, ease: "power2.in" }, au - 0.6 + i * 0.07));
+      for (let k = 0; k < 4; k++) tl.to(S.g, { x: 330 + (k % 2) * 60, duration: 0.2 }, au - 0.6 + k * 0.22);
+      tl.to(sparkle, { opacity: 1, scale: 1.3, duration: 0.2, stagger: 0.06, yoyo: true, repeat: 1 }, fr - 0.2);
+      tl.fromTo("#s07-cl", { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(2.5)" }, fr - 0.1);
+      tl.to(["#s07-cl", S.g], { opacity: 0, duration: 0.25 }, l22 - 0.2);
+      tl.fromTo(bask, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.3 }, l22);
+      tl.fromTo("#s07-sock", { opacity: 0 }, { opacity: 1, duration: 0.3 }, l22 + 0.1);
+      count(tl, "#s07-sn", 27, 3, so - 0.8, 0.9, "", "", "power2.in");
+      tl.to(socks.slice(1), { opacity: 0, y: -40, duration: 0.25, stagger: 0.15 }, so - 0.5);
+      tl.to(Mo.mouth, { attr: { d: "M-5 -149 Q0 -152 5 -149" }, duration: 0.2 }, so);
+      tl.to("#s07-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s07"] = tl;
+    })();
+  </script>
+</template>

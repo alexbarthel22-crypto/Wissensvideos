@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="de" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: #1c2748; }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: url("bg.png") center / cover; }
+      .abs { position: absolute; }
+      #shade { left: 0; top: 1240px; width: 1080px; height: 770px; background: linear-gradient(rgba(20,26,50,0), rgba(20,26,50,.85) 30%, #141a32); }
+      .chip { left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 10px 26px; border-radius: 14px; font: 600 50px/1.1 "EB Garamond", serif; white-space: nowrap; }
+      #c1 { top: 1330px; background: rgba(255,255,255,.95); color: #22283f; transform: rotate(-2deg); box-shadow: 0 16px 40px rgba(0,0,0,.4); }
+      #c1 b { color: #ff4fb0; }
+      #c2 { top: 1440px; border: 3px solid #ffd43b; color: #ffd43b; background: rgba(10,14,30,.8); transform: rotate(1.5deg); }
+      #q { left: 70px; width: 940px; top: 1560px; height: 150px; border-radius: 22px; background: rgba(10,14,30,.9); border: 4px solid #39e27a; box-shadow: 0 0 50px rgba(57,226,122,.4);
+        text-align: center; font: 600 60px/140px "EB Garamond", serif; color: #fff; white-space: nowrap; }
+      #p1 { right: 46px; top: 1225px; padding: 8px 26px; border-radius: 12px; background: #ff3b47; color: #fff; font: 800 64px/1.05 "Inter", "Helvetica Neue", Arial, sans-serif; letter-spacing: 3px; transform: rotate(6deg); box-shadow: 0 0 40px rgba(255,59,71,.6), 0 12px 30px rgba(0,0,0,.5); border: 4px solid #fff; }
+      #q span { color: #39e27a; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="cover" data-start="0" data-duration="1" data-width="1080" data-height="1920" data-no-timeline>
+      <div id="shade" class="abs"></div>
+            <div id="c1" class="abs chip">Lena, 17: „Jungs antworten <b>in Sekunden</b>“</div>
+      <div id="c2" class="abs chip">Taschentücher: ausverkauft</div>
+      <div id="q" class="abs">Was passiert am <span>1. Dezember?</span></div>
+    </div>
+  </body>
+</html>

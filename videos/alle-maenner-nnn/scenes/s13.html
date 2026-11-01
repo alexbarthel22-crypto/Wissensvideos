@@ -1,0 +1,45 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .vig { position: absolute; left: 0; right: 0; top: 1040px; height: 880px; background: linear-gradient(rgba(10,12,30,0), rgba(10,12,30,.5) 45%, rgba(10,12,30,.55)); pointer-events: none; }
+    .chip { position: absolute; padding: 12px 26px; border-radius: 22px; background: rgba(255,255,255,.96); color: #22283f; font: 900 52px Inter, sans-serif; opacity: 0; box-shadow: 0 16px 40px rgba(0,0,0,.4); white-space: nowrap; }
+    .chip b { color: #e0484f; } .chip i { font-style: normal; color: #1fa65a; }
+    #s13-sp { left: 470px; top: 470px; width: 520px; padding: 18px 26px; border-radius: 28px 28px 6px 28px; background: #fff; color: #22283f; font: 700 38px/1.25 Inter, sans-serif; opacity: 0; box-shadow: 0 16px 40px rgba(0,0,0,.4); }
+  </style>
+  <div id="root" data-composition-id="s13" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s13-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <svg id="s13-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s13-sp" class="abs">… und dann hat sie mit <b style="color:#ff4fb0">„haha“</b> geantwortet. Was heißt das?</div>
+      <div class="vig"></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s13-svg"); sky(sv, "s13g", "#5a5560", "#3a3640");
+      const wall = el("g", {}, sv); for (let r = 0; r < 12; r++) for (let c = 0; c < 6; c++) el("rect", { x: c * 190 - (r % 2) * 95, y: 420 + r * 60, width: 180, height: 52, rx: 4, fill: "#6e6872" }, wall);
+      const marks = [], g = el("g", {}, sv); for (let i = 0; i < 29; i++) { const grp = Math.floor(i / 5), k = i % 5, x = 140 + (grp % 3) * 260 + k * 34, y = 470 + Math.floor(grp / 3) * 200;
+        marks.push(k === 4 ? el("line", { x1: x - 150, y1: y + 120, x2: x + 10, y2: y + 20, stroke: "#f2efe6", "stroke-width": 10, "stroke-linecap": "round", opacity: 0 }, g) : el("line", { x1: x, y1: y, x2: x, y2: y + 140, stroke: "#f2efe6", "stroke-width": 10, "stroke-linecap": "round", opacity: 0 }, g)); }
+      const P = finn(sv, 540, 1180, 2.1, { hood: "#ff8a3d", arm: "#e06e2a", label: "29" });
+      const kit = el("g", { opacity: 0 }, sv); sky(kit, "s13k", "#e9e4d6", "#cfc8b4"); el("rect", { x: 0, y: 1120, width: 1080, height: 800, fill: "#a68f6c" }, kit);
+      const fr = el("g", {}, kit); el("rect", { x: 120, y: 520, width: 300, height: 600, rx: 26, fill: "#f4f6fa", stroke: "#c4cad6", "stroke-width": 6 }, fr); el("line", { x1: 120, y1: 760, x2: 420, y2: 760, stroke: "#c4cad6", "stroke-width": 6 }, fr);
+      el("rect", { x: 380, y: 600, width: 16, height: 100, rx: 8, fill: "#9aa3b5" }, fr); el("rect", { x: 380, y: 800, width: 16, height: 120, rx: 8, fill: "#9aa3b5" }, fr);
+      const K = finn(kit, 640, 1180, 2.2, { hood: "#4da3ff", arm: "#2f7fd6", label: "" });
+      const l29b = line("L29b")[0], ge = at("L29b", "Gefängnis"), l29c = line("L29c")[0], ku = at("L29c", "Kühlschrank"), gf = at("L29c", "Gefühlen");
+      tl.to(marks, { opacity: 1, duration: 0.06, stagger: (ge - l29b) / 29 }, l29b);
+      tl.to(P.mouth, { attr: { d: "M-6 -148 Q0 -153 6 -148" }, duration: 0.2 }, ge);
+      tl.to(P.g, { y: 1190, duration: 0.4, yoyo: true, repeat: 1 }, ge);
+      tl.to([wall, g, P.g], { opacity: 0, duration: 0.25 }, l29c - 0.2); tl.to(kit, { opacity: 1, duration: 0.3 }, l29c - 0.1);
+      tl.to(K.head, { rotation: -10, svgOrigin: "0 -150", duration: 0.3 }, ku - 0.1);
+      tl.fromTo("#s13-sp", { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2)" }, ku);
+      tl.to(fr, { x: 5, duration: 0.05, repeat: 5, yoyo: true }, gf);
+      tl.to("#s13-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s13"] = tl;
+    })();
+  </script>
+</template>

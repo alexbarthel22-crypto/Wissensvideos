@@ -1,0 +1,38 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .vig { position: absolute; left: 0; right: 0; top: 1040px; height: 880px; background: linear-gradient(rgba(10,12,30,0), rgba(10,12,30,.5) 45%, rgba(10,12,30,.55)); pointer-events: none; }
+    #s06-n { left: 0; width: 1080px; top: 470px; text-align: center; font: 900 110px Inter, sans-serif; color: #fff; text-shadow: 0 0 40px rgba(255,59,85,.6); }
+    #s06-l { left: 0; width: 1080px; top: 600px; text-align: center; font: 700 30px "Space Mono", monospace; color: #ffb3bf; letter-spacing: .2em; }
+  </style>
+  <div id="root" data-composition-id="s06" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s06-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <svg id="s06-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s06-n" class="abs">4.100.000.000</div><div id="s06-l" class="abs">MÄNNER NOCH DABEI</div>
+      <div class="vig"></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s06-svg"); sky(sv, "s06g", "#1a1030", "#090614");
+      const G = globe(sv, 540, 930, 230, "s06w", 140, 9); G.dots.forEach((d) => gsap.set(d, { opacity: 1, attr: { fill: "#39e27a" } }));
+      const moon = el("g", { opacity: 0 }, sv); el("circle", { cx: 880, cy: 700, r: 60, fill: "#fff6c9" }, moon); el("circle", { cx: 905, cy: 688, r: 54, fill: "#1a1030" }, moon);
+      const red = el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: "#c4123a", opacity: 0 }, sv);
+      const l18 = line("L18")[0], ta = at("L18", "Tausende"), na = at("L18", "nachts"), ha = at("L19", "Hälfte");
+      count(tl, "#s06-n", 4100000000, 2050000000, ta - 0.2, ha - ta + 0.4, "", "", "power1.inOut");
+      const half = G.dots.filter((_, i) => i % 2 === 0);
+      tl.to(half, { attr: { fill: "#ff3b55" }, duration: 0.1, stagger: { each: (ha - ta) / half.length, from: "random" } }, ta);
+      tl.fromTo(moon, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.3 }, na - 0.1);
+      tl.fromTo(red, { opacity: 0 }, { opacity: 0.22, duration: 0.3, yoyo: true, repeat: 5 }, ha - 0.1);
+      tl.to("#s06-n", { color: "#ff3b55", scale: 1.1, duration: 0.2, yoyo: true, repeat: 1 }, ha);
+      tl.to("#s06-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s06"] = tl;
+    })();
+  </script>
+</template>

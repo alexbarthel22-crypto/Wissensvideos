@@ -1,0 +1,41 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .vig { position: absolute; left: 0; right: 0; top: 1040px; height: 880px; background: linear-gradient(rgba(10,12,30,0), rgba(10,12,30,.5) 45%, rgba(10,12,30,.55)); pointer-events: none; }
+    .chip { position: absolute; padding: 12px 26px; border-radius: 22px; background: rgba(255,255,255,.96); color: #22283f; font: 900 52px Inter, sans-serif; opacity: 0; box-shadow: 0 16px 40px rgba(0,0,0,.4); white-space: nowrap; }
+    .chip b { color: #e0484f; } .chip i { font-style: normal; color: #1fa65a; }
+    #s12-b { left: 140px; top: 470px; width: 800px; height: 200px; border-radius: 12px; background: #2f5a46; border: 14px solid #8a6a44; color: #f2f7ee; font: 700 70px/170px "Caveat", "Comic Sans MS", cursive; text-align: center; }
+  </style>
+  <div id="root" data-composition-id="s12" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s12-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <svg id="s12-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s12-b" class="abs">Mathe · 8:00 Uhr</div>
+      <div class="vig"></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s12-svg"); sky(sv, "s12g", "#e6dcc6", "#c9b996");
+      el("rect", { x: 0, y: 1100, width: 1080, height: 820, fill: "#8d7556" }, sv);
+      const T = woman(sv, 900, 1080, 2.0, "#8b5bd6");
+      const tears = [0, 1, 2, 3].map((k) => el("ellipse", { cx: 900 + (k % 2 ? 16 : -16) * 2, cy: 1080 - 150 * 2, rx: 6, ry: 10, fill: "#7cc8ff", opacity: 0 }, sv));
+      const boys = [[200, "#ff6a3d"], [420, "#4da3ff"], [640, "#39e27a"]].map(([x, c]) => { const f = finn(sv, x, 1190, 1.8, { hood: c, arm: shade(c, 0.85), label: "" });
+        el("rect", { x: x - 110, y: 1030, width: 220, height: 24, rx: 6, fill: "#c79a5b" }, sv); el("rect", { x: x - 100, y: 1054, width: 200, height: 140, fill: "#a87d44" }, sv); return f; });
+      const wa = at("L16b", "wach"), me = at("L16c", "melden"), we = at("L16c", "weint");
+      tl.fromTo("#s12-b", { opacity: 0 }, { opacity: 1, duration: 0.4 }, 0.6);
+      boys.forEach((b, i) => { tl.to(b.head, { y: -6, duration: 0.15, yoyo: true, repeat: 1 }, wa + i * 0.1); tl.to(b.mouth, { attr: { d: "M-8 -153 Q0 -144 8 -153" }, duration: 0.15 }, wa); });
+      boys.forEach((b, i) => tl.to(b.aR, { rotation: -170, svgOrigin: "37 -126", duration: 0.25, ease: "back.out(2)" }, me + i * 0.12));
+      tl.to(T.mouth, { attr: { d: "M-6 -147 Q0 -153 6 -147" }, duration: 0.15 }, we);
+      tears.forEach((t, k) => tl.fromTo(t, { opacity: 1, y: 0 }, { opacity: 0, y: 140, duration: 0.6, repeat: 2, ease: "power1.in", immediateRender: false }, we + k * 0.15));
+      tl.to(T.g, { y: 1074, duration: 0.15, yoyo: true, repeat: 7 }, we);
+      tl.to("#s12-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s12"] = tl;
+    })();
+  </script>
+</template>

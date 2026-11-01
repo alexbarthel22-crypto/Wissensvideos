@@ -1,0 +1,531 @@
+{
+ "title": "Was wäre, wenn ALLE Männer beim No Nut November mitmachen?",
+ "voice": "Google Chirp 3 HD (de-DE-Chirp3-HD-Puck), --speed 1.16",
+ "style": "cinema",
+ "lead_in": 0.9,
+ "nocap": [],
+ "_zahlen": "Weltbevölkerung ~8,2 Mrd., davon ~50,4 % männlich ≈ 4,1 Mrd. Jiang et al. (2003): Testosteron-Spitze am 7. Abstinenztag ~145,7 %, danach normal. Rest = humorvolles Gedankenexperiment.",
+ "pronunciations": {
+  "No Nut November": "noʊ nat noˈvɛmbɐ"
+ },
+ "scenes": [
+  {
+   "id": "s01",
+   "tag": "",
+   "lines": [
+    {
+     "id": "L1",
+     "text": "*r:Eilmeldung. / *r:Alle Männer der Welt / machen beim *p:No_Nut_November mit.",
+     "speed": 0.95
+    },
+    {
+     "id": "L2",
+     "text": "Über *y:vier *y:Milliarden. / *r:Dreißig *r:Tage. / Kein einziges *p:Sack-Silvester|Sack_Silvester.",
+     "pause": 0.15
+    },
+    {
+     "id": "L3",
+     "text": "Und am *g:ersten *g:Dezember / passiert etwas, / womit *r:keiner rechnet."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "alarm",
+     "at": "s01+0.0",
+     "volume": 0.85
+    },
+    {
+     "name": "impact-bass-1",
+     "at": "L1:Alle",
+     "volume": 0.7
+    },
+    {
+     "name": "impact-bass-2",
+     "at": "L2:vier",
+     "volume": 0.5
+    },
+    {
+     "name": "impact-bass-1",
+     "at": "L2:Sack",
+     "volume": 0.6
+    },
+    {
+     "name": "glitch-1",
+     "at": "L3:keiner",
+     "volume": 0.2
+    }
+   ]
+  },
+  {
+   "id": "s02",
+   "tag": "",
+   "jump": [
+    "TAG 1",
+    "WELTWEIT"
+   ],
+   "lines": [
+    {
+     "id": "L4",
+     "text": "Tag eins. / Die Welt ist *g:motiviert."
+    },
+    {
+     "id": "L5",
+     "text": "Fitnessstudios haben *r:Schlangen / bis auf die *r:Straße."
+    },
+    {
+     "id": "L6",
+     "text": "Und Millionen Männer / entdecken ein neues Hobby: / *b:kalt *b:duschen."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "pop",
+     "at": "L5:Schlangen",
+     "volume": 0.35
+    },
+    {
+     "name": "glitch-1",
+     "at": "L6:kalt",
+     "volume": 0.2
+    }
+   ]
+  },
+  {
+   "id": "s03",
+   "tag": "",
+   "jump": [
+    "TAG 2",
+    "DAS INTERNET"
+   ],
+   "lines": [
+    {
+     "id": "L7",
+     "text": "Tag zwei. / Das Internet merkt es *r:sofort.",
+     "stat": []
+    },
+    {
+     "id": "L8",
+     "text": "Gewisse Webseiten, / *y:du *y:weißt *y:welche, / verlieren *r:über *r:die *r:Hälfte / ihrer Besucher."
+    },
+    {
+     "id": "L9",
+     "text": "Und die Taschentuch-Verkäufe / sinken."
+    },
+    {
+     "id": "L9b",
+     "text": "*b:Komischerweise.",
+     "pause": 0.35,
+     "speed": 0.9
+    }
+   ],
+   "sfx": [
+    {
+     "name": "error",
+     "at": "L8:Hälfte",
+     "volume": 0.3
+    },
+    {
+     "name": "impact-bass-2",
+     "at": "L9b:Komischerweise",
+     "volume": 0.4
+    }
+   ]
+  },
+  {
+   "id": "s04",
+   "tag": "",
+   "jump": [
+    "LENA, 17",
+    "IHRE SICHT"
+   ],
+   "lines": [
+    {
+     "id": "L10",
+     "text": "Jetzt zu *p:Lena, *y:17|siebzehn.",
+     "stat": []
+    },
+    {
+     "id": "L11",
+     "text": "Lena merkt: / Jungs antworten plötzlich / *g:in *g:Sekunden."
+    },
+    {
+     "id": "L12",
+     "text": "Mit *g:ganzen *g:Sätzen. / Und *g:Satzzeichen."
+    },
+    {
+     "id": "L13",
+     "text": "Ihr Sitznachbar *y:Jonas / hat zum ersten Mal / *g:Hausaufgaben gemacht."
+    },
+    {
+     "id": "L13b",
+     "text": "Und er riecht nach Parfüm. / *r:Viel *r:zu *r:viel Parfüm."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "notification",
+     "at": "L11:Sekunden",
+     "volume": 0.45
+    },
+    {
+     "name": "notification",
+     "at": "L12:Sätzen",
+     "volume": 0.4
+    },
+    {
+     "name": "pop",
+     "at": "L13:Hausaufgaben",
+     "volume": 0.35
+    },
+    {
+     "name": "glitch-1",
+     "at": "L13b:Viel",
+     "volume": 0.2
+    }
+   ]
+  },
+  {
+   "id": "s05",
+   "tag": "",
+   "jump": [
+    "TAG 7",
+    "TESTOSTERON"
+   ],
+   "lines": [
+    {
+     "id": "L14",
+     "text": "Tag|Taak sieben. / Weltweit steigt das *b:Testosteron / kurz auf etwa *y:145|hundertfünfundvierzig *y:Prozent.",
+     "stat": [
+      "TESTOSTERON",
+      "145 %",
+      "TAG 7 · STUDIE 2003"
+     ]
+    },
+    {
+     "id": "L15",
+     "text": "Auf jedem Bolzplatz: / *r:mehr *r:Fouls. / Im Straßenverkehr: / *r:mehr *r:Hupen.",
+     "stat": []
+    },
+    {
+     "id": "L16",
+     "text": "Und jeder Mann glaubt, / er könnte gegen einen *y:Bären gewinnen."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "error",
+     "at": "L15:Fouls",
+     "volume": 0.3
+    },
+    {
+     "name": "notification",
+     "at": "L15:Hupen",
+     "volume": 0.3
+    },
+    {
+     "name": "impact-bass-1",
+     "at": "L16:Bären",
+     "volume": 0.5
+    }
+   ]
+  },
+  {
+   "id": "s12",
+   "tag": "",
+   "jump": [
+    "TAG 9",
+    "DIE SCHULE"
+   ],
+   "lines": [
+    {
+     "id": "L16b",
+     "text": "Tag neun. In der Schule: / *g:Alle *g:Jungs sind *g:wach. / Um *y:acht *y:Uhr morgens."
+    },
+    {
+     "id": "L16c",
+     "text": "Sie *g:melden *g:sich. / Die Lehrerin / *r:weint *r:vor *r:Glück."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "pop",
+     "at": "L16c:melden",
+     "volume": 0.35
+    },
+    {
+     "name": "impact-bass-2",
+     "at": "L16c:weint",
+     "volume": 0.4
+    }
+   ]
+  },
+  {
+   "id": "s06",
+   "tag": "",
+   "jump": [
+    "TAG 13",
+    "GEFAHRENZONE"
+   ],
+   "lines": [
+    {
+     "id": "L17",
+     "text": "Tag dreizehn. / Die *r:Gefahrenzone."
+    },
+    {
+     "id": "L18",
+     "text": "Jede Sekunde scheitern / *r:Tausende Männer. / Die meisten, logisch, *r:nachts.",
+     "stat": [
+      "NOCH DABEI",
+      "4,1 Mrd.",
+      "TAG 1"
+     ]
+    },
+    {
+     "id": "L19",
+     "text": "Weltweiter Stand: / *r:Die *r:Hälfte ist *r:raus.",
+     "stat": [
+      "NOCH DABEI",
+      "2,05 Mrd.",
+      "TAG 13"
+     ]
+    }
+   ],
+   "sfx": [
+    {
+     "name": "heartbeat",
+     "at": "L18:Tausende",
+     "volume": 0.5
+    },
+    {
+     "name": "impact-bass-2",
+     "at": "L19:Hälfte",
+     "volume": 0.5
+    }
+   ]
+  },
+  {
+   "id": "s07",
+   "tag": "",
+   "jump": [
+    "TAG 18",
+    "DIE MÜTTER"
+   ],
+   "lines": [
+    {
+     "id": "L20",
+     "text": "Tag achtzehn. / Die *p:Mütter sind *r:verwirrt.",
+     "stat": []
+    },
+    {
+     "id": "L21",
+     "text": "Die Söhne *g:räumen *g:ihr *g:Zimmer *g:auf. / Freiwillig."
+    },
+    {
+     "id": "L22",
+     "text": "Und im Wäschekorb / sind komischerweise / *g:viel *g:weniger *g:Socken."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "pop",
+     "at": "L21:Freiwillig",
+     "volume": 0.35
+    },
+    {
+     "name": "impact-bass-2",
+     "at": "L22:Socken",
+     "volume": 0.4
+    }
+   ]
+  },
+  {
+   "id": "s08",
+   "tag": "",
+   "jump": [
+    "TAG 21",
+    "DIE WETTE"
+   ],
+   "lines": [
+    {
+     "id": "L23",
+     "text": "Lena und ihre Freundinnen / starten eine *y:Wette:"
+    },
+    {
+     "id": "L24",
+     "text": "Wer aus der Klasse / hält *g:am *g:längsten durch?",
+     "speed": 1.0
+    },
+    {
+     "id": "L25",
+     "text": "Der Klassenchat: / *r:Elf *r:Jungs. / *r:Zwei sind noch dabei.",
+     "stat": [
+      "KLASSE 11B",
+      "2 / 11",
+      "NOCH DABEI"
+     ]
+    },
+    {
+     "id": "L26",
+     "text": "Einer davon ist *y:Jonas. / Lena ist *p:beeindruckt.",
+     "stat": []
+    }
+   ],
+   "sfx": [
+    {
+     "name": "notification",
+     "at": "L25:Elf",
+     "volume": 0.4
+    },
+    {
+     "name": "error",
+     "at": "L25:Zwei",
+     "volume": 0.3
+    },
+    {
+     "name": "pop",
+     "at": "L26:beeindruckt",
+     "volume": 0.4
+    }
+   ]
+  },
+  {
+   "id": "s09",
+   "tag": "",
+   "jump": [
+    "TAG 25",
+    "REALITÄTS-CHECK"
+   ],
+   "lines": [
+    {
+     "id": "L27",
+     "text": "Kurzer Realitäts-Check: / *r:Superkräfte gibt's keine."
+    },
+    {
+     "id": "L28",
+     "text": "Und den *g:Balken *g:hobeln / ist laut Ärzten / *g:völlig *g:normal und *g:gesund."
+    },
+    {
+     "id": "L29",
+     "text": "Die Challenge ist ein *y:Spaß. / Und ein *y:Disziplin-Test."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "error",
+     "at": "L27:Superkräfte",
+     "volume": 0.3
+    },
+    {
+     "name": "pop",
+     "at": "L28:normal",
+     "volume": 0.35
+    }
+   ]
+  },
+  {
+   "id": "s13",
+   "tag": "",
+   "jump": [
+    "TAG 29",
+    "DIE LETZTEN"
+   ],
+   "lines": [
+    {
+     "id": "L29b",
+     "text": "Tag neunundzwanzig. / Die letzten Kämpfer / streichen die Tage ab / wie im *r:Gefängnis."
+    },
+    {
+     "id": "L29c",
+     "text": "Und ein Mann in Bayern / erzählt seinem *b:Kühlschrank / von seinen *p:Gefühlen."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "impact-bass-2",
+     "at": "L29b:Gefängnis",
+     "volume": 0.4
+    },
+    {
+     "name": "pop",
+     "at": "L29c:Kühlschrank",
+     "volume": 0.35
+    }
+   ]
+  },
+  {
+   "id": "s10",
+   "tag": "",
+   "jump": [
+    "01.12.",
+    "00:00 UHR"
+   ],
+   "lines": [
+    {
+     "id": "L30",
+     "text": "Und dann: / *g:erster *g:Dezember. / *r:Mitternacht.",
+     "speed": 0.95
+    },
+    {
+     "id": "L31",
+     "text": "Über eine Milliarde Männer / feiern *r:gleichzeitig / *p:Sack-Silvester|Sack_Silvester.",
+     "pause": 0.2
+    },
+    {
+     "id": "L32",
+     "text": "Die Taschentuch-Regale: / *r:leer."
+    },
+    {
+     "id": "L33",
+     "text": "Und Lena? / Hat ein *p:Date. / Mit *y:Jonas.",
+     "stat": [],
+     "pause": 0.3
+    }
+   ],
+   "sfx": [
+    {
+     "name": "midnight",
+     "at": "L30:Mitternacht-0.3",
+     "volume": 0.6
+    },
+    {
+     "name": "impact-bass-1",
+     "at": "L31:gleichzeitig",
+     "volume": 0.6
+    },
+    {
+     "name": "error",
+     "at": "L32:leer",
+     "volume": 0.3
+    },
+    {
+     "name": "pop",
+     "at": "L33:Date",
+     "volume": 0.4
+    }
+   ]
+  },
+  {
+   "id": "s11",
+   "tag": "",
+   "hold": 2.6,
+   "lines": [
+    {
+     "id": "L34",
+     "text": "Und du? / Schreib in die Kommentare: / *g:Ich *g:mach *g:mit, / oder *p:Team *p:Lena."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "pop",
+     "at": "L34:Ich",
+     "volume": 0.4
+    },
+    {
+     "name": "pop",
+     "at": "L34:Team",
+     "volume": 0.4
+    }
+   ]
+  }
+ ]
+}

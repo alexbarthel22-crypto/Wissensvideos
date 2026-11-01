@@ -1,0 +1,57 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .vig { position: absolute; left: 0; right: 0; top: 1040px; height: 880px; background: linear-gradient(rgba(10,12,30,0), rgba(10,12,30,.5) 45%, rgba(10,12,30,.55)); pointer-events: none; }
+    .chip { position: absolute; padding: 12px 26px; border-radius: 22px; background: rgba(255,255,255,.96); color: #22283f; font: 900 52px Inter, sans-serif; opacity: 0; box-shadow: 0 16px 40px rgba(0,0,0,.4); white-space: nowrap; }
+    .chip b { color: #e0484f; } .chip i { font-style: normal; color: #1fa65a; }
+    #s08-ch { left: 330px; top: 440px; width: 720px; height: 660px; border-radius: 34px; background: #f1eefa; box-shadow: 0 20px 60px rgba(0,0,0,.5); overflow: hidden; opacity: 0; }
+    #s08-ch .hd { height: 84px; background: #ff4fb0; color: #fff; font: 900 38px/84px Inter, sans-serif; text-align: center; }
+    #s08-ch .q { margin: 20px 30px 10px; font: 800 34px Inter, sans-serif; color: #22283f; }
+    .s08-n { position: absolute; width: 320px; height: 70px; border-radius: 16px; background: #fff; color: #22283f; font: 800 34px/70px Inter, sans-serif; padding-left: 24px; box-shadow: 0 3px 10px rgba(0,0,0,.08); }
+    .s08-n i { position: absolute; right: 18px; top: 0; font-style: normal; color: #ff3b55; opacity: 0; font-size: 40px; }
+  </style>
+  <div id="root" data-composition-id="s08" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s08-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <svg id="s08-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s08-ch" class="abs"><div class="hd">Klasse 11b</div><div class="q">Wer hält am längsten durch?</div>
+        <div id="s08-n0" class="s08-n" style="left:25px;top:150px">Ben<i>✕</i></div>
+        <div id="s08-n1" class="s08-n" style="left:370px;top:150px">Jonas<i>✕</i></div>
+        <div id="s08-n2" class="s08-n" style="left:25px;top:232px">Luca<i>✕</i></div>
+        <div id="s08-n3" class="s08-n" style="left:370px;top:232px">Noah<i>✕</i></div>
+        <div id="s08-n4" class="s08-n" style="left:25px;top:314px">Elias<i>✕</i></div>
+        <div id="s08-n5" class="s08-n" style="left:370px;top:314px">Paul<i>✕</i></div>
+        <div id="s08-n6" class="s08-n" style="left:25px;top:396px">Leon<i>✕</i></div>
+        <div id="s08-n7" class="s08-n" style="left:370px;top:396px">Finn<i>✕</i></div>
+        <div id="s08-n8" class="s08-n" style="left:25px;top:478px">Emil<i>✕</i></div>
+        <div id="s08-n9" class="s08-n" style="left:370px;top:478px">Tim<i>✕</i></div>
+        <div id="s08-n10" class="s08-n" style="left:25px;top:560px">Max<i>✕</i></div></div>
+      <div id="s08-h" class="chip" style="left:620px;top:470px;color:#ff4fb0">♥</div>
+      <div class="vig"></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s08-svg"); sky(sv, "s08g", "#4a2f66", "#1f1236");
+      const Lg = lena(sv, 820, 1150, 2.3); gsap.set(Lg.g, { opacity: 0 });
+      const l23 = line("L23")[0], we = at("L23", "Wette"), l24 = line("L24")[0], el_ = at("L25", "Elf"), zw = at("L25", "Zwei"), jo = at("L26", "Jonas"), be = at("L26", "beeindruckt");
+      tl.fromTo("#s08-ch", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.4 }, l24 - 0.4);
+      const out = [0, 2, 3, 4, 5, 6, 7, 8, 9, 10].filter((i) => i !== 0);
+      out.forEach((i, k) => { tl.to(`#s08-n${i} i`, { opacity: 1, duration: 0.1 }, el_ + k * ((zw - el_) / out.length)); tl.to(`#s08-n${i}`, { opacity: 0.4, duration: 0.15 }, el_ + k * ((zw - el_) / out.length)); });
+      tl.to(["#s08-n0", "#s08-n1"], { backgroundColor: "#c9f5d8", duration: 0.2 }, zw);
+      tl.to("#s08-n1", { scale: 1.12, backgroundColor: "#ffd43b", duration: 0.25, ease: "back.out(2)" }, jo - 0.1);
+      tl.to("#s08-ch", { x: -300, scale: 0.85, duration: 0.35 }, jo);
+      tl.fromTo(Lg.g, { opacity: 0, x: 1000 }, { opacity: 1, x: 820, duration: 0.35 }, jo);
+      tl.to(Lg.mouth, { attr: { d: "M-7 -153 Q0 -144 7 -153" }, duration: 0.15 }, be);
+      tl.fromTo("#s08-h", { opacity: 0, scale: 0.3, y: 40 }, { opacity: 1, scale: 1.3, y: 0, duration: 0.3, ease: "back.out(3)" }, be - 0.05);
+      tl.to("#s08-h", { scale: 1.5, duration: 0.25, yoyo: true, repeat: 3 }, be + 0.3);
+      tl.to("#s08-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s08"] = tl;
+    })();
+  </script>
+</template>

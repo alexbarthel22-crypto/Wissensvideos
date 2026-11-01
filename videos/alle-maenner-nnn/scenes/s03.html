@@ -1,0 +1,46 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .vig { position: absolute; left: 0; right: 0; top: 1040px; height: 880px; background: linear-gradient(rgba(10,12,30,0), rgba(10,12,30,.5) 45%, rgba(10,12,30,.55)); pointer-events: none; }
+    #s03-win { left: 110px; top: 470px; width: 860px; height: 560px; border-radius: 22px; background: #f4f2fa; tbox-shadow: 0 24px 60px rgba(0,0,0,.5); overflow: hidden; opacity: 0; }
+    #s03-win .bar { height: 64px; background: #dcd8e8; } #s03-win .url { position: absolute; left: 150px; top: 12px; width: 560px; height: 40px; border-radius: 20px; background: #fff; font: 700 26px/40px Inter, sans-serif; color: #5a5f7a; padding-left: 20px; }
+    #s03-win .url b { background: #22283f; color: #22283f; border-radius: 4px; }
+    #s03-k { left: 0; width: 1080px; top: 1040px; text-align: center; font: 900 96px Inter, sans-serif; color: #4da3ff; opacity: 0; text-shadow: 0 0 30px rgba(77,163,255,.8); }
+  </style>
+  <div id="root" data-composition-id="s03" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s03-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <svg id="s03-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s03-win" class="abs"><div class="bar"></div><div class="url">www.<b>geheim123</b>.com</div><svg id="s03-ch" width="860" height="496" viewBox="0 0 860 496" style="position:absolute;left:0;top:64px"></svg></div>
+      <div id="s03-k" class="abs">???</div>
+      <div class="vig"></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s03-svg"); sky(sv, "s03g", "#1d2146", "#0c0e24");
+      const ch = document.querySelector("#s03-ch"); for (let v = 0; v < 4; v++) el("line", { x1: 50, y1: 60 + v * 110, x2: 820, y2: 60 + v * 110, stroke: "#d8d4e6", "stroke-width": 2 }, ch);
+      const ln = el("path", { d: "M50 120 L180 100 L300 110 L420 90 L470 300 L560 330 L680 320 L810 340", stroke: "#ff3b55", "stroke-width": 12, fill: "none", "stroke-linejoin": "round", "stroke-linecap": "round", "stroke-dasharray": 1300, "stroke-dashoffset": 1300 }, ch);
+      txt(ch, 640, 300, "−50 %", 64, "#ff3b55", { opacity: 0, id: "s03-m" });
+      const tbox = el("g", { opacity: 0 }, sv); el("rect", { x: 380, y: 640, width: 320, height: 200, rx: 18, fill: "#8ad0ff" }, tbox); el("rect", { x: 380, y: 640, width: 320, height: 60, rx: 18, fill: "#5fb3f0" }, tbox);
+      el("path", { d: "M490 640 Q540 560 590 640Z", fill: "#fff" }, tbox); txt(tbox, 540, 790, "TASCHENTÜCHER", 32, "#1d3c66");
+      const arr = el("g", { opacity: 0 }, sv); el("path", { d: "M800 600 V820 L760 780 M800 820 L840 780", stroke: "#ff3b55", "stroke-width": 18, fill: "none", "stroke-linecap": "round", "stroke-linejoin": "round" }, arr);
+      const ha = at("L8", "Hälfte"), l9 = line("L9")[0], si = at("L9", "sinken"), ko = at("L9b", "Komischerweise");
+      tl.fromTo("#s03-win", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, 0.9);
+      tl.to(ln, { attr: { "stroke-dashoffset": 0 }, duration: 1.4, ease: "power1.in" }, ha - 1.0);
+      tl.to("#s03-m", { opacity: 1, duration: 0.2 }, ha + 0.3);
+      tl.to("#s03-win", { opacity: 0, y: -60, duration: 0.3 }, l9 - 0.2);
+      tl.fromTo(tbox, { opacity: 0, scale: 0.6, svgOrigin: "540 740" }, { opacity: 1, scale: 1, svgOrigin: "540 740", duration: 0.35, ease: "back.out(2)" }, l9);
+      tl.fromTo(arr, { opacity: 0, y: -60 }, { opacity: 1, y: 0, duration: 0.3 }, si - 0.1);
+      tl.fromTo("#s03-k", { opacity: 0, scale: 1.5 }, { opacity: 1, scale: 1, duration: 0.25 }, ko - 0.05);
+      tl.to(tbox, { rotation: -6, svgOrigin: "540 740", duration: 0.12, yoyo: true, repeat: 3 }, ko);
+      tl.to("#s03-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s03"] = tl;
+    })();
+  </script>
+</template>
