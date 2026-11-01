@@ -1,6 +1,6 @@
 {
  "title": "Warum kommen hochintelligente Menschen immer zu spät?",
- "voice": "Google Chirp 3 HD (de-DE-Chirp3-HD-Puck), --speed 1.16",
+ "voice": "Gemini TTS (gemini-3.8-flash-tts, Stimme Puck)",
  "style": "oneword",
  "lead_in": 0.3,
  "nocap": [],
@@ -241,5 +241,8 @@
     }
    ]
   }
- ]
+ ],
+ "gemini_model": "gemini-3.8-flash-tts",
+ "gemini_voice": "Puck",
+ "gemini_style": "[packend, emotional, spannend, lebendig, zügig]"
 }

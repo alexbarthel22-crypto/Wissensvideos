@@ -5,15 +5,19 @@
     .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
       font-family: "Inter", sans-serif; font-weight: 900; }
     .vig { position: absolute; left: 0; right: 0; top: 1040px; height: 880px; background: linear-gradient(rgba(10,12,30,0), rgba(10,12,30,.5) 45%, rgba(10,12,30,.55)); pointer-events: none; }
-    .lab { position: absolute; padding: 10px 24px; border-radius: 18px; background: rgba(20,10,50,.82); border: 3px solid #8ff4ff; color: #fff; font: 900 52px Inter, sans-serif; opacity: 0; box-shadow: 0 0 30px rgba(143,244,255,.4); white-space: nowrap; }
+    .sh { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover; opacity: 0; }
+    .lab { position: absolute; padding: 10px 26px; border-radius: 18px; background: rgba(20,10,50,.85); border: 3px solid #8ff4ff; color: #fff; font: 900 56px Inter, sans-serif; opacity: 0; box-shadow: 0 0 30px rgba(143,244,255,.4); white-space: nowrap; }
     .lab.r { border-color: #ff6b8a; box-shadow: 0 0 30px rgba(255,107,138,.5); } .lab.g { border-color: #7dffb0; box-shadow: 0 0 30px rgba(125,255,176,.5); } .lab.y { border-color: #ffd84a; }
-    #s01-clk { left: 330px; top: 300px; width: 660px; height: 230px; border-radius: 40px; background: linear-gradient(#ff9a5a, #d8542e); padding: 16px; box-shadow: 0 0 60px rgba(255,120,60,.6); }
-    #s01-clk .in { width: 100%; height: 100%; border-radius: 26px; background: #2a0e2e; text-align: center; font: 700 116px/198px "Space Mono", monospace; color: #ff8a4a; text-shadow: 0 0 24px rgba(255,138,74,.9); letter-spacing: -.02em; }
   </style>
   <div id="root" data-composition-id="s01" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
     <div id="s01-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
-      <svg id="s01-svg" class="full" viewBox="0 0 1080 1920"></svg>
-      <div id="s01-clk" class="abs"><div class="in" id="s01-t">22:45:45</div></div>
+      <img id="s01-i0" class="sh" src="assets/img/c45.png" alt="">
+      <img id="s01-i1" class="sh" src="assets/img/c46.png" alt="">
+      <img id="s01-i2" class="sh" src="assets/img/c47.png" alt="">
+      <img id="s01-i3" class="sh" src="assets/img/c48.png" alt="">
+      <img id="s01-i4" class="sh" src="assets/img/c45.png" alt="">
+      <img id="s01-i5" class="sh" src="assets/img/c46.png" alt="">
+      <img id="s01-i6" class="sh" src="assets/img/brain.png" alt="">
       <div class="vig"></div>
     </div>
   </div>
@@ -22,18 +26,12 @@
       /*__CUE_HELPERS__*/
 /*__COMMON_JS__*/
       const tl = gsap.timeline({ paused: true });
-      const sv = document.querySelector("#s01-svg"), A = el("g", {}, sv), Bz = el("g", { opacity: 0 }, sv); room(A, "s01a"); defsG(sv);
-      el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: "url(#s01-svgR)", opacity: 0.25 }, A);
-      const P = sitter(A, 330, 1150, 2.4);
-      room(Bz, "s01b", "#251a6e", "#7a2fa0"); const H = brainHead(Bz, 470, 900, 1.7);
-      const ge = at("L2", "Gehirn"), l2 = line("L2")[0];
-      for (let k = 1; k <= 7; k++) tl.set("#s01-t", { textContent: "22:45:" + (45 + k) }, k * 0.8);
-      tl.fromTo(A, { scale: 1, svgOrigin: "540 900" }, { scale: 1.08, svgOrigin: "540 900", duration: ge, ease: "none" }, 0);
-      tl.to(P.head, { rotation: 6, svgOrigin: "-10 -200", duration: 1.2, yoyo: true, repeat: 3, ease: "sine.inOut" }, 0.5);
-      tl.to("#s01-clk", { opacity: 0, duration: 0.15 }, ge - 0.25);
-      tl.set(A, { opacity: 0 }, ge - 0.25); tl.set(Bz, { opacity: 1 }, ge - 0.25);
-      H.rings.forEach((r, i) => tl.fromTo(r, { scale: 0.6, opacity: 0, svgOrigin: "0 -40" }, { scale: 1.1, opacity: 0.9 - i * 0.12, svgOrigin: "0 -40", duration: 1.2, repeat: 2, ease: "power1.out", immediateRender: false }, ge - 0.25 + i * 0.12));
-      tl.fromTo(H.br, { scale: 0.9, svgOrigin: "10 -50" }, { scale: 1.06, svgOrigin: "10 -50", duration: 0.4, yoyo: true, repeat: 5, immediateRender: false }, ge);
+      const T = [0.00, 0.75, 1.50, 2.25, 3.00, 3.75, at("L2", "Gehirn") - 0.05];
+      T.forEach((t, k) => { const e = "#s01-i" + k, t2 = k + 1 < T.length ? T[k + 1] : C.__dur;
+        tl.set(e, { opacity: 1 }, t); if (k) tl.set("#s01-i" + (k - 1), { opacity: 0 }, t);
+        tl.fromTo(e, { scale: 1.02, x: 0, y: 0 }, { scale: 1.12, x: (k % 2 ? -18 : 18), y: (k % 3 ? -14 : 10), duration: Math.max(0.3, t2 - t + 0.2), ease: "none", immediateRender: false }, t); });
+      const br = document.querySelector("#s01-i6");
+      tl.fromTo(br, { filter: "brightness(1)" }, { filter: "brightness(1.35)", duration: 0.35, yoyo: true, repeat: 3, immediateRender: false }, at("L2", "Gehirn"));
       tl.to("#s01-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
       window.__timelines["s01"] = tl;
     })();

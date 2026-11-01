@@ -22,23 +22,22 @@
     .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
       font-family: "Inter", sans-serif; font-weight: 900; }
     .vig { position: absolute; left: 0; right: 0; top: 1040px; height: 880px; background: linear-gradient(rgba(10,12,30,0), rgba(10,12,30,.5) 45%, rgba(10,12,30,.55)); pointer-events: none; }
-    .lab { position: absolute; padding: 10px 24px; border-radius: 18px; background: rgba(20,10,50,.82); border: 3px solid #8ff4ff; color: #fff; font: 900 52px Inter, sans-serif; opacity: 0; box-shadow: 0 0 30px rgba(143,244,255,.4); white-space: nowrap; }
+    .sh { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover; opacity: 0; }
+    .lab { position: absolute; padding: 10px 26px; border-radius: 18px; background: rgba(20,10,50,.85); border: 3px solid #8ff4ff; color: #fff; font: 900 56px Inter, sans-serif; opacity: 0; box-shadow: 0 0 30px rgba(143,244,255,.4); white-space: nowrap; }
     .lab.r { border-color: #ff6b8a; box-shadow: 0 0 30px rgba(255,107,138,.5); } .lab.g { border-color: #7dffb0; box-shadow: 0 0 30px rgba(125,255,176,.5); } .lab.y { border-color: #ffd84a; }
-    #s08-bar { left: 140px; top: 820px; width: 560px; height: 90px; border-radius: 16px; background: linear-gradient(90deg, #8ff4ff, #6d63e8); box-shadow: 0 0 40px rgba(143,244,255,.5); opacity: 0; }
-    #s08-pz { left: 700px; top: 820px; width: 0; height: 90px; border-radius: 0 16px 16px 0; background: #7dffb0; box-shadow: 0 0 40px rgba(125,255,176,.7); }
   </style>
-  <div id="root" data-composition-id="s08" data-start="0" data-duration="6.770" data-width="1080" data-height="1920">
-    <div id="s08-stage" class="clip stage" data-start="0" data-duration="6.770" data-track-index="0">
-      <svg id="s08-svg" class="full" viewBox="0 0 1080 1920"></svg>
-      <div id="s08-bar" class="abs"></div><div id="s08-pz" class="abs"></div>
-      <div id="s08-l" class="lab g" style="left:470px;top:950px">+33 % PUFFER</div>
+  <div id="root" data-composition-id="s08" data-start="0" data-duration="6.470" data-width="1080" data-height="1920">
+    <div id="s08-stage" class="clip stage" data-start="0" data-duration="6.470" data-track-index="0">
+      <img id="s08-i0" class="sh" src="assets/img/think.png" alt="">
+      <img id="s08-i1" class="sh" src="assets/img/plan.png" alt="">
+      <div id="s08-l" class="lab g" style="left:200px;top:1330px">+33 % PUFFER</div>
       <div class="vig"></div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 6.77, "L14": [0.2, 3.08], "L14.words": [["aber", 0.2, 0.492], ["ehrlich", 0.492, 0.8], ["zu", 1.24, 1.399], ["spät", 1.399, 1.57], ["kommen", 1.57, 1.901], ["macht", 1.901, 2.077], ["dich", 2.077, 2.248], ["nicht", 2.248, 2.425], ["intelligent", 2.425, 3.08]], "L15": [3.3, 6.59], "L15.words": [["der", 3.3, 3.517], ["trick", 3.517, 3.75], ["plane", 4.3, 4.643], ["ein", 4.643, 4.818], ["drittel", 4.818, 5.173], ["mehr", 5.173, 5.354], ["zeit", 5.354, 5.535], ["ein", 5.535, 5.71], ["immer", 6.23, 6.59]]};
+      const C = {"__dur": 6.47, "L14": [0.2, 2.89], "L14.words": [["aber", 0.2, 0.463], ["ehrlich", 0.463, 0.74], ["zu", 0.87, 1.045], ["spät", 1.045, 1.233], ["kommen", 1.233, 1.595], ["macht", 1.595, 1.789], ["dich", 1.789, 1.977], ["nicht", 1.977, 2.171], ["intelligent", 2.171, 2.89]], "L15": [3.11, 6.29], "L15.words": [["der", 3.11, 3.298], ["trick", 3.298, 3.5], ["plane", 3.93, 4.329], ["ein", 4.329, 4.532], ["drittel", 4.532, 4.946], ["mehr", 4.946, 5.156], ["zeit", 5.156, 5.367], ["ein", 5.367, 5.57], ["immer", 5.97, 6.29]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -296,16 +295,11 @@
         const l = el("path", { d, stroke: col, "stroke-width": w, fill: "none", "stroke-linecap": "round", "stroke-linejoin": "round", "stroke-dasharray": 3000, "stroke-dashoffset": 3000 }, g); g.l = l; return g; }
 
       const tl = gsap.timeline({ paused: true });
-      const sv = document.querySelector("#s08-svg"), A = el("g", {}, sv), Bz = el("g", { opacity: 0 }, sv); room(A, "s08a", "#2a1158", "#8a2b8f"); defsG(sv);
-      const H = brainHead(A, 470, 920, 1.6); const q = txt(A, 480, 900, "?", 240, "#fff", { opacity: 0 });
-      room(Bz, "s08b", "#16305e", "#3a2a9a");
-      const ni = at("L14", "nicht"), l15 = line("L15")[0], dr = at("L15", "Drittel"), im = at("L15", "Immer");
-      tl.to(q, { opacity: 1, duration: 0.2 }, ni - 0.2); tl.to(H.br, { opacity: 0.4, duration: 0.3 }, ni - 0.2);
-      tl.set(A, { opacity: 0 }, l15 - 0.1); tl.set(Bz, { opacity: 1 }, l15 - 0.1);
-      tl.fromTo("#s08-bar", { opacity: 0, scaleX: 0, transformOrigin: "0 50%" }, { opacity: 1, scaleX: 1, duration: 0.4 }, l15);
-      tl.to("#s08-pz", { width: 190, duration: 0.5, ease: "back.out(1.5)" }, dr - 0.2);
-      tl.fromTo("#s08-l", { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(2.5)" }, dr + 0.2);
-      tl.to("#s08-pz", { boxShadow: "0 0 70px rgba(125,255,176,1)", duration: 0.2, yoyo: true, repeat: 3 }, im);
+      const T = [0, line("L15")[0] - 0.05];
+      T.forEach((t, k) => { const e = "#s08-i" + k, t2 = k + 1 < T.length ? T[k + 1] : C.__dur;
+        tl.set(e, { opacity: 1 }, t); if (k) tl.set("#s08-i" + (k - 1), { opacity: 0 }, t);
+        tl.fromTo(e, { scale: 1.02, x: 0, y: 0 }, { scale: 1.12, x: (k % 2 ? -18 : 18), y: (k % 3 ? -14 : 10), duration: Math.max(0.3, t2 - t + 0.2), ease: "none", immediateRender: false }, t); });
+      tl.fromTo("#s08-l", { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(2.5)" }, at("L15", "Drittel") - 0.1);
       tl.to("#s08-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
       window.__timelines["s08"] = tl;
     })();

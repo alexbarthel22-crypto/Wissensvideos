@@ -102,6 +102,39 @@ for i, (t, ls) in enumerate(zip(job["texts"], job["scales"])):
     return out
 
 
+def synth_gemini(texts, voice, scales, style, model):
+    """Gemini-TTS (natürliche, emotionale Stimme). Schlüssel aus $GEMINI_API_KEY. style = Regieanweisung."""
+    import base64, io, time, urllib.request, urllib.error, subprocess, tempfile
+    key = os.environ.get("GEMINI_API_KEY")
+    if not key:
+        raise SystemExit("GEMINI_API_KEY fehlt.")
+    out = []
+    for t, ls in zip(texts, scales):
+        body = {"contents": [{"parts": [{"text": f"{style} {t}".strip()}]}],
+                "generationConfig": {"responseModalities": ["AUDIO"], "speechConfig": {"voiceConfig": {"prebuiltVoiceConfig": {"voiceName": voice}}}}}
+        for attempt in range(5):
+            try:
+                req = urllib.request.Request(f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={key}",
+                                             data=json.dumps(body).encode(), headers={"Content-Type": "application/json"})
+                d = json.load(urllib.request.urlopen(req, timeout=180))
+                b = base64.b64decode(d["candidates"][0]["content"]["parts"][0]["inlineData"]["data"])
+                break
+            except (urllib.error.HTTPError, KeyError, urllib.error.URLError) as e:
+                if attempt == 4: raise
+                time.sleep(4 * (attempt + 1))
+        if b[:4] == b"RIFF":
+            audio, sr = sf.read(io.BytesIO(b), dtype="float32")
+        else:
+            audio, sr = np.frombuffer(b, dtype="<i2").astype("float32") / 32768.0, 24000
+        if abs(ls - 1.0) > 0.01:  # Tempo per atempo (Tonhöhe bleibt)
+            with tempfile.TemporaryDirectory() as td:
+                sf.write(f"{td}/a.wav", audio, sr)
+                subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", f"{td}/a.wav", "-af", f"atempo={1 / ls:.3f}", f"{td}/b.wav"], check=True)
+                audio, sr = sf.read(f"{td}/b.wav", dtype="float32")
+        out.append((audio, sr))
+    return out
+
+
 def synth_google(texts, voice, scales, prons=None, voices=None):
     """Google Cloud TTS (Chirp 3 HD): echte, natürliche Stimmen. Schlüssel aus $GOOGLE_TTS_API_KEY.
     prons: {"Relaxo": "ʁeˈlakso"} – Aussprache in IPA für Namen, die die Stimme falsch liest."""
@@ -243,7 +276,7 @@ def word_times(words, duration, audio):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("project")
-    ap.add_argument("--backend", choices=["google", "coqui", "piper"], default="coqui")
+    ap.add_argument("--backend", choices=["google", "gemini", "coqui", "piper"], default="coqui")
     ap.add_argument("--voice-dir", help="Piper-Stimmenordner oder Coqui-Modellordner (Standard: aus tools/setup.sh)")
     ap.add_argument("--coqui-python", default=str(CACHE / "coqui" / "bin" / "python"))
     ap.add_argument("--speed", type=float, default=1.0, help="Grundtempo (>1 = schneller); pro Zeile mit 'speed' feinjustierbar")
@@ -272,6 +305,9 @@ def main():
     if args.backend == "google":
         raw = synth_google(texts, args.voice if args.voice.startswith("de-DE") else "de-DE-Chirp3-HD-Puck", scales,
                            script.get("pronunciations"), [l.get("voice") for l in lines])
+    elif args.backend == "gemini":
+        raw = synth_gemini(texts, script.get("gemini_voice", "Puck"), scales, script.get("gemini_style", "Lies auf Deutsch vor:"),
+                           script.get("gemini_model", "gemini-3.8-flash-tts"))
     elif args.backend == "piper":
         raw = synth_piper(texts, args.voice_dir, scales, args.noise)
     else:
@@ -283,7 +319,7 @@ def main():
     pieces, t = [np.zeros(int(lead * SR), dtype="float32")], lead
     for line, (audio, sr) in zip(lines, raw):
         audio = resample(audio.astype("float32"), sr)
-        if args.backend != "google":  # echte Stimme braucht keine Klang-Reparatur
+        if args.backend not in ("google", "gemini"):  # echte Stimme braucht keine Klang-Reparatur
             audio = clarity(audio)
         audio = compress_pauses(trim(audio), args.max_gap)
         if line["gain"] != 1.0:  # einzelne Zeile lauter/leiser (z. B. Durchsage), weich begrenzt

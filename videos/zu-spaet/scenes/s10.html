@@ -5,15 +5,17 @@
     .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
       font-family: "Inter", sans-serif; font-weight: 900; }
     .vig { position: absolute; left: 0; right: 0; top: 1040px; height: 880px; background: linear-gradient(rgba(10,12,30,0), rgba(10,12,30,.5) 45%, rgba(10,12,30,.55)); pointer-events: none; }
-    .lab { position: absolute; padding: 10px 24px; border-radius: 18px; background: rgba(20,10,50,.82); border: 3px solid #8ff4ff; color: #fff; font: 900 52px Inter, sans-serif; opacity: 0; box-shadow: 0 0 30px rgba(143,244,255,.4); white-space: nowrap; }
+    .sh { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover; opacity: 0; }
+    .lab { position: absolute; padding: 10px 26px; border-radius: 18px; background: rgba(20,10,50,.85); border: 3px solid #8ff4ff; color: #fff; font: 900 56px Inter, sans-serif; opacity: 0; box-shadow: 0 0 30px rgba(143,244,255,.4); white-space: nowrap; }
     .lab.r { border-color: #ff6b8a; box-shadow: 0 0 30px rgba(255,107,138,.5); } .lab.g { border-color: #7dffb0; box-shadow: 0 0 30px rgba(125,255,176,.5); } .lab.y { border-color: #ffd84a; }
   </style>
   <div id="root" data-composition-id="s10" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
     <div id="s10-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
-      <svg id="s10-svg" class="full" viewBox="0 0 1080 1920"></svg>
-      <div id="s10-a" class="lab g" style="left:140px;top:420px">DUSCHEN: 3 MIN</div><div id="s10-b" class="lab g" style="left:140px;top:540px">ANZIEHEN: 1 MIN</div>
-      <div id="s10-c" class="lab r" style="left:240px;top:1250px;font-size:84px">20 MIN</div>
-      <div id="s10-d" class="lab y" style="left:330px;top:400px;font-size:90px">+5 MIN</div>
+      <img id="s10-i0" class="sh" src="assets/img/shower.png" alt="">
+      <img id="s10-i1" class="sh" src="assets/img/dress.png" alt="">
+      <img id="s10-i2" class="sh" src="assets/img/door.png" alt="">
+      <div id="s10-a" class="lab g" style="left:90px;top:330px">DUSCHEN: 3 MIN</div><div id="s10-b" class="lab g" style="left:90px;top:450px">ANZIEHEN: 1 MIN</div>
+      <div id="s10-c" class="lab r" style="left:220px;top:1330px;font-size:84px">REAL: 20 MIN</div><div id="s10-d" class="lab y" style="left:300px;top:1330px;font-size:90px">+5 MIN</div>
       <div class="vig"></div>
     </div>
   </div>
@@ -22,26 +24,15 @@
       /*__CUE_HELPERS__*/
 /*__COMMON_JS__*/
       const tl = gsap.timeline({ paused: true });
-      const sv = document.querySelector("#s10-svg"), A = el("g", {}, sv), Bz = el("g", { opacity: 0 }, sv); room(A, "s10a", "#123a6e", "#4a2a9a"); defsG(sv);
-      el("rect", { x: 520, y: 640, width: 24, height: 120, fill: "#c9d4ff" }, A); el("path", { d: "M460 760 H610 L590 800 H480Z", fill: "#e9ecff" }, A);
-      const drops = []; for (let i = 0; i < 18; i++) drops.push(el("line", { x1: 480 + (i % 6) * 22, y1: 820, x2: 480 + (i % 6) * 22, y2: 850, stroke: "#8ff4ff", "stroke-width": 6, "stroke-linecap": "round" }, A));
-      const P = person(A, 535, 1400, 1.8);
-      const K = aclock(A, 870, 1000, 110);
-      room(Bz, "s10b", "#2a1060", "#a02f7a");
-      el("rect", { x: 380, y: 620, width: 320, height: 760, rx: 12, fill: "#3b2a8a", stroke: "#8ff4ff", "stroke-width": 8 }, Bz); el("circle", { cx: 660, cy: 1000, r: 14, fill: "#ffd84a" }, Bz);
-      const crowd = []; for (let i = 0; i < 5; i++) crowd.push(person(Bz, 120 + i * 50 + (i > 2 ? 620 : 0), 1450, 0.9));
-      const P2 = person(Bz, 540, 1420, 1.5); gsap.set(P2.g, { opacity: 0 });
-      const an = at("L13b", "Anziehen"), l13c = line("L13c")[0], zw = at("L13c", "zwanzig"), l13d = line("L13d")[0], fu = at("L13d", "fünf");
-      drops.forEach((d, i) => tl.fromTo(d, { y: 0, opacity: 1 }, { y: 420, opacity: 0.3, duration: 0.5, repeat: Math.ceil(l13d / 0.5), ease: "none", immediateRender: false }, (i % 6) * 0.08));
-      tl.fromTo("#s10-a", { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(2.5)" }, line('L13b')[0] + 0.9);
-      tl.fromTo("#s10-b", { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(2.5)" }, an - 0.1);
-      tl.fromTo(K.m, { rotation: 0, svgOrigin: "870 1000" }, { rotation: 1440, svgOrigin: "870 1000", duration: 1.6, ease: "power2.in", immediateRender: false }, l13c);
-      tl.fromTo("#s10-c", { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(2.5)" }, zw - 0.1);
-      tl.to(["#s10-a", "#s10-b", "#s10-c"], { opacity: 0, duration: 0.15 }, l13d - 0.2);
-      tl.set(A, { opacity: 0 }, l13d - 0.2); tl.set(Bz, { opacity: 1 }, l13d - 0.2);
-      crowd.forEach((c, i) => tl.to(c.head, { rotation: i < 3 ? 14 : -14, svgOrigin: "0 -270", duration: 0.3 }, fu - 0.6));
-      tl.fromTo(P2.g, { opacity: 0, y: 1500 }, { opacity: 1, y: 1420, duration: 0.4 }, fu - 0.5);
-      tl.fromTo("#s10-d", { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(2.5)" }, fu);
+      const T = [0, at("L13b", "Anziehen") - 0.1, line("L13d")[0] - 0.05];
+      T.forEach((t, k) => { const e = "#s10-i" + k, t2 = k + 1 < T.length ? T[k + 1] : C.__dur;
+        tl.set(e, { opacity: 1 }, t); if (k) tl.set("#s10-i" + (k - 1), { opacity: 0 }, t);
+        tl.fromTo(e, { scale: 1.02, x: 0, y: 0 }, { scale: 1.12, x: (k % 2 ? -18 : 18), y: (k % 3 ? -14 : 10), duration: Math.max(0.3, t2 - t + 0.2), ease: "none", immediateRender: false }, t); });
+      tl.fromTo("#s10-a", { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(2.5)" }, at("L13b", "Duschen") + 0.4);
+      tl.fromTo("#s10-b", { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(2.5)" }, at("L13b", "Anziehen"));
+      tl.fromTo("#s10-c", { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(2.5)" }, at("L13c", "zwanzig") - 0.1);
+      tl.set(["#s10-a", "#s10-b", "#s10-c"], { opacity: 0 }, line("L13d")[0] - 0.05);
+      tl.fromTo("#s10-d", { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(2.5)" }, at("L13d", "fünf") - 0.1);
       tl.to("#s10-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
       window.__timelines["s10"] = tl;
     })();
