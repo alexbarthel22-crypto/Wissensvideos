@@ -1190,14 +1190,15 @@ function richSky(t, lt) {
     ctx.beginPath(); ctx.moveTo(x - L, y); ctx.lineTo(x + L, y); ctx.moveTo(x, y - L); ctx.lineTo(x, y + L); ctx.stroke();
     glow(x, y, r, `rgba(${col},A)`, tw);
   }
-  // Lunara flies up from the bottom into the night sky and vanishes among the stars
+  // Lunara drifts across the lower sky from bottom left to bottom right and is gone just before the intro
   {
-    const q = clamp((lt - 0.2) / 3.4);
-    if (q > 0 && q < 1) {
-      const e = easeInOut(q), x = lerp(260, 840, e) + 60 * Math.sin(q * 7), y = lerp(2000, 260, e);
-      for (let i = 1; i < 18; i++) { const qq = clamp(q - i * 0.012), ee = easeInOut(qq); glow(lerp(260, 840, ee) + 60 * Math.sin(qq * 7), lerp(2000, 260, ee), 7 - i * 0.3, 'rgba(210,225,255,A)', 0.5 * (1 - i / 18)); }
+    const dur = SC.kalt.end - SC.kalt.start, q = clamp(lt / (dur - 0.35));
+    if (q < 1) {
+      const path = u => [lerp(-90, 1170, u), lerp(1760, 1480, u) - 70 * Math.sin(u * Math.PI) + 14 * Math.sin(u * 23)];
+      for (let i = 1; i < 22; i++) { const [tx, ty] = path(clamp(q - i * 0.006)); glow(tx - 6, ty + 4, 7 - i * 0.28, 'rgba(210,225,255,A)', 0.5 * (1 - i / 22)); }
+      const [x, y] = path(q);
       ctx.save(); ctx.globalCompositeOperation = 'source-over';
-      moonMouse(x, y, lerp(26, 12, e), t, { dir: 1, mood: 'happy', fly: true, seed: 0.6, a: 1 - smooth(0.8, 1, q) });
+      moonMouse(x, y, 24, t, { dir: 1, mood: 'happy', fly: true, seed: 0.6, tilt: -0.12 });
       ctx.restore();
     }
   }
@@ -2464,7 +2465,7 @@ function overlays(t, frame) {
     const dd = Math.abs(t - s.start);
     if (dd < 0.4 && !['fall', 'angriff', 'intro', 'glocken', 'klinge', 'nacht'].includes(s.id)) { ctx.fillStyle = `rgba(0,0,0,${1 - smooth(0, 0.4, dd)})`; ctx.fillRect(0, 0, W, H); }
   }
-  const fi = 1 - smooth(0, 0.8, t);
+  const fi = LINES[0] && (LINES[0].hook_fly || LINES[0].hook_static) ? 0 : 1 - smooth(0, 0.8, t);
   if (fi > 0) { ctx.fillStyle = `rgba(0,0,0,${fi})`; ctx.fillRect(0, 0, W, H); }
   const fo = smooth(TL.duration - 0.8, TL.duration, t);
   if (fo > 0) { ctx.fillStyle = `rgba(0,0,0,${fo})`; ctx.fillRect(0, 0, W, H); }
