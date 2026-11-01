@@ -62,9 +62,9 @@ def main():
         v = edits[k]
         fit(call(model, [part(outd / f"{v['edit']}.png"), {"text": v["prompt"]}]), outd / f"{k}.png"); print("ok", k, flush=True)
 
-    with ThreadPoolExecutor(6) as ex:
+    with ThreadPoolExecutor(4) as ex:
         list(ex.map(gen, base))
-    with ThreadPoolExecutor(6) as ex:
+    with ThreadPoolExecutor(4) as ex:
         list(ex.map(edit, edits))
 
 

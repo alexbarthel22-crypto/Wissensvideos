@@ -16,7 +16,7 @@ SUFFIX = (" Animate this exact image into a 4 second vertical 9:16 video. Keep t
 def anim(img, prompt, out):
     body = {"model": "gemini-omni-1.1-flash", "input": [
         {"type": "image", "data": base64.b64encode(img.read_bytes()).decode(), "mime_type": "image/png"}, {"type": "text", "text": prompt + SUFFIX}]}
-    for a in range(5):
+    for a in range(10):
         try:
             req = urllib.request.Request("https://generativelanguage.googleapis.com/v1beta/interactions", data=json.dumps(body).encode(),
                                          headers={"Content-Type": "application/json", "x-goog-api-key": KEY})
@@ -28,9 +28,9 @@ def anim(img, prompt, out):
             raise KeyError("kein Video")
         except (urllib.error.HTTPError, urllib.error.URLError, KeyError, TimeoutError) as e:
             print("retry", out.name, e, flush=True)
-            if a == 4:
+            if a == 9:
                 raise
-            time.sleep(8 * (a + 1))
+            time.sleep(min(90, 15 * (a + 1)))
 
 
 def main():
@@ -41,8 +41,11 @@ def main():
     todo = [k for k in cfg if (not only or k in only) and (a.force or not (outd / f"{k}.mp4").exists())]
 
     def job(k):
-        anim(p / "assets" / "img" / f"{k}.png", cfg[k], outd / f"{k}.mp4"); print("ok", k, flush=True)
-    with ThreadPoolExecutor(2) as ex:
+        try:
+            anim(p / "assets" / "img" / f"{k}.png", cfg[k], outd / f"{k}.mp4"); print("ok", k, flush=True)
+        except Exception as e:
+            print("FEHLER", k, e, flush=True)
+    with ThreadPoolExecutor(1) as ex:
         list(ex.map(job, todo))
 
 
