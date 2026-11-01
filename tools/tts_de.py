@@ -263,7 +263,7 @@ def main():
             words = parse_tokens(line["text"])
             spoken = " ".join(w["spoken"] for w in words)
             lines.append({"scene": scene["id"], "id": line["id"], "words": words, "spoken": spoken,
-                          "new_scene": li == 0 and si > 0, "pause": line.get("pause", 0.0),
+                          "new_scene": li == 0 and si > 0, "pause": line.get("pause", 0.0), "gain": line.get("gain", 1.0),
                           "scale": round(1.0 / (args.speed * line.get("speed", 1.0)), 3)})
 
     texts = [l["spoken"] for l in lines]
@@ -285,6 +285,8 @@ def main():
         if args.backend != "google":  # echte Stimme braucht keine Klang-Reparatur
             audio = clarity(audio)
         audio = compress_pauses(trim(audio), args.max_gap)
+        if line["gain"] != 1.0:  # einzelne Zeile lauter/leiser (z. B. Durchsage), weich begrenzt
+            audio = np.tanh(audio * line["gain"] * 1.2) / 1.2
         if line["new_scene"]:
             gap = GAP_SCENE
         elif len(pieces) > 1:
@@ -310,7 +312,7 @@ def main():
                     "-ar", str(SR), out_dir / "narration.wav"], check=True)
     raw_path.unlink()
     for l in lines:
-        for k in ("new_scene", "pause", "scale"):
+        for k in ("new_scene", "pause", "scale", "gain"):
             l.pop(k)
     (out_dir / "timings.json").write_text(json.dumps({"duration": round(len(audio) / SR, 3), "lines": lines},
                                                      ensure_ascii=False, indent=1))

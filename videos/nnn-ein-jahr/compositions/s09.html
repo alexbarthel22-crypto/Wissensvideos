@@ -22,22 +22,22 @@
     .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
       font-family: "Inter", sans-serif; font-weight: 900; }
     .vig { position: absolute; left: 0; right: 0; top: 1040px; height: 880px; background: linear-gradient(rgba(10,12,30,0), rgba(10,12,30,.5) 45%, rgba(10,12,30,.55)); pointer-events: none; }
-    #s09-t { left: 0; width: 1080px; top: 440px; text-align: center; color: #fff; font: 900 104px/1 Inter, sans-serif; text-shadow: 0 0 40px rgba(255,79,176,.6); opacity: 0; }
-    #s09-t small { display: block; margin-top: 20px; font: 800 40px Inter, sans-serif; color: #ff8fd0; letter-spacing: .2em; }
-    .s09-b { position: absolute; top: 760px; width: 440px; height: 150px; border-radius: 30px; text-align: center; color: #fff; font: 900 60px/150px Inter, sans-serif; opacity: 0; }
+    #s09-t { left: 0; width: 1080px; top: 440px; text-align: center; color: #fff; font: 900 90px/1.05 Inter, sans-serif; text-shadow: 0 0 40px rgba(255,79,176,.6); opacity: 0; }
+    #s09-t small { display: block; margin-top: 20px; font: 800 44px Inter, sans-serif; color: #ff8fd0; letter-spacing: .1em; }
+    .s09-b { position: absolute; top: 800px; width: 440px; height: 150px; border-radius: 30px; text-align: center; color: #fff; font: 900 56px/150px Inter, sans-serif; opacity: 0; }
     #s09-y { left: 60px; background: #1fa65a; box-shadow: 0 0 50px rgba(57,226,122,.6); } #s09-n { left: 580px; background: #d32a45; box-shadow: 0 0 50px rgba(255,59,85,.6); }
   </style>
-  <div id="root" data-composition-id="s09" data-start="0" data-duration="7.710" data-width="1080" data-height="1920">
-    <div id="s09-stage" class="clip stage" data-start="0" data-duration="7.710" data-track-index="0">
-      <div id="s09-t" class="abs">Und du?<small>1 JAHR ODER 1 MONAT</small></div>
-      <div id="s09-y" class="s09-b">365 TAGE</div><div id="s09-n" class="s09-b">KEINE CHANCE</div>
+  <div id="root" data-composition-id="s09" data-start="0" data-duration="7.230" data-width="1080" data-height="1920">
+    <div id="s09-stage" class="clip stage" data-start="0" data-duration="7.230" data-track-index="0">
+      <div id="s09-t" class="abs">Würdest du<br>1 Jahr aushalten?<small>Wenn nein: wie lange?</small></div>
+      <div id="s09-y" class="s09-b">JA, 365 TAGE</div><div id="s09-n" class="s09-b">NEIN, NUR …</div>
       <div class="vig"></div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 7.71, "L24": [0.2, 5.11], "L24.words": [["und", 0.2, 0.419], ["du", 0.419, 0.63], ["schreib", 1.07, 1.234], ["in", 1.234, 1.372], ["die", 1.372, 1.516], ["kommentare", 1.516, 2.08], ["365", 2.62, 3.722], ["tage", 3.722, 4.02], ["oder", 4.27, 4.545], ["keine", 4.545, 4.825], ["chance", 4.825, 5.11]]};
+      const C = {"__dur": 7.23, "L24": [0.2, 4.63], "L24.words": [["und", 0.2, 0.441], ["du", 0.441, 0.674], ["würdest", 0.674, 1.165], ["du", 1.165, 1.398], ["ein", 1.398, 1.639], ["jahr", 1.639, 1.889], ["aushalten", 1.889, 2.613], ["wenn", 2.613, 2.863], ["nicht", 2.863, 3.122], ["schreib", 3.122, 3.398], ["wie", 3.398, 3.639], ["lange", 3.639, 4.113], ["du", 4.113, 4.346], ["schaffst", 4.346, 4.63]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -142,15 +142,20 @@
         el("path", { d: "M-19 -60 H-1 L-3 -6 H-17Z", fill: "#3c4357" }, g); el("path", { d: "M1 -60 H19 L17 -6 H3Z", fill: "#3c4357" }, g);
         el("rect", { x: -26, y: -10, width: 26, height: 13, rx: 6, fill: "#ffffff" }, g); el("rect", { x: 0, y: -10, width: 26, height: 13, rx: 6, fill: "#ffffff" }, g);
         el("rect", { x: -26, y: -1, width: 26, height: 4, rx: 2, fill: "#ff4fb0" }, g); el("rect", { x: 0, y: -1, width: 26, height: 4, rx: 2, fill: "#ff4fb0" }, g);
-        const aL = el("rect", { x: -46, y: -130, width: 16, height: 62, rx: 8, fill: AC }, g), aR = el("rect", { x: 30, y: -130, width: 16, height: 62, rx: 8, fill: AC }, g);
+        const aL = el("rect", { x: -46, y: -130, width: 16, height: 62, rx: 8, fill: AC }, g), aR = el("g", {}, g); el("rect", { x: 30, y: -130, width: 16, height: 62, rx: 8, fill: AC }, aR);
+        if (o.can) { el("rect", { x: 31, y: -86, width: 15, height: 28, rx: 3, fill: "#2a4fa8" }, aR); el("rect", { x: 31, y: -86, width: 7.5, height: 28, fill: "#c9d2e0" }, aR); el("circle", { cx: 38.5, cy: -73, r: 3.5, fill: "#e0202f" }, aR); }
         el("path", { d: "M-36 -126 Q-37 -136 -26 -137 L26 -137 Q37 -136 36 -126 L30 -54 L-30 -54Z", fill: HC }, g);
         el("path", { d: "M-16 -96 H16 V-78 H-16Z", fill: AC }, g); if (o.label !== "") txt(g, 0, -106, o.label || "NNN", 11, "#fff", { "data-layout-allow-overlap": "" });
-        el("path", { d: "M-22 -138 Q0 -122 22 -138", stroke: "#1b1d2b", "stroke-width": 6, fill: "none" }, g);
-        el("circle", { cx: -22, cy: -138, r: 8, fill: "#1b1d2b" }, g); el("circle", { cx: 22, cy: -138, r: 8, fill: "#1b1d2b" }, g);
+        if (o.tee) el("path", { d: "M-12 -137 L0 -118 L12 -137Z", fill: o.tee }, g);
+        if (o.chain) el("path", { d: "M-11 -136 Q0 -112 11 -136", stroke: "#ffd43b", "stroke-width": 3, fill: "none" }, g);
+        if (!o.noPhones) { el("path", { d: "M-22 -138 Q0 -122 22 -138", stroke: "#1b1d2b", "stroke-width": 6, fill: "none" }, g);
+        el("circle", { cx: -22, cy: -138, r: 8, fill: "#1b1d2b" }, g); el("circle", { cx: 22, cy: -138, r: 8, fill: "#1b1d2b" }, g); }
         const head = el("g", {}, g);
         el("rect", { x: -6, y: -148, width: 12, height: 12, fill: "#e6b88f" }, head);
         el("circle", { cx: 0, cy: -166, r: 23, fill: "#f2cba5" }, head);
-        if (o.hair) { [[-18, -182], [-8, -188], [4, -189], [15, -183], [21, -172], [-22, -170]].forEach(([hx, hy]) => el("circle", { cx: hx, cy: hy, r: 10, fill: o.hair }, head));
+        if (o.undercut) { el("path", { d: "M-23 -166 Q-24 -182 -12 -186 L12 -186 Q24 -182 23 -166 Q22 -176 14 -178 L-14 -178 Q-22 -176 -23 -166Z", fill: "#c9a37a", opacity: 0.6 }, head);
+          el("path", { d: "M-18 -178 Q-20 -200 4 -202 Q26 -200 22 -184 Q16 -178 4 -182 Q-8 -184 -18 -178Z", fill: o.undercut }, head); }
+        else if (o.hair) { [[-18, -182], [-8, -188], [4, -189], [15, -183], [21, -172], [-22, -170]].forEach(([hx, hy]) => el("circle", { cx: hx, cy: hy, r: 10, fill: o.hair }, head));
           el("path", { d: "M-22 -172 Q-10 -164 0 -173 Q10 -164 22 -172 L20 -184 L-20 -184Z", fill: o.hair }, head); }
         else { el("path", { d: "M-23 -170 Q-22 -194 0 -194 Q22 -194 23 -172 Q12 -178 0 -178 Q-12 -178 -23 -170Z", fill: CC }, head);
         el("rect", { x: -9, y: -198, width: 18, height: 7, rx: 3, fill: CC }, head);
@@ -239,7 +244,7 @@
 
       const tl = gsap.timeline({ paused: true });
       const st = document.querySelector("#s09-stage"), sv = el("svg", { class: "full", viewBox: "0 0 1080 1920" }); st.insertBefore(sv, st.firstChild); sky(sv, "s09g", "#2a1f4f", "#0f0b22");
-      const a = at("L24", "365"), b = at("L24", "keine");
+      const a = at("L24", "Jahr"), b = at("L24", "wie");
       tl.fromTo("#s09-t", { opacity: 0, scale: 1.25 }, { opacity: 1, scale: 1, duration: 0.5, ease: "power3.out" }, 0.1);
       tl.fromTo("#s09-y", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.35, ease: "back.out(2)" }, a - 0.1);
       tl.fromTo("#s09-n", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.35, ease: "back.out(2)" }, b - 0.1);

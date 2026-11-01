@@ -13,7 +13,7 @@
   <div id="root" data-composition-id="s02" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
     <div id="s02-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
       <svg id="s02-svg" class="full" viewBox="0 0 1080 1920"></svg>
-      <div id="s02-v" class="abs" data-layout-allow-overlap>VERBOTEN<small>BIS 1. NOVEMBER</small></div>
+      <div id="s02-v" class="abs" data-layout-allow-overlap>VERBOTEN<small>365 TAGE LANG</small></div>
       <div class="vig"></div>
     </div>
   </div>
@@ -29,7 +29,7 @@
       const bulbs = []; for (let i = 0; i < 22; i++) bulbs.push(el("circle", { cx: 30 + i * 48, cy: 600 + Math.sin(i * 0.6) * 20, r: 9, fill: ["#ffd43b", "#ff4fb0", "#39e27a", "#4da3ff"][i % 4] }, sv));
       const sf = snowfall(sv, 60, 5, 300, 1200);
       const T = woman(sv, 330, 1150, 2.3, "#d0343f", "#5a3a22");
-      const G = finn(sv, 720, 1150, 2.3, { hood: "#e8a83a", arm: "#c98c22", hair: "#e0b050", glasses: true, label: "G" });
+      const G = finn(sv, 720, 1150, 2.3, { hood: "#1d1f2b", arm: "#15161f", undercut: "#f0d060", noPhones: true, tee: "#ffffff", chain: true, label: "" });
       const wurst = el("g", { opacity: 0 }, sv); el("rect", { x: 430, y: 880, width: 150, height: 40, rx: 20, fill: "#a0522d" }, wurst); el("rect", { x: 420, y: 895, width: 170, height: 22, rx: 11, fill: "#f2d6a2", opacity: 0.9 }, wurst);
       const sweat = [0, 1, 2].map((k) => el("circle", { cx: 690 + k * 30, cy: 760, r: 8, fill: "#9fd8ff", opacity: 0 }, sv));
       fall(tl, sf, C.__dur);

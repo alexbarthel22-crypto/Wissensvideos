@@ -24,18 +24,21 @@
     .vig { position: absolute; left: 0; right: 0; top: 1040px; height: 880px; background: linear-gradient(rgba(10,12,30,0), rgba(10,12,30,.5) 45%, rgba(10,12,30,.55)); pointer-events: none; }
     .chip { position: absolute; padding: 12px 26px; border-radius: 22px; background: rgba(255,255,255,.96); color: #22283f; font: 900 52px Inter, sans-serif; opacity: 0; box-shadow: 0 16px 40px rgba(0,0,0,.4); white-space: nowrap; }
     .chip b { color: #e0484f; } .chip i { font-style: normal; color: #1fa65a; }
+    #s03-th { left: 470px; top: 470px; width: 560px; height: 300px; border-radius: 150px; background: #fff; box-shadow: 0 16px 40px rgba(0,0,0,.4); opacity: 0; overflow: hidden; text-align: center; }
+    #s03-th .z { position: absolute; left: 70px; right: 70px; top: 110px; height: 80px; background: #111; color: #fff; font: 900 50px/80px Inter, sans-serif; letter-spacing: .14em; }
+    #s03-th .k { position: absolute; left: 0; right: 0; top: 34px; font: 800 30px Inter, sans-serif; color: #ff4fb0; letter-spacing: .2em; }
   </style>
-  <div id="root" data-composition-id="s03" data-start="0" data-duration="7.270" data-width="1080" data-height="1920">
-    <div id="s03-stage" class="clip stage" data-start="0" data-duration="7.270" data-track-index="0">
+  <div id="root" data-composition-id="s03" data-start="0" data-duration="9.430" data-width="1080" data-height="1920">
+    <div id="s03-stage" class="clip stage" data-start="0" data-duration="9.430" data-track-index="0">
       <svg id="s03-svg" class="full" viewBox="0 0 1080 1920"></svg>
-      <div id="s03-ek" class="chip" style="left:600px;top:500px;color:#2b7cff">EISKALT ❄</div>
+      <div id="s03-th" class="abs"><div class="k">KOPFKINO</div><div class="z">ZENSIERT</div></div>
       <div class="vig"></div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 7.27, "L7": [0.2, 3.24], "L7.words": [["februar", 0.2, 0.68], ["valentinstag", 1.07, 1.75], ["überall", 2.3, 2.855], ["pärchen", 2.855, 3.24]], "L8": [3.46, 7.09], "L8.words": [["georg", 3.46, 3.634], ["bestellt", 3.634, 3.969], ["sich", 3.969, 4.137], ["einen", 4.137, 4.456], ["eistee", 4.456, 4.78], ["eiskalt", 5.31, 5.85], ["zur", 6.4, 6.571], ["sicherheit", 6.571, 7.09]]};
+      const C = {"__dur": 9.43, "L7": [0.2, 3.36], "L7.words": [["februar", 0.2, 0.67], ["valentinstag", 1.22, 2.01], ["überall", 2.56, 3.032], ["pärchen", 3.032, 3.36]], "L8": [3.58, 6.96], "L8.words": [["warum", 3.58, 3.925], ["das", 3.925, 4.101], ["kritisch", 4.101, 4.464], ["ist", 4.464, 4.64], ["überall", 5.19, 5.707], ["wird", 5.707, 5.889], ["geküsst", 5.889, 6.248], ["und", 6.248, 6.425], ["gekuschelt", 6.425, 6.96]], "L8b": [7.18, 9.25], "L8b.words": [["und", 7.18, 7.383], ["georgs", 7.383, 7.609], ["kopfkino", 7.609, 8.211], ["läuft", 8.211, 8.429], ["auf", 8.429, 8.633], ["hochtouren", 8.633, 9.25]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -140,15 +143,20 @@
         el("path", { d: "M-19 -60 H-1 L-3 -6 H-17Z", fill: "#3c4357" }, g); el("path", { d: "M1 -60 H19 L17 -6 H3Z", fill: "#3c4357" }, g);
         el("rect", { x: -26, y: -10, width: 26, height: 13, rx: 6, fill: "#ffffff" }, g); el("rect", { x: 0, y: -10, width: 26, height: 13, rx: 6, fill: "#ffffff" }, g);
         el("rect", { x: -26, y: -1, width: 26, height: 4, rx: 2, fill: "#ff4fb0" }, g); el("rect", { x: 0, y: -1, width: 26, height: 4, rx: 2, fill: "#ff4fb0" }, g);
-        const aL = el("rect", { x: -46, y: -130, width: 16, height: 62, rx: 8, fill: AC }, g), aR = el("rect", { x: 30, y: -130, width: 16, height: 62, rx: 8, fill: AC }, g);
+        const aL = el("rect", { x: -46, y: -130, width: 16, height: 62, rx: 8, fill: AC }, g), aR = el("g", {}, g); el("rect", { x: 30, y: -130, width: 16, height: 62, rx: 8, fill: AC }, aR);
+        if (o.can) { el("rect", { x: 31, y: -86, width: 15, height: 28, rx: 3, fill: "#2a4fa8" }, aR); el("rect", { x: 31, y: -86, width: 7.5, height: 28, fill: "#c9d2e0" }, aR); el("circle", { cx: 38.5, cy: -73, r: 3.5, fill: "#e0202f" }, aR); }
         el("path", { d: "M-36 -126 Q-37 -136 -26 -137 L26 -137 Q37 -136 36 -126 L30 -54 L-30 -54Z", fill: HC }, g);
         el("path", { d: "M-16 -96 H16 V-78 H-16Z", fill: AC }, g); if (o.label !== "") txt(g, 0, -106, o.label || "NNN", 11, "#fff", { "data-layout-allow-overlap": "" });
-        el("path", { d: "M-22 -138 Q0 -122 22 -138", stroke: "#1b1d2b", "stroke-width": 6, fill: "none" }, g);
-        el("circle", { cx: -22, cy: -138, r: 8, fill: "#1b1d2b" }, g); el("circle", { cx: 22, cy: -138, r: 8, fill: "#1b1d2b" }, g);
+        if (o.tee) el("path", { d: "M-12 -137 L0 -118 L12 -137Z", fill: o.tee }, g);
+        if (o.chain) el("path", { d: "M-11 -136 Q0 -112 11 -136", stroke: "#ffd43b", "stroke-width": 3, fill: "none" }, g);
+        if (!o.noPhones) { el("path", { d: "M-22 -138 Q0 -122 22 -138", stroke: "#1b1d2b", "stroke-width": 6, fill: "none" }, g);
+        el("circle", { cx: -22, cy: -138, r: 8, fill: "#1b1d2b" }, g); el("circle", { cx: 22, cy: -138, r: 8, fill: "#1b1d2b" }, g); }
         const head = el("g", {}, g);
         el("rect", { x: -6, y: -148, width: 12, height: 12, fill: "#e6b88f" }, head);
         el("circle", { cx: 0, cy: -166, r: 23, fill: "#f2cba5" }, head);
-        if (o.hair) { [[-18, -182], [-8, -188], [4, -189], [15, -183], [21, -172], [-22, -170]].forEach(([hx, hy]) => el("circle", { cx: hx, cy: hy, r: 10, fill: o.hair }, head));
+        if (o.undercut) { el("path", { d: "M-23 -166 Q-24 -182 -12 -186 L12 -186 Q24 -182 23 -166 Q22 -176 14 -178 L-14 -178 Q-22 -176 -23 -166Z", fill: "#c9a37a", opacity: 0.6 }, head);
+          el("path", { d: "M-18 -178 Q-20 -200 4 -202 Q26 -200 22 -184 Q16 -178 4 -182 Q-8 -184 -18 -178Z", fill: o.undercut }, head); }
+        else if (o.hair) { [[-18, -182], [-8, -188], [4, -189], [15, -183], [21, -172], [-22, -170]].forEach(([hx, hy]) => el("circle", { cx: hx, cy: hy, r: 10, fill: o.hair }, head));
           el("path", { d: "M-22 -172 Q-10 -164 0 -173 Q10 -164 22 -172 L20 -184 L-20 -184Z", fill: o.hair }, head); }
         else { el("path", { d: "M-23 -170 Q-22 -194 0 -194 Q22 -194 23 -172 Q12 -178 0 -178 Q-12 -178 -23 -170Z", fill: CC }, head);
         el("rect", { x: -9, y: -198, width: 18, height: 7, rx: 3, fill: CC }, head);
@@ -238,21 +246,18 @@
       const tl = gsap.timeline({ paused: true });
       const sv = document.querySelector("#s03-svg"); sky(sv, "s03g", "#ffb3d1", "#d96a9c");
       el("rect", { x: 0, y: 1100, width: 1080, height: 820, fill: "#8a4a62" }, sv);
-      const pairs = [[180, 760], [540, 700], [900, 760]].map(([x, y], i) => { const g = el("g", { opacity: 0 }, sv);
-        el("ellipse", { cx: x, cy: y + 70, rx: 90, ry: 18, fill: "#fff" }, g); tiny(g, x - 40, y + 40, "#ff4fb0", 1.6); tiny(g, x + 40, y + 40, "#4da3ff", 1.6);
-        txt(g, x, y - 30, "♥", 56, "#ff2d6b"); return g; });
-      el("ellipse", { cx: 540, cy: 1080, rx: 160, ry: 26, fill: "#fff" }, sv);
-      const G = finn(sv, 540, 1180, 2.2, { hood: "#e8a83a", arm: "#c98c22", hair: "#e0b050", glasses: true, label: "G" });
-      const gl = el("g", { opacity: 0 }, sv); el("path", { d: "M600 960 L700 960 L690 1070 L610 1070Z", fill: "#9fd8ff", stroke: "#e8f6ff", "stroke-width": 5 }, gl);
-      el("rect", { x: 620, y: 990, width: 26, height: 26, rx: 4, fill: "#fff", opacity: 0.8 }, gl); el("rect", { x: 652, y: 1010, width: 26, height: 26, rx: 4, fill: "#fff", opacity: 0.8 }, gl);
-      const frost = el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: "#bfe6ff", opacity: 0 }, sv);
-      const pa = at("L7", "Pärchen"), ei = at("L8", "Eistee"), ek = at("L8", "Eiskalt"), si = at("L8", "Sicherheit");
-      pairs.forEach((p, i) => { tl.fromTo(p, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.3, ease: "back.out(2)" }, pa - 0.2 + i * 0.15); tl.to(p, { y: -10, duration: 0.4, yoyo: true, repeat: 7 }, pa + 0.4 + i * 0.1); });
+      const pairs = [[160, 820], [420, 760], [700, 820]].map(([x, y], i) => { const g = el("g", { opacity: 0 }, sv);
+        tiny(g, x - 26, y + 40, "#ff4fb0", 1.7); tiny(g, x + 26, y + 40, "#4da3ff", 1.7); txt(g, x, y - 40, "♥", 60, "#ff2d6b"); return g; });
+      const bub = [0, 1, 2].map((k) => el("circle", { cx: 790 - k * 50, cy: 820 + k * 60, r: 14 - k * 3, fill: "#fff", opacity: 0 }, sv));
+      const G = finn(sv, 640, 1180, 2.0, { hood: "#1d1f2b", arm: "#15161f", undercut: "#f0d060", noPhones: true, tee: "#ffffff", chain: true, can: true, label: "" });
+      const pa = at("L7", "Pärchen"), ge = at("L8", "geküsst"), gk = at("L8", "gekuschelt"), ko = at("L8b", "Kopfkino"), ho = at("L8b", "Hochtouren");
+      pairs.forEach((p, i) => { tl.fromTo(p, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.3, ease: "back.out(2)" }, pa - 0.2 + i * 0.15); });
+      pairs.forEach((p, i) => tl.to(p, { scale: 1.08, svgOrigin: "540 860", duration: 0.25, yoyo: true, repeat: 5 }, ge + i * 0.1));
       tl.to(G.mouth, { attr: { d: "M-6 -149 Q0 -153 6 -149" }, duration: 0.2 }, pa);
-      tl.fromTo(gl, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.3, ease: "back.out(2)" }, ei - 0.1);
-      tl.fromTo("#s03-ek", { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(3)" }, ek - 0.05);
-      tl.to(frost, { opacity: 0.35, duration: 0.4 }, ek);
-      tl.to(G.g, { x: 548, duration: 0.04, repeat: 30, yoyo: true }, ek + 0.1);
+      tl.to(bub, { opacity: 1, duration: 0.15, stagger: 0.12 }, ko - 0.5);
+      tl.fromTo("#s03-th", { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2)" }, ko - 0.1);
+      tl.fromTo("#s03-th .z", { scaleX: 0 }, { scaleX: 1, duration: 0.25 }, ko + 0.3);
+      tl.to("#s03-th", { rotation: 3, duration: 0.06, repeat: 9, yoyo: true }, ho);
       tl.to("#s03-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
       window.__timelines["s03"] = tl;
     })();

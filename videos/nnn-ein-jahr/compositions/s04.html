@@ -26,18 +26,17 @@
     .chip b { color: #e0484f; } .chip i { font-style: normal; color: #1fa65a; }
     #s04-n { left: 0; width: 1080px; top: 470px; text-align: center; font: 900 220px/1 Inter, sans-serif; color: #39e27a; opacity: 0; text-shadow: 0 0 60px rgba(57,226,122,.9); }
   </style>
-  <div id="root" data-composition-id="s04" data-start="0" data-duration="8.650" data-width="1080" data-height="1920">
-    <div id="s04-stage" class="clip stage" data-start="0" data-duration="8.650" data-track-index="0">
+  <div id="root" data-composition-id="s04" data-start="0" data-duration="8.190" data-width="1080" data-height="1920">
+    <div id="s04-stage" class="clip stage" data-start="0" data-duration="8.190" data-track-index="0">
       <svg id="s04-svg" class="full" viewBox="0 0 1080 1920"></svg>
       <div id="s04-n" class="abs">1,3</div>
-      <div id="s04-dt" class="chip" style="left:120px;top:540px;background:#ff3b55;color:#fff">DROGENTEST?</div>
       <div class="vig"></div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 8.65, "L9": [0.2, 4.25], "L9.words": [["mai", 0.2, 0.51], ["abiprüfungen", 0.96, 1.68], ["ohne", 2.23, 2.53], ["ablenkung", 2.53, 2.998], ["lernt", 2.998, 3.165], ["georg", 3.165, 3.332], ["wie", 3.332, 3.488], ["eine", 3.488, 3.788], ["maschine", 3.788, 4.25]], "L10": [4.67, 6.34], "L10.words": [["abischnitt", 4.67, 5.14], ["13", 5.54, 6.34]], "L11": [6.56, 8.47], "L11.words": [["seine", 6.56, 6.874], ["eltern", 6.874, 7.193], ["lassen", 7.193, 7.512], ["ihn", 7.512, 7.672], ["auf", 7.672, 7.831], ["drogen", 7.831, 8.151], ["testen", 8.151, 8.47]]};
+      const C = {"__dur": 8.19, "L9": [0.2, 5.92], "L9.words": [["mai", 0.2, 0.52], ["abiprüfungen", 0.89, 1.55], ["ohne", 2.1, 2.401], ["ablenkung", 2.401, 2.87], ["dafür", 3.09, 3.376], ["mit", 3.376, 3.521], ["sehr", 3.521, 3.672], ["viel", 3.672, 3.823], ["energydrink", 3.823, 4.4], ["lernt", 4.55, 4.733], ["georg", 4.733, 4.915], ["wie", 4.915, 5.086], ["eine", 5.086, 5.415], ["maschine", 5.415, 5.92]], "L10": [6.34, 8.01], "L10.words": [["abischnitt", 6.34, 6.81], ["13", 7.21, 8.01]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -142,15 +141,20 @@
         el("path", { d: "M-19 -60 H-1 L-3 -6 H-17Z", fill: "#3c4357" }, g); el("path", { d: "M1 -60 H19 L17 -6 H3Z", fill: "#3c4357" }, g);
         el("rect", { x: -26, y: -10, width: 26, height: 13, rx: 6, fill: "#ffffff" }, g); el("rect", { x: 0, y: -10, width: 26, height: 13, rx: 6, fill: "#ffffff" }, g);
         el("rect", { x: -26, y: -1, width: 26, height: 4, rx: 2, fill: "#ff4fb0" }, g); el("rect", { x: 0, y: -1, width: 26, height: 4, rx: 2, fill: "#ff4fb0" }, g);
-        const aL = el("rect", { x: -46, y: -130, width: 16, height: 62, rx: 8, fill: AC }, g), aR = el("rect", { x: 30, y: -130, width: 16, height: 62, rx: 8, fill: AC }, g);
+        const aL = el("rect", { x: -46, y: -130, width: 16, height: 62, rx: 8, fill: AC }, g), aR = el("g", {}, g); el("rect", { x: 30, y: -130, width: 16, height: 62, rx: 8, fill: AC }, aR);
+        if (o.can) { el("rect", { x: 31, y: -86, width: 15, height: 28, rx: 3, fill: "#2a4fa8" }, aR); el("rect", { x: 31, y: -86, width: 7.5, height: 28, fill: "#c9d2e0" }, aR); el("circle", { cx: 38.5, cy: -73, r: 3.5, fill: "#e0202f" }, aR); }
         el("path", { d: "M-36 -126 Q-37 -136 -26 -137 L26 -137 Q37 -136 36 -126 L30 -54 L-30 -54Z", fill: HC }, g);
         el("path", { d: "M-16 -96 H16 V-78 H-16Z", fill: AC }, g); if (o.label !== "") txt(g, 0, -106, o.label || "NNN", 11, "#fff", { "data-layout-allow-overlap": "" });
-        el("path", { d: "M-22 -138 Q0 -122 22 -138", stroke: "#1b1d2b", "stroke-width": 6, fill: "none" }, g);
-        el("circle", { cx: -22, cy: -138, r: 8, fill: "#1b1d2b" }, g); el("circle", { cx: 22, cy: -138, r: 8, fill: "#1b1d2b" }, g);
+        if (o.tee) el("path", { d: "M-12 -137 L0 -118 L12 -137Z", fill: o.tee }, g);
+        if (o.chain) el("path", { d: "M-11 -136 Q0 -112 11 -136", stroke: "#ffd43b", "stroke-width": 3, fill: "none" }, g);
+        if (!o.noPhones) { el("path", { d: "M-22 -138 Q0 -122 22 -138", stroke: "#1b1d2b", "stroke-width": 6, fill: "none" }, g);
+        el("circle", { cx: -22, cy: -138, r: 8, fill: "#1b1d2b" }, g); el("circle", { cx: 22, cy: -138, r: 8, fill: "#1b1d2b" }, g); }
         const head = el("g", {}, g);
         el("rect", { x: -6, y: -148, width: 12, height: 12, fill: "#e6b88f" }, head);
         el("circle", { cx: 0, cy: -166, r: 23, fill: "#f2cba5" }, head);
-        if (o.hair) { [[-18, -182], [-8, -188], [4, -189], [15, -183], [21, -172], [-22, -170]].forEach(([hx, hy]) => el("circle", { cx: hx, cy: hy, r: 10, fill: o.hair }, head));
+        if (o.undercut) { el("path", { d: "M-23 -166 Q-24 -182 -12 -186 L12 -186 Q24 -182 23 -166 Q22 -176 14 -178 L-14 -178 Q-22 -176 -23 -166Z", fill: "#c9a37a", opacity: 0.6 }, head);
+          el("path", { d: "M-18 -178 Q-20 -200 4 -202 Q26 -200 22 -184 Q16 -178 4 -182 Q-8 -184 -18 -178Z", fill: o.undercut }, head); }
+        else if (o.hair) { [[-18, -182], [-8, -188], [4, -189], [15, -183], [21, -172], [-22, -170]].forEach(([hx, hy]) => el("circle", { cx: hx, cy: hy, r: 10, fill: o.hair }, head));
           el("path", { d: "M-22 -172 Q-10 -164 0 -173 Q10 -164 22 -172 L20 -184 L-20 -184Z", fill: o.hair }, head); }
         else { el("path", { d: "M-23 -170 Q-22 -194 0 -194 Q22 -194 23 -172 Q12 -178 0 -178 Q-12 -178 -23 -170Z", fill: CC }, head);
         el("rect", { x: -9, y: -198, width: 18, height: 7, rx: 3, fill: CC }, head);
@@ -240,21 +244,18 @@
       const tl = gsap.timeline({ paused: true });
       const sv = document.querySelector("#s04-svg"); sky(sv, "s04g", "#d8dde8", "#b4bccb");
       el("rect", { x: 0, y: 1080, width: 1080, height: 840, fill: "#7d6a55" }, sv);
-      const desks = []; for (let r = 0; r < 2; r++) for (let c = 0; c < 4; c++) { const x = 140 + c * 270, y = 700 + r * 170; if (r === 1 && c === 1) continue;
-        const g = el("g", {}, sv); el("rect", { x: x - 80, y, width: 160, height: 14, fill: "#c79a5b" }, g); tiny(g, x, y - 4, ["#4da3ff", "#ff6a3d", "#39e27a", "#ffd43b"][(r + c) % 4], 1.5); desks.push(g); }
-      const G = finn(sv, 410, 1190, 2.2, { hood: "#e8a83a", arm: "#c98c22", hair: "#e0b050", glasses: true, label: "G" });
+      for (let r = 0; r < 2; r++) for (let c = 0; c < 4; c++) { const x = 140 + c * 270, y = 700 + r * 170; if (r === 1 && c === 1) continue;
+        const g = el("g", {}, sv); el("rect", { x: x - 80, y, width: 160, height: 14, fill: "#c79a5b" }, g); tiny(g, x, y - 4, ["#4da3ff", "#ff6a3d", "#39e27a", "#ffd43b"][(r + c) % 4], 1.5); }
+      const G = finn(sv, 410, 1190, 2.2, { hood: "#1d1f2b", arm: "#15161f", undercut: "#f0d060", noPhones: true, tee: "#ffffff", chain: true, can: true, label: "" });
       el("rect", { x: 280, y: 1020, width: 260, height: 26, rx: 6, fill: "#c79a5b" }, sv);
+      const cans = [0, 1, 2, 3, 4].map((k) => { const g = el("g", { opacity: 0 }, sv); el("rect", { x: 560 + k * 34, y: 960, width: 26, height: 60, rx: 4, fill: "#2a4fa8" }, g); el("rect", { x: 560 + k * 34, y: 960, width: 13, height: 60, fill: "#c9d2e0" }, g); return g; });
       const pap = []; const rp = rng(8); for (let i = 0; i < 10; i++) pap.push(el("rect", { x: 420, y: 990, width: 60, height: 80, fill: "#fff", stroke: "#cfd5e2", "stroke-width": 2, opacity: 0 }, sv));
-      const par = el("g", { opacity: 0 }, sv); const Mo = woman(par, 700, 1180, 2.1, "#3aa37a"); const Fa = finn(par, 900, 1180, 2.2, { hood: "#4a5a7a", arm: "#3a4a6a", hair: "#7a7a7a", label: "" });
-      const ma = at("L9", "Maschine"), l10 = line("L10")[0], dr = at("L11", "Drogen"), l11 = line("L11")[0];
-      tl.to(G.aR, { rotation: -40, svgOrigin: "37 -126", duration: 0.06, yoyo: true, repeat: 40 }, 1.0);
+      const en = at("L9", "Energy"), ma = at("L9", "Maschine"), l10 = line("L10")[0];
+      tl.to(cans, { opacity: 1, duration: 0.12, stagger: 0.12 }, en - 0.2);
+      tl.to(G.aR, { rotation: -40, svgOrigin: "37 -126", duration: 0.06, yoyo: true, repeat: 40 }, ma - 2.0);
       pap.forEach((p, i) => tl.fromTo(p, { opacity: 1, x: 0, y: 0, rotation: 0 }, { x: 300 + rp() * 300, y: -300 - rp() * 300, rotation: rp() * 360, svgOrigin: "450 1030", opacity: 0, duration: 0.8, ease: "power2.out", immediateRender: false }, ma - 1.2 + i * 0.15));
       tl.fromTo("#s04-n", { opacity: 0, scale: 2 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2)" }, l10 + 0.6);
-      armsUp(tl, G, l10 + 0.7, 0.3, 160);
-      tl.to("#s04-n", { opacity: 0, y: -60, duration: 0.25 }, l11 - 0.2); tl.to(desks, { opacity: 0, duration: 0.3 }, l11 - 0.2);
-      tl.fromTo(par, { opacity: 0, x: 200 }, { opacity: 1, x: 0, duration: 0.35 }, l11 - 0.1);
-      tl.fromTo("#s04-dt", { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(3)" }, dr - 0.1);
-      armsDown(tl, G, dr); tl.to(G.mouth, { attr: { d: "M-6 -149 Q0 -155 6 -149" }, duration: 0.15 }, dr);
+      armsUp(tl, G, l10 + 0.7, 0.3, 160); tl.to(G.mouth, { attr: { d: "M-8 -153 Q0 -144 8 -153" }, duration: 0.15 }, l10 + 0.7);
       tl.to("#s04-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
       window.__timelines["s04"] = tl;
     })();

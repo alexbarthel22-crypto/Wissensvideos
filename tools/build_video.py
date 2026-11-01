@@ -303,7 +303,7 @@ def build_hud_cinema(project, script, windows, total):
     .sl {{ font: 600 28px "Inter", sans-serif; letter-spacing: .18em; opacity: .9; }}
     .sv {{ margin-top: 2px; font: 500 68px/1 "EB Garamond", "Liberation Serif", serif; }}
     .ss {{ margin-top: 8px; font: 600 28px "Inter", sans-serif; letter-spacing: .14em; opacity: .75; }}
-    .jump {{ position: absolute; left: 0; width: 100%; top: 330px; height: 220px; text-align: center; color: #fff; text-shadow: 0 2px 18px rgba(0,0,0,.55); }}
+    .jump {{ position: absolute; left: 0; width: 100%; top: {script.get("jump_top", 330)}px; height: 220px; text-align: center; color: #fff; text-shadow: 0 2px 18px rgba(0,0,0,.55); }}
     .jn {{ font: 500 132px/1 "EB Garamond", "Liberation Serif", serif; }}
     .jl {{ margin-top: 6px; font: 600 30px "Inter", sans-serif; letter-spacing: .3em; }}
   </style>

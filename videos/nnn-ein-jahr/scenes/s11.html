@@ -1,0 +1,47 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .vig { position: absolute; left: 0; right: 0; top: 1040px; height: 880px; background: linear-gradient(rgba(10,12,30,0), rgba(10,12,30,.5) 45%, rgba(10,12,30,.55)); pointer-events: none; }
+    .chip { position: absolute; padding: 12px 26px; border-radius: 22px; background: rgba(255,255,255,.96); color: #22283f; font: 900 52px Inter, sans-serif; opacity: 0; box-shadow: 0 16px 40px rgba(0,0,0,.4); white-space: nowrap; }
+    .chip b { color: #e0484f; } .chip i { font-style: normal; color: #1fa65a; }
+  </style>
+  <div id="root" data-composition-id="s11" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s11-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <svg id="s11-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s11-gr" class="chip" style="left:120px;top:470px">Greta 💉</div>
+      <div id="s11-mo" class="chip" style="left:600px;top:470px">Georg: <b>Mönch</b></div>
+      <div class="vig"></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s11-svg"); sky(sv, "s11g", "#2a1240", "#0c0518");
+      el("rect", { x: 0, y: 1120, width: 1080, height: 800, fill: "#1a0c2a" }, sv);
+      const pk = [[90, 1110], [990, 1110]].map(([x, y]) => { const g = el("g", {}, sv); el("ellipse", { cx: x, cy: y, rx: 70, ry: 56, fill: "#ff8a1f" }, g);
+        el("path", { d: `M${x - 30} ${y - 12} l12 -16 l12 16Z M${x + 6} ${y - 12} l12 -16 l12 16Z M${x - 26} ${y + 16} q26 16 52 0`, fill: "#3a1a00" }, g); return g; });
+      const lights = []; for (let i = 0; i < 20; i++) lights.push(el("circle", { cx: 30 + i * 54, cy: 420 + Math.sin(i * 0.7) * 16, r: 9, fill: ["#ff8a1f", "#a06bff", "#39e27a"][i % 3] }, sv));
+      const Gr = woman(sv, 330, 1150, 2.3, "#f4f4f8", "#f0d060");
+      el("rect", { x: -6, y: -118, width: 12, height: 34, fill: "#e0202f" }, Gr.g); el("rect", { x: -17, y: -107, width: 34, height: 12, fill: "#e0202f" }, Gr.g);
+      el("path", { d: "M-16 -184 H16 L12 -196 H-12Z", fill: "#fff", stroke: "#e0202f", "stroke-width": 2 }, Gr.head); el("rect", { x: -3, y: -194, width: 6, height: 8, fill: "#e0202f" }, Gr.head);
+      const G = finn(sv, 760, 1150, 2.3, { hood: "#1d1f2b", arm: "#15161f", undercut: "#f0d060", noPhones: true, tee: "#ffffff", chain: true, label: "" });
+      const robe = el("g", { opacity: 0 }, G.g); el("path", { d: "M-40 -138 Q0 -150 40 -138 L48 0 H-48Z", fill: "#7a5230" }, robe); el("rect", { x: -44, y: -72, width: 88, height: 8, fill: "#e8d29a" }, robe);
+      el("path", { d: "M-26 -176 Q0 -206 26 -176 L26 -150 Q0 -164 -26 -150Z", fill: "#6a4424" }, robe);
+      const gr = at("L19", "Greta"), kr = at("L19", "Krankenschwester"), mo = at("L19b", "Mönch");
+      tl.to(lights, { opacity: 0.4, duration: 0.3, yoyo: true, repeat: 12, stagger: 0.05 }, 0);
+      tl.fromTo("#s11-gr", { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(3)" }, gr - 0.1);
+      tl.to(Gr.g, { rotation: -6, svgOrigin: "0 0", duration: 0.25, yoyo: true, repeat: 3 }, kr);
+      tl.to(G.mouth, { attr: { d: "M-6 -149 Q0 -156 6 -149" }, duration: 0.15 }, kr); tl.to(G.head, { y: -12, duration: 0.15, yoyo: true, repeat: 1 }, kr + 0.2);
+      tl.to(robe, { opacity: 1, duration: 0.2 }, mo - 0.3);
+      tl.fromTo("#s11-mo", { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(3)" }, mo - 0.1);
+      tl.to(G.mouth, { attr: { d: "M-6 -150 H6" }, duration: 0.15 }, mo);
+      tl.to("#s11-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s11"] = tl;
+    })();
+  </script>
+</template>

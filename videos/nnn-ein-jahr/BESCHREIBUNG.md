@@ -1,34 +1,34 @@
 # Beschreibung – Was wäre, wenn der No Nut November ein ganzes Jahr dauert?
 
 ## Hauptversion (empfohlen)
-Was wäre, wenn der No Nut November ein GANZES JAHR dauert? 😳 Georg, 18: 365 Tage kein Kronjuwelen-Katapult – Bratwurst am Weihnachtsmarkt, Valentinstag, Freibad bei 34 Grad … und am 31. Oktober passiert etwas, womit keiner rechnet 💀 365 Tage oder keine Chance? 👇
+Achtung, Durchsage: Der No Nut November wurde VERLÄNGERT 📢 Georg, 18: 365 Tage kein Kronjuwelen-Katapult – Snapchat gelöscht, Strand bei 34 Grad, Festival-Security fragt nach dem Klo 😳 … und am Ende bebt die Erde. Wortwörtlich 🌋 Würdest du ein Jahr aushalten? Wenn nicht: wie lange? 👇
 #nonutnovember #nnn #waswärewenn #storytime #fyp
 
-## Alternative 1 (Kloster-Hook)
-365 Tage No Nut November – und im Oktober kommt ein Brief vom Kloster: „Wir haben von dir gehört.“ 😭✝️ Georg, 18, hat's fast geschafft … Würdest du ein Jahr durchhalten? 👇
+## Alternative 1 (Erdbeben-Hook)
+30. November, 23:59:50. Georg hat ein ganzes Jahr durchgehalten … um Mitternacht bebt sein Haus mit Stärke 9,0 💀 Bis zum Ende schauen 👀 Wie lange würdest DU schaffen? 👇
+#nonutnovember #nnn #plottwist #comedy #fyp
+
+## Alternative 2 (Kloster-Hook)
+„Lieber Georg, mit Stolz haben wir gehört, dass du seit fast einem Jahr nicht mehr den Pilz gepflückt hast.“ – Brief vom Kloster 😭✝️ 365 Tage oder keine Chance? 👇
 #nonutnovember #nnn #comedy #storytime #fyp
 
-## Alternative 2 (Abi-Hook)
-Ein Jahr No Nut November: Abi-Schnitt 1,3 📚 Seine Eltern lassen ihn auf Drogen testen 💀 Georgs Jahr ohne Wurst pellen – vom Weihnachtsmarkt bis zur Halloween-Party. 365 Tage oder keine Chance? 👇
-#nonutnovember #nnn #abi #waswärewenn #fyp
-
-## Alternative 3 (Plot-Twist-Hook)
-Georg hält 365 Tage durch. 31. Oktober, 23:59:50, Halloween-Party, Countdown läuft … und dann merkt er, welcher Tag um Mitternacht beginnt 😳 Bis zum Ende schauen 👀
-#nonutnovember #nnn #plottwist #halloween #fyp
+## Alternative 3 (Strand-Hook)
+Ein Jahr No Nut November: Georg buddelt sich am Strand bis zur Hüfte ein, damit keiner seine Lust-Lanze sieht 🏖️😳 Und an Halloween kommt seine beste Freundin als Krankenschwester … Wie lange würdest du durchhalten? 👇
+#nonutnovember #nnn #strand #waswärewenn #fyp
 
 ## Angepinnter Kommentar
-Ehrliche Umfrage 👀 ✅ 365 TAGE oder ❌ KEINE CHANCE? Und: Wie viele Tage hast DU im November schon geschafft? 👇
+Ehrliche Umfrage 👀 Würdest du 1 JAHR aushalten? ✅ JA, 365 TAGE oder ❌ NEIN, NUR … (schreib deine Tage!) 👇
 
 ## Antwort-Vorlagen für Kommentare
-- „Georg bewirbt sich übrigens nicht im Kloster 😅 – aber er überlegt.“
-- „Ganz ehrlich: Die Wurst pellen ist laut Ärzten normal und gesund – das hier ist nur Spaß und Disziplin 💪“
-- „Der Plot-Twist am Ende tut weh, oder? 😭“
+- „Georg hat sich übrigens nicht im Kloster beworben 😅 – aber die Stelle ist noch frei.“
+- „Ganz ehrlich: Den Pilz pflücken ist laut Ärzten normal und gesund – das hier ist nur Spaß 💪“
+- „Stärke 9,0 war noch untertrieben 🌋“
 
 ## Posting-Tipps
-- Jetzt im November posten, ideal 17–20 Uhr; passt als Serie zu Finn und „Alle Männer“ – in den Kommentaren gegenseitig verlinken.
-- Cover: `renders/cover.jpg` (NOVEMBER durchgestrichen → JAHR, 365 Tage, Georg mit Koffer).
-- Trend-Sound leise darunter (10–20 %); der Bahnhofs-Gong am Anfang ist schon drin.
-- Umfrage-Kommentar sofort anpinnen.
+- Jetzt im November posten, ideal 17–20 Uhr; als Serie mit Finn und „Alle Männer“ gegenseitig verlinken.
+- Cover: `renders/cover.jpg` (ACHTUNG, DURCHSAGE + rot leuchtendes VERLÄNGERT; Text liegt unterhalb der TikTok-Suchleiste).
+- Trend-Sound leise darunter (10–20 %); Bahnhofs-Gong ist schon drin.
+- Umfrage-Kommentar sofort anpinnen; Antworten mit Tagesangaben liken.
 
 ---
 Humorvolles Gedankenexperiment. Fakt: Selbstbefriedigung gilt medizinisch als normal und gesund.

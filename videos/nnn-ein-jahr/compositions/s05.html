@@ -25,17 +25,17 @@
     .chip { position: absolute; padding: 12px 26px; border-radius: 22px; background: rgba(255,255,255,.96); color: #22283f; font: 900 52px Inter, sans-serif; opacity: 0; box-shadow: 0 16px 40px rgba(0,0,0,.4); white-space: nowrap; }
     .chip b { color: #e0484f; } .chip i { font-style: normal; color: #1fa65a; }
   </style>
-  <div id="root" data-composition-id="s05" data-start="0" data-duration="10.760" data-width="1080" data-height="1920">
-    <div id="s05-stage" class="clip stage" data-start="0" data-duration="10.760" data-track-index="0">
+  <div id="root" data-composition-id="s05" data-start="0" data-duration="10.600" data-width="1080" data-height="1920">
+    <div id="s05-stage" class="clip stage" data-start="0" data-duration="10.600" data-track-index="0">
       <svg id="s05-svg" class="full" viewBox="0 0 1080 1920"></svg>
-      <div id="s05-sw" class="chip" style="left:640px;top:480px">⏱ <i>2:00</i></div>
+      <div id="s05-sp" class="chip" style="left:120px;top:500px;background:#ffd43b">SPERRZONE ⚠</div>
       <div class="vig"></div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 10.76, "L12": [0.2, 4.41], "L12.words": [["juli", 0.2, 0.55], ["freibad", 0.92, 1.31], ["vierunddreißig", 1.77, 2.32], ["grad", 2.32, 2.46], ["überall", 2.94, 3.422], ["sonnencreme", 3.422, 4.075], ["und", 4.075, 4.239], ["haut", 4.239, 4.41]], "L13": [4.63, 7.82], "L13.words": [["georg", 4.63, 4.79], ["geht", 4.79, 4.944], ["auf", 4.944, 5.093], ["nummer", 5.093, 5.392], ["sicher", 5.392, 5.69], ["er", 6.24, 6.392], ["bleibt", 6.392, 6.566], ["den", 6.566, 6.724], ["ganzen", 6.724, 7.038], ["tag", 7.038, 7.196], ["unter", 7.196, 7.505], ["wasser", 7.505, 7.82]], "L14": [8.04, 10.58], "L14.words": [["neuer", 8.04, 8.312], ["rekord", 8.312, 8.82], ["zwei", 9.17, 9.353], ["minuten", 9.353, 9.872], ["luft", 9.872, 10.055], ["anhalten", 10.055, 10.58]]};
+      const C = {"__dur": 10.6, "L12": [0.2, 4.7], "L12.words": [["juli", 0.2, 0.67], ["strand", 0.99, 1.5], ["vierunddreißig", 1.97, 2.735], ["grad", 2.735, 2.93], ["überall", 3.4, 3.83], ["knappe", 3.83, 4.123], ["badesachen", 4.123, 4.7]], "L13": [4.92, 8.43], "L13.words": [["georg", 4.92, 5.095], ["geht", 5.095, 5.264], ["auf", 5.264, 5.427], ["nummer", 5.427, 5.754], ["sicher", 5.754, 6.08], ["er", 6.63, 6.788], ["buddelt", 6.788, 7.121], ["sich", 7.121, 7.29], ["bis", 7.29, 7.454], ["zur", 7.454, 7.618], ["hüfte", 7.618, 7.939], ["im", 7.939, 8.097], ["sand", 8.097, 8.266], ["ein", 8.266, 8.43]], "L14": [8.65, 10.42], "L14.words": [["damit", 8.65, 8.996], ["niemand", 8.996, 9.355], ["seine", 9.355, 9.702], ["lustlanze", 9.702, 10.231], ["sieht", 10.231, 10.42]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -140,15 +140,20 @@
         el("path", { d: "M-19 -60 H-1 L-3 -6 H-17Z", fill: "#3c4357" }, g); el("path", { d: "M1 -60 H19 L17 -6 H3Z", fill: "#3c4357" }, g);
         el("rect", { x: -26, y: -10, width: 26, height: 13, rx: 6, fill: "#ffffff" }, g); el("rect", { x: 0, y: -10, width: 26, height: 13, rx: 6, fill: "#ffffff" }, g);
         el("rect", { x: -26, y: -1, width: 26, height: 4, rx: 2, fill: "#ff4fb0" }, g); el("rect", { x: 0, y: -1, width: 26, height: 4, rx: 2, fill: "#ff4fb0" }, g);
-        const aL = el("rect", { x: -46, y: -130, width: 16, height: 62, rx: 8, fill: AC }, g), aR = el("rect", { x: 30, y: -130, width: 16, height: 62, rx: 8, fill: AC }, g);
+        const aL = el("rect", { x: -46, y: -130, width: 16, height: 62, rx: 8, fill: AC }, g), aR = el("g", {}, g); el("rect", { x: 30, y: -130, width: 16, height: 62, rx: 8, fill: AC }, aR);
+        if (o.can) { el("rect", { x: 31, y: -86, width: 15, height: 28, rx: 3, fill: "#2a4fa8" }, aR); el("rect", { x: 31, y: -86, width: 7.5, height: 28, fill: "#c9d2e0" }, aR); el("circle", { cx: 38.5, cy: -73, r: 3.5, fill: "#e0202f" }, aR); }
         el("path", { d: "M-36 -126 Q-37 -136 -26 -137 L26 -137 Q37 -136 36 -126 L30 -54 L-30 -54Z", fill: HC }, g);
         el("path", { d: "M-16 -96 H16 V-78 H-16Z", fill: AC }, g); if (o.label !== "") txt(g, 0, -106, o.label || "NNN", 11, "#fff", { "data-layout-allow-overlap": "" });
-        el("path", { d: "M-22 -138 Q0 -122 22 -138", stroke: "#1b1d2b", "stroke-width": 6, fill: "none" }, g);
-        el("circle", { cx: -22, cy: -138, r: 8, fill: "#1b1d2b" }, g); el("circle", { cx: 22, cy: -138, r: 8, fill: "#1b1d2b" }, g);
+        if (o.tee) el("path", { d: "M-12 -137 L0 -118 L12 -137Z", fill: o.tee }, g);
+        if (o.chain) el("path", { d: "M-11 -136 Q0 -112 11 -136", stroke: "#ffd43b", "stroke-width": 3, fill: "none" }, g);
+        if (!o.noPhones) { el("path", { d: "M-22 -138 Q0 -122 22 -138", stroke: "#1b1d2b", "stroke-width": 6, fill: "none" }, g);
+        el("circle", { cx: -22, cy: -138, r: 8, fill: "#1b1d2b" }, g); el("circle", { cx: 22, cy: -138, r: 8, fill: "#1b1d2b" }, g); }
         const head = el("g", {}, g);
         el("rect", { x: -6, y: -148, width: 12, height: 12, fill: "#e6b88f" }, head);
         el("circle", { cx: 0, cy: -166, r: 23, fill: "#f2cba5" }, head);
-        if (o.hair) { [[-18, -182], [-8, -188], [4, -189], [15, -183], [21, -172], [-22, -170]].forEach(([hx, hy]) => el("circle", { cx: hx, cy: hy, r: 10, fill: o.hair }, head));
+        if (o.undercut) { el("path", { d: "M-23 -166 Q-24 -182 -12 -186 L12 -186 Q24 -182 23 -166 Q22 -176 14 -178 L-14 -178 Q-22 -176 -23 -166Z", fill: "#c9a37a", opacity: 0.6 }, head);
+          el("path", { d: "M-18 -178 Q-20 -200 4 -202 Q26 -200 22 -184 Q16 -178 4 -182 Q-8 -184 -18 -178Z", fill: o.undercut }, head); }
+        else if (o.hair) { [[-18, -182], [-8, -188], [4, -189], [15, -183], [21, -172], [-22, -170]].forEach(([hx, hy]) => el("circle", { cx: hx, cy: hy, r: 10, fill: o.hair }, head));
           el("path", { d: "M-22 -172 Q-10 -164 0 -173 Q10 -164 22 -172 L20 -184 L-20 -184Z", fill: o.hair }, head); }
         else { el("path", { d: "M-23 -170 Q-22 -194 0 -194 Q22 -194 23 -172 Q12 -178 0 -178 Q-12 -178 -23 -170Z", fill: CC }, head);
         el("rect", { x: -9, y: -198, width: 18, height: 7, rx: 3, fill: CC }, head);
@@ -236,22 +241,23 @@
         return { g, rays }; }
 
       const tl = gsap.timeline({ paused: true });
-      const sv = document.querySelector("#s05-svg"); sky(sv, "s05g", "#5fc0ff", "#9fdcff");
+      const sv = document.querySelector("#s05-svg"); sky(sv, "s05g", "#5fc0ff", "#bfe9ff");
       const sun = el("circle", { cx: 880, cy: 520, r: 80, fill: "#ffd43b" }, sv);
-      el("rect", { x: 0, y: 760, width: 1080, height: 160, fill: "#f2e3c2" }, sv);
-      const towels = [[120, "#ff4fb0"], [420, "#ffd43b"], [740, "#39e27a"]].map(([x, c]) => { const g = el("g", {}, sv); el("rect", { x, y: 790, width: 200, height: 70, rx: 10, fill: c }, g); el("ellipse", { cx: x + 100, cy: 800, rx: 70, ry: 18, fill: "#f2cba5" }, g); return g; });
-      const pool = el("g", {}, sv); el("rect", { x: 0, y: 920, width: 1080, height: 1000, fill: "#2fa8e8" }, pool);
-      const waves = []; for (let k = 0; k < 5; k++) waves.push(el("path", { d: `M0 ${960 + k * 50} q60 -14 120 0 t120 0 t120 0 t120 0 t120 0 t120 0 t120 0 t120 0 t120 0`, stroke: "#bfe9ff", "stroke-width": 5, fill: "none", opacity: 0.6 }, pool));
-      const G = finn(sv, 540, 1180, 2.2, { hood: "#e8a83a", arm: "#c98c22", hair: "#e0b050", glasses: true, label: "G" });
-      const water = el("rect", { x: 0, y: 1000, width: 1080, height: 920, fill: "#2fa8e8", opacity: 0.85 }, sv);
-      const bub = []; for (let i = 0; i < 10; i++) bub.push(el("circle", { cx: 520 + (i % 3) * 20, cy: 1000, r: 6 + (i % 3) * 3, fill: "none", stroke: "#e8f8ff", "stroke-width": 3, opacity: 0 }, sv));
-      const un = at("L13", "unter"), zw = at("L14", "zwei");
-      waves.forEach((w, i) => tl.to(w, { x: -120, duration: 2, repeat: Math.ceil(C.__dur / 2), ease: "none" }, 0));
+      const sea = el("g", {}, sv); el("rect", { x: 0, y: 760, width: 1080, height: 160, fill: "#2fa8e8" }, sea);
+      const waves = []; for (let k = 0; k < 3; k++) waves.push(el("path", { d: `M0 ${790 + k * 40} q60 -14 120 0 t120 0 t120 0 t120 0 t120 0 t120 0 t120 0 t120 0 t120 0 t120 0`, stroke: "#bfe9ff", "stroke-width": 5, fill: "none", opacity: 0.7 }, sea));
+      el("rect", { x: 0, y: 900, width: 1080, height: 1020, fill: "#f2dca6" }, sv);
+      [[140, "#ff4fb0"], [760, "#39e27a"]].forEach(([x, c]) => { el("rect", { x: x + 46, y: 760, width: 8, height: 260, fill: "#8a6a44" }, sv); el("path", { d: `M${x - 70} 790 Q${x + 50} 680 ${x + 170} 790Z`, fill: c }, sv);
+        const t = el("rect", { x: x - 40, y: 1010, width: 180, height: 60, rx: 10, fill: c, opacity: 0.6 }, sv); });
+      const G = finn(sv, 540, 1150, 2.3, { hood: "#1d1f2b", arm: "#15161f", undercut: "#f0d060", noPhones: true, tee: "#ffffff", chain: true, can: true, label: "" });
+      const mound = el("path", { d: "M260 1300 Q540 720 820 1300Z", fill: "#dcbd78", opacity: 0 }, sv);
+      const l13 = line("L13")[0], bu = at("L13", "buddelt"), hu = at("L13", "Hüfte"), lu = at("L14", "Lust");
+      waves.forEach((w) => tl.to(w, { x: -120, duration: 2, repeat: Math.ceil(C.__dur / 2), ease: "none" }, 0));
       tl.to(sun, { scale: 1.1, svgOrigin: "880 520", duration: 0.8, yoyo: true, repeat: 8 }, 0);
       tl.to(G.mouth, { attr: { d: "M-6 -149 Q0 -155 6 -149" }, duration: 0.2 }, 1.5);
-      tl.to(G.g, { y: 1600, duration: 0.6, ease: "power2.in" }, un - 0.1);
-      bub.forEach((b, i) => tl.fromTo(b, { opacity: 0.9, y: 0 }, { opacity: 0, y: -260, duration: 0.9, repeat: 4, ease: "power1.out", immediateRender: false }, un + 0.4 + i * 0.18));
-      tl.fromTo("#s05-sw", { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(3)" }, zw - 0.1);
+      tl.fromTo(mound, { opacity: 0, attr: { d: "M420 1170 Q540 1150 660 1170Z" } }, { opacity: 1, attr: { d: "M240 1300 Q540 700 840 1300Z" }, duration: hu - bu + 0.4, ease: "power1.out" }, bu - 0.1);
+      tl.to(G.g, { y: 1170, duration: hu - bu + 0.4 }, bu - 0.1);
+      tl.fromTo("#s05-sp", { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(3)" }, lu - 0.1);
+      tl.to(G.mouth, { attr: { d: "M-8 -153 Q0 -144 8 -153" }, duration: 0.15 }, lu + 0.3);
       tl.to("#s05-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
       window.__timelines["s05"] = tl;
     })();

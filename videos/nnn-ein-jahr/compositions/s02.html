@@ -27,17 +27,17 @@
     #s02-v { left: 0; right: 0; margin: 0 auto; top: 470px; width: fit-content; padding: 14px 40px; border: 10px solid #ff2d4b; border-radius: 20px; color: #ff2d4b; background: rgba(255,255,255,.92); font: 900 86px Inter, sans-serif; letter-spacing: .06em; opacity: 0; transform: rotate(-7deg); }
     #s02-v small { display: block; font: 800 30px Inter, sans-serif; color: #22283f; letter-spacing: .1em; text-align: center; }
   </style>
-  <div id="root" data-composition-id="s02" data-start="0" data-duration="8.765" data-width="1080" data-height="1920">
-    <div id="s02-stage" class="clip stage" data-start="0" data-duration="8.765" data-track-index="0">
+  <div id="root" data-composition-id="s02" data-start="0" data-duration="8.200" data-width="1080" data-height="1920">
+    <div id="s02-stage" class="clip stage" data-start="0" data-duration="8.200" data-track-index="0">
       <svg id="s02-svg" class="full" viewBox="0 0 1080 1920"></svg>
-      <div id="s02-v" class="abs" data-layout-allow-overlap>VERBOTEN<small>BIS 1. NOVEMBER</small></div>
+      <div id="s02-v" class="abs" data-layout-allow-overlap>VERBOTEN<small>365 TAGE LANG</small></div>
       <div class="vig"></div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 8.765, "L4": [0.2, 2.635], "L4.words": [["dezember", 0.2, 0.74], ["weihnachtsmarkt", 1.29, 1.821], ["mit", 1.821, 1.986], ["der", 1.986, 2.151], ["familie", 2.151, 2.635]], "L5": [2.855, 5.935], "L5.words": [["die", 2.855, 3.011], ["tante", 3.011, 3.318], ["drückt", 3.318, 3.491], ["ihm", 3.491, 3.647], ["eine", 3.647, 3.948], ["bratwurst", 3.948, 4.277], ["in", 4.277, 4.427], ["die", 4.427, 4.583], ["hand", 4.583, 4.745], ["georg", 5.295, 5.6], ["schwitzt", 5.6, 5.935]], "L6": [6.155, 8.585], "L6.words": [["denn", 6.155, 6.311], ["die", 6.311, 6.462], ["wurst", 6.462, 6.624], ["pellen", 6.624, 6.925], ["ist", 6.925, 7.076], ["bis", 7.076, 7.227], ["zum", 7.227, 7.378], ["nächsten", 7.378, 7.691], ["november", 7.691, 8.138], ["verboten", 8.138, 8.585]]};
+      const C = {"__dur": 8.2, "L4": [0.2, 2.66], "L4.words": [["dezember", 0.2, 0.75], ["weihnachtsmarkt", 1.3, 1.837], ["mit", 1.837, 2.004], ["der", 2.004, 2.171], ["familie", 2.171, 2.66]], "L5": [2.88, 5.69], "L5.words": [["die", 2.88, 3.018], ["tante", 3.018, 3.289], ["drückt", 3.289, 3.442], ["ihm", 3.442, 3.58], ["eine", 3.58, 3.846], ["bratwurst", 3.846, 4.136], ["in", 4.136, 4.269], ["die", 4.269, 4.407], ["hand", 4.407, 4.55], ["georg", 5.1, 5.381], ["schwitzt", 5.381, 5.69]], "L6": [5.91, 8.02], "L6.words": [["denn", 5.91, 6.077], ["die", 6.077, 6.238], ["wurst", 6.238, 6.41], ["pellen", 6.41, 6.732], ["ist", 6.732, 6.893], ["ein", 6.893, 7.054], ["ganzes", 7.054, 7.376], ["jahr", 7.376, 7.543], ["verboten", 7.543, 8.02]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -142,15 +142,20 @@
         el("path", { d: "M-19 -60 H-1 L-3 -6 H-17Z", fill: "#3c4357" }, g); el("path", { d: "M1 -60 H19 L17 -6 H3Z", fill: "#3c4357" }, g);
         el("rect", { x: -26, y: -10, width: 26, height: 13, rx: 6, fill: "#ffffff" }, g); el("rect", { x: 0, y: -10, width: 26, height: 13, rx: 6, fill: "#ffffff" }, g);
         el("rect", { x: -26, y: -1, width: 26, height: 4, rx: 2, fill: "#ff4fb0" }, g); el("rect", { x: 0, y: -1, width: 26, height: 4, rx: 2, fill: "#ff4fb0" }, g);
-        const aL = el("rect", { x: -46, y: -130, width: 16, height: 62, rx: 8, fill: AC }, g), aR = el("rect", { x: 30, y: -130, width: 16, height: 62, rx: 8, fill: AC }, g);
+        const aL = el("rect", { x: -46, y: -130, width: 16, height: 62, rx: 8, fill: AC }, g), aR = el("g", {}, g); el("rect", { x: 30, y: -130, width: 16, height: 62, rx: 8, fill: AC }, aR);
+        if (o.can) { el("rect", { x: 31, y: -86, width: 15, height: 28, rx: 3, fill: "#2a4fa8" }, aR); el("rect", { x: 31, y: -86, width: 7.5, height: 28, fill: "#c9d2e0" }, aR); el("circle", { cx: 38.5, cy: -73, r: 3.5, fill: "#e0202f" }, aR); }
         el("path", { d: "M-36 -126 Q-37 -136 -26 -137 L26 -137 Q37 -136 36 -126 L30 -54 L-30 -54Z", fill: HC }, g);
         el("path", { d: "M-16 -96 H16 V-78 H-16Z", fill: AC }, g); if (o.label !== "") txt(g, 0, -106, o.label || "NNN", 11, "#fff", { "data-layout-allow-overlap": "" });
-        el("path", { d: "M-22 -138 Q0 -122 22 -138", stroke: "#1b1d2b", "stroke-width": 6, fill: "none" }, g);
-        el("circle", { cx: -22, cy: -138, r: 8, fill: "#1b1d2b" }, g); el("circle", { cx: 22, cy: -138, r: 8, fill: "#1b1d2b" }, g);
+        if (o.tee) el("path", { d: "M-12 -137 L0 -118 L12 -137Z", fill: o.tee }, g);
+        if (o.chain) el("path", { d: "M-11 -136 Q0 -112 11 -136", stroke: "#ffd43b", "stroke-width": 3, fill: "none" }, g);
+        if (!o.noPhones) { el("path", { d: "M-22 -138 Q0 -122 22 -138", stroke: "#1b1d2b", "stroke-width": 6, fill: "none" }, g);
+        el("circle", { cx: -22, cy: -138, r: 8, fill: "#1b1d2b" }, g); el("circle", { cx: 22, cy: -138, r: 8, fill: "#1b1d2b" }, g); }
         const head = el("g", {}, g);
         el("rect", { x: -6, y: -148, width: 12, height: 12, fill: "#e6b88f" }, head);
         el("circle", { cx: 0, cy: -166, r: 23, fill: "#f2cba5" }, head);
-        if (o.hair) { [[-18, -182], [-8, -188], [4, -189], [15, -183], [21, -172], [-22, -170]].forEach(([hx, hy]) => el("circle", { cx: hx, cy: hy, r: 10, fill: o.hair }, head));
+        if (o.undercut) { el("path", { d: "M-23 -166 Q-24 -182 -12 -186 L12 -186 Q24 -182 23 -166 Q22 -176 14 -178 L-14 -178 Q-22 -176 -23 -166Z", fill: "#c9a37a", opacity: 0.6 }, head);
+          el("path", { d: "M-18 -178 Q-20 -200 4 -202 Q26 -200 22 -184 Q16 -178 4 -182 Q-8 -184 -18 -178Z", fill: o.undercut }, head); }
+        else if (o.hair) { [[-18, -182], [-8, -188], [4, -189], [15, -183], [21, -172], [-22, -170]].forEach(([hx, hy]) => el("circle", { cx: hx, cy: hy, r: 10, fill: o.hair }, head));
           el("path", { d: "M-22 -172 Q-10 -164 0 -173 Q10 -164 22 -172 L20 -184 L-20 -184Z", fill: o.hair }, head); }
         else { el("path", { d: "M-23 -170 Q-22 -194 0 -194 Q22 -194 23 -172 Q12 -178 0 -178 Q-12 -178 -23 -170Z", fill: CC }, head);
         el("rect", { x: -9, y: -198, width: 18, height: 7, rx: 3, fill: CC }, head);
@@ -245,7 +250,7 @@
       const bulbs = []; for (let i = 0; i < 22; i++) bulbs.push(el("circle", { cx: 30 + i * 48, cy: 600 + Math.sin(i * 0.6) * 20, r: 9, fill: ["#ffd43b", "#ff4fb0", "#39e27a", "#4da3ff"][i % 4] }, sv));
       const sf = snowfall(sv, 60, 5, 300, 1200);
       const T = woman(sv, 330, 1150, 2.3, "#d0343f", "#5a3a22");
-      const G = finn(sv, 720, 1150, 2.3, { hood: "#e8a83a", arm: "#c98c22", hair: "#e0b050", glasses: true, label: "G" });
+      const G = finn(sv, 720, 1150, 2.3, { hood: "#1d1f2b", arm: "#15161f", undercut: "#f0d060", noPhones: true, tee: "#ffffff", chain: true, label: "" });
       const wurst = el("g", { opacity: 0 }, sv); el("rect", { x: 430, y: 880, width: 150, height: 40, rx: 20, fill: "#a0522d" }, wurst); el("rect", { x: 420, y: 895, width: 170, height: 22, rx: 11, fill: "#f2d6a2", opacity: 0.9 }, wurst);
       const sweat = [0, 1, 2].map((k) => el("circle", { cx: 690 + k * 30, cy: 760, r: 8, fill: "#9fd8ff", opacity: 0 }, sv));
       fall(tl, sf, C.__dur);

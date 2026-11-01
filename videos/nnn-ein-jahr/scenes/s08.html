@@ -5,18 +5,15 @@
     .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
       font-family: "Inter", sans-serif; font-weight: 900; }
     .vig { position: absolute; left: 0; right: 0; top: 1040px; height: 880px; background: linear-gradient(rgba(10,12,30,0), rgba(10,12,30,.5) 45%, rgba(10,12,30,.55)); pointer-events: none; }
-    #s08-c { left: 240px; top: 470px; width: 600px; height: 200px; border-radius: 26px; background: #07060f; border: 5px solid #2a2440; text-align: center; font: 700 150px/200px "Space Mono", monospace; color: #ff8a3d; text-shadow: 0 0 26px rgba(255,138,61,.9); }
-    #s08-d { left: 0; width: 1080px; top: 470px; text-align: center; opacity: 0; }
-    #s08-d .a { display: inline-block; padding: 10px 30px; border-radius: 16px; background: #39b86b; color: #fff; font: 900 80px Inter, sans-serif; }
-    #s08-st { left: 90px; top: 700px; width: 900px; padding: 10px 0; border: 12px solid #ff2d4b; border-radius: 22px; color: #ff4fb0; background: rgba(10,6,20,.8); text-align: center; font: 900 82px/1.05 Inter, sans-serif; opacity: 0; transform: rotate(-7deg); box-shadow: 0 0 50px rgba(255,79,176,.7); }
-    #s08-st small { display: block; color: #fff; font-size: 56px; }
+    #s08-c { left: 240px; top: 470px; width: 600px; height: 200px; border-radius: 26px; background: #07060f; border: 5px solid #2a2440; text-align: center; font: 700 150px/200px "Space Mono", monospace; color: #ff8a3d; text-shadow: 0 0 26px rgba(255,138,61,.9); opacity: 0; }
+    #s08-eq { left: 0; right: 0; margin: 0 auto; top: 470px; width: fit-content; padding: 14px 36px; border: 10px solid #ff2d4b; border-radius: 20px; color: #fff; background: #e0202f; font: 900 70px/1.05 Inter, sans-serif; text-align: center; opacity: 0; box-shadow: 0 0 60px rgba(255,45,75,1); }
+    #s08-eq small { display: block; font-size: 44px; color: #ffd43b; }
   </style>
   <div id="root" data-composition-id="s08" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
     <div id="s08-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
       <svg id="s08-svg" class="full" viewBox="0 0 1080 1920"></svg>
       <div id="s08-c" class="abs">00:<span id="s08-t">1</span><span id="s08-n">0</span></div>
-      <div id="s08-d" class="abs"><div class="a">1. NOVEMBER</div></div>
-      <div id="s08-st" class="abs" data-layout-allow-overlap>NO NUT NOVEMBER<small>TAG 1 · SCHON WIEDER</small></div>
+      <div id="s08-eq" class="abs" data-layout-allow-overlap>⚠ ERDBEBEN<small>STÄRKE 9,0</small></div>
       <div class="vig"></div>
     </div>
   </div>
@@ -25,28 +22,29 @@
       /*__CUE_HELPERS__*/
 /*__COMMON_JS__*/
       const tl = gsap.timeline({ paused: true });
-      const sv = document.querySelector("#s08-svg"); sky(sv, "s08g", "#2a1240", "#0c0518");
-      el("rect", { x: 0, y: 1120, width: 1080, height: 800, fill: "#1a0c2a" }, sv);
-      const pk = [[120, 1110], [960, 1110], [260, 1150], [820, 1150]].map(([x, y]) => { const g = el("g", {}, sv); el("ellipse", { cx: x, cy: y, rx: 70, ry: 56, fill: "#ff8a1f" }, g);
-        el("rect", { x: x - 6, y: y - 70, width: 12, height: 20, fill: "#4a7a2a" }, g); el("path", { d: `M${x - 30} ${y - 12} l12 -16 l12 16Z M${x + 6} ${y - 12} l12 -16 l12 16Z M${x - 26} ${y + 16} q26 16 52 0`, fill: "#3a1a00" }, g); return g; });
-      const ghosts = [[200, 900], [880, 900]].map(([x, y]) => { const g = el("g", {}, sv); el("path", { d: `M${x - 50} ${y + 140} V${y} q50 -70 100 0 V${y + 140} l-17 -20 l-17 20 l-16 -20 l-17 20 l-16 -20Z`, fill: "#f4f4f8" }, g);
-        el("circle", { cx: x - 18, cy: y + 10, r: 8, fill: "#111" }, g); el("circle", { cx: x + 18, cy: y + 10, r: 8, fill: "#111" }, g); return g; });
-      const G = finn(sv, 540, 1150, 2.4, { hood: "#e8a83a", arm: "#c98c22", hair: "#e0b050", glasses: true, label: "G" });
-      const flash = el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: "#fff", opacity: 0 }, sv);
-      const ze = at("L20", "zehn"), dr = at("L21", "drei"), zw = at("L21", "zwei"), ei = at("L21", "eins"), mi = at("L22", "Mitternacht"), er = at("L22", "erste"), l23 = line("L23")[0], sw = at("L23", "schon");
-      tl.fromTo("#s08-c", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 1.7);
-      ghosts.forEach((g, i) => tl.to(g, { y: -20, duration: 0.6, yoyo: true, repeat: Math.floor(C.__dur / 1.2) }, i * 0.3));
+      const sv = document.querySelector("#s08-svg"); sky(sv, "s08g", "#0d1030", "#05060f");
+      const stars = []; const rs = rng(31); for (let i = 0; i < 30; i++) stars.push(el("circle", { cx: rs() * 1080, cy: 300 + rs() * 400, r: 2 + rs() * 2, fill: "#fff", opacity: 0.6 }, sv));
+      el("rect", { x: 0, y: 1120, width: 1080, height: 800, fill: "#1a2a1a" }, sv);
+      const H = el("g", {}, sv); el("rect", { x: 260, y: 760, width: 560, height: 360, fill: "#c9b38a" }, H); el("path", { d: "M220 770 L540 560 L860 770Z", fill: "#8a3a2a" }, H);
+      const wins = [[320, 820], [620, 820], [320, 960], [620, 960]].map(([x, y]) => el("rect", { x, y, width: 140, height: 100, fill: "#ffd78a" }, H)); el("rect", { x: 480, y: 980, width: 120, height: 140, fill: "#5a3a22" }, H);
+      const tiles = []; for (let i = 0; i < 10; i++) tiles.push(el("rect", { x: 300 + i * 50, y: 700 - Math.abs(i - 4.5) * 26, width: 40, height: 18, fill: "#a04a3a" }, sv));
+      const cracks = el("path", { d: "M380 770 l30 60 l-20 40 l40 70 M720 790 l-30 50 l25 50 l-20 60", stroke: "#3a2a1a", "stroke-width": 6, fill: "none", opacity: 0 }, sv);
+      const seis = el("path", { d: "M40 1520 H1040", stroke: "#39e27a", "stroke-width": 5, fill: "none", opacity: 0 }, sv);
+      let d = "M40 1520"; const rq = rng(5); for (let x = 60; x <= 1040; x += 20) d += ` L${x} ${1520 + (rq() - 0.5) * (x > 300 ? 180 : 20)}`;
+      const ze = at("L20", "zehn"), dr = at("L21", "Drei"), zw = at("L21", "zwei"), ei = at("L21", "eins"), mi = at("L22", "Mitternacht"), ju = at("L22", "Jürgen"), l23 = line("L23")[0], be = at("L23", "bebt"), sk = at("L23", "Stärke");
+      tl.to("#s08-c", { opacity: 1, duration: 0.3 }, 1.7);
       tl.set("#s08-t", { textContent: "0" }, ze + (dr - ze) / 7); for (let k = 9; k >= 4; k--) tl.set("#s08-n", { textContent: String(k) }, ze + (10 - k) * (dr - ze) / 7);
       [[dr, "3"], [zw, "2"], [ei, "1"]].forEach(([t, v]) => { tl.set("#s08-n", { textContent: v }, t); tl.fromTo("#s08-c", { scale: 1.12 }, { scale: 1, duration: 0.3, immediateRender: false }, t); });
-      tl.to(G.mouth, { attr: { d: "M-8 -153 Q0 -144 8 -153" }, duration: 0.15 }, dr); armsUp(tl, G, ei, 0.3, 150);
       tl.set("#s08-n", { textContent: "0" }, mi - 0.05); tl.set("#s08-c", { color: "#39e27a", textShadow: "0 0 30px rgba(57,226,122,1)" }, mi - 0.05);
-      tl.fromTo(flash, { opacity: 0.8 }, { opacity: 0, duration: 0.4, immediateRender: false }, mi - 0.05);
-      tl.to("#s08-c", { opacity: 0, duration: 0.2 }, er - 0.3);
-      tl.fromTo("#s08-d", { opacity: 0, rotationX: 90 }, { opacity: 1, rotationX: 0, duration: 0.4, ease: "back.out(1.6)" }, er - 0.1);
-      armsDown(tl, G, er); tl.to(G.mouth, { attr: { d: "M-6 -149 Q0 -156 6 -149" }, duration: 0.15 }, er);
-      tl.fromTo("#s08-st", { opacity: 0, scale: 2.6 }, { opacity: 1, scale: 1, duration: 0.2, ease: "power4.in" }, sw - 0.2);
-      tl.to(sv, { x: 12, duration: 0.04, repeat: 9, yoyo: true }, sw);
-      tl.to(G.g, { rotation: -90, svgOrigin: "0 0", y: 1120, duration: 0.5, ease: "bounce.out" }, sw + 0.3);
+      tl.to(wins.slice(0, 2), { attr: { fill: "#ffffff" }, duration: 0.1, yoyo: true, repeat: 7 }, ju - 0.2);
+      tl.to(H, { x: 4, duration: 0.05, repeat: 11, yoyo: true }, ju);
+      tl.to("#s08-c", { opacity: 0, duration: 0.2 }, l23 - 0.3);
+      tl.to([H, tiles], { x: 26, y: 8, duration: 0.035, repeat: Math.floor((C.__dur - be) / 0.035) - 6, yoyo: true }, be - 0.1);
+      tl.to(stars, { y: 14, duration: 0.05, repeat: 30, yoyo: true }, be);
+      tiles.forEach((t, i) => tl.to(t, { y: 300 + i * 20, x: (i - 4.5) * 40, rotation: 200, svgOrigin: `${320 + i * 50} 700`, opacity: 0, duration: 1.2, ease: "power2.in" }, be + 0.3 + i * 0.08));
+      tl.to(cracks, { opacity: 1, duration: 0.1 }, be + 0.2);
+      tl.to(seis, { opacity: 1, attr: { d }, duration: 0.3 }, be);
+      tl.fromTo("#s08-eq", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: 0.2, ease: "power4.in" }, sk - 0.15);
       tl.to("#s08-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
       window.__timelines["s08"] = tl;
     })();

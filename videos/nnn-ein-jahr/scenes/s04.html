@@ -13,7 +13,6 @@
     <div id="s04-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
       <svg id="s04-svg" class="full" viewBox="0 0 1080 1920"></svg>
       <div id="s04-n" class="abs">1,3</div>
-      <div id="s04-dt" class="chip" style="left:120px;top:540px;background:#ff3b55;color:#fff">DROGENTEST?</div>
       <div class="vig"></div>
     </div>
   </div>
@@ -24,21 +23,18 @@
       const tl = gsap.timeline({ paused: true });
       const sv = document.querySelector("#s04-svg"); sky(sv, "s04g", "#d8dde8", "#b4bccb");
       el("rect", { x: 0, y: 1080, width: 1080, height: 840, fill: "#7d6a55" }, sv);
-      const desks = []; for (let r = 0; r < 2; r++) for (let c = 0; c < 4; c++) { const x = 140 + c * 270, y = 700 + r * 170; if (r === 1 && c === 1) continue;
-        const g = el("g", {}, sv); el("rect", { x: x - 80, y, width: 160, height: 14, fill: "#c79a5b" }, g); tiny(g, x, y - 4, ["#4da3ff", "#ff6a3d", "#39e27a", "#ffd43b"][(r + c) % 4], 1.5); desks.push(g); }
-      const G = finn(sv, 410, 1190, 2.2, { hood: "#e8a83a", arm: "#c98c22", hair: "#e0b050", glasses: true, label: "G" });
+      for (let r = 0; r < 2; r++) for (let c = 0; c < 4; c++) { const x = 140 + c * 270, y = 700 + r * 170; if (r === 1 && c === 1) continue;
+        const g = el("g", {}, sv); el("rect", { x: x - 80, y, width: 160, height: 14, fill: "#c79a5b" }, g); tiny(g, x, y - 4, ["#4da3ff", "#ff6a3d", "#39e27a", "#ffd43b"][(r + c) % 4], 1.5); }
+      const G = finn(sv, 410, 1190, 2.2, { hood: "#1d1f2b", arm: "#15161f", undercut: "#f0d060", noPhones: true, tee: "#ffffff", chain: true, can: true, label: "" });
       el("rect", { x: 280, y: 1020, width: 260, height: 26, rx: 6, fill: "#c79a5b" }, sv);
+      const cans = [0, 1, 2, 3, 4].map((k) => { const g = el("g", { opacity: 0 }, sv); el("rect", { x: 560 + k * 34, y: 960, width: 26, height: 60, rx: 4, fill: "#2a4fa8" }, g); el("rect", { x: 560 + k * 34, y: 960, width: 13, height: 60, fill: "#c9d2e0" }, g); return g; });
       const pap = []; const rp = rng(8); for (let i = 0; i < 10; i++) pap.push(el("rect", { x: 420, y: 990, width: 60, height: 80, fill: "#fff", stroke: "#cfd5e2", "stroke-width": 2, opacity: 0 }, sv));
-      const par = el("g", { opacity: 0 }, sv); const Mo = woman(par, 700, 1180, 2.1, "#3aa37a"); const Fa = finn(par, 900, 1180, 2.2, { hood: "#4a5a7a", arm: "#3a4a6a", hair: "#7a7a7a", label: "" });
-      const ma = at("L9", "Maschine"), l10 = line("L10")[0], dr = at("L11", "Drogen"), l11 = line("L11")[0];
-      tl.to(G.aR, { rotation: -40, svgOrigin: "37 -126", duration: 0.06, yoyo: true, repeat: 40 }, 1.0);
+      const en = at("L9", "Energy"), ma = at("L9", "Maschine"), l10 = line("L10")[0];
+      tl.to(cans, { opacity: 1, duration: 0.12, stagger: 0.12 }, en - 0.2);
+      tl.to(G.aR, { rotation: -40, svgOrigin: "37 -126", duration: 0.06, yoyo: true, repeat: 40 }, ma - 2.0);
       pap.forEach((p, i) => tl.fromTo(p, { opacity: 1, x: 0, y: 0, rotation: 0 }, { x: 300 + rp() * 300, y: -300 - rp() * 300, rotation: rp() * 360, svgOrigin: "450 1030", opacity: 0, duration: 0.8, ease: "power2.out", immediateRender: false }, ma - 1.2 + i * 0.15));
       tl.fromTo("#s04-n", { opacity: 0, scale: 2 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2)" }, l10 + 0.6);
-      armsUp(tl, G, l10 + 0.7, 0.3, 160);
-      tl.to("#s04-n", { opacity: 0, y: -60, duration: 0.25 }, l11 - 0.2); tl.to(desks, { opacity: 0, duration: 0.3 }, l11 - 0.2);
-      tl.fromTo(par, { opacity: 0, x: 200 }, { opacity: 1, x: 0, duration: 0.35 }, l11 - 0.1);
-      tl.fromTo("#s04-dt", { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(3)" }, dr - 0.1);
-      armsDown(tl, G, dr); tl.to(G.mouth, { attr: { d: "M-6 -149 Q0 -155 6 -149" }, duration: 0.15 }, dr);
+      armsUp(tl, G, l10 + 0.7, 0.3, 160); tl.to(G.mouth, { attr: { d: "M-8 -153 Q0 -144 8 -153" }, duration: 0.15 }, l10 + 0.7);
       tl.to("#s04-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
       window.__timelines["s04"] = tl;
     })();

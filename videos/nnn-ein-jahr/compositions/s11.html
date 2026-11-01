@@ -1,0 +1,268 @@
+<template>
+  <style>
+        #root { position: absolute; inset: 0; }
+    .stage { position: absolute; inset: 0; overflow: hidden; }
+    .abs { position: absolute; }
+    svg { overflow: visible; }
+    /* Zähler-Box wie in der Referenz: Rahmen in Akzentfarbe, Label in Mono-Versalien, große Zahl */
+    .cbox { position: absolute; left: 290px; width: 500px; top: 268px; height: 126px; border: 3px solid #ff4fb0;
+      border-radius: 14px; background: rgba(13,16,38,.88); text-align: center; box-shadow: 0 0 28px rgba(255,79,176,.35); }
+    .cbox .lab { margin-top: 16px; font-family: "Space Mono", monospace; font-weight: 700; font-size: 28px;
+      letter-spacing: .16em; color: #dfe2f5; }
+    .cbox .num { margin-top: 2px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 56px; color: #fff;
+      letter-spacing: .01em; }
+    .cbox.y { border-color: #ffd43b; box-shadow: 0 0 28px rgba(255,212,59,.3); }
+    .cbox.r { border-color: #ff3b55; box-shadow: 0 0 28px rgba(255,59,85,.35); }
+    .cbox.b { border-color: #4da3ff; box-shadow: 0 0 28px rgba(77,163,255,.3); }
+    .cbox.g { border-color: #39e27a; box-shadow: 0 0 28px rgba(57,226,122,.3); }
+    .mono { font-family: "Space Mono", monospace; font-weight: 700; letter-spacing: .12em; }
+    .heavy { font-family: "Inter", sans-serif; font-weight: 900; }
+
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .vig { position: absolute; left: 0; right: 0; top: 1040px; height: 880px; background: linear-gradient(rgba(10,12,30,0), rgba(10,12,30,.5) 45%, rgba(10,12,30,.55)); pointer-events: none; }
+    .chip { position: absolute; padding: 12px 26px; border-radius: 22px; background: rgba(255,255,255,.96); color: #22283f; font: 900 52px Inter, sans-serif; opacity: 0; box-shadow: 0 16px 40px rgba(0,0,0,.4); white-space: nowrap; }
+    .chip b { color: #e0484f; } .chip i { font-style: normal; color: #1fa65a; }
+  </style>
+  <div id="root" data-composition-id="s11" data-start="0" data-duration="6.610" data-width="1080" data-height="1920">
+    <div id="s11-stage" class="clip stage" data-start="0" data-duration="6.610" data-track-index="0">
+      <svg id="s11-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s11-gr" class="chip" style="left:120px;top:470px">Greta 💉</div>
+      <div id="s11-mo" class="chip" style="left:600px;top:470px">Georg: <b>Mönch</b></div>
+      <div class="vig"></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      
+      const C = {"__dur": 6.61, "L19": [0.2, 4.322], "L19.words": [["halloweenparty", 0.2, 0.91], ["seine", 1.39, 1.747], ["beste", 1.747, 2.105], ["freundin", 2.105, 2.482], ["greta", 2.482, 2.839], ["kommt", 2.839, 3.034], ["als", 3.034, 3.216], ["sexy", 3.216, 3.567], ["krankenschwester", 3.567, 4.321]], "L19b": [4.542, 6.43], "L19b.words": [["georg", 4.542, 4.761], ["geht", 4.761, 4.972], ["sicherheitshalber", 4.972, 6.007], ["als", 6.007, 6.212], ["mönch", 6.212, 6.43]]};
+      const line = (id) => C[id];
+      const at = (id, word, which = 0) => {
+        const ws = C[id + ".words"];
+        if (typeof word === "number") return ws[word][1 + which];
+        const key = String(word).toLowerCase().replace(/[^\p{L}\p{N}_]/gu, "");
+        const hit = ws.find((w) => w[0].startsWith(key));
+        if (!hit) throw new Error("cue not found: " + id + " " + word);
+        return hit[1 + which];
+      };
+      // Zähler: schreibt Zahlen im deutschen Format (4.100.000.000) als Funktion der Timeline-Zeit
+      const fmt = (n) => Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      const count = (tl, sel, from, to, t, d, pre = "", post = "", ease = "power2.out") => {
+        const el = document.querySelector(sel);
+        const o = { v: from };
+        el.textContent = pre + fmt(from) + post;
+        tl.to(o, { v: to, duration: d, ease, onUpdate: () => { el.textContent = pre + fmt(o.v) + post; } }, t);
+      };
+      // deterministischer Zufall
+      const rng = (seed) => () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let x = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+        x = (x + Math.imul(x ^ (x >>> 7), 61 | x)) ^ x; return ((x ^ (x >>> 14)) >>> 0) / 4294967296; };
+
+      // ---- Isometrische Low-Poly-Helfer (Stil Referenz A: Klötzchen-Welt, weiche Farben) ----
+      const NS = "http://www.w3.org/2000/svg";
+      const el = (n, a, p) => { const e = document.createElementNS(NS, n); for (const k in a) e.setAttribute(k, a[k]); if (p) p.appendChild(e); return e; };
+      const txt = (p, x, y, s, size, fill, a = {}) => { const t = el("text", Object.assign({ x, y, "text-anchor": "middle", "font-family": "Inter", "font-weight": 800, "font-size": size, fill }, a), p); t.textContent = s; return t; };
+      const shade = (hex, f) => { const n = parseInt(hex.slice(1), 16); const c = [n >> 16, (n >> 8) & 255, n & 255].map((v) => Math.max(0, Math.min(255, Math.round(f > 1 ? v + (255 - v) * (f - 1) : v * f))));
+        return "#" + c.map((v) => v.toString(16).padStart(2, "0")).join(""); };
+      // Kamera: Ursprung (ox, oy), Einheit u
+      const iso = (ox, oy, u) => (x, y, z = 0) => [ox + (x - y) * u * 0.866, oy + (x + y) * u * 0.5 - z * u];
+      const poly = (pts) => pts.map((p) => p.map((v) => v.toFixed(1)).join(",")).join(" ");
+      function box(P, p, x, y, z, w, d, h, col, a = {}) {
+        const g = el("g", a, p);
+        el("polygon", { points: poly([P(x + w, y, z), P(x + w, y + d, z), P(x + w, y + d, z + h), P(x + w, y, z + h)]), fill: shade(col, 0.78) }, g);
+        el("polygon", { points: poly([P(x, y + d, z), P(x + w, y + d, z), P(x + w, y + d, z + h), P(x, y + d, z + h)]), fill: col }, g);
+        el("polygon", { points: poly([P(x, y, z + h), P(x + w, y, z + h), P(x + w, y + d, z + h), P(x, y + d, z + h)]), fill: shade(col, 1.18) }, g);
+        return g;
+      }
+      // Fläche auf der hinteren Wand (y = 0) bzw. linken Wand (x = 0)
+      const wallY = (P, p, x0, x1, z0, z1, fill, a = {}) => el("polygon", Object.assign({ points: poly([P(x0, 0, z0), P(x1, 0, z0), P(x1, 0, z1), P(x0, 0, z1)]), fill }, a), p);
+      const wallX = (P, p, y0, y1, z0, z1, fill, a = {}) => el("polygon", Object.assign({ points: poly([P(0, y0, z0), P(0, y1, z0), P(0, y1, z1), P(0, y0, z1)]), fill }, a), p);
+      function room(P, p, W, D, H, o = {}) {
+        const g = el("g", {}, p);
+        box(P, g, 0, 0, -0.25, W, D, 0.25, o.floor || "#c9a982");
+        for (let k = 1; k < W; k++) el("polyline", { points: poly([P(k, 0, 0), P(k, D, 0)]), stroke: shade(o.floor || "#c9a982", 0.9), "stroke-width": 2, fill: "none" }, g);
+        wallY(P, g, 0, W, 0, H, o.wall || "#ece6dc"); wallX(P, g, 0, D, 0, H, shade(o.wall || "#ece6dc", 0.9));
+        el("polyline", { points: poly([P(0, D, 0), P(0, 0, 0), P(W, 0, 0)]), stroke: shade(o.wall || "#ece6dc", 0.75), "stroke-width": 6, fill: "none" }, g);
+        return g;
+      }
+      // Klötzchen-Figur; Ursprung = Fußpunkt (x, y, z). o.pose: "stand" | "sit" | "lie"
+      function person(P, p, x, y, z, o = {}) {
+        const g = el("g", {}, p), skin = o.skin || "#f0c8a0", shirt = o.shirt || "#e85d5d", pants = o.pants || "#3d4a7a", hair = o.hair || "#4a3020";
+        if (o.pose === "lie") {
+          box(P, g, x, y, z, 1.0, 0.45, 0.3, pants); box(P, g, x + 1.0, y, z, 0.9, 0.5, 0.36, shirt);
+          box(P, g, x + 1.9, y + 0.05, z, 0.45, 0.4, 0.4, skin); box(P, g, x + 2.25, y + 0.05, z, 0.12, 0.4, 0.42, hair);
+        } else if (o.pose === "sit") {
+          box(P, g, x - 0.25, y, z, 0.25, 0.5, 0.5, pants); box(P, g, x, y, z + 0.5, 0.45, 0.5, 0.28, pants);
+          box(P, g, x, y + 0.02, z + 0.78, 0.38, 0.46, 0.75, shirt); box(P, g, x + 0.02, y + 0.06, z + 1.53, 0.36, 0.36, 0.38, skin);
+          box(P, g, x + 0.02, y + 0.06, z + 1.85, 0.36, 0.36, 0.1, hair);
+        } else if (o.big) {
+          box(P, g, x + 0.02, y, z, 0.38, 0.46, 0.95, pants); box(P, g, x - 0.06, y - 0.08, z + 0.95, 0.54, 0.62, 0.85, shirt);
+          box(P, g, x + 0.06, y + 0.06, z + 1.8, 0.34, 0.38, 0.4, skin); box(P, g, x + 0.06, y + 0.06, z + 2.14, 0.34, 0.38, 0.1, hair);
+        } else {
+          box(P, g, x, y, z, 0.36, 0.42, 0.75, pants); box(P, g, x - 0.02, y - 0.02, z + 0.75, 0.4, 0.46, 0.75, shirt);
+          box(P, g, x + 0.02, y + 0.03, z + 1.5, 0.34, 0.38, 0.38, skin); box(P, g, x + 0.02, y + 0.03, z + 1.82, 0.34, 0.38, 0.1, hair);
+        }
+        return g;
+      }
+      function sky(p, id, c1, c2) {
+        const d = el("defs", {}, p), lg = el("linearGradient", { id, x1: 0, y1: 0, x2: 0, y2: 1 }, d);
+        el("stop", { offset: 0, "stop-color": c1 }, lg); el("stop", { offset: 1, "stop-color": c2 }, lg);
+        return el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: `url(#${id})` }, p);
+      }
+      // ---- Schnee-Welt ----
+      function skyline(p, by, seed, cols, n = 9, hmin = 260, hmax = 620) {
+        const r = rng(seed), out = [], g = el("g", {}, p);
+        for (let i = 0; i < n; i++) { const w = 90 + r() * 70, x = i * (1080 / n) - 20 + r() * 20, h = hmin + r() * (hmax - hmin), c = cols[i % cols.length];
+          const b = el("g", {}, g); el("rect", { x, y: by - h, width: w, height: h, fill: c }, b);
+          const wins = []; for (let k = 0; k < Math.floor(h / 46); k++) for (let m = 0; m < 3; m++) wins.push(el("rect", { x: x + 12 + m * (w - 24) / 3, y: by - h + 16 + k * 46, width: (w - 24) / 3 - 10, height: 22, fill: "#ffe7a3", opacity: r() > 0.45 ? 0.85 : 0.12 }, b));
+          out.push({ x, w, h, b, wins }); }
+        return { g, out };
+      }
+      function snowfall(p, n, seed, y0 = 0, y1 = 1500) { const r = rng(seed), fl = [], g = el("g", { "data-layout-allow-overlap": "" }, p);
+        for (let i = 0; i < n; i++) fl.push(el("circle", { cx: r() * 1080, cy: y0 + r() * (y1 - y0), r: 2 + r() * 4, fill: "#ffffff", opacity: 0.5 + r() * 0.5 }, g)); return { g, fl }; }
+      const fall = (tl, sf, dur, t0 = 0) => sf.fl.forEach((f, i) => tl.to(f, { y: 900 + (i % 5) * 60, x: (i % 2 ? 1 : -1) * 40, duration: dur, ease: "none" }, t0));
+      // flache Figur (Alex): Fußpunkt x, y
+      // Alex: groß, sportlich (Fußpunkt x, y)
+      function alex(p, x, y, s = 1) { const g = el("g", {}, p); gsap.set(g, { x, y, scale: s, transformOrigin: "0 0" });
+        el("rect", { x: -17, y: -62, width: 15, height: 62, rx: 6, fill: "#22284d" }, g); el("rect", { x: 2, y: -62, width: 15, height: 62, rx: 6, fill: "#22284d" }, g);
+        el("rect", { x: -20, y: -6, width: 18, height: 8, rx: 4, fill: "#111" }, g); el("rect", { x: 2, y: -6, width: 18, height: 8, rx: 4, fill: "#111" }, g);
+        el("path", { d: "M-34 -128 Q-36 -134 -26 -136 L26 -136 Q36 -134 34 -128 L22 -60 L-22 -60Z", fill: "#e8484f" }, g);
+        el("rect", { x: -44, y: -130, width: 13, height: 58, rx: 6, fill: "#d03c43", transform: "rotate(8 -38 -130)" }, g); el("rect", { x: 31, y: -130, width: 13, height: 58, rx: 6, fill: "#d03c43", transform: "rotate(-8 38 -130)" }, g);
+        el("rect", { x: -6, y: -146, width: 12, height: 12, fill: "#e0b48c" }, g);
+        el("circle", { cx: 0, cy: -160, r: 17, fill: "#f0c8a0" }, g);
+        el("path", { d: "M-18 -164 Q-14 -184 4 -182 Q18 -180 18 -164 Q8 -172 -18 -164Z", fill: "#3a2a1a" }, g);
+        el("path", { d: "M-10 -150 Q0 -146 10 -150", stroke: "#3a2a1a", "stroke-width": 3, fill: "none" }, g);
+        return g; }
+      function snowLayer(p, y, c = "#eef4fb") { return el("path", { d: `M-60 ${y} q90 -30 180 0 t180 0 t180 0 t180 0 t180 0 t180 0 t180 0 V2000 H-60Z`, fill: c }, p); }
+      // ---- No Nut November: Finn (18), Zimmer, Handy ----
+      // Finn: Fußpunkt x, y; gibt {g, aL, aR, head} zurück. Arme drehen um Schulter (lokal -36/36, -128)
+      function finn(p, x, y, s = 1, o = {}) { const HC = o.hood || "#ff6a3d", AC = o.arm || "#e5562e", CC = o.cap || "#2f6fe0"; const g = el("g", {}, p); gsap.set(g, { x, y, scale: s, transformOrigin: "0 0" });
+        // Jugendlicher: weite Jogginghose, dicke Sneaker, Oversize-Hoodie, großer Kopf, Cap verkehrt rum, Kopfhörer um den Hals
+        el("path", { d: "M-19 -60 H-1 L-3 -6 H-17Z", fill: "#3c4357" }, g); el("path", { d: "M1 -60 H19 L17 -6 H3Z", fill: "#3c4357" }, g);
+        el("rect", { x: -26, y: -10, width: 26, height: 13, rx: 6, fill: "#ffffff" }, g); el("rect", { x: 0, y: -10, width: 26, height: 13, rx: 6, fill: "#ffffff" }, g);
+        el("rect", { x: -26, y: -1, width: 26, height: 4, rx: 2, fill: "#ff4fb0" }, g); el("rect", { x: 0, y: -1, width: 26, height: 4, rx: 2, fill: "#ff4fb0" }, g);
+        const aL = el("rect", { x: -46, y: -130, width: 16, height: 62, rx: 8, fill: AC }, g), aR = el("g", {}, g); el("rect", { x: 30, y: -130, width: 16, height: 62, rx: 8, fill: AC }, aR);
+        if (o.can) { el("rect", { x: 31, y: -86, width: 15, height: 28, rx: 3, fill: "#2a4fa8" }, aR); el("rect", { x: 31, y: -86, width: 7.5, height: 28, fill: "#c9d2e0" }, aR); el("circle", { cx: 38.5, cy: -73, r: 3.5, fill: "#e0202f" }, aR); }
+        el("path", { d: "M-36 -126 Q-37 -136 -26 -137 L26 -137 Q37 -136 36 -126 L30 -54 L-30 -54Z", fill: HC }, g);
+        el("path", { d: "M-16 -96 H16 V-78 H-16Z", fill: AC }, g); if (o.label !== "") txt(g, 0, -106, o.label || "NNN", 11, "#fff", { "data-layout-allow-overlap": "" });
+        if (o.tee) el("path", { d: "M-12 -137 L0 -118 L12 -137Z", fill: o.tee }, g);
+        if (o.chain) el("path", { d: "M-11 -136 Q0 -112 11 -136", stroke: "#ffd43b", "stroke-width": 3, fill: "none" }, g);
+        if (!o.noPhones) { el("path", { d: "M-22 -138 Q0 -122 22 -138", stroke: "#1b1d2b", "stroke-width": 6, fill: "none" }, g);
+        el("circle", { cx: -22, cy: -138, r: 8, fill: "#1b1d2b" }, g); el("circle", { cx: 22, cy: -138, r: 8, fill: "#1b1d2b" }, g); }
+        const head = el("g", {}, g);
+        el("rect", { x: -6, y: -148, width: 12, height: 12, fill: "#e6b88f" }, head);
+        el("circle", { cx: 0, cy: -166, r: 23, fill: "#f2cba5" }, head);
+        if (o.undercut) { el("path", { d: "M-23 -166 Q-24 -182 -12 -186 L12 -186 Q24 -182 23 -166 Q22 -176 14 -178 L-14 -178 Q-22 -176 -23 -166Z", fill: "#c9a37a", opacity: 0.6 }, head);
+          el("path", { d: "M-18 -178 Q-20 -200 4 -202 Q26 -200 22 -184 Q16 -178 4 -182 Q-8 -184 -18 -178Z", fill: o.undercut }, head); }
+        else if (o.hair) { [[-18, -182], [-8, -188], [4, -189], [15, -183], [21, -172], [-22, -170]].forEach(([hx, hy]) => el("circle", { cx: hx, cy: hy, r: 10, fill: o.hair }, head));
+          el("path", { d: "M-22 -172 Q-10 -164 0 -173 Q10 -164 22 -172 L20 -184 L-20 -184Z", fill: o.hair }, head); }
+        else { el("path", { d: "M-23 -170 Q-22 -194 0 -194 Q22 -194 23 -172 Q12 -178 0 -178 Q-12 -178 -23 -170Z", fill: CC }, head);
+        el("rect", { x: -9, y: -198, width: 18, height: 7, rx: 3, fill: CC }, head);
+        el("path", { d: "M-14 -176 Q-8 -166 -2 -175 Q4 -165 10 -176 Q4 -180 -14 -176Z", fill: "#6b4423" }, head); }
+        el("ellipse", { cx: -8, cy: -163, rx: 3.2, ry: 3.8, fill: "#2a1a10" }, head); el("ellipse", { cx: 8, cy: -163, rx: 3.2, ry: 3.8, fill: "#2a1a10" }, head);
+        el("circle", { cx: -7, cy: -164.5, r: 1.1, fill: "#fff" }, head); el("circle", { cx: 9, cy: -164.5, r: 1.1, fill: "#fff" }, head);
+        el("circle", { cx: -14, cy: -155, r: 3.5, fill: "#ff8f8f", opacity: 0.5 }, head); el("circle", { cx: 14, cy: -155, r: 3.5, fill: "#ff8f8f", opacity: 0.5 }, head);
+        el("circle", { cx: 11, cy: -175, r: 1.4, fill: "#e0736a" }, head);
+        if (o.glasses) { el("circle", { cx: -8, cy: -163, r: 7.5, fill: "none", stroke: "#22283f", "stroke-width": 2.4 }, head); el("circle", { cx: 8, cy: -163, r: 7.5, fill: "none", stroke: "#22283f", "stroke-width": 2.4 }, head); el("line", { x1: -0.5, y1: -163, x2: 0.5, y2: -163, stroke: "#22283f", "stroke-width": 2.4 }, head); }
+        const mouth = el("path", { d: "M-7 -152 Q0 -147 7 -152", stroke: "#7a3b2a", "stroke-width": 2.5, fill: "none", "stroke-linecap": "round" }, head);
+        return { g, aL, aR, head, mouth }; }
+      // Arme hoch (Jubel/Flex) bzw. zurück
+      const armsUp = (tl, f, t, d = 0.25, a = 150) => { tl.to(f.aL, { rotation: a, svgOrigin: "-37 -126", duration: d, ease: "back.out(2)" }, t); tl.to(f.aR, { rotation: -a, svgOrigin: "37 -126", duration: d, ease: "back.out(2)" }, t); };
+      const armsDown = (tl, f, t, d = 0.25) => { tl.to(f.aL, { rotation: 0, svgOrigin: "-37 -126", duration: d }, t); tl.to(f.aR, { rotation: 0, svgOrigin: "37 -126", duration: d }, t); };
+      // Jugendzimmer bei Nacht: Wand, Fenster, Poster, Bett, Schreibtisch, Boden ab y 1100
+      function bedroom(p, id, o = {}) { const g = el("g", {}, p);
+        sky(g, id, o.w1 || "#2d2356", o.w2 || "#1a1436");
+        const win = el("g", {}, g); el("rect", { x: 690, y: 430, width: 290, height: 250, rx: 10, fill: "#0d1030", stroke: "#4a3d7a", "stroke-width": 12 }, win);
+        el("circle", { cx: 900, cy: 500, r: 34, fill: "#fff6c9", opacity: 0.95 }, win); el("circle", { cx: 915, cy: 492, r: 30, fill: "#0d1030" }, win);
+        const r = rng(7); for (let i = 0; i < 14; i++) el("circle", { cx: 705 + r() * 260, cy: 445 + r() * 220, r: 1.5 + r() * 2, fill: "#fff", opacity: 0.4 + r() * 0.5 }, win);
+        el("line", { x1: 835, y1: 430, x2: 835, y2: 680, stroke: "#4a3d7a", "stroke-width": 8 }, win);
+        const poster = el("g", { "data-layout-allow-overlap": "" }, g); el("rect", { x: 110, y: 450, width: 170, height: 230, rx: 6, fill: "#ff4fb0", opacity: 0.85 }, poster);
+        txt(poster, 195, 560, "NO", 54, "#fff"); txt(poster, 195, 620, "LIMITS", 38, "#fff");
+        el("rect", { x: 0, y: 1100, width: 1080, height: 820, fill: o.floor || "#2a2142" }, g);
+        el("ellipse", { cx: 560, cy: 1170, rx: 330, ry: 46, fill: "#3b2f62" }, g);
+        const bed = el("g", {}, g); el("rect", { x: 40, y: 930, width: 420, height: 170, rx: 14, fill: "#4b3b6e" }, bed);
+        el("rect", { x: 50, y: 900, width: 400, height: 70, rx: 18, fill: "#ece8f7" }, bed); el("rect", { x: 140, y: 890, width: 320, height: 90, rx: 22, fill: "#5865c8" }, bed);
+        el("rect", { x: 58, y: 880, width: 95, height: 46, rx: 16, fill: "#ffffff" }, bed); el("rect", { x: 30, y: 820, width: 26, height: 280, rx: 8, fill: "#3a2d58" }, bed);
+        const desk = el("g", {}, g); el("rect", { x: 760, y: 950, width: 280, height: 22, rx: 6, fill: "#6b5596" }, desk);
+        el("rect", { x: 780, y: 972, width: 18, height: 128, fill: "#4f3f73" }, desk); el("rect", { x: 1000, y: 972, width: 18, height: 128, fill: "#4f3f73" }, desk);
+        el("rect", { x: 940, y: 870, width: 10, height: 80, fill: "#cfc8e6" }, desk); el("path", { d: "M910 880 L980 880 L960 840 L930 840Z", fill: "#ffd43b" }, desk);
+        return { g, win, poster, bed, desk }; }
+      // Handy: Mitte x, y; Breite w
+      function phone(p, x, y, w = 120, glow = "#4da3ff") { const g = el("g", {}, p), h = w * 2;
+        el("rect", { x: x - w / 2, y: y - h / 2, width: w, height: h, rx: w * 0.14, fill: "#111322", stroke: "#3a3f5c", "stroke-width": w * 0.04 }, g);
+        const scr = el("rect", { x: x - w / 2 + w * 0.07, y: y - h / 2 + w * 0.12, width: w * 0.86, height: h - w * 0.24, rx: w * 0.08, fill: glow }, g);
+        return { g, scr }; }
+      // Lena (17): lange Haare, lila Hoodie, Ohrringe; gleiche Schulterpunkte wie Finn
+      function lena(p, x, y, s = 1) { const g = el("g", {}, p); gsap.set(g, { x, y, scale: s, transformOrigin: "0 0" });
+        el("path", { d: "M-26 -176 Q-34 -120 -24 -96 L24 -96 Q34 -120 26 -176Z", fill: "#7a4a26" }, g);
+        el("path", { d: "M-17 -60 H-1 L-3 -6 H-15Z", fill: "#5b7bc4" }, g); el("path", { d: "M1 -60 H17 L15 -6 H3Z", fill: "#5b7bc4" }, g);
+        el("rect", { x: -22, y: -9, width: 22, height: 11, rx: 5, fill: "#fff" }, g); el("rect", { x: 0, y: -9, width: 22, height: 11, rx: 5, fill: "#fff" }, g);
+        const aL = el("rect", { x: -42, y: -128, width: 14, height: 60, rx: 7, fill: "#9a63e8" }, g), aR = el("rect", { x: 28, y: -128, width: 14, height: 60, rx: 7, fill: "#9a63e8" }, g);
+        el("path", { d: "M-32 -124 Q-33 -134 -24 -135 L24 -135 Q33 -134 32 -124 L26 -56 L-26 -56Z", fill: "#b77cff" }, g);
+        const head = el("g", {}, g); el("rect", { x: -6, y: -146, width: 12, height: 12, fill: "#e6b88f" }, head);
+        el("circle", { cx: 0, cy: -166, r: 22, fill: "#f4d0ae" }, head);
+        el("path", { d: "M-24 -164 Q-26 -192 0 -192 Q26 -192 24 -164 Q14 -182 -4 -178 Q-16 -176 -24 -164Z", fill: "#7a4a26" }, head);
+        el("ellipse", { cx: -8, cy: -163, rx: 3.2, ry: 4, fill: "#2a1a10" }, head); el("ellipse", { cx: 8, cy: -163, rx: 3.2, ry: 4, fill: "#2a1a10" }, head);
+        el("path", { d: "M-13 -167 L-10 -169 M13 -167 L10 -169", stroke: "#2a1a10", "stroke-width": 1.6 }, head);
+        el("circle", { cx: -13, cy: -155, r: 3.5, fill: "#ff8f8f", opacity: 0.55 }, head); el("circle", { cx: 13, cy: -155, r: 3.5, fill: "#ff8f8f", opacity: 0.55 }, head);
+        el("circle", { cx: -22, cy: -158, r: 2.5, fill: "#ffd43b" }, head); el("circle", { cx: 22, cy: -158, r: 2.5, fill: "#ffd43b" }, head);
+        const mouth = el("path", { d: "M-6 -152 Q0 -147 6 -152", stroke: "#b0455a", "stroke-width": 2.5, fill: "none", "stroke-linecap": "round" }, head);
+        return { g, aL, aR, head, mouth }; }
+      // Erwachsene Frau (Mutter/Lehrerin)
+      function woman(p, x, y, s = 1, top = "#3aa37a", hair = "#8a4b2a") { const g = el("g", {}, p); gsap.set(g, { x, y, scale: s, transformOrigin: "0 0" });
+        el("path", { d: "M-22 -62 H22 L26 0 H-26Z", fill: "#3b3f63" }, g);
+        const aL = el("rect", { x: -42, y: -130, width: 13, height: 60, rx: 6, fill: shade(top, 0.85) }, g), aR = el("rect", { x: 29, y: -130, width: 13, height: 60, rx: 6, fill: shade(top, 0.85) }, g);
+        el("path", { d: "M-30 -128 Q-30 -138 -20 -138 H20 Q30 -138 30 -128 L24 -60 H-24Z", fill: top }, g);
+        const head = el("g", {}, g); el("circle", { cx: 0, cy: -160, r: 20, fill: "#f0c8a0" }, head);
+        el("path", { d: "M-24 -150 Q-26 -186 0 -184 Q26 -186 24 -150 Q18 -170 0 -172 Q-18 -170 -24 -150Z", fill: hair }, head);
+        el("circle", { cx: -7, cy: -160, r: 2.6, fill: "#2a1a10" }, head); el("circle", { cx: 7, cy: -160, r: 2.6, fill: "#2a1a10" }, head);
+        const mouth = el("path", { d: "M-6 -149 Q0 -145 6 -149", stroke: "#7a3b2a", "stroke-width": 2.4, fill: "none" }, head);
+        return { g, aL, aR, head, mouth }; }
+      // Mini-Männchen (Menge)
+      function tiny(p, x, y, col, s = 1, a = {}) { const g = el("g", a, p); el("circle", { cx: x, cy: y - 30 * s, r: 11 * s, fill: "#f2cba5" }, g);
+        el("rect", { x: x - 13 * s, y: y - 18 * s, width: 26 * s, height: 30 * s, rx: 9 * s, fill: col }, g); return g; }
+      // Erdkugel mit Kontinenten; dots = Lichter auf dem Land
+      function globe(p, cx, cy, r, id, n = 90, seed = 4) { const g = el("g", {}, p), d = el("defs", {}, g);
+        const rg = el("radialGradient", { id: id + "o", cx: 0.38, cy: 0.35, r: 0.75 }, d); el("stop", { offset: 0, "stop-color": "#3f86e8" }, rg); el("stop", { offset: 1, "stop-color": "#123a78" }, rg);
+        const cp = el("clipPath", { id: id + "c" }, d); el("circle", { cx, cy, r }, cp);
+        el("circle", { cx, cy, r: r + 26, fill: "#ff4fb0", opacity: 0.18 }, g);
+        el("circle", { cx, cy, r, fill: `url(#${id}o)` }, g);
+        const land = el("g", { "clip-path": `url(#${id}c)` }, g), u = r / 100;
+        const blobs = ["M-80 -60 Q-60 -80 -40 -62 Q-30 -40 -48 -20 Q-40 0 -50 20 Q-58 40 -66 60 Q-80 30 -76 0 Q-96 -30 -80 -60Z",
+          "M-10 -70 Q20 -84 34 -66 Q30 -50 14 -44 Q24 -30 20 -10 Q30 20 10 50 Q-4 30 -6 0 Q-20 -20 -8 -40 Q-22 -56 -10 -70Z",
+          "M30 -62 Q70 -76 96 -50 Q100 -20 80 -10 Q66 0 58 -16 Q44 -20 40 -36 Q28 -44 30 -62Z", "M60 30 Q86 22 92 44 Q80 60 62 52 Q54 40 60 30Z"];
+        blobs.forEach((b) => el("path", { d: b, fill: "#3fbf7f", transform: `translate(${cx} ${cy}) scale(${u})` }, land));
+        el("ellipse", { cx: cx - r * 0.35, cy: cy - r * 0.4, rx: r * 0.35, ry: r * 0.2, fill: "#fff", opacity: 0.12 }, g);
+        const pts = [[-70, -40], [-60, 0], [-58, 40], [0, -55], [10, -20], [8, 20], [50, -50], [80, -30], [70, 40]], rr = rng(seed), dots = [];
+        for (let i = 0; i < n; i++) { const [px, py] = pts[i % pts.length]; dots.push(el("circle", { cx: cx + (px + (rr() - 0.5) * 26) * u, cy: cy + (py + (rr() - 0.5) * 22) * u, r: 3.2 * u, fill: "#ffe7a3", opacity: 0 }, land)); }
+        return { g, dots }; }
+      // Feuerwerk: Strahlen um (x, y)
+      function burst(p, x, y, col, n = 14, len = 90) { const g = el("g", { opacity: 0 }, p), rays = [];
+        for (let i = 0; i < n; i++) { const a = (i / n) * Math.PI * 2; rays.push(el("line", { x1: x, y1: y, x2: x + Math.cos(a) * len, y2: y + Math.sin(a) * len, stroke: col, "stroke-width": 6, "stroke-linecap": "round" }, g)); }
+        return { g, rays }; }
+
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s11-svg"); sky(sv, "s11g", "#2a1240", "#0c0518");
+      el("rect", { x: 0, y: 1120, width: 1080, height: 800, fill: "#1a0c2a" }, sv);
+      const pk = [[90, 1110], [990, 1110]].map(([x, y]) => { const g = el("g", {}, sv); el("ellipse", { cx: x, cy: y, rx: 70, ry: 56, fill: "#ff8a1f" }, g);
+        el("path", { d: `M${x - 30} ${y - 12} l12 -16 l12 16Z M${x + 6} ${y - 12} l12 -16 l12 16Z M${x - 26} ${y + 16} q26 16 52 0`, fill: "#3a1a00" }, g); return g; });
+      const lights = []; for (let i = 0; i < 20; i++) lights.push(el("circle", { cx: 30 + i * 54, cy: 420 + Math.sin(i * 0.7) * 16, r: 9, fill: ["#ff8a1f", "#a06bff", "#39e27a"][i % 3] }, sv));
+      const Gr = woman(sv, 330, 1150, 2.3, "#f4f4f8", "#f0d060");
+      el("rect", { x: -6, y: -118, width: 12, height: 34, fill: "#e0202f" }, Gr.g); el("rect", { x: -17, y: -107, width: 34, height: 12, fill: "#e0202f" }, Gr.g);
+      el("path", { d: "M-16 -184 H16 L12 -196 H-12Z", fill: "#fff", stroke: "#e0202f", "stroke-width": 2 }, Gr.head); el("rect", { x: -3, y: -194, width: 6, height: 8, fill: "#e0202f" }, Gr.head);
+      const G = finn(sv, 760, 1150, 2.3, { hood: "#1d1f2b", arm: "#15161f", undercut: "#f0d060", noPhones: true, tee: "#ffffff", chain: true, label: "" });
+      const robe = el("g", { opacity: 0 }, G.g); el("path", { d: "M-40 -138 Q0 -150 40 -138 L48 0 H-48Z", fill: "#7a5230" }, robe); el("rect", { x: -44, y: -72, width: 88, height: 8, fill: "#e8d29a" }, robe);
+      el("path", { d: "M-26 -176 Q0 -206 26 -176 L26 -150 Q0 -164 -26 -150Z", fill: "#6a4424" }, robe);
+      const gr = at("L19", "Greta"), kr = at("L19", "Krankenschwester"), mo = at("L19b", "Mönch");
+      tl.to(lights, { opacity: 0.4, duration: 0.3, yoyo: true, repeat: 12, stagger: 0.05 }, 0);
+      tl.fromTo("#s11-gr", { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(3)" }, gr - 0.1);
+      tl.to(Gr.g, { rotation: -6, svgOrigin: "0 0", duration: 0.25, yoyo: true, repeat: 3 }, kr);
+      tl.to(G.mouth, { attr: { d: "M-6 -149 Q0 -156 6 -149" }, duration: 0.15 }, kr); tl.to(G.head, { y: -12, duration: 0.15, yoyo: true, repeat: 1 }, kr + 0.2);
+      tl.to(robe, { opacity: 1, duration: 0.2 }, mo - 0.3);
+      tl.fromTo("#s11-mo", { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(3)" }, mo - 0.1);
+      tl.to(G.mouth, { attr: { d: "M-6 -150 H6" }, duration: 0.15 }, mo);
+      tl.to("#s11-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s11"] = tl;
+    })();
+  </script>
+</template>

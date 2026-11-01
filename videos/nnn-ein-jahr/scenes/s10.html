@@ -1,0 +1,48 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .vig { position: absolute; left: 0; right: 0; top: 1040px; height: 880px; background: linear-gradient(rgba(10,12,30,0), rgba(10,12,30,.5) 45%, rgba(10,12,30,.55)); pointer-events: none; }
+    .chip { position: absolute; padding: 12px 26px; border-radius: 22px; background: rgba(255,255,255,.96); color: #22283f; font: 900 52px Inter, sans-serif; opacity: 0; box-shadow: 0 16px 40px rgba(0,0,0,.4); white-space: nowrap; }
+    .chip b { color: #e0484f; } .chip i { font-style: normal; color: #1fa65a; }
+    #s10-ph { left: 300px; top: 470px; width: 480px; height: 640px; border-radius: 50px; background: linear-gradient(170deg, #2b1f5c, #0b0d1c); border: 10px solid #3a3f5c; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,.5); opacity: 0; }
+    .s10-a { position: absolute; width: 100px; height: 100px; border-radius: 24px; }
+    #s10-sc { left: 190px; top: 210px; width: 100px; height: 100px; border-radius: 24px; background: #fffc00; }
+    #s10-sl { position: absolute; left: 160px; top: 318px; width: 160px; text-align: center; font: 700 22px Inter, sans-serif; color: #fff; }
+    #s10-dl { position: absolute; left: 40px; right: 40px; top: 360px; padding: 20px; border-radius: 22px; background: #f1eefa; text-align: center; color: #22283f; font: 800 30px Inter, sans-serif; opacity: 0; }
+    #s10-dl b { display: block; margin-top: 14px; padding: 10px; border-radius: 14px; background: #ff3b55; color: #fff; }
+  </style>
+  <div id="root" data-composition-id="s10" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s10-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <svg id="s10-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s10-ph" class="abs"><div class="s10-a" style="left:50px;top:80px;background:#ff4fb0"></div><div class="s10-a" style="left:190px;top:80px;background:#4da3ff"></div><div class="s10-a" style="left:330px;top:80px;background:#39e27a"></div>
+        <div id="s10-sc" class="abs"></div><div id="s10-sl">Snapchat</div><div class="s10-a" style="left:50px;top:210px;background:#ff8a3d"></div><div class="s10-a" style="left:330px;top:210px;background:#a06bff"></div>
+        <div id="s10-dl">„Snapchat“ löschen?<b>App löschen</b></div></div>
+      <div id="s10-cl" class="chip" style="left:140px;top:1000px"><b>02:00</b> · 5 neue Snaps</div>
+      <div class="vig"></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s10-svg"); sky(sv, "s10g", "#1d1640", "#0b0820");
+      const G = finn(sv, 880, 1160, 1.9, { hood: "#1d1f2b", arm: "#15161f", undercut: "#f0d060", noPhones: true, tee: "#ffffff", chain: true, can: true, label: "" });
+      const shards = []; const rs = rng(23); for (let i = 0; i < 12; i++) shards.push(el("rect", { x: 530 + rs() * 60, y: 720 + rs() * 60, width: 16, height: 16, fill: "#fffc00", opacity: 0 }, sv));
+      const lo = at("L6b", "löscht"), l6c = line("L6c")[0], zw = at("L6c", "zwei"), ri = at("L6c", "Risiko");
+      tl.fromTo("#s10-ph", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.4 }, 1.0);
+      tl.to("#s10-sc", { rotation: 6, duration: 0.08, yoyo: true, repeat: 9 }, lo - 0.6);
+      tl.fromTo("#s10-dl", { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(2)" }, lo - 0.1);
+      tl.to("#s10-dl b", { scale: 0.92, duration: 0.1, yoyo: true, repeat: 1 }, lo + 0.5);
+      tl.to(["#s10-sc", "#s10-sl", "#s10-dl"], { opacity: 0, duration: 0.15 }, lo + 0.7);
+      shards.forEach((sh, i) => tl.fromTo(sh, { opacity: 1, x: 0, y: 0 }, { opacity: 0, x: (rs() - 0.5) * 400, y: 200 + rs() * 200, rotation: rs() * 360, duration: 0.8, ease: "power2.out", immediateRender: false }, lo + 0.7));
+      tl.fromTo("#s10-cl", { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(3)" }, zw - 0.1);
+      tl.to(G.mouth, { attr: { d: "M-6 -149 Q0 -155 6 -149" }, duration: 0.15 }, ri);
+      tl.to("#s10-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s10"] = tl;
+    })();
+  </script>
+</template>
