@@ -7,7 +7,7 @@ Folge 1/20 von STERNENFALL 🌙 Valdoria – eine Stadt über den Wolken, in der
 Würdest du ihn anfassen? 👇 Ja oder nein?
 Teil 2 kommt bald – folg mir, damit du ihn nicht verpasst.
 
-#sternenfall #valdoria #fantasy #storytime #animation #serie #fantasyserie #lovestory #slowburn #fyp #fürdich #foryou #deutsch
+#sternenfall #fantasy #storytime #animation #fürdich
 
 **Angepinnter Kommentar:**
 Lunara hat inzwischen ihre vierte Nudel geklaut. Bo weiß es noch nicht. 🍜🐭
