@@ -58,7 +58,7 @@ const name = path.basename(storyPath, '.json');
     particles(t, 40, { y0: 1500, dy: -1100, a: 0.5, color: 'rgba(255,200,140,A)', r: 2, life: 9, glowR: 6 });
     // soft darkening behind the text blocks
     const shade = (y, h) => { const g = c.createLinearGradient(0, y - h, 0, y + h); g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(0.5, 'rgba(2,3,12,0.75)'); g.addColorStop(1, 'rgba(0,0,0,0)'); c.fillStyle = g; c.fillRect(0, y - h, 1080, 2 * h); };
-    shade(400, 150); shade(1440, 230);
+    shade(400, 150); shade(1440, 300);
     // --- identical text layout for every episode
     titleText(540, 400, 104, 1, 1);
     c.save(); c.textAlign = 'center';
@@ -67,22 +67,22 @@ const name = path.basename(storyPath, '.json');
     c.shadowColor = 'rgba(0,0,0,0.9)'; c.shadowBlur = 12;
     c.fillText(st.tagline || '', 540, 520);
     // gold band with the episode number
-    const bw = 520, by0 = 1290;
-    const bg = c.createLinearGradient(0, by0, 0, by0 + 120);
+    const bw = 820, bh = 210, by0 = 1250;
+    const bg = c.createLinearGradient(0, by0, 0, by0 + bh);
     bg.addColorStop(0, '#f7dc9b'); bg.addColorStop(0.5, '#e2a94e'); bg.addColorStop(1, '#a8702c');
     c.shadowColor = 'rgba(255,170,70,0.8)'; c.shadowBlur = 40;
-    c.fillStyle = bg; c.beginPath(); c.roundRect(540 - bw / 2, by0, bw, 120, 60); c.fill();
-    c.shadowBlur = 0; c.strokeStyle = 'rgba(255,240,200,0.9)'; c.lineWidth = 3; c.stroke();
+    c.fillStyle = bg; c.beginPath(); c.roundRect(540 - bw / 2, by0, bw, bh, bh / 2); c.fill();
+    c.shadowBlur = 0; c.strokeStyle = 'rgba(255,240,200,0.95)'; c.lineWidth = 5; c.stroke();
     if (c.letterSpacing !== undefined) c.letterSpacing = '10px';
-    c.font = '700 74px Cinzel'; c.fillStyle = '#2a1606'; c.textBaseline = 'middle';
-    c.fillText((st.folge || '').toUpperCase(), 545, by0 + 64);
+    c.font = '700 150px Cinzel'; c.fillStyle = '#2a1606'; c.textBaseline = 'middle';
+    c.fillText((st.folge || '').toUpperCase(), 548, by0 + bh / 2 + 10);
     if (c.letterSpacing !== undefined) c.letterSpacing = '0px';
     // episode title
     c.textBaseline = 'alphabetic'; c.font = 'italic 700 86px "Cormorant Garamond"';
     c.shadowColor = 'rgba(0,0,0,0.95)'; c.shadowBlur = 18;
-    const tg = c.createLinearGradient(0, 1480, 0, 1640); tg.addColorStop(0, '#fff6e6'); tg.addColorStop(1, '#ffd79a');
+    const tg = c.createLinearGradient(0, 1500, 0, 1660); tg.addColorStop(0, '#fff6e6'); tg.addColorStop(1, '#ffd79a');
     c.fillStyle = tg;
-    wrap(st.titel || '', 940).forEach((ln, i) => c.fillText(ln, 540, 1520 + i * 92));
+    wrap(st.titel || '', 940).forEach((ln, i) => c.fillText(ln, 540, 1580 + i * 92));
     c.restore();
     return document.getElementById('c').toDataURL('image/png');
   }, story);
