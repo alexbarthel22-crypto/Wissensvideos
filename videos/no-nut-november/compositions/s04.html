@@ -24,8 +24,8 @@
     .vig { position: absolute; left: 0; right: 0; top: 1040px; height: 880px; background: linear-gradient(rgba(10,12,30,0), rgba(10,12,30,.5) 45%, rgba(10,12,30,.55)); pointer-events: none; }
     #s04-pk { left: 400px; top: 470px; width: 280px; text-align: center; font: 900 76px Inter, sans-serif; color: #ffd43b; text-shadow: 0 0 40px rgba(255,212,59,.8); opacity: 0; }
   </style>
-  <div id="root" data-composition-id="s04" data-start="0" data-duration="11.680" data-width="1080" data-height="1920">
-    <div id="s04-stage" class="clip stage" data-start="0" data-duration="11.680" data-track-index="0">
+  <div id="root" data-composition-id="s04" data-start="0" data-duration="11.791" data-width="1080" data-height="1920">
+    <div id="s04-stage" class="clip stage" data-start="0" data-duration="11.791" data-track-index="0">
       <svg id="s04-svg" class="full" viewBox="0 0 1080 1920"></svg>
       <div id="s04-pk" class="abs">145 %</div>
       <div class="vig"></div>
@@ -34,7 +34,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 11.68, "L9": [0.2, 2.1], "L9.words": [["tag", 0.2, 0.354], ["sieben", 0.354, 0.65], ["jetzt", 1.2, 1.353], ["wirds", 1.353, 1.507], ["wissenschaftlich", 1.507, 2.1]], "L10": [2.32, 6.76], "L10.words": [["eine", 2.32, 2.621], ["studie", 2.621, 2.933], ["zeigt", 2.933, 3.1], ["um", 3.44, 3.592], ["tag", 3.592, 3.749], ["sieben", 3.749, 4.064], ["steigt", 4.064, 4.238], ["das", 4.238, 4.395], ["testosteron", 4.395, 5.019], ["auf", 5.019, 5.176], ["etwa", 5.176, 5.479], ["145", 5.479, 6.44], ["prozent", 6.44, 6.76]], "L11": [6.98, 8.6], "L11.words": [["finn", 6.98, 7.186], ["fühlt", 7.186, 7.399], ["sich", 7.399, 7.605], ["wie", 7.605, 7.804], ["ein", 7.804, 8.003], ["gladiator", 8.003, 8.6]], "L12": [9.12, 11.5], "L12.words": [["der", 9.12, 9.275], ["haken", 9.275, 9.58], ["danach", 10.1, 10.41], ["fällt", 10.41, 10.576], ["es", 10.576, 10.725], ["wieder", 10.725, 11.035], ["auf", 11.035, 11.19], ["normal", 11.19, 11.5]]};
+      const C = {"__dur": 11.791, "L9": [0.2, 2.451], "L9.words": [["tag", 0.2, 0.412], ["sieben", 0.412, 0.82], ["jetzt", 1.37, 1.554], ["wirds", 1.554, 1.739], ["wissenschaftlich", 1.739, 2.451]], "L10": [2.671, 7.111], "L10.words": [["eine", 2.671, 2.972], ["studie", 2.972, 3.284], ["zeigt", 3.284, 3.451], ["um", 3.791, 3.943], ["tag", 3.943, 4.1], ["sieben", 4.1, 4.415], ["steigt", 4.415, 4.589], ["das", 4.589, 4.746], ["testosteron", 4.746, 5.37], ["auf", 5.37, 5.527], ["etwa", 5.527, 5.83], ["145", 5.83, 6.791], ["prozent", 6.791, 7.111]], "L11": [7.331, 8.731], "L11.words": [["finn", 7.331, 7.509], ["fühlt", 7.509, 7.693], ["sich", 7.693, 7.871], ["wie", 7.871, 8.043], ["ein", 8.043, 8.215], ["gladiator", 8.215, 8.731]], "L12": [9.251, 11.611], "L12.words": [["der", 9.251, 9.426], ["haken", 9.426, 9.771], ["danach", 10.191, 10.505], ["fällt", 10.505, 10.674], ["es", 10.674, 10.825], ["wieder", 10.825, 11.14], ["auf", 11.14, 11.297], ["normal", 11.297, 11.611]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];

@@ -24,6 +24,8 @@
     .vig { position: absolute; left: 0; right: 0; top: 1040px; height: 880px; background: linear-gradient(rgba(10,12,30,0), rgba(10,12,30,.5) 45%, rgba(10,12,30,.55)); pointer-events: none; }
     .cd { position: absolute; left: 140px; width: 800px; height: 130px; border-radius: 24px; background: rgba(255,255,255,.95); box-shadow: 0 18px 50px rgba(0,0,0,.4);
       color: #22283f; font: 900 64px/130px Inter, sans-serif; text-align: center; opacity: 0; }
+    #s02-stage .cd { height: 100px; font: 900 56px/100px Inter, sans-serif; }
+    #s02-stage .cd s { top: 46px; }
     .cd s { position: absolute; left: 60px; right: 60px; top: 62px; height: 10px; border-radius: 5px; background: #ff3b55; transform: scaleX(0); transform-origin: 0 50%; }
     .bdg { position: absolute; left: 190px; width: 700px; height: 92px; border-radius: 46px; background: rgba(12,40,30,.92); border: 4px solid #39e27a; color: #fff;
       font: 800 46px/84px Inter, sans-serif; text-align: center; opacity: 0; box-shadow: 0 0 34px rgba(57,226,122,.45); }
@@ -32,10 +34,10 @@
     #s02-big { left: 0; width: 1080px; top: 560px; text-align: center; font: 900 220px/1 Inter, sans-serif; color: #ffd43b; text-shadow: 0 0 60px rgba(255,212,59,.7); opacity: 0; }
     #s02-sub { left: 0; width: 1080px; top: 800px; text-align: center; font: 700 44px Inter, sans-serif; color: #fff; letter-spacing: .14em; opacity: 0; }
   </style>
-  <div id="root" data-composition-id="s02" data-start="0" data-duration="5.940" data-width="1080" data-height="1920">
-    <div id="s02-stage" class="clip stage" data-start="0" data-duration="5.940" data-track-index="0">
+  <div id="root" data-composition-id="s02" data-start="0" data-duration="8.160" data-width="1080" data-height="1920">
+    <div id="s02-stage" class="clip stage" data-start="0" data-duration="8.160" data-track-index="0">
       <svg id="s02-svg" class="full" viewBox="0 0 1080 1920"></svg>
-      <div id="s02-c1" class="cd" style="top:540px">ALLEIN<s></s></div><div id="s02-c2" class="cd" style="top:710px">ZU ZWEIT<s></s></div><div id="s02-c3" class="cd" style="top:880px">GAR NICHT<s></s></div>
+      <div id="s02-c1" class="cd" style="top:470px">ALLEIN<s></s></div><div id="s02-c2" class="cd" style="top:585px">ZU ZWEIT<s></s></div><div id="s02-c4" class="cd" style="top:700px">ZU DRITT<s></s></div><div id="s02-c5" class="cd" style="top:815px">ZU SECHST<s></s></div><div id="s02-c3" class="cd" style="top:930px">GAR NICHT<s></s></div>
 
       <div class="vig"></div>
     </div>
@@ -43,7 +45,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 5.94, "L4": [0.2, 3.73], "L4.words": [["die", 0.2, 0.373], ["regel", 0.373, 0.712], ["ist", 0.712, 0.885], ["simpel", 0.885, 1.23], ["einen", 1.68, 2.017], ["ganzen", 2.017, 2.359], ["monat", 2.359, 2.696], ["lang", 2.696, 2.873], ["kein", 2.873, 3.051], ["dödeldonner", 3.051, 3.73]], "L5": [3.95, 5.76], "L5.words": [["nicht", 3.95, 4.185], ["allein", 4.185, 4.624], ["nicht", 4.624, 4.859], ["zu", 4.859, 5.07], ["zweit", 5.07, 5.306], ["gar", 5.306, 5.525], ["nicht", 5.525, 5.76]]};
+      const C = {"__dur": 8.16, "L4": [0.2, 4.15], "L4.words": [["die", 0.2, 0.363], ["regel", 0.363, 0.682], ["ist", 0.682, 0.845], ["simpel", 0.845, 1.17], ["einen", 1.62, 2.035], ["ganzen", 2.035, 2.458], ["monat", 2.458, 2.874], ["lang", 2.874, 3.093], ["kein", 3.093, 3.312], ["dödeldonner", 3.312, 4.15]], "L5": [4.37, 7.98], "L5.words": [["nicht", 4.37, 4.637], ["allein", 4.637, 5.135], ["nicht", 5.135, 5.401], ["zu", 5.401, 5.642], ["zweit", 5.642, 5.908], ["nicht", 5.908, 6.175], ["zu", 6.175, 6.415], ["dritt", 6.415, 6.682], ["nicht", 6.682, 6.949], ["zu", 6.949, 7.189], ["sechst", 7.189, 7.464], ["gar", 7.464, 7.713], ["nicht", 7.713, 7.98]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -204,12 +206,12 @@
       const ppl = el("g", {}, sv), rp = rng(5), crowd = [];
       for (let i = 0; i < 84; i++) { const c = i % 12, r = Math.floor(i / 12), x = 120 + c * 76 + (r % 2) * 30, y = 990 + r * 28 + rp() * 8, col = ["#ff4fb0", "#4da3ff", "#39e27a", "#ffd43b", "#1fb5a5"][i % 5];
         const g = el("g", { opacity: 0 }, ppl); el("circle", { cx: x, cy: y - 34, r: 13, fill: "#f2cba5" }, g); el("rect", { x: x - 15, y: y - 20, width: 30, height: 36, rx: 10, fill: col }, g); crowd.push(g); }
-      const ga = at("L4", "ganzen"), kh = at("L4", "kein"), al = at("L5", "allein"), zw = at("L5", "zweit"), ga2 = at("L5", "gar");
+      const ga = at("L4", "ganzen"), kh = at("L4", "kein"), al = at("L5", "allein"), zw = at("L5", "zweit"), dr = at("L5", "dritt"), se = at("L5", "sechst"), ga2 = at("L5", "gar");
       tl.fromTo(cal, { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, 0.4);
       tl.to(cells, { attr: { fill: "#ff9fd4" }, duration: 0.15, stagger: 0.035 }, ga - 0.1);
       tl.fromTo(ban, { opacity: 0, scale: 1.6, svgOrigin: "540 840" }, { opacity: 1, scale: 1, svgOrigin: "540 840", duration: 0.3, ease: "power3.out" }, kh);
       tl.to([cal, ban], { opacity: 0.12, duration: 0.3 }, al - 0.35);
-      [["#s02-c1", al], ["#s02-c2", zw], ["#s02-c3", ga2]].forEach(([id, t]) => { tl.fromTo(id, { opacity: 0, x: -80 }, { opacity: 1, x: 0, duration: 0.25, ease: "back.out(2)" }, t - 0.15);
+      [["#s02-c1", al], ["#s02-c2", zw], ["#s02-c4", dr], ["#s02-c5", se], ["#s02-c3", ga2]].forEach(([id, t]) => { tl.fromTo(id, { opacity: 0, x: -80 }, { opacity: 1, x: 0, duration: 0.25, ease: "back.out(2)" }, t - 0.15);
         tl.to(id + " s", { scaleX: 1, duration: 0.2 }, t + 0.25); });
       tl.to("#s02-c3", { scale: 1.08, duration: 0.15, yoyo: true, repeat: 1 }, ga2 + 0.3);
       tl.to("#s02-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);

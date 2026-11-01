@@ -12,7 +12,7 @@
    "lines": [
     {
      "id": "L1",
-     "text": "Mitternacht. *r:Erster *r:November. / Der *p:No_Nut_November|Nou-Natt-November beginnt.",
+     "text": "Mitternacht. *r:Erster *r:November. / Der *p:No_Nut_November beginnt.",
      "speed": 0.95
     },
     {
@@ -63,11 +63,11 @@
    "lines": [
     {
      "id": "L4",
-     "text": "Die Regel ist simpel: / einen *p:ganzen *p:Monat lang / *r:kein *r:Dödel-Donner."
+     "text": "Die Regel ist simpel: / einen *p:ganzen *p:Monat lang / *r:kein *r:Dödel-Donner.|Dödel_Donner."
     },
     {
      "id": "L5",
-     "text": "Nicht *r:allein, / nicht *r:zu *r:zweit, / *r:gar *r:nicht."
+     "text": "Nicht *r:allein, / nicht *r:zu *r:zweit, / nicht *r:zu *r:dritt, / nicht *r:zu *r:sechst. / *r:Gar *r:nicht."
     }
    ],
    "sfx": [
@@ -82,8 +82,18 @@
      "volume": 0.3
     },
     {
+     "name": "error",
+     "at": "L5:dritt",
+     "volume": 0.3
+    },
+    {
+     "name": "error",
+     "at": "L5:sechst",
+     "volume": 0.3
+    },
+    {
      "name": "impact-bass-1",
-     "at": "L5:gar",
+     "at": "L5:Gar",
      "volume": 0.5
     }
    ]
@@ -470,5 +480,8 @@
     }
    ]
   }
- ]
+ ],
+ "pronunciations": {
+  "No Nut November": "noʊ nat noˈvɛmbɐ"
+ }
 }

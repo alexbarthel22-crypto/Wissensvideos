@@ -41,6 +41,8 @@ COLS = '["#5b6a8f", "#6f7da3", "#4e5b7e", "#7c88ad"]'
 
 CARD = '''    .cd { position: absolute; left: 140px; width: 800px; height: 130px; border-radius: 24px; background: rgba(255,255,255,.95); box-shadow: 0 18px 50px rgba(0,0,0,.4);
       color: #22283f; font: 900 64px/130px Inter, sans-serif; text-align: center; opacity: 0; }
+    #s02-stage .cd { height: 100px; font: 900 56px/100px Inter, sans-serif; }
+    #s02-stage .cd s { top: 46px; }
     .cd s { position: absolute; left: 60px; right: 60px; top: 62px; height: 10px; border-radius: 5px; background: #ff3b55; transform: scaleX(0); transform-origin: 0 50%; }
     .bdg { position: absolute; left: 190px; width: 700px; height: 92px; border-radius: 46px; background: rgba(12,40,30,.92); border: 4px solid #39e27a; color: #fff;
       font: 800 46px/84px Inter, sans-serif; text-align: center; opacity: 0; box-shadow: 0 0 34px rgba(57,226,122,.45); }
@@ -146,7 +148,7 @@ S['s02'] = (CARD + '''
     #s02-big { left: 0; width: 1080px; top: 560px; text-align: center; font: 900 220px/1 Inter, sans-serif; color: #ffd43b; text-shadow: 0 0 60px rgba(255,212,59,.7); opacity: 0; }
     #s02-sub { left: 0; width: 1080px; top: 800px; text-align: center; font: 700 44px Inter, sans-serif; color: #fff; letter-spacing: .14em; opacity: 0; }''',
 SVG + '''
-      <div id="s02-c1" class="cd" style="top:540px">ALLEIN<s></s></div><div id="s02-c2" class="cd" style="top:710px">ZU ZWEIT<s></s></div><div id="s02-c3" class="cd" style="top:880px">GAR NICHT<s></s></div>
+      <div id="s02-c1" class="cd" style="top:470px">ALLEIN<s></s></div><div id="s02-c2" class="cd" style="top:585px">ZU ZWEIT<s></s></div><div id="s02-c4" class="cd" style="top:700px">ZU DRITT<s></s></div><div id="s02-c5" class="cd" style="top:815px">ZU SECHST<s></s></div><div id="s02-c3" class="cd" style="top:930px">GAR NICHT<s></s></div>
 ''',
 '''      const sv = document.querySelector("#s02-svg"); sky(sv, "s02g", "#2a1f4f", "#120e28");
       const cal = el("g", {}, sv), cells = [];
@@ -159,12 +161,12 @@ SVG + '''
       const ppl = el("g", {}, sv), rp = rng(5), crowd = [];
       for (let i = 0; i < 84; i++) { const c = i % 12, r = Math.floor(i / 12), x = 120 + c * 76 + (r % 2) * 30, y = 990 + r * 28 + rp() * 8, col = ["#ff4fb0", "#4da3ff", "#39e27a", "#ffd43b", "#1fb5a5"][i % 5];
         const g = el("g", { opacity: 0 }, ppl); el("circle", { cx: x, cy: y - 34, r: 13, fill: "#f2cba5" }, g); el("rect", { x: x - 15, y: y - 20, width: 30, height: 36, rx: 10, fill: col }, g); crowd.push(g); }
-      const ga = at("L4", "ganzen"), kh = at("L4", "kein"), al = at("L5", "allein"), zw = at("L5", "zweit"), ga2 = at("L5", "gar");
+      const ga = at("L4", "ganzen"), kh = at("L4", "kein"), al = at("L5", "allein"), zw = at("L5", "zweit"), dr = at("L5", "dritt"), se = at("L5", "sechst"), ga2 = at("L5", "gar");
       tl.fromTo(cal, { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, 0.4);
       tl.to(cells, { attr: { fill: "#ff9fd4" }, duration: 0.15, stagger: 0.035 }, ga - 0.1);
       tl.fromTo(ban, { opacity: 0, scale: 1.6, svgOrigin: "540 840" }, { opacity: 1, scale: 1, svgOrigin: "540 840", duration: 0.3, ease: "power3.out" }, kh);
       tl.to([cal, ban], { opacity: 0.12, duration: 0.3 }, al - 0.35);
-      [["#s02-c1", al], ["#s02-c2", zw], ["#s02-c3", ga2]].forEach(([id, t]) => { tl.fromTo(id, { opacity: 0, x: -80 }, { opacity: 1, x: 0, duration: 0.25, ease: "back.out(2)" }, t - 0.15);
+      [["#s02-c1", al], ["#s02-c2", zw], ["#s02-c4", dr], ["#s02-c5", se], ["#s02-c3", ga2]].forEach(([id, t]) => { tl.fromTo(id, { opacity: 0, x: -80 }, { opacity: 1, x: 0, duration: 0.25, ease: "back.out(2)" }, t - 0.15);
         tl.to(id + " s", { scaleX: 1, duration: 0.2 }, t + 0.25); });
       tl.to("#s02-c3", { scale: 1.08, duration: 0.15, yoyo: true, repeat: 1 }, ga2 + 0.3);''' + OUT)
 
