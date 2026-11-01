@@ -1251,9 +1251,61 @@ const SCENES = {
   },
 
   intro(t) {
-    if (!SC.kalt) return this._intro(t);  // episodes without a cold open start straight with the title
+    const open = SC.kalt ? 'kalt' : SC.recap ? 'recap' : null;
+    if (!open) return this._intro(t);  // episodes without an opening scene start straight with the title
     const xf = smooth(SC.intro.start, SC.intro.start + 1.8, t);
-    crossfade(xf, () => { ctx.save(); this.kalt(t); ctx.restore(); }, () => this._intro(t));
+    crossfade(xf, () => { ctx.save(); this[open](t); ctx.restore(); }, () => this._intro(t));
+  },
+
+  // recap backdrop: a quiet evening view over the market terraces of the Deep Branches.
+  // Lots of small details (houses, bridges, lanterns, a ramen stall, people, a distant sky whale), little motion.
+  recap(t) {
+    const lt = local('recap', t);
+    ctx.save(); camera(1.03 + 0.02 * lt / 12, 0, 0);
+    vgrad([[0, '#060820'], [0.3, '#1b1a4a'], [0.5, '#4a3266'], [0.62, '#8a4f6a'], [0.72, '#3a2a55'], [1, '#0d0a1c']]);
+    stars(t, { alpha: 0.8, h: 800 });
+    aurora(t, 0.25);
+    moon(860, 300, 70, 0.9);
+    island(230, 760, 160, t, 3, 0.7); island(780, 840, 110, t, 5, 0.75);
+    whale(lerp(1250, -250, (lt + 3) / 40), 640, 0.32, t, 0.55, -1);
+    // far trees with many tiny windows
+    giantTree(120, 260, 650, t, 0.7, 71, { lights: 22, lightSpan: 1100, lightA: 0.8 });
+    giantTree(980, 280, 600, t, 0.7, 72, { lights: 24, lightSpan: 1100, lightA: 0.8 });
+    cloudSea(t, 1180, 0.7);
+    const c = treeColor(0.95);
+    ctx.save(); ctx.translate(0, 170);
+    // the market terrace in the foreground
+    platform(300, 1380, 520, t, 11, c); platform(820, 1300, 420, t, 12, c);
+    bridge(540, 1370, 640, 1300, 40, t, 9, c, 4);
+    house(170, 1380, 130, 150, t, 21, true); house(320, 1380, 110, 190, t, 22, true); house(450, 1380, 90, 130, t, 23, true);
+    house(760, 1300, 120, 170, t, 24, true); house(900, 1300, 100, 140, t, 25, true);
+    this._ramenStand(t, 600, 1380, 0);
+    // garlands of lanterns over the street
+    ctx.save(); ctx.strokeStyle = c; ctx.lineWidth = 2;
+    [[60, 1190, 520, 1220], [520, 1220, 1020, 1150]].forEach(([x1, y1, x2, y2], k) => {
+      ctx.beginPath(); ctx.moveTo(x1, y1); ctx.quadraticCurveTo((x1 + x2) / 2, Math.max(y1, y2) + 60, x2, y2); ctx.stroke();
+      for (let i = 1; i < 8; i++) {
+        const u = i / 8, x = lerp(x1, x2, u), y = (1 - u) * (1 - u) * y1 + 2 * (1 - u) * u * (Math.max(y1, y2) + 60) + u * u * y2;
+        ctx.save(); ctx.globalCompositeOperation = 'lighter';
+        const col = ['255,170,80', '255,120,140', '160,200,255'][(i + k) % 3];
+        glow(x, y + 10, 26, `rgba(${col},A)`, 0.7 + 0.15 * Math.sin(t * 3 + i)); glow(x, y + 10, 5, 'rgba(255,240,210,A)', 1);
+        ctx.restore();
+      }
+    });
+    ctx.restore();
+    // people strolling slowly across the terrace
+    for (let k = 0; k < 6; k++) {
+      const sp = 14 + 8 * rnd(k, 1601), dir = k % 2 ? 1 : -1;
+      const x = ((rnd(k, 1602) * 1100 + dir * sp * lt) % 1100 + 1100) % 1100 - 10;
+      const onLeft = x < 560, y = onLeft ? 1380 : 1300;
+      figure(x, y, 120 + 30 * rnd(k, 1603), { hair: k % 3 === 0, hood: k % 3 === 1, t: t + k, dir, color: '#07060e', rim: 'rgba(255,190,130,0.6)', rimBlur: 10 });
+    }
+    const gnd = ctx.createLinearGradient(0, 1480, 0, 1800);
+    gnd.addColorStop(0, c); gnd.addColorStop(1, '#120d22');
+    ctx.fillStyle = gnd; ctx.fillRect(-100, 1480, W + 200, 600);
+    ctx.restore();
+    particles(t, 40, { y0: 1700, dy: -900, a: 0.5, color: 'rgba(255,200,140,A)', r: 2, life: 10, glowR: 6 });
+    ctx.restore();
   },
 
   _intro(t) {
@@ -1742,8 +1794,66 @@ const SCENES = {
   },
 
   ruinen(t) {
+    // three shots: the climb down, a close look at the ruins, then the wide view where the star waits
+    const L = i => lineOf('ruinen', i), lt = local('ruinen', t), d = SC.ruinen.end - SC.ruinen.start;
+    const toBones = smooth(L(2).start - 0.4, L(2).start + 0.4, t), toWide = smooth(L(3).start - 0.4, L(3).start + 0.4, t);
+    if (toBones < 1) { ctx.save(); this._descent(t); ctx.restore(); }
+    if (toBones > 0 && toWide < 1) {
+      ctx.save(); ctx.globalAlpha = toBones;
+      const z = 1.9 + 0.12 * clamp((t - L(2).start) / 8);
+      camera(z, -(830 - 540) * z + 40 * clamp((t - L(2).start) / 8), -(1500 - 960) * z + 120);
+      this._ruinenWorld(t); ctx.restore();
+    }
+    if (toWide > 0) {
+      ctx.save(); ctx.globalAlpha = toWide;
+      camera(1.0 + 0.1 * lt / d, 0, -20 * lt / d);
+      this._ruinenWorld(t); ctx.restore();
+    }
+  },
+
+  _descent(t) {
+    const lt = local('ruinen', t);
+    vgrad([[0, '#0b1230'], [0.5, '#0a1a2c'], [1, '#04070f']]);
+    // faint city lights far above, the star's blue glow far below
+    ctx.save(); ctx.globalCompositeOperation = 'lighter';
+    glow(540, -100, 700, 'rgba(255,190,120,A)', 0.35); glow(560, 2050, 800, 'rgba(120,170,255,A)', 0.45 + 0.1 * Math.sin(t * 2));
+    ctx.restore();
+    const c = '#03050c', fall = lt * 140;
+    // hanging lianas with leaves, scrolling upwards as she climbs down
+    [[230, 0.9], [520, 1.15], [860, 0.8]].forEach(([vx, w], k) => {
+      ctx.strokeStyle = c; ctx.lineWidth = 16 * w; ctx.lineCap = 'round';
+      ctx.beginPath(); ctx.moveTo(vx, -50);
+      for (let y = -50; y <= 1980; y += 60) ctx.lineTo(vx + 26 * Math.sin((y + fall) * 0.004 + k), y);
+      ctx.stroke();
+      ctx.fillStyle = c;
+      for (let j = 0; j < 22; j++) {
+        const y = ((j * 97 + k * 41 - fall) % 2100 + 2100) % 2100 - 60, x = vx + 26 * Math.sin((y + fall) * 0.004 + k);
+        ctx.beginPath(); ctx.ellipse(x + (j % 2 ? 22 : -22), y, 9, 22, j % 2 ? 0.8 : -0.8, 0, 7); ctx.fill();
+      }
+    });
+    // the last lantern sliding up and out of the frame
+    const ly = 1300 - fall * 1.1;
+    if (ly > -150) {
+      ctx.strokeStyle = c; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(860, ly - 140); ctx.lineTo(860, ly); ctx.stroke();
+      ctx.fillStyle = c; ctx.fillRect(845, ly, 30, 8); ctx.fillRect(848, ly + 40, 24, 6);
+      ctx.save(); ctx.globalCompositeOperation = 'lighter'; glow(860, ly + 22, 120, 'rgba(255,170,80,A)', 0.8); glow(860, ly + 22, 14, 'rgba(255,230,180,A)', 1); ctx.restore();
+    }
+    // Neraya climbing down the middle liana, Lunara clinging to her shoulder
+    const fx = 520 + 26 * Math.sin((1000 + fall) * 0.004 + 1) - 30, fy = 1150 + 6 * Math.sin(t * 2.2);
+    figure(fx, fy, 380, { hair: true, t, dir: 1, arm: -1.45, armLen: 36, rim: 'rgba(160,190,255,0.75)', rimBlur: 24, wind: 3 });
+    moonMouse(fx + 26, fy - 318, 15, t, { dir: 1, mood: 'scared', fly: false, seed: 0.8 });
+    // cold mist bands rising past
+    for (let k = 0; k < 6; k++) {
+      const y = ((k * 380 - fall * 1.6) % 2300 + 2300) % 2300 - 200;
+      const g = ctx.createLinearGradient(0, y - 120, 0, y + 120);
+      g.addColorStop(0, 'rgba(170,190,230,0)'); g.addColorStop(0.5, 'rgba(170,190,230,0.16)'); g.addColorStop(1, 'rgba(170,190,230,0)');
+      ctx.fillStyle = g; ctx.fillRect(0, y - 120, W, 240);
+    }
+    particles(t, 40, { y0: 1950, dy: -2100, a: 0.4, color: 'rgba(200,215,255,A)', r: 1.6, life: 4 });
+  },
+
+  _ruinenWorld(t) {
     const lt = local('ruinen', t), d = SC.ruinen.end - SC.ruinen.start;
-    camera(1.0 + 0.1 * lt / d, 0, -20 * lt / d);
     vgrad([[0, '#02030c'], [0.5, '#0b1330'], [0.8, '#1a2650'], [1, '#05060c']]);
     stars(t, { alpha: 0.6, h: 1100 });
     const voice = speaking('STERN', t);
@@ -2496,7 +2606,41 @@ function hookText(l, t, a) {
   ctx.restore();
 }
 
+function recapText(t) {
+  const R = LINES.filter(l => l.scene === 'recap');
+  if (!R.length || t > SC.recap.end + 0.3) return;
+  const a = smooth(0, 0.3, t) * (1 - smooth(SC.recap.end - 0.4, SC.recap.end + 0.3, t));
+  ctx.save(); ctx.textAlign = 'center';
+  const panel = ctx.createLinearGradient(0, 300, 0, 1080);
+  panel.addColorStop(0, 'rgba(3,3,12,0)'); panel.addColorStop(0.18, `rgba(3,3,12,${0.62 * a})`); panel.addColorStop(0.85, `rgba(3,3,12,${0.62 * a})`); panel.addColorStop(1, 'rgba(3,3,12,0)');
+  ctx.fillStyle = panel; ctx.fillRect(0, 300, W, 780);
+  // header
+  const on = Math.floor(t / 0.45) % 2 === 0;
+  if (ctx.letterSpacing !== undefined) ctx.letterSpacing = '5px';
+  ctx.font = '700 70px Cinzel'; ctx.textBaseline = 'middle';
+  ctx.shadowColor = on ? 'rgba(255,210,40,0.95)' : 'rgba(255,210,40,0.35)'; ctx.shadowBlur = on ? 40 : 12;
+  ctx.fillStyle = on ? `rgba(255,226,90,${a})` : `rgba(230,190,60,${0.7 * a})`;
+  ctx.fillText('WAS BISHER GESCHAH', SAFE_X, 440);
+  if (ctx.letterSpacing !== undefined) ctx.letterSpacing = '0px';
+  ctx.shadowBlur = 0; ctx.fillStyle = `rgba(255,214,90,${0.8 * a})`; ctx.fillRect(SAFE_X - 260, 490, 520, 3);
+  // the recap lines appear one after another and stay, so everything can be read
+  ctx.font = 'italic 600 54px "Cormorant Garamond"'; ctx.textBaseline = 'alphabetic';
+  ctx.shadowColor = 'rgba(0,0,0,0.95)'; ctx.shadowBlur = 14;
+  let y = 580;
+  R.forEach((l, i) => {
+    const la = smooth(l.start - 0.15, l.start + 0.35, t) * a;
+    const lines = wrap(l.text, 760);
+    if (la > 0) {
+      ctx.fillStyle = i === R.length - 1 ? `rgba(255,230,190,${la})` : `rgba(245,240,230,${la})`;
+      lines.forEach((s2, j) => ctx.fillText(s2, SAFE_X, y + j * 60));
+    }
+    y += lines.length * 60 + 26;
+  });
+  ctx.restore();
+}
+
 function subtitles(t) {
+  if (SC.recap && t < SC.recap.end + 0.3) { recapText(t); if (t < SC.recap.end) return; }
   if (LINES[0] && (LINES[0].hook_fly || LINES[0].hook_static) && t < LINES[0].start) return hookText(LINES[0], t, 1);
   const l = LINES.find(l => t >= l.start - 0.12 && t <= l.end + 0.35);
   if (!l) return;
@@ -2547,7 +2691,8 @@ function overlays(t, frame) {
     const dd = Math.abs(t - s.start);
     if (dd < 0.4 && !['fall', 'angriff', 'intro', 'glocken', 'klinge', 'nacht'].includes(s.id)) { ctx.fillStyle = `rgba(0,0,0,${1 - smooth(0, 0.4, dd)})`; ctx.fillRect(0, 0, W, H); }
   }
-  const fi = LINES[0] && (LINES[0].hook_fly || LINES[0].hook_static) ? 0 : 1 - smooth(0, 0.8, t);
+  // never start on a black frame: openings (prolog / recap) are visible from the very first frame
+  const fi = SC.kalt || SC.recap ? 0 : 1 - smooth(0, 0.8, t);
   if (fi > 0) { ctx.fillStyle = `rgba(0,0,0,${fi})`; ctx.fillRect(0, 0, W, H); }
   const fo = smooth(TL.duration - 0.8, TL.duration, t);
   if (fo > 0) { ctx.fillStyle = `rgba(0,0,0,${fo})`; ctx.fillRect(0, 0, W, H); }

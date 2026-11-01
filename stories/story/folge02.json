@@ -76,35 +76,36 @@
  "naechste": "FOLGE 3 · DAS VERSPRECHEN",
  "scenes": [
   {
-   "id": "kalt",
-   "pre": 0.15,
-   "post": 0.3,
+   "id": "recap",
+   "pre": 0.3,
+   "post": 0.5,
    "cues": {
     "frage": "L1+0.0"
    },
    "lines": [
     {
      "who": "ICH",
-     "text": "Was bisher geschah: Meine Mutter verschwand vor zwölf Jahren, als zuletzt ein Stern fiel.",
-     "display": "Meine Mutter verschwand vor zwölf Jahren, als zuletzt ein Stern fiel.",
-     "style": "zügig, spannend zusammenfassend, direkt zum Zuschauer, normale Sprechstimme, nicht flüstern",
-     "hook": "WAS BISHER GESCHAH",
-     "hook_static": true
+     "text": "Ich bin Neraja. Ich zünde Laternen an, in Aurelion, der Stadt über den Wolken.",
+     "display": "Ich bin Neraya, Laternenanzünderin in Aurelion, der Stadt über den Wolken.",
+     "style": "zügig, freundlich, direkt zum Zuschauer, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "ICH",
-     "text": "Jeder fallende Stern gehört dem Orden. Wer ihn berührt, stirbt.",
-     "pre": 0.2,
+     "text": "Meine Mutter verschwand vor zwölf Jahren, in der Nacht, als zuletzt ein Stern fiel.",
+     "pre": 0.25,
      "style": "ernst, zügig, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "ICH",
+     "text": "Jeder fallende Stern gehört dem Orden. Wer ihn berührt, stirbt.",
+     "pre": 0.25,
+     "style": "ernst, mit Gewicht, normale Sprechstimme, nicht flüstern"
+    },
+    {
+     "who": "ICH",
      "text": "Und letzte Nacht fiel einer. Direkt vor mir.",
-     "pre": 0.2,
-     "style": "spannend, mit Nachdruck, normale Sprechstimme, nicht flüstern",
-     "hook": "DIREKT VOR MIR.",
-     "hook_at": 0.6,
-     "display": "Und letzte Nacht fiel einer …"
+     "pre": 0.3,
+     "style": "spannend, mit Nachdruck, normale Sprechstimme, nicht flüstern"
     }
    ],
    "tempo": 1.2
@@ -129,7 +130,7 @@
      "who": "ICH",
      "text": "Nachdem Mama verschwand, hat er mich großgezogen. Er hat mir das Klettern beigebracht. Das Fallen hab ich mir dann selbst beigebracht.",
      "pre": 0.8,
-     "style": "liebevolle Erinnerung, am Ende trocken sarkastisch, normale Sprechstimme, nicht flüstern"
+     "style": "liebevolle Erinnerung, den letzten Satz trocken, Sarkasmus deutlich hörbar: gedehnt, spöttisch, mit hörbarem Augenrollen, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "ICH",
@@ -169,9 +170,9 @@
     },
     {
      "who": "ICH",
-     "text": "Ich kletterte ihm nach: an den Lianen der Riesenbäume hinab, vorbei an der letzten Laterne, durch eiskalten Nebel. Mein schlechtester Plan seit Langem.",
+     "text": "Ich kletterte ihm nach: an den Lianen der Riesenbäume hinab, vorbei an der letzten Laterne, durch eiskalten Nebel. Lowkey mein schlechtester Plan seit Langem.",
      "pre": 0.8,
-     "style": "angespannt erzählend, am Ende trocken sarkastisch, normale Sprechstimme, nicht flüstern"
+     "style": "angespannt erzählend, der letzte Satz trocken, Sarkasmus deutlich hörbar: gedehnt, spöttisch, mit hörbarem Augenrollen, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "ICH",
@@ -196,7 +197,7 @@
      "who": "LUNARA",
      "text": "Wer … wer ist da? … Bitte sei ein Eichhörnchen.",
      "pre": 0.6,
-     "style": "ängstlich, ruhig, nervöser Galgenhumor, normale Sprechstimme, nicht flüstern"
+     "style": "ängstlich, dann der Eichhörnchen-Satz halb verzweifelt, halb ironisch, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "STERN",
@@ -208,7 +209,7 @@
      "who": "LUNARA",
      "text": "Woher kennst du meinen Namen?",
      "pre": 0.5,
-     "style": "misstrauisch, normale Sprechstimme, nicht flüstern"
+     "style": "misstrauisch; das Wort 'Namen' klar und deutlich als 'Naa-men' aussprechen, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "STERN",
@@ -226,7 +227,7 @@
      "who": "LUNARA",
      "text": "Sie hält dich für Mondstaub. Fühl dich geehrt.",
      "pre": 0.4,
-     "style": "trocken sarkastisch, verlegen grinsend, normale Sprechstimme, nicht flüstern"
+     "style": "trocken, verlegen grinsend, Sarkasmus deutlich hörbar: gedehnt, spöttisch, mit hörbarem Augenrollen, normale Sprechstimme, nicht flüstern"
     }
    ],
    "cues": {
@@ -279,7 +280,7 @@
      "who": "ICH",
      "text": "Jetzt wusste ganz Aurelion: Jemand hatte das Gesetz gebrochen. Ratet mal, wer.",
      "pre": 0.7,
-     "style": "panisch, dann trocken sarkastisch, normale Sprechstimme, nicht flüstern"
+     "style": "panisch, dann 'Ratet mal, wer.' trocken, Sarkasmus deutlich hörbar: gedehnt, spöttisch, mit hörbarem Augenrollen, normale Sprechstimme, nicht flüstern"
     }
    ]
   },
@@ -303,7 +304,7 @@
      "who": "ICH",
      "text": "Man sagt, sie war einmal die engste Freundin meiner Mutter. Und dass sie seit zwölf Jahren nicht mehr gelächelt hat. Vermutlich eingerostet.",
      "pre": 1.0,
-     "style": "nachdenklich, misstrauisch, am Ende trocken sarkastisch, normale Sprechstimme, nicht flüstern"
+     "style": "nachdenklich, misstrauisch, 'Vermutlich eingerostet' trocken, Sarkasmus deutlich hörbar: gedehnt, spöttisch, mit hörbarem Augenrollen, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "ICH",
@@ -353,7 +354,7 @@
   {
    "id": "outro",
    "pre": 2.2,
-   "post": 7.0,
+   "post": 6.2,
    "lines": [
     {
      "who": "LUNARA",
@@ -367,7 +368,7 @@
    }
   }
  ],
- "tempo": 1.15,
+ "tempo": 1.18,
  "naechste_folge": "Folge 3",
  "naechste_titel": "Das Versprechen",
  "thumbnail": {

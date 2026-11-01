@@ -484,6 +484,14 @@ def score(tl):
         else:
             fx.add(boom(4, 70, 26, 0.6), kl[-1]["end"] + 0.1, 0.7)
 
+    # Recap over a calm view of the city: soft leitmotif, warm pads, a few bells
+    if "recap" in S:
+        s = S["recap"]
+        each = dur("recap") / 4
+        progression(music, s["start"], ["D", "Bm", "G", "A"], each, bright=3, gain=0.7, attack=1.2)
+        motif(music, s["start"] + 0.6, 0.7, voice="bell", transpose=12, gain=0.22, upto=8)
+        sparkles(music, s["start"], s["end"], 1.0, 0.2)
+
     # Main title
     if "intro" in S:
         if dur("intro") < 8:
@@ -637,11 +645,15 @@ def score(tl):
         s = S["glocken"]
         t, k = C["glocke"], 0
         while t < s["end"] + 1:
-            # loud, clear alarm bells: deep body plus a bright strike on top
-            fx.add(big_bell(["D3", "A2"][k % 2], 5), t, 1.8 - 0.4 * (k % 2), 0.4 * (-1) ** k)
-            fx.add(bell(["D5", "A4"][k % 2], 3.0, 1.2), t, 0.6, 0.4 * (-1) ** k)
-            t += 1.5
+            # menacing alarm bells: deep, slow tolls a tritone apart, a dissonant metallic strike on top
+            fx.add(big_bell(["D2", "Ab1"][k % 2], 7), t, 2.2, 0.35 * (-1) ** k)
+            fx.add(big_bell(["Ab2", "D2"][k % 2], 6), t + 0.02, 1.0, -0.35 * (-1) ** k)
+            fx.add(bell(["Eb5", "A4"][k % 2], 3.5, 1.4), t, 0.45, 0.4 * (-1) ** k)
+            fx.add(boom(2.5, 70, 30, 0.5), t, 0.5)
+            t += 1.9
             k += 1
+        music.add(choir("Dm", dur("glocken"), attack=2.5, release=2.0, vowel="o"), s["start"], 0.5)
+        music.add(tone(hz("D6") * 1.06, dur("glocken"), 1.5, 1.0, 0.025), s["start"], 1.0)
         music.add(drone(dur("glocken") + 1, "D1", grit=0.6), s["start"], 1.3)
         t, gap = s["start"] + 4, 0.6
         while t < s["end"]:
