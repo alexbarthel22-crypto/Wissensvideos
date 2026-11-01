@@ -102,7 +102,8 @@
      "style": "ehrlich, erst trocken ('Ich schon. Leider.'), dann ernst und schwer, normale Sprechstimme, nicht flüstern",
      "hook": "ICH SCHON.",
      "hook_at": 0.0,
-     "display": "Leider. Und das hätte nie passieren dürfen."
+     "display": "Leider. Und das hätte nie passieren dürfen.",
+     "text_delay": 1.15
     }
    ],
    "tempo": 1.0,
@@ -114,7 +115,7 @@
   },
   {
    "id": "intro",
-   "pre": 18.0,
+   "pre": 5.0,
    "post": 0,
    "lines": []
   },

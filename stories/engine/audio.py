@@ -376,6 +376,23 @@ def epic_intro(music, fx, t0, beat=0.6):
     return hit
 
 
+def short_intro(music, fx, t0, d):
+    """Compact main title (~5 s): one swell from the previous scene into a title hit, then a short ring-out."""
+    hit = t0 + 1.6
+    fx.add(cymbal(2.6, swell=True), t0 - 1.0, 0.8)
+    fx.add(riser(2.6), t0 - 1.0, 0.6)
+    music.add(drone(d + 1.5, "D1", grit=0.4), t0, 1.2)
+    music.add(choir("Dm", 1.8, attack=1.2, release=0.4, vowel="o"), t0, 0.8)
+    fx.add(boom(5, 100, 28, 1.0), hit, 1.3)
+    fx.add(cymbal(4), hit, 1.0)
+    music.add(choir("Dm", d - 1.0, attack=0.03, release=2.5), hit, 1.4)
+    music.add(pad("Dm", d - 1.0, bright=11, attack=0.02, release=2.5), hit, 1.2)
+    music.add(lead("D4", 2.5), hit, 1.0)
+    music.add(lead("A4", 2.5), hit, 0.8)
+    melody(music, hit, ["D5", "A5", "D6", "F6", "A6"], 0.1, 0.45, 3)
+    return hit
+
+
 def squeak(n=2, base=2600, gap=0.11, seed=0):
     """Tiny, cute squeak of the moon mouse."""
     r = np.random.default_rng(seed)
@@ -464,7 +481,10 @@ def score(tl):
 
     # Main title
     if "intro" in S:
-        C["title_hit"] = round(epic_intro(music, fx, S["intro"]["start"]), 3)
+        if dur("intro") < 8:
+            C["title_hit"] = round(short_intro(music, fx, S["intro"]["start"], dur("intro")), 3)
+        else:
+            C["title_hit"] = round(epic_intro(music, fx, S["intro"]["start"]), 3)
 
     # Valdoria: dreamy, whale song, music-box leitmotif
     if "welt" in S:

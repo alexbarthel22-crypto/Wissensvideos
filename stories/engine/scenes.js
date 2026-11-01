@@ -1190,6 +1190,17 @@ function richSky(t, lt) {
     ctx.beginPath(); ctx.moveTo(x - L, y); ctx.lineTo(x + L, y); ctx.moveTo(x, y - L); ctx.lineTo(x, y + L); ctx.stroke();
     glow(x, y, r, `rgba(${col},A)`, tw);
   }
+  // Lunara flies up from the bottom into the night sky and vanishes among the stars
+  {
+    const q = clamp((lt - 0.2) / 3.4);
+    if (q > 0 && q < 1) {
+      const e = easeInOut(q), x = lerp(260, 840, e) + 60 * Math.sin(q * 7), y = lerp(2000, 260, e);
+      for (let i = 1; i < 18; i++) { const qq = clamp(q - i * 0.012), ee = easeInOut(qq); glow(lerp(260, 840, ee) + 60 * Math.sin(qq * 7), lerp(2000, 260, ee), 7 - i * 0.3, 'rgba(210,225,255,A)', 0.5 * (1 - i / 18)); }
+      ctx.save(); ctx.globalCompositeOperation = 'source-over';
+      moonMouse(x, y, lerp(26, 12, e), t, { dir: 1, mood: 'happy', fly: true, seed: 0.6, a: 1 - smooth(0.8, 1, q) });
+      ctx.restore();
+    }
+  }
   // an occasional tiny shooting star in the distance
   for (const [t0, x0, y0] of [[3.3, 900, 300], [6.4, 300, 520]]) {
     const q = (lt - t0) / 0.6;
@@ -1262,11 +1273,13 @@ const SCENES = {
     ctx.restore();
     nebula(t, ['rgba(110,60,200,A)', 'rgba(200,120,60,A)'], smooth(1, 4, lt) * 0.8);
     // emblem draws itself with the leitmotif
-    const draw = easeInOut(clamp((lt - 3.0) / 7.5));
-    emblem(540, 900, 300 + 40 * smooth(hit, hit + 2, lt), t, draw, smooth(2.6, 3.4, lt) * (1 - 0.55 * smooth(hit, hit + 0.6, lt)));
+    const short = d < 8;
+    const draw = short ? easeInOut(clamp((lt - 0.1) / Math.max(0.5, hit - 0.3))) : easeInOut(clamp((lt - 3.0) / 7.5));
+    emblem(540, 900, 300 + 40 * smooth(hit, hit + 2, lt), t, draw, (short ? smooth(0, 0.3, lt) : smooth(2.6, 3.4, lt)) * (1 - 0.55 * smooth(hit, hit + 0.6, lt)));
     // a falling star dives into the emblem and ignites the title
-    if (lt > hit - 1.2 && lt < hit + 0.1) {
-      const p = clamp((lt - (hit - 1.2)) / 1.2), k = p * p;
+    const dive = short ? 0.7 : 1.2;
+    if (lt > hit - dive && lt < hit + 0.1) {
+      const p = clamp((lt - (hit - dive)) / dive), k = p * p;
       const x = lerp(1000, 540, k), y = lerp(-60, 900, k);
       ctx.save(); ctx.globalCompositeOperation = 'lighter';
       for (let i = 0; i < 24; i++) { const q = clamp(p - i * 0.02) ** 2; glow(lerp(1000, 540, q), lerp(-60, 900, q), 40 - i, 'rgba(255,220,170,A)', 0.5 * (1 - i / 24)); }
@@ -2276,7 +2289,7 @@ const SCENES = {
 
 // ---------- overlays ----------
 // horizontal centre of all on-screen text: keeps clear of TikTok's buttons on the right edge
-const SAFE_X = 495;
+const SAFE_X = 520;
 const SPEAKER_COL = { BO: '#ffcf8a', LUNARA: '#a8c8ff', KAEL_ERINNERUNG: '#ffc09a', SERAPHINE_HALLE: '#ff6f6f', KAEL: '#ff9b78', SERAPHINE: '#ff6f6f', STERN: '#d9e6ff', STERN_DUNKEL: '#c08cff', MUTTER: '#ffd59a' };
 
 function wrap(text, maxW) {
@@ -2316,10 +2329,10 @@ function hookText(l, t, a) {
   // keyword: series lettering (Cinzel) in blue and red, on screen from the very first frame (hook_static)
   // or rising in while it is spoken; the glow alternates gently between blue and red
   if (l.hook) {
-    const size = l.hook_big ? 128 : l.hook.length > 22 ? 100 : 108;
+    const size = l.hook_big ? 128 : l.hook.length > 22 ? 96 : 104;
     if (ctx.letterSpacing !== undefined) ctx.letterSpacing = '4px';
     ctx.font = `700 ${size}px Cinzel`;
-    const hl = l.hook.length > 16 ? wrap(l.hook, 800) : [l.hook];
+    const hl = l.hook.length > 16 ? wrap(l.hook, 740) : [l.hook];
     const t0 = l.hook_static || l.hook_fly ? 0 : l.start + (l.hook_at ?? 0) * (l.end - l.start);
     if (t >= t0) {
       const since = t - t0, p = l.hook_static ? 1 : l.hook_fly ? 1 : easeOut(clamp(since / 0.5));
@@ -2355,7 +2368,7 @@ function hookText(l, t, a) {
       if (ctx.letterSpacing !== undefined) ctx.letterSpacing = '0px';
       ctx.restore();
       ctx.restore();
-      glitter(0, -90, 860, lh * hl.length + 100, t, 0.8 * a * p * fp, 14, 3);
+      glitter(0, -90, 780, lh * hl.length + 100, t, 0.8 * a * p * fp, 14, 3);
       // emojis above the keyword: a beating heart next to a twinkling star
       if (l.hook_emoji) {
         const beat = 1 + 0.12 * Math.max(0, Math.sin(t * 7.5)) ** 4 + 0.06 * Math.max(0, Math.sin(t * 7.5 - 1.2)) ** 4;
@@ -2380,8 +2393,8 @@ function hookText(l, t, a) {
   // sentence: revealed left to right with star glitter at the edge
   if (l.hook) ctx.translate(0, 70);
   ctx.font = 'italic 600 70px "Cormorant Garamond"';
-  const lines = wrap(l.text, 800), tw = 840;
-  const rp = clamp((t - l.start + 0.1) / 1.1);
+  const lines = wrap(l.text, 740), tw = 780;
+  const rp = clamp((t - l.start - (l.text_delay ?? 0) + 0.1) / 1.1);
   if (rp > 0) {
     ctx.save();
     ctx.beginPath(); ctx.rect(-tw / 2 - 40, 0, (tw + 80) * rp, 80 * lines.length + 40); ctx.clip();
@@ -2410,7 +2423,7 @@ function subtitles(t) {
   ctx.save();
   ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
   ctx.font = narr ? 'italic 500 58px "Cormorant Garamond"' : '600 60px "Cormorant Garamond"';
-  const lines = wrap(l.text, 800);
+  const lines = wrap(l.text, 760);
   const lh = 68, y0 = (l.who === 'BO' ? 640 : l.scene === 'outro' ? 1610 : 1460) - (lines.length - 1) * lh / 2;
   const band = ctx.createLinearGradient(0, y0 - 190, 0, y0 + lines.length * lh + 80);
   band.addColorStop(0, 'rgba(0,0,0,0)'); band.addColorStop(0.35, `rgba(0,0,0,${0.5 * a})`);
