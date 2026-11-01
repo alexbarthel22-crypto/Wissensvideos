@@ -8,15 +8,17 @@
       html, body { width: 1080px; height: 1920px; overflow: hidden; background: #2a1158; }
       #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: url("bg.png") center / cover; }
       .abs { position: absolute; }
-      #t { left: 60px; width: 820px; top: 960px; text-align: center; font: 900 76px/1.08 Inter, sans-serif; color: #eaff8f;
-        text-shadow: 3px 3px 0 #1a0d33, -3px -3px 0 #1a0d33, 3px -3px 0 #1a0d33, -3px 3px 0 #1a0d33, 0 6px 0 #1a0d33, 0 12px 30px rgba(0,0,0,.7); }
-      #t b { color: #ff6b6b; }
-      #s { left: 60px; width: 820px; top: 1270px; text-align: center; font: 900 46px Inter, sans-serif; color: #8ff4ff; text-shadow: 0 4px 0 #1a0d33, 0 0 20px rgba(0,0,0,.6); }
+      #t { left: 20px; width: 1040px; top: 1060px; text-align: center; font: 900 112px/1.0 Inter, sans-serif; letter-spacing: -.02em; color: #eaff8f;
+        text-shadow: 5px 5px 0 #1a0d33, -5px -5px 0 #1a0d33, 5px -5px 0 #1a0d33, -5px 5px 0 #1a0d33, 0 8px 0 #1a0d33, 0 16px 40px rgba(0,0,0,.8); }
+      #t b { color: #ff5a6e; font-size: 132px; }
+      #s { left: 0; right: 0; margin: 0 auto; top: 280px; width: fit-content; padding: 14px 34px; border-radius: 20px; background: #ff3b5c; color: #fff; font: 900 58px Inter, sans-serif; box-shadow: 0 10px 40px rgba(0,0,0,.5); transform: rotate(-3deg); }
+      #shade { left: 0; top: 960px; width: 1080px; height: 800px; background: radial-gradient(ellipse at 50% 50%, rgba(20,8,40,.75), rgba(20,8,40,0) 70%); }
     </style>
   </head>
   <body>
     <div id="root" data-composition-id="cover" data-start="0" data-duration="1" data-width="1080" data-height="1920" data-no-timeline>
-      <div id="t" class="abs">WARUM KOMMEN<br>HOCHINTELLIGENTE<br>IMMER <b>ZU SPÄT?</b></div>
+      <div id="shade" class="abs"></div>
+      <div id="t" class="abs">WARUM KOMMEN<br>HOCH&shy;INTELLIGENTE<br>IMMER<br><b>ZU SPÄT?</b></div>
       <div id="s" class="abs">ES IST NICHT FAULHEIT 🧠</div>
     </div>
   </body>
