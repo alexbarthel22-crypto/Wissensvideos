@@ -49,20 +49,20 @@
    "persona": "Seraphine spricht feierlich zu einer Menschenmenge in einem gewaltigen Tempel."
   },
   "STERN": {
-   "name": "de-DE-Chirp3-HD-Achernar",
-   "gemini": "Achernar",
+   "name": "de-DE-Chirp3-HD-Puck",
+   "gemini": "Puck",
    "label": "Der Stern",
    "rate": 0.92,
    "fx": "stern",
-   "persona": "Ein uraltes Wesen aus Licht, sanft, verführerisch."
+   "persona": "Ein uraltes Wesen aus Licht mit der Stimme eines jungen Mannes von etwa achtzehn: hell, lebendig, charmant, verspielt, ein bisschen frech. Normale Sprechstimme, nicht flüstern."
   },
   "STERN_DUNKEL": {
-   "name": "de-DE-Chirp3-HD-Charon",
-   "gemini": "Charon",
+   "name": "de-DE-Chirp3-HD-Puck",
+   "gemini": "Puck",
    "label": "Der Stern",
    "rate": 0.88,
    "fx": "dunkel",
-   "persona": "Dasselbe Wesen, jetzt entlarvt: tief, ruhig, triumphierend, bedrohlich."
+   "persona": "Dasselbe Wesen aus Licht mit der Stimme eines jungen Mannes von etwa achtzehn, jetzt mächtig: warm, aber unheimlich ruhig, geheimnisvoll. Normale Sprechstimme, nicht flüstern."
   },
   "MUTTER": {
    "name": "de-DE-Chirp3-HD-Sulafat",
@@ -76,8 +76,34 @@
  "naechste": "FOLGE 4 · DER SCHMUGGLER",
  "scenes": [
   {
+   "id": "recap",
+   "pre": 0.3,
+   "post": 0.5,
+   "tempo": 1.2,
+   "lines": [
+    {
+     "who": "ICH",
+     "text": "Ich bin Neraja, Laternenanzünderin in Aurelion. Meine Mutter verschwand vor zwölf Jahren, als zuletzt ein Stern fiel.",
+     "display": "Ich bin Neraya, Laternenanzünderin in Aurelion. Meine Mutter verschwand vor zwölf Jahren, als zuletzt ein Stern fiel.",
+     "style": "zügig, direkt zum Zuschauer, normale Sprechstimme, nicht flüstern"
+    },
+    {
+     "who": "ICH",
+     "text": "Letzte Nacht fiel wieder einer. Ich folgte ihm in die verbotenen Ruinen und berührte sein Herz, obwohl das den Tod bedeutet.",
+     "pre": 0.25,
+     "style": "spannend, zügig, normale Sprechstimme, nicht flüstern"
+    },
+    {
+     "who": "ICH",
+     "text": "Dann kam der Orden. Seraphine, die Hohepriesterin … und neben ihr, mit gezogenem Schwert, mein Bruder Kael.",
+     "pre": 0.25,
+     "style": "angespannt, am Ende schwer, normale Sprechstimme, nicht flüstern"
+    }
+   ]
+  },
+  {
    "id": "intro",
-   "pre": 17.0,
+   "pre": 6.5,
    "post": 0,
    "lines": []
   },
@@ -91,6 +117,18 @@
      "text": "Tritt zurück, Kind.",
      "pre": 0.4,
      "style": "kalt, gebieterisch, normale Sprechstimme, nicht flüstern"
+    },
+    {
+     "who": "SERAPHINE",
+     "text": "Und nimm deine Ratte mit.",
+     "pre": 0.5,
+     "style": "angewidert, herablassend, normale Sprechstimme, nicht flüstern"
+    },
+    {
+     "who": "LUNARA",
+     "text": "Sie ist eine Mondmaus. Und sie beißt.",
+     "pre": 0.3,
+     "style": "trotzig, trocken, Sarkasmus deutlich hörbar: gedehnt, spöttisch, mit hörbarem Augenrollen, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "SERAPHINE",
@@ -132,7 +170,10 @@
      "style": "ruhig, drängend, normale Sprechstimme, nicht flüstern",
      "display": "Sie lügt, Neraya."
     }
-   ]
+   ],
+   "cues": {
+    "faucht": "L1+0.3"
+   }
   },
   {
    "id": "kael",
@@ -146,7 +187,7 @@
     },
     {
      "who": "ICH",
-     "text": "Und aus der Reihe der Flammenwache trat der einzige Mensch, den ich noch hatte.",
+     "text": "Kael trat vor. Der einzige Mensch, den ich noch hatte.",
      "pre": 0.7,
      "style": "erschüttert, normale Sprechstimme, nicht flüstern"
     },
@@ -275,9 +316,9 @@
    "lines": [
     {
      "who": "STERN_DUNKEL",
-     "text": "Weine nicht, Neraja. Du hast ihn nicht verloren. Du hast mich gewonnen.",
-     "style": "tief, triumphierend, langsam, normale Sprechstimme, nicht flüstern",
-     "display": "Weine nicht, Neraya. Du hast ihn nicht verloren. Du hast mich gewonnen."
+     "text": "Weine nicht, Neraja. Du bist nicht allein. Du hast jetzt mich.",
+     "style": "warm, ruhig, ein bisschen zu sanft, unheimlich, normale Sprechstimme, nicht flüstern",
+     "display": "Weine nicht, Neraya. Du bist nicht allein. Du hast jetzt mich."
     },
     {
      "who": "SERAPHINE",
@@ -321,16 +362,16 @@
     },
     {
      "who": "STERN_DUNKEL",
-     "text": "Hallo, Neraja. Ich habe auf dich gewartet.",
+     "text": "Sie hat recht, Neraja. Aber sie hat dir nicht alles erzählt.",
      "pre": 1.8,
-     "style": "ruhig, genüsslich, bedrohlich, normale Sprechstimme, nicht flüstern",
-     "display": "Hallo, Neraya. Ich habe auf dich gewartet."
+     "style": "sanft, geheimnisvoll, verführerisch, normale Sprechstimme, nicht flüstern",
+     "display": "Sie hat recht, Neraya. Aber sie hat dir nicht alles erzählt."
     },
     {
      "who": "LUNARA",
-     "text": "Du … kennst mich?",
+     "text": "Wer … bist du wirklich?",
      "pre": 0.9,
-     "style": "fassungslos, ruhig, normale Sprechstimme, nicht flüstern"
+     "style": "fassungslos, leise aber normale Sprechstimme, normale Sprechstimme, nicht flüstern"
     }
    ]
   },
@@ -341,14 +382,14 @@
    "lines": [
     {
      "who": "ICH",
-     "text": "In dieser Nacht erfuhr ich, dass meine Mutter kein Mensch war.",
+     "text": "Die Stimme meiner Mutter kam aus einem Stern. In dieser Nacht erfuhr ich: Meine Mutter war kein Mensch.",
      "style": "langsam, schwer, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "ICH",
      "text": "Und ich … bin es nur zur Hälfte.",
      "pre": 0.9,
-     "style": "ruhig, die größte Enthüllung, normale Sprechstimme, nicht flüstern"
+     "style": "leise, aber normale Sprechstimme, die größte Enthüllung"
     }
    ]
   },
@@ -367,13 +408,13 @@
   {
    "id": "outro",
    "pre": 2.2,
-   "post": 10.0,
+   "post": 6.2,
    "lines": [
     {
      "who": "LUNARA",
-     "text": "Halb Mensch. Halb Stern. Null Plan. Folge mir … und du siehst, wie ich das überlebe.",
+     "text": "Halb Mensch. Halb Stern. Komplett lost. Folge mir … und du siehst, wie ich das überlebe.",
      "rate": 0.93,
-     "style": "direkt zum Zuschauer, trocken sarkastisch, ein Hauch Lächeln, normale Sprechstimme, nicht flüstern"
+     "style": "direkt zum Zuschauer, trocken, Sarkasmus deutlich hörbar: gedehnt, spöttisch, mit hörbarem Augenrollen, ein Hauch Lächeln, normale Sprechstimme, nicht flüstern"
     }
    ],
    "cues": {
@@ -381,7 +422,15 @@
    }
   }
  ],
- "tempo": 1.2,
+ "tempo": 1.18,
  "naechste_folge": "Folge 4",
- "naechste_titel": "Der Schmuggler"
+ "naechste_titel": "Der Schmuggler",
+ "thumbnail": {
+  "elements": [
+   "moon",
+   "sword",
+   "pendant",
+   "lunara"
+  ]
+ }
 }

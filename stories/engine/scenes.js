@@ -2123,13 +2123,23 @@ const SCENES = {
   orden(t) {
     const lt = local('orden', t), d = SC.orden.end - SC.orden.start;
     camera(1.0 + 0.08 * lt / d, 0, 0);
-    this._ridge(t, 0.4 + 0.4 * smooth(lineOf('orden', 5).start, lineOf('orden', 5).end, t));
+    // the Ratte/Mondmaus exchange shifts the later lines by two
+    const gag = LINES.some(l => l.scene === 'orden' && l.text.startsWith('Sie ist eine Mondmaus')), o = gag ? 2 : 0;
+    this._ridge(t, 0.4 + 0.4 * smooth(lineOf('orden', 5 + o).start, lineOf('orden', 5 + o).end, t));
     const rise = easeOut(clamp((t - SC.orden.start - 0.3) / 3));
     this._order(t, { rise });
     particles(t, 50, { y0: 1400, dy: -1100, a: 0.6, color: 'rgba(255,140,70,A)', r: 2, life: 6, sway: 60 });
     this._elaraFg(t, { arm: 0.3 });
+    if (gag) {
+      // Lunara on Neraya's shoulder puffs up, darts at Seraphine with an angry squeak, then comes back
+      const L = i => lineOf('orden', i);
+      const sx = 330, sy = 1760 - 535 + 3 * Math.sin(t * 2);
+      const dart = smooth(L(1).end - 0.2, L(1).end + 0.25, t) * (1 - smooth(L(2).end - 0.2, L(2).end + 0.6, t));
+      const x = lerp(sx, 520, dart) + (dart > 0.5 ? 6 * Math.sin(t * 40) : 0), y = lerp(sy, sy - 120, dart) - 40 * Math.sin(Math.PI * dart);
+      moonMouse(x, y, lerp(20, 30, dart), t, { dir: 1, mood: dart > 0.3 ? 'scared' : 'happy', fly: dart > 0.02, seed: 0.9 });
+    }
     // "Es hat sie getötet" - slow red pulse
-    const k = smooth(lineOf('orden', 5).start - 0.2, lineOf('orden', 5).start + 0.4, t) * (1 - smooth(lineOf('orden', 6).start, lineOf('orden', 6).end, t));
+    const k = smooth(lineOf('orden', 5 + o).start - 0.2, lineOf('orden', 5 + o).start + 0.4, t) * (1 - smooth(lineOf('orden', 6 + o).start, lineOf('orden', 6 + o).end, t));
     if (k > 0) { ctx.fillStyle = `rgba(140,10,20,${k * 0.18})`; ctx.fillRect(-200, -200, W + 400, H + 400); }
   },
 

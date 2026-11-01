@@ -60,6 +60,17 @@ const name = path.basename(storyPath, '.json');
       c.lineWidth = 6;
       for (let k = 0; k < 3; k++) { const x0 = bx - 26 + k * 24; c.strokeStyle = `rgba(240,240,255,${0.55 - k * 0.1})`; c.beginPath(); c.moveTo(x0, by - 58); c.bezierCurveTo(x0 - 16, by - 88, x0 + 16, by - 110, x0, by - 140); c.stroke(); }
     }
+    if (els.has('sword')) {
+      // a captain's sword, point down, lit red from below, crossing the moon
+      c.save(); c.translate(585, 1000); c.rotate(-0.42); c.scale(0.85, 0.85);
+      c.save(); c.globalCompositeOperation = 'lighter'; glow(0, 120, 360, 'rgba(255,60,40,A)', 0.45); c.restore();
+      const bl = c.createLinearGradient(-14, 0, 14, 0); bl.addColorStop(0, '#8d97ab'); bl.addColorStop(0.5, '#f4f7ff'); bl.addColorStop(1, '#6f7890');
+      c.shadowColor = 'rgba(255,80,60,0.9)'; c.shadowBlur = 30;
+      c.fillStyle = bl; c.beginPath(); c.moveTo(-16, -230); c.lineTo(16, -230); c.lineTo(14, 300); c.lineTo(0, 360); c.lineTo(-14, 300); c.closePath(); c.fill();
+      c.shadowBlur = 0; c.fillStyle = '#2a1608'; c.fillRect(-90, -250, 180, 22); c.fillRect(-14, -390, 28, 145);
+      c.fillStyle = '#c99a4a'; c.beginPath(); c.arc(0, -400, 22, 0, 7); c.fill();
+      c.restore();
+    }
     if (els.has('lunara')) moonMouse(620, 1180, 34, t, { dir: 1, mood: 'happy', fly: true, seed: 0.4 });
     particles(t, 40, { y0: 1500, dy: -1100, a: 0.5, color: 'rgba(255,200,140,A)', r: 2, life: 9, glowR: 6 });
     // soft darkening behind the text blocks

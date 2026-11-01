@@ -828,7 +828,7 @@ def score(tl):
         fx.add(boom(5, 90, 28, 1.0), C["schrei"], 1.2)
 
     # The moon mouse
-    for name, n, base in (("maus_hallo", 3, 2800), ("hicks", 1, 3400), ("schreck", 2, 3600), ("knopf", 2, 3000), ("naschen", 3, 3200), ("ertappt", 2, 3800)):
+    for name, n, base in (("maus_hallo", 3, 2800), ("hicks", 1, 3400), ("schreck", 2, 3600), ("knopf", 2, 3000), ("naschen", 3, 3200), ("ertappt", 2, 3800), ("faucht", 4, 4200)):
         if name in C:
             fx.add(squeak(n, base, seed=len(name)), C[name], 0.9, 0.2)
             if name == "hicks":
