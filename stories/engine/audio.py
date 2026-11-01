@@ -757,6 +757,14 @@ def score(tl):
             fx.add(drum(44, 0.8), t + 0.3, 0.3)
             t += 1.2
         music.add(tone(hz("D6") * 1.06, dur("sting"), 0.5, 0.5, 0.02), s["start"], 1.0)
+        if "bruder" in C:
+            # the reveal: a held breath, then a hard hit on "Mein Bruder."
+            music.add(drone(C["bruder"] - s["start"] + 0.5, "D1", grit=0.8), s["start"], 1.2)
+            fx.add(riser(2.5), C["bruder"] - 2.5, 0.6)
+            stab("Eb", None, C["bruder"], music, 1.4)
+            fx.add(boom(6, 110, 26, 1.0), C["bruder"], 1.4)
+            fx.add(cymbal(4), C["bruder"], 0.8)
+            music.add(tone(hz("A5"), s["end"] - C["bruder"] + 1, 0.05, 1.5, 0.03), C["bruder"] + 0.1, 1.0)
 
     # Previously on: the leitmotif as a fragile memory, darkening toward the Order
     if "rueckblick" in S:

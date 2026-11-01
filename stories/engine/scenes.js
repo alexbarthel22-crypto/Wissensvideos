@@ -2219,6 +2219,24 @@ const SCENES = {
     ctx.globalCompositeOperation = 'lighter';
     [-70, 70].forEach(ex => glow(ex, -260, 40, 'rgba(255,90,60,A)', 0.5 * smooth(1.2, 2.2, lt)));
     ctx.restore();
+    // longer cliffhanger: the hood gives way to the captain beside her, sword drawn, lit red from below
+    if (lineOf('sting', 3) !== NOLINE) {
+      const L = i => lineOf('sting', i), k = smooth(L(2).start + 1.6, L(2).start + 3.0, t);
+      if (k > 0) {
+        ctx.save(); ctx.fillStyle = `rgba(0,0,0,${0.85 * k})`; ctx.fillRect(0, 0, W, H); ctx.restore();
+        ctx.save(); ctx.globalAlpha = k;
+        ctx.save(); ctx.globalCompositeOperation = 'lighter'; glow(540, 1900, 900, 'rgba(255,60,30,A)', 0.45); ctx.restore();
+        const z = 1 + 0.05 * clamp((t - L(2).start) / 6);
+        ctx.translate(540, 1800); ctx.scale(z, z); ctx.translate(-540, -1800);
+        figure(560, 1880, 1150, { dir: -1, t, cape: true, rim: 'rgba(255,90,60,0.95)', rimBlur: 40, arm: 0.9, armLen: 34, sword: 1.35 });
+        ctx.restore();
+      }
+      // "Mein Bruder." – a hard flash, then black
+      const hit = L(3).start;
+      if (t > hit && t < hit + 0.25) { ctx.save(); ctx.fillStyle = `rgba(255,70,50,${0.55 * (1 - (t - hit) / 0.25)})`; ctx.fillRect(0, 0, W, H); ctx.restore(); }
+      const out = smooth(L(3).end + 0.3, SC.sting.end, t);
+      if (out > 0) { ctx.save(); ctx.fillStyle = `rgba(0,0,0,${out})`; ctx.fillRect(0, 0, W, H); ctx.restore(); }
+    }
   },
 
   klinge(t) {

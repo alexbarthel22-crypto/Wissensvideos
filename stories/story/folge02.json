@@ -127,9 +127,9 @@
     },
     {
      "who": "ICH",
-     "text": "Nachdem Mama verschwand, hat er mich großgezogen. Er hat mir das Klettern beigebracht.",
+     "text": "Nachdem Mama verschwand, hat er mich großgezogen. Er hat mir das Klettern beigebracht. Das Fallen hab ich mir dann selbst beigebracht.",
      "pre": 0.8,
-     "style": "liebevolle Erinnerung, normale Sprechstimme, nicht flüstern"
+     "style": "liebevolle Erinnerung, am Ende trocken sarkastisch, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "ICH",
@@ -164,26 +164,26 @@
    "lines": [
     {
      "who": "ICH",
-     "text": "Der Stern war direkt vor mir eingeschlagen … und durch den Ast gebrochen. Immer tiefer, bis hinunter in die verbotenen Ruinen.",
+     "text": "Der Stern war direkt vor mir eingeschlagen … und durch den Ast gebrochen. Er stürzte immer tiefer, bis zu den verbotenen Ruinen, knapp über dem Wolkenmeer.",
      "style": "spannend, atemlos, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "ICH",
-     "text": "Eine tote Insel tief unter der Stadt. Dort begann damals das große Feuer.",
+     "text": "Ich kletterte ihm nach: an den Lianen der Riesenbäume hinab, vorbei an der letzten Laterne, durch eiskalten Nebel. Mein schlechtester Plan seit Langem.",
+     "pre": 0.8,
+     "style": "angespannt erzählend, am Ende trocken sarkastisch, normale Sprechstimme, nicht flüstern"
+    },
+    {
+     "who": "ICH",
+     "text": "Unten lag eine tote Insel. Dort begann vor tausend Jahren das große Feuer. Die Bäume sind zu Stein geworden, und dazwischen liegen die Knochen von Himmelswalen.",
      "pre": 0.8,
      "style": "unheimlich, ernst, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "ICH",
-     "text": "Die Bäume dort sind zu Stein geworden. Und zwischen ihnen liegen die Knochen von Walen.",
-     "pre": 0.8,
-     "style": "ruhig, gruselig, normale Sprechstimme, nicht flüstern"
-    },
-    {
-     "who": "ICH",
-     "text": "Seit tausend Jahren hat niemand sie betreten. Ich kletterte trotzdem hinterher. Mit zitternden Knien.",
+     "text": "Kein Wind. Kein Laut. Nur Asche … und mittendrin ein Licht, das atmete.",
      "pre": 0.9,
-     "style": "entschlossen, dann ehrlich, normale Sprechstimme, nicht flüstern"
+     "style": "leise staunend, aber normale Sprechstimme, gruselig, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "STERN",
@@ -277,9 +277,9 @@
     },
     {
      "who": "ICH",
-     "text": "Jetzt wusste ganz Aurelion: Jemand hatte das Gesetz gebrochen. Und der Orden würde kommen.",
+     "text": "Jetzt wusste ganz Aurelion: Jemand hatte das Gesetz gebrochen. Ratet mal, wer.",
      "pre": 0.7,
-     "style": "panisch, schnell, normale Sprechstimme, nicht flüstern"
+     "style": "panisch, dann trocken sarkastisch, normale Sprechstimme, nicht flüstern"
     }
    ]
   },
@@ -307,17 +307,53 @@
     },
     {
      "who": "ICH",
-     "text": "Heute Nacht … kam sie, um mich zu holen.",
+     "text": "Und heute Nacht kam sie, um mich zu holen. Persönlich.",
      "pre": 1.2,
      "rate": 0.86,
-     "style": "ruhig, unheilvoll, normale Sprechstimme, nicht flüstern"
+     "style": "angespannt, unheilvoll, normale Sprechstimme, nicht flüstern"
+    }
+   ]
+  },
+  {
+   "id": "sting",
+   "pre": 0.5,
+   "post": 1.1,
+   "cues": {
+    "bruder": "L3+0.0"
+   },
+   "lines": [
+    {
+     "who": "SERAPHINE",
+     "text": "Da bist du ja, Neraja.",
+     "display": "Da bist du ja, Neraya.",
+     "style": "eiskalt, ruhig, ganz nah, gefährlich, normale Sprechstimme, nicht flüstern"
+    },
+    {
+     "who": "STERN",
+     "text": "Lauf, Neraja. Jetzt!",
+     "display": "Lauf, Neraya. Jetzt!",
+     "pre": 0.5,
+     "style": "drängend, besorgt, eindringlich, normale Sprechstimme, nicht flüstern"
+    },
+    {
+     "who": "ICH",
+     "text": "Ich wollte laufen. Aber dann sah ich, wer neben ihr stand. Mit gezogenem Schwert.",
+     "pre": 0.6,
+     "style": "atemlos, fassungslos, langsamer werdend, normale Sprechstimme, nicht flüstern"
+    },
+    {
+     "who": "ICH",
+     "text": "Mein Bruder.",
+     "pre": 1.2,
+     "style": "gebrochen, schockiert, kaum glaubend, normale Sprechstimme, nicht flüstern",
+     "keep_tail": true
     }
    ]
   },
   {
    "id": "outro",
    "pre": 2.2,
-   "post": 9.0,
+   "post": 7.0,
    "lines": [
     {
      "who": "LUNARA",
@@ -331,7 +367,7 @@
    }
   }
  ],
- "tempo": 1.1,
+ "tempo": 1.15,
  "naechste_folge": "Folge 3",
  "naechste_titel": "Das Versprechen",
  "thumbnail": {
