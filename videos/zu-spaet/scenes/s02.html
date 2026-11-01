@@ -1,0 +1,46 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .vig { position: absolute; left: 0; right: 0; top: 1040px; height: 880px; background: linear-gradient(rgba(10,12,30,0), rgba(10,12,30,.5) 45%, rgba(10,12,30,.55)); pointer-events: none; }
+    .lab { position: absolute; padding: 10px 24px; border-radius: 18px; background: rgba(20,10,50,.82); border: 3px solid #8ff4ff; color: #fff; font: 900 52px Inter, sans-serif; opacity: 0; box-shadow: 0 0 30px rgba(143,244,255,.4); white-space: nowrap; }
+    .lab.r { border-color: #ff6b8a; box-shadow: 0 0 30px rgba(255,107,138,.5); } .lab.g { border-color: #7dffb0; box-shadow: 0 0 30px rgba(125,255,176,.5); } .lab.y { border-color: #ffd84a; }
+  </style>
+  <div id="root" data-composition-id="s02" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s02-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <svg id="s02-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s02-l1" class="lab g" style="left:520px;top:420px">„Hab noch Zeit“</div>
+      <div class="vig"></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s02-svg"), A = el("g", {}, sv), Bz = el("g", { opacity: 0 }, sv), Cz = el("g", { opacity: 0 }, sv); room(A, "s02a", "#2b1366", "#9a3a8a"); defsG(sv);
+      const K = aclock(A, 760, 760, 150); const P = person(A, 360, 1380, 2.2);
+      room(Bz, "s02b", "#1f1450", "#6a2f9a");
+      el("rect", { x: 140, y: 1040, width: 800, height: 40, rx: 12, fill: "#3b2a8a" }, Bz); el("rect", { x: 330, y: 820, width: 420, height: 230, rx: 16, fill: "#22164f", stroke: "#8ff4ff", "stroke-width": 6 }, Bz);
+      const P2 = person(Bz, 540, 1400, 2.0);
+      const lines = []; for (let i = 0; i < 6; i++) lines.push(el("rect", { x: 160 + (i % 2) * 560, y: 900 + i * 40, width: 200, height: 10, rx: 5, fill: "#8ff4ff", opacity: 0 }, Bz));
+      room(Cz, "s02c", "#3a0d3a", "#c02a5a"); const K2 = aclock(Cz, 540, 820, 230);
+      const ze = at("L3", "Zeit"), sc = at("L3", "schnell"), l4 = line("L4")[0], pl = at("L4", "plötzlich");
+      tl.to(P.head, { rotation: 18, svgOrigin: "0 -270", duration: 0.3 }, line("L3")[0] + 0.8);
+      tl.to(K.m, { rotation: 30, svgOrigin: "760 760", duration: 2, ease: "none" }, 0.3);
+      tl.fromTo("#s02-l1", { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(2.5)" }, ze - 0.6);
+      tl.to("#s02-l1", { opacity: 0, duration: 0.15 }, sc - 0.6);
+      tl.set(A, { opacity: 0 }, sc - 0.6); tl.set(Bz, { opacity: 1 }, sc - 0.6);
+      tl.to([P2.aL, P2.aR], { y: -8, duration: 0.06, yoyo: true, repeat: 40 }, sc - 0.5);
+      tl.to(lines, { opacity: 0.9, x: -60, duration: 0.2, stagger: 0.05, yoyo: true, repeat: 9 }, sc - 0.4);
+      tl.set(Bz, { opacity: 0 }, pl - 0.3); tl.set(Cz, { opacity: 1 }, pl - 0.3);
+      tl.fromTo(K2.m, { rotation: 0, svgOrigin: "540 820" }, { rotation: 1080, svgOrigin: "540 820", duration: 1.6, ease: "power2.in", immediateRender: false }, pl - 0.3);
+      tl.fromTo(K2.h, { rotation: 0, svgOrigin: "540 820" }, { rotation: 90, svgOrigin: "540 820", duration: 1.6, ease: "power2.in", immediateRender: false }, pl - 0.3);
+      tl.to(Cz, { x: 12, duration: 0.04, repeat: 9, yoyo: true }, pl + 1.2);
+      tl.to("#s02-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s02"] = tl;
+    })();
+  </script>
+</template>

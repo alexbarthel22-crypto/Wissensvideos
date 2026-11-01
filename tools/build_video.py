@@ -135,6 +135,8 @@ def caption_groups(timings, windows):
 
 
 def build_captions(project, timings, windows, total, big=False, cin=False, nocap=(), story=False):
+    if json.loads((project / "script.json").read_text()).get("style") == "oneword":
+        return build_captions_oneword(project, timings, total)
     groups = caption_groups(timings, windows)
     groups[-1]["end"] = round(total - 0.05, 3)  # letzte Zeile (Frage an die Zuschauer) bleibt stehen
     rows, js = [], []
@@ -178,6 +180,46 @@ def build_captions(project, timings, windows, total, big=False, cin=False, nocap
   </style>
   <div id="root" data-composition-id="captions" data-start="0" data-duration="{total:.3f}" data-width="{W}" data-height="{H}"
        data-layout-allow-caption-zone>
+{chr(10).join(rows)}
+  </div>
+  <script>
+    const tl = gsap.timeline({{ paused: true }});
+    {chr(10) + "    ".join(js)}
+    window.__timelines["captions"] = tl;
+  </script>
+</template>
+"""
+    (project / "compositions" / "captions.html").write_text(doc)
+
+
+OW_COLORS = {"y": "#ffd84a", "r": "#ff6b6b", "g": "#7dffb0", "b": "#7fd8ff", "p": "#ff8fe0"}
+
+
+def build_captions_oneword(project, timings, total):
+    """Stil wie Referenz C: immer nur EIN Wort, groß in der Bildmitte, außerhalb der TikTok-Bedienelemente
+    (oben Suche, rechts Like-Leiste, unten Kommentar-Leiste)."""
+    ws = [w for l in timings["lines"] for w in l["words"]]
+    rows, js = [], []
+    for i, w in enumerate(ws):
+        t0 = max(0.05, w["start"] - 0.03)
+        t1 = ws[i + 1]["start"] - 0.03 if i + 1 < len(ws) else total - 0.05
+        if i + 1 < len(ws) and t1 - w["end"] > 0.6:  # lange Pause: Wort nicht ewig stehen lassen
+            t1 = w["end"] + 0.45
+        word = esc(w["display"].upper())
+        fs = min(112, int(760 / max(1, 0.64 * len(w["display"]))))
+        col = OW_COLORS.get(w["color"], "#eaff8f")
+        rows.append(f'    <div id="ow{i}" class="clip owg" data-start="{t0:.3f}" data-duration="{t1 - t0:.3f}" data-track-index="{i % 2}">'
+                    f'<div id="owi{i}" class="ow" style="font-size:{fs}px;color:{col}">{word}</div></div>')
+        js.append(f'tl.fromTo("#owi{i}", {{ scale: 1.22, opacity: 0.4 }}, {{ scale: 1, opacity: 1, duration: 0.14, ease: "back.out(2.5)" }}, {t0:.3f});')
+    doc = f"""<template>
+  <style>
+    #root {{ position: absolute; inset: 0; }}
+    .owg {{ position: absolute; left: 0; width: 100%; top: 1060px; height: 200px; }}
+    .ow {{ position: absolute; left: 90px; width: 790px; top: 0; text-align: center; font-family: "Inter", sans-serif; font-weight: 900; line-height: 1;
+      letter-spacing: .01em; transform-origin: 50% 50%;
+      text-shadow: 0 0 2px #1a0d33, 3px 3px 0 #1a0d33, -3px -3px 0 #1a0d33, 3px -3px 0 #1a0d33, -3px 3px 0 #1a0d33, 0 4px 0 #1a0d33, 0 10px 24px rgba(0,0,0,.6); }}
+  </style>
+  <div id="root" data-composition-id="captions" data-start="0" data-duration="{total:.3f}" data-width="{W}" data-height="{H}" data-layout-allow-caption-zone>
 {chr(10).join(rows)}
   </div>
   <script>
@@ -359,7 +401,7 @@ def build_hud_story(project, script, windows, total):
 
 
 def build_hud(project, script, windows, total):
-    if script.get("style") == "cinema":
+    if script.get("style") in ("cinema", "oneword"):
         return build_hud_cinema(project, script, windows, total)
     if script.get("style") == "story":
         return build_hud_story(project, script, windows, total)

@@ -1,0 +1,35 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .vig { position: absolute; left: 0; right: 0; top: 1040px; height: 880px; background: linear-gradient(rgba(10,12,30,0), rgba(10,12,30,.5) 45%, rgba(10,12,30,.55)); pointer-events: none; }
+    .lab { position: absolute; padding: 10px 24px; border-radius: 18px; background: rgba(20,10,50,.82); border: 3px solid #8ff4ff; color: #fff; font: 900 52px Inter, sans-serif; opacity: 0; box-shadow: 0 0 30px rgba(143,244,255,.4); white-space: nowrap; }
+    .lab.r { border-color: #ff6b8a; box-shadow: 0 0 30px rgba(255,107,138,.5); } .lab.g { border-color: #7dffb0; box-shadow: 0 0 30px rgba(125,255,176,.5); } .lab.y { border-color: #ffd84a; }
+    #s09-f { left: 290px; top: 1310px; width: 500px; height: 124px; border-radius: 62px; background: #ff3b5c; color: #fff; text-align: center; font: 900 60px/124px Inter, sans-serif; opacity: 0; box-shadow: 0 10px 50px rgba(255,59,92,.7); }
+  </style>
+  <div id="root" data-composition-id="s09" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s09-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <svg id="s09-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s09-f" class="abs">+ Folgen</div>
+      <div class="vig"></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s09-svg"), A = el("g", {}, sv); room(A, "s09a", "#2a1158", "#a4307f"); defsG(sv);
+      const H = brainHead(A, 470, 760, 1.5);
+      const P = person(A, 760, 1040, 1.4);
+      const fr = at("L16", "Frage"), ho = at("L16", "hochintelligent"), fo = at("L16", "folgst");
+      H.rings.forEach((r, i) => tl.fromTo(r, { scale: 0.6, opacity: 0, svgOrigin: "0 -40" }, { scale: 1.1, opacity: 0.8 - i * 0.1, svgOrigin: "0 -40", duration: 1.1, repeat: 5, immediateRender: false }, 0.2 + i * 0.1));
+      tl.to(P.aR, { rotation: -60, svgOrigin: "52 -236", duration: 0.3 }, fo - 0.2);
+      tl.fromTo("#s09-f", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.35, ease: "back.out(2)" }, fo - 0.1);
+      tl.to("#s09-f", { scale: 1.08, duration: 0.3, yoyo: true, repeat: 11, ease: "sine.inOut" }, fo + 0.4);
+      window.__timelines["s09"] = tl;
+    })();
+  </script>
+</template>

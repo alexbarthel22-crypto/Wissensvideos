@@ -1,0 +1,245 @@
+{
+ "title": "Warum kommen hochintelligente Menschen immer zu spät?",
+ "voice": "Google Chirp 3 HD (de-DE-Chirp3-HD-Puck), --speed 1.16",
+ "style": "oneword",
+ "lead_in": 0.3,
+ "nocap": [],
+ "_zahlen": "Planungsfehlschluss (Kahneman/Tversky); Buehler, Griffin & Ross 1994: geschätzt ~34 Tage, tatsächlich ~55 Tage für die Abschlussarbeit. Conte et al. 2003 (San Diego State Univ.): Typ-B-Personen schätzten eine Minute erst nach ~77 s als vergangen. Flow: verändertes Zeiterleben (Csikszentmihalyi).",
+ "scenes": [
+  {
+   "id": "s01",
+   "tag": "",
+   "lines": [
+    {
+     "id": "L1",
+     "text": "Warum kommen *y:hochintelligente Menschen / *r:immer *r:zu *r:spät?",
+     "speed": 0.95
+    },
+    {
+     "id": "L2",
+     "text": "Die Antwort ist *r:nicht *r:Faulheit. / Es ist ihr *b:Gehirn.",
+     "pause": 0.15
+    }
+   ],
+   "sfx": [
+    {
+     "name": "impact-bass-1",
+     "at": "s01+0.0",
+     "volume": 0.6
+    },
+    {
+     "name": "click",
+     "at": "L1:Warum",
+     "volume": 0.3
+    },
+    {
+     "name": "impact-bass-2",
+     "at": "L2:Gehirn",
+     "volume": 0.5
+    }
+   ]
+  },
+  {
+   "id": "s02",
+   "tag": "",
+   "lines": [
+    {
+     "id": "L3",
+     "text": "Es passiert jeden Tag: / Sie schauen auf die Uhr, / denken: *g:Ich *g:hab *g:noch *g:Zeit. / Und machen *y:noch *y:schnell eine Sache."
+    },
+    {
+     "id": "L4",
+     "text": "Dann noch eine. / Und *r:plötzlich ist es zu spät."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "notification",
+     "at": "L3:schnell",
+     "volume": 0.35
+    },
+    {
+     "name": "error",
+     "at": "L4:plötzlich",
+     "volume": 0.3
+    }
+   ]
+  },
+  {
+   "id": "s03",
+   "tag": "",
+   "lines": [
+    {
+     "id": "L5",
+     "text": "Hochintelligente *r:hassen *r:Leerlauf. / Zehn Minuten warten / fühlt sich an wie *r:verschwendete *r:Zeit."
+    },
+    {
+     "id": "L6",
+     "text": "Also planen sie *y:auf *y:die *y:Sekunde genau. / *r:Ohne *r:Puffer."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "pop",
+     "at": "L6:Sekunde",
+     "volume": 0.35
+    }
+   ]
+  },
+  {
+   "id": "s04",
+   "tag": "",
+   "lines": [
+    {
+     "id": "L7",
+     "text": "Das Problem hat sogar einen Namen: / der *b:Planungsfehlschluss."
+    },
+    {
+     "id": "L8",
+     "text": "In einer Studie schätzten Studenten / *y:34|vierunddreißig *y:Tage für ihre Abschlussarbeit. / Gebraucht haben sie im Schnitt / *r:55|fünfundfünfzig *r:Tage."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "pop",
+     "at": "L8:34",
+     "volume": 0.35
+    },
+    {
+     "name": "impact-bass-2",
+     "at": "L8:55",
+     "volume": 0.45
+    }
+   ]
+  },
+  {
+   "id": "s05",
+   "tag": "",
+   "lines": [
+    {
+     "id": "L9",
+     "text": "Dazu kommt der *g:Flow. / Wer tief in Gedanken ist, / verliert *r:komplett *r:das *r:Zeitgefühl."
+    },
+    {
+     "id": "L10",
+     "text": "Eine Stunde fühlt sich an / wie *y:zehn *y:Minuten."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "whoosh-short",
+     "at": "L9:Flow",
+     "volume": 0.35
+    }
+   ]
+  },
+  {
+   "id": "s06",
+   "tag": "",
+   "lines": [
+    {
+     "id": "L11",
+     "text": "Forscher in San Diego fanden heraus: / Für manche Menschen ist eine Minute / erst nach *r:77|siebenundsiebzig *r:Sekunden vorbei."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "impact-bass-2",
+     "at": "L11:77",
+     "volume": 0.45
+    }
+   ]
+  },
+  {
+   "id": "s07",
+   "tag": "",
+   "lines": [
+    {
+     "id": "L12",
+     "text": "Und ihr Gehirn *b:simuliert ständig. / Im Kopf dauert der Weg / immer *g:zehn *g:Minuten."
+    },
+    {
+     "id": "L13",
+     "text": "In echt: / *r:fünfundzwanzig.",
+     "pause": 0.2
+    }
+   ],
+   "sfx": [
+    {
+     "name": "error",
+     "at": "L13:fünfundzwanzig",
+     "volume": 0.3
+    }
+   ]
+  },
+  {
+   "id": "s10",
+   "tag": "",
+   "lines": [
+    {
+     "id": "L13b",
+     "text": "Dazu *r:überschätzen sie sich. / Duschen? *b:Drei *b:Minuten. / Anziehen? *b:Eine *b:Minute."
+    },
+    {
+     "id": "L13c",
+     "text": "In Wahrheit: / *r:zwanzig *r:Minuten. / Zusammen."
+    },
+    {
+     "id": "L13d",
+     "text": "Deshalb kommen sie selten eine Stunde zu spät. / Sondern *y:fast *y:immer *y:genau *y:fünf *y:Minuten."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "error",
+     "at": "L13c:zwanzig",
+     "volume": 0.3
+    },
+    {
+     "name": "pop",
+     "at": "L13d:fünf",
+     "volume": 0.35
+    }
+   ]
+  },
+  {
+   "id": "s08",
+   "tag": "",
+   "lines": [
+    {
+     "id": "L14",
+     "text": "Aber ehrlich: / Zu spät kommen / macht dich *r:nicht intelligent."
+    },
+    {
+     "id": "L15",
+     "text": "Der Trick: / Plane *g:ein *g:Drittel *g:mehr Zeit ein. / Immer."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "pop",
+     "at": "L15:Drittel",
+     "volume": 0.35
+    }
+   ]
+  },
+  {
+   "id": "s09",
+   "tag": "",
+   "hold": 2.4,
+   "lines": [
+    {
+     "id": "L16",
+     "text": "Aber noch eine Frage: / Wenn du *y:hochintelligent bist, / warum *p:folgst *p:du *p:mir *p:noch *p:nicht?"
+    }
+   ],
+   "sfx": [
+    {
+     "name": "impact-bass-1",
+     "at": "L16:folgst",
+     "volume": 0.5
+    }
+   ]
+  }
+ ]
+}

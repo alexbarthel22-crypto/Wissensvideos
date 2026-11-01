@@ -1,0 +1,38 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .vig { position: absolute; left: 0; right: 0; top: 1040px; height: 880px; background: linear-gradient(rgba(10,12,30,0), rgba(10,12,30,.5) 45%, rgba(10,12,30,.55)); pointer-events: none; }
+    .lab { position: absolute; padding: 10px 24px; border-radius: 18px; background: rgba(20,10,50,.82); border: 3px solid #8ff4ff; color: #fff; font: 900 52px Inter, sans-serif; opacity: 0; box-shadow: 0 0 30px rgba(143,244,255,.4); white-space: nowrap; }
+    .lab.r { border-color: #ff6b8a; box-shadow: 0 0 30px rgba(255,107,138,.5); } .lab.g { border-color: #7dffb0; box-shadow: 0 0 30px rgba(125,255,176,.5); } .lab.y { border-color: #ffd84a; }
+  </style>
+  <div id="root" data-composition-id="s05" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s05-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <svg id="s05-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s05-l1" class="lab y" style="left:150px;top:1250px">1 STUNDE</div><div id="s05-l2" class="lab g" style="left:560px;top:1250px">= 10 MIN</div>
+      <div class="vig"></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s05-svg"), A = el("g", {}, sv), Bz = el("g", { opacity: 0 }, sv); room(A, "s05a", "#141048", "#3a2a9a"); defsG(sv);
+      const sw = []; for (let i = 0; i < 5; i++) sw.push(el("ellipse", { cx: 540, cy: 800, rx: 200 + i * 70, ry: 120 + i * 40, fill: "none", stroke: ["#8ff4ff", "#ff9ad6", "#7dffb0"][i % 3], "stroke-width": 5, opacity: 0.6 }, A));
+      el("rect", { x: 180, y: 1120, width: 720, height: 36, rx: 12, fill: "#3b2a8a" }, A); const P = person(A, 540, 1300, 2.0);
+      room(Bz, "s05b", "#1e1450", "#6a2f9a"); const K = aclock(Bz, 540, 820, 260);
+      const fl = at("L9", "Flow"), ze = at("L9", "Zeitgefühl"), l10 = line("L10")[0], mi = at("L10", "Minuten");
+      sw.forEach((e, i) => tl.fromTo(e, { rotation: 0, svgOrigin: "540 800" }, { rotation: i % 2 ? -360 : 360, svgOrigin: "540 800", duration: 6, ease: "none", immediateRender: false }, 0));
+      tl.fromTo(sw, { opacity: 0 }, { opacity: 0.7, duration: 0.4, stagger: 0.1 }, fl - 0.2);
+      tl.set(A, { opacity: 0 }, l10 - 0.1); tl.set(Bz, { opacity: 1 }, l10 - 0.1);
+      tl.fromTo(K.m, { rotation: 0, svgOrigin: "540 820" }, { rotation: 360, svgOrigin: "540 820", duration: 0.8, ease: "power1.inOut", immediateRender: false }, l10);
+      tl.fromTo("#s05-l1", { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(2.5)" }, l10 + 0.2);
+      tl.fromTo("#s05-l2", { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(2.5)" }, mi - 0.2);
+      tl.to("#s05-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s05"] = tl;
+    })();
+  </script>
+</template>
