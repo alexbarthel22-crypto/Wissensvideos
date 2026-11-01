@@ -44,6 +44,7 @@ CARD = '''    .cd { position: absolute; left: 140px; width: 800px; height: 130px
     .cd s { position: absolute; left: 60px; right: 60px; top: 62px; height: 10px; border-radius: 5px; background: #ff3b55; transform: scaleX(0); transform-origin: 0 50%; }
     .bdg { position: absolute; left: 190px; width: 700px; height: 92px; border-radius: 46px; background: rgba(12,40,30,.92); border: 4px solid #39e27a; color: #fff;
       font: 800 46px/84px Inter, sans-serif; text-align: center; opacity: 0; box-shadow: 0 0 34px rgba(57,226,122,.45); }
+    .bdg { height: 84px; font: 800 42px/76px Inter, sans-serif; }
     .bdg b { color: #39e27a; }'''
 
 S['s01'] = ('''    #s01-t { left: 0; width: 1080px; top: 210px; text-align: center; }
@@ -285,14 +286,14 @@ S['s06'] = ('''    #s06-board { left: 120px; top: 560px; width: 840px; height: 5
     .s06-j b { color: #1fa65a; }
     #s06-ok .t { margin-top: 220px; font: 900 84px/1.05 Inter, sans-serif; } #s06-ok .t b { color: #39e27a; }''',
 '''      <div id="s06-board" class="abs"><div class="h">MYTHEN-CHECK</div>
-        <div id="s06-r1" class="s06-r" style="top:110px">Superkräfte<i>✕</i></div><div id="s06-r2" class="s06-r" style="top:230px">Mehr Bart<i>✕</i></div><div id="s06-r3" class="s06-r" style="top:350px;border:0">Magische Aura<i>✕</i></div></div>
+        <div id="s06-r1" class="s06-r" style="top:110px">Mehr Bart<i>✕</i></div><div id="s06-r2" class="s06-r" style="top:230px">Mehr Aura<i>✕</i></div><div id="s06-r3" class="s06-r" style="top:350px;border:0">Sixpack<i>✕</i></div></div>
       <div id="s06-ok" class="abs"><svg width="160" height="160" viewBox="0 0 160 160" style="position:absolute;left:320px;top:40px"><circle cx="80" cy="80" r="76" fill="#39e27a"/><rect x="66" y="30" width="28" height="100" rx="6" fill="#fff"/><rect x="30" y="66" width="100" height="28" rx="6" fill="#fff"/></svg>
         <div class="t"><b>normal</b><br>und <b>gesund</b></div></div>
       <div id="s06-j1" class="s06-j" style="top:620px;transform:rotate(-3deg)"><b>✓</b> Jürgen würgen</div><div id="s06-j2" class="s06-j" style="top:800px;transform:rotate(2deg)"><b>✓</b> Bohne bohnern</div>''',
 '''      const st6 = document.querySelector("#s06-stage"), sv6 = el("svg", { class: "full", viewBox: "0 0 1080 1920" }); st6.insertBefore(sv6, st6.firstChild); sky(sv6, "s06g", "#16305e", "#0c1a3a");
       const w = (i) => at("L19", i), l20 = line("L20")[0], no = at("L20", "normal"), jw = at("L20", "Jürgen"), bb = at("L20", "Bohne");
       tl.fromTo("#s06-board", { opacity: 0, y: 80, rotation: -3 }, { opacity: 1, y: 0, rotation: -1, duration: 0.5, ease: "back.out(1.6)" }, 1.2);
-      [["#s06-r1", 0, 1], ["#s06-r2", 2, 4], ["#s06-r3", 5, 7]].forEach(([id, a, b]) => { tl.fromTo(id, { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.25 }, w(a) - 0.1);
+      [["#s06-r1", 0, 2], ["#s06-r2", 3, 5], ["#s06-r3", 6, 8]].forEach(([id, a, b]) => { tl.fromTo(id, { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.25 }, w(a) - 0.1);
         tl.fromTo(id + " i", { opacity: 0, scale: 2.2, rotation: -30 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.22, ease: "power3.out" }, w(b) - 0.05);
         tl.to("#s06-board", { x: 8, duration: 0.04, repeat: 3, yoyo: true }, w(b) + 0.1); });
       tl.to("#s06-board", { opacity: 0, y: -60, duration: 0.3 }, l20 - 0.3);
@@ -305,20 +306,22 @@ S['s07'] = (CARD + '''
     #s07-cal { left: 400px; top: 560px; width: 420px; height: 420px; border-radius: 32px; background: #fff; box-shadow: 0 0 80px rgba(57,226,122,.8); opacity: 0; text-align: center; overflow: hidden; }
     #s07-cal .h { height: 104px; background: #39b86b; color: #fff; font: 900 56px/104px Inter, sans-serif; letter-spacing: .12em; }
     #s07-cal .n { font: 900 240px/300px Inter, sans-serif; color: #22283f; }
+    #s07-al { left: 0; width: 1080px; top: 470px; text-align: center; font: 900 170px/1 Inter, sans-serif; color: #ffd43b; letter-spacing: .06em; text-shadow: 0 0 70px rgba(255,212,59,1), 0 8px 30px rgba(0,0,0,.6); opacity: 0; }
     #s07-dz { left: 0; width: 1080px; top: 470px; text-align: center; font: 900 150px/1 Inter, sans-serif; color: #ffd43b; text-shadow: 0 0 60px rgba(255,212,59,.8); opacity: 0; }''',
 SVG + '''
       <div id="s07-cal" class="abs"><div class="h">DEZEMBER</div><div class="n">1</div></div>
-      <div id="s07-b1" class="bdg" style="top:440px"><b>✓</b> Impulse im Griff</div><div id="s07-b2" class="bdg" style="top:550px"><b>✓</b> Sport &amp; früher schlafen</div><div id="s07-b3" class="bdg" style="top:660px"><b>✓</b> Weniger Handy</div>
-      <div id="s07-dz" class="abs">30 / 30</div>''',
+      <div id="s07-b1" class="bdg" style="top:420px"><b>✓</b> Impulse im Griff</div><div id="s07-b2" class="bdg" style="top:514px"><b>✓</b> Sport &amp; früher schlafen</div><div id="s07-b3" class="bdg" style="top:608px"><b>✓</b> Weniger Handy</div><div id="s07-b4" class="bdg" style="top:702px;left:130px;width:820px"><b>✓</b> Kein triebgesteuerter Kerl</div>
+      <div id="s07-dz" class="abs">30 / 30</div><div id="s07-al" class="abs">ALPHA</div>''',
 '''      const sv = document.querySelector("#s07-svg"), W = el("g", {}, sv);
       const R = bedroom(W, "s07g", { w1: "#3b2f75", w2: "#241b50" });
       const glow = el("circle", { cx: 560, cy: 880, r: 300, fill: "#39e27a", opacity: 0 }, W);
       gsap.set([R.poster, R.win], { opacity: 0.35 });
-      const F = finn(W, 560, 1130, 2.1);
+      const F = finn(W, 560, 1150, 1.75);
+      const crown = el("path", { d: "M-40 0 L-46 -44 L-20 -18 L0 -54 L20 -18 L46 -44 L40 0Z", fill: "#ffd43b", stroke: "#c9a020", "stroke-width": 4, opacity: 0 }, W); gsap.set(crown, { x: 560, y: 1150 - 200 * 1.75 - 6 });
       const cf = el("g", { "data-layout-allow-overlap": "" }, sv), rc = rng(12), conf = [];
       for (let i = 0; i < 70; i++) conf.push(el("rect", { x: 540, y: 700, width: 14, height: 22, rx: 3, fill: ["#ff4fb0", "#ffd43b", "#39e27a", "#4da3ff", "#fff"][i % 5], opacity: 0 }, cf));
       const spot = el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: "#000", opacity: 0 }, sv);
-      const de = at("L21", "Dezember"), ge = at("L21", "geschafft"), l22 = line("L22")[0], im = at("L23", "Impulse"), gw = at("L24", "Gewohnheiten"), wn = at("L24", "weniger"), l25 = line("L25")[0], dr = at("L26", "dreißig"), al = at("L26", "alles");
+      const de = at("L21", "Dezember"), ge = at("L21", "geschafft"), l22 = line("L22")[0], im = at("L23", "Impulse"), gw = at("L24", "Gewohnheiten"), wn = at("L24", "weniger"), kt = at("L24b", "kein"), aph = at("L26b", "Alpha"), l26b = line("L26b")[0], l25 = line("L25")[0], dr = at("L26", "dreißig"), al = at("L26", "alles");
       tl.fromTo("#s07-cal", { opacity: 0, rotationX: 90, y: -60 }, { opacity: 1, rotationX: 0, y: 0, duration: 0.5, ease: "back.out(1.6)" }, de - 0.2);
       armsUp(tl, F, ge - 0.05, 0.25, 160); tl.to(glow, { opacity: 0.3, duration: 0.3 }, ge);
       tl.to(F.mouth, { attr: { d: "M-9 -151 Q0 -140 9 -151" }, duration: 0.2 }, ge);
@@ -327,12 +330,17 @@ SVG + '''
         tl.fromTo(c, { opacity: 1, x: 0, y: 0, rotation: 0 }, { x: Math.cos(a) * d, y: Math.sin(a) * d * 0.7 + 380, rotation: rc() * 720, svgOrigin: "547 711", duration: 1.6, ease: "power2.out", immediateRender: false }, ge);
         tl.to(c, { opacity: 0, duration: 0.3 }, ge + 1.4); });
       tl.to("#s07-cal", { opacity: 0, scale: 0.6, duration: 0.3 }, l22 - 0.1); armsDown(tl, F, l22);
-      [["#s07-b1", im], ["#s07-b2", gw], ["#s07-b3", wn]].forEach(([id, t]) => tl.fromTo(id, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2)" }, t - 0.15));
-      tl.to(["#s07-b1", "#s07-b2", "#s07-b3"], { opacity: 0, y: -30, duration: 0.3 }, l25 - 0.3);
+      [["#s07-b1", im], ["#s07-b2", gw], ["#s07-b3", wn], ["#s07-b4", kt]].forEach(([id, t]) => tl.fromTo(id, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2)" }, t - 0.15));
+      tl.to(["#s07-b1", "#s07-b2", "#s07-b3", "#s07-b4"], { opacity: 0, y: -30, duration: 0.3 }, l25 - 0.3);
       tl.to(spot, { opacity: 0.55, duration: 0.6 }, l25); tl.to(glow, { opacity: 0, duration: 0.4 }, l25);
       tl.fromTo("#s07-dz", { opacity: 0, scale: 1.4 }, { opacity: 1, scale: 1, duration: 0.4, ease: "power3.out" }, dr - 0.1);
       armsUp(tl, F, al - 0.05, 0.25, 160); tl.to(glow, { opacity: 0.4, duration: 0.2 }, al); tl.to(spot, { opacity: 0.2, duration: 0.3 }, al);
-      tl.to("#s07-dz", { scale: 1.12, duration: 0.2, yoyo: true, repeat: 1 }, al);''' + OUT)
+      tl.to("#s07-dz", { scale: 1.12, duration: 0.2, yoyo: true, repeat: 1 }, al);
+      tl.to("#s07-dz", { opacity: 0, scale: 0.7, duration: 0.25 }, l26b - 0.1);
+      tl.fromTo("#s07-al", { opacity: 0, scale: 2.2 }, { opacity: 1, scale: 1, duration: 0.25, ease: "power4.in" }, aph - 0.2);
+      tl.to(sv, { x: 10, duration: 0.04, repeat: 7, yoyo: true }, aph + 0.05);
+      tl.fromTo(crown, { opacity: 0, y: "-=120" }, { opacity: 1, y: "+=120", duration: 0.35, ease: "bounce.out" }, aph - 0.1);
+      tl.to(glow, { opacity: 0.55, attr: { fill: "#ffd43b" }, duration: 0.3 }, aph);''' + OUT)
 
 S['s08'] = ('''    #s08-t { left: 0; width: 1080px; top: 440px; text-align: center; color: #fff; font: 900 120px/1 Inter, sans-serif; text-shadow: 0 0 40px rgba(255,79,176,.6); opacity: 0; }
     #s08-t small { display: block; margin-top: 20px; font: 800 44px Inter, sans-serif; color: #ff8fd0; letter-spacing: .2em; }

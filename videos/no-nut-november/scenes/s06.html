@@ -17,7 +17,7 @@
   <div id="root" data-composition-id="s06" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
     <div id="s06-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
       <div id="s06-board" class="abs"><div class="h">MYTHEN-CHECK</div>
-        <div id="s06-r1" class="s06-r" style="top:110px">Superkräfte<i>✕</i></div><div id="s06-r2" class="s06-r" style="top:230px">Mehr Bart<i>✕</i></div><div id="s06-r3" class="s06-r" style="top:350px;border:0">Magische Aura<i>✕</i></div></div>
+        <div id="s06-r1" class="s06-r" style="top:110px">Mehr Bart<i>✕</i></div><div id="s06-r2" class="s06-r" style="top:230px">Mehr Aura<i>✕</i></div><div id="s06-r3" class="s06-r" style="top:350px;border:0">Sixpack<i>✕</i></div></div>
       <div id="s06-ok" class="abs"><svg width="160" height="160" viewBox="0 0 160 160" style="position:absolute;left:320px;top:40px"><circle cx="80" cy="80" r="76" fill="#39e27a"/><rect x="66" y="30" width="28" height="100" rx="6" fill="#fff"/><rect x="30" y="66" width="100" height="28" rx="6" fill="#fff"/></svg>
         <div class="t"><b>normal</b><br>und <b>gesund</b></div></div>
       <div id="s06-j1" class="s06-j" style="top:620px;transform:rotate(-3deg)"><b>✓</b> Jürgen würgen</div><div id="s06-j2" class="s06-j" style="top:800px;transform:rotate(2deg)"><b>✓</b> Bohne bohnern</div>
@@ -32,7 +32,7 @@
       const st6 = document.querySelector("#s06-stage"), sv6 = el("svg", { class: "full", viewBox: "0 0 1080 1920" }); st6.insertBefore(sv6, st6.firstChild); sky(sv6, "s06g", "#16305e", "#0c1a3a");
       const w = (i) => at("L19", i), l20 = line("L20")[0], no = at("L20", "normal"), jw = at("L20", "Jürgen"), bb = at("L20", "Bohne");
       tl.fromTo("#s06-board", { opacity: 0, y: 80, rotation: -3 }, { opacity: 1, y: 0, rotation: -1, duration: 0.5, ease: "back.out(1.6)" }, 1.2);
-      [["#s06-r1", 0, 1], ["#s06-r2", 2, 4], ["#s06-r3", 5, 7]].forEach(([id, a, b]) => { tl.fromTo(id, { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.25 }, w(a) - 0.1);
+      [["#s06-r1", 0, 2], ["#s06-r2", 3, 5], ["#s06-r3", 6, 8]].forEach(([id, a, b]) => { tl.fromTo(id, { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.25 }, w(a) - 0.1);
         tl.fromTo(id + " i", { opacity: 0, scale: 2.2, rotation: -30 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.22, ease: "power3.out" }, w(b) - 0.05);
         tl.to("#s06-board", { x: 8, duration: 0.04, repeat: 3, yoyo: true }, w(b) + 0.1); });
       tl.to("#s06-board", { opacity: 0, y: -60, duration: 0.3 }, l20 - 0.3);

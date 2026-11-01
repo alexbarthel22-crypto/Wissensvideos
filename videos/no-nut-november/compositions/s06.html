@@ -31,10 +31,10 @@
     .s06-j b { color: #1fa65a; }
     #s06-ok .t { margin-top: 220px; font: 900 84px/1.05 Inter, sans-serif; } #s06-ok .t b { color: #39e27a; }
   </style>
-  <div id="root" data-composition-id="s06" data-start="0" data-duration="14.590" data-width="1080" data-height="1920">
-    <div id="s06-stage" class="clip stage" data-start="0" data-duration="14.590" data-track-index="0">
+  <div id="root" data-composition-id="s06" data-start="0" data-duration="13.720" data-width="1080" data-height="1920">
+    <div id="s06-stage" class="clip stage" data-start="0" data-duration="13.720" data-track-index="0">
       <div id="s06-board" class="abs"><div class="h">MYTHEN-CHECK</div>
-        <div id="s06-r1" class="s06-r" style="top:110px">Superkräfte<i>✕</i></div><div id="s06-r2" class="s06-r" style="top:230px">Mehr Bart<i>✕</i></div><div id="s06-r3" class="s06-r" style="top:350px;border:0">Magische Aura<i>✕</i></div></div>
+        <div id="s06-r1" class="s06-r" style="top:110px">Mehr Bart<i>✕</i></div><div id="s06-r2" class="s06-r" style="top:230px">Mehr Aura<i>✕</i></div><div id="s06-r3" class="s06-r" style="top:350px;border:0">Sixpack<i>✕</i></div></div>
       <div id="s06-ok" class="abs"><svg width="160" height="160" viewBox="0 0 160 160" style="position:absolute;left:320px;top:40px"><circle cx="80" cy="80" r="76" fill="#39e27a"/><rect x="66" y="30" width="28" height="100" rx="6" fill="#fff"/><rect x="30" y="66" width="100" height="28" rx="6" fill="#fff"/></svg>
         <div class="t"><b>normal</b><br>und <b>gesund</b></div></div>
       <div id="s06-j1" class="s06-j" style="top:620px;transform:rotate(-3deg)"><b>✓</b> Jürgen würgen</div><div id="s06-j2" class="s06-j" style="top:800px;transform:rotate(2deg)"><b>✓</b> Bohne bohnern</div>
@@ -44,7 +44,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 14.59, "L18": [0.2, 3.04], "L18.words": [["tag", 0.2, 0.383], ["einundzwanzig", 0.383, 1.12], ["zeit", 1.67, 1.846], ["für", 1.846, 2.016], ["einen", 2.016, 2.349], ["realitätscheck", 2.349, 3.04]], "L19": [3.26, 8.75], "L19.words": [["superkräfte", 3.26, 3.98], ["nein", 4.33, 4.67], ["mehr", 5.22, 5.42], ["bart", 5.42, 5.62], ["nein", 5.91, 6.29], ["magische", 6.84, 7.27], ["ausstrahlung", 7.27, 7.72], ["leider", 8.05, 8.391], ["auch", 8.391, 8.567], ["nicht", 8.567, 8.75]], "L20": [8.97, 14.41], "L20.words": [["und", 8.97, 9.165], ["ganz", 9.165, 9.366], ["wichtig", 9.366, 9.762], ["den", 9.762, 9.957], ["jürgen", 9.957, 10.346], ["würgen", 10.346, 10.735], ["oder", 10.735, 11.11], ["die", 11.11, 11.304], ["bohne", 11.304, 11.687], ["bohnern", 11.687, 12.083], ["ist", 12.083, 12.277], ["normal", 12.277, 12.666], ["und", 12.666, 12.861], ["gesund", 12.861, 13.25], ["das", 13.25, 13.444], ["sagen", 13.444, 13.826], ["auch", 13.826, 14.028], ["ärzte", 14.028, 14.41]]};
+      const C = {"__dur": 13.72, "L18": [0.2, 3.41], "L18.words": [["tag", 0.2, 0.426], ["einundzwanzig", 0.426, 1.34], ["zeit", 1.89, 2.085], ["für", 2.085, 2.273], ["einen", 2.273, 2.643], ["realitätscheck", 2.643, 3.41]], "L19": [3.63, 8.35], "L19.words": [["mehr", 3.63, 4.12], ["bart", 4.12, 4.61], ["nein", 5.16, 5.69], ["mehr", 5.92, 6.042], ["aura", 6.042, 6.27], ["nein", 6.82, 7.44], ["ein", 7.69, 7.817], ["sixpack", 7.817, 8.086], ["auch", 8.086, 8.218], ["nein", 8.218, 8.35]], "L20": [8.57, 13.54], "L20.words": [["und", 8.57, 8.748], ["ganz", 8.748, 8.932], ["wichtig", 8.932, 9.294], ["den", 9.294, 9.471], ["jürgen", 9.471, 9.827], ["würgen", 9.827, 10.182], ["oder", 10.182, 10.525], ["die", 10.525, 10.703], ["bohne", 10.703, 11.052], ["bohnern", 11.052, 11.414], ["ist", 11.414, 11.591], ["normal", 11.591, 11.947], ["und", 11.947, 12.125], ["gesund", 12.125, 12.48], ["das", 12.48, 12.658], ["sagen", 12.658, 13.007], ["auch", 13.007, 13.191], ["ärzte", 13.191, 13.54]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -197,7 +197,7 @@
       const st6 = document.querySelector("#s06-stage"), sv6 = el("svg", { class: "full", viewBox: "0 0 1080 1920" }); st6.insertBefore(sv6, st6.firstChild); sky(sv6, "s06g", "#16305e", "#0c1a3a");
       const w = (i) => at("L19", i), l20 = line("L20")[0], no = at("L20", "normal"), jw = at("L20", "Jürgen"), bb = at("L20", "Bohne");
       tl.fromTo("#s06-board", { opacity: 0, y: 80, rotation: -3 }, { opacity: 1, y: 0, rotation: -1, duration: 0.5, ease: "back.out(1.6)" }, 1.2);
-      [["#s06-r1", 0, 1], ["#s06-r2", 2, 4], ["#s06-r3", 5, 7]].forEach(([id, a, b]) => { tl.fromTo(id, { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.25 }, w(a) - 0.1);
+      [["#s06-r1", 0, 2], ["#s06-r2", 3, 5], ["#s06-r3", 6, 8]].forEach(([id, a, b]) => { tl.fromTo(id, { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.25 }, w(a) - 0.1);
         tl.fromTo(id + " i", { opacity: 0, scale: 2.2, rotation: -30 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.22, ease: "power3.out" }, w(b) - 0.05);
         tl.to("#s06-board", { x: 8, duration: 0.04, repeat: 3, yoyo: true }, w(b) + 0.1); });
       tl.to("#s06-board", { opacity: 0, y: -60, duration: 0.3 }, l20 - 0.3);

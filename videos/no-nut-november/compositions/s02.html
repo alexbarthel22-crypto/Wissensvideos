@@ -27,12 +27,13 @@
     .cd s { position: absolute; left: 60px; right: 60px; top: 62px; height: 10px; border-radius: 5px; background: #ff3b55; transform: scaleX(0); transform-origin: 0 50%; }
     .bdg { position: absolute; left: 190px; width: 700px; height: 92px; border-radius: 46px; background: rgba(12,40,30,.92); border: 4px solid #39e27a; color: #fff;
       font: 800 46px/84px Inter, sans-serif; text-align: center; opacity: 0; box-shadow: 0 0 34px rgba(57,226,122,.45); }
+    .bdg { height: 84px; font: 800 42px/76px Inter, sans-serif; }
     .bdg b { color: #39e27a; }
     #s02-big { left: 0; width: 1080px; top: 560px; text-align: center; font: 900 220px/1 Inter, sans-serif; color: #ffd43b; text-shadow: 0 0 60px rgba(255,212,59,.7); opacity: 0; }
     #s02-sub { left: 0; width: 1080px; top: 800px; text-align: center; font: 700 44px Inter, sans-serif; color: #fff; letter-spacing: .14em; opacity: 0; }
   </style>
-  <div id="root" data-composition-id="s02" data-start="0" data-duration="6.320" data-width="1080" data-height="1920">
-    <div id="s02-stage" class="clip stage" data-start="0" data-duration="6.320" data-track-index="0">
+  <div id="root" data-composition-id="s02" data-start="0" data-duration="5.940" data-width="1080" data-height="1920">
+    <div id="s02-stage" class="clip stage" data-start="0" data-duration="5.940" data-track-index="0">
       <svg id="s02-svg" class="full" viewBox="0 0 1080 1920"></svg>
       <div id="s02-c1" class="cd" style="top:540px">ALLEIN<s></s></div><div id="s02-c2" class="cd" style="top:710px">ZU ZWEIT<s></s></div><div id="s02-c3" class="cd" style="top:880px">GAR NICHT<s></s></div>
 
@@ -42,7 +43,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 6.32, "L4": [0.2, 3.64], "L4.words": [["die", 0.2, 0.356], ["regel", 0.356, 0.662], ["ist", 0.662, 0.818], ["simpel", 0.818, 1.13], ["einen", 1.68, 2.03], ["ganzen", 2.03, 2.386], ["monat", 2.386, 2.736], ["lang", 2.736, 2.921], ["kein", 2.921, 3.105], ["höhepunkt", 3.105, 3.64]], "L5": [3.86, 6.14], "L5.words": [["nicht", 3.86, 4.156], ["allein", 4.156, 4.709], ["nicht", 4.709, 5.005], ["zu", 5.005, 5.271], ["zweit", 5.271, 5.568], ["gar", 5.568, 5.844], ["nicht", 5.844, 6.14]]};
+      const C = {"__dur": 5.94, "L4": [0.2, 3.73], "L4.words": [["die", 0.2, 0.373], ["regel", 0.373, 0.712], ["ist", 0.712, 0.885], ["simpel", 0.885, 1.23], ["einen", 1.68, 2.017], ["ganzen", 2.017, 2.359], ["monat", 2.359, 2.696], ["lang", 2.696, 2.873], ["kein", 2.873, 3.051], ["dödeldonner", 3.051, 3.73]], "L5": [3.95, 5.76], "L5.words": [["nicht", 3.95, 4.185], ["allein", 4.185, 4.624], ["nicht", 4.624, 4.859], ["zu", 4.859, 5.07], ["zweit", 5.07, 5.306], ["gar", 5.306, 5.525], ["nicht", 5.525, 5.76]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];

@@ -12,12 +12,12 @@
    "lines": [
     {
      "id": "L1",
-     "text": "Mitternacht. / *r:Erster *r:November.",
+     "text": "Mitternacht. *r:Erster *r:November. / Der *p:No_Nut_November|Nou-Natt-November beginnt.",
      "speed": 0.95
     },
     {
      "id": "L2",
-     "text": "Für Finn, *y:18|achtzehn, / beginnt *r:jetzt der / *p:No_Nut_November|Nou-Natt-November.",
+     "text": "Finn, *y:18|achtzehn, / macht *g:mit.",
      "stat": [
       "FINN",
       "18 Jahre",
@@ -63,7 +63,7 @@
    "lines": [
     {
      "id": "L4",
-     "text": "Die Regel ist simpel: / einen *p:ganzen *p:Monat lang / *r:kein *r:Höhepunkt."
+     "text": "Die Regel ist simpel: / einen *p:ganzen *p:Monat lang / *r:kein *r:Dödel-Donner."
     },
     {
      "id": "L5",
@@ -191,7 +191,7 @@
    "lines": [
     {
      "id": "L9",
-     "text": "Tag sieben. / Jetzt wird's *b:wissenschaftlich."
+     "text": "Tag|Taak sieben. / Jetzt wird's *b:wissenschaftlich."
     },
     {
      "id": "L10",
@@ -336,7 +336,7 @@
     },
     {
      "id": "L19",
-     "text": "Superkräfte? *r:Nein. / Mehr Bart? *r:Nein. / Magische Ausstrahlung? / *r:Leider *r:auch *r:nicht."
+     "text": "Mehr Bart? *r:Nein. / Mehr Aura? *r:Nein. / Ein Sixpack|Sicks-päck? / *r:Auch *r:nein."
     },
     {
      "id": "L20",
@@ -351,12 +351,12 @@
     },
     {
      "name": "error",
-     "at": "L19:Magische-0.55",
+     "at": "L19:Aura+0.45",
      "volume": 0.3
     },
     {
      "name": "error",
-     "at": "L19:Leider",
+     "at": "L19:Auch",
      "volume": 0.3
     }
    ]
@@ -385,16 +385,16 @@
     },
     {
      "id": "L23",
-     "text": "Er weiß jetzt: / Er hat seine *g:Impulse *g:im *g:Griff."
+     "text": "Er weiß jetzt: / Er hat seine *g:Impulse *g:im *g:Griff.",
+     "stat": []
     },
     {
      "id": "L24",
-     "text": "Er hat *g:neue *g:Gewohnheiten: / Sport, früher schlafen, / *g:weniger *g:Handy.",
-     "stat": [
-      "NEUE GEWOHNHEITEN",
-      "3",
-      "SPORT · SCHLAF · HANDY"
-     ]
+     "text": "Er hat *g:neue *g:Gewohnheiten: / Sport, früher schlafen, / *g:weniger *g:Handy."
+    },
+    {
+     "id": "L24b",
+     "text": "Und er ist *g:kein *g:triebgesteuerter *g:Kerl."
     },
     {
      "id": "L25",
@@ -406,6 +406,11 @@
      "id": "L26",
      "text": "Es ging *r:nie um den November. / Wer *y:dreißig *y:Tage durchzieht, / zieht *g:alles durch.",
      "pause": 0.2,
+     "speed": 0.92
+    },
+    {
+     "id": "L26b",
+     "text": "Wer das schafft, / ist ein *y:Alpha.",
      "speed": 0.92
     }
    ],
@@ -429,6 +434,16 @@
      "name": "impact-bass-2",
      "at": "L26:alles",
      "volume": 0.5
+    },
+    {
+     "name": "pop",
+     "at": "L24b:kein",
+     "volume": 0.35
+    },
+    {
+     "name": "impact-bass-1",
+     "at": "L26b:Alpha",
+     "volume": 0.55
     }
    ]
   },
