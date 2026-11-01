@@ -1,7 +1,7 @@
 # Beschreibung – Was wäre, wenn der No Nut November ein ganzes Jahr dauert?
 
 ## Hauptversion (empfohlen)
-Achtung, Durchsage: Der No Nut November wurde VERLÄNGERT 📢 Georg, 18: 365 Tage kein Kronjuwelen-Katapult – Snapchat gelöscht, Strand bei 34 Grad, Festival-Security fragt nach dem Klo 😳 … und am Ende bebt die Erde. Wortwörtlich 🌋 Würdest du ein Jahr aushalten? Wenn nicht: wie lange? 👇
+Achtung, Durchsage: Der No Nut November wurde VERLÄNGERT 📢 Georg, 18: 365 Tage kein Kronjuwelen-Katapult – Snapchat gelöscht, Strand bei 34 Grad, Festival-Security fragt nach dem Klo 😳 … und am Ende bebt die Erde. Wortwörtlich 🌋 Würdest du ein Jahr aushalten? Wenn nicht: wie lange? 👇 Folg mir, wenn du bisher standhaft geblieben bist 💪
 #nonutnovember #nnn #waswärewenn #storytime #fyp
 
 ## Alternative 1 (Erdbeben-Hook)
@@ -25,10 +25,15 @@ Ehrliche Umfrage 👀 Würdest du 1 JAHR aushalten? ✅ JA, 365 TAGE oder ❌ NE
 - „Stärke 9,0 war noch untertrieben 🌋“
 
 ## Posting-Tipps
-- Jetzt im November posten, ideal 17–20 Uhr; als Serie mit Finn und „Alle Männer“ gegenseitig verlinken.
+- Heute Abend posten (1.11., Tag 1 des echten NNN), ideal 18:30–20:00 Uhr – dann scrollen die meisten Jugendlichen; als Serie mit Finn und „Alle Männer“ gegenseitig verlinken.
 - Cover: `renders/cover.jpg` (ACHTUNG, DURCHSAGE + rot leuchtendes VERLÄNGERT; Text liegt unterhalb der TikTok-Suchleiste).
 - Trend-Sound leise darunter (10–20 %); Bahnhofs-Gong ist schon drin.
 - Umfrage-Kommentar sofort anpinnen; Antworten mit Tagesangaben liken.
 
 ---
 Humorvolles Gedankenexperiment. Fakt: Selbstbefriedigung gilt medizinisch als normal und gesund.
+
+## Extra-Tipps für heute Abend
+- In der ersten Stunde jeden Kommentar mit Tagesangabe beantworten (z. B. „Tag 1 von 365? Respekt 😤“) – das pusht die Reichweite.
+- 2–3 Std. nach dem Posten eine Story/einen Kommentar „Wer ist noch standhaft? 🙋‍♂️“ nachschieben.
+- Untertitel in TikTok aus lassen (sind schon im Video), damit nichts doppelt ist.
