@@ -35,6 +35,12 @@ const name = path.basename(storyPath, '.json');
       glow(640, 900, 120, 'rgba(210,230,255,A)', 0.9); glow(640, 900, 20, 'rgba(255,255,255,A)', 1);
       c.restore();
     }
+    if (els.has('stoneTrees')) [[70, 1250, 820, 1], [230, 1250, 620, 2], [870, 1250, 700, 3], [1020, 1250, 560, 4]].forEach(([x, b, h, sd]) => stoneTree(x, b, h, sd, '#0c0e1a'));
+    if (els.has('whaleBones')) whaleBones(800, 1240, 0.9, '#2a3048');
+    if (els.has('heart')) {
+      c.save(); c.globalCompositeOperation = 'lighter'; glow(540, 880, 520, 'rgba(120,160,255,A)', 0.55); c.restore();
+      heart(540, 880, 46, t, { pulse: 0.6 });
+    }
     if (els.has('cloudSea')) cloudSea(t, 1180, 0.9);
     if (els.has('pendant')) pendant(250, 1090, 95, t, { angle: -0.9 });
     if (els.has('ramen')) {

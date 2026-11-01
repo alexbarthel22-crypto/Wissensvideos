@@ -23,7 +23,7 @@ import numpy as np
 SR = 48000
 API = "https://texttospeech.googleapis.com/v1/text:synthesize"
 GEMINI_API = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
-GEMINI_MODEL = os.environ.get("GEMINI_TTS_MODEL", "gemini-2.5-pro-preview-tts")
+GEMINI_MODEL = os.environ.get("GEMINI_TTS_MODEL", "gemini-2.5-flash-preview-tts")
 FALLBACK = os.environ.get("GEMINI_TTS_FALLBACK")
 ENGINE = "gemini" if os.environ.get("GEMINI_API_KEY") else "chirp"
 

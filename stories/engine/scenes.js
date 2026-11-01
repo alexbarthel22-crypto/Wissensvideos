@@ -1252,6 +1252,7 @@ const SCENES = {
   },
 
   intro(t) {
+    if (!SC.kalt) return this._intro(t);  // episodes without a cold open start straight with the title
     const xf = smooth(SC.intro.start, SC.intro.start + 1.8, t);
     crossfade(xf, () => { ctx.save(); this.kalt(t); ctx.restore(); }, () => this._intro(t));
   },
@@ -1771,6 +1772,18 @@ const SCENES = {
     const ex = lerp(-120, 300, walk);
     figure(ex, 1640, 470, { hair: true, t, wind: 2, rim: `rgba(170,205,255,${0.8 + voice * 0.2})`, rimBlur: 36, arm: lerp(0.9, 0.2, smooth(lineOf('ruinen', 8).start, lineOf('ruinen', 8).end, t)) });
     ctx.fillStyle = '#020306'; ctx.fillRect(-200, 1640, W + 400, 500);
+    // Lunara rides on Neraya's shoulder, sneaks over to nibble the glowing heart, gets caught and flies back
+    if (lineOf('ruinen', 9) !== NOLINE) {
+      const L = i => lineOf('ruinen', i);
+      const sx = ex + 30, sy = 1640 - 392 + 3 * Math.sin(t * 2);
+      const go = smooth(L(8).end - 1.4, L(8).end - 0.2, t), back = smooth(L(10).start - 0.1, L(10).start + 0.9, t);
+      const nx = hx - 46 + 4 * Math.sin(t * 9), ny = hy + 6;
+      let mx = lerp(sx, nx, go), my = lerp(sy, ny, go) - 90 * Math.sin(Math.PI * go) * (1 - back);
+      mx = lerp(mx, sx, back); my = lerp(my, sy, back) - 70 * Math.sin(Math.PI * back);
+      const nibbling = go > 0.95 && back < 0.05, caught = t > L(9).start && back < 0.5;
+      moonMouse(mx, my, lerp(17, 22, go * (1 - back)), t, { dir: go > 0.5 && back < 0.5 ? 1 : 1, mood: caught ? 'scared' : nibbling ? 'chew' : 'happy', fly: go > 0.02 && go < 0.98 || back > 0.02 && back < 0.98, crumb: nibbling, seed: 0.8, a: smooth(L(3).start + 1.5, L(3).start + 2.5, t) });
+      if (nibbling) { ctx.save(); ctx.globalCompositeOperation = 'lighter'; for (let k = 0; k < 3; k++) glow(nx + 22 + 6 * Math.sin(t * 13 + k), ny - 6 + 5 * k, 6, 'rgba(200,225,255,A)', 0.8); ctx.restore(); }
+    }
   },
 
   glocken(t) {

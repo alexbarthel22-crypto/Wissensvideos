@@ -49,12 +49,12 @@
    "persona": "Seraphine spricht feierlich zu einer Menschenmenge in einem gewaltigen Tempel."
   },
   "STERN": {
-   "name": "de-DE-Chirp3-HD-Achernar",
-   "gemini": "Achernar",
+   "name": "de-DE-Chirp3-HD-Algieba",
+   "gemini": "Algieba",
    "label": "Der Stern",
    "rate": 0.92,
    "fx": "stern",
-   "persona": "Ein uraltes Wesen aus Licht, sanft, verführerisch."
+   "persona": "Ein uraltes Wesen aus Licht mit der Stimme eines jungen Mannes: warm, charmant, verspielt, ein bisschen geheimnisvoll. Normale Sprechstimme, nicht flüstern."
   },
   "STERN_DUNKEL": {
    "name": "de-DE-Chirp3-HD-Charon",
@@ -77,7 +77,7 @@
  "scenes": [
   {
    "id": "intro",
-   "pre": 17.0,
+   "pre": 5.0,
    "post": 0,
    "lines": []
   },
@@ -88,8 +88,8 @@
    "lines": [
     {
      "who": "ICH",
-     "text": "Letztes Mal fiel ein Stern vom Himmel. Aber bevor ich erzähle, was dann geschah … musst du Kael kennen. Meinen großen Bruder.",
-     "style": "schnell zusammenfassend, dann warm und verletzt, normale Sprechstimme, nicht flüstern"
+     "text": "Letztes Mal fiel ein Stern vom Himmel. Direkt in die verbotenen Ruinen. Aber bevor ich dir erzähle, was ich dort fand … musst du Kael kennen. Meinen großen Bruder.",
+     "style": "schnell und spannend zusammenfassend, dann warm und ein bisschen verletzt, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "ICH",
@@ -155,7 +155,7 @@
      "who": "STERN",
      "text": "Neraja.",
      "pre": 1.4,
-     "style": "ruhig, lockend, normale Sprechstimme, nicht flüstern",
+     "style": "sanft, warm, lockend, wie ein Lächeln, normale Sprechstimme, nicht flüstern",
      "display": "Neraya."
     },
     {
@@ -168,7 +168,7 @@
      "who": "STERN",
      "text": "Du hast lange gebraucht. Zwölf Jahre, um genau zu sein.",
      "pre": 0.6,
-     "style": "sanft, amüsiert, normale Sprechstimme, nicht flüstern"
+     "style": "amüsiert, charmant, ein bisschen neckend, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "LUNARA",
@@ -180,9 +180,25 @@
      "who": "STERN",
      "text": "Deine Mutter hat ihn mir verraten. Kurz bevor sie mich an den Himmel gekettet hat.",
      "pre": 0.7,
-     "style": "sanft, mit verborgener Bitterkeit, normale Sprechstimme, nicht flüstern"
+     "style": "sanft, vertraut, mit verborgener Bitterkeit, normale Sprechstimme, nicht flüstern"
+    },
+    {
+     "who": "STERN",
+     "text": "Und sag deiner Maus bitte, dass ich kein Snack bin.",
+     "pre": 0.6,
+     "style": "belustigt, charmant, mit einem Lachen in der Stimme, normale Sprechstimme, nicht flüstern"
+    },
+    {
+     "who": "LUNARA",
+     "text": "Sie hält dich für Mondstaub. Fühl dich geehrt.",
+     "pre": 0.4,
+     "style": "trocken sarkastisch, verlegen grinsend, normale Sprechstimme, nicht flüstern"
     }
-   ]
+   ],
+   "cues": {
+    "naschen": "L8+1.0",
+    "ertappt": "L9+0.2"
+   }
   },
   {
    "id": "bund",
@@ -201,7 +217,7 @@
      "who": "STERN",
      "text": "Jetzt gehören wir zusammen. Für immer.",
      "pre": 2.6,
-     "style": "zufrieden, hallend, normale Sprechstimme, nicht flüstern"
+     "style": "zärtlich, zufrieden, mit einem Hauch Triumph, normale Sprechstimme, nicht flüstern"
     }
    ]
   },
@@ -267,7 +283,7 @@
   {
    "id": "outro",
    "pre": 2.2,
-   "post": 10.0,
+   "post": 9.0,
    "lines": [
     {
      "who": "LUNARA",
@@ -278,7 +294,16 @@
    ]
   }
  ],
- "tempo": 1.2,
+ "tempo": 1.1,
  "naechste_folge": "Folge 3",
- "naechste_titel": "Das Versprechen"
+ "naechste_titel": "Das Versprechen",
+ "thumbnail": {
+  "elements": [
+   "stoneTrees",
+   "whaleBones",
+   "heart",
+   "pendant",
+   "lunara"
+  ]
+ }
 }

@@ -36,7 +36,7 @@ Neraya muss durch ganz Valdoria reisen – bis hinunter unter die Wolken –, um
 | **Ramen-Bo** | – | Brummiger, gutmütiger Ramen-Koch in den Tiefen Ästen. Lunara klaut ihm ständig Nudeln. |
 | **Kael** | 21 | Nerayas Bruder, Hauptmann der Flammenwache. Verschwindet in Folge 3 und kehrt in Folge 17 zurück. |
 | **Seraphine** | – | Hohepriesterin des Ordens, einst die beste Freundin der Mutter. Antagonistin mit eigenem tragischem Grund. |
-| **Der Stern / Elian** | – (wirkt 18) | Uraltes Lichtwesen. Kennt Nerayas Namen. Ab Folge 5 in Menschengestalt als **Elian**: charmant, versteht sie als Einziger, verspricht, ihre Mutter zu finden. Nerayas erste Liebe, benutzt sie aber, um ganz frei zu kommen. Wird in Folge 14 entlarvt. Die Romanze bleibt zart. |
+| **Der Stern / Elian** | – (wirkt 18, Stimme: junger Mann, Gemini „Algieba“) | Uraltes Lichtwesen. Kennt Nerayas Namen. Ab Folge 5 in Menschengestalt als **Elian**: charmant, versteht sie als Einziger, verspricht, ihre Mutter zu finden. Nerayas erste Liebe, benutzt sie aber, um ganz frei zu kommen. Wird in Folge 14 entlarvt. Die Romanze bleibt zart. |
 | **Die Mutter** | – | Ein Sternwesen in Menschengestalt, hat sich selbst eingesperrt, um den Stern aufzuhalten. |
 | **Hauptmann Varn** | – | Jorens und Tarens gemeinsamer Vater. Hat Nerayas Mutter vor zwölf Jahren an den Orden verraten. Wird erst in Folge 18 enthüllt. |
 
