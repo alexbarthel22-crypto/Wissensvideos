@@ -198,8 +198,20 @@ OW_COLORS = {"y": "#ffd84a", "r": "#ff6b6b", "g": "#7dffb0", "b": "#7fd8ff", "p"
 def build_captions_oneword(project, timings, total):
     """Stil wie Referenz C: immer nur EIN Wort, groß in der Bildmitte, außerhalb der TikTok-Bedienelemente
     (oben Suche, rechts Like-Leiste, unten Kommentar-Leiste)."""
-    ws = [w for l in timings["lines"] for w in l["words"]]
+    full = set(json.loads((project / "script.json").read_text()).get("fullcap", []))
     rows, js = [], []
+    for li, l in enumerate(timings["lines"]):  # Hook-Satz steht ab Frame 0 komplett da, gesprochenes Wort blinkt groß auf
+        if l["id"] not in full:
+            continue
+        lw = l["words"]; t0 = 0.0 if li == 0 else lw[0]["start"] - 0.05; t1 = lw[-1]["end"] + 0.15
+        spans = " ".join(f'<span id="fw{li}-{k}" class="fw" style="color:{OW_COLORS.get(w["color"], "#eaff8f")}">{esc(w["display"].upper())}</span>' for k, w in enumerate(lw))
+        rows.append(f'    <div id="fc{li}" class="clip owg fcg" data-start="{t0:.3f}" data-duration="{t1 - t0:.3f}" data-track-index="2"><div class="fci">{spans}</div></div>')
+        for k, w in enumerate(lw):
+            nxt = lw[k + 1]["start"] if k + 1 < len(lw) else t1
+            sc = round(min(1.32, 1000 / max(1, len(w["display"]) * 0.66 * 88)), 2)
+            js.append(f'tl.fromTo("#fw{li}-{k}", {{ scale: 1 }}, {{ scale: {sc}, duration: 0.1, ease: "back.out(3)", immediateRender: false }}, {w["start"] - 0.03:.3f});')
+            js.append(f'tl.to("#fw{li}-{k}", {{ scale: 1, duration: 0.1 }}, {nxt - 0.05:.3f});')
+    ws = [w for l in timings["lines"] if l["id"] not in full for w in l["words"]]
     for i, w in enumerate(ws):
         t0 = max(0.05, w["start"] - 0.03)
         t1 = ws[i + 1]["start"] - 0.03 if i + 1 < len(ws) else total - 0.05
@@ -215,6 +227,10 @@ def build_captions_oneword(project, timings, total):
   <style>
     #root {{ position: absolute; inset: 0; }}
     .owg {{ position: absolute; left: 0; width: 100%; top: 1060px; height: 200px; }}
+    .fcg {{ top: 930px; }}
+    .fci {{ position: absolute; left: 70px; width: 810px; top: 0; text-align: center; font-family: "Inter", sans-serif; font-weight: 900; font-size: 88px; line-height: 1.12;
+      text-shadow: 3px 3px 0 #1a0d33, -3px -3px 0 #1a0d33, 3px -3px 0 #1a0d33, -3px 3px 0 #1a0d33, 0 5px 0 #1a0d33, 0 10px 24px rgba(0,0,0,.6); }}
+    .fw {{ display: inline-block; transform-origin: 50% 60%; margin: 0 6px; }}
     .ow {{ position: absolute; left: 90px; width: 790px; top: 0; text-align: center; font-family: "Inter", sans-serif; font-weight: 900; line-height: 1;
       letter-spacing: .01em; transform-origin: 50% 50%;
       text-shadow: 0 0 2px #1a0d33, 3px 3px 0 #1a0d33, -3px -3px 0 #1a0d33, 3px -3px 0 #1a0d33, -3px 3px 0 #1a0d33, 0 4px 0 #1a0d33, 0 10px 24px rgba(0,0,0,.6); }}

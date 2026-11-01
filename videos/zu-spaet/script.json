@@ -17,7 +17,7 @@
     },
     {
      "id": "L2",
-     "text": "Die Antwort ist *r:nicht *r:Faulheit. / Es ist ihr *b:Gehirn.",
+     "text": "Die Antwort ist *r:nicht *r:Faulheit. / Es ist *b:dein *b:Gehirn.",
      "pause": 0.15
     }
    ],
@@ -45,11 +45,11 @@
    "lines": [
     {
      "id": "L3",
-     "text": "Es passiert jeden Tag: / Sie schauen auf die Uhr, / denken: *g:Ich *g:hab *g:noch *g:Zeit. / Und machen *y:noch *y:schnell eine Sache."
+     "text": "Kennst du das? / Du schaust auf die Uhr, / denkst: *g:Ich *g:hab *g:noch *g:Zeit. / Und machst *y:noch *y:schnell eine Sache."
     },
     {
      "id": "L4",
-     "text": "Dann noch eine. / Und *r:plötzlich ist es zu spät."
+     "text": "Dann noch eine. / Und *r:plötzlich bist du zu spät."
     }
    ],
    "sfx": [
@@ -71,11 +71,11 @@
    "lines": [
     {
      "id": "L5",
-     "text": "Hochintelligente *r:hassen *r:Leerlauf. / Zehn Minuten warten / fühlt sich an wie *r:verschwendete *r:Zeit."
+     "text": "Du *r:hasst *r:Leerlauf. / Zehn Minuten warten / fühlen sich an wie *r:verschwendete *r:Zeit."
     },
     {
      "id": "L6",
-     "text": "Also planen sie *y:auf *y:die *y:Sekunde genau. / *r:Ohne *r:Puffer."
+     "text": "Also planst du *y:auf *y:die *y:Sekunde genau. / *r:Ohne *r:Puffer."
     }
    ],
    "sfx": [
@@ -118,7 +118,7 @@
    "lines": [
     {
      "id": "L9",
-     "text": "Dazu kommt der *g:Flow. / Wer tief in Gedanken ist, / verliert *r:komplett *r:das *r:Zeitgefühl."
+     "text": "Dazu kommt der *g:Flow. / Wenn du tief in Gedanken bist, / verlierst du *r:komplett *r:das *r:Zeitgefühl."
     },
     {
      "id": "L10",
@@ -156,7 +156,7 @@
    "lines": [
     {
      "id": "L12",
-     "text": "Und ihr Gehirn *b:simuliert ständig. / Im Kopf dauert der Weg / immer *g:zehn *g:Minuten."
+     "text": "Und dein Gehirn *b:simuliert ständig. / In deinem Kopf dauert der Weg / immer *g:zehn *g:Minuten."
     },
     {
      "id": "L13",
@@ -178,7 +178,7 @@
    "lines": [
     {
      "id": "L13b",
-     "text": "Dazu *r:überschätzen sie sich. / Duschen? *b:Drei *b:Minuten. / Anziehen? *b:Eine *b:Minute."
+     "text": "Dazu *r:überschätzt du dich. / Duschen? *b:Drei *b:Minuten. / Anziehen? *b:Eine *b:Minute."
     },
     {
      "id": "L13c",
@@ -186,7 +186,7 @@
     },
     {
      "id": "L13d",
-     "text": "Deshalb kommen sie selten eine Stunde zu spät. / Sondern *y:fast *y:immer *y:genau *y:fünf *y:Minuten."
+     "text": "Deshalb kommst du selten eine Stunde zu spät. / Sondern *y:fast *y:immer *y:genau *y:fünf *y:Minuten."
     }
    ],
    "sfx": [
@@ -244,5 +244,8 @@
  ],
  "gemini_model": "gemini-3.8-flash-tts",
  "gemini_voice": "Puck",
- "gemini_style": "[packend, emotional, spannend, lebendig, zügig]"
+ "gemini_style": "[packend, emotional, spannend, lebendig, zügig]",
+ "fullcap": [
+  "L1"
+ ]
 }
