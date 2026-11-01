@@ -1,0 +1,44 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .vig { position: absolute; left: 0; right: 0; top: 1040px; height: 880px; background: linear-gradient(rgba(10,12,30,0), rgba(10,12,30,.5) 45%, rgba(10,12,30,.55)); pointer-events: none; }
+    .chip { position: absolute; padding: 12px 26px; border-radius: 22px; background: rgba(255,255,255,.96); color: #22283f; font: 900 52px Inter, sans-serif; opacity: 0; box-shadow: 0 16px 40px rgba(0,0,0,.4); white-space: nowrap; }
+    .chip b { color: #e0484f; } .chip i { font-style: normal; color: #1fa65a; }
+    #s06-h { left: 0; width: 1080px; top: 470px; text-align: center; font: 900 96px Inter, sans-serif; color: #fff; opacity: 0; text-shadow: 0 0 40px rgba(255,79,176,.9); }
+  </style>
+  <div id="root" data-composition-id="s06" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s06-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <svg id="s06-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s06-h" class="abs">72 STUNDEN</div>
+      <div id="s06-rb" class="chip" style="left:560px;top:600px"><b>ROBOTER?</b></div>
+      <div class="vig"></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s06-svg"); sky(sv, "s06g", "#12082a", "#05030f");
+      const beams = [0, 1, 2, 3, 4].map((k) => el("path", { d: `M${140 + k * 200} 380 L${40 + k * 200} 1140 L${240 + k * 200} 1140Z`, fill: ["#ff4fb0", "#4da3ff", "#39e27a", "#ffd43b", "#a06bff"][k], opacity: 0.18 }, sv));
+      el("rect", { x: 0, y: 1120, width: 1080, height: 800, fill: "#120a24" }, sv);
+      const crowd = []; for (let i = 0; i < 16; i++) crowd.push(tiny(sv, 40 + i * 68, 1180 + (i % 2) * 20, "#2a1f4f", 1.8));
+      const G = finn(sv, 400, 1150, 2.3, { hood: "#e8a83a", arm: "#c98c22", hair: "#e0b050", glasses: true, label: "G" });
+      const Sec = finn(sv, 820, 1150, 2.8, { hood: "#111", arm: "#000", hair: "#222", label: "SECURITY" });
+      const dr = at("L15", "drei"), l16 = line("L16")[0], ro = at("L16", "Roboter");
+      beams.forEach((b, i) => tl.to(b, { opacity: 0.4, duration: 0.25, yoyo: true, repeat: Math.floor(C.__dur / 0.5), ease: "none" }, i * 0.1));
+      crowd.forEach((c, i) => tl.to(c, { y: -14, duration: 0.25, yoyo: true, repeat: Math.floor(C.__dur / 0.5) }, (i % 3) * 0.08));
+      const n = Math.floor((ro - 0.6) / 0.5); for (let k = 0; k < n; k++) { const t = 0.6 + k * 0.5; armsUp(tl, G, t, 0.2, k % 2 ? 160 : 90); tl.to(G.g, { y: 1130, duration: 0.2, yoyo: true, repeat: 1 }, t); }
+      tl.fromTo("#s06-h", { opacity: 0, scale: 1.5 }, { opacity: 1, scale: 1, duration: 0.3 }, dr - 0.1);
+      tl.to("#s06-h", { opacity: 0, duration: 0.2 }, l16 - 0.2);
+      tl.to(Sec.head, { rotation: 12, svgOrigin: "0 -150", duration: 0.3 }, ro - 0.4);
+      tl.fromTo("#s06-rb", { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(3)" }, ro - 0.1);
+      for (let k = 0; k < 6; k++) tl.to(G.aL, { rotation: k % 2 ? 90 : 0, svgOrigin: "-37 -126", duration: 0.05 }, ro + k * 0.2);
+      tl.to("#s06-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s06"] = tl;
+    })();
+  </script>
+</template>

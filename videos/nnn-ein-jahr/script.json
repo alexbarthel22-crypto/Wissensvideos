@@ -1,0 +1,359 @@
+{
+ "title": "Was wäre, wenn der No Nut November ein ganzes Jahr dauert?",
+ "voice": "Google Chirp 3 HD (de-DE-Chirp3-HD-Puck), --speed 1.16",
+ "style": "cinema",
+ "lead_in": 1.1,
+ "nocap": [],
+ "_zahlen": "Humorvolles Gedankenexperiment; einziger Fakt: Selbstbefriedigung gilt medizinisch als normal und gesund.",
+ "pronunciations": {
+  "No Nut November": "noʊ nat noˈvɛmbɐ"
+ },
+ "scenes": [
+  {
+   "id": "s01",
+   "tag": "",
+   "lines": [
+    {
+     "id": "L1",
+     "text": "Achtung, Durchsage: / Der *p:No_Nut_November / wurde *r:verlängert.",
+     "speed": 0.95
+    },
+    {
+     "id": "L2",
+     "text": "Auf ein *r:ganzes *r:Jahr. / *r:365|Dreihundertfünfundsechzig *r:Tage / kein *p:Kronjuwelen-Katapult|Kronjuwelen_Katapult.",
+     "pause": 0.15
+    },
+    {
+     "id": "L3",
+     "text": "Georg, *y:18|achtzehn, / zieht das durch.",
+     "stat": [
+      "GEORG",
+      "18 Jahre",
+      "CHALLENGE: 365 TAGE"
+     ]
+    },
+    {
+     "id": "L3b",
+     "text": "Und im *y:Oktober / passiert etwas, / das *r:niemand erwartet.",
+     "stat": []
+    }
+   ],
+   "sfx": [
+    {
+     "name": "gong",
+     "at": "s01+0.0",
+     "volume": 0.85
+    },
+    {
+     "name": "impact-bass-1",
+     "at": "L1:verlängert",
+     "volume": 0.7
+    },
+    {
+     "name": "impact-bass-1",
+     "at": "L2:365",
+     "volume": 0.6
+    },
+    {
+     "name": "pop",
+     "at": "L3:18",
+     "volume": 0.35
+    },
+    {
+     "name": "glitch-1",
+     "at": "L3b:niemand",
+     "volume": 0.2
+    }
+   ]
+  },
+  {
+   "id": "s02",
+   "tag": "",
+   "jump": [
+    "DEZEMBER",
+    "TAG 35"
+   ],
+   "lines": [
+    {
+     "id": "L4",
+     "text": "Dezember. / Weihnachtsmarkt mit der Familie."
+    },
+    {
+     "id": "L5",
+     "text": "Die Tante drückt ihm / eine *y:Bratwurst in die Hand. / Georg *r:schwitzt."
+    },
+    {
+     "id": "L6",
+     "text": "Denn die *p:Wurst *p:pellen / ist bis zum *r:nächsten *r:November / *r:verboten."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "pop",
+     "at": "L5:Bratwurst",
+     "volume": 0.4
+    },
+    {
+     "name": "error",
+     "at": "L6:verboten",
+     "volume": 0.3
+    }
+   ]
+  },
+  {
+   "id": "s03",
+   "tag": "",
+   "jump": [
+    "FEBRUAR",
+    "VALENTINSTAG"
+   ],
+   "lines": [
+    {
+     "id": "L7",
+     "text": "Februar. Valentinstag. / *p:Überall *p:Pärchen."
+    },
+    {
+     "id": "L8",
+     "text": "Georg bestellt sich / einen *b:Eistee. / *b:Eiskalt. / Zur Sicherheit."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "pop",
+     "at": "L7:Pärchen",
+     "volume": 0.35
+    },
+    {
+     "name": "glitch-1",
+     "at": "L8:Eiskalt",
+     "volume": 0.2
+    }
+   ]
+  },
+  {
+   "id": "s04",
+   "tag": "",
+   "jump": [
+    "MAI",
+    "ABI-PRÜFUNG"
+   ],
+   "lines": [
+    {
+     "id": "L9",
+     "text": "Mai. Abiprüfungen. / Ohne Ablenkung lernt Georg / wie eine *g:Maschine."
+    },
+    {
+     "id": "L10",
+     "text": "Abi-Schnitt: *g:1,3|eins_komma_drei.",
+     "pause": 0.2
+    },
+    {
+     "id": "L11",
+     "text": "Seine Eltern lassen ihn / *r:auf *r:Drogen *r:testen.",
+     "stat": []
+    }
+   ],
+   "sfx": [
+    {
+     "name": "impact-bass-2",
+     "at": "L10:1,3",
+     "volume": 0.5
+    },
+    {
+     "name": "error",
+     "at": "L11:Drogen",
+     "volume": 0.3
+    }
+   ]
+  },
+  {
+   "id": "s05",
+   "tag": "",
+   "jump": [
+    "JULI",
+    "34 GRAD"
+   ],
+   "lines": [
+    {
+     "id": "L12",
+     "text": "Juli. Freibad. / *r:Vierunddreißig *r:Grad. / Überall Sonnencreme und Haut."
+    },
+    {
+     "id": "L13",
+     "text": "Georg geht auf Nummer sicher: / Er bleibt *b:den *b:ganzen *b:Tag / *b:unter *b:Wasser."
+    },
+    {
+     "id": "L14",
+     "text": "Neuer Rekord: / *g:zwei *g:Minuten Luft anhalten."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "whoosh-short",
+     "at": "L13:unter",
+     "volume": 0.4
+    },
+    {
+     "name": "pop",
+     "at": "L14:zwei",
+     "volume": 0.35
+    }
+   ]
+  },
+  {
+   "id": "s06",
+   "tag": "",
+   "jump": [
+    "AUGUST",
+    "FESTIVAL"
+   ],
+   "lines": [
+    {
+     "id": "L15",
+     "text": "August. Festival. / Georg hat so viel Energie, / er tanzt *g:drei *g:Tage durch.",
+     "stat": []
+    },
+    {
+     "id": "L16",
+     "text": "Ohne Pause. / Die Security hält ihn / für einen *r:Roboter."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "impact-bass-2",
+     "at": "L15:drei",
+     "volume": 0.4
+    },
+    {
+     "name": "glitch-1",
+     "at": "L16:Roboter",
+     "volume": 0.25
+    }
+   ]
+  },
+  {
+   "id": "s07",
+   "tag": "",
+   "jump": [
+    "OKTOBER",
+    "TAG 330"
+   ],
+   "lines": [
+    {
+     "id": "L17",
+     "text": "Oktober. / Ein Brief kommt an."
+    },
+    {
+     "id": "L18",
+     "text": "Absender: / ein *b:Kloster in Bayern. / Betreff: *y:Wir *y:haben *y:von *y:dir *y:gehört.",
+     "pause": 0.2
+    },
+    {
+     "id": "L19",
+     "text": "Kurz ehrlich: / *g:Die *g:Wurst *g:pellen ist laut Ärzten / *g:normal und *g:gesund. / Superkräfte gibt's / nach einem Jahr *r:trotzdem *r:keine."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "notification",
+     "at": "L17:Brief",
+     "volume": 0.4
+    },
+    {
+     "name": "impact-bass-1",
+     "at": "L18:Wir",
+     "volume": 0.5
+    },
+    {
+     "name": "pop",
+     "at": "L19:normal",
+     "volume": 0.35
+    }
+   ]
+  },
+  {
+   "id": "s08",
+   "tag": "",
+   "jump": [
+    "31. OKTOBER",
+    "23:59 UHR"
+   ],
+   "lines": [
+    {
+     "id": "L20",
+     "text": "Einunddreißigster Oktober. / Halloween-Party. / Noch *r:zehn *r:Sekunden / bis zum *p:Kronjuwelen-Katapult|Kronjuwelen_Katapult."
+    },
+    {
+     "id": "L21",
+     "text": "Georg zählt mit: / drei, zwei, eins …",
+     "speed": 0.95
+    },
+    {
+     "id": "L22",
+     "text": "Mitternacht. / Es ist der *r:erste *r:November.",
+     "pause": 0.3
+    },
+    {
+     "id": "L23",
+     "text": "Der *p:No_Nut_November / beginnt *r:schon *r:wieder.",
+     "pause": 0.2
+    }
+   ],
+   "sfx": [
+    {
+     "name": "heartbeat",
+     "at": "L20:zehn",
+     "volume": 0.5
+    },
+    {
+     "name": "pop",
+     "at": "L21:drei",
+     "volume": 0.3
+    },
+    {
+     "name": "pop",
+     "at": "L21:zwei",
+     "volume": 0.3
+    },
+    {
+     "name": "pop",
+     "at": "L21:eins",
+     "volume": 0.3
+    },
+    {
+     "name": "midnight",
+     "at": "L22:Mitternacht-1.2",
+     "volume": 0.6
+    },
+    {
+     "name": "impact-bass-1",
+     "at": "L23:schon",
+     "volume": 0.7
+    }
+   ]
+  },
+  {
+   "id": "s09",
+   "tag": "",
+   "hold": 2.6,
+   "lines": [
+    {
+     "id": "L24",
+     "text": "Und du? / Schreib in die Kommentare: / *g:365|dreihundertfünfundsechzig *g:Tage, / oder *r:keine *r:Chance."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "pop",
+     "at": "L24:365",
+     "volume": 0.4
+    },
+    {
+     "name": "pop",
+     "at": "L24:keine",
+     "volume": 0.4
+    }
+   ]
+  }
+ ]
+}

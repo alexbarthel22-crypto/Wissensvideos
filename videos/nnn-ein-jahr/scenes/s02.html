@@ -1,0 +1,50 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .vig { position: absolute; left: 0; right: 0; top: 1040px; height: 880px; background: linear-gradient(rgba(10,12,30,0), rgba(10,12,30,.5) 45%, rgba(10,12,30,.55)); pointer-events: none; }
+    .chip { position: absolute; padding: 12px 26px; border-radius: 22px; background: rgba(255,255,255,.96); color: #22283f; font: 900 52px Inter, sans-serif; opacity: 0; box-shadow: 0 16px 40px rgba(0,0,0,.4); white-space: nowrap; }
+    .chip b { color: #e0484f; } .chip i { font-style: normal; color: #1fa65a; }
+    #s02-v { left: 0; right: 0; margin: 0 auto; top: 470px; width: fit-content; padding: 14px 40px; border: 10px solid #ff2d4b; border-radius: 20px; color: #ff2d4b; background: rgba(255,255,255,.92); font: 900 86px Inter, sans-serif; letter-spacing: .06em; opacity: 0; transform: rotate(-7deg); }
+    #s02-v small { display: block; font: 800 30px Inter, sans-serif; color: #22283f; letter-spacing: .1em; text-align: center; }
+  </style>
+  <div id="root" data-composition-id="s02" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s02-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <svg id="s02-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s02-v" class="abs" data-layout-allow-overlap>VERBOTEN<small>BIS 1. NOVEMBER</small></div>
+      <div class="vig"></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s02-svg"); sky(sv, "s02g", "#172048", "#0a0e26");
+      el("rect", { x: 0, y: 1120, width: 1080, height: 800, fill: "#dfe8f4" }, sv);
+      [[60, "#8a5a33"], [400, "#9a6a3d"], [740, "#8a5a33"]].forEach(([x, c]) => { const h = el("g", {}, sv); el("rect", { x, y: 760, width: 300, height: 300, fill: c }, h);
+        el("path", { d: `M${x - 30} 770 L${x + 150} 640 L${x + 330} 770Z`, fill: "#eef4fb" }, h); el("rect", { x: x + 20, y: 840, width: 260, height: 90, fill: "#ffd78a" }, h); });
+      const bulbs = []; for (let i = 0; i < 22; i++) bulbs.push(el("circle", { cx: 30 + i * 48, cy: 600 + Math.sin(i * 0.6) * 20, r: 9, fill: ["#ffd43b", "#ff4fb0", "#39e27a", "#4da3ff"][i % 4] }, sv));
+      const sf = snowfall(sv, 60, 5, 300, 1200);
+      const T = woman(sv, 330, 1150, 2.3, "#d0343f", "#5a3a22");
+      const G = finn(sv, 720, 1150, 2.3, { hood: "#e8a83a", arm: "#c98c22", hair: "#e0b050", glasses: true, label: "G" });
+      const wurst = el("g", { opacity: 0 }, sv); el("rect", { x: 430, y: 880, width: 150, height: 40, rx: 20, fill: "#a0522d" }, wurst); el("rect", { x: 420, y: 895, width: 170, height: 22, rx: 11, fill: "#f2d6a2", opacity: 0.9 }, wurst);
+      const sweat = [0, 1, 2].map((k) => el("circle", { cx: 690 + k * 30, cy: 760, r: 8, fill: "#9fd8ff", opacity: 0 }, sv));
+      fall(tl, sf, C.__dur);
+      tl.to(bulbs, { opacity: 0.4, duration: 0.3, yoyo: true, repeat: 15, stagger: 0.05 }, 0);
+      const br = at("L5", "Bratwurst"), sc = at("L5", "schwitzt"), wu = at("L6", "Wurst"), vb = at("L6", "verboten");
+      tl.to(T.aR, { rotation: -80, svgOrigin: "35 -126", duration: 0.3 }, br - 0.3);
+      tl.fromTo(wurst, { opacity: 0, x: -60 }, { opacity: 1, x: 0, duration: 0.3, ease: "back.out(2)" }, br - 0.1);
+      tl.to(wurst, { x: 160, duration: 0.4 }, sc - 0.4);
+      tl.to(sweat, { opacity: 1, y: 40, duration: 0.5, stagger: 0.15 }, sc);
+      tl.to(G.mouth, { attr: { d: "M-6 -149 Q0 -155 6 -149" }, duration: 0.15 }, sc);
+      tl.to(wurst, { scale: 1.6, svgOrigin: "665 900", duration: 0.3 }, wu - 0.1);
+      tl.fromTo("#s02-v", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: 0.2, ease: "power4.in" }, vb - 0.15);
+      tl.to(sv, { x: 10, duration: 0.04, repeat: 7, yoyo: true }, vb + 0.05);
+      tl.to("#s02-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s02"] = tl;
+    })();
+  </script>
+</template>

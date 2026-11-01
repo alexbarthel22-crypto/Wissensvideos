@@ -1,0 +1,43 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .vig { position: absolute; left: 0; right: 0; top: 1040px; height: 880px; background: linear-gradient(rgba(10,12,30,0), rgba(10,12,30,.5) 45%, rgba(10,12,30,.55)); pointer-events: none; }
+    .chip { position: absolute; padding: 12px 26px; border-radius: 22px; background: rgba(255,255,255,.96); color: #22283f; font: 900 52px Inter, sans-serif; opacity: 0; box-shadow: 0 16px 40px rgba(0,0,0,.4); white-space: nowrap; }
+    .chip b { color: #e0484f; } .chip i { font-style: normal; color: #1fa65a; }
+  </style>
+  <div id="root" data-composition-id="s05" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s05-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <svg id="s05-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s05-sw" class="chip" style="left:640px;top:480px">⏱ <i>2:00</i></div>
+      <div class="vig"></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s05-svg"); sky(sv, "s05g", "#5fc0ff", "#9fdcff");
+      const sun = el("circle", { cx: 880, cy: 520, r: 80, fill: "#ffd43b" }, sv);
+      el("rect", { x: 0, y: 760, width: 1080, height: 160, fill: "#f2e3c2" }, sv);
+      const towels = [[120, "#ff4fb0"], [420, "#ffd43b"], [740, "#39e27a"]].map(([x, c]) => { const g = el("g", {}, sv); el("rect", { x, y: 790, width: 200, height: 70, rx: 10, fill: c }, g); el("ellipse", { cx: x + 100, cy: 800, rx: 70, ry: 18, fill: "#f2cba5" }, g); return g; });
+      const pool = el("g", {}, sv); el("rect", { x: 0, y: 920, width: 1080, height: 1000, fill: "#2fa8e8" }, pool);
+      const waves = []; for (let k = 0; k < 5; k++) waves.push(el("path", { d: `M0 ${960 + k * 50} q60 -14 120 0 t120 0 t120 0 t120 0 t120 0 t120 0 t120 0 t120 0 t120 0`, stroke: "#bfe9ff", "stroke-width": 5, fill: "none", opacity: 0.6 }, pool));
+      const G = finn(sv, 540, 1180, 2.2, { hood: "#e8a83a", arm: "#c98c22", hair: "#e0b050", glasses: true, label: "G" });
+      const water = el("rect", { x: 0, y: 1000, width: 1080, height: 920, fill: "#2fa8e8", opacity: 0.85 }, sv);
+      const bub = []; for (let i = 0; i < 10; i++) bub.push(el("circle", { cx: 520 + (i % 3) * 20, cy: 1000, r: 6 + (i % 3) * 3, fill: "none", stroke: "#e8f8ff", "stroke-width": 3, opacity: 0 }, sv));
+      const un = at("L13", "unter"), zw = at("L14", "zwei");
+      waves.forEach((w, i) => tl.to(w, { x: -120, duration: 2, repeat: Math.ceil(C.__dur / 2), ease: "none" }, 0));
+      tl.to(sun, { scale: 1.1, svgOrigin: "880 520", duration: 0.8, yoyo: true, repeat: 8 }, 0);
+      tl.to(G.mouth, { attr: { d: "M-6 -149 Q0 -155 6 -149" }, duration: 0.2 }, 1.5);
+      tl.to(G.g, { y: 1600, duration: 0.6, ease: "power2.in" }, un - 0.1);
+      bub.forEach((b, i) => tl.fromTo(b, { opacity: 0.9, y: 0 }, { opacity: 0, y: -260, duration: 0.9, repeat: 4, ease: "power1.out", immediateRender: false }, un + 0.4 + i * 0.18));
+      tl.fromTo("#s05-sw", { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(3)" }, zw - 0.1);
+      tl.to("#s05-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s05"] = tl;
+    })();
+  </script>
+</template>

@@ -1,0 +1,46 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .vig { position: absolute; left: 0; right: 0; top: 1040px; height: 880px; background: linear-gradient(rgba(10,12,30,0), rgba(10,12,30,.5) 45%, rgba(10,12,30,.55)); pointer-events: none; }
+    #s07-l { left: 140px; top: 470px; width: 800px; height: 560px; border-radius: 14px; background: #f6efdc; box-shadow: 0 24px 60px rgba(0,0,0,.5); color: #3a2a1a; opacity: 0; padding: 40px 50px; font: 600 40px/1.35 "EB Garamond", serif; }
+    #s07-l h3 { font: 700 34px Inter, sans-serif; letter-spacing: .14em; color: #7a5a2a; margin: 0 0 16px; } #s07-l b { color: #b0262f; font-size: 56px; }
+    #s07-l .seal { position: absolute; right: 50px; bottom: 40px; width: 120px; height: 120px; border-radius: 50%; background: #b0262f; color: #f6efdc; font: 900 56px/120px "EB Garamond", serif; text-align: center; }
+    #s07-ok { left: 140px; top: 520px; width: 800px; height: 480px; border-radius: 34px; background: rgba(10,40,28,.95); border: 6px solid #39e27a; box-shadow: 0 0 70px rgba(57,226,122,.5); text-align: center; color: #fff; opacity: 0; }
+    #s07-ok .t { margin-top: 200px; font: 900 62px/1.1 Inter, sans-serif; } #s07-ok .t b { color: #39e27a; }
+  </style>
+  <div id="root" data-composition-id="s07" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s07-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <svg id="s07-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s07-l" class="abs"><h3>KLOSTER ST. BENNO · BAYERN</h3>Lieber Georg,<br><b>wir haben von dir gehört.</b><br>Wir hätten da eine Stelle frei.<div class="seal">✝</div></div>
+      <div id="s07-ok" class="abs"><svg width="150" height="150" viewBox="0 0 160 160" style="position:absolute;left:325px;top:34px"><circle cx="80" cy="80" r="76" fill="#39e27a"/><rect x="66" y="30" width="28" height="100" rx="6" fill="#fff"/><rect x="30" y="66" width="100" height="28" rx="6" fill="#fff"/></svg>
+        <div class="t">Wurst pellen =<br><b>normal &amp; gesund</b></div></div>
+      <div class="vig"></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s07-svg"); sky(sv, "s07g", "#f2c27a", "#c9783a");
+      el("rect", { x: 0, y: 1100, width: 1080, height: 820, fill: "#6b8a3a" }, sv);
+      const leaves = []; const rl = rng(19); for (let i = 0; i < 26; i++) leaves.push(el("ellipse", { cx: rl() * 1080, cy: 300 + rl() * 400, rx: 14, ry: 8, fill: ["#e0702a", "#c9431f", "#ffb03a"][i % 3] }, sv));
+      const mbox = el("g", {}, sv); el("rect", { x: 150, y: 840, width: 40, height: 260, fill: "#5a4a3a" }, mbox); el("rect", { x: 90, y: 760, width: 160, height: 110, rx: 20, fill: "#ffd43b" }, mbox);
+      const env = el("g", { opacity: 0 }, sv); el("rect", { x: 300, y: 820, width: 180, height: 120, rx: 8, fill: "#f6efdc", stroke: "#c9b98a", "stroke-width": 4 }, env); el("path", { d: "M300 820 L390 890 L480 820", fill: "none", stroke: "#c9b98a", "stroke-width": 4 }, env);
+      const G = finn(sv, 700, 1150, 2.3, { hood: "#e8a83a", arm: "#c98c22", hair: "#e0b050", glasses: true, label: "G" });
+      leaves.forEach((l, i) => tl.to(l, { y: 900, x: (i % 2 ? 60 : -60), rotation: 360, svgOrigin: `${l.getAttribute("cx")} ${l.getAttribute("cy")}`, duration: 5 + (i % 4), ease: "none" }, 0));
+      const br = at("L17", "Brief"), l18 = line("L18")[0], wi = at("L18", "Wir"), l19 = line("L19")[0], no = at("L19", "normal");
+      tl.fromTo(env, { opacity: 0, x: -400, rotation: -30, svgOrigin: "390 880" }, { opacity: 1, x: 0, rotation: 0, svgOrigin: "390 880", duration: 0.5, ease: "back.out(1.5)" }, br - 0.3);
+      tl.to(env, { opacity: 0, duration: 0.2 }, l18); tl.fromTo("#s07-l", { opacity: 0, scale: 0.6, rotation: -6 }, { opacity: 1, scale: 1, rotation: -2, duration: 0.4, ease: "back.out(1.6)" }, l18);
+      tl.to(G.mouth, { attr: { d: "M-6 -149 Q0 -156 6 -149" }, duration: 0.15 }, wi); tl.to(G.head, { y: -10, duration: 0.15, yoyo: true, repeat: 1 }, wi);
+      tl.fromTo("#s07-l b", { color: "#b0262f" }, { color: "#ff0018", duration: 0.2, yoyo: true, repeat: 5 }, wi);
+      tl.to("#s07-l", { opacity: 0, y: -60, duration: 0.3 }, l19 - 0.2);
+      tl.fromTo("#s07-ok", { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(1.8)" }, no - 0.4);
+      tl.to("#s07-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s07"] = tl;
+    })();
+  </script>
+</template>
