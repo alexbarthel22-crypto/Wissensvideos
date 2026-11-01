@@ -49,12 +49,12 @@
    "persona": "Seraphine spricht feierlich zu einer Menschenmenge in einem gewaltigen Tempel."
   },
   "STERN": {
-   "name": "de-DE-Chirp3-HD-Algieba",
-   "gemini": "Algieba",
+   "name": "de-DE-Chirp3-HD-Puck",
+   "gemini": "Puck",
    "label": "Der Stern",
    "rate": 0.92,
    "fx": "stern",
-   "persona": "Ein uraltes Wesen aus Licht mit der Stimme eines jungen Mannes: warm, charmant, verspielt, ein bisschen geheimnisvoll. Normale Sprechstimme, nicht flüstern."
+   "persona": "Ein uraltes Wesen aus Licht mit der Stimme eines jungen Mannes von etwa achtzehn: hell, lebendig, charmant, verspielt, ein bisschen frech. Normale Sprechstimme, nicht flüstern."
   },
   "STERN_DUNKEL": {
    "name": "de-DE-Chirp3-HD-Charon",
@@ -85,21 +85,26 @@
    "lines": [
     {
      "who": "ICH",
-     "text": "Was bisher geschah: Jeder Stern, der fällt, gehört dem Orden. Wer ihn berührt, stirbt.",
+     "text": "Was bisher geschah: Meine Mutter verschwand vor zwölf Jahren, als zuletzt ein Stern fiel.",
+     "display": "Meine Mutter verschwand vor zwölf Jahren, als zuletzt ein Stern fiel.",
      "style": "zügig, spannend zusammenfassend, direkt zum Zuschauer, normale Sprechstimme, nicht flüstern",
      "hook": "WAS BISHER GESCHAH",
-     "hook_static": true,
-     "display": "Jeder Stern, der fällt, gehört dem Orden. Wer ihn berührt, stirbt."
+     "hook_static": true
     },
     {
      "who": "ICH",
-     "text": "Und letzte Nacht fiel einer. Ganz in meiner Nähe.",
-     "pre": 0.3,
-     "style": "spannend, dann mit Nachdruck auf 'fiel einer', normale Sprechstimme, nicht flüstern",
-     "hook": "FIEL EINER.",
-     "hook_at": 0.0,
-     "display": "Ganz in meiner Nähe.",
-     "text_delay": 2.0
+     "text": "Jeder fallende Stern gehört dem Orden. Wer ihn berührt, stirbt.",
+     "pre": 0.2,
+     "style": "ernst, zügig, normale Sprechstimme, nicht flüstern"
+    },
+    {
+     "who": "ICH",
+     "text": "Und letzte Nacht fiel einer. Direkt vor mir.",
+     "pre": 0.2,
+     "style": "spannend, mit Nachdruck, normale Sprechstimme, nicht flüstern",
+     "hook": "DIREKT VOR MIR.",
+     "hook_at": 0.6,
+     "display": "Und letzte Nacht fiel einer …"
     }
    ],
    "tempo": 1.2
@@ -159,12 +164,12 @@
    "lines": [
     {
      "who": "ICH",
-     "text": "Ich folgte seinem Licht nach unten. Der Stern war tief unter der Stadt eingeschlagen: in den verbotenen Ruinen.",
-     "style": "spannend, normale Sprechstimme, nicht flüstern"
+     "text": "Der Stern war direkt vor mir eingeschlagen … und durch den Ast gebrochen. Immer tiefer, bis hinunter in die verbotenen Ruinen.",
+     "style": "spannend, atemlos, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "ICH",
-     "text": "Eine tote Insel, die seit tausend Jahren niemand betreten hat. Dort begann damals das große Feuer.",
+     "text": "Eine tote Insel tief unter der Stadt. Dort begann damals das große Feuer.",
      "pre": 0.8,
      "style": "unheimlich, ernst, normale Sprechstimme, nicht flüstern"
     },
@@ -176,9 +181,9 @@
     },
     {
      "who": "ICH",
-     "text": "Seit tausend Jahren hat niemand sie betreten. Ich ging trotzdem. Mit zitternden Knien.",
+     "text": "Seit tausend Jahren hat niemand sie betreten. Ich kletterte trotzdem hinterher. Mit zitternden Knien.",
      "pre": 0.9,
-     "style": "entschlossen, dann ruhig und ehrlich, normale Sprechstimme, nicht flüstern"
+     "style": "entschlossen, dann ehrlich, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "STERN",
