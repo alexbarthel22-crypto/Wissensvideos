@@ -27,10 +27,10 @@
     .lab { position: absolute; padding: 10px 26px; border-radius: 18px; background: rgba(20,10,50,.85); border: 3px solid #8ff4ff; color: #fff; font: 900 56px Inter, sans-serif; opacity: 0; box-shadow: 0 0 30px rgba(143,244,255,.4); white-space: nowrap; }
     .lab.r { border-color: #ff6b8a; box-shadow: 0 0 30px rgba(255,107,138,.5); } .lab.g { border-color: #7dffb0; box-shadow: 0 0 30px rgba(125,255,176,.5); } .lab.y { border-color: #ffd84a; }
   </style>
-  <div id="root" data-composition-id="s01" data-start="0" data-duration="5.950" data-width="1080" data-height="1920">
-    <video id="s01-v0" class="clip shv" data-start="0.000" data-duration="5.386" data-track-index="1" src="assets/vid/s01_0.mp4" muted playsinline></video>
-    <video id="s01-v1" class="clip shv" data-start="5.386" data-duration="0.564" data-track-index="2" src="assets/vid/s01_1.mp4" muted playsinline></video>
-    <div id="s01-stage" class="clip stage" data-start="0" data-duration="5.950" data-track-index="0">
+  <div id="root" data-composition-id="s01" data-start="0" data-duration="6.420" data-width="1080" data-height="1920">
+    <video id="s01-v0" class="clip shv" data-start="0.000" data-duration="5.846" data-track-index="1" src="assets/vid/s01_0.mp4" muted playsinline></video>
+    <video id="s01-v1" class="clip shv" data-start="5.846" data-duration="0.574" data-track-index="2" src="assets/vid/s01_1.mp4" muted playsinline></video>
+    <div id="s01-stage" class="clip stage" data-start="0" data-duration="6.420" data-track-index="0">
 
       <div class="vig"></div>
     </div>
@@ -38,7 +38,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 5.95, "L1": [0.3, 2.89], "L1.words": [["warum", 0.3, 0.619], ["kommen", 0.619, 0.945], ["hochintelligente", 0.945, 1.909], ["menschen", 1.909, 2.245], ["immer", 2.245, 2.565], ["zu", 2.565, 2.722], ["spät", 2.722, 2.89]], "L2": [3.26, 5.77], "L2.words": [["die", 3.26, 3.434], ["antwort", 3.434, 3.789], ["ist", 3.789, 3.963], ["nicht", 3.963, 4.149], ["faulheit", 4.149, 4.51], ["es", 4.94, 5.101], ["ist", 5.101, 5.268], ["ihr", 5.268, 5.436], ["gehirn", 5.436, 5.77]]};
+      const C = {"__dur": 6.42, "L1": [0.3, 3.27], "L1.words": [["warum", 0.3, 0.666], ["kommen", 0.666, 1.039], ["hochintelligente", 1.039, 2.145], ["menschen", 2.145, 2.531], ["immer", 2.531, 2.897], ["zu", 2.897, 3.077], ["spät", 3.077, 3.27]], "L2": [3.64, 6.24], "L2.words": [["die", 3.64, 3.835], ["antwort", 3.835, 4.232], ["ist", 4.232, 4.427], ["nicht", 4.427, 4.636], ["faulheit", 4.636, 5.04], ["es", 5.38, 5.546], ["ist", 5.546, 5.718], ["dein", 5.718, 5.896], ["gehirn", 5.896, 6.24]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];

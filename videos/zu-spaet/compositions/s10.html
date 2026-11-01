@@ -27,11 +27,11 @@
     .lab { position: absolute; padding: 10px 26px; border-radius: 18px; background: rgba(20,10,50,.85); border: 3px solid #8ff4ff; color: #fff; font: 900 56px Inter, sans-serif; opacity: 0; box-shadow: 0 0 30px rgba(143,244,255,.4); white-space: nowrap; }
     .lab.r { border-color: #ff6b8a; box-shadow: 0 0 30px rgba(255,107,138,.5); } .lab.g { border-color: #7dffb0; box-shadow: 0 0 30px rgba(125,255,176,.5); } .lab.y { border-color: #ffd84a; }
   </style>
-  <div id="root" data-composition-id="s10" data-start="0" data-duration="12.310" data-width="1080" data-height="1920">
-    <video id="s10-v0" class="clip shv" data-start="0.000" data-duration="2.940" data-track-index="1" src="assets/vid/s10_0.mp4" muted playsinline></video>
-    <video id="s10-v1" class="clip shv" data-start="2.940" data-duration="4.610" data-track-index="2" src="assets/vid/s10_1.mp4" muted playsinline></video>
-    <video id="s10-v2" class="clip shv" data-start="7.550" data-duration="4.760" data-track-index="1" src="assets/vid/s10_2.mp4" muted playsinline></video>
-    <div id="s10-stage" class="clip stage" data-start="0" data-duration="12.310" data-track-index="0">
+  <div id="root" data-composition-id="s10" data-start="0" data-duration="11.660" data-width="1080" data-height="1920">
+    <video id="s10-v0" class="clip shv" data-start="0.000" data-duration="2.689" data-track-index="1" src="assets/vid/s10_0.mp4" muted playsinline></video>
+    <video id="s10-v1" class="clip shv" data-start="2.689" data-duration="4.431" data-track-index="2" src="assets/vid/s10_1.mp4" muted playsinline></video>
+    <video id="s10-v2" class="clip shv" data-start="7.120" data-duration="4.540" data-track-index="1" src="assets/vid/s10_2.mp4" muted playsinline></video>
+    <div id="s10-stage" class="clip stage" data-start="0" data-duration="11.660" data-track-index="0">
 
       <div id="s10-a" class="lab g" style="left:90px;top:330px">DUSCHEN: 3 MIN</div><div id="s10-b" class="lab g" style="left:90px;top:450px">ANZIEHEN: 1 MIN</div>
       <div id="s10-c" class="lab r" style="left:220px;top:1330px;font-size:84px">REAL: 20 MIN</div><div id="s10-d" class="lab y" style="left:300px;top:1330px;font-size:90px">+5 MIN</div>
@@ -41,7 +41,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 12.31, "L13b": [0.2, 4.62], "L13b.words": [["dazu", 0.2, 0.493], ["überschätzen", 0.493, 1.101], ["sie", 1.101, 1.253], ["sich", 1.253, 1.41], ["duschen", 1.69, 2.03], ["drei", 2.27, 2.382], ["minuten", 2.382, 2.7], ["anziehen", 3.04, 3.46], ["eine", 3.76, 4.104], ["minute", 4.104, 4.62]], "L13c": [4.84, 7.38], "L13c.words": [["in", 4.84, 5.024], ["wahrheit", 5.024, 5.42], ["zwanzig", 5.54, 5.889], ["minuten", 5.889, 6.39], ["zusammen", 6.83, 7.38]], "L13d": [7.6, 12.13], "L13d.words": [["deshalb", 7.6, 7.92], ["kommen", 7.92, 8.235], ["sie", 8.235, 8.392], ["selten", 8.392, 8.707], ["eine", 8.707, 9.011], ["stunde", 9.011, 9.325], ["zu", 9.325, 9.477], ["spät", 9.477, 9.64], ["sondern", 10.03, 10.42], ["fast", 10.42, 10.618], ["immer", 10.618, 10.994], ["genau", 10.994, 11.371], ["fünf", 11.371, 11.569], ["minuten", 11.569, 12.13]]};
+      const C = {"__dur": 11.66, "L13b": [0.2, 4.34], "L13b.words": [["dazu", 0.2, 0.584], ["überschätzt", 0.584, 1.196], ["du", 1.196, 1.388], ["dich", 1.388, 1.594], ["duschen", 1.594, 2.0], ["drei", 2.0, 2.206], ["minuten", 2.206, 2.789], ["anziehen", 2.789, 3.38], ["eine", 3.38, 3.764], ["minute", 3.764, 4.34]], "L13c": [4.56, 6.95], "L13c.words": [["in", 4.56, 4.754], ["wahrheit", 4.754, 5.17], ["zwanzig", 5.39, 5.714], ["minuten", 5.714, 6.18], ["zusammen", 6.57, 6.95]], "L13d": [7.17, 11.48], "L13d.words": [["deshalb", 7.17, 7.488], ["kommst", 7.488, 7.661], ["du", 7.661, 7.812], ["selten", 7.812, 8.124], ["eine", 8.124, 8.425], ["stunde", 8.425, 8.738], ["zu", 8.738, 8.888], ["spät", 8.888, 9.05], ["sondern", 9.42, 9.802], ["fast", 9.802, 9.997], ["immer", 9.997, 10.366], ["genau", 10.366, 10.735], ["fünf", 10.735, 10.93], ["minuten", 10.93, 11.48]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];

@@ -29,9 +29,9 @@
     #s06-n { left: 140px; width: 700px; top: 330px; text-align: center; font: 900 200px/1 "Space Mono", monospace; color: #fff; opacity: 0; text-shadow: 0 0 40px rgba(143,244,255,.9), 0 6px 0 #1a0d33; }
     #s06-n small { display: block; font: 900 38px Inter, sans-serif; color: #8ff4ff; letter-spacing: .1em; white-space: nowrap; }
   </style>
-  <div id="root" data-composition-id="s06" data-start="0" data-duration="6.290" data-width="1080" data-height="1920">
-    <video id="s06-v0" class="clip shv" data-start="0.000" data-duration="6.290" data-track-index="1" src="assets/vid/s06_0.mp4" muted playsinline></video>
-    <div id="s06-stage" class="clip stage" data-start="0" data-duration="6.290" data-track-index="0">
+  <div id="root" data-composition-id="s06" data-start="0" data-duration="6.830" data-width="1080" data-height="1920">
+    <video id="s06-v0" class="clip shv" data-start="0.000" data-duration="6.830" data-track-index="1" src="assets/vid/s06_0.mp4" muted playsinline></video>
+    <div id="s06-stage" class="clip stage" data-start="0" data-duration="6.830" data-track-index="0">
 
       <div id="s06-n" class="abs"><span id="s06-v">0</span><small>SEKUNDEN = 1 MINUTE?</small></div>
       <div class="vig"></div>
@@ -40,7 +40,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 6.29, "L11": [0.2, 6.11], "L11.words": [["forscher", 0.2, 0.556], ["in", 0.556, 0.722], ["san", 0.722, 0.894], ["diego", 0.894, 1.232], ["fanden", 1.232, 1.576], ["heraus", 1.576, 1.92], ["für", 2.32, 2.485], ["manche", 2.485, 2.815], ["menschen", 2.815, 3.157], ["ist", 3.157, 3.322], ["eine", 3.322, 3.64], ["minute", 3.64, 4.118], ["erst", 4.118, 4.289], ["nach", 4.289, 4.46], ["77", 4.46, 5.291], ["sekunden", 5.291, 5.78], ["vorbei", 5.78, 6.11]]};
+      const C = {"__dur": 6.83, "L11": [0.2, 6.65], "L11.words": [["forscher", 0.2, 0.594], ["in", 0.594, 0.777], ["san", 0.777, 0.967], ["diego", 0.967, 1.34], ["fanden", 1.34, 1.72], ["heraus", 1.72, 2.1], ["für", 2.5, 2.681], ["manche", 2.681, 3.042], ["menschen", 3.042, 3.416], ["ist", 3.416, 3.597], ["eine", 3.597, 3.946], ["minute", 3.946, 4.469], ["erst", 4.469, 4.656], ["nach", 4.656, 4.843], ["77", 4.843, 5.753], ["sekunden", 5.753, 6.289], ["vorbei", 6.289, 6.65]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];

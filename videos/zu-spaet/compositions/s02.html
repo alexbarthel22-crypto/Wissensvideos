@@ -27,11 +27,11 @@
     .lab { position: absolute; padding: 10px 26px; border-radius: 18px; background: rgba(20,10,50,.85); border: 3px solid #8ff4ff; color: #fff; font: 900 56px Inter, sans-serif; opacity: 0; box-shadow: 0 0 30px rgba(143,244,255,.4); white-space: nowrap; }
     .lab.r { border-color: #ff6b8a; box-shadow: 0 0 30px rgba(255,107,138,.5); } .lab.g { border-color: #7dffb0; box-shadow: 0 0 30px rgba(125,255,176,.5); } .lab.y { border-color: #ffd84a; }
   </style>
-  <div id="root" data-composition-id="s02" data-start="0" data-duration="9.070" data-width="1080" data-height="1920">
-    <video id="s02-v0" class="clip shv" data-start="0.000" data-duration="4.630" data-track-index="1" src="assets/vid/s02_0.mp4" muted playsinline></video>
-    <video id="s02-v1" class="clip shv" data-start="4.630" data-duration="2.958" data-track-index="2" src="assets/vid/s02_1.mp4" muted playsinline></video>
-    <video id="s02-v2" class="clip shv" data-start="7.588" data-duration="1.482" data-track-index="1" src="assets/vid/s02_2.mp4" muted playsinline></video>
-    <div id="s02-stage" class="clip stage" data-start="0" data-duration="9.070" data-track-index="0">
+  <div id="root" data-composition-id="s02" data-start="0" data-duration="7.430" data-width="1080" data-height="1920">
+    <video id="s02-v0" class="clip shv" data-start="0.000" data-duration="2.960" data-track-index="1" src="assets/vid/s02_0.mp4" muted playsinline></video>
+    <video id="s02-v1" class="clip shv" data-start="2.960" data-duration="3.030" data-track-index="2" src="assets/vid/s02_1.mp4" muted playsinline></video>
+    <video id="s02-v2" class="clip shv" data-start="5.990" data-duration="1.440" data-track-index="1" src="assets/vid/s02_2.mp4" muted playsinline></video>
+    <div id="s02-stage" class="clip stage" data-start="0" data-duration="7.430" data-track-index="0">
 
       <div class="vig"></div>
     </div>
@@ -39,7 +39,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 9.07, "L3": [0.2, 5.98], "L3.words": [["es", 0.2, 0.367], ["passiert", 0.367, 0.726], ["jeden", 0.726, 1.067], ["tag", 1.067, 1.24], ["sie", 1.63, 1.807], ["schauen", 1.807, 2.009], ["auf", 2.009, 2.186], ["die", 2.186, 2.363], ["uhr", 2.363, 2.54], ["denken", 2.85, 3.14], ["ich", 3.49, 3.647], ["hab", 3.647, 3.804], ["noch", 3.804, 3.967], ["zeit", 3.967, 4.13], ["und", 4.68, 4.823], ["machen", 4.823, 5.11], ["noch", 5.11, 5.258], ["schnell", 5.258, 5.422], ["eine", 5.422, 5.699], ["sache", 5.699, 5.98]], "L4": [6.2, 8.89], "L4.words": [["dann", 6.2, 6.405], ["noch", 6.405, 6.609], ["eine", 6.609, 6.99], ["und", 7.49, 7.688], ["plötzlich", 7.688, 8.105], ["ist", 8.105, 8.303], ["es", 8.303, 8.494], ["zu", 8.494, 8.685], ["spät", 8.685, 8.89]]};
+      const C = {"__dur": 7.43, "L3": [0.2, 4.73], "L3.words": [["kennst", 0.2, 0.433], ["du", 0.433, 0.636], ["das", 0.636, 0.846], ["du", 0.846, 1.049], ["schaust", 1.049, 1.289], ["auf", 1.289, 1.5], ["die", 1.5, 1.71], ["uhr", 1.71, 1.92], ["denkst", 1.92, 2.153], ["ich", 2.153, 2.364], ["hab", 2.364, 2.574], ["noch", 2.574, 2.792], ["zeit", 2.792, 3.01], ["und", 3.01, 3.22], ["machst", 3.22, 3.453], ["noch", 3.453, 3.671], ["schnell", 3.671, 3.911], ["eine", 3.911, 4.317], ["sache", 4.317, 4.73]], "L4": [4.95, 7.25], "L4.words": [["dann", 4.95, 5.129], ["noch", 5.129, 5.307], ["eine", 5.307, 5.64], ["und", 5.9, 6.09], ["plötzlich", 6.09, 6.49], ["bist", 6.49, 6.687], ["du", 6.687, 6.87], ["zu", 6.87, 7.053], ["spät", 7.053, 7.25]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];

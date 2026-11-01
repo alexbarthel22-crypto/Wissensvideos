@@ -27,10 +27,10 @@
     .lab { position: absolute; padding: 10px 26px; border-radius: 18px; background: rgba(20,10,50,.85); border: 3px solid #8ff4ff; color: #fff; font: 900 56px Inter, sans-serif; opacity: 0; box-shadow: 0 0 30px rgba(143,244,255,.4); white-space: nowrap; }
     .lab.r { border-color: #ff6b8a; box-shadow: 0 0 30px rgba(255,107,138,.5); } .lab.g { border-color: #7dffb0; box-shadow: 0 0 30px rgba(125,255,176,.5); } .lab.y { border-color: #ffd84a; }
   </style>
-  <div id="root" data-composition-id="s03" data-start="0" data-duration="8.190" data-width="1080" data-height="1920">
-    <video id="s03-v0" class="clip shv" data-start="0.000" data-duration="5.600" data-track-index="1" src="assets/vid/s03_0.mp4" muted playsinline></video>
-    <video id="s03-v1" class="clip shv" data-start="5.600" data-duration="2.590" data-track-index="2" src="assets/vid/s03_1.mp4" muted playsinline></video>
-    <div id="s03-stage" class="clip stage" data-start="0" data-duration="8.190" data-track-index="0">
+  <div id="root" data-composition-id="s03" data-start="0" data-duration="7.340" data-width="1080" data-height="1920">
+    <video id="s03-v0" class="clip shv" data-start="0.000" data-duration="4.230" data-track-index="1" src="assets/vid/s03_0.mp4" muted playsinline></video>
+    <video id="s03-v1" class="clip shv" data-start="4.230" data-duration="3.110" data-track-index="2" src="assets/vid/s03_1.mp4" muted playsinline></video>
+    <div id="s03-stage" class="clip stage" data-start="0" data-duration="7.340" data-track-index="0">
 
       <div id="s03-pf" class="lab r" style="left:250px;top:1330px">PUFFER: 0 MIN</div>
       <div class="vig"></div>
@@ -39,7 +39,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 8.19, "L5": [0.2, 5.43], "L5.words": [["hochintelligente", 0.2, 1.35], ["hassen", 1.35, 1.738], ["leerlauf", 1.738, 2.14], ["zehn", 2.59, 2.785], ["minuten", 2.785, 3.335], ["warten", 3.335, 3.711], ["fühlt", 3.711, 3.913], ["sich", 3.913, 4.107], ["an", 4.107, 4.289], ["wie", 4.289, 4.477], ["verschwendete", 4.477, 5.235], ["zeit", 5.235, 5.43]], "L6": [5.65, 8.01], "L6.words": [["also", 5.65, 5.896], ["planen", 5.896, 6.152], ["sie", 6.152, 6.28], ["auf", 6.28, 6.407], ["die", 6.407, 6.535], ["sekunde", 6.535, 6.909], ["genau", 6.909, 7.16], ["ohne", 7.45, 7.725], ["puffer", 7.725, 8.01]]};
+      const C = {"__dur": 7.34, "L5": [0.2, 4.06], "L5.words": [["du", 0.2, 0.465], ["hasst", 0.465, 0.76], ["leerlauf", 0.76, 1.33], ["zehn", 1.61, 1.768], ["minuten", 1.768, 2.216], ["warten", 2.216, 2.521], ["fühlen", 2.521, 2.827], ["sich", 2.827, 2.985], ["an", 2.985, 3.132], ["wie", 3.132, 3.285], ["verschwendete", 3.285, 3.902], ["zeit", 3.902, 4.06]], "L6": [4.28, 7.16], "L6.words": [["also", 4.28, 4.641], ["planst", 4.641, 4.849], ["du", 4.849, 5.029], ["auf", 5.029, 5.216], ["die", 5.216, 5.404], ["sekunde", 5.404, 5.952], ["genau", 5.952, 6.32], ["ohne", 6.64, 6.895], ["puffer", 6.895, 7.16]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
