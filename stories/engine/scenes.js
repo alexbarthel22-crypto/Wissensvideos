@@ -831,7 +831,6 @@ const CAPTIONS = [
   { scene: 'welt', at: 0.8, dur: 6, title: 'VALDORIA', sub: 'Die Welt über den Wolken' },
   { scene: 'stadt', at: 0.6, dur: 7, title: 'AURELION', sub: 'Die Stadt der tausend Laternen · Jahr 1137 nach dem Sternenbund' },
   { scene: 'lichtkrone', at: 0.5, dur: 6, title: 'DIE LICHTKRONE', sub: 'Sitz des Ordens der Hohen Flamme' },
-  { scene: 'seraphine_vor', at: 0.5, dur: 6, title: 'SERAPHINE', sub: 'Hohepriesterin des Ordens der Hohen Flamme' },
   { scene: 'lunara', at: 0.6, dur: 6.5, title: 'NERAYA', sub: '17 · Laternenanzünderin der Tiefen Äste' },
   { scene: 'kael_vor', at: 0.6, dur: 6, title: 'KAEL', sub: '21 · Nerayas Bruder · Hauptmann der Flammenwache' },
   { scene: 'ruinen', at: 0.5, dur: 6, title: 'DIE VERBOTENEN RUINEN', sub: 'Tempel der Ersten Sterne · Ursprung des großen Feuers' },
@@ -1640,7 +1639,7 @@ const SCENES = {
   kael_vor(t) {
     const L = i => lineOf('kael_vor', i);
     const leave = smooth(L(2).start - 0.5, L(2).start + 0.5, t);
-    const now = smooth(L(4).start - 0.5, L(4).start + 0.5, t);
+    const now = smooth(L(4).start - 0.35, L(4).start + 0.2, t);
     const A = () => {
       ctx.save(); camera(1.05, 0, 0);
       vgrad([[0, '#3a2414'], [0.5, '#8a5a30'], [0.75, '#d69a58'], [1, '#2a1a0e']]);
@@ -1679,7 +1678,7 @@ const SCENES = {
       particles(t, 40, { y0: 1500, dy: -1100, a: 0.5, color: 'rgba(255,140,70,A)', r: 2, life: 6 });
       ctx.restore();
     };
-    if (now < 1) crossfade(leave, A, B);
+    if (now < 1) { ctx.save(); ctx.globalAlpha = 1 - now; crossfade(leave, A, B); ctx.restore(); }
     if (now > 0) { ctx.save(); ctx.globalAlpha = now; C(); ctx.restore(); }
   },
 
@@ -1930,9 +1929,10 @@ const SCENES = {
     // reaching hand
     const reach = easeInOut(pre);
     const hy2 = lerp(2100, hy + 115, reach);
-    ctx.save(); ctx.translate(540 + 20 * (1 - reach), hy2);
+    ctx.save(); ctx.translate(540 + 120 * (1 - reach), hy2); ctx.rotate(-0.28 * reach - 0.1);
     ctx.fillStyle = '#04050b'; ctx.shadowColor = 'rgba(190,215,255,0.95)'; ctx.shadowBlur = 40 + 40 * pre;
-    ctx.beginPath(); ctx.moveTo(-70, 900); ctx.bezierCurveTo(-70, 400, -80, 180, -62, 60); ctx.lineTo(62, 60); ctx.bezierCurveTo(78, 180, 70, 400, 70, 900); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(-60, 70); ctx.bezierCurveTo(-58, 200, -40, 420, 20, 720); ctx.lineTo(260, 720); ctx.bezierCurveTo(170, 420, 90, 200, 62, 70); ctx.closePath(); ctx.fill();
+    ctx.fillRect(20, 700, 240, 900);
     ctx.beginPath(); ctx.ellipse(0, 20, 70, 85, 0, 0, 7); ctx.fill();
     [[-50, -70, -0.18, 95], [-18, -95, -0.05, 120], [16, -98, 0.05, 125], [48, -80, 0.16, 105]].forEach(([fx, fy, a, L]) => {
       ctx.save(); ctx.translate(fx, fy + 60); ctx.rotate(a); ctx.beginPath(); ctx.roundRect(-13, -L + 30, 26, L, 13); ctx.fill(); ctx.restore();

@@ -632,7 +632,9 @@ def score(tl):
         s = S["glocken"]
         t, k = C["glocke"], 0
         while t < s["end"] + 1:
-            fx.add(big_bell(["D3", "A2"][k % 2], 5), t, 0.9 - 0.3 * (k % 2), 0.4 * (-1) ** k)
+            # loud, clear alarm bells: deep body plus a bright strike on top
+            fx.add(big_bell(["D3", "A2"][k % 2], 5), t, 1.8 - 0.4 * (k % 2), 0.4 * (-1) ** k)
+            fx.add(bell(["D5", "A4"][k % 2], 3.0, 1.2), t, 0.6, 0.4 * (-1) ** k)
             t += 1.5
             k += 1
         music.add(drone(dur("glocken") + 1, "D1", grit=0.6), s["start"], 1.3)

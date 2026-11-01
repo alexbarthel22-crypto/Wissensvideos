@@ -76,8 +76,37 @@
  "naechste": "FOLGE 3 · DAS VERSPRECHEN",
  "scenes": [
   {
+   "id": "kalt",
+   "pre": 0.15,
+   "post": 0.3,
+   "cues": {
+    "frage": "L1+0.0"
+   },
+   "lines": [
+    {
+     "who": "ICH",
+     "text": "Was bisher geschah: Jeder Stern, der fällt, gehört dem Orden. Wer ihn berührt, stirbt.",
+     "style": "zügig, spannend zusammenfassend, direkt zum Zuschauer, normale Sprechstimme, nicht flüstern",
+     "hook": "WAS BISHER GESCHAH",
+     "hook_static": true,
+     "display": "Jeder Stern, der fällt, gehört dem Orden. Wer ihn berührt, stirbt."
+    },
+    {
+     "who": "ICH",
+     "text": "Und letzte Nacht fiel einer. Ganz in meiner Nähe.",
+     "pre": 0.3,
+     "style": "spannend, dann mit Nachdruck auf 'fiel einer', normale Sprechstimme, nicht flüstern",
+     "hook": "FIEL EINER.",
+     "hook_at": 0.0,
+     "display": "Ganz in meiner Nähe.",
+     "text_delay": 2.0
+    }
+   ],
+   "tempo": 1.2
+  },
+  {
    "id": "intro",
-   "pre": 5.0,
+   "pre": 6.5,
    "post": 0,
    "lines": []
   },
@@ -88,8 +117,8 @@
    "lines": [
     {
      "who": "ICH",
-     "text": "Letztes Mal fiel ein Stern vom Himmel. Direkt in die verbotenen Ruinen. Aber bevor ich dir erzähle, was ich dort fand … musst du Kael kennen. Meinen großen Bruder.",
-     "style": "schnell und spannend zusammenfassend, dann warm und ein bisschen verletzt, normale Sprechstimme, nicht flüstern"
+     "text": "Bevor ich dir erzähle, wohin mich der Stern geführt hat … musst du Kael kennen. Meinen großen Bruder.",
+     "style": "warm, ein bisschen verletzt, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "ICH",
@@ -111,15 +140,15 @@
     },
     {
      "who": "ICH",
-     "text": "Heute ist er Hauptmann der Flammenwache. Seraphines treuester Soldat.",
+     "text": "Heute ist er Hauptmann der Flammenwache. Er dient Seraphine, der Hohepriesterin des Ordens.",
      "pre": 1.0,
-     "style": "kühl, normale Sprechstimme, nicht flüstern"
+     "style": "kühl, distanziert, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "ICH",
-     "text": "Jeden Monat schickt er mir einen Brief. Ich habe keinen einzigen geöffnet.",
+     "text": "Jeden Monat schickt er mir einen Brief. Ich habe keinen einzigen geöffnet. Er hat mich allein gelassen … für die Leute, die uns alles genommen haben.",
      "pre": 0.8,
-     "style": "trotzig, mit unterdrückter Traurigkeit, normale Sprechstimme, nicht flüstern"
+     "style": "trotzig, dann verletzt, mit unterdrückter Traurigkeit, normale Sprechstimme, nicht flüstern"
     }
    ]
   },
@@ -130,14 +159,14 @@
    "lines": [
     {
      "who": "ICH",
-     "text": "Der Stern schlug in den verbotenen Ruinen ein.",
+     "text": "Ich folgte seinem Licht nach unten. Der Stern war tief unter der Stadt eingeschlagen: in den verbotenen Ruinen.",
      "style": "spannend, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "ICH",
-     "text": "Eine tote Insel, tief unter der Stadt. Dort begann vor tausend Jahren das große Feuer.",
+     "text": "Eine tote Insel, die seit tausend Jahren niemand betreten hat. Dort begann damals das große Feuer.",
      "pre": 0.8,
-     "style": "unheimlich, normale Sprechstimme, nicht flüstern"
+     "style": "unheimlich, ernst, normale Sprechstimme, nicht flüstern"
     },
     {
      "who": "ICH",
@@ -256,7 +285,7 @@
    "lines": [
     {
      "who": "ICH",
-     "text": "An der Spitze des Ordens steht sie: Seraphine. Die Hohepriesterin. Die mächtigste Magierin von Valdoria.",
+     "text": "Seraphine ist die mächtigste Magierin von Valdoria. Niemand widerspricht ihr. Niemand.",
      "style": "respektvoll, etwas ängstlich, normale Sprechstimme, nicht flüstern"
     },
     {
@@ -291,7 +320,10 @@
      "rate": 0.93,
      "style": "direkt zum Zuschauer, warm, eindringlich, ein Hauch Lächeln, normale Sprechstimme, nicht flüstern"
     }
-   ]
+   ],
+   "cues": {
+    "knopf": "L0+2.4"
+   }
   }
  ],
  "tempo": 1.1,

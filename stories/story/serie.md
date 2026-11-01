@@ -104,12 +104,14 @@ Die Enthüllung hat Gewicht für die Hauptgeschichte: Ihr Vater hat Nerayas Mutt
 | 20 | Ramen für vier | Ausklang: Die Wale singen, Ramen zu viert | Optional ein Haken für Staffel 2 |
 
 ## Regeln pro Folge
-- Haken in den ersten 3 Sekunden, Rückblick höchstens 10 Sekunden (ab Folge 2).
+- Haken in den ersten 3 Sekunden. Ab Folge 2 vor dem Intro ein Rückblick von höchstens 10 Sekunden („Was bisher geschah“), der nur nennt, was in den vorigen Folgen wirklich vorkam.
 - Ein großes Ereignis pro Folge, ein klarer Cliffhanger.
 - Kein Flüstern. Immer normale, klare Sprechstimme; Gefahr und Trauer zeigen sich im Tonfall, nicht durch Flüstern.
 - Sarkastische Stellen deutlich sarkastisch spielen (trocken, Augenrollen hörbar).
 - Name „Neraya“ deutsch aussprechen („Ne-ra-ja“): im TTS-Text `Neraja`, im Untertitel `Neraya` (Feld `display`).
 - Moderne Jugendsprache selten und nur, wenn es passt (höchstens 1–2 Mal pro Folge, z. B. „Main-Character-Energy eben“).
+- Neue Figuren und Orte werden beim ersten Nennen kurz erklärt, danach nicht noch einmal.
+- Kein Video beginnt mit einem schwarzen Bild.
 - Sarkasmus sparsam: 1–2 Mal pro Folge, dann aber wirklich lustig und passend. Schüchternheit und Tollpatschigkeit zeigen sich eher im Tonfall. Je weiter die Serie, desto selbstbewusster und weniger stockend.
 - Lunara hat pro Folge genau einen lustigen Moment mit einer anderen Figur (Folge 1: klaut Ramen-Bo eine Nudel). Ihr Lieblingssnack ist Mondstaub.
 - Folge 1 beginnt mit einem Prolog von höchstens 10 Sekunden: „Hast du dich schon mal in einen Stern verliebt?“ fliegt als Sternschnuppe vor einem detaillierten Sternenhimmel herein, dann „Ich schon. Leider. Und das hätte nie passieren dürfen.“ Schrift in Rot und Blau (Cinzel, Cormorant Garamond), danach ein flüssiger Übergang ins Intro.
