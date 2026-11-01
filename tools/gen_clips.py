@@ -14,7 +14,7 @@ SUFFIX = (" Animate this exact image into a 4 second vertical 9:16 video. Keep t
 
 
 def anim(img, prompt, out):
-    body = {"model": "gemini-omni-1.1-flash", "input": [
+    body = {"model": os.environ.get("OMNI_MODEL", "gemini-omni-1.1-flash"), "input": [
         {"type": "image", "data": base64.b64encode(img.read_bytes()).decode(), "mime_type": "image/png"}, {"type": "text", "text": prompt + SUFFIX}]}
     for a in range(10):
         try:
