@@ -1125,9 +1125,86 @@ function camera(z, px = 0, py = 0) {
   ctx.translate(W / 2 + px, H / 2 + py); ctx.scale(z, z); ctx.translate(-W / 2, -H / 2);
 }
 
+// ---------- detailed night sky: milky way, dust lanes, coloured nebulae, thousands of stars ----------
+let SKY = null;
+function buildSky() {
+  const cv = document.createElement('canvas'); cv.width = 1300; cv.height = 2200;
+  const c = cv.getContext('2d'), w = cv.width, h = cv.height;
+  const bg = c.createLinearGradient(0, 0, 0, h);
+  bg.addColorStop(0, '#01020a'); bg.addColorStop(0.5, '#040820'); bg.addColorStop(1, '#0a0a26');
+  c.fillStyle = bg; c.fillRect(0, 0, w, h);
+  // milky way: diagonal band, soft colour clouds
+  const band = (u) => [lerp(-150, w + 150, u), lerp(h * 0.85, h * 0.12, u)];
+  c.globalCompositeOperation = 'lighter';
+  for (let i = 0; i < 260; i++) {
+    const u = rnd(i, 2001), [bx, by] = band(u), off = (rnd(i, 2002) - 0.5) * 380;
+    const x = bx + off * 0.55, y = by + off, r = 60 + 160 * rnd(i, 2003);
+    const col = rnd(i, 2004) < 0.45 ? '120,140,255' : rnd(i, 2004) < 0.75 ? '190,120,255' : '255,150,200';
+    const g = c.createRadialGradient(x, y, 0, x, y, r);
+    g.addColorStop(0, `rgba(${col},${0.05 + 0.05 * rnd(i, 2005)})`); g.addColorStop(1, `rgba(${col},0)`);
+    c.fillStyle = g; c.beginPath(); c.arc(x, y, r, 0, 7); c.fill();
+  }
+  // dense star dust inside the band
+  for (let i = 0; i < 14000; i++) {
+    const u = rnd(i, 2010), [bx, by] = band(u);
+    const g1 = (rnd(i, 2011) + rnd(i, 2012) + rnd(i, 2013) - 1.5) * 260;
+    const x = bx + g1 * 0.55, y = by + g1;
+    c.fillStyle = `rgba(230,235,255,${0.1 + 0.45 * rnd(i, 2014) ** 2})`;
+    const r = 0.4 + 0.9 * rnd(i, 2015) ** 3; c.fillRect(x, y, r, r);
+  }
+  // dark dust lanes along the band
+  c.globalCompositeOperation = 'source-over';
+  for (let i = 0; i < 70; i++) {
+    const u = rnd(i, 2020), [bx, by] = band(u), off = (rnd(i, 2021) - 0.5) * 120;
+    const x = bx + off * 0.55, y = by + off, r = 30 + 70 * rnd(i, 2022);
+    const g = c.createRadialGradient(x, y, 0, x, y, r);
+    g.addColorStop(0, 'rgba(2,3,12,0.35)'); g.addColorStop(1, 'rgba(2,3,12,0)');
+    c.fillStyle = g; c.beginPath(); c.arc(x, y, r, 0, 7); c.fill();
+  }
+  // field stars everywhere, a few tinted
+  c.globalCompositeOperation = 'lighter';
+  for (let i = 0; i < 7000; i++) {
+    const x = rnd(i, 2030) * w, y = rnd(i, 2031) * h, m = rnd(i, 2032) ** 4;
+    const tint = rnd(i, 2033) < 0.12 ? '255,210,170' : rnd(i, 2033) < 0.25 ? '170,200,255' : '245,245,255';
+    c.fillStyle = `rgba(${tint},${0.12 + 0.8 * m})`;
+    const r = 0.45 + 1.5 * m; c.beginPath(); c.arc(x, y, r, 0, 7); c.fill();
+    if (m > 0.75) { const g = c.createRadialGradient(x, y, 0, x, y, r * 6); g.addColorStop(0, `rgba(${tint},0.22)`); g.addColorStop(1, `rgba(${tint},0)`); c.fillStyle = g; c.beginPath(); c.arc(x, y, r * 6, 0, 7); c.fill(); }
+  }
+  return cv;
+}
+function richSky(t, lt) {
+  if (!SKY) SKY = buildSky();
+  // slow drift and a gentle push-in
+  const z = 1.0 + 0.05 * clamp(lt / 9);
+  ctx.save(); ctx.translate(540, 960); ctx.scale(z, z); ctx.rotate(0.012 * lt);
+  ctx.drawImage(SKY, -650 - 6 * lt, -1100 + 4 * lt);
+  ctx.restore();
+  // bright twinkling stars with diffraction spikes
+  ctx.save(); ctx.globalCompositeOperation = 'lighter';
+  for (let i = 0; i < 46; i++) {
+    const x = rnd(i, 2040) * W, y = rnd(i, 2041) * H, tw = 0.55 + 0.45 * Math.sin(t * (1.5 + 2.5 * rnd(i, 2042)) + i * 2.1);
+    const r = 2 + 3 * rnd(i, 2043), col = rnd(i, 2044) < 0.3 ? '255,215,180' : rnd(i, 2044) < 0.6 ? '180,205,255' : '255,255,255';
+    glow(x, y, r * 8, `rgba(${col},A)`, 0.45 * tw);
+    ctx.strokeStyle = `rgba(${col},${0.55 * tw})`; ctx.lineWidth = 1.2;
+    const L = r * (6 + 6 * tw);
+    ctx.beginPath(); ctx.moveTo(x - L, y); ctx.lineTo(x + L, y); ctx.moveTo(x, y - L); ctx.lineTo(x, y + L); ctx.stroke();
+    glow(x, y, r, `rgba(${col},A)`, tw);
+  }
+  // an occasional tiny shooting star in the distance
+  for (const [t0, x0, y0] of [[3.3, 900, 300], [6.4, 300, 520]]) {
+    const q = (lt - t0) / 0.6;
+    if (q > 0 && q < 1) for (let i = 0; i < 14; i++) { const qq = clamp(q - i * 0.025); glow(x0 - 260 * qq, y0 + 120 * qq, 6 - i * 0.35, 'rgba(230,240,255,A)', (1 - i / 14) * (1 - q)); }
+  }
+  ctx.restore();
+  // the star that is about to fall, swelling into the title
+  const d = SC.kalt.end - SC.kalt.start, fall = smooth(d - 2.2, d, lt);
+  if (fall > 0) { ctx.save(); ctx.globalCompositeOperation = 'lighter'; glow(540, 900, 180 * fall, 'rgba(230,240,255,A)', fall); ctx.restore(); }
+}
+
 // ---------- scenes ----------
 const SCENES = {
   kalt(t) {
+    if (LINES.filter(l => l.scene === 'kalt').length < 5) return richSky(t, local('kalt', t));
     const lt = local('kalt', t), d = SC.kalt.end - SC.kalt.start;
     camera(1.15 - 0.12 * lt / d, 0, 120 - 160 * lt / d);
     vgrad([[0, '#010208'], [0.6, '#060b1f'], [1, '#0d1430']]);
@@ -2198,6 +2275,8 @@ const SCENES = {
 };
 
 // ---------- overlays ----------
+// horizontal centre of all on-screen text: keeps clear of TikTok's buttons on the right edge
+const SAFE_X = 495;
 const SPEAKER_COL = { BO: '#ffcf8a', LUNARA: '#a8c8ff', KAEL_ERINNERUNG: '#ffc09a', SERAPHINE_HALLE: '#ff6f6f', KAEL: '#ff9b78', SERAPHINE: '#ff6f6f', STERN: '#d9e6ff', STERN_DUNKEL: '#c08cff', MUTTER: '#ffd59a' };
 
 function wrap(text, maxW) {
@@ -2233,17 +2312,26 @@ function hookText(l, t, a) {
   const bg = ctx.createRadialGradient(540, 900, 60, 540, 900, 760);
   bg.addColorStop(0, `rgba(0,0,0,${0.55 * a})`); bg.addColorStop(1, 'rgba(0,0,0,0)');
   ctx.fillStyle = bg; ctx.fillRect(0, 300, W, 1300);
-  ctx.translate(540, 900);
+  ctx.translate(SAFE_X, 900);
   // keyword: series lettering (Cinzel) in blue and red, on screen from the very first frame (hook_static)
   // or rising in while it is spoken; the glow alternates gently between blue and red
   if (l.hook) {
-    const size = l.hook_big ? 128 : l.hook.length > 22 ? 96 : 104;
+    const size = l.hook_big ? 128 : l.hook.length > 22 ? 100 : 108;
     if (ctx.letterSpacing !== undefined) ctx.letterSpacing = '4px';
     ctx.font = `700 ${size}px Cinzel`;
-    const hl = l.hook.length > 16 ? wrap(l.hook, 980) : [l.hook];
-    const t0 = l.hook_static ? 0 : l.start + (l.hook_at ?? 0) * (l.end - l.start);
+    const hl = l.hook.length > 16 ? wrap(l.hook, 800) : [l.hook];
+    const t0 = l.hook_static || l.hook_fly ? 0 : l.start + (l.hook_at ?? 0) * (l.end - l.start);
     if (t >= t0) {
-      const since = t - t0, p = l.hook_static ? 1 : easeOut(clamp(since / 0.5));
+      const since = t - t0, p = l.hook_static ? 1 : l.hook_fly ? 1 : easeOut(clamp(since / 0.5));
+      // shooting star: the whole text streaks in from the top right with a glittering tail
+      const FLY = 1.0, fp = l.hook_fly ? easeOut(clamp(since / FLY)) : 1;
+      if (l.hook_fly && fp < 1) {
+        ctx.save(); ctx.globalCompositeOperation = 'lighter';
+        for (let i = 0; i < 36; i++) { const q = easeOut(clamp(since / FLY - i * 0.018)); glow(lerp(700, 0, q), lerp(-1100, -90, q), 50 - i, 'rgba(210,225,255,A)', 0.55 * (1 - i / 36)); }
+        ctx.restore();
+      }
+      if (l.hook_fly && since > FLY && since < FLY + 0.45) { ctx.save(); ctx.globalCompositeOperation = 'lighter'; glow(0, -90, 520, 'rgba(200,215,255,A)', 0.6 * (1 - (since - FLY) / 0.45)); ctx.restore(); }
+      ctx.save(); ctx.translate(lerp(700, 0, fp), lerp(-1010, 0, fp)); ctx.scale(lerp(0.25, 1, fp), lerp(0.25, 1, fp));
       const phase = Math.floor(t / 0.35) % 2, pulse = 1 + 0.015 * Math.sin(t * 4);
       ctx.save(); ctx.translate(0, -90 + 30 * (1 - p)); ctx.scale(pulse, pulse);
       ctx.textBaseline = 'middle'; ctx.lineJoin = 'round';
@@ -2266,7 +2354,8 @@ function hookText(l, t, a) {
       ctx.globalAlpha = 1;
       if (ctx.letterSpacing !== undefined) ctx.letterSpacing = '0px';
       ctx.restore();
-      glitter(0, -90, 980, lh * hl.length + 100, t, 0.8 * a * p, 14, 3);
+      ctx.restore();
+      glitter(0, -90, 860, lh * hl.length + 100, t, 0.8 * a * p * fp, 14, 3);
       // emojis above the keyword: a beating heart next to a twinkling star
       if (l.hook_emoji) {
         const beat = 1 + 0.12 * Math.max(0, Math.sin(t * 7.5)) ** 4 + 0.06 * Math.max(0, Math.sin(t * 7.5 - 1.2)) ** 4;
@@ -2291,7 +2380,7 @@ function hookText(l, t, a) {
   // sentence: revealed left to right with star glitter at the edge
   if (l.hook) ctx.translate(0, 70);
   ctx.font = 'italic 600 70px "Cormorant Garamond"';
-  const lines = wrap(l.text, 920), tw = 960;
+  const lines = wrap(l.text, 800), tw = 840;
   const rp = clamp((t - l.start + 0.1) / 1.1);
   if (rp > 0) {
     ctx.save();
@@ -2321,7 +2410,7 @@ function subtitles(t) {
   ctx.save();
   ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
   ctx.font = narr ? 'italic 500 58px "Cormorant Garamond"' : '600 60px "Cormorant Garamond"';
-  const lines = wrap(l.text, 900);
+  const lines = wrap(l.text, 800);
   const lh = 68, y0 = (l.who === 'BO' ? 640 : l.scene === 'outro' ? 1610 : 1460) - (lines.length - 1) * lh / 2;
   const band = ctx.createLinearGradient(0, y0 - 190, 0, y0 + lines.length * lh + 80);
   band.addColorStop(0, 'rgba(0,0,0,0)'); band.addColorStop(0.35, `rgba(0,0,0,${0.5 * a})`);
@@ -2331,12 +2420,12 @@ function subtitles(t) {
   if (!narr) {
     if (ctx.letterSpacing !== undefined) ctx.letterSpacing = '5px';
     ctx.font = '700 34px Cinzel'; ctx.fillStyle = (SPEAKER_COL[l.who] ?? '#fff') + Math.round(a * 255).toString(16).padStart(2, '0');
-    ctx.fillText(l.label.toUpperCase(), 540, y0 - 72);
+    ctx.fillText(l.label.toUpperCase(), SAFE_X, y0 - 72);
     if (ctx.letterSpacing !== undefined) ctx.letterSpacing = '0px';
     ctx.font = '600 60px "Cormorant Garamond"';
   }
   ctx.fillStyle = narr ? `rgba(235,228,214,${a})` : `rgba(255,255,255,${a})`;
-  lines.forEach((s, i) => { ctx.fillText(s, 540, y0 + i * lh); ctx.fillText(s, 540, y0 + i * lh); });
+  lines.forEach((s, i) => { ctx.fillText(s, SAFE_X, y0 + i * lh); ctx.fillText(s, SAFE_X, y0 + i * lh); });
   ctx.restore();
 }
 

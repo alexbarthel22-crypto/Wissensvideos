@@ -112,7 +112,8 @@ Die Enthüllung hat Gewicht für die Hauptgeschichte: Ihr Vater hat Nerayas Mutt
 - Moderne Jugendsprache selten und nur, wenn es passt (höchstens 1–2 Mal pro Folge, z. B. „Main-Character-Energy eben“).
 - Sarkasmus sparsam: 1–2 Mal pro Folge, dann aber wirklich lustig und passend. Schüchternheit und Tollpatschigkeit zeigen sich eher im Tonfall. Je weiter die Serie, desto selbstbewusster und weniger stockend.
 - Lunara hat pro Folge genau einen lustigen Moment mit einer anderen Figur (Folge 1: klaut Ramen-Bo eine Nudel). Ihr Lieblingssnack ist Mondstaub.
-- Folge 1 beginnt mit einem Prolog von höchstens 10 Sekunden: „Ich habe mich in einen Stern verliebt.“ – „Wie das passiert ist? Mach's dir gemütlich … ich erzähle dir alles.“ Schrift in Rot und Blau, in den Serienschriften (Cinzel, Cormorant Garamond), danach ein glatter Übergang ins Intro.
+- Folge 1 beginnt mit einem Prolog von höchstens 10 Sekunden: „Hast du dich schon mal in einen Stern verliebt?“ fliegt als Sternschnuppe vor einem detaillierten Sternenhimmel herein, dann „Ich schon. Leider. Und das hätte nie passieren dürfen.“ Schrift in Rot und Blau (Cinzel, Cormorant Garamond), danach ein flüssiger Übergang ins Intro.
+- Text immer im TikTok-Sicherheitsbereich: rechts etwa 150 px frei lassen (Symbole), Textmitte bei x = 495.
 - Dramatische Sätze („Und Valdoria … brannte.“) bekommen eine Sprechpause davor, als eigene Zeile mit `pre`.
 - Musik: Herausstechende Szenen (ernst, dramatisch, romantisch, spannend, lustig) bekommen eigene Musik. Die Musik bleibt leise unter der Stimme.
 - Neraya bewegt sich passend zur Erzählung (gehen, Laterne anzünden, Hand senken) und posiert nicht starr.

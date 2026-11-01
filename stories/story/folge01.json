@@ -84,34 +84,33 @@
  "scenes": [
   {
    "id": "kalt",
-   "pre": 0.2,
-   "post": 0.5,
+   "pre": 0.3,
+   "post": 0.6,
    "lines": [
     {
      "who": "ICH",
-     "text": "Ich habe mich in einen Stern verliebt.",
-     "style": "direkt zum Zuschauer, ehrlich, ein bisschen verlegen, als würde sie ein Geheimnis gestehen, normale Sprechstimme, nicht flüstern",
-     "hook": "ICH HABE MICH IN EINEN STERN VERLIEBT.",
-     "hook_static": true,
-     "hook_only": true,
-     "hook_emoji": "❤️ ⭐",
-     "hook_big": true
+     "text": "Hast du dich schon mal in einen Stern verliebt?",
+     "style": "direkt zum Zuschauer, neugierig, ein bisschen verschmitzt, geheimnisvoll, normale Sprechstimme, nicht flüstern",
+     "hook": "HAST DU DICH SCHON MAL IN EINEN STERN VERLIEBT?",
+     "hook_fly": true,
+     "hook_only": true
     },
     {
      "who": "ICH",
-     "text": "Wie das passiert ist? Ich erzähle dir alles.",
-     "pre": 0.5,
-     "style": "warm, einladend, mit einem Lächeln, ruhig erzählend, normale Sprechstimme, nicht flüstern",
-     "hook": "WIE DAS PASSIERT IST?",
+     "text": "Ich schon. Leider. Und das hätte nie passieren dürfen.",
+     "pre": 0.6,
+     "style": "ehrlich, erst trocken ('Ich schon. Leider.'), dann ernst und schwer, normale Sprechstimme, nicht flüstern",
+     "hook": "ICH SCHON.",
      "hook_at": 0.0,
-     "display": "Ich erzähle dir alles."
+     "display": "Leider. Und das hätte nie passieren dürfen."
     }
    ],
    "tempo": 1.0,
    "cues": {
     "ex_hit": "L0+0.0",
     "frage": "L1+0.0"
-   }
+   },
+   "rich_sky": true
   },
   {
    "id": "intro",
