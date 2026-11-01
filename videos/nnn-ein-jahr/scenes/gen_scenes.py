@@ -61,16 +61,16 @@ def pop(sel, t): return END.replace("@@SEL@@", sel).replace("@@T@@", t)
 
 S['s01'] = ('''    #s01-ad { left: 0; right: 0; top: 330px; margin: 0 auto; width: fit-content; padding: 12px 34px; border-radius: 18px; background: #e0202f; color: #fff; font: 900 54px Inter, sans-serif; letter-spacing: .04em; box-shadow: 0 0 60px rgba(224,32,47,1); }
     #s01-t { left: 0; width: 1080px; top: 450px; text-align: center; }
-    #s01-t .a { font: 900 130px/0.95 Inter, sans-serif; color: #ff4fb0; text-shadow: 0 0 50px rgba(255,79,176,.95), 0 8px 30px rgba(0,0,0,.7); }
-    #s01-t .b { position: relative; display: inline-block; font: 900 92px/1.05 Inter, sans-serif; color: #fff; text-shadow: 0 8px 30px rgba(0,0,0,.8); }
-    #s01-t .b s { position: absolute; left: -10px; right: -10px; top: 44px; height: 12px; border-radius: 6px; background: #ff2d4b; }
-    #s01-j { left: 600px; top: 600px; font: 700 104px "Caveat", "Comic Sans MS", cursive; color: #ffd43b; transform: rotate(-10deg); text-shadow: 0 0 30px rgba(255,212,59,.8), 0 6px 20px rgba(0,0,0,.8); }
-    #s01-bd { left: 40px; top: 740px; width: 640px; height: 250px; border-radius: 18px; background: #0b1a3a; border: 8px solid #3a4a6e; box-shadow: 0 20px 60px rgba(0,0,0,.6); }
+    #s01-t .a { font: 900 175px/0.92 Inter, sans-serif; color: #ff4fb0; text-shadow: 0 0 50px rgba(255,79,176,.95), 0 8px 30px rgba(0,0,0,.7); }
+    #s01-t .b { position: relative; display: inline-block; font: 900 124px/1.02 Inter, sans-serif; color: #fff; text-shadow: 0 8px 30px rgba(0,0,0,.8); }
+    #s01-t .b s { position: absolute; left: -10px; right: -10px; top: 58px; height: 15px; border-radius: 6px; background: #ff2d4b; }
+    #s01-j { left: 640px; top: 660px; font: 700 120px "Caveat", "Comic Sans MS", cursive; color: #ffd43b; transform: rotate(-10deg); text-shadow: 0 0 30px rgba(255,212,59,.8), 0 6px 20px rgba(0,0,0,.8); }
+    #s01-bd { left: 40px; top: 800px; width: 640px; height: 250px; border-radius: 18px; background: #0b1a3a; border: 8px solid #3a4a6e; box-shadow: 0 20px 60px rgba(0,0,0,.6); }
     #s01-bd .h { height: 50px; background: #1f3a7a; color: #fff; font: 700 28px/50px "Space Mono", monospace; padding-left: 22px; letter-spacing: .1em; }
     #s01-bd .r { position: absolute; left: 22px; right: 22px; font: 700 31px/56px "Space Mono", monospace; color: #ffd43b; white-space: nowrap; }
     #s01-bd .r i { font-style: normal; color: #ff3b55; }
-    #s01-vl { left: 0; width: 1080px; top: 780px; text-align: center; font: 900 120px Inter, sans-serif; color: #ff2d4b; opacity: 0; transform: rotate(-6deg); text-shadow: 0 0 40px rgba(255,45,75,1), 0 0 90px rgba(255,45,75,.8); }
-    #s01-big { left: 0; width: 760px; top: 760px; text-align: center; font: 900 180px/1 Inter, sans-serif; color: #ffd43b; opacity: 0; text-shadow: 0 0 60px rgba(255,212,59,.9); }
+    #s01-vl { left: 0; width: 1080px; top: 840px; text-align: center; font: 900 120px Inter, sans-serif; color: #ff2d4b; opacity: 0; transform: rotate(-6deg); text-shadow: 0 0 40px rgba(255,45,75,1), 0 0 90px rgba(255,45,75,.8); }
+    #s01-big { left: 0; width: 760px; top: 790px; text-align: center; font: 900 180px/1 Inter, sans-serif; color: #ffd43b; opacity: 0; text-shadow: 0 0 60px rgba(255,212,59,.9); }
     #s01-big small { display: block; font: 900 56px Inter, sans-serif; color: #fff; letter-spacing: .2em; }
     #s01-tag { left: 560px; top: 700px; padding: 10px 22px; border-radius: 14px; background: rgba(255,255,255,.96); color: #22283f; font: 800 46px Inter, sans-serif; opacity: 0; box-shadow: 0 16px 40px rgba(0,0,0,.4); }
     #s01-eb { left: 0; width: 760px; top: 720px; text-align: center; font: 900 110px Inter, sans-serif; color: #ff3b55; opacity: 0; text-shadow: 0 0 40px rgba(255,59,85,.9); }
@@ -319,16 +319,21 @@ SVG + '''
 
 S['s09'] = ('''    #s09-t { left: 0; width: 1080px; top: 440px; text-align: center; color: #fff; font: 900 90px/1.05 Inter, sans-serif; text-shadow: 0 0 40px rgba(255,79,176,.6); opacity: 0; }
     #s09-t small { display: block; margin-top: 20px; font: 800 44px Inter, sans-serif; color: #ff8fd0; letter-spacing: .1em; }
-    .s09-b { position: absolute; top: 800px; width: 440px; height: 150px; border-radius: 30px; text-align: center; color: #fff; font: 900 56px/150px Inter, sans-serif; opacity: 0; }
+    .s09-b { position: absolute; top: 760px; width: 440px; height: 150px; border-radius: 30px; text-align: center; color: #fff; font: 900 56px/150px Inter, sans-serif; opacity: 0; }
+    #s09-f { left: 290px; top: 960px; width: 500px; height: 120px; border-radius: 60px; background: #ff3b5c; color: #fff; text-align: center; font: 900 58px/120px Inter, sans-serif; opacity: 0; box-shadow: 0 10px 40px rgba(255,59,92,.6); }
     #s09-y { left: 60px; background: #1fa65a; box-shadow: 0 0 50px rgba(57,226,122,.6); } #s09-n { left: 580px; background: #d32a45; box-shadow: 0 0 50px rgba(255,59,85,.6); }''',
 '''      <div id="s09-t" class="abs">Würdest du<br>1 Jahr aushalten?<small>Wenn nein: wie lange?</small></div>
-      <div id="s09-y" class="s09-b">JA, 365 TAGE</div><div id="s09-n" class="s09-b">NEIN, NUR …</div>''',
+      <div id="s09-y" class="s09-b">JA, 365 TAGE</div><div id="s09-n" class="s09-b">NEIN, NUR …</div>
+      <div id="s09-f" class="abs">+ Folgen</div>''',
 '''      const st = document.querySelector("#s09-stage"), sv = el("svg", { class: "full", viewBox: "0 0 1080 1920" }); st.insertBefore(sv, st.firstChild); sky(sv, "s09g", "#2a1f4f", "#0f0b22");
       const a = at("L24", "Jahr"), b = at("L24", "wie");
       tl.fromTo("#s09-t", { opacity: 0, scale: 1.25 }, { opacity: 1, scale: 1, duration: 0.5, ease: "power3.out" }, 0.1);
       tl.fromTo("#s09-y", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.35, ease: "back.out(2)" }, a - 0.1);
       tl.fromTo("#s09-n", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.35, ease: "back.out(2)" }, b - 0.1);
-      tl.to(["#s09-y", "#s09-n"], { scale: 1.06, duration: 0.35, yoyo: true, repeat: 9, ease: "sine.inOut", stagger: 0.35 }, b + 0.4);''')
+      tl.to(["#s09-y", "#s09-n"], { scale: 1.06, duration: 0.35, yoyo: true, repeat: 3, ease: "sine.inOut", stagger: 0.35 }, b + 0.4);
+      const fo = at("L25", "folg");
+      tl.fromTo("#s09-f", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.4, ease: "back.out(2)" }, fo - 0.1);
+      tl.to("#s09-f", { scale: 1.08, duration: 0.3, yoyo: true, repeat: 11, ease: "sine.inOut" }, fo + 0.4);''')
 
 here = Path(__file__).parent
 for sid, (css, html, js) in S.items():

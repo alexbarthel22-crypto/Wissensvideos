@@ -28,8 +28,8 @@
     #s03-th .z { position: absolute; left: 70px; right: 70px; top: 110px; height: 80px; background: #111; color: #fff; font: 900 50px/80px Inter, sans-serif; letter-spacing: .14em; }
     #s03-th .k { position: absolute; left: 0; right: 0; top: 34px; font: 800 30px Inter, sans-serif; color: #ff4fb0; letter-spacing: .2em; }
   </style>
-  <div id="root" data-composition-id="s03" data-start="0" data-duration="9.430" data-width="1080" data-height="1920">
-    <div id="s03-stage" class="clip stage" data-start="0" data-duration="9.430" data-track-index="0">
+  <div id="root" data-composition-id="s03" data-start="0" data-duration="9.360" data-width="1080" data-height="1920">
+    <div id="s03-stage" class="clip stage" data-start="0" data-duration="9.360" data-track-index="0">
       <svg id="s03-svg" class="full" viewBox="0 0 1080 1920"></svg>
       <div id="s03-th" class="abs"><div class="k">KOPFKINO</div><div class="z">ZENSIERT</div></div>
       <div class="vig"></div>
@@ -38,7 +38,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 9.43, "L7": [0.2, 3.36], "L7.words": [["februar", 0.2, 0.67], ["valentinstag", 1.22, 2.01], ["überall", 2.56, 3.032], ["pärchen", 3.032, 3.36]], "L8": [3.58, 6.96], "L8.words": [["warum", 3.58, 3.925], ["das", 3.925, 4.101], ["kritisch", 4.101, 4.464], ["ist", 4.464, 4.64], ["überall", 5.19, 5.707], ["wird", 5.707, 5.889], ["geküsst", 5.889, 6.248], ["und", 6.248, 6.425], ["gekuschelt", 6.425, 6.96]], "L8b": [7.18, 9.25], "L8b.words": [["und", 7.18, 7.383], ["georgs", 7.383, 7.609], ["kopfkino", 7.609, 8.211], ["läuft", 8.211, 8.429], ["auf", 8.429, 8.633], ["hochtouren", 8.633, 9.25]]};
+      const C = {"__dur": 9.36, "L7": [0.2, 3.33], "L7.words": [["februar", 0.2, 0.67], ["valentinstag", 1.22, 1.91], ["überall", 2.46, 2.973], ["pärchen", 2.973, 3.33]], "L8": [3.55, 6.74], "L8.words": [["warum", 3.55, 3.892], ["das", 3.892, 4.066], ["kritisch", 4.066, 4.426], ["ist", 4.426, 4.6], ["überall", 5.15, 5.614], ["wird", 5.614, 5.778], ["geküsst", 5.778, 6.101], ["und", 6.101, 6.259], ["gekuschelt", 6.259, 6.74]], "L8b": [6.96, 9.18], "L8b.words": [["und", 6.96, 7.178], ["georgs", 7.178, 7.42], ["kopfkino", 7.42, 8.066], ["läuft", 8.066, 8.3], ["auf", 8.3, 8.518], ["hochtouren", 8.518, 9.18]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];

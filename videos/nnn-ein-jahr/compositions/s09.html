@@ -24,20 +24,22 @@
     .vig { position: absolute; left: 0; right: 0; top: 1040px; height: 880px; background: linear-gradient(rgba(10,12,30,0), rgba(10,12,30,.5) 45%, rgba(10,12,30,.55)); pointer-events: none; }
     #s09-t { left: 0; width: 1080px; top: 440px; text-align: center; color: #fff; font: 900 90px/1.05 Inter, sans-serif; text-shadow: 0 0 40px rgba(255,79,176,.6); opacity: 0; }
     #s09-t small { display: block; margin-top: 20px; font: 800 44px Inter, sans-serif; color: #ff8fd0; letter-spacing: .1em; }
-    .s09-b { position: absolute; top: 800px; width: 440px; height: 150px; border-radius: 30px; text-align: center; color: #fff; font: 900 56px/150px Inter, sans-serif; opacity: 0; }
+    .s09-b { position: absolute; top: 760px; width: 440px; height: 150px; border-radius: 30px; text-align: center; color: #fff; font: 900 56px/150px Inter, sans-serif; opacity: 0; }
+    #s09-f { left: 290px; top: 960px; width: 500px; height: 120px; border-radius: 60px; background: #ff3b5c; color: #fff; text-align: center; font: 900 58px/120px Inter, sans-serif; opacity: 0; box-shadow: 0 10px 40px rgba(255,59,92,.6); }
     #s09-y { left: 60px; background: #1fa65a; box-shadow: 0 0 50px rgba(57,226,122,.6); } #s09-n { left: 580px; background: #d32a45; box-shadow: 0 0 50px rgba(255,59,85,.6); }
   </style>
-  <div id="root" data-composition-id="s09" data-start="0" data-duration="7.230" data-width="1080" data-height="1920">
-    <div id="s09-stage" class="clip stage" data-start="0" data-duration="7.230" data-track-index="0">
+  <div id="root" data-composition-id="s09" data-start="0" data-duration="10.010" data-width="1080" data-height="1920">
+    <div id="s09-stage" class="clip stage" data-start="0" data-duration="10.010" data-track-index="0">
       <div id="s09-t" class="abs">Würdest du<br>1 Jahr aushalten?<small>Wenn nein: wie lange?</small></div>
       <div id="s09-y" class="s09-b">JA, 365 TAGE</div><div id="s09-n" class="s09-b">NEIN, NUR …</div>
+      <div id="s09-f" class="abs">+ Folgen</div>
       <div class="vig"></div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 7.23, "L24": [0.2, 4.63], "L24.words": [["und", 0.2, 0.441], ["du", 0.441, 0.674], ["würdest", 0.674, 1.165], ["du", 1.165, 1.398], ["ein", 1.398, 1.639], ["jahr", 1.639, 1.889], ["aushalten", 1.889, 2.613], ["wenn", 2.613, 2.863], ["nicht", 2.863, 3.122], ["schreib", 3.122, 3.398], ["wie", 3.398, 3.639], ["lange", 3.639, 4.113], ["du", 4.113, 4.346], ["schaffst", 4.346, 4.63]]};
+      const C = {"__dur": 10.01, "L24": [0.2, 4.68], "L24.words": [["und", 0.2, 0.444], ["du", 0.444, 0.679], ["würdest", 0.679, 1.176], ["du", 1.176, 1.412], ["ein", 1.412, 1.656], ["jahr", 1.656, 1.908], ["aushalten", 1.908, 2.64], ["wenn", 2.64, 2.893], ["nicht", 2.893, 3.155], ["schreib", 3.155, 3.434], ["wie", 3.434, 3.678], ["lange", 3.678, 4.157], ["du", 4.157, 4.392], ["schaffst", 4.392, 4.68]], "L25": [4.9, 7.41], "L25.words": [["und", 4.9, 5.127], ["folg", 5.127, 5.363], ["mir", 5.363, 5.59], ["wenn", 5.87, 6.027], ["du", 6.027, 6.174], ["bisher", 6.174, 6.477], ["standhaft", 6.477, 6.797], ["geblieben", 6.797, 7.253], ["bist", 7.253, 7.41]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -248,7 +250,10 @@
       tl.fromTo("#s09-t", { opacity: 0, scale: 1.25 }, { opacity: 1, scale: 1, duration: 0.5, ease: "power3.out" }, 0.1);
       tl.fromTo("#s09-y", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.35, ease: "back.out(2)" }, a - 0.1);
       tl.fromTo("#s09-n", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.35, ease: "back.out(2)" }, b - 0.1);
-      tl.to(["#s09-y", "#s09-n"], { scale: 1.06, duration: 0.35, yoyo: true, repeat: 9, ease: "sine.inOut", stagger: 0.35 }, b + 0.4);
+      tl.to(["#s09-y", "#s09-n"], { scale: 1.06, duration: 0.35, yoyo: true, repeat: 3, ease: "sine.inOut", stagger: 0.35 }, b + 0.4);
+      const fo = at("L25", "folg");
+      tl.fromTo("#s09-f", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.4, ease: "back.out(2)" }, fo - 0.1);
+      tl.to("#s09-f", { scale: 1.08, duration: 0.3, yoyo: true, repeat: 11, ease: "sine.inOut" }, fo + 0.4);
       window.__timelines["s09"] = tl;
     })();
   </script>
