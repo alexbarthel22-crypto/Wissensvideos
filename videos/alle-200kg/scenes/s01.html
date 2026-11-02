@@ -1,0 +1,52 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .vig { position: absolute; left: 0; right: 0; top: 1040px; height: 880px; background: linear-gradient(rgba(10,12,30,0), rgba(10,12,30,.5) 45%, rgba(10,12,30,.55)); pointer-events: none; }
+    #s01-bar { left: 0; right: 0; top: 300px; margin: 0 auto; width: fit-content; padding: 8px 28px; border-radius: 12px; background: #e0202f; color: #fff; font: 900 40px Inter, sans-serif; letter-spacing: .14em; box-shadow: 0 0 40px rgba(224,32,47,.9); }
+    #s01-t { left: 30px; width: 1020px; top: 380px; text-align: center; color: #fff; font: 900 92px/1.02 Inter, sans-serif; text-shadow: 0 6px 0 rgba(0,0,0,.4), 0 0 30px rgba(0,0,0,.6); }
+    #s01-t b { display: block; font-size: 230px; line-height: .95; color: #ff3b55; text-shadow: 0 0 60px rgba(255,59,85,.9), 0 8px 0 rgba(0,0,0,.4); }
+    #s01-frame { left: 0; top: 0; width: 1080px; height: 1920px; box-shadow: inset 0 0 0 14px rgba(224,32,47,.9), inset 0 0 140px rgba(224,32,47,.6); }
+    #s01-d { left: 380px; top: 1006px; width: 320px; height: 96px; border-radius: 14px; background: #10131f; text-align: center; font: 700 70px/96px "Space Mono", monospace; color: #ff3b55; text-shadow: 0 0 20px rgba(255,59,85,.9); }
+    #s01-flash { left: 0; top: 0; width: 1080px; height: 1920px; background: #fff; opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="s01" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s01-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <svg id="s01-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s01-frame" class="abs"></div>
+      <div id="s01-bar" class="abs">● EILMELDUNG · LIVE</div>
+      <div id="s01-t" class="abs" data-layout-allow-overlap>WAS WÄRE, WENN<br>JEDER MENSCH<b>200 KG</b>WIEGEN WÜRDE?</div>
+      <div id="s01-d" class="abs">200 kg</div>
+      <div id="s01-flash" class="abs"></div>
+      <div class="vig"></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s01-svg"); sky(sv, "s01g", "#2a0d24", "#0b0716");
+      const sc = el("g", {}, sv); el("rect", { x: 260, y: 960, width: 560, height: 230, rx: 40, fill: "#e9ecf5" }, sc); el("rect", { x: 280, y: 980, width: 520, height: 190, rx: 30, fill: "#cfd5e2" }, sc);
+      const cr = el("path", { d: "M560 1000 l-30 50 l40 30 l-30 60 M620 1010 l30 40 l-20 40", stroke: "#22283f", "stroke-width": 6, fill: "none", opacity: 0 }, sv);
+      const crowd = []; for (let i = 0; i < 9; i++) crowd.push(fat(sv, 90 + i * 112, 1680 + (i % 2) * 30, 0.9 + (i % 3) * 0.08, COLS[i % 6]));
+      gsap.set(crowd.map((c) => c.g), { opacity: 0 });
+      const z = at("L1", "200"), l2 = line("L2")[0], zw = at("L2", "zweihundert"), l3 = line("L3")[0], er = at("L3", "Erde");
+      tl.to("#s01-bar", { opacity: 0.35, duration: 0.25, yoyo: true, repeat: 15 }, 0);
+      tl.to("#s01-frame", { opacity: 0.25, duration: 0.3, yoyo: true, repeat: 13 }, 0);
+      tl.to("#s01-d", { opacity: 0.4, duration: 0.15, yoyo: true, repeat: 11 }, 0);
+      tl.fromTo("#s01-flash", { opacity: 0.85 }, { opacity: 0, duration: 0.4, immediateRender: false }, z - 0.05);
+      tl.fromTo("#s01-t b", { scale: 1.3 }, { scale: 1, duration: 0.35, ease: "back.out(2)", immediateRender: false }, z - 0.05);
+      tl.to([sc, "#s01-d"], { y: 14, duration: 0.05, repeat: 9, yoyo: true }, z);
+      tl.to(cr, { opacity: 1, duration: 0.05 }, z + 0.1);
+      crowd.forEach((c, i) => tl.fromTo(c.g, { opacity: 0, y: 1820 }, { opacity: 1, y: 1680 + (i % 2) * 30, duration: 0.3, ease: "back.out(2)" }, l2 + 0.2 + i * 0.12));
+      crowd.forEach((c, i) => tl.to(c.g, { y: "-=14", duration: 0.18, yoyo: true, repeat: 3 }, zw + (i % 3) * 0.06));
+      tl.to(["#s01-t", "#s01-bar"], { opacity: 0.25, duration: 0.3 }, l3);
+      tl.to(sv, { x: 10, duration: 0.04, repeat: 7, yoyo: true }, er);
+      tl.to("#s01-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s01"] = tl;
+    })();
+  </script>
+</template>

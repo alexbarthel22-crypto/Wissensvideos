@@ -1,0 +1,428 @@
+{
+ "title": "Was wäre, wenn jeder Mensch 200 kg wiegen würde?",
+ "voice": "Gemini TTS (gemini-3.1-flash-tts-preview, Puck)",
+ "style": "cinema",
+ "lead_in": 0.9,
+ "nocap": [
+  "L1"
+ ],
+ "jump_top": 390,
+ "gemini_model": "gemini-3.1-flash-tts-preview",
+ "gemini_voice": "Puck",
+ "gemini_style": "[packend, emotional, staunend, spannend, lebendig, zügig]",
+ "_zahlen": "Weltbevölkerung 8,2 Mrd.; menschliche Biomasse heute ~0,4 Gt (Walpole et al. 2012: Erwachsene 287 Mt); neu 8,2e9×200 kg=1,64 Gt; wilde Landsäugetiere ~22 Mt (Greenspoon et al. 2023, PNAS) → ~74×. Aufzug EN 81: 75 kg/Person, 630 kg = 8 Pers. Knie beim Treppensteigen ~3× Körpergewicht. A320 max. Nutzlast ~19–20 t → ~80–95 Pers. à 200 kg inkl. Gepäck. Stühle häufig bis 110 kg geprüft. Grundumsatz 200 kg (Mifflin) ~3.000 kcal ×1,2 ≈ 3.500 kcal; heutiger Ø-Bedarf ~2.200 → ~+60 %. Tribünen EN 1991-1-1 C5: 5 kN/m² ≈ 510 kg/m². BMI 200/1,75² = 65; Prospective Studies Collaboration 2009: BMI 40–50 → −8 bis −10 Jahre. Erdmasse 6e21 t.",
+ "scenes": [
+  {
+   "id": "s01",
+   "tag": "",
+   "lines": [
+    {
+     "id": "L1",
+     "text": "*r:Eilmeldung: / Was wäre, wenn *y:jeder *y:Mensch / *r:200|zweihundert *r:Kilo wiegen würde?",
+     "speed": 0.95
+    },
+    {
+     "id": "L2",
+     "text": "Acht Komma zwei Milliarden Menschen. / Jeder einzelne: *r:zweihundert *r:Kilo."
+    },
+    {
+     "id": "L3",
+     "text": "Und am Ende erfährst du, / was das mit der *b:Erde macht."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "alarm",
+     "at": "s01+0.0",
+     "volume": 0.9
+    },
+    {
+     "name": "impact-bass-1",
+     "at": "L1:200",
+     "volume": 0.7
+    },
+    {
+     "name": "impact-bass-2",
+     "at": "L2:zweihundert",
+     "volume": 0.5
+    }
+   ]
+  },
+  {
+   "id": "s02",
+   "tag": "",
+   "jump": [
+    "1,6 MRD. T",
+    "MENSCHHEIT"
+   ],
+   "lines": [
+    {
+     "id": "L4",
+     "text": "Heute wiegt die ganze Menschheit / zusammen etwa *y:400|vierhundert *y:Millionen *y:Tonnen."
+    },
+    {
+     "id": "L5",
+     "text": "Mit zweihundert Kilo pro Kopf: / *r:1,6|eins_Komma_sechs *r:Milliarden *r:Tonnen. / *r:Viermal so viel."
+    },
+    {
+     "id": "L6",
+     "text": "Das ist *r:mehr *r:als *r:siebzigmal so viel / wie alle wilden Landsäugetiere der Erde. / Elefanten, Löwen, Rehe. *y:Alle *y:zusammen.",
+     "stat": []
+    }
+   ],
+   "sfx": [
+    {
+     "name": "impact-bass-1",
+     "at": "L5:Milliarden",
+     "volume": 0.5
+    },
+    {
+     "name": "pop",
+     "at": "L6:Alle",
+     "volume": 0.4
+    }
+   ]
+  },
+  {
+   "id": "s03",
+   "tag": "",
+   "jump": [
+    "PROBLEM 1",
+    "AUFZUG"
+   ],
+   "lines": [
+    {
+     "id": "L7",
+     "text": "Erstes Problem: *r:der *r:Aufzug."
+    },
+    {
+     "id": "L8",
+     "text": "Ein normaler Aufzug für *y:acht *y:Personen / trägt *y:630|sechshundertdreißig *y:Kilo.",
+     "stat": [
+      "AUFZUG",
+      "630 kg",
+      "8 PERSONEN"
+     ]
+    },
+    {
+     "id": "L9",
+     "text": "Ab jetzt passen da *r:nur *r:noch *r:drei rein. / Alle anderen nehmen die Treppe.",
+     "stat": [
+      "AUFZUG NEU",
+      "3 PERSONEN",
+      "ÜBERLAST AB DER 4."
+     ]
+    }
+   ],
+   "sfx": [
+    {
+     "name": "error",
+     "at": "L9:drei",
+     "volume": 0.35
+    },
+    {
+     "name": "notification",
+     "at": "L8:630",
+     "volume": 0.3
+    }
+   ]
+  },
+  {
+   "id": "s04",
+   "tag": "",
+   "jump": [
+    "PROBLEM 2",
+    "DIE KNIE"
+   ],
+   "lines": [
+    {
+     "id": "L10",
+     "text": "Und genau da wird's hart: / Beim Treppensteigen tragen deine Knie / *r:etwa *r:das *r:Dreifache deines Gewichts.",
+     "stat": []
+    },
+    {
+     "id": "L11",
+     "text": "Bei zweihundert Kilo sind das / *r:600|sechshundert *r:Kilo. / *r:Pro *r:Schritt.",
+     "stat": [
+      "DRUCK AUFS KNIE",
+      "600 kg",
+      "PRO STUFE"
+     ]
+    }
+   ],
+   "sfx": [
+    {
+     "name": "impact-bass-1",
+     "at": "L11:600",
+     "volume": 0.6
+    },
+    {
+     "name": "impact-bass-2",
+     "at": "L11:Schritt",
+     "volume": 0.5
+    }
+   ]
+  },
+  {
+   "id": "s05",
+   "tag": "",
+   "jump": [
+    "PROBLEM 3",
+    "FLIEGEN"
+   ],
+   "lines": [
+    {
+     "id": "L12",
+     "text": "Fliegen wird *r:Luxus. / Ein Airbus A320|A_drei_zwanzig darf nur / eine bestimmte Last tragen.",
+     "stat": []
+    },
+    {
+     "id": "L13",
+     "text": "Statt hundertachtzig Passagieren / dürften nur noch *r:rund *r:achtzig mit. / Tickets: *r:mindestens *r:doppelt so teuer.",
+     "stat": [
+      "AIRBUS A320",
+      "≈ 80 PLÄTZE",
+      "STATT 180"
+     ]
+    }
+   ],
+   "sfx": [
+    {
+     "name": "whoosh",
+     "at": "L12:Luxus",
+     "volume": 0.4
+    },
+    {
+     "name": "error",
+     "at": "L13:achtzig",
+     "volume": 0.3
+    }
+   ]
+  },
+  {
+   "id": "s06",
+   "tag": "",
+   "jump": [
+    "PROBLEM 4",
+    "STÜHLE"
+   ],
+   "lines": [
+    {
+     "id": "L14",
+     "text": "Viele normale Stühle / sind für etwa *y:110|hundertzehn *y:Kilo gebaut. / Also: *r:Knack.",
+     "stat": [
+      "NORMALER STUHL",
+      "110 kg",
+      "BELASTBAR BIS"
+     ]
+    },
+    {
+     "id": "L15",
+     "text": "Und XXXL|Dreifach_XL / wird die neue *p:Größe *p:M.",
+     "stat": []
+    }
+   ],
+   "sfx": [
+    {
+     "name": "impact-bass-1",
+     "at": "L14:Knack",
+     "volume": 0.7
+    },
+    {
+     "name": "pop",
+     "at": "L15:Größe",
+     "volume": 0.4
+    }
+   ]
+  },
+  {
+   "id": "s07",
+   "tag": "",
+   "jump": [
+    "PROBLEM 5",
+    "ESSEN"
+   ],
+   "lines": [
+    {
+     "id": "L16",
+     "text": "Ein Zweihundert-Kilo-Körper braucht jeden Tag / rund *y:3.500|dreitausendfünfhundert *y:Kalorien. / Nur, um zu überleben.",
+     "stat": [
+      "KALORIEN PRO TAG",
+      "≈ 3.500",
+      "OHNE SPORT"
+     ]
+    },
+    {
+     "id": "L17",
+     "text": "Die Welt bräuchte auf einen Schlag / *r:rund *r:60|sechzig *r:Prozent mehr Essen. / Supermarktregale: *r:leer.",
+     "stat": [
+      "ESSEN WELTWEIT",
+      "+60 %",
+      "SOFORT"
+     ]
+    }
+   ],
+   "sfx": [
+    {
+     "name": "pop",
+     "at": "L16:3.500",
+     "volume": 0.35
+    },
+    {
+     "name": "error",
+     "at": "L17:leer",
+     "volume": 0.3
+    }
+   ]
+  },
+  {
+   "id": "s08",
+   "tag": "",
+   "jump": [
+    "PROBLEM 6",
+    "STADION"
+   ],
+   "lines": [
+    {
+     "id": "L18",
+     "text": "Jetzt wird's richtig gefährlich: / Stadiontribünen sind für etwa / *y:500|fünfhundert *y:Kilo pro Quadratmeter gebaut.",
+     "stat": [
+      "TRIBÜNE",
+      "500 kg/m²",
+      "AUSGELEGT FÜR"
+     ]
+    },
+    {
+     "id": "L19",
+     "text": "Vier Fans pro Quadratmeter, / je zweihundert Kilo: *r:800|achthundert *r:Kilo. / Und beim Torjubel *r:springen sie.",
+     "stat": [
+      "TRIBÜNE NEU",
+      "800 kg/m²",
+      "+ TORJUBEL"
+     ]
+    }
+   ],
+   "sfx": [
+    {
+     "name": "heartbeat",
+     "at": "L18:Stadiontribünen",
+     "volume": 0.5
+    },
+    {
+     "name": "impact-bass-1",
+     "at": "L19:springen",
+     "volume": 0.8
+    },
+    {
+     "name": "impact-bass-2",
+     "at": "L19:springen+0.3",
+     "volume": 0.6
+    }
+   ]
+  },
+  {
+   "id": "s09",
+   "tag": "",
+   "jump": [
+    "PROBLEM 7",
+    "DEIN KÖRPER"
+   ],
+   "lines": [
+    {
+     "id": "L20",
+     "text": "Und dein Körper? / Bei 1,75|eins_fünfundsiebzig Meter Größe / wärst du bei *r:Adipositas *r:Grad *r:drei.",
+     "stat": [
+      "BMI",
+      "65",
+      "ADIPOSITAS GRAD 3"
+     ]
+    },
+    {
+     "id": "L21",
+     "text": "Große Studien zeigen: / Das kostet *r:bis *r:zu *r:zehn *r:Lebensjahre.",
+     "stat": [
+      "LEBENSERWARTUNG",
+      "− 10 J.",
+      "STUDIEN"
+     ]
+    }
+   ],
+   "sfx": [
+    {
+     "name": "heartbeat",
+     "at": "L20:Adipositas",
+     "volume": 0.6
+    },
+    {
+     "name": "error",
+     "at": "L21:zehn",
+     "volume": 0.3
+    }
+   ]
+  },
+  {
+   "id": "s10",
+   "tag": "",
+   "jump": [
+    "UND DIE ERDE?",
+    ""
+   ],
+   "lines": [
+    {
+     "id": "L22",
+     "text": "Und die Erde? / Die merkt davon: *g:absolut *g:nichts.",
+     "stat": [],
+     "pause": 0.3
+    },
+    {
+     "id": "L23",
+     "text": "Eins Komma sechs Milliarden Tonnen / sind für unseren Planeten / *g:weniger *g:als *g:ein *g:Staubkorn für dich."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "pop",
+     "at": "L22:nichts",
+     "volume": 0.4
+    }
+   ]
+  },
+  {
+   "id": "s11",
+   "tag": "",
+   "hold": 2.6,
+   "lines": [
+    {
+     "id": "L24",
+     "text": "Was würde dich am meisten nerven? / Der *y:Aufzug, / das *y:Flugzeug, / oder der *y:Stuhl? / Schreib's in die Kommentare."
+    },
+    {
+     "id": "L25",
+     "text": "Und *p:folg *p:mir / für mehr Was-wäre-wenn."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "pop",
+     "at": "L24:Aufzug",
+     "volume": 0.35
+    },
+    {
+     "name": "pop",
+     "at": "L24:Flugzeug",
+     "volume": 0.35
+    },
+    {
+     "name": "pop",
+     "at": "L24:Stuhl",
+     "volume": 0.35
+    },
+    {
+     "name": "impact-bass-1",
+     "at": "L25:folg",
+     "volume": 0.5
+    }
+   ]
+  }
+ ]
+}
