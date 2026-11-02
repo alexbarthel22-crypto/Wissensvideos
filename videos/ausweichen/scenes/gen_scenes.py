@@ -73,15 +73,15 @@ def scene(sid, shots, extra_css="", extra_html="", extra_js="", outro=True):
 
 S['s01'] = scene("s01", [])
 S['s02'] = scene("s02", [], extra_html='\n      <div id="s02-a" class="lab y" style="left:90px;top:330px">← LINKS</div><div id="s02-b" class="lab y" style="left:560px;top:330px">RECHTS →</div>',
-  extra_js=popin("#s02-a", 'at("L3", "links") - 0.1') + popin("#s02-b", 'at("L3", "rechts") - 0.1'))
-S['s03'] = scene("s03", [], extra_html='\n      <div id="s03-a" class="lab" style="left:150px;top:330px">„SIDEWALK SHUFFLE“</div>', extra_js=popin("#s03-a", 'at("L5", "Sidewalk") - 0.1'))
+  extra_js=popin("#s02-a", 'at("L3", "links") - 0.1') + popin("#s02-b", 'at("L3", "rechts") - 0.1') + '\n      tl.set(["#s02-a", "#s02-b"], { opacity: 0 }, line("L4")[0] - 0.05);')
+S['s03'] = scene("s03", [], extra_html='\n      <div id="s03-a" class="lab" style="left:150px;top:330px">„SIDEWALK SHUFFLE“</div>', extra_js=popin("#s03-a", 'at("L5", "Sidewalk") - 0.1') + '\n      tl.set("#s03-a", { opacity: 0 }, line("L6")[0] - 0.05);')
 S['s04'] = scene("s04", [], extra_html='\n      <div id="s04-a" class="lab r" style="left:260px;top:1330px;font-size:80px">&lt; 1 METER</div>', extra_js=popin("#s04-a", 'at("L7", "Meter") - 0.1') + '\n      tl.set("#s04-a", { opacity: 0 }, line("L8")[0] - 0.05);')
 S['s05'] = scene("s05", [], extra_html='\n      <div id="s05-a" class="lab g" style="left:90px;top:330px">BLICK = RICHTUNG</div><div id="s05-b" class="lab r" style="left:180px;top:1330px">KEIN SIGNAL</div>',
   extra_js=popin("#s05-a", 'at("L9", "wohin") - 0.1') + '\n      tl.set("#s05-a", { opacity: 0 }, line("L10")[0] - 0.05);' + popin("#s05-b", 'at("L10", "kein") - 0.1'))
 S['s06'] = scene("s06", [], extra_css='\n    #s06-c { left: 0; width: 1080px; top: 380px; text-align: center; font: 900 190px/1 Inter, sans-serif; color: #ff5a6e; opacity: 0; transform: rotate(-8deg); text-shadow: 6px 6px 0 #1a0d33, -6px -6px 0 #1a0d33, 0 0 50px rgba(255,90,110,.9); }',
   extra_html='\n      <div id="s06-c" class="abs">CRASH!</div>',
   extra_js='\n      tl.fromTo("#s06-c", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: 0.18, ease: "power4.in" }, at("L11", "Crash") - 0.1);\n      tl.to("#s06-c", { opacity: 0, duration: 0.2 }, line("L12")[0] - 0.2);')
-S['s07'] = scene("s07", [], extra_html='\n      <div id="s07-a" class="lab g" style="left:120px;top:330px">BLICK AUF DEN WEG</div>', extra_js=popin("#s07-a", 'at("L13", "genau") - 0.1'))
+S['s07'] = scene("s07", [], extra_html='\n      <div id="s07-a" class="lab g" style="left:120px;top:330px">BLICK AUF DEN WEG</div>', extra_js=popin("#s07-a", 'at("L13", "genau") - 0.1') + '\n      tl.set("#s07-a", { opacity: 0 }, line("L14")[0] - 0.05);')
 S['s08'] = scene("s08", [], outro=False,
   extra_css='''
     #s08-f { left: 290px; top: 1320px; width: 500px; height: 124px; border-radius: 62px; background: #ff3b5c; color: #fff; text-align: center; font: 900 60px/124px Inter, sans-serif; opacity: 0; box-shadow: 0 10px 50px rgba(255,59,92,.7); }''',
