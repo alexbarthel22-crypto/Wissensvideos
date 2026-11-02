@@ -1,0 +1,359 @@
+{
+ "title": "Was wäre, wenn du der letzte fruchtbare Mann wärst?",
+ "voice": "Gemini TTS (gemini-2.5-flash-preview-tts, Puck)",
+ "style": "cinema",
+ "lead_in": 0.9,
+ "nocap": [
+  "L1"
+ ],
+ "jump_top": 390,
+ "gemini_model": "gemini-2.5-flash-preview-tts",
+ "gemini_voice": "Puck",
+ "gemini_style": "[packend, emotional, spannend, dramatisch, lebendig, zügig]",
+ "_zahlen": "Männer weltweit ~4,1 Mrd.; Geburten ~130–134 Mio./Jahr (UN WPP); Spermienproduktion ~1.500/s ≈ 130 Mio./Tag; ICSI braucht 1 Spermium pro Eizelle; Samenbanken (z. B. Cryos) lagern Proben zehntausender Spender; In-vitro-Gametogenese bei Mäusen gelungen (Hayashi), beim Menschen in Forschung. 20 Jahre × 130 Mio. ≈ 2,6 Mrd. Halbgeschwister.",
+ "scenes": [
+  {
+   "id": "s01",
+   "tag": "",
+   "lines": [
+    {
+     "id": "L1",
+     "text": "*r:Eilmeldung: / Was wäre, wenn *y:du / der *r:letzte *r:fruchtbare *r:Mann / auf der Welt wärst?",
+     "speed": 0.95
+    },
+    {
+     "id": "L2",
+     "text": "Vier Milliarden Männer. / *r:Alle *r:unfruchtbar. / *g:Außer *g:dir.",
+     "pause": 0.1
+    },
+    {
+     "id": "L3",
+     "text": "Und was danach passiert, / ist *r:verstörender, als du denkst."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "alarm",
+     "at": "s01+0.0",
+     "volume": 0.9
+    },
+    {
+     "name": "impact-bass-1",
+     "at": "L1:letzte",
+     "volume": 0.7
+    },
+    {
+     "name": "impact-bass-2",
+     "at": "L2:Außer",
+     "volume": 0.6
+    }
+   ]
+  },
+  {
+   "id": "s02",
+   "tag": "",
+   "jump": [
+    "TAG 1",
+    "DER ANRUF"
+   ],
+   "lines": [
+    {
+     "id": "L4",
+     "text": "Tag eins. / Ein Arzt ruft an. / Dein Testergebnis ist *g:perfekt."
+    },
+    {
+     "id": "L5",
+     "text": "Zwei Stunden später / stehen *r:schwarze *r:Regierungsautos / vor deiner Tür."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "notification",
+     "at": "L4:Arzt",
+     "volume": 0.4
+    },
+    {
+     "name": "impact-bass-2",
+     "at": "L5:Regierungsautos",
+     "volume": 0.5
+    }
+   ]
+  },
+  {
+   "id": "s03",
+   "tag": "",
+   "jump": [
+    "TAG 2",
+    "PERSONENSCHUTZ"
+   ],
+   "lines": [
+    {
+     "id": "L6",
+     "text": "Ab jetzt bist du / der *y:wertvollste *y:Mensch der Welt. / Mehr Bodyguards als jeder *y:Präsident."
+    },
+    {
+     "id": "L7",
+     "text": "Du darfst *r:nicht *r:mehr *r:fliegen, / nicht Motorrad fahren, / nicht mal *r:alleine einkaufen.",
+     "stat": []
+    }
+   ],
+   "sfx": [
+    {
+     "name": "pop",
+     "at": "L6:wertvollste",
+     "volume": 0.4
+    },
+    {
+     "name": "error",
+     "at": "L7:fliegen",
+     "volume": 0.3
+    },
+    {
+     "name": "error",
+     "at": "L7:alleine",
+     "volume": 0.3
+    }
+   ]
+  },
+  {
+   "id": "s04",
+   "tag": "",
+   "jump": [
+    "DIE RECHNUNG",
+    "130 MIO."
+   ],
+   "lines": [
+    {
+     "id": "L8",
+     "text": "Jedes Jahr werden weltweit / rund *y:130|hundertdreißig *y:Millionen Babys geboren."
+    },
+    {
+     "id": "L9",
+     "text": "Dein Körper produziert / jeden Tag *b:über *b:hundert *b:Millionen Spermien. / Rein rechnerisch: *g:genug *g:für *g:alle."
+    },
+    {
+     "id": "L10",
+     "text": "Aber nur mit *b:künstlicher *b:Befruchtung. / Im Labor. / *r:Rund *r:um *r:die *r:Uhr.",
+     "stat": []
+    }
+   ],
+   "sfx": [
+    {
+     "name": "pop",
+     "at": "L8:130",
+     "volume": 0.35
+    },
+    {
+     "name": "pop",
+     "at": "L9:hundert",
+     "volume": 0.35
+    },
+    {
+     "name": "impact-bass-2",
+     "at": "L10:Uhr",
+     "volume": 0.4
+    }
+   ]
+  },
+  {
+   "id": "s05",
+   "tag": "",
+   "jump": [
+    "DEIN ALLTAG",
+    "NEUER JOB"
+   ],
+   "lines": [
+    {
+     "id": "L11",
+     "text": "Dein neuer Job: / *p:Becher *p:füllen. / Jeden Tag. *r:Unter *r:Aufsicht."
+    },
+    {
+     "id": "L12",
+     "text": "Und die ganze Welt weiß, / *r:was *r:du *r:da *r:gerade *r:machst.",
+     "pause": 0.1
+    }
+   ],
+   "sfx": [
+    {
+     "name": "pop",
+     "at": "L11:Becher",
+     "volume": 0.4
+    },
+    {
+     "name": "glitch-1",
+     "at": "L12:machst",
+     "volume": 0.25
+    }
+   ]
+  },
+  {
+   "id": "s06",
+   "tag": "",
+   "jump": [
+    "WOCHE 1",
+    "BERÜHMT"
+   ],
+   "lines": [
+    {
+     "id": "L13",
+     "text": "Du bist berühmter als jeder Star. / *y:Acht *y:Milliarden Menschen / kennen dein Gesicht."
+    },
+    {
+     "id": "L14",
+     "text": "Deine Follower: / *y:eine *y:Milliarde. / Nach einer Woche."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "notification",
+     "at": "L14:Milliarde",
+     "volume": 0.45
+    },
+    {
+     "name": "notification",
+     "at": "L14:Woche",
+     "volume": 0.45
+    }
+   ]
+  },
+  {
+   "id": "s07",
+   "tag": "",
+   "jump": [
+    "MONAT 1",
+    "DIE FRAUEN"
+   ],
+   "lines": [
+    {
+     "id": "L15",
+     "text": "Und die Frauen? / Viele sind *r:wütend, / weil plötzlich *r:alles *r:von *r:dir abhängt.",
+     "stat": []
+    },
+    {
+     "id": "L16",
+     "text": "Andere schicken dir / *p:zehntausend *p:Liebesbriefe. / Pro Tag."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "error",
+     "at": "L15:wütend",
+     "volume": 0.3
+    },
+    {
+     "name": "pop",
+     "at": "L16:Liebesbriefe",
+     "volume": 0.4
+    }
+   ]
+  },
+  {
+   "id": "s08",
+   "tag": "",
+   "jump": [
+    "JAHR 20",
+    "DAS PROBLEM"
+   ],
+   "lines": [
+    {
+     "id": "L17",
+     "text": "Aber jetzt kommt der *r:verstörende Teil.",
+     "pause": 0.2,
+     "speed": 0.92
+    },
+    {
+     "id": "L18",
+     "text": "Jedes Kind, das ab jetzt geboren wird, / ist *r:dein *r:Kind.",
+     "speed": 0.92
+    },
+    {
+     "id": "L19",
+     "text": "Alle Babys der Welt / sind *r:Halbgeschwister. / In zwanzig Jahren / ist *r:jeder *r:mit *r:jedem verwandt."
+    },
+    {
+     "id": "L20",
+     "text": "Ohne neue Gene / droht der Menschheit / in wenigen Generationen *r:Inzucht."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "heartbeat",
+     "at": "L17:verstörende",
+     "volume": 0.5
+    },
+    {
+     "name": "impact-bass-1",
+     "at": "L18:dein",
+     "volume": 0.7
+    },
+    {
+     "name": "impact-bass-2",
+     "at": "L20:Inzucht",
+     "volume": 0.5
+    }
+   ]
+  },
+  {
+   "id": "s09",
+   "tag": "",
+   "jump": [
+    "DIE RETTUNG",
+    ""
+   ],
+   "lines": [
+    {
+     "id": "L21",
+     "text": "Die Rettung: *b:Samenbanken. / Dort lagern *b:eingefrorene *b:Proben / von zehntausenden Spendern."
+    },
+    {
+     "id": "L22",
+     "text": "Und Forscher arbeiten schon heute daran, / Spermien *g:im *g:Labor herzustellen."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "pop",
+     "at": "L21:Samenbanken",
+     "volume": 0.4
+    },
+    {
+     "name": "pop",
+     "at": "L22:Labor",
+     "volume": 0.4
+    }
+   ]
+  },
+  {
+   "id": "s10",
+   "tag": "",
+   "hold": 2.6,
+   "lines": [
+    {
+     "id": "L23",
+     "text": "Also, ehrlich: / Würdest du es *g:genießen, / oder dich *r:verstecken? / Schreib's in die Kommentare."
+    },
+    {
+     "id": "L24",
+     "text": "Und *p:folg *p:mir / für mehr Was-wäre-wenn."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "pop",
+     "at": "L23:genießen",
+     "volume": 0.4
+    },
+    {
+     "name": "pop",
+     "at": "L23:verstecken",
+     "volume": 0.4
+    },
+    {
+     "name": "impact-bass-1",
+     "at": "L24:folg",
+     "volume": 0.5
+    }
+   ]
+  }
+ ]
+}

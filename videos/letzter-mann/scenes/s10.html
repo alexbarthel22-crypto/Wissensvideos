@@ -1,0 +1,36 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .vig { position: absolute; left: 0; right: 0; top: 1040px; height: 880px; background: linear-gradient(rgba(10,12,30,0), rgba(10,12,30,.5) 45%, rgba(10,12,30,.55)); pointer-events: none; }
+    #s10-t { left: 0; width: 1080px; top: 440px; text-align: center; color: #fff; font: 900 96px/1.05 Inter, sans-serif; text-shadow: 0 0 40px rgba(255,79,176,.6); opacity: 0; }
+    .s10-b { position: absolute; top: 760px; width: 470px; height: 150px; border-radius: 30px; text-align: center; color: #fff; white-space: nowrap; font: 900 50px/150px Inter, sans-serif; opacity: 0; }
+    #s10-y { left: 50px; background: #1fa65a; box-shadow: 0 0 50px rgba(57,226,122,.6); } #s10-n { left: 560px; background: #d32a45; box-shadow: 0 0 50px rgba(255,59,85,.6); }
+    #s10-f { left: 290px; top: 960px; width: 500px; height: 110px; border-radius: 55px; background: #ff3b5c; color: #fff; text-align: center; font: 900 56px/110px Inter, sans-serif; opacity: 0; box-shadow: 0 10px 50px rgba(255,59,92,.7); }
+  </style>
+  <div id="root" data-composition-id="s10" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s10-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s10-t" class="abs">Und du?</div>
+      <div id="s10-y" class="s10-b">😎 GENIESSEN</div><div id="s10-n" class="s10-b">🫣 VERSTECKEN</div>
+      <div id="s10-f" class="abs">+ Folgen</div>
+      <div class="vig"></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const st = document.querySelector("#s10-stage"), sv = el("svg", { class: "full", viewBox: "0 0 1080 1920" }); st.insertBefore(sv, st.firstChild); sky(sv, "s10g", "#2a1f4f", "#0f0b22");
+      const a = at("L23", "genießen"), b = at("L23", "verstecken"), fo = at("L24", "folg");
+      tl.fromTo("#s10-t", { opacity: 0, scale: 1.25 }, { opacity: 1, scale: 1, duration: 0.5, ease: "power3.out" }, 0.1);
+      tl.fromTo("#s10-y", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.35, ease: "back.out(2)" }, a - 0.1);
+      tl.fromTo("#s10-n", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.35, ease: "back.out(2)" }, b - 0.1);
+      tl.fromTo("#s10-f", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.35, ease: "back.out(2)" }, fo - 0.1);
+      tl.to("#s10-f", { scale: 1.08, duration: 0.3, yoyo: true, repeat: 9, ease: "sine.inOut" }, fo + 0.4);
+      window.__timelines["s10"] = tl;
+    })();
+  </script>
+</template>

@@ -1,0 +1,46 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .vig { position: absolute; left: 0; right: 0; top: 1040px; height: 880px; background: linear-gradient(rgba(10,12,30,0), rgba(10,12,30,.5) 45%, rgba(10,12,30,.55)); pointer-events: none; }
+    .bt { position: absolute; left: 0; width: 1080px; text-align: center; font: 900 120px/1 Inter, sans-serif; color: #fff; opacity: 0; text-shadow: 0 0 40px rgba(0,0,0,.5), 0 8px 0 rgba(0,0,0,.35); }
+    .bt.r { color: #ff3b55; text-shadow: 0 0 40px rgba(255,59,85,.8); } .bt.y { color: #ffd43b; text-shadow: 0 0 40px rgba(255,212,59,.7); } .bt.g { color: #39e27a; text-shadow: 0 0 40px rgba(57,226,122,.7); }
+    #s04-n { left: 0; width: 1080px; top: 640px; text-align: center; font: 900 120px/1 Inter, sans-serif; color: #ffd43b; opacity: 0; text-shadow: 0 0 40px rgba(255,212,59,.7); }
+    #s04-n small { display: block; font: 800 38px Inter, sans-serif; color: #fff; letter-spacing: .14em; margin-top: 8px; }
+  </style>
+  <div id="root" data-composition-id="s04" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s04-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <svg id="s04-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s04-n" class="abs"><span id="s04-v">0</span><small id="s04-l">BABYS PRO JAHR</small></div>
+      <div class="vig"></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s04-svg"); sky(sv, "s04g", "#1d3a5a", "#0d1e33");
+      el("rect", { x: 0, y: 1150, width: 1080, height: 770, fill: "#16263c" }, sv);
+      const lab = el("g", {}, sv); el("rect", { x: 140, y: 880, width: 800, height: 40, rx: 10, fill: "#cfd8ea" }, lab);
+      const tubes = []; for (let i = 0; i < 9; i++) { const g = el("g", { opacity: 0 }, lab); el("rect", { x: 180 + i * 84, y: 720, width: 40, height: 160, rx: 20, fill: "#fff", stroke: "#9aa3b5", "stroke-width": 4 }, g); el("rect", { x: 186 + i * 84, y: 800, width: 28, height: 74, rx: 14, fill: COLS[i % 6], opacity: 0.8 }, g); tubes.push(g); }
+      const babies = []; for (let i = 0; i < 18; i++) babies.push(el("circle", { cx: 120 + (i % 9) * 105, cy: 940 + Math.floor(i / 9) * 90, r: 30, fill: "#f2cba5", opacity: 0 }, sv));
+      const dct = woman(sv, 900, 1180, 1.8, "#ffffff", "#6b4423"); gsap.set(dct.g, { opacity: 0 });
+      const l8 = line("L8")[0], m1 = at("L8", "130"), l9 = line("L9")[0], hu = at("L9", "hundert"), ge = at("L9", "genug"), l10 = line("L10")[0], uh = at("L10", "Uhr");
+      tl.to("#s04-n", { opacity: 1, duration: 0.3 }, l8 + 0.2);
+      count(tl, "#s04-v", 0, 130000000, l8 + 0.3, m1 - l8, "", "", "power2.out");
+      tl.to(babies, { opacity: 1, duration: 0.1, stagger: 0.06 }, m1 - 0.6);
+      tl.to(babies, { opacity: 0, duration: 0.2 }, l9 - 0.1);
+      tl.set("#s04-l", { textContent: "SPERMIEN PRO TAG" }, l9); count(tl, "#s04-v", 0, 100000000, hu - 0.4, 0.8, "", "+", "power2.out");
+      tl.to("#s04-v", { color: "#39e27a", duration: 0.2 }, ge);
+      tl.to("#s04-n", { opacity: 0, duration: 0.2 }, l10 - 0.2);
+      tl.to(tubes, { opacity: 1, duration: 0.15, stagger: 0.12 }, l10);
+      tl.fromTo(dct.g, { opacity: 0 }, { opacity: 1, duration: 0.3 }, l10 + 0.3);
+      tubes.forEach((t, i) => tl.to(t, { y: -16, duration: 0.25, yoyo: true, repeat: 3 }, uh - 0.5 + i * 0.05));
+      tl.to("#s04-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s04"] = tl;
+    })();
+  </script>
+</template>

@@ -1,0 +1,37 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .vig { position: absolute; left: 0; right: 0; top: 1040px; height: 880px; background: linear-gradient(rgba(10,12,30,0), rgba(10,12,30,.5) 45%, rgba(10,12,30,.55)); pointer-events: none; }
+    .bt { position: absolute; left: 0; width: 1080px; text-align: center; font: 900 120px/1 Inter, sans-serif; color: #fff; opacity: 0; text-shadow: 0 0 40px rgba(0,0,0,.5), 0 8px 0 rgba(0,0,0,.35); }
+    .bt.r { color: #ff3b55; text-shadow: 0 0 40px rgba(255,59,85,.8); } .bt.y { color: #ffd43b; text-shadow: 0 0 40px rgba(255,212,59,.7); } .bt.g { color: #39e27a; text-shadow: 0 0 40px rgba(57,226,122,.7); }
+  </style>
+  <div id="root" data-composition-id="s06" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s06-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <svg id="s06-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s06-f" class="bt y" style="top:470px;font-size:96px"><span id="s06-v">0</span></div>
+      <div class="vig"></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s06-svg"); sky(sv, "s06g", "#2a1158", "#a4307f");
+      const bb = el("g", {}, sv); for (let i = 0; i < 3; i++) { el("rect", { x: 80 + i * 320, y: 640, width: 280, height: 400, rx: 20, fill: "#111" }, bb); }
+      const faces = [0, 1, 2].map((i) => finn(sv, 220 + i * 320, 1020, 1.6, { hood: "#2f6fe0", arm: "#2559b8", cap: "#ffd43b", label: "DU" }));
+      const flashes = []; const rf = rng(9); for (let i = 0; i < 16; i++) flashes.push(el("circle", { cx: 60 + rf() * 960, cy: 1250 + rf() * 400, r: 26, fill: "#fff", opacity: 0 }, sv));
+      const crowd = []; for (let i = 0; i < 14; i++) crowd.push(tiny(sv, 40 + i * 76, 1700 + (i % 2) * 30, COLS[i % 6], 2.2));
+      const ac = at("L13", "Acht"), l14 = line("L14")[0], mi = at("L14", "Milliarde");
+      flashes.forEach((f, i) => tl.fromTo(f, { opacity: 0 }, { opacity: 0.9, duration: 0.06, yoyo: true, repeat: 1, immediateRender: false }, 0.6 + i * 0.35));
+      crowd.forEach((c, i) => tl.to(c, { y: -18, duration: 0.2, yoyo: true, repeat: 7 }, ac + (i % 3) * 0.07));
+      tl.to("#s06-f", { opacity: 1, duration: 0.2 }, l14);
+      count(tl, "#s06-v", 0, 1000000000, l14 + 0.2, mi - l14 + 0.3, "", " FOLLOWER", "power2.in");
+      tl.to("#s06-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s06"] = tl;
+    })();
+  </script>
+</template>

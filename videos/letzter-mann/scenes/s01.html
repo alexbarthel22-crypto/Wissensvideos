@@ -1,0 +1,56 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .vig { position: absolute; left: 0; right: 0; top: 1040px; height: 880px; background: linear-gradient(rgba(10,12,30,0), rgba(10,12,30,.5) 45%, rgba(10,12,30,.55)); pointer-events: none; }
+    #s01-bar { left: 0; right: 0; top: 300px; margin: 0 auto; width: fit-content; padding: 8px 28px; border-radius: 12px; background: #e0202f; color: #fff; font: 900 40px Inter, sans-serif; letter-spacing: .14em; box-shadow: 0 0 40px rgba(224,32,47,.9); }
+    #s01-t { left: 30px; width: 1020px; top: 380px; text-align: center; color: #fff; font: 900 84px/1.04 Inter, sans-serif; text-shadow: 0 6px 0 rgba(0,0,0,.4), 0 0 30px rgba(0,0,0,.6); }
+    #s01-t b { display: block; font-size: 150px; line-height: 1; color: #ff3b55; text-shadow: 0 0 60px rgba(255,59,85,.9), 0 8px 0 rgba(0,0,0,.4); }
+    #s01-frame { left: 0; top: 0; width: 1080px; height: 1920px; box-shadow: inset 0 0 0 14px rgba(224,32,47,.9), inset 0 0 140px rgba(224,32,47,.6); }
+    #s01-cnt { left: 240px; width: 600px; top: 1480px; text-align: center; font: 900 60px/1 "Space Mono", monospace; color: #ffd43b; text-shadow: 0 0 20px rgba(255,212,59,.8); }
+    #s01-cnt small { display: block; margin-top: 8px; font: 800 28px Inter, sans-serif; color: #fff; letter-spacing: .14em; }
+    #s01-du { left: 0; width: 1080px; top: 1370px; text-align: center; font: 900 64px Inter, sans-serif; color: #ffd43b; opacity: 0; text-shadow: 0 0 30px rgba(255,212,59,1); }
+    #s01-flash { left: 0; top: 0; width: 1080px; height: 1920px; background: #fff; opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="s01" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s01-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <svg id="s01-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s01-frame" class="abs"></div>
+      <div id="s01-bar" class="abs">● EILMELDUNG · LIVE</div>
+      <div id="s01-t" class="abs" data-layout-allow-overlap>WAS WÄRE, WENN<br>DU DER<b>LETZTE</b>FRUCHTBARE MANN WÄRST?</div>
+      <div id="s01-cnt" class="abs"><span id="s01-n">4.100.000.000</span><small>FRUCHTBARE MÄNNER</small></div>
+      <div id="s01-du" class="abs">★ DAS BIST DU ★</div>
+      <div id="s01-flash" class="abs"></div>
+      <div class="vig"></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s01-svg"); sky(sv, "s01g", "#2a0d24", "#0b0716");
+      const G = globe(sv, 540, 1080, 165, "s01w", 120, 3); G.dots.forEach((d) => gsap.set(d, { opacity: 1, attr: { fill: "#4da3ff" } }));
+      const me = G.dots[57]; const ring = el("circle", { cx: me.getAttribute("cx"), cy: me.getAttribute("cy"), r: 22, fill: "none", stroke: "#ffd43b", "stroke-width": 5, opacity: 0 }, sv);
+      const le = at("L1", "letzte"), l2 = line("L2")[0], un = at("L2", "unfruchtbar"), au = at("L2", "Außer"), l3 = line("L3")[0];
+      tl.to("#s01-bar", { opacity: 0.35, duration: 0.25, yoyo: true, repeat: 17 }, 0);
+      tl.to("#s01-frame", { opacity: 0.25, duration: 0.3, yoyo: true, repeat: 15 }, 0);
+      tl.fromTo(G.g, { rotation: 0, svgOrigin: "540 1080" }, { rotation: 8, svgOrigin: "540 1080", duration: C.__dur, ease: "none" }, 0);
+      tl.fromTo("#s01-flash", { opacity: 0.85 }, { opacity: 0, duration: 0.4, immediateRender: false }, le - 0.05);
+      tl.fromTo("#s01-t b", { scale: 1.35 }, { scale: 1, duration: 0.35, ease: "back.out(2)", immediateRender: false }, le - 0.05);
+      tl.to("#s01-t", { x: 12, duration: 0.04, repeat: 9, yoyo: true }, le);
+      const off = G.dots.filter((d) => d !== me);
+      tl.to(off, { attr: { fill: "#4a4f66" }, opacity: 0.6, duration: 0.1, stagger: { each: (au - un) / off.length, from: "random" } }, un - 0.3);
+      count(tl, "#s01-n", 4100000000, 1, un - 0.3, au - un + 0.3, "", "", "power3.in");
+      tl.to(me, { attr: { fill: "#ffd43b", r: 9 }, duration: 0.2 }, au - 0.1);
+      tl.fromTo(ring, { opacity: 0, scale: 0.4, svgOrigin: `${me.getAttribute("cx")} ${me.getAttribute("cy")}` }, { opacity: 1, scale: 2, svgOrigin: `${me.getAttribute("cx")} ${me.getAttribute("cy")}`, duration: 0.6, repeat: 4, ease: "power1.out", immediateRender: false }, au);
+      tl.fromTo("#s01-du", { opacity: 0, y: -20 }, { opacity: 1, y: 0, duration: 0.3, ease: "back.out(2)" }, au);
+      tl.to("#s01-cnt small", { textContent: "FRUCHTBARER MANN", duration: 0.01 }, au + 0.2);
+      tl.to("#s01-t", { opacity: 0.3, duration: 0.3 }, l3);
+      tl.to("#s01-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s01"] = tl;
+    })();
+  </script>
+</template>
