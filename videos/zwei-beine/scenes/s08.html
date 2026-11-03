@@ -1,0 +1,36 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .vig { position: absolute; left: 0; right: 0; top: 1040px; height: 880px; background: linear-gradient(rgba(10,12,30,0), rgba(10,12,30,.5) 45%, rgba(10,12,30,.55)); pointer-events: none; }
+    .bt { position: absolute; left: 0; width: 1080px; text-align: center; font: 900 120px/1 Inter, sans-serif; color: #fff; opacity: 0; text-shadow: 0 0 40px rgba(0,0,0,.5), 0 8px 0 rgba(0,0,0,.35); }
+    .bt.r { color: #ff3b55; text-shadow: 0 0 40px rgba(255,59,85,.8); } .bt.y { color: #ffd43b; text-shadow: 0 0 40px rgba(255,212,59,.7); } .bt.g { color: #39e27a; text-shadow: 0 0 40px rgba(57,226,122,.7); }
+  </style>
+  <div id="root" data-composition-id="s08" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s08-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <svg id="s08-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div class="vig"></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s08-svg"); sky(sv, "s08g", "#3a3f5c", "#1e2236"); el("rect", { x: 0, y: 1150, width: 1080, height: 770, fill: "#2a2c3e" }, sv);
+      const F = finn(sv, 540, 1180, 2.1, { hood: "#2f6fe0", arm: "#2559b8", cap: "#ffd43b", label: "DU" });
+      const ring = []; [[150, 1170], [290, 1200], [790, 1200], [930, 1170], [200, 1060], [880, 1060]].forEach(([x, y], i) => ring.push(finn(sv, x, y, 1.5 - (i > 3 ? 0.3 : 0), { one: true, hood: "#9aa3c0", arm: "#9aa3c0", label: "" })));
+      const arrows = ring.map((r, i) => txt(sv, [150, 290, 790, 930, 200, 880][i], [820, 860, 860, 820, 780, 780][i], "👉", 60, "#fff", { opacity: 0 }));
+      const ze = at("L17", "zeigen"), st = at("L17", "starren"), an = at("L18", "anders");
+      tl.to(arrows, { opacity: 1, duration: 0.15, stagger: 0.08 }, ze - 0.1);
+      ring.forEach((r) => tl.to(r.head, { rotation: 0, duration: 0.01 }, 0));
+      tl.to(F.mouth, { attr: { d: "M-6 -149 Q0 -155 6 -149" }, duration: 0.15 }, st);
+      tl.to(F.g, { scale: 1.9, duration: 0.6 }, an - 0.3);
+      tl.to(sv, { scale: 1.12, svgOrigin: "540 900", duration: 1.5, ease: "power1.inOut" }, an - 0.4);
+      tl.to("#s08-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s08"] = tl;
+    })();
+  </script>
+</template>

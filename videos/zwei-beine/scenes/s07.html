@@ -1,0 +1,41 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,16,38,.94); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .vig { position: absolute; left: 0; right: 0; top: 1040px; height: 880px; background: linear-gradient(rgba(10,12,30,0), rgba(10,12,30,.5) 45%, rgba(10,12,30,.55)); pointer-events: none; }
+    .bt { position: absolute; left: 0; width: 1080px; text-align: center; font: 900 120px/1 Inter, sans-serif; color: #fff; opacity: 0; text-shadow: 0 0 40px rgba(0,0,0,.5), 0 8px 0 rgba(0,0,0,.35); }
+    .bt.r { color: #ff3b55; text-shadow: 0 0 40px rgba(255,59,85,.8); } .bt.y { color: #ffd43b; text-shadow: 0 0 40px rgba(255,212,59,.7); } .bt.g { color: #39e27a; text-shadow: 0 0 40px rgba(57,226,122,.7); }
+    .s07-c { position: absolute; padding: 12px 26px; border-radius: 18px; background: rgba(255,255,255,.96); color: #22283f; font: 900 48px Inter, sans-serif; opacity: 0; box-shadow: 0 16px 40px rgba(0,0,0,.4); }
+    .s07-c b { color: #e0202f; }
+  </style>
+  <div id="root" data-composition-id="s07" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s07-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <svg id="s07-svg" class="full" viewBox="0 0 1080 1920"></svg>
+            <div id="s07-a" class="s07-c" style="left:80px;top:440px">👖 <b>1</b> Hosenbein</div><div id="s07-b" class="s07-c" style="left:560px;top:440px">🚲 <b>1</b> Pedal</div><div id="s07-c" class="s07-c" style="left:300px;top:560px">🚗 <b>1</b> Fußpedal</div>
+      <div class="vig"></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+/*__COMMON_JS__*/
+      const tl = gsap.timeline({ paused: true });
+      const sv = document.querySelector("#s07-svg"); sky(sv, "s07g", "#1a0a1a", "#050308"); el("rect", { x: 0, y: 1150, width: 1080, height: 770, fill: "#2a1a2a" }, sv);
+      const F = finn(sv, 400, 1180, 2.0, { hood: "#2f6fe0", arm: "#2559b8", cap: "#ffd43b", label: "DU" });
+      const ch = el("g", { opacity: 0 }, sv); el("rect", { x: 650, y: 1020, width: 110, height: 22, rx: 6, fill: "#c79a5b" }, ch); el("rect", { x: 700, y: 1042, width: 12, height: 138, fill: "#a87d44" }, ch); el("rect", { x: 740, y: 860, width: 20, height: 170, rx: 6, fill: "#c79a5b" }, ch);
+      const ha = at("L14", "Haken"), l15 = line("L15")[0], ho = at("L15", "Hosenbein"), pe = at("L15", "Pedal"), fu = at("L15", "Fußpedal"), l16 = line("L16")[0], sc = at("L16", "schmal");
+      tl.fromTo("#s07-a", { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(2.5)" }, ho - 0.2);
+      tl.fromTo("#s07-b", { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(2.5)" }, pe - 0.2);
+      tl.fromTo("#s07-c", { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(2.5)" }, fu - 0.2);
+      tl.to(["#s07-a", "#s07-b", "#s07-c"], { opacity: 0, duration: 0.2 }, l16 - 0.2);
+      tl.to(ch, { opacity: 1, duration: 0.3 }, l16);
+      tl.to(F.g, { x: 705, y: 1020, duration: 0.5 }, sc - 0.6);
+      tl.to(F.g, { rotation: 14, svgOrigin: "0 0", duration: 0.08, yoyo: true, repeat: 7 }, sc - 0.1);
+      tl.to(F.mouth, { attr: { d: "M-6 -149 Q0 -155 6 -149" }, duration: 0.15 }, sc);
+      tl.to("#s07-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s07"] = tl;
+    })();
+  </script>
+</template>
