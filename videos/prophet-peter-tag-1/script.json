@@ -1,0 +1,77 @@
+{
+ "title": "Prophet Peter – Tag 1: Ich gründe eine Sekte",
+ "voice": "Google Chirp 3 HD (de-DE-Chirp3-HD-Fenrir, männlich, begeistert), --speed 1.1",
+ "notes": "Serie 'Prophet Peter' (Ich-Perspektive). Figur: tools/characters/prophet-peter.js. Offene Schleife: 'etwas gestehen' -> aufgelöst in s05 (nur ein Stuhl). Satire, Kollekte = 1 Euro pro neuem Follower.",
+ "lead_in": 0.9,
+ "hud": "pop",
+ "safe": true,
+ "scenes": [
+  { "id": "s01", "tag": "",
+    "lines": [
+     { "id": "L1", "text": "*y:Tag *y:eins. / Ich gründe / eine *p:Sekte.", "speed": 0.9 },
+     { "id": "L2", "text": "In einem Jahr / kennt sie / die *y:ganze *y:Welt. / Aber erst / muss ich euch / etwas *r:gestehen.", "pause": 0.15 }
+    ],
+    "sfx": [ { "name": "holy-sting", "at": "s01+0.0", "volume": 0.8 },
+             { "name": "impact-bass-1", "at": "L1:Sekte.", "volume": 0.45 },
+             { "name": "glitch-1", "at": "L2:gestehen.", "volume": 0.2 } ] },
+  { "id": "s02", "tag": "DER GRÜNDER",
+    "lines": [
+     { "id": "L3", "text": "Ich bin / *y:Prophet *y:Peter.", "speed": 0.92 },
+     { "id": "L4", "text": "Gründer, / Erleuchteter / und ab heute / euer *p:Anführer." }
+    ],
+    "sfx": [ { "name": "bell-hit", "at": "L3:Prophet", "volume": 0.6 },
+             { "name": "pop", "at": "L4:Anführer.", "volume": 0.4 } ] },
+  { "id": "s03", "tag": "DAS OUTFIT",
+    "lines": [
+     { "id": "L5", "text": "Die Mitra: / *y:selbst *y:gebastelt. / Der Stab: / mit *b:Discokugel. / Die Sandalen: / *g:mit *g:Socken." },
+     { "id": "L6", "text": "Heilig ist, / was *g:bequem ist." }
+    ],
+    "sfx": [ { "name": "click", "at": "L5:Mitra", "volume": 0.4 },
+             { "name": "ping", "at": "L5:Discokugel.", "volume": 0.35 },
+             { "name": "click", "at": "L5:Sandalen", "volume": 0.4 },
+             { "name": "pop", "at": "L5:Socken.", "volume": 0.4 } ] },
+  { "id": "s04", "tag": "DAS ERBE",
+    "lines": [
+     { "id": "L7", "text": "Mein Onkel / hat mir / ein *y:Grundstück / vererbt." },
+     { "id": "L8", "text": "Hier entsteht / unser *p:Heiligtum." }
+    ],
+    "sfx": [ { "name": "impact-bass-2", "at": "L7:vererbt.", "volume": 0.4 } ] },
+  { "id": "s05", "tag": "DIE WAHRHEIT",
+    "lines": [
+     { "id": "L9", "text": "Und jetzt / die *r:Wahrheit: / Hier gibt es / genau / *r:einen *r:Stuhl.", "pause": 0.2 },
+     { "id": "L10", "text": "Unter einem Baum, / der *r:aufgegeben hat.", "speed": 0.94 }
+    ],
+    "sfx": [ { "name": "error", "at": "L9:Stuhl.", "volume": 0.35 },
+             { "name": "whoosh-short", "at": "L10:aufgegeben", "volume": 0.3 } ] },
+  { "id": "s06", "tag": "DIE VISION",
+    "lines": [
+     { "id": "L11", "text": "Aber ich sehe / mehr. / Einen *y:Tempel. / *g:Gärten. / Eine *y:Pilgerstraße." },
+     { "id": "L12", "text": "Und am Ende: / eine *p:Weltreligion." }
+    ],
+    "sfx": [ { "name": "ping", "at": "L11:Tempel.", "volume": 0.35 },
+             { "name": "ping", "at": "L11:Gärten.", "volume": 0.3 },
+             { "name": "ping", "at": "L11:Pilgerstraße.", "volume": 0.3 },
+             { "name": "bell-hit", "at": "L12:Weltreligion.", "volume": 0.6 } ] },
+  { "id": "s07", "tag": "DIE KOLLEKTE",
+    "lines": [
+     { "id": "L13", "text": "Dafür gilt / ein *y:heiliges *y:Gesetz: / Jeder neue *p:Follower / bringt *y:einen *y:Euro / in die Kollekte." },
+     { "id": "L14", "text": "Ein Euro. / Ein *g:Ziegelstein." }
+    ],
+    "sfx": [ { "name": "coin", "at": "L13:Euro", "volume": 0.6 },
+             { "name": "coin", "at": "L14:Ziegelstein.", "volume": 0.5 } ] },
+  { "id": "s08", "tag": "DIE RÄNGE",
+    "lines": [
+     { "id": "L15", "text": "Und wer *g:früh kommt, / steigt *g:hoch auf. / Der *y:erste Anhänger / wird *y:Hohepriester." },
+     { "id": "L16", "text": "Der letzte / *r:mäht *r:den *r:Rasen." }
+    ],
+    "sfx": [ { "name": "bell-hit", "at": "L15:Hohepriester.", "volume": 0.5 },
+             { "name": "pop", "at": "L16:Rasen.", "volume": 0.4 } ] },
+  { "id": "s09", "tag": "TAG 1 · AUFRUF", "hold": 2.8,
+    "lines": [
+     { "id": "L17", "text": "Nur eins / fehlt noch: / ein *p:Name. / Wie soll / unsere Sekte *p:heißen?" },
+     { "id": "L18", "text": "Schreib's / in die *y:Kommentare / und sei / der *g:Erste!" }
+    ],
+    "sfx": [ { "name": "pop", "at": "L17:Name.", "volume": 0.4 },
+             { "name": "notification", "at": "L18:Kommentare", "volume": 0.4 } ] }
+ ]
+}

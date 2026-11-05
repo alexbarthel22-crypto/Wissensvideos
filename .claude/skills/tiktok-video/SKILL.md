@@ -62,6 +62,10 @@ Nach Skriptänderungen immer Schritt 4 → 6 neu ausführen (Timings ändern sic
 - **Aufmerksamkeits-Sound** auf Frame 0, passend zum Thema wählen: Elektro-Zap + Gameboy-Arpeggio (`tools/make_sting.py … zap-sting.wav`) oder Purge-Sirene (`python3 tools/make_siren.py videos/<slug>/assets/sfx/purge-siren.wav`), im Skript `"lead_in": 0.9` und als sfx `{"name": "purge-siren", "at": "s01+0.0", "volume": 0.85}`. Die Sirene steht 0,85 s allein und wird dann unter die Stimme abgesenkt.
 - **Schluss**: direkte Frage an die Zuschauer, ob sie selbst dazugehören („Gehörst du am 19. November zu den vier Milliarden?“) + zwei Antwort-Buttons + „Schreib's in die Kommentare!“. Die letzte Untertitel-Zeile bleibt bis zum Ende stehen.
 
+## Serienfiguren
+
+Wiederkehrende Figuren (z. B. **Prophet Peter**) stehen in `references/figuren.md` und als Code in `tools/characters/`. In Folgevideos genau diese Funktionen einbinden (siehe `videos/prophet-peter-tag-1/scenes/gen_scenes.py`), Aussehen nie ändern. Sicherheitsbereich für TikTok-Bedienelemente: `"safe": true` in script.json (Untertitel weg von der rechten Button-Leiste); wichtige Inhalte bei x 60–930, y 300–1130. Kirchen-Sounds: `python3 tools/make_church.py videos/<slug>/assets/sfx` (holy-sting, bell-hit, coin).
+
 ## Bekannte Grenzen
 
 - Keine Musik verfügbar (HeyGen-Katalog braucht Login). Video kommt mit Stimme + Effekten; der Creator legt in TikTok einen Trend-Sound darunter (Lautstärke dort ~10–20 %).

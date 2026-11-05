@@ -134,7 +134,7 @@ def caption_groups(timings, windows):
     return groups
 
 
-def build_captions(project, timings, windows, total, big=False):
+def build_captions(project, timings, windows, total, big=False, safe=False):
     groups = caption_groups(timings, windows)
     groups[-1]["end"] = round(total - 0.05, 3)  # letzte Zeile (Frage an die Zuschauer) bleibt stehen
     rows, js = [], []
@@ -162,7 +162,7 @@ def build_captions(project, timings, windows, total, big=False):
     .inner {{ position: absolute; left: 70px; right: 70px; top: 0; text-align: center;
       font-family: "Inter", sans-serif; font-weight: 900; font-size: 80px; line-height: 1.04;
       letter-spacing: -0.01em; transform-origin: 50% 40%; }}
-    .w {{ color: #7d8197; text-shadow: 0 5px 0 rgba(0,0,0,.55); }}{BIG_CAP if big else ""}
+    .w {{ color: #7d8197; text-shadow: 0 5px 0 rgba(0,0,0,.55); }}{BIG_CAP if big else ""}{SAFE_CAP if safe else ""}
   </style>
   <div id="root" data-composition-id="captions" data-start="0" data-duration="{total:.3f}" data-width="{W}" data-height="{H}"
        data-layout-allow-caption-zone>
@@ -178,6 +178,9 @@ def build_captions(project, timings, windows, total, big=False):
     (project / "compositions" / "captions.html").write_text(doc)
 
 
+# TikTok-Sicherheitsbereich: rechts liegt die Button-Leiste (x > 940), unten Name + Beschreibung (y > 1480)
+SAFE_CAP = """
+    .inner { left: 96px; right: 170px; font-size: 74px; }"""
 BIG_CAP = """
     .inner {{ font-size: 92px; line-height: 1.06; }}
     .w {{ display: inline-block; transform-origin: 50% 70%; }}""".replace("{{", "{").replace("}}", "}")
@@ -381,7 +384,7 @@ def main():
     shutil.copy(VENDOR / "gsap.min.js", project / "assets" / "vendor" / "gsap.min.js")
     for sc, s, e in windows:
         build_scene(project, sc, s, e, lines)
-    build_captions(project, timings, windows, total, script.get("hud") == "big")
+    build_captions(project, timings, windows, total, script.get("hud") == "big", script.get("safe", False))
     build_hud(project, script, windows, total)
     build_index(project, script, windows, lines, total)
     for sc, s, e in windows:

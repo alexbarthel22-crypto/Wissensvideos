@@ -1,0 +1,39 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; }
+    .tag { position: absolute; left: 0; width: 100%; top: 176px; height: 64px; }
+    .tagt { position: absolute; left: 0; right: 0; top: 0; margin: 0 auto; width: fit-content; min-width: 420px; padding: 0 26px; height: 62px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: "Space Mono", monospace; font-weight: 700; font-size: 30px; letter-spacing: 0.12em;
+      color: #f4d27a; border: 3px solid #b8944a; border-radius: 8px; background: rgba(14,17,36,.65); }
+    .chk { position: absolute; left: 0; width: 100%; height: 34px; }
+    .chkt { position: absolute; left: 30px; top: 0; padding: 2px 10px;
+      font-family: "Space Mono", monospace; font-weight: 700; font-size: 22px; letter-spacing: 0.04em;
+      color: #ff7a8c; border: 2px solid #c8314a; border-radius: 6px; background: rgba(40,10,24,.55); }
+    .chkt b { color: #ff3b55; margin-left: 6px; }
+    .chkt.ok { color: #8affb6; border-color: #1f9a52; background: rgba(8,40,22,.6); }
+    .chkt.ok b { color: #39e27a; }
+    .tag { top: 150px; height: 104px; }
+    .tagt { height: 100px; min-width: 520px; padding: 0 34px; font-size: 54px; letter-spacing: 0.08em; color: #ffd43b;
+      border: 4px solid #ffd43b; border-radius: 14px; background: rgba(10,12,29,.88);
+      text-shadow: 0 0 22px rgba(255,212,59,.6); box-shadow: 0 0 26px rgba(255,212,59,.4); }
+
+  </style>
+  <div id="root" data-composition-id="hud" data-start="0" data-duration="58.270" data-width="1080" data-height="1920">
+      <div id="tag1" class="clip tag" data-start="7.480" data-duration="4.800" data-track-index="1"><span id="tag1t" class="tagt">DER GRÜNDER</span></div>
+      <div id="tag2" class="clip tag" data-start="12.280" data-duration="7.640" data-track-index="1"><span id="tag2t" class="tagt">DAS OUTFIT</span></div>
+      <div id="tag3" class="clip tag" data-start="19.920" data-duration="4.180" data-track-index="1"><span id="tag3t" class="tagt">DAS ERBE</span></div>
+      <div id="tag4" class="clip tag" data-start="24.100" data-duration="4.990" data-track-index="1"><span id="tag4t" class="tagt">DIE WAHRHEIT</span></div>
+      <div id="tag5" class="clip tag" data-start="29.090" data-duration="7.360" data-track-index="1"><span id="tag5t" class="tagt">DIE VISION</span></div>
+      <div id="tag6" class="clip tag" data-start="36.450" data-duration="7.130" data-track-index="1"><span id="tag6t" class="tagt">DIE KOLLEKTE</span></div>
+      <div id="tag7" class="clip tag" data-start="43.580" data-duration="6.110" data-track-index="1"><span id="tag7t" class="tagt">DIE RÄNGE</span></div>
+      <div id="tag8" class="clip tag" data-start="49.690" data-duration="8.580" data-track-index="1"><span id="tag8t" class="tagt">TAG 1 · AUFRUF</span></div>
+
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    
+tl.fromTo("#tag1t", { opacity: 0, scale: 2.4, filter: "blur(14px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.45, ease: "expo.out" }, 7.480);    tl.fromTo("#tag1t", { x: -10 }, { x: 0, duration: 0.05, repeat: 4, yoyo: true, ease: "none" }, 7.900);    tl.fromTo("#tag1t", { boxShadow: "0 0 80px rgba(255,212,59,.95)" }, { boxShadow: "0 0 26px rgba(255,212,59,.4)", duration: 0.7, ease: "power2.out" }, 7.900);    tl.fromTo("#tag2t", { opacity: 0, scale: 2.4, filter: "blur(14px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.45, ease: "expo.out" }, 12.280);    tl.fromTo("#tag2t", { x: -10 }, { x: 0, duration: 0.05, repeat: 4, yoyo: true, ease: "none" }, 12.700);    tl.fromTo("#tag2t", { boxShadow: "0 0 80px rgba(255,212,59,.95)" }, { boxShadow: "0 0 26px rgba(255,212,59,.4)", duration: 0.7, ease: "power2.out" }, 12.700);    tl.fromTo("#tag3t", { opacity: 0, scale: 2.4, filter: "blur(14px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.45, ease: "expo.out" }, 19.920);    tl.fromTo("#tag3t", { x: -10 }, { x: 0, duration: 0.05, repeat: 4, yoyo: true, ease: "none" }, 20.340);    tl.fromTo("#tag3t", { boxShadow: "0 0 80px rgba(255,212,59,.95)" }, { boxShadow: "0 0 26px rgba(255,212,59,.4)", duration: 0.7, ease: "power2.out" }, 20.340);    tl.fromTo("#tag4t", { opacity: 0, scale: 2.4, filter: "blur(14px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.45, ease: "expo.out" }, 24.100);    tl.fromTo("#tag4t", { x: -10 }, { x: 0, duration: 0.05, repeat: 4, yoyo: true, ease: "none" }, 24.520);    tl.fromTo("#tag4t", { boxShadow: "0 0 80px rgba(255,212,59,.95)" }, { boxShadow: "0 0 26px rgba(255,212,59,.4)", duration: 0.7, ease: "power2.out" }, 24.520);    tl.fromTo("#tag5t", { opacity: 0, scale: 2.4, filter: "blur(14px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.45, ease: "expo.out" }, 29.090);    tl.fromTo("#tag5t", { x: -10 }, { x: 0, duration: 0.05, repeat: 4, yoyo: true, ease: "none" }, 29.510);    tl.fromTo("#tag5t", { boxShadow: "0 0 80px rgba(255,212,59,.95)" }, { boxShadow: "0 0 26px rgba(255,212,59,.4)", duration: 0.7, ease: "power2.out" }, 29.510);    tl.fromTo("#tag6t", { opacity: 0, scale: 2.4, filter: "blur(14px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.45, ease: "expo.out" }, 36.450);    tl.fromTo("#tag6t", { x: -10 }, { x: 0, duration: 0.05, repeat: 4, yoyo: true, ease: "none" }, 36.870);    tl.fromTo("#tag6t", { boxShadow: "0 0 80px rgba(255,212,59,.95)" }, { boxShadow: "0 0 26px rgba(255,212,59,.4)", duration: 0.7, ease: "power2.out" }, 36.870);    tl.fromTo("#tag7t", { opacity: 0, scale: 2.4, filter: "blur(14px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.45, ease: "expo.out" }, 43.580);    tl.fromTo("#tag7t", { x: -10 }, { x: 0, duration: 0.05, repeat: 4, yoyo: true, ease: "none" }, 44.000);    tl.fromTo("#tag7t", { boxShadow: "0 0 80px rgba(255,212,59,.95)" }, { boxShadow: "0 0 26px rgba(255,212,59,.4)", duration: 0.7, ease: "power2.out" }, 44.000);    tl.fromTo("#tag8t", { opacity: 0, scale: 2.4, filter: "blur(14px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.45, ease: "expo.out" }, 49.690);    tl.fromTo("#tag8t", { x: -10 }, { x: 0, duration: 0.05, repeat: 4, yoyo: true, ease: "none" }, 50.110);    tl.fromTo("#tag8t", { boxShadow: "0 0 80px rgba(255,212,59,.95)" }, { boxShadow: "0 0 26px rgba(255,212,59,.4)", duration: 0.7, ease: "power2.out" }, 50.110);
+    window.__timelines["hud"] = tl;
+  </script>
+</template>

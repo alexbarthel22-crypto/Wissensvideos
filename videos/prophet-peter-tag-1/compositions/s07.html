@@ -1,0 +1,421 @@
+<template>
+  <style>
+        #root { position: absolute; inset: 0; }
+    .stage { position: absolute; inset: 0; overflow: hidden; }
+    .abs { position: absolute; }
+    svg { overflow: visible; }
+    /* Zähler-Box wie in der Referenz: Rahmen in Akzentfarbe, Label in Mono-Versalien, große Zahl */
+    .cbox { position: absolute; left: 290px; width: 500px; top: 268px; height: 126px; border: 3px solid #ff4fb0;
+      border-radius: 14px; background: rgba(13,16,38,.88); text-align: center; box-shadow: 0 0 28px rgba(255,79,176,.35); }
+    .cbox .lab { margin-top: 16px; font-family: "Space Mono", monospace; font-weight: 700; font-size: 28px;
+      letter-spacing: .16em; color: #dfe2f5; }
+    .cbox .num { margin-top: 2px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 56px; color: #fff;
+      letter-spacing: .01em; }
+    .cbox.y { border-color: #ffd43b; box-shadow: 0 0 28px rgba(255,212,59,.3); }
+    .cbox.r { border-color: #ff3b55; box-shadow: 0 0 28px rgba(255,59,85,.35); }
+    .cbox.b { border-color: #4da3ff; box-shadow: 0 0 28px rgba(77,163,255,.3); }
+    .cbox.g { border-color: #39e27a; box-shadow: 0 0 28px rgba(57,226,122,.3); }
+    .mono { font-family: "Space Mono", monospace; font-weight: 700; letter-spacing: .12em; }
+    .heavy { font-family: "Inter", sans-serif; font-weight: 900; }
+
+    .full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .panel { position: absolute; border-radius: 24px; background: rgba(13,10,30,.9); text-align: center; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; }
+    .lbl { position: absolute; font-family: "Inter", sans-serif; font-weight: 900; color: #fff; text-align: center; white-space: nowrap;
+      padding: 14px 30px; border-radius: 18px; background: rgba(13,10,30,.9); border: 4px solid #ffd43b; box-shadow: 0 0 34px rgba(255,212,59,.45); opacity: 0; }
+    .lbl small { display: block; font-family: "Space Mono", monospace; font-weight: 700; font-size: 30px; letter-spacing: .16em; color: #f4d27a; }
+    .plate { position: absolute; font-family: "Inter", sans-serif; font-weight: 900; color: #fff; text-align: center; }
+    #s07-box { left: 290px; width: 500px; }
+    #s07-law { left: 120px; width: 780px; top: 420px; height: 210px; border-radius: 18px; padding-top: 22px;
+      background: linear-gradient(180deg, #f6ecd2, #dcc58f); color: #3a2a18; box-shadow: 0 20px 50px rgba(0,0,0,.55); opacity: 0; }
+    #s07-law .k { font-family: "Space Mono", monospace; font-weight: 700; font-size: 30px; letter-spacing: .16em; color: #8a1a1a; }
+    #s07-law .x { margin-top: 12px; font-size: 62px; line-height: 1.05; color: #2a1a10; }
+    #s07-law .x em { font-style: normal; color: #c2185b; }
+    #s07-fol { left: 120px; top: 700px; width: 250px; height: 92px; border-radius: 46px; background: #ff4fb0; color: #fff; font-size: 46px; line-height: 92px;
+      box-shadow: 0 0 40px rgba(255,79,176,.7); opacity: 0; }
+    #s07-brick { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 980px; font-size: 56px; border-color: #39e27a; box-shadow: 0 0 34px rgba(57,226,122,.5); }
+  </style>
+  <div id="root" data-composition-id="s07" data-start="0" data-duration="7.130" data-width="1080" data-height="1920">
+    <div id="s07-stage" class="clip stage" data-start="0" data-duration="7.130" data-track-index="0">
+      <svg id="s07-bg" class="full" viewBox="0 0 1080 1920"></svg>
+      <svg id="s07-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s07-box" class="cbox y" style="opacity:0"><div class="lab">KOLLEKTE</div><div class="num" id="s07-n">0 €</div></div>
+      <div id="s07-law" class="plate"><div class="k">HEILIGES GESETZ · § 1</div><div class="x">1 <em>FOLLOWER</em> = 1 € IN<br>DIE KOLLEKTE</div></div>
+      <div id="s07-fol" class="plate">+ FOLGEN</div>
+      <div id="s07-brick" class="lbl"><small>TEMPEL · BAUSTEIN</small>1 € = 1 ZIEGEL</div>
+      <svg id="s07-fx" class="full" viewBox="0 0 1080 1920"></svg>
+    </div>
+  </div>
+  <script>
+    (() => {
+      
+      const C = {"__dur": 7.13, "L13": [0.2, 4.59], "L13.words": [["dafür", 0.2, 0.52], ["gilt", 0.52, 0.689], ["ein", 0.689, 0.851], ["heiliges", 0.851, 1.334], ["gesetz", 1.334, 1.66], ["jeder", 2.05, 2.364], ["neue", 2.364, 2.529], ["follower", 2.529, 3.003], ["bringt", 3.003, 3.18], ["einen", 3.18, 3.494], ["euro", 3.494, 3.802], ["in", 3.802, 3.956], ["die", 3.956, 4.116], ["kollekte", 4.116, 4.59]], "L14": [4.81, 6.95], "L14.words": [["ein", 4.81, 5.035], ["euro", 5.035, 5.47], ["ein", 6.02, 6.248], ["ziegelstein", 6.248, 6.95]]};
+      const line = (id) => C[id];
+      const at = (id, word, which = 0) => {
+        const ws = C[id + ".words"];
+        if (typeof word === "number") return ws[word][1 + which];
+        const key = String(word).toLowerCase().replace(/[^\p{L}\p{N}_]/gu, "");
+        const hit = ws.find((w) => w[0].startsWith(key));
+        if (!hit) throw new Error("cue not found: " + id + " " + word);
+        return hit[1 + which];
+      };
+      // Zähler: schreibt Zahlen im deutschen Format (4.100.000.000) als Funktion der Timeline-Zeit
+      const fmt = (n) => Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      const count = (tl, sel, from, to, t, d, pre = "", post = "", ease = "power2.out") => {
+        const el = document.querySelector(sel);
+        const o = { v: from };
+        el.textContent = pre + fmt(from) + post;
+        tl.to(o, { v: to, duration: d, ease, onUpdate: () => { el.textContent = pre + fmt(o.v) + post; } }, t);
+      };
+      // deterministischer Zufall
+      const rng = (seed) => () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let x = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+        x = (x + Math.imul(x ^ (x >>> 7), 61 | x)) ^ x; return ((x ^ (x >>> 14)) >>> 0) / 4294967296; };
+
+      // ---- Gemeinsame Zeichenhelfer (flacher Stil wie Referenz) ----
+      const NS = "http://www.w3.org/2000/svg";
+      const el = (n, a, p) => { const e = document.createElementNS(NS, n); for (const k in a) e.setAttribute(k, a[k]); if (p) p.appendChild(e); return e; };
+      // Arm als Gruppe, dreht um die Schulter (sx, sy); 0° = hängt nach unten
+      function arm(g, sx, sy, deg, skin, sleeve) {
+        const a = el("g", {}, g);
+        el("rect", { x: sx - 12, y: sy - 4, width: 24, height: 60, rx: 12, fill: sleeve }, a);
+        el("rect", { x: sx - 10, y: sy + 40, width: 20, height: 56, rx: 10, fill: skin }, a);
+        el("circle", { cx: sx, cy: sy + 100, r: 14, fill: skin }, a);
+        gsap.set(a, { rotation: deg, svgOrigin: `${sx} ${sy}` });
+        return a;
+      }
+      // Figur: Ursprung = Mitte des Oberkörpers oben. o.long = lange Haare, o.blind = trübe Augen, o.closed = Augen zu
+      function person(parent, id, x, y, s = 1, o = {}) {
+        const skin = o.skin || "#f2c9a5", shirt = o.shirt || "#4da3ff", hair = o.hair || "#5b3a26", pants = o.pants || "#2a3170";
+        const g = el("g", { id }, parent);
+        gsap.set(g, { x, y, scale: s, transformOrigin: "0 0" });
+        const ang = o.arms || [12, -12];
+        el("rect", { x: -34, y: 118, width: 28, height: 110, rx: 12, fill: pants }, g);
+        el("rect", { x: 6, y: 118, width: 28, height: 110, rx: 12, fill: pants }, g);
+        el("rect", { x: -40, y: 222, width: 36, height: 16, rx: 8, fill: "#1a1f45" }, g);
+        el("rect", { x: 4, y: 222, width: 36, height: 16, rx: 8, fill: "#1a1f45" }, g);
+        const a1 = arm(g, -52, 18, ang[0], skin, shirt), a2 = arm(g, 52, 18, ang[1], skin, shirt);
+        el("rect", { x: -56, y: 0, width: 112, height: 132, rx: 40, fill: shirt }, g);
+        if (o.long) el("path", { d: "M-52 -60 C-56 -128 56 -128 52 -60 L60 34 Q30 48 0 30 Q-30 48 -60 34Z", fill: hair }, g);
+        el("rect", { x: -12, y: -18, width: 24, height: 22, fill: skin }, g);
+        el("circle", { cx: 0, cy: -58, r: 46, fill: skin }, g);
+        el("path", { d: o.long ? "M-48 -54 C-52 -122 52 -122 48 -54 C40 -92 -10 -98 -48 -54Z" : "M-46 -60 C-46 -118 46 -118 46 -60 C30 -84 -20 -88 -46 -60Z", fill: hair }, g);
+        const eyes = el("g", {}, g);
+        if (o.blind) { [-16, 16].forEach((cx) => { el("circle", { cx, cy: -56, r: 9, fill: "#e4e8f6" }, eyes); el("circle", { cx, cy: -56, r: 5, fill: "#b4bbd6" }, eyes); }); }
+        else { el("circle", { cx: -16, cy: -56, r: 7, fill: "#161a36" }, eyes); el("circle", { cx: 16, cy: -56, r: 7, fill: "#161a36" }, eyes); }
+        const lids = el("path", { d: "M-24 -56 q8 6 16 0 M8 -56 q8 6 16 0", fill: "none", stroke: "#161a36", "stroke-width": 4, "stroke-linecap": "round", opacity: o.closed ? 1 : 0 }, g);
+        if (o.closed) gsap.set(eyes, { opacity: 0 });
+        const shades = el("g", { opacity: o.shades ? 1 : 0 }, g);
+        el("rect", { x: -34, y: -68, width: 30, height: 22, rx: 8, fill: "#0b0e22" }, shades); el("rect", { x: 4, y: -68, width: 30, height: 22, rx: 8, fill: "#0b0e22" }, shades);
+        el("rect", { x: -6, y: -62, width: 12, height: 5, fill: "#0b0e22" }, shades);
+        el("path", { d: "M-28 -64 l10 0 M10 -64 l10 0", stroke: "#4da3ff", "stroke-width": 3, opacity: 0.8 }, shades);
+        const mouth = el("path", { d: o.sad ? "M-14 -26 q14 -10 28 0" : "M-12 -30 q12 8 24 0", fill: "none", stroke: "#8a3b2a", "stroke-width": 5, "stroke-linecap": "round" }, g);
+        return { g, a1, a2, eyes, lids, mouth, shades };
+      }
+      // kleine Figur (Menge), Arme tastend nach vorn/außen
+      function mini(parent, x, y, c, glow) {
+        const g = el("g", { opacity: 0 }, parent);
+        if (glow) g.style.filter = "drop-shadow(0 0 18px rgba(255,212,59,.9))";
+        el("path", { d: `M${x - 14} ${y + 22} l-22 -14 M${x + 14} ${y + 22} l22 -14`, stroke: glow ? "#f2c9a5" : "#9aa1c4", "stroke-width": 7, "stroke-linecap": "round" }, g);
+        el("circle", { cx: x, cy: y, r: 14, fill: glow ? "#f2c9a5" : "#9aa1c4" }, g);
+        el("rect", { x: x - 15, y: y + 15, width: 30, height: 42, rx: 11, fill: c }, g);
+        return g;
+      }
+      // großes Auge (Mandelform), Pupille separat beweglich
+      function bigEye(parent, cx, cy, s = 1) {
+        const g = el("g", {}, parent); gsap.set(g, { x: cx, y: cy, scale: s, transformOrigin: "0 0" });
+        const glow = null; g.style.filter = "drop-shadow(0 0 40px rgba(255,212,59,.6))";
+        el("path", { d: "M-240 0 Q0 -175 240 0 Q0 175 -240 0Z", fill: "#f3f1ea" }, g);
+        const iris = el("g", {}, g);
+        el("circle", { cx: 0, cy: 0, r: 86, fill: "#4da3ff" }, iris);
+        el("circle", { cx: 0, cy: 0, r: 60, fill: "#2b6fd1" }, iris);
+        el("circle", { cx: 0, cy: 0, r: 38, fill: "#0b0e22" }, iris);
+        el("circle", { cx: 26, cy: -26, r: 16, fill: "#fff" }, iris);
+        el("path", { d: "M-240 0 Q0 -175 240 0", fill: "none", stroke: "#161a36", "stroke-width": 14, "stroke-linecap": "round" }, g);
+        return { g, iris, glow };
+      }
+      function radio(parent, x, y, s = 1) {
+        const g = el("g", {}, parent); gsap.set(g, { x, y, scale: s, transformOrigin: "0 0" });
+        el("path", { d: "M180 -150 L260 -300", stroke: "#c9cde6", "stroke-width": 10, "stroke-linecap": "round" }, g);
+        el("rect", { x: -300, y: -160, width: 600, height: 320, rx: 40, fill: "#8a5a2b" }, g);
+        el("rect", { x: -280, y: -140, width: 560, height: 280, rx: 28, fill: "#a86b2c" }, g);
+        el("circle", { cx: -140, cy: 0, r: 110, fill: "#5e3b1a" }, g);
+        for (let i = -3; i <= 3; i++) el("rect", { x: -230, y: i * 26 - 4, width: 180, height: 8, rx: 4, fill: "#8a5a2b" }, g);
+        el("rect", { x: 20, y: -100, width: 240, height: 90, rx: 12, fill: "#ffe9a8" }, g);
+        for (let i = 0; i < 9; i++) el("rect", { x: 40 + i * 24, y: -84, width: 4, height: i % 2 ? 20 : 34, fill: "#8a5a2b" }, g);
+        const needle = el("rect", { x: 90, y: -96, width: 6, height: 82, fill: "#ff3b55" }, g);
+        el("circle", { cx: 80, cy: 70, r: 38, fill: "#5e3b1a" }, g); el("circle", { cx: 200, cy: 70, r: 38, fill: "#5e3b1a" }, g);
+        return { g, needle };
+      }
+      function car(parent, x, y, c, rot = 0) {
+        const g = el("g", {}, parent); gsap.set(g, { x, y, rotation: rot, transformOrigin: "0 0" });
+        el("rect", { x: -130, y: -40, width: 260, height: 70, rx: 22, fill: c }, g);
+        el("path", { d: "M-70 -40 L-40 -90 L50 -90 L80 -40Z", fill: c }, g);
+        el("path", { d: "M-56 -44 L-34 -80 L0 -80 L0 -44Z M10 -44 L10 -80 L44 -80 L64 -44Z", fill: "#a9d2ff" }, g);
+        el("circle", { cx: -70, cy: 34, r: 26, fill: "#161a36" }, g); el("circle", { cx: 70, cy: 34, r: 26, fill: "#161a36" }, g);
+        const blink = el("g", { opacity: 0 }, g);
+        el("circle", { cx: -124, cy: -10, r: 12, fill: "#ffb020" }, blink); el("circle", { cx: 124, cy: -10, r: 12, fill: "#ffb020" }, blink);
+        return { g, blink };
+      }
+      // Hund, Ursprung = Körpermitte
+      function dog(parent, x, y, c = "#a86b2c", s = 1) {
+        const g = el("g", {}, parent); gsap.set(g, { x, y, scale: s, transformOrigin: "0 0" });
+        const tail = el("path", { d: "M-70 -10 q-40 -30 -30 -70", stroke: c, "stroke-width": 14, fill: "none", "stroke-linecap": "round" }, g);
+        el("ellipse", { cx: 0, cy: 0, rx: 80, ry: 40, fill: c }, g);
+        [-50, -25, 30, 55].forEach((lx) => el("rect", { x: lx - 8, y: 20, width: 16, height: 54, rx: 8, fill: c }, g));
+        el("circle", { cx: 84, cy: -36, r: 36, fill: c }, g);
+        el("ellipse", { cx: 118, cy: -26, rx: 22, ry: 15, fill: "#f3d9b8", opacity: 0.6 }, g);
+        el("circle", { cx: 136, cy: -30, r: 7, fill: "#161a36" }, g); el("circle", { cx: 92, cy: -44, r: 6, fill: "#161a36" }, g);
+        el("path", { d: "M62 -62 q-14 30 6 44Z", fill: "#161a36", opacity: 0.4 }, g);
+        return { g, tail };
+      }
+      // großes Gesicht (für Nahaufnahmen); blind = trübe Augen, sonst klare Pupillen
+      function face(parent, x, y, r, o = {}) {
+        const g = el("g", {}, parent);
+        el("circle", { cx: x, cy: y, r, fill: o.skin || "#f2c9a5" }, g);
+        el("path", { d: `M${x - r} ${y - r * 0.1} C${x - r} ${y - r * 1.3} ${x + r} ${y - r * 1.3} ${x + r} ${y - r * 0.1} C${x + r * 0.6} ${y - r * 0.7} ${x - r * 0.4} ${y - r * 0.76} ${x - r} ${y - r * 0.1}Z`, fill: o.hair || "#2a2f55" }, g);
+        const eyes = el("g", {}, g), pup = [], cloud = [];
+        [-0.34, 0.34].forEach((dx) => { el("circle", { cx: x + dx * r, cy: y + r * 0.1, r: r * 0.18, fill: "#f3f1ea" }, eyes);
+          cloud.push(el("circle", { cx: x + dx * r, cy: y + r * 0.1, r: r * 0.1, fill: "#b4bbd6" }, eyes));
+          pup.push(el("circle", { cx: x + dx * r, cy: y + r * 0.1, r: r * 0.1, fill: "#0b0e22", opacity: o.blind ? 0 : 1 }, eyes)); });
+        if (!o.blind) gsap.set(cloud, { opacity: 0 });
+        el("path", { d: `M${x - r * 0.2} ${y + r * 0.56} h${r * 0.4}`, stroke: "#8a3b2a", "stroke-width": r * 0.07, "stroke-linecap": "round" }, g);
+        return { g, eyes, pup, cloud };
+      }
+
+      // ===== Prophet Peter – feste Serienfigur (Aussehen siehe .claude/skills/tiktok-video/references/figuren.md) =====
+      // Braucht: el(), gsap. pre = eindeutiges Präfix (z. B. "s02p"), Ursprung = Mitte zwischen den Füßen, Höhe ≈ 900 * s.
+      const GR = (parent, pre) => { let d = parent.querySelector(":scope > defs"); if (!d) d = el("defs", {}, parent); return d; };
+      function lin(defs, id, stops, x1 = 0, y1 = 0, x2 = 0, y2 = 1) {
+        const g = el("linearGradient", { id, x1, y1, x2, y2 }, defs);
+        stops.forEach(([o, c, a = 1]) => el("stop", { offset: o, "stop-color": c, "stop-opacity": a }, g)); return `url(#${id})`;
+      }
+      function rad(defs, id, stops, cx = 0.5, cy = 0.5, r = 0.5, fx, fy) {
+        const g = el("radialGradient", { id, cx, cy, r, fx: fx ?? cx, fy: fy ?? cy }, defs);
+        stops.forEach(([o, c, a = 1]) => el("stop", { offset: o, "stop-color": c, "stop-opacity": a }, g)); return `url(#${id})`;
+      }
+      function peter(parent, pre, x, y, s = 1, o = {}) {
+        const D = GR(parent);
+        const robe = lin(D, pre + "robe", [[0, "#7b3fb0"], [0.45, "#55267f"], [1, "#2a1145"]], 0, 0, 0.35, 1);
+        const robeSide = lin(D, pre + "robes", [[0, "#000", 0.45], [0.25, "#000", 0], [0.75, "#000", 0], [1, "#000", 0.5]], 0, 0, 1, 0);
+        const gold = lin(D, pre + "gold", [[0, "#fff2b0"], [0.35, "#ffd43b"], [0.7, "#d99a1e"], [1, "#9a6510"]], 0, 0, 1, 1);
+        const skin = rad(D, pre + "skin", [[0, "#ffd9bb"], [0.7, "#efb48c"], [1, "#c98563"]], 0.42, 0.38, 0.62);
+        const beard = lin(D, pre + "beard", [[0, "#e07a35"], [0.6, "#b4521f"], [1, "#7a3412"]], 0, 0, 0.2, 1);
+        const lens = lin(D, pre + "lens", [[0, "#ff8fd0"], [0.45, "#5a1a55"], [1, "#12061c"]], 0, 0, 0.6, 1);
+        const sleeve = lin(D, pre + "slv", [[0, "#6a33a0"], [1, "#30134f"]], 0, 0, 1, 1);
+        const ballG = rad(D, pre + "ball", [[0, "#ffffff"], [0.35, "#cfd6ff"], [0.8, "#6a74b8"], [1, "#2e3670"]], 0.35, 0.3, 0.7);
+        const wood = lin(D, pre + "wood", [[0, "#a0703f"], [0.5, "#7a4f27"], [1, "#4f3116"]], 0, 0, 1, 0);
+
+        const g = el("g", { id: pre }, parent); gsap.set(g, { x, y, scale: s, transformOrigin: "0 0" });
+        el("ellipse", { cx: 0, cy: 6, rx: 230, ry: 34, fill: "#000", opacity: 0.35 }, g);
+        // Heiligenschein: pinker Neonring (anders als in der Kirche)
+        const halo = el("g", { opacity: o.halo === false ? 0 : 1 }, g);
+        halo.style.filter = "drop-shadow(0 0 18px #ff4fb0) drop-shadow(0 0 40px rgba(255,79,176,.6))";
+        el("ellipse", { cx: 0, cy: -790, rx: 150, ry: 150, fill: "none", stroke: "#ff7cc6", "stroke-width": 9 }, halo);
+        el("ellipse", { cx: 0, cy: -790, rx: 150, ry: 150, fill: "none", stroke: "#fff", "stroke-width": 3, opacity: 0.8 }, halo);
+        // Stab mit Discokugel (rechte Hand der Figur = links im Bild)
+        const staff = el("g", {}, g);
+        el("rect", { x: -196, y: -800, width: 18, height: 790, rx: 9, fill: wood }, staff);
+        [-640, -420, -200].forEach((yy) => el("rect", { x: -199, y: yy, width: 24, height: 10, rx: 4, fill: "#3b2410", opacity: 0.6 }, staff));
+        const ball = el("g", {}, staff);
+        el("circle", { cx: -187, cy: -850, r: 58, fill: ballG }, ball);
+        for (let i = -2; i <= 2; i++) el("ellipse", { cx: -187, cy: -850, rx: Math.abs(i) * 13 + 2, ry: 58, fill: "none", stroke: "#2e3670", "stroke-width": 2, opacity: 0.5 }, ball);
+        for (let i = -2; i <= 2; i++) el("path", { d: `M${-187 - Math.sqrt(58 * 58 - (i * 22) ** 2)} ${-850 + i * 22} H${-187 + Math.sqrt(58 * 58 - (i * 22) ** 2)}`, stroke: "#2e3670", "stroke-width": 2, opacity: 0.5 }, ball);
+        const spark = el("g", {}, ball);
+        [[-210, -872, 1], [-170, -830, 0.7], [-160, -880, 0.6]].forEach(([sx, sy, k]) => el("path", { d: `M${sx} ${sy - 16 * k} L${sx + 4 * k} ${sy - 4 * k} L${sx + 16 * k} ${sy} L${sx + 4 * k} ${sy + 4 * k} L${sx} ${sy + 16 * k} L${sx - 4 * k} ${sy + 4 * k} L${sx - 16 * k} ${sy} L${sx - 4 * k} ${sy - 4 * k}Z`, fill: "#fff" }, spark));
+        // Füße: Sandalen mit weißen Tennissocken (rote Streifen)
+        [-62, 62].forEach((fx) => {
+          el("ellipse", { cx: fx, cy: -6, rx: 56, ry: 18, fill: "#6b3f1d" }, g);
+          el("path", { d: `M${fx - 40} -10 Q${fx} -52 ${fx + 44} -12 L${fx + 40} 0 L${fx - 44} 0Z`, fill: "#f4f4f0" }, g);
+          el("rect", { x: fx - 34, y: -74, width: 66, height: 50, rx: 18, fill: "#f4f4f0" }, g);
+          el("rect", { x: fx - 34, y: -64, width: 66, height: 7, fill: "#e0303f" }, g); el("rect", { x: fx - 34, y: -52, width: 66, height: 5, fill: "#2b5bd1" }, g);
+          el("path", { d: `M${fx - 46} -18 L${fx + 46} -18`, stroke: "#4a2a10", "stroke-width": 9, "stroke-linecap": "round" }, g);
+        });
+        // Talar
+        el("path", { d: "M-108 -555 Q-150 -300 -190 -70 Q0 -40 190 -70 Q150 -300 108 -555 Q0 -585 -108 -555Z", fill: robe }, g);
+        el("path", { d: "M-108 -555 Q-150 -300 -190 -70 Q0 -40 190 -70 Q150 -300 108 -555 Q0 -585 -108 -555Z", fill: robeSide }, g);
+        ["M-60 -480 Q-80 -260 -110 -70", "M30 -470 Q50 -250 70 -62", "M-10 -300 Q-14 -180 -20 -60"].forEach((d) => el("path", { d, stroke: "#1d0a33", "stroke-width": 7, fill: "none", opacity: 0.45, "stroke-linecap": "round" }, g));
+        el("path", { d: "M-190 -70 Q0 -40 190 -70", stroke: "#ffd43b", "stroke-width": 8, fill: "none" }, g);
+        // Stola (Gold) mit pinken Augen-Symbolen
+        const stola = el("g", {}, g);
+        [-1, 1].forEach((k) => {
+          el("path", { d: `M${k * 22} -560 L${k * 62} -560 L${k * 70} -200 L${k * 30} -200Z`, fill: gold }, stola);
+          for (let i = 0; i < 6; i++) el("path", { d: `M${k * 34 + k * i * 6} ${-200 + 0} l0 22`, stroke: "#d99a1e", "stroke-width": 4 }, stola);
+          const ey = -300;
+          el("path", { d: `M${k * 50 - 15} ${ey} q15 -12 30 0 q-15 12 -30 0Z`, fill: "#ff4fb0" }, stola);
+          el("circle", { cx: k * 50, cy: ey, r: 5, fill: "#2a1145" }, stola);
+          el("path", { d: `M${k * 47 - 14} ${ey - 120} l14 -24 l14 24Z`, fill: "none", stroke: "#ff4fb0", "stroke-width": 4 }, stola);
+        });
+        // Arme (weite Ärmel), drehen um die Schulter; 0° = hängt
+        function armG(sx, deg, side) {
+          const a = el("g", {}, g);
+          el("rect", { x: sx - 15, y: -345, width: 30, height: 50, rx: 14, fill: skin }, a);
+          el("ellipse", { cx: sx, cy: -290, rx: 27, ry: 31, fill: skin }, a);
+          el("path", { d: `M${sx - 13} -300 q-10 14 -2 26`, stroke: "#c98563", "stroke-width": 4, fill: "none" }, a);
+          el("path", { d: `M${sx - 38} -560 Q${sx - 46} -440 ${sx - 56} -330 L${sx + 56} -330 Q${sx + 46} -440 ${sx + 38} -560Z`, fill: sleeve }, a);
+          el("path", { d: `M${sx - 56} -330 L${sx + 56} -330`, stroke: "#ffd43b", "stroke-width": 7, "stroke-linecap": "round" }, a);
+          gsap.set(a, { rotation: deg, svgOrigin: `${sx} -545` });
+          return a;
+        }
+        const ang = o.arms || [14, -8];
+        const armR = armG(-120, ang[0], -1), armL = armG(120, ang[1], 1);
+        // Hand am Stab
+        gsap.set(staff, { x: o.staffX ?? 0 });
+        // Kollar (weißes Kragen-Band)
+        el("rect", { x: -48, y: -590, width: 96, height: 40, rx: 14, fill: "#1b0b2c" }, g);
+        el("rect", { x: -14, y: -586, width: 28, height: 22, rx: 4, fill: "#ffffff" }, g);
+        const head = el("g", {}, g);
+        // Mitra-Bänder hinten (Infuln)
+        el("path", { d: "M40 -700 L66 -560 L92 -566 L70 -706Z", fill: gold, opacity: 0.9 }, head);
+        // Ohren + Kopf
+        el("ellipse", { cx: -76, cy: -650, rx: 14, ry: 22, fill: "#e7a882" }, head); el("ellipse", { cx: 76, cy: -650, rx: 14, ry: 22, fill: "#e7a882" }, head);
+        el("ellipse", { cx: 0, cy: -652, rx: 76, ry: 86, fill: skin }, head);
+        // Bart: buschig, rotblond, mit geflochtenem Zopf und Goldperle
+        el("path", { d: "M-74 -640 Q-92 -560 -64 -520 Q-30 -470 0 -466 Q30 -470 64 -520 Q92 -560 74 -640 Q60 -592 0 -588 Q-60 -592 -74 -640Z", fill: beard }, head);
+        el("path", { d: "M-14 -472 Q-18 -440 -6 -414 Q6 -440 2 -472Z M-6 -414 l0 18", fill: "#a8481a", stroke: "#a8481a", "stroke-width": 8 }, head);
+        el("circle", { cx: -6, cy: -390, r: 11, fill: gold }, head);
+        ["M-50 -560 q8 20 4 40", "M-24 -540 q6 22 2 50", "M24 -540 q-6 22 -2 50", "M50 -560 q-8 20 -4 40"].forEach((d) => el("path", { d, stroke: "#7a3412", "stroke-width": 4, fill: "none", opacity: 0.6 }, head));
+        const mouth = el("path", { d: "M-22 -585 Q0 -578 22 -585 Q0 -580 -22 -585Z", fill: "#3a0d12" }, head);
+        el("path", { d: "M-56 -598 Q-28 -622 0 -604 Q28 -622 56 -598 Q30 -590 0 -596 Q-30 -590 -56 -598Z", fill: "#c4602a" }, head);
+        el("path", { d: "M-8 -660 Q-14 -628 -4 -618 Q8 -616 12 -626", fill: "none", stroke: "#c98563", "stroke-width": 6, "stroke-linecap": "round" }, head);
+        // runde Sonnenbrille mit Goldrand
+        const glasses = el("g", {}, head);
+        [-32, 32].forEach((cx) => { el("circle", { cx, cy: -664, r: 25, fill: lens }, glasses); el("circle", { cx, cy: -664, r: 25, fill: "none", stroke: gold, "stroke-width": 5 }, glasses); });
+        el("path", { d: "M-8 -668 Q0 -676 8 -668", stroke: "#d99a1e", "stroke-width": 4, fill: "none" }, glasses);
+        el("path", { d: "M-57 -668 L-74 -660 M57 -668 L74 -660", stroke: "#d99a1e", "stroke-width": 4 }, glasses);
+        const glint = el("g", {}, glasses);
+        [-32, 32].forEach((cx) => el("path", { d: `M${cx - 14} ${-668} Q${cx - 10} ${-682} ${cx + 2} ${-684}`, stroke: "#fff", "stroke-width": 5, fill: "none", "stroke-linecap": "round", opacity: 0.85 }, glint));
+        const brows = el("g", {}, head);
+        el("path", { d: "M-58 -700 Q-34 -716 -10 -702", stroke: "#b4521f", "stroke-width": 11, fill: "none", "stroke-linecap": "round" }, brows);
+        el("path", { d: "M10 -702 Q34 -716 58 -700", stroke: "#b4521f", "stroke-width": 11, fill: "none", "stroke-linecap": "round" }, brows);
+        // Mitra: selbst gebastelt, golden, schief, mit Klebeband + pinkem Neon-Auge im Dreieck
+        const mitre = el("g", {}, head);
+        el("path", { d: "M-70 -718 Q-80 -800 -4 -906 Q8 -892 14 -880 Q22 -896 34 -900 Q86 -800 72 -718 Q0 -732 -70 -718Z", fill: gold }, mitre);
+        el("path", { d: "M-70 -718 Q0 -732 72 -718 L74 -700 Q0 -714 -72 -700Z", fill: "#c48416" }, mitre);
+        el("path", { d: "M10 -880 L4 -722", stroke: "#c48416", "stroke-width": 6 }, mitre);
+        el("rect", { x: -60, y: -842, width: 52, height: 16, fill: "#cfd3dc", opacity: 0.9, transform: "rotate(-28 -34 -834)" }, mitre);
+        el("rect", { x: 30, y: -770, width: 46, height: 14, fill: "#cfd3dc", opacity: 0.9, transform: "rotate(22 53 -763)" }, mitre);
+        const sym = el("g", {}, mitre); sym.style.filter = "drop-shadow(0 0 10px #ff4fb0)";
+        el("path", { d: "M2 -836 L-30 -776 L34 -776Z", fill: "none", stroke: "#ff4fb0", "stroke-width": 6, "stroke-linejoin": "round" }, sym);
+        el("path", { d: "M-14 -792 q16 -12 32 0 q-16 12 -32 0Z", fill: "#ff4fb0" }, sym);
+        el("circle", { cx: 2, cy: -792, r: 5, fill: "#2a1145" }, sym);
+        gsap.set(mitre, { rotation: 7, svgOrigin: "0 -718" });
+        // Kante/Rim-Light (warmes Gegenlicht links)
+        el("path", { d: "M-108 -555 Q-150 -300 -190 -70", stroke: "#ffb36b", "stroke-width": 5, fill: "none", opacity: 0.55 }, g);
+        g.appendChild(staff); g.appendChild(armR); g.appendChild(armL);
+        return { g, head, armL, armR, staff, ball, spark, mouth, brows, glint, mitre, sym, halo, stola };
+      }
+      // Lippen-Bewegung beim Sprechen (endliche Wiederholung)
+      function talk(tl, P, t0, t1) {
+        const n = Math.max(1, Math.floor((t1 - t0) / 0.16));
+        tl.to(P.mouth, { attr: { d: "M-22 -588 Q0 -560 22 -588 Q0 -582 -22 -588Z" }, duration: 0.08, repeat: n * 2 - 1, yoyo: true, ease: "sine.inOut" }, t0);
+      }
+      // ===== Das geerbte Grundstück (Serien-Kulisse): verwahrlost, ein Stuhl unter einem kargen Baum =====
+      // Braucht: el(), lin(), rad(), gsap, rng(). Zeichnet in eine 1080×1920-SVG. o.mood: "dusk" (Abendrot, Standard) | "night" | "day"
+      function grundstueck(sv, pre, o = {}) {
+        const D = GR(sv), R = rng(o.seed || 7), mood = o.mood || "dusk";
+        const skyC = { dusk: [[0, "#1a1240"], [0.45, "#5b2a6e"], [0.75, "#d0604a"], [1, "#ffb15c"]],
+          night: [[0, "#05060f"], [0.6, "#121634"], [1, "#2a2350"]], day: [[0, "#6d9cc8"], [0.7, "#c9d6d8"], [1, "#efe2c2"]] }[mood];
+        const sky = el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: lin(D, pre + "sky", skyC) }, sv);
+        const land = el("g", {}, sv); gsap.set(land, { y: o.dy ?? -130 });
+        const sunG = el("g", {}, land);
+        el("circle", { cx: 760, cy: 960, r: 520, fill: rad(D, pre + "sunh", [[0, "#ffd08a", 0.75], [0.4, "#ff9a5a", 0.25], [1, "#ff9a5a", 0]]) }, sunG);
+        el("circle", { cx: 760, cy: 960, r: 90, fill: "#ffe2a8", opacity: mood === "night" ? 0 : 0.95 }, sunG);
+        if (mood === "night") gsap.set(sunG, { opacity: 0.25 });
+        // Lichtstrahlen (Gottesstrahlen)
+        const rays = el("g", { opacity: 0.0 }, land);
+        for (let i = 0; i < 9; i++) { const a = -150 + i * 15 + R() * 6; const r1 = 1700;
+          el("path", { d: `M760 960 L${760 + r1 * Math.cos((a - 2.5) * Math.PI / 180)} ${960 + r1 * Math.sin((a - 2.5) * Math.PI / 180)} L${760 + r1 * Math.cos((a + 2.5) * Math.PI / 180)} ${960 + r1 * Math.sin((a + 2.5) * Math.PI / 180)}Z`,
+            fill: lin(D, pre + "ray" + i, [[0, "#fff1c4", 0.5], [1, "#fff1c4", 0]], 0, 0, 1, 0) }, rays); }
+        // Hügel in Lufperspektive
+        el("path", { d: "M0 1010 Q160 900 330 960 Q520 1020 700 930 Q900 850 1080 960 L1080 1920 L0 1920Z", fill: mood === "day" ? "#8a9a8c" : "#4a2a55", opacity: 0.8 }, land);
+        el("path", { d: "M0 1060 Q240 990 470 1050 Q760 1110 1080 1020 L1080 1920 L0 1920Z", fill: mood === "day" ? "#6d7a5a" : "#2f1d3a" }, land);
+        // Boden: trockene Wiese, Erde
+        el("rect", { x: 0, y: 1080, width: 1080, height: 1000, fill: lin(D, pre + "gr", mood === "day" ? [[0, "#8b7a4a"], [1, "#4a3f22"]] : [[0, "#5a3f34"], [0.5, "#33231f"], [1, "#160f12"]]) }, land);
+        // kaputter Zaun hinten
+        const fence = el("g", { opacity: 0.85 }, land);
+        [[40, 0], [130, 6], [230, -14], [330, 4], [690, 10], [800, -8], [900, 18], [1010, 3]].forEach(([fx, rot]) => {
+          el("rect", { x: fx, y: 1010, width: 16, height: 110, rx: 3, fill: "#2a1a18", transform: `rotate(${rot} ${fx + 8} 1120)` }, fence); });
+        el("path", { d: "M40 1040 Q190 1052 340 1036 M690 1046 Q850 1030 1020 1050", stroke: "#2a1a18", "stroke-width": 5, fill: "none" }, fence);
+        el("path", { d: "M40 1074 Q120 1090 250 1078", stroke: "#2a1a18", "stroke-width": 5, fill: "none" }, fence);
+        // Baum: karg, krumm, ein einziges Blatt
+        const tree = el("g", {}, land); const bark = lin(D, pre + "bark", [[0, "#3a2620"], [0.6, "#24160f"], [1, "#120a08"]], 0, 0, 1, 0);
+        const TX = o.treeX ?? 610, TY = 1210;
+        function br(x, y, len, ang, w, d) {
+          const x2 = x + len * Math.cos(ang), y2 = y + len * Math.sin(ang), mx = (x + x2) / 2 + (R() - 0.5) * len * 0.25, my = (y + y2) / 2 + (R() - 0.5) * len * 0.2;
+          el("path", { d: `M${x} ${y} Q${mx} ${my} ${x2} ${y2}`, stroke: bark, "stroke-width": w, fill: "none", "stroke-linecap": "round" }, tree);
+          if (d > 0) { br(x2, y2, len * 0.72, ang - 0.45 - R() * 0.25, w * 0.66, d - 1); br(x2, y2, len * 0.68, ang + 0.35 + R() * 0.3, w * 0.62, d - 1); if (R() > 0.6) br(x2, y2, len * 0.5, ang + (R() - 0.5) * 0.4, w * 0.5, d - 2); }
+          return [x2, y2];
+        }
+        el("path", { d: `M${TX - 46} ${TY} Q${TX - 20} ${TY - 120} ${TX - 18} ${TY - 260} L${TX + 18} ${TY - 260} Q${TX + 24} ${TY - 120} ${TX + 54} ${TY}Z`, fill: bark }, tree);
+        br(TX, TY - 250, 170, -1.95, 30, 4); br(TX, TY - 250, 190, -1.15, 28, 4); br(TX, TY - 200, 120, -0.35, 16, 2);
+        const leafX = TX + 150, leafY = TY - 520;
+        const leaf = el("path", { d: `M${leafX} ${leafY} q16 -22 34 -6 q-12 24 -34 6Z`, fill: "#9a8a2a" }, land);
+        // Stuhl (Holz, leicht schief) unter dem Baum
+        const chair = el("g", {}, land); const cw = lin(D, pre + "chw", [[0, "#b98a52"], [1, "#6b4824"]], 0, 0, 1, 1);
+        const CX = o.chairX ?? 500, CY = 1250;
+        el("ellipse", { cx: CX + 40, cy: CY + 6, rx: 120, ry: 18, fill: "#000", opacity: 0.4 }, chair);
+        el("rect", { x: CX - 70, y: CY - 210, width: 16, height: 210, rx: 4, fill: cw }, chair);
+        el("rect", { x: CX + 54, y: CY - 210, width: 16, height: 210, rx: 4, fill: cw }, chair);
+        el("rect", { x: CX - 70, y: CY - 210, width: 140, height: 20, rx: 6, fill: cw }, chair);
+        el("rect", { x: CX - 70, y: CY - 160, width: 140, height: 14, rx: 6, fill: cw }, chair);
+        el("path", { d: `M${CX - 76} ${CY - 100} L${CX + 76} ${CY - 100} L${CX + 108} ${CY - 74} L${CX - 44} ${CY - 74}Z`, fill: "#c89a60" }, chair);
+        el("rect", { x: CX - 46, y: CY - 76, width: 14, height: 76, rx: 4, fill: "#6b4824" }, chair);
+        el("rect", { x: CX + 92, y: CY - 76, width: 14, height: 80, rx: 4, fill: "#6b4824", transform: `rotate(-4 ${CX + 99} ${CY})` }, chair);
+        // Gerümpel: alter Reifen, Unkraut
+        el("ellipse", { cx: 190, cy: 1230, rx: 70, ry: 26, fill: "#121212" }, land); el("ellipse", { cx: 190, cy: 1226, rx: 34, ry: 11, fill: "#2b1d1a" }, land);
+        const weeds = el("g", {}, land);
+        for (let i = 0; i < 140; i++) { const wx = R() * 1080, wy = 1110 + R() * R() * 800, h = 20 + R() * 60 * (wy / 1300), c = ["#4a5a2a", "#6b6a32", "#8a7a3a", "#3a4422"][i % 4];
+          el("path", { d: `M${wx} ${wy} q${(R() - 0.5) * 20} ${-h * 0.6} ${(R() - 0.5) * 30} ${-h}`, stroke: c, "stroke-width": 3 + R() * 3, fill: "none", "stroke-linecap": "round" }, weeds); }
+        // Staub im Gegenlicht
+        const dust = el("g", {}, land);
+        const motes = Array.from({ length: 26 }, () => el("circle", { cx: 300 + R() * 700, cy: 500 + R() * 700, r: 2 + R() * 4, fill: "#ffe2a8", opacity: 0.25 + R() * 0.5 }, dust));
+        return { sky, land, sunG, rays, tree, leaf, chair, weeds, dust, motes, fence, chairPos: [CX, CY], treePos: [TX, TY] };
+      }
+      // Filmlook: Vignette + feines Korn (statisch) – als oberste Ebene einer Szene
+      function filmLook(sv, pre, strength = 1) {
+        const D = GR(sv);
+        el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: rad(D, pre + "vig", [[0.55, "#000", 0], [1, "#000", 0.7 * strength]], 0.5, 0.42, 0.75), "pointer-events": "none" }, sv);
+        const f = el("filter", { id: pre + "grain", x: 0, y: 0, width: "100%", height: "100%" }, D);
+        el("feTurbulence", { type: "fractalNoise", baseFrequency: 0.9, numOctaves: 2, seed: 3, result: "n" }, f);
+        el("feColorMatrix", { type: "saturate", values: 0 }, f);
+        el("rect", { x: 0, y: 0, width: 1080, height: 1920, filter: `url(#${pre}grain)`, opacity: 0.07 * strength, style: "mix-blend-mode:overlay" }, sv);
+      }
+      // Staubteilchen schweben lassen (endlich, über die Szenendauer)
+      function floatDust(tl, G, dur) { G.motes.forEach((m, i) => tl.to(m, { y: -60 - (i % 5) * 20, x: (i % 3 - 1) * 30, duration: dur, ease: "none" }, 0)); }
+
+      const tl = gsap.timeline({ paused: true });
+      const bg = document.querySelector("#s07-bg"), sv = document.querySelector("#s07-svg"), fx = document.querySelector("#s07-fx");
+      if (fx) filmLook(fx, "s07f");
+      const G = grundstueck(bg, "s07g", { mood: "dusk" }); gsap.set(bg, { filter: "blur(6px) brightness(.6)" });
+      const D = GR(sv);
+      // Klingelbeutel: Samtbeutel an langem Stab mit Glöckchen
+      const bag = el("g", {}, sv), vel = rad(D, "s07vel", [[0, "#c2185b"], [0.7, "#7a0c3a"], [1, "#3a0418"]], 0.4, 0.3, 0.8);
+      el("rect", { x: 0, y: 870, width: 520, height: 22, rx: 11, fill: lin(D, "s07st", [[0, "#a0703f"], [1, "#4f3116"]]) }, bag);
+      el("path", { d: "M560 860 Q500 960 560 1060 Q680 1110 800 1060 Q860 960 800 860Z", fill: vel }, bag);
+      el("ellipse", { cx: 680, cy: 860, rx: 122, ry: 30, fill: "#2a0210" }, bag);
+      el("path", { d: "M558 860 A122 30 0 0 0 802 860", stroke: lin(D, "s07gd", [[0, "#fff2b0"], [1, "#d99a1e"]], 0, 0, 1, 0), "stroke-width": 14, fill: "none" }, bag);
+      el("circle", { cx: 680, cy: 1076, r: 16, fill: "#ffd43b" }, bag);
+      const coin = el("g", { opacity: 0 }, sv); coin.style.filter = "drop-shadow(0 0 16px rgba(255,212,59,.9))";
+      el("circle", { cx: 0, cy: 0, r: 46, fill: "#ffd43b" }, coin); el("circle", { cx: 0, cy: 0, r: 36, fill: "none", stroke: "#c48416", "stroke-width": 5 }, coin);
+      const ct = el("text", { x: 0, y: 17, "text-anchor": "middle", "font-family": "Inter", "font-weight": 900, "font-size": 48, fill: "#9a6510" }, coin); ct.textContent = "€";
+      const brick = el("g", { opacity: 0 }, sv);
+      el("rect", { x: -70, y: -34, width: 140, height: 68, rx: 6, fill: "#b4542a" }, brick); el("rect", { x: -70, y: -34, width: 140, height: 12, rx: 4, fill: "#d77a48" }, brick);
+      const ge = at("L13", "heiliges"), fo = at("L13", "follower"), eu = at("L13", "euro"), l14 = line("L14")[0], zi = at("L14", "ziegelstein");
+      tl.fromTo(bag, { opacity: 0, x: -400 }, { opacity: 1, x: 0, duration: 0.6, ease: "expo.out" }, 0);
+      tl.fromTo("#s07-law", { opacity: 0, y: -60, rotationX: 80 }, { opacity: 1, y: 0, rotationX: 0, duration: 0.45, ease: "back.out(1.6)" }, ge - 0.1);
+      tl.fromTo("#s07-fol", { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(3)" }, fo - 0.05);
+      tl.to("#s07-fol", { scale: 0.9, duration: 0.1, yoyo: true, repeat: 1 }, fo + 0.35);
+      tl.fromTo("#s07-box", { opacity: 0 }, { opacity: 1, duration: 0.25 }, fo);
+      tl.fromTo(coin, { opacity: 1, x: 245, y: 760, scale: 0.6 }, { x: 680, y: 850, scale: 1, rotation: 360, svgOrigin: "0 0", duration: 0.5, ease: "power2.in", immediateRender: false }, eu - 0.45);
+      tl.to(coin, { opacity: 0, duration: 0.08 }, eu + 0.05);
+      tl.to(bag, { y: 14, duration: 0.08, yoyo: true, repeat: 3 }, eu + 0.05);
+      count(tl, "#s07-n", 0, 1, eu + 0.05, 0.2, "", " €", "none");
+      tl.fromTo("#s07-box", { scale: 1.25 }, { scale: 1, duration: 0.35, ease: "back.out(3)", immediateRender: false }, eu + 0.05);
+      tl.to(["#s07-law", "#s07-fol"], { opacity: 0, y: -40, duration: 0.25 }, l14 - 0.15);
+      tl.fromTo(brick, { opacity: 1, x: 300, y: 300, rotation: -30 }, { x: 300, y: 820, rotation: 0, duration: 0.45, ease: "bounce.out", immediateRender: false }, zi - 0.4);
+      tl.fromTo("#s07-brick", { opacity: 0, scale: 1.6 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2.4)" }, zi);
+      tl.to("#s07-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
+      window.__timelines["s07"] = tl;
+    })();
+  </script>
+</template>

@@ -1,0 +1,127 @@
+      // ===== Prophet Peter – feste Serienfigur (Aussehen siehe .claude/skills/tiktok-video/references/figuren.md) =====
+      // Braucht: el(), gsap. pre = eindeutiges Präfix (z. B. "s02p"), Ursprung = Mitte zwischen den Füßen, Höhe ≈ 900 * s.
+      const GR = (parent, pre) => { let d = parent.querySelector(":scope > defs"); if (!d) d = el("defs", {}, parent); return d; };
+      function lin(defs, id, stops, x1 = 0, y1 = 0, x2 = 0, y2 = 1) {
+        const g = el("linearGradient", { id, x1, y1, x2, y2 }, defs);
+        stops.forEach(([o, c, a = 1]) => el("stop", { offset: o, "stop-color": c, "stop-opacity": a }, g)); return `url(#${id})`;
+      }
+      function rad(defs, id, stops, cx = 0.5, cy = 0.5, r = 0.5, fx, fy) {
+        const g = el("radialGradient", { id, cx, cy, r, fx: fx ?? cx, fy: fy ?? cy }, defs);
+        stops.forEach(([o, c, a = 1]) => el("stop", { offset: o, "stop-color": c, "stop-opacity": a }, g)); return `url(#${id})`;
+      }
+      function peter(parent, pre, x, y, s = 1, o = {}) {
+        const D = GR(parent);
+        const robe = lin(D, pre + "robe", [[0, "#7b3fb0"], [0.45, "#55267f"], [1, "#2a1145"]], 0, 0, 0.35, 1);
+        const robeSide = lin(D, pre + "robes", [[0, "#000", 0.45], [0.25, "#000", 0], [0.75, "#000", 0], [1, "#000", 0.5]], 0, 0, 1, 0);
+        const gold = lin(D, pre + "gold", [[0, "#fff2b0"], [0.35, "#ffd43b"], [0.7, "#d99a1e"], [1, "#9a6510"]], 0, 0, 1, 1);
+        const skin = rad(D, pre + "skin", [[0, "#ffd9bb"], [0.7, "#efb48c"], [1, "#c98563"]], 0.42, 0.38, 0.62);
+        const beard = lin(D, pre + "beard", [[0, "#e07a35"], [0.6, "#b4521f"], [1, "#7a3412"]], 0, 0, 0.2, 1);
+        const lens = lin(D, pre + "lens", [[0, "#ff8fd0"], [0.45, "#5a1a55"], [1, "#12061c"]], 0, 0, 0.6, 1);
+        const sleeve = lin(D, pre + "slv", [[0, "#6a33a0"], [1, "#30134f"]], 0, 0, 1, 1);
+        const ballG = rad(D, pre + "ball", [[0, "#ffffff"], [0.35, "#cfd6ff"], [0.8, "#6a74b8"], [1, "#2e3670"]], 0.35, 0.3, 0.7);
+        const wood = lin(D, pre + "wood", [[0, "#a0703f"], [0.5, "#7a4f27"], [1, "#4f3116"]], 0, 0, 1, 0);
+
+        const g = el("g", { id: pre }, parent); gsap.set(g, { x, y, scale: s, transformOrigin: "0 0" });
+        el("ellipse", { cx: 0, cy: 6, rx: 230, ry: 34, fill: "#000", opacity: 0.35 }, g);
+        // Heiligenschein: pinker Neonring (anders als in der Kirche)
+        const halo = el("g", { opacity: o.halo === false ? 0 : 1 }, g);
+        halo.style.filter = "drop-shadow(0 0 18px #ff4fb0) drop-shadow(0 0 40px rgba(255,79,176,.6))";
+        el("ellipse", { cx: 0, cy: -790, rx: 150, ry: 150, fill: "none", stroke: "#ff7cc6", "stroke-width": 9 }, halo);
+        el("ellipse", { cx: 0, cy: -790, rx: 150, ry: 150, fill: "none", stroke: "#fff", "stroke-width": 3, opacity: 0.8 }, halo);
+        // Stab mit Discokugel (rechte Hand der Figur = links im Bild)
+        const staff = el("g", {}, g);
+        el("rect", { x: -196, y: -800, width: 18, height: 790, rx: 9, fill: wood }, staff);
+        [-640, -420, -200].forEach((yy) => el("rect", { x: -199, y: yy, width: 24, height: 10, rx: 4, fill: "#3b2410", opacity: 0.6 }, staff));
+        const ball = el("g", {}, staff);
+        el("circle", { cx: -187, cy: -850, r: 58, fill: ballG }, ball);
+        for (let i = -2; i <= 2; i++) el("ellipse", { cx: -187, cy: -850, rx: Math.abs(i) * 13 + 2, ry: 58, fill: "none", stroke: "#2e3670", "stroke-width": 2, opacity: 0.5 }, ball);
+        for (let i = -2; i <= 2; i++) el("path", { d: `M${-187 - Math.sqrt(58 * 58 - (i * 22) ** 2)} ${-850 + i * 22} H${-187 + Math.sqrt(58 * 58 - (i * 22) ** 2)}`, stroke: "#2e3670", "stroke-width": 2, opacity: 0.5 }, ball);
+        const spark = el("g", {}, ball);
+        [[-210, -872, 1], [-170, -830, 0.7], [-160, -880, 0.6]].forEach(([sx, sy, k]) => el("path", { d: `M${sx} ${sy - 16 * k} L${sx + 4 * k} ${sy - 4 * k} L${sx + 16 * k} ${sy} L${sx + 4 * k} ${sy + 4 * k} L${sx} ${sy + 16 * k} L${sx - 4 * k} ${sy + 4 * k} L${sx - 16 * k} ${sy} L${sx - 4 * k} ${sy - 4 * k}Z`, fill: "#fff" }, spark));
+        // Füße: Sandalen mit weißen Tennissocken (rote Streifen)
+        [-62, 62].forEach((fx) => {
+          el("ellipse", { cx: fx, cy: -6, rx: 56, ry: 18, fill: "#6b3f1d" }, g);
+          el("path", { d: `M${fx - 40} -10 Q${fx} -52 ${fx + 44} -12 L${fx + 40} 0 L${fx - 44} 0Z`, fill: "#f4f4f0" }, g);
+          el("rect", { x: fx - 34, y: -74, width: 66, height: 50, rx: 18, fill: "#f4f4f0" }, g);
+          el("rect", { x: fx - 34, y: -64, width: 66, height: 7, fill: "#e0303f" }, g); el("rect", { x: fx - 34, y: -52, width: 66, height: 5, fill: "#2b5bd1" }, g);
+          el("path", { d: `M${fx - 46} -18 L${fx + 46} -18`, stroke: "#4a2a10", "stroke-width": 9, "stroke-linecap": "round" }, g);
+        });
+        // Talar
+        el("path", { d: "M-108 -555 Q-150 -300 -190 -70 Q0 -40 190 -70 Q150 -300 108 -555 Q0 -585 -108 -555Z", fill: robe }, g);
+        el("path", { d: "M-108 -555 Q-150 -300 -190 -70 Q0 -40 190 -70 Q150 -300 108 -555 Q0 -585 -108 -555Z", fill: robeSide }, g);
+        ["M-60 -480 Q-80 -260 -110 -70", "M30 -470 Q50 -250 70 -62", "M-10 -300 Q-14 -180 -20 -60"].forEach((d) => el("path", { d, stroke: "#1d0a33", "stroke-width": 7, fill: "none", opacity: 0.45, "stroke-linecap": "round" }, g));
+        el("path", { d: "M-190 -70 Q0 -40 190 -70", stroke: "#ffd43b", "stroke-width": 8, fill: "none" }, g);
+        // Stola (Gold) mit pinken Augen-Symbolen
+        const stola = el("g", {}, g);
+        [-1, 1].forEach((k) => {
+          el("path", { d: `M${k * 22} -560 L${k * 62} -560 L${k * 70} -200 L${k * 30} -200Z`, fill: gold }, stola);
+          for (let i = 0; i < 6; i++) el("path", { d: `M${k * 34 + k * i * 6} ${-200 + 0} l0 22`, stroke: "#d99a1e", "stroke-width": 4 }, stola);
+          const ey = -300;
+          el("path", { d: `M${k * 50 - 15} ${ey} q15 -12 30 0 q-15 12 -30 0Z`, fill: "#ff4fb0" }, stola);
+          el("circle", { cx: k * 50, cy: ey, r: 5, fill: "#2a1145" }, stola);
+          el("path", { d: `M${k * 47 - 14} ${ey - 120} l14 -24 l14 24Z`, fill: "none", stroke: "#ff4fb0", "stroke-width": 4 }, stola);
+        });
+        // Arme (weite Ärmel), drehen um die Schulter; 0° = hängt
+        function armG(sx, deg, side) {
+          const a = el("g", {}, g);
+          el("rect", { x: sx - 15, y: -345, width: 30, height: 50, rx: 14, fill: skin }, a);
+          el("ellipse", { cx: sx, cy: -290, rx: 27, ry: 31, fill: skin }, a);
+          el("path", { d: `M${sx - 13} -300 q-10 14 -2 26`, stroke: "#c98563", "stroke-width": 4, fill: "none" }, a);
+          el("path", { d: `M${sx - 38} -560 Q${sx - 46} -440 ${sx - 56} -330 L${sx + 56} -330 Q${sx + 46} -440 ${sx + 38} -560Z`, fill: sleeve }, a);
+          el("path", { d: `M${sx - 56} -330 L${sx + 56} -330`, stroke: "#ffd43b", "stroke-width": 7, "stroke-linecap": "round" }, a);
+          gsap.set(a, { rotation: deg, svgOrigin: `${sx} -545` });
+          return a;
+        }
+        const ang = o.arms || [14, -8];
+        const armR = armG(-120, ang[0], -1), armL = armG(120, ang[1], 1);
+        // Hand am Stab
+        gsap.set(staff, { x: o.staffX ?? 0 });
+        // Kollar (weißes Kragen-Band)
+        el("rect", { x: -48, y: -590, width: 96, height: 40, rx: 14, fill: "#1b0b2c" }, g);
+        el("rect", { x: -14, y: -586, width: 28, height: 22, rx: 4, fill: "#ffffff" }, g);
+        const head = el("g", {}, g);
+        // Mitra-Bänder hinten (Infuln)
+        el("path", { d: "M40 -700 L66 -560 L92 -566 L70 -706Z", fill: gold, opacity: 0.9 }, head);
+        // Ohren + Kopf
+        el("ellipse", { cx: -76, cy: -650, rx: 14, ry: 22, fill: "#e7a882" }, head); el("ellipse", { cx: 76, cy: -650, rx: 14, ry: 22, fill: "#e7a882" }, head);
+        el("ellipse", { cx: 0, cy: -652, rx: 76, ry: 86, fill: skin }, head);
+        // Bart: buschig, rotblond, mit geflochtenem Zopf und Goldperle
+        el("path", { d: "M-74 -640 Q-92 -560 -64 -520 Q-30 -470 0 -466 Q30 -470 64 -520 Q92 -560 74 -640 Q60 -592 0 -588 Q-60 -592 -74 -640Z", fill: beard }, head);
+        el("path", { d: "M-14 -472 Q-18 -440 -6 -414 Q6 -440 2 -472Z M-6 -414 l0 18", fill: "#a8481a", stroke: "#a8481a", "stroke-width": 8 }, head);
+        el("circle", { cx: -6, cy: -390, r: 11, fill: gold }, head);
+        ["M-50 -560 q8 20 4 40", "M-24 -540 q6 22 2 50", "M24 -540 q-6 22 -2 50", "M50 -560 q-8 20 -4 40"].forEach((d) => el("path", { d, stroke: "#7a3412", "stroke-width": 4, fill: "none", opacity: 0.6 }, head));
+        const mouth = el("path", { d: "M-22 -585 Q0 -578 22 -585 Q0 -580 -22 -585Z", fill: "#3a0d12" }, head);
+        el("path", { d: "M-56 -598 Q-28 -622 0 -604 Q28 -622 56 -598 Q30 -590 0 -596 Q-30 -590 -56 -598Z", fill: "#c4602a" }, head);
+        el("path", { d: "M-8 -660 Q-14 -628 -4 -618 Q8 -616 12 -626", fill: "none", stroke: "#c98563", "stroke-width": 6, "stroke-linecap": "round" }, head);
+        // runde Sonnenbrille mit Goldrand
+        const glasses = el("g", {}, head);
+        [-32, 32].forEach((cx) => { el("circle", { cx, cy: -664, r: 25, fill: lens }, glasses); el("circle", { cx, cy: -664, r: 25, fill: "none", stroke: gold, "stroke-width": 5 }, glasses); });
+        el("path", { d: "M-8 -668 Q0 -676 8 -668", stroke: "#d99a1e", "stroke-width": 4, fill: "none" }, glasses);
+        el("path", { d: "M-57 -668 L-74 -660 M57 -668 L74 -660", stroke: "#d99a1e", "stroke-width": 4 }, glasses);
+        const glint = el("g", {}, glasses);
+        [-32, 32].forEach((cx) => el("path", { d: `M${cx - 14} ${-668} Q${cx - 10} ${-682} ${cx + 2} ${-684}`, stroke: "#fff", "stroke-width": 5, fill: "none", "stroke-linecap": "round", opacity: 0.85 }, glint));
+        const brows = el("g", {}, head);
+        el("path", { d: "M-58 -700 Q-34 -716 -10 -702", stroke: "#b4521f", "stroke-width": 11, fill: "none", "stroke-linecap": "round" }, brows);
+        el("path", { d: "M10 -702 Q34 -716 58 -700", stroke: "#b4521f", "stroke-width": 11, fill: "none", "stroke-linecap": "round" }, brows);
+        // Mitra: selbst gebastelt, golden, schief, mit Klebeband + pinkem Neon-Auge im Dreieck
+        const mitre = el("g", {}, head);
+        el("path", { d: "M-70 -718 Q-80 -800 -4 -906 Q8 -892 14 -880 Q22 -896 34 -900 Q86 -800 72 -718 Q0 -732 -70 -718Z", fill: gold }, mitre);
+        el("path", { d: "M-70 -718 Q0 -732 72 -718 L74 -700 Q0 -714 -72 -700Z", fill: "#c48416" }, mitre);
+        el("path", { d: "M10 -880 L4 -722", stroke: "#c48416", "stroke-width": 6 }, mitre);
+        el("rect", { x: -60, y: -842, width: 52, height: 16, fill: "#cfd3dc", opacity: 0.9, transform: "rotate(-28 -34 -834)" }, mitre);
+        el("rect", { x: 30, y: -770, width: 46, height: 14, fill: "#cfd3dc", opacity: 0.9, transform: "rotate(22 53 -763)" }, mitre);
+        const sym = el("g", {}, mitre); sym.style.filter = "drop-shadow(0 0 10px #ff4fb0)";
+        el("path", { d: "M2 -836 L-30 -776 L34 -776Z", fill: "none", stroke: "#ff4fb0", "stroke-width": 6, "stroke-linejoin": "round" }, sym);
+        el("path", { d: "M-14 -792 q16 -12 32 0 q-16 12 -32 0Z", fill: "#ff4fb0" }, sym);
+        el("circle", { cx: 2, cy: -792, r: 5, fill: "#2a1145" }, sym);
+        gsap.set(mitre, { rotation: 7, svgOrigin: "0 -718" });
+        // Kante/Rim-Light (warmes Gegenlicht links)
+        el("path", { d: "M-108 -555 Q-150 -300 -190 -70", stroke: "#ffb36b", "stroke-width": 5, fill: "none", opacity: 0.55 }, g);
+        g.appendChild(staff); g.appendChild(armR); g.appendChild(armL);
+        return { g, head, armL, armR, staff, ball, spark, mouth, brows, glint, mitre, sym, halo, stola };
+      }
+      // Lippen-Bewegung beim Sprechen (endliche Wiederholung)
+      function talk(tl, P, t0, t1) {
+        const n = Math.max(1, Math.floor((t1 - t0) / 0.16));
+        tl.to(P.mouth, { attr: { d: "M-22 -588 Q0 -560 22 -588 Q0 -582 -22 -588Z" }, duration: 0.08, repeat: n * 2 - 1, yoyo: true, ease: "sine.inOut" }, t0);
+      }
