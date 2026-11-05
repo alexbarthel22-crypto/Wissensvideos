@@ -129,6 +129,69 @@ def synth_google(texts, voice, scales, prons=None):
     return out
 
 
+GEMINI_STYLE = ("Lies den folgenden deutschen Text als extrem charismatischer, euphorischer Fernsehprediger und Sektengründer vor: "
+                "mit maximaler Energie, überschäumender Begeisterung, großen Emotionen, lauter, mitreißender Stimme, "
+                "dramatischen Betonungen und zügigem Tempo. Sprich nur den Text, nichts anderes. Text: ")
+
+
+def synth_gemini(texts, voice, scales, style=None, line_styles=None, cache_dir=None, model="gemini-2.5-pro-preview-tts"):
+    """Gemini-TTS (Regieanweisung steuert Emotion/Energie). Schlüssel aus $GEMINI_API_KEY.
+    Ergebnisse werden pro Zeile im Cache abgelegt (gleicher Text + Stil = gleiche Aufnahme); Tempo per ffmpeg atempo."""
+    import base64
+    import hashlib
+    import urllib.request
+    key = os.environ.get("GEMINI_API_KEY")
+    if not key:
+        raise SystemExit("GEMINI_API_KEY fehlt (in den Umgebungs-Einstellungen hinterlegen).")
+    out = []
+    for i, (t, ls) in enumerate(zip(texts, scales)):
+        prompt = (style or GEMINI_STYLE)
+        if line_styles and line_styles[i]:
+            prompt = prompt.replace("Text: ", f"Für diesen Satz: {line_styles[i]}. Text: ")
+        h = hashlib.sha1(f"{model}|{voice}|{prompt}{t}".encode()).hexdigest()[:16]
+        cf = cache_dir / f"{h}.wav" if cache_dir else None
+        if cf and cf.exists():
+            a, sr = sf.read(cf, dtype="float32")
+        else:
+            body = {"contents": [{"parts": [{"text": prompt + t}]}],
+                    "generationConfig": {"responseModalities": ["AUDIO"],
+                                         "speechConfig": {"voiceConfig": {"prebuiltVoiceConfig": {"voiceName": voice}}}}}
+            words = len(t.split())
+            for attempt in range(4):  # Ausreißer (liest Anweisung mit / bricht ab) verwerfen
+                req = urllib.request.Request(f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={key}",
+                                             data=json.dumps(body).encode(), headers={"Content-Type": "application/json"})
+                import time
+                for wait in (0, 30, 60, 90, 120, 180, 240):  # 429 = Rate-Limit: warten und erneut
+                    time.sleep(wait)
+                    try:
+                        with urllib.request.urlopen(req, timeout=180) as r:
+                            d = json.loads(r.read())["candidates"][0]["content"]["parts"][0]["inlineData"]
+                        break
+                    except urllib.error.HTTPError as e:
+                        if e.code not in (429, 500, 503):
+                            raise
+                        print(f"  Zeile {i + 1}: HTTP {e.code}, warte …", flush=True)
+                else:
+                    raise SystemExit("Gemini-Rate-Limit: später erneut starten (fertige Zeilen liegen im Cache).")
+                a = np.frombuffer(base64.b64decode(d["data"]), dtype="<i2").astype("float32") / 32768
+                sr = int(d["mimeType"].split("rate=")[1].split(";")[0]) if "rate=" in d["mimeType"] else 24000
+                rate = words / (len(a) / sr)
+                if 1.0 < rate < 5.0:
+                    break
+                print(f"  Zeile {i + 1}: {rate:.1f} Wörter/s – neuer Versuch")
+            if cf:
+                cf.parent.mkdir(parents=True, exist_ok=True)
+                sf.write(cf, a, sr)
+        if abs(ls - 1.0) > 0.01:  # Tempo ohne Tonhöhenänderung
+            with tempfile.TemporaryDirectory() as dd:
+                src, dst = Path(dd) / "a.wav", Path(dd) / "b.wav"
+                sf.write(src, a, sr)
+                subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", src, "-filter:a", f"atempo={1 / ls:.4f}", dst], check=True)
+                a, sr = sf.read(dst, dtype="float32")
+        out.append((a, sr))
+    return out
+
+
 def resample(audio, sr):
     if sr == SR:
         return audio
@@ -242,7 +305,7 @@ def word_times(words, duration, audio):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("project")
-    ap.add_argument("--backend", choices=["google", "coqui", "piper"], default="coqui")
+    ap.add_argument("--backend", choices=["gemini", "google", "coqui", "piper"], default="coqui")
     ap.add_argument("--voice-dir", help="Piper-Stimmenordner oder Coqui-Modellordner (Standard: aus tools/setup.sh)")
     ap.add_argument("--coqui-python", default=str(CACHE / "coqui" / "bin" / "python"))
     ap.add_argument("--speed", type=float, default=1.0, help="Grundtempo (>1 = schneller); pro Zeile mit 'speed' feinjustierbar")
@@ -254,7 +317,7 @@ def main():
     args = ap.parse_args()
 
     if not args.voice_dir:
-        args.voice_dir = "" if args.backend == "google" else str(CACHE / (args.voice if args.voice != "css10" else "css10-vits"))
+        args.voice_dir = "" if args.backend in ("google", "gemini") else str(CACHE / (args.voice if args.voice != "css10" else "css10-vits"))
     project = Path(args.project)
     script = json.loads((project / "script.json").read_text())
     lines = []
@@ -268,7 +331,11 @@ def main():
 
     texts = [l["spoken"] for l in lines]
     scales = [l["scale"] for l in lines]
-    if args.backend == "google":
+    if args.backend == "gemini":  # --voice z. B. Fenrir/Puck; Stil aus script.json "style", pro Zeile "style"
+        raw = synth_gemini(texts, args.voice, scales, script.get("style"),
+                           [ln.get("style") for sc in script["scenes"] for ln in sc["lines"]], project / "assets" / "voice" / "cache",
+                           script.get("tts_model", "gemini-2.5-pro-preview-tts"))
+    elif args.backend == "google":
         raw = synth_google(texts, args.voice if args.voice.startswith("de-DE") else "de-DE-Chirp3-HD-Puck", scales,
                            script.get("pronunciations"))
     elif args.backend == "piper":
@@ -282,7 +349,7 @@ def main():
     pieces, t = [np.zeros(int(lead * SR), dtype="float32")], lead
     for line, (audio, sr) in zip(lines, raw):
         audio = resample(audio.astype("float32"), sr)
-        if args.backend != "google":  # echte Stimme braucht keine Klang-Reparatur
+        if args.backend not in ("google", "gemini"):  # echte Stimme braucht keine Klang-Reparatur
             audio = clarity(audio)
         audio = compress_pauses(trim(audio), args.max_gap)
         if line["new_scene"]:
