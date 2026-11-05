@@ -377,17 +377,31 @@ def pauses(audio, min_len=0.11):
     return res
 
 
-def compress_pauses(audio, max_gap=0.3):
-    """Kürzt Sprechpausen innerhalb einer Zeile auf max_gap (Coqui setzt ~0,5–1 s zwischen Sätze)."""
+def compress_pauses(audio, max_gap=0.3, fade=0.015):
+    """Kürzt Sprechpausen innerhalb einer Zeile auf max_gap – mit weicher Überblendung an jedem Schnitt (sonst klingt es abgehackt/klickt)."""
     out, last = [], 0
+    nf = int(fade * SR)
     for a, b in pauses(audio, min_len=max_gap):
         cut_a = int((a + max_gap / 2) * SR)
         cut_b = int((b - max_gap / 2) * SR)
-        if cut_b > cut_a:
-            out.append(audio[last:cut_a])
+        if cut_b > cut_a + nf:
+            seg = audio[last:cut_a].copy()
+            if len(seg) > nf:
+                seg[-nf:] *= np.linspace(1, 0, nf)
+            out.append(seg)
             last = cut_b
-    out.append(audio[last:])
+    seg = audio[last:].copy()
+    if last and len(seg) > nf:
+        seg[:nf] *= np.linspace(0, 1, nf)
+    out.append(seg)
     return np.concatenate(out)
+
+
+def edge_fade(audio, fade=0.012):
+    n = min(int(fade * SR), len(audio) // 2)
+    if n > 0:
+        audio = audio.copy(); audio[:n] *= np.linspace(0, 1, n); audio[-n:] *= np.linspace(1, 0, n)
+    return audio
 
 
 def word_times(words, duration, audio):
@@ -472,7 +486,7 @@ def main():
         audio = resample(audio.astype("float32"), sr)
         if args.backend not in ("google", "gemini"):  # echte Stimme braucht keine Klang-Reparatur
             audio = clarity(audio)
-        audio = compress_pauses(trim(audio), args.max_gap)
+        audio = edge_fade(compress_pauses(trim(audio), args.max_gap))
         if line["new_scene"]:
             gap = GAP_SCENE
         elif len(pieces) > 1:

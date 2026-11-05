@@ -1,6 +1,6 @@
 {
  "title": "Prophet Peter – Tag 1: Ich gründe eine Sekte",
- "voice": "Gemini-TTS (gemini-2.5-pro-preview-tts, Fenrir), ganzer Text in EINER Aufnahme (tts_single), danach an Pausen geschnitten; Regie in 'style'",
+ "voice": "Gemini-TTS (gemini-2.5-pro-preview-tts, Puck), EINE Aufnahme (tts_single), flüssige Regie; --speed 1.05 --max-gap 0.3 mit Überblendungen",
  "notes": "Serie 'Prophet Peter' (Ich-Perspektive). Figur: tools/characters/prophet-peter.js. Frame 0: lautester Glockenschlag aus assets/sfx/src/church-bell-5993.mp3 (tools/make_church.py --bell). Szene 1 + Name in Szene 2 ohne Untertitel (Text steht groß im Bild). Ab v3: Szenen-Vordergrund +110 px tiefer (zentrierter), Kapitel-Marke tiefer; Engelschor = hochgeladene Datei (assets/sfx/src/heavenly-choir-322708.mp3, 0–2,6 s).",
  "lead_in": 0.0,
  "hud": "pop",
@@ -343,6 +343,6 @@
  ],
  "shift": 110,
  "tts_model": "gemini-2.5-pro-preview-tts",
- "style": "Lies den folgenden deutschen Text als extrem charismatischer, euphorischer Fernsehprediger und Sektengründer vor – durchgehend mit derselben Stimme, maximaler Energie, Begeisterung und Emotion, laut und mitreißend. Sprich schnell und knackig, zieh keine Wörter und keine Sätze in die Länge, keine Kunstpausen. Nach jeder Zeile nur eine kurze Atempause. Sprich nur den Text, nichts anderes. Text:",
+ "style": "Lies den folgenden deutschen Text als extrem charismatischer, euphorischer Fernsehprediger und Sektengründer vor – durchgehend mit derselben warmen, kraftvollen Stimme, voller Energie, Begeisterung und Emotion, mitreißend. Sprich zügig, flüssig und zusammenhängend im Satzfluss, die Wörter weich verbunden statt abgehackt, ohne Kunstpausen und ohne etwas in die Länge zu ziehen. Nach jeder Zeile nur eine kurze Atempause. Sprich nur den Text, nichts anderes. Text:",
  "tts_single": true
 }
