@@ -4,7 +4,7 @@
   python3 tools/make_church.py videos/<slug>/assets/sfx
 schreibt holy-sting.wav (Glockenschlag + Orgel-Akkord), bell-hit.wav (kurze Glocke), coin.wav (Münze im Klingelbeutel),
 angel-choir.wav (Engelschor „Aaah“, D-Dur), goat.wav (Ziege „Mäh-äh-äh“), sad-trombone.wav (traurige Posaune), record-scratch.wav (Plattenkratzer), creak.wav (rostiges Tor), shimmer.wav (Glitzer-Arpeggio).
-Optional: --choir <datei.mp3> -> choir-intro.wav (erste 2,6 s, ausgeblendet); --bell <datei.mp3> schneidet den lautesten Glockenschlag heraus -> church-bell.wav (für Frame 0).
+Optional: --choir <datei.mp3> -> choir-intro.wav (erste 2,6 s) + choir-intro2.wav (zweiter Bogen 3,4–5,8 s); --bell <datei.mp3> schneidet den lautesten Glockenschlag heraus -> church-bell.wav (für Frame 0).
 """
 import sys
 from pathlib import Path
@@ -191,6 +191,7 @@ def main():
         print(f"church-bell.wav: lautester Schlag ab {t0:.2f} s der Quelle")
     if "--choir" in sys.argv:  # hochgeladener Engelschor: erster Anschwellbogen (0–2,6 s)
         sf.write(out / "choir-intro.wav", clip(sys.argv[sys.argv.index("--choir") + 1], 0.0, 2.6), SR)
+        sf.write(out / "choir-intro2.wav", clip(sys.argv[sys.argv.index("--choir") + 1], 3.4, 5.8), SR)  # zweiter Bogen
     for name, y, v in [("sad-trombone", sad_trombone(), 0.85), ("record-scratch", record_scratch(), 0.7), ("crack", crack(), 0.9), ("angel-choir", choir(), 0.85), ("goat", goat(), 0.8), ("creak", creak(), 0.7), ("shimmer", shimmer(), 0.7)]:
         y = fade_out(y * v)
         sf.write(out / f"{name}.wav", np.stack([y, y], 1), SR)

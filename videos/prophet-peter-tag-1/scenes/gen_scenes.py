@@ -49,23 +49,27 @@ FX = '      <svg id="@@ID@@-fx" class="full" viewBox="0 0 1080 1920"></svg>'
 S = {}
 
 # ---------- s01 Hook: TAG 1 – ICH GRÜNDE EINE SEKTE (alles ab Frame 0 lesbar, jedes gesprochene Wort leuchtet groß auf) ----------
-S['s01'] = ('''    #s01-title { left: 0; width: 1080px; top: 190px; text-align: center; }
+S['s01'] = ('''    #s01-title { left: 0; width: 1080px; top: 175px; text-align: center; }
     #s01-heaven { left: 0; top: 0; width: 1080px; height: 1920px; opacity: .9;
       background: repeating-conic-gradient(from 180deg at 50% -4%, rgba(255,236,170,.30) 0deg 3deg, rgba(255,236,170,0) 3deg 9deg);
       -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 0%, #000 30%, transparent 80%); mask-image: radial-gradient(ellipse 80% 70% at 50% 0%, #000 30%, transparent 80%); }
     #s01-glow { left: -100px; top: 150px; width: 1280px; height: 1100px; background: radial-gradient(ellipse 50% 45% at 50% 45%, rgba(255,226,140,.55), rgba(255,180,90,.18) 55%, rgba(255,180,90,0) 75%); }
     #s01-ring { left: 190px; top: 20px; width: 700px; height: 700px; border-radius: 50%; border: 6px solid rgba(255,230,150,.7); box-shadow: 0 0 60px rgba(255,214,110,.8), inset 0 0 60px rgba(255,214,110,.5); }
     .s01-sp { position: absolute; width: 10px; height: 10px; border-radius: 50%; background: #fff6d0; box-shadow: 0 0 14px 4px rgba(255,220,120,.9); }
-    #s01-title .d { font-family: "Inter", sans-serif; font-weight: 900; font-size: 240px; line-height: .9; letter-spacing: -.03em; color: #ffd43b; }
-    #s01-title .l { display: inline-block; margin-top: 18px; padding: 10px 28px; border-radius: 16px; background: #ff4fb0; color: #fff;
-      font-family: "Space Mono", monospace; font-weight: 700; font-size: 44px; letter-spacing: .2em; box-shadow: 0 0 40px rgba(255,79,176,.6); }
-    #s01-title .h { margin-top: 30px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 136px; line-height: 1.08; color: #fff; letter-spacing: -.015em; }
-    .s01-w { display: inline-block; margin: 0 30px; transform-origin: 50% 60%; text-shadow: 0 8px 0 rgba(0,0,0,.55); }
-    #s01-title .d .s01-w { text-shadow: 0 0 60px rgba(255,212,59,.55), 0 10px 0 rgba(0,0,0,.55); }
-    #s01-w6 { color: #ff4fb0; text-shadow: 0 0 40px rgba(255,79,176,.8), 0 8px 0 rgba(0,0,0,.55); }
+    /* Wörter auf farbigen Kästen, damit der Text vor dem hellen Himmel auffällt */
+    #s01-title .d, #s01-title .h { font-family: "Inter", sans-serif; font-weight: 900; letter-spacing: -.02em; }
+    #s01-title .d { font-size: 200px; line-height: 1.1; }
+    #s01-title .h { margin-top: 22px; font-size: 118px; line-height: 1.32; }
+    .s01-w { position: relative; display: inline-block; margin: 0 6px; padding: 2px 24px 8px; border-radius: 22px; transform-origin: 50% 55%;
+      background: rgba(28,10,58,.9); border: 5px solid rgba(255,214,110,.85); color: #fff;
+      box-shadow: 0 0 34px rgba(255,200,90,.45), 0 12px 0 rgba(0,0,0,.35); text-shadow: 0 6px 0 rgba(0,0,0,.45); }
+    #s01-title .d .s01-w { color: #ffd43b; text-shadow: 0 0 40px rgba(255,212,59,.6), 0 8px 0 rgba(0,0,0,.5); }
+    #s01-w6 { background: #ff4fb0; border-color: #ffd1ec; box-shadow: 0 0 50px rgba(255,79,176,.75), 0 12px 0 rgba(0,0,0,.35); }
     #s01-flash { background: #ffffff; opacity: 0; mix-blend-mode: overlay; }
     .s01-bar { position: absolute; left: 0; width: 1080px; height: 120px; background: #000; }''',
-BG + '\n' + SVG + '''
+BG + '''
+      <svg id="s01-vis" class="full noshift" viewBox="0 0 1080 1920"></svg>
+''' + SVG + '''
       <div id="s01-heaven" class="abs noshift"></div>
       <div id="s01-glow" class="abs"></div><div id="s01-ring" class="abs"></div><div id="s01-sps" class="abs" style="left:0;top:0"></div>
       <div id="s01-flash" class="full noshift"></div>
@@ -73,18 +77,30 @@ BG + '\n' + SVG + '''
         <div class="h"><span id="s01-w3" class="s01-w">ICH</span> <span id="s01-w4" class="s01-w">GRÜNDE</span><br><span id="s01-w5" class="s01-w">EINE</span> <span id="s01-w6" class="s01-w">SEKTE</span></div></div>
       <div class="s01-bar noshift" style="top:0"></div><div class="s01-bar noshift" style="top:1800px"></div>
 ''' + FX,
-'''      const G = grundstueck(bg, "s01g", { mood: "dusk", goatX: 790, goatS: 0.7 }); gsap.set(G.rays, { opacity: 0.55 });
+'''      const G = grundstueck(bg, "s01g", { mood: "dusk", goatX: 400, goatS: 0.6 }); gsap.set(G.rays, { opacity: 0.55 });
       floatDust(tl, G, C.__dur); chew(tl, G, 0, C.__dur - 0.3);
-      // Glockenschlag auf Frame 0: Licht pulsiert, Titel ruckt kurz
+      // Visionen schon ab Frame 0 angedeutet: goldene, gestrichelte Geister-Umrisse von Tempel, Gärten und Pilgerstraße über dem Grundstück
+      const vis = document.querySelector("#s01-vis"), vg = el("g", { transform: "translate(745 1190) scale(0.72) translate(-540 -920)", opacity: 0.8 }, vis);
+      vg.style.filter = "drop-shadow(0 0 12px rgba(255,212,59,.95))";
+      const vd = (d, c = "#ffe08a", w = 9) => el("path", { d, stroke: c, "stroke-width": w, fill: "none", "stroke-linecap": "round", "stroke-linejoin": "round", "stroke-dasharray": "16 12" }, vg);
+      const ghosts = [vd("M300 900 L780 900 L780 920 L300 920Z"), vd("M330 880 L750 880"), vd("M340 880 L340 720 M410 880 L410 720 M480 880 L480 720 M600 880 L600 720 M670 880 L670 720 M740 880 L740 720"),
+        vd("M320 720 L760 720 L540 640Z"), vd("M430 650 Q540 470 650 650"), vd("M540 520 L540 470 M520 490 L560 490"), vd("M505 690 q35 -22 70 0 q-35 22 -70 0Z", "#ff8fd0", 6),
+        vd("M470 925 L250 1120"), vd("M610 925 L830 1120")];
+      [[150, 980], [930, 990], [80, 1050], [1000, 1050]].forEach(([x, y]) => { ghosts.push(vd(`M${x} ${y} l0 -40`, "#7dffb0")); ghosts.push(vd(`M${x - 30} ${y - 40} a30 30 0 1 1 60 0 a30 30 0 1 1 -60 0`, "#7dffb0")); });
+      tl.fromTo(ghosts, { strokeDashoffset: 0 }, { strokeDashoffset: -112, duration: C.__dur, ease: "none" }, 0);
+      tl.fromTo(vg, { opacity: 0.65 }, { opacity: 0.95, duration: 0.5, yoyo: true, repeat: 3, ease: "sine.inOut" }, 0);
+      // Chor auf Frame 0: Licht pulsiert, Titel ruckt kurz
       tl.fromTo(G.rays, { opacity: 1 }, { opacity: 0.55, duration: 0.8, ease: "power2.out", immediateRender: false }, 0.02);
       tl.fromTo("#s01-title", { scale: 1.04 }, { scale: 1, duration: 0.35, ease: "power3.out", immediateRender: false }, 0.02);
       tl.fromTo(bg, { scale: 1.1, transformOrigin: "60% 55%" }, { scale: 1.0, duration: C.__dur, ease: "none" }, 0);
-      // jedes gesprochene Wort: groß aufleuchten, dann leicht vergrößert + leuchtend stehen bleiben
-      gsap.set(".s01-w", { filter: "brightness(0.82) drop-shadow(0 0 0px #000000)" });
-      [["#s01-w1", "tag", "#ffd43b"], ["#s01-w2", "eins", "#ffd43b"], ["#s01-w3", "ich", "#ffffff"], ["#s01-w4", "gründe", "#ffffff"], ["#s01-w5", "eine", "#ffffff"], ["#s01-w6", "sekte", "#ff4fb0"]].forEach(([sel, w, c]) => {
-        const t = at("L1", w);
-        tl.to(sel, { scale: ["#s01-w4", "#s01-w6"].includes(sel) ? 1.16 : 1.34, filter: `brightness(1.7) drop-shadow(0 0 44px ${c})`, duration: 0.08, ease: "power2.out" }, t - 0.03);
-        tl.to(sel, { scale: 1.06, filter: `brightness(1.15) drop-shadow(0 0 20px ${c})`, duration: 0.28, ease: "back.out(2.2)" }, t + 0.06);
+      // jedes gesprochene Wort wird groß (eigener Kasten springt nach vorn), danach zurück auf Normalgröße, leuchtend
+      gsap.set(".s01-w", { filter: "brightness(0.85)" });
+      [["#s01-w1", "tag", "#ffd43b"], ["#s01-w2", "eins", "#ffd43b"], ["#s01-w3", "ich", "#ffd36e"], ["#s01-w4", "gründe", "#ffd36e"], ["#s01-w5", "eine", "#ffd36e"], ["#s01-w6", "sekte", "#ff4fb0"]].forEach(([sel, w, c], i) => {
+        const t = at("L1", w), nx = i < 5 ? at("L1", ["eins", "ich", "gründe", "eine", "sekte"][i]) : C.__dur - 0.3;
+        tl.set(sel, { zIndex: 5 }, t - 0.04);
+        tl.to(sel, { scale: 1.32, filter: `brightness(1.25) drop-shadow(0 0 30px ${c})`, duration: 0.09, ease: "power2.out" }, t - 0.04);
+        tl.to(sel, { scale: 1.0, filter: `brightness(1.08) drop-shadow(0 0 14px ${c})`, duration: 0.22, ease: "power2.out" }, Math.max(t + 0.08, nx - 0.2));
+        tl.set(sel, { zIndex: 1 }, Math.max(t + 0.3, nx));
       });
       // Himmelslicht: Strahlen drehen langsam, Ring + Glühen atmen, Lichtfunken steigen auf
       tl.fromTo("#s01-heaven", { rotation: -4, transformOrigin: "50% 0%" }, { rotation: 4, duration: C.__dur, ease: "none" }, 0);
@@ -94,7 +110,7 @@ BG + '\n' + SVG + '''
       for (let i = 0; i < 34; i++) { const d = document.createElement("div"); d.className = "s01-sp"; const x = 80 + RS() * 900, y = 300 + RS() * 900;
         Object.assign(d.style, { left: x + "px", top: y + "px", transform: `scale(${0.4 + RS()})` }); spc.appendChild(d);
         tl.fromTo(d, { opacity: 0, y: 0 }, { opacity: 0.4 + RS() * 0.6, y: -120 - RS() * 160, duration: C.__dur, ease: "none" }, 0); }
-      // Prophet Peter steht ab Frame 0 links im Bild (segnend), Heiligenschein leuchtet
+      // Prophet Peter steht ab Frame 0 links im Bild (segnend)
       const P = peter(sv, "s01p", 175, 1160, 0.42, { arms: [14, -120] });
       P.g.style.filter = "drop-shadow(0 0 30px rgba(255,220,130,.55))";
       talk(tl, P, line("L1")[0], line("L1")[1]);
