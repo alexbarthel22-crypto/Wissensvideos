@@ -35,8 +35,8 @@
     #s02-plate .r { margin-top: 12px; font-family: "Space Mono", monospace; font-weight: 700; font-size: 30px; letter-spacing: .14em; color: #fff; }
     #s02-plate .r span { opacity: 0; }
   </style>
-  <div id="root" data-composition-id="s02" data-start="0" data-duration="4.450" data-width="1080" data-height="1920">
-    <div id="s02-stage" class="clip stage" data-start="0" data-duration="4.450" data-track-index="0">
+  <div id="root" data-composition-id="s02" data-start="0" data-duration="4.440" data-width="1080" data-height="1920">
+    <div id="s02-stage" class="clip stage" data-start="0" data-duration="4.440" data-track-index="0">
       <svg id="s02-bg" class="full" viewBox="0 0 1080 1920"></svg>
       <div id="s02-fg" class="full fgwrap">
       <div id="s02-beam" class="abs"></div>
@@ -49,7 +49,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 4.45, "L3": [0.2, 1.5], "L3.words": [["ich", 0.2, 0.417], ["bin", 0.417, 0.633], ["prophet", 0.633, 1.074], ["peter", 1.074, 1.5]], "L4": [1.72, 4.27], "L4.words": [["gründer", 1.72, 2.092], ["erleuchteter", 2.092, 2.822], ["und", 2.822, 3.005], ["ab", 3.005, 3.181], ["heute", 3.181, 3.54], ["euer", 3.54, 3.729], ["anführer", 3.729, 4.27]]};
+      const C = {"__dur": 4.44, "L3": [0.2, 1.52], "L3.words": [["ich", 0.2, 0.42], ["bin", 0.42, 0.64], ["prophet", 0.64, 1.088], ["peter", 1.088, 1.52]], "L4": [1.74, 4.26], "L4.words": [["gründer", 1.74, 2.107], ["erleuchteter", 2.107, 2.829], ["und", 2.829, 3.01], ["ab", 3.01, 3.184], ["heute", 3.184, 3.538], ["euer", 3.538, 3.725], ["anführer", 3.725, 4.26]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];

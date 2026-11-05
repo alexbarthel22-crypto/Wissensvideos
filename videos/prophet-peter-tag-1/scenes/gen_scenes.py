@@ -49,16 +49,16 @@ FX = '      <svg id="@@ID@@-fx" class="full" viewBox="0 0 1080 1920"></svg>'
 S = {}
 
 # ---------- s01 Hook: TAG 1 – ICH GRÜNDE EINE SEKTE (alles ab Frame 0 lesbar, jedes gesprochene Wort leuchtet groß auf) ----------
-S['s01'] = ('''    #s01-title { left: 0; width: 1080px; top: 50px; text-align: center; }
+S['s01'] = ('''    #s01-title { left: 0; width: 1080px; top: 115px; text-align: center; }
     #s01-heaven { left: 0; top: 0; width: 1080px; height: 1920px; opacity: .9;
       background: repeating-conic-gradient(from 180deg at 50% -4%, rgba(255,236,170,.30) 0deg 3deg, rgba(255,236,170,0) 3deg 9deg);
       -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 0%, #000 30%, transparent 80%); mask-image: radial-gradient(ellipse 80% 70% at 50% 0%, #000 30%, transparent 80%); }
     #s01-glow { left: -100px; top: 150px; width: 1280px; height: 1100px; background: radial-gradient(ellipse 50% 45% at 50% 45%, rgba(255,226,140,.55), rgba(255,180,90,.18) 55%, rgba(255,180,90,0) 75%); }
-    #s01-ring { left: 190px; top: 20px; width: 700px; height: 700px; border-radius: 50%; border: 6px solid rgba(255,230,150,.7); box-shadow: 0 0 60px rgba(255,214,110,.8), inset 0 0 60px rgba(255,214,110,.5); }
+    #s01-ring { left: 190px; top: 90px; width: 700px; height: 700px; border-radius: 50%; border: 6px solid rgba(255,230,150,.7); box-shadow: 0 0 60px rgba(255,214,110,.8), inset 0 0 60px rgba(255,214,110,.5); }
     .s01-sp { position: absolute; width: 10px; height: 10px; border-radius: 50%; background: #fff6d0; box-shadow: 0 0 14px 4px rgba(255,220,120,.9); }
     /* Wörter auf farbigen Kästen, damit der Text vor dem hellen Himmel auffällt */
     #s01-title .k, #s01-title .d, #s01-title .h { font-family: "Inter", sans-serif; font-weight: 900; letter-spacing: -.02em; }
-    #s01-title .k { font-size: 110px; line-height: 1.2; margin-bottom: 14px; }
+    #s01-title .k { font-size: 128px; line-height: 1.2; margin-bottom: 14px; }
     #s01-title .d { font-size: 170px; line-height: 1.1; }
     #s01-title .h { margin-top: 22px; font-size: 118px; line-height: 1.32; }
     .s01-w { position: relative; display: inline-block; margin: 0 6px; padding: 2px 24px 8px; border-radius: 22px; transform-origin: 50% 55%;
@@ -75,7 +75,7 @@ BG + '''
       <div id="s01-heaven" class="abs noshift"></div>
       <div id="s01-glow" class="abs"></div><div id="s01-ring" class="abs"></div><div id="s01-sps" class="abs" style="left:0;top:0"></div>
       <div id="s01-flash" class="full noshift"></div>
-      <div id="s01-title" class="abs"><div class="k"><span id="s01-k1" class="s01-w s01-kn">HALTE</span> <span id="s01-k2" class="s01-w s01-kn">EIN!</span></div><div class="d"><span id="s01-w1" class="s01-w">TAG</span> <span id="s01-w2" class="s01-w">1</span></div>
+      <div id="s01-title" class="abs"><div class="k"><span id="s01-k1" class="s01-w s01-kn">WARTE!</span></div><div class="d"><span id="s01-w1" class="s01-w">TAG</span> <span id="s01-w2" class="s01-w">1</span></div>
         <div class="h"><span id="s01-w3" class="s01-w">ICH</span> <span id="s01-w4" class="s01-w">GRÜNDE</span><br><span id="s01-w5" class="s01-w">EINE</span> <span id="s01-w6" class="s01-w">SEKTE</span></div></div>
       <div class="s01-bar noshift" style="top:0"></div><div class="s01-bar noshift" style="top:1800px"></div>
 ''' + FX,
@@ -97,10 +97,10 @@ BG + '''
       tl.fromTo(bg, { scale: 1.1, transformOrigin: "60% 55%" }, { scale: 1.0, duration: C.__dur, ease: "none" }, 0);
       // jedes gesprochene Wort wird groß (eigener Kasten springt nach vorn), danach zurück auf Normalgröße, leuchtend
       gsap.set(".s01-w", { filter: "brightness(0.85)" });
-      [["#s01-k1", "halte", "#ff3b55"], ["#s01-k2", "ein", "#ff3b55"], ["#s01-w1", "tag", "#ffd43b"], ["#s01-w2", "eins", "#ffd43b"], ["#s01-w3", "ich", "#ffd36e"], ["#s01-w4", "gründe", "#ffd36e"], ["#s01-w5", "eine", "#ffd36e"], ["#s01-w6", "sekte", "#ff4fb0"]].forEach(([sel, w, c], i) => {
-        const ORD = ["halte", "ein", "tag", "eins", "ich", "gründe", "eine", "sekte"], t = at("L1", w), nx = i < 7 ? at("L1", ORD[i + 1]) : C.__dur - 0.3;
+      [["#s01-k1", "warte", "#ff3b55"], ["#s01-w1", "tag", "#ffd43b"], ["#s01-w2", "eins", "#ffd43b"], ["#s01-w3", "ich", "#ffd36e"], ["#s01-w4", "gründe", "#ffd36e"], ["#s01-w5", "eine", "#ffd36e"], ["#s01-w6", "sekte", "#ff4fb0"]].forEach(([sel, w, c], i) => {
+        const ORD = ["warte", "tag", "eins", "ich", "gründe", "eine", "sekte"], t = at("L1", w), nx = i < 6 ? at("L1", ORD[i + 1]) : at("L1", "sekte") + 0.55;
         tl.set(sel, { zIndex: 5 }, t - 0.04);
-        tl.to(sel, { scale: 1.32, filter: `brightness(1.25) drop-shadow(0 0 30px ${c})`, duration: 0.09, ease: "power2.out" }, t - 0.04);
+        tl.to(sel, { scale: sel === "#s01-w6" ? 1.14 : 1.32, filter: `brightness(1.25) drop-shadow(0 0 30px ${c})`, duration: 0.09, ease: "power2.out" }, t - 0.04);
         tl.to(sel, { scale: 1.0, filter: `brightness(1.08) drop-shadow(0 0 14px ${c})`, duration: 0.22, ease: "power2.out" }, Math.max(t + 0.08, nx - 0.2));
         tl.set(sel, { zIndex: 1 }, Math.max(t + 0.3, nx));
       });
@@ -113,13 +113,13 @@ BG + '''
         Object.assign(d.style, { left: x + "px", top: y + "px", transform: `scale(${0.4 + RS()})` }); spc.appendChild(d);
         tl.fromTo(d, { opacity: 0, y: 0 }, { opacity: 0.4 + RS() * 0.6, y: -120 - RS() * 160, duration: C.__dur, ease: "none" }, 0); }
       // Prophet Peter steht ab Frame 0 links im Bild (segnend)
-      const P = peter(sv, "s01p", 205, 1225, 0.53, { arms: [14, -120] });
+      const P = peter(sv, "s01p", 200, 1385, 0.5, { arms: [14, -120] });
       P.g.style.filter = "drop-shadow(0 0 30px rgba(255,220,130,.55))";
       talk(tl, P, line("L1")[0], line("L1")[1]);
       tl.fromTo(P.spark, { scale: 0.5, svgOrigin: "-187 -850" }, { scale: 1.6, duration: 0.2, yoyo: true, repeat: 5 }, 0.1);
       tl.to(P.armL, { rotation: -150, duration: 0.25, yoyo: true, repeat: 3, ease: "sine.inOut" }, 0.4);
-      // „Halte ein!“: Bild bebt
-      tl.to(["#s01-title", bg], { x: 12, duration: 0.04, repeat: 7, yoyo: true }, at("L1", "ein"));
+      // „WARTE!“: Bild bebt
+      tl.to(["#s01-title", bg], { x: 14, duration: 0.04, repeat: 9, yoyo: true }, at("L1", "warte") + 0.1);
       const se = at("L1", "sekte");
       tl.fromTo("#s01-flash", { opacity: 0.7 }, { opacity: 0, duration: 0.4, ease: "power2.out", immediateRender: false }, se);
       tl.to("#s01-title", { x: 12, duration: 0.04, repeat: 5, yoyo: true }, se);''' + OUT)

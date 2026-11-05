@@ -282,7 +282,7 @@ def verify_cuts(a, cuts, P, texts, cache_file, model="gemini-3.8-flash"):
     key = os.environ.get("GEMINI_API_KEY")
     if not key:
         return cuts
-    for rnd in range(2):
+    for rnd in range(6):
         edges = [0.0] + cuts + [len(a) / SR]
         gap = np.zeros(int(SR * 1.0), dtype="float32")
         parts = []
@@ -304,17 +304,19 @@ def verify_cuts(a, cuts, P, texts, cache_file, model="gemini-3.8-flash"):
             print("  Schnitt-Kontrolle: Abschnittszahl passt nicht, übersprungen"); return cuts
         mids = sorted((x + y) / 2 for x, y in P)
         changed = False
+        def overlap(x, y):  # längstes Ende von x, das ein Anfang von y ist (max. 5 Wörter)
+            return max([n for n in range(1, min(5, len(x), len(y)) + 1) if x[-n:] == y[:n]], default=0)
         for k in range(1, len(texts)):
-            first = _norm(texts[k].split()[0]); last_prev = _norm(texts[k - 1].split()[-1])
-            g_prev = [_norm(w) for w in got[k - 1].split()]; g_cur = [_norm(w) for w in got[k].split()]
-            if g_prev and g_prev[-1] == first and (not g_cur or g_cur[0] != first):  # Anfang hängt am Ende davor -> früher schneiden
+            exp_cur = [_norm(w) for w in texts[k].split()]; exp_prev = [_norm(w) for w in texts[k - 1].split()]
+            g_prev = [_norm(w) for w in got[k - 1].split() if _norm(w)]; g_cur = [_norm(w) for w in got[k].split() if _norm(w)]
+            if overlap(g_prev, exp_cur) and not (g_cur and g_cur[0] == exp_cur[0]):  # Anfang hängt am Ende davor -> früher schneiden
                 earlier = [m for m in mids if m < cuts[k - 1] - 0.08 and (k == 1 or m > cuts[k - 2] + 0.3)]
                 if earlier:
-                    print(f"  Schnitt {k}: „{first}“ hing an Zeile {k} – verschoben {cuts[k - 1]:.2f} → {earlier[-1]:.2f}"); cuts[k - 1] = earlier[-1]; changed = True
-            elif g_cur and g_cur[0] == last_prev and (not g_prev or g_prev[-1] != last_prev):  # Ende davor steckt im Anfang -> später schneiden
+                    print(f"  Schnitt {k}: Anfang von Zeile {k + 1} hing an Zeile {k} – {cuts[k - 1]:.2f} → {earlier[-1]:.2f}"); cuts[k - 1] = earlier[-1]; changed = True
+            elif overlap(exp_prev, g_cur) and not (g_prev and g_prev[-1] == exp_prev[-1]):  # Ende davor steckt im Anfang -> später schneiden
                 later = [m for m in mids if m > cuts[k - 1] + 0.08 and (k == len(cuts) or m < cuts[k] - 0.3)]
                 if later:
-                    print(f"  Schnitt {k}: „{last_prev}“ hing an Zeile {k + 1} – verschoben {cuts[k - 1]:.2f} → {later[0]:.2f}"); cuts[k - 1] = later[0]; changed = True
+                    print(f"  Schnitt {k}: Ende von Zeile {k} hing an Zeile {k + 1} – {cuts[k - 1]:.2f} → {later[0]:.2f}"); cuts[k - 1] = later[0]; changed = True
         if not changed:
             print(f"  Schnitt-Kontrolle ok ({len(texts)} Zeilen)")
             break
