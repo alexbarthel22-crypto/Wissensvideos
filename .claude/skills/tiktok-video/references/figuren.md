@@ -18,7 +18,7 @@ Ich-Erzähler, Gründer der Sekte. Ziel: Weltreligion. Code: `tools/characters/p
 Animierbare Teile: `armL` (Geste, z. B. `rotation: -150` = Arm hoch), `armR` (hält Stab), `mouth` (+ `talk(tl, P, t0, t1)`), `glint` (Brillen-Glanz),
 `spark` (Discokugel-Funkeln, `svgOrigin: "-187 -850"`), `ball`, `mitre`, `halo`, `brows`.
 
-Stimme: Google Chirp 3 HD `de-DE-Chirp3-HD-Sadachbia` (lebhaft, hohe Stimmlage – Nutzer wollte emotionaler als Fenrir), `--speed 1.1`, euphorische Sätze mit „!!“, Szene 1 schneller (`speed` 1.18).
+Stimme: **Gemini-TTS** (`gemini-2.5-pro-preview-tts`, Stimme `Fenrir`, Schlüssel `$GEMINI_API_KEY`) mit Regieanweisung „euphorischer Fernsehprediger, sehr schnell, ohne Pausen“ (`style` in script.json) + Emotion pro Zeile (`style` an der Zeile): `python3 tools/tts_de.py videos/<slug> --backend gemini --voice Fenrir --speed 1.17 --max-gap 0.25`. Chirp 3 HD war dem Nutzer zu wenig emotional. Aufnahmen liegen pro Zeile in `assets/voice/cache/` (Rate-Limit beim Pro-Modell!).
 Sound-Signatur: Frame 0 = lautester Schlag aus `assets/sfx/src/church-bell-5993.mp3` (`tools/make_church.py … --bell`), Engelschor = hochgeladene Datei `assets/sfx/src/heavenly-choir-322708.mp3` (erste 2,6 s → `choir-intro.wav`, `make_church.py --choir`), wenn Peter erscheint. Name nie als „Gestatten …“ einleiten; Custom-IPA wird von Chirp 3 HD abgelehnt.
 
 ## Das Grundstück (Kulisse)
