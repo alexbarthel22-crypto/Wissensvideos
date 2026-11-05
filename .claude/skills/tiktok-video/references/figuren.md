@@ -33,8 +33,8 @@ Wenn die Sekte wächst (Kollekte), hier neue Bauteile ergänzen statt die Kuliss
 
 - Tag 1: Gründung, 0 Anhänger, Kollekte 0 €, 1 € pro neuem Follower = 1 Ziegelstein für den Tempel.
 - Ränge: Hohepriester (Platz 1) · Erzdiakon (2–10) · Tempelwächter (11–100) · Anhänger (101+). (Kein „Rasenmäher“-Rang – vom Nutzer gestrichen.)
-- Tag 1 Ablauf: „Auf die Knie!“ (geschrien) + TAG 1 → Gesetz (Follower = Anhänger + 1 € Kollekte) → Peter → Erbe (Baum + Stuhl im Heiligenschein, kein Tor) → Grundstück (Totale über alles, dann Zoom auf Schrott, Ziege, Stuhl, Baum; Kamera per `transform`-Attribut auf `G.land`, nicht per GSAP-Transform) → Vision → 0 Anhänger → Ränge → Name → Aufruf.
+- Tag 1 Ablauf: „Halte ein!“ (laut, auffordernd gerufen) + TAG 1 → Gesetz (Follower = Anhänger + 1 € Kollekte) → Peter → Erbe (Baum + Stuhl im Heiligenschein, kein Tor) → Grundstück (Totale über alles, dann Zoom auf Schrott, Ziege, Stuhl, Baum; Kamera per `transform`-Attribut auf `G.land`, nicht per GSAP-Transform) → Vision → 0 Anhänger → Ränge → Name → Aufruf.
 - Tag 1 sagt: „Aktueller Stand: null Anhänger“ (Zähler stürzt von Millionen auf 0, Plattenkratzer + traurige Posaune). Cover-Stil: Himmelslicht, TAG 1, „ICH GRÜNDE EINE SEKTE“, roter Stempel „ANHÄNGER 0“, unten „WERDE MEIN 1. ANHÄNGER!“.
-- Offene Fragen an die Community: Name der Sekte + „Was kaufen wir morgen von der ersten Kollekte? Top-Kommentar entscheidet“ (beides in Tag 2 auflösen). Zuschauer sollen Peter in den Kommentaren mit „Prophet Peter“ ansprechen.
-- Ränge ohne Platz-Zahlen; Text: „Sei von Anfang an dabei und sichere dir einen hohen Rang in meiner Sekte“. Folgen = 1 € in die Kollekte.
+- Offene Fragen an die Community: Name der Sekte + „Was kaufen wir morgen von der ersten Kollekte? Top-Kommentar entscheidet“ (beides in Tag 2 auflösen). Zuschauer sollen Peter in den Kommentaren mit „Prophet Peter“ ansprechen („Ich lese nur Kommentare, die mit Prophet Peter beginnen“).
+- Ränge ohne Platz-Zahlen; Text: „Sei einer der ersten Anhänger und sichere dir einen hohen Rang in meiner Sekte“. Folgen = 1 € in die Kollekte.
 - Layout der Serie: `"shift": 110` in script.json (Kapitel-Marke + Untertitel tiefer), Szenen-Vordergrund im Container `.fgwrap` (+110 px) – **nicht** per CSS `translate` auf animierten Elementen (GSAP überschreibt das).

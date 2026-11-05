@@ -234,13 +234,15 @@ def gemini_line_starts(audio, sr, texts, cache_file, model="gemini-3.1-pro-previ
     import urllib.request
     T = len(audio) / sr
 
-    def plausible(st):
-        if len(st) != len(texts):
+    def plausible(sp):
+        if len(sp) != len(texts):
             return None
-        if max(st) < T / 20:  # Antwort im Format Minuten.Sekunden (0.52 = 52 s)
-            st = [int(x) * 60 + round((x - int(x)) * 100, 2) for x in st]
-        ok = all(b > a for a, b in zip(st, st[1:])) and st[-1] > 0.5 * T and st[-1] < T
-        return st if ok else None
+        flat = [x for p in sp for x in p]
+        if max(flat) < T / 20:  # Antwort im Format Minuten.Sekunden (0.52 = 52 s)
+            sp = [[int(x) * 60 + round((x - int(x)) * 100, 2) for x in p] for p in sp]
+        flat = [x for p in sp for x in p]
+        ok = all(b >= a for a, b in zip(flat, flat[1:])) and sp[-1][0] > 0.5 * T and flat[-1] <= T + 0.5
+        return sp if ok else None
 
     if cache_file.exists():
         return json.loads(cache_file.read_text())
@@ -248,8 +250,8 @@ def gemini_line_starts(audio, sr, texts, cache_file, model="gemini-3.1-pro-previ
     buf = io.BytesIO(); sf.write(buf, audio, sr, format="WAV", subtype="PCM_16")
     q = ("Hier ist eine deutsche Sprachaufnahme. Sie enthält nacheinander genau diese Zeilen:\n"
          + "\n".join(f"{i + 1}. {t}" for i, t in enumerate(texts))
-         + f"\nDie Aufnahme ist {T:.1f} Sekunden lang. Gib für jede Zeile die Startzeit des ersten Wortes als Sekunden seit Beginn "
-         "(Dezimalzahl, z. B. 12.34 – NICHT Minuten:Sekunden) als JSON-Liste von Zahlen zurück, sonst nichts.")
+         + f"\nDie Aufnahme ist {T:.1f} Sekunden lang. Gib für jede Zeile [Beginn des ersten Wortes, Ende des letzten Wortes] in Sekunden seit Beginn "
+         "(Dezimalzahlen, z. B. 12.34 – NICHT Minuten:Sekunden) als JSON-Liste von Paaren zurück, sonst nichts.")
     body = {"contents": [{"parts": [{"inlineData": {"mimeType": "audio/wav", "data": base64.b64encode(buf.getvalue()).decode()}}, {"text": q}]}],
             "generationConfig": {"responseMimeType": "application/json", "temperature": 0}}
     for wait in (0, 30, 60, 120):
@@ -258,13 +260,65 @@ def gemini_line_starts(audio, sr, texts, cache_file, model="gemini-3.1-pro-previ
             req = urllib.request.Request(f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={key}",
                                          data=json.dumps(body).encode(), headers={"Content-Type": "application/json"})
             r = json.loads(urllib.request.urlopen(req, timeout=300).read())
-            starts = plausible([float(x) for x in json.loads(r["candidates"][0]["content"]["parts"][-1]["text"])])
+            starts = plausible([[float(x) for x in p] for p in json.loads(r["candidates"][0]["content"]["parts"][-1]["text"])])
             if starts:
                 cache_file.write_text(json.dumps(starts))
                 return starts
         except Exception as e:  # noqa: BLE001
             print(f"  Zeitstempel-Abfrage: {e}", flush=True)
     return None
+
+
+def _norm(w):
+    return re.sub(r"[^a-zäöüß0-9]", "", w.lower())
+
+
+def verify_cuts(a, cuts, P, texts, cache_file, model="gemini-3.8-flash"):
+    """Kontrolle: Gemini hört die geschnittenen Stücke (getrennt durch Stille) und schreibt sie ab. Rutscht das erste Wort
+    einer Zeile ans Ende der vorigen (oder umgekehrt), wird der Schnitt auf die Pause davor/danach verschoben."""
+    import base64
+    import io
+    import urllib.request
+    key = os.environ.get("GEMINI_API_KEY")
+    if not key:
+        return cuts
+    for rnd in range(2):
+        edges = [0.0] + cuts + [len(a) / SR]
+        gap = np.zeros(int(SR * 1.0), dtype="float32")
+        parts = []
+        for i in range(len(texts)):
+            parts += [a[int(edges[i] * SR): int(edges[i + 1] * SR)], gap]
+        buf = io.BytesIO(); sf.write(buf, np.concatenate(parts), SR, format="WAV", subtype="PCM_16")
+        q = (f"Die Aufnahme besteht aus genau {len(texts)} Abschnitten, getrennt durch je eine Sekunde Stille. "
+             "Schreibe jeden Abschnitt wörtlich ab (deutsch). Antworte nur mit einer JSON-Liste von Strings, ein Eintrag pro Abschnitt.")
+        body = {"contents": [{"parts": [{"inlineData": {"mimeType": "audio/wav", "data": base64.b64encode(buf.getvalue()).decode()}}, {"text": q}]}],
+                "generationConfig": {"responseMimeType": "application/json", "temperature": 0}}
+        try:
+            req = urllib.request.Request(f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={key}",
+                                         data=json.dumps(body).encode(), headers={"Content-Type": "application/json"})
+            got = json.loads(json.loads(urllib.request.urlopen(req, timeout=300).read())["candidates"][0]["content"]["parts"][-1]["text"])
+        except Exception as e:  # noqa: BLE001
+            print(f"  Schnitt-Kontrolle übersprungen: {e}")
+            return cuts
+        if len(got) != len(texts):
+            print("  Schnitt-Kontrolle: Abschnittszahl passt nicht, übersprungen"); return cuts
+        mids = sorted((x + y) / 2 for x, y in P)
+        changed = False
+        for k in range(1, len(texts)):
+            first = _norm(texts[k].split()[0]); last_prev = _norm(texts[k - 1].split()[-1])
+            g_prev = [_norm(w) for w in got[k - 1].split()]; g_cur = [_norm(w) for w in got[k].split()]
+            if g_prev and g_prev[-1] == first and (not g_cur or g_cur[0] != first):  # Anfang hängt am Ende davor -> früher schneiden
+                earlier = [m for m in mids if m < cuts[k - 1] - 0.08 and (k == 1 or m > cuts[k - 2] + 0.3)]
+                if earlier:
+                    print(f"  Schnitt {k}: „{first}“ hing an Zeile {k} – verschoben {cuts[k - 1]:.2f} → {earlier[-1]:.2f}"); cuts[k - 1] = earlier[-1]; changed = True
+            elif g_cur and g_cur[0] == last_prev and (not g_prev or g_prev[-1] != last_prev):  # Ende davor steckt im Anfang -> später schneiden
+                later = [m for m in mids if m > cuts[k - 1] + 0.08 and (k == len(cuts) or m < cuts[k] - 0.3)]
+                if later:
+                    print(f"  Schnitt {k}: „{last_prev}“ hing an Zeile {k + 1} – verschoben {cuts[k - 1]:.2f} → {later[0]:.2f}"); cuts[k - 1] = later[0]; changed = True
+        if not changed:
+            print(f"  Schnitt-Kontrolle ok ({len(texts)} Zeilen)")
+            break
+    return cuts
 
 
 def synth_gemini_single(lines_words, texts, voice, scales, style, cache_dir, model):
@@ -274,15 +328,22 @@ def synth_gemini_single(lines_words, texts, voice, scales, style, cache_dir, mod
     prompt = (style or GEMINI_STYLE) + "\n" + "\n".join(texts)
     h = hashlib.sha1(f"single|{model}|{voice}|{prompt}".encode()).hexdigest()[:16]
     a, sr = gemini_request(prompt, voice, model, cache_dir / f"{h}.wav" if cache_dir else None)
-    starts = gemini_line_starts(a, sr, texts, cache_dir / f"{h}.starts.json") if cache_dir else None
+    starts = gemini_line_starts(a, sr, texts, cache_dir / f"{h}.spans.json") if cache_dir else None
     a = resample(a.astype("float32"), sr)
     T = len(a) / SR
     P = pauses(a, min_len=0.07)
-    if starts:  # Zeilenanfang = Ende der passenden Pause nahe der Schätzung (lange Pausen bevorzugt)
+    if starts:  # Schnitt = längste Pause zwischen Ende der Zeile davor und Anfang der Zeile (beides von Gemini geschätzt)
         cuts = []
-        for est in starts[1:]:
-            cand = [(abs(y - est) - 0.8 * (y - x), (x + y) / 2) for x, y in P if abs(y - est) < 1.2 and (not cuts or (x + y) / 2 > cuts[-1] + 0.3)]
-            cuts.append(min(cand)[1] if cand else est - 0.05)
+        for k in range(1, len(starts)):
+            e_prev, s_next = starts[k - 1][1], starts[k][0]
+            cand = [(y - x, (x + y) / 2) for x, y in P if x >= e_prev - 0.35 and y <= s_next + 0.35 and (not cuts or (x + y) / 2 > cuts[-1] + 0.3)]
+            if cand:
+                cuts.append(max(cand)[1])
+            else:
+                mid = (e_prev + s_next) / 2
+                near = [(abs((x + y) / 2 - mid), (x + y) / 2) for x, y in P if (not cuts or (x + y) / 2 > cuts[-1] + 0.3)]
+                cuts.append(min(near)[1] if near else mid)
+        cuts = verify_cuts(a, cuts, P, texts, cache_dir / f"{h}.verify.json" if cache_dir else None)
     else:  # Notlösung: dynamische Programmierung über die Pausen nach Silbenanteil
         syl = [sum(syllables(w["spoken"]) for w in ws) for ws in lines_words]
         cum = np.cumsum(syl)[:-1] / sum(syl)

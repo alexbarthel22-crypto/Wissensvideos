@@ -18,7 +18,7 @@ Tag 1: 0 Anhänger. Ziel: Weltreligion. 🙏 #sekte #prophetpeter #comedy #story
 
 ## Angepinnter Kommentar (selbst als Erstes posten und anpinnen)
 
-Sprecht mich bitte mit „Prophet Peter“ an 🙏 Wie soll die Sekte heißen – und was kaufen wir morgen von der ersten Kollekte? Top-Kommentar entscheidet ⬇️
+Ich lese nur Kommentare, die mit „Prophet Peter“ beginnen 🙏 Wie soll die Sekte heißen – und was kaufen wir morgen von der ersten Kollekte? Top-Kommentar entscheidet ⬇️
 
 ## Warum so (Reichweite)
 

@@ -58,7 +58,7 @@ S['s01'] = ('''    #s01-title { left: 0; width: 1080px; top: 50px; text-align: c
     .s01-sp { position: absolute; width: 10px; height: 10px; border-radius: 50%; background: #fff6d0; box-shadow: 0 0 14px 4px rgba(255,220,120,.9); }
     /* Wörter auf farbigen Kästen, damit der Text vor dem hellen Himmel auffällt */
     #s01-title .k, #s01-title .d, #s01-title .h { font-family: "Inter", sans-serif; font-weight: 900; letter-spacing: -.02em; }
-    #s01-title .k { font-size: 96px; line-height: 1.2; margin-bottom: 14px; }
+    #s01-title .k { font-size: 110px; line-height: 1.2; margin-bottom: 14px; }
     #s01-title .d { font-size: 170px; line-height: 1.1; }
     #s01-title .h { margin-top: 22px; font-size: 118px; line-height: 1.32; }
     .s01-w { position: relative; display: inline-block; margin: 0 6px; padding: 2px 24px 8px; border-radius: 22px; transform-origin: 50% 55%;
@@ -75,7 +75,7 @@ BG + '''
       <div id="s01-heaven" class="abs noshift"></div>
       <div id="s01-glow" class="abs"></div><div id="s01-ring" class="abs"></div><div id="s01-sps" class="abs" style="left:0;top:0"></div>
       <div id="s01-flash" class="full noshift"></div>
-      <div id="s01-title" class="abs"><div class="k"><span id="s01-k1" class="s01-w s01-kn">AUF</span> <span id="s01-k2" class="s01-w s01-kn">DIE</span> <span id="s01-k3" class="s01-w s01-kn">KNIE!</span></div><div class="d"><span id="s01-w1" class="s01-w">TAG</span> <span id="s01-w2" class="s01-w">1</span></div>
+      <div id="s01-title" class="abs"><div class="k"><span id="s01-k1" class="s01-w s01-kn">HALTE</span> <span id="s01-k2" class="s01-w s01-kn">EIN!</span></div><div class="d"><span id="s01-w1" class="s01-w">TAG</span> <span id="s01-w2" class="s01-w">1</span></div>
         <div class="h"><span id="s01-w3" class="s01-w">ICH</span> <span id="s01-w4" class="s01-w">GRÜNDE</span><br><span id="s01-w5" class="s01-w">EINE</span> <span id="s01-w6" class="s01-w">SEKTE</span></div></div>
       <div class="s01-bar noshift" style="top:0"></div><div class="s01-bar noshift" style="top:1800px"></div>
 ''' + FX,
@@ -97,8 +97,8 @@ BG + '''
       tl.fromTo(bg, { scale: 1.1, transformOrigin: "60% 55%" }, { scale: 1.0, duration: C.__dur, ease: "none" }, 0);
       // jedes gesprochene Wort wird groß (eigener Kasten springt nach vorn), danach zurück auf Normalgröße, leuchtend
       gsap.set(".s01-w", { filter: "brightness(0.85)" });
-      [["#s01-k1", "auf", "#ff3b55"], ["#s01-k2", "die", "#ff3b55"], ["#s01-k3", "knie", "#ff3b55"], ["#s01-w1", "tag", "#ffd43b"], ["#s01-w2", "eins", "#ffd43b"], ["#s01-w3", "ich", "#ffd36e"], ["#s01-w4", "gründe", "#ffd36e"], ["#s01-w5", "eine", "#ffd36e"], ["#s01-w6", "sekte", "#ff4fb0"]].forEach(([sel, w, c], i) => {
-        const ORD = ["auf", "die", "knie", "tag", "eins", "ich", "gründe", "eine", "sekte"], t = at("L1", w), nx = i < 8 ? at("L1", ORD[i + 1]) : C.__dur - 0.3;
+      [["#s01-k1", "halte", "#ff3b55"], ["#s01-k2", "ein", "#ff3b55"], ["#s01-w1", "tag", "#ffd43b"], ["#s01-w2", "eins", "#ffd43b"], ["#s01-w3", "ich", "#ffd36e"], ["#s01-w4", "gründe", "#ffd36e"], ["#s01-w5", "eine", "#ffd36e"], ["#s01-w6", "sekte", "#ff4fb0"]].forEach(([sel, w, c], i) => {
+        const ORD = ["halte", "ein", "tag", "eins", "ich", "gründe", "eine", "sekte"], t = at("L1", w), nx = i < 7 ? at("L1", ORD[i + 1]) : C.__dur - 0.3;
         tl.set(sel, { zIndex: 5 }, t - 0.04);
         tl.to(sel, { scale: 1.32, filter: `brightness(1.25) drop-shadow(0 0 30px ${c})`, duration: 0.09, ease: "power2.out" }, t - 0.04);
         tl.to(sel, { scale: 1.0, filter: `brightness(1.08) drop-shadow(0 0 14px ${c})`, duration: 0.22, ease: "power2.out" }, Math.max(t + 0.08, nx - 0.2));
@@ -118,8 +118,8 @@ BG + '''
       talk(tl, P, line("L1")[0], line("L1")[1]);
       tl.fromTo(P.spark, { scale: 0.5, svgOrigin: "-187 -850" }, { scale: 1.6, duration: 0.2, yoyo: true, repeat: 5 }, 0.1);
       tl.to(P.armL, { rotation: -150, duration: 0.25, yoyo: true, repeat: 3, ease: "sine.inOut" }, 0.4);
-      // „Auf die Knie!“: Bild bebt
-      tl.to(["#s01-title", bg], { x: 10, duration: 0.04, repeat: 7, yoyo: true }, at("L1", "knie"));
+      // „Halte ein!“: Bild bebt
+      tl.to(["#s01-title", bg], { x: 12, duration: 0.04, repeat: 7, yoyo: true }, at("L1", "ein"));
       const se = at("L1", "sekte");
       tl.fromTo("#s01-flash", { opacity: 0.7 }, { opacity: 0, duration: 0.4, ease: "power2.out", immediateRender: false }, se);
       tl.to("#s01-title", { x: 12, duration: 0.04, repeat: 5, yoyo: true }, se);''' + OUT)

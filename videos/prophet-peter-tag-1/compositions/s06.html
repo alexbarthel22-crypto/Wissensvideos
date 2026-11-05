@@ -35,8 +35,8 @@
       text-shadow: 0 0 30px rgba(255,59,85,.7); box-shadow: 0 0 60px rgba(255,59,85,.6); transform: rotate(-6deg); }
     #s06-zero small { display: block; font-family: "Space Mono", monospace; font-weight: 700; font-size: 32px; letter-spacing: .16em; color: #ffb3bf; }
   </style>
-  <div id="root" data-composition-id="s06" data-start="0" data-duration="9.650" data-width="1080" data-height="1920">
-    <div id="s06-stage" class="clip stage" data-start="0" data-duration="9.650" data-track-index="0">
+  <div id="root" data-composition-id="s06" data-start="0" data-duration="8.525" data-width="1080" data-height="1920">
+    <div id="s06-stage" class="clip stage" data-start="0" data-duration="8.525" data-track-index="0">
       <svg id="s06-bg" class="full" viewBox="0 0 1080 1920"></svg>
       <div id="s06-fg" class="full fgwrap">
       <svg id="s06-svg" class="full" viewBox="0 0 1080 1920"></svg>
@@ -50,7 +50,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 9.65, "L11": [0.2, 4.58], "L11.words": [["aber", 0.2, 0.622], ["ich", 0.622, 0.841], ["sehe", 0.841, 1.263], ["mehr", 1.263, 1.49], ["einen", 1.71, 2.111], ["tempel", 2.111, 2.52], ["gärten", 2.74, 3.18], ["eine", 3.4, 3.784], ["pilgerstraße", 3.784, 4.58]], "L12": [4.8, 7.04], "L12.words": [["und", 4.8, 4.988], ["am", 4.988, 5.168], ["ende", 5.168, 5.53], ["eine", 5.75, 6.17], ["weltreligion", 6.17, 7.04]], "L12b": [7.36, 9.47], "L12b.words": [["aktueller", 7.36, 8.038], ["stand", 8.038, 8.28], ["null", 8.5, 8.751], ["anhänger", 8.751, 9.47]]};
+      const C = {"__dur": 8.525, "L11": [0.2, 3.265], "L11.words": [["aber", 0.2, 0.472], ["ich", 0.472, 0.612], ["sehe", 0.612, 0.884], ["mehr", 0.884, 1.03], ["einen", 1.25, 1.463], ["tempel", 1.463, 1.68], ["gärten", 1.83, 3.05], ["eine", 3.17, 3.201], ["pilgerstraße", 3.201, 3.265]], "L12": [3.485, 5.885], "L12.words": [["und", 3.485, 3.701], ["am", 3.701, 3.909], ["ende", 3.909, 4.325], ["eine", 4.545, 4.981], ["weltreligion", 4.981, 5.885]], "L12b": [6.205, 8.345], "L12b.words": [["aktueller", 6.205, 6.846], ["stand", 6.846, 7.075], ["null", 7.305, 7.574], ["anhänger", 7.574, 8.345]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];

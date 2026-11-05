@@ -12,7 +12,7 @@
    "lines": [
     {
      "id": "L1",
-     "text": "Auf die Knie!! / Tag eins! / Ich gründe / eine Sekte!",
+     "text": "Halte ein!! / Tag eins! / Ich gründe / eine Sekte!",
      "nocap": true,
      "speed": 1.4
     }
@@ -265,7 +265,7 @@
    "lines": [
     {
      "id": "L15",
-     "text": "Sei von *g:Anfang an dabei / und sichere dir / einen *y:hohen *y:Rang / in meiner *p:Sekte!"
+     "text": "Sei einer der *g:ersten *g:Anhänger / und sichere dir / einen *y:hohen *y:Rang / in meiner *p:Sekte!"
     }
    ],
    "sfx": [
@@ -307,7 +307,8 @@
    "lines": [
     {
      "id": "L17",
-     "text": "Nur eins / fehlt noch: / ein *p:Name! / Wie soll / unsere Sekte *p:heißen?"
+     "text": "Nur eins / fehlt noch: / ein *p:Name! / Wie soll / unsere Sekte *p:heißen?",
+     "speed": 1.22
     }
    ],
    "sfx": [
@@ -326,16 +327,18 @@
   {
    "id": "s10",
    "tag": "TAG 1 · AUFRUF",
-   "hold": 2.6,
+   "hold": 1.2,
    "lines": [
     {
      "id": "L18",
-     "text": "Schreib's / in die *y:Kommentare / und sprich mich an / mit *y:Prophet *y:Peter!"
+     "text": "Schreib's / in die *y:Kommentare! / Aber Achtung: / Ich lese nur Kommentare, / die mit *y:Prophet *y:Peter / beginnen!",
+     "speed": 1.22
     },
     {
      "id": "L19",
      "text": "Und: Was kaufen wir / morgen / von der *y:ersten *y:Kollekte? / Der *g:Top-Kommentar / entscheidet!",
-     "pause": 0.1
+     "pause": 0.1,
+     "speed": 1.22
     }
    ],
    "sfx": [
@@ -364,6 +367,6 @@
  ],
  "shift": 110,
  "tts_model": "gemini-2.5-pro-preview-tts",
- "style": "Lies den folgenden deutschen Text als extrem charismatischer, euphorischer Fernsehprediger und Sektengründer vor – durchgehend mit derselben warmen, kraftvollen Stimme, voller Energie, Begeisterung und Emotion, mitreißend. Sprich schnell, flüssig und zusammenhängend, die Wörter weich verbunden statt abgehackt, ohne Kunstpausen und ohne etwas in die Länge zu ziehen; die ersten Zeilen besonders schnell und überschwänglich. Sprich das Wort „Sekte“ deutlich und korrekt aus: SEK-te, mit kurzem e und betontem „Sek“. Nach jeder Zeile nur eine sehr kurze Atempause. Sprich nur den Text, nichts anderes. Die allererste Zeile „Auf die Knie!“ LAUT und gebieterisch schreien, wie ein Donnerruf. Text:",
+ "style": "Lies den folgenden deutschen Text als extrem charismatischer, euphorischer Fernsehprediger und Sektengründer vor – durchgehend mit derselben warmen, kraftvollen Stimme, voller Energie, Begeisterung und Emotion, mitreißend. Sprich schnell, flüssig und zusammenhängend, die Wörter weich verbunden statt abgehackt, ohne Kunstpausen und ohne etwas in die Länge zu ziehen; die ersten Zeilen besonders schnell und überschwänglich. Sprich das Wort „Sekte“ deutlich und korrekt aus: SEK-te, mit kurzem e und betontem „Sek“. Nach jeder Zeile nur eine sehr kurze Atempause. Sprich nur den Text, nichts anderes. Die allererste Zeile „Halte ein!“ sehr LAUT, auffordernd und gebieterisch rufen – ein donnernder Befehl, der jeden sofort stoppen lässt. Text:",
  "tts_single": true
 }
