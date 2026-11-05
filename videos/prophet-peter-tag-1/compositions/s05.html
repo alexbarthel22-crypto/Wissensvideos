@@ -31,8 +31,8 @@
     #s05-box2 { left: 240px; width: 600px; top: 410px; }
     .s05-l { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 600px; font-size: 48px; border-color: #ff4fb0; box-shadow: 0 0 34px rgba(255,79,176,.5); }
   </style>
-  <div id="root" data-composition-id="s05" data-start="0" data-duration="8.999" data-width="1080" data-height="1920">
-    <div id="s05-stage" class="clip stage" data-start="0" data-duration="8.999" data-track-index="0">
+  <div id="root" data-composition-id="s05" data-start="0" data-duration="8.150" data-width="1080" data-height="1920">
+    <div id="s05-stage" class="clip stage" data-start="0" data-duration="8.150" data-track-index="0">
       <svg id="s05-bg" class="full" viewBox="0 0 1080 1920"></svg>
       <div id="s05-fg" class="full fgwrap">
       <svg id="s05-svg" class="full" viewBox="0 0 1080 1920"></svg>
@@ -47,7 +47,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 8.999, "L9": [0.2, 2.43], "L9.words": [["zum", 0.2, 0.407], ["grundstück", 0.407, 0.85], ["zwei", 1.07, 1.348], ["hektar", 1.348, 1.884], ["wildnis", 1.884, 2.43]], "L9b": [2.75, 6.769], "L9b.words": [["eine", 2.75, 3.615], ["ziege", 3.615, 4.495], ["wohnt", 4.495, 4.975], ["hier", 4.975, 5.44], ["schon", 5.44, 5.92], ["und", 6.14, 6.219], ["es", 6.219, 6.295], ["gibt", 6.295, 6.376], ["genau", 6.376, 6.53], ["einen", 6.53, 6.685], ["stuhl", 6.685, 6.769]], "L10": [6.989, 8.569], "L10.words": [["unter", 6.989, 7.435], ["einem", 7.435, 7.88], ["kargen", 7.88, 8.334], ["baum", 8.334, 8.569]]};
+      const C = {"__dur": 8.15, "L9": [0.2, 2.43], "L9.words": [["zum", 0.2, 0.407], ["grundstück", 0.407, 0.85], ["zwei", 1.07, 1.348], ["hektar", 1.348, 1.884], ["wildnis", 1.884, 2.43]], "L9b": [2.75, 6.0], "L9b.words": [["eine", 2.75, 3.075], ["ziege", 3.075, 3.405], ["wohnt", 3.405, 3.585], ["hier", 3.585, 3.76], ["schon", 3.76, 3.94], ["und", 4.16, 4.39], ["es", 4.39, 4.612], ["gibt", 4.612, 4.85], ["genau", 4.85, 5.302], ["einen", 5.302, 5.754], ["stuhl", 5.754, 6.0]], "L10": [6.22, 7.72], "L10.words": [["unter", 6.22, 6.643], ["einem", 6.643, 7.066], ["kargen", 7.066, 7.497], ["baum", 7.497, 7.72]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];

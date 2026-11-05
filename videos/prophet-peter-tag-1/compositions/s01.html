@@ -48,8 +48,8 @@
     #s01-flash { background: #ffffff; opacity: 0; mix-blend-mode: overlay; }
     .s01-bar { position: absolute; left: 0; width: 1080px; height: 120px; background: #000; }
   </style>
-  <div id="root" data-composition-id="s01" data-start="0" data-duration="3.000" data-width="1080" data-height="1920">
-    <div id="s01-stage" class="clip stage" data-start="0" data-duration="3.000" data-track-index="0">
+  <div id="root" data-composition-id="s01" data-start="0" data-duration="2.680" data-width="1080" data-height="1920">
+    <div id="s01-stage" class="clip stage" data-start="0" data-duration="2.680" data-track-index="0">
       <svg id="s01-bg" class="full" viewBox="0 0 1080 1920"></svg>
       <svg id="s01-vis" class="full noshift" viewBox="0 0 1080 1920"></svg>
       <div id="s01-heaven" class="abs noshift"></div>
@@ -67,7 +67,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 3.0, "L1": [0.0, 2.82], "L1.words": [["warte", 0.0, 0.51], ["tag", 0.72, 1.049], ["eins", 1.049, 1.39], ["ich", 1.52, 1.709], ["gründe", 1.709, 2.086], ["eine", 2.086, 2.45], ["sekte", 2.45, 2.82]]};
+      const C = {"__dur": 2.68, "L1a": [0.0, 0.63], "L1a.words": [["warte", 0.0, 0.63]], "L1": [0.85, 2.5], "L1.words": [["tag", 0.85, 1.035], ["eins", 1.035, 1.226], ["ich", 1.226, 1.411], ["gründe", 1.411, 1.781], ["eine", 1.781, 2.137], ["sekte", 2.137, 2.5]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -507,7 +507,7 @@
       // jedes gesprochene Wort wird groß (eigener Kasten springt nach vorn), danach zurück auf Normalgröße, leuchtend
       gsap.set(".s01-w", { filter: "brightness(0.85)" });
       [["#s01-k1", "warte", "#ff3b55"], ["#s01-w1", "tag", "#ffd43b"], ["#s01-w2", "eins", "#ffd43b"], ["#s01-w3", "ich", "#ffd36e"], ["#s01-w4", "gründe", "#ffd36e"], ["#s01-w5", "eine", "#ffd36e"], ["#s01-w6", "sekte", "#ff4fb0"]].forEach(([sel, w, c], i) => {
-        const ORD = ["warte", "tag", "eins", "ich", "gründe", "eine", "sekte"], t = at("L1", w), nx = i < 6 ? at("L1", ORD[i + 1]) : at("L1", "sekte") + 0.55;
+        const ORD = ["warte", "tag", "eins", "ich", "gründe", "eine", "sekte"], t = w === "warte" ? at("L1a", w) : at("L1", w), nx = i < 6 ? at("L1", ORD[i + 1]) : at("L1", "sekte") + 0.55;
         tl.set(sel, { zIndex: 5 }, t - 0.04);
         tl.to(sel, { scale: sel === "#s01-w6" ? 1.14 : 1.32, filter: `brightness(1.25) drop-shadow(0 0 30px ${c})`, duration: 0.09, ease: "power2.out" }, t - 0.04);
         tl.to(sel, { scale: 1.0, filter: `brightness(1.08) drop-shadow(0 0 14px ${c})`, duration: 0.22, ease: "power2.out" }, Math.max(t + 0.08, nx - 0.2));
@@ -524,11 +524,11 @@
       // Prophet Peter steht ab Frame 0 links im Bild (segnend)
       const P = peter(sv, "s01p", 200, 1385, 0.5, { arms: [14, -120] });
       P.g.style.filter = "drop-shadow(0 0 30px rgba(255,220,130,.55))";
-      talk(tl, P, line("L1")[0], line("L1")[1]);
+      talk(tl, P, line("L1a")[0], line("L1")[1]);
       tl.fromTo(P.spark, { scale: 0.5, svgOrigin: "-187 -850" }, { scale: 1.6, duration: 0.2, yoyo: true, repeat: 5 }, 0.1);
       tl.to(P.armL, { rotation: -150, duration: 0.25, yoyo: true, repeat: 3, ease: "sine.inOut" }, 0.4);
       // „WARTE!“: Bild bebt
-      tl.to(["#s01-title", bg], { x: 14, duration: 0.04, repeat: 9, yoyo: true }, at("L1", "warte") + 0.1);
+      tl.to(["#s01-title", bg], { x: 14, duration: 0.04, repeat: 9, yoyo: true }, at("L1a", "warte") + 0.1);
       const se = at("L1", "sekte");
       tl.fromTo("#s01-flash", { opacity: 0.7 }, { opacity: 0, duration: 0.4, ease: "power2.out", immediateRender: false }, se);
       tl.to("#s01-title", { x: 12, duration: 0.04, repeat: 5, yoyo: true }, se);

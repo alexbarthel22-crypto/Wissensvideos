@@ -323,11 +323,130 @@ def verify_cuts(a, cuts, P, texts, cache_file, model="gemini-3.8-flash"):
     return cuts
 
 
-def synth_gemini_single(lines_words, texts, voice, scales, style, cache_dir, model):
+def _transcribe_pair(left, right, model="gemini-3.8-flash"):
+    """Zwei kurze Stücke (getrennt durch Stille) abschreiben lassen -> (text_links, text_rechts)."""
+    import base64
+    import io
+    import time
+    import urllib.request
+    key = os.environ["GEMINI_API_KEY"]
+    buf = io.BytesIO(); sf.write(buf, np.concatenate([left, np.zeros(int(SR * 1.2), dtype="float32"), right]), SR, format="WAV", subtype="PCM_16")
+    q = ("Zwei kurze deutsche Sprach-Abschnitte, getrennt durch Stille. Schreibe beide wörtlich ab, auch angeschnittene oder sehr kurze Wörter "
+         "am Anfang und Ende. Antworte nur mit einer JSON-Liste aus 2 Strings.")
+    body = {"contents": [{"parts": [{"inlineData": {"mimeType": "audio/wav", "data": base64.b64encode(buf.getvalue()).decode()}}, {"text": q}]}],
+            "generationConfig": {"responseMimeType": "application/json", "temperature": 0}}
+    for wait in (0, 15, 45, 90):
+        time.sleep(wait)
+        try:
+            req = urllib.request.Request(f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={key}",
+                                         data=json.dumps(body).encode(), headers={"Content-Type": "application/json"})
+            got = json.loads(json.loads(urllib.request.urlopen(req, timeout=200).read())["candidates"][0]["content"]["parts"][-1]["text"])
+            if len(got) == 2:
+                return got
+        except Exception as e:  # noqa: BLE001
+            print(f"    (Abschrift: {e})", flush=True)
+    return None
+
+
+def refine_cuts(a, cuts, P, texts, cache_file):
+    """Jede Zeilengrenze an der Pause festmachen, bei der links das letzte Wort der Zeile endet und rechts das erste Wort
+    der nächsten beginnt – geprüft per Abschrift der 2 s davor/danach. Ergebnis wird gecacht."""
+    if cache_file and cache_file.exists():
+        return json.loads(cache_file.read_text())
+    if not os.environ.get("GEMINI_API_KEY"):
+        return cuts
+    mids = sorted((x + y) / 2 for x, y in P)
+    same = lambda g, e: bool(g) and bool(e) and (g == e or (len(e) >= 4 and g[:4] == e[:4]))
+    syl = [sum(syllables(w) for w in t.split()) for t in texts]
+    T = len(a) / SR
+    out = list(cuts)
+    for k in range(len(cuts)):
+        first = _norm(texts[k + 1].split()[0]); last = _norm(texts[k].split()[-1])
+        prev = out[k - 1] if k else 0.0
+        # Erwartung: vorige Grenze + Silbenanteil der Restzeit; zusätzlich der bisherige Schätzwert
+        est = prev + (T - prev) * syl[k] / sum(syl[k:])
+        lo = prev + 0.4
+        pool = [m for m in mids if m > lo and m < prev + 12]
+        cand = sorted(pool, key=lambda m: min(abs(m - est), abs(m - cuts[k])))[:10]
+        best = None
+        for m in cand:
+            L = a[max(0, int((m - 2.0) * SR)): int(m * SR)]; R = a[int(m * SR): int((m + 2.0) * SR)]
+            got = _transcribe_pair(L, R)
+            if not got:
+                break
+            gl = [_norm(w) for w in got[0].split() if _norm(w)]; gr = [_norm(w) for w in got[1].split() if _norm(w)]
+            if gl and gr and same(gl[-1], last) and same(gr[0], first):
+                best = m; break
+        if best is None:
+            print(f"  Grenze {k + 1}: keine eindeutige Pause gefunden – bleibt bei {out[k]:.2f}")
+            out[k] = max(out[k], lo)
+        else:
+            if abs(best - out[k]) > 0.01:
+                print(f"  Grenze {k + 1} („{texts[k].split()[-1]}“ | „{texts[k + 1].split()[0]}“): {out[k]:.2f} → {best:.2f}", flush=True)
+            out[k] = best
+    if cache_file:
+        cache_file.write_text(json.dumps(out))
+    return out
+
+
+def synth_gemini_single(lines_words, texts, voice, scales, style, cache_dir, model, line_ids=None, cut_shift=None, joins=None):
+    """Zeilen mit join_prev werden für Aufnahme + Schnitt mit der vorigen zusammengelegt und danach an einer Pause geteilt."""
+    joins = joins or [False] * len(texts)
+    if not any(joins):
+        return _synth_gemini_single(lines_words, texts, voice, scales, style, cache_dir, model, line_ids, cut_shift)
+    groups = []  # Listen von Original-Indizes
+    for i, j in enumerate(joins):
+        if j and groups:
+            groups[-1].append(i)
+        else:
+            groups.append([i])
+    m_texts = [" ".join(texts[i] for i in g) for g in groups]
+    m_words = [sum((lines_words[i] for i in g), []) for g in groups]
+    m_ids = [line_ids[g[0]] for g in groups] if line_ids else None
+    m_shift = {k: v for k, v in (cut_shift or {}).items() if not m_ids or k in m_ids}
+    raw = _synth_gemini_single(m_words, m_texts, voice, [1.0] * len(groups), style, cache_dir, model, m_ids, m_shift)
+    out = []
+    for g, (seg, sr) in zip(groups, raw):
+        if len(g) == 1:
+            out.append((seg, sr)); continue
+        P = pauses(seg, min_len=0.07); mids = [(x + y) / 2 for x, y in P]
+        pieces, start = [], 0.0
+        for gi in range(len(g) - 1):
+            last = _norm(texts[g[gi]].split()[-1]); first = _norm(texts[g[gi + 1]].split()[0])
+            share = sum(syllables(w) for w in texts[g[gi]].split()) / sum(syllables(w) for i in g[gi:] for w in texts[i].split())
+            est = start + (len(seg) / SR - start) * share
+            cut = None
+            for m in sorted([m for m in mids if m > start + 0.15], key=lambda m: abs(m - est))[:6]:
+                got = _transcribe_pair(seg[max(0, int((m - 2) * SR)): int(m * SR)], seg[int(m * SR): int((m + 2) * SR)])
+                if got:
+                    gl = [_norm(w) for w in got[0].split() if _norm(w)]; gr = [_norm(w) for w in got[1].split() if _norm(w)]
+                    if gl and gr and gl[-1][:4] == last[:4] and gr[0][:4] == first[:4]:
+                        cut = m; break
+            cut = cut if cut is not None else (min(mids, key=lambda m: abs(m - est)) if mids else est)
+            print(f"  intern geteilt: „{texts[g[gi]]}“ | „{texts[g[gi + 1]][:20]}…“ bei {cut:.2f} s")
+            pieces.append(seg[int(start * SR): int(cut * SR)]); start = cut
+        pieces.append(seg[int(start * SR):])
+        for i, p in zip(g, pieces):
+            out.append((p, sr))
+    # Tempo pro Original-Zeile
+    res = []
+    for (seg, sr), ls in zip(out, scales):
+        if abs(ls - 1.0) > 0.01:
+            with tempfile.TemporaryDirectory() as dd:
+                src, dst = Path(dd) / "a.wav", Path(dd) / "b.wav"
+                sf.write(src, seg, sr)
+                subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", src, "-filter:a", f"atempo={1 / ls:.4f}", dst], check=True)
+                seg, sr = sf.read(dst, dtype="float32")
+        res.append((seg, sr))
+    return res
+
+
+def _synth_gemini_single(lines_words, texts, voice, scales, style, cache_dir, model, line_ids=None, cut_shift=None, joins=None):
     """Ganzer Text in EINER Gemini-Aufnahme (gleichbleibende Stimme), danach an Pausen in Zeilen geschnitten.
     Schnittpunkte: dynamische Programmierung über die Pausen – nahe an der erwarteten Position (Silbenanteil) und möglichst lang."""
     import hashlib
-    prompt = (style or GEMINI_STYLE) + "\n" + "\n".join(texts)
+    joins = joins or [False] * len(texts)  # join_prev: Zeile gehört im Sprechtext zur vorigen (gleiche Aufnahme, nur intern getrennt)
+    prompt = (style or GEMINI_STYLE) + "\n" + "".join(("" if i == 0 else (" " if joins[i] else "\n")) + t for i, t in enumerate(texts))
     h = hashlib.sha1(f"single|{model}|{voice}|{prompt}".encode()).hexdigest()[:16]
     a, sr = gemini_request(prompt, voice, model, cache_dir / f"{h}.wav" if cache_dir else None)
     starts = gemini_line_starts(a, sr, texts, cache_dir / f"{h}.spans.json") if cache_dir else None
@@ -345,7 +464,9 @@ def synth_gemini_single(lines_words, texts, voice, scales, style, cache_dir, mod
                 mid = (e_prev + s_next) / 2
                 near = [(abs((x + y) / 2 - mid), (x + y) / 2) for x, y in P if (not cuts or (x + y) / 2 > cuts[-1] + 0.3)]
                 cuts.append(min(near)[1] if near else mid)
-        cuts = verify_cuts(a, cuts, P, texts, cache_dir / f"{h}.verify.json" if cache_dir else None)
+        cuts = refine_cuts(a, cuts, P, texts, cache_dir / f"{h}.cuts.json" if cache_dir else None)
+        if os.environ.get("TTS_VERIFY", "0") == "1":  # automatische Nachkontrolle (unzuverlässig, Standard aus) – lieber tools/check_cuts.py
+            cuts = verify_cuts(a, cuts, P, texts, cache_dir / f"{h}.verify.json" if cache_dir else None)
     else:  # Notlösung: dynamische Programmierung über die Pausen nach Silbenanteil
         syl = [sum(syllables(w["spoken"]) for w in ws) for ws in lines_words]
         cum = np.cumsum(syl)[:-1] / sum(syl)
@@ -369,6 +490,16 @@ def synth_gemini_single(lines_words, texts, voice, scales, style, cache_dir, mod
         for k in range(N - 1, 0, -1):
             j = int(B[k, j]); cuts.append(j)
         cuts = [mids[j] for j in reversed(cuts)]
+    # manuelle Korrektur aus script.json: "cut_shift": {"L17": -1} = Schnitt vor L17 um eine Pause früher
+    if cut_shift and line_ids:
+        mids_all = sorted((x + y) / 2 for x, y in P)
+        for lid, n in cut_shift.items():
+            k = line_ids.index(lid) - 1
+            for _ in range(abs(n)):
+                cand = [m for m in mids_all if (m < cuts[k] - 0.05 if n < 0 else m > cuts[k] + 0.05)]
+                if cand:
+                    print(f"  manuell: Schnitt vor {lid} {cuts[k]:.2f} → {(cand[-1] if n < 0 else cand[0]):.2f}")
+                    cuts[k] = cand[-1] if n < 0 else cand[0]
     edges = [0.0] + cuts + [T]
     out = []
     for i, ls in enumerate(scales):
@@ -539,7 +670,9 @@ def main():
     scales = [l["scale"] for l in lines]
     if args.backend == "gemini" and script.get("tts_single"):  # eine Aufnahme für alles = eine Stimme
         raw = synth_gemini_single([l["words"] for l in lines], texts, args.voice, scales, script.get("style"),
-                                  project / "assets" / "voice" / "cache", script.get("tts_model", "gemini-2.5-pro-preview-tts"))
+                                  project / "assets" / "voice" / "cache", script.get("tts_model", "gemini-2.5-pro-preview-tts"),
+                                  [l["id"] for l in lines], script.get("cut_shift"),
+                                  [ln.get("join_prev", False) for sc in script["scenes"] for ln in sc["lines"]])
     elif args.backend == "gemini":  # --voice z. B. Fenrir/Puck; Stil aus script.json "style", pro Zeile "style"
         raw = synth_gemini(texts, args.voice, scales, script.get("style"),
                            [ln.get("style") for sc in script["scenes"] for ln in sc["lines"]], project / "assets" / "voice" / "cache",
