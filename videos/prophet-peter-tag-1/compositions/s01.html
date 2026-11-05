@@ -27,14 +27,14 @@
     .plate { position: absolute; font-family: "Inter", sans-serif; font-weight: 900; color: #fff; text-align: center; }
     /* Vordergrund 110 px tiefer = besser zentriert zwischen Kapitel-Marke und Untertiteln (Hintergrund/Filmlook bleiben) */
     .fgwrap { transform: translateY(110px); }
-    #s01-title { left: 40px; width: 940px; top: 400px; text-align: center; }
+    #s01-title { left: 40px; width: 940px; top: 300px; text-align: center; }
     #s01-heaven { left: 0; top: 0; width: 1080px; height: 1920px; opacity: .9;
       background: repeating-conic-gradient(from 180deg at 50% -4%, rgba(255,236,170,.30) 0deg 3deg, rgba(255,236,170,0) 3deg 9deg);
       -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 0%, #000 30%, transparent 80%); mask-image: radial-gradient(ellipse 80% 70% at 50% 0%, #000 30%, transparent 80%); }
     #s01-glow { left: -100px; top: 150px; width: 1280px; height: 1100px; background: radial-gradient(ellipse 50% 45% at 50% 45%, rgba(255,226,140,.55), rgba(255,180,90,.18) 55%, rgba(255,180,90,0) 75%); }
-    #s01-ring { left: 190px; top: 210px; width: 700px; height: 700px; border-radius: 50%; border: 6px solid rgba(255,230,150,.7); box-shadow: 0 0 60px rgba(255,214,110,.8), inset 0 0 60px rgba(255,214,110,.5); }
+    #s01-ring { left: 190px; top: 110px; width: 700px; height: 700px; border-radius: 50%; border: 6px solid rgba(255,230,150,.7); box-shadow: 0 0 60px rgba(255,214,110,.8), inset 0 0 60px rgba(255,214,110,.5); }
     .s01-sp { position: absolute; width: 10px; height: 10px; border-radius: 50%; background: #fff6d0; box-shadow: 0 0 14px 4px rgba(255,220,120,.9); }
-    #s01-title .d { font-family: "Inter", sans-serif; font-weight: 900; font-size: 250px; line-height: .9; letter-spacing: -.03em; color: #ffd43b; }
+    #s01-title .d { font-family: "Inter", sans-serif; font-weight: 900; font-size: 220px; line-height: .9; letter-spacing: -.03em; color: #ffd43b; }
     #s01-title .l { display: inline-block; margin-top: 18px; padding: 10px 28px; border-radius: 16px; background: #ff4fb0; color: #fff;
       font-family: "Space Mono", monospace; font-weight: 700; font-size: 44px; letter-spacing: .2em; box-shadow: 0 0 40px rgba(255,79,176,.6); }
     #s01-title .h { margin-top: 30px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 118px; line-height: 1.04; color: #fff; letter-spacing: -.015em; }
@@ -44,8 +44,8 @@
     #s01-flash { background: #ffffff; opacity: 0; mix-blend-mode: overlay; }
     .s01-bar { position: absolute; left: 0; width: 1080px; height: 120px; background: #000; }
   </style>
-  <div id="root" data-composition-id="s01" data-start="0" data-duration="2.820" data-width="1080" data-height="1920">
-    <div id="s01-stage" class="clip stage" data-start="0" data-duration="2.820" data-track-index="0">
+  <div id="root" data-composition-id="s01" data-start="0" data-duration="2.810" data-width="1080" data-height="1920">
+    <div id="s01-stage" class="clip stage" data-start="0" data-duration="2.810" data-track-index="0">
       <svg id="s01-bg" class="full" viewBox="0 0 1080 1920"></svg>
       <div id="s01-heaven" class="abs noshift"></div>
       <div id="s01-flash" class="full noshift"></div>
@@ -62,7 +62,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 2.82, "L1": [0.45, 2.64], "L1.words": [["tag", 0.45, 0.573], ["eins", 0.573, 0.7], ["ich", 0.87, 1.127], ["gründe", 1.127, 1.64], ["eine", 1.64, 2.136], ["sekte", 2.136, 2.64]]};
+      const C = {"__dur": 2.81, "L1": [0.0, 2.63], "L1.words": [["tag", 0.0, 0.437], ["eins", 0.437, 0.89], ["ich", 1.07, 1.296], ["gründe", 1.296, 1.749], ["eine", 1.749, 2.185], ["sekte", 2.185, 2.63]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -504,6 +504,12 @@
       for (let i = 0; i < 34; i++) { const d = document.createElement("div"); d.className = "s01-sp"; const x = 80 + RS() * 900, y = 300 + RS() * 900;
         Object.assign(d.style, { left: x + "px", top: y + "px", transform: `scale(${0.4 + RS()})` }); spc.appendChild(d);
         tl.fromTo(d, { opacity: 0, y: 0 }, { opacity: 0.4 + RS() * 0.6, y: -120 - RS() * 160, duration: C.__dur, ease: "none" }, 0); }
+      // Prophet Peter steht ab Frame 0 links im Bild (segnend), Heiligenschein leuchtet
+      const P = peter(sv, "s01p", 175, 1160, 0.42, { arms: [14, -120] });
+      P.g.style.filter = "drop-shadow(0 0 30px rgba(255,220,130,.55))";
+      talk(tl, P, line("L1")[0], line("L1")[1]);
+      tl.fromTo(P.spark, { scale: 0.5, svgOrigin: "-187 -850" }, { scale: 1.6, duration: 0.2, yoyo: true, repeat: 5 }, 0.1);
+      tl.to(P.armL, { rotation: -150, duration: 0.25, yoyo: true, repeat: 3, ease: "sine.inOut" }, 0.4);
       const se = at("L1", "sekte");
       tl.fromTo("#s01-flash", { opacity: 0.7 }, { opacity: 0, duration: 0.4, ease: "power2.out", immediateRender: false }, se);
       tl.to("#s01-title", { x: 12, duration: 0.04, repeat: 5, yoyo: true }, se);

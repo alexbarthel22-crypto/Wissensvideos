@@ -49,14 +49,14 @@ FX = '      <svg id="@@ID@@-fx" class="full" viewBox="0 0 1080 1920"></svg>'
 S = {}
 
 # ---------- s01 Hook: TAG 1 – ICH GRÜNDE EINE SEKTE (alles ab Frame 0 lesbar, jedes gesprochene Wort leuchtet groß auf) ----------
-S['s01'] = ('''    #s01-title { left: 40px; width: 940px; top: 400px; text-align: center; }
+S['s01'] = ('''    #s01-title { left: 40px; width: 940px; top: 300px; text-align: center; }
     #s01-heaven { left: 0; top: 0; width: 1080px; height: 1920px; opacity: .9;
       background: repeating-conic-gradient(from 180deg at 50% -4%, rgba(255,236,170,.30) 0deg 3deg, rgba(255,236,170,0) 3deg 9deg);
       -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 0%, #000 30%, transparent 80%); mask-image: radial-gradient(ellipse 80% 70% at 50% 0%, #000 30%, transparent 80%); }
     #s01-glow { left: -100px; top: 150px; width: 1280px; height: 1100px; background: radial-gradient(ellipse 50% 45% at 50% 45%, rgba(255,226,140,.55), rgba(255,180,90,.18) 55%, rgba(255,180,90,0) 75%); }
-    #s01-ring { left: 190px; top: 210px; width: 700px; height: 700px; border-radius: 50%; border: 6px solid rgba(255,230,150,.7); box-shadow: 0 0 60px rgba(255,214,110,.8), inset 0 0 60px rgba(255,214,110,.5); }
+    #s01-ring { left: 190px; top: 110px; width: 700px; height: 700px; border-radius: 50%; border: 6px solid rgba(255,230,150,.7); box-shadow: 0 0 60px rgba(255,214,110,.8), inset 0 0 60px rgba(255,214,110,.5); }
     .s01-sp { position: absolute; width: 10px; height: 10px; border-radius: 50%; background: #fff6d0; box-shadow: 0 0 14px 4px rgba(255,220,120,.9); }
-    #s01-title .d { font-family: "Inter", sans-serif; font-weight: 900; font-size: 250px; line-height: .9; letter-spacing: -.03em; color: #ffd43b; }
+    #s01-title .d { font-family: "Inter", sans-serif; font-weight: 900; font-size: 220px; line-height: .9; letter-spacing: -.03em; color: #ffd43b; }
     #s01-title .l { display: inline-block; margin-top: 18px; padding: 10px 28px; border-radius: 16px; background: #ff4fb0; color: #fff;
       font-family: "Space Mono", monospace; font-weight: 700; font-size: 44px; letter-spacing: .2em; box-shadow: 0 0 40px rgba(255,79,176,.6); }
     #s01-title .h { margin-top: 30px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 118px; line-height: 1.04; color: #fff; letter-spacing: -.015em; }
@@ -94,6 +94,12 @@ BG + '\n' + SVG + '''
       for (let i = 0; i < 34; i++) { const d = document.createElement("div"); d.className = "s01-sp"; const x = 80 + RS() * 900, y = 300 + RS() * 900;
         Object.assign(d.style, { left: x + "px", top: y + "px", transform: `scale(${0.4 + RS()})` }); spc.appendChild(d);
         tl.fromTo(d, { opacity: 0, y: 0 }, { opacity: 0.4 + RS() * 0.6, y: -120 - RS() * 160, duration: C.__dur, ease: "none" }, 0); }
+      // Prophet Peter steht ab Frame 0 links im Bild (segnend), Heiligenschein leuchtet
+      const P = peter(sv, "s01p", 175, 1160, 0.42, { arms: [14, -120] });
+      P.g.style.filter = "drop-shadow(0 0 30px rgba(255,220,130,.55))";
+      talk(tl, P, line("L1")[0], line("L1")[1]);
+      tl.fromTo(P.spark, { scale: 0.5, svgOrigin: "-187 -850" }, { scale: 1.6, duration: 0.2, yoyo: true, repeat: 5 }, 0.1);
+      tl.to(P.armL, { rotation: -150, duration: 0.25, yoyo: true, repeat: 3, ease: "sine.inOut" }, 0.4);
       const se = at("L1", "sekte");
       tl.fromTo("#s01-flash", { opacity: 0.7 }, { opacity: 0, duration: 0.4, ease: "power2.out", immediateRender: false }, se);
       tl.to("#s01-title", { x: 12, duration: 0.04, repeat: 5, yoyo: true }, se);''' + OUT)
@@ -144,7 +150,7 @@ S['s04'] = ('''    #s04-doc { left: 150px; top: 410px; width: 720px; height: 660
 BG + '\n' + SVG + '''
       <div id="s04-doc" class="abs"><div class="t">TESTAMENT</div><div class="p">„… vermache ich meinem Neffen <b>Peter</b> mein gesamtes <b>Grundstück</b>.<br>Mach was draus, Junge.“</div>
         <div class="sig">Onkel Heinz</div><div id="s04-seal">H</div></div>
-      <div id="s04-stamp" class="abs">GEERBT</div>
+      <div id="s04-stamp" class="abs" data-layout-ignore>GEERBT</div>
       <div id="s04-sign" class="abs"><small>ZUKÜNFTIGES</small>HEILIGTUM</div>
 ''' + FX,
 '''      const G = grundstueck(bg, "s04g", { mood: "dusk" }); gsap.set(bg, { filter: "blur(8px) brightness(.55)" });
@@ -212,12 +218,11 @@ BG + '\n' + SVG + '''
       tl.to("#s05-box2", { x: 10, duration: 0.04, repeat: 5, yoyo: true }, st + 0.25);
       tl.to(tw, { x: 1200, rotation: 720, duration: 2.2, ease: "none" }, l10 - 0.1);
       // Ast bricht demonstrativ ab: knackt, knickt, fällt zu Boden, prallt ab
-      const [bx, by] = G.brkBase, crk = ba + 0.35;
-      tl.to(G.brk, { rotation: 8, svgOrigin: `${bx} ${by}`, duration: 0.05, yoyo: true, repeat: 3 }, crk - 0.25);
-      tl.to(G.brk, { rotation: 32, svgOrigin: `${bx} ${by}`, duration: 0.18, ease: "power2.in" }, crk);
-      tl.to(G.brk, { y: 1235 - by + 40, x: 40, rotation: 96, svgOrigin: `${bx} ${by}`, duration: 0.55, ease: "power2.in" }, crk + 0.18);
-      tl.to(G.brk, { y: 1235 - by + 10, rotation: 90, svgOrigin: `${bx} ${by}`, duration: 0.2, ease: "power2.out" }, crk + 0.73);
-      tl.to(G.brk, { y: 1235 - by + 40, rotation: 93, svgOrigin: `${bx} ${by}`, duration: 0.18, ease: "bounce.out" }, crk + 0.93);
+      const [bx, by] = G.brkBase, crk = ba + 0.12;
+      tl.to(G.brk, { rotation: 8, svgOrigin: `${bx} ${by}`, duration: 0.04, yoyo: true, repeat: 1 }, crk - 0.1);
+      tl.to(G.brk, { rotation: 30, svgOrigin: `${bx} ${by}`, duration: 0.12, ease: "power2.in" }, crk);
+      tl.to(G.brk, { y: 1235 - by + 40, x: 40, rotation: 96, svgOrigin: `${bx} ${by}`, duration: 0.38, ease: "power2.in" }, crk + 0.12);
+      tl.to(G.brk, { y: 1235 - by + 20, rotation: 92, svgOrigin: `${bx} ${by}`, duration: 0.12, yoyo: true, repeat: 1, ease: "power2.out" }, crk + 0.5);
       tl.to(G.tree, { rotation: -1.5, svgOrigin: "600 1210", duration: 0.12, yoyo: true, repeat: 3, ease: "sine.inOut" }, crk);''' + OUT)
 
 # ---------- s06 Die Vision: goldene Linien zeichnen Tempel, Gärten, Pilgerstraße; dann Weltreligion ----------

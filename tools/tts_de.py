@@ -192,6 +192,124 @@ def synth_gemini(texts, voice, scales, style=None, line_styles=None, cache_dir=N
     return out
 
 
+def gemini_request(prompt, voice, model, cache_file):
+    """Ein Gemini-TTS-Aufruf mit Cache und Wartezeit bei Rate-Limit. Rückgabe (audio, sr)."""
+    import base64
+    import time
+    import urllib.request
+    if cache_file and cache_file.exists():
+        return sf.read(cache_file, dtype="float32")
+    key = os.environ.get("GEMINI_API_KEY")
+    if not key:
+        raise SystemExit("GEMINI_API_KEY fehlt (in den Umgebungs-Einstellungen hinterlegen).")
+    body = {"contents": [{"parts": [{"text": prompt}]}],
+            "generationConfig": {"responseModalities": ["AUDIO"], "speechConfig": {"voiceConfig": {"prebuiltVoiceConfig": {"voiceName": voice}}}}}
+    for wait in (0, 30, 60, 90, 120, 180, 240, 300):
+        time.sleep(wait)
+        try:
+            req = urllib.request.Request(f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={key}",
+                                         data=json.dumps(body).encode(), headers={"Content-Type": "application/json"})
+            with urllib.request.urlopen(req, timeout=300) as r:
+                d = json.loads(r.read())["candidates"][0]["content"]["parts"][0]["inlineData"]
+            break
+        except urllib.error.HTTPError as e:
+            if e.code not in (429, 500, 503):
+                raise
+            print(f"  HTTP {e.code}, warte …", flush=True)
+    else:
+        raise SystemExit("Gemini-Rate-Limit: später erneut starten.")
+    a = np.frombuffer(base64.b64decode(d["data"]), dtype="<i2").astype("float32") / 32768
+    sr = int(d["mimeType"].split("rate=")[1].split(";")[0]) if "rate=" in d["mimeType"] else 24000
+    if cache_file:
+        cache_file.parent.mkdir(parents=True, exist_ok=True)
+        sf.write(cache_file, a, sr)
+    return a, sr
+
+
+def gemini_line_starts(audio, sr, texts, cache_file, model="gemini-3.1-pro-preview"):
+    """Lässt Gemini die Aufnahme hören und die Startzeit jeder Zeile schätzen (Sekunden). Ergebnis wird gecacht."""
+    import base64
+    import io
+    import time
+    import urllib.request
+    if cache_file.exists():
+        return json.loads(cache_file.read_text())
+    key = os.environ["GEMINI_API_KEY"]
+    buf = io.BytesIO(); sf.write(buf, audio, sr, format="WAV", subtype="PCM_16")
+    q = ("Hier ist eine deutsche Sprachaufnahme. Sie enthält nacheinander genau diese Zeilen:\n"
+         + "\n".join(f"{i + 1}. {t}" for i, t in enumerate(texts))
+         + "\nGib für jede Zeile die Startzeit des ersten Wortes in Sekunden (mit zwei Nachkommastellen) als JSON-Liste von Zahlen zurück, sonst nichts.")
+    body = {"contents": [{"parts": [{"inlineData": {"mimeType": "audio/wav", "data": base64.b64encode(buf.getvalue()).decode()}}, {"text": q}]}],
+            "generationConfig": {"responseMimeType": "application/json", "temperature": 0}}
+    for wait in (0, 30, 60, 120):
+        time.sleep(wait)
+        try:
+            req = urllib.request.Request(f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={key}",
+                                         data=json.dumps(body).encode(), headers={"Content-Type": "application/json"})
+            r = json.loads(urllib.request.urlopen(req, timeout=300).read())
+            starts = [float(x) for x in json.loads(r["candidates"][0]["content"]["parts"][-1]["text"])]
+            if len(starts) == len(texts):
+                cache_file.write_text(json.dumps(starts))
+                return starts
+        except Exception as e:  # noqa: BLE001
+            print(f"  Zeitstempel-Abfrage: {e}", flush=True)
+    return None
+
+
+def synth_gemini_single(lines_words, texts, voice, scales, style, cache_dir, model):
+    """Ganzer Text in EINER Gemini-Aufnahme (gleichbleibende Stimme), danach an Pausen in Zeilen geschnitten.
+    Schnittpunkte: dynamische Programmierung über die Pausen – nahe an der erwarteten Position (Silbenanteil) und möglichst lang."""
+    import hashlib
+    prompt = (style or GEMINI_STYLE) + "\n" + "\n".join(texts)
+    h = hashlib.sha1(f"single|{model}|{voice}|{prompt}".encode()).hexdigest()[:16]
+    a, sr = gemini_request(prompt, voice, model, cache_dir / f"{h}.wav" if cache_dir else None)
+    starts = gemini_line_starts(a, sr, texts, cache_dir / f"{h}.starts.json") if cache_dir else None
+    a = resample(a.astype("float32"), sr)
+    T = len(a) / SR
+    P = pauses(a, min_len=0.07)
+    if starts:  # Zeilenanfang = Ende der passenden Pause nahe der Schätzung (lange Pausen bevorzugt)
+        cuts = []
+        for est in starts[1:]:
+            cand = [(abs(y - est) - 0.8 * (y - x), (x + y) / 2) for x, y in P if abs(y - est) < 1.2 and (not cuts or (x + y) / 2 > cuts[-1] + 0.3)]
+            cuts.append(min(cand)[1] if cand else est - 0.05)
+    else:  # Notlösung: dynamische Programmierung über die Pausen nach Silbenanteil
+        syl = [sum(syllables(w["spoken"]) for w in ws) for ws in lines_words]
+        cum = np.cumsum(syl)[:-1] / sum(syl)
+        mids = [(x + y) / 2 for x, y in P]
+        lens = [y - x for x, y in P]
+        N, M = len(cum), len(P)
+        sig = max(0.6, 0.04 * T)
+        cost = lambda k, j: ((mids[j] - cum[k] * T) / sig) ** 2 - 3.0 * np.log(lens[j] / 0.07 + 1)
+        INF = 1e18
+        D = np.full((N, M), INF); B = np.zeros((N, M), dtype=int)
+        for j in range(M):
+            D[0, j] = cost(0, j)
+        for k in range(1, N):
+            best, bj = INF, -1
+            for j in range(M):
+                if j > 0 and D[k - 1, j - 1] < best:
+                    best, bj = D[k - 1, j - 1], j - 1
+                if bj >= 0:
+                    D[k, j] = best + cost(k, j); B[k, j] = bj
+        j = int(np.argmin(D[N - 1])); cuts = [j]
+        for k in range(N - 1, 0, -1):
+            j = int(B[k, j]); cuts.append(j)
+        cuts = [mids[j] for j in reversed(cuts)]
+    edges = [0.0] + cuts + [T]
+    out = []
+    for i, ls in enumerate(scales):
+        seg = a[int(edges[i] * SR): int(edges[i + 1] * SR)]
+        if abs(ls - 1.0) > 0.01:
+            with tempfile.TemporaryDirectory() as dd:
+                src, dst = Path(dd) / "a.wav", Path(dd) / "b.wav"
+                sf.write(src, seg, SR)
+                subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", src, "-filter:a", f"atempo={1 / ls:.4f}", dst], check=True)
+                seg, _ = sf.read(dst, dtype="float32")
+        out.append((seg, SR))
+        print(f"  Zeile {i + 1}: {edges[i]:6.2f}–{edges[i + 1]:6.2f} s  {len(texts[i].split()) / max(0.1, edges[i + 1] - edges[i]):.1f} Wörter/s  {texts[i][:40]}")
+    return out
+
+
 def resample(audio, sr):
     if sr == SR:
         return audio
@@ -331,7 +449,10 @@ def main():
 
     texts = [l["spoken"] for l in lines]
     scales = [l["scale"] for l in lines]
-    if args.backend == "gemini":  # --voice z. B. Fenrir/Puck; Stil aus script.json "style", pro Zeile "style"
+    if args.backend == "gemini" and script.get("tts_single"):  # eine Aufnahme für alles = eine Stimme
+        raw = synth_gemini_single([l["words"] for l in lines], texts, args.voice, scales, script.get("style"),
+                                  project / "assets" / "voice" / "cache", script.get("tts_model", "gemini-2.5-pro-preview-tts"))
+    elif args.backend == "gemini":  # --voice z. B. Fenrir/Puck; Stil aus script.json "style", pro Zeile "style"
         raw = synth_gemini(texts, args.voice, scales, script.get("style"),
                            [ln.get("style") for sc in script["scenes"] for ln in sc["lines"]], project / "assets" / "voice" / "cache",
                            script.get("tts_model", "gemini-2.5-pro-preview-tts"))

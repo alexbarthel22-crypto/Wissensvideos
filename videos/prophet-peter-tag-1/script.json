@@ -1,8 +1,8 @@
 {
  "title": "Prophet Peter – Tag 1: Ich gründe eine Sekte",
- "voice": "Gemini-TTS (gemini-2.5-pro-preview-tts, Stimme Fenrir) mit Regieanweisung: euphorischer Fernsehprediger; --speed 1.1 (atempo); Stil pro Zeile in 'style'",
+ "voice": "Gemini-TTS (gemini-2.5-pro-preview-tts, Fenrir), ganzer Text in EINER Aufnahme (tts_single), danach an Pausen geschnitten; Regie in 'style'",
  "notes": "Serie 'Prophet Peter' (Ich-Perspektive). Figur: tools/characters/prophet-peter.js. Frame 0: lautester Glockenschlag aus assets/sfx/src/church-bell-5993.mp3 (tools/make_church.py --bell). Szene 1 + Name in Szene 2 ohne Untertitel (Text steht groß im Bild). Ab v3: Szenen-Vordergrund +110 px tiefer (zentrierter), Kapitel-Marke tiefer; Engelschor = hochgeladene Datei (assets/sfx/src/heavenly-choir-322708.mp3, 0–2,6 s).",
- "lead_in": 0.45,
+ "lead_in": 0.0,
  "hud": "pop",
  "safe": true,
  "scenes": [
@@ -13,9 +13,7 @@
     {
      "id": "L1",
      "text": "Tag eins!! / Ich gründe / eine Sekte!!",
-     "speed": 1.18,
-     "nocap": true,
-     "style": "jubelnd, triumphierend, fast schreiend vor Freude"
+     "nocap": true
     }
    ],
    "sfx": [
@@ -48,14 +46,11 @@
     {
      "id": "L3",
      "text": "Ich bin / Prophet Peter!",
-     "nocap": true,
-     "speed": 0.92,
-     "style": "feierlich, stolz und strahlend, den Namen Prophet Peter genüsslich und elegant betonen"
+     "nocap": true
     },
     {
      "id": "L4",
-     "text": "Gründer! / Erleuchteter! / Und ab heute / euer *p:Anführer!",
-     "style": "begeistert steigernd, jedes Wort größer"
+     "text": "Gründer! / Erleuchteter! / Und ab heute / euer *p:Anführer!"
     }
    ],
    "sfx": [
@@ -92,13 +87,11 @@
    "lines": [
     {
      "id": "L7",
-     "text": "Mein Onkel / hat mir / ein *y:Grundstück / vererbt!",
-     "style": "aufgeregt, erzählend"
+     "text": "Mein Onkel / hat mir / ein *y:Grundstück / vererbt!"
     },
     {
      "id": "L8",
-     "text": "Hier entsteht / unser *p:Heiligtum!",
-     "style": "ehrfürchtig und überwältigt"
+     "text": "Hier entsteht / unser *p:Heiligtum!"
     }
    ],
    "sfx": [
@@ -116,24 +109,20 @@
   },
   {
    "id": "s05",
-   "tag": "DIE WAHRHEIT",
+   "tag": "DAS GRUNDSTÜCK",
    "lines": [
     {
      "id": "L9",
-     "text": "Und jetzt / die *r:Wahrheit: / *y:zwei *y:Hektar / *r:Wildnis.",
-     "style": "dramatisch, Spannung aufbauend"
+     "text": "Und jetzt / die *r:Wahrheit: / *y:zwei *y:Hektar / *r:Wildnis."
     },
     {
      "id": "L9b",
      "text": "Eine *r:Ziege / wohnt hier schon. / Und es gibt / genau / *r:einen *r:Stuhl.",
-     "pause": 0.1,
-     "style": "komisch ernüchtert, aber mit Humor"
+     "pause": 0.1
     },
     {
      "id": "L10",
-     "text": "Unter einem / *r:kargen *r:Baum.",
-     "speed": 0.95,
-     "style": "trocken-komisch"
+     "text": "Unter einem / *r:kargen *r:Baum."
     }
    ],
    "sfx": [
@@ -164,12 +153,12 @@
     },
     {
      "name": "crack",
-     "at": "L10:Baum+0.35",
+     "at": "L10:Baum+0.12",
      "volume": 0.7
     },
     {
      "name": "impact-bass-2",
-     "at": "L10:Baum+1.0",
+     "at": "L10:Baum+0.6",
      "volume": 0.35
     }
    ],
@@ -182,21 +171,14 @@
     {
      "id": "L11",
      "text": "Aber ich sehe / mehr! / Einen *y:Tempel! / *g:Gärten! / Eine *y:Pilgerstraße!",
-     "pause": 1.0,
-     "style": "visionär, ekstatisch, immer euphorischer werdend"
+     "pause": 0.25
     },
     {
      "id": "L12",
-     "text": "Und am Ende: / eine *p:Weltreligion!",
-     "style": "ekstatisch, triumphal, auf dem Höhepunkt"
+     "text": "Und am Ende: / eine *p:Weltreligion!"
     }
    ],
    "sfx": [
-    {
-     "name": "shimmer",
-     "at": "L11:mehr",
-     "volume": 0.35
-    },
     {
      "name": "ping",
      "at": "L11:Tempel",
@@ -214,8 +196,8 @@
     },
     {
      "name": "choir-intro",
-     "at": "L12:eine-0.3",
-     "volume": 0.4
+     "at": "L11:sehe-0.3",
+     "volume": 0.7
     },
     {
      "name": "impact-bass-2",
@@ -230,8 +212,7 @@
    "lines": [
     {
      "id": "L13",
-     "text": "Dafür gilt / ein *y:heiliges *y:Gesetz: / Jeder neue *p:Follower / bringt *y:einen *y:Euro / in die Kollekte!",
-     "style": "feierlich verkündend wie ein heiliges Gebot"
+     "text": "Dafür gilt / ein *y:heiliges *y:Gesetz: / Jeder neue *p:Follower / bringt *y:einen *y:Euro / in die Kollekte!"
     }
    ],
    "sfx": [
@@ -263,8 +244,7 @@
    "lines": [
     {
      "id": "L15",
-     "text": "Sei von *g:Anfang an dabei / und sichere dir / einen *y:hohen *y:Rang / in meiner *p:Sekte!",
-     "style": "eindringlich, verlockend, mitreißend"
+     "text": "Sei von *g:Anfang an dabei / und sichere dir / einen *y:hohen *y:Rang / in meiner *p:Sekte!"
     }
    ],
    "sfx": [
@@ -306,8 +286,7 @@
    "lines": [
     {
      "id": "L17",
-     "text": "Nur eins / fehlt noch: / ein *p:Name! / Wie soll / unsere Sekte *p:heißen?",
-     "style": "aufgeregt und neugierig"
+     "text": "Nur eins / fehlt noch: / ein *p:Name! / Wie soll / unsere Sekte *p:heißen?"
     }
    ],
    "sfx": [
@@ -330,14 +309,12 @@
    "lines": [
     {
      "id": "L18",
-     "text": "Schreib's / in die *y:Kommentare / und sprich mich an / mit *y:Prophet *y:Peter!",
-     "style": "begeistert auffordernd"
+     "text": "Schreib's / in die *y:Kommentare / und sprich mich an / mit *y:Prophet *y:Peter!"
     },
     {
      "id": "L19",
      "text": "Und: Was kaufen wir / morgen / von der *y:ersten *y:Kollekte? / Der *g:Top-Kommentar / entscheidet!",
-     "pause": 0.1,
-     "style": "spannungsgeladen und mitreißend, Schluss mit Nachdruck"
+     "pause": 0.1
     }
    ],
    "sfx": [
@@ -366,5 +343,6 @@
  ],
  "shift": 110,
  "tts_model": "gemini-2.5-pro-preview-tts",
- "style": "Lies den folgenden deutschen Text als extrem charismatischer, euphorischer Fernsehprediger und Sektengründer vor: mit maximaler Energie, überschäumender Begeisterung, großen Emotionen, lauter, mitreißender Stimme und dramatischen Betonungen. Sprich sehr schnell, atemlos und ohne Pausen zwischen den Wörtern, wie ein aufgeputschter Showmaster. Sprich nur den Text, nichts anderes. Text: "
+ "style": "Lies den folgenden deutschen Text als extrem charismatischer, euphorischer Fernsehprediger und Sektengründer vor – durchgehend mit derselben Stimme, maximaler Energie, Begeisterung und Emotion, laut und mitreißend. Sprich schnell und knackig, zieh keine Wörter und keine Sätze in die Länge, keine Kunstpausen. Nach jeder Zeile nur eine kurze Atempause. Sprich nur den Text, nichts anderes. Text:",
+ "tts_single": true
 }

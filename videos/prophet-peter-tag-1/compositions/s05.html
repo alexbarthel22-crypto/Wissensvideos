@@ -32,8 +32,8 @@
     #s05-goat { left: 300px; top: 830px; font-size: 44px; border-color: #ff4fb0; box-shadow: 0 0 34px rgba(255,79,176,.5); }
     #s05-sad { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 560px; font-size: 54px; border-color: #ff3b55; box-shadow: 0 0 34px rgba(255,59,85,.5); }
   </style>
-  <div id="root" data-composition-id="s05" data-start="0" data-duration="10.390" data-width="1080" data-height="1920">
-    <div id="s05-stage" class="clip stage" data-start="0" data-duration="10.390" data-track-index="0">
+  <div id="root" data-composition-id="s05" data-start="0" data-duration="8.080" data-width="1080" data-height="1920">
+    <div id="s05-stage" class="clip stage" data-start="0" data-duration="8.080" data-track-index="0">
       <svg id="s05-bg" class="full" viewBox="0 0 1080 1920"></svg>
       <div id="s05-fg" class="full fgwrap">
       <svg id="s05-svg" class="full" viewBox="0 0 1080 1920"></svg>
@@ -47,7 +47,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 10.39, "L9": [0.2, 3.44], "L9.words": [["und", 0.2, 0.463], ["jetzt", 0.463, 0.744], ["die", 0.744, 1.006], ["wahrheit", 1.006, 1.55], ["zwei", 1.8, 2.135], ["hektar", 2.135, 2.782], ["wildnis", 2.782, 3.44]], "L9b": [3.76, 7.18], "L9b.words": [["eine", 3.76, 4.404], ["ziege", 4.404, 5.059], ["wohnt", 5.059, 5.417], ["hier", 5.417, 5.762], ["schon", 5.762, 6.12], ["und", 6.23, 6.349], ["es", 6.349, 6.463], ["gibt", 6.463, 6.586], ["genau", 6.586, 6.82], ["einen", 6.82, 7.053], ["stuhl", 7.053, 7.18]], "L10": [7.4, 9.21], "L10.words": [["unter", 7.4, 7.911], ["einem", 7.911, 8.421], ["kargen", 8.421, 8.941], ["baum", 8.941, 9.21]]};
+      const C = {"__dur": 8.08, "L9": [0.2, 2.77], "L9.words": [["und", 0.2, 0.398], ["jetzt", 0.398, 0.611], ["die", 0.611, 0.809], ["wahrheit", 0.809, 1.22], ["zwei", 1.4, 1.68], ["hektar", 1.68, 2.22], ["wildnis", 2.22, 2.77]], "L9b": [3.09, 6.2], "L9b.words": [["eine", 3.09, 3.415], ["ziege", 3.415, 3.745], ["wohnt", 3.745, 3.925], ["hier", 3.925, 4.1], ["schon", 4.1, 4.28], ["und", 4.46, 4.678], ["es", 4.678, 4.887], ["gibt", 4.887, 5.112], ["genau", 5.112, 5.54], ["einen", 5.54, 5.967], ["stuhl", 5.967, 6.2]], "L10": [6.42, 7.65], "L10.words": [["unter", 6.42, 6.767], ["einem", 6.767, 7.114], ["kargen", 7.114, 7.467], ["baum", 7.467, 7.65]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -499,12 +499,11 @@
       tl.to("#s05-box2", { x: 10, duration: 0.04, repeat: 5, yoyo: true }, st + 0.25);
       tl.to(tw, { x: 1200, rotation: 720, duration: 2.2, ease: "none" }, l10 - 0.1);
       // Ast bricht demonstrativ ab: knackt, knickt, fällt zu Boden, prallt ab
-      const [bx, by] = G.brkBase, crk = ba + 0.35;
-      tl.to(G.brk, { rotation: 8, svgOrigin: `${bx} ${by}`, duration: 0.05, yoyo: true, repeat: 3 }, crk - 0.25);
-      tl.to(G.brk, { rotation: 32, svgOrigin: `${bx} ${by}`, duration: 0.18, ease: "power2.in" }, crk);
-      tl.to(G.brk, { y: 1235 - by + 40, x: 40, rotation: 96, svgOrigin: `${bx} ${by}`, duration: 0.55, ease: "power2.in" }, crk + 0.18);
-      tl.to(G.brk, { y: 1235 - by + 10, rotation: 90, svgOrigin: `${bx} ${by}`, duration: 0.2, ease: "power2.out" }, crk + 0.73);
-      tl.to(G.brk, { y: 1235 - by + 40, rotation: 93, svgOrigin: `${bx} ${by}`, duration: 0.18, ease: "bounce.out" }, crk + 0.93);
+      const [bx, by] = G.brkBase, crk = ba + 0.12;
+      tl.to(G.brk, { rotation: 8, svgOrigin: `${bx} ${by}`, duration: 0.04, yoyo: true, repeat: 1 }, crk - 0.1);
+      tl.to(G.brk, { rotation: 30, svgOrigin: `${bx} ${by}`, duration: 0.12, ease: "power2.in" }, crk);
+      tl.to(G.brk, { y: 1235 - by + 40, x: 40, rotation: 96, svgOrigin: `${bx} ${by}`, duration: 0.38, ease: "power2.in" }, crk + 0.12);
+      tl.to(G.brk, { y: 1235 - by + 20, rotation: 92, svgOrigin: `${bx} ${by}`, duration: 0.12, yoyo: true, repeat: 1, ease: "power2.out" }, crk + 0.5);
       tl.to(G.tree, { rotation: -1.5, svgOrigin: "600 1210", duration: 0.12, yoyo: true, repeat: 3, ease: "sine.inOut" }, crk);
       tl.to("#s05-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
       window.__timelines["s05"] = tl;
