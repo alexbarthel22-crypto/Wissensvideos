@@ -27,6 +27,6 @@ Sprecht mich bitte mit „Prophet Peter“ an 🙏 Wie soll die Sekte heißen �
 - **5 Hashtags, gemischt:** `#sekte` (Thema, gesucht), `#prophetpeter` (eigene Serien-Marke, macht alle Folgen auffindbar), `#comedy` (Nische/Genre), `#storytime` (Serien-/Erzählformat, hohe Watchtime), `#fürdich` (deutschsprachige Breite).
 - **Serie:** „Tag 1“ im Titel verspricht Fortsetzung → Folgen-Anreiz. Tag 2 zeitnah (24–48 h) posten und die Top-Kommentare darin aufgreifen.
 - **Posten:** werktags ca. 18–21 Uhr oder am Wochenende vormittags; in der ersten Stunde auf Kommentare antworten (gern als Prophet Peter).
-- **Ton:** In TikTok optional einen leisen Trend-Sound (10–15 %) zusätzlich unterlegen – die Musik im Video ist schon dezent eingemischt.
+- **Ton:** In TikTok optional einen leisen Trend-Sound (10–15 %) zusätzlich unterlegen.
 
 _Hinweis: Satire. Peter ist eine erfundene Figur._

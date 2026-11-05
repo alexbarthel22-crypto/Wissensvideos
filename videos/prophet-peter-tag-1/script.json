@@ -37,11 +37,6 @@
      "name": "impact-bass-1",
      "at": "L1:Sekte",
      "volume": 0.55
-    },
-    {
-     "name": "divine-pad",
-     "at": "s01+0.0",
-     "volume": 0.3
     }
    ]
   },
@@ -369,6 +364,5 @@
  "shift": 110,
  "tts_model": "gemini-2.5-pro-preview-tts",
  "style": "Lies den folgenden deutschen Text als extrem charismatischer, euphorischer Fernsehprediger und Sektengründer vor – durchgehend mit derselben warmen, kraftvollen Stimme, voller Energie, Begeisterung und Emotion, mitreißend. Sprich schnell, flüssig und zusammenhängend, die Wörter weich verbunden statt abgehackt, ohne Kunstpausen und ohne etwas in die Länge zu ziehen; die ersten Zeilen besonders schnell und überschwänglich. Sprich das Wort „Sekte“ deutlich und korrekt aus: SEK-te, mit kurzem e und betontem „Sek“. Nach jeder Zeile nur eine sehr kurze Atempause. Sprich nur den Text, nichts anderes. Text:",
- "tts_single": true,
- "music": "divine-pad.wav: tools/make_pad.py <out> <Gesamtdauer> --duck assets/voice/narration.wav (nach jeder Neuvertonung neu erzeugen)"
+ "tts_single": true
 }
