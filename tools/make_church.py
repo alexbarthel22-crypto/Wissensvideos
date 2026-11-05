@@ -3,7 +3,7 @@
 
   python3 tools/make_church.py videos/<slug>/assets/sfx
 schreibt holy-sting.wav (Glockenschlag + Orgel-Akkord), bell-hit.wav (kurze Glocke), coin.wav (Münze im Klingelbeutel),
-angel-choir.wav (Engelschor „Aaah“, D-Dur), goat.wav (Ziege „Mäh-äh-äh“), creak.wav (rostiges Tor), shimmer.wav (Glitzer-Arpeggio).
+angel-choir.wav (Engelschor „Aaah“, D-Dur), goat.wav (Ziege „Mäh-äh-äh“), sad-trombone.wav (traurige Posaune), record-scratch.wav (Plattenkratzer), creak.wav (rostiges Tor), shimmer.wav (Glitzer-Arpeggio).
 Optional: --choir <datei.mp3> -> choir-intro.wav (erste 2,6 s, ausgeblendet); --bell <datei.mp3> schneidet den lautesten Glockenschlag heraus -> church-bell.wav (für Frame 0).
 """
 import sys
@@ -128,6 +128,32 @@ def crack():
     return y / np.abs(y).max()
 
 
+def sad_trombone():
+    """„Wah-wah-wah-waaah“: vier absteigende Posaunentöne, der letzte mit Vibrato."""
+    out = []
+    for f, d, vib in [(233.08, 0.38, 0), (220.0, 0.38, 0), (207.65, 0.38, 0), (196.0, 1.25, 1)]:
+        t = np.arange(int(SR * d)) / SR
+        f0 = f * (1 + (0.035 * np.sin(2 * np.pi * 6 * t) * np.minimum(1, t / 0.3) if vib else 0)) * (1 - 0.02 * t / d)
+        y = formant_voice(f0, t, [(500, 180, 1.0), (1100, 260, 0.7), (2400, 400, 0.3)], nh=30)
+        env = np.minimum(1, t / 0.04) * np.clip((d - t) / 0.08, 0, 1) * (0.75 + 0.25 * np.minimum(1, t / 0.12))
+        if vib:
+            env *= np.clip((d - t) / 0.5, 0, 1) ** 0.5
+        out.append(y * env)
+    y = np.concatenate(out)
+    return y / np.abs(y).max()
+
+
+def record_scratch():
+    """Plattenkratzer: gefiltertes Rauschen mit schneller Tonhöhen-Kurve vor und zurück."""
+    dur = 0.45; n = int(SR * dur); t = np.arange(n) / SR
+    rng = np.random.default_rng(8)
+    sweep = 1200 + 2600 * np.abs(np.sin(2 * np.pi * 2.6 * t))
+    ph = 2 * np.pi * np.cumsum(sweep) / SR
+    y = (0.6 * np.sin(ph) + 0.4 * np.sin(2.01 * ph)) * (0.5 + 0.5 * rng.standard_normal(n).clip(-2, 2) / 2)
+    y *= np.minimum(1, t / 0.01) * np.clip((dur - t) / 0.08, 0, 1)
+    return y / np.abs(y).max()
+
+
 def clip(path, t0, t1, fade=0.4):
     import subprocess, tempfile
     with tempfile.TemporaryDirectory() as d:
@@ -165,7 +191,7 @@ def main():
         print(f"church-bell.wav: lautester Schlag ab {t0:.2f} s der Quelle")
     if "--choir" in sys.argv:  # hochgeladener Engelschor: erster Anschwellbogen (0–2,6 s)
         sf.write(out / "choir-intro.wav", clip(sys.argv[sys.argv.index("--choir") + 1], 0.0, 2.6), SR)
-    for name, y, v in [("crack", crack(), 0.9), ("angel-choir", choir(), 0.85), ("goat", goat(), 0.8), ("creak", creak(), 0.7), ("shimmer", shimmer(), 0.7)]:
+    for name, y, v in [("sad-trombone", sad_trombone(), 0.85), ("record-scratch", record_scratch(), 0.7), ("crack", crack(), 0.9), ("angel-choir", choir(), 0.85), ("goat", goat(), 0.8), ("creak", creak(), 0.7), ("shimmer", shimmer(), 0.7)]:
         y = fade_out(y * v)
         sf.write(out / f"{name}.wav", np.stack([y, y], 1), SR)
     dur = 2.4

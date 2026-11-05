@@ -228,10 +228,15 @@ BG + '\n' + SVG + '''
 # ---------- s06 Die Vision: goldene Linien zeichnen Tempel, Gärten, Pilgerstraße; dann Weltreligion ----------
 S['s06'] = ('''    #s06-box { left: 190px; width: 700px; opacity: 0; }
     #s06-box .num { font-size: 52px; }
-    #s06-world { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 980px; font-size: 76px; border-color: #ff4fb0; box-shadow: 0 0 40px rgba(255,79,176,.6); }''',
+    #s06-world { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 980px; font-size: 76px; border-color: #ff4fb0; box-shadow: 0 0 40px rgba(255,79,176,.6); }
+    #s06-zero { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 600px; padding: 10px 36px; border: 10px solid #ff3b55; border-radius: 22px; background: rgba(40,4,14,.9);
+      color: #ff3b55; font-family: "Inter", sans-serif; font-weight: 900; font-size: 104px; line-height: 1.05; text-align: center; white-space: nowrap; opacity: 0;
+      text-shadow: 0 0 30px rgba(255,59,85,.7); box-shadow: 0 0 60px rgba(255,59,85,.6); transform: rotate(-6deg); }
+    #s06-zero small { display: block; font-family: "Space Mono", monospace; font-weight: 700; font-size: 32px; letter-spacing: .16em; color: #ffb3bf; }''',
 BG + '\n' + SVG + '''
       <div id="s06-box" class="cbox p"><div class="lab">ANHÄNGER</div><div class="num" id="s06-n">1</div></div>
       <div id="s06-world" class="lbl"><small>ZIEL</small>WELTRELIGION</div>
+      <div id="s06-zero" class="abs"><small>AKTUELLER STAND</small>0 ANHÄNGER</div>
 ''' + FX,
 '''      const G = grundstueck(bg, "s06g", { mood: "dusk", goatX: 880, goatS: 0.5 }); gsap.set(G.rays, { opacity: 0.4 });
       floatDust(tl, G, C.__dur);
@@ -268,7 +273,19 @@ BG + '\n' + SVG + '''
       tl.fromTo(globe, { opacity: 0, scale: 0.3, svgOrigin: "540 720" }, { opacity: 1, scale: 1, duration: 0.5, ease: "back.out(1.8)" }, l12);
       tl.to(pins, { opacity: 1, duration: 0.05, stagger: 0.035 }, l12 + 0.3);
       tl.fromTo("#s06-box", { opacity: 0, y: -20 }, { opacity: 1, y: 0, duration: 0.3 }, l12 + 0.1);
-      count(tl, "#s06-n", 1, 4870000, l12 + 0.3, C.__dur - l12 - 0.3, "", "", "power3.in");
+      // Zähler rast bis in die Millionen … und stürzt bei „null Anhänger“ auf 0 ab (ein Tween, damit Vor-/Zurückspulen stimmt)
+      const zs = at("L12b", "null"), t0 = l12 + 0.3, t1 = zs + 0.25, pc = (zs - 0.05 - t0) / (t1 - t0), nEl = document.querySelector("#s06-n"), cnt = { p: 0 };
+      nEl.textContent = "1";
+      tl.to(cnt, { p: 1, duration: t1 - t0, ease: "none", onUpdate: () => { const p = cnt.p;
+        const v = p <= pc ? 1 + 4870000 * Math.pow(p / pc, 3) : 4870000 * Math.pow(1 - (p - pc) / (1 - pc), 4); nEl.textContent = fmt(v); } }, t0);
+      const l12b = line("L12b")[0];
+      tl.to("#s06-box", { borderColor: "#ff3b55", boxShadow: "0 0 50px rgba(255,59,85,.8)", duration: 0.15 }, zs);
+      tl.to("#s06-box", { x: 12, duration: 0.04, repeat: 7, yoyo: true }, zs + 0.2);
+      tl.to(pins, { opacity: 0, duration: 0.05, stagger: { each: 0.01, from: "random" } }, l12b);
+      tl.to(globe, { filter: "grayscale(1) brightness(.6)", duration: 0.4 }, l12b);
+      tl.to("#s06-world", { opacity: 0.25, filter: "grayscale(1)", duration: 0.3 }, l12b);
+      tl.fromTo("#s06-zero", { opacity: 0, scale: 2.6 }, { opacity: 1, scale: 1, duration: 0.25, ease: "power4.in" }, zs - 0.05);
+      tl.to("#s06-zero", { x: 10, duration: 0.04, repeat: 5, yoyo: true }, zs + 0.22);
       tl.fromTo("#s06-world", { opacity: 0, scale: 1.7 }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(2.4)" }, wr);''' + OUT)
 
 # ---------- s07 Die Kollekte: 1 Follower = 1 Euro = 1 Ziegelstein ----------

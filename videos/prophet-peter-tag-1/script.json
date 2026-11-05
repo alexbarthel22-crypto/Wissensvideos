@@ -186,6 +186,11 @@
     {
      "id": "L12",
      "text": "Und am Ende: / eine *p:Weltreligion!"
+    },
+    {
+     "id": "L12b",
+     "text": "Aktueller Stand: / *r:null *r:Anhänger.",
+     "pause": 0.1
     }
    ],
    "sfx": [
@@ -213,6 +218,16 @@
      "name": "impact-bass-2",
      "at": "L12:Weltreligion",
      "volume": 0.45
+    },
+    {
+     "name": "record-scratch",
+     "at": "L12b:Aktueller-0.15",
+     "volume": 0.5
+    },
+    {
+     "name": "sad-trombone",
+     "at": "L12b:null+0.1",
+     "volume": 0.55
     }
    ]
   },
