@@ -2,7 +2,9 @@
 """Synthetische Kirchen-Sounds für die Prophet-Peter-Serie (keine Downloads nötig).
 
   python3 tools/make_church.py videos/<slug>/assets/sfx
-schreibt holy-sting.wav (Glockenschlag + Orgel-Akkord, Frame-0-Hook), bell-hit.wav (kurze Glocke), coin.wav (Münze im Klingelbeutel).
+schreibt holy-sting.wav (Glockenschlag + Orgel-Akkord), bell-hit.wav (kurze Glocke), coin.wav (Münze im Klingelbeutel),
+angel-choir.wav (Engelschor „Aaah“, D-Dur), goat.wav (Ziege „Mäh-äh-äh“), creak.wav (rostiges Tor), shimmer.wav (Glitzer-Arpeggio).
+Optional: --bell <datei.mp3> schneidet den lautesten Glockenschlag heraus -> church-bell.wav (für Frame 0).
 """
 import sys
 from pathlib import Path
@@ -44,8 +46,103 @@ def fade_out(y, sec=0.08):
     n = int(SR * sec); y[-n:] *= np.linspace(1, 0, n); return y
 
 
+def formant_voice(f0, t, formants, nh=40):
+    """Harmonische Quelle, Amplituden nach Formant-Hüllkurve (Quelle-Filter im Frequenzbereich)."""
+    ph = 2 * np.pi * np.cumsum(f0) / SR
+    y = np.zeros_like(t)
+    for h in range(1, nh + 1):
+        fh = h * np.median(f0)
+        if fh > 9000:
+            break
+        a = sum(g * np.exp(-((fh - F) / B) ** 2) for F, B, g in formants) + 0.02
+        y += a / h ** 0.3 * np.sin(h * ph)
+    return y
+
+
+def reverb(y, sec=1.6, wet=0.35, seed=4):
+    r = np.random.default_rng(seed)
+    ir = r.standard_normal(int(SR * sec)) * np.exp(-np.arange(int(SR * sec)) / (SR * sec / 5))
+    w = np.convolve(y, ir)
+    d = np.concatenate([y, np.zeros(len(w) - len(y))])
+    return d + wet * w / np.abs(w).max() * np.abs(y).max()
+
+
+def choir(dur=3.0):
+    t = np.arange(int(SR * dur)) / SR
+    A = [(800, 160, 1.0), (1150, 200, 0.6), (2900, 300, 0.25), (3300, 300, 0.12)]
+    rng = np.random.default_rng(9)
+    y = np.zeros_like(t)
+    for f in [293.66, 369.99, 440.0, 587.33, 739.99]:
+        for k in range(4):
+            det = 2 ** (rng.uniform(-12, 12) / 1200)
+            vib = 1 + 0.006 * np.sin(2 * np.pi * rng.uniform(4.8, 6.0) * t + rng.uniform(0, 6))
+            y += formant_voice(f * det * vib, t, A)
+    env = np.minimum(1, t / 0.45) * np.clip((dur - t) / 0.9, 0, 1)
+    y = reverb(y * env / np.abs(y).max(), 1.8, 0.5)
+    return y / np.abs(y).max()
+
+
+def goat():
+    dur = 1.0
+    t = np.arange(int(SR * dur)) / SR
+    f0 = 390 * (1 - 0.12 * t) * (1 + 0.05 * np.sin(2 * np.pi * 8.5 * t))
+    y = formant_voice(f0, t, [(650, 140, 1.0), (1800, 220, 0.7), (2600, 260, 0.35)], nh=25)
+    trem = 0.55 + 0.45 * np.sin(2 * np.pi * 8.5 * t) ** 2
+    env = np.minimum(1, t / 0.04) * np.clip((dur - t) / 0.25, 0, 1)
+    y = y * trem * env
+    return y / np.abs(y).max()
+
+
+def creak():
+    dur = 1.1
+    n = int(SR * dur); y = np.zeros(n); t = 0.0
+    rng = np.random.default_rng(2)
+    while t < dur - 0.02:
+        rate = 28 + 40 * (t / dur) + 10 * np.sin(t * 9)
+        i = int(t * SR); y[i] += rng.uniform(0.6, 1.0); t += 1 / rate
+    k = np.arange(int(SR * 0.03)) / SR
+    ir = sum(np.sin(2 * np.pi * f * k) * np.exp(-k / d) for f, d in [(820, .01), (1560, .006), (2400, .004)])
+    y = np.convolve(y, ir)[:n]
+    y *= np.minimum(1, np.arange(n) / (SR * 0.05)) * np.clip((dur - np.arange(n) / SR) / 0.2, 0, 1)
+    return y / np.abs(y).max()
+
+
+def shimmer():
+    out = np.zeros(int(SR * 1.6))
+    for i, f in enumerate([1318.5, 1567.98, 1975.5, 2637.0, 3136.0]):
+        b = bell(f * 2, 1.0) * 0.6
+        k = int(SR * i * 0.07); out[k:k + len(b)] += b[: len(out) - k]
+    return out / np.abs(out).max()
+
+
+def loudest_strike(path, dur=3.6):
+    import subprocess, tempfile
+    with tempfile.TemporaryDirectory() as d:
+        w = Path(d) / "b.wav"
+        subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(path), "-ac", "2", "-ar", str(SR), str(w)], check=True)
+        a, _ = sf.read(w)
+    m = np.abs(a).max(1)
+    peak = int(np.argmax(m))
+    # Anschlag = letzter Punkt vor dem Spitzenwert, an dem der Pegel unter 40 % lag
+    i = peak
+    while i > 0 and m[max(0, i - 200):i].max() > 0.4 * m[peak]:
+        i -= 200
+    i = max(0, i - int(SR * 0.06))  # Anschlag vollständig mitnehmen
+    a = a[i: i + int(SR * dur)].copy()
+    a[:64] *= np.linspace(0, 1, 64)[:, None]
+    n = int(SR * 1.2); a[-n:] *= np.linspace(1, 0, n)[:, None]
+    return a / np.abs(a).max() * 0.95, i / SR
+
+
 def main():
     out = Path(sys.argv[1]); out.mkdir(parents=True, exist_ok=True)
+    if "--bell" in sys.argv:
+        b, t0 = loudest_strike(sys.argv[sys.argv.index("--bell") + 1])
+        sf.write(out / "church-bell.wav", b, SR)
+        print(f"church-bell.wav: lautester Schlag ab {t0:.2f} s der Quelle")
+    for name, y, v in [("angel-choir", choir(), 0.85), ("goat", goat(), 0.8), ("creak", creak(), 0.7), ("shimmer", shimmer(), 0.7)]:
+        y = fade_out(y * v)
+        sf.write(out / f"{name}.wav", np.stack([y, y], 1), SR)
     dur = 2.4
     b = bell(196, dur)                                   # tiefe Glocke G3
     o = organ([146.83, 220.0, 293.66, 349.23], dur) * 0.55  # d-Moll, Orgel

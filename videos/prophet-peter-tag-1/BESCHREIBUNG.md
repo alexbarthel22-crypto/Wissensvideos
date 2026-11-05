@@ -2,7 +2,7 @@
 
 ## Hauptversion (empfohlen)
 
-Tag 1: Ich gründe eine Sekte 🙏 Bisher: ein Stuhl, ein Baum, null Anhänger. Platz 1 als Hohepriester ist noch frei… Wie soll die Sekte heißen? 👇 #prophetpeter #sekte #tag1 #comedy #fyp
+Tag 1: Ich gründe eine Sekte 🙏 Bisher: 5 Hektar Wildnis, eine Ziege und genau ein Stuhl. Der erste Anhänger wird Hohepriester… Wie soll die Sekte heißen? 👇 #prophetpeter #sekte #tag1 #comedy #fyp
 
 ## Alternative A (Frage zuerst)
 

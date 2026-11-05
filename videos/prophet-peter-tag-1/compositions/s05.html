@@ -26,13 +26,17 @@
     .lbl small { display: block; font-family: "Space Mono", monospace; font-weight: 700; font-size: 30px; letter-spacing: .16em; color: #f4d27a; }
     .plate { position: absolute; font-family: "Inter", sans-serif; font-weight: 900; color: #fff; text-align: center; }
     #s05-box { left: 240px; width: 600px; }
-    #s05-sad { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 430px; font-size: 54px; border-color: #ff3b55; box-shadow: 0 0 34px rgba(255,59,85,.5); }
+    #s05-box2 { left: 240px; width: 600px; top: 410px; }
+    #s05-goat { left: 300px; top: 830px; font-size: 44px; border-color: #ff4fb0; box-shadow: 0 0 34px rgba(255,79,176,.5); }
+    #s05-sad { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 560px; font-size: 54px; border-color: #ff3b55; box-shadow: 0 0 34px rgba(255,59,85,.5); }
   </style>
-  <div id="root" data-composition-id="s05" data-start="0" data-duration="4.990" data-width="1080" data-height="1920">
-    <div id="s05-stage" class="clip stage" data-start="0" data-duration="4.990" data-track-index="0">
+  <div id="root" data-composition-id="s05" data-start="0" data-duration="8.650" data-width="1080" data-height="1920">
+    <div id="s05-stage" class="clip stage" data-start="0" data-duration="8.650" data-track-index="0">
       <svg id="s05-bg" class="full" viewBox="0 0 1080 1920"></svg>
       <svg id="s05-svg" class="full" viewBox="0 0 1080 1920"></svg>
-      <div id="s05-box" class="cbox r" style="opacity:0"><div class="lab">AUSSTATTUNG</div><div class="num" id="s05-n">1 STUHL</div></div>
+      <div id="s05-box" class="cbox y" style="opacity:0"><div class="lab">FLÄCHE</div><div class="num" id="s05-n">0 m²</div></div>
+      <div id="s05-box2" class="cbox r" style="opacity:0"><div class="lab">AUSSTATTUNG</div><div class="num">1 STUHL</div></div>
+      <div id="s05-goat" class="lbl"><small>BEWOHNERIN</small>DIE ZIEGE</div>
       <div id="s05-sad" class="lbl"><small>BAUM-STATUS</small>HAT AUFGEGEBEN</div>
       <svg id="s05-fx" class="full" viewBox="0 0 1080 1920"></svg>
     </div>
@@ -40,7 +44,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 4.99, "L9": [0.2, 2.94], "L9.words": [["und", 0.2, 0.367], ["jetzt", 0.367, 0.546], ["die", 0.546, 0.714], ["wahrheit", 0.714, 1.06], ["hier", 1.53, 1.712], ["gibt", 1.712, 1.893], ["es", 1.893, 2.063], ["genau", 2.063, 2.407], ["einen", 2.407, 2.752], ["stuhl", 2.752, 2.94]], "L10": [3.16, 4.81], "L10.words": [["unter", 3.16, 3.458], ["einem", 3.458, 3.755], ["baum", 3.755, 3.912], ["der", 3.912, 4.063], ["aufgegeben", 4.063, 4.659], ["hat", 4.659, 4.81]]};
+      const C = {"__dur": 8.65, "L9": [0.2, 2.66], "L9.words": [["und", 0.2, 0.361], ["jetzt", 0.361, 0.534], ["die", 0.534, 0.696], ["wahrheit", 0.696, 1.03], ["fünf", 1.58, 1.801], ["hektar", 1.801, 2.226], ["wildnis", 2.226, 2.66]], "L9b": [2.98, 6.35], "L9b.words": [["eine", 2.98, 3.315], ["ziege", 3.315, 3.657], ["wohnt", 3.657, 3.843], ["hier", 3.843, 4.024], ["schon", 4.024, 4.21], ["und", 4.76, 4.959], ["es", 4.959, 5.15], ["gibt", 5.15, 5.356], ["genau", 5.356, 5.747], ["einen", 5.747, 6.137], ["stuhl", 6.137, 6.35]], "L10": [6.57, 8.47], "L10.words": [["unter", 6.57, 6.922], ["einem", 6.922, 7.274], ["baum", 7.274, 7.46], ["der", 7.6, 7.747], ["aufgegeben", 7.747, 8.323], ["hat", 8.323, 8.47]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -300,34 +304,60 @@
         const n = Math.max(1, Math.floor((t1 - t0) / 0.16));
         tl.to(P.mouth, { attr: { d: "M-22 -588 Q0 -560 22 -588 Q0 -582 -22 -588Z" }, duration: 0.08, repeat: n * 2 - 1, yoyo: true, ease: "sine.inOut" }, t0);
       }
-      // ===== Das geerbte Grundstück (Serien-Kulisse): verwahrlost, ein Stuhl unter einem kargen Baum =====
-      // Braucht: el(), lin(), rad(), gsap, rng(). Zeichnet in eine 1080×1920-SVG. o.mood: "dusk" (Abendrot, Standard) | "night" | "day"
+      // ===== Das geerbte Grundstück (Serien-Kulisse): riesig, verwahrlost, ein Stuhl unter einem kargen Baum, eine Ziege =====
+      // Braucht: el(), lin(), rad(), GR(), gsap, rng(). Zeichnet in eine 1080×1920-SVG.
+      // o.mood: "dusk" (Abendrot, Standard) | "night" | "day"; o.w: Breite der Welt (Standard 1080, für Kamerafahrten z. B. 3240);
+      // o.chairX/o.treeX: Stuhl/Baum (Welt-x); o.goatX: Ziege (null = keine); o.dy: Höhenversatz (Standard -130)
+      // Rückgabe: land (Vordergrund, für Schwenks x tweenen), far (Sonne/Strahlen, Parallaxe), tree, chair, leaf, goat, …
+      function goatFig(parent, x, y, s = 1, flip = false) {
+        const g = el("g", {}, parent); gsap.set(g, { x, y, scale: s, scaleX: flip ? -s : s, transformOrigin: "0 0" });
+        el("ellipse", { cx: 0, cy: 4, rx: 90, ry: 14, fill: "#000", opacity: 0.3 }, g);
+        [-46, -24, 30, 52].forEach((lx) => { el("rect", { x: lx - 7, y: -40, width: 14, height: 44, rx: 6, fill: "#d9d4c4" }, g); el("rect", { x: lx - 7, y: -4, width: 14, height: 8, rx: 3, fill: "#3a2a20" }, g); });
+        el("ellipse", { cx: 0, cy: -62, rx: 74, ry: 36, fill: "#ebe6d6" }, g);
+        el("ellipse", { cx: -8, cy: -50, rx: 60, ry: 18, fill: "#cfc8b4", opacity: 0.7 }, g);
+        el("path", { d: "M-70 -76 q-16 -6 -22 6", stroke: "#ebe6d6", "stroke-width": 8, fill: "none", "stroke-linecap": "round" }, g);
+        const head = el("g", {}, g);
+        el("path", { d: "M56 -82 Q74 -70 82 -40", stroke: "#ebe6d6", "stroke-width": 26, fill: "none", "stroke-linecap": "round" }, head);
+        el("ellipse", { cx: 88, cy: -26, rx: 20, ry: 30, fill: "#ebe6d6", transform: "rotate(-25 88 -26)" }, head);
+        el("path", { d: "M80 -52 q-4 -26 -22 -32 M90 -52 q4 -28 -10 -40", stroke: "#8a7a5a", "stroke-width": 7, fill: "none", "stroke-linecap": "round" }, head);
+        el("ellipse", { cx: 66, cy: -42, rx: 14, ry: 6, fill: "#d9d4c4", transform: "rotate(30 66 -42)" }, head);
+        el("circle", { cx: 92, cy: -34, r: 3.5, fill: "#2a1a10" }, head);
+        el("path", { d: "M100 -4 l4 18 l6 -16", fill: "#bdb6a0" }, head);
+        gsap.set(head, { rotation: 0, svgOrigin: "60 -80" });
+        return { g, head };
+      }
       function grundstueck(sv, pre, o = {}) {
-        const D = GR(sv), R = rng(o.seed || 7), mood = o.mood || "dusk";
+        const D = GR(sv), R = rng(o.seed || 7), mood = o.mood || "dusk", W = o.w || 1080;
         const skyC = { dusk: [[0, "#1a1240"], [0.45, "#5b2a6e"], [0.75, "#d0604a"], [1, "#ffb15c"]],
           night: [[0, "#05060f"], [0.6, "#121634"], [1, "#2a2350"]], day: [[0, "#6d9cc8"], [0.7, "#c9d6d8"], [1, "#efe2c2"]] }[mood];
         const sky = el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: lin(D, pre + "sky", skyC) }, sv);
-        const land = el("g", {}, sv); gsap.set(land, { y: o.dy ?? -130 });
-        const sunG = el("g", {}, land);
+        const far = el("g", {}, sv); gsap.set(far, { y: o.dy ?? -130 });
+        const sunG = el("g", {}, far);
         el("circle", { cx: 760, cy: 960, r: 520, fill: rad(D, pre + "sunh", [[0, "#ffd08a", 0.75], [0.4, "#ff9a5a", 0.25], [1, "#ff9a5a", 0]]) }, sunG);
         el("circle", { cx: 760, cy: 960, r: 90, fill: "#ffe2a8", opacity: mood === "night" ? 0 : 0.95 }, sunG);
         if (mood === "night") gsap.set(sunG, { opacity: 0.25 });
-        // Lichtstrahlen (Gottesstrahlen)
-        const rays = el("g", { opacity: 0.0 }, land);
+        const rays = el("g", { opacity: 0.0 }, far);
         for (let i = 0; i < 9; i++) { const a = -150 + i * 15 + R() * 6; const r1 = 1700;
           el("path", { d: `M760 960 L${760 + r1 * Math.cos((a - 2.5) * Math.PI / 180)} ${960 + r1 * Math.sin((a - 2.5) * Math.PI / 180)} L${760 + r1 * Math.cos((a + 2.5) * Math.PI / 180)} ${960 + r1 * Math.sin((a + 2.5) * Math.PI / 180)}Z`,
             fill: lin(D, pre + "ray" + i, [[0, "#fff1c4", 0.5], [1, "#fff1c4", 0]], 0, 0, 1, 0) }, rays); }
-        // Hügel in Lufperspektive
-        el("path", { d: "M0 1010 Q160 900 330 960 Q520 1020 700 930 Q900 850 1080 960 L1080 1920 L0 1920Z", fill: mood === "day" ? "#8a9a8c" : "#4a2a55", opacity: 0.8 }, land);
-        el("path", { d: "M0 1060 Q240 990 470 1050 Q760 1110 1080 1020 L1080 1920 L0 1920Z", fill: mood === "day" ? "#6d7a5a" : "#2f1d3a" }, land);
-        // Boden: trockene Wiese, Erde
-        el("rect", { x: 0, y: 1080, width: 1080, height: 1000, fill: lin(D, pre + "gr", mood === "day" ? [[0, "#8b7a4a"], [1, "#4a3f22"]] : [[0, "#5a3f34"], [0.5, "#33231f"], [1, "#160f12"]]) }, land);
-        // kaputter Zaun hinten
+        const land = el("g", {}, sv); gsap.set(land, { y: o.dy ?? -130 });
+        // Hügel: gespiegelte Kacheln, damit die Kanten nahtlos sind
+        for (let k = 0; k * 1080 < W; k++) {
+          const t = el("g", { transform: k % 2 ? `translate(${(k + 1) * 1080} 0) scale(-1 1)` : `translate(${k * 1080} 0)` }, land);
+          el("path", { d: "M0 1010 Q160 900 330 960 Q520 1020 700 930 Q900 850 1080 960 L1080 1920 L0 1920Z", fill: mood === "day" ? "#8a9a8c" : "#4a2a55", opacity: 0.8 }, t);
+          el("path", { d: "M0 1060 Q240 990 470 1050 Q760 1110 1080 1060 L1080 1920 L0 1920Z", fill: mood === "day" ? "#6d7a5a" : "#2f1d3a" }, t);
+        }
+        el("rect", { x: 0, y: 1080, width: W, height: 1000, fill: lin(D, pre + "gr", mood === "day" ? [[0, "#8b7a4a"], [1, "#4a3f22"]] : [[0, "#5a3f34"], [0.5, "#33231f"], [1, "#160f12"]]) }, land);
+        // Erdflecken, Pfützen (spiegeln den Himmel), Steine
+        for (let i = 0; i < W / 220; i++) { const px = R() * W, py = 1150 + R() * 400;
+          el("ellipse", { cx: px, cy: py, rx: 60 + R() * 90, ry: 10 + R() * 14, fill: "#2a1a14", opacity: 0.5 }, land);
+          if (i % 3 === 0) el("ellipse", { cx: px + 40, cy: py + 30, rx: 50 + R() * 40, ry: 9, fill: mood === "day" ? "#9fb8d0" : "#b0607a", opacity: 0.45 }, land);
+          el("ellipse", { cx: px - 50, cy: py - 8, rx: 10 + R() * 12, ry: 7 + R() * 6, fill: "#6a6060" }, land); }
+        // kaputter Zaun hinten (über die ganze Breite, mit Lücken)
         const fence = el("g", { opacity: 0.85 }, land);
-        [[40, 0], [130, 6], [230, -14], [330, 4], [690, 10], [800, -8], [900, 18], [1010, 3]].forEach(([fx, rot]) => {
-          el("rect", { x: fx, y: 1010, width: 16, height: 110, rx: 3, fill: "#2a1a18", transform: `rotate(${rot} ${fx + 8} 1120)` }, fence); });
-        el("path", { d: "M40 1040 Q190 1052 340 1036 M690 1046 Q850 1030 1020 1050", stroke: "#2a1a18", "stroke-width": 5, fill: "none" }, fence);
-        el("path", { d: "M40 1074 Q120 1090 250 1078", stroke: "#2a1a18", "stroke-width": 5, fill: "none" }, fence);
+        for (let fx = 40; fx < W; fx += 90 + R() * 40) { if (R() < 0.25) continue; const rot = (R() - 0.5) * 34;
+          el("rect", { x: fx, y: 1010, width: 16, height: 110, rx: 3, fill: "#2a1a18", transform: `rotate(${rot} ${fx + 8} 1120)` }, fence);
+          if (R() < 0.6) el("path", { d: `M${fx + 8} ${1040 + R() * 8} Q${fx + 60} ${1052} ${fx + 110} ${1040 + R() * 10}`, stroke: "#2a1a18", "stroke-width": 5, fill: "none" }, fence); }
         // Baum: karg, krumm, ein einziges Blatt
         const tree = el("g", {}, land); const bark = lin(D, pre + "bark", [[0, "#3a2620"], [0.6, "#24160f"], [1, "#120a08"]], 0, 0, 1, 0);
         const TX = o.treeX ?? 610, TY = 1210;
@@ -352,16 +382,70 @@
         el("path", { d: `M${CX - 76} ${CY - 100} L${CX + 76} ${CY - 100} L${CX + 108} ${CY - 74} L${CX - 44} ${CY - 74}Z`, fill: "#c89a60" }, chair);
         el("rect", { x: CX - 46, y: CY - 76, width: 14, height: 76, rx: 4, fill: "#6b4824" }, chair);
         el("rect", { x: CX + 92, y: CY - 76, width: 14, height: 80, rx: 4, fill: "#6b4824", transform: `rotate(-4 ${CX + 99} ${CY})` }, chair);
-        // Gerümpel: alter Reifen, Unkraut
-        el("ellipse", { cx: 190, cy: 1230, rx: 70, ry: 26, fill: "#121212" }, land); el("ellipse", { cx: 190, cy: 1226, rx: 34, ry: 11, fill: "#2b1d1a" }, land);
+        // Gerümpel im Standardbild: Reifen, Müllsäcke, Rostfass
+        const junk = el("g", {}, land);
+        el("ellipse", { cx: 190, cy: 1230, rx: 70, ry: 26, fill: "#121212" }, junk); el("ellipse", { cx: 190, cy: 1226, rx: 34, ry: 11, fill: "#2b1d1a" }, junk);
+        [[90, 1135, "#16181c"], [140, 1145, "#22252b"]].forEach(([bx, by, c]) => { el("path", { d: `M${bx - 34} ${by} Q${bx - 40} ${by - 50} ${bx} ${by - 62} Q${bx + 40} ${by - 50} ${bx + 34} ${by}Z`, fill: c }, junk); el("path", { d: `M${bx - 6} ${by - 62} l-8 -14 M${bx + 4} ${by - 62} l8 -14`, stroke: c, "stroke-width": 6 }, junk); });
+        el("rect", { x: 300, y: 1060, width: 50, height: 70, rx: 6, fill: "#7a3a1a", transform: "rotate(12 325 1130)" }, junk);
+        el("path", { d: "M300 1080 h50 M300 1110 h50", stroke: "#4a200c", "stroke-width": 5, transform: "rotate(12 325 1130)" }, junk);
+        // Weitere Verwahrlosung, nur wenn die Welt breiter ist (Kamerafahrt): Autowrack, Schuppen-Ruine, Badewanne, Einkaufswagen, Reifenstapel, Schild
+        if (W > 1300) {
+          const A = (x) => x; // Welt-x
+          const rustC = lin(D, pre + "rst", [[0, "#9a4a22"], [0.6, "#6a3014"], [1, "#3a1a0a"]], 0, 0, 1, 1);
+          // Autowrack ohne Räder auf Steinen
+          const car = el("g", {}, land); gsap.set(car, { x: A(1350), y: 1150 });
+          el("path", { d: "M-170 0 L-170 -60 Q-160 -80 -120 -84 L-70 -140 L70 -140 L120 -84 Q170 -78 176 -50 L176 0Z", fill: rustC }, car);
+          el("path", { d: "M-60 -128 L-24 -128 L-24 -88 L-100 -88Z M-12 -128 L60 -128 L104 -88 L-12 -88Z", fill: "#1a1418" }, car);
+          el("path", { d: "M-40 -120 l20 22 M20 -122 l30 28", stroke: "#c9d6e8", "stroke-width": 3, opacity: 0.6 }, car);
+          [-110, 110].forEach((wx) => { el("rect", { x: wx - 30, y: -6, width: 60, height: 26, rx: 4, fill: "#6a6060" }, car); });
+          el("circle", { cx: -60, cy: -40, r: 9, fill: "#2a1008" }, car); el("circle", { cx: 40, cy: -30, r: 13, fill: "#2a1008" }, car);
+          el("path", { d: "M-160 -20 q30 -40 20 -80 M150 -10 q10 -30 -10 -60", stroke: "#4a5a2a", "stroke-width": 6, fill: "none" }, car);
+          // Schuppen-Ruine mit eingesacktem Dach
+          const shed = el("g", {}, land); gsap.set(shed, { x: A(1880), y: 1110 });
+          el("rect", { x: -160, y: -200, width: 320, height: 200, fill: "#5a3a26" }, shed);
+          for (let i = -140; i < 160; i += 40) el("path", { d: `M${i} -200 V0`, stroke: "#3a2416", "stroke-width": 5 }, shed);
+          el("path", { d: "M-190 -190 L-10 -260 L40 -170 L190 -230 L190 -200 L40 -140 L-10 -230 L-190 -160Z", fill: "#3a3a42" }, shed);
+          el("rect", { x: -40, y: -120, width: 70, height: 120, fill: "#120c0a" }, shed);
+          el("rect", { x: 30, y: -120, width: 60, height: 120, fill: "#6a4a30", transform: "rotate(18 30 0)" }, shed);
+          el("rect", { x: 70, y: -170, width: 60, height: 44, fill: "#1a1418" }, shed); el("path", { d: "M70 -170 l60 44 M130 -170 l-30 22", stroke: "#c9d6e8", "stroke-width": 3, opacity: 0.6 }, shed);
+          // Badewanne mit Brackwasser
+          const tub = el("g", {}, land); gsap.set(tub, { x: A(2330), y: 1200 });
+          el("path", { d: "M-110 -70 L110 -70 Q110 0 70 0 L-70 0 Q-110 0 -110 -70Z", fill: "#e6e2d8" }, tub);
+          el("ellipse", { cx: 0, cy: -70, rx: 112, ry: 16, fill: "#4a5a3a" }, tub);
+          [-80, 80].forEach((fx) => el("path", { d: `M${fx} 0 l-6 16 h16Z`, fill: "#c9a24a" }, tub));
+          el("path", { d: "M-100 -60 q20 30 60 40", stroke: "#8a6a3a", "stroke-width": 4, fill: "none", opacity: 0.6 }, tub);
+          // umgekippter Einkaufswagen
+          const cart = el("g", {}, land); gsap.set(cart, { x: A(2700), y: 1180, rotation: -14 });
+          el("path", { d: "M-80 -100 L80 -100 L60 -20 L-60 -20Z", fill: "none", stroke: "#a8b0bc", "stroke-width": 6 }, cart);
+          for (let i = -60; i <= 60; i += 20) el("path", { d: `M${i} -100 L${i * 0.75} -20`, stroke: "#a8b0bc", "stroke-width": 3 }, cart);
+          el("path", { d: "M-90 -84 L70 -84 M-70 -52 L66 -52", stroke: "#a8b0bc", "stroke-width": 3 }, cart);
+          el("path", { d: "M80 -100 L110 -130", stroke: "#a8b0bc", "stroke-width": 6 }, cart);
+          [-50, 50].forEach((wx) => el("circle", { cx: wx, cy: 0, r: 12, fill: "#22252b" }, cart));
+          // Reifenstapel
+          const tires = el("g", {}, land); gsap.set(tires, { x: A(3020), y: 1160 });
+          [0, -34, -68].forEach((ty, i) => { el("ellipse", { cx: i * 6, cy: ty, rx: 70, ry: 24, fill: "#121212" }, tires); el("ellipse", { cx: i * 6, cy: ty - 4, rx: 34, ry: 10, fill: "#2b1d1a" }, tires); });
+          // schiefes Schild „BETRETEN AUF EIGENE GEFAHR“
+          const sign = el("g", {}, land); gsap.set(sign, { x: A(2120), y: 1150, rotation: 9 });
+          el("rect", { x: -6, y: -150, width: 12, height: 150, fill: "#3a2416" }, sign);
+          el("rect", { x: -130, y: -226, width: 260, height: 96, rx: 6, fill: "#e8d9a0" }, sign);
+          const st = el("text", { x: 0, y: -186, "text-anchor": "middle", "font-family": "Inter", "font-weight": 900, "font-size": 30, fill: "#8a1a1a", "data-layout-ignore": "" }, sign); st.textContent = "BETRETEN AUF";
+          const st2 = el("text", { x: 0, y: -146, "text-anchor": "middle", "font-family": "Inter", "font-weight": 900, "font-size": 30, fill: "#8a1a1a", "data-layout-ignore": "" }, sign); st2.textContent = "EIGENE GEFAHR";
+          // Dornenbüsche
+          [1150, 1620, 2520, 2900].forEach((bx) => { for (let i = 0; i < 9; i++) el("path", { d: `M${bx} 1130 q${(R() - 0.5) * 120} ${-40 - R() * 60} ${(R() - 0.5) * 160} ${-60 - R() * 70}`, stroke: "#3a3a1a", "stroke-width": 4, fill: "none" }, land); });
+        }
+        // Ziege, grast (Kopf unten); goat.head kauend animieren
+        const goat = o.goatX === null ? null : goatFig(land, o.goatX ?? 880, 1150, o.goatS ?? 0.8, !!o.goatFlip);
+        if (goat) gsap.set(goat.head, { rotation: 38 });
+        // Unkraut über die ganze Breite
         const weeds = el("g", {}, land);
-        for (let i = 0; i < 140; i++) { const wx = R() * 1080, wy = 1110 + R() * R() * 800, h = 20 + R() * 60 * (wy / 1300), c = ["#4a5a2a", "#6b6a32", "#8a7a3a", "#3a4422"][i % 4];
+        for (let i = 0; i < 140 * W / 1080; i++) { const wx = R() * W, wy = 1110 + R() * R() * 800, h = 20 + R() * 60 * (wy / 1300), c = ["#4a5a2a", "#6b6a32", "#8a7a3a", "#3a4422"][i % 4];
           el("path", { d: `M${wx} ${wy} q${(R() - 0.5) * 20} ${-h * 0.6} ${(R() - 0.5) * 30} ${-h}`, stroke: c, "stroke-width": 3 + R() * 3, fill: "none", "stroke-linecap": "round" }, weeds); }
-        // Staub im Gegenlicht
-        const dust = el("g", {}, land);
-        const motes = Array.from({ length: 26 }, () => el("circle", { cx: 300 + R() * 700, cy: 500 + R() * 700, r: 2 + R() * 4, fill: "#ffe2a8", opacity: 0.25 + R() * 0.5 }, dust));
-        return { sky, land, sunG, rays, tree, leaf, chair, weeds, dust, motes, fence, chairPos: [CX, CY], treePos: [TX, TY] };
+        const dust = el("g", {}, sv);
+        const motes = Array.from({ length: 26 }, () => el("circle", { cx: 100 + R() * 880, cy: 500 + R() * 600, r: 2 + R() * 4, fill: "#ffe2a8", opacity: 0.25 + R() * 0.5 }, dust));
+        return { sky, land, far, sunG, rays, tree, leaf, chair, goat, weeds, dust, motes, fence, chairPos: [CX, CY], treePos: [TX, TY] };
       }
+      // Ziege kaut (Kopf wippt, endlich)
+      function chew(tl, G, t0, dur) { if (G.goat) tl.to(G.goat.head, { rotation: 30, duration: 0.22, yoyo: true, repeat: Math.max(1, 2 * Math.floor(dur / 0.44) - 1), ease: "sine.inOut" }, t0); }
       // Filmlook: Vignette + feines Korn (statisch) – als oberste Ebene einer Szene
       function filmLook(sv, pre, strength = 1) {
         const D = GR(sv);
@@ -377,26 +461,37 @@
       const tl = gsap.timeline({ paused: true });
       const bg = document.querySelector("#s05-bg"), sv = document.querySelector("#s05-svg"), fx = document.querySelector("#s05-fx");
       if (fx) filmLook(fx, "s05f");
-      const G = grundstueck(bg, "s05g", { mood: "day", chairX: 470, treeX: 600 });
+      const G = grundstueck(bg, "s05g", { mood: "day", w: 3240, chairX: 470, treeX: 600, goatX: 1150, goatS: 1.0, seed: 11 });
       floatDust(tl, G, C.__dur);
       const D = GR(sv), rust = lin(D, "s05rust", [[0, "#6a3a22"], [1, "#2a160c"]], 0, 0, 1, 1), wings = [];
       [[150, 0], [540, 1]].forEach(([gx, k]) => { const w = el("g", {}, sv); wings.push(w);
         el("rect", { x: gx, y: 420, width: 390, height: 700, fill: "none", stroke: rust, "stroke-width": 22 }, w);
         for (let i = 1; i < 8; i++) el("rect", { x: gx + i * 48 - 5, y: 420, width: 12, height: 700, fill: rust }, w);
         el("rect", { x: gx, y: 760, width: 390, height: 16, fill: rust }, w); });
-      // Steppenläufer
       const tw = el("g", {}, sv); for (let i = 0; i < 14; i++) el("circle", { cx: (i % 4) * 9 - 14, cy: Math.floor(i / 4) * 9 - 14, r: 34 - (i % 5) * 3, fill: "none", stroke: "#8a7040", "stroke-width": 3, opacity: 0.8 }, tw);
       gsap.set(tw, { x: -120, y: 1030 });
-      const wa = at("L9", "wahrheit"), st = at("L9", "stuhl"), l10 = line("L10")[0], au = at("L10", "aufgegeben");
+      const ha = at("L9", "hektar"), zi = at("L9b", "ziege"), wo = at("L9b", "wohnt"), st = at("L9b", "stuhl"), es = at("L9b", "und"), l10 = line("L10")[0], au = at("L10", "aufgegeben");
+      // Kamera: Welt 3240 px breit, Start ganz rechts (Gerümpel), über Schuppen/Autowrack zur Ziege, dann zum Stuhl
+      const pan = (x, d, t, ease = "power2.inOut") => { tl.to(G.land, { x, duration: d, ease }, t); tl.to(G.far, { x: x * 0.12, duration: d, ease }, t); };
+      gsap.set(G.land, { x: -2160 }); gsap.set(G.far, { x: -2160 * 0.12 });
       tl.to(wings[0], { scaleX: 0.06, svgOrigin: "150 770", duration: 0.7, ease: "power3.inOut" }, 0.05);
       tl.to(wings[1], { scaleX: 0.06, svgOrigin: "930 770", duration: 0.7, ease: "power3.inOut" }, 0.05);
       tl.to(wings, { opacity: 0, duration: 0.3 }, 0.6);
-      tl.fromTo(G.land, { scale: 1, svgOrigin: "500 1130" }, { scale: 1.0, duration: 0.01 }, 0);
-      tl.to(G.land, { scale: 1.5, svgOrigin: "500 1130", duration: 1.6, ease: "power2.inOut" }, st - 1.0);
-      tl.fromTo("#s05-box", { opacity: 0, scale: 1.5 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2.2)" }, st - 0.05);
-      tl.to("#s05-box", { x: 10, duration: 0.04, repeat: 5, yoyo: true }, st + 0.25);
+      pan(-1350, zi - 0.95, 0.6, "power1.inOut");
+      pan(-700, 0.6, zi - 0.35, "power3.out");
+      tl.fromTo("#s05-box", { opacity: 0, scale: 1.5 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2.2)" }, ha - 0.1);
+      count(tl, "#s05-n", 0, 50000, ha - 0.05, 0.7, "", " m²");
+      tl.fromTo("#s05-goat", { opacity: 0, scale: 1.6 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2.4)" }, zi);
+      tl.to(G.goat.head, { rotation: -8, duration: 0.25, ease: "back.out(2)" }, wo - 0.05);
+      tl.to(G.goat.head, { rotation: -14, duration: 0.07, yoyo: true, repeat: 7 }, wo + 0.2);
+      tl.to(G.goat.head, { rotation: 36, duration: 0.3 }, wo + 0.9);
+      tl.to("#s05-goat", { opacity: 0, duration: 0.2 }, es - 0.2);
+      pan(0, st - es + 0.1, es - 0.3, "power2.inOut");
+      tl.to(G.land, { scale: 1.5, svgOrigin: "500 1130", duration: 1.2, ease: "power2.inOut" }, st - 0.4);
+      tl.fromTo("#s05-box2", { opacity: 0, scale: 1.5 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2.2)" }, st - 0.05);
+      tl.to("#s05-box2", { x: 10, duration: 0.04, repeat: 5, yoyo: true }, st + 0.25);
       tl.to(tw, { x: 1200, rotation: 720, duration: 2.2, ease: "none" }, l10 - 0.1);
-      tl.to(G.leaf, { x: -60, y: 470, rotation: 260, svgOrigin: "760 690", duration: 1.0, ease: "power1.in" }, au - 0.3);
+      tl.to(G.leaf, { x: -60, y: 470, rotation: 260, svgOrigin: "750 690", duration: 1.0, ease: "power1.in" }, au - 0.3);
       tl.to(G.tree, { rotation: -2, svgOrigin: "600 1080", duration: 0.5, yoyo: true, repeat: 1, ease: "sine.inOut" }, au - 0.2);
       tl.fromTo("#s05-sad", { opacity: 0, scale: 1.6 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2.4)" }, au + 0.2);
       tl.to("#s05-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);

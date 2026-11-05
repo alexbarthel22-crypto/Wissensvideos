@@ -118,10 +118,13 @@ def build_scene(project, scene, start, end, lines):
     (project / "compositions" / f"{scene['id']}.html").write_text(text)
 
 
-def caption_groups(timings, windows):
-    """Gruppen pro Zeile; jede Gruppe endet spätestens beim Start der nächsten."""
+def caption_groups(timings, windows, skip=()):
+    """Gruppen pro Zeile; jede Gruppe endet spätestens beim Start der nächsten.
+    skip: Zeilen-IDs ohne Untertitel ("nocap": true im Skript, z. B. wenn die Szene den Text selbst groß zeigt)."""
     groups = []
     for l in timings["lines"]:
+        if l["id"] in skip:
+            continue
         by = {}
         for w in l["words"]:
             by.setdefault(w["group"], []).append(w)
@@ -130,12 +133,13 @@ def caption_groups(timings, windows):
             groups.append({"words": ws, "start": round(ws[0]["start"] - 0.06, 3), "end": round(ws[-1]["end"] + 0.25, 3)})
     for a, b in zip(groups, groups[1:]):
         a["end"] = min(a["end"], b["start"])
-    groups[0]["start"] = max(groups[0]["start"], 0.15)
+    if groups:
+        groups[0]["start"] = max(groups[0]["start"], 0.15)
     return groups
 
 
-def build_captions(project, timings, windows, total, big=False, safe=False):
-    groups = caption_groups(timings, windows)
+def build_captions(project, timings, windows, total, big=False, safe=False, skip=()):
+    groups = caption_groups(timings, windows, skip)
     groups[-1]["end"] = round(total - 0.05, 3)  # letzte Zeile (Frage an die Zuschauer) bleibt stehen
     rows, js = [], []
     for gi, g in enumerate(groups):
@@ -384,7 +388,8 @@ def main():
     shutil.copy(VENDOR / "gsap.min.js", project / "assets" / "vendor" / "gsap.min.js")
     for sc, s, e in windows:
         build_scene(project, sc, s, e, lines)
-    build_captions(project, timings, windows, total, script.get("hud") == "big", script.get("safe", False))
+    build_captions(project, timings, windows, total, script.get("hud") == "big", script.get("safe", False),
+                   {l["id"] for sc in script["scenes"] for l in sc["lines"] if l.get("nocap")})
     build_hud(project, script, windows, total)
     build_index(project, script, windows, lines, total)
     for sc, s, e in windows:

@@ -18,16 +18,17 @@ Ich-Erzähler, Gründer der Sekte. Ziel: Weltreligion. Code: `tools/characters/p
 Animierbare Teile: `armL` (Geste, z. B. `rotation: -150` = Arm hoch), `armR` (hält Stab), `mouth` (+ `talk(tl, P, t0, t1)`), `glint` (Brillen-Glanz),
 `spark` (Discokugel-Funkeln, `svgOrigin: "-187 -850"`), `ball`, `mitre`, `halo`, `brows`.
 
-Stimme: Google Chirp 3 HD `de-DE-Chirp3-HD-Fenrir`, `--speed 1.1`.
+Stimme: Google Chirp 3 HD `de-DE-Chirp3-HD-Sadachbia` (lebhaft, hohe Stimmlage – Nutzer wollte emotionaler als Fenrir), `--speed 1.1`, euphorische Sätze mit „!!“, Szene 1 schneller (`speed` 1.18).
+Sound-Signatur: Frame 0 = lautester Schlag aus `assets/sfx/src/church-bell-5993.mp3` (`tools/make_church.py … --bell`), Engelschor (`angel-choir`) wenn Peter erscheint.
 
 ## Das Grundstück (Kulisse)
 
 `tools/characters/grundstueck.js` → `grundstueck(svg, pre, { mood: "dusk"|"day"|"night", chairX, treeX, dy })`:
-verwahrlostes Erbe von Onkel Heinz – kaputter Zaun, alter Reifen, Unkraut, **ein einziger Holzstuhl unter einem kargen Baum mit einem letzten Blatt**.
+verwahrlostes Erbe von Onkel Heinz, **5 Hektar** groß – kaputter Zaun, Reifen, Müllsäcke, Rostfass, Pfützen, Unkraut, **ein einziger Holzstuhl unter einem kargen Baum mit einem letzten Blatt** und **eine grasende Ziege** (`goatX`, `chew(tl, G, t, dur)`). Mit `w: 3240` entsteht ein Panorama für Kamerafahrten (Autowrack, Schuppen-Ruine, Badewanne, Einkaufswagen, Reifenstapel, Schild „Betreten auf eigene Gefahr“); `G.land`/`G.far` (Parallaxe ×0,12) per `x` schwenken.
 Wenn die Sekte wächst (Kollekte), hier neue Bauteile ergänzen statt die Kulisse auszutauschen. Dazu `filmLook(svg, pre)` (Vignette + Korn) und `floatDust(tl, G, dur)`.
 
 ## Serien-Fakten (Kontinuität)
 
 - Tag 1: Gründung, 0 Anhänger, Kollekte 0 €, 1 € pro neuem Follower = 1 Ziegelstein für den Tempel.
-- Ränge: Hohepriester (Platz 1) · Erzdiakon (2–10) · Tempelwächter (11–100) · Anhänger (101+) · Rasenmäher (der Letzte).
+- Ränge: Hohepriester (Platz 1) · Erzdiakon (2–10) · Tempelwächter (11–100) · Anhänger (101+). (Kein „Rasenmäher“-Rang – vom Nutzer gestrichen.)
 - Offene Frage an die Community: Name der Sekte (Antwort in Tag 2 auflösen).
