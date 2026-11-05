@@ -35,8 +35,8 @@
     #s02-plate .r { margin-top: 12px; font-family: "Space Mono", monospace; font-weight: 700; font-size: 30px; letter-spacing: .14em; color: #fff; }
     #s02-plate .r span { opacity: 0; }
   </style>
-  <div id="root" data-composition-id="s02" data-start="0" data-duration="4.480" data-width="1080" data-height="1920">
-    <div id="s02-stage" class="clip stage" data-start="0" data-duration="4.480" data-track-index="0">
+  <div id="root" data-composition-id="s02" data-start="0" data-duration="4.600" data-width="1080" data-height="1920">
+    <div id="s02-stage" class="clip stage" data-start="0" data-duration="4.600" data-track-index="0">
       <svg id="s02-bg" class="full" viewBox="0 0 1080 1920"></svg>
       <div id="s02-fg" class="full fgwrap">
       <div id="s02-beam" class="abs"></div>
@@ -49,7 +49,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 4.48, "L3": [0.2, 1.38], "L3.words": [["ich", 0.2, 0.397], ["bin", 0.397, 0.593], ["prophet", 0.593, 0.994], ["peter", 0.994, 1.38]], "L4": [1.6, 4.3], "L4.words": [["gründer", 1.6, 1.97], ["erleuchteter", 2.13, 2.66], ["und", 2.79, 2.98], ["ab", 2.98, 3.164], ["heute", 3.164, 3.538], ["euer", 3.538, 3.735], ["anführer", 3.735, 4.3]]};
+      const C = {"__dur": 4.6, "L3": [0.2, 1.47], "L3.words": [["ich", 0.2, 0.412], ["bin", 0.412, 0.623], ["prophet", 0.623, 1.054], ["peter", 1.054, 1.47]], "L4": [1.69, 4.42], "L4.words": [["gründer", 1.69, 2.05], ["erleuchteter", 2.22, 2.75], ["und", 2.98, 3.162], ["ab", 3.162, 3.337], ["heute", 3.337, 3.694], ["euer", 3.694, 3.882], ["anführer", 3.882, 4.42]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -352,7 +352,7 @@
           el("path", { d: "M0 1010 Q160 900 330 960 Q520 1020 700 930 Q900 850 1080 960 L1080 1920 L0 1920Z", fill: mood === "day" ? "#8a9a8c" : "#4a2a55", opacity: 0.8 }, t);
           el("path", { d: "M0 1060 Q240 990 470 1050 Q760 1110 1080 1060 L1080 1920 L0 1920Z", fill: mood === "day" ? "#6d7a5a" : "#2f1d3a" }, t);
         }
-        el("rect", { x: 0, y: 1080, width: W, height: 1000, fill: lin(D, pre + "gr", mood === "day" ? [[0, "#8b7a4a"], [1, "#4a3f22"]] : [[0, "#5a3f34"], [0.5, "#33231f"], [1, "#160f12"]]) }, land);
+        el("rect", { x: -200, y: 1080, width: W + 400, height: 3200, fill: lin(D, pre + "gr", mood === "day" ? [[0, "#8b7a4a"], [1, "#4a3f22"]] : [[0, "#5a3f34"], [0.5, "#33231f"], [1, "#160f12"]]) }, land);
         // Erdflecken, Pfützen (spiegeln den Himmel), Steine
         for (let i = 0; i < W / 220; i++) { const px = R() * W, py = 1150 + R() * 400;
           el("ellipse", { cx: px, cy: py, rx: 60 + R() * 90, ry: 10 + R() * 14, fill: "#2a1a14", opacity: 0.5 }, land);

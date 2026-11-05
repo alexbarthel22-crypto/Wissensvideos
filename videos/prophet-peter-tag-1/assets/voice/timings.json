@@ -1,62 +1,239 @@
 {
- "duration": 50.37,
+ "duration": 52.174,
  "lines": [
   {
    "scene": "s01",
    "id": "L1",
    "words": [
     {
-     "display": "Tag",
-     "spoken": "Tag",
+     "display": "Auf",
+     "spoken": "Auf",
      "color": null,
      "group": 0,
      "start": 0.0,
-     "end": 0.209
+     "end": 0.194
+    },
+    {
+     "display": "die",
+     "spoken": "die",
+     "color": null,
+     "group": 0,
+     "start": 0.194,
+     "end": 0.389
+    },
+    {
+     "display": "Knie!!",
+     "spoken": "Knie!!",
+     "color": null,
+     "group": 0,
+     "start": 0.389,
+     "end": 0.59
+    },
+    {
+     "display": "Tag",
+     "spoken": "Tag",
+     "color": null,
+     "group": 1,
+     "start": 0.82,
+     "end": 1.12
     },
     {
      "display": "eins!",
      "spoken": "eins!",
      "color": null,
-     "group": 0,
-     "start": 0.209,
-     "end": 0.426
+     "group": 1,
+     "start": 1.12,
+     "end": 1.43
     },
     {
      "display": "Ich",
      "spoken": "Ich",
      "color": null,
-     "group": 1,
-     "start": 0.426,
-     "end": 0.636
+     "group": 2,
+     "start": 1.63,
+     "end": 1.806
     },
     {
      "display": "gründe",
      "spoken": "gründe",
      "color": null,
-     "group": 1,
-     "start": 0.636,
-     "end": 1.055
+     "group": 2,
+     "start": 1.806,
+     "end": 2.157
     },
     {
      "display": "eine",
      "spoken": "eine",
      "color": null,
-     "group": 2,
-     "start": 1.055,
-     "end": 1.459
+     "group": 3,
+     "start": 2.157,
+     "end": 2.495
     },
     {
      "display": "Sekte!",
      "spoken": "Sekte!",
      "color": null,
-     "group": 2,
-     "start": 1.459,
-     "end": 1.87
+     "group": 3,
+     "start": 2.495,
+     "end": 2.84
     }
    ],
-   "spoken": "Tag eins! Ich gründe eine Sekte!",
+   "spoken": "Auf die Knie!! Tag eins! Ich gründe eine Sekte!",
    "start": 0.0,
-   "end": 1.87
+   "end": 2.84
+  },
+  {
+   "scene": "s07",
+   "id": "L13",
+   "words": [
+    {
+     "display": "Ab",
+     "spoken": "Ab",
+     "color": null,
+     "group": 0,
+     "start": 3.22,
+     "end": 3.38
+    },
+    {
+     "display": "heute",
+     "spoken": "heute",
+     "color": null,
+     "group": 0,
+     "start": 3.38,
+     "end": 3.707
+    },
+    {
+     "display": "gilt",
+     "spoken": "gilt",
+     "color": null,
+     "group": 0,
+     "start": 3.707,
+     "end": 3.879
+    },
+    {
+     "display": "ein",
+     "spoken": "ein",
+     "color": null,
+     "group": 1,
+     "start": 3.879,
+     "end": 4.045
+    },
+    {
+     "display": "heiliges",
+     "spoken": "heiliges",
+     "color": "y",
+     "group": 1,
+     "start": 4.045,
+     "end": 4.538
+    },
+    {
+     "display": "Gesetz:",
+     "spoken": "Gesetz:",
+     "color": "y",
+     "group": 1,
+     "start": 4.538,
+     "end": 4.87
+    },
+    {
+     "display": "Jeder",
+     "spoken": "Jeder",
+     "color": null,
+     "group": 2,
+     "start": 5.06,
+     "end": 5.396
+    },
+    {
+     "display": "neue",
+     "spoken": "neue",
+     "color": null,
+     "group": 2,
+     "start": 5.396,
+     "end": 5.573
+    },
+    {
+     "display": "Follower",
+     "spoken": "Follower",
+     "color": "p",
+     "group": 2,
+     "start": 5.573,
+     "end": 6.079
+    },
+    {
+     "display": "wird",
+     "spoken": "wird",
+     "color": null,
+     "group": 3,
+     "start": 6.079,
+     "end": 6.256
+    },
+    {
+     "display": "Anhänger",
+     "spoken": "Anhänger",
+     "color": "p",
+     "group": 3,
+     "start": 6.256,
+     "end": 6.763
+    },
+    {
+     "display": "und",
+     "spoken": "und",
+     "color": null,
+     "group": 4,
+     "start": 6.763,
+     "end": 6.933
+    },
+    {
+     "display": "bringt",
+     "spoken": "bringt",
+     "color": null,
+     "group": 4,
+     "start": 6.933,
+     "end": 7.123
+    },
+    {
+     "display": "einen",
+     "spoken": "einen",
+     "color": "y",
+     "group": 4,
+     "start": 7.123,
+     "end": 7.458
+    },
+    {
+     "display": "Euro",
+     "spoken": "Euro",
+     "color": "y",
+     "group": 4,
+     "start": 7.458,
+     "end": 7.788
+    },
+    {
+     "display": "in",
+     "spoken": "in",
+     "color": null,
+     "group": 5,
+     "start": 7.788,
+     "end": 7.953
+    },
+    {
+     "display": "die",
+     "spoken": "die",
+     "color": null,
+     "group": 5,
+     "start": 7.953,
+     "end": 8.123
+    },
+    {
+     "display": "Kollekte!",
+     "spoken": "Kollekte!",
+     "color": null,
+     "group": 5,
+     "start": 8.123,
+     "end": 8.63
+    }
+   ],
+   "spoken": "Ab heute gilt ein heiliges Gesetz: Jeder neue Follower wird Anhänger und bringt einen Euro in die Kollekte!",
+   "start": 3.22,
+   "end": 8.63
   },
   {
    "scene": "s02",
@@ -67,37 +244,37 @@
      "spoken": "Ich",
      "color": null,
      "group": 0,
-     "start": 2.25,
-     "end": 2.447
+     "start": 9.01,
+     "end": 9.222
     },
     {
      "display": "bin",
      "spoken": "bin",
      "color": null,
      "group": 0,
-     "start": 2.447,
-     "end": 2.643
+     "start": 9.222,
+     "end": 9.433
     },
     {
      "display": "Prophet",
      "spoken": "Prophet",
      "color": null,
      "group": 1,
-     "start": 2.643,
-     "end": 3.044
+     "start": 9.433,
+     "end": 9.864
     },
     {
      "display": "Peter!",
      "spoken": "Peter!",
      "color": null,
      "group": 1,
-     "start": 3.044,
-     "end": 3.43
+     "start": 9.864,
+     "end": 10.28
     }
    ],
    "spoken": "Ich bin Prophet Peter!",
-   "start": 2.25,
-   "end": 3.43
+   "start": 9.01,
+   "end": 10.28
   },
   {
    "scene": "s02",
@@ -108,61 +285,61 @@
      "spoken": "Gründer!",
      "color": null,
      "group": 0,
-     "start": 3.65,
-     "end": 4.02
+     "start": 10.5,
+     "end": 10.86
     },
     {
      "display": "Erleuchteter!",
      "spoken": "Erleuchteter!",
      "color": null,
      "group": 1,
-     "start": 4.18,
-     "end": 4.71
+     "start": 11.03,
+     "end": 11.56
     },
     {
      "display": "Und",
      "spoken": "Und",
      "color": null,
      "group": 2,
-     "start": 4.84,
-     "end": 5.03
+     "start": 11.79,
+     "end": 11.972
     },
     {
      "display": "ab",
      "spoken": "ab",
      "color": null,
      "group": 2,
-     "start": 5.03,
-     "end": 5.214
+     "start": 11.972,
+     "end": 12.147
     },
     {
      "display": "heute",
      "spoken": "heute",
      "color": null,
      "group": 2,
-     "start": 5.214,
-     "end": 5.588
+     "start": 12.147,
+     "end": 12.504
     },
     {
      "display": "euer",
      "spoken": "euer",
      "color": null,
      "group": 3,
-     "start": 5.588,
-     "end": 5.785
+     "start": 12.504,
+     "end": 12.692
     },
     {
      "display": "Anführer!",
      "spoken": "Anführer!",
      "color": "p",
      "group": 3,
-     "start": 5.785,
-     "end": 6.35
+     "start": 12.692,
+     "end": 13.23
     }
    ],
    "spoken": "Gründer! Erleuchteter! Und ab heute euer Anführer!",
-   "start": 3.65,
-   "end": 6.35
+   "start": 10.5,
+   "end": 13.23
   },
   {
    "scene": "s04",
@@ -173,61 +350,61 @@
      "spoken": "Mein",
      "color": null,
      "group": 0,
-     "start": 6.73,
-     "end": 6.926
+     "start": 13.61,
+     "end": 13.759
     },
     {
      "display": "Onkel",
      "spoken": "Onkel",
      "color": null,
      "group": 0,
-     "start": 6.926,
-     "end": 7.299
+     "start": 13.759,
+     "end": 14.04
     },
     {
      "display": "hat",
      "spoken": "hat",
      "color": null,
      "group": 1,
-     "start": 7.299,
-     "end": 7.488
+     "start": 14.04,
+     "end": 14.184
     },
     {
      "display": "mir",
      "spoken": "mir",
      "color": null,
      "group": 1,
-     "start": 7.488,
-     "end": 7.678
+     "start": 14.184,
+     "end": 14.327
     },
     {
      "display": "ein",
      "spoken": "ein",
      "color": null,
      "group": 2,
-     "start": 7.678,
-     "end": 7.868
+     "start": 14.327,
+     "end": 14.471
     },
     {
      "display": "Grundstück",
      "spoken": "Grundstück",
      "color": "y",
      "group": 2,
-     "start": 7.868,
-     "end": 8.274
+     "start": 14.471,
+     "end": 14.778
     },
     {
      "display": "vererbt!",
      "spoken": "vererbt!",
      "color": null,
      "group": 3,
-     "start": 8.274,
-     "end": 8.66
+     "start": 14.778,
+     "end": 15.07
     }
    ],
    "spoken": "Mein Onkel hat mir ein Grundstück vererbt!",
-   "start": 6.73,
-   "end": 8.66
+   "start": 13.61,
+   "end": 15.07
   },
   {
    "scene": "s04",
@@ -238,37 +415,37 @@
      "spoken": "Hier",
      "color": null,
      "group": 0,
-     "start": 8.88,
-     "end": 9.074
+     "start": 15.29,
+     "end": 15.456
     },
     {
      "display": "entsteht",
      "spoken": "entsteht",
      "color": null,
      "group": 0,
-     "start": 9.074,
-     "end": 9.461
+     "start": 15.456,
+     "end": 15.787
     },
     {
      "display": "unser",
      "spoken": "unser",
      "color": null,
      "group": 1,
-     "start": 9.461,
-     "end": 9.829
+     "start": 15.787,
+     "end": 16.101
     },
     {
      "display": "Heiligtum!",
      "spoken": "Heiligtum!",
      "color": "p",
      "group": 1,
-     "start": 9.829,
-     "end": 10.39
+     "start": 16.101,
+     "end": 16.58
     }
    ],
    "spoken": "Hier entsteht unser Heiligtum!",
-   "start": 8.88,
-   "end": 10.39
+   "start": 15.29,
+   "end": 16.58
   },
   {
    "scene": "s05",
@@ -279,45 +456,45 @@
      "spoken": "Zum",
      "color": null,
      "group": 0,
-     "start": 10.77,
-     "end": 10.993
+     "start": 16.96,
+     "end": 17.176
     },
     {
      "display": "Grundstück:",
      "spoken": "Grundstück:",
      "color": "y",
      "group": 0,
-     "start": 10.993,
-     "end": 11.47
+     "start": 17.176,
+     "end": 17.64
     },
     {
      "display": "zwei",
      "spoken": "zwei",
      "color": "y",
      "group": 1,
-     "start": 11.69,
-     "end": 11.98
+     "start": 17.86,
+     "end": 18.15
     },
     {
      "display": "Hektar",
      "spoken": "Hektar",
      "color": "y",
      "group": 1,
-     "start": 11.98,
-     "end": 12.54
+     "start": 18.15,
+     "end": 18.71
     },
     {
      "display": "Wildnis.",
      "spoken": "Wildnis.",
      "color": "r",
      "group": 2,
-     "start": 12.54,
-     "end": 13.11
+     "start": 18.71,
+     "end": 19.28
     }
    ],
    "spoken": "Zum Grundstück: zwei Hektar Wildnis.",
-   "start": 10.77,
-   "end": 13.11
+   "start": 16.96,
+   "end": 19.28
   },
   {
    "scene": "s05",
@@ -328,93 +505,93 @@
      "spoken": "Eine",
      "color": null,
      "group": 0,
-     "start": 13.43,
-     "end": 13.793
+     "start": 19.6,
+     "end": 19.941
     },
     {
      "display": "Ziege",
      "spoken": "Ziege",
      "color": "r",
      "group": 0,
-     "start": 13.793,
-     "end": 14.162
+     "start": 19.941,
+     "end": 20.288
     },
     {
      "display": "wohnt",
      "spoken": "wohnt",
      "color": null,
      "group": 1,
-     "start": 14.162,
-     "end": 14.364
+     "start": 20.288,
+     "end": 20.478
     },
     {
      "display": "hier",
      "spoken": "hier",
      "color": null,
      "group": 1,
-     "start": 14.364,
-     "end": 14.558
+     "start": 20.478,
+     "end": 20.661
     },
     {
      "display": "schon.",
      "spoken": "schon.",
      "color": null,
      "group": 1,
-     "start": 14.558,
-     "end": 14.76
+     "start": 20.661,
+     "end": 20.85
     },
     {
      "display": "Und",
      "spoken": "Und",
      "color": null,
      "group": 2,
-     "start": 14.98,
-     "end": 15.188
+     "start": 21.07,
+     "end": 21.282
     },
     {
      "display": "es",
      "spoken": "es",
      "color": null,
      "group": 2,
-     "start": 15.188,
-     "end": 15.388
+     "start": 21.282,
+     "end": 21.487
     },
     {
      "display": "gibt",
      "spoken": "gibt",
      "color": null,
      "group": 2,
-     "start": 15.388,
-     "end": 15.602
+     "start": 21.487,
+     "end": 21.707
     },
     {
      "display": "genau",
      "spoken": "genau",
      "color": null,
      "group": 3,
-     "start": 15.602,
-     "end": 16.01
+     "start": 21.707,
+     "end": 22.125
     },
     {
      "display": "einen",
      "spoken": "einen",
      "color": "r",
      "group": 4,
-     "start": 16.01,
-     "end": 16.418
+     "start": 22.125,
+     "end": 22.542
     },
     {
      "display": "Stuhl.",
      "spoken": "Stuhl.",
      "color": "r",
      "group": 4,
-     "start": 16.418,
-     "end": 16.64
+     "start": 22.542,
+     "end": 22.77
     }
    ],
    "spoken": "Eine Ziege wohnt hier schon. Und es gibt genau einen Stuhl.",
-   "start": 13.43,
-   "end": 16.64
+   "start": 19.6,
+   "end": 22.77
   },
   {
    "scene": "s05",
@@ -425,37 +602,37 @@
      "spoken": "Unter",
      "color": null,
      "group": 0,
-     "start": 16.86,
-     "end": 17.258
+     "start": 22.99,
+     "end": 23.379
     },
     {
      "display": "einem",
      "spoken": "einem",
      "color": null,
      "group": 0,
-     "start": 17.258,
-     "end": 17.655
+     "start": 23.379,
+     "end": 23.768
     },
     {
      "display": "kargen",
      "spoken": "kargen",
      "color": "r",
      "group": 1,
-     "start": 17.655,
-     "end": 18.06
+     "start": 23.768,
+     "end": 24.165
     },
     {
      "display": "Baum.",
      "spoken": "Baum.",
      "color": "r",
      "group": 1,
-     "start": 18.06,
-     "end": 18.27
+     "start": 24.165,
+     "end": 24.37
     }
    ],
    "spoken": "Unter einem kargen Baum.",
-   "start": 16.86,
-   "end": 18.27
+   "start": 22.99,
+   "end": 24.37
   },
   {
    "scene": "s06",
@@ -466,77 +643,77 @@
      "spoken": "Aber",
      "color": null,
      "group": 0,
-     "start": 18.9,
-     "end": 19.28
+     "start": 25.0,
+     "end": 25.422
     },
     {
      "display": "ich",
      "spoken": "ich",
      "color": null,
      "group": 0,
-     "start": 19.28,
-     "end": 19.476
+     "start": 25.422,
+     "end": 25.641
     },
     {
      "display": "sehe",
      "spoken": "sehe",
      "color": null,
      "group": 0,
-     "start": 19.476,
-     "end": 19.856
+     "start": 25.641,
+     "end": 26.063
     },
     {
      "display": "mehr!",
      "spoken": "mehr!",
      "color": null,
      "group": 1,
-     "start": 19.856,
-     "end": 20.06
+     "start": 26.063,
+     "end": 26.29
     },
     {
      "display": "Einen",
      "spoken": "Einen",
      "color": null,
      "group": 2,
-     "start": 20.28,
-     "end": 20.647
+     "start": 26.51,
+     "end": 26.911
     },
     {
      "display": "Tempel!",
      "spoken": "Tempel!",
      "color": "y",
      "group": 2,
-     "start": 20.647,
-     "end": 21.02
+     "start": 26.911,
+     "end": 27.32
     },
     {
      "display": "Gärten!",
      "spoken": "Gärten!",
      "color": "g",
      "group": 3,
-     "start": 21.24,
-     "end": 21.56
+     "start": 27.54,
+     "end": 27.98
     },
     {
      "display": "Eine",
      "spoken": "Eine",
      "color": null,
      "group": 4,
-     "start": 21.78,
-     "end": 22.151
+     "start": 28.2,
+     "end": 28.584
     },
     {
      "display": "Pilgerstraße!",
      "spoken": "Pilgerstraße!",
      "color": "y",
      "group": 4,
-     "start": 22.151,
-     "end": 22.92
+     "start": 28.584,
+     "end": 29.38
     }
    ],
    "spoken": "Aber ich sehe mehr! Einen Tempel! Gärten! Eine Pilgerstraße!",
-   "start": 18.9,
-   "end": 22.92
+   "start": 25.0,
+   "end": 29.38
   },
   {
    "scene": "s06",
@@ -547,45 +724,45 @@
      "spoken": "Und",
      "color": null,
      "group": 0,
-     "start": 23.14,
-     "end": 23.34
+     "start": 29.6,
+     "end": 29.788
     },
     {
      "display": "am",
      "spoken": "am",
      "color": null,
      "group": 0,
-     "start": 23.34,
-     "end": 23.534
+     "start": 29.788,
+     "end": 29.968
     },
     {
      "display": "Ende:",
      "spoken": "Ende:",
      "color": null,
      "group": 0,
-     "start": 23.534,
-     "end": 23.92
+     "start": 29.968,
+     "end": 30.33
     },
     {
      "display": "eine",
      "spoken": "eine",
      "color": null,
      "group": 1,
-     "start": 24.1,
-     "end": 24.484
+     "start": 30.55,
+     "end": 30.97
     },
     {
      "display": "Weltreligion!",
      "spoken": "Weltreligion!",
      "color": "p",
      "group": 1,
-     "start": 24.484,
-     "end": 25.28
+     "start": 30.97,
+     "end": 31.84
     }
    ],
    "spoken": "Und am Ende: eine Weltreligion!",
-   "start": 23.14,
-   "end": 25.28
+   "start": 29.6,
+   "end": 31.84
   },
   {
    "scene": "s06",
@@ -596,158 +773,37 @@
      "spoken": "Aktueller",
      "color": null,
      "group": 0,
-     "start": 25.6,
-     "end": 26.3
+     "start": 32.16,
+     "end": 32.838
     },
     {
      "display": "Stand:",
      "spoken": "Stand:",
      "color": null,
      "group": 0,
-     "start": 26.3,
-     "end": 26.55
+     "start": 32.838,
+     "end": 33.08
     },
     {
      "display": "null",
      "spoken": "null",
      "color": "r",
      "group": 1,
-     "start": 26.77,
-     "end": 27.026
+     "start": 33.3,
+     "end": 33.551
     },
     {
      "display": "Anhänger.",
      "spoken": "Anhänger.",
      "color": "r",
      "group": 1,
-     "start": 27.026,
-     "end": 27.76
+     "start": 33.551,
+     "end": 34.27
     }
    ],
    "spoken": "Aktueller Stand: null Anhänger.",
-   "start": 25.6,
-   "end": 27.76
-  },
-  {
-   "scene": "s07",
-   "id": "L13",
-   "words": [
-    {
-     "display": "Dafür",
-     "spoken": "Dafür",
-     "color": null,
-     "group": 0,
-     "start": 28.14,
-     "end": 28.539
-    },
-    {
-     "display": "gilt",
-     "spoken": "gilt",
-     "color": null,
-     "group": 0,
-     "start": 28.539,
-     "end": 28.749
-    },
-    {
-     "display": "ein",
-     "spoken": "ein",
-     "color": null,
-     "group": 1,
-     "start": 28.749,
-     "end": 28.952
-    },
-    {
-     "display": "heiliges",
-     "spoken": "heiliges",
-     "color": "y",
-     "group": 1,
-     "start": 28.952,
-     "end": 29.554
-    },
-    {
-     "display": "Gesetz:",
-     "spoken": "Gesetz:",
-     "color": "y",
-     "group": 1,
-     "start": 29.554,
-     "end": 29.96
-    },
-    {
-     "display": "Jeder",
-     "spoken": "Jeder",
-     "color": null,
-     "group": 2,
-     "start": 30.18,
-     "end": 30.541
-    },
-    {
-     "display": "neue",
-     "spoken": "neue",
-     "color": null,
-     "group": 2,
-     "start": 30.541,
-     "end": 30.731
-    },
-    {
-     "display": "Follower",
-     "spoken": "Follower",
-     "color": "p",
-     "group": 2,
-     "start": 30.731,
-     "end": 31.276
-    },
-    {
-     "display": "bringt",
-     "spoken": "bringt",
-     "color": null,
-     "group": 3,
-     "start": 31.276,
-     "end": 31.479
-    },
-    {
-     "display": "einen",
-     "spoken": "einen",
-     "color": "y",
-     "group": 3,
-     "start": 31.479,
-     "end": 31.84
-    },
-    {
-     "display": "Euro",
-     "spoken": "Euro",
-     "color": "y",
-     "group": 3,
-     "start": 31.84,
-     "end": 32.194
-    },
-    {
-     "display": "in",
-     "spoken": "in",
-     "color": null,
-     "group": 4,
-     "start": 32.194,
-     "end": 32.372
-    },
-    {
-     "display": "die",
-     "spoken": "die",
-     "color": null,
-     "group": 4,
-     "start": 32.372,
-     "end": 32.555
-    },
-    {
-     "display": "Kollekte!",
-     "spoken": "Kollekte!",
-     "color": null,
-     "group": 4,
-     "start": 32.555,
-     "end": 33.1
-    }
-   ],
-   "spoken": "Dafür gilt ein heiliges Gesetz: Jeder neue Follower bringt einen Euro in die Kollekte!",
-   "start": 28.14,
-   "end": 33.1
+   "start": 32.16,
+   "end": 34.27
   },
   {
    "scene": "s08",
@@ -758,117 +814,117 @@
      "spoken": "Sei",
      "color": null,
      "group": 0,
-     "start": 33.48,
-     "end": 33.654
+     "start": 34.65,
+     "end": 34.847
     },
     {
      "display": "von",
      "spoken": "von",
      "color": null,
      "group": 0,
-     "start": 33.654,
-     "end": 33.828
+     "start": 34.847,
+     "end": 35.044
     },
     {
      "display": "Anfang",
      "spoken": "Anfang",
      "color": "g",
      "group": 0,
-     "start": 33.828,
-     "end": 34.175
+     "start": 35.044,
+     "end": 35.438
     },
     {
      "display": "an",
      "spoken": "an",
      "color": null,
      "group": 0,
-     "start": 34.175,
-     "end": 34.343
+     "start": 35.438,
+     "end": 35.628
     },
     {
      "display": "dabei",
      "spoken": "dabei",
      "color": null,
      "group": 0,
-     "start": 34.343,
-     "end": 34.684
+     "start": 35.628,
+     "end": 36.015
     },
     {
      "display": "und",
      "spoken": "und",
      "color": null,
      "group": 1,
-     "start": 34.684,
-     "end": 34.858
+     "start": 36.015,
+     "end": 36.212
     },
     {
      "display": "sichere",
      "spoken": "sichere",
      "color": null,
      "group": 1,
-     "start": 34.858,
-     "end": 35.367
+     "start": 36.212,
+     "end": 36.789
     },
     {
      "display": "dir",
      "spoken": "dir",
      "color": null,
      "group": 1,
-     "start": 35.367,
-     "end": 35.541
+     "start": 36.789,
+     "end": 36.986
     },
     {
      "display": "einen",
      "spoken": "einen",
      "color": null,
      "group": 2,
-     "start": 35.541,
-     "end": 35.882
+     "start": 36.986,
+     "end": 37.373
     },
     {
      "display": "hohen",
      "spoken": "hohen",
      "color": "y",
      "group": 2,
-     "start": 35.882,
-     "end": 36.223
+     "start": 37.373,
+     "end": 37.76
     },
     {
      "display": "Rang",
      "spoken": "Rang",
      "color": "y",
      "group": 2,
-     "start": 36.223,
-     "end": 36.403
+     "start": 37.76,
+     "end": 37.964
     },
     {
      "display": "in",
      "spoken": "in",
      "color": null,
      "group": 3,
-     "start": 36.403,
-     "end": 36.571
+     "start": 37.964,
+     "end": 38.153
     },
     {
      "display": "meiner",
      "spoken": "meiner",
      "color": null,
      "group": 3,
-     "start": 36.571,
-     "end": 36.919
+     "start": 38.153,
+     "end": 38.547
     },
     {
      "display": "Sekte!",
      "spoken": "Sekte!",
      "color": "p",
      "group": 3,
-     "start": 36.919,
-     "end": 37.26
+     "start": 38.547,
+     "end": 38.934
     }
    ],
    "spoken": "Sei von Anfang an dabei und sichere dir einen hohen Rang in meiner Sekte!",
-   "start": 33.48,
-   "end": 37.26
+   "start": 34.65,
+   "end": 38.934
   },
   {
    "scene": "s09",
@@ -879,93 +935,93 @@
      "spoken": "Nur",
      "color": null,
      "group": 0,
-     "start": 37.64,
-     "end": 37.903
+     "start": 39.314,
+     "end": 39.517
     },
     {
      "display": "eins",
      "spoken": "eins",
      "color": null,
      "group": 0,
-     "start": 37.903,
-     "end": 38.176
+     "start": 39.517,
+     "end": 39.727
     },
     {
      "display": "fehlt",
      "spoken": "fehlt",
      "color": null,
      "group": 1,
-     "start": 38.176,
-     "end": 38.458
+     "start": 39.727,
+     "end": 39.944
     },
     {
      "display": "noch:",
      "spoken": "noch:",
      "color": null,
      "group": 1,
-     "start": 38.458,
-     "end": 38.73
+     "start": 39.944,
+     "end": 40.154
     },
     {
      "display": "ein",
      "spoken": "ein",
      "color": null,
      "group": 2,
-     "start": 38.95,
-     "end": 39.11
+     "start": 40.374,
+     "end": 40.596
     },
     {
      "display": "Name!",
      "spoken": "Name!",
      "color": "p",
      "group": 2,
-     "start": 39.11,
-     "end": 39.42
+     "start": 40.596,
+     "end": 41.024
     },
     {
      "display": "Wie",
      "spoken": "Wie",
      "color": null,
      "group": 3,
-     "start": 39.64,
-     "end": 39.806
+     "start": 41.244,
+     "end": 41.421
     },
     {
      "display": "soll",
      "spoken": "soll",
      "color": null,
      "group": 3,
-     "start": 39.806,
-     "end": 39.979
+     "start": 41.421,
+     "end": 41.603
     },
     {
      "display": "unsere",
      "spoken": "unsere",
      "color": null,
      "group": 4,
-     "start": 39.979,
-     "end": 40.46
+     "start": 41.603,
+     "end": 42.114
     },
     {
      "display": "Sekte",
      "spoken": "Sekte",
      "color": null,
      "group": 4,
-     "start": 40.46,
-     "end": 40.787
+     "start": 42.114,
+     "end": 42.461
     },
     {
      "display": "heißen?",
      "spoken": "heißen?",
      "color": "p",
      "group": 4,
-     "start": 40.787,
-     "end": 41.12
+     "start": 42.461,
+     "end": 42.814
     }
    ],
    "spoken": "Nur eins fehlt noch: ein Name! Wie soll unsere Sekte heißen?",
-   "start": 37.64,
-   "end": 41.12
+   "start": 39.314,
+   "end": 42.814
   },
   {
    "scene": "s10",
@@ -976,93 +1032,93 @@
      "spoken": "Schreib's",
      "color": null,
      "group": 0,
-     "start": 41.5,
-     "end": 41.771
+     "start": 43.194,
+     "end": 43.445
     },
     {
      "display": "in",
      "spoken": "in",
      "color": null,
      "group": 1,
-     "start": 41.771,
-     "end": 41.993
+     "start": 43.445,
+     "end": 43.65
     },
     {
      "display": "die",
      "spoken": "die",
      "color": null,
      "group": 1,
-     "start": 41.993,
-     "end": 42.223
+     "start": 43.65,
+     "end": 43.862
     },
     {
      "display": "Kommentare",
      "spoken": "Kommentare",
      "color": "y",
      "group": 1,
-     "start": 42.223,
-     "end": 43.126
+     "start": 43.862,
+     "end": 44.698
     },
     {
      "display": "und",
      "spoken": "und",
      "color": null,
      "group": 2,
-     "start": 43.126,
-     "end": 43.356
+     "start": 44.698,
+     "end": 44.91
     },
     {
      "display": "sprich",
      "spoken": "sprich",
      "color": null,
      "group": 2,
-     "start": 43.356,
-     "end": 43.61
+     "start": 44.91,
+     "end": 45.146
     },
     {
      "display": "mich",
      "spoken": "mich",
      "color": null,
      "group": 2,
-     "start": 43.61,
-     "end": 43.849
+     "start": 45.146,
+     "end": 45.366
     },
     {
      "display": "an",
      "spoken": "an",
      "color": null,
      "group": 2,
-     "start": 43.849,
-     "end": 44.07
+     "start": 45.366,
+     "end": 45.571
     },
     {
      "display": "mit",
      "spoken": "mit",
      "color": null,
      "group": 3,
-     "start": 44.07,
-     "end": 44.3
+     "start": 45.571,
+     "end": 45.783
     },
     {
      "display": "Prophet",
      "spoken": "Prophet",
      "color": "y",
      "group": 3,
-     "start": 44.3,
-     "end": 44.768
+     "start": 45.783,
+     "end": 46.216
     },
     {
      "display": "Peter!",
      "spoken": "Peter!",
      "color": "y",
      "group": 3,
-     "start": 44.768,
-     "end": 45.22
+     "start": 46.216,
+     "end": 46.634
     }
    ],
    "spoken": "Schreib's in die Kommentare und sprich mich an mit Prophet Peter!",
-   "start": 41.5,
-   "end": 45.22
+   "start": 43.194,
+   "end": 46.634
   },
   {
    "scene": "s10",
@@ -1073,101 +1129,101 @@
      "spoken": "Und:",
      "color": null,
      "group": 0,
-     "start": 45.54,
-     "end": 48.06
+     "start": 46.954,
+     "end": 47.234
     },
     {
      "display": "Was",
      "spoken": "Was",
      "color": null,
      "group": 0,
-     "start": 48.28,
-     "end": 48.305
+     "start": 47.454,
+     "end": 47.626
     },
     {
      "display": "kaufen",
      "spoken": "kaufen",
      "color": null,
      "group": 0,
-     "start": 48.305,
-     "end": 48.354
+     "start": 47.626,
+     "end": 47.97
     },
     {
      "display": "wir",
      "spoken": "wir",
      "color": null,
      "group": 0,
-     "start": 48.354,
-     "end": 48.379
+     "start": 47.97,
+     "end": 48.142
     },
     {
      "display": "morgen",
      "spoken": "morgen",
      "color": null,
      "group": 1,
-     "start": 48.379,
-     "end": 48.428
+     "start": 48.142,
+     "end": 48.486
     },
     {
      "display": "von",
      "spoken": "von",
      "color": null,
      "group": 2,
-     "start": 48.428,
-     "end": 48.453
+     "start": 48.486,
+     "end": 48.658
     },
     {
      "display": "der",
      "spoken": "der",
      "color": null,
      "group": 2,
-     "start": 48.453,
-     "end": 48.477
+     "start": 48.658,
+     "end": 48.83
     },
     {
      "display": "ersten",
      "spoken": "ersten",
      "color": "y",
      "group": 2,
-     "start": 48.477,
-     "end": 48.527
+     "start": 48.83,
+     "end": 49.174
     },
     {
      "display": "Kollekte?",
      "spoken": "Kollekte?",
      "color": "y",
      "group": 2,
-     "start": 48.527,
-     "end": 48.6
+     "start": 49.174,
+     "end": 49.684
     },
     {
      "display": "Der",
      "spoken": "Der",
      "color": null,
      "group": 3,
-     "start": 48.71,
-     "end": 48.854
+     "start": 49.904,
+     "end": 50.123
     },
     {
      "display": "Top-Kommentar",
      "spoken": "Top-Kommentar",
      "color": "g",
      "group": 3,
-     "start": 48.854,
-     "end": 49.429
+     "start": 50.123,
+     "end": 51.0
     },
     {
      "display": "entscheidet!",
      "spoken": "entscheidet!",
      "color": null,
      "group": 4,
-     "start": 49.429,
-     "end": 49.87
+     "start": 51.0,
+     "end": 51.674
     }
    ],
    "spoken": "Und: Was kaufen wir morgen von der ersten Kollekte? Der Top-Kommentar entscheidet!",
-   "start": 45.54,
-   "end": 49.87
+   "start": 46.954,
+   "end": 51.674
   }
  ]
 }

@@ -14,7 +14,7 @@
     #s07-law { left: 120px; width: 780px; top: 420px; height: 210px; border-radius: 18px; padding-top: 22px;
       background: linear-gradient(180deg, #f6ecd2, #dcc58f); color: #3a2a18; box-shadow: 0 20px 50px rgba(0,0,0,.55); opacity: 0; }
     #s07-law .k { font-family: "Space Mono", monospace; font-weight: 700; font-size: 30px; letter-spacing: .16em; color: #8a1a1a; }
-    #s07-law .x { margin-top: 12px; font-size: 60px; line-height: 1.05; color: #2a1a10; }
+    #s07-law .x { margin-top: 12px; font-size: 52px; line-height: 1.05; color: #2a1a10; }
     #s07-law .x em { font-style: normal; color: #c2185b; }
     #s07-fol { left: 120px; top: 700px; width: 250px; height: 92px; border-radius: 46px; background: #ff4fb0; color: #fff; font-size: 46px; line-height: 92px;
       box-shadow: 0 0 40px rgba(255,79,176,.7); opacity: 0; }
@@ -25,7 +25,7 @@
       <div id="s07-fg" class="full fgwrap">
       <svg id="s07-svg" class="full" viewBox="0 0 1080 1920"></svg>
       <div id="s07-box" class="cbox y" style="opacity:0"><div class="lab">KOLLEKTE</div><div class="num" id="s07-n">0 €</div></div>
-      <div id="s07-law" class="plate"><div class="k">HEILIGES GESETZ · § 1</div><div class="x"><em>1 FOLLOWER</em><br>= 1 € IN DIE KOLLEKTE</div></div>
+      <div id="s07-law" class="plate"><div class="k">HEILIGES GESETZ · § 1</div><div class="x"><em>1 FOLLOWER = 1 ANHÄNGER</em><br>+ 1 € IN DIE KOLLEKTE</div></div>
       <div id="s07-fol" class="plate">+ FOLGEN</div>
       <svg id="s07-top" class="full" viewBox="0 0 1080 1920"></svg>
       </div>
@@ -206,7 +206,7 @@
           el("path", { d: "M0 1010 Q160 900 330 960 Q520 1020 700 930 Q900 850 1080 960 L1080 1920 L0 1920Z", fill: mood === "day" ? "#8a9a8c" : "#4a2a55", opacity: 0.8 }, t);
           el("path", { d: "M0 1060 Q240 990 470 1050 Q760 1110 1080 1060 L1080 1920 L0 1920Z", fill: mood === "day" ? "#6d7a5a" : "#2f1d3a" }, t);
         }
-        el("rect", { x: 0, y: 1080, width: W, height: 1000, fill: lin(D, pre + "gr", mood === "day" ? [[0, "#8b7a4a"], [1, "#4a3f22"]] : [[0, "#5a3f34"], [0.5, "#33231f"], [1, "#160f12"]]) }, land);
+        el("rect", { x: -200, y: 1080, width: W + 400, height: 3200, fill: lin(D, pre + "gr", mood === "day" ? [[0, "#8b7a4a"], [1, "#4a3f22"]] : [[0, "#5a3f34"], [0.5, "#33231f"], [1, "#160f12"]]) }, land);
         // Erdflecken, Pfützen (spiegeln den Himmel), Steine
         for (let i = 0; i < W / 220; i++) { const px = R() * W, py = 1150 + R() * 400;
           el("ellipse", { cx: px, cy: py, rx: 60 + R() * 90, ry: 10 + R() * 14, fill: "#2a1a14", opacity: 0.5 }, land);

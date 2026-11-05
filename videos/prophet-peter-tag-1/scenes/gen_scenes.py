@@ -49,7 +49,7 @@ FX = '      <svg id="@@ID@@-fx" class="full" viewBox="0 0 1080 1920"></svg>'
 S = {}
 
 # ---------- s01 Hook: TAG 1 – ICH GRÜNDE EINE SEKTE (alles ab Frame 0 lesbar, jedes gesprochene Wort leuchtet groß auf) ----------
-S['s01'] = ('''    #s01-title { left: 0; width: 1080px; top: 175px; text-align: center; }
+S['s01'] = ('''    #s01-title { left: 0; width: 1080px; top: 50px; text-align: center; }
     #s01-heaven { left: 0; top: 0; width: 1080px; height: 1920px; opacity: .9;
       background: repeating-conic-gradient(from 180deg at 50% -4%, rgba(255,236,170,.30) 0deg 3deg, rgba(255,236,170,0) 3deg 9deg);
       -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 0%, #000 30%, transparent 80%); mask-image: radial-gradient(ellipse 80% 70% at 50% 0%, #000 30%, transparent 80%); }
@@ -57,13 +57,15 @@ S['s01'] = ('''    #s01-title { left: 0; width: 1080px; top: 175px; text-align: 
     #s01-ring { left: 190px; top: 20px; width: 700px; height: 700px; border-radius: 50%; border: 6px solid rgba(255,230,150,.7); box-shadow: 0 0 60px rgba(255,214,110,.8), inset 0 0 60px rgba(255,214,110,.5); }
     .s01-sp { position: absolute; width: 10px; height: 10px; border-radius: 50%; background: #fff6d0; box-shadow: 0 0 14px 4px rgba(255,220,120,.9); }
     /* Wörter auf farbigen Kästen, damit der Text vor dem hellen Himmel auffällt */
-    #s01-title .d, #s01-title .h { font-family: "Inter", sans-serif; font-weight: 900; letter-spacing: -.02em; }
-    #s01-title .d { font-size: 200px; line-height: 1.1; }
+    #s01-title .k, #s01-title .d, #s01-title .h { font-family: "Inter", sans-serif; font-weight: 900; letter-spacing: -.02em; }
+    #s01-title .k { font-size: 96px; line-height: 1.2; margin-bottom: 14px; }
+    #s01-title .d { font-size: 170px; line-height: 1.1; }
     #s01-title .h { margin-top: 22px; font-size: 118px; line-height: 1.32; }
     .s01-w { position: relative; display: inline-block; margin: 0 6px; padding: 2px 24px 8px; border-radius: 22px; transform-origin: 50% 55%;
       background: rgba(28,10,58,.9); border: 5px solid rgba(255,214,110,.85); color: #fff;
       box-shadow: 0 0 34px rgba(255,200,90,.45), 0 12px 0 rgba(0,0,0,.35); text-shadow: 0 6px 0 rgba(0,0,0,.45); }
     #s01-title .d .s01-w { color: #ffd43b; text-shadow: 0 0 40px rgba(255,212,59,.6), 0 8px 0 rgba(0,0,0,.5); }
+    .s01-kn { background: #c8102e !important; border-color: #ffb3bf !important; color: #fff; box-shadow: 0 0 50px rgba(255,40,70,.8), 0 12px 0 rgba(0,0,0,.35) !important; }
     #s01-w6 { background: #ff4fb0; border-color: #ffd1ec; box-shadow: 0 0 50px rgba(255,79,176,.75), 0 12px 0 rgba(0,0,0,.35); }
     #s01-flash { background: #ffffff; opacity: 0; mix-blend-mode: overlay; }
     .s01-bar { position: absolute; left: 0; width: 1080px; height: 120px; background: #000; }''',
@@ -73,11 +75,11 @@ BG + '''
       <div id="s01-heaven" class="abs noshift"></div>
       <div id="s01-glow" class="abs"></div><div id="s01-ring" class="abs"></div><div id="s01-sps" class="abs" style="left:0;top:0"></div>
       <div id="s01-flash" class="full noshift"></div>
-      <div id="s01-title" class="abs"><div class="d"><span id="s01-w1" class="s01-w">TAG</span> <span id="s01-w2" class="s01-w">1</span></div>
+      <div id="s01-title" class="abs"><div class="k"><span id="s01-k1" class="s01-w s01-kn">AUF</span> <span id="s01-k2" class="s01-w s01-kn">DIE</span> <span id="s01-k3" class="s01-w s01-kn">KNIE!</span></div><div class="d"><span id="s01-w1" class="s01-w">TAG</span> <span id="s01-w2" class="s01-w">1</span></div>
         <div class="h"><span id="s01-w3" class="s01-w">ICH</span> <span id="s01-w4" class="s01-w">GRÜNDE</span><br><span id="s01-w5" class="s01-w">EINE</span> <span id="s01-w6" class="s01-w">SEKTE</span></div></div>
       <div class="s01-bar noshift" style="top:0"></div><div class="s01-bar noshift" style="top:1800px"></div>
 ''' + FX,
-'''      const G = grundstueck(bg, "s01g", { mood: "dusk", goatX: 400, goatS: 0.6 }); gsap.set(G.rays, { opacity: 0.55 });
+'''      const G = grundstueck(bg, "s01g", { mood: "dusk", goatX: 440, goatS: 0.6 }); gsap.set(G.rays, { opacity: 0.55 });
       floatDust(tl, G, C.__dur); chew(tl, G, 0, C.__dur - 0.3);
       // Visionen schon ab Frame 0 angedeutet: goldene, gestrichelte Geister-Umrisse von Tempel, Gärten und Pilgerstraße über dem Grundstück
       const vis = document.querySelector("#s01-vis"), vg = el("g", { transform: "translate(745 1190) scale(0.72) translate(-540 -920)", opacity: 0.8 }, vis);
@@ -95,8 +97,8 @@ BG + '''
       tl.fromTo(bg, { scale: 1.1, transformOrigin: "60% 55%" }, { scale: 1.0, duration: C.__dur, ease: "none" }, 0);
       // jedes gesprochene Wort wird groß (eigener Kasten springt nach vorn), danach zurück auf Normalgröße, leuchtend
       gsap.set(".s01-w", { filter: "brightness(0.85)" });
-      [["#s01-w1", "tag", "#ffd43b"], ["#s01-w2", "eins", "#ffd43b"], ["#s01-w3", "ich", "#ffd36e"], ["#s01-w4", "gründe", "#ffd36e"], ["#s01-w5", "eine", "#ffd36e"], ["#s01-w6", "sekte", "#ff4fb0"]].forEach(([sel, w, c], i) => {
-        const t = at("L1", w), nx = i < 5 ? at("L1", ["eins", "ich", "gründe", "eine", "sekte"][i]) : C.__dur - 0.3;
+      [["#s01-k1", "auf", "#ff3b55"], ["#s01-k2", "die", "#ff3b55"], ["#s01-k3", "knie", "#ff3b55"], ["#s01-w1", "tag", "#ffd43b"], ["#s01-w2", "eins", "#ffd43b"], ["#s01-w3", "ich", "#ffd36e"], ["#s01-w4", "gründe", "#ffd36e"], ["#s01-w5", "eine", "#ffd36e"], ["#s01-w6", "sekte", "#ff4fb0"]].forEach(([sel, w, c], i) => {
+        const ORD = ["auf", "die", "knie", "tag", "eins", "ich", "gründe", "eine", "sekte"], t = at("L1", w), nx = i < 8 ? at("L1", ORD[i + 1]) : C.__dur - 0.3;
         tl.set(sel, { zIndex: 5 }, t - 0.04);
         tl.to(sel, { scale: 1.32, filter: `brightness(1.25) drop-shadow(0 0 30px ${c})`, duration: 0.09, ease: "power2.out" }, t - 0.04);
         tl.to(sel, { scale: 1.0, filter: `brightness(1.08) drop-shadow(0 0 14px ${c})`, duration: 0.22, ease: "power2.out" }, Math.max(t + 0.08, nx - 0.2));
@@ -111,11 +113,13 @@ BG + '''
         Object.assign(d.style, { left: x + "px", top: y + "px", transform: `scale(${0.4 + RS()})` }); spc.appendChild(d);
         tl.fromTo(d, { opacity: 0, y: 0 }, { opacity: 0.4 + RS() * 0.6, y: -120 - RS() * 160, duration: C.__dur, ease: "none" }, 0); }
       // Prophet Peter steht ab Frame 0 links im Bild (segnend)
-      const P = peter(sv, "s01p", 175, 1160, 0.42, { arms: [14, -120] });
+      const P = peter(sv, "s01p", 205, 1225, 0.53, { arms: [14, -120] });
       P.g.style.filter = "drop-shadow(0 0 30px rgba(255,220,130,.55))";
       talk(tl, P, line("L1")[0], line("L1")[1]);
       tl.fromTo(P.spark, { scale: 0.5, svgOrigin: "-187 -850" }, { scale: 1.6, duration: 0.2, yoyo: true, repeat: 5 }, 0.1);
       tl.to(P.armL, { rotation: -150, duration: 0.25, yoyo: true, repeat: 3, ease: "sine.inOut" }, 0.4);
+      // „Auf die Knie!“: Bild bebt
+      tl.to(["#s01-title", bg], { x: 10, duration: 0.04, repeat: 7, yoyo: true }, at("L1", "knie"));
       const se = at("L1", "sekte");
       tl.fromTo("#s01-flash", { opacity: 0.7 }, { opacity: 0, duration: 0.4, ease: "power2.out", immediateRender: false }, se);
       tl.to("#s01-title", { x: 12, duration: 0.04, repeat: 5, yoyo: true }, se);''' + OUT)
@@ -159,77 +163,76 @@ S['s04'] = ('''    #s04-doc { left: 150px; top: 410px; width: 720px; height: 660
       box-shadow: 0 6px 0 rgba(0,0,0,.3); color: #ffd2d2; font-family: "Inter", sans-serif; font-weight: 900; font-size: 50px; line-height: 130px; text-align: center; }
     #s04-stamp { left: 210px; top: 640px; width: 600px; height: 150px; border: 10px solid #39e27a; border-radius: 20px; color: #39e27a; font-family: "Inter", sans-serif; font-weight: 900;
       font-size: 110px; line-height: 130px; text-align: center; opacity: 0; transform: rotate(-12deg); text-shadow: 0 0 30px rgba(57,226,122,.6); box-shadow: 0 0 30px rgba(57,226,122,.5), inset 0 0 30px rgba(57,226,122,.4); background: rgba(5,20,10,.55); }
-    #s04-sign { left: 270px; top: 590px; width: 480px; height: 170px; border-radius: 12px; background: linear-gradient(180deg, #8a5a2b, #5e3b1a);
+    #s04-sign { left: 330px; top: 420px; width: 480px; height: 170px; border-radius: 12px; background: linear-gradient(180deg, #8a5a2b, #5e3b1a);
       border: 6px solid #3b2410; color: #ffd43b; font-family: "Inter", sans-serif; font-weight: 900; font-size: 46px; line-height: 1.05; text-align: center; padding-top: 24px; opacity: 0;
       box-shadow: 0 20px 40px rgba(0,0,0,.5); }
     #s04-sign small { display: block; font-size: 30px; color: #f3e2c0; letter-spacing: .1em; }''',
-BG + '\n' + SVG + '''
+BG + '''
+      <svg id="s04-holy" class="full noshift" viewBox="0 0 1080 1920"></svg>
+''' + SVG + '''
       <div id="s04-doc" class="abs"><div class="t">TESTAMENT</div><div class="p">„… vermache ich meinem Neffen <b>Peter</b> mein gesamtes <b>Grundstück</b>.<br>Mach was draus, Junge.“</div>
         <div class="sig">Onkel Heinz</div><div id="s04-seal">H</div></div>
       <div id="s04-stamp" class="abs" data-layout-ignore>GEERBT</div>
       <div id="s04-sign" class="abs"><small>ZUKÜNFTIGES</small>HEILIGTUM</div>
 ''' + FX,
-'''      const G = grundstueck(bg, "s04g", { mood: "dusk" }); gsap.set(bg, { filter: "blur(8px) brightness(.55)" });
-      // verschlossenes, rostiges Tor (verdeckt das Grundstück noch)
-      const D = GR(sv), rust = lin(D, "s04rust", [[0, "#6a3a22"], [0.5, "#4a2716"], [1, "#2a160c"]], 0, 0, 1, 1);
-      const gate = el("g", { opacity: 0 }, sv), wings = [];
-      [[150, 1], [540, -1]].forEach(([gx]) => { const w = el("g", {}, gate); wings.push(w);
-        el("rect", { x: gx, y: 420, width: 390, height: 700, fill: "none", stroke: rust, "stroke-width": 22 }, w);
-        for (let i = 1; i < 8; i++) el("rect", { x: gx + i * 48 - 5, y: 420, width: 12, height: 700, fill: rust }, w);
-        el("rect", { x: gx, y: 760, width: 390, height: 16, fill: rust }, w); });
-      el("path", { d: "M520 760 l40 0 l0 70 l-40 0Z", fill: "#a8a8a8" }, gate);
-      const glow = el("rect", { x: 528, y: 420, width: 24, height: 700, fill: "#ffe2a8", opacity: 0 }, gate); glow.style.filter = "blur(10px)";
-      const P = peter(sv, "s04p", 175, 1120, 0.55, { halo: false });
+'''      const G = grundstueck(bg, "s04g", { mood: "dusk", goatX: 880, goatS: 0.6 }); gsap.set(bg, { filter: "blur(8px) brightness(.55)" });
+      // Heiligenschein um Baum + Stuhl: goldener Ring, Glühen, Lichtkegel von oben (Bild-Koordinaten, nicht verschoben)
+      const H = document.querySelector("#s04-holy"), HD = GR(H), holy = el("g", { opacity: 0 }, H);
+      el("ellipse", { cx: 570, cy: 930, rx: 380, ry: 400, fill: rad(HD, "s04hg", [[0, "#ffe9a8", 0.55], [0.55, "#ffcf6a", 0.22], [1, "#ffcf6a", 0]]) }, holy);
+      el("path", { d: "M470 0 L670 0 L860 1240 L280 1240Z", fill: lin(HD, "s04beam", [[0, "#fff4cf", 0.55], [1, "#fff4cf", 0]]) }, holy);
+      const ring = el("ellipse", { cx: 570, cy: 860, rx: 330, ry: 330, fill: "none", stroke: "#ffe08a", "stroke-width": 16 }, holy);
+      ring.style.filter = "drop-shadow(0 0 22px rgba(255,210,90,1)) drop-shadow(0 0 50px rgba(255,180,60,.8))";
+      const sp = Array.from({ length: 18 }, (_, i) => el("circle", { cx: 570 + 330 * Math.cos(i / 18 * 6.283), cy: 860 + 330 * Math.sin(i / 18 * 6.283), r: 7, fill: "#fffbe6" }, holy));
+      const P = peter(sv, "s04p", 165, 1120, 0.55, { halo: false });
       const ve = at("L7", "vererbt"), l8 = line("L8"), he = at("L8", "heiligtum");
-      tl.fromTo("#s04-doc", { y: -700, rotation: -18 }, { y: 0, rotation: -3, duration: 0.6, ease: "back.out(1.4)" }, 0);
-      tl.fromTo("#s04-stamp", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: 0.22, ease: "power4.in" }, ve - 0.15);
-      tl.to("#s04-doc", { x: 10, duration: 0.04, repeat: 5, yoyo: true }, ve + 0.08);
-      tl.to(["#s04-doc", "#s04-stamp"], { y: 1300, rotation: 10, opacity: 0, duration: 0.45, ease: "power3.in" }, l8[0] - 0.4);
-      tl.to(bg, { filter: "blur(2px) brightness(.8)", duration: 0.5 }, l8[0] - 0.2);
-      tl.fromTo(gate, { opacity: 0, scale: 1.08, svgOrigin: "540 770" }, { opacity: 1, scale: 1, duration: 0.45, ease: "expo.out" }, l8[0] - 0.15);
-      tl.fromTo(P.g, { opacity: 0, x: 60 }, { opacity: 1, x: 175, duration: 0.45, ease: "expo.out" }, l8[0]);
-      tl.to(P.armL, { rotation: -100, duration: 0.4, ease: "back.out(1.6)" }, l8[0] + 0.1);
+      tl.fromTo("#s04-doc", { y: -700, rotation: -18 }, { y: 0, rotation: -3, duration: 0.4, ease: "back.out(1.4)" }, 0);
+      tl.fromTo("#s04-stamp", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: 0.2, ease: "power4.in" }, ve - 0.15);
+      tl.to("#s04-doc", { x: 10, duration: 0.04, repeat: 5, yoyo: true }, ve + 0.06);
+      tl.to(["#s04-doc", "#s04-stamp"], { y: 1300, rotation: 10, opacity: 0, duration: 0.35, ease: "power3.in" }, l8[0] - 0.3);
+      tl.to(bg, { filter: "blur(0px) brightness(.85)", duration: 0.4 }, l8[0] - 0.2);
+      tl.fromTo(holy, { opacity: 0 }, { opacity: 1, duration: 0.4 }, l8[0] - 0.1);
+      tl.fromTo(ring, { scale: 0.6, svgOrigin: "570 860" }, { scale: 1, duration: 0.5, ease: "back.out(1.8)" }, l8[0] - 0.1);
+      tl.fromTo(sp, { opacity: 0 }, { opacity: 1, duration: 0.15, stagger: 0.02 }, l8[0] + 0.2);
+      tl.fromTo(P.g, { opacity: 0, x: 40 }, { opacity: 1, x: 165, duration: 0.4, ease: "expo.out" }, l8[0]);
+      tl.to(P.armL, { rotation: -100, duration: 0.35, ease: "back.out(1.6)" }, l8[0] + 0.1);
       talk(tl, P, l8[0], l8[1]);
-      tl.fromTo("#s04-sign", { opacity: 0, y: -400, rotation: -20 }, { opacity: 1, y: 0, rotation: -4, duration: 0.45, ease: "bounce.out" }, he - 0.3);
-      tl.fromTo(glow, { opacity: 0 }, { opacity: 0.9, duration: 0.4 }, he);''' + OUT)
+      tl.fromTo("#s04-sign", { opacity: 0, y: -400, rotation: -20 }, { opacity: 1, y: 0, rotation: -4, duration: 0.4, ease: "bounce.out" }, he - 0.3);''' + OUT)
 
-# ---------- s05 Die Wahrheit: Tor auf – Kamerafahrt über 5 Hektar Wildnis (Ziege!) bis zum einzigen Stuhl ----------
+# ---------- s05 Das Grundstück: Totale über alle 2 Hektar, dann Zoom auf Schrott, Ziege, Stuhl, Baum (Ast bricht) ----------
 S['s05'] = ('''    #s05-box { left: 240px; width: 600px; }
     #s05-box2 { left: 240px; width: 600px; top: 410px; }
-    #s05-goat { left: 300px; top: 830px; font-size: 44px; border-color: #ff4fb0; box-shadow: 0 0 34px rgba(255,79,176,.5); }
-    #s05-sad { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 560px; font-size: 54px; border-color: #ff3b55; box-shadow: 0 0 34px rgba(255,59,85,.5); }''',
+    .s05-l { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 600px; font-size: 48px; border-color: #ff4fb0; box-shadow: 0 0 34px rgba(255,79,176,.5); }''',
 BG + '\n' + SVG + '''
       <div id="s05-box" class="cbox y" style="opacity:0"><div class="lab">FLÄCHE</div><div class="num" id="s05-n">0 m²</div></div>
       <div id="s05-box2" class="cbox r" style="opacity:0"><div class="lab">AUSSTATTUNG</div><div class="num">1 STUHL</div></div>
-      <div id="s05-goat" class="lbl"><small>BEWOHNERIN</small>DIE ZIEGE</div>
+      <div id="s05-junk" class="lbl s05-l"><small>INKLUSIVE</small>SCHROTT &amp; RUINEN</div>
+      <div id="s05-goat" class="lbl s05-l"><small>BEWOHNERIN</small>DIE ZIEGE</div>
 ''' + FX,
 '''      const G = grundstueck(bg, "s05g", { mood: "day", w: 3240, chairX: 470, treeX: 600, goatX: 1150, goatS: 1.0, seed: 11 });
       floatDust(tl, G, C.__dur);
-      const D = GR(sv), rust = lin(D, "s05rust", [[0, "#6a3a22"], [1, "#2a160c"]], 0, 0, 1, 1), wings = [];
-      [[150, 0], [540, 1]].forEach(([gx, k]) => { const w = el("g", {}, sv); wings.push(w);
-        el("rect", { x: gx, y: 420, width: 390, height: 700, fill: "none", stroke: rust, "stroke-width": 22 }, w);
-        for (let i = 1; i < 8; i++) el("rect", { x: gx + i * 48 - 5, y: 420, width: 12, height: 700, fill: rust }, w);
-        el("rect", { x: gx, y: 760, width: 390, height: 16, fill: rust }, w); });
       const tw = el("g", {}, sv); for (let i = 0; i < 14; i++) el("circle", { cx: (i % 4) * 9 - 14, cy: Math.floor(i / 4) * 9 - 14, r: 34 - (i % 5) * 3, fill: "none", stroke: "#8a7040", "stroke-width": 3, opacity: 0.8 }, tw);
       gsap.set(tw, { x: -120, y: 1030 });
-      const ha = at("L9", "hektar"), zi = at("L9b", "ziege"), wo = at("L9b", "wohnt"), st = at("L9b", "stuhl"), es = at("L9b", "und"), l10 = line("L10")[0], ba = at("L10", "baum");
-      // Kamera: Welt 3240 px breit, Start ganz rechts (Gerümpel), über Schuppen/Autowrack zur Ziege, dann zum Stuhl
-      const pan = (x, d, t, ease = "power2.inOut") => { tl.to(G.land, { x, duration: d, ease }, t); tl.to(G.far, { x: x * 0.12, duration: d, ease }, t); };
-      gsap.set(G.land, { x: -2160 }); gsap.set(G.far, { x: -2160 * 0.12 });
-      tl.to(wings[0], { scaleX: 0.06, svgOrigin: "150 770", duration: 0.7, ease: "power3.inOut" }, 0.05);
-      tl.to(wings[1], { scaleX: 0.06, svgOrigin: "930 770", duration: 0.7, ease: "power3.inOut" }, 0.05);
-      tl.to(wings, { opacity: 0, duration: 0.3 }, 0.6);
-      pan(-1350, zi - 0.95, 0.6, "power1.inOut");
-      pan(-700, 0.6, zi - 0.35, "power3.out");
+      const ha = at("L9", "hektar"), wi = at("L9", "wildnis"), zi = at("L9b", "ziege"), wo = at("L9b", "wohnt"), st = at("L9b", "stuhl"), es = at("L9b", "und"), l10 = line("L10")[0], ba = at("L10", "baum");
+      // Kamera: Welt-Punkt (wx, wy) mit Zoom s an Bild-Punkt (sx, sy)
+      const cam = (s, wx, wy, sx, sy) => ({ s, x: sx - s * wx, y: sy - s * wy });
+      const CAM = cam(0.333, 1620, 1080, 540, 980);                        // Totale: die ganzen 2 Hektar
+      const apply = () => G.land.setAttribute("transform", `translate(${CAM.x} ${CAM.y}) scale(${CAM.s})`);
+      apply();
+      const move = (c, t, d = 0.6, ease = "power3.inOut") => tl.to(CAM, { ...c, duration: d, ease, onUpdate: apply }, t);
+      move(cam(0.36, 1620, 1080, 540, 980), 0, Math.max(0.4, wi - 0.4), "none");
+      move(cam(0.85, 2050, 1080, 540, 1000), wi - 0.3);                        // Schrott: Schuppen, Schild, Badewanne
+      move(cam(1.15, 1180, 1120, 540, 1040), zi - 0.35);                       // die Ziege
+      move(cam(1.35, 530, 1150, 560, 1060), es - 0.2, 0.7);                    // der einzige Stuhl
+      move(cam(1.0, 600, 1000, 560, 920), l10 - 0.15, 0.5);                    // der karge Baum
       tl.fromTo("#s05-box", { opacity: 0, scale: 1.5 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2.2)" }, ha - 0.1);
       count(tl, "#s05-n", 0, 20000, ha - 0.05, 0.7, "", " m²");
+      tl.fromTo("#s05-junk", { opacity: 0, scale: 1.6 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2.4)" }, wi + 0.15);
+      tl.to("#s05-junk", { opacity: 0, duration: 0.15 }, zi - 0.3);
       tl.fromTo("#s05-goat", { opacity: 0, scale: 1.6 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2.4)" }, zi);
       tl.to(G.goat.head, { rotation: -8, duration: 0.25, ease: "back.out(2)" }, wo - 0.05);
       tl.to(G.goat.head, { rotation: -14, duration: 0.07, yoyo: true, repeat: 7 }, wo + 0.2);
       tl.to(G.goat.head, { rotation: 36, duration: 0.3 }, wo + 0.9);
       tl.to("#s05-goat", { opacity: 0, duration: 0.2 }, es - 0.2);
-      pan(0, st - es + 0.1, es - 0.3, "power2.inOut");
-      tl.to(G.land, { scale: 1.4, svgOrigin: "520 1250", duration: 1.2, ease: "power2.inOut" }, st - 0.4);
       tl.fromTo("#s05-box2", { opacity: 0, scale: 1.5 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2.2)" }, st - 0.05);
       tl.to("#s05-box2", { x: 10, duration: 0.04, repeat: 5, yoyo: true }, st + 0.25);
       tl.to(tw, { x: 1200, rotation: 720, duration: 2.2, ease: "none" }, l10 - 0.1);
@@ -309,13 +312,13 @@ S['s07'] = ('''    #s07-box { left: 290px; width: 500px; }
     #s07-law { left: 120px; width: 780px; top: 420px; height: 210px; border-radius: 18px; padding-top: 22px;
       background: linear-gradient(180deg, #f6ecd2, #dcc58f); color: #3a2a18; box-shadow: 0 20px 50px rgba(0,0,0,.55); opacity: 0; }
     #s07-law .k { font-family: "Space Mono", monospace; font-weight: 700; font-size: 30px; letter-spacing: .16em; color: #8a1a1a; }
-    #s07-law .x { margin-top: 12px; font-size: 60px; line-height: 1.05; color: #2a1a10; }
+    #s07-law .x { margin-top: 12px; font-size: 52px; line-height: 1.05; color: #2a1a10; }
     #s07-law .x em { font-style: normal; color: #c2185b; }
     #s07-fol { left: 120px; top: 700px; width: 250px; height: 92px; border-radius: 46px; background: #ff4fb0; color: #fff; font-size: 46px; line-height: 92px;
       box-shadow: 0 0 40px rgba(255,79,176,.7); opacity: 0; }''',
 BG + '\n' + SVG + '''
       <div id="s07-box" class="cbox y" style="opacity:0"><div class="lab">KOLLEKTE</div><div class="num" id="s07-n">0 €</div></div>
-      <div id="s07-law" class="plate"><div class="k">HEILIGES GESETZ · § 1</div><div class="x"><em>1 FOLLOWER</em><br>= 1 € IN DIE KOLLEKTE</div></div>
+      <div id="s07-law" class="plate"><div class="k">HEILIGES GESETZ · § 1</div><div class="x"><em>1 FOLLOWER = 1 ANHÄNGER</em><br>+ 1 € IN DIE KOLLEKTE</div></div>
       <div id="s07-fol" class="plate">+ FOLGEN</div>
       <svg id="s07-top" class="full" viewBox="0 0 1080 1920"></svg>
 ''' + FX,

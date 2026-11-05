@@ -42,8 +42,8 @@
     #s10-f { left: 90px; top: 920px; width: 820px; height: 110px; border-radius: 55px; background: #ff4fb0; color: #fff; font-size: 46px; line-height: 110px; opacity: 0;
       box-shadow: 0 0 50px rgba(255,79,176,.65); }
   </style>
-  <div id="root" data-composition-id="s10" data-start="0" data-duration="11.170" data-width="1080" data-height="1920">
-    <div id="s10-stage" class="clip stage" data-start="0" data-duration="11.170" data-track-index="0">
+  <div id="root" data-composition-id="s10" data-start="0" data-duration="11.280" data-width="1080" data-height="1920">
+    <div id="s10-stage" class="clip stage" data-start="0" data-duration="11.280" data-track-index="0">
       <svg id="s10-bg" class="full" viewBox="0 0 1080 1920"></svg>
       <div id="s10-fg" class="full fgwrap">
       <svg id="s10-svg" class="full" viewBox="0 0 1080 1920"></svg>
@@ -58,7 +58,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 11.17, "L18": [0.2, 3.92], "L18.words": [["schreibs", 0.2, 0.471], ["in", 0.471, 0.693], ["die", 0.693, 0.923], ["kommentare", 0.923, 1.826], ["und", 1.826, 2.056], ["sprich", 2.056, 2.31], ["mich", 2.31, 2.549], ["an", 2.549, 2.77], ["mit", 2.77, 3.0], ["prophet", 3.0, 3.468], ["peter", 3.468, 3.92]], "L19": [4.24, 8.57], "L19.words": [["und", 4.24, 6.76], ["was", 6.98, 7.005], ["kaufen", 7.005, 7.054], ["wir", 7.054, 7.079], ["morgen", 7.079, 7.128], ["von", 7.128, 7.153], ["der", 7.153, 7.177], ["ersten", 7.177, 7.227], ["kollekte", 7.227, 7.3], ["der", 7.41, 7.554], ["topkommentar", 7.554, 8.129], ["entscheidet", 8.129, 8.57]]};
+      const C = {"__dur": 11.28, "L18": [0.2, 3.64], "L18.words": [["schreibs", 0.2, 0.451], ["in", 0.451, 0.656], ["die", 0.656, 0.868], ["kommentare", 0.868, 1.704], ["und", 1.704, 1.916], ["sprich", 1.916, 2.152], ["mich", 2.152, 2.372], ["an", 2.372, 2.577], ["mit", 2.577, 2.789], ["prophet", 2.789, 3.222], ["peter", 3.222, 3.64]], "L19": [3.96, 8.68], "L19.words": [["und", 3.96, 4.24], ["was", 4.46, 4.632], ["kaufen", 4.632, 4.976], ["wir", 4.976, 5.148], ["morgen", 5.148, 5.492], ["von", 5.492, 5.664], ["der", 5.664, 5.836], ["ersten", 5.836, 6.18], ["kollekte", 6.18, 6.69], ["der", 6.91, 7.129], ["topkommentar", 7.129, 8.006], ["entscheidet", 8.006, 8.68]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -361,7 +361,7 @@
           el("path", { d: "M0 1010 Q160 900 330 960 Q520 1020 700 930 Q900 850 1080 960 L1080 1920 L0 1920Z", fill: mood === "day" ? "#8a9a8c" : "#4a2a55", opacity: 0.8 }, t);
           el("path", { d: "M0 1060 Q240 990 470 1050 Q760 1110 1080 1060 L1080 1920 L0 1920Z", fill: mood === "day" ? "#6d7a5a" : "#2f1d3a" }, t);
         }
-        el("rect", { x: 0, y: 1080, width: W, height: 1000, fill: lin(D, pre + "gr", mood === "day" ? [[0, "#8b7a4a"], [1, "#4a3f22"]] : [[0, "#5a3f34"], [0.5, "#33231f"], [1, "#160f12"]]) }, land);
+        el("rect", { x: -200, y: 1080, width: W + 400, height: 3200, fill: lin(D, pre + "gr", mood === "day" ? [[0, "#8b7a4a"], [1, "#4a3f22"]] : [[0, "#5a3f34"], [0.5, "#33231f"], [1, "#160f12"]]) }, land);
         // Erdflecken, Pfützen (spiegeln den Himmel), Steine
         for (let i = 0; i < W / 220; i++) { const px = R() * W, py = 1150 + R() * 400;
           el("ellipse", { cx: px, cy: py, rx: 60 + R() * 90, ry: 10 + R() * 14, fill: "#2a1a14", opacity: 0.5 }, land);

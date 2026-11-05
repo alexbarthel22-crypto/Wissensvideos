@@ -27,7 +27,7 @@
     .plate { position: absolute; font-family: "Inter", sans-serif; font-weight: 900; color: #fff; text-align: center; }
     /* Vordergrund 110 px tiefer = besser zentriert zwischen Kapitel-Marke und Untertiteln (Hintergrund/Filmlook bleiben) */
     .fgwrap { transform: translateY(110px); }
-    #s01-title { left: 0; width: 1080px; top: 175px; text-align: center; }
+    #s01-title { left: 0; width: 1080px; top: 50px; text-align: center; }
     #s01-heaven { left: 0; top: 0; width: 1080px; height: 1920px; opacity: .9;
       background: repeating-conic-gradient(from 180deg at 50% -4%, rgba(255,236,170,.30) 0deg 3deg, rgba(255,236,170,0) 3deg 9deg);
       -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 0%, #000 30%, transparent 80%); mask-image: radial-gradient(ellipse 80% 70% at 50% 0%, #000 30%, transparent 80%); }
@@ -35,19 +35,21 @@
     #s01-ring { left: 190px; top: 20px; width: 700px; height: 700px; border-radius: 50%; border: 6px solid rgba(255,230,150,.7); box-shadow: 0 0 60px rgba(255,214,110,.8), inset 0 0 60px rgba(255,214,110,.5); }
     .s01-sp { position: absolute; width: 10px; height: 10px; border-radius: 50%; background: #fff6d0; box-shadow: 0 0 14px 4px rgba(255,220,120,.9); }
     /* Wörter auf farbigen Kästen, damit der Text vor dem hellen Himmel auffällt */
-    #s01-title .d, #s01-title .h { font-family: "Inter", sans-serif; font-weight: 900; letter-spacing: -.02em; }
-    #s01-title .d { font-size: 200px; line-height: 1.1; }
+    #s01-title .k, #s01-title .d, #s01-title .h { font-family: "Inter", sans-serif; font-weight: 900; letter-spacing: -.02em; }
+    #s01-title .k { font-size: 96px; line-height: 1.2; margin-bottom: 14px; }
+    #s01-title .d { font-size: 170px; line-height: 1.1; }
     #s01-title .h { margin-top: 22px; font-size: 118px; line-height: 1.32; }
     .s01-w { position: relative; display: inline-block; margin: 0 6px; padding: 2px 24px 8px; border-radius: 22px; transform-origin: 50% 55%;
       background: rgba(28,10,58,.9); border: 5px solid rgba(255,214,110,.85); color: #fff;
       box-shadow: 0 0 34px rgba(255,200,90,.45), 0 12px 0 rgba(0,0,0,.35); text-shadow: 0 6px 0 rgba(0,0,0,.45); }
     #s01-title .d .s01-w { color: #ffd43b; text-shadow: 0 0 40px rgba(255,212,59,.6), 0 8px 0 rgba(0,0,0,.5); }
+    .s01-kn { background: #c8102e !important; border-color: #ffb3bf !important; color: #fff; box-shadow: 0 0 50px rgba(255,40,70,.8), 0 12px 0 rgba(0,0,0,.35) !important; }
     #s01-w6 { background: #ff4fb0; border-color: #ffd1ec; box-shadow: 0 0 50px rgba(255,79,176,.75), 0 12px 0 rgba(0,0,0,.35); }
     #s01-flash { background: #ffffff; opacity: 0; mix-blend-mode: overlay; }
     .s01-bar { position: absolute; left: 0; width: 1080px; height: 120px; background: #000; }
   </style>
-  <div id="root" data-composition-id="s01" data-start="0" data-duration="2.050" data-width="1080" data-height="1920">
-    <div id="s01-stage" class="clip stage" data-start="0" data-duration="2.050" data-track-index="0">
+  <div id="root" data-composition-id="s01" data-start="0" data-duration="3.020" data-width="1080" data-height="1920">
+    <div id="s01-stage" class="clip stage" data-start="0" data-duration="3.020" data-track-index="0">
       <svg id="s01-bg" class="full" viewBox="0 0 1080 1920"></svg>
       <svg id="s01-vis" class="full noshift" viewBox="0 0 1080 1920"></svg>
       <div id="s01-heaven" class="abs noshift"></div>
@@ -56,7 +58,7 @@
       <div id="s01-fg" class="full fgwrap">
       <svg id="s01-svg" class="full" viewBox="0 0 1080 1920"></svg>
       <div id="s01-glow" class="abs"></div><div id="s01-ring" class="abs"></div><div id="s01-sps" class="abs" style="left:0;top:0"></div>
-      <div id="s01-title" class="abs"><div class="d"><span id="s01-w1" class="s01-w">TAG</span> <span id="s01-w2" class="s01-w">1</span></div>
+      <div id="s01-title" class="abs"><div class="k"><span id="s01-k1" class="s01-w s01-kn">AUF</span> <span id="s01-k2" class="s01-w s01-kn">DIE</span> <span id="s01-k3" class="s01-w s01-kn">KNIE!</span></div><div class="d"><span id="s01-w1" class="s01-w">TAG</span> <span id="s01-w2" class="s01-w">1</span></div>
         <div class="h"><span id="s01-w3" class="s01-w">ICH</span> <span id="s01-w4" class="s01-w">GRÜNDE</span><br><span id="s01-w5" class="s01-w">EINE</span> <span id="s01-w6" class="s01-w">SEKTE</span></div></div>
       </div>
       <svg id="s01-fx" class="full" viewBox="0 0 1080 1920"></svg>
@@ -65,7 +67,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 2.05, "L1": [0.0, 1.87], "L1.words": [["tag", 0.0, 0.209], ["eins", 0.209, 0.426], ["ich", 0.426, 0.636], ["gründe", 0.636, 1.055], ["eine", 1.055, 1.459], ["sekte", 1.459, 1.87]]};
+      const C = {"__dur": 3.02, "L1": [0.0, 2.84], "L1.words": [["auf", 0.0, 0.194], ["die", 0.194, 0.389], ["knie", 0.389, 0.59], ["tag", 0.82, 1.12], ["eins", 1.12, 1.43], ["ich", 1.63, 1.806], ["gründe", 1.806, 2.157], ["eine", 2.157, 2.495], ["sekte", 2.495, 2.84]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -368,7 +370,7 @@
           el("path", { d: "M0 1010 Q160 900 330 960 Q520 1020 700 930 Q900 850 1080 960 L1080 1920 L0 1920Z", fill: mood === "day" ? "#8a9a8c" : "#4a2a55", opacity: 0.8 }, t);
           el("path", { d: "M0 1060 Q240 990 470 1050 Q760 1110 1080 1060 L1080 1920 L0 1920Z", fill: mood === "day" ? "#6d7a5a" : "#2f1d3a" }, t);
         }
-        el("rect", { x: 0, y: 1080, width: W, height: 1000, fill: lin(D, pre + "gr", mood === "day" ? [[0, "#8b7a4a"], [1, "#4a3f22"]] : [[0, "#5a3f34"], [0.5, "#33231f"], [1, "#160f12"]]) }, land);
+        el("rect", { x: -200, y: 1080, width: W + 400, height: 3200, fill: lin(D, pre + "gr", mood === "day" ? [[0, "#8b7a4a"], [1, "#4a3f22"]] : [[0, "#5a3f34"], [0.5, "#33231f"], [1, "#160f12"]]) }, land);
         // Erdflecken, Pfützen (spiegeln den Himmel), Steine
         for (let i = 0; i < W / 220; i++) { const px = R() * W, py = 1150 + R() * 400;
           el("ellipse", { cx: px, cy: py, rx: 60 + R() * 90, ry: 10 + R() * 14, fill: "#2a1a14", opacity: 0.5 }, land);
@@ -486,7 +488,7 @@
       const tl = gsap.timeline({ paused: true });
       const bg = document.querySelector("#s01-bg"), sv = document.querySelector("#s01-svg"), fx = document.querySelector("#s01-fx");
       if (fx) filmLook(fx, "s01f");
-      const G = grundstueck(bg, "s01g", { mood: "dusk", goatX: 400, goatS: 0.6 }); gsap.set(G.rays, { opacity: 0.55 });
+      const G = grundstueck(bg, "s01g", { mood: "dusk", goatX: 440, goatS: 0.6 }); gsap.set(G.rays, { opacity: 0.55 });
       floatDust(tl, G, C.__dur); chew(tl, G, 0, C.__dur - 0.3);
       // Visionen schon ab Frame 0 angedeutet: goldene, gestrichelte Geister-Umrisse von Tempel, Gärten und Pilgerstraße über dem Grundstück
       const vis = document.querySelector("#s01-vis"), vg = el("g", { transform: "translate(745 1190) scale(0.72) translate(-540 -920)", opacity: 0.8 }, vis);
@@ -504,8 +506,8 @@
       tl.fromTo(bg, { scale: 1.1, transformOrigin: "60% 55%" }, { scale: 1.0, duration: C.__dur, ease: "none" }, 0);
       // jedes gesprochene Wort wird groß (eigener Kasten springt nach vorn), danach zurück auf Normalgröße, leuchtend
       gsap.set(".s01-w", { filter: "brightness(0.85)" });
-      [["#s01-w1", "tag", "#ffd43b"], ["#s01-w2", "eins", "#ffd43b"], ["#s01-w3", "ich", "#ffd36e"], ["#s01-w4", "gründe", "#ffd36e"], ["#s01-w5", "eine", "#ffd36e"], ["#s01-w6", "sekte", "#ff4fb0"]].forEach(([sel, w, c], i) => {
-        const t = at("L1", w), nx = i < 5 ? at("L1", ["eins", "ich", "gründe", "eine", "sekte"][i]) : C.__dur - 0.3;
+      [["#s01-k1", "auf", "#ff3b55"], ["#s01-k2", "die", "#ff3b55"], ["#s01-k3", "knie", "#ff3b55"], ["#s01-w1", "tag", "#ffd43b"], ["#s01-w2", "eins", "#ffd43b"], ["#s01-w3", "ich", "#ffd36e"], ["#s01-w4", "gründe", "#ffd36e"], ["#s01-w5", "eine", "#ffd36e"], ["#s01-w6", "sekte", "#ff4fb0"]].forEach(([sel, w, c], i) => {
+        const ORD = ["auf", "die", "knie", "tag", "eins", "ich", "gründe", "eine", "sekte"], t = at("L1", w), nx = i < 8 ? at("L1", ORD[i + 1]) : C.__dur - 0.3;
         tl.set(sel, { zIndex: 5 }, t - 0.04);
         tl.to(sel, { scale: 1.32, filter: `brightness(1.25) drop-shadow(0 0 30px ${c})`, duration: 0.09, ease: "power2.out" }, t - 0.04);
         tl.to(sel, { scale: 1.0, filter: `brightness(1.08) drop-shadow(0 0 14px ${c})`, duration: 0.22, ease: "power2.out" }, Math.max(t + 0.08, nx - 0.2));
@@ -520,11 +522,13 @@
         Object.assign(d.style, { left: x + "px", top: y + "px", transform: `scale(${0.4 + RS()})` }); spc.appendChild(d);
         tl.fromTo(d, { opacity: 0, y: 0 }, { opacity: 0.4 + RS() * 0.6, y: -120 - RS() * 160, duration: C.__dur, ease: "none" }, 0); }
       // Prophet Peter steht ab Frame 0 links im Bild (segnend)
-      const P = peter(sv, "s01p", 175, 1160, 0.42, { arms: [14, -120] });
+      const P = peter(sv, "s01p", 205, 1225, 0.53, { arms: [14, -120] });
       P.g.style.filter = "drop-shadow(0 0 30px rgba(255,220,130,.55))";
       talk(tl, P, line("L1")[0], line("L1")[1]);
       tl.fromTo(P.spark, { scale: 0.5, svgOrigin: "-187 -850" }, { scale: 1.6, duration: 0.2, yoyo: true, repeat: 5 }, 0.1);
       tl.to(P.armL, { rotation: -150, duration: 0.25, yoyo: true, repeat: 3, ease: "sine.inOut" }, 0.4);
+      // „Auf die Knie!“: Bild bebt
+      tl.to(["#s01-title", bg], { x: 10, duration: 0.04, repeat: 7, yoyo: true }, at("L1", "knie"));
       const se = at("L1", "sekte");
       tl.fromTo("#s01-flash", { opacity: 0.7 }, { opacity: 0, duration: 0.4, ease: "power2.out", immediateRender: false }, se);
       tl.to("#s01-title", { x: 12, duration: 0.04, repeat: 5, yoyo: true }, se);
