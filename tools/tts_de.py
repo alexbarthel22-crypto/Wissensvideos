@@ -232,13 +232,24 @@ def gemini_line_starts(audio, sr, texts, cache_file, model="gemini-3.1-pro-previ
     import io
     import time
     import urllib.request
+    T = len(audio) / sr
+
+    def plausible(st):
+        if len(st) != len(texts):
+            return None
+        if max(st) < T / 20:  # Antwort im Format Minuten.Sekunden (0.52 = 52 s)
+            st = [int(x) * 60 + round((x - int(x)) * 100, 2) for x in st]
+        ok = all(b > a for a, b in zip(st, st[1:])) and st[-1] > 0.5 * T and st[-1] < T
+        return st if ok else None
+
     if cache_file.exists():
         return json.loads(cache_file.read_text())
     key = os.environ["GEMINI_API_KEY"]
     buf = io.BytesIO(); sf.write(buf, audio, sr, format="WAV", subtype="PCM_16")
     q = ("Hier ist eine deutsche Sprachaufnahme. Sie enthält nacheinander genau diese Zeilen:\n"
          + "\n".join(f"{i + 1}. {t}" for i, t in enumerate(texts))
-         + "\nGib für jede Zeile die Startzeit des ersten Wortes in Sekunden (mit zwei Nachkommastellen) als JSON-Liste von Zahlen zurück, sonst nichts.")
+         + f"\nDie Aufnahme ist {T:.1f} Sekunden lang. Gib für jede Zeile die Startzeit des ersten Wortes als Sekunden seit Beginn "
+         "(Dezimalzahl, z. B. 12.34 – NICHT Minuten:Sekunden) als JSON-Liste von Zahlen zurück, sonst nichts.")
     body = {"contents": [{"parts": [{"inlineData": {"mimeType": "audio/wav", "data": base64.b64encode(buf.getvalue()).decode()}}, {"text": q}]}],
             "generationConfig": {"responseMimeType": "application/json", "temperature": 0}}
     for wait in (0, 30, 60, 120):
@@ -247,8 +258,8 @@ def gemini_line_starts(audio, sr, texts, cache_file, model="gemini-3.1-pro-previ
             req = urllib.request.Request(f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={key}",
                                          data=json.dumps(body).encode(), headers={"Content-Type": "application/json"})
             r = json.loads(urllib.request.urlopen(req, timeout=300).read())
-            starts = [float(x) for x in json.loads(r["candidates"][0]["content"]["parts"][-1]["text"])]
-            if len(starts) == len(texts):
+            starts = plausible([float(x) for x in json.loads(r["candidates"][0]["content"]["parts"][-1]["text"])])
+            if starts:
                 cache_file.write_text(json.dumps(starts))
                 return starts
         except Exception as e:  # noqa: BLE001

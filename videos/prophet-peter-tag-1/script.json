@@ -12,8 +12,9 @@
    "lines": [
     {
      "id": "L1",
-     "text": "Tag eins!! / Ich gründe / eine Sekte!!",
-     "nocap": true
+     "text": "Tag eins! / Ich gründe / eine Sekte!",
+     "nocap": true,
+     "speed": 1.22
     }
    ],
    "sfx": [
@@ -46,11 +47,13 @@
     {
      "id": "L3",
      "text": "Ich bin / Prophet Peter!",
-     "nocap": true
+     "nocap": true,
+     "speed": 1.2
     },
     {
      "id": "L4",
-     "text": "Gründer! / Erleuchteter! / Und ab heute / euer *p:Anführer!"
+     "text": "Gründer! / Erleuchteter! / Und ab heute / euer *p:Anführer!",
+     "speed": 1.22
     }
    ],
    "sfx": [
@@ -87,11 +90,13 @@
    "lines": [
     {
      "id": "L7",
-     "text": "Mein Onkel / hat mir / ein *y:Grundstück / vererbt!"
+     "text": "Mein Onkel / hat mir / ein *y:Grundstück / vererbt!",
+     "speed": 1.15
     },
     {
      "id": "L8",
-     "text": "Hier entsteht / unser *p:Heiligtum!"
+     "text": "Hier entsteht / unser *p:Heiligtum!",
+     "speed": 1.15
     }
    ],
    "sfx": [
@@ -113,7 +118,7 @@
    "lines": [
     {
      "id": "L9",
-     "text": "Und jetzt / die *r:Wahrheit: / *y:zwei *y:Hektar / *r:Wildnis."
+     "text": "Zum *y:Grundstück: / *y:zwei *y:Hektar / *r:Wildnis."
     },
     {
      "id": "L9b",
@@ -133,7 +138,7 @@
     },
     {
      "name": "glitch-1",
-     "at": "L9:Wahrheit",
+     "at": "L9:Grundstück",
      "volume": 0.22
     },
     {
@@ -343,6 +348,6 @@
  ],
  "shift": 110,
  "tts_model": "gemini-2.5-pro-preview-tts",
- "style": "Lies den folgenden deutschen Text als extrem charismatischer, euphorischer Fernsehprediger und Sektengründer vor – durchgehend mit derselben warmen, kraftvollen Stimme, voller Energie, Begeisterung und Emotion, mitreißend. Sprich zügig, flüssig und zusammenhängend im Satzfluss, die Wörter weich verbunden statt abgehackt, ohne Kunstpausen und ohne etwas in die Länge zu ziehen. Nach jeder Zeile nur eine kurze Atempause. Sprich nur den Text, nichts anderes. Text:",
+ "style": "Lies den folgenden deutschen Text als extrem charismatischer, euphorischer Fernsehprediger und Sektengründer vor – durchgehend mit derselben warmen, kraftvollen Stimme, voller Energie, Begeisterung und Emotion, mitreißend. Sprich schnell, flüssig und zusammenhängend, die Wörter weich verbunden statt abgehackt, ohne Kunstpausen und ohne etwas in die Länge zu ziehen; die ersten Zeilen besonders schnell und überschwänglich. Sprich das Wort „Sekte“ deutlich und korrekt aus: SEK-te, mit kurzem e und betontem „Sek“. Nach jeder Zeile nur eine sehr kurze Atempause. Sprich nur den Text, nichts anderes. Text:",
  "tts_single": true
 }

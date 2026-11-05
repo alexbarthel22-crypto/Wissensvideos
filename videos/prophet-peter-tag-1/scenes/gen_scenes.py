@@ -49,18 +49,18 @@ FX = '      <svg id="@@ID@@-fx" class="full" viewBox="0 0 1080 1920"></svg>'
 S = {}
 
 # ---------- s01 Hook: TAG 1 – ICH GRÜNDE EINE SEKTE (alles ab Frame 0 lesbar, jedes gesprochene Wort leuchtet groß auf) ----------
-S['s01'] = ('''    #s01-title { left: 40px; width: 940px; top: 300px; text-align: center; }
+S['s01'] = ('''    #s01-title { left: 0; width: 1080px; top: 190px; text-align: center; }
     #s01-heaven { left: 0; top: 0; width: 1080px; height: 1920px; opacity: .9;
       background: repeating-conic-gradient(from 180deg at 50% -4%, rgba(255,236,170,.30) 0deg 3deg, rgba(255,236,170,0) 3deg 9deg);
       -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 0%, #000 30%, transparent 80%); mask-image: radial-gradient(ellipse 80% 70% at 50% 0%, #000 30%, transparent 80%); }
     #s01-glow { left: -100px; top: 150px; width: 1280px; height: 1100px; background: radial-gradient(ellipse 50% 45% at 50% 45%, rgba(255,226,140,.55), rgba(255,180,90,.18) 55%, rgba(255,180,90,0) 75%); }
-    #s01-ring { left: 190px; top: 110px; width: 700px; height: 700px; border-radius: 50%; border: 6px solid rgba(255,230,150,.7); box-shadow: 0 0 60px rgba(255,214,110,.8), inset 0 0 60px rgba(255,214,110,.5); }
+    #s01-ring { left: 190px; top: 20px; width: 700px; height: 700px; border-radius: 50%; border: 6px solid rgba(255,230,150,.7); box-shadow: 0 0 60px rgba(255,214,110,.8), inset 0 0 60px rgba(255,214,110,.5); }
     .s01-sp { position: absolute; width: 10px; height: 10px; border-radius: 50%; background: #fff6d0; box-shadow: 0 0 14px 4px rgba(255,220,120,.9); }
-    #s01-title .d { font-family: "Inter", sans-serif; font-weight: 900; font-size: 220px; line-height: .9; letter-spacing: -.03em; color: #ffd43b; }
+    #s01-title .d { font-family: "Inter", sans-serif; font-weight: 900; font-size: 240px; line-height: .9; letter-spacing: -.03em; color: #ffd43b; }
     #s01-title .l { display: inline-block; margin-top: 18px; padding: 10px 28px; border-radius: 16px; background: #ff4fb0; color: #fff;
       font-family: "Space Mono", monospace; font-weight: 700; font-size: 44px; letter-spacing: .2em; box-shadow: 0 0 40px rgba(255,79,176,.6); }
-    #s01-title .h { margin-top: 30px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 118px; line-height: 1.04; color: #fff; letter-spacing: -.015em; }
-    .s01-w { display: inline-block; margin: 0 24px; transform-origin: 50% 60%; text-shadow: 0 8px 0 rgba(0,0,0,.55); }
+    #s01-title .h { margin-top: 30px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 136px; line-height: 1.08; color: #fff; letter-spacing: -.015em; }
+    .s01-w { display: inline-block; margin: 0 30px; transform-origin: 50% 60%; text-shadow: 0 8px 0 rgba(0,0,0,.55); }
     #s01-title .d .s01-w { text-shadow: 0 0 60px rgba(255,212,59,.55), 0 10px 0 rgba(0,0,0,.55); }
     #s01-w6 { color: #ff4fb0; text-shadow: 0 0 40px rgba(255,79,176,.8), 0 8px 0 rgba(0,0,0,.55); }
     #s01-flash { background: #ffffff; opacity: 0; mix-blend-mode: overlay; }
@@ -83,8 +83,8 @@ BG + '\n' + SVG + '''
       gsap.set(".s01-w", { filter: "brightness(0.82) drop-shadow(0 0 0px #000000)" });
       [["#s01-w1", "tag", "#ffd43b"], ["#s01-w2", "eins", "#ffd43b"], ["#s01-w3", "ich", "#ffffff"], ["#s01-w4", "gründe", "#ffffff"], ["#s01-w5", "eine", "#ffffff"], ["#s01-w6", "sekte", "#ff4fb0"]].forEach(([sel, w, c]) => {
         const t = at("L1", w);
-        tl.to(sel, { scale: 1.14, filter: `brightness(1.6) drop-shadow(0 0 34px ${c})`, duration: 0.09, ease: "power2.out" }, t - 0.03);
-        tl.to(sel, { scale: 1.0, filter: `brightness(1.12) drop-shadow(0 0 16px ${c})`, duration: 0.3, ease: "back.out(2.2)" }, t + 0.07);
+        tl.to(sel, { scale: ["#s01-w4", "#s01-w6"].includes(sel) ? 1.16 : 1.34, filter: `brightness(1.7) drop-shadow(0 0 44px ${c})`, duration: 0.08, ease: "power2.out" }, t - 0.03);
+        tl.to(sel, { scale: 1.06, filter: `brightness(1.15) drop-shadow(0 0 20px ${c})`, duration: 0.28, ease: "back.out(2.2)" }, t + 0.06);
       });
       // Himmelslicht: Strahlen drehen langsam, Ring + Glühen atmen, Lichtfunken steigen auf
       tl.fromTo("#s01-heaven", { rotation: -4, transformOrigin: "50% 0%" }, { rotation: 4, duration: C.__dur, ease: "none" }, 0);
