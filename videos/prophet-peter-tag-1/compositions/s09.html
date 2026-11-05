@@ -25,29 +25,28 @@
       padding: 14px 30px; border-radius: 18px; background: rgba(13,10,30,.9); border: 4px solid #ffd43b; box-shadow: 0 0 34px rgba(255,212,59,.45); opacity: 0; }
     .lbl small { display: block; font-family: "Space Mono", monospace; font-weight: 700; font-size: 30px; letter-spacing: .16em; color: #f4d27a; }
     .plate { position: absolute; font-family: "Inter", sans-serif; font-weight: 900; color: #fff; text-align: center; }
-    #s09-q { background: rgba(13,10,30,.9); left: 90px; width: 820px; top: 370px; height: 280px; border: 6px solid #ff4fb0; box-shadow: 0 0 60px rgba(255,79,176,.55); opacity: 0; }
-    #s09-q .k { margin-top: 18px; font-family: "Space Mono", monospace; font-weight: 700; font-size: 32px; letter-spacing: .16em; color: #f4d27a; }
-    #s09-q .n { margin-top: 10px; font-size: 72px; line-height: 1.08; color: #fff; }
+    /* Vordergrund 110 px tiefer = besser zentriert zwischen Kapitel-Marke und Untertiteln (Hintergrund/Filmlook bleiben) */
+    .fgwrap { transform: translateY(110px); }
+    #s09-q { background: rgba(13,10,30,.9); left: 90px; width: 820px; top: 400px; height: 300px; border: 6px solid #ff4fb0; box-shadow: 0 0 60px rgba(255,79,176,.55); opacity: 0; }
+    #s09-q .k { margin-top: 22px; font-family: "Space Mono", monospace; font-weight: 700; font-size: 32px; letter-spacing: .16em; color: #f4d27a; }
+    #s09-q .n { margin-top: 12px; font-size: 80px; line-height: 1.08; color: #fff; }
     #s09-q .n span { color: #ff4fb0; }
-    #s09-cur { display: inline-block; width: 8px; height: 70px; background: #ff4fb0; vertical-align: -6px; margin-left: 6px; }
-    #s09-c { left: 470px; top: 790px; width: 440px; height: 100px; border-radius: 50px; background: #ffd43b; color: #161a36; font-size: 40px; line-height: 100px; opacity: 0; }
-    #s09-f { left: 470px; top: 910px; width: 440px; height: 100px; border-radius: 50px; background: #ff4fb0; color: #fff; font-size: 40px; line-height: 100px; opacity: 0;
-      box-shadow: 0 0 40px rgba(255,79,176,.6); }
+    #s09-cur { display: inline-block; width: 8px; height: 76px; background: #ff4fb0; vertical-align: -6px; margin-left: 6px; }
   </style>
-  <div id="root" data-composition-id="s09" data-start="0" data-duration="8.790" data-width="1080" data-height="1920">
-    <div id="s09-stage" class="clip stage" data-start="0" data-duration="8.790" data-track-index="0">
+  <div id="root" data-composition-id="s09" data-start="0" data-duration="3.890" data-width="1080" data-height="1920">
+    <div id="s09-stage" class="clip stage" data-start="0" data-duration="3.890" data-track-index="0">
       <svg id="s09-bg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s09-fg" class="full fgwrap">
       <svg id="s09-svg" class="full" viewBox="0 0 1080 1920"></svg>
       <div id="s09-q" class="plate"><div class="k">TAG 1 · ABSTIMMUNG</div><div class="n">„SEKTE DER<br><span id="s09-name">________</span><span id="s09-cur"></span>“</div></div>
-      <div id="s09-c" class="plate">✎ KOMMENTIEREN</div>
-      <div id="s09-f" class="plate">+ FOLGEN = 1 €</div>
+      </div>
       <svg id="s09-fx" class="full" viewBox="0 0 1080 1920"></svg>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 8.79, "L17": [0.2, 3.78], "L17.words": [["nur", 0.2, 0.393], ["eins", 0.393, 0.593], ["fehlt", 0.593, 0.8], ["noch", 0.8, 1.0], ["ein", 1.55, 1.707], ["name", 1.707, 2.01], ["wie", 2.56, 2.697], ["soll", 2.697, 2.839], ["unsere", 2.839, 3.236], ["sekte", 3.236, 3.506], ["heißen", 3.506, 3.78]], "L18": [4.0, 5.99], "L18.words": [["schreibs", 4.0, 4.195], ["in", 4.195, 4.354], ["die", 4.354, 4.52], ["kommentare", 4.52, 5.169], ["und", 5.169, 5.335], ["sei", 5.335, 5.5], ["der", 5.5, 5.665], ["erste", 5.665, 5.99]]};
+      const C = {"__dur": 3.89, "L17": [0.2, 3.71], "L17.words": [["nur", 0.2, 0.386], ["eins", 0.386, 0.578], ["fehlt", 0.578, 0.778], ["noch", 0.778, 0.97], ["ein", 1.49, 1.644], ["name", 1.644, 1.94], ["wie", 2.48, 2.618], ["soll", 2.618, 2.762], ["unsere", 2.762, 3.162], ["sekte", 3.162, 3.433], ["heißen", 3.433, 3.71]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -310,7 +309,7 @@
       // ===== Das geerbte Grundstück (Serien-Kulisse): riesig, verwahrlost, ein Stuhl unter einem kargen Baum, eine Ziege =====
       // Braucht: el(), lin(), rad(), GR(), gsap, rng(). Zeichnet in eine 1080×1920-SVG.
       // o.mood: "dusk" (Abendrot, Standard) | "night" | "day"; o.w: Breite der Welt (Standard 1080, für Kamerafahrten z. B. 3240);
-      // o.chairX/o.treeX: Stuhl/Baum (Welt-x); o.goatX: Ziege (null = keine); o.dy: Höhenversatz (Standard -130)
+      // o.chairX/o.treeX: Stuhl/Baum (Welt-x); o.goatX: Ziege (null = keine); o.dy: Höhenversatz (Standard -20, passend zum um 110 px abgesenkten Vordergrund)
       // Rückgabe: land (Vordergrund, für Schwenks x tweenen), far (Sonne/Strahlen, Parallaxe), tree, chair, leaf, goat, …
       function goatFig(parent, x, y, s = 1, flip = false) {
         const g = el("g", {}, parent); gsap.set(g, { x, y, scale: s, scaleX: flip ? -s : s, transformOrigin: "0 0" });
@@ -330,11 +329,11 @@
         return { g, head };
       }
       function grundstueck(sv, pre, o = {}) {
-        const D = GR(sv), R = rng(o.seed || 7), mood = o.mood || "dusk", W = o.w || 1080;
+        const D = GR(sv), R = rng(o.seed || 7), mood = o.mood || "dusk", W = o.w || 1080, DY = o.dy ?? -20;
         const skyC = { dusk: [[0, "#1a1240"], [0.45, "#5b2a6e"], [0.75, "#d0604a"], [1, "#ffb15c"]],
           night: [[0, "#05060f"], [0.6, "#121634"], [1, "#2a2350"]], day: [[0, "#6d9cc8"], [0.7, "#c9d6d8"], [1, "#efe2c2"]] }[mood];
         const sky = el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: lin(D, pre + "sky", skyC) }, sv);
-        const far = el("g", {}, sv); gsap.set(far, { y: o.dy ?? -130 });
+        const far = el("g", {}, sv); gsap.set(far, { y: DY });
         const sunG = el("g", {}, far);
         el("circle", { cx: 760, cy: 960, r: 520, fill: rad(D, pre + "sunh", [[0, "#ffd08a", 0.75], [0.4, "#ff9a5a", 0.25], [1, "#ff9a5a", 0]]) }, sunG);
         el("circle", { cx: 760, cy: 960, r: 90, fill: "#ffe2a8", opacity: mood === "night" ? 0 : 0.95 }, sunG);
@@ -343,7 +342,7 @@
         for (let i = 0; i < 9; i++) { const a = -150 + i * 15 + R() * 6; const r1 = 1700;
           el("path", { d: `M760 960 L${760 + r1 * Math.cos((a - 2.5) * Math.PI / 180)} ${960 + r1 * Math.sin((a - 2.5) * Math.PI / 180)} L${760 + r1 * Math.cos((a + 2.5) * Math.PI / 180)} ${960 + r1 * Math.sin((a + 2.5) * Math.PI / 180)}Z`,
             fill: lin(D, pre + "ray" + i, [[0, "#fff1c4", 0.5], [1, "#fff1c4", 0]], 0, 0, 1, 0) }, rays); }
-        const land = el("g", {}, sv); gsap.set(land, { y: o.dy ?? -130 });
+        const land = el("g", {}, sv); gsap.set(land, { y: DY });
         // Hügel: gespiegelte Kacheln, damit die Kanten nahtlos sind
         for (let k = 0; k * 1080 < W; k++) {
           const t = el("g", { transform: k % 2 ? `translate(${(k + 1) * 1080} 0) scale(-1 1)` : `translate(${k * 1080} 0)` }, land);
@@ -372,6 +371,10 @@
         }
         el("path", { d: `M${TX - 46} ${TY} Q${TX - 20} ${TY - 120} ${TX - 18} ${TY - 260} L${TX + 18} ${TY - 260} Q${TX + 24} ${TY - 120} ${TX + 54} ${TY}Z`, fill: bark }, tree);
         br(TX, TY - 250, 170, -1.95, 30, 4); br(TX, TY - 250, 190, -1.15, 28, 4); br(TX, TY - 200, 120, -0.35, 16, 2);
+        // abbrechender Ast (eigene Gruppe, Drehpunkt = Ansatz am Stamm): brk / brkBase
+        const brk = el("g", {}, tree), BX = TX + 14, BY = TY - 330;
+        el("path", { d: `M${BX} ${BY} Q${BX + 90} ${BY - 30} ${BX + 190} ${BY - 110}`, stroke: bark, "stroke-width": 18, fill: "none", "stroke-linecap": "round" }, brk);
+        el("path", { d: `M${BX + 110} ${BY - 44} Q${BX + 140} ${BY - 100} ${BX + 150} ${BY - 150} M${BX + 160} ${BY - 86} Q${BX + 210} ${BY - 90} ${BX + 240} ${BY - 70}`, stroke: bark, "stroke-width": 9, fill: "none", "stroke-linecap": "round" }, brk);
         const leafX = TX + 150, leafY = TY - 520;
         const leaf = el("path", { d: `M${leafX} ${leafY} q16 -22 34 -6 q-12 24 -34 6Z`, fill: "#9a8a2a" }, land);
         // Stuhl (Holz, leicht schief) unter dem Baum
@@ -445,7 +448,7 @@
           el("path", { d: `M${wx} ${wy} q${(R() - 0.5) * 20} ${-h * 0.6} ${(R() - 0.5) * 30} ${-h}`, stroke: c, "stroke-width": 3 + R() * 3, fill: "none", "stroke-linecap": "round" }, weeds); }
         const dust = el("g", {}, sv);
         const motes = Array.from({ length: 26 }, () => el("circle", { cx: 100 + R() * 880, cy: 500 + R() * 600, r: 2 + R() * 4, fill: "#ffe2a8", opacity: 0.25 + R() * 0.5 }, dust));
-        return { sky, land, far, sunG, rays, tree, leaf, chair, goat, weeds, dust, motes, fence, chairPos: [CX, CY], treePos: [TX, TY] };
+        return { sky, land, far, sunG, rays, tree, brk, brkBase: [BX, BY], leaf, chair, goat, weeds, dust, motes, fence, chairPos: [CX, CY], treePos: [TX, TY] };
       }
       // Ziege kaut (Kopf wippt, endlich)
       function chew(tl, G, t0, dur) { if (G.goat) tl.to(G.goat.head, { rotation: 30, duration: 0.22, yoyo: true, repeat: Math.max(1, 2 * Math.floor(dur / 0.44) - 1), ease: "sine.inOut" }, t0); }
@@ -465,19 +468,16 @@
       const bg = document.querySelector("#s09-bg"), sv = document.querySelector("#s09-svg"), fx = document.querySelector("#s09-fx");
       if (fx) filmLook(fx, "s09f");
       const G = grundstueck(bg, "s09g", { mood: "dusk", chairX: 690, treeX: 800, goatX: 560, goatS: 0.6, goatFlip: true }); gsap.set(G.rays, { opacity: 0.6 });
-      floatDust(tl, G, C.__dur);
-      const P = peter(sv, "s09p", 240, 1120, 0.5);
-      const na = at("L17", "name"), he = at("L17", "heißen"), l18 = line("L18")[0], ko = at("L18", "kommentare"), er = at("L18", "erste");
-      talk(tl, P, line("L17")[0], line("L17")[1]); talk(tl, P, line("L18")[0], line("L18")[1]);
-      tl.fromTo(P.g, { opacity: 0, x: 120 }, { opacity: 1, x: 240, duration: 0.5, ease: "expo.out" }, 0);
+      floatDust(tl, G, C.__dur); chew(tl, G, 0, C.__dur - 0.3);
+      const P = peter(sv, "s09p", 300, 1120, 0.44);
+      const na = at("L17", "name"), he = at("L17", "heißen");
+      talk(tl, P, line("L17")[0], line("L17")[1]);
+      tl.fromTo(P.g, { opacity: 0, x: 180 }, { opacity: 1, x: 300, duration: 0.5, ease: "expo.out" }, 0);
       tl.fromTo("#s09-q", { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.45, ease: "back.out(1.8)" }, na - 0.2);
-      tl.fromTo("#s09-cur", { opacity: 1 }, { opacity: 0, duration: 0.25, repeat: 13, yoyo: true, ease: "steps(1)" }, na);
+      tl.fromTo("#s09-cur", { opacity: 1 }, { opacity: 0, duration: 0.25, repeat: 9, yoyo: true, ease: "steps(1)" }, na);
       tl.fromTo("#s09-name", { color: "#ff4fb0" }, { color: "#ffd43b", duration: 0.12, repeat: 5, yoyo: true }, he);
       tl.to(P.armL, { rotation: -60, duration: 0.4, ease: "back.out(1.8)" }, he - 0.2);
-      tl.fromTo("#s09-c", { opacity: 0, x: 120 }, { opacity: 1, x: 0, duration: 0.35, ease: "back.out(2)" }, ko - 0.2);
-      tl.fromTo("#s09-f", { opacity: 0, x: 120 }, { opacity: 1, x: 0, duration: 0.35, ease: "back.out(2)" }, er - 0.3);
-      tl.to("#s09-f", { scale: 1.08, duration: 0.3, yoyo: true, repeat: 5, ease: "sine.inOut" }, er + 0.4);
-      tl.fromTo(P.spark, { scale: 0.5, svgOrigin: "-187 -850" }, { scale: 1.5, duration: 0.25, yoyo: true, repeat: 5 }, er);
+      tl.to("#s09-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
       window.__timelines["s09"] = tl;
     })();
   </script>

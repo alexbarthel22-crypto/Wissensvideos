@@ -8,6 +8,8 @@
       padding: 14px 30px; border-radius: 18px; background: rgba(13,10,30,.9); border: 4px solid #ffd43b; box-shadow: 0 0 34px rgba(255,212,59,.45); opacity: 0; }
     .lbl small { display: block; font-family: "Space Mono", monospace; font-weight: 700; font-size: 30px; letter-spacing: .16em; color: #f4d27a; }
     .plate { position: absolute; font-family: "Inter", sans-serif; font-weight: 900; color: #fff; text-align: center; }
+    /* Vordergrund 110 px tiefer = besser zentriert zwischen Kapitel-Marke und Untertiteln (Hintergrund/Filmlook bleiben) */
+    .fgwrap { transform: translateY(110px); }
     #s04-doc { left: 150px; top: 410px; width: 720px; height: 660px; border-radius: 10px; padding: 46px 54px;
       background: linear-gradient(160deg, #f6ecd2 0%, #e9d9b0 60%, #d8c08a 100%); box-shadow: 0 30px 60px rgba(0,0,0,.6); color: #3a2a18; text-align: left; }
     #s04-doc .t { font-family: "Inter", sans-serif; font-weight: 900; font-size: 64px; letter-spacing: .12em; text-align: center; color: #5a1a1a; }
@@ -26,11 +28,13 @@
   <div id="root" data-composition-id="s04" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
     <div id="s04-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
       <svg id="s04-bg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s04-fg" class="full fgwrap">
       <svg id="s04-svg" class="full" viewBox="0 0 1080 1920"></svg>
       <div id="s04-doc" class="abs"><div class="t">TESTAMENT</div><div class="p">„… vermache ich meinem Neffen <b>Peter</b> mein gesamtes <b>Grundstück</b>.<br>Mach was draus, Junge.“</div>
         <div class="sig">Onkel Heinz</div><div id="s04-seal">H</div></div>
       <div id="s04-stamp" class="abs">GEERBT</div>
       <div id="s04-sign" class="abs"><small>ZUKÜNFTIGES</small>HEILIGTUM</div>
+      </div>
       <svg id="s04-fx" class="full" viewBox="0 0 1080 1920"></svg>
     </div>
   </div>
@@ -168,7 +172,7 @@
       // ===== Das geerbte Grundstück (Serien-Kulisse): riesig, verwahrlost, ein Stuhl unter einem kargen Baum, eine Ziege =====
       // Braucht: el(), lin(), rad(), GR(), gsap, rng(). Zeichnet in eine 1080×1920-SVG.
       // o.mood: "dusk" (Abendrot, Standard) | "night" | "day"; o.w: Breite der Welt (Standard 1080, für Kamerafahrten z. B. 3240);
-      // o.chairX/o.treeX: Stuhl/Baum (Welt-x); o.goatX: Ziege (null = keine); o.dy: Höhenversatz (Standard -130)
+      // o.chairX/o.treeX: Stuhl/Baum (Welt-x); o.goatX: Ziege (null = keine); o.dy: Höhenversatz (Standard -20, passend zum um 110 px abgesenkten Vordergrund)
       // Rückgabe: land (Vordergrund, für Schwenks x tweenen), far (Sonne/Strahlen, Parallaxe), tree, chair, leaf, goat, …
       function goatFig(parent, x, y, s = 1, flip = false) {
         const g = el("g", {}, parent); gsap.set(g, { x, y, scale: s, scaleX: flip ? -s : s, transformOrigin: "0 0" });
@@ -188,11 +192,11 @@
         return { g, head };
       }
       function grundstueck(sv, pre, o = {}) {
-        const D = GR(sv), R = rng(o.seed || 7), mood = o.mood || "dusk", W = o.w || 1080;
+        const D = GR(sv), R = rng(o.seed || 7), mood = o.mood || "dusk", W = o.w || 1080, DY = o.dy ?? -20;
         const skyC = { dusk: [[0, "#1a1240"], [0.45, "#5b2a6e"], [0.75, "#d0604a"], [1, "#ffb15c"]],
           night: [[0, "#05060f"], [0.6, "#121634"], [1, "#2a2350"]], day: [[0, "#6d9cc8"], [0.7, "#c9d6d8"], [1, "#efe2c2"]] }[mood];
         const sky = el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: lin(D, pre + "sky", skyC) }, sv);
-        const far = el("g", {}, sv); gsap.set(far, { y: o.dy ?? -130 });
+        const far = el("g", {}, sv); gsap.set(far, { y: DY });
         const sunG = el("g", {}, far);
         el("circle", { cx: 760, cy: 960, r: 520, fill: rad(D, pre + "sunh", [[0, "#ffd08a", 0.75], [0.4, "#ff9a5a", 0.25], [1, "#ff9a5a", 0]]) }, sunG);
         el("circle", { cx: 760, cy: 960, r: 90, fill: "#ffe2a8", opacity: mood === "night" ? 0 : 0.95 }, sunG);
@@ -201,7 +205,7 @@
         for (let i = 0; i < 9; i++) { const a = -150 + i * 15 + R() * 6; const r1 = 1700;
           el("path", { d: `M760 960 L${760 + r1 * Math.cos((a - 2.5) * Math.PI / 180)} ${960 + r1 * Math.sin((a - 2.5) * Math.PI / 180)} L${760 + r1 * Math.cos((a + 2.5) * Math.PI / 180)} ${960 + r1 * Math.sin((a + 2.5) * Math.PI / 180)}Z`,
             fill: lin(D, pre + "ray" + i, [[0, "#fff1c4", 0.5], [1, "#fff1c4", 0]], 0, 0, 1, 0) }, rays); }
-        const land = el("g", {}, sv); gsap.set(land, { y: o.dy ?? -130 });
+        const land = el("g", {}, sv); gsap.set(land, { y: DY });
         // Hügel: gespiegelte Kacheln, damit die Kanten nahtlos sind
         for (let k = 0; k * 1080 < W; k++) {
           const t = el("g", { transform: k % 2 ? `translate(${(k + 1) * 1080} 0) scale(-1 1)` : `translate(${k * 1080} 0)` }, land);
@@ -230,6 +234,10 @@
         }
         el("path", { d: `M${TX - 46} ${TY} Q${TX - 20} ${TY - 120} ${TX - 18} ${TY - 260} L${TX + 18} ${TY - 260} Q${TX + 24} ${TY - 120} ${TX + 54} ${TY}Z`, fill: bark }, tree);
         br(TX, TY - 250, 170, -1.95, 30, 4); br(TX, TY - 250, 190, -1.15, 28, 4); br(TX, TY - 200, 120, -0.35, 16, 2);
+        // abbrechender Ast (eigene Gruppe, Drehpunkt = Ansatz am Stamm): brk / brkBase
+        const brk = el("g", {}, tree), BX = TX + 14, BY = TY - 330;
+        el("path", { d: `M${BX} ${BY} Q${BX + 90} ${BY - 30} ${BX + 190} ${BY - 110}`, stroke: bark, "stroke-width": 18, fill: "none", "stroke-linecap": "round" }, brk);
+        el("path", { d: `M${BX + 110} ${BY - 44} Q${BX + 140} ${BY - 100} ${BX + 150} ${BY - 150} M${BX + 160} ${BY - 86} Q${BX + 210} ${BY - 90} ${BX + 240} ${BY - 70}`, stroke: bark, "stroke-width": 9, fill: "none", "stroke-linecap": "round" }, brk);
         const leafX = TX + 150, leafY = TY - 520;
         const leaf = el("path", { d: `M${leafX} ${leafY} q16 -22 34 -6 q-12 24 -34 6Z`, fill: "#9a8a2a" }, land);
         // Stuhl (Holz, leicht schief) unter dem Baum
@@ -303,7 +311,7 @@
           el("path", { d: `M${wx} ${wy} q${(R() - 0.5) * 20} ${-h * 0.6} ${(R() - 0.5) * 30} ${-h}`, stroke: c, "stroke-width": 3 + R() * 3, fill: "none", "stroke-linecap": "round" }, weeds); }
         const dust = el("g", {}, sv);
         const motes = Array.from({ length: 26 }, () => el("circle", { cx: 100 + R() * 880, cy: 500 + R() * 600, r: 2 + R() * 4, fill: "#ffe2a8", opacity: 0.25 + R() * 0.5 }, dust));
-        return { sky, land, far, sunG, rays, tree, leaf, chair, goat, weeds, dust, motes, fence, chairPos: [CX, CY], treePos: [TX, TY] };
+        return { sky, land, far, sunG, rays, tree, brk, brkBase: [BX, BY], leaf, chair, goat, weeds, dust, motes, fence, chairPos: [CX, CY], treePos: [TX, TY] };
       }
       // Ziege kaut (Kopf wippt, endlich)
       function chew(tl, G, t0, dur) { if (G.goat) tl.to(G.goat.head, { rotation: 30, duration: 0.22, yoyo: true, repeat: Math.max(1, 2 * Math.floor(dur / 0.44) - 1), ease: "sine.inOut" }, t0); }

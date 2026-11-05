@@ -162,7 +162,7 @@ def build_captions(project, timings, windows, total, big=False, safe=False, skip
     doc = f"""<template>
   <style>
     #root {{ position: absolute; inset: 0; }}
-    .grp {{ position: absolute; left: 0; width: 100%; top: 1150px; height: 220px; overflow: visible; }}
+    .grp {{ position: absolute; left: 0; width: 100%; top: {1150 + SHIFT}px; height: 220px; overflow: visible; }}
     .inner {{ position: absolute; left: 70px; right: 70px; top: 0; text-align: center;
       font-family: "Inter", sans-serif; font-weight: 900; font-size: 80px; line-height: 1.04;
       letter-spacing: -0.01em; transform-origin: 50% 40%; }}
@@ -185,6 +185,7 @@ def build_captions(project, timings, windows, total, big=False, safe=False, skip
 # TikTok-Sicherheitsbereich: rechts liegt die Button-Leiste (x > 940), unten Name + Beschreibung (y > 1480)
 SAFE_CAP = """
     .inner { left: 96px; right: 170px; font-size: 74px; }"""
+SHIFT = 0  # "shift" in script.json: Untertitel + Kapitel-Marke tiefer (zentrierteres Bild)
 BIG_CAP = """
     .inner {{ font-size: 92px; line-height: 1.06; }}
     .w {{ display: inline-block; transform-origin: 50% 70%; }}""".replace("{{", "{").replace("}}", "}")
@@ -277,7 +278,7 @@ def build_hud(project, script, windows, total):
       color: #ff7a8c; border: 2px solid #c8314a; border-radius: 6px; background: rgba(40,10,24,.55); }}
     .chkt b {{ color: #ff3b55; margin-left: 6px; }}
     .chkt.ok {{ color: #8affb6; border-color: #1f9a52; background: rgba(8,40,22,.6); }}
-    .chkt.ok b {{ color: #39e27a; }}{BIG_HUD if big else POP_HUD if pop else ""}
+    .chkt.ok b {{ color: #39e27a; }}{BIG_HUD if big else POP_HUD.replace("top: 150px", f"top: {150 + SHIFT}px") if pop else ""}
   </style>
   <div id="root" data-composition-id="hud" data-start="0" data-duration="{total:.3f}" data-width="{W}" data-height="{H}">
 {chr(10).join(tags)}
@@ -380,6 +381,8 @@ def build_index(project, script, windows, lines, total):
 def main():
     project = Path(sys.argv[1])
     script = json.loads((project / "script.json").read_text())
+    global SHIFT
+    SHIFT = int(script.get("shift", 0))
     timings = json.loads((project / "assets" / "voice" / "timings.json").read_text())
     windows, lines = scene_windows(script, timings)
     total = windows[-1][2]

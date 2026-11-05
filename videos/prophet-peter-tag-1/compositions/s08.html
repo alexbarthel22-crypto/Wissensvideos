@@ -25,6 +25,8 @@
       padding: 14px 30px; border-radius: 18px; background: rgba(13,10,30,.9); border: 4px solid #ffd43b; box-shadow: 0 0 34px rgba(255,212,59,.45); opacity: 0; }
     .lbl small { display: block; font-family: "Space Mono", monospace; font-weight: 700; font-size: 30px; letter-spacing: .16em; color: #f4d27a; }
     .plate { position: absolute; font-family: "Inter", sans-serif; font-weight: 900; color: #fff; text-align: center; }
+    /* Vordergrund 110 px tiefer = besser zentriert zwischen Kapitel-Marke und Untertiteln (Hintergrund/Filmlook bleiben) */
+    .fgwrap { transform: translateY(110px); }
     .s08-r { position: absolute; left: 0; right: 0; margin: 0 auto; height: 112px; border-radius: 16px; text-align: center; font-family: "Inter", sans-serif; font-weight: 900;
       color: #fff; font-size: 50px; line-height: 112px; opacity: 0; box-shadow: 0 10px 30px rgba(0,0,0,.45); white-space: nowrap; }
     .s08-r small { font-family: "Space Mono", monospace; font-weight: 700; font-size: 30px; letter-spacing: .1em; margin-left: 14px; opacity: .85; }
@@ -32,25 +34,26 @@
     #s08-r2 { top: 552px; width: 660px; background: linear-gradient(180deg, #e6e9f5, #9aa1c4); color: #161a36; }
     #s08-r3 { top: 684px; width: 740px; background: linear-gradient(180deg, #e0985a, #a0582a); }
     #s08-r4 { top: 816px; width: 800px; background: linear-gradient(180deg, #4a3a8a, #2e2462); }
-    #s08-free { position: absolute; right: -24px; top: -26px; padding: 0 16px; height: 50px; border-radius: 12px; background: #ff3b55; color: #fff; font-size: 30px; line-height: 50px; transform: rotate(8deg); opacity: 0; }
     #s08-arr { left: 40px; top: 430px; width: 60px; height: 520px; opacity: 0; }
   </style>
-  <div id="root" data-composition-id="s08" data-start="0" data-duration="4.520" data-width="1080" data-height="1920">
-    <div id="s08-stage" class="clip stage" data-start="0" data-duration="4.520" data-track-index="0">
+  <div id="root" data-composition-id="s08" data-start="0" data-duration="3.790" data-width="1080" data-height="1920">
+    <div id="s08-stage" class="clip stage" data-start="0" data-duration="3.790" data-track-index="0">
       <svg id="s08-bg" class="full" viewBox="0 0 1080 1920"></svg>
-      <div id="s08-r1" class="s08-r">HOHEPRIESTER<small>PLATZ 1</small><div id="s08-free">FREI!</div></div>
-      <div id="s08-r2" class="s08-r">ERZDIAKON<small>2–10</small></div>
-      <div id="s08-r3" class="s08-r">TEMPELWÄCHTER<small>11–100</small></div>
-      <div id="s08-r4" class="s08-r">ANHÄNGER<small>101+</small></div>
+      <div id="s08-fg" class="full fgwrap">
+      <div id="s08-r1" class="s08-r">HOHEPRIESTER</div>
+      <div id="s08-r2" class="s08-r">ERZDIAKON</div>
+      <div id="s08-r3" class="s08-r">TEMPELWÄCHTER</div>
+      <div id="s08-r4" class="s08-r">ANHÄNGER</div>
       <svg id="s08-arr" class="abs" viewBox="0 0 60 520"><path d="M30 510 L30 30" stroke="#39e27a" stroke-width="12" stroke-linecap="round"/><path d="M6 50 L30 10 L54 50" stroke="#39e27a" stroke-width="12" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
       <svg id="s08-svg" class="full" viewBox="0 0 1080 1920"></svg>
+      </div>
       <svg id="s08-fx" class="full" viewBox="0 0 1080 1920"></svg>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 4.52, "L15": [0.2, 4.34], "L15.words": [["und", 0.2, 0.427], ["wer", 0.427, 0.655], ["früh", 0.655, 0.89], ["kommt", 0.89, 1.134], ["steigt", 1.134, 1.385], ["hoch", 1.385, 1.621], ["auf", 1.621, 1.848], ["der", 1.848, 2.075], ["erste", 2.075, 2.522], ["anhänger", 2.522, 3.195], ["wird", 3.195, 3.431], ["hohepriester", 3.431, 4.34]]};
+      const C = {"__dur": 3.79, "L15": [0.2, 3.61], "L15.words": [["sei", 0.2, 0.357], ["von", 0.357, 0.514], ["anfang", 0.514, 0.827], ["an", 0.827, 0.978], ["dabei", 0.978, 1.286], ["und", 1.286, 1.443], ["sichere", 1.443, 1.902], ["dir", 1.902, 2.059], ["einen", 2.059, 2.367], ["hohen", 2.367, 2.675], ["rang", 2.675, 2.837], ["in", 2.837, 2.988], ["meiner", 2.988, 3.302], ["sekte", 3.302, 3.61]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -313,7 +316,7 @@
       // ===== Das geerbte Grundstück (Serien-Kulisse): riesig, verwahrlost, ein Stuhl unter einem kargen Baum, eine Ziege =====
       // Braucht: el(), lin(), rad(), GR(), gsap, rng(). Zeichnet in eine 1080×1920-SVG.
       // o.mood: "dusk" (Abendrot, Standard) | "night" | "day"; o.w: Breite der Welt (Standard 1080, für Kamerafahrten z. B. 3240);
-      // o.chairX/o.treeX: Stuhl/Baum (Welt-x); o.goatX: Ziege (null = keine); o.dy: Höhenversatz (Standard -130)
+      // o.chairX/o.treeX: Stuhl/Baum (Welt-x); o.goatX: Ziege (null = keine); o.dy: Höhenversatz (Standard -20, passend zum um 110 px abgesenkten Vordergrund)
       // Rückgabe: land (Vordergrund, für Schwenks x tweenen), far (Sonne/Strahlen, Parallaxe), tree, chair, leaf, goat, …
       function goatFig(parent, x, y, s = 1, flip = false) {
         const g = el("g", {}, parent); gsap.set(g, { x, y, scale: s, scaleX: flip ? -s : s, transformOrigin: "0 0" });
@@ -333,11 +336,11 @@
         return { g, head };
       }
       function grundstueck(sv, pre, o = {}) {
-        const D = GR(sv), R = rng(o.seed || 7), mood = o.mood || "dusk", W = o.w || 1080;
+        const D = GR(sv), R = rng(o.seed || 7), mood = o.mood || "dusk", W = o.w || 1080, DY = o.dy ?? -20;
         const skyC = { dusk: [[0, "#1a1240"], [0.45, "#5b2a6e"], [0.75, "#d0604a"], [1, "#ffb15c"]],
           night: [[0, "#05060f"], [0.6, "#121634"], [1, "#2a2350"]], day: [[0, "#6d9cc8"], [0.7, "#c9d6d8"], [1, "#efe2c2"]] }[mood];
         const sky = el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: lin(D, pre + "sky", skyC) }, sv);
-        const far = el("g", {}, sv); gsap.set(far, { y: o.dy ?? -130 });
+        const far = el("g", {}, sv); gsap.set(far, { y: DY });
         const sunG = el("g", {}, far);
         el("circle", { cx: 760, cy: 960, r: 520, fill: rad(D, pre + "sunh", [[0, "#ffd08a", 0.75], [0.4, "#ff9a5a", 0.25], [1, "#ff9a5a", 0]]) }, sunG);
         el("circle", { cx: 760, cy: 960, r: 90, fill: "#ffe2a8", opacity: mood === "night" ? 0 : 0.95 }, sunG);
@@ -346,7 +349,7 @@
         for (let i = 0; i < 9; i++) { const a = -150 + i * 15 + R() * 6; const r1 = 1700;
           el("path", { d: `M760 960 L${760 + r1 * Math.cos((a - 2.5) * Math.PI / 180)} ${960 + r1 * Math.sin((a - 2.5) * Math.PI / 180)} L${760 + r1 * Math.cos((a + 2.5) * Math.PI / 180)} ${960 + r1 * Math.sin((a + 2.5) * Math.PI / 180)}Z`,
             fill: lin(D, pre + "ray" + i, [[0, "#fff1c4", 0.5], [1, "#fff1c4", 0]], 0, 0, 1, 0) }, rays); }
-        const land = el("g", {}, sv); gsap.set(land, { y: o.dy ?? -130 });
+        const land = el("g", {}, sv); gsap.set(land, { y: DY });
         // Hügel: gespiegelte Kacheln, damit die Kanten nahtlos sind
         for (let k = 0; k * 1080 < W; k++) {
           const t = el("g", { transform: k % 2 ? `translate(${(k + 1) * 1080} 0) scale(-1 1)` : `translate(${k * 1080} 0)` }, land);
@@ -375,6 +378,10 @@
         }
         el("path", { d: `M${TX - 46} ${TY} Q${TX - 20} ${TY - 120} ${TX - 18} ${TY - 260} L${TX + 18} ${TY - 260} Q${TX + 24} ${TY - 120} ${TX + 54} ${TY}Z`, fill: bark }, tree);
         br(TX, TY - 250, 170, -1.95, 30, 4); br(TX, TY - 250, 190, -1.15, 28, 4); br(TX, TY - 200, 120, -0.35, 16, 2);
+        // abbrechender Ast (eigene Gruppe, Drehpunkt = Ansatz am Stamm): brk / brkBase
+        const brk = el("g", {}, tree), BX = TX + 14, BY = TY - 330;
+        el("path", { d: `M${BX} ${BY} Q${BX + 90} ${BY - 30} ${BX + 190} ${BY - 110}`, stroke: bark, "stroke-width": 18, fill: "none", "stroke-linecap": "round" }, brk);
+        el("path", { d: `M${BX + 110} ${BY - 44} Q${BX + 140} ${BY - 100} ${BX + 150} ${BY - 150} M${BX + 160} ${BY - 86} Q${BX + 210} ${BY - 90} ${BX + 240} ${BY - 70}`, stroke: bark, "stroke-width": 9, fill: "none", "stroke-linecap": "round" }, brk);
         const leafX = TX + 150, leafY = TY - 520;
         const leaf = el("path", { d: `M${leafX} ${leafY} q16 -22 34 -6 q-12 24 -34 6Z`, fill: "#9a8a2a" }, land);
         // Stuhl (Holz, leicht schief) unter dem Baum
@@ -448,7 +455,7 @@
           el("path", { d: `M${wx} ${wy} q${(R() - 0.5) * 20} ${-h * 0.6} ${(R() - 0.5) * 30} ${-h}`, stroke: c, "stroke-width": 3 + R() * 3, fill: "none", "stroke-linecap": "round" }, weeds); }
         const dust = el("g", {}, sv);
         const motes = Array.from({ length: 26 }, () => el("circle", { cx: 100 + R() * 880, cy: 500 + R() * 600, r: 2 + R() * 4, fill: "#ffe2a8", opacity: 0.25 + R() * 0.5 }, dust));
-        return { sky, land, far, sunG, rays, tree, leaf, chair, goat, weeds, dust, motes, fence, chairPos: [CX, CY], treePos: [TX, TY] };
+        return { sky, land, far, sunG, rays, tree, brk, brkBase: [BX, BY], leaf, chair, goat, weeds, dust, motes, fence, chairPos: [CX, CY], treePos: [TX, TY] };
       }
       // Ziege kaut (Kopf wippt, endlich)
       function chew(tl, G, t0, dur) { if (G.goat) tl.to(G.goat.head, { rotation: 30, duration: 0.22, yoyo: true, repeat: Math.max(1, 2 * Math.floor(dur / 0.44) - 1), ease: "sine.inOut" }, t0); }
@@ -468,12 +475,11 @@
       const bg = document.querySelector("#s08-bg"), sv = document.querySelector("#s08-svg"), fx = document.querySelector("#s08-fx");
       if (fx) filmLook(fx, "s08f");
       const G = grundstueck(bg, "s08g", { mood: "dusk" }); gsap.set(bg, { filter: "blur(7px) brightness(.5)" });
-      const fr = at("L15", "früh"), ho = at("L15", "hoch"), er = at("L15", "erste"), hp = at("L15", "hohepriester");
+      const ho = at("L15", "hohen"), er = at("L15", "rang");
       tl.fromTo([".s08-r#s08-r4", "#s08-r3", "#s08-r2", "#s08-r1"], { opacity: 0, y: 40, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, stagger: 0.12, ease: "back.out(2)" }, 0.05);
-      tl.fromTo("#s08-arr", { opacity: 0, y: 120 }, { opacity: 1, y: 0, duration: 0.5, ease: "expo.out" }, ho - 0.1);
+      tl.fromTo("#s08-arr", { opacity: 0, y: 120 }, { opacity: 1, y: 0, duration: 0.5, ease: "expo.out" }, ho - 0.3);
       tl.fromTo("#s08-r1", { scale: 1 }, { scale: 1.12, duration: 0.2, yoyo: true, repeat: 1 }, er);
-      tl.fromTo("#s08-free", { opacity: 0, scale: 2 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(3)" }, hp - 0.05);
-      tl.to("#s08-free", { opacity: 0.35, duration: 0.18, yoyo: true, repeat: 5 }, hp + 0.4);
+      tl.to("#s08-r1", { boxShadow: "0 0 90px rgba(255,212,59,1)", duration: 0.25, yoyo: true, repeat: 3 }, er);
       tl.to("#s08-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, C.__dur - 0.18);
       window.__timelines["s08"] = tl;
     })();

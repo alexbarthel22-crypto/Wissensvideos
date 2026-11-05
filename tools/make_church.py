@@ -4,7 +4,7 @@
   python3 tools/make_church.py videos/<slug>/assets/sfx
 schreibt holy-sting.wav (Glockenschlag + Orgel-Akkord), bell-hit.wav (kurze Glocke), coin.wav (Münze im Klingelbeutel),
 angel-choir.wav (Engelschor „Aaah“, D-Dur), goat.wav (Ziege „Mäh-äh-äh“), creak.wav (rostiges Tor), shimmer.wav (Glitzer-Arpeggio).
-Optional: --bell <datei.mp3> schneidet den lautesten Glockenschlag heraus -> church-bell.wav (für Frame 0).
+Optional: --choir <datei.mp3> -> choir-intro.wav (erste 2,6 s, ausgeblendet); --bell <datei.mp3> schneidet den lautesten Glockenschlag heraus -> church-bell.wav (für Frame 0).
 """
 import sys
 from pathlib import Path
@@ -115,6 +115,29 @@ def shimmer():
     return out / np.abs(out).max()
 
 
+def crack():
+    """Ast bricht: trockenes Knacken (mehrere kurze Rauschimpulse, Holzresonanz) + Splittern."""
+    dur = 0.7; n = int(SR * dur); rng = np.random.default_rng(5)
+    y = np.zeros(n)
+    for t0, a in [(0.0, 1.0), (0.018, 0.8), (0.05, 0.55), (0.09, 0.4), (0.16, 0.25), (0.23, 0.15)]:
+        k = int(t0 * SR); m = int(SR * 0.03)
+        y[k:k + m] += a * rng.standard_normal(m) * np.exp(-np.arange(m) / (SR * 0.004))
+    kk = np.arange(int(SR * 0.05)) / SR
+    ir = sum(np.sin(2 * np.pi * f * kk) * np.exp(-kk / d) for f, d in [(320, .02), (740, .012), (1900, .006)])
+    y = np.convolve(y, ir)[:n] + 0.3 * y
+    return y / np.abs(y).max()
+
+
+def clip(path, t0, t1, fade=0.4):
+    import subprocess, tempfile
+    with tempfile.TemporaryDirectory() as d:
+        w = Path(d) / "c.wav"
+        subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(path), "-ac", "2", "-ar", str(SR), str(w)], check=True)
+        a, _ = sf.read(w)
+    a = a[int(t0 * SR): int(t1 * SR)].copy(); n = int(SR * fade); a[-n:] *= np.linspace(1, 0, n)[:, None]
+    return a / np.abs(a).max() * 0.95
+
+
 def loudest_strike(path, dur=3.6):
     import subprocess, tempfile
     with tempfile.TemporaryDirectory() as d:
@@ -140,7 +163,9 @@ def main():
         b, t0 = loudest_strike(sys.argv[sys.argv.index("--bell") + 1])
         sf.write(out / "church-bell.wav", b, SR)
         print(f"church-bell.wav: lautester Schlag ab {t0:.2f} s der Quelle")
-    for name, y, v in [("angel-choir", choir(), 0.85), ("goat", goat(), 0.8), ("creak", creak(), 0.7), ("shimmer", shimmer(), 0.7)]:
+    if "--choir" in sys.argv:  # hochgeladener Engelschor: erster Anschwellbogen (0–2,6 s)
+        sf.write(out / "choir-intro.wav", clip(sys.argv[sys.argv.index("--choir") + 1], 0.0, 2.6), SR)
+    for name, y, v in [("crack", crack(), 0.9), ("angel-choir", choir(), 0.85), ("goat", goat(), 0.8), ("creak", creak(), 0.7), ("shimmer", shimmer(), 0.7)]:
         y = fade_out(y * v)
         sf.write(out / f"{name}.wav", np.stack([y, y], 1), SR)
     dur = 2.4

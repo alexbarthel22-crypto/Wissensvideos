@@ -19,6 +19,8 @@ HEAD = '''<template>
       padding: 14px 30px; border-radius: 18px; background: rgba(13,10,30,.9); border: 4px solid #ffd43b; box-shadow: 0 0 34px rgba(255,212,59,.45); opacity: 0; }
     .lbl small { display: block; font-family: "Space Mono", monospace; font-weight: 700; font-size: 30px; letter-spacing: .16em; color: #f4d27a; }
     .plate { position: absolute; font-family: "Inter", sans-serif; font-weight: 900; color: #fff; text-align: center; }
+    /* Vordergrund 110 px tiefer = besser zentriert zwischen Kapitel-Marke und Untertiteln (Hintergrund/Filmlook bleiben) */
+    .fgwrap { transform: translateY(110px); }
 @@CSS@@
   </style>
   <div id="root" data-composition-id="@@ID@@" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
@@ -47,21 +49,29 @@ FX = '      <svg id="@@ID@@-fx" class="full" viewBox="0 0 1080 1920"></svg>'
 S = {}
 
 # ---------- s01 Hook: TAG 1 – ICH GRÜNDE EINE SEKTE (alles ab Frame 0 lesbar, jedes gesprochene Wort leuchtet groß auf) ----------
-S['s01'] = ('''    #s01-title { left: 70px; width: 880px; top: 420px; text-align: center; }
+S['s01'] = ('''    #s01-title { left: 40px; width: 940px; top: 400px; text-align: center; }
+    #s01-heaven { left: 0; top: 0; width: 1080px; height: 1920px; opacity: .9;
+      background: repeating-conic-gradient(from 180deg at 50% -4%, rgba(255,236,170,.30) 0deg 3deg, rgba(255,236,170,0) 3deg 9deg);
+      -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 0%, #000 30%, transparent 80%); mask-image: radial-gradient(ellipse 80% 70% at 50% 0%, #000 30%, transparent 80%); }
+    #s01-glow { left: -100px; top: 150px; width: 1280px; height: 1100px; background: radial-gradient(ellipse 50% 45% at 50% 45%, rgba(255,226,140,.55), rgba(255,180,90,.18) 55%, rgba(255,180,90,0) 75%); }
+    #s01-ring { left: 190px; top: 210px; width: 700px; height: 700px; border-radius: 50%; border: 6px solid rgba(255,230,150,.7); box-shadow: 0 0 60px rgba(255,214,110,.8), inset 0 0 60px rgba(255,214,110,.5); }
+    .s01-sp { position: absolute; width: 10px; height: 10px; border-radius: 50%; background: #fff6d0; box-shadow: 0 0 14px 4px rgba(255,220,120,.9); }
     #s01-title .d { font-family: "Inter", sans-serif; font-weight: 900; font-size: 250px; line-height: .9; letter-spacing: -.03em; color: #ffd43b; }
     #s01-title .l { display: inline-block; margin-top: 18px; padding: 10px 28px; border-radius: 16px; background: #ff4fb0; color: #fff;
       font-family: "Space Mono", monospace; font-weight: 700; font-size: 44px; letter-spacing: .2em; box-shadow: 0 0 40px rgba(255,79,176,.6); }
-    #s01-title .h { margin-top: 26px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 108px; line-height: 1.04; color: #fff; letter-spacing: -.015em; }
-    .s01-w { display: inline-block; margin: 0 10px; transform-origin: 50% 60%; text-shadow: 0 8px 0 rgba(0,0,0,.55); }
+    #s01-title .h { margin-top: 30px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 118px; line-height: 1.04; color: #fff; letter-spacing: -.015em; }
+    .s01-w { display: inline-block; margin: 0 24px; transform-origin: 50% 60%; text-shadow: 0 8px 0 rgba(0,0,0,.55); }
     #s01-title .d .s01-w { text-shadow: 0 0 60px rgba(255,212,59,.55), 0 10px 0 rgba(0,0,0,.55); }
     #s01-w6 { color: #ff4fb0; text-shadow: 0 0 40px rgba(255,79,176,.8), 0 8px 0 rgba(0,0,0,.55); }
     #s01-flash { background: #ffffff; opacity: 0; mix-blend-mode: overlay; }
     .s01-bar { position: absolute; left: 0; width: 1080px; height: 120px; background: #000; }''',
 BG + '\n' + SVG + '''
-      <div id="s01-flash" class="full"></div>
-      <div id="s01-title" class="abs"><div class="d"><span id="s01-w1" class="s01-w">TAG</span> <span id="s01-w2" class="s01-w">1</span></div><div class="l">PROPHET PETER</div>
+      <div id="s01-heaven" class="abs noshift"></div>
+      <div id="s01-glow" class="abs"></div><div id="s01-ring" class="abs"></div><div id="s01-sps" class="abs" style="left:0;top:0"></div>
+      <div id="s01-flash" class="full noshift"></div>
+      <div id="s01-title" class="abs"><div class="d"><span id="s01-w1" class="s01-w">TAG</span> <span id="s01-w2" class="s01-w">1</span></div>
         <div class="h"><span id="s01-w3" class="s01-w">ICH</span> <span id="s01-w4" class="s01-w">GRÜNDE</span><br><span id="s01-w5" class="s01-w">EINE</span> <span id="s01-w6" class="s01-w">SEKTE</span></div></div>
-      <div class="s01-bar" style="top:0"></div><div class="s01-bar" style="top:1800px"></div>
+      <div class="s01-bar noshift" style="top:0"></div><div class="s01-bar noshift" style="top:1800px"></div>
 ''' + FX,
 '''      const G = grundstueck(bg, "s01g", { mood: "dusk", goatX: 790, goatS: 0.7 }); gsap.set(G.rays, { opacity: 0.55 });
       floatDust(tl, G, C.__dur); chew(tl, G, 0, C.__dur - 0.3);
@@ -73,9 +83,17 @@ BG + '\n' + SVG + '''
       gsap.set(".s01-w", { filter: "brightness(0.82) drop-shadow(0 0 0px #000000)" });
       [["#s01-w1", "tag", "#ffd43b"], ["#s01-w2", "eins", "#ffd43b"], ["#s01-w3", "ich", "#ffffff"], ["#s01-w4", "gründe", "#ffffff"], ["#s01-w5", "eine", "#ffffff"], ["#s01-w6", "sekte", "#ff4fb0"]].forEach(([sel, w, c]) => {
         const t = at("L1", w);
-        tl.to(sel, { scale: 1.3, filter: `brightness(1.6) drop-shadow(0 0 34px ${c})`, duration: 0.09, ease: "power2.out" }, t - 0.03);
+        tl.to(sel, { scale: 1.14, filter: `brightness(1.6) drop-shadow(0 0 34px ${c})`, duration: 0.09, ease: "power2.out" }, t - 0.03);
         tl.to(sel, { scale: 1.0, filter: `brightness(1.12) drop-shadow(0 0 16px ${c})`, duration: 0.3, ease: "back.out(2.2)" }, t + 0.07);
       });
+      // Himmelslicht: Strahlen drehen langsam, Ring + Glühen atmen, Lichtfunken steigen auf
+      tl.fromTo("#s01-heaven", { rotation: -4, transformOrigin: "50% 0%" }, { rotation: 4, duration: C.__dur, ease: "none" }, 0);
+      tl.fromTo("#s01-ring", { scale: 0.92, opacity: 0.5 }, { scale: 1.06, opacity: 1, duration: C.__dur, ease: "sine.inOut" }, 0);
+      tl.fromTo("#s01-glow", { opacity: 0.75 }, { opacity: 1, duration: 0.4, yoyo: true, repeat: 3, ease: "sine.inOut" }, 0);
+      const RS = rng(91), spc = document.querySelector("#s01-sps");
+      for (let i = 0; i < 34; i++) { const d = document.createElement("div"); d.className = "s01-sp"; const x = 80 + RS() * 900, y = 300 + RS() * 900;
+        Object.assign(d.style, { left: x + "px", top: y + "px", transform: `scale(${0.4 + RS()})` }); spc.appendChild(d);
+        tl.fromTo(d, { opacity: 0, y: 0 }, { opacity: 0.4 + RS() * 0.6, y: -120 - RS() * 160, duration: C.__dur, ease: "none" }, 0); }
       const se = at("L1", "sekte");
       tl.fromTo("#s01-flash", { opacity: 0.7 }, { opacity: 0, duration: 0.4, ease: "power2.out", immediateRender: false }, se);
       tl.to("#s01-title", { x: 12, duration: 0.04, repeat: 5, yoyo: true }, se);''' + OUT)
@@ -94,7 +112,7 @@ BG + '''
       <div id="s02-plate" class="plate"><div class="n">PROPHET PETER</div><div class="r"><span id="s02-r1">GRÜNDER</span> <span id="s02-r2">· ERLEUCHTET ·</span> <span id="s02-r3">ANFÜHRER</span></div></div>
 ''' + FX,
 '''      const G = grundstueck(bg, "s02g", { mood: "dusk" }); gsap.set(G.rays, { opacity: 0.35 }); gsap.set(bg, { filter: "blur(5px) brightness(.7)" });
-      const P = peter(sv, "s02p", 540, 1090, 0.72);
+      const P = peter(sv, "s02p", 540, 1090, 0.7);
       floatDust(tl, G, C.__dur);
       const l3 = line("L3"), l4 = line("L4"), pr = at("L3", "prophet"), gr = at("L4", "gründer"), er = at("L4", "erleuchteter"), an = at("L4", "anführer");
       tl.fromTo("#s02-beam", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0);
@@ -162,7 +180,6 @@ BG + '\n' + SVG + '''
       <div id="s05-box" class="cbox y" style="opacity:0"><div class="lab">FLÄCHE</div><div class="num" id="s05-n">0 m²</div></div>
       <div id="s05-box2" class="cbox r" style="opacity:0"><div class="lab">AUSSTATTUNG</div><div class="num">1 STUHL</div></div>
       <div id="s05-goat" class="lbl"><small>BEWOHNERIN</small>DIE ZIEGE</div>
-      <div id="s05-sad" class="lbl"><small>BAUM-STATUS</small>HAT AUFGEGEBEN</div>
 ''' + FX,
 '''      const G = grundstueck(bg, "s05g", { mood: "day", w: 3240, chairX: 470, treeX: 600, goatX: 1150, goatS: 1.0, seed: 11 });
       floatDust(tl, G, C.__dur);
@@ -173,7 +190,7 @@ BG + '\n' + SVG + '''
         el("rect", { x: gx, y: 760, width: 390, height: 16, fill: rust }, w); });
       const tw = el("g", {}, sv); for (let i = 0; i < 14; i++) el("circle", { cx: (i % 4) * 9 - 14, cy: Math.floor(i / 4) * 9 - 14, r: 34 - (i % 5) * 3, fill: "none", stroke: "#8a7040", "stroke-width": 3, opacity: 0.8 }, tw);
       gsap.set(tw, { x: -120, y: 1030 });
-      const ha = at("L9", "hektar"), zi = at("L9b", "ziege"), wo = at("L9b", "wohnt"), st = at("L9b", "stuhl"), es = at("L9b", "und"), l10 = line("L10")[0], au = at("L10", "aufgegeben");
+      const ha = at("L9", "hektar"), zi = at("L9b", "ziege"), wo = at("L9b", "wohnt"), st = at("L9b", "stuhl"), es = at("L9b", "und"), l10 = line("L10")[0], ba = at("L10", "baum");
       // Kamera: Welt 3240 px breit, Start ganz rechts (Gerümpel), über Schuppen/Autowrack zur Ziege, dann zum Stuhl
       const pan = (x, d, t, ease = "power2.inOut") => { tl.to(G.land, { x, duration: d, ease }, t); tl.to(G.far, { x: x * 0.12, duration: d, ease }, t); };
       gsap.set(G.land, { x: -2160 }); gsap.set(G.far, { x: -2160 * 0.12 });
@@ -183,27 +200,32 @@ BG + '\n' + SVG + '''
       pan(-1350, zi - 0.95, 0.6, "power1.inOut");
       pan(-700, 0.6, zi - 0.35, "power3.out");
       tl.fromTo("#s05-box", { opacity: 0, scale: 1.5 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2.2)" }, ha - 0.1);
-      count(tl, "#s05-n", 0, 50000, ha - 0.05, 0.7, "", " m²");
+      count(tl, "#s05-n", 0, 20000, ha - 0.05, 0.7, "", " m²");
       tl.fromTo("#s05-goat", { opacity: 0, scale: 1.6 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2.4)" }, zi);
       tl.to(G.goat.head, { rotation: -8, duration: 0.25, ease: "back.out(2)" }, wo - 0.05);
       tl.to(G.goat.head, { rotation: -14, duration: 0.07, yoyo: true, repeat: 7 }, wo + 0.2);
       tl.to(G.goat.head, { rotation: 36, duration: 0.3 }, wo + 0.9);
       tl.to("#s05-goat", { opacity: 0, duration: 0.2 }, es - 0.2);
       pan(0, st - es + 0.1, es - 0.3, "power2.inOut");
-      tl.to(G.land, { scale: 1.5, svgOrigin: "500 1130", duration: 1.2, ease: "power2.inOut" }, st - 0.4);
+      tl.to(G.land, { scale: 1.4, svgOrigin: "520 1250", duration: 1.2, ease: "power2.inOut" }, st - 0.4);
       tl.fromTo("#s05-box2", { opacity: 0, scale: 1.5 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2.2)" }, st - 0.05);
       tl.to("#s05-box2", { x: 10, duration: 0.04, repeat: 5, yoyo: true }, st + 0.25);
       tl.to(tw, { x: 1200, rotation: 720, duration: 2.2, ease: "none" }, l10 - 0.1);
-      tl.to(G.leaf, { x: -60, y: 470, rotation: 260, svgOrigin: "750 690", duration: 1.0, ease: "power1.in" }, au - 0.3);
-      tl.to(G.tree, { rotation: -2, svgOrigin: "600 1080", duration: 0.5, yoyo: true, repeat: 1, ease: "sine.inOut" }, au - 0.2);
-      tl.fromTo("#s05-sad", { opacity: 0, scale: 1.6 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2.4)" }, au + 0.2);''' + OUT)
+      // Ast bricht demonstrativ ab: knackt, knickt, fällt zu Boden, prallt ab
+      const [bx, by] = G.brkBase, crk = ba + 0.35;
+      tl.to(G.brk, { rotation: 8, svgOrigin: `${bx} ${by}`, duration: 0.05, yoyo: true, repeat: 3 }, crk - 0.25);
+      tl.to(G.brk, { rotation: 32, svgOrigin: `${bx} ${by}`, duration: 0.18, ease: "power2.in" }, crk);
+      tl.to(G.brk, { y: 1235 - by + 40, x: 40, rotation: 96, svgOrigin: `${bx} ${by}`, duration: 0.55, ease: "power2.in" }, crk + 0.18);
+      tl.to(G.brk, { y: 1235 - by + 10, rotation: 90, svgOrigin: `${bx} ${by}`, duration: 0.2, ease: "power2.out" }, crk + 0.73);
+      tl.to(G.brk, { y: 1235 - by + 40, rotation: 93, svgOrigin: `${bx} ${by}`, duration: 0.18, ease: "bounce.out" }, crk + 0.93);
+      tl.to(G.tree, { rotation: -1.5, svgOrigin: "600 1210", duration: 0.12, yoyo: true, repeat: 3, ease: "sine.inOut" }, crk);''' + OUT)
 
 # ---------- s06 Die Vision: goldene Linien zeichnen Tempel, Gärten, Pilgerstraße; dann Weltreligion ----------
 S['s06'] = ('''    #s06-box { left: 190px; width: 700px; opacity: 0; }
     #s06-box .num { font-size: 52px; }
     #s06-world { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 980px; font-size: 76px; border-color: #ff4fb0; box-shadow: 0 0 40px rgba(255,79,176,.6); }''',
 BG + '\n' + SVG + '''
-      <div id="s06-box" class="cbox p"><div class="lab">ZIEL · ANHÄNGER</div><div class="num" id="s06-n">1</div></div>
+      <div id="s06-box" class="cbox p"><div class="lab">ANHÄNGER</div><div class="num" id="s06-n">1</div></div>
       <div id="s06-world" class="lbl"><small>ZIEL</small>WELTRELIGION</div>
 ''' + FX,
 '''      const G = grundstueck(bg, "s06g", { mood: "dusk", goatX: 880, goatS: 0.5 }); gsap.set(G.rays, { opacity: 0.4 });
@@ -241,7 +263,7 @@ BG + '\n' + SVG + '''
       tl.fromTo(globe, { opacity: 0, scale: 0.3, svgOrigin: "540 720" }, { opacity: 1, scale: 1, duration: 0.5, ease: "back.out(1.8)" }, l12);
       tl.to(pins, { opacity: 1, duration: 0.05, stagger: 0.035 }, l12 + 0.3);
       tl.fromTo("#s06-box", { opacity: 0, y: -20 }, { opacity: 1, y: 0, duration: 0.3 }, l12 + 0.1);
-      count(tl, "#s06-n", 1, 8000000000, l12 + 0.3, 1.6, "", "", "power3.in");
+      count(tl, "#s06-n", 1, 4870000, l12 + 0.3, C.__dur - l12 - 0.3, "", "", "power3.in");
       tl.fromTo("#s06-world", { opacity: 0, scale: 1.7 }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(2.4)" }, wr);''' + OUT)
 
 # ---------- s07 Die Kollekte: 1 Follower = 1 Euro = 1 Ziegelstein ----------
@@ -252,13 +274,11 @@ S['s07'] = ('''    #s07-box { left: 290px; width: 500px; }
     #s07-law .x { margin-top: 12px; font-size: 60px; line-height: 1.05; color: #2a1a10; }
     #s07-law .x em { font-style: normal; color: #c2185b; }
     #s07-fol { left: 120px; top: 700px; width: 250px; height: 92px; border-radius: 46px; background: #ff4fb0; color: #fff; font-size: 46px; line-height: 92px;
-      box-shadow: 0 0 40px rgba(255,79,176,.7); opacity: 0; }
-    #s07-brick { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 980px; font-size: 56px; border-color: #39e27a; box-shadow: 0 0 34px rgba(57,226,122,.5); }''',
+      box-shadow: 0 0 40px rgba(255,79,176,.7); opacity: 0; }''',
 BG + '\n' + SVG + '''
       <div id="s07-box" class="cbox y" style="opacity:0"><div class="lab">KOLLEKTE</div><div class="num" id="s07-n">0 €</div></div>
       <div id="s07-law" class="plate"><div class="k">HEILIGES GESETZ · § 1</div><div class="x"><em>1 FOLLOWER</em><br>= 1 € IN DIE KOLLEKTE</div></div>
       <div id="s07-fol" class="plate">+ FOLGEN</div>
-      <div id="s07-brick" class="lbl"><small>TEMPEL · BAUSTEIN</small>1 € = 1 ZIEGEL</div>
       <svg id="s07-top" class="full" viewBox="0 0 1080 1920"></svg>
 ''' + FX,
 '''      const G = grundstueck(bg, "s07g", { mood: "dusk" }); gsap.set(bg, { filter: "blur(6px) brightness(.6)" });
@@ -273,9 +293,7 @@ BG + '\n' + SVG + '''
       const top = document.querySelector("#s07-top"), coin = el("g", { opacity: 0 }, top); gsap.set(coin, { transformOrigin: "50% 50%" }); coin.style.filter = "drop-shadow(0 0 16px rgba(255,212,59,.9))";
       el("circle", { cx: 0, cy: 0, r: 46, fill: "#ffd43b" }, coin); el("circle", { cx: 0, cy: 0, r: 36, fill: "none", stroke: "#c48416", "stroke-width": 5 }, coin);
       const ct = el("text", { x: 0, y: 17, "text-anchor": "middle", "font-family": "Inter", "font-weight": 900, "font-size": 48, fill: "#9a6510" }, coin); ct.textContent = "€";
-      const brick = el("g", { opacity: 0 }, sv);
-      el("rect", { x: -70, y: -34, width: 140, height: 68, rx: 6, fill: "#b4542a" }, brick); el("rect", { x: -70, y: -34, width: 140, height: 12, rx: 4, fill: "#d77a48" }, brick);
-      const ge = at("L13", "heiliges"), fo = at("L13", "follower"), eu = at("L13", "euro"), l14 = line("L14")[0], zi = at("L14", "ziegelstein");
+      const ge = at("L13", "heiliges"), fo = at("L13", "follower"), eu = at("L13", "euro");
       tl.fromTo(bag, { opacity: 0, x: -400 }, { opacity: 1, x: 0, duration: 0.6, ease: "expo.out" }, 0);
       tl.fromTo("#s07-law", { opacity: 0, y: -60, rotationX: 80 }, { opacity: 1, y: 0, rotationX: 0, duration: 0.45, ease: "back.out(1.6)" }, ge - 0.1);
       tl.fromTo("#s07-fol", { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(3)" }, fo - 0.05);
@@ -289,10 +307,7 @@ BG + '\n' + SVG + '''
       burst.forEach((b, i) => { const a = -Math.PI * (0.1 + 0.8 * i / 9); tl.fromTo(b, { opacity: 1, x: 0, y: 0 }, { opacity: 0, x: Math.cos(a) * 110, y: Math.sin(a) * 110, duration: 0.45, ease: "power2.out", immediateRender: false }, eu + 0.1); });
       tl.to(bag, { y: 14, duration: 0.08, yoyo: true, repeat: 3 }, eu + 0.1);
       count(tl, "#s07-n", 0, 1, eu + 0.1, 0.2, "", " €", "none");
-      tl.fromTo("#s07-box", { scale: 1.25 }, { scale: 1, duration: 0.35, ease: "back.out(3)", immediateRender: false }, eu + 0.1);
-      tl.to(["#s07-law", "#s07-fol"], { opacity: 0, y: -40, duration: 0.25 }, l14 - 0.15);
-      tl.fromTo(brick, { opacity: 1, x: 300, y: 300, rotation: -30 }, { x: 300, y: 820, rotation: 0, duration: 0.45, ease: "bounce.out", immediateRender: false }, zi - 0.4);
-      tl.fromTo("#s07-brick", { opacity: 0, scale: 1.6 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2.4)" }, zi);''' + OUT)
+      tl.fromTo("#s07-box", { scale: 1.25 }, { scale: 1, duration: 0.35, ease: "back.out(3)", immediateRender: false }, eu + 0.1);''' + OUT)
 
 # ---------- s08 Die Ränge: Pyramide, Platz 1 frei, unten Rasenmähen ----------
 S['s08'] = ('''    .s08-r { position: absolute; left: 0; right: 0; margin: 0 auto; height: 112px; border-radius: 16px; text-align: center; font-family: "Inter", sans-serif; font-weight: 900;
@@ -302,52 +317,85 @@ S['s08'] = ('''    .s08-r { position: absolute; left: 0; right: 0; margin: 0 aut
     #s08-r2 { top: 552px; width: 660px; background: linear-gradient(180deg, #e6e9f5, #9aa1c4); color: #161a36; }
     #s08-r3 { top: 684px; width: 740px; background: linear-gradient(180deg, #e0985a, #a0582a); }
     #s08-r4 { top: 816px; width: 800px; background: linear-gradient(180deg, #4a3a8a, #2e2462); }
-    #s08-free { position: absolute; right: -24px; top: -26px; padding: 0 16px; height: 50px; border-radius: 12px; background: #ff3b55; color: #fff; font-size: 30px; line-height: 50px; transform: rotate(8deg); opacity: 0; }
     #s08-arr { left: 40px; top: 430px; width: 60px; height: 520px; opacity: 0; }''',
 BG + '''
-      <div id="s08-r1" class="s08-r">HOHEPRIESTER<small>PLATZ 1</small><div id="s08-free">FREI!</div></div>
-      <div id="s08-r2" class="s08-r">ERZDIAKON<small>2–10</small></div>
-      <div id="s08-r3" class="s08-r">TEMPELWÄCHTER<small>11–100</small></div>
-      <div id="s08-r4" class="s08-r">ANHÄNGER<small>101+</small></div>
+      <div id="s08-r1" class="s08-r">HOHEPRIESTER</div>
+      <div id="s08-r2" class="s08-r">ERZDIAKON</div>
+      <div id="s08-r3" class="s08-r">TEMPELWÄCHTER</div>
+      <div id="s08-r4" class="s08-r">ANHÄNGER</div>
       <svg id="s08-arr" class="abs" viewBox="0 0 60 520"><path d="M30 510 L30 30" stroke="#39e27a" stroke-width="12" stroke-linecap="round"/><path d="M6 50 L30 10 L54 50" stroke="#39e27a" stroke-width="12" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
 ''' + SVG + '\n' + FX,
 '''      const G = grundstueck(bg, "s08g", { mood: "dusk" }); gsap.set(bg, { filter: "blur(7px) brightness(.5)" });
-      const fr = at("L15", "früh"), ho = at("L15", "hoch"), er = at("L15", "erste"), hp = at("L15", "hohepriester");
+      const ho = at("L15", "hohen"), er = at("L15", "rang");
       tl.fromTo([".s08-r#s08-r4", "#s08-r3", "#s08-r2", "#s08-r1"], { opacity: 0, y: 40, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, stagger: 0.12, ease: "back.out(2)" }, 0.05);
-      tl.fromTo("#s08-arr", { opacity: 0, y: 120 }, { opacity: 1, y: 0, duration: 0.5, ease: "expo.out" }, ho - 0.1);
+      tl.fromTo("#s08-arr", { opacity: 0, y: 120 }, { opacity: 1, y: 0, duration: 0.5, ease: "expo.out" }, ho - 0.3);
       tl.fromTo("#s08-r1", { scale: 1 }, { scale: 1.12, duration: 0.2, yoyo: true, repeat: 1 }, er);
-      tl.fromTo("#s08-free", { opacity: 0, scale: 2 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(3)" }, hp - 0.05);
-      tl.to("#s08-free", { opacity: 0.35, duration: 0.18, yoyo: true, repeat: 5 }, hp + 0.4);''' + OUT)
+      tl.to("#s08-r1", { boxShadow: "0 0 90px rgba(255,212,59,1)", duration: 0.25, yoyo: true, repeat: 3 }, er);''' + OUT)
 
-# ---------- s09 Aufruf: Wie soll die Sekte heißen? (letzte Szene, kein Blur-Out) ----------
-S['s09'] = ('''    #s09-q { background: rgba(13,10,30,.9); left: 90px; width: 820px; top: 370px; height: 280px; border: 6px solid #ff4fb0; box-shadow: 0 0 60px rgba(255,79,176,.55); opacity: 0; }
-    #s09-q .k { margin-top: 18px; font-family: "Space Mono", monospace; font-weight: 700; font-size: 32px; letter-spacing: .16em; color: #f4d27a; }
-    #s09-q .n { margin-top: 10px; font-size: 72px; line-height: 1.08; color: #fff; }
+# ---------- s09 Der Name: Wie soll die Sekte heißen? ----------
+S['s09'] = ('''    #s09-q { background: rgba(13,10,30,.9); left: 90px; width: 820px; top: 400px; height: 300px; border: 6px solid #ff4fb0; box-shadow: 0 0 60px rgba(255,79,176,.55); opacity: 0; }
+    #s09-q .k { margin-top: 22px; font-family: "Space Mono", monospace; font-weight: 700; font-size: 32px; letter-spacing: .16em; color: #f4d27a; }
+    #s09-q .n { margin-top: 12px; font-size: 80px; line-height: 1.08; color: #fff; }
     #s09-q .n span { color: #ff4fb0; }
-    #s09-cur { display: inline-block; width: 8px; height: 70px; background: #ff4fb0; vertical-align: -6px; margin-left: 6px; }
-    #s09-c { left: 470px; top: 790px; width: 440px; height: 100px; border-radius: 50px; background: #ffd43b; color: #161a36; font-size: 40px; line-height: 100px; opacity: 0; }
-    #s09-f { left: 470px; top: 910px; width: 440px; height: 100px; border-radius: 50px; background: #ff4fb0; color: #fff; font-size: 40px; line-height: 100px; opacity: 0;
-      box-shadow: 0 0 40px rgba(255,79,176,.6); }''',
+    #s09-cur { display: inline-block; width: 8px; height: 76px; background: #ff4fb0; vertical-align: -6px; margin-left: 6px; }''',
 BG + '\n' + SVG + '''
       <div id="s09-q" class="plate"><div class="k">TAG 1 · ABSTIMMUNG</div><div class="n">„SEKTE DER<br><span id="s09-name">________</span><span id="s09-cur"></span>“</div></div>
-      <div id="s09-c" class="plate">✎ KOMMENTIEREN</div>
-      <div id="s09-f" class="plate">+ FOLGEN = 1 €</div>
 ''' + FX,
 '''      const G = grundstueck(bg, "s09g", { mood: "dusk", chairX: 690, treeX: 800, goatX: 560, goatS: 0.6, goatFlip: true }); gsap.set(G.rays, { opacity: 0.6 });
-      floatDust(tl, G, C.__dur);
-      const P = peter(sv, "s09p", 240, 1120, 0.5);
-      const na = at("L17", "name"), he = at("L17", "heißen"), l18 = line("L18")[0], ko = at("L18", "kommentare"), er = at("L18", "erste");
-      talk(tl, P, line("L17")[0], line("L17")[1]); talk(tl, P, line("L18")[0], line("L18")[1]);
-      tl.fromTo(P.g, { opacity: 0, x: 120 }, { opacity: 1, x: 240, duration: 0.5, ease: "expo.out" }, 0);
+      floatDust(tl, G, C.__dur); chew(tl, G, 0, C.__dur - 0.3);
+      const P = peter(sv, "s09p", 300, 1120, 0.44);
+      const na = at("L17", "name"), he = at("L17", "heißen");
+      talk(tl, P, line("L17")[0], line("L17")[1]);
+      tl.fromTo(P.g, { opacity: 0, x: 180 }, { opacity: 1, x: 300, duration: 0.5, ease: "expo.out" }, 0);
       tl.fromTo("#s09-q", { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.45, ease: "back.out(1.8)" }, na - 0.2);
-      tl.fromTo("#s09-cur", { opacity: 1 }, { opacity: 0, duration: 0.25, repeat: 13, yoyo: true, ease: "steps(1)" }, na);
+      tl.fromTo("#s09-cur", { opacity: 1 }, { opacity: 0, duration: 0.25, repeat: 9, yoyo: true, ease: "steps(1)" }, na);
       tl.fromTo("#s09-name", { color: "#ff4fb0" }, { color: "#ffd43b", duration: 0.12, repeat: 5, yoyo: true }, he);
-      tl.to(P.armL, { rotation: -60, duration: 0.4, ease: "back.out(1.8)" }, he - 0.2);
-      tl.fromTo("#s09-c", { opacity: 0, x: 120 }, { opacity: 1, x: 0, duration: 0.35, ease: "back.out(2)" }, ko - 0.2);
-      tl.fromTo("#s09-f", { opacity: 0, x: 120 }, { opacity: 1, x: 0, duration: 0.35, ease: "back.out(2)" }, er - 0.3);
-      tl.to("#s09-f", { scale: 1.08, duration: 0.3, yoyo: true, repeat: 5, ease: "sine.inOut" }, er + 0.4);
-      tl.fromTo(P.spark, { scale: 0.5, svgOrigin: "-187 -850" }, { scale: 1.5, duration: 0.25, yoyo: true, repeat: 5 }, er);''')
+      tl.to(P.armL, { rotation: -60, duration: 0.4, ease: "back.out(1.8)" }, he - 0.2);''' + OUT)
+
+# ---------- s10 Aufruf: Kommentar mit „Prophet Peter“, Frage: Was kaufen wir morgen? (letzte Szene, kein Blur-Out) ----------
+S['s10'] = ('''    #s10-cm { left: 90px; width: 820px; top: 400px; height: 190px; border-radius: 26px; background: rgba(250,248,242,.97); box-shadow: 0 20px 50px rgba(0,0,0,.5); opacity: 0; text-align: left; }
+    #s10-cm .av { position: absolute; left: 28px; top: 30px; width: 84px; height: 84px; border-radius: 50%; background: linear-gradient(135deg, #ff4fb0, #ffd43b); }
+    #s10-cm .u { position: absolute; left: 134px; top: 26px; font-family: "Inter", sans-serif; font-weight: 700; font-size: 30px; color: #7a7f99; }
+    #s10-cm .t { position: absolute; left: 134px; top: 70px; right: 110px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 42px; line-height: 1.12; color: #161a36; }
+    #s10-cm .t b { color: #c2185b; }
+    #s10-cm .h { position: absolute; right: 26px; top: 46px; width: 70px; text-align: center; font-family: "Inter", sans-serif; font-weight: 900; font-size: 30px; color: #ff3b55; }
+    #s10-cm .h i { display: block; font-style: normal; font-size: 46px; line-height: 1; }
+    #s10-q { left: 90px; width: 820px; top: 630px; height: 250px; border: 6px solid #ffd43b; box-shadow: 0 0 60px rgba(255,212,59,.45); background: rgba(13,10,30,.92); opacity: 0; }
+    #s10-q .k { margin-top: 22px; font-family: "Space Mono", monospace; font-weight: 700; font-size: 32px; letter-spacing: .14em; color: #f4d27a; }
+    #s10-q .n { margin-top: 10px; font-size: 70px; line-height: 1.05; color: #fff; }
+    #s10-q .n em { font-style: normal; color: #ffd43b; }
+    #s10-st { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 596px; padding: 8px 18px; border-radius: 12px; background: #39e27a; color: #0b0e22; font-family: "Inter", sans-serif; font-weight: 900; font-size: 32px; transform: rotate(-3deg); opacity: 0; white-space: nowrap; }
+    #s10-f { left: 90px; top: 920px; width: 820px; height: 110px; border-radius: 55px; background: #ff4fb0; color: #fff; font-size: 46px; line-height: 110px; opacity: 0;
+      box-shadow: 0 0 50px rgba(255,79,176,.65); }''',
+BG + '\n' + SVG + '''
+      <div id="s10-cm" class="abs"><div class="av"></div><div class="u">@dein_name · gerade eben</div><div class="t"><b id="s10-pp">Prophet Peter</b>, kauf uns eine Hüpfburg!</div><div class="h"><i>♥</i><span id="s10-likes">0</span></div></div>
+      <div id="s10-q" class="plate"><div class="k">VON DER 1. KOLLEKTE</div><div class="n">WAS KAUFEN WIR<br><em>MORGEN?</em></div></div>
+      <div id="s10-st" class="abs">TOP-KOMMENTAR ENTSCHEIDET</div>
+      <div id="s10-f" class="plate">+ FOLGEN = 1 € IN DIE KOLLEKTE</div>
+''' + FX,
+'''      const G = grundstueck(bg, "s10g", { mood: "dusk", chairX: 690, treeX: 800, goatX: 470, goatS: 0.6 }); gsap.set(G.rays, { opacity: 0.6 }); gsap.set(bg, { filter: "blur(3px) brightness(.8)" });
+      floatDust(tl, G, C.__dur); chew(tl, G, 0, 3);
+      const ko = at("L18", "kommentare"), pp = at("L18", "prophet"), l19 = line("L19")[0], mo = at("L19", "morgen"), ko2 = at("L19", "kollekte"), tk = at("L19", "topkommentar"), en = at("L19", "entscheidet");
+      tl.fromTo("#s10-cm", { opacity: 0, y: 60, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "back.out(2)" }, ko - 0.2);
+      tl.fromTo("#s10-pp", { color: "#161a36" }, { color: "#c2185b", duration: 0.2 }, pp - 0.05);
+      tl.fromTo("#s10-pp", { textShadow: "0 0 0px rgba(255,79,176,0)" }, { textShadow: "0 0 18px rgba(255,79,176,.8)", duration: 0.2, yoyo: true, repeat: 3 }, pp);
+      count(tl, "#s10-likes", 0, 999, ko + 0.2, C.__dur - ko - 0.4, "", "", "power1.in");
+      tl.fromTo("#s10-cm .h i", { scale: 1 }, { scale: 1.4, duration: 0.15, yoyo: true, repeat: 3 }, pp + 0.3);
+      tl.fromTo("#s10-q", { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.45, ease: "back.out(1.8)" }, l19 - 0.1);
+      tl.fromTo("#s10-q .n em", { scale: 1 }, { scale: 1.15, duration: 0.2, yoyo: true, repeat: 1 }, mo);
+      tl.fromTo("#s10-f", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.4, ease: "back.out(2)" }, ko2 - 0.1);
+      tl.fromTo("#s10-st", { opacity: 0, scale: 2.2 }, { opacity: 1, scale: 1, duration: 0.25, ease: "power4.in" }, tk - 0.1);
+      tl.to("#s10-f", { scale: 1.05, duration: 0.3, yoyo: true, repeat: 7, ease: "sine.inOut" }, en + 0.3);''')
+
+def wrap_fg(html):
+    # Hintergrund, Filmlook und .noshift-Ebenen bleiben stehen; alles andere kommt in einen um 110 px abgesenkten Container
+    lines = html.split("\n")
+    bg = [l for l in lines if 'id="@@ID@@-bg"' in l or "noshift" in l]
+    fx = [l for l in lines if 'id="@@ID@@-fx"' in l]
+    fg = [l for l in lines if l not in bg and l not in fx and l.strip()]
+    return "\n".join(bg + ['      <div id="@@ID@@-fg" class="full fgwrap">'] + fg + ["      </div>"] + fx)
+
 
 for sid, (css, html, js) in S.items():
-    (here / f"{sid}.html").write_text(HEAD.replace("@@SERIES@@", SERIES_JS).replace("@@CSS@@", css).replace("@@HTML@@", html).replace("@@JS@@", js).replace("@@ID@@", sid))
+    (here / f"{sid}.html").write_text(HEAD.replace("@@SERIES@@", SERIES_JS).replace("@@CSS@@", css).replace("@@HTML@@", wrap_fg(html)).replace("@@JS@@", js).replace("@@ID@@", sid))
 print(sorted(S))

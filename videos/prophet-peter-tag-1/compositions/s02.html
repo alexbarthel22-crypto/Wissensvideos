@@ -25,6 +25,8 @@
       padding: 14px 30px; border-radius: 18px; background: rgba(13,10,30,.9); border: 4px solid #ffd43b; box-shadow: 0 0 34px rgba(255,212,59,.45); opacity: 0; }
     .lbl small { display: block; font-family: "Space Mono", monospace; font-weight: 700; font-size: 30px; letter-spacing: .16em; color: #f4d27a; }
     .plate { position: absolute; font-family: "Inter", sans-serif; font-weight: 900; color: #fff; text-align: center; }
+    /* Vordergrund 110 px tiefer = besser zentriert zwischen Kapitel-Marke und Untertiteln (Hintergrund/Filmlook bleiben) */
+    .fgwrap { transform: translateY(110px); }
     #s02-beam { left: 290px; top: 0; width: 500px; height: 1200px; opacity: 0;
       background: linear-gradient(180deg, rgba(255,240,200,.75), rgba(255,240,200,.05)); clip-path: polygon(38% 0, 62% 0, 100% 100%, 0 100%); filter: blur(6px); }
     #s02-plate { left: 120px; width: 780px; top: 960px; height: 170px; border-radius: 22px; background: rgba(13,10,30,.92); border: 4px solid #ffd43b;
@@ -33,19 +35,21 @@
     #s02-plate .r { margin-top: 12px; font-family: "Space Mono", monospace; font-weight: 700; font-size: 30px; letter-spacing: .14em; color: #fff; }
     #s02-plate .r span { opacity: 0; }
   </style>
-  <div id="root" data-composition-id="s02" data-start="0" data-duration="5.200" data-width="1080" data-height="1920">
-    <div id="s02-stage" class="clip stage" data-start="0" data-duration="5.200" data-track-index="0">
+  <div id="root" data-composition-id="s02" data-start="0" data-duration="4.760" data-width="1080" data-height="1920">
+    <div id="s02-stage" class="clip stage" data-start="0" data-duration="4.760" data-track-index="0">
       <svg id="s02-bg" class="full" viewBox="0 0 1080 1920"></svg>
+      <div id="s02-fg" class="full fgwrap">
       <div id="s02-beam" class="abs"></div>
       <svg id="s02-svg" class="full" viewBox="0 0 1080 1920"></svg>
       <div id="s02-plate" class="plate"><div class="n">PROPHET PETER</div><div class="r"><span id="s02-r1">GRÜNDER</span> <span id="s02-r2">· ERLEUCHTET ·</span> <span id="s02-r3">ANFÜHRER</span></div></div>
+      </div>
       <svg id="s02-fx" class="full" viewBox="0 0 1080 1920"></svg>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 5.2, "L3": [0.2, 1.27], "L3.words": [["ich", 0.2, 0.378], ["bin", 0.378, 0.557], ["prophet", 0.557, 0.92], ["peter", 0.92, 1.27]], "L4": [1.49, 5.02], "L4.words": [["gründer", 1.49, 1.94], ["erleuchteter", 2.22, 2.85], ["und", 3.24, 3.465], ["ab", 3.465, 3.681], ["heute", 3.681, 4.122], ["euer", 4.122, 4.355], ["anführer", 4.355, 5.02]]};
+      const C = {"__dur": 4.76, "L3": [0.2, 1.35], "L3.words": [["ich", 0.2, 0.392], ["bin", 0.392, 0.583], ["prophet", 0.583, 0.974], ["peter", 0.974, 1.35]], "L4": [1.57, 4.58], "L4.words": [["gründer", 1.57, 2.0], ["erleuchteter", 2.25, 2.85], ["und", 3.11, 3.295], ["ab", 3.295, 3.474], ["heute", 3.474, 3.838], ["euer", 3.838, 4.03], ["anführer", 4.03, 4.58]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -308,7 +312,7 @@
       // ===== Das geerbte Grundstück (Serien-Kulisse): riesig, verwahrlost, ein Stuhl unter einem kargen Baum, eine Ziege =====
       // Braucht: el(), lin(), rad(), GR(), gsap, rng(). Zeichnet in eine 1080×1920-SVG.
       // o.mood: "dusk" (Abendrot, Standard) | "night" | "day"; o.w: Breite der Welt (Standard 1080, für Kamerafahrten z. B. 3240);
-      // o.chairX/o.treeX: Stuhl/Baum (Welt-x); o.goatX: Ziege (null = keine); o.dy: Höhenversatz (Standard -130)
+      // o.chairX/o.treeX: Stuhl/Baum (Welt-x); o.goatX: Ziege (null = keine); o.dy: Höhenversatz (Standard -20, passend zum um 110 px abgesenkten Vordergrund)
       // Rückgabe: land (Vordergrund, für Schwenks x tweenen), far (Sonne/Strahlen, Parallaxe), tree, chair, leaf, goat, …
       function goatFig(parent, x, y, s = 1, flip = false) {
         const g = el("g", {}, parent); gsap.set(g, { x, y, scale: s, scaleX: flip ? -s : s, transformOrigin: "0 0" });
@@ -328,11 +332,11 @@
         return { g, head };
       }
       function grundstueck(sv, pre, o = {}) {
-        const D = GR(sv), R = rng(o.seed || 7), mood = o.mood || "dusk", W = o.w || 1080;
+        const D = GR(sv), R = rng(o.seed || 7), mood = o.mood || "dusk", W = o.w || 1080, DY = o.dy ?? -20;
         const skyC = { dusk: [[0, "#1a1240"], [0.45, "#5b2a6e"], [0.75, "#d0604a"], [1, "#ffb15c"]],
           night: [[0, "#05060f"], [0.6, "#121634"], [1, "#2a2350"]], day: [[0, "#6d9cc8"], [0.7, "#c9d6d8"], [1, "#efe2c2"]] }[mood];
         const sky = el("rect", { x: 0, y: 0, width: 1080, height: 1920, fill: lin(D, pre + "sky", skyC) }, sv);
-        const far = el("g", {}, sv); gsap.set(far, { y: o.dy ?? -130 });
+        const far = el("g", {}, sv); gsap.set(far, { y: DY });
         const sunG = el("g", {}, far);
         el("circle", { cx: 760, cy: 960, r: 520, fill: rad(D, pre + "sunh", [[0, "#ffd08a", 0.75], [0.4, "#ff9a5a", 0.25], [1, "#ff9a5a", 0]]) }, sunG);
         el("circle", { cx: 760, cy: 960, r: 90, fill: "#ffe2a8", opacity: mood === "night" ? 0 : 0.95 }, sunG);
@@ -341,7 +345,7 @@
         for (let i = 0; i < 9; i++) { const a = -150 + i * 15 + R() * 6; const r1 = 1700;
           el("path", { d: `M760 960 L${760 + r1 * Math.cos((a - 2.5) * Math.PI / 180)} ${960 + r1 * Math.sin((a - 2.5) * Math.PI / 180)} L${760 + r1 * Math.cos((a + 2.5) * Math.PI / 180)} ${960 + r1 * Math.sin((a + 2.5) * Math.PI / 180)}Z`,
             fill: lin(D, pre + "ray" + i, [[0, "#fff1c4", 0.5], [1, "#fff1c4", 0]], 0, 0, 1, 0) }, rays); }
-        const land = el("g", {}, sv); gsap.set(land, { y: o.dy ?? -130 });
+        const land = el("g", {}, sv); gsap.set(land, { y: DY });
         // Hügel: gespiegelte Kacheln, damit die Kanten nahtlos sind
         for (let k = 0; k * 1080 < W; k++) {
           const t = el("g", { transform: k % 2 ? `translate(${(k + 1) * 1080} 0) scale(-1 1)` : `translate(${k * 1080} 0)` }, land);
@@ -370,6 +374,10 @@
         }
         el("path", { d: `M${TX - 46} ${TY} Q${TX - 20} ${TY - 120} ${TX - 18} ${TY - 260} L${TX + 18} ${TY - 260} Q${TX + 24} ${TY - 120} ${TX + 54} ${TY}Z`, fill: bark }, tree);
         br(TX, TY - 250, 170, -1.95, 30, 4); br(TX, TY - 250, 190, -1.15, 28, 4); br(TX, TY - 200, 120, -0.35, 16, 2);
+        // abbrechender Ast (eigene Gruppe, Drehpunkt = Ansatz am Stamm): brk / brkBase
+        const brk = el("g", {}, tree), BX = TX + 14, BY = TY - 330;
+        el("path", { d: `M${BX} ${BY} Q${BX + 90} ${BY - 30} ${BX + 190} ${BY - 110}`, stroke: bark, "stroke-width": 18, fill: "none", "stroke-linecap": "round" }, brk);
+        el("path", { d: `M${BX + 110} ${BY - 44} Q${BX + 140} ${BY - 100} ${BX + 150} ${BY - 150} M${BX + 160} ${BY - 86} Q${BX + 210} ${BY - 90} ${BX + 240} ${BY - 70}`, stroke: bark, "stroke-width": 9, fill: "none", "stroke-linecap": "round" }, brk);
         const leafX = TX + 150, leafY = TY - 520;
         const leaf = el("path", { d: `M${leafX} ${leafY} q16 -22 34 -6 q-12 24 -34 6Z`, fill: "#9a8a2a" }, land);
         // Stuhl (Holz, leicht schief) unter dem Baum
@@ -443,7 +451,7 @@
           el("path", { d: `M${wx} ${wy} q${(R() - 0.5) * 20} ${-h * 0.6} ${(R() - 0.5) * 30} ${-h}`, stroke: c, "stroke-width": 3 + R() * 3, fill: "none", "stroke-linecap": "round" }, weeds); }
         const dust = el("g", {}, sv);
         const motes = Array.from({ length: 26 }, () => el("circle", { cx: 100 + R() * 880, cy: 500 + R() * 600, r: 2 + R() * 4, fill: "#ffe2a8", opacity: 0.25 + R() * 0.5 }, dust));
-        return { sky, land, far, sunG, rays, tree, leaf, chair, goat, weeds, dust, motes, fence, chairPos: [CX, CY], treePos: [TX, TY] };
+        return { sky, land, far, sunG, rays, tree, brk, brkBase: [BX, BY], leaf, chair, goat, weeds, dust, motes, fence, chairPos: [CX, CY], treePos: [TX, TY] };
       }
       // Ziege kaut (Kopf wippt, endlich)
       function chew(tl, G, t0, dur) { if (G.goat) tl.to(G.goat.head, { rotation: 30, duration: 0.22, yoyo: true, repeat: Math.max(1, 2 * Math.floor(dur / 0.44) - 1), ease: "sine.inOut" }, t0); }
@@ -463,7 +471,7 @@
       const bg = document.querySelector("#s02-bg"), sv = document.querySelector("#s02-svg"), fx = document.querySelector("#s02-fx");
       if (fx) filmLook(fx, "s02f");
       const G = grundstueck(bg, "s02g", { mood: "dusk" }); gsap.set(G.rays, { opacity: 0.35 }); gsap.set(bg, { filter: "blur(5px) brightness(.7)" });
-      const P = peter(sv, "s02p", 540, 1090, 0.72);
+      const P = peter(sv, "s02p", 540, 1090, 0.7);
       floatDust(tl, G, C.__dur);
       const l3 = line("L3"), l4 = line("L4"), pr = at("L3", "prophet"), gr = at("L4", "gründer"), er = at("L4", "erleuchteter"), an = at("L4", "anführer");
       tl.fromTo("#s02-beam", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0);

@@ -1,88 +1,353 @@
 {
  "title": "Prophet Peter – Tag 1: Ich gründe eine Sekte",
- "voice": "Google Chirp 3 HD (de-DE-Chirp3-HD-Sadachbia, lebhaft, hohe Stimmlage), --speed 1.1; Szene 1 schneller (1.18)",
- "notes": "Serie 'Prophet Peter' (Ich-Perspektive). Figur: tools/characters/prophet-peter.js. Frame 0: lautester Glockenschlag aus assets/sfx/src/church-bell-5993.mp3 (tools/make_church.py --bell). Szene 1 + Name in Szene 2 ohne Untertitel (Text steht groß im Bild).",
+ "voice": "Google Chirp 3 HD (de-DE-Chirp3-HD-Sadachbia, lebhaft), --speed 1.1; Szene 1 schneller (1.18); 'Ich bin Prophet Peter!' langsamer (0.92)",
+ "notes": "Serie 'Prophet Peter' (Ich-Perspektive). Figur: tools/characters/prophet-peter.js. Frame 0: lautester Glockenschlag aus assets/sfx/src/church-bell-5993.mp3 (tools/make_church.py --bell). Szene 1 + Name in Szene 2 ohne Untertitel (Text steht groß im Bild). Ab v3: Szenen-Vordergrund +110 px tiefer (zentrierter), Kapitel-Marke tiefer; Engelschor = hochgeladene Datei (assets/sfx/src/heavenly-choir-322708.mp3, 0–2,6 s).",
  "lead_in": 0.45,
  "hud": "pop",
  "safe": true,
  "scenes": [
-  { "id": "s01", "tag": "",
-    "lines": [
-     { "id": "L1", "text": "Tag eins!! / Ich gründe / eine Sekte!!", "speed": 1.18, "nocap": true }
-    ],
-    "sfx": [ { "name": "church-bell", "at": "s01+0.0", "volume": 1.0 },
-             { "name": "pop", "at": "L1:Ich", "volume": 0.3 },
-             { "name": "pop", "at": "L1:gründe", "volume": 0.3 },
-             { "name": "impact-bass-1", "at": "L1:Sekte", "volume": 0.55 } ] },
-  { "id": "s02", "tag": "DER GRÜNDER",
-    "lines": [
-     { "id": "L3", "text": "Ich bin / Prophet Peter!", "nocap": true },
-     { "id": "L4", "text": "Gründer! / Erleuchteter! / Und ab heute / euer *p:Anführer!" }
-    ],
-    "sfx": [ { "name": "angel-choir", "at": "L3:Prophet-0.5", "volume": 0.5 },
-             { "name": "shimmer", "at": "L3:Peter", "volume": 0.4 },
-             { "name": "pop", "at": "L4:Gründer", "volume": 0.3 },
-             { "name": "pop", "at": "L4:Erleuchteter", "volume": 0.3 },
-             { "name": "bell-hit", "at": "L4:Anführer", "volume": 0.45 } ] },
-  { "id": "s04", "tag": "DAS ERBE",
-    "lines": [
-     { "id": "L7", "text": "Mein Onkel / hat mir / ein *y:Grundstück / vererbt!" },
-     { "id": "L8", "text": "Hier entsteht / unser *p:Heiligtum!" }
-    ],
-    "sfx": [ { "name": "impact-bass-2", "at": "L7:vererbt", "volume": 0.45 },
-             { "name": "shimmer", "at": "L8:Heiligtum", "volume": 0.35 } ] },
-  { "id": "s05", "tag": "DIE WAHRHEIT",
-    "lines": [
-     { "id": "L9", "text": "Und jetzt / die *r:Wahrheit: / *y:fünf *y:Hektar / *r:Wildnis." },
-     { "id": "L9b", "text": "Eine *r:Ziege / wohnt hier schon. / Und es gibt / genau / *r:einen *r:Stuhl.", "pause": 0.1 },
-     { "id": "L10", "text": "Unter einem Baum, / der *r:aufgegeben hat.", "speed": 0.95 }
-    ],
-    "sfx": [ { "name": "creak", "at": "s05+0.0", "volume": 0.55 },
-             { "name": "glitch-1", "at": "L9:Wahrheit", "volume": 0.22 },
-             { "name": "impact-bass-1", "at": "L9:Hektar", "volume": 0.45 },
-             { "name": "goat", "at": "L9b:wohnt", "volume": 0.5 },
-             { "name": "error", "at": "L9b:Stuhl", "volume": 0.35 },
-             { "name": "whoosh-short", "at": "L10:aufgegeben", "volume": 0.3 } ] },
-  { "id": "s06", "tag": "DIE VISION",
-    "lines": [
-     { "id": "L11", "text": "Aber ich sehe / mehr! / Einen *y:Tempel! / *g:Gärten! / Eine *y:Pilgerstraße!" },
-     { "id": "L12", "text": "Und am Ende: / eine *p:Weltreligion!" }
-    ],
-    "sfx": [ { "name": "shimmer", "at": "L11:mehr", "volume": 0.35 },
-             { "name": "ping", "at": "L11:Tempel", "volume": 0.35 },
-             { "name": "ping", "at": "L11:Gärten", "volume": 0.3 },
-             { "name": "ping", "at": "L11:Pilgerstraße", "volume": 0.3 },
-             { "name": "angel-choir", "at": "L12:eine-0.3", "volume": 0.35 },
-             { "name": "impact-bass-2", "at": "L12:Weltreligion", "volume": 0.45 } ] },
-  { "id": "s07", "tag": "DIE KOLLEKTE",
-    "lines": [
-     { "id": "L13", "text": "Dafür gilt / ein *y:heiliges *y:Gesetz: / Jeder neue *p:Follower / bringt *y:einen *y:Euro / in die Kollekte!" },
-     { "id": "L14", "text": "Ein Euro. / Ein *g:Ziegelstein." }
-    ],
-    "sfx": [ { "name": "bell-hit", "at": "L13:heiliges", "volume": 0.35 },
-             { "name": "pop", "at": "L13:Follower", "volume": 0.4 },
-             { "name": "whoosh-short", "at": "L13:Euro-0.7", "volume": 0.3 },
-             { "name": "coin", "at": "L13:Euro+0.1", "volume": 0.65 },
-             { "name": "impact-bass-1", "at": "L14:Ziegelstein", "volume": 0.45 } ] },
-  { "id": "s08", "tag": "DIE RÄNGE",
-    "lines": [
-     { "id": "L15", "text": "Und wer *g:früh kommt, / steigt *g:hoch auf! / Der *y:erste Anhänger / wird *y:Hohepriester!" }
-    ],
-    "sfx": [ { "name": "click", "at": "s08+0.1", "volume": 0.35 },
-             { "name": "click", "at": "s08+0.25", "volume": 0.35 },
-             { "name": "click", "at": "s08+0.4", "volume": 0.35 },
-             { "name": "click", "at": "s08+0.55", "volume": 0.35 },
-             { "name": "whoosh-short", "at": "L15:hoch", "volume": 0.3 },
-             { "name": "bell-hit", "at": "L15:Hohepriester", "volume": 0.5 },
-             { "name": "angel-choir", "at": "L15:Hohepriester-0.2", "volume": 0.3 } ] },
-  { "id": "s09", "tag": "TAG 1 · AUFRUF", "hold": 2.8,
-    "lines": [
-     { "id": "L17", "text": "Nur eins / fehlt noch: / ein *p:Name! / Wie soll / unsere Sekte *p:heißen?" },
-     { "id": "L18", "text": "Schreib's / in die *y:Kommentare / und sei / der *g:Erste!" }
-    ],
-    "sfx": [ { "name": "pop", "at": "L17:Name", "volume": 0.4 },
-             { "name": "ping", "at": "L17:heißen", "volume": 0.3 },
-             { "name": "notification", "at": "L18:Kommentare", "volume": 0.4 },
-             { "name": "pop", "at": "L18:Erste", "volume": 0.4 } ] }
- ]
+  {
+   "id": "s01",
+   "tag": "",
+   "lines": [
+    {
+     "id": "L1",
+     "text": "Tag eins!! / Ich gründe / eine Sekte!!",
+     "speed": 1.18,
+     "nocap": true
+    }
+   ],
+   "sfx": [
+    {
+     "name": "church-bell",
+     "at": "s01+0.0",
+     "volume": 1.0
+    },
+    {
+     "name": "pop",
+     "at": "L1:Ich",
+     "volume": 0.3
+    },
+    {
+     "name": "pop",
+     "at": "L1:gründe",
+     "volume": 0.3
+    },
+    {
+     "name": "impact-bass-1",
+     "at": "L1:Sekte",
+     "volume": 0.55
+    }
+   ]
+  },
+  {
+   "id": "s02",
+   "tag": "DER GRÜNDER",
+   "lines": [
+    {
+     "id": "L3",
+     "text": "Ich bin / Prophet Peter!",
+     "nocap": true,
+     "speed": 0.92
+    },
+    {
+     "id": "L4",
+     "text": "Gründer! / Erleuchteter! / Und ab heute / euer *p:Anführer!"
+    }
+   ],
+   "sfx": [
+    {
+     "name": "choir-intro",
+     "at": "s02+0.0",
+     "volume": 0.75
+    },
+    {
+     "name": "shimmer",
+     "at": "L3:Peter",
+     "volume": 0.35
+    },
+    {
+     "name": "pop",
+     "at": "L4:Gründer",
+     "volume": 0.3
+    },
+    {
+     "name": "pop",
+     "at": "L4:Erleuchteter",
+     "volume": 0.3
+    },
+    {
+     "name": "bell-hit",
+     "at": "L4:Anführer",
+     "volume": 0.45
+    }
+   ]
+  },
+  {
+   "id": "s04",
+   "tag": "DAS ERBE",
+   "lines": [
+    {
+     "id": "L7",
+     "text": "Mein Onkel / hat mir / ein *y:Grundstück / vererbt!"
+    },
+    {
+     "id": "L8",
+     "text": "Hier entsteht / unser *p:Heiligtum!"
+    }
+   ],
+   "sfx": [
+    {
+     "name": "impact-bass-2",
+     "at": "L7:vererbt",
+     "volume": 0.45
+    },
+    {
+     "name": "shimmer",
+     "at": "L8:Heiligtum",
+     "volume": 0.35
+    }
+   ]
+  },
+  {
+   "id": "s05",
+   "tag": "DIE WAHRHEIT",
+   "lines": [
+    {
+     "id": "L9",
+     "text": "Und jetzt / die *r:Wahrheit: / *y:zwei *y:Hektar / *r:Wildnis."
+    },
+    {
+     "id": "L9b",
+     "text": "Eine *r:Ziege / wohnt hier schon. / Und es gibt / genau / *r:einen *r:Stuhl.",
+     "pause": 0.1
+    },
+    {
+     "id": "L10",
+     "text": "Unter einem / *r:kargen *r:Baum.",
+     "speed": 0.95
+    }
+   ],
+   "sfx": [
+    {
+     "name": "creak",
+     "at": "s05+0.0",
+     "volume": 0.55
+    },
+    {
+     "name": "glitch-1",
+     "at": "L9:Wahrheit",
+     "volume": 0.22
+    },
+    {
+     "name": "impact-bass-1",
+     "at": "L9:Hektar",
+     "volume": 0.45
+    },
+    {
+     "name": "goat",
+     "at": "L9b:wohnt",
+     "volume": 0.5
+    },
+    {
+     "name": "error",
+     "at": "L9b:Stuhl",
+     "volume": 0.35
+    },
+    {
+     "name": "crack",
+     "at": "L10:Baum+0.35",
+     "volume": 0.7
+    },
+    {
+     "name": "impact-bass-2",
+     "at": "L10:Baum+1.0",
+     "volume": 0.35
+    }
+   ],
+   "hold": 0
+  },
+  {
+   "id": "s06",
+   "tag": "DIE VISION",
+   "lines": [
+    {
+     "id": "L11",
+     "text": "Aber ich sehe / mehr! / Einen *y:Tempel! / *g:Gärten! / Eine *y:Pilgerstraße!",
+     "pause": 1.0
+    },
+    {
+     "id": "L12",
+     "text": "Und am Ende: / eine *p:Weltreligion!"
+    }
+   ],
+   "sfx": [
+    {
+     "name": "shimmer",
+     "at": "L11:mehr",
+     "volume": 0.35
+    },
+    {
+     "name": "ping",
+     "at": "L11:Tempel",
+     "volume": 0.35
+    },
+    {
+     "name": "ping",
+     "at": "L11:Gärten",
+     "volume": 0.3
+    },
+    {
+     "name": "ping",
+     "at": "L11:Pilgerstraße",
+     "volume": 0.3
+    },
+    {
+     "name": "choir-intro",
+     "at": "L12:eine-0.3",
+     "volume": 0.4
+    },
+    {
+     "name": "impact-bass-2",
+     "at": "L12:Weltreligion",
+     "volume": 0.45
+    }
+   ]
+  },
+  {
+   "id": "s07",
+   "tag": "DIE KOLLEKTE",
+   "lines": [
+    {
+     "id": "L13",
+     "text": "Dafür gilt / ein *y:heiliges *y:Gesetz: / Jeder neue *p:Follower / bringt *y:einen *y:Euro / in die Kollekte!"
+    }
+   ],
+   "sfx": [
+    {
+     "name": "bell-hit",
+     "at": "L13:heiliges",
+     "volume": 0.35
+    },
+    {
+     "name": "pop",
+     "at": "L13:Follower",
+     "volume": 0.4
+    },
+    {
+     "name": "whoosh-short",
+     "at": "L13:Euro-0.7",
+     "volume": 0.3
+    },
+    {
+     "name": "coin",
+     "at": "L13:Euro+0.1",
+     "volume": 0.65
+    }
+   ]
+  },
+  {
+   "id": "s08",
+   "tag": "DIE RÄNGE",
+   "lines": [
+    {
+     "id": "L15",
+     "text": "Sei von *g:Anfang an dabei / und sichere dir / einen *y:hohen *y:Rang / in meiner *p:Sekte!"
+    }
+   ],
+   "sfx": [
+    {
+     "name": "click",
+     "at": "s08+0.1",
+     "volume": 0.35
+    },
+    {
+     "name": "click",
+     "at": "s08+0.25",
+     "volume": 0.35
+    },
+    {
+     "name": "click",
+     "at": "s08+0.4",
+     "volume": 0.35
+    },
+    {
+     "name": "click",
+     "at": "s08+0.55",
+     "volume": 0.35
+    },
+    {
+     "name": "whoosh-short",
+     "at": "L15:hohen-0.2",
+     "volume": 0.3
+    },
+    {
+     "name": "bell-hit",
+     "at": "L15:Rang",
+     "volume": 0.5
+    }
+   ]
+  },
+  {
+   "id": "s09",
+   "tag": "DER NAME",
+   "lines": [
+    {
+     "id": "L17",
+     "text": "Nur eins / fehlt noch: / ein *p:Name! / Wie soll / unsere Sekte *p:heißen?"
+    }
+   ],
+   "sfx": [
+    {
+     "name": "pop",
+     "at": "L17:Name",
+     "volume": 0.4
+    },
+    {
+     "name": "ping",
+     "at": "L17:heißen",
+     "volume": 0.3
+    }
+   ]
+  },
+  {
+   "id": "s10",
+   "tag": "TAG 1 · AUFRUF",
+   "hold": 3.0,
+   "lines": [
+    {
+     "id": "L18",
+     "text": "Schreib's / in die *y:Kommentare / und sprich mich an / mit *y:Prophet *y:Peter!"
+    },
+    {
+     "id": "L19",
+     "text": "Und: Was kaufen wir / morgen / von der *y:ersten *y:Kollekte? / Der *g:Top-Kommentar / entscheidet!",
+     "pause": 0.1
+    }
+   ],
+   "sfx": [
+    {
+     "name": "notification",
+     "at": "L18:Kommentare",
+     "volume": 0.4
+    },
+    {
+     "name": "pop",
+     "at": "L18:Prophet",
+     "volume": 0.35
+    },
+    {
+     "name": "coin",
+     "at": "L19:Kollekte",
+     "volume": 0.5
+    },
+    {
+     "name": "bell-hit",
+     "at": "L19:entscheidet",
+     "volume": 0.45
+    }
+   ]
+  }
+ ],
+ "shift": 110
 }
