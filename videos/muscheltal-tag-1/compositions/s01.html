@@ -51,15 +51,15 @@
     #s01-k { top: 300px; transform: rotate(-2deg); }
     #s01-st { left: 300px; top: 470px; color: #e8467c; border-color: #e8467c; transform: rotate(-9deg); font-size: 96px; }
   </style>
-  <div id="root" data-composition-id="s01" data-start="0" data-duration="5.320" data-width="1080" data-height="1920">
-    <div id="s01-stage" class="clip stage" data-start="0" data-duration="5.320" data-track-index="0">
+  <div id="root" data-composition-id="s01" data-start="0" data-duration="5.400" data-width="1080" data-height="1920">
+    <div id="s01-stage" class="clip stage" data-start="0" data-duration="5.400" data-track-index="0">
       <div id="s01-st" class="stamp">GEKAUFT!</div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 5.32, "L1": [0.0, 2.16], "L1.words": [["ich", 0.0, 0.218], ["habe", 0.218, 0.639], ["euch", 0.639, 0.866], ["eine", 0.866, 1.287], ["insel", 1.287, 1.716], ["gekauft", 1.716, 2.16]], "L2": [2.38, 5.14], "L2.words": [["und", 2.38, 2.577], ["jeder", 2.577, 2.964], ["von", 2.964, 3.162], ["euch", 3.162, 3.366], ["bekommt", 3.366, 3.767], ["darauf", 3.767, 4.161], ["ein", 4.161, 4.358], ["eigenes", 4.358, 4.936], ["haus", 4.936, 5.14]]};
+      const C = {"__dur": 5.4, "L1": [0.0, 1.73], "L1.words": [["ich", 0.0, 0.175], ["habe", 0.175, 0.512], ["euch", 0.512, 0.693], ["eine", 0.693, 1.031], ["insel", 1.031, 1.374], ["gekauft", 1.374, 1.73]], "L2": [1.95, 5.22], "L2.words": [["und", 1.95, 2.184], ["jeder", 2.184, 2.642], ["von", 2.642, 2.876], ["euch", 2.876, 3.118], ["bekommt", 3.118, 3.593], ["darauf", 3.593, 4.06], ["ein", 4.06, 4.294], ["eigenes", 4.294, 4.978], ["haus", 4.978, 5.22]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
