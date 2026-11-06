@@ -1,29 +1,29 @@
-# Muschel-Tal – Tag 1: Die Gründung · Beschreibung (v2)
+# Muschel-Tal – Tag 1: Die Gründung · Beschreibung (v3)
 
-**Cover:** `renders/cover.jpg` – „GRATIS? auf meiner Insel wohnen“, Tag 1 · Die Gründung, 0 Einwohner, 0 Muscheln, Hütte Nr. 1 ist frei.
+**Cover:** `renders/cover.jpg` – „ICH VERSCHENKE HÄUSER! auf meiner Insel“, GRATIS-Stempel, 0 Einwohner, 0 Muscheln, Hütte Nr. 1 ist frei.
 
 ## Hauptversion (zum Posten)
-Hütte Nr. 1 ist noch frei 👀 Schreib „ich“ und zieh ein 🏝️
-#muscheltal #fürdich #fyp #insel #gratis
+Ich verschenke Häuser 🏠 Wer will eins? Schreib „ich“ 👇
+#muscheltal #fürdich #fyp #gratis #insel
 
-## Alternative A – Neugier
-Eine Insel. 0 Einwohner. 0 Muscheln. Wer wird die Nr. 1? 🐚
-#muscheltal #fürdich #fyp #insel #gratis
+## Alternative A – Knappheit
+Nur 500 Häuser auf der Hauptinsel 🏝️ Nr. 1 ist noch frei 👀
+#muscheltal #fürdich #fyp #gratis #insel
 
-## Alternative B – Mini-Challenge
-Nur die ersten 500 wohnen auf der Hauptinsel 🏝️ Bist du schnell genug?
-#muscheltal #fürdich #fyp #insel #gratis
+## Alternative B – Neugier
+Ich verschenke Häuser. Wirklich. Einfach folgen 🐚
+#muscheltal #fürdich #fyp #gratis #insel
 
 ## Angepinnter Kommentar (vom Account selbst)
-Die ersten Einwohner ziehen morgen ein 🏝️ Was soll ich vom ersten Geld kaufen? 👇
+Die ersten Häuser werden morgen vergeben 🏠 Schreib „ich“, dann merke ich mir deinen Namen 👇
 
 ## Warum so
-- Kurz: auf TikTok sieht man ohne Aufklappen nur ~70–100 Zeichen – der ganze Text passt da rein.
-- Eine offene Frage bzw. ein klarer Auftrag („Schreib ‚ich‘“) statt einer Erklärung – das Video erklärt schon alles.
-- Ein Kommentar mit einem Wort ist die niedrigste Hürde → viele Kommentare früh = mehr Reichweite.
-- Hashtags: #muscheltal (Marke), #fürdich + #fyp (Reichweite), #insel (Thema), #gratis (passt zum neuen Hook „umsonst“, wird oft gesucht).
+- Sehr kurz: der ganze Text ist ohne Aufklappen sichtbar.
+- Greift den neuen Hook „Ich verschenke Häuser“ auf – Video, Cover und Text sagen dasselbe.
+- „Wer will eins? Schreib ‚ich‘“ = leichtester möglicher Kommentar → viele frühe Kommentare = mehr Reichweite.
+- #gratis vorne bei den Themen-Hashtags, weil „verschenken/gratis“ jetzt der Kern ist.
 
 ## Tipps
 - Posten werktags 17–20 Uhr oder Sonntagvormittag.
-- In der ersten Stunde jedem „ich“ antworten, z. B. „Hütte reserviert ✅“ – erzeugt weitere Kommentare.
-- Zwei, drei Antworten als Video-Antwort aufnehmen („@name, deine Hütte steht!“) – das ist gleich Material für Tag 2.
+- In der ersten Stunde auf jedes „ich“ antworten („Haus reserviert ✅“).
+- Die schönsten Kommentare in Tag 2 als Einwohner zeigen.
