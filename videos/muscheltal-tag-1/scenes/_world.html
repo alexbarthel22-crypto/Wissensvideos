@@ -71,7 +71,7 @@
 
       // ---------- Zeitplan: Hütten erscheinen passend zum Text; Hütte Nr. 1 bleibt frei, Nr. 37 = "deine" Hütte ----------
       // Noch keine Hütten: Platz Nr. 1 zeigt schemenhaft die erste Hütte; bei "500" erscheinen die freien Grundstücke.
-      const ME = 0, tH = at("L2", "Haus"), tPl = at("L8", "Platz"), tFull = line("L8")[1] + .3;
+      const ME = 0, tH = at("L2", "eins"), tPl = at("L8", "Platz"), tFull = line("L8")[1] + .3;
       const plotT = PL.map((p, i) => tPl + (i / 499) * (tFull - tPl));
 
       // ---------- Kamera (Schlüsselbilder an Wörtern) ----------
@@ -80,7 +80,7 @@
       const zMain = (W - 60) / (2 * (MAIN.R + 40)), me = PL[ME], one = PL[0];
       const MR = MAIN.R;
       const K = [
-        [0, 0, 60, zMain * .62], [at("L1", "umsonst"), 0, 25, zMain * 1.02], [line("L2")[0] + .15, -MR * .45, -MR * .3, 2.5], [line("L2")[1], MR * .42, MR * .12, 2.6],
+        [0, 0, 60, zMain * .62], [at("L1", "verschenke"), 0, 25, zMain * 1.02], [line("L2")[0] + .15, -MR * .45, -MR * .3, 2.5], [line("L2")[1], MR * .42, MR * .12, 2.6],
         [line("L3")[0] - .1, MR * .35, MR * .38, 2.2], [line("L3")[1], -MR * .35, MR * .42, 2.4],
         [line("L4")[0], me.x + MR * .3, me.y - MR * .2, 2.4], [at("L4", "ein") - .1, me.x, me.y, 3.2], [line("L5")[1], me.x, me.y, 3.5],
         [line("L6")[0], -MR * .5, MR * .3, 2.4], [line("L6")[1], -MR * .05, MR * .45, 2.6], [line("L6b")[1], MR * .45, MR * .3, 2.3],
@@ -92,7 +92,7 @@
         [line("L16")[0] + .2, MR * .22, -MR * .2, 2.2], [C.__dur, -MR * .25, MR * .1, 2.4]];
       function camAt(t) { let i = 0; while (i < K.length - 1 && K[i + 1][0] <= t) i++; const a = K[i], b = K[Math.min(i + 1, K.length - 1)];
         const k = b[0] > a[0] ? sm(a[0], b[0], t) : 1; const lz = Math.log(a[3]) + (Math.log(b[3]) - Math.log(a[3])) * k;
-        const g0 = at("L1", "umsonst"), sh = t > g0 && t < g0 + .45 ? (1 - (t - g0) / .45) * 14 / Math.exp(lz) : 0; // Wackler beim Stempel
+        const g0 = at("L1", "verschenke"), sh = t > g0 && t < g0 + .45 ? (1 - (t - g0) / .45) * 14 / Math.exp(lz) : 0; // Wackler beim Stempel
         const zz = Math.exp(lz) * (1 + .03 * Math.sin(t * .6)); // ständige leichte Drift + Zoom-Atmen, damit der Hintergrund nie stillsteht
         return { x: a[1] + (b[1] - a[1]) * k + Math.sin(t * 95) * sh + Math.sin(t * .5) * 14 / zz, y: a[2] + (b[2] - a[2]) * k + Math.cos(t * 83) * sh + Math.cos(t * .37) * 11 / zz, z: zz }; }
 
@@ -245,7 +245,7 @@ function palace(c,T,label){
           const s = Math.pow(Math.max(0, Math.sin(t * 1.4)), 8); if (s > .05) { c.fillStyle = `rgba(255,210,80,${s})`; c.beginPath(); for (let k = 0; k < 10; k++) { const r = k % 2 ? 3 : 9, a = k / 10 * TAU - Math.PI / 2; c.lineTo(XM.x + 30 + Math.cos(a) * r, XM.y - 20 + Math.sin(a) * r); } c.closePath(); c.fill(); } }
         // Wolken (blenden beim Heranzoomen aus)
         const ca = Math.max(0, Math.min(1, 1.5 - cam.z * .7)); if (ca > .02) for (const cl of CLOUDS) if (vis(cl.x, cl.y, 300)) cloud(cl, ca);
-        if (cam.z < .9) { for (const v of NB) label("🔒 ???", v.x, v.y + v.R + 34 / cam.z, 40, "#fff");
+        if (cam.z < .9 && t > line("L2")[0]) { for (const v of NB) label("🔒 ???", v.x, v.y + v.R + 34 / cam.z, 40, "#fff");
           label("???", XM.x, XM.y + XM.R + 40 / cam.z, 44, "#fff"); label("MUSCHEL-TAL", 0, MAIN.R + 34 / cam.z, 34, "#ffd23f"); }
         // Sonnenlicht von rechts oben + sanfte Vignette
         c.setTransform(1, 0, 0, 1, 0, 0);

@@ -57,8 +57,8 @@
     .s01-cf { position: absolute; left: 530px; top: 820px; width: 18px; height: 28px; border-radius: 4px; }
     .s01-sp { position: absolute; width: 70px; height: 70px; }
   </style>
-  <div id="root" data-composition-id="s01" data-start="0" data-duration="5.290" data-width="1080" data-height="1920">
-    <div id="s01-stage" class="clip stage" data-start="0" data-duration="5.290" data-track-index="0">
+  <div id="root" data-composition-id="s01" data-start="0" data-duration="4.580" data-width="1080" data-height="1920">
+    <div id="s01-stage" class="clip stage" data-start="0" data-duration="4.580" data-track-index="0">
       <div id="s01-glow"></div>
       <div id="s01-rays"></div>
       <div id="s01-cfw"></div>
@@ -73,7 +73,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 5.29, "L1": [0.0, 1.82], "L1.words": [["willst", 0.0, 0.183], ["du", 0.183, 0.342], ["umsonst", 0.342, 0.677], ["auf", 0.677, 0.842], ["meiner", 0.842, 1.172], ["insel", 1.172, 1.496], ["leben", 1.496, 1.82]], "L2": [2.04, 5.11], "L2.words": [["und", 2.04, 2.259], ["jeder", 2.259, 2.69], ["von", 2.69, 2.909], ["euch", 2.909, 3.136], ["bekommt", 3.136, 3.583], ["darauf", 3.583, 4.021], ["ein", 4.021, 4.241], ["eigenes", 4.241, 4.883], ["haus", 4.883, 5.11]]};
+      const C = {"__dur": 4.58, "L1": [0.0, 1.74], "L1.words": [["ich", 0.0, 0.158], ["verschenke", 0.158, 0.638], ["häuser", 0.638, 0.955], ["auf", 0.955, 1.113], ["meiner", 1.113, 1.429], ["insel", 1.429, 1.74]], "L2": [1.96, 4.4], "L2.words": [["jeder", 1.96, 2.346], ["von", 2.346, 2.543], ["euch", 2.543, 2.746], ["bekommt", 2.746, 3.146], ["eins", 3.146, 3.35], ["ganz", 3.6, 3.87], ["umsonst", 3.87, 4.4]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -117,7 +117,7 @@
 
       wrapBt("#s01-stage");
       const tl = gsap.timeline({ paused: true });
-      const gek = at("L1", "umsonst"), R = rng(21), box = document.getElementById("s01-cfw"), cols = ["#ffd23f", "#e8467c", "#2fb3a0", "#fff", "#7b4fe0", "#ff7a59"];
+      const gek = at("L1", "verschenke"), R = rng(21), box = document.getElementById("s01-cfw"), cols = ["#ffd23f", "#e8467c", "#2fb3a0", "#fff", "#7b4fe0", "#ff7a59"];
       tl.fromTo("#s01-rays", { rotation: 0, opacity: .75 }, { rotation: 75, opacity: .35, duration: C.__dur, ease: "none" }, 0);
       tl.fromTo("#s01-glow", { scale: .9, opacity: .8 }, { scale: 1.15, opacity: .4, duration: .45, yoyo: true, repeat: 3, ease: "sine.inOut" }, 0);
       tl.fromTo(".s01-sp", { scale: .2, opacity: 0, rotation: 0 }, { scale: 1.4, opacity: 1, rotation: 90, duration: .35, ease: "back.out(3)", stagger: .12, yoyo: true, repeat: 3 }, 0);

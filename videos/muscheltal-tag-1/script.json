@@ -13,7 +13,7 @@
   "bars": true,
   "color": "rgba(255,255,255,.78)",
   "first_class": "hook",
-  "css": "@font-face { font-family: 'Lilita One'; src: url('assets/fonts/LilitaOne-Regular.woff2') format('woff2'); font-weight: 400; }\n    .inner.hook { font-family: 'Lilita One', sans-serif; font-weight: 400; font-size: 122px; line-height: 1.04; letter-spacing: .01em; top: -590px; }\n    .inner.hook .bar { background: #ffe500 !important; padding: .02em .3em .08em; border-radius: .5em; }\n    .inner.hook .w { color: #1a0f08; text-shadow: none; }\n    .inner .bar .w { margin: 0 .07em; }\n    .inner .bar { border-radius: .55em; padding: .04em .36em .1em; }\n    .inner .w { white-space: nowrap; }\n    .inner .bar { box-shadow: 0 0 0 6px #1a0f08, 0 12px 0 rgba(0,0,0,.35); }",
+  "css": "@font-face { font-family: 'Lilita One'; src: url('assets/fonts/LilitaOne-Regular.woff2') format('woff2'); font-weight: 400; }\n    .inner.hook { font-family: 'Lilita One', sans-serif; font-weight: 400; font-size: 128px; line-height: 1.06; letter-spacing: .01em; top: -590px; }\n    .inner.hook .bar { background: none !important; box-shadow: none !important; padding: 0; }\n    .inner.hook .w { color: #ffe500; -webkit-text-stroke: 24px #1a0f08; paint-order: stroke fill; text-shadow: 0 12px 0 #ff2e7e, 0 18px 30px rgba(0,0,0,.55); }\n    .inner .bar .w { margin: 0 .07em; }\n    .inner .bar { border-radius: .55em; padding: .04em .36em .1em; }\n    .inner .w { white-space: nowrap; }\n    .inner .bar { box-shadow: 0 0 0 6px #1a0f08, 0 12px 0 rgba(0,0,0,.35); }",
   "vary": true,
   "pop_scale": 1.2,
   "hook_punch": true,
@@ -25,8 +25,9 @@
    "#00b86b"
   ],
   "key_color": "#ffe500",
-  "hook_text": "#1a0f08",
-  "hook_key": "#ff1f6b"
+  "hook_text": "#ffe500",
+  "hook_key": "#ffffff",
+  "hook_shadow": "0 12px 0 #ff2e7e, 0 18px 30px rgba(0,0,0,.55)"
  },
  "scenes": [
   {
@@ -35,13 +36,13 @@
    "lines": [
     {
      "id": "L1",
-     "text": "Willst du *y:umsonst auf meiner *y:Insel leben?",
-     "style": "Style: a real young man with a big excited smile, inviting and teasing, like he has an unbelievable offer for you. Natural, not theatrical. Rising, curious question intonation.\nPace: fast.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+     "text": "Ich *y:verschenke *y:Häuser auf meiner *y:Insel!",
+     "style": "Style: a real young man announcing something unbelievable with a huge excited smile, generous and proud, natural not theatrical.\nPace: fast.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
      "speed": 1.22
     },
     {
      "id": "L2",
-     "text": "Und *g:jeder von euch / bekommt darauf / ein *p:eigenes *p:Haus!"
+     "text": "*g:Jeder von euch / bekommt *p:eins! / Ganz *y:umsonst."
     }
    ],
    "sfx": [
@@ -52,17 +53,17 @@
     },
     {
      "name": "impact-bass-2",
-     "at": "L1:umsonst",
+     "at": "L1:verschenke",
      "volume": 0.22
     },
     {
      "name": "pop",
-     "at": "L2:Haus",
+     "at": "L2:eins",
      "volume": 0.4
     },
     {
      "name": "ka-ching",
-     "at": "L1:umsonst",
+     "at": "L1:verschenke",
      "volume": 0.75
     }
    ]

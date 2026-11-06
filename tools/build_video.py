@@ -155,6 +155,8 @@ def build_captions(project, timings, windows, total, big=False, opt=None):
             if gi == 0 and opt.get("hook_text"):  # eigener Farbsatz für den Einstieg (z. B. dunkle Schrift auf Gelb)
                 target = opt.get("hook_key", target) if col else opt["hook_text"]
             glow = ("0 3px 0 rgba(0,0,0,.35)" if bars else f"0 0 26px {COLORS[col]}aa, 0 5px 0 rgba(0,0,0,.55)") if col else ("0 3px 0 rgba(0,0,0,.35)" if bars else "0 5px 0 rgba(0,0,0,.55)")
+            if gi == 0 and opt.get("hook_shadow"):
+                glow = opt["hook_shadow"]
             js.append(f'tl.to("#{wid}", {{ color: "{target}", textShadow: "{glow}", duration: 0.08, ease: "power1.out" }}, {w["start"] - 0.02:.3f});')
             if big and not (gi == 0 and wi == 0 and opt.get("first_at_zero")):  # Wort hüpft beim Sprechen kurz an (erstes Wort steht ruhig für das Vorschaubild)
                 if gi == 0 and opt.get("hook_punch"):  # Einstieg: jedes Wort knallt deutlich auf
