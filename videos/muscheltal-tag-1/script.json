@@ -13,7 +13,7 @@
   "bars": true,
   "color": "rgba(255,255,255,.62)",
   "first_class": "hook",
-  "css": "@font-face { font-family: 'Lilita One'; src: url('assets/fonts/LilitaOne-Regular.woff2') format('woff2'); font-weight: 400; }\n    .inner.hook { font-family: 'Lilita One', sans-serif; font-weight: 400; font-size: 140px; line-height: 1.04; letter-spacing: .01em; top: -540px; }\n    .inner.hook .bar { background: #ff3d7f !important; padding: .02em .3em .08em; border-radius: .5em; }\n    .inner.hook .w { color: #fff; }\n    .inner .bar .w { margin: 0 .07em; }\n    .inner .bar { border-radius: .55em; padding: .04em .36em .1em; }\n    .inner .w { white-space: nowrap; }",
+  "css": "@font-face { font-family: 'Lilita One'; src: url('assets/fonts/LilitaOne-Regular.woff2') format('woff2'); font-weight: 400; }\n    .inner.hook { font-family: 'Lilita One', sans-serif; font-weight: 400; font-size: 122px; line-height: 1.04; letter-spacing: .01em; top: -590px; }\n    .inner.hook .bar { background: #ff3d7f !important; padding: .02em .3em .08em; border-radius: .5em; }\n    .inner.hook .w { color: #fff; }\n    .inner .bar .w { margin: 0 .07em; }\n    .inner .bar { border-radius: .55em; padding: .04em .36em .1em; }\n    .inner .w { white-space: nowrap; }",
   "vary": true,
   "pop_scale": 1.2,
   "hook_punch": true
@@ -25,8 +25,8 @@
    "lines": [
     {
      "id": "L1",
-     "text": "Ich habe euch eine *y:Insel *y:gekauft!",
-     "style": "Style: a real young man who just did something crazy and is overjoyed to tell everyone, genuine excitement and a big smile in the voice, natural not theatrical.\nPace: fast.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+     "text": "Willst du *y:umsonst auf meiner *y:Insel leben?",
+     "style": "Style: a real young man with a big excited smile, inviting and teasing, like he has an unbelievable offer for you. Natural, not theatrical. Rising, curious question intonation.\nPace: fast.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
      "speed": 1.22
     },
     {
@@ -42,7 +42,7 @@
     },
     {
      "name": "impact-bass-2",
-     "at": "L1:gekauft",
+     "at": "L1:umsonst",
      "volume": 0.35
     },
     {

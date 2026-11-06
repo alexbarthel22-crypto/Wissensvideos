@@ -4,7 +4,7 @@
 In TikTok beim Hochladen unter „Cover auswählen“ → „Hochladen“ einfügen.
 
 ## Hauptversion (zum Posten)
-Tag 1: Die Gründung 🏝️ Ich habe euch eine Insel gekauft – 0 Einwohner, 0 Muscheln. Wer jetzt folgt, bekommt Hütte Nr. 1 👀 Und was kaufen wir morgen vom ersten Geld? Die 2 Top-Kommentare entscheiden! 👇
+Willst du umsonst auf meiner Insel leben? 🏝️ Tag 1: Die Gründung – 0 Einwohner, 0 Muscheln. Wer jetzt folgt, bekommt Hütte Nr. 1 👀 Und was kaufen wir morgen vom ersten Geld? Die 2 Top-Kommentare entscheiden! 👇
 #muscheltal #fürdich #fyp #insel #mitmachen
 
 ## Alternative 1 (Neugier)
