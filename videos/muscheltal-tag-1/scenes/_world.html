@@ -79,7 +79,7 @@
         const z = Math.min((W - 100) / (x1 - x0), 780 / (y1 - y0)); return { x: (x0 + x1) / 2, y: (y0 + y1) / 2, z }; })();
       const zMain = (W - 60) / (2 * (MAIN.R + 40)), me = PL[ME], one = PL[0];
       const K = [
-        [0, 0, 60, zMain * .62], [at("L1", "gekauft"), 0, 25, zMain * 1.02], [line("L2")[1], 0, 20, zMain * 1.08],
+        [0, 0, 60, zMain * .62], [at("L1", "gekauft"), 0, 25, zMain * 1.02], [line("L2")[0] + .15, -MAIN.R * .45, -MAIN.R * .3, 2.5], [line("L2")[1], MAIN.R * .42, MAIN.R * .12, 2.6],
         [line("L3")[0] - .1, 0, 10, zMain * 1.6], [line("L3")[1], 0, 0, zMain * 1.75],
         [at("L4", "folgst") - .3, me.x, me.y, 3.0], [line("L5")[1], me.x, me.y, 3.3],
         [line("L6")[0], 0, 30, 2.1], [line("L6")[1], 0, 20, 2.3],

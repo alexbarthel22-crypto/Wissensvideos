@@ -112,6 +112,8 @@
       tl.fromTo("#s08-sheet", { opacity: 0, y: 500 }, { opacity: 1, y: 0, duration: .45, ease: "power4.out" }, 0.02);
       ["#s08-c1", "#s08-c2", "#s08-c3"].forEach((id, k) => tl.fromTo(id, { opacity: 0, x: -60 }, { opacity: 1, x: 0, duration: .3, ease: "power3.out" }, .2 + k * .18));
       tl.fromTo("#s08-t", { opacity: 0, scale: 2, rotation: -10 }, { opacity: 1, scale: 1, rotation: -2, duration: .35, ease: "back.out(2.4)" }, ihr - .1);
+      tl.to("#s08-sheet", { rotation: 1.2, duration: .22, yoyo: true, repeat: 7, ease: "sine.inOut" }, .5);
+      tl.to("#s08-sheet", { boxShadow: "0 0 0 8px #ffd23f, 0 14px 0 rgba(0,0,0,.22)", duration: .2, yoyo: true, repeat: 5, ease: "sine.inOut" }, .6);
       tkLike(tl, "#s08-c1", .55, 1204, 1391, 1.6, 3); tkLike(tl, "#s08-c2", ihr + .1, 873, 940, 1.2, 5); tkLike(tl, "#s08-c3", ko - .3, 651, 702, 1, 7);
       tl.to("#s08-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
       window.__timelines["s08"] = tl;

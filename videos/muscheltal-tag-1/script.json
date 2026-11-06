@@ -107,6 +107,12 @@
     {
      "id": "L6",
      "text": "Jeder Einwohner / bringt *y:5|fünf *y:Muscheln mit. / Das ist unsere *y:Währung!"
+    },
+    {
+     "id": "L6b",
+     "text": "Aktueller *y:Kontostand: / *r:null Muscheln.",
+     "pause": 0.1,
+     "style": "Style: a real young man, joking and slightly disappointed, like a funny anticlimax, natural.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
     }
    ],
    "sfx": [
@@ -119,6 +125,11 @@
      "name": "ping",
      "at": "L6:Währung",
      "volume": 0.4
+    },
+    {
+     "name": "sad-trombone",
+     "at": "L6b:null",
+     "volume": 0.55
     }
    ]
   },

@@ -35,7 +35,9 @@
       tl.fromTo(".s01-sp", { scale: .2, opacity: 0, rotation: 0 }, { scale: 1.4, opacity: 1, rotation: 90, duration: .35, ease: "back.out(3)", stagger: .12, yoyo: true, repeat: 3 }, 0);
       tl.set("#s01-flash", { opacity: 0 }, 0);
       tl.fromTo("#s01-flash", { opacity: .75 }, { opacity: 0, duration: .35, ease: "power2.out", immediateRender: false }, gek);
-      tl.fromTo("#s01-st", { opacity: 0, scale: 3 }, { opacity: 1, scale: 1, duration: .24, ease: "expo.in" }, gek - .05);
+      tl.set("#s01-st", { opacity: 1 }, 0);
+      tl.fromTo("#s01-st", { rotation: -9 }, { rotation: -5, duration: .3, yoyo: true, repeat: 1, ease: "sine.inOut" }, 0);
+      tl.fromTo("#s01-st", { scale: 1.7 }, { scale: 1, duration: .32, ease: "elastic.out(1.2, .4)", immediateRender: false }, gek - .03);
       tl.fromTo("#s01-st", { x: 0 }, { x: 12, duration: .04, yoyo: true, repeat: 7, ease: "none" }, gek + .2);
       tl.to("#s01-st", { opacity: 0, scale: .6, rotation: 10, duration: .25, ease: "back.in(2)" }, Math.min(gek + 2.0, C.__dur - .6));
       for (let k = 0; k < 46; k++) { const d = document.createElement("div"); d.className = "s01-cf"; d.style.background = cols[k % cols.length]; box.appendChild(d);
