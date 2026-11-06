@@ -102,7 +102,7 @@ def baue(rows, out):
     js = json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
     html = html.replace("/*__DATEN__*/null", js)
     os.makedirs(out, exist_ok=True)
-    for datei in ("impressum.html", "datenschutz.html", "CNAME"):
+    for datei in ("CNAME",):
         quelle = os.path.join(HIER, "site", datei)
         if os.path.exists(quelle) and os.path.abspath(out) != os.path.join(HIER, "site"):
             open(os.path.join(out, datei), "w", encoding="utf-8").write(open(quelle, encoding="utf-8").read())

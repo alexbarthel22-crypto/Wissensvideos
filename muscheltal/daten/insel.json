@@ -3,15 +3,17 @@
   "account": "@muscheltal",
   "muscheln_pro_einwohner": 5,
   "viertel": [
-    {"name": "Gründerbucht", "plaetze": 1000, "farbe": "#ff7a59"},
-    {"name": "Palmenhafen", "plaetze": 4000, "farbe": "#f2a516"},
-    {"name": "Dschungeldorf", "plaetze": 0, "farbe": "#1f9e8f"}
+    {"name": "Gründerbucht", "plaetze": 1000, "farbe": "#e8467c", "emoji": "🦀"},
+    {"name": "Palmenhafen", "plaetze": 4000, "farbe": "#f4a51c", "emoji": "⚓"},
+    {"name": "Dschungeldorf", "plaetze": 0, "farbe": "#2e9e5b", "emoji": "🐒"}
   ],
   "aemter": [
     ["Häuptling", ""],
     ["Strandvilla Nr. 1", ""],
     ["Strandgrundstück Nr. 1", ""]
   ],
+  "projekt": {"name": "Leuchtturm", "emoji": "🗼", "ziel": 1000, "stand": 0, "einheit": "Kommentare",
+              "text": "Jeder Kommentar unter dem neuesten Video ist ein Stein. Bei 1.000 Steinen steht der Leuchtturm."},
   "news": [
     "Muschel-Tal ist gegründet. Die Insel ist noch leer – wer zuerst folgt, bekommt Hütte Nr. 1."
   ],

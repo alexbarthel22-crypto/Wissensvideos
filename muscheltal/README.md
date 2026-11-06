@@ -18,5 +18,3 @@ python3 muscheltal/bau.py                                              # oder nu
 Danach committen + pushen → der Hoster veröffentlicht automatisch.
 
 Vorschau mit Testnamen (nie veröffentlichen): `python3 muscheltal/bau.py --demo 3000 --out /tmp/demo`
-
-Vor dem Livegang: Platzhalter in `site/impressum.html` und `site/datenschutz.html` ausfüllen.
