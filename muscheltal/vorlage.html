@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Muschel-Tal – die Insel aus Followern</title>
+<meta name="description" content="Muschel-Tal: die Inselstadt in der Südsee, die nur aus euch besteht. Folgen = einziehen. Finde deine Hütte auf der Karte.">
+<meta name="theme-color" content="#0d3b66">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%231ba0c9'/%3E%3Cpath d='M12 44 Q32 8 52 44 Z' fill='%23ffc43d'/%3E%3Cpath d='M32 14v30M22 22l6 22M42 22l-6 22' stroke='%23ff7a59' stroke-width='3'/%3E%3C/svg%3E">
+<style>
+/* Muschel-Tal: Südsee-Look. Keine externen Dateien (Datenschutz: keine Google-Fonts, kein Tracking). */
+:root{
+ --navy:#0d3b66;--sea:#1ba0c9;--lagoon:#7fdbe6;--sand:#f6e3b4;--palm:#3fa34d;--coral:#ff7a59;--gold:#ffc43d;
+ --paper:#fdf8ec;--card:#fffdf7;--ink:#0d3b66;--muted:#557092;--line:#ecdfbf;
+ --round:ui-rounded,"SF Pro Rounded","Arial Rounded MT Bold","Nunito","Segoe UI",system-ui,sans-serif;
+ color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--paper);color:var(--ink);font:500 17px/1.5 var(--round)}
+h1,h2,h3{margin:0;text-wrap:balance;font-weight:900;line-height:1.1}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+a{color:var(--sea);font-weight:800}
+.w{max-width:760px;margin:0 auto;padding:0 16px}
+header{background:linear-gradient(180deg,#0d3b66 0%,#145a8a 70%,#1ba0c9 100%);color:#fff;padding:20px 0 0;overflow:hidden}
+.brand{display:flex;align-items:center;gap:12px}
+.brand h1{font-size:34px;letter-spacing:.5px}
+.brand p{margin:3px 0 0;color:#d6ecf7;font-size:15px}
+.stats{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.stat{background:rgba(255,255,255,.14);border-radius:999px;padding:7px 13px;font-weight:800;font-size:15px;font-variant-numeric:tabular-nums}
+.stat b{color:var(--gold)}
+.stat.day{background:var(--coral)}
+.wave{display:block;width:100%;height:46px;margin-top:12px}
+.offiz{font-size:14px;color:#d6ecf7;margin:10px 0 0}
+.offiz a{color:var(--gold)}
+nav.jump{position:sticky;top:0;z-index:20;background:var(--navy);box-shadow:0 4px 12px rgba(13,59,102,.25)}
+nav.jump div{display:flex;gap:6px;overflow-x:auto;padding:8px 12px;max-width:760px;margin:0 auto;scrollbar-width:none}
+nav.jump div::-webkit-scrollbar{display:none}
+nav.jump button{flex:none;border:0;border-radius:999px;padding:9px 14px;min-height:40px;background:rgba(255,255,255,.13);color:#fff;font-weight:800;font-size:15px}
+nav.jump button.me{background:var(--gold);color:var(--navy)}
+section{padding:26px 0 6px;scroll-margin-top:60px}
+section h2{font-size:26px;margin-bottom:12px}
+.sub{color:var(--muted);margin:-6px 0 14px;font-size:15px}
+.box{background:var(--card);border:2px solid var(--line);border-radius:20px;padding:16px}
+/* Suche */
+.search{position:relative}
+.search input{width:100%;border:3px solid var(--navy);border-radius:16px;padding:14px 16px;font-size:18px;font-weight:800;background:#fff}
+.sugg{list-style:none;margin:6px 0 0;padding:0;position:absolute;left:0;right:0;z-index:15;background:#fff;border:2px solid var(--navy);border-radius:14px;overflow:hidden;box-shadow:0 8px 20px rgba(13,59,102,.2)}
+.sugg li button{display:flex;justify-content:space-between;width:100%;border:0;background:none;padding:11px 14px;text-align:left;font-weight:800}
+.sugg li button:hover,.sugg li button.act{background:#e8f7fa}
+.sugg small{color:var(--muted);font-weight:700}
+.row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.pill{border:2px solid var(--navy);background:#fff;border-radius:999px;padding:8px 14px;min-height:42px;font-weight:800;font-size:15px}
+.pill.full{background:var(--navy);color:#fff}
+.pill.hot{background:var(--coral);border-color:var(--coral);color:#fff}
+.miss{margin:10px 2px 0;color:var(--coral);font-weight:800}
+/* Karte */
+.mapwrap{position:relative;border-radius:22px;overflow:hidden;border:3px solid var(--navy);background:#1ba0c9;height:min(68vh,560px);touch-action:none}
+#map{display:block;width:100%;height:100%;cursor:grab}
+#map.drag{cursor:grabbing}
+.zoom{position:absolute;right:10px;top:10px;display:grid;gap:6px}
+.zoom button{width:46px;height:46px;border-radius:14px;border:2px solid var(--navy);background:#fff;font-size:24px;font-weight:900;line-height:1}
+.zoom button.txt{font-size:12px;line-height:1.1;padding:2px}
+.count{position:absolute;left:10px;top:10px;background:rgba(13,59,102,.85);color:#fff;border-radius:12px;padding:6px 11px;font-weight:900;font-variant-numeric:tabular-nums}
+.hint{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:rgba(13,59,102,.88);color:#fff;border-radius:14px;padding:10px 14px;font-weight:800;pointer-events:none;opacity:0;transition:opacity .3s;text-align:center}
+.hint.on{opacity:1}
+.mapcard{position:absolute;left:10px;right:66px;bottom:10px;display:flex;align-items:center;gap:10px;background:#fff;border:2px solid var(--navy);border-radius:16px;padding:8px 8px 8px 12px;box-shadow:0 4px 0 rgba(13,59,102,.2)}
+.mapcard div{flex:1;min-width:0;display:grid}
+.mapcard b{font-weight:900;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mapcard span{font-size:13px;color:var(--muted);font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.legend{margin:8px 4px 0;font-size:14px;color:var(--muted);font-weight:700}
+/* Ausweis */
+.idcard{position:relative;border-radius:22px;padding:18px;color:#fff;background:linear-gradient(135deg,#0d3b66,#1ba0c9);overflow:hidden;box-shadow:0 8px 0 rgba(13,59,102,.25)}
+.idcard::after{content:"";position:absolute;right:-40px;bottom:-40px;width:170px;height:170px;border-radius:50%;background:rgba(255,196,61,.25)}
+.idcard small{display:block;letter-spacing:2px;font-weight:900;color:var(--gold);font-size:13px}
+.idcard h3{font-size:30px;margin:6px 0 10px;word-break:break-all}
+.idcard dl{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:0;font-size:16px}
+.idcard dt{color:#cfe8f5;font-weight:700}
+.idcard dd{margin:0;font-weight:900}
+.idcard .nr{position:absolute;right:18px;top:16px;font-size:34px;font-weight:900;color:var(--gold);font-variant-numeric:tabular-nums}
+/* Listen */
+.grid2{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+.amt{display:flex;gap:12px;align-items:center}
+.amt i{font-style:normal;font-size:28px;width:48px;height:48px;border-radius:14px;background:#e8f7fa;display:grid;place-items:center;flex:none}
+.amt b{display:block;font-size:14px;color:var(--muted)}
+.amt span{font-weight:900;font-size:17px;word-break:break-all}
+.news{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+.news li{background:var(--card);border-left:6px solid var(--coral);border-radius:12px;padding:10px 14px;font-weight:700}
+.bar{height:14px;border-radius:999px;background:#eadfc3;overflow:hidden;margin-top:8px}
+.bar i{display:block;height:100%;border-radius:999px}
+.vt{display:flex;justify-content:space-between;gap:8px;font-weight:900}
+.vt small{color:var(--muted);font-weight:800;font-variant-numeric:tabular-nums}
+.tag{display:inline-block;font-size:12px;font-weight:900;border-radius:999px;padding:2px 9px;background:var(--navy);color:#fff;margin-left:6px;vertical-align:2px}
+.grow{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.grow li{display:flex;justify-content:space-between;background:var(--card);border:2px solid var(--line);border-radius:12px;padding:9px 14px;font-weight:800;font-variant-numeric:tabular-nums}
+.grow li b{color:var(--palm)}
+.founders{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;counter-reset:f}
+.founders li{background:var(--card);border:2px solid var(--line);border-radius:14px;padding:8px 10px;counter-increment:f;font-weight:800;overflow:hidden;text-overflow:ellipsis}
+.founders li::before{content:"#" counter(f) " ";color:var(--coral);font-weight:900}
+.founders button{border:0;background:none;padding:0;font-weight:800}
+.rules{display:grid;gap:10px}
+.rule{display:grid;grid-template-columns:44px 1fr;gap:12px;background:var(--card);border:2px solid var(--line);border-radius:18px;padding:14px}
+.rule i{font-style:normal;width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:var(--navy);color:var(--gold);font-weight:900;font-size:20px}
+.rule b{display:block;font-size:18px}
+.rule span{font-size:15px;color:var(--muted)}
+details{background:var(--card);border:2px solid var(--line);border-radius:16px;padding:0 16px}
+details+details{margin-top:10px}
+summary{cursor:pointer;list-style:none;padding:15px 30px 15px 0;font-weight:900;position:relative}
+summary::-webkit-details-marker{display:none}
+summary::after{content:'+';position:absolute;right:0;top:11px;font-size:24px;color:var(--coral);font-weight:900}
+details[open] summary::after{content:'−'}
+details p{margin:0 0 14px;color:var(--muted)}
+.chron{list-style:none;margin:0;padding:0 0 0 18px;border-left:4px solid var(--lagoon)}
+.chron li{position:relative;padding:0 0 14px 10px}
+.chron li::before{content:"";position:absolute;left:-29px;top:4px;width:14px;height:14px;border-radius:50%;background:var(--sea);border:3px solid var(--paper)}
+.chron li.next::before{background:var(--coral)}
+.chron time{display:block;font-size:13px;font-weight:900;color:var(--muted)}
+.chron p{margin:0;font-weight:700}
+.cta{background:var(--navy);color:#fff;border-radius:22px;padding:20px;text-align:center}
+.cta p{color:#d6ecf7}
+.btn{display:inline-block;background:var(--coral);color:#fff;text-decoration:none;border-radius:999px;padding:13px 22px;font-weight:900;margin-top:4px}
+footer{padding:30px 0 90px;color:var(--muted);font-size:14px;text-align:center}
+footer a{color:var(--muted)}
+#totop{position:fixed;right:14px;bottom:18px;z-index:30;border:0;border-radius:999px;padding:12px 18px;min-height:48px;background:var(--coral);color:#fff;font-weight:900;box-shadow:0 6px 16px rgba(13,59,102,.35)}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<header>
+ <div class="w">
+  <div class="brand">
+   <svg width="58" height="58" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="#ffc43d"/><path d="M10 46 Q32 4 54 46 Q32 54 10 46Z" fill="#ff7a59"/><path d="M32 12v34M21 20l7 26M43 20l-7 26M14 32l14 14M50 32 36 46" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/></svg>
+   <div><h1>MUSCHEL-TAL</h1><p>Die Insel, die nur aus euch besteht. Folgen = einziehen.</p></div>
+  </div>
+  <div class="stats" id="stats"></div>
+  <p class="offiz">Offizieller Account: <a id="acc1" target="_blank" rel="noopener"></a> · nur dort gibt’s Muschel-Tal im Original</p>
+ </div>
+ <svg class="wave" viewBox="0 0 400 46" preserveAspectRatio="none" aria-hidden="true"><path d="M0 26 Q25 12 50 26 T100 26 T150 26 T200 26 T250 26 T300 26 T350 26 T400 26 V46 H0Z" fill="#7fdbe6"/><path d="M0 34 Q25 22 50 34 T100 34 T150 34 T200 34 T250 34 T300 34 T350 34 T400 34 V46 H0Z" fill="#fdf8ec"/></svg>
+</header>
+<nav class="jump" aria-label="Bereiche"><div>
+ <button data-go="s-suche">Suchen</button><button data-go="s-karte">Karte</button><button data-go="s-ausweis" class="me" id="navme" hidden>Mein Ausweis</button><button data-go="s-rat">Inselrat</button><button data-go="s-wachstum">Wachstum</button><button data-go="s-regeln">Regeln</button><button data-go="s-fragen">Fragen</button><button data-go="s-chronik">Chronik</button>
+</div></nav>
+<main class="w">
+ <section id="s-suche">
+  <h2>Wo wohnst du?</h2>
+  <p class="sub">Tipp deinen TikTok-Namen oder deine Einwohner-Nummer ein, dann fliegt die Karte zu deiner Hütte.</p>
+  <div class="search">
+   <input id="q" type="search" placeholder="@deinname oder 377" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="TikTok-Name oder Nummer">
+   <ul class="sugg" id="sugg" hidden></ul>
+  </div>
+  <p class="miss" id="miss" hidden></p>
+  <div class="row"><button class="pill" id="rnd">🎲 Zufälliger Einwohner</button><button class="pill" id="mine" hidden>🏠 Meine Hütte</button><button class="pill" id="vid">🎬 Im Video</button></div>
+ </section>
+ <section id="s-karte">
+  <h2>Die Insel</h2>
+  <div class="mapwrap" id="mapwrap">
+   <canvas id="map" aria-label="Karte von Muschel-Tal"></canvas>
+   <div class="count" id="mcount">0 Einwohner</div>
+   <div class="zoom"><button id="zin" aria-label="Hineinzoomen">+</button><button id="zout" aria-label="Herauszoomen">−</button><button id="zall" class="txt">Ganze Insel</button></div>
+   <div class="hint" id="hint">Zum Zoomen Strg + Mausrad<br>oder + / − benutzen</div>
+   <div class="mapcard" id="mapcard" hidden><div><b id="mcname"></b><span id="mcinfo"></span></div><button class="pill full" data-go="s-ausweis">Ausweis</button></div>
+  </div>
+  <p class="legend" id="legend">Mit einem Finger verschieben, mit zwei zoomen, Hütte antippen.</p>
+  <div class="row"><button class="pill hot" id="growbtn">▶ Insel wachsen sehen</button></div>
+ </section>
+ <section id="s-ausweis" hidden>
+  <h2>Dein Einwohnerausweis</h2>
+  <div class="idcard"><small>EINWOHNERAUSWEIS · MUSCHEL-TAL</small><div class="nr" id="idnr"></div><h3 id="idname"></h3>
+   <dl><dt>Viertel</dt><dd id="idv"></dd><dt>Hütte</dt><dd id="idh"></dd><dt>Eingezogen</dt><dd id="ids"></dd><dt>Status</dt><dd id="idst"></dd></dl></div>
+  <div class="row"><button class="pill full" id="cpy">📋 Text zum Teilen kopieren</button></div>
+  <p class="sub" id="cpyd" style="margin-top:10px"></p>
+ </section>
+ <section id="s-rat">
+  <h2>Inselrat</h2>
+  <div class="grid2" id="aemter"></div>
+  <h3 style="margin:22px 0 10px;font-size:20px">Neues vom Inselrat</h3>
+  <ul class="news" id="news"></ul>
+ </section>
+ <section id="s-wachstum">
+  <h2>So schnell wächst Muschel-Tal</h2>
+  <ul class="grow" id="grow"></ul>
+  <h3 style="margin:22px 0 10px;font-size:20px">Die Viertel</h3>
+  <div class="grid2" id="viertel"></div>
+  <h3 style="margin:22px 0 10px;font-size:20px">Die ersten 10 Einwohner</h3>
+  <ol class="founders" id="founders"></ol>
+ </section>
+ <section id="s-regeln"><h2>So funktioniert Muschel-Tal</h2><div class="rules" id="rules"></div></section>
+ <section id="s-fragen"><h2>Häufige Fragen</h2><div id="faq"></div></section>
+ <section id="s-chronik"><h2>Insel-Chronik</h2><ol class="chron" id="chron"></ol></section>
+ <section>
+  <div class="cta"><h2>Noch nicht auf der Insel?</h2>
+   <p>Folg <b id="acc2"></b> auf TikTok, dann ziehst du ein und bekommst deine eigene Hütte mit deinem Namen. Beim nächsten Update steht sie hier auf der Karte.</p>
+   <a class="btn" id="acc3" target="_blank" rel="noopener">Zum TikTok-Profil</a>
+   <p style="font-size:14px;margin-bottom:0">Muschel-Tal-Videos auf anderen Accounts sind Kopien. Einziehen kannst du nur beim Original.</p></div>
+ </section>
+</main>
+<footer><div class="w" id="foot"></div></footer>
+<button id="totop" hidden>↑ Suchen</button>
+<script>
+const DATA=/*__DATEN__*/null;
+const I=DATA.insel, R=DATA.r, N=R.length, $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmt=n=>n.toLocaleString('de-DE');
+const ACC=I.account, ACCURL='https://www.tiktok.com/'+ACC;
+
+// ---------- Viertel ----------
+const VIER=[];{let s=0;for(const v of I.viertel){const von=s+1;s=v.plaetze?s+v.plaetze:Infinity;VIER.push({...v,von,bis:s});}}
+const viertelVon=nr=>VIER.find(v=>nr<=v.bis);
+
+// ---------- Hütten (Plätze): festes Raster, nach Abstand zum Muschelplatz sortiert -> Plätze bleiben stabil ----------
+const S=20, PLAZA=78;
+function hash(x,y){let h=(x*374761393+y*668265263)|0;h=(h^(h>>>13))*1274126177|0;return((h^(h>>>16))>>>0)/4294967296;}
+function plaetze(n){
+ const want=Math.max(n,1)+60, out=[];
+ let r=Math.sqrt(want/0.55)*S/1.6+PLAZA+60;
+ for(;;){
+  out.length=0;const g=Math.ceil(r/S);
+  for(let gx=-g;gx<=g;gx++)for(let gy=-g;gy<=g;gy++){
+   if(((gx%5)+5)%5===0||((gy%4)+4)%4===0)continue; // Wege
+   const x=gx*S,y=gy*S*0.9,d=Math.hypot(x,y);
+   if(d<PLAZA||d>r)continue;
+   out.push({gx,gy,x,y,k:d+hash(gx,gy)*14});
+  }
+  if(out.length>=want)break;r*=1.25;
+ }
+ out.sort((a,b)=>a.k-b.k);return out.slice(0,Math.max(n,1));
+}
+const P=plaetze(N), cell=new Map();
+const PEOPLE=R.map((r,i)=>({name:r[0],seit:r[1],mark:r[2],nr:i+1,p:P[i],v:viertelVon(i+1)}));
+PEOPLE.forEach(p=>cell.set(p.p.gx+','+p.p.gy,p));
+const byName=new Map(PEOPLE.map(p=>[p.name.toLowerCase(),p]));
+const AMT={};I.aemter.forEach(([t,n])=>{if(n)AMT[n.toLowerCase()]=t;});
+
+// ---------- Küste: folgt den bewohnten Hütten, wächst mit ----------
+const BINS=90, coast=new Array(BINS).fill(150);
+for(const p of PEOPLE){const a=(Math.atan2(p.p.y,p.p.x)+Math.PI)/(2*Math.PI)*BINS|0, d=Math.hypot(p.p.x,p.p.y)+34;const b=a%BINS;if(d>coast[b])coast[b]=d;}
+const sm=coast.map((_,i)=>{let s=0;for(let k=-3;k<=3;k++)s=Math.max(s,coast[(i+k+BINS)%BINS]-Math.abs(k)*4);return s;});
+const COAST=sm.map((d,i)=>{const a=i/BINS*2*Math.PI-Math.PI;return d+8*Math.sin(a*5)+5*Math.sin(a*11+1);});
+const RMAX=Math.max(...COAST);
+function shape(ctx,off){ctx.beginPath();for(let i=0;i<=BINS;i++){const k=i%BINS,a=k/BINS*2*Math.PI-Math.PI,d=COAST[k]+off;const x=Math.cos(a)*d,y=Math.sin(a)*d*0.92;i?ctx.lineTo(x,y):ctx.moveTo(x,y);}ctx.closePath();}
+// Palmen auf freien Wegfeldern
+const PALMS=[];{const g=Math.ceil(RMAX/S)+1;for(let gx=-g;gx<=g;gx++)for(let gy=-g;gy<=g;gy++){if(cell.has(gx+','+gy))continue;const x=gx*S,y=gy*S*0.9,d=Math.hypot(x,y);if(d<PLAZA+10)continue;const a=(Math.atan2(y,x)+Math.PI)/(2*Math.PI)*BINS|0;if(d>COAST[a%BINS]-8)continue;if(hash(gx+99,gy-7)<0.22)PALMS.push({x:x+(hash(gx,gy+3)-.5)*8,y:y+(hash(gx+3,gy)-.5)*8});}}
+
+// ---------- Karte ----------
+const cv=$('map'),ctx=cv.getContext('2d');let W=0,H=0,DPR=1;
+const cam={x:0,y:0,z:1};let sel=null,limit=N,growing=false;
+function fit(){const r=RMAX+60;return{x:0,y:0,z:Math.min(W,H)/(2*r)};}
+function resize(){const b=cv.getBoundingClientRect();DPR=Math.min(2,window.devicePixelRatio||1);W=b.width;H=b.height;cv.width=W*DPR|0;cv.height=H*DPR|0;draw();}
+const w2s=(x,y)=>[(x-cam.x)*cam.z+W/2,(y-cam.y)*cam.z+H/2], s2w=(x,y)=>[(x-W/2)/cam.z+cam.x,(y-H/2)/cam.z+cam.y];
+let raf=0;function kick(){if(!raf)raf=requestAnimationFrame(()=>{raf=0;draw();});}
+function draw(){
+ const z=cam.z;ctx.setTransform(DPR,0,0,DPR,0,0);ctx.fillStyle='#1ba0c9';ctx.fillRect(0,0,W,H);
+ ctx.setTransform(DPR*z,0,0,DPR*z,DPR*(W/2-cam.x*z),DPR*(H/2-cam.y*z));
+ ctx.fillStyle='#55c4dc';shape(ctx,46);ctx.fill();
+ ctx.fillStyle='#8fe0ea';shape(ctx,24);ctx.fill();
+ ctx.fillStyle='#f6e3b4';shape(ctx,12);ctx.fill();
+ ctx.fillStyle='#8fd16a';shape(ctx,0);ctx.fill();
+ // Muschelplatz
+ ctx.fillStyle='#f6e3b4';ctx.beginPath();ctx.ellipse(0,0,PLAZA-8,(PLAZA-8)*.9,0,0,7);ctx.fill();
+ ctx.fillStyle='#7fdbe6';ctx.beginPath();ctx.ellipse(0,0,22,20,0,0,7);ctx.fill();
+ ctx.fillStyle='#ffc43d';ctx.beginPath();ctx.moveTo(-14,8);ctx.quadraticCurveTo(0,-26,14,8);ctx.quadraticCurveTo(0,13,-14,8);ctx.fill();
+ ctx.strokeStyle='#ff7a59';ctx.lineWidth=1.6;ctx.beginPath();for(const dx of[-8,-4,0,4,8]){ctx.moveTo(0,-14);ctx.lineTo(dx,9);}ctx.stroke();
+ if(z>0.9){ctx.fillStyle='#0d3b66';ctx.font='900 9px '+getComputedStyle(document.body).fontFamily;ctx.textAlign='center';ctx.fillText('MUSCHELPLATZ',0,PLAZA-18);}
+ const [x0,y0]=s2w(-30,-30),[x1,y1]=s2w(W+30,H+30);
+ // Palmen
+ if(z>0.35){for(const t of PALMS){if(t.x<x0||t.x>x1||t.y<y0||t.y>y1)continue;ctx.strokeStyle='#8a5a2b';ctx.lineWidth=1.6;ctx.beginPath();ctx.moveTo(t.x,t.y+6);ctx.quadraticCurveTo(t.x+2,t.y,t.x,t.y-4);ctx.stroke();ctx.fillStyle='#2f8f3e';for(let k=0;k<5;k++){const a=k/5*Math.PI*2;ctx.beginPath();ctx.ellipse(t.x+Math.cos(a)*3.5,t.y-4+Math.sin(a)*2,4,1.6,a,0,7);ctx.fill();}}}
+ else{ctx.fillStyle='#4fae46';for(const t of PALMS)ctx.fillRect(t.x-2,t.y-2,4,4);}
+ // Hütten
+ const px=S*z, lim=Math.min(limit,N);
+ for(let i=0;i<lim;i++){const q=PEOPLE[i],x=q.p.x,y=q.p.y;if(x<x0||x>x1||y<y0||y>y1)continue;
+  const col=q.v.farbe;
+  if(px<7){ctx.fillStyle=col;ctx.fillRect(x-6,y-6,12,12);continue;}
+  ctx.fillStyle='#c98f55';ctx.fillRect(x-6,y-2,12,8);
+  ctx.fillStyle='#7a4a24';ctx.fillRect(x-1.6,y+1.5,3.2,4.5);
+  ctx.fillStyle=col;ctx.beginPath();ctx.moveTo(x-8.5,y-1);ctx.lineTo(x,y-9);ctx.lineTo(x+8.5,y-1);ctx.closePath();ctx.fill();
+  if(AMT[q.name.toLowerCase()]){ctx.fillStyle='#ffc43d';ctx.beginPath();ctx.arc(x+7,y-8,3.4,0,7);ctx.fill();}
+  if(px>66){ctx.fillStyle='#0d3b66';ctx.font='800 2.7px '+getComputedStyle(document.body).fontFamily;ctx.textAlign='center';const nm=q.name.length>13?q.name.slice(0,12)+'…':q.name;ctx.fillText(nm,x,y+9);}
+ }
+ if(sel&&sel.nr<=lim){const {x,y}=sel.p;ctx.strokeStyle='#ff2d55';ctx.lineWidth=Math.max(1.5,3/z);ctx.beginPath();ctx.arc(x,y-1,13,0,7);ctx.stroke();const k=Math.max(1,2.5/z);ctx.fillStyle='#ff2d55';ctx.beginPath();ctx.moveTo(x,y-14);ctx.lineTo(x-4*k,y-14-8*k);ctx.lineTo(x+4*k,y-14-8*k);ctx.fill();}
+ $('mcount').textContent=fmt(lim)+' Einwohner';
+}
+function clamp(){cam.z=Math.max(fit().z*0.7,Math.min(10,cam.z));const r=RMAX+80;cam.x=Math.max(-r,Math.min(r,cam.x));cam.y=Math.max(-r,Math.min(r,cam.y));}
+let fly=0;function flyTo(t,ms=750){cancelAnimationFrame(fly);const f={...cam},t0=performance.now();const step=n=>{const k=Math.min(1,(n-t0)/ms),e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;const zz=Math.exp(Math.log(f.z)+(Math.log(t.z)-Math.log(f.z))*e);cam.x=f.x+(t.x-f.x)*e;cam.y=f.y+(t.y-f.y)*e;cam.z=zz;draw();if(k<1)fly=requestAnimationFrame(step);};fly=requestAnimationFrame(step);}
+function zoomAt(f,sx=W/2,sy=H/2){const [wx,wy]=s2w(sx,sy);cam.z*=f;clamp();const [nx,ny]=s2w(sx,sy);cam.x+=wx-nx;cam.y+=wy-ny;clamp();kick();}
+// Bedienung
+const pts=new Map();let moved=0,pinch=0;
+cv.addEventListener('pointerdown',e=>{cv.setPointerCapture(e.pointerId);pts.set(e.pointerId,[e.offsetX,e.offsetY]);moved=0;cancelAnimationFrame(fly);if(pts.size===2){const [a,b]=[...pts.values()];pinch=Math.hypot(a[0]-b[0],a[1]-b[1]);}cv.classList.add('drag');});
+cv.addEventListener('pointermove',e=>{if(!pts.has(e.pointerId))return;const o=pts.get(e.pointerId),n=[e.offsetX,e.offsetY];pts.set(e.pointerId,n);
+ if(pts.size===1){cam.x-=(n[0]-o[0])/cam.z;cam.y-=(n[1]-o[1])/cam.z;moved+=Math.abs(n[0]-o[0])+Math.abs(n[1]-o[1]);clamp();kick();}
+ else if(pts.size===2){const [a,b]=[...pts.values()];const d=Math.hypot(a[0]-b[0],a[1]-b[1]);if(pinch)zoomAt(d/pinch,(a[0]+b[0])/2,(a[1]+b[1])/2);pinch=d;moved+=99;}});
+const up=e=>{if(!pts.has(e.pointerId))return;pts.delete(e.pointerId);if(pts.size<2)pinch=0;cv.classList.remove('drag');
+ if(pts.size===0&&moved<6){const [wx,wy]=s2w(e.offsetX,e.offsetY);let best=null,bd=14;const gx=Math.round(wx/S),gy=Math.round(wy/(S*.9));for(let dx=-1;dx<=1;dx++)for(let dy=-1;dy<=1;dy++){const q=cell.get((gx+dx)+','+(gy+dy));if(!q||q.nr>limit)continue;const d=Math.hypot(q.p.x-wx,q.p.y-wy);if(d<bd){bd=d;best=q;}}if(best)select(best,false);}};
+cv.addEventListener('pointerup',up);cv.addEventListener('pointercancel',up);
+let hintT=0;cv.addEventListener('wheel',e=>{if(e.ctrlKey||e.metaKey){e.preventDefault();zoomAt(Math.exp(-e.deltaY*0.0022),e.offsetX,e.offsetY);}else{$('hint').classList.add('on');clearTimeout(hintT);hintT=setTimeout(()=>$('hint').classList.remove('on'),1100);}},{passive:false});
+$('zin').onclick=()=>zoomAt(1.6);$('zout').onclick=()=>zoomAt(1/1.6);$('zall').onclick=()=>flyTo(fit());
+if(matchMedia('(pointer:fine)').matches)$('legend').textContent='Ziehen zum Verschieben, Strg + Mausrad oder + / − zum Zoomen, Hütte anklicken.';
+$('growbtn').onclick=()=>{if(growing)return;growing=true;sel=null;$('mapcard').hidden=true;flyTo(fit(),500);const t0=performance.now(),ms=Math.min(9000,2500+N*0.6);const st=n=>{const k=Math.min(1,(n-t0)/ms);limit=Math.max(1,Math.round(N*k*k));draw();if(k<1)requestAnimationFrame(st);else{limit=N;growing=false;draw();}};requestAnimationFrame(st);};
+
+// ---------- Auswahl, Ausweis ----------
+function status(p){return AMT[p.name.toLowerCase()]||(p.mark?'War schon im Video':'Einwohner');}
+function select(p,scroll=true){sel=p;limit=N;
+ $('mapcard').hidden=false;$('mcname').textContent=p.name;$('mcinfo').textContent='Hütte Nr. '+fmt(p.nr)+' · '+p.v.name;
+ $('s-ausweis').hidden=false;$('navme').hidden=false;$('idnr').textContent='#'+fmt(p.nr);$('idname').textContent=p.name;$('idv').textContent=p.v.name;$('idh').textContent='Nr. '+fmt(p.nr);$('ids').textContent=p.seit||'–';$('idst').textContent=status(p);
+ const txt='Ich wohne in Muschel-Tal! 🏝️ Hütte Nr. '+fmt(p.nr)+' im '+p.v.name+'. Such deine Hütte auf muscheltal.de – folg '+ACC;
+ $('cpyd').textContent='';$('cpy').textContent='📋 Text zum Teilen kopieren';
+ $('cpy').onclick=async()=>{try{await navigator.clipboard.writeText(txt);$('cpy').textContent='✅ Kopiert!';}catch(e){$('cpyd').textContent=txt;}};
+ try{localStorage.setItem('mt-me',p.name);}catch(e){}$('mine').hidden=false;
+ if(scroll)goTo('s-karte');flyTo({x:p.p.x,y:p.p.y,z:Math.max(4.2,cam.z)});
+}
+
+// ---------- Suche ----------
+const q=$('q'),sg=$('sugg');let hits=[],act=-1;
+function find(s){s=s.trim().toLowerCase().replace(/^#/,'');if(!s)return[];if(/^\d+$/.test(s)){const p=PEOPLE[+s-1];return p?[p]:[];}
+ const t=s.replace(/^@/,''),a=[],b=[];for(const p of PEOPLE){const n=p.name.slice(1).toLowerCase();if(n.startsWith(t))a.push(p);else if(b.length<8&&n.includes(t))b.push(p);if(a.length>=8)break;}return a.concat(b).slice(0,8);}
+function showS(){sg.innerHTML=hits.map((p,i)=>'<li><button type="button" data-i="'+i+'"'+(i===act?' class="act"':'')+'>'+esc(p.name)+'<small>Nr. '+fmt(p.nr)+'</small></button></li>').join('');sg.hidden=!hits.length;}
+q.addEventListener('input',()=>{hits=find(q.value);act=-1;showS();$('miss').hidden=!(q.value.trim().length>1&&!hits.length);$('miss').textContent='Noch nicht gefunden. Neue Einwohner kommen beim nächsten Update dazu – folgst du schon '+ACC+'?';});
+q.addEventListener('keydown',e=>{if(e.key==='ArrowDown'){act=Math.min(hits.length-1,act+1);showS();e.preventDefault();}else if(e.key==='ArrowUp'){act=Math.max(0,act-1);showS();e.preventDefault();}else if(e.key==='Enter'){const p=hits[act<0?0:act];if(p){pick(p);}}else if(e.key==='Escape'){sg.hidden=true;}});
+sg.addEventListener('click',e=>{const b=e.target.closest('button');if(b)pick(hits[+b.dataset.i]);});
+function pick(p){q.value=p.name;sg.hidden=true;$('miss').hidden=true;select(p);}
+document.addEventListener('click',e=>{if(!e.target.closest('.search'))sg.hidden=true;});
+$('rnd').onclick=()=>{if(N)pick(PEOPLE[Math.random()*N|0]);};
+$('mine').onclick=()=>{try{const p=byName.get((localStorage.getItem('mt-me')||'').toLowerCase());if(p)pick(p);}catch(e){}};
+const VID=PEOPLE.filter(p=>p.mark);$('vid').hidden=!VID.length;$('vid').onclick=()=>pick(VID[Math.random()*VID.length|0]);
+if(!N){$('rnd').hidden=true;}
+
+// ---------- Kopf ----------
+$('stats').innerHTML=(I.tag?'<span class="stat day">Tag '+I.tag+'</span>':'<span class="stat day">Bald: Tag 1</span>')+'<span class="stat"><b>'+fmt(N)+'</b> Einwohner</span><span class="stat"><b>'+fmt(N*I.muscheln_pro_einwohner)+'</b> 🐚 Muscheln in der Inselkasse</span>';
+for(const id of['acc1','acc3']){$(id).href=ACCURL;}$('acc1').textContent=ACC;$('acc2').textContent=ACC;$('acc3').textContent='Zum TikTok-Profil '+ACC;
+
+// ---------- Inselrat ----------
+const ICON={'Häuptling':'👑'};
+$('aemter').innerHTML=I.aemter.map(([t,n])=>'<div class="box amt"><i>'+(ICON[t]||(t.startsWith('Strandvilla')?'🏡':'🏝️'))+'</i><div><b>'+esc(t)+'</b>'+(n&&byName.has(n.toLowerCase())?'<span><button class="pill" style="min-height:0;padding:2px 10px" data-n="'+esc(n)+'">'+esc(n)+'</button></span>':'<span>'+(n?esc(n):'wird bald gewählt')+'</span>')+'</div></div>').join('');
+$('news').innerHTML=I.news.map(t=>'<li>'+esc(t)+'</li>').join('');
+
+// ---------- Wachstum, Viertel, Gründer ----------
+const days=[];{const m=new Map();for(const p of PEOPLE){const k=p.seit||'?';if(!m.has(k)){m.set(k,0);days.push(k);}m.set(k,m.get(k)+1);}let sum=0;
+ $('grow').innerHTML=days.length?days.map(d=>{sum+=m.get(d);return'<li><span>'+esc(d)+'</span><span><b>+'+fmt(m.get(d))+'</b> · '+fmt(sum)+' gesamt</span></li>';}).join(''):'<li><span>Noch niemand eingezogen</span><span>Werde Nr. 1!</span></li>';}
+$('viertel').innerHTML=VIER.map(v=>{const n=Math.max(0,Math.min(N,v.bis)-v.von+1),cap=v.plaetze,full=cap&&n>=cap,open=N>=v.von||v===VIER[0];
+ return'<div class="box"><div class="vt"><span>'+esc(v.name)+(full?'<span class="tag" style="background:var(--coral)">VOLL</span>':open?'<span class="tag" style="background:var(--palm)">OFFEN</span>':'<span class="tag">BALD</span>')+'</span><small>'+fmt(n)+(cap?' / '+fmt(cap):'')+'</small></div><div class="bar"><i style="width:'+(cap?Math.min(100,n/cap*100):(n?100:0))+'%;background:'+v.farbe+'"></i></div><p class="sub" style="margin:8px 0 0">Hütten Nr. '+fmt(v.von)+(cap?'–'+fmt(v.bis):' und weiter')+'</p></div>';}).join('');
+$('founders').innerHTML=PEOPLE.slice(0,10).map(p=>'<li><button type="button" data-n="'+esc(p.name)+'">'+esc(p.name)+'</button></li>').join('')||'<li>Noch frei – das könntest du sein!</li>';
+document.addEventListener('click',e=>{const b=e.target.closest('[data-n]');if(b){const p=byName.get(b.dataset.n.toLowerCase());if(p)pick(p);}});
+
+// ---------- Regeln, Fragen, Chronik ----------
+const M=I.muscheln_pro_einwohner;
+$('rules').innerHTML=[
+ ['1','Folgen = einziehen','Wer '+ACC+' folgt, bekommt eine eigene Hütte mit seinem Namen. Je früher du gefolgt bist, desto näher wohnst du am Muschelplatz.'],
+ ['2','Jeder Einwohner bringt '+M+' Muscheln','Die Inselkasse wächst mit jedem neuen Einwohner. Ihr entscheidet, was davon gebaut wird.'],
+ ['3','Ihr stimmt ab, was gebaut wird','Unter den Videos gibt es Abstimmungen. Was die meisten Stimmen bekommt, wird gebaut.'],
+ ['4','Ihr macht die Inselgesetze','Schreibt Gesetzesvorschläge in die Kommentare. Der Vorschlag mit den meisten Likes wird Inselgesetz.'],
+ ['5','Jede Woche ein neuer Häuptling','Schreib in die Kommentare, was du als Häuptling machen würdest.'],
+ ['6','Preise für alle Viertel','Jede Folge wird eine Hütte zur Strandvilla, und jede Woche wird ein Strandgrundstück verlost.']
+].map(r=>'<div class="rule"><i>'+r[0]+'</i><div><b>'+esc(r[1])+'</b><span>'+esc(r[2])+'</span></div></div>').join('');
+$('faq').innerHTML=[
+ ['Warum sehe ich mich nicht im Video?','Es passen nicht alle Einwohner in ein Video. Jede Folge zeigt neue Namen, nach und nach ist jeder dran. Deine Hütte steht trotzdem schon – hier auf der Karte siehst du sie jederzeit.'],
+ ['Ich habe gerade gefolgt. Wo ist meine Hütte?','Neue Einwohner kommen beim nächsten Update der Karte dazu. Deine Nummer richtet sich danach, wann du gefolgt bist.'],
+ ['Behalte ich meine Hütte?','Ja. Wer einmal eingezogen ist, behält seine Nummer und seine Hütte.'],
+ ['Wie werde ich Häuptling?','Schreib unter das neueste Video, was du als Häuptling machen würdest. Jede Woche kommt jemand Neues dran.'],
+ ['Ich habe Muschel-Tal auf einem anderen Account gesehen.','Das ist eine Kopie. Muschel-Tal gibt es nur bei '+ACC+'. Ein Follow beim kopierten Account zählt nicht.'],
+ ['Ich will nicht auf der Karte stehen.','Kein Problem. Schreib '+ACC+' auf TikTok eine Nachricht, dann nehmen wir deinen Namen raus.']
+].map(f=>'<details><summary>'+esc(f[0])+'</summary><p>'+esc(f[1])+'</p></details>').join('');
+$('chron').innerHTML=I.chronik.map(c=>'<li'+(c[2]?' class="next"':'')+'><time>'+esc(c[0])+'</time><p>'+esc(c[1])+'</p></li>').join('');
+$('foot').innerHTML='Stand: '+esc(I.stand)+' · Fan-Projekt von <a href="'+ACCURL+'" target="_blank" rel="noopener">'+esc(ACC)+'</a>, nicht verbunden mit TikTok.<br><a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a>';
+
+// ---------- Navigation ----------
+function goTo(id){const el=$(id);if(el&&!el.hidden)el.scrollIntoView({behavior:'smooth',block:'start'});}
+document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>goTo(b.dataset.go)));
+addEventListener('scroll',()=>{$('totop').hidden=scrollY<700;},{passive:true});
+$('totop').onclick=()=>{goTo('s-suche');setTimeout(()=>q.focus({preventScroll:true}),500);};
+
+// ---------- Start ----------
+addEventListener('resize',resize);resize();Object.assign(cam,fit());draw();
+try{const p=byName.get((localStorage.getItem('mt-me')||'').toLowerCase());if(p)select(p,false);}catch(e){}
+</script>
+</body>
+</html>
