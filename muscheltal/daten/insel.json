@@ -3,21 +3,60 @@
   "account": "@muscheltal",
   "muscheln_pro_einwohner": 5,
   "viertel": [
-    {"name": "Gründerbucht", "plaetze": 1000, "farbe": "#e8467c", "emoji": "🦀"},
-    {"name": "Palmenhafen", "plaetze": 4000, "farbe": "#f4a51c", "emoji": "⚓"},
-    {"name": "Dschungeldorf", "plaetze": 0, "farbe": "#2e9e5b", "emoji": "🐒"}
+    {
+      "name": "Gründerbucht",
+      "plaetze": 1000,
+      "farbe": "#e8467c",
+      "emoji": "🦀"
+    },
+    {
+      "name": "Palmenhafen",
+      "plaetze": 4000,
+      "farbe": "#f4a51c",
+      "emoji": "⚓"
+    },
+    {
+      "name": "Dschungeldorf",
+      "plaetze": 0,
+      "farbe": "#2e9e5b",
+      "emoji": "🐒"
+    }
   ],
   "aemter": [
-    ["Häuptling", ""],
-    ["Strandvilla Nr. 1", ""],
-    ["Strandgrundstück Nr. 1", ""]
+    [
+      "Häuptling",
+      ""
+    ],
+    [
+      "Strandvilla Nr. 1",
+      ""
+    ],
+    [
+      "Strandgrundstück Nr. 1",
+      ""
+    ]
   ],
-  "projekt": {"name": "Leuchtturm", "emoji": "🗼", "ziel": 1000, "stand": 0, "einheit": "Kommentare",
-              "text": "Jeder Kommentar unter dem neuesten Video ist ein Stein. Bei 1.000 Steinen steht der Leuchtturm."},
+  "projekt": {
+    "name": "Leuchtturm",
+    "emoji": "🗼",
+    "ziel": 1000,
+    "stand": 0,
+    "einheit": "Kommentare",
+    "text": "Jeder Kommentar unter dem neuesten Video ist ein Stein. Bei 1.000 Steinen steht der Leuchtturm."
+  },
   "news": [
     "Muschel-Tal ist gegründet. Die Insel ist noch leer – wer zuerst folgt, bekommt Hütte Nr. 1."
   ],
   "chronik": [
-    ["Bald", "Tag 1: Muschel-Tal wird gegründet. Folgen = einziehen.", 1]
-  ]
+    [
+      "Bald",
+      "Tag 1: Muschel-Tal wird gegründet. Folgen = einziehen.",
+      1
+    ]
+  ],
+  "wetter": {
+    "ort": "Deutschland (Mitte)",
+    "lat": 51.16,
+    "lon": 10.45
+  }
 }
