@@ -1,30 +1,29 @@
-# Muschel-Tal – Tag 1: Die Gründung
+# Muschel-Tal – Tag 1: Die Gründung · Beschreibung (v2)
 
-**Cover:** `renders/cover.jpg` (1080 × 1920) – „DIE GRÜNDUNG“, 0 Einwohner, 0 Muscheln, Hütte Nr. 1 ist frei.
-In TikTok beim Hochladen unter „Cover auswählen“ → „Hochladen“ einfügen.
+**Cover:** `renders/cover.jpg` – „DIE GRÜNDUNG“, 0 Einwohner, 0 Muscheln.
 
 ## Hauptversion (zum Posten)
-Willst du umsonst auf meiner Insel leben? 🏝️ Tag 1: Die Gründung – 0 Einwohner, 0 Muscheln. Wer jetzt folgt, bekommt Hütte Nr. 1 👀 Und was kaufen wir morgen vom ersten Geld? Die 2 Top-Kommentare entscheiden! 👇
-#muscheltal #fürdich #fyp #insel #mitmachen
+Hütte Nr. 1 ist noch frei 👀 Schreib „ich“ und zieh ein 🏝️
+#muscheltal #fürdich #fyp #insel #gratis
 
-## Alternative 1 (Neugier)
-Die Gründung von Muschel-Tal 🐚 Eine leere Insel, ein Muschelpalast – und eine geheime Insel am Rand der Karte … Wer wird Einwohner Nr. 1? 🏝️
-#muscheltal #fürdich #fyp #insel #mitmachen
+## Alternative A – Neugier
+Eine Insel. 0 Einwohner. 0 Muscheln. Wer wird die Nr. 1? 🐚
+#muscheltal #fürdich #fyp #insel #gratis
 
-## Alternative 2 (Kommentar-Köder)
-Kontostand: 0 Muscheln 😅 Tag 1 auf meiner Insel – und ihr entscheidet, was wir morgen kaufen. Die 2 Kommentare mit den meisten Likes gewinnen 👇
-#muscheltal #fürdich #fyp #insel #mitmachen
+## Alternative B – Mini-Challenge
+Nur die ersten 500 wohnen auf der Hauptinsel 🏝️ Bist du schnell genug?
+#muscheltal #fürdich #fyp #insel #gratis
 
-## Angepinnter Kommentar
-🏝️ Tag 1 – die Insel ist noch leer! Wer jetzt folgt, wohnt auf der Hauptinsel, je früher, desto näher am Muschelpalast 🐚 Was sollen wir morgen kaufen?
+## Angepinnter Kommentar (vom Account selbst)
+Die ersten Einwohner ziehen morgen ein 🏝️ Was soll ich vom ersten Geld kaufen? 👇
 
-## Warum diese Hashtags
-- #muscheltal – eigene Marke, damit alle Folgen auffindbar sind
-- #fürdich / #fyp – breite Reichweite (deutsch + international)
-- #insel – Thema, gut durchsuchbar
-- #mitmachen – Nische für Mitmach-Formate, passt zu „Folgen = einziehen“
+## Warum so
+- Kurz: auf TikTok sieht man ohne Aufklappen nur ~70–100 Zeichen – der ganze Text passt da rein.
+- Eine offene Frage bzw. ein klarer Auftrag („Schreib ‚ich‘“) statt einer Erklärung – das Video erklärt schon alles.
+- Ein Kommentar mit einem Wort ist die niedrigste Hürde → viele Kommentare früh = mehr Reichweite.
+- Hashtags: #muscheltal (Marke), #fürdich + #fyp (Reichweite), #insel (Thema), #gratis (passt zum neuen Hook „umsonst“, wird oft gesucht).
 
-## Tipps zum Posten
-- Uhrzeit: werktags 17–20 Uhr oder Sonntagvormittag
-- Trend-Sound leise (10–20 %) unter die eigene Tonspur legen
-- In der ersten Stunde möglichst viele Kommentare beantworten (am besten per Video-Antwort)
+## Tipps
+- Posten werktags 17–20 Uhr oder Sonntagvormittag.
+- In der ersten Stunde jedem „ich“ antworten, z. B. „Hütte reserviert ✅“ – erzeugt weitere Kommentare.
+- Zwei, drei Antworten als Video-Antwort aufnehmen („@name, deine Hütte steht!“) – das ist gleich Material für Tag 2.
