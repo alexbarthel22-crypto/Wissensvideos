@@ -35,7 +35,9 @@ section>h2{font-size:28px;margin-bottom:14px}
 #map{display:block;width:100%;height:100%;cursor:grab}
 #map.drag{cursor:grabbing}
 .logo{position:absolute;left:12px;top:12px;display:flex;align-items:center;gap:8px;background:var(--sun);border:3px solid var(--ink);border-radius:999px;padding:3px 14px 3px 3px;box-shadow:var(--sh);transform:rotate(-2deg)}
-.logo b{font-size:19px;letter-spacing:.5px}
+.logo b{font-size:19px;letter-spacing:.5px;display:block;line-height:1.05}
+.logo small{display:block;font-size:11px;font-weight:800;opacity:.75;letter-spacing:.2px}
+.logo>span{display:block}
 .live{position:absolute;right:12px;top:16px;white-space:nowrap;background:#fff;border:3px solid var(--ink);border-radius:999px;padding:4px 11px;font-size:13px;font-weight:900;font-variant-numeric:tabular-nums}
 .live::before{content:"";display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--hib);margin-right:6px;animation:pulse 1.6s infinite}
 @keyframes pulse{50%{opacity:.25}}
@@ -127,7 +129,7 @@ footer a{color:var(--soft)}
 <body>
 <div class="hero" id="hero">
  <canvas id="map" aria-label="Karte von Muschel-Tal"></canvas>
- <div class="logo"><svg width="40" height="40" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs><linearGradient id="lgA" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff8a5c"/><stop offset=".45" stop-color="#ffd23f"/><stop offset=".7" stop-color="#ffe9a8"/><stop offset=".7" stop-color="#14b3c2"/><stop offset="1" stop-color="#08605f"/></linearGradient><radialGradient id="lgB" cx=".5" cy=".95" r=".9"><stop offset="0" stop-color="#fffaf2"/><stop offset=".55" stop-color="#ffcdb5"/><stop offset="1" stop-color="#ec5f8d"/></radialGradient><clipPath id="lgC"><circle cx="32" cy="32" r="28.5"/></clipPath></defs><circle cx="32" cy="32" r="30" fill="url(#lgA)"/><g clip-path="url(#lgC)"><path d="M0 50 Q8 47 16 50 T32 50 T48 50 T64 50" stroke="#fff" stroke-width="2" fill="none" opacity=".8"/><path d="M4 56 Q12 53 20 56 T36 56 T52 56 T68 56" stroke="#7fe0e0" stroke-width="2" fill="none" opacity=".8"/></g><path d="M32 47 L8.8 40.8 Q5.0 34.0 12.7 32.7 Q11.6 25.0 19.2 26.7 Q21.0 19.1 27.5 23.4 Q32.0 17.0 36.5 23.4 Q43.0 19.1 44.8 26.7 Q52.4 25.0 51.3 32.7 Q59.0 34.0 55.2 40.8 Z" fill="url(#lgB)" stroke="#2a1b12" stroke-width="2.4" stroke-linejoin="round"/><path d="M32 45L13.9 33.6M32 45L20.0 27.9M32 45L27.8 24.9M32 45L36.2 24.9M32 45L44.0 27.9M32 45L50.1 33.6" stroke="#c43d6b" stroke-width="1.4" stroke-linecap="round" opacity=".75"/><path d="M25 47 L28 42.5 H36 L39 47 Z" fill="#ffcdb5" stroke="#2a1b12" stroke-width="2" stroke-linejoin="round"/><circle cx="32" cy="38.5" r="3.4" fill="#fff" stroke="#2a1b12" stroke-width="1.4"/><circle cx="31" cy="37.4" r="1" fill="#fff"/><path d="M50 9 l1.4 3.6 3.6 1.4 -3.6 1.4 -1.4 3.6 -1.4 -3.6 -3.6 -1.4 3.6 -1.4z" fill="#fff"/><circle cx="32" cy="32" r="30" fill="none" stroke="#2a1b12" stroke-width="3"/></svg><b>MUSCHEL-TAL</b></div>
+ <div class="logo"><svg width="40" height="40" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs><linearGradient id="lgA" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff8a5c"/><stop offset=".45" stop-color="#ffd23f"/><stop offset=".7" stop-color="#ffe9a8"/><stop offset=".7" stop-color="#14b3c2"/><stop offset="1" stop-color="#08605f"/></linearGradient><radialGradient id="lgB" cx=".5" cy=".95" r=".9"><stop offset="0" stop-color="#fffaf2"/><stop offset=".55" stop-color="#ffcdb5"/><stop offset="1" stop-color="#ec5f8d"/></radialGradient><clipPath id="lgC"><circle cx="32" cy="32" r="28.5"/></clipPath></defs><circle cx="32" cy="32" r="30" fill="url(#lgA)"/><g clip-path="url(#lgC)"><path d="M0 50 Q8 47 16 50 T32 50 T48 50 T64 50" stroke="#fff" stroke-width="2" fill="none" opacity=".8"/><path d="M4 56 Q12 53 20 56 T36 56 T52 56 T68 56" stroke="#7fe0e0" stroke-width="2" fill="none" opacity=".8"/></g><path d="M32 47 L8.8 40.8 Q5.0 34.0 12.7 32.7 Q11.6 25.0 19.2 26.7 Q21.0 19.1 27.5 23.4 Q32.0 17.0 36.5 23.4 Q43.0 19.1 44.8 26.7 Q52.4 25.0 51.3 32.7 Q59.0 34.0 55.2 40.8 Z" fill="url(#lgB)" stroke="#2a1b12" stroke-width="2.4" stroke-linejoin="round"/><path d="M32 45L13.9 33.6M32 45L20.0 27.9M32 45L27.8 24.9M32 45L36.2 24.9M32 45L44.0 27.9M32 45L50.1 33.6" stroke="#c43d6b" stroke-width="1.4" stroke-linecap="round" opacity=".75"/><path d="M25 47 L28 42.5 H36 L39 47 Z" fill="#ffcdb5" stroke="#2a1b12" stroke-width="2" stroke-linejoin="round"/><circle cx="32" cy="38.5" r="3.4" fill="#fff" stroke="#2a1b12" stroke-width="1.4"/><circle cx="31" cy="37.4" r="1" fill="#fff"/><path d="M50 9 l1.4 3.6 3.6 1.4 -3.6 1.4 -1.4 3.6 -1.4 -3.6 -3.6 -1.4 3.6 -1.4z" fill="#fff"/><circle cx="32" cy="32" r="30" fill="none" stroke="#2a1b12" stroke-width="3"/></svg><span><b>MUSCHEL-TAL</b><small class="acc3">@muscheltal</small></span></div>
  <div class="live" id="live"></div>
  <div class="findbar">
   <input id="q" type="search" placeholder="Finde deine Hütte: @TikTok-Name" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="TikTok-Name oder Hütten-Nummer">
@@ -185,7 +187,7 @@ footer a{color:var(--soft)}
 </main>
 <footer id="foot"></footer>
 <script>
-const DATA={"r":[],"insel":{"tag":0,"account":"@muscheltal","muscheln_pro_einwohner":5,"inseln":[{"name":"Muschel-Tal","plaetze":500,"ab":0,"farbe":"#e8467c","emoji":"🐚"},{"name":"???","plaetze":2000,"ab":1000,"farbe":"#f4a51c","emoji":"❔"},{"name":"???","plaetze":2500,"ab":2500,"farbe":"#2e9e5b","emoji":"❔"},{"name":"???","plaetze":5000,"ab":5000,"farbe":"#ff7a3c","emoji":"❔"},{"name":"???","plaetze":0,"ab":10000,"farbe":"#9b6bff","emoji":"❔"}],"geheim":{"name":"???","emoji":"❔","offen":false},"aemter":[["Häuptling",""],["Strandvilla Nr. 1",""],["Strandgrundstück Nr. 1",""]],"projekt":null,"news":["Muschel-Tal ist gegründet. Die Insel ist noch leer – wer zuerst folgt, bekommt Hütte Nr. 1."],"chronik":[["Bald","Tag 1: Muschel-Tal wird gegründet. Folgen = einziehen.",1]],"wetter":{"ort":"Deutschland (Mitte)","lat":51.16,"lon":10.45},"stand":"6. November 2026, 15:02 Uhr"}};
+const DATA={"r":[],"insel":{"tag":0,"account":"@muscheltal","muscheln_pro_einwohner":5,"inseln":[{"name":"Muschel-Tal","plaetze":500,"ab":0,"farbe":"#e8467c","emoji":"🐚"},{"name":"???","plaetze":1500,"ab":500,"farbe":"#f4a51c","emoji":"❔"},{"name":"???","plaetze":3000,"ab":2000,"farbe":"#2e9e5b","emoji":"❔"},{"name":"???","plaetze":5000,"ab":5000,"farbe":"#ff7a3c","emoji":"❔"},{"name":"???","plaetze":0,"ab":10000,"farbe":"#9b6bff","emoji":"❔"}],"geheim":{"name":"???","emoji":"❔","offen":false},"aemter":[["Häuptling",""],["Strandvilla Nr. 1",""],["Strandgrundstück Nr. 1",""]],"projekt":null,"news":["Muschel-Tal ist gegründet. Die Insel ist noch leer – wer zuerst folgt, bekommt Hütte Nr. 1."],"chronik":[["Bald","Tag 1: Muschel-Tal wird gegründet. Folgen = einziehen.",1]],"wetter":{"lat":53.58,"lon":9.93},"stand":"6. November 2026, 16:17 Uhr"}};
 const I=DATA.insel, R=DATA.r, N=R.length, $=id=>document.getElementById(id);
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const fmt=n=>n.toLocaleString('de-DE');
@@ -274,14 +276,15 @@ const QP=new URLSearchParams(location.search);
 const WX={code:0,wind:8,sunrise:0,sunset:0};
 {const f={sonne:0,heiter:2,wolken:3,nebel:45,regen:63,schnee:73,gewitter:95}[QP.get('wetter')];if(f!==undefined)WX.code=f,WX.fixed=1;}
 function nightLevel(){const z=QP.get('zeit');if(z==='tag')return 0;if(z==='nacht')return 1;if(z==='daemmerung')return .5;
- const now=Date.now();let sr=WX.sunrise,ss=WX.sunset;if(!sr){const d=new Date();d.setHours(7,15,0,0);sr=+d;d.setHours(17,15,0,0);ss=+d;}
+ const now=Date.now();let sr=WX.sunrise,ss=WX.sunset;if(!sr){const b=berlin(),off=Date.now()-(+b);const d=new Date(+b);d.setHours(7,45,0,0);sr=+d+off;d.setHours(16,30,0,0);ss=+d+off;}
  const H=40*60e3;if(now<sr-H||now>ss+H)return 1;if(now>sr+H&&now<ss-H)return 0;return now<=sr+H?1-(now-(sr-H))/(2*H):(now-(ss-H))/(2*H);}
 function kind(){const c=WX.code;if(c>=95)return'storm';if((c>=71&&c<=77)||c===85||c===86)return'snow';if((c>=51&&c<=67)||(c>=80&&c<=82))return'rain';if(c===45||c===48)return'fog';if(c===3)return'clouds';if(c===1||c===2)return'fair';return'clear';}
 const WXT={clear:['☀️ Sonnig','🌙 Klar'],fair:['🌤️ Heiter','🌙 Leicht bewölkt'],clouds:['☁️ Bewölkt','☁️ Bewölkt'],fog:['🌫️ Nebel','🌫️ Nebel'],rain:['🌧️ Regen','🌧️ Regen'],snow:['🌨️ Schnee','🌨️ Schnee'],storm:['⛈️ Gewitter','⛈️ Gewitter']};
-function liveText(){const d=new Date(),t=WXT[kind()][nightLevel()>.5?1:0];$('live').textContent='LIVE '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')+' '+t.split(' ')[0];$('live').title='Live-Ansicht: '+t.slice(t.indexOf(' ')+1);}
+function liveText(){const d=berlin(),t=WXT[kind()][nightLevel()>.5?1:0];$('live').textContent='LIVE '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')+' '+t.split(' ')[0];$('live').title='Live-Ansicht: '+t.slice(t.indexOf(' ')+1);}
+function berlin(){try{const p=Object.fromEntries(new Intl.DateTimeFormat('en-US',{timeZone:'Europe/Berlin',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'}).formatToParts(new Date()).map(x=>[x.type,x.value]));return new Date(+p.year,+p.month-1,+p.day,+p.hour,+p.minute,+p.second);}catch(e){return new Date();}}
 async function loadWx(){const o=I.wetter||{lat:51.16,lon:10.45};
- try{const r=await fetch('https://api.open-meteo.com/v1/forecast?latitude='+o.lat+'&longitude='+o.lon+'&current=weather_code,wind_speed_10m&daily=sunrise,sunset&timezone=auto&forecast_days=1');const j=await r.json();
-  if(!WX.fixed)WX.code=j.current.weather_code;WX.wind=j.current.wind_speed_10m;WX.sunrise=+new Date(j.daily.sunrise[0]);WX.sunset=+new Date(j.daily.sunset[0]);}catch(e){}
+ try{const r=await fetch('https://api.open-meteo.com/v1/forecast?latitude='+o.lat+'&longitude='+o.lon+'&current=weather_code,wind_speed_10m&daily=sunrise,sunset&timezone=GMT&forecast_days=1');const j=await r.json();
+  if(!WX.fixed)WX.code=j.current.weather_code;WX.wind=j.current.wind_speed_10m;WX.sunrise=Date.parse(j.daily.sunrise[0]+'Z');WX.sunset=Date.parse(j.daily.sunset[0]+'Z');}catch(e){}
  liveText();kick();}
 let WFg=1,flash=0,nextFlash=3;
 
@@ -386,7 +389,7 @@ function beachbar(c){const [x,y]=BB;
   c.fillStyle='#ffd23f';c.strokeStyle='#2a1b12';c.lineWidth=.6;c.fillRect(x-25,y-9,15,7);c.strokeRect(x-25,y-9,15,7);c.fillStyle='#2a1b12';c.font='900 2.5px '+FONT;c.textAlign='center';c.fillText('BEACH-BAR',x-17.5,y-6.2);c.fillText('IM BAU',x-17.5,y-3.4);
   c.strokeStyle='#6b3f1d';c.beginPath();c.moveTo(x-17.5,y-2);c.lineTo(x-17.5,y+6);c.stroke();}}
 function landmark(c,v,nl){const L=v.open?1:1+v.tier*.4;c.save();c.translate(v.x,v.y);c.scale(L,L);c.translate(-v.x,-v.y);landmark0(c,v,nl);c.restore();
- if(v.tier===4){const cols=['#ff5a5a','#ffa53a','#ffe14a','#5fd35f','#4aa8ff','#a46bff'],lw=Math.max(7,3.5/cam.z);c.lineWidth=lw;for(let k=0;k<6;k++){c.strokeStyle=cols[k];c.globalAlpha=.32*(1-nl*.8);c.beginPath();c.ellipse(v.x,v.y+v.R*.25,v.R*.95-k*lw,v.R*.75-k*lw,0,Math.PI,TAU);c.stroke();}c.globalAlpha=1;
+ if(v.tier===4){const cols=['#ff5a5a','#ffa53a','#ffe14a','#5fd35f','#4aa8ff','#a46bff'],lw=Math.min(Math.max(7,3.5/cam.z),v.R*.12);c.lineWidth=lw;for(let k=0;k<6;k++){c.strokeStyle=cols[k];c.globalAlpha=.32*(1-nl*.8);c.beginPath();c.ellipse(v.x,v.y+v.R*.25,v.R*.95-k*lw,v.R*.75-k*lw,0,Math.PI,TAU);c.stroke();}c.globalAlpha=1;
   c.strokeStyle=`rgba(255,215,90,${.35+.15*Math.sin(T*2)})`;c.lineWidth=Math.max(4,3/cam.z);shape(c,v,46);c.stroke();}}
 function landmark0(c,v,nl){
  if(v.tier===1){const x=v.x,y=v.y;c.fillStyle='#8a8078';for(let k=0;k<8;k++){const a=k/8*TAU;c.beginPath();c.arc(x+Math.cos(a)*7,y+Math.sin(a)*6,1.8,0,TAU);c.fill();}c.strokeStyle='#6b3f1d';c.lineWidth=1.6;c.beginPath();c.moveTo(x-4,y+3);c.lineTo(x+4,y-2);c.moveTo(x+4,y+3);c.lineTo(x-4,y-2);c.stroke();
@@ -448,9 +451,9 @@ function draw(){
  const nc={clear:3,fair:5,clouds:10,fog:7,rain:12,snow:10,storm:12}[K],ca=Math.max(0,Math.min(1,1.6-zr*.6))*(1-nl*.5);if(ca>.02)for(let i=0;i<nc;i++)cloud(c,CLOUDS[i],ca,K==='rain'||K==='storm'||K==='snow');
  if(zr<4&&nl<.6&&(K==='clear'||K==='fair'||K==='clouds')){c.strokeStyle='#fff';c.lineWidth=1.3;for(const b of BIRDS){const a=b.ph+T*b.sp;const [x,y]=polar(MAIN,a,b.r);const f=Math.sin(T*8+b.ph)*2.5;c.beginPath();c.moveTo(x-5,y-f);c.quadraticCurveTo(x-2,y-3,x,y);c.quadraticCurveTo(x+2,y-3,x+5,y-f);c.stroke();}}
  // Beschriftung (herausgezoomt)
- if(zr<.8){c.textAlign='center';c.lineJoin='round';const fz=Math.max(.95,Math.min(1.15,zr/.5));const lab=(t,x,y,fs,col)=>{fs*=fz;c.font='900 '+fs/z+'px '+FONT;c.lineWidth=4/z;c.strokeStyle='#2a1b12';c.fillStyle=col;c.strokeText(t,x,y);c.fillText(t,x,y);};
+ if(zr<.8&&z>fitAll().z*.6){c.textAlign='center';c.lineJoin='round';const fz=Math.max(.95,Math.min(1.15,zr/.5));const lab=(t,x,y,fs,col)=>{fs*=fz;c.font='900 '+fs/z+'px '+FONT;c.lineWidth=4/z;c.strokeStyle='#2a1b12';c.fillStyle=col;c.strokeText(t,x,y);c.fillText(t,x,y);};
   for(const v of ISL){const yb=v.y+v.R*.92+26*fz/z;if(v.open){lab(v.emoji+' '+v.name,v.x,yb,14,'#ffd23f');lab(fmt(v.people.length)+(v.plaetze?' / '+fmt(v.plaetze):'')+' Einwohner',v.x,yb+16*fz/z,10,'#fff');}else{lab('???',v.x,yb,18,'#fff');lab('🔒 ab '+fmt(v.ab)+' Followern',v.x,yb+17*fz/z,11,'#ffd23f');}}
-  lab('???',XM.x,XM.y+XM.r+30*fz/z,18,'#fff');lab('🎁 geheim · Ziel: ???',XM.x,XM.y+XM.r+47*fz/z,11,'#ffd23f');}
+  lab('???',XM.x,XM.y+XM.r+30*fz/z,18,'#fff');}
  c.setTransform(DPR,0,0,DPR,0,0);
  if(K==='rain'||K==='storm'){const sl=WFg*3;c.strokeStyle='rgba(215,230,255,.5)';c.lineWidth=1.1;c.beginPath();for(let i=0;i<(K==='storm'?170:120);i++){const sp=520+hash(i,42)*220,y=((hash(i,41)*(H+40)+T*sp)%(H+40))-20,x=((hash(i,40)*W*1.3+T*sl*40)%(W*1.3))-W*.15;c.moveTo(x,y);c.lineTo(x-sl*2.5,y+15);}c.stroke();}
  if(K==='snow'){c.fillStyle='rgba(235,242,255,.14)';c.fillRect(0,0,W,H);c.fillStyle='#fff';c.strokeStyle='rgba(70,95,130,.45)';c.lineWidth=.8;for(let i=0;i<110;i++){const sp=28+hash(i,43)*40,y=((hash(i,41)*(H+20)+T*sp)%(H+20))-10,x=(((hash(i,40)*W+Math.sin(T*.8+i)*14+T*WFg*10)%W)+W)%W;c.beginPath();c.arc(x,y,1.5+hash(i,44)*2,0,TAU);c.fill();c.stroke();}}
@@ -469,7 +472,7 @@ if(!REDUCED)requestAnimationFrame(loop);
 let raf=0;function kick(){if(!raf)raf=requestAnimationFrame(()=>{raf=0;draw();});}
 
 // ---------- Bedienung ----------
-function clamp(){cam.z=Math.max(fitAll().z*.9,Math.min(10,cam.z));cam.x=Math.max(BOX.x0,Math.min(BOX.x1,cam.x));cam.y=Math.max(BOX.y0,Math.min(BOX.y1,cam.y));}
+function clamp(){cam.z=Math.max(fitAll().z*.12,Math.min(10,cam.z));const mx=(BOX.x1-BOX.x0)*3,my=(BOX.y1-BOX.y0)*3,cx=(BOX.x0+BOX.x1)/2,cy=(BOX.y0+BOX.y1)/2;cam.x=Math.max(cx-mx,Math.min(cx+mx,cam.x));cam.y=Math.max(cy-my,Math.min(cy+my,cam.y));}
 let fly=0;function flyTo(t,ms=750){cancelAnimationFrame(fly);const f={...cam},t0=performance.now();const step=n=>{const k=Math.min(1,(n-t0)/ms),e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;cam.x=f.x+(t.x-f.x)*e;cam.y=f.y+(t.y-f.y)*e;cam.z=Math.exp(Math.log(f.z)+(Math.log(t.z)-Math.log(f.z))*e);draw();if(k<1)fly=requestAnimationFrame(step);};fly=requestAnimationFrame(step);}
 function zoomAt(f,sx=W/2,sy=H/2){const [wx,wy]=s2w(sx,sy);cam.z*=f;clamp();const [nx,ny]=s2w(sx,sy);cam.x+=wx-nx;cam.y+=wy-ny;clamp();kick();}
 const pts=new Map();let moved=0,pinch=0;
@@ -518,12 +521,12 @@ $('mine').onclick=()=>{try{const p=byName.get((localStorage.getItem('mt-me')||''
 document.addEventListener('click',e=>{const b=e.target.closest('[data-n]');if(b){const p=byName.get(b.dataset.n.toLowerCase());if(p)pick(p);}if(!e.target.closest('.findbar'))sg.hidden=true;});
 
 // ---------- Texte ----------
-document.querySelectorAll('.acc').forEach(e=>{e.textContent=ACC;e.href=ACCURL;});document.querySelectorAll('.acc2').forEach(e=>e.textContent=ACC);$('stepf').href=ACCURL;$('join').href=ACCURL;
+document.querySelectorAll('.acc').forEach(e=>{e.textContent=ACC;e.href=ACCURL;});document.querySelectorAll('.acc2').forEach(e=>e.textContent=ACC);document.querySelectorAll('.acc3').forEach(e=>e.textContent='by '+ACC);$('stepf').href=ACCURL;$('join').href=ACCURL;
 $('nTag').textContent=I.tag||'–';$('nEw').textContent=fmt(N);$('nMu').textContent=fmt(N*I.muscheln_pro_einwohner);
 {const next=ISL.find(v=>!v.open);const row=(e,t,s,pct,col,tag,tc)=>'<div class="r"><span class="e">'+e+'</span><div><b>'+t+'</b><small>'+s+'</small><div class="m"><i style="width:'+Math.min(100,pct*100)+'%;background:'+col+'"></i></div></div><span class="tag" style="background:'+tc+'">'+tag+'</span></div>';
  $('isl').innerHTML=ISL.map(v=>{if(v.open){const n=v.people.length,cap=v.plaetze,full=cap&&n>=cap;return row(v.emoji,esc(v.name),fmt(n)+(cap?' von '+fmt(cap)+' Hütten bewohnt':' Hütten bewohnt'),cap?n/cap:1,v.farbe,full?'VOLL':'OFFEN',full?'var(--hib);color:#fff':'var(--sun)');}
   return row('🔒','???','öffnet ab '+fmt(v.ab)+' Followern'+(v===next?' · noch '+fmt(v.ab-N):''),N/v.ab,'#c9b59a','BALD','#fff');}).join('')
-  +row(XM.open?esc(I.geheim.emoji||'🎁'):'❔',XM.open?esc(I.geheim.name):'???',XM.open?'geöffnet!':'Irgendwo am Rand der Karte … Ziel: ???',0,'#ccc','GEHEIM','#fff')
+  +(XM.open?row(esc(I.geheim.emoji||'🎁'),esc(I.geheim.name),'geöffnet!',1,'#ccc','OFFEN','var(--sun)'):'<div class="r"><span class="e"></span><div><b>???</b></div><span></span></div>')
   +(WAIT.length?'<p class="sub" style="margin-top:4px">⛴️ <b>'+fmt(WAIT.length)+'</b> neue Einwohner warten am Steg auf die Fähre zur nächsten Insel.</p>':'');}
 if(PJ){$('pjname').textContent=PJ.emoji+' Wir bauen: '+PJ.name;$('pjnum').textContent=fmt(PJ.stand)+' / '+fmt(PJ.ziel)+' '+PJ.einheit;$('pjbar').style.width=Math.min(100,PJ.stand/PJ.ziel*100)+'%';$('pjtext').textContent=PJ.text;}else $('proj').hidden=true;
 $('news').innerHTML='<b>Neu:</b> '+esc(I.news[0]||'');$('news').hidden=!I.news.length;
