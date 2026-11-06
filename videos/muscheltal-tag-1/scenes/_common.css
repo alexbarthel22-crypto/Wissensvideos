@@ -22,3 +22,11 @@
       -webkit-text-stroke: 10px #2a1b12; paint-order: stroke fill; letter-spacing: -.01em; }
     .kick { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 24px; border-radius: 14px;
       background: #2a1b12; color: #ffd23f; font-family: "Space Mono", monospace; font-weight: 700; font-size: 34px; letter-spacing: .14em; }
+    /* Text auf farbigem Balken (auffälliger, wie TikTok-Textboxen) */
+    .bt { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; max-width: 840px; text-align: center; padding: 10px 28px 14px; border-radius: 18px;
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 64px; line-height: 1.08; color: #fff; box-shadow: 0 9px 0 rgba(0,0,0,.28); }
+    .bt.pk { background: #e8467c; } .bt.tq { background: #0a9fa6; } .bt.vi { background: #7b4fe0; } .bt.bl { background: #2f7fe0; }
+    .bt.ye { background: #ffd23f; color: #2a1b12; } .bt.gr { background: #2fbf6a; } .bt.dk { background: #2a1b12; color: #ffd23f; }
+    .bt.sm { font-size: 40px; padding: 8px 22px 10px; border-radius: 14px; }
+    .stamp { position: absolute; padding: 6px 26px; border: 10px solid; border-radius: 18px; background: rgba(255,255,255,.94);
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 84px; }

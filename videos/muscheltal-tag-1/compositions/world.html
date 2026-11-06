@@ -1,0 +1,231 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; }
+    #w-cv { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+  </style>
+  <div id="root" data-composition-id="world" data-start="0" data-duration="53.747" data-width="1080" data-height="1920">
+    <canvas id="w-cv" class="clip" data-start="0" data-duration="53.747" data-track-index="0" width="1080" height="1920"></canvas>
+  </div>
+  <script>
+    (() => {
+      
+      const C = {"__dur": 53.747, "s01": [0.0, 6.237], "s02": [6.237, 9.547], "s03": [9.547, 14.937], "s04": [14.937, 18.617], "s05": [18.617, 25.227], "s06": [25.227, 30.037], "s07": [30.037, 33.797], "s08": [33.797, 36.647], "s09": [36.647, 42.377], "s10": [42.377, 53.747], "L1": [0.5, 1.99], "L1.words": [["ich", 0.5, 0.651], ["habe", 0.651, 0.941], ["euch", 0.941, 1.097], ["eine", 1.097, 1.388], ["insel", 1.388, 1.683], ["gekauft", 1.683, 1.99]], "L2": [2.21, 6.057], "L2.words": [["und", 2.21, 2.485], ["jeder", 2.485, 3.025], ["von", 3.025, 3.299], ["euch", 3.299, 3.584], ["bekommt", 3.584, 4.143], ["darauf", 4.143, 4.693], ["ein", 4.693, 4.968], ["eigenes", 4.968, 5.772], ["haus", 5.772, 6.057]], "L3": [6.437, 9.367], "L3.words": [["sie", 6.437, 6.778], ["heißt", 6.778, 7.143], ["muscheltal", 7.143, 8.177], ["mitten", 8.417, 8.736], ["in", 8.736, 8.889], ["der", 8.889, 9.048], ["südsee", 9.048, 9.367]], "L4": [9.747, 13.027], "L4.words": [["das", 9.747, 9.952], ["prinzip", 9.952, 10.37], ["ist", 10.37, 10.576], ["super", 10.576, 10.979], ["einfach", 10.979, 11.397], ["du", 11.557, 11.786], ["folgst", 11.786, 12.05], ["mir", 12.05, 12.288], ["und", 12.288, 12.526], ["ziehst", 12.526, 12.789], ["ein", 12.789, 13.027]], "L5": [13.247, 14.757], "L5.words": [["deine", 13.247, 13.546], ["hütte", 13.546, 13.844], ["bekommt", 13.844, 14.154], ["deinen", 14.154, 14.458], ["namen", 14.458, 14.757]], "L6": [15.137, 18.437], "L6.words": [["jeder", 15.137, 15.531], ["einwohner", 15.531, 16.132], ["bringt", 16.132, 16.354], ["5", 16.354, 16.561], ["muscheln", 16.561, 16.977], ["mit", 16.977, 17.177], ["das", 17.377, 17.53], ["ist", 17.53, 17.683], ["unsere", 17.683, 18.126], ["währung", 18.126, 18.437]], "L7": [18.817, 22.397], "L7.words": [["wer", 18.817, 19.088], ["früher", 19.088, 19.63], ["folgt", 19.63, 19.92], ["wohnt", 19.92, 20.21], ["auf", 20.21, 20.481], ["der", 20.481, 20.752], ["hauptinsel", 20.752, 21.575], ["muscheltal", 21.575, 22.397]], "L8": [22.617, 25.047], "L8.words": [["dort", 22.617, 22.864], ["ist", 22.864, 23.103], ["platz", 23.103, 23.359], ["für", 23.359, 23.598], ["500", 23.598, 24.331], ["einwohner", 24.331, 25.047]], "L9": [25.427, 27.327], "L9.words": [["ist", 25.427, 25.641], ["sie", 25.641, 25.855], ["voll", 25.855, 26.077], ["öffnen", 26.317, 26.718], ["neue", 26.718, 26.926], ["inseln", 26.926, 27.327]], "L10": [27.547, 29.857], "L10.words": [["wann", 27.547, 27.763], ["steht", 27.763, 27.987], ["auf", 27.987, 28.195], ["meiner", 28.195, 28.613], ["seite", 28.613, 29.022], ["link", 29.022, 29.239], ["in", 29.239, 29.44], ["der", 29.44, 29.648], ["bio", 29.648, 29.857]], "L11": [30.237, 33.617], "L11.words": [["und", 30.237, 30.438], ["am", 30.438, 30.632], ["rand", 30.632, 30.84], ["der", 30.84, 31.041], ["karte", 31.041, 31.435], ["versteckt", 31.435, 31.859], ["sich", 31.859, 32.067], ["eine", 32.067, 32.454], ["geheime", 32.454, 33.043], ["insel", 33.043, 33.438], ["", 33.438, 33.617]], "L12": [33.997, 36.467], "L12.words": [["was", 33.997, 34.173], ["gebaut", 34.173, 34.525], ["wird", 34.525, 34.707], ["entscheidet", 34.707, 35.248], ["ihr", 35.248, 35.424], ["in", 35.424, 35.593], ["den", 35.593, 35.769], ["kommentaren", 35.769, 36.467]], "L13": [36.847, 39.917], "L13.words": [["deine", 36.847, 37.311], ["hütte", 37.311, 37.775], ["findest", 37.775, 38.255], ["du", 38.255, 38.483], ["auf", 38.483, 38.719], ["muscheltalde", 38.719, 39.917]], "L14": [40.137, 42.197], "L14.words": [["dort", 40.137, 40.35], ["gibt", 40.35, 40.562], ["es", 40.562, 40.76], ["alles", 40.76, 41.163], ["rund", 41.163, 41.376], ["um", 41.376, 41.574], ["muscheltal", 41.574, 42.197]], "L15": [42.577, 45.677], "L15.words": [["hütte", 42.577, 42.953], ["nummer", 42.953, 43.335], ["eins", 43.335, 43.533], ["ist", 43.533, 43.724], ["noch", 43.724, 43.922], ["frei", 43.922, 44.12], ["folg", 44.12, 44.318], ["mir", 44.318, 44.509], ["jetzt", 44.509, 44.714], ["dann", 44.714, 44.912], ["gehört", 44.912, 45.295], ["sie", 45.295, 45.486], ["dir", 45.486, 45.677]], "L16": [45.897, 50.747], "L16.words": [["und", 45.897, 46.105], ["morgen", 46.105, 46.522], ["kaufen", 46.522, 46.939], ["wir", 46.939, 47.147], ["was", 47.147, 47.356], ["vom", 47.356, 47.564], ["ersten", 47.564, 47.981], ["geld", 47.981, 48.197], ["aber", 48.417, 48.773], ["was", 48.773, 48.957], ["die", 49.137, 49.297], ["zwei", 49.297, 49.464], ["topkommentare", 49.464, 50.254], ["entscheiden", 50.254, 50.747]]};
+      const line = (id) => C[id];
+      const at = (id, word, which = 0) => {
+        const ws = C[id + ".words"];
+        if (typeof word === "number") return ws[word][1 + which];
+        const key = String(word).toLowerCase().replace(/[^\p{L}\p{N}_]/gu, "");
+        const hit = ws.find((w) => w[0].startsWith(key));
+        if (!hit) throw new Error("cue not found: " + id + " " + word);
+        return hit[1 + which];
+      };
+      // Zähler: schreibt Zahlen im deutschen Format (4.100.000.000) als Funktion der Timeline-Zeit
+      const fmt = (n) => Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      const count = (tl, sel, from, to, t, d, pre = "", post = "", ease = "power2.out") => {
+        const el = document.querySelector(sel);
+        const o = { v: from };
+        el.textContent = pre + fmt(from) + post;
+        tl.to(o, { v: to, duration: d, ease, onUpdate: () => { el.textContent = pre + fmt(o.v) + post; } }, t);
+      };
+      // deterministischer Zufall
+      const rng = (seed) => () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let x = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+        x = (x + Math.imul(x ^ (x >>> 7), 61 | x)) ^ x; return ((x ^ (x >>> 14)) >>> 0) / 4294967296; };
+
+      // Muschel-Tal-Welt wie auf muscheltal.de: Draufsicht, Lagune, Riffe, Brandung, Palmen, Hütten, Boote, Wolken.
+      // Alles hängt nur an der Timeline-Zeit t (deterministisch, seek-fähig). Bildanker: (540, 640) = Mitte der Bildzone.
+      const TAU = Math.PI * 2, S = 20, BINS = 90, W = 1080, H = 1920, AX = 540, AY = 640;
+      const cv = document.getElementById("w-cv"), c = cv.getContext("2d");
+      const FONT = '"Inter", sans-serif';
+      function hash(x, y) { let h = (x * 374761393 + y * 668265263) | 0; h = (h ^ (h >>> 13)) * 1274126177 | 0; return ((h ^ (h >>> 16)) >>> 0) / 4294967296; }
+      const sm = (a, b, x) => { const k = Math.max(0, Math.min(1, (x - a) / (b - a))); return k * k * (3 - 2 * k); };
+
+      // ---------- Hauptinsel: 500 Plätze im Raster, nach Abstand zum Muschelplatz sortiert ----------
+      const PLAZA = 78;
+      function plaetze(n) { const out = []; let r = Math.sqrt((n + 30) * 600 / Math.PI) + PLAZA + 40;
+        for (;;) { out.length = 0; const g = Math.ceil(r / S);
+          for (let gx = -g; gx <= g; gx++) for (let gy = -g; gy <= g; gy++) { if (((gx % 5) + 5) % 5 === 0 || ((gy % 4) + 4) % 4 === 0) continue;
+            const x = gx * S, y = gy * S * .9, d = Math.hypot(x, y); if (d < PLAZA || d > r) continue; out.push({ gx, gy, x, y, k: d + hash(gx, gy) * 14 }); }
+          if (out.length >= n + 30) break; r *= 1.2; }
+        out.sort((a, b) => a.k - b.k); return out.slice(0, n); }
+      const PL = plaetze(500), KEYS = new Set(PL.map(p => p.gx + "," + p.gy));
+      const ROOFS = ["#e8467c", "#f4a51c", "#ff7a59", "#2fb3a0", "#9b6bff", "#3fa0e8"], WALLS = ["#d9a066", "#e4b47c", "#cf9459", "#e9c48f"];
+      PL.forEach((p, i) => { const h = hash(p.gx + 7, p.gy - 3); p.round = h < .28; p.wall = WALLS[(h * 97 | 0) % 4]; p.roof = ROOFS[(h * 631 | 0) % 6]; p.win = hash(p.gx, p.gy + 11) < .55; });
+      function mkCoast(base, plots, seed) { const a = new Array(BINS).fill(base);
+        for (const p of plots) { const b = ((Math.atan2(p.y, p.x) + Math.PI) / TAU * BINS | 0) % BINS, d = Math.hypot(p.x, p.y) + 34; if (d > a[b]) a[b] = d; }
+        const s = a.map((_, i) => { let m = 0; for (let k = -3; k <= 3; k++) m = Math.max(m, a[(i + k + BINS) % BINS] - Math.abs(k) * 4); return m; });
+        return s.map((d, i) => { const an = i / BINS * TAU - Math.PI; return d + 8 * Math.sin(an * 5 + seed) + 5 * Math.sin(an * 11 + 1 + seed); }); }
+      const MAIN = { x: 0, y: 0, coast: mkCoast(150, PL, 0), tier: 0 }; MAIN.R = Math.max(...MAIN.coast);
+      const coastAt = (v, a) => { const f = ((a + Math.PI) / TAU * BINS % BINS + BINS) % BINS, i = f | 0, k = f - i; return v.coast[i] * (1 - k) + v.coast[(i + 1) % BINS] * k; };
+      const polar = (v, a, d) => [v.x + Math.cos(a) * d, v.y + Math.sin(a) * d * .92];
+      function shape(v, off, wob = 0, t = 0) { c.beginPath(); for (let i = 0; i <= BINS; i++) { const k = i % BINS, a = k / BINS * TAU - Math.PI,
+        d = v.coast[k] + off + (wob ? wob * Math.sin(a * 7 + t * 1.7) + wob * .6 * Math.sin(a * 13 - t * 1.1) : 0); const [x, y] = polar(v, a, d); i ? c.lineTo(x, y) : c.moveTo(x, y); } c.closePath(); }
+      const inside = (v, x, y, m = 0) => { const lx = x - v.x, ly = (y - v.y) / .92; return Math.hypot(lx, ly) < coastAt(v, Math.atan2(ly, lx)) - m; };
+
+      // ---------- Nachbarinseln (gesperrt, ???) + geheime Insel im Nebel ----------
+      const NB = [[-0.55, 150, 1], [0.95, 190, 2], [2.35, 230, 3], [3.75, 270, 4]].map(([a, r, tier], i) => {
+        const d = MAIN.R + r + 280; const v = { x: Math.cos(a) * d, y: Math.sin(a) * d * .92, tier, coast: mkCoast(r, [], i * 2 + 1) }; v.R = Math.max(...v.coast); return v; });
+      const ALL = [MAIN, ...NB];
+      const ext = Math.max(...NB.map(v => Math.hypot(v.x, v.y) + v.R));
+      const XM = { x: Math.cos(4.55) * (ext + 230), y: Math.sin(4.55) * (ext + 230) * .92, r: 150 };
+      XM.coast = mkCoast(XM.r, [], 9); XM.R = Math.max(...XM.coast);
+
+      // ---------- Deko ----------
+      for (const v of [...ALL, XM]) { v.palms = []; v.bush = []; v.flow = []; v.grass = []; v.reef = []; v.jungle = []; v.rocks = [];
+        const g = Math.ceil(v.R / S) + 1, main = v === MAIN, pp = main ? .2 : [0, .07, .1, .13, .17][v.tier] || .05;
+        for (let gx = -g; gx <= g; gx++) for (let gy = -g; gy <= g; gy++) { if (main && KEYS.has(gx + "," + gy)) continue; const x = v.x + gx * S, y = v.y + gy * S * .9;
+          if (Math.hypot(gx * S, gy * S * .9) < (main ? PLAZA + 10 : 60) || !inside(v, x, y, 10)) continue;
+          const h = hash(gx + 99 + v.tier * 13, gy - 7), jx = x + (hash(gx, gy + 3) - .5) * 8, jy = y + (hash(gx + 3, gy) - .5) * 8;
+          if (h < pp) v.palms.push({ x: jx, y: jy, ph: hash(gx, gy) * TAU, s: .85 + hash(gy, gx) * .45 });
+          else if (h < pp + .1) v.bush.push({ x: jx, y: jy, r: 3 + hash(gx, gy) * 3 });
+          else if (h < pp + .16) v.flow.push({ x: jx, y: jy, c: ["#ff6fa3", "#ffd23f", "#fff", "#ff8a4c", "#b48cff"][(h * 1000 | 0) % 5] }); }
+        const A = Math.PI * v.R * v.R;
+        for (let i = 0; i < Math.min(1400, A / 650); i++) { const a = hash(i, 1 + v.tier) * TAU, d = Math.sqrt(hash(i, 2 + v.tier)) * v.R; const [x, y] = polar(v, a, d);
+          if (inside(v, x, y, 6)) v.grass.push({ x, y, r: 8 + hash(i, 3) * 22, c: hash(i, 4 + v.tier) < .5 ? "#7fc25a" : "#a3dc78" }); }
+        for (let i = 0; i < v.R * .9; i++) { const a = hash(i, 40 + v.tier) * TAU, d = coastAt(v, a) - 8 - hash(i, 41) * 26; const [x, y] = polar(v, a, d);
+          if (main && Math.hypot(x, y) < MAIN.R - 60) continue; v.jungle.push({ x, y, r: 7 + hash(i, 42) * 10, c: ["#2f8f3e", "#3a9e4a", "#287f36"][i % 3] }); }
+        for (let i = 0; i < v.R * .35; i++) { const a = hash(i, 5 + v.tier) * TAU, d = coastAt(v, a) + 24 + hash(i, 6) * 34; const [x, y] = polar(v, a, d);
+          v.reef.push({ x, y, r: 4 + hash(i, 7) * 9, c: ["#ff9aa8", "#ffb36b", "#1d8f9f", "#c9a0ff", "#1d8f9f"][i % 5] }); }
+        for (let i = 0; i < 8 + v.R / 14; i++) { const a = hash(i, 8 + v.tier) * TAU, d = coastAt(v, a) + 4 + hash(i, 9) * 6; const [x, y] = polar(v, a, d); v.rocks.push({ x, y, r: 2 + hash(i, 10) * 3 }); } }
+      const SPARK = []; for (let i = 0; i < 700; i++) { const a = hash(i, 11) * TAU, d = 120 + Math.sqrt(hash(i, 12)) * (ext + 600); SPARK.push({ x: Math.cos(a) * d, y: Math.sin(a) * d * .92, ph: hash(i, 13) * TAU, sp: 1 + hash(i, 14) * 2 }); }
+      const BOATS = [0, 1, 2].map(i => ({ ph: i * 2.1 + .4, r: MAIN.R + 90 + i * 45, sp: (i % 2 ? 1 : -1) * (.05 + i * .01), col: ["#fff", "#ffd23f", "#e8467c"][i] }));
+      const CLOUDS = [...Array(9)].map((_, i) => ({ x: (hash(i, 20) - .5) * 2 * (ext + 500), y: (hash(i, 21) - .5) * 2 * (ext + 400), s: 1.4 + hash(i, 22) * 1.6, sp: 8 + hash(i, 23) * 8 }));
+      const LANT = [0, 1, 2, 3, 4, 5, 6, 7].map(i => polar(MAIN, i / 8 * TAU, PLAZA - 14));
+
+      // ---------- Zeitplan: Hütten erscheinen passend zum Text; Hütte Nr. 1 bleibt frei, Nr. 37 = "deine" Hütte ----------
+      const ME = 36, tJ = at("L2", "jeder"), tH = at("L2", "Haus", 1), tEin = at("L4", "ein"), tF = at("L7", "früher"), tFull = line("L8")[1];
+      const born = PL.map((p, i) => i === 0 ? Infinity : i === ME ? tEin : i <= 40 ? tJ + (i / 40) * (tH - tJ + .4) : tF + ((i - 41) / 459) * (tFull - tF));
+
+      // ---------- Kamera (Schlüsselbilder an Wörtern) ----------
+      const fitAll = (() => { let x0 = XM.x - XM.R, x1 = XM.x + XM.R, y0 = XM.y - XM.R, y1 = XM.y + XM.R; for (const v of ALL) { x0 = Math.min(x0, v.x - v.R); x1 = Math.max(x1, v.x + v.R); y0 = Math.min(y0, v.y - v.R); y1 = Math.max(y1, v.y + v.R); }
+        const z = Math.min((W - 100) / (x1 - x0), 780 / (y1 - y0)); return { x: (x0 + x1) / 2, y: (y0 + y1) / 2, z }; })();
+      const zMain = (W - 60) / (2 * (MAIN.R + 40)), me = PL[ME], one = PL[0];
+      const K = [
+        [0, 0, 30, zMain * .92], [line("L2")[1], 0, 20, zMain * 1.05],
+        [line("L3")[0] - .1, 0, 10, zMain * 1.6], [line("L3")[1], 0, 0, zMain * 1.75],
+        [at("L4", "folgst") - .3, me.x, me.y, 3.0], [line("L5")[1], me.x, me.y, 3.3],
+        [line("L6")[0], 0, 30, 2.1], [line("L6")[1], 0, 20, 2.3],
+        [tF, 0, 20, zMain * 1.0], [tFull, 0, 20, zMain * .98],
+        [at("L9", "neue") - .25, 0, 20, zMain * .9], [at("L9", "neue") + .8, fitAll.x, fitAll.y, fitAll.z], [line("L10")[1], fitAll.x, fitAll.y, fitAll.z * 1.05],
+        [line("L11")[0] + .3, XM.x, XM.y + 30, .95], [line("L11")[1], XM.x, XM.y + 30, 1.1],
+        [line("L12")[0] + .4, 0, 20, zMain * 1.25], [line("L12")[1], 0, 20, zMain * 1.35],
+        [line("L13")[0] + .2, 0, 20, zMain * 1.1], [line("L14")[1], 0, 20, zMain * 1.15],
+        [line("L15")[0] + .1, one.x, one.y, 3.4], [line("L15")[1], one.x, one.y, 3.6], [C.__dur, one.x, one.y + 10, 2.7]];
+      function camAt(t) { let i = 0; while (i < K.length - 1 && K[i + 1][0] <= t) i++; const a = K[i], b = K[Math.min(i + 1, K.length - 1)];
+        const k = b[0] > a[0] ? sm(a[0], b[0], t) : 1; const lz = Math.log(a[3]) + (Math.log(b[3]) - Math.log(a[3])) * k;
+        return { x: a[1] + (b[1] - a[1]) * k, y: a[2] + (b[2] - a[2]) * k, z: Math.exp(lz) }; }
+
+      // ---------- Zeichnen ----------
+      let cam = { x: 0, y: 0, z: 1 }, T = 0, x0, y0, x1, y1;
+      const world = () => c.setTransform(cam.z, 0, 0, cam.z, AX - cam.x * cam.z, AY - cam.y * cam.z);
+      const vis = (x, y, m = 40) => x > x0 - m && x < x1 + m && y > y0 - m && y < y1 + m;
+      function blob(v, off) { if (v === XM || v.tier) { c.beginPath(); for (let i = 0; i <= BINS; i++) { const k = i % BINS, a = k / BINS * TAU - Math.PI, [x, y] = polar(v, a, v.coast[k] + off); i ? c.lineTo(x, y) : c.moveTo(x, y); } c.closePath(); } else shape(v, off); }
+      function lagoon(v) {
+        c.fillStyle = "rgba(20,170,200,.55)"; blob(v, 110); c.fill();
+        c.fillStyle = "#2ec4cf"; blob(v, 74); c.fill();
+        for (const r of v.reef) { if (!vis(r.x, r.y)) continue; c.globalAlpha = .55; c.fillStyle = r.c; c.beginPath(); c.ellipse(r.x, r.y, r.r * 1.3, r.r, hash(r.x | 0, 1), 0, TAU); c.fill(); } c.globalAlpha = 1;
+        c.fillStyle = "rgba(127,229,220,.85)"; blob(v, 46); c.fill();
+        c.fillStyle = "#b9f2e8"; blob(v, 26); c.fill();
+        // Lichtnetz am Lagunengrund (Kaustik)
+        c.save(); blob(v, 74); c.clip(); c.strokeStyle = "rgba(255,255,255,.22)"; c.lineWidth = 1.6;
+        const r = v.R + 80; for (let k = -r; k < r; k += 22) { c.beginPath(); for (let x = -r; x <= r; x += 14) { const y = k + 5 * Math.sin(x * .045 + T * 1.3 + k * .12) + 3 * Math.sin(x * .11 - T * 1.9); x === -r ? c.moveTo(v.x + x, v.y + y) : c.lineTo(v.x + x, v.y + y); } c.stroke(); }
+        c.strokeStyle = "rgba(255,255,255,.12)"; for (let k = -r; k < r; k += 30) { c.beginPath(); for (let y = -r; y <= r; y += 14) { const x = k + 6 * Math.sin(y * .05 - T * 1.1 + k * .2); y === -r ? c.moveTo(v.x + x, v.y + y) : c.lineTo(v.x + x, v.y + y); } c.stroke(); }
+        c.restore(); }
+      function foam(v, rings) { c.lineWidth = 2.4; for (let k = 0; k < rings; k++) { const ph = (T * .16 + k / rings) % 1; c.strokeStyle = `rgba(255,255,255,${(1 - ph) * .55})`; if (v === MAIN) shape(v, 12 + ph * 34, 1.5, T + k); else blob(v, 12 + ph * 30); c.stroke(); }
+        c.strokeStyle = "rgba(255,255,255,.85)"; c.lineWidth = 3; if (v === MAIN) shape(v, 11, 1.2, T * 1.4); else blob(v, 11); c.stroke(); }
+      function land(v, snowy) {
+        c.fillStyle = snowy ? "#e8f1f6" : "#e6cf98"; blob(v, 13); c.fill();
+        c.fillStyle = snowy ? "#ffffff" : (v.tier === 4 ? "#ffe39a" : "#fbefd0"); blob(v, 9); c.fill();
+        c.fillStyle = snowy ? "#dfeaf0" : "#4f9c3f"; blob(v, 1); c.fill();
+        c.fillStyle = snowy ? "#f4f8fb" : "#86c95c"; blob(v, -5); c.fill();
+        for (const s of v.grass) if (vis(s.x, s.y)) { c.fillStyle = s.c; c.globalAlpha = .5; c.beginPath(); c.ellipse(s.x, s.y, s.r, s.r * .7, 0, 0, TAU); c.fill(); } c.globalAlpha = 1;
+        for (const r of v.rocks) if (vis(r.x, r.y)) { c.fillStyle = "#9b8f86"; c.beginPath(); c.ellipse(r.x, r.y, r.r, r.r * .7, 0, 0, TAU); c.fill(); } }
+      function jungle(v) { for (const j of v.jungle) { if (!vis(j.x, j.y)) continue; c.fillStyle = "rgba(20,60,20,.25)"; c.beginPath(); c.arc(j.x + 3, j.y + 4, j.r, 0, TAU); c.fill(); c.fillStyle = j.c; c.beginPath(); c.arc(j.x, j.y, j.r, 0, TAU); c.fill(); c.fillStyle = "rgba(160,220,120,.35)"; c.beginPath(); c.arc(j.x - j.r * .3, j.y - j.r * .35, j.r * .45, 0, TAU); c.fill(); } }
+      function palm(t, wind = 1) { const sw = Math.sin(T * 1.3 + t.ph) * .1 * wind, h = 10 * t.s; c.fillStyle = "rgba(20,60,20,.24)"; c.beginPath(); c.ellipse(t.x + 6, t.y + 6, 8 * t.s, 3 * t.s, 0, 0, TAU); c.fill();
+        const tx = t.x + Math.sin(sw) * h, ty = t.y - Math.cos(sw) * h + 2; c.strokeStyle = "#8a5a2b"; c.lineWidth = 1.8 * t.s; c.lineCap = "round"; c.beginPath(); c.moveTo(t.x, t.y + 4); c.quadraticCurveTo(t.x + 2 * t.s, t.y - 2, tx, ty); c.stroke();
+        for (let k = 0; k < 7; k++) { const a = k / 7 * TAU + sw * 2; c.fillStyle = k % 2 ? "#2e9e5b" : "#46b86b"; c.beginPath(); c.ellipse(tx + Math.cos(a) * 4.4 * t.s, ty + Math.sin(a) * 2.6 * t.s, 5.4 * t.s, 1.8 * t.s, a, 0, TAU); c.fill(); }
+        c.fillStyle = "#7a4a24"; c.beginPath(); c.arc(tx, ty + 1, 1.1 * t.s, 0, TAU); c.fill(); }
+      function paths() { c.save(); shape(MAIN, -4); c.clip(); c.lineCap = "round"; const g = Math.ceil(MAIN.R / S) + 1;
+        for (const [w, col] of [[8, "#e3c48a"], [5.5, "#f3dcac"]]) { c.strokeStyle = col; c.lineWidth = w; c.beginPath();
+          for (let gx = -g; gx <= g; gx++) { if (((gx % 5) + 5) % 5) continue; c.moveTo(gx * S, -MAIN.R); c.lineTo(gx * S, MAIN.R); }
+          for (let gy = -g; gy <= g; gy++) { if (((gy % 4) + 4) % 4) continue; c.moveTo(-MAIN.R, gy * S * .9); c.lineTo(MAIN.R, gy * S * .9); } c.stroke(); } c.restore(); }
+      function plaza() { c.fillStyle = "#e7cf9f"; c.beginPath(); c.ellipse(0, 0, PLAZA - 4, (PLAZA - 4) * .92, 0, 0, TAU); c.fill(); c.fillStyle = "#f6e2b8"; c.beginPath(); c.ellipse(0, 0, PLAZA - 9, (PLAZA - 9) * .92, 0, 0, TAU); c.fill();
+        c.strokeStyle = "rgba(160,120,70,.3)"; c.lineWidth = .8; for (let r = 40; r < PLAZA - 10; r += 9) { c.beginPath(); c.ellipse(0, 0, r, r * .92, 0, 0, TAU); c.stroke(); }
+        for (const [lx, ly] of LANT) { c.fillStyle = "#6b3f1d"; c.fillRect(lx - .8, ly - 7, 1.6, 7); c.fillStyle = "#ffe08a"; c.beginPath(); c.arc(lx, ly - 8, 2, 0, TAU); c.fill(); }
+        // Muschel-Rathaus
+        const R0 = -2.88, R1 = -.26, pt = (a, r) => [Math.cos(a) * r, 10 + Math.sin(a) * r];
+        c.fillStyle = "rgba(60,40,20,.25)"; c.beginPath(); c.ellipse(6, 18, 38, 8, 0, 0, TAU); c.fill();
+        c.fillStyle = "#e9d3a6"; c.strokeStyle = "#2a1b12"; c.lineWidth = 1.2; c.beginPath(); c.rect(-33, 8, 66, 9); c.fill(); c.stroke();
+        const gr = c.createLinearGradient(0, -26, 0, 10); gr.addColorStop(0, "#fff6ec"); gr.addColorStop(.55, "#ffc7b2"); gr.addColorStop(1, "#ef6f98");
+        c.fillStyle = gr; c.lineWidth = 1.6; c.beginPath(); c.moveTo(0, 10); c.lineTo(...pt(R0, 30)); for (let i = 0; i < 7; i++) { const s0 = R0 + (R1 - R0) * i / 7, e = R0 + (R1 - R0) * (i + 1) / 7; c.quadraticCurveTo(...pt((s0 + e) / 2, 36.8), ...pt(e, 30)); } c.closePath(); c.fill(); c.stroke();
+        c.strokeStyle = "rgba(196,61,107,.6)"; c.lineWidth = 1; c.beginPath(); for (let k = 1; k < 7; k++) { const a = R0 + (R1 - R0) * k / 7; c.moveTo(0, 8); c.lineTo(Math.cos(a) * 29, 10 + Math.sin(a) * 29); } c.stroke();
+        c.fillStyle = "#6b3f1d"; c.beginPath(); c.moveTo(-3.6, 10); c.lineTo(-3.6, 6.5); c.arc(0, 6.5, 3.6, Math.PI, 0); c.lineTo(3.6, 10); c.closePath(); c.fill();
+        const w = Math.sin(T * 3) * 1.5; c.strokeStyle = "#2a1b12"; c.lineWidth = .9; c.beginPath(); c.moveTo(0, -26); c.lineTo(0, -42); c.stroke();
+        c.fillStyle = "#e8467c"; c.beginPath(); c.moveTo(0, -42); c.quadraticCurveTo(5, -42 + w, 11, -40 + w * 1.4); c.quadraticCurveTo(5, -36 + w, 0, -36); c.closePath(); c.fill();
+        c.fillStyle = "#fff"; c.beginPath(); c.arc(0, -27, 3.6, 0, TAU); c.fill(); c.stroke(); }
+      function hut(p, s) { const x = p.x, y = p.y; c.save(); c.translate(x, y + 6); c.scale(s, s); c.translate(-x, -y - 6);
+        c.fillStyle = "rgba(30,60,20,.3)"; c.beginPath(); c.ellipse(x + 2.5, y + 6.5, 9.5, 3.2, 0, 0, TAU); c.fill();
+        if (p.round) { c.fillStyle = p.wall; c.beginPath(); c.ellipse(x, y + 2, 6.5, 5, 0, 0, TAU); c.fill(); c.fillStyle = "#6b3f1d"; c.fillRect(x - 1.5, y + 1.8, 3, 5); c.fillStyle = p.roof; c.beginPath(); c.moveTo(x - 9, y + .5); c.quadraticCurveTo(x, y - 14, x + 9, y + .5); c.closePath(); c.fill(); }
+        else { c.fillStyle = p.wall; c.fillRect(x - 6, y - 2, 12, 8); c.fillStyle = "#6b3f1d"; c.fillRect(x - 1.6, y + 1.5, 3.2, 4.5); if (p.win) { c.fillStyle = "#5a3a20"; c.fillRect(x + 2.6, y, 2.4, 2.4); } c.fillStyle = p.roof; c.beginPath(); c.moveTo(x - 8.5, y - 1); c.lineTo(x, y - 9.5); c.lineTo(x + 8.5, y - 1); c.closePath(); c.fill(); }
+        c.strokeStyle = "#2a1b12"; c.lineWidth = .7; c.beginPath(); if (p.round) { c.moveTo(x - 9, y + .5); c.quadraticCurveTo(x, y - 14, x + 9, y + .5); c.closePath(); } else { c.moveTo(x - 8.5, y - 1); c.lineTo(x, y - 9.5); c.lineTo(x + 8.5, y - 1); c.closePath(); } c.stroke(); c.restore(); }
+      function feature(v) { const x = v.x, y = v.y;
+        if (v.tier === 1) { const f = .85 + .25 * Math.sin(T * 14); c.fillStyle = "#8a8078"; for (let k = 0; k < 8; k++) { const a = k / 8 * TAU; c.beginPath(); c.arc(x + Math.cos(a) * 9, y + Math.sin(a) * 8, 2.4, 0, TAU); c.fill(); } c.fillStyle = "#ff7a2e"; c.beginPath(); c.ellipse(x, y - 4, 4.5, 8 * f, 0, 0, TAU); c.fill(); c.fillStyle = "#ffd23f"; c.beginPath(); c.ellipse(x, y - 2, 2.3, 4.4 * f, 0, 0, TAU); c.fill(); }
+        if (v.tier === 2) { c.fillStyle = "#fbefd0"; c.beginPath(); c.ellipse(x, y, 54, 46, 0, 0, TAU); c.fill(); c.fillStyle = "#3fd0dc"; c.beginPath(); c.ellipse(x, y, 46, 39, 0, 0, TAU); c.fill(); for (let k = 0; k < 2; k++) { const a = T * .4 + k * Math.PI; c.fillStyle = "#3f8f4a"; c.beginPath(); c.arc(x + Math.cos(a) * 24 + Math.cos(a + 1.57) * 8, y + Math.sin(a) * 20 + Math.sin(a + 1.57) * 8, 2.6, 0, TAU); c.fill(); c.fillStyle = "#7a5a2b"; c.beginPath(); c.ellipse(x + Math.cos(a) * 24, y + Math.sin(a) * 20, 7, 5.4, a, 0, TAU); c.fill(); } }
+        if (v.tier === 3) { c.fillStyle = "#8a6a55"; c.beginPath(); c.ellipse(x, y - 6, 70, 58, 0, 0, TAU); c.fill(); c.fillStyle = "#a3826b"; c.beginPath(); c.ellipse(x - 10, y - 16, 40, 30, 0, 0, TAU); c.fill(); c.fillStyle = "#6e5040"; c.beginPath(); c.ellipse(x, y - 26, 24, 16, 0, 0, TAU); c.fill(); c.fillStyle = "#ff7a3c"; c.beginPath(); c.ellipse(x, y - 28, 11, 6, 0, 0, TAU); c.fill();
+          for (let k = 0; k < 7; k++) { const ph = (T * .12 + k / 7) % 1; c.fillStyle = `rgba(125,115,110,${(1 - ph) * .5})`; c.beginPath(); c.arc(x + Math.sin(ph * 3 + k) * 5 + ph * 30, y - 30 - ph * 90, 6 + ph * 20, 0, TAU); c.fill(); } }
+        if (v.tier === 4) { const cols = ["#ff5a5a", "#ffa53a", "#ffe14a", "#5fd35f", "#4aa8ff", "#a46bff"]; c.lineWidth = 9; for (let k = 0; k < 6; k++) { c.strokeStyle = cols[k]; c.globalAlpha = .35; c.beginPath(); c.ellipse(x, y + v.R * .25, v.R * .95 - k * 9, v.R * .75 - k * 9, 0, Math.PI, TAU); c.stroke(); } c.globalAlpha = 1;
+          c.fillStyle = "#f2c75c"; c.beginPath(); c.ellipse(x, y, 46, 40, 0, 0, TAU); c.fill(); c.fillStyle = "#fff1c4"; c.beginPath(); c.ellipse(x, y, 38, 33, 0, 0, TAU); c.fill();
+          const g = c.createRadialGradient(x - 4, y - 6, 1, x, y - 2, 16); g.addColorStop(0, "#fff"); g.addColorStop(.6, "#efe6ff"); g.addColorStop(1, "#c3b0f0"); c.fillStyle = g; c.beginPath(); c.arc(x, y - 2, 15, 0, TAU); c.fill();
+          for (let k = 0; k < 10; k++) { const a = k / 10 * TAU + T * .3, r = v.R * .5, s = Math.pow(Math.max(0, Math.sin(T * 2 + k * 1.7)), 6); if (s < .1) continue; c.fillStyle = `rgba(255,215,90,${s})`; c.beginPath(); c.arc(x + Math.cos(a) * r, y + Math.sin(a) * r * .85, 3.5, 0, TAU); c.fill(); } } }
+      function boat(x, y, ang, col) { c.save(); c.translate(x, y); c.rotate(ang); c.strokeStyle = "rgba(255,255,255,.6)"; c.lineWidth = 1.4; c.beginPath(); c.moveTo(-8, 0); c.lineTo(-26, -6); c.moveTo(-8, 0); c.lineTo(-26, 6); c.stroke();
+        c.fillStyle = "rgba(0,40,60,.25)"; c.beginPath(); c.ellipse(1, 2.5, 9, 3.5, 0, 0, TAU); c.fill(); c.fillStyle = "#8a5a2b"; c.beginPath(); c.moveTo(-8, -3); c.lineTo(7, -3); c.lineTo(10, 0); c.lineTo(7, 3); c.lineTo(-8, 3); c.closePath(); c.fill(); c.restore();
+        c.fillStyle = col; c.strokeStyle = "#2a1b12"; c.lineWidth = .6; c.beginPath(); c.moveTo(x, y - 1); c.lineTo(x, y - 15); c.lineTo(x + 7, y - 2); c.closePath(); c.fill(); c.stroke(); }
+      function cloud(cl, a) { const span = 2 * (ext + 500), x = ((cl.x + T * cl.sp + ext + 500) % span + span) % span - ext - 500, y = cl.y, s = cl.s * 16, parts = [[0, 0, 1.2], [1.1, .2, .9], [-1.1, .25, .85], [.4, -.5, .9], [-.5, -.4, .7]];
+        c.fillStyle = `rgba(0,40,60,${.14 * a})`; for (const [dx, dy, r] of parts) { c.beginPath(); c.ellipse(x + dx * s + 60, y + dy * s + 70, r * s, r * s * .8, 0, 0, TAU); c.fill(); }
+        c.fillStyle = `rgba(255,255,255,${.88 * a})`; for (const [dx, dy, r] of parts) { c.beginPath(); c.ellipse(x + dx * s, y + dy * s, r * s, r * s * .8, 0, 0, TAU); c.fill(); } }
+      function label(t, x, y, px, col) { c.font = `900 ${px / cam.z}px ${FONT}`; c.textAlign = "center"; c.lineJoin = "round"; c.lineWidth = 7 / cam.z; c.strokeStyle = "#2a1b12"; c.fillStyle = col; c.strokeText(t, x, y); c.fillText(t, x, y); }
+
+      function draw(t) {
+        T = t; cam = camAt(t); c.setTransform(1, 0, 0, 1, 0, 0);
+        const [sx, sy] = [AX - cam.x * cam.z, AY - cam.y * cam.z];
+        const og = c.createRadialGradient(sx, sy, MAIN.R * cam.z * .7, sx, sy, (ext + 900) * cam.z);
+        og.addColorStop(0, "#1192bd"); og.addColorStop(.35, "#0b6aa6"); og.addColorStop(1, "#06386e"); c.fillStyle = og; c.fillRect(0, 0, W, H);
+        x0 = (0 - AX) / cam.z + cam.x; x1 = (W - AX) / cam.z + cam.x; y0 = (0 - AY) / cam.z + cam.y; y1 = (H - AY) / cam.z + cam.y;
+        world();
+        // Dünung auf dem offenen Meer
+        c.strokeStyle = "rgba(255,255,255,.06)"; c.lineWidth = 3 / Math.sqrt(cam.z); const step = 60;
+        for (let yy = Math.floor(y0 / step) * step; yy < y1; yy += step) { c.beginPath(); for (let xx = x0 - 40; xx <= x1 + 40; xx += 30) { const y = yy + 10 * Math.sin(xx * .012 + T * .8 + yy * .05); xx === x0 - 40 ? c.moveTo(xx, y) : c.lineTo(xx, y); } c.stroke(); }
+        for (const s of SPARK) { if (!vis(s.x, s.y)) continue; const a = Math.pow(Math.max(0, Math.sin(T * s.sp + s.ph)), 10); if (a < .05) continue; c.fillStyle = `rgba(255,255,255,${a * .9})`; const r = 2.6 / Math.sqrt(cam.z); c.fillRect(s.x - r, s.y - .35 / cam.z, r * 2, .7 / cam.z); c.fillRect(s.x - .35 / cam.z, s.y - r, .7 / cam.z, r * 2); }
+        for (const v of [...NB, XM, MAIN]) { if (!vis(v.x, v.y, v.R + 140)) continue; lagoon(v); foam(v, v === MAIN ? 3 : 2); land(v, v === XM); }
+        // Hauptinsel
+        if (vis(0, 0, MAIN.R + 60)) {
+          paths(); plaza();
+          for (const f of MAIN.flow) if (vis(f.x, f.y)) { c.fillStyle = f.c; c.beginPath(); c.arc(f.x, f.y, 1.4, 0, TAU); c.fill(); }
+          for (const b of MAIN.bush) if (vis(b.x, b.y)) { c.fillStyle = "#3f9b45"; c.beginPath(); c.arc(b.x, b.y, b.r, 0, TAU); c.fill(); c.fillStyle = "#57b85a"; c.beginPath(); c.arc(b.x - b.r * .3, b.y - b.r * .3, b.r * .55, 0, TAU); c.fill(); }
+          // Hütte Nr. 1: freier Platz, ab der Schlussszene pulsierend markiert
+          const fr = sm(line("L15")[0] - .4, line("L15")[0] + .2, t);
+          c.fillStyle = "rgba(255,244,220,.9)"; c.strokeStyle = "rgba(150,110,60,.7)"; c.lineWidth = .7; c.setLineDash([1.6, 1.2]); c.fillRect(one.x - 6, one.y - 4, 12, 10); c.strokeRect(one.x - 6, one.y - 4, 12, 10); c.setLineDash([]);
+          if (fr > 0) { const p = (t * 1.2) % 1; c.strokeStyle = `rgba(57,226,122,${fr * (1 - p)})`; c.lineWidth = 2; c.beginPath(); c.arc(one.x, one.y + 1, 8 + p * 18, 0, TAU); c.stroke(); }
+          PL.forEach((p, i) => { const b = born[i]; if (t < b || !vis(p.x, p.y)) return; const k = Math.min(1, (t - b) / .3), s = k < 1 ? 1 + Math.sin(k * Math.PI) * .35 - (1 - k) * 1 : 1; hut(p, Math.max(.01, s)); });
+          jungle(MAIN); for (const p of MAIN.palms) if (vis(p.x, p.y)) palm(p);
+          for (const b of BOATS) { const a = b.ph + t * b.sp, [x, y] = polar(MAIN, a, b.r + Math.sin(t * .3 + b.ph) * 10); if (vis(x, y)) boat(x, y, a + (b.sp > 0 ? Math.PI / 2 : -Math.PI / 2), b.col); } }
+        for (const v of NB) { if (!vis(v.x, v.y, v.R + 60)) continue; feature(v); jungle(v); for (const p of v.palms) if (vis(p.x, p.y)) palm(p); }
+        // geheime Insel: Nebelbank
+        if (vis(XM.x, XM.y, XM.R + 220)) { for (let k = 0; k < 18; k++) { const a = k / 18 * TAU + t * .05, r = XM.r * (.3 + .6 * hash(k, 90)), s = XM.r * (.5 + .3 * hash(k, 91)); c.fillStyle = k % 3 ? "rgba(246,249,252,.9)" : "rgba(226,236,243,.9)"; c.beginPath(); c.arc(XM.x + Math.cos(a) * r, XM.y + Math.sin(a) * r * .85, s, 0, TAU); c.fill(); }
+          const s = Math.pow(Math.max(0, Math.sin(t * 1.4)), 8); if (s > .05) { c.fillStyle = `rgba(255,210,80,${s})`; c.beginPath(); for (let k = 0; k < 10; k++) { const r = k % 2 ? 3 : 9, a = k / 10 * TAU - Math.PI / 2; c.lineTo(XM.x + 30 + Math.cos(a) * r, XM.y - 20 + Math.sin(a) * r); } c.closePath(); c.fill(); } }
+        // Wolken (blenden beim Heranzoomen aus)
+        const ca = Math.max(0, Math.min(1, 1.5 - cam.z * .7)); if (ca > .02) for (const cl of CLOUDS) if (vis(cl.x, cl.y, 300)) cloud(cl, ca);
+        if (cam.z < .9) { for (const v of NB) label("🔒 ???", v.x, v.y + v.R + 34 / cam.z, 40, "#fff");
+          label("???", XM.x, XM.y + XM.R + 40 / cam.z, 44, "#fff"); label("MUSCHEL-TAL", 0, MAIN.R + 34 / cam.z, 34, "#ffd23f"); }
+        // Sonnenlicht von rechts oben + sanfte Vignette
+        c.setTransform(1, 0, 0, 1, 0, 0);
+        const lg = c.createLinearGradient(W, 0, 0, H * .7); lg.addColorStop(0, "rgba(255,214,140,.32)"); lg.addColorStop(.5, "rgba(255,214,140,.06)"); lg.addColorStop(1, "rgba(255,214,140,0)"); c.fillStyle = lg; c.fillRect(0, 0, W, H);
+        const vg = c.createRadialGradient(W / 2, AY, 500, W / 2, AY, 1300); vg.addColorStop(0, "rgba(0,20,40,0)"); vg.addColorStop(1, "rgba(0,20,40,.35)"); c.fillStyle = vg; c.fillRect(0, 0, W, H);
+      }
+
+      const tl = gsap.timeline({ paused: true }), o = { t: 0 };
+      tl.to(o, { t: C.__dur, duration: C.__dur, ease: "none", onUpdate: () => draw(o.t) }, 0);
+      draw(0);
+      window.__timelines["world"] = tl;
+    })();
+  </script>
+</template>

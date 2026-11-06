@@ -1,43 +1,254 @@
 {
-  "title": "Muschel-Tal – Ich habe euch eine Insel gekauft",
-  "voice": "Google Chirp 3 HD (de-DE-Chirp3-HD-Puck), --speed 1.0",
-  "notes": "Startvideo Muschel-Tal. Prinzip: Folgen = einziehen, Hütte mit Namen, früher = näher am Rathaus, 500 Plätze, neue Inseln bei 1.000/2.500/5.000/10.000, geheime Insel, Mitbestimmen in Kommentaren, alles auf muscheltal.de (Bio). TikTok-Sicherheitsbereiche: Inhalt x 40–930, y 200–1500; Untertitel rechts 190 px Abstand.",
-  "lead_in": 0.5,
-  "bg": "linear-gradient(180deg,#ff8a5c 0%,#ffb757 16%,#ffe0a0 30%,#36c6c8 31%,#139bb6 50%,#0a6a8c 68%,#063f5c 100%)",
-  "captions": {"pop": true, "first_at_zero": true, "left": 60, "right": 190, "size": 84, "color": "#d8dcec"},
-  "scenes": [
-    {"id": "s01", "tag": "", "lines": [
-      {"id": "L1", "text": "Ich habe euch eine *y:Insel *y:gekauft."},
-      {"id": "L2", "text": "Und *g:jeder von euch / bekommt darauf / ein *p:eigenes *p:Haus.", "pause": 0.25}],
-      "sfx": [{"name": "notification", "at": "s01+0.0", "volume": 0.6}, {"name": "impact-bass-2", "at": "L1:gekauft", "volume": 0.35}, {"name": "pop", "at": "L2:Haus", "volume": 0.4}]},
-    {"id": "s02", "tag": "", "lines": [
-      {"id": "L3", "text": "Sie heißt / *p:Muschel-Tal. / Mitten in der *b:Südsee."}],
-      "sfx": [{"name": "ping", "at": "L3:Muschel", "volume": 0.45}]},
-    {"id": "s03", "tag": "", "lines": [
-      {"id": "L4", "text": "Das Prinzip / ist ganz *g:einfach: / Du *g:folgst mir / und *g:ziehst *g:ein."},
-      {"id": "L5", "text": "Deine Hütte / bekommt *y:deinen *y:Namen."}],
-      "sfx": [{"name": "click", "at": "L4:folgst", "volume": 0.55}, {"name": "pop", "at": "L4:ein", "volume": 0.45}, {"name": "pop", "at": "L5:Namen", "volume": 0.35}]},
-    {"id": "s04", "tag": "", "lines": [
-      {"id": "L6", "text": "Wer *y:früher folgt, / wohnt *y:näher / am *p:Rathaus. / Und das ist / eine *p:Muschel."}],
-      "sfx": [{"name": "pop", "at": "L6:Muschel", "volume": 0.4}]},
-    {"id": "s05", "tag": "", "lines": [
-      {"id": "L7", "text": "Auf Muschel-Tal / ist Platz für / *y:500|fünfhundert Einwohner."},
-      {"id": "L8", "text": "Ist die Insel *r:voll, / öffnen *g:neue *g:Inseln."},
-      {"id": "L9", "text": "Bei *y:1.000|tausend, / *y:2.500|zweitausendfünfhundert, / *y:5.000|fünftausend / und *y:10.000|zehntausend Followern."}],
-      "sfx": [{"name": "impact-bass-1", "at": "L8:voll", "volume": 0.4}, {"name": "pop", "at": "L9:1.000", "volume": 0.35}, {"name": "pop", "at": "L9:2.500", "volume": 0.35}, {"name": "pop", "at": "L9:5.000", "volume": 0.35}, {"name": "pop", "at": "L9:10.000", "volume": 0.4}]},
-    {"id": "s06", "tag": "", "lines": [
-      {"id": "L10", "text": "Und am *b:Rand der Karte / versteckt sich / eine *p:geheime *p:Insel …", "speed": 0.92}],
-      "sfx": [{"name": "ping", "at": "L10:geheime", "volume": 0.4}]},
-    {"id": "s07", "tag": "", "lines": [
-      {"id": "L11", "text": "Was gebaut wird, / entscheidet *y:ihr. / In den *b:Kommentaren."}],
-      "sfx": [{"name": "notification", "at": "L11:Kommentaren", "volume": 0.35}]},
-    {"id": "s08", "tag": "", "lines": [
-      {"id": "L12", "text": "Deine Hütte findest du / auf *p:muscheltal.de|Muscheltal_Punkt_D_E."},
-      {"id": "L13", "text": "Die Adresse / steht in meiner *y:Bio. / Dort gibt es *g:alles / rund um Muschel-Tal."}],
-      "sfx": [{"name": "click-soft", "at": "L12:muscheltal", "volume": 0.4}, {"name": "pop", "at": "L13:Bio", "volume": 0.4}]},
-    {"id": "s09", "tag": "", "hold": 2.6, "lines": [
-      {"id": "L14", "text": "*y:Hütte *y:Nummer *y:eins / ist noch *g:frei."},
-      {"id": "L15", "text": "Wirst *p:du / der *p:erste Einwohner? / Schreib *y:„Ich_ziehe_ein!“ / in die *b:Kommentare!"}],
-      "sfx": [{"name": "ping", "at": "L14:frei", "volume": 0.4}, {"name": "pop", "at": "L15:Schreib", "volume": 0.35}]}
-  ]
+ "title": "Muschel-Tal – Ich habe euch eine Insel gekauft",
+ "voice": "Gemini TTS (gemini-3.8-flash-tts, Stimme Puck), Regie-Notizen euphorisch, --speed 1.05",
+ "notes": "Startvideo Muschel-Tal. Prinzip: Folgen = einziehen, Hütte mit Namen, früher = näher am Rathaus, 500 Plätze, neue Inseln bei 1.000/2.500/5.000/10.000, geheime Insel, Mitbestimmen in Kommentaren, alles auf muscheltal.de (Bio). TikTok-Sicherheitsbereiche: Inhalt x 40–930, y 200–1500; Untertitel rechts 190 px Abstand.",
+ "lead_in": 0.5,
+ "bg": "#0a5a92",
+ "captions": {
+  "pop": true,
+  "first_at_zero": true,
+  "left": 60,
+  "right": 190,
+  "size": 74,
+  "bars": true,
+  "color": "rgba(255,255,255,.62)",
+  "first_class": "hook",
+  "css": "@font-face { font-family: 'Lilita One'; src: url('assets/fonts/LilitaOne-Regular.woff2') format('woff2'); font-weight: 400; }\n    .inner.hook { font-family: 'Lilita One', sans-serif; font-weight: 400; font-size: 112px; line-height: 1.06; letter-spacing: .01em; top: -170px; }\n    .inner.hook .bar { background: #ff3d7f !important; padding: .02em .22em .08em; }\n    .inner.hook .w { color: #fff; }"
+ },
+ "scenes": [
+  {
+   "id": "s01",
+   "tag": "",
+   "lines": [
+    {
+     "id": "L1",
+     "text": "Ich habe euch eine *y:Insel *y:gekauft!",
+     "style": "Style: shouting with pure joy, overjoyed, can't believe it himself.\nPace: fast.\nLanguage: German.",
+     "speed": 1.22
+    },
+    {
+     "id": "L2",
+     "text": "Und *g:jeder von euch / bekommt darauf / ein *p:eigenes *p:Haus!"
+    }
+   ],
+   "sfx": [
+    {
+     "name": "notification",
+     "at": "s01+0.0",
+     "volume": 0.6
+    },
+    {
+     "name": "impact-bass-2",
+     "at": "L1:gekauft",
+     "volume": 0.35
+    },
+    {
+     "name": "pop",
+     "at": "L2:Haus",
+     "volume": 0.4
+    }
+   ]
+  },
+  {
+   "id": "s02",
+   "tag": "",
+   "lines": [
+    {
+     "id": "L3",
+     "text": "Sie heißt / *p:Muschel-Tal! / Mitten in der *b:Südsee."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "ping",
+     "at": "L3:Muschel",
+     "volume": 0.45
+    }
+   ]
+  },
+  {
+   "id": "s03",
+   "tag": "",
+   "lines": [
+    {
+     "id": "L4",
+     "text": "Das Prinzip / ist *g:super *g:einfach: / Du *g:folgst mir / und *g:ziehst *g:ein."
+    },
+    {
+     "id": "L5",
+     "text": "Deine Hütte / bekommt *y:deinen *y:Namen."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "click",
+     "at": "L4:folgst",
+     "volume": 0.55
+    },
+    {
+     "name": "pop",
+     "at": "L4:ein",
+     "volume": 0.45
+    },
+    {
+     "name": "pop",
+     "at": "L5:Namen",
+     "volume": 0.35
+    }
+   ]
+  },
+  {
+   "id": "s04",
+   "tag": "",
+   "lines": [
+    {
+     "id": "L6",
+     "text": "Jeder Einwohner / bringt *y:5|fünf *y:Muscheln mit. / Das ist unsere *y:Währung!"
+    }
+   ],
+   "sfx": [
+    {
+     "name": "click-soft",
+     "at": "L6:5",
+     "volume": 0.4
+    },
+    {
+     "name": "ping",
+     "at": "L6:Währung",
+     "volume": 0.4
+    }
+   ]
+  },
+  {
+   "id": "s05",
+   "tag": "",
+   "lines": [
+    {
+     "id": "L7",
+     "text": "Wer *y:früher folgt, / wohnt auf der *p:Hauptinsel: / *p:Muschel-Tal!"
+    },
+    {
+     "id": "L8",
+     "text": "Dort ist Platz / für *y:500|fünfhundert Einwohner."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "pop",
+     "at": "L7:Muschel",
+     "volume": 0.4
+    }
+   ]
+  },
+  {
+   "id": "s06",
+   "tag": "",
+   "lines": [
+    {
+     "id": "L9",
+     "text": "Ist sie *r:voll, / öffnen *g:neue *g:Inseln."
+    },
+    {
+     "id": "L10",
+     "text": "*y:Wann? / Steht auf meiner *p:Seite, / Link in der *y:Bio!"
+    }
+   ],
+   "sfx": [
+    {
+     "name": "impact-bass-1",
+     "at": "L9:voll",
+     "volume": 0.4
+    },
+    {
+     "name": "pop",
+     "at": "L9:Inseln",
+     "volume": 0.4
+    }
+   ]
+  },
+  {
+   "id": "s07",
+   "tag": "",
+   "lines": [
+    {
+     "id": "L11",
+     "text": "Und am *b:Rand der Karte / versteckt sich / eine *p:geheime *p:Insel …",
+     "style": "Style: mysterious, curious, a bit softer, with a smile.\nPace: medium.\nLanguage: German."
+    }
+   ],
+   "sfx": [
+    {
+     "name": "ping",
+     "at": "L11:geheime",
+     "volume": 0.4
+    }
+   ]
+  },
+  {
+   "id": "s08",
+   "tag": "",
+   "lines": [
+    {
+     "id": "L12",
+     "text": "Was gebaut wird, / entscheidet *y:ihr. / In den *b:Kommentaren!"
+    }
+   ],
+   "sfx": [
+    {
+     "name": "notification",
+     "at": "L12:Kommentaren",
+     "volume": 0.35
+    }
+   ]
+  },
+  {
+   "id": "s09",
+   "tag": "",
+   "lines": [
+    {
+     "id": "L13",
+     "text": "Deine Hütte findest du / auf *p:muscheltal.de|Muscheltal_Punkt_D_E."
+    },
+    {
+     "id": "L14",
+     "text": "Dort gibt es *g:alles / rund um Muschel-Tal!"
+    }
+   ],
+   "sfx": [
+    {
+     "name": "click-soft",
+     "at": "L13:muscheltal",
+     "volume": 0.4
+    }
+   ]
+  },
+  {
+   "id": "s10",
+   "tag": "",
+   "hold": 3.0,
+   "lines": [
+    {
+     "id": "L15",
+     "text": "*y:Hütte *y:Nummer *y:eins / ist noch *g:frei! / *p:Folg mir jetzt, / dann gehört sie *p:dir!"
+    },
+    {
+     "id": "L16",
+     "text": "Und morgen / kaufen wir was / vom *y:ersten *y:Geld. / Aber *p:was? / Die *g:zwei *g:Top-Kommentare / entscheiden!"
+    }
+   ],
+   "sfx": [
+    {
+     "name": "ping",
+     "at": "L15:frei",
+     "volume": 0.4
+    },
+    {
+     "name": "pop",
+     "at": "L16:entscheiden",
+     "volume": 0.4
+    }
+   ]
+  }
+ ],
+ "style": "Style: very euphoric, overjoyed, excited and warm, big smile, like an enthusiastic TikTok creator.\nPace: fast and energetic.\nLanguage: German."
 }

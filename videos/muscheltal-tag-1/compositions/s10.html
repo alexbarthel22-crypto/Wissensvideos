@@ -1,0 +1,102 @@
+<template>
+  <style>
+        #root { position: absolute; inset: 0; }
+    .stage { position: absolute; inset: 0; overflow: hidden; }
+    .abs { position: absolute; }
+    svg { overflow: visible; }
+    /* Zähler-Box wie in der Referenz: Rahmen in Akzentfarbe, Label in Mono-Versalien, große Zahl */
+    .cbox { position: absolute; left: 290px; width: 500px; top: 268px; height: 126px; border: 3px solid #ff4fb0;
+      border-radius: 14px; background: rgba(13,16,38,.88); text-align: center; box-shadow: 0 0 28px rgba(255,79,176,.35); }
+    .cbox .lab { margin-top: 16px; font-family: "Space Mono", monospace; font-weight: 700; font-size: 28px;
+      letter-spacing: .16em; color: #dfe2f5; }
+    .cbox .num { margin-top: 2px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 56px; color: #fff;
+      letter-spacing: .01em; }
+    .cbox.y { border-color: #ffd43b; box-shadow: 0 0 28px rgba(255,212,59,.3); }
+    .cbox.r { border-color: #ff3b55; box-shadow: 0 0 28px rgba(255,59,85,.35); }
+    .cbox.b { border-color: #4da3ff; box-shadow: 0 0 28px rgba(77,163,255,.3); }
+    .cbox.g { border-color: #39e27a; box-shadow: 0 0 28px rgba(57,226,122,.3); }
+    .mono { font-family: "Space Mono", monospace; font-weight: 700; letter-spacing: .12em; }
+    .heavy { font-family: "Inter", sans-serif; font-weight: 900; }
+    /* Muschel-Tal: Sticker-Look wie auf muscheltal.de. Sicherheitsbereich TikTok: x 40–930, y 200–1120 (Untertitel ab 1150). */
+    .ink { stroke: #2a1b12; }
+    .stk { background: #fff; border: 6px solid #2a1b12; border-radius: 28px; box-shadow: 10px 10px 0 #2a1b12; }
+    .ttl { font-family: "Inter", sans-serif; font-weight: 900; color: #fff; text-align: center; line-height: 1;
+      -webkit-text-stroke: 10px #2a1b12; paint-order: stroke fill; letter-spacing: -.01em; }
+    .kick { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 24px; border-radius: 14px;
+      background: #2a1b12; color: #ffd23f; font-family: "Space Mono", monospace; font-weight: 700; font-size: 34px; letter-spacing: .14em; }
+    /* Text auf farbigem Balken (auffälliger, wie TikTok-Textboxen) */
+    .bt { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; max-width: 840px; text-align: center; padding: 10px 28px 14px; border-radius: 18px;
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 64px; line-height: 1.08; color: #fff; box-shadow: 0 9px 0 rgba(0,0,0,.28); }
+    .bt.pk { background: #e8467c; } .bt.tq { background: #0a9fa6; } .bt.vi { background: #7b4fe0; } .bt.bl { background: #2f7fe0; }
+    .bt.ye { background: #ffd23f; color: #2a1b12; } .bt.gr { background: #2fbf6a; } .bt.dk { background: #2a1b12; color: #ffd23f; }
+    .bt.sm { font-size: 40px; padding: 8px 22px 10px; border-radius: 14px; }
+    .stamp { position: absolute; padding: 6px 26px; border: 10px solid; border-radius: 18px; background: rgba(255,255,255,.94);
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 84px; }
+
+    #s10-nr { top: 230px; }
+    #s10-st { left: 560px; top: 560px; color: #2fbf6a; border-color: #2fbf6a; transform: rotate(9deg); font-size: 72px; }
+    #s10-fb { position: absolute; left: 0; right: 0; margin: 0 auto; width: 520px; top: 790px; height: 120px; border-radius: 24px; background: #fe2c55; border: 6px solid #2a1b12;
+      color: #fff; font-family: "Inter", sans-serif; font-weight: 900; font-size: 56px; display: grid; place-items: center; box-shadow: 0 10px 0 rgba(0,0,0,.3); }
+    #s10-hand { position: absolute; left: 640px; top: 860px; font-size: 100px; }
+    #s10-q { top: 230px; }
+    .s10-tc { position: absolute; top: 420px; width: 400px; height: 300px; border-radius: 26px; background: rgba(255,255,255,.96); box-shadow: 0 10px 0 rgba(0,0,0,.25);
+      text-align: center; font-family: "Inter", sans-serif; font-weight: 900; color: #2a1b12; font-size: 40px; padding-top: 30px; line-height: 1.15; }
+    .s10-tc span { display: block; font-size: 110px; color: #e8467c; margin-top: 10px; }
+    #s10-t1 { left: 70px; transform: rotate(-3deg); } #s10-t2 { left: 500px; transform: rotate(3deg); }
+    #s10-ko { top: 800px; }
+  </style>
+  <div id="root" data-composition-id="s10" data-start="0" data-duration="11.370" data-width="1080" data-height="1920">
+    <div id="s10-stage" class="clip stage" data-start="0" data-duration="11.370" data-track-index="0">
+      <div id="s10-nr" class="bt dk">🏠 HÜTTE NR. 1</div>
+      <div id="s10-st" class="stamp">FREI!</div>
+      <div id="s10-fb">+ Folgen</div>
+      <div id="s10-hand" data-layout-ignore>👆</div>
+      <div id="s10-q" class="bt ye">WAS KAUFEN WIR MORGEN? 💰</div>
+      <div id="s10-t1" class="s10-tc">🥇 TOP-KOMMENTAR<span>?</span></div>
+      <div id="s10-t2" class="s10-tc">🥈 TOP-KOMMENTAR<span>?</span></div>
+      <div id="s10-ko" class="bt pk">SCHREIB'S IN DIE KOMMENTARE! 👇</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      
+      const C = {"__dur": 11.37, "L15": [0.2, 3.3], "L15.words": [["hütte", 0.2, 0.576], ["nummer", 0.576, 0.958], ["eins", 0.958, 1.156], ["ist", 1.156, 1.347], ["noch", 1.347, 1.545], ["frei", 1.545, 1.743], ["folg", 1.743, 1.941], ["mir", 1.941, 2.132], ["jetzt", 2.132, 2.337], ["dann", 2.337, 2.535], ["gehört", 2.535, 2.918], ["sie", 2.918, 3.109], ["dir", 3.109, 3.3]], "L16": [3.52, 8.37], "L16.words": [["und", 3.52, 3.728], ["morgen", 3.728, 4.145], ["kaufen", 4.145, 4.562], ["wir", 4.562, 4.77], ["was", 4.77, 4.979], ["vom", 4.979, 5.187], ["ersten", 5.187, 5.604], ["geld", 5.604, 5.82], ["aber", 6.04, 6.396], ["was", 6.396, 6.58], ["die", 6.76, 6.92], ["zwei", 6.92, 7.087], ["topkommentare", 7.087, 7.877], ["entscheiden", 7.877, 8.37]]};
+      const line = (id) => C[id];
+      const at = (id, word, which = 0) => {
+        const ws = C[id + ".words"];
+        if (typeof word === "number") return ws[word][1 + which];
+        const key = String(word).toLowerCase().replace(/[^\p{L}\p{N}_]/gu, "");
+        const hit = ws.find((w) => w[0].startsWith(key));
+        if (!hit) throw new Error("cue not found: " + id + " " + word);
+        return hit[1 + which];
+      };
+      // Zähler: schreibt Zahlen im deutschen Format (4.100.000.000) als Funktion der Timeline-Zeit
+      const fmt = (n) => Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      const count = (tl, sel, from, to, t, d, pre = "", post = "", ease = "power2.out") => {
+        const el = document.querySelector(sel);
+        const o = { v: from };
+        el.textContent = pre + fmt(from) + post;
+        tl.to(o, { v: to, duration: d, ease, onUpdate: () => { el.textContent = pre + fmt(o.v) + post; } }, t);
+      };
+      // deterministischer Zufall
+      const rng = (seed) => () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let x = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+        x = (x + Math.imul(x ^ (x >>> 7), 61 | x)) ^ x; return ((x ^ (x >>> 14)) >>> 0) / 4294967296; };
+
+      const tl = gsap.timeline({ paused: true });
+      const fr = at("L15", "frei"), fo = at("L15", "Folg"), di = at("L15", "dir"), mo = at("L16", "morgen"), wa = at("L16", "was?"), zw = at("L16", "zwei"), en = at("L16", "entscheiden");
+      tl.fromTo("#s10-nr", { opacity: 0, scale: 0, rotation: -20 }, { opacity: 1, scale: 1, rotation: 0, duration: .4, ease: "back.out(2.5)" }, 0.1);
+      tl.fromTo("#s10-st", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .25, ease: "expo.in" }, fr - .1);
+      tl.fromTo("#s10-fb", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: .35, ease: "back.out(2)" }, fo - .2);
+      tl.fromTo("#s10-hand", { opacity: 0, x: 100, y: 100 }, { opacity: 1, x: 0, y: 0, duration: .3, ease: "power3.out" }, fo + .1);
+      tl.to("#s10-hand", { y: -26, scale: .9, duration: .1, yoyo: true, repeat: 1 }, di - .1);
+      tl.to("#s10-fb", { scale: .94, backgroundColor: "#e9e6df", color: "#2a1b12", duration: .1, yoyo: false }, di);
+      tl.to(["#s10-nr", "#s10-st", "#s10-fb", "#s10-hand"], { opacity: 0, y: -30, duration: .25 }, mo - .2);
+      tl.fromTo("#s10-q", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.5)" }, wa - .5);
+      tl.fromTo("#s10-t1", { opacity: 0, y: 80 }, { opacity: 1, y: 0, duration: .4, ease: "back.out(1.8)" }, zw - .1);
+      tl.fromTo("#s10-t2", { opacity: 0, y: 80 }, { opacity: 1, y: 0, duration: .4, ease: "back.out(1.8)" }, zw + .08);
+      tl.fromTo("#s10-ko", { opacity: 0, scale: .6 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.2)" }, en);
+      tl.to(".s10-tc span", { rotation: 12, duration: .15, yoyo: true, repeat: 7, ease: "sine.inOut" }, en + .2);
+      window.__timelines["s10"] = tl;
+    })();
+  </script>
+</template>

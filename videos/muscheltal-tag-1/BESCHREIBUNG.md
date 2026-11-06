@@ -1,16 +1,16 @@
 # Muschel-Tal – Tag 1
 
 ## Hauptversion
-Ich habe euch eine Insel gekauft 🏝️ Jeder Follower bekommt eine Hütte mit seinem Namen. Hütte Nr. 1 ist noch frei – wer zieht als Erstes ein? Deine Hütte findest du auf muscheltal.de (Link in Bio) 🐚
+Ich habe euch eine Insel gekauft 🏝️ Jeder Follower bekommt eine Hütte mit seinem Namen. Hütte Nr. 1 ist noch frei! Und morgen kaufen wir vom ersten Geld etwas – was? Die 2 Top-Kommentare entscheiden 👇 Alles auf muscheltal.de (Bio) 🐚
 #muscheltal #insel #mitmachen #community #fyp
 
 ## Alternative 1
-Folgen = einziehen 🐚 Auf Muschel-Tal ist Platz für 500 Einwohner – danach öffnen neue Inseln. Und eine ist geheim … Wirst du Einwohner Nr. 1? 🏝️
+Folgen = einziehen 🐚 Auf der Hauptinsel ist Platz für 500 Einwohner – danach öffnen neue Inseln (Infos in der Bio). Und eine ist geheim … 🏝️
 #muscheltal #inselleben #followerinsel #fürdich
 
 ## Alternative 2
-Tag 1 auf Muschel-Tal: Die Insel ist leer. Du entscheidest, wer hier wohnt und was gebaut wird 👀 Schreib „Ich ziehe ein!“ in die Kommentare 🏠
+Tag 1 auf Muschel-Tal: Jeder Einwohner bringt 5 Muscheln mit 🐚 Was kaufen wir morgen vom ersten Geld? Die 2 Top-Kommentare entscheiden 👀
 #muscheltal #insel #community #mitmachaktion #fyp
 
 ## Angepinnter Kommentar
-🏝️ Wer jetzt folgt, bekommt eine der ersten Hütten – je früher, desto näher am Muschel-Rathaus! Deine Hütte: muscheltal.de 🐚 Was sollen wir als Erstes bauen?
+🏝️ Wer jetzt folgt, bekommt eine der ersten Hütten – je früher, desto näher am Muschel-Rathaus! Deine Hütte: muscheltal.de 🐚 Was sollen wir morgen vom ersten Geld kaufen? Die 2 Kommentare mit den meisten Likes gewinnen!

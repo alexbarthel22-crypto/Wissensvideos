@@ -1,33 +1,24 @@
 <template>
   <style>
     /*__COMMON_CSS__*/
-    #s07-t { position: absolute; left: 0; width: 1080px; top: 250px; font-size: 104px; color: #ffd23f; }
-    .s07-b { position: absolute; display: flex; align-items: center; gap: 18px; padding: 18px 26px; border-radius: 30px;
-      font-family: "Inter", sans-serif; font-weight: 800; font-size: 44px; color: #2a1b12; }
-    .s07-b i { font-style: normal; width: 74px; height: 74px; border-radius: 50%; display: grid; place-items: center; font-size: 40px; flex: none; border: 4px solid #2a1b12; }
-    .s07-b b { display: block; font-size: 28px; color: #7a5a45; }
-    .s07-h { position: absolute; font-size: 64px; }
+    #s07-k { top: 230px; }
+    #s07-q { position: absolute; left: 0; width: 1080px; top: 540px; font-family: "Lilita One", sans-serif; font-size: 200px; color: #fff; text-align: center; -webkit-text-stroke: 12px #2a1b12; paint-order: stroke fill; }
+    @font-face { font-family: "Lilita One"; src: url("assets/fonts/LilitaOne-Regular.woff2") format("woff2"); font-weight: 400; }
   </style>
   <div id="root" data-composition-id="s07" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
     <div id="s07-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
-      <div id="s07-t" class="ttl">IHR ENTSCHEIDET!</div>
-      <div id="s07-b1" class="s07-b stk" style="left:70px;top:450px"><i style="background:#ffd9b8">🦀</i><div><b>@lena.insel</b>Ein Freibad! 🏊</div></div>
-      <div id="s07-b2" class="s07-b stk" style="left:110px;top:640px"><i style="background:#d6f5f3">🐒</i><div><b>@tom_palme</b>Ich will Häuptling werden 👑</div></div>
-      <div id="s07-b3" class="s07-b stk" style="left:90px;top:830px"><i style="background:#fff6c7">⚓</i><div><b>@mia.meer</b>Eine Pizzeria! 🍕</div></div>
-      <div id="s07-h1" class="s07-h" style="left:800px;top:520px">❤️</div>
-      <div id="s07-h2" class="s07-h" style="left:830px;top:880px">❤️</div>
+      <div id="s07-k" class="bt vi">🎁 GEHEIM</div>
+      <div id="s07-q">???</div>
     </div>
   </div>
   <script>
     (() => {
       /*__CUE_HELPERS__*/
       const tl = gsap.timeline({ paused: true });
-      const ihr = at("L11", "ihr"), ko = at("L11", "Kommentaren");
-      tl.fromTo("#s07-b1", { opacity: 0, x: -200, scale: .6 }, { opacity: 1, x: 0, scale: 1, duration: .35, ease: "back.out(2)" }, 0.05);
-      tl.fromTo("#s07-t", { opacity: 0, scale: 1.8 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.4)" }, ihr - .1);
-      tl.fromTo("#s07-b2", { opacity: 0, x: 200, scale: .6 }, { opacity: 1, x: 0, scale: 1, duration: .35, ease: "back.out(2)" }, ihr + .3);
-      tl.fromTo("#s07-b3", { opacity: 0, x: -200, scale: .6 }, { opacity: 1, x: 0, scale: 1, duration: .35, ease: "back.out(2)" }, ko - .1);
-      tl.fromTo(".s07-h", { opacity: 0, y: 40, scale: .3 }, { opacity: 1, y: -20, scale: 1.2, duration: .5, ease: "back.out(2)", stagger: .3 }, ihr + .5);
+      const ra = at("L11", "Rand"), ge = at("L11", "geheime");
+      tl.fromTo("#s07-k", { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.5)" }, ra);
+      tl.fromTo("#s07-q", { opacity: 0, scale: 2 }, { opacity: 1, scale: 1, duration: .4, ease: "back.out(2)" }, ge - .1);
+      tl.to("#s07-q", { rotation: 6, duration: .12, yoyo: true, repeat: 5, ease: "sine.inOut" }, ge + .4);
       tl.to("#s07-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
       window.__timelines["s07"] = tl;
     })();

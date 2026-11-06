@@ -1,0 +1,48 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    #s10-nr { top: 230px; }
+    #s10-st { left: 560px; top: 560px; color: #2fbf6a; border-color: #2fbf6a; transform: rotate(9deg); font-size: 72px; }
+    #s10-fb { position: absolute; left: 0; right: 0; margin: 0 auto; width: 520px; top: 790px; height: 120px; border-radius: 24px; background: #fe2c55; border: 6px solid #2a1b12;
+      color: #fff; font-family: "Inter", sans-serif; font-weight: 900; font-size: 56px; display: grid; place-items: center; box-shadow: 0 10px 0 rgba(0,0,0,.3); }
+    #s10-hand { position: absolute; left: 640px; top: 860px; font-size: 100px; }
+    #s10-q { top: 230px; }
+    .s10-tc { position: absolute; top: 420px; width: 400px; height: 300px; border-radius: 26px; background: rgba(255,255,255,.96); box-shadow: 0 10px 0 rgba(0,0,0,.25);
+      text-align: center; font-family: "Inter", sans-serif; font-weight: 900; color: #2a1b12; font-size: 40px; padding-top: 30px; line-height: 1.15; }
+    .s10-tc span { display: block; font-size: 110px; color: #e8467c; margin-top: 10px; }
+    #s10-t1 { left: 70px; transform: rotate(-3deg); } #s10-t2 { left: 500px; transform: rotate(3deg); }
+    #s10-ko { top: 800px; }
+  </style>
+  <div id="root" data-composition-id="s10" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s10-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s10-nr" class="bt dk">🏠 HÜTTE NR. 1</div>
+      <div id="s10-st" class="stamp">FREI!</div>
+      <div id="s10-fb">+ Folgen</div>
+      <div id="s10-hand" data-layout-ignore>👆</div>
+      <div id="s10-q" class="bt ye">WAS KAUFEN WIR MORGEN? 💰</div>
+      <div id="s10-t1" class="s10-tc">🥇 TOP-KOMMENTAR<span>?</span></div>
+      <div id="s10-t2" class="s10-tc">🥈 TOP-KOMMENTAR<span>?</span></div>
+      <div id="s10-ko" class="bt pk">SCHREIB'S IN DIE KOMMENTARE! 👇</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      const tl = gsap.timeline({ paused: true });
+      const fr = at("L15", "frei"), fo = at("L15", "Folg"), di = at("L15", "dir"), mo = at("L16", "morgen"), wa = at("L16", "was?"), zw = at("L16", "zwei"), en = at("L16", "entscheiden");
+      tl.fromTo("#s10-nr", { opacity: 0, scale: 0, rotation: -20 }, { opacity: 1, scale: 1, rotation: 0, duration: .4, ease: "back.out(2.5)" }, 0.1);
+      tl.fromTo("#s10-st", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .25, ease: "expo.in" }, fr - .1);
+      tl.fromTo("#s10-fb", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: .35, ease: "back.out(2)" }, fo - .2);
+      tl.fromTo("#s10-hand", { opacity: 0, x: 100, y: 100 }, { opacity: 1, x: 0, y: 0, duration: .3, ease: "power3.out" }, fo + .1);
+      tl.to("#s10-hand", { y: -26, scale: .9, duration: .1, yoyo: true, repeat: 1 }, di - .1);
+      tl.to("#s10-fb", { scale: .94, backgroundColor: "#e9e6df", color: "#2a1b12", duration: .1, yoyo: false }, di);
+      tl.to(["#s10-nr", "#s10-st", "#s10-fb", "#s10-hand"], { opacity: 0, y: -30, duration: .25 }, mo - .2);
+      tl.fromTo("#s10-q", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.5)" }, wa - .5);
+      tl.fromTo("#s10-t1", { opacity: 0, y: 80 }, { opacity: 1, y: 0, duration: .4, ease: "back.out(1.8)" }, zw - .1);
+      tl.fromTo("#s10-t2", { opacity: 0, y: 80 }, { opacity: 1, y: 0, duration: .4, ease: "back.out(1.8)" }, zw + .08);
+      tl.fromTo("#s10-ko", { opacity: 0, scale: .6 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.2)" }, en);
+      tl.to(".s10-tc span", { rotation: 12, duration: .15, yoyo: true, repeat: 7, ease: "sine.inOut" }, en + .2);
+      window.__timelines["s10"] = tl;
+    })();
+  </script>
+</template>

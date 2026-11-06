@@ -1,51 +1,63 @@
 <template>
   <style>
     /*__COMMON_CSS__*/
-    #s09-hut { position: absolute; left: 300px; top: 250px; width: 480px; height: 460px; }
-    #s09-nr { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 230px; padding: 8px 26px; transform: rotate(-4deg);
-      background: #b07a45; border: 6px solid #2a1b12; border-radius: 12px; color: #fff; font-family: "Inter", sans-serif; font-weight: 900; font-size: 54px; box-shadow: 8px 8px 0 #2a1b12; }
-    #s09-frei { position: absolute; left: 600px; top: 540px; padding: 6px 22px; border: 10px solid #2e9e5b; border-radius: 18px; color: #2e9e5b; background: rgba(255,255,255,.95);
-      font-family: "Inter", sans-serif; font-weight: 900; font-size: 74px; transform: rotate(10deg); }
-    .s09-b { position: absolute; top: 760px; height: 150px; border-radius: 28px; border: 6px solid #2a1b12; display: grid; place-items: center; text-align: center;
-      font-family: "Inter", sans-serif; font-weight: 900; font-size: 50px; line-height: 1.05; box-shadow: 10px 10px 0 #2a1b12; }
-    #s09-ja { left: 60px; width: 470px; background: #39e27a; color: #0b2a17; }
-    #s09-nein { left: 560px; width: 340px; background: #fff; color: #2a1b12; font-size: 42px; }
-    #s09-kom { position: absolute; left: 60px; width: 840px; top: 960px; text-align: center; font-size: 56px; color: #ffd23f; }
+    #s09-ph { position: absolute; left: 270px; top: 236px; width: 540px; height: 880px; border-radius: 64px; background: #2a1b12; padding: 22px; box-shadow: 0 14px 0 rgba(0,0,0,.3); }
+    .s09-scr { position: absolute; left: 22px; top: 22px; right: 22px; bottom: 22px; border-radius: 46px; overflow: hidden; background: #0fb3b0; }
+    #s09-url { position: absolute; left: 24px; right: 24px; top: 26px; height: 64px; border-radius: 32px; background: #fff; border: 4px solid #2a1b12; font-family: "Inter", sans-serif; font-weight: 900; font-size: 34px; color: #2a1b12; display: grid; place-items: center; }
+    #s09-search { position: absolute; left: 24px; right: 24px; top: 110px; height: 70px; border-radius: 18px; background: #fff; border: 4px solid #2a1b12; font-family: "Inter", sans-serif; font-weight: 800; font-size: 30px; color: #2a1b12; padding-left: 22px; display: flex; align-items: center; }
+    #s09-map { position: absolute; left: 0; top: 190px; width: 496px; height: 646px; }
+    #s09-pop { position: absolute; left: 34px; right: 34px; bottom: 30px; border-radius: 20px; background: #fff; border: 4px solid #2a1b12; font-family: "Inter", sans-serif; font-weight: 900; font-size: 30px; color: #2a1b12; padding: 10px 20px; line-height: 1.2; }
+    #s09-pop small { display: block; font-size: 28px; color: #7a5a45; }
+    #s09-prof { background: #fff; }
+    #s09-pav { position: absolute; left: 168px; top: 60px; width: 160px; height: 160px; }
+    #s09-pn { position: absolute; left: 0; right: 0; top: 240px; text-align: center; font-family: "Inter", sans-serif; font-weight: 900; font-size: 38px; color: #111; }
+    #s09-pbtn { position: absolute; left: 118px; right: 118px; top: 310px; height: 70px; border-radius: 10px; background: #fe2c55; color: #fff; font-family: "Inter", sans-serif; font-weight: 900; font-size: 32px; display: grid; place-items: center; }
+    #s09-bio { position: absolute; left: 30px; right: 30px; top: 410px; text-align: center; font-family: "Inter", sans-serif; font-weight: 600; font-size: 28px; color: #222; line-height: 1.35; }
+    #s09-link { position: absolute; left: 60px; right: 60px; top: 540px; height: 70px; border-radius: 14px; border: 5px solid #e8467c; text-align: center; font-family: "Inter", sans-serif; font-weight: 900; font-size: 34px; color: #e8467c; line-height: 60px; }
+    #s09-hand { position: absolute; left: 480px; top: 905px; font-size: 100px; }
+    #s09-tag { transform: rotate(-4deg); }
   </style>
   <div id="root" data-composition-id="s09" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
     <div id="s09-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
-      <svg id="s09-hut" viewBox="-240 -330 480 460">
-        <ellipse cx="0" cy="110" rx="230" ry="24" fill="#063f5c" opacity=".35"/>
-        <path d="M-235 118 Q0 0 235 118Z" fill="#ffe8bf" stroke="#2a1b12" stroke-width="7"/>
-        <rect x="-120" y="-110" width="240" height="180" rx="6" fill="#e9c48f" stroke="#2a1b12" stroke-width="9"/>
-        <rect x="-36" y="-40" width="72" height="110" fill="#6b3f1d" stroke="#2a1b12" stroke-width="7"/>
-        <rect x="58" y="-80" width="44" height="44" fill="#8fe8e8" stroke="#2a1b12" stroke-width="7"/>
-        <rect x="-102" y="-80" width="44" height="44" fill="#8fe8e8" stroke="#2a1b12" stroke-width="7"/>
-        <path d="M-170 -94 L0 -290 L170 -94Z" fill="#ffd23f" stroke="#2a1b12" stroke-width="9" stroke-linejoin="round"/>
-        <path d="M-110 -140 L0 -260 M-60 -120 L0 -250 M60 -120 L0 -250 M110 -140 L0 -260" stroke="#c9a12b" stroke-width="5" stroke-linecap="round"/>
-      </svg>
-      <div id="s09-nr">HÜTTE NR. 1</div>
-      <div id="s09-frei">FREI!</div>
-      <div id="s09-ja" class="s09-b">🏠 ICH ZIEHE<br>EIN!</div>
-      <div id="s09-nein" class="s09-b">👀 ERST MAL<br>GUCKEN</div>
-      <div id="s09-kom" class="ttl">SCHREIB'S IN DIE KOMMENTARE!</div>
+      <div id="s09-ph">
+        <div id="s09-web" class="s09-scr">
+          <svg id="s09-map" viewBox="0 0 496 646"><rect width="496" height="646" fill="#0b6aa6"/><ellipse cx="248" cy="330" rx="240" ry="250" fill="#2ec4cf"/><ellipse cx="248" cy="330" rx="214" ry="224" fill="#b9f2e8"/><ellipse cx="248" cy="330" rx="200" ry="210" fill="#fbefd0" stroke="#fff" stroke-width="4"/><ellipse cx="248" cy="330" rx="188" ry="198" fill="#86c95c"/>
+            <g id="s09-hs"></g><circle id="s09-ring" cx="320" cy="250" r="30" fill="none" stroke="#e8467c" stroke-width="7"/></svg>
+          <div id="s09-url">🔒 muscheltal.de</div>
+          <div id="s09-search">🔍&nbsp;<span id="s09-typed"></span></div>
+          <div id="s09-pop">@deinname<small>🐚 Hütte Nr. 37</small></div>
+        </div>
+        <div id="s09-prof" class="s09-scr">
+          <div id="s09-pav"><svg viewBox="0 0 64 64"><defs><linearGradient id="s09sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff7a59"/><stop offset=".38" stop-color="#ffb347"/><stop offset=".64" stop-color="#ffe9a8"/><stop offset=".64" stop-color="#18b8c4"/><stop offset="1" stop-color="#06506e"/></linearGradient><radialGradient id="s09sh" cx=".5" cy=".95" r=".9"><stop offset="0" stop-color="#fffaf2"/><stop offset=".55" stop-color="#ffcdb5"/><stop offset="1" stop-color="#ec5f8d"/></radialGradient><clipPath id="s09c"><circle cx="32" cy="32" r="30"/></clipPath></defs><g clip-path="url(#s09c)"><rect width="64" height="64" fill="url(#s09sky)"/><path d="M-2 45 Q6 42.5 14 45 T30 45 T46 45 T62 45 T78 45" stroke="#fff" stroke-width="1.2" fill="none" opacity=".75"/><path d="M-6 51 Q2 48.5 10 51 T26 51 T42 51 T58 51 T74 51" stroke="#8fe8e8" stroke-width="1.2" fill="none" opacity=".7"/></g><path d="M32 47 L8.8 40.8 Q5.0 34.0 12.7 32.7 Q11.6 25.0 19.2 26.7 Q21.0 19.1 27.5 23.4 Q32.0 17.0 36.5 23.4 Q43.0 19.1 44.8 26.7 Q52.4 25.0 51.3 32.7 Q59.0 34.0 55.2 40.8 Z" fill="url(#s09sh)" stroke="#2a1b12" stroke-width="1.6" stroke-linejoin="round"/><path d="M32 45L13.9 33.6M32 45L20.0 27.9M32 45L27.8 24.9M32 45L36.2 24.9M32 45L44.0 27.9M32 45L50.1 33.6" stroke="#c43d6b" stroke-width="1" stroke-linecap="round" opacity=".75"/><path d="M25 47 L28 42.5 H36 L39 47 Z" fill="#ffcdb5" stroke="#2a1b12" stroke-width="1.4" stroke-linejoin="round"/><circle cx="32" cy="38.3" r="3.2" fill="#fff" stroke="#2a1b12" stroke-width="1"/><path d="M49 11 l1.4 3.6 3.6 1.4 -3.6 1.4 -1.4 3.6 -1.4 -3.6 -3.6 -1.4 3.6 -1.4z" fill="#fff"/><circle cx="32" cy="32" r="30.5" fill="none" stroke="#2a1b12" stroke-width="2.2"/></svg></div>
+          <div id="s09-pn">@muscheltal</div>
+          <div id="s09-pbtn">Folgen</div>
+          <div id="s09-bio">🏝️ Folgen = einziehen!<br>Deine eigene Hütte wartet 🐚</div>
+          <div id="s09-link">🔗 muscheltal.de</div>
+        </div>
+      </div>
+      <div id="s09-hand" data-layout-ignore>👆</div>
     </div>
   </div>
   <script>
     (() => {
       /*__CUE_HELPERS__*/
       const tl = gsap.timeline({ paused: true });
-      const fr = at("L14", "frei"), du = at("L15", "du"), sc = at("L15", "Schreib"), ko = at("L15", "Kommentare");
-      tl.fromTo("#s09-hut", { opacity: 0, y: -200, scale: .7 }, { opacity: 1, y: 0, scale: 1, duration: .5, ease: "bounce.out" }, 0.02);
-      tl.fromTo("#s09-nr", { opacity: 0, scale: 0, rotation: -30 }, { opacity: 1, scale: 1, rotation: -4, duration: .4, ease: "back.out(2.5)" }, 0.35);
-      tl.fromTo("#s09-frei", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .25, ease: "expo.in" }, fr - .1);
-      tl.fromTo("#s09-frei", { scale: 1 }, { scale: 1.12, duration: .22, yoyo: true, repeat: 5, ease: "sine.inOut" }, fr + .4);
-      tl.to("#s09-hut", { scale: .78, y: -40, duration: .45, ease: "power3.inOut", transformOrigin: "50% 0%" }, du - .2);
-      tl.to("#s09-frei", { y: -120, scale: .8, duration: .45, ease: "power3.inOut" }, du - .2);
-      tl.fromTo("#s09-ja", { opacity: 0, y: 80 }, { opacity: 1, y: 0, duration: .4, ease: "back.out(1.8)" }, du + .3);
-      tl.fromTo("#s09-nein", { opacity: 0, y: 80 }, { opacity: 1, y: 0, duration: .4, ease: "back.out(1.8)" }, du + .45);
-      tl.fromTo("#s09-kom", { opacity: 0, scale: .6 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.2)" }, sc - .05);
-      tl.fromTo("#s09-ja", { scale: 1 }, { scale: 1.07, duration: .25, yoyo: true, repeat: 5, ease: "sine.inOut" }, ko + .3);
+      const R = rng(3), g = document.getElementById("s09-hs"), roofs = ["#e8467c","#f4a51c","#ff7a59","#2fb3a0","#9b6bff","#3fa0e8"];
+      for (let gx = -8; gx <= 8; gx++) for (let gy = -8; gy <= 8; gy++) { if (gx % 3 === 0 || gy % 3 === 0) continue; const x = 248 + gx * 24, y = 330 + gy * 25; if (Math.hypot((x - 248) / 175, (y - 330) / 185) > .95 || Math.hypot(x - 248, y - 330) < 40) continue;
+        const r = document.createElementNS("http://www.w3.org/2000/svg", "rect"); r.setAttribute("x", x - 8); r.setAttribute("y", y - 8); r.setAttribute("width", 16); r.setAttribute("height", 16); r.setAttribute("rx", 3); r.setAttribute("fill", roofs[Math.floor(R() * 6)]); g.appendChild(r); }
+      const fi = at("L13", "findest"), mu = at("L13", "muscheltal"), al = at("L14", "alles");
+      tl.fromTo("#s09-ph", { opacity: 0, y: 200, rotation: 6 }, { opacity: 1, y: 0, rotation: 0, duration: .5, ease: "back.out(1.5)" }, 0.02);
+      tl.set("#s09-prof", { opacity: 0 }, 0);
+      const word = "@deinname", el = document.getElementById("s09-typed"), o = { n: 0 };
+      tl.to(o, { n: word.length, duration: .7, ease: "none", onUpdate: () => { el.textContent = word.slice(0, Math.round(o.n)); } }, fi - .3);
+      tl.fromTo("#s09-pop", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, fi + .5);
+      tl.fromTo("#s09-ring", { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(3)", svgOrigin: "320 250" }, fi + .4);
+      tl.fromTo("#s09-url", { scale: 1 }, { scale: 1.12, backgroundColor: "#ffd23f", duration: .2, yoyo: true, repeat: 3, ease: "sine.inOut" }, mu - .05);
+      tl.to("#s09-prof", { opacity: 1, duration: .25 }, al - .5);
+      tl.fromTo("#s09-hand", { opacity: 0, y: 100 }, { opacity: 1, y: 0, duration: .35, ease: "power3.out" }, al - .3);
+      tl.to("#s09-hand", { y: -24, duration: .25, yoyo: true, repeat: 3, ease: "sine.inOut" }, al + .1);
+      tl.fromTo("#s09-link", { scale: 1 }, { scale: 1.1, duration: .2, yoyo: true, repeat: 3, ease: "sine.inOut" }, al);
+      tl.to("#s09-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
       window.__timelines["s09"] = tl;
     })();
   </script>

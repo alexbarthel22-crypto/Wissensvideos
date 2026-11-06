@@ -143,20 +143,23 @@ def build_captions(project, timings, windows, total, big=False, opt=None):
         groups[0]["start"] = 0.0
     groups[-1]["end"] = round(total - 0.05, 3)  # letzte Zeile (Frage an die Zuschauer) bleibt stehen
     rows, js = [], []
+    bars = opt.get("bars")
+    bar_cols = opt.get("bar_colors", ["#e8467c", "#0a9fa6", "#7b4fe0", "#2f7fe0"])
     for gi, g in enumerate(groups):
         spans = []
         for wi, w in enumerate(g["words"]):
             wid = f"cw{gi}-{wi}"
             col = w["color"]
             spans.append(f'<span id="{wid}" class="w{" k-" + col if col else ""}">{esc(w["display"].upper())}</span>')
-            target = COLORS[col] if col else "#ffffff"
-            glow = f"0 0 26px {COLORS[col]}aa, 0 5px 0 rgba(0,0,0,.55)" if col else "0 5px 0 rgba(0,0,0,.55)"
+            target = (opt.get("key_color", "#ffe45c") if bars else COLORS[col]) if col else "#ffffff"
+            glow = ("0 3px 0 rgba(0,0,0,.35)" if bars else f"0 0 26px {COLORS[col]}aa, 0 5px 0 rgba(0,0,0,.55)") if col else ("0 3px 0 rgba(0,0,0,.35)" if bars else "0 5px 0 rgba(0,0,0,.55)")
             js.append(f'tl.to("#{wid}", {{ color: "{target}", textShadow: "{glow}", duration: 0.08, ease: "power1.out" }}, {w["start"] - 0.02:.3f});')
             if big:  # Wort hüpft beim Sprechen kurz an
                 js.append(f'tl.fromTo("#{wid}", {{ scale: 1.16, y: -8, rotation: {(-4, 3, -2, 4)[wi % 4]} }}, {{ scale: 1, y: 0, rotation: 0, duration: 0.28, ease: "back.out(3)", immediateRender: false }}, {w["start"] - 0.02:.3f});')
         dur = round(g["end"] - g["start"], 3)
         rows.append(f'    <div id="cg{gi}" class="clip grp" data-start="{g["start"]:.3f}" data-duration="{dur}" data-track-index="{gi % 2}">'
-                    f'<div id="cgi{gi}" class="inner"{" data-layout-allow-overlap" if big else ""}>{" ".join(spans)}</div></div>')
+                    f'<div id="cgi{gi}" class="inner{" " + opt["first_class"] if gi == 0 and opt.get("first_class") else ""}"{" data-layout-allow-overlap" if big else ""}>'
+                    + (f'<span class="bar" style="background:{bar_cols[gi % len(bar_cols)]}">{" ".join(spans)}</span>' if bars else " ".join(spans)) + '</div></div>')
         if gi == 0 and opt.get("first_at_zero"):  # erster Satz steht ab Frame 0 (Thumbnail)
             js.append(f'tl.set("#cgi{gi}", {{ scale: 1, opacity: 1 }}, 0);')
         else:
@@ -190,6 +193,11 @@ def safe_css(o):
     keys = {"left": "left", "right": "right", "size": "font-size"}
     inner = "; ".join(f"{css}: {o[k]}px" for k, css in keys.items() if k in o)
     out = f"\n    .inner {{ {inner}; }}" if inner else ""
+    if o.get("bars"):
+        out += ("\n    .bar { padding: .04em .26em .1em; border-radius: .2em; line-height: 1.34; -webkit-box-decoration-break: clone; box-decoration-break: clone;"
+                " box-shadow: 0 6px 0 rgba(0,0,0,.28); } .inner .w { text-shadow: 0 3px 0 rgba(0,0,0,.35); }")
+    if o.get("css"):
+        out += "\n    " + o["css"]
     if "top" in o:
         out += f"\n    .grp {{ top: {o['top']}px; }}"
     if "color" in o:
@@ -329,7 +337,23 @@ def stars_svg(seed=19):
     return f"<svg xmlns='http://www.w3.org/2000/svg' width='{W}' height='{H}' viewBox='0 0 {W} {H}'>{''.join(dots)}</svg>"
 
 
-def build_index(project, script, windows, lines, total):
+def build_world(project, windows, lines, total):
+    """Optionale durchgehende Hintergrund-Ebene (scenes/_world.html) mit allen Wort-Zeiten (absolut) und Szenenfenstern."""
+    src = project / "scenes" / "_world.html"
+    if not src.exists():
+        return False
+    c = {"__dur": round(total, 3)}
+    for sc, s, e in windows:
+        c[sc["id"]] = [round(s, 3), round(e, 3)]
+    for lid, l in lines.items():
+        c[lid] = [round(l["start"], 3), round(l["end"], 3)]
+        c[lid + ".words"] = [[norm(w["display"]), round(w["start"], 3), round(w["end"], 3)] for w in l["words"]]
+    text = src.read_text().replace("/*__CUE_HELPERS__*/", CUE_HELPERS).replace("__CUES__", json.dumps(c, ensure_ascii=False))
+    (project / "compositions" / "world.html").write_text(text.replace("__DUR__", f"{total:.3f}"))
+    return True
+
+
+def build_index(project, script, windows, lines, total, world=False):
     hosts = []
     for i, (sc, s, e) in enumerate(windows):
         hosts.append(f'      <div id="{sc["id"]}" data-composition-id="{sc["id"]}" data-composition-src="compositions/{sc["id"]}.html" '
@@ -371,6 +395,7 @@ def build_index(project, script, windows, lines, total):
     <div id="root" data-composition-id="main" data-start="0" data-duration="{total:.3f}" data-width="{W}" data-height="{H}">
       <div id="bg" class="clip" data-start="0" data-duration="{total:.3f}" data-track-index="0"></div>
 {chr(10).join(hosts)}
+{f'      <div id="world" data-composition-id="world" data-composition-src="compositions/world.html" data-start="0" data-duration="{total:.3f}" data-track-index="4" data-track-kind="graphics" data-width="{W}" data-height="{H}" style="z-index:1"></div>' if world else ""}
       <div id="hud" data-composition-id="hud" data-composition-src="compositions/hud.html" data-start="0" data-duration="{total:.3f}"
            data-track-index="2" data-track-kind="graphics" data-width="{W}" data-height="{H}" style="z-index:5"></div>
       <div id="captions" data-composition-id="captions" data-composition-src="compositions/captions.html" data-start="0"
@@ -401,7 +426,8 @@ def main():
         build_scene(project, sc, s, e, lines)
     build_captions(project, timings, windows, total, script.get("hud") == "big", script.get("captions"))
     build_hud(project, script, windows, total)
-    build_index(project, script, windows, lines, total)
+    world = build_world(project, windows, lines, total)
+    build_index(project, script, windows, lines, total, world)
     for sc, s, e in windows:
         print(f"{sc['id']}: {s:6.2f} – {e:6.2f}  ({e - s:4.2f} s)  {sc['tag']}")
     print(f"Gesamt: {total:.2f} s")
