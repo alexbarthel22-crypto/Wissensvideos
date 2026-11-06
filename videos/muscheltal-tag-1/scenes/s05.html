@@ -1,0 +1,68 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    #s05-box { left: 250px; width: 580px; top: 222px; height: 132px; border-color: #ffd23f; background: rgba(42,27,18,.9); box-shadow: 8px 8px 0 #2a1b12; }
+    #s05-box .num { font-size: 60px; }
+    #s05-sea { position: absolute; left: 40px; top: 370px; width: 1000px; height: 760px; }
+    #s05-mainsvg { position: absolute; left: 240px; top: 445px; width: 600px; height: 550px; }
+    #s05-voll { position: absolute; left: 330px; top: 600px; padding: 6px 30px; border: 12px solid #ff3b55; border-radius: 20px; color: #ff3b55;
+      background: rgba(255,255,255,.92); font-family: "Inter", sans-serif; font-weight: 900; font-size: 110px; transform: rotate(-10deg); }
+    .s05-lab { font-family: "Inter", sans-serif; font-weight: 900; text-anchor: middle; paint-order: stroke fill; stroke: #2a1b12; stroke-width: 9px; stroke-linejoin: round; }
+  </style>
+  <div id="root" data-composition-id="s05" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s05-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s05-box" class="cbox"><div class="lab">EINWOHNER</div><div class="num"><span id="s05-n">0</span> / 500</div></div>
+      <svg id="s05-sea" viewBox="0 370 1000 760">
+        <g id="s05-i1" class="s05-isl" transform="translate(210 470)"><ellipse rx="96" ry="84" fill="#62d8d3"/><ellipse rx="80" ry="70" fill="#ffe8bf" stroke="#2a1b12" stroke-width="5"/><ellipse rx="64" ry="56" fill="#9bd86f"/>
+          <circle cx="-22" cy="-8" r="13" fill="#2e9e5b"/><circle cx="20" cy="6" r="15" fill="#3fb36a"/><circle cx="0" cy="-20" r="8" fill="#ff7a2e"/>
+          <text class="s05-lab" y="125" font-size="46" fill="#fff">???</text><text class="s05-lab" y="168" font-size="34" fill="#ffd23f">🔒 1.000</text></g>
+        <g id="s05-i2" class="s05-isl" transform="translate(790 480)"><ellipse rx="108" ry="96" fill="#62d8d3"/><ellipse rx="92" ry="80" fill="#ffe8bf" stroke="#2a1b12" stroke-width="5"/><ellipse rx="76" ry="66" fill="#9bd86f"/>
+          <ellipse rx="38" ry="32" fill="#4fd0e0" stroke="#ffe8bf" stroke-width="6"/><ellipse cx="-8" cy="2" rx="11" ry="8" fill="#7a5a2b"/><circle cx="-42" cy="-26" r="12" fill="#2e9e5b"/><circle cx="44" cy="22" r="13" fill="#3fb36a"/>
+          <text class="s05-lab" y="138" font-size="46" fill="#fff">???</text><text class="s05-lab" y="181" font-size="34" fill="#ffd23f">🔒 2.500</text></g>
+        <g id="s05-i3" class="s05-isl" transform="translate(220 930)"><ellipse rx="120" ry="104" fill="#62d8d3"/><ellipse rx="104" ry="90" fill="#ffe8bf" stroke="#2a1b12" stroke-width="5"/><ellipse rx="88" ry="76" fill="#97c96a"/>
+          <ellipse cy="-8" rx="58" ry="46" fill="#8a6a55"/><ellipse cy="-24" rx="28" ry="18" fill="#6e5040"/><ellipse cy="-26" rx="13" ry="7" fill="#ff7a3c"/>
+          <circle id="s05-smoke1" cx="6" cy="-56" r="14" fill="#9d928c" opacity=".7"/><circle id="s05-smoke2" cx="18" cy="-84" r="20" fill="#9d928c" opacity=".5"/>
+          <text class="s05-lab" y="146" font-size="46" fill="#fff">???</text><text class="s05-lab" y="189" font-size="34" fill="#ffd23f">🔒 5.000</text></g>
+        <g id="s05-i4" class="s05-isl" transform="translate(780 930)"><ellipse rx="134" ry="116" fill="#38cfc9"/><ellipse rx="116" ry="100" fill="#ffe08a" stroke="#2a1b12" stroke-width="5"/><ellipse rx="98" ry="84" fill="#9bd86f"/>
+          <path d="M-110 10 A110 96 0 0 1 110 10" stroke="#ff5a5a" stroke-width="9" fill="none" opacity=".75"/><path d="M-100 10 A100 86 0 0 1 100 10" stroke="#ffe14a" stroke-width="9" fill="none" opacity=".75"/><path d="M-90 10 A90 76 0 0 1 90 10" stroke="#4aa8ff" stroke-width="9" fill="none" opacity=".75"/>
+          <circle r="30" fill="#f2c75c"/><circle cy="-4" r="17" fill="#f3eeff" stroke="#c3b0f0" stroke-width="4"/><path d="M-60 -60 l4 10 10 4 -10 4 -4 10 -4 -10 -10 -4 10 -4z M62 -40 l3 8 8 3 -8 3 -3 8 -3 -8 -8 -3 8 -3z" fill="#ffd23f"/>
+          <text class="s05-lab" y="158" font-size="46" fill="#fff">???</text><text class="s05-lab" y="201" font-size="34" fill="#ffd23f">🔒 10.000</text></g>
+      </svg>
+      <svg id="s05-mainsvg" viewBox="200 445 600 550">
+        <g id="s05-main"><ellipse cx="500" cy="720" rx="300" ry="275" fill="#62d8d3"/><ellipse cx="500" cy="720" rx="278" ry="255" fill="#ffe8bf" stroke="#2a1b12" stroke-width="7"/>
+          <ellipse cx="500" cy="720" rx="258" ry="236" fill="#9bd86f"/><g id="s05-dots"></g>
+          <g transform="translate(500 730) scale(1.6) translate(-32 -40)"><path d="M32 47 L8.8 40.8 Q5.0 34.0 12.7 32.7 Q11.6 25.0 19.2 26.7 Q21.0 19.1 27.5 23.4 Q32.0 17.0 36.5 23.4 Q43.0 19.1 44.8 26.7 Q52.4 25.0 51.3 32.7 Q59.0 34.0 55.2 40.8 Z" fill="#ffc7b2" stroke="#2a1b12" stroke-width="3"/></g></g>
+      </svg>
+      <div id="s05-voll">VOLL!</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      const tl = gsap.timeline({ paused: true });
+      const roofs = ["#e8467c","#f4a51c","#ff7a59","#2fb3a0","#9b6bff","#3fa0e8"], R = rng(5), g = document.getElementById("s05-dots");
+      const pts = []; for (let gx = -11; gx <= 11; gx++) for (let gy = -10; gy <= 10; gy++) { if (gx % 4 === 0 || gy % 3 === 0) continue; const x = gx * 22, y = gy * 22, d = Math.hypot(x / 250, y / 228); if (d > .93 || d < .27) continue; pts.push([d + R() * .05, x, y]); }
+      pts.sort((a, b) => a[0] - b[0]);
+      pts.forEach(([d, x, y], i) => { const r = document.createElementNS("http://www.w3.org/2000/svg", "rect"); r.setAttribute("x", (500 + x - 8).toFixed(0)); r.setAttribute("y", (720 + y - 8).toFixed(0));
+        r.setAttribute("width", 16); r.setAttribute("height", 16); r.setAttribute("rx", 3); r.setAttribute("fill", roofs[Math.floor(R() * 6)]); r.setAttribute("class", "s05-d"); g.appendChild(r); });
+      const pl = at("L7", "Platz"), fh = at("L7", "500", 1), vo = at("L8", "voll"), ne = at("L8", "neue");
+      const t1 = at("L9", "1.000"), t2 = at("L9", "2.500"), t3 = at("L9", "5.000"), t4 = at("L9", "10.000");
+      tl.fromTo("#s05-box", { opacity: 0, y: -40 }, { opacity: 1, y: 0, duration: .35, ease: "back.out(2)" }, 0.05);
+      tl.fromTo("#s05-mainsvg", { opacity: 0, scale: .6 }, { opacity: 1, scale: 1, duration: .45, ease: "back.out(1.6)" }, 0.05);
+      tl.set(".s05-isl", { opacity: 0 }, 0);
+      count(tl, "#s05-n", 0, 500, pl - .2, fh - pl + .5, "", "", "power1.inOut");
+      tl.fromTo(".s05-d", { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: .12, stagger: (fh - pl + .3) / pts.length, transformOrigin: "50% 50%" }, pl - .2);
+      tl.fromTo("#s05-voll", { opacity: 0, scale: 2.6 }, { opacity: 1, scale: 1, duration: .25, ease: "expo.in" }, vo - .1);
+      tl.fromTo("#s05-mainsvg", { x: 0 }, { x: 12, duration: .04, yoyo: true, repeat: 5, ease: "none" }, vo + .15);
+      tl.to("#s05-voll", { opacity: 0, scale: .6, duration: .2 }, Math.max(ne + .25, vo + .85));
+      tl.to("#s05-mainsvg", { scale: .42, duration: .6, ease: "power3.inOut" }, ne - .2);
+      tl.to("#s05-box", { opacity: 0, y: -30, duration: .25 }, ne - .2);
+      [["#s05-i1", t1], ["#s05-i2", t2], ["#s05-i3", t3], ["#s05-i4", t4]].forEach(([id, t], k) => {
+        tl.fromTo(id, { opacity: 0, scale: .2 }, { opacity: 1, scale: 1, duration: .4, ease: "back.out(2.2)" }, t - .12); });
+      tl.fromTo("#s05-smoke1", { y: 0, opacity: .7 }, { y: -40, opacity: 0, duration: 1.2, repeat: 1, ease: "none" }, t3);
+      tl.fromTo("#s05-smoke2", { y: 0, opacity: .5 }, { y: -40, opacity: 0, duration: 1.2, repeat: 1, ease: "none" }, t3 + .4);
+      tl.to("#s05-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
+      window.__timelines["s05"] = tl;
+    })();
+  </script>
+</template>

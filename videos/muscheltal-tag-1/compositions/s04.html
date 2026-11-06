@@ -1,0 +1,94 @@
+<template>
+  <style>
+        #root { position: absolute; inset: 0; }
+    .stage { position: absolute; inset: 0; overflow: hidden; }
+    .abs { position: absolute; }
+    svg { overflow: visible; }
+    /* Zähler-Box wie in der Referenz: Rahmen in Akzentfarbe, Label in Mono-Versalien, große Zahl */
+    .cbox { position: absolute; left: 290px; width: 500px; top: 268px; height: 126px; border: 3px solid #ff4fb0;
+      border-radius: 14px; background: rgba(13,16,38,.88); text-align: center; box-shadow: 0 0 28px rgba(255,79,176,.35); }
+    .cbox .lab { margin-top: 16px; font-family: "Space Mono", monospace; font-weight: 700; font-size: 28px;
+      letter-spacing: .16em; color: #dfe2f5; }
+    .cbox .num { margin-top: 2px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 56px; color: #fff;
+      letter-spacing: .01em; }
+    .cbox.y { border-color: #ffd43b; box-shadow: 0 0 28px rgba(255,212,59,.3); }
+    .cbox.r { border-color: #ff3b55; box-shadow: 0 0 28px rgba(255,59,85,.35); }
+    .cbox.b { border-color: #4da3ff; box-shadow: 0 0 28px rgba(77,163,255,.3); }
+    .cbox.g { border-color: #39e27a; box-shadow: 0 0 28px rgba(57,226,122,.3); }
+    .mono { font-family: "Space Mono", monospace; font-weight: 700; letter-spacing: .12em; }
+    .heavy { font-family: "Inter", sans-serif; font-weight: 900; }
+    /* Muschel-Tal: Sticker-Look wie auf muscheltal.de. Sicherheitsbereich TikTok: x 40–930, y 200–1120 (Untertitel ab 1150). */
+    .ink { stroke: #2a1b12; }
+    .stk { background: #fff; border: 6px solid #2a1b12; border-radius: 28px; box-shadow: 10px 10px 0 #2a1b12; }
+    .ttl { font-family: "Inter", sans-serif; font-weight: 900; color: #fff; text-align: center; line-height: 1;
+      -webkit-text-stroke: 10px #2a1b12; paint-order: stroke fill; letter-spacing: -.01em; }
+    .kick { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 24px; border-radius: 14px;
+      background: #2a1b12; color: #ffd23f; font-family: "Space Mono", monospace; font-weight: 700; font-size: 34px; letter-spacing: .14em; }
+
+    #s04-map { position: absolute; left: 90px; top: 250px; width: 900px; height: 880px; }
+    #s04-chip { position: absolute; left: 70px; top: 230px; padding: 10px 24px; transform: rotate(-3deg);
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 44px; color: #2a1b12; background: #ffd23f; }
+    .s04-n { font-family: "Inter", sans-serif; font-weight: 900; font-size: 20px; fill: #2a1b12; text-anchor: middle; }
+  </style>
+  <div id="root" data-composition-id="s04" data-start="0" data-duration="4.450" data-width="1080" data-height="1920">
+    <div id="s04-stage" class="clip stage" data-start="0" data-duration="4.450" data-track-index="0">
+      <svg id="s04-map" viewBox="0 0 900 880">
+        <ellipse cx="450" cy="450" rx="430" ry="400" fill="#62d8d3"/>
+        <ellipse cx="450" cy="450" rx="405" ry="378" fill="#ffe8bf" stroke="#2a1b12" stroke-width="7"/>
+        <ellipse cx="450" cy="450" rx="380" ry="352" fill="#9bd86f"/>
+        <ellipse id="s04-glow" cx="450" cy="440" rx="120" ry="110" fill="#fff6c9" opacity="0"/>
+        <ellipse cx="450" cy="450" rx="92" ry="85" fill="#f6e2b8" stroke="#d9bf8a" stroke-width="5"/>
+        <g id="s04-huts" data-layout-ignore></g>
+        <g id="s04-rh" transform="translate(450 460)"><g transform="scale(2.4) translate(-32 -40)"><path d="M32 47 L8.8 40.8 Q5.0 34.0 12.7 32.7 Q11.6 25.0 19.2 26.7 Q21.0 19.1 27.5 23.4 Q32.0 17.0 36.5 23.4 Q43.0 19.1 44.8 26.7 Q52.4 25.0 51.3 32.7 Q59.0 34.0 55.2 40.8 Z" fill="#ffc7b2" stroke="#2a1b12" stroke-width="2.4" stroke-linejoin="round"/><path d="M32 45L13.9 33.6M32 45L20.0 27.9M32 45L27.8 24.9M32 45L36.2 24.9M32 45L44.0 27.9M32 45L50.1 33.6" stroke="#c43d6b" stroke-width="1.4" stroke-linecap="round"/><circle cx="32" cy="39" r="3" fill="#fff" stroke="#2a1b12" stroke-width="1.3"/></g></g>
+      </svg>
+      <div id="s04-chip" class="stk">FRÜHER = NÄHER</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      
+      const C = {"__dur": 4.45, "L6": [0.2, 4.27], "L6.words": [["wer", 0.2, 0.409], ["früher", 0.409, 0.826], ["folgt", 0.826, 1.05], ["wohnt", 1.23, 1.468], ["näher", 1.468, 1.904], ["am", 1.904, 2.118], ["rathaus", 2.118, 2.57], ["und", 3.12, 3.285], ["das", 3.285, 3.45], ["ist", 3.45, 3.615], ["eine", 3.615, 3.934], ["muschel", 3.934, 4.27]]};
+      const line = (id) => C[id];
+      const at = (id, word, which = 0) => {
+        const ws = C[id + ".words"];
+        if (typeof word === "number") return ws[word][1 + which];
+        const key = String(word).toLowerCase().replace(/[^\p{L}\p{N}_]/gu, "");
+        const hit = ws.find((w) => w[0].startsWith(key));
+        if (!hit) throw new Error("cue not found: " + id + " " + word);
+        return hit[1 + which];
+      };
+      // Zähler: schreibt Zahlen im deutschen Format (4.100.000.000) als Funktion der Timeline-Zeit
+      const fmt = (n) => Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      const count = (tl, sel, from, to, t, d, pre = "", post = "", ease = "power2.out") => {
+        const el = document.querySelector(sel);
+        const o = { v: from };
+        el.textContent = pre + fmt(from) + post;
+        tl.to(o, { v: to, duration: d, ease, onUpdate: () => { el.textContent = pre + fmt(o.v) + post; } }, t);
+      };
+      // deterministischer Zufall
+      const rng = (seed) => () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let x = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+        x = (x + Math.imul(x ^ (x >>> 7), 61 | x)) ^ x; return ((x ^ (x >>> 14)) >>> 0) / 4294967296; };
+
+      const tl = gsap.timeline({ paused: true });
+      const roofs = ["#e8467c","#f4a51c","#ff7a59","#2fb3a0","#9b6bff","#3fa0e8"], R = rng(7);
+      const g = document.getElementById("s04-huts"), rings = [[140, 8], [215, 14], [290, 20]];
+      let n = 0;
+      rings.forEach(([r, k], ri) => { for (let i = 0; i < k; i++) { const a = i / k * Math.PI * 2 + ri * .3, x = 450 + Math.cos(a) * r, y = 450 + Math.sin(a) * r * .93; n++;
+        const h = document.createElementNS("http://www.w3.org/2000/svg", "g"); h.setAttribute("class", "s04-h s04-r" + ri); h.setAttribute("transform", `translate(${x.toFixed(1)} ${y.toFixed(1)})`);
+        h.innerHTML = `<g><rect x="-17" y="-8" width="34" height="24" fill="#e4b47c" stroke="#2a1b12" stroke-width="3"/><path d="M-24 -6 L0 -28 L24 -6Z" fill="${roofs[Math.floor(R() * 6)]}" stroke="#2a1b12" stroke-width="3" stroke-linejoin="round"/>` +
+          (ri === 0 ? `<circle cx="0" cy="34" r="15" fill="#fff" stroke="#2a1b12" stroke-width="3"/><text class="s04-n" x="0" y="41">${n}</text>` : "") + `</g>`;
+        g.appendChild(h); } });
+      const fr = at("L6", "früher"), na = at("L6", "näher"), ra = at("L6", "Rathaus"), mu = at("L6", "Muschel");
+      tl.fromTo("#s04-map", { opacity: 0, scale: .7 }, { opacity: 1, scale: 1, duration: .45, ease: "back.out(1.5)", transformOrigin: "50% 50%" }, 0.02);
+      tl.fromTo(".s04-r0 > g", { scale: 0 }, { scale: 1, duration: .3, ease: "back.out(3)", stagger: .06, transformOrigin: "50% 50%" }, fr - .1);
+      tl.fromTo(".s04-r1 > g", { scale: 0 }, { scale: 1, duration: .28, ease: "back.out(3)", stagger: .035, transformOrigin: "50% 50%" }, fr + .45);
+      tl.fromTo(".s04-r2 > g", { scale: 0 }, { scale: 1, duration: .26, ease: "back.out(3)", stagger: .025, transformOrigin: "50% 50%" }, na);
+      tl.fromTo("#s04-chip", { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.5)" }, na - .1);
+      tl.fromTo("#s04-glow", { opacity: 0 }, { opacity: .9, duration: .25, yoyo: true, repeat: 3, ease: "sine.inOut" }, ra - .1);
+      tl.fromTo("#s04-map", { scale: 1 }, { scale: 1.9, duration: .7, ease: "power3.inOut", transformOrigin: "50% 52%" }, mu - .35);
+      tl.to("#s04-chip", { opacity: 0, duration: .2 }, mu - .35);
+      tl.to("#s04-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
+      window.__timelines["s04"] = tl;
+    })();
+  </script>
+</template>

@@ -1,0 +1,98 @@
+<template>
+  <style>
+        #root { position: absolute; inset: 0; }
+    .stage { position: absolute; inset: 0; overflow: hidden; }
+    .abs { position: absolute; }
+    svg { overflow: visible; }
+    /* Zähler-Box wie in der Referenz: Rahmen in Akzentfarbe, Label in Mono-Versalien, große Zahl */
+    .cbox { position: absolute; left: 290px; width: 500px; top: 268px; height: 126px; border: 3px solid #ff4fb0;
+      border-radius: 14px; background: rgba(13,16,38,.88); text-align: center; box-shadow: 0 0 28px rgba(255,79,176,.35); }
+    .cbox .lab { margin-top: 16px; font-family: "Space Mono", monospace; font-weight: 700; font-size: 28px;
+      letter-spacing: .16em; color: #dfe2f5; }
+    .cbox .num { margin-top: 2px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 56px; color: #fff;
+      letter-spacing: .01em; }
+    .cbox.y { border-color: #ffd43b; box-shadow: 0 0 28px rgba(255,212,59,.3); }
+    .cbox.r { border-color: #ff3b55; box-shadow: 0 0 28px rgba(255,59,85,.35); }
+    .cbox.b { border-color: #4da3ff; box-shadow: 0 0 28px rgba(77,163,255,.3); }
+    .cbox.g { border-color: #39e27a; box-shadow: 0 0 28px rgba(57,226,122,.3); }
+    .mono { font-family: "Space Mono", monospace; font-weight: 700; letter-spacing: .12em; }
+    .heavy { font-family: "Inter", sans-serif; font-weight: 900; }
+    /* Muschel-Tal: Sticker-Look wie auf muscheltal.de. Sicherheitsbereich TikTok: x 40–930, y 200–1120 (Untertitel ab 1150). */
+    .ink { stroke: #2a1b12; }
+    .stk { background: #fff; border: 6px solid #2a1b12; border-radius: 28px; box-shadow: 10px 10px 0 #2a1b12; }
+    .ttl { font-family: "Inter", sans-serif; font-weight: 900; color: #fff; text-align: center; line-height: 1;
+      -webkit-text-stroke: 10px #2a1b12; paint-order: stroke fill; letter-spacing: -.01em; }
+    .kick { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 24px; border-radius: 14px;
+      background: #2a1b12; color: #ffd23f; font-family: "Space Mono", monospace; font-weight: 700; font-size: 34px; letter-spacing: .14em; }
+
+    #s09-hut { position: absolute; left: 300px; top: 250px; width: 480px; height: 460px; }
+    #s09-nr { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 230px; padding: 8px 26px; transform: rotate(-4deg);
+      background: #b07a45; border: 6px solid #2a1b12; border-radius: 12px; color: #fff; font-family: "Inter", sans-serif; font-weight: 900; font-size: 54px; box-shadow: 8px 8px 0 #2a1b12; }
+    #s09-frei { position: absolute; left: 600px; top: 540px; padding: 6px 22px; border: 10px solid #2e9e5b; border-radius: 18px; color: #2e9e5b; background: rgba(255,255,255,.95);
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 74px; transform: rotate(10deg); }
+    .s09-b { position: absolute; top: 760px; height: 150px; border-radius: 28px; border: 6px solid #2a1b12; display: grid; place-items: center; text-align: center;
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 50px; line-height: 1.05; box-shadow: 10px 10px 0 #2a1b12; }
+    #s09-ja { left: 60px; width: 470px; background: #39e27a; color: #0b2a17; }
+    #s09-nein { left: 560px; width: 340px; background: #fff; color: #2a1b12; font-size: 42px; }
+    #s09-kom { position: absolute; left: 60px; width: 840px; top: 960px; text-align: center; font-size: 56px; color: #ffd23f; }
+  </style>
+  <div id="root" data-composition-id="s09" data-start="0" data-duration="8.930" data-width="1080" data-height="1920">
+    <div id="s09-stage" class="clip stage" data-start="0" data-duration="8.930" data-track-index="0">
+      <svg id="s09-hut" viewBox="-240 -330 480 460">
+        <ellipse cx="0" cy="110" rx="230" ry="24" fill="#063f5c" opacity=".35"/>
+        <path d="M-235 118 Q0 0 235 118Z" fill="#ffe8bf" stroke="#2a1b12" stroke-width="7"/>
+        <rect x="-120" y="-110" width="240" height="180" rx="6" fill="#e9c48f" stroke="#2a1b12" stroke-width="9"/>
+        <rect x="-36" y="-40" width="72" height="110" fill="#6b3f1d" stroke="#2a1b12" stroke-width="7"/>
+        <rect x="58" y="-80" width="44" height="44" fill="#8fe8e8" stroke="#2a1b12" stroke-width="7"/>
+        <rect x="-102" y="-80" width="44" height="44" fill="#8fe8e8" stroke="#2a1b12" stroke-width="7"/>
+        <path d="M-170 -94 L0 -290 L170 -94Z" fill="#ffd23f" stroke="#2a1b12" stroke-width="9" stroke-linejoin="round"/>
+        <path d="M-110 -140 L0 -260 M-60 -120 L0 -250 M60 -120 L0 -250 M110 -140 L0 -260" stroke="#c9a12b" stroke-width="5" stroke-linecap="round"/>
+      </svg>
+      <div id="s09-nr">HÜTTE NR. 1</div>
+      <div id="s09-frei">FREI!</div>
+      <div id="s09-ja" class="s09-b">🏠 ICH ZIEHE<br>EIN!</div>
+      <div id="s09-nein" class="s09-b">👀 ERST MAL<br>GUCKEN</div>
+      <div id="s09-kom" class="ttl">SCHREIB'S IN DIE KOMMENTARE!</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      
+      const C = {"__dur": 8.93, "L14": [0.2, 1.78], "L14.words": [["hütte", 0.2, 0.585], ["nummer", 0.585, 0.976], ["eins", 0.976, 1.179], ["ist", 1.179, 1.375], ["noch", 1.375, 1.577], ["frei", 1.577, 1.78]], "L15": [2.0, 6.33], "L15.words": [["wirst", 2.0, 2.21], ["du", 2.21, 2.4], ["der", 2.4, 2.596], ["erste", 2.596, 2.981], ["einwohner", 2.981, 3.57], ["schreib", 4.12, 4.191], ["ichzieheein", 4.191, 4.38], ["in", 4.7, 4.967], ["die", 4.967, 5.243], ["kommentare", 5.243, 6.33]]};
+      const line = (id) => C[id];
+      const at = (id, word, which = 0) => {
+        const ws = C[id + ".words"];
+        if (typeof word === "number") return ws[word][1 + which];
+        const key = String(word).toLowerCase().replace(/[^\p{L}\p{N}_]/gu, "");
+        const hit = ws.find((w) => w[0].startsWith(key));
+        if (!hit) throw new Error("cue not found: " + id + " " + word);
+        return hit[1 + which];
+      };
+      // Zähler: schreibt Zahlen im deutschen Format (4.100.000.000) als Funktion der Timeline-Zeit
+      const fmt = (n) => Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      const count = (tl, sel, from, to, t, d, pre = "", post = "", ease = "power2.out") => {
+        const el = document.querySelector(sel);
+        const o = { v: from };
+        el.textContent = pre + fmt(from) + post;
+        tl.to(o, { v: to, duration: d, ease, onUpdate: () => { el.textContent = pre + fmt(o.v) + post; } }, t);
+      };
+      // deterministischer Zufall
+      const rng = (seed) => () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let x = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+        x = (x + Math.imul(x ^ (x >>> 7), 61 | x)) ^ x; return ((x ^ (x >>> 14)) >>> 0) / 4294967296; };
+
+      const tl = gsap.timeline({ paused: true });
+      const fr = at("L14", "frei"), du = at("L15", "du"), sc = at("L15", "Schreib"), ko = at("L15", "Kommentare");
+      tl.fromTo("#s09-hut", { opacity: 0, y: -200, scale: .7 }, { opacity: 1, y: 0, scale: 1, duration: .5, ease: "bounce.out" }, 0.02);
+      tl.fromTo("#s09-nr", { opacity: 0, scale: 0, rotation: -30 }, { opacity: 1, scale: 1, rotation: -4, duration: .4, ease: "back.out(2.5)" }, 0.35);
+      tl.fromTo("#s09-frei", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .25, ease: "expo.in" }, fr - .1);
+      tl.fromTo("#s09-frei", { scale: 1 }, { scale: 1.12, duration: .22, yoyo: true, repeat: 5, ease: "sine.inOut" }, fr + .4);
+      tl.to("#s09-hut", { scale: .78, y: -40, duration: .45, ease: "power3.inOut", transformOrigin: "50% 0%" }, du - .2);
+      tl.to("#s09-frei", { y: -120, scale: .8, duration: .45, ease: "power3.inOut" }, du - .2);
+      tl.fromTo("#s09-ja", { opacity: 0, y: 80 }, { opacity: 1, y: 0, duration: .4, ease: "back.out(1.8)" }, du + .3);
+      tl.fromTo("#s09-nein", { opacity: 0, y: 80 }, { opacity: 1, y: 0, duration: .4, ease: "back.out(1.8)" }, du + .45);
+      tl.fromTo("#s09-kom", { opacity: 0, scale: .6 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.2)" }, sc - .05);
+      tl.fromTo("#s09-ja", { scale: 1 }, { scale: 1.07, duration: .25, yoyo: true, repeat: 5, ease: "sine.inOut" }, ko + .3);
+      window.__timelines["s09"] = tl;
+    })();
+  </script>
+</template>

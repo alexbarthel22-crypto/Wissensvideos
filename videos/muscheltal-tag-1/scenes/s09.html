@@ -1,0 +1,52 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    #s09-hut { position: absolute; left: 300px; top: 250px; width: 480px; height: 460px; }
+    #s09-nr { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 230px; padding: 8px 26px; transform: rotate(-4deg);
+      background: #b07a45; border: 6px solid #2a1b12; border-radius: 12px; color: #fff; font-family: "Inter", sans-serif; font-weight: 900; font-size: 54px; box-shadow: 8px 8px 0 #2a1b12; }
+    #s09-frei { position: absolute; left: 600px; top: 540px; padding: 6px 22px; border: 10px solid #2e9e5b; border-radius: 18px; color: #2e9e5b; background: rgba(255,255,255,.95);
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 74px; transform: rotate(10deg); }
+    .s09-b { position: absolute; top: 760px; height: 150px; border-radius: 28px; border: 6px solid #2a1b12; display: grid; place-items: center; text-align: center;
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 50px; line-height: 1.05; box-shadow: 10px 10px 0 #2a1b12; }
+    #s09-ja { left: 60px; width: 470px; background: #39e27a; color: #0b2a17; }
+    #s09-nein { left: 560px; width: 340px; background: #fff; color: #2a1b12; font-size: 42px; }
+    #s09-kom { position: absolute; left: 60px; width: 840px; top: 960px; text-align: center; font-size: 56px; color: #ffd23f; }
+  </style>
+  <div id="root" data-composition-id="s09" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s09-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <svg id="s09-hut" viewBox="-240 -330 480 460">
+        <ellipse cx="0" cy="110" rx="230" ry="24" fill="#063f5c" opacity=".35"/>
+        <path d="M-235 118 Q0 0 235 118Z" fill="#ffe8bf" stroke="#2a1b12" stroke-width="7"/>
+        <rect x="-120" y="-110" width="240" height="180" rx="6" fill="#e9c48f" stroke="#2a1b12" stroke-width="9"/>
+        <rect x="-36" y="-40" width="72" height="110" fill="#6b3f1d" stroke="#2a1b12" stroke-width="7"/>
+        <rect x="58" y="-80" width="44" height="44" fill="#8fe8e8" stroke="#2a1b12" stroke-width="7"/>
+        <rect x="-102" y="-80" width="44" height="44" fill="#8fe8e8" stroke="#2a1b12" stroke-width="7"/>
+        <path d="M-170 -94 L0 -290 L170 -94Z" fill="#ffd23f" stroke="#2a1b12" stroke-width="9" stroke-linejoin="round"/>
+        <path d="M-110 -140 L0 -260 M-60 -120 L0 -250 M60 -120 L0 -250 M110 -140 L0 -260" stroke="#c9a12b" stroke-width="5" stroke-linecap="round"/>
+      </svg>
+      <div id="s09-nr">HÜTTE NR. 1</div>
+      <div id="s09-frei">FREI!</div>
+      <div id="s09-ja" class="s09-b">🏠 ICH ZIEHE<br>EIN!</div>
+      <div id="s09-nein" class="s09-b">👀 ERST MAL<br>GUCKEN</div>
+      <div id="s09-kom" class="ttl">SCHREIB'S IN DIE KOMMENTARE!</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      const tl = gsap.timeline({ paused: true });
+      const fr = at("L14", "frei"), du = at("L15", "du"), sc = at("L15", "Schreib"), ko = at("L15", "Kommentare");
+      tl.fromTo("#s09-hut", { opacity: 0, y: -200, scale: .7 }, { opacity: 1, y: 0, scale: 1, duration: .5, ease: "bounce.out" }, 0.02);
+      tl.fromTo("#s09-nr", { opacity: 0, scale: 0, rotation: -30 }, { opacity: 1, scale: 1, rotation: -4, duration: .4, ease: "back.out(2.5)" }, 0.35);
+      tl.fromTo("#s09-frei", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .25, ease: "expo.in" }, fr - .1);
+      tl.fromTo("#s09-frei", { scale: 1 }, { scale: 1.12, duration: .22, yoyo: true, repeat: 5, ease: "sine.inOut" }, fr + .4);
+      tl.to("#s09-hut", { scale: .78, y: -40, duration: .45, ease: "power3.inOut", transformOrigin: "50% 0%" }, du - .2);
+      tl.to("#s09-frei", { y: -120, scale: .8, duration: .45, ease: "power3.inOut" }, du - .2);
+      tl.fromTo("#s09-ja", { opacity: 0, y: 80 }, { opacity: 1, y: 0, duration: .4, ease: "back.out(1.8)" }, du + .3);
+      tl.fromTo("#s09-nein", { opacity: 0, y: 80 }, { opacity: 1, y: 0, duration: .4, ease: "back.out(1.8)" }, du + .45);
+      tl.fromTo("#s09-kom", { opacity: 0, scale: .6 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.2)" }, sc - .05);
+      tl.fromTo("#s09-ja", { scale: 1 }, { scale: 1.07, duration: .25, yoyo: true, repeat: 5, ease: "sine.inOut" }, ko + .3);
+      window.__timelines["s09"] = tl;
+    })();
+  </script>
+</template>

@@ -134,8 +134,13 @@ def caption_groups(timings, windows):
     return groups
 
 
-def build_captions(project, timings, windows, total, big=False):
+def build_captions(project, timings, windows, total, big=False, opt=None):
+    """opt (script.json "captions"): pop (Wort-Pop), left/right/top/size (TikTok-Sicherheitsbereich), first_at_zero (erster Satz ab Frame 0)."""
+    opt = opt or {}
+    big = big or opt.get("pop", False)
     groups = caption_groups(timings, windows)
+    if opt.get("first_at_zero"):
+        groups[0]["start"] = 0.0
     groups[-1]["end"] = round(total - 0.05, 3)  # letzte Zeile (Frage an die Zuschauer) bleibt stehen
     rows, js = [], []
     for gi, g in enumerate(groups):
@@ -152,7 +157,10 @@ def build_captions(project, timings, windows, total, big=False):
         dur = round(g["end"] - g["start"], 3)
         rows.append(f'    <div id="cg{gi}" class="clip grp" data-start="{g["start"]:.3f}" data-duration="{dur}" data-track-index="{gi % 2}">'
                     f'<div id="cgi{gi}" class="inner"{" data-layout-allow-overlap" if big else ""}>{" ".join(spans)}</div></div>')
-        js.append(f'tl.fromTo("#cgi{gi}", {{ scale: 0.86, opacity: 0 }}, {{ scale: 1, opacity: 1, duration: 0.16, ease: "back.out(2.2)" }}, {g["start"]:.3f});')
+        if gi == 0 and opt.get("first_at_zero"):  # erster Satz steht ab Frame 0 (Thumbnail)
+            js.append(f'tl.set("#cgi{gi}", {{ scale: 1, opacity: 1 }}, 0);')
+        else:
+            js.append(f'tl.fromTo("#cgi{gi}", {{ scale: 0.86, opacity: 0 }}, {{ scale: 1, opacity: 1, duration: 0.16, ease: "back.out(2.2)" }}, {g["start"]:.3f});')
         js.append(f'tl.to("#cgi{gi}", {{ opacity: 0, duration: 0.08, ease: "power2.in" }}, {g["end"] - 0.08:.3f});')
         js.append(f'tl.set("#cgi{gi}", {{ opacity: 0 }}, {g["end"]:.3f});')
     doc = f"""<template>
@@ -162,7 +170,7 @@ def build_captions(project, timings, windows, total, big=False):
     .inner {{ position: absolute; left: 70px; right: 70px; top: 0; text-align: center;
       font-family: "Inter", sans-serif; font-weight: 900; font-size: 80px; line-height: 1.04;
       letter-spacing: -0.01em; transform-origin: 50% 40%; }}
-    .w {{ color: #7d8197; text-shadow: 0 5px 0 rgba(0,0,0,.55); }}{BIG_CAP if big else ""}
+    .w {{ color: #7d8197; text-shadow: 0 5px 0 rgba(0,0,0,.55); }}{BIG_CAP if big else ""}{safe_css(opt)}
   </style>
   <div id="root" data-composition-id="captions" data-start="0" data-duration="{total:.3f}" data-width="{W}" data-height="{H}"
        data-layout-allow-caption-zone>
@@ -176,6 +184,17 @@ def build_captions(project, timings, windows, total, big=False):
 </template>
 """
     (project / "compositions" / "captions.html").write_text(doc)
+
+
+def safe_css(o):
+    keys = {"left": "left", "right": "right", "size": "font-size"}
+    inner = "; ".join(f"{css}: {o[k]}px" for k, css in keys.items() if k in o)
+    out = f"\n    .inner {{ {inner}; }}" if inner else ""
+    if "top" in o:
+        out += f"\n    .grp {{ top: {o['top']}px; }}"
+    if "color" in o:
+        out += f"\n    .w {{ color: {o['color']}; }}"
+    return out
 
 
 BIG_CAP = """
@@ -345,8 +364,7 @@ def build_index(project, script, windows, lines, total):
       html, body {{ margin: 0; width: {W}px; height: {H}px; overflow: hidden; background: #0c0f22; }}
       #root {{ position: relative; width: 100%; height: 100%; }}
       #bg {{ position: absolute; inset: 0; z-index: 0;
-        background: url("data:image/svg+xml;utf8,{stars_svg()}"),
-          radial-gradient(ellipse 80% 55% at 50% 42%, #1c2250 0%, #121634 45%, #0a0c1d 100%); }}
+        background: {script.get("bg") or ('url("data:image/svg+xml;utf8,' + stars_svg() + '"), radial-gradient(ellipse 80% 55% at 50% 42%, #1c2250 0%, #121634 45%, #0a0c1d 100%)')}; }}
     </style>
   </head>
   <body>
@@ -381,7 +399,7 @@ def main():
     shutil.copy(VENDOR / "gsap.min.js", project / "assets" / "vendor" / "gsap.min.js")
     for sc, s, e in windows:
         build_scene(project, sc, s, e, lines)
-    build_captions(project, timings, windows, total, script.get("hud") == "big")
+    build_captions(project, timings, windows, total, script.get("hud") == "big", script.get("captions"))
     build_hud(project, script, windows, total)
     build_index(project, script, windows, lines, total)
     for sc, s, e in windows:
