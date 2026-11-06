@@ -32,23 +32,37 @@
     .bt.sm { font-size: 40px; padding: 8px 22px 10px; border-radius: 14px; }
     .stamp { position: absolute; padding: 6px 26px; border: 10px solid; border-radius: 18px; background: rgba(255,255,255,.94);
       font-family: "Inter", sans-serif; font-weight: 900; font-size: 84px; }
+    /* TikTok-Kommentare (echte Optik) */
+    .tk { position: absolute; left: 50px; width: 860px; background: #fff; border-radius: 30px; padding: 20px 26px 6px; box-shadow: 0 14px 0 rgba(0,0,0,.22); font-family: "Inter", sans-serif; }
+    .tk-h { position: relative; text-align: center; font-weight: 800; font-size: 30px; color: #161823; margin-bottom: 10px; }
+    .tk-h b { position: absolute; right: 4px; top: -4px; font-size: 38px; font-weight: 400; color: #161823; }
+    .tk-c { position: relative; display: flex; gap: 20px; padding: 12px 96px 16px 0; }
+    .tk-a { width: 84px; height: 84px; border-radius: 50%; flex: none; display: grid; place-items: center; color: #fff; font-weight: 900; font-size: 38px; }
+    .tk-u { font-size: 28px; color: #8a8b91; font-weight: 600; }
+    .tk-t { font-size: 38px; color: #161823; font-weight: 500; line-height: 1.22; margin-top: 2px; }
+    .tk-m { font-size: 28px; color: #8a8b91; font-weight: 600; margin-top: 8px; } .tk-m span { margin-left: 30px; }
+    .tk-l { position: absolute; right: 4px; top: 16px; width: 86px; text-align: center; font-size: 28px; color: #8a8b91; font-weight: 600; }
+    .tk-l .hz { position: relative; width: 48px; height: 48px; margin: 0 auto 2px; }
+    .tk-l .hz svg { position: absolute; inset: 0; width: 48px; height: 48px; }
+    .tk-fh { position: absolute; left: 19px; top: 0; width: 50px; height: 50px; opacity: 0; }
+    .tk-pin { display: inline-block; font-size: 28px; font-weight: 800; color: #fe2c55; background: #ffe3ea; border-radius: 6px; padding: 2px 8px; margin-left: 10px; vertical-align: 3px; }
 
-    #s05-k { top: 214px; }
-    #s05-box { left: 250px; width: 580px; top: 300px; height: 132px; border-color: #ffd23f; background: rgba(42,27,18,.9); box-shadow: 8px 8px 0 rgba(0,0,0,.3); }
+    #s05-k { top: 290px; }
+    #s05-box { left: 250px; width: 580px; top: 380px; height: 132px; border-color: #ffd23f; background: rgba(42,27,18,.9); box-shadow: 8px 8px 0 rgba(0,0,0,.3); }
     #s05-box .num { font-size: 60px; }
     #s05-h { top: 960px; }
   </style>
-  <div id="root" data-composition-id="s05" data-start="0" data-duration="6.610" data-width="1080" data-height="1920">
-    <div id="s05-stage" class="clip stage" data-start="0" data-duration="6.610" data-track-index="0">
+  <div id="root" data-composition-id="s05" data-start="0" data-duration="6.380" data-width="1080" data-height="1920">
+    <div id="s05-stage" class="clip stage" data-start="0" data-duration="6.380" data-track-index="0">
       <div id="s05-k" class="bt vi sm">⏱️ FRÜHER FOLGEN = HAUPTINSEL</div>
-      <div id="s05-box" class="cbox"><div class="lab">EINWOHNER</div><div class="num"><span id="s05-n">40</span> / 500</div></div>
+      <div id="s05-box" class="cbox"><div class="lab">FREIE PLÄTZE</div><div class="num"><span id="s05-n">0</span></div></div>
       <div id="s05-h" class="bt pk sm">🐚 HAUPTINSEL MUSCHEL-TAL</div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 6.61, "L7": [0.2, 3.78], "L7.words": [["wer", 0.2, 0.471], ["früher", 0.471, 1.013], ["folgt", 1.013, 1.303], ["wohnt", 1.303, 1.593], ["auf", 1.593, 1.864], ["der", 1.864, 2.135], ["hauptinsel", 2.135, 2.958], ["muscheltal", 2.958, 3.78]], "L8": [4.0, 6.43], "L8.words": [["dort", 4.0, 4.247], ["ist", 4.247, 4.486], ["platz", 4.486, 4.742], ["für", 4.742, 4.981], ["500", 4.981, 5.714], ["einwohner", 5.714, 6.43]]};
+      const C = {"__dur": 6.38, "L7": [0.2, 3.42], "L7.words": [["wer", 0.2, 0.444], ["früher", 0.444, 0.931], ["folgt", 0.931, 1.192], ["wohnt", 1.192, 1.453], ["auf", 1.453, 1.697], ["der", 1.697, 1.941], ["hauptinsel", 1.941, 2.68], ["muscheltal", 2.68, 3.42]], "L8": [3.64, 6.2], "L8.words": [["dort", 3.64, 3.9], ["ist", 3.9, 4.152], ["platz", 4.152, 4.421], ["für", 4.421, 4.673], ["500", 4.673, 5.445], ["einwohner", 5.445, 6.2]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -70,13 +84,32 @@
       const rng = (seed) => () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let x = Math.imul(seed ^ (seed >>> 15), 1 | seed);
         x = (x + Math.imul(x ^ (x >>> 7), 61 | x)) ^ x; return ((x ^ (x >>> 14)) >>> 0) / 4294967296; };
 
+            // TikTok-Kommentar: Herz füllt sich rot, Zahl zählt hoch, Herzen schnellen nach oben
+      const HEART = '<svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-10-9.3C.4 8.4 2 4.5 5.6 4c2-.3 3.6.6 4.4 2 .8-1.4 2.4-2.3 4.4-2 3.6.5 5.2 4.4 3.6 7.7C19.5 16.4 12 21 12 21z" fill="none" stroke="#8a8b91" stroke-width="2"/></svg>';
+      const HEART_R = '<svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-10-9.3C.4 8.4 2 4.5 5.6 4c2-.3 3.6.6 4.4 2 .8-1.4 2.4-2.3 4.4-2 3.6.5 5.2 4.4 3.6 7.7C19.5 16.4 12 21 12 21z" fill="#fe2c55"/></svg>';
+      const fmtK = (n) => n >= 10000 ? (n / 1000).toFixed(1).replace(".", ",") + " Tsd." : Math.round(n).toLocaleString("de-DE");
+      function tkLike(tl, id, t, from, to, dur = 1.4, seed = 1) {
+        const box = document.querySelector(id + " .tk-l"), num = box.querySelector("i"), hz = box.querySelector(".hz");
+        hz.innerHTML = HEART + '<span class="red" style="position:absolute;inset:0;opacity:0">' + HEART_R + "</span>";
+        const R = rng(seed);
+        for (let k = 0; k < 7; k++) { const f = document.createElement("div"); f.className = "tk-fh"; f.innerHTML = HEART_R; box.appendChild(f);
+          const dx = (R() - .5) * 160, up = 200 + R() * 220, t0 = t + k * .11;
+          tl.fromTo(f, { opacity: 0, x: 0, y: 0, scale: .5, rotation: 0 }, { opacity: 1, x: dx * .4, y: -60, scale: 1.1, rotation: (R() - .5) * 40, duration: .15, ease: "power2.out" }, t0);
+          tl.to(f, { x: dx, y: -up, scale: .7, opacity: 0, duration: .7, ease: "power1.in" }, t0 + .15); }
+        tl.fromTo(hz.querySelector(".red"), { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .25, ease: "back.out(3)" }, t);
+        tl.fromTo(hz, { scale: 1 }, { scale: 1.3, duration: .12, yoyo: true, repeat: 1, ease: "power2.out" }, t);
+        const o = { v: from }; num.textContent = fmtK(from);
+        tl.to(o, { v: to, duration: dur, ease: "power2.out", onUpdate: () => { num.textContent = fmtK(o.v); } }, t);
+      }
+
       const tl = gsap.timeline({ paused: true });
-      const fr = at("L7", "früher"), ha = at("L7", "Hauptinsel"), end = line("L8")[1], pl = at("L8", "Platz");
-      tl.fromTo("#s05-k", { opacity: 0, y: -30 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, fr - .2);
-      tl.fromTo("#s05-h", { opacity: 0, scale: .5 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.2)" }, ha - .1);
-      tl.to("#s05-h", { opacity: 0, duration: .2 }, pl - .1);
-      tl.fromTo("#s05-box", { opacity: 0, y: -40 }, { opacity: 1, y: 0, duration: .35, ease: "back.out(2)" }, fr);
-      count(tl, "#s05-n", 40, 500, fr, end - fr, "", "", "none");
+      const fr = at("L7", "früher"), ha = at("L7", "Hauptinsel"), pl = at("L8", "Platz"), end = line("L8")[1] + .3;
+      tl.fromTo("#s05-k", { opacity: 0, x: -300, skewX: -20 }, { opacity: 1, x: 0, skewX: 0, duration: .35, ease: "power4.out" }, fr - .2);
+      tl.fromTo("#s05-h", { opacity: 0, scale: 1.8, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .3, ease: "expo.out" }, ha - .1);
+      tl.to("#s05-h", { opacity: 0, y: 30, duration: .2 }, pl - .1);
+      tl.fromTo("#s05-box", { opacity: 0, rotationX: -90 }, { opacity: 1, rotationX: 0, duration: .4, ease: "back.out(2)" }, pl - .3);
+      count(tl, "#s05-n", 0, 500, pl, end - pl, "", "", "none");
+      tl.fromTo("#s05-box", { scale: 1 }, { scale: 1.1, duration: .15, yoyo: true, repeat: 1 }, end);
       tl.to("#s05-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
       window.__timelines["s05"] = tl;
     })();

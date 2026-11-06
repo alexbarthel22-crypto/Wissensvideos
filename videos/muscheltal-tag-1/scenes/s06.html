@@ -22,7 +22,7 @@
       tl.to("#s06-st", { opacity: 0, scale: .6, duration: .25 }, Math.max(ne - .1, vo + .8));
       tl.fromTo("#s06-q", { opacity: 0, scale: .3, rotation: -20 }, { opacity: 1, scale: 1, rotation: 0, duration: .45, ease: "elastic.out(1.1, .45)" }, wa - .1);
       tl.to("#s06-q", { rotation: 5, duration: .12, yoyo: true, repeat: 5, ease: "sine.inOut" }, wa + .4);
-      tl.fromTo("#s06-bio", { opacity: 0, y: 120 }, { opacity: 1, y: 0, duration: .45, ease: "bounce.out" }, li - .3);
+      tl.fromTo("#s06-bio", { opacity: 0, y: 120 }, { opacity: 1, y: 0, duration: .45, ease: "bounce.out" }, Math.min(li - .3, wa + .35));
       tl.to("#s06-bio", { scale: 1.08, duration: .2, yoyo: true, repeat: 3, ease: "sine.inOut" }, li + .3);
       tl.to("#s06-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
       window.__timelines["s06"] = tl;

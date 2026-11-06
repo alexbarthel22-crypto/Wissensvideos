@@ -32,35 +32,46 @@
     .bt.sm { font-size: 40px; padding: 8px 22px 10px; border-radius: 14px; }
     .stamp { position: absolute; padding: 6px 26px; border: 10px solid; border-radius: 18px; background: rgba(255,255,255,.94);
       font-family: "Inter", sans-serif; font-weight: 900; font-size: 84px; }
+    /* TikTok-Kommentare (echte Optik) */
+    .tk { position: absolute; left: 50px; width: 860px; background: #fff; border-radius: 30px; padding: 20px 26px 6px; box-shadow: 0 14px 0 rgba(0,0,0,.22); font-family: "Inter", sans-serif; }
+    .tk-h { position: relative; text-align: center; font-weight: 800; font-size: 30px; color: #161823; margin-bottom: 10px; }
+    .tk-h b { position: absolute; right: 4px; top: -4px; font-size: 38px; font-weight: 400; color: #161823; }
+    .tk-c { position: relative; display: flex; gap: 20px; padding: 12px 96px 16px 0; }
+    .tk-a { width: 84px; height: 84px; border-radius: 50%; flex: none; display: grid; place-items: center; color: #fff; font-weight: 900; font-size: 38px; }
+    .tk-u { font-size: 28px; color: #8a8b91; font-weight: 600; }
+    .tk-t { font-size: 38px; color: #161823; font-weight: 500; line-height: 1.22; margin-top: 2px; }
+    .tk-m { font-size: 28px; color: #8a8b91; font-weight: 600; margin-top: 8px; } .tk-m span { margin-left: 30px; }
+    .tk-l { position: absolute; right: 4px; top: 16px; width: 86px; text-align: center; font-size: 28px; color: #8a8b91; font-weight: 600; }
+    .tk-l .hz { position: relative; width: 48px; height: 48px; margin: 0 auto 2px; }
+    .tk-l .hz svg { position: absolute; inset: 0; width: 48px; height: 48px; }
+    .tk-fh { position: absolute; left: 19px; top: 0; width: 50px; height: 50px; opacity: 0; }
+    .tk-pin { display: inline-block; font-size: 28px; font-weight: 800; color: #fe2c55; background: #ffe3ea; border-radius: 6px; padding: 2px 8px; margin-left: 10px; vertical-align: 3px; }
 
-    #s10-nr { top: 230px; }
+    #s10-nr { top: 300px; }
     #s10-st { left: 560px; top: 560px; color: #2fbf6a; border-color: #2fbf6a; transform: rotate(9deg); font-size: 72px; }
-    #s10-fb { position: absolute; left: 0; right: 0; margin: 0 auto; width: 520px; top: 790px; height: 120px; border-radius: 24px; background: #fe2c55; border: 6px solid #2a1b12;
+    #s10-fb { position: absolute; left: 0; right: 0; margin: 0 auto; width: 520px; top: 800px; height: 120px; border-radius: 24px; background: #fe2c55; border: 6px solid #2a1b12;
       color: #fff; font-family: "Inter", sans-serif; font-weight: 900; font-size: 56px; display: grid; place-items: center; box-shadow: 0 10px 0 rgba(0,0,0,.3); }
-    #s10-hand { position: absolute; left: 640px; top: 860px; font-size: 100px; }
-    #s10-q { top: 230px; }
-    .s10-tc { position: absolute; top: 420px; width: 400px; height: 300px; border-radius: 26px; background: rgba(255,255,255,.96); box-shadow: 0 10px 0 rgba(0,0,0,.25);
-      text-align: center; font-family: "Inter", sans-serif; font-weight: 900; color: #2a1b12; font-size: 40px; padding-top: 30px; line-height: 1.15; }
-    .s10-tc span { display: block; font-size: 110px; color: #e8467c; margin-top: 10px; }
-    #s10-t1 { left: 70px; transform: rotate(-3deg); } #s10-t2 { left: 500px; transform: rotate(3deg); }
-    #s10-ko { top: 800px; }
+    #s10-hand { position: absolute; left: 640px; top: 870px; font-size: 100px; }
+    #s10-q { top: 290px; }
+    #s10-sheet { top: 440px; }
   </style>
-  <div id="root" data-composition-id="s10" data-start="0" data-duration="11.370" data-width="1080" data-height="1920">
-    <div id="s10-stage" class="clip stage" data-start="0" data-duration="11.370" data-track-index="0">
+  <div id="root" data-composition-id="s10" data-start="0" data-duration="9.130" data-width="1080" data-height="1920">
+    <div id="s10-stage" class="clip stage" data-start="0" data-duration="9.130" data-track-index="0">
       <div id="s10-nr" class="bt dk">🏠 HÜTTE NR. 1</div>
       <div id="s10-st" class="stamp">FREI!</div>
       <div id="s10-fb">+ Folgen</div>
       <div id="s10-hand" data-layout-ignore>👆</div>
       <div id="s10-q" class="bt ye">WAS KAUFEN WIR MORGEN? 💰</div>
-      <div id="s10-t1" class="s10-tc">🥇 TOP-KOMMENTAR<span>?</span></div>
-      <div id="s10-t2" class="s10-tc">🥈 TOP-KOMMENTAR<span>?</span></div>
-      <div id="s10-ko" class="bt pk">SCHREIB'S IN DIE KOMMENTARE! 👇</div>
+      <div id="s10-sheet" class="tk"><div class="tk-h">Top-Kommentare 🔥<b>×</b></div>
+        <div id="s10-c1" class="tk-c"><div class="tk-a" style="background:#7b4fe0">?</div><div><div class="tk-u">dein.name<span class="tk-pin">#1</span></div><div class="tk-t">hier steht bald DEIN vorschlag 💡</div><div class="tk-m">vor 2 Std.<span>Antworten</span></div></div><div class="tk-l"><div class="hz"></div><i>0</i></div></div>
+        <div id="s10-c2" class="tk-c"><div class="tk-a" style="background:#f0742c">?</div><div><div class="tk-u">vielleicht.du_<span class="tk-pin">#2</span></div><div class="tk-t">...oder deiner? 👀</div><div class="tk-m">vor 2 Std.<span>Antworten</span></div></div><div class="tk-l"><div class="hz"></div><i>0</i></div></div>
+      </div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 11.37, "L15": [0.2, 3.3], "L15.words": [["hütte", 0.2, 0.576], ["nummer", 0.576, 0.958], ["eins", 0.958, 1.156], ["ist", 1.156, 1.347], ["noch", 1.347, 1.545], ["frei", 1.545, 1.743], ["folg", 1.743, 1.941], ["mir", 1.941, 2.132], ["jetzt", 2.132, 2.337], ["dann", 2.337, 2.535], ["gehört", 2.535, 2.918], ["sie", 2.918, 3.109], ["dir", 3.109, 3.3]], "L16": [3.52, 8.37], "L16.words": [["und", 3.52, 3.728], ["morgen", 3.728, 4.145], ["kaufen", 4.145, 4.562], ["wir", 4.562, 4.77], ["was", 4.77, 4.979], ["vom", 4.979, 5.187], ["ersten", 5.187, 5.604], ["geld", 5.604, 5.82], ["aber", 6.04, 6.396], ["was", 6.396, 6.58], ["die", 6.76, 6.92], ["zwei", 6.92, 7.087], ["topkommentare", 7.087, 7.877], ["entscheiden", 7.877, 8.37]]};
+      const C = {"__dur": 9.13, "L15": [0.2, 3.73], "L15.words": [["hütte", 0.2, 0.628], ["nummer", 0.628, 1.063], ["eins", 1.063, 1.289], ["ist", 1.289, 1.506], ["noch", 1.506, 1.732], ["frei", 1.732, 1.957], ["folg", 1.957, 2.183], ["mir", 2.183, 2.4], ["jetzt", 2.4, 2.634], ["dann", 2.634, 2.859], ["gehört", 2.859, 3.295], ["sie", 3.295, 3.512], ["dir", 3.512, 3.73]], "L16": [3.95, 7.73], "L16.words": [["was", 3.95, 4.144], ["kaufen", 4.144, 4.533], ["wir", 4.533, 4.727], ["morgen", 4.727, 5.116], ["vom", 5.116, 5.31], ["ersten", 5.31, 5.699], ["geld", 5.699, 5.9], ["die", 6.12, 6.28], ["zwei", 6.28, 6.447], ["topkommentare", 6.447, 7.237], ["entscheiden", 7.237, 7.73]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -82,20 +93,37 @@
       const rng = (seed) => () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let x = Math.imul(seed ^ (seed >>> 15), 1 | seed);
         x = (x + Math.imul(x ^ (x >>> 7), 61 | x)) ^ x; return ((x ^ (x >>> 14)) >>> 0) / 4294967296; };
 
+            // TikTok-Kommentar: Herz füllt sich rot, Zahl zählt hoch, Herzen schnellen nach oben
+      const HEART = '<svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-10-9.3C.4 8.4 2 4.5 5.6 4c2-.3 3.6.6 4.4 2 .8-1.4 2.4-2.3 4.4-2 3.6.5 5.2 4.4 3.6 7.7C19.5 16.4 12 21 12 21z" fill="none" stroke="#8a8b91" stroke-width="2"/></svg>';
+      const HEART_R = '<svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-10-9.3C.4 8.4 2 4.5 5.6 4c2-.3 3.6.6 4.4 2 .8-1.4 2.4-2.3 4.4-2 3.6.5 5.2 4.4 3.6 7.7C19.5 16.4 12 21 12 21z" fill="#fe2c55"/></svg>';
+      const fmtK = (n) => n >= 10000 ? (n / 1000).toFixed(1).replace(".", ",") + " Tsd." : Math.round(n).toLocaleString("de-DE");
+      function tkLike(tl, id, t, from, to, dur = 1.4, seed = 1) {
+        const box = document.querySelector(id + " .tk-l"), num = box.querySelector("i"), hz = box.querySelector(".hz");
+        hz.innerHTML = HEART + '<span class="red" style="position:absolute;inset:0;opacity:0">' + HEART_R + "</span>";
+        const R = rng(seed);
+        for (let k = 0; k < 7; k++) { const f = document.createElement("div"); f.className = "tk-fh"; f.innerHTML = HEART_R; box.appendChild(f);
+          const dx = (R() - .5) * 160, up = 200 + R() * 220, t0 = t + k * .11;
+          tl.fromTo(f, { opacity: 0, x: 0, y: 0, scale: .5, rotation: 0 }, { opacity: 1, x: dx * .4, y: -60, scale: 1.1, rotation: (R() - .5) * 40, duration: .15, ease: "power2.out" }, t0);
+          tl.to(f, { x: dx, y: -up, scale: .7, opacity: 0, duration: .7, ease: "power1.in" }, t0 + .15); }
+        tl.fromTo(hz.querySelector(".red"), { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .25, ease: "back.out(3)" }, t);
+        tl.fromTo(hz, { scale: 1 }, { scale: 1.3, duration: .12, yoyo: true, repeat: 1, ease: "power2.out" }, t);
+        const o = { v: from }; num.textContent = fmtK(from);
+        tl.to(o, { v: to, duration: dur, ease: "power2.out", onUpdate: () => { num.textContent = fmtK(o.v); } }, t);
+      }
+
       const tl = gsap.timeline({ paused: true });
-      const fr = at("L15", "frei"), fo = at("L15", "Folg"), di = at("L15", "dir"), mo = at("L16", "morgen"), wa = at("L16", "was?"), zw = at("L16", "zwei"), en = at("L16", "entscheiden");
-      tl.fromTo("#s10-nr", { opacity: 0, scale: 0, rotation: -20 }, { opacity: 1, scale: 1, rotation: 0, duration: .4, ease: "back.out(2.5)" }, 0.1);
+      const fr = at("L15", "frei"), fo = at("L15", "Folg"), di = at("L15", "dir"), wa = at("L16", "Was"), zw = at("L16", "zwei"), en = at("L16", "entscheiden");
+      tl.fromTo("#s10-nr", { opacity: 0, scale: 0, rotation: -20 }, { opacity: 1, scale: 1, rotation: 0, duration: .4, ease: "back.out(2.5)" }, 0.05);
       tl.fromTo("#s10-st", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .25, ease: "expo.in" }, fr - .1);
-      tl.fromTo("#s10-fb", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: .35, ease: "back.out(2)" }, fo - .2);
+      tl.fromTo("#s10-fb", { opacity: 0, y: 80, scale: .8 }, { opacity: 1, y: 0, scale: 1, duration: .45, ease: "elastic.out(1, .5)" }, fo - .2);
       tl.fromTo("#s10-hand", { opacity: 0, x: 100, y: 100 }, { opacity: 1, x: 0, y: 0, duration: .3, ease: "power3.out" }, fo + .1);
       tl.to("#s10-hand", { y: -26, scale: .9, duration: .1, yoyo: true, repeat: 1 }, di - .1);
-      tl.to("#s10-fb", { scale: .94, backgroundColor: "#e9e6df", color: "#2a1b12", duration: .1, yoyo: false }, di);
-      tl.to(["#s10-nr", "#s10-st", "#s10-fb", "#s10-hand"], { opacity: 0, y: -30, duration: .25 }, mo - .2);
-      tl.fromTo("#s10-q", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.5)" }, wa - .5);
-      tl.fromTo("#s10-t1", { opacity: 0, y: 80 }, { opacity: 1, y: 0, duration: .4, ease: "back.out(1.8)" }, zw - .1);
-      tl.fromTo("#s10-t2", { opacity: 0, y: 80 }, { opacity: 1, y: 0, duration: .4, ease: "back.out(1.8)" }, zw + .08);
-      tl.fromTo("#s10-ko", { opacity: 0, scale: .6 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.2)" }, en);
-      tl.to(".s10-tc span", { rotation: 12, duration: .15, yoyo: true, repeat: 7, ease: "sine.inOut" }, en + .2);
+      tl.to("#s10-fb", { scale: .94, backgroundColor: "#e9e6df", color: "#2a1b12", duration: .1 }, di);
+      tl.to(["#s10-nr", "#s10-st", "#s10-fb", "#s10-hand"], { opacity: 0, y: -40, duration: .22 }, wa - .3);
+      tl.fromTo("#s10-q", { opacity: 0, scaleX: 0 }, { opacity: 1, scaleX: 1, duration: .4, ease: "expo.out" }, wa - .15);
+      tl.fromTo("#s10-sheet", { opacity: 0, y: 500 }, { opacity: 1, y: 0, duration: .45, ease: "power4.out" }, wa + .2);
+      tkLike(tl, "#s10-c1", zw - .1, 0, 2412, 1.4, 11); tkLike(tl, "#s10-c2", zw + .35, 0, 1987, 1.4, 13);
+      
       window.__timelines["s10"] = tl;
     })();
   </script>

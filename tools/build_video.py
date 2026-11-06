@@ -154,7 +154,7 @@ def build_captions(project, timings, windows, total, big=False, opt=None):
             target = (opt.get("key_color", "#ffe45c") if bars else COLORS[col]) if col else "#ffffff"
             glow = ("0 3px 0 rgba(0,0,0,.35)" if bars else f"0 0 26px {COLORS[col]}aa, 0 5px 0 rgba(0,0,0,.55)") if col else ("0 3px 0 rgba(0,0,0,.35)" if bars else "0 5px 0 rgba(0,0,0,.55)")
             js.append(f'tl.to("#{wid}", {{ color: "{target}", textShadow: "{glow}", duration: 0.08, ease: "power1.out" }}, {w["start"] - 0.02:.3f});')
-            if big:  # Wort hüpft beim Sprechen kurz an
+            if big and not (gi == 0 and wi == 0 and opt.get("first_at_zero")):  # Wort hüpft beim Sprechen kurz an (erstes Wort steht ruhig für das Vorschaubild)
                 js.append(f'tl.fromTo("#{wid}", {{ scale: {opt.get("pop_scale", 1.16)}, y: -8, rotation: {(-4, 3, -2, 4)[wi % 4]} }}, {{ scale: 1, y: 0, rotation: 0, duration: 0.28, ease: "back.out(3)", immediateRender: false }}, {w["start"] - 0.02:.3f});')
         dur = round(g["end"] - g["start"], 3)
         rows.append(f'    <div id="cg{gi}" class="clip grp" data-start="{g["start"]:.3f}" data-duration="{dur}" data-track-index="{gi % 2}">'

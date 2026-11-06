@@ -49,6 +49,7 @@
       tl.to(".s09-sp", { opacity: 0, scale: .3, rotation: 90, duration: .3, stagger: .12 }, mu + .6);
       tl.to("#s09-big", { scale: .32, y: -232, opacity: 0, duration: .45, ease: "power3.in" }, al - .55);
       tl.fromTo("#s09-url", { scale: 1 }, { scale: 1.15, backgroundColor: "#ffd23f", duration: .18, yoyo: true, repeat: 3 }, al - .15);
+      tl.to("#s09-pop", { opacity: 0, y: 30, duration: .2 }, al - .3);
       tl.fromTo("#s09-all", { opacity: 0, x: -400, skewX: -20 }, { opacity: 1, x: 0, skewX: 0, duration: .4, ease: "power4.out" }, al - .1);
       tl.to("#s09-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
       window.__timelines["s09"] = tl;
