@@ -1,6 +1,6 @@
 # Muschel-Tal – Tag 1: Die Gründung · Beschreibung (v2)
 
-**Cover:** `renders/cover.jpg` – „DIE GRÜNDUNG“, 0 Einwohner, 0 Muscheln.
+**Cover:** `renders/cover.jpg` – „GRATIS? auf meiner Insel wohnen“, Tag 1 · Die Gründung, 0 Einwohner, 0 Muscheln, Hütte Nr. 1 ist frei.
 
 ## Hauptversion (zum Posten)
 Hütte Nr. 1 ist noch frei 👀 Schreib „ich“ und zieh ein 🏝️
