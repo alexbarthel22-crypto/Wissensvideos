@@ -58,8 +58,8 @@
     #s04-kb .num { font-size: 64px; } #s04-kn { color: #ff3b55; }
     .s04-pf { position: absolute; left: 520px; top: 620px; width: 60px; height: 60px; border-radius: 50%; background: rgba(200,190,180,.85); }
   </style>
-  <div id="root" data-composition-id="s04" data-start="0" data-duration="6.550" data-width="1080" data-height="1920">
-    <div id="s04-stage" class="clip stage" data-start="0" data-duration="6.550" data-track-index="0">
+  <div id="root" data-composition-id="s04" data-start="0" data-duration="6.010" data-width="1080" data-height="1920">
+    <div id="s04-stage" class="clip stage" data-start="0" data-duration="6.010" data-track-index="0">
       <div id="s04-eq" class="bt dk">1 EINWOHNER = 5 MUSCHELN</div>
       <svg id="s04-chest" viewBox="0 0 340 260"><ellipse cx="170" cy="244" rx="160" ry="14" fill="rgba(0,0,0,.25)"/>
         <rect x="20" y="110" width="300" height="130" rx="14" fill="#b07a45" stroke="#2a1b12" stroke-width="8"/>
@@ -82,7 +82,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 6.55, "L6": [0.2, 3.85], "L6.words": [["jeder", 0.2, 0.615], ["einwohner", 0.615, 1.249], ["bringt", 1.249, 1.482], ["5", 1.482, 1.701], ["muscheln", 1.701, 2.139], ["mit", 2.139, 2.35], ["das", 2.73, 2.892], ["ist", 2.892, 3.053], ["unsere", 3.053, 3.521], ["währung", 3.521, 3.85]], "L6b": [4.17, 6.37], "L6b.words": [["aktueller", 4.17, 4.622], ["kontostand", 4.622, 5.08], ["null", 5.63, 5.877], ["muscheln", 5.877, 6.37]]};
+      const C = {"__dur": 6.01, "L6": [0.2, 3.48], "L6.words": [["jeder", 0.2, 0.572], ["einwohner", 0.572, 1.141], ["bringt", 1.141, 1.351], ["5", 1.351, 1.548], ["muscheln", 1.548, 1.94], ["mit", 1.94, 2.13], ["das", 2.48, 2.624], ["ist", 2.624, 2.769], ["unsere", 2.769, 3.186], ["währung", 3.186, 3.48]], "L6b": [3.8, 5.83], "L6b.words": [["aktueller", 3.8, 4.208], ["kontostand", 4.208, 4.62], ["null", 5.17, 5.39], ["muscheln", 5.39, 5.83]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];

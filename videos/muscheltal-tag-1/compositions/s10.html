@@ -56,8 +56,8 @@
     #s10-q { top: 300px; font-size: 44px; white-space: nowrap; }
     #s10-sheet { top: 430px; }
   </style>
-  <div id="root" data-composition-id="s10" data-start="0" data-duration="9.090" data-width="1080" data-height="1920">
-    <div id="s10-stage" class="clip stage" data-start="0" data-duration="9.090" data-track-index="0">
+  <div id="root" data-composition-id="s10" data-start="0" data-duration="8.380" data-width="1080" data-height="1920">
+    <div id="s10-stage" class="clip stage" data-start="0" data-duration="8.380" data-track-index="0">
       <div id="s10-nr" class="bt dk">HÜTTE NR. 1</div>
       <div id="s10-st" class="stamp">FREI!</div>
       <div id="s10-fb">+ Folgen</div>
@@ -72,7 +72,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 9.09, "L15": [0.2, 3.41], "L15.words": [["hütte", 0.2, 0.589], ["nummer", 0.589, 0.985], ["eins", 0.985, 1.19], ["ist", 1.19, 1.388], ["noch", 1.388, 1.593], ["frei", 1.593, 1.798], ["folg", 1.798, 2.003], ["mir", 2.003, 2.201], ["jetzt", 2.201, 2.413], ["dann", 2.413, 2.618], ["gehört", 2.618, 3.014], ["sie", 3.014, 3.212], ["dir", 3.212, 3.41]], "L16": [3.63, 7.69], "L16.words": [["was", 3.63, 3.826], ["kaufen", 3.826, 4.219], ["wir", 4.219, 4.415], ["morgen", 4.415, 4.808], ["vom", 4.808, 5.004], ["ersten", 5.004, 5.397], ["geld", 5.397, 5.6], ["die", 6.02, 6.186], ["zwei", 6.186, 6.359], ["topkommentare", 6.359, 7.179], ["entscheiden", 7.179, 7.69]]};
+      const C = {"__dur": 8.38, "L15": [0.2, 3.07], "L15.words": [["hütte", 0.2, 0.548], ["nummer", 0.548, 0.902], ["eins", 0.902, 1.085], ["ist", 1.085, 1.262], ["noch", 1.262, 1.445], ["frei", 1.445, 1.629], ["folg", 1.629, 1.812], ["mir", 1.812, 1.989], ["jetzt", 1.989, 2.179], ["dann", 2.179, 2.362], ["gehört", 2.362, 2.716], ["sie", 2.716, 2.893], ["dir", 2.893, 3.07]], "L16": [3.29, 6.98], "L16.words": [["was", 3.29, 3.465], ["kaufen", 3.465, 3.816], ["wir", 3.816, 3.991], ["morgen", 3.991, 4.342], ["vom", 4.342, 4.518], ["ersten", 4.518, 4.868], ["geld", 4.868, 5.05], ["die", 5.42, 5.575], ["zwei", 5.575, 5.736], ["topkommentare", 5.736, 6.503], ["entscheiden", 6.503, 6.98]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];

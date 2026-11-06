@@ -78,20 +78,23 @@
       const fitAll = (() => { let x0 = XM.x - XM.R, x1 = XM.x + XM.R, y0 = XM.y - XM.R, y1 = XM.y + XM.R; for (const v of ALL) { x0 = Math.min(x0, v.x - v.R); x1 = Math.max(x1, v.x + v.R); y0 = Math.min(y0, v.y - v.R); y1 = Math.max(y1, v.y + v.R); }
         const z = Math.min((W - 100) / (x1 - x0), 780 / (y1 - y0)); return { x: (x0 + x1) / 2, y: (y0 + y1) / 2, z }; })();
       const zMain = (W - 60) / (2 * (MAIN.R + 40)), me = PL[ME], one = PL[0];
+      const MR = MAIN.R;
       const K = [
-        [0, 0, 60, zMain * .62], [at("L1", "gekauft"), 0, 25, zMain * 1.02], [line("L2")[0] + .15, -MAIN.R * .45, -MAIN.R * .3, 2.5], [line("L2")[1], MAIN.R * .42, MAIN.R * .12, 2.6],
-        [line("L3")[0] - .1, 0, 10, zMain * 1.6], [line("L3")[1], 0, 0, zMain * 1.75],
-        [at("L4", "folgst") - .3, me.x, me.y, 3.0], [line("L5")[1], me.x, me.y, 3.3],
-        [line("L6")[0], 0, 30, 2.1], [line("L6")[1], 0, 20, 2.3],
-        [at("L7", "früher"), 0, 20, zMain * 1.0], [tFull, 0, 20, zMain * .98],
-        [at("L9", "neue") - .25, 0, 20, zMain * .9], [at("L9", "neue") + .8, fitAll.x, fitAll.y, fitAll.z], [line("L10")[1], fitAll.x, fitAll.y, fitAll.z * 1.08],
-        [line("L11")[0] + .3, XM.x, XM.y + 30, .95], [line("L11")[1], XM.x, XM.y + 30, 1.1],
-        [line("L12")[0] + .4, 0, 20, zMain * 1.25], [line("L12")[1], 0, 20, zMain * 1.35],
-        [line("L15")[0] + .1, one.x, one.y, 3.4], [line("L15")[1], one.x, one.y, 3.6], [C.__dur, one.x, one.y + 10, 2.7]];
+        [0, 0, 60, zMain * .62], [at("L1", "gekauft"), 0, 25, zMain * 1.02], [line("L2")[0] + .15, -MR * .45, -MR * .3, 2.5], [line("L2")[1], MR * .42, MR * .12, 2.6],
+        [line("L3")[0] - .1, MR * .35, MR * .38, 2.2], [line("L3")[1], -MR * .35, MR * .42, 2.4],
+        [line("L4")[0], me.x + MR * .3, me.y - MR * .2, 2.4], [at("L4", "ein") - .1, me.x, me.y, 3.2], [line("L5")[1], me.x, me.y, 3.5],
+        [line("L6")[0], -MR * .5, MR * .3, 2.4], [line("L6")[1], -MR * .05, MR * .45, 2.6], [line("L6b")[1], MR * .45, MR * .3, 2.3],
+        [at("L7", "früher"), -MR * .32, -MR * .25, 2.0], [at("L7", "Hauptinsel"), MR * .25, -MR * .15, 1.8], [at("L8", "Platz"), MR * .1, MR * .2, 1.4], [tFull, 0, 20, zMain * .98],
+        [at("L9", "neue") - .25, 0, 20, zMain * .9], [at("L9", "neue") + .8, fitAll.x, fitAll.y, fitAll.z], [line("L10")[1], fitAll.x + 60, fitAll.y - 40, fitAll.z * 1.12],
+        [line("L11")[0] + .3, XM.x - 90, XM.y + 60, .95], [line("L11")[1], XM.x + 50, XM.y + 20, 1.15],
+        [line("L12")[0] + .3, -MR * .35, MR * .2, 1.8], [line("L12")[1], MR * .35, -MR * .1, 1.9],
+        [line("L15")[0] + .1, one.x, one.y, 3.2], [line("L15")[1], one.x, one.y, 3.6],
+        [line("L16")[0] + .2, MR * .22, -MR * .2, 2.2], [C.__dur, -MR * .25, MR * .1, 2.4]];
       function camAt(t) { let i = 0; while (i < K.length - 1 && K[i + 1][0] <= t) i++; const a = K[i], b = K[Math.min(i + 1, K.length - 1)];
         const k = b[0] > a[0] ? sm(a[0], b[0], t) : 1; const lz = Math.log(a[3]) + (Math.log(b[3]) - Math.log(a[3])) * k;
         const g0 = at("L1", "gekauft"), sh = t > g0 && t < g0 + .45 ? (1 - (t - g0) / .45) * 14 / Math.exp(lz) : 0; // Wackler beim Stempel
-        return { x: a[1] + (b[1] - a[1]) * k + Math.sin(t * 95) * sh, y: a[2] + (b[2] - a[2]) * k + Math.cos(t * 83) * sh, z: Math.exp(lz) }; }
+        const zz = Math.exp(lz) * (1 + .03 * Math.sin(t * .6)); // ständige leichte Drift + Zoom-Atmen, damit der Hintergrund nie stillsteht
+        return { x: a[1] + (b[1] - a[1]) * k + Math.sin(t * 95) * sh + Math.sin(t * .5) * 14 / zz, y: a[2] + (b[2] - a[2]) * k + Math.cos(t * 83) * sh + Math.cos(t * .37) * 11 / zz, z: zz }; }
 
       // ---------- Zeichnen ----------
       let cam = { x: 0, y: 0, z: 1 }, T = 0, x0, y0, x1, y1;
