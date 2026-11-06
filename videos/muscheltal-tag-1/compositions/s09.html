@@ -6,7 +6,7 @@
     svg { overflow: visible; }
     /* Zähler-Box wie in der Referenz: Rahmen in Akzentfarbe, Label in Mono-Versalien, große Zahl */
     .cbox { position: absolute; left: 290px; width: 500px; top: 268px; height: 126px; border: 3px solid #ff4fb0;
-      border-radius: 14px; background: rgba(13,16,38,.88); text-align: center; box-shadow: 0 0 28px rgba(255,79,176,.35); }
+      border-radius: 32px; background: rgba(13,16,38,.88); text-align: center; box-shadow: 0 0 28px rgba(255,79,176,.35); }
     .cbox .lab { margin-top: 16px; font-family: "Space Mono", monospace; font-weight: 700; font-size: 28px;
       letter-spacing: .16em; color: #dfe2f5; }
     .cbox .num { margin-top: 2px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 56px; color: #fff;
@@ -27,11 +27,11 @@
     /* Text auf farbigem Balken (auffälliger, wie TikTok-Textboxen) */
     .bt { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; max-width: 860px; text-align: center;
       font-family: "Inter", sans-serif; font-weight: 900; font-size: 66px; line-height: 1.3; color: #fff; }
-    .bt .bx { padding: .06em .34em .14em; border-radius: .26em; -webkit-box-decoration-break: clone; box-decoration-break: clone; box-shadow: 0 9px 0 rgba(0,0,0,.28); }
+    .bt .bx { padding: .06em .4em .14em; border-radius: .6em; -webkit-box-decoration-break: clone; box-decoration-break: clone; box-shadow: 0 9px 0 rgba(0,0,0,.28); }
     .bt.pk .bx { background: #e8467c; } .bt.tq .bx { background: #0a9fa6; } .bt.vi .bx { background: #7b4fe0; } .bt.bl .bx { background: #2f7fe0; }
     .bt.ye .bx { background: #ffd23f; } .bt.ye { color: #2a1b12; } .bt.gr .bx { background: #2fbf6a; } .bt.dk .bx { background: #2a1b12; } .bt.dk { color: #ffd23f; }
     .bt.sm { font-size: 44px; }
-    .stamp { position: absolute; padding: 6px 26px; border: 10px solid; border-radius: 18px; background: rgba(255,255,255,.94);
+    .stamp { position: absolute; padding: 6px 30px; border: 10px solid; border-radius: 40px; background: rgba(255,255,255,.94);
       font-family: "Inter", sans-serif; font-weight: 900; font-size: 84px; }
     /* TikTok-Kommentare (echte Optik) */
     .tk { position: absolute; left: 50px; width: 860px; background: #fff; border-radius: 30px; padding: 20px 26px 6px; box-shadow: 0 14px 0 rgba(0,0,0,.22); font-family: "Inter", sans-serif; }
@@ -53,7 +53,7 @@
     #s09-img { position: absolute; left: 0; top: 0; width: 384px; height: 832px; }
     #s09-isl { position: absolute; left: 0; top: 46px; width: 384px; height: 832px; transform-origin: 50% 50%; }
     #s09-isl img { width: 384px; height: 832px; display: block; }
-    #s09-type { position: absolute; left: 50px; top: 120px; width: 290px; height: 40px; background: #fff; font-family: "Inter", sans-serif; font-weight: 800; font-size: 18px; color: #2a1b12; display: flex; align-items: center; }
+    #s09-type { position: absolute; left: 47px; top: 79px; width: 300px; height: 30px; background: #fff; font-family: "Inter", sans-serif; font-weight: 800; font-size: 17px; color: #2a1b12; display: flex; align-items: center; }
     #s09-bar { position: absolute; left: 14px; right: 14px; bottom: 12px; height: 54px; border-radius: 18px; background: rgba(250,250,250,.97); box-shadow: 0 2px 10px rgba(0,0,0,.2);
       font-family: "Inter", sans-serif; font-weight: 700; font-size: 22px; color: #111; display: grid; place-items: center; }
     #s09-notch { position: absolute; left: 50%; top: 14px; width: 110px; height: 30px; margin-left: -55px; border-radius: 16px; background: #111; }
@@ -64,11 +64,10 @@
     .s09-sp { position: absolute; width: 60px; height: 60px; }
     @font-face { font-family: "Lilita One"; src: url("assets/fonts/LilitaOne-Regular.woff2") format("woff2"); font-weight: 400; }
   </style>
-  <div id="root" data-composition-id="s09" data-start="0" data-duration="5.140" data-width="1080" data-height="1920">
-    <div id="s09-stage" class="clip stage" data-start="0" data-duration="5.140" data-track-index="0">
+  <div id="root" data-composition-id="s09" data-start="0" data-duration="5.060" data-width="1080" data-height="1920">
+    <div id="s09-stage" class="clip stage" data-start="0" data-duration="5.060" data-track-index="0">
       <div id="s09-ph"><div id="s09-scr">
-        <div id="s09-isl"><img src="assets/img/homepage.jpg" alt=""></div>
-        <div id="s09-type" data-layout-ignore><span id="s09-typed"></span><span id="s09-cur">|</span></div>
+        <div id="s09-isl"><img src="assets/img/homepage.jpg" alt=""><div id="s09-type" data-layout-ignore><span id="s09-typed"></span><span id="s09-cur">|</span></div></div>
         <div id="s09-bar" data-layout-ignore>🔒 muscheltal.de</div>
         <div id="s09-notch"></div>
       </div></div>
@@ -82,7 +81,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 5.14, "L13": [0.2, 2.28], "L13.words": [["deine", 0.2, 0.514], ["hütte", 0.514, 0.829], ["findest", 0.829, 1.154], ["du", 1.154, 1.309], ["auf", 1.309, 1.469], ["muscheltalde", 1.469, 2.28]], "L14": [2.5, 4.96], "L14.words": [["dort", 2.5, 2.754], ["gibt", 2.754, 3.008], ["es", 3.008, 3.244], ["alles", 3.244, 3.726], ["rund", 3.726, 3.98], ["um", 3.98, 4.216], ["muscheltal", 4.216, 4.96]]};
+      const C = {"__dur": 5.06, "L13": [0.2, 2.31], "L13.words": [["deine", 0.2, 0.519], ["hütte", 0.519, 0.838], ["findest", 0.838, 1.168], ["du", 1.168, 1.325], ["auf", 1.325, 1.487], ["muscheltalde", 1.487, 2.31]], "L14": [2.53, 4.88], "L14.words": [["dort", 2.53, 2.773], ["gibt", 2.773, 3.015], ["es", 3.015, 3.241], ["alles", 3.241, 3.701], ["rund", 3.701, 3.943], ["um", 3.943, 4.169], ["muscheltal", 4.169, 4.88]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];

@@ -6,7 +6,7 @@
     svg { overflow: visible; }
     /* Zähler-Box wie in der Referenz: Rahmen in Akzentfarbe, Label in Mono-Versalien, große Zahl */
     .cbox { position: absolute; left: 290px; width: 500px; top: 268px; height: 126px; border: 3px solid #ff4fb0;
-      border-radius: 14px; background: rgba(13,16,38,.88); text-align: center; box-shadow: 0 0 28px rgba(255,79,176,.35); }
+      border-radius: 32px; background: rgba(13,16,38,.88); text-align: center; box-shadow: 0 0 28px rgba(255,79,176,.35); }
     .cbox .lab { margin-top: 16px; font-family: "Space Mono", monospace; font-weight: 700; font-size: 28px;
       letter-spacing: .16em; color: #dfe2f5; }
     .cbox .num { margin-top: 2px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 56px; color: #fff;
@@ -27,11 +27,11 @@
     /* Text auf farbigem Balken (auffälliger, wie TikTok-Textboxen) */
     .bt { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; max-width: 860px; text-align: center;
       font-family: "Inter", sans-serif; font-weight: 900; font-size: 66px; line-height: 1.3; color: #fff; }
-    .bt .bx { padding: .06em .34em .14em; border-radius: .26em; -webkit-box-decoration-break: clone; box-decoration-break: clone; box-shadow: 0 9px 0 rgba(0,0,0,.28); }
+    .bt .bx { padding: .06em .4em .14em; border-radius: .6em; -webkit-box-decoration-break: clone; box-decoration-break: clone; box-shadow: 0 9px 0 rgba(0,0,0,.28); }
     .bt.pk .bx { background: #e8467c; } .bt.tq .bx { background: #0a9fa6; } .bt.vi .bx { background: #7b4fe0; } .bt.bl .bx { background: #2f7fe0; }
     .bt.ye .bx { background: #ffd23f; } .bt.ye { color: #2a1b12; } .bt.gr .bx { background: #2fbf6a; } .bt.dk .bx { background: #2a1b12; } .bt.dk { color: #ffd23f; }
     .bt.sm { font-size: 44px; }
-    .stamp { position: absolute; padding: 6px 26px; border: 10px solid; border-radius: 18px; background: rgba(255,255,255,.94);
+    .stamp { position: absolute; padding: 6px 30px; border: 10px solid; border-radius: 40px; background: rgba(255,255,255,.94);
       font-family: "Inter", sans-serif; font-weight: 900; font-size: 84px; }
     /* TikTok-Kommentare (echte Optik) */
     .tk { position: absolute; left: 50px; width: 860px; background: #fff; border-radius: 30px; padding: 20px 26px 6px; box-shadow: 0 14px 0 rgba(0,0,0,.22); font-family: "Inter", sans-serif; }
@@ -49,13 +49,14 @@
     .tk-pin { display: inline-block; font-size: 28px; font-weight: 800; color: #fe2c55; background: #ffe3ea; border-radius: 6px; padding: 2px 8px; margin-left: 10px; vertical-align: 3px; }
 
     #s04-eq { top: 300px; }
+    #s04-box, .cbox { border-radius: 30px !important; }
     #s04-chest { position: absolute; left: 370px; top: 580px; width: 340px; height: 260px; }
     .s04-sh { position: absolute; left: 490px; top: 430px; width: 100px; height: 100px; }
     #s04-plus { position: absolute; left: 700px; top: 560px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 84px; color: #ffd23f; -webkit-text-stroke: 8px #2a1b12; paint-order: stroke fill; }
     #s04-w { top: 960px; }
   </style>
-  <div id="root" data-composition-id="s04" data-start="0" data-duration="4.280" data-width="1080" data-height="1920">
-    <div id="s04-stage" class="clip stage" data-start="0" data-duration="4.280" data-track-index="0">
+  <div id="root" data-composition-id="s04" data-start="0" data-duration="4.200" data-width="1080" data-height="1920">
+    <div id="s04-stage" class="clip stage" data-start="0" data-duration="4.200" data-track-index="0">
       <div id="s04-eq" class="bt dk">1 EINWOHNER = 5 MUSCHELN</div>
       <svg id="s04-chest" viewBox="0 0 340 260"><ellipse cx="170" cy="244" rx="160" ry="14" fill="rgba(0,0,0,.25)"/>
         <rect x="20" y="110" width="300" height="130" rx="14" fill="#b07a45" stroke="#2a1b12" stroke-width="8"/>
@@ -76,7 +77,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 4.28, "L6": [0.2, 4.1], "L6.words": [["jeder", 0.2, 0.659], ["einwohner", 0.659, 1.361], ["bringt", 1.361, 1.62], ["5", 1.62, 1.862], ["muscheln", 1.862, 2.346], ["mit", 2.346, 2.58], ["das", 2.81, 2.996], ["ist", 2.996, 3.182], ["unsere", 3.182, 3.721], ["währung", 3.721, 4.1]]};
+      const C = {"__dur": 4.2, "L6": [0.2, 4.02], "L6.words": [["jeder", 0.2, 0.615], ["einwohner", 0.615, 1.249], ["bringt", 1.249, 1.482], ["5", 1.482, 1.701], ["muscheln", 1.701, 2.139], ["mit", 2.139, 2.35], ["das", 2.68, 2.873], ["ist", 2.873, 3.067], ["unsere", 3.067, 3.626], ["währung", 3.626, 4.02]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];

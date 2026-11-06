@@ -6,7 +6,7 @@
     svg { overflow: visible; }
     /* Zähler-Box wie in der Referenz: Rahmen in Akzentfarbe, Label in Mono-Versalien, große Zahl */
     .cbox { position: absolute; left: 290px; width: 500px; top: 268px; height: 126px; border: 3px solid #ff4fb0;
-      border-radius: 14px; background: rgba(13,16,38,.88); text-align: center; box-shadow: 0 0 28px rgba(255,79,176,.35); }
+      border-radius: 32px; background: rgba(13,16,38,.88); text-align: center; box-shadow: 0 0 28px rgba(255,79,176,.35); }
     .cbox .lab { margin-top: 16px; font-family: "Space Mono", monospace; font-weight: 700; font-size: 28px;
       letter-spacing: .16em; color: #dfe2f5; }
     .cbox .num { margin-top: 2px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 56px; color: #fff;
@@ -27,11 +27,11 @@
     /* Text auf farbigem Balken (auffälliger, wie TikTok-Textboxen) */
     .bt { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; max-width: 860px; text-align: center;
       font-family: "Inter", sans-serif; font-weight: 900; font-size: 66px; line-height: 1.3; color: #fff; }
-    .bt .bx { padding: .06em .34em .14em; border-radius: .26em; -webkit-box-decoration-break: clone; box-decoration-break: clone; box-shadow: 0 9px 0 rgba(0,0,0,.28); }
+    .bt .bx { padding: .06em .4em .14em; border-radius: .6em; -webkit-box-decoration-break: clone; box-decoration-break: clone; box-shadow: 0 9px 0 rgba(0,0,0,.28); }
     .bt.pk .bx { background: #e8467c; } .bt.tq .bx { background: #0a9fa6; } .bt.vi .bx { background: #7b4fe0; } .bt.bl .bx { background: #2f7fe0; }
     .bt.ye .bx { background: #ffd23f; } .bt.ye { color: #2a1b12; } .bt.gr .bx { background: #2fbf6a; } .bt.dk .bx { background: #2a1b12; } .bt.dk { color: #ffd23f; }
     .bt.sm { font-size: 44px; }
-    .stamp { position: absolute; padding: 6px 26px; border: 10px solid; border-radius: 18px; background: rgba(255,255,255,.94);
+    .stamp { position: absolute; padding: 6px 30px; border: 10px solid; border-radius: 40px; background: rgba(255,255,255,.94);
       font-family: "Inter", sans-serif; font-weight: 900; font-size: 84px; }
     /* TikTok-Kommentare (echte Optik) */
     .tk { position: absolute; left: 50px; width: 860px; background: #fff; border-radius: 30px; padding: 20px 26px 6px; box-shadow: 0 14px 0 rgba(0,0,0,.22); font-family: "Inter", sans-serif; }
@@ -50,19 +50,19 @@
 
     #s06-st { left: 300px; top: 500px; color: #ff3b55; border-color: #ff3b55; transform: rotate(-10deg); font-size: 110px; }
     #s06-q { top: 300px; }
-    #s06-bio { top: 960px; }
+
   </style>
-  <div id="root" data-composition-id="s06" data-start="0" data-duration="5.380" data-width="1080" data-height="1920">
-    <div id="s06-stage" class="clip stage" data-start="0" data-duration="5.380" data-track-index="0">
+  <div id="root" data-composition-id="s06" data-start="0" data-duration="5.510" data-width="1080" data-height="1920">
+    <div id="s06-stage" class="clip stage" data-start="0" data-duration="5.510" data-track-index="0">
       <div id="s06-st" class="stamp">VOLL!</div>
       <div id="s06-q" class="bt ye">WANN?</div>
-      <div id="s06-bio" class="bt pk">LINK IN MEINER BIO</div>
+
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 5.38, "L9": [0.2, 2.55], "L9.words": [["ist", 0.2, 0.421], ["sie", 0.421, 0.641], ["voll", 0.641, 0.87], ["öffnen", 1.04, 1.64], ["neue", 1.64, 1.95], ["inseln", 1.95, 2.55]], "L10": [2.77, 5.2], "L10.words": [["wann", 2.77, 3.31], ["siehst", 3.5, 3.688], ["du", 3.688, 3.851], ["unter", 3.851, 4.184], ["dem", 4.184, 4.353], ["link", 4.353, 4.528], ["in", 4.528, 4.692], ["meiner", 4.692, 5.031], ["bio", 5.031, 5.2]]};
+      const C = {"__dur": 5.51, "L9": [0.2, 2.49], "L9.words": [["ist", 0.2, 0.477], ["sie", 0.477, 0.753], ["voll", 0.753, 1.04], ["öffnen", 1.25, 1.742], ["neue", 1.742, 1.998], ["inseln", 1.998, 2.49]], "L10": [2.71, 5.33], "L10.words": [["wann", 2.71, 3.08], ["siehst", 3.52, 3.72], ["du", 3.72, 3.894], ["unter", 3.894, 4.248], ["dem", 4.248, 4.428], ["link", 4.428, 4.615], ["in", 4.615, 4.789], ["meiner", 4.789, 5.15], ["bio", 5.15, 5.33]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -111,8 +111,6 @@
       tl.to("#s06-st", { opacity: 0, scale: .6, duration: .25 }, Math.max(ne - .1, vo + .8));
       tl.fromTo("#s06-q", { opacity: 0, scale: .3, rotation: -20 }, { opacity: 1, scale: 1, rotation: 0, duration: .45, ease: "elastic.out(1.1, .45)" }, wa - .1);
       tl.to("#s06-q", { rotation: 5, duration: .12, yoyo: true, repeat: 5, ease: "sine.inOut" }, wa + .4);
-      tl.fromTo("#s06-bio", { opacity: 0, y: 120 }, { opacity: 1, y: 0, duration: .45, ease: "bounce.out" }, wa + .1);
-      tl.to("#s06-bio", { scale: 1.08, duration: .2, yoyo: true, repeat: 3, ease: "sine.inOut" }, li + .3);
       tl.to("#s06-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
       window.__timelines["s06"] = tl;
     })();
