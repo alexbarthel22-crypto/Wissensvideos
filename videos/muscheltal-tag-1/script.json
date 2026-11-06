@@ -1,6 +1,6 @@
 {
  "title": "Muschel-Tal – Ich habe euch eine Insel gekauft",
- "voice": "Gemini TTS (gemini-3.1-flash-tts-preview, Stimme Achird), natürlich und emotional, --speed 1.05",
+ "voice": "Gemini TTS (gemini-3.1-flash-tts-preview, Stimme Achird), natürlich und emotional, --speed 1.12",
  "notes": "Startvideo Muschel-Tal. Prinzip: Folgen = einziehen, Hütte mit Namen, früher = näher am Rathaus, 500 Plätze, neue Inseln bei 1.000/2.500/5.000/10.000, geheime Insel, Mitbestimmen in Kommentaren, alles auf muscheltal.de (Bio). TikTok-Sicherheitsbereiche: Inhalt x 40–930, y 200–1500; Untertitel rechts 190 px Abstand.",
  "lead_in": 0.0,
  "bg": "#0a5a92",
@@ -15,7 +15,8 @@
   "first_class": "hook",
   "css": "@font-face { font-family: 'Lilita One'; src: url('assets/fonts/LilitaOne-Regular.woff2') format('woff2'); font-weight: 400; }\n    .inner.hook { font-family: 'Lilita One', sans-serif; font-weight: 400; font-size: 140px; line-height: 1.04; letter-spacing: .01em; top: -540px; }\n    .inner.hook .bar { background: #ff3d7f !important; padding: .02em .3em .08em; border-radius: .5em; }\n    .inner.hook .w { color: #fff; }\n    .inner .bar .w { margin: 0 .07em; }\n    .inner .bar { border-radius: .55em; padding: .04em .36em .1em; }\n    .inner .w { white-space: nowrap; }",
   "vary": true,
-  "pop_scale": 1.2
+  "pop_scale": 1.2,
+  "hook_punch": true
  },
  "scenes": [
   {
@@ -210,6 +211,10 @@
     {
      "id": "L14",
      "text": "Dort gibt es *g:alles / rund um Muschel-Tal!"
+    },
+    {
+     "id": "L14b",
+     "text": "Der Link steht übrigens / auch in unserer *y:Bio."
     }
    ],
    "sfx": [

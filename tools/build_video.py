@@ -155,13 +155,19 @@ def build_captions(project, timings, windows, total, big=False, opt=None):
             glow = ("0 3px 0 rgba(0,0,0,.35)" if bars else f"0 0 26px {COLORS[col]}aa, 0 5px 0 rgba(0,0,0,.55)") if col else ("0 3px 0 rgba(0,0,0,.35)" if bars else "0 5px 0 rgba(0,0,0,.55)")
             js.append(f'tl.to("#{wid}", {{ color: "{target}", textShadow: "{glow}", duration: 0.08, ease: "power1.out" }}, {w["start"] - 0.02:.3f});')
             if big and not (gi == 0 and wi == 0 and opt.get("first_at_zero")):  # Wort hüpft beim Sprechen kurz an (erstes Wort steht ruhig für das Vorschaubild)
-                js.append(f'tl.fromTo("#{wid}", {{ scale: {opt.get("pop_scale", 1.16)}, y: -8, rotation: {(-4, 3, -2, 4)[wi % 4]} }}, {{ scale: 1, y: 0, rotation: 0, duration: 0.28, ease: "back.out(3)", immediateRender: false }}, {w["start"] - 0.02:.3f});')
+                if gi == 0 and opt.get("hook_punch"):  # Einstieg: jedes Wort knallt deutlich auf
+                    js.append(f'tl.fromTo("#{wid}", {{ scale: 1.7, y: -30, rotation: {(-10, 8, -7, 9)[wi % 4]} }}, {{ scale: 1, y: 0, rotation: 0, duration: 0.42, ease: "elastic.out(1.1, 0.45)", immediateRender: false }}, {w["start"] - 0.03:.3f});')
+                else:
+                    js.append(f'tl.fromTo("#{wid}", {{ scale: {opt.get("pop_scale", 1.16)}, y: -8, rotation: {(-4, 3, -2, 4)[wi % 4]} }}, {{ scale: 1, y: 0, rotation: 0, duration: 0.28, ease: "back.out(3)", immediateRender: false }}, {w["start"] - 0.02:.3f});')
         dur = round(g["end"] - g["start"], 3)
         rows.append(f'    <div id="cg{gi}" class="clip grp" data-start="{g["start"]:.3f}" data-duration="{dur}" data-track-index="{gi % 2}">'
                     f'<div id="cgi{gi}" class="inner{" " + opt["first_class"] if gi == 0 and opt.get("first_class") else ""}"{" data-layout-allow-overlap" if big else ""}>'
                     + (f'<span class="bar" style="background:{bar_cols[gi % len(bar_cols)]}">{" ".join(spans)}</span>' if bars else " ".join(spans)) + '</div></div>')
         if gi == 0 and opt.get("first_at_zero"):  # erster Satz steht ab Frame 0 (Thumbnail)
             js.append(f'tl.set("#cgi{gi}", {{ scale: 1, opacity: 1 }}, 0);')
+            if opt.get("hook_punch"):  # ganzer Satz: Schlag auf dem letzten Wort, danach lebendiges Wippen
+                lw = g["words"][-1]["start"]
+                js.append(f'tl.fromTo("#cgi{gi}", {{ scale: 1.22, rotation: -4 }}, {{ scale: 1, rotation: 0, duration: 0.6, ease: "elastic.out(1, 0.35)", immediateRender: false }}, {lw - 0.02:.3f});')
         else:
             if opt.get("vary"):  # jede Gruppe kommt anders herein, Balken leicht schräg
                 fr, to = ENTRANCES[gi % len(ENTRANCES)]

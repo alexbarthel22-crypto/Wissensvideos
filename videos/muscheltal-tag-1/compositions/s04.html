@@ -25,7 +25,7 @@
     .kick { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 24px; border-radius: 14px;
       background: #2a1b12; color: #ffd23f; font-family: "Space Mono", monospace; font-weight: 700; font-size: 34px; letter-spacing: .14em; }
     /* Text auf farbigem Balken (auffälliger, wie TikTok-Textboxen) */
-    .bt { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; max-width: 860px; text-align: center;
+    .bt { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; max-width: 740px; text-align: center;
       font-family: "Inter", sans-serif; font-weight: 900; font-size: 66px; line-height: 1.3; color: #fff; }
     .bt .bx { padding: .06em .4em .14em; border-radius: .6em; -webkit-box-decoration-break: clone; box-decoration-break: clone; box-shadow: 0 9px 0 rgba(0,0,0,.28); }
     .bt.pk .bx { background: #e8467c; } .bt.tq .bx { background: #0a9fa6; } .bt.vi .bx { background: #7b4fe0; } .bt.bl .bx { background: #2f7fe0; }
@@ -34,13 +34,13 @@
     .stamp { position: absolute; padding: 6px 30px; border: 10px solid; border-radius: 40px; background: rgba(255,255,255,.94);
       font-family: "Inter", sans-serif; font-weight: 900; font-size: 84px; }
     /* TikTok-Kommentare (echte Optik) */
-    .tk { position: absolute; left: 50px; width: 860px; background: #fff; border-radius: 30px; padding: 20px 26px 6px; box-shadow: 0 14px 0 rgba(0,0,0,.22); font-family: "Inter", sans-serif; }
+    .tk { position: absolute; left: 60px; width: 800px; background: #fff; border-radius: 30px; padding: 20px 26px 6px; box-shadow: 0 14px 0 rgba(0,0,0,.22); font-family: "Inter", sans-serif; }
     .tk-h { position: relative; text-align: center; font-weight: 800; font-size: 30px; color: #161823; margin-bottom: 10px; }
     .tk-h b { position: absolute; right: 4px; top: -4px; font-size: 38px; font-weight: 400; color: #161823; }
     .tk-c { position: relative; display: flex; gap: 20px; padding: 12px 96px 16px 0; }
     .tk-a { width: 84px; height: 84px; border-radius: 50%; flex: none; display: grid; place-items: center; color: #fff; font-weight: 900; font-size: 38px; }
     .tk-u { font-size: 28px; color: #8a8b91; font-weight: 600; }
-    .tk-t { font-size: 38px; color: #161823; font-weight: 500; line-height: 1.22; margin-top: 2px; }
+    .tk-t { font-size: 34px; color: #161823; font-weight: 500; line-height: 1.22; margin-top: 2px; }
     .tk-m { font-size: 28px; color: #8a8b91; font-weight: 600; margin-top: 8px; } .tk-m span { margin-left: 30px; }
     .tk-l { position: absolute; right: 4px; top: 16px; width: 86px; text-align: center; font-size: 28px; color: #8a8b91; font-weight: 600; }
     .tk-l .hz { position: relative; width: 48px; height: 48px; margin: 0 auto 2px; }
@@ -48,15 +48,15 @@
     .tk-fh { position: absolute; left: 19px; top: 0; width: 50px; height: 50px; opacity: 0; }
     .tk-pin { display: inline-block; font-size: 28px; font-weight: 800; color: #fe2c55; background: #ffe3ea; border-radius: 6px; padding: 2px 8px; margin-left: 10px; vertical-align: 3px; }
 
-    #s04-eq { top: 300px; }
+    #s04-eq { top: 300px; font-size: 56px; }
     #s04-box, .cbox { border-radius: 30px !important; }
     #s04-chest { position: absolute; left: 370px; top: 580px; width: 340px; height: 260px; }
     .s04-sh { position: absolute; left: 490px; top: 430px; width: 100px; height: 100px; }
     #s04-plus { position: absolute; left: 700px; top: 560px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 84px; color: #ffd23f; -webkit-text-stroke: 8px #2a1b12; paint-order: stroke fill; }
     #s04-w { top: 960px; }
   </style>
-  <div id="root" data-composition-id="s04" data-start="0" data-duration="4.270" data-width="1080" data-height="1920">
-    <div id="s04-stage" class="clip stage" data-start="0" data-duration="4.270" data-track-index="0">
+  <div id="root" data-composition-id="s04" data-start="0" data-duration="4.030" data-width="1080" data-height="1920">
+    <div id="s04-stage" class="clip stage" data-start="0" data-duration="4.030" data-track-index="0">
       <div id="s04-eq" class="bt dk">1 EINWOHNER = 5 MUSCHELN</div>
       <svg id="s04-chest" viewBox="0 0 340 260"><ellipse cx="170" cy="244" rx="160" ry="14" fill="rgba(0,0,0,.25)"/>
         <rect x="20" y="110" width="300" height="130" rx="14" fill="#b07a45" stroke="#2a1b12" stroke-width="8"/>
@@ -77,7 +77,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 4.27, "L6": [0.2, 4.09], "L6.words": [["jeder", 0.2, 0.638], ["einwohner", 0.638, 1.307], ["bringt", 1.307, 1.554], ["5", 1.554, 1.785], ["muscheln", 1.785, 2.247], ["mit", 2.247, 2.47], ["das", 2.9, 3.072], ["ist", 3.072, 3.244], ["unsere", 3.244, 3.74], ["währung", 3.74, 4.09]]};
+      const C = {"__dur": 4.03, "L6": [0.2, 3.85], "L6.words": [["jeder", 0.2, 0.615], ["einwohner", 0.615, 1.249], ["bringt", 1.249, 1.482], ["5", 1.482, 1.701], ["muscheln", 1.701, 2.139], ["mit", 2.139, 2.35], ["das", 2.73, 2.892], ["ist", 2.892, 3.053], ["unsere", 3.053, 3.521], ["währung", 3.521, 3.85]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];

@@ -25,7 +25,7 @@
     .kick { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 24px; border-radius: 14px;
       background: #2a1b12; color: #ffd23f; font-family: "Space Mono", monospace; font-weight: 700; font-size: 34px; letter-spacing: .14em; }
     /* Text auf farbigem Balken (auffälliger, wie TikTok-Textboxen) */
-    .bt { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; max-width: 860px; text-align: center;
+    .bt { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; max-width: 740px; text-align: center;
       font-family: "Inter", sans-serif; font-weight: 900; font-size: 66px; line-height: 1.3; color: #fff; }
     .bt .bx { padding: .06em .4em .14em; border-radius: .6em; -webkit-box-decoration-break: clone; box-decoration-break: clone; box-shadow: 0 9px 0 rgba(0,0,0,.28); }
     .bt.pk .bx { background: #e8467c; } .bt.tq .bx { background: #0a9fa6; } .bt.vi .bx { background: #7b4fe0; } .bt.bl .bx { background: #2f7fe0; }
@@ -34,13 +34,13 @@
     .stamp { position: absolute; padding: 6px 30px; border: 10px solid; border-radius: 40px; background: rgba(255,255,255,.94);
       font-family: "Inter", sans-serif; font-weight: 900; font-size: 84px; }
     /* TikTok-Kommentare (echte Optik) */
-    .tk { position: absolute; left: 50px; width: 860px; background: #fff; border-radius: 30px; padding: 20px 26px 6px; box-shadow: 0 14px 0 rgba(0,0,0,.22); font-family: "Inter", sans-serif; }
+    .tk { position: absolute; left: 60px; width: 800px; background: #fff; border-radius: 30px; padding: 20px 26px 6px; box-shadow: 0 14px 0 rgba(0,0,0,.22); font-family: "Inter", sans-serif; }
     .tk-h { position: relative; text-align: center; font-weight: 800; font-size: 30px; color: #161823; margin-bottom: 10px; }
     .tk-h b { position: absolute; right: 4px; top: -4px; font-size: 38px; font-weight: 400; color: #161823; }
     .tk-c { position: relative; display: flex; gap: 20px; padding: 12px 96px 16px 0; }
     .tk-a { width: 84px; height: 84px; border-radius: 50%; flex: none; display: grid; place-items: center; color: #fff; font-weight: 900; font-size: 38px; }
     .tk-u { font-size: 28px; color: #8a8b91; font-weight: 600; }
-    .tk-t { font-size: 38px; color: #161823; font-weight: 500; line-height: 1.22; margin-top: 2px; }
+    .tk-t { font-size: 34px; color: #161823; font-weight: 500; line-height: 1.22; margin-top: 2px; }
     .tk-m { font-size: 28px; color: #8a8b91; font-weight: 600; margin-top: 8px; } .tk-m span { margin-left: 30px; }
     .tk-l { position: absolute; right: 4px; top: 16px; width: 86px; text-align: center; font-size: 28px; color: #8a8b91; font-weight: 600; }
     .tk-l .hz { position: relative; width: 48px; height: 48px; margin: 0 auto 2px; }
@@ -52,8 +52,8 @@
     #s07-q { position: absolute; left: 0; width: 1080px; top: 520px; font-family: "Lilita One", sans-serif; font-size: 220px; color: #fff; text-align: center; -webkit-text-stroke: 12px #2a1b12; paint-order: stroke fill; }
     @font-face { font-family: "Lilita One"; src: url("assets/fonts/LilitaOne-Regular.woff2") format("woff2"); font-weight: 400; }
   </style>
-  <div id="root" data-composition-id="s07" data-start="0" data-duration="3.470" data-width="1080" data-height="1920">
-    <div id="s07-stage" class="clip stage" data-start="0" data-duration="3.470" data-track-index="0">
+  <div id="root" data-composition-id="s07" data-start="0" data-duration="3.270" data-width="1080" data-height="1920">
+    <div id="s07-stage" class="clip stage" data-start="0" data-duration="3.270" data-track-index="0">
       <div id="s07-k" class="bt vi">GEHEIM</div>
       <div id="s07-q">???</div>
     </div>
@@ -61,7 +61,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 3.47, "L11": [0.2, 3.29], "L11.words": [["und", 0.2, 0.384], ["am", 0.384, 0.561], ["rand", 0.561, 0.751], ["der", 0.751, 0.935], ["karte", 0.935, 1.296], ["versteckt", 1.296, 1.683], ["sich", 1.683, 1.873], ["eine", 1.873, 2.227], ["geheime", 2.227, 2.765], ["insel", 2.765, 3.126], ["", 3.126, 3.29]]};
+      const C = {"__dur": 3.27, "L11": [0.2, 3.09], "L11.words": [["und", 0.2, 0.372], ["am", 0.372, 0.537], ["rand", 0.537, 0.715], ["der", 0.715, 0.887], ["karte", 0.887, 1.225], ["versteckt", 1.225, 1.587], ["sich", 1.587, 1.765], ["eine", 1.765, 2.096], ["geheime", 2.096, 2.599], ["insel", 2.599, 2.937], ["", 2.937, 3.09]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
