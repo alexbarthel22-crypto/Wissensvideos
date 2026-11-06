@@ -1,30 +1,29 @@
 <template>
   <style>
     /*__COMMON_CSS__*/
-    #s08-t { top: 214px; }
-    .cm { position: absolute; left: 70px; width: 820px; display: flex; gap: 18px; align-items: flex-start; padding: 18px 22px; border-radius: 26px; background: rgba(255,255,255,.96);
-      box-shadow: 0 10px 0 rgba(0,0,0,.22); font-family: "Inter", sans-serif; font-weight: 700; font-size: 40px; color: #161616; line-height: 1.2; }
-    .cm i { font-style: normal; width: 76px; height: 76px; border-radius: 50%; flex: none; display: grid; place-items: center; color: #fff; font-weight: 900; font-size: 36px; }
-    .cm b { display: block; font-size: 30px; color: #8a8a8a; font-weight: 700; margin-bottom: 4px; }
-    .cm small { display: block; font-size: 28px; color: #9a9a9a; margin-top: 6px; }
+    #s08-t { top: 290px; }
+    #s08-sheet { top: 400px; }
   </style>
   <div id="root" data-composition-id="s08" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
     <div id="s08-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
       <div id="s08-t" class="bt ye">IHR ENTSCHEIDET! 🗳️</div>
-      <div id="s08-c1" class="cm" style="top:360px"><i style="background:#e8467c">L</i><div><b>@lxna_09.x</b>bau ein freibad!! 🏊‍♀️<small>♡ 1.204</small></div></div>
-      <div id="s08-c2" class="cm" style="top:590px"><i style="background:#2f7fe0">J</i><div><b>@j0nas.k_04</b>ich will häuptling werden 😭👑<small>♡ 873</small></div></div>
-      <div id="s08-c3" class="cm" style="top:820px"><i style="background:#2fbf6a">M</i><div><b>@mia__b.2k11</b>pizzeria pls 🍕🍕<small>♡ 651</small></div></div>
+      <div id="s08-sheet" class="tk"><div class="tk-h">2.318 Kommentare<b>×</b></div>
+        <div id="s08-c1" class="tk-c"><div class="tk-a" style="background:#e8467c">L</div><div><div class="tk-u">lxna_09.x</div><div class="tk-t">bau ein freibad!! 🏊‍♀️</div><div class="tk-m">vor 2 Std.<span>Antworten</span></div></div><div class="tk-l"><div class="hz"></div><i>1.204</i></div></div>
+        <div id="s08-c2" class="tk-c"><div class="tk-a" style="background:#2f7fe0">J</div><div><div class="tk-u">j0nas.k_04</div><div class="tk-t">ich will häuptling werden 😭👑</div><div class="tk-m">vor 2 Std.<span>Antworten</span></div></div><div class="tk-l"><div class="hz"></div><i>873</i></div></div>
+        <div id="s08-c3" class="tk-c"><div class="tk-a" style="background:#2fbf6a">M</div><div><div class="tk-u">mia__b.2k11</div><div class="tk-t">pizzeria pls 🍕🍕</div><div class="tk-m">vor 2 Std.<span>Antworten</span></div></div><div class="tk-l"><div class="hz"></div><i>651</i></div></div>
+      </div>
     </div>
   </div>
   <script>
     (() => {
       /*__CUE_HELPERS__*/
+      /*__COMMON_JS__*/
       const tl = gsap.timeline({ paused: true });
       const ihr = at("L12", "ihr"), ko = at("L12", "Kommentaren");
-      tl.fromTo("#s08-c1", { opacity: 0, x: -200, scale: .7 }, { opacity: 1, x: 0, scale: 1, duration: .35, ease: "back.out(2)" }, 0.05);
-      tl.fromTo("#s08-t", { opacity: 0, scale: 1.8 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.4)" }, ihr - .1);
-      tl.fromTo("#s08-c2", { opacity: 0, x: 200, scale: .7 }, { opacity: 1, x: 0, scale: 1, duration: .35, ease: "back.out(2)" }, ihr + .25);
-      tl.fromTo("#s08-c3", { opacity: 0, x: -200, scale: .7 }, { opacity: 1, x: 0, scale: 1, duration: .35, ease: "back.out(2)" }, ko - .2);
+      tl.fromTo("#s08-sheet", { opacity: 0, y: 500 }, { opacity: 1, y: 0, duration: .45, ease: "power4.out" }, 0.02);
+      ["#s08-c1", "#s08-c2", "#s08-c3"].forEach((id, k) => tl.fromTo(id, { opacity: 0, x: -60 }, { opacity: 1, x: 0, duration: .3, ease: "power3.out" }, .2 + k * .18));
+      tl.fromTo("#s08-t", { opacity: 0, scale: 2, rotation: -10 }, { opacity: 1, scale: 1, rotation: -2, duration: .35, ease: "back.out(2.4)" }, ihr - .1);
+      tkLike(tl, "#s08-c1", .55, 1204, 1391, 1.6, 3); tkLike(tl, "#s08-c2", ihr + .1, 873, 940, 1.2, 5); tkLike(tl, "#s08-c3", ko - .3, 651, 702, 1, 7);
       tl.to("#s08-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
       window.__timelines["s08"] = tl;
     })();

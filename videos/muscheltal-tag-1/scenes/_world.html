@@ -70,8 +70,9 @@
       const LANT = [0, 1, 2, 3, 4, 5, 6, 7].map(i => polar(MAIN, i / 8 * TAU, PLAZA - 14));
 
       // ---------- Zeitplan: Hütten erscheinen passend zum Text; Hütte Nr. 1 bleibt frei, Nr. 37 = "deine" Hütte ----------
-      const ME = 36, tJ = at("L2", "jeder"), tH = at("L2", "Haus", 1), tEin = at("L4", "ein"), tF = at("L7", "früher"), tFull = line("L8")[1];
-      const born = PL.map((p, i) => i === 0 ? Infinity : i === ME ? tEin : i <= 40 ? tJ + (i / 40) * (tH - tJ + .4) : tF + ((i - 41) / 459) * (tFull - tF));
+      // Noch keine Hütten: Platz Nr. 1 zeigt schemenhaft die erste Hütte; bei "500" erscheinen die freien Grundstücke.
+      const ME = 0, tH = at("L2", "Haus"), tPl = at("L8", "Platz"), tFull = line("L8")[1] + .3;
+      const plotT = PL.map((p, i) => tPl + (i / 499) * (tFull - tPl));
 
       // ---------- Kamera (Schlüsselbilder an Wörtern) ----------
       const fitAll = (() => { let x0 = XM.x - XM.R, x1 = XM.x + XM.R, y0 = XM.y - XM.R, y1 = XM.y + XM.R; for (const v of ALL) { x0 = Math.min(x0, v.x - v.R); x1 = Math.max(x1, v.x + v.R); y0 = Math.min(y0, v.y - v.R); y1 = Math.max(y1, v.y + v.R); }
@@ -82,7 +83,7 @@
         [line("L3")[0] - .1, 0, 10, zMain * 1.6], [line("L3")[1], 0, 0, zMain * 1.75],
         [at("L4", "folgst") - .3, me.x, me.y, 3.0], [line("L5")[1], me.x, me.y, 3.3],
         [line("L6")[0], 0, 30, 2.1], [line("L6")[1], 0, 20, 2.3],
-        [tF, 0, 20, zMain * 1.0], [tFull, 0, 20, zMain * .98],
+        [at("L7", "früher"), 0, 20, zMain * 1.0], [tFull, 0, 20, zMain * .98],
         [at("L9", "neue") - .25, 0, 20, zMain * .9], [at("L9", "neue") + .8, fitAll.x, fitAll.y, fitAll.z], [line("L10")[1], fitAll.x, fitAll.y, fitAll.z * 1.05],
         [line("L11")[0] + .3, XM.x, XM.y + 30, .95], [line("L11")[1], XM.x, XM.y + 30, 1.1],
         [line("L12")[0] + .4, 0, 20, zMain * 1.25], [line("L12")[1], 0, 20, zMain * 1.35],
@@ -179,11 +180,17 @@
           paths(); plaza();
           for (const f of MAIN.flow) if (vis(f.x, f.y)) { c.fillStyle = f.c; c.beginPath(); c.arc(f.x, f.y, 1.4, 0, TAU); c.fill(); }
           for (const b of MAIN.bush) if (vis(b.x, b.y)) { c.fillStyle = "#3f9b45"; c.beginPath(); c.arc(b.x, b.y, b.r, 0, TAU); c.fill(); c.fillStyle = "#57b85a"; c.beginPath(); c.arc(b.x - b.r * .3, b.y - b.r * .3, b.r * .55, 0, TAU); c.fill(); }
-          // Hütte Nr. 1: freier Platz, ab der Schlussszene pulsierend markiert
-          const fr = sm(line("L15")[0] - .4, line("L15")[0] + .2, t);
-          c.fillStyle = "rgba(255,244,220,.9)"; c.strokeStyle = "rgba(150,110,60,.7)"; c.lineWidth = .7; c.setLineDash([1.6, 1.2]); c.fillRect(one.x - 6, one.y - 4, 12, 10); c.strokeRect(one.x - 6, one.y - 4, 12, 10); c.setLineDash([]);
-          if (fr > 0) { const p = (t * 1.2) % 1; c.strokeStyle = `rgba(57,226,122,${fr * (1 - p)})`; c.lineWidth = 2; c.beginPath(); c.arc(one.x, one.y + 1, 8 + p * 18, 0, TAU); c.stroke(); }
-          PL.forEach((p, i) => { const b = born[i]; if (t < b || !vis(p.x, p.y)) return; const k = Math.min(1, (t - b) / .3), s = k < 1 ? 1 + Math.sin(k * Math.PI) * .35 - (1 - k) * 1 : 1; hut(p, Math.max(.01, s)); });
+          // freie Grundstücke (ab "Platz für 500")
+          c.setLineDash([1.6, 1.2]); c.lineWidth = .7;
+          PL.forEach((p, i) => { if (i === 0 || t < plotT[i] || !vis(p.x, p.y)) return; const k = Math.min(1, (t - plotT[i]) / .25); c.globalAlpha = k;
+            c.fillStyle = "rgba(255,244,220,.75)"; c.strokeStyle = "rgba(150,110,60,.7)"; c.fillRect(p.x - 6, p.y - 4, 12, 10); c.strokeRect(p.x - 6, p.y - 4, 12, 10); });
+          c.globalAlpha = 1; c.setLineDash([]);
+          // Platz Nr. 1: schemenhafte erste Hütte (pulsiert), wartet auf den ersten Follower
+          const gh = sm(tH - .2, tH + .5, t);
+          if (gh > 0) { const pul = .55 + .25 * Math.sin(t * 4); c.save(); c.globalAlpha = gh * pul; c.setLineDash([2, 1.5]); c.strokeStyle = "#fff"; c.lineWidth = 1.2; c.fillStyle = "rgba(255,255,255,.35)";
+            const x = one.x, y = one.y; c.beginPath(); c.rect(x - 6, y - 2, 12, 8); c.moveTo(x - 8.5, y - 1); c.lineTo(x, y - 9.5); c.lineTo(x + 8.5, y - 1); c.closePath(); c.fill(); c.stroke(); c.setLineDash([]);
+            c.fillStyle = "#fff"; c.font = `900 7px ${FONT}`; c.textAlign = "center"; c.fillText("?", x, y + 4.5); c.restore();
+            const p2 = (t * .9) % 1; c.strokeStyle = `rgba(255,255,255,${gh * (1 - p2) * .8})`; c.lineWidth = 1.4; c.beginPath(); c.arc(one.x, one.y + 1, 9 + p2 * 22, 0, TAU); c.stroke(); }
           jungle(MAIN); for (const p of MAIN.palms) if (vis(p.x, p.y)) palm(p);
           for (const b of BOATS) { const a = b.ph + t * b.sp, [x, y] = polar(MAIN, a, b.r + Math.sin(t * .3 + b.ph) * 10); if (vis(x, y)) boat(x, y, a + (b.sp > 0 ? Math.PI / 2 : -Math.PI / 2), b.col); } }
         for (const v of NB) { if (!vis(v.x, v.y, v.R + 60)) continue; feature(v); jungle(v); for (const p of v.palms) if (vis(p.x, p.y)) palm(p); }

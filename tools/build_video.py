@@ -155,7 +155,7 @@ def build_captions(project, timings, windows, total, big=False, opt=None):
             glow = ("0 3px 0 rgba(0,0,0,.35)" if bars else f"0 0 26px {COLORS[col]}aa, 0 5px 0 rgba(0,0,0,.55)") if col else ("0 3px 0 rgba(0,0,0,.35)" if bars else "0 5px 0 rgba(0,0,0,.55)")
             js.append(f'tl.to("#{wid}", {{ color: "{target}", textShadow: "{glow}", duration: 0.08, ease: "power1.out" }}, {w["start"] - 0.02:.3f});')
             if big:  # Wort hüpft beim Sprechen kurz an
-                js.append(f'tl.fromTo("#{wid}", {{ scale: 1.16, y: -8, rotation: {(-4, 3, -2, 4)[wi % 4]} }}, {{ scale: 1, y: 0, rotation: 0, duration: 0.28, ease: "back.out(3)", immediateRender: false }}, {w["start"] - 0.02:.3f});')
+                js.append(f'tl.fromTo("#{wid}", {{ scale: {opt.get("pop_scale", 1.16)}, y: -8, rotation: {(-4, 3, -2, 4)[wi % 4]} }}, {{ scale: 1, y: 0, rotation: 0, duration: 0.28, ease: "back.out(3)", immediateRender: false }}, {w["start"] - 0.02:.3f});')
         dur = round(g["end"] - g["start"], 3)
         rows.append(f'    <div id="cg{gi}" class="clip grp" data-start="{g["start"]:.3f}" data-duration="{dur}" data-track-index="{gi % 2}">'
                     f'<div id="cgi{gi}" class="inner{" " + opt["first_class"] if gi == 0 and opt.get("first_class") else ""}"{" data-layout-allow-overlap" if big else ""}>'
@@ -163,7 +163,12 @@ def build_captions(project, timings, windows, total, big=False, opt=None):
         if gi == 0 and opt.get("first_at_zero"):  # erster Satz steht ab Frame 0 (Thumbnail)
             js.append(f'tl.set("#cgi{gi}", {{ scale: 1, opacity: 1 }}, 0);')
         else:
-            js.append(f'tl.fromTo("#cgi{gi}", {{ scale: 0.86, opacity: 0 }}, {{ scale: 1, opacity: 1, duration: 0.16, ease: "back.out(2.2)" }}, {g["start"]:.3f});')
+            if opt.get("vary"):  # jede Gruppe kommt anders herein, Balken leicht schräg
+                fr, to = ENTRANCES[gi % len(ENTRANCES)]
+                rot = (-2, 1.5, -1, 2.2, -1.6, 1)[gi % 6]
+                js.append(f'tl.fromTo("#cgi{gi}", {{ opacity: 0, {fr} }}, {{ opacity: 1, rotation: {rot}, {to} }}, {g["start"]:.3f});')
+            else:
+                js.append(f'tl.fromTo("#cgi{gi}", {{ scale: 0.86, opacity: 0 }}, {{ scale: 1, opacity: 1, duration: 0.16, ease: "back.out(2.2)" }}, {g["start"]:.3f});')
         js.append(f'tl.to("#cgi{gi}", {{ opacity: 0, duration: 0.08, ease: "power2.in" }}, {g["end"] - 0.08:.3f});')
         js.append(f'tl.set("#cgi{gi}", {{ opacity: 0 }}, {g["end"]:.3f});')
     doc = f"""<template>
@@ -187,6 +192,17 @@ def build_captions(project, timings, windows, total, big=False, opt=None):
 </template>
 """
     (project / "compositions" / "captions.html").write_text(doc)
+
+
+ENTRANCES = [
+    ("scale: 0.5, rotation: -8", "scale: 1, duration: 0.28, ease: \"back.out(2.6)\""),
+    ("x: -260, skewX: -18", "x: 0, skewX: 0, duration: 0.26, ease: \"power4.out\""),
+    ("y: 120, scale: 0.9", "y: 0, scale: 1, duration: 0.42, ease: \"bounce.out\""),
+    ("scaleX: 0.2, scaleY: 1.4", "scaleX: 1, scaleY: 1, duration: 0.34, ease: \"elastic.out(1, 0.5)\""),
+    ("x: 260, skewX: 18", "x: 0, skewX: 0, duration: 0.26, ease: \"power4.out\""),
+    ("y: -110, rotation: 10", "y: 0, duration: 0.32, ease: \"back.out(2.2)\""),
+    ("scale: 1.8, filter: \"blur(10px)\"", "scale: 1, filter: \"blur(0px)\", duration: 0.24, ease: \"expo.out\""),
+]
 
 
 def safe_css(o):

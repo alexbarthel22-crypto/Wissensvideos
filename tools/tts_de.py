@@ -129,7 +129,7 @@ def synth_google(texts, voice, scales, prons=None):
     return out
 
 
-def synth_gemini(texts, voice, scales, styles, model):
+def synth_gemini(texts, voice, scales, styles, model, cache_dir=None, force=()):
     """Gemini-TTS: Stimme mit Emotion per Regieanweisung (styles[i]). Schlüssel aus $GEMINI_API_KEY.
     Tempo über ffmpeg-atempo (Tonhöhe bleibt)."""
     import base64
@@ -139,23 +139,52 @@ def synth_gemini(texts, voice, scales, styles, model):
     key = os.environ.get("GEMINI_API_KEY")
     if not key:
         raise SystemExit("GEMINI_API_KEY fehlt (in den Umgebungs-Einstellungen hinterlegen).")
+    import hashlib
     out = []
-    for t, ls, st in zip(texts, scales, styles):
+    for idx, (t, ls, st) in enumerate(zip(texts, scales, styles)):
+        key_h = hashlib.sha1(json.dumps([t, st, voice, model]).encode()).hexdigest()[:16]
+        cpath = Path(cache_dir) / f"{key_h}.wav" if cache_dir else None
+        n_words = len(t.split())
+        if cpath and cpath.exists() and idx not in force:
+            pcm, sr = sf.read(cpath, dtype="float32")
+        else:
+            pcm, sr = gemini_line(t, st, voice, model, key, n_words)
+            if cpath:
+                cpath.parent.mkdir(parents=True, exist_ok=True)
+                sf.write(cpath, pcm, sr)
+        if abs(ls - 1) > 0.01:
+            with tempfile.TemporaryDirectory() as d:
+                src, dst = Path(d) / "a.wav", Path(d) / "b.wav"
+                sf.write(src, pcm, sr)
+                subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", src, "-af", f"atempo={1 / ls:.3f}", dst], check=True)
+                pcm, sr = sf.read(dst, dtype="float32")
+        out.append((pcm, sr))
+    return out
+
+
+def gemini_line(t, st, voice, model, key, n_words, tries=5):
+    """Eine Zeile erzeugen. Gemini dichtet manchmal Wörter/Laute dazu (Zeile wird zu lang) -> neu würfeln, kürzeste plausible nehmen."""
+    import base64
+    import time
+    import urllib.error
+    import urllib.request
+    best = None
+    for attempt in range(tries):
         prompt = f"### DIRECTOR'S NOTES\n{st}\n\n### TRANSCRIPT\n{t}" if st else t  # Notizen werden nicht mitgesprochen
         body = {"contents": [{"parts": [{"text": prompt}]}],
                 "generationConfig": {"responseModalities": ["AUDIO"],
                                      "speechConfig": {"voiceConfig": {"prebuiltVoiceConfig": {"voiceName": voice}}}}}
         url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={key}"
-        for attempt in range(5):
+        for att in range(5):
             try:
                 req = urllib.request.Request(url, data=json.dumps(body).encode(), headers={"Content-Type": "application/json"})
                 with urllib.request.urlopen(req, timeout=120) as r:
                     part = json.loads(r.read())["candidates"][0]["content"]["parts"][0]["inlineData"]
                 break
             except (urllib.error.HTTPError, urllib.error.URLError, KeyError) as e:
-                if attempt == 4:
+                if att == 4:
                     raise
-                time.sleep(15 * (attempt + 1))
+                time.sleep(30 * (att + 1))
         raw = base64.b64decode(part["data"])
         if raw[:4] in (b"RIFF", b"fLaC", b"OggS", b"ID3\x03") or raw[:2] == b"\xff\xfb":
             import io
@@ -166,15 +195,17 @@ def synth_gemini(texts, voice, scales, styles, model):
             m = re.search(r"rate=(\d+)", part.get("mimeType", ""))
             sr = int(m.group(1)) if m else 24000
             pcm = np.frombuffer(raw, dtype="<i2").astype("float32") / 32768
-        if abs(ls - 1) > 0.01:
-            with tempfile.TemporaryDirectory() as d:
-                src, dst = Path(d) / "a.wav", Path(d) / "b.wav"
-                sf.write(src, pcm, sr)
-                subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", src, "-af", f"atempo={1 / ls:.3f}", dst], check=True)
-                pcm, sr = sf.read(dst, dtype="float32")
-        out.append((pcm, sr))
-        time.sleep(3)
-    return out
+        dur = len(trim(resample(pcm.astype("float32"), sr))) / SR if len(pcm) else 0
+        syl = sum(syllables(w) for w in t.split())
+        limit = syl / 5.0 + 0.6  # deutlich länger = vermutlich Wörter/Laute dazugedichtet
+        print(f"    gemini: {t[:40]!r} {syl:.0f} Silben, {dur:.2f} s (max {limit:.2f}){'  -> neu' if dur > limit else ''}")
+        if best is None or dur < best[2]:
+            best = (pcm, sr, dur)
+        if dur <= limit:
+            break
+        time.sleep(7)
+    time.sleep(7)
+    return best[0], best[1]
 
 
 def resample(audio, sr):
@@ -292,6 +323,7 @@ def main():
     ap.add_argument("project")
     ap.add_argument("--backend", choices=["gemini", "google", "coqui", "piper"], default="coqui")
     ap.add_argument("--model", default="gemini-3.8-flash-tts", help="Gemini-TTS-Modell")
+    ap.add_argument("--redo", help="Zeilen-IDs (L2,L8) neu erzeugen statt aus dem Cache")
     ap.add_argument("--voice-dir", help="Piper-Stimmenordner oder Coqui-Modellordner (Standard: aus tools/setup.sh)")
     ap.add_argument("--coqui-python", default=str(CACHE / "coqui" / "bin" / "python"))
     ap.add_argument("--speed", type=float, default=1.0, help="Grundtempo (>1 = schneller); pro Zeile mit 'speed' feinjustierbar")
@@ -319,7 +351,9 @@ def main():
     texts = [l["spoken"] for l in lines]
     scales = [l["scale"] for l in lines]
     if args.backend == "gemini":
-        raw = synth_gemini(texts, args.voice, scales, [l["style"] for l in lines], args.model)
+        force = {i for i, l in enumerate(lines) if l["id"] in (args.redo or "").split(",")}
+        raw = synth_gemini(texts, args.voice, scales, [l["style"] for l in lines], args.model,
+                           project / "assets" / "voice" / "gemini_cache", force)
     elif args.backend == "google":
         raw = synth_google(texts, args.voice if args.voice.startswith("de-DE") else "de-DE-Chirp3-HD-Puck", scales,
                            script.get("pronunciations"))
@@ -358,7 +392,7 @@ def main():
     raw_path = out_dir / "narration_raw.wav"
     sf.write(raw_path, audio, SR)
     # Lautheit für Social Media: -16 LUFS, True Peak -1.5 dB
-    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", raw_path, "-af", "loudnorm=I=-16:TP=-1.5:LRA=11",
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", raw_path, "-af", f"loudnorm=I={script.get('loudness', -16)}:TP=-1.0:LRA=11",
                     "-ar", str(SR), out_dir / "narration.wav"], check=True)
     raw_path.unlink()
     for l in lines:

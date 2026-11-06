@@ -1,15 +1,15 @@
 <template>
   <style>
     /*__COMMON_CSS__*/
-    #s03-k { top: 214px; }
-    #s03-card { position: absolute; left: 160px; top: 320px; width: 740px; height: 170px; display: flex; align-items: center; gap: 22px; padding: 0 26px; }
-    #s03-av { width: 110px; height: 110px; flex: none; }
+    #s03-k { top: 290px; }
+    #s03-card { position: absolute; left: 160px; top: 370px; width: 740px; height: 160px; display: flex; align-items: center; gap: 22px; padding: 0 26px; }
+    #s03-av { width: 104px; height: 104px; flex: none; }
     #s03-acc { font-family: "Inter", sans-serif; font-weight: 900; font-size: 44px; color: #2a1b12; flex: 1; }
-    #s03-btn { position: relative; flex: none; width: 200px; height: 88px; border-radius: 16px; border: 5px solid #2a1b12; background: #fe2c55; color: #fff; font-family: "Inter", sans-serif; font-weight: 900; font-size: 38px; display: grid; place-items: center; }
+    #s03-btn { position: relative; flex: none; width: 200px; height: 86px; border-radius: 16px; border: 5px solid #2a1b12; background: #fe2c55; color: #fff; font-family: "Inter", sans-serif; font-weight: 900; font-size: 38px; display: grid; place-items: center; }
     #s03-btn2 { position: absolute; inset: -5px; border-radius: 16px; border: 5px solid #2a1b12; background: #e9e6df; color: #2a1b12; display: grid; place-items: center; font-size: 34px; opacity: 0; }
-    #s03-hand { position: absolute; left: 770px; top: 450px; font-size: 104px; }
-    #s03-ring { position: absolute; left: 440px; top: 520px; width: 200px; height: 200px; border-radius: 50%; border: 10px solid #ffd23f; box-shadow: 0 0 30px rgba(255,210,63,.8); }
-    #s03-sign { top: 760px; transform: rotate(-3deg); }
+    #s03-hand { position: absolute; left: 770px; top: 490px; font-size: 104px; }
+    #s03-ring { position: absolute; left: 445px; top: 560px; width: 190px; height: 190px; border-radius: 50%; border: 10px solid #ffd23f; box-shadow: 0 0 30px rgba(255,210,63,.8); }
+    #s03-sign { top: 790px; }
   </style>
   <div id="root" data-composition-id="s03" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
     <div id="s03-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
@@ -23,17 +23,20 @@
   <script>
     (() => {
       /*__CUE_HELPERS__*/
+      /*__COMMON_JS__*/
       const tl = gsap.timeline({ paused: true });
       const fol = at("L4", "folgst"), ein = at("L4", "ein"), nam = at("L5", "Namen");
-      tl.fromTo("#s03-k", { opacity: 0, y: -30 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, 0.05);
-      tl.fromTo("#s03-card", { opacity: 0, x: -300 }, { opacity: 1, x: 0, duration: .45, ease: "back.out(1.6)" }, 0.15);
+      tl.fromTo("#s03-k", { opacity: 0, rotationX: 90 }, { opacity: 1, rotationX: 0, duration: .4, ease: "back.out(2)" }, 0.05);
+      tl.fromTo("#s03-card", { opacity: 0, x: -400, rotation: -6 }, { opacity: 1, x: 0, rotation: 0, duration: .5, ease: "elastic.out(1, .6)" }, 0.15);
       tl.fromTo("#s03-hand", { opacity: 0, x: 120, y: 120 }, { opacity: 1, x: 0, y: 0, duration: .35, ease: "power3.out" }, fol - .45);
       tl.to("#s03-hand", { y: -28, scale: .9, duration: .1, yoyo: true, repeat: 1 }, fol - .05);
       tl.to("#s03-btn2", { opacity: 1, duration: .05 }, fol + .05);
+      tl.fromTo("#s03-card", { scale: 1 }, { scale: 1.06, duration: .12, yoyo: true, repeat: 1 }, fol + .05);
       tl.to("#s03-hand", { opacity: 0, duration: .25 }, fol + .5);
-      tl.fromTo("#s03-ring", { opacity: 0, scale: 2 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2)" }, ein - .05);
+      tl.fromTo("#s03-ring", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2)" }, ein - .05);
       tl.to("#s03-ring", { scale: 1.12, duration: .3, yoyo: true, repeat: 3, ease: "sine.inOut" }, ein + .35);
-      tl.fromTo("#s03-sign", { opacity: 0, scale: 0, rotation: -30 }, { opacity: 1, scale: 1, rotation: -3, duration: .4, ease: "back.out(2.5)" }, nam - .2);
+      tl.fromTo("#s03-sign", { opacity: 0, scale: 0, rotation: -30 }, { opacity: 1, scale: 1, rotation: -3, duration: .45, ease: "back.out(2.5)" }, nam - .25);
+      tl.to("#s03-sign", { rotation: 3, duration: .25, yoyo: true, repeat: 3, ease: "sine.inOut" }, nam + .3);
       tl.to("#s03-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
       window.__timelines["s03"] = tl;
     })();

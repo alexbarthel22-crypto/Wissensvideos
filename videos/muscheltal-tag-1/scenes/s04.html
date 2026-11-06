@@ -1,11 +1,11 @@
 <template>
   <style>
     /*__COMMON_CSS__*/
-    #s04-eq { top: 230px; }
-    #s04-chest { position: absolute; left: 370px; top: 540px; width: 340px; height: 260px; }
-    .s04-sh { position: absolute; left: 490px; top: 360px; width: 100px; height: 100px; }
-    #s04-plus { position: absolute; left: 700px; top: 520px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 80px; color: #ffd23f; -webkit-text-stroke: 8px #2a1b12; paint-order: stroke fill; }
-    #s04-w { top: 1000px; }
+    #s04-eq { top: 300px; }
+    #s04-chest { position: absolute; left: 370px; top: 580px; width: 340px; height: 260px; }
+    .s04-sh { position: absolute; left: 490px; top: 430px; width: 100px; height: 100px; }
+    #s04-plus { position: absolute; left: 700px; top: 560px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 84px; color: #ffd23f; -webkit-text-stroke: 8px #2a1b12; paint-order: stroke fill; }
+    #s04-w { top: 960px; }
   </style>
   <div id="root" data-composition-id="s04" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
     <div id="s04-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
@@ -29,16 +29,17 @@
   <script>
     (() => {
       /*__CUE_HELPERS__*/
+      /*__COMMON_JS__*/
       const tl = gsap.timeline({ paused: true });
       const f5 = at("L6", "5"), mi = at("L6", "mit"), wa = at("L6", "Währung");
-      tl.fromTo("#s04-eq", { opacity: 0, scale: .5 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.2)" }, 0.05);
-      tl.fromTo("#s04-chest", { opacity: 0, y: 80 }, { opacity: 1, y: 0, duration: .4, ease: "back.out(1.8)" }, 0.1);
+      tl.fromTo("#s04-eq", { opacity: 0, scaleX: 0 }, { opacity: 1, scaleX: 1, duration: .4, ease: "expo.out" }, 0.05);
+      tl.fromTo("#s04-chest", { opacity: 0, y: -300 }, { opacity: 1, y: 0, duration: .55, ease: "bounce.out" }, 0.1);
       tl.fromTo("#s04-lid", { rotation: 0 }, { rotation: -18, duration: .3, ease: "power2.out", svgOrigin: "20 112" }, f5 - .3);
       for (let i = 1; i <= 5; i++) { const t0 = f5 - .15 + (i - 1) * .14, dx = (i - 3) * 70;
         tl.fromTo("#s04-sh" + i, { opacity: 0, x: dx, y: -40, scale: .6, rotation: -20 }, { opacity: 1, x: dx * .4, y: 40, scale: 1, rotation: 0, duration: .25, ease: "back.out(2)" }, t0);
         tl.to("#s04-sh" + i, { x: 0, y: 230, scale: .5, opacity: 0, duration: .35, ease: "power2.in" }, t0 + .3); }
       tl.fromTo("#s04-plus", { opacity: 0, y: 30, scale: .5 }, { opacity: 1, y: -20, scale: 1, duration: .3, ease: "back.out(3)" }, mi);
-      tl.fromTo("#s04-w", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .35, ease: "back.out(2)" }, wa - .3);
+      tl.fromTo("#s04-w", { opacity: 0, rotation: 15, x: 300 }, { opacity: 1, rotation: -2, x: 0, duration: .45, ease: "elastic.out(1, .55)" }, wa - .3);
       tl.to("#s04-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
       window.__timelines["s04"] = tl;
     })();

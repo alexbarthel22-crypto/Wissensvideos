@@ -1,8 +1,8 @@
 <template>
   <style>
     /*__COMMON_CSS__*/
-    #s02-logo { position: absolute; left: 380px; top: 210px; width: 320px; height: 320px; filter: drop-shadow(10px 10px 0 #2a1b12); }
-    #s02-pin { top: 950px; }
+    #s02-logo { position: absolute; left: 390px; top: 300px; width: 300px; height: 300px; filter: drop-shadow(10px 10px 0 #2a1b12); }
+    #s02-pin { top: 960px; }
   </style>
   <div id="root" data-composition-id="s02" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
     <div id="s02-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
@@ -13,10 +13,12 @@
   <script>
     (() => {
       /*__CUE_HELPERS__*/
+      /*__COMMON_JS__*/
       const tl = gsap.timeline({ paused: true });
-      const mu = at("L3", "Muschel"), su = at("L3", "Südsee");
-      tl.fromTo("#s02-logo", { opacity: 0, scale: .3, rotation: -30 }, { opacity: 1, scale: 1, rotation: 0, duration: .5, ease: "back.out(1.8)" }, mu - .2);
-      tl.fromTo("#s02-pin", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .35, ease: "back.out(2)" }, mu + .25);
+      const mu = at("L3", "Muschel");
+      tl.fromTo("#s02-logo", { opacity: 0, scale: .2, rotation: -200 }, { opacity: 1, scale: 1, rotation: 0, duration: .6, ease: "back.out(1.6)" }, mu - .25);
+      tl.to("#s02-logo", { y: -14, duration: .35, yoyo: true, repeat: 3, ease: "sine.inOut" }, mu + .4);
+      tl.fromTo("#s02-pin", { opacity: 0, y: -80, rotation: -12 }, { opacity: 1, y: 0, rotation: 0, duration: .5, ease: "bounce.out" }, mu + .25);
       tl.to("#s02-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
       window.__timelines["s02"] = tl;
     })();
