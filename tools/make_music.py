@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Eigene, lizenzfreie Hintergrundmusik „Sekten-Gospel“: Kirchenorgel + Chorfläche + Bass + leichter Gospel-Groove (96 BPM),
+"""Eigene, lizenzfreie Hintergrundmusik. --style gospel (Standard) = „Sekten-Gospel“, --style epic = „Heiliger Trailer“ (112 BPM, Streicher, Blech, Chor, Pauken).
+„Sekten-Gospel“: Kirchenorgel + Chorfläche + Bass + leichter Gospel-Groove (96 BPM),
 spärliche Glöckchen, Hall. Unter der Stimme automatisch abgesenkt (Ducking).
 
   python3 tools/make_music.py videos/<slug>/assets/sfx/music-gospel.wav <Gesamtdauer> --duck videos/<slug>/assets/voice/narration.wav
@@ -56,9 +57,46 @@ def place(buf, x, t0, g=1.0):
     buf[i:i + m] += g * x[:m]
 
 
+def saw(f, n, nh=12):
+    t = np.arange(n) / SR
+    return sum(((-1) ** (h + 1)) * np.sin(2 * np.pi * f * h * t) / h for h in range(1, nh + 1))
+
+
+def epic(duration, rng):
+    """„Heiliger Trailer“: 112 BPM, D – A – Hm – G, Streicher-Achtel, Blech-Akkorde, Chor, Pauken, Becken-Swell."""
+    bpm = 112; beat = 60 / bpm; bar = 4 * beat
+    prog = [[146.83, 220.0, 293.66, 369.99], [110.0, 164.81, 220.0, 277.18], [123.47, 185.0, 246.94, 293.66], [98.0, 146.83, 196.0, 246.94]]
+    roots = [146.83, 110.0, 123.47, 98.0]
+    n = int(SR * (duration + 3))
+    strings, brass, choir, perc, cym = (np.zeros(n) for _ in range(5))
+    k = 0
+    while k * bar < duration + 2:
+        t0 = k * bar; ch = prog[k % 4]
+        for e8 in range(8):  # Streicher-Ostinato: Grundton / Quinte / Oktave im Wechsel
+            f = [ch[0] * 2, ch[2] * 2, ch[3] * 2, ch[2] * 2][e8 % 4]
+            m = int(SR * beat / 2 * 0.95); tt = np.arange(m) / SR
+            place(strings, saw(f, m, 8) * np.minimum(1, tt / 0.01) * np.exp(-tt / 0.22), t0 + e8 * beat / 2)
+        m = int(SR * bar * 1.05); tt = np.arange(m) / SR  # Blech: weicher Akkord-Swell
+        b = sum(saw(f, m, 10) for f in ch[:3]) * np.minimum(1, tt / 0.35) * np.clip((bar * 1.05 - tt) / 0.3, 0, 1)
+        place(brass, np.convolve(b, np.ones(10) / 10, mode="same"), t0)
+        tt2 = np.arange(int(SR * (bar + 1.0))) / SR
+        place(choir, sum(pad_voice(f * 2, tt2, rng) for f in ch[1:]) * np.minimum(1, tt2 / 0.5) * np.clip((bar + 1.0 - tt2) / 1.0, 0, 1), t0)
+        for bb, g in ((0, 1.0), (2, 0.8), (3.5, 0.5)):  # Pauke (tief, gestimmt auf den Grundton)
+            mm = int(SR * 0.7); tp = np.arange(mm) / SR
+            place(perc, np.sin(2 * np.pi * roots[k % 4] / 2 * tp * (1 + 0.3 * np.exp(-tp / 0.03))) * np.exp(-tp / 0.35) * g, t0 + bb * beat)
+        if k % 4 == 3:  # Becken-Swell in den nächsten Abschnitt
+            mm = int(SR * bar); tc = np.arange(mm) / SR
+            c = rng.standard_normal(mm); c = np.convolve(c, np.array([1, -0.97]), mode="same")
+            place(cym, c * (tc / bar) ** 3 * 0.25, t0)
+        k += 1
+    nz = lambda x: x / (np.abs(x).max() + 1e-9)
+    return 0.42 * nz(strings) + 0.4 * nz(brass) + 0.35 * nz(choir) + 0.6 * nz(perc) + 0.3 * nz(cym)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("out"); ap.add_argument("duration", type=float)
+    ap.add_argument("--style", choices=["gospel", "epic"], default="gospel")
     ap.add_argument("--duck"); ap.add_argument("--groove-from", type=float, default=2.5, help="Groove setzt ab dieser Sekunde ein")
     a = ap.parse_args()
     rng = np.random.default_rng(7)
@@ -95,6 +133,8 @@ def main():
         k += 1
     norm = lambda x: x / (np.abs(x).max() + 1e-9)
     y = 0.55 * norm(org) + 0.35 * norm(choir) + 0.45 * norm(bass) + 0.5 * norm(drums) + norm(bells) * 0.25
+    if a.style == "epic":
+        y = epic(a.duration, rng)
     y = reverb(y, 2.2, 0.28)[:int(SR * a.duration)]
     y = np.convolve(y, np.ones(4) / 4, mode="same")  # dezent weicher
     t = np.arange(len(y)) / SR

@@ -14,7 +14,8 @@
      "id": "L1a",
      "text": "WARTE!!!",
      "nocap": true,
-     "speed": 1.25
+     "speed": 1.25,
+     "skip": true
     },
     {
      "id": "L1",
@@ -46,9 +47,9 @@
      "volume": 0.55
     },
     {
-     "name": "music-gospel",
+     "name": "music-epic",
      "at": "s01+0.0",
-     "volume": 0.3
+     "volume": 0.45
     }
    ]
   },
@@ -384,5 +385,5 @@
  "cut_shift": {
   "L13": 1
  },
- "music": "music-gospel.wav: eigene Komposition (tools/make_music.py <out> <Gesamtdauer> --duck assets/voice/narration.wav), nach jeder Neuvertonung neu erzeugen"
+ "music": "music-epic.wav: eigene Komposition (tools/make_music.py <out> <Gesamtdauer> --style epic --duck assets/voice/narration.wav), Lautstärke 0.45; nach jeder Neuvertonung neu erzeugen"
 }

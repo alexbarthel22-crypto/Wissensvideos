@@ -29,9 +29,9 @@ Name im Video: „Ich bin Prophet Peter!“ (nie „Gestatten …“). Persönli
   Regie in `script.json` → `style` (euphorischer Fernsehprediger, schnell, flüssig, weich verbunden, keine Kunstpausen, „Sekte“ korrekt „SEK-te“, erstes Wort gebrüllt).
   `python3 tools/tts_de.py videos/<slug> --backend gemini --voice Puck --speed 1.08 --max-gap 0.22`
 - Danach **immer** `python3 tools/check_cuts.py videos/<slug>` (jede Zeile wird abgeschrieben; „!!“ = falscher Schnitt → `"cut_shift": {"L13": 1}` = Grenze vor L13 eine Pause später, `-1` = früher).
-  `"join_prev": true` = Zeile gehört zur vorigen Aufnahme, wird intern geteilt (z. B. „WARTE!!!“ | „Tag eins! …“ mit eigenem Tempo).
-- Tempo: Anfang sehr schnell (Szene 1 speed 1.8 nach „WARTE!“, Gesetz 1.25, Vorstellung 1.35, Erbe 1.35), Ende flott (1.22), Standzeit am Schluss ≈ 1,2 s. Gesamt ≤ 60 s.
-- Musik: eigene Komposition „Sekten-Gospel“ (`tools/make_music.py <out> <Gesamtdauer> --duck assets/voice/narration.wav`, Orgel + Chor + Bass + Gospel-Groove 96 BPM), sfx `music-gospel` Lautstärke 0.3, nach jeder Neuvertonung neu erzeugen. Der frühere reine Klangteppich (make_pad) wurde abgelehnt.
+  `"skip": true` = Zeile bleibt in der Aufnahme, wird aber nicht verwendet. `"join_prev": true` = Zeile gehört zur vorigen Aufnahme, wird intern geteilt (z. B. „WARTE!!!“ | „Tag eins! …“ mit eigenem Tempo).
+- Tempo: Anfang sehr schnell (Szene 1 speed 1.8, Gesetz 1.25, Vorstellung 1.35, Erbe 1.35), Ende flott (1.22), Standzeit am Schluss ≈ 1,2 s. Gesamt ≤ 60 s.
+- Musik: eigene Komposition „Heiliger Trailer“ (`tools/make_music.py <out> <Gesamtdauer> --style epic --duck assets/voice/narration.wav`: Streicher-Achtel, Blech, Chor, Pauken, 112 BPM), sfx `music-epic` Lautstärke **0.45**, nach jeder Neuvertonung neu erzeugen. Abgelehnt: reiner Klangteppich (make_pad), „Sekten-Gospel“ (--style gospel).
 - Abgelehnt: Chirp-3-HD-Stimmen (zu wenig Emotion), Fenrir (abgehackt), harte Pausenschnitte, Glocke am Anfang.
 - Sounds (`tools/make_church.py videos/<slug>/assets/sfx --choir <chor.mp3>`): Frame 0 = Engelschor `choir-intro` (hochgeladene Datei `assets/sfx/src/heavenly-choir-322708.mp3`, 1. Bogen), Peters Vorstellung = `choir-intro2` (2. Bogen), „Aber ich sehe mehr“ = Engelschor; außerdem `shimmer`, `bell-hit`, `coin`, `goat`, `crack` (Ast), `record-scratch` + `sad-trombone` (0 Anhänger), `pop`/`click`/`notification`.
 
@@ -49,7 +49,7 @@ Erbe von **Onkel Heinz** (Testament: „… vermache ich meinem Neffen Peter mei
 
 ## 4. Inhalt Tag 1 (Kanon)
 
-Szenen (Kapitel-Marke): 1) **„WARTE!“** (gebrüllt) + „TAG 1 – ICH GRÜNDE EINE SEKTE“ (farbige Wortkästen, Wort-Zoom, Peter links, goldene Visions-Umrisse von Tempel/Gärten/Pilgerstraße, Himmelslicht)
+Szenen (Kapitel-Marke): 1) „TAG 1 – ICH GRÜNDE EINE SEKTE“ (kein „WARTE!“ mehr – in der Aufnahme als `skip`-Zeile L1a enthalten, wird übersprungen) (farbige Wortkästen, Wort-Zoom, Peter links, goldene Visions-Umrisse von Tempel/Gärten/Pilgerstraße, Himmelslicht)
 → 2) **DAS GESETZ**: „Ab heute gilt ein heiliges Gesetz: Jeder neue Follower wird Anhänger und bringt einen Euro in die Kollekte!“ (Klingelbeutel mittig, echte 1-€-Münze fällt hinein, Kollekte 0 € → 1 €)
 → 3) **DER GRÜNDER**: „Ich bin Prophet Peter! Gründer! Erleuchteter! Und ab heute euer Anführer!“
 → 4) **DAS ERBE**: Testament, Stempel „GEERBT“, „Hier entsteht unser Heiligtum!“ (Baum + Stuhl im goldenen Heiligenschein, Schild „ZUKÜNFTIGES HEILIGTUM“)

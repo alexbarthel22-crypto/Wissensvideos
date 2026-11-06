@@ -664,7 +664,7 @@ def main():
             spoken = " ".join(w["spoken"] for w in words)
             lines.append({"scene": scene["id"], "id": line["id"], "words": words, "spoken": spoken,
                           "new_scene": li == 0 and si > 0, "pause": line.get("pause", 0.0),
-                          "scale": round(1.0 / (args.speed * line.get("speed", 1.0)), 3)})
+                          "scale": round(1.0 / (args.speed * line.get("speed", 1.0)), 3), "skip": line.get("skip", False)})
 
     texts = [l["spoken"] for l in lines]
     scales = [l["scale"] for l in lines]
@@ -685,6 +685,10 @@ def main():
     else:
         raw = synth_coqui(texts, args.voice_dir, args.coqui_python, scales, args.noise, args.noise_dp)
 
+    keep = [i for i, l in enumerate(lines) if not l["skip"]]  # "skip": true = Zeile bleibt in der Aufnahme, fliegt aber raus
+    lines, raw = [lines[i] for i in keep], [raw[i] for i in keep]
+    if lines:
+        lines[0]["new_scene"] = False
     out_dir = project / "assets" / "voice"
     out_dir.mkdir(parents=True, exist_ok=True)
     lead = script.get("lead_in", LEAD_IN)

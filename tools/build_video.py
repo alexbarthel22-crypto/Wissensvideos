@@ -384,6 +384,9 @@ def main():
     global SHIFT
     SHIFT = int(script.get("shift", 0))
     timings = json.loads((project / "assets" / "voice" / "timings.json").read_text())
+    have = {l["id"] for l in timings["lines"]}
+    for sc in script["scenes"]:
+        sc["lines"] = [l for l in sc["lines"] if l["id"] in have]
     windows, lines = scene_windows(script, timings)
     total = windows[-1][2]
     (project / "compositions").mkdir(exist_ok=True)
