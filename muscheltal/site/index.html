@@ -360,7 +360,7 @@ $('faq').innerHTML=[
  ['Ich will nicht auf der Karte stehen.','Kein Problem. Schreib '+ACC+' auf TikTok eine Nachricht, dann nehmen wir deinen Namen raus.']
 ].map(f=>'<details><summary>'+esc(f[0])+'</summary><p>'+esc(f[1])+'</p></details>').join('');
 $('chron').innerHTML=I.chronik.map(c=>'<li'+(c[2]?' class="next"':'')+'><time>'+esc(c[0])+'</time><p>'+esc(c[1])+'</p></li>').join('');
-$('foot').innerHTML='Stand: '+esc(I.stand)+' · Fan-Projekt von <a href="'+ACCURL+'" target="_blank" rel="noopener">'+esc(ACC)+'</a>, nicht verbunden mit TikTok.<br><a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a>';
+$('foot').innerHTML='Stand: '+esc(I.stand)+' · Ein Projekt von <a href="'+ACCURL+'" target="_blank" rel="noopener">'+esc(ACC)+'</a>, nicht verbunden mit TikTok.<br><a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a>';
 
 // ---------- Navigation ----------
 function goTo(id){const el=$(id);if(el&&!el.hidden)el.scrollIntoView({behavior:'smooth',block:'start'});}
