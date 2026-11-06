@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Muschel-Tal: Einwohnerliste -> Webseite (site/index.html) + Daten fürs Video.
+"""Muschel-Tal: Einwohnerliste -> Webseite (site/index.html) + Daten fürs Video (daten/video.json).
 
   python3 muscheltal/bau.py                     # Seite aus daten/ neu bauen
   python3 muscheltal/bau.py --import user_data_tiktok.json   # neue Follower aus TikTok-Export anhängen, dann bauen
@@ -101,7 +101,15 @@ def baue(rows, out):
             continue
         gesehen.add(name.lower())
         sauber.append([name, (r.get("datum") or "").strip(), (r.get("markierung") or "").strip()])
-    data = {"r": sauber, "insel": insel}
+    import copy
+    pop = len(sauber)
+    web = copy.deepcopy(insel)  # öffentliche Fassung: gesperrte/geheime Inseln ohne echten Namen
+    for v in web["inseln"]:
+        if pop < v["ab"]:
+            v["name"], v["emoji"] = "???", "❔"
+    g = web.get("geheim") or {}
+    web["geheim"] = g if g.get("offen") else {"name": "???", "emoji": "❔", "offen": False}
+    data = {"r": sauber, "insel": web}
     html = open(VORLAGE, encoding="utf-8").read()
     js = json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
     html = html.replace("/*__DATEN__*/null", js)
@@ -111,19 +119,25 @@ def baue(rows, out):
         if os.path.exists(quelle) and os.path.abspath(out) != os.path.join(HIER, "site"):
             open(os.path.join(out, datei), "w", encoding="utf-8").write(open(quelle, encoding="utf-8").read())
     open(os.path.join(out, "index.html"), "w", encoding="utf-8").write(html)
+    alt = os.path.join(out, "einwohner.json")
+    if os.path.exists(alt):
+        os.remove(alt)  # nicht mehr öffentlich (enthielt echte Inselnamen)
 
-    # Daten fürs Video (HyperFrames): Nummer, Name, Viertel
+    # Daten fürs Video (HyperFrames) – NICHT im öffentlichen Ordner, enthält echte Inselnamen
     grenzen, s = [], 0
-    for v in insel["viertel"]:
+    for v in insel["inseln"]:
         s = s + v["plaetze"] if v["plaetze"] else float("inf")
-        grenzen.append((s, v["name"]))
-    def viertel(nr):
-        return next(n for g, n in grenzen if nr <= g)
-    video = {"stand": insel["stand"], "tag": insel["tag"], "einwohner": len(sauber),
-             "muscheln": len(sauber) * insel["muscheln_pro_einwohner"], "aemter": insel["aemter"],
-             "liste": [{"nr": i + 1, "name": r[0], "viertel": viertel(i + 1), "seit": r[1], "markierung": r[2]}
+        grenzen.append((s, v))
+    def wo(nr):
+        v = next(v for g, v in grenzen if nr <= g)
+        return v["name"] if pop >= v["ab"] else "wartet am Steg"
+    video = {"stand": insel["stand"], "tag": insel["tag"], "einwohner": pop,
+             "muscheln": pop * insel["muscheln_pro_einwohner"], "aemter": insel["aemter"], "projekt": insel.get("projekt"),
+             "inseln": [{"name": v["name"], "ab": v["ab"], "offen": pop >= v["ab"]} for v in insel["inseln"]],
+             "liste": [{"nr": i + 1, "name": r[0], "insel": wo(i + 1), "seit": r[1], "markierung": r[2]}
                        for i, r in enumerate(sauber)]}
-    json.dump(video, open(os.path.join(out, "einwohner.json"), "w", encoding="utf-8"), ensure_ascii=False)
+    ziel = os.path.join(HIER, "daten", "video.json") if os.path.abspath(out) == os.path.join(HIER, "site") else os.path.join(out, "video.json")
+    json.dump(video, open(ziel, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     print(f"Fertig: {len(sauber)} Einwohner -> {os.path.join(out, 'index.html')}")
 
 
