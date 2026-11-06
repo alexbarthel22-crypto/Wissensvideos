@@ -84,10 +84,9 @@
         [at("L4", "folgst") - .3, me.x, me.y, 3.0], [line("L5")[1], me.x, me.y, 3.3],
         [line("L6")[0], 0, 30, 2.1], [line("L6")[1], 0, 20, 2.3],
         [at("L7", "früher"), 0, 20, zMain * 1.0], [tFull, 0, 20, zMain * .98],
-        [at("L9", "neue") - .25, 0, 20, zMain * .9], [at("L9", "neue") + .8, fitAll.x, fitAll.y, fitAll.z], [line("L10")[1], fitAll.x, fitAll.y, fitAll.z * 1.05],
+        [at("L9", "neue") - .25, 0, 20, zMain * .9], [at("L9", "neue") + .8, fitAll.x, fitAll.y, fitAll.z], [line("L10")[1], fitAll.x, fitAll.y, fitAll.z * 1.08],
         [line("L11")[0] + .3, XM.x, XM.y + 30, .95], [line("L11")[1], XM.x, XM.y + 30, 1.1],
         [line("L12")[0] + .4, 0, 20, zMain * 1.25], [line("L12")[1], 0, 20, zMain * 1.35],
-        [line("L13")[0] + .2, 0, 20, zMain * 1.1], [line("L14")[1], 0, 20, zMain * 1.15],
         [line("L15")[0] + .1, one.x, one.y, 3.4], [line("L15")[1], one.x, one.y, 3.6], [C.__dur, one.x, one.y + 10, 2.7]];
       function camAt(t) { let i = 0; while (i < K.length - 1 && K[i + 1][0] <= t) i++; const a = K[i], b = K[Math.min(i + 1, K.length - 1)];
         const k = b[0] > a[0] ? sm(a[0], b[0], t) : 1; const lz = Math.log(a[3]) + (Math.log(b[3]) - Math.log(a[3])) * k;

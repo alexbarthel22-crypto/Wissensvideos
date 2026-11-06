@@ -13,7 +13,7 @@ Kontostand: 0 Muscheln 😅 Morgen kaufen wir trotzdem was – aber nur, was ihr
 #muscheltal #fürdich #fyp #insel #mitmachen
 
 ## Angepinnter Kommentar
-🏝️ Wer jetzt folgt, wohnt auf der Hauptinsel – je früher, desto näher am Muschelpalast! Deine Hütte findest du auf muscheltal.de (Link auch in der Bio) 🐚 Was sollen wir morgen kaufen?
+🏝️ Wer jetzt folgt, wohnt auf der Hauptinsel – je früher, desto näher am Muschelpalast! 🐚 Was sollen wir morgen kaufen?
 
 ## Warum diese Hashtags
 - #muscheltal – eigene Marke, damit alle Folgen auffindbar sind

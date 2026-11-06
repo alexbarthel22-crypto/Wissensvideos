@@ -1,14 +1,16 @@
 <template>
   <style>
     /*__COMMON_CSS__*/
+    #s06-q { top: 300px; font-size: 80px; }
+    #s06-w { top: 300px; font-size: 64px; }
     #s06-st { left: 300px; top: 500px; color: #ff3b55; border-color: #ff3b55; transform: rotate(-10deg); font-size: 110px; }
-    #s06-q { top: 300px; }
 
   </style>
   <div id="root" data-composition-id="s06" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
     <div id="s06-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
       <div id="s06-st" class="stamp">VOLL!</div>
-      <div id="s06-q" class="bt ye">WANN?</div>
+      <div id="s06-w" class="bt vi">WANN GENAU?</div>
+      <div id="s06-q" class="bt ye">BALD!</div>
 
     </div>
   </div>
@@ -18,11 +20,13 @@
       /*__COMMON_JS__*/
       wrapBt("#s06-stage");
       const tl = gsap.timeline({ paused: true });
-      const vo = at("L9", "voll"), ne = at("L9", "neue"), wa = at("L10", "Wann"), li = at("L10", "Link");
+      const vo = at("L9", "voll"), ne = at("L9", "neue"), ba = at("L10", "bald"), wa = at("L10", "Wann");
+      tl.fromTo("#s06-w", { opacity: 0, x: -300, skewX: -20 }, { opacity: 1, x: 0, skewX: 0, duration: .35, ease: "power4.out" }, wa - .1);
+      tl.to("#s06-w", { rotation: 4, duration: .12, yoyo: true, repeat: 5, ease: "sine.inOut" }, wa + .4);
+      tl.to("#s06-w", { opacity: 0, scale: .5, duration: .15 }, ba - .15);
+      tl.fromTo("#s06-q", { opacity: 0, scale: .2, rotation: -25 }, { opacity: 1, scale: 1, rotation: -3, duration: .35, ease: "back.out(3)" }, ba - .12);
       tl.fromTo("#s06-st", { opacity: 0, scale: 2.6 }, { opacity: 1, scale: 1, duration: .25, ease: "expo.in" }, vo - .12);
       tl.to("#s06-st", { opacity: 0, scale: .6, duration: .25 }, Math.max(ne - .1, vo + .8));
-      tl.fromTo("#s06-q", { opacity: 0, scale: .3, rotation: -20 }, { opacity: 1, scale: 1, rotation: 0, duration: .45, ease: "elastic.out(1.1, .45)" }, wa - .1);
-      tl.to("#s06-q", { rotation: 5, duration: .12, yoyo: true, repeat: 5, ease: "sine.inOut" }, wa + .4);
       tl.to("#s06-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
       window.__timelines["s06"] = tl;
     })();

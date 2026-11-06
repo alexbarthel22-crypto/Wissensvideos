@@ -158,7 +158,7 @@
     },
     {
      "id": "L10",
-     "text": "*y:Wann? / Siehst du unter dem *p:Link / in meiner *y:Bio!"
+     "text": "*y:Wann genau? / Das erfahrt ihr *g:bald!"
     }
    ],
    "sfx": [
@@ -182,7 +182,8 @@
      "id": "L11",
      "text": "Und am *b:Rand der Karte / versteckt sich / eine *p:geheime *p:Insel …",
      "style": "Style: a real young man sharing a secret, curious and a bit mysterious, smiling, natural.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-     "speed": 1.22
+     "speed": 1.22,
+     "pause": 0.55
     }
    ],
    "sfx": [
@@ -207,32 +208,6 @@
      "name": "notification",
      "at": "L12:Kommentaren",
      "volume": 0.35
-    }
-   ]
-  },
-  {
-   "id": "s09",
-   "tag": "",
-   "lines": [
-    {
-     "id": "L13",
-     "text": "Deine Hütte findest du / auf *p:muscheltal.de|Muscheltal-punkt-de!",
-     "speed": 1.15
-    },
-    {
-     "id": "L14",
-     "text": "Dort gibt es *g:alles / rund um Muschel-Tal!"
-    },
-    {
-     "id": "L14b",
-     "text": "Der Link steht übrigens / auch in unserer *y:Bio."
-    }
-   ],
-   "sfx": [
-    {
-     "name": "click-soft",
-     "at": "L13:muscheltal",
-     "volume": 0.4
     }
    ]
   },
