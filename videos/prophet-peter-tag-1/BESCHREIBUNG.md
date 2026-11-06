@@ -33,6 +33,6 @@ Prophet Peter liest nur Kommentare, die mit „Prophet Peter“ beginnen 🙏 Wi
 3. **Posten** werktags ca. 18–21 Uhr oder am Wochenende vormittags.
 4. **Erste Stunde:** Kommentar anpinnen, auf jeden Kommentar als Prophet Peter antworten (gern mit Rängen: „Du bist jetzt Erzdiakon!“) – Antworten zählen als zusätzliche Kommentare.
 5. **Tag 2 innerhalb von 24–48 h** posten und darin den Top-Kommentar (Name / Kauf) auflösen – Serien-Zuschauer kommen dann gezielt zurück.
-6. Optional in TikTok einen leisen Trend-Sound (10–15 %) unterlegen – das Video hat bewusst keine eigene Musik.
+6. Optional in TikTok einen leisen Trend-Sound (10–15 %) unterlegen – das Video hat bereits eine dezente eigene Musik.
 
 _Hinweis: Satire. Prophet Peter ist eine erfundene Figur._

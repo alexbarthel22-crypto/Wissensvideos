@@ -44,6 +44,11 @@
      "name": "impact-bass-1",
      "at": "L1:Sekte",
      "volume": 0.55
+    },
+    {
+     "name": "music-gospel",
+     "at": "s01+0.0",
+     "volume": 0.3
     }
    ]
   },
@@ -378,5 +383,6 @@
  "tts_single": true,
  "cut_shift": {
   "L13": 1
- }
+ },
+ "music": "music-gospel.wav: eigene Komposition (tools/make_music.py <out> <Gesamtdauer> --duck assets/voice/narration.wav), nach jeder Neuvertonung neu erzeugen"
 }

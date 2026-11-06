@@ -31,7 +31,8 @@ Name im Video: „Ich bin Prophet Peter!“ (nie „Gestatten …“). Persönli
 - Danach **immer** `python3 tools/check_cuts.py videos/<slug>` (jede Zeile wird abgeschrieben; „!!“ = falscher Schnitt → `"cut_shift": {"L13": 1}` = Grenze vor L13 eine Pause später, `-1` = früher).
   `"join_prev": true` = Zeile gehört zur vorigen Aufnahme, wird intern geteilt (z. B. „WARTE!!!“ | „Tag eins! …“ mit eigenem Tempo).
 - Tempo: Anfang sehr schnell (Szene 1 speed 1.8 nach „WARTE!“, Gesetz 1.25, Vorstellung 1.35, Erbe 1.35), Ende flott (1.22), Standzeit am Schluss ≈ 1,2 s. Gesamt ≤ 60 s.
-- Abgelehnt: Chirp-3-HD-Stimmen (zu wenig Emotion), Fenrir (abgehackt), harte Pausenschnitte, Hintergrundmusik (**keine Musik**), Glocke am Anfang.
+- Musik: eigene Komposition „Sekten-Gospel“ (`tools/make_music.py <out> <Gesamtdauer> --duck assets/voice/narration.wav`, Orgel + Chor + Bass + Gospel-Groove 96 BPM), sfx `music-gospel` Lautstärke 0.3, nach jeder Neuvertonung neu erzeugen. Der frühere reine Klangteppich (make_pad) wurde abgelehnt.
+- Abgelehnt: Chirp-3-HD-Stimmen (zu wenig Emotion), Fenrir (abgehackt), harte Pausenschnitte, Glocke am Anfang.
 - Sounds (`tools/make_church.py videos/<slug>/assets/sfx --choir <chor.mp3>`): Frame 0 = Engelschor `choir-intro` (hochgeladene Datei `assets/sfx/src/heavenly-choir-322708.mp3`, 1. Bogen), Peters Vorstellung = `choir-intro2` (2. Bogen), „Aber ich sehe mehr“ = Engelschor; außerdem `shimmer`, `bell-hit`, `coin`, `goat`, `crack` (Ast), `record-scratch` + `sad-trombone` (0 Anhänger), `pop`/`click`/`notification`.
 
 ## 3. Das Grundstück (Kulisse)
