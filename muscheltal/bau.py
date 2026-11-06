@@ -86,7 +86,11 @@ def demo_rows(n):
 
 def baue(rows, out):
     insel = json.load(open(INSEL, encoding="utf-8"))
-    jetzt = dt.datetime.now()
+    try:
+        from zoneinfo import ZoneInfo
+        jetzt = dt.datetime.now(ZoneInfo("Europe/Berlin"))
+    except Exception:
+        jetzt = dt.datetime.now()
     insel["stand"] = f"{jetzt.day}. {MONATE[jetzt.month - 1]} {jetzt.year}, {jetzt:%H:%M} Uhr"
     sauber, gesehen = [], set()
     for r in rows:

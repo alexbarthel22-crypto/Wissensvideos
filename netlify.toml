@@ -1,0 +1,7 @@
+# Netlify baut die Muschel-Tal-Seite bei jedem Push neu aus muscheltal/daten/
+[build]
+  command = "python3 muscheltal/bau.py"
+  publish = "muscheltal/site"
+
+[build.environment]
+  PYTHON_VERSION = "3.12"

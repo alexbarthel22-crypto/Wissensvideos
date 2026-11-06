@@ -4,33 +4,34 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Muschel-Tal – die Insel aus Followern</title>
-<meta name="description" content="Muschel-Tal: die Inselstadt in der Südsee, die nur aus euch besteht. Folgen = einziehen. Finde deine Hütte auf der Karte.">
+<meta name="description" content="Jeder, der @muscheltal auf TikTok folgt, bekommt auf dieser Insel eine Hütte mit seinem Namen. Finde deine Hütte!">
 <meta name="theme-color" content="#08605f">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%230fb3b0'/%3E%3Cpath d='M12 44 Q32 8 52 44 Z' fill='%23ffd23f'/%3E%3Cpath d='M32 14v30M22 22l6 22M42 22l-6 22' stroke='%23e8467c' stroke-width='3'/%3E%3C/svg%3E">
 <style>
-/* Muschel-Tal · "Sticker-Lagune": Sand, Türkis, Hibiskus, Sonnengelb, Kakao-Konturen. Keine externen Dateien. */
+/* Muschel-Tal · "Sticker-Lagune". Bewusst schlank: Karte, kurze Erklärung, Pass, Aktuelles, Fragen. Keine externen Dateien. */
 :root{
  --ink:#2a1b12;--sand:#fff4e0;--peach:#ffd9b8;--lagoon:#0fb3b0;--deep:#08605f;--hib:#e8467c;--sun:#ffd23f;--leaf:#2e9e5b;--soft:#7a5a45;
- --r:16px;--sh:4px 4px 0 var(--ink);
+ --sh:4px 4px 0 var(--ink);
  --f:ui-rounded,"SF Pro Rounded","Nunito","Varela Round","Segoe UI",system-ui,sans-serif;
  color-scheme:light;
 }
 *{box-sizing:border-box}
-html{scroll-padding-top:12px}
-body{margin:0;background:var(--sand);background-image:radial-gradient(circle at 12px 12px,rgba(42,27,18,.06) 1.5px,transparent 2px);background-size:24px 24px;color:var(--ink);font:600 17px/1.5 var(--f);padding-bottom:84px}
-h1,h2,h3{margin:0;font-weight:900;line-height:1.05;text-wrap:balance}
+body{margin:0;background:var(--sand);color:var(--ink);font:600 17px/1.5 var(--f)}
+h1,h2,h3{margin:0;font-weight:900;line-height:1.08;text-wrap:balance}
 button,input{font:inherit;color:inherit}
 button{cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 :focus-visible{outline:3px solid var(--hib);outline-offset:2px}
-a{color:var(--deep)}
-.w{max-width:780px;margin:0 auto;padding:0 16px}
-.st{background:#fff;border:3px solid var(--ink);border-radius:var(--r);box-shadow:var(--sh)}
-.kick{display:inline-block;font-size:12px;font-weight:900;letter-spacing:2px;text-transform:uppercase;background:var(--ink);color:var(--sun);padding:4px 10px;border-radius:6px;transform:rotate(-2deg)}
-section{padding:34px 0 0}
-section>h2,.w>h2{font-size:30px;margin:10px 0 14px}
-.sub{color:var(--soft);font-size:15px;margin:-6px 0 14px}
-/* ---------- Hero: Karte zuerst ---------- */
-.hero{position:relative;height:min(78vh,700px);min-height:460px;background:var(--lagoon);touch-action:none;overflow:hidden}
+.w{max-width:720px;margin:0 auto;padding:0 16px}
+.st{background:#fff;border:3px solid var(--ink);border-radius:16px;box-shadow:var(--sh)}
+section{padding:36px 0 0}
+section>h2{font-size:28px;margin-bottom:14px}
+.sub{color:var(--soft);font-size:15px;margin:0}
+.btn{display:inline-block;border:3px solid var(--ink);background:var(--sun);border-radius:12px;padding:11px 18px;font-weight:900;box-shadow:3px 3px 0 var(--ink);text-decoration:none;color:var(--ink)}
+.btn.dark{background:var(--ink);color:#fff}
+.btn.hib{background:var(--hib);color:#fff}
+.btn:active,.chip:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+/* ---------- Karte ---------- */
+.hero{position:relative;height:min(76vh,680px);min-height:470px;background:#0a7f9c;touch-action:none;overflow:hidden}
 #map{display:block;width:100%;height:100%;cursor:grab}
 #map.drag{cursor:grabbing}
 .logo{position:absolute;left:12px;top:12px;display:flex;align-items:center;gap:8px;background:var(--sun);border:3px solid var(--ink);border-radius:999px;padding:5px 14px 5px 6px;box-shadow:var(--sh);transform:rotate(-2deg)}
@@ -45,120 +46,69 @@ section>h2,.w>h2{font-size:30px;margin:10px 0 14px}
 .sugg button:hover,.sugg button.act{background:var(--peach)}
 .sugg small{color:var(--soft)}
 .miss{margin:8px 0 0;background:var(--hib);color:#fff;border:3px solid var(--ink);border-radius:12px;padding:8px 12px;font-size:15px;font-weight:800}
-.ctrl{position:absolute;right:12px;bottom:86px;display:grid;gap:8px}
-.ctrl button{width:48px;height:48px;border-radius:50%;border:3px solid var(--ink);background:#fff;font-size:24px;font-weight:900;line-height:1;box-shadow:3px 3px 0 var(--ink)}
-.quick{position:absolute;left:12px;right:72px;bottom:16px;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:2px 4px 6px 2px}
+.ctrl{position:absolute;right:12px;bottom:74px;display:grid;gap:8px}
+.ctrl button{width:46px;height:46px;border-radius:50%;border:3px solid var(--ink);background:#fff;font-size:22px;font-weight:900;line-height:1;box-shadow:3px 3px 0 var(--ink)}
+.quick{position:absolute;left:12px;right:70px;bottom:16px;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:2px 4px 6px 2px}
 .quick::-webkit-scrollbar{display:none}
 .chip{flex:none;border:3px solid var(--ink);background:#fff;border-radius:999px;padding:7px 13px;min-height:44px;font-weight:900;font-size:15px;box-shadow:3px 3px 0 var(--ink)}
 .chip.hot{background:var(--hib);color:#fff}
 .chip.sun{background:var(--sun)}
 .hint{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:var(--ink);color:#fff;border-radius:14px;padding:10px 14px;font-weight:800;pointer-events:none;opacity:0;transition:opacity .3s;text-align:center}
 .hint.on{opacity:1}
-.pop{position:absolute;left:12px;right:72px;bottom:76px;display:flex;align-items:center;gap:10px;background:#fff;border:3px solid var(--ink);border-radius:14px;padding:8px 8px 8px 12px;box-shadow:var(--sh)}
+.pop{position:absolute;left:12px;right:70px;bottom:74px;display:flex;align-items:center;gap:10px;background:#fff;border:3px solid var(--ink);border-radius:14px;padding:8px 8px 8px 12px;box-shadow:var(--sh)}
 .pop div{flex:1;min-width:0;display:grid}
 .pop b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .pop span{font-size:13px;color:var(--soft);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-/* Ticker */
-.ticker{background:var(--ink);color:var(--sun);border-block:3px solid var(--ink);overflow:hidden;white-space:nowrap;font-weight:900;font-size:16px}
-.ticker div{display:inline-block;padding:9px 0;animation:tick 40s linear infinite}
-.ticker span{margin:0 18px}
-.ticker em{font-style:normal;color:#fff}
-@keyframes tick{to{transform:translateX(-50%)}}
-@media (prefers-reduced-motion:reduce){.ticker div,.live::before{animation:none}}
-/* ---------- Inselpass (Bordkarte) ---------- */
-.pass{display:grid;grid-template-columns:1fr 112px;background:#fff;border:3px solid var(--ink);border-radius:20px;box-shadow:6px 6px 0 var(--ink);overflow:hidden}
+.pop .btn{padding:7px 12px}
+/* ---------- Erklärung ---------- */
+.intro{padding-top:28px;text-align:center}
+.intro h1{font-size:clamp(28px,7vw,40px)}
+.intro .lead{font-size:18px;margin:10px auto 22px;max-width:520px}
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;text-align:center}
+.step{padding:14px 8px 12px}
+.step .e{font-size:34px;line-height:1}
+.step b{display:block;margin-top:8px;font-size:clamp(14px,3.8vw,16px);line-height:1.2;hyphens:manual}
+.step span{display:block;margin-top:4px;font-size:13px;color:var(--soft);line-height:1.3}
+.step:nth-child(1){background:#d6f5f3}.step:nth-child(2){background:#ffe7d4}.step:nth-child(3){background:#fff6c7}
+.intro .btn{margin-top:22px;font-size:18px}
+/* ---------- Inselpass ---------- */
+.pass{display:grid;grid-template-columns:1fr 108px;background:#fff;border:3px solid var(--ink);border-radius:20px;box-shadow:6px 6px 0 var(--ink);overflow:hidden}
 .pass .main{padding:16px;background:linear-gradient(160deg,#fff 55%,var(--peach))}
-.pass .stub{border-left:3px dashed var(--ink);background:var(--lagoon);color:#fff;display:grid;place-items:center;text-align:center;padding:12px 6px;position:relative}
+.pass .stub{border-left:3px dashed var(--ink);background:var(--lagoon);color:#fff;display:grid;place-items:center;text-align:center;padding:12px 6px}
 .pass .stub b{font-size:30px;font-variant-numeric:tabular-nums;line-height:1}
 .pass .stub small{font-size:11px;font-weight:900;letter-spacing:1.5px}
 .stamp{margin-top:8px;border:3px solid var(--sun);color:var(--sun);border-radius:8px;padding:2px 6px;font-size:12px;font-weight:900;letter-spacing:1px;transform:rotate(-12deg)}
-.pass h3{font-size:26px;word-break:break-all;margin:8px 0 10px}
+.pass h3{font-size:26px;overflow-wrap:anywhere;margin:8px 0 10px}
 .pass dl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 12px;margin:0}
+.pass dl .full{grid-column:1/-1}
 .pass dt{font-size:11px;font-weight:900;letter-spacing:1.5px;color:var(--soft);text-transform:uppercase}
 .pass dd{margin:0;font-weight:900;overflow-wrap:anywhere}
-.pass dl .full{grid-column:1/-1}
-.bars{height:26px;margin-top:12px;background:repeating-linear-gradient(90deg,var(--ink) 0 2px,transparent 2px 4px,var(--ink) 4px 7px,transparent 7px 9px);opacity:.85}
+.bars{height:24px;margin-top:12px;background:repeating-linear-gradient(90deg,var(--ink) 0 2px,transparent 2px 4px,var(--ink) 4px 7px,transparent 7px 9px);opacity:.85}
 .nb{margin-top:16px;padding:14px}
-.nb h3{font-size:18px}
 .nbl{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
 .nbl button{border:2px solid var(--ink);background:var(--sand);border-radius:999px;padding:5px 11px;font-weight:800;font-size:15px}
-.acts{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
-.btn{border:3px solid var(--ink);background:var(--sun);border-radius:12px;padding:10px 16px;font-weight:900;box-shadow:3px 3px 0 var(--ink);text-decoration:none;color:var(--ink);display:inline-block}
-.btn.dark{background:var(--ink);color:#fff}
-.btn:active,.chip:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
-.cpy{font-size:14px;color:var(--soft);margin:10px 0 0;word-break:break-word}
-/* ---------- Bauprojekt ---------- */
-.proj{padding:16px;background:var(--sun)}
-.proj .top{display:flex;align-items:center;gap:12px}
-.proj .ico{font-size:40px;width:64px;height:64px;border-radius:50%;background:#fff;border:3px solid var(--ink);display:grid;place-items:center;flex:none}
-.proj h3{font-size:22px}
-.meter{height:30px;border:3px solid var(--ink);border-radius:999px;background:#fff;margin:14px 0 6px;overflow:hidden}
-.meter i{display:block;height:100%;background:repeating-linear-gradient(-45deg,var(--hib) 0 12px,#f06a96 12px 24px);border-right:3px solid var(--ink)}
-.proj .num{display:flex;justify-content:space-between;font-weight:900;font-variant-numeric:tabular-nums}
-/* ---------- Rat ---------- */
-.council{display:flex;gap:14px;overflow-x:auto;padding:4px 4px 10px;scroll-snap-type:x mandatory;scrollbar-width:none}
-.council::-webkit-scrollbar{display:none}
-.mem{flex:0 0 170px;scroll-snap-align:start;text-align:center;padding:14px 10px}
-.mem i{font-style:normal;font-size:38px;width:76px;height:76px;margin:0 auto 8px;border-radius:50%;border:3px solid var(--ink);display:grid;place-items:center;background:var(--peach)}
-.mem small{display:block;font-size:12px;font-weight:900;letter-spacing:1px;text-transform:uppercase;color:var(--soft)}
-.mem button,.mem span{display:block;width:100%;border:0;background:none;padding:0;font-weight:900;overflow-wrap:anywhere;margin-top:4px}
-.mem span{color:var(--soft)}
-.post{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:12px}
-.post li{background:#fffdf6;border:3px solid var(--ink);border-radius:6px;padding:12px 14px 12px 46px;position:relative;box-shadow:var(--sh)}
-.post li:nth-child(odd){transform:rotate(-.6deg)}.post li:nth-child(even){transform:rotate(.5deg)}
-.post li::before{content:"🍾";position:absolute;left:12px;top:10px;font-size:22px}
-/* ---------- Viertel-Duell ---------- */
-.duel{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
-.team{padding:12px 6px;text-align:center}
-.team .e{font-size:42px;line-height:1}
-.team h3{font-size:clamp(13px,3.6vw,18px);margin:6px 0 2px;hyphens:manual}
-.team .n{font-size:26px;font-weight:900;font-variant-numeric:tabular-nums}
-.team .cap{font-size:12px;color:var(--soft);line-height:1.25}
-.team .lvl{height:12px;border:2px solid var(--ink);border-radius:999px;margin-top:8px;overflow:hidden;background:var(--sand)}
-.team .lvl i{display:block;height:100%}
-.badge{display:inline-block;font-size:11px;font-weight:900;letter-spacing:1px;padding:2px 8px;border-radius:6px;border:2px solid var(--ink);margin-top:8px}
-.days{display:flex;gap:10px;overflow-x:auto;padding:4px 4px 10px;scrollbar-width:none;margin-top:16px}
-.days::-webkit-scrollbar{display:none}
-.day{flex:none;min-width:116px;padding:10px 12px;text-align:center}
-.day small{display:block;font-weight:900;color:var(--soft)}
-.day b{display:block;font-size:22px;color:var(--leaf);font-variant-numeric:tabular-nums}
-.day span{font-size:13px;color:var(--soft);font-variant-numeric:tabular-nums}
-.fame{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
-.fame li button{border:3px solid var(--ink);background:#fff;border-radius:10px;padding:6px 10px;font-weight:800;box-shadow:3px 3px 0 var(--ink)}
-.fame li:nth-child(-n+3) button{background:var(--sun)}
-.fame em{font-style:normal;color:var(--hib);font-weight:900;margin-right:4px}
-/* ---------- Regeln (Wisch-Karten) ---------- */
-.swipe{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 4px 12px;scrollbar-width:none}
-.swipe::-webkit-scrollbar{display:none}
-.card{flex:0 0 min(78%,300px);scroll-snap-align:start;padding:16px;min-height:200px;display:flex;flex-direction:column;gap:8px}
-.card:nth-child(3n+1){background:#d6f5f3}.card:nth-child(3n+2){background:#ffe7d4}.card:nth-child(3n){background:#fff6c7}
-.card .e{font-size:34px}
-.card b{font-size:20px;line-height:1.15}
-.card span{font-size:15px;color:var(--soft)}
-.card small{margin-top:auto;font-weight:900;color:var(--soft)}
-/* ---------- Fragen als Chat ---------- */
+.acts{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.cpy{font-size:14px;color:var(--soft);margin:10px 0 0;overflow-wrap:anywhere}
+/* ---------- Aktuell ---------- */
+.now{padding:16px}
+.nums{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;text-align:center}
+.nums div{background:var(--sand);border:2px solid var(--ink);border-radius:12px;padding:8px 4px}
+.nums b{display:block;font-size:22px;font-variant-numeric:tabular-nums;line-height:1.1}
+.nums small{font-size:12px;color:var(--soft);font-weight:800}
+.proj{margin-top:16px}
+.proj .top{display:grid;gap:2px;font-weight:900}
+.proj .top small{color:var(--soft);font-variant-numeric:tabular-nums}
+.meter{height:22px;border:3px solid var(--ink);border-radius:999px;background:#fff;margin:8px 0 6px;overflow:hidden}
+.meter i{display:block;height:100%;background:repeating-linear-gradient(-45deg,var(--hib) 0 12px,#f06a96 12px 24px)}
+.news{margin:16px 0 0;padding:12px 14px;background:#fffdf6;border:2px dashed var(--ink);border-radius:12px;font-weight:700}
+.news b{color:var(--hib)}
+/* ---------- Fragen ---------- */
 .chat details{margin:0 0 12px}
-.chat summary{list-style:none;cursor:pointer;margin-left:auto;max-width:86%;width:fit-content;background:var(--deep);color:#fff;border:3px solid var(--ink);border-radius:18px 18px 4px 18px;padding:10px 14px;font-weight:800}
+.chat summary{list-style:none;cursor:pointer;margin-left:auto;max-width:88%;width:fit-content;background:var(--deep);color:#fff;border:3px solid var(--ink);border-radius:18px 18px 4px 18px;padding:10px 14px;font-weight:800}
 .chat summary::-webkit-details-marker{display:none}
-.chat p{max-width:86%;width:fit-content;background:#fff;border:3px solid var(--ink);border-radius:18px 18px 18px 4px;padding:10px 14px;margin:8px 0 0;color:var(--ink);font-weight:600}
-.chat p::before{content:"🏝️ ";}
-/* ---------- Logbuch ---------- */
-.log{list-style:none;margin:0;padding:0;display:grid;gap:12px}
-.log li{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start}
-.log time{background:var(--ink);color:var(--sun);font-weight:900;font-size:13px;border-radius:8px;padding:5px 9px;white-space:nowrap;transform:rotate(-3deg)}
-.log p{margin:0;font-weight:700}
-.log li.next time{background:var(--hib);color:#fff}
-/* ---------- CTA ---------- */
-.join{margin-top:34px;padding:22px;text-align:center;background:linear-gradient(180deg,#ffb36b,#e8467c);color:#fff}
-.join h2{font-size:30px}
-.join p{font-weight:700}
-.join small{display:block;margin-top:12px;font-size:13px;opacity:.95}
-footer{padding:26px 0 10px;text-align:center;color:var(--soft);font-size:14px}
-/* ---------- Untere Leiste ---------- */
-.tabs{position:fixed;left:50%;bottom:max(10px,env(safe-area-inset-bottom));transform:translateX(-50%);z-index:40;display:flex;gap:4px;background:var(--ink);border-radius:999px;padding:5px;box-shadow:0 8px 24px rgba(42,27,18,.35);max-width:calc(100% - 20px)}
-.tabs button{border:0;background:none;color:#fff;border-radius:999px;padding:6px 12px;min-height:48px;display:grid;justify-items:center;font-size:11px;font-weight:900;letter-spacing:.5px;line-height:1.1}
-.tabs button span{font-size:19px}
-.tabs button.on{background:var(--sun);color:var(--ink)}
+.chat p{max-width:88%;width:fit-content;background:#fff;border:3px solid var(--ink);border-radius:18px 18px 18px 4px;padding:10px 14px;margin:8px 0 0;font-weight:600}
+footer{padding:30px 16px 36px;text-align:center;color:var(--soft);font-size:14px}
+footer a{color:var(--soft)}
 [hidden]{display:none!important}
 </style>
 </head>
@@ -166,100 +116,68 @@ footer{padding:26px 0 10px;text-align:center;color:var(--soft);font-size:14px}
 <div class="hero" id="hero">
  <canvas id="map" aria-label="Karte von Muschel-Tal"></canvas>
  <div class="logo"><svg width="34" height="34" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="#0fb3b0"/><path d="M10 46 Q32 4 54 46 Q32 54 10 46Z" fill="#fff4e0" stroke="#2a1b12" stroke-width="3"/><path d="M32 14v32M21 21l7 25M43 21l-7 25" stroke="#e8467c" stroke-width="3" stroke-linecap="round"/></svg><b>MUSCHEL-TAL</b></div>
- <div class="live" id="live">LIVE-KARTE</div>
+ <div class="live" id="live"></div>
  <div class="findbar">
-  <input id="q" type="search" placeholder="Finde deine Hütte: @name oder Nr." autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="TikTok-Name oder Nummer">
+  <input id="q" type="search" placeholder="Finde deine Hütte: @name" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="TikTok-Name oder Hütten-Nummer">
   <ul class="sugg" id="sugg" hidden></ul>
   <p class="miss" id="miss" hidden></p>
  </div>
- <div class="ctrl"><button id="zin" aria-label="Hineinzoomen">+</button><button id="zout" aria-label="Herauszoomen">−</button><button id="zall" aria-label="Ganze Insel">🏝️</button></div>
- <div class="pop" id="pop" hidden><div><b id="pname"></b><span id="pinfo"></span></div><button class="btn" data-go="s-pass">Pass</button></div>
- <div class="quick"><button class="chip hot" id="growbtn">▶ Insel wachsen sehen</button><button class="chip sun" id="mine" hidden>🏠 Meine Hütte</button><button class="chip" id="rnd">🎲 Zufall</button><button class="chip" id="vid">🎬 Im Video</button></div>
+ <div class="ctrl"><button id="zin" aria-label="Hineinzoomen">+</button><button id="zout" aria-label="Herauszoomen">−</button><button id="zall" aria-label="Ganze Insel">🏝️</button><button id="dn" aria-label="Tag oder Nacht"></button></div>
+ <div class="pop" id="pop" hidden><div><b id="pname"></b><span id="pinfo"></span></div><button class="btn" id="topass">Mein Pass</button></div>
+ <div class="quick"><button class="chip sun" id="mine" hidden>🏠 Meine Hütte</button><button class="chip hot" id="growbtn">▶ Insel wachsen sehen</button><button class="chip" id="rnd">🎲 Zufall</button></div>
  <div class="hint" id="hint">Zum Zoomen Strg + Mausrad<br>oder + / − benutzen</div>
 </div>
-<div class="ticker" aria-hidden="true"><div id="tick"></div></div>
 
 <main class="w">
+ <section class="intro">
+  <h1>Eine Insel, gebaut aus Followern 🏝️</h1>
+  <p class="lead">Jeder, der <b class="acc"></b> auf TikTok folgt, bekommt hier eine eigene Hütte mit seinem Namen. Was auf der Insel passiert, entscheidet ihr in den Kommentaren.</p>
+  <div class="steps">
+   <div class="st step"><div class="e">➕</div><b>Folgen</b><span>auf TikTok</span></div>
+   <div class="st step"><div class="e">🏠</div><b>Hütte bekommen</b><span>mit deinem Namen</span></div>
+   <div class="st step"><div class="e">💬</div><b>Mit&shy;bestimmen</b><span>in den Kommentaren</span></div>
+  </div>
+  <a class="btn hib" id="join" target="_blank" rel="noopener">Jetzt einziehen</a>
+ </section>
+
  <section id="s-pass" hidden>
-  <span class="kick">Dein Inselpass</span>
-  <h2>Willkommen zu Hause!</h2>
+  <h2>Dein Inselpass</h2>
   <div class="pass">
    <div class="main"><small style="font-weight:900;letter-spacing:2px;color:var(--deep)">MUSCHEL-TAL · SÜDSEE</small>
     <h3 id="idname"></h3>
-    <dl><div class="full"><dt>Viertel</dt><dd id="idv"></dd></div><div><dt>Eingezogen</dt><dd id="ids"></dd></div><div><dt>Mitgebracht</dt><dd id="idm"></dd></div><div class="full"><dt>Status</dt><dd id="idst"></dd></div></dl>
+    <dl><div class="full"><dt>Viertel</dt><dd id="idv"></dd></div><div><dt>Eingezogen</dt><dd id="ids"></dd></div><div><dt>Status</dt><dd id="idst"></dd></div></dl>
     <div class="bars"></div>
    </div>
    <div class="stub"><div><small>HÜTTE</small><br><b id="idnr"></b><div class="stamp">BEWOHNT</div></div></div>
   </div>
-  <div class="st nb" id="nbbox">
-   <h3>🏘️ Deine Nachbarn</h3>
-   <div class="nbl" id="nbl"></div>
-   <p class="sub" style="margin:0">Markier sie unter dem neuesten Video – wer zuerst seine Nachbarn findet, bekommt einen Gruß im nächsten Video.</p>
-  </div>
+  <div class="st nb" id="nbbox"><b>🏘️ Deine Nachbarn</b><div class="nbl" id="nbl"></div><p class="sub">Markier sie unter dem neuesten Video!</p></div>
   <div class="acts"><button class="btn" id="cpy">📋 Text zum Teilen</button><button class="btn dark" id="cpyn">🏘️ Nachbarn markieren</button></div>
   <p class="cpy" id="cpyd"></p>
  </section>
 
- <section id="s-rat">
-  <span class="kick">Bauprojekt</span>
-  <h2 id="pjh"></h2>
-  <div class="st proj"><div class="top"><div class="ico" id="pjico"></div><div><h3 id="pjname"></h3><p class="sub" style="margin:4px 0 0;color:var(--ink)" id="pjtext"></p></div></div>
-   <div class="meter"><i id="pjbar"></i></div><div class="num"><span id="pjstand"></span><span id="pjziel"></span></div></div>
-  <h2 style="margin-top:30px">Der Inselrat</h2>
-  <div class="council" id="aemter"></div>
-  <ul class="post" id="news"></ul>
+ <section>
+  <h2>Gerade auf der Insel</h2>
+  <div class="st now">
+   <div class="nums"><div><b id="nTag"></b><small>Tag</small></div><div><b id="nEw"></b><small>Einwohner</small></div><div><b id="nMu"></b><small>🐚 Muscheln</small></div></div>
+   <div class="proj" id="proj"><div class="top"><span id="pjname"></span><small id="pjnum"></small></div><div class="meter"><i id="pjbar"></i></div><p class="sub" id="pjtext"></p></div>
+   <p class="news" id="news"></p>
+  </div>
  </section>
 
- <section id="s-duell">
-  <span class="kick">Viertel-Duell</span>
-  <h2>Welches Viertel ist am lautesten?</h2>
-  <p class="sub">Schreib das Emoji deines Viertels in die Kommentare. Das Viertel mit den meisten Emojis gewinnt die Folge.</p>
-  <div class="duel" id="viertel"></div>
-  <div class="days" id="grow"></div>
-  <h3 style="font-size:20px;margin:22px 0 10px">⭐ Die ersten 10 Einwohner</h3>
-  <ol class="fame" id="founders"></ol>
- </section>
-
- <section id="s-regeln">
-  <span class="kick">Inselregeln</span>
-  <h2>So funktioniert Muschel-Tal</h2>
-  <p class="sub">Zum Weiterlesen zur Seite wischen →</p>
-  <div class="swipe" id="rules"></div>
- </section>
-
- <section id="s-fragen" class="chat">
-  <span class="kick">Fragen</span>
-  <h2>Du fragst, die Insel antwortet</h2>
+ <section class="chat">
+  <h2>Fragen?</h2>
   <div id="faq"></div>
  </section>
-
- <section id="s-log">
-  <span class="kick">Logbuch</span>
-  <h2>Was bisher geschah</h2>
-  <ol class="log" id="chron"></ol>
- </section>
-
- <div class="st join">
-  <h2>Noch keine Hütte?</h2>
-  <p>Folg <span id="acc2"></span> auf TikTok – beim nächsten Update steht deine Hütte mit deinem Namen auf der Karte.</p>
-  <a class="btn" id="acc3" target="_blank" rel="noopener">Jetzt einziehen</a>
-  <small>Muschel-Tal-Videos auf anderen Accounts sind Kopien. Einziehen kannst du nur beim Original.</small>
- </div>
 </main>
 <footer id="foot"></footer>
-<nav class="tabs" aria-label="Bereiche">
- <button data-go="hero" class="on"><span>🗺️</span>Karte</button>
- <button data-go="s-pass" id="tabpass" hidden><span>🎫</span>Pass</button>
- <button data-go="s-rat"><span>🗼</span>Rat</button>
- <button data-go="s-duell"><span>⚔️</span>Duell</button>
- <button data-go="s-regeln"><span>📜</span>Regeln</button>
-</nav>
 <script>
 const DATA=/*__DATEN__*/null;
 const I=DATA.insel, R=DATA.r, N=R.length, $=id=>document.getElementById(id);
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const fmt=n=>n.toLocaleString('de-DE');
 const ACC=I.account, ACCURL='https://www.tiktok.com/'+ACC, FONT=getComputedStyle(document.body).fontFamily;
+const REDUCED=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const TAU=Math.PI*2;
 
 // ---------- Viertel ----------
 const VIER=[];{let s=0;for(const v of I.viertel){const von=s+1;s=v.plaetze?s+v.plaetze:Infinity;VIER.push({...v,von,bis:s});}}
@@ -274,7 +192,7 @@ function plaetze(n){
  for(;;){
   out.length=0;const g=Math.ceil(r/S);
   for(let gx=-g;gx<=g;gx++)for(let gy=-g;gy<=g;gy++){
-   if(((gx%5)+5)%5===0||((gy%4)+4)%4===0)continue;
+   if(((gx%5)+5)%5===0||((gy%4)+4)%4===0)continue; // Wege
    const x=gx*S,y=gy*S*0.9,d=Math.hypot(x,y);
    if(d<PLAZA||d>r)continue;
    out.push({gx,gy,x,y,k:d+hash(gx,gy)*14});
@@ -284,58 +202,174 @@ function plaetze(n){
  out.sort((a,b)=>a.k-b.k);return out.slice(0,Math.max(n,1));
 }
 const P=plaetze(N), cell=new Map();
-const PEOPLE=R.map((r,i)=>({name:r[0],seit:r[1],mark:r[2],nr:i+1,p:P[i],v:viertelVon(i+1)}));
+const WALLS=['#d9a066','#e4b47c','#cf9459','#e9c48f'];
+const PEOPLE=R.map((r,i)=>{const p=P[i],h=hash(p.gx+7,p.gy-3);return{name:r[0],seit:r[1],mark:r[2],nr:i+1,p,v:viertelVon(i+1),round:h<0.28,wall:WALLS[(h*97|0)%4],win:hash(p.gx,p.gy+11)<0.55};});
 PEOPLE.forEach(p=>cell.set(p.p.gx+','+p.p.gy,p));
 const byName=new Map(PEOPLE.map(p=>[p.name.toLowerCase(),p]));
 const AMT={};I.aemter.forEach(([t,n])=>{if(n)AMT[n.toLowerCase()]=t;});
 function nachbarn(p){const a=[];for(let dx=-2;dx<=2;dx++)for(let dy=-2;dy<=2;dy++){if(!dx&&!dy)continue;const q=cell.get((p.p.gx+dx)+','+(p.p.gy+dy));if(q)a.push([Math.hypot(q.p.x-p.p.x,q.p.y-p.p.y),q]);}return a.sort((x,y)=>x[0]-y[0]).slice(0,4).map(x=>x[1]);}
 
-// ---------- Küste ----------
+// ---------- Küste (wächst mit den Hütten) ----------
 const BINS=90, coast=new Array(BINS).fill(150);
-for(const p of PEOPLE){const b=((Math.atan2(p.p.y,p.p.x)+Math.PI)/(2*Math.PI)*BINS|0)%BINS, d=Math.hypot(p.p.x,p.p.y)+34;if(d>coast[b])coast[b]=d;}
+for(const p of PEOPLE){const b=((Math.atan2(p.p.y,p.p.x)+Math.PI)/TAU*BINS|0)%BINS, d=Math.hypot(p.p.x,p.p.y)+34;if(d>coast[b])coast[b]=d;}
 const sm=coast.map((_,i)=>{let s=0;for(let k=-3;k<=3;k++)s=Math.max(s,coast[(i+k+BINS)%BINS]-Math.abs(k)*4);return s;});
-const COAST=sm.map((d,i)=>{const a=i/BINS*2*Math.PI-Math.PI;return d+8*Math.sin(a*5)+5*Math.sin(a*11+1);});
+const COAST=sm.map((d,i)=>{const a=i/BINS*TAU-Math.PI;return d+8*Math.sin(a*5)+5*Math.sin(a*11+1);});
 const RMAX=Math.max(...COAST);
-function shape(ctx,off){ctx.beginPath();for(let i=0;i<=BINS;i++){const k=i%BINS,a=k/BINS*2*Math.PI-Math.PI,d=COAST[k]+off;const x=Math.cos(a)*d,y=Math.sin(a)*d*0.92;i?ctx.lineTo(x,y):ctx.moveTo(x,y);}ctx.closePath();}
-const PALMS=[];{const g=Math.ceil(RMAX/S)+1;for(let gx=-g;gx<=g;gx++)for(let gy=-g;gy<=g;gy++){if(cell.has(gx+','+gy))continue;const x=gx*S,y=gy*S*0.9,d=Math.hypot(x,y);if(d<PLAZA+10)continue;const a=(Math.atan2(y,x)+Math.PI)/(2*Math.PI)*BINS|0;if(d>COAST[a%BINS]-8)continue;if(hash(gx+99,gy-7)<0.22)PALMS.push({x:x+(hash(gx,gy+3)-.5)*8,y:y+(hash(gx+3,gy)-.5)*8});}}
+function coastAt(a){const f=((a+Math.PI)/TAU*BINS%BINS+BINS)%BINS,i=f|0,t=f-i;return COAST[i]*(1-t)+COAST[(i+1)%BINS]*t;}
+const polar=(a,d)=>[Math.cos(a)*d,Math.sin(a)*d*0.92];
+function shape(c,off,wob=0,t=0){c.beginPath();for(let i=0;i<=BINS;i++){const k=i%BINS,a=k/BINS*TAU-Math.PI,d=COAST[k]+off+(wob?wob*Math.sin(a*7+t*1.7)+wob*.6*Math.sin(a*13-t*1.1):0);const [x,y]=polar(a,d);i?c.lineTo(x,y):c.moveTo(x,y);}c.closePath();}
+const inside=(x,y,m=0)=>{const a=Math.atan2(y/0.92,x);return Math.hypot(x,y/0.92)<coastAt(a)-m;};
 
-// ---------- Karte ----------
-const cv=$('map'),ctx=cv.getContext('2d');let W=0,H=0,DPR=1;
+// ---------- Deko (einmal berechnet, immer gleich) ----------
+const PALMS=[],BUSH=[],GRASS=[],REEF=[],ROCKS=[],SPARK=[],FLOW=[];
+{const g=Math.ceil(RMAX/S)+1;for(let gx=-g;gx<=g;gx++)for(let gy=-g;gy<=g;gy++){if(cell.has(gx+','+gy))continue;const x=gx*S,y=gy*S*0.9;if(Math.hypot(x,y)<PLAZA+10||!inside(x,y,10))continue;const h=hash(gx+99,gy-7);
+ const jx=x+(hash(gx,gy+3)-.5)*8,jy=y+(hash(gx+3,gy)-.5)*8;
+ if(h<0.2)PALMS.push({x:jx,y:jy,ph:hash(gx,gy)*TAU,s:.85+hash(gy,gx)*.4});else if(h<0.32)BUSH.push({x:jx,y:jy,r:3+hash(gx,gy)*3});else if(h<0.38)FLOW.push({x:jx,y:jy,c:['#ff6fa3','#ffd23f','#fff','#ff8a4c'][(h*1000|0)%4]});}}
+for(let i=0;i<Math.min(1600,RMAX*RMAX/700);i++){const a=hash(i,1)*TAU,d=Math.sqrt(hash(i,2))*RMAX;const [x,y]=polar(a,d);if(inside(x,y,6))GRASS.push({x,y,r:8+hash(i,3)*22,c:hash(i,4)<.5?'#8fd065':'#a9e07a'});}
+for(let i=0;i<90;i++){const a=hash(i,5)*TAU,d=coastAt(a)+22+hash(i,6)*22;const [x,y]=polar(a,d);REEF.push({x,y,r:3+hash(i,7)*6,c:['#ff8fa3','#ffb36b','#f26d8f','#c9a0ff'][i%4]});}
+for(let i=0;i<26;i++){const a=hash(i,8)*TAU,d=coastAt(a)+5+hash(i,9)*6;const [x,y]=polar(a,d);ROCKS.push({x,y,r:2+hash(i,10)*3});}
+for(let i=0;i<220;i++){const a=hash(i,11)*TAU,d=RMAX+60+Math.sqrt(hash(i,12))*700;const [x,y]=polar(a,d);SPARK.push({x,y,ph:hash(i,13)*TAU,sp:1+hash(i,14)*2});}
+const BOATS=[0,1,2,3].map(i=>({ph:i*1.7+.4,r:RMAX+80+i*38,sp:(i%2?1:-1)*(0.018+i*0.004),c:['#fff','#ffd23f','#e8467c','#fff'][i]}));
+const CLOUDS=[0,1,2,3,4].map(i=>({x:(hash(i,20)-.5)*2*(RMAX+500),y:(hash(i,21)-.5)*2*(RMAX+300),s:.8+hash(i,22)*1.2,sp:5+hash(i,23)*6}));
+const BIRDS=[0,1,2].map(i=>({ph:hash(i,30)*TAU,r:RMAX*.5+i*80,sp:.09+i*.02}));
+const LH_A=-0.75, PIER_A=Math.PI/2+.25;
+const LH=polar(LH_A,coastAt(LH_A)+30);
+const PIER0=polar(PIER_A,coastAt(PIER_A)-6),PIER1=polar(PIER_A,coastAt(PIER_A)+62);
+const PJ=I.projekt, LH_DONE=!PJ||PJ.stand>=PJ.ziel;
+const LANT=[0,1,2,3,4,5,6,7].map(i=>polar(i/8*TAU,PLAZA-14));
+
+// ---------- Kamera ----------
+const cv=$('map'),ctx=cv.getContext('2d'),base=document.createElement('canvas'),bx=base.getContext('2d');
+let W=0,H=0,DPR=1,T=0,baseKey='';
 const cam={x:0,y:0,z:1};let sel=null,limit=N,growing=false;
-function fit(){const r=RMAX+60,z=Math.min(W,H-150)/(2*r);return{x:0,y:-25/z,z};}
-function resize(){const b=cv.getBoundingClientRect();DPR=Math.min(2,window.devicePixelRatio||1);W=b.width;H=b.height;cv.width=W*DPR|0;cv.height=H*DPR|0;draw();}
+function fit(){const r=RMAX+70,z=Math.min(W,H-150)/(2*r);return{x:0,y:-25/z,z};}
+function resize(){const b=cv.getBoundingClientRect();DPR=Math.min(2,window.devicePixelRatio||1);W=b.width;H=b.height;cv.width=base.width=W*DPR|0;cv.height=base.height=H*DPR|0;baseKey='';draw();}
 const s2w=(x,y)=>[(x-W/2)/cam.z+cam.x,(y-H/2)/cam.z+cam.y];
-let raf=0;function kick(){if(!raf)raf=requestAnimationFrame(()=>{raf=0;draw();});}
-function draw(){
- const z=cam.z;ctx.setTransform(DPR,0,0,DPR,0,0);ctx.fillStyle='#0fb3b0';ctx.fillRect(0,0,W,H);
- ctx.setTransform(DPR*z,0,0,DPR*z,DPR*(W/2-cam.x*z),DPR*(H/2-cam.y*z));
- ctx.fillStyle='#3cc9c2';shape(ctx,46);ctx.fill();
- ctx.fillStyle='#8ee6dc';shape(ctx,24);ctx.fill();
- ctx.fillStyle='#ffe8bf';shape(ctx,12);ctx.fill();
- ctx.lineWidth=2.5;ctx.strokeStyle='#2a1b12';ctx.fillStyle='#9bd86f';shape(ctx,0);ctx.fill();
- ctx.fillStyle='#ffe8bf';ctx.beginPath();ctx.ellipse(0,0,PLAZA-8,(PLAZA-8)*.9,0,0,7);ctx.fill();
- ctx.fillStyle='#8ee6dc';ctx.beginPath();ctx.ellipse(0,0,22,20,0,0,7);ctx.fill();
- ctx.fillStyle='#ffd23f';ctx.strokeStyle='#2a1b12';ctx.lineWidth=1.4;ctx.beginPath();ctx.moveTo(-14,8);ctx.quadraticCurveTo(0,-26,14,8);ctx.quadraticCurveTo(0,13,-14,8);ctx.fill();ctx.stroke();
- ctx.strokeStyle='#e8467c';ctx.lineWidth=1.6;ctx.beginPath();for(const dx of[-8,-4,0,4,8]){ctx.moveTo(0,-14);ctx.lineTo(dx,9);}ctx.stroke();
- if(z>0.9){ctx.fillStyle='#2a1b12';ctx.font='900 9px '+FONT;ctx.textAlign='center';ctx.fillText('MUSCHELPLATZ',0,PLAZA-18);}
- const [x0,y0]=s2w(-30,-30),[x1,y1]=s2w(W+30,H+30);
- if(z>0.35){for(const t of PALMS){if(t.x<x0||t.x>x1||t.y<y0||t.y>y1)continue;ctx.strokeStyle='#8a5a2b';ctx.lineWidth=1.6;ctx.beginPath();ctx.moveTo(t.x,t.y+6);ctx.quadraticCurveTo(t.x+2,t.y,t.x,t.y-4);ctx.stroke();ctx.fillStyle='#2e9e5b';for(let k=0;k<5;k++){const a=k/5*Math.PI*2;ctx.beginPath();ctx.ellipse(t.x+Math.cos(a)*3.5,t.y-4+Math.sin(a)*2,4,1.6,a,0,7);ctx.fill();}}}
- else{ctx.fillStyle='#4fae46';for(const t of PALMS)ctx.fillRect(t.x-2,t.y-2,4,4);}
+const world=c=>c.setTransform(DPR*cam.z,0,0,DPR*cam.z,DPR*(W/2-cam.x*cam.z),DPR*(H/2-cam.y*cam.z));
+
+// ---------- Tag & Nacht (Uhrzeit des Besuchers) ----------
+let DN='auto';try{DN=localStorage.getItem('mt-dn')||'auto';}catch(e){}
+function nightLevel(){if(DN==='day')return 0;if(DN==='night')return 1;const d=new Date(),h=d.getHours()+d.getMinutes()/60;if(h>=21||h<5)return 1;if(h>=19)return(h-19)/2;if(h<7)return 1-(h-5)/2;return 0;}
+function dnIcon(){$('dn').textContent=DN==='day'?'☀️':DN==='night'?'🌙':(nightLevel()>.5?'🌙':'☀️');$('dn').title=DN==='auto'?'Tageszeit: automatisch':'Tageszeit: '+(DN==='day'?'Tag':'Nacht');}
+
+// ---------- Statische Ebene (nur neu, wenn sich die Kamera bewegt) ----------
+function drawBase(){
+ const c=bx,z=cam.z;c.setTransform(1,0,0,1,0,0);
+ const [ox,oy]=[(W/2-cam.x*z)*DPR,(H/2-cam.y*z)*DPR];
+ const g=c.createRadialGradient(ox,oy,RMAX*z*DPR*.8,ox,oy,(RMAX+900)*z*DPR);g.addColorStop(0,'#14b3c2');g.addColorStop(1,'#0a6f95');c.fillStyle=g;c.fillRect(0,0,base.width,base.height);
+ world(c);
+ c.fillStyle='#2cc2c6';shape(c,58);c.fill();
+ c.fillStyle='#62d8d3';shape(c,40);c.fill();
+ for(const r of REEF){c.fillStyle=r.c;c.globalAlpha=.75;c.beginPath();c.arc(r.x,r.y,r.r,0,TAU);c.fill();}c.globalAlpha=1;
+ c.fillStyle='#9fe8df';shape(c,22);c.fill();
+ c.fillStyle='#f0d49c';shape(c,14);c.fill();
+ c.fillStyle='#ffe8bf';shape(c,10);c.fill();
+ c.fillStyle='#7cc35a';shape(c,1);c.fill();
+ c.fillStyle='#9bd86f';shape(c,-2);c.fill();
+ const [x0,y0]=s2w(-40,-40),[x1,y1]=s2w(W+40,H+40),vis=(x,y)=>x>x0&&x<x1&&y>y0&&y<y1;
+ for(const s of GRASS)if(vis(s.x,s.y)){c.fillStyle=s.c;c.globalAlpha=.55;c.beginPath();c.ellipse(s.x,s.y,s.r,s.r*.7,0,0,TAU);c.fill();}c.globalAlpha=1;
+ // Wege
+ if(z>.18){c.save();shape(c,-4);c.clip();c.lineCap='round';
+  const gmax=Math.ceil(RMAX/S)+1;
+  for(const [w,col] of [[8,'#e3c48a'],[5.5,'#f3dcac']]){c.strokeStyle=col;c.lineWidth=w;c.beginPath();
+   for(let gx=-gmax;gx<=gmax;gx++){if(((gx%5)+5)%5)continue;c.moveTo(gx*S,-RMAX);c.lineTo(gx*S,RMAX);}
+   for(let gy=-gmax;gy<=gmax;gy++){if(((gy%4)+4)%4)continue;c.moveTo(-RMAX,gy*S*.9);c.lineTo(RMAX,gy*S*.9);}c.stroke();}
+  c.restore();}
+ for(const r of ROCKS)if(vis(r.x,r.y)){c.fillStyle='#9b8f86';c.beginPath();c.ellipse(r.x,r.y,r.r,r.r*.7,0,0,TAU);c.fill();c.fillStyle='#bfb4aa';c.beginPath();c.ellipse(r.x-.6,r.y-.6,r.r*.5,r.r*.35,0,0,TAU);c.fill();}
+ // Steg
+ c.strokeStyle='#7a4a24';c.lineWidth=9;c.lineCap='butt';c.beginPath();c.moveTo(...PIER0);c.lineTo(...PIER1);c.stroke();
+ c.strokeStyle='#b07a45';c.lineWidth=7;c.setLineDash([2.2,.8]);c.beginPath();c.moveTo(...PIER0);c.lineTo(...PIER1);c.stroke();c.setLineDash([]);
+ // Muschelplatz
+ c.fillStyle='#e7cf9f';c.beginPath();c.ellipse(0,0,PLAZA-4,(PLAZA-4)*.92,0,0,TAU);c.fill();
+ c.fillStyle='#f6e2b8';c.beginPath();c.ellipse(0,0,PLAZA-9,(PLAZA-9)*.92,0,0,TAU);c.fill();
+ if(z>.5){c.strokeStyle='rgba(160,120,70,.35)';c.lineWidth=.8;for(let r=30;r<PLAZA-10;r+=9){c.beginPath();c.ellipse(0,0,r,r*.92,0,0,TAU);c.stroke();}
+  c.beginPath();for(let i=0;i<24;i++){const a=i/24*TAU;c.moveTo(Math.cos(a)*30,Math.sin(a)*30*.92);c.lineTo(Math.cos(a)*(PLAZA-10),Math.sin(a)*(PLAZA-10)*.92);}c.stroke();}
+ c.fillStyle='#c9b48a';c.beginPath();c.ellipse(0,2,27,24,0,0,TAU);c.fill();
+ c.fillStyle='#4fd0e0';c.beginPath();c.ellipse(0,0,24,21,0,0,TAU);c.fill();
+ for(const [lx,ly] of LANT){c.fillStyle='#6b3f1d';c.fillRect(lx-.8,ly-7,1.6,7);c.fillStyle='#ffe08a';c.beginPath();c.arc(lx,ly-8,2,0,TAU);c.fill();}
+ if(z>.9){c.fillStyle='#2a1b12';c.font='900 7px '+FONT;c.textAlign='center';c.fillText('MUSCHELPLATZ',0,PLAZA-14);}
+ for(const f of FLOW)if(z>.8&&vis(f.x,f.y)){c.fillStyle=f.c;for(let k=0;k<5;k++){const a=k/5*TAU;c.beginPath();c.arc(f.x+Math.cos(a)*1.3,f.y+Math.sin(a)*1.3,1,0,TAU);c.fill();}c.fillStyle='#ffd23f';c.beginPath();c.arc(f.x,f.y,.8,0,TAU);c.fill();}
+ for(const b of BUSH)if(vis(b.x,b.y)){c.fillStyle='rgba(30,70,20,.25)';c.beginPath();c.ellipse(b.x+1.5,b.y+2,b.r,b.r*.6,0,0,TAU);c.fill();c.fillStyle='#3f9b45';c.beginPath();c.arc(b.x,b.y,b.r,0,TAU);c.fill();c.fillStyle='#57b85a';c.beginPath();c.arc(b.x-b.r*.3,b.y-b.r*.3,b.r*.55,0,TAU);c.fill();}
+ // Hütten
  const px=S*z, lim=Math.min(limit,N);
- for(let i=0;i<lim;i++){const q=PEOPLE[i],x=q.p.x,y=q.p.y;if(x<x0||x>x1||y<y0||y>y1)continue;
-  const col=q.v.farbe;
-  if(px<7){ctx.fillStyle=col;ctx.fillRect(x-6,y-6,12,12);continue;}
-  ctx.fillStyle='#d9a066';ctx.fillRect(x-6,y-2,12,8);
-  ctx.fillStyle='#6b3f1d';ctx.fillRect(x-1.6,y+1.5,3.2,4.5);
-  ctx.fillStyle=col;ctx.beginPath();ctx.moveTo(x-8.5,y-1);ctx.lineTo(x,y-9);ctx.lineTo(x+8.5,y-1);ctx.closePath();ctx.fill();
-  if(px>30){ctx.strokeStyle='#2a1b12';ctx.lineWidth=.7;ctx.stroke();ctx.strokeRect(x-6,y-1,12,7);}
-  if(AMT[q.name.toLowerCase()]){ctx.fillStyle='#ffd23f';ctx.beginPath();ctx.arc(x+7,y-8,3.4,0,7);ctx.fill();}
-  if(px>66){ctx.fillStyle='#2a1b12';ctx.font='800 2.7px '+FONT;ctx.textAlign='center';const nm=q.name.length>13?q.name.slice(0,12)+'…':q.name;ctx.fillText(nm,x,y+9);}
+ for(let i=0;i<lim;i++){const q=PEOPLE[i],x=q.p.x,y=q.p.y;if(!vis(x,y))continue;const col=q.v.farbe;
+  if(px<7){c.fillStyle=col;c.fillRect(x-4.5,y-4.5,9,9);continue;}
+  c.fillStyle='rgba(30,60,20,.28)';c.beginPath();c.ellipse(x+2,y+6.5,9,3,0,0,TAU);c.fill();
+  if(q.round){c.fillStyle=q.wall;c.beginPath();c.ellipse(x,y+2,6.5,5,0,0,TAU);c.fill();c.fillStyle='#6b3f1d';c.fillRect(x-1.5,y+1.8,3,5);
+   c.fillStyle=col;c.beginPath();c.moveTo(x-9,y+.5);c.quadraticCurveTo(x,y-14,x+9,y+.5);c.closePath();c.fill();}
+  else{c.fillStyle=q.wall;c.fillRect(x-6,y-2,12,8);c.fillStyle='#6b3f1d';c.fillRect(x-1.6,y+1.5,3.2,4.5);if(q.win){c.fillStyle='#5a3a20';c.fillRect(x+2.6,y,2.4,2.4);}
+   c.fillStyle=col;c.beginPath();c.moveTo(x-8.5,y-1);c.lineTo(x,y-9.5);c.lineTo(x+8.5,y-1);c.closePath();c.fill();}
+  if(px>22){c.strokeStyle='rgba(42,27,18,.35)';c.lineWidth=.6;c.beginPath();for(let k=-2;k<=2;k++){c.moveTo(x+k*2.6,q.round?y-4:y-5.5);c.lineTo(x+k*3.4,y-.8);}c.stroke();}
+  if(px>30){c.strokeStyle='#2a1b12';c.lineWidth=.7;c.beginPath();if(q.round){c.moveTo(x-9,y+.5);c.quadraticCurveTo(x,y-14,x+9,y+.5);c.closePath();}else{c.moveTo(x-8.5,y-1);c.lineTo(x,y-9.5);c.lineTo(x+8.5,y-1);c.closePath();}c.stroke();}
+  if(AMT[q.name.toLowerCase()]){c.strokeStyle='#2a1b12';c.lineWidth=.6;c.beginPath();c.moveTo(x,y-9.5);c.lineTo(x,y-17);c.stroke();c.fillStyle='#ffd23f';c.beginPath();c.moveTo(x,y-17);c.lineTo(x+6,y-15);c.lineTo(x,y-13);c.fill();}
+  if(px>66){c.fillStyle='#2a1b12';c.font='800 2.7px '+FONT;c.textAlign='center';const nm=q.name.length>13?q.name.slice(0,12)+'…':q.name;c.fillText(nm,x,y+10);}
  }
- if(sel&&sel.nr<=lim){const {x,y}=sel.p;ctx.strokeStyle='#e8467c';ctx.lineWidth=Math.max(1.5,3/z);ctx.beginPath();ctx.arc(x,y-1,13,0,7);ctx.stroke();const k=Math.max(1,2.5/z);ctx.fillStyle='#e8467c';ctx.beginPath();ctx.moveTo(x,y-14);ctx.lineTo(x-4*k,y-14-8*k);ctx.lineTo(x+4*k,y-14-8*k);ctx.fill();}
- $('live').textContent=fmt(lim)+' Einwohner';
 }
-function clamp(){cam.z=Math.max(fit().z*0.7,Math.min(10,cam.z));const r=RMAX+80;cam.x=Math.max(-r,Math.min(r,cam.x));cam.y=Math.max(-r,Math.min(r,cam.y));}
+
+// ---------- Bewegte Ebene ----------
+function palm(c,t){const sw=REDUCED?0:Math.sin(T*1.3+t.ph)*.12;const hgt=10*t.s;c.fillStyle='rgba(30,60,20,.22)';c.beginPath();c.ellipse(t.x+4,t.y+5,7*t.s,2.5*t.s,0,0,TAU);c.fill();
+ const tx=t.x+Math.sin(sw)*hgt,ty=t.y-Math.cos(sw)*hgt+2;c.strokeStyle='#8a5a2b';c.lineWidth=1.8*t.s;c.lineCap='round';c.beginPath();c.moveTo(t.x,t.y+4);c.quadraticCurveTo(t.x+2*t.s,t.y-2,tx,ty);c.stroke();
+ for(let k=0;k<6;k++){const a=k/6*TAU+sw*2;c.fillStyle=k%2?'#2e9e5b':'#3fb36a';c.beginPath();c.ellipse(tx+Math.cos(a)*4.2*t.s,ty+Math.sin(a)*2.4*t.s,5*t.s,1.7*t.s,a,0,TAU);c.fill();}
+ c.fillStyle='#7a4a24';c.beginPath();c.arc(tx,ty+1,1.1*t.s,0,TAU);c.fill();}
+function boat(c,x,y,ang,col,docked){c.save();c.translate(x,y);c.rotate(ang);
+ if(!docked){c.strokeStyle='rgba(255,255,255,.55)';c.lineWidth=1.2;c.beginPath();c.moveTo(-8,0);c.lineTo(-22,-5);c.moveTo(-8,0);c.lineTo(-22,5);c.stroke();}
+ c.fillStyle='rgba(0,40,60,.25)';c.beginPath();c.ellipse(1,2.5,9,3.5,0,0,TAU);c.fill();
+ c.fillStyle='#8a5a2b';c.beginPath();c.moveTo(-8,-3);c.lineTo(7,-3);c.lineTo(10,0);c.lineTo(7,3);c.lineTo(-8,3);c.closePath();c.fill();
+ c.restore();c.fillStyle=col;c.strokeStyle='#2a1b12';c.lineWidth=.6;c.beginPath();c.moveTo(x,y-1);c.lineTo(x,y-15);c.lineTo(x+7,y-2);c.closePath();c.fill();c.stroke();}
+function lighthouse(c){const [x,y]=LH;c.fillStyle='#8d8178';c.beginPath();c.ellipse(x,y+4,14,8,0,0,TAU);c.fill();c.fillStyle='#a99d93';c.beginPath();c.ellipse(x-2,y+2,9,5,0,0,TAU);c.fill();
+ const h=LH_DONE?34:18;c.fillStyle='#fff';c.beginPath();c.moveTo(x-5,y+2);c.lineTo(x-3.4,y+2-h);c.lineTo(x+3.4,y+2-h);c.lineTo(x+5,y+2);c.fill();
+ c.fillStyle='#e8467c';for(let k=0;k<h-6;k+=10){c.fillRect(x-4.6+k*.05,y-4-k,9.2-k*.1,4);}
+ if(LH_DONE){c.fillStyle='#2a1b12';c.fillRect(x-4.5,y-h-6,9,6);c.fillStyle='#ffd23f';c.fillRect(x-3,y-h-5,6,4);c.fillStyle='#e8467c';c.beginPath();c.moveTo(x-5,y-h-6);c.lineTo(x,y-h-11);c.lineTo(x+5,y-h-6);c.fill();}
+ else{c.strokeStyle='#b07a45';c.lineWidth=.9;c.beginPath();for(let k=0;k<4;k++){c.moveTo(x-8,y+2-k*8);c.lineTo(x+8,y+2-k*8);}c.moveTo(x-8,y+2);c.lineTo(x-8,y-28);c.moveTo(x+8,y+2);c.lineTo(x+8,y-28);c.moveTo(x-8,y+2);c.lineTo(x+8,y-22);c.stroke();}}
+function cloud(c,cl,a){const x=((cl.x+T*cl.sp+RMAX+500)%(2*(RMAX+500)))-RMAX-500,y=cl.y,s=cl.s*14;
+ c.fillStyle=`rgba(0,40,40,${.12*a})`;for(const [dx,dy,r] of [[0,0,1.2],[1.1,.2,.9],[-1.1,.25,.85],[.4,-.5,.9]]){c.beginPath();c.ellipse(x+dx*s+50,y+dy*s+60,r*s,r*s*.8,0,0,TAU);c.fill();}
+ c.fillStyle=`rgba(255,255,255,${.85*a})`;for(const [dx,dy,r] of [[0,0,1.2],[1.1,.2,.9],[-1.1,.25,.85],[.4,-.5,.9]]){c.beginPath();c.ellipse(x+dx*s,y+dy*s,r*s,r*s*.8,0,0,TAU);c.fill();}}
+
+function draw(){
+ if(!W)return;const key=[cam.x,cam.y,cam.z,W,H,limit].join(',');
+ if(key!==baseKey){drawBase();baseKey=key;}
+ const c=ctx,z=cam.z,zr=z/fit().z;c.setTransform(1,0,0,1,0,0);c.drawImage(base,0,0);world(c);
+ const [x0,y0]=s2w(-40,-40),[x1,y1]=s2w(W+40,H+40),vis=(x,y)=>x>x0&&x<x1&&y>y0&&y<y1;
+ // Glitzern + Brandung
+ for(const s of SPARK)if(vis(s.x,s.y)){const a=Math.pow(Math.max(0,Math.sin(T*s.sp+s.ph)),12);if(a<.05)continue;c.fillStyle=`rgba(255,255,255,${a*.9})`;const r=2.2/Math.sqrt(z);c.fillRect(s.x-r,s.y-.3/z,r*2,.6/z);c.fillRect(s.x-.3/z,s.y-r,.6/z,r*2);}
+ c.lineWidth=2.2;for(let k=0;k<3;k++){const ph=REDUCED?k/3:(T*.18+k/3)%1;c.strokeStyle=`rgba(255,255,255,${(1-ph)*.5})`;shape(c,12+ph*34,1.5,T+k);c.stroke();}
+ c.strokeStyle='rgba(255,255,255,.75)';c.lineWidth=2.6;shape(c,11,1.2,T*1.4);c.stroke();
+ // Brunnen
+ c.strokeStyle='rgba(255,255,255,.7)';c.lineWidth=.8;for(let k=0;k<3;k++){const ph=(T*.5+k/3)%1;c.globalAlpha=1-ph;c.beginPath();c.ellipse(0,0,6+ph*16,(6+ph*16)*.88,0,0,TAU);c.stroke();}c.globalAlpha=1;
+ c.fillStyle='#ffd23f';c.strokeStyle='#2a1b12';c.lineWidth=1.2;c.beginPath();c.moveTo(-11,6);c.quadraticCurveTo(0,-20,11,6);c.quadraticCurveTo(0,10,-11,6);c.fill();c.stroke();
+ c.strokeStyle='#e8467c';c.lineWidth=1.3;c.beginPath();for(const dx of[-6,-3,0,3,6]){c.moveTo(0,-11);c.lineTo(dx,7);}c.stroke();
+ // Palmen, Leuchtturm, Boote
+ if(z*S>5){for(const t of PALMS)if(vis(t.x,t.y))palm(c,t);}else{c.fillStyle='#3a9e4a';for(const t of PALMS)c.fillRect(t.x-2.5,t.y-2.5,5,5);}
+ lighthouse(c);
+ {const [px,py]=PIER1,a=PIER_A;boat(c,px+Math.cos(a+1.57)*9,py+Math.sin(a+1.57)*9,a,'#fff',true);}
+ for(const b of BOATS){const a=b.ph+T*b.sp;const [x,y]=polar(a,b.r+Math.sin(T*.3+b.ph)*10);if(!vis(x,y))continue;boat(c,x,y,a+(b.sp>0?Math.PI/2:-Math.PI/2),b.c);}
+ // Nacht
+ const nl=nightLevel();
+ if(nl>0){c.setTransform(1,0,0,1,0,0);c.fillStyle=`rgba(12,22,70,${.55*nl})`;c.fillRect(0,0,cv.width,cv.height);world(c);c.globalCompositeOperation='lighter';
+  const lim=Math.min(limit,N),pxs=S*z;
+  for(let i=0;i<lim;i++){const q=PEOPLE[i];if(!vis(q.p.x,q.p.y))continue;const fl=.75+.25*Math.sin(T*3+i);
+   if(pxs<7){c.fillStyle=`rgba(255,190,80,${.35*nl})`;c.fillRect(q.p.x-3,q.p.y-3,6,6);continue;}
+   c.fillStyle=`rgba(255,170,60,${.18*nl*fl})`;c.beginPath();c.arc(q.p.x,q.p.y+3,8,0,TAU);c.fill();
+   c.fillStyle=`rgba(255,220,120,${.9*nl})`;if(q.round)c.fillRect(q.p.x-1.5,q.p.y+1.8,3,5);else{c.fillRect(q.p.x-1.6,q.p.y+1.5,3.2,4.5);if(q.win)c.fillRect(q.p.x+2.6,q.p.y,2.4,2.4);}}
+  for(const [lx,ly] of LANT){const g=c.createRadialGradient(lx,ly-8,0,lx,ly-8,14);g.addColorStop(0,`rgba(255,210,120,${.7*nl})`);g.addColorStop(1,'rgba(255,210,120,0)');c.fillStyle=g;c.beginPath();c.arc(lx,ly-8,14,0,TAU);c.fill();}
+  if(LH_DONE){const [x,y]=LH,a=T*.8;c.fillStyle=`rgba(255,240,170,${.25*nl})`;c.beginPath();c.moveTo(x,y-37);c.arc(x,y-37,260,a-.12,a+.12);c.closePath();c.fill();}
+  c.globalCompositeOperation='source-over';}
+ // Wolken + Möwen (nur von weiter oben sichtbar)
+ const ca=Math.max(0,Math.min(1,1.6-zr*.6))*(1-nl*.6);if(ca>.02)for(const cl of CLOUDS)cloud(c,cl,ca);
+ if(zr<4){c.strokeStyle=nl>.5?'#cfd8ff':'#fff';c.lineWidth=1.3;for(const b of BIRDS){const a=b.ph+T*b.sp;const [x,y]=polar(a,b.r);const f=Math.sin(T*8+b.ph)*2.5;c.beginPath();c.moveTo(x-5,y-f);c.quadraticCurveTo(x-2,y-3,x,y);c.quadraticCurveTo(x+2,y-3,x+5,y-f);c.stroke();}}
+ // Markierung
+ if(sel&&sel.nr<=Math.min(limit,N)){const {x,y}=sel.p,b=REDUCED?0:Math.abs(Math.sin(T*3))*4;c.strokeStyle='#e8467c';c.lineWidth=Math.max(1.5,3/z);c.beginPath();c.arc(x,y,13,0,TAU);c.stroke();const k=Math.max(1,2.5/z);c.fillStyle='#e8467c';c.strokeStyle='#2a1b12';c.lineWidth=.8*k;c.beginPath();c.moveTo(x,y-14-b);c.lineTo(x-4*k,y-14-b-8*k);c.lineTo(x+4*k,y-14-b-8*k);c.closePath();c.fill();c.stroke();}
+}
+
+// ---------- Animationsschleife (pausiert, wenn Karte nicht sichtbar) ----------
+let onScreen=true,last=0;
+if('IntersectionObserver' in window)new IntersectionObserver(e=>{onScreen=e[0].isIntersecting;},{threshold:0}).observe($('hero'));
+function loop(n){requestAnimationFrame(loop);if(!onScreen||document.hidden||n-last<30)return;last=n;T=n/1000;draw();}
+if(REDUCED){T=0;}else requestAnimationFrame(loop);
+let raf=0;function kick(){if(!raf)raf=requestAnimationFrame(()=>{raf=0;draw();});}
+
+// ---------- Bedienung ----------
+function clamp(){cam.z=Math.max(fit().z*0.7,Math.min(10,cam.z));const r=RMAX+120;cam.x=Math.max(-r,Math.min(r,cam.x));cam.y=Math.max(-r,Math.min(r,cam.y));}
 let fly=0;function flyTo(t,ms=750){cancelAnimationFrame(fly);const f={...cam},t0=performance.now();const step=n=>{const k=Math.min(1,(n-t0)/ms),e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;cam.x=f.x+(t.x-f.x)*e;cam.y=f.y+(t.y-f.y)*e;cam.z=Math.exp(Math.log(f.z)+(Math.log(t.z)-Math.log(f.z))*e);draw();if(k<1)fly=requestAnimationFrame(step);};fly=requestAnimationFrame(step);}
 function zoomAt(f,sx=W/2,sy=H/2){const [wx,wy]=s2w(sx,sy);cam.z*=f;clamp();const [nx,ny]=s2w(sx,sy);cam.x+=wx-nx;cam.y+=wy-ny;clamp();kick();}
 const pts=new Map();let moved=0,pinch=0;
@@ -348,14 +382,15 @@ const up=e=>{if(!pts.has(e.pointerId))return;pts.delete(e.pointerId);if(pts.size
 cv.addEventListener('pointerup',up);cv.addEventListener('pointercancel',up);
 let hintT=0;cv.addEventListener('wheel',e=>{if(e.ctrlKey||e.metaKey){e.preventDefault();zoomAt(Math.exp(-e.deltaY*0.0022),e.offsetX,e.offsetY);}else{$('hint').classList.add('on');clearTimeout(hintT);hintT=setTimeout(()=>$('hint').classList.remove('on'),1100);}},{passive:false});
 $('zin').onclick=()=>zoomAt(1.6);$('zout').onclick=()=>zoomAt(1/1.6);$('zall').onclick=()=>flyTo(fit());
-$('growbtn').onclick=()=>{if(growing)return;growing=true;sel=null;$('pop').hidden=true;flyTo(fit(),500);const t0=performance.now(),ms=Math.min(9000,2500+N*0.6);const st=n=>{const k=Math.min(1,(n-t0)/ms);limit=Math.max(1,Math.round(N*k*k));draw();if(k<1)requestAnimationFrame(st);else{limit=N;growing=false;draw();}};requestAnimationFrame(st);};
+$('dn').onclick=()=>{const m=DN;DN='auto';const seq=nightLevel()>.5?['auto','day','night']:['auto','night','day'];DN=seq[(seq.indexOf(m)+1)%3];try{localStorage.setItem('mt-dn',DN);}catch(e){}dnIcon();kick();};
+$('growbtn').onclick=()=>{if(growing||!N)return;growing=true;sel=null;$('pop').hidden=true;flyTo(fit(),500);const t0=performance.now(),ms=Math.min(9000,2500+N*0.6);const st=n=>{const k=Math.min(1,(n-t0)/ms);limit=Math.max(1,Math.round(N*k*k));draw();if(k<1)requestAnimationFrame(st);else{limit=N;growing=false;draw();}};requestAnimationFrame(st);};
 
 // ---------- Auswahl + Inselpass ----------
 const status=p=>AMT[p.name.toLowerCase()]||(p.mark?'War schon im Video':'Einwohner');
-function select(p,fly=true){sel=p;limit=N;
+function select(p,doFly=true){sel=p;limit=N;
  $('pop').hidden=false;$('pname').textContent=p.name;$('pinfo').textContent='Hütte Nr. '+fmt(p.nr)+' · '+p.v.emoji+' '+p.v.name;
- $('s-pass').hidden=false;$('tabpass').hidden=false;
- $('idnr').textContent=fmt(p.nr);$('idname').textContent=p.name;$('idv').textContent=p.v.emoji+' '+p.v.name;$('idm').textContent=I.muscheln_pro_einwohner+' 🐚';$('ids').textContent=p.seit||'–';$('idst').textContent=status(p);
+ $('s-pass').hidden=false;
+ $('idnr').textContent=fmt(p.nr);$('idname').textContent=p.name;$('idv').textContent=p.v.emoji+' '+p.v.name;$('ids').textContent=p.seit||'–';$('idst').textContent=status(p);
  const nb=nachbarn(p);$('nbbox').hidden=!nb.length;$('cpyn').hidden=!nb.length;
  $('nbl').innerHTML=nb.map(q=>'<button type="button" data-n="'+esc(q.name)+'">'+esc(q.name)+'</button>').join('');
  const t1='Ich wohne in Muschel-Tal! 🏝️ Hütte Nr. '+fmt(p.nr)+' im '+p.v.name+' '+p.v.emoji+'. Such deine Hütte auf muscheltal.de – folg '+ACC;
@@ -363,8 +398,9 @@ function select(p,fly=true){sel=p;limit=N;
  const copy=async(t,b,lab)=>{try{await navigator.clipboard.writeText(t);b.textContent='✅ Kopiert!';setTimeout(()=>b.textContent=lab,1800);}catch(e){$('cpyd').textContent=t;}};
  $('cpy').onclick=()=>copy(t1,$('cpy'),'📋 Text zum Teilen');$('cpyn').onclick=()=>copy(t2,$('cpyn'),'🏘️ Nachbarn markieren');$('cpyd').textContent='';
  try{localStorage.setItem('mt-me',p.name);}catch(e){}$('mine').hidden=false;
- if(fly)flyTo({x:p.p.x,y:p.p.y+30/4.2,z:Math.max(4.2,cam.z)});
+ if(doFly)flyTo({x:p.p.x,y:p.p.y+7,z:Math.max(4.2,cam.z)});
 }
+$('topass').onclick=()=>$('s-pass').scrollIntoView({behavior:'smooth'});
 
 // ---------- Suche ----------
 const q=$('q'),sg=$('sugg');let hits=[],act=-1;
@@ -375,62 +411,32 @@ q.addEventListener('input',()=>{hits=find(q.value);act=-1;showS();$('miss').hidd
 q.addEventListener('keydown',e=>{if(e.key==='ArrowDown'){act=Math.min(hits.length-1,act+1);showS();e.preventDefault();}else if(e.key==='ArrowUp'){act=Math.max(0,act-1);showS();e.preventDefault();}else if(e.key==='Enter'){const p=hits[act<0?0:act];if(p)pick(p);}else if(e.key==='Escape')sg.hidden=true;});
 sg.addEventListener('click',e=>{const b=e.target.closest('button');if(b)pick(hits[+b.dataset.i]);});
 function pick(p){q.value=p.name;sg.hidden=true;$('miss').hidden=true;q.blur();window.scrollTo({top:0,behavior:'smooth'});select(p);}
-$('rnd').onclick=()=>{if(N)pick(PEOPLE[Math.random()*N|0]);};$('rnd').hidden=!N;
+$('rnd').onclick=()=>{if(N)pick(PEOPLE[Math.random()*N|0]);};$('rnd').hidden=N<2;$('growbtn').hidden=N<2;
 $('mine').onclick=()=>{try{const p=byName.get((localStorage.getItem('mt-me')||'').toLowerCase());if(p)pick(p);}catch(e){}};
-const VID=PEOPLE.filter(p=>p.mark);$('vid').hidden=!VID.length;$('vid').onclick=()=>pick(VID[Math.random()*VID.length|0]);
 document.addEventListener('click',e=>{const b=e.target.closest('[data-n]');if(b){const p=byName.get(b.dataset.n.toLowerCase());if(p)pick(p);}if(!e.target.closest('.findbar'))sg.hidden=true;});
 
-// ---------- Ticker ----------
-const chief=(I.aemter.find(a=>a[0]==='Häuptling')||[])[1];
-const T=['🏝️ <em>'+(I.tag?'TAG '+I.tag:'BALD: TAG 1')+'</em>','🌴 <em>'+fmt(N)+'</em> Einwohner','🐚 <em>'+fmt(N*I.muscheln_pro_einwohner)+'</em> Muscheln in der Inselkasse','👑 Häuptling: <em>'+esc(chief||'wird gewählt')+'</em>',(I.projekt?I.projekt.emoji+' '+esc(I.projekt.name)+': <em>'+fmt(I.projekt.stand)+' / '+fmt(I.projekt.ziel)+'</em>':''),...I.news.map(esc)].filter(Boolean).map(t=>'<span>'+t+'</span>').join('');
-$('tick').innerHTML=T+T;
-
-// ---------- Bauprojekt + Rat ----------
-const PJ=I.projekt;if(PJ){$('pjh').textContent='Gemeinsam bauen wir: '+PJ.name;$('pjico').textContent=PJ.emoji;$('pjname').textContent=PJ.name;$('pjtext').textContent=PJ.text;$('pjbar').style.width=Math.min(100,PJ.stand/PJ.ziel*100)+'%';$('pjstand').textContent=fmt(PJ.stand)+' '+PJ.einheit;$('pjziel').textContent='Ziel: '+fmt(PJ.ziel);}
-const ICON=t=>t==='Häuptling'?'👑':t.startsWith('Strandvilla')?'🏡':t.startsWith('Strand')?'🏖️':'⭐';
-$('aemter').innerHTML=I.aemter.map(([t,n])=>'<div class="st mem"><i>'+ICON(t)+'</i><small>'+esc(t)+'</small>'+(n&&byName.has(n.toLowerCase())?'<button type="button" data-n="'+esc(n)+'">'+esc(n)+'</button>':'<span>'+(n?esc(n):'wird bald vergeben')+'</span>')+'</div>').join('');
-$('news').innerHTML=I.news.map(t=>'<li>'+esc(t)+'</li>').join('');
-
-// ---------- Duell, Wachstum, Gründer ----------
-$('viertel').innerHTML=VIER.map(v=>{const n=Math.max(0,Math.min(N,v.bis)-v.von+1),cap=v.plaetze,full=cap&&n>=cap,open=N>=v.von||v===VIER[0];
- return'<div class="st team"><div class="e">'+v.emoji+'</div><h3>'+esc(v.name).replace(/(bucht|hafen|dorf|strand|tal)$/i,'\u00ad$1')+'</h3><div class="n">'+fmt(n)+'</div><div class="cap">'+(cap?'von '+fmt(cap)+' Hütten':'Hütten, unbegrenzt')+'</div><div class="lvl"><i style="width:'+(cap?Math.min(100,n/cap*100):(n?100:0))+'%;background:'+v.farbe+'"></i></div><span class="badge" style="background:'+(full?'var(--hib);color:#fff':open?'var(--sun)':'#fff')+'">'+(full?'VOLL':open?'ZIEHT EIN':'BALD')+'</span></div>';}).join('');
-{const m=new Map(),days=[];for(const p of PEOPLE){const k=p.seit||'?';if(!m.has(k)){m.set(k,0);days.push(k);}m.set(k,m.get(k)+1);}let sum=0;
- $('grow').innerHTML=days.map(d=>{sum+=m.get(d);return'<div class="st day"><small>'+esc(d)+'</small><b>+'+fmt(m.get(d))+'</b><span>'+fmt(sum)+' gesamt</span></div>';}).join('');$('grow').hidden=!days.length;}
-$('founders').innerHTML=PEOPLE.slice(0,10).map(p=>'<li><button type="button" data-n="'+esc(p.name)+'"><em>#'+p.nr+'</em>'+esc(p.name)+'</button></li>').join('')||'<li><button type="button" disabled><em>#1</em>noch frei – das könntest du sein!</button></li>';
-
-// ---------- Regeln, Fragen, Logbuch ----------
-const M=I.muscheln_pro_einwohner;
-$('rules').innerHTML=[
- ['🏠','Folgen = einziehen','Wer '+ACC+' folgt, bekommt eine eigene Hütte mit seinem Namen. Je früher, desto näher am Muschelplatz.'],
- ['🐚','Jeder bringt '+M+' Muscheln mit','Die Inselkasse wächst mit jedem neuen Einwohner. Ihr entscheidet, was davon gebaut wird.'],
- ['🗳️','Ihr stimmt ab','Unter den Videos gibt es Abstimmungen. Was die meisten Stimmen bekommt, wird gebaut.'],
- ['🗼','Kommentare bauen mit','Jeder Kommentar ist ein Stein für das aktuelle Bauprojekt. Ist das Ziel erreicht, steht das Gebäude im nächsten Video.'],
- ['⚔️','Viertel gegen Viertel','Schreib das Emoji deines Viertels in die Kommentare. Das lauteste Viertel gewinnt die Folge.'],
- ['👑','Jede Woche ein Häuptling','Schreib in die Kommentare, was du als Häuptling machen würdest. Der beste Vorschlag gewinnt.'],
- ['🏡','Preise für alle','Jede Folge wird eine Hütte zur Strandvilla, jede Woche wird ein Strandgrundstück verlost.']
-].map((r,i)=>'<div class="st card"><div class="e">'+r[0]+'</div><b>'+esc(r[1])+'</b><span>'+esc(r[2])+'</span><small>Regel '+(i+1)+' / 7</small></div>').join('');
+// ---------- Texte ----------
+document.querySelectorAll('.acc').forEach(e=>e.textContent=ACC);$('join').href=ACCURL;
+$('live').textContent=fmt(N)+(N===1?' Einwohner':' Einwohner');
+$('nTag').textContent=I.tag||'–';$('nEw').textContent=fmt(N);$('nMu').textContent=fmt(N*I.muscheln_pro_einwohner);
+if(PJ){$('pjname').textContent=PJ.emoji+' Wir bauen: '+PJ.name;$('pjnum').textContent=fmt(PJ.stand)+' / '+fmt(PJ.ziel)+' '+PJ.einheit;$('pjbar').style.width=Math.min(100,PJ.stand/PJ.ziel*100)+'%';$('pjtext').textContent=PJ.text;}else $('proj').hidden=true;
+$('news').innerHTML='<b>Neu:</b> '+esc(I.news[0]||'');$('news').hidden=!I.news.length;
 $('faq').innerHTML=[
- ['Warum sehe ich mich nicht im Video?','Es passen nicht alle Einwohner in ein Video. Jede Folge zeigt neue Namen. Deine Hütte steht trotzdem schon – hier auf der Karte siehst du sie jederzeit.'],
+ ['Was ist Muschel-Tal?','Ein Mitmach-Spiel auf TikTok: Jeder Follower von '+ACC+' bekommt eine Hütte auf dieser Insel. In den Videos geht die Geschichte der Insel weiter – und ihr bestimmt in den Kommentaren mit.'],
  ['Ich habe gerade gefolgt. Wo ist meine Hütte?','Neue Einwohner kommen beim nächsten Update dazu. Deine Nummer richtet sich danach, wann du gefolgt bist.'],
- ['Behalte ich meine Hütte?','Ja. Wer einmal eingezogen ist, behält Nummer und Hütte.'],
- ['Wer sind meine Nachbarn?','Such deine Hütte – im Inselpass stehen deine vier nächsten Nachbarn. Markier sie unter dem neuesten Video!'],
- ['Ich habe Muschel-Tal auf einem anderen Account gesehen.','Das ist eine Kopie. Muschel-Tal gibt es nur bei '+ACC+'. Ein Follow dort zählt nicht.'],
+ ['Kostet das etwas?','Nein. Folgen reicht.'],
  ['Ich will nicht auf der Karte stehen.','Kein Problem. Schreib '+ACC+' auf TikTok eine Nachricht, dann nehmen wir deinen Namen raus.']
-].map(f=>'<details><summary>'+esc(f[0])+'</summary><p>'+esc(f[1])+'</p></details>').join('');
-$('chron').innerHTML=I.chronik.map(c=>'<li'+(c[2]?' class="next"':'')+'><time>'+esc(c[0])+'</time><p>'+esc(c[1])+'</p></li>').join('');
-$('acc2').textContent=ACC;$('acc3').href=ACCURL;
+].map(f=>'<details><summary>'+esc(f[0])+'</summary><p>🏝️ '+esc(f[1])+'</p></details>').join('');
 $('foot').innerHTML='Stand: '+esc(I.stand)+' · <a href="'+ACCURL+'" target="_blank" rel="noopener">'+esc(ACC)+'</a> auf TikTok · nicht verbunden mit TikTok';
-
-// ---------- Navigation ----------
-function goTo(id){const el=$(id);if(!el||el.hidden)return;id==='hero'?window.scrollTo({top:0,behavior:'smooth'}):el.scrollIntoView({behavior:'smooth',block:'start'});}
-const TABS=[...document.querySelectorAll('.tabs [data-go]')];
-document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>goTo(b.dataset.go)));
-addEventListener('scroll',()=>{let cur='hero';for(const b of TABS){const el=$(b.dataset.go);if(el&&!el.hidden&&el.getBoundingClientRect().top<innerHeight*.4)cur=b.dataset.go;}TABS.forEach(b=>b.classList.toggle('on',b.dataset.go===cur));},{passive:true});
 
 // ---------- Start ----------
 if(matchMedia('(pointer:fine)').matches)$('hint').innerHTML='Zum Zoomen Strg + Mausrad<br>oder + / − benutzen';
-addEventListener('resize',resize);resize();Object.assign(cam,fit());draw();
-try{const p=byName.get((localStorage.getItem('mt-me')||'').toLowerCase());if(p){q.value=p.name;select(p,false);}}catch(e){}
+dnIcon();setInterval(dnIcon,60000);
+addEventListener('resize',resize);resize();
+let me=null;try{me=byName.get((localStorage.getItem('mt-me')||'').toLowerCase());}catch(e){}
+if(me){Object.assign(cam,fit());q.value=me.name;select(me);}
+else if(REDUCED)Object.assign(cam,fit());
+else{const f=fit();Object.assign(cam,{x:f.x+RMAX*.3,y:f.y+RMAX*.2,z:f.z*.55});draw();flyTo(f,1600);}
 </script>
 </body>
 </html>
