@@ -9,7 +9,7 @@
   </style>
   <div id="root" data-composition-id="s04" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
     <div id="s04-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
-      <div id="s04-eq" class="bt dk">1 EINWOHNER = 5 🐚</div>
+      <div id="s04-eq" class="bt dk">1 EINWOHNER = 5 MUSCHELN</div>
       <svg id="s04-chest" viewBox="0 0 340 260"><ellipse cx="170" cy="244" rx="160" ry="14" fill="rgba(0,0,0,.25)"/>
         <rect x="20" y="110" width="300" height="130" rx="14" fill="#b07a45" stroke="#2a1b12" stroke-width="8"/>
         <rect x="20" y="110" width="300" height="30" fill="#8a5a2b" stroke="#2a1b12" stroke-width="6"/>
@@ -23,13 +23,14 @@
       <div class="s04-sh" id="s04-sh3"><svg viewBox="0 0 64 64"><path d="M32 47 L8.8 40.8 Q5.0 34.0 12.7 32.7 Q11.6 25.0 19.2 26.7 Q21.0 19.1 27.5 23.4 Q32.0 17.0 36.5 23.4 Q43.0 19.1 44.8 26.7 Q52.4 25.0 51.3 32.7 Q59.0 34.0 55.2 40.8 Z" fill="#ffc7b2" stroke="#2a1b12" stroke-width="3" stroke-linejoin="round"/><path d="M32 45L13.9 33.6M32 45L20.0 27.9M32 45L27.8 24.9M32 45L36.2 24.9M32 45L44.0 27.9M32 45L50.1 33.6" stroke="#c43d6b" stroke-width="2" stroke-linecap="round"/></svg></div>
       <div class="s04-sh" id="s04-sh4"><svg viewBox="0 0 64 64"><path d="M32 47 L8.8 40.8 Q5.0 34.0 12.7 32.7 Q11.6 25.0 19.2 26.7 Q21.0 19.1 27.5 23.4 Q32.0 17.0 36.5 23.4 Q43.0 19.1 44.8 26.7 Q52.4 25.0 51.3 32.7 Q59.0 34.0 55.2 40.8 Z" fill="#ffc7b2" stroke="#2a1b12" stroke-width="3" stroke-linejoin="round"/><path d="M32 45L13.9 33.6M32 45L20.0 27.9M32 45L27.8 24.9M32 45L36.2 24.9M32 45L44.0 27.9M32 45L50.1 33.6" stroke="#c43d6b" stroke-width="2" stroke-linecap="round"/></svg></div>
       <div class="s04-sh" id="s04-sh5"><svg viewBox="0 0 64 64"><path d="M32 47 L8.8 40.8 Q5.0 34.0 12.7 32.7 Q11.6 25.0 19.2 26.7 Q21.0 19.1 27.5 23.4 Q32.0 17.0 36.5 23.4 Q43.0 19.1 44.8 26.7 Q52.4 25.0 51.3 32.7 Q59.0 34.0 55.2 40.8 Z" fill="#ffc7b2" stroke="#2a1b12" stroke-width="3" stroke-linejoin="round"/><path d="M32 45L13.9 33.6M32 45L20.0 27.9M32 45L27.8 24.9M32 45L36.2 24.9M32 45L44.0 27.9M32 45L50.1 33.6" stroke="#c43d6b" stroke-width="2" stroke-linecap="round"/></svg></div>
-      <div id="s04-w" class="bt pk">🐚 UNSERE WÄHRUNG</div>
+      <div id="s04-w" class="bt pk">UNSERE WÄHRUNG</div>
     </div>
   </div>
   <script>
     (() => {
       /*__CUE_HELPERS__*/
       /*__COMMON_JS__*/
+      wrapBt("#s04-stage");
       const tl = gsap.timeline({ paused: true });
       const f5 = at("L6", "5"), mi = at("L6", "mit"), wa = at("L6", "Währung");
       tl.fromTo("#s04-eq", { opacity: 0, scaleX: 0 }, { opacity: 1, scaleX: 1, duration: .4, ease: "expo.out" }, 0.05);

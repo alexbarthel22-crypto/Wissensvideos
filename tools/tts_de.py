@@ -392,7 +392,9 @@ def main():
     raw_path = out_dir / "narration_raw.wav"
     sf.write(raw_path, audio, SR)
     # Lautheit für Social Media: -16 LUFS, True Peak -1.5 dB
-    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", raw_path, "-af", f"loudnorm=I={script.get('loudness', -16)}:TP=-1.0:LRA=11",
+    pitch = script.get("pitch", 0)  # Halbtöne (negativ = tiefer), Tempo und Wortzeiten bleiben gleich
+    pre = f"rubberband=pitch={2 ** (pitch / 12):.4f}:transients=smooth," if pitch else ""
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", raw_path, "-af", pre + f"loudnorm=I={script.get('loudness', -16)}:TP=-1.0:LRA=11",
                     "-ar", str(SR), out_dir / "narration.wav"], check=True)
     raw_path.unlink()
     for l in lines:

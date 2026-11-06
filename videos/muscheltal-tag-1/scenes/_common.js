@@ -15,3 +15,5 @@
         const o = { v: from }; num.textContent = fmtK(from);
         tl.to(o, { v: to, duration: dur, ease: "power2.out", onUpdate: () => { num.textContent = fmtK(o.v); } }, t);
       }
+      // Textbox füllt immer genau den Text: jede Zeile bekommt ihren eigenen Balken
+      function wrapBt(scope) { document.querySelectorAll(scope + " .bt").forEach((el) => { if (!el.querySelector(":scope > .bx")) el.innerHTML = '<span class="bx">' + el.innerHTML + "</span>"; }); }

@@ -417,6 +417,7 @@ def build_index(project, script, windows, lines, total, world=False):
       <div id="captions" data-composition-id="captions" data-composition-src="compositions/captions.html" data-start="0"
            data-duration="{total:.3f}" data-track-index="3" data-track-kind="captions" data-width="{W}" data-height="{H}" style="z-index:6"></div>
       <audio id="vo" class="clip" src="assets/voice/narration.wav" data-start="0" data-track-index="9" data-volume="1"></audio>
+{f'      <audio id="music" class="clip" src="{script["music"]["src"]}" data-start="0" data-duration="{total:.3f}" data-track-index="8" data-volume="{script["music"].get("volume", 1)}"></audio>' if script.get("music") else ""}
 {chr(10).join(audio)}
     </div>
     <script>

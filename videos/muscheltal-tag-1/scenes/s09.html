@@ -1,15 +1,17 @@
 <template>
   <style>
     /*__COMMON_CSS__*/
-    #s09-ph { position: absolute; left: 280px; top: 290px; width: 520px; height: 820px; border-radius: 62px; background: #2a1b12; padding: 20px; box-shadow: 0 14px 0 rgba(0,0,0,.3); }
-    .s09-scr { position: absolute; left: 20px; top: 20px; right: 20px; bottom: 20px; border-radius: 44px; overflow: hidden; background: #0b6aa6; }
-    #s09-url { position: absolute; left: 22px; right: 22px; top: 24px; height: 62px; border-radius: 31px; background: #fff; border: 4px solid #2a1b12; font-family: "Inter", sans-serif; font-weight: 900; font-size: 32px; color: #2a1b12; display: grid; place-items: center; }
-    #s09-search { position: absolute; left: 22px; right: 22px; top: 104px; height: 68px; border-radius: 18px; background: #fff; border: 4px solid #2a1b12; font-family: "Inter", sans-serif; font-weight: 800; font-size: 30px; color: #2a1b12; padding-left: 20px; display: flex; align-items: center; }
-    #s09-map { position: absolute; left: 0; top: 190px; width: 480px; height: 560px; }
-    #s09-pop { position: absolute; left: 30px; right: 30px; bottom: 26px; border-radius: 20px; background: #fff; border: 4px solid #2a1b12; font-family: "Inter", sans-serif; font-weight: 900; font-size: 30px; color: #2a1b12; padding: 10px 20px; line-height: 1.2; }
-    #s09-pop small { display: block; font-size: 28px; color: #2fbf6a; }
-    #s09-big { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 520px; padding: 6px 34px 16px; border-radius: 26px; background: #ffd23f; color: #2a1b12;
-      font-family: "Lilita One", sans-serif; font-size: 120px; border: 8px solid #2a1b12; box-shadow: 0 14px 0 rgba(0,0,0,.3); overflow: hidden; }
+    #s09-ph { position: absolute; left: 330px; top: 286px; width: 420px; height: 830px; border-radius: 64px; background: #111; padding: 18px; box-shadow: 0 14px 0 rgba(0,0,0,.3), inset 0 0 0 3px #3a3a3a; }
+    #s09-scr { position: absolute; left: 18px; top: 18px; width: 384px; height: 794px; border-radius: 48px; overflow: hidden; background: #0b6aa6; }
+    #s09-img { position: absolute; left: 0; top: 0; width: 384px; height: 832px; }
+    #s09-isl { position: absolute; left: 0; top: 46px; width: 384px; height: 832px; transform-origin: 50% 50%; }
+    #s09-isl img { width: 384px; height: 832px; display: block; }
+    #s09-type { position: absolute; left: 50px; top: 120px; width: 290px; height: 40px; background: #fff; font-family: "Inter", sans-serif; font-weight: 800; font-size: 18px; color: #2a1b12; display: flex; align-items: center; }
+    #s09-bar { position: absolute; left: 14px; right: 14px; bottom: 12px; height: 54px; border-radius: 18px; background: rgba(250,250,250,.97); box-shadow: 0 2px 10px rgba(0,0,0,.2);
+      font-family: "Inter", sans-serif; font-weight: 700; font-size: 22px; color: #111; display: grid; place-items: center; }
+    #s09-notch { position: absolute; left: 50%; top: 14px; width: 110px; height: 30px; margin-left: -55px; border-radius: 16px; background: #111; }
+    #s09-big { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 560px; padding: 6px 34px 16px; border-radius: 26px; background: #ffd23f; color: #2a1b12;
+      font-family: "Lilita One", sans-serif; font-size: 124px; border: 8px solid #2a1b12; box-shadow: 0 14px 0 rgba(0,0,0,.3); overflow: hidden; }
     #s09-shine { position: absolute; top: -20px; bottom: -20px; left: -200px; width: 120px; background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.85), rgba(255,255,255,0)); transform: skewX(-20deg); }
     #s09-all { top: 960px; }
     .s09-sp { position: absolute; width: 60px; height: 60px; }
@@ -17,39 +19,40 @@
   </style>
   <div id="root" data-composition-id="s09" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
     <div id="s09-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
-      <div id="s09-ph"><div class="s09-scr">
-          <svg id="s09-map" viewBox="0 0 480 560"><ellipse cx="240" cy="280" rx="230" ry="240" fill="#2ec4cf"/><ellipse cx="240" cy="280" rx="205" ry="214" fill="#b9f2e8"/><ellipse cx="240" cy="280" rx="190" ry="200" fill="#fbefd0"/><ellipse cx="240" cy="280" rx="176" ry="186" fill="#86c95c"/>
-            <ellipse cx="240" cy="280" rx="36" ry="33" fill="#f6e2b8"/><g transform="translate(240 286) scale(.9) translate(-32 -40)"><path d="M32 47 L8.8 40.8 Q5.0 34.0 12.7 32.7 Q11.6 25.0 19.2 26.7 Q21.0 19.1 27.5 23.4 Q32.0 17.0 36.5 23.4 Q43.0 19.1 44.8 26.7 Q52.4 25.0 51.3 32.7 Q59.0 34.0 55.2 40.8 Z" fill="#ffc7b2" stroke="#2a1b12" stroke-width="3"/></g>
-            <rect x="283" y="244" width="22" height="18" fill="rgba(255,255,255,.6)" stroke="#fff" stroke-width="3" stroke-dasharray="4 3"/><circle id="s09-ring" cx="294" cy="253" r="26" fill="none" stroke="#e8467c" stroke-width="7"/></svg>
-          <div id="s09-url">🔒 muscheltal.de</div>
-          <div id="s09-search">🔍&nbsp;<span id="s09-typed"></span></div>
-          <div id="s09-pop">Hütte Nr. 1<small>✨ noch frei!</small></div>
+      <div id="s09-ph"><div id="s09-scr">
+        <div id="s09-isl"><img src="assets/img/homepage.jpg" alt=""></div>
+        <div id="s09-type" data-layout-ignore><span id="s09-typed"></span><span id="s09-cur">|</span></div>
+        <div id="s09-bar" data-layout-ignore>🔒 muscheltal.de</div>
+        <div id="s09-notch"></div>
       </div></div>
       <div id="s09-big">muscheltal.de<div id="s09-shine"></div></div>
-      <svg class="s09-sp" id="s09-sp1" style="left:180px;top:480px" viewBox="-10 -10 20 20"><path d="M0 -10 L2 -2 L10 0 L2 2 L0 10 L-2 2 L-10 0 L-2 -2Z" fill="#fff"/></svg>
-      <svg class="s09-sp" id="s09-sp2" style="left:850px;top:560px" viewBox="-10 -10 20 20"><path d="M0 -10 L2 -2 L10 0 L2 2 L0 10 L-2 2 L-10 0 L-2 -2Z" fill="#ffd23f"/></svg>
-      <svg class="s09-sp" id="s09-sp3" style="left:230px;top:700px" viewBox="-10 -10 20 20"><path d="M0 -10 L2 -2 L10 0 L2 2 L0 10 L-2 2 L-10 0 L-2 -2Z" fill="#ffd23f"/></svg>
-      <div id="s09-all" class="bt gr">🗺️ ALLES ÜBER MUSCHEL-TAL</div>
+      <svg class="s09-sp" id="s09-sp1" style="left:170px;top:520px" viewBox="-10 -10 20 20"><path d="M0 -10 L2 -2 L10 0 L2 2 L0 10 L-2 2 L-10 0 L-2 -2Z" fill="#fff"/></svg>
+      <svg class="s09-sp" id="s09-sp2" style="left:860px;top:600px" viewBox="-10 -10 20 20"><path d="M0 -10 L2 -2 L10 0 L2 2 L0 10 L-2 2 L-10 0 L-2 -2Z" fill="#ffd23f"/></svg>
+      <svg class="s09-sp" id="s09-sp3" style="left:220px;top:740px" viewBox="-10 -10 20 20"><path d="M0 -10 L2 -2 L10 0 L2 2 L0 10 L-2 2 L-10 0 L-2 -2Z" fill="#ffd23f"/></svg>
+      <div id="s09-all" class="bt gr">ALLES ÜBER MUSCHEL-TAL</div>
     </div>
   </div>
   <script>
     (() => {
       /*__CUE_HELPERS__*/
       /*__COMMON_JS__*/
+      wrapBt("#s09-stage");
       const tl = gsap.timeline({ paused: true });
       const fi = at("L13", "findest"), mu = at("L13", "muscheltal"), al = at("L14", "alles");
-      tl.fromTo("#s09-ph", { opacity: 0, y: 260, rotation: 8 }, { opacity: 1, y: 0, rotation: 0, duration: .5, ease: "back.out(1.5)" }, 0.02);
+      tl.fromTo("#s09-ph", { opacity: 0, y: 300, rotation: 10, scale: .8 }, { opacity: 1, y: 0, rotation: 0, scale: 1, duration: .55, ease: "back.out(1.4)" }, 0.02);
+      tl.set("#s09-type", { opacity: 0 }, 0);
+      tl.to("#s09-type", { opacity: 1, duration: .1 }, .2);
       const word = "@deinname", el = document.getElementById("s09-typed"), o = { n: 0 };
       tl.to(o, { n: word.length, duration: .6, ease: "none", onUpdate: () => { el.textContent = word.slice(0, Math.round(o.n)); } }, .25);
-      tl.fromTo("#s09-ring", { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(3)", svgOrigin: "294 253" }, fi);
-      tl.fromTo("#s09-pop", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, fi + .1);
+      tl.fromTo("#s09-cur", { opacity: 1 }, { opacity: 0, duration: .25, yoyo: true, repeat: 5, ease: "steps(1)" }, .9);
+      tl.fromTo("#s09-isl", { scale: 1 }, { scale: 1.55, duration: 1.2, ease: "power2.inOut" }, fi - .1);
+      tl.fromTo("#s09-bar", { scale: 1 }, { scale: 1.08, backgroundColor: "#ffd23f", duration: .18, yoyo: true, repeat: 3 }, mu - .1);
       tl.fromTo("#s09-big", { opacity: 0, scale: .2, rotation: -25 }, { opacity: 1, scale: 1, rotation: -4, duration: .4, ease: "back.out(2.4)" }, mu - .15);
       tl.fromTo("#s09-shine", { x: 0 }, { x: 1100, duration: .6, ease: "power2.inOut" }, mu + .25);
       tl.fromTo(".s09-sp", { opacity: 0, scale: 0 }, { opacity: 1, scale: 1.5, duration: .25, ease: "back.out(3)", stagger: .12 }, mu + .05);
       tl.to(".s09-sp", { opacity: 0, scale: .3, rotation: 90, duration: .3, stagger: .12 }, mu + .6);
-      tl.to("#s09-big", { scale: .32, y: -232, opacity: 0, duration: .45, ease: "power3.in" }, al - .55);
-      tl.fromTo("#s09-url", { scale: 1 }, { scale: 1.15, backgroundColor: "#ffd23f", duration: .18, yoyo: true, repeat: 3 }, al - .15);
-      tl.to("#s09-pop", { opacity: 0, y: 30, duration: .2 }, al - .3);
+      tl.to("#s09-big", { scale: .3, y: 470, opacity: 0, duration: .45, ease: "power3.in" }, al - .55);
+      tl.to("#s09-isl", { scale: 1, duration: .6, ease: "power2.inOut" }, al - .3);
       tl.fromTo("#s09-all", { opacity: 0, x: -400, skewX: -20 }, { opacity: 1, x: 0, skewX: 0, duration: .4, ease: "power4.out" }, al - .1);
       tl.to("#s09-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
       window.__timelines["s09"] = tl;

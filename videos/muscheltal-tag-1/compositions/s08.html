@@ -25,11 +25,12 @@
     .kick { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 24px; border-radius: 14px;
       background: #2a1b12; color: #ffd23f; font-family: "Space Mono", monospace; font-weight: 700; font-size: 34px; letter-spacing: .14em; }
     /* Text auf farbigem Balken (auffälliger, wie TikTok-Textboxen) */
-    .bt { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; max-width: 840px; text-align: center; padding: 10px 28px 14px; border-radius: 18px;
-      font-family: "Inter", sans-serif; font-weight: 900; font-size: 64px; line-height: 1.08; color: #fff; box-shadow: 0 9px 0 rgba(0,0,0,.28); }
-    .bt.pk { background: #e8467c; } .bt.tq { background: #0a9fa6; } .bt.vi { background: #7b4fe0; } .bt.bl { background: #2f7fe0; }
-    .bt.ye { background: #ffd23f; color: #2a1b12; } .bt.gr { background: #2fbf6a; } .bt.dk { background: #2a1b12; color: #ffd23f; }
-    .bt.sm { font-size: 40px; padding: 8px 22px 10px; border-radius: 14px; }
+    .bt { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; max-width: 860px; text-align: center;
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 66px; line-height: 1.3; color: #fff; }
+    .bt .bx { padding: .06em .34em .14em; border-radius: .26em; -webkit-box-decoration-break: clone; box-decoration-break: clone; box-shadow: 0 9px 0 rgba(0,0,0,.28); }
+    .bt.pk .bx { background: #e8467c; } .bt.tq .bx { background: #0a9fa6; } .bt.vi .bx { background: #7b4fe0; } .bt.bl .bx { background: #2f7fe0; }
+    .bt.ye .bx { background: #ffd23f; } .bt.ye { color: #2a1b12; } .bt.gr .bx { background: #2fbf6a; } .bt.dk .bx { background: #2a1b12; } .bt.dk { color: #ffd23f; }
+    .bt.sm { font-size: 44px; }
     .stamp { position: absolute; padding: 6px 26px; border: 10px solid; border-radius: 18px; background: rgba(255,255,255,.94);
       font-family: "Inter", sans-serif; font-weight: 900; font-size: 84px; }
     /* TikTok-Kommentare (echte Optik) */
@@ -52,7 +53,7 @@
   </style>
   <div id="root" data-composition-id="s08" data-start="0" data-duration="3.530" data-width="1080" data-height="1920">
     <div id="s08-stage" class="clip stage" data-start="0" data-duration="3.530" data-track-index="0">
-      <div id="s08-t" class="bt ye">IHR ENTSCHEIDET! 🗳️</div>
+      <div id="s08-t" class="bt ye">IHR ENTSCHEIDET!</div>
       <div id="s08-sheet" class="tk"><div class="tk-h">2.318 Kommentare<b>×</b></div>
         <div id="s08-c1" class="tk-c"><div class="tk-a" style="background:#e8467c">L</div><div><div class="tk-u">lxna_09.x</div><div class="tk-t">bau ein freibad!! 🏊‍♀️</div><div class="tk-m">vor 2 Std.<span>Antworten</span></div></div><div class="tk-l"><div class="hz"></div><i>1.204</i></div></div>
         <div id="s08-c2" class="tk-c"><div class="tk-a" style="background:#2f7fe0">J</div><div><div class="tk-u">j0nas.k_04</div><div class="tk-t">ich will häuptling werden 😭👑</div><div class="tk-m">vor 2 Std.<span>Antworten</span></div></div><div class="tk-l"><div class="hz"></div><i>873</i></div></div>
@@ -102,7 +103,10 @@
         const o = { v: from }; num.textContent = fmtK(from);
         tl.to(o, { v: to, duration: dur, ease: "power2.out", onUpdate: () => { num.textContent = fmtK(o.v); } }, t);
       }
+      // Textbox füllt immer genau den Text: jede Zeile bekommt ihren eigenen Balken
+      function wrapBt(scope) { document.querySelectorAll(scope + " .bt").forEach((el) => { if (!el.querySelector(":scope > .bx")) el.innerHTML = '<span class="bx">' + el.innerHTML + "</span>"; }); }
 
+      wrapBt("#s08-stage");
       const tl = gsap.timeline({ paused: true });
       const ihr = at("L12", "ihr"), ko = at("L12", "Kommentaren");
       tl.fromTo("#s08-sheet", { opacity: 0, y: 500 }, { opacity: 1, y: 0, duration: .45, ease: "power4.out" }, 0.02);

@@ -169,7 +169,8 @@
     {
      "id": "L11",
      "text": "Und am *b:Rand der Karte / versteckt sich / eine *p:geheime *p:Insel …",
-     "style": "Style: mysterious, curious, a bit softer, with a smile.\nPace: medium.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
+     "style": "Style: mysterious, curious, a bit softer, with a smile.\nPace: medium.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+     "speed": 1.22
     }
    ],
    "sfx": [
@@ -248,5 +249,11 @@
   }
  ],
  "style": "Style: very euphoric, overjoyed, excited and warm, big smile, like an enthusiastic TikTok creator.\nPace: fast and energetic.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
- "loudness": -11
+ "loudness": -11,
+ "pitch": -2.5,
+ "music": {
+  "src": "assets/music/suedsee.wav",
+  "volume": 1,
+  "note": "tools/make_music_tropical.py, im Code erzeugt (lizenzfrei), unter der Stimme automatisch leiser"
+ }
 }
