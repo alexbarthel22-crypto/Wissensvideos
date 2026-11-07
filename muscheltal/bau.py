@@ -66,7 +66,7 @@ def importiere(pfad, rows):
         if not name or name.lower() in da:
             continue
         d = re.match(r"(\d{4})-(\d{2})-(\d{2})", datum)
-        rows.append({"name": name, "datum": f"{int(d[3])}.{int(d[2])}." if d else "", "markierung": ""})
+        rows.append({"name": name, "datum": f"{int(d[3])}.{int(d[2])}.{d[1]}" if d else "", "markierung": ""})
         da.add(name.lower())
         n += 1
     print(f"Import: {n} neue Einwohner")

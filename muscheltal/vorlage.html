@@ -55,6 +55,24 @@ section>h2{font-size:28px;margin-bottom:14px}
 .chip{flex:none;border:3px solid var(--ink);background:#fff;border-radius:999px;padding:7px 13px;min-height:44px;font-weight:900;font-size:15px;box-shadow:3px 3px 0 var(--ink)}
 .chip.hot{background:var(--hib);color:#fff}
 .chip.sun{background:var(--sun)}
+.chip.mpb{background:var(--lagoon);color:#fff}
+.mp{position:fixed;inset:0;z-index:60;background:rgba(8,40,60,.55);display:grid;place-items:center;padding:16px}
+.mp[hidden]{display:none}
+.mpc{position:relative;width:100%;max-width:420px;max-height:92vh;overflow:auto;background:var(--sand);border:3px solid var(--ink);border-radius:24px;box-shadow:6px 6px 0 var(--ink);padding:18px}
+.mpc h2{margin:0 0 10px;font-size:24px}
+.mpx{position:absolute;right:10px;top:8px;border:0;background:none;font-size:30px;font-weight:900;line-height:1;cursor:pointer}
+.mpc input{width:100%;box-sizing:border-box;border:3px solid var(--ink);border-radius:14px;padding:12px 14px;font:800 17px inherit;font-family:inherit}
+.mpcard{border:3px solid var(--ink);border-radius:20px;overflow:hidden;background:#fff;box-shadow:4px 4px 0 var(--ink)}
+.mpcard .hd{background:linear-gradient(135deg,var(--lagoon),#0a8fd0);color:#fff;padding:10px 14px;font-weight:900;letter-spacing:1.5px;font-size:12px;display:flex;justify-content:space-between;align-items:center}
+.mpcard .bd{padding:14px;display:grid;gap:10px}
+.mpcard .nm{font-size:24px;font-weight:900;word-break:break-all}
+.mpcard dl{display:grid;grid-template-columns:1fr 1fr;gap:8px 12px;margin:0}
+.mpcard dt{font-size:11px;font-weight:900;letter-spacing:1px;color:var(--soft)}
+.mpcard dd{margin:0;font-weight:900;font-size:16px}
+.mpcard .big{font-size:30px;color:#ff6a1a}
+.mpst{justify-self:start;border:3px solid var(--leaf);color:var(--leaf);border-radius:8px;padding:2px 8px;font-weight:900;letter-spacing:1px;transform:rotate(-6deg)}
+.mpgo{width:100%;margin-top:12px;border:3px solid var(--ink);border-radius:16px;background:var(--hib);color:#fff;font-weight:900;font-size:18px;padding:13px;box-shadow:3px 3px 0 var(--ink);cursor:pointer}
+.mpalt{display:block;margin:10px auto 0;border:0;background:none;color:var(--soft);font-weight:800;text-decoration:underline;cursor:pointer}
 .down{position:absolute;left:12px;bottom:16px;max-width:calc(100% - 200px);text-decoration:none;color:var(--ink);background:var(--sun)}
 .hint{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:var(--ink);color:#fff;border-radius:14px;padding:10px 14px;font-weight:800;pointer-events:none;opacity:0;transition:opacity .3s;text-align:center}
 .hint.on{opacity:1}
@@ -137,9 +155,19 @@ footer a{color:var(--soft)}
   <p class="miss" id="miss" hidden></p>
  </div>
  <div class="ctrl"><button id="zin" aria-label="Hineinzoomen">+</button><button id="zout" aria-label="Herauszoomen">−</button><button id="zall" aria-label="Hauptinsel">🏝️</button></div>
- <div class="pop" id="pop" hidden><div><b id="pname"></b><span id="pinfo"></span></div><button class="btn" id="topass">Mein Pass</button></div>
- <div class="quick"><button class="chip sun" id="mine" hidden>🏠 Meine Hütte</button><button class="chip hot" id="allbtn">🗺️ Alle Inseln</button><button class="chip" id="growbtn">▶ Wachsen sehen</button><button class="chip" id="rnd">🎲 Zufall</button></div>
+ <div class="pop" id="pop" hidden><div><b id="pname"></b><span id="pinfo"></span></div><button class="btn" id="topass">🪪 Muschelpass</button></div>
+ <div class="quick"><button class="chip mpb" id="passbtn">🪪 Muschelpass</button><button class="chip sun" id="mine" hidden>🏠 Meine Hütte</button><button class="chip hot" id="allbtn">🗺️ Alle Inseln</button><button class="chip" id="growbtn">▶ Wachsen sehen</button><button class="chip" id="rnd">🎲 Zufall</button></div>
  <a class="chip down" href="#intro">↓ Was ist das hier?</a>
+ <div class="mp" id="mp" hidden role="dialog" aria-modal="true" aria-label="Muschelpass"><div class="mpc">
+  <button class="mpx" id="mpx" aria-label="Schließen">×</button>
+  <h2>🪪 Muschelpass</h2>
+  <div id="mpf"><p style="margin:0 0 10px;font-weight:700">Dein Einwohnernachweis. Gib deinen TikTok-Namen ein:</p><input id="mpq" placeholder="@deinname" autocomplete="off" autocapitalize="off" spellcheck="false"><ul class="sugg" id="mps" hidden></ul><p class="miss" id="mpm" hidden></p></div>
+  <div id="mpp" hidden><div class="mpcard"><div class="hd"><span>MUSCHEL-TAL · EINWOHNERNACHWEIS</span><span>🐚</span></div><div class="bd">
+   <div class="nm" id="mpn"></div>
+   <dl><div><dt>HÜTTE NR.</dt><dd class="big" id="mpnr"></dd></div><div><dt>EINGEZOGEN AM</dt><dd id="mpd"></dd></div><div><dt>INSEL</dt><dd id="mpi"></dd></div><div><dt>STATUS</dt><dd id="mpstat"></dd></div></dl>
+   <div class="mpst" id="mpstamp">BEWOHNT ✓</div></div></div>
+   <button class="mpgo" id="mpgo">🏠 Zu meiner Hütte</button><button class="mpalt" id="mpalt">Anderen Namen suchen</button></div>
+ </div></div>
  <div class="hint" id="hint">Zum Zoomen Strg + Mausrad<br>oder + / − benutzen</div>
 </div>
 
@@ -156,7 +184,7 @@ footer a{color:var(--soft)}
  </section>
 
  <section id="s-pass" hidden>
-  <h2>Dein Inselpass</h2>
+  <h2>Dein Muschelpass</h2>
   <div class="pass">
    <div class="main"><small style="font-weight:900;letter-spacing:2px;color:var(--deep)">MUSCHEL-TAL · SÜDSEE</small>
     <h3 id="idname"></h3>
@@ -225,6 +253,7 @@ const WALKERS=PLACED.filter((p,i)=>hash(i,77)<.09).slice(0,36).map((q,i)=>{const
  return{q,vert,mode,rx:v.x+Math.round(gx/5)*5*S,ry:v.y+Math.round(gy/4)*4*S*.9,x0:q.p.x,y0:q.p.y,len:(fast?45:22)+hash(i,79)*(fast?45:30),sp:(fast?.35:.22)+hash(i,80)*.2,ph:hash(i,81)*TAU,
   shirt:ROOFS[(i*3)%ROOFS.length],skin:['#f3c9a0','#d9a07a','#a8714a','#7a4a2a'][i%4],hair:['#2a1b12','#6b3f1d','#e0b860','#1a1a1a'][(i*7)%4],bikec:['#ff3d7f','#0a8fd0','#2fb3a0','#ff8a2a'][i%4]};});
 const byName=new Map(PEOPLE.map(p=>[p.name.toLowerCase(),p]));
+const AWAKE=new Set(PLACED.filter(p=>hash(p.nr,91)<.12));
 const AMT={};I.aemter.forEach(([t,n])=>{if(n)AMT[n.toLowerCase()]=t;});
 function nachbarn(p){if(!p.p)return[];const a=[],cell=p.isl.cell;for(let dx=-2;dx<=2;dx++)for(let dy=-2;dy<=2;dy++){if(!dx&&!dy)continue;const q=cell.get((p.p.gx+dx)+','+(p.p.gy+dy));if(q)a.push([Math.hypot(q.p.x-p.p.x,q.p.y-p.p.y),q]);}return a.sort((x,y)=>x[0]-y[0]).slice(0,4).map(x=>x[1]);}
 
@@ -503,7 +532,7 @@ function draw(){
   c.restore();
   if(z*S>30){const nm=q.name;c.font='800 2.8px '+FONT;c.textAlign='center';const tw=c.measureText(nm).width+3,ly=y-(w.mode==='bike'?12.2:11.2);c.fillStyle='rgba(42,27,18,.82)';c.beginPath();c.roundRect(x-tw/2,ly,tw,4.2,2.1);c.fill();c.fillStyle='#fff';c.fillText(nm,x,ly+3.1);}}
  // nachts: über den Hütten, deren Bewohner nicht unterwegs sind, wird geschlafen 💤
- if(nl>.5&&z*S>16){c.textAlign='center';for(const q of PLACED){if(q.nr>limit||OUT.has(q)||!vis(q.p.x,q.p.y))continue;const k=(T*.35+q.nr*.137)%1;c.globalAlpha=Math.sin(k*Math.PI)*Math.min(1,(nl-.5)*4);c.font='7.5px '+FONT;c.fillText('💤',q.p.x+6+k*2.5,q.p.y-13-k*6);}c.globalAlpha=1;}
+ if(nl>.5&&z*S>16){c.textAlign='center';for(const q of PLACED){if(q.nr>limit||OUT.has(q)||AWAKE.has(q)||!vis(q.p.x,q.p.y))continue;const k=(T*.35+q.nr*.137)%1;c.globalAlpha=Math.sin(k*Math.PI)*Math.min(1,(nl-.5)*4);c.font='7.5px '+FONT;c.fillText('💤',q.p.x+6+k*2.5,q.p.y-13-k*6);}c.globalAlpha=1;}
  // Steg, Fähre, Boote
  {const [px,py]=PIER1;boat(c,px+Math.cos(PIER_A+1.57)*12,py+Math.sin(PIER_A+1.57)*12,PIER_A,WAIT.length?'#ffd23f':'#fff',true,WAIT.length?1.6:1);
   if(WAIT.length){const n=Math.min(WAIT.length,14);for(let k=0;k<n;k++){const t=.25+k/n*.7,x=PIER0[0]+(PIER1[0]-PIER0[0])*t+(k%2?2:-2),y=PIER0[1]+(PIER1[1]-PIER0[1])*t;c.fillStyle=ROOFS[k%ROOFS.length];c.beginPath();c.arc(x,y-2,1.6,0,TAU);c.fill();c.fillStyle='#f3c9a0';c.beginPath();c.arc(x,y-4.4,1.1,0,TAU);c.fill();}}}
@@ -515,7 +544,7 @@ function draw(){
  world(c);
  if(nl>0){c.setTransform(1,0,0,1,0,0);c.fillStyle=`rgba(12,22,70,${.55*nl})`;c.fillRect(0,0,cv.width,cv.height);world(c);c.globalCompositeOperation='lighter';
   const pxs=S*z;
-  for(const q of PLACED){if(q.nr>limit||!vis(q.p.x,q.p.y))continue;const fl=.75+.25*Math.sin(T*3+q.nr);
+  for(const q of PLACED){if(q.nr>limit||!vis(q.p.x,q.p.y))continue;if(!AWAKE.has(q)){if(pxs>=7){c.fillStyle=`rgba(255,200,110,${.1*nl})`;c.fillRect(q.p.x-1.5,q.p.y+2.4,3,3.1);}continue;}const fl=.75+.25*Math.sin(T*3+q.nr);
    if(pxs<7){c.fillStyle=`rgba(255,190,80,${.35*nl})`;c.fillRect(q.p.x-3,q.p.y-3,6,6);continue;}
    c.fillStyle=`rgba(255,170,60,${.18*nl*fl})`;c.beginPath();c.arc(q.p.x,q.p.y+3,8,0,TAU);c.fill();
    c.fillStyle=`rgba(255,220,120,${.9*nl})`;if(q.round)c.fillRect(q.p.x-1.5,q.p.y+1.8,3,5);else{c.fillRect(q.p.x-1.6,q.p.y+1.5,3.2,4.5);if(q.win)c.fillRect(q.p.x+2.6,q.p.y,2.4,2.4);}}
@@ -586,7 +615,24 @@ function select(p,doFly=true){sel=p;limit=N;
  try{localStorage.setItem('mt-me',p.name);}catch(e){}$('mine').hidden=false;
  if(doFly)flyTo(p.p?{x:p.p.x,y:p.p.y+7,z:Math.max(4.2,cam.z)}:{x:(PIER0[0]+PIER1[0])/2,y:(PIER0[1]+PIER1[1])/2,z:3.2});
 }
-$('topass').onclick=()=>$('s-pass').scrollIntoView({behavior:'smooth'});
+$('topass').onclick=()=>{if(sel)zeigePass(sel);};
+// ---------- Muschelpass (Einwohnernachweis) ----------
+let mpP=null;
+function zeigePass(p){mpP=p;$('mp').hidden=false;$('mpf').hidden=true;$('mpp').hidden=false;
+ $('mpn').textContent=p.name;$('mpnr').textContent=fmt(p.nr);$('mpd').textContent=p.seit||'–';$('mpi').textContent=wo(p);$('mpstat').textContent=status(p);$('mpstamp').textContent=p.wait?'WARTET ⛴️':'BEWOHNT ✓';
+ try{localStorage.setItem('mt-me',p.name);}catch(e){}}
+function suchePass(){$('mp').hidden=false;$('mpf').hidden=false;$('mpp').hidden=true;$('mpq').value='';$('mps').hidden=true;$('mpm').hidden=true;setTimeout(()=>$('mpq').focus(),50);}
+$('passbtn').onclick=()=>{let me=null;try{me=byName.get((localStorage.getItem('mt-me')||'').toLowerCase());}catch(e){}me?zeigePass(me):suchePass();};
+$('mpx').onclick=()=>{$('mp').hidden=true;};$('mp').onclick=e=>{if(e.target===$('mp'))$('mp').hidden=true;};
+$('mpalt').onclick=suchePass;
+$('mpgo').onclick=()=>{$('mp').hidden=true;window.scrollTo({top:0,behavior:'smooth'});if(mpP)select(mpP);};
+$('mpq').oninput=()=>{const t=$('mpq').value.trim().toLowerCase().replace(/^@/,'');if(!t){$('mps').hidden=true;$('mpm').hidden=true;return;}
+ const h=PEOPLE.filter(p=>p.name.toLowerCase().replace(/^@/,'').includes(t)).sort((a,b)=>(a.name.toLowerCase().replace(/^@/,'').startsWith(t)?0:1)-(b.name.toLowerCase().replace(/^@/,'').startsWith(t)?0:1)||a.nr-b.nr).slice(0,6);
+ $('mps').innerHTML=h.map(p=>'<li><button type="button" data-n="'+esc(p.name)+'">'+esc(p.name)+'<small>Hütte '+fmt(p.nr)+'</small></button></li>').join('');$('mps').hidden=!h.length;
+ $('mpm').hidden=!!h.length;$('mpm').textContent='Noch nicht gefunden – folg '+ACC+' und schau morgen wieder rein 🐚';};
+$('mps').onclick=e=>{const b=e.target.closest('button');if(b)zeigePass(byName.get(b.dataset.n.toLowerCase()));};
+$('mpq').onkeydown=e=>{if(e.key==='Enter'){const b=$('mps').querySelector('button');if(b)b.click();}};
+document.addEventListener('keydown',e=>{if(e.key==='Escape')$('mp').hidden=true;});
 
 // ---------- Suche ----------
 const q=$('q'),sg=$('sugg');let hits=[],act=-1;
