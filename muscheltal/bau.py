@@ -120,7 +120,7 @@ def baue(rows, out):
             open(os.path.join(out, datei), "w", encoding="utf-8").write(open(quelle, encoding="utf-8").read())
     open(os.path.join(out, "index.html"), "w", encoding="utf-8").write(html)
     # Zusatzseiten (statisch) mitkopieren
-    for datei in ("erfolge.html",):
+    for datei in ("erfolge.html", "regeln.html"):
         quelle = os.path.join(HIER, datei)
         if os.path.exists(quelle):
             open(os.path.join(out, datei), "w", encoding="utf-8").write(open(quelle, encoding="utf-8").read())

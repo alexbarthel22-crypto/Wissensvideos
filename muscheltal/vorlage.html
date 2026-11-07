@@ -16,7 +16,7 @@
  color-scheme:light;
 }
 *{box-sizing:border-box}
-body{margin:0;background:var(--sand);color:var(--ink);font:600 17px/1.5 var(--f);padding-bottom:64px}
+body{margin:0;background:var(--sand);color:var(--ink);font:600 17px/1.5 var(--f);padding-bottom:0}
 h1,h2,h3{margin:0;font-weight:900;line-height:1.08;text-wrap:balance}
 button,input{font:inherit;color:inherit}
 button{cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
@@ -44,6 +44,11 @@ section>h2{font-size:28px;margin-bottom:14px}
 @keyframes pulse{50%{opacity:.25}}
 .findbar{position:absolute;left:12px;right:12px;top:66px;max-width:520px;z-index:2}
 .findbar input{width:100%;border:3px solid var(--ink);border-radius:14px;padding:13px 14px 13px 44px;font-size:17px;font-weight:800;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22' fill='none' stroke='%232a1b12' stroke-width='3'%3E%3Ccircle cx='9' cy='9' r='6.5'/%3E%3Cpath d='M14 14l6 6'/%3E%3C/svg%3E") 13px 50%/20px no-repeat;box-shadow:var(--sh)}
+.findbar{position:absolute}
+.findbar input::-webkit-search-cancel-button{display:none}
+.findbar input{padding-right:48px!important}
+.qx{position:absolute;right:10px;top:9px;width:36px;height:36px;border-radius:50%;border:2px solid var(--ink);background:var(--peach);font-size:24px;font-weight:900;line-height:1;padding:0;display:grid;place-items:center}
+.qx[hidden]{display:none}
 .sugg{list-style:none;margin:8px 0 0;padding:0;background:#fff;border:3px solid var(--ink);border-radius:14px;overflow:hidden;box-shadow:var(--sh)}
 .sugg button{display:flex;justify-content:space-between;width:100%;border:0;background:none;padding:10px 14px;text-align:left;font-weight:800}
 .sugg button:hover,.sugg button.act{background:var(--peach)}
@@ -51,6 +56,8 @@ section>h2{font-size:28px;margin-bottom:14px}
 .miss{margin:8px 0 0;background:var(--hib);color:#fff;border:3px solid var(--ink);border-radius:12px;padding:8px 12px;font-size:15px;font-weight:800}
 .dock{position:absolute;left:12px;right:12px;bottom:14px;display:flex;flex-direction:column;align-items:flex-start;gap:10px;pointer-events:none}
 .dock>*{pointer-events:auto}
+.zoomc{position:absolute;right:12px;top:52%;transform:translateY(-50%);display:grid;gap:8px}
+.zoomc button{width:44px;height:44px;border-radius:50%;border:3px solid var(--ink);background:#fff;font-size:24px;font-weight:900;line-height:1;padding:0;box-shadow:3px 3px 0 var(--ink)}
 .swipe{display:flex;gap:12px;width:100%;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:2px 4px 6px 2px;overscroll-behavior-x:contain}
 .swipe::-webkit-scrollbar{display:none}
 .pg{flex:0 0 calc(100% - 6px);display:grid;grid-template-columns:1fr 1fr;gap:10px;scroll-snap-align:start}
@@ -101,7 +108,8 @@ section>h2{font-size:28px;margin-bottom:14px}
 .mpwinl .ach b{font-size:14px}
 .mpsh .bon{display:block;margin-top:6px;background:#fff;border:2px dashed #e0a93a;border-radius:10px;padding:4px 8px;font-size:13px;font-weight:900;color:#7a4a00}
 .mpsh .bon.done{border-color:#c9b79a;color:var(--soft)}
-.mpc .pgx{text-align:center}
+.pgx{text-align:center}
+.pgx p a{color:var(--hib);font-weight:900}
 .pgx .big{font-size:56px;line-height:1;margin:6px 0 10px}
 .pgx h2{margin:0 0 8px}
 .pgx p{margin:0 0 14px;font-weight:700}
@@ -169,6 +177,8 @@ a.step span{color:var(--hib);font-weight:900}
 .cpy{font-size:14px;color:var(--soft);margin:10px 0 0;overflow-wrap:anywhere}
 /* ---------- Aktuell ---------- */
 .now{padding:16px}
+.nowbtn{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0 4px}
+.nowbtn .btn{display:flex;align-items:center;justify-content:center;gap:6px;padding:10px 6px;white-space:nowrap;font-size:16px}
 .nums{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;text-align:center}
 .nums div{background:var(--sand);border:2px solid var(--ink);border-radius:12px;padding:8px 4px}
 .nums b{display:block;font-size:22px;font-variant-numeric:tabular-nums;line-height:1.1}
@@ -193,9 +203,9 @@ a.step span{color:var(--hib);font-weight:900}
 .chat summary{list-style:none;cursor:pointer;margin-left:auto;max-width:88%;width:fit-content;background:var(--deep);color:#fff;border:3px solid var(--ink);border-radius:18px 18px 4px 18px;padding:10px 14px;font-weight:800}
 .chat summary::-webkit-details-marker{display:none}
 .chat p{max-width:88%;width:fit-content;background:#fff;border:3px solid var(--ink);border-radius:18px 18px 18px 4px;padding:10px 14px;margin:8px 0 0;font-weight:600}
-footer{padding:30px 16px 36px;text-align:center;color:var(--soft);font-size:14px}
+footer{padding:30px 16px 14px;text-align:center;color:var(--soft);font-size:14px}
 footer a{color:var(--soft)}
-.lupebtn{display:block;margin:22px auto 0;width:30px;height:30px;border:0;background:none;padding:0;opacity:.28;animation:lupeblink 6s ease-in-out infinite}
+.lupebtn{display:block;margin:16px auto 0;width:30px;height:30px;border:0;background:none;padding:0;opacity:.28;animation:lupeblink 6s ease-in-out infinite}
 .lupebtn svg{width:100%;height:100%;display:block}
 @keyframes lupeblink{0%,84%,100%{opacity:.28;filter:none;transform:none}90%{opacity:1;filter:drop-shadow(0 0 7px #ffd23f) drop-shadow(0 0 2px #ffb000);transform:scale(1.15) rotate(-8deg)}}
 .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:80;max-width:calc(100% - 32px);width:max-content;background:var(--ink);color:#fff;border-radius:14px;padding:11px 16px;font-weight:800;font-size:15px;box-shadow:0 6px 20px rgba(0,0,0,.25);text-align:center}
@@ -210,10 +220,12 @@ footer a{color:var(--soft)}
  <div class="live" id="live"></div>
  <div class="findbar">
   <input id="q" type="search" placeholder="Finde deine Hütte: @TikTok-Name" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="TikTok-Name oder Hütten-Nummer">
+  <button class="qx" id="qx" type="button" aria-label="Namen löschen" hidden>×</button>
   <ul class="sugg" id="sugg" hidden></ul>
   <p class="miss" id="miss" hidden></p>
  </div>
  <div class="pop" id="pop" hidden><div><b id="pname"></b><span id="pinfo"></span></div></div>
+ <div class="zoomc"><button id="zin" aria-label="Hineinzoomen">+</button><button id="zout" aria-label="Herauszoomen">−</button></div>
  <div class="dock" id="dock">
   <div class="swipe" id="swipe"><div class="pg" id="pg1"></div><div class="pg" id="pg2"></div></div>
   <div class="dots" id="dots" aria-hidden="true"><i class="on"></i><i></i></div>
@@ -255,6 +267,7 @@ footer a{color:var(--soft)}
   <h2>Gerade auf der Insel</h2>
   <div class="st now">
    <div class="nums"><div><b id="nTag"></b><small>Tag</small></div><div><b id="nEw"></b><small>Einwohner</small></div><div><b id="nMu"></b><small>🐚 Muscheln</small></div></div>
+   <div class="nowbtn"><a class="btn" href="regeln.html">📜 Regeln</a><button class="btn hib" id="myerf">🏅 Meine Erfolge</button></div>
    <div class="isl" id="isl"></div>
    <div class="proj" id="proj"><div class="top"><span id="pjname"></span><small id="pjnum"></small></div><div class="meter"><i id="pjbar"></i></div><p class="sub" id="pjtext"></p></div>
    <p class="news" id="news"></p>
@@ -311,6 +324,8 @@ const WALKERS=PLACED.filter((p,i)=>hash(i,77)<.09).slice(0,36).map((q,i)=>{const
  return{q,vert,mode,rx:v.x+Math.round(gx/5)*5*S,ry:v.y+Math.round(gy/4)*4*S*.9,x0:q.p.x,y0:q.p.y,len:(fast?45:22)+hash(i,79)*(fast?45:30),sp:(fast?.35:.22)+hash(i,80)*.2,ph:hash(i,81)*TAU,
   shirt:ROOFS[(i*3)%ROOFS.length],skin:['#f3c9a0','#d9a07a','#a8714a','#7a4a2a'][i%4],hair:['#2a1b12','#6b3f1d','#e0b860','#1a1a1a'][(i*7)%4],bikec:['#ff3d7f','#0a8fd0','#2fb3a0','#ff8a2a'][i%4]};});
 const byName=new Map(PEOPLE.map(p=>[p.name.toLowerCase(),p]));
+const CAMP=(()=>{const v=ISL[1];if(!v||!v.open||v.people.length<7)return[];const pp=v.people.filter(q=>!WALKERS.some(w=>w.q===q)).sort((a,b)=>hash(a.nr,5)-hash(b.nr,5)).slice(0,7);
+ return pp.map((q,k)=>{const a=k/7*TAU+.3;return{q,v,hx:q.p.x,hy:q.p.y+8,fx:v.x+Math.cos(a)*36,fy:v.y+Math.sin(a)*31,ph:k/7+hash(q.nr,6)*.05,shirt:ROOFS[(k*2)%ROOFS.length],skin:['#f3c9a0','#d9a07a','#a8714a','#7a4a2a'][k%4],hair:['#2a1b12','#6b3f1d','#e0b860','#1a1a1a'][(k*3)%4]};});})();
 const AWAKE=new Set(PLACED.filter(p=>hash(p.nr,91)<.12));
 const IDA='ABCDEFGHJKLMNPQRSTUVWXYZ23456789',IDS=new Set();
 for(const p of PEOPLE){let salt=0,id;do{let h1=2166136261^salt,h2=5381+salt*7919;for(const ch of p.name.toLowerCase()+'#mt'){h1=Math.imul(h1^ch.charCodeAt(0),16777619);h2=Math.imul(h2,33)+ch.charCodeAt(0)|0;}
@@ -360,6 +375,21 @@ const MOON=polar(MAIN,-2.35,MAIN.R+300);
 const PIER_A=Math.PI/2+.25,PIER0=polar(MAIN,PIER_A,coastAt(MAIN,PIER_A)-6),PIER1=polar(MAIN,PIER_A,coastAt(MAIN,PIER_A)+62);
 const PJ=I.projekt, BB_DONE=!!PJ&&PJ.stand>=PJ.ziel, BB_A=-0.75, BB=polar(MAIN,BB_A,coastAt(MAIN,BB_A)+4);
 const LANT=[0,1,2,3,4,5,6,7].map(i=>polar(MAIN,i/8*TAU,MAIN.plaza-14));
+// Bänke (am Platz + am Strand) und Straßenlaternen (an Kreuzungen) – je Insel im eigenen Stil
+for(const v of ISL){v.lamps=[];v.benches=[];if(!v.open||!v.plots.length)continue;const g=Math.ceil(v.R/S)+1;
+ for(let gx=-g;gx<=g;gx+=1)for(let gy=-g;gy<=g;gy+=1){if(((gx%5)+5)%5||((gy%4)+4)%4)continue;const x=v.x+gx*S+5.5,y=v.y+gy*S*.9+4.5;
+  if(Math.hypot(x-v.x,y-v.y)<v.plaza+14||!inside(v,x,y,16)||hash(gx+v.i*17,gy+5)>.42)continue;v.lamps.push([x,y]);}
+ if(v.i)for(let k=0;k<6;k++)v.lamps.push(polar(v,k/6*TAU+.5,v.plaza-9));
+ for(let k=0;k<(v.i?6:8);k++){const a=(k+.5)/(v.i?6:8)*TAU;const [x,y]=polar(v,a,v.plaza-(v.i?18:13));if(v.i||Math.abs(Math.sin(a))>.3)v.benches.push([x,y]);}
+ for(let k=0,n=0;k<40&&n<7;k++){const a=hash(k,71+v.i)*TAU-Math.PI,[x,y]=polar(v,a,coastAt(v,a)+3);
+  if(!v.i&&(Math.hypot(x-PIER1[0],y-PIER1[1])<90||Math.hypot(x-PIER0[0],y-PIER0[1])<40||(PJ&&Math.hypot(x-BB[0],y-BB[1])<50)))continue;
+  if(v.benches.some(([bx,by])=>Math.hypot(bx-x,by-y)<70))continue;v.benches.push([x,y]);n++;}}
+function bench(c,v,x,y){if(v.i===1){c.fillStyle='rgba(40,30,10,.25)';c.beginPath();c.ellipse(x+1,y+2.2,5.2,1.4,0,0,TAU);c.fill();c.fillStyle='#7a4a24';c.beginPath();c.roundRect(x-5,y-1.6,10,3.2,1.6);c.fill();c.fillStyle='#c9945a';c.beginPath();c.ellipse(x-5,y,.9,1.6,0,0,TAU);c.ellipse(x+5,y,.9,1.6,0,0,TAU);c.fill();c.strokeStyle='rgba(60,35,15,.6)';c.lineWidth=.3;c.beginPath();c.moveTo(x-3.5,y-.6);c.lineTo(x+3.5,y-.6);c.stroke();return;}
+ c.fillStyle='rgba(40,30,10,.25)';c.fillRect(x-4.4,y+1.4,9.6,1.3);c.fillStyle='#5a3418';c.fillRect(x-4,y,.8,2.2);c.fillRect(x+3.2,y,.8,2.2);c.fillStyle='#a8743c';c.fillRect(x-4.6,y-.6,9.2,1.5);c.fillStyle='#8a5a2b';c.fillRect(x-4.6,y-3,9.2,1.1);c.fillRect(x-4,y-3,.7,2.6);c.fillRect(x+3.3,y-3,.7,2.6);}
+function lamp(c,v,x,y,lit){if(v.i===1){c.strokeStyle='#b8933e';c.lineWidth=1.1;c.beginPath();c.moveTo(x,y);c.lineTo(x,y-10);c.stroke();c.strokeStyle='#8a6a2a';c.lineWidth=.4;c.beginPath();c.moveTo(x-.6,y-3.5);c.lineTo(x+.6,y-3.5);c.moveTo(x-.6,y-7);c.lineTo(x+.6,y-7);c.stroke();
+  c.fillStyle='#d98a2a';c.beginPath();c.ellipse(x,y-11.4,1.9,2.2,0,0,TAU);c.fill();c.fillStyle=lit?'#ffe38a':'#ffd9a0';c.beginPath();c.ellipse(x,y-11.4,1.1,1.4,0,0,TAU);c.fill();return;}
+ c.fillStyle='rgba(40,30,10,.25)';c.beginPath();c.ellipse(x+1.4,y+.6,2,.7,0,0,TAU);c.fill();c.strokeStyle='#33333f';c.lineWidth=.9;c.beginPath();c.moveTo(x,y);c.lineTo(x,y-10);c.stroke();
+ c.fillStyle='#2a2a35';c.beginPath();c.moveTo(x-2,y-11);c.lineTo(x+2,y-11);c.lineTo(x+1.2,y-13);c.lineTo(x-1.2,y-13);c.closePath();c.fill();c.fillStyle=lit?'#ffe08a':'#fff3c4';c.fillRect(x-1.3,y-10.8,2.6,1.9);}
 const RA0=-2.88,RA1=-.26;
 // ---------- Muschelpalast (Mitte des Muschelplatzes) ----------
 const PAL_WIN=[[-21,-6],[-11,-16],[0,-20],[11,-16],[21,-6]];
@@ -515,6 +545,7 @@ function drawIsland(c,v,vis,z){
    c.fillStyle='#6b3f1d';c.fillRect(cx-.9,cy-2,1.8,10);c.fillStyle='#ff8a2a';c.strokeStyle='#2a1b12';c.lineWidth=.6;c.beginPath();c.roundRect(cx-15,cy-12,30,11,2);c.fill();c.stroke();
    c.fillStyle='#fff';c.font='900 4.6px '+FONT;c.textAlign='center';c.fillText('BAUPLATZ',cx,cy-4.8);
    if(px>30){c.fillStyle='#7a5a2b';c.font='800 3.2px '+FONT;c.fillText('bald: ???',cx,cy+12);}}}
+ if(px>6){for(const [x,y] of v.benches)if(vis(x,y))bench(c,v,x,y);for(const [x,y] of v.lamps)if(vis(x,y))lamp(c,v,x,y,nightLevel()>.5);}
  // Hütten (Südsee-Stelzenhütten mit Strohdach)
  const STRAW=['#e8c25a','#dcb04a','#f0cd6a'];const LBL=[];
  for(const q of v.people){if(q.nr>limit)continue;const x=q.p.x,y=q.p.y;if(!vis(x,y))continue;const col=q.roof,st=STRAW[q.nr%3];
@@ -593,7 +624,7 @@ function beachbar(c){const [x,y]=BB;
   c.fillStyle='#c79a63';for(let k=0;k<4;k++)c.fillRect(x+12,y+2-k*2.2,12,1.8);
   c.fillStyle='#ffd23f';c.strokeStyle='#2a1b12';c.lineWidth=.6;c.fillRect(x-25,y-9,15,7);c.strokeRect(x-25,y-9,15,7);c.fillStyle='#2a1b12';c.font='900 2.5px '+FONT;c.textAlign='center';c.fillText('BEACH-BAR',x-17.5,y-6.2);c.fillText('IM BAU',x-17.5,y-3.4);
   c.strokeStyle='#6b3f1d';c.beginPath();c.moveTo(x-17.5,y-2);c.lineTo(x-17.5,y+6);c.stroke();}}
-function landmark(c,v,nl){const L=v.open?1:1+v.tier*.4;c.save();c.translate(v.x,v.y);c.scale(L,L);c.translate(-v.x,-v.y);landmark0(c,v,nl);c.restore();
+function landmark(c,v,nl){const L=v.open?(v.tier===1?2.3:1):1+v.tier*.4;c.save();c.translate(v.x,v.y);c.scale(L,L);c.translate(-v.x,-v.y);landmark0(c,v,nl);c.restore();
  if(v.tier===4){const cols=['#ff5a5a','#ffa53a','#ffe14a','#5fd35f','#4aa8ff','#a46bff'],lw=Math.min(Math.max(7,3.5/cam.z),v.R*.12);c.lineWidth=lw;for(let k=0;k<6;k++){c.strokeStyle=cols[k];c.globalAlpha=.32*(1-nl*.8);c.beginPath();c.ellipse(v.x,v.y+v.R*.25,v.R*.95-k*lw,v.R*.75-k*lw,0,Math.PI,TAU);c.stroke();}c.globalAlpha=1;
   c.strokeStyle=`rgba(255,215,90,${.35+.15*Math.sin(T*2)})`;c.lineWidth=Math.max(4,3/cam.z);shape(c,v,46);c.stroke();}}
 function landmark0(c,v,nl){
@@ -616,7 +647,7 @@ function xmFog(c){const n=16;for(let k=0;k<n;k++){const a=k/n*TAU+(REDUCED?0:T*.
  if(!REDUCED){const s=Math.pow(Math.max(0,Math.sin(T*.9)),10);if(s>.05){c.fillStyle=`rgba(255,210,80,${s})`;const x=XM.x+18,y=XM.y-14;c.beginPath();for(let k=0;k<10;k++){const r=k%2?2.5:7,a=k/10*TAU-Math.PI/2;c.lineTo(x+Math.cos(a)*r,y+Math.sin(a)*r);}c.closePath();c.fill();}}}
 
 function draw(){
- if(!W)return;const key=[cam.x,cam.y,cam.z,W,H,limit,kind()].join(',');
+ if(!W)return;const key=[cam.x,cam.y,cam.z,W,H,limit,kind(),nightLevel()>.5].join(',');
  if(key!==baseKey){drawBase();baseKey=key;}
  const c=ctx,z=cam.z,zr=z/fitMain().z;c.setTransform(1,0,0,1,0,0);c.drawImage(base,0,0);world(c);
  const [x0,y0]=s2w(-40,-40),[x1,y1]=s2w(W+40,H+40),vis=(x,y)=>x>x0&&x<x1&&y>y0&&y<y1,visR=(x,y,r)=>x>x0-r&&x<x1+r&&y>y0-r&&y<y1+r;
@@ -646,6 +677,17 @@ function draw(){
    c.fillStyle=w.shirt;c.beginPath();c.roundRect(-1.6,-2.8,3.2,4,1.1);c.fill();c.fillStyle=w.skin;c.beginPath();c.arc(.2,-4.2,1.45,0,TAU);c.fill();c.fillStyle=w.hair;c.beginPath();c.arc(.2,-4.6,1.45,Math.PI,0);c.fill();}
   c.restore();
   if(z*S>30){const nm=q.name;c.font='800 2.8px '+FONT;c.textAlign='center';const tw=c.measureText(nm).width+3,ly=y-(w.mode==='bike'?12.2:11.2);c.fillStyle='rgba(42,27,18,.82)';c.beginPath();c.roundRect(x-tw/2,ly,tw,4.2,2.1);c.fill();c.fillStyle='#fff';c.fillText(nm,x,ly+3.1);}}
+ // Lagerfeuer auf der Kokos-Küste: 7 Bewohner gehen hin und bleiben lange (meist 5–6 gleichzeitig dort)
+ if(z*S>6)for(const f of CAMP){const k=((T/150)+f.ph)%1,tin=.07,tout=.93;let x,y,mv=0,dir;
+  if(k<tin){const e=k/tin;x=f.hx+(f.fx-f.hx)*e;y=f.hy+(f.fy-f.hy)*e;mv=1;dir=f.fx>=f.hx?1:-1;}
+  else if(k<tout){x=f.fx;y=f.fy+(REDUCED?0:Math.sin(T*1.3+f.ph*9)*.25);dir=f.v.x>=f.fx?1:-1;}
+  else{const e=(k-tout)/(1-tout);x=f.fx+(f.hx-f.fx)*e;y=f.fy+(f.hy-f.fy)*e;mv=1;dir=f.hx>=f.fx?1:-1;}
+  if(k>.01&&k<.99)OUT.add(f.q);if(!vis(x,y))continue;
+  c.save();c.translate(x,y);c.scale(dir,1);c.fillStyle='rgba(30,40,20,.25)';c.beginPath();c.ellipse(0,4.4,2.6,.9,0,0,TAU);c.fill();c.lineCap='round';
+  const st=mv?Math.sin(T*9+f.ph*7)*1.1:0;c.strokeStyle='#3a2a20';c.lineWidth=.9;c.beginPath();c.moveTo(-.6,1.2);c.lineTo(-.6+st,4.2);c.moveTo(.6,1.2);c.lineTo(.6-st,4.2);c.stroke();
+  c.fillStyle=f.shirt;c.beginPath();c.roundRect(-1.7,-2.6,3.4,4.4,1.2);c.fill();if(!mv){c.strokeStyle=f.skin;c.lineWidth=.8;c.beginPath();c.moveTo(1,-1.6);c.lineTo(2.8,-1.2-Math.abs(Math.sin(T*2+f.ph*5))*.8);c.stroke();}
+  c.fillStyle=f.skin;c.beginPath();c.arc(0,-4,1.5,0,TAU);c.fill();c.fillStyle=f.hair;c.beginPath();c.arc(0,-4.5,1.5,Math.PI,0);c.fill();c.restore();
+  if(z*S>30){const nm=f.q.name;c.font='800 2.8px '+FONT;c.textAlign='center';const tw=c.measureText(nm).width+3,ly=y-11.2;c.fillStyle='rgba(42,27,18,.82)';c.beginPath();c.roundRect(x-tw/2,ly,tw,4.2,2.1);c.fill();c.fillStyle='#fff';c.fillText(nm,x,ly+3.1);}}
  // nachts: über den Hütten, deren Bewohner nicht unterwegs sind, wird geschlafen 💤
  if(nl>.5&&z*S>16){c.textAlign='center';for(const q of PLACED){if(q.nr>limit||OUT.has(q)||AWAKE.has(q)||!vis(q.p.x,q.p.y))continue;const k=(T*.35+q.nr*.137)%1;c.globalAlpha=Math.sin(k*Math.PI)*Math.min(1,(nl-.5)*4);c.font='7.5px '+FONT;c.fillText('💤',q.p.x+6+k*2.5,q.p.y-13-k*6);}c.globalAlpha=1;}
  // Steg, Fähre, Boote
@@ -665,12 +707,13 @@ function draw(){
    c.fillStyle=`rgba(255,220,120,${.9*nl})`;if(q.round)c.fillRect(q.p.x-1.5,q.p.y+1.8,3,5);else{c.fillRect(q.p.x-1.6,q.p.y+1.5,3.2,4.5);if(q.win)c.fillRect(q.p.x+2.6,q.p.y,2.4,2.4);}}
   const glow=(x,y,r,rgb,a)=>{const g=c.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,`rgba(${rgb},${a})`);g.addColorStop(1,`rgba(${rgb},0)`);c.fillStyle=g;c.beginPath();c.arc(x,y,r,0,TAU);c.fill();};
   for(const [lx,ly] of LANT)glow(lx,ly-8,14,'255,210,120',.7*nl);
+  if(z*S>4)for(const v of ISL)for(const [lx,ly] of v.lamps||[]){if(!vis(lx,ly))continue;glow(lx,ly-11.4,18,'255,205,110',.75*nl);c.fillStyle=`rgba(255,240,180,${nl})`;c.beginPath();c.arc(lx,ly-11.4,1.1,0,TAU);c.fill();}
   for(const [x,y] of PAL_WIN){c.fillStyle=`rgba(255,215,120,${.9*nl})`;c.beginPath();c.arc(x,y,2.2,0,TAU);c.fill();}
   glow(0,8,40,'255,200,110',.35*nl);
   if(PJ){const [x,y]=BB;if(BB_DONE){glow(x-25,y-8,16,'255,170,60',.6*nl);glow(x+25,y-8,16,'255,170,60',.6*nl);for(let k=0;k<7;k++){const t=k/6,lx=x-25+50*t,ly=y-8+(1-Math.pow(2*t-1,2))*3.5;c.fillStyle=`hsla(${k*50},100%,70%,${(.6+.4*Math.sin(T*3+k))*nl})`;c.beginPath();c.arc(lx,ly,1.1,0,TAU);c.fill();}glow(x,y-6,30,'255,190,100',.25*nl);}else glow(x-17,y-6,12,'255,230,150',.4*nl);}
   if(!REDUCED&&z*S>4)for(const [fx,fy,ph] of FIRE){const x=fx+Math.sin(T*.7+ph)*9,y=fy+Math.cos(T*.5+ph*1.3)*7;if(!vis(x,y))continue;const a=Math.max(0,Math.sin(T*2.2+ph))*nl;if(a<.05)continue;c.fillStyle=`rgba(200,255,120,${a*.9})`;c.beginPath();c.arc(x,y,1.1,0,TAU);c.fill();c.fillStyle=`rgba(200,255,120,${a*.25})`;c.beginPath();c.arc(x,y,4,0,TAU);c.fill();}
   if(K!=='rain'&&K!=='storm'){const [mx,my]=MOON;glow(mx,my,150,'220,230,255',.28*nl);for(let k=0;k<7;k++){const yy=my-40+k*12,ww=30-Math.abs(k-3)*6+Math.sin(T*2+k)*4;c.fillStyle=`rgba(240,245,255,${.35*nl})`;c.fillRect(mx-ww/2,yy,ww,2.2);}}
-  for(const v of ISL){if(v.tier===3)glow(v.x,v.y-24,60,'255,120,40',.6*nl*(.8+.2*Math.sin(T*3)));if(v.tier===1)glow(v.x,v.y-3,30,'255,150,60',.6*nl);if(v.tier===4)glow(v.x,v.y-2,40,'230,220,255',.5*nl);}
+  for(const v of ISL){if(v.tier===3)glow(v.x,v.y-24,60,'255,120,40',.6*nl*(.8+.2*Math.sin(T*3)));if(v.tier===1)glow(v.x,v.y-6,v.open?70:30,'255,150,60',.6*nl*(.85+.15*Math.sin(T*9)));if(v.tier===4)glow(v.x,v.y-2,40,'230,220,255',.5*nl);}
   if(visR(XM.x,XM.y,XM.r*2))glow(XM.x+18,XM.y-14,40,'255,220,140',.25*nl*(.7+.3*Math.sin(T*1.3)));
   c.globalCompositeOperation='source-over';}
  const nc={clear:3,fair:5,clouds:10,fog:7,rain:12,snow:10,storm:12}[K],ca=Math.max(0,Math.min(1,1.6-zr*.6))*(1-nl*.5);if(ca>.02)for(let i=0;i<nc;i++)cloud(c,CLOUDS[i],ca,K==='rain'||K==='storm'||K==='snow');
@@ -714,10 +757,12 @@ const up=e=>{if(!pts.has(e.pointerId))return;pts.delete(e.pointerId);if(pts.size
 cv.addEventListener('pointerup',up);cv.addEventListener('pointercancel',up);
 let hintT=0;cv.addEventListener('wheel',e=>{if(e.ctrlKey||e.metaKey){e.preventDefault();zoomAt(Math.exp(-e.deltaY*0.0022),e.offsetX,e.offsetY);}else{$('hint').classList.add('on');clearTimeout(hintT);hintT=setTimeout(()=>$('hint').classList.remove('on'),1100);}},{passive:false});
 // Knopfleiste: ohne Auswahl Alle Inseln + Zufall (wischen: Wachsen sehen), mit Auswahl Meine Hütte + Muschelpass (wischen: Alle Inseln)
-function setDock(on){const a=on?['mine','passbtn']:['allbtn','rnd'],b=on?['allbtn']:['growbtn'];$('pg1').replaceChildren(...a.map($));$('pg2').replaceChildren(...b.map($));$('swipe').scrollLeft=0;dotsUpd();}
+const CHIP={};for(const id of ['mine','passbtn','allbtn','rnd','growbtn'])CHIP[id]=$(id);
+function setDock(on){const a=on?['mine','passbtn']:['allbtn','rnd'],b=on?['allbtn']:['growbtn'];$('pg1').replaceChildren(...a.map(k=>CHIP[k]));$('pg2').replaceChildren(...b.map(k=>CHIP[k]));$('swipe').scrollLeft=0;dotsUpd();}
 function dotsUpd(){const k=$('swipe').scrollLeft>$('swipe').clientWidth/2?1:0;[...$('dots').children].forEach((d,i)=>d.classList.toggle('on',i===k));}
 $('swipe').addEventListener('scroll',dotsUpd,{passive:true});setDock(false);
 const unsel=()=>{sel=null;$('pop').hidden=true;$('s-pass').hidden=true;setDock(false);};$('allbtn').onclick=()=>{unsel();flyTo(fitAll(freeY()),1100);};
+$('zin').onclick=()=>zoomAt(1.6);$('zout').onclick=()=>zoomAt(1/1.6);
 $('growbtn').onclick=()=>{if(growing||!N)return;growing=true;sel=null;$('pop').hidden=true;flyTo(fitMain(freeY()),500);const t0=performance.now(),ms=Math.min(9000,2500+N*0.6);const st=n=>{const k=Math.min(1,(n-t0)/ms);limit=Math.max(1,Math.round(N*k*k));draw();if(k<1)requestAnimationFrame(st);else{limit=N;growing=false;draw();}};requestAnimationFrame(st);};
 
 // ---------- Auswahl + Inselpass ----------
@@ -747,7 +792,7 @@ const winHTML=p=>{const e=ERF(p).reverse().slice(0,4);return e.length?'<div clas
 function passCard(p){const ini=(p.name.replace(/^@/,'').match(/[a-z]/i)||['🐚'])[0].toUpperCase(),hd=p.wait?'AM STEG':p.isl.name.toUpperCase();
  return '<div class="mpcard"><div class="hd">MUSCHEL-TAL · '+esc(hd)+'<b>🪪 Muschelpass</b><button class="mpshi" data-n="'+esc(p.name)+'" aria-label="Pass in Story teilen" title="In Story teilen (TikTok · Instagram · WhatsApp)">'+SHARE_SVG+'</button><svg viewBox="0 0 400 18" preserveAspectRatio="none"><path d="M0 10 Q25 0 50 10 T100 10 T150 10 T200 10 T250 10 T300 10 T350 10 T400 10 V18 H0Z" fill="#fffaf0"/></svg></div><div class="bd">'
  +'<div class="who"><div class="av">'+esc(ini)+'</div><div class="nm">'+esc(p.name)+'</div></div>'
- +'<dl><div><dt>HÜTTE NR.</dt><dd class="big">'+fmt(p.nr)+'</dd></div><div><dt>EINGEZOGEN AM</dt><dd>'+esc(p.seit||'–')+'</dd></div>'
+ +'<dl><div><dt>EINWOHNER NR.</dt><dd class="big">'+fmt(p.nr)+'</dd></div><div><dt>EINGEZOGEN AM</dt><dd>'+esc(p.seit||'–')+'</dd></div>'
  +'<div class="full"><dt>INSEL</dt><dd>'+esc(wo(p))+'</dd></div>'
  +'<div class="full"><dt>BERUF</dt><dd>'+esc(p.beruf||'–')+'</dd></div>'
  +'<div class="full"><dt>ARBEITSORT</dt><dd>'+(p.ort?(ortPos(p.ort)?'<a class="ortl" href="#" data-ort="'+esc(p.ort)+'">📍 '+esc(p.ort)+'</a>':esc(p.ort)):'–')+'</dd></div>'
@@ -778,7 +823,7 @@ function passBild(p){const W2=1080,H2=1920,cv=document.createElement('canvas');c
  c.fillStyle='#ff8a2a';c.strokeStyle='#2a1b12';c.beginPath();c.arc(x0+100,y0+225,62,0,TAU);c.fill();c.lineWidth=6;c.stroke();c.fillStyle='#fff';c.textAlign='center';c.font='900 60px '+F;c.fillText((p.name.replace(/^@/,'').match(/[a-z]/i)||['?'])[0].toUpperCase(),x0+100,y0+246);
  c.textAlign='left';c.fillStyle='#2a1b12';let fs=58;c.font='900 '+fs+'px '+F;while(c.measureText(p.name).width>cw-230&&fs>30){fs-=2;c.font='900 '+fs+'px '+F;}c.fillText(p.name,x0+190,y0+245);
  const cell=(x,y,w,lab,val,big)=>{c.fillStyle='#fff';rr(c,x,y,w,104,22);c.fill();c.lineWidth=4;c.strokeStyle='#f0e2c8';c.stroke();c.fillStyle='#7a5a45';c.font='900 22px '+F;c.fillText(lab,x+22,y+36);c.fillStyle=big?'#ff6a1a':'#2a1b12';c.font='900 '+(big?46:34)+'px '+F;c.fillText(val,x+22,y+84);};
- cell(x0+36,y0+310,380,'HÜTTE NR.',fmt(p.nr),true);cell(x0+444,y0+310,380,'EINGEZOGEN AM',p.seit||'–');cell(x0+36,y0+430,380,'INSEL',wo(p));cell(x0+444,y0+430,380,'BERUF',p.beruf||'–');{const e=ERF(p);c.fillStyle='#fff';rr(c,x0+36,y0+550,788,104,22);c.fill();c.lineWidth=4;c.strokeStyle='#f0e2c8';c.stroke();c.fillStyle='#7a5a45';c.font='900 22px '+F;c.fillText('ERFOLGE',x0+58,y0+586);let bx=x0+52;for(const x of [...e].reverse().slice(0,3)){if(x==='GRUENDER'){c.fillStyle='#fff3b0';rr(c,bx,y0+596,250,48,24);c.fill();c.strokeStyle='#a86a00';c.lineWidth=3;c.stroke();try{c.drawImage(COINIMG,bx-4,y0+590,60,60);}catch(_){}c.fillStyle='#5a3a00';c.font='900 30px '+F;c.fillText('Gründer',bx+66,y0+631);bx+=270;}else if(x==='LUPE'){c.fillStyle='#c9f1fa';rr(c,bx,y0+596,200,48,24);c.fill();c.strokeStyle='#0a6f8a';c.lineWidth=3;c.stroke();try{c.drawImage(LUPEIMG,bx+6,y0+598,44,44);}catch(_){}c.fillStyle='#073f50';c.font='900 30px '+F;c.fillText('Lupe',bx+62,y0+631);bx+=220;}}if(!e.length){c.fillStyle='#2a1b12';c.font='900 32px '+F;c.fillText('–',x0+58,y0+632);}}
+ cell(x0+36,y0+310,380,'EINWOHNER NR.',fmt(p.nr),true);cell(x0+444,y0+310,380,'EINGEZOGEN AM',p.seit||'–');cell(x0+36,y0+430,380,'INSEL',wo(p));cell(x0+444,y0+430,380,'BERUF',p.beruf||'–');{const e=ERF(p);c.fillStyle='#fff';rr(c,x0+36,y0+550,788,104,22);c.fill();c.lineWidth=4;c.strokeStyle='#f0e2c8';c.stroke();c.fillStyle='#7a5a45';c.font='900 22px '+F;c.fillText('ERFOLGE',x0+58,y0+586);let bx=x0+52;for(const x of [...e].reverse().slice(0,3)){if(x==='GRUENDER'){c.fillStyle='#fff3b0';rr(c,bx,y0+596,250,48,24);c.fill();c.strokeStyle='#a86a00';c.lineWidth=3;c.stroke();try{c.drawImage(COINIMG,bx-4,y0+590,60,60);}catch(_){}c.fillStyle='#5a3a00';c.font='900 30px '+F;c.fillText('Gründer',bx+66,y0+631);bx+=270;}else if(x==='LUPE'){c.fillStyle='#c9f1fa';rr(c,bx,y0+596,200,48,24);c.fill();c.strokeStyle='#0a6f8a';c.lineWidth=3;c.stroke();try{c.drawImage(LUPEIMG,bx+6,y0+598,44,44);}catch(_){}c.fillStyle='#073f50';c.font='900 30px '+F;c.fillText('Lupe',bx+62,y0+631);bx+=220;}}if(!e.length){c.fillStyle='#2a1b12';c.font='900 32px '+F;c.fillText('–',x0+58,y0+632);}}
  {c.fillStyle='#fff';rr(c,x0+36,y0+670,788,90,22);c.fill();c.lineWidth=4;c.strokeStyle='#f0e2c8';c.stroke();c.fillStyle='#7a5a45';c.font='900 20px '+F;c.fillText('ARBEITSORT',x0+58,y0+700);c.fillStyle='#2a1b12';c.font='900 34px '+F;c.fillText(p.ort?'📍 '+p.ort:'–',x0+58,y0+744);
  }
  
@@ -823,10 +868,11 @@ function showS(){sg.innerHTML=hits.map((p,i)=>'<li><button type="button" data-i=
 q.addEventListener('input',()=>{hits=find(q.value);act=-1;showS();$('miss').hidden=!(q.value.trim().length>1&&!hits.length);$('miss').textContent='Noch nicht auf der Insel. Neue Einwohner kommen beim nächsten Update – folgst du schon '+ACC+'?';});
 q.addEventListener('keydown',e=>{if(e.key==='ArrowDown'){act=Math.min(hits.length-1,act+1);showS();e.preventDefault();}else if(e.key==='ArrowUp'){act=Math.max(0,act-1);showS();e.preventDefault();}else if(e.key==='Enter'){const p=hits[act<0?0:act];if(p)pick(p);}else if(e.key==='Escape')sg.hidden=true;});
 sg.addEventListener('click',e=>{const b=e.target.closest('button');if(b)pick(hits[+b.dataset.i]);});
-function pick(p){q.value=p.name;sg.hidden=true;$('miss').hidden=true;q.blur();window.scrollTo({top:0,behavior:'smooth'});select(p);}
+function pick(p){q.value=p.name;$('qx').hidden=false;sg.hidden=true;$('miss').hidden=true;q.blur();window.scrollTo({top:0,behavior:'smooth'});select(p);}
 $('rnd').onclick=()=>{if(N)pick(PEOPLE[Math.random()*N|0]);};
 $('mine').onclick=()=>{let p=sel;try{p=byName.get((localStorage.getItem('mt-me')||'').toLowerCase())||sel;}catch(e){}if(p)pick(p);};
-q.addEventListener('input',()=>{if(!q.value.trim()&&sel)unsel();});
+const qxUpd=()=>{$('qx').hidden=!q.value;};q.addEventListener('input',()=>{qxUpd();if(!q.value.trim()&&sel)unsel();});
+$('qx').onclick=()=>{q.value='';qxUpd();sg.hidden=true;$('miss').hidden=true;unsel();q.focus();};
 document.addEventListener('click',e=>{const b=e.target.closest('[data-n]');if(b){const p=byName.get(b.dataset.n.toLowerCase());if(p)pick(p);}if(!e.target.closest('.findbar'))sg.hidden=true;});
 
 // ---------- Texte ----------
@@ -849,6 +895,8 @@ $('faq').innerHTML=[
 $('foot').innerHTML='<a href="'+ACCURL+'" target="_blank" rel="noopener">'+esc(ACC)+'</a> auf TikTok<button class="lupebtn" id="lupe" aria-label="Lupe">'+LUPE_SVG+'</button>';
 function popup(html){$('pgb').innerHTML=html;$('pg').hidden=false;}
 $('pgx').onclick=()=>$('pg').hidden=true;$('pg').onclick=e=>{if(e.target===$('pg'))$('pg').hidden=true;};
+$('myerf').onclick=()=>{if(sel){zeigePass(sel);setTimeout(()=>{const w=$('mpcardbox').querySelector('.mpwinl');if(w)w.scrollIntoView({block:'center',behavior:'smooth'});},120);return;}
+ popup('<div class="big">🏅</div><h2>Deine Erfolge</h2><p>Folge <a href="'+ACCURL+'" target="_blank" rel="noopener">'+esc(ACC)+'</a> auf TikTok, um einzuziehen – dann such oben deinen Namen und sieh deine Erfolge.</p><a class="btn hib" href="'+ACCURL+'" target="_blank" rel="noopener">➕ '+esc(ACC)+' folgen</a>');};
 let toastT=0;function toast(t){const e=$('toast');e.textContent=t;e.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>e.hidden=true,4200);}
 // Versteckte Lupe: Erfolg „Lupe“ für den gerade ausgewählten TikTok-Namen (gespeichert in diesem Browser)
 $('lupe').onclick=()=>{const p=sel;
@@ -860,12 +908,12 @@ $('lupe').onclick=()=>{const p=sel;
  if(sel===p)$('ppass').innerHTML=passCard(p);};
 
 // ---------- Start: von oben auf alle Inseln, dann auf die Haupt-Insel einzoomen ----------
-if(matchMedia('(pointer:fine)').matches)$('hint').innerHTML='Zum Zoomen Strg + Mausrad';
+if(matchMedia('(pointer:fine)').matches)$('hint').innerHTML='Zum Zoomen Strg + Mausrad<br>oder + / − benutzen';
 liveText();loadWx();setInterval(liveText,15000);setInterval(loadWx,15*60e3);
 addEventListener('resize',()=>{resize();});resize();
 let me=null;try{me=byName.get((localStorage.getItem('mt-me')||'').toLowerCase());}catch(e){}
 Object.assign(cam,REDUCED?fitMain(freeY()):fitAll(freeY()));draw();
-if(me){q.value=me.name;setTimeout(()=>select(me),REDUCED?0:600);}
+if(me){q.value=me.name;$('qx').hidden=false;setTimeout(()=>select(me),REDUCED?0:600);}
 else if(!REDUCED)setTimeout(()=>flyTo(fitMain(freeY()),2600),700);
 </script>
 </body>
