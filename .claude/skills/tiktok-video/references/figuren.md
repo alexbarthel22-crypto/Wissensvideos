@@ -49,7 +49,7 @@ Erbe von **Onkel Heinz** (Testament: „… vermache ich meinem Neffen Peter mei
 
 ## 4. Inhalt Tag 1 (Kanon)
 
-Szenen (Kapitel-Marke): 1) „TAG 1 – ICH GRÜNDE EINE SEKTE“ (kein „WARTE!“ mehr – in der Aufnahme als `skip`-Zeile L1a enthalten, wird übersprungen) (farbige Wortkästen, Wort-Zoom, Peter links, goldene Visions-Umrisse von Tempel/Gärten/Pilgerstraße, Himmelslicht)
+Szenen (Kapitel-Marke): 1) **„WARTE!“** (gebrüllt, roter Kasten) + „TAG 1 – ICH GRÜNDE EINE SEKTE“ (finale Fassung mit WARTE; Variante ohne = L1a `"skip": true`) (farbige Wortkästen, Wort-Zoom, Peter links, goldene Visions-Umrisse von Tempel/Gärten/Pilgerstraße, Himmelslicht)
 → 2) **DAS GESETZ**: „Ab heute gilt ein heiliges Gesetz: Jeder neue Follower wird Anhänger und bringt einen Euro in die Kollekte!“ (Klingelbeutel mittig, echte 1-€-Münze fällt hinein, Kollekte 0 € → 1 €)
 → 3) **DER GRÜNDER**: „Ich bin Prophet Peter! Gründer! Erleuchteter! Und ab heute euer Anführer!“
 → 4) **DAS ERBE**: Testament, Stempel „GEERBT“, „Hier entsteht unser Heiligtum!“ (Baum + Stuhl im goldenen Heiligenschein, Schild „ZUKÜNFTIGES HEILIGTUM“)
@@ -70,5 +70,5 @@ Regeln für Zuschauer: Kommentare beginnen mit „Prophet Peter“; Folgen = Anh
 - **Sicherheitsbereiche:** oben 0–140 px frei, rechts x > 940 zwischen y 860–1600 (Buttons) frei, unten ab y 1560 frei. Untertitel rechts bis x 910. Vor dem Rendern Standbilder mit eingezeichneten Bereichen prüfen.
 - Szene 1 ohne Untertitel (`nocap`), Text steht groß im Bild ab Frame 0; Peters Name in Szene 2 ohne Untertitel (Namensschild).
 - Kapitel-Marken in Versalien, z. B. „DAS GESETZ“, „DAS GRUNDSTÜCK“, „TAG 1 · AUFRUF“ → in Folgen „TAG 2 · …“.
-- **Cover:** Himmelslicht, groß „TAG n“ + Hook-Satz, Peter segnend links, roter Stempel mit Zahl (z. B. „ANHÄNGER 0“), unten gelber Rahmen mit Aufruf; alles Wichtige im 3:4-Ausschnitt (y 240–1680). Vorlage: `videos/prophet-peter-tag-1/cover/gen_cover.py`.
+- **Cover:** roter Kasten „WARTE!“ oben, Himmelslicht, groß „TAG n“ + Hook-Satz, Peter segnend links, roter Stempel mit Zahl (z. B. „ANHÄNGER 0“), unten gelber Rahmen mit Aufruf; alles Wichtige im 3:4-Ausschnitt (y 240–1680). Vorlage: `videos/prophet-peter-tag-1/cover/gen_cover.py`.
 - **Beschreibung:** Hook + Stand + Frage, „Top-Kommentar entscheidet“, Hashtags `#fürdich #fyp #comedy #sekte #prophetpeter` (Marke `#prophetpeter` immer). Vorlage: `videos/prophet-peter-tag-1/BESCHREIBUNG.md`.
