@@ -3,13 +3,13 @@
     #root { position: absolute; inset: 0; }
     #w-cv { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
   </style>
-  <div id="root" data-composition-id="world" data-start="0" data-duration="14.840" data-width="1080" data-height="1920">
-    <canvas id="w-cv" class="clip" data-start="0" data-duration="14.840" data-track-index="0" width="1080" height="1920"></canvas>
+  <div id="root" data-composition-id="world" data-start="0" data-duration="14.970" data-width="1080" data-height="1920">
+    <canvas id="w-cv" class="clip" data-start="0" data-duration="14.970" data-track-index="0" width="1080" height="1920"></canvas>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 14.84, "s01": [0.0, 3.42], "s02": [3.42, 7.36], "s03": [7.36, 10.79], "s04": [10.79, 14.84], "L1": [0.0, 2.34], "L1.words": [["der", 0.0, 0.235], ["tag", 0.235, 0.47], ["geht", 0.47, 0.713], ["zu", 0.713, 0.939], ["ende", 0.939, 1.392], ["auf", 1.392, 1.627], ["muscheltal", 1.627, 2.34]], "L2": [3.62, 6.88], "L2.words": [["die", 3.62, 3.777], ["hauptinsel", 3.777, 4.254], ["ist", 4.254, 4.411], ["nahezu", 4.411, 4.865], ["komplett", 4.865, 5.19], ["fast", 5.32, 5.48], ["alle", 5.48, 5.778], ["hütten", 5.778, 6.086], ["sind", 6.086, 6.246], ["schon", 6.246, 6.411], ["reserviert", 6.411, 6.88]], "L3": [7.56, 10.31], "L3.words": [["wir", 7.56, 7.786], ["brauchen", 7.786, 8.256], ["mehr", 8.256, 8.49], ["platz", 8.49, 8.733], ["für", 8.733, 8.959], ["mehr", 8.959, 9.194], ["hütten", 9.194, 9.647], ["für", 9.647, 9.873], ["euch", 9.873, 10.108], ["", 10.108, 10.31]], "L4": [10.99, 12.64], "L4.words": [["alles", 10.99, 11.295], ["weitere", 11.295, 11.75], ["morgen", 12.28, 12.64]]};
+      const C = {"__dur": 14.97, "s01": [0.0, 3.42], "s02": [3.42, 7.74], "s03": [7.74, 11.52], "s04": [11.52, 14.97], "L1": [0.0, 2.34], "L1.words": [["der", 0.0, 0.235], ["tag", 0.235, 0.47], ["geht", 0.47, 0.713], ["zu", 0.713, 0.939], ["ende", 0.939, 1.392], ["auf", 1.392, 1.627], ["muscheltal", 1.627, 2.34]], "L2": [3.62, 7.26], "L2.words": [["die", 3.62, 3.796], ["hauptinsel", 3.796, 4.33], ["ist", 4.33, 4.506], ["nahezu", 4.506, 5.015], ["komplett", 5.015, 5.38], ["fast", 5.53, 5.707], ["alle", 5.707, 6.037], ["hütten", 6.037, 6.38], ["sind", 6.38, 6.557], ["schon", 6.557, 6.74], ["reserviert", 6.74, 7.26]], "L3": [7.94, 11.04], "L3.words": [["wir", 7.94, 8.195], ["brauchen", 8.195, 8.724], ["mehr", 8.724, 8.989], ["platz", 8.989, 9.262], ["für", 9.262, 9.517], ["mehr", 9.517, 9.782], ["hütten", 9.782, 10.292], ["für", 10.292, 10.548], ["euch", 10.548, 10.812], ["", 10.812, 11.04]], "L4": [11.72, 13.37], "L4.words": [["alles", 11.72, 12.025], ["weitere", 12.025, 12.48], ["morgen", 13.01, 13.37]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -117,7 +117,7 @@ function palace(c,T,label){
         c.strokeStyle = "rgba(90,60,40,.35)"; c.lineWidth = 3; for (let k = -8; k <= 8; k++) { c.beginPath(); c.moveTo(540 + k * 40, 1120); c.lineTo(540 + k * 240, H); c.stroke(); }
         for (let y = 1150, d = 24; y < H; y += d, d *= 1.32) { c.beginPath(); c.moveTo(-200, y); c.lineTo(W + 200, y); c.stroke(); }
         const gl = c.createRadialGradient(540, 860, 50, 540, 860, 620); gl.addColorStop(0, "rgba(255,200,140,.45)"); gl.addColorStop(1, "rgba(255,200,140,0)"); c.fillStyle = gl; c.fillRect(-100, 240, W + 200, 1240);
-        c.save(); c.translate(540, 900); c.scale(8.6, 8.6); palace(c, t, false); c.restore();
+        c.save(); c.translate(540, 900); c.scale(8.6, 8.6); palace(c, t, "Inter, sans-serif"); c.restore();
         for (const [x, y] of [[-21, -6], [-11, -16], [0, -20], [11, -16], [21, -6]]) { const px = 540 + x * 8.6, py = 900 + y * 8.6, f = .7 + .3 * Math.sin(t * 3 + x); const w = c.createRadialGradient(px, py, 2, px, py, 46); w.addColorStop(0, `rgba(255,210,120,${.75 * f})`); w.addColorStop(1, "rgba(255,210,120,0)"); c.fillStyle = w; c.fillRect(px - 46, py - 46, 92, 92); }
         for (const x of [130, 950]) { c.fillStyle = "#3a2a20"; c.fillRect(x - 6, 1060, 12, 230); const f = .8 + .2 * Math.sin(t * 5 + x); const l = c.createRadialGradient(x, 1050, 2, x, 1050, 90); l.addColorStop(0, `rgba(255,220,140,${f})`); l.addColorStop(1, "rgba(255,220,140,0)"); c.fillStyle = l; c.fillRect(x - 90, 960, 180, 180); c.fillStyle = "#fff0c0"; c.beginPath(); c.arc(x, 1050, 14, 0, TAU); c.fill(); }
         c.restore(); }
@@ -144,7 +144,6 @@ function palace(c,T,label){
         c.strokeStyle = "rgba(255,240,220,.9)"; c.lineWidth = 5; c.beginPath(); for (let x = -700; x <= W + 800; x += 20) { const y = 1188 + Math.sin(x * .012) * 14 + wv + Math.sin(x * .05 + t * 2) * 3; x < -690 ? c.moveTo(x, y) : c.lineTo(x, y); } c.stroke();
         const hg = c.createLinearGradient(0, 1210, 0, H); hg.addColorStop(0, "#5a7a4a"); hg.addColorStop(1, "#2a3e2a"); c.fillStyle = hg; c.beginPath(); c.moveTo(-700, 1230); c.quadraticCurveTo(540, 1200, W + 800, 1230); c.lineTo(W + 800, H + 600); c.lineTo(-700, H + 600); c.fill();
         for (const h of HUTS) hut(h.x, h.y, h.s, h.e, t, h.i);
-        for (const [x, hh, s] of [[-60, 520, 40], [1140, 480, -40]]) palmSil(x, H + 20, hh, s + Math.sin(t * .9 + x) * 10, "#1a1420");
         c.restore(); }
       function draw(t) {
         // Kopfdrehung: durchgehendes Panorama (Palast und Meer liegen nebeneinander), weich beschleunigt, leichtes Zurückweichen + Neigen in der Mitte

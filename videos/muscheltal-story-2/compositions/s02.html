@@ -51,19 +51,19 @@
     #s02-box { position: absolute; left: 140px; top: 300px; width: 800px; padding: 22px 30px 28px; border-radius: 34px; background: #fff; border: 6px solid #0a78c2;
       box-shadow: 0 12px 0 rgba(0,40,80,.3); font-family: "Inter", sans-serif; font-weight: 900; color: #0a78c2; }
     #s02-h { font-size: 42px; display: flex; justify-content: space-between; align-items: baseline; }
-    #s02-h b { color: #ff6a1a; }
+    #s02-h b { color: #d4480a; }
     #s02-bar { margin-top: 14px; height: 54px; border-radius: 27px; background: #dff3fb; overflow: hidden; border: 4px solid #0a78c2; }
     #s02-fill { height: 100%; width: 0%; border-radius: 27px; background: repeating-linear-gradient(-45deg, #ff8a2a 0 22px, #ff6a1a 22px 44px); }
   </style>
-  <div id="root" data-composition-id="s02" data-start="0" data-duration="3.940" data-width="1080" data-height="1920">
-    <div id="s02-stage" class="clip stage" data-start="0" data-duration="3.940" data-track-index="0">
+  <div id="root" data-composition-id="s02" data-start="0" data-duration="4.320" data-width="1080" data-height="1920">
+    <div id="s02-stage" class="clip stage" data-start="0" data-duration="4.320" data-track-index="0">
       <div id="s02-box"><div id="s02-h">HAUPTINSEL<b>FAST KOMPLETT</b></div><div id="s02-bar"><div id="s02-fill"></div></div></div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 3.94, "L2": [0.2, 3.46], "L2.words": [["die", 0.2, 0.357], ["hauptinsel", 0.357, 0.834], ["ist", 0.834, 0.991], ["nahezu", 0.991, 1.445], ["komplett", 1.445, 1.77], ["fast", 1.9, 2.06], ["alle", 2.06, 2.358], ["hütten", 2.358, 2.666], ["sind", 2.666, 2.826], ["schon", 2.826, 2.991], ["reserviert", 2.991, 3.46]]};
+      const C = {"__dur": 4.32, "L2": [0.2, 3.84], "L2.words": [["die", 0.2, 0.376], ["hauptinsel", 0.376, 0.91], ["ist", 0.91, 1.086], ["nahezu", 1.086, 1.595], ["komplett", 1.595, 1.96], ["fast", 2.11, 2.287], ["alle", 2.287, 2.617], ["hütten", 2.617, 2.96], ["sind", 2.96, 3.137], ["schon", 3.137, 3.32], ["reserviert", 3.32, 3.84]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];

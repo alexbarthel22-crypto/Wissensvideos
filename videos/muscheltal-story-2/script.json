@@ -43,7 +43,7 @@
      "id": "L2",
      "text": "Die Hauptinsel ist *y:nahezu *y:komplett. / Fast alle Hütten / sind schon *r:reserviert!",
      "style": "Style: a real young man, impressed and happy, sharing good news, natural not theatrical.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-     "speed": 1.1,
+     "speed": 0.98,
      "pause": 0.9
     }
    ],
@@ -63,7 +63,7 @@
      "id": "L3",
      "text": "Wir brauchen *c:mehr *c:Platz / für mehr Hütten / für *y:euch …",
      "style": "Style: a real young man, thoughtful, looking over to other islands with a mischievous smile, natural not theatrical.\nPace: relaxed.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-     "speed": 1.08,
+     "speed": 0.95,
      "pause": 0.3
     }
    ],
@@ -83,7 +83,7 @@
   {
    "id": "s04",
    "tag": "",
-   "hold": 2.2,
+   "hold": 1.6,
    "lines": [
     {
      "id": "L4",
@@ -113,6 +113,6 @@
  "ambience": {
   "src": "assets/music/atmo.wav",
   "volume": 1,
-  "note": "tools/make_ambience.py – Wellen, Brandung, Möwen (im Code erzeugt)"
+  "note": "Meeresrauschen: freesound_community ocean-waves-01 (ab Blick aufs Meer eingeblendet) + leise erzeugte Möwen"
  }
 }
