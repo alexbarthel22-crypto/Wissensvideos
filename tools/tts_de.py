@@ -685,6 +685,17 @@ def main():
     else:
         raw = synth_coqui(texts, args.voice_dir, args.coqui_python, scales, args.noise, args.noise_dp)
 
+    # "audio": eigene Aufnahme für eine Zeile (z. B. „KNIE NIEDER!“ statt „WARTE!“, gleiche Stimme/Regie) – Tempo wie die Zeile
+    for i, ln in enumerate([ln for sc in script["scenes"] for ln in sc["lines"]]):
+        if ln.get("audio"):
+            ov, osr = sf.read(project / ln["audio"], dtype="float32")
+            ov = ov.mean(1) if ov.ndim > 1 else ov
+            if abs(lines[i]["scale"] - 1) > 0.01:
+                with tempfile.TemporaryDirectory() as dd:
+                    sf.write(Path(dd) / "a.wav", ov, osr)
+                    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", Path(dd) / "a.wav", "-filter:a", f"atempo={1 / lines[i]['scale']:.4f}", Path(dd) / "b.wav"], check=True)
+                    ov, osr = sf.read(Path(dd) / "b.wav", dtype="float32")
+            raw[i] = (ov, osr)
     keep = [i for i, l in enumerate(lines) if not l["skip"]]  # "skip": true = Zeile bleibt in der Aufnahme, fliegt aber raus
     lines, raw = [lines[i] for i in keep], [raw[i] for i in keep]
     if lines:

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Eigene, lizenzfreie Hintergrundmusik. --style gospel (Standard) = „Sekten-Gospel“, --style epic = „Heiliger Trailer“ (112 BPM, Streicher, Blech, Chor, Pauken).
+"""Eigene, lizenzfreie Hintergrundmusik. --style gospel (Standard) = „Sekten-Gospel“, --style epic = „Heiliger Trailer“ (112 BPM, Streicher, Blech, Chor, Pauken), --style hymn = „Kirchenchoral“ (70 BPM, Orgel + Chor, ohne Schlagzeug).
 „Sekten-Gospel“: Kirchenorgel + Chorfläche + Bass + leichter Gospel-Groove (96 BPM),
 spärliche Glöckchen, Hall. Unter der Stimme automatisch abgesenkt (Ducking).
 
@@ -94,10 +94,34 @@ def epic(duration, rng):
     return 0.42 * nz(strings) + 0.4 * nz(brass) + 0.35 * nz(choir) + 0.6 * nz(perc) + 0.3 * nz(cym)
 
 
+def hymn(duration, rng):
+    """„Kirchenchoral“: 70 BPM, volle Orgel + Chor + Pedalbass, D-Dur-Choral (I–IV–V–vi–IV–I–V–I), Glocken, ohne Schlagzeug."""
+    beat = 60 / 70; step = 2 * beat
+    prog = [[146.83, 220.0, 293.66, 369.99], [146.83, 196.0, 246.94, 293.66], [110.0, 164.81, 220.0, 277.18], [123.47, 185.0, 246.94, 293.66],
+            [98.0, 196.0, 246.94, 293.66], [146.83, 220.0, 293.66, 369.99], [110.0, 220.0, 277.18, 329.63], [146.83, 220.0, 293.66, 369.99]]
+    pedal = [73.42, 98.0, 55.0, 61.74, 49.0, 73.42, 55.0, 73.42]
+    n = int(SR * (duration + 3))
+    org, ch, ped, bl = (np.zeros(n) for _ in range(4))
+    k = 0
+    while k * step < duration + 2:
+        t0 = k * step; c = prog[k % 8]
+        m = int(SR * step * 1.08); tt = np.arange(m) / SR
+        env = np.minimum(1, tt / 0.08) * np.clip((step * 1.08 - tt) / 0.12, 0, 1)
+        place(org, sum(organ(f, m, rng) for f in c) * env, t0)
+        place(ped, organ(pedal[k % 8], m, rng) * env, t0)
+        tc = np.arange(int(SR * (step + 0.8))) / SR
+        place(ch, sum(pad_voice(f * 2, tc, rng) for f in c[1:]) * np.minimum(1, tc / 0.35) * np.clip((step + 0.8 - tc) / 0.8, 0, 1), t0)
+        if k % 8 == 0:
+            place(bl, bell(587.33, 2.5), t0, 0.8); place(bl, bell(880.0, 2.2), t0 + beat, 0.5)
+        k += 1
+    nz = lambda x: x / (np.abs(x).max() + 1e-9)
+    return 0.55 * nz(org) + 0.45 * nz(ch) + 0.4 * nz(ped) + 0.2 * nz(bl)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("out"); ap.add_argument("duration", type=float)
-    ap.add_argument("--style", choices=["gospel", "epic"], default="gospel")
+    ap.add_argument("--style", choices=["gospel", "epic", "hymn"], default="gospel")
     ap.add_argument("--duck"); ap.add_argument("--groove-from", type=float, default=2.5, help="Groove setzt ab dieser Sekunde ein")
     a = ap.parse_args()
     rng = np.random.default_rng(7)
@@ -136,6 +160,8 @@ def main():
     y = 0.55 * norm(org) + 0.35 * norm(choir) + 0.45 * norm(bass) + 0.5 * norm(drums) + norm(bells) * 0.25
     if a.style == "epic":
         y = epic(a.duration, rng)
+    elif a.style == "hymn":
+        y = hymn(a.duration, rng)
     y = reverb(y, 2.2, 0.28)[:int(SR * a.duration)]
     y = np.convolve(y, np.ones(4) / 4, mode="same")  # dezent weicher
     t = np.arange(len(y)) / SR

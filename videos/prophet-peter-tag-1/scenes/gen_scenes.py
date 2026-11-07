@@ -75,7 +75,7 @@ BG + '''
       <div id="s01-heaven" class="abs noshift"></div>
       <div id="s01-glow" class="abs"></div><div id="s01-ring" class="abs"></div><div id="s01-sps" class="abs" style="left:0;top:0"></div>
       <div id="s01-flash" class="full noshift"></div>
-      <div id="s01-title" class="abs"><div class="k"><span id="s01-k1" class="s01-w s01-kn">WARTE!</span></div><div class="d"><span id="s01-w1" class="s01-w">TAG</span> <span id="s01-w2" class="s01-w">1</span></div>
+      <div id="s01-title" class="abs"><div class="k"><span id="s01-k1" class="s01-w s01-kn">KNIE NIEDER!</span></div><div class="d"><span id="s01-w1" class="s01-w">TAG</span> <span id="s01-w2" class="s01-w">1</span></div>
         <div class="h"><span id="s01-w3" class="s01-w">ICH</span> <span id="s01-w4" class="s01-w">GRÜNDE</span><br><span id="s01-w5" class="s01-w">EINE</span> <span id="s01-w6" class="s01-w">SEKTE</span></div></div>
       <div class="s01-bar noshift" style="top:0"></div><div class="s01-bar noshift" style="top:1800px"></div>
 ''' + FX,
@@ -97,10 +97,10 @@ BG + '''
       tl.fromTo(bg, { scale: 1.1, transformOrigin: "60% 55%" }, { scale: 1.0, duration: C.__dur, ease: "none" }, 0);
       // jedes gesprochene Wort wird groß (eigener Kasten springt nach vorn), danach zurück auf Normalgröße, leuchtend
       gsap.set(".s01-w", { filter: "brightness(0.85)" });
-      [["#s01-k1", "warte", "#ff3b55"], ["#s01-w1", "tag", "#ffd43b"], ["#s01-w2", "eins", "#ffd43b"], ["#s01-w3", "ich", "#ffd36e"], ["#s01-w4", "gründe", "#ffd36e"], ["#s01-w5", "eine", "#ffd36e"], ["#s01-w6", "sekte", "#ff4fb0"]].forEach(([sel, w, c], i) => {
-        const ORD = ["warte", "tag", "eins", "ich", "gründe", "eine", "sekte"], t = w === "warte" ? at("L1a", w) : at("L1", w), nx = i < 6 ? at("L1", ORD[i + 1]) : at("L1", "sekte") + 0.55;
+      [["#s01-k1", "knie", "#ff3b55"], ["#s01-w1", "tag", "#ffd43b"], ["#s01-w2", "eins", "#ffd43b"], ["#s01-w3", "ich", "#ffd36e"], ["#s01-w4", "gründe", "#ffd36e"], ["#s01-w5", "eine", "#ffd36e"], ["#s01-w6", "sekte", "#ff4fb0"]].forEach(([sel, w, c], i) => {
+        const ORD = ["knie", "tag", "eins", "ich", "gründe", "eine", "sekte"], t = w === "knie" ? at("L1a", w) : at("L1", w), nx = i < 6 ? at("L1", ORD[i + 1]) : at("L1", "sekte") + 0.55;
         tl.set(sel, { zIndex: 5 }, t - 0.04);
-        tl.to(sel, { scale: ["#s01-w4", "#s01-w6"].includes(sel) ? 1.12 : 1.3, filter: `brightness(1.25) drop-shadow(0 0 30px ${c})`, duration: 0.09, ease: "power2.out" }, t - 0.04);
+        tl.to(sel, { scale: ["#s01-w4", "#s01-w6", "#s01-k1"].includes(sel) ? 1.1 : 1.3, filter: `brightness(1.25) drop-shadow(0 0 30px ${c})`, duration: 0.09, ease: "power2.out" }, t - 0.04);
         tl.to(sel, { scale: 1.0, filter: `brightness(1.08) drop-shadow(0 0 14px ${c})`, duration: 0.22, ease: "power2.out" }, Math.max(t + 0.08, nx - 0.2));
         tl.set(sel, { zIndex: 1 }, Math.max(t + 0.3, nx));
       });
@@ -118,8 +118,8 @@ BG + '''
       talk(tl, P, line("L1a")[0], line("L1")[1]);
       tl.fromTo(P.spark, { scale: 0.5, svgOrigin: "-187 -850" }, { scale: 1.6, duration: 0.2, yoyo: true, repeat: 5 }, 0.1);
       tl.to(P.armL, { rotation: -150, duration: 0.25, yoyo: true, repeat: 3, ease: "sine.inOut" }, 0.4);
-      // „WARTE!“: Bild bebt
-      tl.to(["#s01-title", bg], { x: 14, duration: 0.04, repeat: 9, yoyo: true }, at("L1a", "warte") + 0.1);
+      // „KNIE NIEDER!“: Bild bebt
+      tl.to(["#s01-title", bg], { x: 14, duration: 0.04, repeat: 9, yoyo: true }, at("L1a", "knie") + 0.1);
       const se = at("L1", "sekte");
       tl.fromTo("#s01-flash", { opacity: 0.7 }, { opacity: 0, duration: 0.4, ease: "power2.out", immediateRender: false }, se);
       tl.to("#s01-title", { x: 12, duration: 0.04, repeat: 5, yoyo: true }, se);''' + OUT)

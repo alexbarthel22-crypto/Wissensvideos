@@ -29,9 +29,9 @@ Name im Video: „Ich bin Prophet Peter!“ (nie „Gestatten …“). Persönli
   Regie in `script.json` → `style` (euphorischer Fernsehprediger, schnell, flüssig, weich verbunden, keine Kunstpausen, „Sekte“ korrekt „SEK-te“, erstes Wort gebrüllt).
   `python3 tools/tts_de.py videos/<slug> --backend gemini --voice Puck --speed 1.08 --max-gap 0.22`
 - Danach **immer** `python3 tools/check_cuts.py videos/<slug>` (jede Zeile wird abgeschrieben; „!!“ = falscher Schnitt → `"cut_shift": {"L13": 1}` = Grenze vor L13 eine Pause später, `-1` = früher).
-  `"skip": true` = Zeile bleibt in der Aufnahme, wird aber nicht verwendet. `"join_prev": true` = Zeile gehört zur vorigen Aufnahme, wird intern geteilt (z. B. „WARTE!!!“ | „Tag eins! …“ mit eigenem Tempo).
+  `"audio": "pfad.wav"` = eigene Aufnahme für eine Zeile (Tempo wie die Zeile). `"skip": true` = Zeile bleibt in der Aufnahme, wird aber nicht verwendet. `"join_prev": true` = Zeile gehört zur vorigen Aufnahme, wird intern geteilt (z. B. „WARTE!!!“ | „Tag eins! …“ mit eigenem Tempo).
 - Lautstärke Stimme: `"voice_lufs": -13` (Kompressor + Limiter, Stimme klar vor der Musik; Musik unter Sprache ~ -10 dB). Tempo: Anfang sehr schnell (Szene 1 speed 1.8, Gesetz 1.25, Vorstellung 1.35, Erbe 1.35), Ende flott (1.22), Standzeit am Schluss ≈ 1,2 s. Gesamt ≤ 60 s.
-- Musik: eigene Komposition „Heiliger Trailer“ (`tools/make_music.py <out> <Gesamtdauer> --style epic --duck assets/voice/narration.wav`: Streicher-Achtel, Blech, Chor, Pauken, 112 BPM), sfx `music-epic` Lautstärke **0.4**, nach jeder Neuvertonung neu erzeugen. Abgelehnt: reiner Klangteppich (make_pad), „Sekten-Gospel“ (--style gospel).
+- Musik: eigene Komposition „Kirchenchoral“ (`tools/make_music.py <out> <Gesamtdauer> --style hymn --duck assets/voice/narration.wav`: Orgel + Chor + Pedalbass, 70 BPM, ohne Schlagzeug), sfx `music-hymn` Lautstärke 0.4, nach jeder Neuvertonung neu erzeugen. Weitere Stile: `epic` (Heiliger Trailer), `gospel`.
 - Abgelehnt: Chirp-3-HD-Stimmen (zu wenig Emotion), Fenrir (abgehackt), harte Pausenschnitte, Glocke am Anfang.
 - Sounds (`tools/make_church.py videos/<slug>/assets/sfx --choir <chor.mp3>`): Frame 0 = Engelschor `choir-intro` (hochgeladene Datei `assets/sfx/src/heavenly-choir-322708.mp3`, 1. Bogen), Peters Vorstellung = `choir-intro2` (2. Bogen), „Aber ich sehe mehr“ = Engelschor; außerdem `shimmer`, `bell-hit`, `coin`, `goat`, `crack` (Ast), `record-scratch` + `sad-trombone` (0 Anhänger), `pop`/`click`/`notification`.
 
@@ -49,7 +49,7 @@ Erbe von **Onkel Heinz** (Testament: „… vermache ich meinem Neffen Peter mei
 
 ## 4. Inhalt Tag 1 (Kanon)
 
-Szenen (Kapitel-Marke): 1) **„WARTE!“** (gebrüllt, roter Kasten) + „TAG 1 – ICH GRÜNDE EINE SEKTE“ (finale Fassung mit WARTE; Variante ohne = L1a `"skip": true`) (farbige Wortkästen, Wort-Zoom, Peter links, goldene Visions-Umrisse von Tempel/Gärten/Pilgerstraße, Himmelslicht)
+Szenen (Kapitel-Marke): 1) **„KNIE NIEDER!“** (gebrüllt wie zuvor „WARTE!“: eigene Aufnahme `assets/voice/knie-nieder.wav` per `"audio"` an Zeile L1a, Text `KNIE_NIEDER!!!|WARTE!!!` damit die Gesamtaufnahme gleich bleibt; roter Kasten) + „TAG 1 – ICH GRÜNDE EINE SEKTE“ (finale Fassung mit WARTE; Variante ohne = L1a `"skip": true`) (farbige Wortkästen, Wort-Zoom, Peter links, goldene Visions-Umrisse von Tempel/Gärten/Pilgerstraße, Himmelslicht)
 → 2) **DAS GESETZ**: „Ab heute gilt ein heiliges Gesetz: Jeder neue Follower wird Anhänger und bringt einen Euro in die Kollekte!“ (Klingelbeutel mittig, echte 1-€-Münze fällt hinein, Kollekte 0 € → 1 €)
 → 3) **DER GRÜNDER**: „Ich bin Prophet Peter! Gründer! Erleuchteter! Und ab heute euer Anführer!“
 → 4) **DAS ERBE**: Testament, Stempel „GEERBT“, „Hier entsteht unser Heiligtum!“ (Baum + Stuhl im goldenen Heiligenschein, Schild „ZUKÜNFTIGES HEILIGTUM“)
@@ -70,5 +70,5 @@ Regeln für Zuschauer: Kommentare beginnen mit „Prophet Peter“; Folgen = Anh
 - **Sicherheitsbereiche:** oben 0–140 px frei, rechts x > 940 zwischen y 860–1600 (Buttons) frei, unten ab y 1560 frei. Untertitel rechts bis x 910. Vor dem Rendern Standbilder mit eingezeichneten Bereichen prüfen.
 - Szene 1 ohne Untertitel (`nocap`), Text steht groß im Bild ab Frame 0; Peters Name in Szene 2 ohne Untertitel (Namensschild).
 - Kapitel-Marken in Versalien, z. B. „DAS GESETZ“, „DAS GRUNDSTÜCK“, „TAG 1 · AUFRUF“ → in Folgen „TAG 2 · …“.
-- **Cover:** roter Kasten „WARTE!“ oben, Himmelslicht, groß „TAG n“ + Hook-Satz, Peter segnend links, roter Stempel mit Zahl (z. B. „ANHÄNGER 0“), unten gelber Rahmen mit Aufruf; alles Wichtige im 3:4-Ausschnitt (y 240–1680). Vorlage: `videos/prophet-peter-tag-1/cover/gen_cover.py`.
+- **Cover:** roter Kasten „KNIE NIEDER!“ oben, Himmelslicht, groß „TAG n“ + Hook-Satz, Peter segnend links, roter Stempel mit Zahl (z. B. „ANHÄNGER 0“), unten gelber Rahmen mit Aufruf; alles Wichtige im 3:4-Ausschnitt (y 240–1680). Vorlage: `videos/prophet-peter-tag-1/cover/gen_cover.py`.
 - **Beschreibung:** Hook + Stand + Frage, „Top-Kommentar entscheidet“, Hashtags `#fürdich #fyp #comedy #sekte #prophetpeter` (Marke `#prophetpeter` immer). Vorlage: `videos/prophet-peter-tag-1/BESCHREIBUNG.md`.

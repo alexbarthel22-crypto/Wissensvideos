@@ -2,7 +2,7 @@
 
 ## Beschreibung (zum Kopieren)
 
-WARTE! ✋ Tag 1: Ich gründe eine Sekte 🙏 Ziel: Weltreligion. Aktueller Stand: 0 Anhänger, 1 Stuhl, 1 Ziege 🐐 Jeder neue Follower wird Anhänger – wer ist der Erste? Was kaufen wir morgen von der ersten Kollekte? Top-Kommentar entscheidet 👇
+KNIE NIEDER! 🙇 Tag 1: Ich gründe eine Sekte 🙏 Ziel: Weltreligion. Aktueller Stand: 0 Anhänger, 1 Stuhl, 1 Ziege 🐐 Jeder neue Follower wird Anhänger – wer ist der Erste? Was kaufen wir morgen von der ersten Kollekte? Top-Kommentar entscheidet 👇
 
 #fürdich #fyp #comedy #sekte #prophetpeter
 
@@ -12,12 +12,12 @@ Prophet Peter liest nur Kommentare, die mit „Prophet Peter“ beginnen 🙏 Wi
 
 ## Alternativen (falls du testen willst)
 
-- **Kurz:** WARTE! Tag 1: 0 Anhänger. Ziel: Weltreligion. 🙏 Wer wird mein Erster? #fürdich #fyp #comedy #sekte #prophetpeter
+- **Kurz:** KNIE NIEDER! Tag 1: 0 Anhänger. Ziel: Weltreligion. 🙏 Wer wird mein Erster? #fürdich #fyp #comedy #sekte #prophetpeter
 - **Frage zuerst:** Was soll ich morgen von der ersten Kollekte kaufen? 🤔 Top-Kommentar entscheidet! Tag 1 als Prophet Peter 🙏 #fürdich #fyp #comedy #sekte #prophetpeter
 
 ## Warum genau so (Reichweite für das erste Video)
 
-- **Die ersten ~70 Zeichen** („WARTE! ✋ Tag 1: Ich gründe eine Sekte 🙏 Ziel: Weltreligion.“ – gleicher Stopp-Ruf wie im Video und auf dem Cover) sind in der Vorschau sichtbar und werden von der TikTok-Suche gelesen. Der Kontrast „Weltreligion“ ↔ „0 Anhänger, 1 Stuhl, 1 Ziege“ macht neugierig.
+- **Die ersten ~70 Zeichen** („KNIE NIEDER! 🙇 Tag 1: Ich gründe eine Sekte 🙏 Ziel: Weltreligion.“ – gleicher Stopp-Ruf wie im Video und auf dem Cover) sind in der Vorschau sichtbar und werden von der TikTok-Suche gelesen. Der Kontrast „Weltreligion“ ↔ „0 Anhänger, 1 Stuhl, 1 Ziege“ macht neugierig.
 - **Drei Kommentar-Köder:** „wer ist der Erste?“, Name der Sekte (im Video), Kauf-Entscheidung „Top-Kommentar entscheidet“. Kommentare und Antworten sind das stärkste Signal, damit ein neues Konto ausgespielt wird – und sie liefern den Stoff für Tag 2.
 - **Folgen-Anreiz:** „Jeder neue Follower wird Anhänger“ verwandelt das Folgen in einen Teil des Spiels.
 - **5 Hashtags:**

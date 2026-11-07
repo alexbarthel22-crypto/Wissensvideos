@@ -12,9 +12,10 @@
    "lines": [
     {
      "id": "L1a",
-     "text": "WARTE!!!",
+     "text": "KNIE_NIEDER!!!|WARTE!!!",
      "nocap": true,
-     "speed": 1.25
+     "speed": 1.25,
+     "audio": "assets/voice/knie-nieder.wav"
     },
     {
      "id": "L1",
@@ -46,7 +47,7 @@
      "volume": 0.55
     },
     {
-     "name": "music-epic",
+     "name": "music-hymn",
      "at": "s01+0.0",
      "volume": 0.4
     }
@@ -384,6 +385,6 @@
  "cut_shift": {
   "L13": 1
  },
- "music": "music-epic.wav: eigene Komposition (tools/make_music.py <out> <Gesamtdauer> --style epic --duck assets/voice/narration.wav), Lautstärke 0.45; nach jeder Neuvertonung neu erzeugen",
+ "music": "music-hymn.wav: eigene Komposition (tools/make_music.py <out> <Gesamtdauer> --style hymn --duck assets/voice/narration.wav), Lautstärke 0.4; nach jeder Neuvertonung neu erzeugen",
  "voice_lufs": -13
 }
