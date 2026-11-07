@@ -1,0 +1,31 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    #s02-box { position: absolute; left: 140px; top: 300px; width: 800px; padding: 22px 30px 28px; border-radius: 34px; background: #fff; border: 6px solid #0a78c2;
+      box-shadow: 0 12px 0 rgba(0,40,80,.3); font-family: "Inter", sans-serif; font-weight: 900; color: #0a78c2; }
+    #s02-h { font-size: 42px; display: flex; justify-content: space-between; align-items: baseline; }
+    #s02-h b { color: #ff6a1a; }
+    #s02-bar { margin-top: 14px; height: 54px; border-radius: 27px; background: #dff3fb; overflow: hidden; border: 4px solid #0a78c2; }
+    #s02-fill { height: 100%; width: 0%; border-radius: 27px; background: repeating-linear-gradient(-45deg, #ff8a2a 0 22px, #ff6a1a 22px 44px); }
+  </style>
+  <div id="root" data-composition-id="s02" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s02-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s02-box"><div id="s02-h">HAUPTINSEL<b>FAST KOMPLETT</b></div><div id="s02-bar"><div id="s02-fill"></div></div></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      /*__COMMON_JS__*/
+      wrapBt("#s02-stage");
+      const tl = gsap.timeline({ paused: true });
+      const l0 = line("L2")[0], rs = at("L2", "reserviert");
+      tl.fromTo("#s02-box", { opacity: 0, y: -100 }, { opacity: 1, y: 0, duration: .4, ease: "back.out(2)" }, l0 - .1);
+      tl.fromTo("#s02-fill", { width: "0%" }, { width: "98%", duration: 1.6, ease: "power2.out" }, l0 + .1);
+      tl.fromTo("#s02-box", { scale: 1 }, { scale: 1.06, duration: .14, yoyo: true, repeat: 1 }, rs);
+      tl.fromTo("#s02-box", { x: 0 }, { x: 10, duration: .05, yoyo: true, repeat: 5, ease: "none" }, rs + .3);
+      tl.to("#s02-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
+      window.__timelines["s02"] = tl;
+    })();
+  </script>
+</template>

@@ -1,0 +1,119 @@
+<template>
+  <style>
+        #root { position: absolute; inset: 0; }
+    .stage { position: absolute; inset: 0; overflow: hidden; }
+    .abs { position: absolute; }
+    svg { overflow: visible; }
+    /* Zähler-Box wie in der Referenz: Rahmen in Akzentfarbe, Label in Mono-Versalien, große Zahl */
+    .cbox { position: absolute; left: 290px; width: 500px; top: 268px; height: 126px; border: 3px solid #ff4fb0;
+      border-radius: 32px; background: rgba(13,16,38,.88); text-align: center; box-shadow: 0 0 28px rgba(255,79,176,.35); }
+    .cbox .lab { margin-top: 16px; font-family: "Space Mono", monospace; font-weight: 700; font-size: 28px;
+      letter-spacing: .16em; color: #dfe2f5; }
+    .cbox .num { margin-top: 2px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 56px; color: #fff;
+      letter-spacing: .01em; }
+    .cbox.y { border-color: #ffd43b; box-shadow: 0 0 28px rgba(255,212,59,.3); }
+    .cbox.r { border-color: #ff3b55; box-shadow: 0 0 28px rgba(255,59,85,.35); }
+    .cbox.b { border-color: #4da3ff; box-shadow: 0 0 28px rgba(77,163,255,.3); }
+    .cbox.g { border-color: #39e27a; box-shadow: 0 0 28px rgba(57,226,122,.3); }
+    .mono { font-family: "Space Mono", monospace; font-weight: 700; letter-spacing: .12em; }
+    .heavy { font-family: "Inter", sans-serif; font-weight: 900; }
+    /* Muschel-Tal: Sticker-Look wie auf muscheltal.de. Sicherheitsbereich TikTok: x 40–930, y 200–1120 (Untertitel ab 1150). */
+    .ink { stroke: #2a1b12; }
+    .stk { background: #fff; border: 6px solid #2a1b12; border-radius: 28px; box-shadow: 10px 10px 0 #2a1b12; }
+    .ttl { font-family: "Inter", sans-serif; font-weight: 900; color: #fff; text-align: center; line-height: 1;
+      -webkit-text-stroke: 10px #2a1b12; paint-order: stroke fill; letter-spacing: -.01em; }
+    .kick { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 24px; border-radius: 14px;
+      background: #2a1b12; color: #ffd23f; font-family: "Space Mono", monospace; font-weight: 700; font-size: 34px; letter-spacing: .14em; }
+    /* Text auf farbigem Balken (auffälliger, wie TikTok-Textboxen) */
+    .bt { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; max-width: 740px; text-align: center;
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 66px; line-height: 1.3; color: #fff; }
+    .bt .bx { padding: .06em .4em .14em; border-radius: .6em; -webkit-box-decoration-break: clone; box-decoration-break: clone; box-shadow: 0 10px 0 rgba(0,0,0,.28), 0 16px 30px rgba(0,0,0,.25); }
+    .bt .bx { background: #23285a; } .bt.or .bx { background: #ff5a3c; } .bt.pk .bx { background: #fe2c55; } .bt.tq .bx { background: #18b8c0; } .bt.vi .bx { background: #23285a; } .bt.bl .bx { background: #23285a; }
+    .bt.ye .bx { background: #ffc93c; } .bt.ye { color: #1a0f08; } .bt.gr .bx { background: #00b86b; } .bt.dk .bx { background: #23285a; } .bt.dk { color: #ffc93c; }
+    .bt.sm { font-size: 44px; }
+    .stamp { position: absolute; padding: 6px 30px; border: 10px solid; border-radius: 40px; background: rgba(255,255,255,.94);
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 84px; }
+    /* TikTok-Kommentare (echte Optik) */
+    .tk { position: absolute; left: 60px; width: 800px; background: #fff; border-radius: 30px; padding: 20px 26px 6px; box-shadow: 0 14px 0 rgba(0,0,0,.22); font-family: "Inter", sans-serif; }
+    .tk-h { position: relative; text-align: center; font-weight: 800; font-size: 30px; color: #161823; margin-bottom: 10px; }
+    .tk-h b { position: absolute; right: 4px; top: -4px; font-size: 38px; font-weight: 400; color: #161823; }
+    .tk-c { position: relative; display: flex; gap: 20px; padding: 12px 96px 16px 0; }
+    .tk-a { width: 84px; height: 84px; border-radius: 50%; flex: none; display: grid; place-items: center; color: #fff; font-weight: 900; font-size: 38px; }
+    .tk-u { font-size: 28px; color: #8a8b91; font-weight: 600; }
+    .tk-t { font-size: 34px; color: #161823; font-weight: 500; line-height: 1.22; margin-top: 2px; }
+    .tk-m { font-size: 28px; color: #8a8b91; font-weight: 600; margin-top: 8px; } .tk-m span { margin-left: 30px; }
+    .tk-l { position: absolute; right: 4px; top: 16px; width: 86px; text-align: center; font-size: 28px; color: #8a8b91; font-weight: 600; }
+    .tk-l .hz { position: relative; width: 48px; height: 48px; margin: 0 auto 2px; }
+    .tk-l .hz svg { position: absolute; inset: 0; width: 48px; height: 48px; }
+    .tk-fh { position: absolute; left: 19px; top: 0; width: 50px; height: 50px; opacity: 0; }
+    .tk-pin { display: inline-block; font-size: 28px; font-weight: 800; color: #fe2c55; background: #ffe3ea; border-radius: 6px; padding: 2px 8px; margin-left: 10px; vertical-align: 3px; }
+
+    #s03-t { top: 300px; font-size: 54px; white-space: nowrap; max-width: none; }
+    #s03-q { position: absolute; left: 0; right: 0; margin: 0 auto; top: 560px; width: fit-content; padding: 6px 26px 10px; border-radius: 999px; background: rgba(20,10,40,.6);
+      border: 4px solid #fff; font-family: "Inter", sans-serif; font-weight: 900; font-size: 46px; color: #fff; }
+    #s03-ar { position: absolute; left: 510px; top: 650px; width: 60px; height: 70px; }
+  </style>
+  <div id="root" data-composition-id="s03" data-start="0" data-duration="3.430" data-width="1080" data-height="1920">
+    <div id="s03-stage" class="clip stage" data-start="0" data-duration="3.430" data-track-index="0">
+      <div id="s03-t" class="bt or">WIR BRAUCHEN MEHR PLATZ!</div>
+      <div id="s03-q">🔒 ???</div>
+      <svg id="s03-ar" viewBox="0 0 60 70"><path d="M20 0 H40 V38 H58 L30 68 L2 38 H20Z" fill="#fff"/></svg>
+    </div>
+  </div>
+  <script>
+    (() => {
+      
+      const C = {"__dur": 3.43, "L3": [0.2, 2.95], "L3.words": [["wir", 0.2, 0.426], ["brauchen", 0.426, 0.896], ["mehr", 0.896, 1.13], ["platz", 1.13, 1.373], ["für", 1.373, 1.599], ["mehr", 1.599, 1.834], ["hütten", 1.834, 2.287], ["für", 2.287, 2.513], ["euch", 2.513, 2.748], ["", 2.748, 2.95]]};
+      const line = (id) => C[id];
+      const at = (id, word, which = 0) => {
+        const ws = C[id + ".words"];
+        if (typeof word === "number") return ws[word][1 + which];
+        const key = String(word).toLowerCase().replace(/[^\p{L}\p{N}_]/gu, "");
+        const hit = ws.find((w) => w[0].startsWith(key));
+        if (!hit) throw new Error("cue not found: " + id + " " + word);
+        return hit[1 + which];
+      };
+      // Zähler: schreibt Zahlen im deutschen Format (4.100.000.000) als Funktion der Timeline-Zeit
+      const fmt = (n) => Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      const count = (tl, sel, from, to, t, d, pre = "", post = "", ease = "power2.out") => {
+        const el = document.querySelector(sel);
+        const o = { v: from };
+        el.textContent = pre + fmt(from) + post;
+        tl.to(o, { v: to, duration: d, ease, onUpdate: () => { el.textContent = pre + fmt(o.v) + post; } }, t);
+      };
+      // deterministischer Zufall
+      const rng = (seed) => () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let x = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+        x = (x + Math.imul(x ^ (x >>> 7), 61 | x)) ^ x; return ((x ^ (x >>> 14)) >>> 0) / 4294967296; };
+
+            // TikTok-Kommentar: Herz füllt sich rot, Zahl zählt hoch, Herzen schnellen nach oben
+      const HEART = '<svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-10-9.3C.4 8.4 2 4.5 5.6 4c2-.3 3.6.6 4.4 2 .8-1.4 2.4-2.3 4.4-2 3.6.5 5.2 4.4 3.6 7.7C19.5 16.4 12 21 12 21z" fill="none" stroke="#8a8b91" stroke-width="2"/></svg>';
+      const HEART_R = '<svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-10-9.3C.4 8.4 2 4.5 5.6 4c2-.3 3.6.6 4.4 2 .8-1.4 2.4-2.3 4.4-2 3.6.5 5.2 4.4 3.6 7.7C19.5 16.4 12 21 12 21z" fill="#fe2c55"/></svg>';
+      const fmtK = (n) => n >= 10000 ? (n / 1000).toFixed(1).replace(".", ",") + " Tsd." : Math.round(n).toLocaleString("de-DE");
+      function tkLike(tl, id, t, from, to, dur = 1.4, seed = 1) {
+        const box = document.querySelector(id + " .tk-l"), num = box.querySelector("i"), hz = box.querySelector(".hz");
+        hz.innerHTML = HEART + '<span class="red" style="position:absolute;inset:0;opacity:0">' + HEART_R + "</span>";
+        const R = rng(seed);
+        for (let k = 0; k < 7; k++) { const f = document.createElement("div"); f.className = "tk-fh"; f.innerHTML = HEART_R; box.appendChild(f);
+          const dx = (R() - .5) * 160, up = 200 + R() * 220, t0 = t + k * .11;
+          tl.fromTo(f, { opacity: 0, x: 0, y: 0, scale: .5, rotation: 0 }, { opacity: 1, x: dx * .4, y: -60, scale: 1.1, rotation: (R() - .5) * 40, duration: .15, ease: "power2.out" }, t0);
+          tl.to(f, { x: dx, y: -up, scale: .7, opacity: 0, duration: .7, ease: "power1.in" }, t0 + .15); }
+        tl.fromTo(hz.querySelector(".red"), { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .25, ease: "back.out(3)" }, t);
+        tl.fromTo(hz, { scale: 1 }, { scale: 1.3, duration: .12, yoyo: true, repeat: 1, ease: "power2.out" }, t);
+        const o = { v: from }; num.textContent = fmtK(from);
+        tl.to(o, { v: to, duration: dur, ease: "power2.out", onUpdate: () => { num.textContent = fmtK(o.v); } }, t);
+      }
+      // Textbox füllt immer genau den Text: jede Zeile bekommt ihren eigenen Balken
+      function wrapBt(scope) { document.querySelectorAll(scope + " .bt").forEach((el) => { if (!el.querySelector(":scope > .bx")) el.innerHTML = '<span class="bx">' + el.innerHTML + "</span>"; }); }
+
+      wrapBt("#s03-stage");
+      const tl = gsap.timeline({ paused: true });
+      const l0 = line("L3")[0], pl = at("L3", "Platz");
+      tl.fromTo("#s03-t", { opacity: 0, scale: 2, rotation: -10 }, { opacity: 1, scale: 1, rotation: -2, duration: .35, ease: "back.out(2.4)" }, pl - .1);
+      tl.to("#s03-t", { rotation: 2, duration: .25, yoyo: true, repeat: 3, ease: "sine.inOut" }, pl + .3);
+      tl.fromTo(["#s03-q", "#s03-ar"], { opacity: 0, y: -30 }, { opacity: 1, y: 0, duration: .35, ease: "back.out(2)", stagger: .1 }, l0 + 1.2);
+      tl.to("#s03-ar", { y: 14, duration: .25, yoyo: true, repeat: 5, ease: "sine.inOut" }, l0 + 1.6);
+      tl.to("#s03-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
+      window.__timelines["s03"] = tl;
+    })();
+  </script>
+</template>

@@ -1,0 +1,27 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    #s04-t { top: 300px; font-size: 54px; white-space: nowrap; max-width: none; }
+    #s04-s { top: 420px; font-size: 44px; }
+  </style>
+  <div id="root" data-composition-id="s04" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s04-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s04-t" class="bt or">ALLES WEITERE MORGEN 😎</div>
+      <div id="s04-s" class="bt bl">@muscheltal</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      /*__COMMON_JS__*/
+      wrapBt("#s04-stage");
+      const tl = gsap.timeline({ paused: true });
+      const mo = at("L4", "Morgen");
+      tl.fromTo("#s04-t", { opacity: 0, scale: .3, rotation: 10 }, { opacity: 1, scale: 1, rotation: -2, duration: .45, ease: "back.out(2.6)" }, mo - .1);
+      tl.to("#s04-t", { rotation: 2, duration: .3, yoyo: true, repeat: 5, ease: "sine.inOut" }, mo + .45);
+      tl.fromTo("#s04-s", { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: .3, ease: "power3.out" }, mo + .3);
+      
+      window.__timelines["s04"] = tl;
+    })();
+  </script>
+</template>

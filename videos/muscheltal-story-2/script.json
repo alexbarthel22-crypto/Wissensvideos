@@ -1,0 +1,118 @@
+{
+ "title": "Muschel-Tal Story – Hauptinsel nahezu komplett",
+ "voice": "Gemini TTS (gemini-3.1-flash-tts-preview, Stimme Achird), natürlich und emotional, --speed 1.12",
+ "notes": "TikTok-Story, Ich-Perspektive: vor dem Muschelpalast umdrehen, Sonnenuntergang; Hauptinsel voller Reserviert-Schilder (keine Hütten), Schwenk zu den Nachbarinseln, alles Weitere morgen.",
+ "lead_in": 0.0,
+ "bg": "#0a5a92",
+ "captions": {
+  "pop": false,
+  "first_at_zero": true,
+  "left": 60,
+  "right": 190,
+  "size": 118,
+  "css": "@font-face { font-family: 'Lilita One'; src: url('assets/fonts/LilitaOne-Regular.woff2') format('woff2'); font-weight: 400; }\n    .inner { font-family: 'Lilita One', sans-serif; font-weight: 400; letter-spacing: .01em; }\n    .w { display: inline-block; white-space: nowrap; color: #fff; -webkit-text-stroke: 16px #1d2147; paint-order: stroke fill; }\n    .inner.hk { font-size: 104px; line-height: 1.12; } .inner.hk .w { margin: 0 .12em; }",
+  "single": true,
+  "top": 1250,
+  "first_full": true
+ },
+ "scenes": [
+  {
+   "id": "s01",
+   "tag": "",
+   "lines": [
+    {
+     "id": "L1",
+     "text": "Der Tag geht zu Ende / auf *c:Muschel-Tal.",
+     "style": "Style: a real young man, calm and warm, a bit dreamy, enjoying the evening, natural not theatrical.\nPace: calm.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+     "speed": 1.05
+    }
+   ],
+   "sfx": [
+    {
+     "name": "whoosh",
+     "at": "L1:Muschel+0.7",
+     "volume": 0.4
+    }
+   ]
+  },
+  {
+   "id": "s02",
+   "tag": "",
+   "lines": [
+    {
+     "id": "L2",
+     "text": "Die Hauptinsel ist *y:nahezu *y:komplett. / Fast alle Hütten / sind schon *r:reserviert!",
+     "style": "Style: a real young man, impressed and happy, sharing good news, natural not theatrical.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+     "speed": 1.1,
+     "pause": 0.9
+    }
+   ],
+   "sfx": [
+    {
+     "name": "pop",
+     "at": "L2:reserviert",
+     "volume": 0.45
+    }
+   ]
+  },
+  {
+   "id": "s03",
+   "tag": "",
+   "lines": [
+    {
+     "id": "L3",
+     "text": "Wir brauchen *c:mehr *c:Platz / für mehr Hütten / für *y:euch …",
+     "style": "Style: a real young man, thoughtful, looking over to other islands with a mischievous smile, natural not theatrical.\nPace: relaxed.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+     "speed": 1.08,
+     "pause": 0.3
+    }
+   ],
+   "sfx": [
+    {
+     "name": "whoosh-short",
+     "at": "L3:Wir",
+     "volume": 0.35
+    },
+    {
+     "name": "ping",
+     "at": "L3:Platz",
+     "volume": 0.4
+    }
+   ]
+  },
+  {
+   "id": "s04",
+   "tag": "",
+   "hold": 2.2,
+   "lines": [
+    {
+     "id": "L4",
+     "text": "Alles Weitere? *c:Morgen.",
+     "style": "Style: a real young man, teasing with a wink, relaxed and confident, natural not theatrical.\nPace: calm.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+     "speed": 1.05,
+     "pause": 0.3
+    }
+   ],
+   "sfx": [
+    {
+     "name": "click-soft",
+     "at": "L4:Morgen",
+     "volume": 0.4
+    }
+   ]
+  }
+ ],
+ "style": "Style: a real, natural-sounding young man telling his friends something he is genuinely excited about. Conversational, warm, honest emotion in the voice, not like an announcer or an advertisement. Emphasize the important words naturally.\nPace: brisk but natural.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+ "loudness": -11,
+ "pitch": 0,
+ "music": {
+  "src": "assets/music/suedsee.wav",
+  "volume": 1,
+  "note": "tools/make_music_tropical.py, im Code erzeugt (lizenzfrei), unter der Stimme automatisch leiser"
+ },
+ "ambience": {
+  "src": "assets/music/atmo.wav",
+  "volume": 1,
+  "note": "tools/make_ambience.py – Wellen, Brandung, Möwen (im Code erzeugt)"
+ }
+}

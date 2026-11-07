@@ -1,0 +1,31 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    #s03-t { top: 300px; font-size: 54px; white-space: nowrap; max-width: none; }
+    #s03-q { position: absolute; left: 0; right: 0; margin: 0 auto; top: 560px; width: fit-content; padding: 6px 26px 10px; border-radius: 999px; background: rgba(20,10,40,.6);
+      border: 4px solid #fff; font-family: "Inter", sans-serif; font-weight: 900; font-size: 46px; color: #fff; }
+    #s03-ar { position: absolute; left: 510px; top: 650px; width: 60px; height: 70px; }
+  </style>
+  <div id="root" data-composition-id="s03" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s03-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s03-t" class="bt or">WIR BRAUCHEN MEHR PLATZ!</div>
+      <div id="s03-q">🔒 ???</div>
+      <svg id="s03-ar" viewBox="0 0 60 70"><path d="M20 0 H40 V38 H58 L30 68 L2 38 H20Z" fill="#fff"/></svg>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      /*__COMMON_JS__*/
+      wrapBt("#s03-stage");
+      const tl = gsap.timeline({ paused: true });
+      const l0 = line("L3")[0], pl = at("L3", "Platz");
+      tl.fromTo("#s03-t", { opacity: 0, scale: 2, rotation: -10 }, { opacity: 1, scale: 1, rotation: -2, duration: .35, ease: "back.out(2.4)" }, pl - .1);
+      tl.to("#s03-t", { rotation: 2, duration: .25, yoyo: true, repeat: 3, ease: "sine.inOut" }, pl + .3);
+      tl.fromTo(["#s03-q", "#s03-ar"], { opacity: 0, y: -30 }, { opacity: 1, y: 0, duration: .35, ease: "back.out(2)", stagger: .1 }, l0 + 1.2);
+      tl.to("#s03-ar", { y: 14, duration: .25, yoyo: true, repeat: 5, ease: "sine.inOut" }, l0 + 1.6);
+      tl.to("#s03-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
+      window.__timelines["s03"] = tl;
+    })();
+  </script>
+</template>
