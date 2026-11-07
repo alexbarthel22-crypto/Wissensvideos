@@ -1,29 +1,27 @@
-# Muschel-Tal – Tag 1: Die Gründung · Beschreibung (v3)
+# Muschel-Tal – Tag 1 · Beschreibung (v4)
 
-**Cover:** `renders/cover.jpg` – „ICH VERSCHENKE HÄUSER! auf meiner Insel“, GRATIS-Stempel, 0 Einwohner, 0 Muscheln, Hütte Nr. 1 ist frei.
+**Cover:** `renders/cover.jpg` – „HIER STEHT BALD DEIN HAUS“, Pin auf Platz Nr. 1, Badge „0 Einwohner“, Button „+ Folgen = einziehen“.
 
 ## Hauptversion (zum Posten)
-Ich verschenke Häuser 🏠 Wer will eins? Schreib „ich“ 👇
-#muscheltal #fürdich #fyp #gratis #insel
+Platz Nr. 1 ist noch frei 👀 Wer zieht als Erstes ein? 🏝️
+#muscheltal #fürdich #fyp #insel #südsee
 
-## Alternative A – Knappheit
-Nur 500 Häuser auf der Hauptinsel 🏝️ Nr. 1 ist noch frei 👀
-#muscheltal #fürdich #fyp #gratis #insel
+## Alternative A – Neugier
+Tag 1: 0 Einwohner. Das ändert sich jetzt 🐚 Schreib deinen Namen 👇
+#muscheltal #fürdich #fyp #insel #südsee
 
-## Alternative B – Neugier
-Ich verschenke Häuser. Wirklich. Einfach folgen 🐚
-#muscheltal #fürdich #fyp #gratis #insel
+## Alternative B – Direkt
+Folgen = einziehen. Dein Haus wartet schon 🏠
+#muscheltal #fürdich #fyp #insel #südsee
 
 ## Angepinnter Kommentar (vom Account selbst)
-Die ersten Häuser werden morgen vergeben 🏠 Schreib „ich“, dann merke ich mir deinen Namen 👇
+Wer will Platz Nr. 1? 🏠 Schreib deinen Namen, ich baue morgen die ersten Häuser 👇
 
 ## Warum so
-- Sehr kurz: der ganze Text ist ohne Aufklappen sichtbar.
-- Greift den neuen Hook „Ich verschenke Häuser“ auf – Video, Cover und Text sagen dasselbe.
-- „Wer will eins? Schreib ‚ich‘“ = leichtester möglicher Kommentar → viele frühe Kommentare = mehr Reichweite.
-- #gratis vorne bei den Themen-Hashtags, weil „verschenken/gratis“ jetzt der Kern ist.
+- Greift den Hook „Hier steht bald dein Haus“ auf – Video, Cover und Text sagen dasselbe.
+- „Platz Nr. 1 ist noch frei“ erzeugt Knappheit; „Wer zieht als Erstes ein?“ lädt zum Kommentieren ein.
+- Sehr kurz, damit alles ohne Aufklappen sichtbar ist.
 
 ## Tipps
 - Posten werktags 17–20 Uhr oder Sonntagvormittag.
-- In der ersten Stunde auf jedes „ich“ antworten („Haus reserviert ✅“).
-- Die schönsten Kommentare in Tag 2 als Einwohner zeigen.
+- In der ersten Stunde auf Kommentare antworten („Haus reserviert ✅“).

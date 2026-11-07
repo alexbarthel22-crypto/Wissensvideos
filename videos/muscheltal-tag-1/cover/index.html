@@ -3,40 +3,39 @@
 <style>
 @font-face { font-family: "Lilita One"; src: url("LilitaOne-Regular.woff2") format("woff2"); }
 * { box-sizing: border-box; margin: 0; }
-body { width: 1080px; height: 1920px; overflow: hidden; background: #04203a; font-family: "Inter", system-ui, sans-serif; }
-#bg { position: absolute; left: 205px; top: 420px; width: 670px; height: 1191px; background: url("bg.jpg") center / 100% 100%;
-  -webkit-mask: radial-gradient(ellipse 50% 29% at 50% 49%, #000 70%, transparent 100%); }
-#spot { position: absolute; inset: 0; background: radial-gradient(ellipse 55% 30% at 50% 52%, rgba(20,170,200,.55), rgba(4,32,58,0) 70%); }
-#rays { position: absolute; left: -260px; top: 360px; width: 1600px; height: 1600px; border-radius: 50%;
-  background: repeating-conic-gradient(from 4deg, rgba(255,229,0,.14) 0deg 7deg, rgba(255,229,0,0) 7deg 18deg);
-  -webkit-mask: radial-gradient(circle, #000 0%, #000 25%, transparent 62%); }
-.pill { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; border-radius: 40px; font-weight: 900; }
-#ep { top: 262px; padding: 6px 20px 9px; font-size: 26px; letter-spacing: .14em; background: #1a0f08; color: #fff; box-shadow: 0 0 0 4px #ffe500; }
-#tag { top: 340px; padding: 8px 30px 12px; font-size: 46px; letter-spacing: .14em; background: #ffe500; color: #1a0f08; box-shadow: 0 0 0 5px #1a0f08; transform: rotate(-2deg); }
-#gratis { position: absolute; left: 0; right: 0; top: 420px; text-align: center; font-family: "Lilita One", sans-serif; font-size: 190px; line-height: 1; color: #ffe500;
-  -webkit-text-stroke: 14px #1a0f08; paint-order: stroke fill; text-shadow: 0 12px 0 #ff2e7e; transform: rotate(-4deg); }
-#sub { top: 630px; z-index: 2; padding: 10px 30px 14px; font-size: 52px; background: #1a0f08; color: #fff; box-shadow: 0 0 0 5px #ffe500; transform: rotate(1.5deg); }
-#sub b { color: #ffe500; }
-.stat { position: absolute; top: 1330px; width: 330px; padding: 14px 0 18px; border-radius: 36px; text-align: center; color: #fff; box-shadow: 0 0 0 6px #1a0f08, 0 12px 0 rgba(0,0,0,.45); }
-.stat b { display: block; font-family: "Lilita One", sans-serif; font-size: 110px; line-height: 1; }
-.stat small { font-weight: 900; font-size: 34px; letter-spacing: .08em; }
-#s1 { left: 180px; background: #ff2e7e; transform: rotate(-4deg); } #s2 { left: 570px; background: #0098ff; transform: rotate(3deg); }
-#free { top: 1560px; padding: 10px 30px 14px; font-size: 44px; background: #00b86b; color: #fff; box-shadow: 0 0 0 5px #1a0f08; transform: rotate(-1.5deg); }
-.sp { position: absolute; }
-#stamp { position: absolute; left: 690px; top: 770px; padding: 6px 26px 10px; border: 9px solid #ff2e7e; border-radius: 36px; background: rgba(255,255,255,.95);
-  color: #ff2e7e; font-family: "Lilita One", sans-serif; font-size: 70px; transform: rotate(14deg); box-shadow: 0 10px 0 rgba(0,0,0,.35); }
+body { width: 1080px; height: 1920px; overflow: hidden; position: relative; font-family: "Inter", system-ui, sans-serif;
+  background: linear-gradient(180deg, #0a8fd0 0%, #0a5fa8 55%, #062f63 100%); }
+#img { position: absolute; left: 0; top: 0; width: 1080px; height: 1180px; background: url("bg2.jpg") center top / 1080px 1920px no-repeat; }
+#img::after { content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 40% at 50% 38%, rgba(255,255,255,0), rgba(4,40,80,.35)); }
+#wave { position: absolute; left: 0; top: 1040px; width: 1080px; height: 200px; }
+#glow { position: absolute; left: 290px; top: 300px; width: 500px; height: 500px; border-radius: 50%; background: radial-gradient(closest-side, rgba(255,236,150,.6), rgba(255,236,150,0)); }
+.chip { position: absolute; display: flex; align-items: center; gap: 14px; font-weight: 900; color: #fff; }
+#brand { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 296px; padding: 10px 14px 10px 28px; border-radius: 999px;
+  background: rgba(6,47,99,.82); border: 4px solid #fff; font-size: 40px; letter-spacing: .04em; box-shadow: 0 10px 30px rgba(0,0,0,.3); }
+#brand span { background: #ff6a1a; border-radius: 999px; padding: 4px 18px 6px; font-size: 32px; }
+#zero { left: 760px; top: 430px; width: 220px; height: 220px; border-radius: 50%; flex-direction: column; justify-content: center; gap: 0;
+  background: linear-gradient(160deg, #ffb347, #ff5e1a); border: 7px solid #fff; transform: rotate(10deg); box-shadow: 0 14px 0 rgba(120,40,0,.35); }
+#zero b { font-family: "Lilita One"; font-weight: 400; font-size: 110px; line-height: .9; }
+#zero i { font-style: normal; font-size: 24px; letter-spacing: .02em; margin-top: 4px; }
+#h1 { position: absolute; left: 0; right: 0; top: 1190px; text-align: center; font-family: "Lilita One"; font-size: 104px; line-height: 1; color: #fff;
+  text-shadow: 0 8px 0 rgba(3,30,60,.55); letter-spacing: .01em; }
+#h2 { position: absolute; left: 0; right: 0; top: 1300px; text-align: center; font-family: "Lilita One"; font-size: 200px; line-height: 1; color: #ffb02e;
+  -webkit-text-stroke: 22px #fff; paint-order: stroke fill; text-shadow: 0 16px 0 #ff3d7f, 0 26px 40px rgba(0,0,0,.4); transform: rotate(-3deg); }
+#h2 em { font-style: normal; color: #ff6a1a; }
+#cta { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 1580px; padding: 14px 40px 18px; border-radius: 999px; background: #fe2c55; font-size: 48px;
+  box-shadow: 0 10px 0 rgba(100,0,20,.4); }
+#cta small { font-size: 48px; opacity: .95; font-weight: 800; }
 </style></head><body>
-<div id="spot"></div><div id="rays"></div><div id="bg"></div>
-<div id="ep" class="pill">TAG 1 · DIE GRÜNDUNG</div>
-<div id="tag" class="pill">ICH VERSCHENKE</div>
-<div id="gratis">HÄUSER!</div>
-<div id="sub" class="pill">auf meiner <b>Insel</b></div>
-<div class="stat" id="s1"><b>0</b><small>EINWOHNER</small></div>
-<div class="stat" id="s2"><b>0</b><small>MUSCHELN</small></div>
-<div id="free" class="pill">HÜTTE NR. 1 IST FREI</div>
-<div id="stamp">GRATIS</div>
-<svg class="sp" style="left:170px;top:470px;width:70px" viewBox="-10 -10 20 20"><path d="M0 -10 L2 -2 L10 0 L2 2 L0 10 L-2 2 L-10 0 L-2 -2Z" fill="#ffe500"/></svg>
-<svg class="sp" style="left:850px;top:380px;width:56px" viewBox="-10 -10 20 20"><path d="M0 -10 L2 -2 L10 0 L2 2 L0 10 L-2 2 L-10 0 L-2 -2Z" fill="#fff"/></svg>
-<svg class="sp" style="left:860px;top:1180px;width:50px" viewBox="-10 -10 20 20"><path d="M0 -10 L2 -2 L10 0 L2 2 L0 10 L-2 2 L-10 0 L-2 -2Z" fill="#ffe500"/></svg>
-<svg class="sp" style="left:160px;top:1150px;width:44px" viewBox="-10 -10 20 20"><path d="M0 -10 L2 -2 L10 0 L2 2 L0 10 L-2 2 L-10 0 L-2 -2Z" fill="#fff"/></svg>
+<div id="img"></div>
+<div id="glow"></div>
+<svg id="wave" viewBox="0 0 1080 200" preserveAspectRatio="none">
+  <path d="M0 90 Q135 40 270 90 T540 90 T810 90 T1080 90 V200 H0Z" fill="#0a8fd0"/>
+  <path d="M0 90 Q135 40 270 90 T540 90 T810 90 T1080 90" fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round"/>
+  <path d="M0 125 Q135 80 270 125 T540 125 T810 125 T1080 125" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="6"/>
+</svg>
+<div id="brand" class="chip">🐚 MUSCHEL-TAL <span>TAG 1</span></div>
+<div id="zero" class="chip"><b>0</b><i>EINWOHNER</i></div>
+<div id="h1">HIER STEHT BALD</div>
+<div id="h2">DEIN <em>HAUS</em></div>
+<div id="cta" class="chip">+ Folgen <small>= einziehen 🏝️</small></div>
 </body></html>
