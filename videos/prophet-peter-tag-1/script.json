@@ -49,7 +49,7 @@
     {
      "name": "music-epic",
      "at": "s01+0.0",
-     "volume": 0.45
+     "volume": 0.4
     }
    ]
   },
@@ -385,5 +385,6 @@
  "cut_shift": {
   "L13": 1
  },
- "music": "music-epic.wav: eigene Komposition (tools/make_music.py <out> <Gesamtdauer> --style epic --duck assets/voice/narration.wav), Lautstärke 0.45; nach jeder Neuvertonung neu erzeugen"
+ "music": "music-epic.wav: eigene Komposition (tools/make_music.py <out> <Gesamtdauer> --style epic --duck assets/voice/narration.wav), Lautstärke 0.45; nach jeder Neuvertonung neu erzeugen",
+ "voice_lufs": -13
 }

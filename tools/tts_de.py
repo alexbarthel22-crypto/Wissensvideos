@@ -718,8 +718,10 @@ def main():
     audio = audio / max(1e-6, np.max(np.abs(audio))) * 0.89  # ~ -1 dBFS Spitze
     raw_path = out_dir / "narration_raw.wav"
     sf.write(raw_path, audio, SR)
-    # Lautheit für Social Media: -16 LUFS, True Peak -1.5 dB
-    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", raw_path, "-af", "loudnorm=I=-16:TP=-1.5:LRA=11",
+    # Lautheit für Social Media: Standard -16 LUFS (script.json "voice_lufs", z. B. -13 = Stimme lauter), True Peak -1.5 dB
+    lufs = script.get("voice_lufs", -16)
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", raw_path, "-af", (f"acompressor=threshold=-20dB:ratio=3:attack=5:release=90:makeup=4,alimiter=limit=0.85:level=false,loudnorm=I={lufs}:TP=-1.5:LRA=7"
+                                                              if lufs > -16 else f"loudnorm=I={lufs}:TP=-1.5:LRA=11"),
                     "-ar", str(SR), out_dir / "narration.wav"], check=True)
     raw_path.unlink()
     for l in lines:

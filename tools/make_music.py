@@ -17,6 +17,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 from make_pad import SR, bell, pad_voice, reverb  # noqa: E402
 
 BPM = 96
+DUCK = 0.32  # Musik unter Sprache auf ~ -10 dB (Stimme klar im Vordergrund)
 BEAT = 60 / BPM
 # D-Dur, Gospel-Kadenz: D – G/D – Bm – A (je 1 Takt = 4 Schläge)
 PROG = [[146.83, 220.0, 293.66, 369.99], [146.83, 196.0, 246.94, 293.66], [123.47, 185.0, 246.94, 293.66], [110.0, 164.81, 220.0, 277.18]]
@@ -145,7 +146,7 @@ def main():
         e = np.array([np.sqrt((v[i:i + hop] ** 2).mean()) for i in range(0, len(v), hop)])
         g = np.ones(len(e)); cur = 1.0
         for i, x in enumerate(e > 0.02):
-            tgt = 0.5 if x else 1.0
+            tgt = DUCK if x else 1.0
             cur += (tgt - cur) * (0.35 if tgt < cur else 0.06); g[i] = cur
         y *= np.interp(t, np.arange(len(g)) * 0.02, g)
     fi, fo = int(SR * 0.4), int(SR * 2.0)
