@@ -33,7 +33,14 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - Karten-Knöpfe: ohne Auswahl „Alle Inseln“ + „Zufall“ (wischen: „Wachsen sehen“), mit Auswahl „Meine Hütte“ + „Muschelpass“ (wischen: „Alle Inseln“).
 - Fahrräder/E-Roller, die hoch/runter fahren, sind von hinten/vorn zu sehen.
 
+## Gepostete Videos (Hauptaccount)
+- **Video 1 (gepostet): „Ich habe euch eine Insel gekauft“** – `videos/muscheltal-tag-1/variante-insel-gekauft/video.mp4` (Stand Commit 69ffe74).
+  Inhalt: Insel gekauft, jeder bekommt ein eigenes Haus · „Sie heißt Muschel-Tal, mitten in der Südsee“ · Folgen = einziehen, Hütte mit Namen · 1 Einwohner = 5 Muscheln, Kontostand 0 · früher folgen = „Hauptinsel: Muschel-Tal“, 500 Plätze · ist sie voll, öffnen neue Inseln („Wann genau? Bald“) · geheime Insel am Kartenrand · ihr entscheidet in den Kommentaren · „Hütte Nr. 1 ist noch frei“.
+  **Offene Frage am Ende:** „Was kaufen wir morgen vom ersten Geld? Die zwei Top-Kommentare entscheiden!“ → muss in Video 2 aufgelöst werden.
+- Die Fassung „Hier steht bald dein Haus“ in `renders/muscheltal-tag-1.mp4` wurde NICHT gepostet.
+
 ## Bekannte Abweichungen (älterer Content, schon veröffentlicht)
+- Video 1 nennt die gekaufte Insel „Muschel-Tal“ und „Hauptinsel: Muschel-Tal“ – heute ist Muschel-Tal die Region, die Insel heißt Hauptinsel (Schreibweise „Hauptinsel“/„Haupt-Insel“ wird im Homepage-Chat festgelegt).
 - Video Tag 1 (Szene 5) nennt die Insel „Hauptinsel: Muschel-Tal“ – heute heißt sie „Haupt-Insel“, Muschel-Tal ist die Region.
 - Story 2 sagt „fast alle Hütten reserviert“ und zeigt Reserviert-Schilder (Hütten noch nicht gebaut) – Homepage zeigt inzwischen 500 gebaute Hütten (500/500).
 - Story 3 (Website-Aufnahme) zeigte „0 / 500 Einwohner“ und „ab 500 Followern“ – heute 500/500 und „ab 501“.
