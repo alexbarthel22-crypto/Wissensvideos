@@ -128,8 +128,9 @@ def caption_groups(timings, windows):
         for g in sorted(by):
             ws = by[g]
             groups.append({"words": ws, "start": round(ws[0]["start"] - 0.06, 3), "end": round(ws[-1]["end"] + 0.25, 3)})
-    if windows == "single":  # ein Wort pro Einblendung (TikTok-Stil), bleibt bis zum nächsten Wort
-        groups = [{"words": [w], "start": round(w["start"] - 0.04, 3), "end": round(w["end"] + 0.35, 3)} for g in groups for w in g["words"]]
+    if windows in ("single", "single_full"):  # ein Wort pro Einblendung (TikTok-Stil); single_full: erster Satz bleibt ganz stehen
+        keep = groups[:1] if windows == "single_full" else []
+        groups = keep + [{"words": [w], "start": round(w["start"] - 0.04, 3), "end": round(w["end"] + 0.35, 3)} for g in groups[len(keep):] for w in g["words"]]
     for a, b in zip(groups, groups[1:]):
         a["end"] = min(a["end"], b["start"])
     groups[0]["start"] = max(groups[0]["start"], 0.15)
@@ -140,7 +141,7 @@ def build_captions(project, timings, windows, total, big=False, opt=None):
     """opt (script.json "captions"): pop (Wort-Pop), left/right/top/size (TikTok-Sicherheitsbereich), first_at_zero (erster Satz ab Frame 0)."""
     opt = opt or {}
     big = big or opt.get("pop", False)
-    groups = caption_groups(timings, "single" if opt.get("single") else windows)
+    groups = caption_groups(timings, ("single_full" if opt.get("first_full") else "single") if opt.get("single") else windows)
     if opt.get("first_at_zero"):
         groups[0]["start"] = 0.0
     groups[-1]["end"] = round(total - 0.05, 3)  # letzte Zeile (Frage an die Zuschauer) bleibt stehen
@@ -160,6 +161,11 @@ def build_captions(project, timings, windows, total, big=False, opt=None):
             glow = ("0 3px 0 rgba(0,0,0,.35)" if bars else f"0 0 26px {COLORS[col]}aa, 0 5px 0 rgba(0,0,0,.55)") if col else ("0 3px 0 rgba(0,0,0,.35)" if bars else "0 5px 0 rgba(0,0,0,.55)")
             if opt.get("single"):
                 glow = "0 8px 0 rgba(0,0,0,.35)"
+            if gi == 0 and opt.get("first_full"):  # Einstieg: ganzer Satz steht, gesprochenes Wort leuchtet auf
+                nxt = g["words"][wi + 1]["start"] if wi + 1 < len(g["words"]) else w["end"] + 0.25
+                js.append(f'tl.fromTo("#{wid}", {{ color: "#ffffff", scale: 1 }}, {{ color: "#ffc93c", scale: 1.16, duration: 0.07, ease: "power2.out", immediateRender: false }}, {max(0, w["start"] - 0.03):.3f});')
+                js.append(f'tl.to("#{wid}", {{ color: "#ffffff", scale: 1, duration: 0.1, ease: "power1.out" }}, {nxt - 0.03:.3f});')
+                continue
             if gi == 0 and opt.get("hook_shadow"):
                 glow = opt["hook_shadow"]
             js.append(f'tl.to("#{wid}", {{ color: "{target}", textShadow: "{glow}", duration: 0.08, ease: "power1.out" }}, {w["start"] - 0.02:.3f});')
@@ -170,7 +176,7 @@ def build_captions(project, timings, windows, total, big=False, opt=None):
                     js.append(f'tl.fromTo("#{wid}", {{ scale: {opt.get("pop_scale", 1.16)}, y: -8, rotation: {(-4, 3, -2, 4)[wi % 4]} }}, {{ scale: 1, y: 0, rotation: 0, duration: 0.28, ease: "back.out(3)", immediateRender: false }}, {w["start"] - 0.02:.3f});')
         dur = round(g["end"] - g["start"], 3)
         rows.append(f'    <div id="cg{gi}" class="clip grp" data-start="{g["start"]:.3f}" data-duration="{dur}" data-track-index="{gi % 2}">'
-                    f'<div id="cgi{gi}" class="inner{" " + opt["first_class"] if gi == 0 and opt.get("first_class") else ""}"{" data-layout-allow-overlap" if big else ""}>'
+                    f'<div id="cgi{gi}" class="inner{" " + opt["first_class"] if gi == 0 and opt.get("first_class") else ""}{" hk" if gi == 0 and opt.get("first_full") else ""}"{" data-layout-allow-overlap" if big else ""}>'
                     + (f'<span class="bar" style="background:{bar_cols[gi % len(bar_cols)]}">{" ".join(spans)}</span>' if bars else " ".join(spans)) + '</div></div>')
         if gi == 0 and opt.get("first_at_zero"):  # erster Satz steht ab Frame 0 (Thumbnail)
             js.append(f'tl.set("#cgi{gi}", {{ scale: 1, opacity: 1 }}, 0);')

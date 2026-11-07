@@ -10,9 +10,10 @@
   "left": 60,
   "right": 190,
   "size": 118,
-  "css": "@font-face { font-family: 'Lilita One'; src: url('assets/fonts/LilitaOne-Regular.woff2') format('woff2'); font-weight: 400; }\n    .inner { font-family: 'Lilita One', sans-serif; font-weight: 400; letter-spacing: .01em; }\n    .w { display: inline-block; white-space: nowrap; color: #fff; -webkit-text-stroke: 16px #1d2147; paint-order: stroke fill; }",
+  "css": "@font-face { font-family: 'Lilita One'; src: url('assets/fonts/LilitaOne-Regular.woff2') format('woff2'); font-weight: 400; }\n    .inner { font-family: 'Lilita One', sans-serif; font-weight: 400; letter-spacing: .01em; }\n    .w { display: inline-block; white-space: nowrap; color: #fff; -webkit-text-stroke: 16px #1d2147; paint-order: stroke fill; }\n    .inner.hk { font-size: 104px; line-height: 1.12; } .inner.hk .w { margin: 0 .12em; }",
   "single": true,
-  "top": 1250
+  "top": 1250,
+  "first_full": true
  },
  "scenes": [
   {
@@ -23,7 +24,7 @@
      "id": "L1",
      "text": "Hier steht bald *y:dein *y:Haus.",
      "style": "Style: a real young man, excited and warm, like showing a friend something great, natural not theatrical.\nPace: fast.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-     "speed": 1.15
+     "speed": 1.32
     }
    ],
    "sfx": [
