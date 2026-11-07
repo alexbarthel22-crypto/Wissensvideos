@@ -62,15 +62,30 @@ section>h2{font-size:28px;margin-bottom:14px}
 .mpc h2{margin:0 0 10px;font-size:24px}
 .mpx{position:absolute;right:10px;top:8px;border:0;background:none;font-size:30px;font-weight:900;line-height:1;cursor:pointer}
 .mpc input{width:100%;box-sizing:border-box;border:3px solid var(--ink);border-radius:14px;padding:12px 14px;font:800 17px inherit;font-family:inherit}
-.mpcard{border:3px solid var(--ink);border-radius:20px;overflow:hidden;background:#fff;box-shadow:4px 4px 0 var(--ink)}
-.mpcard .hd{background:linear-gradient(135deg,var(--lagoon),#0a8fd0);color:#fff;padding:10px 14px;font-weight:900;letter-spacing:1.5px;font-size:12px;display:flex;justify-content:space-between;align-items:center}
-.mpcard .bd{padding:14px;display:grid;gap:10px}
-.mpcard .nm{font-size:24px;font-weight:900;word-break:break-all}
-.mpcard dl{display:grid;grid-template-columns:1fr 1fr;gap:8px 12px;margin:0}
-.mpcard dt{font-size:11px;font-weight:900;letter-spacing:1px;color:var(--soft)}
-.mpcard dd{margin:0;font-weight:900;font-size:16px}
-.mpcard .big{font-size:30px;color:#ff6a1a}
-.mpst{justify-self:start;border:3px solid var(--leaf);color:var(--leaf);border-radius:8px;padding:2px 8px;font-weight:900;letter-spacing:1px;transform:rotate(-6deg)}
+.mpcard{position:relative;border:3px solid var(--ink);border-radius:22px;overflow:hidden;background:#fffaf0;box-shadow:5px 5px 0 var(--ink)}
+.mpcard::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.55) 45%,rgba(160,230,255,.25) 50%,transparent 62%);background-size:250% 100%;animation:mpshine 4s ease-in-out infinite}
+@keyframes mpshine{0%{background-position:120% 0}60%,100%{background-position:-60% 0}}
+.mpcard .hd{position:relative;background:linear-gradient(135deg,#0fb3b0,#0a8fd0 60%,#ff8a2a 140%);color:#fff;padding:12px 14px 26px;font-weight:900;letter-spacing:1.5px;font-size:11px}
+.mpcard .hd b{display:block;font-size:20px;letter-spacing:.5px;margin-top:2px}
+.mpcard .hd svg{position:absolute;left:0;right:0;bottom:-1px;width:100%;height:18px}
+.mpcard .bd{padding:4px 14px 14px;display:grid;gap:12px}
+.mpcard .who{display:flex;gap:12px;align-items:center;margin-top:-22px;position:relative}
+.mpcard .av{flex:none;width:64px;height:64px;border-radius:50%;border:3px solid var(--ink);background:linear-gradient(160deg,#ffd23f,#ff8a2a);display:grid;place-items:center;font-size:26px;font-weight:900;color:#fff;text-shadow:0 2px 0 rgba(0,0,0,.25);box-shadow:2px 2px 0 var(--ink)}
+.mpcard .nm{font-size:22px;font-weight:900;word-break:break-all;line-height:1.1;margin-top:18px}
+.mpcard dl{display:grid;grid-template-columns:1fr 1fr;gap:10px 12px;margin:0}
+.mpcard dl>div{background:#fff;border:2px solid #f0e2c8;border-radius:12px;padding:7px 10px}
+.mpcard dl .full{grid-column:1/-1}
+.mpcard dt{font-size:10.5px;font-weight:900;letter-spacing:1px;color:var(--soft)}
+.mpcard dd{margin:2px 0 0;font-weight:900;font-size:16px}
+.mpcard .big{font-size:28px;color:#ff6a1a;line-height:1}
+.mpcard .soon{color:#b9a58a;font-weight:800;font-size:14px}
+.mpcard .badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
+.mpcard .badges span{width:30px;height:30px;border-radius:50%;border:2px dashed #d8c6a6;display:grid;place-items:center;color:#d8c6a6;font-weight:900}
+.mpft{display:flex;justify-content:space-between;align-items:center}
+.mpbar{height:22px;flex:1;margin-right:12px;background:repeating-linear-gradient(90deg,var(--ink) 0 2px,transparent 2px 4px,var(--ink) 4px 5px,transparent 5px 8px);opacity:.55;border-radius:2px}
+.mpsh{width:100%;margin-top:10px;border:3px solid var(--ink);border-radius:16px;background:var(--sun);color:var(--ink);font-weight:900;font-size:17px;padding:11px;box-shadow:3px 3px 0 var(--ink);cursor:pointer}
+.mpsh small{display:block;font-size:12px;font-weight:800;opacity:.75}
+.mpst{border:3px solid var(--leaf);color:var(--leaf);border-radius:8px;padding:2px 8px;font-weight:900;letter-spacing:1px;transform:rotate(-8deg);background:rgba(255,255,255,.7)}
 .mpgo{width:100%;margin-top:12px;border:3px solid var(--ink);border-radius:16px;background:var(--hib);color:#fff;font-weight:900;font-size:18px;padding:13px;box-shadow:3px 3px 0 var(--ink);cursor:pointer}
 .mpalt{display:block;margin:10px auto 0;border:0;background:none;color:var(--soft);font-weight:800;text-decoration:underline;cursor:pointer}
 .down{position:absolute;left:12px;bottom:16px;max-width:calc(100% - 200px);text-decoration:none;color:var(--ink);background:var(--sun)}
@@ -162,11 +177,16 @@ footer a{color:var(--soft)}
   <button class="mpx" id="mpx" aria-label="Schließen">×</button>
   <h2>🪪 Muschelpass</h2>
   <div id="mpf"><p style="margin:0 0 10px;font-weight:700">Dein Einwohnernachweis. Gib deinen TikTok-Namen ein:</p><input id="mpq" placeholder="@deinname" autocomplete="off" autocapitalize="off" spellcheck="false"><ul class="sugg" id="mps" hidden></ul><p class="miss" id="mpm" hidden></p></div>
-  <div id="mpp" hidden><div class="mpcard"><div class="hd"><span>MUSCHEL-TAL · EINWOHNERNACHWEIS</span><span>🐚</span></div><div class="bd">
-   <div class="nm" id="mpn"></div>
-   <dl><div><dt>HÜTTE NR.</dt><dd class="big" id="mpnr"></dd></div><div><dt>EINGEZOGEN AM</dt><dd id="mpd"></dd></div><div><dt>INSEL</dt><dd id="mpi"></dd></div><div><dt>STATUS</dt><dd id="mpstat"></dd></div></dl>
-   <div class="mpst" id="mpstamp">BEWOHNT ✓</div></div></div>
-   <button class="mpgo" id="mpgo">🏠 Zu meiner Hütte</button><button class="mpalt" id="mpalt">Anderen Namen suchen</button></div>
+  <div id="mpp" hidden><div class="mpcard"><div class="hd">MUSCHEL-TAL · SÜDSEE<b>🪪 Muschelpass</b><svg viewBox="0 0 400 18" preserveAspectRatio="none"><path d="M0 10 Q25 0 50 10 T100 10 T150 10 T200 10 T250 10 T300 10 T350 10 T400 10 V18 H0Z" fill="#fffaf0"/></svg></div><div class="bd">
+   <div class="who"><div class="av" id="mpav"></div><div class="nm" id="mpn"></div></div>
+   <dl><div><dt>HÜTTE NR.</dt><dd class="big" id="mpnr"></dd></div><div><dt>EINGEZOGEN AM</dt><dd id="mpd"></dd></div>
+    <div><dt>INSEL</dt><dd id="mpi"></dd></div><div><dt>STATUS</dt><dd id="mpstat"></dd></div>
+    <div class="full"><dt>BERUF</dt><dd id="mpjob"></dd></div>
+    <div class="full"><dt>ERFOLGE</dt><dd id="mpwin"></dd></div></dl>
+   <div class="mpft"><div class="mpbar"></div><div class="mpst" id="mpstamp">BEWOHNT ✓</div></div></div></div>
+   <button class="mpgo" id="mpgo">🏠 Zu meiner Hütte</button>
+   <button class="mpsh" id="mpshare">📲 In meiner Story teilen<small>TikTok · Instagram · WhatsApp-Status – fertig im Story-Format</small></button>
+   <button class="mpalt" id="mpalt">Anderen Namen suchen</button></div>
  </div></div>
  <div class="hint" id="hint">Zum Zoomen Strg + Mausrad<br>oder + / − benutzen</div>
 </div>
@@ -619,12 +639,43 @@ $('topass').onclick=()=>{if(sel)zeigePass(sel);};
 // ---------- Muschelpass (Einwohnernachweis) ----------
 let mpP=null;
 function zeigePass(p){mpP=p;$('mp').hidden=false;$('mpf').hidden=true;$('mpp').hidden=false;
- $('mpn').textContent=p.name;$('mpnr').textContent=fmt(p.nr);$('mpd').textContent=p.seit||'–';$('mpi').textContent=wo(p);$('mpstat').textContent=status(p);$('mpstamp').textContent=p.wait?'WARTET ⛴️':'BEWOHNT ✓';
+ $('mpn').textContent=p.name;$('mpav').textContent=(p.name.replace(/^@/,'').match(/[a-z]/i)||['🐚'])[0].toUpperCase();
+ $('mpjob').innerHTML=p.beruf?esc(p.beruf):'<span class="soon">kommt bald … 👀</span>';
+ $('mpwin').innerHTML=p.erfolge&&p.erfolge.length?esc(p.erfolge.join(' · ')):'<span class="soon">Noch keine – die ersten Abzeichen kommen bald 🏅</span><div class="badges"><span>?</span><span>?</span><span>?</span><span>?</span></div>';$('mpnr').textContent=fmt(p.nr);$('mpd').textContent=p.seit||'–';$('mpi').textContent=wo(p);$('mpstat').textContent=status(p);$('mpstamp').textContent=p.wait?'WARTET ⛴️':'BEWOHNT ✓';
  try{localStorage.setItem('mt-me',p.name);}catch(e){}}
 function suchePass(){$('mp').hidden=false;$('mpf').hidden=false;$('mpp').hidden=true;$('mpq').value='';$('mps').hidden=true;$('mpm').hidden=true;setTimeout(()=>$('mpq').focus(),50);}
 $('passbtn').onclick=()=>{let me=null;try{me=byName.get((localStorage.getItem('mt-me')||'').toLowerCase());}catch(e){}me?zeigePass(me):suchePass();};
 $('mpx').onclick=()=>{$('mp').hidden=true;};$('mp').onclick=e=>{if(e.target===$('mp'))$('mp').hidden=true;};
 $('mpalt').onclick=suchePass;
+// Story-Bild (1080×1920) für TikTok-/Instagram-Story und WhatsApp-Status
+function rr(c,x,y,w,h,r){c.beginPath();c.roundRect(x,y,w,h,r);}
+function passBild(p){const W2=1080,H2=1920,cv=document.createElement('canvas');cv.width=W2;cv.height=H2;const c=cv.getContext('2d');const F=FONT;
+ let g=c.createLinearGradient(0,0,0,H2);g.addColorStop(0,'#1aa6e0');g.addColorStop(.45,'#5fd3e6');g.addColorStop(.62,'#9feadf');g.addColorStop(.63,'#ffe8bf');g.addColorStop(1,'#f6d9a0');c.fillStyle=g;c.fillRect(0,0,W2,H2);
+ const sun=c.createRadialGradient(860,330,10,860,330,260);sun.addColorStop(0,'rgba(255,250,220,.95)');sun.addColorStop(1,'rgba(255,250,220,0)');c.fillStyle=sun;c.fillRect(560,40,600,600);
+ c.strokeStyle='rgba(255,255,255,.35)';c.lineWidth=5;for(let k=0;k<9;k++){const y=760+k*48;c.beginPath();for(let x=-20;x<=W2+20;x+=30)c.lineTo(x,y+Math.sin(x*.02+k)*7);c.stroke();}
+ c.strokeStyle='#fff';c.lineWidth=10;c.beginPath();for(let x=-20;x<=W2+20;x+=30)c.lineTo(x,1205+Math.sin(x*.015)*12);c.stroke();
+ c.textAlign='center';c.lineJoin='round';
+ c.font='900 104px '+F;c.lineWidth=22;c.strokeStyle='#2a1b12';c.strokeText('MUSCHEL-TAL',W2/2,330);c.fillStyle='#ffd23f';c.fillText('MUSCHEL-TAL',W2/2,330);
+ c.font='900 52px '+F;c.lineWidth=12;c.strokeText('Ich wohne jetzt hier! 🏝️',W2/2,410);c.fillStyle='#fff';c.fillText('Ich wohne jetzt hier! 🏝️',W2/2,410);
+ c.save();c.translate(W2/2,670);c.scale(4.4,4.4);palace(c,0,F);c.restore();
+ const x0=110,y0=820,cw=860,ch=680;c.fillStyle='#2a1b12';rr(c,x0+12,y0+12,cw,ch,46);c.fill();c.fillStyle='#fffaf0';rr(c,x0,y0,cw,ch,46);c.fill();c.lineWidth=7;c.strokeStyle='#2a1b12';c.stroke();
+ c.save();rr(c,x0,y0,cw,ch,46);c.clip();g=c.createLinearGradient(x0,y0,x0+cw,y0+150);g.addColorStop(0,'#0fb3b0');g.addColorStop(.7,'#0a8fd0');g.addColorStop(1,'#ff8a2a');c.fillStyle=g;c.fillRect(x0,y0,cw,150);
+ c.fillStyle='#fffaf0';c.beginPath();c.moveTo(x0,y0+150);for(let x=0;x<=cw;x+=10)c.lineTo(x0+x,y0+140+Math.sin(x*.03)*10);c.lineTo(x0+cw,y0+170);c.lineTo(x0,y0+170);c.fill();c.restore();
+ c.textAlign='left';c.fillStyle='#fff';c.font='900 26px '+F;c.fillText('MUSCHEL-TAL · SÜDSEE',x0+40,y0+52);c.font='900 50px '+F;c.fillText('🪪 Muschelpass',x0+40,y0+112);
+ c.fillStyle='#ff8a2a';c.strokeStyle='#2a1b12';c.beginPath();c.arc(x0+100,y0+225,62,0,TAU);c.fill();c.lineWidth=6;c.stroke();c.fillStyle='#fff';c.textAlign='center';c.font='900 60px '+F;c.fillText((p.name.replace(/^@/,'').match(/[a-z]/i)||['?'])[0].toUpperCase(),x0+100,y0+246);
+ c.textAlign='left';c.fillStyle='#2a1b12';let fs=58;c.font='900 '+fs+'px '+F;while(c.measureText(p.name).width>cw-230&&fs>30){fs-=2;c.font='900 '+fs+'px '+F;}c.fillText(p.name,x0+190,y0+245);
+ const cell=(x,y,w,lab,val,big)=>{c.fillStyle='#fff';rr(c,x,y,w,104,22);c.fill();c.lineWidth=4;c.strokeStyle='#f0e2c8';c.stroke();c.fillStyle='#7a5a45';c.font='900 22px '+F;c.fillText(lab,x+22,y+36);c.fillStyle=big?'#ff6a1a':'#2a1b12';c.font='900 '+(big?46:34)+'px '+F;c.fillText(val,x+22,y+84);};
+ cell(x0+36,y0+310,380,'HÜTTE NR.',fmt(p.nr),true);cell(x0+444,y0+310,380,'EINGEZOGEN AM',p.seit||'–');cell(x0+36,y0+430,788,'INSEL',wo(p));cell(x0+36,y0+550,380,'BERUF',p.beruf||'kommt bald …');cell(x0+444,y0+550,380,'ERFOLGE',p.erfolge&&p.erfolge.length?p.erfolge.length+' 🏅':'bald 🏅');
+ c.save();c.translate(x0+cw-150,y0+92);c.rotate(-.14);c.fillStyle='rgba(255,255,255,.92)';rr(c,-110,-38,220,70,12);c.fill();c.strokeStyle='#2e9e5b';c.lineWidth=6;c.stroke();c.fillStyle='#2e9e5b';c.textAlign='center';c.font='900 34px '+F;c.fillText(p.wait?'WARTET':'BEWOHNT ✓',0,12);c.restore();
+ c.textAlign='center';c.fillStyle='#e8467c';rr(c,110,1535,860,150,75);c.fill();c.lineWidth=7;c.strokeStyle='#2a1b12';c.stroke();c.fillStyle='#fff';c.font='900 58px '+F;c.fillText('Zieh auch ein! 🐚',W2/2,1603);c.font='800 36px '+F;c.fillText('Folg '+ACC+' auf TikTok',W2/2,1657);
+ c.fillStyle='#2a1b12';c.font='900 40px '+F;c.fillText('muscheltal.de',W2/2,1738);
+ return cv;}
+$('mpshare').onclick=async()=>{if(!mpP)return;const b=$('mpshare'),lab=b.innerHTML;b.textContent='⏳ Bild wird erstellt …';
+ try{const blob=await new Promise(r=>passBild(mpP).toBlob(r,'image/png'));const file=new File([blob],'muschelpass.png',{type:'image/png'});
+  const txt='Ich wohne jetzt in Muschel-Tal! 🐚 Zieh auch ein: folg '+ACC+' auf TikTok – muscheltal.de';
+  if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],text:txt});}
+  else{const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='muschelpass.png';document.body.appendChild(a);a.click();a.remove();b.textContent='✅ Bild gespeichert – jetzt in der Story posten!';setTimeout(()=>b.innerHTML=lab,2600);return;}
+ }catch(e){}b.innerHTML=lab;};
 $('mpgo').onclick=()=>{$('mp').hidden=true;window.scrollTo({top:0,behavior:'smooth'});if(mpP)select(mpP);};
 $('mpq').oninput=()=>{const t=$('mpq').value.trim().toLowerCase().replace(/^@/,'');if(!t){$('mps').hidden=true;$('mpm').hidden=true;return;}
  const h=PEOPLE.filter(p=>p.name.toLowerCase().replace(/^@/,'').includes(t)).sort((a,b)=>(a.name.toLowerCase().replace(/^@/,'').startsWith(t)?0:1)-(b.name.toLowerCase().replace(/^@/,'').startsWith(t)?0:1)||a.nr-b.nr).slice(0,6);
