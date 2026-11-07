@@ -71,4 +71,4 @@ Regeln für Zuschauer: Kommentare beginnen mit „Prophet Peter“; Folgen = Anh
 - Szene 1 ohne Untertitel (`nocap`), Text steht groß im Bild ab Frame 0; Peters Name in Szene 2 ohne Untertitel (Namensschild).
 - Kapitel-Marken in Versalien, z. B. „DAS GESETZ“, „DAS GRUNDSTÜCK“, „TAG 1 · AUFRUF“ → in Folgen „TAG 2 · …“.
 - **Cover:** roter Kasten „KNIE NIEDER!“ oben, Himmelslicht, groß „TAG n“ + Hook-Satz, Peter segnend links, roter Stempel mit Zahl (z. B. „ANHÄNGER 0“), unten gelber Rahmen mit Aufruf; alles Wichtige im 3:4-Ausschnitt (y 240–1680). Vorlage: `videos/prophet-peter-tag-1/cover/gen_cover.py`.
-- **Beschreibung:** Hook + Stand + Frage, „Top-Kommentar entscheidet“, Hashtags `#fürdich #fyp #comedy #sekte #prophetpeter` (Marke `#prophetpeter` immer). Vorlage: `videos/prophet-peter-tag-1/BESCHREIBUNG.md`.
+- **Beschreibung:** Hook + Stand + Frage, „Top-Kommentar entscheidet“, Hashtags `#fürdich #fyp #comedy #religion #prophetpeter` (in Beschreibung/Hashtags „Religion“ statt „Sekte“) (Marke `#prophetpeter` immer). Vorlage: `videos/prophet-peter-tag-1/BESCHREIBUNG.md`.
