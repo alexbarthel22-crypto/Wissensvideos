@@ -1,7 +1,9 @@
-# Netlify baut die Muschel-Tal-Seite bei jedem Push neu aus muscheltal/daten/
+# Netlify baut die Muschel-Tal-Seite neu aus muscheltal/daten/ – aber nur, wenn sich im Ordner muscheltal/ etwas geändert hat.
+# (Video-Commits lösen so keinen Build aus und verbrauchen keine Netlify-Kontingente.)
 [build]
   command = "python3 muscheltal/bau.py"
   publish = "muscheltal/site"
+  ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF -- muscheltal/ netlify.toml"
 
 [build.environment]
   PYTHON_VERSION = "3.12"
