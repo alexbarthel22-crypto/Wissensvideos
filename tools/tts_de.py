@@ -28,7 +28,7 @@ SR = 44100
 GAP_LINE = 0.22      # Pause zwischen Zeilen derselben Szene
 GAP_SCENE = 0.38     # Pause zwischen Szenen
 LEAD_IN = 0.25       # Stille am Anfang
-COLOR_RE = re.compile(r"^\*([yrpgb]):")
+COLOR_RE = re.compile(r"^\*([yrpgbc]):")
 PUNCT_RE = re.compile(r"[,.;:?!…]+[\"“”]?$")
 
 

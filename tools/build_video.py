@@ -25,7 +25,7 @@ SFX_DIR = next((p for p in [*Path("/root/.claude/plugins/cache/hyperframes").glo
                 if (p / "manifest.json").exists()),
                Path("/root/.claude/plugins/cache/hyperframes/hyperframes/0.8.217/skills/media-use/audio/assets/sfx"))
 W, H = 1080, 1920
-COLORS = {"y": "#ffd43b", "r": "#ff3b55", "p": "#ff4fb0", "g": "#39e27a", "b": "#4da3ff"}
+COLORS = {"y": "#ffd43b", "r": "#ff3b55", "p": "#ff4fb0", "g": "#39e27a", "b": "#4da3ff", "c": "#3fe3ea"}
 WHOOSHES = ["whoosh-short", "whoosh"]  # nur kurze; lange Whooshes/Glitches rauschen unter der Stimme
 MANIFEST = json.loads((SFX_DIR / "manifest.json").read_text())
 VENDOR = Path(__file__).resolve().parent / "vendor"
@@ -128,6 +128,8 @@ def caption_groups(timings, windows):
         for g in sorted(by):
             ws = by[g]
             groups.append({"words": ws, "start": round(ws[0]["start"] - 0.06, 3), "end": round(ws[-1]["end"] + 0.25, 3)})
+    if windows == "single":  # ein Wort pro Einblendung (TikTok-Stil), bleibt bis zum nächsten Wort
+        groups = [{"words": [w], "start": round(w["start"] - 0.04, 3), "end": round(w["end"] + 0.35, 3)} for g in groups for w in g["words"]]
     for a, b in zip(groups, groups[1:]):
         a["end"] = min(a["end"], b["start"])
     groups[0]["start"] = max(groups[0]["start"], 0.15)
@@ -138,7 +140,7 @@ def build_captions(project, timings, windows, total, big=False, opt=None):
     """opt (script.json "captions"): pop (Wort-Pop), left/right/top/size (TikTok-Sicherheitsbereich), first_at_zero (erster Satz ab Frame 0)."""
     opt = opt or {}
     big = big or opt.get("pop", False)
-    groups = caption_groups(timings, windows)
+    groups = caption_groups(timings, "single" if opt.get("single") else windows)
     if opt.get("first_at_zero"):
         groups[0]["start"] = 0.0
     groups[-1]["end"] = round(total - 0.05, 3)  # letzte Zeile (Frage an die Zuschauer) bleibt stehen
@@ -150,11 +152,14 @@ def build_captions(project, timings, windows, total, big=False, opt=None):
         for wi, w in enumerate(g["words"]):
             wid = f"cw{gi}-{wi}"
             col = w["color"]
-            spans.append(f'<span id="{wid}" class="w{" k-" + col if col else ""}">{esc(w["display"].upper())}</span>')
+            fs = f' style="font-size:{10.5 / len(w["display"]):.2f}em"' if opt.get("single") and len(w["display"]) > 11 else ""  # lange Wörter passen in die Breite
+            spans.append(f'<span id="{wid}" class="w{" k-" + col if col else ""}"{fs}>{esc(w["display"].upper())}</span>')
             target = (opt.get("key_color", "#ffe45c") if bars else COLORS[col]) if col else "#ffffff"
             if gi == 0 and opt.get("hook_text"):  # eigener Farbsatz für den Einstieg (z. B. dunkle Schrift auf Gelb)
                 target = opt.get("hook_key", target) if col else opt["hook_text"]
             glow = ("0 3px 0 rgba(0,0,0,.35)" if bars else f"0 0 26px {COLORS[col]}aa, 0 5px 0 rgba(0,0,0,.55)") if col else ("0 3px 0 rgba(0,0,0,.35)" if bars else "0 5px 0 rgba(0,0,0,.55)")
+            if opt.get("single"):
+                glow = "0 8px 0 rgba(0,0,0,.35)"
             if gi == 0 and opt.get("hook_shadow"):
                 glow = opt["hook_shadow"]
             js.append(f'tl.to("#{wid}", {{ color: "{target}", textShadow: "{glow}", duration: 0.08, ease: "power1.out" }}, {w["start"] - 0.02:.3f});')
@@ -177,9 +182,13 @@ def build_captions(project, timings, windows, total, big=False, opt=None):
                 fr, to = ENTRANCES[gi % len(ENTRANCES)]
                 rot = (-2, 1.5, -1, 2.2, -1.6, 1)[gi % 6]
                 js.append(f'tl.fromTo("#cgi{gi}", {{ opacity: 0, {fr} }}, {{ opacity: 1, rotation: {rot}, {to} }}, {g["start"]:.3f});')
+            elif opt.get("single"):  # Wort ploppt auf
+                d = max(0.05, min(0.2, g["end"] - g["start"] - 0.1))
+                js.append(f'tl.fromTo("#cgi{gi}", {{ scale: 0.35, opacity: 0, y: 30 }}, {{ scale: 1, opacity: 1, y: 0, duration: {d:.3f}, ease: "back.out(2.8)" }}, {g["start"]:.3f});')
             else:
                 js.append(f'tl.fromTo("#cgi{gi}", {{ scale: 0.86, opacity: 0 }}, {{ scale: 1, opacity: 1, duration: 0.16, ease: "back.out(2.2)" }}, {g["start"]:.3f});')
-        js.append(f'tl.to("#cgi{gi}", {{ opacity: 0, duration: 0.08, ease: "power2.in" }}, {g["end"] - 0.08:.3f});')
+        if not opt.get("single"):
+            js.append(f'tl.to("#cgi{gi}", {{ opacity: 0, duration: 0.08, ease: "power2.in" }}, {g["end"] - 0.08:.3f});')
         js.append(f'tl.set("#cgi{gi}", {{ opacity: 0 }}, {g["end"]:.3f});')
     doc = f"""<template>
   <style>

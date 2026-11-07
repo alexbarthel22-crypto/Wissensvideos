@@ -1,34 +1,18 @@
 {
- "title": "Muschel-Tal – Ich habe euch eine Insel gekauft",
+ "title": "Muschel-Tal – Hier steht bald dein Haus",
  "voice": "Gemini TTS (gemini-3.1-flash-tts-preview, Stimme Achird), natürlich und emotional, --speed 1.12",
  "notes": "Startvideo Muschel-Tal. Prinzip: Folgen = einziehen, Hütte mit Namen, früher = näher am Rathaus, 500 Plätze, neue Inseln bei 1.000/2.500/5.000/10.000, geheime Insel, Mitbestimmen in Kommentaren, alles auf muscheltal.de (Bio). TikTok-Sicherheitsbereiche: Inhalt x 40–930, y 200–1500; Untertitel rechts 190 px Abstand.",
  "lead_in": 0.0,
  "bg": "#0a5a92",
  "captions": {
-  "pop": true,
+  "pop": false,
   "first_at_zero": true,
   "left": 60,
   "right": 190,
-  "size": 92,
-  "bars": true,
-  "color": "rgba(255,255,255,.78)",
-  "first_class": "hook",
-  "css": "@font-face { font-family: 'Lilita One'; src: url('assets/fonts/LilitaOne-Regular.woff2') format('woff2'); font-weight: 400; }\n    .inner.hook { font-family: 'Lilita One', sans-serif; font-weight: 400; font-size: 128px; line-height: 1.06; letter-spacing: .01em; top: -590px; }\n    .inner.hook .bar { background: none !important; box-shadow: none !important; padding: 0; }\n    .inner.hook .w { color: #ffe500; -webkit-text-stroke: 24px #1a0f08; paint-order: stroke fill; text-shadow: 0 12px 0 #ff2e7e, 0 18px 30px rgba(0,0,0,.55); }\n    .inner .bar .w { margin: 0 .07em; }\n    .inner .bar { border-radius: .55em; padding: .04em .36em .1em; }\n    .inner .w { white-space: nowrap; }\n    .inner .bar { box-shadow: 0 0 0 6px #1a0f08, 0 12px 0 rgba(0,0,0,.35); }",
-  "vary": true,
-  "pop_scale": 1.2,
-  "hook_punch": true,
-  "bar_colors": [
-   "#ff7a00",
-   "#ff2e7e",
-   "#0098ff",
-   "#ff7a00",
-   "#8a3ffc",
-   "#00b86b"
-  ],
-  "key_color": "#ffe500",
-  "hook_text": "#ffe500",
-  "hook_key": "#ffffff",
-  "hook_shadow": "0 12px 0 #ff2e7e, 0 18px 30px rgba(0,0,0,.55)"
+  "size": 118,
+  "css": "@font-face { font-family: 'Lilita One'; src: url('assets/fonts/LilitaOne-Regular.woff2') format('woff2'); font-weight: 400; }\n    .inner { font-family: 'Lilita One', sans-serif; font-weight: 400; letter-spacing: .01em; }\n    .w { display: inline-block; white-space: nowrap; color: #fff; -webkit-text-stroke: 16px #1d2147; paint-order: stroke fill; }",
+  "single": true,
+  "top": 1250
  },
  "scenes": [
   {
@@ -37,35 +21,21 @@
    "lines": [
     {
      "id": "L1",
-     "text": "Ich *y:verschenke *y:Häuser auf meiner *y:Insel!",
-     "style": "Style: a real young man announcing something unbelievable with a huge excited smile, generous and proud, natural not theatrical.\nPace: fast.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-     "speed": 1.22
-    },
-    {
-     "id": "L2",
-     "text": "*g:Jeder von euch / bekommt *p:eins! / Ganz *y:umsonst."
+     "text": "Hier steht bald *y:dein *y:Haus.",
+     "style": "Style: a real young man, excited and warm, like showing a friend something great, natural not theatrical.\nPace: fast.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+     "speed": 1.15
     }
    ],
    "sfx": [
     {
-     "name": "notification",
+     "name": "whoosh-short",
      "at": "s01+0.0",
-     "volume": 0.35
-    },
-    {
-     "name": "impact-bass-2",
-     "at": "L1:verschenke",
-     "volume": 0.22
-    },
-    {
-     "name": "pop",
-     "at": "L2:eins",
      "volume": 0.4
     },
     {
-     "name": "ka-ching",
-     "at": "L1:verschenke",
-     "volume": 0.75
+     "name": "pop",
+     "at": "L1:Haus",
+     "volume": 0.45
     }
    ]
   },
@@ -74,16 +44,32 @@
    "tag": "",
    "lines": [
     {
+     "id": "L2",
+     "text": "*y:Tag *y:1 von *c:Muschel-Tal, der Insel, die nur aus *c:euch besteht.",
+     "speed": 1.15
+    },
+    {
      "id": "L3",
-     "text": "Sie heißt / *p:Muschel-Tal! / Mitten in der *b:Südsee.",
-     "speed": 1.12
+     "text": "Und bis jetzt wohnt hier: *r:niemand.",
+     "speed": 1.12,
+     "style": "Style: a real young man, joking, a funny anticlimax with a smile, natural not theatrical.\nPace: fast.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
     }
    ],
    "sfx": [
     {
+     "name": "whoosh",
+     "at": "L2:Tag",
+     "volume": 0.35
+    },
+    {
      "name": "ping",
-     "at": "L3:Muschel",
-     "volume": 0.45
+     "at": "L2:Muschel",
+     "volume": 0.4
+    },
+    {
+     "name": "click-soft",
+     "at": "L3:niemand",
+     "volume": 0.5
     }
    ]
   },
@@ -93,30 +79,40 @@
    "lines": [
     {
      "id": "L4",
-     "text": "Das Prinzip / ist *g:super *g:einfach: / Du *g:folgst mir / und *g:ziehst *g:ein.",
-     "speed": 1.12
+     "text": "*y:So *y:funktioniert's: Wer *c:folgt, zieht *c:ein.",
+     "speed": 1.15
     },
     {
      "id": "L5",
-     "text": "Deine Hütte / bekommt *y:deinen *y:Namen.",
-     "speed": 1.12
+     "text": "Mit eigenem *y:Haus und *c:deinem *c:Namen drauf.",
+     "speed": 1.15
     }
    ],
    "sfx": [
     {
+     "name": "whoosh-short",
+     "at": "L4:So",
+     "volume": 0.4
+    },
+    {
      "name": "click",
-     "at": "L4:folgst",
+     "at": "L4:folgt",
      "volume": 0.55
     },
     {
      "name": "pop",
      "at": "L4:ein",
-     "volume": 0.45
+     "volume": 0.5
     },
     {
      "name": "pop",
+     "at": "L5:Haus",
+     "volume": 0.45
+    },
+    {
+     "name": "ping",
      "at": "L5:Namen",
-     "volume": 0.35
+     "volume": 0.4
     }
    ]
   },
