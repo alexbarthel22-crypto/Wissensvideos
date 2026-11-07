@@ -27,7 +27,9 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - Echtes Wetter wirkt auf die Karte: Regen = nasse Wege, Pfützen, dunkle nasse Dächer; Schnee = verschneite Dächer, Wege, Palmen.
 - **Muschelpass** (Einwohnernachweis): Hütte Nr., Eingezogen am, Insel, Beruf („–“), **Arbeitsort** („–“; wird verlinkt, sobald vergeben), Erfolge, Teilen als Story-Bild. **Kein Status, keine Ausweis-Nr., kein „Bewohnt“-Stempel.** Der Pass unten auf der Seite sieht genauso aus wie im Popup.
 - Kopierte Teilen-Texte verlinken immer den TikTok-Account (@muscheltal auf TikTok: https://www.tiktok.com/@muscheltal), nicht die Homepage.
-- **Erfolge**: „Gründer“ (goldene Münze mit goldener Muschel) = einer der ersten 500 Follower. **„Die Lupe“** (enthüllt) = wer neugierig die Welt von Muschel-Tal erkundet; ganz unten auf der Homepage ist eine gold aufblinkende Lupe versteckt, Antippen gibt den Erfolg für den gerade gewählten Namen (nur in diesem Browser gespeichert). 10 weitere Erfolge geheim („bald“).
+- **Erfolge**: „Gründer“ (goldene Münze mit goldener Muschel) = einer der ersten 500 Follower. **„Die Lupe“** (enthüllt) = wer neugierig die Welt von Muschel-Tal erkundet; ganz unten auf der Homepage ist eine gold aufblinkende Lupe versteckt. Ohne gewählten Namen kommt ein Popup „Das könnte wichtig sein … Komm wieder hierhin, wenn du eingezogen bist!“; mit gewähltem Namen „Glückwunsch …“ + Knopf „Zu meinen Erfolgen“ (nur in diesem Browser gespeichert). 10 weitere Erfolge geheim („bald“).
+- Muschelpass zeigt höchstens 4 Erfolge, die neuesten zuerst (kleine Abzeichen).
+- **Inselkasse**: 5 Muscheln pro Einwohner **+ 50 Muscheln für jedes Teilen des Muschelpasses in der Story** (pro TikTok-Name nur alle 7 Tage; wird auf dem Server gezählt). Der Teilen-Knopf zeigt das als Anreiz.
 - Karten-Knöpfe: ohne Auswahl „Alle Inseln“ + „Zufall“ (wischen: „Wachsen sehen“), mit Auswahl „Meine Hütte“ + „Muschelpass“ (wischen: „Alle Inseln“).
 - Fahrräder/E-Roller, die hoch/runter fahren, sind von hinten/vorn zu sehen.
 

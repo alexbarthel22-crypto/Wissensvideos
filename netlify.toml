@@ -3,7 +3,11 @@
 [build]
   command = "python3 muscheltal/bau.py"
   publish = "muscheltal/site"
-  ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF -- muscheltal/ netlify.toml"
+  ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF -- muscheltal/ netlify.toml package.json"
 
 [build.environment]
   PYTHON_VERSION = "3.12"
+
+# Inselkasse (Story teilen = +50 Muscheln), speichert in Netlify Blobs
+[functions]
+  directory = "muscheltal/netlify/functions"
