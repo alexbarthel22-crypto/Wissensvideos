@@ -88,7 +88,8 @@ section>h2{font-size:28px;margin-bottom:14px}
 .mpseal{border:2px solid #f0e2c8;background:#fff;border-radius:12px;display:grid;place-items:center;padding:6px}
 .mpshi{position:absolute;right:10px;top:10px;width:42px;height:42px;border-radius:50%;border:3px solid #fff;background:rgba(255,255,255,.22);color:#fff;display:grid;place-items:center;cursor:pointer;padding:0}
 .mpshi svg{width:22px;height:22px}
-.mpcard .star{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#fff3b0,#ffd23f);border:2px solid #e0a93a;border-radius:999px;padding:3px 10px 3px 6px;font-size:14px}
+.mpcard .erfl{display:block;margin-top:6px;font-size:13px;font-weight:900;color:#0a8fd0}
+.mpcard .star{color:var(--ink);text-decoration:none;display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#fff3b0,#ffd23f);border:2px solid #e0a93a;border-radius:999px;padding:3px 10px 3px 6px;font-size:14px}
 .mpsh{width:100%;margin-top:10px;border:3px solid var(--ink);border-radius:16px;background:var(--sun);color:var(--ink);font-weight:900;font-size:17px;padding:11px;box-shadow:3px 3px 0 var(--ink);cursor:pointer}
 .mpsh small{display:block;font-size:12px;font-weight:800;opacity:.75}
 .mpst{width:78px;height:78px;border-radius:50%;border:3px double var(--leaf);color:var(--leaf);display:grid;place-items:center;text-align:center;font-weight:900;font-size:11px;letter-spacing:1px;transform:rotate(-12deg);background:radial-gradient(circle,rgba(46,158,91,.08),transparent 70%)}
@@ -287,7 +288,7 @@ const IDA='ABCDEFGHJKLMNPQRSTUVWXYZ23456789',IDS=new Set();
 for(const p of PEOPLE){let salt=0,id;do{let h1=2166136261^salt,h2=5381+salt*7919;for(const ch of p.name.toLowerCase()+'#mt'){h1=Math.imul(h1^ch.charCodeAt(0),16777619);h2=Math.imul(h2,33)+ch.charCodeAt(0)|0;}
  id='';let a=h1>>>0,b=h2>>>0;for(let k=0;k<9;k++){const src=k<5?a:b;id+=IDA[src%32];if(k<5)a=Math.floor(a/32);else b=Math.floor(b/32);}salt++;}while(IDS.has(id));IDS.add(id);p.id=id;}
 const fmtId=id=>id.slice(0,3)+' '+id.slice(3,6)+' '+id.slice(6);
-const ERF=p=>{const e=[...(p.erfolge||[])];if(p.nr<=500&&!p.wait)e.unshift('⭐ Gründer · einer der ersten 500');return e;};
+const ERF=p=>{const e=[...(p.erfolge||[])];if(p.nr<=500&&!p.wait)e.unshift('⭐ Gründer');return e;};
 const AMT={};I.aemter.forEach(([t,n])=>{if(n)AMT[n.toLowerCase()]=t;});
 function nachbarn(p){if(!p.p)return[];const a=[],cell=p.isl.cell;for(let dx=-2;dx<=2;dx++)for(let dy=-2;dy<=2;dy++){if(!dx&&!dy)continue;const q=cell.get((p.p.gx+dx)+','+(p.p.gy+dy));if(q)a.push([Math.hypot(q.p.x-p.p.x,q.p.y-p.p.y),q]);}return a.sort((x,y)=>x[0]-y[0]).slice(0,4).map(x=>x[1]);}
 
@@ -655,7 +656,7 @@ let mpP=null;
 function zeigePass(p){mpP=p;$('mp').hidden=false;$('mpf').hidden=true;$('mpp').hidden=false;
  $('mpn').textContent=p.name;$('mpav').textContent=(p.name.replace(/^@/,'').match(/[a-z]/i)||['🐚'])[0].toUpperCase();
  $('mpjob').textContent=p.beruf||'–';
- {const e=ERF(p);$('mpwin').innerHTML=e.length?e.map(x=>'<span class="star">'+esc(x)+'</span>').join(' '):'–';}
+ {const e=ERF(p);$('mpwin').innerHTML=e.length?e.map(x=>'<a class="star" href="erfolge.html" title="Alle Erfolge ansehen">'+esc(x)+' <small>›</small></a>').join(' ')+' <a class="erfl" href="erfolge.html">Alle Erfolge ansehen</a>':'–';}
  $('mpnr').textContent=fmt(p.nr);$('mpd').textContent=p.seit||'–';$('mpi').textContent=wo(p);$('mpstat').textContent=status(p);$('mpstamp').textContent=p.wait?'WARTET':'BEWOHNT';
  $('mpidn').textContent=fmtId(p.id);$('mpstamp').classList.toggle('wait',!!p.wait);
  try{localStorage.setItem('mt-me',p.name);}catch(e){}}

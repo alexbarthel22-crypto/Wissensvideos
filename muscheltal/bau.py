@@ -119,6 +119,11 @@ def baue(rows, out):
         if os.path.exists(quelle) and os.path.abspath(out) != os.path.join(HIER, "site"):
             open(os.path.join(out, datei), "w", encoding="utf-8").write(open(quelle, encoding="utf-8").read())
     open(os.path.join(out, "index.html"), "w", encoding="utf-8").write(html)
+    # Zusatzseiten (statisch) mitkopieren
+    for datei in ("erfolge.html",):
+        quelle = os.path.join(HIER, datei)
+        if os.path.exists(quelle):
+            open(os.path.join(out, datei), "w", encoding="utf-8").write(open(quelle, encoding="utf-8").read())
     alt = os.path.join(out, "einwohner.json")
     if os.path.exists(alt):
         os.remove(alt)  # nicht mehr öffentlich (enthielt echte Inselnamen)
