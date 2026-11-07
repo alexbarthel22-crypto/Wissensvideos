@@ -123,11 +123,12 @@ function palace(c,T,label){
       function draw(t) {
         const h = sm(T0, T1, t), bob = Math.sin(t * 1.5) * 4, blur = Math.sin(h * Math.PI) * 16;
         c.setTransform(1, 0, 0, 1, 0, bob); c.clearRect(0, -10, W, H + 20);
-        c.filter = blur > .5 ? `blur(${blur.toFixed(1)}px)` : "none";
         sky(h, t);
         if (h < .999) viewA(-h * 1250, t);
         if (h > .001) viewB(1250 * (1 - h), t);
-        c.filter = "none"; c.setTransform(1, 0, 0, 1, 0, 0);
+        c.setTransform(1, 0, 0, 1, 0, 0);
+        if (blur > .5) { c.fillStyle = `rgba(255,220,190,${(blur / 16) * .35})`; c.fillRect(0, 0, W, H); // Wisch-Effekt beim Umdrehen: helle Streifen statt teurer Unschärfe
+          for (let i = 0; i < 26; i++) { const y = hash(i, 70) * H, l = 200 + hash(i, 71) * 500; c.fillStyle = `rgba(255,255,255,${(blur / 16) * .28})`; c.fillRect(((hash(i, 72) * W * 2 + t * 4000) % (W + l)) - l, y, l, 3 + hash(i, 73) * 8); } }
         const vg = c.createRadialGradient(W / 2, 900, 520, W / 2, 900, 1350); vg.addColorStop(0, "rgba(40,10,30,0)"); vg.addColorStop(1, "rgba(40,10,30,.35)"); c.fillStyle = vg; c.fillRect(0, 0, W, H);
       }
       const tl = gsap.timeline({ paused: true }), o = { t: 0 };
