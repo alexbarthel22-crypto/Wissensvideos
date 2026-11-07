@@ -33,10 +33,10 @@
 
       // Ich-Perspektive: vor dem Muschelpalast stehen, umdrehen, Sonnenuntergang über Küste und Hütten der Hauptinsel.
       // Alles hängt nur an der Timeline-Zeit t (deterministisch, seek-fähig).
-      const cv = document.getElementById("w-cv"), c = cv.getContext("2d"), W = 1080, H = 1920, HY = 820, TAU = Math.PI * 2;
+      const cv = document.getElementById("w-cv"); let c = cv.getContext("2d"); const OFF = (() => { const o = document.createElement("canvas"); o.width = 1080; o.height = 1920; return o.getContext("2d"); })(); const _c0 = 0, W = 1080, H = 1920, HY = 820, TAU = Math.PI * 2;
       const hash = (i, s) => { let x = Math.sin(i * 127.1 + s * 311.7) * 43758.5453; return x - Math.floor(x); };
       const sm = (a, b, t) => { const k = Math.max(0, Math.min(1, (t - a) / (b - a))); return k * k * (3 - 2 * k); };
-      const T0 = line("L1")[1] + .05, T1 = line("L2")[0] - .1; // Umdrehen zwischen L1 und L2
+      const T0 = line("L1")[1] - .25, T1 = line("L2")[0] + .35; // Umdrehen zwischen L1 und L2 (sanft, ca. 1,9 s)
 // ---------- Muschelpalast (Mitte des Muschelplatzes) ----------
 const PAL_WIN=[[-21,-6],[-11,-16],[0,-20],[11,-16],[21,-6]];
 function palRR(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.lineTo(x+w-r,y);c.quadraticCurveTo(x+w,y,x+w,y+r);c.lineTo(x+w,y+h-r);c.quadraticCurveTo(x+w,y+h,x+w-r,y+h);c.lineTo(x+r,y+h);c.quadraticCurveTo(x,y+h,x,y+h-r);c.lineTo(x,y+r);c.quadraticCurveTo(x,y,x+r,y);c.closePath();}
@@ -105,13 +105,13 @@ function palace(c,T,label){
         c.strokeStyle = "rgba(255,210,80,.9)"; c.lineWidth = 2 * s; c.beginPath(); c.moveTo(-26 * s, -10 * s); c.lineTo(26 * s, -10 * s); c.stroke();
         c.restore(); }
       const ROWS = [[1245, .55, 30], [1305, .72, 25], [1390, .95, 19], [1510, 1.25, 15], [1670, 1.6, 12], [1860, 2.0, 10]];
-      const HUTS = []; let n = 0; ROWS.forEach(([y, s, cnt]) => { for (let k = 0; k < cnt; k++) { const x = (k + .5 + (hash(n, 3) - .5) * .4) * (2100 / cnt) - 500; HUTS.push({ x, y: y + (hash(n, 4) - .5) * 14 * s, s, e: false, i: n }); n++; } });
+      const HUTS = []; let n = 0; ROWS.forEach(([y, s, cnt]) => { for (let k = 0; k < cnt; k++) { const x = (k + .5 + (hash(n, 3) - .5) * .4) * (2100 / cnt) - 500; HUTS.push({ x, y: y + (hash(n, 4) - .5) * 14 * s, s: s * .68, e: false, i: n }); n++; } });
       function sky(h, t) {
-        const a = c.createLinearGradient(0, 0, 0, HY); a.addColorStop(0, "#2b2f6e"); a.addColorStop(.6, "#6c5aa8"); a.addColorStop(1, "#f29a8a"); c.fillStyle = a; c.fillRect(0, 0, W, HY + 2);
-        if (h > 0) { const b = c.createLinearGradient(0, 0, 0, HY); b.addColorStop(0, "#3a2d72"); b.addColorStop(.45, "#c6588a"); b.addColorStop(.75, "#ff8a4a"); b.addColorStop(1, "#ffd27a"); c.globalAlpha = h; c.fillStyle = b; c.fillRect(0, 0, W, HY + 2); c.globalAlpha = 1; }
+        const a = c.createLinearGradient(0, 0, 0, HY); a.addColorStop(0, "#2b2f6e"); a.addColorStop(.6, "#6c5aa8"); a.addColorStop(1, "#f29a8a"); c.fillStyle = a; c.fillRect(-120, -120, W + 240, HY + 122);
+        if (h > 0) { const b = c.createLinearGradient(0, 0, 0, HY); b.addColorStop(0, "#3a2d72"); b.addColorStop(.45, "#c6588a"); b.addColorStop(.75, "#ff8a4a"); b.addColorStop(1, "#ffd27a"); const ga = c.globalAlpha; c.globalAlpha = h * ga; c.fillStyle = b; c.fillRect(-120, -120, W + 240, HY + 122); c.globalAlpha = ga; }
         for (let i = 0; i < 40; i++) { const a = (1 - h) * .7 * Math.pow(Math.max(0, Math.sin(t * 2 + i * 3.1)), 3); if (a < .05) continue; c.fillStyle = `rgba(255,255,255,${a})`; c.fillRect(hash(i, 50) * W, hash(i, 51) * 420, 3, 3); } }
       function viewA(ox, t) { // vor dem Muschelpalast
-        c.save(); c.translate(ox, 0);
+        c.save(); c.translate(ox, 0); c.beginPath(); c.rect(-50, -300, W + 100, H + 600); c.clip();
         for (const [x, hh, s] of [[60, 420, 20], [180, 330, -14], [900, 400, -18], [1020, 340, 12]]) palmSil(x, 1160, hh, s + Math.sin(t + x) * 6, "#2a3a4a");
         const g = c.createLinearGradient(0, 1100, 0, H); g.addColorStop(0, "#c9a98a"); g.addColorStop(1, "#8a6a5a"); c.fillStyle = g; c.fillRect(-200, 1120, W + 400, H - 1120);
         c.strokeStyle = "rgba(90,60,40,.35)"; c.lineWidth = 3; for (let k = -8; k <= 8; k++) { c.beginPath(); c.moveTo(540 + k * 40, 1120); c.lineTo(540 + k * 240, H); c.stroke(); }
@@ -122,7 +122,7 @@ function palace(c,T,label){
         for (const x of [130, 950]) { c.fillStyle = "#3a2a20"; c.fillRect(x - 6, 1060, 12, 230); const f = .8 + .2 * Math.sin(t * 5 + x); const l = c.createRadialGradient(x, 1050, 2, x, 1050, 90); l.addColorStop(0, `rgba(255,220,140,${f})`); l.addColorStop(1, "rgba(255,220,140,0)"); c.fillStyle = l; c.fillRect(x - 90, 960, 180, 180); c.fillStyle = "#fff0c0"; c.beginPath(); c.arc(x, 1050, 14, 0, TAU); c.fill(); }
         c.restore(); }
       function viewB(ox, t) { // Blick zurück: Küste, Sonnenuntergang, geheime Insel am Horizont; bei L3 Schwenk + Zoom zur Nachbarinsel
-        c.save(); c.translate(ox, 0);
+        c.save(); c.translate(ox, 0); c.beginPath(); c.rect(-500, -300, W + 600, H + 600); c.clip();
         const pz = sm(line("L3")[0] - .1, line("L3")[0] + 1.4, t), zz = 1 + .55 * pz + .03 * Math.max(0, t - line("L3")[0]) * pz, PX = 930;
         c.translate(PX - 390 * pz, HY); c.scale(zz, zz); c.translate(-PX, -HY);
         const sy = HY - 40 + Math.max(0, t - T1) * 7, sx = 560;
@@ -130,6 +130,10 @@ function palace(c,T,label){
         c.fillStyle = "#fff1c0"; c.beginPath(); c.arc(sx, sy, 78, 0, TAU); c.fill();
         const sea = c.createLinearGradient(0, HY, 0, 1200); sea.addColorStop(0, "#c85a6a"); sea.addColorStop(.4, "#6a4a8a"); sea.addColorStop(1, "#2a4a7a"); c.fillStyle = sea; c.fillRect(-700, HY, W + 1500, 400);
         for (let i = 0; i < 46; i++) { const y = HY + 6 + i * 8, w = (60 + i * 6) * (.6 + .4 * Math.sin(t * 2.4 + i * 1.3)); c.fillStyle = `rgba(255,220,150,${.75 - i * .013})`; c.fillRect(sx - w / 2 + Math.sin(t * 1.7 + i) * 8, y, w, 3); }
+        for (let r = 0; r < 7; r++) { const ph = ((t * .22 + r / 7) % 1), y = HY + 20 + Math.pow(ph, 1.8) * 360, a = Math.sin(ph * Math.PI) * .7, len = 20 + ph * 90; // Wellenkämme rollen zum Strand
+          c.fillStyle = `rgba(255,240,230,${a})`; for (let k = -4; k < 16; k++) { const x = k * (70 + ph * 60) + hash(r * 31 + k, 80) * 60 + Math.sin(t + k) * 6; c.fillRect(x, y, len * (.5 + hash(r * 17 + k, 81) * .6), 2 + ph * 4); } }
+        for (let g = 0; g < 4; g++) { const gx = ((hash(g, 90) * 1400 + t * (40 + g * 12)) % 1500) - 200, gy = 380 + hash(g, 91) * 300 + Math.sin(t * .8 + g) * 20, fl = Math.sin(t * 9 + g * 2) * 10, s = .8 + hash(g, 92) * .6; // Möwen
+          c.strokeStyle = "#2a1b2a"; c.lineWidth = 4 * s; c.lineCap = "round"; c.beginPath(); c.moveTo(gx - 26 * s, gy - fl * s); c.quadraticCurveTo(gx - 12 * s, gy - 12 * s, gx, gy); c.quadraticCurveTo(gx + 12 * s, gy - 12 * s, gx + 26 * s, gy - fl * s); c.stroke(); }
         const isl = (x, w, h, col) => { c.fillStyle = col; c.beginPath(); c.moveTo(x - w, HY + 1); c.bezierCurveTo(x - w * .5, HY - h, x + w * .5, HY - h, x + w, HY + 1); c.fill(); };
         isl(150, 150, 46, "#4a2d55"); palmSil(120, HY - 30, 50, 6, "#4a2d55"); palmSil(170, HY - 34, 40, -5, "#4a2d55");
         isl(930, 120, 38, "#4a2d55"); palmSil(940, HY - 28, 46, -6, "#4a2d55");
@@ -143,14 +147,20 @@ function palace(c,T,label){
         for (const [x, hh, s] of [[-60, 520, 40], [1140, 480, -40]]) palmSil(x, H + 20, hh, s + Math.sin(t * .9 + x) * 10, "#1a1420");
         c.restore(); }
       function draw(t) {
-        const h = sm(T0, T1, t), bob = Math.sin(t * 1.5) * 4, blur = Math.sin(h * Math.PI) * 16;
-        c.setTransform(1, 0, 0, 1, 0, bob); c.clearRect(0, -10, W, H + 20);
-        sky(h, t);
-        if (h < .999) viewA(-h * 1250, t);
-        if (h > .001) viewB(1250 * (1 - h), t);
+        // Kopfdrehung: durchgehendes Panorama (Palast und Meer liegen nebeneinander), weich beschleunigt, leichtes Zurückweichen + Neigen in der Mitte
+        const ez = (k) => k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2, k0 = Math.max(0, Math.min(1, (t - T0) / (T1 - T0))), h = ez(k0);
+        const mid = Math.sin(h * Math.PI), bob = Math.sin(t * 1.5) * 4 * (1 - mid), zz = 1 - .07 * mid, rot = -.025 * mid, GAP = 920;
+        const vel = (ez(Math.min(1, k0 + .02)) - ez(Math.max(0, k0 - .02))) / .04 * GAP / (T1 - T0) / 30; // Pixel pro Bild
+        const tf = (cx) => { cx.setTransform(1, 0, 0, 1, 0, 0); cx.translate(540, 960 + bob); cx.rotate(rot); cx.scale(zz, zz); cx.translate(-540, -960); };
+        c.setTransform(1, 0, 0, 1, 0, 0); c.fillStyle = "#2b2f6e"; c.fillRect(0, 0, W, H);
+        tf(c); sky(h, t);
+        if (h > .001) viewB(GAP * (1 - h), t);
+        if (h < .999) { // Palast-Ansicht auf eigener Ebene, rechter Rand weich ausgeblendet -> fließender Übergang zum Meer
+          const main = c; c = OFF; c.setTransform(1, 0, 0, 1, 0, 0); c.clearRect(0, 0, W, H); tf(c); viewA(-h * GAP, t);
+          if (h > .001) { c.setTransform(1, 0, 0, 1, 0, 0); const ex = (W + 50) * zz + 540 * (1 - zz) - h * GAP * zz, g = c.createLinearGradient(ex - 420, 0, ex, 0); g.addColorStop(0, "rgba(0,0,0,0)"); g.addColorStop(1, "rgba(0,0,0,1)");
+            c.globalCompositeOperation = "destination-out"; c.fillStyle = g; c.fillRect(ex - 420, 0, W + 600, H); c.globalCompositeOperation = "source-over"; }
+          c = main; c.setTransform(1, 0, 0, 1, 0, 0); c.drawImage(OFF.canvas, 0, 0); }
         c.setTransform(1, 0, 0, 1, 0, 0);
-        if (blur > .5) { c.fillStyle = `rgba(255,220,190,${(blur / 16) * .35})`; c.fillRect(0, 0, W, H); // Wisch-Effekt beim Umdrehen: helle Streifen statt teurer Unschärfe
-          for (let i = 0; i < 26; i++) { const y = hash(i, 70) * H, l = 200 + hash(i, 71) * 500; c.fillStyle = `rgba(255,255,255,${(blur / 16) * .28})`; c.fillRect(((hash(i, 72) * W * 2 + t * 4000) % (W + l)) - l, y, l, 3 + hash(i, 73) * 8); } }
         const vg = c.createRadialGradient(W / 2, 900, 520, W / 2, 900, 1350); vg.addColorStop(0, "rgba(40,10,30,0)"); vg.addColorStop(1, "rgba(40,10,30,.35)"); c.fillStyle = vg; c.fillRect(0, 0, W, H);
       }
       const tl = gsap.timeline({ paused: true }), o = { t: 0 };
