@@ -1,6 +1,6 @@
 # Muschel-Tal – Tag 1 · Beschreibung (v4)
 
-**Cover:** `renders/cover.jpg` – „HIER STEHT BALD DEIN HAUS“, Pin auf Platz Nr. 1, Badge „0 Einwohner“, Button „+ Folgen = einziehen“.
+**Cover:** `renders/cover.jpg` – großes Muschel-Tal-Logo mit „TAG 1“, Badges „0 Einwohner“ und „Kontostand 0 Muscheln“, Pin auf Platz Nr. 1, „HIER STEHT BALD DEIN HAUS“, Button „+ Folgen = einziehen“.
 
 ## Hauptversion (zum Posten, lang mit Suchbegriffen)
 Platz Nr. 1 ist noch frei 👀 Wer zieht als Erstes ein? 🏝️
