@@ -18,10 +18,11 @@
   "pop_scale": 1.2,
   "hook_punch": true,
   "bar_colors": [
+   "#ff7a00",
    "#ff2e7e",
    "#0098ff",
+   "#ff7a00",
    "#8a3ffc",
-   "#ff6a00",
    "#00b86b"
   ],
   "key_color": "#ffe500",
@@ -224,6 +225,12 @@
    "tag": "",
    "lines": [
     {
+     "id": "L12a",
+     "text": "*y:Beach-Bar? / *y:Club? / *y:Wolkenkratzer?",
+     "speed": 1.12,
+     "style": "Style: a real young man listing exciting ideas, each one a playful question with rising intonation and a short pause between, excited.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
+    },
+    {
      "id": "L12",
      "text": "Was gebaut wird, / entscheidet *y:ihr. / In den *b:Kommentaren!",
      "speed": 1.12
@@ -234,6 +241,21 @@
      "name": "notification",
      "at": "L12:Kommentaren",
      "volume": 0.35
+    },
+    {
+     "name": "pop",
+     "at": "L12a:Beach-Bar",
+     "volume": 0.45
+    },
+    {
+     "name": "pop",
+     "at": "L12a:Club",
+     "volume": 0.45
+    },
+    {
+     "name": "pop",
+     "at": "L12a:Wolkenkratzer",
+     "volume": 0.5
     }
    ]
   },
@@ -274,5 +296,10 @@
   "src": "assets/music/suedsee.wav",
   "volume": 1,
   "note": "tools/make_music_tropical.py, im Code erzeugt (lizenzfrei), unter der Stimme automatisch leiser"
+ },
+ "ambience": {
+  "src": "assets/music/atmo.wav",
+  "volume": 1,
+  "note": "tools/make_ambience.py – Wellen, Brandung, Möwen (im Code erzeugt)"
  }
 }
