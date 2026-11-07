@@ -1,0 +1,113 @@
+{
+ "title": "Muschel-Tal Story – Wir warten auf euren Einzug",
+ "voice": "Gemini TTS (gemini-3.1-flash-tts-preview, Stimme Achird), natürlich und emotional, --speed 1.12",
+ "notes": "TikTok-Story: Zoom auf den Muschelpalast, Kreisflug über die leeren Hausplätze, Aufruf zum Folgen.",
+ "lead_in": 0.0,
+ "bg": "#0a5a92",
+ "captions": {
+  "pop": false,
+  "first_at_zero": true,
+  "left": 60,
+  "right": 190,
+  "size": 118,
+  "css": "@font-face { font-family: 'Lilita One'; src: url('assets/fonts/LilitaOne-Regular.woff2') format('woff2'); font-weight: 400; }\n    .inner { font-family: 'Lilita One', sans-serif; font-weight: 400; letter-spacing: .01em; }\n    .w { display: inline-block; white-space: nowrap; color: #fff; -webkit-text-stroke: 16px #1d2147; paint-order: stroke fill; }\n    .inner.hk { font-size: 104px; line-height: 1.12; } .inner.hk .w { margin: 0 .12em; }",
+  "single": true,
+  "top": 1250,
+  "first_full": true
+ },
+ "scenes": [
+  {
+   "id": "s01",
+   "tag": "",
+   "lines": [
+    {
+     "id": "L1",
+     "text": "Willkommen am *y:Muschelpalast!",
+     "style": "Style: a real young man, proud and warm, welcoming a friend, natural not theatrical.\nPace: fast.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+     "speed": 1.05
+    }
+   ],
+   "sfx": [
+    {
+     "name": "whoosh",
+     "at": "s01+0.0",
+     "volume": 0.35
+    },
+    {
+     "name": "ping",
+     "at": "L1:Muschelpalast",
+     "volume": 0.45
+    }
+   ]
+  },
+  {
+   "id": "s02",
+   "tag": "",
+   "lines": [
+    {
+     "id": "L2",
+     "text": "Und rundherum? Alles *r:frei!",
+     "speed": 1.0,
+     "style": "Style: a real young man, playful, a bit surprised, natural not theatrical.\nPace: fast.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
+    },
+    {
+     "id": "L3",
+     "text": "*y:Wir *y:warten auf euren *c:Einzug!",
+     "speed": 1.0,
+     "pause": 0.7
+    }
+   ],
+   "sfx": [
+    {
+     "name": "whoosh-short",
+     "at": "L2:Und",
+     "volume": 0.35
+    },
+    {
+     "name": "pop",
+     "at": "L2:frei",
+     "volume": 0.45
+    }
+   ]
+  },
+  {
+   "id": "s03",
+   "tag": "",
+   "hold": 2.2,
+   "lines": [
+    {
+     "id": "L4",
+     "text": "Jetzt *c:schnell *c:folgen!",
+     "speed": 1.1,
+     "style": "Style: a real young man, energetic and inviting, urgent but friendly, natural not theatrical.\nPace: fast.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+     "pause": 0.3
+    }
+   ],
+   "sfx": [
+    {
+     "name": "click",
+     "at": "L4:folgen",
+     "volume": 0.55
+    },
+    {
+     "name": "ka-ching",
+     "at": "L4:folgen+0.25",
+     "volume": 0.5
+    }
+   ]
+  }
+ ],
+ "style": "Style: a real, natural-sounding young man telling his friends something he is genuinely excited about. Conversational, warm, honest emotion in the voice, not like an announcer or an advertisement. Emphasize the important words naturally.\nPace: brisk but natural.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+ "loudness": -11,
+ "pitch": 0,
+ "music": {
+  "src": "assets/music/suedsee.wav",
+  "volume": 1,
+  "note": "tools/make_music_tropical.py, im Code erzeugt (lizenzfrei), unter der Stimme automatisch leiser"
+ },
+ "ambience": {
+  "src": "assets/music/atmo.wav",
+  "volume": 1,
+  "note": "tools/make_ambience.py – Wellen, Brandung, Möwen (im Code erzeugt)"
+ }
+}

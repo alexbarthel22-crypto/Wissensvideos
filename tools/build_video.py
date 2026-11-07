@@ -153,7 +153,7 @@ def build_captions(project, timings, windows, total, big=False, opt=None):
         for wi, w in enumerate(g["words"]):
             wid = f"cw{gi}-{wi}"
             col = w["color"]
-            fs = f' style="font-size:{10.5 / len(w["display"]):.2f}em"' if opt.get("single") and len(w["display"]) > 11 else ""  # lange Wörter passen in die Breite
+            fs = f' style="font-size:{10.5 / len(w["display"]):.2f}em"' if opt.get("single") and len(w["display"]) > 11 and not (gi == 0 and opt.get("first_full")) else ""  # lange Wörter passen in die Breite
             spans.append(f'<span id="{wid}" class="w{" k-" + col if col else ""}"{fs}>{esc(w["display"].upper())}</span>')
             target = (opt.get("key_color", "#ffe45c") if bars else COLORS[col]) if col else "#ffffff"
             if gi == 0 and opt.get("hook_text"):  # eigener Farbsatz für den Einstieg (z. B. dunkle Schrift auf Gelb)
