@@ -394,9 +394,9 @@ function person(c,L,st,front,wave){c.save();c.scale(L.h,L.h);const bw=1.6*L.wide
  c.fillStyle='rgba(255,120,120,.35)';c.beginPath();c.arc(front?-.85:.6,-3.55,.32,0,TAU);if(front)c.arc(.85,-3.55,.32,0,TAU);c.fill();
  c.strokeStyle='#8a2f22';c.lineWidth=.22;c.lineCap='round';c.beginPath();if(front)c.arc(0,-3.6,.42,.2,Math.PI-.2);else{c.moveTo(.75,-3.35);c.quadraticCurveTo(1.05,-3.15,1.3,-3.4);}c.stroke();
  c.restore();}
-const WALKERS=PLACED.filter((p,i)=>hash(i,77)<.17).slice(0,72).map((q,i)=>{const vert=hash(i,78)<.5,gx=q.p.gx,gy=q.p.gy,v=q.isl,mode=['walk','bike','walk','scooter','inline','walk','skate','bike'][i%8],fast=mode!=='walk';
+const WALKERS=PLACED.filter((p,i)=>hash(i,77)<.17).slice(0,72).map((q,i)=>{const vert=hash(i,78)<.5,gx=q.p.gx,gy=q.p.gy,v=q.isl,mode=['walk','bike','walk','scooter','inline','walk','skate','bike'][i%8],fast=mode!=='walk',phone=mode==='walk'&&hash(i,83)<.4;
  return{q,vert,mode,rx:v.x+Math.round(gx/5)*5*S,ry:v.y+Math.round(gy/4)*4*S*.9,x0:q.p.x,y0:q.p.y,len:(fast?45:22)+hash(i,79)*(fast?45:30),sp:(fast?.35:.22)+hash(i,80)*.2,ph:hash(i,81)*TAU,
-  fw:hash(i,82)<.5?1:-1,...look(q.nr),bikec:['#ff3d7f','#0a8fd0','#2fb3a0','#ff8a2a'][i%4]};}).filter(w=>{const v=w.q.isl,cx=w.vert?w.rx:Math.max(w.x0-w.len,Math.min(w.x0+w.len,v.x)),cy=w.vert?Math.max(w.y0-w.len,Math.min(w.y0+w.len,v.y)):w.ry;return Math.hypot(cx-v.x,cy-v.y)>v.plaza+8;});
+  fw:hash(i,82)<.5?1:-1,phone,...look(q.nr),bikec:['#ff3d7f','#0a8fd0','#2fb3a0','#ff8a2a'][i%4]};}).filter(w=>{const v=w.q.isl,cx=w.vert?w.rx:Math.max(w.x0-w.len,Math.min(w.x0+w.len,v.x)),cy=w.vert?Math.max(w.y0-w.len,Math.min(w.y0+w.len,v.y)):w.ry;return Math.hypot(cx-v.x,cy-v.y)>v.plaza+8;});
 const byName=new Map(PEOPLE.map(p=>[p.name.toLowerCase(),p]));
 
 const CAMP=(()=>{const v=ISL[1];if(!v||!v.open||v.people.length<7)return[];const pp=v.people.filter(q=>!WALKERS.some(w=>w.q===q)).sort((a,b)=>hash(a.nr,5)-hash(b.nr,5)).slice(0,7);
@@ -474,6 +474,11 @@ for(const v of ISL){v.lamps=[];v.benches=[];if(!v.open||!v.plots.length)continue
  for(let k=0,n=0;k<40&&n<7;k++){const a=hash(k,71+v.i)*TAU-Math.PI,[x,y]=polar(v,a,coastAt(v,a)+3);
   if(!v.i&&(Math.hypot(x-PIER1[0],y-PIER1[1])<90||Math.hypot(x-PIER0[0],y-PIER0[1])<40||(PJ&&Math.hypot(x-BB[0],y-BB[1])<50)))continue;
   if(v.benches.some(([bx,by])=>Math.hypot(bx-x,by-y)<70))continue;v.benches.push([x,y]);n++;}}
+const ACTS=(()=>{const A=[];let k=0;const farGeb=(x,y)=>GEB.every(g=>Math.hypot(g.cx-x,g.cy-y)>70)&&Math.hypot(PIER0[0]-x,PIER0[1]-y)>60;
+ for(const v of ISL){if(!v.open)continue;for(const [x,y] of v.benches||[])if(hash(k++,311)<.6&&farGeb(x,y))A.push({t:'bench',x,y,k:k++});
+  const g=Math.ceil(v.R/S);let n=0;for(let r=-g;r<=g&&n<(v.i?8:12);r++)for(let c2=-g;c2<=g&&n<(v.i?8:12);c2++){if(((c2%5)+5)%5||((r%4)+4)%4!==2||hash(r*7+v.i,c2*3+312)>.12)continue;const x=v.x+c2*S,y=v.y+r*S*.9+1;if(!inside(v,x,y,20)||Math.hypot(x-v.x,y-v.y)<v.plaza+20||!farGeb(x,y))continue;A.push({t:'talk',x,y,k:k++});n++;}
+  for(let j=0,m=0;j<40&&m<(v.i?5:7);j++){const a0=hash(j,313+v.i)*TAU-Math.PI;if(Math.abs(Math.cos(a0))<.75)continue;const d=coastAt(v,a0)+3,[x,y]=polar(v,a0,d);if(!farGeb(x,y)||A.some(o=>o.t==='fish'&&Math.hypot(o.x-x,o.y-y)<60))continue;m++;A.push({t:'fish',x,y,dir:Math.cos(a0)>=0?1:-1,k:k++});}}
+ return A;})();
 function bench(c,v,x,y){if(v.i===1){c.fillStyle='rgba(40,30,10,.25)';c.beginPath();c.ellipse(x+1,y+2.2,5.2,1.4,0,0,TAU);c.fill();c.fillStyle='#7a4a24';c.beginPath();c.roundRect(x-5,y-1.6,10,3.2,1.6);c.fill();c.fillStyle='#c9945a';c.beginPath();c.ellipse(x-5,y,.9,1.6,0,0,TAU);c.ellipse(x+5,y,.9,1.6,0,0,TAU);c.fill();c.strokeStyle='rgba(60,35,15,.6)';c.lineWidth=.3;c.beginPath();c.moveTo(x-3.5,y-.6);c.lineTo(x+3.5,y-.6);c.stroke();return;}
  c.fillStyle='rgba(40,30,10,.25)';c.fillRect(x-4.4,y+1.4,9.6,1.3);c.fillStyle='#5a3418';c.fillRect(x-4,y,.8,2.2);c.fillRect(x+3.2,y,.8,2.2);c.fillStyle='#a8743c';c.fillRect(x-4.6,y-.6,9.2,1.5);c.fillStyle='#8a5a2b';c.fillRect(x-4.6,y-3,9.2,1.1);c.fillRect(x-4,y-3,.7,2.6);c.fillRect(x+3.3,y-3,.7,2.6);}
 function lamp(c,v,x,y,lit){if(v.i===1){c.strokeStyle='#b8933e';c.lineWidth=1.1;c.beginPath();c.moveTo(x,y);c.lineTo(x,y-10);c.stroke();c.strokeStyle='#8a6a2a';c.lineWidth=.4;c.beginPath();c.moveTo(x-.6,y-3.5);c.lineTo(x+.6,y-3.5);c.moveTo(x-.6,y-7);c.lineTo(x+.6,y-7);c.stroke();
@@ -703,7 +708,7 @@ function drawMover(c,w,x,y,dir,vert,mode){
   c.save();c.translate(x,y);if(!vert)c.scale(dir,1);
   c.fillStyle='rgba(30,40,20,.25)';c.beginPath();c.ellipse(0,4.4,mode==='walk'?2.6:4.2,.9,0,0,TAU);c.fill();c.lineCap='round';
   if(vert&&mode!=='walk'&&mode!=='inline'&&mode!=='skate'){c.scale(w.h,w.h);riderV(c,w,dir>0);}
-  else if(mode==='walk'){const st=Math.sin(T*9+w.ph)*1.1;person(c,w,vert?st*.5:st,vert&&dir>0);}
+  else if(mode==='walk'){const st=Math.sin(T*9+w.ph)*1.1;person(c,w,vert?st*.5:st,vert&&dir>0);if(w.phone){c.save();c.scale(w.h,w.h);c.strokeStyle=w.skin;c.lineWidth=.75;c.lineCap='round';const fr=vert&&dir>0;c.beginPath();c.moveTo(fr?1.4:.3,-2.1);c.lineTo(fr?1.7:1.4,-3.7);c.stroke();c.fillStyle='#1d1d26';c.beginPath();c.roundRect(fr?1.45:1.15,-4.8,.65,1.25,.15);c.fill();c.restore();}}
   else if(mode==='inline'||mode==='skate'){const sk=mode==='skate',st=sk?0:Math.sin(T*4+w.ph)*.9,lean=sk?0:.12;
    if(sk){c.save();c.scale(w.h,w.h);c.fillStyle=w.bikec;if(vert){c.fillStyle='#8a8a94';c.fillRect(-1.3,4.9,2.6,.4);c.fillStyle='#2a1b12';for(const wx of[-1.55,1.55]){c.beginPath();c.roundRect(wx-.35,4.65,.7,1.15,.3);c.fill();}c.fillStyle=w.bikec;c.beginPath();c.roundRect(-1.75,4.05,3.5,.85,.42);c.fill();c.strokeStyle='#2a1b12';c.lineWidth=.25;c.stroke();c.fillStyle='rgba(255,255,255,.55)';c.fillRect(-1.3,4.2,2.6,.2);}else{c.beginPath();c.roundRect(-3.4,4.3,6.8,1,.5);c.fill();c.fillStyle='#2a1b12';for(const wx of[-2.3,2.3]){c.beginPath();c.arc(wx,5.6,.55,0,TAU);c.fill();}}c.restore();c.translate(0,-.8);}
    c.save();if(!vert)c.rotate(lean);person(c,w,vert?st*.4:st,vert&&dir>0);
@@ -956,6 +961,18 @@ function draw(){
  if(z*S>9)for(let wi=0;wi<nW;wi++){const w=WALKERS[wi];if(!w)break;OUT.add(w.q);const q=w.q,L2=2*w.len,u=((T*w.sp*w.len*.55+w.ph/TAU*L2)%L2+L2)%L2,dir=w.fw,o=dir*(u-w.len),fade=Math.min(1,u/(L2*.08),(L2-u)/(L2*.08)),x=w.vert?w.rx:w.x0+o,y=w.vert?w.y0+o:w.ry-2.6;if(!vis(x,y)||fade<=0)continue;c.globalAlpha=fade;
   drawMover(c,w,x,y,dir,w.vert,w.mode);
   c.globalAlpha=1;if(z*S>30&&fade>.5)NAMES.push([q.name,x,y-(w.mode==='bike'?12.2:11.2)]);}
+ // Tätigkeiten: auf Bänken sitzen, miteinander reden, am Ufer angeln (wechselnde Einwohner, nachts weniger)
+ if(z*S>8)for(const a of ACTS){if(!visR(a.x,a.y,30))continue;const P=90+hash(a.k,301)*90,cyc=T/P+hash(a.k,302),ci=Math.floor(cyc),u=cyc-ci;if(u>(nl>.5?.35:.8))continue;
+  const ps=[];let o=0;while(ps.length<(a.t==='talk'?2:1)&&o<40){const q=PLACED[(hash(ci*13+a.k+o,303)*PLACED.length)|0];o++;if(q&&!OUT.has(q)&&q!==sel&&!ps.includes(q))ps.push(q);}if(ps.length<(a.t==='talk'?2:1))continue;ps.forEach(q=>OUT.add(q));
+  const fade=Math.min(1,u*P/1.2,((nl>.5?.35:.8)-u)*P/1.2);c.globalAlpha=Math.max(0,fade);
+  if(a.t==='bench'){const q=ps[0],L=q.L||(q.L=look(q.nr));c.save();c.translate(a.x,a.y-2.2);person(c,L,0,true,0);c.restore();if(z*S>30)NAMES.push([q.name,a.x,a.y-13*L.h,null,2.1]);}
+  else if(a.t==='talk'){ps.forEach((q,j)=>{const L=q.L||(q.L=look(q.nr)),x=a.x+(j?2.6:-2.6);c.save();c.translate(x,a.y);if(j)c.scale(-1,1);person(c,L,0,false,j===((ci+Math.floor(T/2.4))%2)?.3+Math.abs(Math.sin(T*5+j))*.5:0);c.restore();if(z*S>30)NAMES.push([q.name,x,a.y+5.4+(j?3.4:0),null,2.1]);});
+   if(z*S>14){const j=(ci+Math.floor(T/2.4))%2,bx=a.x+(j?2.6:-2.6),by=a.y-14;c.fillStyle='#fff';c.strokeStyle='#2a1b12';c.lineWidth=.3;c.beginPath();c.roundRect(bx-2.6,by-1.4,5.2,2.8,1.4);c.fill();c.stroke();c.fillStyle='#2a1b12';for(let d=0;d<3;d++){if((T*3|0)%4<d)continue;c.beginPath();c.arc(bx-1.2+d*1.2,by,.35,0,TAU);c.fill();}}}
+  else{const q=ps[0],L=q.L||(q.L=look(q.nr)),d=a.dir;c.save();c.translate(a.x,a.y);c.scale(d,1);person(c,L,0,false,0);c.scale(L.h,L.h);const tw=REDUCED?0:Math.sin(T*1.3+a.k)*.15;
+   c.strokeStyle='#6b3f1d';c.lineWidth=.35;c.beginPath();c.moveTo(.9,-1.6);c.lineTo(7,-7.5+tw);c.stroke();c.strokeStyle='rgba(255,255,255,.75)';c.lineWidth=.15;c.beginPath();c.moveTo(7,-7.5+tw);c.quadraticCurveTo(9,-2,9.6,3.2);c.stroke();
+   const bob=(Math.sin(T*2+a.k)>.93)?.6:0;c.fillStyle='#e8433c';c.beginPath();c.arc(9.6,3.4+bob,.45,0,TAU);c.fill();c.fillStyle='#fff';c.beginPath();c.arc(9.6,3.1+bob,.22,0,TAU);c.fill();
+   c.fillStyle='#3a7bd5';c.beginPath();c.roundRect(-3.2,2.4,2,1.6,.3);c.fill();c.restore();if(z*S>30)NAMES.push([q.name,a.x,a.y-11*L.h,null,2.1]);}
+  c.globalAlpha=1;}
  // Lagerfeuer auf der Kokos-Küste: 7 Bewohner gehen hin und bleiben lange (meist 5–6 gleichzeitig dort)
  if(z*S>6)for(const f of CAMP){const k=((T/150)+f.ph)%1,tin=.07,tout=.93;let x,y,mv=0,dir;
   if(k<tin){const e=k/tin;x=f.hx+(f.fx-f.hx)*e;y=f.hy+(f.fy-f.hy)*e;mv=1;dir=f.fx>=f.hx?1:-1;}
@@ -1195,12 +1212,13 @@ $('nTag').textContent=(()=>{if(!I.start)return I.tag||'–';const b=berlin(),[y,
   +(XM.open?row(esc(I.geheim.emoji||'🎁'),esc(I.geheim.name),'geöffnet!',1,'#ccc','OFFEN','var(--sun)'):'<div class="r"><span class="e"></span><div><b>???</b></div><span></span></div>')
   +(WAIT.length?'<p class="sub" style="margin-top:4px">⛴️ <b>'+fmt(WAIT.length)+'</b> neue Einwohner warten am Steg auf die Fähre zur nächsten Insel.</p>':'');}
 if(PJ){$('pjname').textContent=PJ.emoji+' Wir bauen: '+PJ.name;$('pjnum').textContent=fmt(PJ.stand)+' / '+fmt(PJ.ziel)+' '+PJ.einheit;$('pjbar').style.width=Math.min(100,PJ.stand/PJ.ziel*100)+'%';$('pjtext').textContent=PJ.text;}else $('proj').hidden=true;
-$('news').innerHTML='<a href="news.html"><b>Neu:</b> '+esc(I.news[0]||'')+'<u>Alle News ansehen →</u></a>';$('news').hidden=!I.news.length;
+$('news').hidden=true;
 $('faq').innerHTML=[
  ['Was ist Muschel-Tal?','Ein Mitmach-Spiel auf TikTok: Jeder Follower von '+ACC+' bekommt eine Hütte in Muschel-Tal. In den Videos geht die Geschichte weiter – und ihr bestimmt in den Kommentaren mit.'],
  ['Ich habe gerade gefolgt. Wo ist meine Hütte?','Neue Einwohner kommen beim nächsten Update dazu. Deine Nummer richtet sich danach, wann du gefolgt bist.'],
  ['Was sind die Inseln mit ???','Auf der Haupt-Insel ist Platz für '+fmt(MAIN.plaetze)+' Einwohner. Danach öffnen neue Inseln – bei '+ISL.slice(1).map(v=>fmt(v.ab+1)).join(', ').replace(/, ([^,]*)$/,' und $1')+' Followern. Je später, desto schöner. Und irgendwo am Rand der Karte versteckt sich noch eine geheime Insel …'],
  ['Ist das hier alles umsonst?','Ja, komplett. Folgen reicht.'],
+ ['Ich habe einen Fehler auf der Seite entdeckt. Was mache ich?','Schreib '+ACC+' auf TikTok eine Nachricht oder einen Kommentar und beschreib kurz, was nicht stimmt – am besten mit Screenshot. Danke fürs Helfen!'],
  ['Ich will nicht auf der Karte stehen.','Kein Problem. Schreib '+ACC+' auf TikTok eine Nachricht, dann nehmen wir deinen Namen raus.']
 ].map(f=>'<details><summary>'+esc(f[0])+'</summary><p>🏝️ '+esc(f[1])+'</p></details>').join('');
 $('foot').innerHTML='<a href="'+ACCURL+'" target="_blank" rel="noopener">'+esc(ACC)+'</a> auf TikTok<button class="lupebtn" id="lupe" aria-label="Lupe">'+LUPE_SVG+'</button>';

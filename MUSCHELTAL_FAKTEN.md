@@ -74,6 +74,9 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - Tippt man auf eine Hütte, erscheint unter der Suche nur der Name mit × zum Schließen.
 - Suchfeld: „Finde dich: @TikTok-Name“. Wer sich sucht, steht vor seinem Haus (bzw. an seinem Arbeitsplatz), steht dabei so nah wie möglich an ihrer Hütte – auf einem freien Platz direkt daneben oder dem nächsten Weg (nie auf Dächern), leicht hervorgehoben und von keinem Namen verdeckt, die Kamera zielt auf sie, und sie winkt und sagt in einer Sprechblase direkt über dem Kopf: „Ich bin du! 👋“ (bei allen gleich). Nach 2 s steigt die Person auf ein zufälliges Gefährt (zu Fuß, Fahrrad, E-Roller, Inliner, Skateboard) und fährt den Weg entlang davon.
 - Gefährte auf der Karte: zu Fuß, Fahrrad, E-Roller, Inliner, Skateboard.
+- Bewohner tun auch anderes: telefonieren beim Gehen, stehen zu zweit auf Wegen und reden miteinander, sitzen auf Bänken, angeln am Ufer (wechselnde Einwohner, nachts weniger).
+- Der „Neu:“-Kasten unter „Gerade auf den Inseln“ ist entfernt (News über den News-Knopf).
+- FAQ: „Ich habe einen Fehler auf der Seite entdeckt. Was mache ich?“ → @muscheltal auf TikTok schreiben.
 - Steht in einem TikTok-Namen klar ein Vorname (auch mit Zahlen, z. B. em1lia) oder „girl/boy“ o. ä., hat die Figur das passende Geschlecht (Frauen: lange Haare/Dutt, Männer: kurze Haare).
 - Im Muschelpass führt „Alle meine Erfolge ansehen“ zur persönlichen Erfolge-Übersicht des Einwohners (mit Datum); von dort „Alle Erfolge, die es gibt“ → erfolge.html.
 
