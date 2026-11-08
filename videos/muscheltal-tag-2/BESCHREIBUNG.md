@@ -1,6 +1,6 @@
-# Muschel-Tal – Tag 2 · Beschreibung
+# Muschel-Tal – Tag 1 (Video 2) · Beschreibung
 
-**Cover:** `renders/cover.jpg` – „TAG 2 🎉 · VON 0 AUF 575!“, Haupt-Insel voll · neue Insel 🥥, Hütten mit Namen + Konfetti.
+**Cover:** `renders/cover.jpg` – „TAG 1 🎉 · VON 0 AUF 575!“, Haupt-Insel voll · neue Insel 🥥, Hütten mit Namen + Konfetti.
 
 ## Hauptversion (zum Posten)
 Von 0 auf 575 Bewohner in einem Tag 🤯 Die Haupt-Insel ist voll – findest du deine Hütte? 🏝️
@@ -10,7 +10,7 @@ Muschel-Tal wächst: 500 Hütten mit euren Namen auf der Haupt-Insel und schon 7
 #muscheltal #fürdich #fyp #insel #südsee #followerstadt #community #abstimmung
 
 ## Alternative A – kurz
-Tag 2: 575 Bewohner, 2.875 Muscheln, 2 Gebäude 🏝️ Was bauen wir? 👇
+Tag 1: 575 Bewohner, 2.875 Muscheln, 2 Gebäude 🏝️ Was bauen wir? 👇
 #muscheltal #fürdich #fyp #insel #südsee
 
 ## Alternative B – Neugier

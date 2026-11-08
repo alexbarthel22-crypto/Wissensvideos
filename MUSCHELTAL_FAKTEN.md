@@ -60,7 +60,7 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - Namen auf der Karte stehen immer ganz vorne (nichts verdeckt sie).
 - Im Muschelpass führt „Alle meine Erfolge ansehen“ zur persönlichen Erfolge-Übersicht des Einwohners (mit Datum); von dort „Alle Erfolge, die es gibt“ → erfolge.html.
 
-## Video 2 / Tag 2 (fertig 8.11., `videos/muscheltal-tag-2/renders/muscheltal-tag-2.mp4`, 41 s)
+## Video 2 = „Tag 1“ (Cover „TAG 1“, fertig 8.11., `videos/muscheltal-tag-2/renders/muscheltal-tag-2.mp4`, 41 s)
 - Inhalt: 0 → 575 Bewohner, Haupt-Insel voll (500 Hütten mit Namen) · nächste Insel besiedelt: Kokos-Küste, 75 Bewohner · 1 Bewohner = 5 Muscheln → **2.875 Muscheln** → davon **2 Gebäude** bauen.
 - **Abstimmung in den Kommentaren:** Wünsche Strandbar, Dönerbude, Bäckerei, Krankenhaus – 2 davon werden gekauft.
 - **Bürgermeister*in gesucht** – der Top-Kommentar gewinnt und **wohnt im Muschelpalast** (passt zu Regel 5; Homepage sollte den Palast als Wohnsitz des Bürgermeisters zeigen).
