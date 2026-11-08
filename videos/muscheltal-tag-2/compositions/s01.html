@@ -55,8 +55,8 @@
     #s01-st { left: 250px; top: 520px; color: #e8433c; border-color: #e8433c; transform: rotate(-8deg); font-size: 84px; }
     .s01-em { position: absolute; font-size: 110px; }
   </style>
-  <div id="root" data-composition-id="s01" data-start="0" data-duration="4.890" data-width="1080" data-height="1920">
-    <div id="s01-stage" class="clip stage" data-start="0" data-duration="4.890" data-track-index="0">
+  <div id="root" data-composition-id="s01" data-start="0" data-duration="5.600" data-width="1080" data-height="1920">
+    <div id="s01-stage" class="clip stage" data-start="0" data-duration="5.600" data-track-index="0">
       <div id="s01-cfw"></div>
       <div id="s01-c"><b id="s01-n">0</b>BEWOHNER</div>
       <div id="s01-st" class="stamp">HAUPTINSEL VOLL!</div>
@@ -66,7 +66,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 4.89, "L1": [0.0, 3.05], "L1.words": [["wahnsinn", 0.0, 0.57], ["von", 0.76, 0.934], ["null", 0.934, 1.115], ["auf", 1.115, 1.289], ["575", 1.289, 2.534], ["bewohner", 2.534, 3.05]], "L2": [3.27, 4.71], "L2.words": [["die", 3.27, 3.507], ["hauptinsel", 3.507, 4.227], ["ist", 4.227, 4.464], ["voll", 4.464, 4.71]]};
+      const C = {"__dur": 5.6, "L0": [0.0, 1.11], "L0.words": [["wahnsinn", 0.0, 1.11]], "L1": [1.33, 3.76], "L1.words": [["von", 1.33, 1.515], ["null", 1.515, 1.706], ["auf", 1.706, 1.891], ["575", 1.891, 3.212], ["bewohner", 3.212, 3.76]], "L2": [3.98, 5.42], "L2.words": [["die", 3.98, 4.217], ["hauptinsel", 4.217, 4.937], ["ist", 4.937, 5.174], ["voll", 5.174, 5.42]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];

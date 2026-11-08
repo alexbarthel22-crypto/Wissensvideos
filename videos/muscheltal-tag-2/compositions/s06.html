@@ -51,20 +51,22 @@
     #s06-t { top: 300px; font-size: 52px; white-space: nowrap; max-width: none; }
     #s06-cr { position: absolute; left: 0; right: 0; top: 420px; text-align: center; font-size: 170px; }
     #s06-sheet { top: 660px; }
+    #s06-p { top: 690px; font-size: 54px; white-space: nowrap; max-width: none; }
   </style>
-  <div id="root" data-composition-id="s06" data-start="0" data-duration="4.940" data-width="1080" data-height="1920">
-    <div id="s06-stage" class="clip stage" data-start="0" data-duration="4.940" data-track-index="0">
+  <div id="root" data-composition-id="s06" data-start="0" data-duration="6.320" data-width="1080" data-height="1920">
+    <div id="s06-stage" class="clip stage" data-start="0" data-duration="6.320" data-track-index="0">
       <div id="s06-t" class="bt or">BÜRGERMEISTER*IN GESUCHT!</div>
       <div id="s06-cr">👑</div>
       <div id="s06-sheet" class="tk"><div class="tk-h">Top-Kommentar gewinnt<b>×</b></div>
         <div id="s06-c1" class="tk-c"><div class="tk-a" style="background:#8a3ffc">?</div><div><div class="tk-u">dein.name</div><div class="tk-t">ich will bürgermeister*in werden 👑</div><div class="tk-m">vor 2 Std.<span>Antworten</span></div></div><div class="tk-l"><div class="hz"></div><i>1.204</i></div></div>
       </div>
+      <div id="s06-p" class="bt or">🏰 WOHNT IM MUSCHELPALAST</div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 4.94, "L11": [0.2, 3.23], "L11.words": [["außerdem", 0.2, 0.631], ["suchen", 0.631, 0.922], ["wir", 0.922, 1.068], ["eine", 1.068, 1.349], ["bürgermeisterin", 1.349, 2.076], ["oder", 2.076, 2.357], ["einen", 2.357, 2.643], ["bürgermeister", 2.643, 3.23]], "L12": [3.45, 4.76], "L12.words": [["der", 3.45, 3.636], ["topkommentar", 3.636, 4.381], ["gewinnt", 4.381, 4.76]]};
+      const C = {"__dur": 6.32, "L11": [0.2, 3.23], "L11.words": [["außerdem", 0.2, 0.631], ["suchen", 0.631, 0.922], ["wir", 0.922, 1.068], ["eine", 1.068, 1.349], ["bürgermeisterin", 1.349, 2.076], ["oder", 2.076, 2.357], ["einen", 2.357, 2.643], ["bürgermeister", 2.643, 3.23]], "L12": [3.45, 6.14], "L12.words": [["der", 3.45, 3.641], ["topkommentar", 3.641, 4.403], ["gewinnt", 4.403, 4.792], ["und", 4.792, 4.982], ["wohnt", 4.982, 5.187], ["im", 5.187, 5.37], ["muschelpalast", 5.37, 6.14]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -114,6 +116,9 @@
       tl.to("#s06-cr", { rotation: 8, duration: .3, yoyo: true, repeat: 5, ease: "sine.inOut" }, l0 + .9);
       tl.fromTo("#s06-sheet", { opacity: 0, y: 500 }, { opacity: 1, y: 0, duration: .45, ease: "power4.out" }, tp - .4);
       tkLike(tl, "#s06-c1", tp + .2, 1204, 1388, 1.2, 3);
+      const mp = at("L12", "Muschelpalast");
+      tl.to("#s06-sheet", { opacity: 0, y: 300, duration: .3, ease: "power2.in" }, mp - .35);
+      tl.fromTo("#s06-p", { opacity: 0, scale: .3, rotation: -8 }, { opacity: 1, scale: 1, rotation: -2, duration: .4, ease: "back.out(2.6)" }, mp - .05);
       tl.to("#s06-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
       window.__timelines["s06"] = tl;
     })();

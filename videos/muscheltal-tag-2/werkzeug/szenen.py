@@ -75,24 +75,25 @@ scene("s01", f"""    {CF_CSS}
 
 # s02 – Hütten mit Namen, findest du deinen?
 scene("s02", """    #s02-t { top: 300px; font-size: 52px; white-space: nowrap; max-width: none; }
-    #s02-q { top: 430px; }
-    #s02-ok { left: 330px; top: 560px; color: #2e9e5b; border-color: #2e9e5b; transform: rotate(-6deg); font-size: 80px; }""",
+    #s02-q { top: 430px; font-size: 50px; white-space: nowrap; max-width: none; }
+    #s02-ok { left: 330px; top: 420px; color: #2e9e5b; border-color: #2e9e5b; transform: rotate(-6deg); font-size: 80px; }""",
 """      <div id="s02-t" class="bt or">500 HÜTTEN · 500 NAMEN</div>
-      <div id="s02-q" class="bt bl">🔍 FINDEST DU DEINEN?</div>
+      <div id="s02-q" class="bt pk">🔍 FINDEST DU DEINEN?</div>
       <div id="s02-ok" class="stamp">ALLE DA ✓</div>""",
 """      const de = at("L3", "deinen"), al = at("L4", "Alle");
       tl.fromTo("#s02-t", { opacity: 0, y: -80 }, { opacity: 1, y: 0, duration: .4, ease: "back.out(2)" }, .05);
       tl.fromTo("#s02-q", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, de - .3);
       tl.to("#s02-q", { rotation: 2, duration: .2, yoyo: true, repeat: 5, ease: "sine.inOut" }, de + .1);
+      tl.to("#s02-q", { opacity: 0, scale: .6, duration: .15, ease: "power2.in" }, al - .2);
       tl.fromTo("#s02-ok", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, al - .05);""")
 
 # s03 – Kokos-Küste besiedelt
 scene("s03", """    #s03-t { top: 300px; font-size: 72px; white-space: nowrap; max-width: none; }
-    #s03-c { position: absolute; left: 0; right: 0; margin: 0 auto; top: 450px; width: fit-content; padding: 4px 36px 10px; border-radius: 36px; background: #fff; border: 6px solid #0a8fd0;
-      font-family: "Inter", sans-serif; color: #0a78c2; font-weight: 900; font-size: 40px; display: flex; align-items: baseline; gap: 14px; box-shadow: 0 10px 0 rgba(0,40,80,.3); }
+    #s03-c { position: absolute; left: 0; right: 0; margin: 0 auto; top: 450px; width: fit-content; padding: 4px 36px 10px; border-radius: 36px; background: #fff; border: 6px solid #ff6a1a;
+      font-family: "Inter", sans-serif; color: #2a1b12; font-weight: 900; font-size: 40px; display: flex; align-items: baseline; gap: 14px; box-shadow: 0 10px 0 rgba(0,40,80,.3); }
     #s03-c b { font-size: 100px; color: #ff6a1a; line-height: 1; }
     #s03-new { left: 780px; top: 400px; color: #e8433c; border-color: #e8433c; transform: rotate(10deg); font-size: 48px; }""",
-"""      <div id="s03-t" class="bt bl">🥥 KOKOS-KÜSTE</div>
+"""      <div id="s03-t" class="bt or">🥥 KOKOS-KÜSTE</div>
       <div id="s03-new" class="stamp">NEU!</div>
       <div id="s03-c"><b id="s03-n">0</b>BEWOHNER</div>""",
 """      const ko = at("L5", "Kokos"), fu = at("L6", "75");
@@ -121,7 +122,7 @@ scene("s04", """    #s04-eq { top: 300px; font-size: 56px; white-space: nowrap; 
 scene("s05", WC_CSS + """
     #s05-t { top: 300px; font-size: 52px; white-space: nowrap; max-width: none; }
     #s05-v { top: 1020px; font-size: 50px; white-space: nowrap; max-width: none; }""",
-f"""      <div id="s05-t" class="bt vi">IHR HABT EUCH GEWÜNSCHT:</div>
+f"""      <div id="s05-t" class="bt pk">IHR HABT EUCH GEWÜNSCHT:</div>
       {cards("s05-k", [("🍹", "STRANDBAR", "#ff7a00"), ("🥙", "DÖNERBUDE", "#e8433c"), ("🥐", "BÄCKEREI", "#c98a2a"), ("🏥", "KRANKENHAUS", "#0098ff")], 420)}
       <div id="s05-v" class="bt pk">👇 STIMMT AB: 2 GEWINNEN!</div>""",
 """      const ws = [at("L9", "Strandbar"), at("L9", "Dönerbude"), at("L9", "Bäckerei"), at("L9", "Krankenhaus")], ab = at("L10", "Stimmt");
@@ -135,18 +136,23 @@ f"""      <div id="s05-t" class="bt vi">IHR HABT EUCH GEWÜNSCHT:</div>
 # s06 – Bürgermeister*in gesucht, Top-Kommentar gewinnt
 scene("s06", """    #s06-t { top: 300px; font-size: 52px; white-space: nowrap; max-width: none; }
     #s06-cr { position: absolute; left: 0; right: 0; top: 420px; text-align: center; font-size: 170px; }
-    #s06-sheet { top: 660px; }""",
+    #s06-sheet { top: 660px; }
+    #s06-p { top: 690px; font-size: 54px; white-space: nowrap; max-width: none; }""",
 f"""      <div id="s06-t" class="bt or">BÜRGERMEISTER*IN GESUCHT!</div>
       <div id="s06-cr">👑</div>
       <div id="s06-sheet" class="tk"><div class="tk-h">Top-Kommentar gewinnt<b>×</b></div>
         {tk("s06-c1", "#8a3ffc", "?", "dein.name", "ich will bürgermeister*in werden 👑", "1.204")}
-      </div>""",
+      </div>
+      <div id="s06-p" class="bt or">🏰 WOHNT IM MUSCHELPALAST</div>""",
 """      const l0 = line("L11")[0], tp = at("L12", "Top");
       tl.fromTo("#s06-t", { opacity: 0, scale: 2, rotation: -8 }, { opacity: 1, scale: 1, rotation: -2, duration: .35, ease: "back.out(2.4)" }, l0);
       tl.fromTo("#s06-cr", { opacity: 0, y: -200, rotation: -30 }, { opacity: 1, y: 0, rotation: 0, duration: .5, ease: "bounce.out" }, l0 + .3);
       tl.to("#s06-cr", { rotation: 8, duration: .3, yoyo: true, repeat: 5, ease: "sine.inOut" }, l0 + .9);
       tl.fromTo("#s06-sheet", { opacity: 0, y: 500 }, { opacity: 1, y: 0, duration: .45, ease: "power4.out" }, tp - .4);
-      tkLike(tl, "#s06-c1", tp + .2, 1204, 1388, 1.2, 3);""")
+      tkLike(tl, "#s06-c1", tp + .2, 1204, 1388, 1.2, 3);
+      const mp = at("L12", "Muschelpalast");
+      tl.to("#s06-sheet", { opacity: 0, y: 300, duration: .3, ease: "power2.in" }, mp - .35);
+      tl.fromTo("#s06-p", { opacity: 0, scale: .3, rotation: -8 }, { opacity: 1, scale: 1, rotation: -2, duration: .4, ease: "back.out(2.6)" }, mp - .05);""")
 
 # s07 – Überraschung bei 1.000, folgen
 scene("s07", """    #s07-t { top: 300px; font-size: 56px; white-space: nowrap; max-width: none; }
@@ -156,11 +162,11 @@ scene("s07", """    #s07-t { top: 300px; font-size: 56px; white-space: nowrap; m
     #s07-btn2 { position: absolute; inset: 0; border-radius: 60px; background: #fff; color: #0a78c2; display: grid; place-items: center; opacity: 0; }
     #s07-hand { position: absolute; left: 690px; top: 770px; font-size: 120px; }
     #s07-at { top: 880px; font-size: 44px; }""",
-"""      <div id="s07-t" class="bt vi">BEI 1.000 BEWOHNERN …</div>
+"""      <div id="s07-t" class="bt pk">BEI 1.000 BEWOHNERN …</div>
       <div id="s07-g">🎁</div>
       <div id="s07-btn">+ Folgen<div id="s07-btn2">✓ Gefolgt</div></div>
       <div id="s07-hand" data-layout-ignore>👆</div>
-      <div id="s07-at" class="bt bl">@muscheltal</div>""",
+      <div id="s07-at" class="bt or">@muscheltal</div>""",
 """      const l0 = line("L13")[0], ue = at("L13", "Überraschung"), fo = at("L14", "Folg");
       tl.fromTo("#s07-t", { opacity: 0, y: -80 }, { opacity: 1, y: 0, duration: .4, ease: "back.out(2)" }, l0);
       tl.fromTo("#s07-g", { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: .45, ease: "back.out(2.6)" }, l0 + .3);

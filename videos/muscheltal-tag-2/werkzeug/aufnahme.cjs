@@ -12,7 +12,7 @@ const zk=405/(2*(G.k.R+60));
 const K=[[0,G.m.x,G.m.y,G.m.z*.82],[L.L2.end,G.m.x,G.m.y,G.m.z*1.08],
  [L.L3.start+.2,-170,-40,3.6],[L.L4.end,170,40,4.2],
  [at('L5','nächste')-.2,60,0,G.m.z*1.1],[at('L5','Kokos'),G.k.x,G.k.y,zk],[L.L6.start+.2,G.k.x-50,G.k.y-20,3.6],[L.L6.end+.3,G.k.x+60,G.k.y+30,4.0],
- [L.L7.start+.6,G.m.x,G.m.y,G.m.z*1.05],[at('L8','zwei'),G.bp.x,G.bp.y,2.6],[L.L9.start,G.bp.x+20,G.bp.y,2.8],[L.L10.end,G.bp2.x,G.bp2.y,2.6],
+ [L.L7.start+.4,-230,140,2.5],[at('L7','2.875'),60,190,2.7],[L.L7.end,220,60,2.6],[at('L8','zwei'),G.bp.x,G.bp.y,2.6],[L.L9.start,G.bp.x+20,G.bp.y,2.8],[L.L10.end,G.bp2.x,G.bp2.y,2.6],
  [L.L11.start+.3,0,10,3.4],[L.L12.end,0,0,3.8],
  [L.L13.start+.4,G.a.x,G.a.y,G.a.z*1.15],[dur,G.a.x,G.a.y,G.a.z*1.05]];
 fs.mkdirSync(out,{recursive:true});

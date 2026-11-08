@@ -49,13 +49,13 @@
     .tk-pin { display: inline-block; font-size: 28px; font-weight: 800; color: #fe2c55; background: #ffe3ea; border-radius: 6px; padding: 2px 8px; margin-left: 10px; vertical-align: 3px; }
 
     #s02-t { top: 300px; font-size: 52px; white-space: nowrap; max-width: none; }
-    #s02-q { top: 430px; }
-    #s02-ok { left: 330px; top: 560px; color: #2e9e5b; border-color: #2e9e5b; transform: rotate(-6deg); font-size: 80px; }
+    #s02-q { top: 430px; font-size: 50px; white-space: nowrap; max-width: none; }
+    #s02-ok { left: 330px; top: 420px; color: #2e9e5b; border-color: #2e9e5b; transform: rotate(-6deg); font-size: 80px; }
   </style>
   <div id="root" data-composition-id="s02" data-start="0" data-duration="4.650" data-width="1080" data-height="1920">
     <div id="s02-stage" class="clip stage" data-start="0" data-duration="4.650" data-track-index="0">
       <div id="s02-t" class="bt or">500 HÜTTEN · 500 NAMEN</div>
-      <div id="s02-q" class="bt bl">🔍 FINDEST DU DEINEN?</div>
+      <div id="s02-q" class="bt pk">🔍 FINDEST DU DEINEN?</div>
       <div id="s02-ok" class="stamp">ALLE DA ✓</div>
     </div>
   </div>
@@ -110,6 +110,7 @@
       tl.fromTo("#s02-t", { opacity: 0, y: -80 }, { opacity: 1, y: 0, duration: .4, ease: "back.out(2)" }, .05);
       tl.fromTo("#s02-q", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, de - .3);
       tl.to("#s02-q", { rotation: 2, duration: .2, yoyo: true, repeat: 5, ease: "sine.inOut" }, de + .1);
+      tl.to("#s02-q", { opacity: 0, scale: .6, duration: .15, ease: "power2.in" }, al - .2);
       tl.fromTo("#s02-ok", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, al - .05);
       tl.to("#s02-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
       window.__timelines["s02"] = tl;
