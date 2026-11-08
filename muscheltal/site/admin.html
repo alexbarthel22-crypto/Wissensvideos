@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Besuche – Muschel-Tal</title>
+<style>
+:root{--ink:#2a1b12;--sand:#fff4e0;--hib:#e8467c;--soft:#7a5a45;--f:ui-rounded,"SF Pro Rounded","Nunito","Segoe UI",system-ui,sans-serif}
+*{box-sizing:border-box}body{margin:0;background:var(--sand);color:var(--ink);font:600 16px/1.45 var(--f)}
+main{max-width:760px;margin:0 auto;padding:18px 14px 60px}h1{margin:0 0 4px;font-size:28px}.sub{color:var(--soft);margin:0 0 16px}
+.st{background:#fff;border:3px solid var(--ink);border-radius:16px;padding:14px;margin-bottom:14px;box-shadow:3px 3px 0 var(--ink)}
+input,button,select{font:inherit;border:3px solid var(--ink);border-radius:12px;padding:8px 12px}button{background:var(--hib);color:#fff;font-weight:900;cursor:pointer}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.nums{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center}.nums div{background:var(--sand);border:2px solid var(--ink);border-radius:12px;padding:8px}.nums b{display:block;font-size:24px}
+table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;padding:6px 6px;border-bottom:1px solid #f0e2c8;vertical-align:top}th{font-size:12px;letter-spacing:.5px;color:var(--soft)}
+td.n{font-weight:900}.on{display:inline-block;width:9px;height:9px;border-radius:50%;background:#2e9e5b;margin-right:6px}
+.err{color:#c0392b;font-weight:800}.small{font-size:13px;color:var(--soft)}
+</style>
+</head>
+<body>
+<main>
+ <h1>📊 Besuche</h1>
+ <p class="sub">Wer hat sich oben in der Suche eingegeben – wann, wie lange, wie oft. Daten der letzten 14 Tage.</p>
+ <div class="st row"><input id="pw" type="password" placeholder="Passwort" autocomplete="current-password"><select id="tag"><option value="">Alle Tage</option></select><button id="go">Anzeigen</button><span id="msg" class="err"></span></div>
+ <div id="out"></div>
+</main>
+<script>
+const $=id=>document.getElementById(id),esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const zt=t=>new Date(t).toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit',timeZone:'Europe/Berlin'});
+const dur=ms=>{const m=Math.max(1,Math.round(ms/60000));return m<60?m+' Min.':Math.floor(m/60)+' Std. '+(m%60)+' Min.';};
+const dname=d=>new Date(d+'T12:00:00').toLocaleDateString('de-DE',{weekday:'short',day:'numeric',month:'numeric'});
+try{$('pw').value=localStorage.getItem('mt-admin')||'';}catch(e){}
+let DATA=null;
+async function laden(){$('msg').textContent='';try{localStorage.setItem('mt-admin',$('pw').value);}catch(e){}
+ try{const r=await fetch('/api/besuch?key='+encodeURIComponent($('pw').value),{cache:'no-store'});const d=await r.json();if(!r.ok)throw new Error(d.fehler||'Fehler');DATA=d;
+  const tage=[...new Set(d.besuche.map(b=>b.tag))],sel=$('tag').value;$('tag').innerHTML='<option value="">Alle Tage</option>'+tage.map(t=>'<option value="'+t+'"'+(t===sel?' selected':'')+'>'+dname(t)+'</option>').join('');zeigen();}
+ catch(e){$('msg').textContent=e.message;}}
+function zeigen(){if(!DATA)return;const t=$('tag').value,B=DATA.besuche.filter(b=>!t||b.tag===t),now=DATA.jetzt;
+ // pro Name zusammenfassen
+ const P=new Map();for(const b of B){const p=P.get(b.name)||{name:b.name,besuche:0,dauer:0,erst:b.start,letzt:b.last};p.besuche++;p.dauer+=Math.max(60000,b.last-b.start+60000);p.erst=Math.min(p.erst,b.start);p.letzt=Math.max(p.letzt,b.last);P.set(b.name,p);}
+ const L=[...P.values()].sort((a,b)=>b.letzt-a.letzt),online=L.filter(p=>now-p.letzt<150000).length;
+ $('out').innerHTML='<div class="st nums"><div><b>'+L.length+'</b>Nutzer</div><div><b>'+B.length+'</b>Besuche</div><div><b>'+online+'</b>gerade online</div></div>'
+  +'<div class="st"><b>Nach Nutzer</b><table><tr><th>NAME</th><th>BESUCHE</th><th>ZEIT GESAMT</th><th>ZULETZT</th></tr>'
+  +L.map(p=>'<tr><td class="n">'+(now-p.letzt<150000?'<span class="on" title="gerade online"></span>':'')+'<a href="./?n='+encodeURIComponent(p.name)+'">'+esc(p.name)+'</a></td><td>'+p.besuche+'×</td><td>'+dur(p.dauer)+'</td><td>'+(t?'':dname(new Date(p.letzt).toLocaleDateString('sv-SE',{timeZone:'Europe/Berlin'}))+' ')+zt(p.letzt)+'</td></tr>').join('')+'</table></div>'
+  +'<div class="st"><b>Alle Besuche</b><table><tr><th>TAG</th><th>NAME</th><th>VON – BIS</th><th>DAUER</th></tr>'
+  +B.map(b=>'<tr><td>'+dname(b.tag)+'</td><td class="n">'+esc(b.name)+'</td><td>'+zt(b.start)+' – '+zt(b.last)+'</td><td>'+dur(b.last-b.start+60000)+'</td></tr>').join('')+'</table><p class="small">Dauer auf ca. 1 Minute genau (die Seite meldet sich jede Minute, solange sie offen ist).</p></div>';}
+$('go').onclick=laden;$('tag').onchange=zeigen;$('pw').onkeydown=e=>{if(e.key==='Enter')laden();};if($('pw').value)laden();setInterval(()=>{if(DATA)laden();},60000);
+</script>
+</body>
+</html>
