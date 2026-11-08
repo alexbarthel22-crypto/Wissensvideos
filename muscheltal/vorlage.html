@@ -297,7 +297,7 @@ footer a{color:var(--soft)}
 </div>
 
 <main class="w">
- <div class="walkbar"><button class="btn hib" id="walkbtn" type="button">🚶 Selbst durch Muschel-Tal laufen</button></div>
+ <div class="walkbar"><button class="btn hib" id="walkbtn" type="button">🚶 Muschel-Tal erkunden</button></div>
  <section class="intro" id="intro">
   <h1>Eine Insel, gebaut aus Followern 🏝️</h1>
   <p class="lead">Jeder, der <a class="acc" target="_blank" rel="noopener"></a> auf TikTok folgt, bekommt hier eine eigene Hütte mit seinem Namen. Was auf der Insel passiert, entscheidet ihr in den Kommentaren.</p>
@@ -1296,7 +1296,7 @@ function walkTick(n){if(!WK.on)return;const dt=Math.min(.05,(n-WK.last)/1000);WK
  const K=WK.keys;if(K.has('ArrowLeft')||K.has('a'))vx-=1;if(K.has('ArrowRight')||K.has('d'))vx+=1;if(K.has('ArrowUp')||K.has('w'))vy-=1;if(K.has('ArrowDown')||K.has('s'))vy+=1;
  if(WK.pt){const sx=(WK.x-cam.x)*cam.z+W/2,sy=(WK.y-cam.y)*cam.z+H/2,dx=WK.pt[0]-sx,dy=WK.pt[1]-sy;if(Math.hypot(dx,dy)>14){vx=dx;vy=dy;}}
  const l=Math.hypot(vx,vy);WK.moving=l>0;
- if(l>0){const sp=(WK.mode==='scooter'?120:30)*dt;vx=vx/l*sp;vy=vy/l*sp;
+ if(l>0){const sp=(WK.mode==='scooter'?90:30)*dt;vx=vx/l*sp;vy=vy/l*sp;
   const steps=Math.ceil(Math.max(Math.abs(vx),Math.abs(vy))/2);for(let i=0;i<steps;i++){const sx=vx/steps,sy=vy/steps;if(canWalk(WK.x+sx,WK.y))WK.x+=sx;if(canWalk(WK.x,WK.y+sy))WK.y+=sy;}
   WK.vert=Math.abs(vy)>Math.abs(vx)*1.2;WK.dir=WK.vert?(vy>0?1:-1):(vx>=0?1:-1);WK.front=WK.vert&&vy>0;}
  const tz=WK.mode==='scooter'?3.6:5;cam.x+=(WK.x-cam.x)*Math.min(1,dt*6);cam.y+=(WK.y-cam.y)*Math.min(1,dt*6);cam.z+=(tz-cam.z)*Math.min(1,dt*3);
@@ -1306,6 +1306,8 @@ function drawWalker(c,z){if(!WK.on)return;const L=WK.L,x=WK.x,y=WK.y;
  if(!WK.moving){c.save();c.translate(x,y);if(!WK.front&&WK.dir<0&&!WK.vert)c.scale(-1,1);if(WK.mode==='scooter'){c.restore();drawMover(c,{...L,mode:'scooter'},x,y,WK.vert?1:WK.dir,WK.vert,'scooter');}else{person(c,L,0,true,0);c.restore();}}
  else drawMover(c,{...L,mode:WK.mode},x,y,WK.dir,WK.vert,WK.mode);
  NAMES.push([(WK.me?WK.me.name:'Du')+' (du)',x,y-(WK.mode==='scooter'?13:12)*L.h,'#e8467c']);}
+function walkLabel(){let me=sel;if(!me)try{me=byName.get((localStorage.getItem('mt-me')||'').toLowerCase());}catch(e){}$('walkbtn').textContent=me?'🚶 Als '+me.name+' Muschel-Tal erkunden':'🚶 Muschel-Tal erkunden';}
+walkLabel();setInterval(walkLabel,800);
 $('walkbtn').onclick=walkStart;$('walkend').onclick=walkEnd;
 $('walkmode').onclick=()=>{WK.mode=WK.mode==='walk'?'scooter':'walk';$('walkmode').textContent=WK.mode==='walk'?'🛴 E-Scooter':'🚶 Zu Fuß';};
 addEventListener('keydown',e=>{if(!WK.on)return;const k=e.key.length===1?e.key.toLowerCase():e.key;if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','w','a','s','d'].includes(k)){WK.keys.add(k);e.preventDefault();}if(k==='Escape')walkEnd();});
