@@ -3,11 +3,11 @@
 **Cover:** `renders/cover.jpg` (Vorlage `cover/thumb.html`) – Insel-Look, zentriert für die TikTok-Vorschau: Logo + „TAG 1“, „NEUE INSEL?!“ (nur angedeutet: „Wer wohnt schon dort? 👀“), 575 Einwohner (+575) und 2.875 Muscheln (+2.875) mit Zahlen-Hintergrund, „Folg @muscheltal & zieh ein“.
 
 ## Hauptversion (zum Posten)
-WAHNSINN 🤯 Von 0 auf 575 Bewohner an einem Tag – die Haupt-Insel von Muschel-Tal ist voll! 🏝️
+WAHNSINN 🤯 Von 0 auf 575 Bewohner an einem Tag – unsere Haupt-Insel ist voll! 🏝️
 
-Wer mir folgt, zieht ein und bekommt ein eigenes Haus mit seinem Namen 🏠 Findest du deinen Namen? Die nächste Insel ist schon besiedelt 🥥
+Folgen = einziehen: Jeder bekommt ein eigenes Haus mit seinem Namen 🏠 Findest du deinen? Ihr habt sogar schon die nächste Insel besiedelt 🥥
 
-2.875 Muscheln = 2 neue Gebäude! Strandbar 🍹, Dönerbude 🥙, Bäckerei 🥐 oder Krankenhaus 🏥 – stimmt in den Kommentaren ab 👇 Der Top-Kommentar wird für eine Woche Bürgermeister*in und wohnt im Muschelpalast 👑 Bei 1.000 Bewohnern gibt's eine riesige Überraschung 🎁
+2.875 Muscheln = 2 neue Gebäude! Strandbar, Dönerbude, Bäckerei oder Krankenhaus? Stimmt in den Kommentaren ab 👇 Top-Kommentar wird Bürgermeister*in 👑
 
 #muscheltal #fürdich #fyp #insel #community
 
