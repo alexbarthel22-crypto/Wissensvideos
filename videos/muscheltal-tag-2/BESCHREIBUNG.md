@@ -5,7 +5,7 @@
 ## Hauptversion (zum Posten)
 WAHNSINN 🤯 Von 0 auf 575 Bewohner an einem Tag – die Haupt-Insel von Muschel-Tal ist voll! 🏝️
 
-Wer mir folgt, zieht ein und bekommt ein eigenes Haus mit seinem Namen 🏠 Findest du deine Hütte? Die nächste Insel ist schon besiedelt 🥥
+Wer mir folgt, zieht ein und bekommt ein eigenes Haus mit seinem Namen 🏠 Findest du deinen Namen? Die nächste Insel ist schon besiedelt 🥥
 
 2.875 Muscheln = 2 neue Gebäude! Strandbar 🍹, Dönerbude 🥙, Bäckerei 🥐 oder Krankenhaus 🏥 – stimmt in den Kommentaren ab 👇 Der Top-Kommentar wird für eine Woche Bürgermeister*in und wohnt im Muschelpalast 👑 Bei 1.000 Bewohnern gibt's eine riesige Überraschung 🎁
 

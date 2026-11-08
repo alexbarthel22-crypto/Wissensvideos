@@ -3,9 +3,9 @@
     /*__COMMON_CSS__*/
     .cf { position: absolute; left: 530px; top: 700px; width: 20px; height: 30px; border-radius: 4px; }
     #s01-c { position: absolute; left: 0; right: 0; margin: 0 auto; top: 300px; width: fit-content; padding: 6px 40px 12px; border-radius: 40px; background: #fff; border: 7px solid #ff6a1a;
-      font-family: "Inter", sans-serif; color: #0a78c2; font-weight: 900; font-size: 44px; display: flex; align-items: baseline; gap: 18px; box-shadow: 0 12px 0 rgba(0,40,80,.3); }
+      font-family: "Inter", sans-serif; color: #0a78c2; font-weight: 900; font-size: 44px; display: flex; flex-direction: column; align-items: center; gap: 0; line-height: 1; box-shadow: 0 12px 0 rgba(0,40,80,.3); }
     #s01-c b { font-size: 130px; color: #ff6a1a; line-height: 1; }
-    #s01-f { position: absolute; left: 0; right: 0; margin: 0 auto; top: 470px; width: fit-content; padding: 8px 28px 12px; border-radius: 999px; background: #fe2c55; color: #fff;
+    #s01-f { position: absolute; left: 0; right: 0; margin: 0 auto; top: 540px; width: fit-content; padding: 8px 28px 12px; border-radius: 999px; background: #fe2c55; color: #fff;
       font-family: "Inter", sans-serif; font-weight: 900; font-size: 42px; box-shadow: 0 8px 0 rgba(0,0,0,.25); white-space: nowrap; }
     #s01-st { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 640px; color: #e8433c; border-color: #e8433c; transform: rotate(-6deg); font-size: 60px; white-space: nowrap; }
     .s01-em { position: absolute; width: 150px; height: 150px; border-radius: 50%; background: #fff; display: grid; place-items: center; font-size: 92px;
@@ -37,7 +37,7 @@
       tl.fromTo("#s01-c", { scale: 1 }, { scale: 1.18, duration: .15, yoyo: true, repeat: 3, ease: "sine.inOut" }, n);
       tl.fromTo("#s01-e1", { scale: 0, rotation: -120 }, { scale: 1, rotation: -12, duration: .6, ease: "elastic.out(1, .45)" }, n);
       tl.fromTo("#s01-e2", { scale: 0, rotation: 120 }, { scale: 1, rotation: 12, duration: .6, ease: "elastic.out(1, .45)" }, n + .12);
-      tl.fromTo(".s01-ring", { opacity: .9, scale: .8 }, { opacity: 0, scale: 2.2, duration: .7, ease: "power2.out", stagger: .12 }, n + .05);
+      tl.fromTo(".s01-ring", { opacity: .9, scale: .8 }, { opacity: 0, scale: 2.2, duration: .7, ease: "power2.out", stagger: .12, immediateRender: false }, n + .05);
       tl.fromTo(".s01-ring", { opacity: .7, scale: .8 }, { opacity: 0, scale: 2.0, duration: .7, ease: "power2.out", stagger: .12, immediateRender: false }, n + 1.1);
       tl.to("#s01-e1", { y: -22, rotation: 6, scale: 1.08, duration: .38, yoyo: true, repeat: 7, ease: "sine.inOut" }, n + .6);
       tl.to("#s01-e2", { y: -18, rotation: -6, scale: 1.08, duration: .42, yoyo: true, repeat: 7, ease: "sine.inOut" }, n + .7);
