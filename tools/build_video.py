@@ -166,7 +166,7 @@ def build_captions(project, timings, windows, total, big=False, opt=None):
                 glow = "0 8px 0 rgba(0,0,0,.35)"
             if gi == 0 and opt.get("first_full"):  # Einstieg: ganzer Satz steht, gesprochenes Wort leuchtet auf
                 nxt = g["words"][wi + 1]["start"] if wi + 1 < len(g["words"]) else w["end"] + 0.25
-                js.append(f'tl.fromTo("#{wid}", {{ color: "#ffffff", scale: 1 }}, {{ color: "#ffc93c", scale: {opt.get("first_scale", 1.16)}, duration: 0.07, ease: "power2.out", immediateRender: false }}, {max(0, w["start"] - 0.03):.3f});')
+                js.append(f'tl.fromTo("#{wid}", {{ color: "#ffffff", scale: 1 }}, {{ color: "#ffc93c", scale: {opt.get("first_scale_map", {}).get(w["display"].upper(), opt.get("first_scale", 1.16))}, duration: 0.09, ease: "power2.out", immediateRender: false }}, {max(0, w["start"] - 0.03):.3f});')
                 js.append(f'tl.to("#{wid}", {{ color: "#ffffff", scale: 1, duration: 0.1, ease: "power1.out" }}, {nxt - 0.03:.3f});')
                 continue
             if gi == 0 and opt.get("hook_shadow"):
