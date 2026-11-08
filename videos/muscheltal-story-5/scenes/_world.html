@@ -55,8 +55,8 @@
         for (let i = 0; i < 22; i++) { const y = HY + 8 + i * 7, w = (40 + i * 7) * (.6 + .4 * Math.sin(t * 2 + i)); c.fillStyle = `rgba(220,230,255,${.5 - i * .02})`; c.fillRect(830 - w / 2, y, w, 2.5); }
         const gr = c.createLinearGradient(0, 960, 0, H); gr.addColorStop(0, "#2c2a24"); gr.addColorStop(1, "#1a140e"); c.fillStyle = gr; c.beginPath(); c.moveTo(-200, 990); c.quadraticCurveTo(540, 950, W + 200, 990); c.lineTo(W + 200, H + 200); c.lineTo(-200, H + 200); c.fill();
         palmSil(60, 1060, 330, 30 + Math.sin(t) * 6, "#0a0c14"); palmSil(1010, 1040, 300, -26 + Math.sin(t + 1) * 6, "#0a0c14");
-        [[150, 1080, .9], [300, 1050, .75], [780, 1050, .75], [930, 1080, .9], [470, 1035, .6], [640, 1032, .6]].forEach(([x, y, s], i) => coco(x, y, s, t, i));
-        lantern(230, 1260, 150, t, 1); lantern(850, 1260, 150, t, 2);
+        [[540, 1120, 2.5], [320, 1140, 2.8], [760, 1140, 2.8], [90, 1215, 3.3], [990, 1215, 3.3]].forEach(([x, y, s], i) => coco(x, y, s, t, i));
+        lantern(220, 1300, 170, t, 1); lantern(860, 1300, 170, t, 2);
         const fg = c.createRadialGradient(FX, FY - 60, 30, FX, FY - 60, 760 * fl); fg.addColorStop(0, "rgba(255,150,60,.55)"); fg.addColorStop(.5, "rgba(255,110,40,.18)"); fg.addColorStop(1, "rgba(255,110,40,0)"); c.fillStyle = fg; c.fillRect(-200, 700, W + 400, H);
         c.fillStyle = "#4a3020"; for (const [x, y, w, r] of [[270, 1475, 240, -.25], [800, 1475, 240, .25], [540, 1335, 300, 0]]) { c.save(); c.translate(x, y); c.rotate(r); c.beginPath(); c.roundRect(-w / 2, -18, w, 36, 18); c.fill(); c.restore(); }
         person(200, 1470, 1.1, t, 1, "#ff6a1a", "@laura.ngynn", 130); person(350, 1430, 1.0, t, 2, "#0fb3b0", "@henrik.sca", 185); person(440, 1330, .92, t, 3, "#e8467c", "@coussini2", 150); person(640, 1330, .92, t, 4, "#ffd23f", "@ela.817", 150); person(730, 1430, 1.0, t, 5, "#2e9e5b", "@68.nxlx", 185); person(870, 1470, 1.1, t, 6, "#8a3ffc", "@lena60155", 130);

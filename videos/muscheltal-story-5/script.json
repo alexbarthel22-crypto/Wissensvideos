@@ -10,10 +10,11 @@
   "left": 60,
   "right": 190,
   "size": 118,
-  "css": "@font-face { font-family: 'Lilita One'; src: url('assets/fonts/LilitaOne-Regular.woff2') format('woff2'); font-weight: 400; }\n    .inner { font-family: 'Lilita One', sans-serif; font-weight: 400; letter-spacing: .01em; }\n    .w { display: inline-block; white-space: nowrap; color: #fff; -webkit-text-stroke: 16px #1d2147; paint-order: stroke fill; }\n    .inner.hk { font-size: 104px; line-height: 1.12; } .inner.hk .w { margin: 0 .12em; }",
+  "css": "@font-face { font-family: 'Lilita One'; src: url('assets/fonts/LilitaOne-Regular.woff2') format('woff2'); font-weight: 400; }\n    .inner { font-family: 'Lilita One', sans-serif; font-weight: 400; letter-spacing: .01em; }\n    .w { display: inline-block; white-space: nowrap; color: #fff; -webkit-text-stroke: 16px #1d2147; paint-order: stroke fill; }\n    .inner.hk { font-size: 104px; line-height: 1.12; } .inner.hk .w { margin: 0 .12em; }\n    #cgi28 { font-size: 92px; line-height: 1.05; }",
   "single": true,
   "top": 860,
-  "first_full": true
+  "first_full": true,
+  "merge_last": 5
  },
  "scenes": [
   {
@@ -52,21 +53,14 @@
   {
    "id": "s03",
    "tag": "",
-   "hold": 2.2,
+   "hold": 2.0,
    "lines": [
     {
      "id": "L3",
-     "text": "Also schnell *p:folgen / und *y:ladet eure Freunde mit ein, / damit ihr *g:zusammen / von Anfang an dabei seid!",
+     "text": "Also schnell *p:folgen / und *y:markiert eure Freunde, / damit sie *g:bei *g:euch wohnen. / Wie *y:cool wäre das denn?",
      "style": "Style: a real young man, enthusiastic and inviting, motivating, natural not theatrical.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
      "speed": 1.08,
      "pause": 0.4
-    },
-    {
-     "id": "L4",
-     "text": "Denn *c:Muschel-Tal wird / die *y:größte *y:Welt / auf *p:TikTok!",
-     "style": "Style: a real young man, proud and euphoric, big announcement with a huge smile, natural not theatrical.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-     "speed": 1.08,
-     "pause": 0.25
     }
    ],
    "sfx": [
@@ -77,17 +71,12 @@
     },
     {
      "name": "pop",
-     "at": "L3:Freunde",
+     "at": "L3:markiert",
      "volume": 0.4
     },
     {
      "name": "ka-ching",
-     "at": "L3:zusammen",
-     "volume": 0.4
-    },
-    {
-     "name": "impact-bass-2",
-     "at": "L4:größte",
+     "at": "L3:cool",
      "volume": 0.4
     }
    ]
