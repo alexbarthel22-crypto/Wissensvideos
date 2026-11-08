@@ -69,8 +69,8 @@ scene("s01", f"""    {CF_CSS}
       <div id="s01-c"><b id="s01-n">0</b>BEWOHNER</div>
       <div id="s01-f">➕ Folge mir, um auch einzuziehen!</div>
       <div id="s01-st" class="stamp">HAUPT-INSEL VOLL!</div>
-      <div class="s01-ring" style="left:145px;top:275px"></div><div class="s01-ring" style="left:785px;top:265px"></div>
-      <div class="s01-em" id="s01-e1" style="left:145px;top:275px">🥳</div><div class="s01-em" id="s01-e2" style="left:785px;top:265px">🎉</div>
+      <div class="s01-ring" style="left:30px;top:300px"></div><div class="s01-ring" style="left:890px;top:290px"></div>
+      <div class="s01-em" id="s01-e1" style="left:30px;top:300px">🥳</div><div class="s01-em" id="s01-e2" style="left:890px;top:290px">🎉</div>
       <svg class="s01-sp" style="left:300px;top:265px" viewBox="-10 -10 20 20"><path d="M0 -10 L2 -2 L10 0 L2 2 L0 10 L-2 2 L-10 0 L-2 -2Z" fill="#fff"/></svg>
       <svg class="s01-sp" style="left:730px;top:420px" viewBox="-10 -10 20 20"><path d="M0 -10 L2 -2 L10 0 L2 2 L0 10 L-2 2 L-10 0 L-2 -2Z" fill="#ffc93c"/></svg>""",
 """      const n = at("L1", "575"), vo = at("L2", "voll"), T0 = n;
@@ -94,9 +94,9 @@ scene("s02", """    #s02-t { top: 300px; font-size: 52px; white-space: nowrap; m
     #s02-q { top: 430px; font-size: 50px; white-space: nowrap; max-width: none; }
     #s02-ok { left: 330px; top: 420px; color: #2e9e5b; border-color: #2e9e5b; transform: rotate(-6deg); font-size: 80px; }""",
 """      <div id="s02-t" class="bt or">500 HÜTTEN · 500 NAMEN</div>
-      <div id="s02-q" class="bt pk">🔍 FINDEST DU DEINEN?</div>
+      <div id="s02-q" class="bt pk">🔍 FINDEST DU DEINE?</div>
       <div id="s02-ok" class="stamp">ALLE DA ✓</div>""",
-"""      const de = at("L3", "deinen"), al = at("L4", "Alle");
+"""      const de = at("L3", "deine"), al = at("L4", "Alle");
       tl.fromTo("#s02-t", { opacity: 0, y: -80 }, { opacity: 1, y: 0, duration: .4, ease: "back.out(2)" }, .05);
       tl.fromTo("#s02-q", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, de - .3);
       tl.to("#s02-q", { rotation: 2, duration: .2, yoyo: true, repeat: 5, ease: "sine.inOut" }, de + .1);

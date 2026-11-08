@@ -52,17 +52,17 @@
     #s02-q { top: 430px; font-size: 50px; white-space: nowrap; max-width: none; }
     #s02-ok { left: 330px; top: 420px; color: #2e9e5b; border-color: #2e9e5b; transform: rotate(-6deg); font-size: 80px; }
   </style>
-  <div id="root" data-composition-id="s02" data-start="0" data-duration="4.650" data-width="1080" data-height="1920">
-    <div id="s02-stage" class="clip stage" data-start="0" data-duration="4.650" data-track-index="0">
+  <div id="root" data-composition-id="s02" data-start="0" data-duration="6.470" data-width="1080" data-height="1920">
+    <div id="s02-stage" class="clip stage" data-start="0" data-duration="6.470" data-track-index="0">
       <div id="s02-t" class="bt or">500 HÜTTEN · 500 NAMEN</div>
-      <div id="s02-q" class="bt pk">🔍 FINDEST DU DEINEN?</div>
+      <div id="s02-q" class="bt pk">🔍 FINDEST DU DEINE?</div>
       <div id="s02-ok" class="stamp">ALLE DA ✓</div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 4.65, "L3": [0.2, 3.32], "L3.words": [["500", 0.2, 0.678], ["hütten", 0.678, 0.99], ["jede", 1.28, 1.55], ["mit", 1.55, 1.69], ["eurem", 1.69, 1.965], ["namen", 1.965, 2.24], ["findest", 2.74, 2.976], ["du", 2.976, 3.088], ["deinen", 3.088, 3.32]], "L4": [3.54, 4.47], "L4.words": [["alle", 3.54, 3.997], ["sind", 3.997, 4.242], ["da", 4.242, 4.47]]};
+      const C = {"__dur": 6.47, "L3": [0.2, 3.54], "L3.words": [["500", 0.2, 0.721], ["hütten", 0.721, 1.06], ["jede", 1.34, 1.602], ["mit", 1.602, 1.737], ["eurem", 1.737, 2.004], ["namen", 2.004, 2.27], ["findest", 2.82, 3.115], ["du", 3.115, 3.255], ["deine", 3.255, 3.54]], "L4": [3.76, 4.69], "L4.words": [["alle", 3.76, 4.217], ["sind", 4.217, 4.462], ["da", 4.462, 4.69]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -106,7 +106,7 @@
 
       wrapBt("#s02-stage");
       const tl = gsap.timeline({ paused: true });
-      const de = at("L3", "deinen"), al = at("L4", "Alle");
+      const de = at("L3", "deine"), al = at("L4", "Alle");
       tl.fromTo("#s02-t", { opacity: 0, y: -80 }, { opacity: 1, y: 0, duration: .4, ease: "back.out(2)" }, .05);
       tl.fromTo("#s02-q", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, de - .3);
       tl.to("#s02-q", { rotation: 2, duration: .2, yoyo: true, repeat: 5, ease: "sine.inOut" }, de + .1);
