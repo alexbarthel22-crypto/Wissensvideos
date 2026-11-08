@@ -254,6 +254,54 @@ section h2 span{background:var(--sun);border:2px solid var(--ink);border-radius:
     open(os.path.join(out, "news.html"), "w", encoding="utf-8").write(seite)
 
 
+def berufe(sauber, insel, out):
+    """berufe.html: alle Einwohner mit Job, nach Arbeitsort; Ort und Name verlinkt auf die Karte."""
+    import html as H
+    from urllib.parse import quote
+    erf = open(os.path.join(HIER, "erfolge.html"), encoding="utf-8").read()
+    head = erf[:erf.index("<style>") + len("<style>")].replace("<title>Erfolge – Muschel-Tal</title>", "<title>Berufe – Muschel-Tal</title>").replace(
+        "Alle Erfolge und Abzeichen der Bewohner von Muschel-Tal.", "Alle Berufe in Muschel-Tal: wer wo arbeitet.")
+    css = erf[erf.index("<style>") + len("<style>"):erf.index("</style>")]
+    keep = "\n".join(l for l in css.split("\n") if l.startswith((":root", " --f", "*{", "body{", ".top", "main{", ".cta{")))
+    nr = {r[0].lower().lstrip("@"): i + 1 for i, r in enumerate(sauber)}
+    orte, emo = {}, {g["name"]: g.get("emoji", "📍") for g in insel.get("gebaeude", [])}
+    emo.setdefault("Muschelpalast", "🏰")
+    for n, (beruf, ort) in (insel.get("jobs") or {}).items():
+        if n.lower() in nr:
+            orte.setdefault(ort, []).append((beruf, n))
+    rang = {"Bürgermeisterin": 0, "Bürgermeister": 0, "Leitung": 1}
+    teile = []
+    for ort in sorted(orte, key=lambda o: (o != "Muschelpalast", o)):
+        leute = sorted(orte[ort], key=lambda x: (rang.get(x[0], 5), nr[x[1].lower()]))
+        li = "".join(f'<a class="p{" chef" if x[0] in rang else ""}" href="./?n={quote("@" + x[1])}"><b>{H.escape("⭐ " if x[0] == "Leitung" else "🎖️ " if rang.get(x[0]) == 0 else "")}@{H.escape(x[1])}</b><span>{H.escape(x[0])}</span></a>' for x in leute)
+        teile.append(f'<section><a class="ort" href="./?ort={quote(ort)}">{emo.get(ort, "📍")} {H.escape(ort)} <small>auf der Karte ansehen →</small></a><div class="pl">{li}</div></section>')
+    seite = head + "\n" + keep + """
+.hint{background:#fff;border:3px dashed var(--ink);border-radius:18px;padding:14px;margin:4px 0 18px;font-weight:800;text-align:center}
+.hint a{color:var(--hib)}
+section{background:#fff;border:3px solid var(--ink);border-radius:20px;padding:14px;margin-bottom:14px;box-shadow:4px 4px 0 var(--ink)}
+.ort{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;font-size:22px;font-weight:900;color:var(--ink);text-decoration:none;margin-bottom:10px}
+.ort small{font-size:14px;color:#0a8fd0}
+.pl{display:grid;gap:8px}
+.p{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--sand);border:2px solid #f0e2c8;border-radius:12px;padding:8px 12px;color:var(--ink);text-decoration:none}
+.p b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.p span{flex:none;font-size:14px;font-weight:900;color:#fff;background:var(--ink);border-radius:999px;padding:2px 10px}
+.p.chef span{background:var(--hib)}
+</style>
+</head>
+<body>
+<header class="top"><a href="./">← Zur Karte</a><small>MUSCHEL-TAL</small><h1>💼 Berufe</h1><p>Wer in Muschel-Tal wo arbeitet – tipp auf einen Ort oder Namen, um auf der Karte hinzukommen.</p>
+<svg viewBox="0 0 400 24" preserveAspectRatio="none"><path d="M0 14 Q25 2 50 14 T100 14 T150 14 T200 14 T250 14 T300 14 T350 14 T400 14 V24 H0Z" fill="#fff4e0"/></svg></header>
+<main>
+ <p class="hint">💬 Du willst auch einen Job auf Muschel-Tal? Schreib es in die Kommentare unter dem neuesten Video von <a href="https://www.tiktok.com/@muscheltal" target="_blank" rel="noopener">@muscheltal</a> auf TikTok!</p>
+""" + "\n".join(teile) + """
+ <a class="cta" href="https://www.tiktok.com/@muscheltal" target="_blank" rel="noopener">💬 Auf TikTok kommentieren</a>
+</main>
+</body>
+</html>
+"""
+    open(os.path.join(out, "berufe.html"), "w", encoding="utf-8").write(seite)
+
+
 def demo_rows(n):
     rnd = random.Random(7)
     heute = dt.date.today()
@@ -320,6 +368,7 @@ def baue(rows, out):
             open(os.path.join(out, datei), "w", encoding="utf-8").write(open(quelle, encoding="utf-8").read())
     uebersicht(sauber, insel, out)
     nachrichten(insel, out)
+    berufe(sauber, insel, out)
     alt = os.path.join(out, "einwohner.json")
     if os.path.exists(alt):
         os.remove(alt)  # nicht mehr öffentlich (enthielt echte Inselnamen)

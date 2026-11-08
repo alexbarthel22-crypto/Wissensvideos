@@ -21,6 +21,7 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
   - **🍹 Strandbar** (Ostküste, großer Steg/Deck auf Pfählen weit ins Meer): Leitung @paulepfpgfn, Team @khmr.496 – beide wohnen in der Strandbar.
   - **🏖️ Strandvilla** (Westküste, mit Infinity-Pool): wird **demnächst verlost** (Schild „🎁 bald verlost“).
 - Personal ist farbig gekennzeichnet: Dönerbude rote Shirts + weiße Schürze und rote Namensschilder, Strandbar türkis; die Leitung hat einen ⭐ vor dem Namen.
+- Die Bürgermeisterin steht tagsüber auf der Palasttreppe, lila gekleidet mit goldenem Schein und lila Namensschild „🎖️ Bürgermeisterin @…“.
 - **Bürgermeisterin: @lillygyqcf0** (Beruf „Bürgermeisterin · Muschelpalast“). **Palast-Leitung folgt** (noch nicht vergeben).
 - Wer in einem Gebäude wohnt, hat keine Hütte mehr; dafür rücken die Nächsten nach Einwohner-Nr. auf die Haupt-Insel nach (am 8.11.: 5 Bewohner der Kokos-Küste sind auf die Haupt-Insel umgezogen). Die Haupt-Insel hat damit 500 Hütten + 5 Bewohner in Gebäuden = 505 Einwohner.
 - Dönerbude: tagsüber sitzen 6–9 Gäste an Tischen/der Theke und essen Döner, nachts 2–4; Gäste kommen und gehen. Strandbar: tagsüber 7–10 Gäste an Bar und Steg (Cocktails, Gespräche), nachts 10–14 bei einer Party mit bunten Lichtern.
@@ -60,6 +61,7 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - Muschelpass zeigt höchstens 4 Erfolge, die neuesten zuerst (kleine Abzeichen).
 - **Inselkasse**: 5 Muscheln pro Einwohner **+ 50 Muscheln für jedes Teilen des Muschelpasses in der Story** (pro TikTok-Name nur alle 7 Tage; wird auf dem Server gezählt). Der Teilen-Knopf zeigt das als Anreiz.
 - Unter der Einleitung: „Jetzt einziehen“ (nur ohne gewählten Namen), darunter „📜 Regeln“ + „🏅 Meine Erfolge“ (ohne gewählten Namen: Popup „Folge @muscheltal …“) darunter „👥 Einwohner“ (Einwohner-Übersicht) + „📰 News“.
+- **Berufe** (muscheltal.de/berufe.html): alle Einwohner mit Job nach Arbeitsort; Ort und Name verlinkt auf die Karte; Hinweis „Job gewünscht? Auf TikTok kommentieren“. Langer Knopf „💼 Berufe auf Muschel-Tal“ unter „Gerade auf den Inseln“. Statt des News-Knopfs: News über „Alle News ansehen“ im Neu-Kasten; oben wieder der lange Knopf „👥 Muschel-Tal Einwohner-Übersicht“.
 - **News** (muscheltal.de/news.html): alle wichtigen Ereignisse mit Datum (neue Inseln, Events, Jobs, Bürgermeister, Gebäude …), gepflegt in `muscheltal/daten/insel.json` → `ereignisse`. Das neueste steht auch im „Neu:“-Kasten. Nur die **größten** Neuigkeiten (neue Inseln, Gebäude, Events, Jobs, Bürgermeister) – **keine Erfolge** (die sollen gefunden werden). Neue Ereignisse aus Videos bitte dort eintragen.
 - Abschnitt „Gerade auf den Inseln“: Tag, Einwohner, Muscheln, Inseln.
 - **Einwohner-Übersicht** (muscheltal.de/einwohner.html): alle Einwohner nach Insel mit Nr., Gründer mit kleiner Münze, Suche; Name antippen = zur Hütte fliegen.
