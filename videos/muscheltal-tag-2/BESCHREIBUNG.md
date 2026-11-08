@@ -5,7 +5,7 @@
 ## Hauptversion (zum Posten)
 Von 0 auf 575 Bewohner in einem Tag 🤯 Die Haupt-Insel ist voll – findest du deine Hütte? 🏝️
 
-Muschel-Tal wächst: 500 Hütten mit euren Namen auf der Haupt-Insel und schon 75 Bewohner auf der neuen Kokos-Küste 🥥 Jeder Bewohner bringt 5 Muscheln mit – wir haben jetzt 2.875 Muscheln und können 2 Gebäude bauen. Strandbar, Dönerbude, Bäckerei oder Krankenhaus? Stimmt in den Kommentaren ab 👇 Außerdem suchen wir eine Bürgermeisterin oder einen Bürgermeister – der Top-Kommentar gewinnt und wohnt im Muschelpalast 👑 Und bei 1.000 Bewohnern gibt es eine riesige Überraschung 🎁 Folg mir, dann ziehst du auch ein!
+Muschel-Tal wächst: 500 Hütten mit euren Namen auf der Haupt-Insel und schon 75 Bewohner auf der neuen Kokos-Küste 🥥 Jeder Bewohner bringt 5 Muscheln mit – wir haben jetzt 2.875 Muscheln und können 2 Gebäude bauen. Ihr habt euch gestern Strandbar, Dönerbude, Bäckerei und Krankenhaus gewünscht – welche 2 bauen wir? Stimmt in den Kommentaren ab 👇 Außerdem suchen wir für eine Woche eine Bürgermeisterin oder einen Bürgermeister – der Top-Kommentar gewinnt und wohnt im Muschelpalast 👑 Und unter allen Followern verlosen wir eine Palast-Leitung: eine Woche lang wohnst du mit im Palast 🏰 Und bei 1.000 Bewohnern gibt es eine riesige Überraschung 🎁 Folg mir, dann ziehst du auch ein!
 
 #muscheltal #fürdich #fyp #insel #südsee #followerstadt #community #abstimmung
 

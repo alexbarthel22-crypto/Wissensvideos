@@ -52,21 +52,21 @@
     #s01-c { position: absolute; left: 0; right: 0; margin: 0 auto; top: 300px; width: fit-content; padding: 6px 40px 12px; border-radius: 40px; background: #fff; border: 7px solid #ff6a1a;
       font-family: "Inter", sans-serif; color: #0a78c2; font-weight: 900; font-size: 44px; display: flex; align-items: baseline; gap: 18px; box-shadow: 0 12px 0 rgba(0,40,80,.3); }
     #s01-c b { font-size: 130px; color: #ff6a1a; line-height: 1; }
-    #s01-st { left: 250px; top: 520px; color: #e8433c; border-color: #e8433c; transform: rotate(-8deg); font-size: 84px; }
+    #s01-st { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 1000px; color: #e8433c; border-color: #e8433c; transform: rotate(-6deg); font-size: 60px; white-space: nowrap; }
     .s01-em { position: absolute; font-size: 110px; }
   </style>
-  <div id="root" data-composition-id="s01" data-start="0" data-duration="5.600" data-width="1080" data-height="1920">
-    <div id="s01-stage" class="clip stage" data-start="0" data-duration="5.600" data-track-index="0">
+  <div id="root" data-composition-id="s01" data-start="0" data-duration="6.400" data-width="1080" data-height="1920">
+    <div id="s01-stage" class="clip stage" data-start="0" data-duration="6.400" data-track-index="0">
       <div id="s01-cfw"></div>
       <div id="s01-c"><b id="s01-n">0</b>BEWOHNER</div>
-      <div id="s01-st" class="stamp">HAUPTINSEL VOLL!</div>
+      <div id="s01-st" class="stamp">HAUPT-INSEL VOLL!</div>
       <div class="s01-em" style="left:70px;top:470px">🎉</div><div class="s01-em" style="left:880px;top:430px">🥳</div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 5.6, "L0": [0.0, 1.11], "L0.words": [["wahnsinn", 0.0, 1.11]], "L1": [1.33, 3.76], "L1.words": [["von", 1.33, 1.515], ["null", 1.515, 1.706], ["auf", 1.706, 1.891], ["575", 1.891, 3.212], ["bewohner", 3.212, 3.76]], "L2": [3.98, 5.42], "L2.words": [["die", 3.98, 4.217], ["hauptinsel", 4.217, 4.937], ["ist", 4.937, 5.174], ["voll", 5.174, 5.42]]};
+      const C = {"__dur": 6.4, "L0": [0.0, 1.11], "L0.words": [["wahnsinn", 0.0, 1.11]], "L1": [1.33, 3.76], "L1.words": [["von", 1.33, 1.515], ["null", 1.515, 1.706], ["auf", 1.706, 1.891], ["575", 1.891, 3.212], ["bewohner", 3.212, 3.76]], "L2": [3.98, 5.42], "L2.words": [["die", 3.98, 4.217], ["hauptinsel", 4.217, 4.937], ["ist", 4.937, 5.174], ["voll", 5.174, 5.42]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];

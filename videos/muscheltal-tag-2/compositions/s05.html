@@ -54,9 +54,9 @@
     #s05-t { top: 300px; font-size: 52px; white-space: nowrap; max-width: none; }
     #s05-v { top: 1020px; font-size: 50px; white-space: nowrap; max-width: none; }
   </style>
-  <div id="root" data-composition-id="s05" data-start="0" data-duration="6.940" data-width="1080" data-height="1920">
-    <div id="s05-stage" class="clip stage" data-start="0" data-duration="6.940" data-track-index="0">
-      <div id="s05-t" class="bt pk">IHR HABT EUCH GEWÜNSCHT:</div>
+  <div id="root" data-composition-id="s05" data-start="0" data-duration="7.490" data-width="1080" data-height="1920">
+    <div id="s05-stage" class="clip stage" data-start="0" data-duration="7.490" data-track-index="0">
+      <div id="s05-t" class="bt pk">EURE WÜNSCHE VON GESTERN:</div>
       <div id="s05-k0" class="wc" style="left:90px;top:420px"><div class="wce">🍹</div><div class="wcl" style="background:#ff7a00">STRANDBAR</div></div>
       <div id="s05-k1" class="wc" style="left:550px;top:420px"><div class="wce">🥙</div><div class="wcl" style="background:#e8433c">DÖNERBUDE</div></div>
       <div id="s05-k2" class="wc" style="left:90px;top:720px"><div class="wce">🥐</div><div class="wcl" style="background:#c98a2a">BÄCKEREI</div></div>
@@ -67,7 +67,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 6.94, "L9": [0.2, 4.22], "L9.words": [["ihr", 0.2, 0.362], ["habt", 0.362, 0.53], ["euch", 0.53, 0.698], ["gewünscht", 0.698, 1.04], ["strandbar", 1.27, 1.83], ["dönerbude", 2.05, 2.6], ["bäckerei", 2.73, 3.358], ["und", 3.358, 3.57], ["krankenhaus", 3.57, 4.22]], "L10": [4.44, 6.76], "L10.words": [["zwei", 4.44, 4.63], ["davon", 4.63, 4.99], ["kaufen", 4.99, 5.357], ["wir", 5.357, 5.54], ["stimmt", 5.84, 5.967], ["in", 5.967, 6.078], ["den", 6.078, 6.193], ["kommentaren", 6.193, 6.649], ["ab", 6.649, 6.76]]};
+      const C = {"__dur": 7.49, "L9": [0.2, 4.77], "L9.words": [["ihr", 0.2, 0.318], ["habt", 0.318, 0.44], ["euch", 0.44, 0.562], ["gestern", 0.562, 0.802], ["in", 0.802, 0.916], ["den", 0.916, 1.034], ["kommentaren", 1.034, 1.501], ["gewünscht", 1.501, 1.75], ["strandbar", 2.0, 2.61], ["dönerbude", 2.8, 3.35], ["bäckerei", 3.47, 4.018], ["und", 4.018, 4.202], ["krankenhaus", 4.202, 4.77]], "L10": [4.99, 7.31], "L10.words": [["zwei", 4.99, 5.18], ["davon", 5.18, 5.54], ["kaufen", 5.54, 5.907], ["wir", 5.907, 6.09], ["stimmt", 6.39, 6.517], ["in", 6.517, 6.628], ["den", 6.628, 6.743], ["kommentaren", 6.743, 7.199], ["ab", 7.199, 7.31]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];

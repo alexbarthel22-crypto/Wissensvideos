@@ -58,11 +58,11 @@ scene("s01", f"""    {CF_CSS}
     #s01-c {{ position: absolute; left: 0; right: 0; margin: 0 auto; top: 300px; width: fit-content; padding: 6px 40px 12px; border-radius: 40px; background: #fff; border: 7px solid #ff6a1a;
       font-family: "Inter", sans-serif; color: #0a78c2; font-weight: 900; font-size: 44px; display: flex; align-items: baseline; gap: 18px; box-shadow: 0 12px 0 rgba(0,40,80,.3); }}
     #s01-c b {{ font-size: 130px; color: #ff6a1a; line-height: 1; }}
-    #s01-st {{ left: 250px; top: 520px; color: #e8433c; border-color: #e8433c; transform: rotate(-8deg); font-size: 84px; }}
+    #s01-st {{ left: 0; right: 0; margin: 0 auto; width: fit-content; top: 1000px; color: #e8433c; border-color: #e8433c; transform: rotate(-6deg); font-size: 60px; white-space: nowrap; }}
     .s01-em {{ position: absolute; font-size: 110px; }}""",
 """      <div id="s01-cfw"></div>
       <div id="s01-c"><b id="s01-n">0</b>BEWOHNER</div>
-      <div id="s01-st" class="stamp">HAUPTINSEL VOLL!</div>
+      <div id="s01-st" class="stamp">HAUPT-INSEL VOLL!</div>
       <div class="s01-em" style="left:70px;top:470px">🎉</div><div class="s01-em" style="left:880px;top:430px">🥳</div>""",
 """      const n = at("L1", "575"), vo = at("L2", "voll"), T0 = n;
       tl.set("#s01-c", { opacity: 1 }, 0);
@@ -122,7 +122,7 @@ scene("s04", """    #s04-eq { top: 300px; font-size: 56px; white-space: nowrap; 
 scene("s05", WC_CSS + """
     #s05-t { top: 300px; font-size: 52px; white-space: nowrap; max-width: none; }
     #s05-v { top: 1020px; font-size: 50px; white-space: nowrap; max-width: none; }""",
-f"""      <div id="s05-t" class="bt pk">IHR HABT EUCH GEWÜNSCHT:</div>
+f"""      <div id="s05-t" class="bt pk">EURE WÜNSCHE VON GESTERN:</div>
       {cards("s05-k", [("🍹", "STRANDBAR", "#ff7a00"), ("🥙", "DÖNERBUDE", "#e8433c"), ("🥐", "BÄCKEREI", "#c98a2a"), ("🏥", "KRANKENHAUS", "#0098ff")], 420)}
       <div id="s05-v" class="bt pk">👇 STIMMT AB: 2 GEWINNEN!</div>""",
 """      const ws = [at("L9", "Strandbar"), at("L9", "Dönerbude"), at("L9", "Bäckerei"), at("L9", "Krankenhaus")], ab = at("L10", "Stimmt");
@@ -137,13 +137,19 @@ f"""      <div id="s05-t" class="bt pk">IHR HABT EUCH GEWÜNSCHT:</div>
 scene("s06", """    #s06-t { top: 300px; font-size: 52px; white-space: nowrap; max-width: none; }
     #s06-cr { position: absolute; left: 0; right: 0; top: 420px; text-align: center; font-size: 170px; }
     #s06-sheet { top: 660px; }
+    .vlos { position: absolute; left: 140px; width: 800px; top: 560px; background: #fff7d6; border: 7px solid #e0a020; border-radius: 34px; text-align: center; padding: 18px 20px 24px;
+      font-family: "Inter", sans-serif; box-shadow: 0 0 0 6px #fff3b0, 0 14px 0 rgba(120,70,0,.35); }
+    .vl1 { display: inline-block; background: #e8467c; color: #fff; font-weight: 900; font-size: 38px; padding: 4px 22px 8px; border-radius: 999px; }
+    .vl2 { font-family: "Inter", sans-serif; font-weight: 900; font-size: 84px; color: #e07a00; line-height: 1.05; margin-top: 8px; }
+    .vl3 { font-weight: 800; font-size: 30px; color: #7a4a00; }
     #s06-p { top: 690px; font-size: 54px; white-space: nowrap; max-width: none; }""",
-f"""      <div id="s06-t" class="bt or">BÜRGERMEISTER*IN GESUCHT!</div>
+f"""      <div id="s06-t" class="bt or">BÜRGERMEISTER*IN · 1 WOCHE</div>
       <div id="s06-cr">👑</div>
       <div id="s06-sheet" class="tk"><div class="tk-h">Top-Kommentar gewinnt<b>×</b></div>
         {tk("s06-c1", "#8a3ffc", "?", "dein.name", "ich will bürgermeister*in werden 👑", "1.204")}
       </div>
-      <div id="s06-p" class="bt or">🏰 WOHNT IM MUSCHELPALAST</div>""",
+      <div id="s06-p" class="bt or">🏰 WOHNT IM MUSCHELPALAST</div>
+      <div id="s06-v" class="vlos"><div class="vl1">🎟️ VERLOSUNG</div><div class="vl2">PALAST-LEITUNG</div><div class="vl3">1 Woche im Palast wohnen · unter allen Followern</div></div>""",
 """      const l0 = line("L11")[0], tp = at("L12", "Top");
       tl.fromTo("#s06-t", { opacity: 0, scale: 2, rotation: -8 }, { opacity: 1, scale: 1, rotation: -2, duration: .35, ease: "back.out(2.4)" }, l0);
       tl.fromTo("#s06-cr", { opacity: 0, y: -200, rotation: -30 }, { opacity: 1, y: 0, rotation: 0, duration: .5, ease: "bounce.out" }, l0 + .3);
@@ -152,7 +158,11 @@ f"""      <div id="s06-t" class="bt or">BÜRGERMEISTER*IN GESUCHT!</div>
       tkLike(tl, "#s06-c1", tp + .2, 1204, 1388, 1.2, 3);
       const mp = at("L12", "Muschelpalast");
       tl.to("#s06-sheet", { opacity: 0, y: 300, duration: .3, ease: "power2.in" }, mp - .35);
-      tl.fromTo("#s06-p", { opacity: 0, scale: .3, rotation: -8 }, { opacity: 1, scale: 1, rotation: -2, duration: .4, ease: "back.out(2.6)" }, mp - .05);""")
+      tl.fromTo("#s06-p", { opacity: 0, scale: .3, rotation: -8 }, { opacity: 1, scale: 1, rotation: -2, duration: .4, ease: "back.out(2.6)" }, mp - .05);
+      const vb = line("L12b")[0], pl = at("L12b", "Palast-Leitung");
+      tl.to(["#s06-p", "#s06-cr"], { opacity: 0, y: -60, duration: .3, ease: "power2.in" }, vb - .1);
+      tl.fromTo("#s06-v", { opacity: 0, scale: .3, rotation: 8 }, { opacity: 1, scale: 1, rotation: -2, duration: .45, ease: "back.out(2.2)" }, vb + .1);
+      tl.to("#s06-v", { scale: 1.06, duration: .18, yoyo: true, repeat: 3, ease: "sine.inOut" }, pl);""")
 
 # s07 – Überraschung bei 1.000, folgen
 scene("s07", """    #s07-t { top: 300px; font-size: 56px; white-space: nowrap; max-width: none; }

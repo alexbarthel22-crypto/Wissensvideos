@@ -13,10 +13,9 @@
   "bars": true,
   "color": "rgba(255,255,255,.62)",
   "first_class": "hook",
-  "css": "@font-face { font-family: 'Lilita One'; src: url('assets/fonts/LilitaOne-Regular.woff2') format('woff2'); font-weight: 400; }\n    .inner.hook { font-family: 'Lilita One', sans-serif; font-weight: 400; font-size: 158px; line-height: 1.04; letter-spacing: .01em; top: -540px; }\n    .inner.hook .bar { background: #ff3d7f !important; padding: .02em .3em .08em; border-radius: .5em; }\n    .inner.hook .w { color: #fff; }\n    .inner .bar .w { margin: 0 .07em; }\n    .inner .bar { border-radius: .55em; padding: .04em .36em .1em; }\n    .inner .w { white-space: nowrap; }",
+  "css": "@font-face { font-family: 'Lilita One'; src: url('assets/fonts/LilitaOne-Regular.woff2') format('woff2'); font-weight: 400; }\n    .inner.hook { font-family: 'Lilita One', sans-serif; font-weight: 400; font-size: 104px; line-height: 1.12; letter-spacing: .01em; top: -560px; }\n    .inner.hook .bar { background: #ff3d7f !important; padding: .02em .3em .08em; border-radius: .5em; }\n    .inner.hook .w { color: #fff; }\n    .inner .bar .w { margin: 0 .07em; }\n    .inner .bar { border-radius: .55em; padding: .04em .36em .1em; }\n    .inner .w { white-space: nowrap; }\n    .inner.hook .w { display: inline-block; transform-origin: 50% 70%; }",
   "vary": true,
   "pop_scale": 1.2,
-  "hook_punch": true,
   "bar_colors": [
    "#e8467c",
    "#ff6a1a",
@@ -24,7 +23,10 @@
    "#e8433c",
    "#2e9e5b",
    "#d4469c"
-  ]
+  ],
+  "merge_first": 3,
+  "first_full": true,
+  "first_scale": 1.35
  },
  "scenes": [
   {
@@ -80,7 +82,8 @@
     {
      "id": "L3",
      "text": "*y:500|Fünfhundert Hütten, / jede mit *g:eurem *g:Namen. / Findest du *y:deinen?",
-     "speed": 1.12
+     "speed": 1.12,
+     "pause": 0.8
     },
     {
      "id": "L4",
@@ -158,7 +161,7 @@
    "lines": [
     {
      "id": "L9",
-     "text": "Ihr habt euch gewünscht: / *y:Strandbar, / *y:Dönerbude, / *y:Bäckerei / und *y:Krankenhaus.",
+     "text": "Ihr habt euch gestern / in den Kommentaren gewünscht: / *y:Strandbar, / *y:Dönerbude, / *y:Bäckerei / und *y:Krankenhaus.",
      "speed": 1.1
     },
     {
@@ -196,13 +199,18 @@
    "lines": [
     {
      "id": "L11",
-     "text": "Außerdem suchen wir / eine *y:Bürgermeisterin / oder einen *y:Bürgermeister.",
+     "text": "Außerdem suchen wir / eine *y:Bürgermeisterin / oder einen *y:Bürgermeister / für *g:eine *g:Woche.",
      "speed": 1.12
     },
     {
      "id": "L12",
      "text": "Der *g:Top-Kommentar *g:gewinnt / und wohnt im *p:Muschelpalast!",
      "speed": 1.1
+    },
+    {
+     "id": "L12b",
+     "text": "Und unter *g:allen *g:Followern / verlosen wir / eine *y:Palast-Leitung: / eine Woche lang / wohnst du mit im *p:Palast!",
+     "speed": 1.12
     }
    ],
    "sfx": [
@@ -210,6 +218,11 @@
      "name": "ping",
      "at": "L12:Muschelpalast",
      "volume": 0.4
+    },
+    {
+     "name": "ka-ching",
+     "at": "L12b:Palast",
+     "volume": 0.45
     }
    ]
   },

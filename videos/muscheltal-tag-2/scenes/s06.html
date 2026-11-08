@@ -4,16 +4,22 @@
     #s06-t { top: 300px; font-size: 52px; white-space: nowrap; max-width: none; }
     #s06-cr { position: absolute; left: 0; right: 0; top: 420px; text-align: center; font-size: 170px; }
     #s06-sheet { top: 660px; }
+    .vlos { position: absolute; left: 140px; width: 800px; top: 560px; background: #fff7d6; border: 7px solid #e0a020; border-radius: 34px; text-align: center; padding: 18px 20px 24px;
+      font-family: "Inter", sans-serif; box-shadow: 0 0 0 6px #fff3b0, 0 14px 0 rgba(120,70,0,.35); }
+    .vl1 { display: inline-block; background: #e8467c; color: #fff; font-weight: 900; font-size: 38px; padding: 4px 22px 8px; border-radius: 999px; }
+    .vl2 { font-family: "Inter", sans-serif; font-weight: 900; font-size: 84px; color: #e07a00; line-height: 1.05; margin-top: 8px; }
+    .vl3 { font-weight: 800; font-size: 30px; color: #7a4a00; }
     #s06-p { top: 690px; font-size: 54px; white-space: nowrap; max-width: none; }
   </style>
   <div id="root" data-composition-id="s06" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
     <div id="s06-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
-      <div id="s06-t" class="bt or">BÜRGERMEISTER*IN GESUCHT!</div>
+      <div id="s06-t" class="bt or">BÜRGERMEISTER*IN · 1 WOCHE</div>
       <div id="s06-cr">👑</div>
       <div id="s06-sheet" class="tk"><div class="tk-h">Top-Kommentar gewinnt<b>×</b></div>
         <div id="s06-c1" class="tk-c"><div class="tk-a" style="background:#8a3ffc">?</div><div><div class="tk-u">dein.name</div><div class="tk-t">ich will bürgermeister*in werden 👑</div><div class="tk-m">vor 2 Std.<span>Antworten</span></div></div><div class="tk-l"><div class="hz"></div><i>1.204</i></div></div>
       </div>
       <div id="s06-p" class="bt or">🏰 WOHNT IM MUSCHELPALAST</div>
+      <div id="s06-v" class="vlos"><div class="vl1">🎟️ VERLOSUNG</div><div class="vl2">PALAST-LEITUNG</div><div class="vl3">1 Woche im Palast wohnen · unter allen Followern</div></div>
     </div>
   </div>
   <script>
@@ -31,6 +37,10 @@
       const mp = at("L12", "Muschelpalast");
       tl.to("#s06-sheet", { opacity: 0, y: 300, duration: .3, ease: "power2.in" }, mp - .35);
       tl.fromTo("#s06-p", { opacity: 0, scale: .3, rotation: -8 }, { opacity: 1, scale: 1, rotation: -2, duration: .4, ease: "back.out(2.6)" }, mp - .05);
+      const vb = line("L12b")[0], pl = at("L12b", "Palast-Leitung");
+      tl.to(["#s06-p", "#s06-cr"], { opacity: 0, y: -60, duration: .3, ease: "power2.in" }, vb - .1);
+      tl.fromTo("#s06-v", { opacity: 0, scale: .3, rotation: 8 }, { opacity: 1, scale: 1, rotation: -2, duration: .45, ease: "back.out(2.2)" }, vb + .1);
+      tl.to("#s06-v", { scale: 1.06, duration: .18, yoyo: true, repeat: 3, ease: "sine.inOut" }, pl);
       tl.to("#s06-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
       window.__timelines["s06"] = tl;
     })();
