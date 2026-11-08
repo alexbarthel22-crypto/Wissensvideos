@@ -52,7 +52,7 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - Karten-Knöpfe: ohne Auswahl „Alle Inseln“ + „Zufall“ (wischen: „Wachsen sehen“), mit Auswahl „Meine Hütte“ + „Muschelpass“ (wischen: „Alle Inseln“).
 - Fahrräder/E-Roller, die hoch/runter fahren, sind von hinten/vorn zu sehen.
 
-## Video 2 / Tag 2 (in Arbeit, Stimme 8.11. um 9:03)
+## Video 2 / Tag 2 (fertig 8.11., `videos/muscheltal-tag-2/renders/muscheltal-tag-2.mp4`, 41 s)
 - Inhalt: 0 → 575 Bewohner, Haupt-Insel voll (500 Hütten mit Namen) · nächste Insel besiedelt: Kokos-Küste, 75 Bewohner · 1 Bewohner = 5 Muscheln → **2.875 Muscheln** → davon **2 Gebäude** bauen.
 - **Abstimmung in den Kommentaren:** Wünsche Strandbar, Dönerbude, Bäckerei, Krankenhaus – 2 davon werden gekauft.
 - **Bürgermeister*in gesucht** – der Top-Kommentar gewinnt (passt zu Regel 5).
