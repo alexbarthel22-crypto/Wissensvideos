@@ -6,7 +6,7 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 
 ## Begriffe
 - **Muschel-Tal** = die ganze Region (Inselgruppe), Account @muscheltal.
-- **Haupt-Insel** (mit Bindestrich) = die erste Insel (500 Plätze) mit dem **Muschelpalast** in der Mitte: großer Palast mit zwei Seitenflügeln, Brunnen und Gärten auf einem großen runden Muschelplatz.
+- **Haupt-Insel** (mit Bindestrich) = die erste Insel (500 Plätze) mit dem **Muschelpalast** in der Mitte: großer Palast mit zwei Seitenflügeln, zwei Brunnen vor dem Sockel (links/rechts der Treppe) und zwei echten Blumenbeeten (Steinkante, Blumenreihen) vor den Seitenflügeln, auf einem großen runden Muschelplatz.
 - **Kokos-Küste** = die zweite Insel (unten rechts von der Haupt-Insel), **1.500 Plätze**, seit dem 501. Follower offen. Größer als die Haupt-Insel, unregelmäßige Inselform (nicht rund), Holzstege statt Sandwege, sandiger Boden. **Die Häuser sind Kokosnüsse** (mit Tür, Fenster, Blatt oben). In der Mitte ein großer Sandplatz mit großem Lagerfeuer; dort stehen immer 5–6 Bewohner (gehen hin, bleiben lange, gehen heim).
 - Weitere Inseln (ab 2.001. / 5.001. / 10.001.) heißen öffentlich nur „???“ (verborgen; Namen noch nicht festgelegt). Dazu eine **geheime Insel** am Kartenrand (nur „???“, in Wolken/Nebel).
 
@@ -22,20 +22,24 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
   - **🏖️ Strandvilla** (Westküste, mit Infinity-Pool): wird **demnächst verlost** (Schild „🎁 bald verlost“).
 - Personal ist farbig gekennzeichnet: Dönerbude rote Shirts + weiße Schürze und rote Namensschilder, Strandbar türkis; die Leitung hat einen ⭐ vor dem Namen.
 - Die Bürgermeisterin steht tagsüber auf der Palasttreppe, lila gekleidet mit goldenem Schein und lila Namensschild „🎖️ Bürgermeisterin @…“.
-- **Baustellen (nicht begehbar)**: 🏨 **Hotel Sandkorn** auf einem Bauplatz im Norden der Haupt-Insel – fertig bei **800 Einwohnern**; ⚓ **Boots-Anlegestelle** am kleinen Steg im Süden der Haupt-Insel – fertig bei **900 Einwohnern**. Mit Kran, Absperrung und Fortschrittsbalken.
+- **Baustellen (nicht begehbar)**: 🏨 **Hotel Sandkorn** auf einem Bauplatz im Norden der Haupt-Insel – fertig bei **800 Einwohnern**; ⚓ **Boots-Anlegestelle** am kleinen Steg im Süden der Haupt-Insel, wird als langer Steg weit ins Meer gebaut (für größere Schiffe) – fertig bei **900 Einwohnern**; 🐾 **Tierheim** auf einem Bauplatz im Nordwesten der Haupt-Insel – fertig bei **1.000 Einwohnern**. Mit Kran, Absperrung und Fortschrittsbalken; das Bauschild liegt immer über allen Namen (an der Anlegestelle draußen auf dem Meer). Auf Bauplätzen stehen keine Bänke, Laternen oder Deko.
+- **Aktuelle Bauprojekte**: eigene Seite (Knopf unter „Einwohner“/„Berufe“) mit allen Baustellen, Fortschritt und Ziel; der Ort ist auf die Karte verlinkt.
 - **Inselkasse**: 2 Gebäude (Dönerbude + Strandbar) wurden für 2.875 Muscheln gekauft → Kasse = 5 pro Einwohner + Story-Boni − 2.875.
 - Die Bürgermeisterin ist tagsüber immer am Muschelpalast (Treppe); wer sie sucht, findet sie dort. Ihr Name hat immer gelben Hintergrund.
 - Jede Figur hat ein festes Aussehen (an den TikTok-Namen gebunden); das ist auch ihr Profilbild im Muschelpass und Story-Bild.
 - Tippt man auf eine herumlaufende Person, öffnet sich ihr Muschelpass („Muschelpass von @…“, ohne Teilen-Knopf).
 - Gäste von Dönerbude/Strandbar kommen von ihrer Hütte, gehen im normalen Tempo vorwärts über die Wege und gehen danach wieder nach Hause. Nachts feiern an der Strandbar ca. 12–18 Gäste auf dem Steg und am nahen Strand.
 - Zusätzlich laufen tagsüber 8–12 und nachts 5–8 Passanten frei umher (biegen zufällig ab, bleiben stehen, drehen um).
+- **Jogger** im Sport-Outfit (Shirt in Neonfarbe, kurze Hose, Stirnband, weiße Schuhe) laufen außen am Strand hin und her: tagsüber 4–6, abends/nachts 2–4.
+- Auf dem Meer fahren kleine **Segelboote** (Großsegel, Fock, Wimpel). Sonnenschirme stehen schräg.
+- Döner-Gäste sitzen an den Tischen rechts neben der Bude bzw. stehen vor der Theke – nie im Laden.
 - Am Wegrand wachsen kleine Blumen passend zur Insel (Haupt-Insel: rosa/weiße Muschelblumen, Kokos-Küste: Frangipani). Keine Blumen mehr an den Dächern der Hütten.
 - Knopf „Als @name Muschel-Tal erkunden“ erscheint nur, wenn oben ein Name ausgewählt ist.
 - **Bürgermeisterin: @lillygyqcf0** (Beruf „Bürgermeisterin · Muschelpalast“). **Palast-Leitung folgt** (noch nicht vergeben).
 - Wer in einem Gebäude wohnt, hat keine Hütte mehr; dafür rücken die Nächsten nach Einwohner-Nr. auf die Haupt-Insel nach (am 8.11.: 5 Bewohner der Kokos-Küste sind auf die Haupt-Insel umgezogen). Die Haupt-Insel hat damit 500 Hütten + 5 Bewohner in Gebäuden = 505 Einwohner.
 - Dönerbude: tagsüber sitzen 6–9 Gäste an Tischen/der Theke und essen Döner, nachts 2–4; Gäste kommen und gehen. Strandbar: tagsüber 7–10 Gäste an Bar und Steg (Cocktails, Gespräche), nachts 10–14 bei einer Party mit bunten Lichtern.
 - **Hütten-Nr.** (Platz auf der Insel) ist nicht dasselbe wie die **Einwohner-Nr.** (Folge-Reihenfolge).
-- @sophia_e065 wohnt direkt an der Küste und hat einen kleinen Pool (Flamingo-Schwimmring, Quietscheente, Liege). @zoe518133 wohnt ebenfalls an der Küste. @anton.van11 wohnt direkt neben @laura.ngynn.
+- @sophia_e065 wohnt direkt an der Küste und hat einen kleinen schmalen Pool direkt neben ihrer Hütte (Flamingo-Schwimmring, Quietscheente). @zoe518133 wohnt ebenfalls an der Küste. @anton.van11 wohnt direkt neben @laura.ngynn.
 - Auf der Kokos-Küste gibt es **11 Bauplätze** („bald: ???“). Einer liegt an der Nordwestküste (Richtung Haupt-Insel) und reicht auf Pfählen bis ins Wasser (dort kommt später ein Hafen – **noch geheim, nicht verraten**).
 - Die gesperrten ???-Inseln sind größer und unregelmäßig geformt.
 - Insel unten links (ab 2.001 Followern, öffentlich „???“): etwas kleiner als die Kokos-Küste, weiter weg von der Haupt-Insel, unregelmäßige Form, großer See in der Mitte mit einer kleinen Insel und Palme (dort kommt später eine Villa – **noch geheim, nicht verraten**), Schildkröten schwimmen im See.
@@ -79,9 +83,9 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - Fahrräder/E-Roller, die hoch/runter fahren, sind von hinten/vorn zu sehen. Spaziergänger und Fahrer bewegen sich gemächlich auf den Wegen, bleiben immer an Land (nie ins Wasser, nie durch Gebäude), bleiben am Wegende bzw. Ufer ein paar Sekunden stehen und drehen dann um. Die ausgewählte „Ich bin du“-Person fährt nach 2 s los und bleibt am Wegende/Ufer stehen.
 - Namen auf der Karte stehen immer ganz vorne (nichts verdeckt sie).
 - Einwohner sehen unterschiedlich aus (Größe, Kleidung, Hose, Haut, Haarfarbe/-frisur, Augen, Mund), keine Accessoires. Es laufen/fahren deutlich mehr Leute herum; Wege sind frei von Bäumen/Büschen.
-- Zum Entdecken: Katzen, Blumentöpfe, Briefkästen, Wäscheleinen an Hütten; Seesterne, Muscheln, Sandburgen, Handtücher, Schwimmringe und Krabben am Strand; ab und zu springen Delfine im Meer.
+- Zum Entdecken: Blumentöpfe an Hütten (keine Tiere, Briefkästen oder Girlanden mehr); Seesterne, Muscheln, Sandburgen, Handtücher, Schwimmringe und Krabben am Strand; ab und zu springen Delfine im Meer.
 - Tippt man auf eine Hütte, erscheint unter der Suche nur der Name mit × zum Schließen.
-- Suchfeld: „Finde dich: @TikTok-Name“. Wer sich sucht, steht vor seinem Haus (bzw. an seinem Arbeitsplatz), steht dabei so nah wie möglich an ihrer Hütte – auf einem freien Platz direkt daneben oder dem nächsten Weg (nie auf Dächern), leicht hervorgehoben und von keinem Namen verdeckt, die Kamera zielt auf sie, und sie winkt und sagt in einer Sprechblase direkt über dem Kopf: „Ich bin du! 👋“ (bei allen gleich). Nach 2 s steigt die Person auf ein zufälliges Gefährt (zu Fuß, Fahrrad, E-Roller, Inliner, Skateboard) und fährt den Weg entlang davon.
+- Suchfeld: „Finde dich: @TikTok-Name“. Wer sich sucht, steht vor seinem Haus (bzw. an seinem Arbeitsplatz), steht dabei so nah wie möglich an ihrer Hütte – auf einem freien Platz direkt daneben oder dem nächsten Weg (nie auf Dächern), leicht hervorgehoben und von keinem Namen verdeckt, die Kamera zielt auf sie, und sie winkt und sagt in einer Sprechblase direkt über dem Kopf: „Ich bin du! 👋“ (bei allen gleich). Nach 2 s geht die Person ganz normal zu Fuß vorwärts weiter und läuft dann frei über die Wege; tippt man sie an, öffnet sich ihr Muschelpass wie bei jedem Passanten. Ausgewählt: der Name steht nur oben im Suchfeld (keine zweite Zeile darunter).
 - **Selbst laufen**: Knopf „🚶 Als @name Muschel-Tal erkunden“ (ohne gewählten Namen: „🚶 Muschel-Tal erkunden“) direkt unter der Karte. Man läuft als sich selbst (gesuchter/gespeicherter Name, sonst „Du“) über Wege, Plätze, Muschelplatz, Bauplätze, Steg, Strandbar-Deck und Villen-Terrasse – nicht durch Hütten, Gebäude, Palast, Brunnen, Lagerfeuer oder übers Wasser; durch andere Bewohner kann man hindurch. Umschaltbar auf E-Scooter (1,5× so schnell wie zu Fuß). Steuerung: Tippen & halten auf die Karte (Handy) oder Pfeiltasten/WASD; Beenden-Knopf.
 - Gefährte auf der Karte: zu Fuß, Fahrrad, E-Roller, Inliner, Skateboard.
 - **„Wachsen sehen“** zeigt genau die Insel, die man gerade ansieht: erst die Einzüge der Reihe nach, dann alle Veränderungen der Infrastruktur nacheinander (Bürgermeisterin, Dönerbude, Strandbar, Strandvilla; später auch Entferntes über `insel.json` → `entfernt`) – nur auf der Karte, ohne Meldungen; andere Inseln sind währenddessen ausgeblendet. Gebäude erscheinen mit Effekt auf ihrem vorherigen Bauplatz.

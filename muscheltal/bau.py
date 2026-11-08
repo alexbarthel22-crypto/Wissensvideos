@@ -254,6 +254,49 @@ section h2 span{background:var(--sun);border:2px solid var(--ink);border-radius:
     open(os.path.join(out, "news.html"), "w", encoding="utf-8").write(seite)
 
 
+
+def bauprojekte(sauber, insel, out):
+    """bau.html: alle aktuellen Baustellen mit Ziel zur Fertigstellung; Ort verlinkt auf die Karte."""
+    import html as H
+    from urllib.parse import quote
+    erf = open(os.path.join(HIER, "erfolge.html"), encoding="utf-8").read()
+    head = erf[:erf.index("<style>") + len("<style>")].replace("<title>Erfolge – Muschel-Tal</title>", "<title>Bauprojekte – Muschel-Tal</title>").replace(
+        "Alle Erfolge und Abzeichen der Bewohner von Muschel-Tal.", "Aktuelle Bauprojekte in Muschel-Tal und wann sie fertig werden.")
+    css = erf[erf.index("<style>") + len("<style>"):erf.index("</style>")]
+    keep = "\n".join(l for l in css.split("\n") if l.startswith((":root", " --f", "*{", "body{", ".top", "main{", ".cta{")))
+    n = len(sauber)
+    teile = []
+    for b in sorted([b for b in insel.get("baustellen", []) if n < b["ziel"]], key=lambda b: b["ziel"]):
+        pr = min(100, round(n * 100 / b["ziel"]))
+        ort = "am Steg der Haupt-Insel, weit ins Meer" if b.get("ort") == "steg" else "auf der " + (insel["inseln"][int(b["key"].split(":")[0])]["name"] if b.get("key") else "Haupt-Insel")
+        teile.append(f'''<a class="bp" href="./?ort={quote(b["name"])}"><div class="kopf"><span class="em">{H.escape(b.get("emoji", "🏗️"))}</span><div><b>{H.escape(b["name"])}</b><small>{H.escape(ort)}</small></div></div>
+<div class="bar"><i style="width:{pr}%"></i></div><div class="zl"><span>{n:,} von {b["ziel"]:,} Bewohnern</span><span>noch {b["ziel"] - n:,}</span></div><u>📍 Auf der Karte ansehen →</u></a>'''.replace(",", "."))
+    leer = '<p class="hint">Gerade wird nichts gebaut. Neue Projekte kommen bald!</p>' if not teile else ""
+    seite = head + "\n" + keep + """
+.hint{background:#fff;border:3px dashed var(--ink);border-radius:18px;padding:14px;margin:4px 0 18px;font-weight:800;text-align:center}
+.bp{display:block;background:#fff;border:3px solid var(--ink);border-radius:20px;padding:14px;margin-bottom:14px;box-shadow:4px 4px 0 var(--ink);color:var(--ink);text-decoration:none}
+.kopf{display:flex;align-items:center;gap:12px}
+.em{font-size:34px;line-height:1}
+.kopf b{display:block;font-size:22px;font-weight:900}
+.kopf small{display:block;font-size:14px;font-weight:800;color:#7a5a2b}
+.bar{height:14px;background:#f0e2c8;border:2px solid var(--ink);border-radius:999px;overflow:hidden;margin:12px 0 6px}
+.bar i{display:block;height:100%;background:#2e9e5b}
+.zl{display:flex;justify-content:space-between;gap:10px;font-size:14px;font-weight:900}
+.bp u{display:block;margin-top:8px;font-size:14px;font-weight:900;color:#0a8fd0;text-decoration:none}
+</style>
+</head>
+<body>
+<header class="top"><a href="./">← Zur Karte</a><small>MUSCHEL-TAL</small><h1>🏗️ Aktuelle Bauprojekte</h1><p>Was gerade gebaut wird – fertig, sobald genug Bewohner da sind. Tipp auf ein Projekt, um auf der Karte hinzukommen.</p>
+<svg viewBox="0 0 400 24" preserveAspectRatio="none"><path d="M0 14 Q25 2 50 14 T100 14 T150 14 T200 14 T250 14 T300 14 T350 14 T400 14 V24 H0Z" fill="#fff4e0"/></svg></header>
+<main>
+""" + leer + "\n".join(teile) + """
+ <a class="cta" href="https://www.tiktok.com/@muscheltal" target="_blank" rel="noopener">🐚 Folgen &amp; mitbauen</a>
+</main>
+</body>
+</html>
+"""
+    open(os.path.join(out, "bau.html"), "w", encoding="utf-8").write(seite)
+
 def berufe(sauber, insel, out):
     """berufe.html: alle Einwohner mit Job, nach Arbeitsort; Ort und Name verlinkt auf die Karte."""
     import html as H
@@ -369,6 +412,7 @@ def baue(rows, out):
     uebersicht(sauber, insel, out)
     nachrichten(insel, out)
     berufe(sauber, insel, out)
+    bauprojekte(sauber, insel, out)
     alt = os.path.join(out, "einwohner.json")
     if os.path.exists(alt):
         os.remove(alt)  # nicht mehr öffentlich (enthielt echte Inselnamen)
