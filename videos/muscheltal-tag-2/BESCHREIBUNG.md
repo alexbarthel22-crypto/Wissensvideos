@@ -1,6 +1,6 @@
 # Muschel-Tal – Tag 1 (Video 2) · Beschreibung
 
-**Cover:** `renders/cover.jpg` (Vorlage `cover/thumb.html`) – Insel-Look: Logo + „TAG 1“, Schlagzeile „NEUE INSEL! – Die Kokos-Küste ist besiedelt“ 🥥, Karten 575 Einwohner (+575) und 2.875 Muscheln (+2.875), gestern 0, „Folg @muscheltal & zieh ein“.
+**Cover:** `renders/cover.jpg` (Vorlage `cover/thumb.html`) – Insel-Look, zentriert für die TikTok-Vorschau: Logo + „TAG 1“, „NEUE INSEL?!“ (nur angedeutet: „Wer wohnt schon dort? 👀“), 575 Einwohner (+575) und 2.875 Muscheln (+2.875) mit Zahlen-Hintergrund, „Folg @muscheltal & zieh ein“.
 
 ## Hauptversion (zum Posten)
 Von 0 auf 575 Bewohner in einem Tag 🤯 Die Haupt-Insel ist voll – findest du deine Hütte? 🏝️
