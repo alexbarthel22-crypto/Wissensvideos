@@ -31,6 +31,7 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 6. Preise für alle Bewohner (Villen, Umzüge, Designs, Outfits …).
 7. Wer entfolgt, zieht aus; auf der Haupt-Insel rückt der Nächste nach Einwohner-Nummer nach.
 - **Tag-Zähler: Tag 1 = 8.11.2026**, danach zählt er jeden Tag automatisch hoch (9.11. = Tag 2 …).
+- **Zählung für Videos:** Das Video vom 8.11. (bisher „Video 2 / Tag 2“) startet mit **„Tag 1“**. Ab dann gilt: Video-Tag = Homepage-Tag (9.11. = Tag 2 usw.). ⚠️ Videos-Chat: Titel/Einblendungen „Tag 2“ im Video vom 8.11. auf „Tag 1“ ändern.
 
 ## Stand (8.11.2026)
 - **575 Einwohner**: 500 auf der Haupt-Insel (voll), **75 auf der Kokos-Küste** (Nr. 501–575).
