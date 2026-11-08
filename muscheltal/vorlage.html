@@ -1296,7 +1296,7 @@ function walkTick(n){if(!WK.on)return;const dt=Math.min(.05,(n-WK.last)/1000);WK
  const K=WK.keys;if(K.has('ArrowLeft')||K.has('a'))vx-=1;if(K.has('ArrowRight')||K.has('d'))vx+=1;if(K.has('ArrowUp')||K.has('w'))vy-=1;if(K.has('ArrowDown')||K.has('s'))vy+=1;
  if(WK.pt){const sx=(WK.x-cam.x)*cam.z+W/2,sy=(WK.y-cam.y)*cam.z+H/2,dx=WK.pt[0]-sx,dy=WK.pt[1]-sy;if(Math.hypot(dx,dy)>14){vx=dx;vy=dy;}}
  const l=Math.hypot(vx,vy);WK.moving=l>0;
- if(l>0){const sp=(WK.mode==='scooter'?90:30)*dt;vx=vx/l*sp;vy=vy/l*sp;
+ if(l>0){const sp=(WK.mode==='scooter'?60:30)*dt;vx=vx/l*sp;vy=vy/l*sp;
   const steps=Math.ceil(Math.max(Math.abs(vx),Math.abs(vy))/2);for(let i=0;i<steps;i++){const sx=vx/steps,sy=vy/steps;if(canWalk(WK.x+sx,WK.y))WK.x+=sx;if(canWalk(WK.x,WK.y+sy))WK.y+=sy;}
   WK.vert=Math.abs(vy)>Math.abs(vx)*1.2;WK.dir=WK.vert?(vy>0?1:-1):(vx>=0?1:-1);WK.front=WK.vert&&vy>0;}
  const tz=WK.mode==='scooter'?3.6:5;cam.x+=(WK.x-cam.x)*Math.min(1,dt*6);cam.y+=(WK.y-cam.y)*Math.min(1,dt*6);cam.z+=(tz-cam.z)*Math.min(1,dt*3);
