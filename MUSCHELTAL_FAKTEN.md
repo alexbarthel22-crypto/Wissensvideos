@@ -52,6 +52,13 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - Karten-Knöpfe: ohne Auswahl „Alle Inseln“ + „Zufall“ (wischen: „Wachsen sehen“), mit Auswahl „Meine Hütte“ + „Muschelpass“ (wischen: „Alle Inseln“).
 - Fahrräder/E-Roller, die hoch/runter fahren, sind von hinten/vorn zu sehen.
 
+## Video 2 / Tag 2 (in Arbeit, Stimme 8.11. um 9:03)
+- Inhalt: 0 → 575 Bewohner, Haupt-Insel voll (500 Hütten mit Namen) · nächste Insel besiedelt: Kokos-Küste, 75 Bewohner · 1 Bewohner = 5 Muscheln → **2.875 Muscheln** → davon **2 Gebäude** bauen.
+- **Abstimmung in den Kommentaren:** Wünsche Strandbar, Dönerbude, Bäckerei, Krankenhaus – 2 davon werden gekauft.
+- **Bürgermeister*in gesucht** – der Top-Kommentar gewinnt (passt zu Regel 5).
+- **Bei 1.000 Bewohnern gibt es eine große Überraschung** (noch geheim) → Homepage sollte nichts anderes behaupten.
+- Hintergrund des Videos = Aufnahme der echten Homepage.
+
 ## Gepostete Videos (Hauptaccount)
 - **Video 1 (gepostet): „Ich habe euch eine Insel gekauft“** – `videos/muscheltal-tag-1/variante-insel-gekauft/video.mp4` (Stand Commit 69ffe74).
   Inhalt: Insel gekauft, jeder bekommt ein eigenes Haus · „Sie heißt Muschel-Tal, mitten in der Südsee“ · Folgen = einziehen, Hütte mit Namen · 1 Einwohner = 5 Muscheln, Kontostand 0 · früher folgen = „Hauptinsel: Muschel-Tal“, 500 Plätze · ist sie voll, öffnen neue Inseln („Wann genau? Bald“) · geheime Insel am Kartenrand · ihr entscheidet in den Kommentaren · „Hütte Nr. 1 ist noch frei“.
