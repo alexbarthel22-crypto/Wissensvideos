@@ -394,7 +394,7 @@ function person(c,L,st,front,wave){c.save();c.scale(L.h,L.h);const bw=1.6*L.wide
  c.fillStyle='rgba(255,120,120,.35)';c.beginPath();c.arc(front?-.85:.6,-3.55,.32,0,TAU);if(front)c.arc(.85,-3.55,.32,0,TAU);c.fill();
  c.strokeStyle='#8a2f22';c.lineWidth=.22;c.lineCap='round';c.beginPath();if(front)c.arc(0,-3.6,.42,.2,Math.PI-.2);else{c.moveTo(.75,-3.35);c.quadraticCurveTo(1.05,-3.15,1.3,-3.4);}c.stroke();
  c.restore();}
-const WALKERS=PLACED.filter((p,i)=>hash(i,77)<.17).slice(0,72).map((q,i)=>{const vert=hash(i,78)<.5,gx=q.p.gx,gy=q.p.gy,v=q.isl,mode=['walk','bike','walk','scooter','inline','walk','skate','bike'][i%8],fast=mode!=='walk',phone=mode==='walk'&&hash(i,83)<.4;
+const WALKERS=PLACED.filter((p,i)=>hash(i,77)<.17).slice(0,72).map((q,i)=>{const vert=hash(i,78)<.5,gx=q.p.gx,gy=q.p.gy,v=q.isl,mode=['walk','bike','walk','scooter','inline','walk','skate','bike'][i%8],fast=mode!=='walk',phone=mode==='walk'&&hash(i,83)<.1;
  return{q,vert,mode,rx:v.x+Math.round(gx/5)*5*S,ry:v.y+Math.round(gy/4)*4*S*.9,x0:q.p.x,y0:q.p.y,len:(fast?45:22)+hash(i,79)*(fast?45:30),sp:(fast?.35:.22)+hash(i,80)*.2,ph:hash(i,81)*TAU,
   fw:hash(i,82)<.5?1:-1,phone,...look(q.nr),bikec:['#ff3d7f','#0a8fd0','#2fb3a0','#ff8a2a'][i%4]};}).filter(w=>{const v=w.q.isl,cx=w.vert?w.rx:Math.max(w.x0-w.len,Math.min(w.x0+w.len,v.x)),cy=w.vert?Math.max(w.y0-w.len,Math.min(w.y0+w.len,v.y)):w.ry;return Math.hypot(cx-v.x,cy-v.y)>v.plaza+8;});
 const byName=new Map(PEOPLE.map(p=>[p.name.toLowerCase(),p]));
@@ -1079,7 +1079,7 @@ cv.addEventListener('pointermove',e=>{if(!pts.has(e.pointerId))return;const o=pt
 const up=e=>{if(!pts.has(e.pointerId))return;pts.delete(e.pointerId);if(pts.size<2)pinch=0;cv.classList.remove('drag');
  if(pts.size===0&&moved<6){const [wx,wy]=s2w(e.offsetX,e.offsetY);let best=null,bd=14;
   for(const v of ISL){if(Math.hypot(wx-v.x,wy-v.y)>v.R+30)continue;const gx=Math.round((wx-v.x)/S),gy=Math.round((wy-v.y)/(S*.9));for(let dx=-1;dx<=1;dx++)for(let dy=-1;dy<=1;dy++){const q=v.cell.get((gx+dx)+','+(gy+dy));if(!q||q.nr>limit)continue;const d=Math.hypot(q.p.x-wx,q.p.y-wy);if(d<bd){bd=d;best=q;}}}
-  if(best)select(best);}};
+  if(best)select(best);else if(sel){q.value='';$('qx').hidden=true;sg.hidden=true;unsel();}}};
 cv.addEventListener('pointerup',up);cv.addEventListener('pointercancel',up);
 let hintT=0;cv.addEventListener('wheel',e=>{if(e.ctrlKey||e.metaKey){e.preventDefault();zoomAt(Math.exp(-e.deltaY*0.0022),e.offsetX,e.offsetY);}else{$('hint').classList.add('on');clearTimeout(hintT);hintT=setTimeout(()=>$('hint').classList.remove('on'),1100);}},{passive:false});
 // Knopfleiste: ohne Auswahl Alle Inseln + Zufall (wischen: Wachsen sehen), mit Auswahl Meine Hütte + Muschelpass (wischen: Alle Inseln)
