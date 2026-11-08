@@ -27,7 +27,8 @@ SFX_DIR = next((p for p in [*Path("/root/.claude/plugins/cache/hyperframes").glo
 W, H = 1080, 1920
 COLORS = {"y": "#ffd43b", "r": "#ff3b55", "p": "#ff4fb0", "g": "#39e27a", "b": "#4da3ff", "c": "#3fe3ea"}
 WHOOSHES = ["whoosh-short", "whoosh"]  # nur kurze; lange Whooshes/Glitches rauschen unter der Stimme
-MANIFEST = json.loads((SFX_DIR / "manifest.json").read_text())
+# ohne HyperFrames-Plugin: Effekte kommen aus assets/sfx des Projekts
+MANIFEST = json.loads((SFX_DIR / "manifest.json").read_text()) if (SFX_DIR / "manifest.json").exists() else {}
 VENDOR = Path(__file__).resolve().parent / "vendor"
 
 

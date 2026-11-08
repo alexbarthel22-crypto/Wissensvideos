@@ -1,0 +1,40 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    @font-face { font-family: 'Lilita One'; src: url('assets/fonts/LilitaOne-Regular.woff2') format('woff2'); font-weight: 400; }
+    #s02-n { position: absolute; left: 0; right: 0; top: 330px; text-align: center; font-family: "Lilita One", sans-serif; font-size: 230px; line-height: 1; color: #ffd23f; -webkit-text-stroke: 22px #1d2147; paint-order: stroke fill; }
+    #s02-s { top: 590px; font-size: 64px; white-space: nowrap; max-width: none; }
+    #s02-btn { position: absolute; left: 0; right: 0; margin: 0 auto; top: 760px; width: 440px; height: 124px; border-radius: 62px; background: #fe2c55; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 58px; display: grid; place-items: center; box-shadow: 0 12px 0 rgba(0,0,0,.25); }
+    #s02-btn2 { position: absolute; inset: 0; border-radius: 62px; background: #fff; color: #0a78c2; display: grid; place-items: center; opacity: 0; }
+    #s02-at { top: 920px; font-size: 46px; }
+  </style>
+  <div id="root" data-composition-id="s02" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s02-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s02-n">1.500</div>
+      <div id="s02-s" class="bt gr">FREIE PLÄTZE 🥥</div>
+      <div id="s02-btn">+ Folgen<div id="s02-btn2">✓ Gefolgt</div></div>
+      <div id="s02-at" class="bt or">@muscheltal</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      /*__COMMON_JS__*/
+      wrapBt("#s02-stage");
+      const tl = gsap.timeline({ paused: true });
+      const n = at("L3", "1.500"), fo = at("L4", "Folg");
+      const o = { v: 0 }, el = document.querySelector("#s02-n");
+      tl.fromTo("#s02-n", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .45, ease: "back.out(2.4)" }, n - .15);
+      tl.to(o, { v: 1500, duration: .9, ease: "power2.out", onUpdate: () => { el.textContent = Math.round(o.v).toLocaleString("de-DE"); } }, n - .15);
+      tl.fromTo("#s02-s", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: .35, ease: "back.out(2)" }, n + .5);
+      tl.to("#s02-n", { scale: 1.07, duration: .45, yoyo: true, repeat: 3, ease: "sine.inOut" }, n + .9);
+      tl.fromTo("#s02-btn", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, line("L4")[0] - .1);
+      tl.to("#s02-btn2", { opacity: 1, duration: .05 }, fo + .35);
+      tl.fromTo("#s02-btn", { scale: 1 }, { scale: 1.15, duration: .12, yoyo: true, repeat: 1 }, fo + .35);
+      tl.fromTo("#s02-at", { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: .3, ease: "power3.out" }, fo + .5);
+      tl.to("#s02-btn", { scale: 1.06, duration: .3, yoyo: true, repeat: 3, ease: "sine.inOut" }, fo + .8);
+      window.__timelines["s02"] = tl;
+    })();
+  </script>
+</template>

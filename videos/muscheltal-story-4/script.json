@@ -1,0 +1,88 @@
+{
+ "title": "Muschel-Tal Story – Ich betrete die Kokos-Küste",
+ "voice": "Gemini TTS (gemini-3.1-flash-tts-preview, Stimme Achird), natürlich und emotional, --speed 1.12",
+ "notes": "Story (ca. 13 s), Ich-Perspektive ohne Hände: vom Wasser auf die Kokos-Küste, erste Kokosnuss-Hütten mit Follower-Namen, Lagerfeuer; Ankündigung: Platz für die nächsten 1.500 Follower. Hintergrund = Aufnahme von muscheltal.de.",
+ "lead_in": 0.0,
+ "bg": "#0a5a92",
+ "captions": {
+  "pop": false,
+  "first_at_zero": true,
+  "left": 60,
+  "right": 190,
+  "size": 118,
+  "css": "@font-face { font-family: 'Lilita One'; src: url('assets/fonts/LilitaOne-Regular.woff2') format('woff2'); font-weight: 400; }\n    .inner { font-family: 'Lilita One', sans-serif; font-weight: 400; letter-spacing: .01em; }\n    .w { display: inline-block; white-space: nowrap; color: #fff; -webkit-text-stroke: 16px #1d2147; paint-order: stroke fill; }\n    .inner.hk { font-size: 104px; line-height: 1.12; } .inner.hk .w { margin: 0 .12em; }",
+  "single": true,
+  "top": 1250,
+  "first_full": true
+ },
+ "style": "Style: a real young man, first person, stepping onto a new island for the first time, amazed and happy, warm and natural, not like an announcer.\nPace: natural.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+ "loudness": -11,
+ "pitch": 0,
+ "music": {
+  "src": "assets/music/suedsee.wav",
+  "volume": 1,
+  "note": "tools/make_music_tropical.py, im Code erzeugt (lizenzfrei), unter der Stimme automatisch leiser"
+ },
+ "bgvideo": {
+  "src": "assets/bg.mp4"
+ },
+ "ambience": {
+  "src": "assets/music/atmo.wav",
+  "volume": 1
+ },
+ "scenes": [
+  {
+   "id": "s01",
+   "tag": "",
+   "lines": [
+    {
+     "id": "L1",
+     "text": "Ich betrete / zum ersten Mal / die *b:Kokos-Küste."
+    },
+    {
+     "id": "L2",
+     "text": "Hier stehen schon / die ersten *y:Kokosnuss-Hütten – / mit *g:euren *g:Namen!"
+    }
+   ],
+   "sfx": [
+    {
+     "name": "whoosh",
+     "at": "L1:Kokos",
+     "volume": 0.35
+    },
+    {
+     "name": "pop",
+     "at": "L2:Namen",
+     "volume": 0.4
+    }
+   ]
+  },
+  {
+   "id": "s02",
+   "tag": "",
+   "hold": 1.6,
+   "lines": [
+    {
+     "id": "L3",
+     "text": "Und hier ist jetzt Platz / für die nächsten / *y:1.500|tausendfünfhundert *y:Follower!"
+    },
+    {
+     "id": "L4",
+     "text": "*p:Folg mir / und zieh *g:hier *g:ein!"
+    }
+   ],
+   "sfx": [
+    {
+     "name": "ka-ching",
+     "at": "L3:1.500",
+     "volume": 0.5
+    },
+    {
+     "name": "click",
+     "at": "L4:Folg",
+     "volume": 0.5
+    }
+   ]
+  }
+ ]
+}
