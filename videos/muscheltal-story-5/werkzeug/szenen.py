@@ -67,8 +67,8 @@ scene("s03", STK + """
 """      <div id="s03-btn">+ Folgen<div id="s03-btn2">✓ Gefolgt</div></div>
       <div id="s03-hand" data-layout-ignore>👆</div>
       <div id="s03-at" class="stk2">@muscheltal</div>
-      <div id="s03-a" class="stk2">🌴 Von Anfang an dabei sein!</div>""",
-"""      const fo = at("L3", "folgen"), an = at("L3", "Anfang");
+      <div id="s03-a" class="stk2">👯 Ladet eure Freunde ein!</div>""",
+"""      const fo = at("L3", "folgen"), an = at("L3", "Freunde");
       tl.fromTo("#s03-btn", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, fo - .7);
       tl.fromTo("#s03-hand", { opacity: 0, x: 160, y: 160 }, { opacity: 1, x: 0, y: 0, duration: .3, ease: "power3.out" }, fo - .4);
       tl.to("#s03-hand", { y: -26, scale: .9, duration: .1, yoyo: true, repeat: 1 }, fo - .05);

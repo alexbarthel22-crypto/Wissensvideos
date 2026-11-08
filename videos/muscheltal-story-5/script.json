@@ -12,7 +12,7 @@
   "size": 118,
   "css": "@font-face { font-family: 'Lilita One'; src: url('assets/fonts/LilitaOne-Regular.woff2') format('woff2'); font-weight: 400; }\n    .inner { font-family: 'Lilita One', sans-serif; font-weight: 400; letter-spacing: .01em; }\n    .w { display: inline-block; white-space: nowrap; color: #fff; -webkit-text-stroke: 16px #1d2147; paint-order: stroke fill; }\n    .inner.hk { font-size: 104px; line-height: 1.12; } .inner.hk .w { margin: 0 .12em; }",
   "single": true,
-  "top": 1250,
+  "top": 860,
   "first_full": true
  },
  "scenes": [
@@ -22,7 +22,7 @@
    "lines": [
     {
      "id": "L1",
-     "text": "Ein Abend am *y:Lagerfeuer / auf der *b:Kokos-Küste …",
+     "text": "Ein Abend am *y:Lagerfeuer / auf *b:Kokos-Küste …",
      "style": "Style: a real young man, calm, warm and cozy, enjoying a quiet evening by the fire, natural not theatrical.\nPace: calm.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
      "speed": 1.0
     }
@@ -56,7 +56,7 @@
    "lines": [
     {
      "id": "L3",
-     "text": "Also schnell *p:folgen / und von Anfang an dabei sein / beim *y:Abenteuer in *c:Muschel-Tal!",
+     "text": "Also schnell *p:folgen / und *y:ladet eure Freunde mit ein, / damit ihr *g:zusammen / von Anfang an dabei seid!",
      "style": "Style: a real young man, enthusiastic and inviting, motivating, natural not theatrical.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
      "speed": 1.08,
      "pause": 0.4
@@ -69,8 +69,13 @@
      "volume": 0.5
     },
     {
+     "name": "pop",
+     "at": "L3:Freunde",
+     "volume": 0.4
+    },
+    {
      "name": "ka-ching",
-     "at": "L3:Abenteuer",
+     "at": "L3:zusammen",
      "volume": 0.4
     }
    ]

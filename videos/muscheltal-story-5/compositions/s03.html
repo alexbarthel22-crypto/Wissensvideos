@@ -57,18 +57,18 @@
     #s03-at { top: 530px; font-size: 44px; background: #ff6a1a; }
     #s03-a { top: 640px; font-size: 40px; background: #e8467c; }
   </style>
-  <div id="root" data-composition-id="s03" data-start="0" data-duration="5.470" data-width="1080" data-height="1920">
-    <div id="s03-stage" class="clip stage" data-start="0" data-duration="5.470" data-track-index="0">
+  <div id="root" data-composition-id="s03" data-start="0" data-duration="6.320" data-width="1080" data-height="1920">
+    <div id="s03-stage" class="clip stage" data-start="0" data-duration="6.320" data-track-index="0">
       <div id="s03-btn">+ Folgen<div id="s03-btn2">✓ Gefolgt</div></div>
       <div id="s03-hand" data-layout-ignore>👆</div>
       <div id="s03-at" class="stk2">@muscheltal</div>
-      <div id="s03-a" class="stk2">🌴 Von Anfang an dabei sein!</div>
+      <div id="s03-a" class="stk2">👯 Ladet eure Freunde ein!</div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 5.47, "L3": [0.2, 3.47], "L3.words": [["also", 0.2, 0.499], ["schnell", 0.499, 0.677], ["folgen", 0.677, 0.987], ["und", 0.987, 1.142], ["von", 1.142, 1.297], ["anfang", 1.297, 1.608], ["an", 1.608, 1.757], ["dabei", 1.757, 2.062], ["sein", 2.062, 2.223], ["beim", 2.223, 2.384], ["abenteuer", 2.384, 2.849], ["in", 2.849, 2.999], ["muscheltal", 2.999, 3.47]]};
+      const C = {"__dur": 6.32, "L3": [0.2, 4.32], "L3.words": [["also", 0.2, 0.493], ["schnell", 0.493, 0.667], ["folgen", 0.667, 0.972], ["und", 0.972, 1.124], ["ladet", 1.124, 1.423], ["eure", 1.423, 1.716], ["freunde", 1.716, 2.026], ["mit", 2.026, 2.178], ["ein", 2.178, 2.33], ["damit", 2.54, 2.811], ["ihr", 2.811, 2.949], ["zusammen", 2.949, 3.359], ["von", 3.359, 3.497], ["anfang", 3.497, 3.773], ["an", 3.773, 3.906], ["dabei", 3.906, 4.177], ["seid", 4.177, 4.32]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -112,7 +112,7 @@
 
       wrapBt("#s03-stage");
       const tl = gsap.timeline({ paused: true });
-      const fo = at("L3", "folgen"), an = at("L3", "Anfang");
+      const fo = at("L3", "folgen"), an = at("L3", "Freunde");
       tl.fromTo("#s03-btn", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, fo - .7);
       tl.fromTo("#s03-hand", { opacity: 0, x: 160, y: 160 }, { opacity: 1, x: 0, y: 0, duration: .3, ease: "power3.out" }, fo - .4);
       tl.to("#s03-hand", { y: -26, scale: .9, duration: .1, yoyo: true, repeat: 1 }, fo - .05);
