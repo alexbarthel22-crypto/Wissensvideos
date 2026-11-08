@@ -705,7 +705,7 @@ function drawMover(c,w,x,y,dir,vert,mode){
   if(vert&&mode!=='walk'&&mode!=='inline'&&mode!=='skate'){c.scale(w.h,w.h);riderV(c,w,dir>0);}
   else if(mode==='walk'){const st=Math.sin(T*9+w.ph)*1.1;person(c,w,vert?st*.5:st,vert&&dir>0);}
   else if(mode==='inline'||mode==='skate'){const sk=mode==='skate',st=sk?0:Math.sin(T*4+w.ph)*.9,lean=sk?0:.12;
-   if(sk){c.save();c.scale(w.h,w.h);c.fillStyle=w.bikec;if(vert){c.fillStyle='#8a8a94';c.fillRect(-1.9,4.9,3.8,.45);c.fillStyle='#2a1b12';for(const wx of[-2.3,-1.5,1.5,2.3]){c.beginPath();c.roundRect(wx-.38,4.7,.76,1.2,.3);c.fill();}c.fillStyle=w.bikec;c.beginPath();c.roundRect(-2.8,4.05,5.6,.9,.45);c.fill();c.strokeStyle='#2a1b12';c.lineWidth=.25;c.stroke();c.fillStyle='rgba(255,255,255,.55)';c.fillRect(-2.2,4.2,4.4,.2);}else{c.beginPath();c.roundRect(-3.4,4.3,6.8,1,.5);c.fill();c.fillStyle='#2a1b12';for(const wx of[-2.3,2.3]){c.beginPath();c.arc(wx,5.6,.55,0,TAU);c.fill();}}c.restore();c.translate(0,-.8);}
+   if(sk){c.save();c.scale(w.h,w.h);c.fillStyle=w.bikec;if(vert){c.fillStyle='#8a8a94';c.fillRect(-1.3,4.9,2.6,.4);c.fillStyle='#2a1b12';for(const wx of[-1.55,1.55]){c.beginPath();c.roundRect(wx-.35,4.65,.7,1.15,.3);c.fill();}c.fillStyle=w.bikec;c.beginPath();c.roundRect(-1.75,4.05,3.5,.85,.42);c.fill();c.strokeStyle='#2a1b12';c.lineWidth=.25;c.stroke();c.fillStyle='rgba(255,255,255,.55)';c.fillRect(-1.3,4.2,2.6,.2);}else{c.beginPath();c.roundRect(-3.4,4.3,6.8,1,.5);c.fill();c.fillStyle='#2a1b12';for(const wx of[-2.3,2.3]){c.beginPath();c.arc(wx,5.6,.55,0,TAU);c.fill();}}c.restore();c.translate(0,-.8);}
    c.save();if(!vert)c.rotate(lean);person(c,w,vert?st*.4:st,vert&&dir>0);
    if(!sk){c.scale(w.h,w.h);for(const f of vert?[-.55+st*.4,.55-st*.4]:[-.55+st,.55-st]){c.fillStyle='#2a1b12';c.beginPath();c.roundRect(f-.8,3.6,1.7,1,.35);c.fill();c.fillStyle=w.bikec;if(vert){c.fillRect(f-.22,4.5,.44,.7);}else for(let k=0;k<3;k++){c.beginPath();c.arc(f-.5+k*.55,4.85,.28,0,TAU);c.fill();}}}
    c.restore();}
@@ -743,7 +743,12 @@ function cloud(c,cl,a,grey){const w=BOX.x1-BOX.x0,x=((cl.x-BOX.x0+T*cl.sp*WFg)%w
 function scallop(c,cx,cy,R,b,lobes){c.beginPath();c.moveTo(cx,cy);const pt=(a,r)=>[cx+Math.cos(a)*r,cy+Math.sin(a)*r];c.lineTo(...pt(RA0,R));for(let i=0;i<lobes;i++){const s0=RA0+(RA1-RA0)*i/lobes,e=RA0+(RA1-RA0)*(i+1)/lobes;c.quadraticCurveTo(...pt((s0+e)/2,R+b*2),...pt(e,R));}c.closePath();}
 // Muschelpalast: großer Palast mit Seitenflügeln und Gärten auf dem Muschelplatz
 // Standplatz der gesuchten Person: auf dem Weg unter/neben ihrer Hütte
-function standSpot(p){if(!p||!p.p)return null;if(p.gb)return{x:p.p.x,y:p.p.y,onRow:true};const v=p.isl,gx=p.p.gx,gy=p.p.gy,colx=v.x+Math.round(gx/5)*5*S,rowy=v.y+Math.ceil((gy+.01)/4)*4*S*.9,dc=Math.abs(colx-p.p.x),dr=Math.abs(rowy-p.p.y)/.9,onRow=dr<=dc+4;return onRow?{x:p.p.x,y:rowy-2.6,onRow}:{x:colx,y:p.p.y+2,onRow};}
+function standSpot(p){if(!p||!p.p)return null;if(p.gb)return{x:p.p.x,y:p.p.y,kind:'row'};const v=p.isl,gx=p.p.gx,gy=p.p.gy,hx=p.p.x,hy=p.p.y,C=[];
+ // möglichst nah an der Hütte: freier Platz direkt daneben, sonst der nächste Weg (oben, unten, links, rechts)
+ for(const [dx,dy] of[[1,0],[-1,0],[0,1],[0,-1],[1,1],[-1,1]]){const cx=gx+dx,cy=gy+dy;if(((cx%5)+5)%5===0||((cy%4)+4)%4===0||v.cell.has(cx+','+cy)||inRes(v.resv,cx,cy))continue;const x=v.x+cx*S,y=v.y+cy*S*.9+2;if(!inside(v,x,y,10))continue;if(PEOPLE.some(q=>q.p&&q!==p&&Math.abs(q.p.x-x)<12&&Math.abs(q.p.y-y)<10))continue;C.push({x,y,kind:'cell',d:Math.hypot(x-hx,(y-hy)*1.2)});}
+ for(const r of[Math.floor(gy/4),Math.ceil((gy+.01)/4)]){const y=v.y+r*4*S*.9;C.push({x:hx,y:y-2.6,kind:'row',d:Math.abs(y-hy)+(y<hy?2:0)});}
+ for(const k of[Math.floor(gx/5),Math.ceil((gx+.01)/5)]){const x=v.x+k*5*S;C.push({x,y:hy+2,kind:'col',d:Math.abs(x-hx)});}
+ C.sort((a,b)=>a.d-b.d);const s=C[0];s.onRow=s.kind!=='col';return s;}
 // ---------- Gebäude ----------
 function gTxt(c,g,t,x,y,fs,col,stroke){c.save();c.translate(x,y);c.scale(g.dir||1,1);c.font='900 '+fs+'px '+FONT;c.textAlign='center';if(stroke){c.lineWidth=fs*.28;c.strokeStyle=stroke;c.lineJoin='round';c.strokeText(t,0,0);}c.fillStyle=col;c.fillText(t,0,0);c.restore();}
 function umbrella(c,x,y,r,a,b,t){c.fillStyle='rgba(40,30,10,.22)';c.beginPath();c.ellipse(x+2,y+2.5,r,r*.45,0,0,TAU);c.fill();for(let k=0;k<8;k++){c.fillStyle=k%2?a:b;c.beginPath();c.moveTo(x,y);c.arc(x,y,r,k*TAU/8+(t||0),(k+1)*TAU/8+(t||0));c.closePath();c.fill();}c.fillStyle='#fff';c.beginPath();c.arc(x,y,.7,0,TAU);c.fill();}
@@ -1024,7 +1029,10 @@ function draw(){
    if(age<stay){c.save();c.translate(px,py);const hg=c.createRadialGradient(0,-1,0,0,-1,8*L.h);hg.addColorStop(0,'rgba(255,255,255,.75)');hg.addColorStop(1,'rgba(255,255,255,0)');c.fillStyle=hg;c.beginPath();c.arc(0,-1,8*L.h,0,TAU);c.fill();c.fillStyle='rgba(30,40,20,.25)';c.beginPath();c.ellipse(0,4.4,2.6,.9,0,0,TAU);c.fill();person(c,L,0,true,.5+Math.abs(Math.sin(T*6))*1.2);c.restore();}
    else{// steigt auf ein zufälliges Gefährt und fährt den Weg entlang davon
     const mode=['walk','bike','scooter','inline','skate'][(hash(sel.nr,selN)*5)|0],sp=mode==='walk'?10:22,d1=0,dir=hash(sel.nr,selN+7)<.5?-1:1,s2=(age-stay)*sp,mw={...L,mode,ph:sel.nr,bikec:['#ff3d7f','#0a8fd0','#2fb3a0','#ff8a2a'][sel.nr%4]};
-    let mx,my,vert,md;if(onRow){mx=px+dir*s2;my=py;vert=false;md=dir;}else{mx=px;my=py+dir*s2;vert=true;md=dir;}
+    let mx,my,vert,md;
+    if(SP.kind==='row'){mx=px+dir*s2;my=py;vert=false;md=dir;}
+    else if(SP.kind==='col'){mx=px;my=py+dir*s2;vert=true;md=dir;}
+    else{const v=sel.isl,gyc=Math.round((py-2-v.y)/(S*.9)),ry=v.y+Math.ceil((gyc+.01)/4)*4*S*.9-2.6,dd=Math.max(0,ry-py);if(s2<dd){mx=px;my=py+s2;vert=true;md=1;}else{mx=px+dir*(s2-dd);my=ry;vert=false;md=dir;}}
     const fade=Math.max(0,Math.min(1,(d1+110-s2)/25));gone=fade<=0;if(!gone){c.globalAlpha=fade;drawMover(c,mw,mx,my,md,vert,mode);c.globalAlpha=1;}}
    ny=py+5.6;}
   else if(pz&&sel.gb)ny=py+5.6;
