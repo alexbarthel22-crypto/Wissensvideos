@@ -46,16 +46,8 @@
   },
   "aemter": [
     [
-      "Häuptling",
-      ""
-    ],
-    [
-      "Strandvilla Nr. 1",
-      ""
-    ],
-    [
-      "Strandgrundstück Nr. 1",
-      ""
+      "Bürgermeisterin",
+      "@lillygyqcf0"
     ]
   ],
   "projekt": null,
@@ -75,6 +67,30 @@
   },
   "start": "2026-11-08",
   "ereignisse": [
+    [
+      "8.11.2026",
+      "🏖️",
+      "Die Strandvilla steht",
+      "Direkt am Meer auf der Haupt-Insel steht jetzt eine große Strandvilla. Sie wird demnächst verlost!"
+    ],
+    [
+      "8.11.2026",
+      "🍹",
+      "Die Strandbar hat eröffnet",
+      "Direkt am Meer – geleitet von @paulepfpgfn, mit @khmr.496 im Team."
+    ],
+    [
+      "8.11.2026",
+      "🥙",
+      "Die Dönerbude hat eröffnet",
+      "Geleitet von @lotta.fsthff, mit @alana_wbr und @em1lia.brn im Team. Alle drei wohnen jetzt direkt in der Dönerbude."
+    ],
+    [
+      "8.11.2026",
+      "🎖️",
+      "Muschel-Tal hat eine Bürgermeisterin",
+      "@lillygyqcf0 ist die erste Bürgermeisterin von Muschel-Tal."
+    ],
     [
       "8.11.2026",
       "🏰",
@@ -105,5 +121,63 @@
       "Muschel-Tal ist gegründet",
       "Wer @muscheltal auf TikTok folgt, bekommt eine eigene Hütte mit seinem Namen."
     ]
-  ]
+  ],
+  "gebaeude": [
+    {
+      "key": "0:-2,1",
+      "typ": "doener",
+      "name": "Dönerbude",
+      "emoji": "🥙"
+    },
+    {
+      "key": "0:3,0",
+      "typ": "strandbar",
+      "name": "Strandbar",
+      "emoji": "🍹"
+    },
+    {
+      "key": "0:-4,0",
+      "typ": "villa",
+      "name": "Strandvilla",
+      "emoji": "🏖️"
+    }
+  ],
+  "jobs": {
+    "lillygyqcf0": [
+      "Bürgermeisterin",
+      "Muschelpalast"
+    ],
+    "lotta.fsthff": [
+      "Leitung",
+      "Dönerbude"
+    ],
+    "alana_wbr": [
+      "Team",
+      "Dönerbude"
+    ],
+    "em1lia.brn": [
+      "Team",
+      "Dönerbude"
+    ],
+    "paulepfpgfn": [
+      "Leitung",
+      "Strandbar"
+    ],
+    "khmr.496": [
+      "Team",
+      "Strandbar"
+    ]
+  },
+  "wohnorte": {
+    "lotta.fsthff": "Dönerbude",
+    "alana_wbr": "Dönerbude",
+    "em1lia.brn": "Dönerbude",
+    "paulepfpgfn": "Strandbar",
+    "khmr.496": "Strandbar"
+  },
+  "pool": [
+    "sophia_e065"
+  ],
+  "vermoegen_start": 5,
+  "vermoegen": {}
 }

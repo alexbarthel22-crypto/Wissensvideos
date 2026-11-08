@@ -102,16 +102,40 @@ def importiere_liste(pfad, rows):
     print(f"Liste: {neu} neu eingezogen, {weg} ausgezogen (komplett gelöscht)")
 
 
+def inselgrenzen(sauber, insel):
+    """Letzte Einwohner-Nr. je Insel. Wer in einem Gebäude wohnt (wohnorte), braucht keine Hütte –
+    seine Hütte wird frei und der Nächste rückt nach (Insel fasst dann entsprechend mehr Einwohner)."""
+    wo = {k.lower().lstrip("@") for k in (insel.get("wohnorte") or {})}
+    sonder = [r[0].lower().lstrip("@") in wo for r in sauber]
+    grenzen, s = [], 0
+    for v in insel["inseln"]:
+        if not v["plaetze"]:
+            grenzen.append(float("inf")); continue
+        start, g = s, s + v["plaetze"]
+        while True:
+            extra = sum(1 for j in range(start, min(g, len(sauber))) if sonder[j])
+            if start + v["plaetze"] + extra == g:
+                break
+            g = start + v["plaetze"] + extra
+        s = g
+        grenzen.append(g)
+    return grenzen
+
+
 def verteile(sauber, insel):
     """Insel je Einwohner-Nr.; jeder behält sein Haus (platz), Frei gewordene werden mit den Nachrückern
     (nach Einwohner-Nr.) besetzt. Gibt Liste 'i:k' zurück."""
-    grenzen, s = [], 0
-    for v in insel["inseln"]:
-        s = s + v["plaetze"] if v["plaetze"] else float("inf")
-        grenzen.append(s)
+    grenzen = inselgrenzen(sauber, insel)
     isl = [next(i for i, g in enumerate(grenzen) if nr <= g) for nr in range(1, len(sauber) + 1)]
+    wo = {k.lower().lstrip("@") for k in (insel.get("wohnorte") or {})}
+    sonder = [r[0].lower().lstrip("@") in wo for r in sauber]  # wohnen in einem Gebäude, kein Hütten-Platz
     plaetze, belegt = [None] * len(sauber), {}
+    for j, r in enumerate(sauber):
+        if sonder[j]:
+            plaetze[j] = "H"
     for j, r in enumerate(sauber):  # 1. Durchgang: wer auf seiner Insel bleibt, behält sein Haus
+        if sonder[j]:
+            continue
         m = re.fullmatch(r"(\d+):(\d+)", r[3] or "")
         if m and int(m[1]) == isl[j]:
             k, cap = int(m[2]), insel["inseln"][isl[j]]["plaetze"] or 10 ** 9
@@ -119,7 +143,7 @@ def verteile(sauber, insel):
                 belegt[isl[j]].add(k)
                 plaetze[j] = k
     for j in range(len(sauber)):  # 2. Durchgang: Neue und Umzügler bekommen das nächste freie Haus (nah an der Mitte)
-        if plaetze[j] is None:
+        if plaetze[j] is None and not sonder[j]:
             b, k = belegt.setdefault(isl[j], set()), 0
             while k in b:
                 k += 1
@@ -140,10 +164,7 @@ def uebersicht(sauber, insel, out):
     m = re.search(r'<svg class="coin".*?</svg>', erf, re.S)
     coin = re.sub(r'class="coin" ', "", m[0]) if m else ""
     coin_uri = "data:image/svg+xml;charset=utf-8," + coin.replace("#", "%23").replace('"', "'").replace("\n", "")
-    grenzen, s = [], 0
-    for v in insel["inseln"]:
-        s = s + v["plaetze"] if v["plaetze"] else float("inf")
-        grenzen.append(s)
+    grenzen = inselgrenzen(sauber, insel)
     teile, start = [], 0
     for i, v in enumerate(insel["inseln"]):
         leute = [(j + 1, r) for j, r in enumerate(sauber) if start < j + 1 <= grenzen[i]]
@@ -271,7 +292,7 @@ def baue(rows, out):
         quelle.append(r)
     plaetze = verteile(sauber, insel)
     for j, r in enumerate(sauber):
-        r[3] = int(plaetze[j].split(":")[1])
+        r[3] = int(plaetze[j].split(":")[1]) if plaetze[j][-1] != "H" else None
         quelle[j]["platz"] = plaetze[j]
     import copy
     pop = len(sauber)
@@ -281,6 +302,7 @@ def baue(rows, out):
             v["name"], v["emoji"] = "???", "❔"
     g = web.get("geheim") or {}
     web["geheim"] = g if g.get("offen") else {"name": "???", "emoji": "❔", "offen": False}
+    web["grenzen"] = [g if g != float("inf") else None for g in inselgrenzen(sauber, insel)]
     data = {"r": sauber, "insel": web}
     html = open(VORLAGE, encoding="utf-8").read()
     js = json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
@@ -303,10 +325,7 @@ def baue(rows, out):
         os.remove(alt)  # nicht mehr öffentlich (enthielt echte Inselnamen)
 
     # Daten fürs Video (HyperFrames) – NICHT im öffentlichen Ordner, enthält echte Inselnamen
-    grenzen, s = [], 0
-    for v in insel["inseln"]:
-        s = s + v["plaetze"] if v["plaetze"] else float("inf")
-        grenzen.append((s, v))
+    grenzen = list(zip(inselgrenzen(sauber, insel), insel["inseln"]))
     def wo(nr):
         v = next(v for g, v in grenzen if nr <= g)
         return v["name"] if pop >= v["ab"] else "wartet am Steg"
