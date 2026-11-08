@@ -6,8 +6,8 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 
 ## Begriffe
 - **Muschel-Tal** = die ganze Region (Inselgruppe), Account @muscheltal.
-- **Haupt-Insel** (mit Bindestrich) = die erste Insel (500 Plätze) mit dem **Muschelpalast** in der Mitte (Muschelplatz).
-- **Kokos-Küste** = die zweite Insel (unten rechts von der Haupt-Insel), **1.500 Plätze**, seit dem 501. Follower offen. Größer als die Haupt-Insel, Holzstege statt Sandwege, sandiger Boden. **Die Häuser sind Kokosnüsse** (mit Tür, Fenster, Blatt oben). In der Mitte ein Sandplatz mit großem Lagerfeuer; dort stehen immer 5–6 Bewohner (gehen hin, bleiben lange, gehen heim).
+- **Haupt-Insel** (mit Bindestrich) = die erste Insel (500 Plätze) mit dem **Muschelpalast** in der Mitte: großer Palast mit zwei Seitenflügeln, Brunnen und Gärten auf einem großen runden Muschelplatz.
+- **Kokos-Küste** = die zweite Insel (unten rechts von der Haupt-Insel), **1.500 Plätze**, seit dem 501. Follower offen. Größer als die Haupt-Insel, unregelmäßige Inselform (nicht rund), Holzstege statt Sandwege, sandiger Boden. **Die Häuser sind Kokosnüsse** (mit Tür, Fenster, Blatt oben). In der Mitte ein Sandplatz mit großem Lagerfeuer; dort stehen immer 5–6 Bewohner (gehen hin, bleiben lange, gehen heim).
 - Weitere Inseln (ab 2.001. / 5.001. / 10.001.) heißen öffentlich nur „???“ (verborgen; Namen noch nicht festgelegt). Dazu eine **geheime Insel** am Kartenrand (nur „???“, in Wolken/Nebel).
 
 ## Regeln
@@ -17,7 +17,9 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - Währung: **1 Einwohner = 5 Muscheln**.
 - Was gebaut wird, entscheiden die Zuschauer in den Kommentaren (Ideen: Beach-Bar, Club, Wolkenkratzer …).
 - Auf der Haupt-Insel gibt es **8 Bauplätze** („bald: ???“) für spätere Gebäude – 6 im Inneren, je 1 direkt an der Ost- und Westküste.
-- Auf der Kokos-Küste gibt es **6 Bauplätze** („bald: ???“).
+- Auf der Kokos-Küste gibt es **11 Bauplätze** („bald: ???“). Einer liegt an der Ostküste und reicht auf Pfählen bis ins Wasser (dort kommt später ein Hafen – **noch geheim, nicht verraten**).
+- Insel unten links (ab 2.001 Followern, öffentlich „???“): unregelmäßige Form, großer See in der Mitte mit einer kleinen Insel und Palme (dort kommt später eine Villa – **noch geheim, nicht verraten**), Schildkröten schwimmen im See.
+- **Sonnenaufgang/-untergang** wie am eingestellten Ort (Open-Meteo): Sonnenaufgang wird von Aufgang bis +30 Min. gezeigt, Sonnenuntergang 30 Min. vor Untergang bis Untergang, jeweils mit Farbverlauf. Davor/danach Nacht bzw. Tag.
 - Auf jeder offenen Insel stehen **Bänke** (am Platz + am Strand) und **Straßenlaternen**, die nachts leuchten – Haupt-Insel: Holzbänke + klassische Laternen; Kokos-Küste: Baumstamm-Bänke + Bambus-Laternen.
 
 ## Regeln (Seite muscheltal.de/regeln.html)
@@ -43,7 +45,7 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - Echtes Wetter wirkt auf die Karte: Regen = nasse Wege, Pfützen, dunkle nasse Dächer; Schnee = verschneite Dächer, Wege, Palmen.
 - **Muschelpass** (Einwohnernachweis): **Einwohner Nr.**, Eingezogen am, Insel, Beruf („–“), **Arbeitsort** („–“; wird verlinkt, sobald vergeben), Erfolge, Teilen als Story-Bild. **Kein Status, keine Ausweis-Nr., kein „Bewohnt“-Stempel.** Der Pass unten auf der Seite sieht genauso aus wie im Popup.
 - Kopierte Teilen-Texte verlinken immer den TikTok-Account (@muscheltal auf TikTok: https://www.tiktok.com/@muscheltal), nicht die Homepage.
-- **Erfolge**: „Gründer“ (goldene Münze mit goldener Muschel) = einer der ersten 500 Follower. **„Die Lupe“** (enthüllt) = wer neugierig die Welt von Muschel-Tal erkundet; ganz unten auf der Homepage ist eine gold aufblinkende Lupe versteckt. Ohne gewählten Namen kommt ein Popup „Das könnte wichtig sein … Komm wieder hierhin, wenn du eingezogen bist!“; mit gewähltem Namen „Glückwunsch …“ + Knopf „Zu meinen Erfolgen“ (nur in diesem Browser gespeichert). 10 weitere Erfolge geheim („bald“).
+- **Erfolge**: „Gründer“ (goldene Münze mit goldener Muschel) = einer der ersten 500 Follower. **„Die Lupe“** (enthüllt) = wer neugierig die Welt von Muschel-Tal erkundet; ganz unten auf der Homepage ist eine gold aufblinkende Lupe versteckt. Ohne gewählten Namen kommt ein Popup „Das könnte wichtig sein … Komm wieder hierhin, wenn du eingezogen bist!“; mit gewähltem Namen „Glückwunsch …“ + Knopf „Zu meinen Erfolgen“ (nur in diesem Browser gespeichert). **„Sonnenaufgang“** (morgens den Sonnenaufgang in Muschel-Tal gesehen) und **„Sonnenuntergang“** (abends den Sonnenuntergang gesehen) – wer mit seinem Namen während Auf-/Untergang auf der Seite ist, bekommt den Erfolg mit Popup „Neuer Erfolg!“ (in diesem Browser gespeichert). 10 weitere Erfolge geheim („bald“).
 - Muschelpass zeigt höchstens 4 Erfolge, die neuesten zuerst (kleine Abzeichen).
 - **Inselkasse**: 5 Muscheln pro Einwohner **+ 50 Muscheln für jedes Teilen des Muschelpasses in der Story** (pro TikTok-Name nur alle 7 Tage; wird auf dem Server gezählt). Der Teilen-Knopf zeigt das als Anreiz.
 - Unter der Einleitung: „Jetzt einziehen“ (nur ohne gewählten Namen), darunter „📜 Regeln“ + „🏅 Meine Erfolge“ (ohne gewählten Namen: Popup „Folge @muscheltal …“) und der lange Knopf „👥 Muschel-Tal Einwohner-Übersicht“.
