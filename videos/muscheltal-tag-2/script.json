@@ -1,0 +1,249 @@
+{
+ "title": "Muschel-Tal – Tag 2",
+ "voice": "Gemini TTS (gemini-3.1-flash-tts-preview, Stimme Achird), natürlich und emotional, --speed 1.12",
+ "notes": "Tag 2: 575 Bewohner (500 Hauptinsel voll + 75 Kokos-Küste), 2.875 Muscheln, 2 Gebäude kaufbar (Strandbar, Dönerbude, Bäckerei, Krankenhaus – Abstimmung), Bürgermeister*in gesucht (Top-Kommentar), Überraschung bei 1.000. Hintergrund = Aufnahme der Homepage.",
+ "lead_in": 0.0,
+ "bg": "#0a5a92",
+ "captions": {
+  "pop": true,
+  "first_at_zero": true,
+  "left": 60,
+  "right": 190,
+  "size": 92,
+  "bars": true,
+  "color": "rgba(255,255,255,.62)",
+  "first_class": "hook",
+  "css": "@font-face { font-family: 'Lilita One'; src: url('assets/fonts/LilitaOne-Regular.woff2') format('woff2'); font-weight: 400; }\n    .inner.hook { font-family: 'Lilita One', sans-serif; font-weight: 400; font-size: 140px; line-height: 1.04; letter-spacing: .01em; top: -540px; }\n    .inner.hook .bar { background: #ff3d7f !important; padding: .02em .3em .08em; border-radius: .5em; }\n    .inner.hook .w { color: #fff; }\n    .inner .bar .w { margin: 0 .07em; }\n    .inner .bar { border-radius: .55em; padding: .04em .36em .1em; }\n    .inner .w { white-space: nowrap; }",
+  "vary": true,
+  "pop_scale": 1.2,
+  "hook_punch": true
+ },
+ "scenes": [
+  {
+   "id": "s01",
+   "tag": "",
+   "lines": [
+    {
+     "id": "L1",
+     "text": "*y:Wahnsinn! Von *r:null / auf *y:575|fünfhundertfünfundsiebzig *y:Bewohner!",
+     "style": "Style: a real young man, celebrating wildly, overjoyed, like a party announcement, huge smile, natural not theatrical.\nPace: fast.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+     "speed": 1.15
+    },
+    {
+     "id": "L2",
+     "text": "Die *p:Hauptinsel / ist *r:voll!",
+     "style": "Style: a real young man, celebrating wildly, overjoyed, like a party announcement, huge smile, natural not theatrical.\nPace: fast.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+     "speed": 1.1
+    }
+   ],
+   "sfx": [
+    {
+     "name": "notification",
+     "at": "s01+0.0",
+     "volume": 0.3
+    },
+    {
+     "name": "impact-bass-2",
+     "at": "L1:575",
+     "volume": 0.3
+    },
+    {
+     "name": "ka-ching",
+     "at": "L1:Bewohner",
+     "volume": 0.5
+    },
+    {
+     "name": "pop",
+     "at": "L2:voll",
+     "volume": 0.45
+    }
+   ]
+  },
+  {
+   "id": "s02",
+   "tag": "",
+   "lines": [
+    {
+     "id": "L3",
+     "text": "*y:500|Fünfhundert Hütten, / jede mit *g:eurem *g:Namen. / Findest du *y:deinen?",
+     "speed": 1.12
+    },
+    {
+     "id": "L4",
+     "text": "*g:Alle sind da!",
+     "speed": 1.1
+    }
+   ],
+   "sfx": [
+    {
+     "name": "pop",
+     "at": "L4:Alle",
+     "volume": 0.4
+    }
+   ]
+  },
+  {
+   "id": "s03",
+   "tag": "",
+   "lines": [
+    {
+     "id": "L5",
+     "text": "Und weil kein Platz mehr war, / wurde die nächste Insel *g:besiedelt: / die *b:Kokos-Küste!",
+     "speed": 1.12
+    },
+    {
+     "id": "L6",
+     "text": "Hier wohnen / schon *y:75|fünfundsiebzig von euch.",
+     "speed": 1.12
+    }
+   ],
+   "sfx": [
+    {
+     "name": "whoosh",
+     "at": "L5:nächste",
+     "volume": 0.35
+    },
+    {
+     "name": "ping",
+     "at": "L5:Kokos",
+     "volume": 0.45
+    }
+   ]
+  },
+  {
+   "id": "s04",
+   "tag": "",
+   "lines": [
+    {
+     "id": "L7",
+     "text": "Jeder Bewohner / bringt *y:5|fünf *y:Muscheln mit. / Wir haben jetzt / *y:2.875|zweitausendachthundertfünfundsiebzig *y:Muscheln!",
+     "speed": 1.12
+    },
+    {
+     "id": "L8",
+     "text": "Davon können wir / *g:zwei *g:Gebäude bauen.",
+     "speed": 1.12
+    }
+   ],
+   "sfx": [
+    {
+     "name": "ka-ching",
+     "at": "L7:2.875",
+     "volume": 0.6
+    },
+    {
+     "name": "pop",
+     "at": "L8:zwei",
+     "volume": 0.4
+    }
+   ]
+  },
+  {
+   "id": "s05",
+   "tag": "",
+   "lines": [
+    {
+     "id": "L9",
+     "text": "Ihr habt euch gewünscht: / *y:Strandbar, / *y:Dönerbude, / *y:Bäckerei / und *y:Krankenhaus.",
+     "speed": 1.1
+    },
+    {
+     "id": "L10",
+     "text": "*g:Zwei davon kaufen wir. / *p:Stimmt in den Kommentaren ab!",
+     "speed": 1.12
+    }
+   ],
+   "sfx": [
+    {
+     "name": "pop",
+     "at": "L9:Strandbar",
+     "volume": 0.4
+    },
+    {
+     "name": "pop",
+     "at": "L9:Dönerbude",
+     "volume": 0.4
+    },
+    {
+     "name": "pop",
+     "at": "L9:Bäckerei",
+     "volume": 0.4
+    },
+    {
+     "name": "pop",
+     "at": "L9:Krankenhaus",
+     "volume": 0.4
+    }
+   ]
+  },
+  {
+   "id": "s06",
+   "tag": "",
+   "lines": [
+    {
+     "id": "L11",
+     "text": "Außerdem suchen wir / eine *y:Bürgermeisterin / oder einen *y:Bürgermeister.",
+     "speed": 1.12
+    },
+    {
+     "id": "L12",
+     "text": "Der *g:Top-Kommentar / *g:gewinnt!",
+     "speed": 1.1
+    }
+   ],
+   "sfx": [
+    {
+     "name": "ping",
+     "at": "L12:gewinnt",
+     "volume": 0.4
+    }
+   ]
+  },
+  {
+   "id": "s07",
+   "tag": "",
+   "hold": 1.6,
+   "lines": [
+    {
+     "id": "L13",
+     "text": "Und bei *y:1.000|tausend Bewohnern / gibt es eine / *p:riesige *p:Überraschung!",
+     "style": "Style: a real young man, excited and mysterious, building anticipation, natural not theatrical.\nPace: fast.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+     "speed": 1.1
+    },
+    {
+     "id": "L14",
+     "text": "*p:Folg mir, / dann ziehst *g:du *g:auch *g:ein!",
+     "style": "Style: a real young man, celebrating wildly, overjoyed, like a party announcement, huge smile, natural not theatrical.\nPace: fast.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+     "speed": 1.12
+    }
+   ],
+   "sfx": [
+    {
+     "name": "impact-bass-1",
+     "at": "L13:Überraschung",
+     "volume": 0.3
+    },
+    {
+     "name": "click",
+     "at": "L14:Folg",
+     "volume": 0.5
+    }
+   ]
+  }
+ ],
+ "style": "Style: a real, natural-sounding young man telling his friends something he is genuinely excited about. Conversational, warm, honest emotion in the voice, not like an announcer or an advertisement. Emphasize the important words naturally.\nPace: brisk but natural.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+ "loudness": -11,
+ "pitch": 0,
+ "music": {
+  "src": "assets/music/suedsee.wav",
+  "volume": 1,
+  "note": "tools/make_music_tropical.py, im Code erzeugt (lizenzfrei), unter der Stimme automatisch leiser"
+ },
+ "bgvideo": {
+  "src": "assets/bg.mp4"
+ },
+ "ambience": {
+  "src": "assets/music/atmo.wav",
+  "volume": 1
+ }
+}

@@ -436,6 +436,7 @@ def build_index(project, script, windows, lines, total, world=False):
     <div id="root" data-composition-id="main" data-start="0" data-duration="{total:.3f}" data-width="{W}" data-height="{H}">
       <div id="bg" class="clip" data-start="0" data-duration="{total:.3f}" data-track-index="0"></div>
 {chr(10).join(hosts)}
+{f'      <video id="bgvid" class="clip" src="{script["bgvideo"]["src"]}" data-start="0" data-duration="{total:.3f}" data-track-index="3" muted playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1"></video>' if script.get("bgvideo") else ""}
 {f'      <div id="world" data-composition-id="world" data-composition-src="compositions/world.html" data-start="0" data-duration="{total:.3f}" data-track-index="4" data-track-kind="graphics" data-width="{W}" data-height="{H}" style="z-index:1"></div>' if world else ""}
       <div id="hud" data-composition-id="hud" data-composition-src="compositions/hud.html" data-start="0" data-duration="{total:.3f}"
            data-track-index="2" data-track-kind="graphics" data-width="{W}" data-height="{H}" style="z-index:5"></div>
