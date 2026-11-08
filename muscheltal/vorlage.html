@@ -40,6 +40,7 @@ section>h2{font-size:28px;margin-bottom:14px}
 .logo small{display:block;font-size:11px;font-weight:800;opacity:.75;letter-spacing:.2px}
 .logo>span{display:block}
 .live{position:absolute;right:12px;top:16px;white-space:nowrap;background:#fff;border:3px solid var(--ink);border-radius:999px;padding:4px 11px;font-size:13px;font-weight:900;font-variant-numeric:tabular-nums}
+.live .sun{display:inline-grid;place-items:center;width:20px;height:20px;margin-left:4px;border-radius:50%;background:linear-gradient(135deg,#ffb86b,#ff6f91);font-size:11px;vertical-align:-1px}
 .live::before{content:"";display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--hib);margin-right:6px;animation:pulse 1.6s infinite}
 @keyframes pulse{50%{opacity:.25}}
 .findbar{position:absolute;left:12px;right:12px;top:66px;max-width:520px;z-index:2}
@@ -535,7 +536,9 @@ function nightLevel(){const z=QP.get('zeit');if(z==='tag')return 0;if(z==='nacht
  const now=Date.now(),[sr,ss]=sunTimes();return now<sr||now>=ss?1:0;}
 function kind(){const c=WX.code;if(c>=95)return'storm';if((c>=71&&c<=77)||c===85||c===86)return'snow';if((c>=51&&c<=67)||(c>=80&&c<=82))return'rain';if(c===45||c===48)return'fog';if(c===3)return'clouds';if(c===1||c===2)return'fair';return'clear';}
 const WXT={clear:['☀️ Sonnig','🌙 Klar'],fair:['🌤️ Heiter','🌙 Leicht bewölkt'],clouds:['☁️ Bewölkt','☁️ Bewölkt'],fog:['🌫️ Nebel','🌫️ Nebel'],rain:['🌧️ Regen','🌧️ Regen'],snow:['🌨️ Schnee','🌨️ Schnee'],storm:['⛈️ Gewitter','⛈️ Gewitter']};
-function liveText(){const d=berlin(),ph=sunPhase(),t=ph.k?(ph.k==='auf'?'🌅 Sonnenaufgang':'🌇 Sonnenuntergang'):WXT[kind()][nightLevel()>.5?1:0];$('live').textContent='LIVE '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')+' '+t.split(' ')[0];$('live').title='Live-Ansicht: '+t.slice(t.indexOf(' ')+1);}
+function liveText(){const d=berlin(),ph=sunPhase(),w=WXT[kind()][ph.k==='unter'||!ph.k&&nightLevel()>.5?(ph.k?0:1):0],sn=ph.k?(ph.k==='auf'?['🌅','Sonnenaufgang']:['🌇','Sonnenuntergang']):null;
+ $('live').innerHTML='LIVE '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')+' '+w.split(' ')[0]+(sn?'<span class="sun" title="'+sn[1]+'">'+sn[0]+'</span>':'');
+ $('live').title='Live-Ansicht: '+w.slice(w.indexOf(' ')+1)+(sn?' · '+sn[1]:'');}
 function berlin(){try{const p=Object.fromEntries(new Intl.DateTimeFormat('en-US',{timeZone:'Europe/Berlin',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'}).formatToParts(new Date()).map(x=>[x.type,x.value]));return new Date(+p.year,+p.month-1,+p.day,+p.hour,+p.minute,+p.second);}catch(e){return new Date();}}
 async function loadWx(){const o=I.wetter||{lat:51.16,lon:10.45};
  try{const r=await fetch('https://api.open-meteo.com/v1/forecast?latitude='+o.lat+'&longitude='+o.lon+'&current=weather_code,wind_speed_10m&daily=sunrise,sunset&timezone=GMT&forecast_days=1');const j=await r.json();
