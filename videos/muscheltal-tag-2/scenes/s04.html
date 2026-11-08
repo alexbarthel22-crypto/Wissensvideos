@@ -1,0 +1,33 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    #s04-eq { top: 300px; font-size: 56px; white-space: nowrap; max-width: none; }
+    #s04-c { position: absolute; left: 0; right: 0; margin: 0 auto; top: 440px; width: fit-content; padding: 6px 40px 12px; border-radius: 40px; background: #fff7d6; border: 7px solid #e0a020;
+      font-family: "Inter", sans-serif; color: #7a4a00; font-weight: 900; font-size: 44px; display: flex; align-items: baseline; gap: 16px; box-shadow: 0 12px 0 rgba(120,70,0,.35); }
+    #s04-c b { font-size: 120px; color: #e07a00; line-height: 1; }
+    #s04-g { top: 640px; font-size: 64px; }
+  </style>
+  <div id="root" data-composition-id="s04" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s04-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s04-eq" class="bt or">1 BEWOHNER = 5 🐚</div>
+      <div id="s04-c"><b id="s04-n">0</b>MUSCHELN 🐚</div>
+      <div id="s04-g" class="bt gr">= 2 GEBÄUDE 🏗️</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      /*__COMMON_JS__*/
+      wrapBt("#s04-stage");
+      const tl = gsap.timeline({ paused: true });
+      const fu = at("L7", "5"), mu = at("L7", "2.875"), zw = at("L8", "zwei");
+      tl.fromTo("#s04-eq", { opacity: 0, y: -80 }, { opacity: 1, y: 0, duration: .4, ease: "back.out(2)" }, fu - .3);
+      tl.fromTo("#s04-c", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, mu - .5);
+      count(tl, "#s04-n", 0, 2875, mu - .3, 1.2);
+      tl.fromTo("#s04-c", { scale: 1 }, { scale: 1.12, duration: .14, yoyo: true, repeat: 3 }, mu + .9);
+      tl.fromTo("#s04-g", { opacity: 0, scale: 2, rotation: -8 }, { opacity: 1, scale: 1, rotation: -2, duration: .35, ease: "back.out(2.4)" }, zw - .1);
+      tl.to("#s04-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
+      window.__timelines["s04"] = tl;
+    })();
+  </script>
+</template>

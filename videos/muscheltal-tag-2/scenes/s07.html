@@ -1,0 +1,43 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    #s07-t { top: 300px; font-size: 56px; white-space: nowrap; max-width: none; }
+    #s07-g { position: absolute; left: 0; right: 0; top: 440px; text-align: center; font-size: 200px; }
+    #s07-btn { position: absolute; left: 0; right: 0; margin: 0 auto; top: 720px; width: 420px; height: 120px; border-radius: 60px; background: #fe2c55; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 56px; display: grid; place-items: center; box-shadow: 0 12px 0 rgba(0,0,0,.25); }
+    #s07-btn2 { position: absolute; inset: 0; border-radius: 60px; background: #fff; color: #0a78c2; display: grid; place-items: center; opacity: 0; }
+    #s07-hand { position: absolute; left: 690px; top: 770px; font-size: 120px; }
+    #s07-at { top: 880px; font-size: 44px; }
+  </style>
+  <div id="root" data-composition-id="s07" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s07-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s07-t" class="bt vi">BEI 1.000 BEWOHNERN …</div>
+      <div id="s07-g">🎁</div>
+      <div id="s07-btn">+ Folgen<div id="s07-btn2">✓ Gefolgt</div></div>
+      <div id="s07-hand" data-layout-ignore>👆</div>
+      <div id="s07-at" class="bt bl">@muscheltal</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      /*__COMMON_JS__*/
+      wrapBt("#s07-stage");
+      const tl = gsap.timeline({ paused: true });
+      const l0 = line("L13")[0], ue = at("L13", "Überraschung"), fo = at("L14", "Folg");
+      tl.fromTo("#s07-t", { opacity: 0, y: -80 }, { opacity: 1, y: 0, duration: .4, ease: "back.out(2)" }, l0);
+      tl.fromTo("#s07-g", { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: .45, ease: "back.out(2.6)" }, l0 + .3);
+      tl.to("#s07-g", { rotation: 10, duration: .08, yoyo: true, repeat: 13, ease: "none" }, ue - .1);
+      tl.fromTo("#s07-btn", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, line("L14")[0] - .1);
+      tl.fromTo("#s07-hand", { opacity: 0, x: 160, y: 160 }, { opacity: 1, x: 0, y: 0, duration: .3, ease: "power3.out" }, fo - .4);
+      tl.to("#s07-hand", { y: -26, scale: .9, duration: .1, yoyo: true, repeat: 1 }, fo - .05);
+      tl.to("#s07-btn2", { opacity: 1, duration: .05 }, fo + .05);
+      tl.fromTo("#s07-btn", { scale: 1 }, { scale: 1.15, duration: .12, yoyo: true, repeat: 1 }, fo + .05);
+      tl.to("#s07-hand", { opacity: 0, duration: .25 }, fo + .6);
+      tl.fromTo("#s07-at", { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: .3, ease: "power3.out" }, fo + .3);
+      tl.to("#s07-btn", { scale: 1.06, duration: .3, yoyo: true, repeat: 5, ease: "sine.inOut" }, fo + .5);
+      
+      window.__timelines["s07"] = tl;
+    })();
+  </script>
+</template>

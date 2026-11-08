@@ -5,8 +5,8 @@ const L={};for(const l of T.lines)L[l.id]=l;const W=id=>(id2,w)=>{const x=L[id2]
 const dur=+process.argv[5]||T.duration+1.6,N=Math.round(dur*30);
 const b=await chromium.launch();const p=await b.newPage({viewport:{width:405,height:720},deviceScaleFactor:2.6667});
 await p.clock.install({time:new Date('2026-11-08T13:10:00+01:00')});await p.goto('file://'+site);await p.clock.runFor(7000);
-await p.addStyleTag({content:'body *{visibility:hidden!important}#map canvas{visibility:visible!important}'});
-const G=await p.evaluate(()=>{cancelAnimationFrame(fly);const m=fitMain(),a=fitAll(),k=ISL[1];const [bk,bm]=RESV[0];return{m,a,k:{x:k.x,y:k.y,R:k.R},bp:{x:(5*bk+2.5)*S,y:(4*bm+2)*S*.9},bp2:{x:(5*RESV[1][0]+2.5)*S,y:(4*RESV[1][1]+2)*S*.9}};});
+await p.addStyleTag({content:'body *{visibility:hidden!important}canvas#map{visibility:visible!important}'});
+const G=await p.evaluate(()=>{cancelAnimationFrame(fly);const m=fitMain(),a=fitAll(),k=ISL[1];const RV=(window.RESVS||[[[1,0],[-2,-1]]])[0];const [bk,bm]=RV[0];return{m,a,k:{x:k.x,y:k.y,R:k.R},bp:{x:(5*bk+2.5)*S,y:(4*bm+2)*S*.9},bp2:{x:(5*RV[1][0]+2.5)*S,y:(4*RV[1][1]+2)*S*.9}};});
 const zk=405/(2*(G.k.R+60));
 // Schlüsselbilder [zeit, x, y, z]
 const K=[[0,G.m.x,G.m.y,G.m.z*.82],[L.L2.end,G.m.x,G.m.y,G.m.z*1.08],

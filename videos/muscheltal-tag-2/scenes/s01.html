@@ -1,0 +1,41 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .cf { position: absolute; left: 530px; top: 700px; width: 20px; height: 30px; border-radius: 4px; }
+    #s01-c { position: absolute; left: 0; right: 0; margin: 0 auto; top: 300px; width: fit-content; padding: 6px 40px 12px; border-radius: 40px; background: #fff; border: 7px solid #ff6a1a;
+      font-family: "Inter", sans-serif; color: #0a78c2; font-weight: 900; font-size: 44px; display: flex; align-items: baseline; gap: 18px; box-shadow: 0 12px 0 rgba(0,40,80,.3); }
+    #s01-c b { font-size: 130px; color: #ff6a1a; line-height: 1; }
+    #s01-st { left: 250px; top: 520px; color: #e8433c; border-color: #e8433c; transform: rotate(-8deg); font-size: 84px; }
+    .s01-em { position: absolute; font-size: 110px; }
+  </style>
+  <div id="root" data-composition-id="s01" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s01-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s01-cfw"></div>
+      <div id="s01-c"><b id="s01-n">0</b>BEWOHNER</div>
+      <div id="s01-st" class="stamp">HAUPTINSEL VOLL!</div>
+      <div class="s01-em" style="left:70px;top:470px">🎉</div><div class="s01-em" style="left:880px;top:430px">🥳</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      /*__COMMON_JS__*/
+      wrapBt("#s01-stage");
+      const tl = gsap.timeline({ paused: true });
+      const n = at("L1", "575"), vo = at("L2", "voll"), T0 = n;
+      tl.set("#s01-c", { opacity: 1 }, 0);
+      count(tl, "#s01-n", 0, 575, at("L1", "null"), n - at("L1", "null") + .6);
+      tl.fromTo("#s01-c", { scale: 1 }, { scale: 1.18, duration: .15, yoyo: true, repeat: 3, ease: "sine.inOut" }, n);
+      tl.fromTo(".s01-em", { scale: 0, rotation: -40 }, { scale: 1, rotation: 0, duration: .4, ease: "back.out(3)", stagger: .1 }, n);
+      tl.to(".s01-em", { y: -30, rotation: 12, duration: .3, yoyo: true, repeat: 7, ease: "sine.inOut" }, n + .5);
+      tl.fromTo("#s01-st", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, vo - .05);
+      const R = rng(11), box = document.getElementById("s01-cfw"), cols = ["#ffd23f", "#e8467c", "#2fb3a0", "#fff", "#7b4fe0", "#ff7a59"];
+      for (let k = 0; k < 60; k++) { const d = document.createElement("div"); d.className = "cf"; d.style.background = cols[k % cols.length]; box.appendChild(d);
+        const a = R() * Math.PI * 2, v = 380 + R() * 560, dx = Math.cos(a) * v, dy = Math.sin(a) * v * .8 - 300;
+        tl.fromTo(d, { opacity: 0, x: 0, y: 0, rotation: 0, scale: .6 }, { opacity: 1, x: dx * .7, y: dy * .7, rotation: (R() - .5) * 720, scale: 1, duration: .45, ease: "power3.out" }, T0);
+        tl.to(d, { x: dx, y: dy + 700, rotation: "+=" + Math.round((R() - .5) * 540), opacity: 0, duration: 1.4, ease: "power1.in" }, T0 + .45); }
+      tl.to("#s01-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
+      window.__timelines["s01"] = tl;
+    })();
+  </script>
+</template>

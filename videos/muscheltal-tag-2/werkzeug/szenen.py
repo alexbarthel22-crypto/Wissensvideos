@@ -74,7 +74,7 @@ scene("s01", f"""    {CF_CSS}
       """ + CONF_JS.replace("SEED", "11").replace("BOX", "s01-cfw"))
 
 # s02 – Hütten mit Namen, findest du deinen?
-scene("s02", """    #s02-t { top: 300px; }
+scene("s02", """    #s02-t { top: 300px; font-size: 52px; white-space: nowrap; max-width: none; }
     #s02-q { top: 430px; }
     #s02-ok { left: 330px; top: 560px; color: #2e9e5b; border-color: #2e9e5b; transform: rotate(-6deg); font-size: 80px; }""",
 """      <div id="s02-t" class="bt or">500 HÜTTEN · 500 NAMEN</div>
@@ -87,11 +87,11 @@ scene("s02", """    #s02-t { top: 300px; }
       tl.fromTo("#s02-ok", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, al - .05);""")
 
 # s03 – Kokos-Küste besiedelt
-scene("s03", """    #s03-t { top: 300px; font-size: 76px; }
+scene("s03", """    #s03-t { top: 300px; font-size: 72px; white-space: nowrap; max-width: none; }
     #s03-c { position: absolute; left: 0; right: 0; margin: 0 auto; top: 450px; width: fit-content; padding: 4px 36px 10px; border-radius: 36px; background: #fff; border: 6px solid #0a8fd0;
       font-family: "Inter", sans-serif; color: #0a78c2; font-weight: 900; font-size: 40px; display: flex; align-items: baseline; gap: 14px; box-shadow: 0 10px 0 rgba(0,40,80,.3); }
     #s03-c b { font-size: 100px; color: #ff6a1a; line-height: 1; }
-    #s03-new { left: 640px; top: 250px; color: #e8433c; border-color: #e8433c; transform: rotate(10deg); font-size: 48px; }""",
+    #s03-new { left: 780px; top: 400px; color: #e8433c; border-color: #e8433c; transform: rotate(10deg); font-size: 48px; }""",
 """      <div id="s03-t" class="bt bl">🥥 KOKOS-KÜSTE</div>
       <div id="s03-new" class="stamp">NEU!</div>
       <div id="s03-c"><b id="s03-n">0</b>BEWOHNER</div>""",
@@ -102,7 +102,7 @@ scene("s03", """    #s03-t { top: 300px; font-size: 76px; }
       count(tl, "#s03-n", 0, 75, fu - .3, .8);""")
 
 # s04 – Muscheln
-scene("s04", """    #s04-eq { top: 300px; font-size: 60px; }
+scene("s04", """    #s04-eq { top: 300px; font-size: 56px; white-space: nowrap; max-width: none; }
     #s04-c { position: absolute; left: 0; right: 0; margin: 0 auto; top: 440px; width: fit-content; padding: 6px 40px 12px; border-radius: 40px; background: #fff7d6; border: 7px solid #e0a020;
       font-family: "Inter", sans-serif; color: #7a4a00; font-weight: 900; font-size: 44px; display: flex; align-items: baseline; gap: 16px; box-shadow: 0 12px 0 rgba(120,70,0,.35); }
     #s04-c b { font-size: 120px; color: #e07a00; line-height: 1; }
@@ -119,10 +119,10 @@ scene("s04", """    #s04-eq { top: 300px; font-size: 60px; }
 
 # s05 – Wünsche: 4 Karten, 2 werden gekauft -> Abstimmung
 scene("s05", WC_CSS + """
-    #s05-t { top: 300px; }
-    #s05-v { top: 1010px; font-size: 58px; }""",
+    #s05-t { top: 300px; font-size: 52px; white-space: nowrap; max-width: none; }
+    #s05-v { top: 1020px; font-size: 50px; white-space: nowrap; max-width: none; }""",
 f"""      <div id="s05-t" class="bt vi">IHR HABT EUCH GEWÜNSCHT:</div>
-      {cards("s05-k", [("🍹", "STRANDBAR", "#ff7a00"), ("🥙", "DÖNERBUDE", "#e8433c"), ("🥐", "BÄCKEREI", "#c98a2a"), ("🏥", "KRANKENHAUS", "#0098ff")], 410)}
+      {cards("s05-k", [("🍹", "STRANDBAR", "#ff7a00"), ("🥙", "DÖNERBUDE", "#e8433c"), ("🥐", "BÄCKEREI", "#c98a2a"), ("🏥", "KRANKENHAUS", "#0098ff")], 420)}
       <div id="s05-v" class="bt pk">👇 STIMMT AB: 2 GEWINNEN!</div>""",
 """      const ws = [at("L9", "Strandbar"), at("L9", "Dönerbude"), at("L9", "Bäckerei"), at("L9", "Krankenhaus")], ab = at("L10", "Stimmt");
       tl.fromTo("#s05-t", { opacity: 0, y: -80 }, { opacity: 1, y: 0, duration: .35, ease: "back.out(2)" }, line("L9")[0] - .1);
@@ -133,7 +133,7 @@ f"""      <div id="s05-t" class="bt vi">IHR HABT EUCH GEWÜNSCHT:</div>
       tl.to("#s05-v", { rotation: 2, duration: .2, yoyo: true, repeat: 5, ease: "sine.inOut" }, ab + .3);""")
 
 # s06 – Bürgermeister*in gesucht, Top-Kommentar gewinnt
-scene("s06", """    #s06-t { top: 300px; font-size: 62px; }
+scene("s06", """    #s06-t { top: 300px; font-size: 52px; white-space: nowrap; max-width: none; }
     #s06-cr { position: absolute; left: 0; right: 0; top: 420px; text-align: center; font-size: 170px; }
     #s06-sheet { top: 660px; }""",
 f"""      <div id="s06-t" class="bt or">BÜRGERMEISTER*IN GESUCHT!</div>
@@ -149,8 +149,8 @@ f"""      <div id="s06-t" class="bt or">BÜRGERMEISTER*IN GESUCHT!</div>
       tkLike(tl, "#s06-c1", tp + .2, 1204, 1388, 1.2, 3);""")
 
 # s07 – Überraschung bei 1.000, folgen
-scene("s07", """    #s07-t { top: 300px; font-size: 62px; }
-    #s07-g { position: absolute; left: 0; right: 0; top: 420px; text-align: center; font-size: 200px; }
+scene("s07", """    #s07-t { top: 300px; font-size: 56px; white-space: nowrap; max-width: none; }
+    #s07-g { position: absolute; left: 0; right: 0; top: 440px; text-align: center; font-size: 200px; }
     #s07-btn { position: absolute; left: 0; right: 0; margin: 0 auto; top: 720px; width: 420px; height: 120px; border-radius: 60px; background: #fe2c55; color: #fff;
       font-family: "Inter", sans-serif; font-weight: 900; font-size: 56px; display: grid; place-items: center; box-shadow: 0 12px 0 rgba(0,0,0,.25); }
     #s07-btn2 { position: absolute; inset: 0; border-radius: 60px; background: #fff; color: #0a78c2; display: grid; place-items: center; opacity: 0; }
