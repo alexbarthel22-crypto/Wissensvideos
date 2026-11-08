@@ -159,6 +159,11 @@ section>h2{font-size:28px;margin-bottom:14px}
 .growhud[hidden]{display:none}
 .growhud span{display:block;margin-top:4px;background:var(--sun);border-radius:10px;padding:4px 10px;font-weight:900;animation:gpop .35s ease-out}
 @keyframes gpop{from{transform:scale(.6);opacity:0}to{transform:none;opacity:1}}
+.walkbar{margin:18px 0 0}.walkbar .btn{display:block;width:100%;text-align:center;font-size:19px;padding:14px 12px}
+.walkui{position:absolute;left:12px;right:12px;bottom:14px;max-width:560px;pointer-events:none;z-index:3}.walkui[hidden]{display:none}
+.walkbtns{display:grid;grid-template-columns:1fr 1fr;gap:10px;pointer-events:auto}.walkbtns .chip{width:100%;font-size:16px;min-height:48px}
+.walkhint{margin:0 auto 10px;width:max-content;max-width:100%;background:rgba(42,27,18,.85);color:#fff;border-radius:12px;padding:6px 12px;font-size:14px;font-weight:800;text-align:center;transition:opacity .6s}
+.hero.walking .dock,.hero.walking .zoomc,.hero.walking .pop,.hero.walking .findbar,.hero.walking .growhud{display:none!important}
 .popx{flex:none;width:34px;height:34px;border-radius:50%;border:2px solid var(--ink);background:var(--peach);font-size:22px;font-weight:900;line-height:1;padding:0;display:grid;place-items:center}
 .pop div{flex:1;min-width:0;display:grid}
 .pop b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -273,6 +278,7 @@ footer a{color:var(--soft)}
  <div class="growhud" id="growhud" hidden></div>
  <div class="pop" id="pop" hidden><div><b id="pname"></b></div><button class="popx" id="popx" type="button" aria-label="Auswahl schließen">×</button></div>
  <div class="zoomc"><button id="zin" aria-label="Hineinzoomen">+</button><button id="zout" aria-label="Herauszoomen">−</button></div>
+ <div class="walkui" id="walkui" hidden><p class="walkhint" id="walkhint">Tippe und halte auf die Karte, wohin du gehen willst</p><div class="walkbtns"><button class="chip sun" id="walkmode" type="button">🛴 E-Scooter</button><button class="chip hot" id="walkend" type="button">✕ Beenden</button></div></div>
  <div class="dock" id="dock">
   <div class="swipe" id="swipe"><div class="pg" id="pg1"></div><div class="pg" id="pg2"></div></div>
   <div class="dots" id="dots" aria-hidden="true"><i class="on"></i><i></i></div>
@@ -291,6 +297,7 @@ footer a{color:var(--soft)}
 </div>
 
 <main class="w">
+ <div class="walkbar"><button class="btn hib" id="walkbtn" type="button">🚶 Selbst durch Muschel-Tal laufen</button></div>
  <section class="intro" id="intro">
   <h1>Eine Insel, gebaut aus Followern 🏝️</h1>
   <p class="lead">Jeder, der <a class="acc" target="_blank" rel="noopener"></a> auf TikTok folgt, bekommt hier eine eigene Hütte mit seinem Namen. Was auf der Insel passiert, entscheidet ihr in den Kommentaren.</p>
@@ -938,7 +945,7 @@ function draw(){
   if(z*S>5){for(const t of v.palms)if(vis(t.x,t.y))palm(c,t);}else{c.fillStyle='#3a9e4a';for(const t of v.palms)c.fillRect(t.x-2.5,t.y-2.5,5,5);}
   if(!v.open&&v.i){c.fillStyle='rgba(255,255,255,.07)';shape(c,v,10);c.fill();}
   if(GROWK!=null&&GROWV===v&&v.i&&GROWK<.12){c.fillStyle=`rgba(245,248,252,${.85*(1-GROWK/.12)})`;shape(c,v,30);c.fill();}}
- NAMES.length=0;const OUTG=new Set();if(sel&&sel.p&&!sel.gb)OUTG.add(sel);
+ NAMES.length=0;const OUTG=new Set();if(WK.on&&WK.me)OUTG.add(WK.me);if(sel&&sel.p&&!sel.gb)OUTG.add(sel);
  // Bürgermeisterin arbeitet im Muschelpalast: tagsüber auf der Palasttreppe, golden hervorgehoben
  if(z*S>8&&nl<.5&&(GROWK==null||GROWV!==MAIN||GROWK>=MAYOR_AT))for(const p of PEOPLE){if(p.beruf!=='Bürgermeisterin')continue;OUTG.add(p);const x=0,y=36*PAL_S+4;if(!vis(x,y))continue;
   const L=p.LM||(p.LM={...look(p.nr),shirt:'#7b3fe0',pants:'#2a1b4a'});const gl=.5+.5*Math.sin(T*2.5);
@@ -964,7 +971,7 @@ function draw(){
    if(j<.12||j>.88){c.strokeStyle='rgba(255,255,255,.75)';c.lineWidth=.8;c.beginPath();c.ellipse(x,y+2,4+((j>.5?j-.88:.12-j))*40,1.5,0,0,TAU);c.stroke();}}}
  // Spaziergänger: einige Einwohner laufen mit ihrem @Namen über die Wege
  const nW=nl>.5?32:72,OUT=OUTG;
- if(z*S>9)for(let wi=0;wi<nW;wi++){const w=WALKERS[wi];if(!w)break;if(w.q.nr>limit)continue;OUT.add(w.q);const q=w.q,L2=2*w.len,u=((T*w.sp*w.len*.55+w.ph/TAU*L2)%L2+L2)%L2,dir=w.fw,o=dir*(u-w.len),fade=Math.min(1,u/(L2*.08),(L2-u)/(L2*.08)),x=w.vert?w.rx:w.x0+o,y=w.vert?w.y0+o:w.ry-2.6;if(!vis(x,y)||fade<=0)continue;c.globalAlpha=fade;
+ if(z*S>9)for(let wi=0;wi<nW;wi++){const w=WALKERS[wi];if(!w)break;if(w.q.nr>limit||(WK.on&&w.q===WK.me))continue;OUT.add(w.q);const q=w.q,L2=2*w.len,u=((T*w.sp*w.len*.55+w.ph/TAU*L2)%L2+L2)%L2,dir=w.fw,o=dir*(u-w.len),fade=Math.min(1,u/(L2*.08),(L2-u)/(L2*.08)),x=w.vert?w.rx:w.x0+o,y=w.vert?w.y0+o:w.ry-2.6;if(!vis(x,y)||fade<=0)continue;c.globalAlpha=fade;
   drawMover(c,w,x,y,dir,w.vert,w.mode);
   c.globalAlpha=1;if(z*S>30&&fade>.5)NAMES.push([q.name,x,y-(w.mode==='bike'?12.2:11.2)]);}
  // Tätigkeiten: auf Bänken sitzen, miteinander reden, am Ufer angeln (wechselnde Einwohner, nachts weniger)
@@ -1036,6 +1043,7 @@ function draw(){
  if(K==='storm'&&!REDUCED){if(T>nextFlash){flash=1;nextFlash=T+4+Math.random()*7;}if(flash>.02){c.fillStyle=`rgba(255,255,255,${flash*.6})`;c.fillRect(0,0,W,H);flash*=.82;}}
  if(nl>.6&&sunny&&!REDUCED){const cyc=T%13;if(cyc<1){const k=cyc,sx=W*(.15+.55*hash(Math.floor(T/13),9)),sy=H*(.1+.2*hash(Math.floor(T/13),8));c.strokeStyle=`rgba(255,255,230,${(1-k)*.9})`;c.lineWidth=2;c.beginPath();c.moveTo(sx+k*160,sy+k*60);c.lineTo(sx+k*160-60,sy+k*60-22);c.stroke();}}
  world(c);
+ drawWalker(c,z);
  // Namen ganz oben: nichts (Bäume, Palast, Wolken, Nacht) darf sie verdecken
  const GSP=sel&&sel.p&&(sel.gb||REDUCED||T-selT<2)?standSpot(sel):null,near=(x,y)=>GSP&&Math.abs(x-GSP.x)<16&&y>GSP.y-26&&y<GSP.y+10;
  if(z*S>44){c.font='800 2.35px '+FONT;c.textAlign='center';for(const v of ISL){if(!visR(v.x,v.y,v.R+40))continue;for(const q of v.people){if(q.nr>limit||!q.p||q===sel||!vis(q.p.x,q.p.y)||near(q.p.x,q.p.y+10))continue;const x=q.p.x,y=q.p.y,nm=q.name.length>13?q.name.slice(0,12)+'…':q.name,w=Math.min(19.4,c.measureText(nm).width+2.4);
@@ -1263,6 +1271,50 @@ function zeigeErfolge(p){$('mp').hidden=true;const o=ERFS[p.name.toLowerCase()]|
  popup('<div class="big">🏅</div><h2>Erfolge von '+esc(p.name)+'</h2><p class="elc">'+(e.length?e.length+(e.length===1?' Erfolg':' Erfolge'):'Noch keine Erfolge – erkunde Muschel-Tal, es gibt viel zu entdecken!')+'</p><div class="ell">'+li+'</div><a class="btn" href="erfolge.html">🏅 Alle Erfolge, die es gibt</a>');}
 const zuMeinenErfolgen=p=>{$('pg').hidden=true;zeigeErfolge(p);};
 document.addEventListener('click',e=>{const a=e.target.closest('[data-erf]');if(!a)return;e.preventDefault();const p=byName.get(a.dataset.erf.toLowerCase());if(p)zeigeErfolge(p);});
+// ---------- Selbst durch Muschel-Tal laufen (zu Fuß oder E-Scooter, 4× so schnell) ----------
+const WK={on:false,x:0,y:0,dir:1,vert:false,front:true,moving:false,mode:'walk',me:null,L:null,keys:new Set(),pt:null,last:0};
+function inRect(x,y,a,b,c,d){return x>=a&&x<=b&&y>=c&&y<=d;}
+function canWalk(x,y){
+ for(const g of GEB){const W2=(g.x1-g.x0)/2,lx=(x-g.cx)*(g.dir||1),ly=y-g.cy;if(g.typ==='doener'){if(inRect(x-g.cx,ly,-28,11,-33,6))return false;continue;}
+  const sx=(g.sea-g.cx)*g.dir;if(g.typ==='strandbar'){if(inRect(lx,ly,sx-21,sx+13,-27,10))return false;if(inRect(lx,ly,sx-14,W2-2,-27,27))return true;}
+  else{const vx=-W2+24;if(inRect(lx,ly,vx-22,vx+22,-28,13)||inRect(lx,ly,sx-6,W2-4,-12,8))return false;if(inRect(lx,ly,sx-22,W2-2,-18,18))return true;}}
+ {const ax=PIER1[0]-PIER0[0],ay=PIER1[1]-PIER0[1],t=Math.max(0,Math.min(1,((x-PIER0[0])*ax+(y-PIER0[1])*ay)/(ax*ax+ay*ay)));if(Math.hypot(x-PIER0[0]-ax*t,y-PIER0[1]-ay*t)<4)return true;}
+ const v=ISL.find(v=>v.open&&inside(v,x,y,4));if(!v)return false;
+ if(v===MAIN){const lx=x/PAL_S,ly=y/PAL_S,ax=Math.abs(lx);if((ax<47&&ly>-36&&ly<23)||(ax>40&&ax<72&&ly>-12&&ly<22)||((ax-42)/10.5)**2+((ly-27)/5.2)**2<1||(Math.abs(ax-40)<15&&ly>33&&ly<43))return false;}
+ if(v.i===1&&Math.hypot(x-v.x,(y-v.y)/.86)<18)return false;
+ const gx=Math.round((x-v.x)/S),gy=Math.round((y-v.y)/(S*.9));for(let dx=-1;dx<=1;dx++)for(let dy=-1;dy<=1;dy++){const q=v.cell.get((gx+dx)+','+(gy+dy));if(!q||q.nr>limit)continue;if(Math.abs(x-q.p.x)<9&&y>q.p.y-6&&y<q.p.y+7.5)return false;}
+ return true;}
+function walkStart(){let me=sel;if(!me)try{me=byName.get((localStorage.getItem('mt-me')||'').toLowerCase());}catch(e){}
+ WK.me=me||null;WK.L=me?{...(me.L||(me.L=look(me.nr))),bikec:'#ff3d7f',ph:0}:{...look(7),bikec:'#ff3d7f',ph:0};
+ let sp=me&&me.p?standSpot(me):null;if(sp&&!me.gb&&(sp.kind==='cell'||!canWalk(sp.x,sp.y))){const v=me.isl;sp={x:me.p.x,y:v.y+Math.ceil((me.p.gy+.01)/4)*4*S*.9-2.6};}let x=sp?sp.x:0,y=sp?sp.y:36*PAL_S+10;
+ if(!canWalk(x,y)){let f=null;for(let r=4;r<120&&!f;r+=4)for(let a=0;a<TAU&&!f;a+=.3){const nx=x+Math.cos(a)*r,ny=y+Math.sin(a)*r;if(canWalk(nx,ny))f=[nx,ny];}if(f){x=f[0];y=f[1];}}
+ Object.assign(WK,{on:true,x,y,mode:'walk',moving:false,pt:null});unsel();window.scrollTo({top:0,behavior:'smooth'});
+ $('hero').classList.add('walking');$('walkui').hidden=false;$('walkhint').style.opacity=1;setTimeout(()=>{$('walkhint').style.opacity=0;},4500);$('walkmode').textContent='🛴 E-Scooter';
+ cancelAnimationFrame(fly);flyTo({x,y,z:5},700);setTimeout(()=>{WK.last=performance.now();requestAnimationFrame(walkTick);},720);}
+function walkEnd(){WK.on=false;WK.keys.clear();WK.pt=null;$('hero').classList.remove('walking');$('walkui').hidden=true;flyTo(fitMain(freeY()),800);}
+function walkTick(n){if(!WK.on)return;const dt=Math.min(.05,(n-WK.last)/1000);WK.last=n;let vx=0,vy=0;
+ const K=WK.keys;if(K.has('ArrowLeft')||K.has('a'))vx-=1;if(K.has('ArrowRight')||K.has('d'))vx+=1;if(K.has('ArrowUp')||K.has('w'))vy-=1;if(K.has('ArrowDown')||K.has('s'))vy+=1;
+ if(WK.pt){const sx=(WK.x-cam.x)*cam.z+W/2,sy=(WK.y-cam.y)*cam.z+H/2,dx=WK.pt[0]-sx,dy=WK.pt[1]-sy;if(Math.hypot(dx,dy)>14){vx=dx;vy=dy;}}
+ const l=Math.hypot(vx,vy);WK.moving=l>0;
+ if(l>0){const sp=(WK.mode==='scooter'?120:30)*dt;vx=vx/l*sp;vy=vy/l*sp;
+  const steps=Math.ceil(Math.max(Math.abs(vx),Math.abs(vy))/2);for(let i=0;i<steps;i++){const sx=vx/steps,sy=vy/steps;if(canWalk(WK.x+sx,WK.y))WK.x+=sx;if(canWalk(WK.x,WK.y+sy))WK.y+=sy;}
+  WK.vert=Math.abs(vy)>Math.abs(vx)*1.2;WK.dir=WK.vert?(vy>0?1:-1):(vx>=0?1:-1);WK.front=WK.vert&&vy>0;}
+ const tz=WK.mode==='scooter'?3.6:5;cam.x+=(WK.x-cam.x)*Math.min(1,dt*6);cam.y+=(WK.y-cam.y)*Math.min(1,dt*6);cam.z+=(tz-cam.z)*Math.min(1,dt*3);
+ if(REDUCED)draw();requestAnimationFrame(walkTick);}
+function drawWalker(c,z){if(!WK.on)return;const L=WK.L,x=WK.x,y=WK.y;
+ c.save();c.fillStyle='rgba(232,70,124,.28)';c.beginPath();c.ellipse(x,y+4.4,5,1.8,0,0,TAU);c.fill();c.restore();
+ if(!WK.moving){c.save();c.translate(x,y);if(!WK.front&&WK.dir<0&&!WK.vert)c.scale(-1,1);if(WK.mode==='scooter'){c.restore();drawMover(c,{...L,mode:'scooter'},x,y,WK.vert?1:WK.dir,WK.vert,'scooter');}else{person(c,L,0,true,0);c.restore();}}
+ else drawMover(c,{...L,mode:WK.mode},x,y,WK.dir,WK.vert,WK.mode);
+ NAMES.push([(WK.me?WK.me.name:'Du')+' (du)',x,y-(WK.mode==='scooter'?13:12)*L.h,'#e8467c']);}
+$('walkbtn').onclick=walkStart;$('walkend').onclick=walkEnd;
+$('walkmode').onclick=()=>{WK.mode=WK.mode==='walk'?'scooter':'walk';$('walkmode').textContent=WK.mode==='walk'?'🛴 E-Scooter':'🚶 Zu Fuß';};
+addEventListener('keydown',e=>{if(!WK.on)return;const k=e.key.length===1?e.key.toLowerCase():e.key;if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','w','a','s','d'].includes(k)){WK.keys.add(k);e.preventDefault();}if(k==='Escape')walkEnd();});
+addEventListener('keyup',e=>{const k=e.key.length===1?e.key.toLowerCase():e.key;WK.keys.delete(k);});
+{const hero=$('hero'),pos=e=>{const r=cv.getBoundingClientRect();return[e.clientX-r.left,e.clientY-r.top];},onMap=e=>e.target===cv;
+ hero.addEventListener('pointerdown',e=>{if(!WK.on||!onMap(e))return;e.stopPropagation();e.preventDefault();try{cv.setPointerCapture(e.pointerId);}catch(_){}WK.pt=pos(e);},true);
+ hero.addEventListener('pointermove',e=>{if(!WK.on||!WK.pt)return;e.stopPropagation();WK.pt=pos(e);},true);
+ for(const t of['pointerup','pointercancel'])hero.addEventListener(t,e=>{if(!WK.on)return;if(onMap(e))e.stopPropagation();WK.pt=null;},true);
+ hero.addEventListener('wheel',e=>{if(WK.on){e.stopPropagation();}},true);}
 let toastT=0;function toast(t){const e=$('toast');e.textContent=t;e.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>e.hidden=true,4200);}
 // Versteckte Lupe: Erfolg „Lupe“ für den gerade ausgewählten TikTok-Namen (gespeichert in diesem Browser)
 $('lupe').onclick=()=>{const p=sel;
