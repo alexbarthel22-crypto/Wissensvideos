@@ -164,7 +164,7 @@ def build_captions(project, timings, windows, total, big=False, opt=None):
             glow = ("0 3px 0 rgba(0,0,0,.35)" if bars else f"0 0 26px {COLORS[col]}aa, 0 5px 0 rgba(0,0,0,.55)") if col else ("0 3px 0 rgba(0,0,0,.35)" if bars else "0 5px 0 rgba(0,0,0,.55)")
             if opt.get("single"):
                 glow = "0 8px 0 rgba(0,0,0,.35)"
-            if gi == 0 and opt.get("first_full"):  # Einstieg: ganzer Satz steht, gesprochenes Wort leuchtet auf
+            if gi < opt.get("hook_groups", 1) and opt.get("first_full"):  # Einstieg: ganzer Satz steht, gesprochenes Wort leuchtet auf
                 nxt = g["words"][wi + 1]["start"] if wi + 1 < len(g["words"]) else w["end"] + 0.25
                 js.append(f'tl.fromTo("#{wid}", {{ color: "#ffffff", scale: 1 }}, {{ color: "#ffc93c", scale: {opt.get("first_scale_map", {}).get(w["display"].upper(), opt.get("first_scale", 1.16))}, duration: 0.09, ease: "power2.out", immediateRender: false }}, {max(0, w["start"] - 0.03):.3f});')
                 js.append(f'tl.to("#{wid}", {{ color: "#ffffff", scale: 1, duration: 0.1, ease: "power1.out" }}, {nxt - 0.03:.3f});')
@@ -179,7 +179,7 @@ def build_captions(project, timings, windows, total, big=False, opt=None):
                     js.append(f'tl.fromTo("#{wid}", {{ scale: {opt.get("pop_scale", 1.16)}, y: -8, rotation: {(-4, 3, -2, 4)[wi % 4]} }}, {{ scale: 1, y: 0, rotation: 0, duration: 0.28, ease: "back.out(3)", immediateRender: false }}, {w["start"] - 0.02:.3f});')
         dur = round(g["end"] - g["start"], 3)
         rows.append(f'    <div id="cg{gi}" class="clip grp" data-start="{g["start"]:.3f}" data-duration="{dur}" data-track-index="{gi % 2}">'
-                    f'<div id="cgi{gi}" class="inner{" " + opt["first_class"] if gi == 0 and opt.get("first_class") else ""}{" hk" if gi == 0 and opt.get("first_full") else ""}"{" data-layout-allow-overlap" if big else ""}>'
+                    f'<div id="cgi{gi}" class="inner{" " + opt["first_class"] if gi < opt.get("hook_groups", 1) and opt.get("first_class") else ""}{" hk" if gi == 0 and opt.get("first_full") else ""}"{" data-layout-allow-overlap" if big else ""}>'
                     + (f'<span class="bar" style="background:{bar_cols[gi % len(bar_cols)]}">{" ".join(spans)}</span>' if bars else " ".join(spans)) + '</div></div>')
         if gi == 0 and opt.get("first_at_zero"):  # erster Satz steht ab Frame 0 (Thumbnail)
             js.append(f'tl.set("#cgi{gi}", {{ scale: 1, opacity: 1 }}, 0);')

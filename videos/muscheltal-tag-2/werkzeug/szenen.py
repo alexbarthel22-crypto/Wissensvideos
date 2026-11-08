@@ -58,10 +58,13 @@ scene("s01", f"""    {CF_CSS}
     #s01-c {{ position: absolute; left: 0; right: 0; margin: 0 auto; top: 300px; width: fit-content; padding: 6px 40px 12px; border-radius: 40px; background: #fff; border: 7px solid #ff6a1a;
       font-family: "Inter", sans-serif; color: #0a78c2; font-weight: 900; font-size: 44px; display: flex; align-items: baseline; gap: 18px; box-shadow: 0 12px 0 rgba(0,40,80,.3); }}
     #s01-c b {{ font-size: 130px; color: #ff6a1a; line-height: 1; }}
-    #s01-st {{ left: 0; right: 0; margin: 0 auto; width: fit-content; top: 1000px; color: #e8433c; border-color: #e8433c; transform: rotate(-6deg); font-size: 60px; white-space: nowrap; }}
+    #s01-f {{ position: absolute; left: 0; right: 0; margin: 0 auto; top: 470px; width: fit-content; padding: 8px 28px 12px; border-radius: 999px; background: #fe2c55; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 42px; box-shadow: 0 8px 0 rgba(0,0,0,.25); white-space: nowrap; }}
+    #s01-st {{ left: 0; right: 0; margin: 0 auto; width: fit-content; top: 640px; color: #e8433c; border-color: #e8433c; transform: rotate(-6deg); font-size: 60px; white-space: nowrap; }}
     .s01-em {{ position: absolute; font-size: 110px; }}""",
 """      <div id="s01-cfw"></div>
       <div id="s01-c"><b id="s01-n">0</b>BEWOHNER</div>
+      <div id="s01-f">➕ Folge mir, um auch einzuziehen!</div>
       <div id="s01-st" class="stamp">HAUPT-INSEL VOLL!</div>
       <div class="s01-em" style="left:70px;top:470px">🎉</div><div class="s01-em" style="left:880px;top:430px">🥳</div>""",
 """      const n = at("L1", "575"), vo = at("L2", "voll"), T0 = n;
@@ -70,6 +73,8 @@ scene("s01", f"""    {CF_CSS}
       tl.fromTo("#s01-c", { scale: 1 }, { scale: 1.18, duration: .15, yoyo: true, repeat: 3, ease: "sine.inOut" }, n);
       tl.fromTo(".s01-em", { scale: 0, rotation: -40 }, { scale: 1, rotation: 0, duration: .4, ease: "back.out(3)", stagger: .1 }, n);
       tl.to(".s01-em", { y: -30, rotation: 12, duration: .3, yoyo: true, repeat: 7, ease: "sine.inOut" }, n + .5);
+      tl.fromTo("#s01-f", { opacity: 0, y: -30, scale: .6 }, { opacity: 1, y: 0, scale: 1, duration: .35, ease: "back.out(2.6)" }, line("L1")[1] + .2);
+      tl.to("#s01-f", { scale: 1.07, duration: .25, yoyo: true, repeat: 3, ease: "sine.inOut" }, line("L1")[1] + .7);
       tl.fromTo("#s01-st", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, vo - .05);
       """ + CONF_JS.replace("SEED", "11").replace("BOX", "s01-cfw"))
 
@@ -92,7 +97,7 @@ scene("s03", """    #s03-t { top: 300px; font-size: 72px; white-space: nowrap; m
     #s03-c { position: absolute; left: 0; right: 0; margin: 0 auto; top: 450px; width: fit-content; padding: 4px 36px 10px; border-radius: 36px; background: #fff; border: 6px solid #ff6a1a;
       font-family: "Inter", sans-serif; color: #2a1b12; font-weight: 900; font-size: 40px; display: flex; align-items: baseline; gap: 14px; box-shadow: 0 10px 0 rgba(0,40,80,.3); }
     #s03-c b { font-size: 100px; color: #ff6a1a; line-height: 1; }
-    #s03-new { left: 780px; top: 400px; color: #e8433c; border-color: #e8433c; transform: rotate(10deg); font-size: 48px; }""",
+    #s03-new { left: 90px; top: 440px; color: #e8433c; border-color: #e8433c; transform: rotate(10deg); font-size: 48px; }""",
 """      <div id="s03-t" class="bt or">🥥 KOKOS-KÜSTE</div>
       <div id="s03-new" class="stamp">NEU!</div>
       <div id="s03-c"><b id="s03-n">0</b>BEWOHNER</div>""",
