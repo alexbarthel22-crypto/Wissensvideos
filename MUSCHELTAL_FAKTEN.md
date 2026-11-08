@@ -30,7 +30,7 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 5. Jede Woche ein neuer Bürgermeister (Top-Kommentar gewinnt).
 6. Preise für alle Bewohner (Villen, Umzüge, Designs, Outfits …).
 7. Wer entfolgt, zieht aus; auf der Haupt-Insel rückt der Nächste nach Einwohner-Nummer nach.
-- Tag-Zähler auf der Homepage steht vorerst auf **0** („–“).
+- **Tag-Zähler: Tag 1 = 8.11.2026**, danach zählt er jeden Tag automatisch hoch (9.11. = Tag 2 …).
 
 ## Stand (8.11.2026)
 - **575 Einwohner**: 500 auf der Haupt-Insel (voll), **75 auf der Kokos-Küste** (Nr. 501–575).
@@ -48,7 +48,9 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - **Erfolge**: „Gründer“ (goldene Münze mit goldener Muschel) = einer der ersten 500 Follower. **„Die Lupe“** (enthüllt) = wer neugierig die Welt von Muschel-Tal erkundet; ganz unten auf der Homepage ist eine gold aufblinkende Lupe versteckt. Ohne gewählten Namen kommt ein Popup „Das könnte wichtig sein … Komm wieder hierhin, wenn du eingezogen bist!“; mit gewähltem Namen „Glückwunsch …“ + Knopf „Zu meinen Erfolgen“ (nur in diesem Browser gespeichert). **„Sonnenaufgang“** (morgens den Sonnenaufgang in Muschel-Tal gesehen) und **„Sonnenuntergang“** (abends den Sonnenuntergang gesehen) – wer mit seinem Namen während Auf-/Untergang auf der Seite ist, bekommt den Erfolg mit Popup „Neuer Erfolg!“ (in diesem Browser gespeichert). 10 weitere Erfolge geheim („bald“).
 - Muschelpass zeigt höchstens 4 Erfolge, die neuesten zuerst (kleine Abzeichen).
 - **Inselkasse**: 5 Muscheln pro Einwohner **+ 50 Muscheln für jedes Teilen des Muschelpasses in der Story** (pro TikTok-Name nur alle 7 Tage; wird auf dem Server gezählt). Der Teilen-Knopf zeigt das als Anreiz.
-- Unter der Einleitung: „Jetzt einziehen“ (nur ohne gewählten Namen), darunter „📜 Regeln“ + „🏅 Meine Erfolge“ (ohne gewählten Namen: Popup „Folge @muscheltal …“) und der lange Knopf „👥 Muschel-Tal Einwohner-Übersicht“.
+- Unter der Einleitung: „Jetzt einziehen“ (nur ohne gewählten Namen), darunter „📜 Regeln“ + „🏅 Meine Erfolge“ (ohne gewählten Namen: Popup „Folge @muscheltal …“) darunter „👥 Einwohner“ (Einwohner-Übersicht) + „📰 News“.
+- **News** (muscheltal.de/news.html): alle wichtigen Ereignisse mit Datum (neue Inseln, Events, Jobs, Bürgermeister, Gebäude …), gepflegt in `muscheltal/daten/insel.json` → `ereignisse`. Das neueste steht auch im „Neu:“-Kasten. Nur die **größten** Neuigkeiten (neue Inseln, Gebäude, Events, Jobs, Bürgermeister) – **keine Erfolge** (die sollen gefunden werden). Neue Ereignisse aus Videos bitte dort eintragen.
+- Abschnitt „Gerade auf den Inseln“: Tag, Einwohner, Muscheln, Inseln.
 - **Einwohner-Übersicht** (muscheltal.de/einwohner.html): alle Einwohner nach Insel mit Nr., Gründer mit kleiner Münze, Suche; Name antippen = zur Hütte fliegen.
 - Suchfeld hat ein × zum Löschen; Zoom-Knöpfe + / − rechts am Rand.
 - Karten-Knöpfe: ohne Auswahl „Alle Inseln“ + „Zufall“ (wischen: „Wachsen sehen“), mit Auswahl „Meine Hütte“ + „Muschelpass“ (wischen: „Alle Inseln“).

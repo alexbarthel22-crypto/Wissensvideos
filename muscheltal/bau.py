@@ -192,6 +192,47 @@ document.querySelectorAll('section').forEach(s=>s.hidden=![...s.querySelectorAll
     open(os.path.join(out, "einwohner.html"), "w", encoding="utf-8").write(seite)
 
 
+def nachrichten(insel, out):
+    """news.html: alles, was in Muschel-Tal passiert ist – neueste zuerst, nach Datum."""
+    import html as H
+    erf = open(os.path.join(HIER, "erfolge.html"), encoding="utf-8").read()
+    head = erf[:erf.index("<style>") + len("<style>")].replace("<title>Erfolge – Muschel-Tal</title>", "<title>News – Muschel-Tal</title>").replace(
+        "Alle Erfolge und Abzeichen der Bewohner von Muschel-Tal.", "Alles, was in Muschel-Tal passiert ist: neue Inseln, Gebäude, Events, Jobs, Bürgermeister.")
+    css = erf[erf.index("<style>") + len("<style>"):erf.index("</style>")]
+    keep = "\n".join(l for l in css.split("\n") if l.startswith((":root", " --f", "*{", "body{", ".top", "main{", ".cta{")))
+    start = dt.date.fromisoformat(insel["start"]) if insel.get("start") else None
+    gruppen = {}
+    for e in insel.get("ereignisse", []):
+        gruppen.setdefault(e[0], []).append(e)
+    teile = []
+    for datum, liste in gruppen.items():
+        t, m, j = (int(x) for x in datum.split("."))
+        tag = (dt.date(j, m, t) - start).days + 1 if start else 0
+        kopf = f"{t}. {MONATE[m - 1]} {j}" + (f" <span>Tag {tag}</span>" if tag >= 1 else "")
+        karten = "".join(f'<div class="n"><div class="em">{H.escape(e[1])}</div><div><h3>{H.escape(e[2])}</h3><p>{H.escape(e[3])}</p></div></div>' for e in liste)
+        teile.append(f"<section><h2>{kopf}</h2>{karten}</section>")
+    seite = head + "\n" + keep + """
+section h2{font-size:18px;margin:22px 0 10px;display:flex;align-items:center;gap:8px}
+section h2 span{background:var(--sun);border:2px solid var(--ink);border-radius:999px;padding:0 10px;font-size:14px}
+.n{display:grid;grid-template-columns:46px 1fr;gap:12px;align-items:start;background:#fff;border:3px solid var(--ink);border-radius:18px;padding:12px;margin-bottom:10px;box-shadow:3px 3px 0 var(--ink)}
+.n .em{width:46px;height:46px;border-radius:50%;background:var(--sand);border:2px solid var(--ink);display:grid;place-items:center;font-size:24px}
+.n h3{margin:2px 0 2px;font-size:18px;line-height:1.25}
+.n p{margin:0;color:var(--soft);font-weight:700;font-size:15px}
+</style>
+</head>
+<body>
+<header class="top"><a href="./">← Zur Karte</a><small>MUSCHEL-TAL</small><h1>📰 News</h1><p>Alles, was auf den Inseln passiert ist – neue Inseln, Gebäude, Events, Jobs und Bürgermeister.</p>
+<svg viewBox="0 0 400 24" preserveAspectRatio="none"><path d="M0 14 Q25 2 50 14 T100 14 T150 14 T200 14 T250 14 T300 14 T350 14 T400 14 V24 H0Z" fill="#fff4e0"/></svg></header>
+<main>
+""" + "\n".join(teile) + """
+ <a class="cta" href="https://www.tiktok.com/@muscheltal" target="_blank" rel="noopener">➕ @muscheltal folgen und einziehen</a>
+</main>
+</body>
+</html>
+"""
+    open(os.path.join(out, "news.html"), "w", encoding="utf-8").write(seite)
+
+
 def demo_rows(n):
     rnd = random.Random(7)
     heute = dt.date.today()
@@ -211,6 +252,11 @@ def baue(rows, out):
     except Exception:
         jetzt = dt.datetime.now()
     insel["stand"] = f"{jetzt.day}. {MONATE[jetzt.month - 1]} {jetzt.year}, {jetzt:%H:%M} Uhr"
+    if insel.get("start"):  # Tag 1 = Startdatum, danach zählt der Tag automatisch hoch
+        insel["tag"] = max(0, (jetzt.date() - dt.date.fromisoformat(insel["start"])).days + 1)
+    if insel.get("ereignisse"):  # „Neu:“-Kasten auf der Startseite = neuestes Ereignis
+        e = insel["ereignisse"][0]
+        insel["news"] = [f"{e[1]} {e[2]} – {e[3]}"]
     sauber, gesehen, quelle = [], set(), []
     for pos, r in enumerate(rows):
         name = norm(r.get("name", ""))
@@ -251,6 +297,7 @@ def baue(rows, out):
         if os.path.exists(quelle):
             open(os.path.join(out, datei), "w", encoding="utf-8").write(open(quelle, encoding="utf-8").read())
     uebersicht(sauber, insel, out)
+    nachrichten(insel, out)
     alt = os.path.join(out, "einwohner.json")
     if os.path.exists(alt):
         os.remove(alt)  # nicht mehr öffentlich (enthielt echte Inselnamen)

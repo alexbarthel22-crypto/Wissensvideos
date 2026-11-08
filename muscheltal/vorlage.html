@@ -182,7 +182,10 @@ a.step span{color:var(--hib);font-weight:900}
 /* ---------- Aktuell ---------- */
 .now{padding:16px}
 .nowbtn{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0 0}
-.btn.wide{display:block;text-align:center;margin-top:10px;white-space:nowrap;font-size:16px;padding:12px 8px;background:var(--lagoon);color:#fff}
+.btn.wide.news{background:var(--ink);color:#fff}
+.nowbtn+.nowbtn{margin-top:10px}
+.nowbtn .btn{margin:0!important}
+.btn.wide{display:block;text-align:center;white-space:nowrap;font-size:16px;padding:12px 8px;background:var(--lagoon);color:#fff}
 #join[hidden]{display:none}
 .nowbtn .btn{display:flex;align-items:center;justify-content:center;gap:6px;padding:10px 6px;white-space:nowrap;font-size:16px}
 .nums{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;text-align:center}
@@ -260,7 +263,7 @@ footer a{color:var(--soft)}
   </div>
   <a class="btn hib" id="join" target="_blank" rel="noopener">Jetzt einziehen</a>
   <div class="nowbtn"><a class="btn" href="regeln.html">📜 Regeln</a><button class="btn hib" id="myerf">🏅 Meine Erfolge</button></div>
-  <a class="btn wide" href="einwohner.html">👥 Muschel-Tal Einwohner-Übersicht</a>
+  <div class="nowbtn"><a class="btn wide" href="einwohner.html">👥 Einwohner</a><a class="btn wide news" href="news.html">📰 News</a></div>
  </section>
 
  <section id="s-pass" hidden>
@@ -272,7 +275,7 @@ footer a{color:var(--soft)}
  </section>
 
  <section>
-  <h2>Gerade auf der Insel</h2>
+  <h2>Gerade auf den Inseln</h2>
   <div class="st now">
    <div class="nums"><div><b id="nTag"></b><small>Tag</small></div><div><b id="nEw"></b><small>Einwohner</small></div><div><b id="nMu"></b><small>🐚 Muscheln</small></div></div>
    <div class="isl" id="isl"></div>
@@ -920,12 +923,12 @@ function pick(p){q.value=p.name;$('qx').hidden=false;sg.hidden=true;$('miss').hi
 $('rnd').onclick=()=>{if(N)pick(PEOPLE[Math.random()*N|0]);};
 $('mine').onclick=()=>{let p=sel;try{p=byName.get((localStorage.getItem('mt-me')||'').toLowerCase())||sel;}catch(e){}if(p)pick(p);};
 const qxUpd=()=>{$('qx').hidden=!q.value;};q.addEventListener('input',()=>{qxUpd();if(!q.value.trim()&&sel)unsel();});
-$('qx').onclick=()=>{q.value='';qxUpd();sg.hidden=true;$('miss').hidden=true;unsel();q.focus();};
+$('qx').onclick=()=>{q.value='';qxUpd();sg.hidden=true;$('miss').hidden=true;unsel();q.blur();};
 document.addEventListener('click',e=>{const b=e.target.closest('[data-n]');if(b){const p=byName.get(b.dataset.n.toLowerCase());if(p)pick(p);}if(!e.target.closest('.findbar'))sg.hidden=true;});
 
 // ---------- Texte ----------
 document.querySelectorAll('.acc').forEach(e=>{e.textContent=ACC;e.href=ACCURL;});document.querySelectorAll('.acc2').forEach(e=>e.textContent=ACC);document.querySelectorAll('.acc3').forEach(e=>e.textContent='by '+ACC);$('stepf').href=ACCURL;$('join').href=ACCURL;
-$('nTag').textContent=I.tag||'–';$('nEw').textContent=fmt(N);kasseZeigen();
+$('nTag').textContent=(()=>{if(!I.start)return I.tag||'–';const b=berlin(),[y,m,d]=I.start.split('-').map(Number),t=Math.floor((Date.UTC(b.getFullYear(),b.getMonth(),b.getDate())-Date.UTC(y,m-1,d))/864e5)+1;return t>=1?t:'–';})();$('nEw').textContent=fmt(N);kasseZeigen();
 {const next=ISL.find(v=>!v.open);const row=(e,t,s,pct,col,tag,tc)=>'<div class="r"><span class="e">'+e+'</span><div><b>'+t+'</b><small>'+s+'</small><div class="m"><i style="width:'+Math.min(100,pct*100)+'%;background:'+col+'"></i></div></div><span class="tag" style="background:'+tc+'">'+tag+'</span></div>';
  $('isl').innerHTML=ISL.map(v=>{if(v.open){const n=v.people.length,cap=v.plaetze,full=cap&&n>=cap;return row(v.emoji,esc(v.name),fmt(n)+(cap?' von '+fmt(cap)+' Hütten bewohnt':' Hütten bewohnt'),cap?n/cap:1,v.farbe,full?'VOLL':'OFFEN',full?'var(--hib);color:#fff':'var(--sun)');}
   return row('🔒','???','öffnet ab '+fmt(v.ab+1)+' Followern'+(v===next?' · noch '+fmt(v.ab+1-N):''),N/(v.ab+1),'#c9b59a','BALD','#fff');}).join('')
