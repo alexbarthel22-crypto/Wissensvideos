@@ -63,11 +63,13 @@ scene("s03", STK + """
     #s03-btn2 { position: absolute; inset: 0; border-radius: 60px; background: #fff; color: #0a78c2; display: grid; place-items: center; opacity: 0; }
     #s03-hand { position: absolute; left: 690px; top: 410px; font-size: 120px; }
     #s03-at { top: 530px; font-size: 44px; background: #ff6a1a; }
-    #s03-a { top: 640px; font-size: 40px; background: #e8467c; }""",
+    #s03-a { top: 640px; font-size: 40px; background: #e8467c; }
+    #s03-w { top: 740px; font-size: 44px; background: #2e9e5b; }""",
 """      <div id="s03-btn">+ Folgen<div id="s03-btn2">✓ Gefolgt</div></div>
       <div id="s03-hand" data-layout-ignore>👆</div>
       <div id="s03-at" class="stk2">@muscheltal</div>
-      <div id="s03-a" class="stk2">👯 Ladet eure Freunde ein!</div>""",
+      <div id="s03-a" class="stk2">👯 Ladet eure Freunde ein!</div>
+      <div id="s03-w" class="stk2">🌍 DIE GRÖSSTE WELT AUF TIKTOK!</div>""",
 """      const fo = at("L3", "folgen"), an = at("L3", "Freunde");
       tl.fromTo("#s03-btn", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, fo - .7);
       tl.fromTo("#s03-hand", { opacity: 0, x: 160, y: 160 }, { opacity: 1, x: 0, y: 0, duration: .3, ease: "power3.out" }, fo - .4);
@@ -77,4 +79,7 @@ scene("s03", STK + """
       tl.to("#s03-hand", { opacity: 0, duration: .25 }, fo + .6);
       tl.fromTo("#s03-at", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .3, ease: "power3.out" }, fo + .3);
       tl.fromTo("#s03-a", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, an - .1);
-      tl.to("#s03-btn", { scale: 1.06, duration: .3, yoyo: true, repeat: 5, ease: "sine.inOut" }, fo + .6);""", blur=False)
+      tl.to("#s03-btn", { scale: 1.06, duration: .3, yoyo: true, repeat: 5, ease: "sine.inOut" }, fo + .6);
+      const gr = at("L4", "größte");
+      tl.fromTo("#s03-w", { opacity: 0, scale: .3, rotation: -8 }, { opacity: 1, scale: 1, rotation: -2, duration: .45, ease: "back.out(2.6)" }, gr - .15);
+      tl.to("#s03-w", { scale: 1.07, rotation: 2, duration: .25, yoyo: true, repeat: 5, ease: "sine.inOut" }, gr + .35);""", blur=False)

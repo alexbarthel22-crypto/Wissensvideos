@@ -52,7 +52,7 @@
   {
    "id": "s03",
    "tag": "",
-   "hold": 2.0,
+   "hold": 2.2,
    "lines": [
     {
      "id": "L3",
@@ -60,6 +60,13 @@
      "style": "Style: a real young man, enthusiastic and inviting, motivating, natural not theatrical.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
      "speed": 1.08,
      "pause": 0.4
+    },
+    {
+     "id": "L4",
+     "text": "Denn *c:Muschel-Tal wird / die *y:größte *y:Welt / auf *p:TikTok!",
+     "style": "Style: a real young man, proud and euphoric, big announcement with a huge smile, natural not theatrical.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+     "speed": 1.08,
+     "pause": 0.25
     }
    ],
    "sfx": [
@@ -76,6 +83,11 @@
     {
      "name": "ka-ching",
      "at": "L3:zusammen",
+     "volume": 0.4
+    },
+    {
+     "name": "impact-bass-2",
+     "at": "L4:größte",
      "volume": 0.4
     }
    ]

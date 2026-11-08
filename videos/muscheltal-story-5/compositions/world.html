@@ -3,13 +3,13 @@
     #root { position: absolute; inset: 0; }
     #w-cv { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
   </style>
-  <div id="root" data-composition-id="world" data-start="0" data-duration="14.340" data-width="1080" data-height="1920">
-    <canvas id="w-cv" class="clip" data-start="0" data-duration="14.340" data-track-index="0" width="1080" height="1920"></canvas>
+  <div id="root" data-composition-id="world" data-start="0" data-duration="17.310" data-width="1080" data-height="1920">
+    <canvas id="w-cv" class="clip" data-start="0" data-duration="17.310" data-track-index="0" width="1080" height="1920"></canvas>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 14.34, "s01": [0.0, 3.89], "s02": [3.89, 8.02], "s03": [8.02, 14.34], "L1": [0.0, 3.31], "L1.words": [["ein", 0.0, 0.259], ["abend", 0.259, 0.767], ["am", 0.767, 1.017], ["lagerfeuer", 1.017, 1.803], ["auf", 1.803, 2.062], ["kokosküste", 2.062, 3.079], ["", 3.079, 3.31]], "L2": [4.09, 7.44], "L2.words": [["ich", 4.09, 4.278], ["freu", 4.278, 4.473], ["mich", 4.473, 4.668], ["riesig", 4.668, 5.045], ["auf", 5.045, 5.233], ["morgen", 5.233, 5.61], ["da", 5.79, 5.936], ["werden", 5.936, 6.239], ["die", 6.239, 6.39], ["ersten", 6.39, 6.693], ["gebäude", 6.693, 7.137], ["gebaut", 7.137, 7.44]], "L3": [8.22, 12.34], "L3.words": [["also", 8.22, 8.513], ["schnell", 8.513, 8.687], ["folgen", 8.687, 8.992], ["und", 8.992, 9.144], ["ladet", 9.144, 9.443], ["eure", 9.443, 9.736], ["freunde", 9.736, 10.046], ["mit", 10.046, 10.198], ["ein", 10.198, 10.35], ["damit", 10.56, 10.831], ["ihr", 10.831, 10.969], ["zusammen", 10.969, 11.379], ["von", 11.379, 11.517], ["anfang", 11.517, 11.793], ["an", 11.793, 11.926], ["dabei", 11.926, 12.197], ["seid", 12.197, 12.34]]};
+      const C = {"__dur": 17.31, "s01": [0.0, 3.89], "s02": [3.89, 8.02], "s03": [8.02, 17.31], "L1": [0.0, 3.31], "L1.words": [["ein", 0.0, 0.259], ["abend", 0.259, 0.767], ["am", 0.767, 1.017], ["lagerfeuer", 1.017, 1.803], ["auf", 1.803, 2.062], ["kokosküste", 2.062, 3.079], ["", 3.079, 3.31]], "L2": [4.09, 7.44], "L2.words": [["ich", 4.09, 4.278], ["freu", 4.278, 4.473], ["mich", 4.473, 4.668], ["riesig", 4.668, 5.045], ["auf", 5.045, 5.233], ["morgen", 5.233, 5.61], ["da", 5.79, 5.936], ["werden", 5.936, 6.239], ["die", 6.239, 6.39], ["ersten", 6.39, 6.693], ["gebäude", 6.693, 7.137], ["gebaut", 7.137, 7.44]], "L3": [8.22, 12.34], "L3.words": [["also", 8.22, 8.513], ["schnell", 8.513, 8.687], ["folgen", 8.687, 8.992], ["und", 8.992, 9.144], ["ladet", 9.144, 9.443], ["eure", 9.443, 9.736], ["freunde", 9.736, 10.046], ["mit", 10.046, 10.198], ["ein", 10.198, 10.35], ["damit", 10.56, 10.831], ["ihr", 10.831, 10.969], ["zusammen", 10.969, 11.379], ["von", 11.379, 11.517], ["anfang", 11.517, 11.793], ["an", 11.793, 11.926], ["dabei", 11.926, 12.197], ["seid", 12.197, 12.34]], "L4": [12.81, 15.11], "L4.words": [["denn", 12.81, 13.006], ["muscheltal", 13.006, 13.581], ["wird", 13.581, 13.777], ["die", 13.777, 13.967], ["größte", 13.967, 14.346], ["welt", 14.346, 14.542], ["auf", 14.542, 14.731], ["tiktok", 14.731, 15.11]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];

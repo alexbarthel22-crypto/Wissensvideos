@@ -56,19 +56,21 @@
     #s03-hand { position: absolute; left: 690px; top: 410px; font-size: 120px; }
     #s03-at { top: 530px; font-size: 44px; background: #ff6a1a; }
     #s03-a { top: 640px; font-size: 40px; background: #e8467c; }
+    #s03-w { top: 740px; font-size: 44px; background: #2e9e5b; }
   </style>
-  <div id="root" data-composition-id="s03" data-start="0" data-duration="6.320" data-width="1080" data-height="1920">
-    <div id="s03-stage" class="clip stage" data-start="0" data-duration="6.320" data-track-index="0">
+  <div id="root" data-composition-id="s03" data-start="0" data-duration="9.290" data-width="1080" data-height="1920">
+    <div id="s03-stage" class="clip stage" data-start="0" data-duration="9.290" data-track-index="0">
       <div id="s03-btn">+ Folgen<div id="s03-btn2">✓ Gefolgt</div></div>
       <div id="s03-hand" data-layout-ignore>👆</div>
       <div id="s03-at" class="stk2">@muscheltal</div>
       <div id="s03-a" class="stk2">👯 Ladet eure Freunde ein!</div>
+      <div id="s03-w" class="stk2">🌍 DIE GRÖSSTE WELT AUF TIKTOK!</div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 6.32, "L3": [0.2, 4.32], "L3.words": [["also", 0.2, 0.493], ["schnell", 0.493, 0.667], ["folgen", 0.667, 0.972], ["und", 0.972, 1.124], ["ladet", 1.124, 1.423], ["eure", 1.423, 1.716], ["freunde", 1.716, 2.026], ["mit", 2.026, 2.178], ["ein", 2.178, 2.33], ["damit", 2.54, 2.811], ["ihr", 2.811, 2.949], ["zusammen", 2.949, 3.359], ["von", 3.359, 3.497], ["anfang", 3.497, 3.773], ["an", 3.773, 3.906], ["dabei", 3.906, 4.177], ["seid", 4.177, 4.32]]};
+      const C = {"__dur": 9.29, "L3": [0.2, 4.32], "L3.words": [["also", 0.2, 0.493], ["schnell", 0.493, 0.667], ["folgen", 0.667, 0.972], ["und", 0.972, 1.124], ["ladet", 1.124, 1.423], ["eure", 1.423, 1.716], ["freunde", 1.716, 2.026], ["mit", 2.026, 2.178], ["ein", 2.178, 2.33], ["damit", 2.54, 2.811], ["ihr", 2.811, 2.949], ["zusammen", 2.949, 3.359], ["von", 3.359, 3.497], ["anfang", 3.497, 3.773], ["an", 3.773, 3.906], ["dabei", 3.906, 4.177], ["seid", 4.177, 4.32]], "L4": [4.79, 7.09], "L4.words": [["denn", 4.79, 4.986], ["muscheltal", 4.986, 5.561], ["wird", 5.561, 5.757], ["die", 5.757, 5.947], ["größte", 5.947, 6.326], ["welt", 6.326, 6.522], ["auf", 6.522, 6.711], ["tiktok", 6.711, 7.09]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -122,6 +124,9 @@
       tl.fromTo("#s03-at", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .3, ease: "power3.out" }, fo + .3);
       tl.fromTo("#s03-a", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, an - .1);
       tl.to("#s03-btn", { scale: 1.06, duration: .3, yoyo: true, repeat: 5, ease: "sine.inOut" }, fo + .6);
+      const gr = at("L4", "größte");
+      tl.fromTo("#s03-w", { opacity: 0, scale: .3, rotation: -8 }, { opacity: 1, scale: 1, rotation: -2, duration: .45, ease: "back.out(2.6)" }, gr - .15);
+      tl.to("#s03-w", { scale: 1.07, rotation: 2, duration: .25, yoyo: true, repeat: 5, ease: "sine.inOut" }, gr + .35);
       
       window.__timelines["s03"] = tl;
     })();
