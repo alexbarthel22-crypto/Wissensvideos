@@ -1,0 +1,31 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+.stk2 { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 30px 12px; border-radius: 999px; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); white-space: nowrap; }
+    #s02-t { top: 300px; font-size: 46px; background: #e8467c; }
+    #s02-k { position: absolute; left: 0; right: 0; margin: 0 auto; top: 400px; width: 520px; height: 300px; border-radius: 34px; background: #fff; box-shadow: 0 0 0 6px #2a1b12, 0 14px 0 rgba(0,0,0,.35); overflow: hidden; text-align: center; font-family: "Inter", sans-serif; }
+    #s02-k .e { height: 200px; display: grid; place-items: center; font-size: 130px; background: linear-gradient(180deg, #bfefff, #fff); }
+    #s02-k .l { height: 100px; display: grid; place-items: center; font-weight: 900; font-size: 42px; color: #fff; background: #ff6a1a; }
+  </style>
+  <div id="root" data-composition-id="s02" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s02-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s02-t" class="stk2">⏰ MORGEN</div>
+      <div id="s02-k"><div class="e">🏗️</div><div class="l">ERSTE GEBÄUDE!</div></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      /*__COMMON_JS__*/
+      wrapBt("#s02-stage");
+      const tl = gsap.timeline({ paused: true });
+      const mo = at("L2", "morgen"), ge = at("L2", "Gebäude");
+      tl.fromTo("#s02-t", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .4, ease: "back.out(2.6)" }, mo - .1);
+      tl.fromTo("#s02-k", { opacity: 0, scale: 0, rotation: -12 }, { opacity: 1, scale: 1, rotation: -2, duration: .5, ease: "back.out(2.2)" }, ge - .2);
+      tl.to("#s02-k", { y: -14, rotation: 2, duration: .3, yoyo: true, repeat: 3, ease: "sine.inOut" }, ge + .4);
+      tl.to("#s02-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
+      window.__timelines["s02"] = tl;
+    })();
+  </script>
+</template>

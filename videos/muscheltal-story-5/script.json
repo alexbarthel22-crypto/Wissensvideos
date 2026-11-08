@@ -1,0 +1,91 @@
+{
+ "title": "Muschel-Tal Story – Lagerfeuer auf der Kokos-Küste",
+ "voice": "Gemini TTS (gemini-3.1-flash-tts-preview, Stimme Achird), natürlich und emotional, --speed 1.12",
+ "notes": "TikTok-Story: abends am Lagerfeuer auf der Kokos-Küste, Vorfreude auf morgen (erste Gebäude), Aufruf zu folgen.",
+ "lead_in": 0.0,
+ "bg": "#0a5a92",
+ "captions": {
+  "pop": false,
+  "first_at_zero": true,
+  "left": 60,
+  "right": 190,
+  "size": 118,
+  "css": "@font-face { font-family: 'Lilita One'; src: url('assets/fonts/LilitaOne-Regular.woff2') format('woff2'); font-weight: 400; }\n    .inner { font-family: 'Lilita One', sans-serif; font-weight: 400; letter-spacing: .01em; }\n    .w { display: inline-block; white-space: nowrap; color: #fff; -webkit-text-stroke: 16px #1d2147; paint-order: stroke fill; }\n    .inner.hk { font-size: 104px; line-height: 1.12; } .inner.hk .w { margin: 0 .12em; }",
+  "single": true,
+  "top": 1250,
+  "first_full": true
+ },
+ "scenes": [
+  {
+   "id": "s01",
+   "tag": "",
+   "lines": [
+    {
+     "id": "L1",
+     "text": "Ein Abend am *y:Lagerfeuer / auf der *b:Kokos-Küste …",
+     "style": "Style: a real young man, calm, warm and cozy, enjoying a quiet evening by the fire, natural not theatrical.\nPace: calm.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+     "speed": 1.0
+    }
+   ],
+   "sfx": []
+  },
+  {
+   "id": "s02",
+   "tag": "",
+   "lines": [
+    {
+     "id": "L2",
+     "text": "Ich freu mich *y:riesig auf morgen: / Da werden die *g:ersten *g:Gebäude gebaut!",
+     "style": "Style: a real young man, excited and full of anticipation, smiling, natural not theatrical.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+     "speed": 1.05,
+     "pause": 0.4
+    }
+   ],
+   "sfx": [
+    {
+     "name": "pop",
+     "at": "L2:Gebäude",
+     "volume": 0.35
+    }
+   ]
+  },
+  {
+   "id": "s03",
+   "tag": "",
+   "hold": 2.0,
+   "lines": [
+    {
+     "id": "L3",
+     "text": "Also schnell *p:folgen / und von Anfang an dabei sein / beim *y:Abenteuer in *c:Muschel-Tal!",
+     "style": "Style: a real young man, enthusiastic and inviting, motivating, natural not theatrical.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+     "speed": 1.08,
+     "pause": 0.4
+    }
+   ],
+   "sfx": [
+    {
+     "name": "click",
+     "at": "L3:folgen",
+     "volume": 0.5
+    },
+    {
+     "name": "ka-ching",
+     "at": "L3:Abenteuer",
+     "volume": 0.4
+    }
+   ]
+  }
+ ],
+ "style": "Style: a real, natural-sounding young man telling his friends something he is genuinely excited about. Conversational, warm, honest emotion in the voice, not like an announcer or an advertisement. Emphasize the important words naturally.\nPace: brisk but natural.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+ "loudness": -11,
+ "pitch": 0,
+ "music": {
+  "src": "assets/music/suedsee.wav",
+  "volume": 1,
+  "note": "tools/make_music_tropical.py, im Code erzeugt (lizenzfrei), unter der Stimme automatisch leiser"
+ },
+ "ambience": {
+  "src": "assets/music/atmo.wav",
+  "volume": 1
+ }
+}

@@ -1,0 +1,73 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; }
+    #w-cv { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+  </style>
+  <div id="root" data-composition-id="world" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <canvas id="w-cv" class="clip" data-start="0" data-duration="__DUR__" data-track-index="0" width="1080" height="1920"></canvas>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      // Ich-Perspektive am Lagerfeuer auf der Kokos-Küste: Nachthimmel, Mond, Meer, Kokos-Häuser, Bambus-Laternen, Bewohner auf Baumstamm-Bänken, Feuer mit Funken.
+      // Alles hängt nur an der Timeline-Zeit t (deterministisch, seek-fähig).
+      const cv = document.getElementById("w-cv"), c = cv.getContext("2d"), W = 1080, H = 1920, HY = 820, TAU = Math.PI * 2;
+      const hash = (i, s) => { let x = Math.sin(i * 127.1 + s * 311.7) * 43758.5453; return x - Math.floor(x); };
+      const FX = 540, FY = 1560; // Lagerfeuer
+      function palmSil(x, y, h, sw, col) { c.strokeStyle = col; c.lineWidth = h * .07; c.lineCap = "round"; c.beginPath(); c.moveTo(x, y); c.quadraticCurveTo(x + h * .15, y - h * .5, x + sw, y - h); c.stroke();
+        c.fillStyle = col; for (let k = 0; k < 6; k++) { const a = -Math.PI / 2 + (k - 2.5) * .55; c.beginPath(); c.ellipse(x + sw + Math.cos(a) * h * .28, y - h + Math.sin(a) * h * .14 + h * .08, h * .32, h * .07, k < 3 ? .5 : -.5, 0, TAU); c.fill(); } }
+      function coco(x, y, s, t, i) { // Kokosnuss-Haus in der Nacht, warmes Licht
+        c.fillStyle = "rgba(0,0,0,.35)"; c.beginPath(); c.ellipse(x, y + 4 * s, 34 * s, 8 * s, 0, 0, TAU); c.fill();
+        const g = c.createRadialGradient(x - 10 * s, y - 40 * s, 4 * s, x, y - 26 * s, 44 * s); g.addColorStop(0, "#6b4426"); g.addColorStop(1, "#2e1c10"); c.fillStyle = g; c.beginPath(); c.arc(x, y - 26 * s, 32 * s, 0, TAU); c.fill();
+        c.fillStyle = "#2e6b34"; c.beginPath(); c.ellipse(x - 8 * s, y - 60 * s, 12 * s, 5 * s, -.5, 0, TAU); c.ellipse(x + 8 * s, y - 60 * s, 12 * s, 5 * s, .5, 0, TAU); c.fill();
+        const f = .75 + .25 * Math.sin(t * 3 + i * 1.7), lit = hash(i, 5) > .3;
+        if (lit) { const l = c.createRadialGradient(x, y - 14 * s, 1, x, y - 14 * s, 50 * s); l.addColorStop(0, `rgba(255,190,90,${.45 * f})`); l.addColorStop(1, "rgba(255,190,90,0)"); c.fillStyle = l; c.fillRect(x - 50 * s, y - 64 * s, 100 * s, 100 * s); }
+        c.fillStyle = lit ? `rgba(255,200,110,${f})` : "#1a0f08"; c.beginPath(); c.moveTo(x - 7 * s, y); c.lineTo(x - 7 * s, y - 14 * s); c.arc(x, y - 14 * s, 7 * s, Math.PI, 0); c.lineTo(x + 7 * s, y); c.fill();
+        c.beginPath(); c.arc(x + 15 * s, y - 32 * s, 5 * s, 0, TAU); c.fill(); }
+      function lantern(x, y, h, t, i) { c.strokeStyle = "#3a2a1a"; c.lineWidth = 7; c.beginPath(); c.moveTo(x, y); c.lineTo(x, y - h); c.stroke(); c.strokeStyle = "rgba(90,70,40,.8)"; c.lineWidth = 2; for (let k = 1; k < 5; k++) { c.beginPath(); c.moveTo(x - 4, y - h * k / 5); c.lineTo(x + 4, y - h * k / 5); c.stroke(); }
+        const f = .8 + .2 * Math.sin(t * 6 + i), g = c.createRadialGradient(x, y - h - 12, 2, x, y - h - 12, 90); g.addColorStop(0, `rgba(255,210,120,${.8 * f})`); g.addColorStop(1, "rgba(255,210,120,0)"); c.fillStyle = g; c.fillRect(x - 90, y - h - 102, 180, 180);
+        c.fillStyle = "#ffe2a0"; c.beginPath(); c.ellipse(x, y - h - 12, 10, 14, 0, 0, TAU); c.fill(); }
+      function person(x, y, s, t, i, col) { // sitzender Bewohner auf Baumstamm-Bank, warmes Streiflicht vom Feuer
+        const sw = Math.sin(t * 1.3 + i) * 2 * s, dir = x < FX ? 1 : -1;
+        c.fillStyle = "#14100c"; c.beginPath(); c.roundRect(x - 22 * s + sw, y - 70 * s, 44 * s, 58 * s, 18 * s); c.fill();
+        c.beginPath(); c.arc(x + sw, y - 88 * s, 18 * s, 0, TAU); c.fill();
+        c.fillStyle = col; c.globalAlpha = .55; c.beginPath(); c.roundRect(x - 22 * s + sw + (dir > 0 ? 24 : 0) * s, y - 70 * s, 20 * s, 58 * s, 14 * s); c.fill(); c.globalAlpha = 1;
+        c.fillStyle = "rgba(255,170,90,.75)"; c.beginPath(); c.arc(x + sw + dir * 8 * s, y - 88 * s, 12 * s, -Math.PI / 2 * dir - .2, Math.PI / 2 * dir + .2, dir < 0); c.fill(); }
+      function fire(t, k) { // Holzscheite, Flammen, Funken
+        c.fillStyle = "#4a3a30"; for (let i = 0; i < 9; i++) { const a = i / 9 * TAU; c.beginPath(); c.ellipse(FX + Math.cos(a) * 120 * k, FY + 30 * k + Math.sin(a) * 34 * k, 26 * k, 18 * k, 0, 0, TAU); c.fill(); }
+        c.save(); c.translate(FX, FY + 20 * k); for (const [a, l] of [[.5, 160], [-.5, 160], [.1, 150]]) { c.save(); c.rotate(a); c.fillStyle = "#5a3418"; c.beginPath(); c.roundRect(-l / 2 * k, -12 * k, l * k, 24 * k, 10 * k); c.fill(); c.fillStyle = "#ff8a3a"; c.globalAlpha = .5; c.fillRect(-l / 2 * k, -2 * k, l * k, 5 * k); c.globalAlpha = 1; c.restore(); } c.restore();
+        for (let L = 0; L < 3; L++) { const col = ["#ff5a1a", "#ff9a2a", "#ffe08a"][L], hh = [230, 170, 100][L] * k, ww = [90, 64, 36][L] * k;
+          c.fillStyle = col; c.beginPath(); c.moveTo(FX - ww, FY);
+          for (let i = 0; i <= 12; i++) { const u = i / 12, x = FX - ww + u * ww * 2, n = Math.sin(t * 9 + i * 1.7 + L) * .35 + Math.sin(t * 13 + i * 2.3) * .2, y = FY - Math.sin(u * Math.PI) * hh * (.75 + .25 * n) - (i % 2 ? hh * .15 * (1 + n) : 0); c.lineTo(x, y); }
+          c.lineTo(FX + ww, FY); c.closePath(); c.fill(); }
+        for (let i = 0; i < 40; i++) { const ph = (t * (.35 + hash(i, 2) * .4) + hash(i, 1)) % 1, x = FX + (hash(i, 3) - .5) * 120 * k + Math.sin(t * 2 + i) * 30 * ph * k, y = FY - 60 * k - ph * 700 * k, a = (1 - ph) * .9;
+          c.fillStyle = `rgba(255,${180 + (i % 3) * 25},90,${a})`; c.beginPath(); c.arc(x, y, (2 + hash(i, 4) * 3) * k, 0, TAU); c.fill(); } }
+      function draw(t) {
+        const k = 1 + .06 * Math.min(1, t / C.__dur), fl = .85 + .15 * Math.sin(t * 7) * Math.sin(t * 3.1);
+        c.setTransform(1, 0, 0, 1, 0, 0);
+        c.save(); c.translate(FX, FY); c.scale(k, k); c.translate(-FX, -FY);
+        const sky = c.createLinearGradient(0, 0, 0, HY); sky.addColorStop(0, "#070a24"); sky.addColorStop(.6, "#151a44"); sky.addColorStop(1, "#33285a"); c.fillStyle = sky; c.fillRect(-200, -200, W + 400, HY + 202);
+        for (let i = 0; i < 120; i++) { const a = .3 + .7 * Math.pow(Math.max(0, Math.sin(t * (1 + hash(i, 7)) + i * 2.1)), 2); c.fillStyle = `rgba(255,255,255,${a * .8})`; c.fillRect(hash(i, 8) * (W + 200) - 100, hash(i, 9) * (HY - 60), 2.6, 2.6); }
+        const mg = c.createRadialGradient(830, 300, 10, 830, 300, 220); mg.addColorStop(0, "rgba(230,235,255,.5)"); mg.addColorStop(1, "rgba(230,235,255,0)"); c.fillStyle = mg; c.fillRect(610, 80, 440, 440); c.fillStyle = "#f2f0e0"; c.beginPath(); c.arc(830, 300, 58, 0, TAU); c.fill();
+        const sea = c.createLinearGradient(0, HY, 0, 980); sea.addColorStop(0, "#1a2a5a"); sea.addColorStop(1, "#0c1636"); c.fillStyle = sea; c.fillRect(-200, HY, W + 400, 200);
+        for (let i = 0; i < 22; i++) { const y = HY + 8 + i * 7, w = (40 + i * 7) * (.6 + .4 * Math.sin(t * 2 + i)); c.fillStyle = `rgba(220,230,255,${.5 - i * .02})`; c.fillRect(830 - w / 2, y, w, 2.5); }
+        const gr = c.createLinearGradient(0, 960, 0, H); gr.addColorStop(0, "#2c2a24"); gr.addColorStop(1, "#1a140e"); c.fillStyle = gr; c.beginPath(); c.moveTo(-200, 990); c.quadraticCurveTo(540, 950, W + 200, 990); c.lineTo(W + 200, H + 200); c.lineTo(-200, H + 200); c.fill();
+        palmSil(60, 1060, 330, 30 + Math.sin(t) * 6, "#0a0c14"); palmSil(1010, 1040, 300, -26 + Math.sin(t + 1) * 6, "#0a0c14");
+        [[150, 1080, .9], [300, 1050, .75], [780, 1050, .75], [930, 1080, .9], [470, 1035, .6], [640, 1032, .6]].forEach(([x, y, s], i) => coco(x, y, s, t, i));
+        lantern(230, 1260, 150, t, 1); lantern(850, 1260, 150, t, 2);
+        const fg = c.createRadialGradient(FX, FY - 60, 30, FX, FY - 60, 760 * fl); fg.addColorStop(0, "rgba(255,150,60,.55)"); fg.addColorStop(.5, "rgba(255,110,40,.18)"); fg.addColorStop(1, "rgba(255,110,40,0)"); c.fillStyle = fg; c.fillRect(-200, 700, W + 400, H);
+        c.fillStyle = "#4a3020"; for (const [x, y, w, r] of [[310, 1470, 200, -.25], [770, 1470, 200, .25], [540, 1330, 230, 0]]) { c.save(); c.translate(x, y); c.rotate(r); c.beginPath(); c.roundRect(-w / 2, -18, w, 36, 18); c.fill(); c.restore(); }
+        person(250, 1460, 1.15, t, 1, "#ff6a1a"); person(370, 1440, 1.05, t, 2, "#0fb3b0"); person(480, 1320, .95, t, 3, "#e8467c"); person(600, 1320, .95, t, 4, "#ffd23f"); person(710, 1440, 1.05, t, 5, "#2e9e5b"); person(830, 1460, 1.15, t, 6, "#8a3ffc");
+        fire(t, 1.25);
+        c.restore();
+        c.setTransform(1, 0, 0, 1, 0, 0);
+        c.fillStyle = `rgba(255,140,60,${.05 + .04 * Math.sin(t * 9)})`; c.fillRect(0, 0, W, H);
+        const vg = c.createRadialGradient(W / 2, 1300, 420, W / 2, 1300, 1300); vg.addColorStop(0, "rgba(0,0,0,0)"); vg.addColorStop(1, "rgba(0,0,10,.55)"); c.fillStyle = vg; c.fillRect(0, 0, W, H);
+      }
+      const tl = gsap.timeline({ paused: true }), o = { t: 0 };
+      tl.to(o, { t: C.__dur, duration: C.__dur, ease: "none", onUpdate: () => draw(o.t) }, 0);
+      draw(0);
+      window.__timelines["world"] = tl;
+    })();
+  </script>
+</template>
