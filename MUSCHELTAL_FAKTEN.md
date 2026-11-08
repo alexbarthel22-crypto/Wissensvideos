@@ -68,6 +68,7 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - Die 4 Wünsche stammen aus den Kommentaren „von gestern“ (Video 1).
 - **Bei 1.000 Bewohnern gibt es eine große Überraschung** (noch geheim) → Homepage sollte nichts anderes behaupten.
 - Hintergrund des Videos = Aufnahme der echten Homepage.
+- Video-Hinweis bei der Kokos-Küste: „Hier ziehen die nächsten Follower ein!“
 
 ## Gepostete Videos (Hauptaccount)
 - **Video 1 (gepostet): „Ich habe euch eine Insel gekauft“** – `videos/muscheltal-tag-1/variante-insel-gekauft/video.mp4` (Stand Commit 69ffe74).

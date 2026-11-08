@@ -52,6 +52,8 @@
     #s03-c { position: absolute; left: 0; right: 0; margin: 0 auto; top: 450px; width: fit-content; padding: 4px 36px 10px; border-radius: 36px; background: #fff; border: 6px solid #ff6a1a;
       font-family: "Inter", sans-serif; color: #2a1b12; font-weight: 900; font-size: 40px; display: flex; align-items: baseline; gap: 14px; box-shadow: 0 10px 0 rgba(0,40,80,.3); }
     #s03-c b { font-size: 100px; color: #ff6a1a; line-height: 1; }
+    #s03-h { position: absolute; left: 0; right: 0; margin: 0 auto; top: 600px; width: fit-content; padding: 8px 26px 12px; border-radius: 999px; background: #e8467c; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 40px; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); white-space: nowrap; }
     #s03-new { left: 90px; top: 440px; color: #e8433c; border-color: #e8433c; transform: rotate(10deg); font-size: 48px; }
   </style>
   <div id="root" data-composition-id="s03" data-start="0" data-duration="6.870" data-width="1080" data-height="1920">
@@ -59,6 +61,7 @@
       <div id="s03-t" class="bt or">🥥 KOKOS-KÜSTE</div>
       <div id="s03-new" class="stamp">NEU!</div>
       <div id="s03-c"><b id="s03-n">0</b>BEWOHNER</div>
+      <div id="s03-h">➡️ Hier ziehen die nächsten Follower ein!</div>
     </div>
   </div>
   <script>
@@ -113,6 +116,8 @@
       tl.fromTo("#s03-new", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, ko + .3);
       tl.fromTo("#s03-c", { opacity: 0, y: -60 }, { opacity: 1, y: 0, duration: .35, ease: "back.out(2)" }, fu - .4);
       count(tl, "#s03-n", 0, 75, fu - .3, .8);
+      tl.fromTo("#s03-h", { opacity: 0, y: 30, scale: .6 }, { opacity: 1, y: 0, scale: 1, duration: .4, ease: "back.out(2.6)" }, fu + .6);
+      tl.to("#s03-h", { scale: 1.05, duration: .25, yoyo: true, repeat: 3, ease: "sine.inOut" }, fu + 1.1);
       tl.to("#s03-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
       window.__timelines["s03"] = tl;
     })();

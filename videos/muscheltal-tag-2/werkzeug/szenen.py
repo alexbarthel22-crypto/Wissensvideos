@@ -75,7 +75,7 @@ scene("s01", f"""    {CF_CSS}
       <svg class="s01-sp" style="left:730px;top:420px" viewBox="-10 -10 20 20"><path d="M0 -10 L2 -2 L10 0 L2 2 L0 10 L-2 2 L-10 0 L-2 -2Z" fill="#ffc93c"/></svg>""",
 """      const n = at("L1", "575"), vo = at("L2", "voll"), T0 = n;
       tl.set("#s01-c", { opacity: 1 }, 0);
-      count(tl, "#s01-n", 0, 575, at("L1", "null"), n - at("L1", "null") + .6);
+      count(tl, "#s01-n", 0, 575, 0, at("L1", "575") + .1, "", "", "power1.in");
       tl.fromTo("#s01-c", { scale: 1 }, { scale: 1.18, duration: .15, yoyo: true, repeat: 3, ease: "sine.inOut" }, n);
       tl.fromTo("#s01-e1", { scale: 0, rotation: -120 }, { scale: 1, rotation: -12, duration: .6, ease: "elastic.out(1, .45)" }, n);
       tl.fromTo("#s01-e2", { scale: 0, rotation: 120 }, { scale: 1, rotation: 12, duration: .6, ease: "elastic.out(1, .45)" }, n + .12);
@@ -108,15 +108,20 @@ scene("s03", """    #s03-t { top: 300px; font-size: 72px; white-space: nowrap; m
     #s03-c { position: absolute; left: 0; right: 0; margin: 0 auto; top: 450px; width: fit-content; padding: 4px 36px 10px; border-radius: 36px; background: #fff; border: 6px solid #ff6a1a;
       font-family: "Inter", sans-serif; color: #2a1b12; font-weight: 900; font-size: 40px; display: flex; align-items: baseline; gap: 14px; box-shadow: 0 10px 0 rgba(0,40,80,.3); }
     #s03-c b { font-size: 100px; color: #ff6a1a; line-height: 1; }
+    #s03-h { position: absolute; left: 0; right: 0; margin: 0 auto; top: 600px; width: fit-content; padding: 8px 26px 12px; border-radius: 999px; background: #e8467c; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 40px; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); white-space: nowrap; }
     #s03-new { left: 90px; top: 440px; color: #e8433c; border-color: #e8433c; transform: rotate(10deg); font-size: 48px; }""",
 """      <div id="s03-t" class="bt or">🥥 KOKOS-KÜSTE</div>
       <div id="s03-new" class="stamp">NEU!</div>
-      <div id="s03-c"><b id="s03-n">0</b>BEWOHNER</div>""",
+      <div id="s03-c"><b id="s03-n">0</b>BEWOHNER</div>
+      <div id="s03-h">➡️ Hier ziehen die nächsten Follower ein!</div>""",
 """      const ko = at("L5", "Kokos"), fu = at("L6", "75");
       tl.fromTo("#s03-t", { opacity: 0, scale: .3, rotation: -10 }, { opacity: 1, scale: 1, rotation: -2, duration: .45, ease: "back.out(2.6)" }, ko - .1);
       tl.fromTo("#s03-new", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, ko + .3);
       tl.fromTo("#s03-c", { opacity: 0, y: -60 }, { opacity: 1, y: 0, duration: .35, ease: "back.out(2)" }, fu - .4);
-      count(tl, "#s03-n", 0, 75, fu - .3, .8);""")
+      count(tl, "#s03-n", 0, 75, fu - .3, .8);
+      tl.fromTo("#s03-h", { opacity: 0, y: 30, scale: .6 }, { opacity: 1, y: 0, scale: 1, duration: .4, ease: "back.out(2.6)" }, fu + .6);
+      tl.to("#s03-h", { scale: 1.05, duration: .25, yoyo: true, repeat: 3, ease: "sine.inOut" }, fu + 1.1);""")
 
 # s04 – Muscheln
 scene("s04", """    #s04-eq { top: 300px; font-size: 56px; white-space: nowrap; max-width: none; }

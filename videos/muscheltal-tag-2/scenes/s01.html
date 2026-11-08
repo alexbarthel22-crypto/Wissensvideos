@@ -33,7 +33,7 @@
       const tl = gsap.timeline({ paused: true });
       const n = at("L1", "575"), vo = at("L2", "voll"), T0 = n;
       tl.set("#s01-c", { opacity: 1 }, 0);
-      count(tl, "#s01-n", 0, 575, at("L1", "null"), n - at("L1", "null") + .6);
+      count(tl, "#s01-n", 0, 575, 0, at("L1", "575") + .1, "", "", "power1.in");
       tl.fromTo("#s01-c", { scale: 1 }, { scale: 1.18, duration: .15, yoyo: true, repeat: 3, ease: "sine.inOut" }, n);
       tl.fromTo("#s01-e1", { scale: 0, rotation: -120 }, { scale: 1, rotation: -12, duration: .6, ease: "elastic.out(1, .45)" }, n);
       tl.fromTo("#s01-e2", { scale: 0, rotation: 120 }, { scale: 1, rotation: 12, duration: .6, ease: "elastic.out(1, .45)" }, n + .12);
