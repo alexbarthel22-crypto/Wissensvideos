@@ -22,6 +22,15 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
   - **🏖️ Strandvilla** (Westküste, mit Infinity-Pool): wird **demnächst verlost** (Schild „🎁 bald verlost“).
 - Personal ist farbig gekennzeichnet: Dönerbude rote Shirts + weiße Schürze und rote Namensschilder, Strandbar türkis; die Leitung hat einen ⭐ vor dem Namen.
 - Die Bürgermeisterin steht tagsüber auf der Palasttreppe, lila gekleidet mit goldenem Schein und lila Namensschild „🎖️ Bürgermeisterin @…“.
+- **Baustellen (nicht begehbar)**: 🏨 **Hotel Sandkorn** auf einem Bauplatz im Norden der Haupt-Insel – fertig bei **800 Einwohnern**; ⚓ **Boots-Anlegestelle** am kleinen Steg im Süden der Haupt-Insel – fertig bei **900 Einwohnern**. Mit Kran, Absperrung und Fortschrittsbalken.
+- **Inselkasse**: 2 Gebäude (Dönerbude + Strandbar) wurden für 2.875 Muscheln gekauft → Kasse = 5 pro Einwohner + Story-Boni − 2.875.
+- Die Bürgermeisterin ist tagsüber immer am Muschelpalast (Treppe); wer sie sucht, findet sie dort. Ihr Name hat immer gelben Hintergrund.
+- Jede Figur hat ein festes Aussehen (an den TikTok-Namen gebunden); das ist auch ihr Profilbild im Muschelpass und Story-Bild.
+- Tippt man auf eine herumlaufende Person, öffnet sich ihr Muschelpass („Muschelpass von @…“, ohne Teilen-Knopf).
+- Gäste von Dönerbude/Strandbar kommen von ihrer Hütte, gehen im normalen Tempo vorwärts über die Wege und gehen danach wieder nach Hause. Nachts feiern an der Strandbar ca. 12–18 Gäste auf dem Steg und am nahen Strand.
+- Zusätzlich laufen tagsüber 8–12 und nachts 5–8 Passanten frei umher (biegen zufällig ab, bleiben stehen, drehen um).
+- Am Wegrand wachsen kleine Blumen passend zur Insel (Haupt-Insel: rosa/weiße Muschelblumen, Kokos-Küste: Frangipani). Keine Blumen mehr an den Dächern der Hütten.
+- Knopf „Als @name Muschel-Tal erkunden“ erscheint nur, wenn oben ein Name ausgewählt ist.
 - **Bürgermeisterin: @lillygyqcf0** (Beruf „Bürgermeisterin · Muschelpalast“). **Palast-Leitung folgt** (noch nicht vergeben).
 - Wer in einem Gebäude wohnt, hat keine Hütte mehr; dafür rücken die Nächsten nach Einwohner-Nr. auf die Haupt-Insel nach (am 8.11.: 5 Bewohner der Kokos-Küste sind auf die Haupt-Insel umgezogen). Die Haupt-Insel hat damit 500 Hütten + 5 Bewohner in Gebäuden = 505 Einwohner.
 - Dönerbude: tagsüber sitzen 6–9 Gäste an Tischen/der Theke und essen Döner, nachts 2–4; Gäste kommen und gehen. Strandbar: tagsüber 7–10 Gäste an Bar und Steg (Cocktails, Gespräche), nachts 10–14 bei einer Party mit bunten Lichtern.

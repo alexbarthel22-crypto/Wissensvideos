@@ -69,6 +69,12 @@
   "ereignisse": [
     [
       "8.11.2026",
+      "🏗️",
+      "Baustellen: Hotel Sandkorn und Boots-Anlegestelle",
+      "Auf der Haupt-Insel wird gebaut: Das Hotel Sandkorn ist fertig bei 800 Einwohnern, die neue Boots-Anlegestelle bei 900."
+    ],
+    [
+      "8.11.2026",
       "🏖️",
       "Die Strandvilla steht",
       "Direkt am Meer auf der Haupt-Insel steht jetzt eine große Strandvilla. Sie wird demnächst verlost!"
@@ -180,5 +186,27 @@
   ],
   "vermoegen_start": 0,
   "vermoegen": {},
-  "kasse_korrektur": -50
+  "kasse_korrektur": -2925,
+  "erfolg_entzug": {
+    "76._vivi": {
+      "SCOOT": 1794178644192
+    },
+    "lena.bhg": {
+      "SCOOT": 1794178644192
+    }
+  },
+  "baustellen": [
+    {
+      "key": "0:0,-3",
+      "name": "Hotel Sandkorn",
+      "emoji": "🏨",
+      "ziel": 800
+    },
+    {
+      "ort": "steg",
+      "name": "Boots-Anlegestelle",
+      "emoji": "⚓",
+      "ziel": 900
+    }
+  ]
 }
