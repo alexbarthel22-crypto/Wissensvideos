@@ -137,11 +137,20 @@ scene("s04", """    #s04-eq { top: 300px; font-size: 56px; white-space: nowrap; 
 # s05 – Wünsche: 4 Karten, 2 werden gekauft -> Abstimmung
 scene("s05", WC_CSS + """
     #s05-t { top: 300px; font-size: 52px; white-space: nowrap; max-width: none; }
+    #s05-hier { position: absolute; left: 0; right: 0; margin: 0 auto; top: 760px; width: fit-content; padding: 8px 30px 12px; border-radius: 999px; background: #ff6a1a; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 46px; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); white-space: nowrap; }
+    #s05-hier::after { content: ""; position: absolute; left: 50%; bottom: -26px; margin-left: -18px; border: 18px solid transparent; border-top-color: #ff6a1a; border-bottom: 0; }
+    #s05-ring { position: absolute; left: 340px; top: 860px; width: 400px; height: 220px; border-radius: 30px; border: 8px dashed #ff6a1a; }
     #s05-v { top: 1020px; font-size: 50px; white-space: nowrap; max-width: none; }""",
 f"""      <div id="s05-t" class="bt pk">EURE WÜNSCHE VON GESTERN:</div>
+
+      <div id="s05-hier">🏗️ HIER WIRD GEBAUT!</div>
       {cards("s05-k", [("🍹", "STRANDBAR", "#ff7a00"), ("🥙", "DÖNERBUDE", "#e8433c"), ("🥐", "BÄCKEREI", "#c98a2a"), ("🏥", "KRANKENHAUS", "#0098ff")], 420)}
       <div id="s05-v" class="bt pk">👇 STIMMT AB: 2 GEWINNEN!</div>""",
 """      const ws = [at("L9", "Strandbar"), at("L9", "Dönerbude"), at("L9", "Bäckerei"), at("L9", "Krankenhaus")], ab = at("L10", "Stimmt");
+      tl.fromTo("#s05-hier", { opacity: 0, y: -40, scale: .5 }, { opacity: 1, y: 0, scale: 1, duration: .4, ease: "back.out(2.6)" }, line("L9")[0] + .3);
+      tl.to("#s05-hier", { y: -14, duration: .25, yoyo: true, repeat: 3, ease: "sine.inOut" }, line("L9")[0] + .7);
+      tl.to("#s05-hier", { opacity: 0, duration: .25 }, ws[0] - .3);
       tl.fromTo("#s05-t", { opacity: 0, y: -80 }, { opacity: 1, y: 0, duration: .35, ease: "back.out(2)" }, line("L9")[0] - .1);
       ws.forEach((t, i) => { tl.fromTo("#s05-k" + i, { opacity: 0, scale: 0, rotation: (i % 2 ? 14 : -14) }, { opacity: 1, scale: 1, rotation: (i % 2 ? 3 : -3), duration: .45, ease: "back.out(2.2)" }, t - .08);
         tl.to("#s05-k" + i, { y: -14, duration: .3, yoyo: true, repeat: 3, ease: "sine.inOut" }, t + .5); });
