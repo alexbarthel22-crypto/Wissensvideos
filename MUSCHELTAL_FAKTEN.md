@@ -72,6 +72,7 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - Einwohner sehen unterschiedlich aus (Größe, Kleidung, Hose, Haut, Haarfarbe/-frisur, Augen, Mund), keine Accessoires. Es laufen/fahren deutlich mehr Leute herum; Wege sind frei von Bäumen/Büschen.
 - Zum Entdecken: Katzen, Blumentöpfe, Briefkästen, Wäscheleinen an Hütten; Seesterne, Muscheln, Sandburgen, Handtücher, Schwimmringe und Krabben am Strand; ab und zu springen Delfine im Meer.
 - Tippt man auf eine Hütte, erscheint unter der Suche nur der Name mit × zum Schließen.
+- Suchfeld: „Finde dich: @TikTok-Name“. Wer sich sucht, steht vor seinem Haus (bzw. an seinem Arbeitsplatz), winkt und begrüßt den Besucher in einer Sprechblase: „Hallo Lotta! 👋“, wenn ein Vorname eindeutig im TikTok-Namen steht, sonst „Hallo! 👋“.
 - Im Muschelpass führt „Alle meine Erfolge ansehen“ zur persönlichen Erfolge-Übersicht des Einwohners (mit Datum); von dort „Alle Erfolge, die es gibt“ → erfolge.html.
 
 ## Video 2 = „Tag 1“ (Cover „TAG 1“, fertig 8.11., `videos/muscheltal-tag-2/renders/muscheltal-tag-2.mp4`, 41 s)
