@@ -1004,7 +1004,7 @@ function draw(){
   const pz=z*S>8,px=sel.gb?x:x+5.5,py=sel.gb?y:y+10.5;let ny=y+8.4;
   if(pz&&!sel.gb){const L=sel.L||(sel.L=look(sel.nr));c.save();c.translate(px,py);c.fillStyle='rgba(30,40,20,.25)';c.beginPath();c.ellipse(0,4.4,2.6,.9,0,0,TAU);c.fill();person(c,L,0,true,REDUCED?.6:.5+Math.abs(Math.sin(T*6))*1.2);c.restore();ny=py+5.6;}
   if(z*S>20){const fs=Math.max(2.6,9/z),nm=sel.name;c.font='900 '+fs+'px '+FONT;c.textAlign='center';const w=c.measureText(nm).width+fs*1.2,h=fs*1.55,ty=ny;c.fillStyle='#e8467c';c.strokeStyle='#fff';c.lineWidth=Math.max(.5,1.5/z);c.beginPath();c.roundRect(x-w/2,ty,w,h,h/2);c.fill();c.stroke();c.fillStyle='#fff';c.fillText(nm,x,ty+h*.72);}
-  if(pz){const vn=vorname(sel),txt=(vn?'Hallo '+vn+'!':'Hallo!')+' 👋',fs=Math.max(2.4,8/z);c.font='900 '+fs+'px '+FONT;c.textAlign='center';const w=c.measureText(txt).width+fs*1.3,h=fs*1.7,bx=px+w*.35,by=py-(sel.gb?14:12.5)*(sel.L?sel.L.h:1)-h-fs*.6-b*.3;
+  if(pz){const txt='Ich bin du! 👋',fs=Math.max(2.4,8/z);c.font='900 '+fs+'px '+FONT;c.textAlign='center';const w=c.measureText(txt).width+fs*1.3,h=fs*1.7,bx=px+w*.35,by=py-(sel.gb?14:12.5)*(sel.L?sel.L.h:1)-h-fs*.6-b*.3;
    c.fillStyle='#fff';c.strokeStyle='#2a1b12';c.lineWidth=Math.max(.4,1.4/z);c.beginPath();c.roundRect(bx-w/2,by,w,h,h/2);c.fill();c.stroke();
    c.beginPath();c.moveTo(px+fs*.2,by+h-.2);c.lineTo(px-fs*.1,by+h+fs*.7);c.lineTo(px+fs*.9,by+h-.2);c.fill();c.stroke();c.fillRect(px+fs*.15,by+h-c.lineWidth*1.2,fs*.8,c.lineWidth*1.4);
    c.fillStyle='#2a1b12';c.fillText(txt,bx,by+h*.7);}}
