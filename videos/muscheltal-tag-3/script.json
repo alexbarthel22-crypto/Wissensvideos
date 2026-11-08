@@ -13,7 +13,7 @@
   "bars": true,
   "color": "rgba(255,255,255,.62)",
   "first_class": "hook",
-  "css": "@font-face { font-family: 'Lilita One'; src: url('assets/fonts/LilitaOne-Regular.woff2') format('woff2'); font-weight: 400; }\n    .inner.hook { font-family: 'Lilita One', sans-serif; font-weight: 400; font-size: 98px; line-height: 1.12; letter-spacing: .01em; top: -560px; }\n    .inner.hook .bar { background: #ff3d7f !important; padding: .02em .3em .08em; border-radius: .5em; }\n    .inner.hook .w { color: #fff; }\n    .inner .bar .w { margin: 0 .07em; }\n    .inner .bar { border-radius: .55em; padding: .04em .36em .1em; }\n    .inner .w { white-space: nowrap; }\n    .inner.hook .w { display: inline-block; transform-origin: 50% 70%; }\n    .inner.hook .bar { background: none !important; box-shadow: none !important; padding: 0; }\n    .inner.hook .w { background: #ff3d7f; border-radius: .3em; padding: .02em .16em .1em; margin: .07em .03em; box-shadow: 0 0 0 0px #2a1b12, 0 8px 0 rgba(0,0,0,.28); position: relative; transform-origin: 50% 55%; }\n    #cgi0 .w:first-child { font-size: 1.12em; margin-bottom: .14em; }\n    .inner.hook .w.k-y { position: relative; z-index: 2; }\n    .inner.hook { left: 40px; right: 40px; }\n    #cgi0 .w { margin: .1em .1em; }",
+  "css": "@font-face { font-family: 'Lilita One'; src: url('assets/fonts/LilitaOne-Regular.woff2') format('woff2'); font-weight: 400; }\n    .inner.hook { font-family: 'Lilita One', sans-serif; font-weight: 400; font-size: 98px; line-height: 1.12; letter-spacing: .01em; top: -560px; }\n    .inner.hook .bar { background: #ff3d7f !important; padding: .02em .3em .08em; border-radius: .5em; }\n    .inner.hook .w { color: #fff; }\n    .inner .bar .w { margin: 0 .07em; }\n    .inner .bar { border-radius: .55em; padding: .04em .36em .1em; }\n    .inner .w { white-space: nowrap; }\n    .inner.hook .w { display: inline-block; transform-origin: 50% 70%; }\n    .inner.hook .bar { background: none !important; box-shadow: none !important; padding: 0; }\n    .inner.hook .w { background: #ff3d7f; border-radius: .3em; padding: .02em .16em .1em; margin: .07em .03em; box-shadow: 0 0 0 0px #2a1b12, 0 8px 0 rgba(0,0,0,.28); position: relative; transform-origin: 50% 55%; }\n    #cgi0 .w:first-child { font-size: 1.12em; margin-bottom: .14em; }\n    .inner.hook .w.k-y { position: relative; z-index: 2; }\n    .inner.hook { left: 40px; right: 40px; }\n    #cgi0 .w { margin: .1em .3em; }",
   "vary": true,
   "pop_scale": 1.2,
   "bar_colors": [
@@ -28,7 +28,10 @@
   "first_full": true,
   "first_scale": 1.12,
   "first_scale_map": {
-   "HAUS": 1.25
+   "HAUS": 1.3,
+   "AUF": 1.3,
+   "MEINER": 1.3,
+   "INSEL!": 1.3
   },
   "hook_groups": 1
  },
@@ -65,7 +68,7 @@
      "id": "L2",
      "text": "Das ist *c:Muschel-Tal: / eine ganze *b:Inselwelt, / die nur aus *g:euch besteht.",
      "speed": 1.0,
-     "pause": 0.9
+     "pause": 0.2
     },
     {
      "id": "L3",

@@ -52,8 +52,8 @@
       box-shadow: 0 0 0 7px #ffc93c, 0 0 0 12px #2a1b12, 0 14px 24px rgba(0,40,80,.35); }
     .s01-ring { position: absolute; width: 190px; height: 190px; border-radius: 50%; border: 8px solid #fff; opacity: 0; }
   </style>
-  <div id="root" data-composition-id="s01" data-start="0" data-duration="2.880" data-width="1080" data-height="1920">
-    <div id="s01-stage" class="clip stage" data-start="0" data-duration="2.880" data-track-index="0">
+  <div id="root" data-composition-id="s01" data-start="0" data-duration="2.180" data-width="1080" data-height="1920">
+    <div id="s01-stage" class="clip stage" data-start="0" data-duration="2.180" data-track-index="0">
       <div class="s01-ring" style="left:180px;top:300px"></div><div class="s01-ring" style="left:710px;top:300px"></div>
       <div class="s01-st" id="s01-g" style="left:180px;top:300px">🎁</div><div class="s01-st" id="s01-h" style="left:710px;top:300px">🏠</div>
     </div>
@@ -61,7 +61,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 2.88, "L1": [0.0, 1.8], "L1.words": [["ich", 0.0, 0.163], ["schenke", 0.163, 0.495], ["dir", 0.495, 0.658], ["ein", 0.658, 0.821], ["haus", 0.821, 0.99], ["auf", 0.99, 1.153], ["meiner", 1.153, 1.48], ["insel", 1.48, 1.8]]};
+      const C = {"__dur": 2.18, "L1": [0.0, 1.8], "L1.words": [["ich", 0.0, 0.163], ["schenke", 0.163, 0.495], ["dir", 0.495, 0.658], ["ein", 0.658, 0.821], ["haus", 0.821, 0.99], ["auf", 0.99, 1.153], ["meiner", 1.153, 1.48], ["insel", 1.48, 1.8]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
