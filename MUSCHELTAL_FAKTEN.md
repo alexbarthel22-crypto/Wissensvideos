@@ -72,7 +72,9 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - Einwohner sehen unterschiedlich aus (Größe, Kleidung, Hose, Haut, Haarfarbe/-frisur, Augen, Mund), keine Accessoires. Es laufen/fahren deutlich mehr Leute herum; Wege sind frei von Bäumen/Büschen.
 - Zum Entdecken: Katzen, Blumentöpfe, Briefkästen, Wäscheleinen an Hütten; Seesterne, Muscheln, Sandburgen, Handtücher, Schwimmringe und Krabben am Strand; ab und zu springen Delfine im Meer.
 - Tippt man auf eine Hütte, erscheint unter der Suche nur der Name mit × zum Schließen.
-- Suchfeld: „Finde dich: @TikTok-Name“. Wer sich sucht, steht vor seinem Haus (bzw. an seinem Arbeitsplatz), winkt und sagt in einer Sprechblase: „Ich bin du! 👋“ (bei allen gleich).
+- Suchfeld: „Finde dich: @TikTok-Name“. Wer sich sucht, steht vor seinem Haus (bzw. an seinem Arbeitsplatz), winkt und sagt in einer Sprechblase direkt über dem Kopf: „Ich bin du! 👋“ (bei allen gleich). Nach 2 s steigt die Person auf ein zufälliges Gefährt (zu Fuß, Fahrrad, E-Roller, Inliner, Skateboard) und fährt den Weg entlang davon.
+- Gefährte auf der Karte: zu Fuß, Fahrrad, E-Roller, Inliner, Skateboard.
+- Steht in einem TikTok-Namen klar ein Vorname (auch mit Zahlen, z. B. em1lia) oder „girl/boy“ o. ä., hat die Figur das passende Geschlecht (Frauen: lange Haare/Dutt, Männer: kurze Haare).
 - Im Muschelpass führt „Alle meine Erfolge ansehen“ zur persönlichen Erfolge-Übersicht des Einwohners (mit Datum); von dort „Alle Erfolge, die es gibt“ → erfolge.html.
 
 ## Video 2 = „Tag 1“ (Cover „TAG 1“, fertig 8.11., `videos/muscheltal-tag-2/renders/muscheltal-tag-2.mp4`, 41 s)
