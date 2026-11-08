@@ -7,7 +7,7 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 ## Begriffe
 - **Muschel-Tal** = die ganze Region (Inselgruppe), Account @muscheltal.
 - **Haupt-Insel** (mit Bindestrich) = die erste Insel (500 Plätze) mit dem **Muschelpalast** in der Mitte: großer Palast mit zwei Seitenflügeln, Brunnen und Gärten auf einem großen runden Muschelplatz.
-- **Kokos-Küste** = die zweite Insel (unten rechts von der Haupt-Insel), **1.500 Plätze**, seit dem 501. Follower offen. Größer als die Haupt-Insel, unregelmäßige Inselform (nicht rund), Holzstege statt Sandwege, sandiger Boden. **Die Häuser sind Kokosnüsse** (mit Tür, Fenster, Blatt oben). In der Mitte ein Sandplatz mit großem Lagerfeuer; dort stehen immer 5–6 Bewohner (gehen hin, bleiben lange, gehen heim).
+- **Kokos-Küste** = die zweite Insel (unten rechts von der Haupt-Insel), **1.500 Plätze**, seit dem 501. Follower offen. Größer als die Haupt-Insel, unregelmäßige Inselform (nicht rund), Holzstege statt Sandwege, sandiger Boden. **Die Häuser sind Kokosnüsse** (mit Tür, Fenster, Blatt oben). In der Mitte ein großer Sandplatz mit großem Lagerfeuer; dort stehen immer 5–6 Bewohner (gehen hin, bleiben lange, gehen heim).
 - Weitere Inseln (ab 2.001. / 5.001. / 10.001.) heißen öffentlich nur „???“ (verborgen; Namen noch nicht festgelegt). Dazu eine **geheime Insel** am Kartenrand (nur „???“, in Wolken/Nebel).
 
 ## Regeln
@@ -17,7 +17,8 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - Währung: **1 Einwohner = 5 Muscheln**.
 - Was gebaut wird, entscheiden die Zuschauer in den Kommentaren (Ideen: Beach-Bar, Club, Wolkenkratzer …).
 - Auf der Haupt-Insel gibt es **8 Bauplätze** („bald: ???“) für spätere Gebäude – 6 im Inneren, je 1 direkt an der Ost- und Westküste.
-- Auf der Kokos-Küste gibt es **11 Bauplätze** („bald: ???“). Einer liegt an der Ostküste und reicht auf Pfählen bis ins Wasser (dort kommt später ein Hafen – **noch geheim, nicht verraten**).
+- Auf der Kokos-Küste gibt es **11 Bauplätze** („bald: ???“). Einer liegt an der Nordwestküste (Richtung Haupt-Insel) und reicht auf Pfählen bis ins Wasser (dort kommt später ein Hafen – **noch geheim, nicht verraten**).
+- Die gesperrten ???-Inseln sind größer und unregelmäßig geformt.
 - Insel unten links (ab 2.001 Followern, öffentlich „???“): unregelmäßige Form, großer See in der Mitte mit einer kleinen Insel und Palme (dort kommt später eine Villa – **noch geheim, nicht verraten**), Schildkröten schwimmen im See.
 - **Sonnenaufgang/-untergang** wie am eingestellten Ort (Open-Meteo): Sonnenaufgang wird von Aufgang bis +30 Min. gezeigt, Sonnenuntergang 30 Min. vor Untergang bis Untergang, jeweils mit Farbverlauf. Davor/danach Nacht bzw. Tag.
 - Auf jeder offenen Insel stehen **Bänke** (am Platz + am Strand) und **Straßenlaternen**, die nachts leuchten – Haupt-Insel: Holzbänke + klassische Laternen; Kokos-Küste: Baumstamm-Bänke + Bambus-Laternen.
@@ -55,7 +56,9 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - **Einwohner-Übersicht** (muscheltal.de/einwohner.html): alle Einwohner nach Insel mit Nr., Gründer mit kleiner Münze, Suche; Name antippen = zur Hütte fliegen.
 - Suchfeld hat ein × zum Löschen; Zoom-Knöpfe + / − rechts am Rand.
 - Karten-Knöpfe: ohne Auswahl „Alle Inseln“ + „Zufall“ (wischen: „Wachsen sehen“), mit Auswahl „Meine Hütte“ + „Muschelpass“ (wischen: „Alle Inseln“).
-- Fahrräder/E-Roller, die hoch/runter fahren, sind von hinten/vorn zu sehen.
+- Fahrräder/E-Roller, die hoch/runter fahren, sind von hinten/vorn zu sehen. Spaziergänger und Fahrer kehren nie um: sie folgen den Wegen geradeaus und tauchen am Wegende aus/ein.
+- Namen auf der Karte stehen immer ganz vorne (nichts verdeckt sie).
+- Im Muschelpass führt „Alle meine Erfolge ansehen“ zur persönlichen Erfolge-Übersicht des Einwohners (mit Datum); von dort „Alle Erfolge, die es gibt“ → erfolge.html.
 
 ## Video 2 / Tag 2 (fertig 8.11., `videos/muscheltal-tag-2/renders/muscheltal-tag-2.mp4`, 41 s)
 - Inhalt: 0 → 575 Bewohner, Haupt-Insel voll (500 Hütten mit Namen) · nächste Insel besiedelt: Kokos-Küste, 75 Bewohner · 1 Bewohner = 5 Muscheln → **2.875 Muscheln** → davon **2 Gebäude** bauen.
