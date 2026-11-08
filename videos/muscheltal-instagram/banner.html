@@ -1,0 +1,34 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><style>
+@font-face { font-family: "Lilita One"; src: url("LilitaOne-Regular.woff2") format("woff2"); }
+:root{--ink:#2a1b12;--sand:#fff4e0;--sun:#ffd23f;--hib:#e8467c;--lagoon:#0fb3b0;--leaf:#2e9e5b}
+*{box-sizing:border-box;margin:0} body{width:1080px;height:1350px;overflow:hidden;position:relative;font-family:Inter,system-ui,sans-serif;color:var(--ink)}
+#bg{position:absolute;inset:0;background:url("bg_haupt.jpg") center 45%/1080px 1920px}
+#bg::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 55%,rgba(0,0,0,0) 40%,rgba(4,40,70,.35))}
+.stk{position:absolute;background:var(--sand);border:6px solid var(--ink);border-radius:34px;box-shadow:10px 10px 0 var(--ink)}
+#logo{left:70px;top:70px;width:190px;height:190px;border-radius:50%;padding:12px;background:#fff;transform:rotate(-6deg)}
+#logo svg{width:100%;height:100%}
+#name{left:290px;top:95px;padding:10px 34px 16px;background:var(--sun);transform:rotate(-2deg)}
+#name b{display:block;font-family:"Lilita One";font-size:104px;line-height:1}
+#name small{display:block;font-weight:900;font-size:28px;letter-spacing:3px;margin-top:4px}
+#hl{left:60px;right:60px;top:360px;padding:22px 30px 30px;background:var(--hib);text-align:center;transform:rotate(-1.5deg)}
+#hl b{display:block;font-family:"Lilita One";font-size:112px;line-height:1.02;color:#fff;-webkit-text-stroke:9px var(--ink);paint-order:stroke fill}
+#hl span{display:inline-block;margin-top:12px;font-weight:900;font-size:40px;color:#fff;background:var(--ink);border-radius:999px;padding:6px 26px 10px}
+#gift{position:absolute;z-index:5;right:40px;top:250px;font-size:120px;filter:drop-shadow(8px 8px 0 var(--ink));transform:rotate(12deg)}
+.card{top:760px;width:300px;height:250px;padding:22px 16px;text-align:center}
+.card .ic{font-size:54px;line-height:1}
+.card .n{display:inline-block;font-family:"Lilita One";font-size:76px;line-height:1;margin-top:8px;color:#fff;background:#ff6a1a;border:5px solid var(--ink);border-radius:20px;padding:4px 18px 10px;box-shadow:4px 4px 0 var(--ink)}
+.card .l{font-weight:900;font-size:30px;margin-top:10px}
+#c1{left:60px;transform:rotate(-2deg)} #c2{left:390px} #c3{left:720px;transform:rotate(2deg)}
+#cta{left:0;right:0;margin:0 auto;width:fit-content;top:1110px;padding:14px 40px 18px;background:#fe2c55;color:#fff;font-weight:900;font-size:50px;border-radius:999px;text-align:center}
+#cta small{display:block;font-size:30px;font-weight:800;opacity:.95;margin-top:2px}
+</style></head><body>
+<div id="bg"></div>
+<div id="logo" class="stk"><svg viewBox="0 0 64 64"><defs><linearGradient id="igsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff7a59"/><stop offset=".38" stop-color="#ffb347"/><stop offset=".64" stop-color="#ffe9a8"/><stop offset=".64" stop-color="#18b8c4"/><stop offset="1" stop-color="#06506e"/></linearGradient><radialGradient id="igsh" cx=".5" cy=".95" r=".9"><stop offset="0" stop-color="#fffaf2"/><stop offset=".55" stop-color="#ffcdb5"/><stop offset="1" stop-color="#ec5f8d"/></radialGradient><clipPath id="igc"><circle cx="32" cy="32" r="30"/></clipPath></defs><g clip-path="url(#igc)"><rect width="64" height="64" fill="url(#igsky)"/><path d="M-2 45 Q6 42.5 14 45 T30 45 T46 45 T62 45 T78 45" stroke="#fff" stroke-width="1.2" fill="none" opacity=".75"/><path d="M-6 51 Q2 48.5 10 51 T26 51 T42 51 T58 51 T74 51" stroke="#8fe8e8" stroke-width="1.2" fill="none" opacity=".7"/></g><path d="M32 47 L8.8 40.8 Q5.0 34.0 12.7 32.7 Q11.6 25.0 19.2 26.7 Q21.0 19.1 27.5 23.4 Q32.0 17.0 36.5 23.4 Q43.0 19.1 44.8 26.7 Q52.4 25.0 51.3 32.7 Q59.0 34.0 55.2 40.8 Z" fill="url(#igsh)" stroke="#2a1b12" stroke-width="1.6" stroke-linejoin="round"/><path d="M32 45L13.9 33.6M32 45L20.0 27.9M32 45L27.8 24.9M32 45L36.2 24.9M32 45L44.0 27.9M32 45L50.1 33.6" stroke="#c43d6b" stroke-width="1" stroke-linecap="round" opacity=".75"/><path d="M25 47 L28 42.5 H36 L39 47 Z" fill="#ffcdb5" stroke="#2a1b12" stroke-width="1.4" stroke-linejoin="round"/><circle cx="32" cy="38.3" r="3.2" fill="#fff" stroke="#2a1b12" stroke-width="1"/><path d="M49 11 l1.4 3.6 3.6 1.4 -3.6 1.4 -1.4 3.6 -1.4 -3.6 -3.6 -1.4 3.6 -1.4z" fill="#fff"/><circle cx="32" cy="32" r="30.5" fill="none" stroke="#2a1b12" stroke-width="2.2"/></svg></div>
+<div id="name" class="stk"><b>MUSCHEL-TAL</b><small>DIE INSEL AUS FOLLOWERN</small></div>
+<div id="gift">🎁</div>
+<div id="hl" class="stk"><b>ICH SCHENKE DIR<br>EIN HAUS!</b><span>mit deinem Namen drauf 🏠</span></div>
+<div id="c1" class="stk card"><div class="ic">👥</div><div class="n">575</div><div class="l">Bewohner</div></div>
+<div id="c2" class="stk card"><div class="ic">🏝️</div><div class="n" style="background:#0fb3b0">2</div><div class="l">Inseln</div></div>
+<div id="c3" class="stk card"><div class="ic">🐚</div><div class="n" style="background:#2e9e5b">2.875</div><div class="l">Muscheln</div></div>
+<div id="cta" class="stk">➕ Folg @muscheltal auf TikTok<small>und zieh ein 🌴</small></div>
+</body></html>
