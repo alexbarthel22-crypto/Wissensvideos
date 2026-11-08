@@ -22,6 +22,8 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
   - **🏖️ Strandvilla** (Westküste, mit Infinity-Pool): wird **demnächst verlost** (Schild „🎁 bald verlost“).
 - **Bürgermeisterin: @lillygyqcf0** (Beruf „Bürgermeisterin · Muschelpalast“). **Palast-Leitung folgt** (noch nicht vergeben).
 - Wer in einem Gebäude wohnt, hat keine Hütte mehr; dafür rücken die Nächsten nach Einwohner-Nr. auf die Haupt-Insel nach (am 8.11.: 5 Bewohner der Kokos-Küste sind auf die Haupt-Insel umgezogen). Die Haupt-Insel hat damit 500 Hütten + 5 Bewohner in Gebäuden = 505 Einwohner.
+- Dönerbude: tagsüber sitzen 6–9 Gäste an Tischen/der Theke und essen Döner, nachts 2–4; Gäste kommen und gehen. Strandbar: tagsüber 7–10 Gäste an Bar und Steg (Cocktails, Gespräche), nachts 10–14 bei einer Party mit bunten Lichtern.
+- **Hütten-Nr.** (Platz auf der Insel) ist nicht dasselbe wie die **Einwohner-Nr.** (Folge-Reihenfolge).
 - @sophia_e065 wohnt direkt an der Küste und hat einen kleinen Pool (Flamingo-Schwimmring, Quietscheente, Liege). @zoe518133 wohnt ebenfalls an der Küste. @anton.van11 wohnt direkt neben @laura.ngynn.
 - Auf der Kokos-Küste gibt es **11 Bauplätze** („bald: ???“). Einer liegt an der Nordwestküste (Richtung Haupt-Insel) und reicht auf Pfählen bis ins Wasser (dort kommt später ein Hafen – **noch geheim, nicht verraten**).
 - Die gesperrten ???-Inseln sind größer und unregelmäßig geformt.
@@ -51,7 +53,7 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - Frei gewordene Häuser auf der Kokos-Küste bekommen die nächsten neuen Follower.
 - Hütten sind auf der Homepage **gebaut** (mit Namen). Bewohner laufen/fahren (Fuß, Fahrrad, E-Roller); nachts 💤.
 - Echtes Wetter wirkt auf die Karte: Regen = nasse Wege, Pfützen, dunkle nasse Dächer; Schnee = verschneite Dächer, Wege, Palmen.
-- **Muschelpass** (Einwohnernachweis): **Einwohner Nr.**, Eingezogen am, Insel, **Beruf · Arbeitsplatz** in einer Zeile (verlinkt → Karte fliegt hin), **Muschel-Vermögen** (Start: 5 🐚 pro Person), Erfolge, Teilen als Story-Bild. **Kein Status, keine Ausweis-Nr., kein „Bewohnt“-Stempel.** Der Pass unten auf der Seite sieht genauso aus wie im Popup.
+- **Muschelpass** (Einwohnernachweis): **Einwohner Nr.**, Eingezogen am, Insel, **Beruf · Arbeitsplatz** in einer Zeile (verlinkt → Karte fliegt hin), **Muschel-Vermögen** (Start: **0 🐚** – die 5 Muscheln vom Einzug gehen in die Inselkasse), Insel-Zeile zeigt Insel + **Hütten-Nr.** (Antippen → Karte fliegt zur Hütte), Erfolge, Teilen als Story-Bild. **Kein Status, keine Ausweis-Nr., kein „Bewohnt“-Stempel.** Der Pass unten auf der Seite sieht genauso aus wie im Popup.
 - Kopierte Teilen-Texte verlinken immer den TikTok-Account (@muscheltal auf TikTok: https://www.tiktok.com/@muscheltal), nicht die Homepage.
 - **Erfolge**: „Gründer“ (goldene Münze mit goldener Muschel) = einer der ersten 500 Follower. **„Die Lupe“** (enthüllt) = wer neugierig die Welt von Muschel-Tal erkundet; ganz unten auf der Homepage ist eine gold aufblinkende Lupe versteckt. Ohne gewählten Namen kommt ein Popup „Das könnte wichtig sein … Komm wieder hierhin, wenn du eingezogen bist!“; mit gewähltem Namen „Glückwunsch …“ + Knopf „Zu meinen Erfolgen“ (nur in diesem Browser gespeichert). **„Sonnenaufgang“** (morgens den Sonnenaufgang in Muschel-Tal gesehen) und **„Sonnenuntergang“** (abends den Sonnenuntergang gesehen) – wer mit seinem Namen während Auf-/Untergang auf der Seite ist, bekommt den Erfolg mit Popup „Neuer Erfolg!“ (in diesem Browser gespeichert). 10 weitere Erfolge geheim („bald“).
 - Muschelpass zeigt höchstens 4 Erfolge, die neuesten zuerst (kleine Abzeichen).
@@ -64,7 +66,7 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - Karten-Knöpfe: ohne Auswahl „Alle Inseln“ + „Zufall“ (wischen: „Wachsen sehen“), mit Auswahl „Meine Hütte“ + „Muschelpass“ (wischen: „Alle Inseln“).
 - Fahrräder/E-Roller, die hoch/runter fahren, sind von hinten/vorn zu sehen. Spaziergänger und Fahrer kehren nie um: sie folgen den Wegen geradeaus und tauchen am Wegende aus/ein.
 - Namen auf der Karte stehen immer ganz vorne (nichts verdeckt sie).
-- Einwohner sehen unterschiedlich aus (Größe, Kleidung, Hose, Haut, Haarfarbe/-frisur, Augen), keine Accessoires. Es laufen/fahren deutlich mehr Leute herum; Wege sind frei von Bäumen/Büschen.
+- Einwohner sehen unterschiedlich aus (Größe, Kleidung, Hose, Haut, Haarfarbe/-frisur, Augen, Mund), keine Accessoires. Es laufen/fahren deutlich mehr Leute herum; Wege sind frei von Bäumen/Büschen.
 - Zum Entdecken: Katzen, Blumentöpfe, Briefkästen, Wäscheleinen an Hütten; Seesterne, Muscheln, Sandburgen, Handtücher, Schwimmringe und Krabben am Strand; ab und zu springen Delfine im Meer.
 - Tippt man auf eine Hütte, erscheint unter der Suche nur der Name mit × zum Schließen.
 - Im Muschelpass führt „Alle meine Erfolge ansehen“ zur persönlichen Erfolge-Übersicht des Einwohners (mit Datum); von dort „Alle Erfolge, die es gibt“ → erfolge.html.
