@@ -1218,12 +1218,7 @@ function showS(){sg.innerHTML=hits.map((p,i)=>'<li><button type="button" data-i=
 q.addEventListener('input',()=>{hits=find(q.value);act=-1;showS();$('miss').hidden=!(q.value.trim().length>1&&!hits.length);$('miss').textContent='Noch nicht auf der Insel. Neue Einwohner kommen beim nächsten Update – folgst du schon '+ACC+'?';});
 q.addEventListener('keydown',e=>{if(e.key==='ArrowDown'){act=Math.min(hits.length-1,act+1);showS();e.preventDefault();}else if(e.key==='ArrowUp'){act=Math.max(0,act-1);showS();e.preventDefault();}else if(e.key==='Enter'){const p=hits[act<0?0:act];if(p)pick(p);}else if(e.key==='Escape')sg.hidden=true;});
 sg.addEventListener('click',e=>{const b=e.target.closest('button');if(b)pick(hits[+b.dataset.i]);});
-// Besuch zählen: als „online“ gilt der Name, der oben in die Suche eingegeben wurde (Ping jede Minute, solange die Seite offen ist)
-const BSID=(()=>{try{return crypto.randomUUID();}catch(e){return 'x'+Math.random().toString(36).slice(2)+Date.now().toString(36);}})();let BNAME=null,BT=0;
-function bping(){if(!BNAME||document.hidden||location.protocol==='file:')return;const body=JSON.stringify({sid:BSID,name:BNAME});try{if(navigator.sendBeacon&&navigator.sendBeacon('/api/besuch',new Blob([body],{type:'application/json'})))return;}catch(e){}fetch('/api/besuch',{method:'POST',headers:{'content-type':'application/json'},body,keepalive:true}).catch(()=>{});}
-function besuch(p){if(!p)return;BNAME=p.name.toLowerCase();bping();clearInterval(BT);BT=setInterval(bping,60000);}
-document.addEventListener('visibilitychange',()=>{if(!document.hidden)bping();});
-function pick(p){besuch(p);q.value=p.name;$('qx').hidden=false;sg.hidden=true;$('miss').hidden=true;q.blur();window.scrollTo({top:0,behavior:'smooth'});select(p);}
+function pick(p){q.value=p.name;$('qx').hidden=false;sg.hidden=true;$('miss').hidden=true;q.blur();window.scrollTo({top:0,behavior:'smooth'});select(p);}
 $('rnd').onclick=()=>{if(N)pick(PEOPLE[Math.random()*N|0]);};
 $('mine').onclick=()=>{let p=sel;try{p=byName.get((localStorage.getItem('mt-me')||'').toLowerCase())||sel;}catch(e){}if(p)pick(p);};
 const qxUpd=()=>{$('qx').hidden=!q.value;};q.addEventListener('input',()=>{qxUpd();if(!q.value.trim()&&sel)unsel();});
@@ -1246,7 +1241,6 @@ $('faq').innerHTML=[
  ['Was sind die Inseln mit ???','Auf der Haupt-Insel ist Platz für '+fmt(MAIN.plaetze)+' Einwohner. Danach öffnen neue Inseln – bei '+ISL.slice(1).map(v=>fmt(v.ab+1)).join(', ').replace(/, ([^,]*)$/,' und $1')+' Followern. Je später, desto schöner. Und irgendwo am Rand der Karte versteckt sich noch eine geheime Insel …'],
  ['Ist das hier alles umsonst?','Ja, komplett. Folgen reicht.'],
  ['Ich habe einen Fehler auf der Seite entdeckt. Was mache ich?','Schreib '+ACC+' auf TikTok eine Nachricht oder einen Kommentar und beschreib kurz, was nicht stimmt – am besten mit Screenshot. Danke fürs Helfen!'],
- ['Was passiert mit meinem Namen, wenn ich mich suche?','Wenn du oben deinen TikTok-Namen suchst, speichern wir diesen Namen zusammen mit Zeitpunkt und Dauer deines Besuchs, damit wir sehen, wer gerade in Muschel-Tal unterwegs ist. Die Daten werden nach 14 Tagen automatisch gelöscht und nirgends veröffentlicht. Möchtest du, dass sie früher gelöscht werden, schreib '+ACC+' auf TikTok.'],
  ['Ich will nicht auf der Karte stehen.','Kein Problem. Schreib '+ACC+' auf TikTok eine Nachricht, dann nehmen wir deinen Namen raus.']
 ].map(f=>'<details><summary>'+esc(f[0])+'</summary><p>🏝️ '+esc(f[1])+'</p></details>').join('');
 $('foot').innerHTML='<a href="'+ACCURL+'" target="_blank" rel="noopener">'+esc(ACC)+'</a> auf TikTok<button class="lupebtn" id="lupe" aria-label="Lupe">'+LUPE_SVG+'</button>';
@@ -1285,7 +1279,7 @@ addEventListener('resize',()=>{resize();});resize();
 let me=null;try{me=byName.get((localStorage.getItem('mt-me')||'').toLowerCase());}catch(e){}
 Object.assign(cam,REDUCED?fitMain(freeY()):fitAll(freeY()));draw();
 {const n=new URLSearchParams(location.search).get('n'),t=n&&byName.get(n.toLowerCase().replace(/^(?!@)/,'@'));if(t)me=t;}
-if(me){besuch(me);q.value=me.name;$('qx').hidden=false;setTimeout(()=>select(me),REDUCED?0:600);}
+if(me){q.value=me.name;$('qx').hidden=false;setTimeout(()=>select(me),REDUCED?0:600);}
 else{const o=new URLSearchParams(location.search).get('ort'),t=o&&ortPos(o);if(t)setTimeout(()=>flyTo(t,1600),500);else if(!REDUCED)setTimeout(()=>flyTo(fitMain(freeY()),2600),700);}
 </script>
 </body>
