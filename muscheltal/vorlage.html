@@ -699,8 +699,8 @@ function drawBase(){
  const g=c.createRadialGradient(ox,oy,MAIN.R*z*DPR*.8,ox,oy,(MAIN.R+2600)*z*DPR);g.addColorStop(0,'#14b3c2');g.addColorStop(1,'#07547a');c.fillStyle=g;c.fillRect(0,0,base.width,base.height);
  world(c);
  const [x0,y0]=s2w(-40,-40),[x1,y1]=s2w(W+40,H+40),vis=(x,y)=>x>x0&&x<x1&&y>y0&&y<y1;
- c.fillStyle='#3fa9c0';xmShape(c,30);c.fill();c.fillStyle='#e9f3f7';xmShape(c,6);c.fill();c.fillStyle='#ffffff';xmShape(c,0);c.fill();
- for(const v of ISL){const m=v.R+70;if(v.x+m<x0||v.x-m>x1||v.y+m<y0||v.y-m>y1)continue;drawIsland(c,v,vis,z);}
+ c.fillStyle='#3fa9c0';if(!GROWV){xmShape(c,30);c.fill();c.fillStyle='#e9f3f7';xmShape(c,6);c.fill();c.fillStyle='#ffffff';xmShape(c,0);c.fill();}
+ for(const v of ISL){const m=v.R+70;if(v.x+m<x0||v.x-m>x1||v.y+m<y0||v.y-m>y1)continue;if(GROWV&&v!==GROWV)continue;drawIsland(c,v,vis,z);}
 }
 
 // ---------- Bewegte Ebene: Figuren & Effekte ----------
@@ -925,13 +925,13 @@ function xmFog(c){const n=16;for(let k=0;k<n;k++){const a=k/n*TAU+(REDUCED?0:T*.
  if(!REDUCED){const s=Math.pow(Math.max(0,Math.sin(T*.9)),10);if(s>.05){c.fillStyle=`rgba(255,210,80,${s})`;const x=XM.x+18,y=XM.y-14;c.beginPath();for(let k=0;k<10;k++){const r=k%2?2.5:7,a=k/10*TAU-Math.PI/2;c.lineTo(x+Math.cos(a)*r,y+Math.sin(a)*r);}c.closePath();c.fill();}}}
 
 function draw(){
- if(!W)return;const key=[cam.x,cam.y,cam.z,W,H,limit,kind(),nightLevel()>.5,GROWK==null?'':GEB.map(g=>GROWV===g.v&&GROWK<g.at?0:1).join('')].join(',');
+ if(!W)return;const key=[cam.x,cam.y,cam.z,W,H,limit,kind(),nightLevel()>.5,GROWV?GROWV.i:'',GROWK==null?'':GEB.map(g=>GROWV===g.v&&GROWK<g.at?0:1).join('')].join(',');
  if(key!==baseKey){drawBase();baseKey=key;}
  const c=ctx,z=cam.z,zr=z/fitMain().z;c.setTransform(1,0,0,1,0,0);c.drawImage(base,0,0);world(c);
  const [x0,y0]=s2w(-40,-40),[x1,y1]=s2w(W+40,H+40),vis=(x,y)=>x>x0&&x<x1&&y>y0&&y<y1,visR=(x,y,r)=>x>x0-r&&x<x1+r&&y>y0-r&&y<y1+r;
  const nl=nightLevel(),K=kind(),sunny=K==='clear'||K==='fair';WFg=.6+Math.min(WX.wind,60)/25;
  for(const s of SPARK)if(vis(s.x,s.y)){const a=Math.pow(Math.max(0,Math.sin(T*s.sp+s.ph)),nl>.5?4:12)*(nl>.5?.7:(sunny?1:.3));if(a<.05)continue;c.fillStyle=nl>.5?`rgba(255,245,200,${a})`:`rgba(255,255,255,${a*.9})`;const r=2.2/Math.sqrt(z);c.fillRect(s.x-r,s.y-.3/z,r*2,.6/z);c.fillRect(s.x-.3/z,s.y-r,.6/z,r*2);}
- for(const v of ISL){if(!visR(v.x,v.y,v.R+80))continue;
+ for(const v of ISL){if(!visR(v.x,v.y,v.R+80)||(GROWV&&v!==GROWV))continue;
   c.lineWidth=2.2;for(let k=0;k<3;k++){const ph=REDUCED?k/3:(T*.18*WFg+k/3)%1;c.strokeStyle=`rgba(255,255,255,${(1-ph)*.5})`;shape(c,v,12+ph*34,1.5*WFg,T+k);c.stroke();}
   c.strokeStyle='rgba(255,255,255,.75)';c.lineWidth=2.6;shape(c,v,11,1.2*WFg,T*1.4);c.stroke();
   if(v.i===0){rathaus(c);if(PJ)beachbar(c);}else landmark(c,v,nl);
@@ -994,7 +994,7 @@ function draw(){
  {const [px,py]=PIER1;boat(c,px+Math.cos(PIER_A+1.57)*12,py+Math.sin(PIER_A+1.57)*12,PIER_A,WAIT.length?'#ffd23f':'#fff',true,WAIT.length?1.6:1);
   if(WAIT.length){const n=Math.min(WAIT.length,14);for(let k=0;k<n;k++){const t=.25+k/n*.7,x=PIER0[0]+(PIER1[0]-PIER0[0])*t+(k%2?2:-2),y=PIER0[1]+(PIER1[1]-PIER0[1])*t;c.fillStyle=ROOFS[k%ROOFS.length];c.beginPath();c.arc(x,y-2,1.6,0,TAU);c.fill();c.fillStyle='#f3c9a0';c.beginPath();c.arc(x,y-4.4,1.1,0,TAU);c.fill();}}}
  for(const b of BOATS){const a=b.ph+T*b.sp*(nl>.5?.4:1);const [x,y]=polar(MAIN,a,b.r+Math.sin(T*.3+b.ph)*10);if(!vis(x,y))continue;boat(c,x,y,a+(b.sp>0?Math.PI/2:-Math.PI/2),b.c);}
- if(visR(XM.x,XM.y,XM.r*2))xmFog(c);
+ if(!GROWV&&visR(XM.x,XM.y,XM.r*2))xmFog(c);
  c.setTransform(1,0,0,1,0,0);
  const dim={clear:0,fair:.03,clouds:.12,fog:.06,rain:.2,snow:.08,storm:.3}[K]*(1-nl*.5);if(dim>0){c.fillStyle=`rgba(40,55,75,${dim})`;c.fillRect(0,0,cv.width,cv.height);}
  {const SP=sunPhase();if(SP.k){const up=SP.k==='auf',p=Math.min(1,Math.max(0,SP.p)),s=.45+.55*Math.sin(Math.PI*p),Wc=cv.width,Hc=cv.height;
@@ -1108,12 +1108,11 @@ $('growbtn').onclick=()=>{if(growing||!N)return;const v=islInView();growing=true
  if(v===MAIN&&PEOPLE.some(p=>p.beruf&&p.beruf.startsWith('Bürgermeister'))){MAYOR_AT=.73;EV.push([MAYOR_AT,'🎖️ Muschel-Tal bekommt eine Bürgermeisterin']);ei++;}
  geb.forEach((g,i)=>{g.at=.73+step*(ei++);EV.push([g.at,g.emoji+' '+g.name+(g.typ==='villa'?' wird gebaut':' eröffnet')]);});
  for(const x of (I.entfernt||[]))if(x.insel==null||ISL[x.insel]===v){x.at=x.at||.9;EV.push([x.at,'🧹 '+x.text]);}
- EV.sort((a,b)=>a[0]-b[0]);const hud=$('growhud');hud.hidden=false;
+ EV.sort((a,b)=>a[0]-b[0]);
  const t0=performance.now()+600,ms=Math.min(14000,5000+(hi-lo)*8)+geb.length*1500;
  const st=n=>{const k=Math.max(0,Math.min(1,(n-t0)/ms)),kp=Math.min(1,k/.72);GROWK=k;limit=lo+Math.max(0,Math.round((hi-lo)*kp*kp));
-  const ev=EV.filter(e=>e[0]<=k).pop(),cnt=PEOPLE.filter(p=>p.isl===v&&p.nr<=limit).length;
-  const hh='<b>🌱 '+esc(v.name)+'</b> · '+fmt(cnt)+' Einwohner'+(ev?'<span>'+esc(ev[1])+'</span>':'');if(hud.dataset.h!==hh){const evc=hud.dataset.ev!==(ev?ev[1]:'');hud.innerHTML=hh;hud.dataset.h=hh;hud.dataset.ev=ev?ev[1]:'';const sp=hud.querySelector('span');if(sp&&!evc)sp.style.animation='none';}draw();
-  if(k<1)requestAnimationFrame(st);else setTimeout(()=>{limit=N;growing=false;GROWK=null;GROWV=null;hud.hidden=true;hud.dataset.h='';hud.dataset.ev='';draw();},2200);};requestAnimationFrame(st);};
+  draw();
+  if(k<1)requestAnimationFrame(st);else setTimeout(()=>{limit=N;growing=false;GROWK=null;GROWV=null;draw();},1200);};requestAnimationFrame(st);};
 
 // ---------- Auswahl + Inselpass ----------
 const status=p=>AMT[p.name.toLowerCase()]||(p.wait?'Zieht ein, sobald die nächste Insel öffnet':p.mark?'War schon im Video':'Einwohner');
