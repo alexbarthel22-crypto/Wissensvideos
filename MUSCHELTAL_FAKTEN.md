@@ -31,8 +31,14 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - Tag-Zähler auf der Homepage steht vorerst auf **0** („–“).
 
 ## Stand (8.11.2026)
-- **577 Einwohner**: 500 auf der Haupt-Insel (voll, Hütte 1–500), **77 auf der Kokos-Küste** (Nr. 501–577).
-- 2 frühere Follower (@anesaxmlz, @einbaum18) stehen nicht mehr in der neuesten Followerliste, wohnen aber weiter auf der Insel.
+- **575 Einwohner**: 500 auf der Haupt-Insel (voll), **75 auf der Kokos-Küste** (Nr. 501–575).
+- Am 8.11. sind 2 Einwohner ausgezogen (entfolgt, Namen gelöscht). Dafür sind @rozelinbaysal12 (jetzt Nr. 499) und @aileen.2007_ (jetzt Nr. 500) von der Kokos-Küste auf die Haupt-Insel umgezogen.
+- **Gründer** = die ersten 500 Follower; ausnahmsweise haben auch die beiden Nachrücker @rozelinbaysal12 und @aileen.2007_ den Erfolg. Aktuell 500 Gründer.
+
+## Auszug & Nachrücken (Regel 7)
+- Einwohner-Nr. = Platz unter den **aktuellen** Einwohnern in Folge-Reihenfolge. Wer entfolgt, zieht aus und **verschwindet komplett** (Name wird überall gelöscht, nie in Videos/Homepage nennen); alle danach rücken eine Nummer auf.
+- Wer dadurch unter die Grenze einer Insel rutscht (z. B. Nr. 501 → 500), zieht auf die vorige Insel um – in ein frei gewordenes Haus. Alle anderen behalten ihr Haus.
+- Frei gewordene Häuser auf der Kokos-Küste bekommen die nächsten neuen Follower.
 - Hütten sind auf der Homepage **gebaut** (mit Namen). Bewohner laufen/fahren (Fuß, Fahrrad, E-Roller); nachts 💤.
 - Echtes Wetter wirkt auf die Karte: Regen = nasse Wege, Pfützen, dunkle nasse Dächer; Schnee = verschneite Dächer, Wege, Palmen.
 - **Muschelpass** (Einwohnernachweis): **Einwohner Nr.**, Eingezogen am, Insel, Beruf („–“), **Arbeitsort** („–“; wird verlinkt, sobald vergeben), Erfolge, Teilen als Story-Bild. **Kein Status, keine Ausweis-Nr., kein „Bewohnt“-Stempel.** Der Pass unten auf der Seite sieht genauso aus wie im Popup.
@@ -40,7 +46,8 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - **Erfolge**: „Gründer“ (goldene Münze mit goldener Muschel) = einer der ersten 500 Follower. **„Die Lupe“** (enthüllt) = wer neugierig die Welt von Muschel-Tal erkundet; ganz unten auf der Homepage ist eine gold aufblinkende Lupe versteckt. Ohne gewählten Namen kommt ein Popup „Das könnte wichtig sein … Komm wieder hierhin, wenn du eingezogen bist!“; mit gewähltem Namen „Glückwunsch …“ + Knopf „Zu meinen Erfolgen“ (nur in diesem Browser gespeichert). 10 weitere Erfolge geheim („bald“).
 - Muschelpass zeigt höchstens 4 Erfolge, die neuesten zuerst (kleine Abzeichen).
 - **Inselkasse**: 5 Muscheln pro Einwohner **+ 50 Muscheln für jedes Teilen des Muschelpasses in der Story** (pro TikTok-Name nur alle 7 Tage; wird auf dem Server gezählt). Der Teilen-Knopf zeigt das als Anreiz.
-- Unter „Gerade auf der Insel“: Knöpfe „📜 Regeln“ und „🏅 Meine Erfolge“ (ohne gewählten Namen: Popup „Folge @muscheltal …“).
+- Unter der Einleitung: „Jetzt einziehen“ (nur ohne gewählten Namen), darunter „📜 Regeln“ + „🏅 Meine Erfolge“ (ohne gewählten Namen: Popup „Folge @muscheltal …“) und der lange Knopf „👥 Muschel-Tal Einwohner-Übersicht“.
+- **Einwohner-Übersicht** (muscheltal.de/einwohner.html): alle Einwohner nach Insel mit Nr., Gründer mit kleiner Münze, Suche; Name antippen = zur Hütte fliegen.
 - Suchfeld hat ein × zum Löschen; Zoom-Knöpfe + / − rechts am Rand.
 - Karten-Knöpfe: ohne Auswahl „Alle Inseln“ + „Zufall“ (wischen: „Wachsen sehen“), mit Auswahl „Meine Hütte“ + „Muschelpass“ (wischen: „Alle Inseln“).
 - Fahrräder/E-Roller, die hoch/runter fahren, sind von hinten/vorn zu sehen.
@@ -50,9 +57,6 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
   Inhalt: Insel gekauft, jeder bekommt ein eigenes Haus · „Sie heißt Muschel-Tal, mitten in der Südsee“ · Folgen = einziehen, Hütte mit Namen · 1 Einwohner = 5 Muscheln, Kontostand 0 · früher folgen = „Hauptinsel: Muschel-Tal“, 500 Plätze · ist sie voll, öffnen neue Inseln („Wann genau? Bald“) · geheime Insel am Kartenrand · ihr entscheidet in den Kommentaren · „Hütte Nr. 1 ist noch frei“.
   **Offene Frage am Ende:** „Was kaufen wir morgen vom ersten Geld? Die zwei Top-Kommentare entscheiden!“ → muss in Video 2 aufgelöst werden.
 - Die Fassung „Hier steht bald dein Haus“ in `renders/muscheltal-tag-1.mp4` wurde NICHT gepostet.
-
-## Offene Widersprüche
-- **Regel 7 (Wer entfolgt, zieht aus)** ist noch nicht umgesetzt: @anesaxmlz und @einbaum18 haben entfolgt, wohnen aber noch auf der Haupt-Insel. Nachrücken nach Einwohner-Nummer muss erst gebaut werden.
 
 ## Bekannte Abweichungen (älterer Content, schon veröffentlicht)
 - Video 1 nennt die gekaufte Insel „Muschel-Tal“ und „Hauptinsel: Muschel-Tal“ – heute ist Muschel-Tal die Region, die Insel heißt Hauptinsel (Schreibweise „Hauptinsel“/„Haupt-Insel“ wird im Homepage-Chat festgelegt).

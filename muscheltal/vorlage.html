@@ -177,7 +177,9 @@ a.step span{color:var(--hib);font-weight:900}
 .cpy{font-size:14px;color:var(--soft);margin:10px 0 0;overflow-wrap:anywhere}
 /* ---------- Aktuell ---------- */
 .now{padding:16px}
-.nowbtn{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0 4px}
+.nowbtn{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0 0}
+.btn.wide{display:block;text-align:center;margin-top:10px;white-space:nowrap;font-size:16px;padding:12px 8px;background:var(--lagoon);color:#fff}
+#join[hidden]{display:none}
 .nowbtn .btn{display:flex;align-items:center;justify-content:center;gap:6px;padding:10px 6px;white-space:nowrap;font-size:16px}
 .nums{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;text-align:center}
 .nums div{background:var(--sand);border:2px solid var(--ink);border-radius:12px;padding:8px 4px}
@@ -253,6 +255,8 @@ footer a{color:var(--soft)}
    <div class="st step"><div class="e">💬</div><b>Mit&shy;bestimmen</b><span>in den Kommentaren</span></div>
   </div>
   <a class="btn hib" id="join" target="_blank" rel="noopener">Jetzt einziehen</a>
+  <div class="nowbtn"><a class="btn" href="regeln.html">📜 Regeln</a><button class="btn hib" id="myerf">🏅 Meine Erfolge</button></div>
+  <a class="btn wide" href="einwohner.html">👥 Muschel-Tal Einwohner-Übersicht</a>
  </section>
 
  <section id="s-pass" hidden>
@@ -267,7 +271,6 @@ footer a{color:var(--soft)}
   <h2>Gerade auf der Insel</h2>
   <div class="st now">
    <div class="nums"><div><b id="nTag"></b><small>Tag</small></div><div><b id="nEw"></b><small>Einwohner</small></div><div><b id="nMu"></b><small>🐚 Muscheln</small></div></div>
-   <div class="nowbtn"><a class="btn" href="regeln.html">📜 Regeln</a><button class="btn hib" id="myerf">🏅 Meine Erfolge</button></div>
    <div class="isl" id="isl"></div>
    <div class="proj" id="proj"><div class="top"><span id="pjname"></span><small id="pjnum"></small></div><div class="meter"><i id="pjbar"></i></div><p class="sub" id="pjtext"></p></div>
    <p class="news" id="news"></p>
@@ -313,11 +316,12 @@ function plaetze(n,plaza,res){const want=n+30,out=[];let r=Math.sqrt(want*600/Ma
   if(out.length>=want)break;r*=1.2;}
  out.sort((a,b)=>a.k-b.k);return out.slice(0,n);}
 const WALLS=['#d9a066','#e4b47c','#cf9459','#e9c48f'],ROOFS=['#e8467c','#f4a51c','#ff7a59','#2fb3a0','#9b6bff','#3fa0e8'];
-const PEOPLE=R.map((r,i)=>{const nr=i+1,v=islandOf(nr);return{name:r[0],seit:r[1],mark:r[2],nr,isl:v,wait:!v.open,p:null};});
+const PEOPLE=R.map((r,i)=>{const nr=i+1,v=islandOf(nr);return{name:r[0],seit:r[1],mark:r[2],slot:typeof r[3]==='number'?r[3]:null,gr:r[4]==null?nr<=500:!!r[4],nr,isl:v,wait:!v.open,p:null};});
 for(const v of ISL){const ppl=PEOPLE.filter(p=>p.isl===v&&!p.wait);v.people=ppl;
- v.plots=(v.open&&v.plaetze)?plaetze(v.plaetze,v.plaza,v.resv):(ppl.length?plaetze(ppl.length,v.plaza,v.resv):[]);v.keys=new Set(v.plots.map(pl=>pl.gx+','+pl.gy));
- ppl.forEach((p,k)=>{const pl=v.plots[k],h=hash(pl.gx+7+v.i*31,pl.gy-3);p.p={x:v.x+pl.x,y:v.y+pl.y,gx:pl.gx,gy:pl.gy};p.round=h<.28;p.wall=WALLS[(h*97|0)%4];p.roof=ROOFS[(h*631|0)%ROOFS.length];p.win=hash(pl.gx,pl.gy+11)<.55;v.cell.set(pl.gx+','+pl.gy,p);});
- v.free=v.plots.slice(ppl.length).map(pl=>({x:v.x+pl.x,y:v.y+pl.y}));}
+ const need=ppl.length?Math.max(ppl.length,1+Math.max(...ppl.map(p=>p.slot??0))):0;
+ v.plots=(v.open&&v.plaetze)?plaetze(v.plaetze,v.plaza,v.resv):(need?plaetze(need,v.plaza,v.resv):[]);v.keys=new Set(v.plots.map(pl=>pl.gx+','+pl.gy));
+ const used=new Set();ppl.forEach((p,k)=>{let si=p.slot!=null&&p.slot<v.plots.length&&!used.has(p.slot)?p.slot:k;while(used.has(si))si++;used.add(si);const pl=v.plots[si],h=hash(pl.gx+7+v.i*31,pl.gy-3);p.p={x:v.x+pl.x,y:v.y+pl.y,gx:pl.gx,gy:pl.gy};p.round=h<.28;p.wall=WALLS[(h*97|0)%4];p.roof=ROOFS[(h*631|0)%ROOFS.length];p.win=hash(pl.gx,pl.gy+11)<.55;v.cell.set(pl.gx+','+pl.gy,p);});
+ v.free=v.plots.filter((pl,i)=>!used.has(i)).map(pl=>({x:v.x+pl.x,y:v.y+pl.y}));}
 for(const p of PEOPLE){const b=(I.berufe||{})[p.name.toLowerCase()]||(I.berufe||{})[p.name.toLowerCase().replace(/^@/,'')];if(b){p.beruf=b.beruf||b[0]||'';p.ort=b.ort||b[1]||'';}}
 const PLACED=PEOPLE.filter(p=>p.p), WAIT=PEOPLE.filter(p=>p.wait);
 const WALKERS=PLACED.filter((p,i)=>hash(i,77)<.09).slice(0,36).map((q,i)=>{const vert=hash(i,78)<.5,gx=q.p.gx,gy=q.p.gy,v=q.isl,mode=['walk','bike','walk','scooter','bike','walk'][i%6],fast=mode!=='walk';
@@ -332,7 +336,7 @@ for(const p of PEOPLE){let salt=0,id;do{let h1=2166136261^salt,h2=5381+salt*7919
  id='';let a=h1>>>0,b=h2>>>0;for(let k=0;k<9;k++){const src=k<5?a:b;id+=IDA[src%32];if(k<5)a=Math.floor(a/32);else b=Math.floor(b/32);}salt++;}while(IDS.has(id));IDS.add(id);p.id=id;}
 const fmtId=id=>id.slice(0,3)+' '+id.slice(3,6)+' '+id.slice(6);
 const LUPEN=(()=>{try{return new Set(JSON.parse(localStorage.getItem('mt-lupe')||'[]'));}catch(e){return new Set();}})();
-const ERF=p=>{const e=[...(p.erfolge||[])];if(p.nr<=500&&!p.wait)e.unshift('GRUENDER');if(LUPEN.has(p.name.toLowerCase()))e.push('LUPE');return e;};
+const ERF=p=>{const e=[...(p.erfolge||[])];if(p.gr&&!p.wait)e.unshift('GRUENDER');if(LUPEN.has(p.name.toLowerCase()))e.push('LUPE');return e;};
 const COIN_SVG='<svg class="coin" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs><radialGradient id="cg1" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#fff6c4"/><stop offset=".45" stop-color="#ffd23f"/><stop offset=".8" stop-color="#e0a020"/><stop offset="1" stop-color="#a86a00"/></radialGradient><radialGradient id="cg2" cx="40%" cy="35%" r="70%"><stop offset="0" stop-color="#ffe98a"/><stop offset=".7" stop-color="#f0b830"/><stop offset="1" stop-color="#c88a10"/></radialGradient><linearGradient id="cg3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff8d0"/><stop offset=".5" stop-color="#ffcf3a"/><stop offset="1" stop-color="#d08a00"/></linearGradient></defs><circle cx="50" cy="50" r="47" fill="url(#cg1)" stroke="#7a4a00" stroke-width="3"/><circle cx="50" cy="50" r="42" fill="none" stroke="#b8820a" stroke-width="3.5" stroke-dasharray="1.6 2.2"/><circle cx="50" cy="50" r="37" fill="url(#cg2)" stroke="#a86a00" stroke-width="2"/><g transform="translate(50 54) scale(1.12) translate(-32 -33)"><path d="M32 47 L8.8 40.8 Q5.0 34.0 12.7 32.7 Q11.6 25.0 19.2 26.7 Q21.0 19.1 27.5 23.4 Q32.0 17.0 36.5 23.4 Q43.0 19.1 44.8 26.7 Q52.4 25.0 51.3 32.7 Q59.0 34.0 55.2 40.8 Z" fill="url(#cg3)" stroke="#7a4a00" stroke-width="2.4" stroke-linejoin="round"/><g stroke="#a86a00" stroke-width="1.8" stroke-linecap="round"><path d="M32 45 L9.4 36.8"/><path d="M32 45 L15.6 27.4"/><path d="M32 45 L23.8 22.4"/><path d="M32 45 L32.0 21.0"/><path d="M32 45 L40.2 22.4"/><path d="M32 45 L48.4 27.4"/><path d="M32 45 L54.6 36.8"/></g><path d="M27 46.5 Q32 50 37 46.5 L35 50 Q32 52 29 50 Z" fill="#e0a020" stroke="#7a4a00" stroke-width="1.6" stroke-linejoin="round"/></g><path d="M22 34 A32 32 0 0 1 46 15" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".7"/><path d="M78 20 l2 6 6 2 -6 2 -2 6 -2 -6 -6 -2 6 -2z" fill="#fff"/></svg>';
 const COINIMG=new Image();COINIMG.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent('<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs><radialGradient id="cg1" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#fff6c4"/><stop offset=".45" stop-color="#ffd23f"/><stop offset=".8" stop-color="#e0a020"/><stop offset="1" stop-color="#a86a00"/></radialGradient><radialGradient id="cg2" cx="40%" cy="35%" r="70%"><stop offset="0" stop-color="#ffe98a"/><stop offset=".7" stop-color="#f0b830"/><stop offset="1" stop-color="#c88a10"/></radialGradient><linearGradient id="cg3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff8d0"/><stop offset=".5" stop-color="#ffcf3a"/><stop offset="1" stop-color="#d08a00"/></linearGradient></defs><circle cx="50" cy="50" r="47" fill="url(#cg1)" stroke="#7a4a00" stroke-width="3"/><circle cx="50" cy="50" r="42" fill="none" stroke="#b8820a" stroke-width="3.5" stroke-dasharray="1.6 2.2"/><circle cx="50" cy="50" r="37" fill="url(#cg2)" stroke="#a86a00" stroke-width="2"/><g transform="translate(50 54) scale(1.12) translate(-32 -33)"><path d="M32 47 L8.8 40.8 Q5.0 34.0 12.7 32.7 Q11.6 25.0 19.2 26.7 Q21.0 19.1 27.5 23.4 Q32.0 17.0 36.5 23.4 Q43.0 19.1 44.8 26.7 Q52.4 25.0 51.3 32.7 Q59.0 34.0 55.2 40.8 Z" fill="url(#cg3)" stroke="#7a4a00" stroke-width="2.4" stroke-linejoin="round"/><g stroke="#a86a00" stroke-width="1.8" stroke-linecap="round"><path d="M32 45 L9.4 36.8"/><path d="M32 45 L15.6 27.4"/><path d="M32 45 L23.8 22.4"/><path d="M32 45 L32.0 21.0"/><path d="M32 45 L40.2 22.4"/><path d="M32 45 L48.4 27.4"/><path d="M32 45 L54.6 36.8"/></g><path d="M27 46.5 Q32 50 37 46.5 L35 50 Q32 52 29 50 Z" fill="#e0a020" stroke="#7a4a00" stroke-width="1.6" stroke-linejoin="round"/></g><path d="M22 34 A32 32 0 0 1 46 15" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".7"/><path d="M78 20 l2 6 6 2 -6 2 -2 6 -2 -6 -6 -2 6 -2z" fill="#fff"/></svg>');
 const LUPEIMG=new Image();LUPEIMG.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><circle cx="13" cy="13" r="8.5" fill="#dff7ff" stroke="#c98a00" stroke-width="3.2"/><path d="M19.4 19.4l7.4 7.4" stroke="#7a4a00" stroke-width="4.4" stroke-linecap="round"/></svg>');
@@ -761,14 +765,14 @@ const CHIP={};for(const id of ['mine','passbtn','allbtn','rnd','growbtn'])CHIP[i
 function setDock(on){const a=on?['mine','passbtn']:['allbtn','rnd'],b=on?['allbtn']:['growbtn'];$('pg1').replaceChildren(...a.map(k=>CHIP[k]));$('pg2').replaceChildren(...b.map(k=>CHIP[k]));$('swipe').scrollLeft=0;dotsUpd();}
 function dotsUpd(){const k=$('swipe').scrollLeft>$('swipe').clientWidth/2?1:0;[...$('dots').children].forEach((d,i)=>d.classList.toggle('on',i===k));}
 $('swipe').addEventListener('scroll',dotsUpd,{passive:true});setDock(false);
-const unsel=()=>{sel=null;$('pop').hidden=true;$('s-pass').hidden=true;setDock(false);};$('allbtn').onclick=()=>{unsel();flyTo(fitAll(freeY()),1100);};
+const unsel=()=>{sel=null;$('join').hidden=false;$('pop').hidden=true;$('s-pass').hidden=true;setDock(false);};$('allbtn').onclick=()=>{unsel();flyTo(fitAll(freeY()),1100);};
 $('zin').onclick=()=>zoomAt(1.6);$('zout').onclick=()=>zoomAt(1/1.6);
 $('growbtn').onclick=()=>{if(growing||!N)return;growing=true;sel=null;$('pop').hidden=true;flyTo(fitMain(freeY()),500);const t0=performance.now(),ms=Math.min(9000,2500+N*0.6);const st=n=>{const k=Math.min(1,(n-t0)/ms);limit=Math.max(1,Math.round(N*k*k));draw();if(k<1)requestAnimationFrame(st);else{limit=N;growing=false;draw();}};requestAnimationFrame(st);};
 
 // ---------- Auswahl + Inselpass ----------
 const status=p=>AMT[p.name.toLowerCase()]||(p.wait?'Zieht ein, sobald die nächste Insel öffnet':p.mark?'War schon im Video':'Einwohner');
 const wo=p=>p.wait?'⛴️ wartet am Steg':p.isl.emoji+' '+p.isl.name;
-function select(p,doFly=true){sel=p;limit=N;setDock(true);
+function select(p,doFly=true){sel=p;limit=N;setDock(true);$('join').hidden=true;
  $('pop').hidden=false;$('pname').textContent=p.name;$('pinfo').textContent='Hütte Nr. '+fmt(p.nr)+' · '+wo(p);
  $('s-pass').hidden=false;
  $('ppass').innerHTML=passCard(p);
@@ -913,6 +917,7 @@ liveText();loadWx();setInterval(liveText,15000);setInterval(loadWx,15*60e3);
 addEventListener('resize',()=>{resize();});resize();
 let me=null;try{me=byName.get((localStorage.getItem('mt-me')||'').toLowerCase());}catch(e){}
 Object.assign(cam,REDUCED?fitMain(freeY()):fitAll(freeY()));draw();
+{const n=new URLSearchParams(location.search).get('n'),t=n&&byName.get(n.toLowerCase().replace(/^(?!@)/,'@'));if(t)me=t;}
 if(me){q.value=me.name;$('qx').hidden=false;setTimeout(()=>select(me),REDUCED?0:600);}
 else if(!REDUCED)setTimeout(()=>flyTo(fitMain(freeY()),2600),700);
 </script>

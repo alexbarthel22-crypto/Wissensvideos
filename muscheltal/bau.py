@@ -3,10 +3,13 @@
 
   python3 muscheltal/bau.py                     # Seite aus daten/ neu bauen
   python3 muscheltal/bau.py --import user_data_tiktok.json   # neue Follower aus TikTok-Export anhängen, dann bauen
+  python3 muscheltal/bau.py --liste Follower.txt              # komplette Followerliste (Datum/Anmeldename): neue anhängen, Entfolgte ziehen aus
   python3 muscheltal/bau.py --demo 3000 --out /tmp/demo       # Vorschau mit Testnamen (nie veröffentlichen)
 
-Reihenfolge in daten/einwohner.csv = Einwohner-Nummer. Neue Namen werden nur hinten angehängt,
-damit niemand seine Hütte verliert. Wer raus will: Zeile löschen.
+Reihenfolge in daten/einwohner.csv = Folge-Reihenfolge = Einwohner-Nr. Wer entfolgt, zieht aus und wird komplett
+aus der Liste gelöscht (Name taucht nirgends mehr auf); alle danach rücken eine Nummer auf – wer dadurch unter die Grenze einer Insel rutscht, zieht auf die vorige Insel um (in ein frei
+gewordenes Haus). Spalte „platz“ (Insel:Platz) merkt sich das Haus, damit sonst niemand umziehen muss.
+Spalte „gruender“ = 1: hat den Erfolg Gründer (die ersten 500 Follower + Ausnahmen).
 """
 import argparse, csv, datetime as dt, json, os, random, re, sys
 
@@ -32,7 +35,7 @@ def lade_csv():
 
 def speichere_csv(rows):
     with open(CSV, "w", newline="", encoding="utf-8") as f:
-        w = csv.DictWriter(f, fieldnames=["name", "datum", "markierung"])
+        w = csv.DictWriter(f, fieldnames=["name", "datum", "markierung", "platz", "gruender"], extrasaction="ignore")
         w.writeheader()
         w.writerows(rows)
 
@@ -73,6 +76,122 @@ def importiere(pfad, rows):
     return n
 
 
+def importiere_liste(pfad, rows):
+    """Komplette Followerliste im Format 'Datum: 2026-11-07 22:54:52 UTC / Anmeldename: name'.
+    Neue werden (älteste zuerst) hinten angehängt, wer fehlt, zieht aus, wer wieder folgt, zieht hinten neu ein."""
+    txt = open(pfad, encoding="utf-8").read()
+    paare = re.findall(r"Datum:\s*(\d{4})-(\d\d)-(\d\d)[ T]([\d:]+)[^\n]*\n\s*Anmeldename:\s*(\S+)", txt)
+    if len(paare) < 10:
+        sys.exit("Liste nicht erkannt (zu wenige Einträge) – nichts geändert.")
+    paare.sort(key=lambda p: p[:4])
+    drin = {p[4].lower().lstrip("@") for p in paare}
+    heute = dt.date.today()
+    weg = 0
+    for r in list(rows):  # Entfolgte ziehen aus und verschwinden komplett aus der Liste
+        if r["name"].lower().lstrip("@") not in drin:
+            rows.remove(r)
+            weg += 1
+    aktiv = {r["name"].lower().lstrip("@") for r in rows}
+    neu = 0
+    for y, m, d, _, n in paare:
+        if n.lower().lstrip("@") in aktiv:
+            continue
+        rows.append({"name": n, "datum": f"{int(d)}.{int(m)}.{y}", "markierung": "", "platz": "", "gruender": ""})
+        aktiv.add(n.lower().lstrip("@"))
+        neu += 1
+    print(f"Liste: {neu} neu eingezogen, {weg} ausgezogen (komplett gelöscht)")
+
+
+def verteile(sauber, insel):
+    """Insel je Einwohner-Nr.; jeder behält sein Haus (platz), Frei gewordene werden mit den Nachrückern
+    (nach Einwohner-Nr.) besetzt. Gibt Liste 'i:k' zurück."""
+    grenzen, s = [], 0
+    for v in insel["inseln"]:
+        s = s + v["plaetze"] if v["plaetze"] else float("inf")
+        grenzen.append(s)
+    isl = [next(i for i, g in enumerate(grenzen) if nr <= g) for nr in range(1, len(sauber) + 1)]
+    plaetze, belegt = [None] * len(sauber), {}
+    for j, r in enumerate(sauber):  # 1. Durchgang: wer auf seiner Insel bleibt, behält sein Haus
+        m = re.fullmatch(r"(\d+):(\d+)", r[3] or "")
+        if m and int(m[1]) == isl[j]:
+            k, cap = int(m[2]), insel["inseln"][isl[j]]["plaetze"] or 10 ** 9
+            if k < cap and k not in belegt.setdefault(isl[j], set()):
+                belegt[isl[j]].add(k)
+                plaetze[j] = k
+    for j in range(len(sauber)):  # 2. Durchgang: Neue und Umzügler bekommen das nächste freie Haus (nah an der Mitte)
+        if plaetze[j] is None:
+            b, k = belegt.setdefault(isl[j], set()), 0
+            while k in b:
+                k += 1
+            b.add(k)
+            plaetze[j] = k
+    return [f"{isl[j]}:{plaetze[j]}" for j in range(len(sauber))]
+
+
+def uebersicht(sauber, insel, out):
+    """einwohner.html: alle Einwohner von Muschel-Tal nach Insel, Gründer mit kleiner Münze."""
+    import html as H
+    erf = open(os.path.join(HIER, "erfolge.html"), encoding="utf-8").read()
+    head = erf[:erf.index("<style>") + len("<style>")]
+    head = head.replace("<title>Erfolge – Muschel-Tal</title>", "<title>Einwohner – Muschel-Tal</title>").replace(
+        "Alle Erfolge und Abzeichen der Bewohner von Muschel-Tal.", "Alle Einwohner von Muschel-Tal auf einen Blick.")
+    css = erf[erf.index("<style>") + len("<style>"):erf.index("</style>")]
+    keep = "\n".join(l for l in css.split("\n") if l.startswith((":root", " --f", "*{", "body{", ".top", "main{", ".cta{", ".count")))
+    m = re.search(r'<svg class="coin".*?</svg>', erf, re.S)
+    coin = re.sub(r'class="coin" ', "", m[0]) if m else ""
+    coin_uri = "data:image/svg+xml;charset=utf-8," + coin.replace("#", "%23").replace('"', "'").replace("\n", "")
+    grenzen, s = [], 0
+    for v in insel["inseln"]:
+        s = s + v["plaetze"] if v["plaetze"] else float("inf")
+        grenzen.append(s)
+    teile, start = [], 0
+    for i, v in enumerate(insel["inseln"]):
+        leute = [(j + 1, r) for j, r in enumerate(sauber) if start < j + 1 <= grenzen[i]]
+        start = grenzen[i]
+        if not leute or len(sauber) < v["ab"]:
+            continue
+        li = "".join(f'<li><a href="./?n={H.escape(r[0])}"><span class="nr">{nr}</span><b>{H.escape(r[0])}</b>{"<i class=g title=Gründer></i>" if r[4] else ""}</a></li>' for nr, r in leute)
+        teile.append(f'<section><h2>{H.escape(v["emoji"])} {H.escape(v["name"])} <small>{len(leute):,} Einwohner</small></h2><ul>{li}</ul></section>'.replace(",", "."))
+    gr = sum(1 for r in sauber if r[4])
+    seite = head + "\n" + keep + f"""
+.count{{margin-bottom:14px}}
+.such{{display:block;width:100%;border:3px solid var(--ink);border-radius:14px;padding:12px 14px;font:800 17px var(--f);margin:0 0 16px;box-shadow:3px 3px 0 var(--ink)}}
+section h2{{font-size:22px;margin:22px 0 10px;display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}}
+section h2 small{{font-size:14px;color:var(--soft)}}
+ul{{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px}}
+li a{{display:flex;align-items:center;gap:6px;background:#fff;border:2px solid #f0e2c8;border-radius:10px;padding:5px 8px;color:var(--ink);text-decoration:none;min-width:0}}
+li a:active{{background:#fff3cf}}
+li .nr{{font-size:11px;font-weight:900;color:var(--soft);min-width:26px}}
+li b{{font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}}
+li .g{{flex:none;width:16px;height:16px;background:url("{coin_uri}") center/contain no-repeat}}
+.leg{{display:flex;align-items:center;justify-content:center;gap:6px;color:var(--soft);font-weight:800;font-size:14px;margin:-6px 0 14px}}
+.leg i{{width:18px;height:18px;background:url("{coin_uri}") center/contain no-repeat}}
+.nix{{text-align:center;color:var(--soft);font-weight:800}}
+</style>
+</head>
+<body>
+<header class="top"><a href="./">← Zur Karte</a><small>MUSCHEL-TAL</small><h1>👥 Einwohner</h1><p>Alle Bewohner von Muschel-Tal – tipp einen Namen an, um zu seiner Hütte zu fliegen.</p>
+<svg viewBox="0 0 400 24" preserveAspectRatio="none"><path d="M0 14 Q25 2 50 14 T100 14 T150 14 T200 14 T250 14 T300 14 T350 14 T400 14 V24 H0Z" fill="#fff4e0"/></svg></header>
+<main>
+ <div class="count"><span>{len(sauber):,} Einwohner</span><span>{len(teile)} Inseln</span></div>
+ <p class="leg"><i></i> = Gründer ({gr:,})</p>
+ <input class="such" id="such" type="search" placeholder="Namen suchen …" autocomplete="off" autocapitalize="off" spellcheck="false">
+ {"".join(teile)}
+ <p class="nix" id="nix" hidden>Niemand gefunden – folgst du schon @muscheltal?</p>
+ <a class="cta" href="https://www.tiktok.com/@muscheltal" target="_blank" rel="noopener">➕ @muscheltal folgen und einziehen</a>
+</main>
+<script>
+const f=document.getElementById('such');f.addEventListener('input',()=>{{const t=f.value.trim().toLowerCase().replace(/^@/,'');let n=0;
+document.querySelectorAll('li').forEach(li=>{{const ok=!t||li.textContent.toLowerCase().includes(t);li.hidden=!ok;if(ok)n++;}});
+document.querySelectorAll('section').forEach(s=>s.hidden=![...s.querySelectorAll('li')].some(li=>!li.hidden));document.getElementById('nix').hidden=n>0;}});
+</script>
+</body>
+</html>
+""".replace("{len(sauber):,}", "")
+    seite = seite.replace(f"{len(sauber):,} Einwohner</span>", f"{len(sauber):,}".replace(",", ".") + " Einwohner</span>").replace(f"Gründer ({gr:,})", "Gründer (" + f"{gr:,}".replace(",", ".") + ")")
+    open(os.path.join(out, "einwohner.html"), "w", encoding="utf-8").write(seite)
+
+
 def demo_rows(n):
     rnd = random.Random(7)
     heute = dt.date.today()
@@ -92,15 +211,22 @@ def baue(rows, out):
     except Exception:
         jetzt = dt.datetime.now()
     insel["stand"] = f"{jetzt.day}. {MONATE[jetzt.month - 1]} {jetzt.year}, {jetzt:%H:%M} Uhr"
-    sauber, gesehen = [], set()
-    for r in rows:
+    sauber, gesehen, quelle = [], set(), []
+    for pos, r in enumerate(rows):
         name = norm(r.get("name", ""))
         if not name or name.lower() in gesehen:
             if r.get("name", "").strip():
                 print("übersprungen:", r.get("name"), file=sys.stderr)
             continue
         gesehen.add(name.lower())
-        sauber.append([name, (r.get("datum") or "").strip(), (r.get("markierung") or "").strip()])
+        gr = r.get("gruender")
+        sauber.append([name, (r.get("datum") or "").strip(), (r.get("markierung") or "").strip(),
+                       (r.get("platz") or "").strip(), (1 if gr.strip() == "1" else 0) if gr is not None else (1 if pos < 500 else 0)])
+        quelle.append(r)
+    plaetze = verteile(sauber, insel)
+    for j, r in enumerate(sauber):
+        r[3] = int(plaetze[j].split(":")[1])
+        quelle[j]["platz"] = plaetze[j]
     import copy
     pop = len(sauber)
     web = copy.deepcopy(insel)  # öffentliche Fassung: gesperrte/geheime Inseln ohne echten Namen
@@ -124,6 +250,7 @@ def baue(rows, out):
         quelle = os.path.join(HIER, datei)
         if os.path.exists(quelle):
             open(os.path.join(out, datei), "w", encoding="utf-8").write(open(quelle, encoding="utf-8").read())
+    uebersicht(sauber, insel, out)
     alt = os.path.join(out, "einwohner.json")
     if os.path.exists(alt):
         os.remove(alt)  # nicht mehr öffentlich (enthielt echte Inselnamen)
@@ -149,6 +276,7 @@ def baue(rows, out):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--import", dest="imp", help="TikTok-Datenexport (JSON)")
+    ap.add_argument("--liste", help="komplette Followerliste als Text (Datum + Anmeldename)")
     ap.add_argument("--demo", type=int, help="Testnamen statt echter Liste")
     ap.add_argument("--out", default=os.path.join(HIER, "site"))
     a = ap.parse_args()
@@ -157,10 +285,14 @@ def main():
             sys.exit("Demo nie nach site/ bauen – bitte --out angeben.")
         return baue(demo_rows(a.demo), a.out)
     rows = lade_csv()
+    if a.liste:
+        importiere_liste(a.liste, rows)
     if a.imp:
         importiere(a.imp, rows)
         speichere_csv(rows)
     baue(rows, a.out)
+    if os.path.abspath(a.out) == os.path.join(HIER, "site"):
+        speichere_csv(rows)  # Häuser (platz) und Auszüge merken
 
 
 if __name__ == "__main__":
