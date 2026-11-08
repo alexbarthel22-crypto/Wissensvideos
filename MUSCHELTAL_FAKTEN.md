@@ -76,6 +76,9 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - **Ankündigung: Im nächsten Video werden die ersten Gebäude gebaut und Berufe vergeben** → Homepage: Gebäude + Berufe (Muschelpass „Beruf“/„Arbeitsort“) dann füllen.
 - Frage an die Zuschauer: Was fehlt dir noch in Muschel-Tal? Kommentieren + jemanden markieren, der dein Nachbar sein soll.
 
+## Story-Bild „Umzug um 22:00“ (8.11., `videos/muscheltal-story-6/muscheltal-story-umzug.jpg`)
+- Aussage: **Heute um 22:00 ist Umzug** – wer bis 22:00 Uhr folgt, wohnt **ab morgen** mit auf der Insel. Homepage muss die neuen Follower also bis morgen (9.11.) zeigen.
+
 ## Gepostete Videos (Hauptaccount)
 - **Video 1 (gepostet): „Ich habe euch eine Insel gekauft“** – `videos/muscheltal-tag-1/variante-insel-gekauft/video.mp4` (Stand Commit 69ffe74).
   Inhalt: Insel gekauft, jeder bekommt ein eigenes Haus · „Sie heißt Muschel-Tal, mitten in der Südsee“ · Folgen = einziehen, Hütte mit Namen · 1 Einwohner = 5 Muscheln, Kontostand 0 · früher folgen = „Hauptinsel: Muschel-Tal“, 500 Plätze · ist sie voll, öffnen neue Inseln („Wann genau? Bald“) · geheime Insel am Kartenrand · ihr entscheidet in den Kommentaren · „Hütte Nr. 1 ist noch frei“.

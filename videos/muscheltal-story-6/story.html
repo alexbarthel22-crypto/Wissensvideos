@@ -1,0 +1,31 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:L;src:url(LilitaOne-Regular.woff2)}
+*{margin:0;box-sizing:border-box}
+body{width:1080px;height:1920px;overflow:hidden;background:#071a33;font-family:Inter,system-ui,sans-serif}
+.bg{position:absolute;inset:0;background:url(bg_nacht.png) center/cover;transform:scale(1.08);filter:saturate(1.15)}
+.sky{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,14,48,.96) 0%,rgba(28,24,80,.75) 20%,rgba(60,40,110,.18) 36%,rgba(0,0,0,0) 46%,rgba(0,0,0,0) 62%,rgba(20,10,50,.55) 76%,rgba(8,10,36,.92) 100%)}
+.glow{position:absolute;left:290px;top:730px;width:500px;height:500px;border-radius:50%;background:radial-gradient(rgba(255,214,140,.38),rgba(255,214,140,0) 65%)}
+.stars i{position:absolute;width:5px;height:5px;border-radius:50%;background:#fff;opacity:.8}
+.moon{position:absolute;right:130px;top:140px;width:110px;height:110px;border-radius:50%;box-shadow:-26px 14px 0 0 #fff3cc;filter:drop-shadow(0 0 22px rgba(255,236,180,.7))}
+.c{position:absolute;left:0;right:0;text-align:center}
+.tag{top:270px;margin:0 auto;width:fit-content;padding:10px 34px 14px;border-radius:999px;background:#fff;color:#0a5a92;font:400 46px L;box-shadow:0 0 0 6px #1d2147,0 10px 0 rgba(0,0,0,.3)}
+.h{top:370px;font:400 128px/1.02 L;color:#fff;-webkit-text-stroke:18px #1d2147;paint-order:stroke fill;letter-spacing:.01em}
+.h b{color:#ffd23f;font-weight:400}
+.clock{position:absolute;left:0;right:0;margin:0 auto;top:640px;width:fit-content;padding:6px 44px 14px;border-radius:40px;background:#ff6a1a;color:#fff;font:400 120px L;box-shadow:0 0 0 7px #1d2147,0 14px 0 rgba(0,0,0,.35);transform:rotate(-3deg)}
+.card{position:absolute;left:90px;right:90px;top:1300px;padding:34px 40px 40px;border-radius:44px;background:rgba(255,255,255,.96);box-shadow:0 0 0 7px #1d2147,0 16px 0 rgba(0,0,0,.35);text-align:center;color:#1d2147}
+.card p{font:800 44px/1.25 Inter,system-ui,sans-serif}
+.card p em{font-style:normal;color:#0a8a5b}
+.cta{position:absolute;left:0;right:0;margin:0 auto;top:1555px;width:fit-content;padding:12px 40px 18px;border-radius:999px;background:#e8467c;color:#fff;font:400 54px/1.1 L;text-align:center;box-shadow:0 0 0 7px #1d2147,0 12px 0 rgba(0,0,0,.35);transform:rotate(2deg)}
+.at{top:1770px;font:800 40px Inter,system-ui,sans-serif;color:#fff;opacity:.9;text-shadow:0 3px 10px rgba(0,0,0,.6)}
+.pin{position:absolute;left:0;right:0;margin:0 auto;top:880px;width:fit-content;padding:8px 26px 12px;border-radius:999px;background:rgba(29,33,71,.85);color:#ffe2a0;font:800 34px Inter,system-ui,sans-serif;border:3px solid #ffd23f}
+</style></head><body>
+<div class="bg"></div><div class="glow"></div><div class="sky"></div>
+<div class="stars" id="st"></div><div class="moon"></div>
+<div class="c tag">🐚 MUSCHEL-TAL</div>
+<div class="c h">HEUTE IST<br><b>UMZUG!</b></div>
+<div class="clock">🌙 22:00</div>
+<div class="card"><p>Wer bis <em>22:00 Uhr</em> folgt,<br>wohnt <em>ab morgen</em> direkt<br>mit auf der Insel 🏝️</p></div>
+<div class="cta">Schnell Freunden<br>Bescheid sagen 🐚🤍</div>
+<div class="c at">@muscheltal · muscheltal.de</div>
+<script>let s=7,h='';const r=()=>{s=(s*9301+49297)%233280;return s/233280};for(let i=0;i<70;i++)h+=`<i style="left:${r()*1080}px;top:${r()*330}px;opacity:${.3+r()*.7};transform:scale(${.5+r()})"></i>`;document.getElementById('st').innerHTML=h;</script>
+</body></html>
