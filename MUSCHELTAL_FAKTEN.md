@@ -77,7 +77,7 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - Frage an die Zuschauer: Was fehlt dir noch in Muschel-Tal? Kommentieren + jemanden markieren, der dein Nachbar sein soll.
 
 ## Story-Bild „Umzug um 22:00“ (8.11., `videos/muscheltal-story-6/muscheltal-story-umzug.jpg`)
-- Aussage: **Heute um 22:00 ist Umzug** – wer bis 22:00 Uhr folgt, wohnt **ab morgen** mit auf der Insel. Homepage muss die neuen Follower also bis morgen (9.11.) zeigen.
+- Aussage: **Heute um 22:00 ist Umzug** – wer bis 22:00 Uhr folgt, zieht **ab morgen in eine freie Hütte auf der Kokos-Küste** (Hintergrund: Kokos-Küste nachts, Lagerfeuer-Platz). Homepage muss die neuen Follower also bis morgen (9.11.) zeigen.
 
 ## Gepostete Videos (Hauptaccount)
 - **Video 1 (gepostet): „Ich habe euch eine Insel gekauft“** – `videos/muscheltal-tag-1/variante-insel-gekauft/video.mp4` (Stand Commit 69ffe74).
