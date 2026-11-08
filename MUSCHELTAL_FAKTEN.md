@@ -18,8 +18,9 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - Was gebaut wird, entscheiden die Zuschauer in den Kommentaren (Ideen: Beach-Bar, Club, Wolkenkratzer …).
 - Auf der Haupt-Insel gab es 8 Bauplätze; **3 sind seit 8.11. bebaut**, **5 sind noch frei** („bald: ???“):
   - **🥙 Dönerbude** (innen, nahe Muschelplatz): Leitung @lotta.fsthff, Team @alana_wbr und @em1lia.brn – alle drei wohnen in der Dönerbude.
-  - **🍹 Strandbar** (Ostküste, Deck auf Pfählen bis ins Meer): Leitung @paulepfpgfn, Team @khmr.496 – beide wohnen in der Strandbar.
+  - **🍹 Strandbar** (Ostküste, großer Steg/Deck auf Pfählen weit ins Meer): Leitung @paulepfpgfn, Team @khmr.496 – beide wohnen in der Strandbar.
   - **🏖️ Strandvilla** (Westküste, mit Infinity-Pool): wird **demnächst verlost** (Schild „🎁 bald verlost“).
+- Personal ist farbig gekennzeichnet: Dönerbude rote Shirts + weiße Schürze und rote Namensschilder, Strandbar türkis; die Leitung hat einen ⭐ vor dem Namen.
 - **Bürgermeisterin: @lillygyqcf0** (Beruf „Bürgermeisterin · Muschelpalast“). **Palast-Leitung folgt** (noch nicht vergeben).
 - Wer in einem Gebäude wohnt, hat keine Hütte mehr; dafür rücken die Nächsten nach Einwohner-Nr. auf die Haupt-Insel nach (am 8.11.: 5 Bewohner der Kokos-Küste sind auf die Haupt-Insel umgezogen). Die Haupt-Insel hat damit 500 Hütten + 5 Bewohner in Gebäuden = 505 Einwohner.
 - Dönerbude: tagsüber sitzen 6–9 Gäste an Tischen/der Theke und essen Döner, nachts 2–4; Gäste kommen und gehen. Strandbar: tagsüber 7–10 Gäste an Bar und Steg (Cocktails, Gespräche), nachts 10–14 bei einer Party mit bunten Lichtern.
