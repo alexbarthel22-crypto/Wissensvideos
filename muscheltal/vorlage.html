@@ -200,6 +200,7 @@ a.step span{color:var(--hib);font-weight:900}
 .nowbtn+.nowbtn{margin-top:10px}
 .nowbtn .btn{margin:0!important}
 .btn.wide{display:block;text-align:center;white-space:nowrap;font-size:16px;padding:12px 8px;background:var(--lagoon);color:#fff}
+#join{display:block;width:100%;max-width:520px;margin:18px auto 0;text-align:center;font-size:20px;padding:14px 18px}
 #join[hidden]{display:none}
 .nowbtn .btn{display:flex;align-items:center;justify-content:center;gap:6px;padding:10px 6px;white-space:nowrap;font-size:16px}
 .nums{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;text-align:center}
@@ -525,7 +526,7 @@ const QP=new URLSearchParams(location.search);
 const WX={code:0,wind:8,sunrise:0,sunset:0};
 {const f={sonne:0,heiter:2,wolken:3,nebel:45,regen:63,schnee:73,gewitter:95}[QP.get('wetter')];if(f!==undefined)WX.code=f,WX.fixed=1;}
 // Sonnenaufgang (Aufgang bis +30 Min.) und Sonnenuntergang (30 Min. davor bis Untergang) am eingestellten Ort
-const SUNW=45*60e3;
+const SUNW=60*60e3;
 function sunTimes(){let sr=WX.sunrise,ss=WX.sunset;if(!sr){const b=berlin(),off=Date.now()-(+b);const d=new Date(+b);d.setHours(7,45,0,0);sr=+d+off;d.setHours(16,30,0,0);ss=+d+off;}return[sr,ss];}
 function sunPhase(){const z=QP.get('zeit');if(z==='aufgang')return{k:'auf',p:+(QP.get('p')||.5)};if(z==='untergang')return{k:'unter',p:+(QP.get('p')||.5)};if(z)return{k:null,p:0};
  const now=Date.now(),[sr,ss]=sunTimes();if(now>=sr&&now<sr+SUNW)return{k:'auf',p:(now-sr)/SUNW};if(now>=ss-SUNW&&now<ss)return{k:'unter',p:(now-(ss-SUNW))/SUNW};return{k:null,p:0};}
@@ -1078,7 +1079,7 @@ function passBild(p){const W2=1080,H2=1920,cv=document.createElement('canvas');c
  return cv;}
 // Inselkasse: Grundbetrag (5 pro Einwohner) + Bonus aus geteilten Storys (Server, Netlify-Funktion)
 const WOCHE=7*864e5;let KASSE=0;
-const kasseZeigen=()=>{$('nMu').textContent=fmt(N*I.muscheln_pro_einwohner+KASSE);};
+const kasseZeigen=()=>{$('nMu').textContent=fmt(N*I.muscheln_pro_einwohner+Math.max(0,KASSE+(I.kasse_korrektur||0)));};
 fetch('/api/kasse',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(d=>{if(d&&d.bonus>=0){KASSE=d.bonus;kasseZeigen();}}).catch(()=>{});
 const shareKey=p=>'mt-story-'+p.name.toLowerCase();
 const naechster=p=>{try{return(+localStorage.getItem(shareKey(p))||0)+WOCHE;}catch(e){return 0;}};

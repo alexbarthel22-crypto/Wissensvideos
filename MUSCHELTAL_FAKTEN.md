@@ -30,7 +30,7 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - Auf der Kokos-Küste gibt es **11 Bauplätze** („bald: ???“). Einer liegt an der Nordwestküste (Richtung Haupt-Insel) und reicht auf Pfählen bis ins Wasser (dort kommt später ein Hafen – **noch geheim, nicht verraten**).
 - Die gesperrten ???-Inseln sind größer und unregelmäßig geformt.
 - Insel unten links (ab 2.001 Followern, öffentlich „???“): etwas kleiner als die Kokos-Küste, weiter weg von der Haupt-Insel, unregelmäßige Form, großer See in der Mitte mit einer kleinen Insel und Palme (dort kommt später eine Villa – **noch geheim, nicht verraten**), Schildkröten schwimmen im See.
-- **Sonnenaufgang/-untergang** wie am eingestellten Ort (Open-Meteo): Sonnenaufgang wird von Aufgang bis +45 Min. gezeigt, Sonnenuntergang 45 Min. vor Untergang bis Untergang, jeweils mit Farbverlauf. Davor/danach Nacht bzw. Tag.
+- **Sonnenaufgang/-untergang** wie am eingestellten Ort (Open-Meteo): Sonnenaufgang wird von Aufgang bis +60 Min. gezeigt, Sonnenuntergang 60 Min. vor Untergang bis Untergang, jeweils mit Farbverlauf. Davor/danach Nacht bzw. Tag.
 - Auf jeder offenen Insel stehen **Bänke** (am Platz + am Strand) und **Straßenlaternen**, die nachts leuchten – Haupt-Insel: Holzbänke + klassische Laternen; Kokos-Küste: Baumstamm-Bänke + Bambus-Laternen.
 
 ## Regeln (Seite muscheltal.de/regeln.html)
