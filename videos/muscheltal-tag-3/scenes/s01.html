@@ -1,0 +1,30 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+    .s01-st { position: absolute; width: 190px; height: 190px; border-radius: 50%; background: #fff; display: grid; place-items: center; font-size: 120px;
+      box-shadow: 0 0 0 7px #ffc93c, 0 0 0 12px #2a1b12, 0 14px 24px rgba(0,40,80,.35); }
+    .s01-ring { position: absolute; width: 190px; height: 190px; border-radius: 50%; border: 8px solid #fff; opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="s01" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s01-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div class="s01-ring" style="left:180px;top:300px"></div><div class="s01-ring" style="left:710px;top:300px"></div>
+      <div class="s01-st" id="s01-g" style="left:180px;top:300px">🎁</div><div class="s01-st" id="s01-h" style="left:710px;top:300px">🏠</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      /*__COMMON_JS__*/
+      wrapBt("#s01-stage");
+      const tl = gsap.timeline({ paused: true });
+      const sc = at("L1", "schenke"), ha = at("L1", "Haus");
+      tl.set(["#s01-g", "#s01-h"], { opacity: 1 }, 0);
+      tl.fromTo("#s01-g", { rotation: -10 }, { rotation: 10, y: -16, duration: .35, yoyo: true, repeat: 9, ease: "sine.inOut" }, 0);
+      tl.fromTo("#s01-h", { scale: 1 }, { scale: 1.25, rotation: 8, duration: .14, yoyo: true, repeat: 1, ease: "power2.out" }, ha - .02);
+      tl.to("#s01-h", { y: -16, rotation: -6, duration: .38, yoyo: true, repeat: 7, ease: "sine.inOut" }, ha + .3);
+      tl.fromTo(".s01-ring", { opacity: .9, scale: .8 }, { opacity: 0, scale: 2.2, duration: .7, ease: "power2.out", stagger: .12, immediateRender: false }, ha);
+      tl.to("#s01-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
+      window.__timelines["s01"] = tl;
+    })();
+  </script>
+</template>

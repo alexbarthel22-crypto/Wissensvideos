@@ -1,0 +1,34 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+.stk2 { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 30px 12px; border-radius: 999px; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); white-space: nowrap; }
+    #s06-t { top: 300px; font-size: 52px; background: #ff6a1a; }
+    #s06-sheet { top: 440px; }
+  </style>
+  <div id="root" data-composition-id="s06" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s06-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s06-t" class="stk2">💬 WAS FEHLT DIR NOCH?</div>
+      <div id="s06-sheet" class="tk"><div class="tk-h">Kommentare<b>×</b></div>
+        <div id="s06-c1" class="tk-c"><div class="tk-a" style="background:#ff6a1a">?</div><div><div class="tk-u">dein.name</div><div class="tk-t">ein Kino 🍿 @bestie zieh neben mich!</div><div class="tk-m">vor 2 Std.<span>Antworten</span></div></div><div class="tk-l"><div class="hz"></div><i>1.204</i></div></div>
+        <div id="s06-c2" class="tk-c"><div class="tk-a" style="background:#2e9e5b">?</div><div><div class="tk-u">dein.nachbar</div><div class="tk-t">Freibad!! 🏊 @mein.bruder du auch</div><div class="tk-m">vor 2 Std.<span>Antworten</span></div></div><div class="tk-l"><div class="hz"></div><i>873</i></div></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      /*__COMMON_JS__*/
+      wrapBt("#s06-stage");
+      const tl = gsap.timeline({ paused: true });
+      const l0 = line("L9")[0], ko = at("L9", "Kommentare"), na = at("L9", "Nachbar");
+      tl.fromTo("#s06-t", { opacity: 0, scale: 2, rotation: -8 }, { opacity: 1, scale: 1, rotation: -2, duration: .35, ease: "back.out(2.4)" }, l0);
+      tl.fromTo("#s06-sheet", { opacity: 0, y: 500 }, { opacity: 1, y: 0, duration: .45, ease: "power4.out" }, ko - .3);
+      tl.fromTo(["#s06-c1", "#s06-c2"], { opacity: 0, x: -60 }, { opacity: 1, x: 0, duration: .3, ease: "power3.out", stagger: .25 }, ko);
+      tkLike(tl, "#s06-c1", ko + .5, 1204, 1391, 1.4, 3); tkLike(tl, "#s06-c2", na, 873, 960, 1.2, 5);
+      tl.to("#s06-sheet", { rotation: 1.2, duration: .22, yoyo: true, repeat: 5, ease: "sine.inOut" }, na);
+      
+      window.__timelines["s06"] = tl;
+    })();
+  </script>
+</template>

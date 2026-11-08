@@ -1,0 +1,35 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+.stk2 { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 30px 12px; border-radius: 999px; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); white-space: nowrap; }
+    #s04-t { top: 300px; font-size: 64px; background: #ff6a1a; }
+    #s04-f { top: 430px; font-size: 46px; background: #2e9e5b; }
+    #s04-c { position: absolute; left: 0; right: 0; margin: 0 auto; top: 560px; width: fit-content; padding: 4px 36px 10px; border-radius: 36px; background: #fff; border: 6px solid #ff6a1a;
+      font-family: "Inter", sans-serif; color: #2a1b12; font-weight: 900; font-size: 40px; display: flex; align-items: baseline; gap: 14px; box-shadow: 0 10px 0 rgba(0,40,80,.3); }
+    #s04-c b { font-size: 100px; color: #ff6a1a; line-height: 1; }
+  </style>
+  <div id="root" data-composition-id="s04" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s04-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s04-t" class="stk2">🥥 KOKOS-KÜSTE</div>
+      <div id="s04-f" class="stk2">✅ Hier sind noch Häuser frei!</div>
+      <div id="s04-c"><b id="s04-n">0</b>BEWOHNER</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      /*__COMMON_JS__*/
+      wrapBt("#s04-stage");
+      const tl = gsap.timeline({ paused: true });
+      const ko = at("L5", "Kokos"), fr = at("L5", "frei"), fu = at("L6", "75");
+      tl.fromTo("#s04-t", { opacity: 0, scale: .3, rotation: -10 }, { opacity: 1, scale: 1, rotation: -2, duration: .45, ease: "back.out(2.6)" }, ko - .1);
+      tl.fromTo("#s04-f", { opacity: 0, y: -30 }, { opacity: 1, y: 0, duration: .35, ease: "back.out(2)" }, fr - .3);
+      tl.to("#s04-f", { scale: 1.06, duration: .25, yoyo: true, repeat: 3, ease: "sine.inOut" }, fr + .2);
+      tl.fromTo("#s04-c", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, fu - .5);
+      count(tl, "#s04-n", 0, 75, fu - .4, .9);
+      tl.to("#s04-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
+      window.__timelines["s04"] = tl;
+    })();
+  </script>
+</template>

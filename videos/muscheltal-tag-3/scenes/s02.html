@@ -1,0 +1,28 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+.stk2 { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 30px 12px; border-radius: 999px; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); white-space: nowrap; }
+    #s02-t { top: 300px; font-size: 54px; background: #ff6a1a; }
+    #s02-n { top: 430px; font-size: 46px; background: #e8467c; }
+  </style>
+  <div id="root" data-composition-id="s02" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s02-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s02-t" class="stk2">🌴 MUSCHEL-TAL</div>
+      <div id="s02-n" class="stk2">🏠 Jede Hütte = ein @Name</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      /*__COMMON_JS__*/
+      wrapBt("#s02-stage");
+      const tl = gsap.timeline({ paused: true });
+      tl.fromTo("#s02-t", { opacity: 0, y: -80 }, { opacity: 1, y: 0, duration: .45, ease: "back.out(2)" }, line("L2")[0]);
+      tl.to("#s02-t", { rotation: 2, duration: .4, yoyo: true, repeat: 3, ease: "sine.inOut" }, line("L2")[0] + .6);
+      tl.fromTo("#s02-n", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .4, ease: "back.out(2.6)" }, line("L3")[0] + .2);
+      tl.to("#s02-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
+      window.__timelines["s02"] = tl;
+    })();
+  </script>
+</template>

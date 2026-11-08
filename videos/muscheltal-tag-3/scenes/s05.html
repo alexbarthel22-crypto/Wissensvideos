@@ -1,0 +1,46 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+.stk2 { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 30px 12px; border-radius: 999px; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); white-space: nowrap; }
+    .fbtn { position: absolute; left: 0; right: 0; margin: 0 auto; width: 420px; height: 120px; border-radius: 60px; background: #fe2c55; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 56px; display: grid; place-items: center; box-shadow: 0 0 0 5px #2a1b12, 0 12px 0 rgba(0,0,0,.25); }
+    .fbtn2 { position: absolute; inset: 0; border-radius: 60px; background: #fff; color: #0a78c2; display: grid; place-items: center; opacity: 0; }
+    .fhand { position: absolute; font-size: 120px; }
+    #s05-t { top: 300px; font-size: 52px; background: #e8467c; }
+    .s05-k { position: absolute; top: 420px; width: 400px; height: 250px; border-radius: 34px; background: #fff; box-shadow: 0 0 0 6px #2a1b12, 0 14px 0 rgba(0,0,0,.35); overflow: hidden; text-align: center; font-family: "Inter", sans-serif; }
+    .s05-k .e { height: 160px; display: grid; place-items: center; font-size: 110px; background: linear-gradient(180deg, #bfefff, #fff); }
+    .s05-k .l { height: 90px; display: grid; place-items: center; font-weight: 900; font-size: 38px; color: #fff; }
+    #s05-btn { top: 760px; } #s05-hand { left: 690px; top: 810px; }
+  </style>
+  <div id="root" data-composition-id="s05" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s05-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s05-t" class="stk2">🎬 IM NÄCHSTEN VIDEO</div>
+      <div class="s05-k" id="s05-k1" style="left:90px"><div class="e">🏗️</div><div class="l" style="background:#ff6a1a">ERSTE GEBÄUDE</div></div>
+      <div class="s05-k" id="s05-k2" style="left:590px"><div class="e">👷</div><div class="l" style="background:#2e9e5b">BERUFE</div></div>
+      <div id="s05-btn" class="fbtn">+ Folgen<div id="s05-btn2" class="fbtn2">✓ Gefolgt</div></div>
+      <div id="s05-hand" class="fhand" data-layout-ignore>👆</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      /*__COMMON_JS__*/
+      wrapBt("#s05-stage");
+      const tl = gsap.timeline({ paused: true });
+      const ge = at("L7", "Gebäude"), be = at("L7", "Berufe"), fo = at("L8", "folgen");
+      tl.fromTo("#s05-t", { opacity: 0, y: -80 }, { opacity: 1, y: 0, duration: .4, ease: "back.out(2)" }, line("L7")[0]);
+      tl.fromTo("#s05-k1", { opacity: 0, scale: 0, rotation: -14 }, { opacity: 1, scale: 1, rotation: -3, duration: .45, ease: "back.out(2.2)" }, ge - .1);
+      tl.fromTo("#s05-k2", { opacity: 0, scale: 0, rotation: 14 }, { opacity: 1, scale: 1, rotation: 3, duration: .45, ease: "back.out(2.2)" }, be - .1);
+      tl.to(["#s05-k1", "#s05-k2"], { y: -14, duration: .3, yoyo: true, repeat: 5, ease: "sine.inOut", stagger: .15 }, be + .5);
+      tl.fromTo("#s05-btn", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, fo - .9);
+      tl.fromTo("#s05-hand", { opacity: 0, x: 160, y: 160 }, { opacity: 1, x: 0, y: 0, duration: .3, ease: "power3.out" }, fo - .4);
+      tl.to("#s05-hand", { y: -26, scale: .9, duration: .1, yoyo: true, repeat: 1 }, fo - .05);
+      tl.to("#s05-btn2", { opacity: 1, duration: .05 }, fo + .05);
+      tl.fromTo("#s05-btn", { scale: 1 }, { scale: 1.15, duration: .12, yoyo: true, repeat: 1 }, fo + .05);
+      tl.to("#s05-hand", { opacity: 0, duration: .25 }, fo + .6);
+      tl.to("#s05-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
+      window.__timelines["s05"] = tl;
+    })();
+  </script>
+</template>

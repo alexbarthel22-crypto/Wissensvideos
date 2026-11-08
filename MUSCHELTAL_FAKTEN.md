@@ -70,6 +70,12 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - Hintergrund des Videos = Aufnahme der echten Homepage.
 - Video-Hinweis bei der Kokos-Küste: „Hier ziehen die nächsten Follower ein!“
 
+## Video 3 „Ich schenke dir ein Haus“ (fertig 8.11., `videos/muscheltal-tag-3/renders/muscheltal-tag-3.mp4`, 38 s)
+- Rundgang über die Homepage: Muschel-Tal = ganze Inselwelt aus Followern, jede Hütte hat einen @Namen, Folgen = einziehen.
+- **Der nächste Bewohner zieht auf die Kokos-Küste, dort sind noch Häuser frei**; dort wohnen 75.
+- **Ankündigung: Im nächsten Video werden die ersten Gebäude gebaut und Berufe vergeben** → Homepage: Gebäude + Berufe (Muschelpass „Beruf“/„Arbeitsort“) dann füllen.
+- Frage an die Zuschauer: Was fehlt dir noch in Muschel-Tal? Kommentieren + jemanden markieren, der dein Nachbar sein soll.
+
 ## Gepostete Videos (Hauptaccount)
 - **Video 1 (gepostet): „Ich habe euch eine Insel gekauft“** – `videos/muscheltal-tag-1/variante-insel-gekauft/video.mp4` (Stand Commit 69ffe74).
   Inhalt: Insel gekauft, jeder bekommt ein eigenes Haus · „Sie heißt Muschel-Tal, mitten in der Südsee“ · Folgen = einziehen, Hütte mit Namen · 1 Einwohner = 5 Muscheln, Kontostand 0 · früher folgen = „Hauptinsel: Muschel-Tal“, 500 Plätze · ist sie voll, öffnen neue Inseln („Wann genau? Bald“) · geheime Insel am Kartenrand · ihr entscheidet in den Kommentaren · „Hütte Nr. 1 ist noch frei“.

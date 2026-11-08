@@ -1,0 +1,216 @@
+{
+ "title": "Muschel-Tal – Ich schenke dir ein Haus",
+ "voice": "Gemini TTS (gemini-3.1-flash-tts-preview, Stimme Achird), natürlich und emotional, --speed 1.12",
+ "notes": "Video 3: Haus geschenkt, Rundgang über die Homepage (Haupt-Insel, Kokos-Küste), nächster Bewohner -> Kokos-Küste, nächstes Video: erste Gebäude + Berufe, Frage: Was fehlt dir? + Nachbarn markieren.",
+ "lead_in": 0.0,
+ "bg": "#0a5a92",
+ "captions": {
+  "pop": true,
+  "first_at_zero": true,
+  "left": 60,
+  "right": 190,
+  "size": 92,
+  "bars": true,
+  "color": "rgba(255,255,255,.62)",
+  "first_class": "hook",
+  "css": "@font-face { font-family: 'Lilita One'; src: url('assets/fonts/LilitaOne-Regular.woff2') format('woff2'); font-weight: 400; }\n    .inner.hook { font-family: 'Lilita One', sans-serif; font-weight: 400; font-size: 98px; line-height: 1.12; letter-spacing: .01em; top: -560px; }\n    .inner.hook .bar { background: #ff3d7f !important; padding: .02em .3em .08em; border-radius: .5em; }\n    .inner.hook .w { color: #fff; }\n    .inner .bar .w { margin: 0 .07em; }\n    .inner .bar { border-radius: .55em; padding: .04em .36em .1em; }\n    .inner .w { white-space: nowrap; }\n    .inner.hook .w { display: inline-block; transform-origin: 50% 70%; }\n    .inner.hook .bar { background: none !important; box-shadow: none !important; padding: 0; }\n    .inner.hook .w { background: #ff3d7f; border-radius: .3em; padding: .02em .16em .1em; margin: .07em .03em; box-shadow: 0 0 0 0px #2a1b12, 0 8px 0 rgba(0,0,0,.28); position: relative; transform-origin: 50% 55%; }\n    #cgi0 .w:first-child { font-size: 1.12em; margin-bottom: .14em; }\n    .inner.hook .w.k-y { position: relative; z-index: 2; }\n    .inner.hook { left: 40px; right: 40px; }\n    #cgi0 .w { margin: .1em .1em; }",
+  "vary": true,
+  "pop_scale": 1.2,
+  "bar_colors": [
+   "#e8467c",
+   "#ff6a1a",
+   "#7b3fe0",
+   "#e8433c",
+   "#2e9e5b",
+   "#d4469c"
+  ],
+  "merge_first": 2,
+  "first_full": true,
+  "first_scale": 1.12,
+  "first_scale_map": {
+   "HAUS": 1.25
+  },
+  "hook_groups": 1
+ },
+ "scenes": [
+  {
+   "id": "s01",
+   "tag": "",
+   "lines": [
+    {
+     "id": "L1",
+     "text": "Ich *y:schenke dir ein *y:Haus / auf meiner *p:Insel!",
+     "style": "Style: a real young man, excited and generous, like giving a friend a big surprise gift, huge smile, natural not theatrical.\nPace: fast.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+     "speed": 1.12
+    }
+   ],
+   "sfx": [
+    {
+     "name": "notification",
+     "at": "s01+0.0",
+     "volume": 0.3
+    },
+    {
+     "name": "ka-ching",
+     "at": "L1:Haus",
+     "volume": 0.55
+    }
+   ]
+  },
+  {
+   "id": "s02",
+   "tag": "",
+   "lines": [
+    {
+     "id": "L2",
+     "text": "Das ist *c:Muschel-Tal: / eine ganze *b:Inselwelt, / die nur aus *g:euch besteht.",
+     "speed": 1.0,
+     "pause": 0.9
+    },
+    {
+     "id": "L3",
+     "text": "Jede Hütte hier / gehört einem Follower / mit *y:seinem *y:Namen.",
+     "speed": 1.0,
+     "pause": 0.7
+    }
+   ],
+   "sfx": [
+    {
+     "name": "whoosh-short",
+     "at": "L2:Das",
+     "volume": 0.3
+    },
+    {
+     "name": "pop",
+     "at": "L3:Namen",
+     "volume": 0.4
+    }
+   ]
+  },
+  {
+   "id": "s03",
+   "tag": "",
+   "lines": [
+    {
+     "id": "L4",
+     "text": "Du willst *y:auch eins? / Dann *p:folg *p:mir / und zieh auf eine der *b:Inseln!",
+     "speed": 1.0,
+     "pause": 0.7
+    }
+   ],
+   "sfx": [
+    {
+     "name": "click",
+     "at": "L4:folg",
+     "volume": 0.55
+    }
+   ]
+  },
+  {
+   "id": "s04",
+   "tag": "",
+   "lines": [
+    {
+     "id": "L5",
+     "text": "Der nächste Bewohner / zieht auf die *b:Kokos-Küste. / Dort sind noch *g:Häuser *g:frei!",
+     "speed": 1.0,
+     "pause": 1.2
+    },
+    {
+     "id": "L6",
+     "text": "Hier wohnen schon / *y:75|fünfundsiebzig von euch!",
+     "speed": 1.0,
+     "pause": 0.5
+    }
+   ],
+   "sfx": [
+    {
+     "name": "whoosh",
+     "at": "L5:Kokos-0.4",
+     "volume": 0.35
+    },
+    {
+     "name": "ping",
+     "at": "L5:Kokos",
+     "volume": 0.4
+    }
+   ]
+  },
+  {
+   "id": "s05",
+   "tag": "",
+   "lines": [
+    {
+     "id": "L7",
+     "text": "Im *y:nächsten *y:Video / werden die ersten *g:Gebäude gebaut / und *g:Berufe vergeben!",
+     "speed": 1.0,
+     "pause": 1.0
+    },
+    {
+     "id": "L8",
+     "text": "Also: *p:folgen / und *p:einziehen!",
+     "speed": 1.0,
+     "pause": 0.4
+    }
+   ],
+   "sfx": [
+    {
+     "name": "pop",
+     "at": "L7:Gebäude",
+     "volume": 0.4
+    },
+    {
+     "name": "pop",
+     "at": "L7:Berufe",
+     "volume": 0.4
+    },
+    {
+     "name": "click",
+     "at": "L8:folgen",
+     "volume": 0.5
+    }
+   ]
+  },
+  {
+   "id": "s06",
+   "tag": "",
+   "hold": 2.0,
+   "lines": [
+    {
+     "id": "L9",
+     "text": "Was fehlt dir noch / in *c:Muschel-Tal? / Schreib's in die *y:Kommentare / und markier jemanden, / der dein *g:Nachbar sein soll!",
+     "style": "Style: a real young man, curious and friendly, asking the viewers directly, motivating, natural not theatrical.\nPace: fast.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+     "speed": 1.0,
+     "pause": 0.8
+    }
+   ],
+   "sfx": [
+    {
+     "name": "pop",
+     "at": "L9:Kommentare",
+     "volume": 0.4
+    },
+    {
+     "name": "ping",
+     "at": "L9:Nachbar",
+     "volume": 0.4
+    }
+   ]
+  }
+ ],
+ "style": "Style: a real, natural-sounding young man telling his friends something he is genuinely excited about. Conversational, warm, honest emotion in the voice, not like an announcer or an advertisement. Emphasize the important words naturally.\nPace: brisk but natural.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+ "loudness": -11,
+ "pitch": 0,
+ "music": {
+  "src": "assets/music/suedsee.wav",
+  "volume": 1,
+  "note": "tools/make_music_tropical.py, im Code erzeugt (lizenzfrei), unter der Stimme automatisch leiser"
+ },
+ "bgvideo": {
+  "src": "assets/bg.mp4"
+ },
+ "ambience": {
+  "src": "assets/music/atmo.wav",
+  "volume": 1
+ }
+}
