@@ -272,19 +272,21 @@ def bauprojekte(sauber, insel, out):
     css = erf[erf.index("<style>") + len("<style>"):erf.index("</style>")]
     keep = "\n".join(l for l in css.split("\n") if l.startswith((":root", " --f", "*{", "body{", ".top", "main{", ".cta{")))
     n = len(sauber)
+    tz = lambda x: f"{x:,}".replace(",", ".")
     teile = []
     for b in sorted([b for b in insel.get("baustellen", []) if n < b["ziel"]], key=lambda b: b["ziel"]):
         pr = min(100, round(n * 100 / b["ziel"]))
         ort = "am Steg der Haupt-Insel, weit ins Meer" if b.get("ort") == "steg" else "auf der " + (insel["inseln"][int(b["key"].split(":")[0])]["name"] if b.get("key") else "Haupt-Insel")
         teile.append(f'''<a class="bp" href="./?ort={quote(b["name"])}"><div class="kopf"><span class="em">{H.escape(b.get("emoji", "🏗️"))}</span><div><b>{H.escape(b["name"])}</b><small>{H.escape(ort)}</small></div></div>
-<div class="bar"><i style="width:{pr}%"></i></div><div class="zl"><span>{n:,} von {b["ziel"]:,} Bewohnern</span><span>noch {b["ziel"] - n:,}</span></div><u>📍 Auf der Karte ansehen →</u></a>'''.replace(",", "."))
+<div class="bar"><i style="width:{pr}%"></i></div><div class="zl"><span>{tz(n)} von {tz(b["ziel"])} Bewohnern</span><span>noch {tz(b["ziel"] - n)}</span></div><u>📍 Auf der Karte ansehen →</u></a>''')
     leer = '<p class="hint">Gerade wird nichts gebaut. Neue Projekte kommen bald!</p>' if not teile else ""
     seite = head + "\n" + keep + """
 .hint{background:#fff;border:3px dashed var(--ink);border-radius:18px;padding:14px;margin:4px 0 18px;font-weight:800;text-align:center}
 .bp{display:block;background:#fff;border:3px solid var(--ink);border-radius:20px;padding:14px;margin-bottom:14px;box-shadow:4px 4px 0 var(--ink);color:var(--ink);text-decoration:none}
 .kopf{display:flex;align-items:center;gap:12px}
 .em{font-size:34px;line-height:1}
-.kopf b{display:block;font-size:22px;font-weight:900}
+.kopf{min-width:0}.kopf>div{min-width:0}
+.kopf b{display:block;font-size:min(22px,5.6vw);font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .kopf small{display:block;font-size:14px;font-weight:800;color:#7a5a2b}
 .bar{height:14px;background:#f0e2c8;border:2px solid var(--ink);border-radius:999px;overflow:hidden;margin:12px 0 6px}
 .bar i{display:block;height:100%;background:#2e9e5b}
