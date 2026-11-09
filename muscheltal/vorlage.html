@@ -625,14 +625,14 @@ function palace(c,T,label){
 }
 
 // ---------- Kamera ----------
-const cv=$('map'),ctx=cv.getContext('2d'),base=document.createElement('canvas'),bx=base.getContext('2d');
+const cv=$('map'),ctx=cv.getContext('2d'),base=document.createElement('canvas'),bx=base.getContext('2d'),fgc=document.createElement('canvas'),fx=fgc.getContext('2d');let fgOn=false;
 let W=0,H=0,DPR=1,T=0,baseKey='',selT=0,selN=0,selStop=null,selStopN=-1;
 const cam={x:0,y:0,z:1},NAMES=[],TAPS=[];let sel=null,limit=N,growing=false;
 // freier Kartenbereich zwischen Suchfeld und Knopfleiste (Bildschirm-y oben/unten)
 function freeY(){const h=$('hero').getBoundingClientRect(),t=Math.max($('q').getBoundingClientRect().bottom,$('pop').hidden?0:$('pop').getBoundingClientRect().bottom)-h.top+10,b=$('dock').getBoundingClientRect().top-h.top-10;return b-t>120?[t,b]:[0,H];}
 function fitMain(fr){const r=MAIN.R+25;if(!fr){const z=Math.min(W/(2*r),(H-270)/(2*r*.92));return{x:0,y:-10/z,z};}const [t,b]=fr,z=Math.min((W-20)/(2*r),(b-t)/(2*r*.92));return{x:0,y:(H/2-(t+b)/2)/z,z};}
 function fitAll(fr){const w=BOX.x1-BOX.x0,h=BOX.y1-BOX.y0;if(!fr){const z=Math.min((W-80)/w,(H-230)/h);return{x:(BOX.x0+BOX.x1)/2+34/z,y:(BOX.y0+BOX.y1)/2-12/z,z};}const [t,b]=fr,z=Math.min((W-40)/w,(b-t)/h);return{x:(BOX.x0+BOX.x1)/2,y:(BOX.y0+BOX.y1)/2+(H/2-(t+b)/2)/z,z};}
-function resize(){const b=cv.getBoundingClientRect();DPR=Math.min(2,window.devicePixelRatio||1);W=b.width;H=b.height;cv.width=base.width=W*DPR|0;cv.height=base.height=H*DPR|0;baseKey='';draw();}
+function resize(){const b=cv.getBoundingClientRect();DPR=Math.min(2,window.devicePixelRatio||1);W=b.width;H=b.height;cv.width=base.width=fgc.width=W*DPR|0;cv.height=base.height=fgc.height=H*DPR|0;baseKey='';draw();}
 const s2w=(x,y)=>[(x-W/2)/cam.z+cam.x,(y-H/2)/cam.z+cam.y];
 const world=c=>c.setTransform(DPR*cam.z,0,0,DPR*cam.z,DPR*(W/2-cam.x*cam.z),DPR*(H/2-cam.y*cam.z));
 
@@ -786,6 +786,11 @@ function drawBase(){
  const [x0,y0]=s2w(-40,-40),[x1,y1]=s2w(W+40,H+40),vis=(x,y)=>x>x0&&x<x1&&y>y0&&y<y1;
  c.fillStyle='#3fa9c0';if(!GROWV){xmShape(c,30);c.fill();c.fillStyle='#e9f3f7';xmShape(c,6);c.fill();c.fillStyle='#ffffff';xmShape(c,0);c.fill();}
  for(const v of ISL){const m=v.R+70;if(v.x+m<x0||v.x-m>x1||v.y+m<y0||v.y-m>y1)continue;if(GROWV&&v!==GROWV)continue;drawIsland(c,v,vis,z);}
+ // Küstenhütten als eigene Ebene (liegt über Wellen/Krabben) – einmal je Ansicht statt in jedem Bild
+ fx.setTransform(1,0,0,1,0,0);fx.clearRect(0,0,fgc.width,fgc.height);fgOn=false;
+ if(S*z>=7){world(fx);const K2=kind(),wet=K2==='rain'||K2==='storm',snow=K2==='snow';for(const v of ISL){if(!v.open||(GROWV&&v!==GROWV))continue;
+  if(!v.coastHuts)v.coastHuts=v.people.filter(q=>{if(!q.p)return false;const lx=q.p.x-v.x,ly=(q.p.y-v.y)/.92;return coastAt(v,Math.atan2(ly,lx))-Math.hypot(lx,ly)<40;});
+  for(const q of v.coastHuts)if(q.nr<=limit&&vis(q.p.x,q.p.y)){hutBody(fx,v,q,S*z,wet,snow);fgOn=true;}}}
 }
 
 // ---------- Bewegte Ebene: Figuren & Effekte ----------
@@ -1058,9 +1063,13 @@ function rathaus(c){c.save();c.scale(PAL_S,PAL_S);const ink='#2a1b12',gold='#e0a
   c.fillStyle='#e2d3b0';c.beginPath();c.roundRect(gx-w/2-1.2,y0-1.2,w+2.4,h+2.4,3);c.fill();c.strokeStyle='rgba(120,95,60,.6)';c.lineWidth=.3;c.stroke();
   c.fillStyle='#6b4a2e';c.beginPath();c.roundRect(gx-w/2,y0,w,h,2);c.fill();c.fillStyle='rgba(40,25,10,.25)';for(let k=0;k<10;k++){c.beginPath();c.arc(gx-w/2+1+hash(k,71+s)*(w-2),y0+1+hash(k,72+s)*(h-2),.3,0,TAU);c.fill();}
   const ROWS=s<0?[['#e8467c','#ff9cc0'],['#fff7f0','#ffd23f'],['#b48cff','#e3d4ff']]:[['#ff8a4c','#ffd23f'],['#e8467c','#fff'],['#ffd23f','#ff8a4c']];
-  for(let r=0;r<3;r++){const y=y0+2.6+r*3.1;for(let k=0;k<7;k++){const x=gx-w/2+2+k*3+(r%2)*1.4;if(x>gx+w/2-1.4)continue;const sw=REDUCED?0:Math.sin(t*1.6+k+r)*.15;
-    c.fillStyle='#2f7d36';c.beginPath();c.ellipse(x,y+.9,1.5,.7,0,0,TAU);c.fill();c.fillStyle='#4fa84f';c.beginPath();c.ellipse(x-.6,y+.5,.9,.45,-.6,0,TAU);c.ellipse(x+.6,y+.5,.9,.45,.6,0,TAU);c.fill();
-    const [pc,cc]=ROWS[r];for(const [ox,oy] of[[-.6,-.1],[.5,-.4],[0,-.9]]){const fx=x+ox+sw,fy=y+oy;c.fillStyle=pc;for(let q=0;q<5;q++){const a=q/5*TAU;c.beginPath();c.arc(fx+Math.cos(a)*.42,fy+Math.sin(a)*.32,.32,0,TAU);c.fill();}c.fillStyle=cc;c.beginPath();c.arc(fx,fy,.2,0,TAU);c.fill();}}}}
+  // sparsam: je Reihe und Farbe ein einziger Pfad (gleiches Bild, viel weniger Zeichenaufrufe)
+  for(let r=0;r<3;r++){const y=y0+2.6+r*3.1,xs=[];for(let k=0;k<7;k++){const x=gx-w/2+2+k*3+(r%2)*1.4;if(x<=gx+w/2-1.4)xs.push([x,REDUCED?0:Math.sin(t*1.6+k+r)*.15]);}
+   c.fillStyle='#2f7d36';c.beginPath();for(const [x] of xs){c.moveTo(x+1.5,y+.9);c.ellipse(x,y+.9,1.5,.7,0,0,TAU);}c.fill();
+   c.fillStyle='#4fa84f';c.beginPath();for(const [x] of xs){c.moveTo(x-.6+.9*Math.cos(-.6),y+.5+.9*Math.sin(-.6));c.ellipse(x-.6,y+.5,.9,.45,-.6,0,TAU);c.moveTo(x+.6+.9*Math.cos(.6),y+.5+.9*Math.sin(.6));c.ellipse(x+.6,y+.5,.9,.45,.6,0,TAU);}c.fill();
+   const [pc,cc]=ROWS[r],FL=[[-.6,-.1],[.5,-.4],[0,-.9]];
+   c.fillStyle=pc;c.beginPath();for(const [x,sw] of xs)for(const [ox,oy] of FL){const fx=x+ox+sw,fy=y+oy;for(let q=0;q<5;q++){const a=q/5*TAU,px=fx+Math.cos(a)*.42,py=fy+Math.sin(a)*.32;c.moveTo(px+.32,py);c.arc(px,py,.32,0,TAU);}}c.fill();
+   c.fillStyle=cc;c.beginPath();for(const [x,sw] of xs)for(const [ox,oy] of FL){const fx=x+ox+sw,fy=y+oy;c.moveTo(fx+.2,fy);c.arc(fx,fy,.2,0,TAU);}c.fill();}}
  // Seitenflügel
   for(const s of[-1,1]){const x0=s>0?44:-70,w=26;c.fillStyle='rgba(60,40,20,.25)';c.fillRect(x0+3,20,w,6);
   const g=c.createLinearGradient(0,-4,0,22);g.addColorStop(0,'#fffaf0');g.addColorStop(1,'#eadcbc');c.fillStyle=g;c.strokeStyle=ink;c.lineWidth=.8;c.fillRect(x0,-2,w,24);c.strokeRect(x0,-2,w,24);
@@ -1159,9 +1168,7 @@ function draw(){
    if(tl<.6&&t>.84){c.fillStyle=`rgba(235,248,255,${.8*(1-tl)})`;for(let i=0;i<5;i++){c.beginPath();c.arc(-9.6+(i-2)*1.6,-h*.5-1-Math.abs(i-2)*.6,.6,0,TAU);c.fill();}}}
   c.restore();}
  // Wellen/Krabben dürfen nicht über Hütten an der Küste liegen: diese Hütten darüber neu zeichnen
- if(z*S>=7){const K2=kind(),wet=K2==='rain'||K2==='storm',snow=K2==='snow';for(const v of ISL){if(!v.open||!visR(v.x,v.y,v.R+60)||(GROWV&&v!==GROWV))continue;
-  if(!v.coastHuts)v.coastHuts=v.people.filter(q=>{if(!q.p)return false;const lx=q.p.x-v.x,ly=(q.p.y-v.y)/.92;return coastAt(v,Math.atan2(ly,lx))-Math.hypot(lx,ly)<40;});
-  for(const q of v.coastHuts)if(q.nr<=limit&&vis(q.p.x,q.p.y))hutBody(c,v,q,S*z,wet,snow);}}
+ if(fgOn){c.setTransform(1,0,0,1,0,0);c.drawImage(fgc,0,0);world(c);}
  for(const [j,x,y,dx] of JD){const L=j.L,bob=REDUCED?0:-Math.abs(Math.sin(T*7+j.i))*.6;c.fillStyle='rgba(30,40,20,.22)';c.beginPath();c.ellipse(x,y+4.4,2.4,.8,0,0,TAU);c.fill();c.save();c.translate(x,y+bob);if(dx<0)c.scale(-1,1);person(c,L,REDUCED?0:Math.sin(T*14+j.i)*1.5,false,0);c.restore();hutsFront(c,x,y);
   TAPS.push([x,y,j.q]);if(z*S>30)NAMES.push([j.q.name,x,y-11.2*L.h-1]);}
  // Spaziergänger: einige Einwohner laufen mit ihrem @Namen über die Wege
@@ -1250,7 +1257,7 @@ function draw(){
  drawWalker(c,z);
  // Namen ganz oben: nichts (Bäume, Palast, Wolken, Nacht) darf sie verdecken
  const GSP=sel&&sel.p&&(sel.gb||REDUCED||T-selT<2)?standSpot(sel):null,near=(x,y)=>GSP&&Math.abs(x-GSP.x)<16&&y>GSP.y-26&&y<GSP.y+10;
- if(z*S>44){c.font='800 2.35px '+FONT;c.textAlign='center';for(const v of ISL){if(!visR(v.x,v.y,v.R+40))continue;for(const q of v.people){if(q.nr>limit||!q.p||q===sel||!vis(q.p.x,q.p.y)||near(q.p.x,q.p.y+10)||(WK.on&&Math.abs(q.p.x-WK.x)<14&&q.p.y+10>WK.y-15&&q.p.y+10<WK.y+6))continue;const x=q.p.x,y=q.p.y,nm=q.name,tw0=c.measureText(nm).width,fs=tw0>17?2.35*17/tw0:2.35,w=tw0*fs/2.35+2.4;
+ if(z*S>44){c.font='800 2.35px '+FONT;c.textAlign='center';for(const v of ISL){if(!visR(v.x,v.y,v.R+40))continue;for(const q of v.people){if(q.nr>limit||!q.p||q===sel||!vis(q.p.x,q.p.y)||near(q.p.x,q.p.y+10)||(WK.on&&Math.abs(q.p.x-WK.x)<14&&q.p.y+10>WK.y-15&&q.p.y+10<WK.y+6))continue;const x=q.p.x,y=q.p.y,nm=q.name,tw0=q.tw0||(q.tw0=c.measureText(nm).width),fs=tw0>17?2.35*17/tw0:2.35,w=tw0*fs/2.35+2.4;
   c.fillStyle=isMayor(q)?'#ffd23f':'rgba(255,255,255,.94)';c.beginPath();c.roundRect(x-w/2,y+8.6,w,3.7,1.8);c.fill();c.fillStyle='#2a1b12';if(fs<2.35){c.font='800 '+fs+'px '+FONT;c.fillText(nm,x,y+10.45+fs*.4);c.font='800 2.35px '+FONT;}else c.fillText(nm,x,y+11.4);}}}
   if(NAMES.length){c.font='800 2.8px '+FONT;c.textAlign='center';for(const [nm0,x,ly,bg,fs,tc] of [...NAMES.filter(n=>n[3]!=='#e8467c'),...NAMES.filter(n=>n[3]==='#e8467c')]){if(nm0!==(sel&&sel.name)&&near(x,ly))continue;let f=fs||2.8;const nm=nm0;c.font='800 '+f+'px '+FONT;{const mw=fs?16:24,tw1=c.measureText(nm).width;if(tw1>mw){f=f*mw/tw1;c.font='800 '+f+'px '+FONT;}}const tw=c.measureText(nm).width+f*1.07;c.fillStyle=bg||'rgba(42,27,18,.85)';c.beginPath();c.roundRect(x-tw/2,ly,tw,f*1.5,f*.75);c.fill();c.fillStyle=tc||'#fff';c.fillText(nm,x,ly+f*1.1);}}
  if(z*S>4)for(const b of BAU)if(bauOn(b)&&visR(b.steg?b.sx:b.cx,b.steg?b.sy:b.y0,60))drawBauSign(c,b);
@@ -1413,7 +1420,9 @@ fetch('/api/kasse',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(d=>{if(d
 const shareKey=p=>'mt-story-'+p.name.toLowerCase();
 const naechster=p=>{try{return(+localStorage.getItem(shareKey(p))||0)+WOCHE;}catch(e){return 0;}};
 const datum=t=>new Date(t).toLocaleDateString('de-DE',{day:'numeric',month:'numeric'});
-function bonUpd(p){const n=naechster(p),e=$('mpbon');if(n>Date.now()){e.className='bon done';e.textContent='✅ Deine 50 Muscheln sind in der Inselkasse · nächster Bonus ab '+datum(n);}else{e.className='bon';e.textContent='🐚 +50 Muscheln für die Inselkasse – alle 7 Tage möglich';}}
+// Story-Bonus-Stand der Person vom Server holen (gilt auf allen Geräten), einmal je Person und Besuch
+const BONH=new Set();function bonHol(p){const k=p.name.toLowerCase();if(BONH.has(k))return;BONH.add(k);fetch('/api/kasse?name='+encodeURIComponent(k),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(d=>{if(d&&d.naechstes>0){try{localStorage.setItem(shareKey(p),String(d.naechstes-WOCHE));}catch(e){}if(mpP===p)bonUpd(p);}}).catch(()=>{});}
+function bonUpd(p){bonHol(p);const n=naechster(p),e=$('mpbon');if(n>Date.now()){e.className='bon done';e.textContent='✅ Deine 50 Muscheln sind in der Inselkasse · nächster Bonus ab '+datum(n);}else{e.className='bon';e.textContent='🐚 +50 Muscheln für die Inselkasse – alle 7 Tage möglich';}}
 async function bonus(p){if(naechster(p)>Date.now())return;
  try{const r=await fetch('/api/kasse',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({name:p.name})});const d=await r.json();
   if(d.naechstes)try{localStorage.setItem(shareKey(p),String(d.naechstes-WOCHE));}catch(e){}
