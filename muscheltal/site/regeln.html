@@ -25,7 +25,7 @@ main{max-width:560px;margin:0 auto;padding:6px 16px 60px}
 .r p{margin:0;color:var(--soft);font-weight:700}
 .r p a{color:var(--hib);font-weight:900}
 </style>
-</head>
+<style>@view-transition{navigation:auto}</style></head>
 <body>
 <header class="top"><a href="./">← Zur Karte</a><small>MUSCHEL-TAL</small><h1>📜 Regeln</h1><p>So funktioniert das Leben auf den Inseln.</p>
 <svg viewBox="0 0 400 24" preserveAspectRatio="none"><path d="M0 14 Q25 2 50 14 T100 14 T150 14 T200 14 T250 14 T300 14 T350 14 T400 14 V24 H0Z" fill="#fff4e0"/></svg></header>
@@ -39,5 +39,8 @@ main{max-width:560px;margin:0 auto;padding:6px 16px 60px}
  <div class="r"><div class="n">7</div><div><h2>Wer entfolgt, zieht aus <span>📦</span></h2><p>Sein Haus wird frei. Auf der Haupt-Insel rückt dann der Nächste nach – nach Einwohner-Nummer.</p></div></div>
  <a class="cta" href="https://www.tiktok.com/@muscheltal" target="_blank" rel="noopener">➕ @muscheltal folgen und einziehen</a>
 </main>
-</body>
+<script>(()=>{const done=new Set(),pre=u=>{if(done.has(u))return;done.add(u);try{const l=document.createElement('link');l.rel='prefetch';l.href=u;document.head.appendChild(l);fetch(u,{credentials:'same-origin'}).catch(()=>{});}catch(e){}};
+const h=e=>{const a=e.target.closest&&e.target.closest('a[href]');if(!a)return;const u=new URL(a.href,location.href);if(u.origin===location.origin&&u.pathname!==location.pathname)pre(u.pathname);};
+addEventListener('pointerdown',h,{passive:true});addEventListener('mouseover',h,{passive:true});addEventListener('touchstart',h,{passive:true});
+const z=document.querySelector('header.top a[href="./"]');if(z)z.addEventListener('click',e=>{try{const r=document.referrer&&new URL(document.referrer);if(r&&r.origin===location.origin&&(r.pathname==='/'||r.pathname.endsWith('/index.html'))&&history.length>1){e.preventDefault();history.back();}}catch(x){}});})();</script></body>
 </html>

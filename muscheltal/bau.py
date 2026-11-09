@@ -304,6 +304,29 @@ def bauprojekte(sauber, insel, out):
 """
     open(os.path.join(out, "bau.html"), "w", encoding="utf-8").write(seite)
 
+
+def schnell(out):
+    """Seitenwechsel ohne spürbare Ladezeit: weiche Übergänge (View Transitions), Unterseiten werden beim
+    Antippen/Überfahren vorgeladen (bzw. in Chrome vorgerendert), „← Zur Karte“ springt per Zurück sofort
+    auf die noch geladene Karte (Back-Forward-Cache) statt sie neu zu laden."""
+    css = "<style>@view-transition{navigation:auto}</style>"
+    unter = ["bau.html", "berufe.html", "einwohner.html", "news.html", "regeln.html", "erfolge.html"]
+    spec = '<script type="speculationrules">{"prerender":[{"where":{"href_matches":"/*.html"},"eagerness":"moderate"}],"prefetch":[{"where":{"href_matches":"/*"},"eagerness":"moderate"}]}</script>'
+    vor = """<script>(()=>{const done=new Set(),pre=u=>{if(done.has(u))return;done.add(u);try{const l=document.createElement('link');l.rel='prefetch';l.href=u;document.head.appendChild(l);fetch(u,{credentials:'same-origin'}).catch(()=>{});}catch(e){}};
+const h=e=>{const a=e.target.closest&&e.target.closest('a[href]');if(!a)return;const u=new URL(a.href,location.href);if(u.origin===location.origin&&u.pathname!==location.pathname)pre(u.pathname);};
+addEventListener('pointerdown',h,{passive:true});addEventListener('mouseover',h,{passive:true});addEventListener('touchstart',h,{passive:true});
+const z=document.querySelector('header.top a[href="./"]');if(z)z.addEventListener('click',e=>{try{const r=document.referrer&&new URL(document.referrer);if(r&&r.origin===location.origin&&(r.pathname==='/'||r.pathname.endsWith('/index.html'))&&history.length>1){e.preventDefault();history.back();}}catch(x){}});})();</script>"""
+    for name in ["index.html"] + unter:
+        f = os.path.join(out, name)
+        if not os.path.exists(f):
+            continue
+        t = open(f, encoding="utf-8").read()
+        if "@view-transition" in t:
+            continue
+        t = t.replace("</head>", css + (spec if name == "index.html" else "") + "</head>", 1)
+        t = t.replace("</body>", vor + "</body>", 1) if "</body>" in t else t + vor
+        open(f, "w", encoding="utf-8").write(t)
+
 def berufe(sauber, insel, out):
     """berufe.html: alle Einwohner mit Job, nach Arbeitsort; Ort und Name verlinkt auf die Karte."""
     import html as H
@@ -431,6 +454,7 @@ def baue(rows, out):
     nachrichten(insel, out)
     berufe(sauber, insel, out)
     bauprojekte(sauber, insel, out)
+    schnell(out)
     alt = os.path.join(out, "einwohner.json")
     if os.path.exists(alt):
         os.remove(alt)  # nicht mehr öffentlich (enthielt echte Inselnamen)

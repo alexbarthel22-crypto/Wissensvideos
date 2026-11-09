@@ -162,7 +162,11 @@ section>h2{font-size:28px;margin-bottom:14px}
 .growhud[hidden]{display:none}
 .growhud span{display:block;margin-top:4px;background:var(--sun);border-radius:10px;padding:4px 10px;font-weight:900;animation:gpop .35s ease-out}
 @keyframes gpop{from{transform:scale(.6);opacity:0}to{transform:none;opacity:1}}
-.walkbar{margin:18px 0 0}.walkbar[hidden]{display:none}.walkbar .btn{display:block;width:100%;text-align:center;font-size:19px;padding:14px 10px;white-space:nowrap;overflow:hidden}
+.walkbar{margin:18px 0 0}.walkbar[hidden]{display:none}
+/* Erkunden-Knopf wackelt, bis die ausgewählte Person ihn einmal benutzt hat */
+.walkbar .btn.wackel{animation:wackel 2.6s ease-in-out infinite}
+@keyframes wackel{0%,62%,100%{transform:rotate(0)}66%{transform:rotate(-2.2deg) scale(1.03)}70%{transform:rotate(2.2deg) scale(1.03)}74%{transform:rotate(-1.6deg) scale(1.02)}78%{transform:rotate(1.2deg)}82%{transform:rotate(0)}}
+@media (prefers-reduced-motion:reduce){.walkbar .btn.wackel{animation:none}}.walkbar .btn{display:block;width:100%;text-align:center;font-size:19px;padding:14px 10px;white-space:nowrap;overflow:hidden}
 .walkui{position:absolute;left:12px;right:12px;bottom:14px;max-width:560px;pointer-events:none;z-index:3}.walkui[hidden]{display:none}
 .walkbtns{display:grid;grid-template-columns:1fr 1fr;gap:10px;pointer-events:auto}.walkbtns .chip{width:100%;font-size:16px;min-height:48px}
 .walkhint{margin:0 auto 10px;width:max-content;max-width:100%;background:rgba(42,27,18,.85);color:#fff;border-radius:12px;padding:6px 12px;font-size:14px;font-weight:800;text-align:center;transition:opacity .6s}
@@ -1519,9 +1523,9 @@ function canWalk(x,y){
  const v=ISL.find(v=>v.open&&inside(v,x,y,4));if(!v)return false;
  if(v===MAIN){const lx=x/PAL_S,ly=y/PAL_S,ax=Math.abs(lx);if((ax<47&&ly>-36&&ly<23)||(ax>40&&ax<72&&ly>-12&&ly<22)||((ax-36)/10.5)**2+((ly-34)/5.2)**2<1||(Math.abs(ax-46)<12&&ly>41&&ly<55))return false;}
  if(v.i===1&&Math.hypot(x-v.x,(y-v.y)/.86)<18)return false;
- const gx=Math.round((x-v.x)/S),gy=Math.round((y-v.y)/(S*.9));for(let dx=-1;dx<=1;dx++)for(let dy=-1;dy<=1;dy++){const q=v.cell.get((gx+dx)+','+(gy+dy));if(!q||q.nr>limit)continue;if(Math.abs(x-q.p.x)<9&&y>q.p.y-1&&y<q.p.y+7.5)return false;}
+ const gx=Math.round((x-v.x)/S),gy=Math.round((y-v.y)/(S*.9));for(let dx=-1;dx<=1;dx++)for(let dy=-1;dy<=1;dy++){const q=v.cell.get((gx+dx)+','+(gy+dy));if(!q||q.nr>limit)continue;if(Math.abs(x-q.p.x)<7&&y>q.p.y+.5&&y<q.p.y+7.5)return false;}
  return true;}
-function walkStart(){const me=sel;if(!me)return;
+function walkStart(){const me=sel;if(!me)return;try{const w=walkedSet();w.add(me.name.toLowerCase());localStorage.setItem('mt-walked',JSON.stringify([...w]));}catch(e){}$('walkbtn').classList.remove('wackel');
  WK.me=me||null;WK.L=me?{...(me.L||(me.L=look(me.k))),bikec:'#ff3d7f',ph:0}:{...look(7),bikec:'#ff3d7f',ph:0};
  let sp=me&&me.p?standSpot(me):null;if(sp&&!me.gb&&(sp.kind==='cell'||!canWalk(sp.x,sp.y))){const v=me.isl;sp={x:me.p.x,y:v.y+Math.ceil((me.p.gy+.01)/4)*4*S*.9-2.6};}let x=sp?sp.x:0,y=sp?sp.y:36*PAL_S+10;
  if(!canWalk(x,y)){let f=null;for(let r=4;r<120&&!f;r+=4)for(let a=0;a<TAU&&!f;a+=.3){const nx=x+Math.cos(a)*r,ny=y+Math.sin(a)*r;if(canWalk(nx,ny))f=[nx,ny];}if(f){x=f[0];y=f[1];}}
@@ -1546,7 +1550,8 @@ function drawWalker(c,z){if(!WK.on)return;const L=WK.L,x=WK.x,y=WK.y;
  if(!WK.moving){c.save();c.translate(x,y);if(!WK.front&&WK.dir<0&&!WK.vert)c.scale(-1,1);if(WK.mode==='moped'){c.restore();drawMover(c,{...L,mode:'moped'},x,y,WK.vert?1:WK.dir,WK.vert,'moped');}else{person(c,L,0,true,0);c.restore();hutsFront(c,x,y);}}
  else drawMover(c,{...L,mode:WK.mode},x,y,WK.dir,WK.vert,WK.mode);
  NAMES.push([(WK.me?WK.me.name:'Du')+' (du)',x,y-(WK.mode==='moped'?13:12)*L.h,'#e8467c']);}
-function walkLabel(){const b=$('walkbtn'),bar=b.parentNode;if(!sel){bar.hidden=true;return;}bar.hidden=false;const t='Als '+sel.name+' Muschel-Tal erkunden';if(b.dataset.t===t)return;b.dataset.t=t;b.textContent=t;b.style.fontSize='';let fs=19;while(b.scrollWidth>b.clientWidth&&fs>12){fs-=.5;b.style.fontSize=fs+'px';}}
+const walkedSet=()=>{try{return new Set(JSON.parse(localStorage.getItem('mt-walked')||'[]'));}catch(e){return new Set();}};
+function walkLabel(){const b=$('walkbtn'),bar=b.parentNode;if(!sel){bar.hidden=true;return;}bar.hidden=false;b.classList.toggle('wackel',!walkedSet().has(sel.name.toLowerCase()));const t='Als '+sel.name+' Muschel-Tal erkunden';if(b.dataset.t===t)return;b.dataset.t=t;b.textContent=t;b.style.fontSize='';let fs=19;while(b.scrollWidth>b.clientWidth&&fs>12){fs-=.5;b.style.fontSize=fs+'px';}}
 walkLabel();setInterval(walkLabel,800);
 $('walkbtn').onclick=walkStart;$('walkend').onclick=walkEnd;
 $('walkmode').onclick=()=>{WK.mode=WK.mode==='walk'?'moped':'walk';$('walkmode').textContent=WK.mode==='walk'?'🛵 Moped':'🚶 Zu Fuß';};

@@ -25,7 +25,7 @@ section h2 span{background:var(--sun);border:2px solid var(--ink);border-radius:
 .n h3{margin:2px 0 2px;font-size:18px;line-height:1.25}
 .n p{margin:0;color:var(--soft);font-weight:700;font-size:15px}
 </style>
-</head>
+<style>@view-transition{navigation:auto}</style></head>
 <body>
 <header class="top"><a href="./">← Zur Karte</a><small>MUSCHEL-TAL</small><h1>📰 News</h1><p>Alles, was auf den Inseln passiert ist – neue Inseln, Gebäude, Events, Jobs und Bürgermeister.</p>
 <svg viewBox="0 0 400 24" preserveAspectRatio="none"><path d="M0 14 Q25 2 50 14 T100 14 T150 14 T200 14 T250 14 T300 14 T350 14 T400 14 V24 H0Z" fill="#fff4e0"/></svg></header>
@@ -35,5 +35,8 @@ section h2 span{background:var(--sun);border:2px solid var(--ink);border-radius:
 <section><h2>7. November 2026</h2><div class="n"><div class="em">🏠</div><div><h3>Die Haupt-Insel ist voll</h3><p>500 Einwohner wohnen auf der Haupt-Insel. Die ersten 500 bekommen den Erfolg Gründer.</p></div></div><div class="n"><div class="em">🏝️</div><div><h3>Muschel-Tal ist gegründet</h3><p>Wer @muscheltal auf TikTok folgt, bekommt eine eigene Hütte mit seinem Namen.</p></div></div></section>
  <a class="cta" href="https://www.tiktok.com/@muscheltal" target="_blank" rel="noopener">➕ @muscheltal folgen und einziehen</a>
 </main>
-</body>
+<script>(()=>{const done=new Set(),pre=u=>{if(done.has(u))return;done.add(u);try{const l=document.createElement('link');l.rel='prefetch';l.href=u;document.head.appendChild(l);fetch(u,{credentials:'same-origin'}).catch(()=>{});}catch(e){}};
+const h=e=>{const a=e.target.closest&&e.target.closest('a[href]');if(!a)return;const u=new URL(a.href,location.href);if(u.origin===location.origin&&u.pathname!==location.pathname)pre(u.pathname);};
+addEventListener('pointerdown',h,{passive:true});addEventListener('mouseover',h,{passive:true});addEventListener('touchstart',h,{passive:true});
+const z=document.querySelector('header.top a[href="./"]');if(z)z.addEventListener('click',e=>{try{const r=document.referrer&&new URL(document.referrer);if(r&&r.origin===location.origin&&(r.pathname==='/'||r.pathname.endsWith('/index.html'))&&history.length>1){e.preventDefault();history.back();}}catch(x){}});})();</script></body>
 </html>

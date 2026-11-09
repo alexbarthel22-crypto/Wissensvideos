@@ -29,7 +29,7 @@ main{max-width:560px;margin:0 auto;padding:6px 16px 60px}
 .zl{display:flex;justify-content:space-between;gap:10px;font-size:14px;font-weight:900}
 .bp u{display:block;margin-top:8px;font-size:14px;font-weight:900;color:#0a8fd0;text-decoration:none}
 </style>
-</head>
+<style>@view-transition{navigation:auto}</style></head>
 <body>
 <header class="top"><a href="./">← Zur Karte</a><small>MUSCHEL-TAL</small><h1>🏗️ Aktuelle Bauprojekte</h1><p>Was gerade gebaut wird – fertig, sobald genug Bewohner da sind. Tipp auf ein Projekt, um auf der Karte hinzukommen.</p>
 <svg viewBox="0 0 400 24" preserveAspectRatio="none"><path d="M0 14 Q25 2 50 14 T100 14 T150 14 T200 14 T250 14 T300 14 T350 14 T400 14 V24 H0Z" fill="#fff4e0"/></svg></header>
@@ -42,5 +42,8 @@ main{max-width:560px;margin:0 auto;padding:6px 16px 60px}
 <div class="bar"><i style="width:65%"></i></div><div class="zl"><span>653 von 1.000 Bewohnern</span><span>noch 347</span></div><u>📍 Auf der Karte ansehen →</u></a>
  <a class="cta" href="https://www.tiktok.com/@muscheltal" target="_blank" rel="noopener">🐚 Folgen &amp; mitbauen</a>
 </main>
-</body>
+<script>(()=>{const done=new Set(),pre=u=>{if(done.has(u))return;done.add(u);try{const l=document.createElement('link');l.rel='prefetch';l.href=u;document.head.appendChild(l);fetch(u,{credentials:'same-origin'}).catch(()=>{});}catch(e){}};
+const h=e=>{const a=e.target.closest&&e.target.closest('a[href]');if(!a)return;const u=new URL(a.href,location.href);if(u.origin===location.origin&&u.pathname!==location.pathname)pre(u.pathname);};
+addEventListener('pointerdown',h,{passive:true});addEventListener('mouseover',h,{passive:true});addEventListener('touchstart',h,{passive:true});
+const z=document.querySelector('header.top a[href="./"]');if(z)z.addEventListener('click',e=>{try{const r=document.referrer&&new URL(document.referrer);if(r&&r.origin===location.origin&&(r.pathname==='/'||r.pathname.endsWith('/index.html'))&&history.length>1){e.preventDefault();history.back();}}catch(x){}});})();</script></body>
 </html>

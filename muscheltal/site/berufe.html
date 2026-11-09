@@ -29,7 +29,7 @@ section{background:#fff;border:3px solid var(--ink);border-radius:20px;padding:1
 .p span{flex:none;font-size:14px;font-weight:900;color:#fff;background:var(--ink);border-radius:999px;padding:2px 10px}
 .p.chef span{background:var(--hib)}
 </style>
-</head>
+<style>@view-transition{navigation:auto}</style></head>
 <body>
 <header class="top"><a href="./">← Zur Karte</a><small>MUSCHEL-TAL</small><h1>💼 Berufe</h1><p>Wer in Muschel-Tal wo arbeitet – tipp auf einen Ort oder Namen, um auf der Karte hinzukommen.</p>
 <svg viewBox="0 0 400 24" preserveAspectRatio="none"><path d="M0 14 Q25 2 50 14 T100 14 T150 14 T200 14 T250 14 T300 14 T350 14 T400 14 V24 H0Z" fill="#fff4e0"/></svg></header>
@@ -43,5 +43,8 @@ section{background:#fff;border:3px solid var(--ink);border-radius:20px;padding:1
 <script>/* Jobs mit Ablaufdatum: nach dem letzten Tag automatisch ausblenden */
 (()=>{let h;try{const p=Object.fromEntries(new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Berlin',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date()).map(x=>[x.type,x.value]));h=p.year+'-'+p.month+'-'+p.day+'T'+p.hour+':'+p.minute;}catch(e){h=new Date().toISOString().slice(0,16);}
 document.querySelectorAll('[data-bis]').forEach(a=>{const b=a.dataset.bis;if(h>=(b.length>10?b:b+'T24:00'))a.remove();});document.querySelectorAll('section').forEach(s=>{if(!s.querySelector('.p'))s.remove();});})();</script>
-</body>
+<script>(()=>{const done=new Set(),pre=u=>{if(done.has(u))return;done.add(u);try{const l=document.createElement('link');l.rel='prefetch';l.href=u;document.head.appendChild(l);fetch(u,{credentials:'same-origin'}).catch(()=>{});}catch(e){}};
+const h=e=>{const a=e.target.closest&&e.target.closest('a[href]');if(!a)return;const u=new URL(a.href,location.href);if(u.origin===location.origin&&u.pathname!==location.pathname)pre(u.pathname);};
+addEventListener('pointerdown',h,{passive:true});addEventListener('mouseover',h,{passive:true});addEventListener('touchstart',h,{passive:true});
+const z=document.querySelector('header.top a[href="./"]');if(z)z.addEventListener('click',e=>{try{const r=document.referrer&&new URL(document.referrer);if(r&&r.origin===location.origin&&(r.pathname==='/'||r.pathname.endsWith('/index.html'))&&history.length>1){e.preventDefault();history.back();}}catch(x){}});})();</script></body>
 </html>
