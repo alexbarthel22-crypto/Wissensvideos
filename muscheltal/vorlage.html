@@ -631,9 +631,9 @@ for(const v of ISL){v.lamps=[];v.benches=[];if(!v.open||!v.plots.length)continue
   if(v.benches.some(([bx,by])=>Math.hypot(bx-x,by-y)<70)||inPlot(v,x,y,6))continue;v.benches.push([x,y]);n++;}
  v.benches=v.benches.filter(([x,y])=>!inPlot(v,x,y,6)&&!nearHut(x,y));v.lamps=v.lamps.filter(([x,y])=>!inPlot(v,x,y,4));}
 const ACTS=(()=>{const A=[];let k=0;const farGeb=(x,y)=>GEB.every(g=>Math.hypot(g.cx-x,g.cy-y)>70)&&Math.hypot(PIER0[0]-x,PIER0[1]-y)>60&&!inAnyPlot(x,y,8)&&!inBau(x,y)&&!nearHut(x,y);
- for(const v of ISL){if(!v.open)continue;for(const [x,y] of v.benches||[])if(hash(k++,311)<.6&&farGeb(x,y))A.push({t:'bench',x,y,k:k++});
-  const g=Math.ceil(v.R/S);let n=0;for(let r=-g;r<=g&&n<(v.i?8:12);r++)for(let c2=-g;c2<=g&&n<(v.i?8:12);c2++){if(((c2%5)+5)%5||((r%4)+4)%4!==2||hash(r*7+v.i,c2*3+312)>.12)continue;const x=v.x+c2*S,y=v.y+r*S*.9+1;if(!inside(v,x,y,20)||Math.hypot(x-v.x,y-v.y)<v.plaza+20||!farGeb(x,y))continue;A.push({t:'talk',x,y,k:k++});n++;}
-  for(let j=0,m=0;j<40&&m<(v.i?5:7);j++){const a0=hash(j,313+v.i)*TAU-Math.PI;if(Math.abs(Math.cos(a0))<.75)continue;const d=coastAt(v,a0)+3,[x,y]=polar(v,a0,d);if(!farGeb(x,y)||A.some(o=>o.t==='fish'&&Math.hypot(o.x-x,o.y-y)<60))continue;m++;A.push({t:'fish',x,y,dir:Math.cos(a0)>=0?1:-1,k:k++});}}
+ for(const v of ISL){if(!v.open)continue;for(const [x,y] of v.benches||[])if(hash(k++,311)<.6&&farGeb(x,y)){const lx=x-v.x,ly=(y-v.y)/.92,back=coastAt(v,Math.atan2(ly,lx))-Math.hypot(lx,ly)<14&&ly<-Math.abs(lx)*.35;A.push({t:'bench',x,y,k:k++,v,back});}
+  const g=Math.ceil(v.R/S);let n=0;for(let r=-g;r<=g&&n<(v.i?8:12);r++)for(let c2=-g;c2<=g&&n<(v.i?8:12);c2++){if(((c2%5)+5)%5||((r%4)+4)%4!==2||hash(r*7+v.i,c2*3+312)>.12)continue;const x=v.x+c2*S,y=v.y+r*S*.9+1;if(!inside(v,x,y,20)||Math.hypot(x-v.x,y-v.y)<v.plaza+20||!farGeb(x,y))continue;A.push({t:'talk',x,y,k:k++,v});n++;}
+  for(let j=0,m=0;j<40&&m<(v.i?5:7);j++){const a0=hash(j,313+v.i)*TAU-Math.PI;if(Math.abs(Math.cos(a0))<.75)continue;const d=coastAt(v,a0)+3,[x,y]=polar(v,a0,d);if(!farGeb(x,y)||A.some(o=>o.t==='fish'&&Math.hypot(o.x-x,o.y-y)<60))continue;m++;A.push({t:'fish',x,y,dir:Math.cos(a0)>=0?1:-1,k:k++,v});}}
  return A;})();
 function bench(c,v,x,y){if(v.i===1){c.fillStyle='rgba(40,30,10,.25)';c.beginPath();c.ellipse(x+1,y+2.2,5.2,1.4,0,0,TAU);c.fill();c.fillStyle='#7a4a24';c.beginPath();c.roundRect(x-5,y-1.6,10,3.2,1.6);c.fill();c.fillStyle='#c9945a';c.beginPath();c.ellipse(x-5,y,.9,1.6,0,0,TAU);c.ellipse(x+5,y,.9,1.6,0,0,TAU);c.fill();c.strokeStyle='rgba(60,35,15,.6)';c.lineWidth=.3;c.beginPath();c.moveTo(x-3.5,y-.6);c.lineTo(x+3.5,y-.6);c.stroke();return;}
  c.fillStyle='rgba(40,30,10,.25)';c.fillRect(x-4.4,y+1.4,9.6,1.3);c.fillStyle='#5a3418';c.fillRect(x-4,y,.8,2.2);c.fillRect(x+3.2,y,.8,2.2);c.fillStyle='#a8743c';c.fillRect(x-4.6,y-.6,9.2,1.5);c.fillStyle='#8a5a2b';c.fillRect(x-4.6,y-3,9.2,1.1);c.fillRect(x-4,y-3,.7,2.6);c.fillRect(x+3.3,y-3,.7,2.6);}
@@ -1266,17 +1266,25 @@ function draw(){
  roamStep(nl);if(z*S>9){const act=nl>.5?5+(Math.floor(T/45)%4):8+(Math.floor(T/45)%5);for(let i=0;i<Math.min(act,ROAM.list.length);i++){const r=ROAM.list[i];if(r.q.nr>limit||r.q===sel||(WK.on&&r.q===WK.me))continue;OUT.add(r.q);if(!vis(r.x,r.y))continue;
   drawMover(c,{...r.L,mode:'walk',ph:r.idx,idle:r.pause>0},r.x,r.y,r.dir,r.vert,'walk');TAPS.push([r.x,r.y,r.q]);if(z*S>30)NAMES.push([r.q.name,r.x,r.y-11.2]);}}
  // Tätigkeiten: auf Bänken sitzen, miteinander reden, am Ufer angeln (wechselnde Einwohner, nachts weniger)
- if(z*S>8&&GROWK==null)for(const a of ACTS){if(!visR(a.x,a.y,30))continue;const P=90+hash(a.k,301)*90,cyc=T/P+hash(a.k,302),ci=Math.floor(cyc),u=cyc-ci;if(u>(nl>.5?.35:.8))continue;
-  const ps=[];let o=0;while(ps.length<(a.t==='talk'?2:1)&&o<40){const q=FREE[(hash(ci*13+a.k+o,303)*FREE.length)|0];o++;if(q&&!OUT.has(q)&&q!==sel&&!ps.includes(q))ps.push(q);}if(ps.length<(a.t==='talk'?2:1))continue;ps.forEach(q=>OUT.add(q));
-  const fade=Math.min(1,u*P/1.2,((nl>.5?.35:.8)-u)*P/1.2);c.globalAlpha=Math.max(0,fade);
-  if(a.t==='bench'){const q=ps[0],L=q.L||(q.L=look(q.k));c.save();c.translate(a.x,a.y-2.2);person(c,L,0,true,0);c.restore();if(z*S>30)NAMES.push([q.name,a.x,a.y-13*L.h,null,2.1]);}
+ if(z*S>8&&GROWK==null)for(const a of ACTS){const P=90+hash(a.k,301)*90,cyc=T/P+hash(a.k,302),ci=Math.floor(cyc),u=cyc-ci,lim=nl>.5?.35:.8;if(u>lim)continue;
+  // Bewohner aus der Nähe gehen hin, bleiben eine Weile und gehen danach wieder nach Hause (niemand löst sich in Luft auf)
+  const pool=a.pool||(a.pool=FREE.filter(q=>q.isl===a.v).sort((p1,p2)=>Math.hypot(p1.p.x-a.x,p1.p.y-a.y)-Math.hypot(p2.p.x-a.x,p2.p.y-a.y)).slice(0,40));if(!pool.length)continue;
+  const need=a.t==='talk'?2:1,ps=[];let o=0;while(ps.length<need&&o<40){const q=pool[(hash(ci*13+a.k+o,303)*pool.length)|0];o++;if(q&&!OUT.has(q)&&q!==sel&&!ps.includes(q)&&!(WK.on&&q===WK.me))ps.push(q);}if(ps.length<need)continue;ps.forEach(q=>OUT.add(q));
+  const D=lim*P,tS=u*P;let arrived=true;const PTS=ps.map((q,j)=>{const sx=a.t==='talk'?a.x+(j?2.6:-2.6):a.x,key='act'+a.k+'_'+j;q.gp=q.gp||{};return q.gp[key]||(q.gp[key]=gPath(q,{},sx,a.y,sx,a.y));}),tW=Math.max(.5,Math.min(Math.max(...PTS.map(p=>p.len))/GV,D*.3));
+  ps.forEach((q,j)=>{const pt=PTS[j];
+   let mv=0,x,y,dx,dy;if(tS<tW){[x,y,dx,dy]=along(pt,tS/tW*pt.len);mv=1;}else if(tS>D-tW){[x,y,dx,dy]=along(pt,pt.len-(tS-(D-tW))/tW*pt.len);dx=-dx;dy=-dy;mv=1;}
+   if(!mv)return;arrived=false;q._actWalk=1;if((tS<.4||tS>D-.4)||!vis(x,y))return;const L=q.L||(q.L=look(q.k)),vert=Math.abs(dy)>Math.abs(dx);
+   drawMover(c,{...L,mode:'walk',ph:q.nr},x,y,vert?(dy>0?1:-1):(dx>=0?1:-1),vert,'walk');TAPS.push([x,y,q]);if(z*S>30)NAMES.push([q.name,x,y-11.2]);});
+  if(!arrived||!visR(a.x,a.y,30))continue;
+  if(a.t==='bench'){const q=ps[0],L=q.L||(q.L=look(q.k));c.save();c.translate(a.x,a.y-2.2);person(c,L,0,true,0);
+    if(a.back){c.scale(L.h,L.h);rHead(c,L,0,-4.15,'back');if(L.hs===1){c.fillStyle=L.hair;c.beginPath();c.roundRect(-1.55,-4.6,3.1,3.6,1.2);c.fill();}}c.restore();TAPS.push([a.x,a.y-2.2,q]);if(z*S>30)NAMES.push([q.name,a.x,a.y-13*L.h,null,2.1]);}
   else if(a.t==='talk'){ps.forEach((q,j)=>{const L=q.L||(q.L=look(q.k)),x=a.x+(j?2.6:-2.6);c.save();c.translate(x,a.y);if(j)c.scale(-1,1);person(c,L,0,false,j===((ci+Math.floor(T/2.4))%2)?.3+Math.abs(Math.sin(T*5+j))*.5:0);c.restore();if(z*S>30)NAMES.push([q.name,x,a.y+5.4+(j?3.4:0),null,2.1]);});
    if(z*S>14){const j=(ci+Math.floor(T/2.4))%2,bx=a.x+(j?2.6:-2.6),by=a.y-14;c.fillStyle='#fff';c.strokeStyle='#2a1b12';c.lineWidth=.3;c.beginPath();c.roundRect(bx-2.6,by-1.4,5.2,2.8,1.4);c.fill();c.stroke();c.fillStyle='#2a1b12';for(let d=0;d<3;d++){if((T*3|0)%4<d)continue;c.beginPath();c.arc(bx-1.2+d*1.2,by,.35,0,TAU);c.fill();}}}
   else{const q=ps[0],L=q.L||(q.L=look(q.k)),d=a.dir;c.save();c.translate(a.x,a.y);c.scale(d,1);person(c,L,0,false,0);c.scale(L.h,L.h);const tw=REDUCED?0:Math.sin(T*1.3+a.k)*.15;
    c.strokeStyle='#6b3f1d';c.lineWidth=.35;c.beginPath();c.moveTo(.9,-1.6);c.lineTo(7,-7.5+tw);c.stroke();c.strokeStyle='rgba(255,255,255,.75)';c.lineWidth=.15;c.beginPath();c.moveTo(7,-7.5+tw);c.quadraticCurveTo(9,-2,9.6,3.2);c.stroke();
    const bob=(Math.sin(T*2+a.k)>.93)?.6:0;c.fillStyle='#e8433c';c.beginPath();c.arc(9.6,3.4+bob,.45,0,TAU);c.fill();c.fillStyle='#fff';c.beginPath();c.arc(9.6,3.1+bob,.22,0,TAU);c.fill();
    c.fillStyle='#3a7bd5';c.beginPath();c.roundRect(-3.2,2.4,2,1.6,.3);c.fill();c.restore();if(z*S>30)NAMES.push([q.name,a.x,a.y-11*L.h,null,2.1]);}
-  c.globalAlpha=1;}
+  }
  // Lagerfeuer auf der Kokos-Küste: 7 Bewohner gehen hin und bleiben lange (meist 5–6 gleichzeitig dort)
  if(z*S>6&&GROWK==null)for(const f of CAMP){if(f.q===sel)continue;const k=((T/150)+f.ph)%1,tin=.07,tout=.93;let x,y,mv=0,dir;
   if(k<tin){const e=k/tin;x=f.hx+(f.fx-f.hx)*e;y=f.hy+(f.fy-f.hy)*e;mv=1;dir=f.fx>=f.hx?1:-1;}
