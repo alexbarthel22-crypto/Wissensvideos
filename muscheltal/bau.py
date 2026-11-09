@@ -109,21 +109,59 @@ def _gebaeude_bewohner(insel):
             if (o[0] if isinstance(o, list) else o) != "Muschelpalast"}
 
 
-def inselgrenzen(sauber, insel):
+def _haupt_jobs(insel):
+    """Wer auf der Haupt-Insel arbeitet (Job in einem Gebäude der Haupt-Insel oder im Muschelpalast)."""
+    orte = {g["name"] for g in insel.get("gebaeude", []) if str(g.get("key", "")).startswith("0:")} | {"Muschelpalast"}
+    return {n.lower().lstrip("@") for n, j in (insel.get("jobs") or {}).items() if j and j[1] in orte}
+
+
+_ARB_CACHE = {}
+
+
+def _arbeiter_huetten(sauber, insel):
+    """Haupt-Insel-Arbeiter, die (noch) in ihrem Gebäude wohnen, bekommen eine Hütte auf der Haupt-Insel,
+    sobald dort eine frei wird (Entfolgen) – vor den Nachrückern. Wer schon eine Hütte hat (platz 0:Zahl), behält sie.
+    Gibt die Namen der Arbeiter mit Hütte zurück."""
+    if id(sauber) in _ARB_CACHE:  # einmal je Build berechnen (später ist die Platz-Spalte schon umgewandelt)
+        return _ARB_CACHE[id(sauber)]
+    wo, jobs = _gebaeude_bewohner(insel), _haupt_jobs(insel)
+    arbeiter = [j for j, r in enumerate(sauber) if r[0].lower().lstrip("@") in wo and r[0].lower().lstrip("@") in jobs]
+    mit = {j for j in arbeiter if re.fullmatch(r"0:\d+", sauber[j][3] or "")}
+    warten = [j for j in arbeiter if j not in mit]
+    while warten:
+        grenzen = inselgrenzen(sauber, insel, mit)
+        neu = [j for j in range(min(len(sauber), int(grenzen[0]))) if j not in mit and sauber[j][0].lower().lstrip("@") not in wo
+               and not re.fullmatch(r"0:\d+", sauber[j][3] or "")]
+        if not neu:
+            break
+        j = warten.pop(0)
+        mit.add(j)
+        print(f"Hütte frei: @{sauber[j][0].lstrip('@')} (arbeitet auf der Haupt-Insel) bekommt sie vor @{sauber[max(neu)][0].lstrip('@')}")
+    _ARB_CACHE[id(sauber)] = mit
+    return mit
+
+
+def inselgrenzen(sauber, insel, mit_huette=None):
     """Letzte Einwohner-Nr. je Insel. Wer in einem Gebäude wohnt (wohnorte), braucht keine Hütte –
-    seine Hütte wird frei und der Nächste rückt nach (Insel fasst dann entsprechend mehr Einwohner)."""
+    seine Hütte wird frei und der Nächste rückt nach (Insel fasst dann entsprechend mehr Einwohner).
+    mit_huette: Arbeiter, die trotz Gebäude eine Hütte auf der Haupt-Insel haben (zählen dort voll)."""
     wo = _gebaeude_bewohner(insel)
-    sonder = [r[0].lower().lstrip("@") in wo for r in sauber]
+    mit_huette = mit_huette or set()
+    sonder = [r[0].lower().lstrip("@") in wo and j not in mit_huette for j, r in enumerate(sauber)]
     grenzen, s = [], 0
-    for v in insel["inseln"]:
+    for i_v, v in enumerate(insel["inseln"]):
         if not v["plaetze"]:
             grenzen.append(float("inf")); continue
         start, g = s, s + v["plaetze"]
+        if i_v == 0:  # Arbeiter mit Hütte, deren Nr. hinter der Haupt-Insel liegt, belegen dort trotzdem eine Hütte
+            aussen = sum(1 for j in mit_huette if j >= g)
+            g -= aussen
         while True:
             extra = sum(1 for j in range(start, min(g, len(sauber))) if sonder[j])
-            if start + v["plaetze"] + extra == g:
+            aussen = sum(1 for j in mit_huette if j >= g) if i_v == 0 else 0
+            if start + v["plaetze"] + extra - aussen == g:
                 break
-            g = start + v["plaetze"] + extra
+            g = start + v["plaetze"] + extra - aussen
         s = g
         grenzen.append(g)
     return grenzen
@@ -133,8 +171,11 @@ def insel_je(sauber, insel):
     """Insel-Index je Einwohner (nach Einwohner-Nr. und Inselgrenzen) – plus Nachbarn-Wünsche (insel.json → nachbarn):
     Ist von einem Paar nur einer auf der Haupt-Insel, zieht der andere dazu; dafür zieht der zuletzt auf die
     Haupt-Insel Gekommene (höchste Nr. dort, ohne Gebäude-Bewohner) auf die Insel des Nachziehenden."""
-    grenzen = inselgrenzen(sauber, insel)
+    mit = _arbeiter_huetten(sauber, insel)
+    grenzen = inselgrenzen(sauber, insel, mit)
     isl = [next(i for i, g in enumerate(grenzen) if nr <= g) for nr in range(1, len(sauber) + 1)]
+    for j in mit:
+        isl[j] = 0
     wo = _gebaeude_bewohner(insel)
     idx = {r[0].lower().lstrip("@"): j for j, r in enumerate(sauber)}
     paare = [[idx.get(n.lower().lstrip("@")) for n in paar] for paar in (insel.get("nachbarn") or [])]
@@ -157,7 +198,8 @@ def verteile(sauber, insel):
     (nach Einwohner-Nr.) besetzt. Gibt Liste 'i:k' zurück."""
     isl = insel_je(sauber, insel)
     wo = _gebaeude_bewohner(insel)
-    sonder = [r[0].lower().lstrip("@") in wo for r in sauber]  # wohnen in einem Gebäude, kein Hütten-Platz
+    mit = _arbeiter_huetten(sauber, insel)
+    sonder = [r[0].lower().lstrip("@") in wo and j not in mit for j, r in enumerate(sauber)]  # wohnen in einem Gebäude, kein Hütten-Platz
     plaetze, belegt = [None] * len(sauber), {}
     for j, r in enumerate(sauber):
         if sonder[j]:
@@ -460,7 +502,10 @@ def baue(rows, out):
             v["name"], v["emoji"] = "???", "❔"
     g = web.get("geheim") or {}
     web["geheim"] = g if g.get("offen") else {"name": "???", "emoji": "❔", "offen": False}
-    web["grenzen"] = [g if g != float("inf") else None for g in inselgrenzen(sauber, insel)]
+    mit_h = _arbeiter_huetten(sauber, insel)
+    web["grenzen"] = [g if g != float("inf") else None for g in inselgrenzen(sauber, insel, mit_h)]
+    weg = {sauber[j][0].lower().lstrip("@") for j in mit_h}
+    web["wohnorte"] = {k: o for k, o in (web.get("wohnorte") or {}).items() if k.lower().lstrip("@") not in weg}
     data = {"r": sauber, "insel": web}
     html = open(VORLAGE, encoding="utf-8").read()
     js = json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
