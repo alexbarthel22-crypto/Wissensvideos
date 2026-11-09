@@ -28,27 +28,34 @@
   {
    "id": "s01",
    "tag": "",
-   "hold": 3.24,
+   "hold": 1.4,
    "lines": [
     {
      "id": "L1",
-     "text": "*p:Markiere *p:deine *p:Freunde / unter meinem *y:neuesten *y:Video – / dann werdet ihr *g:Nachbarn / auf der *b:Kokos-Küste!",
-     "speed": 0.9,
+     "text": "*p:Markiere *p:deine *p:Freunde / unter meinem *y:neuesten *y:Video – / dann werdet ihr *g:Nachbarn / auf *b:Kokos-Küste!",
+     "speed": 1.0,
      "style": "Style: a young man, excited and warm, telling his friends news about his island, natural German intonation.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
     },
     {
      "id": "L2",
      "text": "Hier ist noch *y:ganz *y:viel *y:Platz!",
-     "speed": 0.9,
+     "speed": 1.0,
      "style": "Style: a young man, excited and warm, telling his friends news about his island, natural German intonation.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-     "pause": 0.9
+     "pause": 0.5
     },
     {
      "id": "L3",
      "text": "Und wenn du wissen willst, / wo *y:dein *y:Haus ist: / *p:kommentier *p:einfach!",
-     "speed": 0.9,
+     "speed": 1.0,
      "style": "Style: a young man, excited and warm, telling his friends news about his island, natural German intonation.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-     "pause": 0.9
+     "pause": 0.5
+    },
+    {
+     "id": "L4",
+     "text": "Noch *y:keine *y:Hütte? / Schnell *p:folgen / und noch *g:heute *g:einziehen!",
+     "speed": 1.0,
+     "style": "Style: a young man, excited and warm, telling his friends news about his island, natural German intonation.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+     "pause": 0.5
     }
    ],
    "sfx": [
@@ -71,6 +78,11 @@
      "name": "notification",
      "at": "L3:kommentier",
      "volume": 0.4
+    },
+    {
+     "name": "click",
+     "at": "L4:folgen",
+     "volume": 0.5
     }
    ]
   }

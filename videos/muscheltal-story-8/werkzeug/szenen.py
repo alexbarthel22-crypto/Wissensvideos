@@ -65,18 +65,28 @@ scene("s01", PILL + """
     #s01-pl { top: 830px; font-size: 40px; background: #18b8c0; }
     #s01-q { top: 290px; font-size: 56px; background: #ff6a1a; }
     #s01-sheet2 { top: 410px; }
+    #s01-h { top: 290px; font-size: 54px; background: #7b3fe0; }
+    .fbtn { position: absolute; left: 0; right: 0; margin: 0 auto; top: 410px; width: 420px; height: 120px; border-radius: 60px; background: #fe2c55; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 56px; display: grid; place-items: center; box-shadow: 0 0 0 5px #2a1b12, 0 12px 0 rgba(0,0,0,.25); }
+    .fbtn2 { position: absolute; inset: 0; border-radius: 60px; background: #fff; color: #0a78c2; display: grid; place-items: center; opacity: 0; }
+    #s01-hand { position: absolute; left: 690px; top: 460px; font-size: 120px; }
+    #s01-hz { top: 580px; font-size: 46px; background: #2e9e5b; }
     #s01-km { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 640px; color: #e8433c; border-color: #e8433c; background: #fff; transform: rotate(-4deg); font-size: 56px; white-space: nowrap; }""",
 f"""      <div id="s01-t" class="pl">👯 FREUNDE MARKIEREN</div>
       <div id="s01-sheet" class="tk"><div class="tk-h">Kommentare · neuestes Video<b>×</b></div>
         {tk("s01-c1", "#ff6a1a", "?", "dein.name", "@deine.freundin zieh neben mich! 🏡", "312")}
       </div>
-      <div id="s01-nb" class="stamp" data-layout-ignore>🥥 NACHBARN AUF DER KOKOS-KÜSTE!</div>
+      <div id="s01-nb" class="stamp" data-layout-ignore>🥥 NACHBARN AUF KOKOS-KÜSTE!</div>
       <div id="s01-pl" class="pl">🏡 148 von 1.500 Häusern bewohnt</div>
       <div id="s01-q" class="pl">🏠 WO IST DEIN HAUS?</div>
       <div id="s01-sheet2" class="tk"><div class="tk-h">Kommentare<b>×</b></div>
         {tk("s01-c2", "#2e9e5b", "?", "dein.name", "Wo ist mein Haus? 🏠", "87")}
       </div>
-      <div id="s01-km" class="stamp" data-layout-ignore>💬 KOMMENTIEREN!</div>""",
+      <div id="s01-km" class="stamp" data-layout-ignore>💬 KOMMENTIEREN!</div>
+      <div id="s01-h" class="pl">🏝️ NOCH KEINE HÜTTE?</div>
+      <div id="s01-btn" class="fbtn">+ Folgen<div id="s01-btn2" class="fbtn2">✓ Gefolgt</div></div>
+      <div id="s01-hand" data-layout-ignore>👆</div>
+      <div id="s01-hz" class="pl">🏠 Noch heute einziehen!</div>""",
 """      const vi = at("L1", "Video"), nb = at("L1", "Nachbarn"), pz = at("L2", "Platz");
       tl.fromTo("#s01-t", { opacity: 0, scale: .3, rotation: -8 }, { opacity: 1, scale: 1, rotation: -2, duration: .35, ease: "back.out(2.6)" }, .05);
       tl.fromTo("#s01-sheet", { opacity: 0, y: 400 }, { opacity: 1, y: 0, duration: .45, ease: "power4.out" }, vi - .5);
@@ -93,4 +103,15 @@ f"""      <div id="s01-t" class="pl">👯 FREUNDE MARKIEREN</div>
       tl.fromTo("#s01-c2", { opacity: 0, x: -60 }, { opacity: 1, x: 0, duration: .3, ease: "power3.out" }, l3 + .7);
       tkLike(tl, "#s01-c2", ko, 87, 164, 1.4, 6);
       tl.fromTo("#s01-km", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, ko - .05);
-      tl.to("#s01-km", { scale: 1.07, duration: .25, yoyo: true, repeat: 7, ease: "sine.inOut" }, ko + .35);""", blur=False)
+      tl.to("#s01-km", { scale: 1.07, duration: .25, yoyo: true, repeat: 1, ease: "sine.inOut" }, ko + .35);
+      const l4 = line("L4")[0], fo = at("L4", "folgen"), hz = at("L4", "heute");
+      tl.to(["#s01-q", "#s01-sheet2", "#s01-km"], { opacity: 0, y: -30, duration: .25 }, l4 - .2);
+      tl.fromTo("#s01-h", { opacity: 0, scale: .3, rotation: -8 }, { opacity: 1, scale: 1, rotation: -2, duration: .35, ease: "back.out(2.6)" }, l4);
+      tl.fromTo("#s01-btn", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, l4 + .2);
+      tl.fromTo("#s01-hand", { opacity: 0, x: 160, y: 160 }, { opacity: 1, x: 0, y: 0, duration: .25, ease: "power3.out" }, fo - .35);
+      tl.to("#s01-hand", { y: -26, scale: .9, duration: .1, yoyo: true, repeat: 1 }, fo);
+      tl.to("#s01-btn2", { opacity: 1, duration: .05 }, fo + .1);
+      tl.fromTo("#s01-btn", { scale: 1 }, { scale: 1.15, duration: .12, yoyo: true, repeat: 1, immediateRender: false }, fo + .1);
+      tl.to("#s01-hand", { opacity: 0, duration: .25 }, fo + .6);
+      tl.fromTo("#s01-hz", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, hz - .2);
+      tl.to("#s01-hz", { scale: 1.07, duration: .25, yoyo: true, repeat: 3, ease: "sine.inOut" }, hz + .3);""", blur=False)

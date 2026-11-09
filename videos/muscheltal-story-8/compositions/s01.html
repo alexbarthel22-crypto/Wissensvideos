@@ -56,6 +56,12 @@
     #s01-pl { top: 830px; font-size: 40px; background: #18b8c0; }
     #s01-q { top: 290px; font-size: 56px; background: #ff6a1a; }
     #s01-sheet2 { top: 410px; }
+    #s01-h { top: 290px; font-size: 54px; background: #7b3fe0; }
+    .fbtn { position: absolute; left: 0; right: 0; margin: 0 auto; top: 410px; width: 420px; height: 120px; border-radius: 60px; background: #fe2c55; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 56px; display: grid; place-items: center; box-shadow: 0 0 0 5px #2a1b12, 0 12px 0 rgba(0,0,0,.25); }
+    .fbtn2 { position: absolute; inset: 0; border-radius: 60px; background: #fff; color: #0a78c2; display: grid; place-items: center; opacity: 0; }
+    #s01-hand { position: absolute; left: 690px; top: 460px; font-size: 120px; }
+    #s01-hz { top: 580px; font-size: 46px; background: #2e9e5b; }
     #s01-km { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 640px; color: #e8433c; border-color: #e8433c; background: #fff; transform: rotate(-4deg); font-size: 56px; white-space: nowrap; }
   </style>
   <div id="root" data-composition-id="s01" data-start="0" data-duration="15.000" data-width="1080" data-height="1920">
@@ -64,19 +70,23 @@
       <div id="s01-sheet" class="tk"><div class="tk-h">Kommentare · neuestes Video<b>×</b></div>
         <div id="s01-c1" class="tk-c"><div class="tk-a" style="background:#ff6a1a">?</div><div><div class="tk-u">dein.name</div><div class="tk-t">@deine.freundin zieh neben mich! 🏡</div><div class="tk-m">vor 2 Std.<span>Antworten</span></div></div><div class="tk-l"><div class="hz"></div><i>312</i></div></div>
       </div>
-      <div id="s01-nb" class="stamp" data-layout-ignore>🥥 NACHBARN AUF DER KOKOS-KÜSTE!</div>
+      <div id="s01-nb" class="stamp" data-layout-ignore>🥥 NACHBARN AUF KOKOS-KÜSTE!</div>
       <div id="s01-pl" class="pl">🏡 148 von 1.500 Häusern bewohnt</div>
       <div id="s01-q" class="pl">🏠 WO IST DEIN HAUS?</div>
       <div id="s01-sheet2" class="tk"><div class="tk-h">Kommentare<b>×</b></div>
         <div id="s01-c2" class="tk-c"><div class="tk-a" style="background:#2e9e5b">?</div><div><div class="tk-u">dein.name</div><div class="tk-t">Wo ist mein Haus? 🏠</div><div class="tk-m">vor 2 Std.<span>Antworten</span></div></div><div class="tk-l"><div class="hz"></div><i>87</i></div></div>
       </div>
       <div id="s01-km" class="stamp" data-layout-ignore>💬 KOMMENTIEREN!</div>
+      <div id="s01-h" class="pl">🏝️ NOCH KEINE HÜTTE?</div>
+      <div id="s01-btn" class="fbtn">+ Folgen<div id="s01-btn2" class="fbtn2">✓ Gefolgt</div></div>
+      <div id="s01-hand" data-layout-ignore>👆</div>
+      <div id="s01-hz" class="pl">🏠 Noch heute einziehen!</div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 15.0, "L1": [0.0, 4.86], "L1.words": [["markiere", 0.0, 0.447], ["deine", 0.447, 0.743], ["freunde", 0.743, 1.05], ["unter", 1.05, 1.346], ["meinem", 1.346, 1.647], ["neuesten", 1.647, 1.959], ["video", 1.959, 2.255], ["", 2.255, 2.39], ["dann", 2.63, 2.822], ["werdet", 2.822, 3.192], ["ihr", 3.192, 3.378], ["nachbarn", 3.378, 3.762], ["auf", 3.762, 3.947], ["der", 3.947, 4.132], ["kokosküste", 4.132, 4.86]], "L2": [5.98, 7.52], "L2.words": [["hier", 5.98, 6.237], ["ist", 6.237, 6.484], ["noch", 6.484, 6.741], ["ganz", 6.741, 6.998], ["viel", 6.998, 7.254], ["platz", 7.254, 7.52]], "L3": [8.64, 11.76], "L3.words": [["und", 8.64, 8.845], ["wenn", 8.845, 9.057], ["du", 9.057, 9.255], ["wissen", 9.255, 9.665], ["willst", 9.665, 9.892], ["wo", 9.892, 10.09], ["dein", 10.09, 10.303], ["haus", 10.303, 10.515], ["ist", 10.515, 10.72], ["kommentier", 10.72, 11.343], ["einfach", 11.343, 11.76]]};
+      const C = {"__dur": 15.0, "L1": [0.0, 4.55], "L1.words": [["markiere", 0.0, 0.426], ["deine", 0.426, 0.709], ["freunde", 0.709, 1.001], ["unter", 1.001, 1.284], ["meinem", 1.284, 1.571], ["neuesten", 1.571, 1.869], ["video", 1.869, 2.152], ["", 2.152, 2.28], ["dann", 2.62, 2.801], ["werdet", 2.801, 3.151], ["ihr", 3.151, 3.326], ["nachbarn", 3.326, 3.688], ["auf", 3.688, 3.863], ["kokosküste", 3.863, 4.55]], "L2": [5.27, 6.66], "L2.words": [["hier", 5.27, 5.502], ["ist", 5.502, 5.725], ["noch", 5.725, 5.957], ["ganz", 5.957, 6.189], ["viel", 6.189, 6.42], ["platz", 6.42, 6.66]], "L3": [7.38, 10.18], "L3.words": [["und", 7.38, 7.564], ["wenn", 7.564, 7.755], ["du", 7.755, 7.932], ["wissen", 7.932, 8.3], ["willst", 8.3, 8.504], ["wo", 8.504, 8.681], ["dein", 8.681, 8.872], ["haus", 8.872, 9.063], ["ist", 9.063, 9.247], ["kommentier", 9.247, 9.805], ["einfach", 9.805, 10.18]], "L4": [10.9, 13.6], "L4.words": [["noch", 10.9, 11.061], ["keine", 11.061, 11.365], ["hütte", 11.365, 11.67], ["schnell", 11.89, 12.083], ["folgen", 12.083, 12.42], ["und", 12.42, 12.588], ["noch", 12.588, 12.763], ["heute", 12.763, 13.094], ["einziehen", 13.094, 13.6]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -136,7 +146,18 @@
       tl.fromTo("#s01-c2", { opacity: 0, x: -60 }, { opacity: 1, x: 0, duration: .3, ease: "power3.out" }, l3 + .7);
       tkLike(tl, "#s01-c2", ko, 87, 164, 1.4, 6);
       tl.fromTo("#s01-km", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, ko - .05);
-      tl.to("#s01-km", { scale: 1.07, duration: .25, yoyo: true, repeat: 7, ease: "sine.inOut" }, ko + .35);
+      tl.to("#s01-km", { scale: 1.07, duration: .25, yoyo: true, repeat: 1, ease: "sine.inOut" }, ko + .35);
+      const l4 = line("L4")[0], fo = at("L4", "folgen"), hz = at("L4", "heute");
+      tl.to(["#s01-q", "#s01-sheet2", "#s01-km"], { opacity: 0, y: -30, duration: .25 }, l4 - .2);
+      tl.fromTo("#s01-h", { opacity: 0, scale: .3, rotation: -8 }, { opacity: 1, scale: 1, rotation: -2, duration: .35, ease: "back.out(2.6)" }, l4);
+      tl.fromTo("#s01-btn", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, l4 + .2);
+      tl.fromTo("#s01-hand", { opacity: 0, x: 160, y: 160 }, { opacity: 1, x: 0, y: 0, duration: .25, ease: "power3.out" }, fo - .35);
+      tl.to("#s01-hand", { y: -26, scale: .9, duration: .1, yoyo: true, repeat: 1 }, fo);
+      tl.to("#s01-btn2", { opacity: 1, duration: .05 }, fo + .1);
+      tl.fromTo("#s01-btn", { scale: 1 }, { scale: 1.15, duration: .12, yoyo: true, repeat: 1, immediateRender: false }, fo + .1);
+      tl.to("#s01-hand", { opacity: 0, duration: .25 }, fo + .6);
+      tl.fromTo("#s01-hz", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, hz - .2);
+      tl.to("#s01-hz", { scale: 1.07, duration: .25, yoyo: true, repeat: 3, ease: "sine.inOut" }, hz + .3);
       
       window.__timelines["s01"] = tl;
     })();
