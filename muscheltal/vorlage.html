@@ -944,7 +944,7 @@ function jogInit(){JOG.list=[];if(!ROAM.init)roamInit();const busy=new Set([...W
 function jogPos(j){const {sg}=j,v=sg.v,A=sg.a1-sg.a0,len=A*v.R,P=(sg.loop?1:2)*len/j.sp,s=((T/P+j.ph)%1+1)%1,u=sg.loop?s:(s<.5?s*2:2-s*2),bk=!sg.loop&&s>=.5,a=sg.a0+u*A,[x,y]=polar(v,a,coastAt(v,a)+3),a2=a+(bk?-.01:.01),[x2,y2]=polar(v,a2,coastAt(v,a2)+3);return[x,y,x2-x,y2-y];}
 function rNode(v,k,m){return[v.x+k*5*S,v.y+m*4*S*.9-2.6];}
 function rValid(v,k,m){const [x,y]=rNode(v,k,m);return inside(v,x,y,9)&&passable(x,y);}
-function rEdge(v,k1,m1,k2,m2){const [a,b]=rNode(v,k1,m1),[c2,d]=rNode(v,k2,m2);for(let t=.1;t<1;t+=.15){const x=a+(c2-a)*t,y=b+(d-b)*t;if(!inside(v,x,y,7)||!passable(x,y))return false;}return true;}
+function rEdge(v,k1,m1,k2,m2){const [a,b]=rNode(v,k1,m1),[c2,d]=rNode(v,k2,m2);for(let t=.02;t<1;t+=.025){const x=a+(c2-a)*t,y=b+(d-b)*t;if(!inside(v,x,y,7)||!passable(x,y))return false;}return true;}
 function roamInit(){ROAM.init=true;const busy=new Set([...WALKERS.map(w=>w.q),...CAMP.map(f=>f.q)]),pick=FREE.filter(q=>!busy.has(q));
  for(let i=0;i<12&&pick.length;i++){const q=pick[(hash(i,501)*pick.length)|0],v=q.isl;let best=null;const k0=Math.round((q.p.x-v.x)/(5*S)),m0=Math.round((q.p.y-v.y)/(4*S*.9));
   for(let r=0;r<4&&!best;r++)for(let dk=-r;dk<=r&&!best;dk++)for(let dm=-r;dm<=r&&!best;dm++)if(rValid(v,k0+dk,m0+dm))best=[k0+dk,m0+dm];if(!best)continue;
@@ -1854,7 +1854,23 @@ document.addEventListener('click',e=>{const a=e.target.closest('[data-erf]');if(
 // ---------- Selbst durch Muschel-Tal laufen (zu Fuß oder mit dem Moped, 4× so schnell) ----------
 const WK={on:false,x:0,y:0,dir:1,vert:false,front:true,moving:false,mode:'walk',me:null,L:null,keys:new Set(),pt:null,last:0};
 function inRect(x,y,a,b,c,d){return x>=a&&x<=b&&y>=c&&y<=d;}
-function canWalk(x,y){
+// Hindernisse (Gegenstände) als Kreise in Weltkoordinaten – beim Erkunden kann man nicht hindurchlaufen
+let OBS=null;const OBG=new Map();
+function obsBuild(){OBS=[];const A=(x,y,r)=>{OBS.push([x,y,r]);const k=Math.floor(x/20)+','+Math.floor(y/20);if(!OBG.has(k))OBG.set(k,[]);OBG.get(k).push([x,y,r]);};
+ for(const v of ISL){if(!v.open)continue;for(const [x,y] of v.benches||[])A(x,y,4.6);for(const [x,y] of v.lamps||[])A(x,y,1.3);for(const t of v.palms||[])A(t.x,t.y+3,1.6*t.s);for(const b of v.bush||[])A(b.x,b.y,b.r*.75);for(const r of v.rocks||[])A(r.x,r.y,r.r);}
+ for(const [x,y] of LANT)A(x,y,1.3);
+ for(const g of GEB){const W=(g.x1-g.x0)/2,H=(g.y1-g.y0)/2,d=g.dir||1,sx=(g.sea-g.cx)*d,L=(lx,ly,r)=>A(g.cx+lx*((g.typ==='doener'||g.typ==='acai'||g.typ==='werkstatt')?1:d),g.cy+ly,r);
+  if(g.typ==='doener'){for(const [x,y] of[[24,-8],[24,10],[25,21]])L(x,y,3.8);L(-34,-10.5,2.6);L(-34,-5.5,2.6);L(-30,19,3.6);L(-27,19,3);L(12,19,2.8);L(-29.5,4.4,1.5);L(11.8,4.4,1.5);for(const [x,y] of[[-34,-18],[-34,16],[33,-20]])L(x,y,2.6);L(14.5,-9,1.3);}
+  else if(g.typ==='strandbar'){const bx=sx-30;for(const [x,y] of[[-W+15,-10],[-W+15,10],[-W+29,0]])L(x,y,3);for(const [x,y] of[[-W+10,-12],[-W+10,8],[-W+24,-2]])L(x,y+1,1.1);L(sx-50,14,2);L(sx-48,4,2);L(-W+28,15,4.4);L(-W+10,19,2.8);L(sx-8,21,3.4);L(-W+46,20,2.4);L(-W+36,4,1.6);L(-W+3,-H+4,1.8);L(sx-50,-H-2,1.8);L(-W+18,-H+4,1.8);
+   for(const [x,y] of[[W-11,-19],[W-11,19],[W-18,-21],[sx+5,19],[sx+3,-23],[sx+3,23],[sx+8,-14],[sx+8,14],[sx+28,-2]])L(x,y,2.4);L(W-13,-1,4.6);L(W-18.6,-1,1.6);L(W-7.4,-1,1.6);for(const [x,y] of[[sx-42,-24],[W-4,-24],[W-4,24],[sx-42,24],[(sx-44+W)/2,-24],[(sx-44+W)/2,24]])L(x,y+3,1.1);for(const x of[bx-9,bx-3,bx+3,bx+9])L(x,10,1.6);}
+  else if(g.typ==='acai'){for(const [x,y] of[[-33,-12],[-33,-6],[-29,-9]])L(x,y,2.8);L(-33,-1.5,1.6);L(-31.2,-1,1.4);L(-30,15,3.6);L(-26.2,-6,1.4);L(-17,12,3);L(12.5,22,1.5);L(-12.5,22,1.5);L(15.2,-1.4,2.2);L(9.5,25,.9);L(-9.5,25,.9);}
+  else if(g.typ==='werkstatt'){L(-26,17,2.8);L(-21,17,1.5);L(34,19,1.6);L(1,12,2.8);L(25.9,-13.8,1.3);L(31,12,3);L(-29,-2.4,1.5);L(13.4,-2.4,1.5);}
+  else{const vx=-W+24;L(sx-16,-11,3);L(sx-16,11,3);L(sx-20,1,1.1);L(sx-2,-H-1,1.8);L(sx-2,H+2,1.8);}}
+ {const v=ISL[1];if(v&&v.open){const X=(r,a)=>v.x+Math.cos(a)*r*KOKX,Y=(r,a)=>v.y+Math.sin(a)*r*.92;for(const a of[.55,2.6,4.3])A(X(58,a),Y(58,a),5.4);A(X(62,3.3),Y(62,3.3),3.2);A(X(62,5.6),Y(62,5.6),3.4);A(X(48,1.5),Y(48,1.5),2.6);A(X(54,4.85),Y(54,4.85),4.6);
+  {const x=X(70,.95),y=Y(70,.95);A(x-6,y,1);A(x+6,y,1);}A(X(72,-1.57),Y(72,-1.57),1);for(let k=0;k<6;k++){const a=k/6*TAU+.25;A(v.x+Math.cos(a)*68*KOKX,v.y+Math.sin(a)*68*.92+3,1.1);}for(let k=0;k<5;k++){const a=k/5*TAU+.3;A(v.x+Math.cos(a)*30,v.y+Math.sin(a)*26+3,1.8);}}}
+ for(const n of I.pool||[]){const q=byName.get('@'+n.toLowerCase().replace(/^@/,''));if(!q||!q.p)continue;const ps=poolSpot(q);if(!ps)continue;if(ps[2]){A(ps[0],ps[1]-3,3.2);A(ps[0],ps[1]+3,3.2);}else{A(ps[0]-5,ps[1],4.5);A(ps[0]+3,ps[1],4.5);}}}
+function onObs(x,y){if(!OBS)obsBuild();const gx=Math.floor(x/20),gy=Math.floor(y/20);for(let i=-1;i<=1;i++)for(let j=-1;j<=1;j++){const L=OBG.get((gx+i)+','+(gy+j));if(!L)continue;for(const [ox,oy,r] of L)if((x-ox)*(x-ox)+(y-oy)*(y-oy)<r*r)return true;}return false;}
+function canWalk(x,y){if(onObs(x,y))return false;
  for(const g of GEB){const W2=(g.x1-g.x0)/2,lx=(x-g.cx)*(g.dir||1),ly=y-g.cy;{const [bx,by,bw,bh]=signBox(g),m=(g.typ==='doener'||g.typ==='acai'||g.typ==='werkstatt')?1:(g.dir||1),sx2=(x-g.cx)*m;if(sx2>bx-2&&sx2<bx+bw+2&&ly>by-3&&ly<by+bh+7)return false;}if(g.typ==='doener'){const ax=x-g.cx,AW=(g.x1-g.x0)/2,AH=(g.y1-g.y0)/2;if(inRect(ax,ly,-28,11,-33,6))return false;if(Math.abs(ax)<AW+.5&&Math.abs(ly)<AH+.5&&(Math.abs(ax)>AW-3.5||ly<-AH+3.5||(ly>AH-3.5&&Math.abs(ax)>8.5)))return false;continue;}if(g.typ==='werkstatt'){const ax=x-g.cx;if(inRect(ax,ly,-32,16,-27,-3)||inRect(ax,ly,-17,-3,0,9)||inRect(ax,ly,9,19,3,11)||inRect(ax,ly,20,29,-5,4)||inRect(ax,ly,-38,-30,-7,2)||inRect(ax,ly,26,35,-22,-13)||inRect(ax,ly,-35,-25,4,10))return false;continue;}if(g.typ==='acai'){const ax=x-g.cx,AW=(g.x1-g.x0)/2,AH=(g.y1-g.y0)/2;if(Math.abs(ax)<AW+.5&&Math.abs(ly)<AH+.5){if(inRect(ax,ly,-25,13,-26,3)||inRect(ax,ly,13,36,-16,14))return false;if(Math.abs(ax)>AW-4||ly<-AH+4||(ly>AH-4&&Math.abs(ax)>9))return false;}continue;}
   const sx=(g.sea-g.cx)*g.dir;if(g.typ==='strandbar'){if(inRect(lx,ly,sx-47,sx-13,-27,10))return false;if(inRect(lx,ly,sx-44,W2-2,-27,27))return true;}
   else{const vx=-W2+24;if(inRect(lx,ly,vx-22,vx+22,-28,13)||inRect(lx,ly,sx-6,W2-4,-12,8))return false;if(inRect(lx,ly,sx-22,W2-2,-18,18))return true;}}
