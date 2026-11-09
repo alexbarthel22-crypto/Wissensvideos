@@ -52,6 +52,7 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - Auf der Kokos-Küste gibt es **11 Bauplätze** („bald: ???“). Einer liegt an der Nordwestküste (Richtung Haupt-Insel) und reicht auf Pfählen bis ins Wasser (dort kommt später ein Hafen – **noch geheim, nicht verraten**).
 - Die gesperrten ???-Inseln sind größer und unregelmäßig geformt.
 - Insel unten links (ab 2.001 Followern, öffentlich „???“): etwas kleiner als die Kokos-Küste, weiter weg von der Haupt-Insel, unregelmäßige Form, großer See in der Mitte mit einer kleinen Insel und Palme (dort kommt später eine Villa – **noch geheim, nicht verraten**), Schildkröten schwimmen im See.
+- **Schatten** richten sich immer nach dem echten Sonnenstand in Hamburg (Himmelsrichtung + Sonnenhöhe; Karte: Norden oben): morgens fallen sie nach Nordwesten, mittags nach Norden, nachmittags nach Nordosten; je tiefer die Sonne, desto länger (Hütten, Palmen, Büsche, Personen, Laternen, Schirme, Gebäude, Palast, Wolken). Nachts nur kurze Schatten.
 - **Sonnenaufgang/-untergang** wie in **22529 Hamburg** (Open-Meteo): jeweils **ab der echten Aufgangs- bzw. Untergangszeit 45 Min. lang** (z. B. 9.11.: Untergang 16:33 → Untergangs-Stimmung 16:33–17:18, danach Nacht), mit Farbverlauf. Davor/danach Nacht bzw. Tag.
 - Auf jeder offenen Insel stehen **Bänke** (am Platz + am Strand) und **Straßenlaternen**, die nachts leuchten – Haupt-Insel: Holzbänke + klassische Laternen; Kokos-Küste: Baumstamm-Bänke + Bambus-Laternen.
 
