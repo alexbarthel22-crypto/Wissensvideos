@@ -114,7 +114,7 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 ## Story-Bild „Umzug um 22:00“ (8.11., `videos/muscheltal-story-6/muscheltal-story-umzug.jpg`)
 - Aussage: **Heute um 22:00 ist Umzug** – wer bis 22:00 Uhr folgt, zieht **ab morgen in eine freie Hütte auf der Kokos-Küste** (Hintergrund: Kokos-Küste nachts, Lagerfeuer-Platz). Homepage muss die neuen Follower also bis morgen (9.11.) zeigen.
 
-## Video Tag 2 „Gebaut + Verlosung“ (9.11., `videos/muscheltal-tag2-gebaut/renders/muscheltal-tag2-gebaut.mp4`, 55 s)
+## Video Tag 2 „Gebaut + Verlosung“ (9.11., `videos/muscheltal-tag2-gebaut/renders/muscheltal-tag2-gebaut.mp4`, 59,6 s; nach dem Einstieg „Tag 2 in Muschel-Tal!“)
 - 653 Bewohner (+78), Kokos-Küste 148 · Dönerbude (⭐ @lotta.fsthff, @alana_wbr, @em1lia.brn) + Strandbar (⭐ @paulepfpgfn, @khmr.496, nachts Party) gebaut · Bürgermeisterin @lillygyqcf0 im Palast.
 - **Palast-Leitung ausgelost: @prvt.lott1** (1 Woche im Palast).
 - **Ankündigung: Im nächsten Video wird die Strandvilla unter allen Followern an 2 Personen verlost** (Homepage: Schild „bald verlost“ passt; danach 2 Bewohner in der Villa).
