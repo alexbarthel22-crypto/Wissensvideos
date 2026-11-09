@@ -895,7 +895,9 @@ function drawIsland(c,v,vis,z){
  if(px>6){for(const [x,y] of v.benches)if(vis(x,y))bench(c,v,x,y);for(const [x,y] of v.lamps)if(vis(x,y))lamp(c,v,x,y,nightLevel()>.5);}
  // Hütten (Südsee-Stelzenhütten mit Strohdach)
  const STRAW=['#e8c25a','#dcb04a','#f0cd6a'];const LBL=[];
- for(const q of v.people){if(q.nr>limit)continue;const x=q.p.x,y=q.p.y;if(!vis(x,y))continue;const col=q.roof,st=STRAW[q.nr%3];
+ // von hinten nach vorne zeichnen, damit vordere Dächer die Stelzen der hinteren Reihe verdecken
+ const byY=v.byY||(v.byY=v.people.filter(q=>q.p).sort((a,b)=>a.p.y-b.p.y||a.p.x-b.p.x));
+ for(const q of byY){if(q.nr>limit)continue;const x=q.p.x,y=q.p.y;if(!vis(x,y))continue;const col=q.roof,st=STRAW[q.nr%3];
   if(px<7){c.fillStyle=kok?(snow?'#e8eef4':'#7a4a24'):snow?'#f4f8fc':wet?'#b8963f':st;c.fillRect(x-4.5,y-4.5,9,9);c.fillStyle=col;c.fillRect(x+1.5,y+1.5,3,3);continue;}
   hutBody(c,v,q,px,wet,snow);
   if(px>44)LBL.push(q);}
@@ -934,7 +936,10 @@ function drawBase(){
  // Küstenhütten als eigene Ebene (liegt über Wellen/Krabben) – einmal je Ansicht statt in jedem Bild
  fx.setTransform(1,0,0,1,0,0);fx.clearRect(0,0,fgc.width,fgc.height);fgOn=false;
  if(S*z>=7){world(fx);const K2=kind(),wet=K2==='rain'||K2==='storm',snow=K2==='snow';for(const v of ISL){if(!v.open||(GROWV&&v!==GROWV))continue;
-  if(!v.coastHuts)v.coastHuts=v.people.filter(q=>{if(!q.p)return false;const lx=q.p.x-v.x,ly=(q.p.y-v.y)/.92;return coastAt(v,Math.atan2(ly,lx))-Math.hypot(lx,ly)<40;});
+  if(!v.coastHuts){const cst=v.people.filter(q=>{if(!q.p)return false;const lx=q.p.x-v.x,ly=(q.p.y-v.y)/.92;return coastAt(v,Math.atan2(ly,lx))-Math.hypot(lx,ly)<40;}),set=new Set(cst);
+   // auch die Hütten davor mitnehmen (sonst lägen Stelzen der Küstenhütten über deren Dächern), alles von hinten nach vorne
+   for(let it=0;it<3;it++)for(const q of v.people){if(!q.p||set.has(q))continue;for(const k of set)if(q.p.y>k.p.y&&q.p.y-k.p.y<26&&Math.abs(q.p.x-k.p.x)<21){set.add(q);break;}}
+   v.coastHuts=[...set].sort((a,b)=>a.p.y-b.p.y||a.p.x-b.p.x);}
   for(const q of v.coastHuts)if(q.nr<=limit&&vis(q.p.x,q.p.y)){hutBody(fx,v,q,S*z,wet,snow);fgOn=true;}}}
 }
 
