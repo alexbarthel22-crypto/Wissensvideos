@@ -569,7 +569,7 @@ function drawBau(c,b,nl,z){const ink='#2a1b12',t=REDUCED?0:T,ph=bauPhase(b),pr=[
   fence(-w,2,-w,L);fence(w,2,w,L);fence(-w,L,w,L);c.restore();return;}
  const W2=(b.x1-b.x0)/2,H2=(b.y1-b.y0)/2,day=nl<.5;c.save();c.translate(b.cx,b.cy);
  // Boden: Sand, Kies, Reifenspuren
- c.fillStyle='#d9c08a';c.fillRect(-W2,-H2,2*W2,2*H2);c.fillStyle='rgba(120,90,50,.22)';for(let i=0;i<8;i++){c.beginPath();c.ellipse(-W2+8+hash(i,401)*(2*W2-16),-H2+6+hash(i,402)*(2*H2-12),4,2,0,0,TAU);c.fill();}
+ c.fillStyle='#d9c08a';c.fillRect(-W2,-H2,2*W2,2*H2);
  c.fillStyle='rgba(150,140,125,.5)';for(let i=0;i<26;i++){c.beginPath();c.arc(-W2+3+hash(i,403)*(2*W2-6),-H2+3+hash(i,404)*(2*H2-6),.35,0,TAU);c.fill();}
  c.strokeStyle='rgba(110,80,45,.35)';c.lineWidth=.8;c.setLineDash([.9,.7]);for(const o of[-1.6,1.6]){c.beginPath();c.moveTo(-W2+2,H2-3+o);c.quadraticCurveTo(-4,H2-14+o,W2*.62+o,H2*.3+6);c.stroke();}c.setLineDash([]);
  // hintere Absperrung zuerst (verläuft hinter allem)
@@ -872,7 +872,7 @@ function drawIsland(c,v,vis,z){
  if(v.plots.length)for(const [k,m] of v.resv){{const bb=BAUK.has(v.i+':'+k+','+m)&&BAU.find(b=>b.key===v.i+':'+k+','+m);if(bb&&bauOn(bb))continue;const gg=GEBK.get(v.i+':'+k+','+m);if(gg&&!(GROWK!=null&&GROWV===gg.v&&GROWK<gg.at))continue;}const hf=HAFEN.has(v.i+':'+k+','+m),hy=v.y+(4*m+2)*S*.9,hx=(()=>{if(!hf)return 0;let x=v.x+(k<0?(5*k+1)*S:(5*k+4)*S);while(inside(v,x,hy,-14))x+=k<0?-4:4;return x+(k<0?-75:75);})(),x0=hf&&k<0?hx:v.x+(5*k+1)*S-9,x1=hf&&k>=0?hx:v.x+(5*k+4)*S+9,y0=v.y+(4*m+1)*S*.9-8,y1=v.y+(4*m+3)*S*.9+8,cx=(x0+x1)/2,cy=(y0+y1)/2;if(!vis(cx,cy)&&!vis(x0,y0)&&!vis(x1,y1))continue;
   if(hf){c.fillStyle='#6b4423';const pa=k<0?x0+2:x1-60;for(let px2=pa;px2<=pa+58;px2+=14)for(const py2 of [y0+3,y1-1])c.fillRect(px2-1,py2,2.4,5);}
   c.fillStyle='#ecd6a6';c.fillRect(x0,y0,x1-x0,y1-y0);if(wet||snow){c.fillStyle=wet?'rgba(90,70,40,.25)':'rgba(250,252,255,.75)';c.fillRect(x0,y0,x1-x0,y1-y0);}c.strokeStyle='#ff8a2a';c.lineWidth=1.4;c.setLineDash([3,2]);c.strokeRect(x0+1,y0+1,x1-x0-2,y1-y0-2);c.setLineDash([]);
-  if(px>9){c.fillStyle='rgba(150,110,60,.35)';for(let i=0;i<6;i++){c.beginPath();c.ellipse(x0+10+hash(k*7+i+v.i*3,m)*(x1-x0-20),y0+8+hash(k,m*5+i)*(y1-y0-16),3,1.6,0,0,TAU);c.fill();}
+  if(px>9){
    c.fillStyle='#6b3f1d';c.fillRect(cx-.9,cy-2,1.8,10);c.fillStyle='#ff8a2a';c.strokeStyle='#2a1b12';c.lineWidth=.6;c.beginPath();c.roundRect(cx-15,cy-12,30,11,2);c.fill();c.stroke();
    c.fillStyle='#fff';c.font='900 4.6px '+FONT;c.textAlign='center';c.fillText('BAUPLATZ',cx,cy-4.8);
    if(px>30){c.fillStyle='#7a5a2b';c.font='800 3.2px '+FONT;c.fillText('bald: ???',cx,cy+12);}}}
@@ -1142,7 +1142,6 @@ function drawWerk(c,g,nl,z){c.scale(g.dir||1,1);// drawGeb spiegelt Küstenbaute
  const W=(g.x1-g.x0)/2,H=(g.y1-g.y0)/2,t=REDUCED?0:T,day=nl<.5,ink='#2a1b12';
  // Betonplatz mit Fugen, Ölflecken, Reifenspuren
  c.fillStyle='#d6d1c8';c.beginPath();c.roundRect(-W+1,-H+1,2*W-2,2*H-2,3);c.fill();c.strokeStyle='rgba(120,110,100,.25)';c.lineWidth=.3;c.beginPath();for(let x=-W+10;x<W;x+=10){c.moveTo(x,-H+1);c.lineTo(x,H-1);}for(let y=-H+9;y<H;y+=9){c.moveTo(-W+1,y);c.lineTo(W-1,y);}c.stroke();
- c.fillStyle='rgba(40,40,50,.28)';for(const [x,y,r] of[[-8,10,3],[12,14,2],[-24,2,2.2],[20,-2,1.6]]){c.beginPath();c.ellipse(x,y,r,r*.5,.3,0,TAU);c.fill();}c.fillStyle='rgba(120,90,200,.15)';c.beginPath();c.ellipse(-7.4,9.8,1.6,.6,.3,0,TAU);c.fill();
  c.strokeStyle='rgba(60,60,60,.18)';c.lineWidth=.7;c.setLineDash([.8,.7]);for(const o of[-1.2,1.2]){c.beginPath();c.moveTo(-W+2,18+o);c.quadraticCurveTo(-14,10+o,-10,4+o);c.stroke();}c.setLineDash([]);
  // Halle: Backstein, weißer Rand, Wellblechdach, offenes Rolltor, Büro-Fenster
  const x0=-31,x1=15,y0=-25,y1=-4;c.fillStyle='rgba(40,30,10,.25)';c.fillRect(x0+sxh(18),y1-1+syh(18),x1-x0,2.4);c.fillStyle='#b85c3c';c.fillRect(x0,y0,x1-x0,y1-y0);c.strokeStyle='rgba(255,255,255,.18)';c.lineWidth=.25;c.beginPath();for(let y=y0+1.4,r=0;y<y1;y+=1.4,r++){c.moveTo(x0,y);c.lineTo(x1,y);for(let x=x0+(r%2)*1.6;x<x1;x+=3.2){c.moveTo(x,y-1.4);c.lineTo(x,y);}}c.stroke();
