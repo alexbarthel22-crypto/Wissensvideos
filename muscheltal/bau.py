@@ -129,11 +129,33 @@ def inselgrenzen(sauber, insel):
     return grenzen
 
 
+def insel_je(sauber, insel):
+    """Insel-Index je Einwohner (nach Einwohner-Nr. und Inselgrenzen) – plus Nachbarn-Wünsche (insel.json → nachbarn):
+    Ist von einem Paar nur einer auf der Haupt-Insel, zieht der andere dazu; dafür zieht der zuletzt auf die
+    Haupt-Insel Gekommene (höchste Nr. dort, ohne Gebäude-Bewohner) auf die Insel des Nachziehenden."""
+    grenzen = inselgrenzen(sauber, insel)
+    isl = [next(i for i, g in enumerate(grenzen) if nr <= g) for nr in range(1, len(sauber) + 1)]
+    wo = _gebaeude_bewohner(insel)
+    idx = {r[0].lower().lstrip("@"): j for j, r in enumerate(sauber)}
+    paare = [[idx.get(n.lower().lstrip("@")) for n in paar] for paar in (insel.get("nachbarn") or [])]
+    geschuetzt = {j for pa in paare for j in pa if j is not None}
+    for a, b in paare:
+        if a is None or b is None or isl[a] == isl[b] or 0 not in (isl[a], isl[b]):
+            continue
+        k = b if isl[a] == 0 else a
+        kand = [j for j in range(len(sauber)) if isl[j] == 0 and j not in geschuetzt and sauber[j][0].lower().lstrip("@") not in wo]
+        if not kand:
+            continue
+        letzter = max(kand)
+        isl[letzter], isl[k] = isl[k], 0
+        print(f"Nachbarn: @{sauber[k][0].lstrip('@')} zieht auf die Haupt-Insel, @{sauber[letzter][0].lstrip('@')} zieht dafür um")
+    return isl
+
+
 def verteile(sauber, insel):
     """Insel je Einwohner-Nr.; jeder behält sein Haus (platz), Frei gewordene werden mit den Nachrückern
     (nach Einwohner-Nr.) besetzt. Gibt Liste 'i:k' zurück."""
-    grenzen = inselgrenzen(sauber, insel)
-    isl = [next(i for i, g in enumerate(grenzen) if nr <= g) for nr in range(1, len(sauber) + 1)]
+    isl = insel_je(sauber, insel)
     wo = _gebaeude_bewohner(insel)
     sonder = [r[0].lower().lstrip("@") in wo for r in sauber]  # wohnen in einem Gebäude, kein Hütten-Platz
     plaetze, belegt = [None] * len(sauber), {}
@@ -171,11 +193,10 @@ def uebersicht(sauber, insel, out):
     m = re.search(r'<svg class="coin".*?</svg>', erf, re.S)
     coin = re.sub(r'class="coin" ', "", m[0]) if m else ""
     coin_uri = "data:image/svg+xml;charset=utf-8," + coin.replace("#", "%23").replace('"', "'").replace("\n", "")
-    grenzen = inselgrenzen(sauber, insel)
-    teile, start = [], 0
+    isl = insel_je(sauber, insel)
+    teile = []
     for i, v in enumerate(insel["inseln"]):
-        leute = [(j + 1, r) for j, r in enumerate(sauber) if start < j + 1 <= grenzen[i]]
-        start = grenzen[i]
+        leute = [(j + 1, r) for j, r in enumerate(sauber) if isl[j] == i]
         if not leute or len(sauber) < v["ab"]:
             continue
         li = "".join(f'<li><a href="./?n={H.escape(r[0])}"><span class="nr">{nr}</span><b>{H.escape(r[0])}</b>{"<i class=g title=Gründer></i>" if r[4] else ""}</a></li>' for nr, r in leute)
@@ -425,9 +446,12 @@ def baue(rows, out):
                        (r.get("platz") or "").strip(), (1 if gr.strip() == "1" else 0) if gr is not None else (1 if pos < 500 else 0)])
         quelle.append(r)
     plaetze = verteile(sauber, insel)
+    isl_l = insel_je(sauber, insel)
     for j, r in enumerate(sauber):
         r[3] = int(plaetze[j].split(":")[1]) if plaetze[j][-1] != "H" else None
         quelle[j]["platz"] = plaetze[j]
+    for j, r in enumerate(sauber):
+        r.append(isl_l[j])
     import copy
     pop = len(sauber)
     web = copy.deepcopy(insel)  # öffentliche Fassung: gesperrte/geheime Inseln ohne echten Namen
@@ -467,9 +491,9 @@ def baue(rows, out):
         os.remove(alt)  # nicht mehr öffentlich (enthielt echte Inselnamen)
 
     # Daten fürs Video (HyperFrames) – NICHT im öffentlichen Ordner, enthält echte Inselnamen
-    grenzen = list(zip(inselgrenzen(sauber, insel), insel["inseln"]))
+    isl_v = insel_je(sauber, insel)
     def wo(nr):
-        v = next(v for g, v in grenzen if nr <= g)
+        v = insel["inseln"][isl_v[nr - 1]]
         return v["name"] if pop >= v["ab"] else "wartet am Steg"
     video = {"stand": insel["stand"], "tag": insel["tag"], "einwohner": pop,
              "muscheln": pop * insel["muscheln_pro_einwohner"], "aemter": insel["aemter"], "projekt": insel.get("projekt"),

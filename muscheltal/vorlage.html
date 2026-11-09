@@ -384,7 +384,7 @@ const WALLS=['#d9a066','#e4b47c','#cf9459','#e9c48f'],ROOFS=['#e8467c','#f4a51c'
 const JETZT=(()=>{try{const p=Object.fromEntries(new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Berlin',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date()).map(x=>[x.type,x.value]));return p.year+'-'+p.month+'-'+p.day+'T'+p.hour+':'+p.minute;}catch(e){return new Date().toISOString().slice(0,16);}})(),
  bisOK=t=>!t||JETZT<(t.length>10?t:t+'T24:00'),aktiv=b=>!b||bisOK(b[2]);
 const WOHN={};for(const [k,o] of Object.entries(I.wohnorte||{})){if(Array.isArray(o)&&!bisOK(o[1]))continue;WOHN['@'+k.toLowerCase().replace(/^@/,'')]=Array.isArray(o)?o[0]:o;}
-const PEOPLE=R.map((r,i)=>{const nr=i+1,v=islandOf(nr);const wh=WOHN[r[0].toLowerCase()]||null;return{home:wh==='Muschelpalast'?null:wh,palast:wh==='Muschelpalast',name:r[0],seit:r[1],mark:r[2],slot:typeof r[3]==='number'?r[3]:null,gr:r[4]==null?nr<=500:!!r[4],nr,isl:v,wait:!v.open,p:null};});
+const PEOPLE=R.map((r,i)=>{const nr=i+1,v=r[5]!=null&&ISL[r[5]]?ISL[r[5]]:islandOf(nr);const wh=WOHN[r[0].toLowerCase()]||null;return{home:wh==='Muschelpalast'?null:wh,palast:wh==='Muschelpalast',name:r[0],seit:r[1],mark:r[2],slot:typeof r[3]==='number'?r[3]:null,gr:r[4]==null?nr<=500:!!r[4],nr,isl:v,wait:!v.open,p:null};});
 for(const v of ISL){const ppl=PEOPLE.filter(p=>p.isl===v&&!p.wait&&!p.home);v.people=ppl;
  const need=ppl.length?Math.max(ppl.length,1+Math.max(...ppl.map(p=>p.slot??0))):0;
  v.plots=(v.open&&v.plaetze)?plaetze(v.plaetze,v.plaza,v.resv,v.i):(need?plaetze(need,v.plaza,v.resv,v.i):[]);v.keys=new Set(v.plots.map(pl=>pl.gx+','+pl.gy));
@@ -393,7 +393,8 @@ for(const v of ISL){const ppl=PEOPLE.filter(p=>p.isl===v&&!p.wait&&!p.home);v.pe
  const setz=(p,si)=>{if(p.p)v.cell.delete(p.p.gx+','+p.p.gy);used.delete(p.hut-1);used.add(si);p.hut=si+1;const pl=v.plots[si],h=hash(pl.gx+7+v.i*31,pl.gy-3);p.p={x:v.x+pl.x,y:v.y+pl.y,gx:pl.gx,gy:pl.gy};p.round=h<.28;p.wall=WALLS[(h*97|0)%4];p.roof=ROOFS[(h*631|0)%ROOFS.length];p.win=hash(pl.gx,pl.gy+11)<.55;v.cell.set(pl.gx+','+pl.gy,p);};
  const nb=(a,b)=>(a.gy===b.gy&&Math.abs(a.gx-b.gx)===1)||(a.gx===b.gx&&Math.abs(a.gy-b.gy)===1);
  for(const pr of I.nachbarn||[]){const [A,B]=pr.map(n=>ppl.find(p=>p.name.toLowerCase()==='@'+n.toLowerCase().replace(/^@/,'')));if(!A||!B||!A.p||!B.p||nb(A.p,B.p))continue;
-  const [F,L]=A.nr<B.nr?[A,B]:[B,A];let done=false;for(const [X,Y] of[[F,L],[L,F]]){const i=v.plots.findIndex((pl,i)=>!used.has(i)&&nb(pl,X.p));if(i>=0){setz(Y,i);done=true;break;}}}
+  const [F,L]=A.nr<B.nr?[A,B]:[B,A];let done=false;for(const [X,Y] of[[F,L],[L,F]]){const i=v.plots.findIndex((pl,i)=>!used.has(i)&&nb(pl,X.p));if(i>=0){setz(Y,i);done=true;break;}}
+  if(!done){const N=ppl.find(q=>q!==F&&q!==L&&q.p&&nb(q.p,F.p));if(N){const iN=N.hut-1,iL=L.hut-1;v.cell.delete(N.p.gx+','+N.p.gy);v.cell.delete(L.p.gx+','+L.p.gy);used.delete(iN);used.delete(iL);L.hut=0;N.hut=0;used.add(iN);used.add(iL);const tmp=(p,si)=>{p.hut=si+1;const pl=v.plots[si],h=hash(pl.gx+7+v.i*31,pl.gy-3);p.p={x:v.x+pl.x,y:v.y+pl.y,gx:pl.gx,gy:pl.gy};p.round=h<.28;p.wall=WALLS[(h*97|0)%4];p.roof=ROOFS[(h*631|0)%ROOFS.length];p.win=hash(pl.gx,pl.gy+11)<.55;v.cell.set(pl.gx+','+pl.gy,p);};tmp(L,iN);tmp(N,iL);}}}
  v.free=v.plots.filter((pl,i)=>!used.has(i)).map(pl=>({x:v.x+pl.x,y:v.y+pl.y}));}
 for(const p of PEOPLE){const n=p.name.toLowerCase().replace(/^@/,''),b=(I.jobs||{})[n];if(b&&aktiv(b)){p.beruf=b[0]||'';p.ort=b[1]||'';}const vm=(I.vermoegen||{})[n];p.verm=vm!=null?vm:(I.vermoegen_start??0);}
 const PLACED=PEOPLE.filter(p=>p.p), WAIT=PEOPLE.filter(p=>p.wait);
