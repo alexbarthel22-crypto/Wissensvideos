@@ -555,7 +555,7 @@ function drawBau(c,b,nl,z){const ink='#2a1b12',t=REDUCED?0:T,pr=Math.min(1,N/b.z
   c.fillStyle=day?'#bfe3f5':'#ffe08a';c.fillRect(x0+2,y0+2,4.5,2.6);c.fillStyle='#1d3f66';c.fillRect(x0+10,y0+2.2,3,5.8);c.fillStyle='#fff';c.font='900 1.3px '+FONT;c.textAlign='center';c.fillText('BAULEITUNG',x0+7.5,y0+1.4);}
  {const x0=W2-9,y0=-H2+3;c.fillStyle='#2f8fd0';c.beginPath();c.roundRect(x0,y0,4,7,[1.4,1.4,0,0]);c.fill();c.fillStyle='#1d5f90';c.fillRect(x0+.6,y0+1.6,2.8,5.2);c.fillStyle='#fff';c.fillRect(x0+1.4,y0+2.2,1.2,.5);}
  // Rohbau: Bodenplatte mit Bewehrung, wachsende Etagen
- const fl=1+Math.floor(pr*4),bx0=-W2*.5,bw=W2,gy=-H2*.3,top=gy-6-(fl-1)*5;
+ const mF=b.etagen||5,fl=1+Math.floor(pr*(mF-1)),bx0=-W2*.5,bw=W2,gy=-H2*.3,top=gy-6-(fl-1)*5;
  c.fillStyle='#bdb6aa';c.fillRect(-W2*.55,gy,W2*1.1,H2*.75);c.strokeStyle='rgba(140,70,35,.45)';c.lineWidth=.22;c.beginPath();for(let x=-W2*.55+2;x<W2*.55;x+=2.2){c.moveTo(x,gy+5);c.lineTo(x,gy+H2*.75-1);}for(let y=gy+6;y<gy+H2*.75;y+=2.2){c.moveTo(-W2*.55+1,y);c.lineTo(W2*.55-1,y);}c.stroke();
  c.fillStyle='#a9a294';for(let x=bx0+2;x<=bx0+bw-2;x+=bw/5){c.fillRect(x-.6,gy+1,1.2,4);}
  for(let e2=0;e2<fl;e2++){const y=gy-6-e2*5,last=e2===fl-1;c.fillStyle=last?'#d6d0c4':'#c9c2b5';c.fillRect(bx0,y,bw,5);c.strokeStyle='rgba(42,27,18,.35)';c.lineWidth=.3;c.strokeRect(bx0,y,bw,5);
@@ -568,7 +568,7 @@ function drawBau(c,b,nl,z){const ink='#2a1b12',t=REDUCED?0:T,pr=Math.min(1,N/b.z
   c.fillStyle='#b07a45';for(let e2=0;e2<fl;e2++){c.fillRect(sx0,gy-e2*5-.4,sx1-sx0,.8);}
   c.fillStyle='rgba(46,158,91,.35)';c.fillRect(sx1-(sx1-sx0)*.32,top-1,(sx1-sx0)*.32,gy-top+1);}
  // Kran: Gittermast, Fundament, Kabine, Ausleger mit Laufkatze, Gegengewicht, Last am Haken
- const kx=W2*.62,ky=H2*.3,kh=38;c.fillStyle='#9a948a';c.fillRect(kx-3,ky-.6,6,2.2);
+ const kx=W2*.62,ky=H2*.3,kh=mF>=4?38:26;c.fillStyle='#9a948a';c.fillRect(kx-3,ky-.6,6,2.2);
  c.strokeStyle='#f0a500';c.lineWidth=.55;c.beginPath();c.moveTo(kx-1,ky);c.lineTo(kx-1,ky-kh);c.moveTo(kx+1,ky);c.lineTo(kx+1,ky-kh);for(let i=0;i<10;i++){c.moveTo(kx-1,ky-i*3.8);c.lineTo(kx+1,ky-i*3.8-3.8);c.moveTo(kx-1,ky-i*3.8);c.lineTo(kx+1,ky-i*3.8);}c.stroke();
  const a=Math.sin(t*.25)*.5,ca=Math.cos(a);c.save();c.translate(kx,ky-kh);
  c.fillStyle='#f0a500';c.fillRect(-1.6,-.4,3.6,3);c.fillStyle=day?'#bfe3f5':'#ffe08a';c.fillRect(.2,.2,1.4,1.6);
