@@ -141,7 +141,7 @@ scene("s01", LILITA + "\n    " + PILL + """
 """
       <div id="s01-hk"><div class="hk-l"><span class="hk-w" id="hw0">DAS</span><span class="hk-w" id="hw1">KÖNNTE</span></div><div class="hk-l"><span class="hk-w" id="hw2">DEIN</span><span class="hk-w" id="hw3">HAUS</span></div><div class="hk-l"><span class="hk-w" id="hw4">SEIN!</span></div></div>
       <div id="s01-fl"></div>""",
-"""      const TH = .42;
+"""      const TH = .25;
       tl.fromTo("#s01-fl", { opacity: 0 }, { opacity: .6, duration: .05, yoyo: true, repeat: 1, immediateRender: false }, TH);
       tl.fromTo("#s01-hk", { y: 0 }, { y: 16, duration: .05, yoyo: true, repeat: 3, immediateRender: false }, TH);
       const hk = ["Das", "könnte", "dein", "Haus", "sein"];

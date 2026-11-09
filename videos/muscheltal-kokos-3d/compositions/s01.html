@@ -60,8 +60,8 @@
     #s01-stk { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 330px; color: #e8433c; border-color: #e8433c; background: #fff; transform: rotate(-5deg); font-size: 54px; white-space: nowrap; }
     #s01-fl { position: absolute; inset: 0; background: #fff; opacity: 0; }
   </style>
-  <div id="root" data-composition-id="s01" data-start="0" data-duration="1.940" data-width="1080" data-height="1920">
-    <div id="s01-stage" class="clip stage" data-start="0" data-duration="1.940" data-track-index="0">
+  <div id="root" data-composition-id="s01" data-start="0" data-duration="1.610" data-width="1080" data-height="1920">
+    <div id="s01-stage" class="clip stage" data-start="0" data-duration="1.610" data-track-index="0">
 
       <div id="s01-hk"><div class="hk-l"><span class="hk-w" id="hw0">DAS</span><span class="hk-w" id="hw1">KÖNNTE</span></div><div class="hk-l"><span class="hk-w" id="hw2">DEIN</span><span class="hk-w" id="hw3">HAUS</span></div><div class="hk-l"><span class="hk-w" id="hw4">SEIN!</span></div></div>
       <div id="s01-fl"></div>
@@ -70,7 +70,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 1.94, "L1": [0.0, 1.61], "L1.words": [["das", 0.0, 0.264], ["könnte", 0.264, 0.791], ["dein", 0.791, 1.064], ["haus", 1.064, 1.337], ["sein", 1.337, 1.61]]};
+      const C = {"__dur": 1.61, "L1": [0.0, 1.28], "L1.words": [["das", 0.0, 0.21], ["könnte", 0.21, 0.629], ["dein", 0.629, 0.846], ["haus", 0.846, 1.063], ["sein", 1.063, 1.28]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -114,7 +114,7 @@
 
       wrapBt("#s01-stage");
       const tl = gsap.timeline({ paused: true });
-      const TH = .42;
+      const TH = .25;
       tl.fromTo("#s01-fl", { opacity: 0 }, { opacity: .6, duration: .05, yoyo: true, repeat: 1, immediateRender: false }, TH);
       tl.fromTo("#s01-hk", { y: 0 }, { y: 16, duration: .05, yoyo: true, repeat: 3, immediateRender: false }, TH);
       const hk = ["Das", "könnte", "dein", "Haus", "sein"];
