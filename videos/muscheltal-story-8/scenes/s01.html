@@ -1,0 +1,56 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+.pl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 28px 12px; border-radius: 999px; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); white-space: nowrap; }
+    #s01-t { top: 290px; font-size: 56px; background: #e8467c; }
+    #s01-sheet { top: 410px; }
+    #s01-nb { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 690px; color: #2e9e5b; border-color: #2e9e5b; background: #fff; transform: rotate(-4deg); font-size: 48px; white-space: nowrap; }
+    #s01-pl { top: 830px; font-size: 40px; background: #18b8c0; }
+    #s01-q { top: 290px; font-size: 56px; background: #ff6a1a; }
+    #s01-sheet2 { top: 410px; }
+    #s01-km { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 640px; color: #e8433c; border-color: #e8433c; background: #fff; transform: rotate(-4deg); font-size: 56px; white-space: nowrap; }
+  </style>
+  <div id="root" data-composition-id="s01" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s01-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s01-t" class="pl">👯 FREUNDE MARKIEREN</div>
+      <div id="s01-sheet" class="tk"><div class="tk-h">Kommentare · neuestes Video<b>×</b></div>
+        <div id="s01-c1" class="tk-c"><div class="tk-a" style="background:#ff6a1a">?</div><div><div class="tk-u">dein.name</div><div class="tk-t">@deine.freundin zieh neben mich! 🏡</div><div class="tk-m">vor 2 Std.<span>Antworten</span></div></div><div class="tk-l"><div class="hz"></div><i>312</i></div></div>
+      </div>
+      <div id="s01-nb" class="stamp" data-layout-ignore>🥥 NACHBARN AUF DER KOKOS-KÜSTE!</div>
+      <div id="s01-pl" class="pl">🏡 148 von 1.500 Häusern bewohnt</div>
+      <div id="s01-q" class="pl">🏠 WO IST DEIN HAUS?</div>
+      <div id="s01-sheet2" class="tk"><div class="tk-h">Kommentare<b>×</b></div>
+        <div id="s01-c2" class="tk-c"><div class="tk-a" style="background:#2e9e5b">?</div><div><div class="tk-u">dein.name</div><div class="tk-t">Wo ist mein Haus? 🏠</div><div class="tk-m">vor 2 Std.<span>Antworten</span></div></div><div class="tk-l"><div class="hz"></div><i>87</i></div></div>
+      </div>
+      <div id="s01-km" class="stamp" data-layout-ignore>💬 KOMMENTIEREN!</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      /*__COMMON_JS__*/
+      wrapBt("#s01-stage");
+      const tl = gsap.timeline({ paused: true });
+      const vi = at("L1", "Video"), nb = at("L1", "Nachbarn"), pz = at("L2", "Platz");
+      tl.fromTo("#s01-t", { opacity: 0, scale: .3, rotation: -8 }, { opacity: 1, scale: 1, rotation: -2, duration: .35, ease: "back.out(2.6)" }, .05);
+      tl.fromTo("#s01-sheet", { opacity: 0, y: 400 }, { opacity: 1, y: 0, duration: .45, ease: "power4.out" }, vi - .5);
+      tl.fromTo("#s01-c1", { opacity: 0, x: -60 }, { opacity: 1, x: 0, duration: .3, ease: "power3.out" }, vi - .2);
+      tkLike(tl, "#s01-c1", vi + .5, 312, 498, 1.4, 4);
+      tl.fromTo("#s01-nb", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, nb - .05);
+      tl.to("#s01-nb", { scale: 1.06, duration: .25, yoyo: true, repeat: 3, ease: "sine.inOut" }, nb + .35);
+      tl.fromTo("#s01-pl", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, pz - .3);
+      tl.to("#s01-pl", { scale: 1.06, duration: .25, yoyo: true, repeat: 3, ease: "sine.inOut" }, pz + .2);
+      const l3 = line("L3")[0], ko = at("L3", "kommentier");
+      tl.to(["#s01-t", "#s01-sheet", "#s01-nb", "#s01-pl"], { opacity: 0, y: -30, duration: .25 }, l3 - .2);
+      tl.fromTo("#s01-q", { opacity: 0, scale: .3, rotation: 8 }, { opacity: 1, scale: 1, rotation: 2, duration: .35, ease: "back.out(2.6)" }, l3 + .05);
+      tl.fromTo("#s01-sheet2", { opacity: 0, y: 400 }, { opacity: 1, y: 0, duration: .45, ease: "power4.out" }, l3 + .4);
+      tl.fromTo("#s01-c2", { opacity: 0, x: -60 }, { opacity: 1, x: 0, duration: .3, ease: "power3.out" }, l3 + .7);
+      tkLike(tl, "#s01-c2", ko, 87, 164, 1.4, 6);
+      tl.fromTo("#s01-km", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, ko - .05);
+      tl.to("#s01-km", { scale: 1.07, duration: .25, yoyo: true, repeat: 7, ease: "sine.inOut" }, ko + .35);
+      
+      window.__timelines["s01"] = tl;
+    })();
+  </script>
+</template>
