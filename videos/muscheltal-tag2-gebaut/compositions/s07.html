@@ -50,20 +50,23 @@
 
 .pl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 28px 12px; border-radius: 999px; color: #fff;
       font-family: "Inter", sans-serif; font-weight: 900; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); white-space: nowrap; }
-    .s07-c { position: absolute; left: 110px; width: 860px; height: 124px; border-radius: 30px; background: #fff; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.3);
+    .s07-c { position: absolute; left: 90px; width: 900px; height: 140px; border-radius: 30px; background: #fff; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.3);
       display: flex; align-items: center; gap: 20px; padding: 0 28px; font-family: "Inter", sans-serif; color: #23285a; }
-    .s07-c .e { font-size: 70px; } .s07-c .m { flex: 1; } .s07-c b { font-size: 40px; font-weight: 900; display: block; }
-    .s07-c .bar { height: 22px; border-radius: 11px; background: #e3e6f0; margin-top: 8px; overflow: hidden; } .s07-c .bar i { display: block; height: 100%; width: 0; background: #ff6a1a; border-radius: 11px; }
-    .s07-c .z { font-size: 34px; font-weight: 900; color: #ff6a1a; }
+    .s07-c .e { font-size: 72px; } .s07-c .m { flex: 1; } .s07-c b { font-size: 40px; font-weight: 900; display: block; line-height: 1.1; }
+    .s07-c small { display: block; font-size: 28px; font-weight: 800; color: #6b6f8a; margin-top: 2px; }
+    .s07-c .bar { height: 20px; border-radius: 10px; background: #e3e6f0; margin-top: 8px; overflow: hidden; } .s07-c .bar i { display: block; height: 100%; width: 0; background: #ff6a1a; border-radius: 10px; }
+    .s07-c .z { font-size: 40px; font-weight: 900; color: #ff6a1a; text-align: center; line-height: 1; } .s07-c .z span { font-size: 26px; color: #6b6f8a; }
+    #s07-w { top: 790px; font-size: 44px; background: #18b8c0; }
     .fbtn { position: absolute; left: 0; right: 0; margin: 0 auto; top: 330px; width: 420px; height: 120px; border-radius: 60px; background: #fe2c55; color: #fff;
       font-family: "Inter", sans-serif; font-weight: 900; font-size: 56px; display: grid; place-items: center; box-shadow: 0 0 0 5px #2a1b12, 0 12px 0 rgba(0,0,0,.25); }
     .fbtn2 { position: absolute; inset: 0; border-radius: 60px; background: #fff; color: #0a78c2; display: grid; place-items: center; opacity: 0; }
     #s07-hand { position: absolute; left: 690px; top: 380px; font-size: 120px; }
     #s07-m { top: 500px; font-size: 44px; background: #e8467c; }
   </style>
-  <div id="root" data-composition-id="s07" data-start="0" data-duration="8.000" data-width="1080" data-height="1920">
-    <div id="s07-stage" class="clip stage" data-start="0" data-duration="8.000" data-track-index="0">
-<div class="s07-c" id="s07-c0" style="top:290px"><div class="e">🏨</div><div class="m"><b>Hotel Sandkorn</b><div class="bar"><i id="s07-b0"></i></div></div><div class="z">653/800</div></div><div class="s07-c" id="s07-c1" style="top:440px"><div class="e">⚓</div><div class="m"><b>Anlegestelle</b><div class="bar"><i id="s07-b1"></i></div></div><div class="z">653/900</div></div><div class="s07-c" id="s07-c2" style="top:590px"><div class="e">🐾</div><div class="m"><b>Tierheim</b><div class="bar"><i id="s07-b2"></i></div></div><div class="z">653/1.000</div></div>
+  <div id="root" data-composition-id="s07" data-start="0" data-duration="11.080" data-width="1080" data-height="1920">
+    <div id="s07-stage" class="clip stage" data-start="0" data-duration="11.080" data-track-index="0">
+<div class="s07-c" id="s07-c0" style="top:290px"><div class="e">🏨</div><div class="m"><b>Hotel Sandkorn</b><small>Fertig bei 800 Bewohnern</small><div class="bar"><i id="s07-b0"></i></div></div><div class="z">653<br><span>/ 800</span></div></div><div class="s07-c" id="s07-c1" style="top:450px"><div class="e">⚓</div><div class="m"><b>Boots-Anlegestelle</b><small>Fertig bei 900 Bewohnern</small><div class="bar"><i id="s07-b1"></i></div></div><div class="z">653<br><span>/ 900</span></div></div><div class="s07-c" id="s07-c2" style="top:610px"><div class="e">🐾</div><div class="m"><b>Tierheim</b><small>Fertig bei 1.000 Bewohnern</small><div class="bar"><i id="s07-b2"></i></div></div><div class="z">653<br><span>/ 1.000</span></div></div>
+      <div id="s07-w" class="pl">⛵ Zwischen den Inseln wechseln!</div>
       <div id="s07-btn" class="fbtn">+ Folgen<div id="s07-btn2" class="fbtn2">✓ Gefolgt</div></div>
       <div id="s07-hand" data-layout-ignore>👆</div>
       <div id="s07-m" class="pl">👯 Freunde markieren!</div>
@@ -72,7 +75,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 8.0, "L9": [0.2, 3.44], "L9.words": [["und", 0.2, 0.329], ["es", 0.329, 0.453], ["wird", 0.453, 0.586], ["weitergebaut", 0.586, 1.1], ["hotel", 1.48, 1.85], ["anlegestelle", 2.09, 2.919], ["und", 2.919, 3.089], ["tierheim", 3.089, 3.44]], "L10": [3.66, 7.25], "L10.words": [["jeder", 3.66, 3.981], ["neue", 3.981, 4.15], ["follower", 4.15, 4.635], ["bringt", 4.635, 4.816], ["uns", 4.816, 4.979], ["näher", 4.979, 5.3], ["also", 5.66, 5.968], ["folgen", 5.968, 6.287], ["und", 6.287, 6.446], ["freunde", 6.446, 6.771], ["markieren", 6.771, 7.25]]};
+      const C = {"__dur": 11.08, "L9": [0.2, 4.84], "L9.words": [["das", 0.2, 0.384], ["hotel", 0.384, 0.746], ["kommt", 0.746, 0.944], ["bei", 0.944, 1.128], ["800", 1.128, 1.694], ["die", 1.694, 1.878], ["anlegestelle", 1.878, 2.78], ["bei", 2.78, 2.964], ["900", 2.964, 3.53], ["und", 3.53, 3.715], ["das", 3.715, 3.899], ["tierheim", 3.899, 4.281], ["bei", 4.281, 4.465], ["1000", 4.465, 4.84]], "L9b": [5.06, 8.66], "L9b.words": [["die", 5.06, 5.204], ["anlegestelle", 5.204, 5.909], ["ist", 5.909, 6.053], ["super", 6.053, 6.337], ["wichtig", 6.337, 6.63], ["damit", 6.77, 7.102], ["könnt", 7.102, 7.283], ["ihr", 7.283, 7.452], ["zwischen", 7.452, 7.803], ["den", 7.803, 7.972], ["inseln", 7.972, 8.31], ["wechseln", 8.31, 8.66]], "L10": [8.88, 10.63], "L10.words": [["also", 8.88, 9.219], ["folgen", 9.219, 9.57], ["und", 9.57, 9.746], ["freunde", 9.746, 10.103], ["markieren", 10.103, 10.63]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -116,18 +119,22 @@
 
       wrapBt("#s07-stage");
       const tl = gsap.timeline({ paused: true });
-      const ws = [at("L9", "Hotel"), at("L9", "Anlegestelle"), at("L9", "Tierheim")], pc = [653 / 800, 653 / 900, 653 / 1000], l10 = line("L10")[0], fo = at("L10", "folgen"), fr = at("L10", "Freunde");
-      ws.forEach((w, i) => { tl.fromTo("#s07-c" + i, { opacity: 0, x: i % 2 ? 120 : -120 }, { opacity: 1, x: 0, duration: .3, ease: "back.out(2)" }, w - .15);
-        tl.fromTo("#s07-b" + i, { width: "0%" }, { width: (pc[i] * 100).toFixed(1) + "%", duration: .7, ease: "power2.out" }, w + .1); });
-      tl.to([".s07-c"], { opacity: 0, y: -30, duration: .25, stagger: .05 }, l10 + .9);
-      tl.fromTo("#s07-btn", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, fo - .8);
-      tl.fromTo("#s07-hand", { opacity: 0, x: 160, y: 160 }, { opacity: 1, x: 0, y: 0, duration: .3, ease: "power3.out" }, fo - .4);
-      tl.to("#s07-hand", { y: -26, scale: .9, duration: .1, yoyo: true, repeat: 1 }, fo - .05);
-      tl.to("#s07-btn2", { opacity: 1, duration: .05 }, fo + .05);
-      tl.fromTo("#s07-btn", { scale: 1 }, { scale: 1.15, duration: .12, yoyo: true, repeat: 1 }, fo + .05);
-      tl.to("#s07-hand", { opacity: 0, duration: .25 }, fo + .6);
+      const ws = [at("L9", "Hotel"), at("L9", "Anlegestelle"), at("L9", "Tierheim")], pc = [0.816, 0.726, 0.653], l10 = line("L10")[0], fo = at("L10", "folgen"), fr = at("L10", "Freunde"), zw = at("L9b", "zwischen"), l9b = line("L9b")[0];
+      ws.forEach((w, i) => { tl.fromTo("#s07-c" + i, { opacity: 0, x: i % 2 ? 120 : -120 }, { opacity: 1, x: 0, duration: .3, ease: "back.out(2)" }, w - .2);
+        tl.fromTo("#s07-b" + i, { width: "0%" }, { width: (pc[i] * 100).toFixed(1) + "%", duration: .8, ease: "power2.out" }, w + .1); });
+      tl.to(["#s07-c0", "#s07-c2"], { opacity: .45, duration: .25 }, l9b);
+      tl.to("#s07-c1", { scale: 1.07, boxShadow: "0 0 0 8px #18b8c0, 0 12px 0 rgba(0,0,0,.3)", duration: .3, ease: "back.out(2)" }, l9b);
+      tl.fromTo("#s07-w", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, zw - .2);
+      tl.to("#s07-w", { scale: 1.06, duration: .25, yoyo: true, repeat: 3, ease: "sine.inOut" }, zw + .3);
+      tl.to([".s07-c", "#s07-w"], { opacity: 0, y: -30, duration: .2 }, l10 - .25);
+      tl.fromTo("#s07-btn", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, l10);
+      tl.fromTo("#s07-hand", { opacity: 0, x: 160, y: 160 }, { opacity: 1, x: 0, y: 0, duration: .25, ease: "power3.out" }, fo - .2);
+      tl.to("#s07-hand", { y: -26, scale: .9, duration: .1, yoyo: true, repeat: 1 }, fo + .1);
+      tl.to("#s07-btn2", { opacity: 1, duration: .05 }, fo + .2);
+      tl.fromTo("#s07-btn", { scale: 1 }, { scale: 1.15, duration: .12, yoyo: true, repeat: 1 }, fo + .2);
+      tl.to("#s07-hand", { opacity: 0, duration: .25 }, fo + .7);
       tl.fromTo("#s07-m", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, fr - .15);
-      tl.to("#s07-m", { scale: 1.06, duration: .25, yoyo: true, repeat: 5, ease: "sine.inOut" }, fr + .4);
+      tl.to("#s07-m", { scale: 1.06, duration: .25, yoyo: true, repeat: 3, ease: "sine.inOut" }, fr + .4);
       
       window.__timelines["s07"] = tl;
     })();

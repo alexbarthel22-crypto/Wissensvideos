@@ -13,6 +13,8 @@
     .s05-r { height: 130px; display: grid; place-items: center; font-family: "Inter", sans-serif; font-weight: 900; font-size: 64px; color: #23285a; white-space: nowrap; }
     #s05-shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,0) 30%, rgba(255,255,255,0) 70%, rgba(255,255,255,.95)); }
     .s05-arr { position: absolute; top: 605px; font-size: 80px; color: #ffc93c; -webkit-text-stroke: 4px #2a1b12; }
+    #s05-pl { top: 300px; font-size: 46px; background: #ffb81c; color: #2a1b12; }
+    #s05-pb { top: 400px; font-size: 42px; background: #7b3fe0; }
     #s05-st { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 890px; color: #e8433c; border-color: #e8433c; transform: rotate(-5deg); font-size: 64px; white-space: nowrap; background: #fff; }
   </style>
   <div id="root" data-composition-id="s05" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
@@ -23,6 +25,8 @@
       <div class="s05-arr" style="left:30px">▶</div><div class="s05-arr" style="left:985px">◀</div>
       <div id="s05-cfw"></div>
       <div id="s05-st" class="stamp" data-layout-ignore>👑 PALAST-LEITUNG!</div>
+      <div id="s05-pl" class="pl">👑 Palast-Leitung: @prvt.lott1</div>
+      <div id="s05-pb" class="pl">🏰 zusammen im Palast</div>
     </div>
   </div>
   <script>
@@ -49,6 +53,11 @@
         tl.fromTo(d, { opacity: 0, x: 0, y: 0, rotation: 0, scale: .6 }, { opacity: 1, x: dx * .7, y: dy * .7, rotation: (R() - .5) * 720, scale: 1, duration: .45, ease: "power3.out" }, T0);
         tl.to(d, { x: dx, y: dy + 700, rotation: "+=" + Math.round((R() - .5) * 540), opacity: 0, duration: 1.4, ease: "power1.in" }, T0 + .45); }
       tl.to("#s05-t", { opacity: 0, duration: .2 }, T0);
+      const wo = at("L7", "wohnst");
+      tl.to(["#s05-box", ".s05-arr", "#s05-st"], { opacity: 0, scale: .8, duration: .25, ease: "power2.in" }, wo - .1);
+      tl.to("#s05-dim", { opacity: 0, duration: .3 }, wo - .1);
+      tl.fromTo("#s05-pl", { opacity: 0, y: -40 }, { opacity: 1, y: 0, duration: .35, ease: "back.out(2)" }, wo + .1);
+      tl.fromTo("#s05-pb", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, at("L7", "Bürgermeisterin") - .1);
       
       window.__timelines["s05"] = tl;
     })();

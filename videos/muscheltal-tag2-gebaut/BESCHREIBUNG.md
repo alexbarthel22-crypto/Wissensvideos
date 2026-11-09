@@ -7,7 +7,7 @@
 ## Hauptversion (zum Posten)
 Tag 2 in Muschel-Tal 🐚 Ihr habt abgestimmt – Dönerbude 🥙 und Strandbar 🍹 sind gebaut! Und ich habe live die Palast-Leitung ausgelost 👑 Bist du es?
 
-653 Bewohner wohnen schon auf unseren Inseln, 148 davon auf der Kokos-Küste 🥥 Im nächsten Video verlose ich die Strandvilla 🏖️ – für zwei von euch!
+653 Bewohner wohnen schon auf unseren Inseln, 148 davon auf der Kokos-Küste 🥥 Im nächsten Video verlose ich die Strandvilla 🏖️ – für zwei von euch! Und Sophia hat ihren Pool bekommen 🏊 Als Nächstes bauen wir das Hotel, das Tierheim und die Anlegestelle – damit könnt ihr bald zwischen den Inseln wechseln ⛵
 
 Folg @muscheltal und du ziehst ein. Markier deine Freunde, damit sie deine Nachbarn werden 👇
 

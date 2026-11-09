@@ -52,19 +52,21 @@
       font-family: "Inter", sans-serif; font-weight: 900; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); white-space: nowrap; }
     #s06-t { top: 300px; font-size: 58px; background: #18b8c0; }
     #s06-n { top: 420px; font-size: 44px; background: #e8467c; }
+    #s06-sp { top: 300px; font-size: 48px; background: #18b8c0; }
     #s06-z { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 530px; color: #e8433c; border-color: #e8433c; transform: rotate(-4deg); font-size: 56px; white-space: nowrap; background: #fff; }
   </style>
-  <div id="root" data-composition-id="s06" data-start="0" data-duration="3.360" data-width="1080" data-height="1920">
-    <div id="s06-stage" class="clip stage" data-start="0" data-duration="3.360" data-track-index="0">
+  <div id="root" data-composition-id="s06" data-start="0" data-duration="5.650" data-width="1080" data-height="1920">
+    <div id="s06-stage" class="clip stage" data-start="0" data-duration="5.650" data-track-index="0">
       <div id="s06-t" class="pl">🏖️ STRANDVILLA</div>
       <div id="s06-n" class="pl">🎬 Nächstes Video: Verlosung</div>
       <div id="s06-z" class="stamp">2 GEWINNER 🎁</div>
+      <div id="s06-sp" class="pl">🏊 Pool für @sophia_e065!</div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 3.36, "L8": [0.2, 3.18], "L8.words": [["im", 0.2, 0.36], ["nächsten", 0.36, 0.704], ["video", 0.704, 1.029], ["verlose", 1.029, 1.515], ["ich", 1.515, 1.681], ["die", 1.681, 1.847], ["strandvilla", 1.847, 2.357], ["", 2.357, 2.505], ["für", 2.505, 2.67], ["zwei", 2.67, 2.842], ["von", 2.842, 3.008], ["euch", 3.008, 3.18]]};
+      const C = {"__dur": 5.65, "L8": [0.2, 3.18], "L8.words": [["im", 0.2, 0.36], ["nächsten", 0.36, 0.704], ["video", 0.704, 1.029], ["verlose", 1.029, 1.515], ["ich", 1.515, 1.681], ["die", 1.681, 1.847], ["strandvilla", 1.847, 2.357], ["", 2.357, 2.505], ["für", 2.505, 2.67], ["zwei", 2.67, 2.842], ["von", 2.842, 3.008], ["euch", 3.008, 3.18]], "L8b": [3.4, 5.47], "L8b.words": [["und", 3.4, 3.588], ["sophia", 3.588, 3.965], ["wollte", 3.965, 4.341], ["einen", 4.341, 4.711], ["pool", 4.711, 4.905], ["", 4.905, 5.073], ["kriegst", 5.073, 5.289], ["du", 5.289, 5.47]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -112,6 +114,10 @@
       tl.fromTo("#s06-n", { opacity: 0, y: -40 }, { opacity: 1, y: 0, duration: .35, ease: "back.out(2)" }, .05);
       tl.fromTo("#s06-t", { opacity: 0, scale: .3, rotation: -8 }, { opacity: 1, scale: 1, rotation: -2, duration: .45, ease: "back.out(2.6)" }, sv - .15);
       tl.fromTo("#s06-z", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, zw - .05);
+      const sp = line("L8b")[0], kd = at("L8b", "kriegst");
+      tl.to(["#s06-t", "#s06-n", "#s06-z"], { opacity: 0, y: -20, duration: .2 }, sp - .1);
+      tl.fromTo("#s06-sp", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, sp + .1);
+      tl.to("#s06-sp", { scale: 1.1, duration: .18, yoyo: true, repeat: 5, ease: "sine.inOut" }, kd);
       tl.to("#s06-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
       window.__timelines["s06"] = tl;
     })();
