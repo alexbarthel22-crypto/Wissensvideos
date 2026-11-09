@@ -846,6 +846,10 @@ function drawMover(c,w,x,y,dir,vert,mode){
    c.strokeStyle=w.bikec;c.lineWidth=.7;c.beginPath();c.moveTo(-2.8,2.9);c.lineTo(-.5,.6);c.lineTo(2,.6);c.lineTo(2.8,2.9);c.moveTo(-.5,.6);c.lineTo(.2,2.9);c.lineTo(2,.6);c.moveTo(2,.6);c.lineTo(2.3,-1);c.stroke();
    const pd=Math.sin(T*10+w.ph)*.9;c.strokeStyle=w.pants;c.lineWidth=.95;c.beginPath();c.moveTo(-.6,-.5);c.lineTo(.2+pd,2.5);c.stroke();
    if(w.hs===1){c.fillStyle=w.hair;c.beginPath();c.roundRect(-1.05,-5.45,3.1,3.4,1.2);c.fill();}c.fillStyle=w.shirt;c.beginPath();c.roundRect(-1.6,-3.6,3,3.6,1.1);c.fill();rHead(c,{...w,hs:w.hs===1?0:w.hs},.5,-5,'side');}
+  else if(mode==='scooter'){c.scale(w.h,w.h);c.strokeStyle='#2a1b12';c.lineWidth=.8;c.beginPath();c.moveTo(-2.6,3.6);c.lineTo(2.4,3.6);c.moveTo(2.4,3.6);c.lineTo(2.8,-2.4);c.moveTo(2,-2.4);c.lineTo(3.6,-2.4);c.stroke();
+   c.fillStyle='#2a1b12';for(const wx of [-2.4,2.6]){c.beginPath();c.arc(wx,4.1,.85,0,TAU);c.fill();}c.fillStyle='#4ef0ff';c.fillRect(-1.4,3.1,2.8,.5);
+   c.strokeStyle=w.pants;c.lineWidth=.95;c.beginPath();c.moveTo(-.5,1);c.lineTo(-.8,3.3);c.moveTo(.5,1);c.lineTo(.6,3.3);c.stroke();
+   if(w.hs===1){c.fillStyle=w.hair;c.beginPath();c.roundRect(-1.35,-4.65,3.1,3.4,1.2);c.fill();}c.fillStyle=w.shirt;c.beginPath();c.roundRect(-1.6,-2.8,3.2,4,1.1);c.fill();rHead(c,{...w,hs:w.hs===1?0:w.hs},.2,-4.2,'side');}
   else{// Moped (Seitenansicht): Fahrer sitzt, Haare wie zu Fuß
    c.scale(w.h,w.h);const mc=w.bikec||'#2fb3a0';
    if(w.hs===1){c.fillStyle=w.hair;c.beginPath();c.roundRect(-2.35,-5.25,3.1,3.4,1.2);c.fill();}
@@ -866,7 +870,9 @@ function riderV(c,w,down){const pd=Math.sin(T*10+w.ph)*.7,bike=w.mode==='bike';
  if(bike){c.fillStyle='#2a1b12';c.beginPath();c.ellipse(0,down?4:1.2,.55,1.5,0,0,TAU);c.fill();if(!down){c.beginPath();c.ellipse(0,4.2,.6,1.3,0,0,TAU);c.fill();}
   c.strokeStyle=w.bikec;c.lineWidth=.8;c.beginPath();c.moveTo(0,down?2.6:1.6);c.lineTo(0,.2);c.stroke();
   c.strokeStyle=w.pants;c.lineWidth=.9;c.beginPath();c.moveTo(-.6,.6);c.lineTo(-.9,2.4+pd);c.moveTo(.6,.6);c.lineTo(.9,2.4-pd);c.stroke();}
- else{c.fillStyle='#2a1b12';c.beginPath();c.ellipse(0,4.3,.6,1,0,0,TAU);c.fill();c.fillStyle=w.bikec||'#2fb3a0';c.beginPath();c.roundRect(-1.5,1.4,3,2.8,1);c.fill();if(down){c.fillStyle='#ffe38a';c.beginPath();c.arc(0,2.2,.5,0,TAU);c.fill();}
+ else if(w.mode==='moped'){c.fillStyle='#2a1b12';c.beginPath();c.ellipse(0,4.3,.6,1,0,0,TAU);c.fill();c.fillStyle=w.bikec||'#2fb3a0';c.beginPath();c.roundRect(-1.5,1.4,3,2.8,1);c.fill();if(down){c.fillStyle='#ffe38a';c.beginPath();c.arc(0,2.2,.5,0,TAU);c.fill();}
+  c.strokeStyle=w.pants;c.lineWidth=.9;c.beginPath();c.moveTo(-.5,.8);c.lineTo(-.6,3);c.moveTo(.5,.8);c.lineTo(.6,3);c.stroke();}
+ else{c.fillStyle='#2a1b12';c.beginPath();c.ellipse(0,4.3,.5,.9,0,0,TAU);c.fill();c.fillStyle='#4ef0ff';c.fillRect(-.6,2.6,1.2,1.4);
   c.strokeStyle=w.pants;c.lineWidth=.9;c.beginPath();c.moveTo(-.5,.8);c.lineTo(-.6,3);c.moveTo(.5,.8);c.lineTo(.6,3);c.stroke();}
  const bar=()=>{c.strokeStyle='#2a1b12';c.lineWidth=.6;c.beginPath();if(bike){c.moveTo(-2.4,-.6);c.lineTo(2.4,-.6);}else{c.moveTo(0,4);c.lineTo(0,-2.2);c.moveTo(-2,-2.2);c.lineTo(2,-2.2);}c.stroke();},body=()=>{c.fillStyle=w.shirt;c.beginPath();c.roundRect(-1.7,-3.4,3.4,4.4,1.2);c.fill();};
  if(down){body();bar();}else{bar();body();}
@@ -1154,7 +1160,9 @@ function draw(){
  // Spaziergänger: einige Einwohner laufen mit ihrem @Namen über die Wege
  const nW=nl>.5?32:72,OUT=OUTG;
  if(z*S>9)for(let wi=0;wi<nW;wi++){const w=WALKERS[wi];if(!w)break;if(w.q.nr>limit||w.q===sel||(WK.on&&w.q===WK.me))continue;OUT.add(w.q);const q=w.q;if(w.lo==null)walkBounds(w);
-  const D=w.hi-w.lo,spd=w.spd,tt=D/spd,pz=w.pause,Pt=2*(tt+pz),s0=((T+w.ph*7)%Pt+Pt)%Pt;let o,dir,idle=false;
+  // mit Fahrzeug immer in Bewegung: an den Enden ohne Pause wenden; zu kurze Strecke -> zu Fuß
+  if(w.mode!=='walk'&&w.hi-w.lo<12){w.mode='walk';w.spd=Math.min(w.spd,5);}
+  const D=w.hi-w.lo,spd=w.spd,tt=D/spd,pz=w.mode==='walk'?w.pause:0,Pt=2*(tt+pz),s0=((T+w.ph*7)%Pt+Pt)%Pt;let o,dir,idle=false;
   if(D<4){o=w.lo;dir=w.fw;idle=true;}else if(s0<tt){o=w.lo+spd*s0;dir=1;}else if(s0<tt+pz){o=w.hi;dir=1;idle=true;}else if(s0<2*tt+pz){o=w.hi-spd*(s0-tt-pz);dir=-1;}else{o=w.lo;dir=-1;idle=true;}
   const fade=1,x=w.vert?w.rx:w.x0+o,y=w.vert?w.y0+o:w.ry-2.6;if(!vis(x,y))continue;w.idle=idle;
   drawMover(c,w,x,y,dir,w.vert,w.mode);TAPS.push([x,y,q]);
@@ -1501,21 +1509,21 @@ function walkTick(n){if(!WK.on)return;const dt=Math.min(.05,(n-WK.last)/1000);WK
  const K=WK.keys;if(K.has('ArrowLeft')||K.has('a'))vx-=1;if(K.has('ArrowRight')||K.has('d'))vx+=1;if(K.has('ArrowUp')||K.has('w'))vy-=1;if(K.has('ArrowDown')||K.has('s'))vy+=1;
  if(WK.pt){const sx=(WK.x-cam.x)*cam.z+W/2,sy=(WK.y-cam.y)*cam.z+H/2,dx=WK.pt[0]-sx,dy=WK.pt[1]-sy;if(Math.hypot(dx,dy)>14){vx=dx;vy=dy;}}
  const l=Math.hypot(vx,vy);WK.moving=l>0;
- if(l>0){const sp=(WK.mode==='scooter'?45:30)*dt;vx=vx/l*sp;vy=vy/l*sp;
+ if(l>0){const sp=(WK.mode==='moped'?45:30)*dt;vx=vx/l*sp;vy=vy/l*sp;
   const steps=Math.ceil(Math.max(Math.abs(vx),Math.abs(vy))/2);for(let i=0;i<steps;i++){const sx=vx/steps,sy=vy/steps;if(canWalk(WK.x+sx,WK.y))WK.x+=sx;if(canWalk(WK.x,WK.y+sy))WK.y+=sy;}
   WK.vert=Math.abs(vy)>Math.abs(vx)*1.2;WK.dir=WK.vert?(vy>0?1:-1):(vx>=0?1:-1);WK.front=WK.vert&&vy>0;}
- const tz=WK.mode==='scooter'?3.6:5;cam.x+=(WK.x-cam.x)*Math.min(1,dt*6);cam.y+=(WK.y-cam.y)*Math.min(1,dt*6);cam.z+=(tz-cam.z)*Math.min(1,dt*3);
- if(WK.me&&WK.mode==='scooter'&&WK.moving){WK.sc=(WK.sc||0)+dt;if(WK.sc>2&&gibErf(WK.me,'SCOOT')){const p=WK.me;popup('<div class="lupebig" style="border-radius:50%;overflow:hidden">'+SCOOT_SVG+'</div><h2>Neuer Erfolg! 🎉</h2><p><b>🛵 Inselflitzer</b><br>Du bist mit dem Moped über die Insel geflitzt.</p><button class="btn hib" id="zuerf3">🏅 Zu meinen Erfolgen</button>');$('zuerf3').onclick=()=>{walkEnd();zuMeinenErfolgen(p);};WK.keys.clear();WK.pt=null;}}
+ const tz=WK.mode==='moped'?3.6:5;cam.x+=(WK.x-cam.x)*Math.min(1,dt*6);cam.y+=(WK.y-cam.y)*Math.min(1,dt*6);cam.z+=(tz-cam.z)*Math.min(1,dt*3);
+ if(WK.me&&WK.mode==='moped'&&WK.moving){WK.sc=(WK.sc||0)+dt;if(WK.sc>2&&gibErf(WK.me,'SCOOT')){const p=WK.me;popup('<div class="lupebig" style="border-radius:50%;overflow:hidden">'+SCOOT_SVG+'</div><h2>Neuer Erfolg! 🎉</h2><p><b>🛵 Inselflitzer</b><br>Du bist mit dem Moped über die Insel geflitzt.</p><button class="btn hib" id="zuerf3">🏅 Zu meinen Erfolgen</button>');$('zuerf3').onclick=()=>{walkEnd();zuMeinenErfolgen(p);};WK.keys.clear();WK.pt=null;}}
  if(REDUCED)draw();requestAnimationFrame(walkTick);}
 function drawWalker(c,z){if(!WK.on)return;const L=WK.L,x=WK.x,y=WK.y;
  c.save();c.fillStyle='rgba(232,70,124,.28)';c.beginPath();c.ellipse(x,y+4.4,5,1.8,0,0,TAU);c.fill();c.restore();
- if(!WK.moving){c.save();c.translate(x,y);if(!WK.front&&WK.dir<0&&!WK.vert)c.scale(-1,1);if(WK.mode==='scooter'){c.restore();drawMover(c,{...L,mode:'scooter'},x,y,WK.vert?1:WK.dir,WK.vert,'scooter');}else{person(c,L,0,true,0);c.restore();hutsFront(c,x,y);}}
+ if(!WK.moving){c.save();c.translate(x,y);if(!WK.front&&WK.dir<0&&!WK.vert)c.scale(-1,1);if(WK.mode==='moped'){c.restore();drawMover(c,{...L,mode:'moped'},x,y,WK.vert?1:WK.dir,WK.vert,'moped');}else{person(c,L,0,true,0);c.restore();hutsFront(c,x,y);}}
  else drawMover(c,{...L,mode:WK.mode},x,y,WK.dir,WK.vert,WK.mode);
- NAMES.push([(WK.me?WK.me.name:'Du')+' (du)',x,y-(WK.mode==='scooter'?13:12)*L.h,'#e8467c']);}
+ NAMES.push([(WK.me?WK.me.name:'Du')+' (du)',x,y-(WK.mode==='moped'?13:12)*L.h,'#e8467c']);}
 function walkLabel(){const b=$('walkbtn'),bar=b.parentNode;if(!sel){bar.hidden=true;return;}bar.hidden=false;const t='Als '+sel.name+' Muschel-Tal erkunden';if(b.dataset.t===t)return;b.dataset.t=t;b.textContent=t;b.style.fontSize='';let fs=19;while(b.scrollWidth>b.clientWidth&&fs>12){fs-=.5;b.style.fontSize=fs+'px';}}
 walkLabel();setInterval(walkLabel,800);
 $('walkbtn').onclick=walkStart;$('walkend').onclick=walkEnd;
-$('walkmode').onclick=()=>{WK.mode=WK.mode==='walk'?'scooter':'walk';$('walkmode').textContent=WK.mode==='walk'?'🛵 Moped':'🚶 Zu Fuß';};
+$('walkmode').onclick=()=>{WK.mode=WK.mode==='walk'?'moped':'walk';$('walkmode').textContent=WK.mode==='walk'?'🛵 Moped':'🚶 Zu Fuß';};
 addEventListener('keydown',e=>{if(!WK.on)return;const k=e.key.length===1?e.key.toLowerCase():e.key;if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','w','a','s','d'].includes(k)){WK.keys.add(k);e.preventDefault();}if(k==='Escape')walkEnd();});
 addEventListener('keyup',e=>{const k=e.key.length===1?e.key.toLowerCase():e.key;WK.keys.delete(k);});
 {const hero=$('hero'),pos=e=>{const r=cv.getBoundingClientRect();return[e.clientX-r.left,e.clientY-r.top];},onMap=e=>e.target===cv;
