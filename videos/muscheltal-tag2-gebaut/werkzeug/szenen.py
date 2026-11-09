@@ -76,11 +76,11 @@ scene("s01", LILITA + "\n    " + PILL + """
     #s01-hk { position: absolute; left: 0; right: 0; top: 410px; text-align: center; }
     .hk-l { display: table; margin: 26px auto 0; background: #ff2e7e; border-radius: 38px; padding: 6px 40px 16px; font-family: "Lilita One", sans-serif; font-size: 132px; line-height: 1.05; color: #fff; box-shadow: 0 9px 0 rgba(0,0,0,.25); }
     .hk-w { display: inline-block; margin: 0 .1em; transform-origin: 50% 60%; position: relative; }
-    #s01-hint { top: 1330px; font-size: 50px; background: #fe2c55; }
+    #s01-hint { top: 1330px; font-size: 38px; background: #fe2c55; }
     .hk-sp { position: absolute; width: 70px; height: 70px; }""",
 """      <div id="s01-ray"></div><div id="s01-tint"></div>
       <div id="s01-stk">EINGEZOGEN!</div>
-      <div id="s01-hk"><div class="hk-l"><span class="hk-w" id="hw0">DU</span><span class="hk-w" id="hw1">WOHNST</span></div><div class="hk-l"><span class="hk-w" id="hw2">AB</span><span class="hk-w" id="hw3">JETZT</span></div><div class="hk-l"><span class="hk-w" id="hw4">AUF</span><span class="hk-w" id="hw5">MEINER</span></div><div class="hk-l"><span class="hk-w" id="hw6">INSEL!</span></div></div>
+      <div id="s01-hk"><div class="hk-l"><span class="hk-w" id="hw0">DU</span><span class="hk-w" id="hw1">WOHNST</span></div><div class="hk-l"><span class="hk-w" id="hw2">AB</span><span class="hk-w" id="hw3">JETZT</span></div><div class="hk-l"><span class="hk-w" id="hw4">AUF</span><span class="hk-w" id="hw5">MEINER</span></div><div class="hk-l" id="hl3"><span class="hk-w" id="hw6">INSEL!</span></div></div>
       <svg class="hk-sp" style="left:90px;top:520px" viewBox="-10 -10 20 20"><path d="M0 -10 L2 -2 L10 0 L2 2 L0 10 L-2 2 L-10 0 L-2 -2Z" fill="#fff"/></svg>
       <svg class="hk-sp" style="left:900px;top:640px" viewBox="-10 -10 20 20"><path d="M0 -10 L2 -2 L10 0 L2 2 L0 10 L-2 2 L-10 0 L-2 -2Z" fill="#ffd23f"/></svg>
       <svg class="hk-sp" style="left:140px;top:880px" viewBox="-10 -10 20 20"><path d="M0 -10 L2 -2 L10 0 L2 2 L0 10 L-2 2 L-10 0 L-2 -2Z" fill="#ffd23f"/></svg>
@@ -94,14 +94,16 @@ scene("s01", LILITA + "\n    " + PILL + """
       tl.set(["#s01-hk", "#s01-stk", "#s01-ray", "#s01-tint"], { opacity: 1 }, 0);
       tl.fromTo("#s01-ray", { rotation: 0 }, { rotation: 24, duration: hEnd + .3, ease: "none" }, 0);
       tl.fromTo("#s01-stk", { scale: 1 }, { scale: 1.08, rotation: -3, duration: .25, yoyo: true, repeat: 5, ease: "sine.inOut" }, 0);
-      hkw.forEach((w, i) => { const t0 = Math.max(0, at("L1", w) - .03); tl.set("#hw" + i, { zIndex: 5 }, t0); tl.fromTo("#hw" + i, { scale: 1 }, { scale: .5, duration: .05, ease: "power2.in", immediateRender: false }, t0); tl.to("#hw" + i, { scale: [1.75, 1.3, 1.75, 1.5, 1.75, 1.35, 1.55][i], duration: .13, ease: "power2.out" }, t0 + .05); tl.to("#hw" + i, { scale: 1, duration: .22, ease: "back.out(2.5)" }, t0 + .24); tl.set("#hw" + i, { zIndex: 1 }, t0 + .46); });
+      hkw.forEach((w, i) => { const t0 = Math.max(0, at("L1", w) - .03); tl.set("#hw" + i, { zIndex: 5 }, t0); tl.fromTo("#hw" + i, { scale: 1 }, { scale: .5, duration: .05, ease: "power2.in", immediateRender: false }, t0); tl.to("#hw" + i, { scale: [2.2, 1.3, 1.75, 1.5, 1.75, 1.35, 1][i], duration: .13, ease: "power2.out" }, t0 + .05); tl.to("#hw" + i, { scale: 1, duration: .22, ease: "back.out(2.5)" }, t0 + .24); tl.set("#hw" + i, { zIndex: 1 }, t0 + .46); });
       tl.to("#hw3", { color: "#ffd23f", duration: .05 }, at("L1", "jetzt"));
       tl.to("#hw6", { color: "#ffd23f", duration: .05 }, ins);
+      tl.fromTo("#hl3", { scale: 1 }, { scale: 1.55, duration: .14, ease: "power2.out", immediateRender: false }, ins - .02);
+      tl.to("#hl3", { scale: 1.25, duration: .3, ease: "back.out(2.5)" }, ins + .12);
       tl.fromTo(".hk-sp", { scale: 0, rotation: 0, opacity: 0 }, { scale: 1.2, rotation: 180, opacity: 1, duration: .35, ease: "back.out(3)", stagger: .12, yoyo: true, repeat: 3 }, .05);
       tl.fromTo("#s01-fl", { opacity: 0 }, { opacity: .75, duration: .08, yoyo: true, repeat: 1, ease: "power2.out" }, ins + .25);
       tl.to(["#s01-hk", "#s01-stk", "#s01-ray", "#s01-tint", ".hk-sp"], { opacity: 0, duration: .2 }, hEnd + .05);
       tl.set("#s01-hint", { opacity: 1 }, 0);
-      tl.to("#s01-hint", { opacity: .15, scale: .96, duration: .28, yoyo: true, repeat: 9, ease: "sine.inOut" }, .3);
+      tl.to("#s01-hint", { opacity: .15, scale: .96, duration: .25, yoyo: true, repeat: Math.max(1, Math.floor((hEnd - .45) / .25)) | 1, ease: "sine.inOut" }, .3);
       tl.to("#s01-hint", { opacity: 0, duration: .2 }, hEnd + .05);
       const l2 = line("L2")[0], be = at("L2", "653"), ko = at("L2", "Kokos");
       tl.fromTo("#s01-c", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, l2 - .1);

@@ -63,8 +63,8 @@
     #s07-hand { position: absolute; left: 690px; top: 380px; font-size: 120px; }
     #s07-m { top: 500px; font-size: 44px; background: #e8467c; }
   </style>
-  <div id="root" data-composition-id="s07" data-start="0" data-duration="11.550" data-width="1080" data-height="1920">
-    <div id="s07-stage" class="clip stage" data-start="0" data-duration="11.550" data-track-index="0">
+  <div id="root" data-composition-id="s07" data-start="0" data-duration="11.920" data-width="1080" data-height="1920">
+    <div id="s07-stage" class="clip stage" data-start="0" data-duration="11.920" data-track-index="0">
 <div class="s07-c" id="s07-c0" style="top:290px"><div class="e">🏨</div><div class="m"><b>Hotel Sandkorn</b><small>Fertig bei 800 Bewohnern</small><div class="bar"><i id="s07-b0"></i></div></div><div class="z">653<br><span>/ 800</span></div></div><div class="s07-c" id="s07-c1" style="top:450px"><div class="e">⚓</div><div class="m"><b>Boots-Anlegestelle</b><small>Fertig bei 900 Bewohnern</small><div class="bar"><i id="s07-b1"></i></div></div><div class="z">653<br><span>/ 900</span></div></div>
       <div id="s07-w" class="pl">⛵ Zwischen den Inseln wechseln!</div>
       <div id="s07-btn" class="fbtn">+ Folgen<div id="s07-btn2" class="fbtn2">✓ Gefolgt</div></div>
@@ -75,7 +75,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 11.55, "L9": [0.2, 3.75], "L9.words": [["das", 0.2, 0.368], ["hotel", 0.368, 0.699], ["kommt", 0.699, 0.88], ["bei", 0.88, 1.048], ["800", 1.048, 1.566], ["die", 1.566, 1.734], ["anlegestelle", 1.734, 2.559], ["bei", 2.559, 2.727], ["900", 2.727, 3.245], ["bewohnern", 3.245, 3.75]], "L9b": [3.97, 7.57], "L9b.words": [["die", 3.97, 4.114], ["anlegestelle", 4.114, 4.819], ["ist", 4.819, 4.963], ["super", 4.963, 5.247], ["wichtig", 5.247, 5.54], ["damit", 5.68, 6.012], ["könnt", 6.012, 6.193], ["ihr", 6.193, 6.362], ["zwischen", 6.362, 6.713], ["den", 6.713, 6.882], ["inseln", 6.882, 7.22], ["wechseln", 7.22, 7.57]], "L10": [7.79, 11.1], "L10.words": [["also", 7.79, 8.13], ["folgen", 8.13, 8.482], ["", 8.482, 8.639], ["denn", 8.639, 8.821], ["folgen", 8.821, 9.173], ["heißt", 9.173, 9.362], ["einziehen", 9.362, 9.89], ["und", 10.32, 10.449], ["freunde", 10.449, 10.712], ["markieren", 10.712, 11.1]]};
+      const C = {"__dur": 11.92, "L9": [0.2, 3.88], "L9.words": [["das", 0.2, 0.375], ["hotel", 0.375, 0.718], ["kommt", 0.718, 0.905], ["bei", 0.905, 1.079], ["800", 1.079, 1.616], ["die", 1.616, 1.791], ["anlegestelle", 1.791, 2.645], ["bei", 2.645, 2.82], ["900", 2.82, 3.356], ["bewohnern", 3.356, 3.88]], "L9b": [4.1, 7.82], "L9b.words": [["die", 4.1, 4.255], ["anlegestelle", 4.255, 5.014], ["ist", 5.014, 5.169], ["super", 5.169, 5.474], ["wichtig", 5.474, 5.79], ["damit", 6.04, 6.353], ["könnt", 6.353, 6.523], ["ihr", 6.523, 6.683], ["zwischen", 6.683, 7.012], ["den", 7.012, 7.172], ["inseln", 7.172, 7.49], ["wechseln", 7.49, 7.82]], "L10": [8.04, 11.47], "L10.words": [["also", 8.04, 8.392], ["folgen", 8.392, 8.758], ["", 8.758, 8.921], ["denn", 8.921, 9.11], ["folgen", 9.11, 9.476], ["heißt", 9.476, 9.672], ["einziehen", 9.672, 10.22], ["und", 10.66, 10.794], ["freunde", 10.794, 11.067], ["markieren", 11.067, 11.47]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
