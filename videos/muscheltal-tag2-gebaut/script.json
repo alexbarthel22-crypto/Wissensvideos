@@ -40,8 +40,8 @@
     {
      "id": "L1",
      "text": "Du wohnst ab jetzt / auf meiner *y:Insel!",
-     "speed": 1.05,
-     "style": "Style: a young man with a relaxed, slightly deeper, grounded voice, excited but cool, speaking quickly and confidently. Low natural pitch, not high-pitched, not shouting.\nPace: fast.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
+     "speed": 1.1,
+     "style": "Style: a young man telling a good friend some happy news, completely natural everyday German intonation, relaxed and smiling, normal speaking pitch, no exaggerated emphasis.\nPace: natural, slightly quick.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
     },
     {
      "id": "L2",
@@ -73,12 +73,7 @@
    "lines": [
     {
      "id": "L3",
-     "text": "Ihr habt *p:abgestimmt – / gebaut wurde die *y:Dönerbude! / Hier wohnen und arbeiten jetzt / *g:drei *g:von *g:euch.",
-     "speed": 1.12
-    },
-    {
-     "id": "L3b",
-     "text": "Und tagsüber sitzen hier / die Gäste und essen *y:Döner!",
+     "text": "Ihr habt *p:abgestimmt – / gebaut wurde die *y:Dönerbude! / Hier wohnen und arbeiten jetzt / *g:Lotta, *g:Alana *g:und *g:Emilia.",
      "speed": 1.12
     }
    ],
@@ -90,7 +85,7 @@
     },
     {
      "name": "pop",
-     "at": "L3:drei",
+     "at": "L3:Lotta",
      "volume": 0.35
     }
    ]
@@ -135,13 +130,13 @@
    "lines": [
     {
      "id": "L5",
-     "text": "Und das ist unsere *p:Bürgermeisterin – / *g:herzlichen *g:Glückwunsch!",
+     "text": "Und das ist unsere *p:Bürgermeisterin *p:Lilly – / *g:herzlichen *g:Glückwunsch!",
      "speed": 1.1,
      "style": "Style: a young man, warm and proud, congratulating a friend from the heart, smiling, natural not theatrical.\nPace: brisk but natural.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
     },
     {
      "id": "L5b",
-     "text": "Was soll sie als *y:Erstes *y:beschließen? / *p:Vorschläge in die Kommentare!",
+     "text": "Was soll sie als *y:Erstes *y:beschließen? / Der *p:Top-Kommentar *p:gewinnt!",
      "speed": 1.12
     }
    ],
@@ -158,7 +153,7 @@
     },
     {
      "name": "notification",
-     "at": "L5b:Vorschläge",
+     "at": "L5b:Top-Kommentar",
      "volume": 0.35
     }
    ]
@@ -175,9 +170,9 @@
     },
     {
      "id": "L7",
-     "text": "*g:Glückwunsch! / Du wohnst jetzt eine Woche / mit unserer *p:Bürgermeisterin / im *y:Palast!",
+     "text": "*g:Glückwunsch, *g:Lotti! / Du wohnst jetzt eine Woche / mit *p:Lilly im *y:Palast!",
      "speed": 1.1,
-     "pause": 3.4,
+     "pause": 3.2,
      "style": "Style: a young man, genuinely thrilled, telling his friends big news. Energetic but natural, not an announcer.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
     }
    ],
@@ -253,7 +248,7 @@
    "lines": [
     {
      "id": "L9",
-     "text": "Das *y:Hotel kommt bei *y:800|achthundert, / die *y:Anlegestelle bei *y:900|neunhundert!",
+     "text": "Das *y:Hotel kommt bei *y:800|achthundert, / die *y:Anlegestelle / bei *y:900|neunhundert *y:Bewohnern!",
      "speed": 1.12
     },
     {
@@ -263,7 +258,7 @@
     },
     {
      "id": "L10",
-     "text": "Also *p:folgen / und *y:Freunde *y:markieren!",
+     "text": "Also *p:folgen – / denn *g:Folgen *g:heißt *g:einziehen! / Und *y:Freunde *y:markieren!",
      "speed": 1.12
     }
    ],

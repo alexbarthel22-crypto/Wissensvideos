@@ -119,7 +119,8 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - **Palast-Leitung ausgelost: @prvt.lott1** (1 Woche im Palast).
 - **Ankündigung: Im nächsten Video wird die Strandvilla unter allen Followern an 2 Personen verlost** (Homepage: Schild „bald verlost“ passt; danach 2 Bewohner in der Villa).
 - Baustellen mit Zielen: Hotel Sandkorn (800), Boots-Anlegestelle (900). **Tierheim wird im Video noch nicht erwähnt** (Wunsch des Nutzers); „Überraschung bei 1.000“ aus Tag 1 auch nicht.
-- Bürgermeisterin-Szene: „Was soll sie als Erstes beschließen? Vorschläge in die Kommentare!“
+- Bürgermeisterin-Szene: „Unsere Bürgermeisterin **Lilly** … Was soll sie als Erstes beschließen? **Der Top-Kommentar gewinnt!**“
+- Namen im Video: Dönerbude-Team = **Lotta, Alana und Emilia**; Palast-Leitung = **Lotti** (@prvt.lott1); Bürgermeisterin = **Lilly**. Ende: „Folgen heißt einziehen!“
 - „Anton und Laura sind jetzt Nachbarn!“ (@anton.van11 + @laura.ngynn, Hütten nebeneinander, 🤝).
 - **Neu (Video): Die Anlegestelle ist „super wichtig: damit könnt ihr zwischen den Inseln wechseln“** → Homepage: Bauprojekte-Seite/Bauschild der Anlegestelle sollte diesen Zweck nennen (Boot zwischen Haupt-Insel und Kokos-Küste).
 - Video zeigt @prvt.lott1 (Palast-Leitung, gelbes Shirt, Schild „👑 Palast-Leitung @…“) neben der Bürgermeisterin auf der Palasttreppe (lokal nachgebaut) → Homepage bitte genauso zeigen.

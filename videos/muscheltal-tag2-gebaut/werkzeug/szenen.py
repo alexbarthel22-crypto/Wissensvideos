@@ -73,9 +73,10 @@ scene("s01", LILITA + "\n    " + PILL + """
     #s01-fl { position: absolute; inset: 0; background: #fff; opacity: 0; }
     #s01-stk { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 300px; padding: 4px 30px 10px; border-radius: 22px; background: #fff; color: #ff2e7e;
       font-family: "Lilita One", sans-serif; font-size: 64px; border: 5px solid #ff2e7e; box-shadow: 0 8px 0 rgba(0,0,0,.2); transform: rotate(-6deg); }
-    #s01-hk { position: absolute; left: 0; right: 0; top: 430px; text-align: center; }
-    .hk-l { display: table; margin: 16px auto 0; background: #ff2e7e; border-radius: 34px; padding: 4px 34px 14px; font-family: "Lilita One", sans-serif; font-size: 112px; line-height: 1.05; color: #fff; box-shadow: 0 9px 0 rgba(0,0,0,.25); }
-    .hk-w { display: inline-block; margin: 0 .1em; transform-origin: 50% 60%; }
+    #s01-hk { position: absolute; left: 0; right: 0; top: 410px; text-align: center; }
+    .hk-l { display: table; margin: 26px auto 0; background: #ff2e7e; border-radius: 38px; padding: 6px 40px 16px; font-family: "Lilita One", sans-serif; font-size: 132px; line-height: 1.05; color: #fff; box-shadow: 0 9px 0 rgba(0,0,0,.25); }
+    .hk-w { display: inline-block; margin: 0 .1em; transform-origin: 50% 60%; position: relative; }
+    #s01-hint { top: 1330px; font-size: 50px; background: #fe2c55; }
     .hk-sp { position: absolute; width: 70px; height: 70px; }""",
 """      <div id="s01-ray"></div><div id="s01-tint"></div>
       <div id="s01-stk">EINGEZOGEN!</div>
@@ -84,6 +85,7 @@ scene("s01", LILITA + "\n    " + PILL + """
       <svg class="hk-sp" style="left:900px;top:640px" viewBox="-10 -10 20 20"><path d="M0 -10 L2 -2 L10 0 L2 2 L0 10 L-2 2 L-10 0 L-2 -2Z" fill="#ffd23f"/></svg>
       <svg class="hk-sp" style="left:140px;top:880px" viewBox="-10 -10 20 20"><path d="M0 -10 L2 -2 L10 0 L2 2 L0 10 L-2 2 L-10 0 L-2 -2Z" fill="#ffd23f"/></svg>
       <svg class="hk-sp" style="left:850px;top:930px" viewBox="-10 -10 20 20"><path d="M0 -10 L2 -2 L10 0 L2 2 L0 10 L-2 2 L-10 0 L-2 -2Z" fill="#fff"/></svg>
+      <div id="s01-hint" class="pl">➕ Folgen, um einzuziehen!</div>
       <div id="s01-fl"></div>
       <div id="s01-c"><b id="s01-n">575</b>BEWOHNER</div>
       <div id="s01-p" class="pl">+78</div>
@@ -92,12 +94,15 @@ scene("s01", LILITA + "\n    " + PILL + """
       tl.set(["#s01-hk", "#s01-stk", "#s01-ray", "#s01-tint"], { opacity: 1 }, 0);
       tl.fromTo("#s01-ray", { rotation: 0 }, { rotation: 24, duration: hEnd + .3, ease: "none" }, 0);
       tl.fromTo("#s01-stk", { scale: 1 }, { scale: 1.08, rotation: -3, duration: .25, yoyo: true, repeat: 5, ease: "sine.inOut" }, 0);
-      hkw.forEach((w, i) => { const t0 = Math.max(0, at("L1", w) - .03); tl.fromTo("#hw" + i, { scale: 1 }, { scale: .45, duration: .05, ease: "power2.in", immediateRender: false }, t0); tl.to("#hw" + i, { scale: 1.35, duration: .12, ease: "power2.out" }, t0 + .05); tl.to("#hw" + i, { scale: 1, duration: .2, ease: "back.out(3)" }, t0 + .17); });
+      hkw.forEach((w, i) => { const t0 = Math.max(0, at("L1", w) - .03); tl.set("#hw" + i, { zIndex: 5 }, t0); tl.fromTo("#hw" + i, { scale: 1 }, { scale: .5, duration: .05, ease: "power2.in", immediateRender: false }, t0); tl.to("#hw" + i, { scale: 1.75, duration: .13, ease: "power2.out" }, t0 + .05); tl.to("#hw" + i, { scale: 1, duration: .22, ease: "back.out(2.5)" }, t0 + .24); tl.set("#hw" + i, { zIndex: 1 }, t0 + .46); });
       tl.to("#hw3", { color: "#ffd23f", duration: .05 }, at("L1", "jetzt"));
       tl.to("#hw6", { color: "#ffd23f", duration: .05 }, ins);
       tl.fromTo(".hk-sp", { scale: 0, rotation: 0, opacity: 0 }, { scale: 1.2, rotation: 180, opacity: 1, duration: .35, ease: "back.out(3)", stagger: .12, yoyo: true, repeat: 3 }, .05);
       tl.fromTo("#s01-fl", { opacity: 0 }, { opacity: .75, duration: .08, yoyo: true, repeat: 1, ease: "power2.out" }, ins + .25);
       tl.to(["#s01-hk", "#s01-stk", "#s01-ray", "#s01-tint", ".hk-sp"], { opacity: 0, duration: .2 }, hEnd + .05);
+      tl.set("#s01-hint", { opacity: 1 }, 0);
+      tl.to("#s01-hint", { opacity: .15, scale: .96, duration: .28, yoyo: true, repeat: 9, ease: "sine.inOut" }, .3);
+      tl.to("#s01-hint", { opacity: 0, duration: .2 }, hEnd + .05);
       const l2 = line("L2")[0], be = at("L2", "653"), ko = at("L2", "Kokos");
       tl.fromTo("#s01-c", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, l2 - .1);
       count(tl, "#s01-n", 575, 653, l2 + .1, be - l2 + .3);
@@ -108,7 +113,7 @@ scene("s01", LILITA + "\n    " + PILL + """
 # s02 – Dönerbude
 scene("s02", PILL + """
     #s02-t { top: 300px; font-size: 62px; background: #e8433c; }
-    #s02-w { left: 20px; top: 385px; color: #2e9e5b; border-color: #2e9e5b; background: #fff; transform: rotate(-10deg); font-size: 36px; }
+    #s02-w { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 730px; color: #2e9e5b; border-color: #2e9e5b; background: #fff; transform: rotate(-6deg); font-size: 36px; }
     .s02-n { font-size: 40px; background: #fff; color: #e8433c; }
     #s02-g { top: 720px; font-size: 46px; background: #ff6a1a; }""",
 """      <div id="s02-t" class="pl">🥙 DÖNERBUDE</div>
@@ -116,14 +121,11 @@ scene("s02", PILL + """
       <div id="s02-n1" class="pl s02-n" style="top:430px">⭐ @lotta.fsthff</div>
       <div id="s02-n2" class="pl s02-n" style="top:520px">@alana_wbr</div>
       <div id="s02-n3" class="pl s02-n" style="top:610px">@em1lia.brn</div>
-      <div id="s02-g" class="pl">😋 Döner für alle!</div>""",
-"""      const dn = at("L3", "Dönerbude"), dr = at("L3", "drei");
+""",
+"""      const dn = at("L3", "Dönerbude"), dr = at("L3", "Lotta");
       tl.fromTo("#s02-t", { opacity: 0, scale: .3, rotation: -10 }, { opacity: 1, scale: 1, rotation: -2, duration: .45, ease: "back.out(2.6)" }, dn - .15);
-      tl.fromTo("#s02-w", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, dn + .45);
-      tl.fromTo(["#s02-n1", "#s02-n2", "#s02-n3"], { opacity: 0, x: -80 }, { opacity: 1, x: 0, duration: .3, ease: "back.out(2)", stagger: .18 }, dr - .35);
-      const dg = at("L3b", "Döner");
-      tl.fromTo("#s02-g", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, dg - .15);
-      tl.to("#s02-g", { rotation: 3, duration: .2, yoyo: true, repeat: 5, ease: "sine.inOut" }, dg + .3);""")
+      tl.fromTo("#s02-w", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, dr + .9);
+      tl.fromTo(["#s02-n1", "#s02-n2", "#s02-n3"], { opacity: 0, x: -80 }, { opacity: 1, x: 0, duration: .3, ease: "back.out(2)", stagger: .18 }, dr - .35);""")
 
 # s03 – Strandbar, nachts Party
 scene("s03", PILL + """
@@ -148,11 +150,11 @@ scene("s04", PILL + """
     #s04-gl { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 530px; color: #2e9e5b; border-color: #2e9e5b; background: #fff; transform: rotate(-4deg); font-size: 54px; white-space: nowrap; }
     """ + CF_CSS.replace("top: 700px", "top: 600px") + """""",
 f"""      <div id="s04-t" class="pl">🎖️ BÜRGERMEISTERIN</div>
-      <div id="s04-n" class="pl">@lillygyqcf0</div>
+      <div id="s04-n" class="pl">Lilly · @lillygyqcf0</div>
       <div id="s04-gl" class="stamp" data-layout-ignore>🎉 HERZLICHEN GLÜCKWUNSCH!</div>
       <div id="s04-cfw"></div>
       <div id="s04-sheet" class="tk"><div class="tk-h">Kommentare<b>×</b></div>
-        {tk("s04-k1", "#ff6a1a", "?", "dein.name", "Jeden Freitag Strandparty! 🎉", "1.204")}
+        {tk("s04-k1", "#ff6a1a", "?", "dein.name", "Jeden Freitag Strandparty! 🎉", "1.204", " <span style='background:#ffd23f;color:#2a1b12;border-radius:8px;padding:0 8px;font-size:22px'>🏆 Top</span>")}
         {tk("s04-k2", "#2e9e5b", "?", "dein.nachbar", "Gratis Döner am Sonntag 🥙", "873")}
       </div>""",
 """      const bm = at("L5", "Bürgermeisterin");
@@ -161,7 +163,7 @@ f"""      <div id="s04-t" class="pl">🎖️ BÜRGERMEISTERIN</div>
       const T0 = at("L5", "Herzlichen");
       tl.fromTo("#s04-gl", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, T0 - .05);
       tl.to("#s04-gl", { scale: 1.06, duration: .25, yoyo: true, repeat: 3, ease: "sine.inOut" }, T0 + .4);
-      const l5b = line("L5b")[0], vo = at("L5b", "Vorschläge");
+      const l5b = line("L5b")[0], vo = at("L5b", "Top-Kommentar");
       tl.to("#s04-gl", { opacity: 0, scale: .7, duration: .2 }, l5b - .1);
       tl.fromTo("#s04-sheet", { opacity: 0, y: 500 }, { opacity: 1, y: 0, duration: .45, ease: "power4.out" }, l5b + .1);
       tl.fromTo(["#s04-k1", "#s04-k2"], { opacity: 0, x: -60 }, { opacity: 1, x: 0, duration: .3, ease: "power3.out", stagger: .25 }, l5b + .35);
@@ -190,8 +192,8 @@ f"""      <div id="s05-dim"></div>
       <div class="s05-arr" style="left:30px">▶</div><div class="s05-arr" style="left:985px">◀</div>
       <div id="s05-cfw"></div>
       <div id="s05-st" class="stamp" data-layout-ignore>👑 PALAST-LEITUNG!</div>
-      <div id="s05-pl" class="pl">👑 Palast-Leitung: @prvt.lott1</div>
-      <div id="s05-pb" class="pl">🏰 zusammen im Palast</div>""",
+      <div id="s05-pl" class="pl">👑 Palast-Leitung: Lotti (@prvt.lott1)</div>
+      <div id="s05-pb" class="pl">🏰 mit Lilly im Palast</div>""",
 f"""      const s0 = at("L6", "Palast-Leitung") + .7, T0 = line("L7")[0] - .45, H = 130, NR = {len(NAMES)}, W = {WIN};
       tl.fromTo("#s05-dim", {{ opacity: 0 }}, {{ opacity: 1, duration: .4 }}, line("L6")[0]);
       tl.fromTo("#s05-t", {{ opacity: 0, scale: .3 }}, {{ opacity: 1, scale: 1, duration: .4, ease: "back.out(2.6)" }}, line("L6")[0] + .1);
@@ -206,11 +208,11 @@ f"""      const s0 = at("L6", "Palast-Leitung") + .7, T0 = line("L7")[0] - .45, 
       tl.fromTo("#s05-st", {{ opacity: 0, scale: 2.6 }}, {{ opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }}, T0 + .25);
       """ + CONF_JS.replace("SEED", "21").replace("BOX", "s05-cfw") + """
       tl.to("#s05-t", { opacity: 0, duration: .2 }, T0);
-      const wo = at("L7", "wohnst");
+      const wo = at("L7", "wohnst"), li = at("L7", "Lilly");
       tl.to(["#s05-box", ".s05-arr", "#s05-st"], { opacity: 0, scale: .8, duration: .25, ease: "power2.in" }, wo - .1);
       tl.to("#s05-dim", { opacity: 0, duration: .3 }, wo - .1);
       tl.fromTo("#s05-pl", { opacity: 0, y: -40 }, { opacity: 1, y: 0, duration: .35, ease: "back.out(2)" }, wo + .1);
-      tl.fromTo("#s05-pb", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, at("L7", "Bürgermeisterin") - .1);""", blur=False)
+      tl.fromTo("#s05-pb", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, li - .1);""", blur=False)
 
 # s06 – Strandvilla: nächstes Video
 scene("s06", PILL + """
@@ -218,7 +220,7 @@ scene("s06", PILL + """
     #s06-n { top: 420px; font-size: 44px; background: #e8467c; }
     #s06-sp { top: 300px; font-size: 48px; background: #18b8c0; }
     #s06-nb { top: 300px; font-size: 42px; background: #2e9e5b; }
-    #s06-hs { position: absolute; left: 215px; top: 880px; width: 130px; height: 130px; border-radius: 50%; background: #fff; display: grid; place-items: center; font-size: 84px; box-shadow: 0 0 0 7px #ffc93c, 0 0 0 12px #2a1b12, 0 12px 20px rgba(0,0,0,.3); }
+    #s06-hs { position: absolute; left: 230px; top: 640px; width: 130px; height: 130px; border-radius: 50%; background: #fff; display: grid; place-items: center; font-size: 84px; box-shadow: 0 0 0 7px #ffc93c, 0 0 0 12px #2a1b12, 0 12px 20px rgba(0,0,0,.3); }
     #s06-z { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 530px; color: #e8433c; border-color: #e8433c; transform: rotate(-4deg); font-size: 56px; white-space: nowrap; background: #fff; }""",
 """      <div id="s06-t" class="pl">🏖️ STRANDVILLA</div>
       <div id="s06-n" class="pl">🎬 Nächstes Video: Verlosung</div>

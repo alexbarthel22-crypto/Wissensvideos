@@ -51,24 +51,24 @@
 .pl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 28px 12px; border-radius: 999px; color: #fff;
       font-family: "Inter", sans-serif; font-weight: 900; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); white-space: nowrap; }
     #s02-t { top: 300px; font-size: 62px; background: #e8433c; }
-    #s02-w { left: 20px; top: 385px; color: #2e9e5b; border-color: #2e9e5b; background: #fff; transform: rotate(-10deg); font-size: 36px; }
+    #s02-w { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 730px; color: #2e9e5b; border-color: #2e9e5b; background: #fff; transform: rotate(-6deg); font-size: 36px; }
     .s02-n { font-size: 40px; background: #fff; color: #e8433c; }
     #s02-g { top: 720px; font-size: 46px; background: #ff6a1a; }
   </style>
-  <div id="root" data-composition-id="s02" data-start="0" data-duration="8.060" data-width="1080" data-height="1920">
-    <div id="s02-stage" class="clip stage" data-start="0" data-duration="8.060" data-track-index="0">
+  <div id="root" data-composition-id="s02" data-start="0" data-duration="6.330" data-width="1080" data-height="1920">
+    <div id="s02-stage" class="clip stage" data-start="0" data-duration="6.330" data-track-index="0">
       <div id="s02-t" class="pl">🥙 DÖNERBUDE</div>
       <div id="s02-w" class="stamp">GEWONNEN!</div>
       <div id="s02-n1" class="pl s02-n" style="top:430px">⭐ @lotta.fsthff</div>
       <div id="s02-n2" class="pl s02-n" style="top:520px">@alana_wbr</div>
       <div id="s02-n3" class="pl s02-n" style="top:610px">@em1lia.brn</div>
-      <div id="s02-g" class="pl">😋 Döner für alle!</div>
+
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 8.06, "L3": [0.2, 5.05], "L3.words": [["ihr", 0.2, 0.371], ["habt", 0.371, 0.549], ["abgestimmt", 0.549, 1.069], ["", 1.069, 1.222], ["gebaut", 1.222, 1.565], ["wurde", 1.565, 1.901], ["die", 1.901, 2.073], ["dönerbude", 2.073, 2.74], ["hier", 3.17, 3.345], ["wohnen", 3.345, 3.682], ["und", 3.682, 3.851], ["arbeiten", 3.851, 4.351], ["jetzt", 4.351, 4.532], ["drei", 4.532, 4.707], ["von", 4.707, 4.875], ["euch", 4.875, 5.05]], "L3b": [5.27, 7.88], "L3b.words": [["und", 5.27, 5.445], ["tagsüber", 5.445, 5.965], ["sitzen", 5.965, 6.315], ["hier", 6.315, 6.497], ["die", 6.497, 6.672], ["gäste", 6.672, 7.016], ["und", 7.016, 7.192], ["essen", 7.192, 7.536], ["döner", 7.536, 7.88]]};
+      const C = {"__dur": 6.33, "L3": [0.2, 6.15], "L3.words": [["ihr", 0.2, 0.258], ["habt", 0.258, 0.318], ["abgestimmt", 0.318, 0.494], ["", 0.494, 0.546], ["gebaut", 0.546, 0.662], ["wurde", 0.662, 0.776], ["die", 0.776, 0.834], ["dönerbude", 0.834, 1.06], ["hier", 1.32, 1.472], ["wohnen", 1.472, 1.765], ["und", 1.765, 1.911], ["arbeiten", 1.911, 2.345], ["jetzt", 2.345, 2.502], ["lotta", 2.502, 2.79], ["alana", 3.23, 4.466], ["und", 4.466, 4.899], ["emilia", 4.899, 6.15]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -112,13 +112,10 @@
 
       wrapBt("#s02-stage");
       const tl = gsap.timeline({ paused: true });
-      const dn = at("L3", "Dönerbude"), dr = at("L3", "drei");
+      const dn = at("L3", "Dönerbude"), dr = at("L3", "Lotta");
       tl.fromTo("#s02-t", { opacity: 0, scale: .3, rotation: -10 }, { opacity: 1, scale: 1, rotation: -2, duration: .45, ease: "back.out(2.6)" }, dn - .15);
-      tl.fromTo("#s02-w", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, dn + .45);
+      tl.fromTo("#s02-w", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, dr + .9);
       tl.fromTo(["#s02-n1", "#s02-n2", "#s02-n3"], { opacity: 0, x: -80 }, { opacity: 1, x: 0, duration: .3, ease: "back.out(2)", stagger: .18 }, dr - .35);
-      const dg = at("L3b", "Döner");
-      tl.fromTo("#s02-g", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, dg - .15);
-      tl.to("#s02-g", { rotation: 3, duration: .2, yoyo: true, repeat: 5, ease: "sine.inOut" }, dg + .3);
       tl.to("#s02-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
       window.__timelines["s02"] = tl;
     })();
