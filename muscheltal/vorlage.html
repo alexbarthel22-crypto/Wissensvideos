@@ -928,8 +928,7 @@ function drawIsland(c,v,vis,z){
   if(hf){c.fillStyle='#6b4423';const pa=k<0?x0+2:x1-60;for(let px2=pa;px2<=pa+58;px2+=14)for(const py2 of [y0+3,y1-1])c.fillRect(px2-1,py2,2.4,5);}
   c.fillStyle='#ecd6a6';c.fillRect(x0,y0,x1-x0,y1-y0);if(wet||snow){c.fillStyle=wet?'rgba(90,70,40,.25)':'rgba(250,252,255,.75)';c.fillRect(x0,y0,x1-x0,y1-y0);}c.strokeStyle='#ff8a2a';c.lineWidth=1.4;c.setLineDash([3,2]);c.strokeRect(x0+1,y0+1,x1-x0-2,y1-y0-2);c.setLineDash([]);
   if(px>9){
-   c.fillStyle='#6b3f1d';c.fillRect(cx-.9,cy-2,1.8,10);c.fillStyle='#ff8a2a';c.strokeStyle='#2a1b12';c.lineWidth=.6;c.beginPath();c.roundRect(cx-15,cy-12,30,11,2);c.fill();c.stroke();
-   c.fillStyle='#fff';c.font='900 4.6px '+FONT;c.textAlign='center';c.fillText('BAUPLATZ',cx,cy-4.8);
+   plotSign(c,cx,cy);c.textAlign='center';
    if(px>30){c.fillStyle='#7a5a2b';c.font='800 3.2px '+FONT;c.fillText('bald: ???',cx,cy+12);}}}
  if(px>6){for(const [x,y] of v.benches)if(vis(x,y))bench(c,v,x,y);for(const [x,y] of v.lamps)if(vis(x,y))lamp(c,v,x,y,nightLevel()>.5);}
  // Hütten (Südsee-Stelzenhütten mit Strohdach)
@@ -942,6 +941,13 @@ function drawIsland(c,v,vis,z){
   if(px>44)LBL.push(q);}
 }
 // eine Hütte zeichnen (Grundkarte; wird für Tiefe auch über Figuren/Wellen erneut gezeichnet)
+// Bauplatz-Schild: Pfosten steht bei (cx, cy+8) am Boden, Tafel darüber
+function plotSign(c,cx,cy){c.fillStyle='rgba(40,30,10,.25)';c.beginPath();c.ellipse(cx+.6,cy+8,2.2,.7,0,0,TAU);c.fill();c.fillStyle='#6b3f1d';c.fillRect(cx-.9,cy-2,1.8,10);c.fillStyle='#ff8a2a';c.strokeStyle='#2a1b12';c.lineWidth=.6;c.beginPath();c.roundRect(cx-15,cy-12,30,11,2);c.fill();c.stroke();
+ c.fillStyle='#fff';c.font='900 4.6px '+FONT;c.textAlign='center';c.fillText('BAUPLATZ',cx,cy-4.8);}
+let PSIGNS=null;function plotSigns(){if(PSIGNS)return PSIGNS;PSIGNS=[];for(const v of ISL){if(!v.open||!v.plots||!v.plots.length)continue;for(const [k,m] of v.resv){const bb=BAUK.has(v.i+':'+k+','+m)&&BAU.find(b=>b.key===v.i+':'+k+','+m);if(bb&&bauOn(bb))continue;if(GEBK.get(v.i+':'+k+','+m))continue;
+  const hf=HAFEN.has(v.i+':'+k+','+m),hy=v.y+(4*m+2)*S*.9,hx=(()=>{if(!hf)return 0;let x=v.x+(k<0?(5*k+1)*S:(5*k+4)*S);while(inside(v,x,hy,-14))x+=k<0?-4:4;return x+(k<0?-75:75);})(),x0=hf&&k<0?hx:v.x+(5*k+1)*S-9,x1=hf&&k>=0?hx:v.x+(5*k+4)*S+9,y0=v.y+(4*m+1)*S*.9-8,y1=v.y+(4*m+3)*S*.9+8;PSIGNS.push([(x0+x1)/2,(y0+y1)/2]);}}return PSIGNS;}
+// Figur hinter dem Bauplatz-Schild: Schild wird über ihr nachgezeichnet
+function plotSignFront(c,x,y,tn){if(S*cam.z<=9)return;for(const [cx,cy] of plotSigns())if(Math.abs(x-cx)<17&&y<cy+7.6&&y>cy-26)tintDraw(c,tn,cx-16,cy-13,cx+16,cy+9,o=>plotSign(o,cx,cy));}
 function hutBody(c,v,q,px,wet,snow){const x=q.p.x,y=q.p.y,st=['#e8c25a','#dcb04a','#f0cd6a'][q.nr%3];
   if(v.i===1){coco(c,q,x,y,px,wet,snow);return;}
   c.fillStyle='rgba(30,60,20,.28)';c.beginPath();c.ellipse(x+2,y+7.5,9.5,3,0,0,TAU);c.fill();
@@ -1271,7 +1277,7 @@ const TOC=document.createElement('canvas');function tintDraw(c,tn,x0,y0,x1,y1,fn
  TOC.width=w;TOC.height=h;const o=TOC.getContext('2d');o.setTransform(m.a,m.b,m.c,m.d,m.e-X,m.f-Y);fn(o);o.setTransform(1,0,0,1,0,0);o.globalCompositeOperation='source-atop';o.fillStyle=`rgba(12,22,70,${.55*tn})`;o.fillRect(0,0,w,h);o.globalCompositeOperation='source-over';c.save();c.setTransform(1,0,0,1,0,0);c.drawImage(TOC,X,Y);c.restore();}
 let PALMG=null;function palmsFront(c,x,y,tn){if(S*cam.z<=5)return;if(!PALMG){PALMG=new Map();for(const v of ISL)for(const t of v.palms||[]){const k=Math.floor(t.x/24)+','+Math.floor(t.y/24);if(!PALMG.has(k))PALMG.set(k,[]);PALMG.get(k).push(t);}}
  const gx=Math.floor(x/24),gy=Math.floor(y/24);for(let i=-1;i<=1;i++)for(let j=0;j<=1;j++){const L=PALMG.get((gx+i)+','+(gy+j));if(!L)continue;for(const t of L){const d=t.y-y;if(d>.3&&d<12*t.s+4.5&&Math.abs(x-t.x)<9.6*t.s+2.6)tintDraw(c,tn,t.x-12*t.s,t.y-17*t.s,t.x+12*t.s+3,t.y+6,o=>palm(o,t,1));}}}
-function hutsFront(c,x,y,tn){palmsFront(c,x,y,tn);acaiFront(c,x,y,tn);const px=S*cam.z;if(px<7)return;const K=kind(),wet=K==='rain'||K==='storm',snow=K==='snow';
+function hutsFront(c,x,y,tn){palmsFront(c,x,y,tn);acaiFront(c,x,y,tn);plotSignFront(c,x,y,tn);const px=S*cam.z;if(px<7)return;const K=kind(),wet=K==='rain'||K==='storm',snow=K==='snow';
  for(const v of ISL){if(!v.open||!v.cell||Math.hypot(x-v.x,y-v.y)>v.R+40)continue;const gx=Math.round((x-v.x)/S),gy=Math.round((y-v.y)/(S*.9));
   for(let dy=0;dy<=2;dy++)for(let dx=-1;dx<=1;dx++){const q=v.cell.get((gx+dx)+','+(gy+dy));if(!q||q.nr>limit||!q.p||q.p.y<=y-.5||q.p.y-y>24||Math.abs(q.p.x-x)>12)continue;tintDraw(c,tn,q.p.x-12,q.p.y-16,q.p.x+12,q.p.y+11,o=>hutBody(o,v,q,px,wet,snow));}}}
 function drawMover(c,w,x,y,dir,vert,mode){
@@ -1502,7 +1508,7 @@ function drawWerk(c,g,nl,z){c.scale(g.dir||1,1);// drawGeb spiegelt Küstenbaute
   c.strokeStyle='#c9d1d9';c.lineWidth=.35;c.beginPath();c.moveTo(-2.4,-3.6);c.lineTo(-3.6,-4.4);c.stroke();c.fillStyle='#fff';c.fillRect(-.5,-1.6,1,.35);c.restore();TAPS.push([g.cx+x,g.cy+y,p]);if(z*S>40&&sel!==p)NAMES.push([(p.beruf==='Leitung'?'⭐ ':'')+p.name,g.cx+x,g.cy+y-12-(k%2)*4.8,'#2f5f9f']);});
  }
 // Ladenschilder (oben auf den Gebäuden) – nach den Figuren nochmal darüber gezeichnet: wer hinter einem Schild läuft, ist verdeckt
-function offenNeon(c,x,y,g){const on=Math.sin(T*2.4)>-.6;c.fillStyle=on?'#ff3d7f':'#7a3a4a';c.beginPath();c.roundRect(x,y,8.6,4,1);c.fill();c.strokeStyle='#2a1b12';c.lineWidth=.25;c.beginPath();c.moveTo(x+1.5,y-1.4);c.lineTo(x+2.1,y);c.moveTo(x+7.1,y-1.4);c.lineTo(x+6.5,y);c.stroke();gTxt(c,g||{},'OFFEN',x+4.3,y+2.8,2.6,on?'#fff':'#d8b8c0');}
+function offenNeon(c,x,y,g){const on=Math.sin(T*2.4)>-.6;c.fillStyle=on?'#ff3d7f':'#7a3a4a';c.beginPath();c.roundRect(x,y,8.6,4,1);c.fill();c.strokeStyle='#2a1b12';c.lineWidth=.25;c.beginPath();c.moveTo(x+1.5,y-1.4);c.lineTo(x+2.1,y);c.moveTo(x+7.1,y-1.4);c.lineTo(x+6.5,y);c.stroke();gTxt(c,g||{},'OFFEN',x+4.3,y+2.8,2.6,on?'#fff':'#d8b8c0',null,7.2);}
 // Position des OFFEN-Schilds je Laden (lokal) – nicht über Namen oder Wegen
 const OFFEN_POS={doener:[.5,-18.6],acai:[2.4,-20.6],werkstatt:[-14.3,-24],strandbar:null};
 function gebSign(c,g){const ink='#2a1b12';
@@ -1589,7 +1595,7 @@ function drawGeb(c,g,nl,z){const ink='#2a1b12';c.save();c.translate(g.cx,g.cy);
    const bx=sx-30;c.fillStyle='rgba(40,30,10,.25)';c.beginPath();c.ellipse(bx+sxh(16)*(g.dir||1),4+syh(16),15,7,0,0,TAU);c.fill();
    c.fillStyle='#d9a066';c.fillRect(bx-12,-9,24,13);c.strokeStyle='rgba(120,70,30,.5)';c.lineWidth=.4;c.beginPath();for(let x=bx-12;x<bx+12;x+=2){c.moveTo(x,-9);c.lineTo(x,4);}c.stroke();
    c.fillStyle='#e8c25a';c.beginPath();c.moveTo(bx-17,-7);c.lineTo(bx,-20);c.lineTo(bx+17,-7);for(let k=17;k>=-17;k-=2.4)c.lineTo(bx+k,-7+(Math.round(k/2.4)%2?1.6:0));c.closePath();c.fill();c.strokeStyle='#a8832d';c.lineWidth=.45;c.beginPath();for(let k=-14;k<=14;k+=3.5){c.moveTo(bx,-19);c.lineTo(bx+k,-7);}c.stroke();
-   crew(c,g,z,g.dir);offenNeon(c,bx-23.5,-17,g);
+   crew(c,g,z,g.dir);offenNeon(c,bx+3.4,-19.1,g);
    // Theke mit Cocktails + Hocker
    c.fillStyle='#7a4a24';c.fillRect(bx-13,3,26,4);c.fillStyle='#f4e3c0';c.fillRect(bx-13,3,26,1.1);
    for(let k=0;k<4;k++){const x=bx-10+k*6.5,cc=['#ff8a4c','#ff6fa3','#4fd0e0','#ffd23f'][k];c.fillStyle='rgba(255,255,255,.7)';c.beginPath();c.moveTo(x-1.3,.2);c.lineTo(x+1.3,.2);c.lineTo(x+.6,2.9);c.lineTo(x-.6,2.9);c.closePath();c.fill();c.fillStyle=cc;c.beginPath();c.moveTo(x-1.1,.8);c.lineTo(x+1.1,.8);c.lineTo(x+.55,2.7);c.lineTo(x-.55,2.7);c.closePath();c.fill();c.strokeStyle=k%2?'#e8433c':'#2fb3a0';c.lineWidth=.35;c.beginPath();c.moveTo(x+.5,.8);c.lineTo(x+1.4,-1.6);c.stroke();c.fillStyle=k%2?'#ffd23f':'#ff6fa3';c.beginPath();c.moveTo(x+.6,-1.4);c.arc(x+1.4,-1.6,1.4,Math.PI,TAU);c.closePath();c.fill();}
@@ -1653,7 +1659,7 @@ function drawGeb(c,g,nl,z){const ink='#2a1b12';c.save();c.translate(g.cx,g.cy);
    }}
  c.restore();
  // Bewohner (arbeiten/wohnen hier) stehen im Gebäude
- let ki=0;if(z*S>30&&g.typ!=='acai'&&g.typ!=='werkstatt')for(const p of teamOf(g)){const tp=teamPos(g,p);NAMES.push(g.typ==='doener'?[(p.beruf==='Leitung'?'⭐ ':'')+p.name,g.cx+19,g.cy-32+ki*3.8,'#e8433c',2.3]:[(p.beruf==='Leitung'?'⭐ ':'')+p.name,tp.x,tp.y-11.5-(ki%3)*5.2,'#0fa3a8']);ki++;}}
+ let ki=0;if(z*S>30&&g.typ!=='acai'&&g.typ!=='werkstatt')for(const p of teamOf(g)){const tp=teamPos(g,p);NAMES.push(g.typ==='doener'?[(p.beruf==='Leitung'?'⭐ ':'')+p.name,g.cx+19,g.cy-32+ki*3.8,'#e8433c',2.3]:[(p.beruf==='Leitung'?'⭐ ':'')+p.name,tp.x,g.cy-32.5-ki*4.6,'#0fa3a8']);ki++;}}
 // Gäste: kommen und gehen. Jeder Platz hat einen eigenen Rhythmus; besetzt ~80 % der Zeit, mit wechselnden Einwohnern.
 // Dönerbude: tagsüber 9 Plätze (≈6–9 Gäste), nachts 4 (≈2–4). Strandbar: tagsüber 11 (≈7–10), nachts 16 Partygäste (≈10–14).
 const SEATS_D0=0,SEATS={werkstatt:{tag:[[-3,19,0,0],[5,19,0,1]],nacht:[[1,19,0,0]]},acai:{tag:[[-14,8,0,0],[-7,9,0,1],[17,-8,1,0],[29,-8,-1,1],[17,8,1,0],[29,8,-1,1]],nacht:[[-10,8,0,0],[17,-8,1,0],[29,-8,-1,1],[17,8,1,0]]},doener:{tag:[[16,-8,1,0],[32,-8,-1,1],[16,10,1,0],[32,10,-1,1],[17,21,1,0],[33,21,-1,1],[-24,9,0,0],[-12,9,0,1],[0,9,0,0]],nacht:[[-24,9,0,1],[-6,9,0,0],[16,-8,1,0],[32,10,-1,1]]},
@@ -1912,7 +1918,7 @@ function draw(){
     for(let k=0;k<4;k++)glow(X(bx-11+k*7.3),Y(-6.6),4,['255,120,180','255,220,100','100,240,220','255,160,90'][k],.8*nl);for(const [lx,ly] of[[sx+11,-14.8],[sx+11,13.2],[sx+31,-2.8]])glow(X(lx),Y(ly),5,'255,200,110',.7*nl);glow(X(W-13),Y(-1),9,`${(T*80|0)%2?'255,60,160':'60,200,255'}`,.55*nl);for(let x=sx+6;x<W-2;x+=8)for(const yy of[-26.6,26.6])glow(X(x),Y(yy),2.2,'255,225,160',.55*nl);}}
   for(const g of GEB)if(g.typ==='werkstatt'&&visR(g.cx,g.cy,60)){const x=g.cx,y=g.cy;glow(x-11,y-11,20,'220,235,255',.5*nl);glow(x-10,y+2,10,'255,230,170',.45*nl);glow(x+9.5,y-16.5,6,'255,220,140',.6*nl);glow(x-6,y-30,14,'255,220,90',.35*nl);}
   {const v=ISL[1];if(v&&v.open&&visR(v.x,v.y,v.plaza))for(let k=0;k<6;k++){const a=k/6*TAU+.25;glow(v.x+Math.cos(a)*68*KOKX,v.y+Math.sin(a)*68*.92-7.5,7,'255,160,60',.75*nl*(.85+.15*Math.sin(T*11+k)));}}
-  for(const g of GEB){if(!visR(g.cx,g.cy,80))continue;const on=Math.sin(T*2.4)>-.6?1:.3,d=g.dir||1;let p2=null;if(g.typ==='acai')p2=[g.cx+17.8,g.cy-20.5];else if(g.typ==='werkstatt')p2=[g.cx-20.3,g.cy-16];else if(g.typ==='strandbar'){const sx=(g.sea-g.cx)*d;p2=[g.cx+(sx-30-19.2)*d,g.cy-15];}if(p2)glow(p2[0],p2[1],5,'255,90,140',.6*nl*on);}
+  for(const g of GEB){if(!visR(g.cx,g.cy,80))continue;const on=Math.sin(T*2.4)>-.6?1:.3,d=g.dir||1;let p2=null;if(g.typ==='acai')p2=[g.cx+17.8,g.cy-20.5];else if(g.typ==='werkstatt')p2=[g.cx-20.3,g.cy-16];else if(g.typ==='strandbar'){const sx=(g.sea-g.cx)*d;p2=[g.cx+(sx-30+7.7)*d,g.cy-17.1];}if(p2)glow(p2[0],p2[1],5,'255,90,140',.6*nl*on);}
   // Açaí-Stand nachts: warmes, gemütliches Licht (Kiosk, Lichterketten, Teelichter)
   for(const g of GEB)if(g.typ==='acai'&&visR(g.cx,g.cy,60)){const x=g.cx,y=g.cy;glow(x-6,y-14,22,'255,190,120',.55*nl);glow(x-6,y-3,14,'255,170,200',.3*nl);for(let k=0;k<10;k++)glow(x-23+k*3.8,y-16.8+Math.sin(k/9*Math.PI)*1.2,2.4,'255,225,150',.8*nl);for(const [tx,ty] of[[24.4,-9.5],[24.4,6.5]])glow(x+tx,y+ty,6,'255,200,110',.75*nl*(.85+.15*Math.sin(T*7+tx)));for(const [x0,y0,x1,y1] of[[12,-18,23,-13],[12,-18,23,3]])for(let k=1;k<6;k++){const u=k/6;glow(x+x0+(x1-x0)*u,y+y0+(y1-y0)*u+6*u*(1-u)+.4,2,'255,225,160',.6*nl);}}
   if(z*S>4)for(const v of ISL)for(const [lx,ly] of v.lamps||[]){if(!vis(lx,ly))continue;glow(lx,ly-11.4,18,'255,205,110',.75*nl);c.fillStyle=`rgba(255,240,180,${nl})`;c.beginPath();c.arc(lx,ly-11.4,1.1,0,TAU);c.fill();}
@@ -2190,7 +2196,7 @@ function inRect(x,y,a,b,c,d){return x>=a&&x<=b&&y>=c&&y<=d;}
 let OBS=null;const OBG=new Map();
 function obsBuild(){OBS=[];const A=(x,y,r)=>{OBS.push([x,y,r]);const k=Math.floor(x/20)+','+Math.floor(y/20);if(!OBG.has(k))OBG.set(k,[]);OBG.get(k).push([x,y,r]);};
  for(const v of ISL){if(!v.open)continue;for(const [x,y] of v.benches||[])A(x,y,4.6);for(const [x,y] of v.lamps||[])A(x,y,1.3);for(const t of v.palms||[])A(t.x,t.y+3,1.6*t.s);for(const b of v.bush||[])A(b.x,b.y,b.r*.75);for(const r of v.rocks||[])A(r.x,r.y,r.r);}
- for(const [x,y] of LANT)A(x,y,1.3);for(const s of[-1,1])A(s*23.6*PAL_S,28.6*PAL_S,4.2);
+ for(const [x,y] of LANT)A(x,y,1.3);for(const [x,y] of plotSigns())A(x,y+7.6,2.2);for(const s of[-1,1])A(s*23.6*PAL_S,28.6*PAL_S,4.2);
  for(const g of GEB){const W=(g.x1-g.x0)/2,H=(g.y1-g.y0)/2,d=g.dir||1,sx=(g.sea-g.cx)*d,L=(lx,ly,r)=>A(g.cx+lx*((g.typ==='doener'||g.typ==='acai'||g.typ==='werkstatt')?1:d),g.cy+ly,r);
   if(g.typ==='doener'){for(const [x,y] of[[24,-8],[24,10],[25,21]])L(x,y,3.8);L(-34,-10.5,2.6);L(-34,-5.5,2.6);L(-24,19,3.6);L(-21,19,3);L(12,19,2.8);L(-29.5,4.4,1.5);L(11.8,4.4,1.5);for(const [x,y] of[[-34,-18],[-34,16],[33,-20]])L(x,y,2.6);L(14.5,-9,1.3);}
   else if(g.typ==='strandbar'){const bx=sx-30;for(const [x,y] of[[-W+15,-5],[-W+15,12],[-W+29,3]])L(x,y,3);for(const [x,y] of[[-W+10,-7],[-W+10,10],[-W+24,1]])L(x,y+1,1.1);L(sx-50,14,2);L(sx-48,4,2);L(-W+28,15,4.4);L(-W+10,19,2.8);L(sx-8,21,3.4);L(-W+46,20,2.4);L(-W+36,4,1.6);L(-W+3,-H+4,1.8);L(sx-50,-H-2,1.8);L(-W+18,-H+4,1.8);
