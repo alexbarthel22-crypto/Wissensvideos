@@ -127,6 +127,9 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - Video zeigt den Pool neben der Hütte von @sophia_e065: „Sophia wollte einen Pool – kriegst du!“ (Wunsch aus den Kommentaren).
 - Einstieg: „Du wohnst ab jetzt auf meiner Insel!“ (Stil wie Video 1, Sticker „EINGEZOGEN!“).
 
+## Story-Bild „Wer soll heute Nacht noch einziehen?“ (`videos/muscheltal-story-umzug2/muscheltal-story-einziehen-2330.jpg`)
+- Aussage: **Folgt bis 23:30 Uhr – und habt morgen eure Hütte auf Kokos-Küste.** Homepage muss die neuen Follower (bis 23:30) bis morgen zeigen.
+
 ## Gepostete Videos (Hauptaccount)
 - **Video 1 (gepostet): „Ich habe euch eine Insel gekauft“** – `videos/muscheltal-tag-1/variante-insel-gekauft/video.mp4` (Stand Commit 69ffe74).
   Inhalt: Insel gekauft, jeder bekommt ein eigenes Haus · „Sie heißt Muschel-Tal, mitten in der Südsee“ · Folgen = einziehen, Hütte mit Namen · 1 Einwohner = 5 Muscheln, Kontostand 0 · früher folgen = „Hauptinsel: Muschel-Tal“, 500 Plätze · ist sie voll, öffnen neue Inseln („Wann genau? Bald“) · geheime Insel am Kartenrand · ihr entscheidet in den Kommentaren · „Hütte Nr. 1 ist noch frei“.
