@@ -58,20 +58,22 @@
     #s05-a { top: 400px; font-size: 44px; background: #2e9e5b; }
     #s05-btn { top: 520px; } #s05-hand { left: 690px; top: 570px; }
     #s05-h { top: 670px; font-size: 56px; background: #fe2c55; }
+    #s05-f { top: 780px; font-size: 40px; background: #e2560c; }
   </style>
-  <div id="root" data-composition-id="s05" data-start="0" data-duration="5.590" data-width="1080" data-height="1920">
-    <div id="s05-stage" class="clip stage" data-start="0" data-duration="5.590" data-track-index="0">
+  <div id="root" data-composition-id="s05" data-start="0" data-duration="8.100" data-width="1080" data-height="1920">
+    <div id="s05-stage" class="clip stage" data-start="0" data-duration="8.100" data-track-index="0">
       <div id="s05-w" class="pl">🗺️ ENTDECKE MUSCHEL-TAL</div>
       <div id="s05-a" class="pl">🌱 Von Anfang an dabei sein!</div>
       <div id="s05-btn" class="fbtn">+ Folgen<div id="s05-btn2" class="fbtn2">✓ Gefolgt</div></div>
       <div id="s05-hand" class="fhand" data-layout-ignore>👆</div>
       <div id="s05-h" class="pl">@muscheltal</div>
+      <div id="s05-f" class="pl">🏠 Eigene Hütte mit Namen – für immer!</div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 5.59, "L6": [0.2, 3.99], "L6.words": [["entdecke", 0.2, 0.665], ["die", 0.665, 0.822], ["welt", 0.822, 0.984], ["von", 0.984, 1.141], ["muscheltal", 1.141, 1.617], ["und", 1.617, 1.774], ["sei", 1.774, 1.93], ["von", 1.93, 2.087], ["anfang", 2.087, 2.401], ["an", 2.401, 2.552], ["dabei", 2.552, 2.86], ["", 2.86, 3.0], ["jetzt", 3.17, 3.456], ["folgen", 3.456, 3.99]]};
+      const C = {"__dur": 8.1, "L6": [0.2, 6.9], "L6.words": [["entdecke", 0.2, 0.738], ["die", 0.738, 0.919], ["welt", 0.919, 1.107], ["von", 1.107, 1.289], ["muscheltal", 1.289, 1.839], ["und", 1.839, 2.021], ["sei", 2.021, 2.202], ["von", 2.202, 2.384], ["anfang", 2.384, 2.747], ["an", 2.747, 2.922], ["dabei", 2.922, 3.278], ["", 3.278, 3.44], ["jetzt", 3.66, 3.844], ["folgen", 3.844, 4.188], ["und", 4.188, 4.36], ["deine", 4.36, 4.697], ["eigene", 4.697, 5.194], ["hütte", 5.194, 5.532], ["mit", 5.532, 5.703], ["namen", 5.703, 6.041], ["für", 6.041, 6.213], ["immer", 6.213, 6.55], ["sichern", 6.55, 6.9]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -125,7 +127,10 @@
       tl.fromTo("#s05-btn", { scale: 1 }, { scale: 1.15, duration: .12, yoyo: true, repeat: 1, immediateRender: false }, fo + .1);
       tl.to("#s05-hand", { opacity: 0, duration: .25 }, fo + .6);
       tl.fromTo("#s05-h", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, fo + .3);
-      tl.to("#s05-h", { scale: 1.07, duration: .25, yoyo: true, repeat: 5, ease: "sine.inOut" }, fo + .7);
+      tl.to("#s05-h", { scale: 1.07, duration: .25, yoyo: true, repeat: 3, ease: "sine.inOut" }, fo + .7);
+      const im = at("L6", "immer");
+      tl.fromTo("#s05-f", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, at("L6", "eigene") - .2);
+      tl.to("#s05-f", { scale: 1.08, duration: .22, yoyo: true, repeat: 5, ease: "sine.inOut" }, im);
       
       window.__timelines["s05"] = tl;
     })();

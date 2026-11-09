@@ -100,6 +100,7 @@ JS = r"""
       const HOUSES = []; let ni = 0;
       for (const z of ROWS) for (let x = -25; x <= 25; x += 5) { if (z === 0 && (x === 0 || x === 5)) continue; HOUSES.push(makeHouse(x, z, HOUSES.length, (z === 0 && x === -5) ? null : NAMES[ni++ % NAMES.length])); }
       const MY = makeHouse(0, 0, 99, "dein.name", true, true), BF = makeHouse(5, 0, 98, "dein.bestie?", true, false);
+      const MY2 = makeSign("@" + NAMES[NAMES.length - 1], false); MY2.position.copy(MY.userData.sign.position); MY2.rotation.copy(MY.userData.sign.rotation); MY2.visible = false; MY.add(MY2);
 
       // ---------- Palmen ----------
       const PALMS = [];
@@ -181,12 +182,12 @@ JS = r"""
         S.fog.color.set(on ? 0xf3a070 : 0xcdeefa); sea.material.color.set(on ? 0x2f6f9a : 0x2cb6cf); ROOTEL.style.background = on ? SKY_SET : SKY_DAY; }
       // ---------- Zeit / Kamera ----------
       const s02 = C.s02[0], s03 = C.s03[0], s04 = C.s04[0], s05 = C.s05[0], END = C.__dur;
-      const T_FALL = 0, T_HOUSE = .38, T_SIGN = T_HOUSE + .35, T_BF = s04 + .3, T_HI = 1e9;
+      const T_FALL = -.32, T_HOUSE = .05, T_SIGN = T_HOUSE + .35, T_BF = s04 + .3, T_HI = 1e9;
       const ease = (k) => k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2, cl = (v) => Math.max(0, Math.min(1, v));
       const lerp = (a, b, k) => a + (b - a) * k, V = (x, y, z) => new THREE.Vector3(x, y, z);
       function camShot(t) {
         if (t < s02) { const k = ease(cl((t - T_HOUSE - .3) / (s02 - T_HOUSE - .3))), r = lerp(15, 13.2, k);
-          return [V(0, lerp(3.0, 2.7, k), r), V(0, lerp(1.75, 1.65, k), 0)]; }
+          return [V(0, lerp(3.3, 3.1, k), r), V(0, lerp(2.75, 2.6, k), 0)]; }
         if (t < s03) { const k = ease(cl((t - s02) / (s03 - s02))), x = lerp(-26, 1, k); return [V(x, 2.5, 11), V(x + 3, 1.3, 0)]; }
         if (t < s04) { const k = cl((t - s03) / (s04 - s03)), a = lerp(-.55, .7, ease(k)), r = lerp(13.5, 11.5, k); return [V(PZ.x + Math.sin(a) * r, lerp(5.2, 4.2, k), PZ.z + Math.cos(a) * r), V(PZ.x, .9, PZ.z)]; }
         if (t < s05) { const k = ease(cl((t - s04) / (s05 - s04))); return [V(3.5, lerp(2.9, 2.6, k), lerp(15, 13.5, k)), V(3.5, 1.4, 0)]; }
@@ -198,7 +199,7 @@ JS = r"""
         MY.position.y = fy; MY.visible = true; MY.rotation.y = fy > 0 ? (fy / H0) * .6 : 0;
         const lk = t - T_HOUSE, sq = lk > 0 && lk < .5 ? Math.sin(lk / .5 * Math.PI * 2) * Math.exp(-lk * 6) * .22 : 0; MY.scale.set(1 + sq * .6, 1 - sq, 1 + sq * .6);
         DUST.forEach((d) => { const u = d.userData, k = (t - T_HOUSE) / 1.6; if (k <= 0 || k >= 1) { d.material.opacity = 0; return; } const r = 1.9 + u.v * (1 - Math.pow(1 - k, 3)) * 1.1;
-          d.position.set(Math.cos(u.a) * r, .25 + u.up * Math.sin(Math.min(1, k * 2) * Math.PI / 2) * (1 - k * .4), Math.sin(u.a) * r); d.scale.setScalar(u.s * (1 + k * 2.2)); d.material.opacity = .75 * (1 - k); }); MY.userData.sign.visible = t >= T_SIGN; MY.userData.sign.scale.setScalar(t >= T_SIGN ? Math.min(1, .3 + (t - T_SIGN) * 4) : 1);
+          d.position.set(Math.cos(u.a) * r, .25 + u.up * Math.sin(Math.min(1, k * 2) * Math.PI / 2) * (1 - k * .4), Math.sin(u.a) * r); d.scale.setScalar(u.s * (1 + k * 2.2)); d.material.opacity = .75 * (1 - k); }); MY.userData.sign.visible = t >= T_SIGN && t < C.s02[0]; MY2.visible = t >= C.s02[0]; MY.userData.sign.scale.setScalar(t >= T_SIGN ? Math.min(1, .3 + (t - T_SIGN) * 4) : 1);
         BF.visible = false; const bk = cl((t - T_BF) / .45); BF.scale.setScalar(Math.max(.0001, bk >= 1 ? 1 : 1 - Math.pow(1 - bk, 3) * Math.cos(bk * 9)));
         // Palmen
         PALMS.forEach((p) => { p.userData.crown.rotation.z = Math.sin(t * 1.3 + p.userData.i) * .06; p.userData.crown.rotation.x = Math.cos(t * 1.1 + p.userData.i) * .04; });

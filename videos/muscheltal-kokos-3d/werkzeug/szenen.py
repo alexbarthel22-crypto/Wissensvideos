@@ -135,6 +135,7 @@ scene("s01", LILITA + "\n    " + PILL + """
     #s01-hk { position: absolute; left: 0; right: 0; top: 290px; text-align: center; }
     .hk-l { display: table; margin: 14px auto 0; background: #e8262f; border-radius: 30px; padding: 2px 34px 12px; font-family: "Lilita One", sans-serif; font-size: 104px; line-height: 1.05; color: #fff; box-shadow: 0 0 0 5px #2a1b12, 0 9px 0 rgba(0,0,0,.25); }
     .hk-w { display: inline-block; margin: 0 .08em; transform-origin: 50% 60%; position: relative; }
+    #hw2 { margin-right: .22em; }
     #s01-stk { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 330px; color: #e8433c; border-color: #e8433c; background: #fff; transform: rotate(-5deg); font-size: 54px; white-space: nowrap; }
     #s01-fl { position: absolute; inset: 0; background: #fff; opacity: 0; }""",
 """
@@ -144,7 +145,7 @@ scene("s01", LILITA + "\n    " + PILL + """
       tl.fromTo("#s01-fl", { opacity: 0 }, { opacity: .45, duration: .06, yoyo: true, repeat: 1, immediateRender: false }, TH);
       const hk = ["Das", "könnte", "dein", "Haus", "sein"];
       tl.set("#s01-hk", { opacity: 1 }, 0);
-      hk.forEach((w, i) => { const t0 = Math.max(0, at("L1", w) - .03); tl.set("#hw" + i, { zIndex: 5 }, t0); tl.fromTo("#hw" + i, { scale: 1 }, { scale: .5, duration: .05, immediateRender: false }, t0); tl.to("#hw" + i, { scale: [2.2, 1.6, 2.4, 2.2, 2.2][i], duration: .13, ease: "power2.out" }, t0 + .05); tl.to("#hw" + i, { scale: 1, color: "#ffe14d", textShadow: "0 0 26px rgba(255,225,77,1), 0 0 8px rgba(255,255,200,1)", duration: .22, ease: "back.out(2.5)" }, t0 + .18); tl.to("#hw" + i, { textShadow: "0 0 0px rgba(255,225,77,0), 0 0 0px rgba(255,255,200,0)", duration: .5 }, t0 + .45); });
+      hk.forEach((w, i) => { const t0 = Math.max(0, at("L1", w) - .03); tl.set("#hw" + i, { zIndex: 5 }, t0); tl.fromTo("#hw" + i, { scale: 1 }, { scale: .5, duration: .05, immediateRender: false }, t0); tl.to("#hw" + i, { scale: [1.8, 1.5, 3.2, 2.0, 1.9][i], duration: .13, ease: "power2.out" }, t0 + .05); tl.to("#hw" + i, { scale: i === 2 ? 1.18 : 1, color: "#ffe14d", textShadow: "0 0 26px rgba(255,225,77,1), 0 0 8px rgba(255,255,200,1)", duration: .22, ease: "back.out(2.5)" }, t0 + .18); tl.to("#hw" + i, { textShadow: "0 0 0px rgba(255,225,77,0), 0 0 0px rgba(255,255,200,0)", duration: .5 }, t0 + .45); });
 """, blur=False)
 
 scene("s02", PILL + """
@@ -161,7 +162,7 @@ scene("s03", PILL + """
     #s03-c { position: absolute; left: 0; right: 0; margin: 0 auto; top: 410px; width: fit-content; padding: 4px 36px 10px; border-radius: 36px; background: #fff; border: 6px solid #ff6a1a;
       font-family: "Inter", sans-serif; color: #2a1b12; font-weight: 900; font-size: 38px; display: flex; align-items: baseline; gap: 14px; box-shadow: 0 10px 0 rgba(0,40,80,.3); }
     #s03-c b { font-size: 92px; color: #e2560c; line-height: 1; }""",
-"""      <div id="s03-t" class="pl">🔥 SCHON EINGEZOGEN</div>
+"""      <div id="s03-t" class="pl">🔥 FRISCH EINGEZOGEN</div>
       <div id="s03-c"><b id="s03-n">0</b>BEWOHNER</div>""",
 """      const he = at("L4", "heute");
       tl.fromTo("#s03-t", { opacity: 0, y: -50 }, { opacity: 1, y: 0, duration: .35, ease: "back.out(2)" }, he - .2);
@@ -189,12 +190,14 @@ scene("s05", PILL + "\n" + FOLLOW + """
     #s05-w { top: 290px; font-size: 52px; background: #18a6b8; }
     #s05-a { top: 400px; font-size: 44px; background: #2e9e5b; }
     #s05-btn { top: 520px; } #s05-hand { left: 690px; top: 570px; }
-    #s05-h { top: 670px; font-size: 56px; background: #fe2c55; }""",
+    #s05-h { top: 670px; font-size: 56px; background: #fe2c55; }
+    #s05-f { top: 780px; font-size: 40px; background: #e2560c; }""",
 """      <div id="s05-w" class="pl">🗺️ ENTDECKE MUSCHEL-TAL</div>
       <div id="s05-a" class="pl">🌱 Von Anfang an dabei sein!</div>
       <div id="s05-btn" class="fbtn">+ Folgen<div id="s05-btn2" class="fbtn2">✓ Gefolgt</div></div>
       <div id="s05-hand" class="fhand" data-layout-ignore>👆</div>
-      <div id="s05-h" class="pl">@muscheltal</div>""",
+      <div id="s05-h" class="pl">@muscheltal</div>
+      <div id="s05-f" class="pl">🏠 Eigene Hütte mit Namen – für immer!</div>""",
 """      const en = at("L6", "Entdecke"), af = at("L6", "Anfang"), fo = at("L6", "folgen");
       tl.fromTo("#s05-w", { opacity: 0, scale: .3, rotation: -6 }, { opacity: 1, scale: 1, rotation: -2, duration: .35, ease: "back.out(2.6)" }, en - .1);
       tl.fromTo("#s05-a", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, af - .2);
@@ -205,4 +208,7 @@ scene("s05", PILL + "\n" + FOLLOW + """
       tl.fromTo("#s05-btn", { scale: 1 }, { scale: 1.15, duration: .12, yoyo: true, repeat: 1, immediateRender: false }, fo + .1);
       tl.to("#s05-hand", { opacity: 0, duration: .25 }, fo + .6);
       tl.fromTo("#s05-h", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, fo + .3);
-      tl.to("#s05-h", { scale: 1.07, duration: .25, yoyo: true, repeat: 5, ease: "sine.inOut" }, fo + .7);""", blur=False)
+      tl.to("#s05-h", { scale: 1.07, duration: .25, yoyo: true, repeat: 3, ease: "sine.inOut" }, fo + .7);
+      const im = at("L6", "immer");
+      tl.fromTo("#s05-f", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, at("L6", "eigene") - .2);
+      tl.to("#s05-f", { scale: 1.08, duration: .22, yoyo: true, repeat: 5, ease: "sine.inOut" }, im);""", blur=False)
