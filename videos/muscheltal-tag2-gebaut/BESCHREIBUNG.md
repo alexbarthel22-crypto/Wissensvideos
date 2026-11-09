@@ -8,9 +8,9 @@
 Folge und zieh in dein Haus auf der Kokos-Küste 🥥🏝️
 
 Tag 2: 653 Bewohner und die ersten Berufe!
-🎖️ Bürgermeisterin: Lilly
-👑 Palast-Leitung: Lotti
-🥙 Dönerbude: Lotta (Leitung), Alana & Emilia
+🎖️ Bürgermeisterin: @lillygyqcf0
+👑 Palast-Leitung: @prvt.lott1
+🥙 Dönerbude: @lotta.fsthff (Leitung), @alana_wbr, @em1lia.brn
 🍹 Strandbar: @paulepfpgfn (Leitung), @khmr.496
 
 🏗️ Bauprojekte: Hotel Sandkorn bei 800 Bewohnern, Anlegestelle bei 900 – damit wechselt ihr zwischen den Inseln ⛵
@@ -20,7 +20,7 @@ Nächstes Video: Ich verlose die Strandvilla 🏖️ Markier deine Freunde 👇
 #muscheltal #fürdich #insel #verlosung #community
 
 ## Angepinnter Kommentar (vom Account selbst)
-Glückwunsch Lotti 👑 Du wohnst jetzt eine Woche mit Lilly im Muschelpalast! Was soll Lilly als Erstes beschließen? Der Top-Kommentar gewinnt 👇
+Glückwunsch @prvt.lott1 👑 Du wohnst jetzt eine Woche mit @lillygyqcf0 im Muschelpalast! Was soll @lillygyqcf0 als Erstes beschließen? Der Top-Kommentar gewinnt 👇
 
 ## Warum so
 - Erster Satz = Versprechen für Neue („Folg mir und du wohnst auf meiner Insel“) – erscheint in der Vorschau vor dem „mehr“.
