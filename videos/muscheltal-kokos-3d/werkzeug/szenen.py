@@ -139,16 +139,13 @@ scene("s01", LILITA + "\n    " + PILL + """
     #s01-fl { position: absolute; inset: 0; background: #fff; opacity: 0; }""",
 """
       <div id="s01-hk"><div class="hk-l"><span class="hk-w" id="hw0">DAS</span><span class="hk-w" id="hw1">KÖNNTE</span></div><div class="hk-l"><span class="hk-w" id="hw2">DEIN</span><span class="hk-w" id="hw3">HAUS</span></div><div class="hk-l"><span class="hk-w" id="hw4">SEIN!</span></div></div>
-      <div id="s01-stk" class="stamp" data-layout-ignore>🔎 EINWOHNER GESUCHT!</div>
       <div id="s01-fl"></div>""",
 """      const TH = .9;
       tl.fromTo("#s01-fl", { opacity: 0 }, { opacity: .45, duration: .06, yoyo: true, repeat: 1, immediateRender: false }, TH);
       const hk = ["Das", "könnte", "dein", "Haus", "sein"];
       tl.set("#s01-hk", { opacity: 1 }, 0);
       hk.forEach((w, i) => { const t0 = Math.max(0, at("L1", w) - .03); tl.set("#hw" + i, { zIndex: 5 }, t0); tl.fromTo("#hw" + i, { scale: 1 }, { scale: .5, duration: .05, immediateRender: false }, t0); tl.to("#hw" + i, { scale: [2.2, 1.6, 2.4, 2.2, 2.2][i], duration: .13, ease: "power2.out" }, t0 + .05); tl.to("#hw" + i, { scale: 1, color: "#ffe14d", textShadow: "0 0 26px rgba(255,225,77,1), 0 0 8px rgba(255,255,200,1)", duration: .22, ease: "back.out(2.5)" }, t0 + .18); tl.to("#hw" + i, { textShadow: "0 0 0px rgba(255,225,77,0), 0 0 0px rgba(255,255,200,0)", duration: .5 }, t0 + .45); });
-      tl.to("#s01-hk", { opacity: 0, y: -40, duration: .2 }, line("L2")[0] - .15);
-      tl.fromTo("#s01-stk", { opacity: 0, scale: 3 }, { opacity: 1, scale: 1, duration: .16, ease: "power4.in" }, at("L2", "gesucht") - .12);
-      tl.to("#s01-stk", { scale: 1.06, duration: .25, yoyo: true, repeat: 5, ease: "sine.inOut" }, at("L2", "gesucht") + .2);""", blur=False)
+""", blur=False)
 
 scene("s02", PILL + """
     #s02-t { top: 300px; font-size: 58px; background: #e2560c; }
@@ -178,7 +175,7 @@ CARD = """    .bc { position: absolute; left: 80px; width: 920px; height: 150px;
     .bc .z { font-size: 26px; font-weight: 900; color: #6b6f8a; text-align: center; line-height: 1.1; } .bc .z i { font-style: normal; font-size: 40px; color: #e2560c; display: block; }"""
 scene("s04", PILL + "\n" + CARD + """
     #s04-t { top: 290px; font-size: 54px; background: #e2560c; }""",
-"""      <div id="s04-t" class="pl">🏗️ DAS WIRD GEBAUT</div>
+"""      <div id="s04-t" class="pl">🏗️ AKTUELL IM BAU</div>
       <div id="s04-h" class="bc" style="top:400px"><div class="e">🏨</div><div class="m"><b>Hotel Sandkorn</b><small>Hier wohnen &amp; arbeiten viele von euch</small></div><div class="z">ab<i>800</i>Bewohnern</div></div>
       <div id="s04-a" class="bc" style="top:580px"><div class="e">⚓</div><div class="m"><b>Anlegestelle</b><small>Von Insel zu Insel reisen ⛵</small></div><div class="z">ab<i>900</i>Bewohnern</div></div>""",
 """      const ge = at("L5", "gebaut"), ho = at("L5", "Hotel"), an = at("L5", "Anlegestelle");

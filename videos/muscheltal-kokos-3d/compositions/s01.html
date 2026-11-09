@@ -59,18 +59,17 @@
     #s01-stk { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 330px; color: #e8433c; border-color: #e8433c; background: #fff; transform: rotate(-5deg); font-size: 54px; white-space: nowrap; }
     #s01-fl { position: absolute; inset: 0; background: #fff; opacity: 0; }
   </style>
-  <div id="root" data-composition-id="s01" data-start="0" data-duration="4.400" data-width="1080" data-height="1920">
-    <div id="s01-stage" class="clip stage" data-start="0" data-duration="4.400" data-track-index="0">
+  <div id="root" data-composition-id="s01" data-start="0" data-duration="2.590" data-width="1080" data-height="1920">
+    <div id="s01-stage" class="clip stage" data-start="0" data-duration="2.590" data-track-index="0">
 
       <div id="s01-hk"><div class="hk-l"><span class="hk-w" id="hw0">DAS</span><span class="hk-w" id="hw1">KÖNNTE</span></div><div class="hk-l"><span class="hk-w" id="hw2">DEIN</span><span class="hk-w" id="hw3">HAUS</span></div><div class="hk-l"><span class="hk-w" id="hw4">SEIN!</span></div></div>
-      <div id="s01-stk" class="stamp" data-layout-ignore>🔎 EINWOHNER GESUCHT!</div>
       <div id="s01-fl"></div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 4.4, "L1": [0.0, 1.51], "L1.words": [["das", 0.0, 0.247], ["könnte", 0.247, 0.742], ["dein", 0.742, 0.998], ["haus", 0.998, 1.254], ["sein", 1.254, 1.51]], "L2": [1.78, 3.72], "L2.words": [["einwohner", 1.78, 2.364], ["für", 2.364, 2.559], ["meine", 2.559, 2.941], ["insel", 2.941, 3.324], ["gesucht", 3.324, 3.72]]};
+      const C = {"__dur": 2.59, "L1": [0.0, 1.51], "L1.words": [["das", 0.0, 0.247], ["könnte", 0.247, 0.742], ["dein", 0.742, 0.998], ["haus", 0.998, 1.254], ["sein", 1.254, 1.51]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -119,9 +118,7 @@
       const hk = ["Das", "könnte", "dein", "Haus", "sein"];
       tl.set("#s01-hk", { opacity: 1 }, 0);
       hk.forEach((w, i) => { const t0 = Math.max(0, at("L1", w) - .03); tl.set("#hw" + i, { zIndex: 5 }, t0); tl.fromTo("#hw" + i, { scale: 1 }, { scale: .5, duration: .05, immediateRender: false }, t0); tl.to("#hw" + i, { scale: [2.2, 1.6, 2.4, 2.2, 2.2][i], duration: .13, ease: "power2.out" }, t0 + .05); tl.to("#hw" + i, { scale: 1, color: "#ffe14d", textShadow: "0 0 26px rgba(255,225,77,1), 0 0 8px rgba(255,255,200,1)", duration: .22, ease: "back.out(2.5)" }, t0 + .18); tl.to("#hw" + i, { textShadow: "0 0 0px rgba(255,225,77,0), 0 0 0px rgba(255,255,200,0)", duration: .5 }, t0 + .45); });
-      tl.to("#s01-hk", { opacity: 0, y: -40, duration: .2 }, line("L2")[0] - .15);
-      tl.fromTo("#s01-stk", { opacity: 0, scale: 3 }, { opacity: 1, scale: 1, duration: .16, ease: "power4.in" }, at("L2", "gesucht") - .12);
-      tl.to("#s01-stk", { scale: 1.06, duration: .25, yoyo: true, repeat: 5, ease: "sine.inOut" }, at("L2", "gesucht") + .2);
+
       
       window.__timelines["s01"] = tl;
     })();
