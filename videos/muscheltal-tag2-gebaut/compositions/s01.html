@@ -68,8 +68,8 @@
     .hk-w { display: inline-block; margin: 0 .1em; transform-origin: 50% 60%; }
     .hk-sp { position: absolute; width: 70px; height: 70px; }
   </style>
-  <div id="root" data-composition-id="s01" data-start="0" data-duration="7.330" data-width="1080" data-height="1920">
-    <div id="s01-stage" class="clip stage" data-start="0" data-duration="7.330" data-track-index="0">
+  <div id="root" data-composition-id="s01" data-start="0" data-duration="6.820" data-width="1080" data-height="1920">
+    <div id="s01-stage" class="clip stage" data-start="0" data-duration="6.820" data-track-index="0">
       <div id="s01-ray"></div><div id="s01-tint"></div>
       <div id="s01-stk">EINGEZOGEN!</div>
       <div id="s01-hk"><div class="hk-l"><span class="hk-w" id="hw0">DU</span><span class="hk-w" id="hw1">WOHNST</span></div><div class="hk-l"><span class="hk-w" id="hw2">AB</span><span class="hk-w" id="hw3">JETZT</span></div><div class="hk-l"><span class="hk-w" id="hw4">AUF</span><span class="hk-w" id="hw5">MEINER</span></div><div class="hk-l"><span class="hk-w" id="hw6">INSEL!</span></div></div>
@@ -86,7 +86,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 7.33, "L1": [0.0, 2.0], "L1.words": [["du", 0.0, 0.213], ["wohnst", 0.213, 0.457], ["ab", 0.457, 0.669], ["jetzt", 0.669, 0.906], ["auf", 0.906, 1.126], ["meiner", 1.126, 1.567], ["insel", 1.567, 2.0]], "L2": [2.22, 7.15], "L2.words": [["schon", 2.22, 2.41], ["653", 2.41, 3.524], ["bewohner", 3.524, 4.05], ["auf", 4.57, 4.741], ["der", 4.741, 4.912], ["kokosküste", 4.912, 5.582], ["wohnen", 5.582, 5.924], ["jetzt", 5.924, 6.107], ["148", 6.107, 7.15]]};
+      const C = {"__dur": 6.82, "L1": [0.0, 1.49], "L1.words": [["du", 0.0, 0.158], ["wohnst", 0.158, 0.34], ["ab", 0.34, 0.499], ["jetzt", 0.499, 0.675], ["auf", 0.675, 0.839], ["meiner", 0.839, 1.167], ["insel", 1.167, 1.49]], "L2": [1.71, 6.64], "L2.words": [["schon", 1.71, 1.9], ["653", 1.9, 3.014], ["bewohner", 3.014, 3.54], ["auf", 4.06, 4.231], ["der", 4.231, 4.402], ["kokosküste", 4.402, 5.072], ["wohnen", 5.072, 5.414], ["jetzt", 5.414, 5.597], ["148", 5.597, 6.64]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -134,7 +134,7 @@
       tl.set(["#s01-hk", "#s01-stk", "#s01-ray", "#s01-tint"], { opacity: 1 }, 0);
       tl.fromTo("#s01-ray", { rotation: 0 }, { rotation: 24, duration: hEnd + .3, ease: "none" }, 0);
       tl.fromTo("#s01-stk", { scale: 1 }, { scale: 1.08, rotation: -3, duration: .25, yoyo: true, repeat: 5, ease: "sine.inOut" }, 0);
-      hkw.forEach((w, i) => { const t0 = Math.max(0, at("L1", w) - .03); tl.fromTo("#hw" + i, { scale: 1 }, { scale: .68, duration: .06, ease: "power2.in", immediateRender: false }, t0); tl.to("#hw" + i, { scale: 1, duration: .22, ease: "back.out(3)" }, t0 + .06); });
+      hkw.forEach((w, i) => { const t0 = Math.max(0, at("L1", w) - .03); tl.fromTo("#hw" + i, { scale: 1 }, { scale: .45, duration: .05, ease: "power2.in", immediateRender: false }, t0); tl.to("#hw" + i, { scale: 1.35, duration: .12, ease: "power2.out" }, t0 + .05); tl.to("#hw" + i, { scale: 1, duration: .2, ease: "back.out(3)" }, t0 + .17); });
       tl.to("#hw3", { color: "#ffd23f", duration: .05 }, at("L1", "jetzt"));
       tl.to("#hw6", { color: "#ffd23f", duration: .05 }, ins);
       tl.fromTo(".hk-sp", { scale: 0, rotation: 0, opacity: 0 }, { scale: 1.2, rotation: 180, opacity: 1, duration: .35, ease: "back.out(3)", stagger: .12, yoyo: true, repeat: 3 }, .05);

@@ -5,6 +5,7 @@
       font-family: "Inter", sans-serif; font-weight: 900; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); white-space: nowrap; }
     #s04-t { top: 300px; font-size: 56px; background: #7b3fe0; }
     #s04-n { top: 410px; font-size: 46px; background: #fff; color: #7b3fe0; }
+    #s04-sheet { top: 500px; }
     #s04-gl { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 530px; color: #2e9e5b; border-color: #2e9e5b; background: #fff; transform: rotate(-4deg); font-size: 54px; white-space: nowrap; }
     .cf { position: absolute; left: 530px; top: 600px; width: 20px; height: 30px; border-radius: 4px; }
   </style>
@@ -14,6 +15,10 @@
       <div id="s04-n" class="pl">@lillygyqcf0</div>
       <div id="s04-gl" class="stamp" data-layout-ignore>🎉 HERZLICHEN GLÜCKWUNSCH!</div>
       <div id="s04-cfw"></div>
+      <div id="s04-sheet" class="tk"><div class="tk-h">Kommentare<b>×</b></div>
+        <div id="s04-k1" class="tk-c"><div class="tk-a" style="background:#ff6a1a">?</div><div><div class="tk-u">dein.name</div><div class="tk-t">Jeden Freitag Strandparty! 🎉</div><div class="tk-m">vor 2 Std.<span>Antworten</span></div></div><div class="tk-l"><div class="hz"></div><i>1.204</i></div></div>
+        <div id="s04-k2" class="tk-c"><div class="tk-a" style="background:#2e9e5b">?</div><div><div class="tk-u">dein.nachbar</div><div class="tk-t">Gratis Döner am Sonntag 🥙</div><div class="tk-m">vor 2 Std.<span>Antworten</span></div></div><div class="tk-l"><div class="hz"></div><i>873</i></div></div>
+      </div>
     </div>
   </div>
   <script>
@@ -27,7 +32,13 @@
       tl.fromTo("#s04-n", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, bm + .35);
       const T0 = at("L5", "Herzlichen");
       tl.fromTo("#s04-gl", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, T0 - .05);
-      tl.to("#s04-gl", { scale: 1.06, duration: .25, yoyo: true, repeat: 5, ease: "sine.inOut" }, T0 + .4);
+      tl.to("#s04-gl", { scale: 1.06, duration: .25, yoyo: true, repeat: 3, ease: "sine.inOut" }, T0 + .4);
+      const l5b = line("L5b")[0], vo = at("L5b", "Vorschläge");
+      tl.to("#s04-gl", { opacity: 0, scale: .7, duration: .2 }, l5b - .1);
+      tl.fromTo("#s04-sheet", { opacity: 0, y: 500 }, { opacity: 1, y: 0, duration: .45, ease: "power4.out" }, l5b + .1);
+      tl.fromTo(["#s04-k1", "#s04-k2"], { opacity: 0, x: -60 }, { opacity: 1, x: 0, duration: .3, ease: "power3.out", stagger: .25 }, l5b + .35);
+      tkLike(tl, "#s04-k1", vo, 1204, 1388, 1.2, 3);
+      tl.to("#s04-sheet", { rotation: 1.2, duration: .22, yoyo: true, repeat: 3, ease: "sine.inOut" }, vo);
       const R = rng(31), box = document.getElementById("s04-cfw"), cols = ["#ffd23f", "#e8467c", "#2fb3a0", "#fff", "#7b4fe0", "#ff7a59"];
       for (let k = 0; k < 60; k++) { const d = document.createElement("div"); d.className = "cf"; d.style.background = cols[k % cols.length]; box.appendChild(d);
         const a = R() * Math.PI * 2, v = 380 + R() * 560, dx = Math.cos(a) * v, dy = Math.sin(a) * v * .8 - 300;

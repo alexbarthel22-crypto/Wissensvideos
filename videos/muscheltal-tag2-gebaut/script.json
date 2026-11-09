@@ -41,7 +41,7 @@
      "id": "L1",
      "text": "Du wohnst ab jetzt / auf meiner *y:Insel!",
      "speed": 1.05,
-     "style": "Style: a young man, genuinely thrilled, telling his friends big news. Energetic but natural, not an announcer.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
+     "style": "Style: a young man with a relaxed, slightly deeper, grounded voice, excited but cool, speaking quickly and confidently. Low natural pitch, not high-pitched, not shouting.\nPace: fast.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
     },
     {
      "id": "L2",
@@ -135,9 +135,14 @@
    "lines": [
     {
      "id": "L5",
-     "text": "Und das ist unsere *p:Bürgermeisterin! / *g:Herzlichen *g:Glückwunsch! / Sie wohnt jetzt eine Woche / im *y:Muschelpalast.",
+     "text": "Und das ist unsere *p:Bürgermeisterin – / *g:herzlichen *g:Glückwunsch!",
      "speed": 1.1,
      "style": "Style: a young man, warm and proud, congratulating a friend from the heart, smiling, natural not theatrical.\nPace: brisk but natural.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
+    },
+    {
+     "id": "L5b",
+     "text": "Was soll sie als *y:Erstes *y:beschließen? / *p:Vorschläge in die Kommentare!",
+     "speed": 1.12
     }
    ],
    "sfx": [
@@ -148,8 +153,13 @@
     },
     {
      "name": "jubel",
-     "at": "L5:Herzlichen",
+     "at": "L5:herzlichen",
      "volume": 0.45
+    },
+    {
+     "name": "notification",
+     "at": "L5b:Vorschläge",
+     "volume": 0.35
     }
    ]
   },
@@ -167,7 +177,7 @@
      "id": "L7",
      "text": "*g:Glückwunsch! / Du wohnst jetzt eine Woche / mit unserer *p:Bürgermeisterin / im *y:Palast!",
      "speed": 1.1,
-     "pause": 3.6,
+     "pause": 3.4,
      "style": "Style: a young man, genuinely thrilled, telling his friends big news. Energetic but natural, not an announcer.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
     }
    ],
@@ -207,6 +217,11 @@
      "id": "L8b",
      "text": "Und *b:Sophia wollte einen *b:Pool – / *g:kriegst *g:du!",
      "speed": 1.1
+    },
+    {
+     "id": "L8c",
+     "text": "Und *b:Anton und *b:Laura / sind jetzt *g:Nachbarn!",
+     "speed": 1.12
     }
    ],
    "sfx": [
@@ -224,6 +239,11 @@
      "name": "ka-ching",
      "at": "L8b:kriegst",
      "volume": 0.45
+    },
+    {
+     "name": "pop",
+     "at": "L8c:Nachbarn",
+     "volume": 0.4
     }
    ]
   },
@@ -233,7 +253,7 @@
    "lines": [
     {
      "id": "L9",
-     "text": "Das *y:Hotel kommt bei *y:800|achthundert, / die *y:Anlegestelle bei *y:900|neunhundert / und das *y:Tierheim bei *y:1.000|tausend!",
+     "text": "Das *y:Hotel kommt bei *y:800|achthundert, / die *y:Anlegestelle bei *y:900|neunhundert!",
      "speed": 1.12
     },
     {
@@ -256,11 +276,6 @@
     {
      "name": "pop",
      "at": "L9:Anlegestelle",
-     "volume": 0.35
-    },
-    {
-     "name": "pop",
-     "at": "L9:Tierheim",
      "volume": 0.35
     },
     {

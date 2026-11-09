@@ -92,7 +92,7 @@ scene("s01", LILITA + "\n    " + PILL + """
       tl.set(["#s01-hk", "#s01-stk", "#s01-ray", "#s01-tint"], { opacity: 1 }, 0);
       tl.fromTo("#s01-ray", { rotation: 0 }, { rotation: 24, duration: hEnd + .3, ease: "none" }, 0);
       tl.fromTo("#s01-stk", { scale: 1 }, { scale: 1.08, rotation: -3, duration: .25, yoyo: true, repeat: 5, ease: "sine.inOut" }, 0);
-      hkw.forEach((w, i) => { const t0 = Math.max(0, at("L1", w) - .03); tl.fromTo("#hw" + i, { scale: 1 }, { scale: .68, duration: .06, ease: "power2.in", immediateRender: false }, t0); tl.to("#hw" + i, { scale: 1, duration: .22, ease: "back.out(3)" }, t0 + .06); });
+      hkw.forEach((w, i) => { const t0 = Math.max(0, at("L1", w) - .03); tl.fromTo("#hw" + i, { scale: 1 }, { scale: .45, duration: .05, ease: "power2.in", immediateRender: false }, t0); tl.to("#hw" + i, { scale: 1.35, duration: .12, ease: "power2.out" }, t0 + .05); tl.to("#hw" + i, { scale: 1, duration: .2, ease: "back.out(3)" }, t0 + .17); });
       tl.to("#hw3", { color: "#ffd23f", duration: .05 }, at("L1", "jetzt"));
       tl.to("#hw6", { color: "#ffd23f", duration: .05 }, ins);
       tl.fromTo(".hk-sp", { scale: 0, rotation: 0, opacity: 0 }, { scale: 1.2, rotation: 180, opacity: 1, duration: .35, ease: "back.out(3)", stagger: .12, yoyo: true, repeat: 3 }, .05);
@@ -144,18 +144,29 @@ scene("s03", PILL + """
 scene("s04", PILL + """
     #s04-t { top: 300px; font-size: 56px; background: #7b3fe0; }
     #s04-n { top: 410px; font-size: 46px; background: #fff; color: #7b3fe0; }
+    #s04-sheet { top: 500px; }
     #s04-gl { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 530px; color: #2e9e5b; border-color: #2e9e5b; background: #fff; transform: rotate(-4deg); font-size: 54px; white-space: nowrap; }
     """ + CF_CSS.replace("top: 700px", "top: 600px") + """""",
-"""      <div id="s04-t" class="pl">🎖️ BÜRGERMEISTERIN</div>
+f"""      <div id="s04-t" class="pl">🎖️ BÜRGERMEISTERIN</div>
       <div id="s04-n" class="pl">@lillygyqcf0</div>
       <div id="s04-gl" class="stamp" data-layout-ignore>🎉 HERZLICHEN GLÜCKWUNSCH!</div>
-      <div id="s04-cfw"></div>""",
+      <div id="s04-cfw"></div>
+      <div id="s04-sheet" class="tk"><div class="tk-h">Kommentare<b>×</b></div>
+        {tk("s04-k1", "#ff6a1a", "?", "dein.name", "Jeden Freitag Strandparty! 🎉", "1.204")}
+        {tk("s04-k2", "#2e9e5b", "?", "dein.nachbar", "Gratis Döner am Sonntag 🥙", "873")}
+      </div>""",
 """      const bm = at("L5", "Bürgermeisterin");
       tl.fromTo("#s04-t", { opacity: 0, y: -60 }, { opacity: 1, y: 0, duration: .4, ease: "back.out(2)" }, bm - .15);
       tl.fromTo("#s04-n", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, bm + .35);
       const T0 = at("L5", "Herzlichen");
       tl.fromTo("#s04-gl", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, T0 - .05);
-      tl.to("#s04-gl", { scale: 1.06, duration: .25, yoyo: true, repeat: 5, ease: "sine.inOut" }, T0 + .4);
+      tl.to("#s04-gl", { scale: 1.06, duration: .25, yoyo: true, repeat: 3, ease: "sine.inOut" }, T0 + .4);
+      const l5b = line("L5b")[0], vo = at("L5b", "Vorschläge");
+      tl.to("#s04-gl", { opacity: 0, scale: .7, duration: .2 }, l5b - .1);
+      tl.fromTo("#s04-sheet", { opacity: 0, y: 500 }, { opacity: 1, y: 0, duration: .45, ease: "power4.out" }, l5b + .1);
+      tl.fromTo(["#s04-k1", "#s04-k2"], { opacity: 0, x: -60 }, { opacity: 1, x: 0, duration: .3, ease: "power3.out", stagger: .25 }, l5b + .35);
+      tkLike(tl, "#s04-k1", vo, 1204, 1388, 1.2, 3);
+      tl.to("#s04-sheet", { rotation: 1.2, duration: .22, yoyo: true, repeat: 3, ease: "sine.inOut" }, vo);
       """ + CONF_JS.replace("SEED", "31").replace("BOX", "s04-cfw"))
 
 # s05 – Verlosung Palast-Leitung: Spielautomat
@@ -206,11 +217,15 @@ scene("s06", PILL + """
     #s06-t { top: 300px; font-size: 58px; background: #18b8c0; }
     #s06-n { top: 420px; font-size: 44px; background: #e8467c; }
     #s06-sp { top: 300px; font-size: 48px; background: #18b8c0; }
+    #s06-nb { top: 300px; font-size: 42px; background: #2e9e5b; }
+    #s06-hs { position: absolute; left: 215px; top: 880px; width: 130px; height: 130px; border-radius: 50%; background: #fff; display: grid; place-items: center; font-size: 84px; box-shadow: 0 0 0 7px #ffc93c, 0 0 0 12px #2a1b12, 0 12px 20px rgba(0,0,0,.3); }
     #s06-z { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 530px; color: #e8433c; border-color: #e8433c; transform: rotate(-4deg); font-size: 56px; white-space: nowrap; background: #fff; }""",
 """      <div id="s06-t" class="pl">🏖️ STRANDVILLA</div>
       <div id="s06-n" class="pl">🎬 Nächstes Video: Verlosung</div>
       <div id="s06-z" class="stamp">2 GEWINNER 🎁</div>
-      <div id="s06-sp" class="pl">🏊 Pool für @sophia_e065!</div>""",
+      <div id="s06-sp" class="pl">🏊 Pool für @sophia_e065!</div>
+      <div id="s06-nb" class="pl">🏡 @anton.van11 + @laura.ngynn</div>
+      <div id="s06-hs" data-layout-ignore>🤝</div>""",
 """      const sv = at("L8", "Strandvilla"), zw = at("L8", "zwei");
       tl.fromTo("#s06-n", { opacity: 0, y: -40 }, { opacity: 1, y: 0, duration: .35, ease: "back.out(2)" }, .05);
       tl.fromTo("#s06-t", { opacity: 0, scale: .3, rotation: -8 }, { opacity: 1, scale: 1, rotation: -2, duration: .45, ease: "back.out(2.6)" }, sv - .15);
@@ -218,11 +233,16 @@ scene("s06", PILL + """
       const sp = line("L8b")[0], kd = at("L8b", "kriegst");
       tl.to(["#s06-t", "#s06-n", "#s06-z"], { opacity: 0, y: -20, duration: .2 }, sp - .1);
       tl.fromTo("#s06-sp", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, sp + .1);
-      tl.to("#s06-sp", { scale: 1.1, duration: .18, yoyo: true, repeat: 5, ease: "sine.inOut" }, kd);""")
+      tl.to("#s06-sp", { scale: 1.1, duration: .18, yoyo: true, repeat: 3, ease: "sine.inOut" }, kd);
+      const nb = line("L8c")[0], na = at("L8c", "Nachbarn");
+      tl.to("#s06-sp", { opacity: 0, y: -20, duration: .2 }, nb - .1);
+      tl.fromTo("#s06-nb", { opacity: 0, y: -40 }, { opacity: 1, y: 0, duration: .35, ease: "back.out(2)" }, nb + .1);
+      tl.fromTo("#s06-hs", { opacity: 0, scale: 0, rotation: -40 }, { opacity: 1, scale: 1, rotation: 0, duration: .5, ease: "elastic.out(1, .5)" }, na - .2);
+      tl.to("#s06-hs", { scale: 1.15, rotation: 8, duration: .2, yoyo: true, repeat: 5, ease: "sine.inOut" }, na + .35);""")
 
 # s07 – Bauprojekte mit Zielen, Anlegestelle wichtig, Aufruf
-BAUC = [("🏨", "Hotel Sandkorn", "800"), ("⚓", "Boots-Anlegestelle", "900"), ("🐾", "Tierheim", "1.000")]
-PCT = [653 / 800, 653 / 900, 653 / 1000]
+BAUC = [("🏨", "Hotel Sandkorn", "800"), ("⚓", "Boots-Anlegestelle", "900")]
+PCT = [653 / 800, 653 / 900]
 CARDS = "".join(f'<div class="s07-c" id="s07-c{i}" style="top:{290 + i * 160}px"><div class="e">{e}</div><div class="m"><b>{n}</b><small>Fertig bei {z} Bewohnern</small><div class="bar"><i id="s07-b{i}"></i></div></div><div class="z">653<br><span>/ {z}</span></div></div>' for i, (e, n, z) in enumerate(BAUC))
 scene("s07", PILL + """
     .s07-c { position: absolute; left: 90px; width: 900px; height: 140px; border-radius: 30px; background: #fff; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.3);
@@ -231,7 +251,7 @@ scene("s07", PILL + """
     .s07-c small { display: block; font-size: 28px; font-weight: 800; color: #6b6f8a; margin-top: 2px; }
     .s07-c .bar { height: 20px; border-radius: 10px; background: #e3e6f0; margin-top: 8px; overflow: hidden; } .s07-c .bar i { display: block; height: 100%; width: 0; background: #ff6a1a; border-radius: 10px; }
     .s07-c .z { font-size: 40px; font-weight: 900; color: #ff6a1a; text-align: center; line-height: 1; } .s07-c .z span { font-size: 26px; color: #6b6f8a; }
-    #s07-w { top: 790px; font-size: 44px; background: #18b8c0; }
+    #s07-w { top: 640px; font-size: 44px; background: #18b8c0; }
     .fbtn { position: absolute; left: 0; right: 0; margin: 0 auto; top: 330px; width: 420px; height: 120px; border-radius: 60px; background: #fe2c55; color: #fff;
       font-family: "Inter", sans-serif; font-weight: 900; font-size: 56px; display: grid; place-items: center; box-shadow: 0 0 0 5px #2a1b12, 0 12px 0 rgba(0,0,0,.25); }
     .fbtn2 { position: absolute; inset: 0; border-radius: 60px; background: #fff; color: #0a78c2; display: grid; place-items: center; opacity: 0; }
@@ -242,10 +262,10 @@ CARDS + """
       <div id="s07-btn" class="fbtn">+ Folgen<div id="s07-btn2" class="fbtn2">✓ Gefolgt</div></div>
       <div id="s07-hand" data-layout-ignore>👆</div>
       <div id="s07-m" class="pl">👯 Freunde markieren!</div>""",
-"""      const ws = [at("L9", "Hotel"), at("L9", "Anlegestelle"), at("L9", "Tierheim")], pc = """ + str([round(x, 3) for x in PCT]) + """, l10 = line("L10")[0], fo = at("L10", "folgen"), fr = at("L10", "Freunde"), zw = at("L9b", "zwischen"), l9b = line("L9b")[0];
+"""      const ws = [at("L9", "Hotel"), at("L9", "Anlegestelle")], pc = """ + str([round(x, 3) for x in PCT]) + """, l10 = line("L10")[0], fo = at("L10", "folgen"), fr = at("L10", "Freunde"), zw = at("L9b", "zwischen"), l9b = line("L9b")[0];
       ws.forEach((w, i) => { tl.fromTo("#s07-c" + i, { opacity: 0, x: i % 2 ? 120 : -120 }, { opacity: 1, x: 0, duration: .3, ease: "back.out(2)" }, w - .2);
         tl.fromTo("#s07-b" + i, { width: "0%" }, { width: (pc[i] * 100).toFixed(1) + "%", duration: .8, ease: "power2.out" }, w + .1); });
-      tl.to(["#s07-c0", "#s07-c2"], { opacity: .45, duration: .25 }, l9b);
+      tl.to(["#s07-c0"], { opacity: .45, duration: .25 }, l9b);
       tl.to("#s07-c1", { scale: 1.07, boxShadow: "0 0 0 8px #18b8c0, 0 12px 0 rgba(0,0,0,.3)", duration: .3, ease: "back.out(2)" }, l9b);
       tl.fromTo("#s07-w", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, zw - .2);
       tl.to("#s07-w", { scale: 1.06, duration: .25, yoyo: true, repeat: 3, ease: "sine.inOut" }, zw + .3);

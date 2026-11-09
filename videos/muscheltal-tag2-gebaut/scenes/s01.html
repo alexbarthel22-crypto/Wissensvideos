@@ -46,7 +46,7 @@
       tl.set(["#s01-hk", "#s01-stk", "#s01-ray", "#s01-tint"], { opacity: 1 }, 0);
       tl.fromTo("#s01-ray", { rotation: 0 }, { rotation: 24, duration: hEnd + .3, ease: "none" }, 0);
       tl.fromTo("#s01-stk", { scale: 1 }, { scale: 1.08, rotation: -3, duration: .25, yoyo: true, repeat: 5, ease: "sine.inOut" }, 0);
-      hkw.forEach((w, i) => { const t0 = Math.max(0, at("L1", w) - .03); tl.fromTo("#hw" + i, { scale: 1 }, { scale: .68, duration: .06, ease: "power2.in", immediateRender: false }, t0); tl.to("#hw" + i, { scale: 1, duration: .22, ease: "back.out(3)" }, t0 + .06); });
+      hkw.forEach((w, i) => { const t0 = Math.max(0, at("L1", w) - .03); tl.fromTo("#hw" + i, { scale: 1 }, { scale: .45, duration: .05, ease: "power2.in", immediateRender: false }, t0); tl.to("#hw" + i, { scale: 1.35, duration: .12, ease: "power2.out" }, t0 + .05); tl.to("#hw" + i, { scale: 1, duration: .2, ease: "back.out(3)" }, t0 + .17); });
       tl.to("#hw3", { color: "#ffd23f", duration: .05 }, at("L1", "jetzt"));
       tl.to("#hw6", { color: "#ffd23f", duration: .05 }, ins);
       tl.fromTo(".hk-sp", { scale: 0, rotation: 0, opacity: 0 }, { scale: 1.2, rotation: 180, opacity: 1, duration: .35, ease: "back.out(3)", stagger: .12, yoyo: true, repeat: 3 }, .05);

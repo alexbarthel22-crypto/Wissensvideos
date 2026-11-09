@@ -118,7 +118,9 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - 653 Bewohner (+78), Kokos-Küste 148 · Dönerbude (⭐ @lotta.fsthff, @alana_wbr, @em1lia.brn) + Strandbar (⭐ @paulepfpgfn, @khmr.496, nachts Party) gebaut · Bürgermeisterin @lillygyqcf0 im Palast.
 - **Palast-Leitung ausgelost: @prvt.lott1** (1 Woche im Palast).
 - **Ankündigung: Im nächsten Video wird die Strandvilla unter allen Followern an 2 Personen verlost** (Homepage: Schild „bald verlost“ passt; danach 2 Bewohner in der Villa).
-- Baustellen mit Zielen: Hotel Sandkorn (800), Boots-Anlegestelle (900), Tierheim (1.000) – „Überraschung bei 1.000“ aus Tag 1 wird nicht erwähnt.
+- Baustellen mit Zielen: Hotel Sandkorn (800), Boots-Anlegestelle (900). **Tierheim wird im Video noch nicht erwähnt** (Wunsch des Nutzers); „Überraschung bei 1.000“ aus Tag 1 auch nicht.
+- Bürgermeisterin-Szene: „Was soll sie als Erstes beschließen? Vorschläge in die Kommentare!“
+- „Anton und Laura sind jetzt Nachbarn!“ (@anton.van11 + @laura.ngynn, Hütten nebeneinander, 🤝).
 - **Neu (Video): Die Anlegestelle ist „super wichtig: damit könnt ihr zwischen den Inseln wechseln“** → Homepage: Bauprojekte-Seite/Bauschild der Anlegestelle sollte diesen Zweck nennen (Boot zwischen Haupt-Insel und Kokos-Küste).
 - Video zeigt @prvt.lott1 (Palast-Leitung, gelbes Shirt, Schild „👑 Palast-Leitung @…“) neben der Bürgermeisterin auf der Palasttreppe (lokal nachgebaut) → Homepage bitte genauso zeigen.
 - Video zeigt den Pool neben der Hütte von @sophia_e065: „Sophia wollte einen Pool – kriegst du!“ (Wunsch aus den Kommentaren).
