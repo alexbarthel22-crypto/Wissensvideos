@@ -79,7 +79,7 @@
      "text": "Jeder Follower bekommt / eine *g:eigene *g:Hütte – / mit *y:seinem *y:Namen drauf!",
      "speed": 1.1,
      "style": "Style: a young man who is absolutely euphoric and super excited, almost shouting with joy, like announcing the best news ever to his followers. Very energetic, big emotions, but natural German intonation.\nPace: fast.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-     "pause": 2.8
+     "pause": 0.5
     }
    ],
    "sfx": [
@@ -102,9 +102,9 @@
     {
      "id": "L4",
      "text": "Viele sind *g:heute schon eingezogen. / Am *y:Lagerfeuer / treffen sich die *b:Nachbarn!",
-     "speed": 1.1,
-     "style": "Style: a young man who is absolutely euphoric and super excited, almost shouting with joy, like announcing the best news ever to his followers. Very energetic, big emotions, but natural German intonation.\nPace: fast.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-     "pause": 2.6
+     "speed": 1.0,
+     "style": "Style: a young man, happy and warm, telling his friends about his island, relaxed and natural, normal speaking pitch, not shouting.\nPace: moderate.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+     "pause": 0.6
     }
    ],
    "sfx": [
@@ -121,48 +121,53 @@
    "lines": [
     {
      "id": "L5",
-     "text": "Und wer soll *p:neben *p:dir wohnen? / *y:Markier ihn in den Kommentaren!",
-     "speed": 1.1,
+     "text": "Und das wird *g:gebaut: / Im *y:Hotel können viele von euch / *y:wohnen und *y:arbeiten – / und mit der *b:Anlegestelle / könnt ihr von *b:Insel zu *b:Insel reisen!",
+     "speed": 1.08,
      "style": "Style: a young man who is absolutely euphoric and super excited, almost shouting with joy, like announcing the best news ever to his followers. Very energetic, big emotions, but natural German intonation.\nPace: fast.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-     "pause": 3.0
+     "pause": 0.5
     }
    ],
    "sfx": [
     {
-     "name": "whoosh-short",
-     "at": "s04+0.0",
-     "volume": 0.3
+     "name": "pop",
+     "at": "L5:Hotel",
+     "volume": 0.4
     },
     {
-     "name": "notification",
-     "at": "L5:Markier",
-     "volume": 0.35
+     "name": "pop",
+     "at": "L5:Anlegestelle",
+     "volume": 0.4
     }
    ]
   },
   {
    "id": "s05",
    "tag": "",
-   "hold": 3.25,
+   "hold": 1.6,
    "lines": [
     {
      "id": "L6",
-     "text": "Folg mir – / und *g:zieh noch *g:heute *g:ein!",
-     "speed": 1.1,
+     "text": "Entdecke die Welt von *y:Muschel-Tal / und sei *g:von *g:Anfang *g:an dabei – / *p:jetzt *p:folgen!",
+     "speed": 1.08,
      "style": "Style: a young man who is absolutely euphoric and super excited, almost shouting with joy, like announcing the best news ever to his followers. Very energetic, big emotions, but natural German intonation.\nPace: fast.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-     "pause": 1.8
+     "pause": 0.4
     }
    ],
    "sfx": [
     {
+     "name": "whoosh-short",
+     "at": "s05+0.0",
+     "volume": 0.3
+    },
+    {
      "name": "click",
-     "at": "L6:Folg",
+     "at": "L6:folgen",
      "volume": 0.5
     },
     {
      "name": "ka-ching",
-     "at": "L6:ein",
-     "volume": 0.4
+     "at": "L6:folgen+0.3",
+     "volume": 0.35
     }
    ]
   }

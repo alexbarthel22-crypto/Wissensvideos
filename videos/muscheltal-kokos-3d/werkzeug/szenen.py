@@ -172,34 +172,40 @@ scene("s03", PILL + """
       count(tl, "#s03-n", 0, 653, he + .1, 1.4, "", "", "power3.in");
       tl.fromTo("#s03-c", { scale: 1 }, { scale: 1.3, duration: .12, yoyo: true, repeat: 1, immediateRender: false }, he + 1.5);""")
 
-scene("s04", PILL + """
-    #s04-t { top: 300px; font-size: 52px; background: #7b3fe0; }
-    #s04-sheet { top: 420px; }""",
-f"""      <div id="s04-t" class="pl">👯 WER WOHNT NEBEN DIR?</div>
-      <div id="s04-sheet" class="tk"><div class="tk-h">Kommentare<b>×</b></div>
-        {tk("s04-c1", "#e8467c", "?", "dein.name", "@dein.bestie zieh neben mich! 🏡", "1.204")}
-      </div>""",
-"""      const ne = at("L5", "neben"), ma = at("L5", "Markier");
-      tl.fromTo("#s04-t", { opacity: 0, scale: .3, rotation: 8 }, { opacity: 1, scale: 1, rotation: 2, duration: .35, ease: "back.out(2.6)" }, ne - .2);
-      tl.fromTo("#s04-sheet", { opacity: 0, y: 400 }, { opacity: 1, y: 0, duration: .45, ease: "power4.out" }, ma - .3);
-      tl.fromTo("#s04-c1", { opacity: 0, x: -60 }, { opacity: 1, x: 0, duration: .3, ease: "power3.out" }, ma);
-      tkLike(tl, "#s04-c1", ma + .4, 1204, 1388, 1.2, 3);""")
+CARD = """    .bc { position: absolute; left: 80px; width: 920px; height: 150px; border-radius: 30px; background: #fff; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.3);
+      display: flex; align-items: center; gap: 20px; padding: 0 28px; font-family: "Inter", sans-serif; color: #23285a; }
+    .bc .e { font-size: 72px; } .bc .m { flex: 1; } .bc b { font-size: 40px; font-weight: 900; display: block; line-height: 1.1; } .bc small { display: block; font-size: 30px; font-weight: 800; color: #e2560c; margin-top: 4px; }
+    .bc .z { font-size: 26px; font-weight: 900; color: #6b6f8a; text-align: center; line-height: 1.1; } .bc .z i { font-style: normal; font-size: 40px; color: #e2560c; display: block; }"""
+scene("s04", PILL + "\n" + CARD + """
+    #s04-t { top: 290px; font-size: 54px; background: #e2560c; }""",
+"""      <div id="s04-t" class="pl">🏗️ DAS WIRD GEBAUT</div>
+      <div id="s04-h" class="bc" style="top:400px"><div class="e">🏨</div><div class="m"><b>Hotel Sandkorn</b><small>Hier wohnen &amp; arbeiten viele von euch</small></div><div class="z">ab<i>800</i>Bewohnern</div></div>
+      <div id="s04-a" class="bc" style="top:580px"><div class="e">⚓</div><div class="m"><b>Anlegestelle</b><small>Von Insel zu Insel reisen ⛵</small></div><div class="z">ab<i>900</i>Bewohnern</div></div>""",
+"""      const ge = at("L5", "gebaut"), ho = at("L5", "Hotel"), an = at("L5", "Anlegestelle");
+      tl.fromTo("#s04-t", { opacity: 0, scale: .3, rotation: -8 }, { opacity: 1, scale: 1, rotation: -2, duration: .35, ease: "back.out(2.6)" }, ge - .3);
+      tl.fromTo("#s04-h", { opacity: 0, x: -140 }, { opacity: 1, x: 0, duration: .35, ease: "back.out(2)" }, ho - .2);
+      tl.to("#s04-h", { scale: 1.05, duration: .25, yoyo: true, repeat: 3, ease: "sine.inOut" }, at("L5", "wohnen"));
+      tl.fromTo("#s04-a", { opacity: 0, x: 140 }, { opacity: 1, x: 0, duration: .35, ease: "back.out(2)" }, an - .2);
+      tl.to("#s04-a", { scale: 1.05, duration: .25, yoyo: true, repeat: 3, ease: "sine.inOut" }, at("L5", "Insel"));""")
 
 scene("s05", PILL + "\n" + FOLLOW + """
-    #s05-btn { top: 330px; } #s05-hand { left: 690px; top: 380px; }
-    #s05-h { top: 480px; font-size: 64px; background: #fe2c55; }
-    #s05-g { top: 600px; font-size: 44px; background: #2e9e5b; }""",
-"""      <div id="s05-btn" class="fbtn">+ Folgen<div id="s05-btn2" class="fbtn2">✓ Gefolgt</div></div>
+    #s05-w { top: 290px; font-size: 52px; background: #18a6b8; }
+    #s05-a { top: 400px; font-size: 44px; background: #2e9e5b; }
+    #s05-btn { top: 520px; } #s05-hand { left: 690px; top: 570px; }
+    #s05-h { top: 670px; font-size: 56px; background: #fe2c55; }""",
+"""      <div id="s05-w" class="pl">🗺️ ENTDECKE MUSCHEL-TAL</div>
+      <div id="s05-a" class="pl">🌱 Von Anfang an dabei sein!</div>
+      <div id="s05-btn" class="fbtn">+ Folgen<div id="s05-btn2" class="fbtn2">✓ Gefolgt</div></div>
       <div id="s05-hand" class="fhand" data-layout-ignore>👆</div>
-      <div id="s05-h" class="pl">@muscheltal</div>
-      <div id="s05-g" class="pl">🏠 Folgen = einziehen!</div>""",
-"""      const fo = at("L6", "Folg"), ei = at("L6", "ein");
-      tl.fromTo("#s05-btn", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, fo - .5);
-      tl.fromTo("#s05-hand", { opacity: 0, x: 160, y: 160 }, { opacity: 1, x: 0, y: 0, duration: .25, ease: "power3.out" }, fo - .3);
+      <div id="s05-h" class="pl">@muscheltal</div>""",
+"""      const en = at("L6", "Entdecke"), af = at("L6", "Anfang"), fo = at("L6", "folgen");
+      tl.fromTo("#s05-w", { opacity: 0, scale: .3, rotation: -6 }, { opacity: 1, scale: 1, rotation: -2, duration: .35, ease: "back.out(2.6)" }, en - .1);
+      tl.fromTo("#s05-a", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, af - .2);
+      tl.fromTo("#s05-btn", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, fo - .6);
+      tl.fromTo("#s05-hand", { opacity: 0, x: 160, y: 160 }, { opacity: 1, x: 0, y: 0, duration: .25, ease: "power3.out" }, fo - .35);
       tl.to("#s05-hand", { y: -26, scale: .9, duration: .1, yoyo: true, repeat: 1 }, fo);
       tl.to("#s05-btn2", { opacity: 1, duration: .05 }, fo + .1);
       tl.fromTo("#s05-btn", { scale: 1 }, { scale: 1.15, duration: .12, yoyo: true, repeat: 1, immediateRender: false }, fo + .1);
       tl.to("#s05-hand", { opacity: 0, duration: .25 }, fo + .6);
       tl.fromTo("#s05-h", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, fo + .3);
-      tl.fromTo("#s05-g", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, ei - .3);
-      tl.to("#s05-g", { scale: 1.08, duration: .25, yoyo: true, repeat: 7, ease: "sine.inOut" }, ei + .2);""", blur=False)
+      tl.to("#s05-h", { scale: 1.07, duration: .25, yoyo: true, repeat: 5, ease: "sine.inOut" }, fo + .7);""", blur=False)

@@ -98,7 +98,7 @@ JS = r"""
         if (name) { const sg = makeSign("@" + name, special); sg.position.set(2.05, 0, 1.75); sg.rotation.y = -.25; g.add(sg); g.userData.sign = sg; }
         S.add(g); return g; }
       const HOUSES = []; let ni = 0;
-      for (const z of ROWS) for (let x = -25; x <= 25; x += 5) { if (z === 0 && (x === 0 || x === 5)) continue; HOUSES.push(makeHouse(x, z, HOUSES.length, NAMES[ni++ % NAMES.length])); }
+      for (const z of ROWS) for (let x = -25; x <= 25; x += 5) { if (z === 0 && (x === 0 || x === 5)) continue; HOUSES.push(makeHouse(x, z, HOUSES.length, (z === 0 && x === -5) ? null : NAMES[ni++ % NAMES.length])); }
       const MY = makeHouse(0, 0, 99, "dein.name", true, true), BF = makeHouse(5, 0, 98, "dein.bestie?", true, false);
 
       // ---------- Palmen ----------
@@ -176,12 +176,12 @@ JS = r"""
       const DUST = []; for (let k = 0; k < 46; k++) { const d = new THREE.Sprite(new THREE.SpriteMaterial({ map: dustT, depthWrite: false, transparent: true, opacity: 0 })); d.userData = { a: hash(k, 50) * TAU, v: 2.2 + hash(k, 51) * 3.2, up: .4 + hash(k, 52) * 1.4, s: .9 + hash(k, 53) * 1.4 }; S.add(d); DUST.push(d); }
       // ---------- Zeit / Kamera ----------
       const s02 = C.s02[0], s03 = C.s03[0], s04 = C.s04[0], s05 = C.s05[0], END = C.__dur;
-      const T_FALL = .05, T_HOUSE = .9, T_SIGN = T_HOUSE + .5, T_BF = s04 + .3, T_HI = at("L5", "markier") - .25;
+      const T_FALL = 0, T_HOUSE = .38, T_SIGN = T_HOUSE + .35, T_BF = s04 + .3, T_HI = 1e9;
       const ease = (k) => k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2, cl = (v) => Math.max(0, Math.min(1, v));
       const lerp = (a, b, k) => a + (b - a) * k, V = (x, y, z) => new THREE.Vector3(x, y, z);
       function camShot(t) {
-        if (t < s02) { const k = ease(cl((t - T_HOUSE - .4) / (s02 - T_HOUSE - .4))), a = lerp(0, .38, k), r = lerp(12.5, 9.5, k);
-          return [V(Math.sin(a) * r, lerp(2.9, 2.5, k), Math.cos(a) * r), V(0, lerp(1.7, 1.6, k), 0)]; }
+        if (t < s02) { const k = ease(cl((t - T_HOUSE - .3) / (s02 - T_HOUSE - .3))), a = lerp(0, -.22, k), r = lerp(13, 11, k);
+          return [V(.95 + Math.sin(a) * r, lerp(2.9, 2.6, k), Math.cos(a) * r), V(.95, lerp(1.7, 1.6, k), 0)]; }
         if (t < s03) { const k = ease(cl((t - s02) / (s03 - s02))), x = lerp(-26, 1, k); return [V(x, 2.5, 11), V(x + 3, 1.3, 0)]; }
         if (t < s04) { const k = cl((t - s03) / (s04 - s03)), a = lerp(-.55, .7, ease(k)), r = lerp(13.5, 11.5, k); return [V(PZ.x + Math.sin(a) * r, lerp(5.2, 4.2, k), PZ.z + Math.cos(a) * r), V(PZ.x, .9, PZ.z)]; }
         if (t < s05) { const k = ease(cl((t - s04) / (s05 - s04))); return [V(3.5, lerp(2.9, 2.6, k), lerp(15, 13.5, k)), V(3.5, 1.4, 0)]; }
@@ -193,7 +193,7 @@ JS = r"""
         const lk = t - T_HOUSE, sq = lk > 0 && lk < .5 ? Math.sin(lk / .5 * Math.PI * 2) * Math.exp(-lk * 6) * .22 : 0; MY.scale.set(1 + sq * .6, 1 - sq, 1 + sq * .6);
         DUST.forEach((d) => { const u = d.userData, k = (t - T_HOUSE) / 1.6; if (k <= 0 || k >= 1) { d.material.opacity = 0; return; } const r = 1.9 + u.v * (1 - Math.pow(1 - k, 3)) * 1.1;
           d.position.set(Math.cos(u.a) * r, .25 + u.up * Math.sin(Math.min(1, k * 2) * Math.PI / 2) * (1 - k * .4), Math.sin(u.a) * r); d.scale.setScalar(u.s * (1 + k * 2.2)); d.material.opacity = .75 * (1 - k); }); MY.userData.sign.visible = t >= T_SIGN; MY.userData.sign.scale.setScalar(t >= T_SIGN ? Math.min(1, .3 + (t - T_SIGN) * 4) : 1);
-        BF.visible = t >= s04; const bk = cl((t - T_BF) / .45); BF.scale.setScalar(Math.max(.0001, bk >= 1 ? 1 : 1 - Math.pow(1 - bk, 3) * Math.cos(bk * 9)));
+        BF.visible = false; const bk = cl((t - T_BF) / .45); BF.scale.setScalar(Math.max(.0001, bk >= 1 ? 1 : 1 - Math.pow(1 - bk, 3) * Math.cos(bk * 9)));
         // Palmen
         PALMS.forEach((p) => { p.userData.crown.rotation.z = Math.sin(t * 1.3 + p.userData.i) * .06; p.userData.crown.rotation.x = Math.cos(t * 1.1 + p.userData.i) * .04; });
         // Feuer
@@ -205,7 +205,7 @@ JS = r"""
         SIT.forEach((p, k) => { p.lookAt(PZ.x, 0, PZ.z); pose(p, t, "sit"); if (k % 2) { p.userData.head.rotation.y = Math.sin(t * 2 + k) * .35; p.userData.arms[0].rotation.x = -1.1 + Math.sin(t * 4 + k) * .3; } });
         PW.forEach((p, k) => { const a = p.userData.ang + t * .22, r = 5.2; p.position.set(PZ.x + Math.cos(a) * r, 0, PZ.z + Math.sin(a) * r); p.rotation.y = -a; pose(p, t, k === 1 ? "wave" : "walk"); if (k === 1) { const u = p.userData; u.legs.forEach((l, j) => l.rotation.x = (j ? -1 : 1) * Math.sin(t * 7) * .5); } });
         // Nachbarn: laufen aufeinander zu und klatschen ab
-        const vis = t >= s04 && t < s05; N1.visible = N2.visible = vis;
+        const vis = false; N1.visible = N2.visible = vis;
         if (vis) { const k = ease(cl((t - (s04 + .4)) / (T_HI - s04 - .4))); N1.position.set(lerp(-.3, 4.0, k), .12, 3.4); N2.position.set(lerp(9.3, 4.9, k), .12, 3.4);
           N1.rotation.y = Math.PI / 2; N2.rotation.y = -Math.PI / 2; pose(N1, t, k < 1 ? "walk" : "stand"); pose(N2, t, k < 1 ? "walk" : "stand");
           if (t >= T_HI) { const h = Math.min(1, (t - T_HI) / .15); N1.userData.arms[1].rotation.z = 0; N1.userData.arms[1].rotation.x = -2.6 * h; N2.userData.arms[0].rotation.x = -2.6 * h; } }
@@ -213,7 +213,7 @@ JS = r"""
         const [p, l] = camShot(t); const sk = t > T_HOUSE && t < T_HOUSE + .35 ? (1 - (t - T_HOUSE) / .35) * .18 : 0; p.x += Math.sin(t * 90) * sk; p.y += Math.cos(t * 77) * sk; cam.position.copy(p); cam.lookAt(l); R.render(S, cam); }
       const tl = gsap.timeline({ paused: true }), o = { t: 0 };
       tl.to(o, { t: C.__dur, duration: C.__dur, ease: "none", onUpdate: () => draw(o.t) }, 0);
-      tl.to([cv, document.querySelector(".w-root")], { opacity: 0, duration: .6, ease: "power1.inOut" }, C.s05[0] + 1.2);
+      tl.to([cv, document.querySelector(".w-root")], { opacity: 0, duration: .6, ease: "power1.inOut" }, C.s04[0] - .3);
       draw(0);
       window.__timelines["world"] = tl;
 """

@@ -59,8 +59,8 @@
     #s01-stk { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 330px; color: #e8433c; border-color: #e8433c; background: #fff; transform: rotate(-5deg); font-size: 54px; white-space: nowrap; }
     #s01-fl { position: absolute; inset: 0; background: #fff; opacity: 0; }
   </style>
-  <div id="root" data-composition-id="s01" data-start="0" data-duration="6.700" data-width="1080" data-height="1920">
-    <div id="s01-stage" class="clip stage" data-start="0" data-duration="6.700" data-track-index="0">
+  <div id="root" data-composition-id="s01" data-start="0" data-duration="4.400" data-width="1080" data-height="1920">
+    <div id="s01-stage" class="clip stage" data-start="0" data-duration="4.400" data-track-index="0">
 
       <div id="s01-hk"><div class="hk-l"><span class="hk-w" id="hw0">DAS</span><span class="hk-w" id="hw1">KÖNNTE</span></div><div class="hk-l"><span class="hk-w" id="hw2">DEIN</span><span class="hk-w" id="hw3">HAUS</span></div><div class="hk-l"><span class="hk-w" id="hw4">SEIN!</span></div></div>
       <div id="s01-stk" class="stamp" data-layout-ignore>🔎 EINWOHNER GESUCHT!</div>
@@ -70,7 +70,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 6.7, "L1": [0.0, 1.51], "L1.words": [["das", 0.0, 0.247], ["könnte", 0.247, 0.742], ["dein", 0.742, 0.998], ["haus", 0.998, 1.254], ["sein", 1.254, 1.51]], "L2": [1.78, 3.72], "L2.words": [["einwohner", 1.78, 2.364], ["für", 2.364, 2.559], ["meine", 2.559, 2.941], ["insel", 2.941, 3.324], ["gesucht", 3.324, 3.72]]};
+      const C = {"__dur": 4.4, "L1": [0.0, 1.51], "L1.words": [["das", 0.0, 0.247], ["könnte", 0.247, 0.742], ["dein", 0.742, 0.998], ["haus", 0.998, 1.254], ["sein", 1.254, 1.51]], "L2": [1.78, 3.72], "L2.words": [["einwohner", 1.78, 2.364], ["für", 2.364, 2.559], ["meine", 2.559, 2.941], ["insel", 2.941, 3.324], ["gesucht", 3.324, 3.72]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];

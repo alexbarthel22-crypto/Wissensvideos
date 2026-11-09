@@ -54,22 +54,24 @@
       font-family: "Inter", sans-serif; font-weight: 900; font-size: 56px; display: grid; place-items: center; box-shadow: 0 0 0 5px #2a1b12, 0 12px 0 rgba(0,0,0,.25); }
     .fbtn2 { position: absolute; inset: 0; border-radius: 60px; background: #fff; color: #0a78c2; display: grid; place-items: center; opacity: 0; }
     .fhand { position: absolute; font-size: 120px; }
-    #s05-btn { top: 330px; } #s05-hand { left: 690px; top: 380px; }
-    #s05-h { top: 480px; font-size: 64px; background: #fe2c55; }
-    #s05-g { top: 600px; font-size: 44px; background: #2e9e5b; }
+    #s05-w { top: 290px; font-size: 52px; background: #18a6b8; }
+    #s05-a { top: 400px; font-size: 44px; background: #2e9e5b; }
+    #s05-btn { top: 520px; } #s05-hand { left: 690px; top: 570px; }
+    #s05-h { top: 670px; font-size: 56px; background: #fe2c55; }
   </style>
-  <div id="root" data-composition-id="s05" data-start="0" data-duration="5.410" data-width="1080" data-height="1920">
-    <div id="s05-stage" class="clip stage" data-start="0" data-duration="5.410" data-track-index="0">
+  <div id="root" data-composition-id="s05" data-start="0" data-duration="5.590" data-width="1080" data-height="1920">
+    <div id="s05-stage" class="clip stage" data-start="0" data-duration="5.590" data-track-index="0">
+      <div id="s05-w" class="pl">🗺️ ENTDECKE MUSCHEL-TAL</div>
+      <div id="s05-a" class="pl">🌱 Von Anfang an dabei sein!</div>
       <div id="s05-btn" class="fbtn">+ Folgen<div id="s05-btn2" class="fbtn2">✓ Gefolgt</div></div>
       <div id="s05-hand" class="fhand" data-layout-ignore>👆</div>
       <div id="s05-h" class="pl">@muscheltal</div>
-      <div id="s05-g" class="pl">🏠 Folgen = einziehen!</div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 5.41, "L6": [0.2, 2.16], "L6.words": [["folg", 0.2, 0.412], ["mir", 0.412, 0.617], ["", 0.617, 0.8], ["und", 0.94, 1.142], ["zieh", 1.142, 1.351], ["noch", 1.351, 1.561], ["heute", 1.561, 1.958], ["ein", 1.958, 2.16]]};
+      const C = {"__dur": 5.59, "L6": [0.2, 3.99], "L6.words": [["entdecke", 0.2, 0.665], ["die", 0.665, 0.822], ["welt", 0.822, 0.984], ["von", 0.984, 1.141], ["muscheltal", 1.141, 1.617], ["und", 1.617, 1.774], ["sei", 1.774, 1.93], ["von", 1.93, 2.087], ["anfang", 2.087, 2.401], ["an", 2.401, 2.552], ["dabei", 2.552, 2.86], ["", 2.86, 3.0], ["jetzt", 3.17, 3.456], ["folgen", 3.456, 3.99]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -113,16 +115,17 @@
 
       wrapBt("#s05-stage");
       const tl = gsap.timeline({ paused: true });
-      const fo = at("L6", "Folg"), ei = at("L6", "ein");
-      tl.fromTo("#s05-btn", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, fo - .5);
-      tl.fromTo("#s05-hand", { opacity: 0, x: 160, y: 160 }, { opacity: 1, x: 0, y: 0, duration: .25, ease: "power3.out" }, fo - .3);
+      const en = at("L6", "Entdecke"), af = at("L6", "Anfang"), fo = at("L6", "folgen");
+      tl.fromTo("#s05-w", { opacity: 0, scale: .3, rotation: -6 }, { opacity: 1, scale: 1, rotation: -2, duration: .35, ease: "back.out(2.6)" }, en - .1);
+      tl.fromTo("#s05-a", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, af - .2);
+      tl.fromTo("#s05-btn", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, fo - .6);
+      tl.fromTo("#s05-hand", { opacity: 0, x: 160, y: 160 }, { opacity: 1, x: 0, y: 0, duration: .25, ease: "power3.out" }, fo - .35);
       tl.to("#s05-hand", { y: -26, scale: .9, duration: .1, yoyo: true, repeat: 1 }, fo);
       tl.to("#s05-btn2", { opacity: 1, duration: .05 }, fo + .1);
       tl.fromTo("#s05-btn", { scale: 1 }, { scale: 1.15, duration: .12, yoyo: true, repeat: 1, immediateRender: false }, fo + .1);
       tl.to("#s05-hand", { opacity: 0, duration: .25 }, fo + .6);
       tl.fromTo("#s05-h", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, fo + .3);
-      tl.fromTo("#s05-g", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, ei - .3);
-      tl.to("#s05-g", { scale: 1.08, duration: .25, yoyo: true, repeat: 7, ease: "sine.inOut" }, ei + .2);
+      tl.to("#s05-h", { scale: 1.07, duration: .25, yoyo: true, repeat: 5, ease: "sine.inOut" }, fo + .7);
       
       window.__timelines["s05"] = tl;
     })();
