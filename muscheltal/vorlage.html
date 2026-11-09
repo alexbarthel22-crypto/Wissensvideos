@@ -1093,7 +1093,7 @@ function drawAcai(c,g,nl,z){const W=(g.x1-g.x0)/2,H=(g.y1-g.y0)/2,t=REDUCED?0:T,
  c.fillStyle='#b58ad0';c.beginPath();c.roundRect(-3,H-3.2,6,1.6,.5);c.fill();c.fillStyle='#fff';c.font='900 .8px '+FONT;c.textAlign='center';c.fillText('HALLO ♥',0,H-2.1);
  if(!REDUCED&&day)for(let k=0;k<2;k++){const bx=8+Math.sin(t*.5+k*2)*12,by=-4+Math.cos(t*.37+k)*8,fl=Math.abs(Math.sin(t*9+k));c.fillStyle=k?'#ffb3d1':'#d7b8ff';c.beginPath();c.ellipse(bx-.5,by,.7*fl+.15,.5,0,0,TAU);c.ellipse(bx+.5,by,.7*fl+.15,.5,0,0,TAU);c.fill();c.fillStyle='#2a1b12';c.fillRect(bx-.1,by-.4,.2,.8);}
  if(!day)for(const [tx,ty] of[[24.4,-8.6],[24.4,7.4]]){c.fillStyle='rgba(255,255,255,.7)';c.fillRect(tx-.4,ty-.6,.8,.8);c.fillStyle='#ffd27a';c.beginPath();c.ellipse(tx,ty-.9+(REDUCED?0:Math.sin(t*9)*.05),.22,.4,0,0,TAU);c.fill();}
- if(z>1.2)gTxt(c,{},'🫐 AÇAÍ-STAND',0,H+6.5,4.6,'#fff','#2a1b12');
+ 
 }
 // ---------- Moped-Werkstatt: offene Halle, Hebebühne mit Moped, Werkzeugwand, Reifen, Fässer – von allen Seiten begehbar ----------
 function mopedSide(c,x,y,col,s=1){c.save();c.translate(x,y);c.scale(s,s);c.fillStyle='#2a2a2a';for(const wx of[-2.8,3]){c.beginPath();c.arc(wx,1.4,1.2,0,TAU);c.fill();c.fillStyle='#c9d1d9';c.beginPath();c.arc(wx,1.4,.42,0,TAU);c.fill();c.fillStyle='#2a2a2a';}
@@ -1119,8 +1119,9 @@ function drawWerk(c,g,nl,z){c.scale(g.dir||1,1);// drawGeb spiegelt Küstenbaute
  c.fillStyle=day?'#bfe3f5':'#ffe7a8';c.fillRect(6,-19,7,5);c.strokeStyle='#fff';c.lineWidth=.4;c.strokeRect(6,-19,7,5);c.beginPath();c.moveTo(9.5,-19);c.lineTo(9.5,-14);c.stroke();
  c.fillStyle='#fff';c.fillRect(6.6,-15.4,1,.9);c.fillStyle='#e8433c';c.fillRect(10.6,-16,2,1.4);c.fillStyle='#2a2a2a';c.beginPath();c.arc(11.2,-15.3,.35,0,TAU);c.fill();
  // Schild auf dem Dach
- c.fillStyle='#ffd23f';c.strokeStyle=ink;c.lineWidth=.5;c.beginPath();c.roundRect(-25,-33,38,6.4,1.4);c.fill();c.stroke();c.fillStyle=ink;c.font='900 3px '+FONT;c.textAlign='center';c.fillText('MOPED-WERKSTATT',-4,-28.9);
- c.strokeStyle='#5a646e';c.lineWidth=.9;c.lineCap='round';c.beginPath();c.moveTo(-23.4,-28.4);c.lineTo(-20.6,-31.6);c.stroke();c.beginPath();c.arc(-20.2,-31.9,.8,0,TAU);c.stroke();
+ c.fillStyle='#ffd23f';c.strokeStyle=ink;c.lineWidth=.5;c.beginPath();c.roundRect(-25,-37,38,10,1.6);c.fill();c.stroke();
+ c.strokeStyle='#5a646e';c.lineWidth=1;c.lineCap='round';c.beginPath();c.moveTo(-22.6,-29.6);c.lineTo(-18.8,-34);c.stroke();c.beginPath();c.arc(-18.3,-34.5,1.1,0,TAU);c.stroke();c.fillStyle='#ffd23f';c.beginPath();c.arc(-17.8,-35,.55,0,TAU);c.fill();
+ gTxt(c,{},'MOPED',-3,-31.2,4.8,ink,null,24);gTxt(c,{},'WERKSTATT',-3,-28.2,2.6,'#5a646e',null,24);
  // Werkbank mit Schraubstock (rechts vor der Halle)
  c.fillStyle='#8a5a2b';c.fillRect(12,-9,8,1.4);c.fillRect(12.4,-7.6,.8,3);c.fillRect(18.8,-7.6,.8,3);c.fillStyle='#5a646e';c.fillRect(17,-10.6,2,1.6);c.fillStyle='#e8433c';c.fillRect(13,-10.2,2.6,1.2);c.fillStyle='#c9d1d9';c.fillRect(13.3,-10.6,2,.4);
  // Hebebühne mit Moped in Reparatur (Hauptsache!)
@@ -1150,7 +1151,7 @@ function drawWerk(c,g,nl,z){c.scale(g.dir||1,1);// drawGeb spiegelt Küstenbaute
  const team=PEOPLE.filter(p=>p.ort===g.name&&p.p);
  if(z*S>8)team.forEach((p,k)=>{const x=k?6:-4.6,y=6,L=p.LW||(p.LW={...look(p.k),shirt:'#2f5f9f',pants:'#1d3a66'});c.save();c.translate(x,y);c.scale(-1,1);person(c,L,0,false,.3+Math.abs(Math.sin(t*4+k))*.9);c.scale(L.h,L.h);c.fillStyle='#e8433c';c.beginPath();c.arc(0,-4.8,1.55,Math.PI,0);c.fill();c.fillRect(-2.2,-4.9,1.6,.35);
   c.strokeStyle='#c9d1d9';c.lineWidth=.35;c.beginPath();c.moveTo(-2.4,-3.6);c.lineTo(-3.6,-4.4);c.stroke();c.fillStyle='#fff';c.fillRect(-.5,-1.6,1,.35);c.restore();TAPS.push([g.cx+x,g.cy+y,p]);if(z*S>40&&sel!==p)NAMES.push([(p.beruf==='Leitung'?'⭐ ':'')+p.name,g.cx+x,g.cy+y-12,'#2f5f9f']);});
- if(z>1.2)gTxt(c,{},'🔧 MOPED-WERKSTATT',0,H+7,5,'#fff','#2a1b12');}
+ }
 function drawGeb(c,g,nl,z){const ink='#2a1b12';c.save();c.translate(g.cx,g.cy);
  if(g.typ==='doener'){const W=(g.x1-g.x0)/2,H=(g.y1-g.y0)/2;
   c.fillStyle='#ecdcbc';c.beginPath();c.roundRect(-W,-H,2*W,2*H,4);c.fill();c.strokeStyle='rgba(150,120,80,.35)';c.lineWidth=.35;c.beginPath();for(let x=-W+5;x<W;x+=5){c.moveTo(x,-H);c.lineTo(x,H);}for(let y=-H+5;y<H;y+=5){c.moveTo(-W,y);c.lineTo(W,y);}c.stroke();
@@ -1206,7 +1207,7 @@ function drawGeb(c,g,nl,z){const ink='#2a1b12';c.save();c.translate(g.cx,g.cy);
   dwall(-W+1.5,-H+1.5,-W+1.5,H-1.5);dwall(W-1.5,-H+1.5,W-1.5,H-1.5);dwall(-W+1.5,H-1.5,-10,H-1.5);dwall(10,H-1.5,W-1.5,H-1.5);
   for(const ex of[-10,10]){c.fillStyle='#f7f1e6';c.fillRect(ex-1.2,H-4.6,2.4,4.4);c.fillStyle='#1d5fbf';c.beginPath();c.arc(ex,H-4.8,1.3,Math.PI,0);c.fill();c.fillStyle='#ffd23f';c.beginPath();c.arc(ex,H-5.6,.4,0,TAU);c.fill();}
   if(nl>.5)for(const [x,y] of[[24,-8],[24,10],[25,21]]){c.fillStyle='#ffd27a';c.beginPath();c.ellipse(x+3,y-.6+(REDUCED?0:Math.sin(T*9+x)*.05),.22,.4,0,0,TAU);c.fill();}
-  if(z>1.2)gTxt(c,{},'🥙 DÖNERBUDE',0,H+7,5,'#fff','#2a1b12');}
+  }
  else{c.scale(g.dir,1);const L0=(g.dir>0?g.x0:-g.x1+0)-g.cx*0, W=(g.x1-g.x0)/2,H=(g.y1-g.y0)/2,sx=(g.sea-g.cx)*g.dir;// sx = Küstenlinie (lokal, Meer rechts)
   if(g.typ==='strandbar'){
    c.fillStyle='#f3dcac';c.beginPath();c.roundRect(-W,-H,sx+W,2*H,4);c.fill();
@@ -1259,7 +1260,7 @@ function drawGeb(c,g,nl,z){const ink='#2a1b12';c.save();c.translate(g.cx,g.cy);
    {const kx=sx-8,ky=21;c.save();c.translate(kx,ky);c.rotate(-.25);c.fillStyle='#ff8a2a';c.beginPath();c.ellipse(0,0,6,1.4,0,0,TAU);c.fill();c.fillStyle='#2a2a2a';c.beginPath();c.ellipse(.5,0,1.6,.6,0,0,TAU);c.fill();c.strokeStyle='#8a8a94';c.lineWidth=.3;c.beginPath();c.moveTo(-3,-2);c.lineTo(4,2);c.stroke();c.restore();}
    for(let k=0;k<7;k++){const x=-W+6+hash(k,951)*(sx-6+W-12),y=-H+4+hash(k,952)*(2*H-8);if(k%2){c.fillStyle='#ff8a4c';c.beginPath();for(let i=0;i<10;i++){const a=i/10*TAU-Math.PI/2,r=i%2?.4:1;c.lineTo(x+Math.cos(a)*r,y+Math.sin(a)*r);}c.closePath();c.fill();}else{c.fillStyle='#fff3e8';c.beginPath();c.arc(x,y,.6,Math.PI,0);c.fill();c.strokeStyle='#e8c8a8';c.lineWidth=.12;c.beginPath();c.moveTo(x,y);c.lineTo(x-.4,y-.5);c.moveTo(x,y);c.lineTo(x+.4,y-.5);c.stroke();}}
    if(nl>.5)for(const [cx2,cy2] of[[sx+11,-14],[sx+11,14],[sx+31,-2]]){c.fillStyle='#ffd27a';c.beginPath();c.ellipse(cx2,cy2-.8+(REDUCED?0:Math.sin(T*9+cy2)*.05),.22,.4,0,0,TAU);c.fill();}
-   if(z>1.2)gTxt(c,g,'🍹 STRANDBAR',(sx-44-W)/2,H+7,5,'#fff','#2a1b12');}
+   }
   else if(g.typ==='acai')drawAcai(c,g,nl,z);
   else if(g.typ==='werkstatt')drawWerk(c,g,nl,z);
   else{// Strandvilla
@@ -1276,14 +1277,14 @@ function drawGeb(c,g,nl,z){const ink='#2a1b12';c.save();c.translate(g.cx,g.cy);
    // Villa
    const vx=-W+24;c.fillStyle='rgba(40,30,10,.28)';c.fillRect(vx-18,-11,40,28);
    c.fillStyle='#fffaf2';c.strokeStyle=ink;c.lineWidth=.7;c.fillRect(vx-20,-15,40,28);c.strokeRect(vx-20,-15,40,28);
-   c.fillStyle='#f4efe6';c.fillRect(vx-22,-19,44,5);c.strokeRect(vx-22,-19,44,5);c.fillStyle='#fffaf2';c.fillRect(vx-8,-26,22,8);c.strokeRect(vx-8,-26,22,8);c.fillStyle='#e9e2d2';c.fillRect(vx-10,-28,26,3);c.strokeRect(vx-10,-28,26,3);
+   c.fillStyle='#f4efe6';c.fillRect(vx-22,-19,44,5);c.strokeRect(vx-22,-19,44,5);gTxt(c,g,'STRANDVILLA',vx,-15.2,3.8,'#b8862b',null,40);c.fillStyle='#fffaf2';c.fillRect(vx-8,-26,22,8);c.strokeRect(vx-8,-26,22,8);c.fillStyle='#e9e2d2';c.fillRect(vx-10,-28,26,3);c.strokeRect(vx-10,-28,26,3);
    for(const [x,y,w,h] of[[vx-17,-11,8,9],[vx-6,-11,8,9],[vx+5,-11,12,9],[vx-17,1,8,9],[vx+9,1,8,9],[vx-5,-24,7,4],[vx+4,-24,7,4]]){c.fillStyle=nl>.4?'#ffd98a':'#7fc8e8';c.fillRect(x,y,w,h);c.fillStyle='rgba(255,255,255,.45)';c.fillRect(x+.6,y+.6,w*.35,h-1.2);c.strokeStyle='#c9b48a';c.lineWidth=.4;c.strokeRect(x,y,w,h);}
    c.fillStyle='#8a5a2b';c.fillRect(vx-3,3,8,10);c.fillStyle='#ffd23f';c.beginPath();c.arc(vx+3.3,8,.5,0,TAU);c.fill();
    c.fillStyle='#e8c9a0';c.fillRect(vx-3,13,8,H-13);
    // Geschenkschleife: wird verlost
    const pu=1+.06*Math.sin(T*3);c.save();c.translate(vx+3,-31);c.scale(pu,pu);c.fillStyle='#e8433c';c.beginPath();c.ellipse(-3.4,0,3.4,2,-.5,0,TAU);c.ellipse(3.4,0,3.4,2,.5,0,TAU);c.fill();c.beginPath();c.arc(0,0,1.4,0,TAU);c.fill();c.restore();
    c.fillStyle='#ffd23f';c.beginPath();c.roundRect(vx-15,17,30,7,3.5);c.fill();c.strokeStyle=ink;c.lineWidth=.5;c.stroke();gTxt(c,g,'🎁 BALD VERLOST',vx,22.1,3.6,'#7a3a00',null,26);
-   if(z>1.2)gTxt(c,g,'🏖️ STRANDVILLA',(sx-W)/2,H+7,5,'#fff','#2a1b12');}}
+   }}
  c.restore();
  // Bewohner (arbeiten/wohnen hier) stehen im Gebäude
  let ki=0;if(z*S>30&&g.typ!=='acai'&&g.typ!=='werkstatt')for(const p of PEOPLE)if(p.gb===g){NAMES.push([(p.beruf==='Leitung'?'⭐ ':'')+p.name,p.p.x,p.p.y-11.5-(ki%3)*5.2,g.typ==='doener'?'#e8433c':'#0fa3a8']);ki++;}}
