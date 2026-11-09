@@ -79,7 +79,7 @@ scene("s01", PILL + """
 # s02 – Dönerbude
 scene("s02", PILL + """
     #s02-t { top: 300px; font-size: 62px; background: #e8433c; }
-    #s02-w { left: 690px; top: 250px; color: #2e9e5b; border-color: #2e9e5b; transform: rotate(10deg); font-size: 44px; }
+    #s02-w { left: 20px; top: 385px; color: #2e9e5b; border-color: #2e9e5b; background: #fff; transform: rotate(-10deg); font-size: 36px; }
     .s02-n { font-size: 40px; background: #fff; color: #e8433c; }""",
 """      <div id="s02-t" class="pl">🥙 DÖNERBUDE</div>
       <div id="s02-w" class="stamp">GEWONNEN!</div>
@@ -131,10 +131,10 @@ scene("s05", PILL + "\n    " + CF_CSS.replace("top: 700px", "top: 660px") + """
     #s05-st { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 890px; color: #e8433c; border-color: #e8433c; transform: rotate(-5deg); font-size: 64px; white-space: nowrap; background: #fff; }""",
 f"""      <div id="s05-dim"></div>
       <div id="s05-t" class="pl">👑 VERLOSUNG: PALAST-LEITUNG</div>
-      <div id="s05-box"><div id="s05-band"></div><div id="s05-col">{ROWS}</div><div id="s05-shade"></div></div>
+      <div id="s05-box"><div id="s05-band"></div><div id="s05-col" data-layout-ignore>{ROWS}</div><div id="s05-shade" data-layout-ignore></div></div>
       <div class="s05-arr" style="left:30px">▶</div><div class="s05-arr" style="left:985px">◀</div>
       <div id="s05-cfw"></div>
-      <div id="s05-st" class="stamp">👑 PALAST-LEITUNG!</div>""",
+      <div id="s05-st" class="stamp" data-layout-ignore>👑 PALAST-LEITUNG!</div>""",
 f"""      const s0 = at("L6", "Palast-Leitung") + .7, T0 = line("L7")[0] - .45, H = 130, NR = {len(NAMES)}, W = {WIN};
       tl.fromTo("#s05-dim", {{ opacity: 0 }}, {{ opacity: 1, duration: .4 }}, line("L6")[0]);
       tl.fromTo("#s05-t", {{ opacity: 0, scale: .3 }}, {{ opacity: 1, scale: 1, duration: .4, ease: "back.out(2.6)" }}, line("L6")[0] + .1);
