@@ -80,16 +80,21 @@ scene("s01", PILL + """
 scene("s02", PILL + """
     #s02-t { top: 300px; font-size: 62px; background: #e8433c; }
     #s02-w { left: 20px; top: 385px; color: #2e9e5b; border-color: #2e9e5b; background: #fff; transform: rotate(-10deg); font-size: 36px; }
-    .s02-n { font-size: 40px; background: #fff; color: #e8433c; }""",
+    .s02-n { font-size: 40px; background: #fff; color: #e8433c; }
+    #s02-g { top: 720px; font-size: 46px; background: #ff6a1a; }""",
 """      <div id="s02-t" class="pl">🥙 DÖNERBUDE</div>
       <div id="s02-w" class="stamp">GEWONNEN!</div>
       <div id="s02-n1" class="pl s02-n" style="top:430px">⭐ @lotta.fsthff</div>
       <div id="s02-n2" class="pl s02-n" style="top:520px">@alana_wbr</div>
-      <div id="s02-n3" class="pl s02-n" style="top:610px">@em1lia.brn</div>""",
+      <div id="s02-n3" class="pl s02-n" style="top:610px">@em1lia.brn</div>
+      <div id="s02-g" class="pl">😋 Döner für alle!</div>""",
 """      const dn = at("L3", "Dönerbude"), dr = at("L3", "drei");
       tl.fromTo("#s02-t", { opacity: 0, scale: .3, rotation: -10 }, { opacity: 1, scale: 1, rotation: -2, duration: .45, ease: "back.out(2.6)" }, dn - .15);
       tl.fromTo("#s02-w", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, dn + .45);
-      tl.fromTo(["#s02-n1", "#s02-n2", "#s02-n3"], { opacity: 0, x: -80 }, { opacity: 1, x: 0, duration: .3, ease: "back.out(2)", stagger: .18 }, dr - .35);""")
+      tl.fromTo(["#s02-n1", "#s02-n2", "#s02-n3"], { opacity: 0, x: -80 }, { opacity: 1, x: 0, duration: .3, ease: "back.out(2)", stagger: .18 }, dr - .35);
+      const dg = at("L3b", "Döner");
+      tl.fromTo("#s02-g", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, dg - .15);
+      tl.to("#s02-g", { rotation: 3, duration: .2, yoyo: true, repeat: 5, ease: "sine.inOut" }, dg + .3);""")
 
 # s03 – Strandbar, nachts Party
 scene("s03", PILL + """
@@ -100,21 +105,29 @@ scene("s03", PILL + """
       <div id="s03-n1" class="pl s03-n" style="top:430px">⭐ @paulepfpgfn</div>
       <div id="s03-n2" class="pl s03-n" style="top:520px">@khmr.496</div>
       <div id="s03-p" class="pl">🎉 Jede Nacht Party!</div>""",
-"""      const sb = at("L4", "Strandbar"), na = at("L4", "nachts");
+"""      const sb = at("L4", "Strandbar"), na = at("L4b", "nachts"), zw = at("L4", "zwei");
       tl.fromTo("#s03-t", { opacity: 0, scale: .3, rotation: 10 }, { opacity: 1, scale: 1, rotation: 2, duration: .45, ease: "back.out(2.6)" }, sb - .15);
-      tl.fromTo(["#s03-n1", "#s03-n2"], { opacity: 0, x: 80 }, { opacity: 1, x: 0, duration: .3, ease: "back.out(2)", stagger: .2 }, sb + .5);
+      tl.fromTo(["#s03-n1", "#s03-n2"], { opacity: 0, x: 80 }, { opacity: 1, x: 0, duration: .3, ease: "back.out(2)", stagger: .2 }, zw - .3);
       tl.fromTo("#s03-p", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, na);
       tl.to("#s03-p", { rotation: 3, scale: 1.06, duration: .2, yoyo: true, repeat: 7, ease: "sine.inOut" }, na + .4);""")
 
 # s04 – Bürgermeisterin
 scene("s04", PILL + """
     #s04-t { top: 300px; font-size: 56px; background: #7b3fe0; }
-    #s04-n { top: 410px; font-size: 46px; background: #fff; color: #7b3fe0; }""",
+    #s04-n { top: 410px; font-size: 46px; background: #fff; color: #7b3fe0; }
+    #s04-gl { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 530px; color: #2e9e5b; border-color: #2e9e5b; background: #fff; transform: rotate(-4deg); font-size: 54px; white-space: nowrap; }
+    """ + CF_CSS.replace("top: 700px", "top: 600px") + """""",
 """      <div id="s04-t" class="pl">🎖️ BÜRGERMEISTERIN</div>
-      <div id="s04-n" class="pl">@lillygyqcf0</div>""",
+      <div id="s04-n" class="pl">@lillygyqcf0</div>
+      <div id="s04-gl" class="stamp" data-layout-ignore>🎉 HERZLICHEN GLÜCKWUNSCH!</div>
+      <div id="s04-cfw"></div>""",
 """      const bm = at("L5", "Bürgermeisterin");
       tl.fromTo("#s04-t", { opacity: 0, y: -60 }, { opacity: 1, y: 0, duration: .4, ease: "back.out(2)" }, bm - .15);
-      tl.fromTo("#s04-n", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, bm + .35);""")
+      tl.fromTo("#s04-n", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, bm + .35);
+      const T0 = at("L5", "Herzlichen");
+      tl.fromTo("#s04-gl", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, T0 - .05);
+      tl.to("#s04-gl", { scale: 1.06, duration: .25, yoyo: true, repeat: 5, ease: "sine.inOut" }, T0 + .4);
+      """ + CONF_JS.replace("SEED", "31").replace("BOX", "s04-cfw"))
 
 # s05 – Verlosung Palast-Leitung: Spielautomat
 ROWS = "".join(f'<div class="s05-r{" s05-win" if i == WIN else ""}">@{n}</div>' for i, n in enumerate(NAMES))

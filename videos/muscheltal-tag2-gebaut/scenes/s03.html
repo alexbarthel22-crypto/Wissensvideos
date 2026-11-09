@@ -21,9 +21,9 @@
       /*__COMMON_JS__*/
       wrapBt("#s03-stage");
       const tl = gsap.timeline({ paused: true });
-      const sb = at("L4", "Strandbar"), na = at("L4", "nachts");
+      const sb = at("L4", "Strandbar"), na = at("L4b", "nachts"), zw = at("L4", "zwei");
       tl.fromTo("#s03-t", { opacity: 0, scale: .3, rotation: 10 }, { opacity: 1, scale: 1, rotation: 2, duration: .45, ease: "back.out(2.6)" }, sb - .15);
-      tl.fromTo(["#s03-n1", "#s03-n2"], { opacity: 0, x: 80 }, { opacity: 1, x: 0, duration: .3, ease: "back.out(2)", stagger: .2 }, sb + .5);
+      tl.fromTo(["#s03-n1", "#s03-n2"], { opacity: 0, x: 80 }, { opacity: 1, x: 0, duration: .3, ease: "back.out(2)", stagger: .2 }, zw - .3);
       tl.fromTo("#s03-p", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, na);
       tl.to("#s03-p", { rotation: 3, scale: 1.06, duration: .2, yoyo: true, repeat: 7, ease: "sine.inOut" }, na + .4);
       tl.to("#s03-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);

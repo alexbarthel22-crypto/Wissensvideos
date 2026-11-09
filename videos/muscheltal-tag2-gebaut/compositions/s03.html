@@ -54,8 +54,8 @@
     .s03-n { font-size: 40px; background: #fff; color: #0a8a90; }
     #s03-p { top: 640px; font-size: 52px; background: #7b3fe0; }
   </style>
-  <div id="root" data-composition-id="s03" data-start="0" data-duration="4.620" data-width="1080" data-height="1920">
-    <div id="s03-stage" class="clip stage" data-start="0" data-duration="4.620" data-track-index="0">
+  <div id="root" data-composition-id="s03" data-start="0" data-duration="6.280" data-width="1080" data-height="1920">
+    <div id="s03-stage" class="clip stage" data-start="0" data-duration="6.280" data-track-index="0">
       <div id="s03-t" class="pl">🍹 STRANDBAR</div>
       <div id="s03-n1" class="pl s03-n" style="top:430px">⭐ @paulepfpgfn</div>
       <div id="s03-n2" class="pl s03-n" style="top:520px">@khmr.496</div>
@@ -65,7 +65,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 4.62, "L4": [0.2, 4.44], "L4.words": [["und", 0.2, 0.423], ["die", 0.423, 0.645], ["strandbar", 0.645, 1.114], ["", 1.114, 1.313], ["mit", 1.313, 1.536], ["steg", 1.536, 1.766], ["weit", 1.766, 1.997], ["ins", 1.997, 2.219], ["meer", 2.219, 2.45], ["und", 2.91, 3.155], ["nachts", 3.155, 3.426], ["wird", 3.426, 3.679], ["hier", 3.679, 3.933], ["gefeiert", 3.933, 4.44]]};
+      const C = {"__dur": 6.28, "L4": [0.2, 3.99], "L4.words": [["und", 0.2, 0.419], ["die", 0.419, 0.637], ["strandbar", 0.637, 1.098], ["", 1.098, 1.293], ["mit", 1.293, 1.512], ["steg", 1.512, 1.738], ["weit", 1.738, 1.965], ["ins", 1.965, 2.184], ["meer", 2.184, 2.41], ["hier", 2.83, 3.0], ["arbeiten", 3.0, 3.486], ["zwei", 3.486, 3.656], ["von", 3.656, 3.82], ["euch", 3.82, 3.99]], "L4b": [4.51, 6.1], "L4b.words": [["und", 4.51, 4.764], ["nachts", 4.764, 5.046], ["wird", 5.046, 5.31], ["hier", 5.31, 5.573], ["gefeiert", 5.573, 6.1]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -109,9 +109,9 @@
 
       wrapBt("#s03-stage");
       const tl = gsap.timeline({ paused: true });
-      const sb = at("L4", "Strandbar"), na = at("L4", "nachts");
+      const sb = at("L4", "Strandbar"), na = at("L4b", "nachts"), zw = at("L4", "zwei");
       tl.fromTo("#s03-t", { opacity: 0, scale: .3, rotation: 10 }, { opacity: 1, scale: 1, rotation: 2, duration: .45, ease: "back.out(2.6)" }, sb - .15);
-      tl.fromTo(["#s03-n1", "#s03-n2"], { opacity: 0, x: 80 }, { opacity: 1, x: 0, duration: .3, ease: "back.out(2)", stagger: .2 }, sb + .5);
+      tl.fromTo(["#s03-n1", "#s03-n2"], { opacity: 0, x: 80 }, { opacity: 1, x: 0, duration: .3, ease: "back.out(2)", stagger: .2 }, zw - .3);
       tl.fromTo("#s03-p", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, na);
       tl.to("#s03-p", { rotation: 3, scale: 1.06, duration: .2, yoyo: true, repeat: 7, ease: "sine.inOut" }, na + .4);
       tl.to("#s03-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);

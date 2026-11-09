@@ -10,16 +10,16 @@ const mk=async zeit=>{const p=await b.newPage({viewport:{width:405,height:720},d
 const day=await mk('tag'),night=await mk('nacht');
 const G=await day.evaluate(()=>{const m=fitMain(),a=fitAll(),k=ISL[1];const g=n=>{const x=GEB.find(q=>q.typ===n);return{x:x.cx,y:x.cy}};
  const bau=BAU.map(q=>({x:q.cx,y:q.cy}));return{m,a,k:{x:k.x,y:k.y,R:k.R},d:g('doener'),s:g('strandbar'),v:g('villa'),mayor:{x:0,y:36*PAL_S+4},bau};});
-const zk=405/(2*(G.k.R+60)),nightA=at('L4','nachts')-.15,nightB=L.L5.start-.25;
-const K=[[0,G.m.x,G.m.y,G.m.z*.95],[L.L1.end-.2,G.d.x,G.d.y,2.2],
- [L.L2.start+.2,G.a.x,G.a.y,G.a.z*1.25],[at('L2','Kokos')-.1,G.k.x,G.k.y,zk*1.1],[L.L2.end+.1,G.k.x+20,G.k.y-10,zk*1.35],
- [L.L3.start+.25,G.d.x,G.d.y,4.6],[L.L3.end+.1,G.d.x+10,G.d.y+6,5.2],
- [L.L4.start+.3,G.s.x-50,G.s.y,3.4],[nightA,G.s.x-20,G.s.y,3.6],[L.L4.end+.1,G.s.x-25,G.s.y,3.9],
- [L.L5.start+.3,G.mayor.x,G.mayor.y+18,6.5],[L.L5.end,G.mayor.x,G.mayor.y+16,7.2],
+const zk=405/(2*(G.k.R+60)),nightA=at('L4b','nachts')-.15,nightB=L.L5.start-.25;
+const K=[[0,-260,-230,2.7],[L.L1.end,180,-250,2.7],
+ [L.L2.start+1.2,260,120,2.6],[at('L2','Kokos')-.2,G.k.x,G.k.y,zk*1.1],[L.L2.end+.1,G.k.x+30,G.k.y-20,2.4],
+ [L.L3.start+.25,G.d.x,G.d.y,4.6],[L.L3.end,G.d.x+10,G.d.y+6,5.0],[L.L3b.end+.1,G.d.x-120,G.d.y+60,2.6],
+ [L.L4.start+.3,G.s.x-50,G.s.y,3.4],[nightA,G.s.x-20,G.s.y,3.6],[L.L4b.end+.1,G.s.x-25,G.s.y,3.9],
+ [L.L5.start+.3,G.mayor.x,G.mayor.y+18,6.5],[at('L5','Herzlichen'),G.mayor.x,G.mayor.y+14,6.0],[L.L5.end,0,10,3.4],
  [L.L6.start+.4,0,0,2.6],[L.L7.start,0,-6,3.2],[L.L7.end,0,0,3.6],
  [L.L8.start+.3,G.v.x+28,G.v.y,4.0],[L.L8.end+.1,G.v.x+20,G.v.y,4.4],
  [at('L9','Hotel'),G.bau[0].x,G.bau[0].y,3.4],[at('L9','Anlegestelle'),G.bau[1].x,G.bau[1].y,3.0],[at('L9','Tierheim'),G.bau[2].x,G.bau[2].y,3.4],
- [L.L10.start+.4,G.m.x,G.m.y,G.m.z*1.1],[dur,G.a.x,G.a.y,G.a.z*1.15]];
+ [L.L10.start+.3,-200,120,2.7],[L.L10.end-.6,150,200,2.7],[dur,G.a.x,G.a.y,G.a.z*1.15]];
 const cam=t=>{let j=0;while(j<K.length-1&&K[j+1][0]<=t)j++;const a=K[j],b2=K[Math.min(j+1,K.length-1)];let k=b2[0]>a[0]?Math.max(0,Math.min(1,(t-a[0])/(b2[0]-a[0]))):1;k=k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2;
  return [a[1]+(b2[1]-a[1])*k,a[2]+(b2[2]-a[2])*k,Math.exp(Math.log(a[3])+(Math.log(b2[3])-Math.log(a[3]))*k)*(1+.012*Math.sin(t*.8))];};
 const shot=async(t,f)=>{const p=(t>=nightA&&t<nightB)?night:day;const c=cam(t);
