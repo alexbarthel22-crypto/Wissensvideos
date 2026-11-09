@@ -44,24 +44,29 @@
      "text": "*y:Einwohner für meine Insel *y:gesucht!",
      "speed": 1.1,
      "style": "Style: a young man who is absolutely euphoric and super excited, almost shouting with joy, like announcing the best news ever to his followers. Very energetic, big emotions, but natural German intonation.\nPace: fast.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-     "pause": 0.35
+     "pause": 0.05
     }
    ],
    "sfx": [
     {
      "name": "whoosh",
      "at": "s01+0.0",
-     "volume": 0.25
+     "volume": 0.35
+    },
+    {
+     "name": "impact-bass-1",
+     "at": "s01+0.9",
+     "volume": 0.6
     },
     {
      "name": "pop",
      "at": "L1:Haus",
-     "volume": 0.45
+     "volume": 0.35
     },
     {
      "name": "impact-bass-2",
      "at": "L2:gesucht",
-     "volume": 0.45
+     "volume": 0.4
     }
    ]
   },

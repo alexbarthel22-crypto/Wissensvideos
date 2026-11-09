@@ -62,30 +62,42 @@
       const lightG = new THREE.ShapeGeometry(archShape(.74, 1.24), 24), tunnelG = new THREE.BoxGeometry(1.02, 1.3, .8);
       const leafShape = new THREE.Shape(); leafShape.moveTo(0, 0); leafShape.bezierCurveTo(.5, .3, .62, 1.25, 0, 1.9); leafShape.bezierCurveTo(-.62, 1.25, -.5, .3, 0, 0);
       const leafG2 = new THREE.ExtrudeGeometry(leafShape, { depth: .05, bevelEnabled: true, bevelSize: .03, bevelThickness: .03, bevelSegments: 2, curveSegments: 20 });
-      const ribG = new THREE.BoxGeometry(.035, 1.6, .02), GREY = 0x9d9599, LIGHT = 0xfff0a0;
+      const ribG = new THREE.BoxGeometry(.035, 1.6, .02), GREY = 0x9d9599, LIGHT = 0xfff3a8;
+      const GLOWW = (() => { const c = document.createElement('canvas'); c.width = c.height = 128; const x = c.getContext('2d'); const gr = x.createRadialGradient(64, 64, 0, 64, 64, 64); gr.addColorStop(0, 'rgba(255,230,140,.95)'); gr.addColorStop(.4, 'rgba(255,200,90,.45)'); gr.addColorStop(1, 'rgba(255,170,60,0)'); x.fillStyle = gr; x.fillRect(0, 0, 128, 128); return new THREE.CanvasTexture(c); })();
+      const tropLeafS = new THREE.Shape(); tropLeafS.moveTo(0, 0); tropLeafS.bezierCurveTo(.42, .18, .5, .9, 0, 1.25); tropLeafS.bezierCurveTo(-.5, .9, -.42, .18, 0, 0);
+      const tropLeafG = new THREE.ExtrudeGeometry(tropLeafS, { depth: .015, bevelEnabled: true, bevelSize: .01, bevelThickness: .01, bevelSegments: 1, curveSegments: 16 }), stemG = new THREE.CylinderGeometry(.025, .035, 1, 6);
+      const petalG = new THREE.SphereGeometry(1, 10, 8);
+      function tropPlant(g, x, z, sc, seed, flowers) { const P = new THREE.Group(); P.position.set(x, 0, z); P.scale.setScalar(sc); g.add(P); const n = 7 + Math.floor(hash(seed, 1) * 3);
+        for (let k = 0; k < n; k++) { const a = k / n * TAU + hash(seed, k) * .5, tilt = .18 + hash(seed, k + 20) * .32, len = .7 + hash(seed, k + 40) * .55; const arm = new THREE.Group(); arm.rotation.y = a; P.add(arm);
+          const st = mesh(stemG, L(0x5f8f3a), 0, len / 2, 0); st.scale.y = len; const sp = new THREE.Group(); sp.rotation.x = tilt; arm.add(sp); sp.add(st);
+          const lf = mesh(tropLeafG, L(k % 3 ? 0x2f9a3f : 0x3fb34d), 0, len, 0); lf.rotation.x = .35 + hash(seed, k + 60) * .35; lf.scale.setScalar(.6 + hash(seed, k + 80) * .3); lf.castShadow = true; sp.add(lf);
+          lf.add(mesh(new THREE.BoxGeometry(.02, 1.1, .03), L(0x9fd36a), 0, .6, .03)); }
+        if (flowers) for (let k = 0; k < flowers; k++) { const fa = k / flowers * TAU + .3, F = new THREE.Group(); F.position.set(Math.cos(fa) * .35, .75 + hash(seed, k + 90) * .35, Math.sin(fa) * .35 + .15); F.lookAt(F.position.clone().add(new THREE.Vector3(Math.cos(fa) * .4, .6, 1))); P.add(F);
+          const pc = [0xe8262f, 0xff4f8b, 0xff7a1a][k % 3]; for (let q = 0; q < 5; q++) { const pt = mesh(petalG, L(pc), 0, 0, 0); pt.scale.set(.13, .055, .02); const pa = q / 5 * TAU; pt.position.set(Math.cos(pa) * .1, Math.sin(pa) * .1, 0); pt.rotation.z = pa; F.add(pt); }
+          F.add(mesh(new THREE.CylinderGeometry(.012, .012, .2, 5), L(0xffd23f), 0, 0, .08)).rotation.x = Math.PI / 2; } }
       const onEll = (c, rx, ry, rz, x, y) => { const k = 1 - (x / rx) ** 2 - ((y - c.y) / ry) ** 2; const z = c.z + rz * Math.sqrt(Math.max(.02, k)), p = V3(x, y, z); const n = V3(x / rx / rx, (y - c.y) / ry / ry, (z - c.z) / rz / rz).normalize(); return [p, n]; };
       const V3 = (x, y, z) => new THREE.Vector3(x, y, z);
       function makeHouse(x, z, i, name, special, rich) {
-        const g = new THREE.Group(); g.position.set(x, 0, z); const sm = new THREE.MeshLambertMaterial({ map: SHELL[i % 3] }), dmM = new THREE.MeshLambertMaterial({ map: DOME[i % 3] });
+        const g = new THREE.Group(); g.position.set(x, 0, z); const sm = new THREE.MeshStandardMaterial({ map: SHELL[i % 3], bumpMap: SHELL[i % 3], bumpScale: 6, roughness: .95, metalness: 0 }), dmM = new THREE.MeshStandardMaterial({ map: DOME[i % 3], bumpMap: DOME[i % 3], bumpScale: 4, roughness: .9 });
         const C0 = V3(0, 1.62, 0), shell = mesh(shellG, sm, C0.x, C0.y, C0.z); shell.castShadow = shell.receiveShadow = true; g.add(shell);
         for (const [px, py, r] of [[-.4, 2.68, .2], [.4, 2.68, .2], [0, 2.25, .16]]) { const n = V3(px, py - C0.y, Math.sqrt(1.75 ** 2 - px * px - (py - C0.y) ** 2)).normalize(), p = C0.clone().addScaledVector(n, 1.7);
           const po = mesh(poreG, L(0x15111a), p.x, p.y, p.z); po.scale.set(r, r, r * .45); po.lookAt(p.clone().add(n)); g.add(po); }
         const DC = V3(0, 1.0, .74), RX = 1.4, RY = 1.4 * .92, RZ = 1.4 * .72; const dome = mesh(domeG, dmM, DC.x, DC.y, DC.z); dome.scale.set(1, .92, .72); dome.castShadow = dome.receiveShadow = true; g.add(dome);
         const tun = mesh(tunnelG, dmM, 0, .65, 1.38); g.add(tun);
-        const fr = mesh(frameG, L(GREY), 0, 0, 1.66); fr.castShadow = true; g.add(fr); g.add(mesh(lightG, B(LIGHT), 0, 0, 1.79));
+        const fr = mesh(frameG, L(GREY), 0, 0, 1.66); fr.castShadow = true; g.add(fr); g.add(mesh(lightG, B(LIGHT), 0, 0, 1.79)); { const gl = new THREE.Sprite(new THREE.SpriteMaterial({ map: GLOWW, blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: .55 })); gl.scale.set(2.2, 2.6, 1); gl.position.set(0, .7, 1.95); g.add(gl); g.userData.glows = [gl]; }
         const wn = V3(.95, 1.55 - C0.y, Math.sqrt(1.75 ** 2 - .95 ** 2 - (1.55 - C0.y) ** 2)).normalize(), wp = C0.clone().addScaledVector(wn, 1.76), wr = mesh(new THREE.TorusGeometry(.29, .07, 12, 32), L(GREY), wp.x, wp.y, wp.z); wr.lookAt(wp.clone().add(wn)); g.add(wr);
-        const wl = mesh(new THREE.CircleGeometry(.25, 28), B(LIGHT), wp.x, wp.y, wp.z); wl.position.addScaledVector(wn, .01); wl.lookAt(wl.position.clone().add(wn)); g.add(wl);
+        const wl = mesh(new THREE.CircleGeometry(.25, 28), B(LIGHT), wp.x, wp.y, wp.z); wl.position.addScaledVector(wn, .01); wl.lookAt(wl.position.clone().add(wn)); g.add(wl); { const gw = new THREE.Sprite(new THREE.SpriteMaterial({ map: GLOWW, blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: .5 })); gw.scale.set(1.3, 1.3, 1); gw.position.copy(wp).addScaledVector(wn, .15); g.add(gw); g.userData.glows.push(gw); }
         const fm = L(0x9a7462), nf = rich ? 70 : 22;
         for (let k = 0; k < nf; k++) { const u = hash(i * 31 + k, 1) * 2 - 1, v = hash(i * 31 + k, 2), th = u * 1.3, ph = .15 + v * 1.2; const onDome = hash(i * 31 + k, 3) > .55;
           let p, n; if (onDome) { [p, n] = onEll(DC, RX, RY, RZ, Math.sin(th) * 1.1, .35 + v * 1.1); } else { n = V3(Math.sin(th) * Math.cos(ph - .6), Math.sin(ph - .2) * .9 + .2, Math.cos(th) * Math.cos(ph - .6)).normalize(); p = C0.clone().addScaledVector(n, 1.755); }
-          if (p.z < .2) continue; const f = mesh(fibG, fm, p.x, p.y, p.z); f.lookAt(p.clone().add(n)); f.rotateX(Math.PI / 2); f.rotateY(hash(k, 4) * 3); g.add(f); }
+          if (p.z < .2) continue; if (Math.abs(p.x) < .75 && p.y < 1.75) continue; if (p.distanceTo(wp) < .55) continue; const f = mesh(fibG, fm, p.x, p.y, p.z); f.lookAt(p.clone().add(n)); f.rotateX(Math.PI / 2); f.rotateY(hash(k, 4) * 3); g.add(f); }
         const lm = L(0x2f6a4c), rm = L(0x4a8f66);
         for (const [rz, ry] of [[.95, .25], [-.85, -.2]]) { const pv = new THREE.Group(); pv.position.set(0, 3.25, -.1); pv.rotation.set(-.35, ry, rz); const lf = mesh(leafG2, lm, 0, 0, -.03); lf.castShadow = true; pv.add(lf); pv.add(mesh(ribG, rm, 0, .9, .06)); g.add(pv); }
-        if (rich) { for (const sx of [-1, 1]) { const pot = mesh(new THREE.CylinderGeometry(.2, .15, .3, 16), L(0xc0603a), sx * .9, .15, 1.95); pot.castShadow = true; g.add(pot);
-            for (let k = 0; k < 5; k++) { const fl = mesh(new THREE.SphereGeometry(.09, 10, 8), L([0xff5a8a, 0xffd23f, 0xffffff, 0xff8a3a, 0xe8467c][k]), sx * .9 + (hash(k, sx + 3) - .5) * .3, .4 + hash(k, 5) * .12, 1.95 + (hash(k, 7) - .5) * .25); g.add(fl); } }
+        if (rich) { tropPlant(g, -1.05, 1.9, .85, 11, 4); tropPlant(g, 1.05, 1.9, .8, 12, 3); tropPlant(g, -2.15, 1.1, 1.15, 13, 0); tropPlant(g, 2.1, .9, .75, 14, 2);
           for (let k = 0; k < 4; k++) { const st = mesh(new THREE.CylinderGeometry(.28, .3, .06, 14), L(0xbdb6a6), (hash(k, 9) - .5) * .25, .03, 2.3 + k * .6); st.receiveShadow = true; g.add(st); }
           const mat = mesh(new THREE.BoxGeometry(.9, .03, .5), L(0xc65b4b), 0, .02, 1.95); g.add(mat);
           const lp = mesh(new THREE.CylinderGeometry(.05, .05, 1.6, 8), L(0x6b4426), -1.75, .8, 1.7); lp.castShadow = true; g.add(lp); g.add(mesh(new THREE.SphereGeometry(.17, 14, 10), B(0xffe08a), -1.75, 1.72, 1.7)); }
+        if (!rich && hash(i, 77) > .35) tropPlant(g, (hash(i, 78) > .5 ? 1 : -1) * 1.1, 1.85, .6, i + 200, hash(i, 79) > .5 ? 2 : 0);
         const sh = mesh(new THREE.CircleGeometry(2.4, 28), shadowM, .2, .015, .3); sh.rotation.x = -Math.PI / 2; g.add(sh);
         if (name) { const sg = makeSign("@" + name, special); sg.position.set(2.05, 0, 1.75); sg.rotation.y = -.25; g.add(sg); g.userData.sign = sg; }
         S.add(g); return g; }
@@ -164,13 +176,15 @@
       // Nachbarn-Szene: zwei Bewohner vor den Häusern
       const N1 = makePerson(2, null, null), N2 = makePerson(5, null, null);
 
+      const dustT = (() => { const c = document.createElement('canvas'); c.width = c.height = 128; const x = c.getContext('2d'); const gr = x.createRadialGradient(64, 64, 0, 64, 64, 64); gr.addColorStop(0, 'rgba(235,215,170,.9)'); gr.addColorStop(1, 'rgba(235,215,170,0)'); x.fillStyle = gr; x.fillRect(0, 0, 128, 128); return new THREE.CanvasTexture(c); })();
+      const DUST = []; for (let k = 0; k < 46; k++) { const d = new THREE.Sprite(new THREE.SpriteMaterial({ map: dustT, depthWrite: false, transparent: true, opacity: 0 })); d.userData = { a: hash(k, 50) * TAU, v: 2.2 + hash(k, 51) * 3.2, up: .4 + hash(k, 52) * 1.4, s: .9 + hash(k, 53) * 1.4 }; S.add(d); DUST.push(d); }
       // ---------- Zeit / Kamera ----------
       const s02 = C.s02[0], s03 = C.s03[0], s04 = C.s04[0], s05 = C.s05[0], END = C.__dur;
-      const T_HOUSE = line("L1")[1] + .35, T_SIGN = T_HOUSE + .45, T_BF = s04 + .3, T_HI = at("L5", "markier") - .25;
+      const T_FALL = .05, T_HOUSE = .9, T_SIGN = T_HOUSE + .5, T_BF = s04 + .3, T_HI = at("L5", "markier") - .25;
       const ease = (k) => k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2, cl = (v) => Math.max(0, Math.min(1, v));
       const lerp = (a, b, k) => a + (b - a) * k, V = (x, y, z) => new THREE.Vector3(x, y, z);
       function camShot(t) {
-        if (t < s02) { const k = ease(cl((t - T_HOUSE) / (s02 - T_HOUSE))), a = lerp(0, .38, k), r = lerp(12.5, 9.5, k);
+        if (t < s02) { const k = ease(cl((t - T_HOUSE - .4) / (s02 - T_HOUSE - .4))), a = lerp(0, .38, k), r = lerp(12.5, 9.5, k);
           return [V(Math.sin(a) * r, lerp(2.9, 2.5, k), Math.cos(a) * r), V(0, lerp(1.7, 1.6, k), 0)]; }
         if (t < s03) { const k = ease(cl((t - s02) / (s03 - s02))), x = lerp(-26, 1, k); return [V(x, 2.5, 11), V(x + 3, 1.3, 0)]; }
         if (t < s04) { const k = cl((t - s03) / (s04 - s03)), a = lerp(-.55, .7, ease(k)), r = lerp(13.5, 11.5, k); return [V(PZ.x + Math.sin(a) * r, lerp(5.2, 4.2, k), PZ.z + Math.cos(a) * r), V(PZ.x, .9, PZ.z)]; }
@@ -178,8 +192,11 @@
         const k = ease(cl((t - s05) / (END - s05))); return [V(2.5, lerp(3, 46, k), lerp(11, 42, k)), V(lerp(2.5, 0, k), 0, lerp(0, -20, k))]; }
       function draw(t) {
         // Häuser
-        const hk = cl((t - T_HOUSE) / .45), hs = hk <= 0 ? 0.0001 : (hk >= 1 ? 1 : 1 - Math.pow(1 - hk, 3) * Math.cos(hk * 9) * 1.0);
-        MY.scale.setScalar(Math.max(.0001, hs)); MY.visible = hk > 0; MY.userData.sign.visible = t >= T_SIGN; MY.userData.sign.scale.setScalar(t >= T_SIGN ? Math.min(1, .3 + (t - T_SIGN) * 4) : 1);
+        const ft = Math.max(0, t - T_FALL), H0 = 26, gA = 2 * H0 / Math.pow(T_HOUSE - T_FALL, 2), fy = Math.max(0, H0 - .5 * gA * ft * ft);
+        MY.position.y = fy; MY.visible = true; MY.rotation.y = fy > 0 ? (fy / H0) * .6 : 0;
+        const lk = t - T_HOUSE, sq = lk > 0 && lk < .5 ? Math.sin(lk / .5 * Math.PI * 2) * Math.exp(-lk * 6) * .22 : 0; MY.scale.set(1 + sq * .6, 1 - sq, 1 + sq * .6);
+        DUST.forEach((d) => { const u = d.userData, k = (t - T_HOUSE) / 1.6; if (k <= 0 || k >= 1) { d.material.opacity = 0; return; } const r = 1.9 + u.v * (1 - Math.pow(1 - k, 3)) * 1.1;
+          d.position.set(Math.cos(u.a) * r, .25 + u.up * Math.sin(Math.min(1, k * 2) * Math.PI / 2) * (1 - k * .4), Math.sin(u.a) * r); d.scale.setScalar(u.s * (1 + k * 2.2)); d.material.opacity = .75 * (1 - k); }); MY.userData.sign.visible = t >= T_SIGN; MY.userData.sign.scale.setScalar(t >= T_SIGN ? Math.min(1, .3 + (t - T_SIGN) * 4) : 1);
         BF.visible = t >= s04; const bk = cl((t - T_BF) / .45); BF.scale.setScalar(Math.max(.0001, bk >= 1 ? 1 : 1 - Math.pow(1 - bk, 3) * Math.cos(bk * 9)));
         // Palmen
         PALMS.forEach((p) => { p.userData.crown.rotation.z = Math.sin(t * 1.3 + p.userData.i) * .06; p.userData.crown.rotation.x = Math.cos(t * 1.1 + p.userData.i) * .04; });
@@ -197,7 +214,7 @@
           N1.rotation.y = Math.PI / 2; N2.rotation.y = -Math.PI / 2; pose(N1, t, k < 1 ? "walk" : "stand"); pose(N2, t, k < 1 ? "walk" : "stand");
           if (t >= T_HI) { const h = Math.min(1, (t - T_HI) / .15); N1.userData.arms[1].rotation.z = 0; N1.userData.arms[1].rotation.x = -2.6 * h; N2.userData.arms[0].rotation.x = -2.6 * h; } }
         foam.scale.setScalar(1 + Math.sin(t * 1.4) * .004);
-        const [p, l] = camShot(t); cam.position.copy(p); cam.lookAt(l); R.render(S, cam); }
+        const [p, l] = camShot(t); const sk = t > T_HOUSE && t < T_HOUSE + .35 ? (1 - (t - T_HOUSE) / .35) * .18 : 0; p.x += Math.sin(t * 90) * sk; p.y += Math.cos(t * 77) * sk; cam.position.copy(p); cam.lookAt(l); R.render(S, cam); }
       const tl = gsap.timeline({ paused: true }), o = { t: 0 };
       tl.to(o, { t: C.__dur, duration: C.__dur, ease: "none", onUpdate: () => draw(o.t) }, 0);
       tl.to([cv, document.querySelector(".w-root")], { opacity: 0, duration: .6, ease: "power1.inOut" }, C.s05[0] + 1.2);

@@ -137,21 +137,12 @@ scene("s01", LILITA + "\n    " + PILL + """
     .hk-w { display: inline-block; margin: 0 .08em; transform-origin: 50% 60%; position: relative; }
     #s01-stk { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 330px; color: #e8433c; border-color: #e8433c; background: #fff; transform: rotate(-5deg); font-size: 54px; white-space: nowrap; }
     #s01-fl { position: absolute; inset: 0; background: #fff; opacity: 0; }""",
-SVG + """
-      <div id="s01-pen" data-layout-ignore>✏️</div>
+"""
       <div id="s01-hk"><div class="hk-l"><span class="hk-w" id="hw0">DAS</span><span class="hk-w" id="hw1">KÖNNTE</span></div><div class="hk-l"><span class="hk-w" id="hw2">DEIN</span><span class="hk-w" id="hw3">HAUS</span></div><div class="hk-l"><span class="hk-w" id="hw4">SEIN!</span></div></div>
       <div id="s01-stk" class="stamp" data-layout-ignore>🔎 EINWOHNER GESUCHT!</div>
       <div id="s01-fl"></div>""",
-"""      const ps = [...document.querySelectorAll("#s01-lines path")], WT = """ + str(WTS) + """, sum = WT.reduce((a, b) => a + b, 0);
-      const T0 = .05, T1 = line("L1")[1] - .15, TH = line("L1")[1] + .35; let tt = T0;
-      const pen = document.getElementById("s01-pen");
-      ps.forEach((p, i) => { const len = p.getTotalLength(), d = (T1 - T0) * WT[i] / sum; p.style.strokeDasharray = len; p.style.strokeDashoffset = len;
-        const o = { v: 0 }; tl.to(o, { v: 1, duration: d, ease: "none", onUpdate: () => { p.style.strokeDashoffset = len * (1 - o.v); const pt = p.getPointAtLength(len * o.v); pen.style.transform = `translate(${pt.x - 8}px, ${pt.y - 102}px)`; } }, tt);
-        tt += d; });
-      tl.set(pen, { opacity: 1 }, 0); tl.to(pen, { opacity: 0, duration: .15 }, T1);
-      tl.fromTo("#s01-fill", { opacity: 0 }, { opacity: 1, duration: .35, ease: "power1.out", immediateRender: false }, T1);
-      tl.fromTo("#s01-fl", { opacity: 0 }, { opacity: .75, duration: .07, yoyo: true, repeat: 1, immediateRender: false }, TH - .02);
-      tl.to("#s01-svg", { opacity: 0, duration: .2 }, TH + .05);
+"""      const TH = .9;
+      tl.fromTo("#s01-fl", { opacity: 0 }, { opacity: .45, duration: .06, yoyo: true, repeat: 1, immediateRender: false }, TH);
       const hk = ["Das", "könnte", "dein", "Haus", "sein"];
       tl.set("#s01-hk", { opacity: 1 }, 0);
       hk.forEach((w, i) => { const t0 = Math.max(0, at("L1", w) - .03); tl.set("#hw" + i, { zIndex: 5 }, t0); tl.fromTo("#hw" + i, { scale: 1 }, { scale: .5, duration: .05, immediateRender: false }, t0); tl.to("#hw" + i, { scale: [2.2, 1.6, 2.4, 2.2, 2.2][i], duration: .13, ease: "power2.out" }, t0 + .05); tl.to("#hw" + i, { scale: 1, color: "#ffe14d", textShadow: "0 0 26px rgba(255,225,77,1), 0 0 8px rgba(255,255,200,1)", duration: .22, ease: "back.out(2.5)" }, t0 + .18); tl.to("#hw" + i, { textShadow: "0 0 0px rgba(255,225,77,0), 0 0 0px rgba(255,255,200,0)", duration: .5 }, t0 + .45); });
