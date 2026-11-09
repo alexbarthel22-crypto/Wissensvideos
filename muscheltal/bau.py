@@ -457,6 +457,11 @@ def baue(rows, out):
     berufe(sauber, insel, out)
     bauprojekte(sauber, insel, out)
     schnell(out)
+    # Hinweis: Nachbarn-Wünsche, sobald beide eingezogen sind (Karte setzt sie automatisch nebeneinander)
+    namen = {r[0].lower().lstrip("@") for r in sauber}
+    for paar in insel.get("nachbarn") or []:
+        da = [n for n in paar if n.lower().lstrip("@") in namen]
+        print(f"Nachbarn-Wunsch {' + '.join('@' + n for n in paar)}: " + ("beide da → wohnen nebeneinander" if len(da) == 2 else f"noch nicht beide Follower ({len(da)}/2)"))
     alt = os.path.join(out, "einwohner.json")
     if os.path.exists(alt):
         os.remove(alt)  # nicht mehr öffentlich (enthielt echte Inselnamen)

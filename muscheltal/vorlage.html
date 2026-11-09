@@ -389,6 +389,11 @@ for(const v of ISL){const ppl=PEOPLE.filter(p=>p.isl===v&&!p.wait&&!p.home);v.pe
  const need=ppl.length?Math.max(ppl.length,1+Math.max(...ppl.map(p=>p.slot??0))):0;
  v.plots=(v.open&&v.plaetze)?plaetze(v.plaetze,v.plaza,v.resv,v.i):(need?plaetze(need,v.plaza,v.resv,v.i):[]);v.keys=new Set(v.plots.map(pl=>pl.gx+','+pl.gy));
  const used=new Set();ppl.forEach((p,k)=>{let si=p.slot!=null&&p.slot<v.plots.length&&!used.has(p.slot)?p.slot:k;while(used.has(si))si++;used.add(si);p.hut=si+1;const pl=v.plots[si],h=hash(pl.gx+7+v.i*31,pl.gy-3);p.p={x:v.x+pl.x,y:v.y+pl.y,gx:pl.gx,gy:pl.gy};p.round=h<.28;p.wall=WALLS[(h*97|0)%4];p.roof=ROOFS[(h*631|0)%ROOFS.length];p.win=hash(pl.gx,pl.gy+11)<.55;v.cell.set(pl.gx+','+pl.gy,p);});
+ // Nachbarn-Wünsche (insel.json → nachbarn): sind beide eingezogen, wohnt der Spätere direkt neben dem Früheren (freie Nachbarhütte)
+ const setz=(p,si)=>{if(p.p)v.cell.delete(p.p.gx+','+p.p.gy);used.delete(p.hut-1);used.add(si);p.hut=si+1;const pl=v.plots[si],h=hash(pl.gx+7+v.i*31,pl.gy-3);p.p={x:v.x+pl.x,y:v.y+pl.y,gx:pl.gx,gy:pl.gy};p.round=h<.28;p.wall=WALLS[(h*97|0)%4];p.roof=ROOFS[(h*631|0)%ROOFS.length];p.win=hash(pl.gx,pl.gy+11)<.55;v.cell.set(pl.gx+','+pl.gy,p);};
+ const nb=(a,b)=>(a.gy===b.gy&&Math.abs(a.gx-b.gx)===1)||(a.gx===b.gx&&Math.abs(a.gy-b.gy)===1);
+ for(const pr of I.nachbarn||[]){const [A,B]=pr.map(n=>ppl.find(p=>p.name.toLowerCase()==='@'+n.toLowerCase().replace(/^@/,'')));if(!A||!B||!A.p||!B.p||nb(A.p,B.p))continue;
+  const [F,L]=A.nr<B.nr?[A,B]:[B,A];let done=false;for(const [X,Y] of[[F,L],[L,F]]){const i=v.plots.findIndex((pl,i)=>!used.has(i)&&nb(pl,X.p));if(i>=0){setz(Y,i);done=true;break;}}}
  v.free=v.plots.filter((pl,i)=>!used.has(i)).map(pl=>({x:v.x+pl.x,y:v.y+pl.y}));}
 for(const p of PEOPLE){const n=p.name.toLowerCase().replace(/^@/,''),b=(I.jobs||{})[n];if(b&&aktiv(b)){p.beruf=b[0]||'';p.ort=b[1]||'';}const vm=(I.vermoegen||{})[n];p.verm=vm!=null?vm:(I.vermoegen_start??0);}
 const PLACED=PEOPLE.filter(p=>p.p), WAIT=PEOPLE.filter(p=>p.wait);
