@@ -293,12 +293,29 @@ def word_times(words, duration, audio):
     chunks, cur = [], []
     for i, w in enumerate(words):
         cur.append(i)
-        if PUNCT_RE.search(w["display"]) and i < len(words) - 1:
+        if (PUNCT_RE.search(w["display"]) or w["display"] in ("–", "—", "-")) and i < len(words) - 1:
             chunks.append(cur)
             cur = []
     chunks.append(cur)
-    gaps = sorted(pauses(audio), key=lambda p: p[1] - p[0], reverse=True)[: len(chunks) - 1]
-    gaps = sorted(gaps)
+    cand = sorted(pauses(audio))
+    k = len(chunks) - 1
+    if 0 < k <= len(cand) and len(cand) <= 16:
+        # Pausen so wählen, dass die Abschnittslängen zu den Silben passen (lange Pausen bevorzugt)
+        from itertools import combinations
+        syl = [sum(syllables(words[i]["spoken"]) for i in c) for c in chunks]
+        tot = sum(syl) or 1
+        best, gaps = None, []
+        for comb in combinations(cand, k):
+            edges = [0.0] + [x for g in comb for x in g] + [duration]
+            durs = [edges[2 * j + 1] - edges[2 * j] for j in range(k + 1)]
+            if min(durs) <= 0:
+                continue
+            td = sum(durs)
+            cost = sum((d / td - s_ / tot) ** 2 for d, s_ in zip(durs, syl)) - 0.02 * sum(g[1] - g[0] for g in comb)
+            if best is None or cost < best:
+                best, gaps = cost, list(comb)
+    else:
+        gaps = sorted(sorted(cand, key=lambda p: p[1] - p[0], reverse=True)[:k])
     if len(gaps) == len(chunks) - 1:
         bounds, t = [], 0.0
         for g in gaps:
