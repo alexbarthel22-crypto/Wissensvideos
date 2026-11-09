@@ -1109,6 +1109,7 @@ function drawAcai(c,g,nl,z){const W=(g.x1-g.x0)/2,H=(g.y1-g.y0)/2,t=REDUCED?0:T,
  c.fillStyle='#a8743c';c.beginPath();c.ellipse(-3.4,kc-.3,2.4,.9,0,0,TAU);c.fill();c.fillStyle='#ffd23f';c.beginPath();c.ellipse(-4.2,kc-1.2,1.3,.45,-.4,0,TAU);c.ellipse(-3.2,kc-1.5,1.3,.45,-.2,0,TAU);c.fill();c.fillStyle='#e8433c';c.beginPath();c.arc(-2.2,kc-1,.5,0,TAU);c.fill();c.fillStyle='#ff9a3c';c.beginPath();c.arc(-3,kc-.8,.55,0,TAU);c.fill();
  c.fillStyle='#d9e6ee';c.fillRect(3.4,kc-3.4,1.6,2.6);c.fillStyle='#b58ad0';c.fillRect(3.5,kc-2.2,1.4,1.4);c.fillStyle='#4a4a55';c.fillRect(3.1,kc-.8,2.2,.8);
  c.fillStyle='#ff6fa3';c.beginPath();const hx=8.4,hy=kc+2.2;c.moveTo(hx,hy+1);c.bezierCurveTo(hx-1.8,hy-.2,hx-.9,hy-1.6,hx,hy-.6);c.bezierCurveTo(hx+.9,hy-1.6,hx+1.8,hy-.2,hx,hy+1);c.fill();
+ offenNeon(c,13.5,-22.5);
  // Lichterkette an der Markise
  for(let k=0;k<10;k++){const x=kx0+1+k*(kx1-kx0-2)/9,y=ky0+7.2+Math.sin(k/9*Math.PI)*1.2;const on=.55+.45*Math.sin(t*2.5+k);c.fillStyle=day?'#fff3c4':`rgba(255,${200+k*5},150,${.6+.4*on})`;c.beginPath();c.arc(x,y,.45,0,TAU);c.fill();}
  // links: Obstkisten, Kokosnüsse, Monstera im Topf; vorne: Kreide-Aufsteller
@@ -1184,13 +1185,16 @@ function drawWerk(c,g,nl,z){c.scale(g.dir||1,1);// drawGeb spiegelt Küstenbaute
  {const lx=34,ly=19;c.fillStyle='#3fa0e8';c.beginPath();c.roundRect(lx-1,ly-5,2,5,.5);c.fill();c.fillStyle='#fff';c.fillRect(lx-.7,ly-4.4,1.4,1);c.fillStyle='#3fa0e8';c.font='900 .6px '+FONT;c.textAlign='center';c.fillText('LUFT',lx,ly-3.6);c.strokeStyle='#2a2a2a';c.lineWidth=.2;c.beginPath();c.moveTo(lx+1,ly-2);c.quadraticCurveTo(lx+2.6,ly,lx+1.4,ly+.6);c.stroke();}
  // Blumenkübel + Hinweisschild „OFFEN“ am Tor
  for(const [x,y] of[[-29,-2.4],[13.4,-2.4]]){c.fillStyle='#8a8a94';c.fillRect(x-1.2,y,2.4,1.8);c.fillStyle='#3f9b45';c.beginPath();c.arc(x,y-.4,1.2,0,TAU);c.fill();c.fillStyle='#ffd23f';c.beginPath();c.arc(x+.4,y-.9,.35,0,TAU);c.fill();}
- c.fillStyle='#fff';c.beginPath();c.roundRect(-1.2,-9,4,1.6,.3);c.fill();c.fillStyle='#2e9e5b';c.font='900 .9px '+FONT;c.textAlign='center';c.fillText('OFFEN',.8,-7.9);
+ offenNeon(c,-14.3,-24);
  // Werkstatt-Team (Leitung) an der Hebebühne
  const team=PEOPLE.filter(p=>p.ort===g.name&&p.p);
  if(z*S>8)team.forEach((p,k)=>{const x=k?6:-4.6,y=6,L=p.LW||(p.LW={...look(p.k),shirt:'#2f5f9f',pants:'#1d3a66'});c.save();c.translate(x,y);c.scale(-1,1);person(c,L,0,false,.3+Math.abs(Math.sin(t*4+k))*.9);c.scale(L.h,L.h);c.fillStyle='#e8433c';c.beginPath();c.arc(0,-4.8,1.55,Math.PI,0);c.fill();c.fillRect(-2.2,-4.9,1.6,.35);
   c.strokeStyle='#c9d1d9';c.lineWidth=.35;c.beginPath();c.moveTo(-2.4,-3.6);c.lineTo(-3.6,-4.4);c.stroke();c.fillStyle='#fff';c.fillRect(-.5,-1.6,1,.35);c.restore();TAPS.push([g.cx+x,g.cy+y,p]);if(z*S>40&&sel!==p)NAMES.push([(p.beruf==='Leitung'?'⭐ ':'')+p.name,g.cx+x,g.cy+y-12,'#2f5f9f']);});
  }
 // Ladenschilder (oben auf den Gebäuden) – nach den Figuren nochmal darüber gezeichnet: wer hinter einem Schild läuft, ist verdeckt
+function offenNeon(c,x,y,g){const on=Math.sin(T*2.4)>-.6;c.fillStyle=on?'#ff3d7f':'#7a3a4a';c.beginPath();c.roundRect(x,y,8.6,4,1);c.fill();c.strokeStyle='#2a1b12';c.lineWidth=.25;c.beginPath();c.moveTo(x+1.5,y-1.4);c.lineTo(x+2.1,y);c.moveTo(x+7.1,y-1.4);c.lineTo(x+6.5,y);c.stroke();gTxt(c,g||{},'OFFEN',x+4.3,y+2.8,2.6,on?'#fff':'#d8b8c0');}
+// Position des OFFEN-Schilds je Laden (lokal) – nicht über Namen oder Wegen
+const OFFEN_POS={doener:[.5,-18.6],acai:[13.5,-22.5],werkstatt:[-14.3,-24],strandbar:null};
 function gebSign(c,g){const ink='#2a1b12';
  if(g.typ==='doener'){c.strokeStyle=ink;c.lineWidth=.7;c.fillStyle='#ffd23f';c.beginPath();c.roundRect(-25,-33,26,9,2);c.fill();c.stroke();gTxt(c,{},'DÖNER',-12,-26.4,6.2,'#c0392b',null,23);}
  else if(g.typ==='werkstatt'){c.fillStyle='#ffd23f';c.strokeStyle=ink;c.lineWidth=.5;c.beginPath();c.roundRect(-25,-37,38,10,1.6);c.fill();c.stroke();c.strokeStyle='#5a646e';c.lineWidth=1;c.lineCap='round';c.beginPath();c.moveTo(-22.6,-29.6);c.lineTo(-18.8,-34);c.stroke();c.beginPath();c.arc(-18.3,-34.5,1.1,0,TAU);c.stroke();c.fillStyle='#ffd23f';c.beginPath();c.arc(-17.8,-35,.55,0,TAU);c.fill();
@@ -1226,7 +1230,7 @@ function drawGeb(c,g,nl,z){const ink='#2a1b12';c.save();c.translate(g.cx,g.cy);
   c.strokeStyle='#c46a2a';c.lineWidth=.7;for(let k=-1;k<6;k++){const y=-15+((k*2+sp)%12);c.beginPath();c.moveTo(-17.5+(y+15)*.11,y);c.lineTo(-12.5-(y+15)*.11,y+.6);c.stroke();}
   c.fillStyle='#ffb04a';c.fillRect(-20,-14,1,8);c.restore();
   // OFFEN-Neon
-  const on=Math.sin(T*2.4)>-.6;c.fillStyle=on?'#ff3d7f':'#7a3a4a';c.beginPath();c.roundRect(.5,-18.6,8.6,4,1);c.fill();c.strokeStyle='#2a1b12';c.lineWidth=.25;c.beginPath();c.moveTo(2,-20);c.lineTo(2.6,-18.6);c.moveTo(7.6,-20);c.lineTo(7,-18.6);c.stroke();gTxt(c,{},'OFFEN',4.8,-15.8,2.6,on?'#fff':'#d8b8c0');
+  offenNeon(c,.5,-18.6);
   // Markise
   for(let k=0;k<8;k++){c.fillStyle=k%2?'#fff':'#e8433c';c.beginPath();c.moveTo(-27+k*4.6,-4);c.lineTo(-27+(k+1)*4.6,-4);c.lineTo(-27+(k+1)*4.6,-1);c.quadraticCurveTo(-27+(k+.5)*4.6,1.2,-27+k*4.6,-1);c.closePath();c.fill();}
   crew(c,g,z,1);
@@ -1275,7 +1279,7 @@ function drawGeb(c,g,nl,z){const ink='#2a1b12';c.save();c.translate(g.cx,g.cy);
    const bx=sx-30;c.fillStyle='rgba(40,30,10,.25)';c.beginPath();c.ellipse(bx+sxh(16)*(g.dir||1),4+syh(16),15,7,0,0,TAU);c.fill();
    c.fillStyle='#d9a066';c.fillRect(bx-12,-9,24,13);c.strokeStyle='rgba(120,70,30,.5)';c.lineWidth=.4;c.beginPath();for(let x=bx-12;x<bx+12;x+=2){c.moveTo(x,-9);c.lineTo(x,4);}c.stroke();
    c.fillStyle='#e8c25a';c.beginPath();c.moveTo(bx-17,-7);c.lineTo(bx,-20);c.lineTo(bx+17,-7);for(let k=17;k>=-17;k-=2.4)c.lineTo(bx+k,-7+(Math.round(k/2.4)%2?1.6:0));c.closePath();c.fill();c.strokeStyle='#a8832d';c.lineWidth=.45;c.beginPath();for(let k=-14;k<=14;k+=3.5){c.moveTo(bx,-19);c.lineTo(bx+k,-7);}c.stroke();
-   crew(c,g,z,g.dir);
+   crew(c,g,z,g.dir);offenNeon(c,bx-23.5,-17,g);
    // Theke mit Cocktails + Hocker
    c.fillStyle='#7a4a24';c.fillRect(bx-13,3,26,4);c.fillStyle='#f4e3c0';c.fillRect(bx-13,3,26,1.1);
    for(let k=0;k<4;k++){const x=bx-10+k*6.5,cc=['#ff8a4c','#ff6fa3','#4fd0e0','#ffd23f'][k];c.fillStyle='rgba(255,255,255,.7)';c.beginPath();c.moveTo(x-1.3,.2);c.lineTo(x+1.3,.2);c.lineTo(x+.6,2.9);c.lineTo(x-.6,2.9);c.closePath();c.fill();c.fillStyle=cc;c.beginPath();c.moveTo(x-1.1,.8);c.lineTo(x+1.1,.8);c.lineTo(x+.55,2.7);c.lineTo(x-.55,2.7);c.closePath();c.fill();c.strokeStyle=k%2?'#e8433c':'#2fb3a0';c.lineWidth=.35;c.beginPath();c.moveTo(x+.5,.8);c.lineTo(x+1.4,-1.6);c.stroke();c.fillStyle=k%2?'#ffd23f':'#ff6fa3';c.beginPath();c.moveTo(x+.6,-1.4);c.arc(x+1.4,-1.6,1.4,Math.PI,TAU);c.closePath();c.fill();}
@@ -1574,6 +1578,7 @@ function draw(){
     for(let k=0;k<4;k++)glow(X(bx-11+k*7.3),Y(-6.6),4,['255,120,180','255,220,100','100,240,220','255,160,90'][k],.8*nl);for(const [lx,ly] of[[sx+11,-14.8],[sx+11,13.2],[sx+31,-2.8]])glow(X(lx),Y(ly),5,'255,200,110',.7*nl);glow(X(W-13),Y(-1),9,`${(T*80|0)%2?'255,60,160':'60,200,255'}`,.55*nl);for(let x=sx+6;x<W-2;x+=8)for(const yy of[-26.6,26.6])glow(X(x),Y(yy),2.2,'255,225,160',.55*nl);}}
   for(const g of GEB)if(g.typ==='werkstatt'&&visR(g.cx,g.cy,60)){const x=g.cx,y=g.cy;glow(x-11,y-11,20,'220,235,255',.5*nl);glow(x-10,y+2,10,'255,230,170',.45*nl);glow(x+9.5,y-16.5,6,'255,220,140',.6*nl);glow(x-6,y-30,14,'255,220,90',.35*nl);}
   {const v=ISL[1];if(v&&v.open&&visR(v.x,v.y,v.plaza))for(let k=0;k<6;k++){const a=k/6*TAU+.25;glow(v.x+Math.cos(a)*68*KOKX,v.y+Math.sin(a)*68*.92-7.5,7,'255,160,60',.75*nl*(.85+.15*Math.sin(T*11+k)));}}
+  for(const g of GEB){if(!visR(g.cx,g.cy,80))continue;const on=Math.sin(T*2.4)>-.6?1:.3,d=g.dir||1;let p2=null;if(g.typ==='acai')p2=[g.cx+17.8,g.cy-20.5];else if(g.typ==='werkstatt')p2=[g.cx-10,g.cy-22];else if(g.typ==='strandbar'){const sx=(g.sea-g.cx)*d;p2=[g.cx+(sx-30-19.2)*d,g.cy-15];}if(p2)glow(p2[0],p2[1],5,'255,90,140',.6*nl*on);}
   // Açaí-Stand nachts: warmes, gemütliches Licht (Kiosk, Lichterketten, Teelichter)
   for(const g of GEB)if(g.typ==='acai'&&visR(g.cx,g.cy,60)){const x=g.cx,y=g.cy;glow(x-6,y-14,22,'255,190,120',.55*nl);glow(x-6,y-3,14,'255,170,200',.3*nl);for(let k=0;k<10;k++)glow(x-23+k*3.8,y-16.8+Math.sin(k/9*Math.PI)*1.2,2.4,'255,225,150',.8*nl);for(const [tx,ty] of[[24.4,-9.5],[24.4,6.5]])glow(x+tx,y+ty,6,'255,200,110',.75*nl*(.85+.15*Math.sin(T*7+tx)));for(const [x0,y0,x1,y1] of[[12,-18,23,-13],[12,-18,23,3]])for(let k=1;k<6;k++){const u=k/6;glow(x+x0+(x1-x0)*u,y+y0+(y1-y0)*u+6*u*(1-u)+.4,2,'255,225,160',.6*nl);}}
   if(z*S>4)for(const v of ISL)for(const [lx,ly] of v.lamps||[]){if(!vis(lx,ly))continue;glow(lx,ly-11.4,18,'255,205,110',.75*nl);c.fillStyle=`rgba(255,240,180,${nl})`;c.beginPath();c.arc(lx,ly-11.4,1.1,0,TAU);c.fill();}
