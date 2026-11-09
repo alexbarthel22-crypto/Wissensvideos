@@ -1,0 +1,177 @@
+{
+ "title": "Muschel-Tal – Einwohner gesucht (3D Kokos-Küste)",
+ "voice": "Gemini TTS (gemini-3.1-flash-tts-preview, Stimme Achird), natürlich und emotional, --speed 1.12",
+ "notes": "30 s Reichweiten-Video: 3D-Ansicht Kokos-Küste, Haus wird gezeichnet, jeder Follower = eigene Hütte mit Namen, Bewohner laufen/interagieren, Aufruf folgen.",
+ "lead_in": 0.0,
+ "bg": "#0a5a92",
+ "captions": {
+  "pop": true,
+  "first_at_zero": true,
+  "left": 60,
+  "right": 190,
+  "size": 92,
+  "bars": true,
+  "color": "rgba(255,255,255,.62)",
+  "css": "@font-face { font-family: 'Lilita One'; src: url('assets/fonts/LilitaOne-Regular.woff2') format('woff2'); font-weight: 400; }\n    .inner.hook { font-family: 'Lilita One', sans-serif; font-weight: 400; font-size: 98px; line-height: 1.12; letter-spacing: .01em; top: -560px; }\n    .inner.hook .bar { background: #ff3d7f !important; padding: .02em .3em .08em; border-radius: .5em; }\n    .inner.hook .w { color: #fff; }\n    .inner .bar .w { margin: 0 .07em; }\n    .inner .bar { border-radius: .55em; padding: .04em .36em .1em; }\n    .inner .w { white-space: nowrap; }\n    .inner.hook .w { display: inline-block; transform-origin: 50% 70%; }\n    .inner.hook .bar { background: none !important; box-shadow: none !important; padding: 0; }\n    .inner.hook .w { background: #ff3d7f; border-radius: .3em; padding: .02em .16em .1em; margin: .07em .03em; box-shadow: 0 0 0 0px #2a1b12, 0 8px 0 rgba(0,0,0,.28); position: relative; transform-origin: 50% 55%; }\n    .inner.hook .w.k-y { position: relative; z-index: 2; }\n    #cgi1.inner.hook, #cgi2.inner.hook { top: 0; }\n    .inner.hook { left: 40px; right: 40px; }\n    #cgi1 .w, #cgi2 .w { margin: .1em .12em; }\n    .inner.hook { display: none !important; }",
+  "vary": true,
+  "pop_scale": 1.2,
+  "bar_colors": [
+   "#e8467c",
+   "#ff6a1a",
+   "#7b3fe0",
+   "#e8433c",
+   "#2e9e5b",
+   "#d4469c"
+  ],
+  "merge_first": 2,
+  "hook_groups": 2,
+  "first_full": true,
+  "first_class": "hook"
+ },
+ "scenes": [
+  {
+   "id": "s01",
+   "tag": "",
+   "lines": [
+    {
+     "id": "L1",
+     "text": "*y:Einwohner für meine Insel *y:gesucht!",
+     "speed": 1.0,
+     "style": "Style: a young man announcing something exciting to new viewers, energetic, warm and inviting, natural German intonation.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
+    },
+    {
+     "id": "L2",
+     "text": "Das könnte *y:dein *y:Haus sein!",
+     "speed": 1.0,
+     "style": "Style: a young man announcing something exciting to new viewers, energetic, warm and inviting, natural German intonation.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+     "pause": 0.5
+    }
+   ],
+   "sfx": [
+    {
+     "name": "whoosh",
+     "at": "s01+0.0",
+     "volume": 0.3
+    },
+    {
+     "name": "impact-bass-2",
+     "at": "L1:gesucht",
+     "volume": 0.45
+    },
+    {
+     "name": "pop",
+     "at": "L2:Haus",
+     "volume": 0.45
+    }
+   ]
+  },
+  {
+   "id": "s02",
+   "tag": "",
+   "lines": [
+    {
+     "id": "L3",
+     "text": "Jeder Follower bekommt / eine *g:eigene *g:Hütte – / mit *y:seinem *y:Namen drauf!",
+     "speed": 1.0,
+     "style": "Style: a young man, excited and warm, telling viewers about his island, natural German intonation.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+     "pause": 2.8
+    }
+   ],
+   "sfx": [
+    {
+     "name": "whoosh-short",
+     "at": "s02+0.0",
+     "volume": 0.3
+    },
+    {
+     "name": "ka-ching",
+     "at": "L3:Namen",
+     "volume": 0.4
+    }
+   ]
+  },
+  {
+   "id": "s03",
+   "tag": "",
+   "lines": [
+    {
+     "id": "L4",
+     "text": "Viele sind *g:heute schon eingezogen. / Am *y:Lagerfeuer / treffen sich die *b:Nachbarn!",
+     "speed": 1.0,
+     "style": "Style: a young man, excited and warm, telling viewers about his island, natural German intonation.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+     "pause": 2.6
+    }
+   ],
+   "sfx": [
+    {
+     "name": "whoosh-short",
+     "at": "s03+0.0",
+     "volume": 0.3
+    }
+   ]
+  },
+  {
+   "id": "s04",
+   "tag": "",
+   "lines": [
+    {
+     "id": "L5",
+     "text": "Und wer soll *p:neben *p:dir wohnen? / *y:Markier ihn in den Kommentaren!",
+     "speed": 1.0,
+     "style": "Style: a young man, excited and warm, telling viewers about his island, natural German intonation.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+     "pause": 3.0
+    }
+   ],
+   "sfx": [
+    {
+     "name": "whoosh-short",
+     "at": "s04+0.0",
+     "volume": 0.3
+    },
+    {
+     "name": "notification",
+     "at": "L5:Markier",
+     "volume": 0.35
+    }
+   ]
+  },
+  {
+   "id": "s05",
+   "tag": "",
+   "hold": 3.0999999999999996,
+   "lines": [
+    {
+     "id": "L6",
+     "text": "Folg mir – / und *g:zieh noch *g:heute *g:ein!",
+     "speed": 1.0,
+     "style": "Style: a young man announcing something exciting to new viewers, energetic, warm and inviting, natural German intonation.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+     "pause": 1.8
+    }
+   ],
+   "sfx": [
+    {
+     "name": "click",
+     "at": "L6:Folg",
+     "volume": 0.5
+    },
+    {
+     "name": "ka-ching",
+     "at": "L6:ein",
+     "volume": 0.4
+    }
+   ]
+  }
+ ],
+ "style": "Style: a real, natural-sounding young man telling his friends something he is genuinely excited about. Conversational, warm, honest emotion in the voice, not like an announcer or an advertisement. Emphasize the important words naturally.\nPace: brisk but natural.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+ "loudness": -11,
+ "pitch": 0,
+ "music": {
+  "src": "assets/music/suedsee.wav",
+  "volume": 1,
+  "note": "tools/make_music_tropical.py, im Code erzeugt (lizenzfrei), unter der Stimme automatisch leiser"
+ },
+ "ambience": {
+  "src": "assets/music/atmo.wav",
+  "volume": 1
+ }
+}

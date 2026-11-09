@@ -425,12 +425,13 @@ def build_index(project, script, windows, lines, total, world=False):
         k += 1
         audio.append(f'      <audio id="fx{k}" class="clip" src="assets/sfx/{fname}" data-start="{max(0, t):.3f}" data-duration="{dur}" '
                      f'data-track-index="{10 + k}" data-volume="{vol}"></audio>')
+    THREE_TAG = '\n    <script src="assets/vendor/three.min.js"></script>' if (project / "assets" / "vendor" / "three.min.js").exists() else ""
     doc = f"""<!doctype html>
 <html lang="de" data-resolution="portrait">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width={W}, height={H}" />
-    <script src="assets/vendor/gsap.min.js"></script>
+    <script src="assets/vendor/gsap.min.js"></script>{THREE_TAG}
     <style>
       * {{ margin: 0; padding: 0; box-sizing: border-box; }}
       html, body {{ margin: 0; width: {W}px; height: {H}px; overflow: hidden; background: #0c0f22; }}
