@@ -1,0 +1,31 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+.pl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 28px 12px; border-radius: 999px; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); white-space: nowrap; }
+    #s06-t { top: 300px; font-size: 58px; background: #18b8c0; }
+    #s06-n { top: 420px; font-size: 44px; background: #e8467c; }
+    #s06-z { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 530px; color: #e8433c; border-color: #e8433c; transform: rotate(-4deg); font-size: 56px; white-space: nowrap; background: #fff; }
+  </style>
+  <div id="root" data-composition-id="s06" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s06-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s06-t" class="pl">🏖️ STRANDVILLA</div>
+      <div id="s06-n" class="pl">🎬 Nächstes Video: Verlosung</div>
+      <div id="s06-z" class="stamp">2 GEWINNER 🎁</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      /*__COMMON_JS__*/
+      wrapBt("#s06-stage");
+      const tl = gsap.timeline({ paused: true });
+      const sv = at("L8", "Strandvilla"), zw = at("L8", "zwei");
+      tl.fromTo("#s06-n", { opacity: 0, y: -40 }, { opacity: 1, y: 0, duration: .35, ease: "back.out(2)" }, .05);
+      tl.fromTo("#s06-t", { opacity: 0, scale: .3, rotation: -8 }, { opacity: 1, scale: 1, rotation: -2, duration: .45, ease: "back.out(2.6)" }, sv - .15);
+      tl.fromTo("#s06-z", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, zw - .05);
+      tl.to("#s06-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
+      window.__timelines["s06"] = tl;
+    })();
+  </script>
+</template>

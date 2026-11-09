@@ -1,0 +1,47 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+.pl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 28px 12px; border-radius: 999px; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); white-space: nowrap; }
+    .s07-c { position: absolute; left: 110px; width: 860px; height: 124px; border-radius: 30px; background: #fff; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.3);
+      display: flex; align-items: center; gap: 20px; padding: 0 28px; font-family: "Inter", sans-serif; color: #23285a; }
+    .s07-c .e { font-size: 70px; } .s07-c .m { flex: 1; } .s07-c b { font-size: 40px; font-weight: 900; display: block; }
+    .s07-c .bar { height: 22px; border-radius: 11px; background: #e3e6f0; margin-top: 8px; overflow: hidden; } .s07-c .bar i { display: block; height: 100%; width: 0; background: #ff6a1a; border-radius: 11px; }
+    .s07-c .z { font-size: 34px; font-weight: 900; color: #ff6a1a; }
+    .fbtn { position: absolute; left: 0; right: 0; margin: 0 auto; top: 330px; width: 420px; height: 120px; border-radius: 60px; background: #fe2c55; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 56px; display: grid; place-items: center; box-shadow: 0 0 0 5px #2a1b12, 0 12px 0 rgba(0,0,0,.25); }
+    .fbtn2 { position: absolute; inset: 0; border-radius: 60px; background: #fff; color: #0a78c2; display: grid; place-items: center; opacity: 0; }
+    #s07-hand { position: absolute; left: 690px; top: 380px; font-size: 120px; }
+    #s07-m { top: 500px; font-size: 44px; background: #e8467c; }
+  </style>
+  <div id="root" data-composition-id="s07" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s07-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+<div class="s07-c" id="s07-c0" style="top:290px"><div class="e">🏨</div><div class="m"><b>Hotel Sandkorn</b><div class="bar"><i id="s07-b0"></i></div></div><div class="z">653/800</div></div><div class="s07-c" id="s07-c1" style="top:440px"><div class="e">⚓</div><div class="m"><b>Anlegestelle</b><div class="bar"><i id="s07-b1"></i></div></div><div class="z">653/900</div></div><div class="s07-c" id="s07-c2" style="top:590px"><div class="e">🐾</div><div class="m"><b>Tierheim</b><div class="bar"><i id="s07-b2"></i></div></div><div class="z">653/1.000</div></div>
+      <div id="s07-btn" class="fbtn">+ Folgen<div id="s07-btn2" class="fbtn2">✓ Gefolgt</div></div>
+      <div id="s07-hand" data-layout-ignore>👆</div>
+      <div id="s07-m" class="pl">👯 Freunde markieren!</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      /*__COMMON_JS__*/
+      wrapBt("#s07-stage");
+      const tl = gsap.timeline({ paused: true });
+      const ws = [at("L9", "Hotel"), at("L9", "Anlegestelle"), at("L9", "Tierheim")], pc = [653 / 800, 653 / 900, 653 / 1000], l10 = line("L10")[0], fo = at("L10", "folgen"), fr = at("L10", "Freunde");
+      ws.forEach((w, i) => { tl.fromTo("#s07-c" + i, { opacity: 0, x: i % 2 ? 120 : -120 }, { opacity: 1, x: 0, duration: .3, ease: "back.out(2)" }, w - .15);
+        tl.fromTo("#s07-b" + i, { width: "0%" }, { width: (pc[i] * 100).toFixed(1) + "%", duration: .7, ease: "power2.out" }, w + .1); });
+      tl.to([".s07-c"], { opacity: 0, y: -30, duration: .25, stagger: .05 }, l10 + .9);
+      tl.fromTo("#s07-btn", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, fo - .8);
+      tl.fromTo("#s07-hand", { opacity: 0, x: 160, y: 160 }, { opacity: 1, x: 0, y: 0, duration: .3, ease: "power3.out" }, fo - .4);
+      tl.to("#s07-hand", { y: -26, scale: .9, duration: .1, yoyo: true, repeat: 1 }, fo - .05);
+      tl.to("#s07-btn2", { opacity: 1, duration: .05 }, fo + .05);
+      tl.fromTo("#s07-btn", { scale: 1 }, { scale: 1.15, duration: .12, yoyo: true, repeat: 1 }, fo + .05);
+      tl.to("#s07-hand", { opacity: 0, duration: .25 }, fo + .6);
+      tl.fromTo("#s07-m", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, fr - .15);
+      tl.to("#s07-m", { scale: 1.06, duration: .25, yoyo: true, repeat: 5, ease: "sine.inOut" }, fr + .4);
+      
+      window.__timelines["s07"] = tl;
+    })();
+  </script>
+</template>

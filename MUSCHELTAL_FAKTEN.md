@@ -35,7 +35,7 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - Döner-Gäste sitzen an den Tischen rechts neben der Bude bzw. stehen vor der Theke – nie im Laden.
 - Am Wegrand wachsen kleine Blumen passend zur Insel (Haupt-Insel: rosa/weiße Muschelblumen, Kokos-Küste: Frangipani). Keine Blumen mehr an den Dächern der Hütten.
 - Knopf „Als @name Muschel-Tal erkunden“ erscheint nur, wenn oben ein Name ausgewählt ist.
-- **Bürgermeisterin: @lillygyqcf0** (Beruf „Bürgermeisterin · Muschelpalast“). **Palast-Leitung folgt** (noch nicht vergeben).
+- **Bürgermeisterin: @lillygyqcf0** (Beruf „Bürgermeisterin · Muschelpalast“). **Palast-Leitung: @prvt.lott1** (Einwohner Nr. 152, Haupt-Insel) – am 9.11. im Video Tag 2 per Spielautomat ausgelost (Zufall unter allen Einwohnern ohne Amt/Job), **1 Woche**, wohnt mit im Muschelpalast. ⚠️ Homepage: Beruf „Palast-Leitung · Muschelpalast“, Wohnort Muschelpalast, News-Eintrag.
 - Wer in einem Gebäude wohnt, hat keine Hütte mehr; dafür rücken die Nächsten nach Einwohner-Nr. auf die Haupt-Insel nach (am 8.11.: 5 Bewohner der Kokos-Küste sind auf die Haupt-Insel umgezogen). Die Haupt-Insel hat damit 500 Hütten + 5 Bewohner in Gebäuden = 505 Einwohner.
 - Dönerbude: tagsüber sitzen 6–9 Gäste an Tischen/der Theke und essen Döner, nachts 2–4; Gäste kommen und gehen. Strandbar: tagsüber 7–10 Gäste an Bar und Steg (Cocktails, Gespräche), nachts 10–14 bei einer Party mit bunten Lichtern.
 - **Hütten-Nr.** (Platz auf der Insel) ist nicht dasselbe wie die **Einwohner-Nr.** (Folge-Reihenfolge).
@@ -113,6 +113,12 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 
 ## Story-Bild „Umzug um 22:00“ (8.11., `videos/muscheltal-story-6/muscheltal-story-umzug.jpg`)
 - Aussage: **Heute um 22:00 ist Umzug** – wer bis 22:00 Uhr folgt, zieht **ab morgen in eine freie Hütte auf der Kokos-Küste** (Hintergrund: Kokos-Küste nachts, Lagerfeuer-Platz). Homepage muss die neuen Follower also bis morgen (9.11.) zeigen.
+
+## Video Tag 2 „Gebaut + Verlosung“ (9.11., `videos/muscheltal-tag2-gebaut/renders/muscheltal-tag2-gebaut.mp4`, ca. 42 s)
+- 653 Bewohner (+78), Kokos-Küste 148 · Dönerbude (⭐ @lotta.fsthff, @alana_wbr, @em1lia.brn) + Strandbar (⭐ @paulepfpgfn, @khmr.496, nachts Party) gebaut · Bürgermeisterin @lillygyqcf0 im Palast.
+- **Palast-Leitung ausgelost: @prvt.lott1** (1 Woche im Palast).
+- **Ankündigung: Im nächsten Video wird die Strandvilla unter allen Followern an 2 Personen verlost** (Homepage: Schild „bald verlost“ passt; danach 2 Bewohner in der Villa).
+- Baustellen genannt: Hotel (800), Anlegestelle (900), Tierheim (1.000) – „Überraschung bei 1.000“ aus Tag 1 wird nicht erwähnt.
 
 ## Gepostete Videos (Hauptaccount)
 - **Video 1 (gepostet): „Ich habe euch eine Insel gekauft“** – `videos/muscheltal-tag-1/variante-insel-gekauft/video.mp4` (Stand Commit 69ffe74).

@@ -1,0 +1,57 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+.pl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 28px 12px; border-radius: 999px; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); white-space: nowrap; }
+    #s01-c { position: absolute; left: 0; right: 0; margin: 0 auto; top: 300px; width: fit-content; padding: 6px 40px 12px; border-radius: 40px; background: #fff; border: 7px solid #ff6a1a;
+      font-family: "Inter", sans-serif; color: #0a78c2; font-weight: 900; font-size: 44px; display: flex; flex-direction: column; align-items: center; line-height: 1; box-shadow: 0 12px 0 rgba(0,40,80,.3); }
+    #s01-c b { font-size: 130px; color: #ff6a1a; line-height: 1; }
+    #s01-p { top: 300px; left: 760px; right: auto; margin: 0; font-size: 46px; background: #2e9e5b; transform: rotate(8deg); }
+    #s01-k { top: 560px; font-size: 46px; background: #18b8c0; }
+  </style>
+  <div id="root" data-composition-id="s01" data-start="0" data-duration="8.150" data-width="1080" data-height="1920">
+    <div id="s01-stage" class="clip stage" data-start="0" data-duration="8.150" data-track-index="0">
+      <div id="s01-c"><b id="s01-n">575</b>BEWOHNER</div>
+      <div id="s01-p" class="pl">+78</div>
+      <div id="s01-k" class="pl">🥥 Kokos-Küste: 148</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      
+      const C = {"__dur": 8.15, "L1": [0.0, 2.82], "L1.words": [["tag", 0.0, 0.343], ["2", 0.343, 0.65], ["ihr", 0.89, 1.052], ["habt", 1.052, 1.219], ["abgestimmt", 1.219, 1.711], ["", 1.711, 1.855], ["und", 1.855, 2.017], ["das", 2.017, 2.179], ["wurde", 2.179, 2.496], ["gebaut", 2.496, 2.82]], "L2": [3.04, 7.97], "L2.words": [["schon", 3.04, 3.23], ["653", 3.23, 4.344], ["bewohner", 4.344, 4.87], ["auf", 5.39, 5.561], ["der", 5.561, 5.732], ["kokosküste", 5.732, 6.402], ["wohnen", 6.402, 6.744], ["jetzt", 6.744, 6.927], ["148", 6.927, 7.97]]};
+      const line = (id) => C[id];
+      const at = (id, word, which = 0) => {
+        const ws = C[id + ".words"];
+        if (typeof word === "number") return ws[word][1 + which];
+        const key = String(word).toLowerCase().replace(/[^\p{L}\p{N}_]/gu, "");
+        const hit = ws.find((w) => w[0].startsWith(key));
+        if (!hit) throw new Error("cue not found: " + id + " " + word);
+        return hit[1 + which];
+      };
+      // Zähler: schreibt Zahlen im deutschen Format (4.100.000.000) als Funktion der Timeline-Zeit
+      const fmt = (n) => Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      const count = (tl, sel, from, to, t, d, pre = "", post = "", ease = "power2.out") => {
+        const el = document.querySelector(sel);
+        const o = { v: from };
+        el.textContent = pre + fmt(from) + post;
+        tl.to(o, { v: to, duration: d, ease, onUpdate: () => { el.textContent = pre + fmt(o.v) + post; } }, t);
+      };
+      // deterministischer Zufall
+      const rng = (seed) => () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let x = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+        x = (x + Math.imul(x ^ (x >>> 7), 61 | x)) ^ x; return ((x ^ (x >>> 14)) >>> 0) / 4294967296; };
+
+      /*__COMMON_JS__*/
+      wrapBt("#s01-stage");
+      const tl = gsap.timeline({ paused: true });
+      const l2 = line("L2")[0], be = at("L2", "653"), ko = at("L2", "Kokos");
+      tl.fromTo("#s01-c", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, l2 - .1);
+      count(tl, "#s01-n", 575, 653, l2 + .1, be - l2 + .3);
+      tl.fromTo("#s01-c", { scale: 1 }, { scale: 1.15, duration: .15, yoyo: true, repeat: 3, ease: "sine.inOut" }, be + .4);
+      tl.fromTo("#s01-p", { opacity: 0, scale: 2.2 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, be + .45);
+      tl.fromTo("#s01-k", { opacity: 0, y: -40 }, { opacity: 1, y: 0, duration: .35, ease: "back.out(2)" }, ko - .1);
+      tl.to("#s01-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
+      window.__timelines["s01"] = tl;
+    })();
+  </script>
+</template>

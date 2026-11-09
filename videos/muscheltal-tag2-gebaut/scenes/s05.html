@@ -1,0 +1,56 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+.pl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 28px 12px; border-radius: 999px; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); white-space: nowrap; }
+    .cf { position: absolute; left: 530px; top: 660px; width: 20px; height: 30px; border-radius: 4px; }
+    #s05-dim { position: absolute; inset: 0; background: rgba(10,12,40,.55); }
+    #s05-t { top: 300px; font-size: 50px; background: #ff6a1a; }
+    #s05-box { position: absolute; left: 110px; top: 450px; width: 860px; height: 390px; border-radius: 40px; background: #fff; overflow: hidden;
+      box-shadow: 0 0 0 8px #2a1b12, 0 0 0 16px #ffc93c, 0 0 0 22px #2a1b12, 0 22px 0 rgba(0,0,0,.35); }
+    #s05-band { position: absolute; left: 0; right: 0; top: 130px; height: 130px; background: #fff3c4; border-top: 5px solid #ffc93c; border-bottom: 5px solid #ffc93c; }
+    #s05-col { position: absolute; left: 0; right: 0; top: 0; }
+    .s05-r { height: 130px; display: grid; place-items: center; font-family: "Inter", sans-serif; font-weight: 900; font-size: 64px; color: #23285a; white-space: nowrap; }
+    #s05-shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,0) 30%, rgba(255,255,255,0) 70%, rgba(255,255,255,.95)); }
+    .s05-arr { position: absolute; top: 605px; font-size: 80px; color: #ffc93c; -webkit-text-stroke: 4px #2a1b12; }
+    #s05-st { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 890px; color: #e8433c; border-color: #e8433c; transform: rotate(-5deg); font-size: 64px; white-space: nowrap; background: #fff; }
+  </style>
+  <div id="root" data-composition-id="s05" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s05-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s05-dim"></div>
+      <div id="s05-t" class="pl">👑 VERLOSUNG: PALAST-LEITUNG</div>
+      <div id="s05-box"><div id="s05-band"></div><div id="s05-col"><div class="s05-r">@frau_hops</div><div class="s05-r">@ilvana.esn45</div><div class="s05-r s05-win">@prvt.lott1</div><div class="s05-r">@evelinka2508</div><div class="s05-r">@emely.xy</div><div class="s05-r">@annalena4013</div><div class="s05-r">@jan.kieler47</div><div class="s05-r">@marcibasic</div><div class="s05-r">@kacper_bin_ich</div><div class="s05-r">@nicoo.4102</div><div class="s05-r">@leaaa2405</div><div class="s05-r">@amelie.xx512</div><div class="s05-r">@did_33333</div><div class="s05-r">@anto.hsse</div><div class="s05-r">@karakan27koray</div><div class="s05-r">@hannah_zsc</div><div class="s05-r">@maya_ks13</div><div class="s05-r">@notyours2322</div><div class="s05-r">@insa.t_sp</div><div class="s05-r">@.28o6</div><div class="s05-r">@hllr.marie</div><div class="s05-r">@yuris.river</div><div class="s05-r">@chiara.k300</div><div class="s05-r">@pauline__45</div><div class="s05-r">@j4sm1niiiii</div><div class="s05-r">@noncharl0nt16</div><div class="s05-r">@maestronewyork</div><div class="s05-r">@leona644</div><div class="s05-r">@fabi.1796</div><div class="s05-r">@lauu.rx</div><div class="s05-r">@lisa2011.13</div><div class="s05-r">@mxlan084</div><div class="s05-r">@pepefechner</div><div class="s05-r">@el1naa_13</div><div class="s05-r">@user.drtmd</div><div class="s05-r">@sophieee_nrb</div><div class="s05-r">@sawalalo3</div><div class="s05-r">@amii.lrv5</div><div class="s05-r">@chiara.l563</div><div class="s05-r">@hana_hro18109</div><div class="s05-r">@wael.cgn1</div><div class="s05-r">@annikakkinge</div><div class="s05-r">@alexne91</div><div class="s05-r">@omniwatt1043</div></div><div id="s05-shade"></div></div>
+      <div class="s05-arr" style="left:30px">▶</div><div class="s05-arr" style="left:985px">◀</div>
+      <div id="s05-cfw"></div>
+      <div id="s05-st" class="stamp">👑 PALAST-LEITUNG!</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      /*__COMMON_JS__*/
+      wrapBt("#s05-stage");
+      const tl = gsap.timeline({ paused: true });
+      const s0 = at("L6", "Palast-Leitung") + .7, T0 = line("L7")[0] - .45, H = 130, NR = 44, W = 2;
+      tl.fromTo("#s05-dim", { opacity: 0 }, { opacity: 1, duration: .4 }, line("L6")[0]);
+      tl.fromTo("#s05-t", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .4, ease: "back.out(2.6)" }, line("L6")[0] + .1);
+      tl.fromTo(["#s05-box", ".s05-arr"], { opacity: 0, scale: .5 }, { opacity: 1, scale: 1, duration: .4, ease: "back.out(2)" }, at("L6", "Wer") - .2);
+      tl.set("#s05-col", { y: -(NR - 3) * H }, 0);
+      tl.fromTo("#s05-col", { y: -(NR - 3) * H }, { y: -(W - 1) * H, duration: T0 - s0, ease: "power3.out", immediateRender: false }, s0);
+      tl.fromTo("#s05-col", { filter: "blur(5px)" }, { filter: "blur(0px)", duration: (T0 - s0) * .8, ease: "power2.in", immediateRender: false }, s0);
+      tl.to(".s05-arr", { x: (i) => i ? -14 : 14, duration: .15, yoyo: true, repeat: 13, ease: "sine.inOut" }, s0);
+      tl.to(".s05-win", { color: "#e8433c", scale: 1.18, duration: .2, ease: "back.out(3)" }, T0);
+      tl.to(".s05-win", { scale: 1.08, duration: .25, yoyo: true, repeat: 7, ease: "sine.inOut" }, T0 + .25);
+      tl.to("#s05-band", { backgroundColor: "#ffd23f", duration: .15, yoyo: true, repeat: 9 }, T0);
+      tl.fromTo("#s05-st", { opacity: 0, scale: 2.6 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, T0 + .25);
+      const R = rng(21), box = document.getElementById("s05-cfw"), cols = ["#ffd23f", "#e8467c", "#2fb3a0", "#fff", "#7b4fe0", "#ff7a59"];
+      for (let k = 0; k < 60; k++) { const d = document.createElement("div"); d.className = "cf"; d.style.background = cols[k % cols.length]; box.appendChild(d);
+        const a = R() * Math.PI * 2, v = 380 + R() * 560, dx = Math.cos(a) * v, dy = Math.sin(a) * v * .8 - 300;
+        tl.fromTo(d, { opacity: 0, x: 0, y: 0, rotation: 0, scale: .6 }, { opacity: 1, x: dx * .7, y: dy * .7, rotation: (R() - .5) * 720, scale: 1, duration: .45, ease: "power3.out" }, T0);
+        tl.to(d, { x: dx, y: dy + 700, rotation: "+=" + Math.round((R() - .5) * 540), opacity: 0, duration: 1.4, ease: "power1.in" }, T0 + .45); }
+      tl.to("#s05-t", { opacity: 0, duration: .2 }, T0);
+      
+      window.__timelines["s05"] = tl;
+    })();
+  </script>
+</template>

@@ -1,0 +1,50 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+.pl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 28px 12px; border-radius: 999px; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); white-space: nowrap; }
+    #s04-t { top: 300px; font-size: 56px; background: #7b3fe0; }
+    #s04-n { top: 410px; font-size: 46px; background: #fff; color: #7b3fe0; }
+  </style>
+  <div id="root" data-composition-id="s04" data-start="0" data-duration="2.580" data-width="1080" data-height="1920">
+    <div id="s04-stage" class="clip stage" data-start="0" data-duration="2.580" data-track-index="0">
+      <div id="s04-t" class="pl">🎖️ BÜRGERMEISTERIN</div>
+      <div id="s04-n" class="pl">@lillygyqcf0</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      
+      const C = {"__dur": 2.58, "L5": [0.2, 2.4], "L5.words": [["unsere", 0.2, 0.623], ["bürgermeisterin", 0.623, 1.355], ["wohnt", 1.355, 1.512], ["schon", 1.512, 1.668], ["im", 1.668, 1.81], ["muschelpalast", 1.81, 2.4]]};
+      const line = (id) => C[id];
+      const at = (id, word, which = 0) => {
+        const ws = C[id + ".words"];
+        if (typeof word === "number") return ws[word][1 + which];
+        const key = String(word).toLowerCase().replace(/[^\p{L}\p{N}_]/gu, "");
+        const hit = ws.find((w) => w[0].startsWith(key));
+        if (!hit) throw new Error("cue not found: " + id + " " + word);
+        return hit[1 + which];
+      };
+      // Zähler: schreibt Zahlen im deutschen Format (4.100.000.000) als Funktion der Timeline-Zeit
+      const fmt = (n) => Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      const count = (tl, sel, from, to, t, d, pre = "", post = "", ease = "power2.out") => {
+        const el = document.querySelector(sel);
+        const o = { v: from };
+        el.textContent = pre + fmt(from) + post;
+        tl.to(o, { v: to, duration: d, ease, onUpdate: () => { el.textContent = pre + fmt(o.v) + post; } }, t);
+      };
+      // deterministischer Zufall
+      const rng = (seed) => () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let x = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+        x = (x + Math.imul(x ^ (x >>> 7), 61 | x)) ^ x; return ((x ^ (x >>> 14)) >>> 0) / 4294967296; };
+
+      /*__COMMON_JS__*/
+      wrapBt("#s04-stage");
+      const tl = gsap.timeline({ paused: true });
+      const bm = at("L5", "Bürgermeisterin");
+      tl.fromTo("#s04-t", { opacity: 0, y: -60 }, { opacity: 1, y: 0, duration: .4, ease: "back.out(2)" }, bm - .15);
+      tl.fromTo("#s04-n", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, bm + .35);
+      tl.to("#s04-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
+      window.__timelines["s04"] = tl;
+    })();
+  </script>
+</template>
