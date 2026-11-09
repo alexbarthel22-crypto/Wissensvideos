@@ -493,6 +493,15 @@ for(const v of ISL){Object.assign(v,{palms:[],bush:[],flow:[],grass:[],reef:[],r
  v.beach=[];if(v.open)for(let i=0;i<v.R/9;i++){const a=hash(i,21+v.i)*TAU,d=coastAt(v,a)+4+hash(i,22)*5;const [x,y]=polar(v,a,d);if(inPlot(v,x,y,8))continue;v.beach.push({x,y,t:(hash(i,23)*6)|0,a,c:['#ff8a4c','#ff6fa3','#ffd23f','#b48cff','#4fc3dc'][i%5]});}
  if(v.tier===1)for(let k=0;k<5;k++){const a=k/5*TAU+.3;v.palms.push({x:v.x+Math.cos(a)*30,y:v.y+Math.sin(a)*26,ph:k,s:1.5});}}
 const SPARK=[];for(let i=0;i<520;i++)SPARK.push({x:BOX.x0+hash(i,11)*(BOX.x1-BOX.x0),y:BOX.y0+hash(i,12)*(BOX.y1-BOX.y0),ph:hash(i,13)*TAU,sp:1+hash(i,14)*2});
+// Segelboote fahren nur auf freiem Wasser: nie über Inseln, Stege, Strandbar, Villa oder Baustellen
+function boatBlocked(x,y){for(const v of ISL)if(inside(v,x,y,-34))return true;for(const g of GEB)if(x>g.x0-22&&x<g.x1+22&&y>g.y0-22&&y<g.y1+22)return true;
+ for(const b of BAU){if(b.inr){const dx=x-b.ox,dy=y-b.oy,ca=Math.cos(b.ang),sa=Math.sin(b.ang),u=dx*ca+dy*sa,v2=-dx*sa+dy*ca;if(u>-30&&u<b.len+40&&Math.abs(v2)<b.w+24)return true;}else if(x>b.x0-22&&x<b.x1+22&&y>b.y0-22&&y<b.y1+22)return true;}
+ for(const [px,py] of[PIER0,PIER1])if(Math.hypot(x-px,y-py)<45)return true;if(PJ&&Math.hypot(x-BB[0],y-BB[1])<70)return true;return false;}
+function boatRoute(b){const n=360;for(let r=b.r;r<b.r+400;r+=12){const ok=[];for(let i=0;i<n;i++){const a=i/n*TAU;let f=true;for(const dr of[-10,0,10]){const [x,y]=polar(MAIN,a,r+dr);if(boatBlocked(x,y)){f=false;break;}}ok.push(f);}
+  const st=ok.indexOf(false);if(st<0){b.seg={a0:0,a1:TAU,r,loop:true};return;}
+  let best=null;for(let i=0;i<n;){if(ok[(st+i)%n]){let k=i;while(k<n&&ok[(st+k)%n])k++;const a0=((st+i)%n)/n*TAU+.04,a1=a0+(k-i)/n*TAU-.08;if(!best||a1-a0>best.a1-best.a0)best={a0,a1,r,loop:false};i=k;}else i++;}
+  if(best&&(best.a1-best.a0)*r>500){b.seg=best;return;}}
+ b.seg={a0:0,a1:.01,r:b.r+400,loop:false};}
 const BOATS=[0,1,2,3].map(i=>({ph:i*1.7+.4,r:MAIN.R+80+i*38,sp:(i%2?1:-1)*(0.018+i*0.004),c:['#fff','#ffd23f','#e8467c','#fff'][i]}));
 const CLOUDS=[...Array(12)].map((_,i)=>({x:BOX.x0+hash(i,20)*(BOX.x1-BOX.x0),y:BOX.y0+hash(i,21)*(BOX.y1-BOX.y0),s:1+hash(i,22)*1.6,sp:5+hash(i,23)*6}));
 const BIRDS=[0,1,2].map(i=>({ph:hash(i,30)*TAU,r:MAIN.R*.5+i*80,sp:.09+i*.02}));
@@ -1211,7 +1220,8 @@ function draw(){
  // Steg, Fähre, Boote
  {const [px,py]=PIER1;const fo=BAU.some(b=>b.steg)?30:12;boat(c,px+Math.cos(PIER_A+1.57)*fo,py+Math.sin(PIER_A+1.57)*fo,PIER_A,WAIT.length?'#ffd23f':'#fff',true,WAIT.length?1.6:1);
   if(WAIT.length){const n=Math.min(WAIT.length,14);for(let k=0;k<n;k++){const t=.25+k/n*.7,x=PIER0[0]+(PIER1[0]-PIER0[0])*t+(k%2?2:-2),y=PIER0[1]+(PIER1[1]-PIER0[1])*t;c.fillStyle=ROOFS[k%ROOFS.length];c.beginPath();c.arc(x,y-2,1.6,0,TAU);c.fill();c.fillStyle='#f3c9a0';c.beginPath();c.arc(x,y-4.4,1.1,0,TAU);c.fill();}}}
- for(const b of BOATS){const a=b.ph+T*b.sp*(nl>.5?.4:1);const [x,y]=polar(MAIN,a,b.r+Math.sin(T*.3+b.ph)*10);if(!vis(x,y))continue;sailboat(c,x,y,-Math.sin(a)*b.sp>=0?1:-1,b.c,b.ph);}
+ for(const b of BOATS){if(!b.seg)boatRoute(b);const sg=b.seg,A=sg.a1-sg.a0,u0=b.ph/TAU+T*Math.abs(b.sp)*(nl>.5?.4:1)/(sg.loop?TAU:2*A);let a,fw;if(sg.loop){a=sg.a0+((u0%1)+1)%1*A;fw=1;}else{const u=((u0%1)+1)%1;fw=u<.5?1:-1;a=sg.a0+(u<.5?u*2:2-u*2)*A;}if(b.sp<0&&sg.loop){a=sg.a1-(a-sg.a0);fw=-1;}
+  const [x,y]=polar(MAIN,a,sg.r+Math.sin(T*.3+b.ph)*6);if(!vis(x,y))continue;sailboat(c,x,y,-Math.sin(a)*fw>=0?1:-1,b.c,b.ph);}
  if(!GROWV&&visR(XM.x,XM.y,XM.r*2))xmFog(c);
  c.setTransform(1,0,0,1,0,0);
  const dim={clear:0,fair:.03,clouds:.12,fog:.06,rain:.2,snow:.08,storm:.3}[K]*(1-nl*.5);if(dim>0){c.fillStyle=`rgba(40,55,75,${dim})`;c.fillRect(0,0,cv.width,cv.height);}

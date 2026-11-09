@@ -31,7 +31,7 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - Gäste von Dönerbude/Strandbar kommen von ihrer Hütte, gehen im normalen Tempo vorwärts über die Wege und gehen danach wieder nach Hause. Nachts feiern an der Strandbar ca. 12–18 Gäste auf dem Steg und am nahen Strand.
 - Zusätzlich laufen tagsüber 8–12 und nachts 5–8 Passanten frei umher (biegen zufällig ab, bleiben stehen, drehen um).
 - **Jogger** im Sport-Outfit (Shirt in Neonfarbe, kurze Hose, Stirnband, weiße Schuhe) laufen außen am Strand hin und her: tagsüber 4–6, abends/nachts 2–4.
-- Auf dem Meer fahren kleine **Segelboote** (Großsegel, Fock, Wimpel). Sonnenschirme stehen schräg.
+- Auf dem Meer fahren kleine **Segelboote** (Großsegel, Fock, Wimpel). Sie fahren nur auf freiem Wasser – nie über Inseln, Stege, Strandbar, Villa oder Baustellen (wo der Weg versperrt ist, wenden sie). Sonnenschirme stehen schräg.
 - Döner-Gäste sitzen an den Tischen rechts neben der Bude bzw. stehen vor der Theke – nie im Laden. Die zwei Mitarbeiter stehen links und rechts vom Drehspieß (Spieß ganz sichtbar); das blinkende „OFFEN“-Schild hängt oben rechts an der Bude.
 - Der runde Platz in der Mitte der Kokos-Küste ist so breit, dass er die Wege links und rechts nicht überdeckt.
 - Am Wegrand wachsen kleine Blumen passend zur Insel (Haupt-Insel: rosa/weiße Muschelblumen, Kokos-Küste: Frangipani). Keine Blumen mehr an den Dächern der Hütten.
