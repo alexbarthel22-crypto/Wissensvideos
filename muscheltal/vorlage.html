@@ -412,7 +412,7 @@ function palPts(){if(PALPTS)return PALPTS;PALPTS=[];for(let r=48;r<MAIN.plaza-14
 function palWalk(p){const P=palPts();let w=PALW[p.name];if(!w){const i=(hash(p.nr,801)*P.length)|0;w=PALW[p.name]={x:P[i][0],y:P[i][1],t:null,pause:1+hash(p.nr,802)*3,last:T,dir:1,vert:false,n:0};}
  let dt=T-w.last;w.last=T;if(!(dt>0)||dt>.3)dt=.033;if(w.pause>0){w.pause-=dt;return w;}
  if(!w.t){for(let k=0;k<12;k++){const c2=P[(hash(p.nr*31+w.n++,803)*P.length)|0],d=Math.hypot(c2[0]-w.x,c2[1]-w.y);if(d<12||d>70)continue;let ok=true;for(let u=.04;u<1;u+=.04)if(!canWalk(w.x+(c2[0]-w.x)*u,w.y+(c2[1]-w.y)*u)){ok=false;break;}if(ok){w.t=c2;break;}}if(!w.t){w.pause=1;return w;}}
- const dx=w.t[0]-w.x,dy=w.t[1]-w.y,d=Math.hypot(dx,dy),sp=4.2*dt;w.vert=Math.abs(dy)>Math.abs(dx);w.dir=w.vert?(dy>0?1:-1):(dx>=0?1:-1);if(d<=sp){w.x=w.t[0];w.y=w.t[1];w.t=null;w.pause=2+hash(p.nr,w.n)*4;}else{w.x+=dx/d*sp;w.y+=dy/d*sp;}return w;}
+ const dx=w.t[0]-w.x,dy=w.t[1]-w.y,d=Math.hypot(dx,dy),sp=GV*dt;w.vert=Math.abs(dy)>Math.abs(dx);w.dir=w.vert?(dy>0?1:-1):(dx>=0?1:-1);if(d<=sp){w.x=w.t[0];w.y=w.t[1];w.t=null;w.pause=2+hash(p.nr,w.n)*4;}else{w.x+=dx/d*sp;w.y+=dy/d*sp;}return w;}
 const palX=p=>isMayor(p)?0:(12+8*(PEOPLE.filter(q=>q.ort==='Muschelpalast'&&!isMayor(q)).indexOf(p)))*PAL_S;
 const ACAI_X=[-6,-13,1,-19];// Plätze des Açaí-Teams hinter der Theke
 const GEBNAM=new Set((I.gebaeude||[]).map(g=>g.name)),atWork=p=>!!p&&!p.home&&!!p.ort&&GEBNAM.has(p.ort);
@@ -1230,7 +1230,7 @@ function jogInit(){JOG.list=[];if(!ROAM.init)roamInit();const busy=new Set([...W
   for(let i=0;i<n;){if(ok[(st+i)%n]){let k=i;while(k<n&&ok[(st+k)%n])k++;const a0=((st+i)%n)/n*TAU,da=(k-i)/n*TAU;if(da*v.R>120)segs.push({v,a0,a1:a0+da});i=k;}else i++;}}
  segs.sort((a,b)=>(b.a1-b.a0)*b.v.R-(a.a1-a.a0)*a.v.R);const use=segs.slice(0,4);if(!use.length)return;
  for(let i=0;i<6;i++){const sg=use[i%use.length],pool=FREE.filter(q=>q.isl===sg.v&&!busy.has(q));if(!pool.length)continue;const q=pool[(hash(i,601)*pool.length)|0];busy.add(q);
-  JOG.list.push({q,sg,sp:8.5+hash(i,602)*2.5,ph:hash(i,603),i,L:{...look(q.k),sport:1,shirt:['#ff3d7f','#2fe0a0','#ffd23f','#3fa0e8','#ff8a2a','#b48cff'][i%6],pants:['#1d1d2a','#2a2a3a','#0a3a6a'][i%3],band:['#fff','#ff3d7f','#ffd23f','#2fe0a0'][i%4]}});}}
+  JOG.list.push({q,sg,sp:9.5,ph:hash(i,603),i,L:{...look(q.k),sport:1,shirt:['#ff3d7f','#2fe0a0','#ffd23f','#3fa0e8','#ff8a2a','#b48cff'][i%6],pants:['#1d1d2a','#2a2a3a','#0a3a6a'][i%3],band:['#fff','#ff3d7f','#ffd23f','#2fe0a0'][i%4]}});}}
 function jogPos(j){const {sg}=j,v=sg.v,A=sg.a1-sg.a0,len=A*v.R,P=(sg.loop?1:2)*len/j.sp,s=((T/P+j.ph)%1+1)%1,u=sg.loop?s:(s<.5?s*2:2-s*2),bk=!sg.loop&&s>=.5,a=sg.a0+u*A,[x,y]=polar(v,a,coastAt(v,a)+3),a2=a+(bk?-.01:.01),[x2,y2]=polar(v,a2,coastAt(v,a2)+3);return[x,y,x2-x,y2-y];}
 function rNode(v,k,m){return[v.x+k*5*S,v.y+m*4*S*.9-2.6];}
 function rValid(v,k,m){const [x,y]=rNode(v,k,m);return inside(v,x,y,9)&&passable(x,y);}
@@ -1238,7 +1238,7 @@ function rEdge(v,k1,m1,k2,m2){const [a,b]=rNode(v,k1,m1),[c2,d]=rNode(v,k2,m2);f
 function roamInit(){ROAM.init=true;const busy=new Set([...WALKERS.map(w=>w.q),...CAMP.map(f=>f.q)]),pick=FREE.filter(q=>!busy.has(q));
  for(let i=0;i<12&&pick.length;i++){const q=pick[(hash(i,501)*pick.length)|0],v=q.isl;let best=null;const k0=Math.round((q.p.x-v.x)/(5*S)),m0=Math.round((q.p.y-v.y)/(4*S*.9));
   for(let r=0;r<4&&!best;r++)for(let dk=-r;dk<=r&&!best;dk++)for(let dm=-r;dm<=r&&!best;dm++)if(rValid(v,k0+dk,m0+dm))best=[k0+dk,m0+dm];if(!best)continue;
-  const [x,y]=rNode(v,best[0],best[1]);ROAM.list.push({q,v,k:best[0],m:best[1],x,y,tk:null,tm:null,pause:hash(i,502)*3,sp:4.2+hash(i,503)*1.6,dir:1,vert:false,L:look(q.k),idx:i,pk:null,pm:null});}}
+  const [x,y]=rNode(v,best[0],best[1]);ROAM.list.push({q,v,k:best[0],m:best[1],x,y,tk:null,tm:null,pause:hash(i,502)*3,sp:GV,dir:1,vert:false,L:look(q.k),idx:i,pk:null,pm:null});}}
 // Passanten kommen aus ihrer Hütte und gehen wieder nach Hause (Anzahl wechselt mit der Tageszeit) – niemand verschwindet mitten auf dem Weg
 const roamAct=nl=>nl>.5?5+(Math.floor(T/45)%4):8+(Math.floor(T/45)%5);
 function rKey(k,m){return k+','+m;}
@@ -1255,12 +1255,12 @@ function roamStep(nl){if(!ROAM.init)roamInit();let dt=T-ROAM.last;ROAM.last=T;if
   if(r.wp&&r.wp.length){const [tx,ty]=r.wp[0],dx=tx-r.x,dy=ty-r.y,dd=Math.hypot(dx,dy),sp=r.sp*dt;if(dd>.01){r.vert=Math.abs(dy)>Math.abs(dx);r.dir=r.vert?(dy>0?1:-1):(dx>=0?1:-1);}if(dd<=sp){r.x=tx;r.y=ty;r.wp.shift();}else{r.x+=dx/dd*sp;r.y+=dy/dd*sp;}continue;}
   if(r.tk==null){const opts=[[1,0],[-1,0],[0,1],[0,-1]].map(([a,b])=>[r.k+a,r.m+b]).filter(([k,m])=>rValid(r.v,k,m)&&rEdge(r.v,r.k,r.m,k,m));if(!opts.length){r.pause=2;continue;}
    const fwd=opts.filter(([k,m])=>!(k===r.pk&&m===r.pm));const ch=(fwd.length&&Math.random()>.12)?fwd:opts;const t=ch[(Math.random()*ch.length)|0];r.pk=r.k;r.pm=r.m;r.tk=t[0];r.tm=t[1];if(Math.random()<.22){r.pause=.8+Math.random()*3;}continue;}
-  const [tx,ty]=rNode(r.v,r.tk,r.tm),dx=tx-r.x,dy=ty-r.y,dd=Math.hypot(dx,dy),sp=r.sp*(.85+.3*Math.sin(T*.7+r.idx))*dt;
+  const [tx,ty]=rNode(r.v,r.tk,r.tm),dx=tx-r.x,dy=ty-r.y,dd=Math.hypot(dx,dy),sp=r.sp*dt;
   if(Math.random()<dt*.04){r.pause=.6+Math.random()*1.4;if(Math.random()<.35){const ok=r.pk,om=r.pm;r.pk=r.tk;r.pm=r.tm;r.tk=ok;r.tm=om;}continue;}
   r.vert=Math.abs(dy)>Math.abs(dx);r.dir=r.vert?(dy>0?1:-1):(dx>=0?1:-1);if(dd<=sp){r.x=tx;r.y=ty;r.k=r.tk;r.m=r.tm;r.tk=null;}else{r.x+=dx/dd*sp;r.y+=dy/dd*sp;}}}
 function passable(x,y){return canWalk(x,y)&&!inBau(x,y)&&!GEB.some(g=>x>g.x0-3&&x<g.x1+3&&y>g.y0-3&&y<g.y1+3);}
 function walkBounds(w){const v=w.q.isl,pt=o=>w.vert?[w.rx,w.y0+o]:[w.x0+o,w.ry-2.6],ok=o=>{const [x,y]=pt(o);return inside(v,x,y,7)&&passable(x,y);};
- const fast=w.mode!=='walk';w.spd=(fast?8:4.2)*(.85+hash(w.q.nr,84)*.4);w.pause=2.5+hash(w.q.nr,85)*3.5;
+ const fast=w.mode!=='walk';w.spd=fast?8:GV;w.pause=2.5+hash(w.q.nr,85)*3.5;
  if(!ok(0)){w.lo=w.hi=0;return;}let hi=0,lo=0;const M=w.len*1.6;while(hi<M&&ok(hi+2))hi+=2;while(lo>-M&&ok(lo-2))lo-=2;
  const wat=o=>{const [x,y]=pt(o);return!inside(v,x,y,-6);};w.wHi=hi<M&&wat(hi+14);w.wLo=lo>-M&&wat(lo-14);w.endWater=w.wHi||w.wLo;w.lo=lo;w.hi=hi;}
 // Kopf mit Frisur wie bei person(): lange Haare (hs 1), Dutt (hs 2); v: 'side' | 'front' | 'back'
@@ -1674,7 +1674,16 @@ function mkPath(P){const L=[0];for(let i=1;i<P.length;i++)L.push(L[i-1]+Math.hyp
 // Prüft einen Weg (ohne Haustür und ohne das Zielgelände g): frei begehbar, keine fremde Hütte
 function pathOK(pt,who,g){const v=who.isl;for(let d=4;d<pt.len;d+=1.5){const [x,y]=along(pt,d);if(g&&x>g.x0-4&&x<g.x1+4&&y>g.y0-4&&y<g.y1+4)continue;if(!canWalk(x,y)&&!(Math.abs(x-who.p.x)<12&&Math.abs(y-who.p.y)<10))return false;
  const gx=Math.round((x-v.x)/S),gy=Math.round((y-v.y)/(S*.9));for(let a=-1;a<=1;a++)for(let b=-1;b<=1;b++){const q=v.cell.get((gx+a)+','+(gy+b));if(q&&q!==who&&q.p&&q.nr<=limit&&Math.abs(x-q.p.x)<7.5&&y>q.p.y-9&&y<q.p.y+7.5)return false;}}return true;}
-function bestPath(mk,who,g,na){let first=null;for(let alt=0;alt<(na||4);alt++){const pt=mk(alt);if(!first)first=pt;if(pathOK(pt,who,g))return pt;}return first;}
+// Notfall-Route über ein Raster (nur Land, nie Wasser, nie über Hütten), wenn keine der einfachen Varianten passt
+function ptOK(x,y,who){if(!canWalk(x,y)&&!(Math.abs(x-who.p.x)<12&&Math.abs(y-who.p.y)<10))return false;const v=who.isl,gx=Math.round((x-v.x)/S),gy=Math.round((y-v.y)/(S*.9));for(let a=-1;a<=1;a++)for(let b=-1;b<=1;b++){const q=v.cell.get((gx+a)+','+(gy+b));if(q&&q!==who&&q.p&&q.nr<=limit&&Math.abs(x-q.p.x)<7.5&&y>q.p.y-9&&y<q.p.y+7.5)return false;}return true;}
+function gridRoute(who,x0,y0,x1,y1){const st=3,X0=Math.min(x0,x1)-90,Y0=Math.min(y0,y1)-90,nx=Math.ceil((Math.abs(x1-x0)+180)/st),ny=Math.ceil((Math.abs(y1-y0)+180)/st);if(nx*ny>90000)return null;
+ const id=(i,j)=>j*nx+i,ok=new Int8Array(nx*ny),prev=new Int32Array(nx*ny).fill(-1),okAt=(i,j)=>{const k=id(i,j);if(!ok[k])ok[k]=ptOK(X0+i*st,Y0+j*st,who)?1:2;return ok[k]===1;};
+ const si=Math.round((x0-X0)/st),sj=Math.round((y0-Y0)/st),ei=Math.round((x1-X0)/st),ej=Math.round((y1-Y0)/st),Q=[id(si,sj)];prev[Q[0]]=Q[0];
+ for(let h=0;h<Q.length;h++){const k=Q[h],i=k%nx,j=(k/nx)|0;if(Math.hypot(i-ei,j-ej)*st<6.5){const pts=[];let c=k;while(c!==prev[c]){pts.unshift([X0+(c%nx)*st,Y0+((c/nx)|0)*st]);c=prev[c];}pts.unshift([x0,y0]);pts.push([x1,y1]);
+   const out=[pts[0]];for(let a=1;a<pts.length-1;a++){const p0=out[out.length-1],p1=pts[a],p2=pts[a+1];if((p1[0]-p0[0])*(p2[1]-p1[1])!==(p1[1]-p0[1])*(p2[0]-p1[0]))out.push(p1);}out.push(pts[pts.length-1]);return out;}
+  for(const [a,b] of[[1,0],[-1,0],[0,1],[0,-1]]){const ii=i+a,jj=j+b;if(ii<0||jj<0||ii>=nx||jj>=ny)continue;const kk=id(ii,jj);if(prev[kk]>=0)continue;if(!okAt(ii,jj)&&!(ii===ei&&jj===ej))continue;prev[kk]=k;Q.push(kk);}}return null;}
+function bestPath(mk,who,g,na){let first=null;for(let alt=0;alt<(na||4);alt++){const pt=mk(alt);if(!first)first=pt;if(pathOK(pt,who,g))return pt;}
+ if(!g||g.x0==null){const P=first.P,a=P[0],b=P[P.length-1],R=gridRoute(who,a[0],a[1]+3,b[0],b[1]);if(R)return mkPath([a,...R]);}return first;}
 // Weg zum Lagerfeuer: Hütte → Wegreihe → nächster Holzsteg nach Norden/Süden → mittlerer Quersteg → außen um die Sitze herum zum Platz am Feuer
 function campPath(f){const v=f.v,q=f.q,c0=Math.round((q.p.x-v.x)/(5*S)),cx=v.x+(c0||(f.fx<v.x?-1:1))*5*S,y0=v.y-2.6,sd=Math.sign(cx-v.x);
  return bestPath(alt=>{const H0=homeExit(q,cx,alt),P=[...H0.pts,[cx,H0.row],[cx,y0],[v.x+sd*50,y0]];const a0=sd>0?0:Math.PI;let da=Math.atan2((f.fy-v.y)/31,(f.fx-v.x)/36)-a0;da=Math.atan2(Math.sin(da),Math.cos(da));const n=Math.max(1,Math.ceil(Math.abs(da)/.25));for(let i=0;i<=n;i++){const a=a0+da*i/n;P.push([v.x+Math.cos(a)*44,v.y+Math.sin(a)*38]);}P.push([f.fx,f.fy]);return mkPath(P);},q,null);}
@@ -1857,9 +1866,9 @@ function draw(){
   // Bewohner aus der Nähe gehen hin, bleiben eine Weile und gehen danach wieder nach Hause (niemand löst sich in Luft auf)
   const pool=a.pool||(a.pool=guestPool({v:a.v,cx:a.x,cy:a.y},24));if(!pool.length)continue;
   const need=a.t==='talk'?2:1,ps=[];let o=0;while(ps.length<need&&o<40){const q=pool[(hash(ci*13+a.k+o,303)*pool.length)|0];o++;if(q&&!OUT.has(q)&&q!==sel&&!ps.includes(q)&&!(WK.on&&q===WK.me))ps.push(q);}if(ps.length<need)continue;ps.forEach(q=>OUT.add(q));
-  const D=lim*P,tS=u*P;let arrived=true;const PTS=ps.map((q,j)=>{const sx=a.t==='talk'?a.x+(j?2.6:-2.6):a.x,key='act'+a.k+'_'+j;q.gp=q.gp||{};return q.gp[key]||(q.gp[key]=gPath(q,{},sx,a.y,sx,a.y));}),tW=Math.max(.5,Math.min(Math.max(...PTS.map(p=>p.len))/GV,D*.3));
+  const D=lim*P,tS=u*P;let arrived=true;const PTS=ps.map((q,j)=>{const sx=a.t==='talk'?a.x+(j?2.6:-2.6):a.x,key='act'+a.k+'_'+j;q.gp=q.gp||{};return q.gp[key]||(q.gp[key]=gPath(q,{},sx,a.y,sx,a.y));});
   ps.forEach((q,j)=>{const pt=PTS[j];
-   let mv=0,x,y,dx,dy;if(tS<tW){[x,y,dx,dy]=along(pt,tS/tW*pt.len);mv=1;}else if(tS>D-tW){[x,y,dx,dy]=along(pt,pt.len-(tS-(D-tW))/tW*pt.len);dx=-dx;dy=-dy;mv=1;}
+   const tW=Math.min(pt.len/GV,D/2);let mv=0,x,y,dx,dy;if(tS<tW){[x,y,dx,dy]=along(pt,tS*GV);mv=1;}else if(tS>D-tW){[x,y,dx,dy]=along(pt,pt.len-(tS-(D-tW))*GV);dx=-dx;dy=-dy;mv=1;}
    if(!mv)return;arrived=false;q._actWalk=1;if((tS<.4||tS>D-.4)||!vis(x,y))return;const L=q.L||(q.L=look(q.k)),vert=Math.abs(dy)>Math.abs(dx);
    drawMover(c,{...L,mode:'walk',ph:q.nr},x,y,vert?(dy>0?1:-1):(dx>=0?1:-1),vert,'walk');TAPS.push([x,y,q]);if(z*S>30)NAMES.push([q.name,x,y-11.2]);});
   if(!arrived||!visR(a.x,a.y,30))continue;
@@ -1873,7 +1882,7 @@ function draw(){
    c.fillStyle='#3a7bd5';c.beginPath();c.roundRect(-3.2,2.4,2,1.6,.3);c.fill();c.restore();if(z*S>30)NAMES.push([q.name,a.x,a.y-11*L.h,null,2.1]);}
   }
  // Lagerfeuer auf der Kokos-Küste: 7 Bewohner gehen hin und bleiben lange (meist 5–6 gleichzeitig dort)
- if(z*S>6&&GROWK==null)for(const f of CAMP){if(f.q===sel)continue;const P=200,tS=(((T/P)+f.ph)%1)*P,pt=f.pt||(f.pt=campPath(f)),sp=Math.max(GV,pt.len/50),tW=pt.len/sp;let x=f.fx,y=f.fy+(REDUCED?0:Math.sin(T*1.3+f.ph*9)*.25),mv=0,dx=f.v.x-f.fx,dy=0;
+ if(z*S>6&&GROWK==null)for(const f of CAMP){if(f.q===sel)continue;const pt=f.pt||(f.pt=campPath(f)),sp=GV,P=Math.max(200,2*pt.len/GV+60),tS=(((T/P)+f.ph)%1)*P,tW=pt.len/sp;let x=f.fx,y=f.fy+(REDUCED?0:Math.sin(T*1.3+f.ph*9)*.25),mv=0,dx=f.v.x-f.fx,dy=0;
   // Hin- und Rückweg über die Holzstege (wie alle Passanten), nie quer über Hütten
   if(tS<tW){[x,y,dx,dy]=along(pt,tS*sp);mv=1;}else if(tS>P-tW){[x,y,dx,dy]=along(pt,pt.len-(tS-(P-tW))*sp);dx=-dx;dy=-dy;mv=1;}
   if(mv&&(tS<.4||tS>P-.4))continue;OUT.add(f.q);if(!vis(x,y))continue;const vert=mv&&Math.abs(dy)>Math.abs(dx);
@@ -2213,7 +2222,7 @@ function canWalk(x,y){if(onObs(x,y))return false;
   const sx=(g.sea-g.cx)*g.dir;if(g.typ==='strandbar'){if(inRect(lx,ly,sx-47,sx-13,-27,10))return false;if(inRect(lx,ly,sx-44,W2-2,-27,27))return true;}
   else{const vx=-W2+24;if(inRect(lx,ly,vx-22,vx+22,-28,13)||inRect(lx,ly,sx-6,W2-4,-12,8))return false;if(inRect(lx,ly,sx-22,W2-2,-18,18))return true;}}
  if(inBau(x,y))return false;
- const v=ISL.find(v=>v.open&&inside(v,x,y,4));if(!v)return false;
+ const v=ISL.find(v=>v.open&&inside(v,x,y,-9));if(!v)return false;
  if(v===MAIN){const lx=x/PAL_S,ly=y/PAL_S,ax=Math.abs(lx);if((ax<47&&ly>-36&&ly<23)||(ax>40&&ax<72&&ly>-12&&ly<22)||((ax-36)/10.5)**2+((ly-34)/5.2)**2<1||(Math.abs(ax-46)<12&&ly>41&&ly<55))return false;}
  if(v.i===1&&Math.hypot(x-v.x,(y-v.y)/.86)<18)return false;
  const gx=Math.round((x-v.x)/S),gy=Math.round((y-v.y)/(S*.9));for(let dx=-1;dx<=1;dx++)for(let dy=-1;dy<=1;dy++){const q=v.cell.get((gx+dx)+','+(gy+dy));if(!q||q.nr>limit)continue;if(Math.abs(x-q.p.x)<7&&y>q.p.y+.5&&y<q.p.y+7.5)return false;}
