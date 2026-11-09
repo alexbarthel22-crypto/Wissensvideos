@@ -446,7 +446,7 @@ for(const p of PEOPLE){let salt=0,id;do{let h1=2166136261^salt,h2=5381+salt*7919
 const fmtId=id=>id.slice(0,3)+' '+id.slice(3,6)+' '+id.slice(6);
 // Erfolge, die im Browser freigeschaltet werden – mit Zeitpunkt, damit die neuesten vorne stehen
 // zurückgenommene Erfolge (insel.json → erfolg_entzug) entfernen
-function entzug(o){for(const [n,m] of Object.entries(I.erfolg_entzug||{})){const k='@'+n.toLowerCase().replace(/^@/,'');for(const [e,ts] of Object.entries(m))if(o[k]&&o[k][e]&&o[k][e]<=ts)delete o[k][e];}
+function entzug(o){for(const [n,m] of Object.entries(I.erfolg_entzug||{})){const k='@'+n.toLowerCase().replace(/^@/,'');for(const [e,ts] of Object.entries(m))if(o[k]&&o[k][e]&&(Array.isArray(ts)?o[k][e]>=ts[0]&&o[k][e]<=ts[1]:o[k][e]<=ts))delete o[k][e];}
  // für alle: Erfolg, der in einem Zeitraum vergeben wurde (insel.json → erfolg_entzug_alle: {ERFOLG:[von,bis]})
  for(const [e,[von,bis]] of Object.entries(I.erfolg_entzug_alle||{}))for(const m of Object.values(o))if(m&&m[e]&&m[e]>=von&&m[e]<=bis)delete m[e];}
 const ERFS=(()=>{let o={};try{o=JSON.parse(localStorage.getItem('mt-erf')||'{}')||{};for(const n of JSON.parse(localStorage.getItem('mt-lupe')||'[]')){(o[n]=o[n]||{}).LUPE=o[n].LUPE||1;}}catch(e){}
