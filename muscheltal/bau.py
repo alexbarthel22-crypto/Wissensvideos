@@ -102,10 +102,17 @@ def importiere_liste(pfad, rows):
     print(f"Liste: {neu} neu eingezogen, {weg} ausgezogen (komplett gelöscht)")
 
 
+def _gebaeude_bewohner(insel):
+    """Wer in einem Gebäude wohnt und deshalb keine Hütte braucht. Ausnahme Muschelpalast
+    (Palast-Leitung, befristet): behält seine Hütte mit Namen."""
+    return {k.lower().lstrip("@") for k, o in (insel.get("wohnorte") or {}).items()
+            if (o[0] if isinstance(o, list) else o) != "Muschelpalast"}
+
+
 def inselgrenzen(sauber, insel):
     """Letzte Einwohner-Nr. je Insel. Wer in einem Gebäude wohnt (wohnorte), braucht keine Hütte –
     seine Hütte wird frei und der Nächste rückt nach (Insel fasst dann entsprechend mehr Einwohner)."""
-    wo = {k.lower().lstrip("@") for k in (insel.get("wohnorte") or {})}
+    wo = _gebaeude_bewohner(insel)
     sonder = [r[0].lower().lstrip("@") in wo for r in sauber]
     grenzen, s = [], 0
     for v in insel["inseln"]:
@@ -127,7 +134,7 @@ def verteile(sauber, insel):
     (nach Einwohner-Nr.) besetzt. Gibt Liste 'i:k' zurück."""
     grenzen = inselgrenzen(sauber, insel)
     isl = [next(i for i, g in enumerate(grenzen) if nr <= g) for nr in range(1, len(sauber) + 1)]
-    wo = {k.lower().lstrip("@") for k in (insel.get("wohnorte") or {})}
+    wo = _gebaeude_bewohner(insel)
     sonder = [r[0].lower().lstrip("@") in wo for r in sauber]  # wohnen in einem Gebäude, kein Hütten-Platz
     plaetze, belegt = [None] * len(sauber), {}
     for j, r in enumerate(sauber):
@@ -309,16 +316,22 @@ def berufe(sauber, insel, out):
     nr = {r[0].lower().lstrip("@"): i + 1 for i, r in enumerate(sauber)}
     orte, emo = {}, {g["name"]: g.get("emoji", "📍") for g in insel.get("gebaeude", [])}
     emo.setdefault("Muschelpalast", "🏰")
-    heute = __import__("datetime").date.today().isoformat()
+    import datetime as _dt
+    try:
+        from zoneinfo import ZoneInfo
+        jetzt = _dt.datetime.now(ZoneInfo("Europe/Berlin")).strftime("%Y-%m-%dT%H:%M")
+    except Exception:
+        jetzt = _dt.datetime.now().strftime("%Y-%m-%dT%H:%M")
+    bis_ok = lambda b: not b or jetzt < (b if len(b) > 10 else b + "T24:00")
     for n, job in (insel.get("jobs") or {}).items():
         beruf, ort, bis = (list(job) + [None])[:3]
-        if n.lower() in nr and (not bis or bis >= heute):
+        if n.lower() in nr and bis_ok(bis):
             orte.setdefault(ort, []).append((beruf, n, bis))
     rang = {"Bürgermeisterin": 0, "Bürgermeister": 0, "Leitung": 1, "Palast-Leitung": 1}
     teile = []
     for ort in sorted(orte, key=lambda o: (o != "Muschelpalast", o)):
         leute = sorted(orte[ort], key=lambda x: (rang.get(x[0], 5), nr[x[1].lower()]))
-        li = "".join(f'<a class="p{" chef" if x[0] in rang else ""}" href="./?n={quote("@" + x[1])}"{f' data-bis="{x[2]}"' if x[2] else ""}><b>{H.escape("⭐ " if rang.get(x[0]) == 1 else "🎖️ " if rang.get(x[0]) == 0 else "")}@{H.escape(x[1])}</b><span>{H.escape(x[0])}{H.escape(" · bis " + ".".join(str(int(t)) for t in reversed(x[2].split("-")[1:])) + ".") if x[2] else ""}</span></a>' for x in leute)
+        li = "".join(f'<a class="p{" chef" if x[0] in rang else ""}" href="./?n={quote("@" + x[1])}"{f' data-bis="{x[2]}"' if x[2] else ""}><b>{H.escape("⭐ " if rang.get(x[0]) == 1 else "🎖️ " if rang.get(x[0]) == 0 else "")}@{H.escape(x[1])}</b><span>{H.escape(x[0])}{H.escape(" · bis Mo " + ".".join(str(int(t)) for t in reversed(x[2][:10].split("-")[1:])) + "." + (", " + str(int(x[2][11:13])) + " Uhr" if len(x[2]) > 10 else "")) if x[2] else ""}</span></a>' for x in leute)
         teile.append(f'<section><a class="ort" href="./?ort={quote(ort)}">{emo.get(ort, "📍")} {H.escape(ort)} <small>auf der Karte ansehen →</small></a><div class="pl">{li}</div></section>')
     seite = head + "\n" + keep + """
 .hint{background:#fff;border:3px dashed var(--ink);border-radius:18px;padding:14px;margin:4px 0 18px;font-weight:800;text-align:center}
@@ -342,8 +355,8 @@ section{background:#fff;border:3px solid var(--ink);border-radius:20px;padding:1
  <a class="cta" href="https://www.tiktok.com/@muscheltal" target="_blank" rel="noopener">💬 Auf TikTok kommentieren</a>
 </main>
 <script>/* Jobs mit Ablaufdatum: nach dem letzten Tag automatisch ausblenden */
-(()=>{let h;try{h=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Berlin'}).format(new Date());}catch(e){h=new Date().toISOString().slice(0,10);}
-document.querySelectorAll('[data-bis]').forEach(a=>{if(a.dataset.bis<h)a.remove();});document.querySelectorAll('section').forEach(s=>{if(!s.querySelector('.p'))s.remove();});})();</script>
+(()=>{let h;try{const p=Object.fromEntries(new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Berlin',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date()).map(x=>[x.type,x.value]));h=p.year+'-'+p.month+'-'+p.day+'T'+p.hour+':'+p.minute;}catch(e){h=new Date().toISOString().slice(0,16);}
+document.querySelectorAll('[data-bis]').forEach(a=>{const b=a.dataset.bis;if(h>=(b.length>10?b:b+'T24:00'))a.remove();});document.querySelectorAll('section').forEach(s=>{if(!s.querySelector('.p'))s.remove();});})();</script>
 </body>
 </html>
 """

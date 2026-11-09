@@ -376,9 +376,11 @@ function plaetze(n,plaza,res,isl=0){const want=n+30,out=[];let r=Math.sqrt(want*
   if(out.length>=want)break;r*=1.2;}
  out.sort((a,b)=>a.k-b.k);return out.slice(0,n);}
 const WALLS=['#d9a066','#e4b47c','#cf9459','#e9c48f'],ROOFS=['#e8467c','#f4a51c','#ff7a59','#2fb3a0','#9b6bff','#3fa0e8'];
-const HEUTE=(()=>{try{return new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Berlin'}).format(new Date());}catch(e){return new Date().toISOString().slice(0,10);}})(),aktiv=b=>!b||!b[2]||HEUTE<=b[2];
-const WOHN={};for(const [k,o] of Object.entries(I.wohnorte||{})){if(Array.isArray(o)&&o[1]&&HEUTE>o[1])continue;WOHN['@'+k.toLowerCase().replace(/^@/,'')]=Array.isArray(o)?o[0]:o;}
-const PEOPLE=R.map((r,i)=>{const nr=i+1,v=islandOf(nr);return{home:WOHN[r[0].toLowerCase()]||null,name:r[0],seit:r[1],mark:r[2],slot:typeof r[3]==='number'?r[3]:null,gr:r[4]==null?nr<=500:!!r[4],nr,isl:v,wait:!v.open,p:null};});
+// Jetzt (Berlin) als 'JJJJ-MM-TTTHH:MM'; Ämter/Jobs gelten bis zum angegebenen Zeitpunkt (z. B. Montag 12:00)
+const JETZT=(()=>{try{const p=Object.fromEntries(new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Berlin',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date()).map(x=>[x.type,x.value]));return p.year+'-'+p.month+'-'+p.day+'T'+p.hour+':'+p.minute;}catch(e){return new Date().toISOString().slice(0,16);}})(),
+ bisOK=t=>!t||JETZT<(t.length>10?t:t+'T24:00'),aktiv=b=>!b||bisOK(b[2]);
+const WOHN={};for(const [k,o] of Object.entries(I.wohnorte||{})){if(Array.isArray(o)&&!bisOK(o[1]))continue;WOHN['@'+k.toLowerCase().replace(/^@/,'')]=Array.isArray(o)?o[0]:o;}
+const PEOPLE=R.map((r,i)=>{const nr=i+1,v=islandOf(nr);const wh=WOHN[r[0].toLowerCase()]||null;return{home:wh==='Muschelpalast'?null:wh,palast:wh==='Muschelpalast',name:r[0],seit:r[1],mark:r[2],slot:typeof r[3]==='number'?r[3]:null,gr:r[4]==null?nr<=500:!!r[4],nr,isl:v,wait:!v.open,p:null};});
 for(const v of ISL){const ppl=PEOPLE.filter(p=>p.isl===v&&!p.wait&&!p.home);v.people=ppl;
  const need=ppl.length?Math.max(ppl.length,1+Math.max(...ppl.map(p=>p.slot??0))):0;
  v.plots=(v.open&&v.plaetze)?plaetze(v.plaetze,v.plaza,v.resv,v.i):(need?plaetze(need,v.plaza,v.resv,v.i):[]);v.keys=new Set(v.plots.map(pl=>pl.gx+','+pl.gy));
@@ -535,7 +537,6 @@ function drawBauSign(c,b){const pr=Math.min(1,N/b.ziel),x=b.steg?b.sx:b.cx,sy=b.
  gTxt(c,{},b.emoji+' '+b.name.toUpperCase(),0,.4,4,'#2a1b12',null,44);gTxt(c,{},'IM BAU · FERTIG BEI '+fmt(b.ziel)+' BEWOHNERN',0,4.4,2.4,'#7a5a2b',null,44);
  c.fillStyle='rgba(42,27,18,.2)';c.fillRect(-20,5.4,40,1.6);c.fillStyle='#2e9e5b';c.fillRect(-20,5.4,40*pr,1.6);c.restore();}
 const GEBK=new Map(GEB.map(g=>[g.key,g])),GEBN=new Map(GEB.map(g=>[g.name.toLowerCase(),g]));
-for(const p of PEOPLE)if(p.home==='Muschelpalast'){p.p={x:palX(p),y:36*PAL_S+4,gx:0,gy:0};}
 for(const p of PEOPLE)if(p.home){const g=GEBN.get(p.home.toLowerCase());if(g){const mates=PEOPLE.filter(q=>q.home===p.home),k=mates.indexOf(p);p.p=g.typ==='doener'?{x:g.cx+[-21.5,-8.5,-1.5][k%3],y:g.cy-6}:{x:g.sea-30*g.dir+(k-(mates.length-1)/2)*9*g.dir,y:g.cy-3};p.gb=g;}}
 // Kokos-Küste: Platz in der Breite so schmal, dass er die Wege links/rechts nicht überdeckt
 const KOKX=.86;
@@ -1314,7 +1315,7 @@ $('growbtn').onclick=()=>{if(growing||!N)return;const v=islInView();growing=true
 
 // ---------- Auswahl + Inselpass ----------
 const status=p=>AMT[p.name.toLowerCase()]||(p.wait?'Zieht ein, sobald die nächste Insel öffnet':p.mark?'War schon im Video':'Einwohner');
-const wo=p=>p.wait?'⛴️ wartet am Steg':p.isl.emoji+' '+p.isl.name+(p.home==='Muschelpalast'?' · wohnt im Muschelpalast':p.hut&&!p.gb?' · Hütte '+p.hut:'');
+const wo=p=>p.wait?'⛴️ wartet am Steg':p.isl.emoji+' '+p.isl.name+(p.hut&&!p.gb?' · Hütte '+p.hut:'')+(p.palast?' · wohnt gerade im Muschelpalast':'');
 function select(p,doFly=true){sel=p;selT=T;selN++;limit=N;setDock(true);$('join').hidden=true;setTimeout(()=>{if(typeof sonneCheck==='function')sonneCheck();},900);
  // Name steht oben im Suchfeld – keine zusätzliche Zeile darunter
  $('pop').hidden=true;$('pname').textContent=p.name;$('q').value=p.name;$('qx').hidden=false;
@@ -1351,7 +1352,7 @@ function avatarCanvas(p,sz=128){const cv=document.createElement('canvas');cv.wid
 function avatarURL(p){return p.avURL||(p.avURL=avatarCanvas(p).toDataURL('image/png'));}
 let mpThird=false;
 function zeigePass(p,third){mpP=p;mpThird=!!third;$('mp').hidden=false;$('mpf').hidden=true;$('mpp').hidden=false;$('mpcardbox').innerHTML=passCard(p);bonUpd(p);
- $('mpgo').textContent=p.home==='Muschelpalast'?'🏰 Zum Muschelpalast':'🏠 Zu '+p.name+(/[sßxz]$/i.test(p.name)?'’':'s')+' Hütte';$('mpshare').hidden=false;$('mpalt').textContent=third?'Meinen eigenen Namen suchen':'Anderen Namen suchen';
+ $('mpgo').textContent='🏠 Zu '+p.name+(/[sßxz]$/i.test(p.name)?'’':'s')+' Hütte';$('mpshare').hidden=false;$('mpalt').textContent=third?'Meinen eigenen Namen suchen':'Anderen Namen suchen';
  $('mp').querySelector('h2').textContent=third?'🪪 Muschelpass von '+p.name:'🪪 Muschelpass';
  if(!third)try{localStorage.setItem('mt-me',p.name);}catch(e){}}
 document.addEventListener('click',e=>{const b=e.target.closest('.mpshi');if(b){const p=byName.get((b.dataset.n||'').toLowerCase());if(p){mpP=p;$('mpshare').click();}return;}
