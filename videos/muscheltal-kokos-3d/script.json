@@ -35,32 +35,32 @@
    "lines": [
     {
      "id": "L1",
-     "text": "*y:Einwohner für meine Insel *y:gesucht!",
+     "text": "Das könnte *y:dein *y:Haus sein!",
      "speed": 1.0,
      "style": "Style: a young man announcing something exciting to new viewers, energetic, warm and inviting, natural German intonation.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
     },
     {
      "id": "L2",
-     "text": "Das könnte *y:dein *y:Haus sein!",
+     "text": "*y:Einwohner für meine Insel *y:gesucht!",
      "speed": 1.0,
      "style": "Style: a young man announcing something exciting to new viewers, energetic, warm and inviting, natural German intonation.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-     "pause": 0.5
+     "pause": 0.35
     }
    ],
    "sfx": [
     {
      "name": "whoosh",
      "at": "s01+0.0",
-     "volume": 0.3
-    },
-    {
-     "name": "impact-bass-2",
-     "at": "L1:gesucht",
-     "volume": 0.45
+     "volume": 0.25
     },
     {
      "name": "pop",
-     "at": "L2:Haus",
+     "at": "L1:Haus",
+     "volume": 0.45
+    },
+    {
+     "name": "impact-bass-2",
+     "at": "L2:gesucht",
      "volume": 0.45
     }
    ]
@@ -138,7 +138,7 @@
   {
    "id": "s05",
    "tag": "",
-   "hold": 3.0999999999999996,
+   "hold": 3.25,
    "lines": [
     {
      "id": "L6",

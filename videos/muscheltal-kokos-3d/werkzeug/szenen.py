@@ -62,42 +62,103 @@ FOLLOW = """    .fbtn { position: absolute; left: 0; right: 0; margin: 0 auto; w
     .fbtn2 { position: absolute; inset: 0; border-radius: 60px; background: #fff; color: #0a78c2; display: grid; place-items: center; opacity: 0; }
     .fhand { position: absolute; font-size: 120px; }"""
 
-PATHS = [("M330,1212 A280,268 0 1,1 750,1212", 1.0), ("M447,1244 L447,974 A93,95 0 0,1 633,974 L633,1244", .55), ("M767,870 A40,40 0 1,1 687,870 A40,40 0 1,1 767,870", .25),
-         ("M540,716 C490,640 430,650 395,700", .2), ("M540,716 C590,640 650,650 685,700", .2), ("M200,1246 L880,1246", .3)]
-SVG = '<svg id="s01-svg" width="1080" height="1920" viewBox="0 0 1080 1920" style="position:absolute;left:0;top:0">' + "".join(
-    f'<path id="s01-p{i}" d="{d}" fill="none" stroke="#fff" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>' for i, (d, w) in enumerate(PATHS)) + "</svg>"
+import math as _m
+_CP, _CL = (0.0, 2.9, 12.5), (0.0, 1.7, 0.0)
+def _sub(a, b): return [a[0]-b[0], a[1]-b[1], a[2]-b[2]]
+def _nrm(v): l = _m.sqrt(sum(x*x for x in v)); return [x/l for x in v]
+def _cr(a, b): return [a[1]*b[2]-a[2]*b[1], a[2]*b[0]-a[0]*b[2], a[0]*b[1]-a[1]*b[0]]
+_F = _nrm(_sub(_CL, _CP)); _R = _nrm(_cr(_F, [0, 1, 0])); _U = _cr(_R, _F); _TH = _m.tan(_m.radians(25)); _AS = 1080/1920
+def P(x, y, z):
+    d = _sub((x, y, z), _CP); X = sum(a*b for a, b in zip(d, _R)); Y = sum(a*b for a, b in zip(d, _U)); Z = sum(a*b for a, b in zip(d, _F))
+    return (540 + X/(Z*_TH*_AS)*540, 960 - Y/(Z*_TH)*960)
+def poly(pts, close=True): return "M" + " L".join(f"{x:.1f},{y:.1f}" for x, y in pts) + (" Z" if close else "")
+def ell3(cx, cy, cz, rx, ry, n=64, a0=0, a1=2*_m.pi): return [P(cx + rx*_m.cos(a0 + (a1-a0)*k/n), cy + ry*_m.sin(a0 + (a1-a0)*k/n), cz) for k in range(n+1)]
+def arch3(w, h, z, n=24):
+    pts = [(-w/2, 0), (-w/2, h - w/2)] + [(-w/2*_m.cos(k/n*_m.pi), h - w/2 + w/2*_m.sin(k/n*_m.pi)) for k in range(1, n)] + [(w/2, h - w/2), (w/2, 0)]
+    return [P(x, y, z) for x, y in pts]
+def rotXYZ(v, rx, ry, rz):
+    x, y, z = v; c, s_ = _m.cos(rz), _m.sin(rz); x, y = x*c - y*s_, x*s_ + y*c
+    c, s_ = _m.cos(ry), _m.sin(ry); x, z = x*c + z*s_, -x*s_ + z*c
+    c, s_ = _m.cos(rx), _m.sin(rx); y, z = y*c - z*s_, y*s_ + z*c
+    return (x, y, z)
+def bez(p0, p1, p2, p3, n=16): return [tuple((1-t)**3*a + 3*(1-t)**2*t*b + 3*(1-t)*t*t*c + t**3*d for a, b, c, d in zip(p0, p1, p2, p3)) for t in [k/n for k in range(n+1)]]
+def leaf3(rz, ry):
+    loc = bez((0, 0), (.5, .3), (.62, 1.25), (0, 1.9)) + bez((0, 1.9), (-.62, 1.25), (-.5, .3), (0, 0))[1:]
+    pts = []
+    for x, y in loc: v = rotXYZ((x, y, 0), -.35, ry, rz); pts.append(P(v[0], v[1] + 3.25, v[2] - .1))
+    rib = [P(*[a + b for a, b in zip(rotXYZ((0, y, .06), -.35, ry, rz), (0, 3.25, -.1))]) for y in (.15, 1.7)]
+    return pts, rib
+C0 = (0, 1.62, 0); DC = (0, 1.0, .74)
+def onEll(x, y): k = 1 - (x/1.4)**2 - ((y - 1)/1.288)**2; return (x, y, .74 + 1.008*_m.sqrt(max(.02, k)))
+shell = ell3(0, 1.62, 0, 1.75, 1.75); dome = ell3(0, 1.0, .74, 1.4, 1.288, 64, _m.radians(-38), _m.radians(218))
+pores = []
+for px, py, r in [(-.4, 2.68, .2), (.4, 2.68, .2), (0, 2.25, .16)]:
+    z = _m.sqrt(1.75**2 - px*px - (py - 1.62)**2); pores.append((P(px, py, z), r*95))
+door_o, door_i = arch3(1.02, 1.42, 1.83), arch3(.74, 1.24, 1.83)
+wp = (.95, 1.55, _m.sqrt(1.75**2 - .95**2 - (1.55 - 1.62)**2) + .01); wc = P(*wp)
+leaves = [leaf3(.95, .25), leaf3(-.85, -.2)]
+pots = [(sx*.9, 1.95) for sx in (-1, 1)]
+stones = [P((0.0), .03, 2.3 + k*.6) for k in range(4)]
+ground = ell3(.2, 0, .3, 2.6, .01, 48)
+# Faserstriche (2D, auf Schale/Kuppel)
+import random as _r; _r.seed(7)
+fibers = []
+for k in range(46):
+    if k % 2: x, y = _r.uniform(-1.2, 1.2), _r.uniform(.4, 1.9); pz = onEll(x, y); a = P(*pz); 
+    else:
+        th = _r.uniform(-1.1, 1.1); ph = _r.uniform(.15, 1.25); x = 1.75*_m.sin(th)*_m.cos(ph-.6); y = 1.62 + 1.75*_m.sin(ph-.2)*.9; z = _m.sqrt(max(.05, 1.75**2 - x*x - (y-1.62)**2)); a = P(x, y, z)
+    ang = _r.uniform(-1.2, 1.2); L_ = _r.uniform(14, 26); fibers.append((a[0], a[1], a[0] + _m.cos(ang)*L_, a[1] + _m.sin(ang)*L_))
+SC = P(0, 1.62, 0); SR = abs(P(1.75, 1.62, 0)[0] - SC[0])
+strokes = [(poly(shell, False), "s", 1.0), (poly(dome, False), "s", .7)]
+strokes += [(poly(l, True), "s", .45) for l, _ in leaves] + [(poly(r, False), "s", .12) for _, r in leaves]
+strokes += [(f"M{c[0]+rr:.1f},{c[1]:.1f} A{rr:.1f},{rr*.9:.1f} 0 1,1 {c[0]-rr:.1f},{c[1]:.1f} A{rr:.1f},{rr*.9:.1f} 0 1,1 {c[0]+rr:.1f},{c[1]:.1f}", "s", .12) for c, rr in pores]
+strokes += [(poly(door_o, False), "s", .45), (poly(door_i, False), "s", .35)]
+wr = abs(P(wp[0] + .36, wp[1], wp[2])[0] - wc[0]); strokes += [(f"M{wc[0]+wr:.1f},{wc[1]:.1f} A{wr:.1f},{wr:.1f} 0 1,1 {wc[0]-wr:.1f},{wc[1]:.1f} A{wr:.1f},{wr:.1f} 0 1,1 {wc[0]+wr:.1f},{wc[1]:.1f}", "s", .2)]
+for px, pz in pots:
+    a, b, c, d = P(px - .2, .3, pz), P(px + .2, .3, pz), P(px + .15, 0, pz), P(px - .15, 0, pz); strokes.append((poly([a, b, c, d]), "s", .1))
+    for k in range(5): q = P(px + (k - 2)*.08, .45 + (k % 2)*.08, pz); strokes.append((f"M{q[0]+7:.1f},{q[1]:.1f} A7,7 0 1,1 {q[0]-7:.1f},{q[1]:.1f} A7,7 0 1,1 {q[0]+7:.1f},{q[1]:.1f}", "f", .04))
+for q in stones: strokes.append((f"M{q[0]+30:.1f},{q[1]:.1f} A30,9 0 1,1 {q[0]-30:.1f},{q[1]:.1f} A30,9 0 1,1 {q[0]+30:.1f},{q[1]:.1f}", "s", .06))
+strokes.append((poly(ground, False), "s", .3))
+strokes += [(f"M{a:.1f},{b:.1f} L{c:.1f},{d:.1f}", "f", .015) for a, b, c, d in fibers]
+FILLS = [(poly(shell), "url(#gSh)"), (poly(dome), "url(#gDo)")] + [(poly(l), "url(#gLf)") for l, _ in leaves] + \
+        [(poly(door_o), "#a39ca0"), (poly(door_i), "#fff0a0")] + [(f"M{c[0]+rr:.1f},{c[1]:.1f} A{rr:.1f},{rr*.9:.1f} 0 1,1 {c[0]-rr:.1f},{c[1]:.1f} A{rr:.1f},{rr*.9:.1f} 0 1,1 {c[0]+rr:.1f},{c[1]:.1f}", "#16111b") for c, rr in pores] + \
+        [(f"M{wc[0]+wr:.1f},{wc[1]:.1f} A{wr:.1f},{wr:.1f} 0 1,1 {wc[0]-wr:.1f},{wc[1]:.1f} A{wr:.1f},{wr:.1f} 0 1,1 {wc[0]+wr:.1f},{wc[1]:.1f}", "#a39ca0"),
+         (f"M{wc[0]+wr*.78:.1f},{wc[1]:.1f} A{wr*.78:.1f},{wr*.78:.1f} 0 1,1 {wc[0]-wr*.78:.1f},{wc[1]:.1f} A{wr*.78:.1f},{wr*.78:.1f} 0 1,1 {wc[0]+wr*.78:.1f},{wc[1]:.1f}", "#fff0a0")]
+DEFS = '<defs><radialGradient id="gSh" cx=".4" cy=".3" r=".8"><stop offset="0" stop-color="#55404c"/><stop offset="1" stop-color="#2a1d25"/></radialGradient><radialGradient id="gDo" cx=".45" cy=".35" r=".8"><stop offset="0" stop-color="#8a634f"/><stop offset="1" stop-color="#55392f"/></radialGradient><linearGradient id="gLf" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4f9a6e"/><stop offset="1" stop-color="#2a5e44"/></linearGradient><filter id="glow"><feGaussianBlur stdDeviation="3"/></filter></defs>'
+SVG = ('<svg id="s01-svg" width="1080" height="1920" viewBox="0 0 1080 1920" style="position:absolute;left:0;top:0">' + DEFS +
+       '<g id="s01-fill" opacity="0">' + "".join(f'<path d="{d}" fill="{c}"/>' for d, c in FILLS) + '</g>' +
+       '<g id="s01-lines">' + "".join(f'<path class="sp" d="{d}" fill="none" stroke="#fff" stroke-width="{9 if kind == "s" else 5}" stroke-linecap="round" stroke-linejoin="round"/>' for d, kind, w in strokes) + '</g></svg>')
+WTS = [w for _, _, w in strokes]
 scene("s01", LILITA + "\n    " + PILL + """
-    #s01-svg path { filter: drop-shadow(0 0 4px rgba(0,0,0,.45)); }
+    #s01-lines path { filter: drop-shadow(0 0 3px rgba(0,0,0,.5)); }
     #s01-pen { position: absolute; left: 0; top: 0; font-size: 110px; }
-    #s01-hk { position: absolute; left: 0; right: 0; top: 280px; text-align: center; }
-    .hk-l { display: table; margin: 14px auto 0; background: #ff2e7e; border-radius: 30px; padding: 2px 34px 12px; font-family: "Lilita One", sans-serif; font-size: 104px; line-height: 1.05; color: #fff; box-shadow: 0 0 0 5px #2a1b12, 0 9px 0 rgba(0,0,0,.25); }
+    #s01-hk { position: absolute; left: 0; right: 0; top: 290px; text-align: center; }
+    .hk-l { display: table; margin: 14px auto 0; background: #ff6a1a; border-radius: 30px; padding: 2px 34px 12px; font-family: "Lilita One", sans-serif; font-size: 104px; line-height: 1.05; color: #fff; box-shadow: 0 0 0 5px #2a1b12, 0 9px 0 rgba(0,0,0,.25); }
     .hk-w { display: inline-block; margin: 0 .08em; transform-origin: 50% 60%; position: relative; }
-    #s01-stk { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 600px; color: #e8433c; border-color: #e8433c; background: #fff; transform: rotate(-6deg); font-size: 60px; white-space: nowrap; }
-    #s01-d { top: 300px; font-size: 56px; background: #2e9e5b; }
+    #s01-stk { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 330px; color: #e8433c; border-color: #e8433c; background: #fff; transform: rotate(-5deg); font-size: 54px; white-space: nowrap; }
     #s01-fl { position: absolute; inset: 0; background: #fff; opacity: 0; }""",
 SVG + """
       <div id="s01-pen" data-layout-ignore>✏️</div>
-      <div id="s01-hk"><div class="hk-l"><span class="hk-w" id="hw0">EINWOHNER</span></div><div class="hk-l"><span class="hk-w" id="hw1">FÜR</span><span class="hk-w" id="hw2">MEINE</span><span class="hk-w" id="hw3">INSEL</span></div></div>
-      <div id="s01-stk" class="stamp" data-layout-ignore>🔎 GESUCHT!</div>
-      <div id="s01-d" class="pl">🏠 Das könnte DEIN Haus sein!</div>
+      <div id="s01-hk"><div class="hk-l"><span class="hk-w" id="hw0">DAS</span><span class="hk-w" id="hw1">KÖNNTE</span></div><div class="hk-l"><span class="hk-w" id="hw2">DEIN</span><span class="hk-w" id="hw3">HAUS</span></div><div class="hk-l"><span class="hk-w" id="hw4">SEIN!</span></div></div>
+      <div id="s01-stk" class="stamp" data-layout-ignore>🔎 EINWOHNER GESUCHT!</div>
       <div id="s01-fl"></div>""",
-"""      const ps = [...document.querySelectorAll("#s01-svg path")], WT = """ + str([w for _, w in PATHS]) + """, sum = WT.reduce((a, b) => a + b, 0);
-      const T0 = .12, T1 = at("L2", "Das") - .15; let tt = T0;
+"""      const ps = [...document.querySelectorAll("#s01-lines path")], WT = """ + str(WTS) + """, sum = WT.reduce((a, b) => a + b, 0);
+      const T0 = .08, T1 = line("L2")[1] - .55, TH = line("L2")[1] + .05; let tt = T0;
       const pen = document.getElementById("s01-pen");
       ps.forEach((p, i) => { const len = p.getTotalLength(), d = (T1 - T0) * WT[i] / sum; p.style.strokeDasharray = len; p.style.strokeDashoffset = len;
         const o = { v: 0 }; tl.to(o, { v: 1, duration: d, ease: "none", onUpdate: () => { p.style.strokeDashoffset = len * (1 - o.v); const pt = p.getPointAtLength(len * o.v); pen.style.transform = `translate(${pt.x - 8}px, ${pt.y - 102}px)`; } }, tt);
         tt += d; });
-      tl.set(pen, { opacity: 1 }, 0); tl.to(pen, { opacity: 0, duration: .2 }, T1);
-      tl.fromTo("#s01-fl", { opacity: 0 }, { opacity: .7, duration: .07, yoyo: true, repeat: 1, immediateRender: false }, T1 + .05);
-      tl.to("#s01-svg", { opacity: 0, duration: .25 }, T1 + .05);
-      const hk = ["Einwohner", "für", "meine", "Insel"];
+      tl.set(pen, { opacity: 1 }, 0); tl.to(pen, { opacity: 0, duration: .15 }, T1);
+      tl.fromTo("#s01-fill", { opacity: 0 }, { opacity: 1, duration: .45, ease: "power1.out", immediateRender: false }, T1);
+      tl.fromTo("#s01-fl", { opacity: 0 }, { opacity: .75, duration: .07, yoyo: true, repeat: 1, immediateRender: false }, TH - .02);
+      tl.to("#s01-svg", { opacity: 0, duration: .2 }, TH + .05);
+      const hk = ["Das", "könnte", "dein", "Haus", "sein"];
       tl.set("#s01-hk", { opacity: 1 }, 0);
-      hk.forEach((w, i) => { const t0 = Math.max(0, at("L1", w) - .03); tl.set("#hw" + i, { zIndex: 5 }, t0); tl.fromTo("#hw" + i, { scale: 1 }, { scale: .5, duration: .05, immediateRender: false }, t0); tl.to("#hw" + i, { scale: [1.3, 1.6, 1.6, 1.6][i], duration: .12, ease: "power2.out" }, t0 + .05); tl.to("#hw" + i, { scale: 1, duration: .2, ease: "back.out(2.5)" }, t0 + .17); });
-      tl.to("#hw3", { color: "#ffd23f", duration: .05 }, at("L1", "Insel"));
-      tl.fromTo("#s01-stk", { opacity: 0, scale: 3 }, { opacity: 1, scale: 1, duration: .16, ease: "power4.in" }, at("L1", "gesucht") - .1);
-      tl.to(["#s01-hk", "#s01-stk"], { opacity: 0, y: -40, duration: .2 }, T1 - .05);
-      tl.fromTo("#s01-d", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, T1 + .1);
-      tl.to("#s01-d", { scale: 1.07, duration: .25, yoyo: true, repeat: 5, ease: "sine.inOut" }, at("L2", "dein"));""", blur=False)
+      hk.forEach((w, i) => { const t0 = Math.max(0, at("L1", w) - .03); tl.set("#hw" + i, { zIndex: 5 }, t0); tl.fromTo("#hw" + i, { scale: 1 }, { scale: .5, duration: .05, immediateRender: false }, t0); tl.to("#hw" + i, { scale: [1.7, 1.35, 1.8, 1.7, 1.7][i], duration: .12, ease: "power2.out" }, t0 + .05); tl.to("#hw" + i, { scale: 1, duration: .2, ease: "back.out(2.5)" }, t0 + .17); });
+      tl.to(["#hw2", "#hw3"], { color: "#ffe14d", duration: .05 }, at("L1", "dein"));
+      tl.to("#s01-hk", { opacity: 0, y: -40, duration: .2 }, line("L2")[0] - .15);
+      tl.fromTo("#s01-stk", { opacity: 0, scale: 3 }, { opacity: 1, scale: 1, duration: .16, ease: "power4.in" }, at("L2", "gesucht") - .12);
+      tl.to("#s01-stk", { scale: 1.06, duration: .25, yoyo: true, repeat: 5, ease: "sine.inOut" }, at("L2", "gesucht") + .2);""", blur=False)
 
 scene("s02", PILL + """
     #s02-t { top: 300px; font-size: 58px; background: #e2560c; }
