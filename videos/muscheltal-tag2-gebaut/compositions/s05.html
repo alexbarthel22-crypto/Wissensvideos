@@ -60,6 +60,7 @@
     .s05-r { height: 130px; display: grid; place-items: center; font-family: "Inter", sans-serif; font-weight: 900; font-size: 64px; color: #23285a; white-space: nowrap; }
     #s05-shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,0) 30%, rgba(255,255,255,0) 70%, rgba(255,255,255,.95)); }
     .s05-arr { position: absolute; top: 605px; font-size: 80px; color: #ffc93c; -webkit-text-stroke: 4px #2a1b12; }
+    #s05-fv { position: absolute; left: 110px; width: 860px; top: 870px; text-align: center; white-space: nowrap; font-family: "Inter", sans-serif; font-weight: 800; font-size: 30px; color: #fff; text-shadow: 0 2px 6px rgba(0,0,0,.6); }
     #s05-pl { top: 300px; font-size: 46px; background: #ffb81c; color: #2a1b12; }
     #s05-pb { top: 400px; font-size: 42px; background: #7b3fe0; }
     #s05-st { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 890px; color: #e8433c; border-color: #e8433c; transform: rotate(-5deg); font-size: 64px; white-space: nowrap; background: #fff; }
@@ -70,6 +71,7 @@
       <div id="s05-t" class="pl">👑 VERLOSUNG: PALAST-LEITUNG</div>
       <div id="s05-box"><div id="s05-band"></div><div id="s05-col" data-layout-ignore><div class="s05-r">@frau_hops</div><div class="s05-r">@ilvana.esn45</div><div class="s05-r s05-win">@prvt.lott1</div><div class="s05-r">@evelinka2508</div><div class="s05-r">@emely.xy</div><div class="s05-r">@annalena4013</div><div class="s05-r">@jan.kieler47</div><div class="s05-r">@marcibasic</div><div class="s05-r">@kacper_bin_ich</div><div class="s05-r">@nicoo.4102</div><div class="s05-r">@leaaa2405</div><div class="s05-r">@amelie.xx512</div><div class="s05-r">@did_33333</div><div class="s05-r">@anto.hsse</div><div class="s05-r">@karakan27koray</div><div class="s05-r">@hannah_zsc</div><div class="s05-r">@maya_ks13</div><div class="s05-r">@notyours2322</div><div class="s05-r">@insa.t_sp</div><div class="s05-r">@.28o6</div><div class="s05-r">@hllr.marie</div><div class="s05-r">@yuris.river</div><div class="s05-r">@chiara.k300</div><div class="s05-r">@pauline__45</div><div class="s05-r">@j4sm1niiiii</div><div class="s05-r">@noncharl0nt16</div><div class="s05-r">@maestronewyork</div><div class="s05-r">@leona644</div><div class="s05-r">@fabi.1796</div><div class="s05-r">@lauu.rx</div><div class="s05-r">@lisa2011.13</div><div class="s05-r">@mxlan084</div><div class="s05-r">@pepefechner</div><div class="s05-r">@el1naa_13</div><div class="s05-r">@user.drtmd</div><div class="s05-r">@sophieee_nrb</div><div class="s05-r">@sawalalo3</div><div class="s05-r">@amii.lrv5</div><div class="s05-r">@chiara.l563</div><div class="s05-r">@hana_hro18109</div><div class="s05-r">@wael.cgn1</div><div class="s05-r">@annikakkinge</div><div class="s05-r">@alexne91</div><div class="s05-r">@omniwatt1043</div></div><div id="s05-shade" data-layout-ignore></div></div>
       <div class="s05-arr" style="left:30px">▶</div><div class="s05-arr" style="left:985px">◀</div>
+      <div id="s05-fv">➕ Folgen, um bei der nächsten Verlosung teilzunehmen</div>
       <div id="s05-cfw"></div>
       <div id="s05-st" class="stamp" data-layout-ignore>👑 PALAST-LEITUNG!</div>
       <div id="s05-pl" class="pl">👑 Palast-Leitung: Lotti (@prvt.lott1)</div>
@@ -127,6 +129,8 @@
       tl.fromTo("#s05-dim", { opacity: 0 }, { opacity: 1, duration: .4 }, line("L6")[0]);
       tl.fromTo("#s05-t", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .4, ease: "back.out(2.6)" }, line("L6")[0] + .1);
       tl.fromTo(["#s05-box", ".s05-arr"], { opacity: 0, scale: .5 }, { opacity: 1, scale: 1, duration: .4, ease: "back.out(2)" }, at("L6", "Wer") - .2);
+      tl.fromTo("#s05-fv", { opacity: 0 }, { opacity: 1, duration: .3 }, at("L6", "Wer"));
+      tl.to("#s05-fv", { opacity: 0, duration: .2 }, T0);
       tl.set("#s05-col", { y: -(NR - 3) * H }, 0);
       tl.fromTo("#s05-col", { y: -(NR - 3) * H }, { y: -(W - 1) * H, duration: T0 - s0, ease: "power3.out", immediateRender: false }, s0);
       tl.fromTo("#s05-col", { filter: "blur(5px)" }, { filter: "blur(0px)", duration: (T0 - s0) * .8, ease: "power2.in", immediateRender: false }, s0);

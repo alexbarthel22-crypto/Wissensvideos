@@ -67,21 +67,21 @@ scene("s01", LILITA + "\n    " + PILL + """
     #s01-p { top: 410px; left: 760px; right: auto; margin: 0; font-size: 46px; background: #2e9e5b; transform: rotate(8deg); }
     #s01-k { top: 660px; font-size: 46px; background: #18b8c0; }
     #s01-tag { top: 300px; font-size: 52px; background: #ff6a1a; }
-    #s01-tool { position: absolute; left: 330px; top: 60px; width: 420px; height: 330px; transform-origin: 50% 100%; }
+    #s01-tool { position: absolute; left: 330px; top: 120px; width: 420px; height: 330px; transform-origin: 50% 100%; }
     #s01-tool .kn { position: absolute; left: 160px; top: 0; width: 100px; height: 100px; border-radius: 50%; background: #8a4b2a; box-shadow: inset -10px -10px 0 rgba(0,0,0,.25), 0 0 0 6px #2a1b12; }
     #s01-tool .st { position: absolute; left: 180px; top: 80px; width: 60px; height: 140px; background: #a8613a; box-shadow: inset -8px 0 0 rgba(0,0,0,.25), 0 0 0 6px #2a1b12; }
     #s01-tool .bs { position: absolute; left: 0; top: 210px; width: 420px; height: 70px; border-radius: 16px; background: #5a2e1a; box-shadow: inset 0 -10px 0 rgba(0,0,0,.3), 0 0 0 6px #2a1b12; }
     #s01-tool .ru { position: absolute; left: 10px; top: 280px; width: 400px; height: 40px; border-radius: 0 0 12px 12px; background: #ff2e7e; box-shadow: 0 0 0 6px #2a1b12; }
-    #s01-ink { position: absolute; left: 0; right: 0; margin: 0 auto; width: 560px; height: 220px; top: 250px; border-radius: 50%; background: radial-gradient(closest-side, rgba(255,46,126,.35), rgba(255,46,126,0)); opacity: 0; }
-    #s01-ring { position: absolute; left: 340px; top: 270px; width: 400px; height: 150px; border-radius: 40px; border: 10px solid #ff2e7e; opacity: 0; transform: rotate(-6deg); }
+    #s01-ink { position: absolute; left: 0; right: 0; margin: 0 auto; width: 560px; height: 220px; top: 310px; border-radius: 50%; background: radial-gradient(closest-side, rgba(255,46,126,.35), rgba(255,46,126,0)); opacity: 0; }
+    #s01-ring { position: absolute; left: 340px; top: 330px; width: 400px; height: 150px; border-radius: 40px; border: 10px solid #ff2e7e; opacity: 0; transform: rotate(-6deg); }
     #s01-ray { position: absolute; left: -660px; top: 140px; width: 2400px; height: 2400px; border-radius: 50%;
       background: repeating-conic-gradient(from 0deg, rgba(255,255,255,.16) 0deg 5deg, rgba(255,255,255,0) 5deg 15deg);
       -webkit-mask-image: radial-gradient(circle, #000 0%, #000 30%, transparent 62%); mask-image: radial-gradient(circle, #000 0%, #000 30%, transparent 62%); }
     #s01-tint { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,60,120,0) 35%, rgba(10,60,120,.45) 100%); }
     #s01-fl { position: absolute; inset: 0; background: #fff; opacity: 0; }
-    #s01-stk { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 300px; padding: 4px 30px 10px; border-radius: 22px; background: #fff; color: #ff2e7e;
+    #s01-stk { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 360px; padding: 4px 30px 10px; border-radius: 22px; background: #fff; color: #ff2e7e;
       font-family: "Lilita One", sans-serif; font-size: 64px; border: 5px solid #ff2e7e; box-shadow: 0 8px 0 rgba(0,0,0,.2); transform: rotate(-6deg); }
-    #s01-hk { position: absolute; left: 0; right: 0; top: 410px; text-align: center; }
+    #s01-hk { position: absolute; left: 0; right: 0; top: 480px; text-align: center; }
     .hk-l { display: table; margin: 26px auto 0; background: #ff2e7e; border-radius: 38px; padding: 6px 40px 16px; font-family: "Lilita One", sans-serif; font-size: 132px; line-height: 1.05; color: #fff; box-shadow: 0 9px 0 rgba(0,0,0,.25); }
     .hk-w { display: inline-block; margin: 0 .1em; transform-origin: 50% 60%; position: relative; }
     #s01-hint { top: 780px; font-size: 38px; background: #fe2c55; }
@@ -105,10 +105,10 @@ scene("s01", LILITA + "\n    " + PILL + """
 """      const hkw = ["Du", "wohnst", "ab", "jetzt", "auf", "meiner", "Insel"], hEnd = line("L1")[1], ins = at("L1", "Insel");
       tl.set(["#s01-hk", "#s01-ray", "#s01-tint"], { opacity: 1 }, 0);
       tl.fromTo("#s01-ray", { rotation: 0 }, { rotation: 24, duration: hEnd + .3, ease: "none" }, 0);
-      const SI = .14;
+      const SI = .09;
       tl.fromTo("#s01-tool", { y: -260, scale: 1.25, rotation: -6, opacity: 1 }, { y: 0, scale: 1, rotation: -6, duration: SI, ease: "power3.in" }, 0);
-      tl.to("#s01-tool", { scaleY: .9, duration: .05, yoyo: true, repeat: 1, ease: "power2.out" }, SI);
-      tl.to("#s01-tool", { y: -520, rotation: 4, opacity: 0, duration: .26, ease: "power3.in" }, SI + .12);
+      tl.to("#s01-tool", { scaleY: .88, duration: .04, yoyo: true, repeat: 1, ease: "power2.out" }, SI);
+      tl.to("#s01-tool", { y: -520, rotation: 4, opacity: 0, duration: .2, ease: "power3.in" }, SI + .08);
       tl.fromTo("#s01-stk", { opacity: 0, scale: 1.1, rotation: -6 }, { opacity: 1, scale: 1, rotation: -6, duration: .06 }, SI);
       tl.fromTo("#s01-ink", { opacity: 0, scale: .6 }, { opacity: 1, scale: 1.25, duration: .25, ease: "power2.out", immediateRender: false }, SI);
       tl.to("#s01-ink", { opacity: 0, duration: .4 }, SI + .3);
@@ -210,6 +210,7 @@ scene("s05", PILL + "\n    " + CF_CSS.replace("top: 700px", "top: 660px") + """
     .s05-r { height: 130px; display: grid; place-items: center; font-family: "Inter", sans-serif; font-weight: 900; font-size: 64px; color: #23285a; white-space: nowrap; }
     #s05-shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,0) 30%, rgba(255,255,255,0) 70%, rgba(255,255,255,.95)); }
     .s05-arr { position: absolute; top: 605px; font-size: 80px; color: #ffc93c; -webkit-text-stroke: 4px #2a1b12; }
+    #s05-fv { position: absolute; left: 110px; width: 860px; top: 870px; text-align: center; white-space: nowrap; font-family: "Inter", sans-serif; font-weight: 800; font-size: 30px; color: #fff; text-shadow: 0 2px 6px rgba(0,0,0,.6); }
     #s05-pl { top: 300px; font-size: 46px; background: #ffb81c; color: #2a1b12; }
     #s05-pb { top: 400px; font-size: 42px; background: #7b3fe0; }
     #s05-st { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 890px; color: #e8433c; border-color: #e8433c; transform: rotate(-5deg); font-size: 64px; white-space: nowrap; background: #fff; }""",
@@ -217,6 +218,7 @@ f"""      <div id="s05-dim"></div>
       <div id="s05-t" class="pl">👑 VERLOSUNG: PALAST-LEITUNG</div>
       <div id="s05-box"><div id="s05-band"></div><div id="s05-col" data-layout-ignore>{ROWS}</div><div id="s05-shade" data-layout-ignore></div></div>
       <div class="s05-arr" style="left:30px">▶</div><div class="s05-arr" style="left:985px">◀</div>
+      <div id="s05-fv">➕ Folgen, um bei der nächsten Verlosung teilzunehmen</div>
       <div id="s05-cfw"></div>
       <div id="s05-st" class="stamp" data-layout-ignore>👑 PALAST-LEITUNG!</div>
       <div id="s05-pl" class="pl">👑 Palast-Leitung: Lotti (@prvt.lott1)</div>
@@ -225,6 +227,8 @@ f"""      const s0 = at("L6", "Palast-Leitung") + .7, T0 = line("L7")[0] - .45, 
       tl.fromTo("#s05-dim", {{ opacity: 0 }}, {{ opacity: 1, duration: .4 }}, line("L6")[0]);
       tl.fromTo("#s05-t", {{ opacity: 0, scale: .3 }}, {{ opacity: 1, scale: 1, duration: .4, ease: "back.out(2.6)" }}, line("L6")[0] + .1);
       tl.fromTo(["#s05-box", ".s05-arr"], {{ opacity: 0, scale: .5 }}, {{ opacity: 1, scale: 1, duration: .4, ease: "back.out(2)" }}, at("L6", "Wer") - .2);
+      tl.fromTo("#s05-fv", {{ opacity: 0 }}, {{ opacity: 1, duration: .3 }}, at("L6", "Wer"));
+      tl.to("#s05-fv", {{ opacity: 0, duration: .2 }}, T0);
       tl.set("#s05-col", {{ y: -(NR - 3) * H }}, 0);
       tl.fromTo("#s05-col", {{ y: -(NR - 3) * H }}, {{ y: -(W - 1) * H, duration: T0 - s0, ease: "power3.out", immediateRender: false }}, s0);
       tl.fromTo("#s05-col", {{ filter: "blur(5px)" }}, {{ filter: "blur(0px)", duration: (T0 - s0) * .8, ease: "power2.in", immediateRender: false }}, s0);
