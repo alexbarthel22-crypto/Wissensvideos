@@ -309,14 +309,16 @@ def berufe(sauber, insel, out):
     nr = {r[0].lower().lstrip("@"): i + 1 for i, r in enumerate(sauber)}
     orte, emo = {}, {g["name"]: g.get("emoji", "📍") for g in insel.get("gebaeude", [])}
     emo.setdefault("Muschelpalast", "🏰")
-    for n, (beruf, ort) in (insel.get("jobs") or {}).items():
-        if n.lower() in nr:
-            orte.setdefault(ort, []).append((beruf, n))
-    rang = {"Bürgermeisterin": 0, "Bürgermeister": 0, "Leitung": 1}
+    heute = __import__("datetime").date.today().isoformat()
+    for n, job in (insel.get("jobs") or {}).items():
+        beruf, ort, bis = (list(job) + [None])[:3]
+        if n.lower() in nr and (not bis or bis >= heute):
+            orte.setdefault(ort, []).append((beruf, n, bis))
+    rang = {"Bürgermeisterin": 0, "Bürgermeister": 0, "Leitung": 1, "Palast-Leitung": 1}
     teile = []
     for ort in sorted(orte, key=lambda o: (o != "Muschelpalast", o)):
         leute = sorted(orte[ort], key=lambda x: (rang.get(x[0], 5), nr[x[1].lower()]))
-        li = "".join(f'<a class="p{" chef" if x[0] in rang else ""}" href="./?n={quote("@" + x[1])}"><b>{H.escape("⭐ " if x[0] == "Leitung" else "🎖️ " if rang.get(x[0]) == 0 else "")}@{H.escape(x[1])}</b><span>{H.escape(x[0])}</span></a>' for x in leute)
+        li = "".join(f'<a class="p{" chef" if x[0] in rang else ""}" href="./?n={quote("@" + x[1])}"{f' data-bis="{x[2]}"' if x[2] else ""}><b>{H.escape("⭐ " if rang.get(x[0]) == 1 else "🎖️ " if rang.get(x[0]) == 0 else "")}@{H.escape(x[1])}</b><span>{H.escape(x[0])}{H.escape(" · bis " + ".".join(str(int(t)) for t in reversed(x[2].split("-")[1:])) + ".") if x[2] else ""}</span></a>' for x in leute)
         teile.append(f'<section><a class="ort" href="./?ort={quote(ort)}">{emo.get(ort, "📍")} {H.escape(ort)} <small>auf der Karte ansehen →</small></a><div class="pl">{li}</div></section>')
     seite = head + "\n" + keep + """
 .hint{background:#fff;border:3px dashed var(--ink);border-radius:18px;padding:14px;margin:4px 0 18px;font-weight:800;text-align:center}
@@ -339,6 +341,9 @@ section{background:#fff;border:3px solid var(--ink);border-radius:20px;padding:1
 """ + "\n".join(teile) + """
  <a class="cta" href="https://www.tiktok.com/@muscheltal" target="_blank" rel="noopener">💬 Auf TikTok kommentieren</a>
 </main>
+<script>/* Jobs mit Ablaufdatum: nach dem letzten Tag automatisch ausblenden */
+(()=>{let h;try{h=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Berlin'}).format(new Date());}catch(e){h=new Date().toISOString().slice(0,10);}
+document.querySelectorAll('[data-bis]').forEach(a=>{if(a.dataset.bis<h)a.remove();});document.querySelectorAll('section').forEach(s=>{if(!s.querySelector('.p'))s.remove();});})();</script>
 </body>
 </html>
 """

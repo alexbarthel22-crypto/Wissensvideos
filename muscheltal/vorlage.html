@@ -376,17 +376,21 @@ function plaetze(n,plaza,res,isl=0){const want=n+30,out=[];let r=Math.sqrt(want*
   if(out.length>=want)break;r*=1.2;}
  out.sort((a,b)=>a.k-b.k);return out.slice(0,n);}
 const WALLS=['#d9a066','#e4b47c','#cf9459','#e9c48f'],ROOFS=['#e8467c','#f4a51c','#ff7a59','#2fb3a0','#9b6bff','#3fa0e8'];
-const WOHN={};for(const [k,o] of Object.entries(I.wohnorte||{}))WOHN['@'+k.toLowerCase().replace(/^@/,'')]=o;
+const HEUTE=(()=>{try{return new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Berlin'}).format(new Date());}catch(e){return new Date().toISOString().slice(0,10);}})(),aktiv=b=>!b||!b[2]||HEUTE<=b[2];
+const WOHN={};for(const [k,o] of Object.entries(I.wohnorte||{})){if(Array.isArray(o)&&o[1]&&HEUTE>o[1])continue;WOHN['@'+k.toLowerCase().replace(/^@/,'')]=Array.isArray(o)?o[0]:o;}
 const PEOPLE=R.map((r,i)=>{const nr=i+1,v=islandOf(nr);return{home:WOHN[r[0].toLowerCase()]||null,name:r[0],seit:r[1],mark:r[2],slot:typeof r[3]==='number'?r[3]:null,gr:r[4]==null?nr<=500:!!r[4],nr,isl:v,wait:!v.open,p:null};});
 for(const v of ISL){const ppl=PEOPLE.filter(p=>p.isl===v&&!p.wait&&!p.home);v.people=ppl;
  const need=ppl.length?Math.max(ppl.length,1+Math.max(...ppl.map(p=>p.slot??0))):0;
  v.plots=(v.open&&v.plaetze)?plaetze(v.plaetze,v.plaza,v.resv,v.i):(need?plaetze(need,v.plaza,v.resv,v.i):[]);v.keys=new Set(v.plots.map(pl=>pl.gx+','+pl.gy));
  const used=new Set();ppl.forEach((p,k)=>{let si=p.slot!=null&&p.slot<v.plots.length&&!used.has(p.slot)?p.slot:k;while(used.has(si))si++;used.add(si);p.hut=si+1;const pl=v.plots[si],h=hash(pl.gx+7+v.i*31,pl.gy-3);p.p={x:v.x+pl.x,y:v.y+pl.y,gx:pl.gx,gy:pl.gy};p.round=h<.28;p.wall=WALLS[(h*97|0)%4];p.roof=ROOFS[(h*631|0)%ROOFS.length];p.win=hash(pl.gx,pl.gy+11)<.55;v.cell.set(pl.gx+','+pl.gy,p);});
  v.free=v.plots.filter((pl,i)=>!used.has(i)).map(pl=>({x:v.x+pl.x,y:v.y+pl.y}));}
-for(const p of PEOPLE){const n=p.name.toLowerCase().replace(/^@/,''),b=(I.jobs||{})[n];if(b){p.beruf=b[0]||'';p.ort=b[1]||'';}const vm=(I.vermoegen||{})[n];p.verm=vm!=null?vm:(I.vermoegen_start??0);}
+for(const p of PEOPLE){const n=p.name.toLowerCase().replace(/^@/,''),b=(I.jobs||{})[n];if(b&&aktiv(b)){p.beruf=b[0]||'';p.ort=b[1]||'';}const vm=(I.vermoegen||{})[n];p.verm=vm!=null?vm:(I.vermoegen_start??0);}
 const PLACED=PEOPLE.filter(p=>p.p), WAIT=PEOPLE.filter(p=>p.wait);
 const isMayor=p=>!!p&&(p.beruf||'').startsWith('Bürgermeister');
-const FREE=PLACED.filter(p=>!p.home&&!isMayor(p));
+// arbeitet im Muschelpalast (Bürgermeisterin, Palast-Leitung): tagsüber an der Palasttreppe
+const atPal=p=>!!p&&(isMayor(p)||p.ort==='Muschelpalast');
+const palX=p=>isMayor(p)?0:(12+8*(PEOPLE.filter(q=>q.ort==='Muschelpalast'&&!isMayor(q)).indexOf(p)))*PAL_S;
+const FREE=PLACED.filter(p=>!p.home&&!atPal(p));
 // Aussehen der Einwohner: Größe, Kleidung, Haut, Haare (ohne Accessoires)
 const SHIRTS=['#e8467c','#f4a51c','#ff7a59','#2fb3a0','#9b6bff','#3fa0e8','#ffffff','#2e9e5b','#ffd23f','#c0392b','#1f6fb2','#f7a1c4','#7dd3a8','#6d4c41'],PANTS=['#2b3a67','#3b3b3b','#6b4f2a','#c9b48a','#1f6fb2','#7a2f4a','#4a6b3a','#e6e1d6','#2a1b12'],
  SKINS=['#f6d2b4','#f3c9a0','#e2b08a','#d9a07a','#b97a52','#a8714a','#7a4a2a','#5a3620'],HAIRS=['#2a1b12','#6b3f1d','#e0b860','#1a1a1a','#a0522d','#c96a2a','#f1d98a','#8a8a8a','#4a2c16'];
@@ -443,7 +447,7 @@ const COINIMG=new Image();COINIMG.src='data:image/svg+xml;charset=utf-8,'+encode
 const LUPEIMG=new Image();LUPEIMG.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><circle cx="13" cy="13" r="8.5" fill="#dff7ff" stroke="#c98a00" stroke-width="3.2"/><path d="M19.4 19.4l7.4 7.4" stroke="#7a4a00" stroke-width="4.4" stroke-linecap="round"/></svg>');
 const AUFIMG=new Image();AUFIMG.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(SUN_SVG(true).replace('<svg ','<svg xmlns="http://www.w3.org/2000/svg" '));const UNTERIMG=new Image();UNTERIMG.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(SUN_SVG(false).replace('<svg ','<svg xmlns="http://www.w3.org/2000/svg" '));
 const SCOOTIMG=new Image();SCOOTIMG.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(SCOOT_SVG.replace('<svg ','<svg xmlns="http://www.w3.org/2000/svg" '));
-const AMT={};I.aemter.forEach(([t,n])=>{if(n)AMT[n.toLowerCase()]=t;});
+const AMT={};I.aemter.forEach(a=>{const [t,n]=a;if(n&&aktiv(a))AMT[n.toLowerCase()]=t;});
 function nachbarn(p){if(!p.p)return[];const a=[],cell=p.isl.cell;for(let dx=-2;dx<=2;dx++)for(let dy=-2;dy<=2;dy++){if(!dx&&!dy)continue;const q=cell.get((p.p.gx+dx)+','+(p.p.gy+dy));if(q)a.push([Math.hypot(q.p.x-p.p.x,q.p.y-p.p.y),q]);}return a.sort((x,y)=>x[0]-y[0]).slice(0,4).map(x=>x[1]);}
 
 // ---------- Küsten ----------
@@ -531,6 +535,7 @@ function drawBauSign(c,b){const pr=Math.min(1,N/b.ziel),x=b.steg?b.sx:b.cx,sy=b.
  gTxt(c,{},b.emoji+' '+b.name.toUpperCase(),0,.4,4,'#2a1b12',null,44);gTxt(c,{},'IM BAU · FERTIG BEI '+fmt(b.ziel)+' BEWOHNERN',0,4.4,2.4,'#7a5a2b',null,44);
  c.fillStyle='rgba(42,27,18,.2)';c.fillRect(-20,5.4,40,1.6);c.fillStyle='#2e9e5b';c.fillRect(-20,5.4,40*pr,1.6);c.restore();}
 const GEBK=new Map(GEB.map(g=>[g.key,g])),GEBN=new Map(GEB.map(g=>[g.name.toLowerCase(),g]));
+for(const p of PEOPLE)if(p.home==='Muschelpalast'){p.p={x:palX(p),y:36*PAL_S+4,gx:0,gy:0};}
 for(const p of PEOPLE)if(p.home){const g=GEBN.get(p.home.toLowerCase());if(g){const mates=PEOPLE.filter(q=>q.home===p.home),k=mates.indexOf(p);p.p=g.typ==='doener'?{x:g.cx+[-21.5,-8.5,-1.5][k%3],y:g.cy-6}:{x:g.sea-30*g.dir+(k-(mates.length-1)/2)*9*g.dir,y:g.cy-3};p.gb=g;}}
 // Kokos-Küste: Platz in der Breite so schmal, dass er die Wege links/rechts nicht überdeckt
 const KOKX=.86;
@@ -890,7 +895,7 @@ function cloud(c,cl,a,grey){const w=BOX.x1-BOX.x0,x=((cl.x-BOX.x0+T*cl.sp*WFg)%w
 function scallop(c,cx,cy,R,b,lobes){c.beginPath();c.moveTo(cx,cy);const pt=(a,r)=>[cx+Math.cos(a)*r,cy+Math.sin(a)*r];c.lineTo(...pt(RA0,R));for(let i=0;i<lobes;i++){const s0=RA0+(RA1-RA0)*i/lobes,e=RA0+(RA1-RA0)*(i+1)/lobes;c.quadraticCurveTo(...pt((s0+e)/2,R+b*2),...pt(e,R));}c.closePath();}
 // Muschelpalast: großer Palast mit Seitenflügeln und Gärten auf dem Muschelplatz
 // Standplatz der gesuchten Person: auf dem Weg unter/neben ihrer Hütte
-function standSpot(p){if(!p||!p.p)return null;if(isMayor(p))return{x:0,y:36*PAL_S+4,kind:'row',onRow:true,mayor:true};if(p.gb)return{x:p.p.x,y:p.p.y,kind:'row'};const v=p.isl,gx=p.p.gx,gy=p.p.gy,hx=p.p.x,hy=p.p.y,C=[];
+function standSpot(p){if(!p||!p.p)return null;if(atPal(p))return{x:palX(p),y:36*PAL_S+4,kind:'row',onRow:true,mayor:true};if(p.gb)return{x:p.p.x,y:p.p.y,kind:'row'};const v=p.isl,gx=p.p.gx,gy=p.p.gy,hx=p.p.x,hy=p.p.y,C=[];
  // möglichst nah an der Hütte: freier Platz direkt daneben, sonst der nächste Weg (oben, unten, links, rechts)
  for(const [dx,dy] of[[1,0],[-1,0],[0,1],[0,-1],[1,1],[-1,1]]){const cx=gx+dx,cy=gy+dy;if(((cx%5)+5)%5===0||((cy%4)+4)%4===0||v.cell.has(cx+','+cy)||inRes(v.resv,cx,cy))continue;const x=v.x+cx*S,y=v.y+cy*S*.9+2;if(!inside(v,x,y,10))continue;if(PEOPLE.some(q=>q.p&&q!==p&&Math.abs(q.p.x-x)<12&&Math.abs(q.p.y-y)<10))continue;C.push({x,y,kind:'cell',d:Math.hypot(x-hx,(y-hy)*1.2)});}
  for(const r of[Math.floor(gy/4),Math.ceil((gy+.01)/4)]){const y=v.y+r*4*S*.9;C.push({x:hx,y:y-2.6,kind:'row',d:Math.abs(y-hy)+(y<hy?2:0)});}
@@ -1102,11 +1107,11 @@ function draw(){
   if(GROWK!=null&&GROWV===v&&v.i&&GROWK<.12){c.fillStyle=`rgba(245,248,252,${.85*(1-GROWK/.12)})`;shape(c,v,30);c.fill();}}
  NAMES.length=0;TAPS.length=0;for(const b of BAU)if(bauOn(b)&&visR(b.cx,b.cy,b.steg?130:80))drawBau(c,b,nl,z);const OUTG=new Set();if(WK.on&&WK.me)OUTG.add(WK.me);if(sel&&sel.p&&!sel.gb)OUTG.add(sel);
  // Bürgermeisterin arbeitet im Muschelpalast: tagsüber auf der Palasttreppe, golden hervorgehoben
- if(z*S>8&&(nl<.5||isMayor(sel))&&(GROWK==null||GROWV!==MAIN||GROWK>=MAYOR_AT))for(const p of PEOPLE){if(p.beruf!=='Bürgermeisterin')continue;OUTG.add(p);const x=0,y=36*PAL_S+4;if(!vis(x,y))continue;
-  const L=p.LM||(p.LM={...look(p.k),shirt:'#7b3fe0',pants:'#2a1b4a'});const gl=.5+.5*Math.sin(T*2.5);
-  c.fillStyle=`rgba(255,215,90,${.35+.25*gl})`;c.beginPath();c.ellipse(x,y+4.4,6,2,0,0,TAU);c.fill();c.save();c.translate(x,y);person(c,L,0,true,.3+gl*.6);
+ if(z*S>8&&(GROWK==null||GROWV!==MAIN||GROWK>=MAYOR_AT))for(const p of PEOPLE){if(!atPal(p)||!(nl<.5||sel===p))continue;const MYp=isMayor(p);OUTG.add(p);const x=palX(p),y=36*PAL_S+4;if(!vis(x,y))continue;
+  const L=p.LM||(p.LM={...look(p.k),shirt:MYp?'#7b3fe0':'#0a8fd0',pants:MYp?'#2a1b4a':'#1d2a3a'});const gl=.5+.5*Math.sin(T*2.5);
+  if(MYp){c.fillStyle=`rgba(255,215,90,${.35+.25*gl})`;c.beginPath();c.ellipse(x,y+4.4,6,2,0,0,TAU);c.fill();}else{c.fillStyle='rgba(30,40,20,.25)';c.beginPath();c.ellipse(x,y+4.4,2.6,.9,0,0,TAU);c.fill();}c.save();c.translate(x,y);person(c,L,0,true,MYp?.3+gl*.6:0);
   c.restore();
-  if(z*S>30&&sel!==p)NAMES.push(['🎖️ Bürgermeisterin '+p.name,x,y-12.5*L.h,'#ffd23f',0,'#2a1b12']);TAPS.push([x,y,p]);}
+  if(z*S>30&&sel!==p)NAMES.push(MYp?['🎖️ Bürgermeisterin '+p.name,x,y-12.5*L.h,'#ffd23f',0,'#2a1b12']:['⭐ '+p.beruf+' '+p.name,x,y-12.5*L.h-(Math.abs(x)<30?4:0)]);TAPS.push([x,y,p]);}
  // Jogger am Strand: tagsüber 4–6, abends/nachts 2–4 (hier nur vormerken, gezeichnet nach den Küstenhütten)
  const JD=[];if(GROWK==null){if(!JOG.list)jogInit();const nJ=nl>.5?2+(Math.floor(T/60)%3):4+(Math.floor(T/60)%3);for(let i=0;i<Math.min(nJ,JOG.list.length);i++){const j=JOG.list[i];if(j.q.nr>limit||j.q===sel||(WK.on&&j.q===WK.me))continue;OUTG.add(j.q);if(z*S<=8)continue;const [x,y,dx]=jogPos(j);if(vis(x,y))JD.push([j,x,y,dx]);}}
  for(const g of GEB)if(visR(g.cx,g.cy,90)){const gk=GROWK!=null&&GROWV===g.v;if(gk&&GROWK<g.at)continue;const pk=gk?Math.min(1,(GROWK-g.at)/.03):1;if(pk<1){c.save();c.translate(g.cx,g.cy);const sc=.3+.7*pk+Math.sin(pk*Math.PI)*.12;c.scale(sc,sc);c.translate(-g.cx,-g.cy);c.globalAlpha=pk;drawGeb(c,g,nl,z);c.restore();c.globalAlpha=1;for(let i=0;i<14;i++){const a=i/14*TAU,r2=10+pk*40;c.fillStyle=['#ffd23f','#ff6fa3','#4fc3dc','#7dd3a8'][i%4];c.beginPath();c.arc(g.cx+Math.cos(a)*r2,g.cy+Math.sin(a)*r2*.8,1.6*(1-pk)+.3,0,TAU);c.fill();}}else drawGeb(c,g,nl,z);if(!gk)guests(c,g,nl,z,OUTG);}
@@ -1233,14 +1238,14 @@ function draw(){
   c.fillStyle=isMayor(q)?'#ffd23f':'rgba(255,255,255,.94)';c.beginPath();c.roundRect(x-w/2,y+8.6,w,3.7,1.8);c.fill();c.fillStyle='#2a1b12';if(fs<2.35){c.font='800 '+fs+'px '+FONT;c.fillText(nm,x,y+10.45+fs*.4);c.font='800 2.35px '+FONT;}else c.fillText(nm,x,y+11.4);}}}
   if(NAMES.length){c.font='800 2.8px '+FONT;c.textAlign='center';for(const [nm0,x,ly,bg,fs,tc] of [...NAMES.filter(n=>n[3]!=='#e8467c'),...NAMES.filter(n=>n[3]==='#e8467c')]){if(nm0!==(sel&&sel.name)&&near(x,ly))continue;let f=fs||2.8;const nm=nm0;c.font='800 '+f+'px '+FONT;{const mw=fs?16:24,tw1=c.measureText(nm).width;if(tw1>mw){f=f*mw/tw1;c.font='800 '+f+'px '+FONT;}}const tw=c.measureText(nm).width+f*1.07;c.fillStyle=bg||'rgba(42,27,18,.85)';c.beginPath();c.roundRect(x-tw/2,ly,tw,f*1.5,f*.75);c.fill();c.fillStyle=tc||'#fff';c.fillText(nm,x,ly+f*1.1);}}
  if(z*S>4)for(const b of BAU)if(bauOn(b)&&visR(b.steg?b.sx:b.cx,b.steg?b.sy:b.y0,60))drawBauSign(c,b);
- if(sel&&sel.p&&sel.nr<=limit){const MY=isMayor(sel),{x,y}=MY?standSpot(sel):sel.p,b=REDUCED?0:Math.abs(Math.sin(T*3))*4;c.strokeStyle='#e8467c';c.lineWidth=Math.max(1.5,3/z);c.beginPath();c.arc(x,y,13,0,TAU);c.stroke();if(sel.gb||MY||REDUCED||T-selT>=2){const k=Math.max(1,2.5/z);c.fillStyle='#e8467c';c.strokeStyle='#2a1b12';c.lineWidth=.8*k;c.beginPath();c.moveTo(x,y-14-b);c.lineTo(x-4*k,y-14-b-8*k);c.lineTo(x+4*k,y-14-b-8*k);c.closePath();c.fill();c.stroke();}
+ if(sel&&sel.p&&sel.nr<=limit){const MY=isMayor(sel),PW=atPal(sel),{x,y}=PW?standSpot(sel):sel.p,b=REDUCED?0:Math.abs(Math.sin(T*3))*4;c.strokeStyle='#e8467c';c.lineWidth=Math.max(1.5,3/z);c.beginPath();c.arc(x,y,13,0,TAU);c.stroke();if(sel.gb||PW||REDUCED||T-selT>=2){const k=Math.max(1,2.5/z);c.fillStyle='#e8467c';c.strokeStyle='#2a1b12';c.lineWidth=.8*k;c.beginPath();c.moveTo(x,y-14-b);c.lineTo(x-4*k,y-14-b-8*k);c.lineTo(x+4*k,y-14-b-8*k);c.closePath();c.fill();c.stroke();}
   // Name über dem Kreis, damit er nicht verdeckt wird
   // die Person steht vor ihrem Haus und winkt dem Besucher zu
   // Standplatz: auf dem nächsten Weg neben der Hütte (nie auf Dächern oder in Hütten)
   const SP=standSpot(sel),onRow=SP.onRow;
   const pz=z*S>8,px=SP.x,py=SP.y;let ny=y+8.4;
   const age=REDUCED?0:T-selT,stay=2;let gone=false;
-  if(pz&&!sel.gb&&!MY){const L=sel.L||(sel.L=look(sel.k));
+  if(pz&&!sel.gb&&!PW){const L=sel.L||(sel.L=look(sel.k));
    if(age<stay){c.save();c.translate(px,py);const hg=c.createRadialGradient(0,-1,0,0,-1,8*L.h);hg.addColorStop(0,'rgba(255,255,255,.75)');hg.addColorStop(1,'rgba(255,255,255,0)');c.fillStyle=hg;c.beginPath();c.arc(0,-1,8*L.h,0,TAU);c.fill();c.fillStyle='rgba(30,40,20,.25)';c.beginPath();c.ellipse(0,4.4,2.6,.9,0,0,TAU);c.fill();person(c,L,0,true,.5+Math.abs(Math.sin(T*6))*1.2);c.restore();}
    else{// geht ganz normal zu Fuß vorwärts weiter und läuft danach frei über die Wege (wie ein Passant, antippbar)
     let r=ROAM.sel;if(!r||r.q!==sel||r.n!==selN){const v0=sel.isl,dir=hash(sel.nr,selN+7)<.5?-1:1,gyc=Math.round((py-2-v0.y)/(S*.9)),ry=v0.y+Math.ceil((gyc+.01)/4)*4*S*.9-2.6,K=x=>(x-v0.x)/(5*S),M=y=>(y+2.6-v0.y)/(4*S*.9);
@@ -1249,9 +1254,9 @@ function draw(){
      r=ROAM.sel={q:sel,n:selN,v:v0,x:px,y:py,k:tk,m:tm,tk:null,tm:null,pk:null,pm:null,wp:[...wp,rNode(v0,tk,tm)],pause:0,sp:5,dir,vert:SP.kind==='col',idx:sel.nr};}
     drawMover(c,{...L,mode:'walk',ph:sel.nr,idle:r.pause>0},r.x,r.y,r.dir,r.vert,'walk');TAPS.push([r.x,r.y,sel]);}
    ny=py+5.6;}
-  else if(pz&&(sel.gb||MY))ny=py+5.6;
+  else if(pz&&(sel.gb||PW))ny=py+5.6;
   if(z*S>20){const fs=Math.max(2.6,9/z),nm=sel.name;c.font='900 '+fs+'px '+FONT;c.textAlign='center';const w=c.measureText(nm).width+fs*1.2,h=fs*1.55,ty=ny;c.fillStyle=MY?'#ffd23f':'#e8467c';c.strokeStyle=MY?'#2a1b12':'#fff';c.lineWidth=Math.max(.5,1.5/z);c.beginPath();c.roundRect(x-w/2,ty,w,h,h/2);c.fill();c.stroke();c.fillStyle=MY?'#2a1b12':'#fff';c.fillText(nm,x,ty+h*.72);}
-  if(pz&&(sel.gb||MY||age<stay)){const txt='Ich bin du! 👋',fs=Math.max(2.4,8/z);c.font='900 '+fs+'px '+FONT;c.textAlign='center';const w=c.measureText(txt).width+fs*1.3,h=fs*1.7,bx=px,by=py-6.3*(sel.L?sel.L.h:1)-h-fs*.8;
+  if(pz&&(sel.gb||PW||age<stay)){const txt='Ich bin du! 👋',fs=Math.max(2.4,8/z);c.font='900 '+fs+'px '+FONT;c.textAlign='center';const w=c.measureText(txt).width+fs*1.3,h=fs*1.7,bx=px,by=py-6.3*(sel.L?sel.L.h:1)-h-fs*.8;
    c.fillStyle='#fff';c.strokeStyle='#2a1b12';c.lineWidth=Math.max(.4,1.4/z);c.beginPath();c.roundRect(bx-w/2,by,w,h,h/2);c.fill();c.stroke();
    c.beginPath();c.moveTo(px-fs*.45,by+h-.2);c.lineTo(px,by+h+fs*.75);c.lineTo(px+fs*.45,by+h-.2);c.fill();c.stroke();c.fillRect(px-fs*.42,by+h-c.lineWidth*1.2,fs*.84,c.lineWidth*1.4);
    c.fillStyle='#2a1b12';c.fillText(txt,bx,by+h*.7);}}
@@ -1309,7 +1314,7 @@ $('growbtn').onclick=()=>{if(growing||!N)return;const v=islInView();growing=true
 
 // ---------- Auswahl + Inselpass ----------
 const status=p=>AMT[p.name.toLowerCase()]||(p.wait?'Zieht ein, sobald die nächste Insel öffnet':p.mark?'War schon im Video':'Einwohner');
-const wo=p=>p.wait?'⛴️ wartet am Steg':p.isl.emoji+' '+p.isl.name+(p.hut&&!p.gb?' · Hütte '+p.hut:'');
+const wo=p=>p.wait?'⛴️ wartet am Steg':p.isl.emoji+' '+p.isl.name+(p.home==='Muschelpalast'?' · wohnt im Muschelpalast':p.hut&&!p.gb?' · Hütte '+p.hut:'');
 function select(p,doFly=true){sel=p;selT=T;selN++;limit=N;setDock(true);$('join').hidden=true;setTimeout(()=>{if(typeof sonneCheck==='function')sonneCheck();},900);
  // Name steht oben im Suchfeld – keine zusätzliche Zeile darunter
  $('pop').hidden=true;$('pname').textContent=p.name;$('q').value=p.name;$('qx').hidden=false;
@@ -1346,7 +1351,7 @@ function avatarCanvas(p,sz=128){const cv=document.createElement('canvas');cv.wid
 function avatarURL(p){return p.avURL||(p.avURL=avatarCanvas(p).toDataURL('image/png'));}
 let mpThird=false;
 function zeigePass(p,third){mpP=p;mpThird=!!third;$('mp').hidden=false;$('mpf').hidden=true;$('mpp').hidden=false;$('mpcardbox').innerHTML=passCard(p);bonUpd(p);
- $('mpgo').textContent='🏠 Zu '+p.name+(/[sßxz]$/i.test(p.name)?'’':'s')+' Hütte';$('mpshare').hidden=false;$('mpalt').textContent=third?'Meinen eigenen Namen suchen':'Anderen Namen suchen';
+ $('mpgo').textContent=p.home==='Muschelpalast'?'🏰 Zum Muschelpalast':'🏠 Zu '+p.name+(/[sßxz]$/i.test(p.name)?'’':'s')+' Hütte';$('mpshare').hidden=false;$('mpalt').textContent=third?'Meinen eigenen Namen suchen':'Anderen Namen suchen';
  $('mp').querySelector('h2').textContent=third?'🪪 Muschelpass von '+p.name:'🪪 Muschelpass';
  if(!third)try{localStorage.setItem('mt-me',p.name);}catch(e){}}
 document.addEventListener('click',e=>{const b=e.target.closest('.mpshi');if(b){const p=byName.get((b.dataset.n||'').toLowerCase());if(p){mpP=p;$('mpshare').click();}return;}

@@ -35,10 +35,13 @@ section{background:#fff;border:3px solid var(--ink);border-radius:20px;padding:1
 <svg viewBox="0 0 400 24" preserveAspectRatio="none"><path d="M0 14 Q25 2 50 14 T100 14 T150 14 T200 14 T250 14 T300 14 T350 14 T400 14 V24 H0Z" fill="#fff4e0"/></svg></header>
 <main>
  <p class="hint">💬 Du willst auch einen Job auf Muschel-Tal? Schreib es in die Kommentare unter dem neuesten Video von <a href="https://www.tiktok.com/@muscheltal" target="_blank" rel="noopener">@muscheltal</a> auf TikTok!</p>
-<section><a class="ort" href="./?ort=Muschelpalast">🏰 Muschelpalast <small>auf der Karte ansehen →</small></a><div class="pl"><a class="p chef" href="./?n=%40lillygyqcf0"><b>🎖️ @lillygyqcf0</b><span>Bürgermeisterin</span></a></div></section>
+<section><a class="ort" href="./?ort=Muschelpalast">🏰 Muschelpalast <small>auf der Karte ansehen →</small></a><div class="pl"><a class="p chef" href="./?n=%40lillygyqcf0" data-bis="2026-11-16"><b>🎖️ @lillygyqcf0</b><span>Bürgermeisterin · bis 16.11.</span></a><a class="p chef" href="./?n=%40prvt.lott1" data-bis="2026-11-16"><b>⭐ @prvt.lott1</b><span>Palast-Leitung · bis 16.11.</span></a></div></section>
 <section><a class="ort" href="./?ort=D%C3%B6nerbude">🥙 Dönerbude <small>auf der Karte ansehen →</small></a><div class="pl"><a class="p chef" href="./?n=%40lotta.fsthff"><b>⭐ @lotta.fsthff</b><span>Leitung</span></a><a class="p" href="./?n=%40alana_wbr"><b>@alana_wbr</b><span>Team</span></a><a class="p" href="./?n=%40em1lia.brn"><b>@em1lia.brn</b><span>Team</span></a></div></section>
 <section><a class="ort" href="./?ort=Strandbar">🍹 Strandbar <small>auf der Karte ansehen →</small></a><div class="pl"><a class="p chef" href="./?n=%40paulepfpgfn"><b>⭐ @paulepfpgfn</b><span>Leitung</span></a><a class="p" href="./?n=%40khmr.496"><b>@khmr.496</b><span>Team</span></a></div></section>
  <a class="cta" href="https://www.tiktok.com/@muscheltal" target="_blank" rel="noopener">💬 Auf TikTok kommentieren</a>
 </main>
+<script>/* Jobs mit Ablaufdatum: nach dem letzten Tag automatisch ausblenden */
+(()=>{let h;try{h=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Berlin'}).format(new Date());}catch(e){h=new Date().toISOString().slice(0,10);}
+document.querySelectorAll('[data-bis]').forEach(a=>{if(a.dataset.bis<h)a.remove();});document.querySelectorAll('section').forEach(s=>{if(!s.querySelector('.p'))s.remove();});})();</script>
 </body>
 </html>
