@@ -711,13 +711,13 @@ const QP=new URLSearchParams(location.search);
 const WX={code:0,wind:8,sunrise:0,sunset:0};
 {const f={sonne:0,heiter:2,wolken:3,nebel:45,regen:63,schnee:73,gewitter:95}[QP.get('wetter')];if(f!==undefined)WX.code=f,WX.fixed=1;}
 // Sonnenaufgang (Aufgang bis +30 Min.) und Sonnenuntergang (30 Min. davor bis Untergang) am eingestellten Ort
-const SUNW=60*60e3;
+const SUNW=45*60e3;
 function sunTimes(){let sr=WX.sunrise,ss=WX.sunset;if(!sr){const b=berlin(),off=Date.now()-(+b);const d=new Date(+b);d.setHours(7,45,0,0);sr=+d+off;d.setHours(16,30,0,0);ss=+d+off;}return[sr,ss];}
 function sunPhase(){const z=QP.get('zeit');if(z==='aufgang')return{k:'auf',p:+(QP.get('p')||.5)};if(z==='untergang')return{k:'unter',p:+(QP.get('p')||.5)};if(z)return{k:null,p:0};
- const now=Date.now(),[sr,ss]=sunTimes();if(now>=sr&&now<sr+SUNW)return{k:'auf',p:(now-sr)/SUNW};if(now>=ss-SUNW&&now<ss)return{k:'unter',p:(now-(ss-SUNW))/SUNW};return{k:null,p:0};}
+ const now=Date.now(),[sr,ss]=sunTimes();if(now>=sr&&now<sr+SUNW)return{k:'auf',p:(now-sr)/SUNW};if(now>=ss&&now<ss+SUNW)return{k:'unter',p:(now-ss)/SUNW};return{k:null,p:0};}
 function nightLevel(){const z=QP.get('zeit');if(z==='tag')return 0;if(z==='nacht')return 1;if(z==='daemmerung')return .5;
  const ph=sunPhase();if(ph.k==='auf')return .75*(1-ph.p);if(ph.k==='unter')return .75*ph.p;if(z)return 0;
- const now=Date.now(),[sr,ss]=sunTimes();return now<sr||now>=ss?1:0;}
+ const now=Date.now(),[sr,ss]=sunTimes();return now<sr||now>=ss+SUNW?1:0;}
 function kind(){const c=WX.code;if(c>=95)return'storm';if((c>=71&&c<=77)||c===85||c===86)return'snow';if((c>=51&&c<=67)||(c>=80&&c<=82))return'rain';if(c===45||c===48)return'fog';if(c===3)return'clouds';if(c===1||c===2)return'fair';return'clear';}
 const WXT={clear:['☀️ Sonnig','🌙 Klar'],fair:['🌤️ Heiter','🌙 Leicht bewölkt'],clouds:['☁️ Bewölkt','☁️ Bewölkt'],fog:['🌫️ Nebel','🌫️ Nebel'],rain:['🌧️ Regen','🌧️ Regen'],snow:['🌨️ Schnee','🌨️ Schnee'],storm:['⛈️ Gewitter','⛈️ Gewitter']};
 function liveText(){const d=berlin(),ph=sunPhase(),w=WXT[kind()][ph.k==='unter'||!ph.k&&nightLevel()>.5?(ph.k?0:1):0],sn=ph.k?(ph.k==='auf'?['🌅','Sonnenaufgang']:['🌇','Sonnenuntergang']):null;
