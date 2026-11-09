@@ -1,0 +1,58 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+.pl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 28px 12px; border-radius: 999px; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); white-space: nowrap; }
+    #s01-q { top: 300px; font-size: 56px; background: #e2560c; }
+    #s01-nm { top: 420px; font-size: 52px; background: #fff; color: #2a1b12; }
+    #s01-tt { top: 300px; font-size: 50px; background: #2a1b12; }
+    #s01-h { top: 410px; font-size: 84px; background: #fe2c55; padding: 4px 40px 14px; }
+    .fbtn { position: absolute; left: 0; right: 0; margin: 0 auto; top: 580px; width: 400px; height: 110px; border-radius: 55px; background: #fe2c55; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 52px; display: grid; place-items: center; box-shadow: 0 0 0 5px #2a1b12, 0 12px 0 rgba(0,0,0,.25); }
+    .fbtn2 { position: absolute; inset: 0; border-radius: 55px; background: #fff; color: #0a78c2; display: grid; place-items: center; opacity: 0; }
+    #s01-hand { position: absolute; left: 680px; top: 630px; font-size: 110px; }
+    #s01-k { top: 730px; font-size: 44px; background: #18b8c0; }
+    #s01-st { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 840px; color: #2e9e5b; border-color: #2e9e5b; background: #fff; transform: rotate(-4deg); font-size: 56px; white-space: nowrap; }
+    #s01-fr { top: 970px; font-size: 40px; background: #e8467c; }
+  </style>
+  <div id="root" data-composition-id="s01" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s01-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s01-q" class="pl">🏠 DEINE EIGENE HÜTTE?</div>
+      <div id="s01-nm" class="pl">mit <span style="color:#e8467c">@deinem.namen</span></div>
+      <div id="s01-tt" class="pl">📲 Folge mir auf TikTok</div>
+      <div id="s01-h" class="pl">@muscheltal</div>
+      <div id="s01-btn" class="fbtn">+ Folgen<div id="s01-btn2" class="fbtn2">✓ Gefolgt</div></div>
+      <div id="s01-hand" data-layout-ignore>👆</div>
+      <div id="s01-k" class="pl">🥥 Deine Hütte auf Kokos-Küste</div>
+      <div id="s01-st" class="stamp" data-layout-ignore>🏠 HÜTTE SICHERN!</div>
+      <div id="s01-fr" class="pl">👯 Freunde markieren = Nachbarn</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      /*__COMMON_JS__*/
+      wrapBt("#s01-stage");
+      const tl = gsap.timeline({ paused: true });
+      const hu = at("L1", "Hütte"), na = at("L1", "Namen"), l2 = line("L2")[0], mu = at("L2", "@muscheltal"), ko = at("L3", "Kokos-Küste"), si = at("L4", "sichern"), fr = at("L4", "Freunde");
+      tl.fromTo("#s01-q", { opacity: 0, scale: .3, rotation: -8 }, { opacity: 1, scale: 1, rotation: -2, duration: .35, ease: "back.out(2.6)" }, .05);
+      tl.fromTo("#s01-nm", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, na - .3);
+      tl.to(["#s01-q", "#s01-nm"], { opacity: 0, y: -30, duration: .25 }, l2 - .25);
+      tl.fromTo("#s01-tt", { opacity: 0, y: -40 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, l2);
+      tl.fromTo("#s01-h", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, mu - .15);
+      tl.to("#s01-h", { scale: 1.08, duration: .25, yoyo: true, repeat: 3, ease: "sine.inOut" }, mu + .3);
+      tl.fromTo("#s01-btn", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, mu + .1);
+      tl.fromTo("#s01-hand", { opacity: 0, x: 160, y: 160 }, { opacity: 1, x: 0, y: 0, duration: .25, ease: "power3.out" }, mu + .4);
+      tl.to("#s01-hand", { y: -26, scale: .9, duration: .1, yoyo: true, repeat: 1 }, mu + .75);
+      tl.to("#s01-btn2", { opacity: 1, duration: .05 }, mu + .85);
+      tl.fromTo("#s01-btn", { scale: 1 }, { scale: 1.15, duration: .12, yoyo: true, repeat: 1, immediateRender: false }, mu + .85);
+      tl.to("#s01-hand", { opacity: 0, duration: .25 }, mu + 1.3);
+      tl.fromTo("#s01-k", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, ko - .2);
+      tl.fromTo("#s01-st", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, si - .1);
+      tl.to("#s01-st", { scale: 1.07, duration: .25, yoyo: true, repeat: 5, ease: "sine.inOut" }, si + .3);
+      tl.fromTo("#s01-fr", { opacity: 0, x: -100 }, { opacity: 1, x: 0, duration: .3, ease: "back.out(2)" }, fr - .15);
+      
+      window.__timelines["s01"] = tl;
+    })();
+  </script>
+</template>
