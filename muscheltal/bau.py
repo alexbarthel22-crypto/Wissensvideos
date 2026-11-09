@@ -331,7 +331,7 @@ def berufe(sauber, insel, out):
     teile = []
     for ort in sorted(orte, key=lambda o: (o != "Muschelpalast", o)):
         leute = sorted(orte[ort], key=lambda x: (rang.get(x[0], 5), nr[x[1].lower()]))
-        li = "".join(f'<a class="p{" chef" if x[0] in rang else ""}" href="./?n={quote("@" + x[1])}"{f' data-bis="{x[2]}"' if x[2] else ""}><b>{H.escape("⭐ " if rang.get(x[0]) == 1 else "🎖️ " if rang.get(x[0]) == 0 else "")}@{H.escape(x[1])}</b><span>{H.escape(x[0])}{H.escape(" · bis Mo " + ".".join(str(int(t)) for t in reversed(x[2][:10].split("-")[1:])) + "." + (", " + str(int(x[2][11:13])) + " Uhr" if len(x[2]) > 10 else "")) if x[2] else ""}</span></a>' for x in leute)
+        li = "".join(f'<a class="p{" chef" if x[0] in rang else ""}" href="./?n={quote("@" + x[1])}"{f' data-bis="{x[2]}"' if x[2] else ""}><b>{H.escape("👑 " if x[0] == "Palast-Leitung" else "⭐ " if rang.get(x[0]) == 1 else "🎖️ " if rang.get(x[0]) == 0 else "")}@{H.escape(x[1])}</b><span>{H.escape(x[0])}{H.escape(" · bis Mo " + ".".join(str(int(t)) for t in reversed(x[2][:10].split("-")[1:])) + "." + (", " + str(int(x[2][11:13])) + " Uhr" if len(x[2]) > 10 else "")) if x[2] else ""}</span></a>' for x in leute)
         teile.append(f'<section><a class="ort" href="./?ort={quote(ort)}">{emo.get(ort, "📍")} {H.escape(ort)} <small>auf der Karte ansehen →</small></a><div class="pl">{li}</div></section>')
     seite = head + "\n" + keep + """
 .hint{background:#fff;border:3px dashed var(--ink);border-radius:18px;padding:14px;margin:4px 0 18px;font-weight:800;text-align:center}
