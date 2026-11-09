@@ -178,7 +178,8 @@
       const N1 = makePerson(2, null, null), N2 = makePerson(5, null, null);
 
       const dustT = (() => { const c = document.createElement('canvas'); c.width = c.height = 128; const x = c.getContext('2d'); const gr = x.createRadialGradient(64, 64, 0, 64, 64, 64); gr.addColorStop(0, 'rgba(235,215,170,.9)'); gr.addColorStop(1, 'rgba(235,215,170,0)'); x.fillStyle = gr; x.fillRect(0, 0, 128, 128); return new THREE.CanvasTexture(c); })();
-      const DUST = []; for (let k = 0; k < 46; k++) { const d = new THREE.Sprite(new THREE.SpriteMaterial({ map: dustT, depthWrite: false, transparent: true, opacity: 0 })); d.userData = { a: hash(k, 50) * TAU, v: 2.2 + hash(k, 51) * 3.2, up: .4 + hash(k, 52) * 1.4, s: .9 + hash(k, 53) * 1.4 }; S.add(d); DUST.push(d); }
+      const SHOCK = new THREE.Mesh(new THREE.RingGeometry(1.6, 2.0, 48), new THREE.MeshBasicMaterial({ color: 0xfff1d0, transparent: true, opacity: .7, depthWrite: false })); SHOCK.rotation.x = -Math.PI / 2; SHOCK.position.set(0, .05, .3); SHOCK.visible = false; S.add(SHOCK);
+      const DUST = []; for (let k = 0; k < 70; k++) { const d = new THREE.Sprite(new THREE.SpriteMaterial({ map: dustT, depthWrite: false, transparent: true, opacity: 0 })); d.userData = { a: hash(k, 50) * TAU, v: 2.2 + hash(k, 51) * 3.2, up: .4 + hash(k, 52) * 1.4, s: .9 + hash(k, 53) * 1.4 }; S.add(d); DUST.push(d); }
       const sunT = (() => { const c = document.createElement('canvas'); c.width = c.height = 256; const x = c.getContext('2d'); const gr = x.createRadialGradient(128, 128, 0, 128, 128, 128); gr.addColorStop(0, 'rgba(255,240,190,1)'); gr.addColorStop(.25, 'rgba(255,190,90,1)'); gr.addColorStop(.32, 'rgba(255,140,60,.55)'); gr.addColorStop(1, 'rgba(255,120,60,0)'); x.fillStyle = gr; x.fillRect(0, 0, 256, 256); return new THREE.CanvasTexture(c); })();
       const SUNSP = new THREE.Sprite(new THREE.SpriteMaterial({ map: sunT, fog: false, depthWrite: false, transparent: true })); SUNSP.scale.set(40, 40, 1); SUNSP.position.set(-10, 6, -190); SUNSP.visible = false; S.add(SUNSP);
       const ROOTEL = document.querySelector('.w-root'), SKY_DAY = 'linear-gradient(180deg, #5fc4ee 0%, #9fdcf5 38%, #e8f7fb 52%, #bfe8f5 60%)', SKY_SET = 'linear-gradient(180deg, #2b2a6b 0%, #8a3f7a 26%, #f0716a 42%, #ffb35c 52%, #ffd59a 58%)';
@@ -186,7 +187,7 @@
         S.fog.color.set(on ? 0xf3a070 : 0xcdeefa); sea.material.color.set(on ? 0x2f6f9a : 0x2cb6cf); ROOTEL.style.background = on ? SKY_SET : SKY_DAY; }
       // ---------- Zeit / Kamera ----------
       const s02 = C.s02[0], s03 = C.s03[0], s04 = C.s04[0], s05 = C.s05[0], END = C.__dur;
-      const T_FALL = -.32, T_HOUSE = .05, T_SIGN = T_HOUSE + .35, T_BF = s04 + .3, T_HI = 1e9;
+      const T_FALL = 0, T_HOUSE = .42, T_SIGN = T_HOUSE + .35, T_BF = s04 + .3, T_HI = 1e9;
       const ease = (k) => k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2, cl = (v) => Math.max(0, Math.min(1, v));
       const lerp = (a, b, k) => a + (b - a) * k, V = (x, y, z) => new THREE.Vector3(x, y, z);
       function camShot(t) {
@@ -201,9 +202,10 @@
         // Häuser
         const ft = Math.max(0, t - T_FALL), H0 = 26, gA = 2 * H0 / Math.pow(T_HOUSE - T_FALL, 2), fy = Math.max(0, H0 - .5 * gA * ft * ft);
         MY.position.y = fy; MY.visible = true; MY.rotation.y = fy > 0 ? (fy / H0) * .6 : 0;
-        const lk = t - T_HOUSE, sq = lk > 0 && lk < .5 ? Math.sin(lk / .5 * Math.PI * 2) * Math.exp(-lk * 6) * .22 : 0; MY.scale.set(1 + sq * .6, 1 - sq, 1 + sq * .6);
-        DUST.forEach((d) => { const u = d.userData, k = (t - T_HOUSE) / 1.6; if (k <= 0 || k >= 1) { d.material.opacity = 0; return; } const r = 1.9 + u.v * (1 - Math.pow(1 - k, 3)) * 1.1;
-          d.position.set(Math.cos(u.a) * r, .25 + u.up * Math.sin(Math.min(1, k * 2) * Math.PI / 2) * (1 - k * .4), Math.sin(u.a) * r); d.scale.setScalar(u.s * (1 + k * 2.2)); d.material.opacity = .75 * (1 - k); }); MY.userData.sign.visible = t >= T_SIGN && t < C.s02[0]; MY2.visible = t >= C.s02[0]; MY.userData.sign.scale.setScalar(t >= T_SIGN ? Math.min(1, .3 + (t - T_SIGN) * 4) : 1);
+        const lk = t - T_HOUSE, sq = lk > 0 && lk < .5 ? Math.sin(lk / .5 * Math.PI * 2) * Math.exp(-lk * 5) * .38 : 0; MY.scale.set(1 + sq * .6, 1 - sq, 1 + sq * .6);
+        DUST.forEach((d) => { const u = d.userData, k = (t - T_HOUSE) / 1.6; if (k <= 0 || k >= 1) { d.material.opacity = 0; return; } const r = 1.9 + u.v * (1 - Math.pow(1 - k, 3)) * 1.6;
+          d.position.set(Math.cos(u.a) * r, .25 + u.up * Math.sin(Math.min(1, k * 2) * Math.PI / 2) * (1 - k * .4), Math.sin(u.a) * r); d.scale.setScalar(u.s * 1.5 * (1 + k * 2.4)); d.material.opacity = .85 * (1 - k); });
+        { const k = (t - T_HOUSE) / .7; SHOCK.visible = k > 0 && k < 1; if (SHOCK.visible) { SHOCK.scale.setScalar(1 + k * 6); SHOCK.material.opacity = .7 * (1 - k); } } MY.userData.sign.visible = t >= T_SIGN && t < C.s02[0]; MY2.visible = t >= C.s02[0]; MY.userData.sign.scale.setScalar(t >= T_SIGN ? Math.min(1, .3 + (t - T_SIGN) * 4) : 1);
         BF.visible = false; const bk = cl((t - T_BF) / .45); BF.scale.setScalar(Math.max(.0001, bk >= 1 ? 1 : 1 - Math.pow(1 - bk, 3) * Math.cos(bk * 9)));
         // Palmen
         PALMS.forEach((p) => { p.userData.crown.rotation.z = Math.sin(t * 1.3 + p.userData.i) * .06; p.userData.crown.rotation.x = Math.cos(t * 1.1 + p.userData.i) * .04; });
@@ -221,7 +223,7 @@
           N1.rotation.y = Math.PI / 2; N2.rotation.y = -Math.PI / 2; pose(N1, t, k < 1 ? "walk" : "stand"); pose(N2, t, k < 1 ? "walk" : "stand");
           if (t >= T_HI) { const h = Math.min(1, (t - T_HI) / .15); N1.userData.arms[1].rotation.z = 0; N1.userData.arms[1].rotation.x = -2.6 * h; N2.userData.arms[0].rotation.x = -2.6 * h; } }
         foam.scale.setScalar(1 + Math.sin(t * 1.4) * .004);
-        const [p, l] = camShot(t); const sk = t > T_HOUSE && t < T_HOUSE + .35 ? (1 - (t - T_HOUSE) / .35) * .18 : 0; p.x += Math.sin(t * 90) * sk; p.y += Math.cos(t * 77) * sk; cam.position.copy(p); cam.lookAt(l); R.render(S, cam); }
+        const [p, l] = camShot(t); const sk = t > T_HOUSE && t < T_HOUSE + .55 ? Math.pow(1 - (t - T_HOUSE) / .55, 1.5) * .5 : 0; p.x += Math.sin(t * 90) * sk; p.y += Math.cos(t * 77) * sk; cam.position.copy(p); cam.lookAt(l); R.render(S, cam); }
       const tl = gsap.timeline({ paused: true }), o = { t: 0 };
       tl.to(o, { t: C.__dur, duration: C.__dur, ease: "none", onUpdate: () => draw(o.t) }, 0);
       tl.to([cv, document.querySelector(".w-root")], { opacity: 0, duration: .6, ease: "power1.inOut" }, C.s04[0] - .3);

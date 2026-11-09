@@ -141,8 +141,9 @@ scene("s01", LILITA + "\n    " + PILL + """
 """
       <div id="s01-hk"><div class="hk-l"><span class="hk-w" id="hw0">DAS</span><span class="hk-w" id="hw1">KÖNNTE</span></div><div class="hk-l"><span class="hk-w" id="hw2">DEIN</span><span class="hk-w" id="hw3">HAUS</span></div><div class="hk-l"><span class="hk-w" id="hw4">SEIN!</span></div></div>
       <div id="s01-fl"></div>""",
-"""      const TH = .9;
-      tl.fromTo("#s01-fl", { opacity: 0 }, { opacity: .45, duration: .06, yoyo: true, repeat: 1, immediateRender: false }, TH);
+"""      const TH = .42;
+      tl.fromTo("#s01-fl", { opacity: 0 }, { opacity: .6, duration: .05, yoyo: true, repeat: 1, immediateRender: false }, TH);
+      tl.fromTo("#s01-hk", { y: 0 }, { y: 16, duration: .05, yoyo: true, repeat: 3, immediateRender: false }, TH);
       const hk = ["Das", "könnte", "dein", "Haus", "sein"];
       tl.set("#s01-hk", { opacity: 1 }, 0);
       hk.forEach((w, i) => { const t0 = Math.max(0, at("L1", w) - .03); tl.set("#hw" + i, { zIndex: 5 }, t0); tl.fromTo("#hw" + i, { scale: 1 }, { scale: .5, duration: .05, immediateRender: false }, t0); tl.to("#hw" + i, { scale: [1.8, 1.5, 3.2, 2.0, 1.9][i], duration: .13, ease: "power2.out" }, t0 + .05); tl.to("#hw" + i, { scale: i === 2 ? 1.18 : 1, color: "#ffe14d", textShadow: "0 0 26px rgba(255,225,77,1), 0 0 8px rgba(255,255,200,1)", duration: .22, ease: "back.out(2.5)" }, t0 + .18); tl.to("#hw" + i, { textShadow: "0 0 0px rgba(255,225,77,0), 0 0 0px rgba(255,255,200,0)", duration: .5 }, t0 + .45); });

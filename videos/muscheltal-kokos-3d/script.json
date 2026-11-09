@@ -37,24 +37,29 @@
      "id": "L1",
      "text": "Das könnte *y:dein *y:Haus sein!",
      "speed": 1.1,
-     "style": "Style: a young man who is absolutely euphoric and super excited, almost shouting with joy, like announcing the best news ever to his followers. Very energetic, big emotions, but natural German intonation.\nPace: fast.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
+     "style": "Style: a young man, absolutely euphoric and excited, announcing big news. Put a strong, loud emphasis on the very first word 'Das' – stretch it a little – then the rest excited.\nPace: fast.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
     }
    ],
    "sfx": [
     {
      "name": "whoosh",
      "at": "s01+0.0",
-     "volume": 0.35
+     "volume": 0.45
     },
     {
      "name": "impact-bass-1",
-     "at": "s01+0.9",
+     "at": "s01+0.42",
+     "volume": 1.0
+    },
+    {
+     "name": "impact-bass-2",
+     "at": "s01+0.42",
      "volume": 0.6
     },
     {
      "name": "pop",
      "at": "L1:Haus",
-     "volume": 0.35
+     "volume": 0.3
     }
    ]
   },
@@ -67,7 +72,7 @@
      "text": "Denn jeder Follower bekommt / eine *g:eigene *g:Hütte – / mit *y:seinem *y:Namen drauf!",
      "speed": 1.1,
      "style": "Style: a young man who is absolutely euphoric and super excited, almost shouting with joy, like announcing the best news ever to his followers. Very energetic, big emotions, but natural German intonation.\nPace: fast.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-     "pause": 0.9
+     "pause": 0.15
     }
    ],
    "sfx": [
@@ -109,7 +114,7 @@
    "lines": [
     {
      "id": "L5",
-     "text": "Und das wird *g:aktuell *g:gebaut: / Im *y:Hotel können viele von euch / *y:wohnen und *y:arbeiten – / und mit der *b:Anlegestelle / könnt ihr von *b:Insel zu *b:Insel reisen!",
+     "text": "Und das wird *g:aktuell *g:gebaut: / Im *y:Hotel *y:Sandkorn können viele von euch / *y:wohnen und *y:arbeiten – / und mit der *b:Anlegestelle / könnt ihr von *b:Insel zu *b:Insel reisen!",
      "speed": 1.05,
      "style": "Style: a young man, friendly and positive, telling his friends about his island, natural normal speaking pitch, not shouting, relaxed.\nPace: natural.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
      "pause": 0.5
