@@ -649,6 +649,12 @@ for(const v of ISL){v.lamps=[];v.benches=[];if(!v.open||!v.plots.length)continue
   if(!v.i&&(Math.hypot(x-PIER1[0],y-PIER1[1])<90||Math.hypot(x-PIER0[0],y-PIER0[1])<40||(PJ&&Math.hypot(x-BB[0],y-BB[1])<50)))continue;
   if(v.benches.some(([bx,by])=>Math.hypot(bx-x,by-y)<70)||inPlot(v,x,y,6))continue;v.benches.push([x,y]);n++;}
  v.benches=v.benches.filter(([x,y])=>!inPlot(v,x,y,6)&&!nearHut(x,y)&&!inLab(x,y));v.lamps=v.lamps.filter(([x,y])=>!inPlot(v,x,y,4)&&!inLab(x,y));}
+// Gegenstände, die in einen Weg ragen, seitlich vom Weg wegschieben (Wege bleiben frei begehbar; Platz in der Mitte ausgenommen)
+for(const v of ISL){if(!v.open)continue;const CX=5*S,CY=4*S*.9;const fix=(x,y,r)=>{if(Math.hypot(x-v.x,(y-v.y)/.92)<v.plaza+6)return[x,y];let dx=((x-v.x)%CX+CX)%CX,dy=((y-v.y)%CY+CY)%CY;const need=4.6+r;
+  if(dx<need)x+=need-dx;else if(CX-dx<need)x-=need-(CX-dx);if(dy<need)y+=need-dy;else if(CY-dy<need)y-=need-(CY-dy);return[x,y];};
+ for(const t of v.palms){[t.x,t.y]=(()=>{const [a,b]=fix(t.x,t.y+3,1.6*t.s);return[a,b-3];})();}
+ for(const b of v.bush){[b.x,b.y]=fix(b.x,b.y,b.r*.75);}
+ v.benches=v.benches.map(([x,y])=>fix(x,y,4.6));v.lamps=v.lamps.map(([x,y])=>fix(x,y,1.3));}
 const ACTS=(()=>{const A=[];let k=0;const farGeb=(x,y)=>GEB.every(g=>Math.hypot(g.cx-x,g.cy-y)>70)&&Math.hypot(PIER0[0]-x,PIER0[1]-y)>60&&!inAnyPlot(x,y,8)&&!inBau(x,y)&&!nearHut(x,y)&&!inLab(x,y);
  for(const v of ISL){if(!v.open)continue;for(const [x,y] of v.benches||[])if(hash(k++,311)<.6&&farGeb(x,y)){const lx=x-v.x,ly=(y-v.y)/.92,back=coastAt(v,Math.atan2(ly,lx))-Math.hypot(lx,ly)<14&&ly<-Math.abs(lx)*.35;A.push({t:'bench',x,y,k:k++,v,back});}
   const g=Math.ceil(v.R/S);let n=0;for(let r=-g;r<=g&&n<(v.i?8:12);r++)for(let c2=-g;c2<=g&&n<(v.i?8:12);c2++){if(((c2%5)+5)%5||((r%4)+4)%4!==2||hash(r*7+v.i,c2*3+312)>.12)continue;const x=v.x+c2*S,y=v.y+r*S*.9+1;if(!inside(v,x,y,20)||Math.hypot(x-v.x,y-v.y)<v.plaza+20||!farGeb(x,y))continue;A.push({t:'talk',x,y,k:k++,v});n++;}
@@ -1113,8 +1119,8 @@ function drawAcai(c,g,nl,z){const W=(g.x1-g.x0)/2,H=(g.y1-g.y0)/2,t=REDUCED?0:T,
  // Lichterkette an der Markise
  for(let k=0;k<10;k++){const x=kx0+1+k*(kx1-kx0-2)/9,y=ky0+7.2+Math.sin(k/9*Math.PI)*1.2;const on=.55+.45*Math.sin(t*2.5+k);c.fillStyle=day?'#fff3c4':`rgba(255,${200+k*5},150,${.6+.4*on})`;c.beginPath();c.arc(x,y,.45,0,TAU);c.fill();}
  // links: Obstkisten, Kokosnüsse, Monstera im Topf; vorne: Kreide-Aufsteller
- for(const [x,y,f] of[[-33,-12,'#ffd23f'],[-33,-6,'#e8433c'],[-29,-9,'#2b3a8a']]){c.fillStyle='#b07a45';c.fillRect(x-2.6,y-1,5.2,3);c.strokeStyle='rgba(90,55,25,.5)';c.lineWidth=.25;c.strokeRect(x-2.6,y-1,5.2,3);c.fillStyle=f;c.beginPath();for(let i=0;i<5;i++){c.moveTo(x-1.8+i*.9+.5,y-1);c.arc(x-1.8+i*.9,y-1,.5,0,TAU);}c.fill();}
- c.fillStyle='#7a4a24';c.beginPath();c.arc(-33,-1.5,1.2,0,TAU);c.arc(-31.2,-1,1.1,0,TAU);c.fill();c.fillStyle='#5a3418';c.beginPath();c.arc(-33.3,-1.8,.2,0,TAU);c.fill();
+ for(const [x,y,f] of[[-33,-12,'#ffd23f'],[-33,-6,'#e8433c'],[-33,0,'#2b3a8a']]){c.fillStyle='#b07a45';c.fillRect(x-2.6,y-1,5.2,3);c.strokeStyle='rgba(90,55,25,.5)';c.lineWidth=.25;c.strokeRect(x-2.6,y-1,5.2,3);c.fillStyle=f;c.beginPath();for(let i=0;i<5;i++){c.moveTo(x-1.8+i*.9+.5,y-1);c.arc(x-1.8+i*.9,y-1,.5,0,TAU);}c.fill();}
+ c.fillStyle='#7a4a24';c.beginPath();c.arc(-33,5.5,1.2,0,TAU);c.arc(-31.2,6,1.1,0,TAU);c.fill();c.fillStyle='#5a3418';c.beginPath();c.arc(-33.3,5.2,.2,0,TAU);c.fill();
  {const px=15.2,py=-1.4;c.fillStyle='#c2643a';c.beginPath();c.moveTo(px-2,py);c.lineTo(px+2,py);c.lineTo(px+1.5,py+2.6);c.lineTo(px-1.5,py+2.6);c.closePath();c.fill();c.fillStyle='#2f7d36';for(let k=0;k<5;k++){const a=-Math.PI/2+(k-2)*.55+(REDUCED?0:Math.sin(t*1.2+k)*.04);c.save();c.translate(px,py);c.rotate(a);c.beginPath();c.ellipse(0,-3,1.4,3,0,0,TAU);c.fill();c.restore();}}
  {const ax=-17,ay=12;c.strokeStyle='#8a5a2b';c.lineWidth=.5;c.beginPath();c.moveTo(ax-3.4,ay+3.6);c.lineTo(ax,ay-4);c.lineTo(ax+3.4,ay+3.6);c.stroke();c.fillStyle='#8a5a2b';c.beginPath();c.roundRect(ax-3.4,ay-3.4,6.8,6,.6);c.fill();c.fillStyle='#2a3a3a';c.beginPath();c.roundRect(ax-3,ay-3,6,5.2,.4);c.fill();
   c.fillStyle='#fff';c.font='900 1px '+FONT;c.textAlign='center';c.fillText('BOWL',ax,ay-1.7);c.fillText('DES TAGES',ax,ay-.6);acaiBowl(c,ax,ay+.9,.42);c.fillStyle='#ffb3d1';c.font='900 .8px '+FONT;c.fillText('♥ ♥ ♥',ax,ay+2);}
@@ -1161,9 +1167,9 @@ function drawWerk(c,g,nl,z){c.scale(g.dir||1,1);// drawGeb spiegelt Küstenbaute
  c.fillStyle=day?'#bfe3f5':'#ffe7a8';c.fillRect(6,-19,7,5);c.strokeStyle='#fff';c.lineWidth=.4;c.strokeRect(6,-19,7,5);c.beginPath();c.moveTo(9.5,-19);c.lineTo(9.5,-14);c.stroke();
  c.fillStyle='#fff';c.fillRect(6.6,-15.4,1,.9);c.fillStyle='#e8433c';c.fillRect(10.6,-16,2,1.4);c.fillStyle='#2a2a2a';c.beginPath();c.arc(11.2,-15.3,.35,0,TAU);c.fill();
  // Schild auf dem Dach
- c.fillStyle='#ffd23f';c.strokeStyle=ink;c.lineWidth=.5;c.beginPath();c.roundRect(-25,-37,38,10,1.6);c.fill();c.stroke();
- c.strokeStyle='#5a646e';c.lineWidth=1;c.lineCap='round';c.beginPath();c.moveTo(-22.6,-29.6);c.lineTo(-18.8,-34);c.stroke();c.beginPath();c.arc(-18.3,-34.5,1.1,0,TAU);c.stroke();c.fillStyle='#ffd23f';c.beginPath();c.arc(-17.8,-35,.55,0,TAU);c.fill();
- gTxt(c,{},'MOPED',-3,-31.2,4.8,ink,null,24);gTxt(c,{},'WERKSTATT',-3,-28.2,2.6,'#5a646e',null,24);
+ c.fillStyle='#ffd23f';c.strokeStyle=ink;c.lineWidth=.5;c.beginPath();c.roundRect(-25,-29,38,10,1.6);c.fill();c.stroke();
+ c.strokeStyle='#5a646e';c.lineWidth=1;c.lineCap='round';c.beginPath();c.moveTo(-22.6,-21.6);c.lineTo(-18.8,-26);c.stroke();c.beginPath();c.arc(-18.3,-26.5,1.1,0,TAU);c.stroke();c.fillStyle='#ffd23f';c.beginPath();c.arc(-17.8,-27,.55,0,TAU);c.fill();
+ gTxt(c,{},'MOPED',-3,-23.2,4.8,ink,null,24);gTxt(c,{},'WERKSTATT',-3,-20.2,2.6,'#5a646e',null,24);
  // Werkbank mit Schraubstock (rechts vor der Halle)
  c.fillStyle='#8a5a2b';c.fillRect(12,-9,8,1.4);c.fillRect(12.4,-7.6,.8,3);c.fillRect(18.8,-7.6,.8,3);c.fillStyle='#5a646e';c.fillRect(17,-10.6,2,1.6);c.fillStyle='#e8433c';c.fillRect(13,-10.2,2.6,1.2);c.fillStyle='#c9d1d9';c.fillRect(13.3,-10.6,2,.4);
  // Hebebühne mit Moped in Reparatur (Hauptsache!)
@@ -1188,7 +1194,7 @@ function drawWerk(c,g,nl,z){c.scale(g.dir||1,1);// drawGeb spiegelt Küstenbaute
  {const lx=34,ly=19;c.fillStyle='#3fa0e8';c.beginPath();c.roundRect(lx-1,ly-5,2,5,.5);c.fill();c.fillStyle='#fff';c.fillRect(lx-.7,ly-4.4,1.4,1);c.fillStyle='#3fa0e8';c.font='900 .6px '+FONT;c.textAlign='center';c.fillText('LUFT',lx,ly-3.6);c.strokeStyle='#2a2a2a';c.lineWidth=.2;c.beginPath();c.moveTo(lx+1,ly-2);c.quadraticCurveTo(lx+2.6,ly,lx+1.4,ly+.6);c.stroke();}
  // Blumenkübel + Hinweisschild „OFFEN“ am Tor
  for(const [x,y] of[[-29,-2.4],[13.4,-2.4]]){c.fillStyle='#8a8a94';c.fillRect(x-1.2,y,2.4,1.8);c.fillStyle='#3f9b45';c.beginPath();c.arc(x,y-.4,1.2,0,TAU);c.fill();c.fillStyle='#ffd23f';c.beginPath();c.arc(x+.4,y-.9,.35,0,TAU);c.fill();}
- offenNeon(c,-14.3,-24);
+ offenNeon(c,-24.6,-18);
  // Werkstatt-Team (Leitung) an der Hebebühne
  const team=PEOPLE.filter(p=>p.ort===g.name&&p.p);
  if(z*S>8)team.forEach((p,k)=>{const x=k?6:-4.6,y=6,L=p.LW||(p.LW={...look(p.k),shirt:'#2f5f9f',pants:'#1d3a66'});c.save();c.translate(x,y);c.scale(-1,1);person(c,L,0,false,.3+Math.abs(Math.sin(t*4+k))*.9);c.scale(L.h,L.h);c.fillStyle='#e8433c';c.beginPath();c.arc(0,-4.8,1.55,Math.PI,0);c.fill();c.fillRect(-2.2,-4.9,1.6,.35);
@@ -1200,14 +1206,14 @@ function offenNeon(c,x,y,g){const on=Math.sin(T*2.4)>-.6;c.fillStyle=on?'#ff3d7f
 const OFFEN_POS={doener:[.5,-18.6],acai:[13.5,-22.5],werkstatt:[-14.3,-24],strandbar:null};
 function gebSign(c,g){const ink='#2a1b12';
  if(g.typ==='doener'){c.strokeStyle=ink;c.lineWidth=.7;c.fillStyle='#ffd23f';c.beginPath();c.roundRect(-25,-33,26,9,2);c.fill();c.stroke();gTxt(c,{},'DÖNER',-12,-26.4,6.2,'#c0392b',null,23);}
- else if(g.typ==='werkstatt'){c.fillStyle='#ffd23f';c.strokeStyle=ink;c.lineWidth=.5;c.beginPath();c.roundRect(-25,-37,38,10,1.6);c.fill();c.stroke();c.strokeStyle='#5a646e';c.lineWidth=1;c.lineCap='round';c.beginPath();c.moveTo(-22.6,-29.6);c.lineTo(-18.8,-34);c.stroke();c.beginPath();c.arc(-18.3,-34.5,1.1,0,TAU);c.stroke();c.fillStyle='#ffd23f';c.beginPath();c.arc(-17.8,-35,.55,0,TAU);c.fill();
-  gTxt(c,{},'MOPED',-3,-31.2,4.8,ink,null,24);gTxt(c,{},'WERKSTATT',-3,-28.2,2.6,'#5a646e',null,24);}
+ else if(g.typ==='werkstatt'){c.fillStyle='#ffd23f';c.strokeStyle=ink;c.lineWidth=.5;c.beginPath();c.roundRect(-25,-29,38,10,1.6);c.fill();c.stroke();c.strokeStyle='#5a646e';c.lineWidth=1;c.lineCap='round';c.beginPath();c.moveTo(-22.6,-21.6);c.lineTo(-18.8,-26);c.stroke();c.beginPath();c.arc(-18.3,-26.5,1.1,0,TAU);c.stroke();c.fillStyle='#ffd23f';c.beginPath();c.arc(-17.8,-27,.55,0,TAU);c.fill();
+  gTxt(c,{},'MOPED',-3,-23.2,4.8,ink,null,24);gTxt(c,{},'WERKSTATT',-3,-20.2,2.6,'#5a646e',null,24);}
  else if(g.typ==='acai'){const kx0=-24,kx1=12,ky0=-24,LIL='#7a3a8c';c.fillStyle=LIL;c.beginPath();c.roundRect(kx0-2,ky0-2.4,kx1-kx0+4,4.6,1.4);c.fill();c.fillStyle='#fff';c.font='900 3.2px '+FONT;c.textAlign='center';c.fillText('AÇAÍ',(kx0+kx1)/2-6,ky0+1.2);c.fillStyle='#ff6fa3';c.font='900 2px '+FONT;c.fillText('♥ BOWLS',(kx0+kx1)/2+5,ky0+1);acaiBig(c,(kx0+kx1)/2,ky0-5.6);}
  else if(g.typ==='strandbar'){const W=(g.x1-g.x0)/2,sx=(g.sea-g.cx)*(g.dir||1),bx=sx-30;c.fillStyle='#ff3d7f';c.beginPath();c.roundRect(bx-13,-27,26,7,3);c.fill();c.strokeStyle=ink;c.lineWidth=.6;c.stroke();gTxt(c,g,'STRANDBAR',bx,-22,4.6,'#fff',null,22);
   for(const [hx,hy] of[[bx-13,-23.5],[bx+13,-23.5]]){c.fillStyle='#e8467c';for(let k=0;k<5;k++){const a=k/5*TAU;c.beginPath();c.ellipse(hx+Math.cos(a)*.7,hy+Math.sin(a)*.7,.6,.4,a,0,TAU);c.fill();}c.fillStyle='#ffd23f';c.beginPath();c.arc(hx,hy,.3,0,TAU);c.fill();}}
  else if(g.typ==='villa'){const W=(g.x1-g.x0)/2,vx=-W+24;gTxt(c,g,'STRANDVILLA',vx,-16.4,4.4,'#b8862b',null,40);}}
 // Schild-Rechteck (lokal) je Gebäude, für Verdeckung der eigenen Figur
-function signBox(g){const W=(g.x1-g.x0)/2,sx=(g.sea-g.cx)*(g.dir||1);return g.typ==='doener'?[-25,-33,26,9]:g.typ==='werkstatt'?[-25,-37,38,10]:g.typ==='acai'?[-26,-33,40,11]:g.typ==='strandbar'?[sx-43,-27,26,7]:[-W+2,-31,44,17];}
+function signBox(g){const W=(g.x1-g.x0)/2,sx=(g.sea-g.cx)*(g.dir||1);return g.typ==='doener'?[-25,-33,26,9]:g.typ==='werkstatt'?[-25,-29,38,10]:g.typ==='acai'?[-26,-33,40,11]:g.typ==='strandbar'?[sx-43,-27,26,7]:[-W+2,-31,44,17];}
 function signOver(c,x,y,nl){for(const g of GEB){if(GROWK!=null&&GROWV===g.v&&GROWK<g.at)continue;const [bx,by,bw,bh]=signBox(g),m=(g.typ==='doener'||g.typ==='acai'||g.typ==='werkstatt')?1:(g.dir||1),lx=(x-g.cx)*m,ly=y-g.cy;
   if(lx>bx-3&&lx<bx+bw+3&&ly>by&&ly<by+bh+12){c.save();c.translate(g.cx,g.cy);if(m<0)c.scale(-1,1);gebSign(c,g);if(nl>0){c.fillStyle=`rgba(12,22,70,${.55*nl})`;c.fillRect(bx-1,by-8,bw+2,bh+9);}c.restore();}}}
 function gebSigns(c,z){if(z*S<=4)return;for(const g of GEB){if(GROWK!=null&&GROWV===g.v&&GROWK<g.at)continue;c.save();c.translate(g.cx,g.cy);if(g.typ!=='doener'&&g.typ!=='acai')c.scale(g.dir||1,1);if(g.typ==='werkstatt')c.scale(g.dir||1,1);gebSign(c,g);c.restore();}}
@@ -1258,7 +1264,7 @@ function drawGeb(c,g,nl,z){const ink='#2a1b12';c.save();c.translate(g.cx,g.cy);
    c.fillStyle='#fff';c.beginPath();c.ellipse(x,y+.6,1.3,.5,0,0,TAU);c.fill();c.fillStyle='#f3d27a';c.beginPath();c.moveTo(x-.8,y+.2);c.lineTo(x+.8,y+.2);c.lineTo(x,y+.9);c.closePath();c.fill();c.fillStyle='#57b85a';c.fillRect(x-.4,y+.05,.8,.25);}
   {const fx=-34,fy=-8;c.fillStyle='rgba(40,30,10,.25)';c.fillRect(fx-2,fy+5.2,5,1);c.fillStyle='#f4f6f8';c.beginPath();c.roundRect(fx-2.4,fy-5,4.8,10,.6);c.fill();c.strokeStyle='#9aa4ad';c.lineWidth=.25;c.stroke();c.fillStyle=nl>.5?'#fff5d6':'#cfe7f5';c.fillRect(fx-1.8,fy-3.6,3.6,7.6);
    for(let r=0;r<3;r++)for(let k=0;k<3;k++){c.fillStyle='#fff';c.fillRect(fx-1.5+k*1.2,fy-3.2+r*2.5,.7,1.7);c.fillStyle='#2fb3a0';c.fillRect(fx-1.5+k*1.2,fy-2.3+r*2.5,.7,.3);}c.fillStyle='#e8433c';c.font='900 .8px '+FONT;c.textAlign='center';c.fillText('AYRAN',fx,fy-4.1);}
-  {const mx=-30,my=19;c.fillStyle='rgba(40,30,10,.25)';c.beginPath();c.ellipse(mx,my+2.6,4.4,.9,0,0,TAU);c.fill();c.fillStyle='#2a2a2a';for(const wx of[-2.6,2.6]){c.beginPath();c.arc(mx+wx,my+1.6,1.1,0,TAU);c.fill();}c.fillStyle='#e8433c';c.beginPath();c.moveTo(mx-3.6,my+1);c.quadraticCurveTo(mx-3.4,my-1,mx-1,my-.8);c.lineTo(mx+1.4,my-.8);c.lineTo(mx+2,my+1.2);c.closePath();c.fill();
+  {const mx=-24,my=19;c.fillStyle='rgba(40,30,10,.25)';c.beginPath();c.ellipse(mx,my+2.6,4.4,.9,0,0,TAU);c.fill();c.fillStyle='#2a2a2a';for(const wx of[-2.6,2.6]){c.beginPath();c.arc(mx+wx,my+1.6,1.1,0,TAU);c.fill();}c.fillStyle='#e8433c';c.beginPath();c.moveTo(mx-3.6,my+1);c.quadraticCurveTo(mx-3.4,my-1,mx-1,my-.8);c.lineTo(mx+1.4,my-.8);c.lineTo(mx+2,my+1.2);c.closePath();c.fill();
    c.beginPath();c.moveTo(mx+1.6,my+1.2);c.lineTo(mx+2.2,my-2.6);c.lineTo(mx+3,my-2.6);c.lineTo(mx+3.1,my+1.2);c.closePath();c.fill();c.strokeStyle='#2a2a2a';c.lineWidth=.3;c.beginPath();c.moveTo(mx+2.6,my-2.6);c.lineTo(mx+2.2,my-3.4);c.stroke();
    c.fillStyle='#fff';c.fillRect(mx-4,my-4,3.4,3);c.fillStyle='#e8433c';c.font='900 .8px '+FONT;c.textAlign='center';c.fillText('DÖNER',mx-2.3,my-2.2);c.fillStyle='#ffd23f';c.beginPath();c.arc(mx+3.2,my-1.8,.3,0,TAU);c.fill();}
   for(const [x,y] of[[-29.5,4.4],[11.8,4.4]]){c.fillStyle='#c2643a';c.beginPath();c.moveTo(x-1.3,y);c.lineTo(x+1.3,y);c.lineTo(x+1,y+1.8);c.lineTo(x-1,y+1.8);c.closePath();c.fill();c.fillStyle='#3f9b45';c.beginPath();c.arc(x,y-.6,1.2,0,TAU);c.fill();c.fillStyle='#e8433c';for(const [ox,oy] of[[-.6,-1],[.4,-1.3],[.7,-.4]]){c.beginPath();c.arc(x+ox,y+oy,.38,0,TAU);c.fill();}}
@@ -1581,7 +1587,7 @@ function draw(){
     for(let k=0;k<4;k++)glow(X(bx-11+k*7.3),Y(-6.6),4,['255,120,180','255,220,100','100,240,220','255,160,90'][k],.8*nl);for(const [lx,ly] of[[sx+11,-14.8],[sx+11,13.2],[sx+31,-2.8]])glow(X(lx),Y(ly),5,'255,200,110',.7*nl);glow(X(W-13),Y(-1),9,`${(T*80|0)%2?'255,60,160':'60,200,255'}`,.55*nl);for(let x=sx+6;x<W-2;x+=8)for(const yy of[-26.6,26.6])glow(X(x),Y(yy),2.2,'255,225,160',.55*nl);}}
   for(const g of GEB)if(g.typ==='werkstatt'&&visR(g.cx,g.cy,60)){const x=g.cx,y=g.cy;glow(x-11,y-11,20,'220,235,255',.5*nl);glow(x-10,y+2,10,'255,230,170',.45*nl);glow(x+9.5,y-16.5,6,'255,220,140',.6*nl);glow(x-6,y-30,14,'255,220,90',.35*nl);}
   {const v=ISL[1];if(v&&v.open&&visR(v.x,v.y,v.plaza))for(let k=0;k<6;k++){const a=k/6*TAU+.25;glow(v.x+Math.cos(a)*68*KOKX,v.y+Math.sin(a)*68*.92-7.5,7,'255,160,60',.75*nl*(.85+.15*Math.sin(T*11+k)));}}
-  for(const g of GEB){if(!visR(g.cx,g.cy,80))continue;const on=Math.sin(T*2.4)>-.6?1:.3,d=g.dir||1;let p2=null;if(g.typ==='acai')p2=[g.cx+17.8,g.cy-20.5];else if(g.typ==='werkstatt')p2=[g.cx-10,g.cy-22];else if(g.typ==='strandbar'){const sx=(g.sea-g.cx)*d;p2=[g.cx+(sx-30-19.2)*d,g.cy-15];}if(p2)glow(p2[0],p2[1],5,'255,90,140',.6*nl*on);}
+  for(const g of GEB){if(!visR(g.cx,g.cy,80))continue;const on=Math.sin(T*2.4)>-.6?1:.3,d=g.dir||1;let p2=null;if(g.typ==='acai')p2=[g.cx+17.8,g.cy-20.5];else if(g.typ==='werkstatt')p2=[g.cx-20.3,g.cy-16];else if(g.typ==='strandbar'){const sx=(g.sea-g.cx)*d;p2=[g.cx+(sx-30-19.2)*d,g.cy-15];}if(p2)glow(p2[0],p2[1],5,'255,90,140',.6*nl*on);}
   // Açaí-Stand nachts: warmes, gemütliches Licht (Kiosk, Lichterketten, Teelichter)
   for(const g of GEB)if(g.typ==='acai'&&visR(g.cx,g.cy,60)){const x=g.cx,y=g.cy;glow(x-6,y-14,22,'255,190,120',.55*nl);glow(x-6,y-3,14,'255,170,200',.3*nl);for(let k=0;k<10;k++)glow(x-23+k*3.8,y-16.8+Math.sin(k/9*Math.PI)*1.2,2.4,'255,225,150',.8*nl);for(const [tx,ty] of[[24.4,-9.5],[24.4,6.5]])glow(x+tx,y+ty,6,'255,200,110',.75*nl*(.85+.15*Math.sin(T*7+tx)));for(const [x0,y0,x1,y1] of[[12,-18,23,-13],[12,-18,23,3]])for(let k=1;k<6;k++){const u=k/6;glow(x+x0+(x1-x0)*u,y+y0+(y1-y0)*u+6*u*(1-u)+.4,2,'255,225,160',.6*nl);}}
   if(z*S>4)for(const v of ISL)for(const [lx,ly] of v.lamps||[]){if(!vis(lx,ly))continue;glow(lx,ly-11.4,18,'255,205,110',.75*nl);c.fillStyle=`rgba(255,240,180,${nl})`;c.beginPath();c.arc(lx,ly-11.4,1.1,0,TAU);c.fill();}
@@ -1860,10 +1866,10 @@ function obsBuild(){OBS=[];const A=(x,y,r)=>{OBS.push([x,y,r]);const k=Math.floo
  for(const v of ISL){if(!v.open)continue;for(const [x,y] of v.benches||[])A(x,y,4.6);for(const [x,y] of v.lamps||[])A(x,y,1.3);for(const t of v.palms||[])A(t.x,t.y+3,1.6*t.s);for(const b of v.bush||[])A(b.x,b.y,b.r*.75);for(const r of v.rocks||[])A(r.x,r.y,r.r);}
  for(const [x,y] of LANT)A(x,y,1.3);
  for(const g of GEB){const W=(g.x1-g.x0)/2,H=(g.y1-g.y0)/2,d=g.dir||1,sx=(g.sea-g.cx)*d,L=(lx,ly,r)=>A(g.cx+lx*((g.typ==='doener'||g.typ==='acai'||g.typ==='werkstatt')?1:d),g.cy+ly,r);
-  if(g.typ==='doener'){for(const [x,y] of[[24,-8],[24,10],[25,21]])L(x,y,3.8);L(-34,-10.5,2.6);L(-34,-5.5,2.6);L(-30,19,3.6);L(-27,19,3);L(12,19,2.8);L(-29.5,4.4,1.5);L(11.8,4.4,1.5);for(const [x,y] of[[-34,-18],[-34,16],[33,-20]])L(x,y,2.6);L(14.5,-9,1.3);}
+  if(g.typ==='doener'){for(const [x,y] of[[24,-8],[24,10],[25,21]])L(x,y,3.8);L(-34,-10.5,2.6);L(-34,-5.5,2.6);L(-24,19,3.6);L(-21,19,3);L(12,19,2.8);L(-29.5,4.4,1.5);L(11.8,4.4,1.5);for(const [x,y] of[[-34,-18],[-34,16],[33,-20]])L(x,y,2.6);L(14.5,-9,1.3);}
   else if(g.typ==='strandbar'){const bx=sx-30;for(const [x,y] of[[-W+15,-10],[-W+15,10],[-W+29,0]])L(x,y,3);for(const [x,y] of[[-W+10,-12],[-W+10,8],[-W+24,-2]])L(x,y+1,1.1);L(sx-50,14,2);L(sx-48,4,2);L(-W+28,15,4.4);L(-W+10,19,2.8);L(sx-8,21,3.4);L(-W+46,20,2.4);L(-W+36,4,1.6);L(-W+3,-H+4,1.8);L(sx-50,-H-2,1.8);L(-W+18,-H+4,1.8);
    for(const [x,y] of[[W-11,-19],[W-11,19],[W-18,-21],[sx+5,19],[sx+3,-23],[sx+3,23],[sx+8,-14],[sx+8,14],[sx+28,-2]])L(x,y,2.4);L(W-13,-1,4.6);L(W-18.6,-1,1.6);L(W-7.4,-1,1.6);for(const [x,y] of[[sx-42,-24],[W-4,-24],[W-4,24],[sx-42,24],[(sx-44+W)/2,-24],[(sx-44+W)/2,24]])L(x,y+3,1.1);for(const x of[bx-9,bx-3,bx+3,bx+9])L(x,10,1.6);}
-  else if(g.typ==='acai'){for(const [x,y] of[[-33,-12],[-33,-6],[-29,-9]])L(x,y,2.8);L(-33,-1.5,1.6);L(-31.2,-1,1.4);L(-30,15,3.6);L(-26.2,-6,1.4);L(-17,12,3);L(12.5,22,1.5);L(-12.5,22,1.5);L(15.2,-1.4,2.2);L(9.5,25,.9);L(-9.5,25,.9);}
+  else if(g.typ==='acai'){for(const [x,y] of[[-33,-12],[-33,-6],[-33,0]])L(x,y,2.8);L(-33,5.5,1.6);L(-31.2,6,1.4);L(-30,15,3.6);L(-26.2,-6,1.4);L(-17,12,3);L(12.5,22,1.5);L(-12.5,22,1.5);L(15.2,-1.4,2.2);L(9.5,25,.9);L(-9.5,25,.9);}
   else if(g.typ==='werkstatt'){L(-26,17,2.8);L(-21,17,1.5);L(34,19,1.6);L(1,12,2.8);L(25.9,-13.8,1.3);L(31,12,3);L(-29,-2.4,1.5);L(13.4,-2.4,1.5);}
   else{const vx=-W+24;L(sx-16,-11,3);L(sx-16,11,3);L(sx-20,1,1.1);L(sx-2,-H-1,1.8);L(sx-2,H+2,1.8);}}
  {const v=ISL[1];if(v&&v.open){const X=(r,a)=>v.x+Math.cos(a)*r*KOKX,Y=(r,a)=>v.y+Math.sin(a)*r*.92;for(const a of[.55,2.6,4.3])A(X(58,a),Y(58,a),5.4);A(X(62,3.3),Y(62,3.3),3.2);A(X(62,5.6),Y(62,5.6),3.4);A(X(48,1.5),Y(48,1.5),2.6);A(X(54,4.85),Y(54,4.85),4.6);
