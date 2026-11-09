@@ -71,6 +71,18 @@
   "ereignisse": [
     [
       "9.11.2026",
+      "🔧",
+      "Neu: die Moped-Werkstatt",
+      "Auf der Haupt-Insel gibt es jetzt eine kleine Werkstatt: vor allem für Mopeds, aber auch Fahrräder, E-Scooter, Inliner und Skateboards werden hier repariert. Leitung: @bruecke.2803."
+    ],
+    [
+      "9.11.2026",
+      "🏊",
+      "@luisedbr.11 hat jetzt einen Pool",
+      "Neben ihrer Hütte auf der Kokos-Küste gibt es jetzt einen kleinen Pool."
+    ],
+    [
+      "9.11.2026",
       "🫐",
       "Neu: der Açaí-Stand",
       "Auf der Haupt-Insel neben der Strandbar hat ein kleiner Açaí-Stand eröffnet. Leitung: @vidafilipa, im Team: @lp_art18, @marina.cgnn und @borbie20."
@@ -172,6 +184,12 @@
       "typ": "acai",
       "name": "Açaí-Stand",
       "emoji": "🫐"
+    },
+    {
+      "key": "0:-1,2",
+      "typ": "werkstatt",
+      "name": "Moped-Werkstatt",
+      "emoji": "🔧"
     }
   ],
   "jobs": {
@@ -220,6 +238,10 @@
     "borbie20": [
       "Team",
       "Açaí-Stand"
+    ],
+    "bruecke.2803": [
+      "Leitung",
+      "Moped-Werkstatt"
     ]
   },
   "wohnorte": {
@@ -232,10 +254,12 @@
       "Muschelpalast",
       "2026-11-16T12:00"
     ],
-    "borbie20": "Açaí-Stand"
+    "borbie20": "Açaí-Stand",
+    "bruecke.2803": "Moped-Werkstatt"
   },
   "pool": [
-    "sophia_e065"
+    "sophia_e065",
+    "luisedbr.11"
   ],
   "vermoegen_start": 0,
   "vermoegen": {},
