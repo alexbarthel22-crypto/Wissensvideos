@@ -7,7 +7,7 @@
     #s01-lines path { filter: drop-shadow(0 0 3px rgba(0,0,0,.5)); }
     #s01-pen { position: absolute; left: 0; top: 0; font-size: 110px; }
     #s01-hk { position: absolute; left: 0; right: 0; top: 290px; text-align: center; }
-    .hk-l { display: table; margin: 14px auto 0; background: #ff6a1a; border-radius: 30px; padding: 2px 34px 12px; font-family: "Lilita One", sans-serif; font-size: 104px; line-height: 1.05; color: #fff; box-shadow: 0 0 0 5px #2a1b12, 0 9px 0 rgba(0,0,0,.25); }
+    .hk-l { display: table; margin: 14px auto 0; background: #e8262f; border-radius: 30px; padding: 2px 34px 12px; font-family: "Lilita One", sans-serif; font-size: 104px; line-height: 1.05; color: #fff; box-shadow: 0 0 0 5px #2a1b12, 0 9px 0 rgba(0,0,0,.25); }
     .hk-w { display: inline-block; margin: 0 .08em; transform-origin: 50% 60%; position: relative; }
     #s01-stk { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 330px; color: #e8433c; border-color: #e8433c; background: #fff; transform: rotate(-5deg); font-size: 54px; white-space: nowrap; }
     #s01-fl { position: absolute; inset: 0; background: #fff; opacity: 0; }
@@ -28,19 +28,18 @@
       wrapBt("#s01-stage");
       const tl = gsap.timeline({ paused: true });
       const ps = [...document.querySelectorAll("#s01-lines path")], WT = [1.0, 0.7, 0.45, 0.45, 0.12, 0.12, 0.12, 0.12, 0.12, 0.45, 0.35, 0.2, 0.1, 0.04, 0.04, 0.04, 0.04, 0.04, 0.1, 0.04, 0.04, 0.04, 0.04, 0.04, 0.06, 0.06, 0.06, 0.06, 0.3, 0.015, 0.015, 0.015, 0.015, 0.015, 0.015, 0.015, 0.015, 0.015, 0.015, 0.015, 0.015, 0.015, 0.015, 0.015, 0.015, 0.015, 0.015, 0.015, 0.015, 0.015, 0.015, 0.015, 0.015, 0.015, 0.015, 0.015, 0.015, 0.015, 0.015, 0.015, 0.015, 0.015, 0.015, 0.015, 0.015, 0.015, 0.015, 0.015, 0.015, 0.015, 0.015, 0.015, 0.015, 0.015, 0.015], sum = WT.reduce((a, b) => a + b, 0);
-      const T0 = .08, T1 = line("L2")[1] - .55, TH = line("L2")[1] + .05; let tt = T0;
+      const T0 = .05, T1 = line("L1")[1] - .15, TH = line("L1")[1] + .35; let tt = T0;
       const pen = document.getElementById("s01-pen");
       ps.forEach((p, i) => { const len = p.getTotalLength(), d = (T1 - T0) * WT[i] / sum; p.style.strokeDasharray = len; p.style.strokeDashoffset = len;
         const o = { v: 0 }; tl.to(o, { v: 1, duration: d, ease: "none", onUpdate: () => { p.style.strokeDashoffset = len * (1 - o.v); const pt = p.getPointAtLength(len * o.v); pen.style.transform = `translate(${pt.x - 8}px, ${pt.y - 102}px)`; } }, tt);
         tt += d; });
       tl.set(pen, { opacity: 1 }, 0); tl.to(pen, { opacity: 0, duration: .15 }, T1);
-      tl.fromTo("#s01-fill", { opacity: 0 }, { opacity: 1, duration: .45, ease: "power1.out", immediateRender: false }, T1);
+      tl.fromTo("#s01-fill", { opacity: 0 }, { opacity: 1, duration: .35, ease: "power1.out", immediateRender: false }, T1);
       tl.fromTo("#s01-fl", { opacity: 0 }, { opacity: .75, duration: .07, yoyo: true, repeat: 1, immediateRender: false }, TH - .02);
       tl.to("#s01-svg", { opacity: 0, duration: .2 }, TH + .05);
       const hk = ["Das", "könnte", "dein", "Haus", "sein"];
       tl.set("#s01-hk", { opacity: 1 }, 0);
-      hk.forEach((w, i) => { const t0 = Math.max(0, at("L1", w) - .03); tl.set("#hw" + i, { zIndex: 5 }, t0); tl.fromTo("#hw" + i, { scale: 1 }, { scale: .5, duration: .05, immediateRender: false }, t0); tl.to("#hw" + i, { scale: [1.7, 1.35, 1.8, 1.7, 1.7][i], duration: .12, ease: "power2.out" }, t0 + .05); tl.to("#hw" + i, { scale: 1, duration: .2, ease: "back.out(2.5)" }, t0 + .17); });
-      tl.to(["#hw2", "#hw3"], { color: "#ffe14d", duration: .05 }, at("L1", "dein"));
+      hk.forEach((w, i) => { const t0 = Math.max(0, at("L1", w) - .03); tl.set("#hw" + i, { zIndex: 5 }, t0); tl.fromTo("#hw" + i, { scale: 1 }, { scale: .5, duration: .05, immediateRender: false }, t0); tl.to("#hw" + i, { scale: [2.2, 1.6, 2.4, 2.2, 2.2][i], duration: .13, ease: "power2.out" }, t0 + .05); tl.to("#hw" + i, { scale: 1, color: "#ffe14d", textShadow: "0 0 26px rgba(255,225,77,1), 0 0 8px rgba(255,255,200,1)", duration: .22, ease: "back.out(2.5)" }, t0 + .18); tl.to("#hw" + i, { textShadow: "0 0 0px rgba(255,225,77,0), 0 0 0px rgba(255,255,200,0)", duration: .5 }, t0 + .45); });
       tl.to("#s01-hk", { opacity: 0, y: -40, duration: .2 }, line("L2")[0] - .15);
       tl.fromTo("#s01-stk", { opacity: 0, scale: 3 }, { opacity: 1, scale: 1, duration: .16, ease: "power4.in" }, at("L2", "gesucht") - .12);
       tl.to("#s01-stk", { scale: 1.06, duration: .25, yoyo: true, repeat: 5, ease: "sine.inOut" }, at("L2", "gesucht") + .2);

@@ -3,7 +3,7 @@
     #root { position: absolute; inset: 0; background: linear-gradient(180deg, #5fc4ee 0%, #9fdcf5 38%, #e8f7fb 52%, #bfe8f5 60%); }
     #w-cv { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
   </style>
-  <div id="root" data-composition-id="world" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+  <div id="root" class="w-root" data-composition-id="world" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
     <canvas id="w-cv" class="clip" data-start="0" data-duration="__DUR__" data-track-index="0" width="1080" height="1920"></canvas>
   </div>
   <script src="assets/vendor/three.min.js"></script>
@@ -166,7 +166,7 @@
 
       // ---------- Zeit / Kamera ----------
       const s02 = C.s02[0], s03 = C.s03[0], s04 = C.s04[0], s05 = C.s05[0], END = C.__dur;
-      const T_HOUSE = line("L2")[1] + .05, T_SIGN = T_HOUSE + .45, T_BF = s04 + .3, T_HI = at("L5", "markier") - .25;
+      const T_HOUSE = line("L1")[1] + .35, T_SIGN = T_HOUSE + .45, T_BF = s04 + .3, T_HI = at("L5", "markier") - .25;
       const ease = (k) => k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2, cl = (v) => Math.max(0, Math.min(1, v));
       const lerp = (a, b, k) => a + (b - a) * k, V = (x, y, z) => new THREE.Vector3(x, y, z);
       function camShot(t) {
@@ -200,6 +200,7 @@
         const [p, l] = camShot(t); cam.position.copy(p); cam.lookAt(l); R.render(S, cam); }
       const tl = gsap.timeline({ paused: true }), o = { t: 0 };
       tl.to(o, { t: C.__dur, duration: C.__dur, ease: "none", onUpdate: () => draw(o.t) }, 0);
+      tl.to([cv, document.querySelector(".w-root")], { opacity: 0, duration: .6, ease: "power1.inOut" }, C.s05[0] + 1.2);
       draw(0);
       window.__timelines["world"] = tl;
 
