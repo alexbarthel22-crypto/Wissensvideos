@@ -1,6 +1,6 @@
 # Muschel-Tal – Tag 2 · Beschreibung
 
-**Cover:** `renders/cover.jpg` (Vorlage `cover/thumb.html`, gewohntes Layout) – Logo + „TAG 2“, „DU WOHNST HIER?! – Folgen = einziehen 🏝️“, Karten „653 Bewohner (+78)“ und „? Palast verlost“ (verrät den Gewinner nicht), „➕ Dein @Name auf meiner Insel“. Hintergrund: Hütten-Reihen mit echten @Namen.
+**Cover:** `renders/cover.jpg` (Vorlage `cover/thumb.html`, gewohntes Layout) – Logo + „TAG 2“, „ERSTE BERUFE & GEBÄUDE! – Folgen = einziehen 🏝️“, Karten „653 Bewohner (+78)“ und „? Palast verlost“ (verrät den Gewinner nicht), „➕ Dein @Name auf meiner Insel“. Hintergrund: Hütten-Reihen mit echten @Namen.
 
 **Verlosung:** Palast-Leitung = **Lotti (@prvt.lott1)**, Einwohner Nr. 152, am 9.11. per Zufall (Python `secrets.choice`) aus allen 647 Einwohnern ohne Amt/Job gezogen.
 
