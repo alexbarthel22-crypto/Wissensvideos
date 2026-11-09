@@ -537,19 +537,63 @@ function drawBau(c,b,nl,z){const ink='#2a1b12',t=REDUCED?0:T,pr=Math.min(1,N/b.z
   const ky=L-12;c.fillStyle='#6f7680';c.fillRect(-8,ky-5,16,10);c.strokeStyle='#f0a500';c.lineWidth=.9;c.beginPath();c.moveTo(0,ky);c.lineTo(0,ky-22);c.stroke();c.save();c.translate(0,ky-22);c.rotate(Math.sin(t*.25)*.6);c.beginPath();c.moveTo(-5,0);c.lineTo(16,0);c.stroke();const hx=5+Math.sin(t*.4)*5;c.strokeStyle='#2a2a2a';c.lineWidth=.25;c.beginPath();c.moveTo(hx,0);c.lineTo(hx,10);c.stroke();c.fillStyle='#c0392b';c.fillRect(hx-1.2,10,2.4,1.6);c.restore();
   if(!REDUCED){c.strokeStyle='rgba(255,255,255,.5)';c.lineWidth=.5;for(let k=0;k<2;k++){const ph=(T*.4+k/2)%1;c.beginPath();c.ellipse(0,ky+6,9+ph*6,2+ph*1.5,0,0,Math.PI);c.stroke();}}
   for(const [x,y] of[[-w,L],[w,L],[-w,L*.5],[w,L*.5]]){c.fillStyle='#ff7a1a';c.beginPath();c.arc(x,y,1.6,0,TAU);c.fill();c.fillStyle='#fff';c.fillRect(x-1.6,y-.4,3.2,.8);}
+  // Bretterstapel auf dem fertigen Teil, Ramme am Ende des Stegs, Arbeiter mit Helm (tagsüber)
+  c.fillStyle='#c79a5e';for(let k=0;k<4;k++)c.fillRect(-7,built-14+k*.9,7,.8);c.strokeStyle='rgba(60,35,15,.4)';c.lineWidth=.15;c.strokeRect(-7,built-14,7,3.6);
+  {const ry=built+2,hp=REDUCED?0:Math.abs(Math.sin(t*1.6));c.fillStyle='#6f7680';c.fillRect(3,ry-2,6,5);c.strokeStyle='#f0a500';c.lineWidth=.5;c.beginPath();c.moveTo(5,ry);c.lineTo(5,ry-14);c.moveTo(7,ry);c.lineTo(7,ry-14);c.stroke();c.fillStyle='#4a4a4a';c.fillRect(4.6,ry-12+hp*6,2.8,2.4);c.fillStyle='#5a3418';c.beginPath();c.arc(6,ry+4,1.5,0,TAU);c.fill();
+   if(hp>.97){c.strokeStyle='rgba(255,255,255,.6)';c.lineWidth=.4;c.beginPath();c.arc(6,ry+4,3,0,TAU);c.stroke();}}
+  if(nl<.5&&z*S>12)for(const [i,wx,wy,act] of[[1,-3,built-6,'work'],[2,-5,built*.45,'walk']]){const L=b['W'+i]||(b['W'+i]={...look(950+i*5),shirt:'#ff7a1a',pants:'#2a3a5a'});c.save();const yy=act==='walk'?wy+Math.sin(t*.2+i)*built*.3:wy;c.translate(wx,yy);c.rotate(-(b.ang-Math.PI/2));person(c,L,act==='walk'?Math.sin(t*7)*1:0,act!=='walk',act==='work'?.4+Math.abs(Math.sin(t*5))*1.2:0);c.scale(L.h,L.h);c.fillStyle='#fff';c.fillRect(-1.6,-1.3,3.2,.35);c.fillStyle='#ffd23f';c.beginPath();c.arc(0,-4.75,1.62,Math.PI,0);c.fill();c.fillRect(-1.7,-4.85,3.4,.45);c.restore();}
   fence(-w,2,-w,L);fence(w,2,w,L);fence(-w,L,w,L);c.restore();return;}
- const W2=(b.x1-b.x0)/2,H2=(b.y1-b.y0)/2;c.save();c.translate(b.cx,b.cy);
- c.fillStyle='#d9c08a';c.fillRect(-W2,-H2,2*W2,2*H2);c.fillStyle='rgba(120,90,50,.25)';for(let i=0;i<8;i++){c.beginPath();c.ellipse(-W2+8+hash(i,401)*(2*W2-16),-H2+6+hash(i,402)*(2*H2-12),4,2,0,0,TAU);c.fill();}
- // hintere Absperrung zuerst (verläuft hinter dem Rohbau)
+ const W2=(b.x1-b.x0)/2,H2=(b.y1-b.y0)/2,day=nl<.5;c.save();c.translate(b.cx,b.cy);
+ // Boden: Sand, Kies, Reifenspuren
+ c.fillStyle='#d9c08a';c.fillRect(-W2,-H2,2*W2,2*H2);c.fillStyle='rgba(120,90,50,.22)';for(let i=0;i<8;i++){c.beginPath();c.ellipse(-W2+8+hash(i,401)*(2*W2-16),-H2+6+hash(i,402)*(2*H2-12),4,2,0,0,TAU);c.fill();}
+ c.fillStyle='rgba(150,140,125,.5)';for(let i=0;i<26;i++){c.beginPath();c.arc(-W2+3+hash(i,403)*(2*W2-6),-H2+3+hash(i,404)*(2*H2-6),.35,0,TAU);c.fill();}
+ c.strokeStyle='rgba(110,80,45,.35)';c.lineWidth=.8;c.setLineDash([.9,.7]);for(const o of[-1.6,1.6]){c.beginPath();c.moveTo(-W2+2,H2-3+o);c.quadraticCurveTo(-4,H2-14+o,W2*.62+o,H2*.3+6);c.stroke();}c.setLineDash([]);
+ // hintere Absperrung zuerst (verläuft hinter allem)
  fence(-W2+1,-H2+1,W2-1,-H2+1);
- // Rohbau: Fundament + wachsende Etagen (je nach Fortschritt)
- const fl=1+Math.floor(pr*4);c.fillStyle='#bdb6aa';c.fillRect(-W2*.55,-H2*.3,W2*1.1,H2*.75);for(let e=0;e<fl;e++){c.fillStyle=e===fl-1?'#d6d0c4':'#c9c2b5';c.fillRect(-W2*.5,-H2*.3-6-e*5,W2,5);c.strokeStyle='rgba(42,27,18,.35)';c.lineWidth=.3;c.strokeRect(-W2*.5,-H2*.3-6-e*5,W2,5);for(let w=0;w<5;w++){c.fillStyle='#6f7680';c.fillRect(-W2*.42+w*W2*.2,-H2*.3-5-e*5,2.2,2.6);}}
- // Kran
- const kx=W2*.62,ky=H2*.3,kh=36;c.strokeStyle='#f0a500';c.lineWidth=1.1;c.beginPath();c.moveTo(kx,ky);c.lineTo(kx,ky-kh);c.stroke();c.lineWidth=.35;for(let i=0;i<9;i++){c.beginPath();c.moveTo(kx-.9,ky-i*4);c.lineTo(kx+.9,ky-i*4-4);c.stroke();}
- const a=Math.sin(t*.25)*.5;c.save();c.translate(kx,ky-kh);c.rotate(a);c.lineWidth=1;c.beginPath();c.moveTo(-10,0);c.lineTo(28,0);c.stroke();c.fillStyle='#8a8a94';c.fillRect(-12,-1.5,4,3);const hx=8+Math.sin(t*.4)*8;c.strokeStyle='#2a2a2a';c.lineWidth=.25;c.beginPath();c.moveTo(hx,0);c.lineTo(hx,12+Math.sin(t*.6)*3);c.stroke();c.fillStyle='#c0392b';c.fillRect(hx-1.5,12+Math.sin(t*.6)*3,3,2);c.restore();
+ // Baucontainer (Büro) + Toilettenhäuschen hinten
+ {const x0=-W2+3,y0=-H2+3;c.fillStyle='rgba(40,30,10,.25)';c.fillRect(x0+1,y0+7,15,1.6);c.fillStyle='#2f6fb0';c.fillRect(x0,y0,15,8);c.strokeStyle='rgba(255,255,255,.35)';c.lineWidth=.3;c.beginPath();for(let x=x0+1.5;x<x0+15;x+=1.5){c.moveTo(x,y0+.4);c.lineTo(x,y0+7.6);}c.stroke();
+  c.fillStyle=day?'#bfe3f5':'#ffe08a';c.fillRect(x0+2,y0+2,4.5,2.6);c.fillStyle='#1d3f66';c.fillRect(x0+10,y0+2.2,3,5.8);c.fillStyle='#fff';c.font='900 1.3px '+FONT;c.textAlign='center';c.fillText('BAULEITUNG',x0+7.5,y0+1.4);}
+ {const x0=W2-9,y0=-H2+3;c.fillStyle='#2f8fd0';c.beginPath();c.roundRect(x0,y0,4,7,[1.4,1.4,0,0]);c.fill();c.fillStyle='#1d5f90';c.fillRect(x0+.6,y0+1.6,2.8,5.2);c.fillStyle='#fff';c.fillRect(x0+1.4,y0+2.2,1.2,.5);}
+ // Rohbau: Bodenplatte mit Bewehrung, wachsende Etagen
+ const fl=1+Math.floor(pr*4),bx0=-W2*.5,bw=W2,gy=-H2*.3,top=gy-6-(fl-1)*5;
+ c.fillStyle='#bdb6aa';c.fillRect(-W2*.55,gy,W2*1.1,H2*.75);c.strokeStyle='rgba(140,70,35,.45)';c.lineWidth=.22;c.beginPath();for(let x=-W2*.55+2;x<W2*.55;x+=2.2){c.moveTo(x,gy+5);c.lineTo(x,gy+H2*.75-1);}for(let y=gy+6;y<gy+H2*.75;y+=2.2){c.moveTo(-W2*.55+1,y);c.lineTo(W2*.55-1,y);}c.stroke();
+ c.fillStyle='#a9a294';for(let x=bx0+2;x<=bx0+bw-2;x+=bw/5){c.fillRect(x-.6,gy+1,1.2,4);}
+ for(let e2=0;e2<fl;e2++){const y=gy-6-e2*5,last=e2===fl-1;c.fillStyle=last?'#d6d0c4':'#c9c2b5';c.fillRect(bx0,y,bw,5);c.strokeStyle='rgba(42,27,18,.35)';c.lineWidth=.3;c.strokeRect(bx0,y,bw,5);
+  for(let w=0;w<5;w++){c.fillStyle=last?'#9a948a':'#6f7680';c.fillRect(bx0+W2*.08+w*W2*.2,y+1,2.2,2.6);}}
+ c.strokeStyle='#8a4a2a';c.lineWidth=.25;c.beginPath();for(let x=bx0+1.5;x<bx0+bw;x+=3){c.moveTo(x,top);c.lineTo(x,top-2.6);}c.stroke();
+ // Gerüst vor der Fassade: Stangen, Bretter, Diagonalen, Schutznetz rechts
+ {const sx0=bx0-1.6,sx1=bx0+bw+1.6;c.strokeStyle='#8f969e';c.lineWidth=.35;c.beginPath();for(let x=sx0;x<=sx1+.1;x+=(sx1-sx0)/6){c.moveTo(x,gy+.6);c.lineTo(x,top-1.4);}
+  for(let e2=0;e2<fl;e2++){const y=gy-e2*5-1;c.moveTo(sx0,y-2.5);c.lineTo(sx1,y-2.5+((e2%2)?2.5:-2.5)*0);}c.stroke();
+  c.strokeStyle='rgba(143,150,158,.7)';c.lineWidth=.22;c.beginPath();for(let e2=0;e2<fl;e2++){const y=gy-e2*5;for(let k=0;k<6;k+=2){const xa=sx0+k*(sx1-sx0)/6,xb=sx0+(k+1)*(sx1-sx0)/6;c.moveTo(xa,y);c.lineTo(xb,y-5);}}c.stroke();
+  c.fillStyle='#b07a45';for(let e2=0;e2<fl;e2++){c.fillRect(sx0,gy-e2*5-.4,sx1-sx0,.8);}
+  c.fillStyle='rgba(46,158,91,.35)';c.fillRect(sx1-(sx1-sx0)*.32,top-1,(sx1-sx0)*.32,gy-top+1);}
+ // Kran: Gittermast, Fundament, Kabine, Ausleger mit Laufkatze, Gegengewicht, Last am Haken
+ const kx=W2*.62,ky=H2*.3,kh=38;c.fillStyle='#9a948a';c.fillRect(kx-3,ky-.6,6,2.2);
+ c.strokeStyle='#f0a500';c.lineWidth=.55;c.beginPath();c.moveTo(kx-1,ky);c.lineTo(kx-1,ky-kh);c.moveTo(kx+1,ky);c.lineTo(kx+1,ky-kh);for(let i=0;i<10;i++){c.moveTo(kx-1,ky-i*3.8);c.lineTo(kx+1,ky-i*3.8-3.8);c.moveTo(kx-1,ky-i*3.8);c.lineTo(kx+1,ky-i*3.8);}c.stroke();
+ const a=Math.sin(t*.25)*.5,ca=Math.cos(a);c.save();c.translate(kx,ky-kh);
+ c.fillStyle='#f0a500';c.fillRect(-1.6,-.4,3.6,3);c.fillStyle=day?'#bfe3f5':'#ffe08a';c.fillRect(.2,.2,1.4,1.6);
+ c.strokeStyle='#f0a500';c.lineWidth=.5;const J=28*ca,CJ=-10*ca;c.beginPath();c.moveTo(CJ,0);c.lineTo(J,0);c.moveTo(CJ,-1.4);c.lineTo(J,-1.4);for(let x=CJ;x<J;x+=2.4){c.moveTo(x,0);c.lineTo(x+1.2,-1.4);c.lineTo(x+2.4,0);}c.stroke();
+ c.lineWidth=.3;c.beginPath();c.moveTo(0,-5);c.lineTo(J*.95,-1.4);c.moveTo(0,-5);c.lineTo(CJ,-1.4);c.moveTo(-.3,-.4);c.lineTo(0,-5);c.stroke();
+ c.fillStyle='#8a8a94';c.fillRect(CJ-.4,-1.2,3.6*Math.max(.3,Math.abs(ca)),3.2);
+ const hx=(8+Math.sin(t*.4)*8)*ca,hl=12+Math.sin(t*.6)*3,sw=Math.sin(t*1.3)*.6;c.fillStyle='#2a2a2a';c.fillRect(hx-.8,-.2,1.6,.9);c.strokeStyle='#2a2a2a';c.lineWidth=.2;c.beginPath();c.moveTo(hx,.6);c.lineTo(hx+sw,hl);c.stroke();
+ c.fillStyle='#c0392b';c.beginPath();c.arc(hx+sw,hl+.3,.45,0,TAU);c.fill();c.fillStyle='#b07a45';c.fillRect(hx+sw-2.2,hl+1.2,4.4,.6);c.fillStyle='#b5523a';for(let r=0;r<2;r++)for(let k=0;k<3;k++)c.fillRect(hx+sw-2+k*1.4,hl+.1-r*.9,1.25,.8);
+ if(!day&&Math.sin(T*3)>0){c.fillStyle='#ff3030';c.beginPath();c.arc(0,-5.3,.7,0,TAU);c.fill();}c.restore();
+ // Material vorne: Betonmischer, Sandhaufen, Ziegel-Paletten, Rohre, Schubkarre
+ {const mx=-W2+10,my=H2-8;c.fillStyle='rgba(40,30,10,.25)';c.beginPath();c.ellipse(mx+1,my+3.4,5,1.2,0,0,TAU);c.fill();c.strokeStyle='#555';c.lineWidth=.45;c.beginPath();c.moveTo(mx-3,my+3);c.lineTo(mx-1.5,my);c.moveTo(mx+3,my+3);c.lineTo(mx+1.5,my);c.stroke();
+  c.save();c.translate(mx,my-1.4);c.rotate(-.35);c.fillStyle='#ff7a1a';c.beginPath();c.ellipse(0,0,3.6,2.6,0,0,TAU);c.fill();c.save();c.clip();c.strokeStyle='rgba(255,255,255,.5)';c.lineWidth=.45;const rot=(t*2)%1.6;for(let k=-4;k<5;k++){c.beginPath();c.moveTo(-4+k*1.6+rot,-3);c.lineTo(-2+k*1.6+rot,3);c.stroke();}c.restore();c.fillStyle='#4a4a4a';c.beginPath();c.ellipse(3.5,0,.7,1.4,0,0,TAU);c.fill();c.restore();}
+ c.fillStyle='#c9a868';c.beginPath();c.moveTo(-14,H2-3);c.quadraticCurveTo(-10,H2-11,-5,H2-3);c.closePath();c.fill();c.fillStyle='rgba(255,255,255,.18)';c.beginPath();c.moveTo(-12,H2-4);c.quadraticCurveTo(-10.5,H2-8.5,-9,H2-5);c.closePath();c.fill();
+ for(const px of[W2-17,W2-11]){const py=H2-5;c.fillStyle='#b07a45';c.fillRect(px-2.6,py,5.2,.8);c.fillStyle='#b5523a';for(let r=0;r<3;r++)for(let k=0;k<3;k++){c.fillRect(px-2.5+k*1.7,py-.9-r*1,1.55,.85);}c.fillStyle='rgba(255,255,255,.18)';c.fillRect(px-2.5,py-3.4,5,.3);}
+ {const px=4,py=H2-4;c.fillStyle='#8f969e';for(let r=0;r<2;r++)for(let k=0;k<3-r;k++){c.beginPath();c.arc(px+k*1.6+r*.8,py-r*1.4,.75,0,TAU);c.fill();}c.fillStyle='#5b636b';for(let r=0;r<2;r++)for(let k=0;k<3-r;k++){c.beginPath();c.arc(px+k*1.6+r*.8,py-r*1.4,.35,0,TAU);c.fill();}}
+ // Bauarbeiter mit Helm und Warnweste (nur tagsüber)
+ if(day&&z*S>12){const wk=(i,x,y,dir,act)=>{const L=b['W'+i]||(b['W'+i]={...look(900+i*7+(b.ziel|0)),shirt:'#ff7a1a',pants:'#2a3a5a'});c.save();c.translate(x,y);c.scale(dir,1);
+   person(c,L,act==='walk'?Math.sin(t*7+i)*1:0,false,act==='work'?.4+Math.abs(Math.sin(t*5+i))*1.2:0);c.scale(L.h,L.h);c.fillStyle='#fff';c.fillRect(-1.6,-1.3,3.2,.35);c.fillStyle='#ffd23f';c.beginPath();c.arc(0,-4.75,1.62,Math.PI,0);c.fill();c.fillRect(-1.2,-4.85,3.4,.45);c.restore();};
+  const fy=gy-(fl-1)*5-.4;wk(1,bx0+6,fy-4.4,1,'work');
+  const u=(t*.12+(b.ziel%7)/7)%1,wx=-14+(u<.5?u*2:2-u*2)*26,dr=u<.5?1:-1;c.save();c.translate(wx+dr*3.4,H2-9.6);c.scale(dr,1);c.fillStyle='#4a6a8a';c.beginPath();c.moveTo(-1.6,-.6);c.lineTo(1.8,-.6);c.lineTo(1.2,1.2);c.lineTo(-1.2,1.2);c.closePath();c.fill();c.fillStyle='#c9a868';c.beginPath();c.ellipse(0,-.7,1.6,.5,0,0,TAU);c.fill();c.fillStyle='#2a2a2a';c.beginPath();c.arc(1.9,1.6,.6,0,TAU);c.fill();c.strokeStyle='#555';c.lineWidth=.3;c.beginPath();c.moveTo(-1.4,.2);c.lineTo(-3.4,-.6);c.stroke();c.restore();
+  wk(2,wx,H2-13.8,dr,'walk');wk(3,-W2+16.5,H2-12.4,-1,'work');}
  for(const [x,y] of[[-W2+5,H2-4],[W2-5,H2-4],[-W2+5,-H2+4]]){c.fillStyle='#ff7a1a';c.beginPath();c.moveTo(x-1.4,y+1);c.lineTo(x,y-2.6);c.lineTo(x+1.4,y+1);c.closePath();c.fill();c.fillStyle='#fff';c.fillRect(x-.8,y-1,1.6,.5);}
- // seitliche + vordere Absperrung (vor dem Rohbau)
+ // seitliche + vordere Absperrung (vor dem Rohbau), nachts mit blinkenden Warnleuchten
  fence(-W2+1,-H2+1,-W2+1,H2-1);fence(W2-1,-H2+1,W2-1,H2-1);fence(-W2+1,H2-1,W2-1,H2-1);
+ if(!day){const on=Math.sin(T*4)>0;for(const [x,y] of[[-W2+1,H2-1],[W2-1,H2-1],[-W2+1,-H2+1],[W2-1,-H2+1],[0,H2-1]]){c.fillStyle=on?'#ffb020':'#7a5a20';c.beginPath();c.arc(x,y-1.2,.8,0,TAU);c.fill();if(on){c.fillStyle='rgba(255,176,32,.25)';c.beginPath();c.arc(x,y-1.2,2.6,0,TAU);c.fill();}}}
  c.restore();}
 // Bauschild mit Fortschritt – wird ganz zuletzt gezeichnet (über allen Namensschildern); am Steg draußen auf dem Meer
 function drawBauSign(c,b){const pr=Math.min(1,N/b.ziel),x=b.steg?b.sx:b.cx,sy=b.steg?b.sy:b.y0-10;c.save();c.translate(x,sy);
