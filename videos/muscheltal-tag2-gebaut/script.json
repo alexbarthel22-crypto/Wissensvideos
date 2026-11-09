@@ -44,6 +44,12 @@
      "style": "Style: a young man announcing an absolute sensation to his followers, super excited and thrilled, voice full of joy and energy, almost can't believe it himself. Natural German intonation, not robotic, emphasis on 'Insel'.\nPace: quick and energetic.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
     },
     {
+     "id": "L1b",
+     "text": "*y:Tag *y:2 in *b:Muschel-Tal!",
+     "speed": 1.08,
+     "style": "Style: a young man, genuinely thrilled, telling his friends big news. Energetic but natural, not an announcer.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
+    },
+    {
      "id": "L2",
      "text": "Schon *y:653|sechshundertdreiundfünfzig *y:Bewohner! / Auf der *b:Kokos-Küste / wohnen jetzt *y:148|hundertachtundvierzig.",
      "speed": 1.08
@@ -51,9 +57,14 @@
    ],
    "sfx": [
     {
-     "name": "whoosh",
+     "name": "impact-bass-1",
      "at": "s01+0.0",
-     "volume": 0.35
+     "volume": 0.6
+    },
+    {
+     "name": "whoosh",
+     "at": "s01+0.05",
+     "volume": 0.25
     },
     {
      "name": "impact-bass-2",
@@ -62,8 +73,8 @@
     },
     {
      "name": "ka-ching",
-     "at": "L2:Bewohner",
-     "volume": 0.45
+     "at": "L1b:Muschel-Tal",
+     "volume": 0.5
     }
    ]
   },
@@ -172,7 +183,7 @@
      "id": "L7",
      "text": "*g:Glückwunsch, *g:Lotti! / Du wohnst jetzt eine Woche / mit *p:Lilly im *y:Palast!",
      "speed": 1.1,
-     "pause": 3.2,
+     "pause": 3.0,
      "style": "Style: a young man, genuinely thrilled, telling his friends big news. Energetic but natural, not an announcer.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
     }
    ],

@@ -13,14 +13,14 @@ const G=await day.evaluate(()=>{const m=fitMain(),a=fitAll(),k=ISL[1];const g=n=
 const zk=405/(2*(G.k.R+60)),nightA=at('L4b','nachts')-.15,nightB=L.L5.start-.25,winT=L.L7.start-.45;
 const MID={x:(G.m.x+G.k.x)/2,y:(G.m.y+G.k.y)/2};
 const K=[[0,G.a.x,G.a.y,G.a.z*1.05],[L.L1.end-.1,G.m.x,G.m.y,G.m.z*1.0],
- [L.L2.start+1.3,-200,-220,2.7],[at('L2','Kokos')-.2,G.k.x,G.k.y,zk*1.1],[L.L2.end+.1,G.k.x+30,G.k.y-20,2.4],
+ [L.L1b.end,-150,-200,2.5],[L.L2.start+1.3,-200,-220,2.7],[at('L2','Kokos')-.2,G.k.x,G.k.y,zk*1.1],[L.L2.end+.1,G.k.x+30,G.k.y-20,2.4],
  [L.L3.start+.25,G.d.x,G.d.y,4.6],[L.L3.end-1.4,G.d.x+10,G.d.y+6,5.0],[L.L3.end+.2,G.d.x-120,G.d.y+60,2.8],
  [L.L4.start+.3,G.s.x-50,G.s.y,3.4],[nightA,G.s.x-20,G.s.y,3.6],[L.L4b.end+.1,G.s.x-25,G.s.y,3.9],
  [L.L5.start+.3,G.mayor.x,G.mayor.y+18,6.5],[at('L5','herzlichen'),G.mayor.x,G.mayor.y+14,6.0],[L.L5b.start,G.mayor.x,G.mayor.y+10,5.4],[L.L5b.end,0,10,3.4],
  [L.L6.start+.4,0,0,2.6],[L.L7.start-.1,0,-6,3.2],[at('L7','wohnst')+.2,8,G.mayor.y+18,5.6],[L.L7.end,8,G.mayor.y+16,6.0],
  [L.L8.start+.3,G.v.x+10,G.v.y,3.4],[L.L8.end,G.v.x+5,G.v.y,3.7],
  [L.L8b.start+.3,G.so.x+14,G.so.y-4,7.6],[L.L8b.end,G.so.x+14,G.so.y-4,8.2],[L.L8c.start+.3,G.nb.x,G.nb.y+18,6.0],[L.L8c.end,G.nb.x,G.nb.y+18,6.0],
- [at('L9','Hotel'),G.bau[0].x,G.bau[0].y,3.4],[at('L9','Anlegestelle'),G.bau[1].x,G.bau[1].y,3.0],
+ [L.L9.start,G.bau[0].x,G.bau[0].y,3.4],[at('L9','Anlegestelle')-.35,G.bau[0].x+6,G.bau[0].y,3.7],[at('L9','Anlegestelle')+.45,G.bau[1].x,G.bau[1].y,3.0],
  [L.L9b.start+.3,G.bau[1].x,G.bau[1].y,2.6],[at('L9b','zwischen'),MID.x,MID.y,G.a.z*1.45],[L.L9b.end,MID.x,MID.y,G.a.z*1.55],
  [L.L10.start+.2,-200,120,2.7],[dur,G.a.x,G.a.y,G.a.z*1.15]];
 const cam=t=>{let j=0;while(j<K.length-1&&K[j+1][0]<=t)j++;const a=K[j],b2=K[Math.min(j+1,K.length-1)];let k=b2[0]>a[0]?Math.max(0,Math.min(1,(t-a[0])/(b2[0]-a[0]))):1;k=k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2;
