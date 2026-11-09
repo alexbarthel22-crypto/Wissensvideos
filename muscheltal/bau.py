@@ -276,7 +276,7 @@ def bauprojekte(sauber, insel, out):
     teile = []
     for b in sorted([b for b in insel.get("baustellen", []) if n < b["ziel"]], key=lambda b: b["ziel"]):
         pr = min(100, round(n * 100 / b["ziel"]))
-        ort = "am Steg der Haupt-Insel, weit ins Meer" if b.get("ort") == "steg" else "auf der " + (insel["inseln"][int(b["key"].split(":")[0])]["name"] if b.get("key") else "Haupt-Insel")
+        ort = "am Steg der Haupt-Insel" if b.get("ort") == "steg" else "auf der " + (insel["inseln"][int(b["key"].split(":")[0])]["name"] if b.get("key") else "Haupt-Insel")
         teile.append(f'''<a class="bp" href="./?ort={quote(b["name"])}"><div class="kopf"><span class="em">{H.escape(b.get("emoji", "🏗️"))}</span><div><b>{H.escape(b["name"])}</b><small>{H.escape(ort)}</small></div></div>
 <div class="bar"><i style="width:{pr}%"></i></div><div class="zl"><span>{tz(n)} von {tz(b["ziel"])} Bewohnern</span><span>noch {tz(b["ziel"] - n)}</span></div><u>📍 Auf der Karte ansehen →</u></a>''')
     leer = '<p class="hint">Gerade wird nichts gebaut. Neue Projekte kommen bald!</p>' if not teile else ""
