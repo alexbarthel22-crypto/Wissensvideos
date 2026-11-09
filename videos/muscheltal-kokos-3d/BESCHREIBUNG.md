@@ -1,11 +1,15 @@
-# Muschel-Tal – „Einwohner gesucht!“ (3D Kokos-Küste, 30 s) · Beschreibung
+# Muschel-Tal – „Das könnte dein Haus sein!“ (3D, 28 s) · Beschreibung
+
+**Cover:** `renders/cover.jpg` (Vorlage `cover/thumb.html`) – Logo + „ZIEH EIN!“, „DEIN NAME HIER?! – Folgen = eigene Hütte 🏝️“, Karten „1 = 1 Follower = Hütte mit deinem Namen“ und „653 sind schon eingezogen“. Hintergrund: 3D-Kokosnuss-Haus mit Schild „@dein.name“.
 
 ## Hauptversion (zum Posten)
-Das könnte dein Haus sein 🏝️ Einwohner für meine Insel gesucht! Folg mir und du bekommst eine eigene Hütte mit deinem @Namen auf Kokos-Küste 🥥
+Das könnte dein Haus sein 🥥🏝️ So funktioniert's: Du folgst mir – und bekommst eine eigene Hütte mit deinem @Namen in Muschel-Tal. Für immer.
 
-653 sind schon eingezogen – wer soll neben dir wohnen? Markier ihn 👇
+Je mehr Follower, desto größer wird die Insel: neue Gebäude, Jobs und Inseln werden freigeschaltet. Gerade im Bau: Hotel Sandkorn und die Anlegestelle ⛵
 
-#muscheltal #fürdich #insel #community #nachbarn
+Folg jetzt und zieh noch heute ein 👇 Markier deine Freunde, dann werdet ihr Nachbarn!
+
+#fürdich #fyp #foryou #viral #muscheltal
 
 ## Angepinnter Kommentar
-Markier hier, wer neben dir wohnen soll 🏡👇
+Schreib „🏠“ in die Kommentare, wenn du schon eingezogen bist – markier deinen Nachbarn 👇
