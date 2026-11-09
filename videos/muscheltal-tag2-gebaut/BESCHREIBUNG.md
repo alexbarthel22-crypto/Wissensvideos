@@ -5,13 +5,17 @@
 **Verlosung:** Palast-Leitung = **Lotti (@prvt.lott1)**, Einwohner Nr. 152, am 9.11. per Zufall (Python `secrets.choice`) aus allen 647 Einwohnern ohne Amt/Job gezogen.
 
 ## Hauptversion (zum Posten)
-Folg mir und du wohnst auf meiner Insel 🏝️ Jeder Follower bekommt eine eigene Hütte mit seinem @Namen – auf muscheltal.de kannst du sie finden.
+Folge und zieh in dein Haus auf der Kokos-Küste 🥥🏝️
 
-Tag 2 in Muschel-Tal: 653 Bewohner! Ihr habt abgestimmt und die Dönerbude 🥙 und die Strandbar 🍹 sind gebaut. Lilly ist unsere Bürgermeisterin und ich habe live die Palast-Leitung ausgelost 👑
+Tag 2: 653 Bewohner und die ersten Berufe!
+🎖️ Bürgermeisterin: Lilly
+👑 Palast-Leitung: Lotti
+🥙 Dönerbude: Lotta (Leitung), Alana & Emilia
+🍹 Strandbar: @paulepfpgfn (Leitung), @khmr.496
 
-Nächstes Video: Ich verlose die Strandvilla mit Pool an zwei von euch 🏖️ Folgen = einziehen = mitmachen.
+🏗️ Bauprojekte: Hotel Sandkorn bei 800 Bewohnern, Anlegestelle bei 900 – damit wechselt ihr zwischen den Inseln ⛵
 
-Markier deine Freunde, dann werdet ihr Nachbarn 👇
+Nächstes Video: Ich verlose die Strandvilla 🏖️ Markier deine Freunde 👇
 
 #muscheltal #fürdich #insel #verlosung #community
 
