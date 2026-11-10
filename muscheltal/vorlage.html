@@ -1004,8 +1004,8 @@ function poolSpot(q){if(q.poolS)return q.poolS;const v=q.isl,gx=q.p.gx,gy=q.p.gy
  for(const dx of[1,-1]){const cx=gx+dx;if(v.cell.has(cx+','+gy))continue;const x=q.p.x+dx*12.8,y=q.p.y+2.5;if(inside(v,x,y,-10))return q.poolS=[x,y,1];}return q.poolS=null;}
 // Streunende Hunde und Katzen: laufen auf allen Wegen herum (wie Passanten, nie über Hütten), bleiben stehen, setzen sich, wedeln
 const PETS={list:null,last:0};
-function petsInit(){PETS.list=[];let i=0;for(const v of ISL){if(!v.open||!v.people||!v.people.length)continue;const n=v.i===0?34:Math.min(26,12+Math.round(v.people.length/20)),K=Math.ceil(v.R/(5*S)),M=Math.ceil(v.R/(4*S*.9));
-  for(let j=0,tr=0;j<n&&tr<400;tr++){const k=Math.round((hash(i*7+tr,701)*2-1)*K),m=Math.round((hash(i*7+tr,702)*2-1)*M);if(!rValid(v,k,m))continue;const [x,y]=rNode(v,k,m),cat=hash(i,703)<.5,T0=cat?CATS:DOGS,sp=T0[(hash(i,704)*T0.length)|0];
+function petsInit(){PETS.list=[];let i=0;for(const v of ISL){if(!v.open||!v.people||!v.people.length)continue;const n=v.i===0?78:v.i===1?120:12,K=Math.ceil(v.R/(5*S)),M=Math.ceil(v.R/(4*S*.9));
+  for(let j=0,tr=0;j<n&&tr<4000;tr++){const k=Math.round((hash(i*7+tr,701)*2-1)*K),m=Math.round((hash(i*7+tr,702)*2-1)*M);if(!rValid(v,k,m))continue;const [x,y]=rNode(v,k,m),cat=hash(i,703)<.5,T0=cat?CATS:DOGS,sp=T0[(hash(i,704)*T0.length)|0];
    PETS.list.push({v,k,m,x,y,tk:null,tm:null,pk:null,pm:null,cat,sp,sz:(sp.small?.8:1)*(.85+hash(i,705)*.3),spd:cat?3.2+hash(i,706)*1.4:5+hash(i,706)*2.5,pause:hash(i,707)*4,sit:0,dir:hash(i,708)<.5?-1:1,vert:0,ph:hash(i,709)*9,coll:hash(i,710)<.6?COLL[(hash(i,711)*COLL.length)|0]:null,i});j++;i++;}}}
 // Streuner-Abstecher: vom Weg in die Gasse zwischen zwei Hüttenspalten, hindurch bis zur nächsten Wegreihe (nie über Hütten oder Hindernisse)
 function petAlleyOK(v,P){for(let i=1;i<P.length;i++){const [x0,y0]=P[i-1],[x1,y1]=P[i],n=Math.ceil(Math.hypot(x1-x0,y1-y0)/1.2);for(let j=1;j<=n;j++){const x=x0+(x1-x0)*j/n,y=y0+(y1-y0)*j/n;if(!canWalk(x,y)||inBau(x,y))return false;
