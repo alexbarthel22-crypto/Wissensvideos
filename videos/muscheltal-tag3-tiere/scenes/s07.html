@@ -3,26 +3,26 @@
     /*__COMMON_CSS__*/
 .pl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 28px 12px; border-radius: 999px; color: #fff;
       font-family: "Inter", sans-serif; font-weight: 900; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); white-space: nowrap; }
-    .s07-c { position: absolute; left: 90px; width: 900px; height: 140px; border-radius: 30px; background: #fff; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.3);
-      display: flex; align-items: center; gap: 20px; padding: 0 28px; font-family: "Inter", sans-serif; color: #23285a; }
-    .s07-c .e { font-size: 72px; } .s07-c .m { flex: 1; } .s07-c b { font-size: 40px; font-weight: 900; display: block; line-height: 1.1; }
-    .s07-c small { display: block; font-size: 28px; font-weight: 800; color: #6b6f8a; margin-top: 2px; }
-    .s07-c .bar { height: 20px; border-radius: 10px; background: #e3e6f0; margin-top: 8px; overflow: hidden; } .s07-c .bar i { display: block; height: 100%; width: 0; background: #ff6a1a; border-radius: 10px; }
-    .s07-c .z { font-size: 40px; font-weight: 900; color: #ff6a1a; text-align: center; line-height: 1; } .s07-c .z span { font-size: 26px; color: #6b6f8a; }
-    #s07-w { top: 640px; font-size: 44px; background: #18b8c0; }
-    .fbtn { position: absolute; left: 0; right: 0; margin: 0 auto; top: 330px; width: 420px; height: 120px; border-radius: 60px; background: #fe2c55; color: #fff;
+    .fbtn { position: absolute; left: 0; right: 0; margin: 0 auto; width: 420px; height: 120px; border-radius: 60px; background: #fe2c55; color: #fff;
       font-family: "Inter", sans-serif; font-weight: 900; font-size: 56px; display: grid; place-items: center; box-shadow: 0 0 0 5px #2a1b12, 0 12px 0 rgba(0,0,0,.25); }
     .fbtn2 { position: absolute; inset: 0; border-radius: 60px; background: #fff; color: #0a78c2; display: grid; place-items: center; opacity: 0; }
-    #s07-hand { position: absolute; left: 690px; top: 380px; font-size: 120px; }
-    #s07-m { top: 500px; font-size: 44px; background: #e8467c; }
+    .fhand { position: absolute; font-size: 120px; }
+    .ks { position: absolute; left: 70px; right: 70px; padding: 18px 28px 22px; border-radius: 32px; background: #fff; box-shadow: 0 0 0 6px #2a1b12, 0 12px 0 rgba(0,0,0,.3); font-family: "Inter", sans-serif; color: #2a1b12; }
+    .ks .row { display: flex; align-items: baseline; justify-content: space-between; font-weight: 900; font-size: 38px; }
+    .ks .row b { font-size: 70px; color: #e8262f; line-height: 1; } .ks .row span { font-size: 34px; color: #6b6f8a; }
+    .ks .bar { height: 30px; border-radius: 15px; background: #ece4d8; margin-top: 12px; overflow: hidden; } .ks .bar i { display: block; height: 100%; width: 0; border-radius: 15px; background: linear-gradient(90deg, #e8262f, #ff8a3a); }
+    #s07-q { top: 300px; font-size: 44px; background: #7b3fe0; }
+    #s07-ks { top: 410px; }
+    #s07-btn { top: 640px; } #s07-hand { left: 690px; top: 690px; }
+    #s07-r { top: 790px; font-size: 42px; background: #2e9e5b; }
   </style>
   <div id="root" data-composition-id="s07" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
     <div id="s07-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
-<div class="s07-c" id="s07-c0" style="top:290px"><div class="e">🏨</div><div class="m"><b>Hotel Sandkorn</b><small>Fertig bei 800 Bewohnern</small><div class="bar"><i id="s07-b0"></i></div></div><div class="z">653<br><span>/ 800</span></div></div><div class="s07-c" id="s07-c1" style="top:450px"><div class="e">⚓</div><div class="m"><b>Boots-Anlegestelle</b><small>Fertig bei 900 Bewohnern</small><div class="bar"><i id="s07-b1"></i></div></div><div class="z">653<br><span>/ 900</span></div></div>
-      <div id="s07-w" class="pl">⛵ Zwischen den Inseln wechseln!</div>
+      <div id="s07-q" class="pl">🐶🐱 Welches Tier willst du adoptieren?</div>
+      <div id="s07-ks" class="ks"><div class="row"><div>🐾 Tierheim Pfotenkuss</div><div><b id="s07-kn">505</b><span> / 2.000 🐚</span></div></div><div class="bar"><i id="s07-kb"></i></div></div>
       <div id="s07-btn" class="fbtn">+ Folgen<div id="s07-btn2" class="fbtn2">✓ Gefolgt</div></div>
-      <div id="s07-hand" data-layout-ignore>👆</div>
-      <div id="s07-m" class="pl">👯 Freunde markieren!</div>
+      <div id="s07-hand" class="fhand" data-layout-ignore>👆</div>
+      <div id="s07-r" class="pl">🐚 +5 Muscheln für die Tiere</div>
     </div>
   </div>
   <script>
@@ -31,22 +31,20 @@
       /*__COMMON_JS__*/
       wrapBt("#s07-stage");
       const tl = gsap.timeline({ paused: true });
-      const ws = [at("L9", "Hotel"), at("L9", "Anlegestelle")], pc = [0.816, 0.726], l10 = line("L10")[0], fo = at("L10", "folgen"), fr = at("L10", "Freunde"), zw = at("L9b", "zwischen"), l9b = line("L9b")[0];
-      ws.forEach((w, i) => { tl.fromTo("#s07-c" + i, { opacity: 0, x: i % 2 ? 120 : -120 }, { opacity: 1, x: 0, duration: .3, ease: "back.out(2)" }, w - .2);
-        tl.fromTo("#s07-b" + i, { width: "0%" }, { width: (pc[i] * 100).toFixed(1) + "%", duration: .8, ease: "power2.out" }, w + .1); });
-      tl.to(["#s07-c0"], { opacity: .45, duration: .25 }, l9b);
-      tl.to("#s07-c1", { scale: 1.07, boxShadow: "0 0 0 8px #18b8c0, 0 12px 0 rgba(0,0,0,.3)", duration: .3, ease: "back.out(2)" }, l9b);
-      tl.fromTo("#s07-w", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, zw - .2);
-      tl.to("#s07-w", { scale: 1.06, duration: .25, yoyo: true, repeat: 3, ease: "sine.inOut" }, zw + .3);
-      tl.to([".s07-c", "#s07-w"], { opacity: 0, y: -30, duration: .2 }, l10 - .25);
-      tl.fromTo("#s07-btn", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, l10);
-      tl.fromTo("#s07-hand", { opacity: 0, x: 160, y: 160 }, { opacity: 1, x: 0, y: 0, duration: .25, ease: "power3.out" }, fo - .2);
-      tl.to("#s07-hand", { y: -26, scale: .9, duration: .1, yoyo: true, repeat: 1 }, fo + .1);
-      tl.to("#s07-btn2", { opacity: 1, duration: .05 }, fo + .2);
-      tl.fromTo("#s07-btn", { scale: 1 }, { scale: 1.15, duration: .12, yoyo: true, repeat: 1 }, fo + .2);
-      tl.to("#s07-hand", { opacity: 0, duration: .25 }, fo + .7);
-      tl.fromTo("#s07-m", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, fr - .15);
-      tl.to("#s07-m", { scale: 1.06, duration: .25, yoyo: true, repeat: 3, ease: "sine.inOut" }, fr + .4);
+      const ti = at("L10", "Tier"), fo = at("L10", "Folgt"), re = at("L10", "rettet");
+      tl.fromTo("#s07-q", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, ti - .2);
+      tl.fromTo("#s07-ks", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, ti + .3);
+      tl.set("#s07-kb", { width: "25.25%" }, 0);
+      tl.fromTo("#s07-btn", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, fo - .5);
+      tl.fromTo("#s07-hand", { opacity: 0, x: 160, y: 160 }, { opacity: 1, x: 0, y: 0, duration: .25, ease: "power3.out" }, fo - .3);
+      tl.to("#s07-hand", { y: -26, scale: .9, duration: .1, yoyo: true, repeat: 1 }, fo);
+      tl.to("#s07-btn2", { opacity: 1, duration: .05 }, fo + .1);
+      tl.fromTo("#s07-btn", { scale: 1 }, { scale: 1.15, duration: .12, yoyo: true, repeat: 1, immediateRender: false }, fo + .1);
+      tl.to("#s07-hand", { opacity: 0, duration: .25 }, fo + .6);
+      count(tl, "#s07-kn", 505, 510, fo + .2, .4);
+      tl.to("#s07-kb", { width: "25.5%", duration: .4 }, fo + .2);
+      tl.fromTo("#s07-r", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, fo + .3);
+      tl.to("#s07-r", { scale: 1.08, duration: .22, yoyo: true, repeat: 5, ease: "sine.inOut" }, re);
       
       window.__timelines["s07"] = tl;
     })();

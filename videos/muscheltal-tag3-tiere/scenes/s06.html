@@ -3,21 +3,20 @@
     /*__COMMON_CSS__*/
 .pl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 28px 12px; border-radius: 999px; color: #fff;
       font-family: "Inter", sans-serif; font-weight: 900; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); white-space: nowrap; }
-    #s06-t { top: 300px; font-size: 58px; background: #18b8c0; }
-    #s06-n { top: 420px; font-size: 44px; background: #e8467c; }
-    #s06-sp { top: 300px; font-size: 48px; background: #18b8c0; }
-    #s06-nb { top: 300px; font-size: 42px; background: #2e9e5b; }
-    #s06-hs { position: absolute; left: 230px; top: 640px; width: 130px; height: 130px; border-radius: 50%; background: #fff; display: grid; place-items: center; font-size: 84px; box-shadow: 0 0 0 7px #ffc93c, 0 0 0 12px #2a1b12, 0 12px 20px rgba(0,0,0,.3); }
-    #s06-z { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 530px; color: #e8433c; border-color: #e8433c; transform: rotate(-4deg); font-size: 56px; white-space: nowrap; background: #fff; }
+    #s06-c { position: absolute; left: 50px; right: 50px; top: 290px; padding: 30px 30px 34px; border-radius: 34px; background: #1f1f1f; box-shadow: 0 0 0 5px #000, 0 16px 30px rgba(0,0,0,.45); font-family: "Inter", sans-serif; color: #fff; display: flex; gap: 26px; }
+    #s06-c .av { width: 104px; height: 104px; border-radius: 50%; background: url(assets/img/fab_avatar.png) center/cover; flex: none; }
+    #s06-c .nm { font-size: 34px; color: #a8a8a8; font-weight: 600; } #s06-c .tx { font-size: 38px; line-height: 1.32; margin-top: 6px; font-weight: 500; }
+    #s06-c .ph { width: 300px; height: 340px; border-radius: 12px; margin-top: 18px; background: url(assets/img/fab_dog.jpg) center/cover; }
+    #s06-c .mt { font-size: 28px; color: #8a8a8a; margin-top: 14px; font-weight: 600; }
+    #s06-v { position: absolute; left: 90px; right: 90px; top: 960px; display: flex; gap: 24px; }
+    #s06-v div { flex: 1; text-align: center; padding: 14px 0 18px; border-radius: 26px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 46px; color: #fff; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); }
+    #s06-q { top: 870px; font-size: 40px; background: #e2560c; }
   </style>
   <div id="root" data-composition-id="s06" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
     <div id="s06-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
-      <div id="s06-t" class="pl">🏖️ STRANDVILLA</div>
-      <div id="s06-n" class="pl">🎬 Nächstes Video: Verlosung</div>
-      <div id="s06-z" class="stamp">2 GEWINNER 🎁</div>
-      <div id="s06-sp" class="pl">🏊 Pool für @sophia_e065!</div>
-      <div id="s06-nb" class="pl">🏡 @anton.van11 + @laura.ngynn</div>
-      <div id="s06-hs" data-layout-ignore>🤝</div>
+      <div id="s06-c"><div class="av"></div><div><div class="nm">Fabienne</div><div class="tx">Wir brauchen noch eine Bäckerei wo ich dann drüber wohne und dort backe.Kann sehr gut Cookies und Zimtschnecken backen.</div><div class="ph"></div><div class="mt">@fabienne3692 · Antworten</div></div></div>
+      <div id="s06-q" class="pl">🥐 Soll Fabienne eine Bäckerei eröffnen?</div>
+      <div id="s06-v"><div style="background:#2e9e5b">✅ JA</div><div style="background:#e8262f">❌ NEIN</div></div>
     </div>
   </div>
   <script>
@@ -26,20 +25,12 @@
       /*__COMMON_JS__*/
       wrapBt("#s06-stage");
       const tl = gsap.timeline({ paused: true });
-      const sv = at("L8", "Strandvilla"), zw = at("L8", "zwei");
-      tl.fromTo("#s06-n", { opacity: 0, y: -40 }, { opacity: 1, y: 0, duration: .35, ease: "back.out(2)" }, .05);
-      tl.fromTo("#s06-t", { opacity: 0, scale: .3, rotation: -8 }, { opacity: 1, scale: 1, rotation: -2, duration: .45, ease: "back.out(2.6)" }, sv - .15);
-      tl.fromTo("#s06-z", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, zw - .05);
-      const sp = line("L8b")[0], kd = at("L8b", "kriegst");
-      tl.to(["#s06-t", "#s06-n", "#s06-z"], { opacity: 0, y: -20, duration: .2 }, sp - .1);
-      tl.fromTo("#s06-sp", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, sp + .1);
-      tl.to("#s06-sp", { scale: 1.1, duration: .18, yoyo: true, repeat: 3, ease: "sine.inOut" }, kd);
-      const nb = line("L8c")[0], na = at("L8c", "Nachbarn");
-      tl.to("#s06-sp", { opacity: 0, y: -20, duration: .2 }, nb - .1);
-      tl.fromTo("#s06-nb", { opacity: 0, y: -40 }, { opacity: 1, y: 0, duration: .35, ease: "back.out(2)" }, nb + .1);
-      tl.fromTo("#s06-hs", { opacity: 0, scale: 0, rotation: -40 }, { opacity: 1, scale: 1, rotation: 0, duration: .5, ease: "elastic.out(1, .5)" }, na - .2);
-      tl.to("#s06-hs", { scale: 1.15, rotation: 8, duration: .2, yoyo: true, repeat: 5, ease: "sine.inOut" }, na + .35);
-      tl.to("#s06-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
+      const fa = at("L9", "Fabienne"), so = at("L9", "Soll"), stm = at("L9", "Stimmt");
+      tl.fromTo("#s06-c", { opacity: 0, y: 300 }, { opacity: 1, y: 0, duration: .45, ease: "power4.out" }, fa - .2);
+      tl.fromTo("#s06-q", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, so - .15);
+      tl.fromTo("#s06-v div", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)", stagger: .12 }, stm - .2);
+      tl.to("#s06-v div", { scale: 1.08, duration: .22, yoyo: true, repeat: 5, ease: "sine.inOut", stagger: .1 }, stm + .3);
+      
       window.__timelines["s06"] = tl;
     })();
   </script>

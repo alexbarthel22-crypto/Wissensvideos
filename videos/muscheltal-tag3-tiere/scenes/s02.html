@@ -3,19 +3,18 @@
     /*__COMMON_CSS__*/
 .pl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 28px 12px; border-radius: 999px; color: #fff;
       font-family: "Inter", sans-serif; font-weight: 900; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); white-space: nowrap; }
-    #s02-t { top: 300px; font-size: 62px; background: #e8433c; }
-    #s02-w { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 730px; color: #2e9e5b; border-color: #2e9e5b; background: #fff; transform: rotate(-6deg); font-size: 36px; }
-    .s02-n { font-size: 40px; background: #fff; color: #e8433c; }
-    #s02-g { top: 720px; font-size: 46px; background: #ff6a1a; }
+    #s02-t { top: 300px; font-size: 58px; background: #7b3fe0; }
+    #s02-l { top: 410px; font-size: 38px; background: #fff; color: #7b3fe0; }
+    .s02-n { font-size: 38px; background: #fff; color: #2a1b12; }
   </style>
   <div id="root" data-composition-id="s02" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
     <div id="s02-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
-      <div id="s02-t" class="pl">🥙 DÖNERBUDE</div>
-      <div id="s02-w" class="stamp">GEWONNEN!</div>
-      <div id="s02-n1" class="pl s02-n" style="top:430px">⭐ @lotta.fsthff</div>
-      <div id="s02-n2" class="pl s02-n" style="top:520px">@alana_wbr</div>
-      <div id="s02-n3" class="pl s02-n" style="top:610px">@em1lia.brn</div>
-
+      <div id="s02-t" class="pl">🫐 AÇAÍ-STAND</div>
+      <div id="s02-l" class="pl">eröffnet von Bürgermeisterin Lilly 🎖️</div>
+      <div id="s02-n0" class="pl s02-n" style="top:520px">⭐ Filipa · @vidafilipa</div>
+      <div id="s02-n1" class="pl s02-n" style="top:610px">Marina · @marina.cgnn</div>
+      <div id="s02-n2" class="pl s02-n" style="top:700px">Johanna · @borbie20</div>
+      <div id="s02-n3" class="pl s02-n" style="top:790px">@lp_art18</div>
     </div>
   </div>
   <script>
@@ -24,10 +23,10 @@
       /*__COMMON_JS__*/
       wrapBt("#s02-stage");
       const tl = gsap.timeline({ paused: true });
-      const dn = at("L3", "Dönerbude"), dr = at("L3", "Lotta");
-      tl.fromTo("#s02-t", { opacity: 0, scale: .3, rotation: -10 }, { opacity: 1, scale: 1, rotation: -2, duration: .45, ease: "back.out(2.6)" }, dn - .15);
-      tl.fromTo("#s02-w", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, dr + .9);
-      tl.fromTo(["#s02-n1", "#s02-n2", "#s02-n3"], { opacity: 0, x: -80 }, { opacity: 1, x: 0, duration: .3, ease: "back.out(2)", stagger: .18 }, dr - .35);
+      const ac = at("L4", "Açaí-Stand"), li = at("L4", "Lilly"), ns = [at("L4", "Filipa"), at("L4", "Marina"), at("L4", "Johanna"), at("L4", "lp_art18")];
+      tl.fromTo("#s02-t", { opacity: 0, scale: .3, rotation: -8 }, { opacity: 1, scale: 1, rotation: -2, duration: .4, ease: "back.out(2.6)" }, ac - .15);
+      tl.fromTo("#s02-l", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, li - .2);
+      ns.forEach((t, i) => tl.fromTo("#s02-n" + i, { opacity: 0, x: i % 2 ? 120 : -120 }, { opacity: 1, x: 0, duration: .3, ease: "back.out(2)" }, t - .15));
       tl.to("#s02-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
       window.__timelines["s02"] = tl;
     })();
