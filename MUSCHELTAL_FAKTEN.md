@@ -180,3 +180,13 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - **Sonnenaufgang/Sonnenuntergang-Erfolg:** gibt es nur noch, wenn man zur passenden Zeit die Welt als jemand **erkundet** (nicht schon beim Suchen/Auswählen des Namens). Sonnenuntergang entzogen am 10.11.: @emely.hac, @mimposible.
 - **Suche ohne Treffer:** „Noch nicht auf der Insel. Neue Einwohner ziehen beim nächsten Update über Nacht ein – folgst du schon auf TikTok @muscheltal?“ (@muscheltal verlinkt). Muschelpass-Suche entsprechend („das nächste Update kommt über Nacht“).
 - **Desktop:** Die Karte füllt nicht mehr den ganzen Bildschirm – unten schaut der nächste Abschnitt hervor, damit man sieht, dass man scrollen kann. Verschieben/Zoomen ist flüssig (Grundkarte wird nur noch verschoben statt bei jeder Bewegung neu gezeichnet; weit herausgezoomte Tiere vereinfacht).
+
+## Video Tag 4 (geplant, noch nicht erstellt – Nutzer aktualisiert vorher die Homepage)
+- **Einwohner: 702** (Stand Planung Tag 4).
+- Einstieg wie Video 1: „Ich habe euch eine Insel gekauft! Am Anfang hab ich hier ganz allein gelebt – jetzt sind wir schon 702 Leute!“
+- Botschaft: Muschel-Tal ist **die erste und größte Insel auf TikTok**, auf der **ganz allein die Follower entscheiden**, was passiert.
+- Veränderungen seit Tag 3: neue Bewohner, Inselkasse/Tierheim, **Emilia & Lea wohnen in der Strandvilla**, **Bäckerei-Abstimmung: Fabienne (@fabienne3692) eröffnet und leitet die Bäckerei**.
+- **Live-Verlosung im Video: ein Job in Fabiennes Bäckerei.**
+- **Regel: An Job-Verlosungen nehmen nur Bewohner teil, die noch keinen Job/kein Amt haben.**
+- **Spoiler: Wer einen Job hat, hat später im Spiel bei 1.000 Bewohnern einen Vorteil.**
+- Aufruf: verrückteste Idee kommentieren (Beispiel-Kommentar: „Es gibt einen Matcha-Brunnen und jeden Tag regnet es Red Bull“) – **der Kommentar mit den meisten Likes gewinnt und ist morgen im Video**. Freunde markieren, folgen = einziehen.

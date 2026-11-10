@@ -1,0 +1,62 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+.pl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 28px 12px; border-radius: 999px; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); white-space: nowrap; }
+    .fbtn { position: absolute; left: 0; right: 0; margin: 0 auto; width: 420px; height: 120px; border-radius: 60px; background: #fe2c55; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 56px; display: grid; place-items: center; box-shadow: 0 0 0 5px #2a1b12, 0 12px 0 rgba(0,0,0,.25); }
+    .fbtn2 { position: absolute; inset: 0; border-radius: 60px; background: #fff; color: #0a78c2; display: grid; place-items: center; opacity: 0; }
+    .fhand { position: absolute; font-size: 120px; }
+    #s01-flash { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 45%, rgba(20,30,80,0) 30%, rgba(10,16,50,.55) 100%); opacity: 0; }
+    #s01-t { top: 290px; font-size: 54px; background: #23285a; }
+    #s01-f { position: absolute; left: 90px; right: 90px; top: 410px; padding: 18px 26px 22px; border-radius: 30px; background: #fff; box-shadow: 0 0 0 6px #2a1b12, 0 12px 0 rgba(0,0,0,.28); font-family: "Inter", sans-serif; font-weight: 900; font-size: 42px; color: #2a1b12; text-align: center; }
+    #s01-f span { display: inline-block; margin: 10px 6px 0; padding: 4px 18px 8px; border-radius: 999px; background: #e8f3ff; color: #0a78c2; font-size: 36px; }
+    #s01-btn { top: 640px; } #s01-hand { left: 690px; top: 690px; }
+    #s01-r { top: 800px; font-size: 46px; background: #2e9e5b; }
+    #s01-m { top: 900px; font-size: 40px; background: #7b3fe0; }
+    #s01-k { position: absolute; left: 90px; right: 90px; top: 410px; padding: 20px 28px 24px; border-radius: 30px; background: #fff; box-shadow: 0 0 0 6px #2a1b12, 0 12px 0 rgba(0,0,0,.28); font-family: "Inter", sans-serif; font-weight: 900; color: #2a1b12; text-align: center; font-size: 40px; }
+    #s01-k b { display: block; font-size: 96px; color: #2e9e5b; line-height: 1.05; }
+    #s01-d { top: 640px; font-size: 56px; background: #e8467c; }
+  </style>
+  <div id="root" data-composition-id="s01" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s01-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s01-flash" data-layout-ignore></div>
+      <div id="s01-t" class="pl">🌙 Heute Nacht auf der Straße …</div>
+      <div id="s01-f">👯 Lade deine Freunde ein<br><span>@deine_bff</span><span>@bester_freund</span></div>
+      <div id="s01-btn" class="fbtn">+ Folgen<div id="s01-btn2" class="fbtn2">✓ Gefolgt</div></div>
+      <div id="s01-hand" class="fhand" data-layout-ignore>👆</div>
+      <div id="s01-r" class="pl">🐾 Tiere gerettet!</div>
+      <div id="s01-m" class="pl">💬 Markiere sie unter dem Video!</div>
+      <div id="s01-k">🐚 Jeder neue Bewohner<b id="s01-kn">+5</b>Muscheln fürs Tierheim Pfotenkuss</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      /*__COMMON_JS__*/
+      wrapBt("#s01-stage");
+      const tl = gsap.timeline({ paused: true });
+      const hi = at("L1", "schlafen"), fr = at("L2", "Freunde"), fo = at("L2", "folgt"), re = at("L2", "rettet"), ma = at("L2", "Markiert"), l3 = line("L3")[0];
+      tl.set("#s01-t", { opacity: 1 }, 0);
+      tl.fromTo("#s01-t", { scale: .6, y: 20 }, { scale: 1, y: 0, duration: .6, ease: "power2.out" }, 0);
+      tl.fromTo("#s01-flash", { opacity: 1 }, { opacity: 0, duration: 1.2 }, line("L2")[0] - .6);
+      tl.fromTo("#s01-f", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.4)" }, fr - .3);
+      tl.fromTo("#s01-f span", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: .25, stagger: .15 }, fr + .1);
+      tl.fromTo("#s01-btn", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, fo - .4);
+      tl.fromTo("#s01-hand", { opacity: 0, x: 160, y: 160 }, { opacity: 1, x: 0, y: 0, duration: .25, ease: "power3.out" }, fo - .3);
+      tl.to("#s01-hand", { y: -26, scale: .9, duration: .1, yoyo: true, repeat: 1 }, fo);
+      tl.to("#s01-btn2", { opacity: 1, duration: .05 }, fo + .1);
+      tl.fromTo("#s01-btn", { scale: 1 }, { scale: 1.15, duration: .12, yoyo: true, repeat: 1, immediateRender: false }, fo + .1);
+      tl.to("#s01-hand", { opacity: 0, duration: .2 }, fo + .5);
+      tl.fromTo("#s01-r", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, re - .1);
+      tl.fromTo("#s01-m", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, ma - .2);
+      tl.to("#s01-m", { scale: 1.08, duration: .2, yoyo: true, repeat: 3, ease: "sine.inOut" }, ma + .2);
+      tl.to(["#s01-f", "#s01-btn", "#s01-r", "#s01-m"], { opacity: 0, y: -30, duration: .25 }, l3 - .3);
+      tl.fromTo("#s01-k", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.4)" }, l3 - .1);
+      tl.fromTo("#s01-k b", { scale: 1 }, { scale: 1.25, duration: .15, yoyo: true, repeat: 5, immediateRender: false }, at("L3", "Muscheln"));
+      tl.to(["#s01-t", "#s01-k"], { opacity: 0, y: -30, duration: .3 }, line("L3")[1] + .3);
+      
+      window.__timelines["s01"] = tl;
+    })();
+  </script>
+</template>
