@@ -57,35 +57,36 @@
     .ks .bar { height: 30px; border-radius: 15px; background: #ece4d8; margin-top: 12px; overflow: hidden; } .ks .bar i { display: block; height: 100%; width: 0; border-radius: 15px; background: linear-gradient(90deg, #e8262f, #ff8a3a); }
     #s01-flash { position: absolute; inset: 0; box-shadow: inset 0 0 220px 60px rgba(232,38,47,.85); opacity: 0; }
     #s01-h { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 250px; padding: 4px 50px 16px; border-radius: 30px; background: #e8262f; color: #fff; font-family: "Lilita One", sans-serif; font-size: 150px; line-height: 1; box-shadow: 0 0 0 7px #2a1b12, 0 14px 0 rgba(0,0,0,.3); transform: rotate(-4deg); z-index: 3; }
-    #s01-ph { position: absolute; left: 0; right: 0; margin: 0 auto; top: 440px; width: 440px; height: 900px; border-radius: 78px; background: linear-gradient(145deg, #3b3f46, #15171b 40%, #2b2e33); padding: 14px; box-shadow: 0 0 0 3px #6a6f78, 0 40px 80px rgba(0,0,0,.55); }
-    #s01-ph::before { content: ""; position: absolute; right: -7px; top: 210px; width: 7px; height: 110px; border-radius: 0 4px 4px 0; background: #4a4e55; }
-    #s01-ph::after { content: ""; position: absolute; left: -7px; top: 180px; width: 7px; height: 70px; border-radius: 4px 0 0 4px; background: #4a4e55; box-shadow: 0 100px 0 #4a4e55; }
-    #s01-scr { position: absolute; inset: 14px; border-radius: 64px; overflow: hidden; background: radial-gradient(circle at 30% 30%, #ffb347, transparent 45%), radial-gradient(circle at 75% 60%, #e8467c, transparent 45%), radial-gradient(circle at 40% 85%, #0fb3b0, transparent 50%), #1a2440; }
-    #s01-apps { position: absolute; inset: 120px 34px 150px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px 26px; filter: blur(9px); }
-    #s01-apps i { aspect-ratio: 1; border-radius: 18px; }
-    #s01-dock { position: absolute; left: 22px; right: 22px; bottom: 22px; height: 104px; border-radius: 40px; background: rgba(255,255,255,.25); filter: blur(6px); }
-    #s01-isl { position: absolute; left: 0; right: 0; margin: 0 auto; top: 16px; width: 130px; height: 38px; border-radius: 20px; background: #000; }
-    #s01-sb { position: absolute; left: 44px; right: 40px; top: 20px; display: flex; justify-content: space-between; font-family: "Inter", sans-serif; font-weight: 700; font-size: 26px; color: #fff; }
-    #s01-al { position: absolute; left: 16px; right: 16px; top: 96px; padding: 20px 22px 22px; border-radius: 34px; background: rgba(245,245,247,.94); font-family: "Inter", sans-serif; color: #111; box-shadow: 0 10px 30px rgba(0,0,0,.35); }
-    #s01-al .hd { display: flex; justify-content: space-between; font-size: 22px; font-weight: 700; color: #555; }
-    #s01-al .tt { display: flex; gap: 12px; align-items: center; font-size: 30px; font-weight: 900; margin-top: 10px; }
-    #s01-al .tt b { color: #e8262f; }
-    #s01-al .tx { font-size: 25px; line-height: 1.3; margin-top: 8px; font-weight: 500; }
+    #s01-ph { position: absolute; left: 0; right: 0; margin: 0 auto; top: 420px; width: 470px; height: 960px; border-radius: 86px; background: linear-gradient(135deg, #3f5f96, #1d3260 45%, #34528a); padding: 16px; box-shadow: inset 0 0 0 3px #6f8cc0, 0 40px 80px rgba(0,0,0,.55); }
+    #s01-ph::before { content: ""; position: absolute; right: -6px; top: 270px; width: 6px; height: 120px; border-radius: 0 4px 4px 0; background: #2b4677; }
+    #s01-ph::after { content: ""; position: absolute; left: -6px; top: 160px; width: 6px; height: 40px; border-radius: 4px 0 0 4px; background: #2b4677; box-shadow: 0 80px 0 #2b4677, 0 160px 0 #2b4677; }
+    #s01-scr { position: absolute; inset: 16px; border-radius: 70px; overflow: hidden; background: #000; }
+    #s01-ls { position: absolute; inset: 10px; border-radius: 62px; overflow: hidden; background: linear-gradient(180deg, #6f7886 0%, #5a6474 45%, #3c4452 100%); }
+    #s01-tm { position: absolute; left: 0; right: 0; top: 95px; text-align: center; font-family: "Inter", sans-serif; font-weight: 700; font-size: 150px; color: rgba(225,230,240,.85); filter: blur(7px); letter-spacing: -4px; }
+    #s01-bl { position: absolute; left: 50px; top: 290px; width: 120px; height: 26px; border-radius: 13px; background: rgba(225,230,240,.5); filter: blur(6px); box-shadow: 190px -20px 0 20px rgba(225,230,240,.35); }
+    #s01-notch { position: absolute; left: 0; right: 0; margin: 0 auto; top: 0; width: 230px; height: 52px; border-radius: 0 0 30px 30px; background: #000; }
+    #s01-notch::after { content: ""; position: absolute; left: 70px; top: 18px; width: 70px; height: 8px; border-radius: 4px; background: #222; box-shadow: 92px -2px 0 2px #1b2a4a; }
+    #s01-home { position: absolute; left: 0; right: 0; margin: 0 auto; bottom: 18px; width: 160px; height: 7px; border-radius: 4px; background: #fff; }
+    #s01-al { position: absolute; left: 22px; right: 22px; top: 345px; padding: 16px 20px 20px 70px; border-radius: 26px; background: #fff; font-family: -apple-system, "Inter", sans-serif; color: #111; box-shadow: 0 8px 24px rgba(0,0,0,.3); }
+    #s01-al .ic { position: absolute; left: 16px; top: 50%; margin-top: -20px; width: 40px; height: 36px; }
+    #s01-al .hd { display: flex; justify-content: space-between; align-items: baseline; font-size: 23px; font-weight: 700; }
+    #s01-al .hd span { font-weight: 500; font-size: 19px; }
+    #s01-al .tx { font-size: 20px; line-height: 1.28; margin-top: 2px; font-weight: 400; }
     #s01-ks { top: 330px; }
     #s01-f { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 540px; padding: 6px 34px 12px; border-radius: 30px; background: #fff; border: 6px solid #e8262f; font-family: "Inter", sans-serif; font-weight: 900; color: #2a1b12; font-size: 40px; text-align: center; box-shadow: 0 10px 0 rgba(0,0,0,.25); }
     #s01-f b { display: block; font-size: 96px; color: #e8262f; line-height: 1; }
     #s01-m { top: 790px; font-size: 44px; background: #7b3fe0; }
   </style>
-  <div id="root" data-composition-id="s01" data-start="0" data-duration="17.840" data-width="1080" data-height="1920">
-    <div id="s01-stage" class="clip stage" data-start="0" data-duration="17.840" data-track-index="0">
+  <div id="root" data-composition-id="s01" data-start="0" data-duration="19.150" data-width="1080" data-height="1920">
+    <div id="s01-stage" class="clip stage" data-start="0" data-duration="19.150" data-track-index="0">
       <div id="s01-flash" data-layout-ignore></div>
-      <div id="s01-ph"><div id="s01-scr">
-        <div id="s01-apps"><i style="background:#34c759"></i><i style="background:#ff9500"></i><i style="background:#5ac8fa"></i><i style="background:#ff2d55"></i><i style="background:#ffcc00"></i><i style="background:#af52de"></i><i style="background:#007aff"></i><i style="background:#ff3b30"></i><i style="background:#4cd964"></i><i style="background:#5856d6"></i><i style="background:#ff9500"></i><i style="background:#34aadc"></i><i style="background:#ffcc00"></i><i style="background:#ff2d55"></i><i style="background:#8e8e93"></i><i style="background:#30b0c7"></i><i style="background:#ff3b30"></i><i style="background:#34c759"></i><i style="background:#007aff"></i><i style="background:#ff9500"></i></div>
-        <div id="s01-dock"></div><div id="s01-isl"></div><div id="s01-sb"><span>9:41</span><span>●●● 5G ▮</span></div>
-        <div id="s01-al"><div class="hd"><span>⚠️ NOTFALLALARM</span><span>jetzt</span></div><div class="tt">⚠️ <b>EXTREME GEFAHR</b></div>
-        <div class="tx"><b>Muschel-Tal:</b> Hunderte streunende Hunde und Katzen ohne Zuhause! Das Tierheim fehlt. Bitte sofort helfen!</div></div>
-      </div></div>
-      <div id="s01-h">🆘 HILFE!</div>
+      <div id="s01-ph"><div id="s01-scr"><div id="s01-ls">
+        <div id="s01-tm">9:41</div><div id="s01-bl"></div><div id="s01-home"></div>
+        <div id="s01-al"><svg class="ic" viewBox="0 0 40 36"><path d="M20 2 L38 34 H2 Z" fill="#ffcc00" stroke="#ffcc00" stroke-width="3" stroke-linejoin="round"/><rect x="18" y="12" width="4" height="12" rx="2" fill="#111"/><circle cx="20" cy="29" r="2.4" fill="#111"/></svg>
+        <div class="hd">Notfallalarm<span>Jetzt</span></div>
+        <div class="tx">WARNUNG MUSCHEL-TAL – Hunderte streunende Hunde und Katzen ohne Zuhause! – Das Tierheim Pfotenkuss fehlt noch. – Bitte sofort helfen und auf die Insel einziehen! – Herausgegeben von: Bürgermeisterin von Muschel-Tal</div></div>
+      </div><div id="s01-notch"></div></div></div>
+      <div id="s01-h">HILFE!</div>
       <div id="s01-ks" class="ks"><div class="row"><div>🐾 Tierheim Pfotenkuss</div><div><b id="s01-kn">505</b><span> / 2.000 🐚</span></div></div><div class="bar"><i id="s01-kb"></i></div></div>
       <div id="s01-f">Es fehlen nur noch<b>299</b>Bewohner!</div>
       <div id="s01-m" class="pl">➕ Folg mir, um einzuziehen!</div>
@@ -94,7 +95,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 17.84, "L1": [0.0, 3.4], "L1.words": [["hilfe", 0.0, 0.56], ["in", 0.94, 1.065], ["muscheltal", 1.065, 1.46], ["laufen", 1.46, 1.72], ["hunderte", 1.72, 2.105], ["streunende", 2.105, 2.5], ["hunde", 2.5, 2.755], ["und", 2.755, 2.885], ["katzen", 2.885, 3.145], ["herum", 3.145, 3.4]], "L2": [3.62, 9.51], "L2.words": [["wir", 3.62, 3.764], ["brauchen", 3.764, 4.063], ["dringend", 4.063, 4.361], ["das", 4.361, 4.505], ["tierheim", 4.505, 4.804], ["pfotenkuss", 4.804, 5.241], ["", 5.241, 5.37], ["aber", 5.66, 5.976], ["das", 5.976, 6.14], ["kostet", 6.14, 6.467], ["2000", 6.467, 6.971], ["muscheln", 6.971, 7.31], ["und", 7.58, 7.754], ["in", 7.754, 7.922], ["der", 7.922, 8.097], ["kasse", 8.097, 8.439], ["sind", 8.439, 8.62], ["nur", 8.62, 8.794], ["505", 8.794, 9.51]], "L3": [9.73, 17.66], "L3.words": [["jeder", 9.73, 9.899], ["neue", 9.899, 9.988], ["bewohner", 9.988, 10.242], ["bringt", 10.242, 10.337], ["5", 10.337, 10.426], ["muscheln", 10.426, 10.604], ["mit", 10.604, 10.69], ["es", 10.82, 10.865], ["fehlen", 10.865, 10.959], ["nur", 10.959, 11.006], ["noch", 11.006, 11.054], ["299", 11.054, 11.389], ["bewohner", 11.389, 11.528], ["", 11.528, 11.57], ["folg", 12.08, 13.164], ["mir", 13.164, 14.21], ["um", 14.76, 14.952], ["einzuziehen", 14.952, 15.74], ["sonst", 16.02, 16.179], ["bleiben", 16.179, 16.48], ["sie", 16.48, 16.628], ["für", 16.628, 16.777], ["immer", 16.777, 17.067], ["auf", 17.067, 17.216], ["der", 17.216, 17.364], ["straße", 17.364, 17.66]]};
+      const C = {"__dur": 19.15, "L1": [0.0, 4.71], "L1.words": [["hilfe", 0.0, 0.57], ["in", 1.02, 1.142], ["muscheltal", 1.142, 1.525], ["laufen", 1.525, 1.777], ["hunderte", 1.777, 2.151], ["streunende", 2.151, 2.534], ["hunde", 2.534, 2.781], ["und", 2.781, 2.907], ["katzen", 2.907, 3.16], ["herum", 3.16, 3.407], ["", 3.407, 3.52], ["wir", 3.76, 3.918], ["müssen", 3.918, 4.235], ["sie", 4.235, 4.393], ["retten", 4.393, 4.71]], "L2": [4.93, 10.82], "L2.words": [["wir", 4.93, 5.074], ["brauchen", 5.074, 5.373], ["dringend", 5.373, 5.671], ["das", 5.671, 5.815], ["tierheim", 5.815, 6.114], ["pfotenkuss", 6.114, 6.551], ["", 6.551, 6.68], ["aber", 6.97, 7.286], ["das", 7.286, 7.45], ["kostet", 7.45, 7.777], ["2000", 7.777, 8.281], ["muscheln", 8.281, 8.62], ["und", 8.89, 9.064], ["in", 9.064, 9.232], ["der", 9.232, 9.407], ["kasse", 9.407, 9.749], ["sind", 9.749, 9.93], ["nur", 9.93, 10.104], ["505", 10.104, 10.82]], "L3": [11.04, 18.97], "L3.words": [["jeder", 11.04, 11.209], ["neue", 11.209, 11.298], ["bewohner", 11.298, 11.552], ["bringt", 11.552, 11.647], ["5", 11.647, 11.736], ["muscheln", 11.736, 11.914], ["mit", 11.914, 12.0], ["es", 12.13, 12.175], ["fehlen", 12.175, 12.269], ["nur", 12.269, 12.316], ["noch", 12.316, 12.364], ["299", 12.364, 12.699], ["bewohner", 12.699, 12.838], ["", 12.838, 12.88], ["folg", 13.39, 14.474], ["mir", 14.474, 15.52], ["um", 16.07, 16.262], ["einzuziehen", 16.262, 17.05], ["sonst", 17.33, 17.489], ["bleiben", 17.489, 17.79], ["sie", 17.79, 17.938], ["für", 17.938, 18.087], ["immer", 18.087, 18.377], ["auf", 18.377, 18.526], ["der", 18.526, 18.674], ["straße", 18.674, 18.97]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -144,9 +145,8 @@
       tl.to("#s01-h", { x: 12, duration: .05, yoyo: true, repeat: 9 }, .16);
       tl.fromTo("#s01-flash", { opacity: 0 }, { opacity: 1, duration: .14, yoyo: true, repeat: 15, ease: "none" }, 0);
       tl.fromTo("#s01-ph", { opacity: 0, y: 600, rotation: 8 }, { opacity: 1, y: 0, rotation: -3, duration: .35, ease: "back.out(1.6)" }, 0);
-      tl.fromTo("#s01-al", { opacity: 0, y: -60 }, { opacity: 1, y: 0, duration: .25, ease: "back.out(2)" }, .3);
+      tl.fromTo("#s01-al", { opacity: 0, y: -40, scale: .9 }, { opacity: 1, y: 0, scale: 1, duration: .25, ease: "back.out(2)" }, .3);
       tl.to("#s01-ph", { x: 9, rotation: -1.5, duration: .04, yoyo: true, repeat: 23, ease: "none" }, .35);
-      tl.to("#s01-al .tt b", { opacity: .2, duration: .12, yoyo: true, repeat: 13, ease: "none" }, .5);
       tl.to("#s01-ph", { y: 1400, rotation: 14, scale: .7, duration: .4, ease: "power3.in" }, l1e - .25);
       tl.to("#s01-h", { opacity: 0, scale: .5, duration: .2 }, ko - .45);
       tl.fromTo("#s01-ks", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .35, ease: "back.out(2)" }, ko - .3);

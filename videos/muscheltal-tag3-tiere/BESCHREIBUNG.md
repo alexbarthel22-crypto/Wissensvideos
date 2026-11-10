@@ -12,6 +12,7 @@ Tag 3: Inselkasse 505 / 2.000 – es fehlen nur noch 299 Bewohner!
 🔧 Moped-Werkstatt: @bruecke.2803 (Leitung), @anti.teamtoxic
 🏊 Neuer Pool für @luisedbr.11
 🏖️ Strandvilla: @emiliamarie155 & @lea.3818730 ziehen ein!
+👫 Hol deine Freunde dazu – werdet Nachbarn und rettet die Tiere!
 
 🥐 Soll @fabienne3692 eine Bäckerei eröffnen? Stimmt ab 👇
 🐶🐱 Und welches Tier willst du aus dem Tierheim haben?

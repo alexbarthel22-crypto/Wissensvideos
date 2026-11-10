@@ -21,10 +21,10 @@ const G=await day.evaluate(()=>{const a=fitAll(),m=fitMain();const g=n=>{const x
 console.error(JSON.stringify(G));
 const PO=G.po,PZ=6.4,POY=PO.y+200/(PZ*2.6667);
 const K=[[0,0,74,4.2],[L.L1.end-.2,0,82,2.7],
- [L.L2.start+.4,G.th.x,G.th.y+8,3.6],[L.L2.end,G.th.x,G.th.y+8,4.0],
- [L.L3.start+.4,0,96,3.0],[at('L3','folg'),0,84,2.6],[at('L3','sonst'),0,78,3.6],[L.L3.end,0,78,4.4],
+ [L.L2.start+.3,G.th.x,G.th.y+8,3.6],[at('L2','kostet')+.3,G.th.x,G.th.y+8,3.9],[at('L2','Muscheln'),-14,80,6.8],[L.L2.end,4,78,7.2],
+ [L.L3.start+.6,0,96,3.4],[at('L3','folg'),0,84,2.6],[at('L3','sonst'),0,78,3.6],[L.L3.end,0,78,4.4],
  [L.L4.start+.3,G.ac.x,G.ac.y-12,4.4],[L.L4.end,G.ac.x,G.ac.y-12,5.0],
- [L.L5.start+.3,G.wk.x,G.wk.y-12,4.4],[L.L5.end,G.wk.x,G.wk.y-12,5.0],
+ [L.L5.start+.3,G.wk.x,G.wk.y+36,3.8],[L.L5.end,G.wk.x,G.wk.y+34,4.1],
  [L.L6.start+.3,PO.x,POY,PZ],[L.L6.end+.2,PO.x,POY,PZ],
  [L.L7.start+.3,G.v.x-40,G.v.y-16,4.2],[L.L8.start,G.v.x+5,G.v.y-16,4.2],[L.L8.end,G.v.x+40,G.v.y-16,4.4],
  [L.L9.start+.4,G.th.x-60,G.th.y-40,2.8],[L.L9.end,G.th.x+40,G.th.y-20,3.0],

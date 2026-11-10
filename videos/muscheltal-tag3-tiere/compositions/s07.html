@@ -62,20 +62,22 @@
     #s07-ks { top: 410px; }
     #s07-btn { top: 640px; } #s07-hand { left: 690px; top: 690px; }
     #s07-r { top: 790px; font-size: 42px; background: #2e9e5b; }
+    #s07-fr { top: 885px; font-size: 38px; background: #e8467c; }
   </style>
-  <div id="root" data-composition-id="s07" data-start="0" data-duration="6.290" data-width="1080" data-height="1920">
-    <div id="s07-stage" class="clip stage" data-start="0" data-duration="6.290" data-track-index="0">
+  <div id="root" data-composition-id="s07" data-start="0" data-duration="7.290" data-width="1080" data-height="1920">
+    <div id="s07-stage" class="clip stage" data-start="0" data-duration="7.290" data-track-index="0">
       <div id="s07-q" class="pl">🐶🐱 Welches Tier willst du adoptieren?</div>
       <div id="s07-ks" class="ks"><div class="row"><div>🐾 Tierheim Pfotenkuss</div><div><b id="s07-kn">505</b><span> / 2.000 🐚</span></div></div><div class="bar"><i id="s07-kb"></i></div></div>
       <div id="s07-btn" class="fbtn">+ Folgen<div id="s07-btn2" class="fbtn2">✓ Gefolgt</div></div>
       <div id="s07-hand" class="fhand" data-layout-ignore>👆</div>
       <div id="s07-r" class="pl">🐚 +5 Muscheln für die Tiere</div>
+      <div id="s07-fr" class="pl">👫 Hol deine Freunde – werdet Nachbarn!</div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 6.29, "L10": [0.2, 5.29], "L10.words": [["und", 0.2, 0.358], ["schreibt", 0.358, 0.545], ["welches", 0.545, 0.867], ["tier", 0.867, 1.031], ["ihr", 1.031, 1.19], ["aus", 1.19, 1.348], ["dem", 1.348, 1.506], ["tierheim", 1.506, 1.834], ["haben", 1.834, 2.146], ["wollt", 2.146, 2.315], ["folg", 2.315, 2.479], ["mir", 2.479, 2.638], ["um", 2.638, 2.79], ["einzuziehen", 2.79, 3.418], ["", 3.418, 3.559], ["jeder", 3.559, 3.87], ["neue", 3.87, 4.034], ["bewohner", 4.034, 4.504], ["rettet", 4.504, 4.821], ["die", 4.821, 4.979], ["tiere", 4.979, 5.29]]};
+      const C = {"__dur": 7.29, "L10": [0.2, 6.59], "L10.words": [["und", 0.2, 0.363], ["schreibt", 0.363, 0.555], ["welches", 0.555, 0.887], ["tier", 0.887, 1.056], ["ihr", 1.056, 1.219], ["aus", 1.219, 1.382], ["dem", 1.382, 1.546], ["tierheim", 1.546, 1.883], ["haben", 1.883, 2.204], ["wollt", 2.204, 2.379], ["folg", 2.379, 2.547], ["mir", 2.547, 2.711], ["um", 2.711, 2.868], ["einzuziehen", 2.868, 3.514], ["", 3.514, 3.66], ["und", 3.66, 3.823], ["hol", 3.823, 3.986], ["deine", 3.986, 4.307], ["freunde", 4.307, 4.639], ["dazu", 4.639, 4.953], ["werdet", 4.953, 5.279], ["nachbarn", 5.279, 5.617], ["und", 5.617, 5.78], ["rettet", 5.78, 6.107], ["die", 6.107, 6.27], ["tiere", 6.27, 6.59]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -119,7 +121,7 @@
 
       wrapBt("#s07-stage");
       const tl = gsap.timeline({ paused: true });
-      const ti = at("L10", "Tier"), fo = at("L10", "Folgt"), re = at("L10", "rettet");
+      const ti = at("L10", "Tier"), fo = at("L10", "Folg"), re = at("L10", "rettet");
       tl.fromTo("#s07-q", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, ti - .2);
       tl.fromTo("#s07-ks", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, ti + .3);
       tl.set("#s07-kb", { width: "25.25%" }, 0);
@@ -132,6 +134,8 @@
       count(tl, "#s07-kn", 505, 510, fo + .2, .4);
       tl.to("#s07-kb", { width: "25.5%", duration: .4 }, fo + .2);
       tl.fromTo("#s07-r", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, fo + .3);
+      tl.fromTo("#s07-fr", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, at("L10", "Freunde") - .2);
+      tl.to("#s07-fr", { scale: 1.08, duration: .2, yoyo: true, repeat: 7, ease: "sine.inOut" }, at("L10", "Nachbarn"));
       tl.to("#s07-r", { scale: 1.08, duration: .22, yoyo: true, repeat: 5, ease: "sine.inOut" }, re);
       
       window.__timelines["s07"] = tl;

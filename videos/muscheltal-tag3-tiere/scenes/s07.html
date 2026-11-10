@@ -15,6 +15,7 @@
     #s07-ks { top: 410px; }
     #s07-btn { top: 640px; } #s07-hand { left: 690px; top: 690px; }
     #s07-r { top: 790px; font-size: 42px; background: #2e9e5b; }
+    #s07-fr { top: 885px; font-size: 38px; background: #e8467c; }
   </style>
   <div id="root" data-composition-id="s07" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
     <div id="s07-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
@@ -23,6 +24,7 @@
       <div id="s07-btn" class="fbtn">+ Folgen<div id="s07-btn2" class="fbtn2">✓ Gefolgt</div></div>
       <div id="s07-hand" class="fhand" data-layout-ignore>👆</div>
       <div id="s07-r" class="pl">🐚 +5 Muscheln für die Tiere</div>
+      <div id="s07-fr" class="pl">👫 Hol deine Freunde – werdet Nachbarn!</div>
     </div>
   </div>
   <script>
@@ -31,7 +33,7 @@
       /*__COMMON_JS__*/
       wrapBt("#s07-stage");
       const tl = gsap.timeline({ paused: true });
-      const ti = at("L10", "Tier"), fo = at("L10", "Folgt"), re = at("L10", "rettet");
+      const ti = at("L10", "Tier"), fo = at("L10", "Folg"), re = at("L10", "rettet");
       tl.fromTo("#s07-q", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, ti - .2);
       tl.fromTo("#s07-ks", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, ti + .3);
       tl.set("#s07-kb", { width: "25.25%" }, 0);
@@ -44,6 +46,8 @@
       count(tl, "#s07-kn", 505, 510, fo + .2, .4);
       tl.to("#s07-kb", { width: "25.5%", duration: .4 }, fo + .2);
       tl.fromTo("#s07-r", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, fo + .3);
+      tl.fromTo("#s07-fr", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, at("L10", "Freunde") - .2);
+      tl.to("#s07-fr", { scale: 1.08, duration: .2, yoyo: true, repeat: 7, ease: "sine.inOut" }, at("L10", "Nachbarn"));
       tl.to("#s07-r", { scale: 1.08, duration: .22, yoyo: true, repeat: 5, ease: "sine.inOut" }, re);
       
       window.__timelines["s07"] = tl;
