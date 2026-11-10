@@ -1,6 +1,6 @@
 # Muschel-Tal – Tag 3 · Beschreibung
 
-**Cover:** `renders/cover.jpg` (Vorlage `cover/thumb.html`, gewohntes Layout wie Tag 2) – Logo + „TAG 3“, „DIE TIERE BRAUCHEN EIN ZUHAUSE! – Folgen = einziehen & Tiere retten 🐾“, Karten „673 Bewohner“ und „505 Inselkasse (von 2.000 fürs Tierheim)“, „➕ Dein @Name auf meiner Insel“. Hintergrund: Baustelle Tierheim Pfotenkuss mit streunenden Katzen (Homepage-Aufnahme).
+**Cover:** `renders/cover.jpg` (Vorlage `cover/thumb.html`, gewohntes Layout wie Tag 2) – Logo + „TAG 3“, „DIE TIERE BRAUCHEN EIN ZUHAUSE! – Folgen = einziehen & Tiere retten 🐾“, Karten „673 Bewohner (+20 seit Tag 2: 653)“ und „505 Inselkasse (+115 seit Tag 2: 653 × 5 − 2.875 = 390; von 2.000 fürs Tierheim)“, „➕ Dein @Name auf meiner Insel“. Hintergrund: Baustelle Tierheim Pfotenkuss mit streunenden Katzen (Homepage-Aufnahme).
 
 **Verlosung Strandvilla:** @emiliamarie155 (Nr. 225) und @lea.3818730 (Nr. 286), am 10.11. per Zufall (Python `secrets.choice`) aus allen Einwohnern ohne Amt/Job gezogen.
 
