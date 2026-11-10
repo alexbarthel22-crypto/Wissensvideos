@@ -184,11 +184,13 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 ## Video Tag 4 (geplant, noch nicht erstellt – Nutzer aktualisiert vorher die Homepage)
 - **Einwohner: 702** (Stand Planung Tag 4).
 - Einstieg wie Video 1: „Ich habe euch eine Insel gekauft! Am Anfang hab ich hier ganz allein gelebt – jetzt sind wir schon 702 Leute!“
-- Botschaft: Muschel-Tal ist **die erste und größte Insel auf TikTok**, auf der **ganz allein die Follower entscheiden**, was passiert.
+- Botschaft: Muschel-Tal ist **die größte Insel auf TikTok** (nicht „erste“ sagen), auf der **ganz allein die Follower entscheiden**, was passiert.
 - Veränderungen seit Tag 3: neue Bewohner, Inselkasse/Tierheim, **Emilia & Lea wohnen in der Strandvilla**, **Bäckerei-Abstimmung: Fabienne (@fabienne3692) eröffnet und leitet die Bäckerei**.
 - **Live-Verlosung im Video: ein Job in Fabiennes Bäckerei.**
 - **Regel: An Job-Verlosungen nehmen nur Bewohner teil, die noch keinen Job/kein Amt haben.**
-- **Spoiler: Wer einen Job hat, hat später im Spiel bei 1.000 Bewohnern einen Vorteil.**
+- **Spoiler: Wer einen Job hat, hat beim Spiel bei 1.000 Followern einen Vorteil.**
+- **Inselkasse Tag 4: 635 Muscheln** (702 × 5 − 2.875). Bäckerei von Fabienne ist im Video **schon fertig** und wird bei den Neuigkeiten zuerst gezeigt.
+- Ideen-Aufruf mit „Ihr entscheidet – es gibt keine Grenzen!“
 - Aufruf: verrückteste Idee kommentieren (Beispiel-Kommentar: „Es gibt einen Matcha-Brunnen und jeden Tag regnet es Red Bull“) – **der Kommentar mit den meisten Likes gewinnt und ist morgen im Video**. Freunde markieren, folgen = einziehen.
 
 ## Muschel-Währung (live seit 10.11.2026)
