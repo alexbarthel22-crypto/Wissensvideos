@@ -57,16 +57,18 @@
     #s04-cm .av { width: 74px; height: 74px; border-radius: 50%; flex: none; background: linear-gradient(135deg, #ffd23f, #e8467c); display: grid; place-items: center; font-size: 40px; }
     #s04-cm .nm { font-size: 26px; color: #a8a8a8; font-weight: 600; } #s04-cm .tx { font-size: 36px; font-weight: 600; margin-top: 4px; min-height: 92px; line-height: 1.25; }
     #s04-cm .cu { display: inline-block; width: 4px; height: 38px; background: #fe2c55; vertical-align: -6px; margin-left: 3px; }
-    #s04-g { top: 820px; font-size: 42px; background: #2e9e5b; }
+    #s04-g { top: 820px; font-size: 42px; background: #e8262f; }
+    #s04-lk { margin-left: auto; text-align: center; font-family: "Inter", sans-serif; font-weight: 800; font-size: 26px; color: #a8a8a8; flex: none; }
+    #s04-lk span { display: block; font-size: 44px; } #s04-lk { position: relative; } #s04-h1 { position: absolute; left: 0; right: 0; top: 0; opacity: 0; }
     #s04-ar { position: absolute; left: 850px; top: 1230px; font-size: 110px; filter: drop-shadow(0 6px 0 rgba(0,0,0,.35)); }
     #s04-cb { position: absolute; left: 640px; top: 1085px; padding: 4px 18px 8px; border-radius: 999px; background: #fff; color: #fe2c55; font-family: "Inter", sans-serif; font-weight: 900; font-size: 30px; box-shadow: 0 0 0 4px #2a1b12; }
   </style>
-  <div id="root" data-composition-id="s04" data-start="0" data-duration="6.040" data-width="1080" data-height="1920">
-    <div id="s04-stage" class="clip stage" data-start="0" data-duration="6.040" data-track-index="0">
+  <div id="root" data-composition-id="s04" data-start="0" data-duration="5.960" data-width="1080" data-height="1920">
+    <div id="s04-stage" class="clip stage" data-start="0" data-duration="5.960" data-track-index="0">
       <div id="s04-h">👑 IHR ENTSCHEIDET!</div>
       <div id="s04-q" class="pl">Eure verrückteste Idee? 👇</div>
-      <div id="s04-cm"><div class="av">🐚</div><div><div class="nm">Du</div><div class="tx"><span id="s04-ty"></span><span class="cu" id="s04-cu"></span></div></div></div>
-      <div id="s04-g" class="pl">🏆 Die besten kommen ins nächste Video!</div>
+      <div id="s04-cm"><div class="av">🐚</div><div><div class="nm">Du</div><div class="tx"><span id="s04-ty"></span><span class="cu" id="s04-cu"></span></div></div><div id="s04-lk"><span id="s04-h0">🤍</span><span id="s04-h1">❤️</span><b id="s04-ln">0</b></div></div>
+      <div id="s04-g" class="pl">❤️ Meiste Likes = nächstes Video!</div>
       <div id="s04-cb" data-layout-ignore>Hier kommentieren</div>
       <div id="s04-ar" data-layout-ignore>👉</div>
     </div>
@@ -74,7 +76,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 6.04, "L4": [0.2, 5.06], "L4.words": [["ihr", 0.2, 0.389], ["entscheidet", 0.389, 0.97], ["was", 1.27, 1.394], ["ist", 1.394, 1.518], ["eure", 1.518, 1.756], ["verrückteste", 1.756, 2.251], ["idee", 2.251, 2.49], ["schreibts", 2.73, 2.848], ["in", 2.848, 2.942], ["die", 2.942, 3.04], ["kommentare", 3.04, 3.423], ["", 3.423, 3.51], ["die", 3.72, 3.854], ["besten", 3.854, 4.122], ["kommen", 4.122, 4.39], ["ins", 4.39, 4.524], ["nächste", 4.524, 4.797], ["video", 4.797, 5.06]]};
+      const C = {"__dur": 5.96, "L4": [0.2, 5.33], "L4.words": [["ihr", 0.2, 0.36], ["entscheidet", 0.36, 0.85], ["was", 1.1, 1.223], ["ist", 1.223, 1.346], ["eure", 1.346, 1.582], ["verrückteste", 1.582, 2.073], ["idee", 2.073, 2.31], ["schreibts", 2.56, 2.675], ["in", 2.675, 2.767], ["die", 2.767, 2.862], ["kommentare", 2.862, 3.235], ["", 3.235, 3.32], ["der", 3.48, 3.622], ["mit", 3.622, 3.763], ["den", 3.763, 3.905], ["meisten", 3.905, 4.193], ["likes", 4.193, 4.471], ["kommt", 4.471, 4.622], ["ins", 4.622, 4.764], ["nächste", 4.764, 5.052], ["video", 5.052, 5.33]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -118,14 +120,17 @@
 
       wrapBt("#s04-stage");
       const tl = gsap.timeline({ paused: true });
-      const ih = at("L4", "Ihr"), ve = at("L4", "verrückteste"), sr = at("L4", "Schreibt’s"), ne = at("L4", "nächste");
+      const mi = at("L4", "meisten"), ih = at("L4", "Ihr"), ve = at("L4", "verrückteste"), sr = at("L4", "Schreibt’s"), ne = at("L4", "nächste");
       tl.fromTo("#s04-h", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, ih - .1);
       tl.fromTo("#s04-q", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, ve - .3);
       tl.fromTo("#s04-cm", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, sr - .3);
       const TXT = "Matcha-Brunnen + Red-Bull-Regen pls 🙏💚", ty = document.getElementById("s04-ty"), o = { n: 0 };
       tl.to(o, { n: Array.from(TXT).length, duration: 1.6, ease: "none", onUpdate: () => { ty.textContent = Array.from(TXT).slice(0, Math.round(o.n)).join(""); } }, sr);
       tl.to("#s04-cu", { opacity: 0, duration: .25, yoyo: true, repeat: 11, ease: "steps(1)" }, sr);
-      tl.fromTo("#s04-g", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, ne - .6);
+      tl.fromTo("#s04-g", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, mi - .2);
+      tl.set("#s04-h1", { opacity: 1 }, mi);
+      tl.fromTo("#s04-h1", { scale: 2.2 }, { scale: 1, duration: .35, ease: "back.out(3)", immediateRender: false }, mi);
+      count(tl, "#s04-ln", 0, 12480, mi, 1.4, "", "", "power2.in");
       tl.to("#s04-g", { scale: 1.07, duration: .2, yoyo: true, repeat: 5, ease: "sine.inOut" }, ne);
       tl.fromTo(["#s04-ar", "#s04-cb"], { opacity: 0 }, { opacity: 1, duration: .25 }, sr);
       tl.to("#s04-ar", { x: 40, duration: .3, yoyo: true, repeat: 11, ease: "sine.inOut" }, sr + .2);

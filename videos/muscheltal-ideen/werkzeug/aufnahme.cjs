@@ -9,11 +9,12 @@ await p.clock.install({time:new Date('2026-11-10T14:10:00+01:00')});await p.goto
 await p.addStyleTag({content:'body *{visibility:hidden!important}canvas#map{visibility:visible!important}'});await p.evaluate(()=>cancelAnimationFrame(fly));
 const G=await p.evaluate(()=>{const a=fitAll(),m=fitMain();const lu=PEOPLE.find(q=>q.name.replace('@','')==='luisedbr.11');const q=poolSpot(lu);return{a,m,po:q?{x:q[0],y:q[1]}:{x:lu.p.x+12,y:lu.p.y}};});
 const PZ=6.4,POY=G.po.y+200/(PZ*2.6667);
-const K=[[0,0,40,2.0],[L.L1.end,0,30,2.8],
+const K=[[0,0,40,2.2],[L.L1.end,0,30,3.0],
  [L.L2.start,0,45,3.0],[L.L2.end,0,45,3.6],
  [L.L3.start+.2,-150,100,2.6],[L.L3.end,-60,140,3.0],
  [L.L4.start+.3,0,40,2.2],[L.L4.end,30,20,2.6],
  [L.L5.start+.3,G.m.x,G.m.y,G.m.z*1.3],[dur,G.a.x,G.a.y,G.a.z*1.1]];
+
 
 
 const cam=t=>{let j=0;while(j<K.length-1&&K[j+1][0]<=t)j++;const a=K[j],c=K[Math.min(j+1,K.length-1)];let k=c[0]>a[0]?Math.max(0,Math.min(1,(t-a[0])/(c[0]-a[0]))):1;k=k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2;

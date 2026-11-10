@@ -1,5 +1,5 @@
 {
- "duration": 25.12,
+ "duration": 23.63,
  "lines": [
   {
    "scene": "s01",
@@ -11,76 +11,68 @@
      "color": null,
      "group": 0,
      "start": 0.0,
-     "end": 0.227
+     "end": 0.649
     },
     {
      "display": "dir",
      "spoken": "dir",
      "color": null,
      "group": 0,
-     "start": 0.227,
-     "end": 0.438
+     "start": 0.649,
+     "end": 1.254
     },
     {
      "display": "vor:",
      "spoken": "vor:",
      "color": null,
      "group": 0,
-     "start": 0.438,
-     "end": 0.65
+     "start": 1.254,
+     "end": 1.86
     },
     {
-     "display": "Auf",
-     "spoken": "Auf",
+     "display": "Es",
+     "spoken": "Es",
      "color": null,
      "group": 1,
-     "start": 0.88,
-     "end": 1.115
-    },
-    {
-     "display": "Muschel-Tal",
-     "spoken": "Muschel-Tal",
-     "color": null,
-     "group": 1,
-     "start": 1.115,
-     "end": 1.827
+     "start": 2.06,
+     "end": 2.116
     },
     {
      "display": "regnet",
      "spoken": "regnet",
-     "color": "r",
-     "group": 2,
-     "start": 1.827,
-     "end": 2.296
+     "color": null,
+     "group": 1,
+     "start": 2.116,
+     "end": 2.231
     },
     {
-     "display": "es",
-     "spoken": "es",
+     "display": "plötzlich",
+     "spoken": "plötzlich",
      "color": "r",
-     "group": 2,
-     "start": 2.296,
-     "end": 2.522
+     "group": 1,
+     "start": 2.231,
+     "end": 2.353
     },
     {
-     "display": "Red",
-     "spoken": "Red",
+     "display": "RED",
+     "spoken": "RED",
      "color": "y",
      "group": 2,
-     "start": 2.522,
-     "end": 2.757
+     "start": 2.353,
+     "end": 2.41
     },
     {
-     "display": "Bull!",
-     "spoken": "Bull!",
+     "display": "BULL!",
+     "spoken": "BULL!",
      "color": "y",
      "group": 2,
-     "start": 2.757,
-     "end": 3.0
+     "start": 2.41,
+     "end": 2.47
     }
    ],
-   "spoken": "Stell dir vor: Auf Muschel-Tal regnet es Red Bull!",
+   "spoken": "Stell dir vor: Es regnet plötzlich RED BULL!",
    "start": 0.0,
-   "end": 3.0
+   "end": 2.47
   },
   {
    "scene": "s02",
@@ -91,85 +83,85 @@
      "spoken": "Auf",
      "color": null,
      "group": 0,
-     "start": 4.18,
-     "end": 4.354
+     "start": 3.3,
+     "end": 3.46
     },
     {
      "display": "dem",
      "spoken": "dem",
      "color": null,
      "group": 0,
-     "start": 4.354,
-     "end": 4.529
+     "start": 3.46,
+     "end": 3.62
     },
     {
      "display": "Muschelplatz",
      "spoken": "Muschelplatz",
      "color": null,
      "group": 0,
-     "start": 4.529,
-     "end": 5.07
+     "start": 3.62,
+     "end": 4.118
     },
     {
      "display": "steht",
      "spoken": "steht",
      "color": null,
      "group": 1,
-     "start": 5.07,
-     "end": 5.257
+     "start": 4.118,
+     "end": 4.29
     },
     {
      "display": "ein",
      "spoken": "ein",
      "color": null,
      "group": 1,
-     "start": 5.257,
-     "end": 5.431
+     "start": 4.29,
+     "end": 4.45
     },
     {
      "display": "Matcha-Brunnen",
      "spoken": "Matcha-Brunnen",
      "color": "g",
      "group": 1,
-     "start": 5.431,
-     "end": 6.134
+     "start": 4.45,
+     "end": 5.097
     },
     {
      "display": "–",
      "spoken": "–",
      "color": null,
      "group": 1,
-     "start": 6.134,
-     "end": 6.29
+     "start": 5.097,
+     "end": 5.24
     },
     {
      "display": "gratis",
      "spoken": "gratis",
      "color": "g",
      "group": 2,
-     "start": 6.49,
-     "end": 6.932
+     "start": 5.43,
+     "end": 5.84
     },
     {
      "display": "für",
      "spoken": "für",
      "color": "g",
      "group": 2,
-     "start": 6.932,
-     "end": 7.153
+     "start": 5.84,
+     "end": 6.045
     },
     {
      "display": "alle!",
      "spoken": "alle!",
      "color": "g",
      "group": 2,
-     "start": 7.153,
-     "end": 7.58
+     "start": 6.045,
+     "end": 6.44
     }
    ],
    "spoken": "Auf dem Muschelplatz steht ein Matcha-Brunnen – gratis für alle!",
-   "start": 4.18,
-   "end": 7.58
+   "start": 3.3,
+   "end": 6.44
   },
   {
    "scene": "s03",
@@ -180,141 +172,165 @@
      "spoken": "Dubai-Schokolade",
      "color": "y",
      "group": 0,
-     "start": 8.76,
-     "end": 9.571
+     "start": 7.27,
+     "end": 8.054
     },
     {
      "display": "an",
      "spoken": "an",
      "color": null,
      "group": 0,
-     "start": 9.571,
-     "end": 9.704
+     "start": 8.054,
+     "end": 8.182
     },
     {
      "display": "jeder",
      "spoken": "jeder",
      "color": null,
      "group": 0,
-     "start": 9.704,
-     "end": 9.974
+     "start": 8.182,
+     "end": 8.443
     },
     {
      "display": "Ecke?",
      "spoken": "Ecke?",
      "color": null,
      "group": 0,
-     "start": 9.974,
-     "end": 10.24
+     "start": 8.443,
+     "end": 8.7
+    },
+    {
+     "display": "Das",
+     "spoken": "Das",
+     "color": null,
+     "group": 1,
+     "start": 8.88,
+     "end": 9.05
+    },
+    {
+     "display": "Meer",
+     "spoken": "Meer",
+     "color": "b",
+     "group": 1,
+     "start": 9.05,
+     "end": 9.227
+    },
+    {
+     "display": "ist",
+     "spoken": "ist",
+     "color": null,
+     "group": 1,
+     "start": 9.227,
+     "end": 9.397
+    },
+    {
+     "display": "Glühwein!",
+     "spoken": "Glühwein!",
+     "color": "r",
+     "group": 1,
+     "start": 9.397,
+     "end": 9.75
     },
     {
      "display": "Dein",
      "spoken": "Dein",
      "color": null,
-     "group": 1,
-     "start": 10.51,
-     "end": 10.657
+     "group": 2,
+     "start": 9.9,
+     "end": 10.026
     },
     {
      "display": "Akku:",
      "spoken": "Akku:",
      "color": "b",
-     "group": 1,
-     "start": 10.657,
-     "end": 10.93
+     "group": 2,
+     "start": 10.026,
+     "end": 10.26
     },
     {
      "display": "immer",
      "spoken": "immer",
      "color": "g",
      "group": 2,
-     "start": 11.09,
-     "end": 11.428
+     "start": 10.42,
+     "end": 10.684
     },
     {
      "display": "100",
      "spoken": "hundert",
      "color": "g",
      "group": 2,
-     "start": 11.428,
-     "end": 11.779
+     "start": 10.684,
+     "end": 10.957
     },
     {
      "display": "Prozent!",
      "spoken": "Prozent!",
      "color": "g",
      "group": 2,
-     "start": 11.779,
-     "end": 12.13
+     "start": 10.957,
+     "end": 11.23
     },
     {
      "display": "Und",
      "spoken": "Und",
      "color": null,
      "group": 3,
-     "start": 12.43,
-     "end": 12.56
+     "start": 11.48,
+     "end": 11.6
     },
     {
      "display": "Schule?",
      "spoken": "Schule?",
      "color": "p",
      "group": 3,
-     "start": 12.56,
-     "end": 12.82
+     "start": 11.6,
+     "end": 11.84
     },
     {
      "display": "Gibt’s",
      "spoken": "Gibt’s",
      "color": null,
      "group": 4,
-     "start": 13.11,
-     "end": 13.339
-    },
-    {
-     "display": "hier",
-     "spoken": "hier",
-     "color": null,
-     "group": 4,
-     "start": 13.339,
-     "end": 13.56
+     "start": 12.09,
+     "end": 12.185
     },
     {
      "display": "nicht",
      "spoken": "nicht",
      "color": "r",
      "group": 4,
-     "start": 13.56,
-     "end": 13.789
+     "start": 12.185,
+     "end": 12.281
     },
     {
      "display": "–",
      "spoken": "–",
      "color": null,
      "group": 4,
-     "start": 13.789,
-     "end": 13.98
+     "start": 12.281,
+     "end": 12.36
     },
     {
      "display": "nur",
      "spoken": "nur",
      "color": "g",
-     "group": 5,
-     "start": 14.09,
-     "end": 14.237
+     "group": 4,
+     "start": 12.6,
+     "end": 12.84
     },
     {
      "display": "Ferien!",
      "spoken": "Ferien!",
      "color": "g",
-     "group": 5,
-     "start": 14.237,
-     "end": 14.53
+     "group": 4,
+     "start": 12.84,
+     "end": 13.32
     }
    ],
-   "spoken": "Dubai-Schokolade an jeder Ecke? Dein Akku: immer hundert Prozent! Und Schule? Gibt’s hier nicht – nur Ferien!",
-   "start": 8.76,
-   "end": 14.53
+   "spoken": "Dubai-Schokolade an jeder Ecke? Das Meer ist Glühwein! Dein Akku: immer hundert Prozent! Und Schule? Gibt’s nicht – nur Ferien!",
+   "start": 7.27,
+   "end": 13.32
   },
   {
    "scene": "s04",
@@ -325,149 +341,173 @@
      "spoken": "Ihr",
      "color": "p",
      "group": 0,
-     "start": 15.71,
-     "end": 15.899
+     "start": 14.15,
+     "end": 14.31
     },
     {
      "display": "entscheidet!",
      "spoken": "entscheidet!",
      "color": "p",
      "group": 0,
-     "start": 15.899,
-     "end": 16.48
+     "start": 14.31,
+     "end": 14.8
     },
     {
      "display": "Was",
      "spoken": "Was",
      "color": null,
      "group": 1,
-     "start": 16.78,
-     "end": 16.904
+     "start": 15.05,
+     "end": 15.173
     },
     {
      "display": "ist",
      "spoken": "ist",
      "color": null,
      "group": 1,
-     "start": 16.904,
-     "end": 17.028
+     "start": 15.173,
+     "end": 15.296
     },
     {
      "display": "eure",
      "spoken": "eure",
      "color": null,
      "group": 1,
-     "start": 17.028,
-     "end": 17.266
+     "start": 15.296,
+     "end": 15.532
     },
     {
      "display": "verrückteste",
      "spoken": "verrückteste",
      "color": "p",
      "group": 1,
-     "start": 17.266,
-     "end": 17.761
+     "start": 15.532,
+     "end": 16.023
     },
     {
      "display": "Idee?",
      "spoken": "Idee?",
      "color": "p",
      "group": 1,
-     "start": 17.761,
-     "end": 18.0
+     "start": 16.023,
+     "end": 16.26
     },
     {
      "display": "Schreibt’s",
      "spoken": "Schreibt’s",
      "color": "p",
      "group": 2,
-     "start": 18.24,
-     "end": 18.358
+     "start": 16.51,
+     "end": 16.625
     },
     {
      "display": "in",
      "spoken": "in",
      "color": null,
      "group": 2,
-     "start": 18.358,
-     "end": 18.452
+     "start": 16.625,
+     "end": 16.717
     },
     {
      "display": "die",
      "spoken": "die",
      "color": null,
      "group": 2,
-     "start": 18.452,
-     "end": 18.55
+     "start": 16.717,
+     "end": 16.812
     },
     {
      "display": "Kommentare",
      "spoken": "Kommentare",
      "color": "p",
      "group": 2,
-     "start": 18.55,
-     "end": 18.933
+     "start": 16.812,
+     "end": 17.185
     },
     {
      "display": "–",
      "spoken": "–",
      "color": null,
      "group": 2,
-     "start": 18.933,
-     "end": 19.02
+     "start": 17.185,
+     "end": 17.27
     },
     {
-     "display": "die",
-     "spoken": "die",
+     "display": "der",
+     "spoken": "der",
      "color": null,
      "group": 3,
-     "start": 19.23,
-     "end": 19.364
+     "start": 17.43,
+     "end": 17.572
     },
     {
-     "display": "besten",
-     "spoken": "besten",
+     "display": "mit",
+     "spoken": "mit",
      "color": null,
      "group": 3,
-     "start": 19.364,
-     "end": 19.632
+     "start": 17.572,
+     "end": 17.713
     },
     {
-     "display": "kommen",
-     "spoken": "kommen",
+     "display": "den",
+     "spoken": "den",
      "color": null,
      "group": 3,
-     "start": 19.632,
-     "end": 19.9
+     "start": 17.713,
+     "end": 17.855
+    },
+    {
+     "display": "meisten",
+     "spoken": "meisten",
+     "color": "y",
+     "group": 3,
+     "start": 17.855,
+     "end": 18.143
+    },
+    {
+     "display": "Likes",
+     "spoken": "Likes",
+     "color": "y",
+     "group": 3,
+     "start": 18.143,
+     "end": 18.421
+    },
+    {
+     "display": "kommt",
+     "spoken": "kommt",
+     "color": null,
+     "group": 4,
+     "start": 18.421,
+     "end": 18.572
     },
     {
      "display": "ins",
      "spoken": "ins",
      "color": null,
-     "group": 3,
-     "start": 19.9,
-     "end": 20.034
+     "group": 4,
+     "start": 18.572,
+     "end": 18.714
     },
     {
      "display": "nächste",
      "spoken": "nächste",
      "color": "g",
-     "group": 3,
-     "start": 20.034,
-     "end": 20.307
+     "group": 4,
+     "start": 18.714,
+     "end": 19.002
     },
     {
      "display": "Video!",
      "spoken": "Video!",
      "color": "g",
-     "group": 3,
-     "start": 20.307,
-     "end": 20.57
+     "group": 4,
+     "start": 19.002,
+     "end": 19.28
     }
    ],
-   "spoken": "Ihr entscheidet! Was ist eure verrückteste Idee? Schreibt’s in die Kommentare – die besten kommen ins nächste Video!",
-   "start": 15.71,
-   "end": 20.57
+   "spoken": "Ihr entscheidet! Was ist eure verrückteste Idee? Schreibt’s in die Kommentare – der mit den meisten Likes kommt ins nächste Video!",
+   "start": 14.15,
+   "end": 19.28
   },
   {
    "scene": "s05",
@@ -478,109 +518,93 @@
      "spoken": "Und",
      "color": null,
      "group": 0,
-     "start": 21.75,
-     "end": 21.895
+     "start": 20.11,
+     "end": 20.308
     },
     {
-     "display": "folg",
-     "spoken": "folg",
+     "display": "jetzt:",
+     "spoken": "jetzt:",
+     "color": null,
+     "group": 0,
+     "start": 20.308,
+     "end": 20.52
+    },
+    {
+     "display": "Folg",
+     "spoken": "Folg",
      "color": "p",
      "group": 0,
-     "start": 21.895,
-     "end": 22.045
+     "start": 20.77,
+     "end": 20.943
     },
     {
      "display": "mir",
      "spoken": "mir",
      "color": "p",
      "group": 0,
-     "start": 22.045,
-     "end": 22.19
+     "start": 20.943,
+     "end": 21.11
     },
     {
-     "display": "–",
-     "spoken": "–",
-     "color": null,
-     "group": 0,
-     "start": 22.19,
-     "end": 22.32
-    },
-    {
-     "display": "wenn’s",
-     "spoken": "wenn’s",
+     "display": "und",
+     "spoken": "und",
      "color": null,
      "group": 1,
-     "start": 22.62,
-     "end": 22.796
+     "start": 21.11,
+     "end": 21.277
     },
     {
-     "display": "hier",
-     "spoken": "hier",
-     "color": null,
-     "group": 1,
-     "start": 22.796,
-     "end": 22.966
-    },
-    {
-     "display": "Red",
-     "spoken": "Red",
-     "color": "y",
-     "group": 1,
-     "start": 22.966,
-     "end": 23.131
-    },
-    {
-     "display": "Bull",
-     "spoken": "Bull",
-     "color": "y",
-     "group": 1,
-     "start": 23.131,
-     "end": 23.301
-    },
-    {
-     "display": "regnet,",
-     "spoken": "regnet,",
-     "color": null,
-     "group": 1,
-     "start": 23.301,
-     "end": 23.63
-    },
-    {
-     "display": "willst",
-     "spoken": "willst",
-     "color": null,
-     "group": 2,
-     "start": 23.88,
-     "end": 24.042
-    },
-    {
-     "display": "du",
-     "spoken": "du",
-     "color": null,
-     "group": 2,
-     "start": 24.042,
-     "end": 24.182
-    },
-    {
-     "display": "dabei",
-     "spoken": "dabei",
+     "display": "zieh",
+     "spoken": "zieh",
      "color": "g",
-     "group": 2,
-     "start": 24.182,
-     "end": 24.469
+     "group": 1,
+     "start": 21.277,
+     "end": 21.45
     },
     {
-     "display": "sein!",
-     "spoken": "sein!",
-     "color": "g",
+     "display": "nach",
+     "spoken": "nach",
+     "color": null,
+     "group": 1,
+     "start": 21.45,
+     "end": 21.623
+    },
+    {
+     "display": "Muschel-Tal!",
+     "spoken": "Muschel-Tal!",
+     "color": "b",
+     "group": 1,
+     "start": 21.623,
+     "end": 22.13
+    },
+    {
+     "display": "Deine",
+     "spoken": "Deine",
+     "color": null,
      "group": 2,
-     "start": 24.469,
-     "end": 24.62
+     "start": 22.31,
+     "end": 22.582
+    },
+    {
+     "display": "Hütte",
+     "spoken": "Hütte",
+     "color": "y",
+     "group": 2,
+     "start": 22.582,
+     "end": 22.853
+    },
+    {
+     "display": "wartet!",
+     "spoken": "wartet!",
+     "color": "y",
+     "group": 2,
+     "start": 22.853,
+     "end": 23.13
     }
    ],
-   "spoken": "Und folg mir – wenn’s hier Red Bull regnet, willst du dabei sein!",
-   "start": 21.75,
-   "end": 24.62
+   "spoken": "Und jetzt: Folg mir und zieh nach Muschel-Tal! Deine Hütte wartet!",
+   "start": 20.11,
+   "end": 23.13
   }
  ]
 }

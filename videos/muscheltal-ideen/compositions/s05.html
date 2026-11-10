@@ -63,19 +63,19 @@
     #s05-btn { top: 430px; } #s05-hand { left: 690px; top: 480px; }
     #s05-r { top: 600px; font-size: 42px; background: #2e9e5b; }
   </style>
-  <div id="root" data-composition-id="s05" data-start="0" data-duration="5.270" data-width="1080" data-height="1920">
-    <div id="s05-stage" class="clip stage" data-start="0" data-duration="5.270" data-track-index="0">
-      <div id="s05-t" class="pl">🏝️ Folgen = einziehen!</div>
+  <div id="root" data-composition-id="s05" data-start="0" data-duration="4.820" data-width="1080" data-height="1920">
+    <div id="s05-stage" class="clip stage" data-start="0" data-duration="4.820" data-track-index="0">
+      <div id="s05-t" class="pl">🏝️ Folg mir & zieh nach Muschel-Tal!</div>
       <div id="s05-btn" class="fbtn">+ Folgen<div id="s05-btn2" class="fbtn2">✓ Gefolgt</div></div>
       <div id="s05-hand" class="fhand" data-layout-ignore>👆</div>
-      <div id="s05-r" class="pl">🏡 Deine Hütte mit deinem @Namen</div>
+      <div id="s05-r" class="pl">🏡 Deine Hütte wartet – mit deinem @Namen!</div>
       <div class="can" id="s05-c0" data-layout-ignore></div><div class="can" id="s05-c1" data-layout-ignore></div><div class="can" id="s05-c2" data-layout-ignore></div><div class="can" id="s05-c3" data-layout-ignore></div><div class="can" id="s05-c4" data-layout-ignore></div><div class="can" id="s05-c5" data-layout-ignore></div><div class="can" id="s05-c6" data-layout-ignore></div><div class="can" id="s05-c7" data-layout-ignore></div><div class="can" id="s05-c8" data-layout-ignore></div><div class="can" id="s05-c9" data-layout-ignore></div><div class="can" id="s05-c10" data-layout-ignore></div><div class="can" id="s05-c11" data-layout-ignore></div><div class="can" id="s05-c12" data-layout-ignore></div><div class="can" id="s05-c13" data-layout-ignore></div><div class="can" id="s05-c14" data-layout-ignore></div><div class="can" id="s05-c15" data-layout-ignore></div><div class="can" id="s05-c16" data-layout-ignore></div><div class="can" id="s05-c17" data-layout-ignore></div><div class="can" id="s05-c18" data-layout-ignore></div><div class="can" id="s05-c19" data-layout-ignore></div><div class="can" id="s05-c20" data-layout-ignore></div><div class="can" id="s05-c21" data-layout-ignore></div><div class="can" id="s05-c22" data-layout-ignore></div><div class="can" id="s05-c23" data-layout-ignore></div><div class="can" id="s05-c24" data-layout-ignore></div><div class="can" id="s05-c25" data-layout-ignore></div><div class="can" id="s05-c26" data-layout-ignore></div><div class="can" id="s05-c27" data-layout-ignore></div><div class="can" id="s05-c28" data-layout-ignore></div><div class="can" id="s05-c29" data-layout-ignore></div><div class="can" id="s05-c30" data-layout-ignore></div><div class="can" id="s05-c31" data-layout-ignore></div><div class="can" id="s05-c32" data-layout-ignore></div><div class="can" id="s05-c33" data-layout-ignore></div><div class="can" id="s05-c34" data-layout-ignore></div><div class="can" id="s05-c35" data-layout-ignore></div><div class="can" id="s05-c36" data-layout-ignore></div><div class="can" id="s05-c37" data-layout-ignore></div><div class="can" id="s05-c38" data-layout-ignore></div><div class="can" id="s05-c39" data-layout-ignore></div><div class="can" id="s05-c40" data-layout-ignore></div><div class="can" id="s05-c41" data-layout-ignore></div><div class="can" id="s05-c42" data-layout-ignore></div><div class="can" id="s05-c43" data-layout-ignore></div><div class="can" id="s05-c44" data-layout-ignore></div><div class="can" id="s05-c45" data-layout-ignore></div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 5.27, "L5": [0.2, 3.07], "L5.words": [["und", 0.2, 0.345], ["folg", 0.345, 0.495], ["mir", 0.495, 0.64], ["", 0.64, 0.77], ["wenns", 1.07, 1.246], ["hier", 1.246, 1.416], ["red", 1.416, 1.581], ["bull", 1.581, 1.751], ["regnet", 1.751, 2.08], ["willst", 2.33, 2.492], ["du", 2.492, 2.632], ["dabei", 2.632, 2.919], ["sein", 2.919, 3.07]]};
+      const C = {"__dur": 4.82, "L5": [0.2, 3.22], "L5.words": [["und", 0.2, 0.398], ["jetzt", 0.398, 0.61], ["folg", 0.86, 1.033], ["mir", 1.033, 1.2], ["und", 1.2, 1.367], ["zieh", 1.367, 1.54], ["nach", 1.54, 1.713], ["muscheltal", 1.713, 2.22], ["deine", 2.4, 2.672], ["hütte", 2.672, 2.943], ["wartet", 2.943, 3.22]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -119,7 +119,7 @@
 
       wrapBt("#s05-stage");
       const tl = gsap.timeline({ paused: true });
-      const fo = at("L5", "folg"), rb = at("L5", "Red"), da = at("L5", "dabei");
+      const fo = at("L5", "Folg"), rb = at("L5", "Muschel-Tal"), da = at("L5", "Hütte");
       tl.fromTo("#s05-t", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, fo - .4);
       tl.fromTo("#s05-btn", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, fo - .3);
       tl.fromTo("#s05-hand", { opacity: 0, x: 160, y: 160 }, { opacity: 1, x: 0, y: 0, duration: .25, ease: "power3.out" }, fo - .1);
@@ -128,9 +128,10 @@
       tl.fromTo("#s05-btn", { scale: 1 }, { scale: 1.15, duration: .12, yoyo: true, repeat: 1, immediateRender: false }, fo + .3);
       tl.to("#s05-hand", { opacity: 0, duration: .25 }, fo + .8);
       tl.fromTo("#s05-r", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, da - .3);
-      { const R = rng(8), T0 = rb - .3, T1 = C.__dur; for (let i = 0; i < 46; i++) { const x = 20 + R() * 1000, d = .9 + R() * .7, st = T0 + R() * Math.max(.1, T1 - T0 - d);
+      { const R = rng(8), T0 = 0, T1 = C.__dur; for (let i = 0; i < 46; i++) { const x = 20 + R() * 1000, d = .9 + R() * .7, st = T0 + R() * Math.max(.1, T1 - T0 - d);
         document.getElementById("s05-c" + i).style.left = x + "px";
-        tl.fromTo("#s05-c" + i, { opacity: 1, y: 0, rotation: (R() - .5) * 60 }, { y: 2300, rotation: "+=" + Math.round((R() - .5) * 540), duration: d, ease: "power1.in" }, st); } }
+        const y0 = (T0 === 0 && i < 46 / 3) ? 200 + R() * 1500 : 0, st2 = y0 ? 0 : st;
+        tl.fromTo("#s05-c" + i, { opacity: 1, y: y0, rotation: (R() - .5) * 60 }, { y: 2300, rotation: "+=" + Math.round((R() - .5) * 540), duration: y0 ? d * (2300 - y0) / 2300 + .2 : d, ease: y0 ? "none" : "power1.in" }, st2); } }
       
       window.__timelines["s05"] = tl;
     })();

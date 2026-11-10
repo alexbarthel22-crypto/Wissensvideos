@@ -31,26 +31,31 @@
    "lines": [
     {
      "id": "L1",
-     "text": "Stell dir vor: / Auf Muschel-Tal / *r:regnet *r:es *y:Red *y:Bull!",
-     "speed": 1.12,
-     "style": "Style: a young German guy, around 20, talking to teenage followers like a friend, hyped and playful, a bit of a grin in the voice, natural and casual German intonation, not an announcer, normal pitch.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
+     "text": "Stell dir vor: / Es regnet *r:plötzlich / *y:RED *y:BULL!",
+     "speed": 1.22,
+     "style": "Style: a young German guy, around 20, hyped and explosive, shouting the big news like the craziest thing ever, playful, natural German intonation, normal pitch.\nPace: fast.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
     }
    ],
    "sfx": [
+    {
+     "name": "impact-bass-1",
+     "at": "s01+0.0",
+     "volume": 0.5
+    },
     {
      "name": "whoosh",
      "at": "s01+0.0",
      "volume": 0.35
     },
     {
-     "name": "impact-bass-1",
-     "at": "L1:regnet",
-     "volume": 0.45
+     "name": "impact-bass-2",
+     "at": "L1:RED",
+     "volume": 0.55
     },
     {
-     "name": "ka-ching",
-     "at": "L1:Bull",
-     "volume": 0.3
+     "name": "jubel",
+     "at": "L1:BULL",
+     "volume": 0.45
     }
    ]
   },
@@ -61,9 +66,9 @@
     {
      "id": "L2",
      "text": "Auf dem Muschelplatz / steht ein *g:Matcha-Brunnen – / *g:gratis *g:für *g:alle!",
-     "speed": 1.12,
+     "speed": 1.22,
      "style": "Style: a young German guy, around 20, talking to teenage followers like a friend, hyped and playful, a bit of a grin in the voice, natural and casual German intonation, not an announcer, normal pitch.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-     "pause": 0.8
+     "pause": 0.45
     }
    ],
    "sfx": [
@@ -85,16 +90,21 @@
    "lines": [
     {
      "id": "L3",
-     "text": "*y:Dubai-Schokolade an jeder Ecke? / Dein *b:Akku: / *g:immer *g:100|hundert *g:Prozent! / Und *p:Schule? / Gibt’s hier *r:nicht – / *g:nur *g:Ferien!",
-     "speed": 1.12,
+     "text": "*y:Dubai-Schokolade an jeder Ecke? / Das *b:Meer ist *r:Glühwein! / Dein *b:Akku: *g:immer *g:100|hundert *g:Prozent! / Und *p:Schule? / Gibt’s *r:nicht – *g:nur *g:Ferien!",
+     "speed": 1.22,
      "style": "Style: a young German guy, around 20, talking to teenage followers like a friend, hyped and playful, a bit of a grin in the voice, natural and casual German intonation, not an announcer, normal pitch.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-     "pause": 0.8
+     "pause": 0.45
     }
    ],
    "sfx": [
     {
      "name": "pop",
      "at": "L3:Dubai-Schokolade",
+     "volume": 0.45
+    },
+    {
+     "name": "pop",
+     "at": "L3:Meer",
      "volume": 0.45
     },
     {
@@ -120,10 +130,10 @@
    "lines": [
     {
      "id": "L4",
-     "text": "*p:Ihr *p:entscheidet! / Was ist eure *p:verrückteste *p:Idee? / *p:Schreibt’s in die *p:Kommentare – / die besten kommen ins *g:nächste *g:Video!",
-     "speed": 1.12,
+     "text": "*p:Ihr *p:entscheidet! / Was ist eure *p:verrückteste *p:Idee? / *p:Schreibt’s in die *p:Kommentare – / der mit den *y:meisten *y:Likes / kommt ins *g:nächste *g:Video!",
+     "speed": 1.22,
      "style": "Style: a young German guy, around 20, talking to teenage followers like a friend, hyped and playful, a bit of a grin in the voice, natural and casual German intonation, not an announcer, normal pitch.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-     "pause": 0.8
+     "pause": 0.45
     }
    ],
    "sfx": [
@@ -138,6 +148,11 @@
      "volume": 0.4
     },
     {
+     "name": "pop",
+     "at": "L4:meisten",
+     "volume": 0.45
+    },
+    {
      "name": "ka-ching",
      "at": "L4:nächste",
      "volume": 0.35
@@ -147,25 +162,30 @@
   {
    "id": "s05",
    "tag": "",
-   "hold": 2.2,
+   "hold": 1.6,
    "lines": [
     {
      "id": "L5",
-     "text": "Und *p:folg *p:mir – / wenn’s hier *y:Red *y:Bull regnet, / willst du *g:dabei *g:sein!",
-     "speed": 1.12,
+     "text": "Und jetzt: *p:Folg *p:mir / und *g:zieh nach *b:Muschel-Tal! / Deine *y:Hütte *y:wartet!",
+     "speed": 1.22,
      "style": "Style: a young German guy, around 20, talking to teenage followers like a friend, hyped and playful, a bit of a grin in the voice, natural and casual German intonation, not an announcer, normal pitch.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-     "pause": 0.8
+     "pause": 0.45
     }
    ],
    "sfx": [
     {
      "name": "click",
-     "at": "L5:folg",
+     "at": "L5:Folg",
      "volume": 0.5
     },
     {
      "name": "impact-bass-1",
-     "at": "L5:Bull",
+     "at": "L5:Muschel-Tal",
+     "volume": 0.35
+    },
+    {
+     "name": "ka-ching",
+     "at": "L5:Hütte",
      "volume": 0.35
     }
    ]

@@ -51,20 +51,25 @@
 @font-face { font-family: "Lilita One"; src: url("assets/fonts/LilitaOne-Regular.woff2") format("woff2"); font-weight: 400; }
     .pl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 28px 12px; border-radius: 999px; color: #fff;
       font-family: "Inter", sans-serif; font-weight: 900; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); white-space: nowrap; }
+    .fl { position: absolute; inset: 0; background: #fff; opacity: 0; }
     .s03-c { position: absolute; left: 110px; right: 230px; height: 150px; border-radius: 34px; background: #fff; box-shadow: 0 0 0 6px #2a1b12, 0 12px 0 rgba(0,0,0,.28); display: flex; align-items: center; gap: 24px; padding: 0 28px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 42px; color: #2a1b12; }
     .s03-c i { font-style: normal; font-size: 84px; }
-    #s03-c1 { top: 300px; transform: rotate(-2deg); background: linear-gradient(90deg, #c8e6a0, #fff 60%); }
-    #s03-c2 { top: 490px; transform: rotate(2deg); }
+    .s03-c { height: 130px !important; font-size: 40px !important; }
+    #s03-c1 { top: 290px; transform: rotate(-2deg); background: linear-gradient(90deg, #c8e6a0, #fff 60%); }
+    #s03-cm { top: 445px; transform: rotate(1.5deg); background: linear-gradient(90deg, #b3202f, #e8565f 60%, #ff9a8a); color: #fff; }
+    #s03-c2 { top: 600px; transform: rotate(-1.5deg); }
     #s03-bt { width: 170px; height: 64px; border-radius: 12px; box-shadow: 0 0 0 5px #2a1b12; position: relative; overflow: hidden; background: #eee; flex: none; }
     #s03-bt i { position: absolute; left: 0; top: 0; bottom: 0; width: 8%; background: #e8262f; font-size: 0; }
     #s03-bp { font-size: 46px; }
-    #s03-c3 { top: 680px; transform: rotate(-1.5deg); }
-    #s03-no { left: 520px; top: 690px; color: #e8262f; border-color: #e8262f; background: #fff; transform: rotate(-8deg); font-size: 50px; white-space: nowrap; font-family: "Lilita One", sans-serif; }
-    #s03-fe { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 880px; padding: 6px 40px 16px; border-radius: 30px; background: #ffcc00; color: #2a1b12; font-family: "Lilita One", sans-serif; font-size: 80px; line-height: 1; white-space: nowrap; box-shadow: 0 0 0 7px #2a1b12, 0 14px 0 rgba(0,0,0,.3); transform: rotate(-2deg); }
+    #s03-c3 { top: 755px; transform: rotate(1.5deg); }
+    #s03-no { left: 520px; top: 765px; color: #e8262f; border-color: #e8262f; background: #fff; transform: rotate(-8deg); font-size: 50px; white-space: nowrap; font-family: "Lilita One", sans-serif; }
+    #s03-fe { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 925px; padding: 6px 40px 16px; border-radius: 30px; background: #ffcc00; color: #2a1b12; font-family: "Lilita One", sans-serif; font-size: 80px; line-height: 1; white-space: nowrap; box-shadow: 0 0 0 7px #2a1b12, 0 14px 0 rgba(0,0,0,.3); transform: rotate(-2deg); }
   </style>
-  <div id="root" data-composition-id="s03" data-start="0" data-duration="6.950" data-width="1080" data-height="1920">
-    <div id="s03-stage" class="clip stage" data-start="0" data-duration="6.950" data-track-index="0">
+  <div id="root" data-composition-id="s03" data-start="0" data-duration="6.880" data-width="1080" data-height="1920">
+    <div id="s03-stage" class="clip stage" data-start="0" data-duration="6.880" data-track-index="0">
+      <div id="s03-fl" class="fl" data-layout-ignore></div>
       <div id="s03-c1" class="s03-c"><i>🍫</i>Dubai-Schoko überall</div>
+      <div id="s03-cm" class="s03-c"><i>🌊</i>Das Meer = Glühwein 🍷</div>
       <div id="s03-c2" class="s03-c"><i>🔋</i><div id="s03-bt"><i id="s03-bi"></i></div><span id="s03-bp">8 %</span></div>
       <div id="s03-c3" class="s03-c"><i>🏫</i>Schule?</div>
       <div id="s03-no" class="stamp" data-layout-ignore>❌ GIBT'S NICHT</div>
@@ -74,7 +79,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 6.95, "L3": [0.2, 5.97], "L3.words": [["dubaischokolade", 0.2, 1.011], ["an", 1.011, 1.144], ["jeder", 1.144, 1.414], ["ecke", 1.414, 1.68], ["dein", 1.95, 2.097], ["akku", 2.097, 2.37], ["immer", 2.53, 2.868], ["100", 2.868, 3.219], ["prozent", 3.219, 3.57], ["und", 3.87, 4.0], ["schule", 4.0, 4.26], ["gibts", 4.55, 4.779], ["hier", 4.779, 5.0], ["nicht", 5.0, 5.229], ["", 5.229, 5.42], ["nur", 5.53, 5.677], ["ferien", 5.677, 5.97]]};
+      const C = {"__dur": 6.88, "L3": [0.2, 6.25], "L3.words": [["dubaischokolade", 0.2, 0.984], ["an", 0.984, 1.112], ["jeder", 1.112, 1.373], ["ecke", 1.373, 1.63], ["das", 1.81, 1.98], ["meer", 1.98, 2.157], ["ist", 2.157, 2.327], ["glühwein", 2.327, 2.68], ["dein", 2.83, 2.956], ["akku", 2.956, 3.19], ["immer", 3.35, 3.614], ["100", 3.614, 3.887], ["prozent", 3.887, 4.16], ["und", 4.41, 4.53], ["schule", 4.53, 4.77], ["gibts", 5.02, 5.115], ["nicht", 5.115, 5.211], ["", 5.211, 5.29], ["nur", 5.53, 5.77], ["ferien", 5.77, 6.25]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -118,8 +123,11 @@
 
       wrapBt("#s03-stage");
       const tl = gsap.timeline({ paused: true });
-      const du = at("L3", "Dubai-Schokolade"), ak = at("L3", "Akku"), im = at("L3", "immer"), sc = at("L3", "Schule"), ni = at("L3", "nicht"), fe = at("L3", "Ferien");
-      [["#s03-c1", du], ["#s03-c2", ak], ["#s03-c3", sc]].forEach(([e, t], i) => tl.fromTo(e, { opacity: 0, scale: .3, x: i % 2 ? 200 : -200 }, { opacity: 1, scale: 1, x: 0, duration: .32, ease: "back.out(2.4)" }, t - .25));
+      const me = at("L3", "Meer"), du = at("L3", "Dubai-Schokolade"), ak = at("L3", "Akku"), im = at("L3", "immer"), sc = at("L3", "Schule"), ni = at("L3", "nicht"), fe = at("L3", "Ferien");
+      [["#s03-c1", du], ["#s03-cm", me], ["#s03-c2", ak], ["#s03-c3", sc]].forEach(([e, t], i) => { tl.fromTo(e, { opacity: 0, scale: .3, x: i % 2 ? 200 : -200 }, { opacity: 1, scale: 1, x: 0, duration: .28, ease: "back.out(2.6)" }, t - .2);
+        tl.fromTo(e + " i", { scale: 1.8, rotation: -30 }, { scale: 1, rotation: 0, duration: .4, ease: "elastic.out(1, .4)", immediateRender: false }, t);
+        tl.fromTo("#s03-fl", { opacity: .55 }, { opacity: 0, duration: .25, immediateRender: false }, t); });
+      tl.to("#s03-stage", { x: 14, duration: .04, yoyo: true, repeat: 7, ease: "none" }, ni);
       tl.to("#s03-bi", { width: "100%", backgroundColor: "#2e9e5b", duration: .6, ease: "power2.out" }, im - .1);
       count(tl, "#s03-bp", 8, 100, im - .1, .6, "", " %");
       tl.fromTo("#s03-no", { opacity: 0, scale: 2.6 }, { opacity: 1, scale: 1, duration: .25, ease: "back.out(2)" }, ni - .05);

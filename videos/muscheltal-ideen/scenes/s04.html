@@ -10,7 +10,9 @@
     #s04-cm .av { width: 74px; height: 74px; border-radius: 50%; flex: none; background: linear-gradient(135deg, #ffd23f, #e8467c); display: grid; place-items: center; font-size: 40px; }
     #s04-cm .nm { font-size: 26px; color: #a8a8a8; font-weight: 600; } #s04-cm .tx { font-size: 36px; font-weight: 600; margin-top: 4px; min-height: 92px; line-height: 1.25; }
     #s04-cm .cu { display: inline-block; width: 4px; height: 38px; background: #fe2c55; vertical-align: -6px; margin-left: 3px; }
-    #s04-g { top: 820px; font-size: 42px; background: #2e9e5b; }
+    #s04-g { top: 820px; font-size: 42px; background: #e8262f; }
+    #s04-lk { margin-left: auto; text-align: center; font-family: "Inter", sans-serif; font-weight: 800; font-size: 26px; color: #a8a8a8; flex: none; }
+    #s04-lk span { display: block; font-size: 44px; } #s04-lk { position: relative; } #s04-h1 { position: absolute; left: 0; right: 0; top: 0; opacity: 0; }
     #s04-ar { position: absolute; left: 850px; top: 1230px; font-size: 110px; filter: drop-shadow(0 6px 0 rgba(0,0,0,.35)); }
     #s04-cb { position: absolute; left: 640px; top: 1085px; padding: 4px 18px 8px; border-radius: 999px; background: #fff; color: #fe2c55; font-family: "Inter", sans-serif; font-weight: 900; font-size: 30px; box-shadow: 0 0 0 4px #2a1b12; }
   </style>
@@ -18,8 +20,8 @@
     <div id="s04-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
       <div id="s04-h">👑 IHR ENTSCHEIDET!</div>
       <div id="s04-q" class="pl">Eure verrückteste Idee? 👇</div>
-      <div id="s04-cm"><div class="av">🐚</div><div><div class="nm">Du</div><div class="tx"><span id="s04-ty"></span><span class="cu" id="s04-cu"></span></div></div></div>
-      <div id="s04-g" class="pl">🏆 Die besten kommen ins nächste Video!</div>
+      <div id="s04-cm"><div class="av">🐚</div><div><div class="nm">Du</div><div class="tx"><span id="s04-ty"></span><span class="cu" id="s04-cu"></span></div></div><div id="s04-lk"><span id="s04-h0">🤍</span><span id="s04-h1">❤️</span><b id="s04-ln">0</b></div></div>
+      <div id="s04-g" class="pl">❤️ Meiste Likes = nächstes Video!</div>
       <div id="s04-cb" data-layout-ignore>Hier kommentieren</div>
       <div id="s04-ar" data-layout-ignore>👉</div>
     </div>
@@ -30,14 +32,17 @@
       /*__COMMON_JS__*/
       wrapBt("#s04-stage");
       const tl = gsap.timeline({ paused: true });
-      const ih = at("L4", "Ihr"), ve = at("L4", "verrückteste"), sr = at("L4", "Schreibt’s"), ne = at("L4", "nächste");
+      const mi = at("L4", "meisten"), ih = at("L4", "Ihr"), ve = at("L4", "verrückteste"), sr = at("L4", "Schreibt’s"), ne = at("L4", "nächste");
       tl.fromTo("#s04-h", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, ih - .1);
       tl.fromTo("#s04-q", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, ve - .3);
       tl.fromTo("#s04-cm", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, sr - .3);
       const TXT = "Matcha-Brunnen + Red-Bull-Regen pls 🙏💚", ty = document.getElementById("s04-ty"), o = { n: 0 };
       tl.to(o, { n: Array.from(TXT).length, duration: 1.6, ease: "none", onUpdate: () => { ty.textContent = Array.from(TXT).slice(0, Math.round(o.n)).join(""); } }, sr);
       tl.to("#s04-cu", { opacity: 0, duration: .25, yoyo: true, repeat: 11, ease: "steps(1)" }, sr);
-      tl.fromTo("#s04-g", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, ne - .6);
+      tl.fromTo("#s04-g", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, mi - .2);
+      tl.set("#s04-h1", { opacity: 1 }, mi);
+      tl.fromTo("#s04-h1", { scale: 2.2 }, { scale: 1, duration: .35, ease: "back.out(3)", immediateRender: false }, mi);
+      count(tl, "#s04-ln", 0, 12480, mi, 1.4, "", "", "power2.in");
       tl.to("#s04-g", { scale: 1.07, duration: .2, yoyo: true, repeat: 5, ease: "sine.inOut" }, ne);
       tl.fromTo(["#s04-ar", "#s04-cb"], { opacity: 0 }, { opacity: 1, duration: .25 }, sr);
       tl.to("#s04-ar", { x: 40, duration: .3, yoyo: true, repeat: 11, ease: "sine.inOut" }, sr + .2);
