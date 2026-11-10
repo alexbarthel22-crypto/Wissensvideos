@@ -142,6 +142,13 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 ## Story-Bild „Wer soll heute Nacht noch einziehen?“ (`videos/muscheltal-story-umzug2/muscheltal-story-einziehen-2330.jpg`)
 - Aussage: **Folgt bis 23:30 Uhr – und habt morgen eure Hütte auf Kokos-Küste.** Homepage muss die neuen Follower (bis 23:30) bis morgen zeigen.
 
+## Video Tag 3 „Hilfe für die Tiere“ (10.11., `videos/muscheltal-tag3-tiere/`)
+- Hook: Hilfe! Überall streunende Hunde und Katzen. **Tierheim Pfotenkuss kostet 2.000 Muscheln**, Kasse hat **505** (676 × 5 − 2.875). Jeder neue Follower = 5 Muscheln → **es fehlen 299 Follower**.
+- Açaí-Stand (von Bürgermeisterin Lilly zum Amtsstart eröffnet): Filipa (@vidafilipa, Leitung), Marina (@marina.cgnn), Johanna (@borbie20), @lp_art18. Moped-Werkstatt: @bruecke.2803 (Leitung), @anti.teamtoxic. Pool für @luisedbr.11 (Kommentar-Wunsch).
+- **Strandvilla ausgelost (10.11., Zufall unter allen Einwohnern ohne Amt/Job): @emiliamarie155 (Nr. 225) und @lea.3818730 (Nr. 286)** – wohnen **dauerhaft** in der Villa (ihre neue „Hütte“). ⚠️ Homepage: beide in die Strandvilla einziehen lassen, Schild „bald verlost“ entfernen.
+- **Abstimmung in den Kommentaren: Soll @fabienne3692 (Fabienne) eine Bäckerei eröffnen** (sie wohnt darüber und backt Cookies/Zimtschnecken)?
+- Kommentar-Frage: Welches Tier willst du aus dem Tierheim haben?
+
 ## Gepostete Videos (Hauptaccount)
 - **Video 1 (gepostet): „Ich habe euch eine Insel gekauft“** – `videos/muscheltal-tag-1/variante-insel-gekauft/video.mp4` (Stand Commit 69ffe74).
   Inhalt: Insel gekauft, jeder bekommt ein eigenes Haus · „Sie heißt Muschel-Tal, mitten in der Südsee“ · Folgen = einziehen, Hütte mit Namen · 1 Einwohner = 5 Muscheln, Kontostand 0 · früher folgen = „Hauptinsel: Muschel-Tal“, 500 Plätze · ist sie voll, öffnen neue Inseln („Wann genau? Bald“) · geheime Insel am Kartenrand · ihr entscheidet in den Kommentaren · „Hütte Nr. 1 ist noch frei“.
