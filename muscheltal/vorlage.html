@@ -2476,7 +2476,9 @@ function drawWalker(c,z){if(!WK.on)return;const L=WK.L,x=WK.x,y=WK.y;
  c.save();c.fillStyle='rgba(232,70,124,.28)';c.beginPath();c.ellipse(x,y+4.4,5,1.8,0,0,TAU);c.fill();c.restore();
  walkerFig(c,1);
  signOver(c,x,y,nightLevel());
- NAMES.push([(WK.me?WK.me.name:'Du')+' (du)',x,y-(WK.mode==='moped'?13:12)*L.h,'#e8467c']);}
+ // vor einer Theke: eigenes Namensschild unter die Füße, damit es keine Gesichter des Teams dahinter verdeckt
+ const vorTheke=TAPS.some(t=>t[2]&&t[2].ort&&t[2]!==WK.me&&Math.abs(t[0]-x)<13&&t[1]<y-1&&t[1]>y-18);
+ NAMES.push([(WK.me?WK.me.name:'Du')+' (du)',x,vorTheke?y+8.5:y-(WK.mode==='moped'?13:12)*L.h,'#e8467c']);}
 const walkedSet=()=>{try{return new Set(JSON.parse(localStorage.getItem('mt-walked')||'[]'));}catch(e){return new Set();}};
 function walkLabel(){const b=$('walkbtn'),bar=b.parentNode;if(!sel){bar.hidden=true;return;}bar.hidden=false;b.classList.toggle('wackel',!walkedSet().has(sel.name.toLowerCase()));const t='Als '+sel.name+' Muschel-Tal erkunden';if(b.dataset.t===t)return;b.dataset.t=t;b.textContent=t;b.style.fontSize='';let fs=19;while(b.scrollWidth>b.clientWidth&&fs>12){fs-=.5;b.style.fontSize=fs+'px';}}
 walkLabel();setInterval(walkLabel,800);
