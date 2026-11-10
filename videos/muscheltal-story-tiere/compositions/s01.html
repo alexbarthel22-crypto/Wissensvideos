@@ -60,8 +60,8 @@
     #s01-c .rest { margin-top: 10px; font-weight: 900; font-size: 32px; color: #2a1b12; text-align: center; }
     #s01-m { top: 790px; font-size: 48px; background: #7b3fe0; }
   </style>
-  <div id="root" data-composition-id="s01" data-start="0" data-duration="15.000" data-width="1080" data-height="1920">
-    <div id="s01-stage" class="clip stage" data-start="0" data-duration="15.000" data-track-index="0">
+  <div id="root" data-composition-id="s01" data-start="0" data-duration="10.000" data-width="1080" data-height="1920">
+    <div id="s01-stage" class="clip stage" data-start="0" data-duration="10.000" data-track-index="0">
       <div id="s01-flash" data-layout-ignore></div>
       <div id="s01-t" class="pl">🚨 NEUES VIDEO</div>
       <div id="s01-h" class="pl">Wir brauchen eure Hilfe!</div>
@@ -72,7 +72,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 15.0, "L1": [0.0, 2.33], "L1.words": [["neues", 0.0, 0.193], ["video", 0.193, 0.546], ["wir", 0.546, 0.725], ["brauchen", 0.725, 1.098], ["dringend", 1.098, 1.47], ["eure", 1.47, 1.817], ["hilfe", 1.817, 2.17], ["", 2.17, 2.33]], "L2": [2.55, 5.71], "L2.words": [["damit", 2.55, 2.868], ["wir", 2.868, 3.03], ["die", 3.03, 3.192], ["tiere", 3.192, 3.509], ["auf", 3.509, 3.671], ["muscheltal", 3.671, 4.163], ["retten", 4.163, 4.486], ["können", 4.486, 4.81], ["mehr", 4.97, 5.097], ["im", 5.097, 5.215], ["neuesten", 5.215, 5.469], ["video", 5.469, 5.71]]};
+      const C = {"__dur": 10.0, "L1": [0.0, 2.33], "L1.words": [["neues", 0.0, 0.193], ["video", 0.193, 0.546], ["wir", 0.546, 0.725], ["brauchen", 0.725, 1.098], ["dringend", 1.098, 1.47], ["eure", 1.47, 1.817], ["hilfe", 1.817, 2.17], ["", 2.17, 2.33]], "L2": [2.55, 5.71], "L2.words": [["damit", 2.55, 2.868], ["wir", 2.868, 3.03], ["die", 3.03, 3.192], ["tiere", 3.192, 3.509], ["auf", 3.509, 3.671], ["muscheltal", 3.671, 4.163], ["retten", 4.163, 4.486], ["können", 4.486, 4.81], ["mehr", 4.97, 5.097], ["im", 5.097, 5.215], ["neuesten", 5.215, 5.469], ["video", 5.469, 5.71]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
