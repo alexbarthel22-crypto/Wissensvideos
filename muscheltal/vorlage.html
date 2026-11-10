@@ -1015,7 +1015,7 @@ function petAlleyOK(v,P){for(let i=1;i<P.length;i++){const [x0,y0]=P[i-1],[x1,y1
 function petAlley(a){const v=a.v,[x0,y0]=rNode(v,a.k,a.m),sx=Math.random()<.5?-1:1,sy=Math.random()<.5?-1:1,j=(Math.random()*4)|0,ax=x0+sx*(j+.5)*S,m2=a.m+sy,[,y1]=rNode(v,a.k,m2),k2=j<2?a.k:a.k+sx,[x2]=rNode(v,k2,m2);
  if(!rValid(v,k2,m2))return false;const P=[[x0,y0],[ax,y0],[ax,y1],[x2,y1]];if(!petAlleyOK(v,P))return false;a.wp=P.slice(1);a.wk=k2;a.wm=m2;return true;}
 function petsStep(){if(!PETS.list)petsInit();let dt=T-PETS.last;PETS.last=T;if(!(dt>0)||dt>.2)dt=.033;
- for(const a of PETS.list){if(a.pause>0){a.pause-=dt;continue;}a.sit=0;a.sniff=0;
+ const NT=nightLevel()>.5;for(const a of PETS.list){const zz=NT&&!a.cat&&a.i%2;if(!zz&&a.sleep){a.sleep=0;a.pause=0;}if(zz&&a.sleep){a.pause=1;continue;}if(a.pause>0){a.pause-=dt;continue;}if(zz&&a.tk==null&&!(a.wp&&a.wp.length)){a.sleep=1;a.sit=1;a.pause=1;continue;}a.sit=0;a.sniff=0;
   if(a.wp&&a.wp.length){const [tx,ty]=a.wp[0],dx=tx-a.x,dy=ty-a.y,dd=Math.hypot(dx,dy),sp=a.spd*dt*.85;if(dd>.01){a.vert=Math.abs(dy)>Math.abs(dx);if(!a.vert)a.dir=dx>0?1:-1;a.view=a.vert?(dy>0?'front':'back'):'side';}
    if(dd<=sp){a.x=tx;a.y=ty;a.wp.shift();if(!a.wp.length){a.k=a.wk;a.m=a.wm;a.tk=null;a.pk=a.pm=null;}else if(Math.random()<.35){a.pause=.8+Math.random()*2.5;a.sniff=!a.cat;}}else{a.x+=dx/dd*sp;a.y+=dy/dd*sp;}continue;}
   if(a.tk==null){if(Math.random()<(a.cat?.3:.22)&&petAlley(a))continue;const opts=[[1,0],[-1,0],[0,1],[0,-1]].map(([p,q])=>[a.k+p,a.m+q]).filter(([k,m])=>rValid(a.v,k,m)&&rEdge(a.v,a.k,a.m,k,m));if(!opts.length){a.pause=3;continue;}
@@ -1103,7 +1103,7 @@ function petFB(c,a,back){const s=a.sz,sp=a.sp,mv=a.pause<=0,t=T+a.ph,cat=a.cat,s
    c.fillStyle='#1d1410';c.beginPath();c.ellipse(0,.24,.32,.24,0,0,TAU);c.fill();c.fillStyle='rgba(255,255,255,.7)';c.beginPath();c.arc(-.08,.17,.08,0,TAU);c.fill();
    c.strokeStyle=ink;c.lineWidth=.09;c.beginPath();c.moveTo(0,.46);c.lineTo(0,.6);c.quadraticCurveTo(-.2,.76,-.38,.64);c.moveTo(0,.6);c.quadraticCurveTo(.2,.76,.38,.64);c.stroke();
    if(mv||Math.sin(t*.9)>0){c.fillStyle='#ff7a9a';c.beginPath();c.ellipse(0,.88,.2,.3,0,0,TAU);c.fill();c.strokeStyle='#e05a7a';c.lineWidth=.05;c.beginPath();c.moveTo(0,.72);c.lineTo(0,1.05);c.stroke();}}
-  const blink=(Math.sin(t*.55)>.985)||(!mv&&cat&&Math.sin(t*.3)>.92),er=cat?.42:.36;
+  const blink=a.sleep||(Math.sin(t*.55)>.985)||(!mv&&cat&&Math.sin(t*.3)>.92),er=cat?.42:.36;
   for(const ex of[-.5,.5]){const ey=-.12;if(blink){c.strokeStyle=ink;c.lineWidth=.13;c.beginPath();c.arc(ex,ey,er*.75,.2,Math.PI-.2);c.stroke();continue;}const ec=sp.odd&&ex<0?'#e8b020':(sp.e||'#4a2a14'),rr=er;
    c.fillStyle=cat?'#fff':'#1d1410';c.beginPath();c.ellipse(ex,ey,rr,rr*1.12,0,0,TAU);c.fill();c.fillStyle=ec;c.beginPath();c.ellipse(ex,ey+.02,rr*(cat?.85:.72),rr*(cat?.98:.8),0,0,TAU);c.fill();
    c.fillStyle='#0d0d10';c.beginPath();c.ellipse(ex,ey+.04,cat?rr*.32:rr*.48,rr*(cat?.8:.58),0,0,TAU);c.fill();c.fillStyle='#fff';c.beginPath();c.arc(ex+rr*.32,ey-rr*.4,rr*.32,0,TAU);c.fill();c.beginPath();c.arc(ex-rr*.25,ey+rr*.38,rr*.14,0,TAU);c.fill();}}
@@ -1205,7 +1205,7 @@ function petDraw(c,a){if(a.view==='front'||a.view==='back')return petFB(c,a,a.vi
   c.fillStyle=blush;c.beginPath();c.ellipse(.05,.45,.28,.18,0,0,TAU);c.fill();}
  else{if(sp.pat!=='points'){c.fillStyle=Wh||shade(B,.08);c.beginPath();c.ellipse(.72,.52,.5,.36,0,0,TAU);c.fill();}c.fillStyle=blush;c.beginPath();c.ellipse(.2,.45,.3,.19,0,0,TAU);c.fill();}
  // große Augen mit zwei Glanzpunkten; blinzeln ab und zu
- const blink=(Math.sin(t*.55)>.985)||(!mv&&cat&&Math.sin(t*.3)>.92),er=cat?.42:.36;
+ const blink=a.sleep||(Math.sin(t*.55)>.985)||(!mv&&cat&&Math.sin(t*.3)>.92),er=cat?.42:.36;
  for(const [ex,ey] of[[.05,-.12],[.92,-.12]]){if(blink){c.strokeStyle=ink;c.lineWidth=.13;c.beginPath();c.arc(ex,ey,er*.75,.2,Math.PI-.2);c.stroke();continue;}
   const ec=sp.odd&&ex<.5?'#e8b020':(sp.e||'#4a2a14'),rr=ex<.5?er*.94:er;
   c.fillStyle=cat?'#fff':'#1d1410';c.beginPath();c.ellipse(ex,ey,rr,rr*1.12,0,0,TAU);c.fill();
@@ -1227,7 +1227,7 @@ function peacock(c,x,y,view,dir,fan,k){const t=T+k*3,mv=!fan&&Math.sin(t*9)!==0;
  if(view!=='back'){c.fillStyle='#fff';c.beginPath();c.ellipse(hx+(view==='side'?.18:-.22),-5.65,.22,.12,0,0,TAU);if(view==='front')c.ellipse(hx+.22,-5.65,.22,.12,0,0,TAU);c.fill();c.fillStyle='#111';c.beginPath();c.arc(hx+(view==='side'?.22:-.22),-5.65,.09,0,TAU);if(view==='front')c.arc(hx+.22,-5.65,.09,0,TAU);c.fill();
   c.fillStyle='#c9a46a';c.beginPath();if(view==='side'){c.moveTo(hx+.55,-5.75);c.lineTo(hx+1.05,-5.55);c.lineTo(hx+.55,-5.4);}else{c.moveTo(hx-.15,-5.45);c.lineTo(hx+.15,-5.45);c.lineTo(hx,-5.05);}c.closePath();c.fill();}
  c.restore();}
-function petsDraw(c,nl,z,vis){if(z*S<=9||GROWK!=null)return;petsStep();for(const a of PETS.list){if(nl>.5&&!a.cat&&a.i%2)continue;if(!vis(a.x,a.y))continue;petDraw(c,a);hutsFront(c,a.x,a.y);}}
+function petsDraw(c,nl,z,vis){if(z*S<=9||GROWK!=null)return;petsStep();for(const a of PETS.list){if(!vis(a.x,a.y))continue;petDraw(c,a);hutsFront(c,a.x,a.y);}}
 const ROAM={list:[],last:0,init:false};
 // Jogger: laufen außen am Strand hin und her (nur auf freien Strandstücken, nie durch Gebäude/Baustellen)
 const JOG={list:null};
