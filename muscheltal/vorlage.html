@@ -1986,8 +1986,10 @@ function draw(){
  drawWalker(c,z);
  // Namen ganz oben: nichts (Bäume, Palast, Wolken, Nacht) darf sie verdecken
  const GSP=sel&&sel.p&&(sel.gb||REDUCED||T-selT<2)?standSpot(sel):null,near=(x,y)=>GSP&&Math.abs(x-GSP.x)<16&&y>GSP.y-26&&y<GSP.y+10;
- if(z*S>44){c.font='800 2.35px '+FONT;c.textAlign='center';for(const v of ISL){if(!visR(v.x,v.y,v.R+40))continue;for(const q of v.people){if(q.nr>limit||!q.p||q===sel||!vis(q.p.x,q.p.y)||near(q.p.x,q.p.y+10)||(WK.on&&Math.abs(q.p.x-WK.x)<14&&q.p.y+10>WK.y-15&&q.p.y+10<WK.y+6))continue;const x=q.p.x,y=q.p.y,nm=q.name,tw0=q.tw0||(q.tw0=c.measureText(nm).width),fs=tw0>17?2.35*17/tw0:2.35,w=tw0*fs/2.35+2.4;
+ if(z*S>44){c.font='800 2.35px '+FONT;c.textAlign='center';for(const v of ISL){if(!visR(v.x,v.y,v.R+40))continue;for(const q of v.people){if(q.nr>limit||!q.p||q===sel||!vis(q.p.x,q.p.y)||near(q.p.x,q.p.y+10)){continue;}if(WK.on&&Math.abs(q.p.x-WK.x)<16&&q.p.y+12.3>WK.y-12&&q.p.y+8.6<WK.y+5)WK.lblHit=1;const x=q.p.x,y=q.p.y,nm=q.name,tw0=q.tw0||(q.tw0=c.measureText(nm).width),fs=tw0>17?2.35*17/tw0:2.35,w=tw0*fs/2.35+2.4;
   c.fillStyle=isMayor(q)?'#ffd23f':'rgba(255,255,255,.94)';c.beginPath();c.roundRect(x-w/2,y+8.6,w,3.7,1.8);c.fill();c.fillStyle='#2a1b12';if(fs<2.35){c.font='800 '+fs+'px '+FONT;c.fillText(nm,x,y+10.45+fs*.4);c.font='800 2.35px '+FONT;}else c.fillText(nm,x,y+11.4);}}}
+  // eigene Figur steht vor Hütten-Namensschildern (Schild bleibt sichtbar, liegt aber dahinter)
+  if(WK.on&&WK.lblHit){WK.lblHit=0;walkerFig(c,1);}
   if(NAMES.length){c.font='800 2.8px '+FONT;c.textAlign='center';for(const [nm0,x,ly,bg,fs,tc] of [...NAMES.filter(n=>n[3]!=='#e8467c'),...NAMES.filter(n=>n[3]==='#e8467c')]){if(nm0!==(sel&&sel.name)&&near(x,ly))continue;let f=fs||2.8;const nm=nm0;c.font='800 '+f+'px '+FONT;{const mw=fs?16:24,tw1=c.measureText(nm).width;if(tw1>mw){f=f*mw/tw1;c.font='800 '+f+'px '+FONT;}}const tw=c.measureText(nm).width+f*1.07;c.fillStyle=bg||'rgba(42,27,18,.85)';c.beginPath();c.roundRect(x-tw/2,ly,tw,f*1.5,f*.75);c.fill();c.fillStyle=tc||'#fff';c.fillText(nm,x,ly+f*1.1);}}
  if(z*S>4)for(const b of BAU)if(bauOn(b)&&visR(b.steg?b.sx:b.cx,b.steg?b.sy:b.y0,60))drawBauSign(c,b);
  if(sel&&sel.p&&sel.nr<=limit){const MY=isMayor(sel),PW=palNow(sel)||atWork(sel),{x,y}=PW?standSpot(sel):sel.p,b=REDUCED?0:Math.abs(Math.sin(T*3))*4;c.strokeStyle='#e8467c';c.lineWidth=Math.max(1.5,3/z);c.beginPath();c.arc(x,y,13,0,TAU);c.stroke();if(sel.gb||PW||REDUCED||T-selT>=2){const k=Math.max(1,2.5/z);c.fillStyle='#e8467c';c.strokeStyle='#2a1b12';c.lineWidth=.8*k;c.beginPath();c.moveTo(x,y-14-b);c.lineTo(x-4*k,y-14-b-8*k);c.lineTo(x+4*k,y-14-b-8*k);c.closePath();c.fill();c.stroke();}
@@ -2286,10 +2288,12 @@ function walkTick(n){if(!WK.on)return;const dt=Math.min(.05,(n-WK.last)/1000);WK
  const tz=WK.mode==='moped'?3.6:5;cam.x+=(WK.x-cam.x)*Math.min(1,dt*6);cam.y+=(WK.y-cam.y)*Math.min(1,dt*6);cam.z+=(tz-cam.z)*Math.min(1,dt*3);
  if(WK.me&&WK.mode==='moped'&&WK.moving){WK.sc=(WK.sc||0)+dt;if(WK.sc>2&&gibErf(WK.me,'SCOOT')){const p=WK.me;popup('<div class="lupebig" style="border-radius:50%;overflow:hidden">'+SCOOT_SVG+'</div><h2>Neuer Erfolg! 🎉</h2><p><b>🛵 Inselflitzer</b><br>Du bist mit dem Moped über die Insel geflitzt.</p><button class="btn hib" id="zuerf3">🏅 Zu meinen Erfolgen</button>');$('zuerf3').onclick=()=>{walkEnd();zuMeinenErfolgen(p);};WK.keys.clear();WK.pt=null;}}
  if(REDUCED)draw();requestAnimationFrame(walkTick);}
+// die eigene Figur (ohne Schatten/Namen); occ: Hütten/Palmen davor nachzeichnen
+function walkerFig(c,occ){const L=WK.L,x=WK.x,y=WK.y;if(!WK.moving){c.save();c.translate(x,y);if(!WK.front&&WK.dir<0&&!WK.vert)c.scale(-1,1);if(WK.mode==='moped'){c.restore();drawMover(c,{...L,mode:'moped',noOcc:1},x,y,WK.vert?1:WK.dir,WK.vert,'moped');}else{person(c,L,0,true,0);c.restore();}}
+ else drawMover(c,{...L,mode:WK.mode,noOcc:1},x,y,WK.dir,WK.vert,WK.mode);if(occ)hutsFront(c,x,y,nightLevel());}
 function drawWalker(c,z){if(!WK.on)return;const L=WK.L,x=WK.x,y=WK.y;
  c.save();c.fillStyle='rgba(232,70,124,.28)';c.beginPath();c.ellipse(x,y+4.4,5,1.8,0,0,TAU);c.fill();c.restore();
- if(!WK.moving){c.save();c.translate(x,y);if(!WK.front&&WK.dir<0&&!WK.vert)c.scale(-1,1);if(WK.mode==='moped'){c.restore();drawMover(c,{...L,mode:'moped'},x,y,WK.vert?1:WK.dir,WK.vert,'moped');}else{person(c,L,0,true,0);c.restore();hutsFront(c,x,y,nightLevel());}}
- else{drawMover(c,{...L,mode:WK.mode,noOcc:1},x,y,WK.dir,WK.vert,WK.mode);hutsFront(c,x,y,nightLevel());}
+ walkerFig(c,1);
  signOver(c,x,y,nightLevel());
  NAMES.push([(WK.me?WK.me.name:'Du')+' (du)',x,y-(WK.mode==='moped'?13:12)*L.h,'#e8467c']);}
 const walkedSet=()=>{try{return new Set(JSON.parse(localStorage.getItem('mt-walked')||'[]'));}catch(e){return new Set();}};
