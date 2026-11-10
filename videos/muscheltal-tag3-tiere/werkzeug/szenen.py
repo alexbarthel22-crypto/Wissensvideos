@@ -125,20 +125,20 @@ scene("s01", LILITA + "\n    " + PILL + "\n" + KASSE + """
 
 # s02 – Açaí-Stand
 scene("s02", PILL + """
-    #s02-t { top: 280px; font-size: 48px; background: #7b3fe0; }
-    #s02-l { top: 370px; font-size: 28px; background: #fff; color: #7b3fe0; padding: 6px 22px 9px; }
-    .s02-n { font-size: 27px; background: #fff; color: #2a1b12; padding: 6px 20px 9px; right: auto; margin: 0; }""",
+    #s02-t { top: 300px; font-size: 48px; background: #7b3fe0; }
+    #s02-l { top: 390px; font-size: 28px; background: #fff; color: #7b3fe0; padding: 6px 22px 9px; }
+    .s02-n { font-size: 20px; background: #fff; color: #2a1b12; padding: 5px 18px 8px; right: auto; margin: 0; left: 40px; transform-origin: 0 50%; }""",
 """      <div id="s02-t" class="pl">🫐 AÇAÍ-STAND</div>
       <div id="s02-l" class="pl">eröffnet von Bürgermeisterin Lilly 🎖️</div>
-      <div id="s02-n0" class="pl s02-n" style="top:445px;left:150px">⭐ Filipa · @vidafilipa</div>
-      <div id="s02-n1" class="pl s02-n" style="top:445px;left:570px">Marina · @marina.cgnn</div>
-      <div id="s02-n2" class="pl s02-n" style="top:510px;left:170px">Johanna · @borbie20</div>
-      <div id="s02-n3" class="pl s02-n" style="top:510px;left:620px">@lp_art18</div>""",
+      <div id="s02-n0" class="pl s02-n" style="top:552px">⭐ Filipa · @vidafilipa</div>
+      <div id="s02-n1" class="pl s02-n" style="top:604px">Marina · @marina.cgnn</div>
+      <div id="s02-n2" class="pl s02-n" style="top:656px">Johanna · @borbie20</div>
+      <div id="s02-n3" class="pl s02-n" style="top:708px">@lp_art18</div>""",
 """      const ac = at("L4", "Açaí-Stand"), li = at("L4", "Lilly"), ns = [at("L4", "Filipa"), at("L4", "Marina"), at("L4", "Johanna"), at("L4", "lp_art18")];
       tl.fromTo("#s02-t", { opacity: 0, scale: .3, rotation: -8 }, { opacity: 1, scale: 1, rotation: -2, duration: .4, ease: "back.out(2.6)" }, ac - .15);
       tl.fromTo("#s02-l", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, li - .2);
-      ns.forEach((t, i) => { tl.fromTo("#s02-n" + i, { opacity: 0, x: i % 2 ? 120 : -120 }, { opacity: 1, x: 0, duration: .3, ease: "back.out(2)" }, t - .15);
-        tl.to("#s02-n" + i, { scale: 1.3, backgroundColor: "#ffd23f", boxShadow: "0 0 0 5px #2a1b12, 0 0 34px 10px rgba(255,210,63,.95)", zIndex: 5, duration: .14, ease: "back.out(3)" }, t + .15);
+      ns.forEach((t, i) => { tl.fromTo("#s02-n" + i, { opacity: 0, x: -140 }, { opacity: 1, x: 0, duration: .3, ease: "back.out(2)" }, t - .15);
+        tl.to("#s02-n" + i, { scale: 1.5, backgroundColor: "#ffd23f", boxShadow: "0 0 0 5px #2a1b12, 0 0 34px 10px rgba(255,210,63,.95)", zIndex: 5, duration: .14, ease: "back.out(3)" }, t + .15);
         tl.to("#s02-n" + i, { scale: 1, backgroundColor: "#ffffff", boxShadow: "0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25)", zIndex: 1, duration: .25 }, t + .75); });""")
 
 # s03 – Moped-Werkstatt

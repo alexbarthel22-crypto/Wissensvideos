@@ -9,7 +9,7 @@ const mk=async zeit=>{const p=await b.newPage({viewport:{width:405,height:720},d
  await p.addStyleTag({content:'body *{visibility:hidden!important}canvas#map{visibility:visible!important}'});await p.evaluate(()=>cancelAnimationFrame(fly));
  // Hunderte Streuner auf dem Muschelplatz vor dem Palast + Schlange zum Tierheim
  await p.evaluate(()=>{let sd=7;const R=()=>(sd=(sd*16807)%2147483647)/2147483647;const base=PETS.list.slice(),C=[];
-  for(let r=0;r<640;r++){const a=Object.assign({},base[r%base.length]);let x,y;if(r<310){const ang=R()*6.283,d=Math.sqrt(R());x=Math.cos(ang)*d*62;y=78+Math.sin(ang)*d*17;}else if(r<380){x=(R()-.5)*10;y=98+R()*60;}else{const sd2=R()<.5?-1:1;x=sd2*(52+R()*58);y=50+R()*70;}
+  for(let r=0;r<1100;r++){const a=Object.assign({},base[r%base.length]);let x,y;if(r<310){const ang=R()*6.283,d=Math.sqrt(R());x=Math.cos(ang)*d*62;y=78+Math.sin(ang)*d*17;}else if(r<380){x=(R()-.5)*10;y=98+R()*60;}else if(r<640){const sd2=R()<.5?-1:1;x=sd2*(52+R()*58);y=50+R()*70;}else{const sd2=R()<.5?-1:1;x=sd2*(10+R()*95);y=86+R()*44;}
    a.x=x;a.y=y;a.pause=1e9;a.wp=null;a.sit=R()<.4?1:0;a.dir=R()<.5?-1:1;a.view=['side','front','side','back'][(R()*4)|0];a.vert=a.view!=='side';a.i=1000+r;C.push(a);}
   C.sort((a,b)=>a.y-b.y);PETS.list.push(...C);});
  return p;};
@@ -23,7 +23,7 @@ const PO=G.po,PZ=6.4,POY=PO.y+200/(PZ*2.6667);
 const K=[[0,0,80,2.8],[L.L1.end-.2,0,78,4.3],
  [L.L2.start+.3,G.th.x,G.th.y+8,3.6],[at('L2','kostet')+.3,G.th.x,G.th.y+8,3.9],[at('L2','Muscheln'),-14,80,6.8],[L.L2.end,4,78,7.2],
  [L.L3.start+.6,0,96,3.4],[at('L3','folg'),0,84,2.6],[at('L3','sonst'),0,78,3.6],[L.L3.end,0,78,4.4],
- [L.L4.start+.3,G.ac.x,G.ac.y-12,4.4],[L.L4.end,G.ac.x,G.ac.y-12,5.0],
+ [L.L4.start+.3,G.ac.x,G.ac.y+5,4.4],[L.L4.end,G.ac.x,G.ac.y+5,4.5],
  [L.L5.start+.3,G.wk.x,G.wk.y+36,3.8],[L.L5.end,G.wk.x,G.wk.y+34,4.1],
  [L.L6.start+.3,PO.x,POY,PZ],[L.L6.end+.2,PO.x,POY,PZ],
  [L.L7.start+.3,G.v.x-40,G.v.y-16,4.2],[L.L8.start,G.v.x+5,G.v.y-16,4.2],[L.L8.end,G.v.x+40,G.v.y-16,4.4],

@@ -332,18 +332,21 @@ def build_hud(project, script, windows, total):
                           f'<span id="{cid}t" class="chkt{" ok" if script.get("check_ok") else ""}">{n}. {esc(sc["check"])} <b>{"✓" if script.get("check_ok") else "✕"}</b></span></div>')
             js.append(f'tl.fromTo("#{cid}t", {{ opacity: 0, x: -24 }}, {{ opacity: 1, x: 0, duration: 0.25, ease: "power3.out" }}, {s + 0.5:.3f});')
     if script.get("progress") == "muschel":  # eigener Fortschrittsbalken unten: Welle spült eine kleine Muschel nach vorne
-        wave = "M0 30 " + " ".join(f"Q{x + 15} {18 if (x // 30) % 2 == 0 else 42} {x + 30} 30" for x in range(0, W, 30))
+        wave = "M0 30 " + " ".join(f"Q{x + 20} {26 if (x // 40) % 2 == 0 else 34} {x + 40} 30" for x in range(0, W, 40))
         tags.append(f'''      <div id="pg" class="clip" data-start="0" data-duration="{total:.3f}" data-track-index="3" data-layout-ignore style="position:absolute;left:0;top:{H - 70}px;width:{W}px;height:70px">
         <svg width="{W}" height="70" viewBox="0 0 {W} 60" style="position:absolute;left:0;top:10px;overflow:visible"><defs><clipPath id="pgc"><rect id="pgr" x="0" y="0" width="0" height="60"/></clipPath></defs>
-          <path d="{wave}" fill="none" stroke="rgba(255,255,255,.45)" stroke-width="5" stroke-linecap="round"/>
-          <path d="{wave}" fill="none" stroke="#3fd0ff" stroke-width="7" stroke-linecap="round" clip-path="url(#pgc)" style="filter:drop-shadow(0 0 6px rgba(63,208,255,.9))"/></svg>
-        <div id="pgs" style="position:absolute;left:-46px;top:-30px;width:92px;height:81px">
-          <svg viewBox="0 0 68 60" width="92" height="81"><path d="M4 50 Q16 30 30 44 Q44 28 64 46 Q54 58 34 56 Q14 58 4 50Z" fill="#e8fbff" opacity=".95"/><circle cx="12" cy="40" r="3" fill="#fff"/><circle cx="56" cy="38" r="2.5" fill="#fff"/>
-          <g transform="translate(34 30)"><path d="M0 14 L-17 9 Q-20 3 -14 2 Q-15 -4 -9 -3 Q-8 -9 -3 -6 Q0 -11 3 -6 Q8 -9 9 -3 Q15 -4 14 2 Q20 3 17 9 Z" fill="#ffc2d4" stroke="#2a1b12" stroke-width="2" stroke-linejoin="round"/><path d="M0 13 L-11 3 M0 13 L-5 -2 M0 13 L5 -2 M0 13 L11 3" stroke="#e8467c" stroke-width="1.5" stroke-linecap="round"/></g></svg></div>
+          <path d="{wave}" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="3" stroke-linecap="round"/>
+          <path d="{wave}" fill="none" stroke="rgba(110,220,255,.85)" stroke-width="4" stroke-linecap="round" clip-path="url(#pgc)"/></svg>
+        <div id="pgs" style="position:absolute;left:-30px;top:-2px;width:60px;height:46px">
+          <svg viewBox="0 0 60 46" width="60" height="46"><defs><radialGradient id="pgsh" cx=".5" cy=".95" r=".95"><stop offset="0" stop-color="#fffaf2"/><stop offset=".55" stop-color="#ffd2c0"/><stop offset="1" stop-color="#ef7aa0"/></radialGradient></defs>
+          <path d="M6 40 Q18 31 30 38 Q42 31 54 40" fill="none" stroke="rgba(255,255,255,.85)" stroke-width="2.5" stroke-linecap="round"/>
+          <g transform="translate(30 22)"><path d="M0 13 L-15.5 8.8 Q-18 3.6 -13 2.6 Q-13.6 -3 -8.6 -2 Q-7.6 -7.6 -3 -5 Q0 -9.4 3 -5 Q7.6 -7.6 8.6 -2 Q13.6 -3 13 2.6 Q18 3.6 15.5 8.8 Z" fill="url(#pgsh)" stroke="#5a2a32" stroke-width="1.1" stroke-linejoin="round"/>
+          <path d="M0 12 L-12.6 3.4 M0 12 L-8 -1.2 M0 12 L-2.8 -3.4 M0 12 L2.8 -3.4 M0 12 L8 -1.2 M0 12 L12.6 3.4" stroke="#c94a74" stroke-width=".9" stroke-linecap="round" opacity=".8"/>
+          <path d="M-4.5 13.4 L-2.6 10.4 H2.6 L4.5 13.4 Z" fill="#ffcdb5" stroke="#5a2a32" stroke-width=".9" stroke-linejoin="round"/><path d="M-9 -0.5 Q-6 -3 -3 -2.4" stroke="#fff" stroke-width="1.2" fill="none" stroke-linecap="round" opacity=".9"/></g></svg></div>
       </div>''')
         js.append(f'tl.fromTo("#pgr", {{ attr: {{ width: 0 }} }}, {{ attr: {{ width: {W} }}, duration: {total:.3f}, ease: "none" }}, 0);')
         js.append(f'tl.fromTo("#pgs", {{ x: 0 }}, {{ x: {W}, duration: {total:.3f}, ease: "none" }}, 0);')
-        js.append(f'tl.fromTo("#pgs", {{ y: 0, rotation: -8 }}, {{ y: -7, rotation: 8, duration: 0.45, yoyo: true, repeat: {int(total / 0.45)}, ease: "sine.inOut" }}, 0);')
+        js.append(f'tl.fromTo("#pgs", {{ y: 0, rotation: -6 }}, {{ y: -3, rotation: 6, duration: 0.6, yoyo: true, repeat: {int(total / 0.6)}, ease: "sine.inOut" }}, 0);')
     doc = f"""<template>
   <style>
     #root {{ position: absolute; inset: 0; }}
