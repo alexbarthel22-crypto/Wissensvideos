@@ -2108,7 +2108,7 @@ let mpWalk=false;
 function zeigePass(p,third,walk){mpP=p;mpThird=!!third;mpWalk=!!walk;$('mp').hidden=false;$('mpf').hidden=true;$('mpp').hidden=false;$('mpcardbox').innerHTML=passCard(p);
  $('mpshare').innerHTML=walk?'📲 Pass von '+esc(p.name)+' teilen<small>TikTok · Instagram · WhatsApp-Status</small><span class="bon" id="mpbon" hidden></span>':'📲 In meiner Story teilen<small>TikTok · Instagram · WhatsApp-Status</small><span class="bon" id="mpbon"></span>';
  $('mpwho').hidden=!walk;$('mpalt').hidden=!!walk;
- if(walk){const me=WK.me?WK.me.name:'Gast';$('mpwho').textContent='Du bist als '+me+' unterwegs und hast '+p.name+' getroffen 👋';$('mpgo').textContent='🚶 Weiter erkunden';$('mp').querySelector('h2').textContent='🪪 Muschelpass von '+p.name;return;}
+ if(walk){const me=WK.me?WK.me.name:'Gast';$('mpwho').textContent=walk==='huette'?'Du bist als '+me+' unterwegs und hast die Hütte von '+p.name+' gefunden 🏠':'Du hast als '+me+' Muschel-Tal erkundet und dabei zufällig '+p.name+' unterwegs getroffen 👋';$('mpgo').textContent='🚶 Weiter erkunden';$('mp').querySelector('h2').textContent='🪪 Muschelpass von '+p.name;return;}
  bonUpd(p);
  $('mpgo').textContent='🏠 Zu '+p.name+(/[sßxz]$/i.test(p.name)?'’':'s')+' Hütte';$('mpshare').hidden=false;$('mpalt').textContent=third?'Meinen eigenen Namen suchen':'Anderen Namen suchen';
  $('mp').querySelector('h2').textContent=third?'🪪 Muschelpass von '+p.name:'🪪 Muschelpass';
@@ -2272,9 +2272,9 @@ function walkStart(){const me=sel;if(!me)return;try{const w=walkedSet();w.add(me
  $('hero').classList.add('walking');$('walkui').hidden=false;$('walkhint').style.opacity=1;setTimeout(()=>{$('walkhint').style.opacity=0;},4500);$('walkmode').textContent='🛵 Moped';
  cancelAnimationFrame(fly);flyTo({x,y,z:5},700);setTimeout(()=>{WK.last=performance.now();requestAnimationFrame(walkTick);},720);}
 // wen hat man beim Erkunden angetippt? (Figur auf der Karte oder Hütte; nie sich selbst)
-function walkTapWho(sx,sy){const r=cv.getBoundingClientRect(),wx=(sx-W/2)/cam.z+cam.x,wy=(sy-H/2)/cam.z+cam.y;let tb=null,td=9;for(const [tx,ty,tq] of TAPS){if(tq===WK.me)continue;const d=Math.hypot(tx-wx,(ty-3)-wy);if(d<td){td=d;tb=tq;}}if(tb)return tb;
+function walkTapWho(sx,sy){const r=cv.getBoundingClientRect(),wx=(sx-W/2)/cam.z+cam.x,wy=(sy-H/2)/cam.z+cam.y;let tb=null,td=9;for(const [tx,ty,tq] of TAPS){if(tq===WK.me)continue;const d=Math.hypot(tx-wx,(ty-3)-wy);if(d<td){td=d;tb=tq;}}if(tb)return[tb,'person'];
  // ganze Hütte (Dach bis Stelzen) ist antippbar
- let best=null,bd=1e9;for(const v of ISL){if(Math.hypot(wx-v.x,wy-v.y)>v.R+30)continue;const gx=Math.round((wx-v.x)/S),gy=Math.round((wy-v.y)/(S*.9));for(let dx=-1;dx<=1;dx++)for(let dy=-1;dy<=2;dy++){const q=v.cell.get((gx+dx)+','+(gy+dy));if(!q||q.nr>limit||q===WK.me||!q.p)continue;const ox=wx-q.p.x,oy=wy-q.p.y;if(Math.abs(ox)>10.5||oy<-14||oy>9)continue;const d=Math.hypot(ox,oy+2);if(d<bd){bd=d;best=q;}}}return best;}
+ let best=null,bd=1e9;for(const v of ISL){if(Math.hypot(wx-v.x,wy-v.y)>v.R+30)continue;const gx=Math.round((wx-v.x)/S),gy=Math.round((wy-v.y)/(S*.9));for(let dx=-1;dx<=1;dx++)for(let dy=-1;dy<=2;dy++){const q=v.cell.get((gx+dx)+','+(gy+dy));if(!q||q.nr>limit||q===WK.me||!q.p)continue;const ox=wx-q.p.x,oy=wy-q.p.y;if(Math.abs(ox)>10.5||oy<-14||oy>9)continue;const d=Math.hypot(ox,oy+2);if(d<bd){bd=d;best=q;}}}return best?[best,'huette']:null;}
 function walkEnd(){const me=WK.me;WK.on=false;WK.keys.clear();WK.pt=null;$('hero').classList.remove('walking');$('walkui').hidden=true;
  // nach dem Beenden wieder die Person auswählen, damit der Erkunden-Knopf wieder da ist
  if(me&&me.p)select(me);else flyTo(fitMain(freeY()),800);if(typeof walkLabel==='function')walkLabel();}
@@ -2306,7 +2306,7 @@ addEventListener('keyup',e=>{const k=e.key.length===1?e.key.toLowerCase():e.key;
 {const hero=$('hero'),pos=e=>{const r=cv.getBoundingClientRect();return[e.clientX-r.left,e.clientY-r.top];},onMap=e=>e.target===cv;
  hero.addEventListener('pointerdown',e=>{if(!WK.on||!onMap(e))return;e.stopPropagation();e.preventDefault();try{cv.setPointerCapture(e.pointerId);}catch(_){}WK.pt=pos(e);WK.tap=[performance.now(),...pos(e)];},true);
  hero.addEventListener('pointermove',e=>{if(!WK.on||!WK.pt)return;e.stopPropagation();WK.pt=pos(e);},true);
- for(const t of['pointerup','pointercancel'])hero.addEventListener(t,e=>{if(!WK.on)return;if(onMap(e))e.stopPropagation();const tp=WK.tap;WK.pt=null;WK.tap=null;if(t==='pointerup'&&tp&&performance.now()-tp[0]<300){const [sx,sy]=pos(e);if(Math.hypot(sx-tp[1],sy-tp[2])<10){const q=walkTapWho(sx,sy);if(q)zeigePass(q,true,true);}}},true);
+ for(const t of['pointerup','pointercancel'])hero.addEventListener(t,e=>{if(!WK.on)return;if(onMap(e))e.stopPropagation();const tp=WK.tap;WK.pt=null;WK.tap=null;if(t==='pointerup'&&tp&&performance.now()-tp[0]<300){const [sx,sy]=pos(e);if(Math.hypot(sx-tp[1],sy-tp[2])<10){const r=walkTapWho(sx,sy);if(r)zeigePass(r[0],true,r[1]);}}},true);
  hero.addEventListener('wheel',e=>{if(WK.on){e.stopPropagation();}},true);}
 let toastT=0;function toast(t){const e=$('toast');e.textContent=t;e.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>e.hidden=true,4200);}
 // Versteckte Lupe: Erfolg „Lupe“ für den gerade ausgewählten TikTok-Namen (gespeichert in diesem Browser)
