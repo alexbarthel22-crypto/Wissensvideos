@@ -68,28 +68,59 @@ KASSE = """    .ks { position: absolute; left: 70px; right: 70px; padding: 18px 
     .ks .bar { height: 30px; border-radius: 15px; background: #ece4d8; margin-top: 12px; overflow: hidden; } .ks .bar i { display: block; height: 100%; width: 0; border-radius: 15px; background: linear-gradient(90deg, #e8262f, #ff8a3a); }"""
 KHTML = lambda p: f'<div id="{p}-ks" class="ks"><div class="row"><div>🐾 Tierheim Pfotenkuss</div><div><b id="{p}-kn">505</b><span> / 2.000 🐚</span></div></div><div class="bar"><i id="{p}-kb"></i></div></div>'
 
-# s01 – Hilfe! Tiere, Kasse, 299 Follower
+# s01 – Alarm! Handy-Warnung, Hunderte Streuner, Kasse, 299 Bewohner
 scene("s01", LILITA + "\n    " + PILL + "\n" + KASSE + """
-    #s01-h { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 300px; padding: 4px 50px 16px; border-radius: 30px; background: #e8262f; color: #fff; font-family: "Lilita One", sans-serif; font-size: 170px; line-height: 1; box-shadow: 0 0 0 7px #2a1b12, 0 14px 0 rgba(0,0,0,.3); transform: rotate(-4deg); }
+    #s01-flash { position: absolute; inset: 0; box-shadow: inset 0 0 220px 60px rgba(232,38,47,.85); opacity: 0; }
+    #s01-h { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 250px; padding: 4px 50px 16px; border-radius: 30px; background: #e8262f; color: #fff; font-family: "Lilita One", sans-serif; font-size: 150px; line-height: 1; box-shadow: 0 0 0 7px #2a1b12, 0 14px 0 rgba(0,0,0,.3); transform: rotate(-4deg); z-index: 3; }
+    #s01-ph { position: absolute; left: 0; right: 0; margin: 0 auto; top: 440px; width: 440px; height: 900px; border-radius: 78px; background: linear-gradient(145deg, #3b3f46, #15171b 40%, #2b2e33); padding: 14px; box-shadow: 0 0 0 3px #6a6f78, 0 40px 80px rgba(0,0,0,.55); }
+    #s01-ph::before { content: ""; position: absolute; right: -7px; top: 210px; width: 7px; height: 110px; border-radius: 0 4px 4px 0; background: #4a4e55; }
+    #s01-ph::after { content: ""; position: absolute; left: -7px; top: 180px; width: 7px; height: 70px; border-radius: 4px 0 0 4px; background: #4a4e55; box-shadow: 0 100px 0 #4a4e55; }
+    #s01-scr { position: absolute; inset: 14px; border-radius: 64px; overflow: hidden; background: radial-gradient(circle at 30% 30%, #ffb347, transparent 45%), radial-gradient(circle at 75% 60%, #e8467c, transparent 45%), radial-gradient(circle at 40% 85%, #0fb3b0, transparent 50%), #1a2440; }
+    #s01-apps { position: absolute; inset: 120px 34px 150px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px 26px; filter: blur(9px); }
+    #s01-apps i { aspect-ratio: 1; border-radius: 18px; }
+    #s01-dock { position: absolute; left: 22px; right: 22px; bottom: 22px; height: 104px; border-radius: 40px; background: rgba(255,255,255,.25); filter: blur(6px); }
+    #s01-isl { position: absolute; left: 0; right: 0; margin: 0 auto; top: 16px; width: 130px; height: 38px; border-radius: 20px; background: #000; }
+    #s01-sb { position: absolute; left: 44px; right: 40px; top: 20px; display: flex; justify-content: space-between; font-family: "Inter", sans-serif; font-weight: 700; font-size: 26px; color: #fff; }
+    #s01-al { position: absolute; left: 16px; right: 16px; top: 96px; padding: 20px 22px 22px; border-radius: 34px; background: rgba(245,245,247,.94); font-family: "Inter", sans-serif; color: #111; box-shadow: 0 10px 30px rgba(0,0,0,.35); }
+    #s01-al .hd { display: flex; justify-content: space-between; font-size: 22px; font-weight: 700; color: #555; }
+    #s01-al .tt { display: flex; gap: 12px; align-items: center; font-size: 30px; font-weight: 900; margin-top: 10px; }
+    #s01-al .tt b { color: #e8262f; }
+    #s01-al .tx { font-size: 25px; line-height: 1.3; margin-top: 8px; font-weight: 500; }
     #s01-ks { top: 330px; }
     #s01-f { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 540px; padding: 6px 34px 12px; border-radius: 30px; background: #fff; border: 6px solid #e8262f; font-family: "Inter", sans-serif; font-weight: 900; color: #2a1b12; font-size: 40px; text-align: center; box-shadow: 0 10px 0 rgba(0,0,0,.25); }
     #s01-f b { display: block; font-size: 96px; color: #e8262f; line-height: 1; }
-    .s01-e { position: absolute; width: 130px; height: 130px; border-radius: 50%; background: #fff; display: grid; place-items: center; font-size: 80px; box-shadow: 0 0 0 6px #ffc93c, 0 0 0 11px #2a1b12, 0 10px 18px rgba(0,0,0,.3); }""",
-f"""      <div id="s01-h">🆘 HILFE!</div>
-      <div class="s01-e" id="s01-e1" style="left:60px;top:560px">🥺</div><div class="s01-e" id="s01-e2" style="left:890px;top:600px">🐶</div><div class="s01-e" id="s01-e3" style="left:110px;top:760px">🐱</div>
-      {KHTML("s01")}
-      <div id="s01-f">Es fehlen nur noch<b>299</b>Follower!</div>""",
-"""      const hu = at("L1", "Hunde"), ko = at("L2", "kostet"), ka = at("L2", "Kasse"), fe = at("L3", "fehlen"), st = at("L3", "Straße");
-      tl.fromTo("#s01-h", { opacity: 0, scale: 3.2 }, { opacity: 1, scale: 1, duration: .16, ease: "power4.in" }, 0);
-      tl.to("#s01-h", { x: 10, duration: .05, yoyo: true, repeat: 7 }, .18);
-      tl.to("#s01-h", { scale: 1.08, duration: .2, yoyo: true, repeat: 5, ease: "sine.inOut" }, .7);
-      [["#s01-e1", 0], ["#s01-e2", .15], ["#s01-e3", .3]].forEach(([e, d]) => { tl.fromTo(e, { scale: 0, rotation: -40 }, { scale: 1, rotation: 0, duration: .45, ease: "elastic.out(1, .5)" }, hu - .2 + d); tl.to(e, { y: -14, duration: .35, yoyo: true, repeat: 5, ease: "sine.inOut" }, hu + .4 + d); });
-      tl.to(["#s01-h", ".s01-e"], { opacity: 0, scale: .6, duration: .2 }, ko - .45);
+    #s01-m { top: 790px; font-size: 44px; background: #7b3fe0; }""",
+"""      <div id="s01-flash" data-layout-ignore></div>
+      <div id="s01-ph"><div id="s01-scr">
+        <div id="s01-apps">""" + "".join(f'<i style="background:{c}"></i>' for c in ["#34c759","#ff9500","#5ac8fa","#ff2d55","#ffcc00","#af52de","#007aff","#ff3b30","#4cd964","#5856d6","#ff9500","#34aadc","#ffcc00","#ff2d55","#8e8e93","#30b0c7","#ff3b30","#34c759","#007aff","#ff9500"]) + """</div>
+        <div id="s01-dock"></div><div id="s01-isl"></div><div id="s01-sb"><span>9:41</span><span>●●● 5G ▮</span></div>
+        <div id="s01-al"><div class="hd"><span>⚠️ NOTFALLALARM</span><span>jetzt</span></div><div class="tt">⚠️ <b>EXTREME GEFAHR</b></div>
+        <div class="tx"><b>Muschel-Tal:</b> Hunderte streunende Hunde und Katzen ohne Zuhause! Das Tierheim fehlt. Bitte sofort helfen!</div></div>
+      </div></div>
+      <div id="s01-h">🆘 HILFE!</div>
+      """ + KHTML("s01") + """
+      <div id="s01-f">Es fehlen nur noch<b>299</b>Bewohner!</div>
+      <div id="s01-m" class="pl">➕ Folg mir, um einzuziehen!</div>""",
+"""      const l1e = line("L1")[1], ko = at("L2", "kostet"), ka = at("L2", "Kasse"), fe = at("L3", "fehlen"), fo = at("L3", "folg"), st = at("L3", "Straße");
+      tl.fromTo("#s01-h", { opacity: 0, scale: 3.2 }, { opacity: 1, scale: 1, duration: .14, ease: "power4.in" }, 0);
+      for (let i = 0; i < 14; i++) tl.set("#s01-h", { backgroundColor: i % 2 ? "#e8262f" : "#fff", color: i % 2 ? "#fff" : "#e8262f" }, .2 + i * .18);
+      tl.to("#s01-h", { x: 12, duration: .05, yoyo: true, repeat: 9 }, .16);
+      tl.fromTo("#s01-flash", { opacity: 0 }, { opacity: 1, duration: .14, yoyo: true, repeat: 15, ease: "none" }, 0);
+      tl.fromTo("#s01-ph", { opacity: 0, y: 600, rotation: 8 }, { opacity: 1, y: 0, rotation: -3, duration: .35, ease: "back.out(1.6)" }, 0);
+      tl.fromTo("#s01-al", { opacity: 0, y: -60 }, { opacity: 1, y: 0, duration: .25, ease: "back.out(2)" }, .3);
+      tl.to("#s01-ph", { x: 9, rotation: -1.5, duration: .04, yoyo: true, repeat: 23, ease: "none" }, .35);
+      tl.to("#s01-al .tt b", { opacity: .2, duration: .12, yoyo: true, repeat: 13, ease: "none" }, .5);
+      tl.to("#s01-ph", { y: 1400, rotation: 14, scale: .7, duration: .4, ease: "power3.in" }, l1e - .25);
+      tl.to("#s01-h", { opacity: 0, scale: .5, duration: .2 }, ko - .45);
       tl.fromTo("#s01-ks", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .35, ease: "back.out(2)" }, ko - .3);
       tl.fromTo("#s01-kb", { width: "0%" }, { width: "25.25%", duration: .8, ease: "power2.out" }, ka);
-      tl.to("#s01-kb", { opacity: .35, duration: .2, yoyo: true, repeat: 7 }, ka + .8);
+      tl.to(["#s01-kb", "#s01-kn"], { opacity: .15, duration: .12, yoyo: true, repeat: 23, ease: "none" }, ka + .8);
       tl.fromTo("#s01-f", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, fe - .1);
-      tl.to("#s01-f", { scale: 1.07, duration: .22, yoyo: true, repeat: 7, ease: "sine.inOut" }, st);""")
+      for (let i = 0; i < 16; i++) tl.set("#s01-f b", { color: i % 2 ? "#e8262f" : "#ffb000" }, fe + .3 + i * .16);
+      tl.to("#s01-f", { scale: 1.08, duration: .16, yoyo: true, repeat: 9, ease: "sine.inOut" }, fe + .3);
+      tl.fromTo("#s01-m", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, fo - .15);
+      tl.to("#s01-m", { opacity: .35, duration: .14, yoyo: true, repeat: 7, ease: "none" }, fo + .3);
+      tl.fromTo("#s01-flash", { opacity: 0 }, { opacity: .8, duration: .14, yoyo: true, repeat: 9, ease: "none", immediateRender: false }, st - .4);""")
 
 # s02 – Açaí-Stand
 scene("s02", PILL + """
@@ -121,11 +152,14 @@ scene("s03", PILL + """
 
 # s04 – Pool für Luise
 scene("s04", PILL + """
-    #s04-t { top: 300px; font-size: 52px; background: #18a6b8; }""",
-"""      <div id="s04-t" class="pl">🏊 Pool für @luisedbr.11!</div>""",
+    #s04-t { top: 290px; font-size: 52px; background: #18a6b8; }
+    #s04-r { position: absolute; left: 400px; top: 620px; width: 280px; height: 280px; border-radius: 50%; border: 12px solid #ffd23f; box-shadow: 0 0 40px 10px rgba(255,210,63,.9), inset 0 0 40px 10px rgba(255,210,63,.6); opacity: 0; }""",
+"""      <div id="s04-t" class="pl">🏊 Pool für @luisedbr.11!</div>
+      <div id="s04-r" data-layout-ignore></div>""",
 """      const po = at("L6", "Pool"), kr = at("L6", "kriegst");
       tl.fromTo("#s04-t", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, po - .2);
-      tl.to("#s04-t", { scale: 1.1, duration: .18, yoyo: true, repeat: 5, ease: "sine.inOut" }, kr);""")
+      tl.to("#s04-t", { scale: 1.1, duration: .18, yoyo: true, repeat: 5, ease: "sine.inOut" }, kr);
+      tl.fromTo("#s04-r", { opacity: 0, scale: .6 }, { opacity: 1, scale: 1, duration: .14, yoyo: true, repeat: 9, ease: "none" }, po - .1);""")
 
 # s05 – Villa: Doppel-Spielautomat
 def col(names, w, cid): return f'<div class="s05-col" id="{cid}">' + "".join(f'<div class="s05-r{" s05-win" if i == w else ""}" id="{cid}-{i}">@{n}</div>' for i, n in enumerate(names)) + "</div>"
@@ -177,14 +211,14 @@ f"""      const s0 = at("L7", "zwei") + .5, TB = line("L8")[0] - .4, TA = TB - .
 
 # s06 – Fabienne-Kommentar (Original-Layout) + Abstimmung
 scene("s06", PILL + """
-    #s06-c { position: absolute; left: 50px; right: 50px; top: 290px; padding: 30px 30px 34px; border-radius: 34px; background: #1f1f1f; box-shadow: 0 0 0 5px #000, 0 16px 30px rgba(0,0,0,.45); font-family: "Inter", sans-serif; color: #fff; display: flex; gap: 26px; }
-    #s06-c .av { width: 104px; height: 104px; border-radius: 50%; background: url(assets/img/fab_avatar.png) center/cover; flex: none; }
-    #s06-c .nm { font-size: 34px; color: #a8a8a8; font-weight: 600; } #s06-c .tx { font-size: 38px; line-height: 1.32; margin-top: 6px; font-weight: 500; }
-    #s06-c .ph { width: 300px; height: 340px; border-radius: 12px; margin-top: 18px; background: url(assets/img/fab_dog.jpg) center/cover; }
-    #s06-c .mt { font-size: 28px; color: #8a8a8a; margin-top: 14px; font-weight: 600; }
-    #s06-v { position: absolute; left: 90px; right: 90px; top: 960px; display: flex; gap: 24px; }
+    #s06-c { position: absolute; left: 130px; right: 130px; top: 280px; padding: 24px 24px 26px; border-radius: 34px; background: #1f1f1f; box-shadow: 0 0 0 5px #000, 0 16px 30px rgba(0,0,0,.45); font-family: "Inter", sans-serif; color: #fff; display: flex; gap: 26px; }
+    #s06-c .av { width: 80px; height: 80px; border-radius: 50%; background: url(assets/img/fab_avatar.png) center/cover; flex: none; }
+    #s06-c .nm { font-size: 28px; color: #a8a8a8; font-weight: 600; } #s06-c .tx { font-size: 31px; line-height: 1.3; margin-top: 6px; font-weight: 500; }
+    #s06-c .ph { width: 220px; height: 250px; border-radius: 14px; margin-top: 16px; border: 7px solid #fff; box-shadow: 0 0 0 3px #555, 0 10px 20px rgba(0,0,0,.5); background: url(assets/img/fab_dog.jpg) center/cover; }
+    #s06-c .mt { font-size: 23px; color: #8a8a8a; margin-top: 14px; font-weight: 600; }
+    #s06-v { position: absolute; left: 130px; right: 130px; top: 1010px; display: flex; gap: 24px; }
     #s06-v div { flex: 1; text-align: center; padding: 14px 0 18px; border-radius: 26px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 46px; color: #fff; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); }
-    #s06-q { top: 870px; font-size: 40px; background: #e2560c; }""",
+    #s06-q { top: 900px; font-size: 40px; background: #e2560c; }""",
 """      <div id="s06-c"><div class="av"></div><div><div class="nm">Fabienne</div><div class="tx">Wir brauchen noch eine Bäckerei wo ich dann drüber wohne und dort backe.Kann sehr gut Cookies und Zimtschnecken backen.</div><div class="ph"></div><div class="mt">@fabienne3692 · Antworten</div></div></div>
       <div id="s06-q" class="pl">🥐 Soll Fabienne eine Bäckerei eröffnen?</div>
       <div id="s06-v"><div style="background:#2e9e5b">✅ JA</div><div style="background:#e8262f">❌ NEIN</div></div>""",

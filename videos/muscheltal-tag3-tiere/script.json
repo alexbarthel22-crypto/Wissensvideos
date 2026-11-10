@@ -31,9 +31,9 @@
    "lines": [
     {
      "id": "L1",
-     "text": "*r:Hilfe! / In Muschel-Tal laufen überall / *y:streunende *y:Hunde und *y:Katzen herum!",
+     "text": "*r:Hilfe! / In Muschel-Tal laufen *y:hunderte / *y:streunende *y:Hunde und *y:Katzen herum!",
      "speed": 1.08,
-     "style": "Style: a young man calling for help, urgent and emotional, really worried about the animals, loud and dramatic but natural German intonation, normal pitch.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
+     "style": "Style: a young man raising an emergency alarm, panicked and alarmed, shouting 'Hilfe!' loudly like in a real emergency, then speaking fast, urgent and very worried about the animals. Natural German intonation, normal pitch.\nPace: fast.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
     },
     {
      "id": "L2",
@@ -43,16 +43,21 @@
     },
     {
      "id": "L3",
-     "text": "Jeder neue Follower bringt *y:5|fünf Muscheln mit. / Es fehlen nur noch *y:299|zweihundertneunundneunzig Follower – / sonst bleiben sie *r:für *r:immer auf der Straße!",
+     "text": "Jeder neue Bewohner bringt *y:5|fünf Muscheln mit. / Es fehlen nur noch *y:299|zweihundertneunundneunzig Bewohner – / *p:folg mir, um einzuziehen! / Sonst bleiben sie *r:für *r:immer auf der Straße!",
      "speed": 1.12,
      "style": "Style: a young man calling for help, urgent and emotional, really worried about the animals, loud and dramatic but natural German intonation, normal pitch.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
     }
    ],
    "sfx": [
     {
+     "name": "alarm",
+     "at": "s01+0.0",
+     "volume": 0.5
+    },
+    {
      "name": "impact-bass-1",
      "at": "s01+0.0",
-     "volume": 0.6
+     "volume": 0.4
     },
     {
      "name": "notification",
@@ -121,6 +126,11 @@
     }
    ],
    "sfx": [
+    {
+     "name": "ping",
+     "at": "L6:Pool",
+     "volume": 0.4
+    },
     {
      "name": "ka-ching",
      "at": "L6:kriegst",
@@ -205,7 +215,7 @@
    "lines": [
     {
      "id": "L10",
-     "text": "Und schreibt, welches *y:Tier / ihr aus dem Tierheim haben wollt! / *p:Folgt jetzt – / jedes Follow *g:rettet die Tiere!",
+     "text": "Und schreibt, welches *y:Tier / ihr aus dem Tierheim haben wollt! / *p:Folg mir, um einzuziehen – / jeder neue Bewohner *g:rettet die Tiere!",
      "speed": 1.12,
      "style": "Style: a young man, genuinely thrilled, telling his friends big news. Energetic but natural, not an announcer.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
     }
@@ -213,7 +223,7 @@
    "sfx": [
     {
      "name": "click",
-     "at": "L10:Folgt",
+     "at": "L10:Folg",
      "volume": 0.5
     }
    ]
