@@ -176,3 +176,4 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - **Wege an der Küste:** Sandwege (und die Holzstege der Kokos-Küste) enden nicht mehr eckig am Grasrand, sondern laufen weich in den Strand aus: der Rand verblasst zuerst, der Weg wird etwas breiter, nimmt die Strandfarbe an und verschwindet – der Übergang ist kaum zu sehen.
 - **Namensschilder beim Erkunden:** Die @Namen an den Hütten bleiben immer sichtbar, auch wenn man direkt davor steht; die eigene Figur steht dann vor dem Schild.
 - **Zur Hütte aus dem Muschelpass:** Nach „Zu …s Hütte“ fliegt die Karte hin und die Hütte leuchtet einmal ganz sanft auf, damit man sie erkennt.
+- **Sonnenaufgang/Sonnenuntergang-Erfolg:** gibt es nur noch, wenn man zur passenden Zeit die Welt als jemand **erkundet** (nicht schon beim Suchen/Auswählen des Namens). Sonnenuntergang entzogen am 10.11.: @emely.hac, @mimposible.
