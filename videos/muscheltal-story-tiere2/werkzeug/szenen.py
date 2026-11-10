@@ -79,9 +79,8 @@ scene("s01", PILL + "\n" + FOLLOW + """
       <div id="s01-hand" class="fhand" data-layout-ignore>👆</div>
       <div id="s01-r" class="pl">🐾 Tiere gerettet!</div>
       <div id="s01-m" class="pl">💬 Markiere sie unter dem Video!</div>
-      <div id="s01-k">🐚 Jeder neue Bewohner<b id="s01-kn">+5</b>Muscheln fürs Tierheim Pfotenkuss</div>
-      <div id="s01-d" class="pl">❤️ Danke euch!</div>""",
-"""      const hi = at("L1", "Hilfe"), fr = at("L2", "Freunde"), fo = at("L2", "folgt"), re = at("L2", "rettet"), ma = at("L2", "Markiert"), l3 = line("L3")[0], da = at("L3", "Danke");
+      <div id="s01-k">🐚 Jeder neue Bewohner<b id="s01-kn">+5</b>Muscheln fürs Tierheim Pfotenkuss</div>""",
+"""      const hi = at("L1", "Hilfe"), fr = at("L2", "Freunde"), fo = at("L2", "folgt"), re = at("L2", "rettet"), ma = at("L2", "Markiert"), l3 = line("L3")[0];
       tl.set("#s01-t", { opacity: 1 }, 0);
       tl.fromTo("#s01-t", { scale: 2.4 }, { scale: 1, duration: .3, ease: "back.out(2.2)" }, 0);
       tl.to("#s01-t", { opacity: .35, duration: .14, yoyo: true, repeat: 9, ease: "none" }, .4);
@@ -100,5 +99,4 @@ scene("s01", PILL + "\n" + FOLLOW + """
       tl.to(["#s01-f", "#s01-btn", "#s01-r", "#s01-m"], { opacity: 0, y: -30, duration: .25 }, l3 - .3);
       tl.fromTo("#s01-k", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.4)" }, l3 - .1);
       tl.fromTo("#s01-k b", { scale: 1 }, { scale: 1.25, duration: .15, yoyo: true, repeat: 5, immediateRender: false }, at("L3", "Muscheln"));
-      tl.fromTo("#s01-d", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, da - .2);
-      tl.to("#s01-d", { scale: 1.08, duration: .25, yoyo: true, repeat: 7, ease: "sine.inOut" }, da + .3);""", blur=False)
+      tl.to(["#s01-t", "#s01-k"], { opacity: 0, y: -30, duration: .3 }, line("L3")[1] + .3);""", blur=False)

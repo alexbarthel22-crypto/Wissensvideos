@@ -22,13 +22,14 @@
    "#e8433c",
    "#2e9e5b",
    "#d4469c"
-  ]
+  ],
+  "last_off": true
  },
  "scenes": [
   {
    "id": "s01",
    "tag": "",
-   "hold": 4.0,
+   "hold": 4.7,
    "lines": [
     {
      "id": "L1",
@@ -45,7 +46,7 @@
     },
     {
      "id": "L3",
-     "text": "Jeder neue Bewohner bringt *y:5|fünf *y:Muscheln / fürs *b:Tierheim *b:Pfotenkuss! / *g:Danke *g:euch!",
+     "text": "Jeder neue Bewohner bringt *y:5|fünf *y:Muscheln / fürs *b:Tierheim *b:Pfotenkuss!",
      "speed": 1.08,
      "style": "Style: a young man urgently and warmly asking his followers for help, worried about the animals but energetic, natural German intonation, normal pitch.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
      "pause": 0.4
