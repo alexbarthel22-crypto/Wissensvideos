@@ -331,6 +331,19 @@ def build_hud(project, script, windows, total):
                           f'data-track-index="2" data-layout-ignore style="top:{258 + (n - 1) * 37}px">'
                           f'<span id="{cid}t" class="chkt{" ok" if script.get("check_ok") else ""}">{n}. {esc(sc["check"])} <b>{"✓" if script.get("check_ok") else "✕"}</b></span></div>')
             js.append(f'tl.fromTo("#{cid}t", {{ opacity: 0, x: -24 }}, {{ opacity: 1, x: 0, duration: 0.25, ease: "power3.out" }}, {s + 0.5:.3f});')
+    if script.get("progress") == "muschel":  # eigener Fortschrittsbalken unten: Welle spült eine kleine Muschel nach vorne
+        wave = "M0 30 " + " ".join(f"Q{x + 15} {18 if (x // 30) % 2 == 0 else 42} {x + 30} 30" for x in range(0, W, 30))
+        tags.append(f'''      <div id="pg" class="clip" data-start="0" data-duration="{total:.3f}" data-track-index="3" data-layout-ignore style="position:absolute;left:0;top:{H - 70}px;width:{W}px;height:70px">
+        <svg width="{W}" height="70" viewBox="0 0 {W} 60" style="position:absolute;left:0;top:10px;overflow:visible"><defs><clipPath id="pgc"><rect id="pgr" x="0" y="0" width="0" height="60"/></clipPath></defs>
+          <path d="{wave}" fill="none" stroke="rgba(255,255,255,.45)" stroke-width="5" stroke-linecap="round"/>
+          <path d="{wave}" fill="none" stroke="#3fd0ff" stroke-width="7" stroke-linecap="round" clip-path="url(#pgc)" style="filter:drop-shadow(0 0 6px rgba(63,208,255,.9))"/></svg>
+        <div id="pgs" style="position:absolute;left:-46px;top:-30px;width:92px;height:81px">
+          <svg viewBox="0 0 68 60" width="92" height="81"><path d="M4 50 Q16 30 30 44 Q44 28 64 46 Q54 58 34 56 Q14 58 4 50Z" fill="#e8fbff" opacity=".95"/><circle cx="12" cy="40" r="3" fill="#fff"/><circle cx="56" cy="38" r="2.5" fill="#fff"/>
+          <g transform="translate(34 30)"><path d="M0 14 L-17 9 Q-20 3 -14 2 Q-15 -4 -9 -3 Q-8 -9 -3 -6 Q0 -11 3 -6 Q8 -9 9 -3 Q15 -4 14 2 Q20 3 17 9 Z" fill="#ffc2d4" stroke="#2a1b12" stroke-width="2" stroke-linejoin="round"/><path d="M0 13 L-11 3 M0 13 L-5 -2 M0 13 L5 -2 M0 13 L11 3" stroke="#e8467c" stroke-width="1.5" stroke-linecap="round"/></g></svg></div>
+      </div>''')
+        js.append(f'tl.fromTo("#pgr", {{ attr: {{ width: 0 }} }}, {{ attr: {{ width: {W} }}, duration: {total:.3f}, ease: "none" }}, 0);')
+        js.append(f'tl.fromTo("#pgs", {{ x: 0 }}, {{ x: {W}, duration: {total:.3f}, ease: "none" }}, 0);')
+        js.append(f'tl.fromTo("#pgs", {{ y: 0, rotation: -8 }}, {{ y: -7, rotation: 8, duration: 0.45, yoyo: true, repeat: {int(total / 0.45)}, ease: "sine.inOut" }}, 0);')
     doc = f"""<template>
   <style>
     #root {{ position: absolute; inset: 0; }}

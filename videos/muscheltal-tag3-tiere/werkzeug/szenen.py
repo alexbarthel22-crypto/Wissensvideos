@@ -66,7 +66,7 @@ KASSE = """    .ks { position: absolute; left: 70px; right: 70px; padding: 18px 
     .ks .row { display: flex; align-items: baseline; justify-content: space-between; font-weight: 900; font-size: 38px; }
     .ks .row b { font-size: 70px; color: #e8262f; line-height: 1; } .ks .row span { font-size: 34px; color: #6b6f8a; }
     .ks .bar { height: 30px; border-radius: 15px; background: #ece4d8; margin-top: 12px; overflow: hidden; } .ks .bar i { display: block; height: 100%; width: 0; border-radius: 15px; background: linear-gradient(90deg, #e8262f, #ff8a3a); }"""
-KHTML = lambda p: f'<div id="{p}-ks" class="ks"><div class="row"><div>🐾 Tierheim Pfotenkuss</div><div><b id="{p}-kn">505</b><span> / 2.000 🐚</span></div></div><div class="bar"><i id="{p}-kb"></i></div></div>'
+KHTML = lambda p: f'<div id="{p}-ks" class="ks"><div class="row"><div>🐚 Inselkasse</div><div><b id="{p}-kn">505</b><span> / 2.000 🐚</span></div></div><div class="bar"><i id="{p}-kb"></i></div></div>'
 
 # s01 – Alarm! Handy-Warnung, Hunderte Streuner, Kasse, 299 Bewohner
 scene("s01", LILITA + "\n    " + PILL + "\n" + KASSE + """
@@ -102,7 +102,7 @@ scene("s01", LILITA + "\n    " + PILL + "\n" + KASSE + """
       """ + KHTML("s01") + """
       <div id="s01-f">Es fehlen nur noch<b>299</b>Bewohner!</div>
       <div id="s01-m" class="pl">➕ Folg mir, um einzuziehen!</div>""",
-"""      const l1e = line("L1")[1], ko = at("L2", "kostet"), ka = at("L2", "Kasse"), fe = at("L3", "fehlen"), fo = at("L3", "folg"), st = at("L3", "Straße");
+"""      const l1e = line("L1")[1], ko = at("L2", "kostet"), ka = at("L2", "Inselkasse"), fe = at("L3", "fehlen"), fo = at("L3", "folg"), st = at("L3", "Straße");
       tl.fromTo("#s01-h", { opacity: 0, scale: 3.2 }, { opacity: 1, scale: 1, duration: .14, ease: "power4.in" }, 0);
       for (let i = 0; i < 14; i++) tl.set("#s01-h", { backgroundColor: i % 2 ? "#e8262f" : "#fff", color: i % 2 ? "#fff" : "#e8262f" }, .2 + i * .18);
       tl.to("#s01-h", { x: 12, duration: .05, yoyo: true, repeat: 9 }, .16);
@@ -111,7 +111,7 @@ scene("s01", LILITA + "\n    " + PILL + "\n" + KASSE + """
       tl.fromTo("#s01-al", { opacity: 0, y: -40, scale: .9 }, { opacity: 1, y: 0, scale: 1, duration: .25, ease: "back.out(2)" }, .3);
       tl.to("#s01-ph", { x: 9, rotation: -1.5, duration: .04, yoyo: true, repeat: 23, ease: "none" }, .35);
       tl.to("#s01-ph", { y: 1400, rotation: 14, scale: .7, duration: .4, ease: "power3.in" }, l1e - .25);
-      tl.to("#s01-h", { opacity: 0, scale: .5, duration: .2 }, ko - .45);
+      tl.to("#s01-h", { opacity: 0, scale: .5, duration: .2 }, line("L2")[0] - .15);
       tl.fromTo("#s01-ks", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .35, ease: "back.out(2)" }, ko - .3);
       tl.fromTo("#s01-kb", { width: "0%" }, { width: "25.25%", duration: .8, ease: "power2.out" }, ka);
       tl.to(["#s01-kb", "#s01-kn"], { opacity: .15, duration: .12, yoyo: true, repeat: 23, ease: "none" }, ka + .8);
@@ -143,11 +143,11 @@ scene("s02", PILL + """
 
 # s03 – Moped-Werkstatt
 scene("s03", PILL + """
-    #s03-t { top: 960px; font-size: 50px; background: #e2560c; }
+    #s03-t { top: 960px; right: 140px; font-size: 46px; background: #e2560c; }
     .s03-n { font-size: 34px; background: #fff; color: #2a1b12; right: auto; margin: 0; }""",
 """      <div id="s03-t" class="pl">🔧 MOPED-WERKSTATT</div>
-      <div id="s03-n0" class="pl s03-n" style="top:1060px;left:140px">⭐ @bruecke.2803</div>
-      <div id="s03-n1" class="pl s03-n" style="top:1060px;left:560px">@anti.teamtoxic</div>""",
+      <div id="s03-n0" class="pl s03-n" style="top:1050px;left:60px">⭐ @bruecke.2803</div>
+      <div id="s03-n1" class="pl s03-n" style="top:1050px;left:420px">@anti.teamtoxic</div>""",
 """      const mo = at("L5", "Moped-Werkstatt"), a = at("L5", "bruecke.2803"), b = at("L5", "anti.teamtoxic");
       tl.fromTo("#s03-t", { opacity: 0, scale: .3, rotation: 8 }, { opacity: 1, scale: 1, rotation: 2, duration: .4, ease: "back.out(2.6)" }, mo - .15);
       [[a, 0], [b, 1]].forEach(([t, i]) => { tl.fromTo("#s03-n" + i, { opacity: 0, x: i ? 120 : -120 }, { opacity: 1, x: 0, duration: .3, ease: "back.out(2)" }, t - .15);
@@ -177,8 +177,8 @@ scene("s05", PILL + "\n    " + CF_CSS.replace("top: 700px", "top: 640px") + """
     .s05-col { position: absolute; left: 0; right: 0; top: 0; }
     .s05-r { height: 130px; display: grid; place-items: center; font-family: "Inter", sans-serif; font-weight: 900; font-size: 38px; color: #23285a; white-space: nowrap; }
     .s05-sh { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,0) 30%, rgba(255,255,255,0) 70%, rgba(255,255,255,.95)); }
-    #s05-fv { position: absolute; left: 55px; width: 970px; top: 875px; text-align: center; white-space: nowrap; font-family: "Inter", sans-serif; font-weight: 800; font-size: 30px; color: #fff; text-shadow: 0 2px 6px rgba(0,0,0,.6); }
-    #s05-st { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 880px; color: #e8433c; border-color: #e8433c; transform: rotate(-4deg); font-size: 56px; white-space: nowrap; background: #fff; }
+    #s05-fv { position: absolute; left: 40px; width: 860px; top: 875px; text-align: center; white-space: nowrap; font-family: "Inter", sans-serif; font-weight: 800; font-size: 30px; color: #fff; text-shadow: 0 2px 6px rgba(0,0,0,.6); }
+    #s05-st { left: 0; right: 120px; margin: 0 auto; width: fit-content; top: 880px; color: #e8433c; border-color: #e8433c; transform: rotate(-4deg); font-size: 56px; white-space: nowrap; background: #fff; }
     #s05-nb { top: 300px; font-size: 44px; background: #2e9e5b; }
     #s05-w1 { top: 400px; font-size: 44px; background: #fff; color: #2a1b12; } #s05-w2 { top: 490px; font-size: 44px; background: #fff; color: #2a1b12; }""",
 f"""      <div id="s05-dim"></div>
@@ -220,9 +220,9 @@ scene("s06", PILL + """
     #s06-c .nm { font-size: 28px; color: #a8a8a8; font-weight: 600; } #s06-c .tx { font-size: 31px; line-height: 1.3; margin-top: 6px; font-weight: 500; }
     #s06-c .ph { width: 220px; height: 250px; border-radius: 14px; margin-top: 16px; border: 7px solid #fff; box-shadow: 0 0 0 3px #555, 0 10px 20px rgba(0,0,0,.5); background: url(assets/img/fab_dog.jpg) center/cover; }
     #s06-c .mt { font-size: 23px; color: #8a8a8a; margin-top: 14px; font-weight: 600; }
-    #s06-v { position: absolute; left: 130px; right: 130px; top: 1010px; display: flex; gap: 24px; }
+    #s06-v { position: absolute; left: 110px; right: 230px; top: 1010px; display: flex; gap: 24px; }
     #s06-v div { flex: 1; text-align: center; padding: 14px 0 18px; border-radius: 26px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 46px; color: #fff; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); }
-    #s06-q { top: 900px; font-size: 40px; background: #e2560c; }""",
+    #s06-q { top: 900px; right: 120px; font-size: 36px; background: #e2560c; }""",
 """      <div id="s06-c"><div class="av"></div><div><div class="nm">Fabienne</div><div class="tx">Wir brauchen noch eine Bäckerei wo ich dann drüber wohne und dort backe.Kann sehr gut Cookies und Zimtschnecken backen.</div><div class="ph"></div><div class="mt">@fabienne3692 · Antworten</div></div></div>
       <div id="s06-q" class="pl">🥐 Soll Fabienne eine Bäckerei eröffnen?</div>
       <div id="s06-v"><div style="background:#2e9e5b">✅ JA</div><div style="background:#e8262f">❌ NEIN</div></div>""",
@@ -238,7 +238,7 @@ scene("s07", PILL + "\n" + FOLLOW + "\n" + KASSE + """
     #s07-ks { top: 410px; }
     #s07-btn { top: 640px; } #s07-hand { left: 690px; top: 690px; }
     #s07-r { top: 790px; font-size: 42px; background: #2e9e5b; }
-    #s07-fr { top: 885px; font-size: 38px; background: #e8467c; }""",
+    #s07-fr { top: 885px; right: 120px; font-size: 34px; background: #e8467c; }""",
 f"""      <div id="s07-q" class="pl">🐶🐱 Welches Tier willst du adoptieren?</div>
       {KHTML("s07")}
       <div id="s07-btn" class="fbtn">+ Folgen<div id="s07-btn2" class="fbtn2">✓ Gefolgt</div></div>

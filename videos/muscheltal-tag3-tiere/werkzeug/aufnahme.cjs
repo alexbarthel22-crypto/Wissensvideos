@@ -9,7 +9,7 @@ const mk=async zeit=>{const p=await b.newPage({viewport:{width:405,height:720},d
  await p.addStyleTag({content:'body *{visibility:hidden!important}canvas#map{visibility:visible!important}'});await p.evaluate(()=>cancelAnimationFrame(fly));
  // Hunderte Streuner auf dem Muschelplatz vor dem Palast + Schlange zum Tierheim
  await p.evaluate(()=>{let sd=7;const R=()=>(sd=(sd*16807)%2147483647)/2147483647;const base=PETS.list.slice(),C=[];
-  for(let r=0;r<380;r++){const a=Object.assign({},base[r%base.length]);let x,y;if(r<310){const ang=R()*6.283,d=Math.sqrt(R());x=Math.cos(ang)*d*62;y=78+Math.sin(ang)*d*17;}else{x=(R()-.5)*10;y=98+R()*60;}
+  for(let r=0;r<640;r++){const a=Object.assign({},base[r%base.length]);let x,y;if(r<310){const ang=R()*6.283,d=Math.sqrt(R());x=Math.cos(ang)*d*62;y=78+Math.sin(ang)*d*17;}else if(r<380){x=(R()-.5)*10;y=98+R()*60;}else{const sd2=R()<.5?-1:1;x=sd2*(52+R()*58);y=50+R()*70;}
    a.x=x;a.y=y;a.pause=1e9;a.wp=null;a.sit=R()<.4?1:0;a.dir=R()<.5?-1:1;a.view=['side','front','side','back'][(R()*4)|0];a.vert=a.view!=='side';a.i=1000+r;C.push(a);}
   C.sort((a,b)=>a.y-b.y);PETS.list.push(...C);});
  return p;};

@@ -14,14 +14,21 @@
     .chkt.ok { color: #8affb6; border-color: #1f9a52; background: rgba(8,40,22,.6); }
     .chkt.ok b { color: #39e27a; }
   </style>
-  <div id="root" data-composition-id="hud" data-start="0" data-duration="58.640" data-width="1080" data-height="1920">
-
+  <div id="root" data-composition-id="hud" data-start="0" data-duration="58.350" data-width="1080" data-height="1920">
+      <div id="pg" class="clip" data-start="0" data-duration="58.350" data-track-index="3" data-layout-ignore style="position:absolute;left:0;top:1850px;width:1080px;height:70px">
+        <svg width="1080" height="70" viewBox="0 0 1080 60" style="position:absolute;left:0;top:10px;overflow:visible"><defs><clipPath id="pgc"><rect id="pgr" x="0" y="0" width="0" height="60"/></clipPath></defs>
+          <path d="M0 30 Q15 18 30 30 Q45 42 60 30 Q75 18 90 30 Q105 42 120 30 Q135 18 150 30 Q165 42 180 30 Q195 18 210 30 Q225 42 240 30 Q255 18 270 30 Q285 42 300 30 Q315 18 330 30 Q345 42 360 30 Q375 18 390 30 Q405 42 420 30 Q435 18 450 30 Q465 42 480 30 Q495 18 510 30 Q525 42 540 30 Q555 18 570 30 Q585 42 600 30 Q615 18 630 30 Q645 42 660 30 Q675 18 690 30 Q705 42 720 30 Q735 18 750 30 Q765 42 780 30 Q795 18 810 30 Q825 42 840 30 Q855 18 870 30 Q885 42 900 30 Q915 18 930 30 Q945 42 960 30 Q975 18 990 30 Q1005 42 1020 30 Q1035 18 1050 30 Q1065 42 1080 30" fill="none" stroke="rgba(255,255,255,.45)" stroke-width="5" stroke-linecap="round"/>
+          <path d="M0 30 Q15 18 30 30 Q45 42 60 30 Q75 18 90 30 Q105 42 120 30 Q135 18 150 30 Q165 42 180 30 Q195 18 210 30 Q225 42 240 30 Q255 18 270 30 Q285 42 300 30 Q315 18 330 30 Q345 42 360 30 Q375 18 390 30 Q405 42 420 30 Q435 18 450 30 Q465 42 480 30 Q495 18 510 30 Q525 42 540 30 Q555 18 570 30 Q585 42 600 30 Q615 18 630 30 Q645 42 660 30 Q675 18 690 30 Q705 42 720 30 Q735 18 750 30 Q765 42 780 30 Q795 18 810 30 Q825 42 840 30 Q855 18 870 30 Q885 42 900 30 Q915 18 930 30 Q945 42 960 30 Q975 18 990 30 Q1005 42 1020 30 Q1035 18 1050 30 Q1065 42 1080 30" fill="none" stroke="#3fd0ff" stroke-width="7" stroke-linecap="round" clip-path="url(#pgc)" style="filter:drop-shadow(0 0 6px rgba(63,208,255,.9))"/></svg>
+        <div id="pgs" style="position:absolute;left:-46px;top:-30px;width:92px;height:81px">
+          <svg viewBox="0 0 68 60" width="92" height="81"><path d="M4 50 Q16 30 30 44 Q44 28 64 46 Q54 58 34 56 Q14 58 4 50Z" fill="#e8fbff" opacity=".95"/><circle cx="12" cy="40" r="3" fill="#fff"/><circle cx="56" cy="38" r="2.5" fill="#fff"/>
+          <g transform="translate(34 30)"><path d="M0 14 L-17 9 Q-20 3 -14 2 Q-15 -4 -9 -3 Q-8 -9 -3 -6 Q0 -11 3 -6 Q8 -9 9 -3 Q15 -4 14 2 Q20 3 17 9 Z" fill="#ffc2d4" stroke="#2a1b12" stroke-width="2" stroke-linejoin="round"/><path d="M0 13 L-11 3 M0 13 L-5 -2 M0 13 L5 -2 M0 13 L11 3" stroke="#e8467c" stroke-width="1.5" stroke-linecap="round"/></g></svg></div>
+      </div>
 
   </div>
   <script>
     const tl = gsap.timeline({ paused: true });
     
-
+tl.fromTo("#pgr", { attr: { width: 0 } }, { attr: { width: 1080 }, duration: 58.350, ease: "none" }, 0);    tl.fromTo("#pgs", { x: 0 }, { x: 1080, duration: 58.350, ease: "none" }, 0);    tl.fromTo("#pgs", { y: 0, rotation: -8 }, { y: -7, rotation: 8, duration: 0.45, yoyo: true, repeat: 129, ease: "sine.inOut" }, 0);
     window.__timelines["hud"] = tl;
   </script>
 </template>

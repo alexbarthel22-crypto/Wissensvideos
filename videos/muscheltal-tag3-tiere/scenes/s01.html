@@ -40,7 +40,7 @@
         <div class="tx">WARNUNG MUSCHEL-TAL – Hunderte streunende Hunde und Katzen ohne Zuhause! – Das Tierheim Pfotenkuss fehlt noch. – Bitte sofort helfen und auf die Insel einziehen! – Herausgegeben von: Bürgermeisterin von Muschel-Tal</div></div>
       </div><div id="s01-notch"></div></div></div>
       <div id="s01-h">HILFE!</div>
-      <div id="s01-ks" class="ks"><div class="row"><div>🐾 Tierheim Pfotenkuss</div><div><b id="s01-kn">505</b><span> / 2.000 🐚</span></div></div><div class="bar"><i id="s01-kb"></i></div></div>
+      <div id="s01-ks" class="ks"><div class="row"><div>🐚 Inselkasse</div><div><b id="s01-kn">505</b><span> / 2.000 🐚</span></div></div><div class="bar"><i id="s01-kb"></i></div></div>
       <div id="s01-f">Es fehlen nur noch<b>299</b>Bewohner!</div>
       <div id="s01-m" class="pl">➕ Folg mir, um einzuziehen!</div>
     </div>
@@ -51,7 +51,7 @@
       /*__COMMON_JS__*/
       wrapBt("#s01-stage");
       const tl = gsap.timeline({ paused: true });
-      const l1e = line("L1")[1], ko = at("L2", "kostet"), ka = at("L2", "Kasse"), fe = at("L3", "fehlen"), fo = at("L3", "folg"), st = at("L3", "Straße");
+      const l1e = line("L1")[1], ko = at("L2", "kostet"), ka = at("L2", "Inselkasse"), fe = at("L3", "fehlen"), fo = at("L3", "folg"), st = at("L3", "Straße");
       tl.fromTo("#s01-h", { opacity: 0, scale: 3.2 }, { opacity: 1, scale: 1, duration: .14, ease: "power4.in" }, 0);
       for (let i = 0; i < 14; i++) tl.set("#s01-h", { backgroundColor: i % 2 ? "#e8262f" : "#fff", color: i % 2 ? "#fff" : "#e8262f" }, .2 + i * .18);
       tl.to("#s01-h", { x: 12, duration: .05, yoyo: true, repeat: 9 }, .16);
@@ -60,7 +60,7 @@
       tl.fromTo("#s01-al", { opacity: 0, y: -40, scale: .9 }, { opacity: 1, y: 0, scale: 1, duration: .25, ease: "back.out(2)" }, .3);
       tl.to("#s01-ph", { x: 9, rotation: -1.5, duration: .04, yoyo: true, repeat: 23, ease: "none" }, .35);
       tl.to("#s01-ph", { y: 1400, rotation: 14, scale: .7, duration: .4, ease: "power3.in" }, l1e - .25);
-      tl.to("#s01-h", { opacity: 0, scale: .5, duration: .2 }, ko - .45);
+      tl.to("#s01-h", { opacity: 0, scale: .5, duration: .2 }, line("L2")[0] - .15);
       tl.fromTo("#s01-ks", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .35, ease: "back.out(2)" }, ko - .3);
       tl.fromTo("#s01-kb", { width: "0%" }, { width: "25.25%", duration: .8, ease: "power2.out" }, ka);
       tl.to(["#s01-kb", "#s01-kn"], { opacity: .15, duration: .12, yoyo: true, repeat: 23, ease: "none" }, ka + .8);
