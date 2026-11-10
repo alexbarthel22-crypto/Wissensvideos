@@ -1704,7 +1704,10 @@ function gPath(who,g,ex,ey,sx2,sy2,ortho){const v=who.isl,c0=v.x+Math.round((ex-
 function along(pt,d){const {P,L}=pt;d=Math.max(0,Math.min(pt.len,d));let i=1;while(i<L.length-1&&L[i]<d)i++;const a=P[i-1],b=P[i],t=(d-L[i-1])/Math.max(.001,L[i]-L[i-1]);return[a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t,b[0]-a[0],b[1]-a[1]];}
 const GV=5;// Gehtempo wie alle Passanten
 // feste Gäste-Gruppe je Lokal: ohne Passanten, Jogger, Lagerfeuer-Besucher und ohne Gäste anderer Lokale (sonst würden Personen plötzlich wechseln)
-let GBUSY=null;function guestPool(g,n){if(!ROAM.init)roamInit();if(!JOG.list)jogInit();if(!GBUSY)GBUSY=new Set([...WALKERS.map(w=>w.q),...CAMP.map(f=>f.q),...ROAM.list.map(r=>r.q),...(JOG.list||[]).map(j=>j.q)]);
+let GBUSY=null;const SEATN=g=>Math.max(SEATS[g.typ].tag.length,SEATS[g.typ].nacht.length+(g.typ==='strandbar'?8:0));
+function guestPool(g,n){if(!ROAM.init)roamInit();if(!JOG.list)jogInit();if(!GBUSY){GBUSY=new Set([...WALKERS.map(w=>w.q),...CAMP.map(f=>f.q),...ROAM.list.map(r=>r.q),...(JOG.list||[]).map(j=>j.q)]);
+  // zuerst alle Lokale (Strandbar zuerst, sie braucht nachts die meisten Gäste), je Platz 4 feste Gäste – erst danach Bänke/Gespräche/Angeln
+  for(const h of GEB.filter(h=>SEATS[h.typ]).sort((a,b)=>SEATN(b)-SEATN(a)))if(!h.pool)h.pool=guestPool(h,SEATN(h)*4);}
  const P=FREE.filter(q=>q.isl===g.v&&!GBUSY.has(q)).sort((a,b)=>Math.hypot(a.p.x-g.cx,a.p.y-g.cy)-Math.hypot(b.p.x-g.cx,b.p.y-g.cy)).slice(0,n);for(const q of P)GBUSY.add(q);return P;}
 function guests(c,g,nl,z,OUT){const S2=SEATS[g.typ];if(!S2||z*S<=8)return;const night=nl>.5,W=(g.x1-g.x0)/2,H=(g.y1-g.y0)/2,FOOD=g.typ==='doener'||g.typ==='acai',d=FOOD||g.typ==='werkstatt'?1:(g.dir||1);
  const sx=g.typ==='strandbar'?(g.sea-g.cx)*d:0,ent=FOOD?[0,H+8]:[-W-6,0],EX=g.cx+ent[0]*d,EY=g.cy+ent[1];
@@ -1714,7 +1717,7 @@ function guests(c,g,nl,z,OUT){const S2=SEATS[g.typ];if(!S2||z*S<=8)return;const 
  const [f,cap,mn]=GSET[g.typ+(night?'N':'D')],USEDG=new Set();const st=list.map((s0,k)=>{const P=480+hash(k,201+g.typ.length)*240,cyc=T/P+hash(k,202),ci=Math.floor(cyc);return{ci,u:cyc-ci,P};});
  // jeder Platz hat seinen eigenen Rhythmus und eigene Gäste – niemand taucht plötzlich auf oder wird mitten im Besuch durch jemand anderen ersetzt
  for(const o of st)o.on=o.u<=f;
- const LS=Math.max(S2.tag.length,S2.nacht.length+(g.typ==='strandbar'?8:0)),pool=g.pool||(g.pool=guestPool(g,Math.max(90,LS*6)));
+ const LS=Math.max(S2.tag.length,S2.nacht.length+(g.typ==='strandbar'?8:0)),pool=g.pool||(g.pool=guestPool(g,LS*4));
  list.forEach(([lx0,ly,face,lab],k)=>{const {ci,u,on,P}=st[k];if(!on)return;
   const cand=[];for(let j=k%LS;j<pool.length;j+=LS)cand.push(pool[j]);if(!cand.length)return;let wi=(hash(ci*31+k,203+(night?7:0)+g.typ.length)*cand.length)|0,tries=0;while(OUT.has(cand[wi])&&tries++<cand.length)wi=(wi+1)%cand.length;const who=cand[wi];if(!who||OUT.has(who))return;OUT.add(who);
   const lx=g.typ==='strandbar'?lx0+sx:lx0,SXw=g.cx+lx*d,SYw=g.cy+ly,key=g.key+'|'+k;who.gp=who.gp||{};const pt=who.gp[key]||(who.gp[key]=gPath(who,g,EX,EY,SXw,SYw,FOOD?(g.typ==='acai'?18:12):0));
@@ -1879,7 +1882,7 @@ function draw(){
  // Tätigkeiten: auf Bänken sitzen, miteinander reden, am Ufer angeln (wechselnde Einwohner, nachts weniger)
  if(z*S>8&&GROWK==null)for(const a of ACTS){const P=90+hash(a.k,301)*90,cyc=T/P+hash(a.k,302),ci=Math.floor(cyc),u=cyc-ci,lim=nl>.5?.35:.8;if(u>lim)continue;
   // Bewohner aus der Nähe gehen hin, bleiben eine Weile und gehen danach wieder nach Hause (niemand löst sich in Luft auf)
-  const pool=a.pool||(a.pool=guestPool({v:a.v,cx:a.x,cy:a.y},24));if(!pool.length)continue;
+  const pool=a.pool||(a.pool=guestPool({v:a.v,cx:a.x,cy:a.y},10));if(!pool.length)continue;
   const need=a.t==='talk'?2:1,ps=[];let o=0;while(ps.length<need&&o<40){const q=pool[(hash(ci*13+a.k+o,303)*pool.length)|0];o++;if(q&&!OUT.has(q)&&q!==sel&&!ps.includes(q)&&!(WK.on&&q===WK.me))ps.push(q);}if(ps.length<need)continue;ps.forEach(q=>OUT.add(q));
   const D=lim*P,tS=u*P;let arrived=true;const PTS=ps.map((q,j)=>{const sx=a.t==='talk'?a.x+(j?2.6:-2.6):a.x,key='act'+a.k+'_'+j;q.gp=q.gp||{};return q.gp[key]||(q.gp[key]=gPath(q,{},sx,a.y,sx,a.y));});
   ps.forEach((q,j)=>{const pt=PTS[j];
