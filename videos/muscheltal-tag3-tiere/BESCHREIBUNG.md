@@ -1,6 +1,6 @@
 # Muschel-Tal – Tag 3 · Beschreibung
 
-**Cover:** `renders/cover.jpg` (Vorlage `cover/thumb.html`, gewohntes Layout) – Logo + „TAG 3“, „🆘 HILFE! Die Katzen brauchen ein Zuhause!“, Hintergrund: Baustelle Tierheim Pfotenkuss mit streunenden Katzen auf dem Weg (Homepage-Aufnahme), Karte „🐚 Inselkasse 505 / 2.000 – Jedes Follow = +5 🐚“.
+**Cover:** `renders/cover.jpg` (Vorlage `cover/thumb.html`, gewohntes Layout) – Logo + „TAG 3“, „🆘 HILFE! Die Katzen brauchen ein Zuhause!“, Hintergrund: Baustelle Tierheim Pfotenkuss mit streunenden Katzen auf dem Weg (Homepage-Aufnahme), Karte „🐚 Inselkasse 505 / 2.000 – Neuer Bewohner = +5 🐚“.
 
 **Verlosung Strandvilla:** @emiliamarie155 (Nr. 225) und @lea.3818730 (Nr. 286), am 10.11. per Zufall (Python `secrets.choice`) aus allen Einwohnern ohne Amt/Job gezogen.
 
