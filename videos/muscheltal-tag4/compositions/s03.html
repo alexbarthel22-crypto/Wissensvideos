@@ -1,0 +1,166 @@
+<template>
+  <style>
+        #root { position: absolute; inset: 0; }
+    .stage { position: absolute; inset: 0; overflow: hidden; }
+    .abs { position: absolute; }
+    svg { overflow: visible; }
+    /* Zähler-Box wie in der Referenz: Rahmen in Akzentfarbe, Label in Mono-Versalien, große Zahl */
+    .cbox { position: absolute; left: 290px; width: 500px; top: 268px; height: 126px; border: 3px solid #ff4fb0;
+      border-radius: 32px; background: rgba(13,16,38,.88); text-align: center; box-shadow: 0 0 28px rgba(255,79,176,.35); }
+    .cbox .lab { margin-top: 16px; font-family: "Space Mono", monospace; font-weight: 700; font-size: 28px;
+      letter-spacing: .16em; color: #dfe2f5; }
+    .cbox .num { margin-top: 2px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 56px; color: #fff;
+      letter-spacing: .01em; }
+    .cbox.y { border-color: #ffd43b; box-shadow: 0 0 28px rgba(255,212,59,.3); }
+    .cbox.r { border-color: #ff3b55; box-shadow: 0 0 28px rgba(255,59,85,.35); }
+    .cbox.b { border-color: #4da3ff; box-shadow: 0 0 28px rgba(77,163,255,.3); }
+    .cbox.g { border-color: #39e27a; box-shadow: 0 0 28px rgba(57,226,122,.3); }
+    .mono { font-family: "Space Mono", monospace; font-weight: 700; letter-spacing: .12em; }
+    .heavy { font-family: "Inter", sans-serif; font-weight: 900; }
+    /* Muschel-Tal: Sticker-Look wie auf muscheltal.de. Sicherheitsbereich TikTok: x 40–930, y 200–1120 (Untertitel ab 1150). */
+    .ink { stroke: #2a1b12; }
+    .stk { background: #fff; border: 6px solid #2a1b12; border-radius: 28px; box-shadow: 10px 10px 0 #2a1b12; }
+    .ttl { font-family: "Inter", sans-serif; font-weight: 900; color: #fff; text-align: center; line-height: 1;
+      -webkit-text-stroke: 10px #2a1b12; paint-order: stroke fill; letter-spacing: -.01em; }
+    .kick { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 24px; border-radius: 14px;
+      background: #2a1b12; color: #ffd23f; font-family: "Space Mono", monospace; font-weight: 700; font-size: 34px; letter-spacing: .14em; }
+    /* Text auf farbigem Balken (auffälliger, wie TikTok-Textboxen) */
+    .bt { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; max-width: 740px; text-align: center;
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 66px; line-height: 1.3; color: #fff; }
+    .bt .bx { padding: .06em .4em .14em; border-radius: .6em; -webkit-box-decoration-break: clone; box-decoration-break: clone; box-shadow: 0 10px 0 rgba(0,0,0,.28), 0 16px 30px rgba(0,0,0,.25); }
+    .bt .bx { background: #23285a; } .bt.or .bx { background: #ff5a3c; } .bt.pk .bx { background: #fe2c55; } .bt.tq .bx { background: #18b8c0; } .bt.vi .bx { background: #23285a; } .bt.bl .bx { background: #23285a; }
+    .bt.ye .bx { background: #ffc93c; } .bt.ye { color: #1a0f08; } .bt.gr .bx { background: #00b86b; } .bt.dk .bx { background: #23285a; } .bt.dk { color: #ffc93c; }
+    .bt.sm { font-size: 44px; }
+    .stamp { position: absolute; padding: 6px 30px; border: 10px solid; border-radius: 40px; background: rgba(255,255,255,.94);
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 84px; }
+    /* TikTok-Kommentare (echte Optik) */
+    .tk { position: absolute; left: 60px; width: 800px; background: #fff; border-radius: 30px; padding: 20px 26px 6px; box-shadow: 0 14px 0 rgba(0,0,0,.22); font-family: "Inter", sans-serif; }
+    .tk-h { position: relative; text-align: center; font-weight: 800; font-size: 30px; color: #161823; margin-bottom: 10px; }
+    .tk-h b { position: absolute; right: 4px; top: -4px; font-size: 38px; font-weight: 400; color: #161823; }
+    .tk-c { position: relative; display: flex; gap: 20px; padding: 12px 96px 16px 0; }
+    .tk-a { width: 84px; height: 84px; border-radius: 50%; flex: none; display: grid; place-items: center; color: #fff; font-weight: 900; font-size: 38px; }
+    .tk-u { font-size: 28px; color: #8a8b91; font-weight: 600; }
+    .tk-t { font-size: 34px; color: #161823; font-weight: 500; line-height: 1.22; margin-top: 2px; }
+    .tk-m { font-size: 28px; color: #8a8b91; font-weight: 600; margin-top: 8px; } .tk-m span { margin-left: 30px; }
+    .tk-l { position: absolute; right: 4px; top: 16px; width: 86px; text-align: center; font-size: 28px; color: #8a8b91; font-weight: 600; }
+    .tk-l .hz { position: relative; width: 48px; height: 48px; margin: 0 auto 2px; }
+    .tk-l .hz svg { position: absolute; inset: 0; width: 48px; height: 48px; }
+    .tk-fh { position: absolute; left: 19px; top: 0; width: 50px; height: 50px; opacity: 0; }
+    .tk-pin { display: inline-block; font-size: 28px; font-weight: 800; color: #fe2c55; background: #ffe3ea; border-radius: 6px; padding: 2px 8px; margin-left: 10px; vertical-align: 3px; }
+
+@font-face { font-family: "Lilita One"; src: url("assets/fonts/LilitaOne-Regular.woff2") format("woff2"); font-weight: 400; }
+    .pl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 28px 12px; border-radius: 999px; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); white-space: nowrap; }
+    .big { position: absolute; left: 60px; right: 60px; margin: 0 auto; text-align: center; padding: 10px 26px 20px; border-radius: 36px; color: #fff; font-family: "Lilita One", sans-serif; line-height: 1; box-shadow: 0 0 0 8px #2a1b12, 0 16px 0 rgba(0,0,0,.3); }
+    .cf { position: absolute; left: 530px; top: 640px; width: 20px; height: 30px; border-radius: 4px; }
+    #s03-t { top: 290px; font-size: 56px; background: #e2560c; }
+    #s03-v { top: 390px; font-size: 40px; background: #fff; color: #e2560c; }
+    #s03-fc { position: absolute; left: 150px; right: 150px; top: 470px; padding: 18px 22px 20px; border-radius: 28px; background: #1f1f1f; box-shadow: 0 0 0 4px #000, 0 12px 24px rgba(0,0,0,.4); display: flex; gap: 18px; font-family: "Inter", sans-serif; color: #fff; }
+    #s03-fc .av { width: 70px; height: 70px; border-radius: 50%; background: url(assets/img/fab_avatar.png) center/cover; flex: none; }
+    #s03-fc .nm { font-size: 24px; color: #a8a8a8; font-weight: 600; } #s03-fc .tx { font-size: 28px; line-height: 1.28; margin-top: 2px; }
+    #s03-dim { position: absolute; inset: 0; background: rgba(10,12,40,.55); }
+    #s03-lv { top: 290px; font-size: 50px; background: #e8262f; }
+    #s03-box { position: absolute; left: 190px; width: 700px; top: 450px; height: 390px; border-radius: 34px; background: #fff; overflow: hidden; box-shadow: 0 0 0 7px #2a1b12, 0 0 0 14px #ffc93c, 0 0 0 19px #2a1b12, 0 18px 0 rgba(0,0,0,.35); }
+    #s03-band { position: absolute; left: 0; right: 0; top: 130px; height: 130px; background: #fff3c4; border-top: 5px solid #ffc93c; border-bottom: 5px solid #ffc93c; }
+    #s03-col { position: absolute; left: 0; right: 0; top: 0; }
+    .s03-r { height: 130px; display: grid; place-items: center; font-family: "Inter", sans-serif; font-weight: 900; font-size: 46px; color: #23285a; white-space: nowrap; }
+    #s03-sh { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,0) 30%, rgba(255,255,255,0) 70%, rgba(255,255,255,.95)); }
+    #s03-st { left: 0; right: 120px; margin: 0 auto; width: fit-content; top: 880px; color: #e2560c; border-color: #e2560c; background: #fff; transform: rotate(-4deg); font-size: 56px; white-space: nowrap; }
+    #s03-wn { top: 300px; font-size: 52px; background: #2e9e5b; }
+    #s03-sp { top: 290px; font-size: 76px; background: #7b3fe0; transform: rotate(-2deg); }
+    #s03-lk { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 520px; padding: 14px 40px 18px; border-radius: 30px; background: #fff; box-shadow: 0 0 0 7px #2a1b12; font-family: "Inter", sans-serif; font-weight: 900; font-size: 44px; color: #2a1b12; text-align: center; }
+    #s03-lk b { display: block; font-size: 120px; line-height: 1.1; }
+  </style>
+  <div id="root" data-composition-id="s03" data-start="0" data-duration="18.040" data-width="1080" data-height="1920">
+    <div id="s03-stage" class="clip stage" data-start="0" data-duration="18.040" data-track-index="0">
+      <div id="s03-t" class="pl">🥐 NEU: Fabiennes Bäckerei!</div>
+      <div id="s03-v" class="pl">✅ Ihr habt abgestimmt</div>
+      <div id="s03-fc"><div class="av"></div><div><div class="nm">Fabienne</div><div class="tx">Kann sehr gut Cookies und Zimtschnecken backen.</div></div></div>
+      <div id="s03-dim"></div>
+      <div id="s03-lv" class="pl">🔴 LIVE: Job in der Bäckerei!</div>
+      <div id="s03-box"><div id="s03-band"></div><div id="s03-col"><div class="s03-r" id="s03-r0">@juli.p.r.v.t</div><div class="s03-r" id="s03-r1">@adelina.ha2</div><div class="s03-r" id="s03-r2">@einbaum18</div><div class="s03-r" id="s03-r3">@hana_hro18109</div><div class="s03-r" id="s03-r4">@luise_ixd</div><div class="s03-r" id="s03-r5">@simonotte</div><div class="s03-r" id="s03-r6">@josy.sgb</div><div class="s03-r" id="s03-r7">@emma_nagel10</div><div class="s03-r" id="s03-r8">@pauline__45</div><div class="s03-r" id="s03-r9">@phil_r10_</div><div class="s03-r" id="s03-r10">@whokilledheli</div><div class="s03-r" id="s03-r11">@h3nri_real11</div><div class="s03-r" id="s03-r12">@lailaniichtleyla</div><div class="s03-r" id="s03-r13">@lmn.emelie</div><div class="s03-r" id="s03-r14">@vanill_tocalife</div><div class="s03-r" id="s03-r15">@lenschgo0</div><div class="s03-r" id="s03-r16">@k0dzuyourballz</div><div class="s03-r" id="s03-r17">@soph_221144</div><div class="s03-r" id="s03-r18">@felicitas.sxh</div><div class="s03-r" id="s03-r19">@val.hxxch</div><div class="s03-r" id="s03-r20">@_bruno_017</div><div class="s03-r" id="s03-r21">@neleluciia</div><div class="s03-r" id="s03-r22">@yuris.river</div><div class="s03-r" id="s03-r23">@nxemi.blk</div><div class="s03-r" id="s03-r24">@gabriel_ph478</div><div class="s03-r" id="s03-r25">@eliii_vsfff</div><div class="s03-r" id="s03-r26">@hxlxna.35</div><div class="s03-r" id="s03-r27">@best57024</div><div class="s03-r" id="s03-r28">@noncharl0nt16</div><div class="s03-r" id="s03-r29">@max966911</div><div class="s03-r" id="s03-r30">@hennah.ac</div><div class="s03-r" id="s03-r31">@laraa.lu</div><div class="s03-r" id="s03-r32">@idoooo388</div><div class="s03-r" id="s03-r33">@user.drtmd</div><div class="s03-r" id="s03-r34">@mitja966</div><div class="s03-r" id="s03-r35">@big.hamster6</div><div class="s03-r" id="s03-r36">@haithem.amo</div><div class="s03-r" id="s03-r37">@wael.cgn1</div><div class="s03-r" id="s03-r38">@lotta_mvk21</div><div class="s03-r" id="s03-r39">@nervousqx</div></div><div id="s03-sh" data-layout-ignore></div></div>
+      <div id="s03-cfw"></div>
+      <div id="s03-st" class="stamp" data-layout-ignore>🥐 NEU IM TEAM!</div>
+      <div id="s03-wn" class="pl">🎉 @einbaum18 arbeitet in der Bäckerei!</div>
+      <div id="s03-sp" class="big">🤫 SPOILER</div>
+      <div id="s03-lk"><b>🔒</b>Job = Vorteil beim Spiel<br>bei 1.000 Followern!</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      
+      const C = {"__dur": 18.04, "L4": [0.2, 3.48], "L4.words": [["und", 0.2, 0.421], ["ganz", 0.421, 0.649], ["neu", 0.649, 0.87], ["ihr", 1.17, 1.296], ["habt", 1.296, 1.426], ["abgestimmt", 1.426, 1.808], ["", 1.808, 1.92], ["fabienne", 2.18, 2.615], ["hat", 2.615, 2.762], ["ihre", 2.762, 3.045], ["bäckerei", 3.045, 3.48]], "L5": [4.0, 6.34], "L5.words": [["und", 4.0, 4.131], ["jetzt", 4.131, 4.272], ["verlose", 4.272, 4.657], ["ich", 4.657, 4.788], ["live", 4.788, 5.041], ["einen", 5.041, 5.299], ["job", 5.299, 5.43], ["in", 5.43, 5.557], ["fabiennes", 5.557, 5.951], ["bäckerei", 5.951, 6.34]], "L6": [9.96, 12.91], "L6.words": [["glückwunsch", 9.96, 10.333], ["einbaum18", 10.333, 10.682], ["achtzehn", 10.682, 11.037], ["du", 11.037, 11.202], ["arbeitest", 11.202, 11.717], ["ab", 11.717, 11.882], ["jetzt", 11.882, 12.065], ["in", 12.065, 12.231], ["der", 12.231, 12.402], ["bäckerei", 12.402, 12.91]], "L7": [13.53, 17.36], "L7.words": [["spoiler", 13.53, 14.26], ["wer", 14.54, 14.826], ["einen", 14.826, 15.388], ["job", 15.388, 15.674], ["hat", 15.674, 15.96], ["hat", 16.07, 16.168], ["beim", 16.168, 16.27], ["spiel", 16.27, 16.375], ["bei", 16.375, 16.473], ["1000", 16.473, 16.673], ["followern", 16.673, 16.967], ["einen", 16.967, 17.16], ["vorteil", 17.16, 17.36]]};
+      const line = (id) => C[id];
+      const at = (id, word, which = 0) => {
+        const ws = C[id + ".words"];
+        if (typeof word === "number") return ws[word][1 + which];
+        const key = String(word).toLowerCase().replace(/[^\p{L}\p{N}_]/gu, "");
+        const hit = ws.find((w) => w[0].startsWith(key));
+        if (!hit) throw new Error("cue not found: " + id + " " + word);
+        return hit[1 + which];
+      };
+      // Zähler: schreibt Zahlen im deutschen Format (4.100.000.000) als Funktion der Timeline-Zeit
+      const fmt = (n) => Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      const count = (tl, sel, from, to, t, d, pre = "", post = "", ease = "power2.out") => {
+        const el = document.querySelector(sel);
+        const o = { v: from };
+        el.textContent = pre + fmt(from) + post;
+        tl.to(o, { v: to, duration: d, ease, onUpdate: () => { el.textContent = pre + fmt(o.v) + post; } }, t);
+      };
+      // deterministischer Zufall
+      const rng = (seed) => () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let x = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+        x = (x + Math.imul(x ^ (x >>> 7), 61 | x)) ^ x; return ((x ^ (x >>> 14)) >>> 0) / 4294967296; };
+
+            // TikTok-Kommentar: Herz füllt sich rot, Zahl zählt hoch, Herzen schnellen nach oben
+      const HEART = '<svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-10-9.3C.4 8.4 2 4.5 5.6 4c2-.3 3.6.6 4.4 2 .8-1.4 2.4-2.3 4.4-2 3.6.5 5.2 4.4 3.6 7.7C19.5 16.4 12 21 12 21z" fill="none" stroke="#8a8b91" stroke-width="2"/></svg>';
+      const HEART_R = '<svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-10-9.3C.4 8.4 2 4.5 5.6 4c2-.3 3.6.6 4.4 2 .8-1.4 2.4-2.3 4.4-2 3.6.5 5.2 4.4 3.6 7.7C19.5 16.4 12 21 12 21z" fill="#fe2c55"/></svg>';
+      const fmtK = (n) => n >= 10000 ? (n / 1000).toFixed(1).replace(".", ",") + " Tsd." : Math.round(n).toLocaleString("de-DE");
+      function tkLike(tl, id, t, from, to, dur = 1.4, seed = 1) {
+        const box = document.querySelector(id + " .tk-l"), num = box.querySelector("i"), hz = box.querySelector(".hz");
+        hz.innerHTML = HEART + '<span class="red" style="position:absolute;inset:0;opacity:0">' + HEART_R + "</span>";
+        const R = rng(seed);
+        for (let k = 0; k < 7; k++) { const f = document.createElement("div"); f.className = "tk-fh"; f.innerHTML = HEART_R; box.appendChild(f);
+          const dx = (R() - .5) * 160, up = 200 + R() * 220, t0 = t + k * .11;
+          tl.fromTo(f, { opacity: 0, x: 0, y: 0, scale: .5, rotation: 0 }, { opacity: 1, x: dx * .4, y: -60, scale: 1.1, rotation: (R() - .5) * 40, duration: .15, ease: "power2.out" }, t0);
+          tl.to(f, { x: dx, y: -up, scale: .7, opacity: 0, duration: .7, ease: "power1.in" }, t0 + .15); }
+        tl.fromTo(hz.querySelector(".red"), { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .25, ease: "back.out(3)" }, t);
+        tl.fromTo(hz, { scale: 1 }, { scale: 1.3, duration: .12, yoyo: true, repeat: 1, ease: "power2.out" }, t);
+        const o = { v: from }; num.textContent = fmtK(from);
+        tl.to(o, { v: to, duration: dur, ease: "power2.out", onUpdate: () => { num.textContent = fmtK(o.v); } }, t);
+      }
+      // Textbox füllt immer genau den Text: jede Zeile bekommt ihren eigenen Balken
+      function wrapBt(scope) { document.querySelectorAll(scope + " .bt").forEach((el) => { if (!el.querySelector(":scope > .bx")) el.innerHTML = '<span class="bx">' + el.innerHTML + "</span>"; }); }
+
+      wrapBt("#s03-stage");
+      const tl = gsap.timeline({ paused: true });
+      const fa = at("L4", "Fabienne"), ab = at("L4", "abgestimmt"), l5 = line("L5")[0], ba = at("L5", "Bäckerei"), TB = line("L6")[0] - .4, gl = at("L6", "Glückwunsch"), l7 = line("L7")[0], vo = at("L7", "Vorteil"), H = 130, N = 40, W = 2;
+      tl.fromTo("#s03-t", { opacity: 0, scale: 2.6 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, line("L4")[0]);
+      tl.fromTo("#s03-v", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .25 }, ab - .2);
+      tl.fromTo("#s03-fc", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, fa - .2);
+      tl.to(["#s03-t", "#s03-v", "#s03-fc"], { opacity: 0, duration: .2 }, l5 - .2);
+      tl.fromTo("#s03-dim", { opacity: 0 }, { opacity: 1, duration: .3 }, l5);
+      tl.fromTo("#s03-lv", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, l5);
+      tl.to("#s03-lv", { opacity: .4, duration: .2, yoyo: true, repeat: 7, ease: "steps(1)" }, l5 + .4);
+      tl.fromTo("#s03-box", { opacity: 0, scale: .5 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2)" }, ba - .3);
+      tl.set("#s03-col", { y: -(N - 3) * H }, 0);
+      tl.fromTo("#s03-col", { y: -(N - 3) * H }, { y: -(W - 1) * H, duration: TB - (ba + .7), ease: "power3.out", immediateRender: false }, ba + .7);
+      tl.fromTo("#s03-col", { filter: "blur(5px)" }, { filter: "blur(0px)", duration: (TB - ba - .7) * .8, ease: "power2.in", immediateRender: false }, ba + .7);
+      tl.to("#s03-r" + W, { color: "#e2560c", scale: 1.15, duration: .2, ease: "back.out(3)" }, TB);
+      tl.to("#s03-band", { backgroundColor: "#ffd23f", duration: .15, yoyo: true, repeat: 5 }, TB);
+      tl.fromTo("#s03-st", { opacity: 0, scale: 2.6 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, TB + .2);
+      const R = rng(44), box = document.getElementById("s03-cfw"), cols = ["#ffd23f", "#e8467c", "#2fb3a0", "#fff", "#7b4fe0", "#ff7a59"];
+      for (let k = 0; k < 60; k++) { const d = document.createElement("div"); d.className = "cf"; d.style.background = cols[k % cols.length]; box.appendChild(d);
+        const a = R() * Math.PI * 2, v = 380 + R() * 560, dx = Math.cos(a) * v, dy = Math.sin(a) * v * .8 - 300;
+        tl.fromTo(d, { opacity: 0, x: 0, y: 0, rotation: 0, scale: .6 }, { opacity: 1, x: dx * .7, y: dy * .7, rotation: (R() - .5) * 720, scale: 1, duration: .45, ease: "power3.out" }, TB);
+        tl.to(d, { x: dx, y: dy + 700, rotation: "+=" + Math.round((R() - .5) * 540), opacity: 0, duration: 1.4, ease: "power1.in" }, TB + .45); }
+      tl.to(["#s03-box", "#s03-st", "#s03-lv"], { opacity: 0, duration: .25 }, gl + 1.0);
+      tl.fromTo("#s03-wn", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, gl + 1.1);
+      tl.to(["#s03-wn", "#s03-dim"], { opacity: 0, duration: .25 }, l7 - .2);
+      tl.fromTo("#s03-sp", { opacity: 0, scale: 3 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(1.8)" }, l7 - .05);
+      tl.fromTo("#s03-lk", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, at("L7", "Job") - .2);
+      tl.fromTo("#s03-lk b", { rotation: 0 }, { rotation: 12, duration: .1, yoyo: true, repeat: 7, immediateRender: false }, vo);
+      
+      window.__timelines["s03"] = tl;
+    })();
+  </script>
+</template>

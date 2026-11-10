@@ -1,0 +1,40 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+.pl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 28px 12px; border-radius: 999px; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); white-space: nowrap; }
+    .fbtn { position: absolute; left: 0; right: 0; margin: 0 auto; width: 420px; height: 120px; border-radius: 60px; background: #fe2c55; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 56px; display: grid; place-items: center; box-shadow: 0 0 0 5px #2a1b12, 0 12px 0 rgba(0,0,0,.25); }
+    .fbtn2 { position: absolute; inset: 0; border-radius: 60px; background: #fff; color: #0a78c2; display: grid; place-items: center; opacity: 0; }
+    .fhand { position: absolute; font-size: 120px; }
+    #s07-t { top: 290px; font-size: 50px; background: #e8467c; }
+    #s07-box { position: absolute; left: 352px; top: 700px; width: 278px; height: 560px; border-radius: 40px; border: 9px solid #ffd23f; box-shadow: 0 0 30px 8px rgba(255,210,63,.85); opacity: 0; }
+    #s07-hs { position: absolute; left: 215px; top: 930px; width: 130px; height: 130px; border-radius: 50%; background: #fff; display: grid; place-items: center; font-size: 78px; box-shadow: 0 0 0 7px #ffd23f, 0 0 0 12px #2a1b12; opacity: 0; }
+    #s07-btn { top: 400px; } #s07-hand { left: 690px; top: 450px; }
+  </style>
+  <div id="root" data-composition-id="s07" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s07-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s07-t" class="pl">👯 Markiert eure Freunde!</div>
+      <div id="s07-btn" class="fbtn">+ Folgen<div id="s07-btn2" class="fbtn2">✓ Gefolgt</div></div>
+      <div id="s07-hand" class="fhand" data-layout-ignore>👆</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      /*__COMMON_JS__*/
+      wrapBt("#s07-stage");
+      const tl = gsap.timeline({ paused: true });
+      const fr = at("L11", "Freunde"), fo = at("L11", "folgt");
+      tl.fromTo("#s07-t", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, fr - .3);
+      tl.fromTo("#s07-btn", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, fo - .4);
+      tl.fromTo("#s07-hand", { opacity: 0, x: 160, y: 160 }, { opacity: 1, x: 0, y: 0, duration: .25, ease: "power3.out" }, fo - .2);
+      tl.to("#s07-hand", { y: -26, scale: .9, duration: .1, yoyo: true, repeat: 1 }, fo + .1);
+      tl.to("#s07-btn2", { opacity: 1, duration: .05 }, fo + .2);
+      tl.fromTo("#s07-btn", { scale: 1 }, { scale: 1.15, duration: .12, yoyo: true, repeat: 1, immediateRender: false }, fo + .2);
+      tl.to("#s07-hand", { opacity: 0, duration: .25 }, fo + .7);
+      
+      window.__timelines["s07"] = tl;
+    })();
+  </script>
+</template>
