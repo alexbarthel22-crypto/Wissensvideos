@@ -2222,7 +2222,8 @@ const BONH=new Set();function bonHol(p){const k=p.name.toLowerCase();if(BONH.has
 function bonUpd(p){bonHol(p);const n=naechster(p),e=$('mpbon');const Z=(a,b)=>'<span class="bz">'+a+'</span><span class="bz">'+b+'</span>';if(n>Date.now()){e.className='bon done';e.innerHTML=Z('✅ Deine 50 Muscheln sind in der Inselkasse','nächster Bonus ab '+datum(n));}else{e.className='bon';e.innerHTML=Z('🐚 +50 Muscheln für die Inselkasse','alle 7 Tage möglich');}
  requestAnimationFrame(()=>{for(const z of e.querySelectorAll('.bz')){z.style.fontSize='';let fs=parseFloat(getComputedStyle(z).fontSize)||16;while(z.scrollWidth>z.clientWidth+1&&fs>10){fs-=.5;z.style.fontSize=fs+'px';}}});}
 async function bonus(p){if(naechster(p)>Date.now())return;
- try{const r=await fetch('/api/kasse',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({name:p.name})});const d=await r.json();
+ // bis zu 3 Versuche bei Netz-/Serverfehlern – sicher, weil der Server pro Name und Woche nur eine Buchung zulässt
+ try{let d=null,err=null;for(let v=0;v<3&&!d;v++){if(v)await new Promise(r=>setTimeout(r,v*1500));try{const r=await fetch('/api/kasse',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({name:p.name})});if(!r.ok)throw new Error('HTTP '+r.status);d=await r.json();}catch(e){err=e;}}if(!d)throw err;
   if(d.naechstes)try{localStorage.setItem(shareKey(p),String(d.naechstes-WOCHE));}catch(e){}
   if(d.bonus>=0){KASSE=d.bonus;kasseZeigen();}
   toast(d.ok?'🎉 Danke fürs Teilen! +50 🐚 für die Inselkasse':'🐚 Bonus schon geholt – wieder ab '+datum(d.naechstes));}
