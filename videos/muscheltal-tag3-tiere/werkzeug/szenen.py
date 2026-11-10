@@ -93,7 +93,7 @@ scene("s01", LILITA + "\n    " + PILL + "\n" + KASSE + """
     #s01-m { top: 800px; font-size: 44px; background: #2e9e5b; }""",
 """      <div id="s01-flash" data-layout-ignore></div>
       <div id="s01-ph"><div id="s01-scr"><div id="s01-ls">
-        <div id="s01-tm">9:41</div><div id="s01-bl"></div><div id="s01-home"></div>
+        <div id="s01-tm">14:24</div><div id="s01-bl"></div><div id="s01-home"></div>
         <div id="s01-al"><svg class="ic" viewBox="0 0 40 36"><path d="M20 2 L38 34 H2 Z" fill="#ffcc00" stroke="#ffcc00" stroke-width="3" stroke-linejoin="round"/><rect x="18" y="12" width="4" height="12" rx="2" fill="#111"/><circle cx="20" cy="29" r="2.4" fill="#111"/></svg>
         <div class="hd">Notfallalarm<span>Jetzt</span></div>
         <div class="tx">WARNUNG MUSCHEL-TAL – Hunderte streunende Hunde und Katzen ohne Zuhause! – Das Tierheim Pfotenkuss fehlt noch. – Bitte sofort helfen und auf die Insel einziehen! – Herausgegeben von: Bürgermeisterin von Muschel-Tal</div></div>
@@ -103,11 +103,12 @@ scene("s01", LILITA + "\n    " + PILL + "\n" + KASSE + """
       <div id="s01-f">Es fehlen nur noch<b>299</b>Bewohner!</div>
       <div id="s01-m" class="pl">➕ Folg mir, um einzuziehen!</div>""",
 """      const l1e = line("L1")[1], ko = at("L2", "kostet"), ka = at("L2", "Inselkasse"), fe = at("L3", "fehlen"), fo = at("L3", "folg"), st = at("L3", "Straße");
-      tl.fromTo("#s01-h", { opacity: 0, scale: 3.2 }, { opacity: 1, scale: 1, duration: .14, ease: "power4.in" }, 0);
-      for (let i = 0; i < 14; i++) tl.set("#s01-h", { backgroundColor: i % 2 ? "#e8262f" : "#fff", color: i % 2 ? "#fff" : "#e8262f" }, .2 + i * .18);
+      tl.set("#s01-h", { opacity: 1, scale: 1 }, 0);
+      tl.fromTo("#s01-h", { boxShadow: "0 0 0 7px #2a1b12, 0 0 70px 24px rgba(255,40,40,1)" }, { boxShadow: "0 0 0 7px #2a1b12, 0 0 14px 2px rgba(255,40,40,.35)", duration: .2, yoyo: true, repeat: 15, ease: "sine.inOut" }, 0);
+      tl.fromTo("#s01-h", { backgroundColor: "#ff2a2a" }, { backgroundColor: "#c4141c", duration: .2, yoyo: true, repeat: 15, ease: "sine.inOut" }, 0);
       tl.to("#s01-h", { x: 12, duration: .05, yoyo: true, repeat: 9 }, .16);
       tl.fromTo("#s01-flash", { opacity: 0 }, { opacity: 1, duration: .14, yoyo: true, repeat: 15, ease: "none" }, 0);
-      tl.fromTo("#s01-ph", { opacity: 0, y: 600, rotation: 8 }, { opacity: 1, y: 0, rotation: -3, duration: .35, ease: "back.out(1.6)" }, 0);
+      tl.fromTo("#s01-ph", { opacity: 0, y: 600, rotation: 8 }, { opacity: 1, y: 0, rotation: -3, duration: .25, ease: "back.out(1.6)" }, 0);
       tl.fromTo("#s01-al", { opacity: 0, y: -40, scale: .9 }, { opacity: 1, y: 0, scale: 1, duration: .25, ease: "back.out(2)" }, .3);
       tl.to("#s01-ph", { x: 9, rotation: -1.5, duration: .04, yoyo: true, repeat: 23, ease: "none" }, .35);
       tl.to("#s01-ph", { y: 1400, rotation: 14, scale: .7, duration: .4, ease: "power3.in" }, l1e - .25);
@@ -137,13 +138,13 @@ scene("s02", PILL + """
 """      const ac = at("L4", "Açaí-Stand"), li = at("L4", "Lilly"), ns = [at("L4", "Filipa"), at("L4", "Marina"), at("L4", "Johanna"), at("L4", "lp_art18")];
       tl.fromTo("#s02-t", { opacity: 0, scale: .3, rotation: -8 }, { opacity: 1, scale: 1, rotation: -2, duration: .4, ease: "back.out(2.6)" }, ac - .15);
       tl.fromTo("#s02-l", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, li - .2);
-      ns.forEach((t, i) => { tl.fromTo("#s02-n" + i, { opacity: 0, x: -140 }, { opacity: 1, x: 0, duration: .3, ease: "back.out(2)" }, t - .15);
-        tl.to("#s02-n" + i, { scale: 1.5, backgroundColor: "#ffd23f", boxShadow: "0 0 0 5px #2a1b12, 0 0 34px 10px rgba(255,210,63,.95)", zIndex: 5, duration: .14, ease: "back.out(3)" }, t + .15);
+      ns.forEach((t, i) => { tl.fromTo("#s02-n" + i, { opacity: 0, x: -140 }, { opacity: 1, x: 0, duration: .3, ease: "back.out(2)" }, ac + .1 + i * .08);
+        tl.to("#s02-n" + i, { scale: 1.4, backgroundColor: "#ffd23f", boxShadow: "0 0 0 5px #2a1b12, 0 0 34px 10px rgba(255,210,63,.95)", zIndex: 5, duration: .14, ease: "back.out(3)" }, t + .15);
         tl.to("#s02-n" + i, { scale: 1, backgroundColor: "#ffffff", boxShadow: "0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25)", zIndex: 1, duration: .25 }, t + .75); });""")
 
 # s03 – Moped-Werkstatt
 scene("s03", PILL + """
-    #s03-t { top: 960px; right: 140px; font-size: 46px; background: #e2560c; }
+    #s03-t { top: 960px; left: 60px; right: auto; margin: 0; font-size: 44px; background: #e2560c; }
     .s03-n { font-size: 34px; background: #fff; color: #2a1b12; right: auto; margin: 0; }""",
 """      <div id="s03-t" class="pl">🔧 MOPED-WERKSTATT</div>
       <div id="s03-n0" class="pl s03-n" style="top:1050px;left:60px">⭐ @bruecke.2803</div>

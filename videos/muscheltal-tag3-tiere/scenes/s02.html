@@ -26,8 +26,8 @@
       const ac = at("L4", "Açaí-Stand"), li = at("L4", "Lilly"), ns = [at("L4", "Filipa"), at("L4", "Marina"), at("L4", "Johanna"), at("L4", "lp_art18")];
       tl.fromTo("#s02-t", { opacity: 0, scale: .3, rotation: -8 }, { opacity: 1, scale: 1, rotation: -2, duration: .4, ease: "back.out(2.6)" }, ac - .15);
       tl.fromTo("#s02-l", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, li - .2);
-      ns.forEach((t, i) => { tl.fromTo("#s02-n" + i, { opacity: 0, x: -140 }, { opacity: 1, x: 0, duration: .3, ease: "back.out(2)" }, t - .15);
-        tl.to("#s02-n" + i, { scale: 1.5, backgroundColor: "#ffd23f", boxShadow: "0 0 0 5px #2a1b12, 0 0 34px 10px rgba(255,210,63,.95)", zIndex: 5, duration: .14, ease: "back.out(3)" }, t + .15);
+      ns.forEach((t, i) => { tl.fromTo("#s02-n" + i, { opacity: 0, x: -140 }, { opacity: 1, x: 0, duration: .3, ease: "back.out(2)" }, ac + .1 + i * .08);
+        tl.to("#s02-n" + i, { scale: 1.4, backgroundColor: "#ffd23f", boxShadow: "0 0 0 5px #2a1b12, 0 0 34px 10px rgba(255,210,63,.95)", zIndex: 5, duration: .14, ease: "back.out(3)" }, t + .15);
         tl.to("#s02-n" + i, { scale: 1, backgroundColor: "#ffffff", boxShadow: "0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25)", zIndex: 1, duration: .25 }, t + .75); });
       tl.to("#s02-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
       window.__timelines["s02"] = tl;

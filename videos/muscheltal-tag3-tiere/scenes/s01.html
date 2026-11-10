@@ -34,7 +34,7 @@
     <div id="s01-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
       <div id="s01-flash" data-layout-ignore></div>
       <div id="s01-ph"><div id="s01-scr"><div id="s01-ls">
-        <div id="s01-tm">9:41</div><div id="s01-bl"></div><div id="s01-home"></div>
+        <div id="s01-tm">14:24</div><div id="s01-bl"></div><div id="s01-home"></div>
         <div id="s01-al"><svg class="ic" viewBox="0 0 40 36"><path d="M20 2 L38 34 H2 Z" fill="#ffcc00" stroke="#ffcc00" stroke-width="3" stroke-linejoin="round"/><rect x="18" y="12" width="4" height="12" rx="2" fill="#111"/><circle cx="20" cy="29" r="2.4" fill="#111"/></svg>
         <div class="hd">Notfallalarm<span>Jetzt</span></div>
         <div class="tx">WARNUNG MUSCHEL-TAL – Hunderte streunende Hunde und Katzen ohne Zuhause! – Das Tierheim Pfotenkuss fehlt noch. – Bitte sofort helfen und auf die Insel einziehen! – Herausgegeben von: Bürgermeisterin von Muschel-Tal</div></div>
@@ -52,11 +52,12 @@
       wrapBt("#s01-stage");
       const tl = gsap.timeline({ paused: true });
       const l1e = line("L1")[1], ko = at("L2", "kostet"), ka = at("L2", "Inselkasse"), fe = at("L3", "fehlen"), fo = at("L3", "folg"), st = at("L3", "Straße");
-      tl.fromTo("#s01-h", { opacity: 0, scale: 3.2 }, { opacity: 1, scale: 1, duration: .14, ease: "power4.in" }, 0);
-      for (let i = 0; i < 14; i++) tl.set("#s01-h", { backgroundColor: i % 2 ? "#e8262f" : "#fff", color: i % 2 ? "#fff" : "#e8262f" }, .2 + i * .18);
+      tl.set("#s01-h", { opacity: 1, scale: 1 }, 0);
+      tl.fromTo("#s01-h", { boxShadow: "0 0 0 7px #2a1b12, 0 0 70px 24px rgba(255,40,40,1)" }, { boxShadow: "0 0 0 7px #2a1b12, 0 0 14px 2px rgba(255,40,40,.35)", duration: .2, yoyo: true, repeat: 15, ease: "sine.inOut" }, 0);
+      tl.fromTo("#s01-h", { backgroundColor: "#ff2a2a" }, { backgroundColor: "#c4141c", duration: .2, yoyo: true, repeat: 15, ease: "sine.inOut" }, 0);
       tl.to("#s01-h", { x: 12, duration: .05, yoyo: true, repeat: 9 }, .16);
       tl.fromTo("#s01-flash", { opacity: 0 }, { opacity: 1, duration: .14, yoyo: true, repeat: 15, ease: "none" }, 0);
-      tl.fromTo("#s01-ph", { opacity: 0, y: 600, rotation: 8 }, { opacity: 1, y: 0, rotation: -3, duration: .35, ease: "back.out(1.6)" }, 0);
+      tl.fromTo("#s01-ph", { opacity: 0, y: 600, rotation: 8 }, { opacity: 1, y: 0, rotation: -3, duration: .25, ease: "back.out(1.6)" }, 0);
       tl.fromTo("#s01-al", { opacity: 0, y: -40, scale: .9 }, { opacity: 1, y: 0, scale: 1, duration: .25, ease: "back.out(2)" }, .3);
       tl.to("#s01-ph", { x: 9, rotation: -1.5, duration: .04, yoyo: true, repeat: 23, ease: "none" }, .35);
       tl.to("#s01-ph", { y: 1400, rotation: 14, scale: .7, duration: .4, ease: "power3.in" }, l1e - .25);

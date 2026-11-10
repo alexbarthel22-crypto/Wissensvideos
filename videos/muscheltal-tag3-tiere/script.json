@@ -12,7 +12,7 @@
   "size": 92,
   "bars": true,
   "color": "rgba(255,255,255,.62)",
-  "css": "@font-face { font-family: 'Lilita One'; src: url('assets/fonts/LilitaOne-Regular.woff2') format('woff2'); font-weight: 400; }\n    .inner.hook { font-family: 'Lilita One', sans-serif; font-weight: 400; font-size: 98px; line-height: 1.12; letter-spacing: .01em; top: -560px; }\n    .inner.hook .bar { background: #ff3d7f !important; padding: .02em .3em .08em; border-radius: .5em; }\n    .inner.hook .w { color: #fff; }\n    .inner .bar .w { margin: 0 .07em; }\n    .inner .bar { border-radius: .55em; padding: .04em .36em .1em; }\n    .inner .w { white-space: nowrap; }\n    .inner.hook .w { display: inline-block; transform-origin: 50% 70%; }\n    .inner.hook .bar { background: none !important; box-shadow: none !important; padding: 0; }\n    .inner.hook .w { background: #ff3d7f; border-radius: .3em; padding: .02em .16em .1em; margin: .07em .03em; box-shadow: 0 0 0 0px #2a1b12, 0 8px 0 rgba(0,0,0,.28); position: relative; transform-origin: 50% 55%; }\n    .inner.hook .w.k-y { position: relative; z-index: 2; }\n    #cgi1.inner.hook, #cgi2.inner.hook { top: 0; }\n    .inner.hook { left: 40px; right: 40px; }\n    #cgi1 .w, #cgi2 .w { margin: .1em .12em; }\n    #cg0,#cg1,#cg2,#cg3,#cg4,#cg5,#cg6,#cg7,#cg8,#cg9,#cg10,#cg11,#cg12,#cg13,#cg14,#cg15 { top: 1040px; }\n    #cg11,#cg12,#cg13,#cg14,#cg15 { top: 1250px !important; }\n    #cg11 .inner,#cg12 .inner,#cg13 .inner,#cg14 .inner,#cg15 .inner { font-size: 70px !important; }",
+  "css": "@font-face { font-family: 'Lilita One'; src: url('assets/fonts/LilitaOne-Regular.woff2') format('woff2'); font-weight: 400; }\n    .inner.hook { font-family: 'Lilita One', sans-serif; font-weight: 400; font-size: 98px; line-height: 1.12; letter-spacing: .01em; top: -560px; }\n    .inner.hook .bar { background: #ff3d7f !important; padding: .02em .3em .08em; border-radius: .5em; }\n    .inner.hook .w { color: #fff; }\n    .inner .bar .w { margin: 0 .07em; }\n    .inner .bar { border-radius: .55em; padding: .04em .36em .1em; }\n    .inner .w { white-space: nowrap; }\n    .inner.hook .w { display: inline-block; transform-origin: 50% 70%; }\n    .inner.hook .bar { background: none !important; box-shadow: none !important; padding: 0; }\n    .inner.hook .w { background: #ff3d7f; border-radius: .3em; padding: .02em .16em .1em; margin: .07em .03em; box-shadow: 0 0 0 0px #2a1b12, 0 8px 0 rgba(0,0,0,.28); position: relative; transform-origin: 50% 55%; }\n    .inner.hook .w.k-y { position: relative; z-index: 2; }\n    #cgi1.inner.hook, #cgi2.inner.hook { top: 0; }\n    .inner.hook { left: 40px; right: 40px; }\n    #cgi1 .w, #cgi2 .w { margin: .1em .12em; }\n    #cg0,#cg1,#cg2,#cg3,#cg4,#cg5,#cg6,#cg7,#cg8,#cg9,#cg10,#cg11 { top: 1040px; }\n    #cg12,#cg13,#cg14,#cg15,#cg16 { top: 1250px !important; }\n    #cg12 .inner,#cg13 .inner,#cg14 .inner,#cg15 .inner,#cg16 .inner { font-size: 70px !important; }\n    #cg17 .inner,#cg18 .inner,#cg19 .inner { font-size: 76px !important; }",
   "vary": true,
   "pop_scale": 1.2,
   "bar_colors": [
@@ -43,7 +43,7 @@
     },
     {
      "id": "L3",
-     "text": "Jeder neue Bewohner bringt *y:5|fünf Muscheln mit. / Es fehlen nur noch *y:299|zweihundertneunundneunzig Bewohner – / *p:folg mir, um einzuziehen! / Sonst bleiben sie *r:für *r:immer auf der Straße!",
+     "text": "Jeder neue Bewohner bringt *y:5|fünf Muscheln mit. / Es fehlen nur noch *y:299|zweihundertneunundneunzig Bewohner – / *p:folg mir, um einzuziehen! / Sonst bleiben sie *r:für *r:immer auf der Straße – / *g:gib ihnen ein *g:schönes *g:Zuhause!",
      "speed": 1.12,
      "style": "Style: a young man calling for help, urgent and emotional, really worried about the animals, loud and dramatic but natural German intonation, normal pitch.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
     }
@@ -153,7 +153,7 @@
      "text": "*g:Glückwunsch, *y:Emilia und *y:Lea! / Die Villa ist ab jetzt / euer *y:Zuhause!",
      "speed": 1.1,
      "style": "Style: a young man, genuinely thrilled, telling his friends big news. Energetic but natural, not an announcer.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-     "pause": 3.6
+     "pause": 3.3
     }
    ],
    "sfx": [
@@ -211,7 +211,7 @@
   {
    "id": "s07",
    "tag": "",
-   "hold": 0.7,
+   "hold": 0.5,
    "lines": [
     {
      "id": "L10",

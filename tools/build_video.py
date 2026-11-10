@@ -127,7 +127,12 @@ def caption_groups(timings, windows):
         for w in l["words"]:
             by.setdefault(w["group"], []).append(w)
         for g in sorted(by):
-            ws = by[g]
+            ws = [w for w in by[g] if w["display"].strip() not in ("–", "-", "—")]  # Gedankenstrich am Satzende nicht anzeigen
+            for w in ws:
+                if w["display"].rstrip().endswith((" –", " -", " —")):
+                    w["display"] = w["display"].rstrip()[:-2].rstrip()
+            if not ws:
+                continue
             groups.append({"words": ws, "start": round(ws[0]["start"] - 0.06, 3), "end": round(ws[-1]["end"] + 0.25, 3)})
     if windows in ("single", "single_full"):  # ein Wort pro Einblendung (TikTok-Stil); single_full: erster Satz bleibt ganz stehen
         keep = groups[:1] if windows == "single_full" else []
