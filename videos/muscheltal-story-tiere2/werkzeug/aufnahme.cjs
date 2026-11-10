@@ -20,7 +20,8 @@ const G=await day.evaluate(()=>{const a=fitAll(),m=fitMain();const g=n=>{const x
  return{a,m,pt:{x:best.x,y:best.y},pk:{x:bk.x,y:bk.y},th:{x:BAU[2].cx,y:BAU[2].cy},ac:g('acai'),wk:g('werkstatt'),v:g('villa'),lu:{x:lu.p.x,y:lu.p.y},po:(()=>{const q=poolSpot(lu);return q?{x:q[0],y:q[1]}:{x:lu.p.x+12,y:lu.p.y}})()};});
 console.error(JSON.stringify(G));
 const PO=G.po,PZ=6.4,POY=PO.y+200/(PZ*2.6667);
-const K=[[0,0,80,2.8],[4,0,78,4.4],[7.6,-4,80,5.5],[9.8,-40,160,3.4],[dur,-40,168,4.2]];
+const K=[[0,0,80,2.8],[5,0,78,4.4],[9.0,-4,80,5.5],[11.0,-40,160,3.4],[dur,-40,168,4.2]];
+
 
 
 

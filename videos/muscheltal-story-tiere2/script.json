@@ -29,13 +29,13 @@
   {
    "id": "s01",
    "tag": "",
-   "hold": 4.7,
+   "hold": 3.4,
    "lines": [
     {
      "id": "L1",
-     "text": "*r:Hunderte *y:Tiere auf *b:Muschel-Tal / brauchen *r:eure *r:Hilfe!",
-     "speed": 1.08,
-     "style": "Style: a young man urgently and warmly asking his followers for help, worried about the animals but energetic, natural German intonation, normal pitch.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
+     "text": "Die *y:Tiere auf *b:Muschel-Tal / müssen *r:heute *r:Nacht / auf der *r:Straße *r:schlafen …",
+     "speed": 1.05,
+     "style": "Style: a young man, worried and sad, speaking softly but urgently to his friends about the animals, heartfelt, natural German intonation, normal pitch.\nPace: calm, then a bit more urgent.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
     },
     {
      "id": "L2",
@@ -54,14 +54,9 @@
    ],
    "sfx": [
     {
-     "name": "alarm",
-     "at": "s01+0.0",
-     "volume": 0.25
-    },
-    {
-     "name": "impact-bass-1",
-     "at": "L1:Hilfe",
-     "volume": 0.45
+     "name": "sad-trombone",
+     "at": "L1:schlafen",
+     "volume": 0.2
     },
     {
      "name": "pop",

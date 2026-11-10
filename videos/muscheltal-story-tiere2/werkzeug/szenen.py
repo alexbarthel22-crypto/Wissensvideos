@@ -62,8 +62,8 @@ FOLLOW = """    .fbtn { position: absolute; left: 0; right: 0; margin: 0 auto; w
     .fbtn2 { position: absolute; inset: 0; border-radius: 60px; background: #fff; color: #0a78c2; display: grid; place-items: center; opacity: 0; }
     .fhand { position: absolute; font-size: 120px; }"""
 scene("s01", PILL + "\n" + FOLLOW + """
-    #s01-flash { position: absolute; inset: 0; box-shadow: inset 0 0 220px 60px rgba(232,38,47,.85); opacity: 0; }
-    #s01-t { top: 290px; font-size: 62px; background: #e8262f; }
+    #s01-flash { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 45%, rgba(20,30,80,0) 30%, rgba(10,16,50,.55) 100%); opacity: 0; }
+    #s01-t { top: 290px; font-size: 54px; background: #23285a; }
     #s01-f { position: absolute; left: 90px; right: 90px; top: 410px; padding: 18px 26px 22px; border-radius: 30px; background: #fff; box-shadow: 0 0 0 6px #2a1b12, 0 12px 0 rgba(0,0,0,.28); font-family: "Inter", sans-serif; font-weight: 900; font-size: 42px; color: #2a1b12; text-align: center; }
     #s01-f span { display: inline-block; margin: 10px 6px 0; padding: 4px 18px 8px; border-radius: 999px; background: #e8f3ff; color: #0a78c2; font-size: 36px; }
     #s01-btn { top: 640px; } #s01-hand { left: 690px; top: 690px; }
@@ -73,18 +73,17 @@ scene("s01", PILL + "\n" + FOLLOW + """
     #s01-k b { display: block; font-size: 96px; color: #2e9e5b; line-height: 1.05; }
     #s01-d { top: 640px; font-size: 56px; background: #e8467c; }""",
 """      <div id="s01-flash" data-layout-ignore></div>
-      <div id="s01-t" class="pl">🚨 Die Tiere brauchen euch!</div>
+      <div id="s01-t" class="pl">🌙 Heute Nacht auf der Straße …</div>
       <div id="s01-f">👯 Lade deine Freunde ein<br><span>@deine_bff</span><span>@bester_freund</span></div>
       <div id="s01-btn" class="fbtn">+ Folgen<div id="s01-btn2" class="fbtn2">✓ Gefolgt</div></div>
       <div id="s01-hand" class="fhand" data-layout-ignore>👆</div>
       <div id="s01-r" class="pl">🐾 Tiere gerettet!</div>
       <div id="s01-m" class="pl">💬 Markiere sie unter dem Video!</div>
       <div id="s01-k">🐚 Jeder neue Bewohner<b id="s01-kn">+5</b>Muscheln fürs Tierheim Pfotenkuss</div>""",
-"""      const hi = at("L1", "Hilfe"), fr = at("L2", "Freunde"), fo = at("L2", "folgt"), re = at("L2", "rettet"), ma = at("L2", "Markiert"), l3 = line("L3")[0];
+"""      const hi = at("L1", "schlafen"), fr = at("L2", "Freunde"), fo = at("L2", "folgt"), re = at("L2", "rettet"), ma = at("L2", "Markiert"), l3 = line("L3")[0];
       tl.set("#s01-t", { opacity: 1 }, 0);
-      tl.fromTo("#s01-t", { scale: 2.4 }, { scale: 1, duration: .3, ease: "back.out(2.2)" }, 0);
-      tl.to("#s01-t", { opacity: .35, duration: .14, yoyo: true, repeat: 9, ease: "none" }, .4);
-      tl.fromTo("#s01-flash", { opacity: 0 }, { opacity: 1, duration: .14, yoyo: true, repeat: 11, ease: "none" }, 0);
+      tl.fromTo("#s01-t", { scale: .6, y: 20 }, { scale: 1, y: 0, duration: .6, ease: "power2.out" }, 0);
+      tl.fromTo("#s01-flash", { opacity: 1 }, { opacity: 0, duration: 1.2 }, line("L2")[0] - .6);
       tl.fromTo("#s01-f", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.4)" }, fr - .3);
       tl.fromTo("#s01-f span", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: .25, stagger: .15 }, fr + .1);
       tl.fromTo("#s01-btn", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, fo - .4);
