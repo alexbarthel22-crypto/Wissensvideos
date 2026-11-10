@@ -31,12 +31,17 @@
    "lines": [
     {
      "id": "L1",
-     "text": "Stell dir vor: / plötzlich kommt ein / *y:RED *y:BULL *r:TSUNAMI!",
-     "speed": 0.98,
-     "style": "Style: a young German guy, around 20, hyped and explosive, shouting the big news like the craziest thing ever, playful, natural German intonation, normal pitch.\nPace: fast.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
+     "text": "*r:ACHTUNG! / *y:RED *y:BULL *r:TSUNAMI!",
+     "speed": 1.0,
+     "style": "Style: a young German guy, around 20, shouting an emergency warning with huge explosive energy, like the craziest thing ever is happening right now, playful, natural German intonation, normal pitch.\nPace: deliberate and punchy, short dramatic pause after ACHTUNG.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
     }
    ],
    "sfx": [
+    {
+     "name": "alarm",
+     "at": "s01+0.0",
+     "volume": 0.3
+    },
     {
      "name": "impact-bass-1",
      "at": "s01+0.0",
@@ -44,8 +49,8 @@
     },
     {
      "name": "whoosh",
-     "at": "s01+0.0",
-     "volume": 0.35
+     "at": "L1:RED-0.3",
+     "volume": 0.45
     },
     {
      "name": "impact-bass-2",

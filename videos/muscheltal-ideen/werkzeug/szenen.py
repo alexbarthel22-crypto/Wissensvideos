@@ -87,22 +87,29 @@ def rain(cid, n, seed, t0, t1):
 r_h, r_js = rain("s01-c", 150, 4, '0', 'C.__dur + .3')
 b1_h, b1_js = drops("s01-b", 14, 21, 'rb', 540, 480, "⚡", 520, 700)
 scene("s01", LILITA + "\n    " + PILL + "\n    " + CAN + "\n    " + PT + "\n" + FL + """
-    #s01-a { top: 290px; font-size: 76px; padding: 10px 40px 16px; background: #7b3fe0; z-index: 5; }
-    #s01-h { z-index: 5; position: absolute; left: 70px; right: 70px; top: 440px; padding: 14px 20px 26px; border-radius: 40px; background: #1f3f95; color: #fff; font-family: "Lilita One", sans-serif; font-size: 160px; line-height: .95; text-align: center; box-shadow: 0 0 0 9px #2a1b12, 0 18px 0 rgba(0,0,0,.3), 0 0 80px 20px rgba(255,204,0,.6); transform: rotate(-3deg); }
+    #s01-a { top: 280px; font-size: 96px; padding: 8px 46px 16px; background: #e8262f; color: #ffe14a; z-index: 6; font-family: "Lilita One", sans-serif; font-weight: 400; box-shadow: 0 0 0 8px #ffcc00, 0 0 0 14px #2a1b12, 0 12px 0 rgba(0,0,0,.3); }
+    #s01-wv { position: absolute; left: 0; top: 0; width: 2400px; height: 1920px; z-index: 4; pointer-events: none; }
+    #s01-h { z-index: 5; position: absolute; left: 70px; right: 70px; top: 480px; padding: 14px 20px 26px; border-radius: 40px; background: #1f3f95; color: #fff; font-family: "Lilita One", sans-serif; font-size: 160px; line-height: .95; text-align: center; box-shadow: 0 0 0 9px #2a1b12, 0 18px 0 rgba(0,0,0,.3), 0 0 80px 20px rgba(255,204,0,.6); transform: rotate(-3deg); }
     #s01-h b { color: #ffcc00; font-weight: 400; }""",
 f"""      <div id="s01-fl" class="fl" data-layout-ignore></div>
-      <div id="s01-a" class="pl">🤯 Stell dir vor …</div>{b1_h}
+      <div id="s01-a" class="pl">⚠️ ACHTUNG!</div>
+      <svg id="s01-wv" viewBox="0 0 2400 1920" data-layout-ignore><defs><linearGradient id="s01-wg" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#0b4fa8" stop-opacity=".95"/><stop offset=".75" stop-color="#1f7fd6" stop-opacity=".9"/><stop offset="1" stop-color="#7fd0ff" stop-opacity=".85"/></linearGradient></defs>
+        <path d="M0 0 H1900 C2150 200 2300 420 2250 640 C2200 820 2020 860 1960 760 C1900 660 2040 600 2080 680 C2060 900 2200 1300 2050 1920 H0 Z" fill="url(#s01-wg)"/>
+        <path d="M1900 0 C2150 200 2300 420 2250 640 C2200 820 2020 860 1960 760 C1900 660 2040 600 2080 680 C2060 900 2200 1300 2050 1920" fill="none" stroke="#fff" stroke-width="46" stroke-linecap="round" stroke-dasharray="70 40" opacity=".9"/></svg>{b1_h}
       <div id="s01-h">🌊 RED BULL<br><b>TSUNAMI!</b></div>
       {r_h}""",
 """      const re = at("L1", "RED"), rb = at("L1", "TSUNAMI");
       tl.set("#s01-a", { opacity: 1 }, 0);
-      tl.fromTo("#s01-a", { scale: 3 }, { scale: 1, duration: .35, ease: "back.out(2.2)" }, 0);
+      tl.fromTo("#s01-a", { scale: 2.6 }, { scale: 1, duration: .3, ease: "back.out(2.2)" }, 0);
+      tl.to("#s01-a", { opacity: .35, duration: .12, yoyo: true, repeat: 5, ease: "steps(1)" }, .35);
+      const tsu = at("L1", "TSUNAMI");
+      tl.fromTo("#s01-wv", { x: -2500 }, { x: 1300, duration: 1.1, ease: "power2.inOut" }, at("L1", "RED") - .25);
+      tl.to("#s01-stage", { y: 14, duration: .05, yoyo: true, repeat: 13, ease: "none" }, tsu - .2);
       tl.fromTo("#s01-h", { opacity: 0, scale: 4.5, rotation: 12 }, { opacity: 1, scale: 1, rotation: -3, duration: .3, ease: "back.out(1.6)" }, re - .05);
       tl.to("#s01-h", { scale: 1.1, duration: .14, yoyo: true, repeat: 11, ease: "sine.inOut" }, re + .3);
       tl.fromTo("#s01-fl", { opacity: .9 }, { opacity: 0, duration: .35, immediateRender: false }, rb);
       tl.to("#s01-stage", { x: 18, duration: .04, yoyo: true, repeat: 9, ease: "none" }, rb);
-      tl.to("#s01-a", { rotation: 4, duration: .1, yoyo: true, repeat: 7 }, .3);
-""" + r_js + b1_js, blur=False)
+      """ + r_js + b1_js, blur=False)
 
 # s02 – Matcha-Brunnen
 b2_h, b2_js = drops("s02-b", 12, 31, 'gr', 540, 900, "🎉", 520, 700)
@@ -111,7 +118,7 @@ scene("s02", LILITA + "\n    " + PILL + "\n    " + PT + "\n" + FL + """
     #s02-bs { position: absolute; left: 240px; top: 930px; width: 600px; height: 170px; border-radius: 50%; background: radial-gradient(ellipse at 50% 40%, #b9e87a, #5fae2e 60%, #3c7d1c); box-shadow: 0 0 0 10px #f2e6c8, 0 0 0 16px #2a1b12, 0 0 60px 20px rgba(140,220,90,.8); }
     #s02-cup { position: absolute; left: 0; right: 0; margin: 0 auto; text-align: center; top: 600px; font-size: 380px; line-height: 1; filter: drop-shadow(0 0 40px rgba(140,220,90,.9)); }
     .s02-d { position: absolute; left: 520px; top: 640px; width: 40px; height: 40px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #d8f5b0, #6fbf3a 60%, #3f8a1f); box-shadow: 0 0 0 3px #2a1b12; opacity: 0; }
-    #s02-st { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 1080px; color: #3f9b3a; border-color: #3f9b3a; background: #fff; transform: rotate(-5deg); font-size: 64px; white-space: nowrap; font-family: "Lilita One", sans-serif; }""",
+    #s02-st { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 430px; color: #3f9b3a; border-color: #3f9b3a; background: #fff; transform: rotate(-5deg); font-size: 64px; white-space: nowrap; font-family: "Lilita One", sans-serif; }""",
 """      <div id="s02-t" class="pl">🍵 Matcha-Brunnen am Muschelplatz</div>
       <div id="s02-bs" data-layout-ignore></div><div id="s02-cup" data-layout-ignore>🍵</div>""" + "".join(f'<div class="s02-d" id="s02-d{i}" data-layout-ignore></div>' for i in range(26)) + """
       <div id="s02-st" class="stamp" data-layout-ignore>GRATIS FÜR ALLE!</div><div id="s02-fl" class="fl" data-layout-ignore></div>""" + b2_h,
