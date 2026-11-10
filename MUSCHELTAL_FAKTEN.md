@@ -177,3 +177,5 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - **Namensschilder beim Erkunden:** Die @Namen an den Hütten bleiben immer sichtbar, auch wenn man direkt davor steht; die eigene Figur steht dann vor dem Schild.
 - **Zur Hütte aus dem Muschelpass:** Nach „Zu …s Hütte“ fliegt die Karte hin und die Hütte leuchtet einmal ganz sanft auf, damit man sie erkennt.
 - **Sonnenaufgang/Sonnenuntergang-Erfolg:** gibt es nur noch, wenn man zur passenden Zeit die Welt als jemand **erkundet** (nicht schon beim Suchen/Auswählen des Namens). Sonnenuntergang entzogen am 10.11.: @emely.hac, @mimposible.
+- **Suche ohne Treffer:** „Noch nicht auf der Insel. Neue Einwohner ziehen beim nächsten Update über Nacht ein – folgst du schon auf TikTok @muscheltal?“ (@muscheltal verlinkt). Muschelpass-Suche entsprechend („das nächste Update kommt über Nacht“).
+- **Desktop:** Die Karte füllt nicht mehr den ganzen Bildschirm – unten schaut der nächste Abschnitt hervor, damit man sieht, dass man scrollen kann. Verschieben/Zoomen ist flüssig (Grundkarte wird nur noch verschoben statt bei jeder Bewegung neu gezeichnet; weit herausgezoomte Tiere vereinfacht).

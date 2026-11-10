@@ -31,7 +31,7 @@ section>h2{font-size:28px;margin-bottom:14px}
 .btn.hib{background:var(--hib);color:#fff}
 .btn:active,.chip:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
 /* ---------- Karte ---------- */
-.hero{position:relative;height:100vh;height:100svh;min-height:540px;max-height:960px;background:#0a7f9c;touch-action:none;overflow:hidden}
+.hero{position:relative;height:calc(100vh - 64px);height:calc(100svh - 64px);min-height:540px;max-height:960px;background:#0a7f9c;touch-action:none;overflow:hidden}
 #map{display:block;width:100%;height:100%;cursor:grab}
 #map.drag{cursor:grabbing}
 @media (pointer:coarse){.hero{height:82vh;height:82svh;min-height:480px}}
@@ -783,7 +783,17 @@ const cam={x:0,y:0,z:1},NAMES=[],TAPS=[];let sel=null,limit=N,growing=false;
 function freeY(){const h=$('hero').getBoundingClientRect(),t=Math.max($('q').getBoundingClientRect().bottom,$('pop').hidden?0:$('pop').getBoundingClientRect().bottom)-h.top+10,b=$('dock').getBoundingClientRect().top-h.top-10;return b-t>120?[t,b]:[0,H];}
 function fitMain(fr){const r=MAIN.R+25;if(!fr){const z=Math.min(W/(2*r),(H-270)/(2*r*.92));return{x:0,y:-10/z,z};}const [t,b]=fr,z=Math.min((W-20)/(2*r),(b-t)/(2*r*.92));return{x:0,y:(H/2-(t+b)/2)/z,z};}
 function fitAll(fr){const w=BOX.x1-BOX.x0,h=BOX.y1-BOX.y0;if(!fr){const z=Math.min((W-80)/w,(H-230)/h);return{x:(BOX.x0+BOX.x1)/2+34/z,y:(BOX.y0+BOX.y1)/2-12/z,z};}const [t,b]=fr,z=Math.min((W-40)/w,(b-t)/h);return{x:(BOX.x0+BOX.x1)/2,y:(BOX.y0+BOX.y1)/2+(H/2-(t+b)/2)/z,z};}
-function resize(){const b=cv.getBoundingClientRect();DPR=Math.min(2,window.devicePixelRatio||1);W=b.width;H=b.height;cv.width=base.width=fgc.width=W*DPR|0;cv.height=base.height=fgc.height=H*DPR|0;baseKey='';draw();}
+// Grundkarte wird mit Rand (BM) größer als der Bildschirm gezeichnet und beim Verschieben/Zoomen nur verschoben bzw. skaliert –
+// neu gezeichnet wird sie erst, wenn der Rand aufgebraucht ist oder der Zoom sich deutlich geändert hat (flüssiges Ziehen auch am Desktop).
+// Große Bildschirme: Pixeldichte so begrenzt, dass höchstens ~5 Mio. Bildpunkte gezeichnet werden (scharf, aber nicht überteuer).
+let BM=0,BASE={x:0,y:0,z:1},ZCH=0;
+function resize(){const b=cv.getBoundingClientRect();W=b.width;H=b.height;DPR=Math.min(2,window.devicePixelRatio||1,Math.max(1,Math.sqrt(5e6/Math.max(1,W*H))));BM=Math.round(Math.min(260,Math.max(W,H)*.3));
+ cv.width=W*DPR|0;cv.height=H*DPR|0;base.width=fgc.width=(W+2*BM)*DPR|0;base.height=fgc.height=(H+2*BM)*DPR|0;baseKey='';draw();}
+function baseBuild(){const w0=W,h0=H;W+=2*BM;H+=2*BM;try{drawBase();}finally{W=w0;H=h0;}BASE={x:cam.x,y:cam.y,z:cam.z};}
+// Grundkarte (oder Küstenhütten-Ebene) passend zur aktuellen Kamera auf den Bildschirm legen
+function baseBlit(c,img){const s=cam.z/BASE.z,ax=DPR*(W/2+(BASE.x-cam.x)*cam.z)-(W/2+BM)*DPR*s,ay=DPR*(H/2+(BASE.y-cam.y)*cam.z)-(H/2+BM)*DPR*s;c.setTransform(1,0,0,1,0,0);if(s===1)c.drawImage(img,Math.round(ax),Math.round(ay));else c.drawImage(img,ax,ay,img.width*s,img.height*s);}
+function baseOk(){const s=cam.z/BASE.z;if(s<.86||s>1.17)return false;if(s!==1&&performance.now()-ZCH>160)return false;const ax=DPR*(W/2+(BASE.x-cam.x)*cam.z)-(W/2+BM)*DPR*s,ay=DPR*(H/2+(BASE.y-cam.y)*cam.z)-(H/2+BM)*DPR*s;return ax<=0&&ay<=0&&ax+base.width*s>=cv.width-1&&ay+base.height*s>=cv.height-1;}
+let ZL=1;
 const s2w=(x,y)=>[(x-W/2)/cam.z+cam.x,(y-H/2)/cam.z+cam.y];
 const world=c=>c.setTransform(DPR*cam.z,0,0,DPR*cam.z,DPR*(W/2-cam.x*cam.z),DPR*(H/2-cam.y*cam.z));
 
@@ -1238,7 +1248,10 @@ function peacock(c,x,y,view,dir,fan,k){const t=T+k*3,mv=!fan&&Math.sin(t*9)!==0;
  if(view!=='back'){c.fillStyle='#fff';c.beginPath();c.ellipse(hx+(view==='side'?.18:-.22),-5.65,.22,.12,0,0,TAU);if(view==='front')c.ellipse(hx+.22,-5.65,.22,.12,0,0,TAU);c.fill();c.fillStyle='#111';c.beginPath();c.arc(hx+(view==='side'?.22:-.22),-5.65,.09,0,TAU);if(view==='front')c.arc(hx+.22,-5.65,.09,0,TAU);c.fill();
   c.fillStyle='#c9a46a';c.beginPath();if(view==='side'){c.moveTo(hx+.55,-5.75);c.lineTo(hx+1.05,-5.55);c.lineTo(hx+.55,-5.4);}else{c.moveTo(hx-.15,-5.45);c.lineTo(hx+.15,-5.45);c.lineTo(hx,-5.05);}c.closePath();c.fill();}
  c.restore();}
-function petsDraw(c,nl,z,vis){if(z*S<=9||GROWK!=null)return;petsStep();for(const a of PETS.list){if(!vis(a.x,a.y))continue;petDraw(c,a);hutsFront(c,a.x,a.y);}}
+function petsDraw(c,nl,z,vis){if(z*S<=9||GROWK!=null)return;petsStep();const far=z*S<26;
+ if(far){// weit weg: nur Körper + Kopf in Fellfarbe (Details wären ohnehin nur wenige Pixel groß)
+  for(const a of PETS.list){if(!vis(a.x,a.y))continue;const s=a.sz,B=a.sp.b,d=a.dir||1;c.fillStyle=B;c.beginPath();c.ellipse(a.x,a.y+2.2,2*s,1.1*s,0,0,TAU);c.moveTo(a.x+d*1.9*s+1.3*s,a.y+1);c.arc(a.x+d*1.9*s,a.y+1,1.3*s,0,TAU);c.fill();}return;}
+ for(const a of PETS.list){if(!vis(a.x,a.y))continue;petDraw(c,a);hutsFront(c,a.x,a.y);}}
 const ROAM={list:[],last:0,init:false};
 // Jogger: laufen außen am Strand hin und her (nur auf freien Strandstücken, nie durch Gebäude/Baustellen)
 const JOG={list:null};
@@ -1873,9 +1886,9 @@ function xmFog(c){const n=16;for(let k=0;k<n;k++){const a=k/n*TAU+(REDUCED?0:T*.
  if(!REDUCED){const s=Math.pow(Math.max(0,Math.sin(T*.9)),10);if(s>.05){c.fillStyle=`rgba(255,210,80,${s})`;const x=XM.x+18,y=XM.y-14;c.beginPath();for(let k=0;k<10;k++){const r=k%2?2.5:7,a=k/10*TAU-Math.PI/2;c.lineTo(x+Math.cos(a)*r,y+Math.sin(a)*r);}c.closePath();c.fill();}}}
 
 function draw(){
- if(!W)return;sunUpdate();const key=[cam.x,cam.y,cam.z,W,H,limit,SUN.key,kind(),nightLevel()>.5,GROWV?GROWV.i:'',GROWK==null?'':GEB.map(g=>GROWV===g.v&&GROWK<g.at?0:1).join('')+BAU.map(b=>bauOn(b)?1:0).join('')].join(',');
- if(key!==baseKey){drawBase();baseKey=key;}
- const c=ctx,z=cam.z,zr=z/fitMain().z;c.setTransform(1,0,0,1,0,0);c.drawImage(base,0,0);world(c);
+ if(!W)return;sunUpdate();if(cam.z!==ZL){ZL=cam.z;ZCH=performance.now();}const key=[W,H,limit,SUN.key,kind(),nightLevel()>.5,GROWV?GROWV.i:'',GROWK==null?'':GEB.map(g=>GROWV===g.v&&GROWK<g.at?0:1).join('')+BAU.map(b=>bauOn(b)?1:0).join('')].join(',');
+ if(key!==baseKey||!baseOk()){baseBuild();baseKey=key;}
+ const c=ctx,z=cam.z,zr=z/fitMain().z;baseBlit(c,base);world(c);
  const [x0,y0]=s2w(-40,-40),[x1,y1]=s2w(W+40,H+40),vis=(x,y)=>x>x0&&x<x1&&y>y0&&y<y1,visR=(x,y,r)=>x>x0-r&&x<x1+r&&y>y0-r&&y<y1+r;
  const nl=nightLevel(),K=kind(),sunny=K==='clear'||K==='fair';WFg=.6+Math.min(WX.wind,60)/25;
  for(const s of SPARK)if(vis(s.x,s.y)){const a=Math.pow(Math.max(0,Math.sin(T*s.sp+s.ph)),nl>.5?4:12)*(nl>.5?.7:(sunny?1:.3));if(a<.05)continue;c.fillStyle=nl>.5?`rgba(255,245,200,${a})`:`rgba(255,255,255,${a*.9})`;const r=2.2/Math.sqrt(z);c.fillRect(s.x-r,s.y-.3/z,r*2,.6/z);c.fillRect(s.x-.3/z,s.y-r,.6/z,r*2);}
@@ -1927,7 +1940,7 @@ function draw(){
    if(tl<.6&&t>.84){c.fillStyle=`rgba(235,248,255,${.8*(1-tl)})`;for(let i=0;i<5;i++){c.beginPath();c.arc(-9.6+(i-2)*1.6,-h*.5-1-Math.abs(i-2)*.6,.6,0,TAU);c.fill();}}}
   c.restore();}
  // Wellen/Krabben dürfen nicht über Hütten an der Küste liegen: diese Hütten darüber neu zeichnen
- if(fgOn){c.setTransform(1,0,0,1,0,0);c.drawImage(fgc,0,0);world(c);}
+ if(fgOn){baseBlit(c,fgc);world(c);}
  for(const [j,x,y,dx] of JD){const L=j.L,bob=REDUCED?0:-Math.abs(Math.sin(T*7+j.i))*.6;c.fillStyle='rgba(30,40,20,.22)';c.beginPath();c.ellipse(x,y+4.4,2.4,.8,0,0,TAU);c.fill();c.save();c.translate(x,y+bob);if(dx<0)c.scale(-1,1);person(c,L,REDUCED?0:Math.sin(T*14+j.i)*1.5,false,0);c.restore();hutsFront(c,x,y);
   TAPS.push([x,y,j.q]);if(z*S>30)NAMES.push([j.q.name,x,y-11.2*L.h-1]);}
  // Spaziergänger: einige Einwohner laufen mit ihrem @Namen über die Wege
@@ -1996,7 +2009,8 @@ function draw(){
   const pxs=S*z;
   const FIGS=[...TAPS.map(t=>[t[0],t[1],1]),...(PETS.list||[]).filter(a=>a.v.open).map(a=>[a.x,a.y,.6]),...(WK.on?[[WK.x,WK.y,1]]:[])];
   // Licht in Tür/Fenster nur dort, wo keine Figur davor steht
-  const litC=(q,w)=>{const F=FIGS.filter(([fx,fy])=>fy>=q.p.y+.5&&Math.abs(fx-q.p.x)<9&&fy-q.p.y<20);if(!F.length)return litShape(c,q,w);c.save();c.beginPath();c.rect(q.p.x-12,q.p.y-16,24,30);for(const [fx,fy,h] of F)c.rect(fx-3.4*h,fy-12*h,6.8*h,16*h);c.clip('evenodd');litShape(c,q,w);c.restore();};
+  const FG=new Map();for(const f of FIGS){const k=Math.floor(f[0]/20)+','+Math.floor(f[1]/20);let L=FG.get(k);if(!L)FG.set(k,L=[]);L.push(f);}
+  const litC=(q,w)=>{const gx=Math.floor(q.p.x/20),gy=Math.floor(q.p.y/20),F=[];for(let i=-1;i<=1;i++)for(let j=0;j<=1;j++){const L=FG.get((gx+i)+','+(gy+j));if(L)for(const f of L)if(f[1]>=q.p.y+.5&&Math.abs(f[0]-q.p.x)<9&&f[1]-q.p.y<20)F.push(f);}if(!F.length)return litShape(c,q,w);c.save();c.beginPath();c.rect(q.p.x-12,q.p.y-16,24,30);for(const [fx,fy,h] of F)c.rect(fx-3.4*h,fy-12*h,6.8*h,16*h);c.clip('evenodd');litShape(c,q,w);c.restore();};
   for(const q of PLACED){if(q.nr>limit||!vis(q.p.x,q.p.y))continue;if(!AWAKE.has(q)){if(pxs>=7){c.fillStyle=`rgba(255,200,110,${.1*nl})`;litC(q,false);}continue;}const fl=.75+.25*Math.sin(T*3+q.nr);
    if(pxs<7){c.fillStyle=`rgba(255,190,80,${.35*nl})`;c.fillRect(q.p.x-3,q.p.y-3,6,6);continue;}
    c.fillStyle=`rgba(255,170,60,${.18*nl*fl})`;c.beginPath();c.arc(q.p.x,q.p.y+3,8,0,TAU);c.fill();
@@ -2241,7 +2255,7 @@ $('mpgo').onclick=()=>{$('mp').hidden=true;if(mpWalk)return;window.scrollTo({top
 $('mpq').oninput=()=>{const t=$('mpq').value.trim().toLowerCase().replace(/^@/,'');if(!t){$('mps').hidden=true;$('mpm').hidden=true;return;}
  const h=PEOPLE.filter(p=>p.name.toLowerCase().replace(/^@/,'').includes(t)).sort((a,b)=>(a.name.toLowerCase().replace(/^@/,'').startsWith(t)?0:1)-(b.name.toLowerCase().replace(/^@/,'').startsWith(t)?0:1)||a.nr-b.nr).slice(0,6);
  $('mps').innerHTML=h.map(p=>'<li><button type="button" data-n="'+esc(p.name)+'">'+esc(p.name)+'<small>Hütte '+fmt(p.nr)+'</small></button></li>').join('');$('mps').hidden=!h.length;
- $('mpm').hidden=!!h.length;$('mpm').innerHTML='Noch nicht gefunden – folg auf TikTok <a class="accl" href="'+ACCURL+'" target="_blank" rel="noopener">'+esc(ACC)+'</a> und schau morgen wieder rein 🐚';};
+ $('mpm').hidden=!!h.length;$('mpm').innerHTML='Noch nicht gefunden – das nächste Update kommt über Nacht. Folg auf TikTok <a class="accl" href="'+ACCURL+'" target="_blank" rel="noopener">'+esc(ACC)+'</a> und schau morgen wieder rein 🐚';};
 $('mps').onclick=e=>{const b=e.target.closest('button');if(b)zeigePass(byName.get(b.dataset.n.toLowerCase()));};
 $('mpq').onkeydown=e=>{if(e.key==='Enter'){const b=$('mps').querySelector('button');if(b)b.click();}};
 document.addEventListener('keydown',e=>{if(e.key==='Escape')$('mp').hidden=true;});
@@ -2251,7 +2265,7 @@ const q=$('q'),sg=$('sugg');let hits=[],act=-1;
 function find(s){s=s.trim().toLowerCase().replace(/^(#|nr\.?\s*)/,'');if(!s)return[];if(/^\d+$/.test(s)){const p=PEOPLE[+s-1];return p?[p]:[];}
  const t=s.replace(/^@/,''),a=[],b=[];for(const p of PEOPLE){const n=p.name.slice(1).toLowerCase();if(n.startsWith(t))a.push(p);else if(b.length<6&&n.includes(t))b.push(p);if(a.length>=6)break;}return a.concat(b).slice(0,6);}
 function showS(){sg.innerHTML=hits.map((p,i)=>'<li><button type="button" data-i="'+i+'"'+(i===act?' class="act"':'')+'>'+esc(p.name)+'<small>Nr. '+fmt(p.nr)+'</small></button></li>').join('');sg.hidden=!hits.length;}
-q.addEventListener('input',()=>{hits=find(q.value);act=-1;showS();$('miss').hidden=!(q.value.trim().length>1&&!hits.length);$('miss').innerHTML='Noch nicht auf der Insel. Neue Einwohner kommen beim nächsten Update – folgst du schon auf TikTok <a class="accl" href="'+ACCURL+'" target="_blank" rel="noopener">'+esc(ACC)+'</a>?';});
+q.addEventListener('input',()=>{hits=find(q.value);act=-1;showS();$('miss').hidden=!(q.value.trim().length>1&&!hits.length);$('miss').innerHTML='Noch nicht auf der Insel. Neue Einwohner ziehen beim nächsten Update über Nacht ein – folgst du schon auf TikTok <a class="accl" href="'+ACCURL+'" target="_blank" rel="noopener">'+esc(ACC)+'</a>?';});
 q.addEventListener('keydown',e=>{if(e.key==='ArrowDown'){act=Math.min(hits.length-1,act+1);showS();e.preventDefault();}else if(e.key==='ArrowUp'){act=Math.max(0,act-1);showS();e.preventDefault();}else if(e.key==='Enter'){const p=hits[act<0?0:act];if(p)pick(p);}else if(e.key==='Escape')sg.hidden=true;});
 sg.addEventListener('click',e=>{const b=e.target.closest('button');if(b)pick(hits[+b.dataset.i]);});
 function pick(p){q.value=p.name;$('qx').hidden=false;sg.hidden=true;$('miss').hidden=true;q.blur();window.scrollTo({top:0,behavior:'smooth'});select(p);}
