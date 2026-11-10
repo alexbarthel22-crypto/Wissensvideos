@@ -5,9 +5,9 @@
 **Verlosung Strandvilla:** @emiliamarie155 (Nr. 225) und @lea.3818730 (Nr. 286), am 10.11. per Zufall (Python `secrets.choice`) aus allen Einwohnern ohne Amt/Job gezogen.
 
 ## Hauptversion (zum Posten)
-Hilfe! Die Streuner auf Muschel-Tal brauchen ein Tierheim 🐾 Folg mir – jedes Follow bringt 5 Muscheln in die Inselkasse 🐚
+Hilfe! Die Streuner auf Muschel-Tal brauchen ein Tierheim 🐾 Folg mir, um einzuziehen – jeder neue Bewohner bringt 5 Muscheln in die Inselkasse 🐚
 
-Tag 3: Inselkasse 505 / 2.000 – es fehlen nur noch 299 Follower!
+Tag 3: Inselkasse 505 / 2.000 – es fehlen nur noch 299 Bewohner!
 🫐 Açaí-Stand: @vidafilipa (Leitung), @marina.cgnn, @borbie20, @lp_art18
 🔧 Moped-Werkstatt: @bruecke.2803 (Leitung), @anti.teamtoxic
 🏊 Neuer Pool für @luisedbr.11
