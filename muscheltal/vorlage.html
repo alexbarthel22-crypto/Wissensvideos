@@ -870,23 +870,26 @@ function drawIsland(c,v,vis,z){
  if(wet){c.fillStyle='rgba(20,55,60,.17)';shape(c,v,10);c.fill();}
  if(snow){c.fillStyle='rgba(248,251,255,.6)';shape(c,v,10);c.fill();c.fillStyle='rgba(248,251,255,.35)';shape(c,v,-2);c.fill();
   for(const s of v.grass)if(vis(s.x,s.y)){c.fillStyle='rgba(255,255,255,.5)';c.beginPath();c.ellipse(s.x,s.y,s.r*.8,s.r*.5,0,0,TAU);c.fill();}}
- if(v.plots.length&&z>.12){c.save();shape(c,v,-4);c.clip();c.lineCap='round';const g=Math.ceil(v.R/S)+1;
-  const road=()=>{c.beginPath();for(let gx=-g;gx<=g;gx++){if(((gx%5)+5)%5)continue;c.moveTo(v.x+gx*S,v.y-v.R);c.lineTo(v.x+gx*S,v.y+v.R);}
-   for(let gy=-g;gy<=g;gy++){if(((gy%4)+4)%4)continue;c.moveTo(v.x-v.R,v.y+gy*S*.9);c.lineTo(v.x+v.R,v.y+gy*S*.9);}};
+ if(v.plots.length&&z>.12){c.save();shape(c,v,9);c.clip();c.lineCap='round';const g=Math.ceil(v.R/S)+1;
+  // Wege enden nicht eckig an der Küste: jeder Weg läuft ein Stück auf den Strand und endet abgerundet
+  const EXT=-5,onL=(x,y)=>inside(v,x,y,EXT);
+  if(!v.rseg){v.rseg=[];const seg=(x0,y0,dx,dy,L)=>{let a=null;for(let t=0;t<=L;t+=1.2){const x=x0+dx*t,y=y0+dy*t,ok=onL(x,y);if(ok&&a==null)a=t;if((!ok||t+1.2>L)&&a!=null){const b=ok?t:t-1.2;if(b-a>2)v.rseg.push([x0+dx*a,y0+dy*a,x0+dx*b,y0+dy*b]);a=null;}}};
+   for(let gx=-g;gx<=g;gx++){if(((gx%5)+5)%5)continue;seg(v.x+gx*S,v.y-v.R-20,0,1,2*v.R+40);}for(let gy=-g;gy<=g;gy++){if(((gy%4)+4)%4)continue;seg(v.x-v.R-20,v.y+gy*S*.9,1,0,2*v.R+40);}}
+  const road=()=>{c.beginPath();for(const [x0,y0,x1,y1] of v.rseg){c.moveTo(x0,y0);c.lineTo(x1,y1);}};
   const RC=kok?(snow?[[7.5,'#8a6a50'],[5.5,'#f4f8fc']]:wet?[[7.5,'#4a2e14'],[5.5,'#7a5230']]:[[7.5,'#6b4423'],[5.5,'#b9854d']]):wet?[[8,'#a8895a'],[5.5,'#b99a68']]:snow?[[8,'#d6e0ea'],[5.5,'#fbfdff']]:[[8,'#e3c48a'],[5.5,'#f3dcac']];
   for(const [w,col] of RC){c.strokeStyle=col;c.lineWidth=w;road();c.stroke();}
   if(kok&&!snow&&z>.6){c.lineCap='butt';c.strokeStyle='rgba(70,40,15,.45)';c.lineWidth=5.5;c.setLineDash([.6,1.7]);road();c.stroke();c.setLineDash([]);c.lineCap='round';}
   // Feine Struktur auf den Wegen (nur nah): Sandwege mit Körnchen, Steinchen und kleinen Glitzer-Sternchen; Holzwege mit Maserung/Fasern
   if(!snow&&z*S>10){if(!v.grain){const G=[];let n=0;const add=(x,y,dirV)=>{const h1=hash(n,701+v.i),h2=hash(n,702),h3=hash(n,703);n++;const o=(h1-.5)*5,x2=dirV?x+o:x,y2=dirV?y:y+o*.9;G.push(x2,y2,h2,h3,dirV?1:0);};
-    for(let gx=-g;gx<=g;gx++){if(((gx%5)+5)%5)continue;for(let y=v.y-v.R;y<v.y+v.R;y+=1.1)add(v.x+gx*S,y,1);}
-    for(let gy=-g;gy<=g;gy++){if(((gy%4)+4)%4)continue;for(let x=v.x-v.R;x<v.x+v.R;x+=1.1)add(x,v.y+gy*S*.9,0);}v.grain=new Float32Array(G);}
+    for(let gx=-g;gx<=g;gx++){if(((gx%5)+5)%5)continue;for(let y=v.y-v.R;y<v.y+v.R;y+=1.1)if(onL(v.x+gx*S,y+3)&&onL(v.x+gx*S,y-3))add(v.x+gx*S,y,1);}
+    for(let gy=-g;gy<=g;gy++){if(((gy%4)+4)%4)continue;for(let x=v.x-v.R;x<v.x+v.R;x+=1.1)if(onL(x+3,v.y+gy*S*.9)&&onL(x-3,v.y+gy*S*.9))add(x,v.y+gy*S*.9,0);}v.grain=new Float32Array(G);}
    const Gr=v.grain,dk=wet?.12:0;
    if(kok){c.lineCap='round';const fib=[[`rgba(70,40,15,${.35+dk})`,.16],['rgba(225,180,120,.45)',.12]];for(const [col,lw] of fib){c.strokeStyle=col;c.lineWidth=lw;c.beginPath();for(let i=0;i<Gr.length;i+=5){const x=Gr[i],y=Gr[i+1],h=Gr[i+2],k=Gr[i+3];if((col[5]==='7')!==(k<.6)||!vis(x,y))continue;const L=.6+h*1.8;if(Gr[i+4]){c.moveTo(x,y-L/2);c.lineTo(x+(k-.5)*.25,y+L/2);}else{c.moveTo(x-L/2,y);c.lineTo(x+L/2,y+(k-.5)*.25);}}c.stroke();}}
    else{const P=[[`rgba(170,130,70,${.45+dk})`,.2,0,.45],['rgba(255,250,235,.8)',.17,.45,.75],[`rgba(140,115,80,${.5+dk})`,.32,.75,.84]];
     for(const [col,r,a0,a1] of P){c.fillStyle=col;c.beginPath();for(let i=0;i<Gr.length;i+=5){const k=Gr[i+3];if(k<a0||k>=a1)continue;const x=Gr[i],y=Gr[i+1];if(!vis(x,y))continue;const rr=r*(.6+Gr[i+2]*.8);c.moveTo(x+rr,y);c.arc(x,y,rr,0,TAU);}c.fill();}
     if(z*S>24){c.fillStyle='rgba(255,255,255,.9)';c.beginPath();for(let i=0;i<Gr.length;i+=5){const k=Gr[i+3];if(k<.84||k>=.87)continue;const x=Gr[i],y=Gr[i+1];if(!vis(x,y))continue;const r=.35;c.moveTo(x,y-r);c.lineTo(x+.08,y-.08);c.lineTo(x+r,y);c.lineTo(x+.08,y+.08);c.lineTo(x,y+r);c.lineTo(x-.08,y+.08);c.lineTo(x-r,y);c.lineTo(x-.08,y-.08);c.closePath();}c.fill();}}}
   // Pfützen (Regen) bzw. Fußspuren im Schnee auf den Wegen
-  if((wet||snow)&&z>.5)for(let gx=-g;gx<=g;gx++)for(let gy=-g;gy<=g;gy++){const onX=!(((gx%5)+5)%5),onY=!(((gy%4)+4)%4);if(!onX&&!onY)continue;const h=hash(gx*3+v.i,gy*5-1);if(h>(wet?.33:.22))continue;const x=v.x+gx*S+(onX?(hash(gx,gy+9)-.5)*2:(hash(gx+9,gy)-.5)*10),y=v.y+gy*S*.9+(onY?(hash(gx+4,gy)-.5)*1.5:(hash(gx,gy+4)-.5)*9);if(!vis(x,y))continue;
+  if((wet||snow)&&z>.5)for(let gx=-g;gx<=g;gx++)for(let gy=-g;gy<=g;gy++){const onX=!(((gx%5)+5)%5),onY=!(((gy%4)+4)%4);if(!onX&&!onY)continue;const h=hash(gx*3+v.i,gy*5-1);if(h>(wet?.33:.22))continue;const x=v.x+gx*S+(onX?(hash(gx,gy+9)-.5)*2:(hash(gx+9,gy)-.5)*10),y=v.y+gy*S*.9+(onY?(hash(gx+4,gy)-.5)*1.5:(hash(gx,gy+4)-.5)*9);if(!vis(x,y)||!inside(v,x,y,-1))continue;
    if(wet){const r=2+h*7;c.fillStyle='rgba(88,140,170,.6)';c.beginPath();c.ellipse(x,y,onX&&!onY?r*.5:r,onX&&!onY?r*.9:r*.45,0,0,TAU);c.fill();c.strokeStyle='rgba(225,240,255,.75)';c.lineWidth=.5;c.beginPath();c.ellipse(x-r*.15,y-r*.08,r*.35,r*.12,0,Math.PI*1.1,Math.PI*1.9);c.stroke();
 }
    else{c.fillStyle='rgba(150,170,195,.45)';for(let k=0;k<4;k++){const ox=onX&&!onY?((k%2)-.5)*1.4:k*2.4-3.6,oy=onX&&!onY?k*2.4-3.6:((k%2)-.5)*1.4;c.beginPath();c.ellipse(x+ox,y+oy,.55,.8,0,0,TAU);c.fill();}}}
