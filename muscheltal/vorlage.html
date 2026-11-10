@@ -2190,7 +2190,7 @@ function draw(){
   for(const v of ISL){if(v.tier===3)glow(v.x,v.y-24,60,'255,120,40',.6*nl*(.8+.2*Math.sin(T*3)));if(v.tier===1)glow(v.x,v.y-6,v.open?70:30,'255,150,60',.6*nl*(.85+.15*Math.sin(T*9)));if(v.tier===4)glow(v.x,v.y-2,40,'230,220,255',.5*nl);}
   if(visR(XM.x,XM.y,XM.r*2))glow(XM.x+18,XM.y-14,40,'255,220,140',.25*nl*(.7+.3*Math.sin(T*1.3)));
   c.globalCompositeOperation='source-over';}
- const nc={clear:3,fair:5,clouds:10,fog:7,rain:12,snow:10,storm:12}[K],ca=Math.max(0,Math.min(1,1.6-zr*.6))*(1-nl*.5);if(ca>.02)for(let i=0;i<nc;i++)cloud(c,CLOUDS[i],ca,K==='rain'||K==='storm'||K==='snow');
+ const nc={clear:3,fair:5,clouds:10,fog:0,rain:12,snow:10,storm:12}[K],ca=Math.max(0,Math.min(1,1.6-zr*.6))*(1-nl*.5);if(ca>.02)for(let i=0;i<nc;i++)cloud(c,CLOUDS[i],ca,K==='rain'||K==='storm'||K==='snow');
  if(zr<4&&nl<.6&&(K==='clear'||K==='fair'||K==='clouds')){c.strokeStyle='#fff';c.lineWidth=1.3;for(const b of BIRDS){const a=b.ph+T*b.sp;const [x,y]=polar(MAIN,a,b.r);const f=Math.sin(T*8+b.ph)*2.5;c.beginPath();c.moveTo(x-5,y-f);c.quadraticCurveTo(x-2,y-3,x,y);c.quadraticCurveTo(x+2,y-3,x+5,y-f);c.stroke();}}
  // Beschriftung (herausgezoomt)
  if(zr<.8&&z>fitAll().z*.6){c.textAlign='center';c.lineJoin='round';const fz=Math.max(.95,Math.min(1.15,zr/.5));const lab=(t,x,y,fs,col)=>{fs*=fz;c.font='900 '+fs/z+'px '+FONT;c.lineWidth=4/z;c.strokeStyle='#2a1b12';c.fillStyle=col;c.strokeText(t,x,y);c.fillText(t,x,y);};
