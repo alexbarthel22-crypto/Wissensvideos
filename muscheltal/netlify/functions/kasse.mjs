@@ -1,4 +1,4 @@
-// Inselkasse: +50 Muscheln, wenn jemand seinen Muschelpass in der Story teilt (pro TikTok-Name alle 7 Tage).
+// Inselkasse: +50 Muscheln, wenn jemand seinen Muschelpass in der Story teilt (pro TikTok-Name alle 7 Tage), dazu Spenden aus den Muschel-Konten ("s/<name>/<kennung>/<betrag>").
 // Sicher gegen Verluste und Doppelbuchungen: Jede Buchung ist ein eigener, unveränderlicher Eintrag im Kontobuch
 // ("b/<name>/<zeit>-<zufall>"); es wird kein Zähler überschrieben. Der Kassenstand ist die Summe aller gültigen Einträge.
 // Gültig ist pro Name höchstens eine Buchung je 7 Tage (bei gleichzeitigen Anfragen gewinnt die früheste, die andere wird verworfen).
@@ -32,7 +32,8 @@ export default async (req) => {
   // Altbestand: bisheriger Zähler (bleibt unverändert als Sockel) und die alten "zuletzt geteilt"-Zeiten
   const alt = (await store.get("stand", { type: "json" })) || { bonus: 0 };
   const altZeit = async n => Number(await store.get("geteilt/" + n)) || 0;
-  const summe = async () => { const ok = gueltig(await liste(store, "b/"), {}); let c = 0; for (const L of Object.values(ok)) c += L.length; return (alt.bonus || 0) + c * BONUS; };
+  const spenden = async () => (await liste(store, "s/")).reduce((s, k) => s + (Number(k.split("/").pop()) || 0), 0); // Spenden aus den Muschel-Konten
+  const summe = async () => { const ok = gueltig(await liste(store, "b/"), {}); let c = 0; for (const L of Object.values(ok)) c += L.length; return (alt.bonus || 0) + c * BONUS + (await spenden()); };
 
   if (req.method === "GET") {
     const n = (new URL(req.url).searchParams.get("name") || "").trim().toLowerCase();
@@ -42,6 +43,7 @@ export default async (req) => {
       const z = Math.max(a, ok.length ? ok[ok.length - 1].ts : 0);
       return json({ bonus, naechstes: z ? z + WOCHE : 0 });
     }
+    if (new URL(req.url).searchParams.get("spenden")) return json({ bonus, spenden: await spenden() });
     return json({ bonus });
   }
   if (req.method !== "POST") return json({ fehler: "Methode" }, 405);

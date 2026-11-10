@@ -464,6 +464,11 @@ def demo_rows(n):
 
 def baue(rows, out):
     insel = json.load(open(INSEL, encoding="utf-8"))
+    # Jobs für die Server-Funktion der Muschel-Konten (Job-Zuschlag beim Login-Bonus)
+    lib = os.path.join(HIER, "netlify", "lib")
+    os.makedirs(lib, exist_ok=True)
+    with open(os.path.join(lib, "jobs.mjs"), "w", encoding="utf-8") as f:
+        f.write("// automatisch aus daten/insel.json erzeugt (bau.py) – nicht von Hand ändern\nexport const JOBS = " + json.dumps({k.lower().lstrip("@"): v for k, v in insel.get("jobs", {}).items()}, ensure_ascii=False) + ";\n")
     try:
         from zoneinfo import ZoneInfo
         jetzt = dt.datetime.now(ZoneInfo("Europe/Berlin"))
