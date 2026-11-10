@@ -1,0 +1,97 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+@font-face { font-family: "Lilita One"; src: url("assets/fonts/LilitaOne-Regular.woff2") format("woff2"); font-weight: 400; }
+    .pl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 28px 12px; border-radius: 999px; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); white-space: nowrap; }
+    #s01-c { position: absolute; left: 0; right: 0; margin: 0 auto; top: 400px; width: fit-content; padding: 6px 40px 12px; border-radius: 40px; background: #fff; border: 7px solid #ff6a1a;
+      font-family: "Inter", sans-serif; color: #0a78c2; font-weight: 900; font-size: 44px; display: flex; flex-direction: column; align-items: center; line-height: 1; box-shadow: 0 12px 0 rgba(0,40,80,.3); }
+    #s01-c b { font-size: 130px; color: #ff6a1a; line-height: 1; }
+    #s01-p { top: 410px; left: 760px; right: auto; margin: 0; font-size: 46px; background: #2e9e5b; transform: rotate(8deg); }
+    #s01-k { top: 660px; font-size: 46px; background: #18b8c0; }
+    #s01-tag { top: 300px; font-size: 52px; background: #ff6a1a; }
+    #s01-tool { position: absolute; left: 330px; top: 120px; width: 420px; height: 330px; transform-origin: 50% 100%; }
+    #s01-tool .kn { position: absolute; left: 160px; top: 0; width: 100px; height: 100px; border-radius: 50%; background: #8a4b2a; box-shadow: inset -10px -10px 0 rgba(0,0,0,.25), 0 0 0 6px #2a1b12; }
+    #s01-tool .st { position: absolute; left: 180px; top: 80px; width: 60px; height: 140px; background: #a8613a; box-shadow: inset -8px 0 0 rgba(0,0,0,.25), 0 0 0 6px #2a1b12; }
+    #s01-tool .bs { position: absolute; left: 0; top: 210px; width: 420px; height: 70px; border-radius: 16px; background: #5a2e1a; box-shadow: inset 0 -10px 0 rgba(0,0,0,.3), 0 0 0 6px #2a1b12; }
+    #s01-tool .ru { position: absolute; left: 10px; top: 280px; width: 400px; height: 40px; border-radius: 0 0 12px 12px; background: #ff2e7e; box-shadow: 0 0 0 6px #2a1b12; }
+    #s01-ink { position: absolute; left: 0; right: 0; margin: 0 auto; width: 560px; height: 220px; top: 310px; border-radius: 50%; background: radial-gradient(closest-side, rgba(255,46,126,.35), rgba(255,46,126,0)); opacity: 0; }
+    #s01-ring { position: absolute; left: 340px; top: 330px; width: 400px; height: 150px; border-radius: 40px; border: 10px solid #ff2e7e; opacity: 0; transform: rotate(-6deg); }
+    #s01-ray { position: absolute; left: -660px; top: 140px; width: 2400px; height: 2400px; border-radius: 50%;
+      background: repeating-conic-gradient(from 0deg, rgba(255,255,255,.16) 0deg 5deg, rgba(255,255,255,0) 5deg 15deg);
+      -webkit-mask-image: radial-gradient(circle, #000 0%, #000 30%, transparent 62%); mask-image: radial-gradient(circle, #000 0%, #000 30%, transparent 62%); }
+    #s01-tint { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,60,120,0) 35%, rgba(10,60,120,.45) 100%); }
+    #s01-fl { position: absolute; inset: 0; background: #fff; opacity: 0; }
+    #s01-stk { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 360px; padding: 4px 30px 10px; border-radius: 22px; background: #fff; color: #ff2e7e;
+      font-family: "Lilita One", sans-serif; font-size: 64px; border: 5px solid #ff2e7e; box-shadow: 0 8px 0 rgba(0,0,0,.2); transform: rotate(-6deg); }
+    #s01-hk { position: absolute; left: 0; right: 0; top: 480px; text-align: center; }
+    .hk-l { display: table; margin: 26px auto 0; background: #ff2e7e; border-radius: 38px; padding: 6px 40px 16px; font-family: "Lilita One", sans-serif; font-size: 132px; line-height: 1.05; color: #fff; box-shadow: 0 9px 0 rgba(0,0,0,.25); }
+    .hk-w { display: inline-block; margin: 0 .1em; transform-origin: 50% 60%; position: relative; }
+    #s01-hint { top: 780px; font-size: 38px; background: #fe2c55; }
+    .hk-sp { position: absolute; width: 70px; height: 70px; }
+  </style>
+  <div id="root" data-composition-id="s01" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s01-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s01-ray"></div><div id="s01-tint"></div>
+      <div id="s01-ink"></div>
+      <div id="s01-ring"></div>
+      <div id="s01-stk">EINGEZOGEN!</div>
+      <div id="s01-tool" data-layout-ignore><div class="kn"></div><div class="st"></div><div class="bs"></div><div class="ru"></div></div>
+      <div id="s01-hk"><div class="hk-l"><span class="hk-w" id="hw0">DU</span><span class="hk-w" id="hw1">WOHNST</span></div><div class="hk-l"><span class="hk-w" id="hw2">AB</span><span class="hk-w" id="hw3">JETZT</span></div><div class="hk-l"><span class="hk-w" id="hw4">AUF</span><span class="hk-w" id="hw5">MEINER</span></div><div class="hk-l" id="hl3"><span class="hk-w" id="hw6">INSEL!</span></div></div>
+      <svg class="hk-sp" style="left:90px;top:520px" viewBox="-10 -10 20 20"><path d="M0 -10 L2 -2 L10 0 L2 2 L0 10 L-2 2 L-10 0 L-2 -2Z" fill="#fff"/></svg>
+      <svg class="hk-sp" style="left:900px;top:640px" viewBox="-10 -10 20 20"><path d="M0 -10 L2 -2 L10 0 L2 2 L0 10 L-2 2 L-10 0 L-2 -2Z" fill="#ffd23f"/></svg>
+      <svg class="hk-sp" style="left:140px;top:880px" viewBox="-10 -10 20 20"><path d="M0 -10 L2 -2 L10 0 L2 2 L0 10 L-2 2 L-10 0 L-2 -2Z" fill="#ffd23f"/></svg>
+      <svg class="hk-sp" style="left:850px;top:930px" viewBox="-10 -10 20 20"><path d="M0 -10 L2 -2 L10 0 L2 2 L0 10 L-2 2 L-10 0 L-2 -2Z" fill="#fff"/></svg>
+      <div id="s01-hint" class="pl">➕ Folgen, um einzuziehen!</div>
+      <div id="s01-fl"></div>
+      <div id="s01-tag" class="pl">🌴 TAG 2 IN MUSCHEL-TAL</div>
+      <div id="s01-c"><b id="s01-n">0</b>BEWOHNER</div>
+      <div id="s01-p" class="pl">+78</div>
+      <div id="s01-k" class="pl">🥥 Kokos-Küste: 148</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      /*__COMMON_JS__*/
+      wrapBt("#s01-stage");
+      const tl = gsap.timeline({ paused: true });
+      const hkw = ["Du", "wohnst", "ab", "jetzt", "auf", "meiner", "Insel"], hEnd = line("L1")[1], ins = at("L1", "Insel");
+      tl.set(["#s01-hk", "#s01-ray", "#s01-tint"], { opacity: 1 }, 0);
+      tl.fromTo("#s01-ray", { rotation: 0 }, { rotation: 24, duration: hEnd + .3, ease: "none" }, 0);
+      const SI = .09;
+      tl.fromTo("#s01-tool", { y: -260, scale: 1.25, rotation: -6, opacity: 1 }, { y: 0, scale: 1, rotation: -6, duration: SI, ease: "power3.in" }, 0);
+      tl.to("#s01-tool", { scaleY: .88, duration: .04, yoyo: true, repeat: 1, ease: "power2.out" }, SI);
+      tl.to("#s01-tool", { y: -520, rotation: 4, opacity: 0, duration: .2, ease: "power3.in" }, SI + .08);
+      tl.fromTo("#s01-stk", { opacity: 0, scale: 1.1, rotation: -6 }, { opacity: 1, scale: 1, rotation: -6, duration: .06 }, SI);
+      tl.fromTo("#s01-ink", { opacity: 0, scale: .6 }, { opacity: 1, scale: 1.25, duration: .25, ease: "power2.out", immediateRender: false }, SI);
+      tl.to("#s01-ink", { opacity: 0, duration: .4 }, SI + .3);
+      tl.fromTo("#s01-ring", { opacity: .9, scale: .9 }, { opacity: 0, scale: 1.8, duration: .45, ease: "power2.out", immediateRender: false }, SI);
+      tl.fromTo("#s01-hk", { y: 0 }, { y: 18, duration: .05, yoyo: true, repeat: 3, ease: "power1.inOut" }, SI);
+      tl.fromTo("#s01-ray", { x: 0, y: 0 }, { x: -12, y: 10, duration: .05, yoyo: true, repeat: 3, ease: "power1.inOut" }, SI);
+      tl.to("#s01-stk", { scale: 1.07, rotation: -4, duration: .25, yoyo: true, repeat: 3, ease: "sine.inOut" }, .5);
+      hkw.forEach((w, i) => { const t0 = Math.max(0, at("L1", w) - .03); tl.set("#hw" + i, { zIndex: 5 }, t0); tl.fromTo("#hw" + i, { scale: 1 }, { scale: .5, duration: .05, ease: "power2.in", immediateRender: false }, t0); tl.to("#hw" + i, { scale: [2.2, 1.3, 1.75, 1.5, 1.75, 1.35, 1][i], duration: .13, ease: "power2.out" }, t0 + .05); tl.to("#hw" + i, { scale: 1, duration: .22, ease: "back.out(2.5)" }, t0 + .24); tl.set("#hw" + i, { zIndex: 1 }, t0 + .46); });
+      tl.to("#hw3", { color: "#ffd23f", duration: .05 }, at("L1", "jetzt"));
+      tl.to("#hw6", { color: "#ffd23f", duration: .05 }, ins);
+      tl.fromTo("#hl3", { scale: 1 }, { scale: 1.55, duration: .14, ease: "power2.out", immediateRender: false }, ins - .02);
+      tl.to("#hl3", { scale: 1.25, duration: .3, ease: "back.out(2.5)" }, ins + .12);
+      tl.fromTo(".hk-sp", { scale: 0, rotation: 0, opacity: 0 }, { scale: 1.2, rotation: 180, opacity: 1, duration: .35, ease: "back.out(3)", stagger: .12, yoyo: true, repeat: 3 }, .05);
+      tl.fromTo("#s01-fl", { opacity: 0 }, { opacity: .75, duration: .08, yoyo: true, repeat: 1, ease: "power2.out" }, ins + .25);
+      tl.to(["#s01-hk", "#s01-stk", "#s01-ray", "#s01-tint", ".hk-sp"], { opacity: 0, duration: .2 }, hEnd + .05);
+
+      const [t2a, t2b] = line("L1b"), be = at("L2", "653"), ko = at("L2", "Kokos");
+      tl.fromTo("#s01-tag", { opacity: 0, scale: .3, rotation: -8 }, { opacity: 1, scale: 1, rotation: -2, duration: .35, ease: "back.out(2.6)" }, t2a - .1);
+      tl.fromTo("#s01-c", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, t2a);
+      count(tl, "#s01-n", 0, 653, t2a + .1, t2b - t2a + .1, "", "", "power3.in");
+      tl.fromTo("#s01-c", { scale: 1 }, { scale: 1.4, duration: .12, ease: "power2.out", immediateRender: false }, t2b + .2);
+      tl.to("#s01-c", { scale: 1, duration: .35, ease: "back.out(3)" }, t2b + .32);
+      tl.fromTo("#s01-c", { scale: 1 }, { scale: 1.12, duration: .15, yoyo: true, repeat: 3, ease: "sine.inOut", immediateRender: false }, be + .2);
+      tl.fromTo("#s01-p", { opacity: 0, scale: 2.2 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, be + .45);
+      tl.fromTo("#s01-k", { opacity: 0, y: -40 }, { opacity: 1, y: 0, duration: .35, ease: "back.out(2)" }, ko - .1);
+      tl.fromTo("#s01-hint", { opacity: 0, scale: .5 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, t2a + .2);
+      tl.to("#s01-hint", { opacity: .2, duration: .3, yoyo: true, repeat: Math.max(1, Math.floor((line("L2")[1] - t2a - .8) / .3)) | 1, ease: "sine.inOut" }, t2a + .55);
+      tl.to("#s01-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
+      window.__timelines["s01"] = tl;
+    })();
+  </script>
+</template>
