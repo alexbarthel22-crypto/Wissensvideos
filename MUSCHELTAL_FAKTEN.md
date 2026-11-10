@@ -175,3 +175,4 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - **Dönerbude:** Die schwarze Menütafel rechts ist ein Hindernis; wer dahinter steht, wird von ihr verdeckt.
 - **Wege an der Küste:** Sandwege (und die Holzstege der Kokos-Küste) enden nicht mehr eckig am Grasrand, sondern laufen weich in den Strand aus: der Rand verblasst zuerst, der Weg wird etwas breiter, nimmt die Strandfarbe an und verschwindet – der Übergang ist kaum zu sehen.
 - **Namensschilder beim Erkunden:** Die @Namen an den Hütten bleiben immer sichtbar, auch wenn man direkt davor steht; die eigene Figur steht dann vor dem Schild.
+- **Zur Hütte aus dem Muschelpass:** Nach „Zu …s Hütte“ fliegt die Karte hin und die Hütte blinkt einmal kurz hell auf, damit man sieht, welche es ist.

@@ -2040,6 +2040,10 @@ function draw(){
  if(K==='storm'&&!REDUCED){if(T>nextFlash){flash=1;nextFlash=T+4+Math.random()*7;}if(flash>.02){c.fillStyle=`rgba(255,255,255,${flash*.6})`;c.fillRect(0,0,W,H);flash*=.82;}}
  if(nl>.6&&sunny&&!REDUCED){const cyc=T%13;if(cyc<1){const k=cyc,sx=W*(.15+.55*hash(Math.floor(T/13),9)),sy=H*(.1+.2*hash(Math.floor(T/13),8));c.strokeStyle=`rgba(255,255,230,${(1-k)*.9})`;c.lineWidth=2;c.beginPath();c.moveTo(sx+k*160,sy+k*60);c.lineTo(sx+k*160-60,sy+k*60-22);c.stroke();}}
  world(c);
+ // Hütte kurz aufblinken lassen (nach „Zu …s Hütte“ im Muschelpass)
+ if(HFLASH){const u=(performance.now()-HFLASH.t0)/650;if(u>1)HFLASH=null;else if(u>0){const q=HFLASH.q,a=Math.sin(Math.PI*u)*.85,px=S*cam.z;const m=c.getTransform(),A=m.transformPoint({x:q.p.x-13,y:q.p.y-17}),B2=m.transformPoint({x:q.p.x+13,y:q.p.y+12}),X=Math.floor(A.x),Y=Math.floor(A.y),w=Math.ceil(B2.x-A.x)+2,h=Math.ceil(B2.y-A.y)+2;
+   if(w>2&&h>2&&w<3000&&h<3000){TOC.width=w;TOC.height=h;const o=TOC.getContext('2d');o.setTransform(m.a,m.b,m.c,m.d,m.e-X,m.f-Y);hutBody(o,q.isl,q,px,false,false);o.setTransform(1,0,0,1,0,0);o.globalCompositeOperation='source-atop';o.fillStyle=`rgba(255,250,215,${a})`;o.fillRect(0,0,w,h);o.globalCompositeOperation='source-over';c.save();c.setTransform(1,0,0,1,0,0);c.globalAlpha=Math.min(1,a*1.6);c.drawImage(TOC,X,Y);c.restore();
+    c.save();c.globalCompositeOperation='lighter';const gg=c.createRadialGradient(q.p.x,q.p.y-2,1,q.p.x,q.p.y-2,18);gg.addColorStop(0,`rgba(255,240,170,${a*.55})`);gg.addColorStop(1,'rgba(255,240,170,0)');c.fillStyle=gg;c.beginPath();c.arc(q.p.x,q.p.y-2,18,0,TAU);c.fill();c.restore();hutsFront(c,q.p.x,q.p.y+.6);}}}
  drawWalker(c,z);
  // Namen ganz oben: nichts (Bäume, Palast, Wolken, Nacht) darf sie verdecken
  const GSP=sel&&sel.p&&(sel.gb||REDUCED||T-selT<2)?standSpot(sel):null,near=(x,y)=>GSP&&Math.abs(x-GSP.x)<16&&y>GSP.y-26&&y<GSP.y+10;
@@ -2160,7 +2164,7 @@ function avatarCanvas(p,sz=128){const cv=document.createElement('canvas');cv.wid
  const g=c.createLinearGradient(0,0,0,sz);g.addColorStop(0,'#9fe8df');g.addColorStop(1,'#4fc3dc');c.fillStyle=g;c.fillRect(0,0,sz,sz);c.fillStyle='rgba(255,255,255,.35)';c.beginPath();c.arc(sz*.78,sz*.22,sz*.14,0,TAU);c.fill();
  c.save();c.translate(64*k,104*k);c.scale(15*k/L.h,15*k/L.h);person(c,{...L,h:1},0,true,0);c.restore();return cv;}
 function avatarURL(p){return p.avURL||(p.avURL=avatarCanvas(p).toDataURL('image/png'));}
-let mpThird=false;
+let mpThird=false,HFLASH=null;
 let mpWalk=false;
 function zeigePass(p,third,walk){mpP=p;mpThird=!!third;mpWalk=!!walk;$('mp').hidden=false;$('mpf').hidden=true;$('mpp').hidden=false;$('mpcardbox').innerHTML=passCard(p);
  $('mpshare').innerHTML=walk?'📲 Pass von '+esc(p.name)+' teilen<small>TikTok · Instagram · WhatsApp-Status</small><span class="bon" id="mpbon" hidden></span>':'📲 In meiner Story teilen<small>TikTok · Instagram · WhatsApp-Status</small><span class="bon" id="mpbon"></span>';
@@ -2230,7 +2234,7 @@ $('mpshare').onclick=async()=>{if(!mpP)return;const p=mpP,b=$('mpshare'),lab=b.i
   if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],text:txt});b.innerHTML=lab;if(!fr)bonus(p);return;}
   else{const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='muschelpass.png';document.body.appendChild(a);a.click();a.remove();b.textContent='✅ Bild gespeichert – jetzt in der Story posten!';setTimeout(()=>{b.innerHTML=lab;if(!mpWalk)bonUpd(p);},2600);if(!fr)bonus(p);return;}
  }catch(e){}b.innerHTML=lab;if(!mpWalk)bonUpd(p);};
-$('mpgo').onclick=()=>{$('mp').hidden=true;if(mpWalk)return;window.scrollTo({top:0,behavior:'smooth'});if(mpP)select(mpP);};
+$('mpgo').onclick=()=>{$('mp').hidden=true;if(mpWalk)return;window.scrollTo({top:0,behavior:'smooth'});if(mpP){select(mpP);if(mpP.p&&!mpP.gb)HFLASH={q:mpP,t0:performance.now()+1250};}};
 $('mpq').oninput=()=>{const t=$('mpq').value.trim().toLowerCase().replace(/^@/,'');if(!t){$('mps').hidden=true;$('mpm').hidden=true;return;}
  const h=PEOPLE.filter(p=>p.name.toLowerCase().replace(/^@/,'').includes(t)).sort((a,b)=>(a.name.toLowerCase().replace(/^@/,'').startsWith(t)?0:1)-(b.name.toLowerCase().replace(/^@/,'').startsWith(t)?0:1)||a.nr-b.nr).slice(0,6);
  $('mps').innerHTML=h.map(p=>'<li><button type="button" data-n="'+esc(p.name)+'">'+esc(p.name)+'<small>Hütte '+fmt(p.nr)+'</small></button></li>').join('');$('mps').hidden=!h.length;
