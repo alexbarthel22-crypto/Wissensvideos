@@ -177,7 +177,7 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - **Wege an der Küste:** Sandwege (und die Holzstege der Kokos-Küste) enden nicht mehr eckig am Grasrand, sondern laufen weich in den Strand aus: der Rand verblasst zuerst, der Weg wird etwas breiter, nimmt die Strandfarbe an und verschwindet – der Übergang ist kaum zu sehen.
 - **Namensschilder beim Erkunden:** Die @Namen an den Hütten bleiben immer sichtbar, auch wenn man direkt davor steht; die eigene Figur steht dann vor dem Schild.
 - **Zur Hütte aus dem Muschelpass:** Nach „Zu …s Hütte“ fliegt die Karte hin und die Hütte leuchtet einmal ganz sanft auf, damit man sie erkennt.
-- **Sonnenaufgang/Sonnenuntergang-Erfolg:** gibt es, wenn man zur passenden Zeit seinen Namen ausgewählt hat oder die Welt als jemand erkundet (beides zählt). Sonnenuntergang entzogen am 10.11.: @emely.hac, @mimposible.
+- **Sonnenaufgang/Sonnenuntergang-Erfolg:** gibt es, wenn man zur passenden Zeit seinen Namen ausgewählt hat oder die Welt als jemand erkundet (beides zählt). Sonnenuntergang entzogen am 10.11.: @emely.hac, @mimposible. Inselflitzer entzogen am 10.11.: @riegelchen8.
 - **Suche ohne Treffer:** „Noch nicht auf der Insel. Neue Einwohner ziehen beim nächsten Update über Nacht ein – folgst du schon auf TikTok @muscheltal?“ (@muscheltal verlinkt). Muschelpass-Suche entsprechend („das nächste Update kommt über Nacht“).
 - **Desktop:** Die Karte füllt nicht mehr den ganzen Bildschirm – unten schaut der nächste Abschnitt hervor, damit man sieht, dass man scrollen kann. Verschieben/Zoomen ist flüssig (Grundkarte wird nur noch verschoben statt bei jeder Bewegung neu gezeichnet; weit herausgezoomte Tiere vereinfacht).
 
