@@ -87,17 +87,17 @@ def rain(cid, n, seed, t0, t1):
 r_h, r_js = rain("s01-c", 150, 4, '0', 'C.__dur + .3')
 b1_h, b1_js = drops("s01-b", 14, 21, 'rb', 540, 480, "⚡", 520, 700)
 scene("s01", LILITA + "\n    " + PILL + "\n    " + CAN + "\n    " + PT + "\n" + FL + """
-    #s01-a { top: 300px; font-size: 52px; background: #7b3fe0; z-index: 5; }
-    #s01-h { z-index: 5; position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 420px; padding: 6px 40px 16px; border-radius: 30px; background: #1f3f95; color: #fff; font-family: "Lilita One", sans-serif; font-size: 84px; line-height: 1; white-space: nowrap; box-shadow: 0 0 0 7px #2a1b12, 0 14px 0 rgba(0,0,0,.3); transform: rotate(-3deg); }
+    #s01-a { top: 290px; font-size: 76px; padding: 10px 40px 16px; background: #7b3fe0; z-index: 5; }
+    #s01-h { z-index: 5; position: absolute; left: 70px; right: 70px; top: 440px; padding: 14px 20px 26px; border-radius: 40px; background: #1f3f95; color: #fff; font-family: "Lilita One", sans-serif; font-size: 160px; line-height: .95; text-align: center; box-shadow: 0 0 0 9px #2a1b12, 0 18px 0 rgba(0,0,0,.3), 0 0 80px 20px rgba(255,204,0,.6); transform: rotate(-3deg); }
     #s01-h b { color: #ffcc00; font-weight: 400; }""",
 f"""      <div id="s01-fl" class="fl" data-layout-ignore></div>
       <div id="s01-a" class="pl">🤯 Stell dir vor …</div>{b1_h}
-      <div id="s01-h">🌊 RED BULL <b>TSUNAMI!</b></div>
+      <div id="s01-h">🌊 RED BULL<br><b>TSUNAMI!</b></div>
       {r_h}""",
-"""      const re = at("L1", "RED") - .25, rb = at("L1", "TSUNAMI");
+"""      const re = at("L1", "RED"), rb = at("L1", "TSUNAMI");
       tl.set("#s01-a", { opacity: 1 }, 0);
-      tl.fromTo("#s01-a", { scale: 1.3 }, { scale: 1, duration: .3, ease: "back.out(3)" }, 0);
-      tl.fromTo("#s01-h", { opacity: 0, scale: 2.6 }, { opacity: 1, scale: 1, duration: .25, ease: "back.out(2)" }, re - .05);
+      tl.fromTo("#s01-a", { scale: 3 }, { scale: 1, duration: .35, ease: "back.out(2.2)" }, 0);
+      tl.fromTo("#s01-h", { opacity: 0, scale: 4.5, rotation: 12 }, { opacity: 1, scale: 1, rotation: -3, duration: .3, ease: "back.out(1.6)" }, re - .05);
       tl.to("#s01-h", { scale: 1.1, duration: .14, yoyo: true, repeat: 11, ease: "sine.inOut" }, re + .3);
       tl.fromTo("#s01-fl", { opacity: .9 }, { opacity: 0, duration: .35, immediateRender: false }, rb);
       tl.to("#s01-stage", { x: 18, duration: .04, yoyo: true, repeat: 9, ease: "none" }, rb);
