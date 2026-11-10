@@ -1,0 +1,39 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+@font-face { font-family: "Lilita One"; src: url("assets/fonts/LilitaOne-Regular.woff2") format("woff2"); font-weight: 400; }
+    .pl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 28px 12px; border-radius: 999px; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); white-space: nowrap; }
+    #s01-h { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 300px; padding: 6px 44px 18px; border-radius: 30px; background: #ffd23f; color: #2a1b12; font-family: "Lilita One", sans-serif; font-size: 90px; line-height: 1; white-space: nowrap; box-shadow: 0 0 0 7px #2a1b12, 0 14px 0 rgba(0,0,0,.3); transform: rotate(-3deg); }
+    #s01-q { top: 440px; font-size: 46px; background: #7b3fe0; }
+    #s01-b { position: absolute; left: 470px; top: 600px; font-size: 150px; filter: drop-shadow(0 0 30px rgba(255,230,120,.95)); }
+    .s01-x { position: absolute; font-family: "Lilita One", sans-serif; font-size: 120px; color: #fff; -webkit-text-stroke: 8px #2a1b12; paint-order: stroke fill; }
+  </style>
+  <div id="root" data-composition-id="s01" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s01-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s01-h">📣 IHR SEID GEFRAGT!</div>
+      <div id="s01-q" class="pl">Eure verrückteste Idee für Muschel-Tal?</div>
+      <div id="s01-b" data-layout-ignore>💡</div>
+      <div class="s01-x" id="s01-x1" style="left:250px;top:640px" data-layout-ignore>?</div><div class="s01-x" id="s01-x2" style="left:760px;top:610px" data-layout-ignore>?</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      /*__COMMON_JS__*/
+      wrapBt("#s01-stage");
+      const tl = gsap.timeline({ paused: true });
+      const ve = at("L1", "verrückteste");
+      tl.set("#s01-h", { opacity: 1 }, 0);
+      tl.fromTo("#s01-h", { scale: 1.25 }, { scale: 1, duration: .35, ease: "back.out(3)" }, 0);
+      tl.to("#s01-h", { scale: 1.07, duration: .2, yoyo: true, repeat: 7, ease: "sine.inOut" }, .4);
+      tl.fromTo("#s01-q", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, ve - .3);
+      tl.fromTo("#s01-b", { opacity: 0, scale: .2 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(3)" }, ve);
+      tl.to("#s01-b", { filter: "drop-shadow(0 0 60px rgba(255,230,120,1))", scale: 1.1, duration: .25, yoyo: true, repeat: 5, ease: "sine.inOut" }, ve + .4);
+      [["#s01-x1", 0], ["#s01-x2", .15]].forEach(([e, d]) => { tl.fromTo(e, { opacity: 0, scale: 0, rotation: -30 }, { opacity: 1, scale: 1, rotation: 10, duration: .35, ease: "back.out(3)" }, ve + .2 + d);
+        tl.to(e, { y: -20, rotation: -10, duration: .3, yoyo: true, repeat: 5, ease: "sine.inOut" }, ve + .6 + d); });
+      tl.to("#s01-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
+      window.__timelines["s01"] = tl;
+    })();
+  </script>
+</template>
