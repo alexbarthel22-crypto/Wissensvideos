@@ -1,0 +1,46 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+.pl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 28px 12px; border-radius: 999px; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); white-space: nowrap; }
+    .fbtn { position: absolute; left: 0; right: 0; margin: 0 auto; width: 420px; height: 120px; border-radius: 60px; background: #fe2c55; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 56px; display: grid; place-items: center; box-shadow: 0 0 0 5px #2a1b12, 0 12px 0 rgba(0,0,0,.25); }
+    .fbtn2 { position: absolute; inset: 0; border-radius: 60px; background: #fff; color: #0a78c2; display: grid; place-items: center; opacity: 0; }
+    .fhand { position: absolute; font-size: 120px; }
+    #s06-btn { top: 330px; } #s06-hand { left: 690px; top: 380px; }
+    #s06-hu { top: 900px; font-size: 44px; background: #fff; color: #2a1b12; }
+    #s06-p { position: absolute; left: 0; right: 0; margin: 0 auto; text-align: center; top: 600px; font-size: 230px; line-height: 1; }
+    #s06-sb { position: absolute; left: 600px; top: 540px; padding: 8px 22px 12px; border-radius: 26px; background: #fff; font-family: "Inter", sans-serif; font-weight: 900; font-size: 44px; color: #2a1b12; box-shadow: 0 0 0 4px #2a1b12; }
+  </style>
+  <div id="root" data-composition-id="s06" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s06-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s06-btn" class="fbtn">+ Folgen<div id="s06-btn2" class="fbtn2">✓ Gefolgt</div></div>
+      <div id="s06-hu" class="pl">🏡 @DEIN_NAME</div>
+      <div id="s06-p" data-layout-ignore>🐧</div>
+      <div id="s06-sb" data-layout-ignore>MEINS! 😎</div>
+      <div id="s06-hand" class="fhand" data-layout-ignore>👆</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      /*__COMMON_JS__*/
+      wrapBt("#s06-stage");
+      const tl = gsap.timeline({ paused: true });
+      const fo = at("L6", "folg"), pi = at("L6", "Pinguin"), hu = at("L6", "Hütte"), cl = hu + 1.0;
+      tl.fromTo("#s06-btn", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, fo - .3);
+      tl.fromTo("#s06-hu", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, fo);
+      tl.fromTo("#s06-p", { opacity: 1, x: 800 }, { x: 0, duration: .8, ease: "power1.out" }, pi - .2);
+      tl.to("#s06-p", { rotation: 12, duration: .1, yoyo: true, repeat: 7, ease: "none" }, pi - .2);
+      tl.fromTo("#s06-sb", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .25, ease: "back.out(3)" }, hu);
+      tl.fromTo("#s06-hand", { opacity: 0, x: 160, y: 160 }, { opacity: 1, x: 0, y: 0, duration: .25, ease: "power3.out" }, cl - .4);
+      tl.to("#s06-hand", { y: -26, scale: .9, duration: .1, yoyo: true, repeat: 1 }, cl - .1);
+      tl.to("#s06-btn2", { opacity: 1, duration: .05 }, cl);
+      tl.fromTo("#s06-btn", { scale: 1 }, { scale: 1.15, duration: .12, yoyo: true, repeat: 1, immediateRender: false }, cl);
+      tl.to(["#s06-p", "#s06-sb"], { y: -1300, x: 500, rotation: 540, duration: .7, ease: "power2.in" }, cl + .15);
+      tl.to("#s06-hu", { backgroundColor: "#ffd23f", scale: 1.12, duration: .2, yoyo: true, repeat: 3 }, cl + .3);
+      
+      window.__timelines["s06"] = tl;
+    })();
+  </script>
+</template>

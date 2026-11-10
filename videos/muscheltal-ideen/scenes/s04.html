@@ -1,25 +1,20 @@
 <template>
   <style>
     /*__COMMON_CSS__*/
-@font-face { font-family: "Lilita One"; src: url("assets/fonts/LilitaOne-Regular.woff2") format("woff2"); font-weight: 400; }
-    .pl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 28px 12px; border-radius: 999px; color: #fff;
+.pl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 28px 12px; border-radius: 999px; color: #fff;
       font-family: "Inter", sans-serif; font-weight: 900; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); white-space: nowrap; }
-    #s04-h { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 290px; padding: 6px 40px 16px; border-radius: 30px; background: #fe2c55; color: #fff; font-family: "Lilita One", sans-serif; font-size: 84px; line-height: 1; white-space: nowrap; box-shadow: 0 0 0 7px #2a1b12, 0 14px 0 rgba(0,0,0,.3); transform: rotate(-3deg); }
-    #s04-cm { position: absolute; left: 90px; right: 210px; top: 430px; padding: 22px 26px 26px; border-radius: 30px; background: #1f1f1f; box-shadow: 0 0 0 5px #000, 0 14px 26px rgba(0,0,0,.45); font-family: "Inter", sans-serif; color: #fff; display: flex; gap: 20px; }
-    #s04-cm .av { width: 74px; height: 74px; border-radius: 50%; flex: none; background: linear-gradient(135deg, #ffd23f, #e8467c); display: grid; place-items: center; font-size: 40px; }
-    #s04-cm .nm { font-size: 26px; color: #a8a8a8; font-weight: 600; } #s04-cm .tx { font-size: 36px; font-weight: 600; margin-top: 4px; min-height: 92px; line-height: 1.25; }
-    #s04-cm .cu { display: inline-block; width: 4px; height: 38px; background: #fe2c55; vertical-align: -6px; margin-left: 3px; }
-    #s04-g { top: 760px; font-size: 44px; background: #2e9e5b; }
-    #s04-ar { position: absolute; left: 850px; top: 1230px; font-size: 110px; filter: drop-shadow(0 6px 0 rgba(0,0,0,.35)); }
-    #s04-cb { position: absolute; left: 640px; top: 1085px; padding: 4px 18px 8px; border-radius: 999px; background: #fff; color: #fe2c55; font-family: "Inter", sans-serif; font-weight: 900; font-size: 30px; box-shadow: 0 0 0 4px #2a1b12; }
+    #s04-t { top: 290px; font-size: 46px; background: #2e9e5b; }
+    #s04-c { position: absolute; left: 160px; width: 760px; top: 395px; border-radius: 30px; padding: 8px; background: linear-gradient(135deg, #5fe0ff, #ff7ac0); box-shadow: 0 14px 30px rgba(0,0,0,.45); transform: rotate(-1.5deg); }
+    #s04-c img { display: block; width: 100%; border-radius: 23px; }
+    #s04-r { position: absolute; left: 400px; top: 620px; width: 280px; height: 280px; border-radius: 50%; border: 12px solid #ffd23f; box-shadow: 0 0 40px 10px rgba(255,210,63,.9); opacity: 0; }
+    #s04-st { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 930px; color: #2e9e5b; border-color: #2e9e5b; background: #fff; transform: rotate(-5deg); font-size: 60px; white-space: nowrap; }
   </style>
   <div id="root" data-composition-id="s04" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
     <div id="s04-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
-      <div id="s04-h">💬 KOMMENTIERT JETZT!</div>
-      <div id="s04-cm"><div class="av">🐚</div><div><div class="nm">Du</div><div class="tx"><span id="s04-ty"></span><span class="cu" id="s04-cu"></span></div></div></div>
-      <div id="s04-g" class="pl">🍀 Mit Glück im nächsten Video!</div>
-      <div id="s04-cb" data-layout-ignore>Hier kommentieren</div>
-      <div id="s04-ar" data-layout-ignore>👉</div>
+      <div id="s04-t" class="pl">🙌 Kein Witz: Eure Ideen werden echt!</div>
+      <div id="s04-c"><img src="assets/img/luise_comment.jpg" alt=""></div>
+      <div id="s04-r" data-layout-ignore></div>
+      <div id="s04-st" class="stamp" data-layout-ignore>🏊 GEBAUT! (ohne Wal)</div>
     </div>
   </div>
   <script>
@@ -28,17 +23,11 @@
       /*__COMMON_JS__*/
       wrapBt("#s04-stage");
       const tl = gsap.timeline({ paused: true });
-      const ko = at("L4", "Kommentiert"), id = at("L4", "Idee"), gl = at("L4", "Glück");
-      tl.fromTo("#s04-h", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, ko - .2);
-      tl.to("#s04-h", { scale: 1.08, duration: .18, yoyo: true, repeat: 13, ease: "sine.inOut" }, ko + .2);
-      tl.fromTo("#s04-cm", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, id - .4);
-      const TXT = "Eine Riesen-Wasserrutsche vom Palast direkt ins Meer! 🌊", ty = document.getElementById("s04-ty"), o = { n: 0 };
-      tl.to(o, { n: TXT.length, duration: 2.2, ease: "none", onUpdate: () => { ty.textContent = Array.from(TXT).slice(0, Math.round(o.n)).join(""); } }, id - .1);
-      tl.to("#s04-cu", { opacity: 0, duration: .25, yoyo: true, repeat: 15, ease: "steps(1)" }, id);
-      tl.fromTo("#s04-g", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, gl - .2);
-      tl.to("#s04-g", { scale: 1.08, duration: .22, yoyo: true, repeat: 7, ease: "sine.inOut" }, gl + .3);
-      tl.fromTo(["#s04-ar", "#s04-cb"], { opacity: 0 }, { opacity: 1, duration: .25 }, ko + .3);
-      tl.to("#s04-ar", { x: 40, duration: .3, yoyo: true, repeat: 15, ease: "sine.inOut" }, ko + .5);
+      const ec = at("L4", "echt"), lu = at("L4", "Luise"), be = at("L4", "bekommen");
+      tl.fromTo("#s04-t", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, line("L4")[0]);
+      tl.fromTo("#s04-c", { opacity: 0, y: -40, scale: .85 }, { opacity: 1, y: 0, scale: 1, duration: .35, ease: "back.out(2)" }, lu - .2);
+      tl.fromTo("#s04-r", { opacity: 0, scale: .6 }, { opacity: 1, scale: 1, duration: .14, yoyo: true, repeat: 9, ease: "none" }, at("L4", "Pool") - .1);
+      tl.fromTo("#s04-st", { opacity: 0, scale: 2.6 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, be);
       tl.to("#s04-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
       window.__timelines["s04"] = tl;
     })();
