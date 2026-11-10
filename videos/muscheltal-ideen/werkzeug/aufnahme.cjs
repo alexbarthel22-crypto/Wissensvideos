@@ -10,7 +10,7 @@ await p.addStyleTag({content:'body *{visibility:hidden!important}canvas#map{visi
 const G=await p.evaluate(()=>{const a=fitAll(),m=fitMain();const lu=PEOPLE.find(q=>q.name.replace('@','')==='luisedbr.11');const q=poolSpot(lu);return{a,m,po:q?{x:q[0],y:q[1]}:{x:lu.p.x+12,y:lu.p.y}};});
 const PZ=6.4,POY=G.po.y+200/(PZ*2.6667);
 const K=[[0,0,40,2.2],[L.L1.end,0,30,3.0],
- [L.L2.start,0,45,3.0],[L.L2.end,0,45,3.6],
+ [L.L2.start-.3,0,45,3.3],[L.L2.end+.3,0,45,3.3],
  [L.L3.start+.2,-150,100,2.6],[L.L3.end,-60,140,3.0],
  [L.L4.start+.3,0,40,2.2],[L.L4.end,30,20,2.6],
  [L.L5.start+.3,G.m.x,G.m.y,G.m.z*1.3],[dur,G.a.x,G.a.y,G.a.z*1.1]];

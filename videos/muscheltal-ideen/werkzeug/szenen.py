@@ -71,34 +71,30 @@ def drops(cid, n, seed, t, cx, cy, ch, spread=520, up=700):
     return html, js
 PT = ".pt { position: absolute; width: 80px; height: 80px; font-size: 70px; text-align: center; line-height: 80px; opacity: 0; }"
 
-CAN = """.can { position: absolute; top: -180px; width: 56px; height: 104px; border-radius: 12px 12px 10px 10px; opacity: 0;
-      background: linear-gradient(90deg, rgba(0,0,0,.18), rgba(255,255,255,.35) 35%, rgba(0,0,0,.12) 70%), linear-gradient(180deg, #1f3f95 0 48%, #c9d1dc 48% 100%);
-      box-shadow: 0 0 0 3px #2a1b12; }
-    .can::before { content: ""; position: absolute; left: 6px; right: 6px; top: 40px; height: 16px; border-radius: 8px; background: linear-gradient(90deg, #e8262f, #ffcc00); }
-    .can::after { content: ""; position: absolute; left: 8px; right: 8px; top: -6px; height: 8px; border-radius: 4px; background: #aab3c0; box-shadow: 0 0 0 2px #2a1b12; }"""
+CAN = """.can { position: absolute; top: -200px; width: 64px; height: 168px; background: url(assets/img/can.png) center/contain no-repeat; opacity: 0; filter: drop-shadow(0 6px 6px rgba(0,0,0,.35)); }"""
 
 FL = """    .fl { position: absolute; inset: 0; background: #fff; opacity: 0; }"""
 
 def rain(cid, n, seed, t0, t1):
     html = "".join(f'<div class="can" id="{cid}{i}" data-layout-ignore></div>' for i in range(n))
     js = f"""      {{ const R = rng({seed}), T0 = {t0}, T1 = {t1}; for (let i = 0; i < {n}; i++) {{ const x = 20 + R() * 1000, d = .9 + R() * .7, st = T0 + R() * Math.max(.1, T1 - T0 - d);
-        document.getElementById("{cid}" + i).style.left = x + "px";
+        document.getElementById("{cid}" + i).style.left = x + "px"; const sz = .7 + R() * .6; document.getElementById("{cid}" + i).style.transform = "scale(" + sz + ")";
         const y0 = (T0 === 0 && i < {n} / 3) ? 200 + R() * 1500 : 0, st2 = y0 ? 0 : st;
         tl.fromTo("#{cid}" + i, {{ opacity: 1, y: y0, rotation: (R() - .5) * 60 }}, {{ y: 2300, rotation: "+=" + Math.round((R() - .5) * 540), duration: y0 ? d * (2300 - y0) / 2300 + .2 : d, ease: y0 ? "none" : "power1.in" }}, st2); }} }}"""
     return html, js
 
 # s01 – Stell dir vor: Es regnet Red Bull
-r_h, r_js = rain("s01-c", 64, 4, '0', 'C.__dur + .3')
+r_h, r_js = rain("s01-c", 150, 4, '0', 'C.__dur + .3')
 b1_h, b1_js = drops("s01-b", 14, 21, 'rb', 540, 480, "⚡", 520, 700)
 scene("s01", LILITA + "\n    " + PILL + "\n    " + CAN + "\n    " + PT + "\n" + FL + """
-    #s01-a { top: 300px; font-size: 52px; background: #7b3fe0; }
-    #s01-h { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 420px; padding: 6px 40px 16px; border-radius: 30px; background: #1f3f95; color: #fff; font-family: "Lilita One", sans-serif; font-size: 84px; line-height: 1; white-space: nowrap; box-shadow: 0 0 0 7px #2a1b12, 0 14px 0 rgba(0,0,0,.3); transform: rotate(-3deg); }
+    #s01-a { top: 300px; font-size: 52px; background: #7b3fe0; z-index: 5; }
+    #s01-h { z-index: 5; position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 420px; padding: 6px 40px 16px; border-radius: 30px; background: #1f3f95; color: #fff; font-family: "Lilita One", sans-serif; font-size: 84px; line-height: 1; white-space: nowrap; box-shadow: 0 0 0 7px #2a1b12, 0 14px 0 rgba(0,0,0,.3); transform: rotate(-3deg); }
     #s01-h b { color: #ffcc00; font-weight: 400; }""",
 f"""      <div id="s01-fl" class="fl" data-layout-ignore></div>
       <div id="s01-a" class="pl">🤯 Stell dir vor …</div>{b1_h}
-      <div id="s01-h">⚡ ES REGNET <b>RED BULL!</b></div>
+      <div id="s01-h">🌊 RED BULL <b>TSUNAMI!</b></div>
       {r_h}""",
-"""      const re = at("L1", "RED") - .25, rb = at("L1", "RED");
+"""      const re = at("L1", "RED") - .25, rb = at("L1", "TSUNAMI");
       tl.set("#s01-a", { opacity: 1 }, 0);
       tl.fromTo("#s01-a", { scale: 1.3 }, { scale: 1, duration: .3, ease: "back.out(3)" }, 0);
       tl.fromTo("#s01-h", { opacity: 0, scale: 2.6 }, { opacity: 1, scale: 1, duration: .25, ease: "back.out(2)" }, re - .05);
@@ -112,15 +108,17 @@ f"""      <div id="s01-fl" class="fl" data-layout-ignore></div>
 b2_h, b2_js = drops("s02-b", 12, 31, 'gr', 540, 900, "🎉", 520, 700)
 scene("s02", LILITA + "\n    " + PILL + "\n    " + PT + "\n" + FL + """
     #s02-t { top: 300px; font-size: 54px; background: #3f9b3a; }
-    #s02-cup { position: absolute; left: 0; right: 0; margin: 0 auto; text-align: center; top: 640px; font-size: 230px; line-height: 1; filter: drop-shadow(0 0 40px rgba(140,220,90,.9)); }
-    .s02-d { position: absolute; left: 520px; top: 660px; width: 40px; height: 40px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #d8f5b0, #6fbf3a 60%, #3f8a1f); box-shadow: 0 0 0 3px #2a1b12; opacity: 0; }
-    #s02-st { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 930px; color: #3f9b3a; border-color: #3f9b3a; background: #fff; transform: rotate(-5deg); font-size: 64px; white-space: nowrap; font-family: "Lilita One", sans-serif; }""",
+    #s02-bs { position: absolute; left: 240px; top: 930px; width: 600px; height: 170px; border-radius: 50%; background: radial-gradient(ellipse at 50% 40%, #b9e87a, #5fae2e 60%, #3c7d1c); box-shadow: 0 0 0 10px #f2e6c8, 0 0 0 16px #2a1b12, 0 0 60px 20px rgba(140,220,90,.8); }
+    #s02-cup { position: absolute; left: 0; right: 0; margin: 0 auto; text-align: center; top: 600px; font-size: 380px; line-height: 1; filter: drop-shadow(0 0 40px rgba(140,220,90,.9)); }
+    .s02-d { position: absolute; left: 520px; top: 640px; width: 40px; height: 40px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #d8f5b0, #6fbf3a 60%, #3f8a1f); box-shadow: 0 0 0 3px #2a1b12; opacity: 0; }
+    #s02-st { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 1080px; color: #3f9b3a; border-color: #3f9b3a; background: #fff; transform: rotate(-5deg); font-size: 64px; white-space: nowrap; font-family: "Lilita One", sans-serif; }""",
 """      <div id="s02-t" class="pl">🍵 Matcha-Brunnen am Muschelplatz</div>
-      <div id="s02-cup" data-layout-ignore>🍵</div>""" + "".join(f'<div class="s02-d" id="s02-d{i}" data-layout-ignore></div>' for i in range(26)) + """
+      <div id="s02-bs" data-layout-ignore></div><div id="s02-cup" data-layout-ignore>🍵</div>""" + "".join(f'<div class="s02-d" id="s02-d{i}" data-layout-ignore></div>' for i in range(26)) + """
       <div id="s02-st" class="stamp" data-layout-ignore>GRATIS FÜR ALLE!</div><div id="s02-fl" class="fl" data-layout-ignore></div>""" + b2_h,
 """      const ma = at("L2", "Matcha-Brunnen"), gr = at("L2", "gratis");
       tl.fromTo("#s02-t", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, ma - .4);
-      tl.fromTo("#s02-cup", { opacity: 0, y: 400, scale: .5 }, { opacity: 1, y: 0, scale: 1, duration: .4, ease: "back.out(1.8)" }, ma - .2);
+      tl.fromTo(["#s02-bs", "#s02-cup"], { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .4, ease: "back.out(1.8)" }, ma - .2);
+      tl.to("#s02-stage > *", { opacity: 0, duration: .15 }, line("L2")[1] + .15);
       { const R = rng(9); for (let i = 0; i < 26; i++) { const t = ma + .2 + (i % 13) * .2, dx = (R() - .5) * 500, up = 380 + R() * 260;
         tl.fromTo("#s02-d" + i, { opacity: 1, x: 0, y: 0, scale: .6 }, { x: dx * .5, y: -up, scale: 1, duration: .45, ease: "power2.out" }, t);
         tl.to("#s02-d" + i, { x: dx, y: 260, opacity: 0, duration: .7, ease: "power2.in" }, t + .45); } }
@@ -196,7 +194,7 @@ scene("s04", LILITA + "\n    " + PILL + """
       tl.to("#s04-ar", { x: 40, duration: .3, yoyo: true, repeat: 11, ease: "sine.inOut" }, sr + .2);""")
 
 # s05 – Folg mir
-r2_h, r2_js = rain("s05-c", 46, 8, '0', 'C.__dur')
+r2_h, r2_js = rain("s05-c", 90, 8, '0', 'C.__dur')
 scene("s05", PILL + "\n" + FOLLOW + "\n    " + CAN + """
     #s05-t { top: 300px; font-size: 50px; background: #18a6b8; }
     #s05-btn { top: 430px; } #s05-hand { left: 690px; top: 480px; }

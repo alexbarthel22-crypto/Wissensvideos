@@ -31,7 +31,7 @@
    "lines": [
     {
      "id": "L1",
-     "text": "Stell dir vor: / Es regnet *r:plötzlich / *y:RED *y:BULL!",
+     "text": "Stell dir vor: / plötzlich kommt ein / *y:RED *y:BULL *r:TSUNAMI!",
      "speed": 1.22,
      "style": "Style: a young German guy, around 20, hyped and explosive, shouting the big news like the craziest thing ever, playful, natural German intonation, normal pitch.\nPace: fast.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
     }
@@ -53,8 +53,13 @@
      "volume": 0.55
     },
     {
+     "name": "platsch",
+     "at": "L1:TSUNAMI",
+     "volume": 0.6
+    },
+    {
      "name": "jubel",
-     "at": "L1:BULL",
+     "at": "L1:TSUNAMI",
      "volume": 0.45
     }
    ]
