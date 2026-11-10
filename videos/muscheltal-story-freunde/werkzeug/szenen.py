@@ -62,18 +62,25 @@ scene("s01", PILL + "\n    " + CF_CSS.replace("top: 700px", "top: 900px") + """
     .s01-st { position: absolute; left: 90px; right: 210px; height: 104px; border-radius: 30px; background: #fff; box-shadow: 0 0 0 6px #2a1b12, 0 10px 0 rgba(0,0,0,.28); display: flex; align-items: center; gap: 22px; padding: 0 22px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 38px; color: #2a1b12; }
     .s01-st b { flex: none; width: 70px; height: 70px; border-radius: 50%; display: grid; place-items: center; color: #fff; font-size: 42px; box-shadow: 0 0 0 4px #2a1b12; }
     #s01-s1 { top: 400px; } #s01-s2 { top: 530px; } #s01-s3 { top: 660px; }
-    #s01-h { position: absolute; left: 110px; top: 850px; font-size: 110px; filter: drop-shadow(0 6px 0 rgba(0,0,0,.3)); }""",
+    #s01-box { position: absolute; left: 352px; top: 772px; width: 278px; height: 560px; border-radius: 40px; border: 9px solid #ffd23f; box-shadow: 0 0 30px 8px rgba(255,210,63,.85), inset 0 0 24px 4px rgba(255,210,63,.5); }
+    #s01-h { position: absolute; left: 215px; top: 1015px; width: 130px; height: 130px; border-radius: 50%; background: #fff; display: grid; place-items: center; font-size: 78px; box-shadow: 0 0 0 7px #ffd23f, 0 0 0 12px #2a1b12, 0 10px 18px rgba(0,0,0,.35); }
+    #s01-nl { position: absolute; left: 140px; top: 1170px; padding: 4px 20px 8px; border-radius: 999px; background: #2e9e5b; color: #fff; font-family: "Inter", sans-serif; font-weight: 900; font-size: 30px; box-shadow: 0 0 0 4px #2a1b12; transform: rotate(-4deg); }""",
 """      <div id="s01-t" class="pl">👯 Beste Freunde = Nachbarn!</div>
       <div id="s01-s1" class="s01-st"><b style="background:#7b3fe0">1</b>💬 Unter dem Video markieren</div>
       <div id="s01-s2" class="s01-st"><b style="background:#fe2c55">2</b>➕ Sie folgt mir</div>
       <div id="s01-s3" class="s01-st"><b style="background:#2e9e5b">3</b>🏡 Morgen seid ihr Nachbarn!</div>
-      <div id="s01-h" data-layout-ignore>💞</div>
+      <div id="s01-box" data-layout-ignore></div>
+      <div id="s01-h" data-layout-ignore>🤝</div>
+      <div id="s01-nl" data-layout-ignore>Nachbarn!</div>
       <div id="s01-cfw"></div>""",
-"""      const be = at("L1", "besten"), e1 = at("L2", "eins"), e2 = at("L2", "zwei"), e3 = at("L2", "drei"), na = at("L2", "Nachbarn");
+"""      const be = at("L0", "besten"), le = at("L0", "leben"), e1 = at("L2", "eins"), e2 = at("L2", "zwei"), e3 = at("L2", "drei"), na = at("L2", "Nachbarn");
       tl.fromTo("#s01-t", { opacity: 0, scale: .3, rotation: -8 }, { opacity: 1, scale: 1, rotation: -2, duration: .35, ease: "back.out(2.6)" }, Math.max(0, be - .3));
       [[e1, 1], [e2, 2], [e3, 3]].forEach(([t, i]) => {
         tl.fromTo("#s01-s" + i, { opacity: 0, x: -200 }, { opacity: 1, x: 0, duration: .3, ease: "back.out(2)" }, t - .35);
         tl.fromTo("#s01-s" + i, { scale: 1 }, { scale: 1.08, duration: .15, yoyo: true, repeat: 1, immediateRender: false }, t + .1); });
-      tl.fromTo("#s01-h", { opacity: 0, scale: .2 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(3)" }, na - .1);
-      tl.to("#s01-h", { scale: 1.15, duration: .25, yoyo: true, repeat: 5, ease: "sine.inOut" }, na + .3);
+      tl.fromTo("#s01-box", { opacity: 0, scale: 1.15 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2)" }, le - .1);
+      tl.fromTo("#s01-box", { boxShadow: "0 0 30px 8px rgba(255,210,63,.85), inset 0 0 24px 4px rgba(255,210,63,.5)" }, { boxShadow: "0 0 60px 20px rgba(255,210,63,1), inset 0 0 34px 8px rgba(255,210,63,.7)", duration: .4, yoyo: true, repeat: 15, ease: "sine.inOut" }, le + .3);
+      tl.fromTo("#s01-h", { opacity: 0, scale: .2, rotation: -30 }, { opacity: 1, scale: 1, rotation: 0, duration: .4, ease: "back.out(3)" }, le);
+      tl.to("#s01-h", { scale: 1.12, duration: .3, yoyo: true, repeat: 9, ease: "sine.inOut" }, le + .5);
+      tl.fromTo("#s01-nl", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, na - .1);
       """ + CONF_JS.replace("SEED", "21").replace("BOX", "s01-cfw").replace("T0", "na") + """""", blur=False)

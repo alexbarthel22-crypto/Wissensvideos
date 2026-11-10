@@ -31,8 +31,14 @@
    "hold": 1.2,
    "lines": [
     {
+     "id": "L0",
+     "text": "Willst du neben deiner *p:besten *p:Freundin / oder deinem *p:besten *p:Freund *g:leben?",
+     "speed": 1.12,
+     "style": "Style: a young man warmly and excitedly inviting his followers, friendly and energetic but natural German intonation, normal pitch.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
+    },
+    {
      "id": "L1",
-     "text": "Lade deinen *p:besten *p:Freund / oder deine *p:beste *p:Freundin ein – / dann wohnt ihr *g:nebeneinander!",
+     "text": "Dann *y:lad *y:sie *y:ein – so geht’s:",
      "speed": 1.12,
      "style": "Style: a young man warmly and excitedly inviting his followers, friendly and energetic but natural German intonation, normal pitch.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
     },
@@ -46,7 +52,12 @@
    "sfx": [
     {
      "name": "pop",
-     "at": "L1:besten",
+     "at": "L0:besten",
+     "volume": 0.4
+    },
+    {
+     "name": "ping",
+     "at": "L0:leben",
      "volume": 0.4
     },
     {

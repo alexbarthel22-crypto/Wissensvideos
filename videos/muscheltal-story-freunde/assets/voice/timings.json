@@ -1,126 +1,167 @@
 {
- "duration": 9.06,
+ "duration": 9.84,
  "lines": [
   {
    "scene": "s01",
-   "id": "L1",
+   "id": "L0",
    "words": [
     {
-     "display": "Lade",
-     "spoken": "Lade",
+     "display": "Willst",
+     "spoken": "Willst",
      "color": null,
      "group": 0,
      "start": 0.0,
-     "end": 0.237
+     "end": 0.149
     },
     {
-     "display": "deinen",
-     "spoken": "deinen",
+     "display": "du",
+     "spoken": "du",
      "color": null,
      "group": 0,
-     "start": 0.237,
-     "end": 0.482
+     "start": 0.149,
+     "end": 0.279
+    },
+    {
+     "display": "neben",
+     "spoken": "neben",
+     "color": null,
+     "group": 0,
+     "start": 0.279,
+     "end": 0.543
+    },
+    {
+     "display": "deiner",
+     "spoken": "deiner",
+     "color": null,
+     "group": 0,
+     "start": 0.543,
+     "end": 0.812
     },
     {
      "display": "besten",
      "spoken": "besten",
      "color": "p",
      "group": 0,
-     "start": 0.482,
-     "end": 0.728
+     "start": 0.812,
+     "end": 1.081
     },
     {
-     "display": "Freund",
-     "spoken": "Freund",
+     "display": "Freundin",
+     "spoken": "Freundin",
      "color": "p",
      "group": 0,
-     "start": 0.728,
-     "end": 0.864
+     "start": 1.081,
+     "end": 1.359
     },
     {
      "display": "oder",
      "spoken": "oder",
      "color": null,
      "group": 1,
-     "start": 0.864,
-     "end": 1.101
+     "start": 1.359,
+     "end": 1.619
     },
     {
-     "display": "deine",
-     "spoken": "deine",
+     "display": "deinem",
+     "spoken": "deinem",
      "color": null,
      "group": 1,
-     "start": 1.101,
-     "end": 1.342
+     "start": 1.619,
+     "end": 1.888
     },
     {
-     "display": "beste",
-     "spoken": "beste",
+     "display": "besten",
+     "spoken": "besten",
      "color": "p",
      "group": 1,
-     "start": 1.342,
-     "end": 1.583
+     "start": 1.888,
+     "end": 2.157
     },
     {
-     "display": "Freundin",
-     "spoken": "Freundin",
+     "display": "Freund",
+     "spoken": "Freund",
      "color": "p",
      "group": 1,
-     "start": 1.583,
-     "end": 1.838
+     "start": 2.157,
+     "end": 2.306
+    },
+    {
+     "display": "leben?",
+     "spoken": "leben?",
+     "color": "g",
+     "group": 1,
+     "start": 2.306,
+     "end": 2.57
+    }
+   ],
+   "spoken": "Willst du neben deiner besten Freundin oder deinem besten Freund leben?",
+   "start": 0.0,
+   "end": 2.57
+  },
+  {
+   "scene": "s01",
+   "id": "L1",
+   "words": [
+    {
+     "display": "Dann",
+     "spoken": "Dann",
+     "color": null,
+     "group": 0,
+     "start": 2.79,
+     "end": 2.918
+    },
+    {
+     "display": "lad",
+     "spoken": "lad",
+     "color": "y",
+     "group": 0,
+     "start": 2.918,
+     "end": 3.042
+    },
+    {
+     "display": "sie",
+     "spoken": "sie",
+     "color": "y",
+     "group": 0,
+     "start": 3.042,
+     "end": 3.166
     },
     {
      "display": "ein",
      "spoken": "ein",
-     "color": null,
-     "group": 1,
-     "start": 1.838,
-     "end": 1.96
+     "color": "y",
+     "group": 0,
+     "start": 3.166,
+     "end": 3.289
     },
     {
      "display": "–",
      "spoken": "–",
      "color": null,
-     "group": 1,
-     "start": 1.96,
-     "end": 2.07
+     "group": 0,
+     "start": 3.289,
+     "end": 3.4
     },
     {
-     "display": "dann",
-     "spoken": "dann",
+     "display": "so",
+     "spoken": "so",
      "color": null,
-     "group": 2,
-     "start": 2.2,
-     "end": 2.339
+     "group": 0,
+     "start": 3.6,
+     "end": 3.818
     },
     {
-     "display": "wohnt",
-     "spoken": "wohnt",
+     "display": "geht’s:",
+     "spoken": "geht’s:",
      "color": null,
-     "group": 2,
-     "start": 2.339,
-     "end": 2.483
-    },
-    {
-     "display": "ihr",
-     "spoken": "ihr",
-     "color": null,
-     "group": 2,
-     "start": 2.483,
-     "end": 2.618
-    },
-    {
-     "display": "nebeneinander!",
-     "spoken": "nebeneinander!",
-     "color": "g",
-     "group": 2,
-     "start": 2.618,
-     "end": 3.28
+     "group": 0,
+     "start": 3.818,
+     "end": 4.06
     }
    ],
-   "spoken": "Lade deinen besten Freund oder deine beste Freundin ein – dann wohnt ihr nebeneinander!",
-   "start": 0.0,
-   "end": 3.28
+   "spoken": "Dann lad sie ein – so geht’s:",
+   "start": 2.79,
+   "end": 4.06
   },
   {
    "scene": "s01",
@@ -131,157 +172,157 @@
      "spoken": "Schritt",
      "color": null,
      "group": 0,
-     "start": 3.5,
-     "end": 3.799
+     "start": 4.28,
+     "end": 4.579
     },
     {
      "display": "eins:",
      "spoken": "eins:",
      "color": "y",
      "group": 0,
-     "start": 3.799,
-     "end": 4.07
+     "start": 4.579,
+     "end": 4.85
     },
     {
      "display": "markier",
      "spoken": "markier",
      "color": "b",
      "group": 1,
-     "start": 4.19,
-     "end": 4.443
+     "start": 4.97,
+     "end": 5.223
     },
     {
      "display": "sie",
      "spoken": "sie",
      "color": null,
      "group": 1,
-     "start": 4.443,
-     "end": 4.567
+     "start": 5.223,
+     "end": 5.347
     },
     {
      "display": "unter",
      "spoken": "unter",
      "color": null,
      "group": 1,
-     "start": 4.567,
-     "end": 4.812
+     "start": 5.347,
+     "end": 5.592
     },
     {
      "display": "dem",
      "spoken": "dem",
      "color": null,
      "group": 1,
-     "start": 4.812,
-     "end": 4.936
+     "start": 5.592,
+     "end": 5.716
     },
     {
      "display": "Video.",
      "spoken": "Video.",
      "color": null,
      "group": 1,
-     "start": 4.936,
-     "end": 5.18
+     "start": 5.716,
+     "end": 5.96
     },
     {
      "display": "Schritt",
      "spoken": "Schritt",
      "color": null,
      "group": 2,
-     "start": 5.42,
-     "end": 5.672
+     "start": 6.2,
+     "end": 6.452
     },
     {
      "display": "zwei:",
      "spoken": "zwei:",
      "color": "y",
      "group": 2,
-     "start": 5.672,
-     "end": 5.9
+     "start": 6.452,
+     "end": 6.68
     },
     {
      "display": "sie",
      "spoken": "sie",
      "color": null,
      "group": 3,
-     "start": 6.02,
-     "end": 6.206
+     "start": 6.8,
+     "end": 6.986
     },
     {
      "display": "folgt",
      "spoken": "folgt",
      "color": "b",
      "group": 3,
-     "start": 6.206,
-     "end": 6.404
+     "start": 6.986,
+     "end": 7.184
     },
     {
      "display": "mir.",
      "spoken": "mir.",
      "color": null,
      "group": 3,
-     "start": 6.404,
-     "end": 6.59
+     "start": 7.184,
+     "end": 7.37
     },
     {
      "display": "Schritt",
      "spoken": "Schritt",
      "color": null,
      "group": 4,
-     "start": 6.77,
-     "end": 7.038
+     "start": 7.55,
+     "end": 7.818
     },
     {
      "display": "drei:",
      "spoken": "drei:",
      "color": "y",
      "group": 4,
-     "start": 7.038,
-     "end": 7.28
+     "start": 7.818,
+     "end": 8.06
     },
     {
      "display": "morgen",
      "spoken": "morgen",
      "color": null,
      "group": 5,
-     "start": 7.45,
-     "end": 7.759
+     "start": 8.23,
+     "end": 8.539
     },
     {
      "display": "seid",
      "spoken": "seid",
      "color": null,
      "group": 5,
-     "start": 7.759,
-     "end": 7.919
+     "start": 8.539,
+     "end": 8.699
     },
     {
      "display": "ihr",
      "spoken": "ihr",
      "color": null,
      "group": 5,
-     "start": 7.919,
-     "end": 8.074
+     "start": 8.699,
+     "end": 8.854
     },
     {
      "display": "schon",
      "spoken": "schon",
      "color": null,
      "group": 5,
-     "start": 8.074,
-     "end": 8.24
+     "start": 8.854,
+     "end": 9.02
     },
     {
      "display": "Nachbarn!",
      "spoken": "Nachbarn!",
      "color": "g",
      "group": 5,
-     "start": 8.24,
-     "end": 8.56
+     "start": 9.02,
+     "end": 9.34
     }
    ],
    "spoken": "Schritt eins: markier sie unter dem Video. Schritt zwei: sie folgt mir. Schritt drei: morgen seid ihr schon Nachbarn!",
-   "start": 3.5,
-   "end": 8.56
+   "start": 4.28,
+   "end": 9.34
   }
  ]
 }
