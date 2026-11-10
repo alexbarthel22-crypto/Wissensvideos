@@ -167,10 +167,14 @@ scene("s03", PILL + """
 # s04 – Pool für Luise
 scene("s04", PILL + """
     #s04-t { top: 290px; font-size: 52px; background: #18a6b8; }
+    #s04-c { position: absolute; left: 160px; width: 760px; top: 395px; border-radius: 30px; padding: 8px; background: linear-gradient(135deg, #5fe0ff, #ff7ac0); box-shadow: 0 14px 30px rgba(0,0,0,.45); transform: rotate(-1.5deg); }
+    #s04-c img { display: block; width: 100%; border-radius: 23px; }
     #s04-r { position: absolute; left: 400px; top: 620px; width: 280px; height: 280px; border-radius: 50%; border: 12px solid #ffd23f; box-shadow: 0 0 40px 10px rgba(255,210,63,.9), inset 0 0 40px 10px rgba(255,210,63,.6); opacity: 0; }""",
 """      <div id="s04-t" class="pl">🏊 Pool für @luisedbr.11!</div>
+      <div id="s04-c"><img src="assets/img/luise_comment.jpg" alt=""></div>
       <div id="s04-r" data-layout-ignore></div>""",
 """      const po = at("L6", "Pool"), kr = at("L6", "kriegst");
+      tl.fromTo("#s04-c", { opacity: 0, y: -40, scale: .85 }, { opacity: 1, y: 0, scale: 1, duration: .35, ease: "back.out(2)" }, at("L6", "Luise") - .2);
       tl.fromTo("#s04-t", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, po - .2);
       tl.to("#s04-t", { scale: 1.1, duration: .18, yoyo: true, repeat: 5, ease: "sine.inOut" }, kr);
       tl.fromTo("#s04-r", { opacity: 0, scale: .6 }, { opacity: 1, scale: 1, duration: .14, yoyo: true, repeat: 9, ease: "none" }, po - .1);""")
