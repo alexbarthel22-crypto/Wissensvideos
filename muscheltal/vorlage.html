@@ -2401,7 +2401,7 @@ $('myerf').onclick=()=>{if(sel){zeigeErfolge(sel);return;}
  popup('<div class="big">🏅</div><h2>Deine Erfolge</h2><p>Folge <a href="'+ACCURL+'" target="_blank" rel="noopener">'+esc(ACC)+'</a> auf TikTok, um einzuziehen – dann such oben deinen Namen und sieh deine Erfolge.</p><a class="btn hib" href="'+ACCURL+'" target="_blank" rel="noopener">➕ '+esc(ACC)+' folgen</a>');};
 // Sonnenaufgang/-untergang: wer mit seinem Namen gerade dabei ist, bekommt den Erfolg
 // Sonnenauf-/-untergang gibt es nur, wenn man die Welt gerade als jemand erkundet (nicht beim bloßen Suchen/Auswählen)
-function sonneCheck(){const me=WK.on&&WK.me?WK.me:null;if(!me||QP.get('zeit')||!WX.sunrise)return;const ph=sunPhase();if(!ph.k)return;const k=ph.k==='auf'?'AUF':'UNTER';if(!gibErf(me,k))return;const i=ERFI[k],p=me;
+function sonneCheck(){const me=WK.on&&WK.me?WK.me:sel;if(!me||QP.get('zeit')||!WX.sunrise)return;const ph=sunPhase();if(!ph.k)return;const k=ph.k==='auf'?'AUF':'UNTER';if(!gibErf(me,k))return;const i=ERFI[k],p=me;
  popup('<div class="lupebig" style="border-radius:50%;overflow:hidden;filter:drop-shadow(0 0 12px #ffb04a)">'+SUN_SVG(k==='AUF')+'</div><h2>Neuer Erfolg! 🎉</h2><p><b>'+(k==='AUF'?'🌅 ':'🌇 ')+i.t+'</b><br>'+i.d+'</p><button class="btn hib" id="zuerf2">🏅 Zu meinen Erfolgen</button>');
  $('zuerf2').onclick=()=>zuMeinenErfolgen(p);
  if(sel===p)$('ppass').innerHTML=passCard(p);}
