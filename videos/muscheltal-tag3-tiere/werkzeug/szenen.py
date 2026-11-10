@@ -77,12 +77,12 @@ scene("s01", LILITA + "\n    " + PILL + "\n" + KASSE + """
     #s01-ph::after { content: ""; position: absolute; left: -6px; top: 160px; width: 6px; height: 40px; border-radius: 4px 0 0 4px; background: #2b4677; box-shadow: 0 80px 0 #2b4677, 0 160px 0 #2b4677; }
     #s01-scr { position: absolute; inset: 16px; border-radius: 70px; overflow: hidden; background: #000; }
     #s01-ls { position: absolute; inset: 10px; border-radius: 62px; overflow: hidden; background: linear-gradient(180deg, #6f7886 0%, #5a6474 45%, #3c4452 100%); }
-    #s01-tm { position: absolute; left: 0; right: 0; top: 95px; text-align: center; font-family: "Inter", sans-serif; font-weight: 700; font-size: 150px; color: rgba(225,230,240,.85); filter: blur(7px); letter-spacing: -4px; }
-    #s01-bl { position: absolute; left: 50px; top: 290px; width: 120px; height: 26px; border-radius: 13px; background: rgba(225,230,240,.5); filter: blur(6px); box-shadow: 190px -20px 0 20px rgba(225,230,240,.35); }
+    #s01-tm { position: absolute; left: 0; right: 0; top: 70px; text-align: center; font-family: "Inter", sans-serif; font-weight: 700; font-size: 150px; color: rgba(225,230,240,.85); filter: blur(7px); letter-spacing: -4px; }
+    #s01-bl { position: absolute; left: 50px; top: 250px; width: 120px; height: 26px; border-radius: 13px; background: rgba(225,230,240,.5); filter: blur(6px); box-shadow: 190px -20px 0 20px rgba(225,230,240,.35); }
     #s01-notch { position: absolute; left: 0; right: 0; margin: 0 auto; top: 0; width: 230px; height: 52px; border-radius: 0 0 30px 30px; background: #000; }
     #s01-notch::after { content: ""; position: absolute; left: 70px; top: 18px; width: 70px; height: 8px; border-radius: 4px; background: #222; box-shadow: 92px -2px 0 2px #1b2a4a; }
     #s01-home { position: absolute; left: 0; right: 0; margin: 0 auto; bottom: 18px; width: 160px; height: 7px; border-radius: 4px; background: #fff; }
-    #s01-al { position: absolute; left: 22px; right: 22px; top: 345px; padding: 16px 20px 20px 70px; border-radius: 26px; background: #fff; font-family: -apple-system, "Inter", sans-serif; color: #111; box-shadow: 0 8px 24px rgba(0,0,0,.3); }
+    #s01-al { position: absolute; left: 22px; right: 22px; top: 300px; padding: 16px 20px 20px 70px; border-radius: 26px; background: #fff; font-family: -apple-system, "Inter", sans-serif; color: #111; box-shadow: 0 8px 24px rgba(0,0,0,.3); }
     #s01-al .ic { position: absolute; left: 16px; top: 50%; margin-top: -20px; width: 40px; height: 36px; }
     #s01-al .hd { display: flex; justify-content: space-between; align-items: baseline; font-size: 23px; font-weight: 700; }
     #s01-al .hd span { font-weight: 500; font-size: 19px; }
@@ -90,7 +90,7 @@ scene("s01", LILITA + "\n    " + PILL + "\n" + KASSE + """
     #s01-ks { top: 330px; }
     #s01-f { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 540px; padding: 6px 34px 12px; border-radius: 30px; background: #fff; border: 6px solid #e8262f; font-family: "Inter", sans-serif; font-weight: 900; color: #2a1b12; font-size: 40px; text-align: center; box-shadow: 0 10px 0 rgba(0,0,0,.25); }
     #s01-f b { display: block; font-size: 96px; color: #e8262f; line-height: 1; }
-    #s01-m { top: 790px; font-size: 44px; background: #7b3fe0; }""",
+    #s01-m { top: 800px; font-size: 44px; background: #2e9e5b; }""",
 """      <div id="s01-flash" data-layout-ignore></div>
       <div id="s01-ph"><div id="s01-scr"><div id="s01-ls">
         <div id="s01-tm">9:41</div><div id="s01-bl"></div><div id="s01-home"></div>
@@ -119,7 +119,8 @@ scene("s01", LILITA + "\n    " + PILL + "\n" + KASSE + """
       for (let i = 0; i < 16; i++) tl.set("#s01-f b", { color: i % 2 ? "#e8262f" : "#ffb000" }, fe + .3 + i * .16);
       tl.to("#s01-f", { scale: 1.08, duration: .16, yoyo: true, repeat: 9, ease: "sine.inOut" }, fe + .3);
       tl.fromTo("#s01-m", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, fo - .15);
-      tl.to("#s01-m", { opacity: .35, duration: .14, yoyo: true, repeat: 7, ease: "none" }, fo + .3);
+      tl.to("#s01-m", { opacity: .3, duration: .1, yoyo: true, repeat: 3, ease: "none" }, fo + .3);
+      tl.to("#s01-m", { opacity: 0, scale: .6, duration: .18 }, at("L3", "Sonst") - .15);
       tl.fromTo("#s01-flash", { opacity: 0 }, { opacity: .8, duration: .14, yoyo: true, repeat: 9, ease: "none", immediateRender: false }, st - .4);""")
 
 # s02 – Açaí-Stand
@@ -136,7 +137,9 @@ scene("s02", PILL + """
 """      const ac = at("L4", "Açaí-Stand"), li = at("L4", "Lilly"), ns = [at("L4", "Filipa"), at("L4", "Marina"), at("L4", "Johanna"), at("L4", "lp_art18")];
       tl.fromTo("#s02-t", { opacity: 0, scale: .3, rotation: -8 }, { opacity: 1, scale: 1, rotation: -2, duration: .4, ease: "back.out(2.6)" }, ac - .15);
       tl.fromTo("#s02-l", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, li - .2);
-      ns.forEach((t, i) => tl.fromTo("#s02-n" + i, { opacity: 0, x: i % 2 ? 120 : -120 }, { opacity: 1, x: 0, duration: .3, ease: "back.out(2)" }, t - .15));""")
+      ns.forEach((t, i) => { tl.fromTo("#s02-n" + i, { opacity: 0, x: i % 2 ? 120 : -120 }, { opacity: 1, x: 0, duration: .3, ease: "back.out(2)" }, t - .15);
+        tl.to("#s02-n" + i, { scale: 1.3, backgroundColor: "#ffd23f", boxShadow: "0 0 0 5px #2a1b12, 0 0 34px 10px rgba(255,210,63,.95)", zIndex: 5, duration: .14, ease: "back.out(3)" }, t + .15);
+        tl.to("#s02-n" + i, { scale: 1, backgroundColor: "#ffffff", boxShadow: "0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25)", zIndex: 1, duration: .25 }, t + .75); });""")
 
 # s03 – Moped-Werkstatt
 scene("s03", PILL + """
@@ -147,8 +150,9 @@ scene("s03", PILL + """
       <div id="s03-n1" class="pl s03-n" style="top:1060px;left:560px">@anti.teamtoxic</div>""",
 """      const mo = at("L5", "Moped-Werkstatt"), a = at("L5", "bruecke.2803"), b = at("L5", "anti.teamtoxic");
       tl.fromTo("#s03-t", { opacity: 0, scale: .3, rotation: 8 }, { opacity: 1, scale: 1, rotation: 2, duration: .4, ease: "back.out(2.6)" }, mo - .15);
-      tl.fromTo("#s03-n0", { opacity: 0, x: -120 }, { opacity: 1, x: 0, duration: .3, ease: "back.out(2)" }, a - .15);
-      tl.fromTo("#s03-n1", { opacity: 0, x: 120 }, { opacity: 1, x: 0, duration: .3, ease: "back.out(2)" }, b - .15);""")
+      [[a, 0], [b, 1]].forEach(([t, i]) => { tl.fromTo("#s03-n" + i, { opacity: 0, x: i ? 120 : -120 }, { opacity: 1, x: 0, duration: .3, ease: "back.out(2)" }, t - .15);
+        tl.to("#s03-n" + i, { scale: 1.3, backgroundColor: "#ffd23f", boxShadow: "0 0 0 5px #2a1b12, 0 0 34px 10px rgba(255,210,63,.95)", zIndex: 5, duration: .14, ease: "back.out(3)" }, t + .15);
+        tl.to("#s03-n" + i, { scale: 1, backgroundColor: "#ffffff", boxShadow: "0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25)", zIndex: 1, duration: .25 }, t + .9); });""")
 
 # s04 – Pool für Luise
 scene("s04", PILL + """

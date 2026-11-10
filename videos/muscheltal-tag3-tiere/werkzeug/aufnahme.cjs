@@ -20,7 +20,7 @@ const G=await day.evaluate(()=>{const a=fitAll(),m=fitMain();const g=n=>{const x
  return{a,m,pt:{x:best.x,y:best.y},pk:{x:bk.x,y:bk.y},th:{x:BAU[2].cx,y:BAU[2].cy},ac:g('acai'),wk:g('werkstatt'),v:g('villa'),lu:{x:lu.p.x,y:lu.p.y},po:(()=>{const q=poolSpot(lu);return q?{x:q[0],y:q[1]}:{x:lu.p.x+12,y:lu.p.y}})()};});
 console.error(JSON.stringify(G));
 const PO=G.po,PZ=6.4,POY=PO.y+200/(PZ*2.6667);
-const K=[[0,0,74,4.2],[L.L1.end-.2,0,82,2.7],
+const K=[[0,0,80,2.8],[L.L1.end-.2,0,78,4.3],
  [L.L2.start+.3,G.th.x,G.th.y+8,3.6],[at('L2','kostet')+.3,G.th.x,G.th.y+8,3.9],[at('L2','Muscheln'),-14,80,6.8],[L.L2.end,4,78,7.2],
  [L.L3.start+.6,0,96,3.4],[at('L3','folg'),0,84,2.6],[at('L3','sonst'),0,78,3.6],[L.L3.end,0,78,4.4],
  [L.L4.start+.3,G.ac.x,G.ac.y-12,4.4],[L.L4.end,G.ac.x,G.ac.y-12,5.0],
@@ -28,7 +28,7 @@ const K=[[0,0,74,4.2],[L.L1.end-.2,0,82,2.7],
  [L.L6.start+.3,PO.x,POY,PZ],[L.L6.end+.2,PO.x,POY,PZ],
  [L.L7.start+.3,G.v.x-40,G.v.y-16,4.2],[L.L8.start,G.v.x+5,G.v.y-16,4.2],[L.L8.end,G.v.x+40,G.v.y-16,4.4],
  [L.L9.start+.4,G.th.x-60,G.th.y-40,2.8],[L.L9.end,G.th.x+40,G.th.y-20,3.0],
- [L.L10.start+.4,0,80,3.2],[at('L10','Folg'),0,86,2.6],[dur,G.a.x,G.a.y,G.a.z*1.1]];
+ [L.L10.start+.3,-8,78,6.6],[at('L10','Folg')-.4,8,78,7.0],[at('L10','Folg')+.6,0,86,3.0],[dur,G.a.x,G.a.y,G.a.z*1.1]];
 
 const cam=t=>{let j=0;while(j<K.length-1&&K[j+1][0]<=t)j++;const a=K[j],b2=K[Math.min(j+1,K.length-1)];let k=b2[0]>a[0]?Math.max(0,Math.min(1,(t-a[0])/(b2[0]-a[0]))):1;k=k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2;
  return [a[1]+(b2[1]-a[1])*k,a[2]+(b2[2]-a[2])*k,Math.exp(Math.log(a[3])+(Math.log(b2[3])-Math.log(a[3]))*k)*(1+.012*Math.sin(t*.8))];};
