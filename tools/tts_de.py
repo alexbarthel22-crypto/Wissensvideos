@@ -46,7 +46,7 @@ def parse_tokens(text):
         display, _, spoken = raw.partition("|")
         spoken = spoken or display
         words.append({
-            "display": display.replace("_", " "),
+            "display": display if "|" in raw else display.replace("_", " "),  # bei display|gesprochen bleibt _ sichtbar (z. B. @lp_art18)
             "spoken": spoken.replace("_", " ").replace("-", " ") if "|" in raw else spoken.replace("_", " "),
             "color": color,
             "group": group,

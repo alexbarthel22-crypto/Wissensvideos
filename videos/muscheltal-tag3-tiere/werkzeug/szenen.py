@@ -69,7 +69,7 @@ KASSE = """    .ks { position: absolute; left: 70px; right: 70px; padding: 18px 
 KHTML = lambda p: f'<div id="{p}-ks" class="ks"><div class="row"><div>🐚 Inselkasse</div><div><b id="{p}-kn">505</b><span> / 2.000 🐚</span></div></div><div class="bar"><i id="{p}-kb"></i></div></div>'
 
 # s01 – Alarm! Handy-Warnung, Hunderte Streuner, Kasse, 299 Bewohner
-scene("s01", LILITA + "\n    " + PILL + "\n" + KASSE + """
+scene("s01", LILITA + "\n    " + PILL + "\n" + KASSE + "\n" + FOLLOW + """
     #s01-flash { position: absolute; inset: 0; box-shadow: inset 0 0 220px 60px rgba(232,38,47,.85); opacity: 0; }
     #s01-h { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 250px; padding: 4px 50px 16px; border-radius: 30px; background: #e8262f; color: #fff; font-family: "Lilita One", sans-serif; font-size: 150px; line-height: 1; box-shadow: 0 0 0 7px #2a1b12, 0 14px 0 rgba(0,0,0,.3); transform: rotate(-4deg); z-index: 3; }
     #s01-ph { position: absolute; left: 0; right: 0; margin: 0 auto; top: 420px; width: 470px; height: 960px; border-radius: 86px; background: linear-gradient(135deg, #3f5f96, #1d3260 45%, #34528a); padding: 16px; box-shadow: inset 0 0 0 3px #6f8cc0, 0 40px 80px rgba(0,0,0,.55); }
@@ -90,7 +90,7 @@ scene("s01", LILITA + "\n    " + PILL + "\n" + KASSE + """
     #s01-ks { top: 330px; }
     #s01-f { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 540px; padding: 6px 34px 12px; border-radius: 30px; background: #fff; border: 6px solid #e8262f; font-family: "Inter", sans-serif; font-weight: 900; color: #2a1b12; font-size: 40px; text-align: center; box-shadow: 0 10px 0 rgba(0,0,0,.25); }
     #s01-f b { display: block; font-size: 96px; color: #e8262f; line-height: 1; }
-    #s01-m { top: 800px; font-size: 44px; background: #2e9e5b; }""",
+    #s01-btn { top: 810px; } #s01-hand { left: 690px; top: 860px; }""",
 """      <div id="s01-flash" data-layout-ignore></div>
       <div id="s01-ph"><div id="s01-scr"><div id="s01-ls">
         <div id="s01-tm">14:24</div><div id="s01-bl"></div><div id="s01-home"></div>
@@ -101,7 +101,8 @@ scene("s01", LILITA + "\n    " + PILL + "\n" + KASSE + """
       <div id="s01-h">HILFE!</div>
       """ + KHTML("s01") + """
       <div id="s01-f">Es fehlen nur noch<b>299</b>Bewohner!</div>
-      <div id="s01-m" class="pl">➕ Folg mir, um einzuziehen!</div>""",
+      <div id="s01-btn" class="fbtn">+ Folgen<div id="s01-btn2" class="fbtn2">✓ Gefolgt</div></div>
+      <div id="s01-hand" class="fhand" data-layout-ignore>👆</div>""",
 """      const l1e = line("L1")[1], ko = at("L2", "kostet"), ka = at("L2", "Inselkasse"), fe = at("L3", "fehlen"), fo = at("L3", "folg"), st = at("L3", "Straße");
       tl.set("#s01-h", { opacity: 1, scale: 1 }, 0);
       tl.fromTo("#s01-h", { boxShadow: "0 0 0 7px #2a1b12, 0 0 70px 24px rgba(255,40,40,1)" }, { boxShadow: "0 0 0 7px #2a1b12, 0 0 14px 2px rgba(255,40,40,.35)", duration: .2, yoyo: true, repeat: 15, ease: "sine.inOut" }, 0);
@@ -111,34 +112,42 @@ scene("s01", LILITA + "\n    " + PILL + "\n" + KASSE + """
       tl.fromTo("#s01-ph", { opacity: 0, y: 600, rotation: 8 }, { opacity: 1, y: 0, rotation: -3, duration: .25, ease: "back.out(1.6)" }, 0);
       tl.fromTo("#s01-al", { opacity: 0, y: -40, scale: .9 }, { opacity: 1, y: 0, scale: 1, duration: .25, ease: "back.out(2)" }, .3);
       tl.to("#s01-ph", { x: 9, rotation: -1.5, duration: .04, yoyo: true, repeat: 23, ease: "none" }, .35);
-      tl.to("#s01-ph", { y: 1400, rotation: 14, scale: .7, duration: .4, ease: "power3.in" }, l1e - .25);
+      tl.to("#s01-ph", { y: 1400, rotation: 14, scale: .7, duration: .35, ease: "power3.in" }, at("L1", "wir") - .5);
       tl.to("#s01-h", { opacity: 0, scale: .5, duration: .2 }, line("L2")[0] - .15);
       tl.fromTo("#s01-ks", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .35, ease: "back.out(2)" }, ko - .3);
       tl.fromTo("#s01-kb", { width: "0%" }, { width: "25.25%", duration: .8, ease: "power2.out" }, ka);
-      tl.to(["#s01-kb", "#s01-kn"], { opacity: .15, duration: .12, yoyo: true, repeat: 23, ease: "none" }, ka + .8);
+      tl.to(["#s01-kb", "#s01-kn"], { opacity: .15, duration: .12, yoyo: true, repeat: 11, ease: "none" }, ka + .8);
       tl.fromTo("#s01-f", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, fe - .1);
       for (let i = 0; i < 16; i++) tl.set("#s01-f b", { color: i % 2 ? "#e8262f" : "#ffb000" }, fe + .3 + i * .16);
       tl.to("#s01-f", { scale: 1.08, duration: .16, yoyo: true, repeat: 9, ease: "sine.inOut" }, fe + .3);
-      tl.fromTo("#s01-m", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, fo - .15);
-      tl.to("#s01-m", { opacity: .3, duration: .1, yoyo: true, repeat: 3, ease: "none" }, fo + .3);
-      tl.to("#s01-m", { opacity: 0, scale: .6, duration: .18 }, at("L3", "Sonst") - .15);
+      // Folgen-Knopf wird immer wieder gedrückt: Bewohner-Zähler sinkt, Inselkasse füllt sich
+      const ce = line("L3")[1] + .2, N = 9, dt = (ce - fo - .4) / N;
+      tl.fromTo("#s01-btn", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, fo - .3);
+      tl.fromTo("#s01-hand", { opacity: 0, x: 160, y: 160 }, { opacity: 1, x: 0, y: 0, duration: .25, ease: "power3.out" }, fo - .2);
+      for (let i = 0; i < N; i++) { const t = fo + .1 + i * dt;
+        tl.to("#s01-hand", { y: -26, scale: .9, duration: .08, yoyo: true, repeat: 1 }, t);
+        tl.set("#s01-btn2", { opacity: 1 }, t + .08); tl.set("#s01-btn2", { opacity: 0 }, t + Math.min(.35, dt * .7));
+        tl.fromTo("#s01-btn", { scale: 1 }, { scale: 1.12, duration: .08, yoyo: true, repeat: 1, immediateRender: false }, t + .08); }
+      count(tl, "#s01-f b", 299, 199, fo + .15, ce - fo - .4, "", "", "none");
+      count(tl, "#s01-kn", 505, 1005, fo + .15, ce - fo - .4, "", "", "none");
+      tl.to("#s01-kb", { width: "50.25%", duration: ce - fo - .4, ease: "none" }, fo + .15);
       tl.fromTo("#s01-flash", { opacity: 0 }, { opacity: .8, duration: .14, yoyo: true, repeat: 9, ease: "none", immediateRender: false }, st - .4);""")
 
 # s02 – Açaí-Stand
 scene("s02", PILL + """
     #s02-t { top: 300px; font-size: 48px; background: #7b3fe0; }
     #s02-l { top: 390px; font-size: 28px; background: #fff; color: #7b3fe0; padding: 6px 22px 9px; }
-    .s02-n { font-size: 20px; background: #fff; color: #2a1b12; padding: 5px 18px 8px; right: auto; margin: 0; left: 40px; transform-origin: 0 50%; }""",
+    .s02-n { font-size: 23px; background: #fff; color: #2a1b12; padding: 5px 18px 8px; right: auto; margin: 0; }""",
 """      <div id="s02-t" class="pl">🫐 AÇAÍ-STAND</div>
       <div id="s02-l" class="pl">eröffnet von Bürgermeisterin Lilly 🎖️</div>
-      <div id="s02-n0" class="pl s02-n" style="top:552px">⭐ Filipa · @vidafilipa</div>
-      <div id="s02-n1" class="pl s02-n" style="top:604px">Marina · @marina.cgnn</div>
-      <div id="s02-n2" class="pl s02-n" style="top:656px">Johanna · @borbie20</div>
-      <div id="s02-n3" class="pl s02-n" style="top:708px">@lp_art18</div>""",
+      <div id="s02-n0" class="pl s02-n" style="top:455px;left:150px">⭐ Filipa · @vidafilipa</div>
+      <div id="s02-n1" class="pl s02-n" style="top:455px;left:560px">Marina · @marina.cgnn</div>
+      <div id="s02-n2" class="pl s02-n" style="top:512px;left:190px">Johanna · @borbie20</div>
+      <div id="s02-n3" class="pl s02-n" style="top:512px;left:600px">@lp_art18</div>""",
 """      const ac = at("L4", "Açaí-Stand"), li = at("L4", "Lilly"), ns = [at("L4", "Filipa"), at("L4", "Marina"), at("L4", "Johanna"), at("L4", "lp_art18")];
       tl.fromTo("#s02-t", { opacity: 0, scale: .3, rotation: -8 }, { opacity: 1, scale: 1, rotation: -2, duration: .4, ease: "back.out(2.6)" }, ac - .15);
       tl.fromTo("#s02-l", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, li - .2);
-      ns.forEach((t, i) => { tl.fromTo("#s02-n" + i, { opacity: 0, x: -140 }, { opacity: 1, x: 0, duration: .3, ease: "back.out(2)" }, ac + .1 + i * .08);
+      ns.forEach((t, i) => { tl.fromTo("#s02-n" + i, { opacity: 0, y: -30 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, ac + .1 + i * .08);
         tl.to("#s02-n" + i, { scale: 1.4, backgroundColor: "#ffd23f", boxShadow: "0 0 0 5px #2a1b12, 0 0 34px 10px rgba(255,210,63,.95)", zIndex: 5, duration: .14, ease: "back.out(3)" }, t + .15);
         tl.to("#s02-n" + i, { scale: 1, backgroundColor: "#ffffff", boxShadow: "0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25)", zIndex: 1, duration: .25 }, t + .75); });""")
 

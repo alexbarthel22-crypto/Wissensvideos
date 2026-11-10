@@ -52,22 +52,22 @@
       font-family: "Inter", sans-serif; font-weight: 900; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); white-space: nowrap; }
     #s02-t { top: 300px; font-size: 48px; background: #7b3fe0; }
     #s02-l { top: 390px; font-size: 28px; background: #fff; color: #7b3fe0; padding: 6px 22px 9px; }
-    .s02-n { font-size: 20px; background: #fff; color: #2a1b12; padding: 5px 18px 8px; right: auto; margin: 0; left: 40px; transform-origin: 0 50%; }
+    .s02-n { font-size: 23px; background: #fff; color: #2a1b12; padding: 5px 18px 8px; right: auto; margin: 0; }
   </style>
   <div id="root" data-composition-id="s02" data-start="0" data-duration="7.260" data-width="1080" data-height="1920">
     <div id="s02-stage" class="clip stage" data-start="0" data-duration="7.260" data-track-index="0">
       <div id="s02-t" class="pl">🫐 AÇAÍ-STAND</div>
       <div id="s02-l" class="pl">eröffnet von Bürgermeisterin Lilly 🎖️</div>
-      <div id="s02-n0" class="pl s02-n" style="top:552px">⭐ Filipa · @vidafilipa</div>
-      <div id="s02-n1" class="pl s02-n" style="top:604px">Marina · @marina.cgnn</div>
-      <div id="s02-n2" class="pl s02-n" style="top:656px">Johanna · @borbie20</div>
-      <div id="s02-n3" class="pl s02-n" style="top:708px">@lp_art18</div>
+      <div id="s02-n0" class="pl s02-n" style="top:455px;left:150px">⭐ Filipa · @vidafilipa</div>
+      <div id="s02-n1" class="pl s02-n" style="top:455px;left:560px">Marina · @marina.cgnn</div>
+      <div id="s02-n2" class="pl s02-n" style="top:512px;left:190px">Johanna · @borbie20</div>
+      <div id="s02-n3" class="pl s02-n" style="top:512px;left:600px">@lp_art18</div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 7.26, "L4": [0.2, 7.08], "L4.words": [["zum", 0.2, 0.356], ["start", 0.356, 0.524], ["ihres", 0.524, 0.831], ["amtes", 0.831, 1.138], ["hat", 1.138, 1.294], ["bürgermeisterin", 1.294, 2.076], ["lilly", 2.076, 2.383], ["einen", 2.383, 2.69], ["açaístand", 2.69, 3.164], ["eröffnen", 3.164, 3.628], ["lassen", 3.628, 3.94], ["", 3.94, 4.08], ["mit", 4.22, 4.333], ["filipa", 4.333, 4.66], ["marina", 4.78, 5.75], ["johanna", 5.89, 6.383], ["und", 6.383, 6.551], ["lpart18", 6.551, 6.731], ["achtzehn", 6.731, 7.08]]};
+      const C = {"__dur": 7.26, "L4": [0.2, 7.08], "L4.words": [["zum", 0.2, 0.356], ["start", 0.356, 0.524], ["ihres", 0.524, 0.831], ["amtes", 0.831, 1.138], ["hat", 1.138, 1.294], ["bürgermeisterin", 1.294, 2.076], ["lilly", 2.076, 2.383], ["einen", 2.383, 2.69], ["açaístand", 2.69, 3.164], ["eröffnen", 3.164, 3.628], ["lassen", 3.628, 3.94], ["", 3.94, 4.08], ["mit", 4.22, 4.333], ["filipa", 4.333, 4.66], ["marina", 4.78, 5.75], ["johanna", 5.89, 6.383], ["und", 6.383, 6.551], ["lp_art18", 6.551, 7.08]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -114,7 +114,7 @@
       const ac = at("L4", "Açaí-Stand"), li = at("L4", "Lilly"), ns = [at("L4", "Filipa"), at("L4", "Marina"), at("L4", "Johanna"), at("L4", "lp_art18")];
       tl.fromTo("#s02-t", { opacity: 0, scale: .3, rotation: -8 }, { opacity: 1, scale: 1, rotation: -2, duration: .4, ease: "back.out(2.6)" }, ac - .15);
       tl.fromTo("#s02-l", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, li - .2);
-      ns.forEach((t, i) => { tl.fromTo("#s02-n" + i, { opacity: 0, x: -140 }, { opacity: 1, x: 0, duration: .3, ease: "back.out(2)" }, ac + .1 + i * .08);
+      ns.forEach((t, i) => { tl.fromTo("#s02-n" + i, { opacity: 0, y: -30 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, ac + .1 + i * .08);
         tl.to("#s02-n" + i, { scale: 1.4, backgroundColor: "#ffd23f", boxShadow: "0 0 0 5px #2a1b12, 0 0 34px 10px rgba(255,210,63,.95)", zIndex: 5, duration: .14, ease: "back.out(3)" }, t + .15);
         tl.to("#s02-n" + i, { scale: 1, backgroundColor: "#ffffff", boxShadow: "0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25)", zIndex: 1, duration: .25 }, t + .75); });
       tl.to("#s02-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
