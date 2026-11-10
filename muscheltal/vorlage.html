@@ -100,7 +100,7 @@ section>h2{font-size:28px;margin-bottom:14px}
 .mpcard dt{font-size:10.5px;font-weight:900;letter-spacing:1px;color:var(--soft)}
 .mpcard dd{margin:2px 0 0;font-weight:900;font-size:16px}
 .mpcard .ortl{color:#0a8fd0;text-decoration:none}
-.ppass{max-width:420px}
+.ppass{max-width:420px}.mpwho{margin:0 0 10px;font-weight:700;color:#7a5a2b;font-size:14px}.mpwho[hidden],#mpbon[hidden]{display:none!important}
 .ach.lupe{background:linear-gradient(135deg,#e8fbff,#9fe3f2 55%,#4fc3dc);border-color:#0a6f8a;color:#073f50}
 .ach .lupei{width:44px;height:44px;flex:none;display:grid;place-items:center;border-radius:50%;background:#fff;border:2px solid #0a6f8a}
 .ach .lupei svg{width:28px;height:28px}
@@ -297,7 +297,7 @@ footer a{color:var(--soft)}
   <button class="mpx" id="mpx" aria-label="Schließen">×</button>
   <h2>🪪 Muschelpass</h2>
   <div id="mpf"><p style="margin:0 0 10px;font-weight:700">Dein Einwohnernachweis. Gib deinen TikTok-Namen ein:</p><input id="mpq" placeholder="@deinname" autocomplete="off" autocapitalize="off" spellcheck="false"><ul class="sugg" id="mps" hidden></ul><p class="miss" id="mpm" hidden></p></div>
-  <div id="mpp" hidden><div id="mpcardbox"></div>
+  <div id="mpp" hidden><p class="mpwho" id="mpwho" hidden></p><div id="mpcardbox"></div>
    <button class="mpgo" id="mpgo">🏠 Zu meiner Hütte</button>
    <button class="mpsh" id="mpshare">📲 In meiner Story teilen<small>TikTok · Instagram · WhatsApp-Status</small><span class="bon" id="mpbon">🐚 +50 Muscheln für die Inselkasse – alle 7 Tage möglich</span></button>
    <button class="mpalt" id="mpalt">Anderen Namen suchen</button></div>
@@ -1282,7 +1282,7 @@ const TOC=document.createElement('canvas');function tintDraw(c,tn,x0,y0,x1,y1,fn
  TOC.width=w;TOC.height=h;const o=TOC.getContext('2d');o.setTransform(m.a,m.b,m.c,m.d,m.e-X,m.f-Y);fn(o);o.setTransform(1,0,0,1,0,0);o.globalCompositeOperation='source-atop';o.fillStyle=`rgba(12,22,70,${.55*tn})`;o.fillRect(0,0,w,h);o.globalCompositeOperation='source-over';c.save();c.setTransform(1,0,0,1,0,0);c.drawImage(TOC,X,Y);c.restore();}
 let PALMG=null;function palmsFront(c,x,y,tn){if(S*cam.z<=5)return;if(!PALMG){PALMG=new Map();for(const v of ISL)for(const t of v.palms||[]){const k=Math.floor(t.x/24)+','+Math.floor(t.y/24);if(!PALMG.has(k))PALMG.set(k,[]);PALMG.get(k).push(t);}}
  const gx=Math.floor(x/24),gy=Math.floor(y/24);for(let i=-1;i<=1;i++)for(let j=0;j<=1;j++){const L=PALMG.get((gx+i)+','+(gy+j));if(!L)continue;for(const t of L){const d=t.y-y;if(d>.3&&d<12*t.s+4.5&&Math.abs(x-t.x)<9.6*t.s+2.6)tintDraw(c,tn,t.x-12*t.s,t.y-17*t.s,t.x+12*t.s+3,t.y+6,o=>palm(o,t,1));}}}
-function hutsFront(c,x,y,tn){palmsFront(c,x,y,tn);if(Math.abs(x)<130*PAL_S&&Math.abs(y)<80*PAL_S)palFront(c,x,y,tn);acaiFront(c,x,y,tn);plotSignFront(c,x,y,tn);const px=S*cam.z;if(px<7)return;const K=kind(),wet=K==='rain'||K==='storm',snow=K==='snow';
+function hutsFront(c,x,y,tn){palmsFront(c,x,y,tn);doenerFront(c,x,y,tn);if(Math.abs(x)<130*PAL_S&&Math.abs(y)<80*PAL_S)palFront(c,x,y,tn);acaiFront(c,x,y,tn);plotSignFront(c,x,y,tn);const px=S*cam.z;if(px<7)return;const K=kind(),wet=K==='rain'||K==='storm',snow=K==='snow';
  for(const v of ISL){if(!v.open||!v.cell||Math.hypot(x-v.x,y-v.y)>v.R+40)continue;const gx=Math.round((x-v.x)/S),gy=Math.round((y-v.y)/(S*.9));
   for(let dy=0;dy<=2;dy++)for(let dx=-1;dx<=1;dx++){const q=v.cell.get((gx+dx)+','+(gy+dy));if(!q||q.nr>limit||!q.p||q.p.y<=y-.5||q.p.y-y>24||Math.abs(q.p.x-x)>12)continue;tintDraw(c,tn,q.p.x-12,q.p.y-16,q.p.x+12,q.p.y+11,o=>hutBody(o,v,q,px,wet,snow));}}}
 function drawMover(c,w,x,y,dir,vert,mode){
@@ -1525,6 +1525,9 @@ function gebSign(c,g){const ink='#2a1b12';
   for(const [hx,hy] of[[bx-13,-23.5],[bx+13,-23.5]]){c.fillStyle='#e8467c';for(let k=0;k<5;k++){const a=k/5*TAU;c.beginPath();c.ellipse(hx+Math.cos(a)*.7,hy+Math.sin(a)*.7,.6,.4,a,0,TAU);c.fill();}c.fillStyle='#ffd23f';c.beginPath();c.arc(hx,hy,.3,0,TAU);c.fill();}}
  else if(g.typ==='villa'){const W=(g.x1-g.x0)/2,vx=-W+24;gTxt(c,g,'STRANDVILLA',vx,-16.4,4.4,'#b8862b',null,40);}}
 // Schild-Rechteck (lokal) je Gebäude, für Verdeckung der eigenen Figur
+function doenerMenu(c){c.fillStyle='#6b3f1d';c.fillRect(14,-13,1,10);c.fillStyle='#2a2a2a';c.fillRect(11,-17,9,9);c.strokeStyle='#8a5a2b';c.lineWidth=.7;c.strokeRect(11,-17,9,9);c.strokeStyle='rgba(255,255,255,.75)';c.lineWidth=.35;c.beginPath();for(let k=0;k<4;k++){c.moveTo(12.3,-15+k*2);c.lineTo(16+k%2*2,-15+k*2);}c.stroke();}
+// Figur hinter der Döner-Menütafel: Tafel wird über ihr nachgezeichnet
+function doenerFront(c,x,y,tn){if(S*cam.z<=6)return;for(const g of GEB){if(g.typ!=='doener')continue;const lx=x-g.cx,ly=y-g.cy;if(lx>7.5&&lx<23.5&&ly<-3.2&&ly>-22)tintDraw(c,tn,g.cx+10,g.cy-18,g.cx+21,g.cy-2,o=>{o.save();o.translate(g.cx,g.cy);doenerMenu(o);o.restore();});}}
 function signBox(g){const W=(g.x1-g.x0)/2,sx=(g.sea-g.cx)*(g.dir||1);return g.typ==='doener'?[-25,-33,26,9]:g.typ==='werkstatt'?[-25,-29,38,10]:g.typ==='acai'?[-26,-33,40,11]:g.typ==='strandbar'?[sx-43,-27,26,7]:[-W+2,-31,44,17];}
 function signOver(c,x,y,nl){for(const g of GEB){if(GROWK!=null&&GROWV===g.v&&GROWK<g.at)continue;const [bx,by,bw,bh]=signBox(g),m=(g.typ==='doener'||g.typ==='acai'||g.typ==='werkstatt')?1:(g.dir||1),lx=(x-g.cx)*m,ly=y-g.cy;
   if(lx>bx-3&&lx<bx+bw+3&&ly>by&&ly<by+bh+12){c.save();c.translate(g.cx,g.cy);if(m<0)c.scale(-1,1);gebSign(c,g);if(nl>0){c.fillStyle=`rgba(12,22,70,${.55*nl})`;c.fillRect(bx-1,by-8,bw+2,bh+9);}c.restore();}}}
@@ -1559,7 +1562,7 @@ function drawGeb(c,g,nl,z){const ink='#2a1b12';c.save();c.translate(g.cx,g.cy);
   c.fillStyle='#8a5a2b';c.fillRect(-27,1,37,4.5);c.strokeStyle=ink;c.lineWidth=.5;c.strokeRect(-27,1,37,4.5);c.fillStyle='#f4e3c0';c.fillRect(-26,1,35,1.2);
   for(const x of[-22,-14,-6]){c.fillStyle='#f3d27a';c.beginPath();c.moveTo(x,1);c.lineTo(x+3,1);c.lineTo(x+1.5,-2.4);c.closePath();c.fill();c.fillStyle='#57b85a';c.fillRect(x+.6,-.4,1.8,.8);}
   // Menütafel
-  c.fillStyle='#6b3f1d';c.fillRect(14,-13,1,10);c.fillStyle='#2a2a2a';c.fillRect(11,-17,9,9);c.strokeStyle='#8a5a2b';c.lineWidth=.7;c.strokeRect(11,-17,9,9);c.strokeStyle='rgba(255,255,255,.75)';c.lineWidth=.35;c.beginPath();for(let k=0;k<4;k++){c.moveTo(12.3,-15+k*2);c.lineTo(16+k%2*2,-15+k*2);}c.stroke();
+  doenerMenu(c);
   // Tische mit Schirmen
   for(const [x,y,a] of[[24,-8,'#e8433c'],[24,10,'#ffd23f'],[25,21,'#2fb3a0']]){c.fillStyle='#6b3f1d';for(const d of[-4,4]){c.fillRect(x+d-1,y-1,2,2);}umbrella(c,x,y,5.6,a,'#fff',0);}
   // Pflanzen + Lichterkette
@@ -2080,12 +2083,17 @@ function avatarCanvas(p,sz=128){const cv=document.createElement('canvas');cv.wid
  c.save();c.translate(64*k,104*k);c.scale(15*k/L.h,15*k/L.h);person(c,{...L,h:1},0,true,0);c.restore();return cv;}
 function avatarURL(p){return p.avURL||(p.avURL=avatarCanvas(p).toDataURL('image/png'));}
 let mpThird=false;
-function zeigePass(p,third){mpP=p;mpThird=!!third;$('mp').hidden=false;$('mpf').hidden=true;$('mpp').hidden=false;$('mpcardbox').innerHTML=passCard(p);bonUpd(p);
+let mpWalk=false;
+function zeigePass(p,third,walk){mpP=p;mpThird=!!third;mpWalk=!!walk;$('mp').hidden=false;$('mpf').hidden=true;$('mpp').hidden=false;$('mpcardbox').innerHTML=passCard(p);
+ $('mpshare').innerHTML=walk?'📲 Pass von '+esc(p.name)+' teilen<small>TikTok · Instagram · WhatsApp-Status</small><span class="bon" id="mpbon" hidden></span>':'📲 In meiner Story teilen<small>TikTok · Instagram · WhatsApp-Status</small><span class="bon" id="mpbon"></span>';
+ $('mpwho').hidden=!walk;$('mpalt').hidden=!!walk;
+ if(walk){const me=WK.me?WK.me.name:'Gast';$('mpwho').textContent='Du bist als '+me+' unterwegs und hast '+p.name+' getroffen 👋';$('mpgo').textContent='🚶 Weiter erkunden';$('mp').querySelector('h2').textContent='🪪 Muschelpass von '+p.name;return;}
+ bonUpd(p);
  $('mpgo').textContent='🏠 Zu '+p.name+(/[sßxz]$/i.test(p.name)?'’':'s')+' Hütte';$('mpshare').hidden=false;$('mpalt').textContent=third?'Meinen eigenen Namen suchen':'Anderen Namen suchen';
  $('mp').querySelector('h2').textContent=third?'🪪 Muschelpass von '+p.name:'🪪 Muschelpass';
  if(!third)try{localStorage.setItem('mt-me',p.name);}catch(e){}}
 document.addEventListener('click',e=>{const b=e.target.closest('.mpshi');if(b){const p=byName.get((b.dataset.n||'').toLowerCase());if(p){mpP=p;$('mpshare').click();}return;}
- const o=e.target.closest('.ortl');if(o){e.preventDefault();const t=ortPos(o.dataset.ort);$('mp').hidden=true;window.scrollTo({top:0,behavior:'smooth'});if(t)flyTo(t,1000);}});
+ const o=e.target.closest('.ortl');if(o&&WK.on&&!$('mp').hidden&&mpWalk){e.preventDefault();return;}if(o){e.preventDefault();const t=ortPos(o.dataset.ort);$('mp').hidden=true;window.scrollTo({top:0,behavior:'smooth'});if(t)flyTo(t,1000);}});
 function suchePass(){$('mp').hidden=false;$('mpf').hidden=false;$('mpp').hidden=true;$('mpq').value='';$('mps').hidden=true;$('mpm').hidden=true;setTimeout(()=>$('mpq').focus(),50);}
 $('passbtn').onclick=()=>{let me=null;try{me=byName.get((localStorage.getItem('mt-me')||'').toLowerCase());}catch(e){}me?zeigePass(me):suchePass();};
 $('mpx').onclick=()=>{$('mp').hidden=true;};$('mp').onclick=e=>{if(e.target===$('mp'))$('mp').hidden=true;};
@@ -2142,9 +2150,9 @@ $('mpshare').onclick=async()=>{if(!mpP)return;const p=mpP,b=$('mpshare'),lab=b.i
  try{const blob=await new Promise(r=>passBild(p).toBlob(r,'image/png'));const file=new File([blob],'muschelpass.png',{type:'image/png'});
   const fr=mpThird,txt=fr?'Das ist der Muschelpass von '+p.name+' in Muschel-Tal! 🐚 Zieh auch ein – folg '+ACCTXT:'Ich wohne jetzt in Muschel-Tal! 🐚 Zieh auch ein – folg '+ACCTXT;
   if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],text:txt});b.innerHTML=lab;if(!fr)bonus(p);return;}
-  else{const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='muschelpass.png';document.body.appendChild(a);a.click();a.remove();b.textContent='✅ Bild gespeichert – jetzt in der Story posten!';setTimeout(()=>{b.innerHTML=lab;bonUpd(p);},2600);if(!fr)bonus(p);return;}
- }catch(e){}b.innerHTML=lab;bonUpd(p);};
-$('mpgo').onclick=()=>{$('mp').hidden=true;window.scrollTo({top:0,behavior:'smooth'});if(mpP)select(mpP);};
+  else{const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='muschelpass.png';document.body.appendChild(a);a.click();a.remove();b.textContent='✅ Bild gespeichert – jetzt in der Story posten!';setTimeout(()=>{b.innerHTML=lab;if(!mpWalk)bonUpd(p);},2600);if(!fr)bonus(p);return;}
+ }catch(e){}b.innerHTML=lab;if(!mpWalk)bonUpd(p);};
+$('mpgo').onclick=()=>{$('mp').hidden=true;if(mpWalk)return;window.scrollTo({top:0,behavior:'smooth'});if(mpP)select(mpP);};
 $('mpq').oninput=()=>{const t=$('mpq').value.trim().toLowerCase().replace(/^@/,'');if(!t){$('mps').hidden=true;$('mpm').hidden=true;return;}
  const h=PEOPLE.filter(p=>p.name.toLowerCase().replace(/^@/,'').includes(t)).sort((a,b)=>(a.name.toLowerCase().replace(/^@/,'').startsWith(t)?0:1)-(b.name.toLowerCase().replace(/^@/,'').startsWith(t)?0:1)||a.nr-b.nr).slice(0,6);
  $('mps').innerHTML=h.map(p=>'<li><button type="button" data-n="'+esc(p.name)+'">'+esc(p.name)+'<small>Hütte '+fmt(p.nr)+'</small></button></li>').join('');$('mps').hidden=!h.length;
@@ -2215,7 +2223,7 @@ function obsBuild(){OBS=[];const A=(x,y,r)=>{OBS.push([x,y,r]);const k=Math.floo
  for(const v of ISL){if(!v.open)continue;for(const [x,y] of v.benches||[])A(x,y,4.6);for(const [x,y] of v.lamps||[])A(x,y,1.3);for(const t of v.palms||[])A(t.x,t.y+3,1.6*t.s);for(const b of v.bush||[])A(b.x,b.y,b.r*.75);for(const r of v.rocks||[])A(r.x,r.y,r.r);}
  for(const [x,y] of LANT)A(x,y,1.3);for(const [x,y] of plotSigns())A(x,y+7.6,2.2);for(const s of[-1,1])A(s*23.6*PAL_S,28.6*PAL_S,4.2);
  for(const g of GEB){const W=(g.x1-g.x0)/2,H=(g.y1-g.y0)/2,d=g.dir||1,sx=(g.sea-g.cx)*d,L=(lx,ly,r)=>A(g.cx+lx*((g.typ==='doener'||g.typ==='acai'||g.typ==='werkstatt')?1:d),g.cy+ly,r);
-  if(g.typ==='doener'){for(const [x,y] of[[24,-8],[24,10],[25,21]])L(x,y,3.8);L(-34,-10.5,2.6);L(-34,-5.5,2.6);L(-24,19,3.6);L(-21,19,3);L(12,19,2.8);L(-29.5,4.4,1.5);L(11.8,4.4,1.5);for(const [x,y] of[[-34,-18],[-34,16],[33,-20]])L(x,y,2.6);L(14.5,-9,1.3);}
+  if(g.typ==='doener'){for(const [x,y] of[[24,-8],[24,10],[25,21]])L(x,y,3.8);L(-34,-10.5,2.6);L(-34,-5.5,2.6);L(-24,19,3.6);L(-21,19,3);L(12,19,2.8);L(-29.5,4.4,1.5);L(11.8,4.4,1.5);for(const [x,y] of[[-34,-18],[-34,16],[33,-20]])L(x,y,2.6);L(14.5,-3.4,1.8);}
   else if(g.typ==='strandbar'){const bx=sx-30;for(const [x,y] of[[-W+15,-5],[-W+15,12],[-W+29,3]])L(x,y,3);for(const [x,y] of[[-W+10,-7],[-W+10,10],[-W+24,1]])L(x,y+1,1.1);L(sx-50,14,2);L(sx-48,4,2);L(-W+28,15,4.4);L(-W+10,19,2.8);L(sx-8,21,3.4);L(-W+46,20,2.4);L(-W+36,4,1.6);L(-W+3,-H+4,1.8);L(sx-50,-H-2,1.8);L(-W+18,-H+4,1.8);
    for(const [x,y] of[[W-11,-19],[W-11,19],[W-18,-21],[sx+5,19],[sx+3,-23],[sx+3,23],[sx+8,-14],[sx+8,14],[sx+28,-2]])L(x,y,2.4);L(W-13,-1,4.6);L(W-18.6,-1,1.6);L(W-7.4,-1,1.6);for(const [x,y] of[[sx-42,-24],[W-4,-24],[W-4,24],[sx-42,24],[(sx-44+W)/2,-24],[(sx-44+W)/2,24]])L(x,y+3,1.1);for(const x of[bx-9,bx-3,bx+3,bx+9])L(x,10,1.6);}
   else if(g.typ==='acai'){for(const [x,y] of[[-33,-12],[-33,-6],[-33,0]])L(x,y,2.8);L(-33,5.5,1.6);L(-31.2,6,1.4);L(-30,15,3.6);L(-26.2,-6,1.4);L(-17,12,3);L(12.5,22,1.5);L(-12.5,22,1.5);L(15.2,-1.4,2.2);L(9.5,25,.9);L(-9.5,25,.9);}
@@ -2242,6 +2250,9 @@ function walkStart(){const me=sel;if(!me)return;try{const w=walkedSet();w.add(me
  Object.assign(WK,{on:true,x,y,mode:'walk',moving:false,pt:null,sc:0});unsel();window.scrollTo({top:0,behavior:'smooth'});
  $('hero').classList.add('walking');$('walkui').hidden=false;$('walkhint').style.opacity=1;setTimeout(()=>{$('walkhint').style.opacity=0;},4500);$('walkmode').textContent='🛵 Moped';
  cancelAnimationFrame(fly);flyTo({x,y,z:5},700);setTimeout(()=>{WK.last=performance.now();requestAnimationFrame(walkTick);},720);}
+// wen hat man beim Erkunden angetippt? (Figur auf der Karte oder Hütte; nie sich selbst)
+function walkTapWho(sx,sy){const r=cv.getBoundingClientRect(),wx=(sx-W/2)/cam.z+cam.x,wy=(sy-H/2)/cam.z+cam.y;let tb=null,td=9;for(const [tx,ty,tq] of TAPS){if(tq===WK.me)continue;const d=Math.hypot(tx-wx,(ty-3)-wy);if(d<td){td=d;tb=tq;}}if(tb)return tb;
+ let best=null,bd=10;for(const v of ISL){if(Math.hypot(wx-v.x,wy-v.y)>v.R+30)continue;const gx=Math.round((wx-v.x)/S),gy=Math.round((wy-v.y)/(S*.9));for(let dx=-1;dx<=1;dx++)for(let dy=-1;dy<=1;dy++){const q=v.cell.get((gx+dx)+','+(gy+dy));if(!q||q.nr>limit||q===WK.me||!q.p)continue;const d=Math.hypot(q.p.x-wx,q.p.y-wy);if(d<bd){bd=d;best=q;}}}return best;}
 function walkEnd(){const me=WK.me;WK.on=false;WK.keys.clear();WK.pt=null;$('hero').classList.remove('walking');$('walkui').hidden=true;
  // nach dem Beenden wieder die Person auswählen, damit der Erkunden-Knopf wieder da ist
  if(me&&me.p)select(me);else flyTo(fitMain(freeY()),800);if(typeof walkLabel==='function')walkLabel();}
@@ -2269,9 +2280,9 @@ $('walkmode').onclick=()=>{WK.mode=WK.mode==='walk'?'moped':'walk';$('walkmode')
 addEventListener('keydown',e=>{if(!WK.on)return;const k=e.key.length===1?e.key.toLowerCase():e.key;if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','w','a','s','d'].includes(k)){WK.keys.add(k);e.preventDefault();}if(k==='Escape')walkEnd();});
 addEventListener('keyup',e=>{const k=e.key.length===1?e.key.toLowerCase():e.key;WK.keys.delete(k);});
 {const hero=$('hero'),pos=e=>{const r=cv.getBoundingClientRect();return[e.clientX-r.left,e.clientY-r.top];},onMap=e=>e.target===cv;
- hero.addEventListener('pointerdown',e=>{if(!WK.on||!onMap(e))return;e.stopPropagation();e.preventDefault();try{cv.setPointerCapture(e.pointerId);}catch(_){}WK.pt=pos(e);},true);
+ hero.addEventListener('pointerdown',e=>{if(!WK.on||!onMap(e))return;e.stopPropagation();e.preventDefault();try{cv.setPointerCapture(e.pointerId);}catch(_){}WK.pt=pos(e);WK.tap=[performance.now(),...pos(e)];},true);
  hero.addEventListener('pointermove',e=>{if(!WK.on||!WK.pt)return;e.stopPropagation();WK.pt=pos(e);},true);
- for(const t of['pointerup','pointercancel'])hero.addEventListener(t,e=>{if(!WK.on)return;if(onMap(e))e.stopPropagation();WK.pt=null;},true);
+ for(const t of['pointerup','pointercancel'])hero.addEventListener(t,e=>{if(!WK.on)return;if(onMap(e))e.stopPropagation();const tp=WK.tap;WK.pt=null;WK.tap=null;if(t==='pointerup'&&tp&&performance.now()-tp[0]<300){const [sx,sy]=pos(e);if(Math.hypot(sx-tp[1],sy-tp[2])<10){const q=walkTapWho(sx,sy);if(q)zeigePass(q,true,true);}}},true);
  hero.addEventListener('wheel',e=>{if(WK.on){e.stopPropagation();}},true);}
 let toastT=0;function toast(t){const e=$('toast');e.textContent=t;e.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>e.hidden=true,4200);}
 // Versteckte Lupe: Erfolg „Lupe“ für den gerade ausgewählten TikTok-Namen (gespeichert in diesem Browser)
