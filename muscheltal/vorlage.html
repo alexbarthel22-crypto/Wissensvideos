@@ -170,7 +170,7 @@ section>h2{font-size:28px;margin-bottom:14px}
 @media (prefers-reduced-motion:reduce){.walkbar .btn.wackel{animation:none}}.walkbar .btn{display:block;width:100%;text-align:center;font-size:19px;padding:14px 10px;white-space:nowrap;overflow:hidden}
 .walkui{position:absolute;left:12px;right:12px;bottom:14px;max-width:560px;pointer-events:none;z-index:3}.walkui[hidden]{display:none}
 .walkbtns{display:grid;grid-template-columns:1fr 1fr;gap:10px;pointer-events:auto}.walkbtns .chip{width:100%;font-size:16px;min-height:48px}
-.walkhint{margin:0 auto 10px;width:max-content;max-width:100%;background:rgba(42,27,18,.85);color:#fff;border-radius:12px;padding:6px 12px;font-size:14px;font-weight:800;text-align:center;transition:opacity .6s}
+.walkhint{margin:0 auto 10px;width:max-content;max-width:100%;white-space:nowrap;background:rgba(42,27,18,.85);color:#fff;border-radius:12px;padding:6px 12px;font-size:14px;font-weight:800;text-align:center;transition:opacity .6s}
 .hero.walking .dock,.hero.walking .zoomc,.hero.walking .pop,.hero.walking .findbar,.hero.walking .growhud{display:none!important}
 .popx{flex:none;width:34px;height:34px;border-radius:50%;border:2px solid var(--ink);background:var(--peach);font-size:22px;font-weight:900;line-height:1;padding:0;display:grid;place-items:center}
 .pop div{flex:1;min-width:0;display:grid}
@@ -287,7 +287,7 @@ footer a{color:var(--soft)}
  <div class="growhud" id="growhud" hidden></div>
  <div class="pop" id="pop" hidden><div><b id="pname"></b></div><button class="popx" id="popx" type="button" aria-label="Auswahl schließen">×</button></div>
  <div class="zoomc"><button id="zin" aria-label="Hineinzoomen">+</button><button id="zout" aria-label="Herauszoomen">−</button></div>
- <div class="walkui" id="walkui" hidden><p class="walkhint" id="walkhint">Tippe und halte auf die Karte, wohin du gehen willst</p><div class="walkbtns"><button class="chip sun" id="walkmode" type="button">🛵 Moped</button><button class="chip hot" id="walkend" type="button">✕ Beenden</button></div></div>
+ <div class="walkui" id="walkui" hidden><p class="walkhint" id="walkhint">Tippe und halte, wohin du gehen willst</p><div class="walkbtns"><button class="chip sun" id="walkmode" type="button">🛵 Moped</button><button class="chip hot" id="walkend" type="button">✕ Beenden</button></div></div>
  <div class="dock" id="dock">
   <div class="swipe" id="swipe"><div class="pg" id="pg1"></div><div class="pg" id="pg2"></div></div>
   <div class="dots" id="dots" aria-hidden="true"><i class="on"></i><i></i></div>
@@ -2445,12 +2445,12 @@ function canWalk(x,y){if(onObs(x,y))return false;
  if(v.i===1&&Math.hypot(x-v.x,(y-v.y)/.86)<18)return false;
  const gx=Math.round((x-v.x)/S),gy=Math.round((y-v.y)/(S*.9));for(let dx=-1;dx<=1;dx++)for(let dy=-1;dy<=1;dy++){const q=v.cell.get((gx+dx)+','+(gy+dy));if(!q||q.nr>limit)continue;if(Math.abs(x-q.p.x)<7&&y>q.p.y+.5&&y<q.p.y+7.5)return false;}
  return true;}
-function walkStart(){const me=sel;if(!me)return;try{const w=walkedSet();w.add(me.name.toLowerCase());localStorage.setItem('mt-walked',JSON.stringify([...w]));}catch(e){}$('walkbtn').classList.remove('wackel');
+function walkStart(){const me=sel;if(!me)return;let erst=true;try{erst=!walkedSet().has(me.name.toLowerCase());}catch(e){}try{const w=walkedSet();w.add(me.name.toLowerCase());localStorage.setItem('mt-walked',JSON.stringify([...w]));}catch(e){}$('walkbtn').classList.remove('wackel');
  WK.me=me||null;WK.L=me?{...(me.L||(me.L=look(me.k))),bikec:'#ff3d7f',ph:0}:{...look(7),bikec:'#ff3d7f',ph:0};
  let sp=me&&me.p?standSpot(me):null;if(sp&&!me.gb&&(sp.kind==='cell'||!canWalk(sp.x,sp.y))){const v=me.isl;sp={x:me.p.x,y:v.y+Math.ceil((me.p.gy+.01)/4)*4*S*.9-2.6};}let x=sp?sp.x:0,y=sp?sp.y:36*PAL_S+10;
  if(!canWalk(x,y)){let f=null;for(let r=4;r<120&&!f;r+=4)for(let a=0;a<TAU&&!f;a+=.3){const nx=x+Math.cos(a)*r,ny=y+Math.sin(a)*r;if(canWalk(nx,ny))f=[nx,ny];}if(f){x=f[0];y=f[1];}}
  Object.assign(WK,{on:true,x,y,mode:'walk',moving:false,pt:null,sc:0});unsel();setTimeout(()=>{if(typeof sonneCheck==='function')sonneCheck();},1500);window.scrollTo({top:0,behavior:'smooth'});
- $('hero').classList.add('walking');$('walkui').hidden=false;$('walkhint').style.opacity=1;setTimeout(()=>{$('walkhint').style.opacity=0;},4500);$('walkmode').textContent='🛵 Moped';
+ $('hero').classList.add('walking');$('walkui').hidden=false;$('walkhint').hidden=!erst;$('walkhint').style.opacity=erst?1:0;if(erst)setTimeout(()=>{$('walkhint').style.opacity=0;},4500);$('walkmode').textContent='🛵 Moped';
  cancelAnimationFrame(fly);flyTo({x,y,z:5},700);setTimeout(()=>{WK.last=performance.now();requestAnimationFrame(walkTick);},720);}
 // wen hat man beim Erkunden angetippt? (Figur auf der Karte oder Hütte; nie sich selbst)
 function walkTapWho(sx,sy){const r=cv.getBoundingClientRect(),wx=(sx-W/2)/cam.z+cam.x,wy=(sy-H/2)/cam.z+cam.y;let tb=null,td=9;for(const [tx,ty,tq] of TAPS){if(tq===WK.me)continue;const d=Math.hypot(tx-wx,(ty-3)-wy);if(d<td){td=d;tb=tq;}}if(tb)return[tb,'person'];
