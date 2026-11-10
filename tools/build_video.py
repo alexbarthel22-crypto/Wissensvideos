@@ -156,7 +156,8 @@ def build_captions(project, timings, windows, total, big=False, opt=None):
     if opt.get("merge_last"):  # letzte k Gruppen als ganzer Schluss-Satz (z. B. Frage an die Zuschauer)
         k = opt["merge_last"]
         groups = groups[:-k] + [{"words": [w for g in groups[-k:] for w in g["words"]], "start": groups[-k]["start"], "end": groups[-1]["end"]}]
-    groups[-1]["end"] = round(total - 0.05, 3)  # letzte Zeile (Frage an die Zuschauer) bleibt stehen
+    if not opt.get("last_off"):  # last_off: letzte Zeile verschwindet nach dem Aussprechen
+        groups[-1]["end"] = round(total - 0.05, 3)  # letzte Zeile (Frage an die Zuschauer) bleibt stehen
     rows, js = [], []
     bars = opt.get("bars")
     bar_cols = opt.get("bar_colors", ["#e8467c", "#0a9fa6", "#7b4fe0", "#2f7fe0"])
