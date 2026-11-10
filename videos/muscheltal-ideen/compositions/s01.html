@@ -51,26 +51,26 @@
 @font-face { font-family: "Lilita One"; src: url("assets/fonts/LilitaOne-Regular.woff2") format("woff2"); font-weight: 400; }
     .pl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 28px 12px; border-radius: 999px; color: #fff;
       font-family: "Inter", sans-serif; font-weight: 900; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); white-space: nowrap; }
-    .pt { position: absolute; width: 80px; height: 80px; font-size: 70px; text-align: center; line-height: 80px; opacity: 0; }
-    #s01-bar { position: absolute; left: 0; right: 0; top: 250px; height: 120px; background: #e8262f; display: flex; align-items: center; gap: 24px; padding: 0 40px; box-shadow: 0 8px 0 rgba(0,0,0,.25); }
-    #s01-bar b { font-family: "Lilita One", sans-serif; font-size: 78px; color: #fff; letter-spacing: .02em; }
-    #s01-live { padding: 4px 16px 6px; border-radius: 10px; background: #fff; color: #e8262f; font-family: "Inter", sans-serif; font-weight: 900; font-size: 36px; }
-    #s01-tk { position: absolute; left: 0; right: 0; top: 1060px; height: 70px; background: #111; overflow: hidden; }
-    #s01-tt { position: absolute; left: 1080px; top: 10px; white-space: nowrap; font-family: "Inter", sans-serif; font-weight: 900; font-size: 40px; color: #ffd23f; }
-    #s01-w { position: absolute; left: 470px; top: 590px; font-size: 280px; line-height: 1; }
+    .can { position: absolute; top: -180px; width: 56px; height: 104px; border-radius: 12px 12px 10px 10px; opacity: 0;
+      background: linear-gradient(90deg, rgba(0,0,0,.18), rgba(255,255,255,.35) 35%, rgba(0,0,0,.12) 70%), linear-gradient(180deg, #1f3f95 0 48%, #c9d1dc 48% 100%);
+      box-shadow: 0 0 0 3px #2a1b12; }
+    .can::before { content: ""; position: absolute; left: 6px; right: 6px; top: 40px; height: 16px; border-radius: 8px; background: linear-gradient(90deg, #e8262f, #ffcc00); }
+    .can::after { content: ""; position: absolute; left: 8px; right: 8px; top: -6px; height: 8px; border-radius: 4px; background: #aab3c0; box-shadow: 0 0 0 2px #2a1b12; }
+    #s01-a { top: 300px; font-size: 52px; background: #7b3fe0; }
+    #s01-h { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 420px; padding: 6px 40px 16px; border-radius: 30px; background: #1f3f95; color: #fff; font-family: "Lilita One", sans-serif; font-size: 84px; line-height: 1; white-space: nowrap; box-shadow: 0 0 0 7px #2a1b12, 0 14px 0 rgba(0,0,0,.3); transform: rotate(-3deg); }
+    #s01-h b { color: #ffcc00; font-weight: 400; }
   </style>
-  <div id="root" data-composition-id="s01" data-start="0" data-duration="4.330" data-width="1080" data-height="1920">
-    <div id="s01-stage" class="clip stage" data-start="0" data-duration="4.330" data-track-index="0">
-      <div id="s01-bar"><span id="s01-live">● LIVE</span><b>EILMELDUNG</b></div>
-      <div id="s01-w" data-layout-ignore>🐳</div>
-      <div class="pt" id="s01-d0" style="left:500px;top:720px">💦</div><div class="pt" id="s01-d1" style="left:500px;top:720px">💦</div><div class="pt" id="s01-d2" style="left:500px;top:720px">💦</div><div class="pt" id="s01-d3" style="left:500px;top:720px">💦</div><div class="pt" id="s01-d4" style="left:500px;top:720px">💦</div><div class="pt" id="s01-d5" style="left:500px;top:720px">💦</div><div class="pt" id="s01-d6" style="left:500px;top:720px">💦</div><div class="pt" id="s01-d7" style="left:500px;top:720px">💦</div><div class="pt" id="s01-d8" style="left:500px;top:720px">💦</div><div class="pt" id="s01-d9" style="left:500px;top:720px">💦</div><div class="pt" id="s01-d10" style="left:500px;top:720px">💦</div><div class="pt" id="s01-d11" style="left:500px;top:720px">💦</div><div class="pt" id="s01-d12" style="left:500px;top:720px">💦</div><div class="pt" id="s01-d13" style="left:500px;top:720px">💦</div><div class="pt" id="s01-d14" style="left:500px;top:720px">💦</div><div class="pt" id="s01-d15" style="left:500px;top:720px">💦</div>
-      <div id="s01-tk" data-layout-ignore><div id="s01-tt">+++ WAL IM POOL +++ LUISE SPRACHLOS +++ BADEMEISTER GESUCHT +++ WAL IM POOL +++ LUISE SPRACHLOS +++</div></div>
+  <div id="root" data-composition-id="s01" data-start="0" data-duration="3.980" data-width="1080" data-height="1920">
+    <div id="s01-stage" class="clip stage" data-start="0" data-duration="3.980" data-track-index="0">
+      <div id="s01-a" class="pl">🤯 Stell dir vor …</div>
+      <div id="s01-h">⚡ ES REGNET <b>RED BULL!</b></div>
+      <div class="can" id="s01-c0" data-layout-ignore></div><div class="can" id="s01-c1" data-layout-ignore></div><div class="can" id="s01-c2" data-layout-ignore></div><div class="can" id="s01-c3" data-layout-ignore></div><div class="can" id="s01-c4" data-layout-ignore></div><div class="can" id="s01-c5" data-layout-ignore></div><div class="can" id="s01-c6" data-layout-ignore></div><div class="can" id="s01-c7" data-layout-ignore></div><div class="can" id="s01-c8" data-layout-ignore></div><div class="can" id="s01-c9" data-layout-ignore></div><div class="can" id="s01-c10" data-layout-ignore></div><div class="can" id="s01-c11" data-layout-ignore></div><div class="can" id="s01-c12" data-layout-ignore></div><div class="can" id="s01-c13" data-layout-ignore></div><div class="can" id="s01-c14" data-layout-ignore></div><div class="can" id="s01-c15" data-layout-ignore></div><div class="can" id="s01-c16" data-layout-ignore></div><div class="can" id="s01-c17" data-layout-ignore></div><div class="can" id="s01-c18" data-layout-ignore></div><div class="can" id="s01-c19" data-layout-ignore></div><div class="can" id="s01-c20" data-layout-ignore></div><div class="can" id="s01-c21" data-layout-ignore></div><div class="can" id="s01-c22" data-layout-ignore></div><div class="can" id="s01-c23" data-layout-ignore></div><div class="can" id="s01-c24" data-layout-ignore></div><div class="can" id="s01-c25" data-layout-ignore></div><div class="can" id="s01-c26" data-layout-ignore></div><div class="can" id="s01-c27" data-layout-ignore></div><div class="can" id="s01-c28" data-layout-ignore></div><div class="can" id="s01-c29" data-layout-ignore></div><div class="can" id="s01-c30" data-layout-ignore></div><div class="can" id="s01-c31" data-layout-ignore></div><div class="can" id="s01-c32" data-layout-ignore></div><div class="can" id="s01-c33" data-layout-ignore></div><div class="can" id="s01-c34" data-layout-ignore></div><div class="can" id="s01-c35" data-layout-ignore></div><div class="can" id="s01-c36" data-layout-ignore></div><div class="can" id="s01-c37" data-layout-ignore></div><div class="can" id="s01-c38" data-layout-ignore></div><div class="can" id="s01-c39" data-layout-ignore></div><div class="can" id="s01-c40" data-layout-ignore></div><div class="can" id="s01-c41" data-layout-ignore></div><div class="can" id="s01-c42" data-layout-ignore></div><div class="can" id="s01-c43" data-layout-ignore></div><div class="can" id="s01-c44" data-layout-ignore></div><div class="can" id="s01-c45" data-layout-ignore></div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 4.33, "L1": [0.0, 3.65], "L1.words": [["eilmeldung", 0.0, 0.556], ["auf", 0.556, 0.739], ["muscheltal", 0.739, 1.295], ["ist", 1.295, 1.478], ["gerade", 1.478, 2.008], ["ein", 2.008, 2.191], ["wal", 2.191, 2.374], ["in", 2.374, 2.551], ["luises", 2.551, 2.917], ["pool", 2.917, 3.107], ["gelandet", 3.107, 3.65]]};
+      const C = {"__dur": 3.98, "L1": [0.0, 3.0], "L1.words": [["stell", 0.0, 0.227], ["dir", 0.227, 0.438], ["vor", 0.438, 0.65], ["auf", 0.88, 1.115], ["muscheltal", 1.115, 1.827], ["regnet", 1.827, 2.296], ["es", 2.296, 2.522], ["red", 2.522, 2.757], ["bull", 2.757, 3.0]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -114,18 +114,14 @@
 
       wrapBt("#s01-stage");
       const tl = gsap.timeline({ paused: true });
-      const wa = at("L1", "Wal"), po = at("L1", "Pool");
-      tl.set("#s01-bar", { opacity: 1 }, 0);
-      tl.fromTo("#s01-bar", { x: -1100 }, { x: 0, duration: .25, ease: "power3.out" }, 0);
-      tl.to("#s01-live", { opacity: .2, duration: .25, yoyo: true, repeat: 15, ease: "steps(1)" }, .3);
-      tl.fromTo("#s01-tt", { x: 0 }, { x: -2600, duration: 6, ease: "none" }, .2);
-      tl.fromTo("#s01-w", { y: -1100, rotation: -40, scale: .8 }, { y: 0, rotation: 8, scale: 1, duration: po - wa + .1, ease: "power2.in" }, wa - .1);
-      tl.to("#s01-w", { scaleY: .7, scaleX: 1.25, duration: .08, yoyo: true, repeat: 1 }, po);
-      tl.to("#s01-w", { rotation: -6, y: -14, duration: .3, yoyo: true, repeat: 5, ease: "sine.inOut" }, po + .3);
-      tl.to("#s01-stage", { x: 16, duration: .04, yoyo: true, repeat: 9, ease: "none" }, po);
-      { const R = rng(11); for (let i = 0; i < 16; i++) { const dx = (R() - .5) * 480 * 2, dy = -600 * (.5 + R() * .6);
-        tl.fromTo("#s01-d" + i, { opacity: 0, x: 0, y: 0, scale: .4, rotation: 0 }, { opacity: 1, x: dx * .6, y: dy * .6, scale: 1, rotation: (R() - .5) * 400, duration: .4, ease: "power3.out" }, po + .05);
-        tl.to("#s01-d" + i, { x: dx, y: dy * .6 + 900, opacity: 0, rotation: "+=" + Math.round((R() - .5) * 300), duration: 1.3, ease: "power1.in" }, po + .05 + .4); } }
+      const re = at("L1", "regnet");
+      tl.set("#s01-a", { opacity: 1 }, 0);
+      tl.fromTo("#s01-a", { scale: 1.3 }, { scale: 1, duration: .3, ease: "back.out(3)" }, 0);
+      tl.fromTo("#s01-h", { opacity: 0, scale: 2.6 }, { opacity: 1, scale: 1, duration: .25, ease: "back.out(2)" }, re - .05);
+      tl.to("#s01-h", { scale: 1.08, duration: .16, yoyo: true, repeat: 9, ease: "sine.inOut" }, re + .3);
+      { const R = rng(4), T0 = re - .2, T1 = C.__dur + .3; for (let i = 0; i < 46; i++) { const x = 20 + R() * 1000, d = .9 + R() * .7, st = T0 + R() * Math.max(.1, T1 - T0 - d);
+        document.getElementById("s01-c" + i).style.left = x + "px";
+        tl.fromTo("#s01-c" + i, { opacity: 1, y: 0, rotation: (R() - .5) * 60 }, { y: 2300, rotation: "+=" + Math.round((R() - .5) * 540), duration: d, ease: "power1.in" }, st); } }
       
       window.__timelines["s01"] = tl;
     })();

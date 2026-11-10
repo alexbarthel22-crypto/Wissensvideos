@@ -1,715 +1,586 @@
 {
- "duration": 29.49,
+ "duration": 25.12,
  "lines": [
   {
    "scene": "s01",
    "id": "L1",
    "words": [
     {
-     "display": "Eilmeldung!",
-     "spoken": "Eilmeldung!",
-     "color": "r",
+     "display": "Stell",
+     "spoken": "Stell",
+     "color": null,
      "group": 0,
      "start": 0.0,
-     "end": 0.556
+     "end": 0.227
+    },
+    {
+     "display": "dir",
+     "spoken": "dir",
+     "color": null,
+     "group": 0,
+     "start": 0.227,
+     "end": 0.438
+    },
+    {
+     "display": "vor:",
+     "spoken": "vor:",
+     "color": null,
+     "group": 0,
+     "start": 0.438,
+     "end": 0.65
     },
     {
      "display": "Auf",
      "spoken": "Auf",
      "color": null,
      "group": 1,
-     "start": 0.556,
-     "end": 0.739
+     "start": 0.88,
+     "end": 1.115
     },
     {
      "display": "Muschel-Tal",
      "spoken": "Muschel-Tal",
      "color": null,
      "group": 1,
-     "start": 0.739,
-     "end": 1.295
+     "start": 1.115,
+     "end": 1.827
     },
     {
-     "display": "ist",
-     "spoken": "ist",
-     "color": null,
-     "group": 1,
-     "start": 1.295,
-     "end": 1.478
-    },
-    {
-     "display": "gerade",
-     "spoken": "gerade",
-     "color": null,
-     "group": 1,
-     "start": 1.478,
-     "end": 2.008
-    },
-    {
-     "display": "ein",
-     "spoken": "ein",
-     "color": null,
+     "display": "regnet",
+     "spoken": "regnet",
+     "color": "r",
      "group": 2,
-     "start": 2.008,
-     "end": 2.191
+     "start": 1.827,
+     "end": 2.296
     },
     {
-     "display": "Wal",
-     "spoken": "Wal",
-     "color": "b",
+     "display": "es",
+     "spoken": "es",
+     "color": "r",
      "group": 2,
-     "start": 2.191,
-     "end": 2.374
+     "start": 2.296,
+     "end": 2.522
     },
     {
-     "display": "in",
-     "spoken": "in",
-     "color": null,
+     "display": "Red",
+     "spoken": "Red",
+     "color": "y",
      "group": 2,
-     "start": 2.374,
-     "end": 2.551
+     "start": 2.522,
+     "end": 2.757
     },
     {
-     "display": "Luises",
-     "spoken": "Luises",
-     "color": "b",
+     "display": "Bull!",
+     "spoken": "Bull!",
+     "color": "y",
      "group": 2,
-     "start": 2.551,
-     "end": 2.917
-    },
-    {
-     "display": "Pool",
-     "spoken": "Pool",
-     "color": "b",
-     "group": 2,
-     "start": 2.917,
-     "end": 3.107
-    },
-    {
-     "display": "gelandet!",
-     "spoken": "gelandet!",
-     "color": null,
-     "group": 2,
-     "start": 3.107,
-     "end": 3.65
+     "start": 2.757,
+     "end": 3.0
     }
    ],
-   "spoken": "Eilmeldung! Auf Muschel-Tal ist gerade ein Wal in Luises Pool gelandet!",
+   "spoken": "Stell dir vor: Auf Muschel-Tal regnet es Red Bull!",
    "start": 0.0,
-   "end": 3.65
+   "end": 3.0
   },
   {
    "scene": "s02",
    "id": "L2",
    "words": [
     {
-     "display": "Okay",
-     "spoken": "Okay",
+     "display": "Auf",
+     "spoken": "Auf",
      "color": null,
      "group": 0,
-     "start": 4.53,
-     "end": 4.81
+     "start": 4.18,
+     "end": 4.354
     },
     {
-     "display": "–",
-     "spoken": "–",
+     "display": "dem",
+     "spoken": "dem",
      "color": null,
      "group": 0,
-     "start": 4.81,
-     "end": 4.94
+     "start": 4.354,
+     "end": 4.529
     },
     {
-     "display": "Spaß.",
-     "spoken": "Spaß.",
-     "color": "y",
+     "display": "Muschelplatz",
+     "spoken": "Muschelplatz",
+     "color": null,
      "group": 0,
-     "start": 5.24,
-     "end": 5.8
+     "start": 4.529,
+     "end": 5.07
     },
     {
-     "display": "Aber",
-     "spoken": "Aber",
+     "display": "steht",
+     "spoken": "steht",
      "color": null,
      "group": 1,
-     "start": 6.1,
-     "end": 6.303
+     "start": 5.07,
+     "end": 5.257
     },
     {
-     "display": "das",
-     "spoken": "das",
+     "display": "ein",
+     "spoken": "ein",
+     "color": null,
+     "group": 1,
+     "start": 5.257,
+     "end": 5.431
+    },
+    {
+     "display": "Matcha-Brunnen",
+     "spoken": "Matcha-Brunnen",
      "color": "g",
      "group": 1,
-     "start": 6.303,
-     "end": 6.409
-    },
-    {
-     "display": "könnte",
-     "spoken": "könnte",
-     "color": null,
-     "group": 1,
-     "start": 6.409,
-     "end": 6.62
-    },
-    {
-     "display": "passieren",
-     "spoken": "passieren",
-     "color": null,
-     "group": 1,
-     "start": 6.62,
-     "end": 6.936
+     "start": 5.431,
+     "end": 6.134
     },
     {
      "display": "–",
      "spoken": "–",
      "color": null,
      "group": 1,
-     "start": 6.936,
-     "end": 7.03
+     "start": 6.134,
+     "end": 6.29
     },
     {
-     "display": "wenn",
-     "spoken": "wenn",
-     "color": null,
+     "display": "gratis",
+     "spoken": "gratis",
+     "color": "g",
      "group": 2,
-     "start": 7.33,
-     "end": 7.462
+     "start": 6.49,
+     "end": 6.932
     },
     {
-     "display": "ihr",
-     "spoken": "ihr",
-     "color": "p",
+     "display": "für",
+     "spoken": "für",
+     "color": "g",
      "group": 2,
-     "start": 7.462,
-     "end": 7.59
+     "start": 6.932,
+     "end": 7.153
     },
     {
-     "display": "es",
-     "spoken": "es",
-     "color": null,
+     "display": "alle!",
+     "spoken": "alle!",
+     "color": "g",
      "group": 2,
-     "start": 7.59,
-     "end": 7.713
-    },
-    {
-     "display": "wollt!",
-     "spoken": "wollt!",
-     "color": null,
-     "group": 2,
-     "start": 7.713,
-     "end": 7.85
+     "start": 7.153,
+     "end": 7.58
     }
    ],
-   "spoken": "Okay – Spaß. Aber das könnte passieren – wenn ihr es wollt!",
-   "start": 4.53,
-   "end": 7.85
+   "spoken": "Auf dem Muschelplatz steht ein Matcha-Brunnen – gratis für alle!",
+   "start": 4.18,
+   "end": 7.58
   },
   {
    "scene": "s03",
    "id": "L3",
    "words": [
     {
-     "display": "Was",
-     "spoken": "Was",
+     "display": "Dubai-Schokolade",
+     "spoken": "Dubai-Schokolade",
+     "color": "y",
+     "group": 0,
+     "start": 8.76,
+     "end": 9.571
+    },
+    {
+     "display": "an",
+     "spoken": "an",
      "color": null,
      "group": 0,
-     "start": 8.83,
-     "end": 8.976
+     "start": 9.571,
+     "end": 9.704
     },
     {
-     "display": "ist",
-     "spoken": "ist",
+     "display": "jeder",
+     "spoken": "jeder",
      "color": null,
      "group": 0,
-     "start": 8.976,
-     "end": 9.122
+     "start": 9.704,
+     "end": 9.974
     },
     {
-     "display": "eure",
-     "spoken": "eure",
+     "display": "Ecke?",
+     "spoken": "Ecke?",
      "color": null,
      "group": 0,
-     "start": 9.122,
-     "end": 9.404
+     "start": 9.974,
+     "end": 10.24
     },
     {
-     "display": "verrückteste",
-     "spoken": "verrückteste",
-     "color": "p",
-     "group": 0,
-     "start": 9.404,
-     "end": 9.988
-    },
-    {
-     "display": "Idee?",
-     "spoken": "Idee?",
-     "color": "p",
-     "group": 0,
-     "start": 9.988,
-     "end": 10.27
-    },
-    {
-     "display": "Ein",
-     "spoken": "Ein",
+     "display": "Dein",
+     "spoken": "Dein",
      "color": null,
      "group": 1,
-     "start": 10.57,
-     "end": 11.02
+     "start": 10.51,
+     "end": 10.657
     },
     {
-     "display": "Vulkan,",
-     "spoken": "Vulkan,",
+     "display": "Akku:",
+     "spoken": "Akku:",
+     "color": "b",
+     "group": 1,
+     "start": 10.657,
+     "end": 10.93
+    },
+    {
+     "display": "immer",
+     "spoken": "immer",
+     "color": "g",
+     "group": 2,
+     "start": 11.09,
+     "end": 11.428
+    },
+    {
+     "display": "100",
+     "spoken": "hundert",
+     "color": "g",
+     "group": 2,
+     "start": 11.428,
+     "end": 11.779
+    },
+    {
+     "display": "Prozent!",
+     "spoken": "Prozent!",
+     "color": "g",
+     "group": 2,
+     "start": 11.779,
+     "end": 12.13
+    },
+    {
+     "display": "Und",
+     "spoken": "Und",
+     "color": null,
+     "group": 3,
+     "start": 12.43,
+     "end": 12.56
+    },
+    {
+     "display": "Schule?",
+     "spoken": "Schule?",
+     "color": "p",
+     "group": 3,
+     "start": 12.56,
+     "end": 12.82
+    },
+    {
+     "display": "Gibt’s",
+     "spoken": "Gibt’s",
+     "color": null,
+     "group": 4,
+     "start": 13.11,
+     "end": 13.339
+    },
+    {
+     "display": "hier",
+     "spoken": "hier",
+     "color": null,
+     "group": 4,
+     "start": 13.339,
+     "end": 13.56
+    },
+    {
+     "display": "nicht",
+     "spoken": "nicht",
      "color": "r",
-     "group": 1,
-     "start": 11.02,
-     "end": 11.92
+     "group": 4,
+     "start": 13.56,
+     "end": 13.789
     },
     {
-     "display": "der",
-     "spoken": "der",
-     "color": null,
-     "group": 1,
-     "start": 12.22,
-     "end": 12.412
-    },
-    {
-     "display": "Schokolade",
-     "spoken": "Schokolade",
-     "color": "y",
-     "group": 1,
-     "start": 12.412,
-     "end": 13.167
-    },
-    {
-     "display": "spuckt?",
-     "spoken": "spuckt?",
-     "color": null,
-     "group": 1,
-     "start": 13.167,
-     "end": 13.38
-    },
-    {
-     "display": "Ein",
-     "spoken": "Ein",
-     "color": null,
-     "group": 2,
-     "start": 13.68,
-     "end": 13.867
-    },
-    {
-     "display": "Pinguin",
-     "spoken": "Pinguin",
-     "color": "b",
-     "group": 2,
-     "start": 13.867,
-     "end": 14.248
-    },
-    {
-     "display": "als",
-     "spoken": "als",
-     "color": null,
-     "group": 2,
-     "start": 14.248,
-     "end": 14.435
-    },
-    {
-     "display": "Polizist?",
-     "spoken": "Polizist?",
-     "color": "b",
-     "group": 2,
-     "start": 14.435,
-     "end": 14.99
-    },
-    {
-     "display": "Oder",
-     "spoken": "Oder",
-     "color": null,
-     "group": 3,
-     "start": 15.11,
-     "end": 15.217
-    },
-    {
-     "display": "die",
-     "spoken": "die",
-     "color": null,
-     "group": 3,
-     "start": 15.217,
-     "end": 15.273
-    },
-    {
-     "display": "Bürgermeisterin",
-     "spoken": "Bürgermeisterin",
-     "color": "p",
-     "group": 3,
-     "start": 15.273,
-     "end": 15.552
-    },
-    {
-     "display": "als",
-     "spoken": "als",
+     "display": "–",
+     "spoken": "–",
      "color": null,
      "group": 4,
-     "start": 15.552,
-     "end": 15.607
+     "start": 13.789,
+     "end": 13.98
     },
     {
-     "display": "Riesen-Statue?",
-     "spoken": "Riesen-Statue?",
-     "color": "y",
-     "group": 4,
-     "start": 15.607,
-     "end": 15.83
+     "display": "nur",
+     "spoken": "nur",
+     "color": "g",
+     "group": 5,
+     "start": 14.09,
+     "end": 14.237
+    },
+    {
+     "display": "Ferien!",
+     "spoken": "Ferien!",
+     "color": "g",
+     "group": 5,
+     "start": 14.237,
+     "end": 14.53
     }
    ],
-   "spoken": "Was ist eure verrückteste Idee? Ein Vulkan, der Schokolade spuckt? Ein Pinguin als Polizist? Oder die Bürgermeisterin als Riesen-Statue?",
-   "start": 8.83,
-   "end": 15.83
+   "spoken": "Dubai-Schokolade an jeder Ecke? Dein Akku: immer hundert Prozent! Und Schule? Gibt’s hier nicht – nur Ferien!",
+   "start": 8.76,
+   "end": 14.53
   },
   {
    "scene": "s04",
    "id": "L4",
    "words": [
     {
-     "display": "Kein",
-     "spoken": "Kein",
-     "color": null,
-     "group": 0,
-     "start": 16.81,
-     "end": 17.02
-    },
-    {
-     "display": "Witz",
-     "spoken": "Witz",
-     "color": null,
-     "group": 0,
-     "start": 17.02,
-     "end": 17.229
-    },
-    {
-     "display": "–",
-     "spoken": "–",
-     "color": null,
-     "group": 0,
-     "start": 17.229,
-     "end": 17.41
-    },
-    {
-     "display": "eure",
-     "spoken": "eure",
-     "color": null,
-     "group": 0,
-     "start": 17.58,
-     "end": 17.892
-    },
-    {
-     "display": "Ideen",
-     "spoken": "Ideen",
-     "color": null,
-     "group": 0,
-     "start": 17.892,
-     "end": 18.209
-    },
-    {
-     "display": "werden",
-     "spoken": "werden",
-     "color": null,
-     "group": 0,
-     "start": 18.209,
-     "end": 18.533
-    },
-    {
-     "display": "echt!",
-     "spoken": "echt!",
-     "color": "g",
-     "group": 0,
-     "start": 18.533,
-     "end": 18.7
-    },
-    {
-     "display": "Luise",
-     "spoken": "Luise",
-     "color": "b",
-     "group": 1,
-     "start": 19.0,
-     "end": 19.248
-    },
-    {
-     "display": "wollte",
-     "spoken": "wollte",
-     "color": null,
-     "group": 1,
-     "start": 19.248,
-     "end": 19.5
-    },
-    {
-     "display": "einen",
-     "spoken": "einen",
-     "color": null,
-     "group": 1,
-     "start": 19.5,
-     "end": 19.747
-    },
-    {
-     "display": "Pool",
-     "spoken": "Pool",
-     "color": "b",
-     "group": 1,
-     "start": 19.747,
-     "end": 19.878
-    },
-    {
-     "display": "–",
-     "spoken": "–",
-     "color": null,
-     "group": 1,
-     "start": 19.878,
-     "end": 19.99
-    },
-    {
-     "display": "sie",
-     "spoken": "sie",
-     "color": null,
-     "group": 2,
-     "start": 20.18,
-     "end": 20.348
-    },
-    {
-     "display": "hat",
-     "spoken": "hat",
-     "color": null,
-     "group": 2,
-     "start": 20.348,
-     "end": 20.515
-    },
-    {
-     "display": "ihn",
-     "spoken": "ihn",
-     "color": null,
-     "group": 2,
-     "start": 20.515,
-     "end": 20.683
-    },
-    {
-     "display": "bekommen!",
-     "spoken": "bekommen!",
-     "color": "g",
-     "group": 2,
-     "start": 20.683,
-     "end": 21.18
-    }
-   ],
-   "spoken": "Kein Witz – eure Ideen werden echt! Luise wollte einen Pool – sie hat ihn bekommen!",
-   "start": 16.81,
-   "end": 21.18
-  },
-  {
-   "scene": "s05",
-   "id": "L5",
-   "words": [
-    {
-     "display": "Also:",
-     "spoken": "Also:",
-     "color": null,
-     "group": 0,
-     "start": 22.16,
-     "end": 22.53
-    },
-    {
-     "display": "Kommentiert",
-     "spoken": "Kommentiert",
+     "display": "Ihr",
+     "spoken": "Ihr",
      "color": "p",
      "group": 0,
-     "start": 22.74,
-     "end": 23.112
+     "start": 15.71,
+     "end": 15.899
+    },
+    {
+     "display": "entscheidet!",
+     "spoken": "entscheidet!",
+     "color": "p",
+     "group": 0,
+     "start": 15.899,
+     "end": 16.48
+    },
+    {
+     "display": "Was",
+     "spoken": "Was",
+     "color": null,
+     "group": 1,
+     "start": 16.78,
+     "end": 16.904
+    },
+    {
+     "display": "ist",
+     "spoken": "ist",
+     "color": null,
+     "group": 1,
+     "start": 16.904,
+     "end": 17.028
     },
     {
      "display": "eure",
      "spoken": "eure",
      "color": null,
-     "group": 0,
-     "start": 23.112,
-     "end": 23.345
+     "group": 1,
+     "start": 17.028,
+     "end": 17.266
     },
     {
      "display": "verrückteste",
      "spoken": "verrückteste",
      "color": "p",
-     "group": 0,
-     "start": 23.345,
-     "end": 23.829
+     "group": 1,
+     "start": 17.266,
+     "end": 17.761
     },
     {
-     "display": "Idee",
-     "spoken": "Idee",
+     "display": "Idee?",
+     "spoken": "Idee?",
      "color": "p",
-     "group": 0,
-     "start": 23.829,
-     "end": 24.062
-    },
-    {
-     "display": "–",
-     "spoken": "–",
-     "color": null,
-     "group": 0,
-     "start": 24.062,
-     "end": 24.17
-    },
-    {
-     "display": "mit",
-     "spoken": "mit",
-     "color": null,
      "group": 1,
-     "start": 24.32,
-     "end": 24.469
+     "start": 17.761,
+     "end": 18.0
     },
     {
-     "display": "Glück",
-     "spoken": "Glück",
-     "color": null,
-     "group": 1,
-     "start": 24.469,
-     "end": 24.629
-    },
-    {
-     "display": "landet",
-     "spoken": "landet",
-     "color": null,
-     "group": 1,
-     "start": 24.629,
-     "end": 24.926
-    },
-    {
-     "display": "sie",
-     "spoken": "sie",
-     "color": null,
-     "group": 1,
-     "start": 24.926,
-     "end": 25.075
-    },
-    {
-     "display": "im",
-     "spoken": "im",
-     "color": null,
-     "group": 2,
-     "start": 25.075,
-     "end": 25.219
-    },
-    {
-     "display": "nächsten",
-     "spoken": "nächsten",
-     "color": "g",
-     "group": 2,
-     "start": 25.219,
-     "end": 25.527
-    },
-    {
-     "display": "Video!",
-     "spoken": "Video!",
-     "color": "g",
-     "group": 2,
-     "start": 25.527,
-     "end": 25.82
-    }
-   ],
-   "spoken": "Also: Kommentiert eure verrückteste Idee – mit Glück landet sie im nächsten Video!",
-   "start": 22.16,
-   "end": 25.82
-  },
-  {
-   "scene": "s06",
-   "id": "L6",
-   "words": [
-    {
-     "display": "Und",
-     "spoken": "Und",
-     "color": null,
-     "group": 0,
-     "start": 26.8,
-     "end": 26.958
-    },
-    {
-     "display": "folg",
-     "spoken": "folg",
+     "display": "Schreibt’s",
+     "spoken": "Schreibt’s",
      "color": "p",
-     "group": 0,
-     "start": 26.958,
-     "end": 27.121
-    },
-    {
-     "display": "mir",
-     "spoken": "mir",
-     "color": "p",
-     "group": 0,
-     "start": 27.121,
-     "end": 27.279
-    },
-    {
-     "display": "–",
-     "spoken": "–",
-     "color": null,
-     "group": 0,
-     "start": 27.279,
-     "end": 27.42
-    },
-    {
-     "display": "sonst",
-     "spoken": "sonst",
-     "color": null,
-     "group": 1,
-     "start": 27.69,
-     "end": 27.828
-    },
-    {
-     "display": "zieht",
-     "spoken": "zieht",
-     "color": null,
-     "group": 1,
-     "start": 27.828,
-     "end": 27.967
-    },
-    {
-     "display": "der",
-     "spoken": "der",
-     "color": null,
-     "group": 1,
-     "start": 27.967,
-     "end": 28.096
-    },
-    {
-     "display": "Pinguin",
-     "spoken": "Pinguin",
-     "color": "b",
-     "group": 1,
-     "start": 28.096,
-     "end": 28.358
+     "group": 2,
+     "start": 18.24,
+     "end": 18.358
     },
     {
      "display": "in",
      "spoken": "in",
      "color": null,
      "group": 2,
-     "start": 28.358,
-     "end": 28.483
+     "start": 18.358,
+     "end": 18.452
     },
     {
-     "display": "deine",
-     "spoken": "deine",
-     "color": "y",
+     "display": "die",
+     "spoken": "die",
+     "color": null,
      "group": 2,
-     "start": 28.483,
-     "end": 28.736
+     "start": 18.452,
+     "end": 18.55
     },
     {
-     "display": "Hütte!",
-     "spoken": "Hütte!",
-     "color": "y",
+     "display": "Kommentare",
+     "spoken": "Kommentare",
+     "color": "p",
      "group": 2,
-     "start": 28.736,
-     "end": 28.99
+     "start": 18.55,
+     "end": 18.933
+    },
+    {
+     "display": "–",
+     "spoken": "–",
+     "color": null,
+     "group": 2,
+     "start": 18.933,
+     "end": 19.02
+    },
+    {
+     "display": "die",
+     "spoken": "die",
+     "color": null,
+     "group": 3,
+     "start": 19.23,
+     "end": 19.364
+    },
+    {
+     "display": "besten",
+     "spoken": "besten",
+     "color": null,
+     "group": 3,
+     "start": 19.364,
+     "end": 19.632
+    },
+    {
+     "display": "kommen",
+     "spoken": "kommen",
+     "color": null,
+     "group": 3,
+     "start": 19.632,
+     "end": 19.9
+    },
+    {
+     "display": "ins",
+     "spoken": "ins",
+     "color": null,
+     "group": 3,
+     "start": 19.9,
+     "end": 20.034
+    },
+    {
+     "display": "nächste",
+     "spoken": "nächste",
+     "color": "g",
+     "group": 3,
+     "start": 20.034,
+     "end": 20.307
+    },
+    {
+     "display": "Video!",
+     "spoken": "Video!",
+     "color": "g",
+     "group": 3,
+     "start": 20.307,
+     "end": 20.57
     }
    ],
-   "spoken": "Und folg mir – sonst zieht der Pinguin in deine Hütte!",
-   "start": 26.8,
-   "end": 28.99
+   "spoken": "Ihr entscheidet! Was ist eure verrückteste Idee? Schreibt’s in die Kommentare – die besten kommen ins nächste Video!",
+   "start": 15.71,
+   "end": 20.57
+  },
+  {
+   "scene": "s05",
+   "id": "L5",
+   "words": [
+    {
+     "display": "Und",
+     "spoken": "Und",
+     "color": null,
+     "group": 0,
+     "start": 21.75,
+     "end": 21.895
+    },
+    {
+     "display": "folg",
+     "spoken": "folg",
+     "color": "p",
+     "group": 0,
+     "start": 21.895,
+     "end": 22.045
+    },
+    {
+     "display": "mir",
+     "spoken": "mir",
+     "color": "p",
+     "group": 0,
+     "start": 22.045,
+     "end": 22.19
+    },
+    {
+     "display": "–",
+     "spoken": "–",
+     "color": null,
+     "group": 0,
+     "start": 22.19,
+     "end": 22.32
+    },
+    {
+     "display": "wenn’s",
+     "spoken": "wenn’s",
+     "color": null,
+     "group": 1,
+     "start": 22.62,
+     "end": 22.796
+    },
+    {
+     "display": "hier",
+     "spoken": "hier",
+     "color": null,
+     "group": 1,
+     "start": 22.796,
+     "end": 22.966
+    },
+    {
+     "display": "Red",
+     "spoken": "Red",
+     "color": "y",
+     "group": 1,
+     "start": 22.966,
+     "end": 23.131
+    },
+    {
+     "display": "Bull",
+     "spoken": "Bull",
+     "color": "y",
+     "group": 1,
+     "start": 23.131,
+     "end": 23.301
+    },
+    {
+     "display": "regnet,",
+     "spoken": "regnet,",
+     "color": null,
+     "group": 1,
+     "start": 23.301,
+     "end": 23.63
+    },
+    {
+     "display": "willst",
+     "spoken": "willst",
+     "color": null,
+     "group": 2,
+     "start": 23.88,
+     "end": 24.042
+    },
+    {
+     "display": "du",
+     "spoken": "du",
+     "color": null,
+     "group": 2,
+     "start": 24.042,
+     "end": 24.182
+    },
+    {
+     "display": "dabei",
+     "spoken": "dabei",
+     "color": "g",
+     "group": 2,
+     "start": 24.182,
+     "end": 24.469
+    },
+    {
+     "display": "sein!",
+     "spoken": "sein!",
+     "color": "g",
+     "group": 2,
+     "start": 24.469,
+     "end": 24.62
+    }
+   ],
+   "spoken": "Und folg mir – wenn’s hier Red Bull regnet, willst du dabei sein!",
+   "start": 21.75,
+   "end": 24.62
   }
  ]
 }

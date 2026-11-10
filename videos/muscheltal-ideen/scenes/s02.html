@@ -4,15 +4,16 @@
 @font-face { font-family: "Lilita One"; src: url("assets/fonts/LilitaOne-Regular.woff2") format("woff2"); font-weight: 400; }
     .pl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 28px 12px; border-radius: 999px; color: #fff;
       font-family: "Inter", sans-serif; font-weight: 900; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); white-space: nowrap; }
-    #s02-w { position: absolute; left: 470px; top: 590px; font-size: 280px; line-height: 1; }
-    #s02-st { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 420px; color: #e8262f; border-color: #e8262f; background: #fff; transform: rotate(-6deg); font-size: 90px; white-space: nowrap; font-family: "Lilita One", sans-serif; }
-    #s02-p { top: 950px; font-size: 44px; background: #7b3fe0; }
+    #s02-t { top: 300px; font-size: 54px; background: #3f9b3a; }
+    #s02-cup { position: absolute; left: 0; right: 0; margin: 0 auto; text-align: center; top: 640px; font-size: 230px; line-height: 1; filter: drop-shadow(0 0 40px rgba(140,220,90,.9)); }
+    .s02-d { position: absolute; left: 520px; top: 660px; width: 40px; height: 40px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #d8f5b0, #6fbf3a 60%, #3f8a1f); box-shadow: 0 0 0 3px #2a1b12; opacity: 0; }
+    #s02-st { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 930px; color: #3f9b3a; border-color: #3f9b3a; background: #fff; transform: rotate(-5deg); font-size: 64px; white-space: nowrap; font-family: "Lilita One", sans-serif; }
   </style>
   <div id="root" data-composition-id="s02" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
     <div id="s02-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
-      <div id="s02-w" data-layout-ignore>🐳</div>
-      <div id="s02-st" class="stamp" data-layout-ignore>😅 SPASS!</div>
-      <div id="s02-p" class="pl">…aber IHR entscheidet, was passiert!</div>
+      <div id="s02-t" class="pl">🍵 Matcha-Brunnen am Muschelplatz</div>
+      <div id="s02-cup" data-layout-ignore>🍵</div><div class="s02-d" id="s02-d0" data-layout-ignore></div><div class="s02-d" id="s02-d1" data-layout-ignore></div><div class="s02-d" id="s02-d2" data-layout-ignore></div><div class="s02-d" id="s02-d3" data-layout-ignore></div><div class="s02-d" id="s02-d4" data-layout-ignore></div><div class="s02-d" id="s02-d5" data-layout-ignore></div><div class="s02-d" id="s02-d6" data-layout-ignore></div><div class="s02-d" id="s02-d7" data-layout-ignore></div><div class="s02-d" id="s02-d8" data-layout-ignore></div><div class="s02-d" id="s02-d9" data-layout-ignore></div><div class="s02-d" id="s02-d10" data-layout-ignore></div><div class="s02-d" id="s02-d11" data-layout-ignore></div><div class="s02-d" id="s02-d12" data-layout-ignore></div><div class="s02-d" id="s02-d13" data-layout-ignore></div><div class="s02-d" id="s02-d14" data-layout-ignore></div><div class="s02-d" id="s02-d15" data-layout-ignore></div><div class="s02-d" id="s02-d16" data-layout-ignore></div><div class="s02-d" id="s02-d17" data-layout-ignore></div><div class="s02-d" id="s02-d18" data-layout-ignore></div><div class="s02-d" id="s02-d19" data-layout-ignore></div><div class="s02-d" id="s02-d20" data-layout-ignore></div><div class="s02-d" id="s02-d21" data-layout-ignore></div><div class="s02-d" id="s02-d22" data-layout-ignore></div><div class="s02-d" id="s02-d23" data-layout-ignore></div><div class="s02-d" id="s02-d24" data-layout-ignore></div><div class="s02-d" id="s02-d25" data-layout-ignore></div>
+      <div id="s02-st" class="stamp" data-layout-ignore>GRATIS FÜR ALLE!</div>
     </div>
   </div>
   <script>
@@ -21,13 +22,13 @@
       /*__COMMON_JS__*/
       wrapBt("#s02-stage");
       const tl = gsap.timeline({ paused: true });
-      const ok = at("L2", "Okay"), sp = at("L2", "Spaß"), ih = at("L2", "ihr");
-      tl.set("#s02-w", { opacity: 1, rotation: 8 }, 0);
-      tl.to("#s02-w", { y: -1400, rotation: 200, scale: .4, duration: .6, ease: "back.in(1.6)" }, sp + .1);
-      tl.fromTo("#s02-st", { opacity: 0, scale: 2.8 }, { opacity: 1, scale: 1, duration: .25, ease: "back.out(2)" }, sp - .05);
-      tl.to("#s02-st", { opacity: 0, duration: .2 }, ih - .5);
-      tl.fromTo("#s02-p", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, ih - .3);
-      tl.to("#s02-p", { scale: 1.07, duration: .2, yoyo: true, repeat: 5, ease: "sine.inOut" }, ih + .2);
+      const ma = at("L2", "Matcha-Brunnen"), gr = at("L2", "gratis");
+      tl.fromTo("#s02-t", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, ma - .4);
+      tl.fromTo("#s02-cup", { opacity: 0, y: 400, scale: .5 }, { opacity: 1, y: 0, scale: 1, duration: .4, ease: "back.out(1.8)" }, ma - .2);
+      { const R = rng(9); for (let i = 0; i < 26; i++) { const t = ma + .2 + (i % 13) * .2, dx = (R() - .5) * 500, up = 380 + R() * 260;
+        tl.fromTo("#s02-d" + i, { opacity: 1, x: 0, y: 0, scale: .6 }, { x: dx * .5, y: -up, scale: 1, duration: .45, ease: "power2.out" }, t);
+        tl.to("#s02-d" + i, { x: dx, y: 260, opacity: 0, duration: .7, ease: "power2.in" }, t + .45); } }
+      tl.fromTo("#s02-st", { opacity: 0, scale: 2.6 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, gr - .05);
       
       window.__timelines["s02"] = tl;
     })();

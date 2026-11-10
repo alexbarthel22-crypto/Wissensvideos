@@ -1,7 +1,7 @@
 {
- "title": "Muschel-Tal – Eure verrückteste Idee",
+ "title": "Muschel-Tal – Eure verrückteste Idee (Red Bull, Matcha …)",
  "voice": "Gemini TTS (gemini-3.1-flash-tts-preview, Stimme Achird), natürlich und emotional, --speed 1.12",
- "notes": "TikTok ca. 30 s: Aufruf, die verrückteste Idee für Muschel-Tal zu kommentieren; Beweis: Luises Pool wurde gebaut; Ende: folgen = einziehen.",
+ "notes": "TikTok ca. 30 s für Jugendliche: verrückte Ideen (es regnet Red Bull, Matcha-Brunnen, Dubai-Schokolade, keine Schule) → kommentiert eure Idee, beste ins nächste Video; folgen = einziehen.",
  "lead_in": 0.0,
  "bg": "#0a5a92",
  "captions": {
@@ -31,36 +31,26 @@
    "lines": [
     {
      "id": "L1",
-     "text": "*r:Eilmeldung! / Auf Muschel-Tal ist gerade / ein *b:Wal in *b:Luises *b:Pool gelandet!",
+     "text": "Stell dir vor: / Auf Muschel-Tal / *r:regnet *r:es *y:Red *y:Bull!",
      "speed": 1.12,
-     "style": "Style: a young man reading an urgent breaking news announcement, dramatic and excited, over the top like a funny news anchor, natural German intonation, normal pitch.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
+     "style": "Style: a young German guy, around 20, talking to teenage followers like a friend, hyped and playful, a bit of a grin in the voice, natural and casual German intonation, not an announcer, normal pitch.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
     }
    ],
    "sfx": [
     {
-     "name": "impact-bass-1",
-     "at": "s01+0.0",
-     "volume": 0.5
-    },
-    {
-     "name": "notification",
-     "at": "s01+0.05",
-     "volume": 0.4
-    },
-    {
      "name": "whoosh",
-     "at": "L1:Wal-0.3",
-     "volume": 0.4
+     "at": "s01+0.0",
+     "volume": 0.35
     },
     {
-     "name": "platsch",
-     "at": "L1:Pool",
-     "volume": 0.7
+     "name": "impact-bass-1",
+     "at": "L1:regnet",
+     "volume": 0.45
     },
     {
-     "name": "impact-bass-2",
-     "at": "L1:Pool",
-     "volume": 0.4
+     "name": "ka-ching",
+     "at": "L1:Bull",
+     "volume": 0.3
     }
    ]
   },
@@ -70,26 +60,21 @@
    "lines": [
     {
      "id": "L2",
-     "text": "Okay – *y:Spaß. / Aber *g:das könnte passieren – / wenn *p:ihr es wollt!",
+     "text": "Auf dem Muschelplatz / steht ein *g:Matcha-Brunnen – / *g:gratis *g:für *g:alle!",
      "speed": 1.12,
-     "style": "Style: a young man suddenly switching to a relaxed, cheeky, amused tone, as if admitting a joke, then getting excited again. Natural German intonation, normal pitch.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-     "pause": 0.5
+     "style": "Style: a young German guy, around 20, talking to teenage followers like a friend, hyped and playful, a bit of a grin in the voice, natural and casual German intonation, not an announcer, normal pitch.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+     "pause": 0.8
     }
    ],
    "sfx": [
     {
-     "name": "scratch",
-     "at": "L2:Okay-0.35",
-     "volume": 0.6
-    },
-    {
-     "name": "stempel",
-     "at": "L2:Spaß",
+     "name": "pop",
+     "at": "L2:Matcha-Brunnen",
      "volume": 0.45
     },
     {
      "name": "ping",
-     "at": "L2:ihr",
+     "at": "L2:gratis",
      "volume": 0.4
     }
    ]
@@ -100,37 +85,32 @@
    "lines": [
     {
      "id": "L3",
-     "text": "Was ist eure *p:verrückteste *p:Idee? / Ein *r:Vulkan, der *y:Schokolade spuckt? / Ein *b:Pinguin als *b:Polizist? / Oder die *p:Bürgermeisterin / als *y:Riesen-Statue?",
+     "text": "*y:Dubai-Schokolade an jeder Ecke? / Dein *b:Akku: / *g:immer *g:100|hundert *g:Prozent! / Und *p:Schule? / Gibt’s hier *r:nicht – / *g:nur *g:Ferien!",
      "speed": 1.12,
-     "style": "Style: a young man, genuinely excited, energetically calling on his followers to take part, natural German intonation, not an announcer, normal pitch.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-     "pause": 0.6
+     "style": "Style: a young German guy, around 20, talking to teenage followers like a friend, hyped and playful, a bit of a grin in the voice, natural and casual German intonation, not an announcer, normal pitch.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+     "pause": 0.8
     }
    ],
    "sfx": [
     {
      "name": "pop",
-     "at": "L3:Vulkan",
+     "at": "L3:Dubai-Schokolade",
+     "volume": 0.45
+    },
+    {
+     "name": "ping",
+     "at": "L3:immer",
      "volume": 0.4
     },
     {
-     "name": "impact-bass-2",
-     "at": "L3:Schokolade",
-     "volume": 0.35
+     "name": "stempel",
+     "at": "L3:nicht",
+     "volume": 0.45
     },
     {
-     "name": "boing",
-     "at": "L3:Pinguin",
-     "volume": 0.5
-    },
-    {
-     "name": "whoosh",
-     "at": "L3:Riesen-Statue-0.2",
-     "volume": 0.35
-    },
-    {
-     "name": "impact-bass-1",
-     "at": "L3:Riesen-Statue+0.2",
-     "volume": 0.35
+     "name": "jubel",
+     "at": "L3:Ferien",
+     "volume": 0.4
     }
    ]
   },
@@ -140,83 +120,53 @@
    "lines": [
     {
      "id": "L4",
-     "text": "Kein Witz – eure Ideen werden *g:echt! / *b:Luise wollte einen *b:Pool – / sie hat ihn *g:bekommen!",
+     "text": "*p:Ihr *p:entscheidet! / Was ist eure *p:verrückteste *p:Idee? / *p:Schreibt’s in die *p:Kommentare – / die besten kommen ins *g:nächste *g:Video!",
      "speed": 1.12,
-     "style": "Style: a young man, genuinely excited, energetically calling on his followers to take part, natural German intonation, not an announcer, normal pitch.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-     "pause": 0.6
+     "style": "Style: a young German guy, around 20, talking to teenage followers like a friend, hyped and playful, a bit of a grin in the voice, natural and casual German intonation, not an announcer, normal pitch.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+     "pause": 0.8
     }
    ],
    "sfx": [
     {
+     "name": "impact-bass-2",
+     "at": "L4:Ihr",
+     "volume": 0.4
+    },
+    {
      "name": "notification",
-     "at": "L4:Luise",
-     "volume": 0.35
+     "at": "L4:Schreibt’s",
+     "volume": 0.4
     },
     {
      "name": "ka-ching",
-     "at": "L4:bekommen",
-     "volume": 0.4
+     "at": "L4:nächste",
+     "volume": 0.35
     }
    ]
   },
   {
    "id": "s05",
    "tag": "",
+   "hold": 2.2,
    "lines": [
     {
      "id": "L5",
-     "text": "Also: *p:Kommentiert eure *p:verrückteste *p:Idee – / mit Glück landet sie / im *g:nächsten *g:Video!",
+     "text": "Und *p:folg *p:mir – / wenn’s hier *y:Red *y:Bull regnet, / willst du *g:dabei *g:sein!",
      "speed": 1.12,
-     "style": "Style: a young man, genuinely excited, energetically calling on his followers to take part, natural German intonation, not an announcer, normal pitch.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-     "pause": 0.6
+     "style": "Style: a young German guy, around 20, talking to teenage followers like a friend, hyped and playful, a bit of a grin in the voice, natural and casual German intonation, not an announcer, normal pitch.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+     "pause": 0.8
     }
    ],
    "sfx": [
-    {
-     "name": "notification",
-     "at": "L5:Kommentiert",
-     "volume": 0.4
-    },
-    {
-     "name": "jubel",
-     "at": "L5:nächsten",
-     "volume": 0.4
-    }
-   ]
-  },
-  {
-   "id": "s06",
-   "tag": "",
-   "hold": 1.4,
-   "lines": [
-    {
-     "id": "L6",
-     "text": "Und *p:folg *p:mir – / sonst zieht der *b:Pinguin / in *y:deine *y:Hütte!",
-     "speed": 1.12,
-     "style": "Style: a young man, genuinely excited, energetically calling on his followers to take part, natural German intonation, not an announcer, normal pitch.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-     "pause": 0.6
-    }
-   ],
-   "sfx": [
-    {
-     "name": "boing",
-     "at": "L6:Pinguin",
-     "volume": 0.5
-    },
-    {
-     "name": "sad-trombone",
-     "at": "L6:Hütte",
-     "volume": 0.3
-    },
     {
      "name": "click",
-     "at": "L6:Hütte+1.0",
+     "at": "L5:folg",
      "volume": 0.5
     },
     {
-     "name": "boing",
-     "at": "L6:Hütte+1.15",
-     "volume": 0.5
+     "name": "impact-bass-1",
+     "at": "L5:Bull",
+     "volume": 0.35
     }
    ]
   }
