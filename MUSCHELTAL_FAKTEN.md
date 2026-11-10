@@ -173,3 +173,13 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - **Muschelpalast:** Genau die Gebäudeform (Hauptmuschel mit Krone und Perle, Türmchen, Seitenflügel mit Dächern, Sockel) ist für alle unpassierbar – die Flächen zwischen Muschelbögen, Türmchen und Flügeln sind begehbar. Hinter den Fahnenmasten auf den Seitenflügeln kann man entlanglaufen; Mast und Fahne liegen dann im Vordergrund.
 - **Erkunden & Muschelpass:** Wer beim Erkunden kurz auf eine andere Person oder eine fremde Hütte (Dach, Wand oder Stelzen) tippt, sieht deren Muschelpass aus Sicht der gespielten Person („Muschelpass von @x“, „Du bist als @y unterwegs und hast @x getroffen“, Knopf „Weiter erkunden“, Teilen ohne eigenen Bonus). Tippen und Halten bleibt Laufen.
 - **Dönerbude:** Die schwarze Menütafel rechts ist ein Hindernis; wer dahinter steht, wird von ihr verdeckt.
+
+## Video Tag 4 (geplant, noch nicht erstellt – Nutzer aktualisiert vorher die Homepage)
+- **Einwohner: 702** (Stand Planung Tag 4).
+- Einstieg wie Video 1: „Ich habe euch eine Insel gekauft! Am Anfang hab ich hier ganz allein gelebt – jetzt sind wir schon 702 Leute!“
+- Botschaft: Muschel-Tal ist **die erste und größte Insel auf TikTok**, auf der **ganz allein die Follower entscheiden**, was passiert.
+- Veränderungen seit Tag 3: neue Bewohner, Inselkasse/Tierheim, **Emilia & Lea wohnen in der Strandvilla**, **Bäckerei-Abstimmung: Fabienne (@fabienne3692) eröffnet und leitet die Bäckerei**.
+- **Live-Verlosung im Video: ein Job in Fabiennes Bäckerei.**
+- **Regel: An Job-Verlosungen nehmen nur Bewohner teil, die noch keinen Job/kein Amt haben.**
+- **Spoiler: Wer einen Job hat, hat später im Spiel bei 1.000 Bewohnern einen Vorteil.**
+- Aufruf: verrückteste Idee kommentieren (Beispiel-Kommentar: „Es gibt einen Matcha-Brunnen und jeden Tag regnet es Red Bull“) – **der Kommentar mit den meisten Likes gewinnt und ist morgen im Video**. Freunde markieren, folgen = einziehen.
