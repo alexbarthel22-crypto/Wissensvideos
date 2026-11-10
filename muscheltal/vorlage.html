@@ -2173,7 +2173,7 @@ function zeigePass(p,third,walk){mpP=p;mpThird=!!third;mpWalk=!!walk;$('mp').hid
  $('mpwho').hidden=!walk;$('mpalt').hidden=!!walk;
  if(walk){const me=WK.me?WK.me.name:'Gast';$('mpwho').textContent=walk==='huette'?'Du bist als '+me+' unterwegs und hast die Hütte von '+p.name+' gefunden 🏠':'Du hast als '+me+' Muschel-Tal erkundet und dabei zufällig '+p.name+' unterwegs getroffen 👋';$('mpgo').textContent='🚶 Weiter erkunden';$('mp').querySelector('h2').textContent='🪪 Muschelpass von '+p.name;return;}
  bonUpd(p);
- $('mpgo').textContent='🏠 Zu '+p.name+(/[sßxz]$/i.test(p.name)?'’':'s')+' Hütte';$('mpshare').hidden=false;$('mpalt').textContent=third?'Meinen eigenen Namen suchen':'Anderen Namen suchen';
+ $('mpgo').textContent=third?'🏠 Zu '+p.name+(/[sßxz]$/i.test(p.name)?'’':'s')+' Hütte':'🏠 Zu meiner Hütte';$('mpshare').hidden=false;$('mpalt').textContent=third?'Meinen eigenen Namen suchen':'Anderen Namen suchen';
  $('mp').querySelector('h2').textContent=third?'🪪 Muschelpass von '+p.name:'🪪 Muschelpass';
  if(!third)try{localStorage.setItem('mt-me',p.name);}catch(e){}}
 document.addEventListener('click',e=>{const b=e.target.closest('.mpshi');if(b){const p=byName.get((b.dataset.n||'').toLowerCase());if(p){mpP=p;$('mpshare').click();}return;}
