@@ -55,7 +55,7 @@ section>h2{font-size:28px;margin-bottom:14px}
 .sugg button{display:flex;justify-content:space-between;width:100%;border:0;background:none;padding:10px 14px;text-align:left;font-weight:800}
 .sugg button:hover,.sugg button.act{background:var(--peach)}
 .sugg small{color:var(--soft)}
-.miss{margin:8px 0 0;background:var(--hib);color:#fff;border:3px solid var(--ink);border-radius:12px;padding:8px 12px;font-size:15px;font-weight:800}
+.miss a.accl{color:inherit;text-decoration:underline;text-underline-offset:2px;font-weight:900}.miss{margin:8px 0 0;background:var(--hib);color:#fff;border:3px solid var(--ink);border-radius:12px;padding:8px 12px;font-size:15px;font-weight:800}
 .dock{position:absolute;left:12px;right:12px;bottom:14px;display:flex;flex-direction:column;align-items:flex-start;gap:10px;pointer-events:none}
 .dock>*{pointer-events:auto}
 .zoomc{position:absolute;right:12px;top:52%;transform:translateY(-50%);display:grid;gap:8px}
@@ -2179,7 +2179,7 @@ $('mpgo').onclick=()=>{$('mp').hidden=true;if(mpWalk)return;window.scrollTo({top
 $('mpq').oninput=()=>{const t=$('mpq').value.trim().toLowerCase().replace(/^@/,'');if(!t){$('mps').hidden=true;$('mpm').hidden=true;return;}
  const h=PEOPLE.filter(p=>p.name.toLowerCase().replace(/^@/,'').includes(t)).sort((a,b)=>(a.name.toLowerCase().replace(/^@/,'').startsWith(t)?0:1)-(b.name.toLowerCase().replace(/^@/,'').startsWith(t)?0:1)||a.nr-b.nr).slice(0,6);
  $('mps').innerHTML=h.map(p=>'<li><button type="button" data-n="'+esc(p.name)+'">'+esc(p.name)+'<small>Hütte '+fmt(p.nr)+'</small></button></li>').join('');$('mps').hidden=!h.length;
- $('mpm').hidden=!!h.length;$('mpm').textContent='Noch nicht gefunden – folg '+ACC+' und schau morgen wieder rein 🐚';};
+ $('mpm').hidden=!!h.length;$('mpm').innerHTML='Noch nicht gefunden – folg auf TikTok <a class="accl" href="'+ACCURL+'" target="_blank" rel="noopener">'+esc(ACC)+'</a> und schau morgen wieder rein 🐚';};
 $('mps').onclick=e=>{const b=e.target.closest('button');if(b)zeigePass(byName.get(b.dataset.n.toLowerCase()));};
 $('mpq').onkeydown=e=>{if(e.key==='Enter'){const b=$('mps').querySelector('button');if(b)b.click();}};
 document.addEventListener('keydown',e=>{if(e.key==='Escape')$('mp').hidden=true;});
@@ -2189,7 +2189,7 @@ const q=$('q'),sg=$('sugg');let hits=[],act=-1;
 function find(s){s=s.trim().toLowerCase().replace(/^(#|nr\.?\s*)/,'');if(!s)return[];if(/^\d+$/.test(s)){const p=PEOPLE[+s-1];return p?[p]:[];}
  const t=s.replace(/^@/,''),a=[],b=[];for(const p of PEOPLE){const n=p.name.slice(1).toLowerCase();if(n.startsWith(t))a.push(p);else if(b.length<6&&n.includes(t))b.push(p);if(a.length>=6)break;}return a.concat(b).slice(0,6);}
 function showS(){sg.innerHTML=hits.map((p,i)=>'<li><button type="button" data-i="'+i+'"'+(i===act?' class="act"':'')+'>'+esc(p.name)+'<small>Nr. '+fmt(p.nr)+'</small></button></li>').join('');sg.hidden=!hits.length;}
-q.addEventListener('input',()=>{hits=find(q.value);act=-1;showS();$('miss').hidden=!(q.value.trim().length>1&&!hits.length);$('miss').textContent='Noch nicht auf der Insel. Neue Einwohner kommen beim nächsten Update – folgst du schon '+ACC+'?';});
+q.addEventListener('input',()=>{hits=find(q.value);act=-1;showS();$('miss').hidden=!(q.value.trim().length>1&&!hits.length);$('miss').innerHTML='Noch nicht auf der Insel. Neue Einwohner kommen beim nächsten Update – folgst du schon auf TikTok <a class="accl" href="'+ACCURL+'" target="_blank" rel="noopener">'+esc(ACC)+'</a>?';});
 q.addEventListener('keydown',e=>{if(e.key==='ArrowDown'){act=Math.min(hits.length-1,act+1);showS();e.preventDefault();}else if(e.key==='ArrowUp'){act=Math.max(0,act-1);showS();e.preventDefault();}else if(e.key==='Enter'){const p=hits[act<0?0:act];if(p)pick(p);}else if(e.key==='Escape')sg.hidden=true;});
 sg.addEventListener('click',e=>{const b=e.target.closest('button');if(b)pick(hits[+b.dataset.i]);});
 function pick(p){q.value=p.name;$('qx').hidden=false;sg.hidden=true;$('miss').hidden=true;q.blur();window.scrollTo({top:0,behavior:'smooth'});select(p);}
