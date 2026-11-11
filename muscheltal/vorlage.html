@@ -689,6 +689,9 @@ function drawBau(c,b,nl,z){const ruhe=bauRuhe(),ink='#2a1b12',t=REDUCED||ruhe?0:
  if(!day){const on=Math.sin(T*4)>0;for(const [x,y] of[[-W2+1,H2-1],[W2-1,H2-1],[-W2+1,-H2+1],[W2-1,-H2+1],[0,H2-1]]){c.fillStyle=on?'#ffb020':'#7a5a20';c.beginPath();c.arc(x,y-1.2,.8,0,TAU);c.fill();if(on){c.fillStyle='rgba(255,176,32,.25)';c.beginPath();c.arc(x,y-1.2,2.6,0,TAU);c.fill();}}}
  c.restore();}
 // Bauschild mit Fortschritt – wird ganz zuletzt gezeichnet (über allen Namensschildern); am Steg draußen auf dem Meer
+// Bauschild antippen (auch beim Erkunden) → Seite mit allen Bauprojekten
+function bauSignAt(wx,wy){if(cam.z*S<=4)return null;for(const b of BAU){if(!bauOn(b))continue;const x=b.steg?b.sx:b.cx,sy=b.steg?b.sy:b.y0-10;if(wx>x-25&&wx<x+25&&wy>sy-6&&wy<sy+9)return b;}return null;}
+function zuBauprojekten(){location.href='bau.html';}
 function drawBauSign(c,b){const pr=Math.min(1,N/b.ziel),x=b.steg?b.sx:b.cx,sy=b.steg?b.sy:b.y0-10;c.save();c.translate(x,sy);
  c.fillStyle='#ffd23f';c.strokeStyle='#2a1b12';c.lineWidth=.5;c.beginPath();c.roundRect(-24,-5,48,13,3);c.fill();c.stroke();
  gTxt(c,{},b.emoji+' '+b.name.toUpperCase(),0,.4,4,'#2a1b12',null,44);gTxt(c,{},'IM BAU · FERTIG BEI '+fmt(b.ziel)+' BEWOHNERN',0,4.4,2.4,'#7a5a2b',null,44);
@@ -2331,7 +2334,7 @@ cv.addEventListener('pointermove',e=>{if(!pts.has(e.pointerId))return;const o=pt
  if(pts.size===1){cam.x-=(n[0]-o[0])/cam.z;cam.y-=(n[1]-o[1])/cam.z;moved+=Math.abs(n[0]-o[0])+Math.abs(n[1]-o[1]);clamp();kick();}
  else if(pts.size===2){const [a,b]=[...pts.values()];const d=Math.hypot(a[0]-b[0],a[1]-b[1]);if(pinch)zoomAt(d/pinch,(a[0]+b[0])/2,(a[1]+b[1])/2);pinch=d;moved+=99;}});
 const up=e=>{if(!pts.has(e.pointerId))return;pts.delete(e.pointerId);if(pts.size<2)pinch=0;cv.classList.remove('drag');
- if(pts.size===0&&moved<6){const [wx,wy]=s2w(e.offsetX,e.offsetY);let best=null,bd=14;
+ if(pts.size===0&&moved<6){const [wx,wy]=s2w(e.offsetX,e.offsetY);if(bauSignAt(wx,wy)){zuBauprojekten();return;}let best=null,bd=14;
   for(const v of ISL){if(Math.hypot(wx-v.x,wy-v.y)>v.R+30)continue;const gx=Math.round((wx-v.x)/S),gy=Math.round((wy-v.y)/(S*.9));for(let dx=-1;dx<=1;dx++)for(let dy=-1;dy<=1;dy++){const q=v.cell.get((gx+dx)+','+(gy+dy));if(!q||q.nr>limit)continue;const d=Math.hypot(q.p.x-wx,q.p.y-wy);if(d<bd){bd=d;best=q;}}}
   {let tb=null,td=9;for(const [tx,ty,tq] of TAPS){const d=Math.hypot(tx-wx,(ty-3)-wy);if(d<td){td=d;tb=tq;}}if(tb){zeigePass(tb,true);return;}}
   if(best)select(best);else if(sel){q.value='';$('qx').hidden=true;sg.hidden=true;unsel();}}};
@@ -2610,7 +2613,7 @@ addEventListener('keyup',e=>{const k=e.key.length===1?e.key.toLowerCase():e.key;
 {const hero=$('hero'),pos=e=>{const r=cv.getBoundingClientRect();return[e.clientX-r.left,e.clientY-r.top];},onMap=e=>e.target===cv;
  hero.addEventListener('pointerdown',e=>{if(!WK.on||!onMap(e))return;e.stopPropagation();e.preventDefault();try{cv.setPointerCapture(e.pointerId);}catch(_){}WK.pt=pos(e);WK.tap=[performance.now(),...pos(e)];},true);
  hero.addEventListener('pointermove',e=>{if(!WK.on||!WK.pt)return;e.stopPropagation();WK.pt=pos(e);},true);
- for(const t of['pointerup','pointercancel'])hero.addEventListener(t,e=>{if(!WK.on)return;if(onMap(e))e.stopPropagation();const tp=WK.tap;WK.pt=null;WK.tap=null;if(t==='pointerup'&&tp&&performance.now()-tp[0]<300){const [sx,sy]=pos(e);if(Math.hypot(sx-tp[1],sy-tp[2])<10){const r=walkTapWho(sx,sy);if(r)zeigePass(r[0],true,r[1]);}}},true);
+ for(const t of['pointerup','pointercancel'])hero.addEventListener(t,e=>{if(!WK.on)return;if(onMap(e))e.stopPropagation();const tp=WK.tap;WK.pt=null;WK.tap=null;if(t==='pointerup'&&tp&&performance.now()-tp[0]<300){const [sx,sy]=pos(e);if(Math.hypot(sx-tp[1],sy-tp[2])<10){if(bauSignAt((sx-W/2)/cam.z+cam.x,(sy-H/2)/cam.z+cam.y)){zuBauprojekten();return;}const r=walkTapWho(sx,sy);if(r)zeigePass(r[0],true,r[1]);}}},true);
  hero.addEventListener('wheel',e=>{if(WK.on){e.stopPropagation();}},true);}
 let toastT=0;function toast(t){const e=$('toast');e.textContent=t;e.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>e.hidden=true,4200);}
 // Versteckte Lupe: Erfolg „Lupe“ für den gerade ausgewählten TikTok-Namen (gespeichert in diesem Browser)
