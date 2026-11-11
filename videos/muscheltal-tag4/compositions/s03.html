@@ -51,7 +51,7 @@
 @font-face { font-family: "Lilita One"; src: url("assets/fonts/LilitaOne-Regular.woff2") format("woff2"); font-weight: 400; }
     .pl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 28px 12px; border-radius: 999px; color: #fff;
       font-family: "Inter", sans-serif; font-weight: 900; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); white-space: nowrap; }
-    .big { position: absolute; left: 0; right: 0; width: fit-content; max-width: 940px; margin: 0 auto; text-align: center; padding: 10px 26px 20px; border-radius: 36px; color: #fff; font-family: "Lilita One", sans-serif; line-height: 1; box-shadow: 0 0 0 8px #2a1b12, 0 16px 0 rgba(0,0,0,.3); }
+    .big { position: absolute; left: 0; right: 0; width: fit-content; max-width: 980px; white-space: nowrap; margin: 0 auto; text-align: center; padding: 10px 26px 20px; border-radius: 36px; color: #fff; font-family: "Lilita One", sans-serif; line-height: 1; box-shadow: 0 0 0 8px #2a1b12, 0 16px 0 rgba(0,0,0,.3); }
     .cmt { position: absolute; left: 140px; width: 800px; border-radius: 30px; padding: 8px; background: linear-gradient(135deg, #5fe0ff, #ff7ac0); box-shadow: 0 14px 30px rgba(0,0,0,.45); transform: rotate(-1.5deg); }
     .cmt img { display: block; width: 100%; border-radius: 23px; }
     .cf { position: absolute; left: 530px; top: 640px; width: 20px; height: 30px; border-radius: 4px; }
@@ -60,6 +60,7 @@
     #s03-fc { top: 470px; left: 160px; width: 760px; }
     #s03-fc .av { width: 70px; height: 70px; border-radius: 50%; background: url(assets/img/fab_avatar.png) center/cover; flex: none; }
     #s03-fc .nm { font-size: 24px; color: #a8a8a8; font-weight: 600; } #s03-fc .tx { font-size: 28px; line-height: 1.28; margin-top: 2px; }
+    #s03-gw { top: 1000px; right: 120px; font-size: 42px; background: #2e9e5b; }
     #s03-dim { position: absolute; inset: 0; background: rgba(10,12,40,.55); }
     #s03-lv { top: 290px; font-size: 50px; background: #e8262f; }
     #s03-box { position: absolute; left: 190px; width: 700px; top: 450px; height: 390px; border-radius: 34px; background: #fff; overflow: hidden; box-shadow: 0 0 0 7px #2a1b12, 0 0 0 14px #ffc93c, 0 0 0 19px #2a1b12, 0 18px 0 rgba(0,0,0,.35); }
@@ -74,10 +75,11 @@
     #s03-lk { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 520px; padding: 14px 40px 18px; border-radius: 30px; background: #fff; box-shadow: 0 0 0 7px #2a1b12; font-family: "Inter", sans-serif; font-weight: 900; font-size: 44px; color: #2a1b12; text-align: center; }
     #s03-lk b { display: block; line-height: 1; }
   </style>
-  <div id="root" data-composition-id="s03" data-start="0" data-duration="17.610" data-width="1080" data-height="1920">
-    <div id="s03-stage" class="clip stage" data-start="0" data-duration="17.610" data-track-index="0">
+  <div id="root" data-composition-id="s03" data-start="0" data-duration="18.290" data-width="1080" data-height="1920">
+    <div id="s03-stage" class="clip stage" data-start="0" data-duration="18.290" data-track-index="0">
       <div id="s03-t" class="pl">🥐 NEU: Fabiennes Bäckerei!</div>
       <div id="s03-v" class="pl">✅ Ihr habt abgestimmt</div>
+      <div id="s03-gw" class="pl">🎉 Glückwunsch, Fabienne!</div>
       <div id="s03-fc" class="cmt"><img src="assets/img/fab_comment.jpg" alt=""></div>
       <div id="s03-dim"></div>
       <div id="s03-lv" class="pl">🔴 LIVE: Job in der Bäckerei!</div>
@@ -93,7 +95,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 17.61, "L4": [0.2, 3.48], "L4.words": [["und", 0.2, 0.421], ["ganz", 0.421, 0.649], ["neu", 0.649, 0.87], ["ihr", 1.17, 1.296], ["habt", 1.296, 1.426], ["abgestimmt", 1.426, 1.808], ["", 1.808, 1.92], ["fabienne", 2.18, 2.615], ["hat", 2.615, 2.762], ["ihre", 2.762, 3.045], ["bäckerei", 3.045, 3.48]], "L5": [4.0, 6.34], "L5.words": [["und", 4.0, 4.131], ["jetzt", 4.131, 4.272], ["verlose", 4.272, 4.657], ["ich", 4.657, 4.788], ["live", 4.788, 5.041], ["einen", 5.041, 5.299], ["job", 5.299, 5.43], ["in", 5.43, 5.557], ["fabiennes", 5.557, 5.951], ["bäckerei", 5.951, 6.34]], "L6": [9.96, 12.48], "L6.words": [["glückwunsch", 9.96, 10.93], ["lonajs", 11.15, 11.356], ["du", 11.356, 11.455], ["arbeitest", 11.455, 11.764], ["ab", 11.764, 11.863], ["jetzt", 11.863, 11.973], ["in", 11.973, 12.072], ["der", 12.072, 12.175], ["bäckerei", 12.175, 12.48]], "L7": [13.1, 16.93], "L7.words": [["spoiler", 13.1, 13.83], ["wer", 14.11, 14.396], ["einen", 14.396, 14.958], ["job", 14.958, 15.244], ["hat", 15.244, 15.53], ["hat", 15.64, 15.738], ["beim", 15.738, 15.84], ["spiel", 15.84, 15.945], ["bei", 15.945, 16.043], ["1000", 16.043, 16.243], ["followern", 16.243, 16.537], ["einen", 16.537, 16.73], ["vorteil", 16.73, 16.93]]};
+      const C = {"__dur": 18.29, "L4": [0.2, 4.16], "L4.words": [["und", 0.2, 0.372], ["ganz", 0.372, 0.55], ["neu", 0.55, 0.723], ["ihr", 0.723, 0.895], ["habt", 0.895, 1.073], ["abgestimmt", 1.073, 1.596], ["", 1.596, 1.75], ["fabienne", 1.75, 2.26], ["hat", 2.26, 2.432], ["ihre", 2.432, 2.764], ["bäckerei", 2.764, 3.275], ["glückwunsch", 3.275, 3.65], ["fabienne", 3.65, 4.16]], "L5": [4.68, 7.02], "L5.words": [["und", 4.68, 4.811], ["jetzt", 4.811, 4.952], ["verlose", 4.952, 5.337], ["ich", 5.337, 5.468], ["live", 5.468, 5.721], ["einen", 5.721, 5.979], ["job", 5.979, 6.11], ["in", 6.11, 6.237], ["fabiennes", 6.237, 6.631], ["bäckerei", 6.631, 7.02]], "L6": [10.64, 13.16], "L6.words": [["glückwunsch", 10.64, 11.61], ["lonajs", 11.83, 12.036], ["du", 12.036, 12.135], ["arbeitest", 12.135, 12.444], ["ab", 12.444, 12.543], ["jetzt", 12.543, 12.653], ["in", 12.653, 12.752], ["der", 12.752, 12.855], ["bäckerei", 12.855, 13.16]], "L7": [13.78, 17.61], "L7.words": [["spoiler", 13.78, 14.51], ["wer", 14.79, 15.076], ["einen", 15.076, 15.638], ["job", 15.638, 15.924], ["hat", 15.924, 16.21], ["hat", 16.32, 16.418], ["beim", 16.418, 16.52], ["spiel", 16.52, 16.625], ["bei", 16.625, 16.723], ["1000", 16.723, 16.923], ["followern", 16.923, 17.217], ["einen", 17.217, 17.41], ["vorteil", 17.41, 17.61]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -141,7 +143,8 @@
       tl.fromTo("#s03-t", { opacity: 0, scale: 2.6 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, line("L4")[0]);
       tl.fromTo("#s03-v", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .25 }, ab - .2);
       tl.fromTo("#s03-fc", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, fa - .2);
-      tl.to(["#s03-t", "#s03-v", "#s03-fc"], { opacity: 0, duration: .2 }, l5 - .2);
+      tl.fromTo("#s03-gw", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, at("L4", "Glückwunsch") - .15);
+      tl.to(["#s03-t", "#s03-v", "#s03-fc", "#s03-gw"], { opacity: 0, duration: .2 }, l5 - .2);
       tl.fromTo("#s03-dim", { opacity: 0 }, { opacity: 1, duration: .3 }, l5);
       tl.fromTo("#s03-lv", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, l5);
       tl.to("#s03-lv", { opacity: .4, duration: .2, yoyo: true, repeat: 7, ease: "steps(1)" }, l5 + .4);

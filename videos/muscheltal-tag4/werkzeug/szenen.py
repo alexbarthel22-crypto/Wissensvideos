@@ -84,7 +84,7 @@ def rain(cid, n, seed, t0, t1):
     return html, js
 
 NS = (D.parent / "werkzeug" / "slot.txt").read_text().split(); WI = NS.index("lona.js")
-BIG = """.big { position: absolute; left: 0; right: 0; width: fit-content; max-width: 940px; margin: 0 auto; text-align: center; padding: 10px 26px 20px; border-radius: 36px; color: #fff; font-family: "Lilita One", sans-serif; line-height: 1; box-shadow: 0 0 0 8px #2a1b12, 0 16px 0 rgba(0,0,0,.3); }"""
+BIG = """.big { position: absolute; left: 0; right: 0; width: fit-content; max-width: 980px; white-space: nowrap; margin: 0 auto; text-align: center; padding: 10px 26px 20px; border-radius: 36px; color: #fff; font-family: "Lilita One", sans-serif; line-height: 1; box-shadow: 0 0 0 8px #2a1b12, 0 16px 0 rgba(0,0,0,.3); }"""
 CMT = """.cmt { position: absolute; left: 140px; width: 800px; border-radius: 30px; padding: 8px; background: linear-gradient(135deg, #5fe0ff, #ff7ac0); box-shadow: 0 14px 30px rgba(0,0,0,.45); transform: rotate(-1.5deg); }
     .cmt img { display: block; width: 100%; border-radius: 23px; }"""
 
@@ -144,7 +144,7 @@ scene("s02", LILITA + "\n    " + PILL + "\n    " + BIG + """
     #s02-h { top: 290px; font-size: 76px; background: #18a6b8; transform: rotate(-2deg); }
     #s02-e { top: 460px; font-size: 48px; background: #7b3fe0; }
     #s02-ihr { position: absolute; left: 0; right: 0; top: 560px; text-align: center; font-family: "Lilita One", sans-serif; font-size: 300px; line-height: 1; color: #ffe14a; -webkit-text-stroke: 18px #2a1b12; paint-order: stroke fill; filter: drop-shadow(0 16px 0 rgba(0,0,0,.35)); opacity: 0; }""",
-"""      <div id="s02-h" class="big">🏆 DIE GRÖSSTE INSEL-WELT AUF TIKTOK</div>
+"""      <div id="s02-h" class="big">🏆 DIE GRÖSSTE<br>INSEL-WELT AUF TIKTOK</div>
       <div id="s02-ihr" data-layout-ignore>IHR!</div>
       <div id="s02-e" class="pl">👑 Hier entscheidet ihr!</div>""",
 """      const gr = at("L2", "größte"), ih = at("L2", "ihr");
@@ -161,9 +161,9 @@ scene("s0a", LILITA + "\n    " + PILL + "\n" + FOLLOW + "\n    " + PT + """
     #s0a-t { top: 290px; font-size: 54px; background: #2e9e5b; }
     #s0a-fr { position: absolute; left: 375px; top: 500px; width: 330px; height: 440px; border-radius: 34px; border: 9px dashed #ffe14a; box-shadow: 0 0 34px 6px rgba(255,225,74,.7); }
     #s0a-tag { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 640px; padding: 8px 26px 12px; border-radius: 22px; background: #ffe14a; color: #2a1b12; font-family: "Lilita One", sans-serif; font-size: 64px; box-shadow: 0 0 0 6px #2a1b12; transform: rotate(-6deg); }
-    #s0a-nm { top: 1080px; right: 120px; font-size: 42px; background: #7b3fe0; }
+    #s0a-nm { display: none; top: 1090px; right: 120px; font-size: 34px; background: #7b3fe0; }
     #s0a-btn { top: 400px; } #s0a-hand { left: 690px; top: 450px; }
-    #s0a-st { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 980px; color: #2e9e5b; border-color: #2e9e5b; background: #fff; transform: rotate(-4deg); font-size: 60px; white-space: nowrap; font-family: "Lilita One", sans-serif; }""",
+    #s0a-st { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 1035px; color: #2e9e5b; border-color: #2e9e5b; background: #fff; transform: rotate(-4deg); font-size: 60px; white-space: nowrap; font-family: "Lilita One", sans-serif; }""",
 """      <div id="s0a-t" class="pl">✨ So einfach geht's</div>
       <div id="s0a-fr" data-layout-ignore></div>
       <div id="s0a-tag" data-layout-ignore>🔑 FREI</div>
@@ -212,6 +212,7 @@ scene("s03", LILITA + "\n    " + PILL + "\n    " + BIG + "\n    " + CMT + "\n   
     #s03-fc { top: 470px; left: 160px; width: 760px; }
     #s03-fc .av { width: 70px; height: 70px; border-radius: 50%; background: url(assets/img/fab_avatar.png) center/cover; flex: none; }
     #s03-fc .nm { font-size: 24px; color: #a8a8a8; font-weight: 600; } #s03-fc .tx { font-size: 28px; line-height: 1.28; margin-top: 2px; }
+    #s03-gw { top: 1000px; right: 120px; font-size: 42px; background: #2e9e5b; }
     #s03-dim { position: absolute; inset: 0; background: rgba(10,12,40,.55); }
     #s03-lv { top: 290px; font-size: 50px; background: #e8262f; }
     #s03-box { position: absolute; left: 190px; width: 700px; top: 450px; height: 390px; border-radius: 34px; background: #fff; overflow: hidden; box-shadow: 0 0 0 7px #2a1b12, 0 0 0 14px #ffc93c, 0 0 0 19px #2a1b12, 0 18px 0 rgba(0,0,0,.35); }
@@ -227,6 +228,7 @@ scene("s03", LILITA + "\n    " + PILL + "\n    " + BIG + "\n    " + CMT + "\n   
     #s03-lk b { display: block; line-height: 1; }""",
 f"""      <div id="s03-t" class="pl">🥐 NEU: Fabiennes Bäckerei!</div>
       <div id="s03-v" class="pl">✅ Ihr habt abgestimmt</div>
+      <div id="s03-gw" class="pl">🎉 Glückwunsch, Fabienne!</div>
       <div id="s03-fc" class="cmt"><img src="assets/img/fab_comment.jpg" alt=""></div>
       <div id="s03-dim"></div>
       <div id="s03-lv" class="pl">🔴 LIVE: Job in der Bäckerei!</div>
@@ -241,7 +243,8 @@ f"""      const fa = at("L4", "Fabienne"), ab = at("L4", "abgestimmt"), l5 = lin
       tl.fromTo("#s03-t", {{ opacity: 0, scale: 2.6 }}, {{ opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }}, line("L4")[0]);
       tl.fromTo("#s03-v", {{ opacity: 0, y: 30 }}, {{ opacity: 1, y: 0, duration: .25 }}, ab - .2);
       tl.fromTo("#s03-fc", {{ opacity: 0, y: 40 }}, {{ opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }}, fa - .2);
-      tl.to(["#s03-t", "#s03-v", "#s03-fc"], {{ opacity: 0, duration: .2 }}, l5 - .2);
+      tl.fromTo("#s03-gw", {{ opacity: 0, scale: .3 }}, {{ opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }}, at("L4", "Glückwunsch") - .15);
+      tl.to(["#s03-t", "#s03-v", "#s03-fc", "#s03-gw"], {{ opacity: 0, duration: .2 }}, l5 - .2);
       tl.fromTo("#s03-dim", {{ opacity: 0 }}, {{ opacity: 1, duration: .3 }}, l5);
       tl.fromTo("#s03-lv", {{ opacity: 0, scale: 2.4 }}, {{ opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }}, l5);
       tl.to("#s03-lv", {{ opacity: .4, duration: .2, yoyo: true, repeat: 7, ease: "steps(1)" }}, l5 + .4);
@@ -333,7 +336,7 @@ scene("s06", LILITA + "\n    " + PILL + "\n    " + BIG + """
     #s06-g { top: 800px; font-size: 42px; background: #e8262f; }
     #s06-ar { position: absolute; left: 850px; top: 1230px; font-size: 110px; filter: drop-shadow(0 6px 0 rgba(0,0,0,.35)); }
     #s06-cb { position: absolute; left: 640px; top: 1085px; padding: 4px 18px 8px; border-radius: 999px; background: #fff; color: #fe2c55; font-family: "Inter", sans-serif; font-weight: 900; font-size: 30px; box-shadow: 0 0 0 4px #2a1b12; }""",
-"""      <div id="s06-h" class="big">🚀 ES GIBT KEINE GRENZEN!</div>
+"""      <div id="s06-h" class="big">🚀 ES GIBT KEINE<br>GRENZEN!</div>
       <div id="s06-cm"><div class="av">🐚</div><div><div class="nm">Du</div><div class="tx"><span id="s06-ty"></span><span class="cu" id="s06-cu"></span></div></div><div id="s06-lk"><span id="s06-h0">🤍</span><span id="s06-h1">❤️</span><b id="s06-ln">0</b></div></div>
       <div id="s06-g" class="pl">❤️ Meiste Likes = morgen im Video!</div>
       <div id="s06-cb" data-layout-ignore>Hier kommentieren</div>
