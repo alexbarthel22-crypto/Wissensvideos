@@ -206,3 +206,4 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 
 - **Strand** (11.11.): rundum breiter – die Wasserlinie liegt weiter draußen (Riffe, Steine, Steg-Ende, Wellen und Laufgrenze am Wasser mit verschoben). Steine liegen nie in Verlängerung eines Weges.
 - **Namensschilder der Mitarbeiter** (11.11.): überall einheitlich – kleine Schilder in der Farbe des Ladens, die Leitung zuerst mit ⭐, mittig auf dem Weg direkt unter dem Gelände (Eingangsseite). Sie überdecken weder Schild, Theke noch Gesichter; bei vielen Mitarbeitern zweizeilig.
+- **Jede Person nur einmal auf der Karte** (11.11.): Wer arbeitet, hat trotzdem eine eigene Hütte, steht tagsüber aber nur im Laden (nie zusätzlich als Passant, Gast oder an der Hütte). Erkundet jemand mit Job selbst die Welt, steht er währenddessen nicht gleichzeitig hinter der Theke bzw. auf dem Muschelplatz.

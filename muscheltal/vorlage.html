@@ -1628,7 +1628,7 @@ function drawBaeckerei(c,g,nl,z){const W=(g.x1-g.x0)/2,H=(g.y1-g.y0)/2,t=REDUCED
  // hängende Brezeln und Lichterkette an der Dachkante
  for(const hx of[-13]){c.strokeStyle='#6b3f1d';c.lineWidth=.12;c.beginPath();c.moveTo(hx,-19.6);c.lineTo(hx,-17.6);c.stroke();bread(c,hx,-16.6,.36,'brezel');}
  // Team hinter der Theke
- const team=PEOPLE.filter(p=>p.ort===g.name&&p.p).sort((a,b)=>(a.beruf==='Leitung'?-1:0)-(b.beruf==='Leitung'?-1:0));
+ const team=PEOPLE.filter(p=>p.ort===g.name&&p.p&&!imSpiel(p)).sort((a,b)=>(a.beruf==='Leitung'?-1:0)-(b.beruf==='Leitung'?-1:0));
  if(z*S>8)team.forEach((p,k)=>{if(k>=BKX.length)return;const x=BKX[k],y=-9,L=p.LB||(p.LB={...look(p.k),shirt:'#fffaf2'});c.save();c.translate(x,y);person(c,L,0,true,k===0?.2+Math.abs(Math.sin(t*2))*.5:0);c.scale(L.h,L.h);
   c.fillStyle=BK.rose2;c.beginPath();c.roundRect(-1.2,-1.6,2.4,2.8,.5);c.fill();c.fillStyle='#fff';c.fillRect(-1.5,-5.55,3,.55);c.beginPath();c.arc(-.8,-6.2,.9,0,TAU);c.arc(.8,-6.2,.9,0,TAU);c.arc(0,-6.6,1,0,TAU);c.fill();c.restore();
   TAPS.push([g.cx+x,g.cy+y,p]);if(z*S>40&&sel!==p)teamLbl(g,p,BK.rose2);});
@@ -1671,7 +1671,7 @@ function drawAcai(c,g,nl,z){const W=(g.x1-g.x0)/2,H=(g.y1-g.y0)/2,t=REDUCED?0:T,
  c.fillStyle='#2a3a3a';c.beginPath();c.roundRect(kx1-12,ky0+10.5,8,5.6,.6);c.fill();c.strokeStyle='#8a5a2b';c.lineWidth=.5;c.stroke();c.lineWidth=.25;const ML=['#fff','#ffb3d1','#d7b8ff','#fff3a8'];for(let r=0;r<4;r++){c.strokeStyle=ML[r];c.beginPath();c.moveTo(kx1-11,ky0+12+r*1.1);c.lineTo(kx1-11+3+((r*37)%4),ky0+12+r*1.1);c.stroke();}
  c.fillStyle='#fff';c.font='900 1.1px '+FONT;c.textAlign='center';c.fillText('MENÜ',kx1-8,ky0+11.6);
  // Team hinter der Theke (tagsüber)
- const team=PEOPLE.filter(p=>p.ort===g.name&&p.p).sort((a,b)=>(a.beruf==='Leitung'?-1:0)-(b.beruf==='Leitung'?-1:0));
+ const team=PEOPLE.filter(p=>p.ort===g.name&&p.p&&!imSpiel(p)).sort((a,b)=>(a.beruf==='Leitung'?-1:0)-(b.beruf==='Leitung'?-1:0));
  if(z*S>8)team.forEach((p,k)=>{if(k>=ACAI_X.length)return;const x=ACAI_X[k],y=-3,L=p.LA||(p.LA={...look(p.k),shirt:p.beruf==='Leitung'?'#ff6fa3':'#b58ad0'});c.save();c.translate(x,y);person(c,L,0,true,k===0?.2+Math.abs(Math.sin(t*2))*.5:0);c.scale(L.h,L.h);
   c.fillStyle='#fff';c.beginPath();c.roundRect(-1.2,-1.6,2.4,2.8,.5);c.fill();c.fillStyle=LIL;c.beginPath();c.arc(0,-.6,.45,0,TAU);c.fill();c.fillStyle=LIL2;c.fillRect(-1.5,-5.45,3,.5);c.restore();
   TAPS.push([g.cx+x,g.cy+y,p]);if(z*S>40&&sel!==p)teamLbl(g,p,LIL);});
@@ -1765,7 +1765,7 @@ function drawWerk(c,g,nl,z){c.scale(g.dir||1,1);// drawGeb spiegelt Küstenbaute
  for(const [x,y] of[[-29,-2.4],[13.4,-2.4]]){c.fillStyle='#8a8a94';c.fillRect(x-1.2,y,2.4,1.8);c.fillStyle='#3f9b45';c.beginPath();c.arc(x,y-.4,1.2,0,TAU);c.fill();c.fillStyle='#ffd23f';c.beginPath();c.arc(x+.4,y-.9,.35,0,TAU);c.fill();}
  offenNeon(c,-24.6,-18);
  // Werkstatt-Team (Leitung) an der Hebebühne
- const team=PEOPLE.filter(p=>p.ort===g.name&&p.p);
+ const team=PEOPLE.filter(p=>p.ort===g.name&&p.p&&!imSpiel(p));
  if(z*S>8)team.forEach((p,k)=>{const x=k?6:-4.6,y=6,L=p.LW||(p.LW={...look(p.k),shirt:'#2f5f9f',pants:'#1d3a66'});c.save();c.translate(x,y);c.scale(-1,1);person(c,L,0,false,.3+Math.abs(Math.sin(t*4+k))*.9);c.scale(L.h,L.h);c.fillStyle='#e8433c';c.beginPath();c.arc(0,-4.8,1.55,Math.PI,0);c.fill();c.fillRect(-2.2,-4.9,1.6,.35);
   c.strokeStyle='#c9d1d9';c.lineWidth=.35;c.beginPath();c.moveTo(-2.4,-3.6);c.lineTo(-3.6,-4.4);c.stroke();c.fillStyle='#fff';c.fillRect(-.5,-1.6,1,.35);c.restore();TAPS.push([g.cx+x,g.cy+y,p]);if(z*S>40&&sel!==p)teamLbl(g,p,'#2f5f9f');});
  }
@@ -1975,7 +1975,9 @@ function guests(c,g,nl,z,OUT){const S2=SEATS[g.typ];if(!S2||z*S<=8)return;const 
   c.restore();if(KIO(g))acaiFront(c,x,y);TAPS.push([x,y+bob,who]);if(z*S>60)NAMES.push([who.name,x,FOOD&&lab&&!mv?y+6.2:y+bob-10.6*L.h-(FOOD||mv?0:(k%2)*3.6),null,2.1]);});}
 // Team hinter der Theke (im lokalen Koordinatensystem des Gebäudes)
 // Team eines Ladens (wohnt im Laden oder kommt aus der eigenen Hütte) und sein Platz hinter der Theke
-const teamOf=g=>PEOPLE.filter(p=>p.ort===g.name&&(p.gb===g||(p.p&&!p.home&&!p.wait)));
+// Wer gerade selbst erkundet, steht nicht gleichzeitig am Arbeitsplatz (jede Person nur einmal auf der Karte)
+const imSpiel=p=>WK.on&&WK.me===p;
+const teamOf=g=>PEOPLE.filter(p=>p.ort===g.name&&!imSpiel(p)&&(p.gb===g||(p.p&&!p.home&&!p.wait)));
 function teamPos(g,p){const T2=teamOf(g),k=Math.max(0,T2.indexOf(p)),n=T2.length;if(g.typ==='doener')return{x:g.cx+[-21.5,-8.5,-1.5][k%3],y:g.cy-6};if(g.typ==='strandbar')return{x:g.sea-30*g.dir+(k-(n-1)/2)*9*g.dir,y:g.cy-3};if(g.typ==='werkstatt')return{x:g.cx-4.6+k*10.6,y:g.cy+6};return kioPos(g,k);}
 function crew(c,g,z,d){if(z*S<=8)return;const col=g.typ==='doener'?'#e8433c':'#0fa3a8';for(const p of teamOf(g)){const tp=teamPos(g,p),L=p.LC||(p.LC={...look(p.k),shirt:col});c.save();c.translate((tp.x-g.cx)*d,tp.y-g.cy);person(c,L,0,true,0);c.scale(L.h,L.h);c.fillStyle='#fff';c.beginPath();c.roundRect(-1.2,-1.6,2.4,2.8,.5);c.fill();c.fillStyle=col;c.fillRect(-.5,-1.1,1,.25);c.restore();}}
 function boatS(c,x,y){c.fillStyle='#8a5a2b';c.beginPath();c.moveTo(x-6,y-2);c.lineTo(x+5,y-2);c.lineTo(x+7,y);c.lineTo(x+5,y+2);c.lineTo(x-6,y+2);c.closePath();c.fill();c.fillStyle='#fff';c.fillRect(x-4,y-1,7,.6);}
@@ -2061,7 +2063,7 @@ function draw(){
  // Bürgermeisterin arbeitet im Muschelpalast: tagsüber auf der Palasttreppe, golden hervorgehoben
  // zwei Pfauen stolzieren tagsüber über den Muschelplatz und schlagen ab und zu ein Rad
  if(z*S>8&&nl<.5&&GROWK==null)for(let k=0;k<2;k++){const w=palWalk({name:'#pfau'+k,nr:9100+k*17}),x=w.x,y=w.y;if(!vis(x,y))continue;peacock(c,x,y,w.vert?(w.dir>0?'front':'back'):'side',w.vert?1:w.dir,w.pause>0&&Math.sin(T*.13+k*2)>.2,k);hutsFront(c,x,y);}
- if(z*S>8&&(GROWK==null||GROWV!==MAIN||GROWK>=MAYOR_AT))for(const p of PEOPLE){if(!palNow(p))continue;const MYp=isMayor(p);OUTG.add(p);const w=palWalk(p),x=w.x,y=w.y;if(!vis(x,y))continue;
+ if(z*S>8&&(GROWK==null||GROWV!==MAIN||GROWK>=MAYOR_AT))for(const p of PEOPLE){if(!palNow(p)||imSpiel(p))continue;const MYp=isMayor(p);OUTG.add(p);const w=palWalk(p),x=w.x,y=w.y;if(!vis(x,y))continue;
   const L=p.LM||(p.LM={...look(p.k),shirt:MYp?'#7b3fe0':'#ffd23f',pants:MYp?'#2a1b4a':'#1d2a3a'});const gl=.5+.5*Math.sin(T*2.5);
   if(MYp){c.fillStyle=`rgba(255,215,90,${.35+.25*gl})`;c.beginPath();c.ellipse(x,y+4.4,6,2,0,0,TAU);c.fill();}else{c.fillStyle='rgba(30,40,20,.25)';c.beginPath();c.ellipse(x,y+4.4,2.6,.9,0,0,TAU);c.fill();}if(w.pause>0||!w.t){c.save();c.translate(x,y);person(c,L,0,true,MYp?.3+gl*.6:0);c.restore();}else drawMover(c,{...L,mode:'walk',ph:p.nr},x,y,w.dir,w.vert,'walk');
   if(z*S>30&&sel!==p)NAMES.push(MYp?['🎖️ Bürgermeisterin '+p.name,x,y-12.5*L.h,'#ffd23f',0,'#2a1b12']:[(p.beruf==='Palast-Leitung'?'👑 ':'⭐ ')+p.beruf+' '+p.name,x,y-12.5*L.h-(Math.abs(x)<30?4:0)]);TAPS.push([x,y,p]);}
