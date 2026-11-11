@@ -54,16 +54,31 @@
     .cmt img { display: block; width: 100%; border-radius: 23px; }
     #s05-t { top: 290px; font-size: 52px; background: #1f6fb8; }
     #s05-c { top: 400px; }
-    #s05-y { position: absolute; left: 0; right: 0; margin: 0 auto; text-align: center; top: 640px; font-size: 220px; line-height: 1; }
-    #s05-q { top: 880px; right: 120px; font-size: 40px; background: #e8467c; }
-    #s05-vv { position: absolute; left: 110px; right: 230px; top: 980px; display: flex; gap: 24px; }
+    #s05-y { position: absolute; left: 90px; top: 640px; width: 560px; height: 300px; }
+    #s05-q { top: 960px; right: 120px; font-size: 40px; background: #e8467c; }
+    #s05-vv { position: absolute; left: 110px; right: 230px; top: 1050px; display: flex; gap: 24px; }
     #s05-vv div { flex: 1; text-align: center; padding: 14px 0 18px; border-radius: 26px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 46px; color: #fff; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); }
   </style>
   <div id="root" data-composition-id="s05" data-start="0" data-duration="5.930" data-width="1080" data-height="1920">
     <div id="s05-stage" class="clip stage" data-start="0" data-duration="5.930" data-track-index="0">
       <div id="s05-t" class="pl">🛥️ Private Yacht für Marie?</div>
       <div id="s05-c" class="cmt"><img src="assets/img/marie_comment.jpg" alt=""></div>
-      <div id="s05-y" data-layout-ignore>🛥️</div>
+      <svg id="s05-y" viewBox="0 0 600 320" data-layout-ignore><g fill="none" stroke="#2a1b12" stroke-linejoin="round" stroke-linecap="round">
+ <ellipse cx="300" cy="268" rx="290" ry="26" fill="#bfeefa" stroke="none" opacity=".7"/><path d="M40 262 q30 -12 60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0" stroke="#fff" stroke-width="7" opacity=".9"/>
+ <path d="M30 168 H500 Q570 168 552 196 L486 252 H82 Q48 252 30 168 Z" fill="#ffffff" stroke-width="6"/>
+ <path d="M44 214 H528 L506 232 H70 Z" fill="#1f3f95" stroke="none"/><path d="M38 196 H544" stroke="#c9d6e6" stroke-width="4"/>
+ <g fill="#123a4a" stroke="none"><circle cx="150" cy="190" r="6"/><circle cx="180" cy="190" r="6"/><circle cx="210" cy="190" r="6"/><circle cx="380" cy="190" r="6"/><circle cx="410" cy="190" r="6"/></g>
+ <path d="M110 168 L130 112 H420 Q470 112 488 168 Z" fill="#f4f7fb" stroke-width="6"/>
+ <path d="M150 158 L162 124 H300 V158 Z M314 158 V124 H412 Q440 124 456 158 Z" fill="#1d5f7a" stroke-width="4"/>
+ <path d="M176 154 L186 128 H210 L200 154Z M330 154 V128 H352 V154Z" fill="#7fd6f0" stroke="none" opacity=".7"/>
+ <path d="M190 112 L206 74 H360 Q392 74 404 112 Z" fill="#ffffff" stroke-width="6"/>
+ <path d="M220 104 L230 82 H350 Q370 82 378 104 Z" fill="#1d5f7a" stroke-width="4"/>
+ <path d="M250 74 V48 M250 48 H300 M300 48 V74" stroke-width="6"/><circle cx="275" cy="40" r="10" fill="#e9eef5" stroke-width="4"/>
+ <path d="M96 168 V120" stroke-width="5"/><path d="M96 120 L130 130 L96 140 Z" fill="#e8467c" stroke-width="3"/>
+ <path d="M96 122 Q170 70 250 50 Q330 40 420 70 Q470 90 520 140" stroke="#2a1b12" stroke-width="2.5"/>
+ <g stroke="#2a1b12" stroke-width="2"><circle cx="130" cy="100" r="7" fill="#ffe14a"/><circle cx="170" cy="78" r="7" fill="#ff5ecf"/><circle cx="215" cy="60" r="7" fill="#5fe0ff"/><circle cx="330" cy="46" r="7" fill="#ffe14a"/><circle cx="380" cy="56" r="7" fill="#ff5ecf"/><circle cx="430" cy="74" r="7" fill="#5fe0ff"/><circle cx="480" cy="104" r="7" fill="#ffe14a"/></g>
+ <g stroke-width="3"><circle cx="440" cy="98" r="9" fill="#f2c39a"/><path d="M440 108 V130 M430 116 L450 116 M428 100 L418 86 M452 100 L462 86" stroke-width="5"/><circle cx="160" cy="96" r="9" fill="#8a5a3c"/><path d="M160 106 V128 M150 112 L140 98 M170 112 L180 98" stroke-width="5"/></g>
+ <text x="300" y="246" font-family="Lilita One" font-size="22" fill="#fff" stroke="none" text-anchor="middle">MARIE · MUSCHEL-TAL</text></g></svg>
       <div id="s05-q" class="pl">🎉 Mit Partys an Bord!</div>
       <div id="s05-vv"><div style="background:#2e9e5b">✅ JA</div><div style="background:#e8262f">❌ NEIN</div></div>
     </div>
@@ -119,7 +134,7 @@
       tl.fromTo("#s05-t", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, ma - .2);
       tl.fromTo("#s05-c", { opacity: 0, y: -40, scale: .85 }, { opacity: 1, y: 0, scale: 1, duration: .35, ease: "back.out(2)" }, ma);
       tl.fromTo("#s05-y", { opacity: 0, x: -700 }, { opacity: 1, x: 0, duration: .6, ease: "power2.out" }, at("L9", "Yacht") - .2);
-      tl.to("#s05-y", { y: -14, rotation: -4, duration: .5, yoyo: true, repeat: 7, ease: "sine.inOut" }, at("L9", "Yacht") + .4);
+      tl.to("#s05-y", { y: -10, rotation: -2, duration: .6, yoyo: true, repeat: 7, ease: "sine.inOut" }, at("L9", "Yacht") + .4);
       tl.fromTo("#s05-q", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, pa - .2);
       tl.fromTo("#s05-vv div", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)", stagger: .12 }, so - .1);
       tl.to("#s05-vv div", { scale: 1.08, duration: .2, yoyo: true, repeat: 5, ease: "sine.inOut", stagger: .1 }, st);

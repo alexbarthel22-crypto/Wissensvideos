@@ -54,25 +54,17 @@
     .big { position: absolute; left: 60px; right: 60px; margin: 0 auto; text-align: center; padding: 10px 26px 20px; border-radius: 36px; color: #fff; font-family: "Lilita One", sans-serif; line-height: 1; box-shadow: 0 0 0 8px #2a1b12, 0 16px 0 rgba(0,0,0,.3); }
     #s02-h { top: 290px; font-size: 76px; background: #18a6b8; transform: rotate(-2deg); }
     #s02-e { top: 460px; font-size: 48px; background: #7b3fe0; }
-    .s02-b { top: 300px; font-size: 52px; }
-    #s02-st { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 430px; color: #2e9e5b; border-color: #2e9e5b; background: #fff; transform: rotate(-5deg); font-size: 70px; white-space: nowrap; font-family: "Lilita One", sans-serif; }
   </style>
-  <div id="root" data-composition-id="s02" data-start="0" data-duration="13.710" data-width="1080" data-height="1920">
-    <div id="s02-stage" class="clip stage" data-start="0" data-duration="13.710" data-track-index="0">
+  <div id="root" data-composition-id="s02" data-start="0" data-duration="4.910" data-width="1080" data-height="1920">
+    <div id="s02-stage" class="clip stage" data-start="0" data-duration="4.910" data-track-index="0">
       <div id="s02-h" class="big">🏆 DIE GRÖSSTE INSEL AUF TIKTOK</div>
       <div id="s02-e" class="pl">👑 Hier entscheidet ihr!</div>
-      <div id="s02-b0" class="pl s02-b" style="background:#e8262f">🥙 Dönerbude</div>
-      <div id="s02-b1" class="pl s02-b" style="background:#18a6b8">🍹 Strandbar</div>
-      <div id="s02-b2" class="pl s02-b" style="background:#7b3fe0">🫐 Açaí-Stand</div>
-      <div id="s02-b3" class="pl s02-b" style="background:#e2560c">🔧 Moped-Werkstatt</div>
-      <div id="s02-b4" class="pl s02-b" style="background:#2e9e5b">🏖️ Strandvilla</div>
-      <div id="s02-st" class="stamp" data-layout-ignore>✅ ALLES GEBAUT!</div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 13.71, "L2": [0.2, 6.4], "L2.words": [["muscheltal", 0.2, 0.878], ["ist", 0.878, 1.101], ["die", 1.101, 1.325], ["größte", 1.325, 1.772], ["insel", 1.772, 2.21], ["auf", 2.21, 2.434], ["tiktok", 2.434, 2.881], ["", 2.881, 3.08], ["und", 3.38, 3.535], ["hier", 3.535, 3.696], ["entscheidet", 3.696, 4.173], ["ganz", 4.173, 4.334], ["allein", 4.334, 4.645], ["ihr", 4.645, 4.8], ["was", 4.96, 5.429], ["passiert", 5.429, 6.4]], "L3": [6.92, 13.03], "L3.words": [["ihr", 6.92, 7.06], ["wolltet", 7.06, 7.345], ["eine", 7.345, 7.615], ["dönerbude", 7.615, 8.38], ["eine", 8.38, 8.63], ["strandbar", 8.63, 9.13], ["einen", 9.13, 9.33], ["açaístand", 9.33, 10.03], ["eine", 10.03, 10.23], ["mopedwerkstatt", 10.23, 10.93], ["und", 10.93, 11.08], ["eine", 11.08, 11.33], ["strandvilla", 11.33, 11.918], ["", 11.918, 12.29], ["alles", 12.29, 12.657], ["gebaut", 12.657, 13.03]]};
+      const C = {"__dur": 4.91, "L2": [0.2, 4.23], "L2.words": [["muscheltal", 0.2, 0.647], ["ist", 0.647, 0.795], ["die", 0.795, 0.942], ["größte", 0.942, 1.237], ["insel", 1.237, 1.526], ["auf", 1.526, 1.674], ["tiktok", 1.674, 1.968], ["", 1.968, 2.1], ["und", 2.4, 2.514], ["hier", 2.514, 2.632], ["entscheidet", 2.632, 2.981], ["ganz", 2.981, 3.099], ["allein", 3.099, 3.326], ["ihr", 3.326, 3.44], ["was", 3.55, 3.771], ["passiert", 3.771, 4.23]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -116,16 +108,10 @@
 
       wrapBt("#s02-stage");
       const tl = gsap.timeline({ paused: true });
-      const gr = at("L2", "größte"), ih = at("L2", "ihr"), l3 = line("L3")[0], al = at("L3", "alles");
+      const gr = at("L2", "größte"), ih = at("L2", "ihr");
       tl.fromTo("#s02-h", { opacity: 0, scale: 3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(1.8)" }, gr - .25);
       tl.fromTo("#s02-e", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, ih - .2);
       tl.to("#s02-e", { scale: 1.1, duration: .2, yoyo: true, repeat: 3, ease: "sine.inOut" }, ih + .2);
-      tl.to(["#s02-h", "#s02-e"], { opacity: 0, y: -30, duration: .2 }, l3 - .2);
-      ["Dönerbude", "Strandbar", "Açaí-Stand", "Moped-Werkstatt", "Strandvilla"].forEach((w, i) => { const t = at("L3", w);
-        tl.fromTo("#s02-b" + i, { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .22, ease: "back.out(2)" }, t - .25);
-        if (i < 4) tl.to("#s02-b" + i, { opacity: 0, duration: .12 }, at("L3", ["Strandbar", "Açaí-Stand", "Moped-Werkstatt", "Strandvilla"][i]) - .3); });
-      tl.to("#s02-b4", { opacity: 0, duration: .12 }, al - .2);
-      tl.fromTo("#s02-st", { opacity: 0, scale: 2.8 }, { opacity: 1, scale: 1, duration: .25, ease: "back.out(2)" }, al - .05);
       tl.to("#s02-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
       window.__timelines["s02"] = tl;
     })();
