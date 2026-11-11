@@ -92,7 +92,7 @@ CMT = """.cmt { position: absolute; left: 140px; width: 800px; border-radius: 30
 AW = [("ALLEINE", 'at("L1", "alleine")', "<br>"), ("AUF", 'at("L1", "auf")', ""), ("EINER", 'at("L1", "meiner")', "<br>"), ("INSEL!", 'at("L1", "meiner") + .3', "")]
 HW = [("ICH", "Ich", ""), ("HABE", "habe", ""), ("EUCH", "euch", "<br>"), ("EINE", "eine", ""), ("INSEL", "Insel", "<br>"), ("GEKAUFT!", "gekauft", "")]
 scene("s01", LILITA + "\n    " + PILL + "\n    " + PT + "\n" + FL + """
-    #s01-hk { position: absolute; left: 20px; right: 20px; top: 340px; text-align: center; font-family: "Lilita One", sans-serif; font-size: 128px; white-space: nowrap; line-height: 1.02; color: #fff; -webkit-text-stroke: 14px #2a1b12; paint-order: stroke fill; filter: drop-shadow(0 12px 0 rgba(0,0,0,.35)); }
+    #s01-hk { position: absolute; left: 10px; right: 10px; top: 520px; text-align: center; font-family: "Lilita One", sans-serif; font-size: 142px; white-space: nowrap; line-height: 1.02; color: #fff; -webkit-text-stroke: 14px #2a1b12; paint-order: stroke fill; filter: drop-shadow(0 12px 0 rgba(0,0,0,.35)); }
     #s01-hk span { display: inline-block; margin: 0 .08em; transform-origin: 50% 60%; }
     #s01-hk span.y { color: #ffe14a; }
     #s01-hk i, #s01-al i { font-style: normal; display: inline-block; transform-origin: 50% 60%; }
@@ -110,8 +110,8 @@ scene("s01", LILITA + "\n    " + PILL + "\n    " + PT + "\n" + FL + """
       <div class="s01-rg" id="s01-rg0" data-layout-ignore></div><div class="s01-rg" id="s01-rg1" data-layout-ignore></div><div class="s01-rg" id="s01-rg2" data-layout-ignore></div>
       <div id="s01-c"><b id="s01-n">1</b>Bewohner 🏝️</div>""" + drops("s01-p", 22, 5, 'je + .1', 540, 760, "🏠", 560, 820)[0] + drops("s01-q", 16, 9, 'le', 540, 760, "✨", 520, 760)[0],
 """      const al = at("L1", "Am"), je = at("L1", "jetzt"), le = at("L1", "Leute");
-      """ + "\n      ".join(f'tl.fromTo("#s01-w{i}", {{ opacity: 0, scale: 7, filter: "blur(12px)" }}, {{ opacity: 1, scale: 1, filter: "blur(0px)", duration: .22, ease: "power3.in" }}, {"0" if i == 0 else f"Math.max(.05, at(\"L1\", \"{k}\") - .12)"});' for i, (_, k, _) in enumerate(HW)) + """
-      """ + "\n      ".join(f'tl.to("#s01-wi{i}", {{ scale: 1.45, color: "#ffffff", textShadow: "0 0 40px rgba(255,230,80,1)", duration: .1, yoyo: true, repeat: 1, ease: "power2.out" }}, {"0.2" if i == 0 else f"at(\"L1\", \"{k}\") + .1"});' for i, (_, k, _) in enumerate(HW)) + """
+      """ + "\n      ".join(f'tl.set("#s01-w{i}", {{ opacity: 1 }}, 0);' for i, (_, k, _) in enumerate(HW)) + """
+      """ + "\n      ".join(f'tl.to("#s01-wi{i}", {{ scale: 1.5, color: "#ffffff", textShadow: "0 0 40px rgba(255,230,80,1)", duration: .12, yoyo: true, repeat: 1, ease: "power2.out" }}, {"0.02" if i == 0 else f"at(\"L1\", \"{k}\") - .02"});' for i, (_, k, _) in enumerate(HW)) + """
       tl.to("#s01-hk", { scale: 1.06, duration: .12, yoyo: true, repeat: 1 }, at("L1", "gekauft") + .1);
       tl.to("#s01-stage", { x: 14, duration: .04, yoyo: true, repeat: 5, ease: "none" }, at("L1", "gekauft") + .1);
       tl.to("#s01-hk", { opacity: 0, scale: .7, y: -80, duration: .25 }, al - .15);
