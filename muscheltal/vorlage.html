@@ -574,7 +574,7 @@ for(const v of ISL){Object.assign(v,{palms:[],bush:[],flow:[],grass:[],reef:[],r
  if(v.tier===1)for(let k=0;k<5;k++){const a=k/5*TAU+.3;v.palms.push({x:v.x+Math.cos(a)*30,y:v.y+Math.sin(a)*26,ph:k,s:1.5});}}
 const SPARK=[];for(let i=0;i<520;i++)SPARK.push({x:BOX.x0+hash(i,11)*(BOX.x1-BOX.x0),y:BOX.y0+hash(i,12)*(BOX.y1-BOX.y0),ph:hash(i,13)*TAU,sp:1+hash(i,14)*2});
 // Segelboote fahren nur auf freiem Wasser: nie über Inseln, Stege, Strandbar, Villa oder Baustellen
-function boatBlocked(x,y){for(const v of ISL)if(inside(v,x,y,-34-BEX))return true;for(const g of GEB)if(x>g.x0-22&&x<g.x1+22&&y>g.y0-22&&y<g.y1+22)return true;
+function boatBlocked(x,y){if(typeof YACHT!=='undefined'&&Math.abs(x-YACHT.cx)<70&&Math.abs(y-YACHT.cy)<45)return true;for(const v of ISL)if(inside(v,x,y,-34-BEX))return true;for(const g of GEB)if(x>g.x0-22&&x<g.x1+22&&y>g.y0-22&&y<g.y1+22)return true;
  for(const b of BAU){if(b.inr){const dx=x-b.ox,dy=y-b.oy,ca=Math.cos(b.ang),sa=Math.sin(b.ang),u=dx*ca+dy*sa,v2=-dx*sa+dy*ca;if(u>-30&&u<b.len+40&&Math.abs(v2)<b.w+24)return true;}else if(x>b.x0-22&&x<b.x1+22&&y>b.y0-22&&y<b.y1+22)return true;}
  for(const [px,py] of[PIER0,PIER1])if(Math.hypot(x-px,y-py)<45)return true;if(PJ&&Math.hypot(x-BB[0],y-BB[1])<70)return true;return false;}
 function boatRoute(b){const n=360;for(let r=b.r;r<b.r+400;r+=12){const ok=[];for(let i=0;i<n;i++){const a=i/n*TAU;let f=true;for(const dr of[-10,0,10]){const [x,y]=polar(MAIN,a,r+dr);if(boatBlocked(x,y)){f=false;break;}}ok.push(f);}
@@ -702,6 +702,67 @@ const inLab=(x,y)=>LABR.some(([a,b,c2,d2])=>x>a&&x<c2&&y>b&&y<d2);
 for(const v of ISL){if(v.rflow)v.rflow=v.rflow.filter(f=>!inLab(f.x,f.y));if(v.beach)v.beach=v.beach.filter(f=>!inLab(f.x,f.y));}
 const GEBK=new Map(GEB.map(g=>[g.key,g])),GEBN=new Map(GEB.map(g=>[g.name.toLowerCase(),g]));
 for(const p of PEOPLE)if(p.home){const g=GEBN.get(p.home.toLowerCase());if(g){const mates=PEOPLE.filter(q=>q.home===p.home),k=mates.indexOf(p);p.isl=g.v;p.wait=false;p.p=g.typ==='werkstatt'?{x:g.cx-3,y:g.cy+5}:KIO(g)?kioPos(g,Math.max(0,PEOPLE.filter(q=>q.ort===p.ort).sort((a,b)=>(a.beruf==='Leitung'?-1:0)-(b.beruf==='Leitung'?-1:0)).indexOf(p))):g.typ==='doener'?{x:g.cx+[-21.5,-8.5,-1.5][k%3],y:g.cy-6}:g.typ==='villa'?{x:g.cx+(22+k*8)*(g.dir||1),y:g.cy+13.5}:{x:g.sea-30*g.dir+(k-(mates.length-1)/2)*9*g.dir,y:g.cy-3};p.gb=g;}}
+// Luxus-Yacht „Muschelperle“: liegt vor Anker vor der Westküste der Haupt-Insel (Platz für höchstens 4 Personen)
+const YACHT=(()=>{const a=Math.PI+.3,[x,y]=polar(MAIN,a,coastAt(MAIN,a)+BEX+78);return{typ:'yacht',name:'Yacht',cx:x,cy:y,x0:x-40,x1:x+40,y0:y-34,y1:y+16,v:MAIN,
+ // Plätze an Deck (lokal): Achterdeck, Bug-Sonnenliege, Flybridge, Badeplattform
+ spots:[[18.6,-8.6],[-21,-8.6],[0,-19.4],[32.2,-3.2]]};})();
+function drawYacht(c,nl,z){const Y=YACHT,t=REDUCED?0:T,day=nl<.5,bob=Math.sin(t*1.1)*.5,rk=Math.sin(t*.8)*.012;c.save();c.translate(Y.cx,Y.cy);
+ // Wasser: Schatten, Wellenringe, nachts türkises Unterwasserlicht
+ if(!day){const g=c.createRadialGradient(0,6,2,0,6,44);g.addColorStop(0,`rgba(60,230,255,${.55*nl})`);g.addColorStop(1,'rgba(60,230,255,0)');c.fillStyle=g;c.beginPath();c.ellipse(0,6,46,14,0,0,TAU);c.fill();}
+ c.fillStyle='rgba(0,40,60,.22)';c.beginPath();c.ellipse(1,9,38,5,0,0,TAU);c.fill();
+ for(let k=0;k<3;k++){const ph=REDUCED?k/3:(t*.25+k/3)%1;c.strokeStyle=`rgba(255,255,255,${.45*(1-ph)})`;c.lineWidth=.45;c.beginPath();c.ellipse(0,8.5,34+ph*16,4+ph*3,0,0,TAU);c.stroke();}
+ // Ankerkette vom Bug ins Wasser, Boje
+ c.strokeStyle='#8a8f98';c.lineWidth=.35;c.setLineDash([.6,.4]);c.beginPath();c.moveTo(-31,-2+bob);c.quadraticCurveTo(-38,4,-41,9);c.stroke();c.setLineDash([]);c.fillStyle='#ff6fa3';c.beginPath();c.arc(-41,9,1,0,TAU);c.fill();c.fillStyle='#fff';c.fillRect(-41.9,8.7,1.8,.5);
+ // Flamingo-Schwimmring am Heck (an einer Leine)
+ {const fx=40+Math.sin(t*.7)*1.2,fy=8+Math.cos(t*.9)*.6;c.strokeStyle='#fff';c.lineWidth=.2;c.beginPath();c.moveTo(31,1+bob);c.quadraticCurveTo(36,6,fx-3,fy);c.stroke();c.fillStyle='#ff8fb8';c.beginPath();c.ellipse(fx,fy,4,1.6,0,0,TAU);c.fill();c.fillStyle='rgba(0,60,80,.35)';c.beginPath();c.ellipse(fx,fy,2,.7,0,0,TAU);c.fill();
+  c.strokeStyle='#ff8fb8';c.lineWidth=.8;c.lineCap='round';c.beginPath();c.moveTo(fx+3,fy-.5);c.quadraticCurveTo(fx+4.6,fy-4,fx+3.2,fy-5.2);c.stroke();c.fillStyle='#ff8fb8';c.beginPath();c.arc(fx+3.1,fy-5.4,.8,0,TAU);c.fill();c.fillStyle='#2a1b12';c.beginPath();c.moveTo(fx+2.4,fy-5.6);c.lineTo(fx+1.6,fy-5);c.lineTo(fx+2.4,fy-5);c.fill();}
+ c.translate(0,bob);c.rotate(rk);
+ // Rumpf: weiß, navy Wasserlinie, goldene Zierlinie, Bullaugen, Name
+ const hull=()=>{c.beginPath();c.moveTo(-36,-4.5);c.quadraticCurveTo(-30,8,-20,8);c.lineTo(27,8);c.quadraticCurveTo(31,8,32,-3.5);c.closePath();};
+ hull();c.fillStyle='#fdfdfb';c.fill();c.save();hull();c.clip();c.fillStyle='#1f3b6e';c.fillRect(-40,4.4,80,5);c.fillStyle='#d9a63a';c.fillRect(-40,3.6,80,.5);c.fillRect(-40,-.6,80,.35);
+  const sh=c.createLinearGradient(0,-4,0,8);sh.addColorStop(0,'rgba(255,255,255,0)');sh.addColorStop(1,'rgba(30,50,90,.18)');c.fillStyle=sh;c.fillRect(-40,-5,80,14);c.restore();
+ c.strokeStyle='#2a3550';c.lineWidth=.45;hull();c.stroke();
+ for(let k=0;k<5;k++){const x=-19+k*5.4;c.fillStyle=day?'#9fd8ee':`rgba(255,${210+k*6},140,${.85})`;c.beginPath();c.arc(x,1.6,.75,0,TAU);c.fill();c.strokeStyle='#d9a63a';c.lineWidth=.22;c.stroke();}
+ c.fillStyle='#d9a63a';c.font='900 2px '+FONT;c.textAlign='center';c.fillText('MUSCHELPERLE ✦',17,2.5);
+ // Deck aus Teak (leicht von oben) mit Reling
+ c.fillStyle='#c08a55';c.beginPath();c.moveTo(-33,-4.5);c.lineTo(31,-3.5);c.lineTo(29,-9);c.lineTo(-26,-9.5);c.closePath();c.fill();c.strokeStyle='rgba(90,55,25,.4)';c.lineWidth=.15;c.beginPath();for(let y=-8.6;y<-4;y+=.9){c.moveTo(-30,y);c.lineTo(30,y+.4);}c.stroke();
+ // Badeplattform am Heck mit Leiter
+ c.fillStyle='#a8743e';c.fillRect(30,-3.2,4.5,1.2);c.strokeStyle='#c9d1d9';c.lineWidth=.25;c.beginPath();c.moveTo(33.5,-2);c.lineTo(33.5,3);c.moveTo(34.5,-2);c.lineTo(34.5,3);for(let y=-1;y<3;y+=1.2){c.moveTo(33.5,y);c.lineTo(34.5,y);}c.stroke();
+ // Bug: Sonnenliege mit Kissen und Handtüchern, Champagner-Kühler
+ c.fillStyle='#fff';c.beginPath();c.roundRect(-27,-11,12,2.6,1);c.fill();c.strokeStyle='#d8d0c4';c.lineWidth=.2;c.stroke();
+ for(const [x,col] of[[-25.5,'#ff6fa3'],[-22.8,'#ffd23f'],[-20.1,'#7fe0c8']]){c.fillStyle=col;c.beginPath();c.roundRect(x,-12.4,2.2,1.6,.6);c.fill();}
+ c.fillStyle='#ff8fb8';c.fillRect(-18.6,-10.8,3,1.4);c.fillStyle='#fff';for(let k=0;k<3;k++)c.fillRect(-18.6+k,-10.8,.5,1.4);
+ {const bx=-29.5,by=-9.8;c.fillStyle='#c9d1d9';c.beginPath();c.moveTo(bx-1.2,by-2);c.lineTo(bx+1.2,by-2);c.lineTo(bx+.9,by);c.lineTo(bx-.9,by);c.fill();c.fillStyle='#2f6b3a';c.fillRect(bx-.6,by-4.2,.5,2.4);c.fillRect(bx+.1,by-3.8,.5,2);c.fillStyle='#d9a63a';c.fillRect(bx-.6,by-4.4,.5,.4);c.fillRect(bx+.1,by-4,.5,.4);}
+ // Kabine: weißer Aufbau mit getönter Rundum-Verglasung und Goldlinie
+ c.fillStyle='#fdfdfb';c.beginPath();c.moveTo(-13,-8.9);c.lineTo(-8,-16);c.lineTo(15,-16);c.lineTo(17,-8.6);c.closePath();c.fill();c.strokeStyle='#2a3550';c.lineWidth=.35;c.stroke();
+ {const wg=c.createLinearGradient(0,-15,0,-11);wg.addColorStop(0,day?'#2a4a6a':'#ffcf80');wg.addColorStop(1,day?'#4f86a8':'#ff8fb8');c.fillStyle=wg;c.beginPath();c.moveTo(-10.6,-11);c.lineTo(-7.4,-14.8);c.lineTo(14,-14.8);c.lineTo(15.2,-11);c.closePath();c.fill();
+  c.fillStyle='rgba(255,255,255,.35)';c.beginPath();c.moveTo(-6,-14.6);c.lineTo(-4.6,-14.6);c.lineTo(-7,-11.2);c.lineTo(-8.4,-11.2);c.closePath();c.fill();c.fillStyle='#d9a63a';c.fillRect(-12,-10.3,28.6,.4);}
+ // Flybridge: Hardtop auf Stützen, DJ-Pult, Discokugel, Lautsprecher
+ c.fillStyle='#e9e2d6';c.fillRect(-6,-17.4,20,1.4);
+ c.strokeStyle='#c9d1d9';c.lineWidth=.35;c.beginPath();for(const x of[-5,13]){c.moveTo(x,-17.4);c.lineTo(x,-25);}c.stroke();
+ c.fillStyle='#fdfdfb';c.beginPath();c.moveTo(-8,-25);c.lineTo(16,-25);c.lineTo(14,-26.6);c.lineTo(-6,-26.6);c.closePath();c.fill();c.strokeStyle='#2a3550';c.lineWidth=.3;c.stroke();c.fillStyle='#d9a63a';c.fillRect(-8,-25.2,24,.35);
+ {c.fillStyle='#2a2a34';c.beginPath();c.roundRect(5,-20.4,7,2.6,.5);c.fill();for(const dx of[6.8,10.2]){const sp=REDUCED?0:t*6;c.fillStyle='#111';c.beginPath();c.arc(dx,-20.5,1.05,0,TAU);c.fill();c.strokeStyle='#666';c.lineWidth=.15;c.beginPath();c.arc(dx,-20.5,.6,sp,sp+2);c.stroke();}
+  for(const sx of[3.6,13.2]){c.fillStyle='#1d1d26';c.fillRect(sx-.8,-21.6,1.6,3.8);c.fillStyle='#555';const pu=1+(REDUCED?0:Math.max(0,Math.sin(t*8))*.25);c.beginPath();c.arc(sx,-20.6,.45*pu,0,TAU);c.arc(sx,-18.9,.35*pu,0,TAU);c.fill();}}
+ {const dx=2,dy=-23.2;c.strokeStyle='#c9d1d9';c.lineWidth=.12;c.beginPath();c.moveTo(dx,-25);c.lineTo(dx,dy-1);c.stroke();const g=c.createRadialGradient(dx-.3,dy-.3,.1,dx,dy,1);g.addColorStop(0,'#fff');g.addColorStop(1,'#9aa4b2');c.fillStyle=g;c.beginPath();c.arc(dx,dy,1,0,TAU);c.fill();
+  if(!REDUCED)for(let k=0;k<4;k++){const a=t*2+k*1.6,on=Math.sin(t*5+k*2)>.2;if(!on)continue;c.fillStyle=['#ff6fa3','#7fe0ff','#ffd23f','#b58ad0'][k];c.fillRect(dx+Math.cos(a)*(3+k)-.15,dy+1+Math.sin(a)*1.4-.15,.3,.3);}}
+ // Lichterkette vom Bug über das Hardtop zum Heck, Wimpel
+ const bulbs=(x0,y0,x1,y1,n,sag)=>{c.strokeStyle='rgba(60,50,40,.6)';c.lineWidth=.1;c.beginPath();c.moveTo(x0,y0);c.quadraticCurveTo((x0+x1)/2,(y0+y1)/2+sag,x1,y1);c.stroke();for(let k=1;k<n;k++){const u=k/n,x=x0+(x1-x0)*u,y=y0+(y1-y0)*u+sag*2*u*(1-u),on=.55+.45*Math.sin(t*3+k*1.3);c.fillStyle=day?['#ff6fa3','#ffd23f','#7fe0c8','#b58ad0'][k%4]:`rgba(255,${190+(k*23)%60},${120+(k*41)%120},${.6+.4*on})`;c.beginPath();c.arc(x,y,.35,0,TAU);c.fill();}};
+ bulbs(-34,-6,-7,-26.4,9,3);bulbs(15,-26.4,31,-5,7,2.4);
+ for(let k=0;k<5;k++){const x=-30+k*4.4,y=-9.8-k*3.1;c.fillStyle=['#ff6fa3','#ffd23f','#2fb3a0','#fff','#b58ad0'][k];c.beginPath();c.moveTo(x,y);c.lineTo(x+1.4,y+.3);c.lineTo(x+.5,y+1.8);c.closePath();c.fill();}
+ // Heckflagge mit Muschel
+ c.strokeStyle='#c9d1d9';c.lineWidth=.25;c.beginPath();c.moveTo(30.5,-4);c.lineTo(30.5,-13);c.stroke();{const w=REDUCED?0:Math.sin(t*4)*.5;c.fillStyle='#ff6fa3';c.beginPath();c.moveTo(30.5,-13);c.quadraticCurveTo(33,-13+w,35.5,-12.4);c.lineTo(35.5,-10);c.quadraticCurveTo(33,-10.6+w,30.5,-10.4);c.closePath();c.fill();c.fillStyle='#fff';c.font='1.6px '+FONT;c.textAlign='center';c.fillText('🐚',33,-11);}
+ // Achterdeck: Whirlpool mit Blubberblasen, Lounge-Kissen
+ {const wx=25,wy=-8.4;c.fillStyle='#e9e2d6';c.beginPath();c.ellipse(wx,wy,4.4,1.5,0,0,TAU);c.fill();c.fillStyle=day?'#5fd8ea':`rgba(80,230,255,${.9})`;c.beginPath();c.ellipse(wx,wy-.1,3.6,1.05,0,0,TAU);c.fill();
+  if(!REDUCED)for(let k=0;k<5;k++){const ph=(t*.8+k/5)%1;c.fillStyle=`rgba(255,255,255,${.9*(1-ph)})`;c.beginPath();c.arc(wx-2.6+k*1.3,wy-.2-ph*1.4,.18+ph*.12,0,TAU);c.fill();}
+  }
+ // Bewohnerin(nen) an Deck – höchstens 4 Plätze
+ const B=PEOPLE.filter(p=>p.gb===Y);B.forEach((p,k)=>{if(k>=Y.spots.length)return;const [sx,sy]=Y.spots[(k+(day?0:0))%Y.spots.length],L=p.LY||(p.LY={...look(p.k)});c.save();c.translate(sx,sy-4.4);c.fillStyle='rgba(60,40,20,.2)';c.beginPath();c.ellipse(0,4.4,2,.6,0,0,TAU);c.fill();
+  const dance=!day&&!REDUCED,wv=dance?.4+Math.abs(Math.sin(t*5+k))*1.2:.3+Math.abs(Math.sin(t*1.4+k))*.6;if(dance)c.translate(0,-Math.abs(Math.sin(t*5+k))*.5);person(c,L,0,true,wv);c.scale(L.h,L.h);c.fillStyle='rgba(255,255,255,.85)';c.fillRect(2.2,-4.4,.9,1.4);c.fillStyle='#ff6fa3';c.fillRect(2.25,-3.9,.8,.8);c.restore();
+  const wx=Y.cx+sx,wy=Y.cy+sy+bob;TAPS.push([wx,wy-4.4,p]);if(z*S>30&&sel!==p)NAMES.push(['🛥️ '+p.name,wx,wy-16,'#d9a63a',2.4,'#2a1b12']);});
+ c.restore();}
+function yachtGlow(glow,nl){const Y=YACHT,x=Y.cx,y=Y.cy;glow(x+2,y-21,16,'255,120,200',.55*nl*(.7+.3*Math.sin(T*5)));glow(x+2,y-13,18,'255,200,130',.45*nl);glow(x+25,y-8,8,'80,230,255',.6*nl);for(let k=1;k<9;k++){const u=k/9;glow(x-34+27*u,y-6-20.4*u+6*u*(1-u),2.2,'255,210,150',.7*nl);}for(let k=1;k<7;k++){const u=k/7;glow(x+15+16*u,y-26.4+21.4*u+4.8*u*(1-u),2.2,'255,190,220',.7*nl);}for(let k=0;k<5;k++)glow(x-19+k*5.4,y+1.6,2.6,'255,220,150',.7*nl);}
+// Bewohnerin der Yacht platzieren (wohnorte → "Yacht")
+for(const p of PEOPLE)if(p.home==='Yacht'){p.isl=MAIN;p.wait=false;p.gb=YACHT;const k=PEOPLE.filter(q=>q.home==='Yacht').indexOf(p),[sx,sy]=YACHT.spots[k%4];p.p={x:YACHT.cx+sx,y:YACHT.cy+sy-4.4};}
 // Kokos-Küste: Platz in der Breite so schmal, dass er die Wege links/rechts nicht überdeckt
 const KOKX=.86;
 // nahe vor/über einer Hütte (Dach würde Sitzende überdecken)
@@ -2215,6 +2276,7 @@ function draw(){
   if(WAIT.length){const n=Math.min(WAIT.length,14);for(let k=0;k<n;k++){const t=.25+k/n*.7,x=PIER0[0]+(PIER1[0]-PIER0[0])*t+(k%2?2:-2),y=PIER0[1]+(PIER1[1]-PIER0[1])*t;c.fillStyle=ROOFS[k%ROOFS.length];c.beginPath();c.arc(x,y-2,1.6,0,TAU);c.fill();c.fillStyle='#f3c9a0';c.beginPath();c.arc(x,y-4.4,1.1,0,TAU);c.fill();}}}
  for(const b of BOATS){if(!b.seg)boatRoute(b);const sg=b.seg,A=sg.a1-sg.a0,u0=b.ph/TAU+T*Math.abs(b.sp)*(nl>.5?.4:1)/(sg.loop?TAU:2*A);let a,fw;if(sg.loop){a=sg.a0+((u0%1)+1)%1*A;fw=1;}else{const u=((u0%1)+1)%1;fw=u<.5?1:-1;a=sg.a0+(u<.5?u*2:2-u*2)*A;}if(b.sp<0&&sg.loop){a=sg.a1-(a-sg.a0);fw=-1;}
   const [x,y]=polar(MAIN,a,sg.r+Math.sin(T*.3+b.ph)*6);if(!vis(x,y))continue;sailboat(c,x,y,-Math.sin(a)*fw>=0?1:-1,b.c,b.ph);}
+ if(visR(YACHT.cx,YACHT.cy,60))drawYacht(c,nl,z);
  if(!GROWV&&visR(XM.x,XM.y,XM.r*2))xmFog(c);
  c.setTransform(1,0,0,1,0,0);
  const dim={clear:0,fair:.03,clouds:.12,fog:.06,rain:.2,snow:.08,storm:.3}[K]*(1-nl*.5);if(dim>0){c.fillStyle=`rgba(40,55,75,${dim})`;c.fillRect(0,0,cv.width,cv.height);}
@@ -2244,6 +2306,7 @@ function draw(){
     for(const [lx,ly] of[[27,-8.6],[27,9.4],[28,20.4]])glow(X(lx),Y(ly),5,'255,200,110',.7*nl);for(let k=1;k<7;k++)glow(X(11+22*k/7),Y(-22+1.5*4*(k/7)*(1-k/7)+.6),2,'255,220,160',.55*nl);glow(X(4.8),Y(-16.6),4,'255,90,140',.6*nl*(Math.sin(T*2.4)>-.6?1:.3));}
    else if(g.typ==='strandbar'){const W=(g.x1-g.x0)/2,H=(g.y1-g.y0)/2,sx=(g.sea-g.cx)*d,bx=sx-30;glow(X(bx),Y(-2),20,'255,170,90',.55*nl);for(const [lx,ly] of[[sx-42,-24],[W-4,-24],[W-4,24],[sx-42,24],[(sx-44+W)/2,-24],[(sx-44+W)/2,24]])glow(X(lx),Y(ly-7.5),7,'255,160,60',.75*nl*(.85+.15*Math.sin(T*11+lx)));
     for(let k=0;k<4;k++)glow(X(bx-11+k*7.3),Y(-6.6),4,['255,120,180','255,220,100','100,240,220','255,160,90'][k],.8*nl);for(const [lx,ly] of[[sx+11,-14.8],[sx+11,13.2],[sx+31,-2.8]])glow(X(lx),Y(ly),5,'255,200,110',.7*nl);glow(X(W-13),Y(-1),9,`${(T*80|0)%2?'255,60,160':'60,200,255'}`,.55*nl);for(let x=sx+6;x<W-2;x+=8)for(const yy of[-26.6,26.6])glow(X(x),Y(yy),2.2,'255,225,160',.55*nl);}}
+  if(visR(YACHT.cx,YACHT.cy,60))yachtGlow(glow,nl);
   // Strandvilla nachts: warme Fenster, türkis leuchtender Pool, Fackeln, Feuerschale, Wegleuchten
   for(const g of GEB)if(g.typ==='villa'&&visR(g.cx,g.cy,90)){const W=(g.x1-g.x0)/2,H=(g.y1-g.y0)/2,d=g.dir||1,sx=(g.sea-g.cx)*d,vx=-W+24,X=lx=>g.cx+lx*d,Y=ly=>g.cy+ly;
    glow(X(vx),Y(-4),26,'255,200,120',.5*nl);glow(X(vx),Y(-27),16,'255,210,140',.4*nl);glow(X((sx-6+W-4)/2),Y(-2),26,'90,230,255',.45*nl);
@@ -2369,7 +2432,7 @@ $('growbtn').onclick=()=>{if(growing||!N)return;const v=islInView();growing=true
 
 // ---------- Auswahl + Inselpass ----------
 const status=p=>AMT[p.name.toLowerCase()]||(p.wait?'Zieht ein, sobald die nächste Insel öffnet':p.mark?'War schon im Video':'Einwohner');
-const wo=p=>p.wait?'⛴️ wartet am Steg':p.isl.emoji+' '+p.isl.name+(p.hut&&!p.gb?' · Hütte '+p.hut:'')+(p.palast?' · wohnt gerade im Muschelpalast':'');
+const wo=p=>p.wait?'⛴️ wartet am Steg':p.isl.emoji+' '+p.isl.name+(p.hut&&!p.gb?' · Hütte '+p.hut:'')+(p.gb&&p.gb.typ==='yacht'?' · Yacht „Muschelperle“':'')+(p.palast?' · wohnt gerade im Muschelpalast':'');
 function select(p,doFly=true){sel=p;selT=T;selN++;limit=N;setDock(true);$('join').hidden=true;setTimeout(()=>{if(typeof sonneCheck==='function')sonneCheck();},900);
  // Name steht oben im Suchfeld – keine zusätzliche Zeile darunter
  $('pop').hidden=true;$('pname').textContent=p.name;$('q').value=p.name;$('qx').hidden=false;
