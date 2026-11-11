@@ -26,10 +26,29 @@ function job(nm) {
 async function buch(store, nm) {
   return (await liste(store, "b/" + nm + "/")).map(k => { const [, , art, id, a] = k.split("/"); return { art, id, a: Number(a) || 0 }; });
 }
+// Einmaliges Zurücksetzen (z. B. zum Testen): Beanspruchung, Kontobuch, Aufgaben und Spenden des Namens werden gelöscht.
+// Läuft je Eintrag genau einmal (Merker x/reset/<name>/<nr>); danach kann der Name neu beansprucht werden.
+const RESET = [["leamickunnnn", 1]];
+async function zuruecksetzen(store) {
+  for (const [n, nr] of RESET) {
+    const mk = "x/reset/" + n + "/" + nr;
+    if (await store.get(mk)) continue;
+    await store.set(mk, String(Date.now()));
+    for (const pre of ["c/" + n, "b/" + n + "/", "q/" + n + "/"])
+      for (const k of await liste(store, pre)) if (k === "c/" + n || pre.endsWith("/")) await store.delete(k);
+    for (const k of await liste(store, "r/")) {
+      const L = JSON.parse((await store.get(k)) || "[]");
+      if (Array.isArray(L) && L.includes(n)) await store.set(k, JSON.stringify(L.filter(x => x !== n)));
+    }
+    const kasse = getStore({ name: "inselkasse", consistency: "strong" });
+    for (const k of await liste(kasse, "s/" + n + "/")) await kasse.delete(k);
+  }
+}
 const TEXT = { login: "Login-Serie", quest: "Aufgabe", qbonus: "Alle 3 Aufgaben", shell: "Schwebende Muschel", erf: "Neuer Erfolg", story: "Story geteilt", spende: "Spende Inselkasse" };
 
 export default async (req) => {
   const store = getStore({ name: "muscheln", consistency: "strong" });
+  await zuruecksetzen(store);
   const url = new URL(req.url);
   if (req.method === "GET" && url.searchParams.get("top")) {
     // Muschel-Rangliste: Top 10 der beanspruchten Namen nach Kontostand, Pfeile im Vergleich zu gestern, optional eigener Platz
