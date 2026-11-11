@@ -85,7 +85,7 @@
    "lines": [
     {
      "id": "L2b",
-     "text": "Und so *g:einfach geht’s: / *p:Folg *p:mir – / und du ziehst in deine *y:eigene *y:Hütte!",
+     "text": "Und so *g:einfach geht’s: / *p:Folg *p:mir – / und du ziehst in deine *y:eigene *y:Hütte – / *y:mit *y:deinem *y:Namen!",
      "speed": 1.1,
      "style": "Style: a young German guy, around 20, genuinely excited, talking to his followers like friends, energetic and warm, natural German intonation, not an announcer, normal pitch.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
      "pause": 0.5
@@ -121,7 +121,7 @@
     {
      "id": "L3",
      "text": "Ihr wolltet eine *b:Dönerbude, / eine *b:Strandbar, / einen *p:Açaí-Stand|Assa-i-Stand, / eine *b:Moped-Werkstatt / und eine *y:Strandvilla – / *g:alles *g:gebaut!",
-     "speed": 1.1,
+     "speed": 0.92,
      "style": "Style: a young German guy, around 20, genuinely excited, talking to his followers like friends, energetic and warm, natural German intonation, not an announcer, normal pitch.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
      "pause": 0.3
     }
@@ -236,18 +236,13 @@
    "lines": [
     {
      "id": "L8",
-     "text": "Seit gestern sind *g:29|neunundzwanzig neue Bewohner eingezogen! / In der *y:Inselkasse sind jetzt *y:635|sechshundertfünfunddreißig Muscheln / fürs *b:Tierheim. / Und *y:Emilia und *y:Lea / wohnen jetzt in der *y:Strandvilla!",
+     "text": "In der *y:Inselkasse sind jetzt *y:635|sechshundertfünfunddreißig Muscheln / fürs *b:Tierheim. / Und *y:Emilia und *y:Lea / wohnen jetzt in der *y:Strandvilla!",
      "speed": 1.1,
      "style": "Style: a young German guy, around 20, genuinely excited, talking to his followers like friends, energetic and warm, natural German intonation, not an announcer, normal pitch.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
      "pause": 0.5
     }
    ],
    "sfx": [
-    {
-     "name": "pop",
-     "at": "L8:29",
-     "volume": 0.4
-    },
     {
      "name": "ka-ching",
      "at": "L8:635",
@@ -356,6 +351,5 @@
  "ambience": {
   "src": "assets/music/atmo.wav",
   "volume": 1
- },
- "progress": "muschel"
+ }
 }

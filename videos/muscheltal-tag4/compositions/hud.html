@@ -14,24 +14,14 @@
     .chkt.ok { color: #8affb6; border-color: #1f9a52; background: rgba(8,40,22,.6); }
     .chkt.ok b { color: #39e27a; }
   </style>
-  <div id="root" data-composition-id="hud" data-start="0" data-duration="67.340" data-width="1080" data-height="1920">
-      <div id="pg" class="clip" data-start="0" data-duration="67.340" data-track-index="3" data-layout-ignore style="position:absolute;left:0;top:1850px;width:1080px;height:70px">
-        <svg width="1080" height="70" viewBox="0 0 1080 60" style="position:absolute;left:0;top:10px;overflow:visible"><defs><clipPath id="pgc"><rect id="pgr" x="0" y="0" width="0" height="60"/></clipPath></defs>
-          <path d="M0 30 Q20 26 40 30 Q60 34 80 30 Q100 26 120 30 Q140 34 160 30 Q180 26 200 30 Q220 34 240 30 Q260 26 280 30 Q300 34 320 30 Q340 26 360 30 Q380 34 400 30 Q420 26 440 30 Q460 34 480 30 Q500 26 520 30 Q540 34 560 30 Q580 26 600 30 Q620 34 640 30 Q660 26 680 30 Q700 34 720 30 Q740 26 760 30 Q780 34 800 30 Q820 26 840 30 Q860 34 880 30 Q900 26 920 30 Q940 34 960 30 Q980 26 1000 30 Q1020 34 1040 30 Q1060 26 1080 30" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="3" stroke-linecap="round"/>
-          <path d="M0 30 Q20 26 40 30 Q60 34 80 30 Q100 26 120 30 Q140 34 160 30 Q180 26 200 30 Q220 34 240 30 Q260 26 280 30 Q300 34 320 30 Q340 26 360 30 Q380 34 400 30 Q420 26 440 30 Q460 34 480 30 Q500 26 520 30 Q540 34 560 30 Q580 26 600 30 Q620 34 640 30 Q660 26 680 30 Q700 34 720 30 Q740 26 760 30 Q780 34 800 30 Q820 26 840 30 Q860 34 880 30 Q900 26 920 30 Q940 34 960 30 Q980 26 1000 30 Q1020 34 1040 30 Q1060 26 1080 30" fill="none" stroke="rgba(110,220,255,.85)" stroke-width="4" stroke-linecap="round" clip-path="url(#pgc)"/></svg>
-        <div id="pgs" style="position:absolute;left:-30px;top:-2px;width:60px;height:46px">
-          <svg viewBox="0 0 60 46" width="60" height="46"><defs><radialGradient id="pgsh" cx=".5" cy=".95" r=".95"><stop offset="0" stop-color="#fffaf2"/><stop offset=".55" stop-color="#ffd2c0"/><stop offset="1" stop-color="#ef7aa0"/></radialGradient></defs>
-          <path d="M6 40 Q18 31 30 38 Q42 31 54 40" fill="none" stroke="rgba(255,255,255,.85)" stroke-width="2.5" stroke-linecap="round"/>
-          <g transform="translate(30 22)"><path d="M0 13 L-15.5 8.8 Q-18 3.6 -13 2.6 Q-13.6 -3 -8.6 -2 Q-7.6 -7.6 -3 -5 Q0 -9.4 3 -5 Q7.6 -7.6 8.6 -2 Q13.6 -3 13 2.6 Q18 3.6 15.5 8.8 Z" fill="url(#pgsh)" stroke="#5a2a32" stroke-width="1.1" stroke-linejoin="round"/>
-          <path d="M0 12 L-12.6 3.4 M0 12 L-8 -1.2 M0 12 L-2.8 -3.4 M0 12 L2.8 -3.4 M0 12 L8 -1.2 M0 12 L12.6 3.4" stroke="#c94a74" stroke-width=".9" stroke-linecap="round" opacity=".8"/>
-          <path d="M-4.5 13.4 L-2.6 10.4 H2.6 L4.5 13.4 Z" fill="#ffcdb5" stroke="#5a2a32" stroke-width=".9" stroke-linejoin="round"/><path d="M-9 -0.5 Q-6 -3 -3 -2.4" stroke="#fff" stroke-width="1.2" fill="none" stroke-linecap="round" opacity=".9"/></g></svg></div>
-      </div>
+  <div id="root" data-composition-id="hud" data-start="0" data-duration="66.050" data-width="1080" data-height="1920">
+
 
   </div>
   <script>
     const tl = gsap.timeline({ paused: true });
     
-tl.fromTo("#pgr", { attr: { width: 0 } }, { attr: { width: 1080 }, duration: 67.340, ease: "none" }, 0);    tl.fromTo("#pgs", { x: 0 }, { x: 1080, duration: 67.340, ease: "none" }, 0);    tl.fromTo("#pgs", { y: 0, rotation: -6 }, { y: -3, rotation: 6, duration: 0.6, yoyo: true, repeat: 112, ease: "sine.inOut" }, 0);
+
     window.__timelines["hud"] = tl;
   </script>
 </template>
