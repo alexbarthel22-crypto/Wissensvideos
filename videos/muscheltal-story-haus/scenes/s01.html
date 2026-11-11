@@ -1,0 +1,47 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+@font-face { font-family: "Lilita One"; src: url("assets/fonts/LilitaOne-Regular.woff2") format("woff2"); font-weight: 400; }
+    .pl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 28px 12px; border-radius: 999px; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); white-space: nowrap; }
+    #s01-h { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 280px; padding: 6px 36px 14px; border-radius: 30px; background: #e8467c; color: #fff; font-family: "Lilita One", sans-serif; font-size: 72px; line-height: 1; white-space: nowrap; box-shadow: 0 0 0 7px #2a1b12, 0 12px 0 rgba(0,0,0,.3); transform: rotate(-2deg); }
+    #s01-cm { position: absolute; left: 90px; right: 210px; top: 420px; padding: 20px 24px 24px; border-radius: 28px; background: #1f1f1f; box-shadow: 0 0 0 5px #000, 0 12px 24px rgba(0,0,0,.45); font-family: "Inter", sans-serif; color: #fff; display: flex; gap: 18px; }
+    #s01-cm .av { width: 70px; height: 70px; border-radius: 50%; flex: none; background: linear-gradient(135deg, #ffd23f, #e8467c); display: grid; place-items: center; font-size: 38px; }
+    #s01-cm .nm { font-size: 24px; color: #a8a8a8; font-weight: 600; } #s01-cm .tx { font-size: 36px; font-weight: 600; margin-top: 4px; min-height: 46px; }
+    #s01-cm .cu { display: inline-block; width: 4px; height: 36px; background: #fe2c55; vertical-align: -6px; margin-left: 3px; }
+    #s01-v { top: 600px; font-size: 38px; background: #7b3fe0; }
+    #s01-n { position: absolute; left: 90px; right: 210px; top: 420px; padding: 18px 24px 22px; border-radius: 28px; background: #fff; box-shadow: 0 0 0 6px #2a1b12, 0 12px 0 rgba(0,0,0,.28); font-family: "Inter", sans-serif; font-weight: 900; font-size: 40px; color: #2a1b12; text-align: center; }
+    #s01-n span { display: inline-block; margin: 10px 6px 0; padding: 4px 18px 8px; border-radius: 999px; background: #e8f3ff; color: #0a78c2; font-size: 36px; }
+  </style>
+  <div id="root" data-composition-id="s01" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s01-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s01-h">🏠 Wo ist dein Haus?</div>
+      <div id="s01-cm"><div class="av">🐚</div><div><div class="nm">Du</div><div class="tx"><span id="s01-ty"></span><span class="cu" id="s01-cu"></span></div></div></div>
+      <div id="s01-v" class="pl">💬 Unter meinem neuen Video von heute</div>
+      <div id="s01-n">👯 Gleich Nachbarn markieren<br><span>@beste_freundin</span><span>@bester_freund</span></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      /*__COMMON_JS__*/
+      wrapBt("#s01-stage");
+      const tl = gsap.timeline({ paused: true });
+      const ha = at("L1", "Haus"), ko = at("L1", "Kommentiere"), ze = at("L1", "zeige"), l2 = line("L2")[0], ma = at("L2", "Markiere");
+      tl.set("#s01-h", { opacity: 1 }, 0);
+      tl.fromTo("#s01-h", { scale: 2.2 }, { scale: 1, duration: .3, ease: "back.out(2.2)" }, 0);
+      tl.to("#s01-h", { scale: 1.08, duration: .15, yoyo: true, repeat: 1 }, ha);
+      tl.fromTo("#s01-cm", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, ko - .3);
+      const TXT = "Wo ist mein Haus? 🏠", ty = document.getElementById("s01-ty"), o = { n: 0 };
+      tl.to(o, { n: Array.from(TXT).length, duration: .9, ease: "none", onUpdate: () => { ty.textContent = Array.from(TXT).slice(0, Math.round(o.n)).join(""); } }, ko);
+      tl.to("#s01-cu", { opacity: 0, duration: .25, yoyo: true, repeat: 7, ease: "steps(1)" }, ko);
+      tl.fromTo("#s01-v", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, ko + .3);
+      tl.to(["#s01-cm", "#s01-v"], { opacity: 0, y: -30, duration: .25 }, l2 - .25);
+      tl.fromTo("#s01-n", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.4)" }, l2 - .1);
+      tl.fromTo("#s01-n span", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: .25, stagger: .15 }, ma);
+      tl.to("#s01-n span", { scale: 1.1, duration: .2, yoyo: true, repeat: 5, ease: "sine.inOut", stagger: .1 }, ma + .4);
+      
+      window.__timelines["s01"] = tl;
+    })();
+  </script>
+</template>

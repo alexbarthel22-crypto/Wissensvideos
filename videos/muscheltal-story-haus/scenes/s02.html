@@ -1,0 +1,35 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+.pl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 28px 12px; border-radius: 999px; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); white-space: nowrap; }
+    #s02-t { top: 290px; font-size: 48px; background: #ff6a1a; }
+    .s02-c { position: absolute; left: 90px; width: 900px; height: 140px; border-radius: 30px; background: #fff; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.3);
+      display: flex; align-items: center; gap: 20px; padding: 0 28px; font-family: "Inter", sans-serif; color: #23285a; }
+    .s02-c .e { font-size: 72px; } .s02-c .m { flex: 1; } .s02-c b { font-size: 40px; font-weight: 900; display: block; line-height: 1.1; }
+    .s02-c small { display: block; font-size: 28px; font-weight: 800; color: #6b6f8a; margin-top: 2px; }
+    .s02-c .bar { height: 20px; border-radius: 10px; background: #e3e6f0; margin-top: 8px; overflow: hidden; } .s02-c .bar i { display: block; height: 100%; width: 0; background: #ff6a1a; border-radius: 10px; }
+    .s02-c .z { font-size: 40px; font-weight: 900; color: #ff6a1a; text-align: center; line-height: 1; } .s02-c .z span { font-size: 26px; color: #6b6f8a; }
+  </style>
+  <div id="root" data-composition-id="s02" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s02-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s02-t" class="pl">🏗️ JETZT WIRD GEBAUT</div>
+      <div class="s02-c" id="s02-c0" style="top:400px"><div class="e">🏨</div><div class="m"><b>Hotel Sandkorn</b><small>Fertig bei 800 Bewohnern</small><div class="bar"><i id="s02-b0"></i></div></div><div class="z">653<br><span>/ 800</span></div></div><div class="s02-c" id="s02-c1" style="top:560px"><div class="e">⚓</div><div class="m"><b>Boots-Anlegestelle</b><small>Fertig bei 900 Bewohnern</small><div class="bar"><i id="s02-b1"></i></div></div><div class="z">653<br><span>/ 900</span></div></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      /*__COMMON_JS__*/
+      wrapBt("#s02-stage");
+      const tl = gsap.timeline({ paused: true });
+      const ws = [at("L2", "Hotel"), at("L2", "Anlegestelle")], pc = [0.816, 0.726];
+      tl.fromTo("#s02-t", { opacity: 0, y: -50 }, { opacity: 1, y: 0, duration: .35, ease: "back.out(2)" }, .05);
+      ws.forEach((w, i) => { tl.fromTo("#s02-c" + i, { opacity: 0, x: i ? 120 : -120 }, { opacity: 1, x: 0, duration: .3, ease: "back.out(2)" }, w - .2);
+        tl.fromTo("#s02-b" + i, { width: "0%" }, { width: (pc[i] * 100).toFixed(1) + "%", duration: .8, ease: "power2.out" }, w + .1); });
+      tl.to("#s02-c1", { scale: 1.06, duration: .25, yoyo: true, repeat: 3, ease: "sine.inOut" }, at("L2", "900"));
+      tl.to("#s02-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
+      window.__timelines["s02"] = tl;
+    })();
+  </script>
+</template>
