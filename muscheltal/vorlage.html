@@ -929,7 +929,7 @@ function palLion(c,x,y,s,gold,ink){const TW=Math.PI*2;c.fillStyle='rgba(40,30,10
 const cv=$('map'),ctx=cv.getContext('2d'),base=document.createElement('canvas'),bx=base.getContext('2d'),fgc=document.createElement('canvas'),fx=fgc.getContext('2d');let fgOn=false;
 let W=0,H=0,DPR=1,T=0,baseKey='',selT=0,selN=0,selStop=null,selStopN=-1;
 // Nachbarpaare (beide eingezogen)
-let NBP_=null;const NBW_Y=3.2;var NBW_COL='#e8467c';const NBPget=()=>NBP_||(NBP_=(I.nachbarn||[]).map(pr=>pr.map(n=>byName.get('@'+String(n).toLowerCase().replace(/^@/,'')))).filter(([a,b])=>a&&b&&a.p&&b.p&&!a.gb&&!b.gb));
+let NBP_=null;const NBW_Y=3.2;var NBW_COL='#e8433c';const NBPget=()=>NBP_||(NBP_=(I.nachbarn||[]).map(pr=>pr.map(n=>byName.get('@'+String(n).toLowerCase().replace(/^@/,'')))).filter(([a,b])=>a&&b&&a.p&&b.p&&!a.gb&&!b.gb));
 const cam={x:0,y:0,z:1},NAMES=[],TAPS=[],TEAMN=new Map();
 // Team-Schilder: alle Mitarbeiter eines Ladens einheitlich als kleine Schilder in Ladenfarbe, mittig auf dem Weg direkt unter dem Gelände
 function teamLbl(g,p,col){}
