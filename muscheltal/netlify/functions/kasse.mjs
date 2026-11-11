@@ -1,4 +1,4 @@
-// Inselkasse: +50 Muscheln, wenn jemand seinen Muschelpass in der Story teilt (pro TikTok-Name alle 7 Tage), dazu Spenden aus den Muschel-Konten ("s/<name>/<kennung>/<betrag>").
+// Inselkasse: früher +50 Muscheln je Story-Teilen (seit 12.11. eingestellt – bisherige Buchungen zählen weiter), dazu Spenden aus den Muschel-Konten ("s/<name>/<kennung>/<betrag>").
 // Sicher gegen Verluste und Doppelbuchungen: Jede Buchung ist ein eigener, unveränderlicher Eintrag im Kontobuch
 // ("b/<name>/<zeit>-<zufall>"); es wird kein Zähler überschrieben. Der Kassenstand ist die Summe aller gültigen Einträge.
 // Gültig ist pro Name höchstens eine Buchung je 7 Tage (bei gleichzeitigen Anfragen gewinnt die früheste, die andere wird verworfen).
@@ -47,6 +47,8 @@ export default async (req) => {
     return json({ bonus });
   }
   if (req.method !== "POST") return json({ fehler: "Methode" }, 405);
+  // Story-Bonus für die Inselkasse ist eingestellt (12.11.): keine neuen Buchungen mehr
+  return json({ ok: false, eingestellt: true, bonus: await summe() });
   let name = "";
   try { name = String((await req.json()).name || "").trim().toLowerCase(); } catch (e) {}
   if (!NAME.test(name)) return json({ fehler: "Name" }, 400);

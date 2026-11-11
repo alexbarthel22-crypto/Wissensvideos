@@ -429,8 +429,8 @@ section{background:#fff;border:3px solid var(--ink);border-radius:20px;padding:1
 .ort{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;font-size:22px;font-weight:900;color:var(--ink);text-decoration:none;margin-bottom:10px}
 .ort small{font-size:14px;color:#0a8fd0}
 .pl{display:grid;gap:8px}
-.p{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--sand);border:2px solid #f0e2c8;border-radius:12px;padding:8px 12px;color:var(--ink);text-decoration:none}
-.p b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.p{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:4px 10px;background:var(--sand);border:2px solid #f0e2c8;border-radius:12px;padding:8px 12px;color:var(--ink);text-decoration:none}
+.p b{flex:1 1 auto;min-width:0;overflow-wrap:anywhere}
 .p span{flex:none;font-size:14px;font-weight:900;color:#fff;background:var(--ink);border-radius:999px;padding:2px 10px}
 .p.chef span{background:var(--hib)}
 </style>

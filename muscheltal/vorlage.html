@@ -79,6 +79,15 @@ section>h2{font-size:28px;margin-bottom:14px}
 .chip.mpb{background:var(--lagoon);color:#fff}
 .mp{position:fixed;inset:0;z-index:60;background:rgba(8,40,60,.55);display:grid;place-items:center;padding:16px}
 .mp[hidden]{display:none}
+#s-pass>h2,#ppass{display:none}
+#pg{z-index:70}
+.mb3 a{padding:0 6px;gap:4px}
+.mkglow{position:relative;display:inline-flex;align-items:center;gap:3px;margin-left:8px;padding:3px 10px;border-radius:99px;background:linear-gradient(90deg,#ffd23f,#ffb02e,#ffd23f);background-size:200% 100%;color:#2a1b12;font-size:12.5px;font-weight:900;text-decoration:none;vertical-align:middle;white-space:nowrap;border:2px solid #2a1b12;animation:mkgl 1.6s ease-in-out infinite,mksh 2.4s linear infinite}
+.mkglow:after,.mkcard.glow:after{content:'✨';position:absolute;right:-8px;top:-10px;font-size:13px;animation:mktw 1.2s ease-in-out infinite}
+@keyframes mkgl{0%,100%{box-shadow:0 0 0 0 rgba(255,210,63,.0)}50%{box-shadow:0 0 12px 4px rgba(255,200,40,.85)}}@keyframes mksh{to{background-position:-200% 0}}@keyframes mktw{0%,100%{opacity:.2;transform:scale(.7) rotate(0)}50%{opacity:1;transform:scale(1.15) rotate(20deg)}}
+.mkcard{position:relative}.mkcard.glow{animation:mkgl 1.6s ease-in-out infinite;background:linear-gradient(90deg,#fff,#fff6d6,#fff);}.mkcard.glow small{color:#c47a00}
+.mkcard .mkct b:only-child{font-size:18px}
+@media(prefers-reduced-motion:reduce){.mkglow,.mkcard.glow,.mkglow:after,.mkcard.glow:after{animation:none}}
 .mpc{position:relative;width:100%;max-width:420px;max-height:92vh;overflow:auto;background:var(--sand);border:3px solid var(--ink);border-radius:24px;box-shadow:6px 6px 0 var(--ink);padding:18px}
 .mpc h2{margin:0 0 10px;font-size:24px}
 .mpx{position:absolute;right:10px;top:8px;border:0;background:none;font-size:30px;font-weight:900;line-height:1;cursor:pointer}
@@ -115,7 +124,8 @@ section>h2{font-size:28px;margin-bottom:14px}
 .mpwinl .ach .lupei svg{width:18px;height:18px}
 .mpwinl .ach b{font-size:14px}
 .mpsh .bon{display:block;margin-top:6px;background:#fff;border:2px dashed #e0a93a;border-radius:10px;padding:4px 8px;font-size:13px;font-weight:900;color:#7a4a00}
-.mpsh .bon.done{border-color:#c9b79a;color:var(--soft)}
+.mpsh .bon[hidden]{display:none}
+.bon.done{border-color:#c9b79a;color:var(--soft)}
 .pgx{text-align:center}
 .pgx .elc{margin:0 0 10px;color:var(--soft)}
 .ell{display:grid;gap:8px;margin:0 0 14px;text-align:left}
@@ -311,7 +321,7 @@ footer a{color:var(--soft)}
 .qchip{position:absolute;right:12px;top:64px;z-index:20;border:3px solid #2a1b12;border-radius:14px;background:#ffd23f;font:900 13px inherit;font-family:inherit;padding:5px 10px;box-shadow:0 4px 0 #2a1b12;cursor:pointer}.qchip .n{background:#2a1b12;color:#ffd23f;border-radius:99px;padding:1px 7px;margin-left:5px;font-size:12px}.qchip .n2{display:block;font-size:11px;margin-top:2px;text-align:right}
 .qsheet{position:absolute;left:0;right:0;bottom:0;z-index:25;background:#fff8ea;border-top:3px solid #2a1b12;border-radius:24px 24px 0 0;padding:8px 16px 22px;box-shadow:0 -6px 20px rgba(0,0,0,.25);max-height:80%;overflow:auto}.qsheet .grip{width:44px;height:5px;border-radius:9px;background:#d8c8a8;margin:0 auto 8px}.qsheet h3{margin:0;font-size:20px}.mksub{font-size:12.5px;color:#6a5a40;font-weight:700;margin:2px 0 6px}
 .mkx{position:absolute;right:14px;top:14px;width:32px;height:32px;border:3px solid #2a1b12;border-radius:50%;background:#ffd9c0;font-weight:900;font-size:18px;line-height:1;padding:0;cursor:pointer}
-.qi{display:flex;align-items:center;gap:9px;padding:8px 0;border-bottom:2px dashed #eadcc0;font-weight:800;font-size:13.5px}.qi:last-of-type{border:0}.qi .tx{flex:1;min-width:0}.qi .t1{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.25}.qi .t1 i{font-style:normal;color:#8a6a40;font-weight:700}.qi .ic{font-size:24px;width:30px;text-align:center}.qi small{display:block;font-size:11.5px;color:#8a6a40;font-weight:700;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.qi b{white-space:nowrap;flex:none}.qi.ok .tx{color:#8a7a60}.qi.ok b,.qi.ok small{color:#059669}.qi .ck{width:16px;height:16px}
+.qi{display:flex;align-items:center;gap:9px;padding:8px 0;border-bottom:2px dashed #eadcc0;font-weight:800;font-size:13.5px}.qi:last-of-type{border:0}.qi .tx{flex:1;min-width:0}.qi .t1{display:block;line-height:1.25;overflow-wrap:anywhere}.qi .t1 i{font-style:normal;color:#8a6a40;font-weight:700}.qi .ic{font-size:24px;width:30px;text-align:center}.qi small{display:block;font-size:11.5px;color:#8a6a40;font-weight:700;margin-top:1px;overflow-wrap:anywhere}.qi b{white-space:nowrap;flex:none}.qi.ok .tx{color:#8a7a60}.qi.ok b,.qi.ok small{color:#059669}.qi .ck{width:16px;height:16px}
 .qi .go{flex:none;border:2px solid #2a1b12;border-radius:10px;padding:3px 7px;font:800 12px inherit;font-family:inherit;background:#fff;white-space:nowrap;cursor:pointer}
 .qbar{height:12px;border-radius:99px;background:#efe3c8;border:2px solid #2a1b12;overflow:hidden;margin:10px 0 5px}.qbar i{display:block;height:100%;background:linear-gradient(90deg,#2fb3a0,#7fe0c8)}.qft{display:flex;justify-content:space-between;font-size:12.5px;font-weight:800;color:#6a5a40}
 .qact{display:flex;flex-direction:column;align-items:center;width:100%;margin:0 0 10px;padding:10px 12px;border:3px solid #2a1b12;border-radius:18px;background:#fff;box-shadow:0 4px 0 #2a1b12;font-family:inherit;animation:qpop .35s ease-out;cursor:pointer;pointer-events:auto}.qact b{font-size:16px;font-weight:900;text-align:center;line-height:1.2;color:#2a1b12}.qact span{font-size:12px;font-weight:800;color:#2a8a55;margin-top:1px}@keyframes qpop{from{transform:scale(.6);opacity:0}to{transform:scale(1);opacity:1}}
@@ -358,7 +368,7 @@ footer a{color:var(--soft)}
   <div id="mpf"><p style="margin:0 0 10px;font-weight:700">Dein Einwohnernachweis. Gib deinen TikTok-Namen ein:</p><input id="mpq" placeholder="@deinname" autocomplete="off" autocapitalize="off" spellcheck="false"><ul class="sugg" id="mps" hidden></ul><p class="miss" id="mpm" hidden></p></div>
   <div id="mpp" hidden><p class="mpwho" id="mpwho" hidden></p><div id="mpcardbox"></div>
    <button class="mpgo" id="mpgo">🏠 Zu meiner Hütte</button>
-   <button class="mpsh" id="mpshare">📲 In meiner Story teilen<small>TikTok · Instagram · WhatsApp-Status</small><span class="bon" id="mpbon">🐚 +50 Muscheln für die Inselkasse – alle 7 Tage möglich</span></button>
+   <button class="mpsh" id="mpshare">📲 In meiner Story teilen<small>TikTok · Instagram · WhatsApp-Status</small><span class="bon" id="mpbon" hidden></span></button>
    <button class="mpalt" id="mpalt">Anderen Namen suchen</button></div>
  </div></div>
  <div class="hint" id="hint">Zum Zoomen Strg + Mausrad</div>
@@ -2488,7 +2498,7 @@ function draw(){
   // Standplatz: auf dem nächsten Weg neben der Hütte (nie auf Dächern oder in Hütten)
   const SP=standSpot(sel),onRow=SP.onRow;
   const pz=z*S>8,px=SP.x,py=SP.y;let ny=y+8.4;
-  const age=REDUCED?0:T-selT,stay=2;let gone=false;
+  const age=REDUCED?0:T-selT,gtx=gruss(),stay=gtx?Math.max(2,age+.1):2;let gone=false;
   if(pz&&!sel.gb&&!PW){const L=sel.L||(sel.L=look(sel.k));
    if(age<stay){c.save();c.translate(px,py);const hg=c.createRadialGradient(0,-1,0,0,-1,8*L.h);hg.addColorStop(0,'rgba(255,255,255,.75)');hg.addColorStop(1,'rgba(255,255,255,0)');c.fillStyle=hg;c.beginPath();c.arc(0,-1,8*L.h,0,TAU);c.fill();c.fillStyle='rgba(30,40,20,.25)';c.beginPath();c.ellipse(0,4.4,2.6,.9,0,0,TAU);c.fill();person(c,L,0,true,.5+Math.abs(Math.sin(T*6))*1.2);c.restore();}
    else{// geht ganz normal zu Fuß vorwärts weiter und läuft danach frei über die Wege (wie ein Passant, antippbar)
@@ -2500,7 +2510,7 @@ function draw(){
    ny=py+5.6;}
   else if(pz&&(sel.gb||PW))ny=py+5.6;
   if(z*S>20){const fs=Math.max(2.6,9/z),nm=sel.name;c.font='900 '+fs+'px '+FONT;c.textAlign='center';const w=c.measureText(nm).width+fs*1.2,h=fs*1.55,ty=ny;c.fillStyle=MY?'#ffd23f':'#e8467c';c.strokeStyle=MY?'#2a1b12':'#fff';c.lineWidth=Math.max(.5,1.5/z);c.beginPath();c.roundRect(x-w/2,ty,w,h,h/2);c.fill();c.stroke();c.fillStyle=MY?'#2a1b12':'#fff';c.fillText(nm,x,ty+h*.72);}
-  if(pz&&(sel.gb||PW||age<stay)){const txt='Ich bin du! 👋',fs=Math.max(2.4,8/z);c.font='900 '+fs+'px '+FONT;c.textAlign='center';const w=c.measureText(txt).width+fs*1.3,h=fs*1.7,bx=px,by=py-6.3*(sel.L?sel.L.h:1)-h-fs*.8;
+  const txt=pz?gtx:null;if(txt){const fs=Math.max(2.4,8/z);c.font='900 '+fs+'px '+FONT;c.textAlign='center';const w=c.measureText(txt).width+fs*1.3,h=fs*1.7,bx=px,by=py-6.3*(sel.L?sel.L.h:1)-h-fs*.8;
    c.fillStyle='#fff';c.strokeStyle='#2a1b12';c.lineWidth=Math.max(.4,1.4/z);c.beginPath();c.roundRect(bx-w/2,by,w,h,h/2);c.fill();c.stroke();
    c.beginPath();c.moveTo(px-fs*.45,by+h-.2);c.lineTo(px,by+h+fs*.75);c.lineTo(px+fs*.45,by+h-.2);c.fill();c.stroke();c.fillRect(px-fs*.42,by+h-c.lineWidth*1.2,fs*.84,c.lineWidth*1.4);
    c.fillStyle='#2a1b12';c.fillText(txt,bx,by+h*.7);}}
@@ -2561,7 +2571,7 @@ const status=p=>AMT[p.name.toLowerCase()]||(p.wait?'Zieht ein, sobald die nächs
 const wo=p=>p.wait?'⛴️ wartet am Steg':p.isl.emoji+' '+p.isl.name+(p.hut&&!p.gb?' · Hütte '+p.hut:'')+(p.gb&&p.gb.typ==='yacht'?' · Yacht „White Pearl“':'')+(p.palast?' · wohnt gerade im Muschelpalast':'');
 function select(p,doFly=true){sel=p;selT=T;selN++;limit=N;setDock(true);$('join').hidden=true;setTimeout(()=>{if(typeof sonneCheck==='function')sonneCheck();},900);
  // Name steht oben im Suchfeld – keine zusätzliche Zeile darunter
- $('pop').hidden=true;$('pname').textContent=p.name;$('q').value=p.name;$('qx').hidden=false;
+ $('pop').hidden=true;$('pname').textContent=p.name;$('q').value=p.name;$('qx').hidden=false;qFit();
  $('s-pass').hidden=false;
  $('ppass').innerHTML=passCard(p);
  const nb=nachbarn(p);$('nbbox').hidden=!nb.length;$('cpyn').hidden=!nb.length;
@@ -2648,17 +2658,10 @@ const naechster=p=>{try{return(+localStorage.getItem(shareKey(p))||0)+WOCHE;}cat
 const datum=t=>new Date(t).toLocaleDateString('de-DE',{day:'numeric',month:'numeric'});
 // Story-Bonus-Stand der Person vom Server holen (gilt auf allen Geräten), einmal je Person und Besuch
 const BONH=new Set();function bonHol(p){const k=p.name.toLowerCase();if(BONH.has(k))return;BONH.add(k);fetch('/api/kasse?name='+encodeURIComponent(k),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(d=>{if(d&&d.naechstes>0){try{localStorage.setItem(shareKey(p),String(d.naechstes-WOCHE));}catch(e){}if(mpP===p)bonUpd(p);}}).catch(()=>{});}
-function bonUpd(p){bonHol(p);const n=naechster(p),e=$('mpbon');if(!e)return;const Z=(a,b)=>'<span class="bz">'+a+'</span><span class="bz">'+b+'</span>';if(n>Date.now()){e.className='bon done';e.innerHTML=Z('✅ Deine 50 Muscheln sind in der Inselkasse','nächster Bonus ab '+datum(n));}else{e.className='bon';e.innerHTML=Z('🐚 +50 Muscheln für die Inselkasse','alle 7 Tage möglich');}
+// Story teilen: kein Inselkasse-Bonus mehr; nur beanspruchte Namen bekommen 1× pro Woche +25 🐚 aufs eigene Konto
+function bonUpd(p){const e=$('mpbon');if(!e)return;const own=typeof mkOwn==='function'&&mkOwn(p);e.hidden=!own;if(!own)return;e.className='bon';e.innerHTML='<span class="bz">🐚 +25 Muscheln für dein Konto</span><span class="bz">1× pro Woche</span>';
  requestAnimationFrame(()=>{for(const z of e.querySelectorAll('.bz')){z.style.fontSize='';let fs=parseFloat(getComputedStyle(z).fontSize)||16;while(z.scrollWidth>z.clientWidth+1&&fs>10){fs-=.5;z.style.fontSize=fs+'px';}}});}
-async function bonus(p){if(naechster(p)>Date.now())return;
- // bis zu 3 Versuche bei Netz-/Serverfehlern – sicher, weil der Server pro Name und Woche nur eine Buchung zulässt
- try{let d=null,err=null;for(let v=0;v<3&&!d;v++){if(v)await new Promise(r=>setTimeout(r,v*1500));try{const r=await fetch('/api/kasse',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({name:p.name})});if(!r.ok)throw new Error('HTTP '+r.status);d=await r.json();}catch(e){err=e;}}if(!d)throw err;
-  if(d.naechstes)try{localStorage.setItem(shareKey(p),String(d.naechstes-WOCHE));}catch(e){}
-  if(d.bonus>=0){KASSE=d.bonus;kasseZeigen();}
-  if(d.ok&&typeof mkOwn==='function'&&mkOwn(p))mk('story').then(()=>mkStand());
-  toast(d.ok?'🎉 Danke fürs Teilen! +50 🐚 für die Inselkasse':'🐚 Bonus schon geholt – wieder ab '+datum(d.naechstes));}
- catch(e){toast('Bonus konnte gerade nicht gebucht werden – versuch es später nochmal.');}
- bonUpd(p);}
+async function bonus(p){if(typeof mkOwn!=='function'||!mkOwn(p))return;const r=await mk('story');if(r&&r.ok){toast('🎉 Danke fürs Teilen! +25 🐚 für dein Konto');mkStand();}}
 $('mpshare').onclick=async()=>{if(!mpP)return;const p=mpP,b=$('mpshare'),lab=b.innerHTML;b.textContent='⏳ Bild wird erstellt …';
  try{const blob=await new Promise(r=>passBild(p).toBlob(r,'image/png'));const file=new File([blob],'muschelpass.png',{type:'image/png'});
   const fr=mpThird,txt=fr?'Das ist der Muschelpass von '+p.name+' in Muschel-Tal! 🐚 Zieh auch ein – folg '+ACCTXT:'Ich wohne jetzt in Muschel-Tal! 🐚 Zieh auch ein – folg '+ACCTXT;
@@ -2685,7 +2688,7 @@ sg.addEventListener('click',e=>{const b=e.target.closest('button');if(b)pick(hit
 function pick(p){q.value=p.name;$('qx').hidden=false;sg.hidden=true;$('miss').hidden=true;q.blur();window.scrollTo({top:0,behavior:'smooth'});select(p);}
 $('rnd').onclick=()=>{if(N)pick(PEOPLE[Math.random()*N|0]);};
 $('mine').onclick=()=>{let p=sel;try{p=byName.get((localStorage.getItem('mt-me')||'').toLowerCase())||sel;}catch(e){}if(p)pick(p);};
-const qxUpd=()=>{$('qx').hidden=!q.value;};q.addEventListener('input',()=>{qxUpd();if(!q.value.trim()&&sel)unsel();});
+const qxUpd=()=>{$('qx').hidden=!q.value;qFit();};q.addEventListener('input',()=>{qxUpd();if(!q.value.trim()&&sel)unsel();});
 $('qx').onclick=()=>{q.value='';qxUpd();sg.hidden=true;$('miss').hidden=true;unsel();q.blur();};
 document.addEventListener('click',e=>{const b=e.target.closest('[data-n]');if(b){const p=byName.get(b.dataset.n.toLowerCase());if(p)pick(p);}if(!e.target.closest('.findbar'))sg.hidden=true;});
 
@@ -2708,7 +2711,8 @@ $('faq').innerHTML=[
  ['Ich will nicht auf der Karte stehen.','Kein Problem. Schreib '+ACC+' auf TikTok eine Nachricht, dann nehmen wir deinen Namen raus.']
 ].map(f=>'<details><summary>'+esc(f[0])+'</summary><p>🏝️ '+esc(f[1])+'</p></details>').join('');
 $('foot').innerHTML='<a href="'+ACCURL+'" target="_blank" rel="noopener">'+esc(ACC)+'</a> auf TikTok<button class="lupebtn" id="lupe" aria-label="Lupe">'+LUPE_SVG+'</button>';
-function popup(html){$('pgb').innerHTML=html;$('pg').hidden=false;}
+let PGCB=null;function popup(html,zu){$('pgb').innerHTML=html;$('pg').hidden=false;PGCB=zu||null;}
+new MutationObserver(()=>{if($('pg').hidden&&PGCB){const f=PGCB;PGCB=null;f();}}).observe($('pg'),{attributes:true,attributeFilter:['hidden']});
 $('pgx').onclick=()=>$('pg').hidden=true;$('pg').onclick=e=>{if(e.target===$('pg'))$('pg').hidden=true;};
 $('myerf').onclick=()=>{if(sel){zeigeErfolge(sel);return;}
  popup('<div class="big">🏅</div><h2>Deine Erfolge</h2><p>Folge <a href="'+ACCURL+'" target="_blank" rel="noopener">'+esc(ACC)+'</a> auf TikTok, um einzuziehen – dann such oben deinen Namen und sieh deine Erfolge.</p><a class="btn hib" href="'+ACCURL+'" target="_blank" rel="noopener">➕ '+esc(ACC)+' folgen</a>');};
@@ -2759,11 +2763,11 @@ function canWalk(x,y){if(onObs(x,y))return false;
  if(v.i===1&&Math.hypot(x-v.x,(y-v.y)/.86)<18)return false;
  const gx=Math.round((x-v.x)/S),gy=Math.round((y-v.y)/(S*.9));for(let dx=-1;dx<=1;dx++)for(let dy=-1;dy<=1;dy++){const q=v.cell.get((gx+dx)+','+(gy+dy));if(!q||q.nr>limit)continue;if(Math.abs(x-q.p.x)<7&&y>q.p.y+.5&&y<q.p.y+7.5)return false;}
  return true;}
-function walkStart(){const me=sel;if(!me)return;let erst=true;try{erst=!walkedSet().has(me.name.toLowerCase());}catch(e){}try{const w=walkedSet();w.add(me.name.toLowerCase());localStorage.setItem('mt-walked',JSON.stringify([...w]));}catch(e){}$('walkbtn').classList.remove('wackel');
+function walkStart(){const me=sel;if(!me||!darfErkunden(me))return;let erst=true;try{erst=!walkedSet().has(me.name.toLowerCase());}catch(e){}try{const w=walkedSet();w.add(me.name.toLowerCase());localStorage.setItem('mt-walked',JSON.stringify([...w]));}catch(e){}$('walkbtn').classList.remove('wackel');
  WK.me=me||null;WK.L=me?{...(me.L||(me.L=look(me.k))),bikec:'#ff3d7f',ph:0}:{...look(7),bikec:'#ff3d7f',ph:0};
  let sp=me&&me.p?standSpot(me):null;if(sp&&!me.gb&&(sp.kind==='cell'||!canWalk(sp.x,sp.y))){const v=me.isl;sp={x:me.p.x,y:v.y+Math.ceil((me.p.gy+.01)/4)*4*S*.9-2.6};}let x=sp?sp.x:0,y=sp?sp.y:36*PAL_S+10;
  if(!canWalk(x,y)){let f=null;for(let r=4;r<120&&!f;r+=4)for(let a=0;a<TAU&&!f;a+=.3){const nx=x+Math.cos(a)*r,ny=y+Math.sin(a)*r;if(canWalk(nx,ny))f=[nx,ny];}if(f){x=f[0];y=f[1];}}
- Object.assign(WK,{on:true,x,y,mode:'walk',moving:false,pt:null,sc:0});unsel();setTimeout(()=>{if(typeof sonneCheck==='function')sonneCheck();},1500);window.scrollTo({top:0,behavior:'smooth'});
+ Object.assign(WK,{on:true,x,y,mode:'walk',autoFuss:false,moving:false,pt:null,sc:0});unsel();setTimeout(()=>{if(typeof sonneCheck==='function')sonneCheck();},1500);window.scrollTo({top:0,behavior:'smooth'});
  $('hero').classList.add('walking');$('walkui').hidden=false;$('walkhint').hidden=!erst;$('walkhint').style.opacity=erst?1:0;if(erst)setTimeout(()=>{$('walkhint').style.opacity=0;},4500);$('walkmode').textContent='🛵 Moped';
  cancelAnimationFrame(fly);flyTo({x,y,z:5},700);setTimeout(()=>{WK.last=performance.now();requestAnimationFrame(walkTick);},720);}
 // wen hat man beim Erkunden angetippt? (Figur auf der Karte oder Hütte; nie sich selbst)
@@ -2779,13 +2783,13 @@ function walkTick(n){if(!WK.on)return;const dt=Math.min(.05,(n-WK.last)/1000);WK
  const l=Math.hypot(vx,vy);WK.moving=l>0;
  if(l>0){const sp=(WK.mode==='moped'?45:30)*dt;vx=vx/l*sp;vy=vy/l*sp;
   const steps=Math.ceil(Math.max(Math.abs(vx),Math.abs(vy))/2);for(let i=0;i<steps;i++){const sx=vx/steps,sy=vy/steps;if(canWalk(WK.x+sx,WK.y))WK.x+=sx;if(canWalk(WK.x,WK.y+sy))WK.y+=sy;}
-  WK.vert=Math.abs(vy)>Math.abs(vx)*1.2;WK.dir=WK.vert?(vy>0?1:-1):(vx>=0?1:-1);WK.front=WK.vert&&vy>0;}
- const tz=WK.mode==='moped'?3.6:5;cam.x+=(WK.x-cam.x)*Math.min(1,dt*6);cam.y+=(WK.y-cam.y)*Math.min(1,dt*6);cam.z+=(tz-cam.z)*Math.min(1,dt*3);
+  if(Math.abs(vx)>Math.abs(vy)*.15)WK.hdir=vx>=0?1:-1;WK.vert=Math.abs(vy)>Math.abs(vx)*1.2;WK.dir=WK.vert?(vy>0?1:-1):(vx>=0?1:-1);WK.front=WK.vert&&vy>0;}
+ walkGelaende();const tz=WK.mode==='moped'?3.6:5;cam.x+=(WK.x-cam.x)*Math.min(1,dt*6);cam.y+=(WK.y-cam.y)*Math.min(1,dt*6);cam.z+=(tz-cam.z)*Math.min(1,dt*3);
  if(WK.me&&WK.mode==='moped'&&WK.moving){WK.sc=(WK.sc||0)+dt;if(WK.sc>2&&gibErf(WK.me,'SCOOT')){const p=WK.me;popup('<div class="lupebig" style="border-radius:50%;overflow:hidden">'+SCOOT_SVG+'</div><h2>Neuer Erfolg! 🎉</h2><p><b>🛵 Inselflitzer</b><br>Du bist mit dem Moped über die Insel geflitzt.</p><button class="btn hib" id="zuerf3">🏅 Zu meinen Erfolgen</button>');$('zuerf3').onclick=()=>{walkEnd();zuMeinenErfolgen(p);};WK.keys.clear();WK.pt=null;}}
  if(REDUCED)draw();requestAnimationFrame(walkTick);}
 // die eigene Figur (ohne Schatten/Namen); occ: Hütten/Palmen davor nachzeichnen
 function walkerFig(c,occ){const L=WK.L,x=WK.x,y=WK.y;if(!WK.moving){c.save();c.translate(x,y);if(!WK.front&&WK.dir<0&&!WK.vert)c.scale(-1,1);if(WK.mode==='moped'){c.restore();drawMover(c,{...L,mode:'moped',noOcc:1},x,y,WK.vert?1:WK.dir,WK.vert,'moped');}else{person(c,L,0,true,0);c.restore();}}
- else drawMover(c,{...L,mode:WK.mode,noOcc:1},x,y,WK.dir,WK.vert,WK.mode);if(occ)hutsFront(c,x,y,nightLevel());}
+ else{const up=WK.vert&&WK.dir<0&&WK.mode!=='moped';drawMover(c,{...L,mode:WK.mode,noOcc:1},x,y,up?(WK.hdir||1):WK.dir,up?false:WK.vert,WK.mode);}if(occ)hutsFront(c,x,y,nightLevel());}
 function drawWalker(c,z){if(!WK.on)return;const L=WK.L,x=WK.x,y=WK.y;
  c.save();c.fillStyle='rgba(232,70,124,.28)';c.beginPath();c.ellipse(x,y+4.4,5,1.8,0,0,TAU);c.fill();c.restore();
  walkerFig(c,1);
@@ -2794,10 +2798,20 @@ function drawWalker(c,z){if(!WK.on)return;const L=WK.L,x=WK.x,y=WK.y;
  const vorTheke=TAPS.some(t=>t[2]&&t[2].ort&&t[2]!==WK.me&&Math.abs(t[0]-x)<13&&t[1]<y-1&&t[1]>y-18);
  NAMES.push([(WK.me?WK.me.name:'Du')+' (du)',x,vorTheke?y+8.5:y-(WK.mode==='moped'?13:12)*L.h,'#e8467c']);}
 const walkedSet=()=>{try{return new Set(JSON.parse(localStorage.getItem('mt-walked')||'[]'));}catch(e){return new Set();}};
-function walkLabel(){const b=$('walkbtn'),bar=b.parentNode;if(!sel){bar.hidden=true;return;}bar.hidden=false;b.classList.toggle('wackel',!walkedSet().has(sel.name.toLowerCase()));const t='Als '+sel.name+' Muschel-Tal erkunden';if(b.dataset.t===t)return;b.dataset.t=t;b.textContent=t;b.style.fontSize='';let fs=19;while(b.scrollWidth>b.clientWidth&&fs>12){fs-=.5;b.style.fontSize=fs+'px';}}
+// tägliche Begrüßung: nur beim ersten Anzeigen des eigenen (beanspruchten) Namens am Tag, zufällig, nie zweimal hintereinander gleich
+const GRUSS=['Du bist es wieder! 👋','Hallöchen du da! 👋','Na, Sonnenschein? ☀️','Gut siehst du aus! ✨','Na Schnecke? 🐌','Was geht? 😎','Hab dich vermisst! 💛'];
+function gruss(){try{if(!mkOwn(sel))return null;let G={};try{G=JSON.parse(localStorage.getItem('mt-gruss')||'{}')||{};}catch(e){}const h=mkTag();
+ if(G.d!==h){const L=GRUSS.filter(x=>x!==G.t);G={d:h,t:L[Math.floor(Math.random()*L.length)],bis:Date.now()+6500};try{localStorage.setItem('mt-gruss',JSON.stringify(G));}catch(e){}}
+ return Date.now()<(G.bis||0)?G.t:null;}catch(e){return null;}}
+// Erkunden als jemand: mit eigenem beanspruchten Namen nur als man selbst; fremde beanspruchte Namen nie
+function darfErkunden(p){if(!p)return false;try{if(mkClaim())return mkOwn(p);const n=p.name.toLowerCase();if(!MK.bea.has(n)){mkBea(n).then(()=>{if(!MK.bea.has(n))MK.bea.set(n,false);if(sel===p)walkLabel();});return false;}return !MK.bea.get(n);}catch(e){return true;}}
+function walkLabel(){const b=$('walkbtn'),bar=b.parentNode;if(!sel||!darfErkunden(sel)){bar.hidden=true;return;}bar.hidden=false;b.classList.toggle('wackel',!walkedSet().has(sel.name.toLowerCase()));const t='Als '+sel.name+' Muschel-Tal erkunden';if(b.dataset.t===t)return;b.dataset.t=t;b.textContent=t;b.style.fontSize='';let fs=19;while(b.scrollWidth>b.clientWidth&&fs>12){fs-=.5;b.style.fontSize=fs+'px';}}
 walkLabel();setInterval(walkLabel,800);
 $('walkbtn').onclick=walkStart;$('walkend').onclick=walkEnd;
-$('walkmode').onclick=()=>{WK.mode=WK.mode==='walk'?'moped':'walk';$('walkmode').textContent=WK.mode==='walk'?'🛵 Moped':'🚶 Zu Fuß';};
+// Auf Laden-/Gebäude-Geländen (außer Werkstatt) automatisch zu Fuß; beim Verlassen wieder aufs Moped, wenn man mit dem Moped kam
+const aufGelaende=(x,y)=>GEB.some(g=>g.typ!=='werkstatt'&&x>g.x0&&x<g.x1&&y>g.y0&&y<g.y1);
+function walkGelaende(){const inG=aufGelaende(WK.x,WK.y+4);if(inG&&WK.mode==='moped'){WK.mode='walk';WK.autoFuss=true;mkToast('🚶 Auf dem Gelände geht’s zu Fuß weiter');}else if(!inG&&WK.autoFuss){WK.mode='moped';WK.autoFuss=false;}else return;$('walkmode').textContent=WK.mode==='walk'?'🛵 Moped':'🚶 Zu Fuß';}
+$('walkmode').onclick=()=>{WK.autoFuss=false;WK.mode=WK.mode==='walk'?'moped':'walk';$('walkmode').textContent=WK.mode==='walk'?'🛵 Moped':'🚶 Zu Fuß';};
 addEventListener('keydown',e=>{if(!WK.on)return;const k=e.key.length===1?e.key.toLowerCase():e.key;if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','w','a','s','d'].includes(k)){WK.keys.add(k);e.preventDefault();}if(k==='Escape')walkEnd();});
 addEventListener('keyup',e=>{const k=e.key.length===1?e.key.toLowerCase():e.key;WK.keys.delete(k);});
 {const hero=$('hero'),pos=e=>{const r=cv.getBoundingClientRect();return[e.clientX-r.left,e.clientY-r.top];},onMap=e=>e.target===cv;
@@ -2836,7 +2850,7 @@ function mkToast(t){let e=$('mktoast');if(!e){e=document.createElement('div');e.
 async function mkPass(p,third,walk){const dd=$('mpverm');if(!dd)return;const own=!third&&!walk&&mkOwn(p),c=mkClaim();
  document.querySelectorAll('#mp .clm,#mp .gone').forEach(e=>e.remove());
  if(own){dd.innerHTML='<span class="lockv">⏳</span>';const d=MK.d||await mkStand();if(mpP!==p)return;const ab=d&&d.serie&&!d.serie.abgeholt;
-  dd.innerHTML=(d?fmt(d.stand)+'&nbsp;🐚':'–')+(ab?'<span class="mkdot">heute '+(d.serie.betrag+((mkJob(p)||{}).z||0))+'&nbsp;🐚</span>':'')+'<div class="mb3"><a href="#" data-mk="konto" class="p"><span>🐚</span>Konto</a><a href="#" data-mk="shop"><span>🛍️</span>Shop</a><a href="#" data-mk="spenden"><span>💛</span>Spenden</a></div>';}
+  dd.innerHTML=(d?fmt(d.stand)+'&nbsp;🐚':'–')+(ab?'<a href="#" data-mk="login" class="mkglow">'+(d.serie.betrag+((mkJob(p)||{}).z||0))+'&nbsp;🐚 abholbar</a>':'')+'<div class="mb3"><a href="#" data-mk="konto" class="p"><span>🐚</span>Konto</a><a href="#" data-mk="shop"><span>🛍️</span>Shop</a><a href="#" data-mk="spenden"><span>💛</span>Spenden</a></div>';}
  else dd.innerHTML='<span class="lockv">🔒 Nur '+esc(p.name)+' sieht den Kontostand</span>';
  const bea=await mkBea(p.name);if(mpP!==p)return;
  if(bea){const nm=document.querySelector('#mpcardbox .nm');if(nm&&!nm.querySelector('.claimed'))nm.insertAdjacentHTML('beforeend','<span class="claimed">🔐 Username beansprucht</span>');}
@@ -2851,8 +2865,8 @@ function mkClaimFrag(p){popup('<div class="cf"><div class="big">🔐</div><h2>Bi
   if(!d.ok){MK.bea.set(p.name.toLowerCase(),true);popup('<div class="big">🔐</div><h2>Schon beansprucht</h2><p>Jemand hat diesen Usernamen schon beansprucht. Ist das dein Name? Schreib uns auf TikTok <a href="'+ACCURL+'" target="_blank" rel="noopener">@muscheltal</a>.</p>');return;}
   try{localStorage.setItem('mt-claim',JSON.stringify({n:p.name.toLowerCase(),t:d.token}));localStorage.setItem('mt-me',p.name);}catch(e){}MK.bea.set(p.name.toLowerCase(),true);MK.d=null;
   const conf=Array.from({length:26},(_,i)=>'<i style="left:'+((i*37)%100)+'%;top:'+((i*53)%70)+'%;background:'+['#ffd23f','#e8467c','#fff','#7fe0c8','#ff8a2a'][i%5]+';transform:rotate('+(i*29)+'deg)"></i>').join('');
-  popup('<div class="okc"><div class="okh"><div class="conf">'+conf+'</div><div class="okav"><img src="'+avatarURL(p)+'" alt=""><span class="okbadge">✓</span></div></div><div class="okrib">✓ BEANSPRUCHT</div><h2 class="okn">'+esc(p.name)+'</h2><p class="okt">gehört jetzt dir 🐚</p><div class="okl"><div>🐚 Nur du siehst deinen Kontostand</div><div>🛍️ Muschel-Shop &amp; 💛 Spenden freigeschaltet</div><div>🔐 Im Profil steht „Username beansprucht“</div></div><p class="cft">Neues Handy? Schreib <a href="'+ACCURL+'" target="_blank" rel="noopener">@muscheltal</a> auf TikTok – wir ziehen deinen Namen um.</p></div>');
-  await mkStand();if(!$('mp').hidden&&mpP===p)zeigePass(p,mpThird);mkLoginCheck(true);};}
+  popup('<div class="okc"><div class="okh"><div class="conf">'+conf+'</div><div class="okav"><img src="'+avatarURL(p)+'" alt=""><span class="okbadge">✓</span></div></div><div class="okrib">✓ BEANSPRUCHT</div><h2 class="okn">'+esc(p.name)+'</h2><p class="okt">gehört jetzt dir 🐚</p><div class="okl"><div>🐚 Nur du siehst deinen Kontostand</div><div>🛍️ Muschel-Shop &amp; 💛 Spenden freigeschaltet</div><div>🔐 Im Profil steht „Username beansprucht“</div></div><button class="cbtn hot" type="button" data-mk="weiter" style="margin-top:10px">Super, weiter 🐚</button><p class="cft">Neues Handy? Schreib <a href="'+ACCURL+'" target="_blank" rel="noopener">@muscheltal</a> auf TikTok – wir ziehen deinen Namen um.</p></div>',()=>setTimeout(()=>mkLoginCheck(true),700));
+  await mkStand();if(!$('mp').hidden&&mpP===p)zeigePass(p,mpThird);};}
 
 // Muschel-Funktionen nur mit beanspruchtem Namen: Hinweis + direkter Weg zum Beanspruchen (Name aus der Suchleiste)
 function mkWer(){let p=byName.get(($('q').value||'').trim().toLowerCase().replace(/^@?/,'@'))||sel;if(!p)try{p=byName.get((localStorage.getItem('mt-me')||'').toLowerCase());}catch(e){}return p&&p.name?p:null;}
@@ -2864,8 +2878,8 @@ async function mkSperre(){if(mkClaim())return false;const p=mkWer();mkZu();rangZ
 // ---------- Startseite: Karte „Deine Muscheln“ unter dem Erkunden-Knopf ----------
 function mkCard(){let e=$('mkcard');const me=mkMe();if(!me||!MK.d){if(e)e.hidden=true;return;}
  if(!e){e=document.createElement('a');e.id='mkcard';e.href='#';e.className='mkcard';document.querySelector('.walkbar').after(e);e.onclick=ev=>{ev.preventDefault();mkSeite();};}
- const d=MK.d,offen=MK.quests?MK.quests.length-(d.questsDone||[]).length:null,heute=d.serie&&!d.serie.abgeholt?'Heute '+(d.serie.betrag+((mkJob(me)||{}).z||0))+'&nbsp;🐚 abholbar':'Heute abgeholt ✓';
- e.hidden=false;e.innerHTML='<span class="mkci">🐚</span><span class="mkct"><b>Deine Muscheln: '+fmt(d.stand)+'&nbsp;🐚</b><small>'+heute+(offen?' · '+offen+' Aufgabe'+(offen>1?'n':'')+' offen':'')+'</small></span><b class="mkcg">→</b>';}
+ const d=MK.d,offen=MK.quests?MK.quests.length-(d.questsDone||[]).length:null,ab=d.serie&&!d.serie.abgeholt;
+ e.hidden=false;e.classList.toggle('glow',!!ab);e.innerHTML='<span class="mkci">🐚</span><span class="mkct"><b>Deine Muscheln: '+fmt(d.stand)+'&nbsp;🐚</b>'+(ab?'<small>✨ '+(d.serie.betrag+((mkJob(me)||{}).z||0))+'&nbsp;🐚 abholbar</small>':'')+'</span><b class="mkcg">→</b>';}
 
 // ---------- Seite „Meine Muscheln“ ----------
 async function mkSeite(){const me=mkMe();if(!me)return;let e=$('mkpage');if(!e){e=document.createElement('div');e.id='mkpage';e.className='mkpage';document.body.appendChild(e);}
@@ -2876,9 +2890,9 @@ async function mkSeite(){const me=mkMe();if(!me)return;let e=$('mkpage');if(!e){
  e.innerHTML='<a class="mkback" href="#" id="mkback">← Zur Karte</a><h1>🐚 Meine Muscheln</h1><div class="mktag">Deine kleine Schatztruhe in Muschel-Tal</div>'
   +'<div class="mkbox mkhero"><div class="who">'+esc(me.name)+'</div><div class="bal">'+fmt(d.stand)+'&nbsp;🐚</div><div class="mb3"><a href="#" data-mk="shop"><span>🛍️</span>Muschel-Shop</a><a href="#" data-mk="spenden"><span>💛</span>Spenden</a><a href="#" data-mk="auszug"><span>📜</span>Verlauf</a></div></div>'
   +'<div class="mkbox"><h3>🔥 Deine Serie · Tag '+s.tag+'</h3><div class="ser">'+cells+'</div>'+(s.abgeholt?'<div class="mkdone">✓ Heute abgeholt – morgen gibt’s '+SERIE[s.tag%7]+'&nbsp;🐚</div>':'<button class="btnw wob" type="button" data-mk="login"><span>🐚</span>'+heute+' Muscheln abholen</button>')+'</div>'
-  +'<div class="mkbox"><h3>📋 Aufgaben heute</h3>'+(Q.length?Q.map((id,i)=>{const q=mkQDef(id);return'<div class="q"><span>'+q.ic+'</span><span>'+q.t+'</span><b class="'+(qd.includes(i)?'ok':'')+'">'+(qd.includes(i)?MKCK:'')+'+5&nbsp;🐚</b></div>';}).join('')+'<div class="q" style="color:#8a6a40">🎁 Alle 3 geschafft<b>+5&nbsp;🐚</b></div>':'<p class="mkp">Starte das Erkunden, dann bekommst du deine Aufgaben.</p>')+'<button class="btnw" type="button" data-mk="erkunden" style="background:#2fb3a0;color:#fff"><span>🧭</span>Jetzt erkunden</button></div>'
+  +'<div class="mkbox"><h3>📋 Aufgaben heute</h3>'+(Q.length?Q.map((id,i)=>{const q=mkQDef(id);return'<div class="q"><span>'+q.ic+'</span><span>'+q.t+'</span><b class="'+(qd.includes(i)?'ok':'')+'">'+(qd.includes(i)?MKCK:'')+'+5&nbsp;🐚</b></div>';}).join('')+'<div class="q" style="color:#8a6a40">🎁 Alle 3 geschafft<b class="'+(qd.length>=3?'ok':'')+'">'+(qd.length>=3?MKCK:'')+'+5&nbsp;🐚</b></div>':'<p class="mkp">Starte das Erkunden, dann bekommst du deine Aufgaben.</p>')+'<button class="btnw" type="button" data-mk="erkunden" style="background:#2fb3a0;color:#fff"><span>🧭</span>Jetzt erkunden</button></div>'
   +'<div class="mkbox"><h3>🛍️ Muschel-Shop</h3><div class="empty"><div class="bx">🎁🔒</div><b>Psst … hier entsteht etwas Großes</b><span>Was es geben wird, verraten wir noch nicht. Nur so viel: Spar schon mal deine Muscheln – du wirst sie brauchen! 👀</span></div></div>'
-  +'<div class="mkbox ka" id="mkka"><div class="kah" data-mk="kauf"><h3>📜 Kontoauszug</h3><span class="cnt">'+d.posten.length+' Buchung'+(d.posten.length===1?'':'en')+'</span><span class="chev">▾</span></div><div class="kab" hidden>'+(d.posten.map(x=>'<div><span>'+mkDat(x.id)+' · '+esc(x.t)+'</span><b class="'+(x.a<0?'m':'pl')+'">'+(x.a>0?'+':'−')+Math.abs(x.a)+'</b></div>').join('')||'<div><span>Noch keine Buchungen</span></div>')+'</div></div>'
+  +'<div class="mkbox ka" id="mkka"><div class="kah" data-mk="kauf"><h3>📜 Kontoauszug</h3><span class="cnt">'+d.posten.length+' Buchung'+(d.posten.length===1?'':'en')+'</span><span class="chev">▾</span></div><div class="kab" hidden>'+(d.posten.map(x=>'<div><span>'+(mkDat(x.id)?mkDat(x.id)+' · ':'')+esc(x.art==='erf'?'Erfolg „'+((ERFD[x.id]||[])[0]||x.id)+'“':x.t)+'</span><b class="'+(x.a<0?'m':'pl')+'">'+(x.a>0?'+':'−')+Math.abs(x.a)+'</b></div>').join('')||'<div><span>Noch keine Buchungen</span></div>')+'</div></div>'
   +'<div class="mkbox"><h3>💡 So verdienst du Muscheln</h3><div class="q">🔥 Login-Serie<b>bis 100&nbsp;🐚/Woche</b></div><div class="q">📋 Aufgaben<b>20&nbsp;🐚/Tag</b></div><div class="q">🐚 Schwebende Muscheln<b>4&nbsp;🐚/Tag</b></div><div class="q">💼 Job-Zuschlag<b>+2 bis +4/Tag</b></div><div class="q">📲 Story teilen<b>+25&nbsp;🐚/Woche</b></div><div class="q">🏅 Neuer Erfolg<b>+10&nbsp;🐚</b></div></div>';
  $('mkback').onclick=ev=>{ev.preventDefault();mkZu();};}
 const MKCK='<span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>';
@@ -2981,23 +2995,35 @@ function mkZiel2(id){const geb=t=>GEB.find(g=>g.typ===t);
  if(id==='bm'){const m=PEOPLE.find(p=>/bürgermeister/i.test(p.beruf||''));const t=m&&TAPS.find(t=>t[2]===m);return t?{x:t[0],y:t[1]+4,r:0}:mkNah(0,36*PAL_S+30,{r:0});}return null;}
 function mkNah(x,y,o){if(canWalk(x,y))return{x,y,...o};for(let r=2;r<40;r+=2)for(let a=0;a<TAU;a+=.4){const nx=x+Math.cos(a)*r,ny=y+Math.sin(a)*r;if(canWalk(nx,ny))return{x:nx,y:ny,...o};}return{x,y,...o};}
 function mkChip(){let c=$('mkchip');if(!WK.on||!mkOwn(WK.me)||!MK.quests){if(c)c.hidden=true;return;}if(!c){c=document.createElement('button');c.id='mkchip';c.type='button';c.className='qchip';$('hero').appendChild(c);c.onclick=mkSheet;}
- const n=(MK.d&&MK.d.questsDone||[]).length,s=(MK.d&&MK.d.shells||[]).length;c.hidden=false;c.innerHTML='📋 Aufgaben<span class="n">'+n+'/'+MK.quests.length+'</span>'+(s?'<span class="n2">🐚 '+s+'/4</span>':'');}
+ const n=(MK.d&&MK.d.questsDone||[]).length,s=(MK.d&&MK.d.shells||[]).length;c.hidden=false;const alle=MK.quests.length&&n>=MK.quests.length;c.innerHTML='📋 Aufgaben'+(alle?' '+MKCK.replace('class="ck"','class="ck" style="margin:0 0 0 4px;width:18px;height:18px"'):'<span class="n">'+n+'/'+MK.quests.length+'</span>')+(s?'<span class="n2">🐚 '+s+'/4</span>':'');qFit();}
+// Suchleiste neben dem Aufgaben-Knopf kürzen, langer Name wird kleiner geschrieben
+function qFit(){const c=$('mkchip'),fb=document.querySelector('.findbar'),q=$('q');if(!fb||!q)return;requestAnimationFrame(()=>{const on=c&&!c.hidden;fb.style.right=on?(c.offsetWidth+22)+'px':'';const cs=getComputedStyle(q),av=q.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight)-4,cx=qFit.cx||(qFit.cx=document.createElement('canvas').getContext('2d'));let fs=17;cx.font='800 '+fs+'px '+cs.fontFamily;const w=cx.measureText(q.value||q.placeholder).width;if(w>av&&av>0)fs=Math.max(11,17*av/w);q.style.fontSize=fs+'px';});}
+addEventListener('resize',qFit);
 function mkSheet(){const Q=MK.quests||[],qd=MK.d&&MK.d.questsDone||[],done=qd.length;let e=$('mksheet');if(!e){e=document.createElement('div');e.id='mksheet';e.className='qsheet';$('hero').appendChild(e);}
  e.hidden=false;e.innerHTML='<div class="grip"></div><button class="mkx" type="button" id="mkqx">×</button><h3>📋 Aufgaben für heute</h3><div class="mksub">Beim Erkunden erledigen · neue ab 0:00 Uhr</div>'+Q.map((id,i)=>{const q=mkQDef(id),ok=qd.includes(i);return'<div class="qi'+(ok?' ok':'')+'"><span class="ic">'+q.ic+'</span><span class="tx"><span class="t1">'+q.t+'</span><small>'+(ok?MKCK+'erledigt':esc(q.hint||''))+'</small></span><b>+5&nbsp;🐚</b>'+(ok||!mkZiel2(id)?'':'<button class="go" type="button" data-qi="'+i+'">📍 Hin da!</button>')+'</div>';}).join('')
-  +'<div class="qbar"><i style="width:'+(Q.length?done/Q.length*100:0)+'%"></i></div><div class="qft"><span>'+done+' von '+Q.length+' geschafft</span><span>'+(done>=3?'🎁 Bonus +5&nbsp;🐚 erhalten!':'🎁 alle 3: +5&nbsp;🐚 Bonus')+'</span></div>';
+  +'<div class="qbar"><i style="width:'+(Q.length?done/Q.length*100:0)+'%"></i></div><div class="qft"><span>'+(done>=3?MKCK:'')+done+' von '+Q.length+' geschafft</span><span>'+(done>=3?'🎁 Bonus +5&nbsp;🐚 erhalten!':'🎁 alle 3: +5&nbsp;🐚 Bonus')+'</span></div>';
  $('mkqx').onclick=()=>{e.hidden=true;};e.querySelectorAll('[data-qi]').forEach(b=>b.onclick=()=>{e.hidden=true;mkHin(+b.dataset.qi);});}
 // „Hin da!“: Route über begehbare Flächen, als feine Linie im Hintergrund
-function mkRoute(x0,y0,x1,y1){const st=3,X0=Math.min(x0,x1)-60,Y0=Math.min(y0,y1)-60,nx=Math.ceil((Math.abs(x1-x0)+120)/st),ny=Math.ceil((Math.abs(y1-y0)+120)/st);if(nx*ny>160000)return[[x0,y0],[x1,y1]];
- const id=(i,j)=>j*nx+i,ok=new Int8Array(nx*ny),prev=new Int32Array(nx*ny).fill(-1),okAt=(i,j)=>{const k=id(i,j);if(!ok[k])ok[k]=canWalk(X0+i*st,Y0+j*st)?1:2;return ok[k]===1;};
- const si=Math.round((x0-X0)/st),sj=Math.round((y0-Y0)/st),ei=Math.round((x1-X0)/st),ej=Math.round((y1-Y0)/st),Q=[id(si,sj)];prev[Q[0]]=Q[0];
- for(let h=0;h<Q.length;h++){const k=Q[h],i=k%nx,j=(k/nx)|0;if(Math.hypot(i-ei,j-ej)<1.5){const pts=[];let c=k;while(c!==prev[c]){pts.unshift([X0+(c%nx)*st,Y0+((c/nx)|0)*st]);c=prev[c];}pts.unshift([x0,y0]);pts.push([x1,y1]);const out=[pts[0]];for(let a=1;a<pts.length-1;a++){const p0=out[out.length-1],p1=pts[a],p2=pts[a+1];if((p1[0]-p0[0])*(p2[1]-p1[1])!==(p1[1]-p0[1])*(p2[0]-p1[0]))out.push(p1);}out.push(pts[pts.length-1]);return out;}
-  for(const [a,b] of[[1,0],[-1,0],[0,1],[0,-1]]){const ii=i+a,jj=j+b;if(ii<0||jj<0||ii>=nx||jj>=ny)continue;const kk=id(ii,jj);if(prev[kk]>=0||!okAt(ii,jj))continue;prev[kk]=k;Q.push(kk);}}return[[x0,y0],[x1,y1]];}
+// Ziel-Linie: kürzester Weg mit Kosten – bevorzugt die Mitte der Wege, meidet Zwischenräume zwischen Hütten; danach auf die Wegmitte einrasten
+function wegAbst(x,y){const v=ISL.find(v=>v.open&&inside(v,x,y,0));if(!v)return null;const gx=(x-v.x)/S,gy=(y-v.y)/(S*.9),kx=Math.round(gx/5)*5,ky=Math.round(gy/4)*4;return{v,dx:Math.abs(gx-kx)*S,dy:Math.abs(gy-ky)*S*.9,cx:v.x+kx*S,cy:v.y+ky*S*.9};}
+function mkKost(x,y){const w=wegAbst(x,y);if(!w)return 5;const d=Math.min(w.dx,w.dy);if(d<1.6)return 1;if(d<3.8)return 2;if(aufGelaende(x,y))return 3;
+ const v=w.v,gx=Math.round((x-v.x)/S),gy=Math.round((y-v.y)/(S*.9));for(let a=-1;a<=1;a++)for(let b=-1;b<=1;b++){const q=v.cell.get((gx+a)+','+(gy+b));if(q&&q.p&&q.nr<=limit&&Math.abs(x-q.p.x)<14&&Math.abs(y-q.p.y)<13)return 60;}return 6;}
+function mkRoute(x0,y0,x1,y1){const st=3,X0=Math.min(x0,x1)-60,Y0=Math.min(y0,y1)-60,nx=Math.ceil((Math.abs(x1-x0)+120)/st),ny=Math.ceil((Math.abs(y1-y0)+120)/st);if(nx*ny>260000)return[[x0,y0],[x1,y1]];
+ const N=nx*ny,ok=new Int8Array(N),cost=new Float32Array(N),dist=new Float32Array(N).fill(1e9),prev=new Int32Array(N).fill(-1),done=new Uint8Array(N);
+ const okAt=k=>{if(!ok[k]){const x=X0+(k%nx)*st,y=Y0+((k/nx)|0)*st;ok[k]=canWalk(x,y)?1:2;if(ok[k]===1)cost[k]=mkKost(x,y);}return ok[k]===1;};
+ const H=[],push=(k,d)=>{H.push([d,k]);let i=H.length-1;while(i>0){const p=(i-1)>>1;if(H[p][0]<=H[i][0])break;[H[p],H[i]]=[H[i],H[p]];i=p;}},pop=()=>{const t=H[0],l=H.pop();if(H.length){H[0]=l;let i=0;for(;;){const a=2*i+1,b=a+1;let m=i;if(a<H.length&&H[a][0]<H[m][0])m=a;if(b<H.length&&H[b][0]<H[m][0])m=b;if(m===i)break;[H[m],H[i]]=[H[i],H[m]];i=m;}}return t;};
+ const si=Math.round((x0-X0)/st),sj=Math.round((y0-Y0)/st),ei=Math.round((x1-X0)/st),ej=Math.round((y1-Y0)/st),s0=sj*nx+si;dist[s0]=0;prev[s0]=s0;push(s0,0);let end=-1;
+ while(H.length){const [d,k]=pop();if(done[k])continue;done[k]=1;const i=k%nx,j=(k/nx)|0;if(Math.hypot(i-ei,j-ej)<1.5){end=k;break;}
+  for(const [a,b] of[[1,0],[-1,0],[0,1],[0,-1]]){const ii=i+a,jj=j+b;if(ii<0||jj<0||ii>=nx||jj>=ny)continue;const kk=jj*nx+ii;if(done[kk]||!okAt(kk))continue;const nd=d+cost[kk];if(nd<dist[kk]){dist[kk]=nd;prev[kk]=k;push(kk,nd);}}}
+ if(end<0)return[[x0,y0],[x1,y1]];
+ const pts=[];let c=end;while(c!==prev[c]){let x=X0+(c%nx)*st,y=Y0+((c/nx)|0)*st;const w=wegAbst(x,y);if(w){if(w.dx<4)x=w.cx;if(w.dy<4)y=w.cy;}pts.unshift([x,y]);c=prev[c];}
+ pts.unshift([x0,y0]);pts.push([x1,y1]);const out=[pts[0]];for(let a=1;a<pts.length-1;a++){const p0=out[out.length-1],p1=pts[a],p2=pts[a+1];if(Math.abs((p1[0]-p0[0])*(p2[1]-p1[1])-(p1[1]-p0[1])*(p2[0]-p1[0]))>.01)out.push(p1);}out.push(pts[pts.length-1]);return out;}
 function mkHin(i){const id=(MK.quests||[])[i];const z=id&&mkZiel2(id);if(!z)return;MK.hin={i,z,t:0};mkHinUpd(true);const q=mkQDef(id);mkToast(q.ic+' Folge der Linie'+(z.r?' bis '+(id==='steg'?'auf den Steg':id==='bm'?'zur Bürgermeisterin':id==='beet'?'zum Beet':id==='werkstatt'?'zum Rolltor – mit dem 🛵 Moped':id==='bau'?'zum Bauzaun':id==='villa'?'zum Tor':id==='palast'?'zum Eingang':'an die Theke'):' bis zur Hütte'));}
 function mkHinUpd(force){const h=MK.hin;if(!h||!WK.on)return;const t=performance.now();if(!force&&t-h.t<900)return;h.t=t;const z=mkZiel2(MK.quests[h.i])||h.z;h.z=z;const L=WK.L||{h:1};h.pts=mkRoute(WK.x,WK.y+4.4*(L.h||1),z.x,z.y);}
 // feine, transparente Linie: auf dem Boden (vor Gebäuden gezeichnet) und auf Ladengeländen über dem Boden, unter allen Gegenständen
 function MKLINE(c,g){const h=MK.hin;if(!h||!h.pts||!WK.on)return;c.save();world(c);if(g){c.beginPath();c.rect(g.x0,g.y0,g.x1-g.x0,g.y1-g.y0);c.clip();}
- c.lineCap='round';c.lineJoin='round';c.setLineDash([1.4,2]);c.lineDashOffset=-T*4;c.beginPath();h.pts.forEach(([x,y],i)=>i?c.lineTo(x,y):c.moveTo(x,y));c.strokeStyle='rgba(255,255,255,.3)';c.lineWidth=.9;c.stroke();c.strokeStyle='rgba(232,70,124,.38)';c.lineWidth=.4;c.stroke();c.setLineDash([]);
- const [tx,ty]=h.pts[h.pts.length-1],pu=1+.12*Math.sin(T*4);c.fillStyle='rgba(232,70,124,.12)';c.beginPath();c.ellipse(tx,ty,3.4*pu,1.4*pu,0,0,TAU);c.fill();c.strokeStyle='rgba(232,70,124,.4)';c.lineWidth=.3;c.stroke();c.restore();}
+ c.lineCap='round';c.lineJoin='round';c.beginPath();h.pts.forEach(([x,y],i)=>i?c.lineTo(x,y):c.moveTo(x,y));c.strokeStyle='rgba(42,27,18,.45)';c.lineWidth=3.2;c.stroke();c.strokeStyle='#ffd23f';c.lineWidth=2.3;c.stroke();c.setLineDash([1.4,2.6]);c.lineDashOffset=-T*7;c.strokeStyle='#fff6c8';c.lineWidth=.9;c.stroke();c.setLineDash([]);
+ const [tx,ty]=h.pts[h.pts.length-1],pu=1+.12*Math.sin(T*4);c.fillStyle='rgba(255,210,63,.35)';c.beginPath();c.ellipse(tx,ty,3.6*pu,1.5*pu,0,0,TAU);c.fill();c.strokeStyle='#ffb02e';c.lineWidth=.5;c.stroke();c.restore();}
 const MKIN=(c,g)=>{if(MK.hin&&MK.hin.z&&MK.hin.z.g===g)MKLINE(c,g);};
 // an der Theke: Knopf einblenden
 function mkNahe(){if(!WK.on||!mkOwn(WK.me)||!MK.quests)return;const qd=MK.d&&MK.d.questsDone||[];let hit=-1;
