@@ -23,7 +23,7 @@ const K=[[0,G.m.x,G.m.y-20,G.m.z*.95],[AL-.2,G.m.x,G.m.y-20,G.m.z*1.15],[AL,G.h1
  [L.L8.start,G.th.x,G.th.y,3.0],[at('L8','Tierheim')-.4,G.th.x,G.th.y,3.4],[at('L8','Emilia')-.4,G.v.x,G.v.y-6,3.6],[L.L8.end,G.v.x,G.v.y-6,3.9],
  [L.L9.start+.3,G.v.x-120,G.v.y-30,2.6],[L.L9.end,G.v.x-130,G.v.y-30,2.8],
  [L.L10.start+.3,0,40,2.2],[L.L10.end,30,20,2.6],
- [L.L11.start+.2,G.nb.x,G.nb.y-2,4.4],[L.L11.end+.3,G.nb.x,G.nb.y-2,4.6],[dur,G.a.x,G.a.y,G.a.z*1.1]];
+ [L.L11.start+.2,G.nb.x,G.nb.y-2,4.5],[L.L11.end+.3,G.nb.x,G.nb.y-2,4.5],[dur,G.a.x,G.a.y,G.a.z*1.1]];
 console.error(JSON.stringify({last:G.last,HZ:6.2}));
 const cam=t=>{let j=0;while(j<K.length-1&&K[j+1][0]<=t)j++;const a=K[j],c=K[Math.min(j+1,K.length-1)];let k=c[0]>a[0]?Math.max(0,Math.min(1,(t-a[0])/(c[0]-a[0]))):1;k=k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2;
  return [a[1]+(c[1]-a[1])*k,a[2]+(c[2]-a[2])*k,Math.exp(Math.log(a[3])+(Math.log(c[3])-Math.log(a[3]))*k)*(1+.012*Math.sin(t*.8))];};
