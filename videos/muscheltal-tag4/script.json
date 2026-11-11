@@ -66,10 +66,58 @@
     {
      "id": "L2",
      "text": "Muschel-Tal ist die *y:größte *y:Insel auf *b:TikTok – / und hier entscheidet / *g:ganz *g:allein *g:ihr, was passiert!",
-     "speed": 1.3,
+     "speed": 1.12,
+     "style": "Style: a young German guy, around 20, genuinely excited, talking to his followers like friends, energetic and warm, natural German intonation, not an announcer, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+     "pause": 0.5
+    }
+   ],
+   "sfx": [
+    {
+     "name": "ping",
+     "at": "L2:größte",
+     "volume": 0.4
+    }
+   ]
+  },
+  {
+   "id": "s0a",
+   "tag": "",
+   "lines": [
+    {
+     "id": "L2b",
+     "text": "Und so *g:einfach geht’s: / *p:Folg *p:mir – / und du ziehst in deine *y:eigene *y:Hütte!",
+     "speed": 1.1,
      "style": "Style: a young German guy, around 20, genuinely excited, talking to his followers like friends, energetic and warm, natural German intonation, not an announcer, normal pitch.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
      "pause": 0.5
+    }
+   ],
+   "sfx": [
+    {
+     "name": "pop",
+     "at": "L2b:einfach",
+     "volume": 0.4
     },
+    {
+     "name": "click",
+     "at": "L2b:Folg",
+     "volume": 0.5
+    },
+    {
+     "name": "ka-ching",
+     "at": "L2b:Hütte",
+     "volume": 0.45
+    },
+    {
+     "name": "jubel",
+     "at": "L2b:Hütte",
+     "volume": 0.35
+    }
+   ]
+  },
+  {
+   "id": "s0b",
+   "tag": "",
+   "lines": [
     {
      "id": "L3",
      "text": "Ihr wolltet eine *b:Dönerbude, / eine *b:Strandbar, / einen *p:Açaí-Stand|Assa-i-Stand, / eine *b:Moped-Werkstatt / und eine *y:Strandvilla – / *g:alles *g:gebaut!",
@@ -79,11 +127,6 @@
     }
    ],
    "sfx": [
-    {
-     "name": "ping",
-     "at": "L2:größte",
-     "volume": 0.4
-    },
     {
      "name": "pop",
      "at": "L3:Dönerbude",
@@ -136,7 +179,7 @@
     },
     {
      "id": "L6",
-     "text": "*g:Glückwunsch, *y:lona.js|Lona J S! / Du arbeitest ab jetzt / in der *y:Bäckerei!",
+     "text": "*g:Glückwunsch, *y:lona.js|Lona-J-S! / Du arbeitest ab jetzt / in der *y:Bäckerei!",
      "speed": 1.1,
      "style": "Style: a young German guy, around 20, genuinely excited, talking to his followers like friends, energetic and warm, natural German intonation, not an announcer, normal pitch.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
      "pause": 3.4

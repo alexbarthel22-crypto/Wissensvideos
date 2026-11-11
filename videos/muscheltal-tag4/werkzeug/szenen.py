@@ -88,48 +88,94 @@ BIG = """.big { position: absolute; left: 60px; right: 60px; margin: 0 auto; tex
 CMT = """.cmt { position: absolute; left: 140px; width: 800px; border-radius: 30px; padding: 8px; background: linear-gradient(135deg, #5fe0ff, #ff7ac0); box-shadow: 0 14px 30px rgba(0,0,0,.45); transform: rotate(-1.5deg); }
     .cmt img { display: block; width: 100%; border-radius: 23px; }"""
 
-# s01 – Ich habe euch eine Insel gekauft
-scene("s01", LILITA + "\n    " + PILL + "\n    " + BIG + "\n    " + PT + "\n" + FL + """
-    #s01-h { top: 280px; font-size: 86px; background: #e8467c; transform: rotate(-2deg); }
-    #s01-h b { color: #ffe14a; font-weight: 400; }
-    #s01-al { top: 640px; font-size: 46px; background: #23285a; }
-    #s01-c { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 640px; padding: 10px 44px 18px; border-radius: 36px; background: #fff; box-shadow: 0 0 0 8px #2a1b12, 0 14px 0 rgba(0,0,0,.3); text-align: center; font-family: "Inter", sans-serif; font-weight: 900; color: #2a1b12; font-size: 44px; }
-    #s01-c b { display: block; font-family: "Lilita One", sans-serif; font-weight: 400; font-size: 170px; line-height: 1; color: #2e9e5b; }""",
-"""      <div id="s01-fl" class="fl" data-layout-ignore></div>
-      <div id="s01-h" class="big">ICH HABE EUCH EINE <b>INSEL GEKAUFT!</b></div>
+# s01 – Ich habe euch eine Insel gekauft (Wörter fliegen ins Gesicht), leere Insel, Stadt wächst
+HW = [("ICH", "Ich", ""), ("HABE", "habe", ""), ("EUCH", "euch", "<br>"), ("EINE", "eine", ""), ("INSEL", "Insel", "<br>"), ("GEKAUFT!", "gekauft", "")]
+scene("s01", LILITA + "\n    " + PILL + "\n    " + PT + "\n" + FL + """
+    #s01-hk { position: absolute; left: 20px; right: 20px; top: 340px; text-align: center; font-family: "Lilita One", sans-serif; font-size: 128px; white-space: nowrap; line-height: 1.02; color: #fff; -webkit-text-stroke: 14px #2a1b12; paint-order: stroke fill; filter: drop-shadow(0 12px 0 rgba(0,0,0,.35)); }
+    #s01-hk span { display: inline-block; margin: 0 .08em; transform-origin: 50% 60%; }
+    #s01-hk span.y { color: #ffe14a; }
+    #s01-sad { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 55%, rgba(30,34,48,0) 35%, rgba(20,22,34,.6) 100%); }
+    .s01-rn { position: absolute; width: 4px; height: 70px; border-radius: 2px; background: rgba(210,225,240,.55); }
+    #s01-al { top: 840px; font-size: 42px; background: #4a5068; }
+    #s01-c { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 600px; padding: 10px 44px 18px; border-radius: 36px; background: #fff; box-shadow: 0 0 0 8px #2a1b12, 0 14px 0 rgba(0,0,0,.3); text-align: center; font-family: "Inter", sans-serif; font-weight: 900; color: #2a1b12; font-size: 44px; }
+    #s01-c b { display: block; font-family: "Lilita One", sans-serif; font-weight: 400; font-size: 170px; line-height: 1; color: #2e9e5b; }
+    .s01-rg { position: absolute; left: 340px; top: 560px; width: 400px; height: 400px; border-radius: 50%; border: 14px solid #ffe14a; opacity: 0; }""",
+"""      <div id="s01-sad" data-layout-ignore></div>""" + "".join(f'<div class="s01-rn" id="s01-rn{i}" data-layout-ignore></div>' for i in range(40)) + """
+      <div id="s01-fl" class="fl" data-layout-ignore></div>
+      <div id="s01-hk">""" + "".join(f'<span id="s01-w{i}" class="{"y" if w in ("INSEL","GEKAUFT!") else ""}">{w}</span>{br}' for i, (w, _, br) in enumerate(HW)) + """</div>
       <div id="s01-al" class="pl">🏠 Am Anfang: nur ich – ganz allein</div>
-      <div id="s01-c"><b id="s01-n">1</b>Bewohner 🏝️</div>""" + drops("s01-p", 14, 5, 'le', 540, 760, "🎉", 520, 760)[0],
-"""      const al = at("L1", "ganz"), je = at("L1", "jetzt"), le = at("L1", "Leute");
-      tl.set("#s01-h", { opacity: 1 }, 0);
-      tl.fromTo("#s01-h", { scale: 1.6 }, { scale: 1, duration: .35, ease: "back.out(2.4)" }, 0);
-      tl.to("#s01-h", { scale: 1.05, duration: .2, yoyo: true, repeat: 5, ease: "sine.inOut" }, .5);
-      tl.fromTo("#s01-al", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, al - .3);
-      tl.to("#s01-al", { opacity: 0, duration: .2 }, je - .2);
-      tl.fromTo("#s01-c", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.4)" }, je - .1);
-      count(tl, "#s01-n", 1, 702, je, le - je + .1, "", "", "power2.in");
+      <div class="s01-rg" id="s01-rg0" data-layout-ignore></div><div class="s01-rg" id="s01-rg1" data-layout-ignore></div><div class="s01-rg" id="s01-rg2" data-layout-ignore></div>
+      <div id="s01-c"><b id="s01-n">1</b>Bewohner 🏝️</div>""" + drops("s01-p", 22, 5, 'je + .1', 540, 760, "🏠", 560, 820)[0] + drops("s01-q", 16, 9, 'le', 540, 760, "✨", 520, 760)[0],
+"""      const al = at("L1", "Am"), je = at("L1", "jetzt"), le = at("L1", "Leute");
+      """ + "\n      ".join(f'tl.fromTo("#s01-w{i}", {{ opacity: 0, scale: 7, filter: "blur(12px)" }}, {{ opacity: 1, scale: 1, filter: "blur(0px)", duration: .22, ease: "power3.in" }}, {"0" if i == 0 else f"Math.max(.05, at(\"L1\", \"{k}\") - .12)"});' for i, (_, k, _) in enumerate(HW)) + """
+      tl.to("#s01-hk", { scale: 1.06, duration: .12, yoyo: true, repeat: 1 }, at("L1", "gekauft") + .1);
+      tl.to("#s01-stage", { x: 14, duration: .04, yoyo: true, repeat: 5, ease: "none" }, at("L1", "gekauft") + .1);
+      tl.to("#s01-hk", { opacity: 0, scale: .7, y: -80, duration: .25 }, al - .15);
+      { const R = rng(3); for (let i = 0; i < 40; i++) { const x = R() * 1080, d = .5 + R() * .4, st = al - .3 + R() * (je - al);
+        document.getElementById("s01-rn" + i).style.left = x + "px";
+        tl.fromTo("#s01-rn" + i, { y: -100, opacity: .9 }, { y: 2000, duration: d, ease: "none" }, st); } }
+      tl.set("#s01-sad", { opacity: 1 }, 0);
+      tl.to("#s01-sad", { opacity: 0, duration: .5 }, je);
+      tl.fromTo("#s01-al", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, al);
+      tl.to("#s01-al", { opacity: 0, duration: .2 }, je - .15);
+      tl.fromTo("#s01-fl", { opacity: .85 }, { opacity: 0, duration: .4, immediateRender: false }, je);
+      [0, 1, 2].forEach(i => tl.fromTo("#s01-rg" + i, { opacity: .9, scale: .2 }, { opacity: 0, scale: 3, duration: .7, ease: "power2.out", immediateRender: false }, je + i * .25));
+      tl.fromTo("#s01-c", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.4)" }, je);
+      count(tl, "#s01-n", 1, 702, je + .05, le - je + .1, "", "", "power2.in");
       tl.fromTo("#s01-c", { scale: 1 }, { scale: 1.18, duration: .15, yoyo: true, repeat: 1, immediateRender: false }, le + .1);
-      tl.fromTo("#s01-fl", { opacity: .8 }, { opacity: 0, duration: .35, immediateRender: false }, le + .1);
-""" + drops("s01-p", 14, 5, 'le', 540, 760, "🎉", 520, 760)[1])
+      tl.fromTo("#s01-fl", { opacity: .7 }, { opacity: 0, duration: .35, immediateRender: false }, le + .1);
+""" + drops("s01-p", 22, 5, 'je + .1', 540, 760, "🏠", 560, 820)[1] + drops("s01-q", 16, 9, 'le', 540, 760, "✨", 520, 760)[1])
 
-# s02 – größte Insel auf TikTok, ihr entscheidet, alles gebaut
+# s02 – größte Insel auf TikTok, ihr entscheidet
 scene("s02", LILITA + "\n    " + PILL + "\n    " + BIG + """
     #s02-h { top: 290px; font-size: 76px; background: #18a6b8; transform: rotate(-2deg); }
-    #s02-e { top: 460px; font-size: 48px; background: #7b3fe0; }
+    #s02-e { top: 460px; font-size: 48px; background: #7b3fe0; }""",
+"""      <div id="s02-h" class="big">🏆 DIE GRÖSSTE INSEL AUF TIKTOK</div>
+      <div id="s02-e" class="pl">👑 Hier entscheidet ihr!</div>""",
+"""      const gr = at("L2", "größte"), ih = at("L2", "ihr");
+      tl.fromTo("#s02-h", { opacity: 0, scale: 3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(1.8)" }, gr - .25);
+      tl.fromTo("#s02-e", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, ih - .2);
+      tl.to("#s02-e", { scale: 1.1, duration: .2, yoyo: true, repeat: 3, ease: "sine.inOut" }, ih + .2);""")
+
+# s0a – So einfach: folgen = eigene Hütte
+scene("s0a", LILITA + "\n    " + PILL + "\n" + FOLLOW + "\n    " + PT + """
+    #s0a-t { top: 290px; font-size: 54px; background: #2e9e5b; }
+    #s0a-fr { position: absolute; left: 375px; top: 500px; width: 330px; height: 440px; border-radius: 34px; border: 9px dashed #ffe14a; box-shadow: 0 0 34px 6px rgba(255,225,74,.7); }
+    #s0a-tag { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 640px; padding: 8px 26px 12px; border-radius: 22px; background: #ffe14a; color: #2a1b12; font-family: "Lilita One", sans-serif; font-size: 64px; box-shadow: 0 0 0 6px #2a1b12; transform: rotate(-6deg); }
+    #s0a-btn { top: 400px; } #s0a-hand { left: 690px; top: 450px; }
+    #s0a-st { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 980px; color: #2e9e5b; border-color: #2e9e5b; background: #fff; transform: rotate(-4deg); font-size: 60px; white-space: nowrap; font-family: "Lilita One", sans-serif; }""",
+"""      <div id="s0a-t" class="pl">✨ So einfach geht's</div>
+      <div id="s0a-fr" data-layout-ignore></div>
+      <div id="s0a-tag" data-layout-ignore>🔑 FREI</div>
+      <div id="s0a-btn" class="fbtn">+ Folgen<div id="s0a-btn2" class="fbtn2">✓ Gefolgt</div></div>
+      <div id="s0a-hand" class="fhand" data-layout-ignore>👆</div>
+      <div id="s0a-st" class="stamp" data-layout-ignore>🏠 DEINE HÜTTE!</div>""" + drops("s0a-p", 14, 13, 'fo + .2', 540, 720, "🎉", 480, 700)[0],
+"""      const ei = at("L2b", "einfach"), fo = at("L2b", "Folg"), hu = at("L2b", "Hütte");
+      tl.fromTo("#s0a-t", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, ei - .3);
+      tl.fromTo(["#s0a-fr", "#s0a-tag"], { opacity: 0, scale: 1.4 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, line("L2b")[0]);
+      tl.to("#s0a-fr", { boxShadow: "0 0 60px 18px rgba(255,225,74,1)", duration: .3, yoyo: true, repeat: 3 }, ei);
+      tl.fromTo("#s0a-btn", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, fo - .45);
+      tl.fromTo("#s0a-hand", { opacity: 0, x: 160, y: 160 }, { opacity: 1, x: 0, y: 0, duration: .25, ease: "power3.out" }, fo - .35);
+      tl.to("#s0a-hand", { y: -26, scale: .9, duration: .1, yoyo: true, repeat: 1 }, fo - .05);
+      tl.to("#s0a-btn2", { opacity: 1, duration: .05 }, fo + .05);
+      tl.fromTo("#s0a-btn", { scale: 1 }, { scale: 1.15, duration: .12, yoyo: true, repeat: 1, immediateRender: false }, fo + .05);
+      tl.to("#s0a-hand", { opacity: 0, duration: .2 }, fo + .5);
+      tl.to("#s0a-tag", { opacity: 0, scale: .3, duration: .2 }, fo + .1);
+      tl.to("#s0a-fr", { borderColor: "#2e9e5b", borderStyle: "solid", boxShadow: "0 0 50px 14px rgba(46,158,91,.9)", duration: .2 }, fo + .15);
+      tl.fromTo("#s0a-st", { opacity: 0, scale: 2.6 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, hu - .2);
+""" + drops("s0a-p", 14, 13, 'fo + .2', 540, 720, "🎉", 480, 700)[1])
+
+# s0b – Ihr wolltet … alles gebaut
+scene("s0b", LILITA + "\n    " + PILL + """
     .s02-b { top: 300px; font-size: 52px; }
     #s02-st { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 430px; color: #2e9e5b; border-color: #2e9e5b; background: #fff; transform: rotate(-5deg); font-size: 70px; white-space: nowrap; font-family: "Lilita One", sans-serif; }""",
-"""      <div id="s02-h" class="big">🏆 DIE GRÖSSTE INSEL AUF TIKTOK</div>
-      <div id="s02-e" class="pl">👑 Hier entscheidet ihr!</div>
-      <div id="s02-b0" class="pl s02-b" style="background:#e8262f">🥙 Dönerbude</div>
+"""      <div id="s02-b0" class="pl s02-b" style="background:#e8262f">🥙 Dönerbude</div>
       <div id="s02-b1" class="pl s02-b" style="background:#18a6b8">🍹 Strandbar</div>
       <div id="s02-b2" class="pl s02-b" style="background:#7b3fe0">🫐 Açaí-Stand</div>
       <div id="s02-b3" class="pl s02-b" style="background:#e2560c">🔧 Moped-Werkstatt</div>
       <div id="s02-b4" class="pl s02-b" style="background:#2e9e5b">🏖️ Strandvilla</div>
       <div id="s02-st" class="stamp" data-layout-ignore>✅ ALLES GEBAUT!</div>""",
-"""      const gr = at("L2", "größte"), ih = at("L2", "ihr"), l3 = line("L3")[0], al = at("L3", "alles");
-      tl.fromTo("#s02-h", { opacity: 0, scale: 3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(1.8)" }, gr - .25);
-      tl.fromTo("#s02-e", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, ih - .2);
-      tl.to("#s02-e", { scale: 1.1, duration: .2, yoyo: true, repeat: 3, ease: "sine.inOut" }, ih + .2);
-      tl.to(["#s02-h", "#s02-e"], { opacity: 0, y: -30, duration: .2 }, l3 - .2);
+"""      const al = at("L3", "alles");
       ["Dönerbude", "Strandbar", "Açaí-Stand", "Moped-Werkstatt", "Strandvilla"].forEach((w, i) => { const t = at("L3", w);
         tl.fromTo("#s02-b" + i, { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .22, ease: "back.out(2)" }, t - .25);
         if (i < 4) tl.to("#s02-b" + i, { opacity: 0, duration: .12 }, at("L3", ["Strandbar", "Açaí-Stand", "Moped-Werkstatt", "Strandvilla"][i]) - .3); });
@@ -153,9 +199,9 @@ scene("s03", LILITA + "\n    " + PILL + "\n    " + BIG + "\n    " + CF_CSS.repla
     #s03-sh { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,0) 30%, rgba(255,255,255,0) 70%, rgba(255,255,255,.95)); }
     #s03-st { left: 0; right: 120px; margin: 0 auto; width: fit-content; top: 880px; color: #e2560c; border-color: #e2560c; background: #fff; transform: rotate(-4deg); font-size: 56px; white-space: nowrap; }
     #s03-wn { top: 300px; font-size: 52px; background: #2e9e5b; }
-    #s03-sp { top: 290px; font-size: 76px; background: #7b3fe0; transform: rotate(-2deg); }
+    #s03-sp { top: 290px; font-size: 76px; background: linear-gradient(135deg, #ff5ecf, #7b5cff); transform: rotate(-2deg); }
     #s03-lk { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 520px; padding: 14px 40px 18px; border-radius: 30px; background: #fff; box-shadow: 0 0 0 7px #2a1b12; font-family: "Inter", sans-serif; font-weight: 900; font-size: 44px; color: #2a1b12; text-align: center; }
-    #s03-lk b { display: block; font-size: 120px; line-height: 1.1; }""",
+    #s03-lk b { display: block; line-height: 1; }""",
 f"""      <div id="s03-t" class="pl">🥐 NEU: Fabiennes Bäckerei!</div>
       <div id="s03-v" class="pl">✅ Ihr habt abgestimmt</div>
       <div id="s03-fc"><div class="av"></div><div><div class="nm">Fabienne</div><div class="tx">Kann sehr gut Cookies und Zimtschnecken backen.</div></div></div>
@@ -165,8 +211,8 @@ f"""      <div id="s03-t" class="pl">🥐 NEU: Fabiennes Bäckerei!</div>
       <div id="s03-cfw"></div>
       <div id="s03-st" class="stamp" data-layout-ignore>🥐 NEU IM TEAM!</div>
       <div id="s03-wn" class="pl">🎉 @lona.js arbeitet in der Bäckerei!</div>
-      <div id="s03-sp" class="big">🤫 SPOILER</div>
-      <div id="s03-lk"><b>🔒</b>Job = Vorteil beim Spiel<br>bei 1.000 Followern!</div>""",
+      <div id="s03-sp" class="big"><svg viewBox="0 0 64 64" width="90" height="90" style="vertical-align:-18px"><defs><linearGradient id="sg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff5ecf"/><stop offset="1" stop-color="#7b5cff"/></linearGradient></defs><path d="M4 32 C14 14 50 14 60 32 C50 50 14 50 4 32 Z" fill="#fff" stroke="url(#sg)" stroke-width="5"/><circle cx="32" cy="32" r="12" fill="url(#sg)"/><circle cx="36" cy="27" r="4" fill="#fff"/><path d="M50 6 l2 5 5 2 -5 2 -2 5 -2 -5 -5 -2 5 -2z" fill="#ffe14a"/></svg> SPOILER</div>
+      <div id="s03-lk"><b><svg viewBox="0 0 64 64" width="120" height="120"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffd84d"/><stop offset="1" stop-color="#ff8a00"/></linearGradient></defs><path d="M20 28 V20 a12 12 0 0 1 24 0 V28" fill="none" stroke="#2a1b12" stroke-width="6" stroke-linecap="round"/><rect x="12" y="27" width="40" height="30" rx="9" fill="url(#lg)" stroke="#2a1b12" stroke-width="4"/><circle cx="32" cy="40" r="4.5" fill="#2a1b12"/><rect x="30" y="42" width="4" height="8" rx="2" fill="#2a1b12"/><path d="M54 8 l2 5 5 2 -5 2 -2 5 -2 -5 -5 -2 5 -2z" fill="#fff"/></svg></b>Job = Vorteil beim Spiel<br>bei 1.000 Followern!</div>""",
 f"""      const fa = at("L4", "Fabienne"), ab = at("L4", "abgestimmt"), l5 = line("L5")[0], ba = at("L5", "Bäckerei"), TB = line("L6")[0] - .4, gl = at("L6", "Glückwunsch"), l7 = line("L7")[0], vo = at("L7", "Vorteil"), H = 130, N = {len(NS)}, W = {WI};
       tl.fromTo("#s03-t", {{ opacity: 0, scale: 2.6 }}, {{ opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }}, line("L4")[0]);
       tl.fromTo("#s03-v", {{ opacity: 0, y: 30 }}, {{ opacity: 1, y: 0, duration: .25 }}, ab - .2);
@@ -219,20 +265,35 @@ scene("s04", PILL + """
 scene("s05", PILL + "\n    " + CMT + """
     #s05-t { top: 290px; font-size: 52px; background: #1f6fb8; }
     #s05-c { top: 400px; }
-    #s05-y { position: absolute; left: 0; right: 0; margin: 0 auto; text-align: center; top: 640px; font-size: 220px; line-height: 1; }
-    #s05-q { top: 880px; right: 120px; font-size: 40px; background: #e8467c; }
-    #s05-vv { position: absolute; left: 110px; right: 230px; top: 980px; display: flex; gap: 24px; }
+    #s05-y { position: absolute; left: 90px; top: 640px; width: 560px; height: 300px; }
+    #s05-q { top: 960px; right: 120px; font-size: 40px; background: #e8467c; }
+    #s05-vv { position: absolute; left: 110px; right: 230px; top: 1050px; display: flex; gap: 24px; }
     #s05-vv div { flex: 1; text-align: center; padding: 14px 0 18px; border-radius: 26px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 46px; color: #fff; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); }""",
 """      <div id="s05-t" class="pl">🛥️ Private Yacht für Marie?</div>
       <div id="s05-c" class="cmt"><img src="assets/img/marie_comment.jpg" alt=""></div>
-      <div id="s05-y" data-layout-ignore>🛥️</div>
+      <svg id="s05-y" viewBox="0 0 600 320" data-layout-ignore><g fill="none" stroke="#2a1b12" stroke-linejoin="round" stroke-linecap="round">
+ <ellipse cx="300" cy="268" rx="290" ry="26" fill="#bfeefa" stroke="none" opacity=".7"/><path d="M40 262 q30 -12 60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0" stroke="#fff" stroke-width="7" opacity=".9"/>
+ <path d="M30 168 H500 Q570 168 552 196 L486 252 H82 Q48 252 30 168 Z" fill="#ffffff" stroke-width="6"/>
+ <path d="M44 214 H528 L506 232 H70 Z" fill="#1f3f95" stroke="none"/><path d="M38 196 H544" stroke="#c9d6e6" stroke-width="4"/>
+ <g fill="#123a4a" stroke="none"><circle cx="150" cy="190" r="6"/><circle cx="180" cy="190" r="6"/><circle cx="210" cy="190" r="6"/><circle cx="380" cy="190" r="6"/><circle cx="410" cy="190" r="6"/></g>
+ <path d="M110 168 L130 112 H420 Q470 112 488 168 Z" fill="#f4f7fb" stroke-width="6"/>
+ <path d="M150 158 L162 124 H300 V158 Z M314 158 V124 H412 Q440 124 456 158 Z" fill="#1d5f7a" stroke-width="4"/>
+ <path d="M176 154 L186 128 H210 L200 154Z M330 154 V128 H352 V154Z" fill="#7fd6f0" stroke="none" opacity=".7"/>
+ <path d="M190 112 L206 74 H360 Q392 74 404 112 Z" fill="#ffffff" stroke-width="6"/>
+ <path d="M220 104 L230 82 H350 Q370 82 378 104 Z" fill="#1d5f7a" stroke-width="4"/>
+ <path d="M250 74 V48 M250 48 H300 M300 48 V74" stroke-width="6"/><circle cx="275" cy="40" r="10" fill="#e9eef5" stroke-width="4"/>
+ <path d="M96 168 V120" stroke-width="5"/><path d="M96 120 L130 130 L96 140 Z" fill="#e8467c" stroke-width="3"/>
+ <path d="M96 122 Q170 70 250 50 Q330 40 420 70 Q470 90 520 140" stroke="#2a1b12" stroke-width="2.5"/>
+ <g stroke="#2a1b12" stroke-width="2"><circle cx="130" cy="100" r="7" fill="#ffe14a"/><circle cx="170" cy="78" r="7" fill="#ff5ecf"/><circle cx="215" cy="60" r="7" fill="#5fe0ff"/><circle cx="330" cy="46" r="7" fill="#ffe14a"/><circle cx="380" cy="56" r="7" fill="#ff5ecf"/><circle cx="430" cy="74" r="7" fill="#5fe0ff"/><circle cx="480" cy="104" r="7" fill="#ffe14a"/></g>
+ <g stroke-width="3"><circle cx="440" cy="98" r="9" fill="#f2c39a"/><path d="M440 108 V130 M430 116 L450 116 M428 100 L418 86 M452 100 L462 86" stroke-width="5"/><circle cx="160" cy="96" r="9" fill="#8a5a3c"/><path d="M160 106 V128 M150 112 L140 98 M170 112 L180 98" stroke-width="5"/></g>
+ <text x="300" y="246" font-family="Lilita One" font-size="22" fill="#fff" stroke="none" text-anchor="middle">MARIE · MUSCHEL-TAL</text></g></svg>
       <div id="s05-q" class="pl">🎉 Mit Partys an Bord!</div>
       <div id="s05-vv"><div style="background:#2e9e5b">✅ JA</div><div style="background:#e8262f">❌ NEIN</div></div>""",
 """      const ma = at("L9", "Marie"), pa = at("L9", "Partys"), so = at("L9", "Soll"), st = at("L9", "Stimmt");
       tl.fromTo("#s05-t", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, ma - .2);
       tl.fromTo("#s05-c", { opacity: 0, y: -40, scale: .85 }, { opacity: 1, y: 0, scale: 1, duration: .35, ease: "back.out(2)" }, ma);
       tl.fromTo("#s05-y", { opacity: 0, x: -700 }, { opacity: 1, x: 0, duration: .6, ease: "power2.out" }, at("L9", "Yacht") - .2);
-      tl.to("#s05-y", { y: -14, rotation: -4, duration: .5, yoyo: true, repeat: 7, ease: "sine.inOut" }, at("L9", "Yacht") + .4);
+      tl.to("#s05-y", { y: -10, rotation: -2, duration: .6, yoyo: true, repeat: 7, ease: "sine.inOut" }, at("L9", "Yacht") + .4);
       tl.fromTo("#s05-q", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, pa - .2);
       tl.fromTo("#s05-vv div", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)", stagger: .12 }, so - .1);
       tl.to("#s05-vv div", { scale: 1.08, duration: .2, yoyo: true, repeat: 5, ease: "sine.inOut", stagger: .1 }, st);""")

@@ -67,9 +67,9 @@
     #s03-sh { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,0) 30%, rgba(255,255,255,0) 70%, rgba(255,255,255,.95)); }
     #s03-st { left: 0; right: 120px; margin: 0 auto; width: fit-content; top: 880px; color: #e2560c; border-color: #e2560c; background: #fff; transform: rotate(-4deg); font-size: 56px; white-space: nowrap; }
     #s03-wn { top: 300px; font-size: 52px; background: #2e9e5b; }
-    #s03-sp { top: 290px; font-size: 76px; background: #7b3fe0; transform: rotate(-2deg); }
+    #s03-sp { top: 290px; font-size: 76px; background: linear-gradient(135deg, #ff5ecf, #7b5cff); transform: rotate(-2deg); }
     #s03-lk { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 520px; padding: 14px 40px 18px; border-radius: 30px; background: #fff; box-shadow: 0 0 0 7px #2a1b12; font-family: "Inter", sans-serif; font-weight: 900; font-size: 44px; color: #2a1b12; text-align: center; }
-    #s03-lk b { display: block; font-size: 120px; line-height: 1.1; }
+    #s03-lk b { display: block; line-height: 1; }
   </style>
   <div id="root" data-composition-id="s03" data-start="0" data-duration="17.610" data-width="1080" data-height="1920">
     <div id="s03-stage" class="clip stage" data-start="0" data-duration="17.610" data-track-index="0">
@@ -82,14 +82,14 @@
       <div id="s03-cfw"></div>
       <div id="s03-st" class="stamp" data-layout-ignore>🥐 NEU IM TEAM!</div>
       <div id="s03-wn" class="pl">🎉 @lona.js arbeitet in der Bäckerei!</div>
-      <div id="s03-sp" class="big">🤫 SPOILER</div>
-      <div id="s03-lk"><b>🔒</b>Job = Vorteil beim Spiel<br>bei 1.000 Followern!</div>
+      <div id="s03-sp" class="big"><svg viewBox="0 0 64 64" width="90" height="90" style="vertical-align:-18px"><defs><linearGradient id="sg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff5ecf"/><stop offset="1" stop-color="#7b5cff"/></linearGradient></defs><path d="M4 32 C14 14 50 14 60 32 C50 50 14 50 4 32 Z" fill="#fff" stroke="url(#sg)" stroke-width="5"/><circle cx="32" cy="32" r="12" fill="url(#sg)"/><circle cx="36" cy="27" r="4" fill="#fff"/><path d="M50 6 l2 5 5 2 -5 2 -2 5 -2 -5 -5 -2 5 -2z" fill="#ffe14a"/></svg> SPOILER</div>
+      <div id="s03-lk"><b><svg viewBox="0 0 64 64" width="120" height="120"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffd84d"/><stop offset="1" stop-color="#ff8a00"/></linearGradient></defs><path d="M20 28 V20 a12 12 0 0 1 24 0 V28" fill="none" stroke="#2a1b12" stroke-width="6" stroke-linecap="round"/><rect x="12" y="27" width="40" height="30" rx="9" fill="url(#lg)" stroke="#2a1b12" stroke-width="4"/><circle cx="32" cy="40" r="4.5" fill="#2a1b12"/><rect x="30" y="42" width="4" height="8" rx="2" fill="#2a1b12"/><path d="M54 8 l2 5 5 2 -5 2 -2 5 -2 -5 -5 -2 5 -2z" fill="#fff"/></svg></b>Job = Vorteil beim Spiel<br>bei 1.000 Followern!</div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 17.61, "L4": [0.2, 3.48], "L4.words": [["und", 0.2, 0.421], ["ganz", 0.421, 0.649], ["neu", 0.649, 0.87], ["ihr", 1.17, 1.296], ["habt", 1.296, 1.426], ["abgestimmt", 1.426, 1.808], ["", 1.808, 1.92], ["fabienne", 2.18, 2.615], ["hat", 2.615, 2.762], ["ihre", 2.762, 3.045], ["bäckerei", 3.045, 3.48]], "L5": [4.0, 6.34], "L5.words": [["und", 4.0, 4.131], ["jetzt", 4.131, 4.272], ["verlose", 4.272, 4.657], ["ich", 4.657, 4.788], ["live", 4.788, 5.041], ["einen", 5.041, 5.299], ["job", 5.299, 5.43], ["in", 5.43, 5.557], ["fabiennes", 5.557, 5.951], ["bäckerei", 5.951, 6.34]], "L6": [9.96, 12.48], "L6.words": [["glückwunsch", 9.96, 10.285], ["lonajs", 10.285, 10.573], ["j", 10.573, 10.711], ["s", 10.711, 10.85], ["du", 10.85, 10.994], ["arbeitest", 10.994, 11.441], ["ab", 11.441, 11.585], ["jetzt", 11.585, 11.745], ["in", 11.745, 11.889], ["der", 11.889, 12.038], ["bäckerei", 12.038, 12.48]], "L7": [13.1, 16.93], "L7.words": [["spoiler", 13.1, 13.83], ["wer", 14.11, 14.396], ["einen", 14.396, 14.958], ["job", 14.958, 15.244], ["hat", 15.244, 15.53], ["hat", 15.64, 15.738], ["beim", 15.738, 15.84], ["spiel", 15.84, 15.945], ["bei", 15.945, 16.043], ["1000", 16.043, 16.243], ["followern", 16.243, 16.537], ["einen", 16.537, 16.73], ["vorteil", 16.73, 16.93]]};
+      const C = {"__dur": 17.61, "L4": [0.2, 3.48], "L4.words": [["und", 0.2, 0.421], ["ganz", 0.421, 0.649], ["neu", 0.649, 0.87], ["ihr", 1.17, 1.296], ["habt", 1.296, 1.426], ["abgestimmt", 1.426, 1.808], ["", 1.808, 1.92], ["fabienne", 2.18, 2.615], ["hat", 2.615, 2.762], ["ihre", 2.762, 3.045], ["bäckerei", 3.045, 3.48]], "L5": [4.0, 6.34], "L5.words": [["und", 4.0, 4.131], ["jetzt", 4.131, 4.272], ["verlose", 4.272, 4.657], ["ich", 4.657, 4.788], ["live", 4.788, 5.041], ["einen", 5.041, 5.299], ["job", 5.299, 5.43], ["in", 5.43, 5.557], ["fabiennes", 5.557, 5.951], ["bäckerei", 5.951, 6.34]], "L6": [9.96, 12.48], "L6.words": [["glückwunsch", 9.96, 10.93], ["lonajs", 11.15, 11.356], ["du", 11.356, 11.455], ["arbeitest", 11.455, 11.764], ["ab", 11.764, 11.863], ["jetzt", 11.863, 11.973], ["in", 11.973, 12.072], ["der", 12.072, 12.175], ["bäckerei", 12.175, 12.48]], "L7": [13.1, 16.93], "L7.words": [["spoiler", 13.1, 13.83], ["wer", 14.11, 14.396], ["einen", 14.396, 14.958], ["job", 14.958, 15.244], ["hat", 15.244, 15.53], ["hat", 15.64, 15.738], ["beim", 15.738, 15.84], ["spiel", 15.84, 15.945], ["bei", 15.945, 16.043], ["1000", 16.043, 16.243], ["followern", 16.243, 16.537], ["einen", 16.537, 16.73], ["vorteil", 16.73, 16.93]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
