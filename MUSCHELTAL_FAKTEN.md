@@ -203,3 +203,6 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - **Bäckerei-Job verlost (11.11., Zufall unter allen Bewohnern ohne Job/Amt, 693 im Lostopf): @einbaum18 (Nr. 656) arbeitet ab jetzt in Fabiennes Bäckerei.** ⚠️ Homepage: @einbaum18 als Team in die Bäckerei eintragen.
 - **Abstimmung in den Kommentaren (Tag 4): Soll Marie eine private Yacht bekommen (mit Partys)?** (TikTok-Name von Marie noch offen.)
 - ⚠️ Homepage zeigt beim Erstellen von Tag 4 bereits **707 Einwohner**; im Video laut Nutzer **702** und Kasse **635**.
+
+- **Strand** (11.11.): rundum breiter – die Wasserlinie liegt weiter draußen (Riffe, Steine, Steg-Ende, Wellen und Laufgrenze am Wasser mit verschoben). Steine liegen nie in Verlängerung eines Weges.
+- **Namensschilder der Mitarbeiter** (11.11.): überall einheitlich – kleine Schilder in der Farbe des Ladens, die Leitung zuerst mit ⭐, mittig auf dem Weg direkt unter dem Gelände (Eingangsseite). Sie überdecken weder Schild, Theke noch Gesichter; bei vielen Mitarbeitern zweizeilig.
