@@ -103,7 +103,7 @@ scene("s01", LILITA + "\n    " + PILL + "\n    " + PT + "\n" + FL + """
 """      <div id="s01-sad" data-layout-ignore></div>""" + "".join(f'<div class="s01-rn" id="s01-rn{i}" data-layout-ignore></div>' for i in range(40)) + """
       <div id="s01-fl" class="fl" data-layout-ignore></div>
       <div id="s01-hk">""" + "".join(f'<span id="s01-w{i}" class="{"y" if w in ("INSEL","GEKAUFT!") else ""}">{w}</span>{br}' for i, (w, _, br) in enumerate(HW)) + """</div>
-      <div id="s01-al" class="pl">🏠 Am Anfang: nur ich – ganz allein</div>
+      <div id="s01-al" class="pl">😢 Ganz allein auf meiner Insel</div>
       <div class="s01-rg" id="s01-rg0" data-layout-ignore></div><div class="s01-rg" id="s01-rg1" data-layout-ignore></div><div class="s01-rg" id="s01-rg2" data-layout-ignore></div>
       <div id="s01-c"><b id="s01-n">1</b>Bewohner 🏝️</div>""" + drops("s01-p", 22, 5, 'je + .1', 540, 760, "🏠", 560, 820)[0] + drops("s01-q", 16, 9, 'le', 540, 760, "✨", 520, 760)[0],
 """      const al = at("L1", "Am"), je = at("L1", "jetzt"), le = at("L1", "Leute");
@@ -129,13 +129,19 @@ scene("s01", LILITA + "\n    " + PILL + "\n    " + PT + "\n" + FL + """
 # s02 – größte Insel auf TikTok, ihr entscheidet
 scene("s02", LILITA + "\n    " + PILL + "\n    " + BIG + """
     #s02-h { top: 290px; font-size: 76px; background: #18a6b8; transform: rotate(-2deg); }
-    #s02-e { top: 460px; font-size: 48px; background: #7b3fe0; }""",
-"""      <div id="s02-h" class="big">🏆 DIE GRÖSSTE INSEL AUF TIKTOK</div>
+    #s02-e { top: 460px; font-size: 48px; background: #7b3fe0; }
+    #s02-ihr { position: absolute; left: 0; right: 0; top: 560px; text-align: center; font-family: "Lilita One", sans-serif; font-size: 300px; line-height: 1; color: #ffe14a; -webkit-text-stroke: 18px #2a1b12; paint-order: stroke fill; filter: drop-shadow(0 16px 0 rgba(0,0,0,.35)); opacity: 0; }""",
+"""      <div id="s02-h" class="big">🏆 DIE GRÖSSTE INSEL-WELT AUF TIKTOK</div>
+      <div id="s02-ihr" data-layout-ignore>IHR!</div>
       <div id="s02-e" class="pl">👑 Hier entscheidet ihr!</div>""",
 """      const gr = at("L2", "größte"), ih = at("L2", "ihr");
       tl.fromTo("#s02-h", { opacity: 0, scale: 3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(1.8)" }, gr - .25);
       tl.fromTo("#s02-e", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, ih - .2);
-      tl.to("#s02-e", { scale: 1.1, duration: .2, yoyo: true, repeat: 3, ease: "sine.inOut" }, ih + .2);""")
+      tl.to("#s02-e", { scale: 1.1, duration: .2, yoyo: true, repeat: 3, ease: "sine.inOut" }, ih + .2);
+      tl.fromTo("#s02-ihr", { opacity: 0, scale: 8, filter: "blur(14px) drop-shadow(0 16px 0 rgba(0,0,0,.35))" }, { opacity: 1, scale: 1, filter: "blur(0px) drop-shadow(0 16px 0 rgba(0,0,0,.35))", duration: .22, ease: "power3.in" }, ih - .12);
+      tl.to("#s02-stage", { x: 16, duration: .04, yoyo: true, repeat: 7, ease: "none" }, ih + .1);
+      tl.to("#s02-ihr", { scale: 1.12, duration: .15, yoyo: true, repeat: 3 }, ih + .15);
+      tl.to("#s02-ihr", { opacity: 0, scale: .6, duration: .25 }, ih + .95);""")
 
 # s0a – So einfach: folgen = eigene Hütte
 scene("s0a", LILITA + "\n    " + PILL + "\n" + FOLLOW + "\n    " + PT + """
@@ -184,10 +190,10 @@ scene("s0b", LILITA + "\n    " + PILL + """
 
 # s03 – Bäckerei, Live-Verlosung, Spoiler
 def col(names, w): return '<div id="s03-col">' + "".join(f'<div class="s03-r" id="s03-r{i}">@{n}</div>' for i, n in enumerate(names)) + "</div>"
-scene("s03", LILITA + "\n    " + PILL + "\n    " + BIG + "\n    " + CF_CSS.replace("top: 700px", "top: 640px") + """
+scene("s03", LILITA + "\n    " + PILL + "\n    " + BIG + "\n    " + CMT + "\n    " + CF_CSS.replace("top: 700px", "top: 640px") + """
     #s03-t { top: 290px; font-size: 56px; background: #e2560c; }
     #s03-v { top: 390px; font-size: 40px; background: #fff; color: #e2560c; }
-    #s03-fc { position: absolute; left: 150px; right: 150px; top: 470px; padding: 18px 22px 20px; border-radius: 28px; background: #1f1f1f; box-shadow: 0 0 0 4px #000, 0 12px 24px rgba(0,0,0,.4); display: flex; gap: 18px; font-family: "Inter", sans-serif; color: #fff; }
+    #s03-fc { top: 470px; left: 160px; width: 760px; }
     #s03-fc .av { width: 70px; height: 70px; border-radius: 50%; background: url(assets/img/fab_avatar.png) center/cover; flex: none; }
     #s03-fc .nm { font-size: 24px; color: #a8a8a8; font-weight: 600; } #s03-fc .tx { font-size: 28px; line-height: 1.28; margin-top: 2px; }
     #s03-dim { position: absolute; inset: 0; background: rgba(10,12,40,.55); }
@@ -204,7 +210,7 @@ scene("s03", LILITA + "\n    " + PILL + "\n    " + BIG + "\n    " + CF_CSS.repla
     #s03-lk b { display: block; line-height: 1; }""",
 f"""      <div id="s03-t" class="pl">🥐 NEU: Fabiennes Bäckerei!</div>
       <div id="s03-v" class="pl">✅ Ihr habt abgestimmt</div>
-      <div id="s03-fc"><div class="av"></div><div><div class="nm">Fabienne</div><div class="tx">Kann sehr gut Cookies und Zimtschnecken backen.</div></div></div>
+      <div id="s03-fc" class="cmt"><img src="assets/img/fab_comment.jpg" alt=""></div>
       <div id="s03-dim"></div>
       <div id="s03-lv" class="pl">🔴 LIVE: Job in der Bäckerei!</div>
       <div id="s03-box"><div id="s03-band"></div>{col(NS, WI)}<div id="s03-sh" data-layout-ignore></div></div>
@@ -269,7 +275,7 @@ scene("s05", PILL + "\n    " + CMT + """
     #s05-q { top: 960px; right: 120px; font-size: 40px; background: #e8467c; }
     #s05-vv { position: absolute; left: 110px; right: 230px; top: 1050px; display: flex; gap: 24px; }
     #s05-vv div { flex: 1; text-align: center; padding: 14px 0 18px; border-radius: 26px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 46px; color: #fff; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); }""",
-"""      <div id="s05-t" class="pl">🛥️ Private Yacht für Marie?</div>
+"""      <div id="s05-t" class="pl">🛥️ Private Yacht für @marie18034?</div>
       <div id="s05-c" class="cmt"><img src="assets/img/marie_comment.jpg" alt=""></div>
       <svg id="s05-y" viewBox="0 0 600 320" data-layout-ignore><g fill="none" stroke="#2a1b12" stroke-linejoin="round" stroke-linecap="round">
  <ellipse cx="300" cy="268" rx="290" ry="26" fill="#bfeefa" stroke="none" opacity=".7"/><path d="M40 262 q30 -12 60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0" stroke="#fff" stroke-width="7" opacity=".9"/>

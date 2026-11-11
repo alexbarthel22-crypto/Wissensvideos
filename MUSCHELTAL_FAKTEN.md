@@ -202,8 +202,8 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - **Spenden** an die Inselkasse (1, 10, alle, freier Betrag) für das nächste Bauprojekt; ab 100 gespendeten 🐚 Erfolg „Inselfreund“. Teilen-Bild mit unverändertem Muschelpass und Spenden-Band.
 - **Muschel-Shop:** noch leer („Psst … hier entsteht etwas Großes“).
 - **Bäckerei-Job (11.11.): @lona.js (Nr. 43) arbeitet ab jetzt in Fabiennes Bäckerei** (vom Nutzer festgelegt, im Video als Live-Verlosung mit Spielautomat gezeigt). ⚠️ Homepage: @lona.js als Team in die Bäckerei eintragen.
-- **Abstimmung in den Kommentaren (Tag 4): Soll Marie eine private Yacht bekommen (mit Partys)?** (TikTok-Name von Marie noch offen.)
-- ⚠️ Homepage zeigt beim Erstellen von Tag 4 bereits **707 Einwohner**; im Video laut Nutzer **702** und Kasse **635**.
+- **Abstimmung in den Kommentaren (Tag 4): Soll Marie eine private Yacht bekommen (mit Partys)?** (Marie = @marie18034.)
+- Tag 4 nennt **702 Bewohner** und Kasse **635** (vom Nutzer bestätigt); Homepage zeigte beim Erstellen bereits 707.
 
 - **Strand** (11.11.): rundum breiter – die Wasserlinie liegt weiter draußen (Riffe, Steine, Steg-Ende, Wellen und Laufgrenze am Wasser mit verschoben). Steine liegen nie in Verlängerung eines Weges.
 - **Namensschilder der Mitarbeiter** (11.11.): überall einheitlich als **Team-Plakette**, die an zwei Schnüren direkt unter dem Ladenschild hängt – cremefarbene Tafel mit Rand in Ladenfarbe, darauf kleine Namensschilder in Ladenfarbe, die Leitung zuerst mit ⭐ (bei vielen Mitarbeitern zweizeilig). Nicht auf dem Weg, nicht über Gesichtern; gehört zum Schild (dahinter ist nicht begehbar, Personen dahinter werden verdeckt). Döner-„OFFEN“ hängt dafür rechts neben der Plakette. Beim Açaí-Stand und der Werkstatt sind die Namen auf zwei kleine Tafeln links und rechts neben dem Schild verteilt, damit der Stand frei bleibt.

@@ -7,6 +7,9 @@ const dur=+durS,N=Math.round(dur*30);const b=await chromium.launch();
 const p=await b.newPage({viewport:{width:405,height:720},deviceScaleFactor:2.6667});
 await p.clock.install({time:new Date('2026-11-11T14:10:00+01:00')});await p.goto('file://'+site+'?zeit=tag&wetter=sonne');await p.clock.runFor(7000);await p.clock.pauseAt(new Date('2026-11-11T14:11:00+01:00'));
 await p.addStyleTag({content:'body *{visibility:hidden!important}canvas#map{visibility:visible!important}'});await p.evaluate(()=>cancelAnimationFrame(fly));
+await p.evaluate(()=>{petsStep();let sd=11;const R=()=>(sd=(sd*16807)%2147483647)/2147483647;
+ for(const a of PETS.list){const opts=[[1,0],[-1,0],[0,1],[0,-1]].filter(([dk,dm])=>rValid(a.v,a.k+dk,a.m+dm));if(!opts.length)continue;const [dk,dm]=opts[(R()*opts.length)|0];
+  const [x0,y0]=rNode(a.v,a.k,a.m),[x1,y1]=rNode(a.v,a.k+dk,a.m+dm),t=R();a.x=x0+(x1-x0)*t;a.y=y0+(y1-y0)*t;a.pause=R()*3;}});
 const G=await p.evaluate(()=>{const a=fitAll(),m=fitMain();const g=n=>{const x=GEB.find(q=>q.typ===n);return{x:x.cx,y:x.cy}};const f=n=>{const q=PEOPLE.find(q=>q.name.replace('@','')===n);return{x:q.p.x,y:q.p.y}};
  const an=f('anton.van11'),la=f('laura.ngynn');const last=PEOPLE.filter(q=>q.p&&q.isl===ISL[1]).sort((a,b)=>b.nr-a.nr)[0];window.__LAST=last;
  const geb=GEB.filter(g=>g.v===MAIN),bau=BAU.filter(b=>b.v===MAIN),st=.26/Math.max(1,geb.length+bau.length+1);geb.forEach((g,i)=>g.at=.73+st*(i+1));bau.forEach((b,i)=>b.at=.73+st*(geb.length+i+1));
@@ -29,7 +32,7 @@ const ST=t=>{const e=(x)=>x<0?0:x>1?1:x;let gk=null,gv=0,lim=G.N,flt=0,nm=0;
  else if(t<KE){const k=e((t-GE)/(KE-GE));lim=500+Math.round((G.N-500)*k*k);}
  if(t>=L.L2b.start-.5&&t<L.L2b.end+.5){lim=t<at('L2b','Folg')+.15?G.last.nr-1:G.last.nr;nm=1;}return [gk,gv,lim,flt,nm];};
 const shot=async(t,f)=>{const c=cam(t),z=ST(t);await p.evaluate(([c,z])=>{const [gk,gv,lim,flt,nm]=z;GROWK=gk;GROWV=gv?MAIN:null;growing=gk!=null;limit=lim;
- window.__LAST.name=nm?'@dein_name':(window.__LAST.orig||(window.__LAST.orig=window.__LAST.name));if(!nm&&window.__LAST.orig)window.__LAST.name=window.__LAST.orig;
+ const H1=PEOPLE.find(q=>q.nr===1);if(H1){H1.orig=H1.orig||H1.name;H1.name=lim===1?'\u200b':H1.orig;}window.__LAST.name=nm?'@dein_name':(window.__LAST.orig||(window.__LAST.orig=window.__LAST.name));if(!nm&&window.__LAST.orig)window.__LAST.name=window.__LAST.orig;
  document.getElementById('map').style.filter=flt?`grayscale(${.85*flt}) brightness(${1-.25*flt}) contrast(${1-.1*flt})`:'';cam.x=c[0];cam.y=c[1];cam.z=c[2];draw();},[c,z]);await p.clock.runFor(33.333);await p.screenshot({path:f,type:'jpeg',quality:92});};
 fs.mkdirSync(out,{recursive:true});
 if(test){for(const t of test.split(',').map(Number))await shot(t,`${out}/t${t}.jpg`);}else for(let i=0;i<N;i++)await shot(i/30,`${out}/f${String(i).padStart(5,'0')}.jpg`);
