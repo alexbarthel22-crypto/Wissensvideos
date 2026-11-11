@@ -215,3 +215,4 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - **Passanten vor Hütten-Namensschildern** (11.11.): Läuft ein Passant (zu Fuß, Rad, Roller, Moped …) auf dem Weg direkt vor dem Namensschild einer Hütte, steht er im Vordergrund – das Schild liegt dahinter. Die eigenen Namen der Passanten bleiben oben sichtbar.
 - **Bauschild antippen** (11.11.): Tippt man auf der Karte auf das gelbe Schild eines Bauprojekts (Hotel Sandkorn, Boots-Anlegestelle, Tierheim Pfotenkuss) – ob beim Erkunden oder nicht –, öffnet sich die Seite „Aktuelle Bauprojekte“.
 - **Nachbarn-Wunsch** (11.11.): @luisedbr.11 + @mateo.fhl – greift, sobald beide folgen (@mateo.fhl ist noch nicht eingezogen).
+- **Nachbarn-Wunsch** (11.11.): @m_hmb1307 + @marlene_hmb0 – greift, sobald beide folgen (beide noch nicht eingezogen).
