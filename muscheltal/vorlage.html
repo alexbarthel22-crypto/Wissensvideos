@@ -315,7 +315,7 @@ footer a{color:var(--soft)}
 .qi .go{flex:none;border:2px solid #2a1b12;border-radius:10px;padding:3px 7px;font:800 12px inherit;font-family:inherit;background:#fff;white-space:nowrap;cursor:pointer}
 .qbar{height:12px;border-radius:99px;background:#efe3c8;border:2px solid #2a1b12;overflow:hidden;margin:10px 0 5px}.qbar i{display:block;height:100%;background:linear-gradient(90deg,#2fb3a0,#7fe0c8)}.qft{display:flex;justify-content:space-between;font-size:12.5px;font-weight:800;color:#6a5a40}
 .qact{display:flex;flex-direction:column;align-items:center;width:100%;margin:0 0 10px;padding:10px 12px;border:3px solid #2a1b12;border-radius:18px;background:#fff;box-shadow:0 4px 0 #2a1b12;font-family:inherit;animation:qpop .35s ease-out;cursor:pointer;pointer-events:auto}.qact b{font-size:16px;font-weight:900;text-align:center;line-height:1.2;color:#2a1b12}.qact span{font-size:12px;font-weight:800;color:#2a8a55;margin-top:1px}@keyframes qpop{from{transform:scale(.6);opacity:0}to{transform:scale(1);opacity:1}}
-.mktoast{position:absolute;left:50%;bottom:118px;transform:translateX(-50%) translateY(8px);z-index:26;background:rgba(42,27,18,.82);color:#ffd23f;border-radius:14px;padding:7px 14px;font-weight:900;font-size:14px;white-space:nowrap;opacity:0;transition:opacity .3s,transform .3s;pointer-events:none}.mktoast.on{opacity:1;transform:translateX(-50%)}
+.mktoast{position:absolute;left:50%;bottom:118px;max-width:calc(100% - 24px);overflow:hidden;text-overflow:ellipsis;transform:translateX(-50%) translateY(8px);z-index:26;background:rgba(42,27,18,.82);color:#ffd23f;border-radius:14px;padding:7px 14px;font-weight:900;font-size:14px;white-space:nowrap;opacity:0;transition:opacity .3s,transform .3s;pointer-events:none}.mktoast.on{opacity:1;transform:translateX(-50%)}
 </style>
 </head>
 <body>
@@ -2737,23 +2737,27 @@ const MKQ={
  acai:{ic:'🫐',t:'Açaí-Bowl holen',ort:'Açaí-Stand',hint:'An die Theke vom Açaí-Stand gehen',btn:'🫐 Açaí-Bowl mitnehmen',em:['🫐','🍓','💜','🍌','🫐']},
  doener:{ic:'🥙',t:'Döner holen',ort:'Dönerbude',hint:'An die Theke der Dönerbude gehen',btn:'🥙 Döner mit alles mitnehmen',em:['🥙','🌶️','🧅','🍅','🥙']},
  baeckerei:{ic:'🥐',t:'Zimtschnecken holen',ort:'Bäckerei',hint:'An die Theke der Bäckerei gehen',btn:'🥐 Fabiennes berühmte Zimtschnecken mitnehmen',em:['🥐','🥨','🤍','🧁','🍞']},
- bar:{ic:'🍹',t:'Cocktail an der Bar trinken',ort:'Strandbar',hint:'An die Bar der Strandbar gehen',btn:'🍹 Einen „Sex on the Muschel Beach“ trinken',em:['🍹','🌴','🐚','🍍','🍹']},
+ bar:{ic:'🍹',t:'Einen „Dirty Muschel“ an der Bar trinken',ort:'Strandbar',hint:'An die Bar der Strandbar gehen',btn:'🍹 Einen „Dirty Muschel“ trinken',em:['🍹','🌴','🐚','🍍','🍹']},
  steg:{ic:'💃',t:'Auf dem Steg tanzen',ort:'Strandbar',hint:'Auf den Steg der Strandbar gehen',btn:'💃 Auf dem Steg tanzen',em:['💃','🎶','✨','🕺','🎶']},
- werkstatt:{ic:'🛵',t:'Moped reparieren lassen',ort:'Moped-Werkstatt',hint:'Zum Rolltor der Werkstatt gehen',btn:'🛵 Moped reparieren lassen',em:['🛵','🔧','✨','⚙️','🔩']},
+ werkstatt:{ic:'🛵',t:'Moped reparieren lassen',ort:'Moped-Werkstatt',hint:'Mit dem 🛵 Moped zum Rolltor der Werkstatt fahren',btn:'🛵 Moped reparieren lassen',em:['🛵','🔧','✨','⚙️','🔩']},
  palast:{ic:'🏰',t:'Audienz im Muschelpalast',ort:'Muschelpalast',hint:'Zum Eingang des Muschelpalasts gehen',btn:'🏰 Um eine Audienz bitten',em:['👑','✨','🐚','💎','✨']},
  villa:{ic:'🏖️',t:'An der Strandvilla klingeln',ort:'Strandvilla',hint:'Zum Tor der Strandvilla gehen',btn:'🔔 Bei der Villa klingeln',em:['🔔','🌺','🏖️','✨','🌴']},
  bau:{ic:'🏗️',t:'Auf der Baustelle helfen',ort:'',hint:'Zum Bauzaun der Baustelle gehen',btn:'🧱 Den Bauarbeitern Wasser bringen',em:['🧱','💧','🏗️','💪','✨']},
+ beet:{ic:'💧',t:'Beim Gießen der Beete vorm Palast helfen',ort:'',hint:'An eines der beiden Blumenbeete vor dem Palast gehen',btn:'💧 Beete gießen',em:['💧','🌷','💦','🌸','🌼']},
+ pass:{ic:'🪪',t:'Schau dir den Muschelpass eines anderen Users an',ort:'',hint:'Beim Erkunden eine Person oder Hütte antippen'},
  bm:{ic:'👑',t:'Der Bürgermeisterin Hallo sagen',ort:'',hint:'Auf dem Muschelplatz die Bürgermeisterin antippen',btn:'',em:['👑','👋','✨','🐚','💛']}};
 const mkLeiter=o=>PEOPLE.filter(p=>p.ort===o&&p.beruf==='Leitung').map(p=>p.name)[0]||'';
 function mkQDef(id){if(id.startsWith('hut:')){const n=id.slice(4);return{ic:'🏠',t:'Besuche <b>'+esc(n)+'</b> an der Hütte',hint:'Hütte antippen und den Muschelpass ansehen',hut:n};}
- const q=MKQ[id]||{ic:'❓',t:id,hint:''};let wer='';if(id==='bm'){const m=PEOPLE.find(p=>/bürgermeister/i.test(p.beruf||''));wer=m?m.name:'';}else if(id==='bau'){const b=mkProjekt();return{...q,t:'Hilf mit beim Bau: '+(b?esc(b.emoji+' '+b.name):'Baustelle'),bau:b};}else if(q.ort)wer=id==='steg'?(PEOPLE.find(p=>p.ort==='Strandbar'&&p.beruf==='Team')||{}).name||'':mkLeiter(q.ort);
+ const q=MKQ[id]||{ic:'❓',t:id,hint:''};let wer='';if(id==='bm'){const m=PEOPLE.find(p=>/bürgermeister/i.test(p.beruf||''));wer=m?m.name:'';}else if(id==='beet'){const m=PEOPLE.find(p=>p.beruf==='Palast-Leitung');return{...q,t:m?'Hilf <b>'+esc(m.name)+'</b> beim Gießen der Beete vorm Palast':q.t};}else if(id==='bau'){const b=mkProjekt();return{...q,t:'Hilf mit beim Bau: '+(b?esc(b.emoji+' '+b.name):'Baustelle'),bau:b};}else if(q.ort)wer=id==='steg'?(PEOPLE.find(p=>p.ort==='Strandbar'&&p.beruf==='Team')||{}).name||'':mkLeiter(q.ort);
  return{...q,t:q.t+(wer?' <i>bei '+esc(wer)+'</i>':'')};}
 function mkVorschlag(me){const h=mkTag(),r=mkR(mkH(me.name+h));const pick=a=>a[Math.floor(r()*a.length)];const own=me.ort||'';
- const A=['acai','doener','baeckerei','bar','steg','werkstatt'].filter(k=>MKQ[k].ort!==own||!own),B=['palast','villa','bm'].concat(new Date().getHours()>=6&&new Date().getHours()<22&&mkProjekt()?['bau']:[]).filter(k=>!(k==='palast'&&/palast/i.test(own)));
- const H=PEOPLE.filter(p=>p.p&&!p.gb&&p!==me&&p.nr<=limit&&p.isl&&p.isl.open);const hut=H.length?'hut:'+pick(H).name:'bm';return[pick(A),pick(B),hut];}
+ const A=['acai','doener','baeckerei','bar','steg','werkstatt'].filter(k=>MKQ[k].ort!==own||!own),B=['palast','villa','bm','beet'].concat(new Date().getHours()>=6&&new Date().getHours()<22&&mkProjekt()?['bau']:[]).filter(k=>!(k==='palast'&&/palast/i.test(own)));
+ const H=PEOPLE.filter(p=>p.p&&!p.gb&&p!==me&&p.nr<=limit&&p.isl===me.isl&&p.isl.open);const hut=H.length?'hut:'+pick(H).name:'pass';return[pick(A),pick(B),r()<.5?hut:'pass'];}
 async function mkQuests(){const me=mkMe();if(!me)return null;const r=await mk('quests',{vorschlag:mkVorschlag(me)});if(r&&r.ok)MK.quests=r.quests;mkChip();mkCard();return MK.quests;}
 // Ziele (Weltkoordinaten) und Bereiche, in denen der Knopf erscheint
 function mkZiel2(id){const geb=t=>GEB.find(g=>g.typ===t);
+ if(id==='beet'){const Z=[-1,1].map(s=>mkNah(s*46*PAL_S,55*PAL_S+3,{r:9,beet:1}));return Z.sort((a,b)=>Math.hypot(a.x-WK.x,a.y-WK.y)-Math.hypot(b.x-WK.x,b.y-WK.y))[0];}
+ if(id==='pass')return null;
  if(id==='acai'){const g=geb('acai');return g&&{x:g.cx-4,y:g.cy+6.5,r:5,g};}
  if(id==='baeckerei'){const g=geb('baeckerei');return g&&{x:g.cx,y:g.cy+0.5,r:5,g};}
  if(id==='doener'){const g=geb('doener');return g&&{x:g.cx-8,y:g.cy+9.5,r:6,g};}
@@ -2768,7 +2772,7 @@ function mkNah(x,y,o){if(canWalk(x,y))return{x,y,...o};for(let r=2;r<40;r+=2)for
 function mkChip(){let c=$('mkchip');if(!WK.on||!mkOwn(WK.me)||!MK.quests){if(c)c.hidden=true;return;}if(!c){c=document.createElement('button');c.id='mkchip';c.type='button';c.className='qchip';$('hero').appendChild(c);c.onclick=mkSheet;}
  const n=(MK.d&&MK.d.questsDone||[]).length,s=(MK.d&&MK.d.shells||[]).length;c.hidden=false;c.innerHTML='📋 Aufgaben<span class="n">'+n+'/'+MK.quests.length+'</span>'+(s?'<span class="n2">🐚 '+s+'/4</span>':'');}
 function mkSheet(){const Q=MK.quests||[],qd=MK.d&&MK.d.questsDone||[],done=qd.length;let e=$('mksheet');if(!e){e=document.createElement('div');e.id='mksheet';e.className='qsheet';$('hero').appendChild(e);}
- e.hidden=false;e.innerHTML='<div class="grip"></div><button class="mkx" type="button" id="mkqx">×</button><h3>📋 Aufgaben für heute</h3><div class="mksub">Beim Erkunden erledigen · neue ab 0:00 Uhr</div>'+Q.map((id,i)=>{const q=mkQDef(id),ok=qd.includes(i);return'<div class="qi'+(ok?' ok':'')+'"><span class="ic">'+q.ic+'</span><span class="tx"><span class="t1">'+q.t+'</span><small>'+(ok?MKCK+'erledigt':esc(q.hint||''))+'</small></span><b>+5&nbsp;🐚</b>'+(ok?'':'<button class="go" type="button" data-qi="'+i+'">📍 Hin da!</button>')+'</div>';}).join('')
+ e.hidden=false;e.innerHTML='<div class="grip"></div><button class="mkx" type="button" id="mkqx">×</button><h3>📋 Aufgaben für heute</h3><div class="mksub">Beim Erkunden erledigen · neue ab 0:00 Uhr</div>'+Q.map((id,i)=>{const q=mkQDef(id),ok=qd.includes(i);return'<div class="qi'+(ok?' ok':'')+'"><span class="ic">'+q.ic+'</span><span class="tx"><span class="t1">'+q.t+'</span><small>'+(ok?MKCK+'erledigt':esc(q.hint||''))+'</small></span><b>+5&nbsp;🐚</b>'+(ok||!mkZiel2(id)?'':'<button class="go" type="button" data-qi="'+i+'">📍 Hin da!</button>')+'</div>';}).join('')
   +'<div class="qbar"><i style="width:'+(Q.length?done/Q.length*100:0)+'%"></i></div><div class="qft"><span>'+done+' von '+Q.length+' geschafft</span><span>'+(done>=3?'🎁 Bonus +5&nbsp;🐚 erhalten!':'🎁 alle 3: +5&nbsp;🐚 Bonus')+'</span></div>';
  $('mkqx').onclick=()=>{e.hidden=true;};e.querySelectorAll('[data-qi]').forEach(b=>b.onclick=()=>{e.hidden=true;mkHin(+b.dataset.qi);});}
 // „Hin da!“: Route über begehbare Flächen, als feine Linie im Hintergrund
@@ -2777,7 +2781,7 @@ function mkRoute(x0,y0,x1,y1){const st=3,X0=Math.min(x0,x1)-60,Y0=Math.min(y0,y1
  const si=Math.round((x0-X0)/st),sj=Math.round((y0-Y0)/st),ei=Math.round((x1-X0)/st),ej=Math.round((y1-Y0)/st),Q=[id(si,sj)];prev[Q[0]]=Q[0];
  for(let h=0;h<Q.length;h++){const k=Q[h],i=k%nx,j=(k/nx)|0;if(Math.hypot(i-ei,j-ej)<1.5){const pts=[];let c=k;while(c!==prev[c]){pts.unshift([X0+(c%nx)*st,Y0+((c/nx)|0)*st]);c=prev[c];}pts.unshift([x0,y0]);pts.push([x1,y1]);const out=[pts[0]];for(let a=1;a<pts.length-1;a++){const p0=out[out.length-1],p1=pts[a],p2=pts[a+1];if((p1[0]-p0[0])*(p2[1]-p1[1])!==(p1[1]-p0[1])*(p2[0]-p1[0]))out.push(p1);}out.push(pts[pts.length-1]);return out;}
   for(const [a,b] of[[1,0],[-1,0],[0,1],[0,-1]]){const ii=i+a,jj=j+b;if(ii<0||jj<0||ii>=nx||jj>=ny)continue;const kk=id(ii,jj);if(prev[kk]>=0||!okAt(ii,jj))continue;prev[kk]=k;Q.push(kk);}}return[[x0,y0],[x1,y1]];}
-function mkHin(i){const id=(MK.quests||[])[i];const z=id&&mkZiel2(id);if(!z)return;MK.hin={i,z,t:0};mkHinUpd(true);const q=mkQDef(id);mkToast(q.ic+' Folge der Linie'+(z.r?' bis '+(id==='steg'?'auf den Steg':id==='bm'?'zur Bürgermeisterin':'an die Theke'):' bis zur Hütte'));}
+function mkHin(i){const id=(MK.quests||[])[i];const z=id&&mkZiel2(id);if(!z)return;MK.hin={i,z,t:0};mkHinUpd(true);const q=mkQDef(id);mkToast(q.ic+' Folge der Linie'+(z.r?' bis '+(id==='steg'?'auf den Steg':id==='bm'?'zur Bürgermeisterin':id==='beet'?'zum Beet':id==='werkstatt'?'zum Rolltor – mit dem 🛵 Moped':id==='bau'?'zum Bauzaun':id==='villa'?'zum Tor':id==='palast'?'zum Eingang':'an die Theke'):' bis zur Hütte'));}
 function mkHinUpd(force){const h=MK.hin;if(!h||!WK.on)return;const t=performance.now();if(!force&&t-h.t<900)return;h.t=t;const z=mkZiel2(MK.quests[h.i])||h.z;h.z=z;const L=WK.L||{h:1};h.pts=mkRoute(WK.x,WK.y+4.4*(L.h||1),z.x,z.y);}
 // feine, transparente Linie: auf dem Boden (vor Gebäuden gezeichnet) und auf Ladengeländen über dem Boden, unter allen Gegenständen
 function MKLINE(c,g){const h=MK.hin;if(!h||!h.pts||!WK.on)return;c.save();world(c);if(g){c.beginPath();c.rect(g.x0,g.y0,g.x1-g.x0,g.y1-g.y0);c.clip();}
@@ -2786,17 +2790,18 @@ function MKLINE(c,g){const h=MK.hin;if(!h||!h.pts||!WK.on)return;c.save();world(
 const MKIN=(c,g)=>{if(MK.hin&&MK.hin.z&&MK.hin.z.g===g)MKLINE(c,g);};
 // an der Theke: Knopf einblenden
 function mkNahe(){if(!WK.on||!mkOwn(WK.me)||!MK.quests)return;const qd=MK.d&&MK.d.questsDone||[];let hit=-1;
- MK.quests.forEach((id,i)=>{if(hit>=0||qd.includes(i)||id==='bm'||id.startsWith('hut:'))return;const z=mkZiel2(id);if(!z)return;const L=WK.L||{h:1},fy=WK.y+4.4*(L.h||1);
-  if(id==='steg'){const g=z.g,d=g.dir||1,sx=(g.sea-g.cx)*d,lx=(WK.x-g.cx)*d,ly=WK.y-g.cy;if(lx>sx-8&&Math.abs(ly)<27)hit=i;return;}if(Math.hypot(WK.x-z.x,fy-z.y)<z.r)hit=i;});
+ let hinweis=null;MK.quests.forEach((id,i)=>{if(hit>=0||qd.includes(i)||id==='bm'||id==='pass'||id.startsWith('hut:'))return;const z=mkZiel2(id);if(!z)return;const L=WK.L||{h:1},fy=WK.y+4.4*(L.h||1);
+  if(id==='steg'){const g=z.g,d=g.dir||1,sx=(g.sea-g.cx)*d,lx=(WK.x-g.cx)*d,ly=WK.y-g.cy;if(lx>sx-8&&Math.abs(ly)<27)hit=i;return;}if(Math.hypot(WK.x-z.x,fy-z.y)<z.r){if(id==='werkstatt'&&WK.mode!=='moped'){hinweis='moped';return;}if(id==='bau'&&bauRuhe()){hinweis='bau';return;}hit=i;}});
+ const mb=$('walkmode');if(mb)mb.classList.toggle('wob',hinweis==='moped');if(hinweis&&MK.hw!==hinweis){MK.hw=hinweis;mkToast(hinweis==='moped'?'🛵 Moped reparieren geht nur mit dem Moped – steig auf!':'🏗️ Die Baustelle ist von 6 bis 22 Uhr geöffnet – komm dann wieder!');}if(!hinweis)MK.hw=null;
  let b=$('mkact');if(hit<0){if(b)b.remove();MK.nahe=-1;return;}if(MK.nahe===hit&&b)return;MK.nahe=hit;const q=mkQDef(MK.quests[hit]);if(b)b.remove();
  b=document.createElement('button');b.id='mkact';b.type='button';b.className='qact';b.innerHTML='<b>'+(MKQ[MK.quests[hit]]||{}).btn+'</b><span>Aufgabe · +5 🐚</span>';$('walkui').prepend(b);b.onclick=()=>mkErledigt(hit);}
 async function mkErledigt(i){const b=$('mkact');if(b){b.disabled=true;}const id=MK.quests[i],r=await mk('quest',{i});if(!r||r.fehler){if(b)b.disabled=false;mkToast('Bitte nochmal versuchen');return;}
  if(b)b.remove();MK.nahe=-1;if(MK.hin&&MK.hin.i===i)MK.hin=null;await mkStand();mkChip();const q=MKQ[id]||{em:['✨','🐚','💛','✨','🐚']},z=mkZiel2(id);
  MK.fx={x:WK.x,y:WK.y-2,t0:performance.now(),em:q.em||['✨','🐚','💛']};
- const g=z&&z.g,L=g?TAPS.find(t=>t[2]&&t[2].ort===g.name&&t[2].beruf==='Leitung'):id==='bm'?TAPS.find(t=>t[2]&&/bürgermeister/i.test(t[2].beruf||'')):null;if(L)MK.bub={p:L[2],t0:performance.now()};
- mkToast('✅ '+(mkQDef(id).t.replace(/<[^>]+>/g,'').replace(/ bei @.*/,''))+' · +5 🐚'+(r.bonus?' · 🎁 +5 Bonus':''));mkCard();}
+ const g=z&&z.g,L=g?TAPS.find(t=>t[2]&&t[2].ort===g.name&&t[2].beruf==='Leitung'):id==='bm'?TAPS.find(t=>t[2]&&/bürgermeister/i.test(t[2].beruf||'')):id==='beet'?TAPS.find(t=>t[2]&&t[2].beruf==='Palast-Leitung'):null;if(L)MK.bub={p:L[2],t0:performance.now()};
+ mkToast('✅ Aufgabe geschafft · +5 🐚'+(r.bonus?' · 🎁 +5 Bonus':''));mkCard();}
 // Hütte bzw. Bürgermeisterin antippen erfüllt die Aufgabe (Muschelpass öffnet sich wie gewohnt)
-async function mkTipp(p,walk){if(!WK.on||!mkOwn(WK.me)||!MK.quests)return;const qd=MK.d&&MK.d.questsDone||[];const i=MK.quests.findIndex((id,k)=>!qd.includes(k)&&((walk==='huette'&&id==='hut:'+p.name)||(id==='bm'&&/bürgermeister/i.test(p.beruf||''))));if(i<0)return;
+async function mkTipp(p,walk){if(!WK.on||!mkOwn(WK.me)||!MK.quests)return;const qd=MK.d&&MK.d.questsDone||[];const i=MK.quests.findIndex((id,k)=>!qd.includes(k)&&((walk==='huette'&&id==='hut:'+p.name)||(id==='pass'&&p!==WK.me)||(id==='bm'&&/bürgermeister/i.test(p.beruf||''))));if(i<0)return;
  const r=await mk('quest',{i});if(!r||r.fehler)return;if(MK.hin&&MK.hin.i===i)MK.hin=null;await mkStand();mkChip();mkToast('✅ Aufgabe geschafft · +5 🐚'+(r.bonus?' · 🎁 +5 Bonus':''));}
 
 // ---------- schwebende Muscheln: höchstens 4 am Tag, zufällig auf begehbaren Stellen ----------
