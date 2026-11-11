@@ -2380,7 +2380,7 @@ function draw(){
  // Hütte kurz aufblinken lassen (nach „Zu …s Hütte“ im Muschelpass)
  if(HFLASH){const u=(performance.now()-HFLASH.t0)/1100;if(u>1)HFLASH=null;else if(u>0){const q=HFLASH.q,a=Math.pow(Math.sin(Math.PI*u),2)*.32,px=S*cam.z;const m=c.getTransform(),A=m.transformPoint({x:q.p.x-13,y:q.p.y-17}),B2=m.transformPoint({x:q.p.x+13,y:q.p.y+12}),X=Math.floor(A.x),Y=Math.floor(A.y),w=Math.ceil(B2.x-A.x)+2,h=Math.ceil(B2.y-A.y)+2;
    if(w>2&&h>2&&w<3000&&h<3000){TOC.width=w;TOC.height=h;const o=TOC.getContext('2d');o.setTransform(m.a,m.b,m.c,m.d,m.e-X,m.f-Y);hutBody(o,q.isl,q,px,false,false);o.setTransform(1,0,0,1,0,0);o.globalCompositeOperation='source-atop';o.fillStyle=`rgba(255,250,215,${a})`;o.fillRect(0,0,w,h);o.globalCompositeOperation='source-over';c.save();c.setTransform(1,0,0,1,0,0);c.globalAlpha=1;c.drawImage(TOC,X,Y);c.restore();
-    c.save();c.globalCompositeOperation='lighter';const gg=c.createRadialGradient(q.p.x,q.p.y-2,1,q.p.x,q.p.y-2,18);gg.addColorStop(0,`rgba(255,240,170,${a*.6})`);gg.addColorStop(1,'rgba(255,240,170,0)');c.fillStyle=gg;c.beginPath();c.arc(q.p.x,q.p.y-2,18,0,TAU);c.fill();c.restore();hutsFront(c,q.p.x,q.p.y+.6);}}}
+    c.save();c.globalCompositeOperation='lighter';const gg=c.createRadialGradient(q.p.x,q.p.y-2,1,q.p.x,q.p.y-2,18);gg.addColorStop(0,`rgba(255,240,170,${a*.6})`);gg.addColorStop(1,'rgba(255,240,170,0)');c.fillStyle=gg;c.beginPath();c.arc(q.p.x,q.p.y-2,18,0,TAU);c.fill();c.restore();hutsFront(c,q.p.x,q.p.y+.6,nightLevel());}}}
  drawWalker(c,z);
  // Namen ganz oben: nichts (Bäume, Palast, Wolken, Nacht) darf sie verdecken
  const GSP=sel&&sel.p&&(sel.gb||REDUCED||T-selT<2)?standSpot(sel):null,near=(x,y)=>GSP&&Math.abs(x-GSP.x)<16&&y>GSP.y-26&&y<GSP.y+10;
@@ -2393,7 +2393,7 @@ function draw(){
    for(const [x,d] of[[xa,1],[xb,-1]]){c.fillStyle='#8a5a2b';c.beginPath();c.arc(x,y,.42,d>0?-Math.PI/2:Math.PI/2,d>0?Math.PI/2:Math.PI*1.5);c.fill();}
    c.fillStyle='#fff';c.strokeStyle=NBW_COL;c.lineWidth=.35;c.beginPath();c.arc(mx,y,1.9,0,TAU);c.fill();c.stroke();c.font='2.2px '+FONT;c.textAlign='center';c.textBaseline='middle';c.fillText('🤝',mx,y+.15);c.textBaseline='alphabetic';c.font='800 2.35px '+FONT;}
   // Passanten auf dem Weg vor einem Hütten-Namensschild stehen im Vordergrund (Schild dahinter)
-  if(LR.length&&FIGS.length){drawMover.re=1;for(const f of FIGS){const [w,fx,fy]=f;for(const r of LR){if(fx>r[0]-2.2&&fx<r[2]+2.2&&fy+4.4>r[1]+1&&fy-11<r[3]){drawMover(ctx,...f);break;}}}drawMover.re=0;}
+  if(LR.length&&FIGS.length){drawMover.re=1;const tn=nightLevel();for(const f of FIGS){const [w,fx,fy,dir,vert,mode]=f;for(const r of LR){if(fx>r[0]-2.2&&fx<r[2]+2.2&&fy+4.4>r[1]+1&&fy-11<r[3]){tintDraw(ctx,tn,fx-6,fy-14,fx+6,fy+6,o=>drawMover(o,{...w,noOcc:1},fx,fy,dir,vert,mode));break;}}}drawMover.re=0;}
   if(WK.on&&WK.lblHit){WK.lblHit=0;walkerFig(c,1);}
   teamLayout(c);if(NAMES.length){c.font='800 2.8px '+FONT;c.textAlign='center';for(const [nm0,x,ly,bg,fs,tc] of [...NAMES.filter(n=>n[3]!=='#e8467c'),...NAMES.filter(n=>n[3]==='#e8467c')]){if(nm0!==(sel&&sel.name)&&near(x,ly))continue;let f=fs||2.8;const nm=nm0;c.font='800 '+f+'px '+FONT;{const mw=fs?16:24,tw1=c.measureText(nm).width;if(tw1>mw){f=f*mw/tw1;c.font='800 '+f+'px '+FONT;}}const tw=c.measureText(nm).width+f*1.07;c.fillStyle=bg||'rgba(42,27,18,.85)';c.beginPath();c.roundRect(x-tw/2,ly,tw,f*1.5,f*.75);c.fill();c.fillStyle=tc||'#fff';c.fillText(nm,x,ly+f*1.1);}}
  if(z*S>4)for(const b of BAU)if(bauOn(b)&&visR(b.steg?b.sx:b.cx,b.steg?b.sy:b.y0,60))drawBauSign(c,b);
