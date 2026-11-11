@@ -216,3 +216,4 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - **Bauschild antippen** (11.11.): Tippt man auf der Karte auf das gelbe Schild eines Bauprojekts (Hotel Sandkorn, Boots-Anlegestelle, Tierheim Pfotenkuss) – ob beim Erkunden oder nicht –, öffnet sich die Seite „Aktuelle Bauprojekte“.
 - **Nachbarn-Wunsch** (11.11.): @luisedbr.11 + @mateo.fhl – greift, sobald beide folgen (@mateo.fhl ist noch nicht eingezogen).
 - **Nachbarn-Wunsch** (11.11.): @m_hmb1307 + @marlene_hmb0 – greift, sobald beide folgen (beide noch nicht eingezogen).
+- **Regel Nachbarn:** Wohnt einer der beiden auf der Haupt-Insel, zieht der andere dazu (dafür zieht der zuletzt auf die Haupt-Insel Gekommene ohne Job/Gebäude auf die andere Insel). Wohnen beide nicht auf der Haupt-Insel, zieht keiner auf die Haupt-Insel – sie werden auf ihrer Insel Nachbarn.
