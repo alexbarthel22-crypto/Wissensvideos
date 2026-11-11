@@ -758,7 +758,7 @@ const YL=1.32;
 function yachtPos(k,t){const Y=YACHT;if(k>0){const [sx,sy]=Y.spots[k%4];return{x:sx*YL,y:sy,mv:false,dir:1};}
  const A=-20*YL,B=18.6*YL,len=B-A,dur=len/GV,P=7,per=2*(P+dur);let u=((t%per)+per)%per;
  if(u<P)return{x:B,y:-8.6,mv:false,dir:1,end:'heck'};u-=P;if(u<dur)return{x:B-u*GV,y:-8.6,mv:true,dir:-1};u-=dur;if(u<P)return{x:A,y:-8.6,mv:false,dir:-1,end:'bug'};u-=P;return{x:A+u*GV,y:-8.6,mv:true,dir:1};}
-function drawYacht(c,nl,z){const Y=YACHT,t=REDUCED?0:T,day=nl<.5,bob=Math.sin(t*1.1)*.5,rk=Math.sin(t*.8)*.012;c.save();c.translate(Y.cx,Y.cy);c.save();c.scale(YL,1);
+function drawYacht(c,nl0,z){const nl=Math.max(nl0,.6),Y=YACHT,t=REDUCED?0:T,day=false,bob=Math.sin(t*1.1)*.5,rk=Math.sin(t*.8)*.012;c.save();c.translate(Y.cx,Y.cy);c.save();c.scale(YL,1);
  // Wasser: Schatten, Wellenringe, nachts türkises Unterwasserlicht
  if(!day){const g=c.createRadialGradient(0,6,2,0,6,44);g.addColorStop(0,`rgba(60,230,255,${.55*nl})`);g.addColorStop(1,'rgba(60,230,255,0)');c.fillStyle=g;c.beginPath();c.ellipse(0,6,46,14,0,0,TAU);c.fill();}
  c.fillStyle='rgba(0,40,60,.22)';c.beginPath();c.ellipse(1,9,38,5,0,0,TAU);c.fill();
@@ -1694,8 +1694,10 @@ function acaiArch(c,H){c.strokeStyle='#c79a5e';c.lineWidth=.8;c.beginPath();c.mo
 function acaiTafel(c){{const ax=-17,ay=12;c.strokeStyle='#8a5a2b';c.lineWidth=.5;c.beginPath();c.moveTo(ax-3.4,ay+3.6);c.lineTo(ax,ay-4);c.lineTo(ax+3.4,ay+3.6);c.stroke();c.fillStyle='#8a5a2b';c.beginPath();c.roundRect(ax-3.4,ay-3.4,6.8,6,.6);c.fill();c.fillStyle='#2a3a3a';c.beginPath();c.roundRect(ax-3,ay-3,6,5.2,.4);c.fill();
   c.fillStyle='#fff';c.font='900 1px '+FONT;c.textAlign='center';c.fillText('BOWL',ax,ay-1.7);c.fillText('DES TAGES',ax,ay-.6);acaiBowl(c,ax,ay+.9,.42);c.fillStyle='#ffb3d1';c.font='900 .8px '+FONT;c.fillText('♥ ♥ ♥',ax,ay+2);}}
 // Figuren hinter dem Blumentor bzw. hinter dem Aufsteller „Bowl des Tages“: Tor/Aufsteller werden über der Figur nachgezeichnet
-function acaiFront(c,x,y,tn){if(S*cam.z<=6)return;for(const g of GEB){if(!KIO(g)||Math.abs(x-g.cx)>45||Math.abs(y-g.cy)>40)continue;const H=(g.y1-g.y0)/2,lx=x-g.cx,ly=y-g.cy;
- if(g.typ==='nagel'){if(Math.abs(lx+28)<6&&ly<17.4&&ly>3)tintDraw(c,tn,g.cx-32,g.cy+9,g.cx-24,g.cy+18,o=>{o.save();o.translate(g.cx,g.cy);nagelTafel(o);o.restore();});continue;}
+function acaiFront(c,x,y,tn){if(S*cam.z<=6)return;for(const g of GEB){if(!KIO(g)||Math.abs(x-g.cx)>45||Math.abs(y-g.cy)>56)continue;const H=(g.y1-g.y0)/2,lx=x-g.cx,ly=y-g.cy;
+ if(g.typ==='nagel'){// Ladenschild hängt über dem Weg dahinter: Fußgänger dort laufen hinter dem Schild
+  if(Math.abs(lx)<19&&ly<-26&&ly>-54)tintDraw(c,tn,g.cx-18,g.cy-45,g.cx+18,g.cy-22,o=>{o.save();o.translate(g.cx,g.cy);gebSign(o,g);o.restore();teamBand(o,g);});
+  if(Math.abs(lx+28)<6&&ly<17.4&&ly>3)tintDraw(c,tn,g.cx-32,g.cy+9,g.cx-24,g.cy+18,o=>{o.save();o.translate(g.cx,g.cy);nagelTafel(o);o.restore();});continue;}
  if(g.typ==='baeckerei'){// Bäckerei: Kreidetafel und Brotwagen verdecken Figuren dahinter
   if(Math.abs(lx-18)<6&&ly<20.4&&ly>6)tintDraw(c,tn,g.cx+14,g.cy+12,g.cx+22,g.cy+21.5,o=>{o.save();o.translate(g.cx,g.cy);baeckTafel(o);o.restore();});
   if(Math.abs(lx-25)<7&&ly<13.5&&ly>1)tintDraw(c,tn,g.cx+19,g.cy+1.5,g.cx+31,g.cy+14,o=>{o.save();o.translate(g.cx,g.cy);baeckWagen(o);o.restore();});
@@ -1848,9 +1850,9 @@ function drawNagel0(c,g,nl,z){const W=(g.x1-g.x0)/2,H=(g.y1-g.y0)/2,t=REDUCED?0:
  // Neon „💅“ an der Fassade (nachts leuchtend)
  {const on=REDUCED||Math.sin(t*2.2)>-.7;c.fillStyle=on&&!day?'#fff':'rgba(255,255,255,.8)';c.font='2.6px '+FONT;c.textAlign='center';c.fillText('💅',-11.5,by0+4.3);c.fillText('✨',11.5,by0+4.3);}
  
- offenNeon(c,8.4,by0+5.2);// OFFEN hängt vorne an der Markise
  // Lichterkette mit Perlen an der Markise
  for(let k=0;k<12;k++){const x=bx0+1.5+k*3.2,y=by0+5.4+Math.sin(k/14*Math.PI)*.8,on=.55+.45*Math.sin(t*2.6+k);c.fillStyle=day?['#fff','#ffd3e2','#c9f1fa'][k%3]:`rgba(255,${215+k*2},${200+k*3},${.6+.4*on})`;c.beginPath();c.arc(x,y,.36,0,TAU);c.fill();}
+ offenNeon(c,8.4,by0+5.2);// OFFEN hängt vorne an der Markise (über der Lichterkette)
  c.restore();
  // Pediküre-Ecke links: Sessel mit Fußbad (blubbernd) und Handtuchstapel
  {const px=-28,py=0;c.fillStyle='rgba(60,30,40,.18)';c.beginPath();c.ellipse(px+.6,py+3.2,4.6,1.2,0,0,TAU);c.fill();c.fillStyle=OC.lav;c.beginPath();c.roundRect(px-3.6,py-5,7.2,4.6,1.6);c.fill();c.fillStyle='#b48ae0';c.beginPath();c.roundRect(px-3,py-1.4,6,2.4,1);c.fill();
@@ -2440,6 +2442,8 @@ function draw(){
   const sx=up?Wc*.88:Wc*.12,sy=Hc*.04,r=Math.max(Wc,Hc)*.75,gl=c.createRadialGradient(sx,sy,0,sx,sy,r);gl.addColorStop(0,`rgba(255,235,170,${.55*s})`);gl.addColorStop(.25,`rgba(255,180,90,${.25*s})`);gl.addColorStop(1,'rgba(255,160,80,0)');
   c.globalCompositeOperation='lighter';c.fillStyle=gl;c.fillRect(0,0,Wc,Hc);c.globalCompositeOperation='source-over';}}
  world(c);
+ // Yacht: Party-Licht rund um die Uhr (tagsüber zusätzlich zum Nachtlicht)
+ if(nl<.6&&visR(YACHT.cx,YACHT.cy,60)){c.save();c.globalCompositeOperation='lighter';const gl2=(x,y,r,rgb,a)=>{const g=c.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,`rgba(${rgb},${a})`);g.addColorStop(1,`rgba(${rgb},0)`);c.fillStyle=g;c.beginPath();c.arc(x,y,r,0,TAU);c.fill();};yachtGlow(gl2,.6-nl);c.restore();}
  if(nl>0){c.setTransform(1,0,0,1,0,0);c.fillStyle=`rgba(12,22,70,${.55*nl})`;c.fillRect(0,0,cv.width,cv.height);world(c);c.globalCompositeOperation='lighter';
   const pxs=S*z;
   const FIGS=[...TAPS.map(t=>[t[0],t[1],1]),...(PETS.list||[]).filter(a=>a.v.open).map(a=>[a.x,a.y,.6]),...(WK.on?[[WK.x,WK.y,1]]:[])];
