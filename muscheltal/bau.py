@@ -126,7 +126,8 @@ def _arbeiter_huetten(sauber, insel):
         return _ARB_CACHE[id(sauber)]
     wo, jobs = _gebaeude_bewohner(insel), _haupt_jobs(insel)
     arbeiter = [j for j, r in enumerate(sauber) if r[0].lower().lstrip("@") in wo and r[0].lower().lstrip("@") in jobs]
-    mit = {j for j in arbeiter if re.fullmatch(r"0:\d+", sauber[j][3] or "")}
+    # Arbeiter ohne Gebäude-Wohnung, die schon eine Haupt-Insel-Hütte haben (z. B. von der Kokos-Küste umgezogen), behalten sie
+    mit = {j for j, r in enumerate(sauber) if r[0].lower().lstrip("@") in jobs and re.fullmatch(r"0:\d+", r[3] or "")}
     warten = [j for j in arbeiter if j not in mit]
     while warten:
         grenzen = inselgrenzen(sauber, insel, mit)
@@ -184,7 +185,7 @@ def insel_je(sauber, insel):
         if a is None or b is None or isl[a] == isl[b] or 0 not in (isl[a], isl[b]):
             continue
         k = b if isl[a] == 0 else a
-        kand = [j for j in range(len(sauber)) if isl[j] == 0 and j not in geschuetzt and sauber[j][0].lower().lstrip("@") not in wo]
+        kand = [j for j in range(len(sauber)) if isl[j] == 0 and j not in geschuetzt and j not in mit and sauber[j][0].lower().lstrip("@") not in wo]
         if not kand:
             continue
         letzter = max(kand)
