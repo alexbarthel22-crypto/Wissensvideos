@@ -1789,15 +1789,20 @@ function doenerFront(c,x,y,tn){if(S*cam.z<=6)return;for(const g of GEB){if(g.typ
 // Team-Plakette: hängt an zwei Schnüren direkt unter dem Ladenschild, kleine Namensschilder in Ladenfarbe (Leitung zuerst mit ⭐)
 const TEAMCOL={doener:'#e8433c',strandbar:'#0fa3a8',acai:'#7a3a8c',werkstatt:'#2f5f9f',baeckerei:'#e27d95'};
 function teamListe(g){if(!g.tl){g.tl=PEOPLE.filter(p=>p.ort===g.name&&p.beruf).sort((a,b)=>(b.beruf==='Leitung')-(a.beruf==='Leitung')||a.nr-b.nr).map(p=>(p.beruf==='Leitung'?'⭐ ':'')+p.name);}return g.tl;}
-const TB_FS=1.7,TB_RH=TB_FS*1.5+.5;
+const TB_FS=1.7,TB_RH=TB_FS*1.5+.5,TB_SPLIT=new Set(['acai','werkstatt']);
 function teamRows(g,c){if(g.tr)return g.tr;const L=teamListe(g);if(!L.length||!TEAMCOL[g.typ])return g.tr=[];const m=c||ctx;m.save();m.font='800 '+TB_FS+'px '+FONT;const wd=L.map(n=>Math.min(14,m.measureText(n).width)+TB_FS*1.1+.8);m.restore();
+ // geteilt: je eine schmale Spalte unter dem linken und dem rechten Ende des Schildes (die Mitte des Standes bleibt frei)
+ if(TB_SPLIT.has(g.typ)){const h=Math.ceil(L.length/2),A=L.map((n,i)=>[n,wd[i]]);return g.tr={split:true,cols:[A.slice(0,h),A.slice(h)]};}
  const bw=signBox0(g)[2],maxW=Math.max(28,bw+6),rows=[[]];let w=0;wd.forEach((x,i)=>{if(w+x>maxW&&rows[rows.length-1].length){rows.push([]);w=0;}rows[rows.length-1].push(i);w+=x;});return g.tr=rows.map(r=>r.map(i=>[L[i],wd[i]]));}
-const teamH=g=>{const R=teamRows(g);return R.length?R.length*TB_RH+1.6:0;};
-function teamBand(c,g){if(S*cam.z<12)return;const R=teamRows(g,c);if(!R.length)return;const [bx,by,bw,bh]=signBox0(g),m=(g.typ==='doener'||KIO(g)||g.typ==='werkstatt')?1:(g.dir||1),cx=g.cx+(bx+bw/2)*m,y0=g.cy+by+bh+1.2,col=TEAMCOL[g.typ];
- const pw=Math.max(...R.map(r=>r.reduce((s,x)=>s+x[1],0)))+1.4,ph=R.length*TB_RH+.6;c.save();c.strokeStyle='#5a3418';c.lineWidth=.25;c.beginPath();for(const sx of[-pw/2+2,pw/2-2]){c.moveTo(cx+sx,y0-1.4);c.lineTo(cx+sx,y0);}c.stroke();
+const teamH=g=>{const R=teamRows(g);if(R.split)return 0;return R.length?R.length*TB_RH+1.6:0;};
+function plakette(c,x0,y0,rows,col,noStr){const pw=Math.max(...rows.map(r=>r.reduce((s,x)=>s+x[1],0)))+1.4,ph=rows.length*TB_RH+.6,cx=x0;if(!noStr){c.strokeStyle='#5a3418';c.lineWidth=.25;c.beginPath();for(const sx of[-pw/2+2,pw/2-2]){c.moveTo(cx+sx,y0-1.4);c.lineTo(cx+sx,y0);}c.stroke();}
  c.fillStyle='rgba(42,27,18,.22)';c.beginPath();c.roundRect(cx-pw/2+.4,y0+.5,pw,ph,1.4);c.fill();c.fillStyle='#fffaf0';c.strokeStyle=col;c.lineWidth=.35;c.beginPath();c.roundRect(cx-pw/2,y0,pw,ph,1.4);c.fill();c.stroke();
- c.font='800 '+TB_FS+'px '+FONT;c.textAlign='center';R.forEach((r,ri)=>{const tot=r.reduce((s,x)=>s+x[1],0);let x=cx-tot/2;const y=y0+.5+ri*TB_RH;for(const [n,w] of r){c.fillStyle=col;c.beginPath();c.roundRect(x+.2,y,w-.4,TB_FS*1.5,TB_FS*.75);c.fill();c.fillStyle='#fff';let f=TB_FS;const tw=c.measureText(n).width;if(tw>14){f=TB_FS*14/tw;c.font='800 '+f+'px '+FONT;}c.fillText(n,x+w/2,y+TB_FS*1.08);c.font='800 '+TB_FS+'px '+FONT;x+=w;}});c.restore();}
-function signBox(g){const b=signBox0(g);return[b[0],b[1],b[2],b[3]+teamH(g)];}
+ c.font='800 '+TB_FS+'px '+FONT;c.textAlign='center';rows.forEach((r,ri)=>{const tot=r.reduce((s,x)=>s+x[1],0);let x=cx-tot/2;const y=y0+.5+ri*TB_RH;for(const [n,w] of r){c.fillStyle=col;c.beginPath();c.roundRect(x+.2,y,w-.4,TB_FS*1.5,TB_FS*.75);c.fill();c.fillStyle='#fff';const tw=c.measureText(n).width;if(tw>14)c.font='800 '+TB_FS*14/tw+'px '+FONT;c.fillText(n,x+w/2,y+TB_FS*1.08);c.font='800 '+TB_FS+'px '+FONT;x+=w;}});return pw;}
+function teamBand(c,g){if(S*cam.z<12)return;const R=teamRows(g,c);if(!R.length&&!R.split)return;const [bx,by,bw,bh]=signBox0(g),m=(g.typ==='doener'||KIO(g)||g.typ==='werkstatt')?1:(g.dir||1),y0=g.cy+by+bh+1.2,col=TEAMCOL[g.typ];c.save();
+ if(R.split){const wl=Math.max(0,...R.cols[0].map(x=>x[1]))+1.4,wr=Math.max(0,...R.cols[1].map(x=>x[1]))+1.4,L=g.cx+bx*m,Rr=g.cx+(bx+bw)*m,lo=Math.min(L,Rr),hi=Math.max(L,Rr);
+  const yt=g.typ==='acai'?g.cy+by+bh+1.4:g.cy+by+.6;if(R.cols[0].length)plakette(c,lo-wl/2-1,yt,R.cols[0].map(x=>[x]),col,1);if(R.cols[1].length)plakette(c,hi+wr/2+1,yt,R.cols[1].map(x=>[x]),col,1);}
+ else plakette(c,g.cx+(bx+bw/2)*m,y0,R,col);c.restore();}
+function signBox(g){const b=signBox0(g),R=teamRows(g);if(R.split){const wl=Math.max(0,...R.cols[0].map(x=>x[1]))+2.4,wr=Math.max(0,...R.cols[1].map(x=>x[1]))+2.4,h=Math.max(...R.cols.map(c=>c.length))*TB_RH+1.2+(g.typ==='acai'?b[3]+1.4:0);return[b[0]-wl,b[1],b[2]+wl+wr,Math.max(b[3],h)];}return[b[0],b[1],b[2],b[3]+teamH(g)];}
 function signBox0(g){const W=(g.x1-g.x0)/2,sx=(g.sea-g.cx)*(g.dir||1);return g.typ==='doener'?[-25,-33,26,9]:g.typ==='werkstatt'?[-25,-29,38,10]:g.typ==='baeckerei'?[-14,-38,28,12]:KIO(g)?[-26,-33,40,11]:g.typ==='strandbar'?[sx-43,-27,26,7]:[-W+2,-31,44,17];}
 function signOver(c,x,y,nl){for(const g of GEB){if(GROWK!=null&&GROWV===g.v&&GROWK<g.at)continue;const [bx,by,bw,bh]=signBox(g),m=(g.typ==='doener'||KIO(g)||g.typ==='werkstatt')?1:(g.dir||1),lx=(x-g.cx)*m,ly=y-g.cy;
   if(lx>bx-3&&lx<bx+bw+3&&ly>by&&ly<by+bh+12){c.save();c.translate(g.cx,g.cy);if(m<0)c.scale(-1,1);gebSign(c,g);if(nl>0){c.fillStyle=`rgba(12,22,70,${.55*nl})`;c.fillRect(bx-1,by-8,bw+2,bh+9);}c.restore();teamBand(c,g);}}}
