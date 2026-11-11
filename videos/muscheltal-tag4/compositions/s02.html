@@ -54,17 +54,19 @@
     .big { position: absolute; left: 60px; right: 60px; margin: 0 auto; text-align: center; padding: 10px 26px 20px; border-radius: 36px; color: #fff; font-family: "Lilita One", sans-serif; line-height: 1; box-shadow: 0 0 0 8px #2a1b12, 0 16px 0 rgba(0,0,0,.3); }
     #s02-h { top: 290px; font-size: 76px; background: #18a6b8; transform: rotate(-2deg); }
     #s02-e { top: 460px; font-size: 48px; background: #7b3fe0; }
+    #s02-ihr { position: absolute; left: 0; right: 0; top: 560px; text-align: center; font-family: "Lilita One", sans-serif; font-size: 300px; line-height: 1; color: #ffe14a; -webkit-text-stroke: 18px #2a1b12; paint-order: stroke fill; filter: drop-shadow(0 16px 0 rgba(0,0,0,.35)); opacity: 0; }
   </style>
-  <div id="root" data-composition-id="s02" data-start="0" data-duration="4.910" data-width="1080" data-height="1920">
-    <div id="s02-stage" class="clip stage" data-start="0" data-duration="4.910" data-track-index="0">
-      <div id="s02-h" class="big">🏆 DIE GRÖSSTE INSEL AUF TIKTOK</div>
+  <div id="root" data-composition-id="s02" data-start="0" data-duration="4.830" data-width="1080" data-height="1920">
+    <div id="s02-stage" class="clip stage" data-start="0" data-duration="4.830" data-track-index="0">
+      <div id="s02-h" class="big">🏆 DIE GRÖSSTE INSEL-WELT AUF TIKTOK</div>
+      <div id="s02-ihr" data-layout-ignore>IHR!</div>
       <div id="s02-e" class="pl">👑 Hier entscheidet ihr!</div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 4.91, "L2": [0.2, 4.23], "L2.words": [["muscheltal", 0.2, 0.647], ["ist", 0.647, 0.795], ["die", 0.795, 0.942], ["größte", 0.942, 1.237], ["insel", 1.237, 1.526], ["auf", 1.526, 1.674], ["tiktok", 1.674, 1.968], ["", 1.968, 2.1], ["und", 2.4, 2.514], ["hier", 2.514, 2.632], ["entscheidet", 2.632, 2.981], ["ganz", 2.981, 3.099], ["allein", 3.099, 3.326], ["ihr", 3.326, 3.44], ["was", 3.55, 3.771], ["passiert", 3.771, 4.23]]};
+      const C = {"__dur": 4.83, "L2": [0.2, 4.15], "L2.words": [["muscheltal", 0.2, 0.659], ["ist", 0.659, 0.81], ["die", 0.81, 0.961], ["größte", 0.961, 1.263], ["inselwelt", 1.263, 1.716], ["auf", 1.716, 1.867], ["tiktok", 1.867, 2.17], ["", 2.17, 2.305], ["und", 2.305, 2.456], ["hier", 2.456, 2.612], ["entscheidet", 2.612, 3.076], ["ganz", 3.076, 3.233], ["allein", 3.233, 3.535], ["ihr", 3.535, 3.686], ["was", 3.686, 3.837], ["passiert", 3.837, 4.15]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -112,6 +114,10 @@
       tl.fromTo("#s02-h", { opacity: 0, scale: 3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(1.8)" }, gr - .25);
       tl.fromTo("#s02-e", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, ih - .2);
       tl.to("#s02-e", { scale: 1.1, duration: .2, yoyo: true, repeat: 3, ease: "sine.inOut" }, ih + .2);
+      tl.fromTo("#s02-ihr", { opacity: 0, scale: 8, filter: "blur(14px) drop-shadow(0 16px 0 rgba(0,0,0,.35))" }, { opacity: 1, scale: 1, filter: "blur(0px) drop-shadow(0 16px 0 rgba(0,0,0,.35))", duration: .22, ease: "power3.in" }, ih - .12);
+      tl.to("#s02-stage", { x: 16, duration: .04, yoyo: true, repeat: 7, ease: "none" }, ih + .1);
+      tl.to("#s02-ihr", { scale: 1.12, duration: .15, yoyo: true, repeat: 3 }, ih + .15);
+      tl.to("#s02-ihr", { opacity: 0, scale: .6, duration: .25 }, ih + .95);
       tl.to("#s02-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
       window.__timelines["s02"] = tl;
     })();
