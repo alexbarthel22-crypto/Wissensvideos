@@ -5,7 +5,7 @@
       font-family: "Inter", sans-serif; font-weight: 900; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); white-space: nowrap; }
     #s04-n { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 290px; padding: 10px 40px 16px; border-radius: 30px; background: #fff; box-shadow: 0 0 0 7px #2a1b12, 0 12px 0 rgba(0,0,0,.3); font-family: "Inter", sans-serif; font-weight: 900; font-size: 44px; color: #2a1b12; }
     #s04-n b { color: #2e9e5b; font-size: 80px; }
-    #s04-k { position: absolute; left: 70px; right: 70px; top: 450px; padding: 18px 28px 22px; border-radius: 32px; background: #fff; box-shadow: 0 0 0 6px #2a1b12, 0 12px 0 rgba(0,0,0,.3); font-family: "Inter", sans-serif; color: #2a1b12; }
+    #s04-k { position: absolute; left: 70px; right: 70px; top: 300px; padding: 18px 28px 22px; border-radius: 32px; background: #fff; box-shadow: 0 0 0 6px #2a1b12, 0 12px 0 rgba(0,0,0,.3); font-family: "Inter", sans-serif; color: #2a1b12; }
     #s04-k .row { display: flex; align-items: baseline; justify-content: space-between; font-weight: 900; font-size: 38px; }
     #s04-k .row b { font-size: 70px; color: #e2560c; line-height: 1; } #s04-k .row span { font-size: 34px; color: #6b6f8a; }
     #s04-k .bar { height: 30px; border-radius: 15px; background: #ece4d8; margin-top: 12px; overflow: hidden; } #s04-k .bar i { display: block; height: 100%; width: 0; border-radius: 15px; background: linear-gradient(90deg, #ff6a1a, #ffb21a); }
@@ -14,7 +14,6 @@
   </style>
   <div id="root" data-composition-id="s04" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
     <div id="s04-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
-      <div id="s04-n">🏝️ <b id="s04-nn">+0</b> neue Bewohner</div>
       <div id="s04-k"><div class="row"><div>🐚 Inselkasse</div><div><b id="s04-kn">0</b><span> / 2.000</span></div></div><div class="bar"><i id="s04-kb"></i></div><div class="row" style="font-size:30px;margin-top:8px"><div>🐾 fürs Tierheim Pfotenkuss</div></div></div>
       <div id="s04-v" class="pl">🏖️ Eingezogen in die Strandvilla</div>
       <div id="s04-w1" class="pl">🎉 @emiliamarie155</div>
@@ -27,13 +26,11 @@
       /*__COMMON_JS__*/
       wrapBt("#s04-stage");
       const tl = gsap.timeline({ paused: true });
-      const ne = at("L8", "29"), ka = at("L8", "Inselkasse"), em = at("L8", "Emilia");
-      tl.fromTo("#s04-n", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, ne - .3);
-      count(tl, "#s04-nn", 0, 29, ne - .1, .6, "+", "");
+      const ka = at("L8", "Inselkasse"), em = at("L8", "Emilia");
       tl.fromTo("#s04-k", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, ka - .3);
       count(tl, "#s04-kn", 0, 635, ka, 1.0);
       tl.fromTo("#s04-kb", { width: "0%" }, { width: "31.75%", duration: 1.0, ease: "power2.out" }, ka);
-      tl.to(["#s04-n", "#s04-k"], { opacity: 0, y: -30, duration: .25 }, em - .5);
+      tl.to("#s04-k", { opacity: 0, y: -30, duration: .25 }, em - .5);
       tl.fromTo("#s04-v", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, em - .3);
       tl.fromTo(["#s04-w1", "#s04-w2"], { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)", stagger: .2 }, em - .1);
       tl.to("#s04-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);

@@ -14,13 +14,13 @@ const G=await p.evaluate(()=>{const a=fitAll(),m=fitMain();const g=n=>{const x=G
  const an=f('anton.van11'),la=f('laura.ngynn');const last=PEOPLE.filter(q=>q.p&&q.isl===ISL[1]).sort((a,b)=>b.nr-a.nr)[0];window.__LAST=last;
  const geb=GEB.filter(g=>g.v===MAIN),bau=BAU.filter(b=>b.v===MAIN),st=.26/Math.max(1,geb.length+bau.length+1);geb.forEach((g,i)=>g.at=.73+st*(i+1));bau.forEach((b,i)=>b.at=.73+st*(geb.length+i+1));
  return{N,a,m,last:{x:last.p.x,y:last.p.y,nr:last.nr},h1:f('sophia_e065'),d:g('doener'),s:g('strandbar'),ac:g('acai'),w:g('werkstatt'),v:g('villa'),b:g('baeckerei'),th:{x:BAU[2].cx,y:BAU[2].cy},an:{x:BAU[1].cx,y:BAU[1].cy},nb:{x:(an.x+la.x)/2,y:(an.y+la.y)/2}};});
-const hop=(w,o,z)=>{const t=at('L3',w);return [[t-.25,o.x,o.y+8,z],[t+.4,o.x,o.y+8,z*1.03]];};
+const hop=(w,o,z)=>{const t=at('L3',w);return [[t-.25,o.x,o.y+8,z],[t+.6,o.x,o.y+8,z*1.04]];};
 const JE=at('L1','jetzt'),GE=JE+1.7,KE=GE+1.2,HZ=6.2,HY=G.last.y+140/(HZ*2.6667);
 const K=[[0,G.h1.x,G.h1.y-14,3.4],[JE-.1,G.h1.x,G.h1.y-14,3.0],[GE,G.m.x,G.m.y,G.m.z*1.05],[KE+.3,G.a.x,G.a.y,G.a.z*1.15],
  [L.L2.end,G.a.x,G.a.y,G.a.z*1.2],[L.L2b.start,G.last.x,HY,HZ],[L.L2b.end+.2,G.last.x,HY,HZ],
  ...hop('Dönerbude',G.d,3.6),...hop('Strandbar',G.s,3.2),...hop('Açaí-Stand',G.ac,3.6),...hop('Moped-Werkstatt',G.w,3.6),...hop('Strandvilla',G.v,3.4),[L.L3.end+.2,G.v.x,G.v.y+8,3.0],
  [L.L4.start+.3,G.b.x,G.b.y-10,4.2],[L.L7.end,G.b.x,G.b.y-10,4.6],
- [L.L8.start+.3,G.m.x,G.m.y,G.m.z*1.2],[at('L8','Tierheim')-.4,G.th.x,G.th.y,3.4],[at('L8','Emilia')-.4,G.v.x,G.v.y-6,3.6],[L.L8.end,G.v.x,G.v.y-6,3.9],
+ [L.L8.start,G.th.x,G.th.y,3.0],[at('L8','Tierheim')-.4,G.th.x,G.th.y,3.4],[at('L8','Emilia')-.4,G.v.x,G.v.y-6,3.6],[L.L8.end,G.v.x,G.v.y-6,3.9],
  [L.L9.start+.3,G.v.x-120,G.v.y-30,2.6],[L.L9.end,G.v.x-130,G.v.y-30,2.8],
  [L.L10.start+.3,0,40,2.2],[L.L10.end,30,20,2.6],
  [L.L11.start+.2,G.nb.x+4,G.nb.y+22,4.4],[L.L11.end+.3,G.nb.x+4,G.nb.y+22,4.6],[dur,G.a.x,G.a.y,G.a.z*1.1]];
