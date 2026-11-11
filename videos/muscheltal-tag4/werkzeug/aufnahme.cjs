@@ -11,7 +11,7 @@ await p.evaluate(()=>{petsStep();let sd=11;const R=()=>(sd=(sd*16807)%2147483647
  for(const a of PETS.list){const opts=[[1,0],[-1,0],[0,1],[0,-1]].filter(([dk,dm])=>rValid(a.v,a.k+dk,a.m+dm));if(!opts.length)continue;const [dk,dm]=opts[(R()*opts.length)|0];
   const [x0,y0]=rNode(a.v,a.k,a.m),[x1,y1]=rNode(a.v,a.k+dk,a.m+dm),t=R();a.x=x0+(x1-x0)*t;a.y=y0+(y1-y0)*t;a.pause=R()*3;}});
 const G=await p.evaluate(()=>{const a=fitAll(),m=fitMain();const g=n=>{const x=GEB.find(q=>q.typ===n);return{x:x.cx,y:x.cy}};const f=n=>{const q=PEOPLE.find(q=>q.name.replace('@','')===n);return{x:q.p.x,y:q.p.y}};
- const an=f('high.jxdxn'),la=f('tiames1');const last=PEOPLE.filter(q=>q.p&&q.isl===ISL[1]).sort((a,b)=>b.nr-a.nr)[0];window.__LAST=last;
+ const an=f('melie_js'),la=f('lisann.lmp');const last=PEOPLE.filter(q=>q.p&&q.isl===ISL[1]).sort((a,b)=>b.nr-a.nr)[0];window.__LAST=last;
  const geb=GEB.filter(g=>g.v===MAIN),bau=BAU.filter(b=>b.v===MAIN),st=.26/Math.max(1,geb.length+bau.length+1);geb.forEach((g,i)=>g.at=.73+st*(i+1));bau.forEach((b,i)=>b.at=.73+st*(geb.length+i+1));
  return{N,a,m,last:{x:last.p.x,y:last.p.y,nr:last.nr},h1:f('sophia_e065'),d:g('doener'),s:g('strandbar'),ac:g('acai'),w:g('werkstatt'),v:g('villa'),b:g('baeckerei'),th:{x:BAU[2].cx,y:BAU[2].cy},an:{x:BAU[1].cx,y:BAU[1].cy},nb:{x:(an.x+la.x)/2,y:(an.y+la.y)/2}};});
 const hop=(w,o,z)=>{const t=at('L3',w);return [[t-.25,o.x,o.y+8,z],[t+.6,o.x,o.y+8,z*1.04]];};

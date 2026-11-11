@@ -110,7 +110,7 @@ scene("s01", LILITA + "\n    " + PILL + "\n    " + PT + "\n" + FL + """
       <div id="s01-hk">""" + "".join(f'<span id="s01-w{i}" class="{"y" if w in ("INSEL","GEKAUFT!") else ""}"><i id="s01-wi{i}">{w}</i></span>{br}' for i, (w, _, br) in enumerate(HW)) + """</div>
       <div id="s01-al">""" + "".join(f'<span id="s01-a{i}"><i id="s01-ai{i}">{w}</i></span>{br}' for i, (w, _, br) in enumerate(AW)) + """</div>
       <div class="s01-rg" id="s01-rg0" data-layout-ignore></div><div class="s01-rg" id="s01-rg1" data-layout-ignore></div><div class="s01-rg" id="s01-rg2" data-layout-ignore></div>
-      <div id="s01-c"><b id="s01-n">1</b>Bewohner 🏝️</div>""" + drops("s01-i", 18, 17, 'at("L1", "Insel") - .3', 540, 700, "🌴", 560, 760)[0] + drops("s01-g", 22, 19, 'ga - .3', 540, 720, "🐚", 600, 820)[0] + drops("s01-p", 22, 5, 'je + .1', 540, 760, "🏠", 560, 820)[0] + drops("s01-q", 16, 9, 'le', 540, 760, "✨", 520, 760)[0],
+      <div id="s01-c"><b id="s01-n">1</b>Bewohner 🏝️</div>""" + drops("s01-i", 18, 17, '0', 540, 700, "🌴", 560, 760)[0] + drops("s01-g", 22, 19, '.35', 540, 720, "🐚", 600, 820)[0] + drops("s01-p", 22, 5, 'je + .1', 540, 760, "🏠", 560, 820)[0] + drops("s01-q", 16, 9, 'le', 540, 760, "✨", 520, 760)[0],
 """      const al = at("L1", "Am"), je = at("L1", "jetzt"), le = at("L1", "Bewohner"), ga = at("L1", "gekauft");
       """ + "\n      ".join(f'tl.set("#s01-w{i}", {{ opacity: 1 }}, 0);' for i, (_, k, _) in enumerate(HW)) + """
       """ + "\n      ".join(f'tl.to("#s01-wi{i}", {{ scale: {1.3 if i >= 4 else 1.7}, color: "#ffffff", textShadow: "0 0 50px rgba(255,230,80,1)", duration: .1, yoyo: true, repeat: 1, ease: "power2.out" }}, {"0.02" if i == 0 else f"at(\"L1\", \"{k}\") - .02"});' for i, (_, k, _) in enumerate(HW)) + """
@@ -137,7 +137,7 @@ scene("s01", LILITA + "\n    " + PILL + "\n    " + PT + "\n" + FL + """
       count(tl, "#s01-n", 1, 702, je + .05, le - je + .1, "", "", "power2.in");
       tl.fromTo("#s01-c", { scale: 1 }, { scale: 1.18, duration: .15, yoyo: true, repeat: 1, immediateRender: false }, le + .1);
       tl.fromTo("#s01-fl", { opacity: .7 }, { opacity: 0, duration: .35, immediateRender: false }, le + .1);
-""" + drops("s01-i", 18, 17, 'at("L1", "Insel") - .3', 540, 700, "🌴", 560, 760)[1] + drops("s01-g", 22, 19, 'ga - .3', 540, 720, "🐚", 600, 820)[1] + drops("s01-p", 22, 5, 'je + .1', 540, 760, "🏠", 560, 820)[1] + drops("s01-q", 16, 9, 'le', 540, 760, "✨", 520, 760)[1])
+""" + drops("s01-i", 18, 17, '0', 540, 700, "🌴", 560, 760)[1] + drops("s01-g", 22, 19, '.35', 540, 720, "🐚", 600, 820)[1] + drops("s01-p", 22, 5, 'je + .1', 540, 760, "🏠", 560, 820)[1] + drops("s01-q", 16, 9, 'le', 540, 760, "✨", 520, 760)[1])
 
 # s02 – größte Insel auf TikTok, ihr entscheidet
 scene("s02", LILITA + "\n    " + PILL + "\n    " + BIG + """
@@ -367,7 +367,7 @@ scene("s07", PILL + "\n" + FOLLOW + """
     #s07-btn { top: 400px; } #s07-hand { left: 690px; top: 450px; }""",
 """      <div id="s07-t" class="pl">👯 Markiert eure Freunde!</div>
       <div id="s07-fr" data-layout-ignore></div><div id="s07-hs2" data-layout-ignore>🤝</div>
-      <div id="s07-nb" class="pl">🤝 Neue Nachbarn: @high.jxdxn & @tiames1</div>
+      <div id="s07-nb" class="pl">🤝 Nachbarn: @melie_js & @lisann.lmp</div>
       <div id="s07-btn" class="fbtn">+ Folgen<div id="s07-btn2" class="fbtn2">✓ Gefolgt</div></div>
       <div id="s07-hand" class="fhand" data-layout-ignore>👆</div>""",
 """      const fr = at("L11", "Freunde"), fo = at("L11", "folgt");
