@@ -247,3 +247,9 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
   - Startseite: Ist ein Name gewählt, steht unten kein Muschelpass mehr (nur noch Nachbarn + Teilen-Knöpfe).
   - Berufe-Seite: Lange Zeilen (z. B. Bürgermeisterin mit Datum) brechen um, Name und Icon sind wieder sichtbar.
   - @leamickunnnn: Erfolg „Inselflitzer“ entfernt.
+- **Erkunden & Gelände (12.11.):**
+  - Aufgabe „Muschelpass einer anderen Person ansehen“ (und Hütten-Besuch): Bestätigung „✅ Aufgabe geschafft! +5 🐚“ erscheint direkt oben im geöffneten Muschelpass.
+  - Zäune, Hecken und Mauern: Niemand steht mehr auf oder in der vorderen Umrandung (Füße bleiben dahinter). Kreidetafeln/Aufsteller („Kuchen des Tages“, „Bowl des Tages“, Ocean Nails) sind nicht passierbar; dahinter stehen ist erlaubt (die Figur wird verdeckt).
+  - Bäckerei: Mehlsäcke und Fass-Stehtische sind Hindernisse und verdecken Figuren dahinter; Laternenpfosten am Eingang sind Hindernisse.
+  - Hindernisse auf allen Laden-Geländen an die Gegenstände angepasst, sodass es (fast) keine abgeschnittenen Ecken mehr gibt (Prüfung `node muscheltal/pruefung/gelaende.js`); keine Deko entfernt.
+  - Wer nach oben läuft, ist von hinten zu sehen (eigene Figur und alle Passanten; Tiere hatten das schon).
