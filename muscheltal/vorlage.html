@@ -2469,7 +2469,7 @@ function draw(){
  drawWalker(c,z);
  // Namen ganz oben: nichts (Bäume, Palast, Wolken, Nacht) darf sie verdecken
  const GSP=sel&&sel.p&&(sel.gb||REDUCED||T-selT<2)?standSpot(sel):null,near=(x,y)=>GSP&&Math.abs(x-GSP.x)<16&&y>GSP.y-26&&y<GSP.y+10;
- const LR=[],LD=new Map();if(z*S>44){c.font='800 2.35px '+FONT;c.textAlign='center';for(const v of ISL){if(!visR(v.x,v.y,v.R+40))continue;for(const q of v.people){if(q.nr>limit||!q.p||q===sel||!vis(q.p.x,q.p.y)||near(q.p.x,q.p.y+10)){continue;}if(WK.on&&Math.abs(q.p.x-WK.x)<16&&q.p.y+12.3>WK.y-12&&q.p.y+8.6<WK.y+5)WK.lblHit=1;const x=q.p.x,y=q.p.y,nm=q.name,tw0=q.tw0||(q.tw0=c.measureText(nm).width),fs=tw0>17?2.35*17/tw0:2.35,w=tw0*fs/2.35+2.4;
+ const LBL_UP=1.6,LR=[],LD=new Map();if(z*S>44){c.font='800 2.35px '+FONT;c.textAlign='center';for(const v of ISL){if(!visR(v.x,v.y,v.R+40))continue;for(const q of v.people){if(q.nr>limit||!q.p||q===sel||!vis(q.p.x,q.p.y)||near(q.p.x,q.p.y+10)){continue;}if(WK.on&&Math.abs(q.p.x-WK.x)<16&&q.p.y+12.3>WK.y-12&&q.p.y+8.6<WK.y+5)WK.lblHit=1;const x=q.p.x,y=q.p.y-(q.lu??(q.lu=v.cell&&v.cell.has(q.p.gx+','+(q.p.gy+1))?LBL_UP:0)),nm=q.name,tw0=q.tw0||(q.tw0=c.measureText(nm).width),fs=tw0>17?2.35*17/tw0:2.35,w=tw0*fs/2.35+2.4;
   LR.push([x-w/2,y+8.6,x+w/2,y+12.3]);LD.set(q,w);c.fillStyle=isMayor(q)?'#ffd23f':'rgba(255,255,255,.94)';c.beginPath();c.roundRect(x-w/2,y+8.6,w,3.7,1.8);c.fill();c.fillStyle='#2a1b12';if(fs<2.35){c.font='800 '+fs+'px '+FONT;c.fillText(nm,x,y+10.45+fs*.4);c.font='800 2.35px '+FONT;}else c.fillText(nm,x,y+11.4);}}}
   // eigene Figur steht vor Hütten-Namensschildern (Schild bleibt sichtbar, liegt aber dahinter)
   // Nachbarn: die Seitenwände beider Hütten sind mit einem rosa Strich und 🤝 verbunden
