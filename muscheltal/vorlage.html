@@ -2826,7 +2826,7 @@ function gruss(){try{if(!mkOwn(sel))return null;let G={};try{G=JSON.parse(localS
  return Date.now()<(G.bis||0)?G.t:null;}catch(e){return null;}}
 // Erkunden als jemand: mit eigenem beanspruchten Namen nur als man selbst; fremde beanspruchte Namen nie
 function darfErkunden(p){if(!p)return false;try{if(mkClaim())return mkOwn(p);const n=p.name.toLowerCase();if(!MK.bea.has(n)){mkBea(n).then(()=>{if(!MK.bea.has(n))MK.bea.set(n,false);if(sel===p)walkLabel();});return false;}return !MK.bea.get(n);}catch(e){return true;}}
-function walkLabel(){if(typeof mkChip==='function')try{mkChip();}catch(e){}const b=$('walkbtn'),bar=b.parentNode;if(!sel||!darfErkunden(sel)){bar.hidden=true;return;}bar.hidden=false;b.classList.toggle('wackel',!walkedSet().has(sel.name.toLowerCase()));const t='Als '+sel.name+' Muschel-Tal erkunden';if(b.dataset.t===t)return;b.dataset.t=t;b.textContent=t;b.style.fontSize='';let fs=19;while(b.scrollWidth>b.clientWidth&&fs>12){fs-=.5;b.style.fontSize=fs+'px';}}
+function walkLabel(){if(typeof mkChip==='function')try{mkChip();const e=$('mkcard');if(e&&!e.hidden!==!!(MK.d&&mkMe()&&(WK.on?WK.me===mkMe():sel===mkMe())))mkCard();}catch(e){}const b=$('walkbtn'),bar=b.parentNode;if(!sel||!darfErkunden(sel)){bar.hidden=true;return;}bar.hidden=false;b.classList.toggle('wackel',!walkedSet().has(sel.name.toLowerCase()));const t='Als '+sel.name+' Muschel-Tal erkunden';if(b.dataset.t===t)return;b.dataset.t=t;b.textContent=t;b.style.fontSize='';let fs=19;while(b.scrollWidth>b.clientWidth&&fs>12){fs-=.5;b.style.fontSize=fs+'px';}}
 walkLabel();setInterval(walkLabel,800);
 $('walkbtn').onclick=walkStart;$('walkend').onclick=walkEnd;
 // Auf Laden-/Gebäude-Geländen (außer Werkstatt) automatisch zu Fuß; beim Verlassen wieder aufs Moped, wenn man mit dem Moped kam
@@ -2897,7 +2897,7 @@ async function mkSperre(){if(mkClaim())return false;const p=mkWer();mkZu();rangZ
  if(an)an.onclick=e=>{e.preventDefault();$('pg').hidden=true;suchePass();};return true;}
 
 // ---------- Startseite: Karte „Deine Muscheln“ unter dem Erkunden-Knopf ----------
-function mkCard(){let e=$('mkcard');const me=mkMe();if(!me||!MK.d){if(e)e.hidden=true;return;}
+function mkCard(){let e=$('mkcard');const me=mkMe();if(!me||!MK.d||!(WK.on?WK.me===me:sel===me)){if(e)e.hidden=true;return;}
  if(!e){e=document.createElement('a');e.id='mkcard';e.href='#';e.className='mkcard';document.querySelector('.walkbar').after(e);e.onclick=ev=>{ev.preventDefault();mkSeite();};}
  const d=MK.d,offen=MK.quests?MK.quests.length-(d.questsDone||[]).length:null,ab=d.serie&&!d.serie.abgeholt;
  e.hidden=false;e.classList.toggle('glow',!!ab);e.innerHTML='<span class="mkci">🐚</span><span class="mkct"><b>Deine Muscheln: '+fmt(d.stand)+'&nbsp;🐚</b>'+(ab?'<small>✨ '+(d.serie.betrag+((mkJob(me)||{}).z||0))+'&nbsp;🐚 abholbar</small>':'')+'</span><b class="mkcg">→</b>';}

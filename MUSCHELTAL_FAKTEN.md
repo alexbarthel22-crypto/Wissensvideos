@@ -255,3 +255,4 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
   - Wer nach oben läuft, ist von hinten zu sehen (eigene Figur und alle Passanten; Tiere hatten das schon).
 - **Brunnen vor dem Palast** (12.11.): Die ganze Brunnenform (Becken mit Rand) ist nicht begehbar – auch von oben kommend bleiben die Füße am Rand stehen.
 - **Aufgaben-Knopf oben rechts** (12.11.): nur sichtbar, wenn der eigene beanspruchte Name ausgewählt ist (oder man als dieser erkundet); dann ist die Suchleiste daneben gekürzt. Ohne Auswahl oder bei fremden Namen kein Knopf, Suchleiste wieder volle Breite.
+- **Karte „Deine Muscheln“** (12.11.): erscheint nur, wenn der eigene beanspruchte Name ausgewählt ist (oder man als dieser erkundet); nach × in der Suche oder bei fremden Namen verschwindet sie.
