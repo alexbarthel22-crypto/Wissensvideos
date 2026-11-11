@@ -16,7 +16,7 @@ const G=await p.evaluate(()=>{const a=fitAll(),m=fitMain();const g=n=>{const x=G
  return{N,a,m,last:{x:last.p.x,y:last.p.y,nr:last.nr},h1:f('sophia_e065'),d:g('doener'),s:g('strandbar'),ac:g('acai'),w:g('werkstatt'),v:g('villa'),b:g('baeckerei'),th:{x:BAU[2].cx,y:BAU[2].cy},an:{x:BAU[1].cx,y:BAU[1].cy},nb:{x:(an.x+la.x)/2,y:(an.y+la.y)/2}};});
 const hop=(w,o,z)=>{const t=at('L3',w);return [[t-.25,o.x,o.y+8,z],[t+.6,o.x,o.y+8,z*1.04]];};
 const AL=at('L1','Am'),HW=['habe','euch','eine','Insel','gekauft'].map(w=>at('L1',w)).concat([0]);const JE=at('L1','jetzt'),GE=JE+1.7,KE=GE+1.2,HZ=6.2,HY=G.last.y+140/(HZ*2.6667);
-const K=[[0,G.m.x,G.m.y+300,G.m.z*.45],[AL-.2,G.m.x,G.m.y+260,G.m.z*.6],[AL,G.h1.x,G.h1.y-14,3.4],[JE-.1,G.h1.x,G.h1.y-14,3.0],[GE,G.m.x,G.m.y,G.m.z*1.05],[KE+.3,G.a.x,G.a.y,G.a.z*1.15],
+const K=[[0,G.m.x,G.m.y-20,G.m.z*.95],[AL-.2,G.m.x,G.m.y-20,G.m.z*1.15],[AL,G.h1.x,G.h1.y-14,3.4],[JE-.1,G.h1.x,G.h1.y-14,3.0],[GE,G.m.x,G.m.y,G.m.z*1.05],[KE+.3,G.a.x,G.a.y,G.a.z*1.15],
  [L.L2.end,G.a.x,G.a.y,G.a.z*1.2],[L.L2b.start,G.last.x,HY,HZ],[L.L2b.end+.2,G.last.x,HY,HZ],
  ...hop('Dönerbude',G.d,3.6),...hop('Strandbar',G.s,3.2),...hop('Açaí-Stand',G.ac,3.6),...hop('Moped-Werkstatt',G.w,3.6),...hop('Strandvilla',G.v,3.4),[L.L3.end+.2,G.v.x,G.v.y+8,3.0],
  [L.L4.start+.3,G.b.x,G.b.y-10,4.2],[L.L7.end,G.b.x,G.b.y-10,4.6],
@@ -31,9 +31,9 @@ const ST=t=>{const e=(x)=>x<0?0:x>1?1:x;let gk=null,gv=0,lim=G.N,flt=0,nm=0;
  if(t<AL-.1){gk=0;gv=1;lim=1;flt=0;}else if(t<JE){gk=0;gv=1;lim=1;flt=1;}else if(t<GE){const k=e((t-JE)/(GE-JE));gk=k;gv=1;lim=1+Math.round(499*Math.min(1,k/.72)**2);flt=1-e(k*3);}
  else if(t<KE){const k=e((t-GE)/(KE-GE));lim=500+Math.round((G.N-500)*k*k);}
  if(t>=L.L2b.start-.5&&t<L.L2b.end+.5){lim=t<at('L2b','Folg')+.15?G.last.nr-1:G.last.nr;nm=1;}return [gk,gv,lim,flt,nm];};
-const shot=async(t,f)=>{const c=cam(t),z=ST(t);if(t<AL){let b=0;for(const w of HW)b+=Math.exp(-(((t-w-.05)/.07)**2));c[2]*=1+.12*b;}await p.evaluate(([c,z])=>{const [gk,gv,lim,flt,nm]=z;GROWK=gk;GROWV=gv?MAIN:null;growing=gk!=null;limit=lim;
+const shot=async(t,f)=>{const c=cam(t),z=ST(t);if(t<AL){let b=0;for(const w of HW)b+=Math.exp(-(((t-w-.05)/.07)**2));c[2]*=1+.12*b;const sh=Math.min(1,b);c[0]+=Math.sin(t*90)*6*sh/c[2];c[1]+=Math.cos(t*77)*6*sh/c[2];}await p.evaluate(([c,z])=>{const [gk,gv,lim,flt,nm]=z;GROWK=gk;GROWV=gv?MAIN:null;growing=gk!=null;limit=lim;
  const H1=PEOPLE.find(q=>q.nr===1);if(H1){H1.orig=H1.orig||H1.name;H1.name=lim===1?'\u200b':H1.orig;}window.__LAST.name=nm?'@dein_name':(window.__LAST.orig||(window.__LAST.orig=window.__LAST.name));if(!nm&&window.__LAST.orig)window.__LAST.name=window.__LAST.orig;
- document.getElementById('map').style.filter=flt?`grayscale(${.85*flt}) brightness(${1-.25*flt}) contrast(${1-.1*flt})`:'';cam.x=c[0];cam.y=c[1];cam.z=c[2];draw();},[c,z]);await p.clock.runFor(33.333);await p.screenshot({path:f,type:'jpeg',quality:92});};
+ document.getElementById('map').style.filter=flt?`grayscale(${.85*flt}) brightness(${1-.25*flt}) contrast(${1-.1*flt})`:'';window.NOLAB=z[5];cam.x=c[0];cam.y=c[1];cam.z=c[2];draw();},[c,z.concat([t<AL?1:0])]);await p.clock.runFor(33.333);await p.screenshot({path:f,type:'jpeg',quality:92});};
 fs.mkdirSync(out,{recursive:true});
 if(test){for(const t of test.split(',').map(Number))await shot(t,`${out}/t${t}.jpg`);}else for(let i=0;i<N;i++)await shot(i/30,`${out}/f${String(i).padStart(5,'0')}.jpg`);
 await b.close();console.log('ok',N);})();

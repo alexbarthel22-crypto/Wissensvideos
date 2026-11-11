@@ -90,14 +90,14 @@ CMT = """.cmt { position: absolute; left: 140px; width: 800px; border-radius: 30
 
 # s01 – Ich habe euch eine Insel gekauft (Wörter fliegen ins Gesicht), leere Insel, Stadt wächst
 AW = [("ALLEINE", 'at("L1", "alleine")', "<br>"), ("AUF", 'at("L1", "auf")', ""), ("EINER", 'at("L1", "meiner")', "<br>"), ("INSEL!", 'at("L1", "meiner") + .3', "")]
-HW = [("ICH", "Ich", ""), ("HABE", "habe", ""), ("EUCH", "euch", "<br>"), ("EINE", "eine", ""), ("INSEL", "Insel", "<br>"), ("GEKAUFT!", "gekauft", "")]
+HW = [("ICH", "Ich", ""), ("HABE", "habe", "<br>"), ("EUCH", "euch", ""), ("EINE", "eine", "<br>"), ("INSEL", "Insel", "<br>"), ("GEKAUFT!", "gekauft", "")]
 scene("s01", LILITA + "\n    " + PILL + "\n    " + PT + "\n" + FL + """
     #s01-ray { position: absolute; left: -460px; top: -80px; width: 2000px; height: 2000px; border-radius: 50%; background: repeating-conic-gradient(rgba(255,240,150,.42) 0 9deg, rgba(255,255,255,0) 9deg 22deg); -webkit-mask: radial-gradient(circle, #000 20%, transparent 62%); }
-    #s01-hk { position: absolute; left: 10px; right: 10px; top: 560px; text-align: center; font-family: "Lilita One", sans-serif; font-size: 146px; white-space: nowrap; line-height: 1.02; color: #fff; -webkit-text-stroke: 14px #2a1b12; paint-order: stroke fill; filter: drop-shadow(0 12px 0 rgba(0,0,0,.35)); }
+    #s01-hk { position: absolute; left: 10px; right: 10px; top: 540px; text-align: center; font-family: "Lilita One", sans-serif; font-size: 178px; white-space: nowrap; line-height: 1.02; color: #fff; -webkit-text-stroke: 14px #2a1b12; paint-order: stroke fill; filter: drop-shadow(0 12px 0 rgba(0,0,0,.35)); }
     #s01-hk span { display: inline-block; margin: 0 .08em; transform-origin: 50% 60%; }
     #s01-hk span.y { color: #ffe14a; }
     #s01-hk i, #s01-al i { font-style: normal; display: inline-block; transform-origin: 50% 60%; }
-    #s01-sad { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 55%, rgba(30,34,48,0) 35%, rgba(20,22,34,.6) 100%); }
+    #s01-sad { position: absolute; inset: -80px; background: radial-gradient(ellipse at 50% 55%, rgba(30,34,48,0) 35%, rgba(20,22,34,.6) 100%); }
     .s01-rn { position: absolute; width: 4px; height: 70px; border-radius: 2px; background: rgba(210,225,240,.55); }
     #s01-al { position: absolute; left: 20px; right: 20px; top: 360px; text-align: center; font-family: "Lilita One", sans-serif; font-size: 150px; line-height: 1.02; color: #dfe6f2; -webkit-text-stroke: 14px #1b1e2c; paint-order: stroke fill; filter: drop-shadow(0 12px 0 rgba(0,0,0,.4)); white-space: nowrap; }
     #s01-al span { display: inline-block; margin: 0 .06em; transform-origin: 50% 60%; opacity: 0; }
@@ -113,23 +113,23 @@ scene("s01", LILITA + "\n    " + PILL + "\n    " + PT + "\n" + FL + """
       <div id="s01-c"><b id="s01-n">1</b>Bewohner 🏝️</div>""" + drops("s01-i", 18, 17, 'at("L1", "Insel")', 540, 700, "🌴", 560, 760)[0] + drops("s01-g", 22, 19, 'ga', 540, 720, "🐚", 600, 820)[0] + drops("s01-p", 22, 5, 'je + .1', 540, 760, "🏠", 560, 820)[0] + drops("s01-q", 16, 9, 'le', 540, 760, "✨", 520, 760)[0],
 """      const al = at("L1", "Am"), je = at("L1", "jetzt"), le = at("L1", "Bewohner"), ga = at("L1", "gekauft");
       """ + "\n      ".join(f'tl.set("#s01-w{i}", {{ opacity: 1 }}, 0);' for i, (_, k, _) in enumerate(HW)) + """
-      """ + "\n      ".join(f'tl.to("#s01-wi{i}", {{ scale: 1.85, color: "#ffffff", textShadow: "0 0 50px rgba(255,230,80,1)", duration: .1, yoyo: true, repeat: 1, ease: "power2.out" }}, {"0.02" if i == 0 else f"at(\"L1\", \"{k}\") - .02"});' for i, (_, k, _) in enumerate(HW)) + """
+      """ + "\n      ".join(f'tl.to("#s01-wi{i}", {{ scale: {1.3 if i >= 4 else 1.7}, color: "#ffffff", textShadow: "0 0 50px rgba(255,230,80,1)", duration: .1, yoyo: true, repeat: 1, ease: "power2.out" }}, {"0.02" if i == 0 else f"at(\"L1\", \"{k}\") - .02"});' for i, (_, k, _) in enumerate(HW)) + """
       tl.to("#s01-hk", { scale: 1.12, duration: .1, yoyo: true, repeat: 3 }, ga + .05);
       tl.fromTo("#s01-ray", { rotation: 0, opacity: 1 }, { rotation: 60, duration: al, ease: "none" }, 0);
       tl.to("#s01-ray", { opacity: 0, duration: .2 }, al - .15);
       tl.fromTo("#s01-fl", { opacity: 1 }, { opacity: 0, duration: .3, immediateRender: false }, 0);
       tl.fromTo("#s01-fl", { opacity: .8 }, { opacity: 0, duration: .3, immediateRender: false }, ga);
-      ["Ich", "habe", "euch", "eine", "Insel"].forEach((w, i) => tl.to("#s01-stage", { x: i % 2 ? -12 : 12, y: i % 2 ? 8 : -8, duration: .05, yoyo: true, repeat: 3, ease: "none" }, i ? at("L1", w) : 0.02));
-      tl.to("#s01-stage", { x: 22, y: -10, duration: .04, yoyo: true, repeat: 9, ease: "none" }, ga);
+      ["Ich", "habe", "euch", "eine", "Insel"].forEach((w, i) => tl.to("#s01-hk", { x: i % 2 ? -14 : 14, y: i % 2 ? 10 : -10, duration: .05, yoyo: true, repeat: 3, ease: "none" }, i ? at("L1", w) : 0.02));
+      tl.to("#s01-hk", { x: 24, y: -12, duration: .04, yoyo: true, repeat: 9, ease: "none" }, ga);
       tl.to("#s01-stage", { x: 14, duration: .04, yoyo: true, repeat: 5, ease: "none" }, at("L1", "gekauft") + .1);
       tl.to("#s01-hk", { opacity: 0, scale: .7, y: -80, duration: .25 }, al - .15);
       { const R = rng(3); for (let i = 0; i < 40; i++) { const x = R() * 1080, d = .5 + R() * .4, st = al - .3 + R() * (je - al);
         document.getElementById("s01-rn" + i).style.left = x + "px";
         tl.fromTo("#s01-rn" + i, { y: -100, opacity: .9 }, { y: 2000, duration: d, ease: "none" }, st); } }
-      tl.set("#s01-sad", { opacity: 1 }, 0);
+      tl.set("#s01-sad", { opacity: 0 }, 0); tl.set("#s01-sad", { opacity: 1 }, al - .1);
       tl.to("#s01-sad", { opacity: 0, duration: .5 }, je);
       """ + "\n      ".join(f'tl.fromTo("#s01-a{i}", {{ opacity: 0, scale: 6, filter: "blur(10px)" }}, {{ opacity: 1, scale: 1, filter: "blur(0px)", duration: .2, ease: "power3.in" }}, {k} - .12); tl.to("#s01-ai{i}", {{ scale: 1.45, color: "#ff6b6b", duration: .1, yoyo: true, repeat: 1 }}, {k} + .1);' for i, (_, k, _) in enumerate(AW)) + """
-      tl.to("#s01-stage", { x: 12, duration: .04, yoyo: true, repeat: 5, ease: "none" }, at("L1", "alleine") + .1);
+      tl.to("#s01-al", { x: 14, duration: .04, yoyo: true, repeat: 5, ease: "none" }, at("L1", "alleine") + .1);
       tl.to("#s01-al", { opacity: 0, scale: .6, duration: .2 }, je - .15);
       tl.fromTo("#s01-fl", { opacity: .85 }, { opacity: 0, duration: .4, immediateRender: false }, je);
       [0, 1, 2].forEach(i => tl.fromTo("#s01-rg" + i, { opacity: .9, scale: .2 }, { opacity: 0, scale: 3, duration: .7, ease: "power2.out", immediateRender: false }, je + i * .25));
