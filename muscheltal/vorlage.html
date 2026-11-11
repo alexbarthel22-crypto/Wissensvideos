@@ -610,7 +610,8 @@ const FIRE=[];for(let i=0;i<60;i++){const a=hash(i,80)*TAU,d=MAIN.plaza+Math.sqr
 const MOON=polar(MAIN,-2.35,MAIN.R+300);
 const PIER_A=Math.PI/2+.25,PIER0=polar(MAIN,PIER_A,coastAt(MAIN,PIER_A)-6),PIER1=polar(MAIN,PIER_A,coastAt(MAIN,PIER_A)+62+BEX);
 const PJ=I.projekt, BB_DONE=!!PJ&&PJ.stand>=PJ.ziel, BB_A=-0.75, BB=polar(MAIN,BB_A,coastAt(MAIN,BB_A)+4);
-const LANT=[0,1,2,3,4,5,6,7].map(i=>polar(MAIN,i/8*TAU,MAIN.plaza-14));
+// Laternen am Muschelplatz – keine an den Blumenbeeten vor den Seitenflügeln (dort wären sie verdeckt und nur ihr Licht zu sehen)
+const LANT=[0,1,2,3,4,5,6,7].map(i=>polar(MAIN,i/8*TAU,MAIN.plaza-14)).filter(([x,y])=>!(Math.abs(Math.abs(x/PAL_S)-46)<14&&y/PAL_S>39&&y/PAL_S<57));
 // Gebäude auf Bauplätzen (Dönerbude, Strandbar, Strandvilla). Küsten-Gebäude reichen bis ans/ins Wasser.
 const GEB=(I.gebaeude||[]).map(g=>{const [i,km]=g.key.split(':'),[k,m]=km.split(',').map(Number),v=ISL[+i];
  let x0=v.x+(5*k+1)*S-9,x1=v.x+(5*k+4)*S+9;const y0=v.y+(4*m+1)*S*.9-8,y1=v.y+(4*m+3)*S*.9+8,cy=(y0+y1)/2;
