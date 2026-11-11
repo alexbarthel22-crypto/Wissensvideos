@@ -83,7 +83,7 @@ def rain(cid, n, seed, t0, t1):
         tl.fromTo("#{cid}" + i, {{ opacity: 1, y: y0, rotation: (R() - .5) * 60 }}, {{ y: 2300, rotation: "+=" + Math.round((R() - .5) * 540), duration: y0 ? d * (2300 - y0) / 2300 + .2 : d, ease: y0 ? "none" : "power1.in" }}, st2); }} }}"""
     return html, js
 
-NS = (D.parent / "werkzeug" / "slot.txt").read_text().split(); WI = NS.index("einbaum18")
+NS = (D.parent / "werkzeug" / "slot.txt").read_text().split(); WI = NS.index("lona.js")
 BIG = """.big { position: absolute; left: 60px; right: 60px; margin: 0 auto; text-align: center; padding: 10px 26px 20px; border-radius: 36px; color: #fff; font-family: "Lilita One", sans-serif; line-height: 1; box-shadow: 0 0 0 8px #2a1b12, 0 16px 0 rgba(0,0,0,.3); }"""
 CMT = """.cmt { position: absolute; left: 140px; width: 800px; border-radius: 30px; padding: 8px; background: linear-gradient(135deg, #5fe0ff, #ff7ac0); box-shadow: 0 14px 30px rgba(0,0,0,.45); transform: rotate(-1.5deg); }
     .cmt img { display: block; width: 100%; border-radius: 23px; }"""
@@ -164,7 +164,7 @@ f"""      <div id="s03-t" class="pl">🥐 NEU: Fabiennes Bäckerei!</div>
       <div id="s03-box"><div id="s03-band"></div>{col(NS, WI)}<div id="s03-sh" data-layout-ignore></div></div>
       <div id="s03-cfw"></div>
       <div id="s03-st" class="stamp" data-layout-ignore>🥐 NEU IM TEAM!</div>
-      <div id="s03-wn" class="pl">🎉 @einbaum18 arbeitet in der Bäckerei!</div>
+      <div id="s03-wn" class="pl">🎉 @lona.js arbeitet in der Bäckerei!</div>
       <div id="s03-sp" class="big">🤫 SPOILER</div>
       <div id="s03-lk"><b>🔒</b>Job = Vorteil beim Spiel<br>bei 1.000 Followern!</div>""",
 f"""      const fa = at("L4", "Fabienne"), ab = at("L4", "abgestimmt"), l5 = line("L5")[0], ba = at("L5", "Bäckerei"), TB = line("L6")[0] - .4, gl = at("L6", "Glückwunsch"), l7 = line("L7")[0], vo = at("L7", "Vorteil"), H = 130, N = {len(NS)}, W = {WI};

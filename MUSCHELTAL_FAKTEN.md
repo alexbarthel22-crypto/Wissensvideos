@@ -200,7 +200,7 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - **Aufgaben** beim Erkunden („📋 Aufgaben x/3“, „📍 Hin da!“ mit feiner Linie bis an die Theke/den Eingang). Knopf erscheint erst direkt an der Theke: Açaí-Bowl mitnehmen, Döner mit alles mitnehmen, Fabiennes berühmte Zimtschnecken mitnehmen, „Sex on the Muschel Beach“ an der Bar trinken, auf dem Steg tanzen, Moped reparieren lassen, Audienz im Palast, an der Villa klingeln, Bauarbeitern Wasser bringen; außerdem Hütte eines zufälligen Einwohners besuchen und der Bürgermeisterin Hallo sagen. Danach sagt die Leitung „Danke! 🤍“ und passende Emojis steigen 1 s auf.
 - **Spenden** an die Inselkasse (1, 10, alle, freier Betrag) für das nächste Bauprojekt; ab 100 gespendeten 🐚 Erfolg „Inselfreund“. Teilen-Bild mit unverändertem Muschelpass und Spenden-Band.
 - **Muschel-Shop:** noch leer („Psst … hier entsteht etwas Großes“).
-- **Bäckerei-Job verlost (11.11., Zufall unter allen Bewohnern ohne Job/Amt, 693 im Lostopf): @einbaum18 (Nr. 656) arbeitet ab jetzt in Fabiennes Bäckerei.** ⚠️ Homepage: @einbaum18 als Team in die Bäckerei eintragen.
+- **Bäckerei-Job (11.11.): @lona.js (Nr. 43) arbeitet ab jetzt in Fabiennes Bäckerei** (vom Nutzer festgelegt, im Video als Live-Verlosung mit Spielautomat gezeigt). ⚠️ Homepage: @lona.js als Team in die Bäckerei eintragen.
 - **Abstimmung in den Kommentaren (Tag 4): Soll Marie eine private Yacht bekommen (mit Partys)?** (TikTok-Name von Marie noch offen.)
 - ⚠️ Homepage zeigt beim Erstellen von Tag 4 bereits **707 Einwohner**; im Video laut Nutzer **702** und Kasse **635**.
 
