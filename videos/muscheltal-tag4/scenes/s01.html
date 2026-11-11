@@ -1,0 +1,47 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+@font-face { font-family: "Lilita One"; src: url("assets/fonts/LilitaOne-Regular.woff2") format("woff2"); font-weight: 400; }
+    .pl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 28px 12px; border-radius: 999px; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); white-space: nowrap; }
+    .big { position: absolute; left: 60px; right: 60px; margin: 0 auto; text-align: center; padding: 10px 26px 20px; border-radius: 36px; color: #fff; font-family: "Lilita One", sans-serif; line-height: 1; box-shadow: 0 0 0 8px #2a1b12, 0 16px 0 rgba(0,0,0,.3); }
+    .pt { position: absolute; width: 80px; height: 80px; font-size: 70px; text-align: center; line-height: 80px; opacity: 0; }
+    .fl { position: absolute; inset: 0; background: #fff; opacity: 0; }
+    #s01-h { top: 280px; font-size: 86px; background: #e8467c; transform: rotate(-2deg); }
+    #s01-h b { color: #ffe14a; font-weight: 400; }
+    #s01-al { top: 640px; font-size: 46px; background: #23285a; }
+    #s01-c { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 640px; padding: 10px 44px 18px; border-radius: 36px; background: #fff; box-shadow: 0 0 0 8px #2a1b12, 0 14px 0 rgba(0,0,0,.3); text-align: center; font-family: "Inter", sans-serif; font-weight: 900; color: #2a1b12; font-size: 44px; }
+    #s01-c b { display: block; font-family: "Lilita One", sans-serif; font-weight: 400; font-size: 170px; line-height: 1; color: #2e9e5b; }
+  </style>
+  <div id="root" data-composition-id="s01" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s01-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s01-fl" class="fl" data-layout-ignore></div>
+      <div id="s01-h" class="big">ICH HABE EUCH EINE <b>INSEL GEKAUFT!</b></div>
+      <div id="s01-al" class="pl">🏠 Am Anfang: nur ich – ganz allein</div>
+      <div id="s01-c"><b id="s01-n">1</b>Bewohner 🏝️</div><div class="pt" id="s01-p0" style="left:500px;top:720px">🎉</div><div class="pt" id="s01-p1" style="left:500px;top:720px">🎉</div><div class="pt" id="s01-p2" style="left:500px;top:720px">🎉</div><div class="pt" id="s01-p3" style="left:500px;top:720px">🎉</div><div class="pt" id="s01-p4" style="left:500px;top:720px">🎉</div><div class="pt" id="s01-p5" style="left:500px;top:720px">🎉</div><div class="pt" id="s01-p6" style="left:500px;top:720px">🎉</div><div class="pt" id="s01-p7" style="left:500px;top:720px">🎉</div><div class="pt" id="s01-p8" style="left:500px;top:720px">🎉</div><div class="pt" id="s01-p9" style="left:500px;top:720px">🎉</div><div class="pt" id="s01-p10" style="left:500px;top:720px">🎉</div><div class="pt" id="s01-p11" style="left:500px;top:720px">🎉</div><div class="pt" id="s01-p12" style="left:500px;top:720px">🎉</div><div class="pt" id="s01-p13" style="left:500px;top:720px">🎉</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      /*__COMMON_JS__*/
+      wrapBt("#s01-stage");
+      const tl = gsap.timeline({ paused: true });
+      const al = at("L1", "ganz"), je = at("L1", "jetzt"), le = at("L1", "Leute");
+      tl.set("#s01-h", { opacity: 1 }, 0);
+      tl.fromTo("#s01-h", { scale: 1.6 }, { scale: 1, duration: .35, ease: "back.out(2.4)" }, 0);
+      tl.to("#s01-h", { scale: 1.05, duration: .2, yoyo: true, repeat: 5, ease: "sine.inOut" }, .5);
+      tl.fromTo("#s01-al", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, al - .3);
+      tl.to("#s01-al", { opacity: 0, duration: .2 }, je - .2);
+      tl.fromTo("#s01-c", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.4)" }, je - .1);
+      count(tl, "#s01-n", 1, 702, je, le - je + .1, "", "", "power2.in");
+      tl.fromTo("#s01-c", { scale: 1 }, { scale: 1.18, duration: .15, yoyo: true, repeat: 1, immediateRender: false }, le + .1);
+      tl.fromTo("#s01-fl", { opacity: .8 }, { opacity: 0, duration: .35, immediateRender: false }, le + .1);
+      { const R = rng(5); for (let i = 0; i < 14; i++) { const dx = (R() - .5) * 520 * 2, dy = -760 * (.5 + R() * .6);
+        tl.fromTo("#s01-p" + i, { opacity: 0, x: 0, y: 0, scale: .4, rotation: 0 }, { opacity: 1, x: dx * .6, y: dy * .6, scale: 1, rotation: (R() - .5) * 400, duration: .4, ease: "power3.out" }, le);
+        tl.to("#s01-p" + i, { x: dx, y: dy * .6 + 900, opacity: 0, rotation: "+=" + Math.round((R() - .5) * 300), duration: 1.3, ease: "power1.in" }, le + .4); } }
+      tl.to("#s01-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
+      window.__timelines["s01"] = tl;
+    })();
+  </script>
+</template>
