@@ -2449,7 +2449,7 @@ const naechster=p=>{try{return(+localStorage.getItem(shareKey(p))||0)+WOCHE;}cat
 const datum=t=>new Date(t).toLocaleDateString('de-DE',{day:'numeric',month:'numeric'});
 // Story-Bonus-Stand der Person vom Server holen (gilt auf allen Geräten), einmal je Person und Besuch
 const BONH=new Set();function bonHol(p){const k=p.name.toLowerCase();if(BONH.has(k))return;BONH.add(k);fetch('/api/kasse?name='+encodeURIComponent(k),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(d=>{if(d&&d.naechstes>0){try{localStorage.setItem(shareKey(p),String(d.naechstes-WOCHE));}catch(e){}if(mpP===p)bonUpd(p);}}).catch(()=>{});}
-function bonUpd(p){bonHol(p);const n=naechster(p),e=$('mpbon');const Z=(a,b)=>'<span class="bz">'+a+'</span><span class="bz">'+b+'</span>';if(n>Date.now()){e.className='bon done';e.innerHTML=Z('✅ Deine 50 Muscheln sind in der Inselkasse','nächster Bonus ab '+datum(n));}else{e.className='bon';e.innerHTML=Z('🐚 +50 Muscheln für die Inselkasse','alle 7 Tage möglich');}
+function bonUpd(p){bonHol(p);const n=naechster(p),e=$('mpbon');if(!e)return;const Z=(a,b)=>'<span class="bz">'+a+'</span><span class="bz">'+b+'</span>';if(n>Date.now()){e.className='bon done';e.innerHTML=Z('✅ Deine 50 Muscheln sind in der Inselkasse','nächster Bonus ab '+datum(n));}else{e.className='bon';e.innerHTML=Z('🐚 +50 Muscheln für die Inselkasse','alle 7 Tage möglich');}
  requestAnimationFrame(()=>{for(const z of e.querySelectorAll('.bz')){z.style.fontSize='';let fs=parseFloat(getComputedStyle(z).fontSize)||16;while(z.scrollWidth>z.clientWidth+1&&fs>10){fs-=.5;z.style.fontSize=fs+'px';}}});}
 async function bonus(p){if(naechster(p)>Date.now())return;
  // bis zu 3 Versuche bei Netz-/Serverfehlern – sicher, weil der Server pro Name und Woche nur eine Buchung zulässt
@@ -2463,8 +2463,8 @@ async function bonus(p){if(naechster(p)>Date.now())return;
 $('mpshare').onclick=async()=>{if(!mpP)return;const p=mpP,b=$('mpshare'),lab=b.innerHTML;b.textContent='⏳ Bild wird erstellt …';
  try{const blob=await new Promise(r=>passBild(p).toBlob(r,'image/png'));const file=new File([blob],'muschelpass.png',{type:'image/png'});
   const fr=mpThird,txt=fr?'Das ist der Muschelpass von '+p.name+' in Muschel-Tal! 🐚 Zieh auch ein – folg '+ACCTXT:'Ich wohne jetzt in Muschel-Tal! 🐚 Zieh auch ein – folg '+ACCTXT;
-  if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],text:txt});b.innerHTML=lab;if(!fr)bonus(p);return;}
-  else{const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='muschelpass.png';document.body.appendChild(a);a.click();a.remove();b.textContent='✅ Bild gespeichert – jetzt in der Story posten!';setTimeout(()=>{b.innerHTML=lab;if(!mpWalk)bonUpd(p);},2600);if(!fr)bonus(p);return;}
+  if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],text:txt});b.innerHTML=lab;if(!fr){bonus(p);mkTeilenQ(p);}return;}
+  else{const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='muschelpass.png';document.body.appendChild(a);a.click();a.remove();b.textContent='✅ Bild gespeichert – jetzt in der Story posten!';setTimeout(()=>{b.innerHTML=lab;if(!mpWalk)bonUpd(p);},2600);if(!fr){bonus(p);mkTeilenQ(p);}return;}
  }catch(e){}b.innerHTML=lab;if(!mpWalk)bonUpd(p);};
 $('mpgo').onclick=()=>{$('mp').hidden=true;if(mpWalk)return;window.scrollTo({top:0,behavior:'smooth'});if(mpP){select(mpP);if(mpP.p&&!mpP.gb)HFLASH={q:mpP,t0:performance.now()+1250};}};
 $('mpq').oninput=()=>{const t=$('mpq').value.trim().toLowerCase().replace(/^@/,'');if(!t){$('mps').hidden=true;$('mpm').hidden=true;return;}
@@ -2744,6 +2744,7 @@ const MKQ={
  villa:{ic:'🏖️',t:'An der Strandvilla klingeln',ort:'Strandvilla',hint:'Zum Tor der Strandvilla gehen',btn:'🔔 Bei der Villa klingeln',em:['🔔','🌺','🏖️','✨','🌴']},
  bau:{ic:'🏗️',t:'Auf der Baustelle helfen',ort:'',hint:'Zum Bauzaun der Baustelle gehen',btn:'🧱 Den Bauarbeitern Wasser bringen',em:['🧱','💧','🏗️','💪','✨']},
  beet:{ic:'💧',t:'Beim Gießen der Beete vorm Palast helfen',ort:'',hint:'An eines der beiden Blumenbeete vor dem Palast gehen',btn:'💧 Beete gießen',em:['💧','🌷','💦','🌸','🌼']},
+ teilen:{ic:'📲',t:'Teile deinen Muschelpass 1× mit deinen Freunden',ort:'',hint:'Muschelpass öffnen → „In meiner Story teilen“'},
  pass:{ic:'🪪',t:'Schau dir den Muschelpass eines anderen Users an',ort:'',hint:'Beim Erkunden eine Person oder Hütte antippen'},
  bm:{ic:'👑',t:'Der Bürgermeisterin Hallo sagen',ort:'',hint:'Auf dem Muschelplatz die Bürgermeisterin antippen',btn:'',em:['👑','👋','✨','🐚','💛']}};
 const mkLeiter=o=>PEOPLE.filter(p=>p.ort===o&&p.beruf==='Leitung').map(p=>p.name)[0]||'';
@@ -2752,12 +2753,12 @@ function mkQDef(id){if(id.startsWith('hut:')){const n=id.slice(4);return{ic:'�
  return{...q,t:q.t+(wer?' <i>bei '+esc(wer)+'</i>':'')};}
 function mkVorschlag(me){const h=mkTag(),r=mkR(mkH(me.name+h));const pick=a=>a[Math.floor(r()*a.length)];const own=me.ort||'';
  const A=['acai','doener','baeckerei','bar','steg','werkstatt'].filter(k=>MKQ[k].ort!==own||!own),B=['palast','villa','bm','beet'].concat(new Date().getHours()>=6&&new Date().getHours()<22&&mkProjekt()?['bau']:[]).filter(k=>!(k==='palast'&&/palast/i.test(own)));
- const H=PEOPLE.filter(p=>p.p&&!p.gb&&p!==me&&p.nr<=limit&&p.isl===me.isl&&p.isl.open);const hut=H.length?'hut:'+pick(H).name:'pass';return[pick(A),pick(B),r()<.5?hut:'pass'];}
+ const H=PEOPLE.filter(p=>p.p&&!p.gb&&p!==me&&p.nr<=limit&&p.isl===me.isl&&p.isl.open);const hut=H.length?'hut:'+pick(H).name:'pass';return[pick(A),pick(B),pick([hut,'pass','teilen'])];}
 async function mkQuests(){const me=mkMe();if(!me)return null;const r=await mk('quests',{vorschlag:mkVorschlag(me)});if(r&&r.ok)MK.quests=r.quests;mkChip();mkCard();return MK.quests;}
 // Ziele (Weltkoordinaten) und Bereiche, in denen der Knopf erscheint
 function mkZiel2(id){const geb=t=>GEB.find(g=>g.typ===t);
  if(id==='beet'){const Z=[-1,1].map(s=>mkNah(s*46*PAL_S,55*PAL_S+3,{r:9,beet:1}));return Z.sort((a,b)=>Math.hypot(a.x-WK.x,a.y-WK.y)-Math.hypot(b.x-WK.x,b.y-WK.y))[0];}
- if(id==='pass')return null;
+ if(id==='pass'||id==='teilen')return null;
  if(id==='acai'){const g=geb('acai');return g&&{x:g.cx-4,y:g.cy+6.5,r:5,g};}
  if(id==='baeckerei'){const g=geb('baeckerei');return g&&{x:g.cx,y:g.cy+0.5,r:5,g};}
  if(id==='doener'){const g=geb('doener');return g&&{x:g.cx-8,y:g.cy+9.5,r:6,g};}
@@ -2790,7 +2791,7 @@ function MKLINE(c,g){const h=MK.hin;if(!h||!h.pts||!WK.on)return;c.save();world(
 const MKIN=(c,g)=>{if(MK.hin&&MK.hin.z&&MK.hin.z.g===g)MKLINE(c,g);};
 // an der Theke: Knopf einblenden
 function mkNahe(){if(!WK.on||!mkOwn(WK.me)||!MK.quests)return;const qd=MK.d&&MK.d.questsDone||[];let hit=-1;
- let hinweis=null;MK.quests.forEach((id,i)=>{if(hit>=0||qd.includes(i)||id==='bm'||id==='pass'||id.startsWith('hut:'))return;const z=mkZiel2(id);if(!z)return;const L=WK.L||{h:1},fy=WK.y+4.4*(L.h||1);
+ let hinweis=null;MK.quests.forEach((id,i)=>{if(hit>=0||qd.includes(i)||id==='bm'||id==='pass'||id==='teilen'||id.startsWith('hut:'))return;const z=mkZiel2(id);if(!z)return;const L=WK.L||{h:1},fy=WK.y+4.4*(L.h||1);
   if(id==='steg'){const g=z.g,d=g.dir||1,sx=(g.sea-g.cx)*d,lx=(WK.x-g.cx)*d,ly=WK.y-g.cy;if(lx>sx-8&&Math.abs(ly)<27)hit=i;return;}if(Math.hypot(WK.x-z.x,fy-z.y)<z.r){if(id==='werkstatt'&&WK.mode!=='moped'){hinweis='moped';return;}if(id==='bau'&&bauRuhe()){hinweis='bau';return;}hit=i;}});
  const mb=$('walkmode');if(mb)mb.classList.toggle('wob',hinweis==='moped');if(hinweis&&MK.hw!==hinweis){MK.hw=hinweis;mkToast(hinweis==='moped'?'🛵 Moped reparieren geht nur mit dem Moped – steig auf!':'🏗️ Die Baustelle ist von 6 bis 22 Uhr geöffnet – komm dann wieder!');}if(!hinweis)MK.hw=null;
  let b=$('mkact');if(hit<0){if(b)b.remove();MK.nahe=-1;return;}if(MK.nahe===hit&&b)return;MK.nahe=hit;const q=mkQDef(MK.quests[hit]);if(b)b.remove();
@@ -2801,6 +2802,8 @@ async function mkErledigt(i){const b=$('mkact');if(b){b.disabled=true;}const id=
  const g=z&&z.g,L=g?TAPS.find(t=>t[2]&&t[2].ort===g.name&&t[2].beruf==='Leitung'):id==='bm'?TAPS.find(t=>t[2]&&/bürgermeister/i.test(t[2].beruf||'')):id==='beet'?TAPS.find(t=>t[2]&&t[2].beruf==='Palast-Leitung'):null;if(L)MK.bub={p:L[2],t0:performance.now()};
  mkToast('✅ Aufgabe geschafft · +5 🐚'+(r.bonus?' · 🎁 +5 Bonus':''));mkCard();}
 // Hütte bzw. Bürgermeisterin antippen erfüllt die Aufgabe (Muschelpass öffnet sich wie gewohnt)
+// Aufgabe „Muschelpass teilen“: erfüllt, sobald man den eigenen Pass geteilt (oder als Bild gespeichert) hat
+async function mkTeilenQ(p){if(!mkOwn(p))return;if(!MK.quests)await mkQuests();const qd=MK.d&&MK.d.questsDone||[],i=(MK.quests||[]).findIndex((id,k)=>id==='teilen'&&!qd.includes(k));if(i<0)return;const r=await mk('quest',{i});if(!r||r.fehler)return;await mkStand();mkChip();mkToast('✅ Aufgabe geschafft · +5 🐚'+(r.bonus?' · 🎁 +5 Bonus':''));}
 async function mkTipp(p,walk){if(!WK.on||!mkOwn(WK.me)||!MK.quests)return;const qd=MK.d&&MK.d.questsDone||[];const i=MK.quests.findIndex((id,k)=>!qd.includes(k)&&((walk==='huette'&&id==='hut:'+p.name)||(id==='pass'&&p!==WK.me)||(id==='bm'&&/bürgermeister/i.test(p.beruf||''))));if(i<0)return;
  const r=await mk('quest',{i});if(!r||r.fehler)return;if(MK.hin&&MK.hin.i===i)MK.hin=null;await mkStand();mkChip();mkToast('✅ Aufgabe geschafft · +5 🐚'+(r.bonus?' · 🎁 +5 Bonus':''));}
 
