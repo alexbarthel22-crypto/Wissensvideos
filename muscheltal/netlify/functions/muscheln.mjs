@@ -31,6 +31,22 @@ const TEXT = { login: "Login-Serie", quest: "Aufgabe", qbonus: "Alle 3 Aufgaben"
 export default async (req) => {
   const store = getStore({ name: "muscheln", consistency: "strong" });
   const url = new URL(req.url);
+  if (req.method === "GET" && url.searchParams.get("top")) {
+    // Muschel-Rangliste: Top 10 der beanspruchten Namen nach Kontostand, Pfeile im Vergleich zu gestern, optional eigener Platz
+    const claimed = new Set((await liste(store, "c/")).map(k => k.slice(2)));
+    const sum = {};
+    for (const k of await liste(store, "b/")) { const [, n, , , a] = k.split("/"); if (claimed.has(n)) sum[n] = (sum[n] || 0) + (Number(a) || 0); }
+    const order = Object.entries(sum).filter(([, v]) => v > 0).sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : 1));
+    const heute = tag(), key = "r/" + heute;
+    if (!(await store.get(key))) await store.set(key, JSON.stringify(order.slice(0, 50).map(x => x[0])));
+    const vor = JSON.parse((await store.get("r/" + gestern(heute))) || "null");
+    const top = order.slice(0, 10).map(([n, v], i) => { const j = vor ? vor.indexOf(n) : -1; return { n: "@" + n, stand: v, d: vor ? (j < 0 ? "neu" : j - i) : null }; });
+    const me = (url.searchParams.get("name") || "").trim().toLowerCase().replace(/^@/, "");
+    let platz = null, stand = null;
+    if (me) { const i = order.findIndex(x => x[0] === me); if (i >= 0) { platz = i + 1; stand = order[i][1]; } }
+    const bis10 = platz && platz > 10 && top[9] ? top[9].stand - stand + 1 : null;
+    return json({ top, platz, stand, bis10, anzahl: order.length });
+  }
   if (req.method === "GET") {
     // öffentlich: nur, ob ein Name beansprucht ist (für den Hinweis im Muschelpass)
     const n = (url.searchParams.get("name") || "").trim().toLowerCase();

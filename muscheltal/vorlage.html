@@ -316,6 +316,20 @@ footer a{color:var(--soft)}
 .qbar{height:12px;border-radius:99px;background:#efe3c8;border:2px solid #2a1b12;overflow:hidden;margin:10px 0 5px}.qbar i{display:block;height:100%;background:linear-gradient(90deg,#2fb3a0,#7fe0c8)}.qft{display:flex;justify-content:space-between;font-size:12.5px;font-weight:800;color:#6a5a40}
 .qact{display:flex;flex-direction:column;align-items:center;width:100%;margin:0 0 10px;padding:10px 12px;border:3px solid #2a1b12;border-radius:18px;background:#fff;box-shadow:0 4px 0 #2a1b12;font-family:inherit;animation:qpop .35s ease-out;cursor:pointer;pointer-events:auto}.qact b{font-size:16px;font-weight:900;text-align:center;line-height:1.2;color:#2a1b12}.qact span{font-size:12px;font-weight:800;color:#2a8a55;margin-top:1px}@keyframes qpop{from{transform:scale(.6);opacity:0}to{transform:scale(1);opacity:1}}
 .mktoast{position:absolute;left:50%;bottom:118px;max-width:calc(100% - 24px);overflow:hidden;text-overflow:ellipsis;transform:translateX(-50%) translateY(8px);z-index:26;background:rgba(42,27,18,.82);color:#ffd23f;border-radius:14px;padding:7px 14px;font-weight:900;font-size:14px;white-space:nowrap;opacity:0;transition:opacity .3s,transform .3s;pointer-events:none}.mktoast.on{opacity:1;transform:translateX(-50%)}
+/* ===== Muschel-Rangliste ===== */
+.rpage .stage{position:relative;margin:10px 0 0;border:3px solid #2a1b12;border-radius:22px;box-shadow:0 4px 0 #2a1b12;overflow:hidden;background:linear-gradient(#5fd3e6 0%,#9feadf 45%,#ffe8bf 46%,#f6d9a0 100%);padding:12px 8px 0}
+.rpage .sun{position:absolute;right:14px;top:10px;width:46px;height:46px;border-radius:50%;background:radial-gradient(#fff8d0,#ffd86a);box-shadow:0 0 24px #ffe9a0}.rpage .palm{position:absolute;font-size:34px;bottom:62px}.rpage .wave{position:absolute;left:0;right:0;top:44%;height:8px;background:repeating-linear-gradient(90deg,rgba(255,255,255,.7) 0 18px,transparent 18px 30px)}
+.rpage .conf{position:absolute;width:7px;height:4px;border-radius:2px}.rpage .spark{position:absolute;color:#fff;font-size:14px;text-shadow:0 0 6px #ffd23f}
+.rpage .stage h4{position:relative;margin:0;text-align:center;font-size:13px;letter-spacing:.12em;color:#fff;text-shadow:0 2px 0 #2a1b12,0 0 2px #2a1b12}
+.rpage .pod{position:relative;display:grid;grid-template-columns:1fr 1.15fr 1fr;gap:6px;align-items:end;margin:8px 0 0}.rpage .pd{text-align:center}.rpage .pd .av{width:54px;height:54px;border-radius:50%;border:4px solid #2a1b12;margin:0 auto -8px;position:relative;z-index:2;background:#9fe8df;overflow:hidden}.rpage .pd .av img{width:100%;height:100%}.rpage .pd.g1 .av{width:68px;height:68px;border-color:#d9a63a;box-shadow:0 0 0 3px #2a1b12,0 0 20px rgba(255,210,80,.9)}
+.rpage .pd .crown{font-size:26px;display:block;margin-bottom:-4px}.rpage .pd .blk{border:3px solid #2a1b12;border-bottom:0;border-radius:14px 14px 0 0;padding:14px 3px 8px;font-weight:900}.rpage .pd .n{font-size:11px;white-space:nowrap;letter-spacing:-.2px;overflow:hidden}.rpage .pd .v{font-size:15px;white-space:nowrap}.rpage .pd .pl{font-size:22px}
+.rpage .g1 .blk{background:linear-gradient(#ffe59a,#ffc84a);min-height:118px}.rpage .g2 .blk{background:linear-gradient(#f2f2f6,#c9ccd6);min-height:98px}.rpage .g3 .blk{background:linear-gradient(#ffd9b0,#e8a06a);min-height:86px}
+.rpage .rl{background:#fff;border:3px solid #2a1b12;border-radius:18px;box-shadow:0 4px 0 #2a1b12;margin-top:12px;overflow:hidden}.rpage .rr{display:flex;align-items:center;gap:9px;padding:8px 12px;border-bottom:1px dashed #eadcc0;font-weight:800;font-size:14px}.rpage .rr:last-child{border:0}.rpage .rr.me{background:#ffe3ef}.rpage .rr .nr{width:30px;height:30px;border-radius:50%;background:#fff3d6;border:2px solid #e8c88a;display:flex;align-items:center;justify-content:center;font-weight:900;color:#8a6a40;flex:none}.rpage .rr .a{width:32px;height:32px;border-radius:50%;border:2px solid #2a1b12;overflow:hidden;background:#9fe8df;flex:none}.rpage .rr .a img{width:100%;height:100%}.rpage .rr .nm{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.rpage .rr b{white-space:nowrap}
+.rup{font-size:11px;color:#2a8a55;font-weight:900}.rdn{font-size:11px;color:#c0392b;font-weight:900}
+.rpage .mine{margin-top:12px;background:#ffe3ef;border:3px dashed #e8467c;border-radius:16px;padding:9px 13px;font-weight:900;display:flex;justify-content:space-between;align-items:center;gap:10px}.rpage .mine small{display:block;font-size:11.5px;color:#a8346a;font-weight:800}.rpage .mine>span:last-child{white-space:nowrap}
+.rfoot{text-align:center;font-size:12.5px;color:#7a5a2b;font-weight:700;margin-top:10px;line-height:1.4}
+.rangbox{background:#fff;border:3px solid #2a1b12;border-radius:20px;box-shadow:0 4px 0 #2a1b12;padding:10px 13px;margin:12px 0}.rangbox h3{margin:0 0 6px;font-size:16px}.rangbox .trow{display:flex;gap:8px;align-items:center;font-weight:800;font-size:14px;padding:3px 0}.rangbox .trow span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.rangbox .trow b{margin-left:auto;white-space:nowrap}.rangbox .trow.me{color:#e8467c}.rangbox .tlink{display:block;margin-top:6px;font-weight:900;color:#0a8fd0;font-size:13.5px;text-decoration:none}
+.btn.rangb{background:#ffd23f}
 </style>
 </head>
 <body>
@@ -363,7 +377,7 @@ footer a{color:var(--soft)}
   <a class="btn hib" id="join" target="_blank" rel="noopener">Jetzt einziehen</a>
   <div class="nowbtn"><a class="btn" href="regeln.html">📜 Regeln</a><button class="btn hib" id="myerf">🏅 Meine Erfolge</button></div>
   <div class="nowbtn"><a class="btn wide" href="einwohner.html">👥 Einwohner</a><a class="btn wide jobs2" href="berufe.html">💼 Berufe</a></div>
-  <div class="nowbtn one"><a class="btn wide baub" href="bau.html">🏗️ Aktuelle Bauprojekte</a></div>
+  <div class="nowbtn"><a class="btn wide baub" href="bau.html">🏗️ Bauprojekte</a><a class="btn wide rangb" href="#rangliste">🏆 Rangliste</a></div>
  </section>
 
  <section id="s-pass" hidden>
@@ -382,6 +396,7 @@ footer a{color:var(--soft)}
    <div class="proj" id="proj"><div class="top"><span id="pjname"></span><small id="pjnum"></small></div><div class="meter"><i id="pjbar"></i></div><p class="sub" id="pjtext"></p></div>
    <p class="news" id="news"></p>
   </div>
+  <div class="rangbox" id="rangbox" hidden></div>
   <a class="btn wide jobs" href="news.html">📰 News aus Muschel-Tal</a>
  </section>
 
@@ -2924,6 +2939,58 @@ setInterval(()=>{if(!WK.on){const b=$('mkact');if(b)b.remove();return;}mkNahe();
 {const _sel=select;select=function(p,doFly){_sel(p,doFly);if(p&&mkOwn(p))(MK.d?Promise.resolve(MK.d):mkStand()).then(()=>{mkCard();setTimeout(()=>mkLoginCheck(),1400);});else mkCard();};}
 {const _d=draw;draw=function(){_d();mkShellDraw(ctx);mkOver();};}
 if(mkClaim())mkStand();
+
+// ================= Muschel-Rangliste (Top 10 der beanspruchten Namen nach Muschel-Vermögen) =================
+const RANG={d:null,t:0};
+async function rangLaden(){if(RANG.d&&Date.now()-RANG.t<60000)return RANG.d;const c=mkClaim();try{const r=await fetch('/api/muscheln?top=1'+(c?'&name='+encodeURIComponent(c.n):''),{cache:'no-store'});if(r.ok){RANG.d=await r.json();RANG.t=Date.now();}}catch(e){}return RANG.d;}
+const rangAv=n=>{const p=byName.get(String(n).toLowerCase());return p?avatarURL(p):'';};
+const rangPfeil=d=>d==='neu'?' <span class="rup">neu</span>':d>0?' <span class="rup">▲'+d+'</span>':d<0?' <span class="rdn">▼'+(-d)+'</span>':'';
+// Kasten auf der Startseite (unter „Gerade auf den Inseln“)
+async function rangKasten(){const box=$('rangbox');if(!box)return;const d=await rangLaden();if(!d||!d.top||!d.top.length){box.hidden=true;return;}box.hidden=false;
+ const c=mkClaim();box.innerHTML='<h3>🏆 Reichste Muschelsammler</h3>'+d.top.slice(0,3).map((r,i)=>'<div class="trow">'+['🥇','🥈','🥉'][i]+' <span>'+esc(r.n)+'</span><b>'+fmt(r.stand)+'&nbsp;🐚</b></div>').join('')
+  +(c&&d.platz&&d.platz>3?'<div class="trow me">#'+d.platz+' <span>'+esc(c.n)+' (du)</span><b>'+fmt(d.stand)+'&nbsp;🐚</b></div>':'')+'<a class="tlink" href="#rangliste">Ganze Rangliste (Top 10) →</a>';}
+// eigene Seite
+async function rangSeite(){let e=$('rangpage');if(!e){e=document.createElement('div');e.id='rangpage';e.className='mkpage rpage';document.body.appendChild(e);}e.hidden=false;document.body.style.overflow='hidden';
+ e.innerHTML='<a class="mkback" href="#" data-rang="zu">← Zur Karte</a><h1>🏆 Muschel-Rangliste</h1><div class="mktag">Die 10 reichsten Muschelsammler von Muschel-Tal</div><div class="mkbox">⏳ Lade …</div>';
+ RANG.t=0;const d=await rangLaden();if(e.hidden)return;
+ if(!d||!d.top){e.querySelector('.mkbox').textContent='Gerade keine Verbindung – bitte gleich nochmal versuchen.';return;}
+ if(!d.top.length){e.querySelector('.mkbox').innerHTML='<b>Noch ist die Rangliste leer.</b><br>Sichere deinen Namen im Muschelpass, hol dir deine Muscheln ab – und sei die/der Erste! 🐚';return;}
+ const T3=d.top.slice(0,3),pod=(r,cls,pl)=>r?'<div class="pd '+cls+'">'+(cls==='g1'?'<span class="crown">👑</span>':'')+'<div class="av"><img src="'+rangAv(r.n)+'" alt=""></div><div class="blk"><div class="pl">'+pl+'</div><div class="n">'+esc(r.n)+'</div><div class="v">'+fmt(r.stand)+'&nbsp;🐚</div></div></div>':'<div></div>';
+ const conf=Array.from({length:22},(_,i)=>'<i class="conf" style="left:'+((i*41)%96)+'%;top:'+((i*29)%40)+'%;background:'+['#ff6fa3','#ffd23f','#7fe0c8','#b58ad0','#fff'][i%5]+';transform:rotate('+(i*37)+'deg)"></i>').join('')+['8%:18%','88%:34%','20%:6%','70%:12%'].map(s=>{const [l,t]=s.split(':');return'<span class="spark" style="left:'+l+';top:'+t+'">✦</span>';}).join('');
+ const c=mkClaim(),meIn=c&&d.platz&&d.platz<=10;
+ e.innerHTML='<a class="mkback" href="#" data-rang="zu">← Zur Karte</a><h1>🏆 Muschel-Rangliste</h1><div class="mktag">Die 10 reichsten Muschelsammler von Muschel-Tal · Stand jetzt</div>'
+  +'<div class="stage"><div class="sun"></div><div class="wave"></div><span class="palm" style="left:4px">🌴</span><span class="palm" style="right:6px">🌴</span>'+conf+'<h4>★ TOP 10 ★</h4><div class="pod">'+pod(T3[1],'g2','🥈')+pod(T3[0],'g1','🥇')+pod(T3[2],'g3','🥉')+'</div></div>'
+  +(d.top.length>3?'<div class="rl">'+d.top.slice(3).map((r,i)=>'<div class="rr'+(c&&r.n===c.n?' me':'')+'"><span class="nr">'+(i+4)+'</span><span class="a"><img src="'+rangAv(r.n)+'" alt=""></span><span class="nm">'+esc(r.n)+rangPfeil(r.d)+'</span><b>'+fmt(r.stand)+'&nbsp;🐚</b></div>').join('')+'</div>':'')
+  +(c?(meIn?'<div class="mine"><span>Du bist auf Platz #'+d.platz+' 🎉<small>weiter so!</small></span><span>'+fmt(d.stand)+'&nbsp;🐚</span></div>':d.platz?'<div class="mine"><span>Dein Platz: #'+d.platz+'<small>noch '+fmt(d.bis10)+' 🐚 bis Platz 10</small></span><span>'+fmt(d.stand)+'&nbsp;🐚</span></div>':'<div class="mine"><span>Noch kein Platz<small>hol dir Muscheln ab, dann bist du dabei</small></span><span>0&nbsp;🐚</span></div>')
+   :'<div class="mine"><span>Du bist noch nicht dabei<small>sichere deinen Namen im Muschelpass</small></span><span>🔐</span></div>')
+  +'<button class="btnw" type="button" data-rang="teilen"><span>📲</span>Top 10 teilen</button><p class="rfoot">Teilen bringt keine Muscheln – einfach zum Angeben 😎<br>In der Rangliste stehen nur Namen, die beansprucht wurden.</p>';}
+function rangZu(){const e=$('rangpage');if(e)e.hidden=true;document.body.style.overflow='';if(location.hash==='#rangliste')history.replaceState(null,'',location.pathname+location.search);}
+async function rangTeilen(btn){const d=RANG.d;if(!d||!d.top||!d.top.length)return;const lab=btn.innerHTML;btn.textContent='⏳ Bild wird erstellt …';
+ try{const ld=s=>new Promise(r=>{if(!s)return r(null);const im=new Image();im.onload=()=>r(im);im.onerror=()=>r(null);im.src=s;});const IM=await Promise.all(d.top.map(r=>ld(rangAv(r.n))));
+  const W2=1080,H2=1920,cv=document.createElement('canvas');cv.width=W2;cv.height=H2;const c=cv.getContext('2d'),F=FONT;
+  let g=c.createLinearGradient(0,0,0,H2);g.addColorStop(0,'#1aa6e0');g.addColorStop(.42,'#5fd3e6');g.addColorStop(.58,'#9feadf');g.addColorStop(.59,'#ffe8bf');g.addColorStop(1,'#f6d9a0');c.fillStyle=g;c.fillRect(0,0,W2,H2);
+  const sun=c.createRadialGradient(880,260,10,880,260,240);sun.addColorStop(0,'rgba(255,250,220,.95)');sun.addColorStop(1,'rgba(255,250,220,0)');c.fillStyle=sun;c.fillRect(600,0,480,520);
+  c.strokeStyle='rgba(255,255,255,.35)';c.lineWidth=5;for(let k=0;k<8;k++){const y=820+k*40;c.beginPath();for(let x=-20;x<=W2+20;x+=30)c.lineTo(x,y+Math.sin(x*.02+k)*7);c.stroke();}
+  for(let i=0;i<60;i++){const x=(i*173)%W2,y=(i*97)%760;if(y>300&&y<360)continue;c.save();c.translate(x,y);c.rotate(i);c.fillStyle=['#ff6fa3','#ffd23f','#7fe0c8','#b58ad0','#fff'][i%5];c.fillRect(-9,-5,18,10);c.restore();}
+  c.textAlign='center';c.lineJoin='round';c.font='900 104px '+F;c.lineWidth=22;c.strokeStyle='#2a1b12';c.strokeText('MUSCHEL-TAL',W2/2,210);c.fillStyle='#ffd23f';c.fillText('MUSCHEL-TAL',W2/2,210);
+  c.font='900 58px '+F;c.lineWidth=12;c.strokeText('🏆 Top 10 Muschelsammler',W2/2,290);c.fillStyle='#fff';c.fillText('🏆 Top 10 Muschelsammler',W2/2,290);
+  const podX=[W2/2-300,W2/2,W2/2+300],podH=[250,310,230],ord=[1,0,2],cols=[['#f2f2f6','#c9ccd6'],['#ffe59a','#ffc84a'],['#ffd9b0','#e8a06a']],medal=['🥈','🥇','🥉'];
+  ord.forEach((ri,i)=>{const r=d.top[ri];if(!r)return;const x=podX[i],h=podH[i],y0=850-h,w=270;const gg=c.createLinearGradient(0,y0,0,850);gg.addColorStop(0,cols[i][0]);gg.addColorStop(1,cols[i][1]);c.fillStyle=gg;c.strokeStyle='#2a1b12';c.lineWidth=8;c.beginPath();c.roundRect(x-w/2,y0,w,h+20,[30,30,0,0]);c.fill();c.stroke();
+   const R=i===1?92:76,ay=y0-R+20;c.save();c.beginPath();c.arc(x,ay,R,0,TAU);c.clip();c.fillStyle='#9fe8df';c.fillRect(x-R,ay-R,R*2,R*2);if(IM[ri])c.drawImage(IM[ri],x-R,ay-R,R*2,R*2);c.restore();c.lineWidth=10;c.strokeStyle=i===1?'#d9a63a':'#2a1b12';c.beginPath();c.arc(x,ay,R,0,TAU);c.stroke();
+   if(i===1){c.font='80px '+F;c.fillText('👑',x,ay-R+4);}c.font='64px '+F;c.fillText(medal[i],x,y0+86);c.fillStyle='#2a1b12';let fs=36;c.font='900 '+fs+'px '+F;while(c.measureText(r.n).width>w-20&&fs>20){fs-=2;c.font='900 '+fs+'px '+F;}c.fillText(r.n,x,y0+140);c.font='900 44px '+F;c.fillText(fmt(r.stand)+' 🐚',x,y0+196);});
+  const R7=d.top.slice(3),x0=110,y0=870,cw=860,ch=Math.max(120,R7.length*98+40);if(R7.length){c.fillStyle='#2a1b12';rr(c,x0+12,y0+12,cw,ch,46);c.fill();c.fillStyle='#fffaf0';rr(c,x0,y0,cw,ch,46);c.fill();c.lineWidth=7;c.strokeStyle='#2a1b12';c.stroke();}
+  R7.forEach((r,i)=>{const y=y0+26+i*98;c.fillStyle='#fff3d6';c.beginPath();c.arc(x0+70,y+40,34,0,TAU);c.fill();c.strokeStyle='#e8c88a';c.lineWidth=5;c.stroke();c.fillStyle='#8a6a40';c.font='900 34px '+F;c.textAlign='center';c.fillText(i+4,x0+70,y+52);
+   c.save();c.beginPath();c.arc(x0+150,y+40,34,0,TAU);c.clip();c.fillStyle='#9fe8df';c.fillRect(x0+116,y+6,68,68);if(IM[i+3])c.drawImage(IM[i+3],x0+116,y+6,68,68);c.restore();c.strokeStyle='#2a1b12';c.lineWidth=5;c.beginPath();c.arc(x0+150,y+40,34,0,TAU);c.stroke();
+   c.textAlign='left';c.fillStyle='#2a1b12';let fs=40;c.font='900 '+fs+'px '+F;while(c.measureText(r.n).width>cw-420&&fs>24){fs-=2;c.font='900 '+fs+'px '+F;}c.fillText(r.n,x0+205,y+54);c.font='900 40px '+F;c.textAlign='right';c.fillText(fmt(r.stand)+' 🐚',x0+cw-40,y+54);
+   if(i<R7.length-1){c.strokeStyle='#eadcc0';c.lineWidth=3;c.setLineDash([10,8]);c.beginPath();c.moveTo(x0+40,y+92);c.lineTo(x0+cw-40,y+92);c.stroke();c.setLineDash([]);}});
+  c.textAlign='center';c.fillStyle='#e8467c';rr(c,110,1640,860,150,75);c.fill();c.lineWidth=7;c.strokeStyle='#2a1b12';c.stroke();c.fillStyle='#fff';c.font='900 58px '+F;c.fillText('Sammel mit! 🐚',W2/2,1708);c.font='800 36px '+F;c.fillText('Folg '+ACC+' auf TikTok',W2/2,1762);c.fillStyle='#2a1b12';c.font='900 40px '+F;c.fillText('muscheltal.de',W2/2,1860);
+  const blob=await new Promise(r=>cv.toBlob(r,'image/png')),file=new File([blob],'muschel-rangliste.png',{type:'image/png'}),txt='Die Top 10 Muschelsammler in Muschel-Tal! 🏆🐚 Zieh auch ein – folg '+ACCTXT;
+  if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],text:txt});}
+  else{const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='muschel-rangliste.png';document.body.appendChild(a);a.click();a.remove();btn.textContent='✅ Bild gespeichert';setTimeout(()=>{btn.innerHTML=lab;},2600);return;}
+ }catch(e){}btn.innerHTML=lab;}
+document.addEventListener('click',ev=>{const a=ev.target.closest('[data-rang],a[href="#rangliste"]');if(!a)return;ev.preventDefault();const k=a.dataset.rang;if(k==='zu')rangZu();else if(k==='teilen')rangTeilen(a);else{history.replaceState(null,'','#rangliste');rangSeite();}});
+if(location.hash==='#rangliste')setTimeout(rangSeite,600);
+rangKasten();setInterval(()=>{if(!document.hidden)rangKasten();},120000);
 
 liveText();loadWx();setInterval(liveText,15000);setInterval(loadWx,15*60e3);
 addEventListener('resize',()=>{resize();});resize();
