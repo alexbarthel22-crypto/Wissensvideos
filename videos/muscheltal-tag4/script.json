@@ -31,16 +31,56 @@
    "lines": [
     {
      "id": "L1",
-     "text": "Ich habe euch eine *y:Insel *y:gekauft! / Am Anfang war ich *r:ganz *r:alleine / auf meiner Insel – / und jetzt sind wir schon / *g:702|siebenhundertzwei *g:Leute!",
+     "text": "Ich habe euch eine *y:Insel *y:gekauft! / Am Anfang war ich *r:ganz *r:alleine / auf meiner Insel – / und jetzt sind wir schon / *g:702|siebenhundertzwei *g:Bewohner!",
      "speed": 1.1,
-     "style": "Style: a young German guy, around 20, proudly and excitedly announcing big news, punchy and confident, natural German intonation, normal pitch.\nPace: brisk with a short dramatic pause.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
+     "style": "Style: a young German guy, around 20, extremely excited and loud, almost shouting with joy, announcing huge news to his followers, explosive energy on 'Insel gekauft', natural German intonation, normal pitch.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
     }
    ],
    "sfx": [
     {
      "name": "impact-bass-1",
      "at": "s01+0.0",
+     "volume": 0.6
+    },
+    {
+     "name": "whoosh",
+     "at": "s01+0.0",
+     "volume": 0.4
+    },
+    {
+     "name": "pop",
+     "at": "L1:habe",
+     "volume": 0.35
+    },
+    {
+     "name": "pop",
+     "at": "L1:euch",
+     "volume": 0.35
+    },
+    {
+     "name": "pop",
+     "at": "L1:eine",
+     "volume": 0.35
+    },
+    {
+     "name": "impact-bass-2",
+     "at": "L1:Insel",
      "volume": 0.5
+    },
+    {
+     "name": "impact-bass-1",
+     "at": "L1:gekauft",
+     "volume": 0.55
+    },
+    {
+     "name": "jubel",
+     "at": "L1:gekauft",
+     "volume": 0.35
+    },
+    {
+     "name": "sad-trombone",
+     "at": "L1:alleine",
+     "volume": 0.18
     },
     {
      "name": "whoosh",
@@ -49,13 +89,13 @@
     },
     {
      "name": "ka-ching",
-     "at": "L1:Leute",
+     "at": "L1:Bewohner",
      "volume": 0.45
     },
     {
-     "name": "jubel",
-     "at": "L1:Leute",
-     "volume": 0.4
+     "name": "yippee",
+     "at": "L1:Bewohner-0.5",
+     "volume": 1.0
     }
    ]
   },
@@ -165,7 +205,7 @@
    "lines": [
     {
      "id": "L4",
-     "text": "Und *g:ganz *g:neu: / Ihr habt abgestimmt – / *y:Fabienne hat ihre *y:Bäckerei!",
+     "text": "Und *g:ganz *g:neu: / Ihr habt abgestimmt – / *y:Fabienne hat ihre *y:Bäckerei! / *g:Glückwunsch, *y:Fabienne!",
      "speed": 1.1,
      "style": "Style: a young German guy, around 20, genuinely excited, talking to his followers like friends, energetic and warm, natural German intonation, not an announcer, normal pitch.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
      "pause": 0.5
@@ -227,6 +267,11 @@
      "name": "impact-bass-2",
      "at": "L7:Vorteil",
      "volume": 0.4
+    },
+    {
+     "name": "jubel",
+     "at": "L4:Glückwunsch",
+     "volume": 0.45
     }
    ]
   },
@@ -338,7 +383,7 @@
   }
  ],
  "style": "Style: a real, natural-sounding young man telling his friends something he is genuinely excited about. Conversational, warm, honest emotion in the voice, not like an announcer or an advertisement. Emphasize the important words naturally.\nPace: brisk but natural.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
- "loudness": -11,
+ "loudness": -6,
  "pitch": 0,
  "music": {
   "src": "assets/music/suedsee.wav",

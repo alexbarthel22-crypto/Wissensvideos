@@ -51,7 +51,7 @@
 @font-face { font-family: "Lilita One"; src: url("assets/fonts/LilitaOne-Regular.woff2") format("woff2"); font-weight: 400; }
     .pl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 28px 12px; border-radius: 999px; color: #fff;
       font-family: "Inter", sans-serif; font-weight: 900; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); white-space: nowrap; }
-    .big { position: absolute; left: 0; right: 0; width: fit-content; max-width: 940px; margin: 0 auto; text-align: center; padding: 10px 26px 20px; border-radius: 36px; color: #fff; font-family: "Lilita One", sans-serif; line-height: 1; box-shadow: 0 0 0 8px #2a1b12, 0 16px 0 rgba(0,0,0,.3); }
+    .big { position: absolute; left: 0; right: 0; width: fit-content; max-width: 980px; white-space: nowrap; margin: 0 auto; text-align: center; padding: 10px 26px 20px; border-radius: 36px; color: #fff; font-family: "Lilita One", sans-serif; line-height: 1; box-shadow: 0 0 0 8px #2a1b12, 0 16px 0 rgba(0,0,0,.3); }
     #s06-h { top: 290px; font-size: 80px; background: #fe2c55; transform: rotate(-2deg); }
     #s06-cm { position: absolute; left: 90px; right: 210px; top: 480px; padding: 22px 26px 26px; border-radius: 30px; background: #1f1f1f; box-shadow: 0 0 0 5px #000, 0 14px 26px rgba(0,0,0,.45); font-family: "Inter", sans-serif; color: #fff; display: flex; gap: 20px; }
     #s06-cm .av { width: 74px; height: 74px; border-radius: 50%; flex: none; background: linear-gradient(135deg, #ffd23f, #e8467c); display: grid; place-items: center; font-size: 40px; }
@@ -65,7 +65,7 @@
   </style>
   <div id="root" data-composition-id="s06" data-start="0" data-duration="8.420" data-width="1080" data-height="1920">
     <div id="s06-stage" class="clip stage" data-start="0" data-duration="8.420" data-track-index="0">
-      <div id="s06-h" class="big">🚀 ES GIBT KEINE GRENZEN!</div>
+      <div id="s06-h" class="big">🚀 ES GIBT KEINE<br>GRENZEN!</div>
       <div id="s06-cm"><div class="av">🐚</div><div><div class="nm">Du</div><div class="tx"><span id="s06-ty"></span><span class="cu" id="s06-cu"></span></div></div><div id="s06-lk"><span id="s06-h0">🤍</span><span id="s06-h1">❤️</span><b id="s06-ln">0</b></div></div>
       <div id="s06-g" class="pl">❤️ Meiste Likes = morgen im Video!</div>
       <div id="s06-cb" data-layout-ignore>Hier kommentieren</div>
@@ -75,7 +75,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 8.42, "L10": [0.2, 7.74], "L10.words": [["ihr", 0.23, 0.36], ["entscheidet", 0.36, 0.837], ["", 0.837, 0.88], ["es", 1.13, 1.219], ["gibt", 1.219, 1.398], ["keine", 1.398, 1.622], ["grenzen", 1.622, 1.98], ["was", 2.18, 2.307], ["ist", 2.307, 2.434], ["die", 2.434, 2.561], ["verrückteste", 2.561, 3.068], ["idee", 3.068, 3.28], ["die", 3.38, 3.497], ["ihr", 3.497, 3.614], ["euch", 3.614, 3.771], ["für", 3.771, 3.888], ["muscheltal", 3.888, 4.317], ["wünscht", 4.317, 4.63], ["der", 4.88, 5.014], ["kommentar", 5.014, 5.415], ["mit", 5.415, 5.549], ["den", 5.549, 5.683], ["meisten", 5.683, 5.995], ["likes", 5.995, 6.218], ["gewinnt", 6.218, 6.53], ["und", 6.68, 6.83], ["ist", 6.83, 6.98], ["morgen", 6.98, 7.28], ["im", 7.28, 7.38], ["video", 7.38, 7.68]]};
+      const C = {"__dur": 8.42, "L10": [0.2, 7.74], "L10.words": [["ihr", 0.23, 0.36], ["entscheidet", 0.36, 0.837], ["", 0.837, 0.88], ["es", 1.13, 1.219], ["gibt", 1.219, 1.398], ["keine", 1.398, 1.622], ["grenzen", 1.622, 1.98], ["was", 2.18, 2.307], ["ist", 2.307, 2.434], ["die", 2.434, 2.561], ["verrückteste", 2.561, 3.068], ["idee", 3.068, 3.28], ["die", 3.38, 3.497], ["ihr", 3.497, 3.614], ["euch", 3.614, 3.771], ["für", 3.771, 3.888], ["muscheltal", 3.888, 4.318], ["wünscht", 4.318, 4.63], ["der", 4.88, 5.014], ["kommentar", 5.014, 5.415], ["mit", 5.415, 5.549], ["den", 5.549, 5.683], ["meisten", 5.683, 5.995], ["likes", 5.995, 6.218], ["gewinnt", 6.218, 6.53], ["und", 6.68, 6.83], ["ist", 6.83, 6.98], ["morgen", 6.98, 7.28], ["im", 7.28, 7.38], ["video", 7.38, 7.68]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
