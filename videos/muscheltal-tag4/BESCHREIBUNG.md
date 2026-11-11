@@ -1,6 +1,6 @@
 # Muschel-Tal – Tag 4 · Beschreibung
 
-**Cover:** `renders/cover.jpg` (Vorlage `cover/thumb.html`, gewohntes Layout) – Logo + „TAG 4“, 🏝️, „ICH HABE EUCH EINE INSEL GEKAUFT! – Folgen = einziehen 🏝️“, Karten „702 Bewohner (+29)“ und „635 Inselkasse (+130, von 2.000 fürs Tierheim)“, „➕ Dein @Name auf meiner Insel“. Hintergrund: die volle Haupt-Insel im Meer (Homepage-Aufnahme).
+**Cover:** `renders/cover.jpg` (Vorlage `cover/thumb.html`, gewohntes Layout) – Logo + „TAG 4“, 🥐, „LIVE VERLOST: JOB IN DER BÄCKEREI! – Wer gewinnt? 👀 Folgen = einziehen 🏝️“ (größter Teaser der Folge, verrät den Gewinner nicht), Karten „702 Bewohner (+29)“ und „635 Inselkasse (+130, von 2.000 fürs Tierheim)“, „➕ Dein @Name auf meiner Insel“. Hintergrund: die volle Haupt-Insel im Meer (Homepage-Aufnahme).
 
 ## Hauptversion (zum Posten)
 Ich hab euch eine Insel gekauft 🏝️ Folg mir und zieh ein – deine Hütte mit deinem @Namen wartet!
