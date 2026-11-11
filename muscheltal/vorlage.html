@@ -1373,7 +1373,9 @@ let LAMPG=null;function lampsFront(c,x,y,tn){if(S*cam.z<=6)return;if(!LAMPG){LAM
 function hutsFront(c,x,y,tn){lampsFront(c,x,y,tn);palmsFront(c,x,y,tn);doenerFront(c,x,y,tn);if(Math.abs(x)<130*PAL_S&&Math.abs(y)<80*PAL_S)palFront(c,x,y,tn);acaiFront(c,x,y,tn);plotSignFront(c,x,y,tn);const px=S*cam.z;if(px<7)return;const K=kind(),wet=K==='rain'||K==='storm',snow=K==='snow';
  for(const v of ISL){if(!v.open||!v.cell||Math.hypot(x-v.x,y-v.y)>v.R+40)continue;const gx=Math.round((x-v.x)/S),gy=Math.round((y-v.y)/(S*.9));
   for(let dy=0;dy<=2;dy++)for(let dx=-1;dx<=1;dx++){const q=v.cell.get((gx+dx)+','+(gy+dy));if(!q||q.nr>limit||!q.p||q.p.y<=y-.5||q.p.y-y>24||Math.abs(q.p.x-x)>12)continue;tintDraw(c,tn,q.p.x-12,q.p.y-16,q.p.x+12,q.p.y+11,o=>hutBody(o,v,q,px,wet,snow));}}}
-function drawMover(c,w,x,y,dir,vert,mode){
+// Figuren dieses Bildes merken (für „Passant vor Namensschild“)
+const FIGS=[];
+function drawMover(c,w,x,y,dir,vert,mode){if(c===ctx&&!drawMover.re)FIGS.push([w,x,y,dir,vert,mode]);
   c.save();c.translate(x,y);if(!vert)c.scale(dir,1);
   c.fillStyle='rgba(30,40,20,.25)';c.beginPath();c.ellipse(0,4.4,mode==='walk'?2.6:4.2,.9,0,0,TAU);c.fill();c.lineCap='round';
   if(vert&&mode!=='walk'&&mode!=='inline'&&mode!=='skate'){c.scale(w.h,w.h);riderV(c,w,dir>0);}
@@ -2115,7 +2117,7 @@ function draw(){
   if(z*S>5){for(const t of v.palms)if(vis(t.x,t.y))palm(c,t);}else{c.fillStyle='#3a9e4a';for(const t of v.palms)c.fillRect(t.x-2.5,t.y-2.5,5,5);}
   if(!v.open&&v.i){c.fillStyle='rgba(255,255,255,.07)';shape(c,v,10);c.fill();}
   if(GROWK!=null&&GROWV===v&&v.i&&GROWK<.12){c.fillStyle=`rgba(245,248,252,${.85*(1-GROWK/.12)})`;shape(c,v,30);c.fill();}}
- NAMES.length=0;TAPS.length=0;TEAMN.clear();for(const b of BAU)if(bauOn(b)&&visR(b.cx,b.cy,b.steg?130:80))drawBau(c,b,nl,z);const OUTG=new Set();if(WK.on&&WK.me)OUTG.add(WK.me);if(sel&&sel.p&&!sel.gb)OUTG.add(sel);
+ NAMES.length=0;TAPS.length=0;TEAMN.clear();FIGS.length=0;for(const b of BAU)if(bauOn(b)&&visR(b.cx,b.cy,b.steg?130:80))drawBau(c,b,nl,z);const OUTG=new Set();if(WK.on&&WK.me)OUTG.add(WK.me);if(sel&&sel.p&&!sel.gb)OUTG.add(sel);
  // Bürgermeisterin arbeitet im Muschelpalast: tagsüber auf der Palasttreppe, golden hervorgehoben
  // zwei Pfauen stolzieren tagsüber über den Muschelplatz und schlagen ab und zu ein Rad
  if(z*S>8&&nl<.5&&GROWK==null)for(let k=0;k<2;k++){const w=palWalk({name:'#pfau'+k,nr:9100+k*17}),x=w.x,y=w.y;if(!vis(x,y))continue;peacock(c,x,y,w.vert?(w.dir>0?'front':'back'):'side',w.vert?1:w.dir,w.pause>0&&Math.sin(T*.13+k*2)>.2,k);hutsFront(c,x,y);}
@@ -2280,9 +2282,11 @@ function draw(){
  drawWalker(c,z);
  // Namen ganz oben: nichts (Bäume, Palast, Wolken, Nacht) darf sie verdecken
  const GSP=sel&&sel.p&&(sel.gb||REDUCED||T-selT<2)?standSpot(sel):null,near=(x,y)=>GSP&&Math.abs(x-GSP.x)<16&&y>GSP.y-26&&y<GSP.y+10;
- if(z*S>44){c.font='800 2.35px '+FONT;c.textAlign='center';for(const v of ISL){if(!visR(v.x,v.y,v.R+40))continue;for(const q of v.people){if(q.nr>limit||!q.p||q===sel||!vis(q.p.x,q.p.y)||near(q.p.x,q.p.y+10)){continue;}if(WK.on&&Math.abs(q.p.x-WK.x)<16&&q.p.y+12.3>WK.y-12&&q.p.y+8.6<WK.y+5)WK.lblHit=1;const x=q.p.x,y=q.p.y,nm=q.name,tw0=q.tw0||(q.tw0=c.measureText(nm).width),fs=tw0>17?2.35*17/tw0:2.35,w=tw0*fs/2.35+2.4;
-  c.fillStyle=isMayor(q)?'#ffd23f':'rgba(255,255,255,.94)';c.beginPath();c.roundRect(x-w/2,y+8.6,w,3.7,1.8);c.fill();c.fillStyle='#2a1b12';if(fs<2.35){c.font='800 '+fs+'px '+FONT;c.fillText(nm,x,y+10.45+fs*.4);c.font='800 2.35px '+FONT;}else c.fillText(nm,x,y+11.4);}}}
+ const LR=[];if(z*S>44){c.font='800 2.35px '+FONT;c.textAlign='center';for(const v of ISL){if(!visR(v.x,v.y,v.R+40))continue;for(const q of v.people){if(q.nr>limit||!q.p||q===sel||!vis(q.p.x,q.p.y)||near(q.p.x,q.p.y+10)){continue;}if(WK.on&&Math.abs(q.p.x-WK.x)<16&&q.p.y+12.3>WK.y-12&&q.p.y+8.6<WK.y+5)WK.lblHit=1;const x=q.p.x,y=q.p.y,nm=q.name,tw0=q.tw0||(q.tw0=c.measureText(nm).width),fs=tw0>17?2.35*17/tw0:2.35,w=tw0*fs/2.35+2.4;
+  LR.push([x-w/2,y+8.6,x+w/2,y+12.3]);c.fillStyle=isMayor(q)?'#ffd23f':'rgba(255,255,255,.94)';c.beginPath();c.roundRect(x-w/2,y+8.6,w,3.7,1.8);c.fill();c.fillStyle='#2a1b12';if(fs<2.35){c.font='800 '+fs+'px '+FONT;c.fillText(nm,x,y+10.45+fs*.4);c.font='800 2.35px '+FONT;}else c.fillText(nm,x,y+11.4);}}}
   // eigene Figur steht vor Hütten-Namensschildern (Schild bleibt sichtbar, liegt aber dahinter)
+  // Passanten auf dem Weg vor einem Hütten-Namensschild stehen im Vordergrund (Schild dahinter)
+  if(LR.length&&FIGS.length){drawMover.re=1;for(const f of FIGS){const [w,fx,fy]=f;for(const r of LR){if(fx>r[0]-2.2&&fx<r[2]+2.2&&fy+4.4>r[1]+1&&fy-11<r[3]){drawMover(ctx,...f);break;}}}drawMover.re=0;}
   if(WK.on&&WK.lblHit){WK.lblHit=0;walkerFig(c,1);}
   teamLayout(c);if(NAMES.length){c.font='800 2.8px '+FONT;c.textAlign='center';for(const [nm0,x,ly,bg,fs,tc] of [...NAMES.filter(n=>n[3]!=='#e8467c'),...NAMES.filter(n=>n[3]==='#e8467c')]){if(nm0!==(sel&&sel.name)&&near(x,ly))continue;let f=fs||2.8;const nm=nm0;c.font='800 '+f+'px '+FONT;{const mw=fs?16:24,tw1=c.measureText(nm).width;if(tw1>mw){f=f*mw/tw1;c.font='800 '+f+'px '+FONT;}}const tw=c.measureText(nm).width+f*1.07;c.fillStyle=bg||'rgba(42,27,18,.85)';c.beginPath();c.roundRect(x-tw/2,ly,tw,f*1.5,f*.75);c.fill();c.fillStyle=tc||'#fff';c.fillText(nm,x,ly+f*1.1);}}
  if(z*S>4)for(const b of BAU)if(bauOn(b)&&visR(b.steg?b.sx:b.cx,b.steg?b.sy:b.y0,60))drawBauSign(c,b);
