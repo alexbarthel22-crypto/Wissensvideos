@@ -253,3 +253,4 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
   - Bäckerei: Mehlsäcke und Fass-Stehtische sind Hindernisse und verdecken Figuren dahinter; Laternenpfosten am Eingang sind Hindernisse.
   - Hindernisse auf allen Laden-Geländen an die Gegenstände angepasst, sodass es (fast) keine abgeschnittenen Ecken mehr gibt (Prüfung `node muscheltal/pruefung/gelaende.js`); keine Deko entfernt.
   - Wer nach oben läuft, ist von hinten zu sehen (eigene Figur und alle Passanten; Tiere hatten das schon).
+- **Brunnen vor dem Palast** (12.11.): Die ganze Brunnenform (Becken mit Rand) ist nicht begehbar – auch von oben kommend bleiben die Füße am Rand stehen.
