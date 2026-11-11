@@ -31,7 +31,7 @@
    "lines": [
     {
      "id": "L1",
-     "text": "Ich habe euch eine *y:Insel *y:gekauft! / Am Anfang war ich *r:ganz *r:alleine / auf meiner Insel – / und jetzt sind wir schon / *g:702|siebenhundertzwei *g:Leute!",
+     "text": "Ich habe euch eine *y:Insel *y:gekauft! / Am Anfang war ich *r:ganz *r:alleine / auf meiner Insel – / und jetzt sind wir schon / *g:702|siebenhundertzwei *g:Bewohner!",
      "speed": 1.1,
      "style": "Style: a young German guy, around 20, extremely excited and loud, almost shouting with joy, announcing huge news to his followers, explosive energy on 'Insel gekauft', natural German intonation, normal pitch.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
     }
@@ -40,7 +40,47 @@
     {
      "name": "impact-bass-1",
      "at": "s01+0.0",
+     "volume": 0.6
+    },
+    {
+     "name": "whoosh",
+     "at": "s01+0.0",
+     "volume": 0.4
+    },
+    {
+     "name": "pop",
+     "at": "L1:habe",
+     "volume": 0.35
+    },
+    {
+     "name": "pop",
+     "at": "L1:euch",
+     "volume": 0.35
+    },
+    {
+     "name": "pop",
+     "at": "L1:eine",
+     "volume": 0.35
+    },
+    {
+     "name": "impact-bass-2",
+     "at": "L1:Insel",
      "volume": 0.5
+    },
+    {
+     "name": "impact-bass-1",
+     "at": "L1:gekauft",
+     "volume": 0.55
+    },
+    {
+     "name": "jubel",
+     "at": "L1:gekauft",
+     "volume": 0.35
+    },
+    {
+     "name": "sad-trombone",
+     "at": "L1:alleine",
+     "volume": 0.18
     },
     {
      "name": "whoosh",
@@ -49,12 +89,12 @@
     },
     {
      "name": "ka-ching",
-     "at": "L1:Leute",
+     "at": "L1:Bewohner",
      "volume": 0.45
     },
     {
      "name": "jubel",
-     "at": "L1:Leute",
+     "at": "L1:Bewohner",
      "volume": 0.4
     }
    ]
