@@ -256,3 +256,6 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - **Brunnen vor dem Palast** (12.11.): Die ganze Brunnenform (Becken mit Rand) ist nicht begehbar – auch von oben kommend bleiben die Füße am Rand stehen.
 - **Aufgaben-Knopf oben rechts** (12.11.): nur sichtbar, wenn der eigene beanspruchte Name ausgewählt ist (oder man als dieser erkundet); dann ist die Suchleiste daneben gekürzt. Ohne Auswahl oder bei fremden Namen kein Knopf, Suchleiste wieder volle Breite.
 - **Karte „Deine Muscheln“** (12.11.): erscheint nur, wenn der eigene beanspruchte Name ausgewählt ist (oder man als dieser erkundet); nach × in der Suche oder bei fremden Namen verschwindet sie.
+- **Ocean Nails** (12.11.): Schriftzug „OCEAN NAILS“ passt mit Rand ins Schild; das OFFEN-Schild hängt vorne oben an der Markise (wie bei den anderen Läden).
+- **Yacht White Pearl** (12.11.): @marie18034 feiert immer – sie tanzt an Bug und Heck und hüpft auch beim Laufen mit erhobenem Arm.
+- **2 neue Bauplätze auf der Kokos-Küste** (12.11.): Blöcke (1,3) und (−2,−4) (`insel.json` → `platz_neu`), jeweils mit einem Block Abstand zu anderen Bauplätzen; niemand musste umziehen. Kokos-Küste hat damit 13 Bauplätze.
