@@ -57,7 +57,7 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - **Schatten** von Sonnenschirmen, Palmen, Büschen, Laternen, Tischen und Gebäuden richten sich nach dem echten Sonnenstand in Hamburg (Norden oben): morgens nach Nordwesten, mittags nach Norden, nachmittags nach Nordosten; je tiefer die Sonne, desto länger. Hütten und Personen behalten ihre kleinen Standard-Schatten. Kein Mondschein-Fleck im Meer.
 - **Platz der Kokos-Küste:** um das Lagerfeuer Palmen mit Lichterkette, 6 Tiki-Fackeln (nachts leuchtend), Muschelrand, drei Bastmatten mit bunten Kissen, Kokosnuss-Haufen, Ananas-Korb, Bongos, Ukulele auf einem Baumstamm, Fischernetz mit Bojen, Wegweiser „KOKOS-KÜSTE“.
 - **Sonnenaufgang/-untergang** wie in **22529 Hamburg** (Open-Meteo): jeweils **ab der echten Aufgangs- bzw. Untergangszeit 45 Min. lang** (z. B. 9.11.: Untergang 16:33 → Untergangs-Stimmung 16:33–17:18, danach Nacht), mit Farbverlauf. Davor/danach Nacht bzw. Tag.
-- Auf jeder offenen Insel stehen **Bänke** (am Platz + am Strand) und **Straßenlaternen**, die nachts leuchten – Haupt-Insel: Holzbänke + klassische Laternen; Kokos-Küste: Baumstamm-Bänke + Bambus-Laternen.
+- Auf jeder offenen Insel stehen **Bänke** (am Platz + am Strand) und **Straßenlaternen**, die nachts leuchten – Haupt-Insel: Holzbänke + klassische Laternen (am Südweg des Muschelplatzes stehen zwei Laternen links und rechts vom Weg statt einer davor); Kokos-Küste: Baumstamm-Bänke + Bambus-Laternen.
 
 ## Regeln (Seite muscheltal.de/regeln.html)
 1. Folgen = einziehen (je früher, desto höher die Chance auf die Haupt-Insel).
@@ -71,6 +71,7 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - **Zählung für Videos:** Das Video vom 8.11. (bisher „Video 2 / Tag 2“) startet mit **„Tag 1“**. Ab dann gilt: Video-Tag = Homepage-Tag (9.11. = Tag 2 usw.). ⚠️ Videos-Chat: Titel/Einblendungen „Tag 2“ im Video vom 8.11. auf „Tag 1“ ändern.
 
 ## Stand (8.11.2026)
+- **Update 11.11.: 718 Einwohner** (Followerliste vom 11.11.): 26 neu eingezogen, 15 ausgezogen (entfolgt, komplett gelöscht). Damit sind alle 13 Nachbarn-Paare aktiv und wohnen direkt nebeneinander (u. a. @luisedbr.11 + @mateo.fhl teilen sich den Pool, @m_hmb1307 + @marlene_hmb0, @linat.5 + @linus945, @xxxal3xa + @lina015040, @elina_brn + @arikk.xxn, @khmr.496 + @gratisninja_tv, @_marydoesart_ + @azhuela, @spongebobblue0 + @julian68151).
 - **653 Einwohner** (Followerliste vom 8.11. abends): 505 auf der Haupt-Insel (500 Hütten + 5 in Gebäuden), **148 auf der Kokos-Küste**. 104 neu eingezogen, 26 ausgezogen (entfolgt, komplett gelöscht); Nachrücker sind von der Kokos-Küste auf die Haupt-Insel umgezogen.
 - Am 8.11. sind 2 Einwohner ausgezogen (entfolgt, Namen gelöscht). Dafür sind @rozelinbaysal12 (jetzt Nr. 499) und @aileen.2007_ (jetzt Nr. 500) von der Kokos-Küste auf die Haupt-Insel umgezogen.
 - **Gründer** = die ersten 500 Follower; ausnahmsweise haben auch die beiden Nachrücker @rozelinbaysal12 und @aileen.2007_ den Erfolg. Aktuell 477 Gründer (Gründer behalten den Erfolg, auch wenn andere entfolgen; Nachrücker werden keine Gründer).
