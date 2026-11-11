@@ -574,7 +574,7 @@ for(const v of ISL){Object.assign(v,{palms:[],bush:[],flow:[],grass:[],reef:[],r
  if(v.tier===1)for(let k=0;k<5;k++){const a=k/5*TAU+.3;v.palms.push({x:v.x+Math.cos(a)*30,y:v.y+Math.sin(a)*26,ph:k,s:1.5});}}
 const SPARK=[];for(let i=0;i<520;i++)SPARK.push({x:BOX.x0+hash(i,11)*(BOX.x1-BOX.x0),y:BOX.y0+hash(i,12)*(BOX.y1-BOX.y0),ph:hash(i,13)*TAU,sp:1+hash(i,14)*2});
 // Segelboote fahren nur auf freiem Wasser: nie über Inseln, Stege, Strandbar, Villa oder Baustellen
-function boatBlocked(x,y){if(typeof YACHT!=='undefined'&&Math.abs(x-YACHT.cx)<70&&Math.abs(y-YACHT.cy)<45)return true;for(const v of ISL)if(inside(v,x,y,-34-BEX))return true;for(const g of GEB)if(x>g.x0-22&&x<g.x1+22&&y>g.y0-22&&y<g.y1+22)return true;
+function boatBlocked(x,y){if(typeof YACHT!=='undefined'&&Math.abs(x-YACHT.cx)<85&&Math.abs(y-YACHT.cy)<48)return true;for(const v of ISL)if(inside(v,x,y,-34-BEX))return true;for(const g of GEB)if(x>g.x0-22&&x<g.x1+22&&y>g.y0-22&&y<g.y1+22)return true;
  for(const b of BAU){if(b.inr){const dx=x-b.ox,dy=y-b.oy,ca=Math.cos(b.ang),sa=Math.sin(b.ang),u=dx*ca+dy*sa,v2=-dx*sa+dy*ca;if(u>-30&&u<b.len+40&&Math.abs(v2)<b.w+24)return true;}else if(x>b.x0-22&&x<b.x1+22&&y>b.y0-22&&y<b.y1+22)return true;}
  for(const [px,py] of[PIER0,PIER1])if(Math.hypot(x-px,y-py)<45)return true;if(PJ&&Math.hypot(x-BB[0],y-BB[1])<70)return true;return false;}
 function boatRoute(b){const n=360;for(let r=b.r;r<b.r+400;r+=12){const ok=[];for(let i=0;i<n;i++){const a=i/n*TAU;let f=true;for(const dr of[-10,0,10]){const [x,y]=polar(MAIN,a,r+dr);if(boatBlocked(x,y)){f=false;break;}}ok.push(f);}
@@ -703,10 +703,15 @@ for(const v of ISL){if(v.rflow)v.rflow=v.rflow.filter(f=>!inLab(f.x,f.y));if(v.b
 const GEBK=new Map(GEB.map(g=>[g.key,g])),GEBN=new Map(GEB.map(g=>[g.name.toLowerCase(),g]));
 for(const p of PEOPLE)if(p.home){const g=GEBN.get(p.home.toLowerCase());if(g){const mates=PEOPLE.filter(q=>q.home===p.home),k=mates.indexOf(p);p.isl=g.v;p.wait=false;p.p=g.typ==='werkstatt'?{x:g.cx-3,y:g.cy+5}:KIO(g)?kioPos(g,Math.max(0,PEOPLE.filter(q=>q.ort===p.ort).sort((a,b)=>(a.beruf==='Leitung'?-1:0)-(b.beruf==='Leitung'?-1:0)).indexOf(p))):g.typ==='doener'?{x:g.cx+[-21.5,-8.5,-1.5][k%3],y:g.cy-6}:g.typ==='villa'?{x:g.cx+(22+k*8)*(g.dir||1),y:g.cy+13.5}:{x:g.sea-30*g.dir+(k-(mates.length-1)/2)*9*g.dir,y:g.cy-3};p.gb=g;}}
 // Luxus-Yacht „Muschelperle“: liegt vor Anker vor der Westküste der Haupt-Insel (Platz für höchstens 4 Personen)
-const YACHT=(()=>{const a=Math.PI+.3,[x,y]=polar(MAIN,a,coastAt(MAIN,a)+BEX+78);return{typ:'yacht',name:'Yacht',cx:x,cy:y,x0:x-40,x1:x+40,y0:y-34,y1:y+16,v:MAIN,
+const YACHT=(()=>{const a=Math.PI+.3,[x,y]=polar(MAIN,a,coastAt(MAIN,a)+BEX+108);return{typ:'yacht',name:'Yacht',cx:x,cy:y,x0:x-55,x1:x+55,y0:y-34,y1:y+16,v:MAIN,
  // Plätze an Deck (lokal): Achterdeck, Bug-Sonnenliege, Flybridge, Badeplattform
  spots:[[18.6,-8.6],[-21,-8.6],[0,-19.4],[32.2,-3.2]]};})();
-function drawYacht(c,nl,z){const Y=YACHT,t=REDUCED?0:T,day=nl<.5,bob=Math.sin(t*1.1)*.5,rk=Math.sin(t*.8)*.012;c.save();c.translate(Y.cx,Y.cy);
+// Länge der Yacht (Rumpf wird in x gestreckt); Bewohnerin läuft an Deck zwischen Bug und Heck hin und her
+const YL=1.32;
+function yachtPos(k,t){const Y=YACHT;if(k>0){const [sx,sy]=Y.spots[k%4];return{x:sx*YL,y:sy,mv:false,dir:1};}
+ const A=-20*YL,B=18.6*YL,len=B-A,dur=len/GV,P=7,per=2*(P+dur);let u=((t%per)+per)%per;
+ if(u<P)return{x:B,y:-8.6,mv:false,dir:1,end:'heck'};u-=P;if(u<dur)return{x:B-u*GV,y:-8.6,mv:true,dir:-1};u-=dur;if(u<P)return{x:A,y:-8.6,mv:false,dir:-1,end:'bug'};u-=P;return{x:A+u*GV,y:-8.6,mv:true,dir:1};}
+function drawYacht(c,nl,z){const Y=YACHT,t=REDUCED?0:T,day=nl<.5,bob=Math.sin(t*1.1)*.5,rk=Math.sin(t*.8)*.012;c.save();c.translate(Y.cx,Y.cy);c.save();c.scale(YL,1);
  // Wasser: Schatten, Wellenringe, nachts türkises Unterwasserlicht
  if(!day){const g=c.createRadialGradient(0,6,2,0,6,44);g.addColorStop(0,`rgba(60,230,255,${.55*nl})`);g.addColorStop(1,'rgba(60,230,255,0)');c.fillStyle=g;c.beginPath();c.ellipse(0,6,46,14,0,0,TAU);c.fill();}
  c.fillStyle='rgba(0,40,60,.22)';c.beginPath();c.ellipse(1,9,38,5,0,0,TAU);c.fill();
@@ -755,14 +760,23 @@ function drawYacht(c,nl,z){const Y=YACHT,t=REDUCED?0:T,day=nl<.5,bob=Math.sin(t*
  {const wx=25,wy=-8.4;c.fillStyle='#e9e2d6';c.beginPath();c.ellipse(wx,wy,4.4,1.5,0,0,TAU);c.fill();c.fillStyle=day?'#5fd8ea':`rgba(80,230,255,${.9})`;c.beginPath();c.ellipse(wx,wy-.1,3.6,1.05,0,0,TAU);c.fill();
   if(!REDUCED)for(let k=0;k<5;k++){const ph=(t*.8+k/5)%1;c.fillStyle=`rgba(255,255,255,${.9*(1-ph)})`;c.beginPath();c.arc(wx-2.6+k*1.3,wy-.2-ph*1.4,.18+ph*.12,0,TAU);c.fill();}
   }
- // Bewohnerin(nen) an Deck – höchstens 4 Plätze
- const B=PEOPLE.filter(p=>p.gb===Y);B.forEach((p,k)=>{if(k>=Y.spots.length)return;const [sx,sy]=Y.spots[(k+(day?0:0))%Y.spots.length],L=p.LY||(p.LY={...look(p.k)});c.save();c.translate(sx,sy-4.4);c.fillStyle='rgba(60,40,20,.2)';c.beginPath();c.ellipse(0,4.4,2,.6,0,0,TAU);c.fill();
-  const dance=!day&&!REDUCED,wv=dance?.4+Math.abs(Math.sin(t*5+k))*1.2:.3+Math.abs(Math.sin(t*1.4+k))*.6;if(dance)c.translate(0,-Math.abs(Math.sin(t*5+k))*.5);person(c,L,0,true,wv);c.scale(L.h,L.h);c.fillStyle='rgba(255,255,255,.85)';c.fillRect(2.2,-4.4,.9,1.4);c.fillStyle='#ff6fa3';c.fillRect(2.25,-3.9,.8,.8);c.restore();
+ // mehr Details: Rettungsring an der Reling, Palme im Topf, Neon-Herz am Hardtop, Gläser-Tablett, Herz-Kissen
+ {const rx=-13.6,ry=-11.2;c.strokeStyle='#ff6fa3';c.lineWidth=.7;c.beginPath();c.ellipse(rx,ry,1.1,1.4,0,0,TAU);c.stroke();c.strokeStyle='#fff';c.lineWidth=.7;c.setLineDash([.6,.9]);c.beginPath();c.ellipse(rx,ry,1.1,1.4,0,0,TAU);c.stroke();c.setLineDash([]);}
+ {const px=29,py=-9;c.fillStyle='#c98a52';c.beginPath();c.moveTo(px-1,py-1.6);c.lineTo(px+1,py-1.6);c.lineTo(px+.7,py);c.lineTo(px-.7,py);c.fill();c.strokeStyle='#8a5a2b';c.lineWidth=.25;c.beginPath();c.moveTo(px,py-1.6);c.lineTo(px+.2,py-4.6);c.stroke();
+  c.fillStyle='#2fa05a';for(let k=0;k<5;k++){const a=-Math.PI/2+(k-2)*.6;c.beginPath();c.ellipse(px+.2+Math.cos(a)*1.3,py-4.6+Math.sin(a)*.9,1.3,.35,a,0,TAU);c.fill();}}
+ {const on=REDUCED||Math.sin(t*3)>-.5;c.fillStyle=on?(day?'#ff6fa3':'#ff3d7f'):'#7a3a4a';c.font='900 2.2px '+FONT;c.textAlign='center';c.fillText('♥',-1,-25.4);}
+ {c.fillStyle='#d9a63a';c.fillRect(-4.6,-17.9,3,.35);for(let k=0;k<3;k++){c.fillStyle='rgba(220,240,255,.9)';c.fillRect(-4.3+k*.9,-18.9,.5,1);c.fillStyle='#ff8fb8';c.fillRect(-4.3+k*.9,-18.5,.5,.5);}}
+ c.fillStyle='#ff6fa3';c.font='1.4px '+FONT;c.textAlign='center';c.fillText('💗',-16.6,-11.1);
+ c.restore();c.translate(0,bob);
+ // Bewohnerin(nen) an Deck – höchstens 4 Plätze; die erste läuft zwischen Bug und Heck hin und her (immer im Vordergrund)
+ const B=PEOPLE.filter(p=>p.gb===Y);B.forEach((p,k)=>{if(k>=Y.spots.length)return;const q=yachtPos(k,t),sx=q.x,sy=q.y,L=p.LY||(p.LY={...look(p.k)});
+  if(q.mv){drawMover(c,{...L,mode:'walk',ph:p.nr},sx,sy-4.4,q.dir,false,'walk');}else{c.save();c.translate(sx,sy-4.4);if(q.dir<0)c.scale(-1,1);c.fillStyle='rgba(60,40,20,.2)';c.beginPath();c.ellipse(0,4.4,2,.6,0,0,TAU);c.fill();
+  const dance=!day&&!REDUCED&&q.end!=='bug',wv=dance?.4+Math.abs(Math.sin(t*5+k))*1.2:.3+Math.abs(Math.sin(t*1.4+k))*.6;if(dance)c.translate(0,-Math.abs(Math.sin(t*5+k))*.5);person(c,L,0,true,wv);c.scale(L.h,L.h);c.fillStyle='rgba(255,255,255,.85)';c.fillRect(2.2,-4.4,.9,1.4);c.fillStyle='#ff6fa3';c.fillRect(2.25,-3.9,.8,.8);c.restore();}
   const wx=Y.cx+sx,wy=Y.cy+sy+bob;TAPS.push([wx,wy-4.4,p]);if(z*S>30&&sel!==p)NAMES.push(['🛥️ '+p.name,wx,wy-16,'#d9a63a',2.4,'#2a1b12']);});
  c.restore();}
-function yachtGlow(glow,nl){const Y=YACHT,x=Y.cx,y=Y.cy;glow(x+2,y-21,16,'255,120,200',.55*nl*(.7+.3*Math.sin(T*5)));glow(x+2,y-13,18,'255,200,130',.45*nl);glow(x+25,y-8,8,'80,230,255',.6*nl);for(let k=1;k<9;k++){const u=k/9;glow(x-34+27*u,y-6-20.4*u+6*u*(1-u),2.2,'255,210,150',.7*nl);}for(let k=1;k<7;k++){const u=k/7;glow(x+15+16*u,y-26.4+21.4*u+4.8*u*(1-u),2.2,'255,190,220',.7*nl);}for(let k=0;k<5;k++)glow(x-19+k*5.4,y+1.6,2.6,'255,220,150',.7*nl);}
+function yachtGlow(glow0,nl){const Y=YACHT,x=Y.cx,y=Y.cy,glow=(gx,gy,r,col,a)=>glow0(x+(gx-x)*YL,gy,r,col,a);glow(x+2,y-21,16,'255,120,200',.55*nl*(.7+.3*Math.sin(T*5)));glow(x+2,y-13,18,'255,200,130',.45*nl);glow(x+25,y-8,8,'80,230,255',.6*nl);for(let k=1;k<9;k++){const u=k/9;glow(x-34+27*u,y-6-20.4*u+6*u*(1-u),2.2,'255,210,150',.7*nl);}for(let k=1;k<7;k++){const u=k/7;glow(x+15+16*u,y-26.4+21.4*u+4.8*u*(1-u),2.2,'255,190,220',.7*nl);}for(let k=0;k<5;k++)glow(x-19+k*5.4,y+1.6,2.6,'255,220,150',.7*nl);}
 // Bewohnerin der Yacht platzieren (wohnorte → "Yacht")
-for(const p of PEOPLE)if(p.home==='Yacht'){p.isl=MAIN;p.wait=false;p.gb=YACHT;const k=PEOPLE.filter(q=>q.home==='Yacht').indexOf(p),[sx,sy]=YACHT.spots[k%4];p.p={x:YACHT.cx+sx,y:YACHT.cy+sy-4.4};}
+for(const p of PEOPLE)if(p.home==='Yacht'){p.isl=MAIN;p.wait=false;p.gb=YACHT;const k=PEOPLE.filter(q=>q.home==='Yacht').indexOf(p),[sx,sy]=YACHT.spots[k%4];p.p={x:YACHT.cx+sx*1.32,y:YACHT.cy+sy-4.4};}
 // Kokos-Küste: Platz in der Breite so schmal, dass er die Wege links/rechts nicht überdeckt
 const KOKX=.86;
 // nahe vor/über einer Hütte (Dach würde Sitzende überdecken)
@@ -1509,7 +1523,7 @@ function cloud(c,cl,a,grey){const w=BOX.x1-BOX.x0,x=((cl.x-BOX.x0+T*cl.sp*WFg)%w
 function scallop(c,cx,cy,R,b,lobes){c.beginPath();c.moveTo(cx,cy);const pt=(a,r)=>[cx+Math.cos(a)*r,cy+Math.sin(a)*r];c.lineTo(...pt(RA0,R));for(let i=0;i<lobes;i++){const s0=RA0+(RA1-RA0)*i/lobes,e=RA0+(RA1-RA0)*(i+1)/lobes;c.quadraticCurveTo(...pt((s0+e)/2,R+b*2),...pt(e,R));}c.closePath();}
 // Muschelpalast: großer Palast mit Seitenflügeln und Gärten auf dem Muschelplatz
 // Standplatz der gesuchten Person: auf dem Weg unter/neben ihrer Hütte
-function standSpot(p){if(!p||!p.p)return null;if(palNow(p)){const w=PALW[p.name];return w?{x:w.x,y:w.y,kind:'row',onRow:true,mayor:true}:{x:palX(p),y:36*PAL_S+4,kind:'row',onRow:true,mayor:true};}if(atWork(p)&&GEBN.get(p.ort.toLowerCase())&&!KIO(GEBN.get(p.ort.toLowerCase()))){const tp=teamPos(GEBN.get(p.ort.toLowerCase()),p);return{x:tp.x,y:tp.y,kind:'row',onRow:true,mayor:true};}if(atWork(p)){const g=GEBN.get(p.ort.toLowerCase()),k=Math.max(0,PEOPLE.filter(q=>q.ort===p.ort&&q.p).sort((a,b)=>(a.beruf==='Leitung'?-1:0)-(b.beruf==='Leitung'?-1:0)).indexOf(p));const kp=kioPos(g,k);return{x:kp.x,y:kp.y,kind:'row',onRow:true,mayor:true};}if(p.gb){const g=p.gb;if(g.typ==='villa'&&typeof villaRoute==='function'){const k=PEOPLE.filter(q=>q.gb===g).indexOf(p),q=villaPos(villaRoute(g,k),REDUCED?0:T,k);return{x:g.cx+q.x*(g.dir||1),y:g.cy+q.y,kind:'row'};}return{x:p.p.x,y:p.p.y,kind:'row'};}const v=p.isl,gx=p.p.gx,gy=p.p.gy,hx=p.p.x,hy=p.p.y,C=[];
+function standSpot(p){if(!p||!p.p)return null;if(palNow(p)){const w=PALW[p.name];return w?{x:w.x,y:w.y,kind:'row',onRow:true,mayor:true}:{x:palX(p),y:36*PAL_S+4,kind:'row',onRow:true,mayor:true};}if(atWork(p)&&GEBN.get(p.ort.toLowerCase())&&!KIO(GEBN.get(p.ort.toLowerCase()))){const tp=teamPos(GEBN.get(p.ort.toLowerCase()),p);return{x:tp.x,y:tp.y,kind:'row',onRow:true,mayor:true};}if(atWork(p)){const g=GEBN.get(p.ort.toLowerCase()),k=Math.max(0,PEOPLE.filter(q=>q.ort===p.ort&&q.p).sort((a,b)=>(a.beruf==='Leitung'?-1:0)-(b.beruf==='Leitung'?-1:0)).indexOf(p));const kp=kioPos(g,k);return{x:kp.x,y:kp.y,kind:'row',onRow:true,mayor:true};}if(p.gb){const g=p.gb;if(g.typ==='yacht'){const k=PEOPLE.filter(q=>q.gb===g).indexOf(p),q=yachtPos(k,REDUCED?0:T);return{x:g.cx+q.x,y:g.cy+q.y-4.4,kind:'row'};}if(g.typ==='villa'&&typeof villaRoute==='function'){const k=PEOPLE.filter(q=>q.gb===g).indexOf(p),q=villaPos(villaRoute(g,k),REDUCED?0:T,k);return{x:g.cx+q.x*(g.dir||1),y:g.cy+q.y,kind:'row'};}return{x:p.p.x,y:p.p.y,kind:'row'};}const v=p.isl,gx=p.p.gx,gy=p.p.gy,hx=p.p.x,hy=p.p.y,C=[];
  // möglichst nah an der Hütte: freier Platz direkt daneben, sonst der nächste Weg (oben, unten, links, rechts)
  for(const [dx,dy] of[[1,0],[-1,0],[0,1],[0,-1],[1,1],[-1,1]]){const cx=gx+dx,cy=gy+dy;if(((cx%5)+5)%5===0||((cy%4)+4)%4===0||v.cell.has(cx+','+cy)||inRes(v.resv,cx,cy))continue;const x=v.x+cx*S,y=v.y+cy*S*.9+2;if(!inside(v,x,y,10))continue;if(PEOPLE.some(q=>q.p&&q!==p&&Math.abs(q.p.x-x)<12&&Math.abs(q.p.y-y)<10))continue;C.push({x,y,kind:'cell',d:Math.hypot(x-hx,(y-hy)*1.2)});}
  for(const r of[Math.floor(gy/4),Math.ceil((gy+.01)/4)]){const y=v.y+r*4*S*.9;C.push({x:hx,y:y-2.6,kind:'row',d:Math.abs(y-hy)+(y<hy?2:0)});}
