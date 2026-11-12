@@ -2705,12 +2705,12 @@ function draw(){{const k=kind();REGEN.on=k==="rain"||k==="storm";}
   if(!arrived||!visR(a.x,a.y,30))continue;
   if(a.t==='bench'){const q=ps[0],L=q.L||(q.L=look(q.k));c.save();c.translate(a.x,a.y-2.2);person(c,L,0,true,0);
     if(a.back){c.scale(L.h,L.h);rHead(c,L,0,-4.15,'back');if(L.hs===1){c.fillStyle=L.hair;c.beginPath();c.roundRect(-1.55,-4.6,3.1,3.6,1.2);c.fill();}}c.restore();TAPS.push([a.x,a.y-2.2,q]);if(z*S>30)NAMES.push([q.name,a.x,a.y-13*L.h,null,2.1]);}
-  else if(a.t==='talk'){ps.forEach((q,j)=>{const L=q.L||(q.L=look(q.k)),x=a.x+(j?2.6:-2.6);c.save();c.translate(x,a.y);if(j)c.scale(-1,1);person(c,L,0,false,j===((ci+Math.floor(T/2.4))%2)?.3+Math.abs(Math.sin(T*5+j))*.5:0);c.restore();if(z*S>30)NAMES.push([q.name,x,a.y+5.4+(j?3.4:0),null,2.1]);});
+  else if(a.t==='talk'){ps.forEach((q,j)=>{const L=q.L||(q.L=look(q.k)),x=a.x+(j?2.6:-2.6);c.save();c.translate(x,a.y);if(j)c.scale(-1,1);person(c,L,0,false,j===((ci+Math.floor(T/2.4))%2)?.3+Math.abs(Math.sin(T*5+j))*.5:0);c.restore();TAPS.push([x,a.y,q]);if(z*S>30)NAMES.push([q.name,x,a.y+5.4+(j?3.4:0),null,2.1]);});
    if(z*S>14){const j=(ci+Math.floor(T/2.4))%2,bx=a.x+(j?2.6:-2.6),by=a.y-14;c.fillStyle='#fff';c.strokeStyle='#2a1b12';c.lineWidth=.3;c.beginPath();c.roundRect(bx-2.6,by-1.4,5.2,2.8,1.4);c.fill();c.stroke();c.fillStyle='#2a1b12';for(let d=0;d<3;d++){if((T*3|0)%4<d)continue;c.beginPath();c.arc(bx-1.2+d*1.2,by,.35,0,TAU);c.fill();}}}
   else{const q=ps[0],L=q.L||(q.L=look(q.k)),d=a.dir;c.save();c.translate(a.x,a.y);c.scale(d,1);person(c,L,0,false,0);c.scale(L.h,L.h);const tw=REDUCED?0:Math.sin(T*1.3+a.k)*.15;
    c.strokeStyle='#6b3f1d';c.lineWidth=.35;c.beginPath();c.moveTo(.9,-1.6);c.lineTo(7,-7.5+tw);c.stroke();c.strokeStyle='rgba(255,255,255,.75)';c.lineWidth=.15;c.beginPath();c.moveTo(7,-7.5+tw);c.quadraticCurveTo(9,-2,9.6,3.2);c.stroke();
    const bob=(Math.sin(T*2+a.k)>.93)?.6:0;c.fillStyle='#e8433c';c.beginPath();c.arc(9.6,3.4+bob,.45,0,TAU);c.fill();c.fillStyle='#fff';c.beginPath();c.arc(9.6,3.1+bob,.22,0,TAU);c.fill();
-   c.fillStyle='#3a7bd5';c.beginPath();c.roundRect(-3.2,2.4,2,1.6,.3);c.fill();c.restore();if(z*S>30)NAMES.push([q.name,a.x,a.y-11*L.h,null,2.1]);}
+   c.fillStyle='#3a7bd5';c.beginPath();c.roundRect(-3.2,2.4,2,1.6,.3);c.fill();c.restore();TAPS.push([a.x,a.y,q]);if(z*S>30)NAMES.push([q.name,a.x,a.y-11*L.h,null,2.1]);}
   }
  // Lagerfeuer auf der Kokos-Küste: 7 Bewohner gehen hin und bleiben lange (meist 5–6 gleichzeitig dort)
  if(z*S>6&&GROWK==null)for(const f of CAMP){if(f.q===sel)continue;const pt=f.pt||(f.pt=campPath(f)),sp=GV,P=Math.max(200,2*pt.len/GV+60),tS=(((T/P)+f.ph)%1)*P,tW=pt.len/sp;let x=f.fx,y=f.fy+(REDUCED?0:Math.sin(T*1.3+f.ph*9)*.25),mv=0,dx=f.v.x-f.fx,dy=0;
@@ -2719,7 +2719,7 @@ function draw(){{const k=kind();REGEN.on=k==="rain"||k==="storm";}
   if(mv&&(tS<.4||tS>P-.4))continue;OUT.add(f.q);if(!vis(x,y))continue;const vert=mv&&Math.abs(dy)>Math.abs(dx);
   c.save();c.translate(x,y);if(!vert&&dx<0)c.scale(-1,1);c.fillStyle='rgba(30,40,20,.25)';c.beginPath();c.ellipse(0,4.4,2.6,.9,0,0,TAU);c.fill();c.lineCap='round';
   const st=mv?Math.sin(T*9+f.ph*7)*(vert?.55:1.1):0;person(c,f.L,st,vert?(dy>0?true:'back'):false,mv?0:.2+Math.abs(Math.sin(T*2+f.ph*5))*.6);c.restore();hutsFront(c,x,y);
-  if(z*S>30)NAMES.push([f.q.name,x,y-11.2]);}
+  TAPS.push([x,y,f.q]);if(z*S>30)NAMES.push([f.q.name,x,y-11.2]);}
  gebSigns(c,z);
  // nachts: über den Hütten, deren Bewohner nicht unterwegs sind, wird geschlafen 💤
  if(nl>.5&&z*S>16){c.textAlign='center';for(const q of PLACED){if(q.nr>limit||OUT.has(q)||AWAKE.has(q)||!vis(q.p.x,q.p.y))continue;const k=(T*.35+q.nr*.137)%1;c.globalAlpha=Math.sin(k*Math.PI)*Math.min(1,(nl-.5)*4);c.font='7.5px '+FONT;c.fillText('💤',q.p.x+6+k*2.5,q.p.y-13-k*6);}c.globalAlpha=1;}
