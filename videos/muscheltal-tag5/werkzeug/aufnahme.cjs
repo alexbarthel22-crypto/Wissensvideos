@@ -12,7 +12,7 @@ await p.evaluate(()=>{petsStep();let sd=11;const R=()=>(sd=(sd*16807)%2147483647
   const [x0,y0]=rNode(a.v,a.k,a.m),[x1,y1]=rNode(a.v,a.k+dk,a.m+dm),t=R();a.x=x0+(x1-x0)*t;a.y=y0+(y1-y0)*t;a.pause=R()*3;}});
 const G=await p.evaluate(()=>{const a=fitAll(),m=fitMain();const g=n=>{const x=GEB.find(q=>q.typ===n);return{x:x.cx,y:x.cy}};const f=n=>{const q=PEOPLE.find(q=>q.name.replace('@','')===n);return{x:q.p.x,y:q.p.y}};
  const an=f('melie_js'),la=f('lisann.lmp');const geb=GEB.filter(g=>g.v===MAIN),bau=BAU.filter(b=>b.v===MAIN),st=.26/Math.max(1,geb.length+bau.length+1);geb.forEach((g,i)=>g.at=.73+st*(i+1));bau.forEach((b,i)=>b.at=.73+st*(geb.length+i+1));const last=PEOPLE.filter(q=>q.p&&q.isl===ISL[1]).sort((a,b)=>b.nr-a.nr)[0];window.__LAST=last;const y={x:YACHT.cx,y:YACHT.cy};
- return{N,a,m,last:{x:last.p.x,y:last.p.y,nr:last.nr},v:g('villa'),na:g('nagel'),ya:{x:y.x!=null?y.x:y[0],y:y.y!=null?y.y:y[1]},ho:{x:BAU[0].cx,y:BAU[0].cy},nb:{x:(an.x+la.x)/2,y:(an.y+la.y)/2}};});
+ return{N,a,m,last:{x:last.p.x,y:last.p.y,nr:last.nr},v:g('villa'),na:g('nagel'),ya:{x:y.x!=null?y.x:y[0],y:y.y!=null?y.y:y[1]},ho:{x:BAU[0].cx,y:BAU[0].cy},ba:g('baeckerei'),nb:{x:(an.x+la.x)/2,y:(an.y+la.y)/2}};});
 console.error(JSON.stringify(G));
 const HW=['verschenke','VILLA'].map(w=>at('L2v',w)).concat([L.L2v.start]),AL=L.L2v.end+.2,AS=L.L2v.start-.1,HZ=6.2,HY=G.last.y+140/(HZ*2.6667);
 const GS=at('L1','besiedeln')-.1,GE=L.L1b.end+.6;
@@ -21,7 +21,7 @@ const K=[[0,G.m.x,G.m.y-10,G.m.z*1.0],[GS,G.m.x,G.m.y-10,G.m.z*1.15],[GE,G.a.x,G
  [L.L3h.start,G.last.x,HY,HZ],[L.L3h.end+.2,G.last.x,HY,HZ],
  [L.L4n.start+.2,G.na.x,G.na.y+10,3.4],[L.L4n.end,G.na.x,G.na.y+8,3.7],[L.L4n.end+.4,G.na.x,G.na.y+2,4.2],[L.L5.start-.15,G.na.x+3,G.na.y-2,7.0],
  [L.L5.start+.3,G.ya.x,G.ya.y-10,4.0],[L.L5.end,G.ya.x,G.ya.y-10,4.4],
- [L.L6.start+.3,G.ho.x,G.ho.y-6,3.4],[L.L6.end,G.ho.x,G.ho.y-6,3.7],[L.L7g.start+.2,G.m.x,G.m.y,G.m.z*1.25],[at('L7g','spielst')-.3,G.last.x,G.last.y+4,5.5],[at('L7g','läufst')+.1,G.last.x,G.last.y+4,5.5],[at('L7g','Welt'),G.last.x-90,G.last.y-60,4.2],[L.L7g.end,G.m.x,G.m.y,G.m.z*1.4],
+ [L.L6.start+.3,G.ho.x,G.ho.y-6,3.4],[L.L6.end,G.ho.x,G.ho.y-6,3.7],[L.L6b.start,G.ba.x,G.ba.y-4,4.6],[L.L6b.end+.3,G.ba.x,G.ba.y-4,5.2],[L.L7g.start+.2,G.m.x,G.m.y,G.m.z*1.25],[at('L7g','spielst')-.3,G.last.x,G.last.y+4,5.5],[at('L7g','läufst')+.1,G.last.x,G.last.y+4,5.5],[at('L7g','Welt'),G.last.x-90,G.last.y-60,4.2],[L.L7g.end,G.m.x,G.m.y,G.m.z*1.4],
  [L.L10.start+.1,0,82,3.4],[L.L10.end,0,80,2.6],[dur,0,78,2.4]];
 
 

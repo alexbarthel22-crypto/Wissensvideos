@@ -12,6 +12,7 @@
     #s2v-hk i { font-style: normal; display: inline-block; transform-origin: 50% 60%; }
     #s2v-t { top: 290px; font-size: 50px; background: #e8467c; }
     #s2v-v { top: 400px; font-size: 44px; background: #fff; color: #18a6b8; }
+    #s2v-e { top: 500px; font-size: 44px; background: #ff7a59; }
     #s2v-f { top: 900px; right: 120px; font-size: 42px; background: #7b3fe0; }
   </style>
   <div id="root" data-composition-id="s02v" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
@@ -21,6 +22,7 @@
       <div id="s2v-hk"><span id="s2v-w0" class=""><i id="s2v-wi0">ICH</i></span><br><span id="s2v-w1" class=""><i id="s2v-wi1">VERSCHENKE</i></span><br><span id="s2v-w2" class=""><i id="s2v-wi2">EINE</i></span><span id="s2v-w3" class="y"><i id="s2v-wi3">VILLA!</i></span></div>
       <div id="s2v-t" class="pl">🎟️ Verlosung im nächsten Video!</div>
       <div id="s2v-v" class="pl">🏖️ Ein Platz in der Strandvilla</div>
+      <div id="s2v-e" class="pl">👭 Bei Emilia & Lea</div>
       <div id="s2v-f" class="pl">👯 Freund markieren = er zieht mit ein!</div><div class="pt" id="s2v-a0" style="left:500px;top:660px">🎁</div><div class="pt" id="s2v-a1" style="left:500px;top:660px">🎁</div><div class="pt" id="s2v-a2" style="left:500px;top:660px">🎁</div><div class="pt" id="s2v-a3" style="left:500px;top:660px">🎁</div><div class="pt" id="s2v-a4" style="left:500px;top:660px">🎁</div><div class="pt" id="s2v-a5" style="left:500px;top:660px">🎁</div><div class="pt" id="s2v-a6" style="left:500px;top:660px">🎁</div><div class="pt" id="s2v-a7" style="left:500px;top:660px">🎁</div><div class="pt" id="s2v-a8" style="left:500px;top:660px">🎁</div><div class="pt" id="s2v-a9" style="left:500px;top:660px">🎁</div><div class="pt" id="s2v-a10" style="left:500px;top:660px">🎁</div><div class="pt" id="s2v-a11" style="left:500px;top:660px">🎁</div><div class="pt" id="s2v-a12" style="left:500px;top:660px">🎁</div><div class="pt" id="s2v-a13" style="left:500px;top:660px">🎁</div><div class="pt" id="s2v-a14" style="left:500px;top:660px">🎁</div><div class="pt" id="s2v-a15" style="left:500px;top:660px">🎁</div><div class="pt" id="s2v-a16" style="left:500px;top:660px">🎁</div><div class="pt" id="s2v-a17" style="left:500px;top:660px">🎁</div><div class="pt" id="s2v-b0" style="left:500px;top:680px">🏖️</div><div class="pt" id="s2v-b1" style="left:500px;top:680px">🏖️</div><div class="pt" id="s2v-b2" style="left:500px;top:680px">🏖️</div><div class="pt" id="s2v-b3" style="left:500px;top:680px">🏖️</div><div class="pt" id="s2v-b4" style="left:500px;top:680px">🏖️</div><div class="pt" id="s2v-b5" style="left:500px;top:680px">🏖️</div><div class="pt" id="s2v-b6" style="left:500px;top:680px">🏖️</div><div class="pt" id="s2v-b7" style="left:500px;top:680px">🏖️</div><div class="pt" id="s2v-b8" style="left:500px;top:680px">🏖️</div><div class="pt" id="s2v-b9" style="left:500px;top:680px">🏖️</div><div class="pt" id="s2v-b10" style="left:500px;top:680px">🏖️</div><div class="pt" id="s2v-b11" style="left:500px;top:680px">🏖️</div><div class="pt" id="s2v-b12" style="left:500px;top:680px">🏖️</div><div class="pt" id="s2v-b13" style="left:500px;top:680px">🏖️</div><div class="pt" id="s2v-b14" style="left:500px;top:680px">🏖️</div><div class="pt" id="s2v-b15" style="left:500px;top:680px">🏖️</div><div class="pt" id="s2v-b16" style="left:500px;top:680px">🏖️</div><div class="pt" id="s2v-b17" style="left:500px;top:680px">🏖️</div><div class="pt" id="s2v-b18" style="left:500px;top:680px">🏖️</div><div class="pt" id="s2v-b19" style="left:500px;top:680px">🏖️</div><div class="pt" id="s2v-b20" style="left:500px;top:680px">🏖️</div><div class="pt" id="s2v-b21" style="left:500px;top:680px">🏖️</div>
     </div>
   </div>
@@ -44,6 +46,7 @@
       tl.to(["#s2v-hk", "#s2v-ray"], { opacity: 0, scale: .7, duration: .25 }, l1b - .1);
       tl.fromTo("#s2v-t", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, l1b);
       tl.fromTo("#s2v-v", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, pl - .2);
+      tl.fromTo("#s2v-e", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, at("L2vb", "Emilia") - .15);
       tl.fromTo("#s2v-f", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, fr - .2);
       tl.to("#s2v-f", { scale: 1.08, duration: .2, yoyo: true, repeat: 5, ease: "sine.inOut" }, fr + .3);
       { const R = rng(17); for (let i = 0; i < 18; i++) { const dx = (R() - .5) * 560 * 2, dy = -760 * (.5 + R() * .6);

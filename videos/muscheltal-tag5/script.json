@@ -32,13 +32,13 @@
     {
      "id": "L1",
      "text": "Was wäre, wenn deine *y:Follower / eine *y:Insel *g:besiedeln?!",
-     "speed": 1.3,
+     "speed": 1.5,
      "style": "Style: a young German guy, around 20, extremely excited and loud, almost shouting with joy, asking an intriguing question with suspense, then excitedly revealing the answer, explosive energy, natural German intonation, normal pitch.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
     },
     {
      "id": "L1b",
      "text": "*g:Genau *g:das *g:mache *g:ich!",
-     "speed": 1.3,
+     "speed": 1.5,
      "style": "Style: a young German guy, around 20, extremely excited and loud, almost shouting with joy, asking an intriguing question with suspense, then excitedly revealing the answer, explosive energy, natural German intonation, normal pitch.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
      "pause": 0.3
     }
@@ -53,11 +53,6 @@
      "name": "whoosh",
      "at": "L1:wäre",
      "volume": 0.3
-    },
-    {
-     "name": "pop",
-     "at": "L1:deine",
-     "volume": 0.35
     },
     {
      "name": "whoosh",
@@ -83,6 +78,16 @@
      "name": "yippee",
      "at": "L1b:Genau",
      "volume": 0.8
+    },
+    {
+     "name": "pop",
+     "at": "L1:wenn",
+     "volume": 0.35
+    },
+    {
+     "name": "pop",
+     "at": "L1:eine",
+     "volume": 0.35
     }
    ]
   },
@@ -99,7 +104,7 @@
     },
     {
      "id": "L2vb",
-     "text": "Im *p:nächsten *p:Video verlose ich / unter *y:allen *y:Followern / einen *y:Platz in meiner *b:Strandvilla – / und wer einen *p:Freund markiert, / *g:nimmt *g:ihn *g:mit!",
+     "text": "Im *p:nächsten *p:Video verlose ich / unter *y:allen *y:Followern / einen *y:Platz in meiner *b:Strandvilla / bei *p:Emilia und *p:Lea – / und wer einen *p:Freund markiert, / *g:nimmt *g:ihn *g:mit!",
      "speed": 1.1,
      "style": "Style: a young German guy, around 20, genuinely excited, talking to his followers like friends, energetic and warm, natural German intonation, not an announcer, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
      "pause": 0.3
@@ -137,9 +142,9 @@
      "volume": 0.4
     },
     {
-     "name": "verlosung",
+     "name": "nice",
      "at": "L2vb:verlose",
-     "volume": 0.6
+     "volume": 0.9
     }
    ]
   },
@@ -179,7 +184,7 @@
    "lines": [
     {
      "id": "L4n",
-     "text": "*p:Zwei wollten das *p:Nagelstudio *p:Ocean *p:Nails eröffnen – / deshalb macht jetzt *p:Lisann die *y:linken Hände / und *p:Alina die *y:rechten – / bis der *r:Streit beigelegt ist!",
+     "text": "*p:@lisann.lmp|Lisann-L-M-P und *p:@al1na.mai5|Alina-Mai-fünf / wollten beide das *p:Nagelstudio *p:Ocean *p:Nails eröffnen – / deshalb macht jetzt *p:Lisann die *y:linken Hände / und *p:Alina die *y:rechten – / bis der *r:Streit beigelegt ist!",
      "speed": 1.1,
      "style": "Style: a young German guy, around 20, genuinely excited, talking to his followers like friends, energetic and warm, natural German intonation, not an announcer, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
      "pause": 0.4
@@ -187,19 +192,29 @@
    ],
    "sfx": [
     {
+     "name": "pop",
+     "at": "L4n:lisann",
+     "volume": 0.4
+    },
+    {
+     "name": "pop",
+     "at": "L4n:al1na",
+     "volume": 0.4
+    },
+    {
      "name": "stempel",
      "at": "L4n:Nagelstudio",
      "volume": 0.45
     },
     {
      "name": "pop",
-     "at": "L4n:Lisann",
-     "volume": 0.4
+     "at": "L4n:linken",
+     "volume": 0.35
     },
     {
      "name": "pop",
-     "at": "L4n:Alina",
-     "volume": 0.4
+     "at": "L4n:rechten",
+     "volume": 0.35
     },
     {
      "name": "impact-bass-2",
@@ -260,6 +275,31 @@
      "name": "pop",
      "at": "L6:84",
      "volume": 0.4
+    }
+   ]
+  },
+  {
+   "id": "s05b",
+   "tag": "",
+   "sfx": [
+    {
+     "name": "whoosh",
+     "at": "L6b:zuletzt",
+     "volume": 0.3
+    },
+    {
+     "name": "ka-ching",
+     "at": "L6b:Bäckerei",
+     "volume": 0.4
+    }
+   ],
+   "lines": [
+    {
+     "id": "L6b",
+     "text": "Und zuletzt gebaut: / *p:Fabiennes *y:Bäckerei!",
+     "speed": 1.1,
+     "style": "Style: a young German guy, around 20, genuinely excited, talking to his followers like friends, energetic and warm, natural German intonation, not an announcer, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+     "pause": 0.4
     }
    ]
   },

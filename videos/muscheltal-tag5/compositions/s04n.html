@@ -58,8 +58,8 @@
     .s4n-pn .hd { position: absolute; left: 0; right: 0; top: 412px; margin: 0 auto; width: fit-content; padding: 2px 14px 6px; border-radius: 14px; background: #fff; color: #2a1b12; font-family: "Lilita One", sans-serif; font-size: 34px; opacity: 0; }
     #s4n-sx { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 900px; padding: 4px 20px 8px; border-radius: 18px; background: #e8262f; color: #fff; font-family: "Lilita One", sans-serif; font-size: 48px; box-shadow: 0 0 0 5px #2a1b12; transform: rotate(-6deg); opacity: 0; }
   </style>
-  <div id="root" data-composition-id="s04n" data-start="0" data-duration="9.380" data-width="1080" data-height="1920">
-    <div id="s04n-stage" class="clip stage" data-start="0" data-duration="9.380" data-track-index="0">
+  <div id="root" data-composition-id="s04n" data-start="0" data-duration="10.640" data-width="1080" data-height="1920">
+    <div id="s04n-stage" class="clip stage" data-start="0" data-duration="10.640" data-track-index="0">
       <div id="s4n-t" class="pl">💅 NEU: Ocean Nails</div>
       <div id="s4n-L" class="s4n-pn" style="left:90px;background:linear-gradient(160deg,#ff5e8a,#c2185b)"><img src="assets/img/av_lisann.png" alt=""><div class="nm">@lisann.lmp</div><div class="hd" id="s4n-L-hd">🤚 LINKE HÄNDE</div></div><div id="s4n-R" class="s4n-pn" style="left:590px;background:linear-gradient(200deg,#5ea8ff,#3949ab)"><img src="assets/img/av_alina.png" alt=""><div class="nm">@al1na.mai5</div><div class="hd" id="s4n-R-hd">✋ RECHTE HÄNDE</div></div>
       <div id="s4n-sx" data-layout-ignore>⏳ Bis der Streit beigelegt ist</div>
@@ -68,7 +68,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 9.38, "L4n": [0.2, 6.8], "L4n.words": [["zwei", 0.2, 0.354], ["wollten", 0.354, 0.657], ["das", 0.657, 0.805], ["nagelstudio", 0.805, 1.395], ["ocean", 1.395, 1.687], ["nails", 1.687, 1.846], ["eröffnen", 1.846, 2.287], ["", 2.287, 2.42], ["deshalb", 2.66, 2.941], ["macht", 2.941, 3.088], ["jetzt", 3.088, 3.236], ["lisann", 3.236, 3.512], ["die", 3.512, 3.65], ["linken", 3.65, 3.926], ["hände", 3.926, 4.196], ["und", 4.196, 4.334], ["alina", 4.334, 4.728], ["die", 4.728, 4.866], ["rechten", 4.866, 5.147], ["", 5.147, 5.27], ["bis", 5.57, 5.743], ["der", 5.743, 5.916], ["streit", 5.916, 6.108], ["beigelegt", 6.108, 6.627], ["ist", 6.627, 6.8]]};
+      const C = {"__dur": 10.64, "L4n": [0.2, 8.06], "L4n.words": [["lisannlmp", 0.2, 0.542], ["und", 0.542, 0.704], ["al1namai5", 0.704, 1.498], ["wollten", 1.498, 1.828], ["beide", 1.828, 2.147], ["das", 2.147, 2.309], ["nagelstudio", 2.309, 2.952], ["ocean", 2.952, 3.271], ["nails", 3.271, 3.444], ["eröffnen", 3.444, 3.925], ["", 3.925, 4.07], ["deshalb", 4.37, 4.626], ["macht", 4.626, 4.761], ["jetzt", 4.761, 4.895], ["lisann", 4.895, 5.147], ["die", 5.147, 5.273], ["linken", 5.273, 5.524], ["hände", 5.524, 5.771], ["und", 5.771, 5.897], ["alina", 5.897, 6.256], ["die", 6.256, 6.382], ["rechten", 6.382, 6.638], ["", 6.638, 6.75], ["bis", 7.05, 7.192], ["der", 7.192, 7.334], ["streit", 7.334, 7.492], ["beigelegt", 7.492, 7.918], ["ist", 7.918, 8.06]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -112,10 +112,10 @@
 
       wrapBt("#s04n-stage");
       const tl = gsap.timeline({ paused: true });
-      const ng = at("L4n", "Nagelstudio"), sr = at("L4n", "Streit") - .3, li = at("L4n", "Lisann"), al = at("L4n", "Alina");
+      const ng = at("L4n", "Nagelstudio"), sr = at("L4n", "Streit") - .3, li = at("L4n", "linken"), al = at("L4n", "rechten"), u1 = at("L4n", "lisann"), u2 = at("L4n", "al1na");
       tl.fromTo("#s4n-t", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, ng - .25);
-      tl.fromTo("#s4n-L", { opacity: 1, x: -500, rotation: -8 }, { x: 0, rotation: -3, duration: .3, ease: "back.out(1.6)" }, ng);
-      tl.fromTo("#s4n-R", { opacity: 1, x: 500, rotation: 8 }, { x: 0, rotation: 3, duration: .3, ease: "back.out(1.6)" }, ng + .15);
+      tl.fromTo("#s4n-L", { opacity: 1, x: -500, rotation: -8 }, { x: 0, rotation: -3, duration: .3, ease: "back.out(1.6)" }, u1 - .1);
+      tl.fromTo("#s4n-R", { opacity: 1, x: 500, rotation: 8 }, { x: 0, rotation: 3, duration: .3, ease: "back.out(1.6)" }, u2 - .1);
       tl.fromTo("#s4n-sx", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .25, ease: "back.out(2)" }, sr - .1);
       tl.to("#s4n-sx", { x: 10, duration: .05, yoyo: true, repeat: 5, ease: "none" }, sr + .15);
       tl.fromTo("#s4n-L-hd", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1.15, duration: .3, ease: "back.out(2.6)" }, li);
