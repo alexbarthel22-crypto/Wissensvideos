@@ -922,7 +922,7 @@ function drawKiosk(c,nl){const t=REDUCED?0:T,day=nl<.5,PX=KI.x,X=KI.x+KI.ko,Y=KI
  // Blumentöpfe auf der Theke-Ecke und Luftballons am Kiosk
  for(const [fx,fc] of[[bx0+1.2,'#ff6fa3'],[bx1-1.2,'#ffd23f']]){c.fillStyle='#c8643c';c.beginPath();c.moveTo(fx-.8,by1-3);c.lineTo(fx+.8,by1-3);c.lineTo(fx+.6,by1-1.8);c.lineTo(fx-.6,by1-1.8);c.fill();c.fillStyle='#3f9b45';c.beginPath();c.arc(fx,by1-3.3,.7,0,TAU);c.fill();c.fillStyle=fc;c.beginPath();c.arc(fx+.2,by1-3.6,.35,0,TAU);c.fill();}
  for(let k=0;k<3;k++){const bx2=bx1+1+k*1.4,by2=by0+1.5-k*.9+Math.sin(t*1.5+k)*.3;c.strokeStyle='rgba(60,40,20,.5)';c.lineWidth=.08;c.beginPath();c.moveTo(bx1+.5,by0+6);c.lineTo(bx2,by2+1);c.stroke();c.fillStyle=['#ff6fa3','#7fe0c8','#ffd23f'][k];c.beginPath();c.ellipse(bx2,by2,.85,1.05,0,0,TAU);c.fill();c.fillStyle='rgba(255,255,255,.55)';c.beginPath();c.arc(bx2-.3,by2-.35,.22,0,TAU);c.fill();}
- offenNeon(c,X+5,by0+6.6);
+ offenNeon(c,X+3.4,by0+12.4);
  // Laternen an den vorderen Ecken und am Stegbeginn
  for(const [lx,ly] of[[PX-W+2,Y+Hh-1],[PX+W-2,Y+Hh-1],[PX-KI.pw-1.5,KI.y0-3],[PX+KI.pw+1.5,KI.y0-3],[PX-KI.pw-1.5,Y+Hh-1],[PX+KI.pw+1.5,Y+Hh-1]]){c.fillStyle='#2a2a2a';c.fillRect(lx-.3,ly-7,.6,7);c.fillStyle=day?'#fff3c4':'#ffe08a';c.fillRect(lx-.8,ly-8.6,1.6,1.8);c.fillStyle='#2a2a2a';c.beginPath();c.moveTo(lx-1,ly-8.6);c.lineTo(lx,ly-9.5);c.lineTo(lx+1,ly-8.6);c.fill();}
  // Wimpelkette vom Dach zu den hinteren Pfosten, Möwe auf dem Pfosten
