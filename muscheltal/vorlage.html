@@ -3011,14 +3011,18 @@ const MKQ={
  beet:{ic:'💧',t:'Beim Gießen der Beete vorm Palast helfen',ort:'',hint:'An eines der beiden Blumenbeete vor dem Palast gehen',btn:'💧 Beete gießen',em:['💧','🌷','💦','🌸','🌼']},
  teilen:{ic:'📲',t:'Teile deinen Muschelpass 1× mit deinen Freunden',ort:'',hint:'Muschelpass öffnen → „In meiner Story teilen“'},
  pass:{ic:'🪪',t:'Schau dir den Muschelpass eines anderen Users an',ort:'',hint:'Beim Erkunden eine Person oder Hütte antippen'},
+ nagelR:{ic:'💅',t:'Lass dir deine rechten Nägel machen',ort:'Ocean Nails',hint:'An den rechten Maniküre-Tisch bei Ocean Nails gehen',btn:'💅 Rechte Nägel machen lassen',em:['💅','✋','✨','💖','🐚']},
+ nagelL:{ic:'💅',t:'Lass dir deine linken Nägel machen',ort:'Ocean Nails',hint:'An den linken Maniküre-Tisch bei Ocean Nails gehen',btn:'💅 Linke Nägel machen lassen',em:['💅','🤚','✨','💖','🐚']},
  yacht:{ic:'🛥️',t:'Blicke auf die Yacht',ort:'',hint:'Ans Ufer gegenüber der Yacht „White Pearl“ gehen',btn:'👀 Auf die White Pearl blicken',em:['🛥️','🎉','🪩','🎶','✨']},
  bm:{ic:'👑',t:'Der Bürgermeisterin Hallo sagen',ort:'',hint:'Auf dem Muschelplatz die Bürgermeisterin antippen',btn:'',em:['👑','👋','✨','🐚','💛']}};
 const mkLeiter=o=>PEOPLE.filter(p=>p.ort===o&&p.beruf==='Leitung').map(p=>p.name)[0]||'';
+// Ocean Nails: linke Hände bei der einen, rechte bei der anderen Leiterin (NAGEL_HAND)
+const nagelWer=id=>PEOPLE.find(p=>NAGEL_HAND[p.name.toLowerCase()]===(id==='nagelR'?'✋':'🤚'));
 function mkQDef(id){if(id.startsWith('hut:')){const n=id.slice(4);return{ic:'🏠',t:'Besuche <b>'+esc(n)+'</b> an der Hütte',hint:'Hütte antippen und den Muschelpass ansehen',hut:n};}
- const q=MKQ[id]||{ic:'❓',t:id,hint:''};let wer='';if(id==='bm'){const m=PEOPLE.find(p=>/bürgermeister/i.test(p.beruf||''));wer=m?m.name:'';}else if(id==='beet'){const m=PEOPLE.find(p=>p.beruf==='Palast-Leitung');return{...q,t:m?'Hilf <b>'+esc(m.name)+'</b> beim Gießen der Beete vorm Palast':q.t};}else if(id==='bau'){const b=mkProjekt();return{...q,t:'Hilf mit beim Bau: '+(b?esc(b.emoji+' '+b.name):'Baustelle'),bau:b};}else if(id==='yacht'){const m=PEOPLE.find(p=>p.gb===YACHT);return{...q,t:m?'Blicke auf die Yacht von <b>'+esc(m.name)+'</b>':q.t};}else if(id==='nagel')return q;else if(q.ort)wer=id==='steg'?(PEOPLE.find(p=>p.ort==='Strandbar'&&p.beruf==='Team')||{}).name||'':mkLeiter(q.ort);
+ const q=MKQ[id]||{ic:'❓',t:id,hint:''};let wer='';if(id==='bm'){const m=PEOPLE.find(p=>/bürgermeister/i.test(p.beruf||''));wer=m?m.name:'';}else if(id==='beet'){const m=PEOPLE.find(p=>p.beruf==='Palast-Leitung');return{...q,t:m?'Hilf <b>'+esc(m.name)+'</b> beim Gießen der Beete vorm Palast':q.t};}else if(id==='bau'){const b=mkProjekt();return{...q,t:'Hilf mit beim Bau: '+(b?esc(b.emoji+' '+b.name):'Baustelle'),bau:b};}else if(id==='yacht'){const m=PEOPLE.find(p=>p.gb===YACHT);return{...q,t:m?'Blicke auf die Yacht von <b>'+esc(m.name)+'</b>':q.t};}else if(id==='nagel')return q;else if(id==='nagelL'||id==='nagelR'){const m=nagelWer(id);return{...q,t:q.t+(m?' bei <b>'+esc(m.name)+'</b>':'')};}else if(q.ort)wer=id==='steg'?(PEOPLE.find(p=>p.ort==='Strandbar'&&p.beruf==='Team')||{}).name||'':mkLeiter(q.ort);
  return{...q,t:q.t+(wer?' <i>bei '+esc(wer)+'</i>':'')};}
 function mkVorschlag(me){const h=mkTag(),r=mkR(mkH(me.name+h));const pick=a=>a[Math.floor(r()*a.length)];const own=me.ort||'';
- const A=['acai','doener','baeckerei','bar','steg','werkstatt','nagel'].filter(k=>MKQ[k].ort!==own||!own),B=['palast','villa','bm','beet'].concat(PEOPLE.some(p=>p.gb===YACHT)?['yacht']:[]).concat(new Date().getHours()>=6&&new Date().getHours()<22&&mkProjekt()?['bau']:[]).filter(k=>!(k==='palast'&&/palast/i.test(own)));
+ const A=['acai','doener','baeckerei','bar','steg','werkstatt','nagelL','nagelR'].filter(k=>MKQ[k].ort!==own||!own),B=['palast','villa','bm','beet'].concat(PEOPLE.some(p=>p.gb===YACHT)?['yacht']:[]).concat(new Date().getHours()>=6&&new Date().getHours()<22&&mkProjekt()?['bau']:[]).filter(k=>!(k==='palast'&&/palast/i.test(own)));
  const H=PEOPLE.filter(p=>p.p&&!p.gb&&p!==me&&p.nr<=limit&&p.isl===me.isl&&p.isl.open);const hut=H.length?'hut:'+pick(H).name:'pass';return[pick(A),pick(B),pick([hut,'pass','teilen'])];}
 async function mkQuests(){const me=mkMe();if(!me)return null;const r=await mk('quests',{vorschlag:mkVorschlag(me)});if(r&&r.ok)MK.quests=r.quests;mkChip();mkCard();return MK.quests;}
 // Ziele (Weltkoordinaten) und Bereiche, in denen der Knopf erscheint
@@ -3027,7 +3031,7 @@ function mkZiel2(id){const geb=t=>GEB.find(g=>g.typ===t);
  if(id==='pass'||id==='teilen')return null;
  if(id==='acai'){const g=geb('acai');return g&&{x:g.cx-4,y:g.cy+6.5,r:5,g};}
  if(id==='baeckerei'){const g=geb('baeckerei');return g&&{x:g.cx,y:g.cy+0.5,r:5,g};}
- if(id==='nagel'){const g=geb('nagel');return g&&{x:g.cx-16,y:g.cy+9.6,r:5,g};}
+ if(id==='nagel'||id==='nagelL'||id==='nagelR'){const g=geb('nagel'),m=id==='nagel'?null:nagelWer(id),tp=m&&teamPos(g,m),x=tp?tp.x:g.cx+(id==='nagelR'?16:-16);return g&&{x,y:g.cy+9.6,r:5,g};}
  if(id==='doener'){const g=geb('doener');return g&&{x:g.cx-8,y:g.cy+9.5,r:6,g};}
  if(id==='werkstatt'){const g=geb('werkstatt');return g&&mkNah(g.cx-8*(g.dir||1),g.cy+1,{r:6,g});}
  if(id==='bar'||id==='steg'){const g=geb('strandbar');if(!g)return null;const d=g.dir||1,sx=(g.sea-g.cx)*d;if(id==='steg')return mkNah(g.cx+(sx+6)*d,g.cy,{r:9,g});const L=TAPS.find(t=>t[2]&&t[2].ort===g.name&&t[2].beruf==='Leitung');return L?{x:L[0]+3,y:L[1]+9,r:6,g}:mkNah(g.cx+(sx-30)*d,g.cy+4,{r:7,g});}
@@ -3063,7 +3067,7 @@ function mkRoute(x0,y0,x1,y1){const st=3,X0=Math.min(x0,x1)-60,Y0=Math.min(y0,y1
  if(end<0)return[[x0,y0],[x1,y1]];
  const pts=[];let c=end;while(c!==prev[c]){let x=X0+(c%nx)*st,y=Y0+((c/nx)|0)*st;const w=wegAbst(x,y);if(w){if(w.dx<4)x=w.cx;if(w.dy<4)y=w.cy;}pts.unshift([x,y]);c=prev[c];}
  pts.unshift([x0,y0]);pts.push([x1,y1]);const out=[pts[0]];for(let a=1;a<pts.length-1;a++){const p0=out[out.length-1],p1=pts[a],p2=pts[a+1];if(Math.abs((p1[0]-p0[0])*(p2[1]-p1[1])-(p1[1]-p0[1])*(p2[0]-p1[0]))>.01)out.push(p1);}out.push(pts[pts.length-1]);return out;}
-function mkHin(i){const id=(MK.quests||[])[i];const z=id&&mkZiel2(id);if(!z)return;MK.hin={i,z,t:0};mkHinUpd(true);const q=mkQDef(id);mkToast(q.ic+' Folge der Linie'+(z.r?' bis '+(id==='steg'?'auf den Steg':id==='bm'?'zur Bürgermeisterin':id==='beet'?'zum Beet':id==='werkstatt'?'zum Rolltor – mit dem 🛵 Moped':id==='bau'?'zum Bauzaun':id==='villa'?'zum Tor':id==='palast'?'zum Eingang':id==='yacht'?'ans Ufer gegenüber der Yacht':'an die Theke'):' bis zur Hütte'));}
+function mkHin(i){const id=(MK.quests||[])[i];const z=id&&mkZiel2(id);if(!z)return;MK.hin={i,z,t:0};mkHinUpd(true);const q=mkQDef(id);mkToast(q.ic+' Folge der Linie'+(z.r?' bis '+(id==='steg'?'auf den Steg':id==='bm'?'zur Bürgermeisterin':id==='beet'?'zum Beet':id==='werkstatt'?'zum Rolltor – mit dem 🛵 Moped':id==='bau'?'zum Bauzaun':id==='villa'?'zum Tor':id==='palast'?'zum Eingang':id==='yacht'?'ans Ufer gegenüber der Yacht':id.startsWith('nagel')?'an den Maniküre-Tisch':'an die Theke'):' bis zur Hütte'));}
 function mkHinUpd(force){const h=MK.hin;if(!h||!WK.on)return;const t=performance.now();if(!force&&t-h.t<900)return;h.t=t;const z=mkZiel2(MK.quests[h.i])||h.z;h.z=z;const L=WK.L||{h:1};h.pts=mkRoute(WK.x,WK.y+4.4*(L.h||1),z.x,z.y);}
 // feine, transparente Linie: auf dem Boden (vor Gebäuden gezeichnet) und auf Ladengeländen über dem Boden, unter allen Gegenständen
 function MKLINE(c,g){const h=MK.hin;if(!h||!h.pts||!WK.on)return;c.save();world(c);if(g){c.beginPath();c.rect(g.x0,g.y0,g.x1-g.x0,g.y1-g.y0);c.clip();}
@@ -3080,7 +3084,7 @@ function mkNahe(){if(!WK.on||!mkOwn(WK.me)||!MK.quests)return;const qd=MK.d&&MK.
 async function mkErledigt(i){const b=$('mkact');if(b){b.disabled=true;}const id=MK.quests[i],r=await mk('quest',{i});if(!r||r.fehler){if(b)b.disabled=false;mkToast('Bitte nochmal versuchen');return;}
  if(b)b.remove();MK.nahe=-1;if(MK.hin&&MK.hin.i===i)MK.hin=null;await mkStand();mkChip();const q=MKQ[id]||{em:['✨','🐚','💛','✨','🐚']},z=mkZiel2(id);
  MK.fx={x:WK.x,y:WK.y-2,t0:performance.now(),em:q.em||['✨','🐚','💛']};
- const g=z&&z.g,L=g?TAPS.find(t=>t[2]&&t[2].ort===g.name&&t[2].beruf==='Leitung'):id==='bm'?TAPS.find(t=>t[2]&&/bürgermeister/i.test(t[2].beruf||'')):id==='beet'?TAPS.find(t=>t[2]&&t[2].beruf==='Palast-Leitung'):null;if(L)MK.bub={p:L[2],t0:performance.now()};
+ const g=z&&z.g,NW=(id==='nagelL'||id==='nagelR')&&nagelWer(id),L=NW?TAPS.find(t=>t[2]===NW):g?TAPS.find(t=>t[2]&&t[2].ort===g.name&&t[2].beruf==='Leitung'):id==='bm'?TAPS.find(t=>t[2]&&/bürgermeister/i.test(t[2].beruf||'')):id==='beet'?TAPS.find(t=>t[2]&&t[2].beruf==='Palast-Leitung'):null;if(L)MK.bub={p:L[2],t0:performance.now()};
  mkToast('✅ Aufgabe geschafft · +5 🐚'+(r.bonus?' · 🎁 +5 Bonus':''));mkCard();}
 // Hütte bzw. Bürgermeisterin antippen erfüllt die Aufgabe (Muschelpass öffnet sich wie gewohnt)
 // Aufgabe „Muschelpass teilen“: erfüllt, sobald man den eigenen Pass geteilt (oder als Bild gespeichert) hat
