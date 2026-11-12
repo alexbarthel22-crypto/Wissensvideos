@@ -844,14 +844,15 @@ function drawMarkt(c,nl){const t=REDUCED?0:T,day=nl<.5,X=MKT.cx,Y=MKT.cy,BL='#1f
 function marktGlow(glow,nl){const X=MKT.cx,Y=MKT.cy;for(const wx of[-25,25])glow(X+wx,Y-10,20,'255,230,160',.5*nl);glow(X,Y-9,14,'255,220,150',.6*nl);}
 // Begehbarkeit: Steg (5 breit je Seite) und Plattform; Bude samt Rückseite, Kühltruhe, Zeitungsständer, Bank und Laternen sind Hindernisse. null = nicht im Kiosk-Bereich
 function kioskWalk(x,y){const lx=x-KI.x;if(Math.abs(lx)<KI.pw&&y<=KI.y0+2&&y>=KI.y1)return true;const ly=y-KI.cy;if(Math.abs(lx)>KI.W+1||ly<-KI.H-1||ly>KI.H+1)return null;
- if(Math.abs(lx)>KI.W-2.4||ly<-KI.H+2.4)return false;if(ly>KI.H-2.4&&Math.abs(lx)>KI.pw)return false;
- {const kx=lx-KI.ko;if(Math.abs(kx)<12&&ly<1.2)return false;// Kiosk-Bude
-  if(inRect(kx,ly,8.6,15.4,1.8,7.4)||inRect(kx,ly,-12.6,-6.4,1.2,7)||inRect(kx,ly,-12.6,-3.4,11,14.4)||inRect(kx,ly,11.6,18.6,-20,1.2))return false;}// Kühltruhe, Zeitungsständer, Bank, Eis-Aufsteller
- {const bx=lx-KI.bo;if(Math.abs(bx)<12&&ly<1.2)return false;// Boba-Bude
-  if(Math.hypot((bx+11)/3.3,(ly-7.6)/1.8)<1||Math.hypot((bx+15.4)/1.4,ly-8.3)<1||Math.hypot((bx+6.6)/1.4,ly-8.3)<1||Math.hypot((bx-11.8)/3.1,(ly-12)/2)<1||inRect(bx,ly,12,18.6,-20,1.2)||inRect(bx,ly,-16,-13,11.4,14.4))return false;}// Tisch, Hocker, Sitzsack, Aufsteller, Palme
- {const qx=lx-KI.po;if(Math.abs(qx)<12&&ly<1.2)return false;// Pizzeria
-  for(const tx of[-11,8])if(Math.hypot((qx-tx)/3,(ly-8)/1.7)<1||Math.hypot((qx-tx+4.2)/1.2,ly-8.6)<1||Math.hypot((qx-tx-4.2)/1.2,ly-8.6)<1)return false;
-  if(inRect(qx,ly,-18.4,-12,-20,1.2)||inRect(qx,ly,-17,-14,11.6,15))return false;}// Tische, Stühle, Tafel, Olivenbaum
+ // f = Höhe der Füße (Figur steht 4,4 über ihren Füßen) – Hindernisse gelten für die Füße, mit Abstand davor/dahinter
+ const f=ly+4.4;if(Math.abs(lx)>KI.W-2.4||ly<-KI.H+2.4)return false;if(f>KI.H-.6&&Math.abs(lx)>KI.pw)return false;
+ {const kx=lx-KI.ko;if(Math.abs(kx)<12&&f<1.4)return false;// Kiosk-Bude
+  if(inRect(kx,f,7.8,16.2,-3,8.4)||inRect(kx,f,-13.2,-5.8,-3,8.6)||inRect(kx,f,-13.4,-2.6,8,15.6)||inRect(kx,f,11.6,18.6,-30,2))return false;}// Kühltruhe, Zeitungsständer, Bank, Eis-Tafel
+ {const bx=lx-KI.bo;if(Math.abs(bx)<12&&f<1.4)return false;// Boba-Bude
+  if(inRect(bx,f,-17,-5,-3,10.8)||Math.hypot((bx-11.8)/3.6,(f-12.2)/2.4)<1||inRect(bx,f,12,18.6,-30,2)||inRect(bx,f,-16.4,-12.6,9,14.8))return false;}// Tisch mit Schirm+Hocker, Sitzsack, Tafel, Palme
+ {const qx=lx-KI.po;if(Math.abs(qx)<12&&f<1.4)return false;// Pizzeria
+  for(const tx of[-11,8])if(inRect(qx,f,tx-5.8,tx+5.8,-3,11))return false;
+  if(inRect(qx,f,-18.4,-12,-30,2)||inRect(qx,f,-17.2,-13.8,8,15.4))return false;}// Tische, Stühle, Tafel, Olivenbaum
  return true;}
 const rnd2=(i,k)=>{const x=Math.sin(i*127.1+k*311.7)*43758.5453;return x-Math.floor(x);};
 function drawKiosk(c,nl){const t=REDUCED?0:T,day=nl<.5,PX=KI.x,X=KI.x+KI.ko,Y=KI.cy,W=KI.W,Hh=KI.H,wood='#b07a45',wood2='#8a5a2b',dark='#5a3418';c.save();
