@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Muschel-Tal 3D</title>
+<style>
+html,body{margin:0;height:100%;background:#9fd8f0;overflow:hidden;font-family:system-ui,sans-serif}
+#c{display:block;width:100%;height:100%}
+#lade{position:fixed;inset:0;display:grid;place-items:center;font:800 20px system-ui;color:#2a1b12;background:#9fd8f0}
+#src{position:fixed;left:-9999px;top:0;width:800px;height:800px;border:0}
+</style>
+</head>
+<body>
+<!-- 3D-Ansicht von Muschel-Tal nur für Videos (nicht auf der Homepage verlinkt).
+     Liest Inseln, Hütten, Läden und Deko aus der gebauten Seite (muscheltal/site/index.html) und baut sie mit three.js nach.
+     Parameter: ?insel=0|1 (Haupt-Insel / Kokos-Küste) · ?zeit=tag|nacht · ?name=@user (Hütte markieren) · ?flug=1 (Kamera kreist)
+                ?winkel=Grad · ?hoehe=0..1 · ?zoom=Faktor · ?w=1080&h=1920 (feste Größe fürs Aufnehmen)
+     Aufnehmen: über einen lokalen Webserver ab dem Repo-Ordner öffnen (z. B. python3 -m http.server), dann
+     http://localhost:8000/videos/muscheltal-3d/insel3d.html?flug=1 – window.BEREIT ist true, sobald alles steht. -->
+<div id="lade">🐚 Muschel-Tal wird gebaut …</div>
+<canvas id="c"></canvas>
+<iframe id="src" src="../../muscheltal/site/index.html?zeit=tag&wetter=sonne"></iframe>
+<script src="lib/three.min.js"></script>
+<script src="lib/OrbitControls.js"></script>
+<script>
+const LIN0=c=>new THREE.Color(c).convertSRGBToLinear();
+const Q=new URLSearchParams(location.search),INSEL=+(Q.get('insel')||0),NACHT=Q.get('zeit')==='nacht',FLUG=Q.get('flug')==='1',NAME=(Q.get('name')||'').toLowerCase().replace(/^@?/,'@');
+const FW=+Q.get('w')||0,FH=+Q.get('h')||0;window.BEREIT=false;
+const src=document.getElementById('src');
+function warte(){const W=src.contentWindow;try{if(W&&W.eval&&W.eval("typeof PEOPLE!=='undefined'&&PEOPLE.length>0&&typeof ISL!=='undefined'&&ISL[0].plots&&ISL[0].plots.length>0"))return baue(W);}catch(e){}setTimeout(warte,200);}
+src.onload=()=>setTimeout(warte,300);
+
+function baue(W){
+ const g=n=>W.eval(n),ISL=g('ISL'),PEOPLE=g('PEOPLE'),GEB=g('GEB'),S=g('S'),PAL_S=g('PAL_S'),BEX=g('BEX'),coastAt=g('coastAt'),inside=g('inside'),limit=g('limit'),LANT=g('LANT'),BAU=g('BAU'),YACHT=g('YACHT');
+ try{W.cancelAnimationFrame(g('fly'));}catch(e){}
+ const v=ISL[INSEL]||ISL[0],KOK=v.i===1;
+ // ---------- Renderer, Szene, Licht ----------
+ const cv=document.getElementById('c'),R=new THREE.WebGLRenderer({canvas:cv,antialias:true,preserveDrawingBuffer:true});
+ const setSize=()=>{const w=FW||innerWidth,h=FH||innerHeight;R.setPixelRatio(FW?1:Math.min(2,devicePixelRatio));R.setSize(w,h,!FW);if(FW){cv.style.width='100%';cv.style.height='100%';cv.style.objectFit='contain';}cam.aspect=w/h;cam.updateProjectionMatrix();};
+ R.shadowMap.enabled=true;R.shadowMap.type=THREE.PCFSoftShadowMap;R.outputEncoding=THREE.sRGBEncoding;R.toneMapping=THREE.ACESFilmicToneMapping;R.toneMappingExposure=NACHT?1:1;
+ const sc=new THREE.Scene(),SKY=NACHT?0x0c1a3a:0x9fd8f0;sc.background=LIN0(SKY);sc.fog=new THREE.Fog(LIN0(SKY),v.R*2.4,v.R*5.5);
+ const cam=new THREE.PerspectiveCamera(38,1,5,v.R*12);
+ sc.add(new THREE.HemisphereLight(LIN0(NACHT?0x6a7fc0:0xdff4ff),LIN0(NACHT?0x1a2a20:0x7aa05a),NACHT?.5:.6));
+ const sun=new THREE.DirectionalLight(LIN0(NACHT?0x9fb4ff:0xfff1d6),NACHT?.4:1.7);sun.position.set(v.x-v.R*.8,v.R*1.4,v.y-v.R*.6);sun.target.position.set(v.x,0,v.y);sc.add(sun,sun.target);
+ sun.castShadow=true;sun.shadow.mapSize.set(4096,4096);const sh=sun.shadow.camera;sh.left=sh.bottom=-v.R*1.3;sh.right=sh.top=v.R*1.3;sh.near=10;sh.far=v.R*5;sun.shadow.bias=-.0004;sun.shadow.normalBias=.6;
+ const LIN=c=>new THREE.Color(c).convertSRGBToLinear();
+ const M=(c,o={})=>new THREE.MeshStandardMaterial({roughness:.85,metalness:0,...o,color:LIN(c),...(o.emissive!=null?{emissive:LIN(o.emissive)}:{})});
+ const add=(geo,mat,x,y,z,o={})=>{const m=new THREE.Mesh(geo,mat);m.position.set(x,y,z);if(o.ry)m.rotation.y=o.ry;if(o.rx)m.rotation.x=o.rx;m.castShadow=o.cast!==false;m.receiveShadow=true;sc.add(m);return m;};
+
+ // ---------- Wasser (leichte Wellen) ----------
+ const wg=new THREE.PlaneGeometry(v.R*12,v.R*12,120,120);wg.rotateX(-Math.PI/2);
+ const water=new THREE.Mesh(wg,M(NACHT?0x123a6a:0x2bb3d6,{roughness:.25,metalness:.1,transparent:true,opacity:.96}));water.position.set(v.x,-3,v.y);water.receiveShadow=true;sc.add(water);
+ const wp=wg.attributes.position,w0=Float32Array.from(wp.array);
+ // flaches Wasser am Strand (heller Ring)
+ // ---------- Insel: Sand, Gras ----------
+ const ring=(rf,n=180)=>{const s=new THREE.Shape();for(let i=0;i<=n;i++){const a=i/n*Math.PI*2-Math.PI,r=rf(a),x=v.x+Math.cos(a)*r,y=v.y+Math.sin(a)*r;i?s.lineTo(x,-y):s.moveTo(x,-y);}return s;};
+ const plate=(shape,h,mat,y)=>{const geo=new THREE.ExtrudeGeometry(shape,{depth:h,bevelEnabled:true,bevelThickness:1.5,bevelSize:2.5,bevelSegments:3,curveSegments:8});geo.rotateX(-Math.PI/2);const m=new THREE.Mesh(geo,mat);m.position.y=y;m.receiveShadow=true;sc.add(m);return m;};
+ plate(ring(a=>coastAt(v,a)+BEX+30),3,M(0x7fd6e6,{roughness:.3,transparent:true,opacity:.55}),-3.2);
+ plate(ring(a=>coastAt(v,a)+BEX+16),5,M(0xf2dca6),-4);
+ plate(ring(a=>coastAt(v,a)),4,M(KOK?0x6aa843:0x5aae3c),-2.6);
+ const TOP=3.05;
+ // Wege (Raster wie auf der Karte) und Platz
+ const PATH=M(KOK?0x9a6a3a:0xdcc08a),pg=new THREE.BoxGeometry(1,.6,1),paths=[];
+ const ok=(x,y)=>inside(v,x,y,-4)&&Math.hypot(x-v.x,y-v.y)>v.plaza+2;
+ const G=Math.ceil(v.R/S)+2;
+ for(let k=-G;k<=G;k++){if(((k%5)+5)%5)continue;const x=v.x+k*S;for(let y=v.y-v.R;y<v.y+v.R;y+=4)if(ok(x,y))paths.push([x,y,7,4.2]);}
+ for(let m=-G;m<=G;m++){if(((m%4)+4)%4)continue;const y=v.y+m*S*.9;for(let x=v.x-v.R;x<v.x+v.R;x+=4)if(ok(x,y))paths.push([x,y,4.2,7]);}
+ {const im=new THREE.InstancedMesh(pg,PATH,paths.length),o=new THREE.Object3D();paths.forEach(([x,y,w,d],i)=>{o.position.set(x,TOP+.05,y);o.scale.set(w,1,d);o.updateMatrix();im.setMatrixAt(i,o.matrix);});im.receiveShadow=true;sc.add(im);}
+ add(new THREE.CylinderGeometry(v.plaza+2,v.plaza+3,1.2,64),M(KOK?0xf0dcaa:0xd9cdb6),v.x,TOP-.1,v.y,{cast:false});
+
+ // ---------- Hütten ----------
+ const H=PEOPLE.filter(p=>p.p&&!p.gb&&p.isl===v&&p.nr<=limit);
+ const dummy=new THREE.Object3D(),col=new THREE.Color();
+ const inst=(geo,mat,n,f)=>{const im=new THREE.InstancedMesh(geo,mat,n);im.castShadow=true;im.receiveShadow=true;for(let i=0;i<n;i++){f(i,dummy);dummy.updateMatrix();im.setMatrixAt(i,dummy.matrix);}sc.add(im);return im;};
+ const win=[];
+ if(!KOK){
+  const stil=H.length*4,STIL=M(0x6b4423);
+  inst(new THREE.BoxGeometry(.9,4,.9),STIL,stil,(i,o)=>{const p=H[i>>2],k=i&3;o.position.set(p.p.x+(k&1?-5:5),TOP+2,p.p.y-2+(k&2?-3.5:3.5));o.rotation.set(0,0,0);o.scale.set(1,1,1);});
+  const body=inst(new THREE.BoxGeometry(12,7,9),M(0xffffff),H.length,(i,o)=>{const p=H[i];o.position.set(p.p.x,TOP+7.5,p.p.y-2);});
+  H.forEach((p,i)=>body.setColorAt(i,col.set(p.wall||'#d9a066').convertSRGBToLinear()));body.instanceColor.needsUpdate=true;
+  const sq=H.filter(p=>!p.round),rd=H.filter(p=>p.round),TH=[0xe8c25a,0xdcb04a,0xf0cd6a];
+  const r1=inst(new THREE.ConeGeometry(10.5,9,4,1),M(0xffffff,{roughness:.95}),sq.length,(i,o)=>{const p=sq[i];o.position.set(p.p.x,TOP+15.5,p.p.y-2);o.rotation.set(0,Math.PI/4,0);o.scale.set(1,1,.82);});
+  sq.forEach((p,i)=>r1.setColorAt(i,col.setHex(TH[(p.nr*7)%3]).convertSRGBToLinear()));r1.instanceColor.needsUpdate=true;
+  const r2=inst(new THREE.SphereGeometry(9,20,12,0,Math.PI*2,0,Math.PI/2),M(0xffffff,{roughness:.95}),rd.length,(i,o)=>{const p=rd[i];o.position.set(p.p.x,TOP+10.8,p.p.y-2);o.rotation.set(0,0,0);o.scale.set(1,1.05,.85);});
+  rd.forEach((p,i)=>r2.setColorAt(i,col.setHex(TH[(p.nr*5)%3]).convertSRGBToLinear()));r2.instanceColor.needsUpdate=true;
+  inst(new THREE.BoxGeometry(3,4.6,.4),M(0x4a2a14),H.length,(i,o)=>{const p=H[i];o.position.set(p.p.x,TOP+6.6,p.p.y+2.6);o.rotation.set(0,0,0);o.scale.set(1,1,1);});
+  H.forEach(p=>win.push([p.p.x+3.6,TOP+8.4,p.p.y+2.6]));
+ }else{
+  inst(new THREE.SphereGeometry(8.5,24,16),M(0x6b3f1d,{roughness:.9}),H.length,(i,o)=>{const p=H[i];o.position.set(p.p.x,TOP+7,p.p.y-1);o.scale.set(1,.92,1);o.rotation.set(0,0,0);});
+  inst(new THREE.SphereGeometry(3,10,8),M(0x3f9b45),H.length*2,(i,o)=>{const p=H[i>>1],s=i&1?1:-1;o.position.set(p.p.x+s*2.6,TOP+15,p.p.y-1);o.scale.set(1.5,.35,.8);o.rotation.set(0,0,s*.35);});
+  inst(new THREE.CylinderGeometry(2,2,.6,16,1,false,0,Math.PI),M(0x2a1608),H.length,(i,o)=>{const p=H[i];o.position.set(p.p.x,TOP+3.5,p.p.y+6.9);o.rotation.set(Math.PI/2,0,0);o.scale.set(1,1,1.6);});
+  H.forEach(p=>win.push([p.p.x+4,TOP+8,p.p.y+6.3]));
+ }
+ // Fensterlicht (nachts)
+ if(NACHT)inst(new THREE.SphereGeometry(1.1,8,6),M(0xffd27a,{emissive:0xffb040,emissiveIntensity:1.6}),win.length,(i,o)=>{o.position.set(...win[i]);o.scale.set(1,1,1);});
+
+ // ---------- Palmen, Büsche, Steine, Laternen ----------
+ const PALMS=(v.palms||[]).slice();
+ // zusätzliche Palmen am Strand (nicht vor Läden, Yacht oder Steg) und Büsche auf freien Plätzen – nur Deko für die 3D-Ansicht
+ {const rnd=(i,k)=>{const x=Math.sin(i*127.1+k*311.7)*43758.5453;return x-Math.floor(x);};for(let i=0;i<70;i++){const a=i/70*Math.PI*2+rnd(i,1)*.05,r=coastAt(v,a)+BEX*.4+rnd(i,2)*8,x=v.x+Math.cos(a)*r,y=v.y+Math.sin(a)*r;if(GEB.some(b=>x>b.x0-14&&x<b.x1+14&&y>b.y0-14&&y<b.y1+14))continue;if(rnd(i,3)<.35)continue;PALMS.push({x,y:y-3,s:.85+rnd(i,4)*.45});}
+  (v.free||[]).forEach((f,i)=>{if(rnd(i,7)<.55)(v.bush=v.bush||[]).push({x:f.x+(rnd(i,8)-.5)*6,y:f.y,r:3.5+rnd(i,9)*2.5});});}
+ PALMS.forEach(t=>{const s=t.s||1,x=t.x,z=t.y+3,h=16*s;const tr=add(new THREE.CylinderGeometry(.9*s,1.4*s,h,8),M(0x8a5a2b),x,TOP+h/2,z);tr.rotation.z=.08;
+  for(let k=0;k<6;k++){const a=k/6*Math.PI*2,l=add(new THREE.ConeGeometry(2.4*s,11*s,4),M(k%2?0x2f9a4a:0x3fb35a),x+Math.cos(a)*4*s,TOP+h+.5,z+Math.sin(a)*4*s);l.rotation.set(Math.sin(a)*1.25,0,-Math.cos(a)*1.25);}});
+ (v.bush||[]).forEach(b=>add(new THREE.SphereGeometry(b.r*.9,12,8),M(0x4caf50),b.x,TOP+b.r*.5,b.y).scale.set(1,.75,1));
+ (v.rocks||[]).forEach(r=>add(new THREE.DodecahedronGeometry(r.r*.8,0),M(0x9a9a9a),r.x,TOP+r.r*.3,r.y));
+ const lamp=(x,z)=>{add(new THREE.CylinderGeometry(.35,.45,9,6),M(0x2a2a2a),x,TOP+4.5,z);add(new THREE.SphereGeometry(1,10,8),M(0xfff3c4,{emissive:0xffcf70,emissiveIntensity:NACHT?2.2:.25}),x,TOP+9.5,z,{cast:false});
+  if(NACHT){const l=new THREE.PointLight(0xffc870,.9,60,2);l.position.set(x,TOP+10,z);sc.add(l);}};
+ (v.lamps||[]).forEach(([x,y])=>lamp(x,y));if(v===ISL[0])LANT.forEach(([x,y])=>lamp(x,y));
+
+ // ---------- Läden / Gebäude ----------
+ const TYP={doener:[0xffd23f,0xc0392b,'DÖNER'],strandbar:[0xb07a45,0xff3d7f,'STRANDBAR'],villa:[0xf7f4ee,0x3a5a7a,'STRANDVILLA'],acai:[0xb58ad0,0x7a3a8c,'AÇAÍ'],werkstatt:[0x9aa4ae,0xffd23f,'WERKSTATT'],baeckerei:[0xd9884a,0x7a4a24,'BÄCKEREI'],nagel:[0xffb3d1,0x4fc3dc,'OCEAN NAILS']};
+ const schild=(txt,bg,w)=>{const c=document.createElement('canvas');c.width=512;c.height=128;const x=c.getContext('2d');x.fillStyle='#'+bg.toString(16).padStart(6,'0');x.beginPath();x.roundRect(4,4,504,120,40);x.fill();x.lineWidth=8;x.strokeStyle='#2a1b12';x.stroke();x.fillStyle='#fff';x.font='900 64px system-ui';x.textAlign='center';x.textBaseline='middle';let fs=64;while(x.measureText(txt).width>440&&fs>20){fs-=4;x.font='900 '+fs+'px system-ui';}x.fillText(txt,256,68);const t=new THREE.CanvasTexture(c);t.encoding=THREE.sRGBEncoding;t.anisotropy=8;return new THREE.Mesh(new THREE.PlaneGeometry(w,w/4),new THREE.MeshBasicMaterial({map:t,transparent:true}));};
+ for(const b of GEB){if(b.v!==v&&!(b.key||'').startsWith(v.i+':'))continue;const [c1,c2,nm]=TYP[b.typ]||[0xcccccc,0x666666,b.name];const w=b.x1-b.x0,d=b.y1-b.y0;
+  add(new THREE.BoxGeometry(w-2,.8,d-2),M(b.typ==='nagel'?0xffe3ef:b.typ==='villa'?0x8fd06a:0xefe2c8),b.cx,TOP+.4,b.cy,{cast:false});
+  // Umrandung
+  const fz=M(b.typ==='acai'||b.typ==='villa'?0x3f8f3a:0xb8854e);for(const [x,z,ww,dd] of[[b.cx,b.y0+1.5,w-3,1.6],[b.x0+1.5,b.cy,1.6,d-3],[b.x1-1.5,b.cy,1.6,d-3]])if(b.typ!=='strandbar')add(new THREE.BoxGeometry(ww,3,dd),fz,x,TOP+1.5,z);
+  if(b.typ!=='strandbar')for(const s of[-1,1])add(new THREE.BoxGeometry(w/2-10,3,1.6),fz,b.cx+s*(w/4+5),TOP+1.5,b.y1-1.5);
+  if(b.typ==='villa'){const d2=b.dir||1,hx=b.cx-d2*(w/2-26);add(new THREE.BoxGeometry(36,22,24),M(0xf7f4ee),hx,TOP+11,b.cy-6);add(new THREE.BoxGeometry(40,2,28),M(0x6b4423),hx,TOP+23,b.cy-6);
+   add(new THREE.BoxGeometry(30,.6,18),M(0x2fc0dc,{roughness:.15,emissive:0x0a6080,emissiveIntensity:NACHT?.8:.15}),b.cx+d2*(w/2-22),TOP+.9,b.cy-2,{cast:false});
+   const t=schild('STRANDVILLA',0x3a5a7a,26);t.position.set(hx,TOP+18,b.cy+6.2);sc.add(t);continue;}
+  if(b.typ==='strandbar'){const d2=b.dir||1;add(new THREE.BoxGeometry(w,1.2,d-6),M(0x9a6a3a),b.cx+d2*10,TOP+.6,b.cy);const bx=b.cx+d2*((b.sea-b.cx)*d2-30);
+   add(new THREE.BoxGeometry(26,9,8),M(c1),bx,TOP+5,b.cy-4);add(new THREE.ConeGeometry(17,8,4),M(0xe0b860,{roughness:1}),bx,TOP+16,b.cy-4,{ry:Math.PI/4});const t=schild(nm,c2,24);t.position.set(bx,TOP+22,b.cy+1);sc.add(t);continue;}
+  const bh=b.typ==='werkstatt'?18:14;add(new THREE.BoxGeometry(Math.min(w-14,40),bh,12),M(c1),b.cx,TOP+bh/2,b.cy-d/2+12);
+  add(new THREE.BoxGeometry(Math.min(w-10,44),1.6,16),M(c2),b.cx,TOP+bh+.8,b.cy-d/2+13);
+  // gestreifte Markise
+  for(let k=0;k<8;k++)add(new THREE.BoxGeometry(Math.min(w-14,40)/8,.5,5),M(k%2?0xffffff:c2),b.cx-Math.min(w-14,40)/2+(k+.5)*Math.min(w-14,40)/8,TOP+bh-2,b.cy-d/2+19.5,{rx:.4});
+  add(new THREE.BoxGeometry(Math.min(w-18,30),5,3),M(0xc9925a),b.cx,TOP+2.5,b.cy-d/2+22);
+  const t=schild(nm,c2,26);t.position.set(b.cx,TOP+bh+8,b.cy-d/2+18);sc.add(t);}
+
+ // ---------- Muschelpalast & Brunnen (Haupt-Insel) ----------
+ if(v===ISL[0]){const P=PAL_S,pk=M(0xffc2d6,{roughness:.5}),wh=M(0xfffaf2,{roughness:.6}),gd=M(0xe0b040,{metalness:.6,roughness:.35});
+  add(new THREE.CylinderGeometry(46*P,50*P,4,48),wh,0,TOP+2,-6*P);add(new THREE.CylinderGeometry(40*P,44*P,4,48),wh,0,TOP+6,-8*P);
+  // Muschelfächer aus Rippen
+  for(let k=0;k<9;k++){const a=-Math.PI/2+(k-4)*.3,r=add(new THREE.CylinderGeometry(3.6*P,1.2*P,30*P,10),k%2?pk:M(0xff9fbf,{roughness:.5}),Math.sin(a)*14*P,TOP+8+Math.cos(a+Math.PI/2)*0+15*P,-14*P);r.rotation.z=-(k-4)*.3;r.position.y=TOP+8+Math.cos((k-4)*.3)*15*P;r.position.x=Math.sin((k-4)*.3)*15*P;}
+  add(new THREE.SphereGeometry(4*P,20,14),M(0xffffff,{metalness:.2,roughness:.1,emissive:0xbfe8ff,emissiveIntensity:.3}),0,TOP+8+33*P,-14*P);
+  for(const s of[-1,1]){add(new THREE.CylinderGeometry(6*P,6.5*P,26*P,20),wh,s*30*P,TOP+8+13*P,-10*P);add(new THREE.ConeGeometry(7*P,10*P,20),pk,s*30*P,TOP+8+31*P,-10*P);add(new THREE.SphereGeometry(1.4*P,10,8),gd,s*30*P,TOP+8+36.5*P,-10*P);
+   add(new THREE.CylinderGeometry(11*P,11.5*P,1.6,40),M(0xe9d3a6),s*36*P,TOP+.8,34*P,{cast:false});add(new THREE.CylinderGeometry(9*P,9*P,1.8,40),M(0x4fd0e0,{roughness:.1,emissive:0x1a90a0,emissiveIntensity:.25}),s*36*P,TOP+1,34*P,{cast:false});}
+  for(let k=0;k<6;k++)add(new THREE.BoxGeometry(24*P-k*2*P,1.2,3),wh,0,TOP+.6+k*1.2,(12+k*2.6)*P);}
+
+ // ---------- Baustellen (Kran) ----------
+ for(const b of BAU||[]){if(b.steg||!(b.key||'').startsWith(v.i+':'))continue;const x=b.cx,z=b.cy;add(new THREE.BoxGeometry(60,.8,48),M(0xc9b48a),x,TOP+.4,z,{cast:false});add(new THREE.BoxGeometry(30,12,20),M(0xb0b6bc),x-6,TOP+6,z);
+  add(new THREE.BoxGeometry(2,60,2),M(0xffc21a),x+18,TOP+30,z-8);add(new THREE.BoxGeometry(56,2,2),M(0xffc21a),x+6,TOP+60,z-8);add(new THREE.BoxGeometry(6,4,4),M(0x555555),x-18,TOP+58,z-8);}
+
+ // ---------- Yacht (Haupt-Insel) ----------
+ if(v===ISL[0]&&YACHT){const Y=YACHT,yx=Y.cx,yz=Y.cy,L=1.32;const hull=add(new THREE.BoxGeometry(80*L,9,26),M(0xffffff,{roughness:.4}),yx,1.5,yz);add(new THREE.BoxGeometry(80*L,3,26.2),M(0x24407a),yx,-2.5,yz);
+  add(new THREE.BoxGeometry(74*L,1,22),M(0xc98a52),yx,6.4,yz);add(new THREE.BoxGeometry(34,8,16),M(0xffffff,{roughness:.3}),yx+4,11,yz);add(new THREE.BoxGeometry(30,1,14),M(0xff8fb8,{emissive:0xff5f9f,emissiveIntensity:.6}),yx+4,15.4,yz);
+  for(let k=0;k<12;k++)add(new THREE.SphereGeometry(.8,8,6),M(0xffffff,{emissive:[0xff6fa3,0xffd23f,0x7fe0ff][k%3],emissiveIntensity:1.6}),yx-40*L+k*7*L,16+Math.sin(k)*1.5,yz-11,{cast:false});}
+
+ // ---------- markierte Hütte (?name=@user) ----------
+ const ich=PEOPLE.find(p=>p.name.toLowerCase()===NAME&&p.p&&p.isl===v);
+ let pin=null;if(ich){const x=ich.p.x,z=ich.p.y-2;pin=new THREE.Group();const m=M(0xe8467c,{emissive:0xe8467c,emissiveIntensity:.35});const s=new THREE.Mesh(new THREE.SphereGeometry(4,24,16),m),c=new THREE.Mesh(new THREE.ConeGeometry(3.2,7,24),m);c.rotation.x=Math.PI;c.position.y=-5;s.castShadow=c.castShadow=true;pin.add(s,c);pin.position.set(x,TOP+38,z);sc.add(pin);
+  const t=schild(ich.name,0xe8467c,34);t.position.set(x,TOP+50,z);sc.add(t);pin.userData.t=t;}
+
+ // ---------- Kamera ----------
+ const ctr=new THREE.Vector3(v.x,0,v.y);
+ const ctl=new THREE.OrbitControls(cam,cv);ctl.target.copy(ich&&Q.get('fokus')==='1'?new THREE.Vector3(ich.p.x,0,ich.p.y):ctr);ctl.enableDamping=true;ctl.maxPolarAngle=Math.PI*.47;ctl.minDistance=40;ctl.maxDistance=v.R*5;
+ const ang=(+Q.get('winkel')||35)*Math.PI/180,hoch=Q.has('hoehe')?+Q.get('hoehe'):.55,dist=v.R*2.15/(+Q.get('zoom')||1);
+ const setzeCam=a=>{cam.position.set(ctl.target.x+Math.sin(a)*dist*Math.cos(hoch),dist*Math.sin(hoch)+20,ctl.target.z+Math.cos(a)*dist*Math.cos(hoch));cam.lookAt(ctl.target);};
+ setzeCam(ang);setSize();addEventListener('resize',setSize);
+ // ---------- Animation ----------
+ const t0=performance.now();
+ function tick(){const t=(performance.now()-t0)/1000;
+  for(let i=0;i<wp.count;i++){const x=w0[i*3],z=w0[i*3+2];wp.setY(i,Math.sin(x*.035+t*1.2)*.6+Math.cos(z*.04+t*.9)*.5);}wp.needsUpdate=true;
+  if(pin){pin.position.y=TOP+38+Math.sin(t*2.4)*2.5;pin.rotation.y=t*1.2;pin.userData.t.lookAt(cam.position);}
+  if(FLUG)setzeCam(ang+t*.12);else ctl.update();
+  R.render(sc,cam);requestAnimationFrame(tick);}
+ document.getElementById('lade').remove();tick();setTimeout(()=>{window.BEREIT=true;},600);}
+</script>
+</body>
+</html>
