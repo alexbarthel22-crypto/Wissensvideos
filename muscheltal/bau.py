@@ -111,7 +111,7 @@ def _gebaeude_bewohner(insel):
 
 def _haupt_jobs(insel):
     """Wer auf der Haupt-Insel arbeitet (Job in einem Gebäude der Haupt-Insel oder im Muschelpalast)."""
-    orte = {g["name"] for g in insel.get("gebaeude", []) if str(g.get("key", "")).startswith("0:")} | {"Muschelpalast", "Kiosk Kunterbunt"}
+    orte = {g["name"] for g in insel.get("gebaeude", []) if str(g.get("key", "")).startswith("0:")} | {"Muschelpalast", "Kiosk Kunterbunt", "Boba Beach", "Meerkauf"}
     return {n.lower().lstrip("@") for n, j in (insel.get("jobs") or {}).items() if j and j[1] in orte}
 
 
@@ -406,6 +406,8 @@ def berufe(sauber, insel, out):
     orte, emo = {}, {g["name"]: g.get("emoji", "📍") for g in insel.get("gebaeude", [])}
     emo.setdefault("Muschelpalast", "🏰")
     emo.setdefault("Kiosk Kunterbunt", "🍦")
+    emo.setdefault("Boba Beach", "🧋")
+    emo.setdefault("Meerkauf", "🛒")
     import datetime as _dt
     try:
         from zoneinfo import ZoneInfo
