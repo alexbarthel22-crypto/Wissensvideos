@@ -79,6 +79,7 @@ section>h2{font-size:28px;margin-bottom:14px}
 .chip.mpb{background:var(--lagoon);color:#fff}
 .mp{position:fixed;inset:0;z-index:60;background:rgba(8,40,60,.55);display:grid;place-items:center;padding:16px}
 .mp[hidden]{display:none}
+.findbar input.qblink{animation:qblink .8s ease-in-out 3}@keyframes qblink{50%{box-shadow:0 0 0 5px #ffd23f}}
 .clm .clmn,.clmn{display:inline-block;vertical-align:middle;line-height:1.25;position:relative;top:-2px;background:#ffd23f;color:#2a1b12!important;font-size:inherit!important;font-weight:900!important;border:2.5px solid #2a1b12;border-radius:10px;padding:1px 8px;margin:2px 1px;box-shadow:0 2px 0 #2a1b12;white-space:nowrap}
 .qok{display:flex;align-items:center;gap:8px;margin:0 0 10px;padding:9px 12px;border:3px solid #2a1b12;border-radius:16px;background:linear-gradient(90deg,#e6fbef,#fff);box-shadow:0 3px 0 #2a1b12;font-weight:800;animation:qpop .35s ease-out}.qok span{flex:1;min-width:0}.qok span b{display:block;font-size:15px;color:#059669}.qok small{display:block;font-size:12px;color:#6a5a40;overflow-wrap:anywhere}.qok .pl{white-space:nowrap;font-size:15px;text-align:right}.qok .ck{flex:none;margin:0}
 #s-pass>h2,#ppass{display:none}
@@ -3051,6 +3052,7 @@ const mkDat=id=>{const m=String(id).match(/(\d{4})-(\d\d)-(\d\d)/);if(m){const h
 function mkZu(){const e=$('mkpage');if(e)e.hidden=true;document.body.style.overflow='';}
 document.addEventListener('click',async ev=>{const a=ev.target.closest('[data-mk]');if(!a)return;ev.preventDefault();const k=a.dataset.mk;
  if(k==='claim'&&mpP){mkClaimFrag(mpP);return;}
+ if(k==='suche'){rangZu();mkZu();$('pg').hidden=true;window.scrollTo({top:0,behavior:'smooth'});setTimeout(()=>{const q=$('q');q.focus();q.classList.add('qblink');setTimeout(()=>q.classList.remove('qblink'),2400);mkToast('🔐 Gib hier deinen TikTok-Namen ein');},450);return;}
  if(k==='sperre'||['konto','shop','spenden','login','erkunden'].includes(k)&&!mkClaim()){mkSperre();return;}
  if(k==='konto'){$('mp').hidden=true;mkSeite();return;}
  if(k==='shop'){popup('<div class="big">🎁🔒</div><h2>Muschel-Shop</h2><p><b>Psst … hier entsteht etwas Großes.</b><br>Was es geben wird, verraten wir noch nicht. Nur so viel: Spar schon mal deine Muscheln – du wirst sie brauchen! 👀</p>');return;}
@@ -3241,7 +3243,7 @@ const rangPfeil=d=>d==='neu'?' <span class="rup">neu</span>':d>0?' <span class="
 // Kasten auf der Startseite (unter „Gerade auf den Inseln“)
 async function rangKasten(){const box=$('rangbox');if(!box)return;const d=await rangLaden();if(!d||!d.top||!d.top.length){box.hidden=true;return;}box.hidden=false;
  const c=mkClaim();box.innerHTML='<h3>🏆 Reichste Muschelsammler</h3>'+d.top.slice(0,3).map((r,i)=>'<div class="trow">'+['🥇','🥈','🥉'][i]+' <span>'+esc(r.n)+'</span><b>'+fmt(r.stand)+'&nbsp;🐚</b></div>').join('')
-  +(c&&d.platz&&d.platz>3?'<div class="trow me">#'+d.platz+' <span>'+esc(c.n)+' (du)</span><b>'+fmt(d.stand)+'&nbsp;🐚</b></div>':'')+(c?'':'<a class="tlink" href="#" data-mk="sperre">🔐 Mitmachen: Usernamen beanspruchen</a>')+'<a class="tlink" href="#rangliste">Ganze Rangliste (Top 10) →</a>';}
+  +(c&&d.platz&&d.platz>3?'<div class="trow me">#'+d.platz+' <span>'+esc(c.n)+' (du)</span><b>'+fmt(d.stand)+'&nbsp;🐚</b></div>':'')+(c?'':'<a class="tlink" href="#" data-mk="suche">🔐 Mitmachen: Usernamen beanspruchen</a>')+'<a class="tlink" href="#rangliste">Ganze Rangliste (Top 10) →</a>';}
 // eigene Seite
 async function rangSeite(){let e=$('rangpage');if(!e){e=document.createElement('div');e.id='rangpage';e.className='mkpage rpage';document.body.appendChild(e);}e.hidden=false;document.body.style.overflow='hidden';
  e.innerHTML='<a class="mkback" href="#" data-rang="zu">← Zur Karte</a><h1>🏆 Muschel-Rangliste</h1><div class="mktag">Die 10 reichsten Muschelsammler von Muschel-Tal</div><div class="mkbox">⏳ Lade …</div>';
