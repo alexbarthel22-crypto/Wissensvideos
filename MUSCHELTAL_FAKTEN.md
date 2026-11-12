@@ -285,3 +285,4 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - Hintergrund der Abstimmung: Hunderte streunende Tiere auf dem Muschelplatz.
 - **Nachbarn** (12.11.): @wilma.bchmn + @_bxsti7 – @_bxsti7 zog dafür von der Kokos-Küste auf die Haupt-Insel neben @wilma.bchmn (Hütten 293/333, 🤝); @frau_hops (zuletzt auf die Haupt-Insel Gekommene) zog dafür auf die Kokos-Küste.
 - **Regenschirme** (12.11.): Bei Regen/Gewitter trägt im Schnitt jeder zweite Fußgänger einen bunten Regenschirm (fest je Person, 8 Farben; kurzer Stiel, Schirm endet knapp über dem Kopf und kippt mit dem schräg gehaltenen Stiel), in alle Laufrichtungen passend (seitlich, von vorn, von hinten); das Namensschild sitzt dann über dem Schirm. Radfahrer, Roller usw. ohne Schirm.
+- **Zoom beim Erkunden** (12.11.): Die Plus-/Minus-Knöpfe bleiben beim Erkunden rechts sichtbar und zoomen die mitlaufende Kamera (bleibt bis zum Beenden).

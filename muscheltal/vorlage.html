@@ -183,7 +183,7 @@ section>h2{font-size:28px;margin-bottom:14px}
 .walkui{position:absolute;left:12px;right:12px;bottom:14px;max-width:560px;pointer-events:none;z-index:3}.walkui[hidden]{display:none}
 .walkbtns{display:grid;grid-template-columns:1fr 1fr;gap:10px;pointer-events:auto}.walkbtns .chip{width:100%;font-size:16px;min-height:48px}
 .walkhint{margin:0 auto 10px;width:max-content;max-width:100%;white-space:nowrap;background:rgba(42,27,18,.85);color:#fff;border-radius:12px;padding:6px 12px;font-size:14px;font-weight:800;text-align:center;transition:opacity .6s}
-.hero.walking .dock,.hero.walking .zoomc,.hero.walking .pop,.hero.walking .findbar,.hero.walking .growhud{display:none!important}
+.hero.walking .dock,.hero.walking .pop,.hero.walking .findbar,.hero.walking .growhud{display:none!important}
 .popx{flex:none;width:34px;height:34px;border-radius:50%;border:2px solid var(--ink);background:var(--peach);font-size:22px;font-weight:900;line-height:1;padding:0;display:grid;place-items:center}
 .pop div{flex:1;min-width:0;display:grid}
 .pop b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -2604,7 +2604,9 @@ function dotsUpd(){const k=$('swipe').scrollLeft>$('swipe').clientWidth/2?1:0;[.
 $('swipe').addEventListener('scroll',dotsUpd,{passive:true});setDock(false);
 const unsel=()=>{sel=null;ROAM.sel=null;$('join').hidden=false;$('pop').hidden=true;$('s-pass').hidden=true;setDock(false);};$('allbtn').onclick=()=>{unsel();flyTo(fitAll(freeY()),1100);};
 $('popx').onclick=()=>{q.value='';$('qx').hidden=true;unsel();};
-$('zin').onclick=()=>zoomAt(1.6);$('zout').onclick=()=>zoomAt(1/1.6);
+// beim Erkunden zoomen die Knöpfe die mitlaufende Kamera (Faktor bleibt bis zum Beenden)
+const zoomWK=f=>{WK.zf=Math.max(.45,Math.min(2.4,(WK.zf||1)*f));};
+$('zin').onclick=()=>WK.on?zoomWK(1.4):zoomAt(1.6);$('zout').onclick=()=>WK.on?zoomWK(1/1.4):zoomAt(1/1.6);
 // Wachsen sehen: genau die Insel, die man gerade ansieht – Einzüge + Bauten/Veränderungen in der richtigen Reihenfolge
 function islInView(){let best=MAIN,bd=1e9;for(const v of ISL){if(!v.open)continue;const d=Math.hypot(v.x-cam.x,v.y-cam.y)/(v.R+1);if(d<bd){bd=d;best=v;}}return best;}
 function fitIsl(v){if(v===MAIN)return fitMain(freeY());const [t,b]=freeY(),r=Math.max(v.R*.7,v.plaza+120),z=Math.min((W-20)/(2*r),(b-t)/(2*r*.92));return{x:v.x,y:v.y+(H/2-(t+b)/2)/z,z};}
@@ -2825,7 +2827,7 @@ function walkStart(){const me=sel;if(!me||!darfErkunden(me))return;let erst=true
  WK.me=me||null;WK.L=me?{...(me.L||(me.L=look(me.k))),bikec:'#ff3d7f',ph:0}:{...look(7),bikec:'#ff3d7f',ph:0};
  let sp=me&&me.p?standSpot(me):null;if(sp&&!me.gb&&(sp.kind==='cell'||!canWalk(sp.x,sp.y))){const v=me.isl;sp={x:me.p.x,y:v.y+Math.ceil((me.p.gy+.01)/4)*4*S*.9-2.6};}let x=sp?sp.x:0,y=sp?sp.y:36*PAL_S+10;
  if(!canWalk(x,y)){let f=null;for(let r=4;r<120&&!f;r+=4)for(let a=0;a<TAU&&!f;a+=.3){const nx=x+Math.cos(a)*r,ny=y+Math.sin(a)*r;if(canWalk(nx,ny))f=[nx,ny];}if(f){x=f[0];y=f[1];}}
- Object.assign(WK,{on:true,x,y,mode:'walk',autoFuss:false,moving:false,pt:null,sc:0});unsel();setTimeout(()=>{if(typeof sonneCheck==='function')sonneCheck();},1500);window.scrollTo({top:0,behavior:'smooth'});
+ Object.assign(WK,{on:true,x,y,zf:1,mode:'walk',autoFuss:false,moving:false,pt:null,sc:0});unsel();setTimeout(()=>{if(typeof sonneCheck==='function')sonneCheck();},1500);window.scrollTo({top:0,behavior:'smooth'});
  $('hero').classList.add('walking');$('walkui').hidden=false;$('walkhint').hidden=!erst;$('walkhint').style.opacity=erst?1:0;if(erst)setTimeout(()=>{$('walkhint').style.opacity=0;},4500);$('walkmode').textContent='🛵 Moped';
  cancelAnimationFrame(fly);flyTo({x,y,z:5},700);setTimeout(()=>{WK.last=performance.now();requestAnimationFrame(walkTick);},720);}
 // wen hat man beim Erkunden angetippt? (Figur auf der Karte oder Hütte; nie sich selbst)
@@ -2842,7 +2844,7 @@ function walkTick(n){if(!WK.on)return;const dt=Math.min(.05,(n-WK.last)/1000);WK
  if(l>0){const sp=(WK.mode==='moped'?45:30)*dt;vx=vx/l*sp;vy=vy/l*sp;
   const steps=Math.ceil(Math.max(Math.abs(vx),Math.abs(vy))/2);for(let i=0;i<steps;i++){const sx=vx/steps,sy=vy/steps;if(canWalk(WK.x+sx,WK.y))WK.x+=sx;if(canWalk(WK.x,WK.y+sy))WK.y+=sy;}
   if(Math.abs(vx)>Math.abs(vy)*.15)WK.hdir=vx>=0?1:-1;WK.vert=Math.abs(vy)>Math.abs(vx)*1.2;WK.dir=WK.vert?(vy>0?1:-1):(vx>=0?1:-1);WK.front=WK.vert&&vy>0;}
- walkGelaende();const tz=WK.mode==='moped'?3.6:5;cam.x+=(WK.x-cam.x)*Math.min(1,dt*6);cam.y+=(WK.y-cam.y)*Math.min(1,dt*6);cam.z+=(tz-cam.z)*Math.min(1,dt*3);
+ walkGelaende();const tz=(WK.mode==='moped'?3.6:5)*(WK.zf||1);cam.x+=(WK.x-cam.x)*Math.min(1,dt*6);cam.y+=(WK.y-cam.y)*Math.min(1,dt*6);cam.z+=(tz-cam.z)*Math.min(1,dt*3);
  if(WK.me&&WK.mode==='moped'&&WK.moving){WK.sc=(WK.sc||0)+dt;if(WK.sc>2&&gibErf(WK.me,'SCOOT')){const p=WK.me;popup('<div class="lupebig" style="border-radius:50%;overflow:hidden">'+SCOOT_SVG+'</div><h2>Neuer Erfolg! 🎉</h2><p><b>🛵 Inselflitzer</b><br>Du bist mit dem Moped über die Insel geflitzt.</p><button class="btn hib" id="zuerf3">🏅 Zu meinen Erfolgen</button>');$('zuerf3').onclick=()=>{walkEnd();zuMeinenErfolgen(p);};WK.keys.clear();WK.pt=null;}}
  if(REDUCED)draw();requestAnimationFrame(walkTick);}
 // die eigene Figur (ohne Schatten/Namen); occ: Hütten/Palmen davor nachzeichnen
