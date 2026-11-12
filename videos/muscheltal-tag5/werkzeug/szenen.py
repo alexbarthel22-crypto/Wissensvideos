@@ -90,121 +90,121 @@ CMT = """.cmt { position: absolute; left: 140px; width: 800px; border-radius: 30
 LOCK = '<svg viewBox="0 0 64 64" width="110" height="110"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffd84d"/><stop offset="1" stop-color="#ff8a00"/></linearGradient></defs><path d="M20 28 V20 a12 12 0 0 1 24 0 V28" fill="none" stroke="#2a1b12" stroke-width="6" stroke-linecap="round"/><rect x="12" y="27" width="40" height="30" rx="9" fill="url(#lg)" stroke="#2a1b12" stroke-width="4"/><circle cx="32" cy="40" r="4.5" fill="#2a1b12"/><rect x="30" y="42" width="4" height="8" rx="2" fill="#2a1b12"/><path d="M54 8 l2 5 5 2 -5 2 -2 5 -2 -5 -5 -2 5 -2z" fill="#fff"/></svg>'
 HW = [("ICH", "Ich", "<br>"), ("VERSCHENKE", "verschenke", "<br>"), ("EINE", "eine", ""), ("VILLA!", "VILLA", "")]
 
-# s01 – Ich verschenke eine Villa!
-scene("s01", LILITA + "\n    " + PILL + "\n    " + PT + "\n" + FL + """
-    #s01-ray { position: absolute; left: -460px; top: -80px; width: 2000px; height: 2000px; border-radius: 50%; background: repeating-conic-gradient(rgba(255,240,150,.42) 0 9deg, rgba(255,255,255,0) 9deg 22deg); -webkit-mask: radial-gradient(circle, #000 20%, transparent 62%); }
-    #s01-hk { position: absolute; left: 10px; right: 10px; top: 470px; text-align: center; font-family: "Lilita One", sans-serif; font-size: 160px; white-space: nowrap; line-height: 1.02; color: #fff; -webkit-text-stroke: 14px #2a1b12; paint-order: stroke fill; filter: drop-shadow(0 12px 0 rgba(0,0,0,.35)); }
-    #s01-hk span { display: inline-block; margin: 0 .06em; transform-origin: 50% 60%; } #s01-hk span.y { color: #ffe14a; }
-    #s01-hk i { font-style: normal; display: inline-block; transform-origin: 50% 60%; }
-    #s01-t { top: 290px; font-size: 50px; background: #e8467c; }
-    #s01-v { top: 400px; font-size: 44px; background: #fff; color: #18a6b8; }
-    #s01-f { top: 900px; right: 120px; font-size: 42px; background: #7b3fe0; }""",
-"""      <div id="s01-ray" data-layout-ignore></div>
-      <div id="s01-fl" class="fl" data-layout-ignore></div>
-      <div id="s01-hk">""" + "".join(f'<span id="s01-w{i}" class="{"y" if w == "VILLA!" else ""}"><i id="s01-wi{i}">{w}</i></span>{br}' for i, (w, _, br) in enumerate(HW)) + """</div>
-      <div id="s01-t" class="pl">🎟️ Verlosung im nächsten Video!</div>
-      <div id="s01-v" class="pl">🏖️ Ein Platz in der Strandvilla</div>
-      <div id="s01-f" class="pl">👯 Freund markieren = er zieht mit ein!</div>""" + drops("s01-a", 18, 17, '0', 540, 700, "🎁", 560, 760)[0] + drops("s01-b", 22, 19, 'vi - .25', 540, 720, "🏖️", 600, 820)[0],
-"""      const vi = at("L1", "VILLA"), l1b = line("L1b")[0], pl = at("L1b", "Platz"), fr = at("L1b", "Freund");
-      """ + "\n      ".join(f'tl.set("#s01-w{i}", {{ opacity: 1 }}, 0); tl.to("#s01-wi{i}", {{ scale: {1.25 if i in (1, 3) else 1.6}, color: "#ffffff", textShadow: "0 0 50px rgba(255,230,80,1)", duration: .1, yoyo: true, repeat: 1, ease: "power2.out" }}, {"0.02" if i == 0 else f"at(\"L1\", \"{k}\") - .02"});' for i, (_, k, _) in enumerate(HW)) + """
-      tl.fromTo("#s01-ray", { rotation: 0, opacity: 1 }, { rotation: 50, duration: l1b, ease: "none" }, 0);
-      tl.fromTo("#s01-fl", { opacity: 1 }, { opacity: 0, duration: .3, immediateRender: false }, 0);
-      tl.fromTo("#s01-fl", { opacity: .85 }, { opacity: 0, duration: .3, immediateRender: false }, vi);
-      tl.to("#s01-hk", { x: 16, y: -10, duration: .05, yoyo: true, repeat: 5, ease: "none" }, 0.02);
-      tl.to("#s01-hk", { x: 24, y: -12, duration: .04, yoyo: true, repeat: 9, ease: "none" }, vi);
-      tl.to("#s01-hk", { scale: 1.12, duration: .1, yoyo: true, repeat: 3 }, vi + .05);
-      tl.to(["#s01-hk", "#s01-ray"], { opacity: 0, scale: .7, duration: .25 }, l1b - .1);
-      tl.fromTo("#s01-t", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, l1b);
-      tl.fromTo("#s01-v", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, pl - .2);
-      tl.fromTo("#s01-f", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, fr - .2);
-      tl.to("#s01-f", { scale: 1.08, duration: .2, yoyo: true, repeat: 5, ease: "sine.inOut" }, fr + .3);
-""" + drops("s01-a", 18, 17, '0', 540, 700, "🎁", 560, 760)[1] + drops("s01-b", 22, 19, 'vi - .25', 540, 720, "🏖️", 600, 820)[1])
-
-# s02 – Folgen = eigenes Haus mit Namen
-scene("s02", LILITA + "\n    " + PILL + "\n" + FOLLOW + "\n    " + PT + """
-    #s02-t { top: 290px; font-size: 52px; background: #2e9e5b; }
-    #s02-fr { position: absolute; left: 375px; top: 500px; width: 330px; height: 440px; border-radius: 34px; border: 9px dashed #ffe14a; box-shadow: 0 0 34px 6px rgba(255,225,74,.7); }
-    #s02-tag { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 640px; padding: 8px 26px 12px; border-radius: 22px; background: #ffe14a; color: #2a1b12; font-family: "Lilita One", sans-serif; font-size: 64px; box-shadow: 0 0 0 6px #2a1b12; transform: rotate(-6deg); }
-    #s02-btn { top: 400px; } #s02-hand { left: 690px; top: 450px; }
-    #s02-st { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 1035px; color: #2e9e5b; border-color: #2e9e5b; background: #fff; transform: rotate(-4deg); font-size: 60px; white-space: nowrap; font-family: "Lilita One", sans-serif; }""",
-"""      <div id="s02-t" class="pl">🏝️ Folgen = eigenes Haus</div>
-      <div id="s02-fr" data-layout-ignore></div>
-      <div id="s02-tag" data-layout-ignore>🔑 FREI</div>
-      <div id="s02-btn" class="fbtn">+ Folgen<div id="s02-btn2" class="fbtn2">✓ Gefolgt</div></div>
-      <div id="s02-hand" class="fhand" data-layout-ignore>👆</div>
-      <div id="s02-st" class="stamp" data-layout-ignore>🏠 MIT DEINEM NAMEN!</div>""" + drops("s02-p", 14, 13, 'fo + .2', 540, 720, "🎉", 480, 700)[0],
-"""      const fo = at("L2", "folgt"), na = at("L2", "Namen");
-      tl.fromTo("#s02-t", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, line("L2")[0] - .1);
-      tl.fromTo(["#s02-fr", "#s02-tag"], { opacity: 0, scale: 1.4 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, line("L2")[0]);
-      tl.fromTo("#s02-btn", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, fo - .45);
-      tl.fromTo("#s02-hand", { opacity: 0, x: 160, y: 160 }, { opacity: 1, x: 0, y: 0, duration: .25, ease: "power3.out" }, fo - .35);
-      tl.to("#s02-hand", { y: -26, scale: .9, duration: .1, yoyo: true, repeat: 1 }, fo - .05);
-      tl.to("#s02-btn2", { opacity: 1, duration: .05 }, fo + .05);
-      tl.fromTo("#s02-btn", { scale: 1 }, { scale: 1.15, duration: .12, yoyo: true, repeat: 1, immediateRender: false }, fo + .05);
-      tl.to("#s02-hand", { opacity: 0, duration: .2 }, fo + .5);
-      tl.to("#s02-tag", { opacity: 0, scale: .3, duration: .2 }, fo + .1);
-      tl.to("#s02-fr", { borderColor: "#2e9e5b", borderStyle: "solid", boxShadow: "0 0 50px 14px rgba(46,158,91,.9)", duration: .2 }, fo + .15);
-      tl.fromTo("#s02-st", { opacity: 0, scale: 2.6 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, na - .3);
-""" + drops("s02-p", 14, 13, 'fo + .2', 540, 720, "🎉", 480, 700)[1])
-
 # s03 – Nagelstudio Ocean Nails + Zickenkrieg als Boxkampf
 def side(cid, img, name, hand, col, left):
-    return f"""<div id="{cid}" class="s03-pn" style="left:{left}px;background:{col}"><div class="hb"><i id="{cid}-hp"></i></div><img src="assets/img/{img}" alt=""><div class="nm">{name}</div><div class="hd" id="{cid}-hd">{hand}</div></div>"""
-scene("s03", LILITA + "\n    " + PILL + "\n    " + PT + "\n" + FL + """
-    #s03-t { top: 290px; font-size: 50px; background: #7b3fe0; }
-    #s03-st { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 400px; color: #e8467c; border-color: #e8467c; background: #fff; transform: rotate(-4deg); font-size: 66px; white-space: nowrap; font-family: "Lilita One", sans-serif; }
-    #s03-fd { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 50%, rgba(40,10,40,.55), rgba(10,5,20,.85)); opacity: 0; }
-    .s03-pn { position: absolute; top: 430px; width: 440px; height: 600px; border-radius: 36px; box-shadow: 0 0 0 7px #2a1b12, 0 14px 0 rgba(0,0,0,.35); overflow: hidden; opacity: 0; }
-    .s03-pn img { position: absolute; left: 20px; top: 70px; width: 400px; height: 400px; border-radius: 26px; }
-    .s03-pn .hb { position: absolute; left: 24px; right: 24px; top: 20px; height: 32px; border-radius: 16px; background: #2a1b12; overflow: hidden; box-shadow: 0 0 0 4px #fff; }
-    .s03-pn .hb i { display: block; height: 100%; width: 100%; background: linear-gradient(90deg, #ff3b3b, #ffd23f, #3fe07a); }
-    .s03-pn .nm { position: absolute; left: 0; right: 0; top: 482px; text-align: center; font-family: "Inter", sans-serif; font-weight: 900; font-size: 36px; color: #fff; text-shadow: 0 3px 0 rgba(0,0,0,.35); }
-    .s03-pn .hd { position: absolute; left: 0; right: 0; top: 530px; margin: 0 auto; width: fit-content; padding: 2px 16px 6px; border-radius: 16px; background: #fff; color: #2a1b12; font-family: "Lilita One", sans-serif; font-size: 40px; opacity: 0; }
-    #s03-vs { position: absolute; left: 0; right: 0; top: 600px; text-align: center; font-family: "Lilita One", sans-serif; font-size: 230px; line-height: 1; color: #ffe14a; -webkit-text-stroke: 16px #2a1b12; paint-order: stroke fill; filter: drop-shadow(0 0 40px rgba(255,80,80,.9)); opacity: 0; }
-    #s03-rd { top: 300px; font-size: 64px; background: #e8262f; font-family: "Lilita One", sans-serif; font-weight: 400; }
-    .s03-pw { position: absolute; font-family: "Lilita One", sans-serif; font-size: 110px; color: #fff; -webkit-text-stroke: 12px #e8262f; paint-order: stroke fill; opacity: 0; }
-    .s03-np { position: absolute; top: 640px; font-size: 110px; opacity: 0; }
-    #s03-km { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 300px; color: #2e9e5b; border-color: #2e9e5b; background: #fff; transform: rotate(-4deg); font-size: 70px; white-space: nowrap; font-family: "Lilita One", sans-serif; }
-    #s03-hs { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 640px; font-size: 200px; opacity: 0; }""",
-"""      <div id="s03-t" class="pl">💡 Euer Top-Kommentar</div>
-      <div id="s03-st" class="stamp" data-layout-ignore>💅 OCEAN NAILS – GEBAUT!</div>
-      <div id="s03-fd" data-layout-ignore></div>
-      """ + side("s03-L", "av_lisann.png", "@lisann.lmp", "🤚 LINKE HÄNDE", "linear-gradient(160deg,#ff5e8a,#c2185b)", 50) + side("s03-R", "av_alina.png", "@al1na.mai5", "✋ RECHTE HÄNDE", "linear-gradient(200deg,#5ea8ff,#3949ab)", 590) + """
-      <div id="s03-vs" data-layout-ignore>VS</div>
-      <div id="s03-rd" class="pl" data-layout-ignore>🔔 ROUND 1</div>
-      """ + "".join(f'<div class="s03-np" id="s03-np{i}" data-layout-ignore>💅</div>' for i in range(6)) + "".join(f'<div class="s03-pw" id="s03-pw{i}" data-layout-ignore>{w}</div>' for i, w in enumerate(["POW!", "ZACK!", "BAM!", "PENG!"])) + """
-      <div id="s03-fl" class="fl" data-layout-ignore></div>
-      <div id="s03-hs" data-layout-ignore>🤝</div>
-      <div id="s03-km" class="stamp" data-layout-ignore>✋ KOMPROMISS! 🤚</div>""",
-"""      const ng = at("L3", "Nagelstudio"), hi = at("L3", "hier"), li = at("L4", "Lisann"), al = at("L4", "Alina"), sr = at("L4", "Streit"), al2 = line("L4b")[0], lk = at("L4b", "linken"), re = at("L4b", "rechten");
-      tl.fromTo("#s03-t", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, ng - .3);
-      tl.fromTo("#s03-st", { opacity: 0, scale: 2.8 }, { opacity: 1, scale: 1, duration: .25, ease: "back.out(2)" }, hi - .05);
-      tl.to(["#s03-t", "#s03-st"], { opacity: 0, duration: .2 }, li - .25);
-      tl.to("#s03-fd", { opacity: 1, duration: .25 }, li - .2);
-      tl.fromTo("#s03-L", { opacity: 1, x: -600, rotation: -8 }, { x: 0, rotation: -3, duration: .3, ease: "back.out(1.6)" }, li - .1);
-      tl.fromTo("#s03-R", { opacity: 1, x: 600, rotation: 8 }, { x: 0, rotation: 3, duration: .3, ease: "back.out(1.6)" }, al - .1);
-      tl.fromTo("#s03-vs", { opacity: 0, scale: 5 }, { opacity: 1, scale: 1, duration: .22, ease: "power3.in" }, al + .25);
-      tl.to("#s03-stage", { x: 18, duration: .04, yoyo: true, repeat: 7, ease: "none" }, al + .47);
-      tl.fromTo("#s03-rd", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .22, ease: "back.out(2)" }, al + .45);
-      tl.to("#s03-vs", { scale: 1.1, duration: .15, yoyo: true, repeat: 5 }, al + .5);
+    return f"""<div id="{cid}" class="s01-pn" style="left:{left}px;background:{col}"><div class="hb"><i id="{cid}-hp"></i></div><img src="assets/img/{img}" alt=""><div class="nm">{name}</div><div class="hd" id="{cid}-hd">{hand}</div></div>"""
+scene("s01", LILITA + "\n    " + PILL + "\n    " + PT + "\n" + FL + """
+    #s01-t { top: 290px; font-size: 50px; background: #7b3fe0; }
+    #s01-st { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 1060px; right: 120px; font-size: 54px !important; color: #e8467c; border-color: #e8467c; background: #fff; transform: rotate(-4deg); font-size: 66px; white-space: nowrap; font-family: "Lilita One", sans-serif; }
+    #s01-fd { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 50%, rgba(40,10,40,.55), rgba(10,5,20,.85)); opacity: 0; }
+    .s01-pn { position: absolute; top: 430px; width: 440px; height: 600px; border-radius: 36px; box-shadow: 0 0 0 7px #2a1b12, 0 14px 0 rgba(0,0,0,.35); overflow: hidden; opacity: 0; }
+    .s01-pn img { position: absolute; left: 20px; top: 70px; width: 400px; height: 400px; border-radius: 26px; }
+    .s01-pn .hb { position: absolute; left: 24px; right: 24px; top: 20px; height: 32px; border-radius: 16px; background: #2a1b12; overflow: hidden; box-shadow: 0 0 0 4px #fff; }
+    .s01-pn .hb i { display: block; height: 100%; width: 100%; background: linear-gradient(90deg, #ff3b3b, #ffd23f, #3fe07a); }
+    .s01-pn .nm { position: absolute; left: 0; right: 0; top: 482px; text-align: center; font-family: "Inter", sans-serif; font-weight: 900; font-size: 36px; color: #fff; text-shadow: 0 3px 0 rgba(0,0,0,.35); }
+    .s01-pn .hd { position: absolute; left: 0; right: 0; top: 530px; margin: 0 auto; width: fit-content; padding: 2px 16px 6px; border-radius: 16px; background: #fff; color: #2a1b12; font-family: "Lilita One", sans-serif; font-size: 40px; opacity: 0; }
+    #s01-vs { position: absolute; left: 0; right: 0; top: 600px; text-align: center; font-family: "Lilita One", sans-serif; font-size: 230px; line-height: 1; color: #ffe14a; -webkit-text-stroke: 16px #2a1b12; paint-order: stroke fill; filter: drop-shadow(0 0 40px rgba(255,80,80,.9)); opacity: 0; }
+    #s01-rd { top: 300px; font-size: 64px; background: #e8262f; font-family: "Lilita One", sans-serif; font-weight: 400; }
+    .s01-pw { position: absolute; left: 0; top: 0; font-family: "Lilita One", sans-serif; font-size: 110px; color: #fff; -webkit-text-stroke: 12px #e8262f; paint-order: stroke fill; opacity: 0; }
+    .s01-np { position: absolute; top: 640px; font-size: 110px; opacity: 0; }
+    #s01-km { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 300px; color: #2e9e5b; border-color: #2e9e5b; background: #fff; transform: rotate(-4deg); font-size: 70px; white-space: nowrap; font-family: "Lilita One", sans-serif; }
+    #s01-hs { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 640px; font-size: 200px; opacity: 0; }""",
+"""      <div id="s01-t" class="pl">🥊 HEUTE: DER GROSSE KAMPF!</div>
+      <div id="s01-st" class="stamp" data-layout-ignore>💅 Ocean Nails – euer Wunsch!</div>
+      <div id="s01-fd" data-layout-ignore></div>
+      """ + side("s01-L", "av_lisann.png", "@lisann.lmp", "🤚 LINKE HÄNDE", "linear-gradient(160deg,#ff5e8a,#c2185b)", 50) + side("s01-R", "av_alina.png", "@al1na.mai5", "✋ RECHTE HÄNDE", "linear-gradient(200deg,#5ea8ff,#3949ab)", 590) + """
+      <div id="s01-vs" data-layout-ignore>VS</div>
+      <div id="s01-rd" class="pl" data-layout-ignore>🔔 ROUND 1</div>
+      """ + "".join(f'<div class="s01-np" id="s01-np{i}" data-layout-ignore>💅</div>' for i in range(6)) + "".join(f'<div class="s01-pw" id="s01-pw{i}" data-layout-ignore>{w}</div>' for i, w in enumerate(["POW!", "ZACK!", "BAM!", "PENG!"])) + """
+      <div id="s01-fl" class="fl" data-layout-ignore></div>
+      <div id="s01-hs" data-layout-ignore>🤝</div>
+      <div id="s01-km" class="stamp" data-layout-ignore>✋ KOMPROMISS! 🤚</div>""",
+"""      const li = at("L1", "Lisann"), al = at("L1", "Alina"), ge = at("L1", "gegeneinander"), ng = at("L1b", "Nagelstudio"), F0 = at("L1b", "gewünscht") + .6, al2 = line("L1c")[0], lk = at("L1c", "linken"), re = at("L1c", "rechten");
+      tl.set(["#s01-t", "#s01-fd"], { opacity: 1 }, 0);
+      tl.fromTo("#s01-t", { scale: 2.4 }, { scale: 1, duration: .3, ease: "back.out(2)" }, 0);
+      tl.fromTo("#s01-L", { opacity: 1, x: -600, rotation: -8 }, { x: 0, rotation: -3, duration: .3, ease: "back.out(1.6)" }, Math.max(0, li - .15));
+      tl.fromTo("#s01-R", { opacity: 1, x: 600, rotation: 8 }, { x: 0, rotation: 3, duration: .3, ease: "back.out(1.6)" }, al - .15);
+      tl.fromTo("#s01-vs", { opacity: 0, scale: 5 }, { opacity: 1, scale: 1, duration: .22, ease: "power3.in" }, ge - .2);
+      tl.to("#s01-stage", { x: 18, duration: .04, yoyo: true, repeat: 7, ease: "none" }, ge + .02);
+      tl.to("#s01-vs", { scale: 1.1, duration: .15, yoyo: true, repeat: 5 }, ge + .1);
+      tl.fromTo("#s01-st", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, ng - .2);
+      tl.to("#s01-t", { opacity: 0, duration: .15 }, F0 - .1);
+      tl.fromTo("#s01-rd", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .22, ease: "back.out(2)" }, F0);
       // Kampf: Nagellack fliegt hin und her, Lebensbalken sinken
-      const F = sr + .1, E = al2 - .35, n = 6, dt = (E - F) / n;
+      const F = F0 + .2, E = al2 - .35, n = 6, dt = (E - F) / n;
       for (let i = 0; i < n; i++) { const t = F + i * dt, lr = i % 2 === 0, from = lr ? 260 : 820, to = lr ? 820 : 260;
-        tl.fromTo("#s03-np" + i, { opacity: 1, x: from - 55, y: 0, rotation: 0, scale: .8 }, { x: to - 55, y: -60, rotation: lr ? 540 : -540, scale: 1.1, duration: dt * .8, ease: "power1.in", immediateRender: false }, t);
-        tl.set("#s03-np" + i, { opacity: 0 }, t + dt * .8);
-        const tg = lr ? "#s03-R" : "#s03-L";
+        tl.fromTo("#s01-np" + i, { opacity: 1, x: from - 55, y: 0, rotation: 0, scale: .8 }, { x: to - 55, y: -60, rotation: lr ? 540 : -540, scale: 1.1, duration: dt * .8, ease: "power1.in", immediateRender: false }, t);
+        tl.set("#s01-np" + i, { opacity: 0 }, t + dt * .8);
+        const tg = lr ? "#s01-R" : "#s01-L";
         tl.to(tg, { x: lr ? 30 : -30, duration: .05, yoyo: true, repeat: 3, ease: "none" }, t + dt * .8);
         tl.to(tg + "-hp", { width: (100 - (Math.floor(i / 2) + 1) * 20) + "%", duration: .15 }, t + dt * .8);
-        const pw = "#s03-pw" + (i % 4);
-        tl.fromTo(pw, { opacity: 1, scale: .3, left: lr ? "620px" : "80px", top: (500 + (i % 3) * 120) + "px", rotation: lr ? 12 : -12 }, { scale: 1.1, duration: .15, ease: "back.out(3)", immediateRender: false }, t + dt * .8);
+        const pw = "#s01-pw" + (i % 4);
+        tl.fromTo(pw, { opacity: 1, scale: .3, x: lr ? 620 : 80, y: 500 + (i % 3) * 120, rotation: lr ? 12 : -12 }, { scale: 1.1, duration: .15, ease: "back.out(3)", immediateRender: false }, t + dt * .8);
         tl.set(pw, { opacity: 0 }, t + dt * .8 + Math.min(.35, dt * .9)); }
-      tl.to(["#s03-vs", "#s03-rd"], { opacity: 0, duration: .15 }, al2 - .3);
-      tl.fromTo("#s03-fl", { opacity: .9 }, { opacity: 0, duration: .4, immediateRender: false }, al2 - .25);
-      tl.fromTo("#s03-hs", { opacity: 0, scale: .2, rotation: -30 }, { opacity: 1, scale: 1, rotation: 0, duration: .35, ease: "back.out(3)" }, al2 - .25);
-      tl.fromTo("#s03-km", { opacity: 0, scale: 2.8 }, { opacity: 1, scale: 1, duration: .25, ease: "back.out(2)" }, al2 - .15);
-      tl.to(["#s03-L-hp", "#s03-R-hp"], { width: "100%", duration: .4 }, lk);
-      tl.fromTo("#s03-L-hd", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1.15, duration: .3, ease: "back.out(2.6)" }, lk);
-      tl.fromTo("#s03-R-hd", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1.15, duration: .3, ease: "back.out(2.6)" }, re);""", blur=False)
+      tl.to(["#s01-vs", "#s01-rd", "#s01-st"], { opacity: 0, duration: .15 }, al2 - .3);
+      tl.fromTo("#s01-fl", { opacity: .9 }, { opacity: 0, duration: .4, immediateRender: false }, al2 - .25);
+      tl.fromTo("#s01-hs", { opacity: 0, scale: .2, rotation: -30 }, { opacity: 1, scale: 1, rotation: 0, duration: .35, ease: "back.out(3)" }, al2 - .25);
+      tl.fromTo("#s01-km", { opacity: 0, scale: 2.8 }, { opacity: 1, scale: 1, duration: .25, ease: "back.out(2)" }, al2 - .15);
+      tl.to(["#s01-L-hp", "#s01-R-hp"], { width: "100%", duration: .4 }, lk);
+      tl.fromTo("#s01-L-hd", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1.15, duration: .3, ease: "back.out(2.6)" }, lk);
+      tl.fromTo("#s01-R-hd", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1.15, duration: .3, ease: "back.out(2.6)" }, re);""", blur=False)
+
+# s01 – Ich verschenke eine Villa!
+scene("s02v", LILITA + "\n    " + PILL + "\n    " + PT + "\n" + FL + """
+    #s2v-ray { position: absolute; left: -460px; top: -80px; width: 2000px; height: 2000px; border-radius: 50%; background: repeating-conic-gradient(rgba(255,240,150,.42) 0 9deg, rgba(255,255,255,0) 9deg 22deg); -webkit-mask: radial-gradient(circle, #000 20%, transparent 62%); }
+    #s2v-hk { position: absolute; left: 10px; right: 10px; top: 470px; text-align: center; font-family: "Lilita One", sans-serif; font-size: 160px; white-space: nowrap; line-height: 1.02; color: #fff; -webkit-text-stroke: 14px #2a1b12; paint-order: stroke fill; filter: drop-shadow(0 12px 0 rgba(0,0,0,.35)); }
+    #s2v-hk span { display: inline-block; margin: 0 .06em; transform-origin: 50% 60%; } #s2v-hk span.y { color: #ffe14a; }
+    #s2v-hk i { font-style: normal; display: inline-block; transform-origin: 50% 60%; }
+    #s2v-t { top: 290px; font-size: 50px; background: #e8467c; }
+    #s2v-v { top: 400px; font-size: 44px; background: #fff; color: #18a6b8; }
+    #s2v-f { top: 900px; right: 120px; font-size: 42px; background: #7b3fe0; }""",
+"""      <div id="s2v-ray" data-layout-ignore></div>
+      <div id="s2v-fl" class="fl" data-layout-ignore></div>
+      <div id="s2v-hk">""" + "".join(f'<span id="s2v-w{i}" class="{"y" if w == "VILLA!" else ""}"><i id="s2v-wi{i}">{w}</i></span>{br}' for i, (w, _, br) in enumerate(HW)) + """</div>
+      <div id="s2v-t" class="pl">🎟️ Verlosung im nächsten Video!</div>
+      <div id="s2v-v" class="pl">🏖️ Ein Platz in der Strandvilla</div>
+      <div id="s2v-f" class="pl">👯 Freund markieren = er zieht mit ein!</div>""" + drops("s2v-a", 18, 17, 'line("L2v")[0]', 540, 700, "🎁", 560, 760)[0] + drops("s2v-b", 22, 19, 'vi - .25', 540, 720, "🏖️", 600, 820)[0],
+"""      const vi = at("L2v", "VILLA"), l1b = line("L2vb")[0], pl = at("L2vb", "Platz"), fr = at("L2vb", "Freund");
+      """ + "\n      ".join(f'tl.set("#s2v-w{i}", {{ opacity: 1 }}, 0); tl.to("#s2v-wi{i}", {{ scale: {1.25 if i in (1, 3) else 1.6}, color: "#ffffff", textShadow: "0 0 50px rgba(255,230,80,1)", duration: .1, yoyo: true, repeat: 1, ease: "power2.out" }}, {f"line(\"L2v\")[0] + .02" if i == 0 else f"at(\"L2v\", \"{k}\") - .02"});' for i, (_, k, _) in enumerate(HW)) + """
+      tl.fromTo("#s2v-ray", { rotation: 0, opacity: 1 }, { rotation: 50, duration: l1b, ease: "none" }, 0);
+      tl.fromTo("#s2v-fl", { opacity: 1 }, { opacity: 0, duration: .3, immediateRender: false }, 0);
+      tl.fromTo("#s2v-fl", { opacity: .85 }, { opacity: 0, duration: .3, immediateRender: false }, vi);
+      tl.to("#s2v-hk", { x: 16, y: -10, duration: .05, yoyo: true, repeat: 5, ease: "none" }, 0.02);
+      tl.to("#s2v-hk", { x: 24, y: -12, duration: .04, yoyo: true, repeat: 9, ease: "none" }, vi);
+      tl.to("#s2v-hk", { scale: 1.12, duration: .1, yoyo: true, repeat: 3 }, vi + .05);
+      tl.to(["#s2v-hk", "#s2v-ray"], { opacity: 0, scale: .7, duration: .25 }, l1b - .1);
+      tl.fromTo("#s2v-t", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, l1b);
+      tl.fromTo("#s2v-v", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, pl - .2);
+      tl.fromTo("#s2v-f", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, fr - .2);
+      tl.to("#s2v-f", { scale: 1.08, duration: .2, yoyo: true, repeat: 5, ease: "sine.inOut" }, fr + .3);
+""" + drops("s2v-a", 18, 17, 'line("L2v")[0]', 540, 700, "🎁", 560, 760)[1] + drops("s2v-b", 22, 19, 'vi - .25', 540, 720, "🏖️", 600, 820)[1])
+
+# s02 – Folgen = eigenes Haus mit Namen
+scene("s03h", LILITA + "\n    " + PILL + "\n" + FOLLOW + "\n    " + PT + """
+    #s3h-t { top: 290px; font-size: 52px; background: #2e9e5b; }
+    #s3h-fr { position: absolute; left: 375px; top: 500px; width: 330px; height: 440px; border-radius: 34px; border: 9px dashed #ffe14a; box-shadow: 0 0 34px 6px rgba(255,225,74,.7); }
+    #s3h-tag { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 640px; padding: 8px 26px 12px; border-radius: 22px; background: #ffe14a; color: #2a1b12; font-family: "Lilita One", sans-serif; font-size: 64px; box-shadow: 0 0 0 6px #2a1b12; transform: rotate(-6deg); }
+    #s3h-btn { top: 400px; } #s3h-hand { left: 690px; top: 450px; }
+    #s3h-st { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 1035px; color: #2e9e5b; border-color: #2e9e5b; background: #fff; transform: rotate(-4deg); font-size: 60px; white-space: nowrap; font-family: "Lilita One", sans-serif; }""",
+"""      <div id="s3h-t" class="pl">🏝️ Folgen = eigenes Haus</div>
+      <div id="s3h-fr" data-layout-ignore></div>
+      <div id="s3h-tag" data-layout-ignore>🔑 FREI</div>
+      <div id="s3h-btn" class="fbtn">+ Folgen<div id="s3h-btn2" class="fbtn2">✓ Gefolgt</div></div>
+      <div id="s3h-hand" class="fhand" data-layout-ignore>👆</div>
+      <div id="s3h-st" class="stamp" data-layout-ignore>🏠 MIT DEINEM NAMEN!</div>""" + drops("s3h-p", 14, 13, 'fo + .2', 540, 720, "🎉", 480, 700)[0],
+"""      const fo = at("L3h", "folgt"), na = at("L3h", "Namen");
+      tl.fromTo("#s3h-t", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, line("L3h")[0] - .1);
+      tl.fromTo(["#s3h-fr", "#s3h-tag"], { opacity: 0, scale: 1.4 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, line("L3h")[0]);
+      tl.fromTo("#s3h-btn", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, fo - .45);
+      tl.fromTo("#s3h-hand", { opacity: 0, x: 160, y: 160 }, { opacity: 1, x: 0, y: 0, duration: .25, ease: "power3.out" }, fo - .35);
+      tl.to("#s3h-hand", { y: -26, scale: .9, duration: .1, yoyo: true, repeat: 1 }, fo - .05);
+      tl.to("#s3h-btn2", { opacity: 1, duration: .05 }, fo + .05);
+      tl.fromTo("#s3h-btn", { scale: 1 }, { scale: 1.15, duration: .12, yoyo: true, repeat: 1, immediateRender: false }, fo + .05);
+      tl.to("#s3h-hand", { opacity: 0, duration: .2 }, fo + .5);
+      tl.to("#s3h-tag", { opacity: 0, scale: .3, duration: .2 }, fo + .1);
+      tl.to("#s3h-fr", { borderColor: "#2e9e5b", borderStyle: "solid", boxShadow: "0 0 50px 14px rgba(46,158,91,.9)", duration: .2 }, fo + .15);
+      tl.fromTo("#s3h-st", { opacity: 0, scale: 2.6 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, na - .3);
+""" + drops("s3h-p", 14, 13, 'fo + .2', 540, 720, "🎉", 480, 700)[1])
 
 # s04 – Yacht für Marie
 scene("s04", LILITA + "\n    " + PILL + """
