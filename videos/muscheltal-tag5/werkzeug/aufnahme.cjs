@@ -17,7 +17,7 @@ console.error(JSON.stringify(G));
 const HW=['verschenke','VILLA'].map(w=>at('L1',w)).concat([0]),AL=L.L1.end+.2,HZ=6.2,HY=G.last.y+140/(HZ*2.6667);
 const K=[[0,G.v.x+20,G.v.y-10,4.0],[L.L1.end,G.v.x+20,G.v.y-10,4.4],[L.L1b.end,G.v.x+10,G.v.y-14,3.4],
  [L.L2.start,G.last.x,HY,HZ],[L.L2.end+.2,G.last.x,HY,HZ],
- [L.L3.start+.2,G.na.x,G.na.y-6,3.6],[at('L3','hier')+.4,G.na.x,G.na.y-10,4.0],[L.L4.start+.3,G.na.x,G.na.y-14,5.0],[L.L4.end,G.na.x,G.na.y-14,5.3],
+ [L.L3.start+.2,G.na.x,G.na.y-6,3.6],[at('L3','hier')+.4,G.na.x,G.na.y-10,4.0],[L.L4.start+.3,G.na.x,G.na.y-14,5.0],[L.L4b.end,G.na.x,G.na.y-14,5.3],
  [L.L5.start+.3,G.ya.x,G.ya.y-10,4.0],[L.L5.end,G.ya.x,G.ya.y-10,4.4],
  [L.L6.start+.3,G.ho.x,G.ho.y-6,3.4],[L.L6.end,G.ho.x,G.ho.y-6,3.7],[L.L7.start+.3,G.m.x,G.m.y,G.m.z*1.2],[L.L7.end,G.m.x,G.m.y,G.m.z*1.3],
  [L.L8.start+.3,0,40,2.2],[L.L8.end,30,20,2.6],
