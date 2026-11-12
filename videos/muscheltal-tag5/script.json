@@ -169,7 +169,7 @@
    "lines": [
     {
      "id": "L4n",
-     "text": "Neu ist das *p:Nagelstudio *p:Ocean *p:Nails! / Nach kurzem *r:Streit macht *p:Lisann die *y:linken Hände / und *p:Alina die *y:rechten!",
+     "text": "*p:Zwei wollten das *p:Nagelstudio *p:Ocean *p:Nails eröffnen – / deshalb macht jetzt *p:Lisann die *y:linken Hände / und *p:Alina die *y:rechten – / bis der *r:Streit beigelegt ist!",
      "speed": 1.1,
      "style": "Style: a young German guy, around 20, genuinely excited, talking to his followers like friends, energetic and warm, natural German intonation, not an announcer, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
      "pause": 0.4
@@ -182,11 +182,6 @@
      "volume": 0.45
     },
     {
-     "name": "impact-bass-2",
-     "at": "L4n:Streit",
-     "volume": 0.35
-    },
-    {
      "name": "pop",
      "at": "L4n:Lisann",
      "volume": 0.4
@@ -195,6 +190,11 @@
      "name": "pop",
      "at": "L4n:Alina",
      "volume": 0.4
+    },
+    {
+     "name": "impact-bass-2",
+     "at": "L4n:Streit",
+     "volume": 0.35
     }
    ]
   },
@@ -263,43 +263,36 @@
   {
    "id": "s06",
    "tag": "",
-   "hold": 1.4,
+   "hold": 1.6,
    "lines": [
     {
-     "id": "L8",
-     "text": "Was soll als Nächstes gebaut werden? / Der Kommentar mit den *y:meisten *y:Likes / kommt ins *g:nächste *g:Video!",
+     "id": "L10",
+     "text": "Und *p:Bürgermeisterin *p:Lilly hat eine *y:Abstimmung gestartet: / Bauen wir zuerst *b:Hotel *b:Sandkorn / oder das *g:Tierheim *g:Pfotenkuss? / *p:Stimmt in den Kommentaren ab!",
      "speed": 1.1,
      "style": "Style: a young German guy, around 20, genuinely excited, talking to his followers like friends, energetic and warm, natural German intonation, not an announcer, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
      "pause": 0.4
-    },
-    {
-     "id": "L9",
-     "text": "*p:Markiert eure *p:Freunde – / und *g:folgt mir, um *g:einzuziehen!",
-     "speed": 1.1,
-     "style": "Style: a young German guy, around 20, genuinely excited, talking to his followers like friends, energetic and warm, natural German intonation, not an announcer, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-     "pause": 0.3
     }
    ],
    "sfx": [
     {
      "name": "notification",
-     "at": "L8:Kommentar",
+     "at": "L10:Abstimmung",
      "volume": 0.4
-    },
-    {
-     "name": "ka-ching",
-     "at": "L8:nächste",
-     "volume": 0.35
     },
     {
      "name": "pop",
-     "at": "L9:Freunde",
-     "volume": 0.4
+     "at": "L10:Hotel",
+     "volume": 0.45
     },
     {
-     "name": "click",
-     "at": "L9:folgt",
-     "volume": 0.5
+     "name": "pop",
+     "at": "L10:Tierheim",
+     "volume": 0.45
+    },
+    {
+     "name": "ka-ching",
+     "at": "L10:Stimmt",
+     "volume": 0.35
     }
    ]
   }

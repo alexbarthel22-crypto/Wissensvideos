@@ -22,8 +22,7 @@ const K=[[0,G.m.x,G.m.y-10,G.m.z*1.0],[GS,G.m.x,G.m.y-10,G.m.z*1.15],[GE,G.a.x,G
  [L.L4n.start+.2,G.na.x,G.na.y+10,3.4],[L.L4n.end,G.na.x,G.na.y+8,3.7],
  [L.L5.start+.3,G.ya.x,G.ya.y-10,4.0],[L.L5.end,G.ya.x,G.ya.y-10,4.4],
  [L.L6.start+.3,G.ho.x,G.ho.y-6,3.4],[L.L6.end,G.ho.x,G.ho.y-6,3.7],[L.L7.start+.3,G.m.x,G.m.y,G.m.z*1.2],[L.L7.end,G.m.x,G.m.y,G.m.z*1.3],
- [L.L8.start+.3,0,40,2.2],[L.L8.end,30,20,2.6],
- [L.L9.start+.2,G.nb.x,G.nb.y-2,4.5],[L.L9.end+.3,G.nb.x,G.nb.y-2,4.5],[dur,G.a.x,G.a.y,G.a.z*1.1]];
+ [L.L10.start+.1,0,82,3.4],[L.L10.end,0,80,2.6],[dur,0,78,2.4]];
 
 
 const cam=t=>{let j=0;while(j<K.length-1&&K[j+1][0]<=t)j++;const a=K[j],c=K[Math.min(j+1,K.length-1)];let k=c[0]>a[0]?Math.max(0,Math.min(1,(t-a[0])/(c[0]-a[0]))):1;k=k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2;
@@ -31,7 +30,10 @@ const cam=t=>{let j=0;while(j<K.length-1&&K[j+1][0]<=t)j++;const a=K[j],c=K[Math
 const ST=t=>{const e=x=>x<0?0:x>1?1:x;let gk=null,gv=0,lim=G.N,flt=0,nm=0;
  if(t<GS){gk=0;gv=1;lim=1;}else if(t<GE){const k=e((t-GS)/(GE-GS));gk=Math.min(1,k*1.3);gv=k<.75?1:0;lim=1+Math.round((G.N-1)*Math.min(1,k/.8)**2);if(!gv)gk=null;}
  if(t>=L.L3h.start-.5&&t<L.L3h.end+.5){lim=t<at('L3h','folgt')+.15?G.last.nr-1:G.last.nr;nm=1;}return [gk,gv,lim,flt,nm];};
-const shot=async(t,f)=>{const c=cam(t),z=ST(t);if(t>AS&&t<AL){let b=0;for(const w of HW)b+=Math.exp(-(((t-w-.05)/.09)**2));c[2]*=1+.12*b;const sh=Math.min(1,b);c[0]+=Math.sin(t*90)*6*sh/c[2];c[1]+=Math.cos(t*77)*6*sh/c[2];}await p.evaluate(([c,z])=>{const [gk,gv,lim,flt,nm]=z;GROWK=gk;GROWV=gv?MAIN:null;growing=gk!=null;limit=lim;
+const shot=async(t,f)=>{const c=cam(t),z=ST(t);if(t>=L.L10.start-.5&&!globalThis.CROWD){globalThis.CROWD=1;await p.evaluate(()=>{let sd=7;const R=()=>(sd=(sd*16807)%2147483647)/2147483647;const base=PETS.list.slice(),C=[];
+ for(let r=0;r<1100;r++){const a=Object.assign({},base[r%base.length]);let x,y;if(r<500){const ang=R()*6.283,d=Math.sqrt(R());x=Math.cos(ang)*d*62;y=78+Math.sin(ang)*d*17;}else if(r<640){x=(R()-.5)*10;y=98+R()*60;}else{const sd2=R()<.5?-1:1;x=sd2*(10+R()*95);y=40+R()*90;}
+  a.x=x;a.y=y;a.pause=1e9;a.wp=null;a.sit=R()<.4?1:0;a.dir=R()<.5?-1:1;a.view=['side','front','side','back'][(R()*4)|0];a.vert=a.view!=='side';a.i=5000+r;C.push(a);}
+ C.sort((a,b)=>a.y-b.y);PETS.list.push(...C);});}if(t>AS&&t<AL){let b=0;for(const w of HW)b+=Math.exp(-(((t-w-.05)/.09)**2));c[2]*=1+.12*b;const sh=Math.min(1,b);c[0]+=Math.sin(t*90)*6*sh/c[2];c[1]+=Math.cos(t*77)*6*sh/c[2];}await p.evaluate(([c,z])=>{const [gk,gv,lim,flt,nm]=z;GROWK=gk;GROWV=gv?MAIN:null;growing=gk!=null;limit=lim;
  const GB=GEB.find(q=>q.typ==='baeckerei');if(GB){GB.tl0=GB.tl0||GB.tl;GB.tr0=GB.tr0||GB.tr;GB.tl=z[6]?GB.tl0.slice(0,1):GB.tl0;GB.tr=z[6]?[[GB.tr0[0][0]]]:GB.tr0;}const LJ=PEOPLE.find(q=>q.name.replace('@','')==='lona.js');if(LJ){LJ.orig=LJ.orig||LJ.name;LJ.name=z[6]?'\u200b':LJ.orig;}window.__LAST.name=nm?'@dein_name':(window.__LAST.orig||(window.__LAST.orig=window.__LAST.name));if(!nm&&window.__LAST.orig)window.__LAST.name=window.__LAST.orig;
  document.getElementById('map').style.filter=flt?`grayscale(${.85*flt}) brightness(${1-.25*flt}) contrast(${1-.1*flt})`:'';window.NOLAB=z[5];cam.x=c[0];cam.y=c[1];cam.z=c[2];draw();},[c,z.concat([0,0])]);await p.clock.runFor(33.333);await p.screenshot({path:f,type:'jpeg',quality:92});};
 fs.mkdirSync(out,{recursive:true});

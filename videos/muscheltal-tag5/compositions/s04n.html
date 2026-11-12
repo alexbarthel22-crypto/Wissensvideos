@@ -58,17 +58,17 @@
     .s4n-pn .hd { position: absolute; left: 0; right: 0; top: 412px; margin: 0 auto; width: fit-content; padding: 2px 14px 6px; border-radius: 14px; background: #fff; color: #2a1b12; font-family: "Lilita One", sans-serif; font-size: 34px; opacity: 0; }
     #s4n-sx { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 900px; padding: 4px 20px 8px; border-radius: 18px; background: #e8262f; color: #fff; font-family: "Lilita One", sans-serif; font-size: 48px; box-shadow: 0 0 0 5px #2a1b12; transform: rotate(-6deg); opacity: 0; }
   </style>
-  <div id="root" data-composition-id="s04n" data-start="0" data-duration="6.030" data-width="1080" data-height="1920">
-    <div id="s04n-stage" class="clip stage" data-start="0" data-duration="6.030" data-track-index="0">
+  <div id="root" data-composition-id="s04n" data-start="0" data-duration="7.380" data-width="1080" data-height="1920">
+    <div id="s04n-stage" class="clip stage" data-start="0" data-duration="7.380" data-track-index="0">
       <div id="s4n-t" class="pl">💅 NEU: Ocean Nails</div>
       <div id="s4n-L" class="s4n-pn" style="left:90px;background:linear-gradient(160deg,#ff5e8a,#c2185b)"><img src="assets/img/av_lisann.png" alt=""><div class="nm">@lisann.lmp</div><div class="hd" id="s4n-L-hd">🤚 LINKE HÄNDE</div></div><div id="s4n-R" class="s4n-pn" style="left:590px;background:linear-gradient(200deg,#5ea8ff,#3949ab)"><img src="assets/img/av_alina.png" alt=""><div class="nm">@al1na.mai5</div><div class="hd" id="s4n-R-hd">✋ RECHTE HÄNDE</div></div>
-      <div id="s4n-sx" data-layout-ignore>⚡ STREIT → 🤝</div>
+      <div id="s4n-sx" data-layout-ignore>⏳ Bis der Streit beigelegt ist</div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 6.03, "L4n": [0.2, 5.45], "L4n.words": [["neu", 0.2, 0.41], ["ist", 0.41, 0.62], ["das", 0.62, 0.83], ["nagelstudio", 0.83, 1.663], ["ocean", 1.663, 2.075], ["nails", 2.075, 2.3], ["nach", 2.53, 2.689], ["kurzem", 2.689, 2.995], ["streit", 2.995, 3.164], ["macht", 3.164, 3.328], ["lisann", 3.328, 3.635], ["die", 3.635, 3.788], ["linken", 3.788, 4.094], ["hände", 4.094, 4.395], ["und", 4.395, 4.548], ["alina", 4.548, 4.985], ["die", 4.985, 5.138], ["rechten", 5.138, 5.45]]};
+      const C = {"__dur": 7.38, "L4n": [0.2, 6.8], "L4n.words": [["zwei", 0.2, 0.354], ["wollten", 0.354, 0.657], ["das", 0.657, 0.805], ["nagelstudio", 0.805, 1.395], ["ocean", 1.395, 1.687], ["nails", 1.687, 1.846], ["eröffnen", 1.846, 2.287], ["", 2.287, 2.42], ["deshalb", 2.66, 2.941], ["macht", 2.941, 3.088], ["jetzt", 3.088, 3.236], ["lisann", 3.236, 3.512], ["die", 3.512, 3.65], ["linken", 3.65, 3.926], ["hände", 3.926, 4.196], ["und", 4.196, 4.334], ["alina", 4.334, 4.728], ["die", 4.728, 4.866], ["rechten", 4.866, 5.147], ["", 5.147, 5.27], ["bis", 5.57, 5.743], ["der", 5.743, 5.916], ["streit", 5.916, 6.108], ["beigelegt", 6.108, 6.627], ["ist", 6.627, 6.8]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -112,7 +112,7 @@
 
       wrapBt("#s04n-stage");
       const tl = gsap.timeline({ paused: true });
-      const ng = at("L4n", "Nagelstudio"), sr = at("L4n", "Streit"), li = at("L4n", "Lisann"), al = at("L4n", "Alina");
+      const ng = at("L4n", "Nagelstudio"), sr = at("L4n", "Streit") - .3, li = at("L4n", "Lisann"), al = at("L4n", "Alina");
       tl.fromTo("#s4n-t", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, ng - .25);
       tl.fromTo("#s4n-L", { opacity: 1, x: -500, rotation: -8 }, { x: 0, rotation: -3, duration: .3, ease: "back.out(1.6)" }, ng);
       tl.fromTo("#s4n-R", { opacity: 1, x: 500, rotation: 8 }, { x: 0, rotation: 3, duration: .3, ease: "back.out(1.6)" }, ng + .15);

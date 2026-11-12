@@ -15,7 +15,7 @@
     <div id="s04n-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
       <div id="s4n-t" class="pl">💅 NEU: Ocean Nails</div>
       <div id="s4n-L" class="s4n-pn" style="left:90px;background:linear-gradient(160deg,#ff5e8a,#c2185b)"><img src="assets/img/av_lisann.png" alt=""><div class="nm">@lisann.lmp</div><div class="hd" id="s4n-L-hd">🤚 LINKE HÄNDE</div></div><div id="s4n-R" class="s4n-pn" style="left:590px;background:linear-gradient(200deg,#5ea8ff,#3949ab)"><img src="assets/img/av_alina.png" alt=""><div class="nm">@al1na.mai5</div><div class="hd" id="s4n-R-hd">✋ RECHTE HÄNDE</div></div>
-      <div id="s4n-sx" data-layout-ignore>⚡ STREIT → 🤝</div>
+      <div id="s4n-sx" data-layout-ignore>⏳ Bis der Streit beigelegt ist</div>
     </div>
   </div>
   <script>
@@ -24,7 +24,7 @@
       /*__COMMON_JS__*/
       wrapBt("#s04n-stage");
       const tl = gsap.timeline({ paused: true });
-      const ng = at("L4n", "Nagelstudio"), sr = at("L4n", "Streit"), li = at("L4n", "Lisann"), al = at("L4n", "Alina");
+      const ng = at("L4n", "Nagelstudio"), sr = at("L4n", "Streit") - .3, li = at("L4n", "Lisann"), al = at("L4n", "Alina");
       tl.fromTo("#s4n-t", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, ng - .25);
       tl.fromTo("#s4n-L", { opacity: 1, x: -500, rotation: -8 }, { x: 0, rotation: -3, duration: .3, ease: "back.out(1.6)" }, ng);
       tl.fromTo("#s4n-R", { opacity: 1, x: 500, rotation: 8 }, { x: 0, rotation: 3, duration: .3, ease: "back.out(1.6)" }, ng + .15);
