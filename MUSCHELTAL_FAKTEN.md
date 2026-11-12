@@ -72,6 +72,7 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 
 ## Stand (8.11.2026)
 - **Update 11.11.: 718 Einwohner** (Followerliste vom 11.11.): 26 neu eingezogen, 15 ausgezogen (entfolgt, komplett gelöscht). Damit sind alle 13 Nachbarn-Paare aktiv und wohnen direkt nebeneinander (u. a. @luisedbr.11 + @mateo.fhl teilen sich den Pool, @m_hmb1307 + @marlene_hmb0, @linat.5 + @linus945, @xxxal3xa + @lina015040, @elina_brn + @arikk.xxn, @khmr.496 + @gratisninja_tv, @_marydoesart_ + @azhuela, @spongebobblue0 + @julian68151).
+- **Update 12.11.: 724 Einwohner** (Followerliste vom 12.11.): 14 neu eingezogen (u. a. @vanessa_k1n, @der_fliegende_hollander0, @theyva.1, @danaehalt, @lilou.mgd), 9 ausgezogen (@h3nri_real11, @laraa.lu, @fabi.1796, @jxnina.rgb, @itzemma01, @sxm.pxrser1, @annaavokado9, @m1rlam, @l1lly_1009). Alle Nachbarn-Paare aktiv, @der_fliegende_hollander0 wohnt jetzt neben @marina.cgnn.
 - **653 Einwohner** (Followerliste vom 8.11. abends): 505 auf der Haupt-Insel (500 Hütten + 5 in Gebäuden), **148 auf der Kokos-Küste**. 104 neu eingezogen, 26 ausgezogen (entfolgt, komplett gelöscht); Nachrücker sind von der Kokos-Küste auf die Haupt-Insel umgezogen.
 - Am 8.11. sind 2 Einwohner ausgezogen (entfolgt, Namen gelöscht). Dafür sind @rozelinbaysal12 (jetzt Nr. 499) und @aileen.2007_ (jetzt Nr. 500) von der Kokos-Küste auf die Haupt-Insel umgezogen.
 - **Gründer** = die ersten 500 Follower; ausnahmsweise haben auch die beiden Nachrücker @rozelinbaysal12 und @aileen.2007_ den Erfolg. Aktuell 477 Gründer (Gründer behalten den Erfolg, auch wenn andere entfolgen; Nachrücker werden keine Gründer).
@@ -299,4 +300,6 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
   - Begehbare Fläche auf der Plattform und bei Meerkauf maximiert (Hindernisse liegen eng an den Gegenständen).
   - Meerkauf: OFFEN-Schild hängt an der Eingangstür (nicht mehr am Namensschild). Team: **@leonie27628** (steht neben @mia_04_ an der Tür).
   - Bäckerei-Team: **@_privat_033**.
-  - **🛟 Rettungsschwimmerin @soph_221144** läuft in roter Kleidung mit Rettungsring über der Schulter und Trillerpfeife am Strand einmal rund um die Haupt-Insel (eine Runde ≈ 7 Minuten, weicht Läden am Ufer aus); Beruf auf der Berufe-Seite unter 🛟 Strand.
+  - **🛟 Rettungsschwimmerin @soph_221144** rennt Tag und Nacht am Strand rund um die Haupt-Insel (eine Runde ≈ 2,5 Minuten, weicht Läden am Ufer aus). Klar erkennbar: rotes Shirt mit weißem Kreuz, gelbe Shorts, rote Kappe mit weißem Kreuz, Rettungsring auf dem Rücken, Trillerpfeife; nachts blinkt ein rotes Licht. Beruf auf der Berufe-Seite unter 🛟 Strand.
+  - Steg-Plattform links und rechts gekürzt. Die Tafeln „Heute Wassereis“ (jetzt komplett schwarz hinterlegt), „Sorten“ (Boba) und „Pizza des Tages“ stehen direkt neben den Buden, Zeitungsständer, Bank, Olivenbaum und Pizza-Tische sind enger gerückt → mehr freie Lauffläche.
+  - Aufgaben: Niemand bekommt eine Aufgabe, bei der er zu sich selbst gehen müsste (z. B. Leitung Kiosk → kein „Eis beim Kiosk bei @…“, Ocean-Nails-Leiterinnen, Bürgermeisterin, Palast-Leitung, Yacht-Besitzerin).
