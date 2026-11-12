@@ -2846,7 +2846,7 @@ const walkedSet=()=>{try{return new Set(JSON.parse(localStorage.getItem('mt-walk
 // Begrüßung je Tageszeit (Berliner Zeit): einmal pro Besuch, wenn man den eigenen beanspruchten Namen auswählt;
 // zufällig aus 3, aber nie dieselbe wie beim letzten Mal in dieser Tageszeit
 const GRUSS={morgen:['Guten Morgen 🤍','Gut geschlafen? ☀️','Moin Moin 🐚'],mittag:['Hallöchen du 👋','Mahlzeit! 🥙','Na, Sonnenschein? 🌞'],abend:['Guten Abend 🌅','Moini, du Perle! 🧡','Feierabend? 🍹'],nacht:['Noch wach? 😴','Gute Nacht 🌙','Na, du Nachteule? 🦉']};
-const grussZeit=()=>{const h=+new Intl.DateTimeFormat('de-DE',{timeZone:'Europe/Berlin',hour:'numeric',hourCycle:'h23'}).format(new Date());return h>=6&&h<11?'morgen':h>=11&&h<16?'mittag':h>=16&&h<22?'abend':'nacht';};
+const grussZeit=()=>{const h=+new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Berlin',hour:'2-digit',hourCycle:'h23'}).formatToParts(new Date()).find(x=>x.type==='hour').value;return h>=6&&h<11?'morgen':h>=11&&h<16?'mittag':h>=16&&h<22?'abend':'nacht';};
 let GR=null;
 function gruss(){try{if(!mkOwn(sel))return null;if(!GR){const z=grussZeit();let L={};try{L=JSON.parse(localStorage.getItem('mt-gruss2')||'{}')||{};}catch(e){}const A=GRUSS[z].filter(x=>x!==L[z]),t=A[Math.floor(Math.random()*A.length)];L[z]=t;try{localStorage.setItem('mt-gruss2',JSON.stringify(L));}catch(e){}GR={t,bis:Date.now()+6500};}
  return Date.now()<GR.bis?GR.t:null;}catch(e){return null;}}
