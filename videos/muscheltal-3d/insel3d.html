@@ -109,20 +109,34 @@ function baue(W){const T0=performance.now(),LOG=m=>console.log('[3D] '+m+' '+Mat
  // Meer: blau, glänzend, mit wandernden Wellen (Normalenkarte) und Umgebungsspiegelung
  WN.repeat.set(140,140);const WN2=WN.clone();WN2.needsUpdate=true;WN2.repeat.set(23,23);
  WN2.repeat.set(37,37);WN2.wrapS=WN2.wrapT=THREE.RepeatWrapping;
- const water=new THREE.Mesh(new THREE.PlaneGeometry(v.R*16,v.R*16),new THREE.MeshPhysicalMaterial({color:LIN(NACHT?0x0a2a50:0x1287b8),roughness:.18,metalness:.05,normalMap:WN,normalScale:new THREE.Vector2(.35,.35),clearcoat:1,clearcoatRoughness:.04,clearcoatNormalMap:WN2,clearcoatNormalScale:new THREE.Vector2(.6,.6),envMapIntensity:NACHT?.4:1}));
- water.rotation.x=-Math.PI/2;water.position.set(v.x,-2.4,v.y);water.receiveShadow=true;sc.add(water);
+ // Meeresgrund: tiefblau, nach außen dunkler – durch das leicht durchsichtige Wasser wirkt das Meer tief
+ {const n=120,P=[],C=[],I=[],RR=[0,0,.5,1.2,2.6,8];for(let i=0;i<=n;i++){const a=i/n*Math.PI*2;RR.forEach((f,k)=>{const r=k===0?0:coastAt(v,a)+BEX+60+f*90;P.push(v.x+Math.cos(a)*r,k===0?-12:-8-(k-1)*3,v.y+Math.sin(a)*r);const c=new THREE.Color([0x7fd8d0,0x3fb8c8,0x1a7fa8,0x0d5a88,0x083e6a,0x062c50][k]).convertSRGBToLinear();C.push(c.r,c.g,c.b);});}
+  const K=RR.length;for(let i=0;i<n;i++)for(let k=0;k<K-1;k++){const a=i*K+k,b2=(i+1)*K+k;I.push(a,b2,a+1,a+1,b2,b2+1);}const gg=new THREE.BufferGeometry();gg.setAttribute('position',new THREE.Float32BufferAttribute(P,3));gg.setAttribute('color',new THREE.Float32BufferAttribute(C,3));gg.setIndex(I);gg.computeVertexNormals();sc.add(new THREE.Mesh(gg,new THREE.MeshBasicMaterial({vertexColors:true,side:THREE.DoubleSide,fog:true})));}
+ // Wasseroberfläche: fein unterteilt, sanfte Dünung im Shader, zwei Wellen-Normalenlagen, leicht durchsichtig
+ const WAVE={value:0};
+ const water=new THREE.Mesh(new THREE.PlaneGeometry(v.R*16,v.R*16,260,260),new THREE.MeshPhysicalMaterial({color:LIN(NACHT?0x0a2a50:0x168fbf),roughness:.12,metalness:.05,normalMap:WN,normalScale:new THREE.Vector2(.4,.4),clearcoat:1,clearcoatRoughness:.03,clearcoatNormalMap:WN2,clearcoatNormalScale:new THREE.Vector2(.7,.7),envMapIntensity:NACHT?.4:1.1,transparent:true,opacity:.82,depthWrite:true}));
+ water.material.onBeforeCompile=sh=>{sh.uniforms.uT=WAVE;sh.vertexShader='uniform float uT;\n'+sh.vertexShader.replace('#include <begin_vertex>','#include <begin_vertex>\n vec4 wpw=modelMatrix*vec4(position,1.);float sw=sin(wpw.x*.045+uT*1.1)*.55+sin(wpw.z*.06-uT*.9)*.45+sin((wpw.x+wpw.z)*.11+uT*1.7)*.18;transformed.z+=sw;').replace('#include <beginnormal_vertex>','#include <beginnormal_vertex>\n');};
+ water.rotation.x=-Math.PI/2;water.position.set(v.x,-2.4,v.y);water.receiveShadow=false;sc.add(water);
 
  // ---------- Insel: Riff, Sand, Gras ----------
  const ring=(rf,n=200)=>{const s=new THREE.Shape();for(let i=0;i<=n;i++){const a=i/n*Math.PI*2-Math.PI,r=rf(a),x=v.x+Math.cos(a)*r,y=v.y+Math.sin(a)*r;i?s.lineTo(x,-y):s.moveTo(x,-y);}return s;};
  const plate=(shape,h,mat,y,uv)=>{const gg=new THREE.ExtrudeGeometry(shape,{depth:h,bevelEnabled:true,bevelThickness:1.5,bevelSize:2.5,bevelSegments:3,curveSegments:8});gg.rotateX(-Math.PI/2);const m=new THREE.Mesh(gg,mat);m.position.y=y;m.receiveShadow=true;sc.add(m);return m;};
  // flache Lagune: türkiser Verlauf vom Strand ins tiefe Blau (Ring mit Vertex-Alpha knapp über dem Meer)
- const lagune=(()=>{const n=240,P=[],C=[],I=[];for(let i=0;i<=n;i++){const a=i/n*Math.PI*2-Math.PI,r0=coastAt(v,a)+BEX+19,rs=[r0,r0+18,r0+50,r0+95],al=[.95,.75,.3,0];rs.forEach((r,k)=>{P.push(v.x+Math.cos(a)*r,-2.32,v.y+Math.sin(a)*r);const c=new THREE.Color(k<2?0x5fe0e6:0x2bbfd8).convertSRGBToLinear();C.push(c.r,c.g,c.b,al[k]);});}
+ const lagune=(()=>{const n=240,P=[],C=[],I=[];for(let i=0;i<=n;i++){const a=i/n*Math.PI*2-Math.PI,r0=coastAt(v,a)+BEX+19,rs=[r0,r0+18,r0+50,r0+95],al=[.55,.4,.15,0];rs.forEach((r,k)=>{P.push(v.x+Math.cos(a)*r,-2.32,v.y+Math.sin(a)*r);const c=new THREE.Color(k<2?0x5fe0e6:0x2bbfd8).convertSRGBToLinear();C.push(c.r,c.g,c.b,al[k]);});}
   for(let i=0;i<n;i++)for(let k=0;k<3;k++){const a=i*4+k,b2=(i+1)*4+k;I.push(a,b2,a+1,a+1,b2,b2+1);}const gg=new THREE.BufferGeometry();gg.setAttribute('position',new THREE.Float32BufferAttribute(P,3));gg.setAttribute('color',new THREE.Float32BufferAttribute(C,4));gg.setIndex(I);gg.computeVertexNormals();
   const m=new THREE.Mesh(gg,new THREE.MeshStandardMaterial({vertexColors:true,transparent:true,roughness:.1,normalMap:WN,normalScale:new THREE.Vector2(.25,.25),depthWrite:false}));m.renderOrder=1;sc.add(m);return m;})();
  // Gischt am Strand: weißer, unregelmäßiger Schaumstreifen an der Wasserlinie
  const SCHAUMT=tex(512,32,(x,w,h)=>{x.clearRect(0,0,w,h);for(let i=0;i<500;i++){const xx=rnd(i,31)*w,yy=h*.25+rnd(i,32)*h*.5,r=2+rnd(i,33)*6;x.fillStyle='rgba(255,255,255,'+(.45+rnd(i,34)*.5)+')';x.beginPath();x.ellipse(xx,yy,r*1.8,r*.6,0,0,7);x.fill();}});SCHAUMT.wrapS=THREE.RepeatWrapping;SCHAUMT.repeat.set(30,1);
  const SCHAUM=(()=>{const n=300,P=[],U=[],I=[];for(let i=0;i<=n;i++){const a=i/n*Math.PI*2-Math.PI,r=coastAt(v,a)+BEX+20;for(const [d,vv] of[[-2.5,0],[3.5,1]]){P.push(v.x+Math.cos(a)*(r+d),-2.25,v.y+Math.sin(a)*(r+d));U.push(i/n,vv);}}for(let i=0;i<n;i++){const a=i*2;I.push(a,a+2,a+1,a+1,a+2,a+3);}
   const gg=new THREE.BufferGeometry();gg.setAttribute('position',new THREE.Float32BufferAttribute(P,3));gg.setAttribute('uv',new THREE.Float32BufferAttribute(U,2));gg.setIndex(I);gg.computeVertexNormals();const m=new THREE.Mesh(gg,new THREE.MeshBasicMaterial({map:SCHAUMT,transparent:true,opacity:.8,depthWrite:false,color:LIN(NACHT?0x8fa0c0:0xffffff)}));m.renderOrder=2;sc.add(m);return m;})();
+ // Lichtnetz (Kaustik) auf dem Grund der Lagune: zwei gegeneinander laufende helle Netz-Texturen, additiv
+ const KT=tex(256,256,(x,w,h)=>{x.fillStyle='#000';x.fillRect(0,0,w,h);x.strokeStyle='rgba(255,255,255,.55)';for(let i=0;i<90;i++){x.lineWidth=1+rnd(i,91)*2.2;x.beginPath();const cx=rnd(i,92)*w,cy=rnd(i,93)*h,r=8+rnd(i,94)*18;for(let k=0;k<=7;k++){const a=k/7*Math.PI*2,rr=r*(.7+rnd(i*9+k,95)*.6);const px=cx+Math.cos(a)*rr,py=cy+Math.sin(a)*rr;k?x.lineTo(px,py):x.moveTo(px,py);}x.stroke();}});
+ const kaustik=(rep)=>{const t2=KT.clone();t2.needsUpdate=true;t2.wrapS=t2.wrapT=THREE.RepeatWrapping;t2.repeat.set(rep,rep);const n=200,P=[],U=[],I=[];for(let i=0;i<=n;i++){const a=i/n*Math.PI*2-Math.PI,c0=coastAt(v,a);for(const d of[BEX+18,BEX+70]){const r=c0+d;const x=v.x+Math.cos(a)*r,z=v.y+Math.sin(a)*r;P.push(x,-2.5-(d>BEX+20?2.4:0),z);U.push(x*.004,z*.004);}}for(let i=0;i<n;i++){const a=i*2;I.push(a,a+2,a+1,a+1,a+2,a+3);}
+  const gg=new THREE.BufferGeometry();gg.setAttribute('position',new THREE.Float32BufferAttribute(P,3));gg.setAttribute('uv',new THREE.Float32BufferAttribute(U,2));gg.setIndex(I);const m=new THREE.Mesh(gg,new THREE.MeshBasicMaterial({map:t2,transparent:true,opacity:NACHT?.05:.12,blending:THREE.AdditiveBlending,depthWrite:false}));m.renderOrder=3;sc.add(m);return m;};
+ const KAUST=kaustik(3),KAUST2=kaustik(4.3);
+ // Brandungslinien: weiße Wellenkämme etwas vor der Küste, laufen zum Strand und verblassen
+ const BRANDUNG=[];for(let j=0;j<3;j++){const n=260,P=[],I=[],UV=[];for(let i=0;i<=n;i++){const a=i/n*Math.PI*2-Math.PI,r=coastAt(v,a)+BEX+30+j*14+Math.sin(a*9+j)*3;for(const [d,vv] of[[-1.6,0],[1.6,1]]){P.push(v.x+Math.cos(a)*(r+d),-1.9,v.y+Math.sin(a)*(r+d));UV.push(i/n*40+j*.37,vv);}}for(let i=0;i<n;i++){const a=i*2;I.push(a,a+2,a+1,a+1,a+2,a+3);}
+  const gg=new THREE.BufferGeometry();gg.setAttribute('position',new THREE.Float32BufferAttribute(P,3));gg.setAttribute('uv',new THREE.Float32BufferAttribute(UV,2));gg.setIndex(I);const st=SCHAUMT.clone();st.needsUpdate=true;st.wrapS=THREE.RepeatWrapping;st.repeat.set(1,1);const m=new THREE.Mesh(gg,new THREE.MeshBasicMaterial({map:st,transparent:true,opacity:.35,depthWrite:false}));m.position.set(v.x,0,v.y);gg.translate(-v.x,0,-v.y);m.renderOrder=2;sc.add(m);BRANDUNG.push({m,ph:j/3});}
  // Bojen, Felsen an der Wasserlinie, Seesterne und Muscheln im Sand, springende Fische
  const BOJEN=[],FISCHE=[];
  for(let i=0;i<10;i++){const a=i/10*Math.PI*2+.2,r=coastAt(v,a)+BEX+75+rnd(i,51)*40,x=v.x+Math.cos(a)*r,z=v.y+Math.sin(a)*r;if(MAINI&&YACHT&&Math.hypot(x-YACHT.cx,z-YACHT.cy)<80)continue;const bo=new THREE.Group();bo.position.set(x,-1.6,z);bo.userData.ph=rnd(i,52)*9;sc.add(bo);
@@ -200,7 +214,10 @@ function baue(W){const T0=performance.now(),LOG=m=>console.log('[3D] '+m+' '+Mat
   const sh2=inst(BOX(1.2,2.6,.3),M(0xffffff),WN.length*2,(i,o)=>{const p=WN[i>>1];o.position.set(p.p.x+3+(i&1?1.95:-1.95),TOP+8.6,p.p.y+2.4);});
   WN.forEach((p,i)=>{col.set(p.roof||'#e8467c').convertSRGBToLinear();sh2.setColorAt(i*2,col);sh2.setColorAt(i*2+1,col);});sh2.instanceColor.needsUpdate=true;
   // Treppe vor der Tür
-  inst(BOX(3,.5,1.4),M(0x8a5a2b),H.length*2,(i,o)=>{const p=H[i>>1],k=i&1;o.position.set(p.p.x-1.6,TOP+1.2+k*1.6,p.p.y+4.2-k*1.1);});
+  // drei Stufen zwischen zwei schrägen Wangen, die auf dem Boden stehen und an der Plattform enden
+  inst(BOX(3,.4,1.3),M(0x8a5a2b),H.length*3,(i,o)=>{const p=H[(i/3)|0],k=i%3;o.position.set(p.p.x-1.6,TOP+1.1+k*1.15,p.p.y+5.7-k*1.15);});
+  {const wl=Math.hypot(3.6,4.2);inst(BOX(.32,.9,wl),M(0x6b4423),H.length*2,(i,o)=>{const p=H[i>>1],s2=i&1?1:-1;o.position.set(p.p.x-1.6+s2*1.62,TOP+2.15,p.p.y+4.6);o.rotation.set(Math.atan2(4.2,3.6),0,0);});}
+  inst(BOX(.3,1.2,.3),M(0x6b4423),H.length*2,(i,o)=>{const p=H[i>>1],s2=i&1?1:-1;o.position.set(p.p.x-1.6+s2*1.62,TOP+.5,p.p.y+6.3);});
   // Blumentöpfe (bei jeder dritten Hütte)
   const POT=H.filter(p=>rnd(p.nr,9)<.38);
   inst(CYL(1,.8,1.6,10),M(0xc8643c),POT.length,(i,o)=>{const p=POT[i];o.position.set(p.p.x+5.6,TOP+.8,p.p.y+4.6);});
@@ -218,8 +235,8 @@ function baue(W){const T0=performance.now(),LOG=m=>console.log('[3D] '+m+' '+Mat
   H.forEach((p,i)=>{const cx=(i%cols)*CW,cy=((i/cols)|0)*CH;let fs=54;x.font='800 '+fs+'px system-ui';let tw=x.measureText(p.name).width;if(tw>CW-48){fs=fs*(CW-48)/tw;x.font='800 '+fs+'px system-ui';tw=x.measureText(p.name).width;}
    x.fillStyle='rgba(255,255,255,.95)';x.beginPath();x.roundRect(cx+(CW-tw)/2-20,cy+8,tw+40,CH-16,(CH-16)/2);x.fill();x.fillStyle='#2a1b12';x.textAlign='center';x.textBaseline='middle';x.fillText(p.name,cx+CW/2,cy+CH/2+1);});
   const t=new THREE.CanvasTexture(cvs);t.encoding=THREE.sRGBEncoding;t.anisotropy=R.capabilities.getMaxAnisotropy();t.minFilter=THREE.LinearMipmapLinearFilter;t.generateMipmaps=true;
-  const pos=[],uv=[],idx=[],W2=14,H2=W2*CH/CW,ang=-.75;
-  H.forEach((p,i)=>{const u0=(i%cols)*CW/cvs.width,u1=u0+CW/cvs.width,v1=1-((i/cols)|0)*CH/cvs.height,v0=v1-CH/cvs.height;const x0=p.p.x-W2/2,x1=p.p.x+W2/2,zc=p.p.y+(KOK?11.5:9.6),yc=TOP+1.6,dy=Math.sin(-ang)*H2/2,dz=Math.cos(-ang)*H2/2;const b=pos.length/3;
+  const pos=[],uv=[],idx=[],W2=14,H2=W2*CH/CW,ang=-.3;
+  H.forEach((p,i)=>{const u0=(i%cols)*CW/cvs.width,u1=u0+CW/cvs.width,v1=1-((i/cols)|0)*CH/cvs.height,v0=v1-CH/cvs.height;const x0=p.p.x-W2/2,x1=p.p.x+W2/2,zc=p.p.y+(KOK?11.5:9.8),yc=TOP+1.9,dy=Math.sin(-ang)*H2/2,dz=Math.cos(-ang)*H2/2;const b=pos.length/3;
    pos.push(x0,yc-dy,zc+dz, x1,yc-dy,zc+dz, x1,yc+dy,zc-dz, x0,yc+dy,zc-dz);uv.push(u0,v0,u1,v0,u1,v1,u0,v1);idx.push(b,b+1,b+2,b,b+2,b+3);});
   const gg=new THREE.BufferGeometry();gg.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));gg.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));gg.setIndex(idx);gg.computeVertexNormals();
   const lab=new THREE.Mesh(gg,new THREE.MeshBasicMaterial({map:t,transparent:true,depthWrite:false}));lab.renderOrder=2;sc.add(lab);}
@@ -230,9 +247,9 @@ function baue(W){const T0=performance.now(),LOG=m=>console.log('[3D] '+m+' '+Mat
  for(let i=0;i<90;i++){const a=i/90*Math.PI*2+rnd(i,1)*.05,r=coastAt(v,a)+BEX*.4+rnd(i,2)*8,x=v.x+Math.cos(a)*r,y=v.y+Math.sin(a)*r;if(GEB.some(b=>x>b.x0-14&&x<b.x1+14&&y>b.y0-14&&y<b.y1+14))continue;if(MAINI&&YACHT&&Math.hypot(x-YACHT.cx,y-YACHT.cy)<90)continue;if(rnd(i,3)<.3)continue;PALMS.push({x,y:y-3,s:.85+rnd(i,4)*.5});}
  const BUSH=(v.bush||[]).slice();(v.free||[]).forEach((f,i)=>{if(rnd(i,7)<.6)BUSH.push({x:f.x+(rnd(i,8)-.5)*6,y:f.y,r:3.2+rnd(i,9)*2.6});});
  // Wedel-Textur (Fiederblatt mit Transparenz) und gebogene Wedel-Geometrie
- const FROND=tex(64,256,(x,w,h)=>{x.clearRect(0,0,w,h);x.strokeStyle='#4a7a2a';x.lineWidth=3;x.beginPath();x.moveTo(w/2,0);x.lineTo(w/2,h);x.stroke();for(let k=4;k<h;k+=6){const f=Math.sin(k/h*Math.PI)*.95;for(const sg of[-1,1]){x.strokeStyle=['#3f9b45','#4fb34f','#2f8a3a'][k%3];x.lineWidth=3;x.beginPath();x.moveTo(w/2,k);x.lineTo(w/2+sg*w/2*f,k+10*f);x.stroke();}}});
+ const FROND=tex(64,256,(x,w,h)=>{x.clearRect(0,0,w,h);x.strokeStyle='#5a6a28';x.lineWidth=3;x.beginPath();x.moveTo(w/2,0);x.lineTo(w/2,h);x.stroke();for(let k=4;k<h;k+=6){const f=Math.sin(k/h*Math.PI)*.95;for(const sg of[-1,1]){x.strokeStyle=['#1d5a2a','#246b30','#17501f','#2b7436'][k%4];x.lineWidth=3;x.beginPath();x.moveTo(w/2,k);x.lineTo(w/2+sg*w/2*f,k+10*f);x.stroke();}}});
  const frondGeo=(()=>{const gg=new THREE.PlaneGeometry(3.4,13,1,10),pa=gg.attributes.position;for(let k=0;k<pa.count;k++){const y=pa.getY(k)+6.5;pa.setXYZ(k,pa.getX(k)*(1-y/16),0,0);pa.setZ(k,y);pa.setY(k,-Math.pow(y/13,2)*5.5+y*.25);}gg.computeVertexNormals();return gg;})();
- const frondM=new THREE.MeshStandardMaterial({map:FROND,alphaTest:.5,side:THREE.DoubleSide,roughness:.8,envMapIntensity:.4});
+ const frondM=new THREE.MeshStandardMaterial({map:FROND,color:LIN(0x9ac48a),alphaTest:.5,side:THREE.DoubleSide,roughness:1,envMapIntensity:.08});
  const RINDE=tex(32,64,(x,w,h)=>{x.fillStyle='#8a5a2b';x.fillRect(0,0,w,h);for(let k=0;k<h;k+=8){x.fillStyle='#6b4423';x.fillRect(0,k,w,2);x.fillStyle='#a0703a';x.fillRect(0,k+3,w,2);}},[2,6]);
  const rindeM=new THREE.MeshStandardMaterial({map:RINDE,roughness:.95,envMapIntensity:.3});
  PALMS.forEach((t,i)=>{const s2=t.s||1,x=t.x,z=t.y+3,h=18*s2,bend=(4+rnd(i,6)*5)*s2,ba=rnd(i,7)*Math.PI*2;
@@ -590,7 +607,7 @@ function baue(W){const T0=performance.now(),LOG=m=>console.log('[3D] '+m+' '+Mat
  const t0=performance.now();let FIXT=null;
  window.ZEIT=t=>{FIXT=t;tick();window.BEREIT=true;};if(STILL)FIXT=+Q.get('t')||0;
  function tick(){const t=FIXT!=null?FIXT:(performance.now()-t0)/1000;
-  WN.offset.set(t*.004,t*.0025);WN2.offset.set(-t*.0031,t*.0042);if(SCHAUM){SCHAUM.material.map.offset.x=t*.01;SCHAUM.material.opacity=.9+Math.sin(t*1.3)*.1;SCHAUM.scale.setScalar(1+Math.sin(t*.9)*.004);}
+  WAVE.value=t;WN.offset.set(t*.004,t*.0025);if(KAUST){KAUST.material.map.offset.set(t*.012,t*.007);KAUST2.material.map.offset.set(-t*.009,t*.011);}for(const b of BRANDUNG){const u=((t*.16+b.ph)%1);b.m.scale.setScalar(1+.035*(1-u));b.m.material.opacity=Math.sin(u*Math.PI)*.4;}WN2.offset.set(-t*.0031,t*.0042);if(SCHAUM){SCHAUM.material.map.offset.x=t*.01;SCHAUM.material.opacity=.9+Math.sin(t*1.3)*.1;SCHAUM.scale.setScalar(1+Math.sin(t*.9)*.004);}
   for(const f of FISCHE){const u=((t+f.ph)%f.per)/f.per;if(u<.12){const k=u/.12;f.m.visible=true;f.m.position.set(f.x+Math.cos(f.a)*k*10,-2.4+Math.sin(k*Math.PI)*5,f.z+Math.sin(f.a)*k*10);f.m.rotation.set(0,-f.a,(.5-k)*2.4);}else f.m.visible=false;}
   for(const bo of BOJEN){bo.position.y=-1.6+Math.sin(t*1.4+bo.userData.ph)*.35;bo.rotation.z=Math.sin(t*1.1+bo.userData.ph)*.12;}
   for(const L of LAUF){if(L.party){const f=L.party;f.position.y=5.9+Math.abs(Math.sin(t*6))*.8;f.userData.arms[0].rotation.z=-2.4-Math.sin(t*6)*.4;f.userData.arms[1].rotation.z=2.4+Math.sin(t*6)*.4;continue;}
