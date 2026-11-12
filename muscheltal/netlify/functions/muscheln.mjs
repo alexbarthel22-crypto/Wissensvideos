@@ -28,9 +28,11 @@ async function buch(store, nm) {
 }
 // Einmaliges Zurücksetzen (z. B. zum Testen): Beanspruchung, Kontobuch, Aufgaben und Spenden des Namens werden gelöscht.
 // Läuft je Eintrag genau einmal (Merker x/reset/<name>/<nr>); danach kann der Name neu beansprucht werden.
-const RESET = [["leamickunnnn", 1]];
+// [Name, Lauf-Nr., optional: ab Zeitpunkt (ms) – dann werden auch Erfolge und Story-Buchungen ab diesem Zeitpunkt gelöscht]
+const TEST_12_11 = 1794438000000; // 12.11.2026 0:00 Uhr (Berlin): Testlauf mit mehreren Testern
+const RESET = [["leamickunnnn", 1], ...["marina.cgnn", "ju1e_smt", "mimposible", "maja.gnw", "eeli_mxo", "luna.gsn02", "toca_lexi00"].map(n => [n, 1, TEST_12_11])];
 async function zuruecksetzen(store) {
-  for (const [n, nr] of RESET) {
+  for (const [n, nr, ab] of RESET) {
     const mk = "x/reset/" + n + "/" + nr;
     if (await store.get(mk)) continue;
     await store.set(mk, String(Date.now()));
@@ -42,6 +44,12 @@ async function zuruecksetzen(store) {
     }
     const kasse = getStore({ name: "inselkasse", consistency: "strong" });
     for (const k of await liste(kasse, "s/" + n + "/")) await kasse.delete(k);
+    if (ab) {
+      // im Test verdiente Erfolge und Story-Buchungen (Zeitstempel im Schlüssel) ebenfalls entfernen
+      const es = getStore("erfolge");
+      for (const k of await liste(es, "e/" + n + "/")) if (Number(k.split("/").pop()) >= ab) await es.delete(k);
+      for (const k of await liste(kasse, "b/" + n + "/")) if (Number(String(k.split("/").pop()).split("-")[0]) >= ab) await kasse.delete(k);
+    }
   }
 }
 const TEXT = { login: "Login-Serie", quest: "Aufgabe", qbonus: "Alle 3 Aufgaben", shell: "Schwebende Muschel", erf: "Neuer Erfolg", story: "Story geteilt", spende: "Spende Inselkasse" };
