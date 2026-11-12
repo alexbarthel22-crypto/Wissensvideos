@@ -283,3 +283,4 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - **Abstimmung von Bürgermeisterin Lilly (@lillygyqcf0):** Was wird **bei 800 Bewohnern zuerst** gebaut – 🏨 Hotel Sandkorn oder 🐾 Tierheim Pfotenkuss? Abstimmung in den Kommentaren. ⚠️ Homepage: Hotel ist bei 800 und Tierheim bei 1.000 als Ziel eingetragen; nach der Abstimmung anpassen.
 - Hintergrund der Abstimmung: Hunderte streunende Tiere auf dem Muschelplatz.
 - **Nachbarn** (12.11.): @wilma.bchmn + @_bxsti7 – @_bxsti7 zog dafür von der Kokos-Küste auf die Haupt-Insel neben @wilma.bchmn (Hütten 293/333, 🤝); @frau_hops (zuletzt auf die Haupt-Insel Gekommene) zog dafür auf die Kokos-Küste.
+- **Regenschirme** (12.11.): Bei Regen/Gewitter trägt im Schnitt jeder zweite Fußgänger einen bunten Regenschirm (fest je Person, 8 Farben), in alle Laufrichtungen passend (seitlich, von vorn, von hinten); das Namensschild sitzt dann über dem Schirm. Radfahrer, Roller usw. ohne Schirm.
