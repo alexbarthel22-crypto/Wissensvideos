@@ -282,3 +282,4 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - **Spiel bei 1.000 Followern** (vom Nutzer bestätigt): Muschel-Tal wird zum Spiel – du spielst dich selbst, läufst über die Inseln und erkundest die Welt. Die ersten 1.000 bekommen Vorteile. ⚠️ Homepage: Die „Überraschung bei 1.000“ ist damit verraten.
 - **Abstimmung von Bürgermeisterin Lilly (@lillygyqcf0):** Was wird **bei 800 Bewohnern zuerst** gebaut – 🏨 Hotel Sandkorn oder 🐾 Tierheim Pfotenkuss? Abstimmung in den Kommentaren. ⚠️ Homepage: Hotel ist bei 800 und Tierheim bei 1.000 als Ziel eingetragen; nach der Abstimmung anpassen.
 - Hintergrund der Abstimmung: Hunderte streunende Tiere auf dem Muschelplatz.
+- **Nachbarn** (12.11.): @wilma.bchmn + @_bxsti7 – @_bxsti7 zog dafür von der Kokos-Küste auf die Haupt-Insel neben @wilma.bchmn (Hütten 293/333, 🤝); @frau_hops (zuletzt auf die Haupt-Insel Gekommene) zog dafür auf die Kokos-Küste.
