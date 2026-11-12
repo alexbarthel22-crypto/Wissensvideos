@@ -90,64 +90,53 @@ CMT = """.cmt { position: absolute; left: 140px; width: 800px; border-radius: 30
 LOCK = '<svg viewBox="0 0 64 64" width="110" height="110"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffd84d"/><stop offset="1" stop-color="#ff8a00"/></linearGradient></defs><path d="M20 28 V20 a12 12 0 0 1 24 0 V28" fill="none" stroke="#2a1b12" stroke-width="6" stroke-linecap="round"/><rect x="12" y="27" width="40" height="30" rx="9" fill="url(#lg)" stroke="#2a1b12" stroke-width="4"/><circle cx="32" cy="40" r="4.5" fill="#2a1b12"/><rect x="30" y="42" width="4" height="8" rx="2" fill="#2a1b12"/><path d="M54 8 l2 5 5 2 -5 2 -2 5 -2 -5 -5 -2 5 -2z" fill="#fff"/></svg>'
 HW = [("ICH", "Ich", "<br>"), ("VERSCHENKE", "verschenke", "<br>"), ("EINE", "eine", ""), ("VILLA!", "VILLA", "")]
 
-# s03 – Nagelstudio Ocean Nails + Zickenkrieg als Boxkampf
-def side(cid, img, name, hand, col, left):
-    return f"""<div id="{cid}" class="s01-pn" style="left:{left}px;background:{col}"><div class="hb"><i id="{cid}-hp"></i></div><img src="assets/img/{img}" alt=""><div class="nm">{name}</div><div class="hd" id="{cid}-hd">{hand}</div></div>"""
+# s01 – Was wäre, wenn deine Follower eine Insel besiedeln?
+QW = [("DEINE", "Follower", ""), ("FOLLOWER", "Follower", "<br>"), ("EINE", "Insel", ""), ("INSEL", "Insel", "<br>"), ("BESIEDELN?!", "besiedeln", "")]
 scene("s01", LILITA + "\n    " + PILL + "\n    " + PT + "\n" + FL + """
-    #s01-t { top: 290px; font-size: 50px; background: #7b3fe0; }
-    #s01-st { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 1060px; right: 120px; font-size: 54px !important; color: #e8467c; border-color: #e8467c; background: #fff; transform: rotate(-4deg); font-size: 66px; white-space: nowrap; font-family: "Lilita One", sans-serif; }
-    #s01-fd { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 50%, rgba(40,10,40,.55), rgba(10,5,20,.85)); opacity: 0; }
-    .s01-pn { position: absolute; top: 430px; width: 440px; height: 600px; border-radius: 36px; box-shadow: 0 0 0 7px #2a1b12, 0 14px 0 rgba(0,0,0,.35); overflow: hidden; opacity: 0; }
-    .s01-pn img { position: absolute; left: 20px; top: 70px; width: 400px; height: 400px; border-radius: 26px; }
-    .s01-pn .hb { position: absolute; left: 24px; right: 24px; top: 20px; height: 32px; border-radius: 16px; background: #2a1b12; overflow: hidden; box-shadow: 0 0 0 4px #fff; }
-    .s01-pn .hb i { display: block; height: 100%; width: 100%; background: linear-gradient(90deg, #ff3b3b, #ffd23f, #3fe07a); }
-    .s01-pn .nm { position: absolute; left: 0; right: 0; top: 482px; text-align: center; font-family: "Inter", sans-serif; font-weight: 900; font-size: 36px; color: #fff; text-shadow: 0 3px 0 rgba(0,0,0,.35); }
-    .s01-pn .hd { position: absolute; left: 0; right: 0; top: 530px; margin: 0 auto; width: fit-content; padding: 2px 16px 6px; border-radius: 16px; background: #fff; color: #2a1b12; font-family: "Lilita One", sans-serif; font-size: 40px; opacity: 0; }
-    #s01-vs { position: absolute; left: 0; right: 0; top: 600px; text-align: center; font-family: "Lilita One", sans-serif; font-size: 230px; line-height: 1; color: #ffe14a; -webkit-text-stroke: 16px #2a1b12; paint-order: stroke fill; filter: drop-shadow(0 0 40px rgba(255,80,80,.9)); opacity: 0; }
-    #s01-rd { top: 300px; font-size: 64px; background: #e8262f; font-family: "Lilita One", sans-serif; font-weight: 400; }
-    .s01-pw { position: absolute; left: 0; top: 0; font-family: "Lilita One", sans-serif; font-size: 110px; color: #fff; -webkit-text-stroke: 12px #e8262f; paint-order: stroke fill; opacity: 0; }
-    .s01-np { position: absolute; top: 640px; font-size: 110px; opacity: 0; }
-    #s01-km { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 300px; color: #2e9e5b; border-color: #2e9e5b; background: #fff; transform: rotate(-4deg); font-size: 70px; white-space: nowrap; font-family: "Lilita One", sans-serif; }
-    #s01-hs { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 640px; font-size: 200px; opacity: 0; }""",
-"""      <div id="s01-t" class="pl">🥊 HEUTE: DER GROSSE KAMPF!</div>
-      <div id="s01-st" class="stamp" data-layout-ignore>💅 Ocean Nails – euer Wunsch!</div>
-      <div id="s01-fd" data-layout-ignore></div>
-      """ + side("s01-L", "av_lisann.png", "@lisann.lmp", "🤚 LINKE HÄNDE", "linear-gradient(160deg,#ff5e8a,#c2185b)", 50) + side("s01-R", "av_alina.png", "@al1na.mai5", "✋ RECHTE HÄNDE", "linear-gradient(200deg,#5ea8ff,#3949ab)", 590) + """
-      <div id="s01-vs" data-layout-ignore>VS</div>
-      <div id="s01-rd" class="pl" data-layout-ignore>🔔 ROUND 1</div>
-      """ + "".join(f'<div class="s01-np" id="s01-np{i}" data-layout-ignore>💅</div>' for i in range(6)) + "".join(f'<div class="s01-pw" id="s01-pw{i}" data-layout-ignore>{w}</div>' for i, w in enumerate(["POW!", "ZACK!", "BAM!", "PENG!"])) + """
+    #s01-ray { position: absolute; left: -460px; top: -80px; width: 2000px; height: 2000px; border-radius: 50%; background: repeating-conic-gradient(rgba(255,240,150,.38) 0 9deg, rgba(255,255,255,0) 9deg 22deg); -webkit-mask: radial-gradient(circle, #000 20%, transparent 62%); }
+    #s01-q { top: 330px; font-size: 64px; background: #7b3fe0; font-family: "Lilita One", sans-serif; font-weight: 400; }
+    #s01-hk { position: absolute; left: 10px; right: 10px; top: 470px; text-align: center; font-family: "Lilita One", sans-serif; font-size: 128px; white-space: nowrap; line-height: 1.02; color: #fff; -webkit-text-stroke: 14px #2a1b12; paint-order: stroke fill; filter: drop-shadow(0 12px 0 rgba(0,0,0,.35)); }
+    #s01-hk span { display: inline-block; margin: 0 .06em; transform-origin: 50% 60%; opacity: 0; } #s01-hk span.y { color: #ffe14a; }
+    #s01-hk i { font-style: normal; display: inline-block; transform-origin: 50% 60%; }
+    #s01-st { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 1010px; color: #2e9e5b; border-color: #2e9e5b; background: #fff; transform: rotate(-4deg); font-size: 72px; white-space: nowrap; font-family: "Lilita One", sans-serif; }""",
+"""      <div id="s01-ray" data-layout-ignore></div>
       <div id="s01-fl" class="fl" data-layout-ignore></div>
-      <div id="s01-hs" data-layout-ignore>🤝</div>
-      <div id="s01-km" class="stamp" data-layout-ignore>✋ KOMPROMISS! 🤚</div>""",
-"""      const li = at("L1", "Lisann"), al = at("L1", "Alina"), ge = at("L1", "gegeneinander"), ng = at("L1b", "Nagelstudio"), F0 = at("L1b", "gewünscht") + .6, al2 = line("L1c")[0], lk = at("L1c", "linken"), re = at("L1c", "rechten");
-      tl.set(["#s01-t", "#s01-fd"], { opacity: 1 }, 0);
-      tl.fromTo("#s01-t", { scale: 2.4 }, { scale: 1, duration: .3, ease: "back.out(2)" }, 0);
-      tl.fromTo("#s01-L", { opacity: 1, x: -600, rotation: -8 }, { x: 0, rotation: -3, duration: .3, ease: "back.out(1.6)" }, Math.max(0, li - .15));
-      tl.fromTo("#s01-R", { opacity: 1, x: 600, rotation: 8 }, { x: 0, rotation: 3, duration: .3, ease: "back.out(1.6)" }, al - .15);
-      tl.fromTo("#s01-vs", { opacity: 0, scale: 5 }, { opacity: 1, scale: 1, duration: .22, ease: "power3.in" }, ge - .2);
-      tl.to("#s01-stage", { x: 18, duration: .04, yoyo: true, repeat: 7, ease: "none" }, ge + .02);
-      tl.to("#s01-vs", { scale: 1.1, duration: .15, yoyo: true, repeat: 5 }, ge + .1);
-      tl.fromTo("#s01-st", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, ng - .2);
-      tl.to("#s01-t", { opacity: 0, duration: .15 }, F0 - .1);
-      tl.fromTo("#s01-rd", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .22, ease: "back.out(2)" }, F0);
-      // Kampf: Nagellack fliegt hin und her, Lebensbalken sinken
-      const F = F0 + .2, E = al2 - .35, n = 6, dt = (E - F) / n;
-      for (let i = 0; i < n; i++) { const t = F + i * dt, lr = i % 2 === 0, from = lr ? 260 : 820, to = lr ? 820 : 260;
-        tl.fromTo("#s01-np" + i, { opacity: 1, x: from - 55, y: 0, rotation: 0, scale: .8 }, { x: to - 55, y: -60, rotation: lr ? 540 : -540, scale: 1.1, duration: dt * .8, ease: "power1.in", immediateRender: false }, t);
-        tl.set("#s01-np" + i, { opacity: 0 }, t + dt * .8);
-        const tg = lr ? "#s01-R" : "#s01-L";
-        tl.to(tg, { x: lr ? 30 : -30, duration: .05, yoyo: true, repeat: 3, ease: "none" }, t + dt * .8);
-        tl.to(tg + "-hp", { width: (100 - (Math.floor(i / 2) + 1) * 20) + "%", duration: .15 }, t + dt * .8);
-        const pw = "#s01-pw" + (i % 4);
-        tl.fromTo(pw, { opacity: 1, scale: .3, x: lr ? 620 : 80, y: 500 + (i % 3) * 120, rotation: lr ? 12 : -12 }, { scale: 1.1, duration: .15, ease: "back.out(3)", immediateRender: false }, t + dt * .8);
-        tl.set(pw, { opacity: 0 }, t + dt * .8 + Math.min(.35, dt * .9)); }
-      tl.to(["#s01-vs", "#s01-rd", "#s01-st"], { opacity: 0, duration: .15 }, al2 - .3);
-      tl.fromTo("#s01-fl", { opacity: .9 }, { opacity: 0, duration: .4, immediateRender: false }, al2 - .25);
-      tl.fromTo("#s01-hs", { opacity: 0, scale: .2, rotation: -30 }, { opacity: 1, scale: 1, rotation: 0, duration: .35, ease: "back.out(3)" }, al2 - .25);
-      tl.fromTo("#s01-km", { opacity: 0, scale: 2.8 }, { opacity: 1, scale: 1, duration: .25, ease: "back.out(2)" }, al2 - .15);
-      tl.to(["#s01-L-hp", "#s01-R-hp"], { width: "100%", duration: .4 }, lk);
-      tl.fromTo("#s01-L-hd", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1.15, duration: .3, ease: "back.out(2.6)" }, lk);
-      tl.fromTo("#s01-R-hd", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1.15, duration: .3, ease: "back.out(2.6)" }, re);""", blur=False)
+      <div id="s01-q" class="pl">🤔 Was wäre, wenn …</div>
+      <div id="s01-hk">""" + "".join(f'<span id="s01-w{i}" class="{"y" if w in ("INSEL", "BESIEDELN?!") else ""}"><i id="s01-wi{i}">{w}</i></span>{br}' for i, (w, _, br) in enumerate(QW)) + """</div>
+      <div id="s01-st" class="stamp" data-layout-ignore>✅ GENAU DAS MACHE ICH!</div>""" + drops("s01-p", 22, 5, 'ge', 540, 760, "🏠", 600, 820)[0] + drops("s01-q2", 16, 9, 'ge + .2', 540, 760, "🐚", 520, 760)[0],
+"""      const ge = at("L1b", "Genau");
+      tl.set(["#s01-q", "#s01-ray"], { opacity: 1 }, 0);
+      tl.fromTo("#s01-q", { scale: 2.4 }, { scale: 1, duration: .3, ease: "back.out(2.2)" }, 0);
+      tl.fromTo("#s01-ray", { rotation: 0 }, { rotation: 60, duration: 6, ease: "none" }, 0);
+      tl.fromTo("#s01-fl", { opacity: 1 }, { opacity: 0, duration: .3, immediateRender: false }, 0);
+      """ + "\n      ".join(f'tl.fromTo("#s01-w{i}", {{ opacity: 0, scale: 6, filter: "blur(10px)" }}, {{ opacity: 1, scale: 1, filter: "blur(0px)", duration: .2, ease: "power3.in" }}, at("L1", "{k}") - {.12 if i % 2 else .3}); tl.to("#s01-wi{i}", {{ scale: {1.25 if w.startswith("BES") else 1.5}, color: "#ffffff", textShadow: "0 0 50px rgba(255,230,80,1)", duration: .1, yoyo: true, repeat: 1 }}, at("L1", "{k}") + .05);' for i, (w, k, _) in enumerate(QW)) + """
+      tl.to("#s01-hk", { x: 14, y: -8, duration: .05, yoyo: true, repeat: 5, ease: "none" }, at("L1", "besiedeln") + .1);
+      tl.fromTo("#s01-fl", { opacity: .85 }, { opacity: 0, duration: .35, immediateRender: false }, ge);
+      tl.fromTo("#s01-st", { opacity: 0, scale: 2.8 }, { opacity: 1, scale: 1, duration: .25, ease: "back.out(2)" }, ge - .05);
+      tl.to("#s01-hk", { x: 22, duration: .04, yoyo: true, repeat: 9, ease: "none" }, ge);
+""" + drops("s01-p", 22, 5, 'ge', 540, 760, "🏠", 600, 820)[1] + drops("s01-q2", 16, 9, 'ge + .2', 540, 760, "🐚", 520, 760)[1])
+
+# s04n – Nagelstudio kurz: Lisann links, Alina rechts
+def side(cid, img, name, hand, col, left):
+    return f"""<div id="{cid}" class="s4n-pn" style="left:{left}px;background:{col}"><img src="assets/img/{img}" alt=""><div class="nm">{name}</div><div class="hd" id="{cid}-hd">{hand}</div></div>"""
+scene("s04n", LILITA + "\n    " + PILL + """
+    #s4n-t { top: 290px; font-size: 54px; background: #e8467c; }
+    .s4n-pn { position: absolute; top: 400px; width: 400px; height: 470px; border-radius: 32px; box-shadow: 0 0 0 6px #2a1b12, 0 12px 0 rgba(0,0,0,.3); overflow: hidden; opacity: 0; }
+    .s4n-pn img { position: absolute; left: 30px; top: 20px; width: 340px; height: 340px; border-radius: 24px; }
+    .s4n-pn .nm { position: absolute; left: 0; right: 0; top: 368px; text-align: center; font-family: "Inter", sans-serif; font-weight: 900; font-size: 32px; color: #fff; }
+    .s4n-pn .hd { position: absolute; left: 0; right: 0; top: 412px; margin: 0 auto; width: fit-content; padding: 2px 14px 6px; border-radius: 14px; background: #fff; color: #2a1b12; font-family: "Lilita One", sans-serif; font-size: 34px; opacity: 0; }
+    #s4n-sx { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 900px; padding: 4px 20px 8px; border-radius: 18px; background: #e8262f; color: #fff; font-family: "Lilita One", sans-serif; font-size: 48px; box-shadow: 0 0 0 5px #2a1b12; transform: rotate(-6deg); opacity: 0; }""",
+"""      <div id="s4n-t" class="pl">💅 NEU: Ocean Nails</div>
+      """ + side("s4n-L", "av_lisann.png", "@lisann.lmp", "🤚 LINKE HÄNDE", "linear-gradient(160deg,#ff5e8a,#c2185b)", 90) + side("s4n-R", "av_alina.png", "@al1na.mai5", "✋ RECHTE HÄNDE", "linear-gradient(200deg,#5ea8ff,#3949ab)", 590) + """
+      <div id="s4n-sx" data-layout-ignore>⚡ STREIT → 🤝</div>""",
+"""      const ng = at("L4n", "Nagelstudio"), sr = at("L4n", "Streit"), li = at("L4n", "Lisann"), al = at("L4n", "Alina");
+      tl.fromTo("#s4n-t", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, ng - .25);
+      tl.fromTo("#s4n-L", { opacity: 1, x: -500, rotation: -8 }, { x: 0, rotation: -3, duration: .3, ease: "back.out(1.6)" }, ng);
+      tl.fromTo("#s4n-R", { opacity: 1, x: 500, rotation: 8 }, { x: 0, rotation: 3, duration: .3, ease: "back.out(1.6)" }, ng + .15);
+      tl.fromTo("#s4n-sx", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .25, ease: "back.out(2)" }, sr - .1);
+      tl.to("#s4n-sx", { x: 10, duration: .05, yoyo: true, repeat: 5, ease: "none" }, sr + .15);
+      tl.fromTo("#s4n-L-hd", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1.15, duration: .3, ease: "back.out(2.6)" }, li);
+      tl.fromTo("#s4n-R-hd", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1.15, duration: .3, ease: "back.out(2.6)" }, al);""")
 
 # s01 – Ich verschenke eine Villa!
 scene("s02v", LILITA + "\n    " + PILL + "\n    " + PT + "\n" + FL + """
