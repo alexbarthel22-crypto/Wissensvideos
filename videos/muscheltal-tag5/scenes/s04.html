@@ -1,0 +1,33 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+@font-face { font-family: "Lilita One"; src: url("assets/fonts/LilitaOne-Regular.woff2") format("woff2"); font-weight: 400; }
+    .pl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 28px 12px; border-radius: 999px; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); white-space: nowrap; }
+    #s04-st { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 300px; color: #2e9e5b; border-color: #2e9e5b; background: #fff; transform: rotate(-4deg); font-size: 76px; white-space: nowrap; font-family: "Lilita One", sans-serif; }
+    #s04-n { top: 440px; font-size: 44px; background: #1f6fb8; }
+    #s04-p { top: 1030px; right: 120px; font-size: 40px; background: #e8467c; }
+  </style>
+  <div id="root" data-composition-id="s04" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s04-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s04-st" class="stamp" data-layout-ignore>✅ JA – YACHT!</div>
+      <div id="s04-n" class="pl">🛥️ White Pearl · @marie18034</div>
+      <div id="s04-p" class="pl">🎉 Jeden Tag Party an Bord!</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      /*__COMMON_JS__*/
+      wrapBt("#s04-stage");
+      const tl = gsap.timeline({ paused: true });
+      const ma = at("L5", "Marie"), ya = at("L5", "Yacht"), je = at("L5", "jeden");
+      tl.fromTo("#s04-st", { opacity: 0, scale: 2.8 }, { opacity: 1, scale: 1, duration: .25, ease: "back.out(2)" }, ma - .1);
+      tl.fromTo("#s04-n", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, ya - .1);
+      tl.fromTo("#s04-p", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, je - .2);
+      tl.to("#s04-p", { scale: 1.08, duration: .2, yoyo: true, repeat: 5, ease: "sine.inOut" }, je + .3);
+      tl.to("#s04-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
+      window.__timelines["s04"] = tl;
+    })();
+  </script>
+</template>
