@@ -3099,6 +3099,8 @@ function canWalk(x,y){if(onObs(x,y))return false;
 function walkStart(){const me=sel;if(!me||!darfErkunden(me))return;let erst=true;try{erst=!walkedSet().has(me.name.toLowerCase());}catch(e){}try{const w=walkedSet();w.add(me.name.toLowerCase());localStorage.setItem('mt-walked',JSON.stringify([...w]));}catch(e){}$('walkbtn').classList.remove('wackel');
  WK.me=me||null;WK.L=me?{...(me.L||(me.L=look(me.k))),bikec:'#ff3d7f',ph:0}:{...look(7),bikec:'#ff3d7f',ph:0};
  let sp=me&&me.p?standSpot(me):null;if(sp&&!me.gb&&(sp.kind==='cell'||!canWalk(sp.x,sp.y))){const v=me.isl;sp={x:me.p.x,y:v.y+Math.ceil((me.p.gy+.01)/4)*4*S*.9-2.6};}let x=sp?sp.x:0,y=sp?sp.y:36*PAL_S+10;
+ // Yacht-Besitzerin: startet am nächsten Küstenpunkt gegenüber der Yacht (an Land)
+ if(me&&me.gb===YACHT){let best=null;for(let da=-.25;da<=.25;da+=.01){const an=Math.atan2(YACHT.cy-MAIN.y,YACHT.cx-MAIN.x)+da;for(let r=coastAt(MAIN,an)+BEX+12;r>0;r-=1.5){const [px,py]=polar(MAIN,an,r);if(canWalk(px,py)){const d=Math.hypot(px-YACHT.cx,py-YACHT.cy);if(!best||d<best[2])best=[px,py,d];break;}}}if(best){x=best[0];y=best[1];}}
  if(!canWalk(x,y)){let f=null;for(let r=4;r<120&&!f;r+=4)for(let a=0;a<TAU&&!f;a+=.3){const nx=x+Math.cos(a)*r,ny=y+Math.sin(a)*r;if(canWalk(nx,ny))f=[nx,ny];}if(f){x=f[0];y=f[1];}}
  Object.assign(WK,{on:true,x,y,zf:1,mode:'walk',autoFuss:false,moving:false,pt:null,sc:0});unsel();setTimeout(()=>{if(typeof sonneCheck==='function')sonneCheck();},1500);window.scrollTo({top:0,behavior:'smooth'});
  $('hero').classList.add('walking');$('walkui').hidden=false;$('walkhint').hidden=!erst;$('walkhint').style.opacity=erst?1:0;if(erst)setTimeout(()=>{$('walkhint').style.opacity=0;},4500);$('walkmode').textContent='🛵 Moped';
