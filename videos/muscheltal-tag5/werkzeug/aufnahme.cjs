@@ -12,16 +12,16 @@ await p.evaluate(()=>{petsStep();let sd=11;const R=()=>(sd=(sd*16807)%2147483647
   const [x0,y0]=rNode(a.v,a.k,a.m),[x1,y1]=rNode(a.v,a.k+dk,a.m+dm),t=R();a.x=x0+(x1-x0)*t;a.y=y0+(y1-y0)*t;a.pause=R()*3;}});
 const G=await p.evaluate(()=>{const a=fitAll(),m=fitMain();const g=n=>{const x=GEB.find(q=>q.typ===n);return{x:x.cx,y:x.cy}};const f=n=>{const q=PEOPLE.find(q=>q.name.replace('@','')===n);return{x:q.p.x,y:q.p.y}};
  const an=f('melie_js'),la=f('lisann.lmp');const geb=GEB.filter(g=>g.v===MAIN),bau=BAU.filter(b=>b.v===MAIN),st=.26/Math.max(1,geb.length+bau.length+1);geb.forEach((g,i)=>g.at=.73+st*(i+1));bau.forEach((b,i)=>b.at=.73+st*(geb.length+i+1));const last=PEOPLE.filter(q=>q.p&&q.isl===ISL[1]).sort((a,b)=>b.nr-a.nr)[0];window.__LAST=last;const y={x:YACHT.cx,y:YACHT.cy};
- return{N,a,m,last:{x:last.p.x,y:last.p.y,nr:last.nr},v:g('villa'),na:g('nagel'),ya:{x:y.x!=null?y.x:y[0],y:y.y!=null?y.y:y[1]},ho:{x:BAU[0].cx,y:BAU[0].cy},nb:{x:(an.x+la.x)/2,y:(an.y+la.y)/2}};});
+ return{N,a,m,last:{x:last.p.x,y:last.p.y,nr:last.nr},v:g('villa'),na:g('nagel'),ya:{x:y.x!=null?y.x:y[0],y:y.y!=null?y.y:y[1]},ho:{x:BAU[0].cx,y:BAU[0].cy},ba:g('baeckerei'),nb:{x:(an.x+la.x)/2,y:(an.y+la.y)/2}};});
 console.error(JSON.stringify(G));
 const HW=['verschenke','VILLA'].map(w=>at('L2v',w)).concat([L.L2v.start]),AL=L.L2v.end+.2,AS=L.L2v.start-.1,HZ=6.2,HY=G.last.y+140/(HZ*2.6667);
 const GS=at('L1','besiedeln')-.1,GE=L.L1b.end+.6;
 const K=[[0,G.m.x,G.m.y-10,G.m.z*1.0],[GS,G.m.x,G.m.y-10,G.m.z*1.15],[GE,G.a.x,G.a.y,G.a.z*1.2],
  [L.L2v.start-.15,G.v.x+20,G.v.y-10,4.0],[L.L2v.end,G.v.x+20,G.v.y-10,4.4],[L.L2vb.end,G.v.x+10,G.v.y-14,3.4],
  [L.L3h.start,G.last.x,HY,HZ],[L.L3h.end+.2,G.last.x,HY,HZ],
- [L.L4n.start+.2,G.na.x,G.na.y+10,3.4],[L.L4n.end,G.na.x,G.na.y+8,3.7],
+ [L.L4n.start+.2,G.na.x,G.na.y+10,3.4],[L.L4n.end,G.na.x,G.na.y+8,3.7],[L.L4n.end+.4,G.na.x,G.na.y+2,4.2],[L.L5.start-.15,G.na.x+3,G.na.y-2,7.0],
  [L.L5.start+.3,G.ya.x,G.ya.y-10,4.0],[L.L5.end,G.ya.x,G.ya.y-10,4.4],
- [L.L6.start+.3,G.ho.x,G.ho.y-6,3.4],[L.L6.end,G.ho.x,G.ho.y-6,3.7],[L.L7.start+.3,G.m.x,G.m.y,G.m.z*1.2],[L.L7.end,G.m.x,G.m.y,G.m.z*1.3],
+ [L.L6.start+.3,G.ho.x,G.ho.y-6,3.4],[L.L6.end,G.ho.x,G.ho.y-6,3.7],[L.L6b.start,G.ba.x,G.ba.y-4,4.6],[L.L6b.end+.3,G.ba.x,G.ba.y-4,5.2],[L.L7g.start+.2,G.m.x,G.m.y,G.m.z*1.25],[at('L7g','spielst')-.3,G.last.x,G.last.y+4,5.5],[at('L7g','läufst')+.1,G.last.x,G.last.y+4,5.5],[at('L7g','Welt'),G.last.x-90,G.last.y-60,4.2],[L.L7g.end,G.m.x,G.m.y,G.m.z*1.4],
  [L.L10.start+.1,0,82,3.4],[L.L10.end,0,80,2.6],[dur,0,78,2.4]];
 
 
@@ -29,7 +29,7 @@ const cam=t=>{let j=0;while(j<K.length-1&&K[j+1][0]<=t)j++;const a=K[j],c=K[Math
  return [a[1]+(c[1]-a[1])*k,a[2]+(c[2]-a[2])*k,Math.exp(Math.log(a[3])+(Math.log(c[3])-Math.log(a[3]))*k)*(1+.012*Math.sin(t*.8))];};
 const ST=t=>{const e=x=>x<0?0:x>1?1:x;let gk=null,gv=0,lim=G.N,flt=0,nm=0;
  if(t<GS){gk=0;gv=1;lim=1;}else if(t<GE){const k=e((t-GS)/(GE-GS));gk=Math.min(1,k*1.3);gv=k<.75?1:0;lim=1+Math.round((G.N-1)*Math.min(1,k/.8)**2);if(!gv)gk=null;}
- if(t>=L.L3h.start-.5&&t<L.L3h.end+.5){lim=t<at('L3h','folgt')+.15?G.last.nr-1:G.last.nr;nm=1;}return [gk,gv,lim,flt,nm];};
+ if(t>=at('L7g','spielst')-.6&&t<at('L7g','Welt')){nm=1;}if(t>=L.L3h.start-.5&&t<L.L3h.end+.5){lim=t<at('L3h','folgt')+.15?G.last.nr-1:G.last.nr;nm=1;}return [gk,gv,lim,flt,nm];};
 const shot=async(t,f)=>{const c=cam(t),z=ST(t);if(t>=L.L10.start-.5&&!globalThis.CROWD){globalThis.CROWD=1;await p.evaluate(()=>{let sd=7;const R=()=>(sd=(sd*16807)%2147483647)/2147483647;const base=PETS.list.slice(),C=[];
  for(let r=0;r<1100;r++){const a=Object.assign({},base[r%base.length]);let x,y;if(r<500){const ang=R()*6.283,d=Math.sqrt(R());x=Math.cos(ang)*d*62;y=78+Math.sin(ang)*d*17;}else if(r<640){x=(R()-.5)*10;y=98+R()*60;}else{const sd2=R()<.5?-1:1;x=sd2*(10+R()*95);y=40+R()*90;}
   a.x=x;a.y=y;a.pause=1e9;a.wp=null;a.sit=R()<.4?1:0;a.dir=R()<.5?-1:1;a.view=['side','front','side','back'][(R()*4)|0];a.vert=a.view!=='side';a.i=5000+r;C.push(a);}

@@ -11,15 +11,11 @@
     #s05-h .r { display: flex; align-items: baseline; justify-content: space-between; font-weight: 900; font-size: 40px; } #s05-h .r b { font-size: 66px; color: #e2560c; }
     #s05-h .bar { height: 30px; border-radius: 15px; background: #ece4d8; margin-top: 10px; overflow: hidden; } #s05-h .bar i { display: block; height: 100%; width: 0; border-radius: 15px; background: linear-gradient(90deg, #ff6a1a, #ffb21a); }
     #s05-h .f { margin-top: 8px; font-weight: 900; font-size: 32px; color: #2e9e5b; }
-    #s05-sp { top: 290px; font-size: 64px; background: linear-gradient(135deg, #ff5ecf, #7b5cff); transform: rotate(-2deg); }
-    #s05-lk { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 470px; padding: 14px 40px 18px; border-radius: 30px; background: #fff; box-shadow: 0 0 0 7px #2a1b12; font-family: "Inter", sans-serif; font-weight: 900; font-size: 42px; color: #2a1b12; text-align: center; }
   </style>
   <div id="root" data-composition-id="s05" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
     <div id="s05-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
       <div id="s05-c"><b id="s05-n">0</b>Bewohner 🏝️</div>
-      <div id="s05-h"><div class="r"><div>🏨 Hotel Sandkorn</div><div><b id="s05-hn">716</b> / 800</div></div><div class="bar"><i id="s05-hb"></i></div><div class="f">Nur noch 84 Bewohner bis zur Eröffnung!</div></div>
-      <div id="s05-sp" class="big">🤫 SPOILER</div>
-      <div id="s05-lk"><svg viewBox="0 0 64 64" width="110" height="110"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffd84d"/><stop offset="1" stop-color="#ff8a00"/></linearGradient></defs><path d="M20 28 V20 a12 12 0 0 1 24 0 V28" fill="none" stroke="#2a1b12" stroke-width="6" stroke-linecap="round"/><rect x="12" y="27" width="40" height="30" rx="9" fill="url(#lg)" stroke="#2a1b12" stroke-width="4"/><circle cx="32" cy="40" r="4.5" fill="#2a1b12"/><rect x="30" y="42" width="4" height="8" rx="2" fill="#2a1b12"/><path d="M54 8 l2 5 5 2 -5 2 -2 5 -2 -5 -5 -2 5 -2z" fill="#fff"/></svg><br>Die ersten 1.000 bekommen<br>Vorteile im Spiel!</div>
+      <div id="s05-h"><div class="r"><div>🏗️ Nächster Bau</div><div><b id="s05-hn">716</b> / 800</div></div><div class="bar"><i id="s05-hb"></i></div><div class="f">Nur noch 84 Bewohner – dann wird gebaut!</div></div>
     </div>
   </div>
   <script>
@@ -28,16 +24,12 @@
       /*__COMMON_JS__*/
       wrapBt("#s05-stage");
       const tl = gsap.timeline({ paused: true });
-      const be = at("L6", "Bewohner"), vi = at("L6", "84"), ho = at("L6", "Hotel"), l7 = line("L7")[0], vo = at("L7", "Vorteile");
+      const be = at("L6", "Bewohner"), vi = at("L6", "84"), ho = at("L6", "gebaut");
       tl.fromTo("#s05-c", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.4)" }, line("L6")[0]);
       count(tl, "#s05-n", 0, 716, line("L6")[0] + .1, be - line("L6")[0], "", "", "power2.out");
       tl.fromTo("#s05-h", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, vi - .3);
       tl.fromTo("#s05-hb", { width: "0%" }, { width: "89.5%", duration: .9, ease: "power2.out" }, vi - .1);
       tl.to("#s05-hb", { opacity: .4, duration: .15, yoyo: true, repeat: 7, ease: "none" }, ho);
-      tl.to(["#s05-c", "#s05-h"], { opacity: 0, y: -30, duration: .25 }, l7 - .2);
-      tl.fromTo("#s05-sp", { opacity: 0, scale: 3 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(1.8)" }, l7 - .05);
-      tl.fromTo("#s05-lk", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, l7 + .3);
-      tl.to("#s05-lk svg", { rotation: 12, duration: .1, yoyo: true, repeat: 7 }, vo);
       tl.to("#s05-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
       window.__timelines["s05"] = tl;
     })();

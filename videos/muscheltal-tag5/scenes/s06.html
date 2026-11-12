@@ -5,16 +5,18 @@
     .pl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 28px 12px; border-radius: 999px; color: #fff;
       font-family: "Inter", sans-serif; font-weight: 900; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); white-space: nowrap; }
     #s06-h { top: 280px; font-size: 46px; background: #7b3fe0; }
-    .s06-a { position: absolute; top: 390px; width: 430px; padding: 18px 14px 22px; border-radius: 30px; background: #fff; box-shadow: 0 0 0 6px #2a1b12, 0 12px 0 rgba(0,0,0,.3); text-align: center; font-family: "Inter", sans-serif; font-weight: 900; color: #2a1b12; font-size: 38px; line-height: 1.15; }
+    .s06-a { position: absolute; top: 470px; width: 430px; padding: 18px 14px 22px; border-radius: 30px; background: #fff; box-shadow: 0 0 0 6px #2a1b12, 0 12px 0 rgba(0,0,0,.3); text-align: center; font-family: "Inter", sans-serif; font-weight: 900; color: #2a1b12; font-size: 38px; line-height: 1.15; }
     .s06-a i { display: block; font-style: normal; font-size: 110px; line-height: 1.1; }
-    #s06-vs { position: absolute; left: 0; right: 0; top: 510px; margin: 0 auto; width: fit-content; font-family: "Lilita One", sans-serif; font-size: 110px; color: #ffe14a; -webkit-text-stroke: 12px #2a1b12; paint-order: stroke fill; }
-    #s06-c { top: 760px; font-size: 44px; background: #fe2c55; }
+    #s06-vs { position: absolute; left: 0; right: 0; top: 590px; margin: 0 auto; width: fit-content; font-family: "Lilita One", sans-serif; font-size: 110px; color: #ffe14a; -webkit-text-stroke: 12px #2a1b12; paint-order: stroke fill; }
+    #s06-8 { top: 365px; font-size: 40px; background: #ff6a1a; transform: rotate(-1.5deg); }
+    #s06-c { top: 840px; font-size: 44px; background: #fe2c55; }
     #s06-ar { position: absolute; left: 850px; top: 1230px; font-size: 110px; filter: drop-shadow(0 6px 0 rgba(0,0,0,.35)); }
     #s06-cb { position: absolute; left: 640px; top: 1085px; padding: 4px 18px 8px; border-radius: 999px; background: #fff; color: #fe2c55; font-family: "Inter", sans-serif; font-weight: 900; font-size: 30px; box-shadow: 0 0 0 4px #2a1b12; }
   </style>
   <div id="root" data-composition-id="s06" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
     <div id="s06-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
       <div id="s06-h" class="pl">🗳️ Abstimmung von Bürgermeisterin Lilly</div>
+      <div id="s06-8" class="pl">Bei 800 Bewohnern bauen wir zuerst …</div>
             <div id="s06-o1"><div class="s06-a" style="left:50px"><i>🏨</i>Hotel<br>Sandkorn</div></div>
       <div id="s06-o2"><div class="s06-a" style="left:600px"><i>🐾</i>Tierheim<br>Pfotenkuss</div></div>
       <div id="s06-vs" data-layout-ignore>VS</div>
@@ -29,8 +31,9 @@
       /*__COMMON_JS__*/
       wrapBt("#s06-stage");
       const tl = gsap.timeline({ paused: true });
-      const ab = at("L10", "Abstimmung"), ho = at("L10", "Hotel"), ti = at("L10", "Tierheim"), st = at("L10", "Stimmt");
+      const ab = at("L10", "Abstimmung"), ac = at("L10", "800"), ho = at("L10", "Hotel"), ti = at("L10", "Tierheim"), st = at("L10", "Stimmt");
       tl.fromTo("#s06-h", { opacity: 0, scale: 2.2 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, ab - .3);
+      tl.fromTo("#s06-8", { opacity: 0, scale: 2 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2.2)" }, ac - .2);
       tl.fromTo("#s06-o1", { opacity: 0, x: -500 }, { opacity: 1, x: 0, duration: .3, ease: "back.out(1.6)" }, ho - .2);
       tl.fromTo("#s06-o2", { opacity: 0, x: 500 }, { opacity: 1, x: 0, duration: .3, ease: "back.out(1.6)" }, ti - .2);
       tl.fromTo("#s06-vs", { opacity: 0, scale: 4 }, { opacity: 1, scale: 1, duration: .22, ease: "power3.in" }, ti + .15);

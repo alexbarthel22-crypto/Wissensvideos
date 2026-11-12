@@ -1,0 +1,33 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+@font-face { font-family: "Lilita One"; src: url("assets/fonts/LilitaOne-Regular.woff2") format("woff2"); font-weight: 400; }
+    .pl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 28px 12px; border-radius: 999px; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); white-space: nowrap; }
+    .big { position: absolute; left: 0; right: 0; width: fit-content; max-width: 980px; white-space: nowrap; margin: 0 auto; text-align: center; padding: 10px 26px 20px; border-radius: 36px; color: #fff; font-family: "Lilita One", sans-serif; line-height: 1; box-shadow: 0 0 0 8px #2a1b12, 0 16px 0 rgba(0,0,0,.3); }
+    #s5b-t { top: 290px; font-size: 52px; background: #2e9e5b; }
+    #s5b-b { top: 400px; font-size: 84px; background: linear-gradient(135deg, #ffb21a, #ff6a1a); transform: rotate(-2deg); }
+    #s5b-u { top: 560px; font-size: 40px; background: #fff; color: #e2560c; }
+  </style>
+  <div id="root" data-composition-id="s05b" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s05b-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s5b-t" class="pl">✅ Zuletzt gebaut</div>
+      <div id="s5b-b" class="big">🥐 Fabiennes Bäckerei</div>
+      <div id="s5b-u" class="pl">@fabienne3692</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      /*__COMMON_JS__*/
+      wrapBt("#s05b-stage");
+      const tl = gsap.timeline({ paused: true });
+      const t0 = line("L6b")[0], fa = at("L6b", "Fabiennes");
+      tl.fromTo("#s5b-t", { opacity: 0, y: -30 }, { opacity: 1, y: 0, duration: .25, ease: "back.out(2)" }, t0);
+      tl.fromTo("#s5b-b", { opacity: 0, scale: 2.6 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(1.8)" }, fa - .2);
+      tl.fromTo("#s5b-u", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .25, ease: "back.out(2.6)" }, fa + .25);
+      tl.to("#s05b-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
+      window.__timelines["s05b"] = tl;
+    })();
+  </script>
+</template>
