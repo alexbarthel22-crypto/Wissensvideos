@@ -6,7 +6,7 @@
 Ich verschenke einen Platz in meiner Villa 🏖️ Wer zieht ein? Folg mir – im nächsten Video wird unter allen Followern verlost 👀
 🏖️ Neue Mitbewohner für @emiliamarie155 & @lea.3818730!
 
-Was wäre, wenn deine Follower eine Insel besiedeln? Genau das mache ich 🏝️ Jeder, der mir folgt, bekommt ein eigenes Haus mit seinem @Namen – schon 716 Bewohner!
+Stell dir vor, deine Follower würden eine Insel besiedeln – genau das mache ich 🏝️ Jeder, der mir folgt, bekommt ein eigenes Haus mit seinem @Namen – schon 716 Bewohner!
 💅 Ocean Nails: @lisann.lmp & @al1na.mai5 wollten beide eröffnen – jetzt macht Lisann die linken Hände, Alina die rechten, bis der Streit beigelegt ist 😅
 🛥️ @marie18034 bekommt ihre Yacht
 🥐 Zuletzt gebaut: Fabiennes Bäckerei @fabienne3692

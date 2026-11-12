@@ -274,6 +274,7 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - **Figuren zwischen Hüttenreihen** (12.11.): Wer vor einem Namensschild steht, bleibt vor dem Schild, aber hinter der Hütte, die weiter vorne (darunter) steht – die Figur rutscht nicht mehr vor die untere Hütte.
 - **Begrüßung nach Tageszeit** (12.11., ersetzt die tägliche Begrüßung): Wählt man den eigenen beanspruchten Namen aus, erscheint bei jedem Besuch eine Sprechblase je Tageszeit (Berliner Zeit), zufällig aus 3, aber nie dieselbe wie beim letzten Mal in dieser Tageszeit. Morgens 6–11: „Guten Morgen 🤍“, „Gut geschlafen? ☀️“, „Moin Moin 🐚“ · Mittags 11–16: „Hallöchen du 👋“, „Mahlzeit! 🥙“, „Na, Sonnenschein? 🌞“ · Abends 16–22: „Guten Abend 🌅“, „Moini, du Perle! 🧡“, „Feierabend? 🍹“ · Nachts 22–6: „Noch wach? 😴“, „Gute Nacht 🌙“, „Na, du Nachteule? 🦉“.
 - Hook: „Was wäre, wenn deine Follower eine Insel besiedeln?! – Genau das mache ich!“
+- Hook (im Stil von Tag 1 „Insel gekauft“): „Stell dir vor, deine Follower würden eine Insel besiedeln! – Genau das mache ich!“
 - **Villa-Verlosung:** Im **nächsten Video** wird **unter allen Followern** ein Platz in der bestehenden Strandvilla verlost (bei @emiliamarie155 & @lea.3818730). Wer einen Freund markiert, nimmt ihn mit. (Kein „bis auf Widerruf“.)
 - Folgen = eigenes Haus mit Namen.
 - **💅 Ocean Nails:** Zwei wollten das Nagelstudio eröffnen, deshalb macht @lisann.lmp die linken Hände und @al1na.mai5 die rechten, bis der Streit beigelegt ist.

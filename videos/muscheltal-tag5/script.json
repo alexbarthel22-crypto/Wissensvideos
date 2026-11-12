@@ -31,63 +31,43 @@
    "lines": [
     {
      "id": "L1",
-     "text": "Was wäre, wenn deine *y:Follower / eine *y:Insel *g:besiedeln?!",
-     "speed": 1.5,
-     "style": "Style: a young German guy, around 20, extremely excited and loud, almost shouting with joy, asking an intriguing question with suspense, then excitedly revealing the answer, explosive energy, natural German intonation, normal pitch.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
+     "text": "*p:Stell dir vor, deine *y:Follower / würden eine *y:Insel *y:besiedeln!",
+     "speed": 1.15,
+     "style": "Style: a young German guy, around 20, extremely excited and loud, almost shouting with joy, asking an intriguing question with suspense, then excitedly revealing the answer, explosive energy, natural German intonation, normal pitch.\nPace: brisk. Say the sentence exactly once and stop after \"besiedeln\". Never repeat any words.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
     },
     {
      "id": "L1b",
      "text": "*g:Genau *g:das *g:mache *g:ich!",
-     "speed": 1.5,
+     "speed": 1.25,
      "style": "Style: a young German guy, around 20, extremely excited and loud, almost shouting with joy, asking an intriguing question with suspense, then excitedly revealing the answer, explosive energy, natural German intonation, normal pitch.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
      "pause": 0.3
     }
    ],
    "sfx": [
     {
-     "name": "impact-bass-1",
+     "name": "notification",
      "at": "s01+0.0",
-     "volume": 0.55
-    },
-    {
-     "name": "whoosh",
-     "at": "L1:wäre",
-     "volume": 0.3
+     "volume": 0.6
     },
     {
      "name": "whoosh",
      "at": "L1:Follower",
+     "volume": 0.35
+    },
+    {
+     "name": "pop",
+     "at": "L1:Insel",
      "volume": 0.4
     },
     {
      "name": "impact-bass-2",
-     "at": "L1:Insel",
-     "volume": 0.45
-    },
-    {
-     "name": "whoosh",
      "at": "L1:besiedeln",
-     "volume": 0.45
+     "volume": 0.5
     },
     {
      "name": "impact-bass-2",
      "at": "L1b:Genau",
      "volume": 0.55
-    },
-    {
-     "name": "yippee",
-     "at": "L1b:Genau",
-     "volume": 0.8
-    },
-    {
-     "name": "pop",
-     "at": "L1:wenn",
-     "volume": 0.35
-    },
-    {
-     "name": "pop",
-     "at": "L1:eine",
-     "volume": 0.35
     }
    ]
   },
@@ -137,9 +117,9 @@
      "volume": 0.4
     },
     {
-     "name": "nice",
-     "at": "L2v:VILLA+0.32",
-     "volume": 1.0
+     "name": "yippee",
+     "at": "L2v:VILLA-0.2",
+     "volume": 0.9
     }
    ]
   },
