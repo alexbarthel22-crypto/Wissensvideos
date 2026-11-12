@@ -809,7 +809,7 @@ function drawMarkt(c,nl){const t=REDUCED?0:T,day=nl<.5,X=MKT.cx,Y=MKT.cy,BL='#1f
   c.fillStyle='#fff';c.font='900 3.6px '+FONT;c.textAlign='center';c.fillText('MEERKAUF',2.2,-16.6);
   const lx=-14,ly=-18;c.fillStyle='#4fe0d8';c.beginPath();c.ellipse(lx,ly,2.2,1.2,0,0,TAU);c.fill();c.beginPath();c.moveTo(lx+1.8,ly);c.lineTo(lx+3.2,ly-1);c.lineTo(lx+3.2,ly+1);c.closePath();c.fill();c.fillStyle='#fff';c.beginPath();c.arc(lx-1,ly-.3,.3,0,TAU);c.fill();
   c.strokeStyle='#fff';c.lineWidth=.35;c.beginPath();c.moveTo(lx-2.6,ly+1.8);c.quadraticCurveTo(lx-1.3,ly+1,lx,ly+1.8);c.quadraticCurveTo(lx+1.3,ly+2.6,lx+2.6,ly+1.8);c.stroke();
-  c.fillStyle='#ffd23f';c.font='800 1.1px '+FONT;c.fillText('frisch · günstig · am Meer',0,-22.2);}
+  }
  // Personal-Plakette
  {const KT2=Object.entries(I.jobs||{}).filter(([n,j])=>j&&j[1]===MKT.name).map(([n,j])=>({name:'@'+n,beruf:j[0]})).sort((a,b)=>(b.beruf==='Leitung')-(a.beruf==='Leitung'));
   if(KT2.length&&S*cam.z>14){c.font='800 1.6px '+FONT;c.textAlign='center';const txt=KT2.map(p=>(p.beruf==='Leitung'?'⭐ ':'')+p.name).join('  ·  '),tw=c.measureText(txt).width+2.4;c.fillStyle=BL;c.beginPath();c.roundRect(-tw/2,-29.6,tw,2.6,1.3);c.fill();c.fillStyle='#fff';c.fillText(txt,0,-27.8);}}
