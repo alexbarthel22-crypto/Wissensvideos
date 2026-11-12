@@ -124,10 +124,17 @@
     },
     {
      "id": "L4",
-     "text": "*p:Lisann und *p:Alina wollten es beide leiten – / es gab ein bisschen *r:Streit … / also macht Lisann jetzt die *y:linken *y:Hände / und Alina die *y:rechten!",
+     "text": "*p:Lisann und *p:Alina wollten es beide leiten – / es gab ein bisschen *r:Streit …",
      "speed": 1.1,
      "style": "Style: a young German guy, around 20, genuinely excited, talking to his followers like friends, energetic and warm, natural German intonation, not an announcer, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
      "pause": 0.3
+    },
+    {
+     "id": "L4b",
+     "text": "Also macht Lisann jetzt die *y:linken *y:Hände / und Alina die *y:rechten!",
+     "speed": 1.1,
+     "style": "Style: a young German guy, around 20, genuinely excited, talking to his followers like friends, energetic and warm, natural German intonation, not an announcer, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+     "pause": 2.2
     }
    ],
    "sfx": [
@@ -142,24 +149,59 @@
      "volume": 0.45
     },
     {
-     "name": "pop",
-     "at": "L4:Lisann",
+     "name": "whoosh",
+     "at": "L4:Lisann-0.1",
      "volume": 0.4
     },
     {
-     "name": "pop",
-     "at": "L4:Alina",
+     "name": "whoosh",
+     "at": "L4:Alina-0.1",
      "volume": 0.4
+    },
+    {
+     "name": "impact-bass-1",
+     "at": "L4:Alina+0.47",
+     "volume": 0.55
+    },
+    {
+     "name": "bell",
+     "at": "L4:Alina+0.45",
+     "volume": 0.5
     },
     {
      "name": "impact-bass-2",
      "at": "L4:Streit",
-     "volume": 0.4
+     "volume": 0.45
     },
     {
-     "name": "ka-ching",
-     "at": "L4:rechten",
-     "volume": 0.35
+     "name": "pop",
+     "at": "L4b:Also-1.9",
+     "volume": 0.5
+    },
+    {
+     "name": "impact-bass-2",
+     "at": "L4b:Also-1.5",
+     "volume": 0.45
+    },
+    {
+     "name": "pop",
+     "at": "L4b:Also-1.1",
+     "volume": 0.5
+    },
+    {
+     "name": "impact-bass-2",
+     "at": "L4b:Also-0.7",
+     "volume": 0.45
+    },
+    {
+     "name": "stempel",
+     "at": "L4b:Also-0.2",
+     "volume": 0.5
+    },
+    {
+     "name": "jubel",
+     "at": "L4b:rechten",
+     "volume": 0.4
     }
    ]
   },

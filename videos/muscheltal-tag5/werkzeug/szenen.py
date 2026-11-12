@@ -147,31 +147,64 @@ scene("s02", LILITA + "\n    " + PILL + "\n" + FOLLOW + "\n    " + PT + """
       tl.fromTo("#s02-st", { opacity: 0, scale: 2.6 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, na - .3);
 """ + drops("s02-p", 14, 13, 'fo + .2', 540, 720, "🎉", 480, 700)[1])
 
-# s03 – Nagelstudio Ocean Nails
-scene("s03", LILITA + "\n    " + PILL + """
+# s03 – Nagelstudio Ocean Nails + Zickenkrieg als Boxkampf
+def side(cid, img, name, hand, col, left):
+    return f"""<div id="{cid}" class="s03-pn" style="left:{left}px;background:{col}"><div class="hb"><i id="{cid}-hp"></i></div><img src="assets/img/{img}" alt=""><div class="nm">{name}</div><div class="hd" id="{cid}-hd">{hand}</div></div>"""
+scene("s03", LILITA + "\n    " + PILL + "\n    " + PT + "\n" + FL + """
     #s03-t { top: 290px; font-size: 50px; background: #7b3fe0; }
     #s03-st { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 400px; color: #e8467c; border-color: #e8467c; background: #fff; transform: rotate(-4deg); font-size: 66px; white-space: nowrap; font-family: "Lilita One", sans-serif; }
-    .s03-n { top: 1000px; font-size: 36px; background: #fff; color: #2a1b12; right: auto; margin: 0; }
-    #s03-sx { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 400px; padding: 6px 30px 12px; border-radius: 22px; background: #e8262f; color: #fff; font-family: "Lilita One", sans-serif; font-size: 70px; box-shadow: 0 0 0 6px #2a1b12; transform: rotate(3deg); }
-    #s03-hs { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 520px; font-size: 130px; }""",
+    #s03-fd { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 50%, rgba(40,10,40,.55), rgba(10,5,20,.85)); opacity: 0; }
+    .s03-pn { position: absolute; top: 430px; width: 440px; height: 600px; border-radius: 36px; box-shadow: 0 0 0 7px #2a1b12, 0 14px 0 rgba(0,0,0,.35); overflow: hidden; opacity: 0; }
+    .s03-pn img { position: absolute; left: 20px; top: 70px; width: 400px; height: 400px; border-radius: 26px; }
+    .s03-pn .hb { position: absolute; left: 24px; right: 24px; top: 20px; height: 32px; border-radius: 16px; background: #2a1b12; overflow: hidden; box-shadow: 0 0 0 4px #fff; }
+    .s03-pn .hb i { display: block; height: 100%; width: 100%; background: linear-gradient(90deg, #ff3b3b, #ffd23f, #3fe07a); }
+    .s03-pn .nm { position: absolute; left: 0; right: 0; top: 482px; text-align: center; font-family: "Inter", sans-serif; font-weight: 900; font-size: 36px; color: #fff; text-shadow: 0 3px 0 rgba(0,0,0,.35); }
+    .s03-pn .hd { position: absolute; left: 0; right: 0; top: 530px; margin: 0 auto; width: fit-content; padding: 2px 16px 6px; border-radius: 16px; background: #fff; color: #2a1b12; font-family: "Lilita One", sans-serif; font-size: 40px; opacity: 0; }
+    #s03-vs { position: absolute; left: 0; right: 0; top: 600px; text-align: center; font-family: "Lilita One", sans-serif; font-size: 230px; line-height: 1; color: #ffe14a; -webkit-text-stroke: 16px #2a1b12; paint-order: stroke fill; filter: drop-shadow(0 0 40px rgba(255,80,80,.9)); opacity: 0; }
+    #s03-rd { top: 300px; font-size: 64px; background: #e8262f; font-family: "Lilita One", sans-serif; font-weight: 400; }
+    .s03-pw { position: absolute; font-family: "Lilita One", sans-serif; font-size: 110px; color: #fff; -webkit-text-stroke: 12px #e8262f; paint-order: stroke fill; opacity: 0; }
+    .s03-np { position: absolute; top: 640px; font-size: 110px; opacity: 0; }
+    #s03-km { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 300px; color: #2e9e5b; border-color: #2e9e5b; background: #fff; transform: rotate(-4deg); font-size: 70px; white-space: nowrap; font-family: "Lilita One", sans-serif; }
+    #s03-hs { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 640px; font-size: 200px; opacity: 0; }""",
 """      <div id="s03-t" class="pl">💡 Euer Top-Kommentar</div>
       <div id="s03-st" class="stamp" data-layout-ignore>💅 OCEAN NAILS – GEBAUT!</div>
-      <div id="s03-sx" data-layout-ignore>⚡ STREIT?</div>
+      <div id="s03-fd" data-layout-ignore></div>
+      """ + side("s03-L", "av_lisann.png", "@lisann.lmp", "🤚 LINKE HÄNDE", "linear-gradient(160deg,#ff5e8a,#c2185b)", 50) + side("s03-R", "av_alina.png", "@al1na.mai5", "✋ RECHTE HÄNDE", "linear-gradient(200deg,#5ea8ff,#3949ab)", 590) + """
+      <div id="s03-vs" data-layout-ignore>VS</div>
+      <div id="s03-rd" class="pl" data-layout-ignore>🔔 ROUND 1</div>
+      """ + "".join(f'<div class="s03-np" id="s03-np{i}" data-layout-ignore>💅</div>' for i in range(6)) + "".join(f'<div class="s03-pw" id="s03-pw{i}" data-layout-ignore>{w}</div>' for i, w in enumerate(["POW!", "ZACK!", "BAM!", "PENG!"])) + """
+      <div id="s03-fl" class="fl" data-layout-ignore></div>
       <div id="s03-hs" data-layout-ignore>🤝</div>
-      <div id="s03-l" class="pl s03-n" style="left:60px">⭐🤚 @lisann.lmp – links</div>
-      <div id="s03-r" class="pl s03-n" style="left:540px">⭐✋ @al1na.mai5 – rechts</div>""",
-"""      const ng = at("L3", "Nagelstudio"), hi = at("L3", "hier"), li = at("L4", "Lisann"), al = at("L4", "Alina"), sr = at("L4", "Streit"), lk = at("L4", "linken"), re = at("L4", "rechten");
+      <div id="s03-km" class="stamp" data-layout-ignore>✋ KOMPROMISS! 🤚</div>""",
+"""      const ng = at("L3", "Nagelstudio"), hi = at("L3", "hier"), li = at("L4", "Lisann"), al = at("L4", "Alina"), sr = at("L4", "Streit"), al2 = line("L4b")[0], lk = at("L4b", "linken"), re = at("L4b", "rechten");
       tl.fromTo("#s03-t", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, ng - .3);
       tl.fromTo("#s03-st", { opacity: 0, scale: 2.8 }, { opacity: 1, scale: 1, duration: .25, ease: "back.out(2)" }, hi - .05);
-      tl.to(["#s03-t", "#s03-st"], { opacity: 0, duration: .2 }, li - .2);
-      tl.fromTo("#s03-sx", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .25, ease: "back.out(2)" }, sr - .1);
-      tl.to("#s03-sx", { x: 14, duration: .05, yoyo: true, repeat: 7, ease: "none" }, sr + .15);
-      tl.to("#s03-sx", { opacity: 0, scale: .4, duration: .2 }, lk - .4);
-      tl.fromTo("#s03-hs", { opacity: 0, scale: .2, rotation: -30 }, { opacity: 1, scale: 1, rotation: 0, duration: .35, ease: "back.out(3)" }, lk - .3);
-      tl.fromTo("#s03-l", { opacity: 0, x: -120 }, { opacity: 1, x: 0, duration: .3, ease: "back.out(2)" }, li - .1);
-      tl.fromTo("#s03-r", { opacity: 0, x: 120 }, { opacity: 1, x: 0, duration: .3, ease: "back.out(2)" }, al - .1);
-      tl.to("#s03-l", { scale: 1.2, backgroundColor: "#ffd23f", duration: .14, yoyo: true, repeat: 1 }, lk);
-      tl.to("#s03-r", { scale: 1.2, backgroundColor: "#ffd23f", duration: .14, yoyo: true, repeat: 1 }, re);""")
+      tl.to(["#s03-t", "#s03-st"], { opacity: 0, duration: .2 }, li - .25);
+      tl.to("#s03-fd", { opacity: 1, duration: .25 }, li - .2);
+      tl.fromTo("#s03-L", { opacity: 1, x: -600, rotation: -8 }, { x: 0, rotation: -3, duration: .3, ease: "back.out(1.6)" }, li - .1);
+      tl.fromTo("#s03-R", { opacity: 1, x: 600, rotation: 8 }, { x: 0, rotation: 3, duration: .3, ease: "back.out(1.6)" }, al - .1);
+      tl.fromTo("#s03-vs", { opacity: 0, scale: 5 }, { opacity: 1, scale: 1, duration: .22, ease: "power3.in" }, al + .25);
+      tl.to("#s03-stage", { x: 18, duration: .04, yoyo: true, repeat: 7, ease: "none" }, al + .47);
+      tl.fromTo("#s03-rd", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .22, ease: "back.out(2)" }, al + .45);
+      tl.to("#s03-vs", { scale: 1.1, duration: .15, yoyo: true, repeat: 5 }, al + .5);
+      // Kampf: Nagellack fliegt hin und her, Lebensbalken sinken
+      const F = sr + .1, E = al2 - .35, n = 6, dt = (E - F) / n;
+      for (let i = 0; i < n; i++) { const t = F + i * dt, lr = i % 2 === 0, from = lr ? 260 : 820, to = lr ? 820 : 260;
+        tl.fromTo("#s03-np" + i, { opacity: 1, x: from - 55, y: 0, rotation: 0, scale: .8 }, { x: to - 55, y: -60, rotation: lr ? 540 : -540, scale: 1.1, duration: dt * .8, ease: "power1.in", immediateRender: false }, t);
+        tl.set("#s03-np" + i, { opacity: 0 }, t + dt * .8);
+        const tg = lr ? "#s03-R" : "#s03-L";
+        tl.to(tg, { x: lr ? 30 : -30, duration: .05, yoyo: true, repeat: 3, ease: "none" }, t + dt * .8);
+        tl.to(tg + "-hp", { width: (100 - (Math.floor(i / 2) + 1) * 20) + "%", duration: .15 }, t + dt * .8);
+        const pw = "#s03-pw" + (i % 4);
+        tl.fromTo(pw, { opacity: 1, scale: .3, left: lr ? "620px" : "80px", top: (500 + (i % 3) * 120) + "px", rotation: lr ? 12 : -12 }, { scale: 1.1, duration: .15, ease: "back.out(3)", immediateRender: false }, t + dt * .8);
+        tl.set(pw, { opacity: 0 }, t + dt * .8 + Math.min(.35, dt * .9)); }
+      tl.to(["#s03-vs", "#s03-rd"], { opacity: 0, duration: .15 }, al2 - .3);
+      tl.fromTo("#s03-fl", { opacity: .9 }, { opacity: 0, duration: .4, immediateRender: false }, al2 - .25);
+      tl.fromTo("#s03-hs", { opacity: 0, scale: .2, rotation: -30 }, { opacity: 1, scale: 1, rotation: 0, duration: .35, ease: "back.out(3)" }, al2 - .25);
+      tl.fromTo("#s03-km", { opacity: 0, scale: 2.8 }, { opacity: 1, scale: 1, duration: .25, ease: "back.out(2)" }, al2 - .15);
+      tl.to(["#s03-L-hp", "#s03-R-hp"], { width: "100%", duration: .4 }, lk);
+      tl.fromTo("#s03-L-hd", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1.15, duration: .3, ease: "back.out(2.6)" }, lk);
+      tl.fromTo("#s03-R-hd", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1.15, duration: .3, ease: "back.out(2.6)" }, re);""", blur=False)
 
 # s04 – Yacht für Marie
 scene("s04", LILITA + "\n    " + PILL + """
