@@ -3001,7 +3001,7 @@ const MKQ={
  acai:{ic:'🫐',t:'Açaí-Bowl holen',ort:'Açaí-Stand',hint:'An die Theke vom Açaí-Stand gehen',btn:'🫐 Açaí-Bowl mitnehmen',em:['🫐','🍓','💜','🍌','🫐']},
  doener:{ic:'🥙',t:'Döner holen',ort:'Dönerbude',hint:'An die Theke der Dönerbude gehen',btn:'🥙 Döner mit alles mitnehmen',em:['🥙','🌶️','🧅','🍅','🥙']},
  baeckerei:{ic:'🥐',t:'Zimtschnecken holen',ort:'Bäckerei',hint:'An die Theke der Bäckerei gehen',btn:'🥐 Fabiennes berühmte Zimtschnecken mitnehmen',em:['🥐','🥨','🤍','🧁','🍞']},
- nagel:{ic:'💅',t:'Nägel machen lassen',ort:'Ocean Nails',hint:'An einen Maniküre-Tisch bei Ocean Nails gehen',btn:'💅 Nägel machen lassen',em:['💅','✨','🐚','💖','✨']},
+ nagel:{ic:'💅',t:'Lass dir deine Nägel bei Ocean Nails machen',ort:'Ocean Nails',hint:'An einen Maniküre-Tisch bei Ocean Nails gehen',btn:'💅 Nägel machen lassen',em:['💅','✨','🐚','💖','✨']},
  bar:{ic:'🍹',t:'Einen „Dirty Muschel“ an der Bar trinken',ort:'Strandbar',hint:'An die Bar der Strandbar gehen',btn:'🍹 Einen „Dirty Muschel“ trinken',em:['🍹','🌴','🐚','🍍','🍹']},
  steg:{ic:'💃',t:'Auf dem Steg tanzen',ort:'Strandbar',hint:'Auf den Steg der Strandbar gehen',btn:'💃 Auf dem Steg tanzen',em:['💃','🎶','✨','🕺','🎶']},
  werkstatt:{ic:'🛵',t:'Moped reparieren lassen',ort:'Moped-Werkstatt',hint:'Mit dem 🛵 Moped zum Rolltor der Werkstatt fahren',btn:'🛵 Moped reparieren lassen',em:['🛵','🔧','✨','⚙️','🔩']},
@@ -3011,13 +3011,14 @@ const MKQ={
  beet:{ic:'💧',t:'Beim Gießen der Beete vorm Palast helfen',ort:'',hint:'An eines der beiden Blumenbeete vor dem Palast gehen',btn:'💧 Beete gießen',em:['💧','🌷','💦','🌸','🌼']},
  teilen:{ic:'📲',t:'Teile deinen Muschelpass 1× mit deinen Freunden',ort:'',hint:'Muschelpass öffnen → „In meiner Story teilen“'},
  pass:{ic:'🪪',t:'Schau dir den Muschelpass eines anderen Users an',ort:'',hint:'Beim Erkunden eine Person oder Hütte antippen'},
+ yacht:{ic:'🛥️',t:'Blicke auf die Yacht',ort:'',hint:'Ans Ufer gegenüber der Yacht „White Pearl“ gehen',btn:'👀 Auf die White Pearl blicken',em:['🛥️','🎉','🪩','🎶','✨']},
  bm:{ic:'👑',t:'Der Bürgermeisterin Hallo sagen',ort:'',hint:'Auf dem Muschelplatz die Bürgermeisterin antippen',btn:'',em:['👑','👋','✨','🐚','💛']}};
 const mkLeiter=o=>PEOPLE.filter(p=>p.ort===o&&p.beruf==='Leitung').map(p=>p.name)[0]||'';
 function mkQDef(id){if(id.startsWith('hut:')){const n=id.slice(4);return{ic:'🏠',t:'Besuche <b>'+esc(n)+'</b> an der Hütte',hint:'Hütte antippen und den Muschelpass ansehen',hut:n};}
- const q=MKQ[id]||{ic:'❓',t:id,hint:''};let wer='';if(id==='bm'){const m=PEOPLE.find(p=>/bürgermeister/i.test(p.beruf||''));wer=m?m.name:'';}else if(id==='beet'){const m=PEOPLE.find(p=>p.beruf==='Palast-Leitung');return{...q,t:m?'Hilf <b>'+esc(m.name)+'</b> beim Gießen der Beete vorm Palast':q.t};}else if(id==='bau'){const b=mkProjekt();return{...q,t:'Hilf mit beim Bau: '+(b?esc(b.emoji+' '+b.name):'Baustelle'),bau:b};}else if(q.ort)wer=id==='steg'?(PEOPLE.find(p=>p.ort==='Strandbar'&&p.beruf==='Team')||{}).name||'':mkLeiter(q.ort);
+ const q=MKQ[id]||{ic:'❓',t:id,hint:''};let wer='';if(id==='bm'){const m=PEOPLE.find(p=>/bürgermeister/i.test(p.beruf||''));wer=m?m.name:'';}else if(id==='beet'){const m=PEOPLE.find(p=>p.beruf==='Palast-Leitung');return{...q,t:m?'Hilf <b>'+esc(m.name)+'</b> beim Gießen der Beete vorm Palast':q.t};}else if(id==='bau'){const b=mkProjekt();return{...q,t:'Hilf mit beim Bau: '+(b?esc(b.emoji+' '+b.name):'Baustelle'),bau:b};}else if(id==='yacht'){const m=PEOPLE.find(p=>p.gb===YACHT);return{...q,t:m?'Blicke auf die Yacht von <b>'+esc(m.name)+'</b>':q.t};}else if(id==='nagel')return q;else if(q.ort)wer=id==='steg'?(PEOPLE.find(p=>p.ort==='Strandbar'&&p.beruf==='Team')||{}).name||'':mkLeiter(q.ort);
  return{...q,t:q.t+(wer?' <i>bei '+esc(wer)+'</i>':'')};}
 function mkVorschlag(me){const h=mkTag(),r=mkR(mkH(me.name+h));const pick=a=>a[Math.floor(r()*a.length)];const own=me.ort||'';
- const A=['acai','doener','baeckerei','bar','steg','werkstatt','nagel'].filter(k=>MKQ[k].ort!==own||!own),B=['palast','villa','bm','beet'].concat(new Date().getHours()>=6&&new Date().getHours()<22&&mkProjekt()?['bau']:[]).filter(k=>!(k==='palast'&&/palast/i.test(own)));
+ const A=['acai','doener','baeckerei','bar','steg','werkstatt','nagel'].filter(k=>MKQ[k].ort!==own||!own),B=['palast','villa','bm','beet'].concat(PEOPLE.some(p=>p.gb===YACHT)?['yacht']:[]).concat(new Date().getHours()>=6&&new Date().getHours()<22&&mkProjekt()?['bau']:[]).filter(k=>!(k==='palast'&&/palast/i.test(own)));
  const H=PEOPLE.filter(p=>p.p&&!p.gb&&p!==me&&p.nr<=limit&&p.isl===me.isl&&p.isl.open);const hut=H.length?'hut:'+pick(H).name:'pass';return[pick(A),pick(B),pick([hut,'pass','teilen'])];}
 async function mkQuests(){const me=mkMe();if(!me)return null;const r=await mk('quests',{vorschlag:mkVorschlag(me)});if(r&&r.ok)MK.quests=r.quests;mkChip();mkCard();return MK.quests;}
 // Ziele (Weltkoordinaten) und Bereiche, in denen der Knopf erscheint
@@ -3031,6 +3032,7 @@ function mkZiel2(id){const geb=t=>GEB.find(g=>g.typ===t);
  if(id==='werkstatt'){const g=geb('werkstatt');return g&&mkNah(g.cx-8*(g.dir||1),g.cy+1,{r:6,g});}
  if(id==='bar'||id==='steg'){const g=geb('strandbar');if(!g)return null;const d=g.dir||1,sx=(g.sea-g.cx)*d;if(id==='steg')return mkNah(g.cx+(sx+6)*d,g.cy,{r:9,g});const L=TAPS.find(t=>t[2]&&t[2].ort===g.name&&t[2].beruf==='Leitung');return L?{x:L[0]+3,y:L[1]+9,r:6,g}:mkNah(g.cx+(sx-30)*d,g.cy+4,{r:7,g});}
  if(id==='palast')return mkNah(0,36*PAL_S+6,{r:8});
+ if(id==='yacht'){if(!mkZiel2.yt){const Y=YACHT,a=Math.atan2(Y.cy-MAIN.y,Y.cx-MAIN.x);let d=Math.hypot(Y.cx-MAIN.x,Y.cy-MAIN.y),x=Y.cx,y=Y.cy;while(d>0&&!canWalk(x,y)){d-=2;x=MAIN.x+Math.cos(a)*d;y=MAIN.y+Math.sin(a)*d;}mkZiel2.yt={x,y,r:9};}return mkZiel2.yt;}
  if(id==='villa'){const g=geb('villa');return g&&mkNah(g.cx,g.y1+3,{r:8,g});}
  if(id==='bau'){const b=mkProjekt(),B=b&&BAU.find(x=>x.name===b.name);return B&&mkNah(B.cx,B.y1+4,{r:9});}
  if(id.startsWith('hut:')){const p=byName.get(id.slice(4));return p&&p.p?mkNah(p.p.x,p.p.y+8,{r:0}):null;}
@@ -3061,7 +3063,7 @@ function mkRoute(x0,y0,x1,y1){const st=3,X0=Math.min(x0,x1)-60,Y0=Math.min(y0,y1
  if(end<0)return[[x0,y0],[x1,y1]];
  const pts=[];let c=end;while(c!==prev[c]){let x=X0+(c%nx)*st,y=Y0+((c/nx)|0)*st;const w=wegAbst(x,y);if(w){if(w.dx<4)x=w.cx;if(w.dy<4)y=w.cy;}pts.unshift([x,y]);c=prev[c];}
  pts.unshift([x0,y0]);pts.push([x1,y1]);const out=[pts[0]];for(let a=1;a<pts.length-1;a++){const p0=out[out.length-1],p1=pts[a],p2=pts[a+1];if(Math.abs((p1[0]-p0[0])*(p2[1]-p1[1])-(p1[1]-p0[1])*(p2[0]-p1[0]))>.01)out.push(p1);}out.push(pts[pts.length-1]);return out;}
-function mkHin(i){const id=(MK.quests||[])[i];const z=id&&mkZiel2(id);if(!z)return;MK.hin={i,z,t:0};mkHinUpd(true);const q=mkQDef(id);mkToast(q.ic+' Folge der Linie'+(z.r?' bis '+(id==='steg'?'auf den Steg':id==='bm'?'zur Bürgermeisterin':id==='beet'?'zum Beet':id==='werkstatt'?'zum Rolltor – mit dem 🛵 Moped':id==='bau'?'zum Bauzaun':id==='villa'?'zum Tor':id==='palast'?'zum Eingang':'an die Theke'):' bis zur Hütte'));}
+function mkHin(i){const id=(MK.quests||[])[i];const z=id&&mkZiel2(id);if(!z)return;MK.hin={i,z,t:0};mkHinUpd(true);const q=mkQDef(id);mkToast(q.ic+' Folge der Linie'+(z.r?' bis '+(id==='steg'?'auf den Steg':id==='bm'?'zur Bürgermeisterin':id==='beet'?'zum Beet':id==='werkstatt'?'zum Rolltor – mit dem 🛵 Moped':id==='bau'?'zum Bauzaun':id==='villa'?'zum Tor':id==='palast'?'zum Eingang':id==='yacht'?'ans Ufer gegenüber der Yacht':'an die Theke'):' bis zur Hütte'));}
 function mkHinUpd(force){const h=MK.hin;if(!h||!WK.on)return;const t=performance.now();if(!force&&t-h.t<900)return;h.t=t;const z=mkZiel2(MK.quests[h.i])||h.z;h.z=z;const L=WK.L||{h:1};h.pts=mkRoute(WK.x,WK.y+4.4*(L.h||1),z.x,z.y);}
 // feine, transparente Linie: auf dem Boden (vor Gebäuden gezeichnet) und auf Ladengeländen über dem Boden, unter allen Gegenständen
 function MKLINE(c,g){const h=MK.hin;if(!h||!h.pts||!WK.on)return;c.save();world(c);if(g){c.beginPath();c.rect(g.x0,g.y0,g.x1-g.x0,g.y1-g.y0);c.clip();}
