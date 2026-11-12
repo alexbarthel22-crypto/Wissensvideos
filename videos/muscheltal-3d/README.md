@@ -8,3 +8,7 @@
     http://localhost:8077/videos/muscheltal-3d/insel3d.html?flug=1
 
 Parameter: `still=1` (ein Standbild) · `fx=0` (ohne Nachbearbeitung) · `sonne=Grad` · `ziel=x,y` · `insel=0|1` · `zeit=tag|nacht` · `name=@user` (Hütte mit Pin) · `fokus=1` (Kamera auf die Hütte) · `flug=1` (Kamera kreist) · `winkel=Grad` · `hoehe=0..1` · `zoom=Faktor` · `w=1080&h=1920` (feste Größe). `window.BEREIT` wird `true`, sobald die Szene steht.
+
+## Am Handy testen
+Online-Fassung (privat): https://claude.ai/artifact/JqNYrQMucF699ZtjdwZ2WH – links Daumen = laufen (Joystick), rechts wischen = umsehen, Knopf „Rennen“. Auf Touch-Geräten startet automatisch das freie Laufen mit leichterer Grafik (`fx=1` erzwingt alle Effekte).
+Neu hochladen: `index.html` aus `insel3d.html` erzeugen (Bibliotheken von cdnjs/jsDelivr, Karte als `karte.html` daneben).
