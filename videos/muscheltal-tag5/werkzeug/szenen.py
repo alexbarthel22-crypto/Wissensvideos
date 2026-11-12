@@ -90,59 +90,40 @@ CMT = """.cmt { position: absolute; left: 140px; width: 800px; border-radius: 30
 LOCK = '<svg viewBox="0 0 64 64" width="110" height="110"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffd84d"/><stop offset="1" stop-color="#ff8a00"/></linearGradient></defs><path d="M20 28 V20 a12 12 0 0 1 24 0 V28" fill="none" stroke="#2a1b12" stroke-width="6" stroke-linecap="round"/><rect x="12" y="27" width="40" height="30" rx="9" fill="url(#lg)" stroke="#2a1b12" stroke-width="4"/><circle cx="32" cy="40" r="4.5" fill="#2a1b12"/><rect x="30" y="42" width="4" height="8" rx="2" fill="#2a1b12"/><path d="M54 8 l2 5 5 2 -5 2 -2 5 -2 -5 -5 -2 5 -2z" fill="#fff"/></svg>'
 HW = [("ICH", "Ich", "<br>"), ("VERSCHENKE", "verschenke", "<br>"), ("EINE", "eine", ""), ("VILLA!", "VILLA", "")]
 
-EX = [(40, 175, -14, "#ff3d7f", "#ff9a3d"), (300, 200, 10, "#2fd6ff", "#7b3fe0"), (560, 170, -8, "#ffe14a", "#ff7a1a"), (820, 190, 14, "#b45cff", "#ff3d9a"), (40, 1290, 12, "#2fd6ff", "#2a6bff"), (330, 1350, -10, "#ffe14a", "#ff3d7f"), (620, 1290, 8, "#5cff9d", "#13b5a0"), (150, 1490, -6, "#ff3d7f", "#ffb21a"), (520, 1510, 12, "#2fd6ff", "#b45cff")]
-# s01 – Was wäre, wenn deine Follower eine ganze Insel besiedeln? (Text füllt den Bildschirm)
-QL = [[("WAS", "Was"), ("WÄRE,", "wäre")], [("WENN", "wenn"), ("DEINE", "deine")], [("FOLLOWER", "Follower")], [("EINE", "eine"), ("INSEL", "Insel")], [("BESIEDELN?!", "besiedeln")]]
+# s01 – Stil wie Tag 1 „Ich habe euch eine Insel gekauft“: pinke Balken, Schlüsselwörter werden gelb, Sticker „BESIEDELT!“
+QL = [[("STELL", "Stell"), ("DIR", "dir"), ("VOR,", "vor")], [("DEINE", "deine"), ("FOLLOWER", "Follower")], [("WÜRDEN", "würden"), ("EINE", "eine")], [("INSEL", "Insel")], [("BESIEDELN!", "besiedeln")]]
 QW = [w for ln in QL for w in ln]
-YW = ("FOLLOWER", "INSEL", "BESIEDELN?!")
+YW = ("FOLLOWER", "INSEL", "BESIEDELN!")
+SP = [(110, 560, 46), (900, 600, 34), (70, 960, 30), (930, 1010, 44), (180, 1330, 38), (820, 1290, 30)]
 scene("s01", LILITA + "\n    " + PT + "\n" + FL + """
-    #s01-ray { position: absolute; left: -460px; top: -40px; width: 2000px; height: 2000px; border-radius: 50%; background: repeating-conic-gradient(rgba(255,240,150,.45) 0 9deg, rgba(255,255,255,0) 9deg 22deg); -webkit-mask: radial-gradient(circle, #000 20%, transparent 62%); }
-    #s01-dk { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 42%, rgba(10,20,60,.15), rgba(10,20,60,.55) 75%); }
-    #s01-hk { position: absolute; left: 50px; width: 980px; top: 170px; height: 1240px; display: flex; flex-direction: column; justify-content: center; align-items: center; font-family: "Lilita One", sans-serif; color: #fff; line-height: .98; transform-origin: 50% 45%; }
-    #s01-hk .ln { white-space: nowrap; text-align: center; }
-    #s01-hk span { position: relative; display: inline-block; margin: 0 .05em; transform-origin: 50% 55%; }
-    #s01-hk i { font-style: normal; display: inline-block; -webkit-text-stroke: .1em #1a0f08; paint-order: stroke fill; filter: drop-shadow(0 .07em 0 rgba(0,0,0,.4)); }
-    #s01-hk span.y i { color: #ffe14a; }
-    #s01-hk .rg { position: absolute; left: 50%; top: 50%; width: 300px; height: 300px; margin: -150px 0 0 -150px; border-radius: 50%; border: 14px solid #fff; box-shadow: 0 0 40px #ffe14a, inset 0 0 40px #ffe14a; opacity: 0; pointer-events: none; }
-    #s01-hk .sk { position: absolute; left: 50%; top: 50%; width: 60px; height: 60px; margin: -30px 0 0 -30px; font-size: 60px; line-height: 60px; text-align: center; color: #ffe14a; text-shadow: 0 0 20px #fff; opacity: 0; font-style: normal; -webkit-text-stroke: 0; }
-    #s01-hk b { position: absolute; left: 0; top: 0; font-weight: 400; color: #fff; opacity: 0; pointer-events: none; text-shadow: 0 0 30px #fff, 0 0 80px #ffe14a; }
-    .s01-ex { position: absolute; width: 190px; height: 190px; opacity: 0; }
-    .s01-ex .bs { position: absolute; inset: -18px; clip-path: polygon(50% 0%,58% 22%,79% 9%,74% 32%,97% 31%,80% 47%,100% 62%,77% 66%,85% 89%,63% 78%,50% 100%,39% 78%,15% 89%,23% 66%,0% 62%,20% 47%,3% 31%,26% 32%,21% 9%,42% 22%); opacity: .95; }
-    .s01-ex .qb { position: absolute; left: 22px; top: 22px; width: 146px; height: 146px; border-radius: 50%; border: 7px solid #1a0f08; box-shadow: 0 10px 0 #1a0f08, inset 0 -14px 0 rgba(0,0,0,.18), inset 0 10px 0 rgba(255,255,255,.35); display: grid; place-items: center; overflow: hidden; }
-    .s01-ex .qb::before { content: ""; position: absolute; left: 22px; top: 14px; width: 54px; height: 28px; border-radius: 50%; background: rgba(255,255,255,.75); transform: rotate(-25deg); }
-    .s01-ex .qb b { position: relative; font-family: "Lilita One", sans-serif; font-weight: 400; font-size: 112px; line-height: 1; color: #fff; -webkit-text-stroke: 9px #1a0f08; paint-order: stroke fill; margin-top: 6px; }
-    #s01-st { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 700px; z-index: 6; padding: 14px 40px 22px; box-shadow: 0 0 0 8px #2a1b12, 0 16px 0 rgba(0,0,0,.35), 0 0 80px 20px rgba(255,255,255,.7); color: #2e9e5b; border-color: #2e9e5b; background: #fff; transform: rotate(-4deg); font-size: 120px; line-height: 1.05; text-align: center; white-space: nowrap; font-family: "Lilita One", sans-serif; }""",
+    #s01-ray { position: absolute; left: -460px; top: 300px; width: 2000px; height: 2000px; border-radius: 50%; background: repeating-conic-gradient(rgba(255,250,210,.28) 0 8deg, rgba(255,255,255,0) 8deg 20deg); -webkit-mask: radial-gradient(circle, #000 15%, transparent 60%); }
+    #s01-hk { position: absolute; left: 40px; right: 40px; top: 620px; text-align: center; font-family: "Lilita One", sans-serif; }
+    #s01-hk .ln { display: block; width: fit-content; margin: 0 auto 16px; padding: 4px 34px 14px; border-radius: 30px; background: #ff2e7e; box-shadow: 0 0 0 6px #1a0f08, 0 12px 0 rgba(0,0,0,.35); font-size: 112px; line-height: 1.05; white-space: nowrap; transform-origin: 50% 60%; }
+    #s01-hk span { display: inline-block; margin: 0 .08em; color: #fff; -webkit-text-stroke: 8px #1a0f08; paint-order: stroke fill; transform-origin: 50% 65%; }
+    #s01-gk { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 400px; padding: 6px 36px 14px; border-radius: 26px; background: #fff; border: 8px solid #ff2e7e; box-shadow: 0 0 0 5px #1a0f08, 0 12px 0 rgba(0,0,0,.3); font-family: "Lilita One", sans-serif; font-size: 96px; line-height: 1; color: #ff2e7e; transform: rotate(-6deg); }
+    .s01-sp { position: absolute; color: #fff; text-shadow: 0 0 18px #fff, 0 0 30px #ffe14a; opacity: 0; line-height: 1; }
+    #s01-st { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 820px; z-index: 6; padding: 14px 40px 22px; box-shadow: 0 0 0 8px #2a1b12, 0 16px 0 rgba(0,0,0,.35), 0 0 80px 20px rgba(255,255,255,.7); color: #2e9e5b; border-color: #2e9e5b; background: #fff; transform: rotate(-4deg); font-size: 120px; line-height: 1.05; text-align: center; white-space: nowrap; font-family: "Lilita One", sans-serif; }""",
 """      <div id="s01-ray" data-layout-ignore></div>
-      <div id="s01-dk" data-layout-ignore></div>
       <div id="s01-fl" class="fl" data-layout-ignore></div>
-      <div id="s01-hk" data-layout-allow-overlap>""" + "".join('<div class="ln">' + "".join(f'<span id="s01-w{QW.index(w)}" class="{"y" if w[0] in YW else ""}"><i id="s01-wi{QW.index(w)}">{w[0]}</i><b id="s01-wg{QW.index(w)}" data-layout-ignore>{w[0]}</b><u class="rg" id="s01-rg{QW.index(w)}" data-layout-ignore></u>' + "".join(f'<em class="sk" id="s01-sk{QW.index(w)}_{m}" data-layout-ignore>✦</em>' for m in range(10)) + '</span>' for w in ln) + '</div>' for ln in QL) + """</div>
-      """ + "".join(f'<div id="s01-ex{k}" class="s01-ex" data-layout-ignore style="left:{x}px;top:{y}px"><div class="bs" id="s01-bs{k}" style="background:{c2}"></div><div class="qb" style="background:radial-gradient(circle at 35% 30%, {c}, {c2})"><b>?</b></div></div>' for k, (x, y, r, c, c2) in enumerate(EX)) + """
+      <div id="s01-gk" data-layout-ignore>BESIEDELT!</div>
+      <div id="s01-hk">""" + "".join('<div class="ln" id="s01-l' + str(j) + '">' + "".join(f'<span id="s01-w{QW.index(w)}">{w[0]}</span>' for w in ln) + '</div>' for j, ln in enumerate(QL)) + """</div>
+      """ + "".join(f'<div class="s01-sp" id="s01-sp{k}" data-layout-ignore style="left:{x}px;top:{y}px;font-size:{f}px">✦</div>' for k, (x, y, f) in enumerate(SP)) + """
       <div id="s01-st" class="stamp" data-layout-ignore>✅ GENAU DAS<br>MACHE ICH!</div>""" + drops("s01-p", 22, 5, 'ge', 540, 900, "🏠", 600, 820)[0] + drops("s01-q2", 16, 9, 'ge + .2', 540, 900, "🐚", 520, 760)[0],
-"""      const ge = at("L1b", "Genau"), hk = document.getElementById("s01-hk");
-      // jede Zeile auf volle Breite, dann alles auf die Höhe einpassen
-      const lns = [...hk.querySelectorAll(".ln")];
-      [181, 171, 197, 162, 137].forEach((f, j) => lns[j].style.fontSize = f + "px"); // fest gemessen (Lilita One)
-      tl.set(["#s01-ray", "#s01-dk"], { opacity: 1 }, 0);
-      
-      tl.fromTo("#s01-ray", { rotation: 0 }, { rotation: 70, duration: 6, ease: "none" }, 0);
-      tl.fromTo("#s01-fl", { opacity: .9 }, { opacity: 0, duration: .25, immediateRender: false }, 0);
+"""      const ge = at("L1b", "Genau"), be = at("L1", "besiedeln");
+      tl.set(["#s01-ray"], { opacity: 1 }, 0);
+      tl.fromTo("#s01-ray", { rotation: 0 }, { rotation: 40, duration: 4, ease: "none" }, 0);
+      tl.fromTo("#s01-gk", { rotation: -6 }, { rotation: -2, duration: .5, yoyo: true, repeat: 7, ease: "sine.inOut" }, 0);
       """ + "\n      ".join(
-        f'{{ const t = at("L1", "{k}") - .03; tl.set("#s01-w{i}", {{ zIndex: 5 }}, t); tl.set("#s01-w{i}", {{ zIndex: 0 }}, t + .45);'
-        f' tl.to("#s01-wi{i}", {{ scale: {1.45 if len(w) > 7 else 1.9}, rotation: {(-1)**i * 4}, color: "#ffffff", textShadow: "0 0 30px #fff, 0 0 90px #ffe14a, 0 0 180px #ff3d7f", duration: .07, ease: "power3.out" }}, t);'
-        f' tl.to("#s01-wi{i}", {{ scale: 1, rotation: 0, color: "{"#ffe14a" if w in YW else "#ffffff"}", textShadow: "0 0 22px rgba(255,240,170,.95)", duration: .35, ease: "back.out(2.5)" }}, t + .16);'
-        f' tl.fromTo("#s01-wg{i}", {{ opacity: .95, scale: 1 }}, {{ opacity: 0, scale: 5, duration: .4, ease: "power2.in", immediateRender: false }}, t);'
-        f' tl.fromTo("#s01-rg{i}", {{ opacity: 1, scale: .2 }}, {{ opacity: 0, scale: {3.2 if len(w) > 7 else 2.4}, duration: .45, ease: "power2.out", immediateRender: false }}, t);'
-        f' for (let m = 0; m < 10; m++) {{ const an = m / 10 * 6.283 + {i}, r = {300 if len(w) > 7 else 220} + (m % 3) * 50; tl.fromTo("#s01-sk{i}_" + m, {{ opacity: 1, x: 0, y: 0, scale: 1.4, rotation: 0 }}, {{ opacity: 0, x: Math.cos(an) * r, y: Math.sin(an) * r * .8, scale: .3, rotation: 180, duration: .5, ease: "power3.out", immediateRender: false }}, t); }}'
-        f' tl.fromTo("#s01-fl", {{ opacity: {.5 if i in (4, 6, 7) else .25} }}, {{ opacity: 0, duration: .2, immediateRender: false }}, t);'
-        f' tl.fromTo("#s01-hk", {{ x: 0, y: 0 }}, {{ x: {(-1)**i * 14}, y: {(-1)**(i+1) * 10}, duration: .035, yoyo: true, repeat: 5, ease: "none", immediateRender: false }}, t); }}'
+        f'tl.to("#s01-w{i}", {{ scale: 1.22, duration: .09, yoyo: true, repeat: 1, ease: "power2.out" }}, at("L1", "{k}") - .02);'
+        + (f' tl.to("#s01-w{i}", {{ color: "#ffe500", duration: .05 }}, at("L1", "{k}") - .02);' if w in YW else '')
         for i, (w, k) in enumerate(QW)) + """
-            tl.fromTo("#s01-hk", { opacity: 1 }, { opacity: .25, duration: .2, immediateRender: false }, ge - .1);
+      """ + "\n      ".join(f'tl.fromTo("#s01-sp{k}", {{ opacity: 0, scale: .2, rotation: 0 }}, {{ opacity: 1, scale: 1, rotation: 90, duration: .3, yoyo: true, repeat: 5, ease: "sine.inOut", immediateRender: false }}, {k * .23:.2f});' for k in range(len(SP))) + """
+      tl.fromTo("#s01-fl", { opacity: .9 }, { opacity: 0, duration: .45, immediateRender: false }, be);
+      tl.to("#s01-l4", { scale: 1.12, duration: .12, yoyo: true, repeat: 1 }, be);
+      tl.to("#s01-gk", { scale: 1.25, duration: .12, yoyo: true, repeat: 1 }, be + .05);
+      tl.to("#s01-hk", { x: 12, duration: .04, yoyo: true, repeat: 5, ease: "none" }, be);
+      tl.to("#s01-hk", { opacity: 0, y: -40, duration: .2 }, ge - .15);
       tl.fromTo("#s01-fl", { opacity: .85 }, { opacity: 0, duration: .35, immediateRender: false }, ge);
-      """ + "\n      ".join(f'{{ const t = at("L1", "{k}") - .05; tl.fromTo("#s01-ex{n % 9}", {{ opacity: 1, scale: 0, rotation: {EX[n % 9][2] * 4}, y: 40 }}, {{ opacity: 1, scale: 1.3, rotation: {EX[n % 9][2]}, y: 0, duration: .16, ease: "back.out(3.5)", immediateRender: false }}, t);'
-        f' tl.to("#s01-ex{n % 9}", {{ scale: 1, duration: .18, ease: "elastic.out(1.2, .4)" }}, t + .16);'
-        f' tl.fromTo("#s01-bs{n % 9}", {{ rotation: 0, scale: .6 }}, {{ rotation: 140, scale: 1.15, duration: .7, ease: "power2.out", immediateRender: false }}, t);'
-        f' tl.to("#s01-ex{n % 9}", {{ rotation: {-EX[n % 9][2]}, y: -14, duration: .2, yoyo: true, repeat: 1, ease: "sine.inOut" }}, t + .34);'
-        f' tl.to("#s01-ex{n % 9}", {{ opacity: 0, scale: 0, rotation: {EX[n % 9][2] * 3}, duration: .18, ease: "back.in(2)" }}, t + .78); }}' for n, (w, k) in enumerate(QW)) + """
       tl.fromTo("#s01-st", { opacity: 0, scale: .1, rotation: -20 }, { opacity: 1, scale: 1, rotation: -4, duration: .32, ease: "back.out(3.2)" }, ge - .05);
       tl.to("#s01-st", { scale: 1.08, duration: .18, yoyo: true, repeat: 3, ease: "sine.inOut" }, ge + .3);
 """ + drops("s01-p", 22, 5, 'ge', 540, 900, "🏠", 600, 820)[1] + drops("s01-q2", 16, 9, 'ge + .2', 540, 900, "🐚", 520, 760)[1])
