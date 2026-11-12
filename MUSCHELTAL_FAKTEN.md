@@ -263,8 +263,12 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - **Yacht**: Partylichter (Lichterketten, Disco-Glühen, beleuchtete Fenster/Pool) leuchten rund um die Uhr, auch tagsüber.
 
 ## Video Tag 5 (12.11., `videos/muscheltal-tag5/`)
-- Opener: **„Ich verschenke eine Villa!“** – im **nächsten Video** wird **ein Platz in der bestehenden Strandvilla** verlost (bei @emiliamarie155 & @lea.3818730). **Alle können mitmachen; wer einen Freund markiert, nimmt ihn mit.** (Kein „bis auf Widerruf“.)
-- Folgen = eigenes Haus mit Namen. Top-Kommentar umgesetzt: **💅 Ocean Nails** – @lisann.lmp (linke Hände) & @al1na.mai5 (rechte Hände), es gab „ein bisschen Streit“. Kommentare werden nur erzählt, nicht gezeigt.
-- **Yacht-Abstimmung: Ja** – @marie18034 auf der White Pearl, jeden Tag Party.
-- **716 Bewohner** (laut Nutzer; Homepage zeigte 718), Hotel Sandkorn bei 800 → noch 84. Spoiler: die ersten 1.000 bekommen Vorteile im Spiel.
-- Aufruf: Was soll als Nächstes gebaut werden? Meiste Likes kommt ins nächste Video. Nachbarn-Beispiel @melie_js & @lisann.lmp.
+- Hook: „Was wäre, wenn deine Follower eine ganze Insel besiedeln?! – Genau das mache ich!“
+- **Villa-Verlosung:** Im **nächsten Video** wird **unter allen Followern** ein Platz in der bestehenden Strandvilla verlost (bei @emiliamarie155 & @lea.3818730). Wer einen Freund markiert, nimmt ihn mit. (Kein „bis auf Widerruf“.)
+- Folgen = eigenes Haus mit Namen.
+- **💅 Ocean Nails:** Zwei wollten das Nagelstudio eröffnen, deshalb macht @lisann.lmp die linken Hände und @al1na.mai5 die rechten, bis der Streit beigelegt ist.
+- **Yacht-Abstimmung: Ja** – @marie18034 bekommt ihre Yacht, dort wird jeden Tag gefeiert.
+- **716 Bewohner** (laut Nutzer; Homepage zeigte 718). „Nur noch 84, dann wird gebaut“ (bei 800).
+- **Spiel bei 1.000 Followern** (vom Nutzer bestätigt): Muschel-Tal wird zum Spiel – du spielst dich selbst, läufst über die Inseln und erkundest die Welt. Die ersten 1.000 bekommen Vorteile. ⚠️ Homepage: Die „Überraschung bei 1.000“ ist damit verraten.
+- **Abstimmung von Bürgermeisterin Lilly (@lillygyqcf0):** Was wird **bei 800 Bewohnern zuerst** gebaut – 🏨 Hotel Sandkorn oder 🐾 Tierheim Pfotenkuss? Abstimmung in den Kommentaren. ⚠️ Homepage: Hotel ist bei 800 und Tierheim bei 1.000 als Ziel eingetragen; nach der Abstimmung anpassen.
+- Hintergrund der Abstimmung: Hunderte streunende Tiere auf dem Muschelplatz.

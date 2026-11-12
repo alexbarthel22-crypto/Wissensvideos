@@ -21,7 +21,7 @@ const K=[[0,G.m.x,G.m.y-10,G.m.z*1.0],[GS,G.m.x,G.m.y-10,G.m.z*1.15],[GE,G.a.x,G
  [L.L3h.start,G.last.x,HY,HZ],[L.L3h.end+.2,G.last.x,HY,HZ],
  [L.L4n.start+.2,G.na.x,G.na.y+10,3.4],[L.L4n.end,G.na.x,G.na.y+8,3.7],
  [L.L5.start+.3,G.ya.x,G.ya.y-10,4.0],[L.L5.end,G.ya.x,G.ya.y-10,4.4],
- [L.L6.start+.3,G.ho.x,G.ho.y-6,3.4],[L.L6.end,G.ho.x,G.ho.y-6,3.7],[L.L7.start+.3,G.m.x,G.m.y,G.m.z*1.2],[L.L7.end,G.m.x,G.m.y,G.m.z*1.3],
+ [L.L6.start+.3,G.ho.x,G.ho.y-6,3.4],[L.L6.end,G.ho.x,G.ho.y-6,3.7],[L.L7g.start+.2,G.m.x,G.m.y,G.m.z*1.25],[at('L7g','spielst')-.3,G.last.x,G.last.y+4,5.5],[at('L7g','läufst')+.1,G.last.x,G.last.y+4,5.5],[at('L7g','Welt'),G.last.x-90,G.last.y-60,4.2],[L.L7g.end,G.m.x,G.m.y,G.m.z*1.4],
  [L.L10.start+.1,0,82,3.4],[L.L10.end,0,80,2.6],[dur,0,78,2.4]];
 
 
@@ -29,7 +29,7 @@ const cam=t=>{let j=0;while(j<K.length-1&&K[j+1][0]<=t)j++;const a=K[j],c=K[Math
  return [a[1]+(c[1]-a[1])*k,a[2]+(c[2]-a[2])*k,Math.exp(Math.log(a[3])+(Math.log(c[3])-Math.log(a[3]))*k)*(1+.012*Math.sin(t*.8))];};
 const ST=t=>{const e=x=>x<0?0:x>1?1:x;let gk=null,gv=0,lim=G.N,flt=0,nm=0;
  if(t<GS){gk=0;gv=1;lim=1;}else if(t<GE){const k=e((t-GS)/(GE-GS));gk=Math.min(1,k*1.3);gv=k<.75?1:0;lim=1+Math.round((G.N-1)*Math.min(1,k/.8)**2);if(!gv)gk=null;}
- if(t>=L.L3h.start-.5&&t<L.L3h.end+.5){lim=t<at('L3h','folgt')+.15?G.last.nr-1:G.last.nr;nm=1;}return [gk,gv,lim,flt,nm];};
+ if(t>=at('L7g','spielst')-.6&&t<at('L7g','Welt')){nm=1;}if(t>=L.L3h.start-.5&&t<L.L3h.end+.5){lim=t<at('L3h','folgt')+.15?G.last.nr-1:G.last.nr;nm=1;}return [gk,gv,lim,flt,nm];};
 const shot=async(t,f)=>{const c=cam(t),z=ST(t);if(t>=L.L10.start-.5&&!globalThis.CROWD){globalThis.CROWD=1;await p.evaluate(()=>{let sd=7;const R=()=>(sd=(sd*16807)%2147483647)/2147483647;const base=PETS.list.slice(),C=[];
  for(let r=0;r<1100;r++){const a=Object.assign({},base[r%base.length]);let x,y;if(r<500){const ang=R()*6.283,d=Math.sqrt(R());x=Math.cos(ang)*d*62;y=78+Math.sin(ang)*d*17;}else if(r<640){x=(R()-.5)*10;y=98+R()*60;}else{const sd2=R()<.5?-1:1;x=sd2*(10+R()*95);y=40+R()*90;}
   a.x=x;a.y=y;a.pause=1e9;a.wp=null;a.sit=R()<.4?1:0;a.dir=R()<.5?-1:1;a.view=['side','front','side','back'][(R()*4)|0];a.vert=a.view!=='side';a.i=5000+r;C.push(a);}

@@ -1,0 +1,55 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+@font-face { font-family: "Lilita One"; src: url("assets/fonts/LilitaOne-Regular.woff2") format("woff2"); font-weight: 400; }
+    .pl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 28px 12px; border-radius: 999px; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); white-space: nowrap; }
+    .big { position: absolute; left: 0; right: 0; width: fit-content; max-width: 980px; white-space: nowrap; margin: 0 auto; text-align: center; padding: 10px 26px 20px; border-radius: 36px; color: #fff; font-family: "Lilita One", sans-serif; line-height: 1; box-shadow: 0 0 0 8px #2a1b12, 0 16px 0 rgba(0,0,0,.3); }
+    .fl { position: absolute; inset: 0; background: #fff; opacity: 0; }
+    #s5g-t { top: 230px; font-size: 92px; background: linear-gradient(100deg, #ff3d7f, #7b3fe0 55%, #2fb3ff); transform: rotate(-2deg); box-shadow: 0 0 0 8px #2a1b12, 0 16px 0 rgba(0,0,0,.3), 0 0 60px 12px rgba(123,63,224,.6); }
+    #s5g-b { position: absolute; left: 90px; right: 90px; top: 420px; padding: 14px 26px 18px; border-radius: 28px; background: #fff; box-shadow: 0 0 0 6px #2a1b12, 0 10px 0 rgba(0,0,0,.3); font-family: "Inter", sans-serif; color: #2a1b12; }
+    #s5g-b .r { display: flex; justify-content: space-between; align-items: baseline; font-weight: 900; font-size: 38px; } #s5g-b .r b { font-size: 50px; color: #7b3fe0; }
+    #s5g-b .bar { height: 28px; border-radius: 14px; background: #ece4d8; margin-top: 8px; overflow: hidden; } #s5g-b .bar i { display: block; height: 100%; width: 0; border-radius: 14px; background: linear-gradient(90deg, #ff3d7f, #7b3fe0, #2fb3ff); }
+    #s5g-du { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 735px; text-align: center; font-family: "Lilita One", sans-serif; font-size: 70px; color: #fff; -webkit-text-stroke: 10px #2a1b12; paint-order: stroke fill; }
+    #s5g-du div { font-size: 90px; line-height: .9; -webkit-text-stroke: 0; }
+    #s5g-hud { position: absolute; inset: 0; }
+    #s5g-js { position: absolute; left: 70px; top: 1300px; width: 230px; height: 230px; border-radius: 50%; background: rgba(255,255,255,.28); box-shadow: inset 0 0 0 6px rgba(255,255,255,.75), 0 0 0 4px rgba(42,27,18,.5); }
+    #s5g-jk { position: absolute; left: 60px; top: 60px; width: 110px; height: 110px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 5px #2a1b12, 0 8px 0 rgba(0,0,0,.3); }
+    #s5g-ch { position: absolute; left: 60px; top: 560px; display: flex; flex-direction: column; gap: 18px; }
+    .s5g-c { padding: 8px 26px 12px; border-radius: 999px; background: #fff; color: #2a1b12; font-family: "Inter", sans-serif; font-weight: 900; font-size: 44px; box-shadow: 0 0 0 5px #2a1b12, 0 8px 0 rgba(0,0,0,.3); width: fit-content; }
+    #s5g-v { top: 1080px; font-size: 64px; background: linear-gradient(135deg, #ffb21a, #ff6a1a); }
+  </style>
+  <div id="root" data-composition-id="s05g" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s05g-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s5g-fl" class="fl" data-layout-ignore></div>
+      <div id="s5g-t" class="big">🎮 BALD SPIELBAR!</div>
+      <div id="s5g-b"><div class="r"><div>Bei 1.000 Followern</div><div><b id="s5g-n">716</b> / 1.000</div></div><div class="bar"><i id="s5g-bi"></i></div></div>
+      <div id="s5g-du" data-layout-ignore>DU<div>👇</div></div>
+            <div id="s5g-ch"><div id="s5g-c0" class="s5g-c">🕹️ Spiel dich selbst</div><div id="s5g-c1" class="s5g-c">🏝️ Lauf über die Inseln</div><div id="s5g-c2" class="s5g-c">🗺️ Erkunde die Welt</div></div>
+      <div id="s5g-v" class="big">⭐ Die ersten 1.000: VORTEILE!</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      /*__COMMON_JS__*/
+      wrapBt("#s05g-stage");
+      const tl = gsap.timeline({ paused: true });
+      const t0 = line("L7g")[0], sp = at("L7g", "Spiel"), sl = at("L7g", "spielst"), la = at("L7g", "läufst"), er = at("L7g", "erkundest"), di = at("L7g", "ersten"), vo = at("L7g", "Vorteile");
+      tl.fromTo("#s5g-b", { opacity: 0, y: -40 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, t0 + .4);
+      tl.fromTo("#s5g-bi", { width: "0%" }, { width: "71.6%", duration: .9, ease: "power2.out" }, t0 + .6);
+      tl.fromTo("#s5g-fl", { opacity: .8 }, { opacity: 0, duration: .3, immediateRender: false }, sp);
+      tl.fromTo("#s5g-t", { opacity: 0, scale: 3.5 }, { opacity: 1, scale: 1, duration: .25, ease: "power3.in" }, sp - .25);
+      tl.to("#s5g-t", { scale: 1.07, duration: .25, yoyo: true, repeat: 9, ease: "sine.inOut" }, sp + .1);
+      tl.fromTo("#s5g-du", { opacity: 0, y: -60 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2.5)" }, sl - .1);
+      tl.to("#s5g-du div", { y: 18, duration: .25, yoyo: true, repeat: 11, ease: "sine.inOut" }, sl + .2);
+            [[0, sl], [1, la], [2, er]].forEach(([i, t]) => tl.fromTo("#s5g-c" + i, { opacity: 0, x: -400 }, { opacity: 1, x: 0, duration: .28, ease: "back.out(1.8)" }, t - .1));
+      tl.to("#s5g-du", { opacity: 0, duration: .2 }, la + .15);
+      tl.to(["#s5g-ch"], { opacity: 0, duration: .2 }, di - .25);
+      tl.fromTo("#s5g-v", { opacity: 0, scale: 3 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(1.8)" }, di - .15);
+      tl.to("#s5g-v", { scale: 1.1, duration: .12, yoyo: true, repeat: 1 }, vo);
+      tl.to("#s05g-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
+      window.__timelines["s05g"] = tl;
+    })();
+  </script>
+</template>

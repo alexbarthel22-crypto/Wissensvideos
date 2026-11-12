@@ -31,7 +31,7 @@
    "lines": [
     {
      "id": "L1",
-     "text": "Was wäre, wenn man seine *y:Follower / eine *y:Insel *g:besiedeln lassen würde?",
+     "text": "Was wäre, wenn deine *y:Follower / eine *y:ganze *y:Insel *g:besiedeln?!",
      "speed": 1.1,
      "style": "Style: a young German guy, around 20, extremely excited and loud, almost shouting with joy, asking an intriguing question with suspense, then excitedly revealing the answer, explosive energy, natural German intonation, normal pitch.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
     },
@@ -89,7 +89,7 @@
     },
     {
      "id": "L2vb",
-     "text": "Im *p:nächsten *p:Video verlose ich / einen *y:Platz in meiner *b:Strandvilla – / und wer einen *p:Freund markiert, / *g:nimmt *g:ihn *g:mit!",
+     "text": "Im *p:nächsten *p:Video verlose ich / unter *y:allen *y:Followern / einen *y:Platz in meiner *b:Strandvilla – / und wer einen *p:Freund markiert, / *g:nimmt *g:ihn *g:mit!",
      "speed": 1.1,
      "style": "Style: a young German guy, around 20, genuinely excited, talking to his followers like friends, energetic and warm, natural German intonation, not an announcer, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
      "pause": 0.3
@@ -229,17 +229,10 @@
    "lines": [
     {
      "id": "L6",
-     "text": "Wir sind schon *g:716|siebenhundertsechzehn Bewohner! / Nur noch *y:84|vierundachtzig, / dann eröffnet *b:Hotel *b:Sandkorn!",
+     "text": "Wir sind schon *g:716|siebenhundertsechzehn Bewohner! / Nur noch *y:84|vierundachtzig, / dann wird *b:gebaut!",
      "speed": 1.1,
      "style": "Style: a young German guy, around 20, genuinely excited, talking to his followers like friends, energetic and warm, natural German intonation, not an announcer, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
      "pause": 0.4
-    },
-    {
-     "id": "L7",
-     "text": "*p:Spoiler: / Die ersten *y:1.000|tausend bekommen / *g:Vorteile im Spiel!",
-     "speed": 1.1,
-     "style": "Style: a young German guy, around 20, genuinely excited, talking to his followers like friends, energetic and warm, natural German intonation, not an announcer, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-     "pause": 0.3
     }
    ],
    "sfx": [
@@ -252,11 +245,36 @@
      "name": "pop",
      "at": "L6:84",
      "volume": 0.4
-    },
+    }
+   ]
+  },
+  {
+   "id": "s05g",
+   "tag": "",
+   "sfx": [
     {
      "name": "impact-bass-2",
-     "at": "L7:Vorteile",
+     "at": "L7g:Spiel",
+     "volume": 0.45
+    },
+    {
+     "name": "pop",
+     "at": "L7g:spielst",
      "volume": 0.4
+    },
+    {
+     "name": "ka-ching",
+     "at": "L7g:Vorteile",
+     "volume": 0.4
+    }
+   ],
+   "lines": [
+    {
+     "id": "L7g",
+     "text": "Und das *y:Beste: / Bei *y:1.000|tausend Followern / wird *p:Muschel-Tal zum *p:Spiel! / Dann *g:spielst du *g:dich *g:selbst, / läufst über die *b:Inseln / und *b:erkundest die *b:Welt! / Die *y:ersten *y:1.000|tausend bekommen *g:Vorteile!",
+     "speed": 1.1,
+     "style": "Style: a young German guy, around 20, genuinely excited, talking to his followers like friends, energetic and warm, natural German intonation, not an announcer, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+     "pause": 0.4
     }
    ]
   },
@@ -267,7 +285,7 @@
    "lines": [
     {
      "id": "L10",
-     "text": "Und *p:Bürgermeisterin *p:Lilly hat eine *y:Abstimmung gestartet: / Bauen wir zuerst *b:Hotel *b:Sandkorn / oder das *g:Tierheim *g:Pfotenkuss? / *p:Stimmt in den Kommentaren ab!",
+     "text": "Und *p:Bürgermeisterin *p:Lilly hat eine *y:Abstimmung gestartet: / Was bauen wir bei *y:800|achthundert Bewohnern zuerst? / *b:Hotel *b:Sandkorn / oder das *g:Tierheim *g:Pfotenkuss? / *p:Stimmt in den Kommentaren ab!",
      "speed": 1.1,
      "style": "Style: a young German guy, around 20, genuinely excited, talking to his followers like friends, energetic and warm, natural German intonation, not an announcer, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
      "pause": 0.4
