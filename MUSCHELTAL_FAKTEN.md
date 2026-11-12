@@ -261,3 +261,4 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - **2 neue Bauplätze auf der Kokos-Küste** (12.11.): Blöcke (1,3) und (−2,−4) (`insel.json` → `platz_neu`), jeweils mit einem Block Abstand zu anderen Bauplätzen; niemand musste umziehen. Kokos-Küste hat damit 13 Bauplätze.
 - **Ocean Nails** (12.11., Nachtrag): Wer auf dem Weg hinter dem Laden läuft, ist hinter dem Schild (wird verdeckt). OFFEN-Schild ohne Lichterketten-Perlen davor.
 - **Yacht**: Partylichter (Lichterketten, Disco-Glühen, beleuchtete Fenster/Pool) leuchten rund um die Uhr, auch tagsüber.
+- **Ocean Nails – Weg hinter dem Schild** (12.11.): Man kann (wie bei den Baustellen-Schildern) auf dem Weg hinter dem Schild entlanglaufen; die Figur wird dabei vom Schild verdeckt.
