@@ -19,7 +19,7 @@ const GS=at('L1','besiedeln')-.1,GE=L.L1b.end+.6;
 const K=[[0,G.m.x,G.m.y-10,G.m.z*1.0],[GS,G.m.x,G.m.y-10,G.m.z*1.15],[GE,G.a.x,G.a.y,G.a.z*1.2],
  [L.L2v.start-.15,G.v.x+20,G.v.y-10,4.0],[L.L2v.end,G.v.x+20,G.v.y-10,4.4],[L.L2vb.end,G.v.x+10,G.v.y-14,3.4],
  [L.L3h.start,G.last.x,HY,HZ],[L.L3h.end+.2,G.last.x,HY,HZ],
- [L.L4n.start+.2,G.na.x,G.na.y+10,3.4],[L.L4n.end,G.na.x,G.na.y+8,3.7],
+ [L.L4n.start+.2,G.na.x,G.na.y+10,3.4],[L.L4n.end,G.na.x,G.na.y+8,3.7],[L.L4n.end+.4,G.na.x,G.na.y+2,4.2],[L.L5.start-.15,G.na.x+3,G.na.y-2,7.0],
  [L.L5.start+.3,G.ya.x,G.ya.y-10,4.0],[L.L5.end,G.ya.x,G.ya.y-10,4.4],
  [L.L6.start+.3,G.ho.x,G.ho.y-6,3.4],[L.L6.end,G.ho.x,G.ho.y-6,3.7],[L.L7g.start+.2,G.m.x,G.m.y,G.m.z*1.25],[at('L7g','spielst')-.3,G.last.x,G.last.y+4,5.5],[at('L7g','läufst')+.1,G.last.x,G.last.y+4,5.5],[at('L7g','Welt'),G.last.x-90,G.last.y-60,4.2],[L.L7g.end,G.m.x,G.m.y,G.m.z*1.4],
  [L.L10.start+.1,0,82,3.4],[L.L10.end,0,80,2.6],[dur,0,78,2.4]];

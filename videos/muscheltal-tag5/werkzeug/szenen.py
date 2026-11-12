@@ -105,12 +105,12 @@ scene("s01", LILITA + "\n    " + PT + "\n" + FL + """
     #s01-hk .rg { position: absolute; left: 50%; top: 50%; width: 300px; height: 300px; margin: -150px 0 0 -150px; border-radius: 50%; border: 14px solid #fff; box-shadow: 0 0 40px #ffe14a, inset 0 0 40px #ffe14a; opacity: 0; pointer-events: none; }
     #s01-hk .sk { position: absolute; left: 50%; top: 50%; width: 60px; height: 60px; margin: -30px 0 0 -30px; font-size: 60px; line-height: 60px; text-align: center; color: #ffe14a; text-shadow: 0 0 20px #fff; opacity: 0; font-style: normal; -webkit-text-stroke: 0; }
     #s01-hk b { position: absolute; left: 0; top: 0; font-weight: 400; color: #fff; opacity: 0; pointer-events: none; text-shadow: 0 0 30px #fff, 0 0 80px #ffe14a; }
-    #s01-st { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 1450px; color: #2e9e5b; border-color: #2e9e5b; background: #fff; transform: rotate(-4deg); font-size: 72px; white-space: nowrap; font-family: "Lilita One", sans-serif; }""",
+    #s01-st { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 700px; z-index: 6; padding: 14px 40px 22px; box-shadow: 0 0 0 8px #2a1b12, 0 16px 0 rgba(0,0,0,.35), 0 0 80px 20px rgba(255,255,255,.7); color: #2e9e5b; border-color: #2e9e5b; background: #fff; transform: rotate(-4deg); font-size: 120px; line-height: 1.05; text-align: center; white-space: nowrap; font-family: "Lilita One", sans-serif; }""",
 """      <div id="s01-ray" data-layout-ignore></div>
       <div id="s01-dk" data-layout-ignore></div>
       <div id="s01-fl" class="fl" data-layout-ignore></div>
       <div id="s01-hk" data-layout-allow-overlap>""" + "".join('<div class="ln">' + "".join(f'<span id="s01-w{QW.index(w)}" class="{"y" if w[0] in YW else ""}"><i id="s01-wi{QW.index(w)}">{w[0]}</i><b id="s01-wg{QW.index(w)}" data-layout-ignore>{w[0]}</b><u class="rg" id="s01-rg{QW.index(w)}" data-layout-ignore></u>' + "".join(f'<em class="sk" id="s01-sk{QW.index(w)}_{m}" data-layout-ignore>✦</em>' for m in range(10)) + '</span>' for w in ln) + '</div>' for ln in QL) + """</div>
-      <div id="s01-st" class="stamp" data-layout-ignore>✅ GENAU DAS MACHE ICH!</div>""" + drops("s01-p", 22, 5, 'ge', 540, 900, "🏠", 600, 820)[0] + drops("s01-q2", 16, 9, 'ge + .2', 540, 900, "🐚", 520, 760)[0],
+      <div id="s01-st" class="stamp" data-layout-ignore>✅ GENAU DAS<br>MACHE ICH!</div>""" + drops("s01-p", 22, 5, 'ge', 540, 900, "🏠", 600, 820)[0] + drops("s01-q2", 16, 9, 'ge + .2', 540, 900, "🐚", 520, 760)[0],
 """      const ge = at("L1b", "Genau"), hk = document.getElementById("s01-hk");
       // jede Zeile auf volle Breite, dann alles auf die Höhe einpassen
       const lns = [...hk.querySelectorAll(".ln")];
@@ -129,9 +129,10 @@ scene("s01", LILITA + "\n    " + PT + "\n" + FL + """
         f' tl.fromTo("#s01-fl", {{ opacity: {.5 if i in (4, 6, 7) else .25} }}, {{ opacity: 0, duration: .2, immediateRender: false }}, t);'
         f' tl.fromTo("#s01-hk", {{ x: 0, y: 0 }}, {{ x: {(-1)**i * 14}, y: {(-1)**(i+1) * 10}, duration: .035, yoyo: true, repeat: 5, ease: "none", immediateRender: false }}, t); }}'
         for i, (w, k) in enumerate(QW)) + """
-            tl.fromTo("#s01-hk", { opacity: 1 }, { opacity: .35, duration: .2, immediateRender: false }, ge - .1);
+            tl.fromTo("#s01-hk", { opacity: 1 }, { opacity: .25, duration: .2, immediateRender: false }, ge - .1);
       tl.fromTo("#s01-fl", { opacity: .85 }, { opacity: 0, duration: .35, immediateRender: false }, ge);
-      tl.fromTo("#s01-st", { opacity: 0, scale: 2.8 }, { opacity: 1, scale: 1, duration: .25, ease: "back.out(2)" }, ge - .05);
+      tl.fromTo("#s01-st", { opacity: 0, scale: .1, rotation: -20 }, { opacity: 1, scale: 1, rotation: -4, duration: .32, ease: "back.out(3.2)" }, ge - .05);
+      tl.to("#s01-st", { scale: 1.08, duration: .18, yoyo: true, repeat: 3, ease: "sine.inOut" }, ge + .3);
 """ + drops("s01-p", 22, 5, 'ge', 540, 900, "🏠", 600, 820)[1] + drops("s01-q2", 16, 9, 'ge + .2', 540, 900, "🐚", 520, 760)[1])
 
 # s04n – Nagelstudio kurz: Lisann links, Alina rechts
@@ -154,7 +155,8 @@ scene("s04n", LILITA + "\n    " + PILL + """
       tl.fromTo("#s4n-sx", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .25, ease: "back.out(2)" }, sr - .1);
       tl.to("#s4n-sx", { x: 10, duration: .05, yoyo: true, repeat: 5, ease: "none" }, sr + .15);
       tl.fromTo("#s4n-L-hd", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1.15, duration: .3, ease: "back.out(2.6)" }, li);
-      tl.fromTo("#s4n-R-hd", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1.15, duration: .3, ease: "back.out(2.6)" }, al);""")
+      tl.fromTo("#s4n-R-hd", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1.15, duration: .3, ease: "back.out(2.6)" }, al);
+      tl.to(["#s4n-L", "#s4n-R", "#s4n-sx"], { opacity: 0, y: -40, duration: .3 }, line("L4n")[1] + .2);""")
 
 # s01 – Ich verschenke eine Villa!
 scene("s02v", LILITA + "\n    " + PILL + "\n    " + PT + "\n" + FL + """
