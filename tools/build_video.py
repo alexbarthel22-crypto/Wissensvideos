@@ -385,13 +385,13 @@ def build_hud(project, script, windows, total):
 
 def resolve_sfx_time(spec, windows, lines):
     """'L4:Server' -> absolute Zeit des Wortes; 's03+0.4' -> Szenenstart + Offset."""
-    m = re.match(r"^(L\d+[a-z]?):(.+?)([+-][\d.]+)?$", spec)
+    m = re.match(r"^(L\d+[a-z]*):(.+?)([+-][\d.]+)?$", spec)
     if m:
         l = lines[m.group(1)]
         key = norm(m.group(2))
         w = next(w for w in l["words"] if norm(w["display"]).startswith(key))
         return w["start"] + float(m.group(3) or 0)
-    m = re.match(r"^(s\d+)([+-][\d.]+)?$", spec)
+    m = re.match(r"^(s\d+[a-z]*)([+-][\d.]+)?$", spec)
     sc = next(s for s in windows if s[0]["id"] == m.group(1))
     return sc[1] + float(m.group(2) or 0)
 

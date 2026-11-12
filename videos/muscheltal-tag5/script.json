@@ -12,7 +12,7 @@
   "size": 92,
   "bars": true,
   "color": "rgba(255,255,255,.62)",
-  "css": "@font-face { font-family: 'Lilita One'; src: url('assets/fonts/LilitaOne-Regular.woff2') format('woff2'); font-weight: 400; }\n    .inner.hook { font-family: 'Lilita One', sans-serif; font-weight: 400; font-size: 98px; line-height: 1.12; letter-spacing: .01em; top: -560px; }\n    .inner.hook .bar { background: #ff3d7f !important; padding: .02em .3em .08em; border-radius: .5em; }\n    .inner.hook .w { color: #fff; }\n    .inner .bar .w { margin: 0 .07em; }\n    .inner .bar { border-radius: .55em; padding: .04em .36em .1em; }\n    .inner .w { white-space: nowrap; }\n    .inner.hook .w { display: inline-block; transform-origin: 50% 70%; }\n    .inner.hook .bar { background: none !important; box-shadow: none !important; padding: 0; }\n    .inner.hook .w { background: #ff3d7f; border-radius: .3em; padding: .02em .16em .1em; margin: .07em .03em; box-shadow: 0 0 0 0px #2a1b12, 0 8px 0 rgba(0,0,0,.28); position: relative; transform-origin: 50% 55%; }\n    .inner.hook .w.k-y { position: relative; z-index: 2; }\n    #cgi1.inner.hook, #cgi2.inner.hook { top: 0; }\n    .inner.hook { left: 40px; right: 40px; }\n    #cgi1 .w, #cgi2 .w { margin: .1em .12em; }\n    #cg0, #cg1 { display: none !important; }\n    #cg0, #cg1 { display: none !important; }",
+  "css": "@font-face { font-family: 'Lilita One'; src: url('assets/fonts/LilitaOne-Regular.woff2') format('woff2'); font-weight: 400; }\n    .inner.hook { font-family: 'Lilita One', sans-serif; font-weight: 400; font-size: 98px; line-height: 1.12; letter-spacing: .01em; top: -560px; }\n    .inner.hook .bar { background: #ff3d7f !important; padding: .02em .3em .08em; border-radius: .5em; }\n    .inner.hook .w { color: #fff; }\n    .inner .bar .w { margin: 0 .07em; }\n    .inner .bar { border-radius: .55em; padding: .04em .36em .1em; }\n    .inner .w { white-space: nowrap; }\n    .inner.hook .w { display: inline-block; transform-origin: 50% 70%; }\n    .inner.hook .bar { background: none !important; box-shadow: none !important; padding: 0; }\n    .inner.hook .w { background: #ff3d7f; border-radius: .3em; padding: .02em .16em .1em; margin: .07em .03em; box-shadow: 0 0 0 0px #2a1b12, 0 8px 0 rgba(0,0,0,.28); position: relative; transform-origin: 50% 55%; }\n    .inner.hook .w.k-y { position: relative; z-index: 2; }\n    #cgi1.inner.hook, #cgi2.inner.hook { top: 0; }\n    .inner.hook { left: 40px; right: 40px; }\n    #cgi1 .w, #cgi2 .w { margin: .1em .12em; }\n    \n    \n    #cg0,#cg1,#cg3,#cg4 { display: none !important; }",
   "vary": true,
   "pop_scale": 1.2,
   "bar_colors": [
@@ -31,12 +31,64 @@
    "lines": [
     {
      "id": "L1",
-     "text": "Ich *r:verschenke / eine *y:VILLA!",
+     "text": "Was wäre, wenn man seine *y:Follower / eine *y:Insel *g:besiedeln lassen würde?",
      "speed": 1.1,
-     "style": "Style: a young German guy, around 20, extremely excited and loud, almost shouting with joy, announcing that he is giving away a villa, explosive energy, natural German intonation, normal pitch.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
+     "style": "Style: a young German guy, around 20, extremely excited and loud, almost shouting with joy, asking an intriguing question with suspense, then excitedly revealing the answer, explosive energy, natural German intonation, normal pitch.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
     },
     {
      "id": "L1b",
+     "text": "*g:Genau *g:das *g:mache *g:ich!",
+     "speed": 1.1,
+     "style": "Style: a young German guy, around 20, extremely excited and loud, almost shouting with joy, asking an intriguing question with suspense, then excitedly revealing the answer, explosive energy, natural German intonation, normal pitch.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+     "pause": 0.3
+    }
+   ],
+   "sfx": [
+    {
+     "name": "impact-bass-1",
+     "at": "s01+0.0",
+     "volume": 0.55
+    },
+    {
+     "name": "whoosh",
+     "at": "L1:Follower",
+     "volume": 0.35
+    },
+    {
+     "name": "pop",
+     "at": "L1:Insel",
+     "volume": 0.45
+    },
+    {
+     "name": "whoosh",
+     "at": "L1:besiedeln",
+     "volume": 0.4
+    },
+    {
+     "name": "impact-bass-2",
+     "at": "L1b:Genau",
+     "volume": 0.55
+    },
+    {
+     "name": "yippee",
+     "at": "L1b:Genau",
+     "volume": 0.8
+    }
+   ]
+  },
+  {
+   "id": "s02v",
+   "tag": "",
+   "lines": [
+    {
+     "id": "L2v",
+     "text": "Und heute *r:verschenke ich / eine *y:VILLA!",
+     "speed": 1.1,
+     "style": "Style: a young German guy, around 20, extremely excited and loud, almost shouting with joy, announcing that he is giving away a villa, explosive energy, natural German intonation, normal pitch.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+     "pause": 0.4
+    },
+    {
+     "id": "L2vb",
      "text": "Im *p:nächsten *p:Video verlose ich / einen *y:Platz in meiner *b:Strandvilla – / und wer einen *p:Freund markiert, / *g:nimmt *g:ihn *g:mit!",
      "speed": 1.1,
      "style": "Style: a young German guy, around 20, genuinely excited, talking to his followers like friends, energetic and warm, natural German intonation, not an announcer, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
@@ -46,47 +98,47 @@
    "sfx": [
     {
      "name": "impact-bass-1",
-     "at": "s01+0.0",
+     "at": "L2v:Ich",
      "volume": 0.6
     },
     {
      "name": "whoosh",
-     "at": "s01+0.0",
+     "at": "L2v:Ich",
      "volume": 0.4
     },
     {
      "name": "impact-bass-2",
-     "at": "L1:VILLA",
+     "at": "L2v:VILLA",
      "volume": 0.55
     },
     {
      "name": "yippee",
-     "at": "L1:VILLA-0.2",
+     "at": "L2v:VILLA-0.2",
      "volume": 0.9
     },
     {
      "name": "ka-ching",
-     "at": "L1b:Platz",
+     "at": "L2vb:Platz",
      "volume": 0.4
     },
     {
      "name": "pop",
-     "at": "L1b:Freund",
+     "at": "L2vb:Freund",
      "volume": 0.45
     },
     {
      "name": "jubel",
-     "at": "L1b:nimmt",
+     "at": "L2vb:nimmt",
      "volume": 0.4
     }
    ]
   },
   {
-   "id": "s02",
+   "id": "s03h",
    "tag": "",
    "lines": [
     {
-     "id": "L2",
+     "id": "L3h",
      "text": "Denn auf meiner *y:Insel bekommt jeder, / der mir *g:folgt, / ein *y:eigenes *y:Haus – / mit seinem *p:Namen!",
      "speed": 1.1,
      "style": "Style: a young German guy, around 20, genuinely excited, talking to his followers like friends, energetic and warm, natural German intonation, not an announcer, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
@@ -96,112 +148,53 @@
    "sfx": [
     {
      "name": "click",
-     "at": "L2:folgt",
+     "at": "L3h:folgt",
      "volume": 0.5
     },
     {
      "name": "ka-ching",
-     "at": "L2:Haus",
+     "at": "L3h:Haus",
      "volume": 0.45
     },
     {
      "name": "jubel",
-     "at": "L2:Namen",
+     "at": "L3h:Namen",
      "volume": 0.35
     }
    ]
   },
   {
-   "id": "s03",
+   "id": "s04n",
    "tag": "",
    "lines": [
     {
-     "id": "L3",
-     "text": "Und *g:ihr bestimmt, was gebaut wird: / Ihr wolltet ein *p:Nagelstudio – / *g:hier *g:ist *g:es!",
+     "id": "L4n",
+     "text": "*p:Zwei wollten das *p:Nagelstudio *p:Ocean *p:Nails eröffnen – / deshalb macht jetzt *p:Lisann die *y:linken Hände / und *p:Alina die *y:rechten – / bis der *r:Streit beigelegt ist!",
      "speed": 1.1,
      "style": "Style: a young German guy, around 20, genuinely excited, talking to his followers like friends, energetic and warm, natural German intonation, not an announcer, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
      "pause": 0.4
-    },
-    {
-     "id": "L4",
-     "text": "*p:Lisann und *p:Alina wollten es beide leiten – / es gab ein bisschen *r:Streit …",
-     "speed": 1.1,
-     "style": "Style: a young German guy, around 20, genuinely excited, talking to his followers like friends, energetic and warm, natural German intonation, not an announcer, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-     "pause": 0.3
-    },
-    {
-     "id": "L4b",
-     "text": "Also macht Lisann jetzt die *y:linken *y:Hände / und Alina die *y:rechten!",
-     "speed": 1.1,
-     "style": "Style: a young German guy, around 20, genuinely excited, talking to his followers like friends, energetic and warm, natural German intonation, not an announcer, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-     "pause": 2.2
     }
    ],
    "sfx": [
     {
-     "name": "whoosh",
-     "at": "L3:hier-0.3",
+     "name": "stempel",
+     "at": "L4n:Nagelstudio",
+     "volume": 0.45
+    },
+    {
+     "name": "pop",
+     "at": "L4n:Lisann",
+     "volume": 0.4
+    },
+    {
+     "name": "pop",
+     "at": "L4n:Alina",
+     "volume": 0.4
+    },
+    {
+     "name": "impact-bass-2",
+     "at": "L4n:Streit",
      "volume": 0.35
-    },
-    {
-     "name": "stempel",
-     "at": "L3:hier",
-     "volume": 0.45
-    },
-    {
-     "name": "whoosh",
-     "at": "L4:Lisann-0.1",
-     "volume": 0.4
-    },
-    {
-     "name": "whoosh",
-     "at": "L4:Alina-0.1",
-     "volume": 0.4
-    },
-    {
-     "name": "impact-bass-1",
-     "at": "L4:Alina+0.47",
-     "volume": 0.55
-    },
-    {
-     "name": "bell",
-     "at": "L4:Alina+0.45",
-     "volume": 0.5
-    },
-    {
-     "name": "impact-bass-2",
-     "at": "L4:Streit",
-     "volume": 0.45
-    },
-    {
-     "name": "pop",
-     "at": "L4b:Also-1.9",
-     "volume": 0.5
-    },
-    {
-     "name": "impact-bass-2",
-     "at": "L4b:Also-1.5",
-     "volume": 0.45
-    },
-    {
-     "name": "pop",
-     "at": "L4b:Also-1.1",
-     "volume": 0.5
-    },
-    {
-     "name": "impact-bass-2",
-     "at": "L4b:Also-0.7",
-     "volume": 0.45
-    },
-    {
-     "name": "stempel",
-     "at": "L4b:Also-0.2",
-     "volume": 0.5
-    },
-    {
-     "name": "jubel",
-     "at": "L4b:rechten",
-     "volume": 0.4
     }
    ]
   },
@@ -270,43 +263,36 @@
   {
    "id": "s06",
    "tag": "",
-   "hold": 1.4,
+   "hold": 1.6,
    "lines": [
     {
-     "id": "L8",
-     "text": "Was soll als Nächstes gebaut werden? / Der Kommentar mit den *y:meisten *y:Likes / kommt ins *g:nächste *g:Video!",
+     "id": "L10",
+     "text": "Und *p:Bürgermeisterin *p:Lilly hat eine *y:Abstimmung gestartet: / Bauen wir zuerst *b:Hotel *b:Sandkorn / oder das *g:Tierheim *g:Pfotenkuss? / *p:Stimmt in den Kommentaren ab!",
      "speed": 1.1,
      "style": "Style: a young German guy, around 20, genuinely excited, talking to his followers like friends, energetic and warm, natural German intonation, not an announcer, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
      "pause": 0.4
-    },
-    {
-     "id": "L9",
-     "text": "*p:Markiert eure *p:Freunde – / und *g:folgt mir, um *g:einzuziehen!",
-     "speed": 1.1,
-     "style": "Style: a young German guy, around 20, genuinely excited, talking to his followers like friends, energetic and warm, natural German intonation, not an announcer, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-     "pause": 0.3
     }
    ],
    "sfx": [
     {
      "name": "notification",
-     "at": "L8:Kommentar",
+     "at": "L10:Abstimmung",
      "volume": 0.4
-    },
-    {
-     "name": "ka-ching",
-     "at": "L8:nächste",
-     "volume": 0.35
     },
     {
      "name": "pop",
-     "at": "L9:Freunde",
-     "volume": 0.4
+     "at": "L10:Hotel",
+     "volume": 0.45
     },
     {
-     "name": "click",
-     "at": "L9:folgt",
-     "volume": 0.5
+     "name": "pop",
+     "at": "L10:Tierheim",
+     "volume": 0.45
+    },
+    {
+     "name": "ka-ching",
+     "at": "L10:Stimmt",
+     "volume": 0.35
     }
    ]
   }
