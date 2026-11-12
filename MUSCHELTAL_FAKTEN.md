@@ -262,3 +262,10 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - **Ocean Nails** (12.11., Nachtrag): Wer auf dem Weg hinter dem Laden läuft, ist hinter dem Schild (wird verdeckt). OFFEN-Schild ohne Lichterketten-Perlen davor.
 - **Yacht**: Partylichter (Lichterketten, Disco-Glühen, beleuchtete Fenster/Pool) leuchten rund um die Uhr, auch tagsüber.
 - **Ocean Nails – Weg hinter dem Schild** (12.11.): Man kann (wie bei den Baustellen-Schildern) auf dem Weg hinter dem Schild entlanglaufen; die Figur wird dabei vom Schild verdeckt.
+
+## Video Tag 5 (12.11., `videos/muscheltal-tag5/`)
+- Opener: **„Ich verschenke eine Villa!“** – im **nächsten Video** wird **ein Platz in der bestehenden Strandvilla** verlost (bei @emiliamarie155 & @lea.3818730). **Alle können mitmachen; wer einen Freund markiert, nimmt ihn mit.** (Kein „bis auf Widerruf“.)
+- Folgen = eigenes Haus mit Namen. Top-Kommentar umgesetzt: **💅 Ocean Nails** – @lisann.lmp (linke Hände) & @al1na.mai5 (rechte Hände), es gab „ein bisschen Streit“. Kommentare werden nur erzählt, nicht gezeigt.
+- **Yacht-Abstimmung: Ja** – @marie18034 auf der White Pearl, jeden Tag Party.
+- **716 Bewohner** (laut Nutzer; Homepage zeigte 718), Hotel Sandkorn bei 800 → noch 84. Spoiler: die ersten 1.000 bekommen Vorteile im Spiel.
+- Aufruf: Was soll als Nächstes gebaut werden? Meiste Likes kommt ins nächste Video. Nachbarn-Beispiel @melie_js & @lisann.lmp.
