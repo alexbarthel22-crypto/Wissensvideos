@@ -2816,7 +2816,8 @@ $('mpshare').onclick=async()=>{if(!mpP)return;const p=mpP,b=$('mpshare'),lab=b.i
   if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],text:txt});b.innerHTML=lab;if(!fr){bonus(p);mkTeilenQ(p);}return;}
   else{const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='muschelpass.png';document.body.appendChild(a);a.click();a.remove();b.textContent='✅ Bild gespeichert – jetzt in der Story posten!';setTimeout(()=>{b.innerHTML=lab;if(!mpWalk)bonUpd(p);},2600);if(!fr){bonus(p);mkTeilenQ(p);}return;}
  }catch(e){}b.innerHTML=lab;if(!mpWalk)bonUpd(p);};
-$('mpgo').onclick=()=>{$('mp').hidden=true;if(mpWalk)return;window.scrollTo({top:0,behavior:'smooth'});if(mpP){select(mpP);if(mpP.p&&!mpP.gb)HFLASH={q:mpP,t0:performance.now()+1250};}};
+$('mpgo').onclick=()=>{$('mp').hidden=true;if(mpWalk)return;window.scrollTo({top:0,behavior:'smooth'});if(mpP){const p=mpP;// auch wer gerade arbeitet: Kamera fliegt zur eigenen Hütte, nicht zum Arbeitsplatz
+ if(p.p&&!p.gb){select(p,false);const z=Math.max(4.2,cam.z),[t,b]=freeY();flyTo({x:p.p.x,y:p.p.y+(H/2-(t+b)/2)/z,z});HFLASH={q:p,t0:performance.now()+1250};}else select(p);}};
 $('mpq').oninput=()=>{const t=$('mpq').value.trim().toLowerCase().replace(/^@/,'');if(!t){$('mps').hidden=true;$('mpm').hidden=true;return;}
  const h=PEOPLE.filter(p=>p.name.toLowerCase().replace(/^@/,'').includes(t)).sort((a,b)=>(a.name.toLowerCase().replace(/^@/,'').startsWith(t)?0:1)-(b.name.toLowerCase().replace(/^@/,'').startsWith(t)?0:1)||a.nr-b.nr).slice(0,6);
  $('mps').innerHTML=h.map(p=>'<li><button type="button" data-n="'+esc(p.name)+'">'+esc(p.name)+'<small>Hütte '+fmt(p.nr)+'</small></button></li>').join('');$('mps').hidden=!h.length;
