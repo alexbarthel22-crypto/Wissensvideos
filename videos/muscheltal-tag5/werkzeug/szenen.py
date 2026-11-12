@@ -99,7 +99,7 @@ scene("s01", LILITA + "\n    " + PT + "\n" + FL + """
     #s01-ray { position: absolute; left: -460px; top: 300px; width: 2000px; height: 2000px; border-radius: 50%; background: repeating-conic-gradient(rgba(255,250,210,.28) 0 8deg, rgba(255,255,255,0) 8deg 20deg); -webkit-mask: radial-gradient(circle, #000 15%, transparent 60%); }
     #s01-hk { position: absolute; left: 40px; right: 40px; top: 620px; text-align: center; font-family: "Lilita One", sans-serif; }
     #s01-hk .ln { display: block; width: fit-content; margin: 0 auto 16px; padding: 4px 34px 14px; border-radius: 30px; background: #ff2e7e; box-shadow: 0 0 0 6px #1a0f08, 0 12px 0 rgba(0,0,0,.35); font-size: 112px; line-height: 1.05; white-space: nowrap; transform-origin: 50% 60%; }
-    #s01-hk span { display: inline-block; margin: 0 .08em; color: #fff; -webkit-text-stroke: 8px #1a0f08; paint-order: stroke fill; transform-origin: 50% 65%; }
+    #s01-hk span { position: relative; display: inline-block; margin: 0 .08em; color: #fff; -webkit-text-stroke: 8px #1a0f08; paint-order: stroke fill; transform-origin: 50% 65%; }
     #s01-gk { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 400px; padding: 6px 36px 14px; border-radius: 26px; background: #fff; border: 8px solid #ff2e7e; box-shadow: 0 0 0 5px #1a0f08, 0 12px 0 rgba(0,0,0,.3); font-family: "Lilita One", sans-serif; font-size: 96px; line-height: 1; color: #ff2e7e; transform: rotate(-6deg); }
     .s01-sp { position: absolute; color: #fff; text-shadow: 0 0 18px #fff, 0 0 30px #ffe14a; opacity: 0; line-height: 1; }
     #s01-st { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 820px; z-index: 6; padding: 14px 40px 22px; box-shadow: 0 0 0 8px #2a1b12, 0 16px 0 rgba(0,0,0,.35), 0 0 80px 20px rgba(255,255,255,.7); color: #2e9e5b; border-color: #2e9e5b; background: #fff; transform: rotate(-4deg); font-size: 120px; line-height: 1.05; text-align: center; white-space: nowrap; font-family: "Lilita One", sans-serif; }""",
@@ -114,7 +114,7 @@ scene("s01", LILITA + "\n    " + PT + "\n" + FL + """
       tl.fromTo("#s01-ray", { rotation: 0 }, { rotation: 40, duration: 4, ease: "none" }, 0);
       tl.fromTo("#s01-gk", { rotation: -6 }, { rotation: -2, duration: .5, yoyo: true, repeat: 7, ease: "sine.inOut" }, 0);
       """ + "\n      ".join(
-        f'tl.to("#s01-w{i}", {{ scale: 1.22, duration: .09, yoyo: true, repeat: 1, ease: "power2.out" }}, at("L1", "{k}") - .02);'
+        f'tl.set("#s01-w{i}", {{ zIndex: 5 }}, at("L1", "{k}") - .03); tl.to("#s01-w{i}", {{ scale: {1.45 if len(w) > 7 else 1.75}, rotation: {(-1)**i * 3}, duration: .1, ease: "back.out(3)" }}, at("L1", "{k}") - .03); tl.to("#s01-w{i}", {{ scale: 1, rotation: 0, duration: .25, ease: "power2.inOut" }}, at("L1", "{k}") + .22); tl.set("#s01-w{i}", {{ zIndex: 0 }}, at("L1", "{k}") + .47);'
         + (f' tl.to("#s01-w{i}", {{ color: "#ffe500", duration: .05 }}, at("L1", "{k}") - .02);' if w in YW else '')
         for i, (w, k) in enumerate(QW)) + """
       """ + "\n      ".join(f'tl.fromTo("#s01-sp{k}", {{ opacity: 0, scale: .2, rotation: 0 }}, {{ opacity: 1, scale: 1, rotation: 90, duration: .3, yoyo: true, repeat: 5, ease: "sine.inOut", immediateRender: false }}, {k * .23:.2f});' for k in range(len(SP))) + """
