@@ -31,7 +31,7 @@
    "lines": [
     {
      "id": "L1",
-     "text": "Was wäre, wenn deine *y:Follower / eine *y:ganze *y:Insel *g:besiedeln?!",
+     "text": "Was wäre, wenn deine *y:Follower / eine *y:Insel *g:besiedeln?!",
      "speed": 1.1,
      "style": "Style: a young German guy, around 20, extremely excited and loud, almost shouting with joy, asking an intriguing question with suspense, then excitedly revealing the answer, explosive energy, natural German intonation, normal pitch.\nPace: brisk.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
     },
@@ -51,18 +51,28 @@
     },
     {
      "name": "whoosh",
-     "at": "L1:Follower",
-     "volume": 0.35
+     "at": "L1:wäre",
+     "volume": 0.3
     },
     {
      "name": "pop",
+     "at": "L1:deine",
+     "volume": 0.35
+    },
+    {
+     "name": "whoosh",
+     "at": "L1:Follower",
+     "volume": 0.4
+    },
+    {
+     "name": "impact-bass-2",
      "at": "L1:Insel",
      "volume": 0.45
     },
     {
      "name": "whoosh",
      "at": "L1:besiedeln",
-     "volume": 0.4
+     "volume": 0.45
     },
     {
      "name": "impact-bass-2",

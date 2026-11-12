@@ -263,7 +263,7 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - **Yacht**: Partylichter (Lichterketten, Disco-Glühen, beleuchtete Fenster/Pool) leuchten rund um die Uhr, auch tagsüber.
 
 ## Video Tag 5 (12.11., `videos/muscheltal-tag5/`)
-- Hook: „Was wäre, wenn deine Follower eine ganze Insel besiedeln?! – Genau das mache ich!“
+- Hook: „Was wäre, wenn deine Follower eine Insel besiedeln?! – Genau das mache ich!“
 - **Villa-Verlosung:** Im **nächsten Video** wird **unter allen Followern** ein Platz in der bestehenden Strandvilla verlost (bei @emiliamarie155 & @lea.3818730). Wer einen Freund markiert, nimmt ihn mit. (Kein „bis auf Widerruf“.)
 - Folgen = eigenes Haus mit Namen.
 - **💅 Ocean Nails:** Zwei wollten das Nagelstudio eröffnen, deshalb macht @lisann.lmp die linken Hände und @al1na.mai5 die rechten, bis der Streit beigelegt ist.

@@ -91,7 +91,7 @@ LOCK = '<svg viewBox="0 0 64 64" width="110" height="110"><defs><linearGradient 
 HW = [("ICH", "Ich", "<br>"), ("VERSCHENKE", "verschenke", "<br>"), ("EINE", "eine", ""), ("VILLA!", "VILLA", "")]
 
 # s01 – Was wäre, wenn deine Follower eine ganze Insel besiedeln? (Text füllt den Bildschirm)
-QL = [[("WAS", "Was"), ("WÄRE,", "wäre")], [("WENN", "wenn"), ("DEINE", "deine")], [("FOLLOWER", "Follower")], [("EINE", "eine"), ("GANZE", "ganze")], [("INSEL", "Insel")], [("BESIEDELN?!", "besiedeln")]]
+QL = [[("WAS", "Was"), ("WÄRE,", "wäre")], [("WENN", "wenn"), ("DEINE", "deine")], [("FOLLOWER", "Follower")], [("EINE", "eine"), ("INSEL", "Insel")], [("BESIEDELN?!", "besiedeln")]]
 QW = [w for ln in QL for w in ln]
 YW = ("FOLLOWER", "INSEL", "BESIEDELN?!")
 scene("s01", LILITA + "\n    " + PT + "\n" + FL + """
@@ -102,31 +102,34 @@ scene("s01", LILITA + "\n    " + PT + "\n" + FL + """
     #s01-hk span { position: relative; display: inline-block; margin: 0 .05em; transform-origin: 50% 55%; }
     #s01-hk i { font-style: normal; display: inline-block; -webkit-text-stroke: .1em #1a0f08; paint-order: stroke fill; filter: drop-shadow(0 .07em 0 rgba(0,0,0,.4)); }
     #s01-hk span.y i { color: #ffe14a; }
+    #s01-hk .rg { position: absolute; left: 50%; top: 50%; width: 300px; height: 300px; margin: -150px 0 0 -150px; border-radius: 50%; border: 14px solid #fff; box-shadow: 0 0 40px #ffe14a, inset 0 0 40px #ffe14a; opacity: 0; pointer-events: none; }
+    #s01-hk .sk { position: absolute; left: 50%; top: 50%; width: 60px; height: 60px; margin: -30px 0 0 -30px; font-size: 60px; line-height: 60px; text-align: center; color: #ffe14a; text-shadow: 0 0 20px #fff; opacity: 0; font-style: normal; -webkit-text-stroke: 0; }
     #s01-hk b { position: absolute; left: 0; top: 0; font-weight: 400; color: #fff; opacity: 0; pointer-events: none; text-shadow: 0 0 30px #fff, 0 0 80px #ffe14a; }
     #s01-st { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 1450px; color: #2e9e5b; border-color: #2e9e5b; background: #fff; transform: rotate(-4deg); font-size: 72px; white-space: nowrap; font-family: "Lilita One", sans-serif; }""",
 """      <div id="s01-ray" data-layout-ignore></div>
       <div id="s01-dk" data-layout-ignore></div>
       <div id="s01-fl" class="fl" data-layout-ignore></div>
-      <div id="s01-hk" data-layout-allow-overlap>""" + "".join('<div class="ln">' + "".join(f'<span id="s01-w{QW.index(w)}" class="{"y" if w[0] in YW else ""}"><i id="s01-wi{QW.index(w)}">{w[0]}</i><b id="s01-wg{QW.index(w)}" data-layout-ignore>{w[0]}</b></span>' for w in ln) + '</div>' for ln in QL) + """</div>
+      <div id="s01-hk" data-layout-allow-overlap>""" + "".join('<div class="ln">' + "".join(f'<span id="s01-w{QW.index(w)}" class="{"y" if w[0] in YW else ""}"><i id="s01-wi{QW.index(w)}">{w[0]}</i><b id="s01-wg{QW.index(w)}" data-layout-ignore>{w[0]}</b><u class="rg" id="s01-rg{QW.index(w)}" data-layout-ignore></u>' + "".join(f'<em class="sk" id="s01-sk{QW.index(w)}_{m}" data-layout-ignore>✦</em>' for m in range(10)) + '</span>' for w in ln) + '</div>' for ln in QL) + """</div>
       <div id="s01-st" class="stamp" data-layout-ignore>✅ GENAU DAS MACHE ICH!</div>""" + drops("s01-p", 22, 5, 'ge', 540, 900, "🏠", 600, 820)[0] + drops("s01-q2", 16, 9, 'ge + .2', 540, 900, "🐚", 520, 760)[0],
 """      const ge = at("L1b", "Genau"), hk = document.getElementById("s01-hk");
       // jede Zeile auf volle Breite, dann alles auf die Höhe einpassen
-      const lns = [...hk.querySelectorAll(".ln")]; let H = 0;
-      const fit = () => { H = 0; lns.forEach((l, j) => { const w = j >= 3 ? 800 : 960; l.style.marginRight = j >= 3 ? "170px" : "0px"; l.style.fontSize = "100px"; const f = Math.min(330, 100 * w / l.scrollWidth); l.style.fontSize = f + "px"; H += l.offsetHeight; }); };
-      fit(); if (H > 1230) lns.forEach(l => l.style.fontSize = parseFloat(l.style.fontSize) * 1230 / H + "px");
+      const lns = [...hk.querySelectorAll(".ln")];
+      [181, 171, 197, 162, 137].forEach((f, j) => lns[j].style.fontSize = f + "px"); // fest gemessen (Lilita One)
       tl.set(["#s01-ray", "#s01-dk"], { opacity: 1 }, 0);
-      tl.fromTo("#s01-hk", { scale: .75 }, { scale: 1, duration: .22, ease: "back.out(2.5)" }, 0);
+      
       tl.fromTo("#s01-ray", { rotation: 0 }, { rotation: 70, duration: 6, ease: "none" }, 0);
       tl.fromTo("#s01-fl", { opacity: .9 }, { opacity: 0, duration: .25, immediateRender: false }, 0);
       """ + "\n      ".join(
-        f'{{ const t = at("L1", "{k}") - .03; tl.to("#s01-wi{i}", {{ scale: {1.18 if len(w) > 7 else 1.3}, color: "#ffffff", textShadow: "0 0 24px #fff, 0 0 70px #ffe14a, 0 0 140px #ff3d7f", duration: .08, ease: "power2.out" }}, t);'
-        f' tl.to("#s01-wi{i}", {{ scale: 1, color: "{"#ffe14a" if w in YW else "#ffffff"}", textShadow: "0 0 18px rgba(255,240,170,.9)", duration: .3, ease: "power2.out" }}, t + .12);'
-        f' tl.fromTo("#s01-wg{i}", {{ opacity: .95, scale: 1 }}, {{ opacity: 0, scale: 4.5, duration: .38, ease: "power2.in", immediateRender: false }}, t);'
-        f' tl.fromTo("#s01-hk", {{ x: 0, y: 0 }}, {{ x: {(-1)**i * 10}, y: {(-1)**(i+1) * 7}, duration: .04, yoyo: true, repeat: 3, ease: "none", immediateRender: false }}, t); }}'
+        f'{{ const t = at("L1", "{k}") - .03; tl.set("#s01-w{i}", {{ zIndex: 5 }}, t); tl.set("#s01-w{i}", {{ zIndex: 0 }}, t + .45);'
+        f' tl.to("#s01-wi{i}", {{ scale: {1.45 if len(w) > 7 else 1.9}, rotation: {(-1)**i * 4}, color: "#ffffff", textShadow: "0 0 30px #fff, 0 0 90px #ffe14a, 0 0 180px #ff3d7f", duration: .07, ease: "power3.out" }}, t);'
+        f' tl.to("#s01-wi{i}", {{ scale: 1, rotation: 0, color: "{"#ffe14a" if w in YW else "#ffffff"}", textShadow: "0 0 22px rgba(255,240,170,.95)", duration: .35, ease: "back.out(2.5)" }}, t + .16);'
+        f' tl.fromTo("#s01-wg{i}", {{ opacity: .95, scale: 1 }}, {{ opacity: 0, scale: 5, duration: .4, ease: "power2.in", immediateRender: false }}, t);'
+        f' tl.fromTo("#s01-rg{i}", {{ opacity: 1, scale: .2 }}, {{ opacity: 0, scale: {3.2 if len(w) > 7 else 2.4}, duration: .45, ease: "power2.out", immediateRender: false }}, t);'
+        f' for (let m = 0; m < 10; m++) {{ const an = m / 10 * 6.283 + {i}, r = {300 if len(w) > 7 else 220} + (m % 3) * 50; tl.fromTo("#s01-sk{i}_" + m, {{ opacity: 1, x: 0, y: 0, scale: 1.4, rotation: 0 }}, {{ opacity: 0, x: Math.cos(an) * r, y: Math.sin(an) * r * .8, scale: .3, rotation: 180, duration: .5, ease: "power3.out", immediateRender: false }}, t); }}'
+        f' tl.fromTo("#s01-fl", {{ opacity: {.5 if i in (4, 6, 7) else .25} }}, {{ opacity: 0, duration: .2, immediateRender: false }}, t);'
+        f' tl.fromTo("#s01-hk", {{ x: 0, y: 0 }}, {{ x: {(-1)**i * 14}, y: {(-1)**(i+1) * 10}, duration: .035, yoyo: true, repeat: 5, ease: "none", immediateRender: false }}, t); }}'
         for i, (w, k) in enumerate(QW)) + """
-      tl.fromTo("#s01-fl", { opacity: .55 }, { opacity: 0, duration: .25, immediateRender: false }, at("L1", "besiedeln") - .03);
-      tl.to("#s01-hk", { scale: 1.03, duration: .25, ease: "power2.out" }, at("L1", "besiedeln"));
-      tl.to("#s01-hk", { opacity: .35, scale: .97, duration: .2 }, ge - .1);
+            tl.fromTo("#s01-hk", { opacity: 1 }, { opacity: .35, duration: .2, immediateRender: false }, ge - .1);
       tl.fromTo("#s01-fl", { opacity: .85 }, { opacity: 0, duration: .35, immediateRender: false }, ge);
       tl.fromTo("#s01-st", { opacity: 0, scale: 2.8 }, { opacity: 1, scale: 1, duration: .25, ease: "back.out(2)" }, ge - .05);
 """ + drops("s01-p", 22, 5, 'ge', 540, 900, "🏠", 600, 820)[1] + drops("s01-q2", 16, 9, 'ge + .2', 540, 900, "🐚", 520, 760)[1])
@@ -256,7 +259,7 @@ scene("s05g", LILITA + "\n    " + PILL + "\n    " + BIG + "\n" + FL + """
     #s5g-jk { position: absolute; left: 60px; top: 60px; width: 110px; height: 110px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 5px #2a1b12, 0 8px 0 rgba(0,0,0,.3); }
     #s5g-ch { position: absolute; left: 60px; top: 560px; display: flex; flex-direction: column; gap: 18px; }
     .s5g-c { padding: 8px 26px 12px; border-radius: 999px; background: #fff; color: #2a1b12; font-family: "Inter", sans-serif; font-weight: 900; font-size: 44px; box-shadow: 0 0 0 5px #2a1b12, 0 8px 0 rgba(0,0,0,.3); width: fit-content; }
-    #s5g-v { top: 1080px; font-size: 64px; background: linear-gradient(135deg, #ffb21a, #ff6a1a); }""",
+    #s5g-v { top: 600px; font-size: 64px; background: linear-gradient(135deg, #ffb21a, #ff6a1a); }""",
 """      <div id="s5g-fl" class="fl" data-layout-ignore></div>
       <div id="s5g-t" class="big">🎮 BALD SPIELBAR!</div>
       <div id="s5g-b"><div class="r"><div>Bei 1.000 Followern</div><div><b id="s5g-n">716</b> / 1.000</div></div><div class="bar"><i id="s5g-bi"></i></div></div>
