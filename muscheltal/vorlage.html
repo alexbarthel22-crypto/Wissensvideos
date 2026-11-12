@@ -1520,6 +1520,8 @@ function hutsFront(c,x,y,tn){lampsFront(c,x,y,tn);palmsFront(c,x,y,tn);doenerFro
   for(let dy=0;dy<=2;dy++)for(let dx=-1;dx<=1;dx++){const q=v.cell.get((gx+dx)+','+(gy+dy));if(!q||q.nr>limit||!q.p||q.p.y<=y-.5||q.p.y-y>24||Math.abs(q.p.x-x)>12)continue;tintDraw(c,tn,q.p.x-12,q.p.y-16,q.p.x+12,q.p.y+11,o=>hutBody(o,v,q,px,wet,snow));}}}
 // Figuren dieses Bildes merken (für „Passant vor Namensschild“)
 const FIGS=[];
+// Oberkante der nächsten Hütte, die vor einer Figur steht (Figur darf beim Nachzeichnen über Namen nicht vor diese Hütte rutschen)
+function huetteVorne(x,y){let top=1e9;const v=ISL.find(v=>v.open&&Math.hypot(x-v.x,y-v.y)<v.R+30);if(!v)return top;const gx=Math.round((x-v.x)/S),gy=Math.round((y-v.y)/(S*.9));for(let dx=-1;dx<=1;dx++)for(let dy=0;dy<=2;dy++){const q=v.cell.get((gx+dx)+','+(gy+dy));if(!q||!q.p||q.nr>limit||q.p.y<=y+.5||Math.abs(q.p.x-x)>13)continue;top=Math.min(top,q.p.y-(q.isl&&q.isl.i===1?13.5:15));}return top;}
 function drawMover(c,w,x,y,dir,vert,mode){if(c===ctx&&!drawMover.re)FIGS.push([w,x,y,dir,vert,mode]);
   c.save();c.translate(x,y);if(!vert)c.scale(dir,1);
   c.fillStyle='rgba(30,40,20,.25)';c.beginPath();c.ellipse(0,4.4,mode==='walk'?2.6:4.2,.9,0,0,TAU);c.fill();c.lineCap='round';
@@ -2530,7 +2532,7 @@ function draw(){
    for(const [x,d] of[[xa,1],[xb,-1]]){c.fillStyle='#8a5a2b';c.beginPath();c.arc(x,y,.42,d>0?-Math.PI/2:Math.PI/2,d>0?Math.PI/2:Math.PI*1.5);c.fill();}
    c.fillStyle='#fff';c.strokeStyle=NBW_COL;c.lineWidth=.35;c.beginPath();c.arc(mx,y,1.9,0,TAU);c.fill();c.stroke();c.font='2.2px '+FONT;c.textAlign='center';c.textBaseline='middle';c.fillText('🤝',mx,y+.15);c.textBaseline='alphabetic';c.font='800 2.35px '+FONT;}
   // Passanten auf dem Weg vor einem Hütten-Namensschild stehen im Vordergrund (Schild dahinter)
-  if(LR.length&&FIGS.length){drawMover.re=1;const tn=nightLevel();for(const f of FIGS){const [w,fx,fy,dir,vert,mode]=f;for(const r of LR){if(fx>r[0]-2.2&&fx<r[2]+2.2&&fy+4.4>r[1]+1&&fy-11<r[3]){tintDraw(ctx,tn,fx-6,fy-14,fx+6,fy+6,o=>drawMover(o,{...w,noOcc:1},fx,fy,dir,vert,mode));break;}}}drawMover.re=0;}
+  if(LR.length&&FIGS.length){drawMover.re=1;const tn=nightLevel();for(const f of FIGS){const [w,fx,fy,dir,vert,mode]=f;for(const r of LR){if(fx>r[0]-2.2&&fx<r[2]+2.2&&fy+4.4>r[1]+1&&fy-11<r[3]){tintDraw(ctx,tn,fx-6,fy-14,fx+6,Math.min(fy+6,huetteVorne(fx,fy)),o=>drawMover(o,{...w,noOcc:1},fx,fy,dir,vert,mode));break;}}}drawMover.re=0;}
   if(WK.on&&WK.lblHit){WK.lblHit=0;walkerFig(c,1);}
   teamLayout(c);if(NAMES.length){c.font='800 2.8px '+FONT;c.textAlign='center';for(const [nm0,x,ly,bg,fs,tc] of [...NAMES.filter(n=>n[3]!=='#e8467c'),...NAMES.filter(n=>n[3]==='#e8467c')]){if(nm0!==(sel&&sel.name)&&near(x,ly))continue;let f=fs||2.8;const nm=nm0;c.font='800 '+f+'px '+FONT;{const mw=fs?16:24,tw1=c.measureText(nm).width;if(tw1>mw){f=f*mw/tw1;c.font='800 '+f+'px '+FONT;}}const tw=c.measureText(nm).width+f*1.07;c.fillStyle=bg||'rgba(42,27,18,.85)';c.beginPath();c.roundRect(x-tw/2,ly,tw,f*1.5,f*.75);c.fill();c.fillStyle=tc||'#fff';c.fillText(nm,x,ly+f*1.1);}}
  if(z*S>4)for(const b of BAU)if(bauOn(b)&&visR(b.steg?b.sx:b.cx,b.steg?b.sy:b.y0,60))drawBauSign(c,b);
