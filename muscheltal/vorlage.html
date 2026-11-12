@@ -476,12 +476,26 @@ for(const v of ISL){const ppl=PEOPLE.filter(p=>p.isl===v&&!p.wait&&!p.home);v.pe
  // zuerst Wohnort-Wünsche, danach Nachbarn (damit Nachbarn neben dem endgültigen Platz wohnen)
  for(const [n,ort] of Object.entries(I.wohnnaehe||{})){const P2=ppl.find(q=>q.name.toLowerCase()==='@'+n.toLowerCase().replace(/^@/,''));const gg=(I.gebaeude||[]).find(g=>g.name===ort);if(!P2||!P2.p||!gg||!gg.key.startsWith(v.i+':'))continue;const [k2,m2]=gg.key.split(':')[1].split(',').map(Number),gx=v.x+(5*k2+2.5)*S,gy=v.y+(4*m2+2)*S*.9;
   let best=null,bd=1e9;for(const q of ppl){if(!q.p||q===P2)continue;const dd=Math.hypot(q.p.x-gx,q.p.y-gy);if(dd<bd){bd=dd;best=q;}}if(best&&Math.hypot(P2.p.x-gx,P2.p.y-gy)>bd+5){const iA=P2.hut-1,iB=best.hut-1;v.cell.delete(P2.p.gx+','+P2.p.gy);v.cell.delete(best.p.gx+','+best.p.gy);const put=(p,si)=>{p.hut=si+1;const pl=v.plots[si],h=hash(pl.gx+7+v.i*31,pl.gy-3);p.p={x:v.x+pl.x,y:v.y+pl.y,gx:pl.gx,gy:pl.gy};p.round=h<.28;p.wall=WALLS[(h*97|0)%4];p.roof=ROOFS[(h*631|0)%ROOFS.length];p.win=hash(pl.gx,pl.gy+11)<.55;v.cell.set(pl.gx+','+pl.gy,p);};put(P2,iB);put(best,iA);}}
- for(const pr of I.nachbarn||[]){const [A,B]=pr.map(n=>ppl.find(p=>p.name.toLowerCase()==='@'+n.toLowerCase().replace(/^@/,'')));if(!A||!B||!A.p||!B.p||nb(A.p,B.p))continue;
+ for(const pr of I.nachbarn||[]){if(pr.length>2)continue;const [A,B]=pr.map(n=>ppl.find(p=>p.name.toLowerCase()==='@'+n.toLowerCase().replace(/^@/,'')));if(!A||!B||!A.p||!B.p||nb(A.p,B.p))continue;
   // wer einen Wohnort-Wunsch hat (wohnnaehe, z. B. nahe der Strandbar), bleibt stehen – der/die andere zieht daneben
   const WN=new Set(Object.keys(I.wohnnaehe||{}).map(n=>'@'+n.toLowerCase().replace(/^@/,''))),fx=q=>WN.has(q.name.toLowerCase());let [F,L]=A.nr<B.nr?[A,B]:[B,A];if(fx(L)&&!fx(F))[F,L]=[L,F];let done=false;for(const [X,Y] of(fx(F)?[[F,L]]:[[F,L],[L,F]])){const i=v.plots.findIndex((pl,i)=>!used.has(i)&&nb(pl,X.p));if(i>=0){setz(Y,i);done=true;break;}}
   // kein freier Platz daneben: mit einem Nachbarn tauschen, der selbst keinen Nachbarn-Wunsch hat (erst neben F, sonst neben L)
   if(!done){const PR=new Set((I.nachbarn||[]).flat().map(n=>'@'+n.toLowerCase().replace(/^@/,''))),frei=q=>!PR.has(q.name.toLowerCase())&&!WN.has(q.name.toLowerCase());
    for(const [X,Y] of(fx(F)?[[F,L]]:[[F,L],[L,F]])){const N=ppl.find(q=>q!==X&&q!==Y&&q.p&&frei(q)&&nb(q.p,X.p));if(!N)continue;const iN=N.hut-1,iY=Y.hut-1;v.cell.delete(N.p.gx+','+N.p.gy);v.cell.delete(Y.p.gx+','+Y.p.gy);used.delete(iN);used.delete(iY);Y.hut=0;N.hut=0;used.add(iN);used.add(iY);const tmp=(p,si)=>{p.hut=si+1;const pl=v.plots[si],h=hash(pl.gx+7+v.i*31,pl.gy-3);p.p={x:v.x+pl.x,y:v.y+pl.y,gx:pl.gx,gy:pl.gy};p.round=h<.28;p.wall=WALLS[(h*97|0)%4];p.roof=ROOFS[(h*631|0)%ROOFS.length];p.win=hash(pl.gx,pl.gy+11)<.55;v.cell.set(pl.gx+','+pl.gy,p);};tmp(Y,iN);tmp(N,iY);break;}}}
+ // Nachbarn-Gruppen (3–4 Leute, insel.json → nachbarn): alle in einer Reihe nebeneinander (ein Block hat 4 Hütten je Reihe)
+ {const PI=new Map();v.plots.forEach((pl,i)=>PI.set(pl.gx+','+pl.gy,i));const nm=n=>'@'+String(n).toLowerCase().replace(/^@/,'');
+  const PR=new Set((I.nachbarn||[]).flat().map(nm)),WN=new Set(Object.keys(I.wohnnaehe||{}).map(nm));
+  const put=(p,si)=>{p.hut=si+1;const pl=v.plots[si],h=hash(pl.gx+7+v.i*31,pl.gy-3);p.p={x:v.x+pl.x,y:v.y+pl.y,gx:pl.gx,gy:pl.gy};p.round=h<.28;p.wall=WALLS[(h*97|0)%4];p.roof=ROOFS[(h*631|0)%ROOFS.length];p.win=hash(pl.gx,pl.gy+11)<.55;v.cell.set(pl.gx+','+pl.gy,p);};
+  for(const gr of I.nachbarn||[]){if(gr.length<3)continue;const G=gr.map(n=>ppl.find(p=>p.name.toLowerCase()===nm(n)));if(G.some(p=>!p||!p.p))continue;const n=G.length;
+   const reihe=(gy,k)=>{for(let o=1;o+n-1<=4;o++){const C=[];for(let i=0;i<n;i++)C.push(5*k+o+i);if(C.every(gx=>PI.has(gx+','+gy)&&(()=>{const q=v.cell.get(gx+','+gy);return !q||G.includes(q)||(!PR.has(q.name.toLowerCase())&&!WN.has(q.name.toLowerCase()));})()))return C;}return null;};
+   const A=G.slice().sort((a,b)=>a.nr-b.nr)[0];let best=null;
+   {const k=Math.floor(A.p.gx/5),C=reihe(A.p.gy,k);if(C)best={gy:A.p.gy,C};}
+   if(!best){const R2=[];for(const pl of v.plots){if(((pl.gx%5)+5)%5!==1)continue;R2.push([Math.hypot(pl.gx-A.p.gx,(pl.gy-A.p.gy)*.9),pl.gy,Math.floor(pl.gx/5)]);}R2.sort((a,b)=>a[0]-b[0]);for(const [,gy,k] of R2){const C=reihe(gy,k);if(C){best={gy,C};break;}}}
+   if(!best)continue;
+   // wer schon in der Reihe wohnt, bleibt; die anderen ziehen auf die übrigen Plätze (Bewohner dort tauschen mit ihnen)
+   const rest=best.C.filter(gx=>{const q=v.cell.get(gx+','+best.gy);return !(q&&G.includes(q));});
+   for(const p of G){if(p.p.gy===best.gy&&best.C.includes(p.p.gx))continue;const gx=rest.shift();const si=PI.get(gx+','+best.gy),q=v.cell.get(gx+','+best.gy),iP=p.hut-1;v.cell.delete(p.p.gx+','+p.p.gy);
+    if(q&&q!==p){v.cell.delete(gx+','+best.gy);put(q,iP);}else{used.delete(iP);used.add(si);}put(p,si);}}}
  v.free=v.plots.filter((pl,i)=>!used.has(i)).map(pl=>({x:v.x+pl.x,y:v.y+pl.y}));}
 for(const p of PEOPLE){const n=p.name.toLowerCase().replace(/^@/,''),b=(I.jobs||{})[n];if(b&&aktiv(b)){p.beruf=b[0]||'';p.ort=b[1]||'';}const vm=(I.vermoegen||{})[n];p.verm=vm!=null?vm:(I.vermoegen_start??0);}
 const PLACED=PEOPLE.filter(p=>p.p), WAIT=PEOPLE.filter(p=>p.wait);
@@ -959,7 +973,7 @@ function palLion(c,x,y,s,gold,ink){const TW=Math.PI*2;c.fillStyle='rgba(40,30,10
 const cv=$('map'),ctx=cv.getContext('2d'),base=document.createElement('canvas'),bx=base.getContext('2d'),fgc=document.createElement('canvas'),fx=fgc.getContext('2d');let fgOn=false;
 let W=0,H=0,DPR=1,T=0,baseKey='',selT=0,selN=0,selStop=null,selStopN=-1;
 // Nachbarpaare (beide eingezogen)
-let NBP_=null;const NBW_Y=3.2;var NBW_COL='#e8433c';const NBPget=()=>NBP_||(NBP_=(I.nachbarn||[]).map(pr=>pr.map(n=>byName.get('@'+String(n).toLowerCase().replace(/^@/,'')))).filter(([a,b])=>a&&b&&a.p&&b.p&&!a.gb&&!b.gb));
+let NBP_=null;const NBW_Y=3.2;var NBW_COL='#e8433c';const NBPget=()=>NBP_||(NBP_=(I.nachbarn||[]).flatMap(pr=>{const G=pr.map(n=>byName.get('@'+String(n).toLowerCase().replace(/^@/,'')));if(G.length<3)return[G];if(G.some(q=>!q||!q.p))return[];G.sort((a,b)=>a.p.gx-b.p.gx);return G.slice(1).map((q,i)=>[G[i],q]);}).filter(([a,b])=>a&&b&&a.p&&b.p&&!a.gb&&!b.gb));
 const cam={x:0,y:0,z:1},NAMES=[],TAPS=[],TEAMN=new Map();
 // Team-Schilder: alle Mitarbeiter eines Ladens einheitlich als kleine Schilder in Ladenfarbe, mittig auf dem Weg direkt unter dem Gelände
 function teamLbl(g,p,col){}

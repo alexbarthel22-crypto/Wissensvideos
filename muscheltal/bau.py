@@ -181,16 +181,16 @@ def insel_je(sauber, insel):
     idx = {r[0].lower().lstrip("@"): j for j, r in enumerate(sauber)}
     paare = [[idx.get(n.lower().lstrip("@")) for n in paar] for paar in (insel.get("nachbarn") or [])]
     geschuetzt = {j for pa in paare for j in pa if j is not None}
-    for a, b in paare:
-        if a is None or b is None or isl[a] == isl[b] or 0 not in (isl[a], isl[b]):
+    for gruppe in paare:  # Paare oder Gruppen (3–4): wohnt einer auf der Haupt-Insel, ziehen alle anderen dazu
+        if any(j is None for j in gruppe) or len({isl[j] for j in gruppe}) == 1 or not any(isl[j] == 0 for j in gruppe):
             continue
-        k = b if isl[a] == 0 else a
-        kand = [j for j in range(len(sauber)) if isl[j] == 0 and j not in geschuetzt and j not in mit and sauber[j][0].lower().lstrip("@") not in wo]
-        if not kand:
-            continue
-        letzter = max(kand)
-        isl[letzter], isl[k] = isl[k], 0
-        print(f"Nachbarn: @{sauber[k][0].lstrip('@')} zieht auf die Haupt-Insel, @{sauber[letzter][0].lstrip('@')} zieht dafür um")
+        for k in [j for j in gruppe if isl[j] != 0]:
+            kand = [j for j in range(len(sauber)) if isl[j] == 0 and j not in geschuetzt and j not in mit and sauber[j][0].lower().lstrip("@") not in wo]
+            if not kand:
+                break
+            letzter = max(kand)
+            isl[letzter], isl[k] = isl[k], 0
+            print(f"Nachbarn: @{sauber[k][0].lstrip('@')} zieht auf die Haupt-Insel, @{sauber[letzter][0].lstrip('@')} zieht dafür um")
     return isl
 
 
@@ -536,7 +536,7 @@ def baue(rows, out):
     namen = {r[0].lower().lstrip("@") for r in sauber}
     for paar in insel.get("nachbarn") or []:
         da = [n for n in paar if n.lower().lstrip("@") in namen]
-        print(f"Nachbarn-Wunsch {' + '.join('@' + n for n in paar)}: " + ("beide da → wohnen nebeneinander" if len(da) == 2 else f"noch nicht beide Follower ({len(da)}/2)"))
+        print(f"Nachbarn-Wunsch {' + '.join('@' + n for n in paar)}: " + ("alle da → wohnen nebeneinander" if len(da) == len(paar) else f"noch nicht alle Follower ({len(da)}/{len(paar)})"))
     alt = os.path.join(out, "einwohner.json")
     if os.path.exists(alt):
         os.remove(alt)  # nicht mehr öffentlich (enthielt echte Inselnamen)

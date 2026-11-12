@@ -269,3 +269,4 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - **Yacht-Abstimmung: Ja** – @marie18034 auf der White Pearl, jeden Tag Party.
 - **716 Bewohner** (laut Nutzer; Homepage zeigte 718), Hotel Sandkorn bei 800 → noch 84. Spoiler: die ersten 1.000 bekommen Vorteile im Spiel.
 - Aufruf: Was soll als Nächstes gebaut werden? Meiste Likes kommt ins nächste Video. Nachbarn-Beispiel @melie_js & @lisann.lmp.
+- **Nachbarn-Gruppe** (12.11.): @millakhler + @nelee_4011 + @gretadewitz + @fridabrrr0 wohnen in einer Reihe nebeneinander (Haupt-Insel, Hütten 252 · 351 · 298 · 377, alle mit 🤝 verbunden). Da @millakhler schon auf der Haupt-Insel wohnte, sind die drei anderen von der Kokos-Küste nachgezogen; dafür sind @lottawally1105, @leonie_xy und @antonia0o (zuletzt auf die Haupt-Insel Gekommene) auf die Kokos-Küste gezogen. Regel: Nachbarn-Wünsche können auch Gruppen bis 4 sein (ein Block hat 4 Hütten je Reihe).
