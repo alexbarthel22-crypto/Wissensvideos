@@ -55,7 +55,11 @@ function spieler(u) {
     p = S.spieler[id] = { id, name: anzeigeName(u, S.reihenfolge.length), muscheln: 0, stufe: 0, anbauten: [], farbe: null, platz: S.reihenfolge.length, zuletzt: Date.now() };
     S.reihenfolge.push(id);
     sende({ typ: 'neu', id });
-    sag(satz('neu', { name: sprechName(p) }), 3);
+    sag(satz('neu', { name: sprechName(p) }), 2);
+    // Sofort ein richtiges Haus: Startbonus bis zur ersten Hütte, Kamera zeigt es kurz
+    const start = CFG.startMuscheln ?? 25;
+    if (start > 0) setImmediate(() => gibMuscheln(p, start, 'start'));
+    if (!hausWunsch.includes(id)) hausWunsch.unshift(id);
   }
   return p;
 }
@@ -68,7 +72,7 @@ function gibMuscheln(p, n, grund) {
   geaendert = true;
   if (p.stufe > vorher) {
     sende({ typ: 'stufe', id: p.id, stufe: p.stufe });
-    sag(satz('stufe', { name: sprechName(p), stufe: artikel(CFG.stufen[p.stufe].name), stufeDativ: dativ(CFG.stufen[p.stufe].name), stufeName: CFG.stufen[p.stufe].name }), 2);
+    if (grund !== 'start') sag(satz('stufe', { name: sprechName(p), stufe: artikel(CFG.stufen[p.stufe].name), stufeDativ: dativ(CFG.stufen[p.stufe].name), stufeName: CFG.stufen[p.stufe].name }), 2);
   }
   zustand();
 }
@@ -277,6 +281,7 @@ function weiter() {
     if (aufSeite && code === 0) {                      // Seite spielt ab; warten, bis die Ansage vorbei ist
       let ms = 2000; try { ms = (fs.statSync(datei).size - 44) / 44.1 + 300; } catch {}
       sende({ typ: 'stimme', id: tonSeite, url: '/ton/' + path.basename(datei) + '?' + Date.now() });
+      if (++unbestaetigt >= 3) { unbestaetigt = 0; stimmeFehlerBis = Date.now() + 60000; console.log('🔈 Live-Seite bestätigt Annas Stimme nicht – spreche 1 Minute über die Mac-Lautsprecher.'); }
       setTimeout(fertig, ms);
       return;
     }
@@ -290,7 +295,7 @@ function weiter() {
 
 // ---------- Ton-Absicherung ----------
 // Läuft auf keiner Live-Seite Ton (Browser blockiert ihn), spielen Stimme und Musik direkt über die Mac-Lautsprecher.
-let lokalMusik = null, lokalNr = 0, tonSeite = null, stimmeFehlerBis = 0;
+var lokalMusik = null, lokalNr = 0, tonSeite = null, stimmeFehlerBis = 0, unbestaetigt = 0;
 const tonStatus = new Map();                               // Seiten-Nr. -> { an, zeit, vorschau, seit }
 const seiteHatTon = () => { const st = tonStatus.get(tonSeite); return !!st && st.an && Date.now() - st.zeit < 10000; };
 // Genau EINE Seite spielt Ton: bevorzugt eine, auf der Ton schon läuft, sonst die zuerst geöffnete (keine Vorschau)
@@ -317,7 +322,7 @@ var letzteAnsageZeit = 0;
 setInterval(() => {
   const seiten = [...kunden.keys()].map(id => { const t = tonStatus.get(id) || {}; return `#${id}${t.vorschau ? '(Vorschau)' : ''}${id === tonSeite ? '★' : ''} Ton ${t.an ? 'an' : 'aus'}/${t.ac || '?'}`; });
   const weg = ECHT ? (CFG.stimme.wiedergabe !== 'mac' && seiteHatTon() && Date.now() > stimmeFehlerBis ? 'Seite (Stream)' : 'Mac-Lautsprecher') : 'aus (Test)';
-  console.log(`ℹ️  ${new Date().toLocaleTimeString('de-DE')} · Seiten: ${seiten.join(', ') || 'keine!'} · Anna über: ${weg} · letzte Ansage vor ${letzteAnsageZeit ? Math.round((Date.now() - letzteAnsageZeit) / 1000) + ' s' : '–'}`);
+  console.log(`ℹ️  ${new Date().toLocaleTimeString('de-DE')} · TikTok: ${tiktokStatus} (${tiktokEreignisse} Ereignisse${tiktokLetztes ? ', letztes vor ' + Math.round((Date.now() - tiktokLetztes) / 1000) + ' s' : ''}) · Seiten: ${seiten.join(', ') || 'keine!'} · Anna über: ${weg} · letzte Ansage vor ${letzteAnsageZeit ? Math.round((Date.now() - letzteAnsageZeit) / 1000) + ' s' : '–'}`);
 }, 30000);
 setInterval(musikLokal, 3000);
 process.on('exit', () => lokalMusik?.kill());
@@ -444,7 +449,11 @@ function beitritt(u) {                                     // jemand kommt neu i
 // wird nur mitgeschickt, wenn sie sich geändert hat, und die Antwort wird gepackt (gzip).
 const kunden = new Map(); let letzteSeitenAnsage = 0, seitenNr = 0;      // Seiten-Nr. -> zuletzt gesehen
 const LOG = [], listeZeit = new Map(); let seq = 0, letzterZustand = null, spielerJSON = '[]', spielerVer = 0;
-function sende(ev) { LOG.push({ n: ++seq, ev }); if (LOG.length > 400) LOG.splice(0, LOG.length - 400); }
+const wartende = new Set();                                  // offene Abfragen der Live-Seiten (Long-Poll)
+function sende(ev) {
+  LOG.push({ n: ++seq, ev }); if (LOG.length > 400) LOG.splice(0, LOG.length - 400);
+  if (wartende.size) setImmediate(() => { for (const f of wartende) f(); wartende.clear(); });
+}
 let zLetzt = 0, zOffen = false;
 function zustand() {
   if (Date.now() - zLetzt < 250) { if (!zOffen) { zOffen = true; setTimeout(() => { zOffen = false; zustand(); }, 260); } return; }
@@ -469,7 +478,7 @@ function oeffentlich() {
 }
 
 const TYPEN = { '.mp3': 'audio/mpeg', '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.png': 'image/png', '.woff2': 'font/woff2', '.svg': 'image/svg+xml' };
-http.createServer((req, res) => {
+const server = http.createServer((req, res) => {
   const url = new URL(req.url, 'http://x');
   if (url.pathname === '/wachsen') {                         // Seite meldet: Insel ist gewachsen (nur Zahl, kein freier Text)
     const n = Math.min(5000, Math.max(0, parseInt(url.searchParams.get('n'), 10) || 0));
@@ -502,15 +511,26 @@ http.createServer((req, res) => {
     if (url.searchParams.has('an')) tonStatus.set(id, { ...alt, an: url.searchParams.get('an') === '1', ac: url.searchParams.get('ac'), vorschau: url.searchParams.get('vorschau') === '1', zeit: Date.now() });
     if (url.searchParams.get('stimme') === '1' && alt.stimmeOk !== true) { tonStatus.set(id, { ...tonStatus.get(id), stimmeOk: true }); console.log(`🔊 Anna spricht über die Live-Seite #${id} (Stream-Ton).`); }
     if (url.searchParams.get('stimme') === '0') { stimmeFehlerBis = Date.now() + 60000; console.log('🔈 Stimme auf der Seite blockiert – spreche über die Mac-Lautsprecher.'); }
-    if (url.searchParams.get('stimme') === '1') stimmeFehlerBis = 0;
+    if (url.searchParams.get('stimme') === '1') { stimmeFehlerBis = 0; unbestaetigt = 0; }
     waehleTonSeite();
     res.writeHead(204); return res.end();
   }
   if (url.pathname === '/poll') {
+    // Nichts Neues? Kurz offen halten und sofort antworten, wenn etwas passiert (max. 8 s)
+    const nAlt = +url.searchParams.get('n') || 0;
+    if (url.searchParams.get('w') === '1' && nAlt && nAlt >= seq && !req._gewartet) {
+      req._gewartet = true; const id0 = +url.searchParams.get('id') || 0; if (id0) kunden.set(id0, Date.now());
+      let fertigF; const t = setTimeout(() => { wartende.delete(fertigF); fertigF(); }, 8000);
+      fertigF = () => { clearTimeout(t); server.emit('request', req, res); };
+      wartende.add(fertigF); req.on('close', () => { clearTimeout(t); wartende.delete(fertigF); });
+      return;
+    }
     let id = +url.searchParams.get('id') || 0;
     const neu = !id || !kunden.has(id);
     if (neu && !id) id = ++seitenNr;
-    kunden.set(id, Date.now()); if (neu) waehleTonSeite();
+    kunden.set(id, Date.now());
+    if (url.searchParams.has('an')) { const alt = tonStatus.get(id) || {}; tonStatus.set(id, { ...alt, an: url.searchParams.get('an') === '1', ac: url.searchParams.get('ac'), vorschau: url.searchParams.get('vorschau') === '1', zeit: Date.now() }); }
+    waehleTonSeite();
     const n = +url.searchParams.get('n') || 0, sv = +url.searchParams.get('sv');
     if (!letzterZustand) zustand();
     // Erste Abfrage oder zu weit zurück: nur den aktuellen Zustand (keine alten Shows/Banner nachspielen)
@@ -545,24 +565,35 @@ http.createServer((req, res) => {
 });
 
 // ---------- TikTok-Verbindung ----------
+var tiktokStatus = TEST ? 'Test-Modus' : 'noch nicht verbunden', tiktokEreignisse = 0, tiktokLetztes = 0, likeLogZeit = 0;
+function tt(art, text) {                                     // jedes echte TikTok-Ereignis kurz im Terminal zeigen
+  tiktokEreignisse++; tiktokLetztes = Date.now();
+  if (art === '❤️' && Date.now() - likeLogZeit < 5000) return; if (art === '❤️') likeLogZeit = Date.now();
+  console.log(`${art} ${text}`);
+}
 async function verbinde() {
   const { TikTokLiveConnection, WebcastEvent } = await import('tiktok-live-connector');
-  const c = new TikTokLiveConnection(CFG.tiktokName, { enableExtendedGiftInfo: true, processInitialData: false });
-  c.on(WebcastEvent.CHAT, d => d.user && kommentar(d.user, d.comment));
-  c.on(WebcastEvent.LIKE, d => d.user && like(d.user, d.likeCount || 1));
-  c.on(WebcastEvent.FOLLOW, d => d.user && follow(d.user));
-  c.on(WebcastEvent.SHARE, d => d.user && teilen(d.user));
-  c.on(WebcastEvent.MEMBER, d => d.user && beitritt(d.user));
+  const opt = { enableExtendedGiftInfo: true, processInitialData: false };
+  if (CFG.eulerApiKey) opt.signApiKey = CFG.eulerApiKey;   // optional: eigener Schlüssel von eulerstream.com (stabiler)
+  const c = new TikTokLiveConnection(CFG.tiktokName, opt);
+  const nm = d => '@' + (d.user?.uniqueId || '?');
+  c.on(WebcastEvent.CHAT, d => { if (!d.user) return; tt('💬', `${nm(d)}: ${d.comment}`); kommentar(d.user, d.comment); });
+  c.on(WebcastEvent.LIKE, d => { if (!d.user) return; tt('❤️', `${nm(d)} +${d.likeCount || 1} Likes`); like(d.user, d.likeCount || 1); });
+  c.on(WebcastEvent.FOLLOW, d => { if (!d.user) return; tt('➕', `${nm(d)} folgt`); follow(d.user); });
+  c.on(WebcastEvent.SHARE, d => { if (!d.user) return; tt('🔁', `${nm(d)} teilt`); teilen(d.user); });
+  c.on(WebcastEvent.MEMBER, d => { if (!d.user) return; tt('👋', `${nm(d)} ist da`); beitritt(d.user); });
   c.on(WebcastEvent.GIFT, d => {
+    tt('🎁', `${nm(d)}: ${d.giftDetails?.giftName || 'Geschenk'}`);
     const g = d.giftDetails || {};
     if (g.giftType === 1 && !d.repeatEnd) return; // Serie läuft noch – erst am Ende zählen
     const ex = d.extendedGiftInfo || {};
     geschenk(d.user || {}, g.giftName || ex.name || 'das Geschenk', g.diamondCount || ex.diamond_count || 1, d.repeatCount || 1);
   });
   c.on(WebcastEvent.STREAM_END, () => { console.log('Stream beendet.'); speichern(); });
-  c.on('disconnected', () => { console.log('Verbindung weg – neuer Versuch in 15 s'); setTimeout(versuche, 15000); });
+  c.on('disconnected', () => { tiktokStatus = 'getrennt'; console.log('⚠️  Verbindung zu TikTok weg – neuer Versuch in 15 s'); setTimeout(versuche, 15000); });
   const st = await c.connect();
-  console.log(`✅ Mit dem LIVE von @${CFG.tiktokName} verbunden (Raum ${st.roomId}).`);
+  tiktokStatus = 'verbunden';
+  console.log(`\n✅✅✅ Mit deinem TikTok-LIVE (@${CFG.tiktokName}) verbunden – Likes, Kommentare und Geschenke kommen jetzt an.\n`);
   // Echte Follower-Zahl = Bewohner (beim Start und alle 5 Minuten)
   const fol = info => { const f = suche(info, 'follower_count'); if (f) { bewohnerVonTikTok = true; setzeBewohner(Number(f), 'tiktok'); } };
   fol(st.roomInfo || c.roomInfo);
@@ -578,8 +609,9 @@ function suche(o, key, tiefe = 0) {
 async function versuche() {
   try { await verbinde(); }
   catch (e) {
-    console.log(`⏳ Noch nicht live oder keine Verbindung (${e.message || e}). Neuer Versuch in 20 s …`);
-    setTimeout(versuche, 20000);
+    tiktokStatus = 'nicht verbunden';
+    console.log(`⏳ TikTok: noch nicht verbunden (${e.constructor?.name || ''}: ${e.message || e}${e.errors ? ' – ' + e.errors.map(x => x.message).join(' | ') : ''}). Neuer Versuch in 15 s …`);
+    setTimeout(versuche, 15000);
   }
 }
 

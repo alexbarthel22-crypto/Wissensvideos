@@ -158,3 +158,9 @@ Ohne Stimme starten: `node server.mjs --still`.
 - Die TikTok-Verbindung nutzt die freie Bibliothek „TikTok-Live-Connector“ (inoffiziell). Ändert TikTok etwas, kann sie kurz ausfallen – das Programm versucht es automatisch weiter.
 - Wichtige Infos stehen oben, unten bleibt Platz für TikToks Kommentarspalte.
 - Die Insel ist noch ein Platzhalter; sobald die Live-Insel auf muscheltal.de existiert, wird sie hier eingesetzt.
+
+## Wenn im LIVE nichts reagiert oder Anna stumm ist
+- Im Terminal muss nach dem Live-Gehen **„✅✅✅ Mit deinem TikTok-LIVE verbunden“** stehen. Danach erscheint jedes Like, jeder Kommentar und jedes Geschenk als Zeile (❤️ 💬 🎁 👋).
+- Alle 30 s zeigt eine **ℹ️-Zeile**: TikTok-Verbindung, Anzahl Ereignisse, Live-Seiten, über welchen Weg Anna spricht.
+- Steht dort dauerhaft „TikTok: nicht verbunden“: kostenlosen Schlüssel auf eulerstream.com holen und in `einstellungen.json` bei `eulerApiKey` eintragen.
+- Bestätigt die Live-Seite Annas Stimme nicht, spricht sie automatisch über die Mac-Lautsprecher.

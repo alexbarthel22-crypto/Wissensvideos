@@ -426,5 +426,9 @@
     "alleMinuten": 3,
     "_hinweis": "Alle 3 Minuten ein zufälliges Überraschungs-Event (40 verschiedene, siehe events.mjs). Nie dasselbe wie eins der letzten 10."
   },
-  "folgeAufrufMinuten": 3
+  "folgeAufrufMinuten": 3,
+  "startMuscheln": 25,
+  "_startMuscheln": "Beim ersten Like/Kommentar bekommt jeder sofort so viele Muscheln geschenkt: 25 = Strohhütte (erstes richtiges Haus) wird direkt gebaut.",
+  "eulerApiKey": "",
+  "_eulerApiKey": "Optional: kostenloser Schlüssel von eulerstream.com, falls die TikTok-Verbindung nicht klappt."
 }

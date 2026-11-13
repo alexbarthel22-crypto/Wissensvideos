@@ -238,14 +238,15 @@ let pollN = 0, pollSV = -1, SPIELER = [];
 async function verbinde() {
   for (;;) {
     try {
-      const r = await fetch(`poll?id=${meineId || ''}&n=${pollN}&sv=${pollSV}`, { cache: 'no-store' });
+      // Long-Poll: Server antwortet sofort bei Neuigkeiten – ohne Timer, die LIVE Studio im Hintergrund drosseln könnte
+      const r = await fetch(`poll?id=${meineId || ''}&n=${pollN}&sv=${pollSV}&w=1${tonText()}`, { cache: 'no-store' });
       const d = await r.json();
       meineId = d.id;
       if (d.spieler) { SPIELER = d.spieler; pollSV = d.sv; S.spieler = SPIELER; }
       for (const e of d.ev) { if (e.typ === 'zustand') e.s.spieler = SPIELER; ereignis(e); }
       const rolle = !VORSCHAU && d.tonSeite === meineId; if (rolle !== tonRolle) { tonRolle = rolle; if (rolle) tonStarten(); else tonStoppen(); }
       pollN = d.n;
-      await new Promise(r => setTimeout(r, 200));
+      if (tonRolle && (musik.paused || (AC && AC.state !== 'running'))) tonStarten();   // Ton nach Unterbrechung selbst wieder an
     } catch { await new Promise(r => setTimeout(r, 1500)); }
   }
 }
@@ -552,7 +553,7 @@ async function stimmeAbspielen(url) {                             // Stimme übe
 setInterval(() => { if (tonRolle && (musik.paused || (AC && AC.state !== 'running'))) tonStarten(); }, 4000);   // Ton nach Unterbrechung selbst wieder an
 addEventListener('click', tonStarten); addEventListener('keydown', tonStarten); addEventListener('touchstart', tonStarten);
 // Meldet dem Programm, ob hier wirklich Ton läuft – sonst übernimmt der Mac (Lautsprecher)
-setInterval(() => meineId != null && fetch(`/tonstatus?id=${meineId}&an=${tonRolle && tonAn && !musik.paused ? 1 : 0}&ac=${AC ? AC.state : 'kein'}&vorschau=${VORSCHAU ? 1 : 0}`).catch(() => {}), 3000);
+const tonText = () => `&an=${tonRolle && tonAn && !musik.paused ? 1 : 0}&ac=${AC ? AC.state : 'kein'}&vorschau=${VORSCHAU ? 1 : 0}`;   // Tonstatus reist mit jeder Abfrage mit
 
 // ================= Zeichen-Hilfen =================
 function rr(x, y, w, h, r) { X.beginPath(); X.roundRect(x, y, w, h, r); }

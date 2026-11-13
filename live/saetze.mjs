@@ -55,10 +55,10 @@ const SAETZE = {
     'Geteilt von {name}! Das bringt zwei Muscheln in die Kasse. Danke!',
   ],
   neu: [
-    'Willkommen im Muschel-Tal, {name}! Dein Zelt steht.',
-    'Hallo {name}! Dein Grundstück ist bereit.',
-    '{name} ist da! Das erste Zelt steht schon.',
-    'Ein neues Zelt für {name}! Viel Spaß beim Bauen!',
+    'Willkommen im Muschel-Tal, {name}! … Deine Hütte wird gerade gebaut.',
+    'Hallo {name}! … Schau mal, die Krabben bauen schon dein Haus.',
+    '{name} ist da! … Dein erstes Haus steht sofort.',
+    'Eine neue Hütte für {name}! … Jedes Like baut weiter.',
   ],
   stufe: [
     '{name} hat jetzt {stufe}!',
