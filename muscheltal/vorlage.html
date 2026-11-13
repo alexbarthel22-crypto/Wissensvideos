@@ -1883,22 +1883,24 @@ function schCorgi(c,t){const q=corgiPos(REDUCED?3:t),moving=q.moving&&!REDUCED,s
  leg(-1.8,0,OR,'#f3e2c8');leg(3.4,Math.PI,OR,WH);
  // weiße Brust
  c.fillStyle=WH;c.beginPath();c.moveTo(2.6,-1.4);c.quadraticCurveTo(4.8,-1,4.4,.8);c.quadraticCurveTo(3.4,1.6,2.4,1.1);c.quadraticCurveTo(2.2,-.4,2.6,-1.4);c.fill();
- // Kopf in Dreiviertel-Ansicht (beide Augen sichtbar), beim Schnüffeln gesenkt
- c.save();c.translate(4.5,-2.7+st*.1+sn*2.2);c.rotate(sn*.35);
- // Ohren groß und spitz, innen rosa
- for(const [bx,tx,ty] of[[-1.15,-1.6,-3.9],[.95,1.5,-4.1]]){c.fillStyle=OR;c.beginPath();c.moveTo(bx-.85,-1.1);c.quadraticCurveTo(tx-.2,ty+.6,tx,ty);c.quadraticCurveTo(tx+.4,ty+1,bx+.85,-1.35);c.closePath();c.fill();c.fillStyle='#f5b3a0';c.beginPath();c.moveTo(bx-.45,-1.3);c.quadraticCurveTo(tx-.1,ty+1,tx,ty+.7);c.quadraticCurveTo(tx+.25,ty+1.2,bx+.45,-1.45);c.closePath();c.fill();}
- // Kopfform (Fuchsgesicht) mit Wangenfell
- c.fillStyle=OR;c.beginPath();c.moveTo(-1.9,-.6);c.quadraticCurveTo(-2,-2,0,-2.1);c.quadraticCurveTo(2,-2.1,2.1,-.6);c.quadraticCurveTo(2.2,1,1.2,1.7);c.lineTo(-1.1,1.7);c.quadraticCurveTo(-2.1,1,-1.9,-.6);c.fill();
- c.fillStyle='#f7c48a';c.beginPath();c.ellipse(-1.6,.6,.6,.8,.3,0,TAU);c.ellipse(1.8,.6,.6,.8,-.3,0,TAU);c.fill();
- // weiße Blesse von der Stirn zur Schnauze
- c.fillStyle=WH;c.beginPath();c.moveTo(-.25,-2);c.quadraticCurveTo(.1,-1.2,-.05,-.3);c.quadraticCurveTo(-1.2,.2,-1.15,1.2);c.quadraticCurveTo(0,2.3,1.15,1.2);c.quadraticCurveTo(1.2,.2,.15,-.3);c.quadraticCurveTo(.1,-1.2,.25,-2);c.closePath();c.fill();
- // Schnauze, Nase, Maul
- c.fillStyle=WH;c.beginPath();c.ellipse(0,.95,1.05,.75,0,0,TAU);c.fill();
- c.fillStyle='#2a1b12';c.beginPath();c.moveTo(-.42,.42);c.quadraticCurveTo(0,.25,.42,.42);c.quadraticCurveTo(.3,.85,0,.88);c.quadraticCurveTo(-.3,.85,-.42,.42);c.fill();c.fillStyle='rgba(255,255,255,.55)';c.beginPath();c.ellipse(-.12,.45,.12,.07,0,0,TAU);c.fill();
- c.strokeStyle='#2a1b12';c.lineWidth=.1;c.beginPath();c.moveTo(0,.88);c.lineTo(0,1.15);c.moveTo(-.55,1.15);c.quadraticCurveTo(-.28,1.4,0,1.15);c.quadraticCurveTo(.28,1.4,.55,1.15);c.stroke();
- if(moving||sn>0){c.fillStyle='#ff7a96';c.beginPath();c.ellipse(.1,1.55,.32,.45,0,0,TAU);c.fill();c.strokeStyle='#e0587a';c.lineWidth=.06;c.beginPath();c.moveTo(.1,1.2);c.lineTo(.1,1.9);c.stroke();}
- // beide Augen (braun mit Glanz), helle Augenbrauen-Flecken
- for(const ex of[-.82,.82]){c.fillStyle='#2a1406';c.beginPath();c.ellipse(ex,-.45,.34,.38,0,0,TAU);c.fill();c.fillStyle='#5a3418';c.beginPath();c.arc(ex,-.4,.18,0,TAU);c.fill();c.fillStyle='#fff';c.beginPath();c.arc(ex+.1,-.58,.1,0,TAU);c.fill();c.fillStyle='#f7c48a';c.beginPath();c.ellipse(ex*1.05,-1.05,.28,.12,ex>0?-.2:.2,0,TAU);c.fill();}
+ // Kopf im Profil, schaut in Laufrichtung (beim Schnüffeln gesenkt)
+ c.save();c.translate(4.3,-2.6+st*.1+sn*2.2);c.rotate(sn*.4);
+ // Ohren: groß, spitz, aufgestellt (hinteres etwas dunkler)
+ c.fillStyle=OR2;c.beginPath();c.moveTo(-1.5,-1);c.quadraticCurveTo(-1.9,-3.2,-1.3,-4.2);c.quadraticCurveTo(-.4,-2.9,-.2,-1.5);c.closePath();c.fill();
+ c.fillStyle=OR;c.beginPath();c.moveTo(-.7,-1.3);c.quadraticCurveTo(-.7,-3.6,.1,-4.4);c.quadraticCurveTo(.8,-3,.7,-1.4);c.closePath();c.fill();c.fillStyle='#f5b3a0';c.beginPath();c.moveTo(-.35,-1.5);c.quadraticCurveTo(-.3,-3.3,.1,-3.9);c.quadraticCurveTo(.5,-2.9,.45,-1.6);c.closePath();c.fill();
+ // Schädel + lange Fuchsschnauze nach vorne
+ c.fillStyle=OR;c.beginPath();c.moveTo(-1.8,.6);c.quadraticCurveTo(-2.1,-1.6,-.2,-1.9);c.quadraticCurveTo(1.2,-2,1.6,-1);c.quadraticCurveTo(2.4,-.7,3.2,-.4);c.quadraticCurveTo(3.6,0,3.3,.45);c.quadraticCurveTo(2,1.1,.6,1.3);c.quadraticCurveTo(-1,1.5,-1.8,.6);c.fill();
+ // weiße Schnauze, Blesse am Nasenrücken, Wangenfell
+ c.fillStyle=WH;c.beginPath();c.moveTo(1.2,-.5);c.quadraticCurveTo(2.3,-.5,3.2,-.2);c.quadraticCurveTo(3.5,.2,3.2,.5);c.quadraticCurveTo(1.9,1.1,.7,1.2);c.quadraticCurveTo(.6,.3,1.2,-.5);c.fill();
+ c.beginPath();c.moveTo(.2,-1.85);c.quadraticCurveTo(1.1,-1.3,1.5,-.6);c.lineTo(1.1,-.5);c.quadraticCurveTo(.6,-1.2,.2,-1.85);c.fill();
+ c.fillStyle='#fff6e6';c.beginPath();c.ellipse(-1,.9,.9,.7,-.3,0,TAU);c.fill();
+ // Nase, Maul, Zunge
+ c.fillStyle='#2a1b12';c.beginPath();c.ellipse(3.35,-.12,.34,.28,.2,0,TAU);c.fill();c.fillStyle='rgba(255,255,255,.5)';c.beginPath();c.arc(3.28,-.22,.08,0,TAU);c.fill();
+ c.strokeStyle='#2a1b12';c.lineWidth=.1;c.beginPath();c.moveTo(3.2,.35);c.quadraticCurveTo(2.4,.85,1.7,.7);c.stroke();
+ if(moving||sn>0){c.fillStyle='#ff7a96';c.beginPath();c.ellipse(2.3,.95,.42,.3,.4,0,TAU);c.fill();}
+ // Auge (nach vorne gerichtet) mit Glanz, Augenbraue
+ c.fillStyle='#2a1406';c.beginPath();c.ellipse(1,-.85,.3,.34,0,0,TAU);c.fill();c.fillStyle='#5a3418';c.beginPath();c.arc(1.07,-.82,.15,0,TAU);c.fill();c.fillStyle='#fff';c.beginPath();c.arc(1.15,-.95,.09,0,TAU);c.fill();
+ c.fillStyle='#f7c48a';c.beginPath();c.ellipse(.85,-1.35,.3,.11,-.2,0,TAU);c.fill();
  c.restore();
  // Halsband mit Marke
  c.fillStyle='#e8433c';c.beginPath();c.moveTo(3,-1.35);c.quadraticCurveTo(4.6,-.9,5.7,-1.3);c.lineTo(5.7,-.8);c.quadraticCurveTo(4.6,-.4,3,-.85);c.closePath();c.fill();c.fillStyle='#ffd23f';c.beginPath();c.arc(4.6,-.25,.38,0,TAU);c.fill();
