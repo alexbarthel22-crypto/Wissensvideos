@@ -5,7 +5,7 @@ Eine Mac-Stimme (unbegrenzt, offline) moderiert.
 
 ## Einmal einrichten (Mac)
 1. **Node.js** installieren: https://nodejs.org → LTS-Version.
-2. Dieses Repo herunterladen (GitHub → grüner Knopf „Code“ → „Download ZIP“, Branch `claude/serene-dijkstra-z5qm94`) und entpacken.
+2. Repo **Wissensvideos** herunterladen (GitHub → Branch `claude/sweet-hamilton-2bxep9` wählen → grüner Knopf „Code“ → „Download ZIP“) und entpacken. Dieser Branch enthält auch die aktuellen Homepage-Daten (Bewohner, Bauprojekte).
 3. Im Ordner `live/` auf **„Muschel-Tal LIVE testen.command“** doppelklicken.
    Falls der Mac warnt: Rechtsklick → „Öffnen“ → „Öffnen“.
    Es öffnet sich die Insel mit Test-Zuschauern, Markus spricht.
@@ -76,7 +76,13 @@ Für jede Situation gibt es mehrere Varianten; der zuletzt benutzte Satz wird au
 
 ## Vollautomatisch
 `Muschel-Tal LIVE starten.command` wartet, bis dein LIVE läuft, verbindet sich selbst, verbindet sich nach Abbrüchen neu und startet sich nach Fehlern automatisch wieder. Der Spielstand bleibt erhalten.
-Das Einzige, was TikTok nicht erlaubt zu automatisieren: den LIVE in LIVE Studio starten.
+Der Mac bleibt automatisch wach, solange das Programm läuft (`caffeinate`). Das Einzige, was TikTok nicht erlaubt zu automatisieren: den LIVE in LIVE Studio starten.
+
+## Schutz vor anstößigen Namen
+- Namen mit anstößigen Wörtern (auch mit Zahlen/Sonderzeichen geschrieben, z. B. „f4ck“) werden zu „Bewohner 12“: nicht angezeigt, nicht vorgelesen. Liste in `filter.mjs`.
+- `sperrliste.txt`: ein TikTok-Name pro Zeile – diese Person wird komplett ignoriert (kein Haus, keine Begrüßung, kein Dank). Gilt nach spätestens 30 s, auch während des Streams.
+- Kommentar-Texte werden nie vorgelesen oder angezeigt. Jeder Satz von Markus wird vor dem Sprechen noch einmal geprüft.
+- Zusätzlich empfohlen: in den TikTok-LIVE-Einstellungen den Stichwort-Filter für Kommentare einschalten.
 
 ## Ton (Musik + Stimme)
 - Im Hintergrund läuft die Südsee-Musik aus den Muschel-Tal-Videos (lizenzfrei, erzeugt mit `tools/make_music_tropical.py`, 3 Stücke à 3 Min. im Wechsel) plus Meeresrauschen (`tools/make_ambience.py`).

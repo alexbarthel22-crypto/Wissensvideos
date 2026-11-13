@@ -10,6 +10,7 @@ import os from 'node:os';
 import { fileURLToPath } from 'node:url';
 import { macheEvents } from './events.mjs';
 import { satz, namenListe } from './saetze.mjs';
+import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt } from './filter.mjs';
 
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
@@ -27,15 +28,26 @@ let geaendert = false;
 const speichern = () => { if (!geaendert || TEST) return; fs.writeFileSync(STAND, JSON.stringify(S)); geaendert = false; };
 setInterval(speichern, 10000);
 
+// ---------- Schutz vor anstößigen Namen (filter.mjs, sperrliste.txt) ----------
+const anzeigeName = (u, platz) => anstoessig(u.uniqueId) || anstoessig(u.nickname) ? `Bewohner ${platz + 1}` : '@' + u.uniqueId;
+function namenPruefen() {                                  // auch für Bewohner aus früheren Streams
+  ladeSperrliste(DIR);
+  for (const p of Object.values(S.spieler)) {
+    p.gesperrt = gesperrt(p.id) || undefined;
+    if (p.name.startsWith('@') && anstoessig(p.name)) { p.name = `Bewohner ${p.platz + 1}`; geaendert = true; }
+  }
+}
+namenPruefen(); setInterval(namenPruefen, 30000);
+
 const stufeVon = m => { let i = 0; CFG.stufen.forEach((s, k) => { if (m >= s.ab) i = k; }); return i; };
 
 function spieler(u) {
   const id = String(u.uniqueId || '').toLowerCase();
-  if (!id) return null;
+  if (!id || gesperrt(id)) return null;                   // Sperrliste: komplett ignorieren
   let p = S.spieler[id];
   if (p) p.zuletzt = Date.now();
   if (!p) {
-    p = S.spieler[id] = { id, name: '@' + u.uniqueId, muscheln: 0, stufe: 0, anbauten: [], farbe: null, platz: S.reihenfolge.length, zuletzt: Date.now() };
+    p = S.spieler[id] = { id, name: anzeigeName(u, S.reihenfolge.length), muscheln: 0, stufe: 0, anbauten: [], farbe: null, platz: S.reihenfolge.length, zuletzt: Date.now() };
     S.reihenfolge.push(id);
     sende({ typ: 'neu', id });
     sag(satz('neu', { name: sprechName(p) }), 3);
@@ -63,7 +75,7 @@ const sprechName = p => p.name.replace(/^@/, '').replace(/[._]+/g, ' ').replace(
 
 // ---------- Ereignisse ----------
 function like(u, anzahl) {
-  const p = spieler(u); if (!p) return;
+  const p = spieler(u); if (!p) { S.likesGesamt += anzahl; inKasse(anzahl * CFG.kasse.proLike); return; }
   S.likesGesamt += anzahl; likeLog.push([Date.now(), anzahl]);
   inKasse(anzahl * CFG.kasse.proLike);
   const faktor = EV.like(p, anzahl);                       // Muschelregen ×2, Bau-Turbo ×3
@@ -93,7 +105,7 @@ function kommentar(u, text) {
 }
 
 function geschenk(u, name, diamanten, anzahl) {
-  const p = spieler(u); if (!p) return;
+  const p = spieler(u); if (!p) { inKasse(Math.max(1, diamanten || 1) * Math.max(1, anzahl || 1) * CFG.kasse.proCoin); return; }
   const d = Math.max(1, diamanten || 1) * Math.max(1, anzahl || 1);   // Coins insgesamt: 1 Coin = 1 Muschel (= 0,01 €)
   sende({ typ: 'geschenk', id: p.id, name, anzahl, diamanten: d });
   EV.geschenkShow(p, name, anzahl, d);
@@ -143,7 +155,7 @@ function setzeBewohner(n, quelle) {
   zustand();
 }
 function follow(u) {
-  const p = spieler(u); if (!p) return;
+  const p = spieler(u); if (!p) { setzeBewohner(bewohner + 1, 'follow'); inKasse(CFG.kasse.proFollow); return; }
   sende({ typ: 'follow', id: p.id });
   setzeBewohner(bewohner + 1, 'follow');
   inKasse(CFG.kasse.proFollow);
@@ -152,7 +164,7 @@ function follow(u) {
 }
 
 function teilen(u) {
-  const p = spieler(u); if (!p) return;
+  const p = spieler(u); if (!p) { inKasse(CFG.kasse.proShare); return; }
   inKasse(CFG.kasse.proShare);
   sende({ typ: 'teilen', id: p.id });
   sag(satz('teilen', { name: sprechName(p) }), 3);
@@ -181,7 +193,7 @@ function belohne(p, n, extra) {
 const EV = macheEvents({
   CFG, test: TEST, sende, zustand: () => zustand(), sag: (t, pr) => sag(t, pr), belohne, name: p => sprechName(p), artikel: n => artikel(n),
   spieler: id => S.spieler[id],
-  aktive: min => Object.values(S.spieler).filter(p => Date.now() - (p.zuletzt || 0) < min * 60000),
+  aktive: min => Object.values(S.spieler).filter(p => !p.gesperrt && Date.now() - (p.zuletzt || 0) < min * 60000),
   likeRate: () => { const t = Date.now() - 300000; while (likeLog.length && likeLog[0][0] < t) likeLog.shift(); return likeLog.reduce((a, [, n]) => a + n, 0) / 5; },
   hatProjekt: () => !!S.projekt,
   offeneProjekte: () => CFG.abstimmung.projekte.filter(x => !S.fertig.includes(x.id)),
@@ -200,6 +212,7 @@ const dauerMs = t => t.length * 62 + (t.match(/…/g) || []).length * 450 + 300;
 const fuerStimme = t => t.replace(/\s*…\s*/g, ' [[slnc 450]] ').replace(/([!?])\s+/g, '$1 [[slnc 250]] ');
 function sag(text, prio = 2) {
   if (!text) return;
+  if (satzAnstoessig(text)) { console.log('🚫 Satz nicht gesprochen (Filter):', text); return; }
   const jetzt = Date.now();
   while (gesprochen.length && jetzt - gesprochen[0] > 60000) gesprochen.shift();
   if (prio >= 2 && prio <= 3 && gesprochen.length >= CFG.stimme.maxProMinute) return; // Kleinkram nicht stapeln
@@ -261,7 +274,7 @@ const MODERATION = [
 const aktiveAnzahl = () => Object.values(S.spieler).filter(p => Date.now() - (p.zuletzt || 0) < 600000).length;
 function rundgang() {                                      // Kamera fliegt zu einem Haus, Markus stellt es vor
   if (Date.now() - letzterRundgang < 40000) return null;
-  const kand = Object.values(S.spieler).filter(p => Date.now() - (p.zuletzt || 0) < 900000 && p.stufe > 0);
+  const kand = Object.values(S.spieler).filter(p => !p.gesperrt && Date.now() - (p.zuletzt || 0) < 900000 && p.stufe > 0);
   if (!kand.length) return null;
   const p = kand[Math.floor(Math.random() * kand.length)], st = CFG.stufen[p.stufe].name;
   const an = p.anbauten.map(a => CFG.anbauten[a]?.name).filter(Boolean);
@@ -303,7 +316,7 @@ setInterval(() => {
 }, 400);
 function beitritt(u) {                                     // jemand kommt neu in den Stream
   const id = String(u.uniqueId || '').toLowerCase();
-  if (!id || begruesst.has(id)) return;
+  if (!id || begruesst.has(id) || gesperrt(id) || anstoessig(u.uniqueId) || anstoessig(u.nickname)) return;
   begruesst.add(id); begruessen.push(sprechName({ name: '@' + u.uniqueId }));
   if (begruessen.length > 12) begruessen.splice(0, begruessen.length - 12);   // nur die neuesten
 }
@@ -320,7 +333,7 @@ function zustand() {
 function oeffentlich() {
   return {
     ...EV.oeffentlich(),
-    spieler: S.reihenfolge.map(id => S.spieler[id]),
+    spieler: S.reihenfolge.map(id => S.spieler[id]).filter(p => p && !p.gesperrt),
     stufen: CFG.stufen.map(s => s.name), stufenAb: CFG.stufen.map(s => s.ab),
     projekt: S.projekt, fertig: S.fertig, kasse: S.kasse,
     bewohner, ziel: zielJetzt(), strassen: CFG.strassen,
@@ -412,7 +425,7 @@ function simulator() {
   const silben = ['sun', 'meer', 'koko', 'palm', 'surf', 'wave', 'sand', 'perl', 'hai', 'lagu', 'mango', 'ebbe', 'flut', 'riff', 'kiki', 'lia', 'max', 'ben'];
   for (let i = 0; i < 230; i++) namen.push(silben[i % 18] + (i % 3 ? '.' : '_') + silben[(i * 7) % 18] + (10 + i));
   namen.slice(0, 195).forEach((nm, i) => {
-    const p = spieler({ uniqueId: nm }); const st = CFG.stufen[(i * 7) % CFG.stufen.length];
+    const p = spieler({ uniqueId: nm }); if (!p) return; const st = CFG.stufen[(i * 7) % CFG.stufen.length];
     p.muscheln = st.ab + 5; p.stufe = stufeVon(p.muscheln);
     p.anbauten = Object.keys(CFG.anbauten).filter((k, j) => (i + j) % 4 === 0 && CFG.anbauten[k].abStufe <= p.stufe);
   });
