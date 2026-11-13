@@ -28,6 +28,7 @@ Eine Mac-Stimme (unbegrenzt, offline) moderiert.
 | Rangliste „Beste Häuser“ | höchste Haus-Stufe zuerst, bei Gleichstand entscheiden die Muscheln aus Events |
 | Kommentar `palme` `flagge` `garten` `laterne` `pool` `boot` | Anbau (ab bestimmter Stufe) |
 | Kommentar `rot` `blau` `lila` … | Hausfarbe |
+| Kommentar `haus` (auch Haus!, hauus, house, huas, mein haus …) | ab und zu fliegt die Kamera zum eigenen Haus, Anna: „…, hier ist dein Haus!“ |
 | Geschenk | **1 Coin = 1 Muschel (= 0,01 €)** – für die Muschelkasse und fürs eigene Haus, große Geschenke = Feuerwerk |
 | Folgen | neuer **Bewohner** + 5 Muscheln in die Muschelkasse |
 | Stream teilen | 2 Muscheln in die Muschelkasse |
@@ -74,7 +75,7 @@ Reihenfolge, wenn er frei ist:
 1. Geschenke bedanken (immer, sofort) · Event-Ansagen · Countdown („noch dreißig Sekunden“, „zehn Sekunden“)
 2. Follows bedanken (mehrere zusammengefasst)
 3. Während eines Events: Spielstand live kommentieren, anfeuern, ab und zu ein Tipp
-4. Sonst: neue Zuschauer begrüßen, Rundgang (Kamera fliegt zu einem Haus, Anna stellt es vor), Tipps, Muschel-Tal-Fakten, Fragen an den Chat, Rangliste, Muschelkasse, Bauprojekt, Bewohner-Ziel, Teaser fürs nächste Event (ohne es zu verraten), Abendstimmung
+4. Sonst: Häuser zeigen (wer „haus“ geschrieben hat), neue Zuschauer begrüßen, Wiederkehrer mit „Willkommen zurück“ (ab dem 3. Besuch mit Danke für die Treue), erklären was Geschenke bringen, Rundgang (Kamera fliegt zu einem Haus, Anna stellt es vor), Tipps, Muschel-Tal-Fakten, Fragen an den Chat, Rangliste, Muschelkasse, Bauprojekt, Bewohner-Ziel, Teaser fürs nächste Event (ohne es zu verraten), Abendstimmung
 Für jede Situation gibt es mehrere Varianten; der zuletzt benutzte Satz wird ausgelassen.
 
 ## Vollautomatisch

@@ -116,6 +116,7 @@ const SAETZE = {
     'Jeder Coin, … der als Geschenk kommt, … ist eine Muschel für euer Haus und die Muschelkasse.',
     'Teilt den Stream mit Freunden … dann ziehen sie vielleicht bald neben euch ein!',
     'Wer früher kommt, … wohnt näher an der großen Muschel. … Also, ran an die Likes!',
+    'Schreib haus … dann zeige ich dir dein Haus hier im Stream!',
   ],
   fakt: [
     'Wusstet ihr? … Auf der Haupt-Insel steht in der Mitte der Muschelpalast … mit zwei Brunnen davor.',
@@ -183,6 +184,35 @@ const SAETZE = {
     'Das wird spannend …',
     'Ich bin gespannt, wie das ausgeht!',
     'Los, los, los!',
+  ],
+  hausZeigen: [
+    '{name} … hier ist dein Haus! … {stufeCap}{anbauText}.',
+    'Bitte schön, {name} … das ist dein Zuhause! … {stufeCap}{anbauText}.',
+    'Da ist es, {name}! … {stufeCap}{anbauText}. … Like weiter, dann wird es noch größer!',
+    '{name}, … schau mal … hier wohnst du! … {stufeCap}{anbauText}.',
+    'Hier ist dein Haus, {name}! … {stufeCap}{anbauText}. … Sieht richtig gut aus!',
+  ],
+  begruessungZurueck: [
+    'Willkommen zurück, {name}! … Du wohnst immer noch in {stufeDativ}.',
+    'Schön, dass du wieder da bist, {name}! … Schreib haus, dann zeige ich dir dein Zuhause.',
+    'Da ist ja {name} wieder! … Dein Haus hat dich schon vermisst.',
+    'Hallo {name}, … schön, dich wiederzusehen! … Dein Haus steht noch.',
+  ],
+  begruessungTreu: [
+    'Schon zum {besuche}. Mal dabei, {name}! … Danke für deine Treue!',
+    '{name} ist wieder da … zum {besuche}. Mal! … Du gehörst hier schon richtig dazu.',
+  ],
+  begruessungZurueckMehrere: [
+    'Willkommen zurück, {namen}! … Schön, dass ihr wieder da seid.',
+    'Bekannte Gesichter! … Hallo {namen}, … eure Häuser stehen noch.',
+    'Da sind ja {namen} wieder! … Willkommen zurück auf der Insel.',
+  ],
+  geschenkInfo: [
+    'Übrigens … jedes Geschenk bringt Muscheln für dein Haus. … Ein Coin ist eine Muschel … und dazu gibt es eine Show mit deinem Namen!',
+    'Mit Geschenken wächst dein Haus besonders schnell … eine Rose ist eine Muschel, … ein Galaxy schon tausend!',
+    'Ab hundert Coins … gibt es ein Feuerwerk mit deinem Namen … und ab tausend sogar eine Mega-Show über der ganzen Insel!',
+    'Alle Geschenke gehen auch in die Muschelkasse … für unsere gemeinsamen Bauprojekte. … Danke an alle, die mitbauen!',
+    'Wer ein Geschenk schickt, … wird hier groß bedankt … und sein Haus macht einen richtigen Sprung nach oben!',
   ],
   folgeAufruf: [
     'Folge mir … und du bekommst live deine Hütte hier … und in Muschel-Tal für das Spiel!',

@@ -219,6 +219,7 @@ export function macheEvents(api) {
       return { event: a, ergebnis: ergebnis && { titel: ergebnis.titel, icon: ergebnis.icon, text: ergebnis.text, id: ergebnis.id, gut: !!ergebnis.gut, extra: ergebnis.extra }, eventIn: ev ? 0 : Math.max(0, Math.round((naechstes - Date.now()) / 1000)) };
     },
     laeuft: () => !!ev,
+    id: () => ev?.id || null,
     liveSatz() {                                          // abwechslungsreich: nie derselbe Satz wie zuletzt
       if (!ev || ev.frueh || rest(ev) <= 3 || !LIVE[ev.id]) return null;
       const opts = [].concat(LIVE[ev.id](ev)).filter(x => x && x !== ev.letzterLive);

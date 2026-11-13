@@ -10,7 +10,7 @@ import os from 'node:os';
 import { fileURLToPath } from 'node:url';
 import { macheEvents } from './events.mjs';
 import { satz, namenListe } from './saetze.mjs';
-import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt } from './filter.mjs';
+import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './filter.mjs';
 
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
@@ -75,6 +75,21 @@ const artikel = n => (WEIBLICH.test(n) ? 'eine ' : MAENNLICH.test(n) ? 'einen ' 
 // Namen für die Stimme lesbar machen: "lena_xx.22" -> "lena xx"
 const sprechName = p => p.name.replace(/^@/, '').replace(/[._]+/g, ' ').replace(/\d{3,}/g, '').trim() || 'Neuer Bewohner';
 
+// ---------- „haus“ im Chat = eigenes Haus im Stream zeigen (auch Haus!, hauus, house, huas, mein haus …) ----------
+const HAUS_WORTE = ['haus', 'hause', 'haeus', 'hous', 'house', 'huas', 'hasu', 'hus', 'haeuschen', 'zuhause', 'home', 'hutte', 'huete', 'huette'];
+const abstand = (a, b) => { const d = Array.from({ length: a.length + 1 }, (_, i) => [i]); for (let j = 1; j <= b.length; j++) d[0][j] = j;
+  for (let i = 1; i <= a.length; i++) for (let j = 1; j <= b.length; j++) d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)); return d[a.length][b.length]; };
+function istHausWunsch(text) {
+  for (const w of String(text || '').split(/\s+/)) {
+    const n = normal(w); if (!n) continue;
+    if (n.includes('haus') || n.includes('hous') || HAUS_WORTE.includes(n)) return true;
+    if (n[0] === 'h' && n.length >= 3 && n.length <= 6 && abstand(n, 'haus') <= 1) return true;
+  }
+  return false;
+}
+const hausWunsch = [], hausGezeigt = {};
+let letztesHausZeigen = 0;
+
 // ---------- Ereignisse ----------
 function like(u, anzahl) {
   const p = spieler(u); if (!p) { S.likesGesamt += anzahl; inKasse(anzahl * CFG.kasse.proLike); return; }
@@ -90,6 +105,9 @@ function kommentar(u, text) {
   if (neu) gibMuscheln(p, CFG.muschelnFuerErstenKommentar, 'kommentar');
   const t = String(text || '').toLowerCase().trim();
   if (EV.kommentar(p, t)) { geaendert = true; zustand(); return; }   // Event-Antworten (rot, flasche, A, 42 …)
+  if (istHausWunsch(t) && !hausWunsch.includes(p.id) && Date.now() - (hausGezeigt[p.id] || 0) > 120000) {
+    hausWunsch.push(p.id); if (hausWunsch.length > 20) hausWunsch.shift();
+  }
   for (const wort of t.split(/[^a-zäöüß]+/)) {
     const ab = CFG.anbauten[wort];
     if (ab) {
@@ -302,6 +320,7 @@ const MODERATION = [
   () => { const s = EV.naechstesIn(); return s > 45 ? satz('teaser', { zeit: s >= 100 ? `${Math.round(s / 60)} Minuten` : 'gut einer Minute' }) : null; },
   () => rundgang(),
   () => satz('fakt'),
+  () => satz('geschenkInfo'),
   () => { const z = zielJetzt(); return z ? satz('ziel', { rest: z.ziel - bewohner, projekt: z.name, bewohner, zielzahl: z.ziel }) : null; },
   () => satz('frage'),
   () => { const t = Object.values(S.spieler).filter(p => !p.gesperrt).sort(rangFolge); return t.length > 1 ? satz('rangliste', { erster: sprechName(t[0]), zweiter: sprechName(t[1]) }) : null; },
@@ -328,6 +347,17 @@ function moderiere() {
     const n = followDank.splice(0, 4).map(sprechName), z = zielJetzt();
     return sag((n.length > 1 ? satz('followMehrere', { namen: namenListe(n) }) : satz('followEins', { name: n[0] })) + (z && Math.random() < .5 ? satz('followZiel', { rest: z.ziel - bewohner, projekt: z.name }) : ''), 1);
   }
+  // 1b. Wer „haus“ geschrieben hat: Kamera fliegt zum Haus (ab und zu, nicht während Events)
+  const kameraEvent = ['schatzsuche', 'meeresbesuch', 'flaschenpost', 'moewenalarm', 'hausbesuch'].includes(EV.id());
+  if (!kameraEvent && hausWunsch.length && Date.now() - letztesHausZeigen > (EV.laeuft() ? 20000 : 12000)) {
+    const p = S.spieler[hausWunsch.shift()];
+    if (p && !p.gesperrt) {
+      letztesHausZeigen = letzterRundgang = Date.now(); hausGezeigt[p.id] = Date.now();
+      sende({ typ: 'kamera', id: p.id, ms: 9000 }); sende({ typ: 'hausGezeigt', id: p.id });
+      const st = CFG.stufen[p.stufe].name, an = p.anbauten.map(a => CFG.anbauten[a]?.name).filter(Boolean);
+      return sag(satz('hausZeigen', { name: sprechName(p), stufeCap: grossKlein(artikel(st)), anbauText: an.length ? ' mit ' + namenListe(an) : '' }), 1);
+    }
+  }
   // 2. Laufendes Event: abwechselnd Spielstand, Anfeuern und ab und zu ein normaler Satz
   if (EV.laeuft()) {
     const art = eventModNr++ % 4;
@@ -337,8 +367,13 @@ function moderiere() {
   }
   // 3. Neue Zuschauer begrüßen (nur wenn kein Event moderiert werden muss)
   if (!EV.laeuft() && begruessen.length) {
-    const n = begruessen.splice(0, 3);
-    return sag(n.length > 1 ? satz('begruessungMehrere', { namen: namenListe(n) }) : satz('begruessungEins', { name: n[0] }), 4);
+    const zurueck = begruessen[0].zurueck, n = [];
+    for (let i = 0; i < begruessen.length && n.length < 3;) { if (begruessen[i].zurueck === zurueck) n.push(...begruessen.splice(i, 1)); else i++; }
+    if (zurueck) {
+      if (n.length > 1) return sag(satz('begruessungZurueckMehrere', { namen: namenListe(n.map(x => x.name)) }), 4);
+      return sag(n[0].besuche >= 3 && Math.random() < .6 ? satz('begruessungTreu', { name: n[0].name, besuche: n[0].besuche }) : satz('begruessungZurueck', { name: n[0].name, stufeDativ: dativ(n[0].stufe) }), 4);
+    }
+    return sag(n.length > 1 ? satz('begruessungMehrere', { namen: namenListe(n.map(x => x.name)) }) : satz('begruessungEins', { name: n[0].name }), 4);
   }
   if (EV.laeuft()) return;
   // 4. Abwechselnde Moderation
@@ -359,7 +394,12 @@ setInterval(() => {
 function beitritt(u) {                                     // jemand kommt neu in den Stream
   const id = String(u.uniqueId || '').toLowerCase();
   if (!id || begruesst.has(id) || gesperrt(id) || anstoessig(u.uniqueId) || anstoessig(u.nickname)) return;
-  begruesst.add(id); begruessen.push(sprechName({ name: '@' + u.uniqueId }));
+  begruesst.add(id);
+  const p = S.spieler[id];
+  if (p && !p.gesperrt) {                                  // kennt die Insel schon: „Willkommen zurück“
+    p.besuche = (p.besuche || 1) + 1; geaendert = true;
+    begruessen.push({ name: sprechName(p), zurueck: true, besuche: p.besuche, stufe: CFG.stufen[p.stufe].name });
+  } else begruessen.push({ name: sprechName({ name: '@' + u.uniqueId }), zurueck: false });
   if (begruessen.length > 12) begruessen.splice(0, begruessen.length - 12);   // nur die neuesten
 }
 
@@ -473,7 +513,7 @@ async function versuche() {
 function simulator() {
   const namen = ['lena.sun', 'muschel_max', 'koko.nuss22', 'sandy_beach', 'tim.wave', 'perle.88', 'jonas_insel', 'mia.meer', 'surfer.ben', 'krabbe.kalle',
     'lotta.fsthff', 'paulepfpgfn', 'vidafilipa', 'nina_palme', 'ole.anker', 'emma.sonne', 'leo.leuchtturm', 'hanna.hai', 'finn.flut', 'ella.ebbe'];
-  const worte = ['pool', 'garten', 'boot', 'palme', 'rot', 'blau', 'lila', 'gelb', 'laterne', 'flagge', 'hallo!', 'wie geht das?', 'türkis'];
+  const worte = ['haus', 'Haus!', 'hauus', 'mein haus', 'house', 'pool', 'garten', 'boot', 'palme', 'rot', 'blau', 'lila', 'gelb', 'laterne', 'flagge', 'hallo!', 'wie geht das?', 'türkis'];
   const gifts = [['Rose', 1], ['Rose', 1], ['TikTok', 1], ['Finger Heart', 5], ['Donut', 30], ['Perfume', 20], ['Galaxy', 1000]];
   // Volle Insel zum Ansehen: viele Bewohner mit allen Haus-Stufen
   const silben = ['sun', 'meer', 'koko', 'palm', 'surf', 'wave', 'sand', 'perl', 'hai', 'lagu', 'mango', 'ebbe', 'flut', 'riff', 'kiki', 'lia', 'max', 'ben'];
@@ -497,7 +537,7 @@ function simulator() {
     else if (r < .9) kommentar(u, worte[Math.floor(Math.random() * worte.length)]);
     else if (r < .97) { if (RUHIG && Math.random() < .9) return; const g = gifts[Math.floor(Math.random() * (Math.random() < .9 ? 4 : gifts.length))]; geschenk(u, g[0], g[1], 1 + Math.floor(Math.random() * 3)); }
     else if (Math.random() < .5) teilen(u); else follow(u);
-    if (Math.random() < .15) beitritt({ uniqueId: 'zuschauer.' + Math.random().toString(36).slice(2, 6) });
+    if (Math.random() < .15) beitritt(Math.random() < .5 ? { uniqueId: 'zuschauer.' + Math.random().toString(36).slice(2, 6) } : { uniqueId: namen[Math.floor(Math.random() * n)] });
   }, RUHIG ? 2500 : 700);
 }
 

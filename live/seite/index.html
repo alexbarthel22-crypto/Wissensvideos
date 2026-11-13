@@ -242,6 +242,7 @@ function ereignis(e) {
       if (e.coins < 10) { banner.push({ t: 0, oben: `🎁 Danke ${e.name}!`, unten: (e.anzahl > 1 ? e.anzahl + '× ' : '') + e.gift + ' · +' + e.coins + ' 🐚', farbe: PINK }); if (pl) funken(pl, { herzregen: '💖', muschelkonfetti: '🐚', seifenblasen: '🫧' }[e.art] || '💖', 16); }
       else showStart(e);
       break;
+    case 'hausGezeigt': if (p) { banner.unshift({ t: 0, oben: `🏠 ${p.name}`, unten: 'hier ist dein Haus!', farbe: TUERKIS }); if (pl) { pop[e.id] = jetzt; funken(pl, '⭐', 12); } } break;
     case 'folgeAufruf': banner.push({ t: 0, oben: '🏠 Folge @muscheltal!', unten: 'Deine Hütte hier im LIVE + in Muschel-Tal', farbe: TUERKIS }); break;
     case 'kamera': if (pl) fokus(pl, e.ms || 15000); break;
     case 'feuerwerk': feuerwerk(); break;
@@ -1158,7 +1159,7 @@ function kopf(t) {
       const y = y3 + 52 + k * 22; text(`${k + 1}. ${p.name}`, SL + 22, y, 17, INK, 'left', 800, lw - 200); text(S.stufen[p.stufe] || '', SL + lw - 22, y, 15, '#8a5a2b', 'right', 900, 160);
     });
   } else {
-    [['❤️', 'Liken = dein Haus wächst'], ['💬', 'Schreib „pool“, „garten“ oder „boot“ = Anbau'], ['🎨', 'Schreib eine Farbe, z. B. „rot“ = neue Farbe']].forEach(([i, s], k) => {
+    [['❤️', 'Liken = dein Haus wächst'], ['🏠', 'Schreib „haus“ = du siehst dein Haus'], ['🎨', 'Schreib eine Farbe, z. B. „rot“ = neue Farbe']].forEach(([i, s], k) => {
       text(i, SL + 18, y3 + 28 + k * 29, 20, INK, 'left', 400); text(s, SL + 54, y3 + 28 + k * 29, 18, INK, 'left', 800, lw - 74);
     });
   }
