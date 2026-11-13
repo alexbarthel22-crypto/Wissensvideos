@@ -32,34 +32,55 @@ Eine Mac-Stimme (unbegrenzt, offline) moderiert.
 | Geschenk | **1 Coin = 1 Muschel (= 0,01 €)** – für die Muschelkasse und fürs eigene Haus, große Geschenke = Feuerwerk |
 | Folgen | neuer **Bewohner** + 5 Muscheln in die Muschelkasse |
 | Stream teilen | 2 Muscheln in die Muschelkasse |
-| Abstimmung (eins der Events) | Gemeinschaftsprojekt, wird mit Muscheln aus der Muschelkasse gebaut |
+| Abstimmung (eins der Events) | nächstes Stadtgebäude, wird mit Muscheln aus der Muschelkasse gebaut |
 
 Die Insel startet mit 200 Grundstücken und **wächst live**, sobald alle belegt sind (jeweils ca. 60 neue).
 Ausbauten werden animiert gebaut (Bambusgerüst, Krabben-Bauarbeiter, Sandstaub), die Kamera fährt dabei an das Haus heran; sonst wechselt sie zwischen Übersicht und kleinen Rundfahrten.
 Oben steht immer das **nächste Bauprojekt der Haupt-Insel** – automatisch aus `muscheltal/daten/insel.json` (`baustellen`), Startzahl der Bewohner aus `einwohner.csv`. Straßennamen stehen unter `strassen`.
 Die Bewohnerzahl kommt live von TikTok (Follower), `bewohner.start` ist nur der Startwert, falls TikTok sie nicht liefert.
 
-## Überraschungs-Events (alle 5 Minuten)
-Rechts oben läuft ein Countdown „Nächstes Event“ – welches kommt, bleibt geheim (❓❓❓). Nie dasselbe wie eins der letzten 4.
+## Überraschungs-Events (alle 4 Minuten, 30 verschiedene)
+Rechts oben läuft ein Countdown „Nächstes Event“ – welches kommt, bleibt geheim (❓❓❓). Nie dasselbe wie eins der letzten 10.
 Alle Events laufen komplett im Stream, mitmachen per Like oder Kommentar – niemand muss den Stream verlassen, nichts ist an Geschenke gebunden.
+Like-Ziele liegen bei ca. 80 % des normalen Like-Tempos: schaffbar, wenn alle mitmachen. Alle 30 Events sind automatisch geprüft (Test-Zuschauer machen mit, Belohnungen kommen an).
 
 | Event | Mitmachen | Belohnung |
 |---|---|---|
-| 🌊 Sturmflut | gemeinsam X Likes in 60 s | Deich hält → 20 🐚 für alle Helfer |
-| 🎡 Muschel-Glücksrad | aktiv sein (letzte 10 Min.) | Gewinner: 150–500 🐚, goldenes Dach oder Pool |
-| 🦀 Krabbenrennen | `rot` `blau` `gelb` `grün` + liken | Siegerteam 25 🐚 |
-| ⚔️ Team-Duell | `muschel` oder `kokos` + liken | Siegerteam 30 🐚 |
+| 🌊 Sturmflut | gemeinsam liken | Deich hält → 20 🐚 für alle Helfer |
+| 🎡 Muschel-Glücksrad | in den letzten 10 Min. aktiv | 150–500 🐚, goldenes Dach oder Pool |
+| 🦀 Krabbenrennen | `rot` `blau` `gelb` `grün` oder einfach liken | Siegerteam 25 🐚 |
+| ⚔️ Team-Duell | `muschel` / `kokos` oder einfach liken | Siegerteam 30 🐚 |
 | 🍾 Flaschenpost | zuerst `flasche` | 40–150 🐚 / Anbau |
-| 🐋 Besuch vom Meer (Wal, Delfine, Piraten) | `hallo` | 10 🐚 je Gruß |
+| 🐋 Besuch vom Meer | `hallo` | 10 🐚 je Gruß |
 | 🏠 Hausbesuch | – (Kamera besucht ein aktives Haus) | 25 🐚 |
 | ✨ Muschelregen | liken | Likes zählen doppelt fürs Haus |
 | ⚡ Bau-Turbo | liken | Likes zählen dreifach fürs Haus |
 | 🗺️ Schatzsuche | `A` `B` `C` `D` | richtige 30 🐚 |
-| 🔢 Zahlenraten | Zahl 1–100 | Treffer 100 🐚, sonst Nächster 50 🐚 |
+| 🔢 Zahlenraten | Zahl 1–100 (mit Hinweisen) | Treffer 100 🐚 |
 | 🎉 Strandparty | Stimmung per Likes | Feuerwerk + 15 🐚 |
 | 🐦 Möwenalarm | `fang` (erste 5) | 20 🐚 |
 | 🌠 Sternschnuppe | `wunsch` | einer bekommt einen Anbau |
-| 🗳️ Abstimmung | `1` `2` `3` | nächstes Gemeinschaftsprojekt |
+| 🗳️ Abstimmung | `1` `2` `3` | nächstes Stadtgebäude |
+| ⌨️ Wortjagd | gezeigtes Wort abtippen (erste 3) | 40 / 25 / 15 🐚 |
+| 🍹 Cocktail-Mix | `mango` `kokos` `ananas` | Mehrheit 15 🐚 |
+| 🎈 Ballon-Platzen | liken | wer einen Ballon platzen lässt: 10 🐚 |
+| 🐢 Schildkröten-Rettung | gemeinsam liken | 20 🐚 für alle Helfer |
+| 🌺 Blumenwiese | `blume` | ab 25 Blumen 15 🐚 für alle |
+| 🧩 Emoji-Rätsel | Lösung schreiben (z. B. „Sandburg“) | 50 🐚 |
+| 🏐 Beachvolleyball | `links` / `rechts` oder einfach liken | Siegerteam 25 🐚 |
+| 🦈 Hai-Alarm | `ufer` (erste 10) | 15 🐚 |
+| 🍦 Eiswagen | gemeinsam liken | 15 🐚 für alle |
+| 🍀 Glückszahl | Zahl 1–10 | richtige 30 🐚 |
+| ❓ Strand-Quiz | `A` `B` `C` | richtige 20 🐚 |
+| 🐚 Muscheln sammeln | `sammeln` (erste 20) | 12 🐚 |
+| 🏄 Surf-Contest | `surf`, dann liken | Bester 60 🐚 |
+| 🥥 Kokosnuss-Weitwurf | `wurf` | weitester Wurf 40 🐚 |
+| 📸 Inselfoto | `cheese` | 8 🐚 + Name auf dem Foto |
+
+## Stadtgebäude
+Per Abstimmung wählt der Chat das nächste Gemeinschafts-Gebäude, bezahlt wird aus der Muschelkasse:
+Rathaus, Schule, Krankenhaus, Feuerwache, Polizeistation, Supermarkt, Kino, Bibliothek, Post, Café, Eisdiele, Museum, Sporthalle, Markthalle, Hotel, Apotheke – alle im tropischen Strand-Stil (Palmen, Markisen, Stroh- und Ziegeldächer).
+Sie entstehen auf festen Bauplätzen rund um den Muschelplatz: erst eine Baustelle mit Kran und Fortschritt, bei Fertigstellung eine kurze Bau-Animation (Gerüst, Krabben, Gebäude wächst), Feuerwerk.
 
 ## Geschenk-Shows
 Jedes Geschenk wird bedankt (Anna) und bekommt eine Show mit dem Namen des Spenders – je wertvoller, desto größer:

@@ -37,6 +37,8 @@ function namenPruefen() {                                  // auch für Bewohner
     if (p.name.startsWith('@') && anstoessig(p.name)) { p.name = `Bewohner ${p.platz + 1}`; geaendert = true; }
   }
 }
+S.fertig = (S.fertig || []).filter(id => CFG.abstimmung.projekte.some(x => x.id === id));
+if (S.projekt && !CFG.abstimmung.projekte.some(x => x.id === S.projekt.id)) S.projekt = null;
 namenPruefen(); setInterval(namenPruefen, 30000);
 
 const stufeVon = m => { let i = 0; CFG.stufen.forEach((s, k) => { if (m >= s.ab) i = k; }); return i; };
@@ -207,7 +209,8 @@ function projektStarten(pr) {
 function projektFertig() {
   const pr = S.projekt; S.fertig.push(pr.id); S.projekt = null; geaendert = true;
   sende({ typ: 'fertig', id: pr.id });
-  sag(satz('projektFertig', { projekt: pr.name }), 0);
+  const def = CFG.abstimmung.projekte.find(x => x.id === pr.id) || {};
+  sag(satz('projektFertig', { Projekt: grossKlein(def.der || pr.name) }), 0);
 }
 
 // ---------- Überraschungs-Events (events.mjs) ----------
@@ -366,14 +369,10 @@ function moderiere() {
     return sag(satz('eventAllgemein', { rest: EV.restSek() }), 4);   // nie Stille während Events
   }
   // 3. Neue Zuschauer begrüßen (nur wenn kein Event moderiert werden muss)
-  if (!EV.laeuft() && begruessen.length) {
-    const zurueck = begruessen[0].zurueck, n = [];
-    for (let i = 0; i < begruessen.length && n.length < 3;) { if (begruessen[i].zurueck === zurueck) n.push(...begruessen.splice(i, 1)); else i++; }
-    if (zurueck) {
-      if (n.length > 1) return sag(satz('begruessungZurueckMehrere', { namen: namenListe(n.map(x => x.name)) }), 4);
-      return sag(n[0].besuche >= 3 && Math.random() < .6 ? satz('begruessungTreu', { name: n[0].name, besuche: n[0].besuche }) : satz('begruessungZurueck', { name: n[0].name, stufeDativ: dativ(n[0].stufe) }), 4);
-    }
-    return sag(n.length > 1 ? satz('begruessungMehrere', { namen: namenListe(n.map(x => x.name)) }) : satz('begruessungEins', { name: n[0].name }), 4);
+  if (!EV.laeuft() && begruessen.length) {                  // immer einzeln und kurz
+    const b = begruessen.shift();
+    if (b.zurueck) return sag(b.besuche >= 3 && Math.random() < .5 ? satz('begruessungTreu', { name: b.name, besuche: b.besuche }) : satz('begruessungZurueck', { name: b.name }), 4);
+    return sag(satz('begruessungEins', { name: b.name }), 4);
   }
   if (EV.laeuft()) return;
   // 4. Abwechselnde Moderation
@@ -400,7 +399,7 @@ function beitritt(u) {                                     // jemand kommt neu i
     p.besuche = (p.besuche || 1) + 1; geaendert = true;
     begruessen.push({ name: sprechName(p), zurueck: true, besuche: p.besuche, stufe: CFG.stufen[p.stufe].name });
   } else begruessen.push({ name: sprechName({ name: '@' + u.uniqueId }), zurueck: false });
-  if (begruessen.length > 12) begruessen.splice(0, begruessen.length - 12);   // nur die neuesten
+  if (begruessen.length > 6) begruessen.splice(0, begruessen.length - 6);   // bei vielen Neuen: nur die neuesten
 }
 
 // ---------- Seite + Live-Daten (Server-Sent Events) ----------
@@ -433,7 +432,21 @@ http.createServer((req, res) => {
   }
   if (TEST && url.pathname === '/test') {                 // nur Test-Modus: Event / Geschenk-Show auslösen
     const id = url.searchParams.get('event'), art = url.searchParams.get('geschenk');
+    if (url.searchParams.has('stadt')) { const n = +url.searchParams.get('stadt'), ids = CFG.abstimmung.projekte.map(x => x.id); S.fertig = ids.slice(0, n); const pr = CFG.abstimmung.projekte[n]; S.projekt = pr ? { id: pr.id, name: pr.name, ziel: pr.ziel, stand: Math.round(pr.ziel * .45) } : null; zustand(); }
+    if (url.searchParams.has('fertigbauen') && S.projekt) { S.projekt.stand = S.projekt.ziel - 1; inKasse(1); }
     if (id) EV.starte(id);
+    const nutzer = url.searchParams.get('user');               // gezielt als Test-Zuschauer handeln
+    if (nutzer) {
+      const u = { uniqueId: nutzer }, q = url.searchParams;
+      if (q.has('kommentar')) kommentar(u, q.get('kommentar'));
+      if (q.has('like')) like(u, +q.get('like'));
+      if (q.has('follow')) follow(u);
+      if (q.has('teilen')) teilen(u);
+      if (q.has('gift')) geschenk(u, q.get('gift'), +q.get('coins') || 1, +q.get('anzahl') || 1);
+      if (q.has('beitritt')) beitritt(u);
+    }
+    if (url.searchParams.has('ende')) EV.beendeJetzt();
+    if (url.searchParams.has('zustand')) { res.writeHead(200, { 'Content-Type': 'application/json' }); return res.end(JSON.stringify({ ...oeffentlich(), bewohner, hausWunsch, begruessen, followDank: followDank.map(p => p.id) })); }
     if (art) { const p = Object.values(S.spieler)[3]; geschenk({ uniqueId: p.name.slice(1) }, url.searchParams.get('name') || 'Rose', +url.searchParams.get('coins') || 1, 1); }
     res.writeHead(204); return res.end();
   }
@@ -541,5 +554,5 @@ function simulator() {
   }, RUHIG ? 2500 : 700);
 }
 
-if (TEST) simulator(); else versuche();
+if (TEST && !process.argv.includes('--leer')) simulator(); else if (!TEST) versuche();
 process.on('SIGINT', () => { geaendert = true; speichern(); process.exit(0); });

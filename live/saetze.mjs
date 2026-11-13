@@ -77,9 +77,9 @@ const SAETZE = {
     'Geschafft! Mit {zahl} Bewohnern wird {projekt} fertig gebaut! Danke an alle!',
   ],
   projektFertig: [
-    'Geschafft! {projekt} ist fertig. Danke an alle!',
-    '{projekt} steht! Das habt ihr mit der Muschelkasse gebaut!',
-    'Fertig! Unser {projekt} ist eröffnet!',
+    'Geschafft! … {Projekt} ist fertig. … Danke an alle!',
+    '{Projekt} steht! … Das habt ihr mit der Muschelkasse gebaut!',
+    'Fertig! … {Projekt} ist eröffnet!',
   ],
   start: [
     'Muschel-Tal live ist gestartet. Liked, kommentiert und baut eure Häuser!',
@@ -88,12 +88,11 @@ const SAETZE = {
   ],
   // ---------- Dauer-Moderation („…“ = Sprechpause) ----------
   begruessungEins: [
-    'Hallo {name} … schön, dass du da bist!',
-    'Hey {name}! … Herzlich willkommen auf der Live-Insel!',
-    'Da ist ja {name}! … Willkommen im Muschel-Tal!',
-    'Willkommen {name}! … Ein Like, und schon steht dein erstes Zelt.',
-    'Hallo {name} … mach es dir gemütlich, hier wird gerade fleißig gebaut!',
-    'Schön, dich zu sehen, {name}! … Such dir schon mal einen Platz für dein Haus aus.',
+    'Hallo {name}!',
+    'Willkommen, {name}!',
+    'Hey {name}, schön, dass du da bist!',
+    'Hi {name} … viel Spaß!',
+    'Willkommen auf der Insel, {name}!',
   ],
   begruessungMehrere: [
     'Hallo {namen} … schön, dass ihr da seid!',
@@ -193,14 +192,14 @@ const SAETZE = {
     'Hier ist dein Haus, {name}! … {stufeCap}{anbauText}. … Sieht richtig gut aus!',
   ],
   begruessungZurueck: [
-    'Willkommen zurück, {name}! … Du wohnst immer noch in {stufeDativ}.',
-    'Schön, dass du wieder da bist, {name}! … Schreib haus, dann zeige ich dir dein Zuhause.',
-    'Da ist ja {name} wieder! … Dein Haus hat dich schon vermisst.',
-    'Hallo {name}, … schön, dich wiederzusehen! … Dein Haus steht noch.',
+    'Willkommen zurück, {name}!',
+    'Schön, dass du wieder da bist, {name}!',
+    'Da ist ja {name} wieder!',
+    'Hallo {name}, schön, dich wiederzusehen!',
   ],
   begruessungTreu: [
-    'Schon zum {besuche}. Mal dabei, {name}! … Danke für deine Treue!',
-    '{name} ist wieder da … zum {besuche}. Mal! … Du gehörst hier schon richtig dazu.',
+    '{name}, schon zum {besuche}. Mal da … danke!',
+    'Willkommen zurück, {name} … zum {besuche}. Mal!',
   ],
   begruessungZurueckMehrere: [
     'Willkommen zurück, {namen}! … Schön, dass ihr wieder da seid.',

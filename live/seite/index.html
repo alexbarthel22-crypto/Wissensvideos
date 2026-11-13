@@ -48,6 +48,16 @@ const START_PLAETZE = 200, K_MAX = 2.6;
 
 function zufall(seed) { return () => (seed = (seed * 1664525 + 1013904223) >>> 0) / 4294967296; }
 
+// Stadtzentrum: 16 feste Bauplätze (je 2×2 Zellen, zur Platzseite hin) für die Gemeinschafts-Gebäude.
+// Ring 1: Blöcke direkt nördlich/südlich/westlich/östlich des Muschelplatzes, Ring 2: die Blöcke dahinter.
+const GEB_BLOECKE = [[-1, -2], [0, -2], [-1, 1], [0, 1], [-2, -1], [1, -1], [-2, 0], [1, 0],      // [Spalte, Zeile] relativ zum Platz
+                     [-1, -3], [0, -3], [-1, 2], [0, 2], [-2, -2], [1, -2], [-2, 1], [1, 1]];
+const GEB_PLAETZE = GEB_BLOECKE.map(([bi, bj]) => {
+  const i = GI + bi, j = GJ + bj, bx = XS[i] + STR / 2 + 3, by = YS[j] + STR / 2 + 3, bw = PX - STR - 6, bh = PY - STR - 6;
+  const q0 = bi < 0 ? 1 : 0;                                       // die zwei Spalten, die näher an der Mitte liegen
+  return { x0: bx + q0 * bw / 3, y0: by, w: bw * 2 / 3, h: bh, x: bx + q0 * bw / 3 + bw / 3, y: by + bh * .9, i, j, q0 };
+});
+const istGebZelle = (i, j, q) => GEB_PLAETZE.some(g => g.i === i && g.j === j && (q === g.q0 || q === g.q0 + 1));
 // Alle möglichen Grundstücke (3 × 2 je Block), sortiert nach Abstand zur Muschel.
 // Ein Grundstück gehört zur Insel, sobald K >= sein Maß – so bleiben alte Grundstücke beim Wachsen an ihrem Platz.
 const ALLE = (() => {
@@ -56,7 +66,7 @@ const ALLE = (() => {
     const bx = XS[i] + STR / 2 + 3, by = YS[j] + STR / 2 + 3, bw = PX - STR - 6, bh = PY - STR - 6;
     for (let q = 0; q < 3; q++) for (let r = 0; r < 2; r++) {
       const x0 = bx + q * bw / 3, y0 = by + r * bh / 2, w = bw / 3, h = bh / 2, cx = x0 + w / 2, cy = y0 + h / 2;
-      if (Math.hypot(cx - IX, cy - IY) <= PLATZ_R + 30) continue;
+      if (Math.hypot(cx - IX, cy - IY) <= PLATZ_R + 30 || istGebZelle(i, j, q)) continue;
       const m = Math.max(...[[x0, y0], [x0 + w, y0], [x0, y0 + h], [x0 + w, y0 + h]].map(([x, y]) => mass(x, y))) / RAND_PLATZ;
       out.push({ x: cx, y: cy + h * .28, cx, cy, x0, y0, w, h, m, mitte: mass(cx, cy) });
     }
@@ -246,11 +256,13 @@ function ereignis(e) {
     case 'folgeAufruf': banner.push({ t: 0, oben: '🏠 Folge @muscheltal!', unten: 'Deine Hütte hier im LIVE + in Muschel-Tal', farbe: TUERKIS }); break;
     case 'kamera': if (pl) fokus(pl, e.ms || 15000); break;
     case 'feuerwerk': feuerwerk(); break;
+    case 'ballonPlatzt': for (let i = 0; i < 18; i++) fx.push({ x: IX + (Math.random() - .5) * 500, y: IY - 200 + (Math.random() - .5) * 300, vx: (Math.random() - .5) * 8, vy: (Math.random() - .5) * 8, t: performance.now(), z: ['🎉', '✨', '💥'][i % 3], s: 22 }); break;
     case 'eventStart': fokusBis = 0; tourModus = 0; tourBis = jetzt + 70000; banner.push({ t: 0, oben: '⚡ Überraschungs-Event!', unten: 'Jetzt mitmachen!', farbe: '#9b5de5' }); funken({ x: IX, y: IY }, '⚡', 20); break;
     case 'eventEnde': if (e.gut) { const q = e.spielerId && sp(e.spielerId), qp = q && platzVon(q); if (qp) { funken(qp, '🎉', 24); fokus(qp, 5000); } else feuerwerk(); } break;
     case 'follow': banner.push({ t: 0, oben: `🏠 ${p ? p.name : ''}`, unten: 'ist jetzt Bewohner · +5 🐚 in die Muschelkasse', farbe: TUERKIS }); break;
     case 'ziel': banner.push({ t: 0, oben: '🎉 Bewohner-Ziel erreicht!', unten: e.name + ' wird auf der Haupt-Insel gebaut', farbe: '#9b5de5' }); feuerwerk(); break;
-    case 'projekt': case 'fertig': funken({ x: IX, y: IY }, e.typ === 'fertig' ? '🎉' : '🚧', 30); if (e.typ === 'fertig') feuerwerk(); break;
+    case 'projekt': { const gp = GEB_PLAETZE[(S.fertig || []).length]; if (gp) { funken({ x: gp.x, y: gp.y - 40 }, '🚧', 14); fokus({ x: gp.x, y: gp.y - 10 }, 5000); } break; }
+    case 'fertig': { const gp = GEB_PLAETZE[(S.fertig || []).length]; GEB_BAU[e.id] = jetzt; if (gp) { fokus({ x: gp.x, y: gp.y - 10 }, 6500); setTimeout(() => { funken({ x: gp.x, y: gp.y - 60 }, '🎉', 30); feuerwerk(); }, 3300); } break; }
     case 'ansage': untertitel = { text: e.text, t: jetzt, d: Math.max(2.5, (e.ms || 4000) / 1000 + .5) }; break;
     case 'stimme': if (e.id === meineId) stimmeAbspielen(e.url); break;
     case 'hallo': meineId = e.id; break;
@@ -605,9 +617,7 @@ function platzZeichnen(t) {
   c.save(); c.translate(IX, IY + 4);
   for (let i = 0; i < 7; i++) { const ph = (t * .0015 + i * .29) % 1, s = Math.sin(ph * Math.PI) * 8, a = i * 1.7; stern(c, Math.cos(a) * 64, Math.sin(a) * 40 - 26, s); }
   c.restore();
-  // Fertige Gemeinschaftsprojekte am Platzrand
-  (S.fertig || []).forEach((id, i) => { const a = -Math.PI * .75 + i * .55, x = IX + Math.cos(a) * (PLATZ_R + 34), y = IY + Math.sin(a) * (PLATZ_R + 34); c.font = `46px ${FONT}`; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText(ICON[id] || '🏛️', x, y); });
-  if (S.projekt) { const x = IX + PLATZ_R * .78, y = IY - PLATZ_R * .78; c.font = `40px ${FONT}`; c.textAlign = 'center'; c.fillText('🏗️', x, y); }
+
 }
 function stern(c, x, y, s) { if (s <= 0) return; c.fillStyle = '#fff'; c.beginPath(); c.moveTo(x, y - s); c.quadraticCurveTo(x, y, x + s, y); c.quadraticCurveTo(x, y, x, y + s); c.quadraticCurveTo(x, y, x - s, y); c.quadraticCurveTo(x, y, x, y - s); c.fill(); }
 const ICON = { leuchtturm: '🗼', markt: '🏪', bruecke: '🌉', riesenrad: '🎡', brunnen: '⛲', hafen: '⚓', eisdiele: '🍦', kino: '🎬' };
@@ -900,6 +910,109 @@ function haus(p, pl, t) {
   X.fillStyle = INK; X.textAlign = 'center'; const nv = mitteVersatz(); X.textBaseline = 'alphabetic'; X.fillText(n, pl.x, pl.y + 15.5 + nv);
 }
 
+// ================= Stadtgebäude der Gemeinschaft (tropischer Strand-Stil) =================
+// Jedes Gebäude steht auf einem festen Bauplatz im Stadtzentrum (GEB_PLAETZE). Breite ca. 130, Höhe bis ca. 120.
+const GEB = {
+  rathaus:    { farbe: '#fff3e0', dach: 'ziegel', dachFarbe: '#e8743c', schild: 'RATHAUS', akzent: '#2fb3a0' },
+  schule:     { farbe: '#ffe9a8', dach: 'ziegel', dachFarbe: '#e8433c', schild: 'SCHULE', akzent: '#3fa0e8' },
+  krankenhaus:{ farbe: '#ffffff', dach: 'flach', dachFarbe: '#7fe0c8', schild: 'KRANKENHAUS', akzent: '#e8433c' },
+  feuerwache: { farbe: '#ffd3c4', dach: 'flach', dachFarbe: '#e8433c', schild: 'FEUERWACHE', akzent: '#e8433c' },
+  polizei:    { farbe: '#e6f2ff', dach: 'flach', dachFarbe: '#2f6fb3', schild: 'POLIZEI', akzent: '#2f6fb3' },
+  supermarkt: { farbe: '#f4fff0', dach: 'flach', dachFarbe: '#57b85a', schild: 'SUPERMARKT', akzent: '#57b85a' },
+  kino:       { farbe: '#3a2a5a', dach: 'flach', dachFarbe: '#e8467c', schild: 'KINO', akzent: '#ffd23f' },
+  bibliothek: { farbe: '#f3e6d0', dach: 'ziegel', dachFarbe: '#8a5a2b', schild: 'BIBLIOTHEK', akzent: '#8a5a2b' },
+  post:       { farbe: '#fff6c8', dach: 'stroh', dachFarbe: '#d9a63a', schild: 'POST', akzent: '#ffd23f' },
+  cafe:       { farbe: '#ffe1ec', dach: 'stroh', dachFarbe: '#d9a63a', schild: 'CAFÉ', akzent: '#e8467c' },
+  eisdiele:   { farbe: '#e1f7ff', dach: 'stroh', dachFarbe: '#d9a63a', schild: 'EISDIELE', akzent: '#ff8fb8' },
+  museum:     { farbe: '#f7f2e8', dach: 'giebel', dachFarbe: '#efe6d6', schild: 'MUSEUM', akzent: '#c99a2e' },
+  sporthalle: { farbe: '#e8f7ef', dach: 'rund', dachFarbe: '#3fa0e8', schild: 'SPORTHALLE', akzent: '#ff8a2a' },
+  markthalle: { farbe: '#fff3c4', dach: 'stroh', dachFarbe: '#d9a63a', schild: 'MARKTHALLE', akzent: '#ff8a2a' },
+  hotel:      { farbe: '#fffaf0', dach: 'flach', dachFarbe: '#2fb3a0', schild: 'HOTEL', akzent: '#2fb3a0' },
+  apotheke:   { farbe: '#f0fff4', dach: 'ziegel', dachFarbe: '#2fb3a0', schild: 'APOTHEKE', akzent: '#3f9b45' },
+};
+function gebaeude(c, id, t) {
+  const g = GEB[id] || GEB.rathaus, W2 = 58, H = id === 'hotel' ? 92 : id === 'krankenhaus' ? 78 : 64;
+  // Grundstück: Platten, Palmen, Hibiskus
+  c.fillStyle = '#efe0b8'; c.beginPath(); c.roundRect(-W2 - 8, -6, W2 * 2 + 16, 18, 6); c.fill();
+  c.fillStyle = 'rgba(0,0,0,.15)'; c.beginPath(); c.ellipse(6, 4, W2 + 8, 9, 0, 0, 7); c.fill();
+  // Baukörper
+  c.fillStyle = g.farbe; c.fillRect(-W2, -H, W2 * 2, H); c.strokeStyle = INK; c.lineWidth = 2.5; c.strokeRect(-W2, -H, W2 * 2, H);
+  // Fenster (Reihen), Teak-Rahmen
+  const reihen = Math.max(1, Math.floor((H - 34) / 26));
+  for (let r = 0; r < reihen; r++) for (let k = 0; k < 5; k++) { if (k === 2 && r === reihen - 1) continue; fenster(c, -W2 + 8 + k * 22, -H + 28 + r * 26, 14, 14, id === 'kino' ? '#ffd23f' : '#b07a45'); }
+  // Eingang mit Markise
+  c.fillStyle = g.akzent; c.beginPath(); c.moveTo(-18, -26); c.lineTo(18, -26); c.lineTo(22, -18); c.lineTo(-22, -18); c.closePath(); c.fill();
+  c.fillStyle = 'rgba(255,255,255,.6)'; for (let k = -16; k < 18; k += 8) c.fillRect(k, -26, 4, 8);
+  tuer(c, -9, -18, 18, 18, id === 'kino' ? '#e8467c' : '#8a5a2b');
+  // Dach
+  if (g.dach === 'ziegel') ziegel(c, -W2 - 8, -H - 30, W2 + 8, -H + 2, 0, g.dachFarbe);
+  else if (g.dach === 'stroh') stroh(c, [[-W2 - 10, -H + 4], [0, -H - 28], [W2 + 10, -H + 4]]);
+  else if (g.dach === 'giebel') { c.fillStyle = g.dachFarbe; c.beginPath(); c.moveTo(-W2 - 6, -H); c.lineTo(0, -H - 24); c.lineTo(W2 + 6, -H); c.closePath(); c.fill(); c.stroke(); for (let k = -3; k <= 3; k++) { c.fillStyle = '#fff'; c.fillRect(k * 16 - 3, -H, 6, H - 20); c.strokeRect(k * 16 - 3, -H, 6, H - 20); } }
+  else if (g.dach === 'rund') { c.fillStyle = g.dachFarbe; c.beginPath(); c.ellipse(0, -H, W2 + 4, 22, 0, Math.PI, 0); c.fill(); c.stroke(); c.strokeStyle = 'rgba(255,255,255,.5)'; c.lineWidth = 2; for (let k = -2; k <= 2; k++) { c.beginPath(); c.moveTo(k * 18, -H); c.lineTo(k * 12, -H - 20); c.stroke(); } }
+  else { c.fillStyle = g.dachFarbe; c.fillRect(-W2 - 4, -H - 7, W2 * 2 + 8, 8); c.strokeStyle = INK; c.lineWidth = 2; c.strokeRect(-W2 - 4, -H - 7, W2 * 2 + 8, 8); }
+  // Schild mit Namen
+  c.font = `900 11px ${FONT}`; const sw = c.measureText(g.schild).width + 14, sy = g.dach === 'flach' || g.dach === 'rund' ? -H - 22 : -H + 8;
+  c.fillStyle = '#fff'; c.beginPath(); c.roundRect(-sw / 2, sy, sw, 15, 4); c.fill(); c.strokeStyle = g.akzent; c.lineWidth = 2; c.stroke();
+  c.fillStyle = INK; c.textAlign = 'center'; c.textBaseline = 'alphabetic'; c.fillText(g.schild, 0, sy + 11.5);
+  // Besonderheiten
+  if (id === 'rathaus') { c.fillStyle = '#fff3e0'; c.fillRect(-10, -H - 56, 20, 30); c.strokeStyle = INK; c.lineWidth = 2; c.strokeRect(-10, -H - 56, 20, 30); c.fillStyle = '#fff'; c.beginPath(); c.arc(0, -H - 44, 7, 0, 7); c.fill(); c.stroke(); c.strokeStyle = INK; c.lineWidth = 1.5; c.beginPath(); c.moveTo(0, -H - 44); c.lineTo(0, -H - 49); c.moveTo(0, -H - 44); c.lineTo(4, -H - 44); c.stroke(); c.fillStyle = '#e8743c'; c.beginPath(); c.moveTo(-13, -H - 56); c.lineTo(0, -H - 68); c.lineTo(13, -H - 56); c.fill(); c.strokeStyle = INK; c.beginPath(); c.moveTo(0, -H - 68); c.lineTo(0, -H - 82); c.stroke(); c.fillStyle = GELB; c.beginPath(); c.moveTo(0, -H - 82); c.lineTo(12 + Math.sin(t * .006) * 2, -H - 78); c.lineTo(0, -H - 74); c.fill(); }
+  if (id === 'schule') { c.fillStyle = '#fff'; c.beginPath(); c.arc(0, -H - 10, 7, 0, 7); c.fill(); c.strokeStyle = INK; c.lineWidth = 1.5; c.stroke(); c.beginPath(); c.moveTo(0, -H - 10); c.lineTo(0, -H - 15); c.moveTo(0, -H - 10); c.lineTo(3, -H - 8); c.stroke(); c.fillStyle = '#e8433c'; c.fillRect(W2 + 4, -12, 10, 6); c.fillStyle = '#3fa0e8'; c.fillRect(W2 + 6, -18, 6, 6); }
+  if (id === 'krankenhaus' || id === 'apotheke') { const k = id === 'apotheke' ? '#3f9b45' : '#e8433c'; c.fillStyle = '#fff'; c.beginPath(); c.arc(W2 - 14, -H + 14, 10, 0, 7); c.fill(); c.fillStyle = k; c.fillRect(W2 - 17, -H + 7, 6, 14); c.fillRect(W2 - 21, -H + 11, 14, 6); }
+  if (id === 'feuerwache') { c.fillStyle = '#e8433c'; c.fillRect(-W2 + 6, -26, 30, 26); c.fillRect(W2 - 36, -26, 30, 26); c.strokeStyle = '#fff'; c.lineWidth = 1; for (let k = 0; k < 4; k++) { c.beginPath(); c.moveTo(-W2 + 6, -22 + k * 6); c.lineTo(-W2 + 36, -22 + k * 6); c.moveTo(W2 - 36, -22 + k * 6); c.lineTo(W2 - 6, -22 + k * 6); c.stroke(); } c.fillStyle = '#e8433c'; c.beginPath(); c.roundRect(W2 + 2, -14, 30, 14, 3); c.fill(); c.fillStyle = '#9fe3f0'; c.fillRect(W2 + 22, -12, 8, 5); c.fillStyle = INK; c.beginPath(); c.arc(W2 + 8, 0, 3, 0, 7); c.arc(W2 + 26, 0, 3, 0, 7); c.fill(); }
+  if (id === 'polizei') { const an = Math.sin(t * .02) > 0; c.fillStyle = an ? '#3fa0e8' : '#9fd0ff'; c.beginPath(); c.arc(-6, -H - 32, 4, 0, 7); c.fill(); c.fillStyle = an ? '#9fd0ff' : '#3fa0e8'; c.beginPath(); c.arc(6, -H - 32, 4, 0, 7); c.fill(); c.fillStyle = '#9aa6a0'; c.fillRect(-10, -H - 30, 20, 3); }
+  if (id === 'supermarkt') { for (let k = 0; k < 3; k++) { c.strokeStyle = '#9aa6a0'; c.lineWidth = 1.5; c.strokeRect(W2 + 4 + k * 4, -12 + k, 10, 7); } c.fillStyle = '#ff8a2a'; c.beginPath(); c.arc(-W2 - 2, -4, 5, 0, 7); c.fill(); c.fillStyle = '#ffd23f'; c.beginPath(); c.arc(-W2 + 7, -3, 4, 0, 7); c.fill(); }
+  if (id === 'kino') { for (let k = 0; k < 12; k++) { c.fillStyle = (Math.floor(t / 250) + k) % 2 ? '#ffd23f' : '#fff3c4'; c.beginPath(); c.arc(-W2 + 6 + k * 10, -H - 2, 2.4, 0, 7); c.fill(); } }
+  if (id === 'post') { c.fillStyle = GELB; c.beginPath(); c.roundRect(W2 + 4, -22, 12, 16, 3); c.fill(); c.strokeStyle = INK; c.lineWidth = 1.5; c.stroke(); c.fillStyle = INK; c.fillRect(W2 + 7, -18, 6, 1.5); }
+  if (id === 'cafe' || id === 'eisdiele') { [[-W2 - 6, '#ff6fa3'], [W2 + 6, '#7fe0c8']].forEach(([x, f]) => { c.strokeStyle = '#6b4423'; c.lineWidth = 1.5; c.beginPath(); c.moveTo(x, 4); c.lineTo(x, -20); c.stroke(); c.fillStyle = f; c.beginPath(); c.ellipse(x, -21, 13, 5, 0, Math.PI, 0); c.fill(); c.fillStyle = '#fff'; c.beginPath(); c.arc(x, 2, 5, 0, 7); c.fill(); }); }
+  if (id === 'eisdiele') { c.fillStyle = '#d9a66a'; c.beginPath(); c.moveTo(-8, -H - 24); c.lineTo(8, -H - 24); c.lineTo(0, -H + 2); c.closePath(); c.fill(); [['#ff8fb8', -4], ['#7fe0c8', 4], ['#fff3c4', 0]].forEach(([f, x], k) => { c.fillStyle = f; c.beginPath(); c.arc(x, -H - 28 - k * 6, 7, 0, 7); c.fill(); }); }
+  if (id === 'markthalle') { ['#e8433c', '#3fa0e8', '#57b85a'].forEach((f, k) => { const x = -W2 + 4 + k * 40; for (let s = 0; s < 4; s++) { c.fillStyle = s % 2 ? '#fff' : f; c.fillRect(x + s * 8, 4, 8, 6); } }); }
+  if (id === 'hotel') { for (let r = 0; r < 3; r++) { c.strokeStyle = '#fff'; c.lineWidth = 1.5; c.beginPath(); c.moveTo(-W2, -H + 44 + r * 26); c.lineTo(W2, -H + 44 + r * 26); c.stroke(); } c.fillStyle = '#3fa0e8'; c.beginPath(); c.roundRect(-W2 + 10, -H - 6, 40, 5, 2); c.fill(); c.strokeStyle = '#6b4423'; c.lineWidth = 1.5; c.beginPath(); c.moveTo(W2 - 16, -H - 7); c.lineTo(W2 - 16, -H - 24); c.stroke(); c.fillStyle = '#ff6fa3'; c.beginPath(); c.ellipse(W2 - 16, -H - 25, 12, 4.5, 0, Math.PI, 0); c.fill(); }
+  if (id === 'bibliothek') { ['#e8433c', '#3fa0e8', '#57b85a', '#ffd23f'].forEach((f, k) => { c.fillStyle = f; c.fillRect(W2 + 4 + k * 4, -16, 3.5, 14); }); }
+  if (id === 'sporthalle') { c.fillStyle = '#ff8a2a'; c.beginPath(); c.arc(W2 + 10, -6, 6, 0, 7); c.fill(); c.strokeStyle = INK; c.lineWidth = 1; c.stroke(); }
+  if (id === 'museum') { c.fillStyle = '#c99a2e'; c.beginPath(); c.arc(0, -H - 10, 4, 0, 7); c.fill(); }
+  // tropische Deko: Palmen links/rechts, Hibiskus
+  palme(c, -W2 - 14, 6, .55, t); palme(c, W2 + 16, 6, .55, t + 700);
+  blumen(c, -W2 + 2, 2, 5, 30); blumen(c, W2 - 30, 2, 5, 30);
+}
+function baustelle(c, prozent, name, t) {
+  const W2 = 58;
+  c.fillStyle = '#e6d3a0'; c.beginPath(); c.roundRect(-W2 - 8, -50, W2 * 2 + 16, 62, 6); c.fill();
+  // Rohbau wächst mit dem Fortschritt
+  const h = 10 + 54 * prozent;
+  c.fillStyle = '#d0c6b4'; c.fillRect(-W2 + 6, -h, W2 * 2 - 12, h); c.strokeStyle = '#8a7f6a'; c.lineWidth = 1.5; c.strokeRect(-W2 + 6, -h, W2 * 2 - 12, h);
+  for (let y = -h + 8; y < 0; y += 12) { c.beginPath(); c.moveTo(-W2 + 6, y); c.lineTo(W2 - 6, y); c.stroke(); }
+  c.strokeStyle = '#c9a25a'; c.lineWidth = 2.2; [-W2 + 2, -20, 20, W2 - 2].forEach(x => { c.beginPath(); c.moveTo(x, 0); c.lineTo(x, -h - 8); c.stroke(); });
+  // Kran
+  c.strokeStyle = '#ffb02e'; c.lineWidth = 4; c.beginPath(); c.moveTo(W2 - 10, 0); c.lineTo(W2 - 10, -100); c.lineTo(-W2 + 4, -100); c.stroke(); c.lineWidth = 1.5; c.strokeStyle = INK;
+  const sw = Math.sin(t * .0015) * 18; c.beginPath(); c.moveTo(sw, -100); c.lineTo(sw, -74); c.stroke(); c.fillStyle = '#c96a3a'; c.fillRect(sw - 7, -74, 14, 8);
+  // Bauzaun + Schild mit Fortschritt
+  for (let x = -W2 - 6; x <= W2 + 6; x += 8) { c.fillStyle = (x / 8 | 0) % 2 ? '#e8433c' : '#fff'; c.fillRect(x, 4, 8, 5); }
+  c.fillStyle = '#fff'; c.beginPath(); c.roundRect(-46, -128, 92, 22, 5); c.fill(); c.strokeStyle = '#ffb02e'; c.lineWidth = 2; c.stroke();
+  c.fillStyle = INK; c.font = `900 10px ${FONT}`; c.textAlign = 'center'; c.textBaseline = 'alphabetic'; c.fillText(`🏗️ ${name} ${Math.floor(prozent * 100)}%`, 0, -113);
+}
+// Bau-Animation bei Fertigstellung (wie bei den Häusern: Gerüst, Krabben, Staub, Gebäude wächst nach oben)
+const GEB_BAU = {};
+function gebaeudeZeichnen(t, imCache) {
+  const liste = S.projekteListe || [];
+  (S.fertig || []).forEach((id, i) => {
+    const pl = GEB_PLAETZE[i]; if (!pl) return;
+    const anim = GEB_BAU[id], age = anim ? (t - anim) / 1000 : 99;
+    if (imCache && age < 4.2) return;                               // läuft gerade die Bau-Animation: live zeichnen
+    if (!imCache && age >= 4.2) return;
+    X.save(); X.translate(pl.x, pl.y);
+    if (age < 4.2) {
+      const q = Math.min(1, age / 3.2), hoch = 130;
+      X.save(); X.beginPath(); X.rect(-90, 14 - q * hoch - 20, 180, q * hoch + 40); X.clip(); gebaeude(X, id, t); X.restore();
+      if (age < 3.6) { X.strokeStyle = '#c9a25a'; X.lineWidth = 2.6; [-62, -22, 22, 62].forEach(x => { X.beginPath(); X.moveTo(x, 8); X.lineTo(x, -hoch); X.stroke(); }); for (let y = -10; y > -hoch; y -= 18) { X.beginPath(); X.moveTo(-66, y); X.lineTo(66, y); X.stroke(); }
+        krabbe(X, Math.sin(t * .003) * 40, 14 - q * hoch - 24, t); krabbe(X, 70, -6, t + 400); }
+      for (let k = 0; k < 7; k++) { const ph = (age * 1.2 + k / 7) % 1; X.fillStyle = `rgba(240,220,160,${(1 - ph) * .5})`; X.beginPath(); X.arc((k - 3) * 18, 6 - ph * 22, 6 + ph * 10, 0, 7); X.fill(); }
+    } else gebaeude(X, id, t);
+    X.restore();
+  });
+  if (S.projekt && !imCache) return;
+  if (S.projekt) { const pl = GEB_PLAETZE[(S.fertig || []).length]; if (pl) { X.save(); X.translate(pl.x, pl.y); baustelle(X, S.projekt.stand / S.projekt.ziel, S.projekt.name, t); X.restore(); } }
+}
+
 // ================= Kopfzeile =================
 let seite = 0, seiteSeit = 0;
 // ================= Überraschungs-Events: Panel, Countdown, Effekte =================
@@ -1003,6 +1116,19 @@ function eventWelt(t) {
     if (los === i) { X.font = `64px ${FONT}`; X.textAlign = 'center'; X.fillText('💰', p.x, p.y - 4 - Math.abs(Math.sin(t * .006)) * 10); }
   });
   if (id === 'meeresbesuch') meerTier(t, e.extra.art, (e.dauer - e.rest) / e.dauer);
+  const ex = e?.extra || {};
+  if (ex.schildkroeten != null) for (let k = 0; k < 6; k++) {                    // Schildkröten krabbeln vom Strand ins Meer
+    const a = 1.15 + k * .07, q = Math.min(1, ex.schildkroeten * 1.1 - k * .02), r = rand(a) * K * (.97 + Math.max(0, q) * .2), x = IX + Math.cos(a) * RX * r, y = IY + Math.sin(a) * RY * r;
+    X.font = `26px ${FONT}`; X.textAlign = 'center'; X.textBaseline = 'middle'; X.fillText('🐢', x, y + Math.sin(t * .01 + k) * 2);
+  }
+  if (ex.blumen) for (let k = 0; k < Math.min(60, ex.blumen); k++) {             // Blumenwiese rund um den Platz
+    const a = k * 2.39996, r = PLATZ_R + 18 + (k % 4) * 9; X.font = `${18 + (k % 3) * 4}px ${FONT}`; X.textAlign = 'center'; X.textBaseline = 'middle'; X.fillText(['🌺', '🌸', '🌼', '🌷'][k % 4], IX + Math.cos(a) * r, IY + Math.sin(a) * r * .9);
+  }
+  if (ex.hai) { const a = t * .0008, r = K * 1.16, x = IX + Math.cos(a) * RX * r * rand(a), y = IY + Math.sin(a) * RY * r * rand(a); X.fillStyle = '#5b6b7a'; X.beginPath(); X.moveTo(x - 16, y); X.lineTo(x + 2, y - 30); X.lineTo(x + 14, y); X.closePath(); X.fill(); X.strokeStyle = 'rgba(255,255,255,.7)'; X.lineWidth = 3; X.beginPath(); X.moveTo(x - 30, y + 2); X.lineTo(x + 26, y + 2); X.stroke(); }
+  if (ex.goldmuscheln) for (let k = 0; k < ex.goldmuscheln; k++) {                // goldene Muscheln am Strand
+    const a = k * .31 + .4, r = rand(a) * K * 1.015, x = IX + Math.cos(a) * RX * r, y = IY + Math.sin(a) * RY * r, s = 1 + Math.sin(t * .006 + k) * .1;
+    X.save(); X.translate(x, y); X.scale(s, s); X.fillStyle = '#ffd23f'; X.beginPath(); X.arc(0, 0, 9, Math.PI, 0); X.lineTo(0, 5); X.fill(); X.strokeStyle = '#b8862a'; X.lineWidth = 1.5; X.stroke(); X.restore();
+  }
   if (id === 'flaschenpost') { const q = Math.min(1, (e.dauer - e.rest) / 20), a = 2.2, r = rand(a) * K * (1.4 - q * .36), x = IX + Math.cos(a) * RX * r, y = IY + Math.sin(a) * RY * r + Math.sin(t * .004) * 6; X.save(); X.translate(x, y); X.rotate(.6 + Math.sin(t * .003) * .2); X.fillStyle = 'rgba(120,200,150,.85)'; rr(-8, -24, 16, 40, 6); X.fill(); X.fillStyle = '#b07a45'; X.fillRect(-4, -32, 8, 9); X.fillStyle = '#fff3c4'; X.fillRect(-5, -14, 10, 18); X.restore(); }
   if (id === 'moewenalarm') { const a = t * .0012, x = IX + Math.cos(a) * 230, y = IY - 120 + Math.sin(a * 2) * 90, f = Math.sin(t * .02) * 10; X.strokeStyle = '#fff'; X.lineWidth = 6; X.lineCap = 'round'; X.beginPath(); X.moveTo(x - 30, y - f); X.quadraticCurveTo(x - 14, y - 16, x, y); X.quadraticCurveTo(x + 14, y - 16, x + 30, y - f); X.stroke(); X.fillStyle = '#ffd3e2'; X.beginPath(); X.arc(x, y + 14, 9, 0, 7); X.fill(); X.strokeStyle = '#e8467c'; X.lineWidth = 2; X.stroke(); }
 }
@@ -1036,6 +1162,11 @@ function eventBildschirm(t) {
   if (id === 'muschelregen' || id === 'bauturbo') {
     for (let i = 0; i < 40; i++) { const x = (i * 137) % 1000 + 40, y = (t * (.25 + (i % 5) * .05) + i * 233) % 1500 + 450; X.font = `${24 + (i % 3) * 8}px ${FONT}`; X.textAlign = 'center'; X.globalAlpha = .9; X.fillText(id === 'bauturbo' ? (i % 2 ? '⚡' : '🔨') : (i % 3 ? '🐚' : '✨'), x, y); }
     X.globalAlpha = 1;
+  }
+  if (S.event?.extra?.ballons) for (let i = 0; i < S.event.extra.ballons; i++) {   // Ballons schweben über der Insel
+    const x = 170 + (i % 6) * 148 + Math.sin(t * .001 + i) * 14, y = 900 + Math.floor(i / 6) * 230 + Math.sin(t * .0015 + i * 2) * 18, col = ['#ff6fa3', '#ffd23f', '#3fa0e8', '#57b85a', '#b58ad0', '#ff8a2a'][i % 6];
+    X.strokeStyle = 'rgba(42,27,18,.5)'; X.lineWidth = 1.5; X.beginPath(); X.moveTo(x, y + 34); X.quadraticCurveTo(x + 6, y + 60, x, y + 86); X.stroke();
+    X.fillStyle = col; X.beginPath(); X.ellipse(x, y, 26, 32, 0, 0, 7); X.fill(); X.fillStyle = 'rgba(255,255,255,.45)'; X.beginPath(); X.ellipse(x - 9, y - 11, 6, 10, -.4, 0, 7); X.fill();
   }
   if (id === 'sternschnuppe') { X.fillStyle = 'rgba(10,20,60,.25)'; X.fillRect(0, 0, W, H); for (let i = 0; i < 3; i++) { const q = ((t * .0004 + i * .37) % 1), x = 1100 - q * 1300, y = 500 + i * 200 + q * 500; const g = X.createLinearGradient(x, y, x + 160, y - 60); g.addColorStop(0, '#fff'); g.addColorStop(1, 'rgba(255,255,255,0)'); X.strokeStyle = g; X.lineWidth = 4; X.beginPath(); X.moveTo(x, y); X.lineTo(x + 160, y - 60); X.stroke(); stern(X, x, y, 10); } }
 }
@@ -1122,10 +1253,11 @@ function kopf(t) {
   karte(612, OBEN, SR - 612, 92, '#fff', 999);
   text('🐚 ' + (S.kasse || 0).toLocaleString('de-DE'), 786, OBEN + 36, 38, INK, 'center', 900, 300);
   text('Like = 1 · Teilen = 2 · Folgen = 5', 786, OBEN + 72, 18, '#8a5a2b', 'center', 900, 310);
-  // Nächstes Bauprojekt der Haupt-Insel
-  const z = S.ziel, bw = S.bewohner || 0, y2 = OBEN + 116;
-  karte(SL, y2, SB, 92, '#fff', 30);
+  // Nächstes Bauprojekt der Haupt-Insel (kommt automatisch von muscheltal.de; gibt es keins, entfällt die Zeile)
+  const z = S.ziel, bw = S.bewohner || 0;
+  let y2 = OBEN + 116;
   if (z) {
+    karte(SL, y2, SB, 92, '#fff', 30);
     const f = Math.min(1, bw / z.ziel);
     text(`${z.icon || '🏗️'} ${z.name}`, SL + 24, y2 + 26, 26, INK, 'left', 900, 500);
     text(`${bw.toLocaleString('de-DE')} / ${z.ziel.toLocaleString('de-DE')}`, SR - 24, y2 + 26, 25, INK, 'right', 900, 280);
@@ -1134,7 +1266,7 @@ function kopf(t) {
     X.fillStyle = g; rr(SL + 24, y2 + 48, Math.max(26, (SB - 48) * f), 26, 13); X.fill();
     X.strokeStyle = INK; X.lineWidth = 3.5; rr(SL + 24, y2 + 48, SB - 48, 26, 13); X.stroke();
     text(`${z.ort || 'Haupt-Insel'} · Folgen = einziehen 🏠 · noch ${Math.max(0, z.ziel - bw)} Bewohner`, 540, y2 + 62, 16, INK, 'center', 900, SB - 70);
-  } else text(`🏠 ${bw.toLocaleString('de-DE')} Bewohner · Folgen = einziehen`, 540, y2 + 46, 28, INK, 'center', 900, SB - 40);
+  } else y2 = OBEN + 2;
   // Laufendes Event / Ergebnis, sonst Infos (wechselnd) + Countdown zum nächsten Event
   const y3 = y2 + 114, ep = eventPanel(t, y3);
   if (ep) return ep;
@@ -1213,12 +1345,13 @@ function overlay(t) {
 // Häuser: in der Übersicht als ein fertiges Bild, neu gezeichnet nur wenn sich etwas ändert (höchstens 1× pro Sekunde).
 let HC = null, HC_BOX = null, HC_SIG = '', hcGeprueft = 0, hcGebaut = 0;
 const hausLive = (p, t) => bau[p.id] || (pop[p.id] && t - pop[p.id] < 700);
-function hausSignatur(t) { let s = K + ':'; for (const p of S.spieler) s += p.platz + '.' + p.stufe + (p.farbe || '') + p.anbauten.length + p.name.length + (hausLive(p, t) ? 'L' : '') + '|'; return s; }
+function hausSignatur(t) { let s = K + ':' + (S.fertig || []).join(',') + (S.projekt ? S.projekt.id + Math.floor(S.projekt.stand / S.projekt.ziel * 50) : '') + Object.keys(GEB_BAU).filter(id => t - GEB_BAU[id] < 4200).join(',') + ':'; for (const p of S.spieler) s += p.platz + '.' + p.stufe + (p.farbe || '') + p.anbauten.length + p.name.length + (hausLive(p, t) ? 'L' : '') + '|'; return s; }
 function hausCacheBauen(t) {
   const B = BASIS_BOX, hq = Math.min(1, Math.max(.45, zUebersicht() * Q0 * 1.6)), w = Math.ceil(B.w * hq), h = Math.ceil(B.h * hq);
   if (!HC || HC.width !== w || HC.height !== h) { HC = document.createElement('canvas'); HC.width = w; HC.height = h; }
   const hx = HC.getContext('2d'); hx.setTransform(1, 0, 0, 1, 0, 0); hx.clearRect(0, 0, w, h); hx.setTransform(hq, 0, 0, hq, -B.x * hq, -B.y * hq);
   const echt = X; X = hx;
+  gebaeudeZeichnen(t, true);
   S.spieler.map(p => [p, platzVon(p)]).filter(([p, pl]) => pl && !hausLive(p, t)).sort((a, b) => a[1].y - b[1].y).forEach(([p, pl]) => haus(p, pl, t));
   X = echt; HC_BOX = B; hcGebaut = t;
 }
@@ -1246,8 +1379,9 @@ function bild(t) {
   if (cam.z < 1.15 && BASIS) {                                     // Übersicht: Häuser aus dem Zwischenspeicher
     if (t - hcGeprueft > 250) { hcGeprueft = t; const sig = hausSignatur(t); if (sig !== HC_SIG && (t - hcGebaut > 1000 || !HC)) { HC_SIG = sig; hausCacheBauen(t); } }
     if (HC) X.drawImage(HC, HC_BOX.x, HC_BOX.y, HC_BOX.w, HC_BOX.h);
+    gebaeudeZeichnen(t, false);
     S.spieler.filter(p => hausLive(p, t)).map(p => [p, platzVon(p)]).filter(([, pl]) => pl).forEach(([p, pl]) => haus(p, pl, t));
-  } else S.spieler.map(p => [p, platzVon(p)]).filter(([p, pl]) => pl && sichtbar(pl.x, pl.y, 90)).sort((a, b) => a[1].y - b[1].y).forEach(([p, pl]) => haus(p, pl, t));
+  } else { gebaeudeZeichnen(t, true); gebaeudeZeichnen(t, false); } if (cam.z >= 1.15) S.spieler.map(p => [p, platzVon(p)]).filter(([p, pl]) => pl && sichtbar(pl.x, pl.y, 90)).sort((a, b) => a[1].y - b[1].y).forEach(([p, pl]) => haus(p, pl, t));
   eventWelt(t);
   nachtZeichnen(t);
   moewen(t); effekte(t);

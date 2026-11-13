@@ -154,44 +154,116 @@
     "dauerSekunden": 90,
     "projekte": [
       {
-        "id": "leuchtturm",
-        "name": "Leuchtturm",
+        "id": "rathaus",
+        "name": "Rathaus",
+        "ein": "ein Rathaus",
+        "der": "das Rathaus",
         "ziel": 3000
       },
       {
-        "id": "markt",
-        "name": "Marktplatz",
+        "id": "schule",
+        "name": "Schule",
+        "ein": "eine Schule",
+        "der": "die Schule",
         "ziel": 2500
       },
       {
-        "id": "bruecke",
-        "name": "Brücke",
-        "ziel": 3500
+        "id": "krankenhaus",
+        "name": "Krankenhaus",
+        "ein": "ein Krankenhaus",
+        "der": "das Krankenhaus",
+        "ziel": 4000
       },
       {
-        "id": "riesenrad",
-        "name": "Riesenrad",
-        "ziel": 5000
+        "id": "feuerwache",
+        "name": "Feuerwache",
+        "ein": "eine Feuerwache",
+        "der": "die Feuerwache",
+        "ziel": 3000
       },
       {
-        "id": "brunnen",
-        "name": "Brunnen",
-        "ziel": 2000
+        "id": "polizei",
+        "name": "Polizeistation",
+        "ein": "eine Polizeistation",
+        "der": "die Polizeistation",
+        "ziel": 3000
       },
       {
-        "id": "hafen",
-        "name": "Hafen",
-        "ziel": 4500
-      },
-      {
-        "id": "eisdiele",
-        "name": "Eisdiele",
+        "id": "supermarkt",
+        "name": "Supermarkt",
+        "ein": "einen Supermarkt",
+        "der": "der Supermarkt",
         "ziel": 2500
       },
       {
         "id": "kino",
-        "name": "Freiluftkino",
+        "name": "Kino",
+        "ein": "ein Kino",
+        "der": "das Kino",
+        "ziel": 3500
+      },
+      {
+        "id": "bibliothek",
+        "name": "Bibliothek",
+        "ein": "eine Bibliothek",
+        "der": "die Bibliothek",
+        "ziel": 2500
+      },
+      {
+        "id": "post",
+        "name": "Post",
+        "ein": "eine Post",
+        "der": "die Post",
+        "ziel": 2000
+      },
+      {
+        "id": "cafe",
+        "name": "Café",
+        "ein": "ein Café",
+        "der": "das Café",
+        "ziel": 1500
+      },
+      {
+        "id": "eisdiele",
+        "name": "Eisdiele",
+        "ein": "eine Eisdiele",
+        "der": "die Eisdiele",
+        "ziel": 1500
+      },
+      {
+        "id": "museum",
+        "name": "Museum",
+        "ein": "ein Museum",
+        "der": "das Museum",
+        "ziel": 3500
+      },
+      {
+        "id": "sporthalle",
+        "name": "Sporthalle",
+        "ein": "eine Sporthalle",
+        "der": "die Sporthalle",
+        "ziel": 3000
+      },
+      {
+        "id": "markthalle",
+        "name": "Markthalle",
+        "ein": "eine Markthalle",
+        "der": "die Markthalle",
+        "ziel": 2500
+      },
+      {
+        "id": "hotel",
+        "name": "Hotel",
+        "ein": "ein Hotel",
+        "der": "das Hotel",
         "ziel": 4000
+      },
+      {
+        "id": "apotheke",
+        "name": "Apotheke",
+        "ein": "eine Apotheke",
+        "der": "die Apotheke",
+        "ziel": 2000
       }
     ]
   },
@@ -294,8 +366,8 @@
   },
   "muschelnProCoin": 1,
   "events": {
-    "alleMinuten": 5,
-    "_hinweis": "Alle 5 Minuten ein zufälliges Überraschungs-Event (siehe events.mjs). Nie dasselbe wie eins der letzten 4."
+    "alleMinuten": 4,
+    "_hinweis": "Alle 4 Minuten ein zufälliges Überraschungs-Event (30 verschiedene, siehe events.mjs). Nie dasselbe wie eins der letzten 10."
   },
   "folgeAufrufMinuten": 3
 }
