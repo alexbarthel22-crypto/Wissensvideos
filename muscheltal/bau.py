@@ -409,6 +409,9 @@ def berufe(sauber, insel, out):
     emo.setdefault("Boba Beach", "🧋")
     emo.setdefault("Meerkauf", "🛒")
     emo.setdefault("Porto Pizza", "🍕")
+    emo.setdefault("Coco Bay", "🍹")
+    emo.setdefault("Kokos-Bad", "🏊")
+    emo.setdefault("Cost & Cotton", "👗")
     emo.setdefault("Strand", "🛟")
     import datetime as _dt
     try:
