@@ -411,7 +411,7 @@ def berufe(sauber, insel, out):
     emo.setdefault("Porto Pizza", "🍕")
     emo.setdefault("Coco Bay", "🍹")
     emo.setdefault("Kokos-Bad", "🏊")
-    emo.setdefault("Cost & Cotton", "👗")
+    emo.setdefault("Coast & Cotton", "👗")
     emo.setdefault("Strand", "🛟")
     import datetime as _dt
     try:
