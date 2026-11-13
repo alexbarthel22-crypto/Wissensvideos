@@ -47,7 +47,7 @@ Die Bewohnerzahl kommt live von TikTok (Follower), `bewohner.start` ist nur der 
 ## Überraschungs-Events (alle 3 Minuten, 40 verschiedene)
 Rechts oben läuft ein Countdown „Nächstes Event“ – welches kommt, bleibt geheim (❓❓❓). Nie dasselbe wie eins der letzten 10.
 Beim Start sagt Anna, was am Ende passiert (steht auch im Event-Feld unter 🏆). Am Ende nennt sie die Gewinner mit Namen (im Ergebnis-Feld unter 🏆).
-Alle Events laufen komplett im Stream, mitmachen per Like oder Kommentar – niemand muss den Stream verlassen, nichts ist an Geschenke gebunden.
+Alle Events laufen komplett im Stream und ohne Rauszoomen (die Kamera bleibt bei den Häusern), mitmachen per Like oder Kommentar – niemand muss den Stream verlassen, nichts ist an Geschenke gebunden.
 Like-Ziele liegen bei ca. 80 % des normalen Like-Tempos: schaffbar, wenn alle mitmachen. Alle 40 Events sind automatisch geprüft (Test-Zuschauer machen mit, Belohnungen kommen an).
 
 | Event | Mitmachen | Belohnung |
@@ -56,12 +56,12 @@ Like-Ziele liegen bei ca. 80 % des normalen Like-Tempos: schaffbar, wenn alle mi
 | 🎡 Muschel-Glücksrad | in den letzten 10 Min. aktiv | 150–500 🐚, goldenes Dach oder Pool |
 | 🦀 Krabbenrennen | `rot` `blau` `gelb` `grün` oder einfach liken | Siegerteam 25 🐚 |
 | ⚔️ Team-Duell | `muschel` / `kokos` oder einfach liken | Siegerteam 30 🐚 |
-| 🍾 Flaschenpost | zuerst `flasche` | 40–150 🐚 / Anbau |
-| 🐋 Besuch vom Meer | `hallo` | 10 🐚 je Gruß |
+| 🎉 Hausparty | `party` (Kamera beim Gastgeber) | Gast 10 🐚, Gastgeber 5 🐚 pro Gast |
+| 👋 Inselgruß | `moin` / `hallo` | 10 🐚 je Gruß |
 | 🏠 Hausbesuch | – (Kamera besucht ein aktives Haus) | 25 🐚 |
 | ✨ Muschelregen | liken | Likes zählen doppelt fürs Haus |
 | ⚡ Bau-Turbo | liken | Likes zählen dreifach fürs Haus |
-| 🗺️ Schatzsuche | `A` `B` `C` `D` | richtige 30 🐚 |
+| 🧰 Schatzkiste | `1` `2` `3` | richtige Kiste 30 🐚 |
 | 🔢 Zahlenraten | Zahl 1–100 (mit Hinweisen) | Treffer 100 🐚 |
 | 🎉 Strandparty | Stimmung per Likes | Feuerwerk + 15 🐚 |
 | 🐦 Möwenalarm | `fang` (erste 5) | 20 🐚 |
@@ -70,15 +70,15 @@ Like-Ziele liegen bei ca. 80 % des normalen Like-Tempos: schaffbar, wenn alle mi
 | ⌨️ Wortjagd | gezeigtes Wort abtippen (erste 3) | 40 / 25 / 15 🐚 |
 | 🍹 Cocktail-Mix | `mango` `kokos` `ananas` | Mehrheit 15 🐚 |
 | 🎈 Ballon-Platzen | liken | wer einen Ballon platzen lässt: 10 🐚 |
-| 🐢 Schildkröten-Rettung | gemeinsam liken | 20 🐚 für alle Helfer |
+| 🗼 Leuchtturm anzünden | gemeinsam liken | 20 🐚 für alle Helfer |
 | 🌺 Blumenwiese | `blume` | ab 25 Blumen 15 🐚 für alle |
 | 🧩 Emoji-Rätsel | Lösung schreiben (z. B. „Sandburg“) | 50 🐚 |
 | 🏐 Beachvolleyball | `links` / `rechts` oder einfach liken | Siegerteam 25 🐚 |
-| 🦈 Hai-Alarm | `ufer` (erste 10) | 15 🐚 |
+| 🤝 Nachbarschaftshilfe | liken = baut beim kleinsten Haus mit | fleißigster Helfer 30 🐚 |
 | 🍦 Eiswagen | gemeinsam liken | 15 🐚 für alle |
 | 🍀 Glückszahl | Zahl 1–10 | richtige 30 🐚 |
 | ❓ Strand-Quiz | `A` `B` `C` | richtige 20 🐚 |
-| 🐚 Muscheln sammeln | `sammeln` (erste 20) | 12 🐚 |
+| 🤔 Wahr oder falsch | `wahr` / `falsch` | richtige 20 🐚 |
 | 🏄 Surf-Contest | `surf`, dann liken | Bester 60 🐚 |
 | 🥥 Kokosnuss-Weitwurf | `wurf` | weitester Wurf 40 🐚 |
 | 📸 Inselfoto | `cheese` | 8 🐚 + Name auf dem Foto |
@@ -87,7 +87,7 @@ Like-Ziele liegen bei ca. 80 % des normalen Like-Tempos: schaffbar, wenn alle mi
 | 🎲 Muschel-Würfeln | `würfel` | jede Sechs 30 🐚 |
 | 🦜 Papagei | gezeigten Satz nachschreiben (erste 5) | 20 🐚 |
 | 🌈 Regenbogen malen | `rot` `orange` `gelb` `grün` `blau` `lila` | komplett: 20 🐚 für alle Maler |
-| 🐠 Fische zählen | Anzahl der Fische schreiben | genau 30 🐚, ±1 10 🐚 |
+| 👑 Inselkönig | 1 Minute am meisten liken | 60 🐚 + Krone |
 | 🏆 Like-Rekord | 30 Sekunden liken | Rekord gebrochen: 25 🐚 für alle |
 | 🎭 Motto des Tages | `1` `2` `3` | Mehrheit 10 🐚 |
 | 🎁 Mystery-Box | `box` | 3–50 🐚 für jeden |
@@ -97,7 +97,7 @@ Like-Ziele liegen bei ca. 80 % des normalen Like-Tempos: schaffbar, wenn alle mi
 Per Abstimmung wählt der Chat das nächste Gemeinschafts-Gebäude, bezahlt wird aus der Muschelkasse:
 Rathaus, Schule, Krankenhaus, Feuerwache, Polizeistation, Supermarkt, Kino, Bibliothek, Post, Café, Eisdiele, Museum, Sporthalle, Markthalle, Hotel, Apotheke, Aquarium, Theater, Schwimmbad, Kindergarten, Restaurant, Friseur, Muschelbank, Inselbahnhof – alle im tropischen Strand-Stil (Palmen, Markisen, Stroh- und Ziegeldächer).
 Gebäude dürfen mehrfach gebaut werden (noch nicht gebaute kommen bei der Abstimmung zuerst). Bauplätze: zuerst das Stadtzentrum um den Muschelplatz, dann über die ganze Insel verteilt (fest vorgemerkt, Häuser ziehen nie um). Reichen die Plätze nicht, wächst die Insel – bis ca. 60 Gebäude und 1.800 Grundstücke.
-Während des Baus: lebendige Baustelle (Kran mit Last, Krabben-Bauarbeiter, Schubkarre, Betonmischer, Funken, Prozent-Schild); ab und zu fliegt die Kamera hin und Anna berichtet. Bei Fertigstellung: Bau-Animation (Gerüst, Kran, Krabben, Staub, Gebäude wächst nach oben), dann Feuerwerk.
+Während des Baus: lebendige Baustelle (Kran mit Last, Krabben-Bauarbeiter, Schubkarre, Betonmischer, Funken, Prozent-Schild); ab und zu fliegt die Kamera hin und Anna berichtet. Steigt ein Haus eine Stufe auf: Bau-Animation und Feuerwerk direkt über dem Haus (je höher die Stufe, desto größer). Bei Fertigstellung eines Gebäudes: Bau-Animation (Gerüst, Kran, Krabben, Staub, Gebäude wächst nach oben), dann Feuerwerk.
 
 ## Rangliste
 „Beste Häuser“: höchste Haus-Stufe zuerst, bei Gleichstand die Muscheln aus Events. Neuer Platz 1 oder Neueinsteiger in den Top 3 werden angesagt und als Banner gezeigt.

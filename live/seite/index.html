@@ -265,7 +265,7 @@ function ereignis(e) {
       break;
     }
     case 'neu': bau[e.id] = { t: jetzt + 250, alt: -1, neu: 0, D: 1.9 }; break;
-    case 'stufe': if (p) { bau[e.id] = { t: jetzt, alt: p.stufe, neu: e.stufe, D: 4.8 }; if (pl) fokus(pl, 6000); } break;
+    case 'stufe': if (p) { bau[e.id] = { t: jetzt, alt: p.stufe, neu: e.stufe, D: 4.8 }; if (pl) { fokus(pl, 8500); funken(pl, '✨', 8); setTimeout(() => { hausFeuerwerk(pl, e.stufe); funken(pl, '✨', 14); }, 4300); } } break;
     case 'anbau': case 'farbe': if (pl) { pop[e.id] = jetzt; funken(pl, '🔨', 5); fokus(pl, 2600, true); } break;
     case 'geschenk': if (pl) funken(pl, '💖', 10 + Math.min(30, e.diamanten)); break;
     case 'show':
@@ -279,7 +279,7 @@ function ereignis(e) {
     case 'feuerwerk': feuerwerk(); break;
     case 'kameraBau': { const gp = GEB_PLAETZE[(S.fertig || []).length]; if (gp) fokus({ x: gp.x, y: gp.y - 20 }, e.ms || 8000); break; }
     case 'ballonPlatzt': for (let i = 0; i < 18; i++) fx.push({ x: IX + (Math.random() - .5) * 500, y: IY - 200 + (Math.random() - .5) * 300, vx: (Math.random() - .5) * 8, vy: (Math.random() - .5) * 8, t: performance.now(), z: ['🎉', '✨', '💥'][i % 3], s: 22 }); break;
-    case 'eventStart': fokusBis = 0; tourModus = 0; tourBis = jetzt + 70000; banner.push({ t: 0, oben: '⚡ Überraschungs-Event!', unten: 'Jetzt mitmachen!', farbe: '#9b5de5' }); funken({ x: IX, y: IY }, '⚡', 20); break;
+    case 'eventStart': banner.push({ t: 0, oben: '⚡ Überraschungs-Event!', unten: 'Jetzt mitmachen!', farbe: '#9b5de5' }); funken({ x: IX, y: IY }, '⚡', 20); break;
     case 'eventEnde': if (e.gut) { const q = e.spielerId && sp(e.spielerId), qp = q && platzVon(q); if (qp) { funken(qp, '🎉', 24); fokus(qp, 5000); } else feuerwerk(); } break;
     case 'follow': banner.push({ t: 0, oben: `🏠 ${p ? p.name : ''}`, unten: 'ist jetzt Bewohner · +5 🐚 in die Muschelkasse', farbe: TUERKIS }); break;
     case 'ziel': banner.push({ t: 0, oben: '🎉 Bewohner-Ziel erreicht!', unten: e.name + ' wird auf der Haupt-Insel gebaut', farbe: '#9b5de5' }); feuerwerk(); break;
@@ -302,6 +302,15 @@ function wachsen(kz) {
   fetch('/wachsen?n=' + neu).catch(() => {});
 }
 function funken(pl, z, n) { n = Math.min(n, 200 - fx.length); for (let i = 0; i < n; i++) fx.push({ x: pl.x, y: pl.y - 30, vx: (Math.random() - .5) * 5, vy: -2 - Math.random() * 5, t: performance.now(), z, s: 18 + Math.random() * 14 }); }
+// Feuerwerk direkt über einem Haus (sichtbar, während die Kamera dort ist) – je höher die Stufe, desto mehr
+function hausFeuerwerk(pl, stufe) {
+  const n = 4 + Math.min(10, Math.floor(stufe / 2)), farben = ['#ffd23f', '#ff6fa3', '#7fe0c8', '#fff', '#ff8a2a', '#b58ad0', '#3fa0e8', '#39ff8f'];
+  for (let k = 0; k < n; k++) setTimeout(() => {
+    if (fx.length > 700) return;
+    const x = pl.x + (Math.random() - .5) * 150, y = pl.y - 70 - Math.random() * 90, col = farben[(k + stufe) % farben.length], m = 26 + Math.min(16, stufe);
+    for (let i = 0; i < m; i++) { const a = i / m * 6.283, v = 1.2 + Math.random() * 1.3; fx.push({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v, t: performance.now(), punkt: col, s: 2.6 }); }
+  }, k * 260);
+}
 function feuerwerk() {
   for (let k = 0; k < 6; k++) setTimeout(() => {
     const x = IX + (Math.random() - .5) * RX * K * 1.4, y = IY + (Math.random() - .5) * RY * K, col = ['#ffd23f', '#ff6fa3', '#7fe0c8', '#fff', '#ff8a2a', '#b58ad0'][k];
