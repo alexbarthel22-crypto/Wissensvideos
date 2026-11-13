@@ -8,6 +8,10 @@ if ! command -v node >/dev/null; then
   read -r; exit 1
 fi
 [ -d node_modules ] || npm install --silent
+# Läuft noch ein Probelauf (Test-Fenster)? Den beenden – sonst sähen die Zuschauer simulierte Daten.
+if pgrep -f "server.mjs --test" >/dev/null; then
+  echo "🧪 Ein Probelauf lief noch – wird beendet."; pkill -f "server.mjs --test"; pkill -f "cloudflared tunnel"; sleep 2
+fi
 source ./tunnel.sh
 starte_tunnel
 trap stoppe_tunnel EXIT

@@ -4,6 +4,12 @@
 cd "$(dirname "$0")"
 command -v node >/dev/null || { echo "Node.js fehlt: https://nodejs.org"; read -r; exit 1; }
 [ -d node_modules ] || npm install --silent
+# Nicht aus Versehen starten (z. B. wenn das Terminal alte Fenster wiederherstellt) und nie neben dem echten LIVE
+if pgrep -f "node server.mjs" >/dev/null; then
+  echo "⚠️  Muschel-Tal LIVE läuft gerade (echter Stream). Probelauf wird NICHT gestartet."; read -r -p "Enter zum Schließen"; exit 0
+fi
+read -r -p "🧪 Probelauf mit Test-Zuschauern starten? (j = ja, Enter = abbrechen) " ok
+[ "$ok" = "j" ] || [ "$ok" = "J" ] || exit 0
 source ./tunnel.sh
 starte_tunnel
 trap stoppe_tunnel EXIT

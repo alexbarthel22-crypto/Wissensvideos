@@ -593,7 +593,17 @@ async function verbinde() {
   const nm = d => '@' + (U(d.user)?.uniqueId || '?');
   const txt = d => d.content ?? d.comment ?? '';
   c.on(WebcastEvent.CHAT, d => { const u = U(d.user); if (!u?.uniqueId) return; tt('💬', `${nm(d)}: ${txt(d)}`); kommentar(u, txt(d)); });
-  c.on(WebcastEvent.LIKE, d => { const u = U(d.user); if (!u?.uniqueId) return; const n = +(d.count ?? d.likeCount) || 1; tt('❤️', `${nm(d)} +${n} Likes`); like(u, n); });
+  // TikTok schickt nicht jedes Like einzeln, aber immer die Gesamtzahl (total). Was fehlt, kommt trotzdem in die Kasse.
+  let likeTotal = 0;
+  c.on(WebcastEvent.LIKE, d => {
+    const u = U(d.user), n = +(d.count ?? d.likeCount) || 1, total = +(d.total ?? d.totalLikeCount) || 0;
+    if (u?.uniqueId) { tt('❤️', `${nm(d)} +${n} Likes`); like(u, n); } else { S.likesGesamt += n; inKasse(n * CFG.kasse.proLike); }
+    if (total) {
+      const fehlt = likeTotal ? total - likeTotal - n : 0;
+      if (fehlt > 0 && fehlt < 100000) { S.likesGesamt += fehlt; inKasse(fehlt * CFG.kasse.proLike); geaendert = true; zustand(); }
+      likeTotal = Math.max(likeTotal, total);
+    }
+  });
   c.on(WebcastEvent.FOLLOW, d => { const u = U(d.user); if (!u?.uniqueId) return; tt('➕', `${nm(d)} folgt`); follow(u); });
   c.on(WebcastEvent.SHARE, d => { const u = U(d.user); if (!u?.uniqueId) return; tt('🔁', `${nm(d)} teilt`); teilen(u); });
   c.on(WebcastEvent.MEMBER, d => { const u = U(d.user); if (!u?.uniqueId) return; tt('👋', `${nm(d)} ist da`); beitritt(u); });
