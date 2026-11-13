@@ -1,0 +1,12 @@
+{
+  "name": "muscheltal-live",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs",
+    "test": "node server.mjs --test --neu --still"
+  },
+  "dependencies": {
+    "tiktok-live-connector": "^2.5.0"
+  }
+}

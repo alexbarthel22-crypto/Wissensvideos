@@ -1,0 +1,373 @@
+{
+  "tiktokName": "muscheltal",
+  "port": 8790,
+  "stimme": {
+    "an": true,
+    "mac": "Anna (Premium)",
+    "macErsatz": [
+      "Anna (Erweitert)",
+      "Anna (Enhanced)",
+      "Anna"
+    ],
+    "tempo": 185,
+    "maxProMinute": 10,
+    "maxWarteschlange": 6,
+    "wiedergabe": "seite",
+    "_hinweis": "wiedergabe 'seite': Stimme läuft über die Live-Seite (zusammen mit der Musik im Stream-Ton). 'mac': direkt über die Mac-Lautsprecher.",
+    "pauseSek": 1.2,
+    "_pause": "pauseSek: Pause zwischen zwei Sätzen. Anna moderiert ununterbrochen; „…“ in saetze.mjs = Sprechpause."
+  },
+  "stufen": [
+    {
+      "name": "Zelt",
+      "ab": 0
+    },
+    {
+      "name": "Hängematten-Camp",
+      "ab": 10
+    },
+    {
+      "name": "Strohhütte",
+      "ab": 25
+    },
+    {
+      "name": "Fischerhütte",
+      "ab": 50
+    },
+    {
+      "name": "Stelzenhütte",
+      "ab": 90
+    },
+    {
+      "name": "Baumhaus",
+      "ab": 150
+    },
+    {
+      "name": "Bungalow",
+      "ab": 230
+    },
+    {
+      "name": "Surferhütte",
+      "ab": 350
+    },
+    {
+      "name": "Strandhaus",
+      "ab": 500
+    },
+    {
+      "name": "Leuchtturmhaus",
+      "ab": 700
+    },
+    {
+      "name": "Ferienhaus",
+      "ab": 1000
+    },
+    {
+      "name": "Poolhaus",
+      "ab": 1400
+    },
+    {
+      "name": "Villa",
+      "ab": 2000
+    },
+    {
+      "name": "Glasvilla",
+      "ab": 2800
+    },
+    {
+      "name": "Luxusvilla",
+      "ab": 4000
+    },
+    {
+      "name": "Inselvilla mit Hubschrauberlandeplatz",
+      "ab": 5500
+    },
+    {
+      "name": "Strandpalast",
+      "ab": 7500
+    },
+    {
+      "name": "Korallenpalast",
+      "ab": 10000
+    },
+    {
+      "name": "Muschelschloss",
+      "ab": 14000
+    },
+    {
+      "name": "Perlenschloss",
+      "ab": 20000
+    }
+  ],
+  "muschelnProLike": 1,
+  "muschelnFuerFollow": 25,
+  "anbauten": {
+    "palme": {
+      "name": "Palme",
+      "abStufe": 0,
+      "kosten": 10
+    },
+    "flagge": {
+      "name": "Flagge",
+      "abStufe": 0,
+      "kosten": 5
+    },
+    "garten": {
+      "name": "Garten",
+      "abStufe": 2,
+      "kosten": 20
+    },
+    "laterne": {
+      "name": "Laterne",
+      "abStufe": 2,
+      "kosten": 15
+    },
+    "pool": {
+      "name": "Pool",
+      "abStufe": 6,
+      "kosten": 150
+    },
+    "boot": {
+      "name": "Boot",
+      "abStufe": 6,
+      "kosten": 200
+    }
+  },
+  "farben": {
+    "rot": "#E8504A",
+    "blau": "#3A8FE0",
+    "grün": "#4DB85A",
+    "gruen": "#4DB85A",
+    "gelb": "#F5C93B",
+    "lila": "#9B5DE5",
+    "rosa": "#F28DC0",
+    "pink": "#F25CA8",
+    "orange": "#F59238",
+    "türkis": "#2EC4B6",
+    "tuerkis": "#2EC4B6",
+    "weiß": "#F4F1E8",
+    "weiss": "#F4F1E8",
+    "schwarz": "#33313B",
+    "gold": "#E0B43A"
+  },
+  "abstimmung": {
+    "dauerSekunden": 90,
+    "projekte": [
+      {
+        "id": "rathaus",
+        "name": "Rathaus",
+        "ein": "ein Rathaus",
+        "der": "das Rathaus",
+        "ziel": 3000
+      },
+      {
+        "id": "schule",
+        "name": "Schule",
+        "ein": "eine Schule",
+        "der": "die Schule",
+        "ziel": 2500
+      },
+      {
+        "id": "krankenhaus",
+        "name": "Krankenhaus",
+        "ein": "ein Krankenhaus",
+        "der": "das Krankenhaus",
+        "ziel": 4000
+      },
+      {
+        "id": "feuerwache",
+        "name": "Feuerwache",
+        "ein": "eine Feuerwache",
+        "der": "die Feuerwache",
+        "ziel": 3000
+      },
+      {
+        "id": "polizei",
+        "name": "Polizeistation",
+        "ein": "eine Polizeistation",
+        "der": "die Polizeistation",
+        "ziel": 3000
+      },
+      {
+        "id": "supermarkt",
+        "name": "Supermarkt",
+        "ein": "einen Supermarkt",
+        "der": "der Supermarkt",
+        "ziel": 2500
+      },
+      {
+        "id": "kino",
+        "name": "Kino",
+        "ein": "ein Kino",
+        "der": "das Kino",
+        "ziel": 3500
+      },
+      {
+        "id": "bibliothek",
+        "name": "Bibliothek",
+        "ein": "eine Bibliothek",
+        "der": "die Bibliothek",
+        "ziel": 2500
+      },
+      {
+        "id": "post",
+        "name": "Post",
+        "ein": "eine Post",
+        "der": "die Post",
+        "ziel": 2000
+      },
+      {
+        "id": "cafe",
+        "name": "Café",
+        "ein": "ein Café",
+        "der": "das Café",
+        "ziel": 1500
+      },
+      {
+        "id": "eisdiele",
+        "name": "Eisdiele",
+        "ein": "eine Eisdiele",
+        "der": "die Eisdiele",
+        "ziel": 1500
+      },
+      {
+        "id": "museum",
+        "name": "Museum",
+        "ein": "ein Museum",
+        "der": "das Museum",
+        "ziel": 3500
+      },
+      {
+        "id": "sporthalle",
+        "name": "Sporthalle",
+        "ein": "eine Sporthalle",
+        "der": "die Sporthalle",
+        "ziel": 3000
+      },
+      {
+        "id": "markthalle",
+        "name": "Markthalle",
+        "ein": "eine Markthalle",
+        "der": "die Markthalle",
+        "ziel": 2500
+      },
+      {
+        "id": "hotel",
+        "name": "Hotel",
+        "ein": "ein Hotel",
+        "der": "das Hotel",
+        "ziel": 4000
+      },
+      {
+        "id": "apotheke",
+        "name": "Apotheke",
+        "ein": "eine Apotheke",
+        "der": "die Apotheke",
+        "ziel": 2000
+      }
+    ]
+  },
+  "muschelnFuerErstenKommentar": 5,
+  "bewohner": {
+    "start": 724,
+    "ziele": [
+      {
+        "name": "Tierheim Pfotenkuss",
+        "icon": "🐾",
+        "ziel": 800,
+        "ort": "Haupt-Insel"
+      }
+    ],
+    "_hinweis": "Bauprojekte + Startzahl kommen automatisch aus muscheltal/daten (insel.json, einwohner.csv). Diese Werte gelten nur, wenn die Dateien fehlen."
+  },
+  "strassen": [
+    "Sonnenallee",
+    "Muschelweg",
+    "Kokosstraße",
+    "Palmenweg",
+    "Strandpromenade",
+    "Seesternweg",
+    "Brandungsallee",
+    "Flip-Flop-Gasse",
+    "Sandburgweg",
+    "Lagunenstraße",
+    "Korallenweg",
+    "Hängemattenweg",
+    "Sonnenschirmgasse",
+    "Surferstraße",
+    "Ananasweg",
+    "Eiswaffelgasse",
+    "Sommerbrise-Allee",
+    "Leuchtturmstraße",
+    "Delfinweg",
+    "Perlenstraße",
+    "Cocktailgasse",
+    "Wellenreiterweg",
+    "Sonnenuntergangsallee",
+    "Hibiskusweg",
+    "Mangoweg",
+    "Möwenweg",
+    "Strandkorbweg",
+    "Badetuchgasse",
+    "Sonnencremeweg",
+    "Urlaubsallee",
+    "Wellenweg",
+    "Kokosnussallee",
+    "Sandalenweg",
+    "Bikinigasse",
+    "Schnorchelweg",
+    "Taucherstraße",
+    "Strandbadweg",
+    "Sonnenhutgasse",
+    "Ferienstraße",
+    "Inselring",
+    "Riffstraße",
+    "Lagunenring",
+    "Papageienweg",
+    "Tukanweg",
+    "Limonadenweg",
+    "Melonenweg",
+    "Sandstrandallee",
+    "Sonnenstrahlweg",
+    "Brisenweg",
+    "Ebbeweg",
+    "Flutstraße",
+    "Schatzinselweg",
+    "Kompassweg",
+    "Ankerweg",
+    "Segelweg",
+    "Fischerweg",
+    "Krabbenweg",
+    "Strandgutweg",
+    "Kajakweg",
+    "Sommerweg"
+  ],
+  "kasse": {
+    "proLike": 1,
+    "proFollow": 5,
+    "proShare": 2,
+    "proCoin": 1,
+    "_hinweis": "1 Muschel = 1 Coin = 0,01 €. Geschenke: jeder ausgegebene Coin = 1 Muschel für die Kasse und fürs eigene Haus."
+  },
+  "ton": {
+    "musik": 0.32,
+    "musikBeiStimme": 0.1,
+    "meer": 0.22,
+    "stimme": 1.0,
+    "musikAufMac": true,
+    "musikAufMacLautstaerke": 0.18,
+    "_hinweis": "Normal laufen Musik und Stimme über die Live-Seite. Blockiert der Browser den Ton, spielt das Programm beides über die Mac-Lautsprecher (musikAufMac)."
+  },
+  "ort": {
+    "name": "Hamburg (22529)",
+    "breite": 53.58,
+    "laenge": 9.95,
+    "_hinweis": "Tag/Nacht, Sonnenauf- und -untergang wie auf muscheltal.de"
+  },
+  "muschelnProCoin": 1,
+  "events": {
+    "alleMinuten": 4,
+    "_hinweis": "Alle 4 Minuten ein zufälliges Überraschungs-Event (30 verschiedene, siehe events.mjs). Nie dasselbe wie eins der letzten 10."
+  },
+  "folgeAufrufMinuten": 3
+}
