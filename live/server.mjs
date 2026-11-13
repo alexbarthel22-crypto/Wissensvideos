@@ -274,6 +274,7 @@ function weiter() {
   const datei = path.join(TON_DIR, `s${++tonNr % 20}.wav`);
   const args = ['-v', stimme, '-r', String(CFG.stimme.tempo)];
   if (aufSeite) args.push('-o', datei, '--file-format=WAVE', '--data-format=LEI16@22050');
+  else if (CFG.stimme.macGeraet) args.push('-a', CFG.stimme.macGeraet);   // z. B. „BlackHole 2ch“ → direkt in LIVE Studio
   const pr = spawn('say', [...args, fuerStimme(text)]);
   let fehler = '';
   pr.stderr.on('data', d => fehler += d);
@@ -299,11 +300,20 @@ var lokalMusik = null, lokalNr = 0, tonSeite = null, stimmeFehlerBis = 0, unbest
 const tonStatus = new Map();                               // Seiten-Nr. -> { an, zeit, vorschau, seit }
 const seiteHatTon = () => { const st = tonStatus.get(tonSeite); return !!st && st.an && Date.now() - st.zeit < 10000; };
 // Genau EINE Seite spielt Ton: bevorzugt eine, auf der Ton schon läuft, sonst die zuerst geöffnete (keine Vorschau)
+// Spielt die gewählte Seite nach 8 s noch keinen Ton, kommt die nächste dran (LIVE Studio lädt die Seite manchmal doppelt).
+let rolleSeit = 0; const tonFehl = new Map();             // Seiten-Nr. -> wann zuletzt ohne Ton
 function waehleTonSeite() {
   const offen = [...kunden.keys()].filter(id => !tonStatus.get(id)?.vorschau);
   const mitTon = offen.filter(id => tonStatus.get(id)?.an);
-  let neu = offen.includes(tonSeite) && (tonStatus.get(tonSeite)?.an || !mitTon.length) ? tonSeite : (mitTon[0] ?? offen[0] ?? null);
-  if (neu !== tonSeite) { tonSeite = neu; sende({ typ: 'tonRolle', id: tonSeite }); }
+  let neu = tonSeite;
+  if (!offen.includes(tonSeite)) neu = null;
+  else if (!tonStatus.get(tonSeite)?.an && Date.now() - rolleSeit > 8000) {   // hängt – weiterreichen
+    tonFehl.set(tonSeite, Date.now());
+    const andere = offen.filter(id => id !== tonSeite).sort((a, b) => (tonFehl.get(a) || 0) - (tonFehl.get(b) || 0));
+    if (andere.length) neu = mitTon[0] ?? andere[0];
+  }
+  if (neu == null) neu = mitTon[0] ?? [...offen].sort((a, b) => (tonFehl.get(a) || 0) - (tonFehl.get(b) || 0))[0] ?? null;
+  if (neu !== tonSeite) { tonSeite = neu; rolleSeit = Date.now(); sende({ typ: 'tonRolle', id: tonSeite }); if (tonSeite != null) console.log(`🔊 Ton-Aufgabe → Live-Seite #${tonSeite}`); }
 }
 const MUSIK_DATEIEN = ['suedsee_3.mp3', 'suedsee_9.mp3', 'suedsee_11.mp3'].map(f => path.join(DIR, 'seite', 'musik', f));
 function musikLokal() {
@@ -510,6 +520,7 @@ const server = http.createServer((req, res) => {
     const id = +url.searchParams.get('id'), alt = tonStatus.get(id) || {};
     if (url.searchParams.has('an')) tonStatus.set(id, { ...alt, an: url.searchParams.get('an') === '1', ac: url.searchParams.get('ac'), vorschau: url.searchParams.get('vorschau') === '1', zeit: Date.now() });
     if (url.searchParams.get('stimme') === '1' && alt.stimmeOk !== true) { tonStatus.set(id, { ...tonStatus.get(id), stimmeOk: true }); console.log(`🔊 Anna spricht über die Live-Seite #${id} (Stream-Ton).`); }
+    if (url.searchParams.get('stimme') === '0') console.log(`   Grund (Seite #${id}): ${url.searchParams.get('grund') || '?'}`);
     if (url.searchParams.get('stimme') === '0') { stimmeFehlerBis = Date.now() + 60000; console.log('🔈 Stimme auf der Seite blockiert – spreche über die Mac-Lautsprecher.'); }
     if (url.searchParams.get('stimme') === '1') { stimmeFehlerBis = 0; unbestaetigt = 0; }
     waehleTonSeite();
@@ -577,16 +588,20 @@ async function verbinde() {
   const opt = { enableExtendedGiftInfo: false, processInitialData: false };
   if (CFG.eulerApiKey) opt.signApiKey = CFG.eulerApiKey;   // optional: eigener Schlüssel von eulerstream.com (stabiler)
   const c = new TikTokLiveConnection(CFG.tiktokName, opt);
-  const nm = d => '@' + (d.user?.uniqueId || '?');
-  c.on(WebcastEvent.CHAT, d => { if (!d.user) return; tt('💬', `${nm(d)}: ${d.comment}`); kommentar(d.user, d.comment); });
-  c.on(WebcastEvent.LIKE, d => { if (!d.user) return; tt('❤️', `${nm(d)} +${d.likeCount || 1} Likes`); like(d.user, d.likeCount || 1); });
-  c.on(WebcastEvent.FOLLOW, d => { if (!d.user) return; tt('➕', `${nm(d)} folgt`); follow(d.user); });
-  c.on(WebcastEvent.SHARE, d => { if (!d.user) return; tt('🔁', `${nm(d)} teilt`); teilen(d.user); });
-  c.on(WebcastEvent.MEMBER, d => { if (!d.user) return; tt('👋', `${nm(d)} ist da`); beitritt(d.user); });
+  // Neue TikTok-Schnittstelle: Benutzername steht in displayId (früher uniqueId), Kommentar in content, Likes in count
+  const U = u => u && { ...u, uniqueId: u.uniqueId || u.displayId || u.username || '', nickname: u.nickname || '' };
+  const nm = d => '@' + (U(d.user)?.uniqueId || '?');
+  const txt = d => d.content ?? d.comment ?? '';
+  c.on(WebcastEvent.CHAT, d => { const u = U(d.user); if (!u?.uniqueId) return; tt('💬', `${nm(d)}: ${txt(d)}`); kommentar(u, txt(d)); });
+  c.on(WebcastEvent.LIKE, d => { const u = U(d.user); if (!u?.uniqueId) return; const n = +(d.count ?? d.likeCount) || 1; tt('❤️', `${nm(d)} +${n} Likes`); like(u, n); });
+  c.on(WebcastEvent.FOLLOW, d => { const u = U(d.user); if (!u?.uniqueId) return; tt('➕', `${nm(d)} folgt`); follow(u); });
+  c.on(WebcastEvent.SHARE, d => { const u = U(d.user); if (!u?.uniqueId) return; tt('🔁', `${nm(d)} teilt`); teilen(u); });
+  c.on(WebcastEvent.MEMBER, d => { const u = U(d.user); if (!u?.uniqueId) return; tt('👋', `${nm(d)} ist da`); beitritt(u); });
   c.on(WebcastEvent.GIFT, d => {
-    tt('🎁', `${nm(d)}: ${d.giftDetails?.giftName || 'Geschenk'}`);
+    d.user = U(d.user);
     const g = d.giftDetails || {};
     if (g.giftType === 1 && !d.repeatEnd) return; // Serie läuft noch – erst am Ende zählen
+    tt('🎁', `${nm(d)}: ${g.giftName || 'Geschenk'} ×${d.repeatCount || 1}`);
     const ex = d.extendedGiftInfo || {};
     geschenk(d.user || {}, g.giftName || ex.name || 'das Geschenk', g.diamondCount || ex.diamond_count || 1, d.repeatCount || 1);
   });

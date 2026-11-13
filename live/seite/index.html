@@ -534,21 +534,21 @@ function tonLautstaerke() {
   musik.volume = Math.max(0, Math.min(1, musik.volume + (ziel - musik.volume) * .15));
   meerTon.volume = TON().meer;
 }
-const meldeStimme = ok => fetch(`/tonstatus?id=${meineId}&stimme=${ok ? 1 : 0}`).catch(() => {});
+const meldeStimme = (ok, grund = '') => fetch(`/tonstatus?id=${meineId}&stimme=${ok ? 1 : 0}&grund=${encodeURIComponent(String(grund).slice(0, 120))}`).catch(() => {});
 async function stimmeAbspielen(url) {                             // Stimme über Web Audio: einmal freigeschaltet, spielt sie immer
   if (tonRolle && AC && AC.state !== 'running') { try { await AC.resume(); } catch {} }   // z. B. nach Pause beim Live-Gehen
   if (tonRolle && musik.paused) musik.play().catch(() => {});
-  if (!tonRolle) return meldeStimme(false);
+  if (!tonRolle) return meldeStimme(false, 'diese Seite hat keine Ton-Aufgabe');
   if (!AC || AC.state !== 'running') {                            // Ersatzweg: wie die Musik über ein Audio-Element
     stimmeEl.src = url; stimmeEl.volume = Math.min(1, TON().stimme);
-    return stimmeEl.play().then(() => { stimmeLaeuft = performance.now() + 4000; meldeStimme(true); }).catch(() => meldeStimme(false));
+    return stimmeEl.play().then(() => { stimmeLaeuft = performance.now() + 4000; meldeStimme(true); }).catch(e => meldeStimme(false, `Audio blockiert (${e.name}), AudioContext ${AC ? AC.state : 'fehlt'}`));
   }
   try {
     const daten = await (await fetch(url)).arrayBuffer(), puffer = await AC.decodeAudioData(daten);
     const q = AC.createBufferSource(), g = AC.createGain(); q.buffer = puffer; g.gain.value = TON().stimme;
     q.connect(g); g.connect(AC.destination); q.start();
     stimmeLaeuft = performance.now() + puffer.duration * 1000 + 300; meldeStimme(true);
-  } catch { meldeStimme(false); }
+  } catch (e) { meldeStimme(false, `Abspielen fehlgeschlagen (${e.name || e})`); }
 }
 setInterval(() => { if (tonRolle && (musik.paused || (AC && AC.state !== 'running'))) tonStarten(); }, 4000);   // Ton nach Unterbrechung selbst wieder an
 addEventListener('click', tonStarten); addEventListener('keydown', tonStarten); addEventListener('touchstart', tonStarten);
