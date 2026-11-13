@@ -14,8 +14,8 @@
     "maxWarteschlange": 6,
     "wiedergabe": "seite",
     "_hinweis": "wiedergabe 'seite': Stimme läuft über die Live-Seite (zusammen mit der Musik im Stream-Ton). 'mac': direkt über die Mac-Lautsprecher.",
-    "pauseSek": 1.2,
-    "_pause": "pauseSek: Pause zwischen zwei Sätzen. Anna moderiert ununterbrochen; „…“ in saetze.mjs = Sprechpause."
+    "pauseSek": 0.6,
+    "_pause": "pauseSek: Pause zwischen zwei Sätzen (0,6 s → alle 2–4 s ein neuer kurzer Satz). „…“ in saetze.mjs = kurze Sprechpause."
   },
   "stufen": [
     {
@@ -158,168 +158,168 @@
         "name": "Rathaus",
         "ein": "ein Rathaus",
         "der": "das Rathaus",
-        "ziel": 3000
+        "ziel": 20000
       },
       {
         "id": "schule",
         "name": "Schule",
         "ein": "eine Schule",
         "der": "die Schule",
-        "ziel": 2500
+        "ziel": 15000
       },
       {
         "id": "krankenhaus",
         "name": "Krankenhaus",
         "ein": "ein Krankenhaus",
         "der": "das Krankenhaus",
-        "ziel": 4000
+        "ziel": 35000
       },
       {
         "id": "feuerwache",
         "name": "Feuerwache",
         "ein": "eine Feuerwache",
         "der": "die Feuerwache",
-        "ziel": 3000
+        "ziel": 15000
       },
       {
         "id": "polizei",
         "name": "Polizeistation",
         "ein": "eine Polizeistation",
         "der": "die Polizeistation",
-        "ziel": 3000
+        "ziel": 15000
       },
       {
         "id": "supermarkt",
         "name": "Supermarkt",
         "ein": "einen Supermarkt",
         "der": "der Supermarkt",
-        "ziel": 2500
+        "ziel": 10000
       },
       {
         "id": "kino",
         "name": "Kino",
         "ein": "ein Kino",
         "der": "das Kino",
-        "ziel": 3500
+        "ziel": 18000
       },
       {
         "id": "bibliothek",
         "name": "Bibliothek",
         "ein": "eine Bibliothek",
         "der": "die Bibliothek",
-        "ziel": 2500
+        "ziel": 10000
       },
       {
         "id": "post",
         "name": "Post",
         "ein": "eine Post",
         "der": "die Post",
-        "ziel": 2000
+        "ziel": 8000
       },
       {
         "id": "cafe",
         "name": "Café",
         "ein": "ein Café",
         "der": "das Café",
-        "ziel": 1500
+        "ziel": 6000
       },
       {
         "id": "eisdiele",
         "name": "Eisdiele",
         "ein": "eine Eisdiele",
         "der": "die Eisdiele",
-        "ziel": 1500
+        "ziel": 6000
       },
       {
         "id": "museum",
         "name": "Museum",
         "ein": "ein Museum",
         "der": "das Museum",
-        "ziel": 3500
+        "ziel": 18000
       },
       {
         "id": "sporthalle",
         "name": "Sporthalle",
         "ein": "eine Sporthalle",
         "der": "die Sporthalle",
-        "ziel": 3000
+        "ziel": 15000
       },
       {
         "id": "markthalle",
         "name": "Markthalle",
         "ein": "eine Markthalle",
         "der": "die Markthalle",
-        "ziel": 2500
+        "ziel": 12000
       },
       {
         "id": "hotel",
         "name": "Hotel",
         "ein": "ein Hotel",
         "der": "das Hotel",
-        "ziel": 4000
+        "ziel": 25000
       },
       {
         "id": "apotheke",
         "name": "Apotheke",
         "ein": "eine Apotheke",
         "der": "die Apotheke",
-        "ziel": 2000
+        "ziel": 8000
       },
       {
         "id": "aquarium",
         "name": "Aquarium",
         "ein": "ein Aquarium",
         "der": "das Aquarium",
-        "ziel": 3500
+        "ziel": 25000
       },
       {
         "id": "theater",
         "name": "Theater",
         "ein": "ein Theater",
         "der": "das Theater",
-        "ziel": 3500
+        "ziel": 18000
       },
       {
         "id": "schwimmbad",
         "name": "Schwimmbad",
         "ein": "ein Schwimmbad",
         "der": "das Schwimmbad",
-        "ziel": 3000
+        "ziel": 20000
       },
       {
         "id": "kindergarten",
         "name": "Kindergarten",
         "ein": "einen Kindergarten",
         "der": "der Kindergarten",
-        "ziel": 2500
+        "ziel": 10000
       },
       {
         "id": "restaurant",
         "name": "Restaurant",
         "ein": "ein Restaurant",
         "der": "das Restaurant",
-        "ziel": 2000
+        "ziel": 8000
       },
       {
         "id": "friseur",
         "name": "Friseur",
         "ein": "einen Friseur",
         "der": "der Friseur",
-        "ziel": 1500
+        "ziel": 6000
       },
       {
         "id": "bank",
         "name": "Muschelbank",
         "ein": "eine Muschelbank",
         "der": "die Muschelbank",
-        "ziel": 3000
+        "ziel": 15000
       },
       {
         "id": "bahnhof",
         "name": "Inselbahnhof",
         "ein": "einen Inselbahnhof",
         "der": "der Inselbahnhof",
-        "ziel": 4000
+        "ziel": 30000
       }
     ],
     "_hinweis": "Kein Limit: Gebäude dürfen mehrfach gebaut werden (noch nicht gebaute werden bei der Abstimmung bevorzugt). Reichen die Bauplätze nicht, wächst die Insel."
@@ -404,7 +404,10 @@
     "proFollow": 5,
     "proShare": 2,
     "proCoin": 1,
-    "_hinweis": "1 Muschel = 1 Coin = 0,01 €. Geschenke: jeder ausgegebene Coin = 1 Muschel für die Kasse und fürs eigene Haus."
+    "_hinweis": "1 Muschel = 1 Coin = 0,01 €. Geschenke: jeder ausgegebene Coin = 1 Muschel für die Kasse und fürs eigene Haus.",
+    "startAnteil": 0.5,
+    "bauAnteil": 0.7,
+    "_bau": "Gebäude werden aus der Kasse bezahlt: beim Baustart fließt die Hälfte (startAnteil), danach 70 % jeder neuen Muschel (bauAnteil). Die Kasse ist so nie leer."
   },
   "ton": {
     "musik": 0.32,
@@ -430,5 +433,7 @@
   "startMuscheln": 0,
   "_startMuscheln": "Startbonus beim ersten Like/Kommentar (0 = man startet mit dem Zelt).",
   "eulerApiKey": "",
-  "_eulerApiKey": "Optional: kostenloser Schlüssel von eulerstream.com, falls die TikTok-Verbindung nicht klappt."
+  "_eulerApiKey": "Optional: kostenloser Schlüssel von eulerstream.com, falls die TikTok-Verbindung nicht klappt.",
+  "likeDankAb": 50,
+  "_likeDankAb": "Wer innerhalb einer Minute so viele Likes gibt, bekommt ein Danke von Anna (pro Person höchstens alle 3 Minuten)."
 }

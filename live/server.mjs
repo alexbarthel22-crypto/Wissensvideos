@@ -41,6 +41,7 @@ function namenPruefen() {                                  // auch für Bewohner
 }
 S.fertig = (S.fertig || []).filter(id => CFG.abstimmung.projekte.some(x => x.id === id));
 if (S.projekt && !CFG.abstimmung.projekte.some(x => x.id === S.projekt.id)) S.projekt = null;
+if (S.projekt) S.projekt.ziel = CFG.abstimmung.projekte.find(x => x.id === S.projekt.id).ziel;   // Kosten aus den Einstellungen
 namenPruefen(); setInterval(namenPruefen, 30000);
 
 const stufeVon = m => { let i = 0; CFG.stufen.forEach((s, k) => { if (m >= s.ab) i = k; }); return i; };
@@ -95,7 +96,7 @@ function istHausWunsch(text) {
   }
   return false;
 }
-const hausWunsch = [], hausGezeigt = {};
+const hausWunsch = [], hausGezeigt = {}, likeSerie = {}, likeDank = [];
 let letztesHausZeigen = 0;
 
 // ---------- Ereignisse ----------
@@ -103,6 +104,10 @@ function like(u, anzahl) {
   const p = spieler(u); if (!p) { S.likesGesamt += anzahl; inKasse(anzahl * CFG.kasse.proLike); return; }
   S.likesGesamt += anzahl; likeLog.push([Date.now(), anzahl]);
   inKasse(anzahl * CFG.kasse.proLike);
+  const ls = likeSerie[p.id] ||= { n: 0, t0: Date.now(), dank: 0 };
+  if (Date.now() - ls.t0 > 60000) { ls.n = 0; ls.t0 = Date.now(); }
+  ls.n += anzahl;
+  if (ls.n >= (CFG.likeDankAb ?? 50) && Date.now() - ls.dank > 180000 && !likeDank.includes(p)) { ls.dank = Date.now(); likeDank.push(p); }
   const faktor = EV.like(p, anzahl);                       // Muschelregen ×2, Bau-Turbo ×3
   gibMuscheln(p, anzahl * CFG.muschelnProLike * faktor, 'like');
 }
@@ -139,7 +144,7 @@ function geschenk(u, name, diamanten, anzahl) {
   sende({ typ: 'geschenk', id: p.id, name: g.name, anzahl, diamanten: d });
   EV.geschenkShow(p, g, anzahl, d);
   inKasse(d * CFG.kasse.proCoin);
-  sag(satz(d >= 1000 ? 'geschenkGross' : d >= 100 ? 'geschenkMittel' : 'geschenkKlein', { name: sprechName(p), fuer: g.fuer, einAkk: g.einAkk, einNom: g.einNom, EinNom: grossKlein(g.einNom) }), 0);
+  sag(satz(d >= 1000 ? 'geschenkMega' : d >= 200 ? 'geschenkGross' : d >= 20 ? 'geschenkMittel' : 'geschenkKlein', { name: sprechName(p), fuer: g.fuer, einAkk: g.einAkk, einNom: g.einNom, EinNom: grossKlein(g.einNom) }), 0);
   gibMuscheln(p, d * CFG.muschelnProCoin, 'geschenk');
 }
 
@@ -147,12 +152,14 @@ function geschenk(u, name, diamanten, anzahl) {
 if (S.kasse == null) S.kasse = S.likesGesamt || 0;
 function inKasse(n) {
   S.kasse += n; geaendert = true;
-  finanziere();
+  finanziere(n * (CFG.kasse.bauAnteil ?? .7));
 }
 // Gebäude werden aus der Muschelkasse bezahlt: läuft ein Bau, fließen die Muscheln aus der Kasse in die Baustelle
-function finanziere() {
+// Damit die Kasse nie leer ist: beim Baustart fließt die Hälfte des Ersparten, danach 70 % jeder neuen Muschel (einstellbar).
+function finanziere(anteil) {
   if (!S.projekt || S.kasse <= 0) return 0;
-  const t = Math.min(S.kasse, S.projekt.ziel - S.projekt.stand);
+  const roh = anteil * 1 + (S.bauBruch || 0), ganz = Math.floor(roh); S.bauBruch = roh - ganz;
+  const t = Math.min(ganz, S.kasse - 1, S.projekt.ziel - S.projekt.stand);   // mindestens 1 Muschel bleibt immer
   if (t <= 0) return 0;
   S.kasse -= t; S.projekt.stand += t; geaendert = true;
   if (S.projekt.stand >= S.projekt.ziel) projektFertig();
@@ -209,7 +216,7 @@ function teilen(u) {
   const p = spieler(u); if (!p) { inKasse(CFG.kasse.proShare); return; }
   inKasse(CFG.kasse.proShare);
   sende({ typ: 'teilen', id: p.id });
-  sag(satz('teilen', { name: sprechName(p) }), 3);
+  sag(satz('teilen', { name: sprechName(p) }), 1);
   zustand();
 }
 
@@ -217,8 +224,8 @@ function teilen(u) {
 function projektStarten(pr) {
   S.projekt = { id: pr.id, name: pr.name, ziel: pr.ziel, stand: 0 }; geaendert = true;
   sende({ typ: 'projekt', id: pr.id });
-  const aus = finanziere();                                  // Erspartes aus der Muschelkasse fließt sofort in den Bau
-  if (aus > 0 && S.projekt) sag(`${aus.toLocaleString('de-DE')} Muscheln aus der Muschelkasse fließen sofort in den Bau. … Jedes Like baut weiter mit!`, 1);
+  const aus = finanziere(S.kasse * (CFG.kasse.startAnteil ?? .5));   // die Hälfte des Ersparten fließt sofort in den Bau
+  if (aus > 0 && S.projekt) sag(`${aus.toLocaleString('de-DE')} Muscheln aus der Kasse gehen in den Bau!`, 1);
   zustand();
 }
 function projektFertig() {
@@ -253,18 +260,19 @@ setInterval(zustand, 1000);
 // ---------- Stimme (macOS „say“, unbegrenzt, offline) ----------
 // Prio 0: Geschenk-Dank, Event-Ansagen · 1: Follow-Dank, Countdown · 2: Haus-Ausbau · 3: Kleinkram · 4: Dauer-Moderation
 // Untertitel erscheinen genau dann, wenn Anna den Satz spricht. „…“ im Text = Sprechpause.
-const warte = []; let spricht = false; const gesprochen = [];
+const warte = []; let spricht = false; const gesprochen = [], kleinkram = [];   // kleinkram: nur Prio-2/3-Ansagen fürs Limit
 const TON_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'muscheltal-ton-')); let tonNr = 0;
 let stimme = CFG.stimme.mac, stilleSeit = Date.now();
 const ECHT = !STILL && process.platform === 'darwin';
 const dauerMs = t => t.length * 62 + (t.match(/…/g) || []).length * 450 + 300;   // Schätzung ohne echte Stimme
-const fuerStimme = t => t.replace(/\s*…\s*/g, ' [[slnc 450]] ').replace(/([!?])\s+/g, '$1 [[slnc 250]] ');
+const fuerStimme = t => t.replace(/\s*…\s*/g, ' [[slnc 250]] ').replace(/([!?])\s+/g, '$1 [[slnc 150]] ');
 function sag(text, prio = 2) {
   if (!text) return;
   if (satzAnstoessig(text)) { console.log('🚫 Satz nicht gesprochen (Filter):', text); return; }
   const jetzt = Date.now();
   while (gesprochen.length && jetzt - gesprochen[0] > 60000) gesprochen.shift();
-  if (prio >= 2 && prio <= 3 && gesprochen.length >= CFG.stimme.maxProMinute) return; // Kleinkram nicht stapeln
+  while (kleinkram.length && jetzt - kleinkram[0] > 60000) kleinkram.shift();
+  if (prio >= 2 && prio <= 3) { if (kleinkram.length >= CFG.stimme.maxProMinute) return; kleinkram.push(jetzt); }   // Kleinkram nicht stapeln
   warte.push({ text, prio, t: jetzt });
   warte.sort((a, b) => a.prio - b.prio || a.t - b.t);
   // Geschenk-Dank und Event-Ansagen (Prio 0/1) werden nie verworfen, nur Kleinkram
@@ -324,7 +332,7 @@ function waehleTonSeite() {
   if (neu == null) neu = mitTon[0] ?? [...offen].sort((a, b) => (tonFehl.get(a) || 0) - (tonFehl.get(b) || 0))[0] ?? null;
   if (neu !== tonSeite) { tonSeite = neu; rolleSeit = Date.now(); sende({ typ: 'tonRolle', id: tonSeite }); if (tonSeite != null) console.log(`🔊 Ton-Aufgabe → Live-Seite #${tonSeite}`); }
 }
-const MUSIK_DATEIEN = ['suedsee_3.mp3', 'suedsee_9.mp3', 'suedsee_11.mp3'].map(f => path.join(DIR, 'seite', 'musik', f));
+const MUSIK_DATEIEN = [1, 2, 3, 4, 5].map(i => `insel_${i}.mp3`).map(f => path.join(DIR, 'seite', 'musik', f));
 function musikLokal() {
   const brauche = process.platform === 'darwin' && CFG.ton.musikAufMac !== false && !seiteHatTon() && Date.now() - START > 15000;
   if (brauche && !lokalMusik) {
@@ -353,18 +361,23 @@ let letzterLive = 0, letzterRundgang = 0, modNr = 0, eventModNr = 0, countdownGe
 const rangFolge = (a, b) => b.stufe - a.stufe || (b.eventMuscheln || 0) - (a.eventMuscheln || 0) || b.muscheln - a.muscheln;
 const zufallAus = fs => fs[Math.floor(Math.random() * fs.length)]();
 const grossKlein = t => t.charAt(0).toUpperCase() + t.slice(1);
+const H = () => satz('hinweis');                              // die wichtigsten Hinweise kommen oft
 const MODERATION = [
+  H,
   () => satz('tipp'),
   () => { const s = EV.naechstesIn(); return s > 45 ? satz('teaser', { zeit: s >= 100 ? `${Math.round(s / 60)} Minuten` : 'gut einer Minute' }) : null; },
   () => rundgang(),
+  H,
   () => satz('fakt'),
   () => satz('geschenkInfo'),
   () => { const z = zielJetzt(); return z ? satz('ziel', { rest: z.ziel - bewohner, projekt: z.name, bewohner, zielzahl: z.ziel }) : null; },
+  H,
   () => satz('frage'),
   () => { const t = Object.values(S.spieler).filter(p => !p.gesperrt).sort(rangFolge); return t.length > 1 ? satz('rangliste', { erster: sprechName(t[0]), zweiter: sprechName(t[1]) }) : null; },
   () => rundgang(),
   () => S.kasse > 0 ? satz('kasse', { kasse: S.kasse.toLocaleString('de-DE') }) : null,
   () => S.projekt ? satz('projekt', { projekt: S.projekt.name, prozent: Math.floor(S.projekt.stand / S.projekt.ziel * 100) }) : null,
+  H,
   () => baustelleZeigen(),
   () => { const h = new Date().getHours(); return h >= 17 || h < 7 ? satz('abend') : satz('stimmung', { aktive: aktiveAnzahl() }); },
   () => satz('stimmung', { aktive: aktiveAnzahl() }),
@@ -389,9 +402,10 @@ function moderiere() {
   if (spricht || warte.length || Date.now() - stilleSeit < (CFG.stimme.pauseSek ?? 1.6) * 1000) return;
   // 1. Follows bedanken
   if (followDank.length) {
-    const n = followDank.splice(0, 4).map(sprechName), z = zielJetzt();
-    return sag((n.length > 1 ? satz('followMehrere', { namen: namenListe(n) }) : satz('followEins', { name: n[0] })) + (z && Math.random() < .5 ? satz('followZiel', { rest: z.ziel - bewohner, projekt: z.name }) : ''), 1);
+    return sag(satz('followEins', { name: sprechName(followDank.shift()) }), 1);   // einzeln, kurz
   }
+  // 1a. Viele Likes von einer Person: bedanken
+  if (likeDank.length) { const p = likeDank.shift(); return sag(satz('likeDank', { name: sprechName(p) }), 1); }
   // 1b. Wer „haus“ geschrieben hat: Kamera fliegt zum Haus (ab und zu, nicht während Events)
   const kameraEvent = ['schatzsuche', 'meeresbesuch', 'flaschenpost', 'moewenalarm', 'hausbesuch'].includes(EV.id());
   if (!kameraEvent && hausWunsch.length && Date.now() - letztesHausZeigen > (EV.laeuft() ? 20000 : 12000)) {
@@ -407,7 +421,7 @@ function moderiere() {
   if (EV.laeuft()) {
     const art = eventModNr++ % 4;
     if (art !== 3 && Date.now() - letzterLive > 6000) { const t = EV.liveSatz(); if (t) { letzterLive = Date.now(); return sag(t, 4); } }
-    if (art === 3) return sag(zufallAus([() => satz('tipp'), () => satz('stimmung', { aktive: aktiveAnzahl() })]), 4);
+    if (art === 3) return sag(zufallAus([H, H, () => satz('stimmung', { aktive: aktiveAnzahl() })]), 4);
     return sag(satz('eventAllgemein', { rest: EV.restSek() }), 4);   // nie Stille während Events
   }
   // 3. Neue Zuschauer begrüßen (nur wenn kein Event moderiert werden muss)
@@ -508,7 +522,7 @@ const server = http.createServer((req, res) => {
   if (TEST && url.pathname === '/test' && !req.headers['cf-ray'] && !req.headers['cf-connecting-ip']) {                 // nur Test-Modus: Event / Geschenk-Show auslösen
     const id = url.searchParams.get('event'), art = url.searchParams.get('geschenk');
     if (url.searchParams.has('stadt')) { const n = +url.searchParams.get('stadt'), ids = CFG.abstimmung.projekte.map(x => x.id); S.fertig = Array.from({ length: n }, (_, i) => ids[i % ids.length]); const pr = CFG.abstimmung.projekte[n % ids.length]; S.projekt = pr ? { id: pr.id, name: pr.name, ziel: pr.ziel, stand: Math.round(pr.ziel * .45) } : null; zustand(); }
-    if (url.searchParams.has('fertigbauen') && S.projekt) { S.projekt.stand = S.projekt.ziel - 1; inKasse(1); }
+    if (url.searchParams.has('fertigbauen') && S.projekt) { S.projekt.stand = S.projekt.ziel - 1; S.kasse += 10; inKasse(5); }
     if (id) EV.starte(id);
     const nutzer = url.searchParams.get('user');               // gezielt als Test-Zuschauer handeln
     if (nutzer) {
