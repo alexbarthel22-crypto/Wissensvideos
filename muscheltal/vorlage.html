@@ -59,7 +59,7 @@ section>h2{font-size:28px;margin-bottom:14px}
 .dock{position:absolute;left:12px;right:12px;bottom:14px;display:flex;flex-direction:column;align-items:flex-start;gap:10px;pointer-events:none}
 .dock>*{pointer-events:auto}
 .zoomc{position:absolute;right:12px;top:52%;transform:translateY(-50%);display:grid;gap:8px}
-.zoomc button{width:44px;height:44px;border-radius:50%;border:3px solid var(--ink);background:#fff;font-size:24px;font-weight:900;line-height:1;padding:0;box-shadow:3px 3px 0 var(--ink)}
+.zoomc #snd{font-size:19px;margin-top:4px}.zoomc #snd.an{background:var(--sun)}.zoomc button{width:44px;height:44px;border-radius:50%;border:3px solid var(--ink);background:#fff;font-size:24px;font-weight:900;line-height:1;padding:0;box-shadow:3px 3px 0 var(--ink)}
 .swipe{display:flex;gap:12px;width:100%;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:2px 4px 6px 2px;overscroll-behavior-x:contain}
 .swipe::-webkit-scrollbar{display:none}
 .pg{flex:0 0 calc(100% - 6px);display:grid;grid-template-columns:1fr 1fr;gap:10px;scroll-snap-align:start}
@@ -358,7 +358,7 @@ footer a{color:var(--soft)}
  </div>
  <div class="growhud" id="growhud" hidden></div>
  <div class="pop" id="pop" hidden><div><b id="pname"></b></div><button class="popx" id="popx" type="button" aria-label="Auswahl schließen">×</button></div>
- <div class="zoomc"><button id="zin" aria-label="Hineinzoomen">+</button><button id="zout" aria-label="Herauszoomen">−</button></div>
+ <div class="zoomc"><button id="zin" aria-label="Hineinzoomen">+</button><button id="zout" aria-label="Herauszoomen">−</button><button id="snd" aria-label="Musik einschalten" aria-pressed="false">🔇</button></div>
  <div class="walkui" id="walkui" hidden><p class="walkhint" id="walkhint">Tippe und halte, wohin du gehen willst</p><div class="walkbtns"><button class="chip sun" id="walkmode" type="button">🛵 Moped</button><button class="chip hot" id="walkend" type="button">✕ Beenden</button></div></div>
  <div class="dock" id="dock">
   <div class="swipe" id="swipe"><div class="pg" id="pg1"></div><div class="pg" id="pg2"></div></div>
@@ -3164,6 +3164,13 @@ const unsel=()=>{sel=null;ROAM.sel=null;$('join').hidden=false;$('pop').hidden=t
 $('popx').onclick=()=>{q.value='';$('qx').hidden=true;unsel();};
 // beim Erkunden zoomen die Knöpfe die mitlaufende Kamera (Faktor bleibt bis zum Beenden)
 const zoomWK=f=>{WK.zf=Math.max(.45,Math.min(2.4,(WK.zf||1)*f));};
+// 🎵 Musik aus den Videos (Tag 4 + Tag 5 im Wechsel) mit Meeresrauschen – startet immer aus, Knopf unter Zoom
+const SND={an:false,i:0,mus:null,meer:null};
+function sndSpiel(){const L=['musik/suedsee_tag4.mp3','musik/suedsee_tag5.mp3'];if(!SND.mus){SND.mus=new Audio();SND.mus.volume=.5;SND.mus.preload='auto';SND.mus.onended=()=>{SND.i=(SND.i+1)%L.length;SND.mus.src=L[SND.i];if(SND.an)SND.mus.play().catch(()=>{});};SND.mus.src=L[0];
+ SND.meer=new Audio('musik/meer.mp3');SND.meer.loop=true;SND.meer.volume=.22;}SND.mus.play().catch(()=>{});SND.meer.play().catch(()=>{});}
+function sndSetz(an){SND.an=an;const b=$('snd');b.textContent=an?'🔊':'🔇';b.classList.toggle('an',an);b.setAttribute('aria-pressed',an);b.setAttribute('aria-label',an?'Musik ausschalten':'Musik einschalten');if(an)sndSpiel();else if(SND.mus){SND.mus.pause();SND.meer.pause();}}
+$('snd').onclick=()=>sndSetz(!SND.an);
+document.addEventListener('visibilitychange',()=>{if(!SND.mus||!SND.an)return;if(document.hidden){SND.mus.pause();SND.meer.pause();}else sndSpiel();});
 $('zin').onclick=()=>WK.on?zoomWK(1.4):zoomAt(1.6);$('zout').onclick=()=>WK.on?zoomWK(1/1.4):zoomAt(1/1.6);
 // Wachsen sehen: genau die Insel, die man gerade ansieht – Einzüge + Bauten/Veränderungen in der richtigen Reihenfolge
 function islInView(){let best=MAIN,bd=1e9;for(const v of ISL){if(!v.open)continue;const d=Math.hypot(v.x-cam.x,v.y-cam.y)/(v.R+1);if(d<bd){bd=d;best=v;}}return best;}
