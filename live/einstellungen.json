@@ -14,7 +14,7 @@
     "maxWarteschlange": 6,
     "wiedergabe": "seite",
     "_hinweis": "wiedergabe 'seite': Stimme läuft über die Live-Seite (zusammen mit der Musik im Stream-Ton). 'mac': direkt über die Mac-Lautsprecher.",
-    "pauseSek": 1.6,
+    "pauseSek": 1.2,
     "_pause": "pauseSek: Pause zwischen zwei Sätzen. Anna moderiert ununterbrochen; „…“ in saetze.mjs = Sprechpause."
   },
   "stufen": [
@@ -23,40 +23,80 @@
       "ab": 0
     },
     {
+      "name": "Hängematten-Camp",
+      "ab": 10
+    },
+    {
       "name": "Strohhütte",
-      "ab": 20
+      "ab": 25
+    },
+    {
+      "name": "Fischerhütte",
+      "ab": 50
     },
     {
       "name": "Stelzenhütte",
-      "ab": 60
+      "ab": 90
     },
     {
-      "name": "Bungalow",
+      "name": "Baumhaus",
       "ab": 150
     },
     {
+      "name": "Bungalow",
+      "ab": 230
+    },
+    {
+      "name": "Surferhütte",
+      "ab": 350
+    },
+    {
       "name": "Strandhaus",
-      "ab": 300
+      "ab": 500
+    },
+    {
+      "name": "Leuchtturmhaus",
+      "ab": 700
     },
     {
       "name": "Ferienhaus",
-      "ab": 600
-    },
-    {
-      "name": "Villa",
       "ab": 1000
     },
     {
-      "name": "Luxusvilla",
+      "name": "Poolhaus",
+      "ab": 1400
+    },
+    {
+      "name": "Villa",
       "ab": 2000
     },
     {
-      "name": "Strandpalast",
+      "name": "Glasvilla",
+      "ab": 2800
+    },
+    {
+      "name": "Luxusvilla",
       "ab": 4000
     },
     {
+      "name": "Inselvilla mit Hubschrauberlandeplatz",
+      "ab": 5500
+    },
+    {
+      "name": "Strandpalast",
+      "ab": 7500
+    },
+    {
+      "name": "Korallenpalast",
+      "ab": 10000
+    },
+    {
       "name": "Muschelschloss",
-      "ab": 8000
+      "ab": 14000
+    },
+    {
+      "name": "Perlenschloss",
+      "ab": 20000
     }
   ],
   "muschelnProLike": 1,
@@ -74,22 +114,22 @@
     },
     "garten": {
       "name": "Garten",
-      "abStufe": 1,
+      "abStufe": 2,
       "kosten": 20
     },
     "laterne": {
       "name": "Laterne",
-      "abStufe": 1,
+      "abStufe": 2,
       "kosten": 15
     },
     "pool": {
       "name": "Pool",
-      "abStufe": 3,
+      "abStufe": 6,
       "kosten": 150
     },
     "boot": {
       "name": "Boot",
-      "abStufe": 3,
+      "abStufe": 6,
       "kosten": 200
     }
   },
@@ -256,5 +296,6 @@
   "events": {
     "alleMinuten": 5,
     "_hinweis": "Alle 5 Minuten ein zufälliges Überraschungs-Event (siehe events.mjs). Nie dasselbe wie eins der letzten 4."
-  }
+  },
+  "folgeAufrufMinuten": 3
 }

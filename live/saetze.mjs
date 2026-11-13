@@ -184,6 +184,12 @@ const SAETZE = {
     'Ich bin gespannt, wie das ausgeht!',
     'Los, los, los!',
   ],
+  folgeAufruf: [
+    'Folge mir … und du bekommst live deine Hütte hier … und in Muschel-Tal für das Spiel!',
+    'Noch nicht gefolgt? … Folge mir, dann bekommst du sofort deine Hütte hier im LIVE … und in Muschel-Tal!',
+    'Kleiner Aufruf … wer mir folgt, … bekommt live seine eigene Hütte hier … und in Muschel-Tal für das Spiel!',
+    'Folgen lohnt sich! … Deine Hütte hier im LIVE … und in Muschel-Tal … wartet schon auf dich.',
+  ],
   eventNoch10: [
     'Noch zehn Sekunden!',
     'Zehn Sekunden noch … gebt alles!',

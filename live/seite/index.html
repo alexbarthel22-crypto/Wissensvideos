@@ -11,11 +11,16 @@
 </style>
 </head>
 <body>
-<canvas id="c" width="1080" height="1920"></canvas>
+<canvas id="c"></canvas>
 <script>
 // Muschel-Tal LIVE – Bühne 1080×1920 (TikTok-Hochformat).
 // Oben (y 150–520) feste Infos, darunter die große Insel. Bei Ausbauten fährt die Kamera an das Haus heran.
-const C = document.getElementById('c'), X = C.getContext('2d');
+const C = document.getElementById('c');
+// Sparsam: intern 720×1280 (das kommt bei TikTok ohnehin an), gezeichnet wird weiter im 1080er-Raster. ?aufloesung=1080 = volle Größe
+const Q0 = (+new URLSearchParams(location.search).get('aufloesung') || 720) / 1080;
+C.width = Math.round(1080 * Q0); C.height = Math.round(1920 * Q0);
+let X = C.getContext('2d', { alpha: false });
+const FPS = 30;
 const W = 1080, H = 1920;
 const FONT = '"SF Pro Rounded",ui-rounded,"Arial Rounded MT Bold","Nunito","Varela Round",system-ui,sans-serif';
 const INK = '#2a1b12', GELB = '#ffd23f', PINK = '#e8467c', TUERKIS = '#2fb3a0';
@@ -95,7 +100,7 @@ function strassenBei(k, namen) {
 let BASIS = null, BASIS_K = 0, BASIS_BOX = null, SEG = [], ALT = null;
 function box(k) { const s = k * 1.32; return { x: IX - RX * s, y: IY - RY * s, w: RX * s * 2, h: RY * s * 2 + 220 }; }
 function basisZeichnen(k) {
-  const B = box(k), Q = Math.min(2.2, 4600 / Math.max(B.w, B.h));
+  const B = box(k), Q = Math.min(1.6, 3200 / Math.max(B.w, B.h));
   const cv = document.createElement('canvas'); cv.width = B.w * Q; cv.height = B.h * Q;
   const b = cv.getContext('2d'); b.setTransform(Q, 0, 0, Q, -B.x * Q, -B.y * Q);
   const R = zufall(7); LICHTER = [];
@@ -233,7 +238,11 @@ function ereignis(e) {
     case 'stufe': if (p) { bau[e.id] = { t: jetzt, alt: p.stufe, neu: e.stufe, D: 3.8 }; if (pl) fokus(pl, 5200); } break;
     case 'anbau': case 'farbe': if (pl) { pop[e.id] = jetzt; funken(pl, '🔨', 5); fokus(pl, 2600, true); } break;
     case 'geschenk': if (pl) funken(pl, '💖', 10 + Math.min(30, e.diamanten)); break;
-    case 'show': showStart(e); break;
+    case 'show':
+      if (e.coins < 10) { banner.push({ t: 0, oben: `🎁 Danke ${e.name}!`, unten: (e.anzahl > 1 ? e.anzahl + '× ' : '') + e.gift + ' · +' + e.coins + ' 🐚', farbe: PINK }); if (pl) funken(pl, { herzregen: '💖', muschelkonfetti: '🐚', seifenblasen: '🫧' }[e.art] || '💖', 16); }
+      else showStart(e);
+      break;
+    case 'folgeAufruf': banner.push({ t: 0, oben: '🏠 Folge @muscheltal!', unten: 'Deine Hütte hier im LIVE + in Muschel-Tal', farbe: TUERKIS }); break;
     case 'kamera': if (pl) fokus(pl, e.ms || 15000); break;
     case 'feuerwerk': feuerwerk(); break;
     case 'eventStart': fokusBis = 0; tourModus = 0; tourBis = jetzt + 70000; banner.push({ t: 0, oben: '⚡ Überraschungs-Event!', unten: 'Jetzt mitmachen!', farbe: '#9b5de5' }); funken({ x: IX, y: IY }, '⚡', 20); break;
@@ -242,7 +251,9 @@ function ereignis(e) {
     case 'ziel': banner.push({ t: 0, oben: '🎉 Bewohner-Ziel erreicht!', unten: e.name + ' wird auf der Haupt-Insel gebaut', farbe: '#9b5de5' }); feuerwerk(); break;
     case 'projekt': case 'fertig': funken({ x: IX, y: IY }, e.typ === 'fertig' ? '🎉' : '🚧', 30); if (e.typ === 'fertig') feuerwerk(); break;
     case 'ansage': untertitel = { text: e.text, t: jetzt, d: Math.max(2.5, (e.ms || 4000) / 1000 + .5) }; break;
-    case 'stimme': stimmeAbspielen(e.url); break;
+    case 'stimme': if (e.id === meineId) stimmeAbspielen(e.url); break;
+    case 'hallo': meineId = e.id; break;
+    case 'tonRolle': tonRolle = !VORSCHAU && e.id === meineId; if (tonRolle) tonStarten(); else tonStoppen(); break;
     case 'teilen': banner.push({ t: 0, oben: `🔁 ${p ? p.name : ''}`, unten: 'teilt den Stream · +2 🐚 in die Muschelkasse', farbe: '#3fa0e8' }); break;
   }
 }
@@ -255,7 +266,7 @@ function wachsen(kz) {
   banner.push({ t: 0, oben: '🏝️ Die Insel wächst!', unten: `+${neu} neue Grundstücke · jetzt ${ANZAHL}`, farbe: '#ff8a2a' });
   fetch('/sag?t=' + encodeURIComponent(`Die Insel wächst! ${neu} neue Grundstücke sind dazugekommen.`)).catch(() => {});
 }
-function funken(pl, z, n) { for (let i = 0; i < n; i++) fx.push({ x: pl.x, y: pl.y - 30, vx: (Math.random() - .5) * 5, vy: -2 - Math.random() * 5, t: performance.now(), z, s: 18 + Math.random() * 14 }); }
+function funken(pl, z, n) { n = Math.min(n, 200 - fx.length); for (let i = 0; i < n; i++) fx.push({ x: pl.x, y: pl.y - 30, vx: (Math.random() - .5) * 5, vy: -2 - Math.random() * 5, t: performance.now(), z, s: 18 + Math.random() * 14 }); }
 function feuerwerk() {
   for (let k = 0; k < 6; k++) setTimeout(() => {
     const x = IX + (Math.random() - .5) * RX * K * 1.4, y = IY + (Math.random() - .5) * RY * K, col = ['#ffd23f', '#ff6fa3', '#7fe0c8', '#fff', '#ff8a2a', '#b58ad0'][k];
@@ -287,7 +298,7 @@ function kamera(t) {
   }
   const k = t < fokusBis ? .06 : .025;
   cam.x += (ZIEL.x - cam.x) * k; cam.y += (ZIEL.y - cam.y) * k; cam.z += (ZIEL.z - cam.z) * k;
-  X.setTransform(cam.z, 0, 0, cam.z, 540 - cam.x * cam.z, MITTE_Y - cam.y * cam.z);
+  X.setTransform(cam.z * Q0, 0, 0, cam.z * Q0, (540 - cam.x * cam.z) * Q0, (MITTE_Y - cam.y * cam.z) * Q0);
 }
 function sichtbar(x, y, r = 120) {                               // nur zeichnen, was im Bild ist
   const sx = 540 + (x - cam.x) * cam.z, sy = MITTE_Y + (y - cam.y) * cam.z, rr = r * cam.z;
@@ -330,7 +341,7 @@ function lebenZeichnen(t, dt) {
 function meerLeben(t) {
   X.strokeStyle = 'rgba(255,255,255,.22)'; X.lineWidth = 3 / Math.max(.6, cam.z); X.lineCap = 'round';
   const R = zufall(3), sp = RX * K * 1.6;
-  for (let i = 0; i < 140; i++) {
+  for (let i = 0; i < 60; i++) {
     const x = IX - sp + ((R() * sp * 2 + t * .01 * (1 + i % 3)) % (sp * 2)), y = IY - RY * K * 1.4 + R() * RY * K * 2.8;
     if (innen(x, y, K * 1.1) || !sichtbar(x, y, 20)) continue;
     X.beginPath(); X.moveTo(x, y); X.quadraticCurveTo(x + 12, y - 7, x + 24, y); X.stroke();
@@ -378,7 +389,7 @@ function bauZeichnen(c, p, f, t, b) {
   const gA = Math.min(1, (age - start) * 4, (D - age) * 3);
   if (gA > 0 && b.alt !== -1) {
     c.save(); c.globalAlpha = gA;
-    const breit = 34 + b.neu * 1.5;
+    const breit = 34 + b.neu * .8;
     c.strokeStyle = '#c9a25a'; c.lineWidth = 2.6;
     [-breit, -breit / 3, breit / 3, breit].forEach(x => { c.beginPath(); c.moveTo(x, 6); c.lineTo(x, -hoch - 4); c.stroke(); c.fillStyle = '#a07a3a'; for (let y = 0; y > -hoch; y -= 12) c.fillRect(x - 1.8, y, 3.6, 1.6); });
     c.strokeStyle = '#b8904a'; c.lineWidth = 2;
@@ -438,7 +449,7 @@ let LICHTER = [];
 function nachtZeichnen(t) {
   const L = tageslicht(t); if (L.nacht <= .01 && L.rot <= .01) return;
   // Abdunkeln (multiplizieren) + Abendrot
-  X.save(); X.setTransform(1, 0, 0, 1, 0, 0); X.globalCompositeOperation = 'multiply';
+  X.save(); X.setTransform(Q0, 0, 0, Q0, 0, 0); X.globalCompositeOperation = 'multiply';
   const n = L.nacht * .74, r = L.rot * .35;
   X.fillStyle = `rgb(${255 - n * 215 | 0},${255 - n * 198 - r * 90 | 0},${255 - n * 125 - r * 160 | 0})`; X.fillRect(0, 0, W, H);
   X.restore();
@@ -451,7 +462,7 @@ function nachtZeichnen(t) {
   X.globalAlpha = .45 * a * flackern; X.drawImage(GLUT, IX - 110, IY - 110, 220, 220);   // Muschel leuchtet
   S.spieler.forEach(p => {
     const pl = platzVon(p); if (!pl || !sichtbar(pl.x, pl.y, 60)) return;
-    const st = p.stufe, gr = st === 0 ? 30 : 34 + st * 4;
+    const st = p.stufe, gr = st === 0 ? 30 : 34 + st * 2;
     X.globalAlpha = (st === 0 ? .9 * flackern : .75) * a;
     if (st === 0) X.drawImage(GLUT, pl.x + 27 - gr / 2, pl.y + 2 - gr / 2, gr, gr);     // Lagerfeuer am Zelt
     else X.drawImage(GLUT, pl.x - gr / 2, pl.y + HOEHE[st] * .45 - gr / 2, gr, gr);    // Fensterlicht
@@ -459,31 +470,43 @@ function nachtZeichnen(t) {
   X.restore();
 }
 
-// ================= Ton: Musik aus den Videos (lizenzfrei, tools/make_music_tropical.py) + Meeresrauschen =================
+// ================= Ton: Musik aus den Videos (lizenzfrei, tools/make_music_tropical.py) + Meeresrauschen + Stimme =================
+// Es gibt genau EINEN Musik-Player, EINEN Meeres-Player und EINEN Audio-Kontext für die Stimme – sie werden nie neu angelegt.
+// Sind mehrere Seiten offen (z. B. Browser + LIVE Studio), bestimmt das Programm, welche Seite Ton spielt (tonRolle).
 const MUSIK = ['musik/suedsee_3.mp3', 'musik/suedsee_9.mp3', 'musik/suedsee_11.mp3'];
-let tonAn = false, musik = null, meerTon = null, musikNr = Math.floor(Math.random() * MUSIK.length), stimmeLaeuft = 0;
+const VORSCHAU = PARAM.has('vorschau') || PARAM.has('still');     // ?vorschau = Bild ohne Ton
+let meineId = null, tonRolle = false, tonAn = false, musikNr = Math.floor(Math.random() * MUSIK.length), stimmeLaeuft = 0, AC = null;
 const TON = () => S.ton || { musik: .32, musikBeiStimme: .1, meer: .22, stimme: 1 };
-function tonStarten() {
-  if (tonAn) return;
-  musik = new Audio(MUSIK[musikNr]); musik.volume = 0;
-  musik.onended = () => { musikNr = (musikNr + 1) % MUSIK.length; musik.src = MUSIK[musikNr]; musik.play().catch(() => {}); };
-  meerTon = new Audio('musik/atmo.mp3'); meerTon.loop = true; meerTon.volume = TON().meer;
-  Promise.all([musik.play(), meerTon.play()]).then(() => { tonAn = true; }).catch(() => { tonAn = false; });
+const musik = new Audio(MUSIK[musikNr]); musik.preload = 'auto'; musik.volume = 0;
+musik.onended = () => { musikNr = (musikNr + 1) % MUSIK.length; musik.src = MUSIK[musikNr]; if (tonRolle) musik.play().catch(() => {}); };
+const meerTon = new Audio('musik/atmo.mp3'); meerTon.loop = true; meerTon.volume = 0;
+function tonStarten() {                                           // nur freischalten/fortsetzen, nie neue Player
+  if (VORSCHAU) return;
+  try { if (!AC) AC = new (window.AudioContext || window.webkitAudioContext)(); if (AC.state === 'suspended') AC.resume(); } catch {}
+  if (!tonRolle) return;
+  if (musik.paused) musik.play().then(() => { tonAn = true; }).catch(() => { tonAn = false; }); else tonAn = true;
+  if (meerTon.paused) meerTon.play().catch(() => {});
 }
+function tonStoppen() { musik.pause(); meerTon.pause(); tonAn = false; }
 function tonLautstaerke() {
-  if (!musik) return;
+  if (!tonRolle) { if (!musik.paused || !meerTon.paused) tonStoppen(); return; }
   const ziel = performance.now() < stimmeLaeuft ? TON().musikBeiStimme : TON().musik;
-  musik.volume = Math.max(0, Math.min(1, musik.volume + (ziel - musik.volume) * .08));
+  musik.volume = Math.max(0, Math.min(1, musik.volume + (ziel - musik.volume) * .15));
+  meerTon.volume = TON().meer;
 }
-function stimmeAbspielen(url) {
-  const a = new Audio(url); a.volume = TON().stimme;
-  a.onloadedmetadata = () => { stimmeLaeuft = performance.now() + a.duration * 1000 + 300; };
-  stimmeLaeuft = performance.now() + 4000;
-  a.play().catch(() => { tonAn = false; });
+const meldeStimme = ok => fetch(`/tonstatus?id=${meineId}&stimme=${ok ? 1 : 0}`).catch(() => {});
+async function stimmeAbspielen(url) {                             // Stimme über Web Audio: einmal freigeschaltet, spielt sie immer
+  if (!tonRolle || !AC || AC.state !== 'running') return meldeStimme(false);
+  try {
+    const daten = await (await fetch(url)).arrayBuffer(), puffer = await AC.decodeAudioData(daten);
+    const q = AC.createBufferSource(), g = AC.createGain(); q.buffer = puffer; g.gain.value = TON().stimme;
+    q.connect(g); g.connect(AC.destination); q.start();
+    stimmeLaeuft = performance.now() + puffer.duration * 1000 + 300; meldeStimme(true);
+  } catch { meldeStimme(false); }
 }
-addEventListener('click', tonStarten); addEventListener('keydown', tonStarten);
-// Meldet dem Programm, ob hier wirklich Ton läuft – sonst spielt das Programm Stimme und Musik über die Mac-Lautsprecher
-setInterval(() => fetch('/tonstatus?an=' + (tonAn && musik && !musik.paused ? 1 : 0)).catch(() => {}), 4000);
+addEventListener('click', tonStarten); addEventListener('keydown', tonStarten); addEventListener('touchstart', tonStarten);
+// Meldet dem Programm, ob hier wirklich Ton läuft – sonst übernimmt der Mac (Lautsprecher)
+setInterval(() => meineId != null && fetch(`/tonstatus?id=${meineId}&an=${tonRolle && tonAn && !musik.paused && AC && AC.state === 'running' ? 1 : 0}&vorschau=${VORSCHAU ? 1 : 0}`).catch(() => {}), 3000);
 
 // ================= Zeichen-Hilfen =================
 function rr(x, y, w, h, r) { X.beginPath(); X.roundRect(x, y, w, h, r); }
@@ -506,7 +529,7 @@ const mix = (hex, f) => { const n = parseInt(hex.slice(1), 16); const k = v => M
 // ================= Meer =================
 function meer(t) {
   const g = X.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#3ec3b4'); g.addColorStop(1, '#1d8a82');
-  X.setTransform(1, 0, 0, 1, 0, 0); X.fillStyle = g; X.fillRect(0, 0, W, H);
+  X.setTransform(Q0, 0, 0, Q0, 0, 0); X.fillStyle = g; X.fillRect(0, 0, W, H);
 }
 // ================= Muschelplatz mit Luxus-Muschel =================
 function platz(t) {
@@ -530,14 +553,6 @@ function platz(t) {
   c.fillStyle = g; c.beginPath(); c.ellipse(IX, IY + 6, 102, 86, 0, 0, 7); c.fill();
   const rg = c.createLinearGradient(IX - 110, 0, IX + 110, 0); rg.addColorStop(0, '#b8862a'); rg.addColorStop(.5, '#ffe9a8'); rg.addColorStop(1, '#b8862a');
   c.strokeStyle = rg; c.lineWidth = 6; c.beginPath(); c.ellipse(IX, IY + 6, 104, 88, 0, 0, 7); c.stroke();
-  c.strokeStyle = 'rgba(255,255,255,.55)'; c.lineWidth = 1.5;
-  for (let i = 0; i < 3; i++) { const r = ((t * .02 + i * 30) % 90); c.globalAlpha = 1 - r / 90; c.beginPath(); c.ellipse(IX, IY + 20, 30 + r * .7, 18 + r * .5, 0, 0, 7); c.stroke(); }
-  c.globalAlpha = 1;
-  // Wasserfontänen
-  for (let i = 0; i < 6; i++) {
-    const a = i / 6 * 6.283 + .3, x = IX + Math.cos(a) * 82, y = IY + 6 + Math.sin(a) * 68, h = 26 + Math.sin(t * .006 + i) * 4;
-    c.strokeStyle = 'rgba(220,250,255,.85)'; c.lineWidth = 2.5; c.beginPath(); c.moveTo(x, y); c.quadraticCurveTo(x + (IX - x) * .25, y - h * 1.6, x + (IX - x) * .45, y - h * .2); c.stroke();
-  }
   // Sockel: runder Marmorsockel in zwei Stufen mit Goldbändern
   const sg = c.createLinearGradient(IX - 60, 0, IX + 60, 0); sg.addColorStop(0, '#d9ccb4'); sg.addColorStop(.45, '#fbf6ec'); sg.addColorStop(1, '#cbbda2');
   const gb = c.createLinearGradient(IX - 60, 0, IX + 60, 0); gb.addColorStop(0, '#a87420'); gb.addColorStop(.5, '#ffe9a8'); gb.addColorStop(1, '#a87420');
@@ -558,16 +573,35 @@ function platz(t) {
   const gold = c.createLinearGradient(-f, -f, f, 20); gold.addColorStop(0, '#a87420'); gold.addColorStop(.3, '#ffe9a8'); gold.addColorStop(.55, '#d4a23a'); gold.addColorStop(.8, '#fff3c4'); gold.addColorStop(1, '#a87420');
   c.strokeStyle = gold; c.lineWidth = 4; c.stroke();
   for (let i = 0; i <= rippen; i++) { const a = Math.PI + .25 + i / rippen * (Math.PI - .5); c.strokeStyle = 'rgba(196,140,60,.55)'; c.lineWidth = 1.8; c.beginPath(); c.moveTo(0, 14); c.lineTo(Math.cos(a) * f * .96, Math.sin(a) * f * .92 + 8); c.stroke(); }
-  // Schimmer, der über die Muschel wandert
-  const sx = ((t * .05) % 220) - 110, sh = c.createLinearGradient(sx - 20, 0, sx + 20, 0); sh.addColorStop(0, 'rgba(255,255,255,0)'); sh.addColorStop(.5, 'rgba(255,255,255,.55)'); sh.addColorStop(1, 'rgba(255,255,255,0)');
-  c.save(); c.clip(); c.fillStyle = sh; c.fillRect(-f, -f, f * 2, f * 1.5); c.restore();
   // Schloss (Scharnier) in Gold
   c.fillStyle = gold; c.beginPath(); c.moveTo(-18, 22); c.lineTo(-10, 10); c.lineTo(10, 10); c.lineTo(18, 22); c.closePath(); c.fill(); c.strokeStyle = '#8a5a1a'; c.lineWidth = 1.5; c.stroke();
   // Perle
   const pe = c.createRadialGradient(-4, 0, 1, 0, 4, 14); pe.addColorStop(0, '#fff'); pe.addColorStop(.5, '#f6eefa'); pe.addColorStop(1, '#cfc4e6');
   c.shadowColor = '#fff'; c.shadowBlur = 16; c.fillStyle = pe; c.beginPath(); c.arc(0, 4, 12, 0, 7); c.fill(); c.shadowBlur = 0;
   c.fillStyle = 'rgba(255,255,255,.95)'; c.beginPath(); c.arc(-4, 0, 3.5, 0, 7); c.fill();
-  // Funkeln
+  c.restore();
+
+}
+// Muschelplatz: Marmor, Brunnen, Sockel und Muschel einmal vorzeichnen, nur Wasser und Funkeln live
+let PLATZ_CV = null; const PLATZ_Q = 2.2, PLATZ_RAND = PLATZ_R + 50;
+function platzZeichnen(t) {
+  if (!PLATZ_CV) {
+    const n = Math.ceil(PLATZ_RAND * 2 * PLATZ_Q); PLATZ_CV = document.createElement('canvas'); PLATZ_CV.width = PLATZ_CV.height = n;
+    const cx = PLATZ_CV.getContext('2d'); cx.setTransform(PLATZ_Q, 0, 0, PLATZ_Q, (PLATZ_RAND - IX) * PLATZ_Q, (PLATZ_RAND - IY) * PLATZ_Q);
+    const echt = X; X = cx; platz(0); X = echt;
+  }
+  X.drawImage(PLATZ_CV, IX - PLATZ_RAND, IY - PLATZ_RAND, PLATZ_RAND * 2, PLATZ_RAND * 2);
+  const c = X;
+  c.strokeStyle = 'rgba(255,255,255,.55)'; c.lineWidth = 1.5;
+  for (let i = 0; i < 3; i++) { const r = ((t * .02 + i * 30) % 90); c.globalAlpha = 1 - r / 90; c.beginPath(); c.ellipse(IX, IY + 20, 30 + r * .7, 18 + r * .5, 0, 0, 7); c.stroke(); }
+  c.globalAlpha = 1;
+  for (let i = 0; i < 6; i++) {
+    const a = i / 6 * 6.283 + .3, x = IX + Math.cos(a) * 82, y = IY + 6 + Math.sin(a) * 68, h = 26 + Math.sin(t * .006 + i) * 4;
+    if (Math.sin(a) < -.2) continue;                                   // hintere Fontänen liegen hinter der Muschel
+    c.strokeStyle = 'rgba(220,250,255,.85)'; c.lineWidth = 2.5; c.beginPath(); c.moveTo(x, y); c.quadraticCurveTo(x + (IX - x) * .25, y - h * 1.6, x + (IX - x) * .45, y - h * .2); c.stroke();
+  }
+  c.save(); c.globalCompositeOperation = 'lighter'; c.globalAlpha = .28 + Math.sin(t * .003) * .1; c.drawImage(GLUT, IX - 90, IY - 100, 180, 160); c.restore();
+  c.save(); c.translate(IX, IY + 4);
   for (let i = 0; i < 7; i++) { const ph = (t * .0015 + i * .29) % 1, s = Math.sin(ph * Math.PI) * 8, a = i * 1.7; stern(c, Math.cos(a) * 64, Math.sin(a) * 40 - 26, s); }
   c.restore();
   // Fertige Gemeinschaftsprojekte am Platzrand
@@ -588,7 +622,7 @@ function ziegel(c, x0, y0, x1, y1, xs, col) { // Satteldach mit Ziegelreihen
 }
 function blumen(c, x, y, n, w) { for (let i = 0; i < n; i++) { c.fillStyle = '#3f9b45'; c.beginPath(); c.arc(x + i * w / n, y, 3.2, 0, 7); c.fill(); c.fillStyle = ['#ff6fa3', '#ffd23f', '#fff', '#e8433c'][i % 4]; c.beginPath(); c.arc(x + i * w / n, y - 1.5, 1.8, 0, 7); c.fill(); } }
 
-const HAUS = [
+const HAUS_ALT = [
   // 0 Zelt: gestreiftes Zelt, Heringe, Lagerfeuer
   (c, f, t) => {
     c.fillStyle = f; c.beginPath(); c.moveTo(-24, 0); c.lineTo(0, -34); c.lineTo(24, 0); c.closePath(); c.fill();
@@ -713,18 +747,143 @@ const HAUS = [
     for (let i = 0; i < 4; i++) { const ph = (t * .002 + i * .25) % 1; stern(c, -30 + i * 20, -70 + (i % 2) * 14, Math.sin(ph * Math.PI) * 4); }
   },
 ];
-const HOEHE = [-38, -46, -62, -46, -64, -76, -66, -60, -82, -82];   // Dach-Oberkante je Stufe (für die Flagge)
+// ---------- 10 neue Zwischenstufen (insgesamt 20) ----------
+const HAUS_NEU = {
+  // Hängematten-Camp: zwei Palmen, Hängematte, kleines Lagerfeuer, Rucksack
+  camp: (c, f, t) => {
+    c.save(); c.scale(.62, .62);
+    [[-34, 4], [34, 4]].forEach(([x, y]) => { c.strokeStyle = '#8a5a2b'; c.lineWidth = 7; c.lineCap = 'round'; c.beginPath(); c.moveTo(x, y); c.quadraticCurveTo(x - 4, y - 28, x + 2, y - 54); c.stroke(); c.fillStyle = '#3f9b45'; for (let i = 0; i < 6; i++) { c.save(); c.translate(x + 2, y - 54); c.rotate(i * 1.05); c.beginPath(); c.ellipse(16, 0, 18, 6, 0, 0, 7); c.fill(); c.restore(); } });
+    c.restore();
+    c.strokeStyle = f; c.lineWidth = 5; c.beginPath(); c.moveTo(-19, -24); c.quadraticCurveTo(0, -8, 19, -24); c.stroke();
+    c.strokeStyle = '#fff'; c.lineWidth = 1.5; c.beginPath(); c.moveTo(-19, -25); c.quadraticCurveTo(0, -10, 19, -25); c.stroke();
+    c.fillStyle = '#8a5a2b'; c.fillRect(-6, 6, 12, 3); c.fillStyle = `rgba(255,${140 + Math.sin(t * .02) * 40 | 0},40,.95)`; c.beginPath(); c.moveTo(-5, 6); c.quadraticCurveTo(0, -5 - Math.sin(t * .03) * 2, 5, 6); c.fill();
+    c.fillStyle = mix(f, .7); c.beginPath(); c.roundRect(14, -4, 9, 11, 3); c.fill();
+  },
+  // Fischerhütte: Holzhütte, Netz an der Wand, Fisch-Trockengestell, Ruderboot
+  fischer: (c, f) => {
+    c.fillStyle = '#9a6a3a'; c.fillRect(-22, -26, 40, 26); c.strokeStyle = 'rgba(60,35,15,.5)'; c.lineWidth = 1; for (let y = -22; y < 0; y += 4) { c.beginPath(); c.moveTo(-22, y); c.lineTo(18, y); c.stroke(); }
+    c.strokeStyle = INK; c.lineWidth = 2; c.strokeRect(-22, -26, 40, 26);
+    c.strokeStyle = 'rgba(255,255,255,.75)'; c.lineWidth = .8; for (let k = 0; k < 4; k++) { c.beginPath(); c.moveTo(-19 + k * 4, -22); c.lineTo(-19 + k * 4, -8); c.stroke(); c.beginPath(); c.moveTo(-20, -20 + k * 4); c.lineTo(-7, -20 + k * 4); c.stroke(); }
+    c.fillStyle = '#ffd23f'; c.beginPath(); c.arc(-8, -10, 2.4, 0, 7); c.fill();
+    tuer(c, 2, -18, 9, 18, f);
+    c.fillStyle = '#6b4423'; c.beginPath(); c.moveTo(-27, -24); c.lineTo(-2, -42); c.lineTo(23, -24); c.closePath(); c.fill(); c.stroke();
+    c.strokeStyle = '#6b4423'; c.lineWidth = 2; c.beginPath(); c.moveTo(22, 2); c.lineTo(22, -18); c.moveTo(34, 2); c.lineTo(34, -18); c.moveTo(21, -16); c.lineTo(35, -16); c.stroke();
+    c.fillStyle = '#9aa6a0'; for (let k = 0; k < 3; k++) { c.beginPath(); c.ellipse(25 + k * 4, -11, 1.6, 4, 0, 0, 7); c.fill(); }
+    c.fillStyle = f; c.beginPath(); c.ellipse(-30, 6, 11, 4, 0, 0, 7); c.fill(); c.strokeStyle = INK; c.lineWidth = 1; c.stroke();
+  },
+  // Baumhaus: dicker Stamm, große Krone, Holzhäuschen, Leiter, Schaukel
+  baumhaus: (c, f, t) => {
+    c.fillStyle = '#7a4a24'; c.beginPath(); c.moveTo(-9, 4); c.quadraticCurveTo(-6, -30, -10, -46); c.lineTo(10, -46); c.quadraticCurveTo(6, -30, 9, 4); c.closePath(); c.fill();
+    c.fillStyle = '#3f9b45'; [[-24, -62, 18], [22, -62, 18], [0, -74, 22], [-10, -54, 16], [12, -54, 16]].forEach(([x, y, r]) => { c.beginPath(); c.arc(x, y, r, 0, 7); c.fill(); });
+    c.fillStyle = '#57b85a'; c.beginPath(); c.arc(-6, -78, 10, 0, 7); c.arc(18, -66, 8, 0, 7); c.fill();
+    c.fillStyle = '#c8935a'; c.fillRect(-17, -58, 34, 20); c.strokeStyle = INK; c.lineWidth = 2; c.strokeRect(-17, -58, 34, 20);
+    c.fillStyle = '#b07a45'; c.fillRect(-22, -40, 44, 4); fenster(c, -12, -54, 8, 8, '#8a5a2b'); tuer(c, 4, -53, 8, 14, f);
+    c.fillStyle = f; c.beginPath(); c.moveTo(-21, -56); c.lineTo(0, -70); c.lineTo(21, -56); c.closePath(); c.fill(); c.stroke();
+    c.strokeStyle = '#8a5a2b'; c.lineWidth = 1.5; c.beginPath(); c.moveTo(-20, -36); c.lineTo(-20, 4); c.moveTo(-14, -36); c.lineTo(-14, 4); for (let y = -32; y < 4; y += 6) { c.moveTo(-20, y); c.lineTo(-14, y); } c.stroke();
+    const sw = Math.sin(t * .003) * 4; c.beginPath(); c.moveTo(14, -36); c.lineTo(16 + sw, -6); c.moveTo(22, -36); c.lineTo(24 + sw, -6); c.stroke(); c.fillStyle = '#8a5a2b'; c.fillRect(14 + sw, -7, 11, 3);
+  },
+  // Surferhütte: bunte Holzbude, drei Surfbretter, Außendusche, Wimpel
+  surfer: (c, f) => {
+    c.fillStyle = '#7fe0c8'; c.fillRect(-24, -30, 44, 30); c.strokeStyle = 'rgba(42,27,18,.2)'; c.lineWidth = 1; for (let x = -20; x < 20; x += 5) { c.beginPath(); c.moveTo(x, -30); c.lineTo(x, 0); c.stroke(); }
+    c.strokeStyle = INK; c.lineWidth = 2; c.strokeRect(-24, -30, 44, 30);
+    fenster(c, -18, -24, 12, 10); tuer(c, 4, -20, 10, 20, f);
+    c.fillStyle = f; c.beginPath(); c.moveTo(-28, -28); c.lineTo(-2, -46); c.lineTo(24, -28); c.closePath(); c.fill(); c.stroke();
+    ['#ffd23f', '#ff6fa3', '#3fa0e8'].forEach((col, k) => { c.save(); c.translate(24 + k * 6, -14); c.rotate(.12); c.fillStyle = col; c.beginPath(); c.ellipse(0, 0, 3.5, 15, 0, 0, 7); c.fill(); c.strokeStyle = INK; c.lineWidth = 1; c.stroke(); c.fillStyle = '#fff'; c.fillRect(-.6, -13, 1.2, 26); c.restore(); });
+    c.strokeStyle = '#9aa6a0'; c.lineWidth = 2; c.beginPath(); c.moveTo(-32, 2); c.lineTo(-32, -26); c.lineTo(-27, -26); c.stroke(); c.fillStyle = '#9aa6a0'; c.beginPath(); c.arc(-27, -24, 2.5, 0, 7); c.fill();
+    c.fillStyle = '#e8433c'; for (let k = 0; k < 4; k++) { c.beginPath(); c.moveTo(-20 + k * 10, -46 + k * 4.5); c.lineTo(-15 + k * 10, -46 + k * 4.5); c.lineTo(-17.5 + k * 10, -41 + k * 4.5); c.fill(); }
+  },
+  // Leuchtturmhaus: Häuschen mit rot-weißem Leuchtturm, drehender Lichtkegel
+  leuchtturm: (c, f, t) => {
+    c.fillStyle = '#fffaf0'; c.fillRect(-30, -28, 36, 28); c.strokeStyle = INK; c.lineWidth = 2; c.strokeRect(-30, -28, 36, 28);
+    fenster(c, -25, -22, 10, 10); tuer(c, -10, -18, 10, 18, f);
+    c.fillStyle = f; c.beginPath(); c.moveTo(-34, -26); c.lineTo(-12, -42); c.lineTo(10, -26); c.closePath(); c.fill(); c.stroke();
+    c.save(); c.beginPath(); c.moveTo(8, 0); c.lineTo(12, -64); c.lineTo(24, -64); c.lineTo(28, 0); c.closePath(); c.clip();
+    for (let k = 0; k < 6; k++) { c.fillStyle = k % 2 ? '#fff' : '#e8433c'; c.fillRect(6, -k * 11 - 11, 24, 11); } c.restore();
+    c.strokeStyle = INK; c.lineWidth = 2; c.beginPath(); c.moveTo(8, 0); c.lineTo(12, -64); c.lineTo(24, -64); c.lineTo(28, 0); c.stroke();
+    c.fillStyle = '#ffe9a8'; c.fillRect(11, -74, 14, 10); c.strokeRect(11, -74, 14, 10); c.fillStyle = '#e8433c'; c.beginPath(); c.moveTo(9, -74); c.lineTo(18, -84); c.lineTo(27, -74); c.closePath(); c.fill(); c.stroke();
+    const w = t * .0015, g = c.createLinearGradient(18, -69, 18 + Math.cos(w) * 60, -69 + Math.sin(w) * 14); g.addColorStop(0, 'rgba(255,240,170,.7)'); g.addColorStop(1, 'rgba(255,240,170,0)');
+    c.fillStyle = g; c.beginPath(); c.moveTo(18, -69); c.lineTo(18 + Math.cos(w - .12) * 60, -69 + Math.sin(w - .12) * 14); c.lineTo(18 + Math.cos(w + .12) * 60, -69 + Math.sin(w + .12) * 14); c.closePath(); c.fill();
+  },
+  // Poolhaus: modernes Haus, großer Pool davor, Liegen, Schirm
+  poolhaus: (c, f) => {
+    c.fillStyle = '#fff'; c.beginPath(); c.roundRect(-38, -2, 76, 14, 4); c.fill(); c.fillStyle = '#3fa0e8'; c.beginPath(); c.roundRect(-34, 0, 50, 10, 3); c.fill(); c.fillStyle = 'rgba(255,255,255,.5)'; c.fillRect(-28, 3, 18, 2);
+    c.fillStyle = '#fff'; c.fillRect(20, 1, 6, 9); c.fillRect(29, 1, 6, 9); c.fillStyle = f; c.fillRect(21, 2, 4, 7); c.fillRect(30, 2, 4, 7);
+    c.fillStyle = '#f4f1e8'; c.fillRect(-32, -42, 60, 40); c.strokeStyle = INK; c.lineWidth = 2; c.strokeRect(-32, -42, 60, 40);
+    c.fillStyle = '#9fe3f0'; c.fillRect(-28, -34, 26, 30); c.strokeStyle = '#33313b'; c.lineWidth = 1.2; c.strokeRect(-28, -34, 26, 30); c.beginPath(); c.moveTo(-15, -34); c.lineTo(-15, -4); c.stroke();
+    fenster(c, 4, -34, 18, 12, '#fff'); tuer(c, 6, -18, 10, 16, '#6b4423');
+    c.fillStyle = f; c.fillRect(-36, -48, 68, 7); c.strokeStyle = INK; c.lineWidth = 2; c.strokeRect(-36, -48, 68, 7);
+    c.strokeStyle = '#6b4423'; c.lineWidth = 1.5; c.beginPath(); c.moveTo(30, 6); c.lineTo(30, -18); c.stroke(); c.fillStyle = '#ff6fa3'; c.beginPath(); c.ellipse(30, -19, 12, 4.5, 0, Math.PI, 0); c.fill();
+  },
+  // Glasvilla: Glaswürfel mit Spiegelungen, Dachgarten, Steg
+  glasvilla: (c, f) => {
+    const g = c.createLinearGradient(-36, -54, 36, 0); g.addColorStop(0, '#bfeefa'); g.addColorStop(.5, '#7fd3ea'); g.addColorStop(1, '#a6e6f5');
+    c.fillStyle = g; c.fillRect(-36, -50, 72, 50); c.strokeStyle = '#33313b'; c.lineWidth = 2.5; c.strokeRect(-36, -50, 72, 50);
+    c.lineWidth = 1.2; for (let x = -24; x < 36; x += 12) { c.beginPath(); c.moveTo(x, -50); c.lineTo(x, 0); c.stroke(); } c.beginPath(); c.moveTo(-36, -25); c.lineTo(36, -25); c.stroke();
+    c.fillStyle = 'rgba(255,255,255,.55)'; [[-34, -10, -20, -48], [-8, -12, 4, -48], [16, -14, 26, -48]].forEach(([a, b, d, e]) => { c.beginPath(); c.moveTo(a, b); c.lineTo(d, e); c.lineTo(d + 6, e); c.lineTo(a + 6, b); c.fill(); });
+    c.fillStyle = '#e8e0d0'; c.fillRect(-40, -56, 80, 6); c.strokeStyle = INK; c.lineWidth = 2; c.strokeRect(-40, -56, 80, 6);
+    c.fillStyle = '#57b85a'; [-30, -16, 16, 30].forEach(x => { c.beginPath(); c.arc(x, -60, 6, 0, 7); c.fill(); }); c.fillStyle = f; c.beginPath(); c.arc(-23, -61, 2.5, 0, 7); c.arc(23, -61, 2.5, 0, 7); c.fill();
+    c.fillStyle = '#b07a45'; c.fillRect(-12, 0, 24, 6); tuer(c, -5, -20, 10, 20, f);
+  },
+  // Inselvilla mit Hubschrauberlandeplatz
+  inselvilla: (c, f, t) => {
+    c.fillStyle = '#fffaf0'; c.fillRect(-40, -40, 80, 40); c.strokeStyle = INK; c.lineWidth = 2; c.strokeRect(-40, -40, 80, 40);
+    for (let k = 0; k < 4; k++) fenster(c, -34 + k * 18, -32, 12, 12, '#e0b43a');
+    tuer(c, -6, -18, 12, 18, '#e0b43a');
+    c.fillStyle = '#9aa6a0'; c.fillRect(-44, -48, 88, 8); c.strokeStyle = INK; c.strokeRect(-44, -48, 88, 8);
+    c.fillStyle = '#555'; c.beginPath(); c.ellipse(0, -55, 30, 9, 0, 0, 7); c.fill(); c.strokeStyle = GELB; c.lineWidth = 1.5; c.beginPath(); c.ellipse(0, -55, 24, 7, 0, 0, 7); c.stroke();
+    c.fillStyle = '#fff'; c.font = `900 9px ${FONT}`; c.textAlign = 'center'; c.textBaseline = 'alphabetic'; c.fillText('H', -14, -52);
+    c.fillStyle = f; c.beginPath(); c.ellipse(6, -62, 11, 6, 0, 0, 7); c.fill(); c.strokeStyle = INK; c.lineWidth = 1.2; c.stroke(); c.fillStyle = '#9fe3f0'; c.beginPath(); c.ellipse(0, -63, 4, 3, 0, 0, 7); c.fill();
+    c.strokeStyle = f; c.lineWidth = 2; c.beginPath(); c.moveTo(16, -62); c.lineTo(24, -66); c.stroke();
+    const r = t * .02; c.strokeStyle = 'rgba(42,27,18,.7)'; c.lineWidth = 1.6; c.beginPath(); c.moveTo(6 - Math.cos(r) * 16, -69 - Math.sin(r) * 3); c.lineTo(6 + Math.cos(r) * 16, -69 + Math.sin(r) * 3); c.stroke();
+    c.strokeStyle = INK; c.lineWidth = 1; c.beginPath(); c.moveTo(6, -68); c.lineTo(6, -66); c.stroke(); c.beginPath(); c.moveTo(-2, -56); c.lineTo(14, -56); c.stroke();
+  },
+  // Korallenpalast: korallenrosa Palast, Korallen-Türme, türkise Kuppeln, Muschel-Ornamente
+  korallen: (c, f, t) => {
+    c.fillStyle = '#efe6d6'; for (let i = 0; i < 3; i++) c.fillRect(-14 + i * 2, -4 + i * 3, 28 - i * 4, 3);
+    c.fillStyle = '#ffb3a7'; c.fillRect(-36, -44, 72, 40); c.strokeStyle = INK; c.lineWidth = 2; c.strokeRect(-36, -44, 72, 40);
+    for (let i = 0; i < 5; i++) { c.fillStyle = '#9fe3f0'; c.beginPath(); c.roundRect(-31 + i * 13, -36, 8, 14, [4, 4, 0, 0]); c.fill(); c.strokeStyle = '#fff'; c.lineWidth = 1.2; c.stroke(); }
+    tuer(c, -6, -18, 12, 14, '#2fb3a0');
+    [-44, 32].forEach((x, k) => {
+      c.fillStyle = '#ff7f6e'; c.beginPath(); c.moveTo(x, -2); c.lineTo(x + 2, -40); c.lineTo(x - 4, -52); c.lineTo(x + 3, -48); c.lineTo(x + 6, -62); c.lineTo(x + 9, -48); c.lineTo(x + 16, -52); c.lineTo(x + 10, -40); c.lineTo(x + 12, -2); c.closePath(); c.fill(); c.strokeStyle = INK; c.lineWidth = 1.5; c.stroke();
+    });
+    c.fillStyle = '#2fb3a0'; c.beginPath(); c.arc(0, -44, 16, Math.PI, 0); c.fill(); c.strokeStyle = INK; c.lineWidth = 2; c.stroke();
+    c.fillStyle = '#7fe0c8'; c.beginPath(); c.arc(-4, -50, 5, 0, 7); c.fill();
+    c.fillStyle = '#ffd3e2'; for (let k = 0; k < 3; k++) { c.beginPath(); c.arc(-20 + k * 20, -46, 4, Math.PI, 0); c.fill(); }
+    c.fillStyle = GELB; c.beginPath(); c.arc(0, -62, 3, 0, 7); c.fill();
+  },
+  // Perlenschloss: Perlweißes Schloss, Türme mit Perlen, Gold, Glitzer
+  perlen: (c, f, t) => {
+    c.fillStyle = '#efe6d6'; c.fillRect(-18, -4, 36, 6);
+    const pg = c.createLinearGradient(-40, -60, 40, 0); pg.addColorStop(0, '#ffffff'); pg.addColorStop(.5, '#f3ecf8'); pg.addColorStop(1, '#e8f6f7');
+    c.fillStyle = pg; c.fillRect(-36, -40, 72, 38); c.strokeStyle = '#c99a2e'; c.lineWidth = 2.5; c.strokeRect(-36, -40, 72, 38);
+    for (let i = 0; i < 4; i++) { c.fillStyle = '#c9b8ef'; c.beginPath(); c.roundRect(-28 + i * 15 + (i > 1 ? 4 : 0), -34, 8, 13, [4, 4, 0, 0]); c.fill(); }
+    tuer(c, -7, -20, 14, 18, '#c99a2e');
+    [[-46, 70], [-20, 54], [12, 54], [36, 70]].forEach(([x, h]) => {
+      c.fillStyle = pg; c.fillRect(x, -h, 12, h - 2); c.strokeStyle = '#c99a2e'; c.lineWidth = 2; c.strokeRect(x, -h, 12, h - 2);
+      c.fillStyle = '#e0b43a'; c.beginPath(); c.moveTo(x - 2, -h); c.lineTo(x + 6, -h - 12); c.lineTo(x + 14, -h); c.closePath(); c.fill();
+      const pe = c.createRadialGradient(x + 4, -h - 18, 1, x + 6, -h - 16, 6); pe.addColorStop(0, '#fff'); pe.addColorStop(1, '#d6cbea');
+      c.fillStyle = pe; c.beginPath(); c.arc(x + 6, -h - 16, 5, 0, 7); c.fill();
+    });
+    for (let i = 0; i < 5; i++) { const ph = (t * .002 + i * .2) % 1; stern(c, -40 + i * 20, -60 + (i % 2) * 16, Math.sin(ph * Math.PI) * 4.5); }
+  },
+};
+// 20 Stufen: Zelt → Hängematten-Camp → Strohhütte → Fischerhütte → Stelzenhütte → Baumhaus → Bungalow → Surferhütte → Strandhaus → Leuchtturmhaus
+//           → Ferienhaus → Poolhaus → Villa → Glasvilla → Luxusvilla → Inselvilla → Strandpalast → Korallenpalast → Muschelschloss → Perlenschloss
+const A = HAUS_ALT, N = HAUS_NEU;
+const HAUS = [A[0], N.camp, A[1], N.fischer, A[2], N.baumhaus, A[3], N.surfer, A[4], N.leuchtturm, A[5], N.poolhaus, A[6], N.glasvilla, A[7], N.inselvilla, A[8], N.korallen, A[9], N.perlen];
+const HOEHE = [-38, -40, -46, -42, -62, -86, -46, -46, -64, -84, -76, -48, -66, -66, -60, -70, -82, -62, -82, -88];   // Dach-Oberkante je Stufe (für die Flagge)
+
 
 function haus(p, pl, t) {
   const c = X, f = p.farbe || FARBEN[p.platz % FARBEN.length], st = Math.min(p.stufe, HAUS.length - 1), a = p.anbauten || [];
   const seit = pop[p.id] ? t - pop[p.id] : 9999, hops = seit < 700 ? 1 + Math.sin(seit / 700 * Math.PI) * .3 : 1;
   c.save(); c.translate(pl.x, pl.y);
   // Grundstück-Deko: ab Bungalow eigener Rasen mit Hecke, Weg zur Straße
-  if (st >= 3) { c.fillStyle = 'rgba(70,150,50,.35)'; c.beginPath(); c.roundRect(-pl.w / 2 + 4, -pl.h * .78 + 4, pl.w - 8, pl.h - 8, 6); c.fill(); }
+  if (st >= 6) { c.fillStyle = 'rgba(70,150,50,.35)'; c.beginPath(); c.roundRect(-pl.w / 2 + 4, -pl.h * .78 + 4, pl.w - 8, pl.h - 8, 6); c.fill(); }
   c.fillStyle = '#efd9a0'; c.fillRect(-3, 0, 6, pl.h * .22 + 4);
   if (a.includes('garten')) { c.fillStyle = '#6b4423'; c.beginPath(); c.roundRect(-34, 2, 22, 8, 3); c.fill(); blumen(c, -32, 5, 5, 20); }
-  if (a.includes('pool') && st < 6) { c.fillStyle = '#fff'; c.beginPath(); c.roundRect(14, 1, 22, 11, 3); c.fill(); c.fillStyle = '#3fa0e8'; c.beginPath(); c.roundRect(16, 3, 18, 7, 2); c.fill(); }
-  c.fillStyle = 'rgba(0,0,0,.18)'; c.beginPath(); c.ellipse(4, 3, 28 + st * 1.5, 7, 0, 0, 7); c.fill();
+  if (a.includes('pool') && st < 11) { c.fillStyle = '#fff'; c.beginPath(); c.roundRect(14, 1, 22, 11, 3); c.fill(); c.fillStyle = '#3fa0e8'; c.beginPath(); c.roundRect(16, 3, 18, 7, 2); c.fill(); }
+  c.fillStyle = 'rgba(0,0,0,.18)'; c.beginPath(); c.ellipse(4, 3, 28 + st * .8, 7, 0, 0, 7); c.fill();
   c.scale(hops, hops); c.lineJoin = 'round';
   if (!(bau[p.id] && bauZeichnen(c, p, f, t, bau[p.id]))) HAUS[st](c, f, t + p.platz * 137);
   if (a.includes('flagge')) { const h = HOEHE[st]; c.strokeStyle = INK; c.lineWidth = 1.5; c.beginPath(); c.moveTo(-2, h); c.lineTo(-2, h - 14); c.stroke(); c.fillStyle = f; c.beginPath(); c.moveTo(-2, h - 14); c.lineTo(9 + Math.sin(t * .006) * 2, h - 11); c.lineTo(-2, h - 8); c.fill(); }
@@ -866,7 +1025,7 @@ function meerTier(t, art, q) {
 // ---------- Bildschirm-Effekte (Sturm, Party, Regen …) ----------
 function eventBildschirm(t) {
   const e = S.event, id = e?.id;
-  X.setTransform(1, 0, 0, 1, 0, 0);
+  X.setTransform(Q0, 0, 0, Q0, 0, 0);
   if (id === 'sturmflut') {
     X.fillStyle = 'rgba(30,40,70,.28)'; X.fillRect(0, 0, W, H);
     X.strokeStyle = 'rgba(200,220,255,.5)'; X.lineWidth = 2; for (let i = 0; i < 120; i++) { const x = (i * 97 + t * .9) % 1300 - 100, y = (i * 211 + t * 1.6) % 2000; X.beginPath(); X.moveTo(x, y); X.lineTo(x - 10, y + 26); X.stroke(); }
@@ -893,7 +1052,7 @@ function showsZeichnen(t) {
     const zeichen = { herzregen: '💖', muschelkonfetti: '🐚', seifenblasen: '🫧', megashow: '⭐', goldregen: '✨' }[s.art];
     if (Math.random() < .5) fx.push({ x: s.pl.x + (Math.random() - .5) * 60, y: s.pl.y - 20, vx: (Math.random() - .5) * 3, vy: -3 - Math.random() * 4, t, z: zeichen, s: 18 + Math.random() * 16 });
   }
-  X.setTransform(1, 0, 0, 1, 0, 0);
+  X.setTransform(Q0, 0, 0, Q0, 0, 0);
   const ein = Math.min(1, age * 3, (D - age) * 3);
   if (s.art === 'delfin') {                                       // Delfin springt mit Banner über das Bild
     const x = -150 + q * (W + 300), y = 1180 - Math.sin(q * Math.PI) * 420;
@@ -950,7 +1109,7 @@ function schild(x, y, oben, unten, farbe, a, w = 620) {
 // Alle Texte und Balken bleiben deshalb in x 120–960, ab y 330.
 const SL = 120, SR = 960, SB = SR - SL, OBEN = 330;
 function kopf(t) {
-  X.setTransform(1, 0, 0, 1, 0, 0);
+  X.setTransform(Q0, 0, 0, Q0, 0, 0);
   // Logo wie auf muscheltal.de
   X.save(); X.translate(SL, OBEN); X.rotate(-2 * Math.PI / 180);
   karte(0, 0, 474, 92, GELB);
@@ -960,9 +1119,8 @@ function kopf(t) {
   X.restore();
   // Muschelkasse der Live-Insel
   karte(612, OBEN, SR - 612, 92, '#fff', 999);
-  text('🐚 ' + (S.kasse || 0).toLocaleString('de-DE'), 786, OBEN + 30, 36, INK, 'center', 900, 300);
-  text('Muschelkasse Live-Insel', 786, OBEN + 60, 17, INK, 'center', 900, 300);
-  text('Like 1 · Coin 1 · Folgen 5 · Teilen 2', 786, OBEN + 79, 13, '#8a5a2b', 'center', 800, 300);
+  text('🐚 ' + (S.kasse || 0).toLocaleString('de-DE'), 786, OBEN + 36, 38, INK, 'center', 900, 300);
+  text('Like = 1 · Teilen = 2 · Folgen = 5', 786, OBEN + 72, 18, '#8a5a2b', 'center', 900, 310);
   // Nächstes Bauprojekt der Haupt-Insel
   const z = S.ziel, bw = S.bewohner || 0, y2 = OBEN + 116;
   karte(SL, y2, SB, 92, '#fff', 30);
@@ -979,25 +1137,29 @@ function kopf(t) {
   // Laufendes Event / Ergebnis, sonst Infos (wechselnd) + Countdown zum nächsten Event
   const y3 = y2 + 114, ep = eventPanel(t, y3);
   if (ep) return ep;
-  const seiten = S.projekt ? 3 : 2;
+  const seiten = S.projekt ? 4 : 3;
   if (t - seiteSeit > 7000) { seite = (seite + 1) % seiten; seiteSeit = t; }
   const lw = 540;
   karte(SL, y3, lw, 112, '#fff3c4', 28);
-  if (seite === 2 && S.projekt) {
+  if (seite === 3 && S.projekt) {
     const pr = S.projekt;
     text(`🏗️ Wir bauen: ${pr.name}`, SL + 22, y3 + 28, 23, INK, 'left', 900, lw - 44);
     X.fillStyle = 'rgba(42,27,18,.1)'; rr(SL + 22, y3 + 48, lw - 44, 20, 10); X.fill();
     X.fillStyle = GELB; rr(SL + 22, y3 + 48, Math.max(20, (lw - 44) * pr.stand / pr.ziel), 20, 10); X.fill();
     X.strokeStyle = INK; X.lineWidth = 3; rr(SL + 22, y3 + 48, lw - 44, 20, 10); X.stroke();
     text(`${Math.floor(pr.stand).toLocaleString('de-DE')} / ${pr.ziel.toLocaleString('de-DE')} 🐚 aus der Muschelkasse`, SL + 22, y3 + 88, 16, '#8a5a2b', 'left', 800, lw - 44);
+  } else if (seite === 2) {
+    [['🎁', 'Geschenk: 1 Coin = 1 Muschel fürs Haus'], ['✨', 'Jedes Geschenk bekommt eine Show'], ['🏠', 'Folgen = deine Hütte hier + in Muschel-Tal']].forEach(([i, s], k) => {
+      text(i, SL + 18, y3 + 28 + k * 29, 20, INK, 'left', 400); text(s, SL + 54, y3 + 28 + k * 29, 18, INK, 'left', 800, lw - 74);
+    });
   } else if (seite === 1) {
-    text('🏆 Größte Häuser', SL + 22, y3 + 24, 20, INK, 'left', 900, lw - 44);
-    [...S.spieler].sort((x, y) => y.muscheln - x.muscheln).slice(0, 3).forEach((p, k) => {
+    text('🏆 Beste Häuser', SL + 22, y3 + 24, 20, INK, 'left', 900, lw - 44);
+    [...S.spieler].sort((a, b) => b.stufe - a.stufe || (b.eventMuscheln || 0) - (a.eventMuscheln || 0) || b.muscheln - a.muscheln).slice(0, 3).forEach((p, k) => {
       const y = y3 + 52 + k * 22; text(`${k + 1}. ${p.name}`, SL + 22, y, 17, INK, 'left', 800, lw - 200); text(S.stufen[p.stufe] || '', SL + lw - 22, y, 15, '#8a5a2b', 'right', 900, 160);
     });
   } else {
-    [['❤️', 'Liken = Haus wächst'], ['💬', 'pool · garten · boot · palme · rot …'], ['🎁', '1 Coin = 1 Muschel']].forEach(([i, s], k) => {
-      text(i, SL + 18, y3 + 28 + k * 29, 20, INK, 'left', 400); text(s, SL + 54, y3 + 28 + k * 29, 19, INK, 'left', 800, lw - 74);
+    [['❤️', 'Liken = dein Haus wächst'], ['💬', 'Schreib „pool“, „garten“ oder „boot“ = Anbau'], ['🎨', 'Schreib eine Farbe, z. B. „rot“ = neue Farbe']].forEach(([i, s], k) => {
+      text(i, SL + 18, y3 + 28 + k * 29, 20, INK, 'left', 400); text(s, SL + 54, y3 + 28 + k * 29, 18, INK, 'left', 800, lw - 74);
     });
   }
   countdownKarte(SL + lw + 18, y3, SR - SL - lw - 18, 112, t);
@@ -1017,7 +1179,7 @@ function effekte(t) {
   X.globalAlpha = 1;
 }
 function overlay(t) {
-  X.setTransform(1, 0, 0, 1, 0, 0);
+  X.setTransform(Q0, 0, 0, Q0, 0, 0);
   if (banner.length > 6) banner.splice(1, banner.length - 6);
   const showLaeuft = SHOWS[0]?.t && SHOWS[0].coins >= 10;            // große Geschenk-Show hat Vorrang
   if (showLaeuft && banner[0]) banner[0].t = 0;
@@ -1046,8 +1208,26 @@ function overlay(t) {
   if (S.test) text('TEST-MODUS', SR, OBEN - 18, 18, 'rgba(255,255,255,.8)', 'right', 900);
 }
 
-let tLetzt = 0;
+// ---------- Zwischenspeicher (spart viel Rechenleistung) ----------
+// Häuser: in der Übersicht als ein fertiges Bild, neu gezeichnet nur wenn sich etwas ändert (höchstens 1× pro Sekunde).
+let HC = null, HC_BOX = null, HC_SIG = '', hcGeprueft = 0, hcGebaut = 0;
+const hausLive = (p, t) => bau[p.id] || (pop[p.id] && t - pop[p.id] < 700);
+function hausSignatur(t) { let s = K + ':'; for (const p of S.spieler) s += p.platz + '.' + p.stufe + (p.farbe || '') + p.anbauten.length + p.name.length + (hausLive(p, t) ? 'L' : '') + '|'; return s; }
+function hausCacheBauen(t) {
+  const B = BASIS_BOX, hq = Math.min(1, Math.max(.45, zUebersicht() * Q0 * 1.6)), w = Math.ceil(B.w * hq), h = Math.ceil(B.h * hq);
+  if (!HC || HC.width !== w || HC.height !== h) { HC = document.createElement('canvas'); HC.width = w; HC.height = h; }
+  const hx = HC.getContext('2d'); hx.setTransform(1, 0, 0, 1, 0, 0); hx.clearRect(0, 0, w, h); hx.setTransform(hq, 0, 0, hq, -B.x * hq, -B.y * hq);
+  const echt = X; X = hx;
+  S.spieler.map(p => [p, platzVon(p)]).filter(([p, pl]) => pl && !hausLive(p, t)).sort((a, b) => a[1].y - b[1].y).forEach(([p, pl]) => haus(p, pl, t));
+  X = echt; HC_BOX = B; hcGebaut = t;
+}
+// Kopfzeile: 10× pro Sekunde neu (bei Krabbenrennen/Glücksrad jedes Bild)
+let KC = null, KX = null, kopfZeit = 0;
+let tLetzt = 0, frameZeit = 0;
 function bild(t) {
+  requestAnimationFrame(bild);
+  if (t - frameZeit < 1000 / FPS - 3) return;                      // höchstens 30 Bilder pro Sekunde
+  frameZeit = t;
   const dt = Math.min(100, t - (tLetzt || t)); tLetzt = t;
   meer(t); kamera(t); meerLeben(t);
   if (BASIS) {
@@ -1060,22 +1240,32 @@ function bild(t) {
       if (q >= 1) { WACHS = null; ALT = null; }
     } else X.drawImage(BASIS, BASIS_BOX.x, BASIS_BOX.y, BASIS_BOX.w, BASIS_BOX.h);
   }
-  platz(t);
+  platzZeichnen(t);
   lebenZeichnen(t, dt);
-  S.spieler.map(p => [p, platzVon(p)]).filter(([p, pl]) => pl && sichtbar(pl.x, pl.y, 90)).sort((a, b) => a[1].y - b[1].y).forEach(([p, pl]) => haus(p, pl, t));
+  if (cam.z < 1.15 && BASIS) {                                     // Übersicht: Häuser aus dem Zwischenspeicher
+    if (t - hcGeprueft > 250) { hcGeprueft = t; const sig = hausSignatur(t); if (sig !== HC_SIG && (t - hcGebaut > 1000 || !HC)) { HC_SIG = sig; hausCacheBauen(t); } }
+    if (HC) X.drawImage(HC, HC_BOX.x, HC_BOX.y, HC_BOX.w, HC_BOX.h);
+    S.spieler.filter(p => hausLive(p, t)).map(p => [p, platzVon(p)]).filter(([, pl]) => pl).forEach(([p, pl]) => haus(p, pl, t));
+  } else S.spieler.map(p => [p, platzVon(p)]).filter(([p, pl]) => pl && sichtbar(pl.x, pl.y, 90)).sort((a, b) => a[1].y - b[1].y).forEach(([p, pl]) => haus(p, pl, t));
   eventWelt(t);
   nachtZeichnen(t);
   moewen(t); effekte(t);
   eventBildschirm(t); showsZeichnen(t);
-  X.setTransform(1, 0, 0, 1, 0, 0);
-  if (!tonAn) { if (!bild.versuch || t - bild.versuch > 3000) { bild.versuch = t; tonStarten(); } if (!PARAM.has('still')) text('🔊 Einmal ins Bild klicken für Musik', 540, 1840, 22, 'rgba(255,255,255,.85)', 'center', 900); }
+  X.setTransform(Q0, 0, 0, Q0, 0, 0);
+  if (tonRolle && !(tonAn && AC && AC.state === 'running')) { if (!bild.versuch || t - bild.versuch > 3000) { bild.versuch = t; tonStarten(); } text('🔊 Einmal ins Bild klicken für Ton', 540, 1840, 22, 'rgba(255,255,255,.85)', 'center', 900); }
   tonLautstaerke();
   const warten = S.spieler.length - ANZAHL; if (warten > 0 && BASIS) text(`+ ${warten} warten auf ein Grundstück`, 540, 1880, 20, '#fff', 'center', 900);
-  KOPF_UNTEN = kopf(t); overlay(t);
-  requestAnimationFrame(bild);
+  if (!KC) { KC = document.createElement('canvas'); KC.width = C.width; KC.height = Math.ceil(1200 * Q0); KX = KC.getContext('2d'); }
+  if (t - kopfZeit > 100 || (S.event && (S.event.rennen || S.event.rad))) {
+    kopfZeit = t; const echt = X; X = KX; X.setTransform(1, 0, 0, 1, 0, 0); X.clearRect(0, 0, KC.width, KC.height);
+    KOPF_UNTEN = kopf(t); X = echt;
+  }
+  X.setTransform(1, 0, 0, 1, 0, 0); X.drawImage(KC, 0, 0);
+  overlay(t);
 }
 verbinde();
 requestAnimationFrame(bild);
+
 </script>
 </body>
 </html>

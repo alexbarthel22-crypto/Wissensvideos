@@ -40,6 +40,7 @@ function namenPruefen() {                                  // auch für Bewohner
 namenPruefen(); setInterval(namenPruefen, 30000);
 
 const stufeVon = m => { let i = 0; CFG.stufen.forEach((s, k) => { if (m >= s.ab) i = k; }); return i; };
+for (const p of Object.values(S.spieler)) p.stufe = stufeVon(p.muscheln);   // nach Änderung der Stufen
 
 function spieler(u) {
   const id = String(u.uniqueId || '').toLowerCase();
@@ -68,8 +69,9 @@ function gibMuscheln(p, n, grund) {
   zustand();
 }
 
-const dativ = n => (/^(Strohhütte|Stelzenhütte|Villa|Luxusvilla)$/.test(n) ? 'einer ' : 'einem ') + n;
-const artikel = n => (/^(Strohhütte|Stelzenhütte|Villa|Luxusvilla)$/.test(n) ? 'eine ' : /^(Bungalow|Strandpalast)$/.test(n) ? 'einen ' : 'ein ') + n;
+const WEIBLICH = /(hütte|villa|Inselvilla mit Hubschrauberlandeplatz)$/i, MAENNLICH = /^(Bungalow|Strandpalast|Korallenpalast)$/;
+const dativ = n => (WEIBLICH.test(n) ? 'einer ' : 'einem ') + n;
+const artikel = n => (WEIBLICH.test(n) ? 'eine ' : MAENNLICH.test(n) ? 'einen ' : 'ein ') + n;
 // Namen für die Stimme lesbar machen: "lena_xx.22" -> "lena xx"
 const sprechName = p => p.name.replace(/^@/, '').replace(/[._]+/g, ' ').replace(/\d{3,}/g, '').trim() || 'Neuer Bewohner';
 
@@ -196,6 +198,7 @@ function belohne(p, n, extra) {
   if (!p) return;
   if (extra?.farbe) { p.farbe = extra.farbe; sende({ typ: 'farbe', id: p.id }); }
   if (extra?.anbau && !p.anbauten.includes(extra.anbau)) { p.anbauten.push(extra.anbau); sende({ typ: 'anbau', id: p.id, was: extra.anbau }); }
+  p.eventMuscheln = (p.eventMuscheln || 0) + n;
   gibMuscheln(p, n, 'event');
 }
 const EV = macheEvents({
@@ -238,7 +241,7 @@ function weiter() {
   const { text } = warte.shift(); spricht = true; gesprochen.push(Date.now());
   sende({ typ: 'ansage', text, ms: dauerMs(text) });
   if (!ECHT) { setTimeout(fertig, dauerMs(text)); return; }
-  const aufSeite = CFG.stimme.wiedergabe !== 'mac' && seiteHatTon();
+  const aufSeite = CFG.stimme.wiedergabe !== 'mac' && seiteHatTon() && Date.now() > stimmeFehlerBis;
   const datei = path.join(TON_DIR, `s${++tonNr % 20}.wav`);
   const args = ['-v', stimme, '-r', String(CFG.stimme.tempo)];
   if (aufSeite) args.push('-o', datei, '--file-format=WAVE', '--data-format=LEI16@22050');
@@ -248,7 +251,7 @@ function weiter() {
   pr.on('close', code => {
     if (aufSeite && code === 0) {                      // Seite spielt ab; warten, bis die Ansage vorbei ist
       let ms = 2000; try { ms = (fs.statSync(datei).size - 44) / 44.1 + 300; } catch {}
-      sende({ typ: 'stimme', url: '/ton/' + path.basename(datei) + '?' + Date.now() });
+      sende({ typ: 'stimme', id: tonSeite, url: '/ton/' + path.basename(datei) + '?' + Date.now() });
       setTimeout(fertig, ms);
       return;
     }
@@ -262,8 +265,16 @@ function weiter() {
 
 // ---------- Ton-Absicherung ----------
 // Läuft auf keiner Live-Seite Ton (Browser blockiert ihn), spielen Stimme und Musik direkt über die Mac-Lautsprecher.
-let tonOkSeit = 0, lokalMusik = null, lokalNr = 0;
-const seiteHatTon = () => Date.now() - tonOkSeit < 12000;
+let lokalMusik = null, lokalNr = 0, tonSeite = null, stimmeFehlerBis = 0;
+const tonStatus = new Map();                               // Seiten-Nr. -> { an, zeit, vorschau, seit }
+const seiteHatTon = () => { const st = tonStatus.get(tonSeite); return !!st && st.an && Date.now() - st.zeit < 10000; };
+// Genau EINE Seite spielt Ton: bevorzugt eine, auf der Ton schon läuft, sonst die zuerst geöffnete (keine Vorschau)
+function waehleTonSeite() {
+  const offen = [...kunden.keys()].filter(id => !tonStatus.get(id)?.vorschau);
+  const mitTon = offen.filter(id => tonStatus.get(id)?.an);
+  let neu = offen.includes(tonSeite) && (tonStatus.get(tonSeite)?.an || !mitTon.length) ? tonSeite : (mitTon[0] ?? offen[0] ?? null);
+  if (neu !== tonSeite) { tonSeite = neu; sende({ typ: 'tonRolle', id: tonSeite }); }
+}
 const MUSIK_DATEIEN = ['suedsee_3.mp3', 'suedsee_9.mp3', 'suedsee_11.mp3'].map(f => path.join(DIR, 'seite', 'musik', f));
 function musikLokal() {
   const brauche = process.platform === 'darwin' && CFG.ton.musikAufMac !== false && !seiteHatTon() && Date.now() - START > 15000;
@@ -282,6 +293,8 @@ process.on('exit', () => lokalMusik?.kill());
 // ---------- Dauer-Moderation: Anna redet immer, mit kurzen Pausen dazwischen ----------
 const followDank = [], begruessen = [], begruesst = new Set();
 let letzterLive = 0, letzterRundgang = 0, modNr = 0, eventModNr = 0, countdownGesagt = '', eventZehnGesagt = '';
+// Rangliste: beste Haus-Stufe zuerst, bei Gleichstand entscheiden die Muscheln aus Events
+const rangFolge = (a, b) => b.stufe - a.stufe || (b.eventMuscheln || 0) - (a.eventMuscheln || 0) || b.muscheln - a.muscheln;
 const zufallAus = fs => fs[Math.floor(Math.random() * fs.length)]();
 const grossKlein = t => t.charAt(0).toUpperCase() + t.slice(1);
 const MODERATION = [
@@ -291,7 +304,7 @@ const MODERATION = [
   () => satz('fakt'),
   () => { const z = zielJetzt(); return z ? satz('ziel', { rest: z.ziel - bewohner, projekt: z.name, bewohner, zielzahl: z.ziel }) : null; },
   () => satz('frage'),
-  () => { const t = Object.values(S.spieler).sort((a, b) => b.muscheln - a.muscheln); return t.length > 1 ? satz('rangliste', { erster: sprechName(t[0]), zweiter: sprechName(t[1]) }) : null; },
+  () => { const t = Object.values(S.spieler).filter(p => !p.gesperrt).sort(rangFolge); return t.length > 1 ? satz('rangliste', { erster: sprechName(t[0]), zweiter: sprechName(t[1]) }) : null; },
   () => rundgang(),
   () => S.kasse > 0 ? satz('kasse', { kasse: S.kasse.toLocaleString('de-DE') }) : null,
   () => S.projekt ? satz('projekt', { projekt: S.projekt.name, prozent: Math.floor(S.projekt.stand / S.projekt.ziel * 100) }) : null,
@@ -319,9 +332,8 @@ function moderiere() {
   if (EV.laeuft()) {
     const art = eventModNr++ % 4;
     if (art !== 3 && Date.now() - letzterLive > 6000) { const t = EV.liveSatz(); if (t) { letzterLive = Date.now(); return sag(t, 4); } }
-    if (art === 1) return sag(satz('eventAllgemein', { rest: EV.restSek() }), 4);
     if (art === 3) return sag(zufallAus([() => satz('tipp'), () => satz('stimmung', { aktive: aktiveAnzahl() })]), 4);
-    return;
+    return sag(satz('eventAllgemein', { rest: EV.restSek() }), 4);   // nie Stille während Events
   }
   // 3. Neue Zuschauer begrüßen (nur wenn kein Event moderiert werden muss)
   if (!EV.laeuft() && begruessen.length) {
@@ -331,7 +343,10 @@ function moderiere() {
   if (EV.laeuft()) return;
   // 4. Abwechselnde Moderation
   for (let k = 0; k < MODERATION.length; k++) { const t = MODERATION[modNr++ % MODERATION.length](); if (t) return sag(t, 4); }
+  sag(satz('stimmung', { aktive: aktiveAnzahl() }), 4);
 }
+// Alle 3 Minuten: Aufruf zum Folgen (mit Banner)
+setInterval(() => { sende({ typ: 'folgeAufruf' }); sag(satz('folgeAufruf'), 1); }, (CFG.folgeAufrufMinuten || 3) * 60000);
 setInterval(() => {
   // Countdown-Ansagen (verraten nie, welches Event kommt)
   const s = EV.naechstesIn(), runde = String(Math.floor(Date.now() / 120000));
@@ -349,8 +364,8 @@ function beitritt(u) {                                     // jemand kommt neu i
 }
 
 // ---------- Seite + Live-Daten (Server-Sent Events) ----------
-const kunden = new Set(); let letzteSeitenAnsage = '';
-function sende(ev) { const s = `data: ${JSON.stringify(ev)}\n\n`; for (const k of kunden) k.write(s); }
+const kunden = new Map(); let letzteSeitenAnsage = '', seitenNr = 0;
+function sende(ev) { const s = `data: ${JSON.stringify(ev)}\n\n`; for (const k of kunden.values()) k.write(s); }
 let zLetzt = 0, zOffen = false;
 function zustand() {
   if (Date.now() - zLetzt < 250) { if (!zOffen) { zOffen = true; setTimeout(() => { zOffen = false; zustand(); }, 260); } return; }
@@ -383,13 +398,21 @@ http.createServer((req, res) => {
     res.writeHead(204); return res.end();
   }
   if (url.pathname === '/tonstatus') {                       // Live-Seite meldet, ob ihr Ton läuft
-    if (url.searchParams.get('an') === '1') tonOkSeit = Date.now();
+    const id = +url.searchParams.get('id'), alt = tonStatus.get(id) || {};
+    if (url.searchParams.has('an')) tonStatus.set(id, { ...alt, an: url.searchParams.get('an') === '1', vorschau: url.searchParams.get('vorschau') === '1', zeit: Date.now() });
+    if (url.searchParams.get('stimme') === '0') { stimmeFehlerBis = Date.now() + 60000; console.log('🔈 Stimme auf der Seite blockiert – spreche über die Mac-Lautsprecher.'); }
+    if (url.searchParams.get('stimme') === '1') stimmeFehlerBis = 0;
+    waehleTonSeite();
     res.writeHead(204); return res.end();
   }
   if (url.pathname === '/events') {
     res.writeHead(200, { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-cache', Connection: 'keep-alive' });
     res.write(`data: ${JSON.stringify({ typ: 'zustand', s: oeffentlich() })}\n\n`);
-    kunden.add(res); req.on('close', () => kunden.delete(res));
+    const id = ++seitenNr; kunden.set(id, res);
+    res.write(`data: ${JSON.stringify({ typ: 'hallo', id })}\n\n`);
+    res.write(`data: ${JSON.stringify({ typ: 'tonRolle', id: tonSeite })}\n\n`);
+    waehleTonSeite();
+    req.on('close', () => { kunden.delete(id); tonStatus.delete(id); waehleTonSeite(); });
     return;
   }
   if (url.pathname.startsWith('/ton/')) {

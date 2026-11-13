@@ -24,7 +24,8 @@ Eine Mac-Stimme (unbegrenzt, offline) moderiert.
 |---|---|
 | Erster Like/Kommentar | eigenes Grundstück mit @Namen – wer früher kommt, wohnt näher an der Muschel |
 | 1 Like | 1 Muschel in die **Muschelkasse der Live-Insel** (getrennt von der Inselkasse der Haupt-Insel) + 1 Muschel fürs eigene Haus |
-| Haus-Stufen | Zelt → Strohhütte → Stelzenhütte → Bungalow → Strandhaus → Ferienhaus → Villa → Luxusvilla → Strandpalast → Muschelschloss |
+| Haus-Stufen (20) | Zelt → Hängematten-Camp → Strohhütte → Fischerhütte → Stelzenhütte → Baumhaus → Bungalow → Surferhütte → Strandhaus → Leuchtturmhaus → Ferienhaus → Poolhaus → Villa → Glasvilla → Luxusvilla → Inselvilla mit Hubschrauberlandeplatz → Strandpalast → Korallenpalast → Muschelschloss → Perlenschloss |
+| Rangliste „Beste Häuser“ | höchste Haus-Stufe zuerst, bei Gleichstand entscheiden die Muscheln aus Events |
 | Kommentar `palme` `flagge` `garten` `laterne` `pool` `boot` | Anbau (ab bestimmter Stufe) |
 | Kommentar `rot` `blau` `lila` … | Hausfarbe |
 | Geschenk | **1 Coin = 1 Muschel (= 0,01 €)** – für die Muschelkasse und fürs eigene Haus, große Geschenke = Feuerwerk |
@@ -86,7 +87,14 @@ Der Mac bleibt automatisch wach, solange das Programm läuft (`caffeinate`). Das
 - Kommentar-Texte werden nie vorgelesen oder angezeigt. Jeder Satz von Anna wird vor dem Sprechen noch einmal geprüft.
 - Zusätzlich empfohlen: in den TikTok-LIVE-Einstellungen den Stichwort-Filter für Kommentare einschalten.
 
+## Leistung (für schwächere Macs)
+- Die Seite rechnet intern mit 720×1280 und höchstens 30 Bildern pro Sekunde (so viel kommt bei TikTok an). Volle Größe: `http://localhost:8790/?aufloesung=1080`.
+- Insel, Häuser, Kopfzeile und Muschelplatz werden zwischengespeichert und nur bei Änderungen neu gezeichnet.
+- **In LIVE Studio** zusätzlich: Video-Einstellungen auf **720p (720×1280), 30 FPS**, Bitrate ca. 2.500–3.000 kbps. Das entlastet den Mac am meisten.
+- „Muschel-Tal LIVE starten.command“ öffnet keinen Browser-Tab mehr (spart einen zweiten Durchlauf). Brauchst du doch einen (Fensteraufnahme): `http://localhost:8790` selbst öffnen.
+
 ## Ton (Musik + Stimme)
+- **Es spielt immer nur eine Seite Ton**, auch wenn Browser und LIVE Studio gleichzeitig offen sind (die zuerst geöffnete). Vor dem LIVE deshalb alte Browser-Tabs mit der Insel schließen – oder sie mit `?vorschau` öffnen (Bild ohne Ton).
 - Im Hintergrund läuft die Südsee-Musik aus den Muschel-Tal-Videos (lizenzfrei, erzeugt mit `tools/make_music_tropical.py`, 3 Stücke à 3 Min. im Wechsel) plus Meeresrauschen (`tools/make_ambience.py`).
 - Annas Ansagen werden über die Live-Seite abgespielt, die Musik wird dabei automatisch leiser. So landet alles im Ton der Link-/Browser-Quelle.
 - Falls ein Browser den Ton blockiert, steht unten „Einmal ins Bild klicken für Musik“ – einmal klicken genügt.

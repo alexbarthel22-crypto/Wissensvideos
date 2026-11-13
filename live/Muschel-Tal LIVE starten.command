@@ -7,7 +7,6 @@ if ! command -v node >/dev/null; then
   read -r; exit 1
 fi
 [ -d node_modules ] || npm install --silent
-open "http://localhost:8790"
 while true; do
   caffeinate -dimsu node server.mjs      # Mac bleibt wach, solange das Programm läuft
   echo "Programm beendet – Neustart in 3 Sekunden (zum Beenden: Fenster schließen)."
