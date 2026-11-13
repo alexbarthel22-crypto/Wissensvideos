@@ -56,8 +56,8 @@ function spieler(u) {
     S.reihenfolge.push(id);
     sende({ typ: 'neu', id });
     sag(satz('neu', { name: sprechName(p) }), 2);
-    // Sofort ein richtiges Haus: Startbonus bis zur ersten Hütte, Kamera zeigt es kurz
-    const start = CFG.startMuscheln ?? 25;
+    // Erstes Like/Kommentar: Zelt steht sofort, Kamera zeigt es kurz (startMuscheln optional, Standard 0)
+    const start = CFG.startMuscheln ?? 0;
     if (start > 0) setImmediate(() => gibMuscheln(p, start, 'start'));
     if (!hausWunsch.includes(id)) hausWunsch.unshift(id);
   }
