@@ -305,3 +305,10 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
   - Steg-Plattform links und rechts gekürzt. Die Tafeln „Heute Wassereis“ (jetzt komplett schwarz hinterlegt), „Sorten“ (Boba) und „Pizza des Tages“ stehen direkt neben den Buden, Zeitungsständer, Bank, Olivenbaum und Pizza-Tische sind enger gerückt → mehr freie Lauffläche.
   - Aufgaben: Niemand bekommt eine Aufgabe, bei der er zu sich selbst gehen müsste (z. B. Leitung Kiosk → kein „Eis beim Kiosk bei @…“, Ocean-Nails-Leiterinnen, Bürgermeisterin, Palast-Leitung, Yacht-Besitzerin).
   - Neue Laden-Aufgaben: 🧋 „Hol dir einen Bubble Tea von Boba Beach“ (bei @_amiesspamm), 🍕 „Hol dir die Pizza des Tages“ bei Porto Pizza (bei @charlie._.pink), 🛒 „Geh im Meerkauf einkaufen“ (bei @mia_04_) – Ziel jeweils an der Theke bzw. vor der Meerkauf-Tür. Tafel „Pizza des Tages“ breiter, Text passt aufs Schild. Namensschilder von Boba Beach und Porto Pizza stehen auf zwei Holzpfosten auf dem Dach.
+
+## Video Tag 6 (13.11., `videos/muscheltal-tag6/`)
+- Hook (Stil wie Tag 1): „Ich baue ALLES, was ihr in die Kommentare schreibt!“ (Sticker „GEBAUT!“).
+- **Villa-Verlosung (aus Tag 5 versprochen):** Gewinner **@sklmq3** (Nr. 494, Kokos-Küste), am 13.11. per Zufall (Python `secrets.choice`) aus allen 722 Bewohnern außer @emiliamarie155 & @lea.3818730 gezogen. Zieht zu Emilia & Lea in die Strandvilla, darf einen Freund mitnehmen. ⚠️ Homepage: @sklmq3 in die Strandvilla eintragen.
+- Kommentar-Wünsche umgesetzt (Screenshots im Video): 🛟 Rettungsschwimmerin @soph_221144 (Sophia), 🍕 Porto Pizza @charlie._.pink (Charlie), 🧋 Boba Beach @_amiesspamm (Amelie), 🍦 Kiosk Kunterbunt @ju1e_smt (Jule, mit Team), 🛒 Meerkauf @mia_04_ (Mia), 🥐 Bäckerei bekommt eine neue Mitarbeiterin (Kommentar von „shxrlxen“). ⚠️ Homepage: shxrlxen (Username noch unbestätigt) ins Bäckerei-Team.
+- Abstimmung: **Tierheim kommt zuerst** (bei 800). **723 Bewohner** (laut Nutzer) → noch 77.
+- Aufruf: „Was soll ich als Nächstes bauen? Schreib's in die Kommentare!“ + Folgen = eigenes Haus.
