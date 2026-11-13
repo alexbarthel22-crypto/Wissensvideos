@@ -7,7 +7,18 @@ if ! command -v node >/dev/null; then
   echo "Node.js fehlt. Bitte einmal installieren: https://nodejs.org (LTS-Version), dann nochmal doppelklicken."
   read -r; exit 1
 fi
-[ -d node_modules ] || npm install --silent
+# Pakete installieren bzw. ergänzen (z. B. nach einem Update)
+if [ ! -d node_modules/onnxruntime-node ] || [ ! -d node_modules/@diffusionstudio/piper-wasm ] || [ ! -d node_modules/tiktok-live-connector ]; then
+  echo "📦 Installiere Programmteile (einmalig, kann ein paar Minuten dauern) …"
+  ONNXRUNTIME_NODE_INSTALL=skip npm install --silent
+fi
+# Annas Offline-Stimme (Piper, „Kerstin“, ca. 60 MB) einmalig laden
+if [ ! -f werkzeug/stimme-kerstin/de-kerstin-low.onnx ]; then
+  echo "⬇️  Lade einmalig Annas Offline-Stimme (ca. 60 MB) …"
+  mkdir -p werkzeug/stimme-kerstin
+  curl -fsSL https://github.com/rhasspy/piper/releases/download/v0.0.2/voice-de-kerstin-low.tar.gz | tar xz -C werkzeug/stimme-kerstin \
+    || echo "⚠️  Stimme konnte nicht geladen werden – Anna spricht dann mit der Mac-Stimme."
+fi
 # Läuft noch ein Probelauf (Test-Fenster)? Den beenden – sonst sähen die Zuschauer simulierte Daten.
 if pgrep -f "server.mjs --test" >/dev/null; then
   echo "🧪 Ein Probelauf lief noch – wird beendet."; pkill -f "server.mjs --test"; pkill -f "cloudflared tunnel"; sleep 2

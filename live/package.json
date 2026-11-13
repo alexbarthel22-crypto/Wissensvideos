@@ -7,6 +7,8 @@
     "test": "node server.mjs --test --neu --still"
   },
   "dependencies": {
+    "@diffusionstudio/piper-wasm": "1.0.0",
+    "onnxruntime-node": "1.22.0",
     "tiktok-live-connector": "^2.5.0"
   }
 }

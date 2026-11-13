@@ -5,7 +5,7 @@
 import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
-import { spawn } from 'node:child_process';
+import { spawn, fork } from 'node:child_process';
 import os from 'node:os';
 import zlib from 'node:zlib';
 import crypto from 'node:crypto';
@@ -18,7 +18,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-13 h';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-14 i';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -310,7 +310,8 @@ let sprichtSeit = 0;
 // Sicherung: Sprache erzeugen darf max. 10 s dauern, Abspielen max. 20 s. Hängt das Erzeugen öfter, hilft sich das Programm selbst.
 let schritt = '', haenger = 0;
 setInterval(() => {
-  const grenze = schritt === 'erzeugen' ? 25000 : 20000;
+  const grenze = schritt === 'piper' ? 8000 : schritt === 'erzeugen' ? 25000 : 20000;
+  if (schritt === 'piper' && spricht && Date.now() - sprichtSeit >= grenze) { console.log('⚠️  Piper hing – starte die Stimme neu.'); sprichtSeit = Date.now(); PIPER.neustart(); return; }
   if (!spricht || Date.now() - sprichtSeit < grenze) return;
   console.log(`⚠️  Ansage hing beim ${schritt === 'erzeugen' ? 'Erzeugen der Sprache (say, Stimme „' + stimme + '“)' : schritt === 'abspielen' ? 'Abspielen (afplay)' : 'Warten (' + schritt + ')'} – Anna macht weiter.`);
   if (schritt === 'erzeugen' && ++haenger >= 2) {
@@ -329,7 +330,7 @@ function weiter() {
   if (!ECHT) { setTimeout(fertig, dauerMs(text)); return; }
   const aufSeite = CFG.stimme.wiedergabe !== 'mac' && seiteHatTon() && Date.now() > stimmeFehlerBis;
   // Sprach-Speicher: schon einmal erzeugte Sätze werden sofort wieder abgespielt (spart die lange Erzeugung)
-  const key = crypto.createHash('md5').update(`${stimme}|${CFG.stimme.tempo}|${ohnePausen}|${text}`).digest('hex');
+  const key = crypto.createHash('md5').update(`${PIPER.bereit ? 'piper:' + PIPER.name : stimme}|${CFG.stimme.tempo}|${ohnePausen}|${text}`).digest('hex');
   const fertigDatei = path.join(CACHE_DIR, key + '.wav'), datei = path.join(TON_DIR, `s${++tonNr % 20}.wav`);
   const args = ['-v', stimme, '-r', String(CFG.stimme.tempo)];
   // Immer erst eine Sprachdatei erzeugen (say hängt sonst manchmal an Mehrfach-Ausgabe/BlackHole), dann abspielen
@@ -375,21 +376,54 @@ function weiter() {
   };
   const ausSpeicher = fs.existsSync(fertigDatei);
   if (ausSpeicher) { if (aufSeite) try { fs.copyFileSync(fertigDatei, datei); } catch {} return nachErzeugen(0); }
-  const pr = sayProzess = spawn('say', [...args, fuerStimme(text)]);
+  if (PIPER.bereit) {                                      // Piper: eigene Offline-Stimme, unabhängig vom macOS-Sprachdienst
+    schritt = 'piper';
+    return PIPER.sprich(text, datei, ok => { if (!ok) fehler = 'Piper konnte den Satz nicht erzeugen'; nachErzeugen(ok ? 0 : 1); });
+  }
+  const pr = sayProzess = spawn('say', [...args, fuerStimme(text)], { stdio: ['ignore', 'pipe', 'pipe'] });
   pr.on('error', e => { console.log('⚠️  say-Fehler:', e.message); fertig(); });
   pr.stderr.on('data', d => fehler += d);
   pr.on('close', nachErzeugen);
 }
+
+// ---------- Piper: Annas Stimme offline im eigenen Prozess (werkzeug/stimme-…/…onnx) ----------
+// Wird beim Start geladen. Hängt der Prozess, startet er neu. Fehlt das Modell, spricht wie bisher der Mac (say).
+const PIPER = { bereit: false, name: '', w: null, auftraege: new Map(), nr: 0 };
+function piperStarten() {
+  const ordner = path.join(DIR, 'werkzeug', CFG.stimme.piperModell || 'stimme-kerstin');
+  let modell = null; try { modell = fs.readdirSync(ordner).find(f => f.endsWith('.onnx')); } catch {}
+  if (!modell || CFG.stimme.engine === 'mac') { if (!modell && ECHT) console.log('ℹ️  Piper-Stimme nicht gefunden – Anna spricht mit der Mac-Stimme.'); return; }
+  PIPER.name = modell.replace('.onnx', '');
+  const w = PIPER.w = fork(path.join(DIR, 'tts-worker.mjs'), [path.join(ordner, modell), String(CFG.stimme.piperTempo ?? 1.08)], { stdio: ['ignore', 'ignore', 'pipe', 'ipc'] });
+  let fehlerText = ''; w.stderr.on('data', d => { fehlerText = (fehlerText + d).slice(-400); });
+  w.on('message', m => {
+    if (m.bereit) { PIPER.bereit = true; console.log(`🗣️  Anna spricht mit der Offline-Stimme „${PIPER.name}“ (Piper) – unabhängig vom macOS-Sprachdienst.`); return; }
+    const cb = PIPER.auftraege.get(m.id); PIPER.auftraege.delete(m.id);
+    if (!m.ok) console.log('⚠️  Piper:', m.fehler);
+    cb?.(m.ok);
+  });
+  w.on('exit', code => {
+    if (PIPER.w !== w) return;
+    PIPER.bereit = false; PIPER.w = null;
+    for (const cb of PIPER.auftraege.values()) cb(false); PIPER.auftraege.clear();
+    console.log(`⚠️  Piper-Prozess beendet (${code ?? 'gestoppt'})${fehlerText ? ': ' + fehlerText.trim().split('\n').pop() : ''} – starte neu …`);
+    setTimeout(piperStarten, 2000);
+  });
+}
+PIPER.sprich = (text, datei, cb) => { const id = ++PIPER.nr; PIPER.auftraege.set(id, cb); PIPER.w.send({ id, text, datei }); };
+PIPER.neustart = () => { const w = PIPER.w; PIPER.bereit = false; PIPER.w = null; for (const cb of PIPER.auftraege.values()) cb(false); PIPER.auftraege.clear(); try { w?.kill(); } catch {} setTimeout(piperStarten, 500); };
+setTimeout(piperStarten, 200);
 let langsam = 0;
 // Beim Start alle festen Sätze leise im Hintergrund vorab erzeugen (niedrige Priorität), damit sie im LIVE sofort kommen
 function vorwaermen() {
   if (!ECHT) return;
+  if (PIPER.bereit || PIPER.w) return;                     // Piper braucht kein Vorab-Erzeugen
   const offen = [...festeSaetze(), ...Object.values(require_preis())].filter(Boolean);
   let i = 0, fertigN = 0;
   const naechster = () => {
     if (spricht || warte.length) return setTimeout(naechster, 1500);
     while (i < offen.length) {
-      const text = offen[i++], key = crypto.createHash('md5').update(`${stimme}|${CFG.stimme.tempo}|${ohnePausen}|${text}`).digest('hex'), ziel = path.join(CACHE_DIR, key + '.wav');
+      const text = offen[i++], key = crypto.createHash('md5').update(`${PIPER.bereit ? 'piper:' + PIPER.name : stimme}|${CFG.stimme.tempo}|${ohnePausen}|${text}`).digest('hex'), ziel = path.join(CACHE_DIR, key + '.wav');
       if (fs.existsSync(ziel)) continue;
       const tmp = ziel + '.tmp.wav';
       const pr = spawn('nice', ['-n', '15', 'say', '-v', stimme, '-r', String(CFG.stimme.tempo), '-o', tmp, '--file-format=WAVE', '--data-format=LEI16@22050', fuerStimme(text)]);
