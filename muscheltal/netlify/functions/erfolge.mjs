@@ -2,7 +2,7 @@
 // Ein Eintrag je Erfolg: Schlüssel "e/<name>/<ERFOLG>/<zeitstempel>" (kein Überschreiben, keine Wettläufe).
 import { getStore } from "@netlify/blobs";
 
-const ERLAUBT = new Set(["LUPE", "AUF", "UNTER", "SCOOT"]);
+const ERLAUBT = new Set(["LUPE", "AUF", "UNTER", "SCOOT", "SCHOEPFER"]);
 const json = (d, s = 200) => new Response(JSON.stringify(d), { status: s, headers: { "content-type": "application/json", "cache-control": "no-store" } });
 
 export default async (req) => {
