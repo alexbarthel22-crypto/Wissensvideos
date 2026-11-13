@@ -66,8 +66,8 @@
     #s02-ml { top: 400px; font-size: 40px; background: #fff; color: #ff6a1a; }
     #s02-fr { top: 490px; font-size: 40px; background: #7b3fe0; }
   </style>
-  <div id="root" data-composition-id="s02" data-start="0" data-duration="13.320" data-width="1080" data-height="1920">
-    <div id="s02-stage" class="clip stage" data-start="0" data-duration="13.320" data-track-index="0">
+  <div id="root" data-composition-id="s02" data-start="0" data-duration="10.820" data-width="1080" data-height="1920">
+    <div id="s02-stage" class="clip stage" data-start="0" data-duration="10.820" data-track-index="0">
       <div id="s02-dim"></div>
       <div id="s02-lv" class="pl">🔴 LIVE-VERLOSUNG</div>
       <div id="s02-v" class="pl">🏖️ Ein Platz in der Strandvilla</div>
@@ -83,7 +83,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 13.32, "L2": [0.2, 2.47], "L2.words": [["und", 0.2, 0.343], ["heute", 0.343, 0.622], ["verlose", 0.622, 1.04], ["ich", 1.04, 1.182], ["live", 1.182, 1.457], ["den", 1.457, 1.6], ["platz", 1.6, 1.752], ["in", 1.752, 1.89], ["der", 1.89, 2.032], ["strandvilla", 2.032, 2.47]], "L2w": [9.19, 12.54], "L2w.words": [["glückwunsch", 9.19, 10.66], ["klil3001", 10.85, 11.33], ["du", 11.33, 11.42], ["ziehst", 11.42, 11.523], ["zu", 11.523, 11.613], ["emilia", 11.613, 11.883], ["und", 11.883, 11.977], ["lea", 11.977, 12.07], ["in", 12.07, 12.16], ["die", 12.16, 12.253], ["strandvilla", 12.253, 12.54]]};
+      const C = {"__dur": 10.82, "L2": [0.2, 2.47], "L2.words": [["und", 0.2, 0.343], ["heute", 0.343, 0.622], ["verlose", 0.622, 1.04], ["ich", 1.04, 1.182], ["live", 1.182, 1.457], ["den", 1.457, 1.6], ["platz", 1.6, 1.752], ["in", 1.752, 1.89], ["der", 1.89, 2.032], ["strandvilla", 2.032, 2.47]], "L2w": [6.69, 10.04], "L2w.words": [["glückwunsch", 6.69, 8.16], ["klil3001", 8.35, 8.83], ["du", 8.83, 8.92], ["ziehst", 8.92, 9.023], ["zu", 9.023, 9.113], ["emilia", 9.113, 9.383], ["und", 9.383, 9.477], ["lea", 9.477, 9.57], ["in", 9.57, 9.66], ["die", 9.66, 9.753], ["strandvilla", 9.753, 10.04]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -136,9 +136,9 @@
       tl.fromTo("#s02-fv", { opacity: 0 }, { opacity: 1, duration: .3 }, vi + .3);
       tl.to("#s02-fv", { opacity: 0, duration: .2 }, TB);
       tl.set("#s02-col", { y: 0 }, 0);
-      const T1 = TB - 1.4;
+      const T1 = TB - 1.1;
       tl.fromTo("#s02-col", { y: 0 }, { y: -(W - 9) * H, duration: T1 - (vi + .6), ease: "none", immediateRender: false }, vi + .6);
-      tl.fromTo("#s02-col", { y: -(W - 9) * H }, { y: -(W - 1) * H, duration: 1.4, ease: "power3.out", immediateRender: false }, T1);
+      tl.fromTo("#s02-col", { y: -(W - 9) * H }, { y: -(W - 1) * H, duration: 1.1, ease: "power3.out", immediateRender: false }, T1);
       tl.fromTo("#s02-col", { filter: "blur(5px)" }, { filter: "blur(0px)", duration: 1.2, ease: "power2.in", immediateRender: false }, T1);
       tl.to("#s02-r" + W, { color: "#2e9e5b", scale: 1.15, duration: .2, ease: "back.out(3)" }, TB);
       tl.to("#s02-band", { backgroundColor: "#7dff9e", duration: .15, yoyo: true, repeat: 5 }, TB);
