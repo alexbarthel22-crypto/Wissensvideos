@@ -616,7 +616,7 @@ const inside=(v,x,y,m=0)=>{const lx=x-v.x,ly=(y-v.y)/0.92;return Math.hypot(lx,l
 const EXT0=Math.max(...ISL.map(v=>Math.hypot(v.x,v.y)+Math.max(v.R,v.open?0:v.R)));
 const XM={x:Math.cos(4.45)*(EXT0+260),y:Math.sin(4.45)*(EXT0+260)*.92,r:120,open:!!(I.geheim&&I.geheim.offen)};
 // 🔴 TikTok-LIVE-Insel: weit unten zwischen Schildkröten-Atoll und Kokos-Küste, verhüllt – gebaut wird nur im LIVE
-const LV={x:200,y:2250,r:230};
+const LV={x:200,y:2950,r:690};
 const BOX=(()=>{let a=Math.min(XM.x-XM.r,LV.x-LV.r)-200,b=XM.y-XM.r-200,c=Math.max(XM.x+XM.r,LV.x+LV.r)+200,d=Math.max(XM.y+XM.r,LV.y+LV.r+60)+200;for(const v of ISL){a=Math.min(a,v.x-v.R-220);b=Math.min(b,v.y-v.R-220);c=Math.max(c,v.x+v.R+220);d=Math.max(d,v.y+v.R+220);}return{x0:a,y0:b,x1:c,y1:d};})();
 
 // Bauplätze (inkl. Hafen-Erweiterung) – dort steht keine Deko, keine Bank, keine Laterne
@@ -2625,16 +2625,16 @@ function landmark0(c,v,nl){
 function lvCover(c,nl){const t=REDUCED?0:T,X=LV.x,Y=LV.y,R=LV.r;
  // dunkle Plane mit Falten, festgezurrt an Pflöcken
  c.save();lvShape(c,-6);c.clip();c.fillStyle='#16152a';c.fillRect(X-R*1.3,Y-R,R*2.6,R*2);
- for(let k=-6;k<=6;k++){const x=X+k*R/6.2+Math.sin(t*.6+k)*2;const g=c.createLinearGradient(x-14,0,x+14,0);g.addColorStop(0,'rgba(255,255,255,0)');g.addColorStop(.5,'rgba(255,255,255,.07)');g.addColorStop(1,'rgba(0,0,0,.18)');c.fillStyle=g;c.fillRect(x-14,Y-R,28,R*2);}
- c.restore();c.strokeStyle='#d8c7a0';c.lineWidth=1.6;for(let i=0;i<14;i++){const a=i/14*TAU,rr=LV.r*(1+.1*Math.sin(3*a+2.2)+.07*Math.sin(5*a+.7)),x=X+Math.cos(a)*rr,y=Y+Math.sin(a)*rr*.82,x2=X+Math.cos(a)*(rr-14),y2=Y+Math.sin(a)*(rr-14)*.82;c.beginPath();c.moveTo(x2,y2);c.lineTo(x,y);c.stroke();c.fillStyle='#8a5a2b';c.beginPath();c.arc(x,y,2.6,0,TAU);c.fill();}
+ for(let k=-14;k<=14;k++){const x=X+k*R/14.2+Math.sin(t*.6+k)*2;const g=c.createLinearGradient(x-14,0,x+14,0);g.addColorStop(0,'rgba(255,255,255,0)');g.addColorStop(.5,'rgba(255,255,255,.07)');g.addColorStop(1,'rgba(0,0,0,.18)');c.fillStyle=g;c.fillRect(x-14,Y-R,28,R*2);}
+ c.restore();c.strokeStyle='#d8c7a0';c.lineWidth=1.6;for(let i=0;i<28;i++){const a=i/28*TAU,rr=LV.r*(1+.1*Math.sin(3*a+2.2)+.07*Math.sin(5*a+.7)),x=X+Math.cos(a)*rr,y=Y+Math.sin(a)*rr*.82,x2=X+Math.cos(a)*(rr-14),y2=Y+Math.sin(a)*(rr-14)*.82;c.beginPath();c.moveTo(x2,y2);c.lineTo(x,y);c.stroke();c.fillStyle='#8a5a2b';c.beginPath();c.arc(x,y,2.6,0,TAU);c.fill();}
  // Schild: „TikTok LIVE“ + Hinweis
- const w=150,h=64,sx=X-w/2,sy=Y-h/2-6;c.fillStyle='rgba(0,0,0,.35)';c.beginPath();c.roundRect(sx+3,sy+5,w,h,14);c.fill();c.fillStyle='#0b0b14';c.beginPath();c.roundRect(sx,sy,w,h,14);c.fill();c.strokeStyle='#fff';c.lineWidth=2;c.stroke();
+ c.save();c.translate(X,Y);c.scale(2.6,2.6);c.translate(-X,-Y);const w=150,h=64,sx=X-w/2,sy=Y-h/2-6;c.fillStyle='rgba(0,0,0,.35)';c.beginPath();c.roundRect(sx+3,sy+5,w,h,14);c.fill();c.fillStyle='#0b0b14';c.beginPath();c.roundRect(sx,sy,w,h,14);c.fill();c.strokeStyle='#fff';c.lineWidth=2;c.stroke();
  c.textAlign='center';c.font='900 25px '+FONT;c.fillStyle='#25f4ee';c.fillText('TikTok',X-30,sy+31);c.fillStyle='#fe2c55';c.fillText('TikTok',X-27,sy+33);c.fillStyle='#fff';c.fillText('TikTok',X-28.5,sy+32);
  const bl=Math.sin(t*3)>-.3;c.fillStyle=bl?'#fe2c55':'#9a2038';c.beginPath();c.roundRect(X+20,sy+12,42,24,5);c.fill();c.fillStyle='#fff';c.font='900 16px '+FONT;c.fillText('LIVE',X+41,sy+30);
- c.font='800 10.5px '+FONT;c.fillStyle='#ffd23f';c.fillText('Mitbauen nur im TikTok LIVE 🔴',X,sy+54);
+ {let fs=10.5;const tx='Mitbauen nur im TikTok LIVE 🔴';do{c.font='800 '+fs+'px '+FONT;fs-=.5;}while(c.measureText(tx).width>w-18&&fs>5);c.fillStyle='#ffd23f';c.fillText(tx,X,sy+54);}c.restore();
  if(nl>0){c.fillStyle=`rgba(254,44,85,${.25*nl*(.6+.4*Math.sin(t*3))})`;c.beginPath();c.ellipse(X,Y,R*.6,R*.45,0,0,TAU);c.fill();}}
 const lvAt=(wx,wy)=>Math.hypot(wx-LV.x,(wy-LV.y)/.82)<LV.r;
-function lvInfo(){popup('<div class="big">🔴</div><h2>TikTok LIVE-Insel</h2><p>Diese Insel ist noch verhüllt. Gebaut wird hier <b>nur gemeinsam im TikTok LIVE</b> von <a href="'+ACCURL+'" target="_blank" rel="noopener">'+esc(ACC)+'</a> – schau im LIVE vorbei und bau mit!</p><a class="btn hib" href="'+ACCURL+'/live" target="_blank" rel="noopener">🔴 Zum LIVE</a>');}
+function lvInfo(){popup('<div class="big">🔴</div><h2>TikTok LIVE-Insel</h2><p>Gebaut wird hier <b>nur gemeinsam im TikTok LIVE</b> von <a href="'+ACCURL+'" target="_blank" rel="noopener">'+esc(ACC)+'</a> – schau im LIVE vorbei und bau mit!</p><a class="btn hib" href="'+ACCURL+'/live" target="_blank" rel="noopener">🔴 Zum LIVE</a>');}
 function xmFog(c){const n=16;for(let k=0;k<n;k++){const a=k/n*TAU+(REDUCED?0:T*.05),r=XM.r*(.35+.55*hash(k,90)),x=XM.x+Math.cos(a)*r,y=XM.y+Math.sin(a)*r*.85,s=XM.r*(.45+.25*hash(k,91));
  c.fillStyle='rgba(245,248,252,.86)';c.beginPath();c.arc(x,y,s,0,TAU);c.fill();}
  c.fillStyle='rgba(255,255,255,.9)';c.beginPath();c.ellipse(XM.x,XM.y,XM.r*.75,XM.r*.62,0,0,TAU);c.fill();
