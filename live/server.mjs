@@ -144,7 +144,7 @@ function geschenk(u, name, diamanten, anzahl) {
   sende({ typ: 'geschenk', id: p.id, name: g.name, anzahl, diamanten: d });
   EV.geschenkShow(p, g, anzahl, d);
   inKasse(d * CFG.kasse.proCoin);
-  sag(satz(d >= 1000 ? 'geschenkGross' : d >= 100 ? 'geschenkMittel' : 'geschenkKlein', { name: sprechName(p), fuer: g.fuer, einAkk: g.einAkk, einNom: g.einNom, EinNom: grossKlein(g.einNom) }), 0);
+  sag(satz(d >= 1000 ? 'geschenkMega' : d >= 200 ? 'geschenkGross' : d >= 20 ? 'geschenkMittel' : 'geschenkKlein', { name: sprechName(p), fuer: g.fuer, einAkk: g.einAkk, einNom: g.einNom, EinNom: grossKlein(g.einNom) }), 0);
   gibMuscheln(p, d * CFG.muschelnProCoin, 'geschenk');
 }
 
@@ -225,7 +225,7 @@ function projektStarten(pr) {
   S.projekt = { id: pr.id, name: pr.name, ziel: pr.ziel, stand: 0 }; geaendert = true;
   sende({ typ: 'projekt', id: pr.id });
   const aus = finanziere(S.kasse * (CFG.kasse.startAnteil ?? .5));   // die Hälfte des Ersparten fließt sofort in den Bau
-  if (aus > 0 && S.projekt) sag(`${aus.toLocaleString('de-DE')} Muscheln aus der Muschelkasse fließen sofort in den Bau. … Und von jedem neuen Like baut ein Teil mit!`, 1);
+  if (aus > 0 && S.projekt) sag(`${aus.toLocaleString('de-DE')} Muscheln aus der Kasse gehen in den Bau!`, 1);
   zustand();
 }
 function projektFertig() {
@@ -265,7 +265,7 @@ const TON_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'muscheltal-ton-')); let t
 let stimme = CFG.stimme.mac, stilleSeit = Date.now();
 const ECHT = !STILL && process.platform === 'darwin';
 const dauerMs = t => t.length * 62 + (t.match(/…/g) || []).length * 450 + 300;   // Schätzung ohne echte Stimme
-const fuerStimme = t => t.replace(/\s*…\s*/g, ' [[slnc 450]] ').replace(/([!?])\s+/g, '$1 [[slnc 250]] ');
+const fuerStimme = t => t.replace(/\s*…\s*/g, ' [[slnc 250]] ').replace(/([!?])\s+/g, '$1 [[slnc 150]] ');
 function sag(text, prio = 2) {
   if (!text) return;
   if (satzAnstoessig(text)) { console.log('🚫 Satz nicht gesprochen (Filter):', text); return; }
@@ -332,7 +332,7 @@ function waehleTonSeite() {
   if (neu == null) neu = mitTon[0] ?? [...offen].sort((a, b) => (tonFehl.get(a) || 0) - (tonFehl.get(b) || 0))[0] ?? null;
   if (neu !== tonSeite) { tonSeite = neu; rolleSeit = Date.now(); sende({ typ: 'tonRolle', id: tonSeite }); if (tonSeite != null) console.log(`🔊 Ton-Aufgabe → Live-Seite #${tonSeite}`); }
 }
-const MUSIK_DATEIEN = ['suedsee_3.mp3', 'suedsee_9.mp3', 'suedsee_11.mp3'].map(f => path.join(DIR, 'seite', 'musik', f));
+const MUSIK_DATEIEN = [1, 2, 3, 4, 5].map(i => `insel_${i}.mp3`).map(f => path.join(DIR, 'seite', 'musik', f));
 function musikLokal() {
   const brauche = process.platform === 'darwin' && CFG.ton.musikAufMac !== false && !seiteHatTon() && Date.now() - START > 15000;
   if (brauche && !lokalMusik) {
@@ -402,8 +402,7 @@ function moderiere() {
   if (spricht || warte.length || Date.now() - stilleSeit < (CFG.stimme.pauseSek ?? 1.6) * 1000) return;
   // 1. Follows bedanken
   if (followDank.length) {
-    const n = followDank.splice(0, 4).map(sprechName), z = zielJetzt();
-    return sag((n.length > 1 ? satz('followMehrere', { namen: namenListe(n) }) : satz('followEins', { name: n[0] })) + (z && Math.random() < .5 ? satz('followZiel', { rest: z.ziel - bewohner, projekt: z.name }) : ''), 1);
+    return sag(satz('followEins', { name: sprechName(followDank.shift()) }), 1);   // einzeln, kurz
   }
   // 1a. Viele Likes von einer Person: bedanken
   if (likeDank.length) { const p = likeDank.shift(); return sag(satz('likeDank', { name: sprechName(p) }), 1); }

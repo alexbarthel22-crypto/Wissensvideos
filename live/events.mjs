@@ -434,9 +434,9 @@ export function macheEvents(api) {
 
   function starte(id) {
     const d = DEFS[id]; ev = { id, d, t0: Date.now(), ende: Date.now() + d.dauer * 1000 }; ergebnis = null;
-    const ansage = d.start(ev) + (PREIS[id] ? ' … ' + PREIS[id] : ''); verlauf = [id, ...verlauf].slice(0, 12);
+    const ansage = d.start(ev); verlauf = [id, ...verlauf].slice(0, 12);
     api.sende({ typ: 'eventStart', id });
-    api.sag(ansage, 0); api.zustand();
+    api.sag(ansage, 0); if (PREIS[id]) api.sag(PREIS[id], 0); api.zustand();   // zwei kurze Sätze statt einem langen
   }
   function beende() {
     const r = ev.d.ende(ev) || {}, gew = [...(ev._belohnt?.values() || [])];

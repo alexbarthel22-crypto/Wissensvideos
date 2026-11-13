@@ -521,7 +521,7 @@ function nachtZeichnen(t) {
 // ================= Ton: Musik aus den Videos (lizenzfrei, tools/make_music_tropical.py) + Meeresrauschen + Stimme =================
 // Es gibt genau EINEN Musik-Player, EINEN Meeres-Player und EINEN Audio-Kontext für die Stimme – sie werden nie neu angelegt.
 // Sind mehrere Seiten offen (z. B. Browser + LIVE Studio), bestimmt das Programm, welche Seite Ton spielt (tonRolle).
-const MUSIK = ['musik/suedsee_3.mp3', 'musik/suedsee_9.mp3', 'musik/suedsee_11.mp3'];
+const MUSIK = [1, 2, 3, 4, 5].map(i => `musik/insel_${i}.mp3`);   // 5 Stücke à 7 Min. (35 Min. ohne Wiederholung), tools/make_music_live.py
 const VORSCHAU = PARAM.has('vorschau') || PARAM.has('still');     // ?vorschau = Bild ohne Ton
 let meineId = null, tonRolle = false, tonAn = false, musikNr = Math.floor(Math.random() * MUSIK.length), stimmeLaeuft = 0, AC = null;
 const TON = () => S.ton || { musik: .32, musikBeiStimme: .1, meer: .22, stimme: 1 };
@@ -1129,39 +1129,54 @@ function showStart(e) {                                           // große Gesc
 }
 function zeit(s) { return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; }
 
+// Text in höchstens n Zeilen umbrechen (der Rest landet in der letzten Zeile und wird dort notfalls verkleinert)
+function umbrechen(txt, px, gew, max, n) {
+  X.font = `${gew} ${px}px ${FONT}`;
+  const worte = String(txt || '').split(' '), out = [];
+  let z = '';
+  for (const w of worte) {
+    const neu = z ? z + ' ' + w : w;
+    if (z && X.measureText(neu).width > max && out.length < n - 1) { out.push(z); z = w; } else z = neu;
+  }
+  if (z) out.push(z);
+  return out;
+}
 function eventPanel(t, y) {
   const e = S.event, r = S.ergebnis;
   if (e) {
-    const pz = e.preis ? 30 : 0, hoch = (e.rennen ? 256 : e.rad ? 306 : e.regenbogen ? 156 : e.balken ? 100 + e.balken.length * 40 : 110) + pz;
+    // Groß und gut lesbar: Titel 32, Aufgabe 30 (bis 2 Zeilen), Preis 24, Balken 26
+    const KH = 58, zeilen = umbrechen(e.text, 30, 800, SB - 60, 2), tEnde = y + KH + 14 + zeilen.length * 38;
+    const pzl = e.preis ? umbrechen('🏆 ' + e.preis, 24, 800, SB - 60, 2) : [], pz = pzl.length ? pzl.length * 30 + 8 : 0, unten = tEnde + pz;
+    const hoch = unten - y + (e.rennen ? 156 : e.rad ? 206 : e.regenbogen ? 60 : e.balken ? e.balken.length * 48 + 14 : 16);
     karte(SL, y, SB, hoch, '#fff', 30);
-    X.fillStyle = PINK; rr(SL, y, SB, 46, [30, 30, 0, 0]); X.fill(); X.strokeStyle = INK; X.lineWidth = 7; rr(SL, y, SB, hoch, 30); X.stroke();
-    text(`${e.icon} ${e.titel}`, SL + 26, y + 24, 25, '#fff', 'left', 900, SB - (e.faktor > 1 ? 210 : 160));
-    text(`⏱ ${zeit(e.rest)}`, SR - 26, y + 24, 23, '#fff', 'right', 900);
-    if (e.faktor > 1) text(`×${e.faktor}`, SR - 120, y + 24, 23, GELB, 'right', 900);
-    text(e.text, 540, y + 74, 23, INK, 'center', 800, SB - 50);
-    if (e.preis) text('🏆 ' + e.preis, 540, y + 104, 19, '#8a5a2b', 'center', 800, SB - 50);
+    X.fillStyle = PINK; rr(SL, y, SB, KH, [30, 30, 0, 0]); X.fill(); X.strokeStyle = INK; X.lineWidth = 7; rr(SL, y, SB, hoch, 30); X.stroke();
+    text(`${e.icon} ${e.titel}`, SL + 26, y + 30, 32, '#fff', 'left', 900, SB - (e.faktor > 1 ? 250 : 190));
+    text(`⏱ ${zeit(e.rest)}`, SR - 26, y + 30, 29, '#fff', 'right', 900, 150);
+    if (e.faktor > 1) text(`×${e.faktor}`, SR - 150, y + 30, 29, GELB, 'right', 900);
+    zeilen.forEach((z, i) => text(z, 540, y + KH + 34 + i * 38, 30, INK, 'center', 800, SB - 50));
+    pzl.forEach((z, i) => text(z, 540, tEnde + 18 + i * 30, 24, '#8a5a2b', 'center', 800, SB - 50));
     // Zeitbalken
-    X.fillStyle = 'rgba(42,27,18,.12)'; X.fillRect(SL + 8, y + 44, SB - 16, 4); X.fillStyle = GELB; X.fillRect(SL + 8, y + 44, (SB - 16) * e.rest / e.dauer, 4);
-    let yy = y + 100 + pz;
+    X.fillStyle = 'rgba(42,27,18,.12)'; X.fillRect(SL + 8, y + KH - 3, SB - 16, 5); X.fillStyle = GELB; X.fillRect(SL + 8, y + KH - 3, (SB - 16) * e.rest / e.dauer, 5);
+    let yy = unten + 8;
     (e.balken || []).forEach(b => {
-      X.fillStyle = 'rgba(42,27,18,.08)'; rr(SL + 24, yy, SB - 48, 32, 16); X.fill();
-      X.fillStyle = b.farbe; rr(SL + 24, yy, Math.max(32, (SB - 48) * Math.min(1, b.wert / b.max)), 32, 16); X.fill();
-      text(b.name, SL + 40, yy + 17, 21, INK, 'left', 900, SB - 240);
-      text(b.max > b.wert && e.id !== 'abstimmung' && e.id !== 'schatzsuche' && e.id !== 'teamduell' ? `${b.wert.toLocaleString('de-DE')} / ${b.max.toLocaleString('de-DE')}` : b.wert.toLocaleString('de-DE'), SR - 40, yy + 17, 21, INK, 'right', 900, 180);
-      yy += 40;
+      X.fillStyle = 'rgba(42,27,18,.08)'; rr(SL + 24, yy, SB - 48, 40, 20); X.fill();
+      X.fillStyle = b.farbe; rr(SL + 24, yy, Math.max(40, (SB - 48) * Math.min(1, b.wert / b.max)), 40, 20); X.fill();
+      text(b.name, SL + 42, yy + 21, 26, INK, 'left', 900, SB - 270);
+      text(b.max > b.wert && b.max > Math.max(1, ...e.balken.map(x => x.wert)) ? `${b.wert.toLocaleString('de-DE')} / ${b.max.toLocaleString('de-DE')}` : b.wert.toLocaleString('de-DE'), SR - 42, yy + 21, 26, INK, 'right', 900, 210);
+      yy += 48;
     });
-    if (e.rennen) krabbenRennen(t, y + 98 + pz, e.rennen);
-    if (e.rad) gluecksRad(t, y + 98 + pz, e);
-    if (e.regenbogen) { const fb = ['#e8433c', '#ff8a2a', '#ffd23f', '#57b85a', '#3fa0e8', '#9b5de5'], cy = y + 92 + pz + 52;
+    if (e.rennen) krabbenRennen(t, unten, e.rennen);
+    if (e.rad) gluecksRad(t, unten, e);
+    if (e.regenbogen) { const fb = ['#e8433c', '#ff8a2a', '#ffd23f', '#57b85a', '#3fa0e8', '#9b5de5'], cy = unten + 50;
       e.regenbogen.forEach((an, i) => { X.strokeStyle = an ? fb[i] : 'rgba(42,27,18,.1)'; X.lineWidth = 9; X.beginPath(); X.arc(540, cy, 120 - i * 10, Math.PI, 0); X.stroke(); }); }
     return y + hoch;
   }
   if (r) {
-    const h = r.gewinner ? 150 : 112;
+    const zl = umbrechen(r.text, 30, 900, SB - 60, 2), h = 70 + zl.length * 38 + (r.gewinner ? 40 : 0);
     karte(SL, y, SB, h, r.gut ? '#fff3c4' : '#fff', 30);
-    text(`${r.icon} ${r.titel}`, 540, y + 32, 24, '#8a5a2b', 'center', 900, SB - 50);
-    text(r.text, 540, y + 74, 27, INK, 'center', 900, SB - 50);
-    if (r.gewinner) text(r.gewinner, 540, y + 116, 23, PINK, 'center', 900, SB - 50);
+    text(`${r.icon} ${r.titel}`, 540, y + 34, 27, '#8a5a2b', 'center', 900, SB - 50);
+    zl.forEach((z, i) => text(z, 540, y + 76 + i * 38, 30, INK, 'center', 900, SB - 50));
+    if (r.gewinner) text(r.gewinner, 540, y + 76 + zl.length * 38 + 4, 26, PINK, 'center', 900, SB - 50);
     return y + h;
   }
   return null;
@@ -1172,7 +1187,7 @@ function krabbenRennen(t, y, teams) {
     const yy = y + 12 + i * 36, x0 = SL + 100, x1 = SR - 60, f = Math.min(1, tm.wert / tm.max);
     X.fillStyle = '#f3dfa6'; rr(x0 - 18, yy - 13, x1 - x0 + 28, 26, 13); X.fill();
     X.strokeStyle = INK; X.lineWidth = 2; X.setLineDash([6, 6]); X.beginPath(); X.moveTo(x1, yy - 13); X.lineTo(x1, yy + 13); X.stroke(); X.setLineDash([]);
-    text({ rot: 'Rot', blau: 'Blau', gelb: 'Gelb', gruen: 'Grün' }[tm.name], SL + 22, yy, 16, INK, 'left', 900);
+    text({ rot: 'Rot', blau: 'Blau', gelb: 'Gelb', gruen: 'Grün' }[tm.name], SL + 22, yy, 20, INK, 'left', 900);
     X.save(); X.translate(x0 + (x1 - x0) * f, yy + 2);
     X.fillStyle = farbe[tm.name]; X.beginPath(); X.ellipse(0, 0, 13, 8, 0, 0, 7); X.fill(); X.strokeStyle = INK; X.lineWidth = 1.5; X.stroke();
     const b = Math.sin(t * .03 + i) * 3; X.strokeStyle = farbe[tm.name]; X.lineWidth = 2; for (let k = -1; k <= 1; k += 2) { X.beginPath(); X.moveTo(k * 8, 3); X.lineTo(k * 15, 8 + b * k); X.stroke(); }

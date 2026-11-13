@@ -140,7 +140,8 @@ Der Mac bleibt automatisch wach, solange das Programm läuft (`caffeinate`). Das
 
 ## Ton (Musik + Stimme)
 - **Es spielt immer nur eine Seite Ton**, auch wenn Browser und LIVE Studio gleichzeitig offen sind (die zuerst geöffnete). Vor dem LIVE deshalb alte Browser-Tabs mit der Insel schließen – oder sie mit `?vorschau` öffnen (Bild ohne Ton).
-- Im Hintergrund läuft die Südsee-Musik aus den Muschel-Tal-Videos (lizenzfrei, erzeugt mit `tools/make_music_tropical.py`, 3 Stücke à 3 Min. im Wechsel) plus Meeresrauschen (`tools/make_ambience.py`).
+- Im Hintergrund läuft lizenzfreie Südsee-Musik im Stil der Muschel-Tal-Videos (erzeugt mit `tools/make_music_live.py`): 5 Stücke à 7 Min. (35 Min. ohne Wiederholung), jedes mit eigener Tonart und Tempo, Songform mit Strophe, Refrain, Zwischenteil und ruhigen Stellen, wechselnden Instrumenten (Ukulele, Marimba, Steeldrum, Flöte, Pad, Bongos) und immer neuen Melodien. Dazu Meeresrauschen (`tools/make_ambience.py`).
+- Anna spricht kurze Sätze, etwa alle 2–4 Sekunden einer, je Satz nur eine Sache. Geschenke werden immer mit Namen bedankt („Danke für die Rose“) – je wertvoller, desto größer der Dank (4 Stufen: unter 20, ab 20, ab 200, ab 1.000 Coins).
 - Annas Ansagen werden über die Live-Seite abgespielt, die Musik wird dabei automatisch leiser. So landet alles im Ton der Link-/Browser-Quelle.
 - Falls ein Browser den Ton blockiert, steht unten „Einmal ins Bild klicken für Musik“ – einmal klicken genügt.
 - Bei **Fensteraufnahme** statt Link-Quelle: in LIVE Studio zusätzlich den Mac-Ton (Systemaudio) aufnehmen.

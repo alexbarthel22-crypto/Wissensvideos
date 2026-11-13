@@ -14,8 +14,8 @@
     "maxWarteschlange": 6,
     "wiedergabe": "seite",
     "_hinweis": "wiedergabe 'seite': Stimme läuft über die Live-Seite (zusammen mit der Musik im Stream-Ton). 'mac': direkt über die Mac-Lautsprecher.",
-    "pauseSek": 1.2,
-    "_pause": "pauseSek: Pause zwischen zwei Sätzen. Anna moderiert ununterbrochen; „…“ in saetze.mjs = Sprechpause."
+    "pauseSek": 0.6,
+    "_pause": "pauseSek: Pause zwischen zwei Sätzen (0,6 s → alle 2–4 s ein neuer kurzer Satz). „…“ in saetze.mjs = kurze Sprechpause."
   },
   "stufen": [
     {
