@@ -87,10 +87,27 @@ def importiere_liste(pfad, rows):
     drin = {p[4].lower().lstrip("@") for p in paare}
     heute = dt.date.today()
     weg = 0
+    weg_namen = []
     for r in list(rows):  # Entfolgte ziehen aus und verschwinden komplett aus der Liste
         if r["name"].lower().lstrip("@") not in drin:
             rows.remove(r)
             weg += 1
+            weg_namen.append(r["name"].lower().lstrip("@"))
+    # Wer entfolgt, verliert seinen Job (insel.json → jobs) – gesondert melden
+    if weg_namen:
+        insel = json.load(open(INSEL, encoding="utf-8"))
+        jobs = insel.get("jobs") or {}
+        verloren = [(n, jobs[n]) for n in list(jobs) if n.lower().lstrip("@") in weg_namen]
+        for n, j in verloren:
+            del jobs[n]
+        if verloren:
+            json.dump(insel, open(INSEL, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
+            print("⚠️  JOB VERLOREN (entfolgt):")
+            for n, j in verloren:
+                print(f"   @{n.lstrip('@')}: {j[0]} – {j[1]}")
+        for a in insel.get("aemter") or []:
+            if str(a[1]).lower().lstrip("@") in weg_namen:
+                print(f"⚠️  AMT BETROFFEN (entfolgt): {a[1]} war {a[0]} – bitte von Hand regeln")
     aktiv = {r["name"].lower().lstrip("@") for r in rows}
     neu = 0
     for y, m, d, _, n in paare:

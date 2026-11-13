@@ -3603,6 +3603,11 @@ const MKQ={
  boba:{ic:'🧋',t:'Hol dir einen Bubble Tea von Boba Beach',ort:'Boba Beach',hint:'Über den Steg an der Nordküste zur Theke von Boba Beach gehen',btn:'🧋 Bubble Tea holen',em:['🧋','💜','🍓','✨','🧋']},
  pizza:{ic:'🍕',t:'Hol dir die Pizza des Tages',ort:'Porto Pizza',hint:'Über den Steg an der Nordküste zur Theke von Porto Pizza gehen',btn:'🍕 Pizza des Tages mitnehmen',em:['🍕','🧀','🍅','🌿','🍕']},
  markt:{ic:'🛒',t:'Geh im Meerkauf einkaufen',ort:'Meerkauf',hint:'Zur Eingangstür vom Meerkauf gehen',btn:'🛒 Einkaufen gehen',em:['🛒','🍎','🥖','🧃','🛒']},
+ cocobay:{ic:'🍹',t:'Hol dir einen Kokos-Cocktail in der Coco Bay',ort:'Coco Bay',hint:'Zur Theke der Coco Bay am Südstrand der Kokos-Küste gehen',btn:'🍹 Kokos-Cocktail holen',em:['🍹','🥥','🌴','🍍','🍹']},
+ kokosbad:{ic:'🏊',t:'Zieh ein paar Bahnen im Kokos-Bad',ort:'Kokos-Bad',hint:'Durch den großen Eingang an den Beckenrand im Kokos-Bad gehen',btn:'🏊 Ins Becken springen',em:['🏊','💦','🌊','🐚','💦']},
+ coast:{ic:'👗',t:'Probier ein Outfit bei Coast & Cotton an',ort:'Coast & Cotton',hint:'Durch den Eingang zum Spiegel vor Coast & Cotton gehen',btn:'👗 Outfit anprobieren',em:['👗','👙','👒','✨','🛍️']},
+ anleger:{ic:'⚓',t:'Schau vom Kokos-Anleger aufs Meer',ort:'',hint:'Bis an die Spitze des Kokos-Anlegers im Osten gehen',btn:'⚓ Aufs Meer schauen',em:['⚓','🌊','⛵','🐟','✨']},
+ feuer:{ic:'🔥',t:'Wärm dich am Lagerfeuer',ort:'',hint:'Zum Lagerfeuer in der Mitte der Kokos-Küste gehen',btn:'🔥 Am Feuer sitzen',em:['🔥','✨','🪵','🌙','🔥']},
  kiosk:{ic:'🍦',t:'Hol dir ein Eis beim Kiosk',ort:'Kiosk Kunterbunt',hint:'Über den Steg an der Nordküste zur Theke vom Kiosk Kunterbunt gehen',btn:'🍦 Eis holen',em:['🍦','🍭','🍬','💖','🍦']},
  yacht:{ic:'🛥️',t:'Blicke auf die Yacht',ort:'',hint:'Ans Ufer gegenüber der Yacht „White Pearl“ gehen',btn:'👀 Auf die White Pearl blicken',em:['🛥️','🎉','🪩','🎶','✨']},
  bm:{ic:'👑',t:'Der Bürgermeisterin Hallo sagen',ort:'',hint:'Auf dem Muschelplatz die Bürgermeisterin antippen',btn:'',em:['👑','👋','✨','🐚','💛']}};
@@ -3613,7 +3618,8 @@ function mkQDef(id){if(id.startsWith('hut:')){const n=id.slice(4);return{ic:'�
  const q=MKQ[id]||{ic:'❓',t:id,hint:''};let wer='';if(id==='bm'){const m=PEOPLE.find(p=>/bürgermeister/i.test(p.beruf||''));wer=m?m.name:'';}else if(id==='beet'){const m=PEOPLE.find(p=>p.beruf==='Palast-Leitung');return{...q,t:m?'Hilf <b>'+esc(m.name)+'</b> beim Gießen der Beete vorm Palast':q.t};}else if(id==='bau'){const b=mkProjekt();return{...q,t:'Hilf mit beim Bau: '+(b?esc(b.emoji+' '+b.name):'Baustelle'),bau:b};}else if(id==='yacht'){const m=PEOPLE.find(p=>p.gb===YACHT);return{...q,t:m?'Blicke auf die Yacht von <b>'+esc(m.name)+'</b>':q.t};}else if(id==='nagel')return q;else if(id==='nagelL'||id==='nagelR'){const m=nagelWer(id);return{...q,t:q.t+(m?' bei <b>'+esc(m.name)+'</b>':'')};}else if(q.ort)wer=id==='steg'?(PEOPLE.find(p=>p.ort==='Strandbar'&&p.beruf==='Team')||{}).name||'':mkLeiter(q.ort);
  return{...q,t:q.t+(wer?' <i>bei '+esc(wer)+'</i>':'')};}
 function mkVorschlag(me){const h=mkTag(),r=mkR(mkH(me.name+h));const pick=a=>a[Math.floor(r()*a.length)];const own=me.ort||'',nm=esc(me.name),selbst=k=>{if(k==='yacht'&&me.gb===YACHT)return true;const t=mkQDef(k).t||'';return t.includes('<b>'+nm+'</b>')||t.includes('bei '+nm+'</i>');};
- const A=['acai','doener','baeckerei','bar','steg','werkstatt','nagelL','nagelR','kiosk','boba','pizza','markt'].filter(k=>(MKQ[k].ort!==own||!own)&&!selbst(k)),B=['palast','villa','bm','beet'].concat(PEOPLE.some(p=>p.gb===YACHT)?['yacht']:[]).concat(new Date().getHours()>=6&&new Date().getHours()<22&&mkProjekt()?['bau']:[]).filter(k=>!(k==='palast'&&/palast/i.test(own))&&!selbst(k));
+ const kok=me.isl&&me.isl.i===1;// Bewohner der Kokos-Küste bekommen Aufgaben auf ihrer eigenen Insel
+ const A=(kok?['cocobay','kokosbad','coast']:['acai','doener','baeckerei','bar','steg','werkstatt','nagelL','nagelR','kiosk','boba','pizza','markt']).filter(k=>(MKQ[k].ort!==own||!own)&&!selbst(k)),B=(kok?['anleger','feuer']:['palast','villa','bm','beet'].concat(PEOPLE.some(p=>p.gb===YACHT)?['yacht']:[]).concat(new Date().getHours()>=6&&new Date().getHours()<22&&mkProjekt()?['bau']:[])).filter(k=>!(k==='palast'&&/palast/i.test(own))&&!selbst(k));
  const H=PEOPLE.filter(p=>p.p&&!p.gb&&p!==me&&p.nr<=limit&&p.isl===me.isl&&p.isl.open);const hut=H.length?'hut:'+pick(H).name:'pass';return[pick(A),pick(B),pick([hut,'pass','teilen'])];}
 async function mkQuests(){const me=mkMe();if(!me)return null;const r=await mk('quests',{vorschlag:mkVorschlag(me)});if(r&&r.ok)MK.quests=r.quests;mkChip();mkCard();return MK.quests;}
 // Ziele (Weltkoordinaten) und Bereiche, in denen der Knopf erscheint
@@ -3631,6 +3637,11 @@ function mkZiel2(id){const geb=t=>GEB.find(g=>g.typ===t);
  if(id==='boba')return{x:KI.x+KI.bo,y:KI.cy+4.5,r:6};
  if(id==='pizza')return{x:KI.x+KI.po,y:KI.cy+4.5,r:6};
  if(id==='markt')return mkNah(MKT.cx,MKT.cy+6,{r:7});
+ if(id==='cocobay')return mkNah(KBAR.cx,KBAR.cy+31,{r:6});
+ if(id==='kokosbad')return mkNah(KBAD.cx-12,KBAD.cy+19,{r:6});
+ if(id==='coast')return mkNah(KMODE.cx+24,KMODE.cy+8,{r:6});
+ if(id==='anleger'){const g=STEGE.find(g=>g.th==='kokos');if(!g)return null;const [x,y]=g.pt(g.L-7,0);return mkNah(x,y-4.4,{r:6});}
+ if(id==='feuer')return mkNah(KOKV.x,KOKV.y+20,{r:7});
  if(id==='yacht'){if(!mkZiel2.yt){const Y=YACHT,a=Math.atan2(Y.cy-MAIN.y,Y.cx-MAIN.x);let d=Math.hypot(Y.cx-MAIN.x,Y.cy-MAIN.y),x=Y.cx,y=Y.cy;while(d>0&&!canWalk(x,y)){d-=2;x=MAIN.x+Math.cos(a)*d;y=MAIN.y+Math.sin(a)*d;}mkZiel2.yt={x,y,r:9};}return mkZiel2.yt;}
  if(id==='villa'){const g=geb('villa');return g&&mkNah(g.cx,g.y1+3,{r:8,g});}
  if(id==='bau'){const b=mkProjekt(),B=b&&BAU.find(x=>x.name===b.name);return B&&mkNah(B.cx,B.y1+4,{r:9});}
@@ -3679,7 +3690,7 @@ function mkNahe(){if(!WK.on||!mkOwn(WK.me)||!MK.quests)return;const qd=MK.d&&MK.
 async function mkErledigt(i){const b=$('mkact');if(b){b.disabled=true;}const id=MK.quests[i],r=await mk('quest',{i});if(!r||r.fehler){if(b)b.disabled=false;mkToast('Bitte nochmal versuchen');return;}
  if(b)b.remove();MK.nahe=-1;if(MK.hin&&MK.hin.i===i)MK.hin=null;await mkStand();mkChip();const q=MKQ[id]||{em:['✨','🐚','💛','✨','🐚']},z=mkZiel2(id);
  MK.fx={x:WK.x,y:WK.y-2,t0:performance.now(),em:q.em||['✨','🐚','💛']};
- const g=z&&z.g,NW=(id==='nagelL'||id==='nagelR')&&nagelWer(id),L=NW?TAPS.find(t=>t[2]===NW):['kiosk','boba','pizza','markt'].includes(id)?TAPS.find(t=>t[2]&&t[2].ort===MKQ[id].ort&&t[2].beruf==='Leitung'):g?TAPS.find(t=>t[2]&&t[2].ort===g.name&&t[2].beruf==='Leitung'):id==='bm'?TAPS.find(t=>t[2]&&/bürgermeister/i.test(t[2].beruf||'')):id==='beet'?TAPS.find(t=>t[2]&&t[2].beruf==='Palast-Leitung'):null;if(L)MK.bub={p:L[2],t0:performance.now()};
+ const g=z&&z.g,NW=(id==='nagelL'||id==='nagelR')&&nagelWer(id),L=NW?TAPS.find(t=>t[2]===NW):['kiosk','boba','pizza','markt','cocobay','kokosbad','coast'].includes(id)?TAPS.find(t=>t[2]&&t[2].ort===MKQ[id].ort&&t[2].beruf==='Leitung'):g?TAPS.find(t=>t[2]&&t[2].ort===g.name&&t[2].beruf==='Leitung'):id==='bm'?TAPS.find(t=>t[2]&&/bürgermeister/i.test(t[2].beruf||'')):id==='beet'?TAPS.find(t=>t[2]&&t[2].beruf==='Palast-Leitung'):null;if(L)MK.bub={p:L[2],t0:performance.now()};
  mkToast('✅ Aufgabe geschafft · +5 🐚'+(r.bonus?' · 🎁 +5 Bonus':''));mkCard();}
 // Hütte bzw. Bürgermeisterin antippen erfüllt die Aufgabe (Muschelpass öffnet sich wie gewohnt)
 // Aufgabe „Muschelpass teilen“: erfüllt, sobald man den eigenen Pass geteilt (oder als Bild gespeichert) hat
