@@ -88,8 +88,9 @@ def importiere_liste(pfad, rows):
     heute = dt.date.today()
     weg = 0
     weg_namen = []
-    for r in list(rows):  # Entfolgte ziehen aus und verschwinden komplett aus der Liste
-        if r["name"].lower().lstrip("@") not in drin:
+    sonder = {s["name"].lower().lstrip("@") for s in (json.load(open(INSEL, encoding="utf-8")).get("sonder_bewohner") or [])}
+    for r in list(rows):  # Entfolgte ziehen aus und verschwinden komplett aus der Liste (Sonder-Bewohner bleiben)
+        if r["name"].lower().lstrip("@") not in drin and r["name"].lower().lstrip("@") not in sonder:
             rows.remove(r)
             weg += 1
             weg_namen.append(r["name"].lower().lstrip("@"))
@@ -604,6 +605,11 @@ def main():
     if a.imp:
         importiere(a.imp, rows)
         speichere_csv(rows)
+    # Sonder-Bewohner (insel.json → sonder_bewohner): wohnen da, auch ohne zu folgen
+    da = {r["name"].lower().lstrip("@") for r in rows}
+    for s in json.load(open(INSEL, encoding="utf-8")).get("sonder_bewohner") or []:
+        if s["name"].lower().lstrip("@") not in da:
+            rows.append({"name": s["name"], "datum": s.get("seit", ""), "markierung": "", "platz": "", "gruender": ""})
     baue(rows, a.out)
     if os.path.abspath(a.out) == os.path.join(HIER, "site"):
         speichere_csv(rows)  # Häuser (platz) und Auszüge merken
