@@ -265,7 +265,8 @@ const TON_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'muscheltal-ton-')); let t
 let stimme = CFG.stimme.mac, stilleSeit = Date.now();
 const ECHT = !STILL && process.platform === 'darwin';
 const dauerMs = t => t.length * 62 + (t.match(/…/g) || []).length * 450 + 300;   // Schätzung ohne echte Stimme
-const fuerStimme = t => t.replace(/\s*…\s*/g, ' [[slnc 250]] ').replace(/([!?])\s+/g, '$1 [[slnc 150]] ');
+let ohnePausen = false;                                    // manche Premium-Stimmen hängen an [[slnc]]-Befehlen
+const fuerStimme = t => ohnePausen ? t.replace(/\s*…\s*/g, ', ') : t.replace(/\s*…\s*/g, ' [[slnc 250]] ').replace(/([!?])\s+/g, '$1 [[slnc 150]] ');
 function sag(text, prio = 2) {
   if (!text) return;
   if (satzAnstoessig(text)) { console.log('🚫 Satz nicht gesprochen (Filter):', text); return; }
@@ -282,7 +283,20 @@ function sag(text, prio = 2) {
   weiter();
 }
 let sprichtSeit = 0;
-setInterval(() => { if (spricht && Date.now() - sprichtSeit > 20000) { console.log('⚠️  Ansage hing über 20 s – Anna macht weiter.'); sprichtSeit = Date.now(); if (sayProzess && sayProzess.exitCode === null) { try { sayProzess.kill(); } catch { fertig(); } } else fertig(); } }, 2000);
+// Sicherung: Sprache erzeugen darf max. 10 s dauern, Abspielen max. 20 s. Hängt das Erzeugen öfter, hilft sich das Programm selbst.
+let schritt = '', haenger = 0;
+setInterval(() => {
+  const grenze = schritt === 'erzeugen' ? 10000 : 20000;
+  if (!spricht || Date.now() - sprichtSeit < grenze) return;
+  console.log(`⚠️  Ansage hing beim ${schritt === 'erzeugen' ? 'Erzeugen der Sprache (say, Stimme „' + stimme + '“)' : schritt === 'abspielen' ? 'Abspielen (afplay)' : 'Warten (' + schritt + ')'} – Anna macht weiter.`);
+  if (schritt === 'erzeugen' && ++haenger >= 2) {
+    haenger = 0;
+    if (!ohnePausen) { ohnePausen = true; console.log('   → Versuche es ab jetzt ohne Sprechpausen-Befehle.'); }
+    else { const e = CFG.stimme.macErsatz.shift(); if (e) { stimme = e; console.log(`   → Wechsle auf die Stimme „${e}“.`); } }
+  }
+  sprichtSeit = Date.now();
+  if (sayProzess && sayProzess.exitCode === null) { try { sayProzess.kill(); } catch { fertig(); } } else fertig();
+}, 1000);
 function fertig() { spricht = false; stilleSeit = Date.now(); setTimeout(weiter, 50); }
 function weiter() {
   if (spricht || !warte.length) return;
@@ -294,12 +308,14 @@ function weiter() {
   const args = ['-v', stimme, '-r', String(CFG.stimme.tempo)];
   // Immer erst eine Sprachdatei erzeugen (say hängt sonst manchmal an Mehrfach-Ausgabe/BlackHole), dann abspielen
   args.push('-o', datei, '--file-format=WAVE', '--data-format=LEI16@22050');
+  schritt = 'erzeugen'; const t0say = Date.now();
   const pr = sayProzess = spawn('say', [...args, fuerStimme(text)]);
   pr.on('error', e => { console.log('⚠️  say-Fehler:', e.message); fertig(); });
   let fehler = '';
   pr.stderr.on('data', d => fehler += d);
   pr.on('close', code => {
-    if (aufSeite && code === 0) {                      // Seite spielt ab; warten, bis die Ansage vorbei ist
+    if (aufSeite && code === 0) {
+      schritt = 'seite';                      // Seite spielt ab; warten, bis die Ansage vorbei ist
       let ms = 2000;
       try {                                            // Dauer aus dem WAV-Kopf (Bytes pro Sekunde), nicht geschätzt
         const b = fs.readFileSync(datei), rate = b.readUInt32LE(28) || 44100;
@@ -312,7 +328,9 @@ function weiter() {
       setTimeout(fertig, ms);
       return;
     }
+    if (code === 0) { haenger = 0; if (Date.now() - t0say > 4000) console.log(`🐢 Sprache erzeugen dauerte ${((Date.now() - t0say) / 1000).toFixed(1)} s`); }
     if (!aufSeite && code === 0) {                     // Mac-Ton: Datei mit afplay abspielen (wie die Musik)
+      schritt = 'abspielen';
       const ap = sayProzess = spawn('afplay', ['-v', String(CFG.ton.stimmeAufMac ?? 1), datei]);
       ap.on('error', e => { console.log('⚠️  afplay-Fehler:', e.message); fertig(); });
       ap.on('close', () => fertig());
