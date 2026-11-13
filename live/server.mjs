@@ -10,6 +10,7 @@ import os from 'node:os';
 import { fileURLToPath } from 'node:url';
 import { macheEvents } from './events.mjs';
 import { satz, namenListe } from './saetze.mjs';
+import { geschenkFormen } from './geschenke.mjs';
 import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './filter.mjs';
 
 const DIR = path.dirname(fileURLToPath(import.meta.url));
@@ -129,11 +130,11 @@ function kommentar(u, text) {
 function geschenk(u, name, diamanten, anzahl) {
   const p = spieler(u); if (!p) { inKasse(Math.max(1, diamanten || 1) * Math.max(1, anzahl || 1) * CFG.kasse.proCoin); return; }
   const d = Math.max(1, diamanten || 1) * Math.max(1, anzahl || 1);   // Coins insgesamt: 1 Coin = 1 Muschel (= 0,01 €)
-  sende({ typ: 'geschenk', id: p.id, name, anzahl, diamanten: d });
-  EV.geschenkShow(p, name, anzahl, d);
+  const g = geschenkFormen(name, anzahl);                  // deutsch, mit Artikel: „für die Rose“, „einen Löwen“
+  sende({ typ: 'geschenk', id: p.id, name: g.name, anzahl, diamanten: d });
+  EV.geschenkShow(p, g, anzahl, d);
   inKasse(d * CFG.kasse.proCoin);
-  const wie = anzahl > 1 ? `${anzahl} mal ${name}` : name;
-  sag(satz(d >= 1000 ? 'geschenkGross' : d >= 100 ? 'geschenkMittel' : 'geschenkKlein', { name: sprechName(p), geschenk: wie }), 0);
+  sag(satz(d >= 1000 ? 'geschenkGross' : d >= 100 ? 'geschenkMittel' : 'geschenkKlein', { name: sprechName(p), fuer: g.fuer, einAkk: g.einAkk, einNom: g.einNom, EinNom: grossKlein(g.einNom) }), 0);
   gibMuscheln(p, d * CFG.muschelnProCoin, 'geschenk');
 }
 
@@ -227,8 +228,10 @@ const EV = macheEvents({
   spieler: id => S.spieler[id],
   aktive: min => Object.values(S.spieler).filter(p => !p.gesperrt && Date.now() - (p.zuletzt || 0) < min * 60000),
   likeRate: () => { const t = Date.now() - 300000; while (likeLog.length && likeLog[0][0] < t) likeLog.shift(); return likeLog.reduce((a, [, n]) => a + n, 0) / 5; },
+  rekord: v => { if (v != null) { S.likeRekord = v; geaendert = true; } return S.likeRekord || 150; },
   hatProjekt: () => !!S.projekt,
-  offeneProjekte: () => CFG.abstimmung.projekte.filter(x => !S.fertig.includes(x.id)),
+  // kein Limit: noch nicht gebaute zuerst (gemischt), danach schon gebaute (gemischt)
+  offeneProjekte: () => { const m = a => a.sort(() => Math.random() - .5); return [...m(CFG.abstimmung.projekte.filter(x => !S.fertig.includes(x.id))), ...m(CFG.abstimmung.projekte.filter(x => S.fertig.includes(x.id)))]; },
   projektStarten,
 });
 setInterval(zustand, 1000);
@@ -330,10 +333,17 @@ const MODERATION = [
   () => rundgang(),
   () => S.kasse > 0 ? satz('kasse', { kasse: S.kasse.toLocaleString('de-DE') }) : null,
   () => S.projekt ? satz('projekt', { projekt: S.projekt.name, prozent: Math.floor(S.projekt.stand / S.projekt.ziel * 100) }) : null,
+  () => baustelleZeigen(),
   () => { const h = new Date().getHours(); return h >= 17 || h < 7 ? satz('abend') : satz('stimmung', { aktive: aktiveAnzahl() }); },
   () => satz('stimmung', { aktive: aktiveAnzahl() }),
 ];
 const aktiveAnzahl = () => Object.values(S.spieler).filter(p => Date.now() - (p.zuletzt || 0) < 600000).length;
+function baustelleZeigen() {                                // Kamera fliegt zur Baustelle, Anna berichtet
+  if (!S.projekt || Date.now() - letzterRundgang < 30000) return null;
+  letzterRundgang = Date.now(); sende({ typ: 'kameraBau', ms: 8000 });
+  const def = CFG.abstimmung.projekte.find(x => x.id === S.projekt.id) || {};
+  return satz('baustelleZeigen', { Projekt: grossKlein(def.der || S.projekt.name), ein: def.ein || S.projekt.name, prozent: Math.floor(S.projekt.stand / S.projekt.ziel * 100), rest: Math.max(0, Math.ceil(S.projekt.ziel - S.projekt.stand)).toLocaleString('de-DE') });
+}
 function rundgang() {                                      // Kamera fliegt zu einem Haus, Anna stellt es vor
   if (Date.now() - letzterRundgang < 40000) return null;
   const kand = Object.values(S.spieler).filter(p => !p.gesperrt && Date.now() - (p.zuletzt || 0) < 900000 && p.stufe > 0);
@@ -379,6 +389,24 @@ function moderiere() {
   for (let k = 0; k < MODERATION.length; k++) { const t = MODERATION[modNr++ % MODERATION.length](); if (t) return sag(t, 4); }
   sag(satz('stimmung', { aktive: aktiveAnzahl() }), 4);
 }
+// Rangliste beobachten: Änderungen in den Top 3 ansagen (höchstens alle 15 s, wichtigste Änderung zuerst)
+let topVorher = null, topAnsage = 0;
+setInterval(() => {
+  const top = Object.values(S.spieler).filter(p => !p.gesperrt).sort(rangFolge).slice(0, 3).map(p => p.id);
+  if (!topVorher) { topVorher = top; return; }
+  if (Date.now() - topAnsage < 15000) return;
+  for (let i = 0; i < top.length; i++) {
+    if (top[i] === topVorher[i]) continue;
+    const p = S.spieler[top[i]], neuDrin = !topVorher.includes(top[i]);
+    if (i > 0 && !neuDrin) continue;                        // nur Platz 1 oder Neueinsteiger ansagen
+    topAnsage = Date.now();
+    sende({ typ: 'rangliste', id: p.id, platz: i + 1 });
+    sag(i === 0 ? satz('topEins', { name: sprechName(p) }) : satz('topNeu', { name: sprechName(p), platz: i === 1 ? 'zwei' : 'drei' }), 1);
+    break;
+  }
+  topVorher = top;
+}, 3000);
+
 // Alle 3 Minuten: Aufruf zum Folgen (mit Banner)
 setInterval(() => { sende({ typ: 'folgeAufruf' }); sag(satz('folgeAufruf'), 1); }, (CFG.folgeAufrufMinuten || 3) * 60000);
 setInterval(() => {
@@ -432,7 +460,7 @@ http.createServer((req, res) => {
   }
   if (TEST && url.pathname === '/test') {                 // nur Test-Modus: Event / Geschenk-Show auslösen
     const id = url.searchParams.get('event'), art = url.searchParams.get('geschenk');
-    if (url.searchParams.has('stadt')) { const n = +url.searchParams.get('stadt'), ids = CFG.abstimmung.projekte.map(x => x.id); S.fertig = ids.slice(0, n); const pr = CFG.abstimmung.projekte[n]; S.projekt = pr ? { id: pr.id, name: pr.name, ziel: pr.ziel, stand: Math.round(pr.ziel * .45) } : null; zustand(); }
+    if (url.searchParams.has('stadt')) { const n = +url.searchParams.get('stadt'), ids = CFG.abstimmung.projekte.map(x => x.id); S.fertig = Array.from({ length: n }, (_, i) => ids[i % ids.length]); const pr = CFG.abstimmung.projekte[n % ids.length]; S.projekt = pr ? { id: pr.id, name: pr.name, ziel: pr.ziel, stand: Math.round(pr.ziel * .45) } : null; zustand(); }
     if (url.searchParams.has('fertigbauen') && S.projekt) { S.projekt.stand = S.projekt.ziel - 1; inKasse(1); }
     if (id) EV.starte(id);
     const nutzer = url.searchParams.get('user');               // gezielt als Test-Zuschauer handeln

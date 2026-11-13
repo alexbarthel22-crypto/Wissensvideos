@@ -39,10 +39,11 @@ Ausbauten werden animiert gebaut (Bambusgerüst, Krabben-Bauarbeiter, Sandstaub)
 Oben steht immer das **nächste Bauprojekt der Haupt-Insel** – automatisch aus `muscheltal/daten/insel.json` (`baustellen`), Startzahl der Bewohner aus `einwohner.csv`. Straßennamen stehen unter `strassen`.
 Die Bewohnerzahl kommt live von TikTok (Follower), `bewohner.start` ist nur der Startwert, falls TikTok sie nicht liefert.
 
-## Überraschungs-Events (alle 4 Minuten, 30 verschiedene)
+## Überraschungs-Events (alle 3 Minuten, 40 verschiedene)
 Rechts oben läuft ein Countdown „Nächstes Event“ – welches kommt, bleibt geheim (❓❓❓). Nie dasselbe wie eins der letzten 10.
+Beim Start sagt Anna, was am Ende passiert (steht auch im Event-Feld unter 🏆). Am Ende nennt sie die Gewinner mit Namen (im Ergebnis-Feld unter 🏆).
 Alle Events laufen komplett im Stream, mitmachen per Like oder Kommentar – niemand muss den Stream verlassen, nichts ist an Geschenke gebunden.
-Like-Ziele liegen bei ca. 80 % des normalen Like-Tempos: schaffbar, wenn alle mitmachen. Alle 30 Events sind automatisch geprüft (Test-Zuschauer machen mit, Belohnungen kommen an).
+Like-Ziele liegen bei ca. 80 % des normalen Like-Tempos: schaffbar, wenn alle mitmachen. Alle 40 Events sind automatisch geprüft (Test-Zuschauer machen mit, Belohnungen kommen an).
 
 | Event | Mitmachen | Belohnung |
 |---|---|---|
@@ -76,11 +77,28 @@ Like-Ziele liegen bei ca. 80 % des normalen Like-Tempos: schaffbar, wenn alle mi
 | 🏄 Surf-Contest | `surf`, dann liken | Bester 60 🐚 |
 | 🥥 Kokosnuss-Weitwurf | `wurf` | weitester Wurf 40 🐚 |
 | 📸 Inselfoto | `cheese` | 8 🐚 + Name auf dem Foto |
+| 🪢 Tauziehen | `muschel` / `seestern` oder einfach liken | Siegerteam 25 🐚 |
+| 🔤 Buchstabensalat | Wort aus den Buchstaben schreiben | 50 🐚 |
+| 🎲 Muschel-Würfeln | `würfel` | jede Sechs 30 🐚 |
+| 🦜 Papagei | gezeigten Satz nachschreiben (erste 5) | 20 🐚 |
+| 🌈 Regenbogen malen | `rot` `orange` `gelb` `grün` `blau` `lila` | komplett: 20 🐚 für alle Maler |
+| 🐠 Fische zählen | Anzahl der Fische schreiben | genau 30 🐚, ±1 10 🐚 |
+| 🏆 Like-Rekord | 30 Sekunden liken | Rekord gebrochen: 25 🐚 für alle |
+| 🎭 Motto des Tages | `1` `2` `3` | Mehrheit 10 🐚 |
+| 🎁 Mystery-Box | `box` | 3–50 🐚 für jeden |
+| 🕵️ Wer bin ich? | Tier erraten (3 Hinweise) | 50 🐚 |
 
-## Stadtgebäude
+## Stadtgebäude (ohne Limit)
 Per Abstimmung wählt der Chat das nächste Gemeinschafts-Gebäude, bezahlt wird aus der Muschelkasse:
-Rathaus, Schule, Krankenhaus, Feuerwache, Polizeistation, Supermarkt, Kino, Bibliothek, Post, Café, Eisdiele, Museum, Sporthalle, Markthalle, Hotel, Apotheke – alle im tropischen Strand-Stil (Palmen, Markisen, Stroh- und Ziegeldächer).
-Sie entstehen auf festen Bauplätzen rund um den Muschelplatz: erst eine Baustelle mit Kran und Fortschritt, bei Fertigstellung eine kurze Bau-Animation (Gerüst, Krabben, Gebäude wächst), Feuerwerk.
+Rathaus, Schule, Krankenhaus, Feuerwache, Polizeistation, Supermarkt, Kino, Bibliothek, Post, Café, Eisdiele, Museum, Sporthalle, Markthalle, Hotel, Apotheke, Aquarium, Theater, Schwimmbad, Kindergarten, Restaurant, Friseur, Muschelbank, Inselbahnhof – alle im tropischen Strand-Stil (Palmen, Markisen, Stroh- und Ziegeldächer).
+Gebäude dürfen mehrfach gebaut werden (noch nicht gebaute kommen bei der Abstimmung zuerst). Bauplätze: zuerst das Stadtzentrum um den Muschelplatz, dann über die ganze Insel verteilt (fest vorgemerkt, Häuser ziehen nie um). Reichen die Plätze nicht, wächst die Insel – bis ca. 60 Gebäude und 1.800 Grundstücke.
+Während des Baus: lebendige Baustelle (Kran mit Last, Krabben-Bauarbeiter, Schubkarre, Betonmischer, Funken, Prozent-Schild); ab und zu fliegt die Kamera hin und Anna berichtet. Bei Fertigstellung: Bau-Animation (Gerüst, Kran, Krabben, Staub, Gebäude wächst nach oben), dann Feuerwerk.
+
+## Rangliste
+„Beste Häuser“: höchste Haus-Stufe zuerst, bei Gleichstand die Muscheln aus Events. Neuer Platz 1 oder Neueinsteiger in den Top 3 werden angesagt und als Banner gezeigt.
+
+## Geschenke auf Deutsch
+TikTok liefert die Geschenk-Namen auf Englisch – `geschenke.mjs` übersetzt sie mit Artikel und Mehrzahl: „Danke für die Rose“, „für den Löwen“, „für das Parfüm“, „für 3 Rosen“. Unbekannte Geschenke: „für das Geschenk „…““.
 
 ## Geschenk-Shows
 Jedes Geschenk wird bedankt (Anna) und bekommt eine Show mit dem Namen des Spenders – je wertvoller, desto größer:

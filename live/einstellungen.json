@@ -264,8 +264,65 @@
         "ein": "eine Apotheke",
         "der": "die Apotheke",
         "ziel": 2000
+      },
+      {
+        "id": "aquarium",
+        "name": "Aquarium",
+        "ein": "ein Aquarium",
+        "der": "das Aquarium",
+        "ziel": 3500
+      },
+      {
+        "id": "theater",
+        "name": "Theater",
+        "ein": "ein Theater",
+        "der": "das Theater",
+        "ziel": 3500
+      },
+      {
+        "id": "schwimmbad",
+        "name": "Schwimmbad",
+        "ein": "ein Schwimmbad",
+        "der": "das Schwimmbad",
+        "ziel": 3000
+      },
+      {
+        "id": "kindergarten",
+        "name": "Kindergarten",
+        "ein": "einen Kindergarten",
+        "der": "der Kindergarten",
+        "ziel": 2500
+      },
+      {
+        "id": "restaurant",
+        "name": "Restaurant",
+        "ein": "ein Restaurant",
+        "der": "das Restaurant",
+        "ziel": 2000
+      },
+      {
+        "id": "friseur",
+        "name": "Friseur",
+        "ein": "einen Friseur",
+        "der": "der Friseur",
+        "ziel": 1500
+      },
+      {
+        "id": "bank",
+        "name": "Muschelbank",
+        "ein": "eine Muschelbank",
+        "der": "die Muschelbank",
+        "ziel": 3000
+      },
+      {
+        "id": "bahnhof",
+        "name": "Inselbahnhof",
+        "ein": "einen Inselbahnhof",
+        "der": "der Inselbahnhof",
+        "ziel": 4000
       }
-    ]
+    ],
+    "_hinweis": "Kein Limit: Gebäude dürfen mehrfach gebaut werden (noch nicht gebaute werden bei der Abstimmung bevorzugt). Reichen die Bauplätze nicht, wächst die Insel."
   },
   "muschelnFuerErstenKommentar": 5,
   "bewohner": {
@@ -366,8 +423,8 @@
   },
   "muschelnProCoin": 1,
   "events": {
-    "alleMinuten": 4,
-    "_hinweis": "Alle 4 Minuten ein zufälliges Überraschungs-Event (30 verschiedene, siehe events.mjs). Nie dasselbe wie eins der letzten 10."
+    "alleMinuten": 3,
+    "_hinweis": "Alle 3 Minuten ein zufälliges Überraschungs-Event (40 verschiedene, siehe events.mjs). Nie dasselbe wie eins der letzten 10."
   },
   "folgeAufrufMinuten": 3
 }

@@ -38,25 +38,33 @@ const mass = (x, y) => { const dx = (x - IX) / RX, dy = (y - IY) / RY; return Ma
 const innen = (x, y, s) => mass(x, y) <= s;
 const PLATZ_R = 168;
 const PX = 250, PY = 176, STR = 30;
-const GI = 9, GJ = 13;                                          // Raster reicht für sehr große Inseln
+const GI = 12, GJ = 17;                                          // Raster reicht für sehr große Inseln
 const XS = [], YS = [];
 for (let k = -GI; k <= GI; k++) XS.push(IX + k * PX);
 for (let k = -GJ; k <= GJ; k++) YS.push(IY + k * PY);
 const RAND_GRAS = .95, RAND_PLATZ = .935;
 let K = 1;                                                      // aktuelle Inselgröße
-const START_PLAETZE = 200, K_MAX = 2.6;
+const START_PLAETZE = 200, K_MAX = 4;
 
 function zufall(seed) { return () => (seed = (seed * 1664525 + 1013904223) >>> 0) / 4294967296; }
 
-// Stadtzentrum: 16 feste Bauplätze (je 2×2 Zellen, zur Platzseite hin) für die Gemeinschafts-Gebäude.
-// Ring 1: Blöcke direkt nördlich/südlich/westlich/östlich des Muschelplatzes, Ring 2: die Blöcke dahinter.
-const GEB_BLOECKE = [[-1, -2], [0, -2], [-1, 1], [0, 1], [-2, -1], [1, -1], [-2, 0], [1, 0],      // [Spalte, Zeile] relativ zum Platz
-                     [-1, -3], [0, -3], [-1, 2], [0, 2], [-2, -2], [1, -2], [-2, 1], [1, 1]];
-const GEB_PLAETZE = GEB_BLOECKE.map(([bi, bj]) => {
+// Bauplätze für Gemeinschafts-Gebäude (je 2×2 Zellen, zur Mitte hin). Ohne Limit: zuerst das Stadtzentrum rund um den
+// Muschelplatz, dann ca. jeder 7. Block der ganzen Insel. Alle sind von Anfang an fest vorgemerkt, damit Zuschauer-Häuser
+// nie umziehen müssen. Reichen die Plätze nicht, wächst die Insel (siehe kFuer).
+const ZENTRUM = [[-1, -2], [0, -2], [-1, 1], [0, 1], [-2, -1], [1, -1], [-2, 0], [1, 0], [-1, -3], [0, -3], [-1, 2], [0, 2], [-2, -2], [1, -2], [-2, 1], [1, 1]];
+const GEB_BLOECKE = [];
+for (let bi = -GI; bi < GI; bi++) for (let bj = -GJ; bj < GJ; bj++) {
+  if ((bi === -1 || bi === 0) && (bj === -1 || bj === 0)) continue;   // Blöcke am Muschelplatz
+  const z = ZENTRUM.findIndex(([a, b]) => a === bi && b === bj);
+  if (z >= 0 || ((bi * 3 + bj * 5) % 7 + 7) % 7 === 0) GEB_BLOECKE.push([bi, bj, z]);
+}
+const GEB_PLAETZE = GEB_BLOECKE.map(([bi, bj, z]) => {
   const i = GI + bi, j = GJ + bj, bx = XS[i] + STR / 2 + 3, by = YS[j] + STR / 2 + 3, bw = PX - STR - 6, bh = PY - STR - 6;
-  const q0 = bi < 0 ? 1 : 0;                                       // die zwei Spalten, die näher an der Mitte liegen
-  return { x0: bx + q0 * bw / 3, y0: by, w: bw * 2 / 3, h: bh, x: bx + q0 * bw / 3 + bw / 3, y: by + bh * .9, i, j, q0 };
-});
+  const q0 = bi < 0 ? 1 : 0, x0 = bx + q0 * bw / 3, w = bw * 2 / 3;
+  const m = Math.max(...[[x0, by], [x0 + w, by], [x0, by + bh], [x0 + w, by + bh]].map(([x, y]) => mass(x, y))) / RAND_PLATZ;
+  return { x0, y0: by, w, h: bh, x: x0 + w / 2, y: by + bh * .9, i, j, q0, m: z >= 0 ? -100 + z : m };   // Zentrum zuerst
+}).sort((a, b) => a.m - b.m);
+const gebPlaetzeBei = k => GEB_PLAETZE.filter(g => g.m <= k).length;
 const istGebZelle = (i, j, q) => GEB_PLAETZE.some(g => g.i === i && g.j === j && (q === g.q0 || q === g.q0 + 1));
 // Alle möglichen Grundstücke (3 × 2 je Block), sortiert nach Abstand zur Muschel.
 // Ein Grundstück gehört zur Insel, sobald K >= sein Maß – so bleiben alte Grundstücke beim Wachsen an ihrem Platz.
@@ -76,8 +84,8 @@ const ALLE = (() => {
 const plaetzeBei = k => { let n = 0; while (n < ALLE.length && ALLE[n].m <= k) n++; return n; };
 const PLAETZE = ALLE;                                           // Index = Platz-Nr. des Bewohners
 let ANZAHL = 0;
-function kFuer(spieler) {
-  let k = .9; while (k < K_MAX && plaetzeBei(k) < Math.max(START_PLAETZE, spieler + 12)) k += .02;
+function kFuer(spieler, gebaeude = (S.fertig || []).length + 1) {
+  let k = .9; while (k < K_MAX && (plaetzeBei(k) < Math.max(START_PLAETZE, spieler + 12) || gebPlaetzeBei(k) < gebaeude + 1)) k += .02;
   return Math.round(k * 100) / 100;
 }
 
@@ -120,10 +128,10 @@ function basisZeichnen(k) {
   b.fillStyle = 'rgba(127,224,200,.5)'; form(k * 1.1); b.fill();
   b.strokeStyle = 'rgba(255,255,255,.55)'; b.lineWidth = 3; form(k * 1.06); b.stroke();
   b.fillStyle = '#f3dfa6'; form(k * 1.035); b.fill();
-  b.fillStyle = '#e6c985'; for (let i = 0; i < 2500 * k; i++) { const a = R() * 6.283, [x, y] = amRand(a, k * (RAND_GRAS + R() * .085)); b.fillRect(x, y, 1.6, 1.6); }
+  b.fillStyle = '#e6c985'; for (let i = 0; i < 2500 * Math.min(k, 2.5); i++) { const a = R() * 6.283, [x, y] = amRand(a, k * (RAND_GRAS + R() * .085)); b.fillRect(x, y, 1.6, 1.6); }
   b.fillStyle = '#7cc85a'; form(k * RAND_GRAS); b.fill();
   b.save(); form(k * RAND_GRAS); b.clip();
-  for (let i = 0; i < 5000 * k * k; i++) { b.fillStyle = R() < .5 ? 'rgba(255,255,255,.07)' : 'rgba(40,110,30,.09)'; b.beginPath(); b.arc(IX + (R() * 2 - 1) * RX * k, IY + (R() * 2 - 1) * RY * k, 2 + R() * 5, 0, 7); b.fill(); }
+  for (let i = 0; i < 5000 * Math.min(k, 2) ** 2; i++) { b.fillStyle = R() < .5 ? 'rgba(255,255,255,.07)' : 'rgba(40,110,30,.09)'; b.beginPath(); b.arc(IX + (R() * 2 - 1) * RX * k, IY + (R() * 2 - 1) * RY * k, 2 + R() * 5, 0, 7); b.fill(); }
   // Grundstücke (Rasen mit Kante)
   const n = plaetzeBei(k);
   for (let i = 0; i < n; i++) { const p = ALLE[i]; b.fillStyle = 'rgba(255,255,255,.07)'; b.beginPath(); b.roundRect(p.x0 + 3, p.y0 + 3, p.w - 6, p.h - 6, 6); b.fill(); b.strokeStyle = 'rgba(60,120,40,.28)'; b.lineWidth = 1.2; b.stroke(); }
@@ -241,28 +249,30 @@ function ereignis(e) {
       S = e.s;
       const n = S.spieler.length;
       if (!BASIS || STRASSEN_ALT !== S.strassen.join()) { K = Math.max(K, kFuer(n)); STRASSEN_ALT = S.strassen.join(); basisZeichnen(K); ANZAHL = plaetzeBei(K); spaziergaenger(); }
-      else if (n > ANZAHL && K < K_MAX && !WACHS) wachsen(kFuer(n + 60));     // erst wachsen, wenn alles voll ist – dann gleich ein großes Stück
+      else if ((n > ANZAHL || gebPlaetzeBei(K) < (S.fertig || []).length + 1) && K < K_MAX && !WACHS) wachsen(kFuer(n + 60, (S.fertig || []).length + 4));     // erst wachsen, wenn alles voll ist – dann gleich ein großes Stück
       break;
     }
     case 'neu': bau[e.id] = { t: jetzt + 250, alt: -1, neu: 0, D: 1.9 }; break;
-    case 'stufe': if (p) { bau[e.id] = { t: jetzt, alt: p.stufe, neu: e.stufe, D: 3.8 }; if (pl) fokus(pl, 5200); } break;
+    case 'stufe': if (p) { bau[e.id] = { t: jetzt, alt: p.stufe, neu: e.stufe, D: 4.8 }; if (pl) fokus(pl, 6000); } break;
     case 'anbau': case 'farbe': if (pl) { pop[e.id] = jetzt; funken(pl, '🔨', 5); fokus(pl, 2600, true); } break;
     case 'geschenk': if (pl) funken(pl, '💖', 10 + Math.min(30, e.diamanten)); break;
     case 'show':
-      if (e.coins < 10) { banner.push({ t: 0, oben: `🎁 Danke ${e.name}!`, unten: (e.anzahl > 1 ? e.anzahl + '× ' : '') + e.gift + ' · +' + e.coins + ' 🐚', farbe: PINK }); if (pl) funken(pl, { herzregen: '💖', muschelkonfetti: '🐚', seifenblasen: '🫧' }[e.art] || '💖', 16); }
+      if (e.coins < 10) { banner.push({ t: 0, oben: `🎁 Danke ${e.name}!`, unten: `für ${e.fuer || e.gift} · +${e.coins} 🐚`, farbe: PINK }); if (pl) funken(pl, { herzregen: '💖', muschelkonfetti: '🐚', seifenblasen: '🫧' }[e.art] || '💖', 16); }
       else showStart(e);
       break;
     case 'hausGezeigt': if (p) { banner.unshift({ t: 0, oben: `🏠 ${p.name}`, unten: 'hier ist dein Haus!', farbe: TUERKIS }); if (pl) { pop[e.id] = jetzt; funken(pl, '⭐', 12); } } break;
+    case 'rangliste': if (p) { banner.push({ t: 0, oben: `🏆 ${p.name}`, unten: e.platz === 1 ? 'jetzt Platz 1 – das beste Haus der Insel!' : `neu auf Platz ${e.platz} der besten Häuser`, farbe: '#ff8a2a' }); if (pl) funken(pl, '🏆', 10); } break;
     case 'folgeAufruf': banner.push({ t: 0, oben: '🏠 Folge @muscheltal!', unten: 'Deine Hütte hier im LIVE + in Muschel-Tal', farbe: TUERKIS }); break;
     case 'kamera': if (pl) fokus(pl, e.ms || 15000); break;
     case 'feuerwerk': feuerwerk(); break;
+    case 'kameraBau': { const gp = GEB_PLAETZE[(S.fertig || []).length]; if (gp) fokus({ x: gp.x, y: gp.y - 20 }, e.ms || 8000); break; }
     case 'ballonPlatzt': for (let i = 0; i < 18; i++) fx.push({ x: IX + (Math.random() - .5) * 500, y: IY - 200 + (Math.random() - .5) * 300, vx: (Math.random() - .5) * 8, vy: (Math.random() - .5) * 8, t: performance.now(), z: ['🎉', '✨', '💥'][i % 3], s: 22 }); break;
     case 'eventStart': fokusBis = 0; tourModus = 0; tourBis = jetzt + 70000; banner.push({ t: 0, oben: '⚡ Überraschungs-Event!', unten: 'Jetzt mitmachen!', farbe: '#9b5de5' }); funken({ x: IX, y: IY }, '⚡', 20); break;
     case 'eventEnde': if (e.gut) { const q = e.spielerId && sp(e.spielerId), qp = q && platzVon(q); if (qp) { funken(qp, '🎉', 24); fokus(qp, 5000); } else feuerwerk(); } break;
     case 'follow': banner.push({ t: 0, oben: `🏠 ${p ? p.name : ''}`, unten: 'ist jetzt Bewohner · +5 🐚 in die Muschelkasse', farbe: TUERKIS }); break;
     case 'ziel': banner.push({ t: 0, oben: '🎉 Bewohner-Ziel erreicht!', unten: e.name + ' wird auf der Haupt-Insel gebaut', farbe: '#9b5de5' }); feuerwerk(); break;
     case 'projekt': { const gp = GEB_PLAETZE[(S.fertig || []).length]; if (gp) { funken({ x: gp.x, y: gp.y - 40 }, '🚧', 14); fokus({ x: gp.x, y: gp.y - 10 }, 5000); } break; }
-    case 'fertig': { const gp = GEB_PLAETZE[(S.fertig || []).length]; GEB_BAU[e.id] = jetzt; if (gp) { fokus({ x: gp.x, y: gp.y - 10 }, 6500); setTimeout(() => { funken({ x: gp.x, y: gp.y - 60 }, '🎉', 30); feuerwerk(); }, 3300); } break; }
+    case 'fertig': { const gp = GEB_PLAETZE[(S.fertig || []).length]; GEB_BAU[(S.fertig || []).length] = jetzt; if (gp) { fokus({ x: gp.x, y: gp.y - 10 }, 6500); setTimeout(() => { funken({ x: gp.x, y: gp.y - 60 }, '🎉', 30); feuerwerk(); }, 4300); } break; }
     case 'ansage': untertitel = { text: e.text, t: jetzt, d: Math.max(2.5, (e.ms || 4000) / 1000 + .5) }; break;
     case 'stimme': if (e.id === meineId) stimmeAbspielen(e.url); break;
     case 'hallo': meineId = e.id; break;
@@ -412,6 +422,10 @@ function bauZeichnen(c, p, f, t, b) {
     c.fillStyle = '#d9a66a'; for (let k = 0; k < 3; k++) c.fillRect(breit + 6, 2 - k * 3, 18, 2.5);
     krabbe(c, -breit / 3 + Math.sin(t * .002) * breit * .5, oben - 6, t);
     if (age < D - .8) krabbe(c, breit + 14, -8, t + 500);
+    // Krabbe schleppt ein Brett heran, Betonmischer dreht sich, Funken vom Hammer
+    const lauf = ((age * 22) % 60); c.fillStyle = '#d9a66a'; c.fillRect(-breit - 40 + lauf - 10, -16, 22, 3); krabbe(c, -breit - 40 + lauf, -6, t + 900);
+    c.save(); c.translate(breit + 30, -2); c.fillStyle = '#ff8a2a'; c.beginPath(); c.ellipse(0, -6, 9, 6, t * .006, 0, 7); c.fill(); c.strokeStyle = INK; c.lineWidth = 1; c.stroke(); c.fillStyle = '#6b4423'; c.fillRect(-6, 0, 12, 3); c.restore();
+    if (Math.sin(t * .025) > .6) { stern(c, -breit / 3 + Math.sin(t * .002) * breit * .5 + 12, oben - 10, 4); stern(c, -breit / 3 + Math.sin(t * .002) * breit * .5 + 18, oben - 4, 2.5); }
     c.restore();
   }
   // Sandstaub
@@ -929,6 +943,14 @@ const GEB = {
   markthalle: { farbe: '#fff3c4', dach: 'stroh', dachFarbe: '#d9a63a', schild: 'MARKTHALLE', akzent: '#ff8a2a' },
   hotel:      { farbe: '#fffaf0', dach: 'flach', dachFarbe: '#2fb3a0', schild: 'HOTEL', akzent: '#2fb3a0' },
   apotheke:   { farbe: '#f0fff4', dach: 'ziegel', dachFarbe: '#2fb3a0', schild: 'APOTHEKE', akzent: '#3f9b45' },
+  aquarium:   { farbe: '#d8f4ff', dach: 'rund', dachFarbe: '#2fb3a0', schild: 'AQUARIUM', akzent: '#3fa0e8' },
+  theater:    { farbe: '#fff0f0', dach: 'giebel', dachFarbe: '#e8467c', schild: 'THEATER', akzent: '#e8467c' },
+  schwimmbad: { farbe: '#eafcff', dach: 'flach', dachFarbe: '#3fa0e8', schild: 'SCHWIMMBAD', akzent: '#3fa0e8' },
+  kindergarten:{ farbe: '#fff8d6', dach: 'ziegel', dachFarbe: '#57b85a', schild: 'KINDERGARTEN', akzent: '#ff8a2a' },
+  restaurant: { farbe: '#fff4e6', dach: 'stroh', dachFarbe: '#d9a63a', schild: 'RESTAURANT', akzent: '#e8433c' },
+  friseur:    { farbe: '#fdeaff', dach: 'flach', dachFarbe: '#b58ad0', schild: 'FRISEUR', akzent: '#b58ad0' },
+  bank:       { farbe: '#f7f2e8', dach: 'giebel', dachFarbe: '#efe6d6', schild: 'MUSCHELBANK', akzent: '#c99a2e' },
+  bahnhof:    { farbe: '#fff3e0', dach: 'ziegel', dachFarbe: '#8a5a2b', schild: 'INSELBAHNHOF', akzent: '#e8433c' },
 };
 function gebaeude(c, id, t) {
   const g = GEB[id] || GEB.rathaus, W2 = 58, H = id === 'hotel' ? 92 : id === 'krankenhaus' ? 78 : 64;
@@ -970,6 +992,14 @@ function gebaeude(c, id, t) {
   if (id === 'bibliothek') { ['#e8433c', '#3fa0e8', '#57b85a', '#ffd23f'].forEach((f, k) => { c.fillStyle = f; c.fillRect(W2 + 4 + k * 4, -16, 3.5, 14); }); }
   if (id === 'sporthalle') { c.fillStyle = '#ff8a2a'; c.beginPath(); c.arc(W2 + 10, -6, 6, 0, 7); c.fill(); c.strokeStyle = INK; c.lineWidth = 1; c.stroke(); }
   if (id === 'museum') { c.fillStyle = '#c99a2e'; c.beginPath(); c.arc(0, -H - 10, 4, 0, 7); c.fill(); }
+  if (id === 'aquarium') for (let k = 0; k < 3; k++) { const fx = -W2 + 20 + k * 30 + Math.sin(t * .002 + k) * 6; c.fillStyle = ['#ff8a2a', '#ffd23f', '#ff6fa3'][k]; c.beginPath(); c.ellipse(fx, -H + 34 + (k % 2) * 10, 5, 3, 0, 0, 7); c.fill(); }
+  if (id === 'theater') { c.fillStyle = '#e8467c'; c.fillRect(-W2 + 2, -H + 2, 10, H - 4); c.fillRect(W2 - 12, -H + 2, 10, H - 4); c.font = `16px ${FONT}`; c.textAlign = 'center'; c.fillText('🎭', 0, -H - 30); }
+  if (id === 'schwimmbad') { c.fillStyle = '#3fa0e8'; c.beginPath(); c.roundRect(W2 + 2, -10, 32, 14, 4); c.fill(); c.strokeStyle = '#fff'; c.lineWidth = 2; c.stroke(); c.strokeStyle = '#9aa6a0'; c.lineWidth = 2; c.beginPath(); c.moveTo(-W2 - 4, 0); c.lineTo(-W2 - 4, -30); c.lineTo(-W2 + 10, -30); c.stroke(); }
+  if (id === 'kindergarten') { c.strokeStyle = '#ff8a2a'; c.lineWidth = 2; c.beginPath(); c.moveTo(W2 + 4, 4); c.lineTo(W2 + 4, -22); c.lineTo(W2 + 26, -22); c.lineTo(W2 + 26, 4); c.stroke(); c.beginPath(); c.moveTo(W2 + 12, -22); c.lineTo(W2 + 12 + Math.sin(t * .004) * 3, -6); c.moveTo(W2 + 18, -22); c.lineTo(W2 + 18 + Math.sin(t * .004) * 3, -6); c.stroke(); c.fillStyle = '#e8433c'; c.fillRect(W2 + 10 + Math.sin(t * .004) * 3, -7, 10, 3); }
+  if (id === 'restaurant') { c.fillStyle = '#fff'; [-W2 - 4, W2 + 4].forEach(x => { c.beginPath(); c.arc(x, 0, 6, 0, 7); c.fill(); c.fillStyle = '#e8433c'; c.fillRect(x - 6, -2, 12, 2); c.fillStyle = '#fff'; }); }
+  if (id === 'friseur') { c.save(); c.beginPath(); c.rect(W2 + 4, -30, 6, 26); c.clip(); for (let k = -4; k < 8; k++) { c.fillStyle = k % 2 ? '#e8433c' : '#fff'; c.fillRect(W2 + 4, -30 + k * 5 + (t * .02 % 10), 6, 5); } c.restore(); }
+  if (id === 'bank') { c.fillStyle = '#ffd23f'; c.beginPath(); c.arc(0, -H - 10, 6, 0, 7); c.fill(); c.strokeStyle = '#c99a2e'; c.lineWidth = 1.5; c.stroke(); }
+  if (id === 'bahnhof') { c.fillStyle = '#9aa6a0'; c.fillRect(-W2 - 10, 8, W2 * 2 + 20, 3); c.fillStyle = '#e8433c'; c.beginPath(); c.roundRect(-W2 - 6 + ((t * .02) % 30), -4, 26, 12, 3); c.fill(); c.fillStyle = '#9fe3f0'; c.fillRect(-W2 + ((t * .02) % 30), -2, 6, 4); }
   // tropische Deko: Palmen links/rechts, Hibiskus
   palme(c, -W2 - 14, 6, .55, t); palme(c, W2 + 16, 6, .55, t + 700);
   blumen(c, -W2 + 2, 2, 5, 30); blumen(c, W2 - 30, 2, 5, 30);
@@ -985,32 +1015,44 @@ function baustelle(c, prozent, name, t) {
   // Kran
   c.strokeStyle = '#ffb02e'; c.lineWidth = 4; c.beginPath(); c.moveTo(W2 - 10, 0); c.lineTo(W2 - 10, -100); c.lineTo(-W2 + 4, -100); c.stroke(); c.lineWidth = 1.5; c.strokeStyle = INK;
   const sw = Math.sin(t * .0015) * 18; c.beginPath(); c.moveTo(sw, -100); c.lineTo(sw, -74); c.stroke(); c.fillStyle = '#c96a3a'; c.fillRect(sw - 7, -74, 14, 8);
+  // Bauarbeiter-Krabben, Schubkarre, Betonmischer, Funken
+  krabbe(c, -20 + Math.sin(t * .0025) * 30, -h - 4, t); krabbe(c, -W2 + 14, -2, t + 400);
+  const sk = ((t * .03) % 140) - 70; c.fillStyle = '#9aa6a0'; c.beginPath(); c.moveTo(sk - 8, 2); c.lineTo(sk + 8, 2); c.lineTo(sk + 5, 8); c.lineTo(sk - 5, 8); c.closePath(); c.fill(); c.fillStyle = '#c96a3a'; c.fillRect(sk - 6, -1, 12, 3); krabbe(c, sk - 14, 2, t + 800);
+  c.save(); c.translate(W2 - 2, -8); c.fillStyle = '#ff8a2a'; c.beginPath(); c.ellipse(0, 0, 10, 7, t * .004, 0, 7); c.fill(); c.strokeStyle = INK; c.lineWidth = 1; c.stroke(); c.strokeStyle = '#fff'; c.lineWidth = 1.5; c.beginPath(); c.moveTo(-7 * Math.cos(t * .01), -5 * Math.sin(t * .01)); c.lineTo(7 * Math.cos(t * .01), 5 * Math.sin(t * .01)); c.stroke(); c.restore();
+  if (Math.sin(t * .02) > .7) { stern(c, -20 + Math.sin(t * .0025) * 30 + 14, -h - 8, 4); }
+  for (let k = 0; k < 3; k++) { const ph = (t * .0008 + k / 3) % 1; c.fillStyle = `rgba(240,220,160,${(1 - ph) * .45})`; c.beginPath(); c.arc(-30 + k * 30, -4 - ph * 18, 5 + ph * 8, 0, 7); c.fill(); }
   // Bauzaun + Schild mit Fortschritt
   for (let x = -W2 - 6; x <= W2 + 6; x += 8) { c.fillStyle = (x / 8 | 0) % 2 ? '#e8433c' : '#fff'; c.fillRect(x, 4, 8, 5); }
   c.fillStyle = '#fff'; c.beginPath(); c.roundRect(-46, -128, 92, 22, 5); c.fill(); c.strokeStyle = '#ffb02e'; c.lineWidth = 2; c.stroke();
   c.fillStyle = INK; c.font = `900 10px ${FONT}`; c.textAlign = 'center'; c.textBaseline = 'alphabetic'; c.fillText(`🏗️ ${name} ${Math.floor(prozent * 100)}%`, 0, -113);
 }
-// Bau-Animation bei Fertigstellung (wie bei den Häusern: Gerüst, Krabben, Staub, Gebäude wächst nach oben)
+// Bau-Animation bei Fertigstellung (Gerüst, Krabben, Staub, Gebäude wächst nach oben), Schlüssel = Bauplatz-Nr.
 const GEB_BAU = {};
 function gebaeudeZeichnen(t, imCache) {
-  const liste = S.projekteListe || [];
   (S.fertig || []).forEach((id, i) => {
     const pl = GEB_PLAETZE[i]; if (!pl) return;
-    const anim = GEB_BAU[id], age = anim ? (t - anim) / 1000 : 99;
-    if (imCache && age < 4.2) return;                               // läuft gerade die Bau-Animation: live zeichnen
-    if (!imCache && age >= 4.2) return;
+    const anim = GEB_BAU[i], age = anim ? (t - anim) / 1000 : 99, D = 5.2;
+    if (imCache === (age < D + .2)) return;                      // läuft die Bau-Animation: live zeichnen, sonst aus dem Zwischenspeicher
+    if (!imCache && !sichtbar(pl.x, pl.y - 40, 180)) return;
     X.save(); X.translate(pl.x, pl.y);
-    if (age < 4.2) {
-      const q = Math.min(1, age / 3.2), hoch = 130;
-      X.save(); X.beginPath(); X.rect(-90, 14 - q * hoch - 20, 180, q * hoch + 40); X.clip(); gebaeude(X, id, t); X.restore();
-      if (age < 3.6) { X.strokeStyle = '#c9a25a'; X.lineWidth = 2.6; [-62, -22, 22, 62].forEach(x => { X.beginPath(); X.moveTo(x, 8); X.lineTo(x, -hoch); X.stroke(); }); for (let y = -10; y > -hoch; y -= 18) { X.beginPath(); X.moveTo(-66, y); X.lineTo(66, y); X.stroke(); }
-        krabbe(X, Math.sin(t * .003) * 40, 14 - q * hoch - 24, t); krabbe(X, 70, -6, t + 400); }
-      for (let k = 0; k < 7; k++) { const ph = (age * 1.2 + k / 7) % 1; X.fillStyle = `rgba(240,220,160,${(1 - ph) * .5})`; X.beginPath(); X.arc((k - 3) * 18, 6 - ph * 22, 6 + ph * 10, 0, 7); X.fill(); }
+    if (age < D) {
+      const q = Math.min(1, age / (D - 1)), hoch = 135;
+      X.save(); X.beginPath(); X.rect(-95, 14 - q * hoch - 20, 190, q * hoch + 40); X.clip(); gebaeude(X, id, t); X.restore();
+      if (age < D - .5) {
+        X.strokeStyle = '#c9a25a'; X.lineWidth = 2.6; [-64, -22, 22, 64].forEach(x => { X.beginPath(); X.moveTo(x, 8); X.lineTo(x, -hoch); X.stroke(); });
+        for (let y = -10; y > -hoch; y -= 18) { X.beginPath(); X.moveTo(-68, y); X.lineTo(68, y); X.stroke(); }
+        // Kran schwenkt mit Last
+        X.strokeStyle = '#ffb02e'; X.lineWidth = 4; X.beginPath(); X.moveTo(84, 8); X.lineTo(84, -hoch - 30); X.lineTo(-40, -hoch - 30); X.stroke();
+        const lx = 20 + Math.sin(t * .002) * 50, ly = -hoch - 30 + 20 + (Math.sin(t * .003) + 1) * 20; X.strokeStyle = INK; X.lineWidth = 1.2; X.beginPath(); X.moveTo(lx, -hoch - 30); X.lineTo(lx, ly); X.stroke(); X.fillStyle = '#c96a3a'; X.fillRect(lx - 8, ly, 16, 9);
+        krabbe(X, Math.sin(t * .003) * 40, 14 - q * hoch - 24, t); krabbe(X, -50 + Math.sin(t * .002 + 1) * 20, -40, t + 300); krabbe(X, 76, -6, t + 600);
+        if (Math.random() < .3) fx.push({ x: pl.x + (Math.random() - .5) * 90, y: pl.y + 14 - q * hoch, vx: (Math.random() - .5) * 3, vy: -2, t, z: '✨', s: 14 });
+      }
+      for (let k = 0; k < 8; k++) { const ph = (age * 1.2 + k / 8) % 1; X.fillStyle = `rgba(240,220,160,${(1 - ph) * .5})`; X.beginPath(); X.arc((k - 3.5) * 18, 6 - ph * 24, 6 + ph * 11, 0, 7); X.fill(); }
     } else gebaeude(X, id, t);
     X.restore();
   });
-  if (S.projekt && !imCache) return;
-  if (S.projekt) { const pl = GEB_PLAETZE[(S.fertig || []).length]; if (pl) { X.save(); X.translate(pl.x, pl.y); baustelle(X, S.projekt.stand / S.projekt.ziel, S.projekt.name, t); X.restore(); } }
+  // Baustelle des laufenden Projekts: live, mit Kran, Krabben, Betonmischer und Funken
+  if (S.projekt && !imCache) { const pl = GEB_PLAETZE[(S.fertig || []).length]; if (pl && sichtbar(pl.x, pl.y - 40, 200)) { X.save(); X.translate(pl.x, pl.y); baustelle(X, S.projekt.stand / S.projekt.ziel, S.projekt.name, t); X.restore(); } }
 }
 
 // ================= Kopfzeile =================
@@ -1028,16 +1070,17 @@ function zeit(s) { return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0
 function eventPanel(t, y) {
   const e = S.event, r = S.ergebnis;
   if (e) {
-    const hoch = e.rennen ? 250 : e.rad ? 300 : e.balken ? 92 + e.balken.length * 36 : 104;
+    const pz = e.preis ? 24 : 0, hoch = (e.rennen ? 250 : e.rad ? 300 : e.regenbogen ? 150 : e.balken ? 92 + e.balken.length * 36 : 104) + pz;
     karte(SL, y, SB, hoch, '#fff', 30);
     X.fillStyle = PINK; rr(SL, y, SB, 46, [30, 30, 0, 0]); X.fill(); X.strokeStyle = INK; X.lineWidth = 7; rr(SL, y, SB, hoch, 30); X.stroke();
     text(`${e.icon} ${e.titel}`, SL + 26, y + 24, 25, '#fff', 'left', 900, SB - 170);
     text(`⏱ ${zeit(e.rest)}`, SR - 26, y + 24, 23, '#fff', 'right', 900);
     if (e.faktor > 1) text(`×${e.faktor}`, SR - 120, y + 24, 23, GELB, 'right', 900);
     text(e.text, 540, y + 70, 19, INK, 'center', 800, SB - 50);
+    if (e.preis) text('🏆 ' + e.preis, 540, y + 94, 15, '#8a5a2b', 'center', 800, SB - 50);
     // Zeitbalken
     X.fillStyle = 'rgba(42,27,18,.12)'; X.fillRect(SL + 8, y + 44, SB - 16, 4); X.fillStyle = GELB; X.fillRect(SL + 8, y + 44, (SB - 16) * e.rest / e.dauer, 4);
-    let yy = y + 94;
+    let yy = y + 94 + pz;
     (e.balken || []).forEach(b => {
       X.fillStyle = 'rgba(42,27,18,.08)'; rr(SL + 24, yy, SB - 48, 28, 14); X.fill();
       X.fillStyle = b.farbe; rr(SL + 24, yy, Math.max(28, (SB - 48) * Math.min(1, b.wert / b.max)), 28, 14); X.fill();
@@ -1045,15 +1088,19 @@ function eventPanel(t, y) {
       text(b.max > b.wert && e.id !== 'abstimmung' && e.id !== 'schatzsuche' && e.id !== 'teamduell' ? `${b.wert.toLocaleString('de-DE')} / ${b.max.toLocaleString('de-DE')}` : b.wert.toLocaleString('de-DE'), SR - 40, yy + 15, 18, INK, 'right', 900);
       yy += 36;
     });
-    if (e.rennen) krabbenRennen(t, y + 92, e.rennen);
-    if (e.rad) gluecksRad(t, y + 92, e);
+    if (e.rennen) krabbenRennen(t, y + 92 + pz, e.rennen);
+    if (e.rad) gluecksRad(t, y + 92 + pz, e);
+    if (e.regenbogen) { const fb = ['#e8433c', '#ff8a2a', '#ffd23f', '#57b85a', '#3fa0e8', '#9b5de5'], cy = y + 92 + pz + 52;
+      e.regenbogen.forEach((an, i) => { X.strokeStyle = an ? fb[i] : 'rgba(42,27,18,.1)'; X.lineWidth = 9; X.beginPath(); X.arc(540, cy, 120 - i * 10, Math.PI, 0); X.stroke(); }); }
     return y + hoch;
   }
   if (r) {
-    karte(SL, y, SB, 104, r.gut ? '#fff3c4' : '#fff', 30);
+    const h = r.gewinner ? 136 : 104;
+    karte(SL, y, SB, h, r.gut ? '#fff3c4' : '#fff', 30);
     text(`${r.icon} ${r.titel}`, 540, y + 30, 22, '#8a5a2b', 'center', 900, SB - 50);
     text(r.text, 540, y + 68, 24, INK, 'center', 900, SB - 50);
-    return y + 104;
+    if (r.gewinner) text(r.gewinner, 540, y + 104, 20, PINK, 'center', 900, SB - 50);
+    return y + h;
   }
   return null;
 }
@@ -1124,6 +1171,10 @@ function eventWelt(t) {
   if (ex.blumen) for (let k = 0; k < Math.min(60, ex.blumen); k++) {             // Blumenwiese rund um den Platz
     const a = k * 2.39996, r = PLATZ_R + 18 + (k % 4) * 9; X.font = `${18 + (k % 3) * 4}px ${FONT}`; X.textAlign = 'center'; X.textBaseline = 'middle'; X.fillText(['🌺', '🌸', '🌼', '🌷'][k % 4], IX + Math.cos(a) * r, IY + Math.sin(a) * r * .9);
   }
+  if (ex.fische) for (let k = 0; k < ex.fische; k++) {                           // Fische zum Zählen, gut sichtbar vor der Küste
+    const a = -.9 + k * (1.8 / Math.max(1, ex.fische - 1)), r = rand(a) * K * 1.12, x = IX + Math.cos(a) * RX * r + Math.sin(t * .002 + k) * 8, y = IY + Math.sin(a) * RY * r;
+    X.font = `34px ${FONT}`; X.textAlign = 'center'; X.textBaseline = 'middle'; X.fillText(k % 3 ? '🐠' : '🐟', x, y);
+  }
   if (ex.hai) { const a = t * .0008, r = K * 1.16, x = IX + Math.cos(a) * RX * r * rand(a), y = IY + Math.sin(a) * RY * r * rand(a); X.fillStyle = '#5b6b7a'; X.beginPath(); X.moveTo(x - 16, y); X.lineTo(x + 2, y - 30); X.lineTo(x + 14, y); X.closePath(); X.fill(); X.strokeStyle = 'rgba(255,255,255,.7)'; X.lineWidth = 3; X.beginPath(); X.moveTo(x - 30, y + 2); X.lineTo(x + 26, y + 2); X.stroke(); }
   if (ex.goldmuscheln) for (let k = 0; k < ex.goldmuscheln; k++) {                // goldene Muscheln am Strand
     const a = k * .31 + .4, r = rand(a) * K * 1.015, x = IX + Math.cos(a) * RX * r, y = IY + Math.sin(a) * RY * r, s = 1 + Math.sin(t * .006 + k) * .1;
@@ -1172,13 +1223,13 @@ function eventBildschirm(t) {
 }
 
 // ---------- Geschenk-Shows ----------
-const SHOW_DAUER = { herzregen: 5, muschelkonfetti: 5, seifenblasen: 5, delfin: 6.5, ballon: 7, flugzeug: 7, feuerwerk: 7, yacht: 7.5, goldregen: 7, megashow: 10 };
+const SHOW_DAUER = { herzregen: 5, muschelkonfetti: 5, seifenblasen: 5, delfin: 6.5, ballon: 7, flugzeug: 8, feuerwerk: 7, yacht: 7.5, goldregen: 7, megashow: 10 };
 function showsZeichnen(t) {
   const s = SHOWS[0]; if (!s) return;
   if (!s.t) { s.t = t; const p = sp(s.id), pl = p && platzVon(p); s.pl = pl; if (pl && (s.coins >= 100)) fokus(pl, SHOW_DAUER[s.art] * 1000); if (s.art === 'feuerwerk' || s.art === 'megashow') feuerwerk(); }
   const age = (t - s.t) / 1000, D = SHOW_DAUER[s.art] || 6, q = age / D;
   if (age > D) { SHOWS.shift(); return; }
-  const name = s.name, danke = `Danke ${name}!`, gift = `${s.anzahl > 1 ? s.anzahl + '× ' : ''}${s.gift}`;
+  const name = s.name, danke = `Danke ${name}!`, gift = s.anzeige || s.gift, fuer = `für ${s.fuer || s.gift}`;
   // Weltbezogene Effekte am Haus des Spenders
   if (s.pl && ['herzregen', 'muschelkonfetti', 'seifenblasen', 'megashow', 'goldregen'].includes(s.art)) {
     const zeichen = { herzregen: '💖', muschelkonfetti: '🐚', seifenblasen: '🫧', megashow: '⭐', goldregen: '✨' }[s.art];
@@ -1191,22 +1242,36 @@ function showsZeichnen(t) {
     X.save(); X.translate(x, y); X.rotate(-Math.cos(q * Math.PI) * .7);
     X.fillStyle = '#5b8fc2'; X.beginPath(); X.ellipse(0, 0, 80, 26, 0, 0, 7); X.fill(); X.beginPath(); X.moveTo(-6, -22); X.lineTo(20, -60); X.lineTo(30, -20); X.fill(); X.beginPath(); X.moveTo(-74, 0); X.lineTo(-112, -24); X.lineTo(-112, 24); X.fill();
     X.fillStyle = '#c9dcef'; X.beginPath(); X.ellipse(10, 10, 56, 12, 0, 0, Math.PI); X.fill(); X.fillStyle = INK; X.beginPath(); X.arc(52, -6, 4, 0, 7); X.fill(); X.restore();
-    schild(x - 30, y + 70, danke, gift, PINK, ein);
+    schild(x - 30, y + 70, danke, fuer, PINK, ein);
   } else if (s.art === 'ballon') {                                // Heißluftballon mit Namen
     const x = 160 + q * 760, y = 1500 - q * 700 + Math.sin(t * .002) * 10;
     X.fillStyle = '#e8433c'; X.beginPath(); X.ellipse(x, y, 110, 130, 0, 0, 7); X.fill();
     X.fillStyle = '#ffd23f'; for (let k = -2; k <= 2; k += 2) { X.beginPath(); X.ellipse(x + k * 30, y, 16, 128, 0, 0, 7); X.fill(); }
     X.strokeStyle = INK; X.lineWidth = 2; X.beginPath(); X.moveTo(x - 60, y + 108); X.lineTo(x - 26, y + 170); X.moveTo(x + 60, y + 108); X.lineTo(x + 26, y + 170); X.stroke();
     X.fillStyle = '#8a5a2b'; rr(x - 30, y + 168, 60, 40, 6); X.fill();
-    schild(x, y - 6, name, '🎈 ' + gift, 'rgba(42,27,18,.85)', ein, 300);
-  } else if (s.art === 'flugzeug') {                              // Flugzeug zieht Banner
-    const x = W + 200 - q * (W + 1100), y = 760;
-    X.fillStyle = '#fff'; X.beginPath(); X.ellipse(x, y, 70, 18, 0, 0, 7); X.fill(); X.fillStyle = '#e8433c'; X.fillRect(x - 10, y - 50, 24, 100); X.fillRect(x + 50, y - 26, 12, 52);
-    X.fillStyle = '#9fe3f0'; X.beginPath(); X.ellipse(x - 44, y - 4, 14, 8, 0, 0, 7); X.fill();
-    X.strokeStyle = '#ccc'; X.lineWidth = 2; X.beginPath(); X.moveTo(x + 70, y); X.lineTo(x + 130, y); X.stroke();
-    X.font = `900 34px ${FONT}`; const bw = X.measureText(`❤️ ${danke}`).width + 60;
-    X.save(); X.translate(x + 130, y - 30); for (let k = 0; k < bw; k += 20) { X.fillStyle = k % 40 ? '#fff' : '#fff3c4'; X.fillRect(k, Math.sin(t * .01 + k * .05) * 4, 20, 60); }
-    text(`❤️ ${danke}`, bw / 2, 30, 34, PINK, 'center', 900); X.restore();
+    schild(x, y - 6, name, '🎈 ' + fuer, 'rgba(42,27,18,.85)', ein, 340);
+  } else if (s.art === 'flugzeug') {                              // Flugzeug zieht ein Banner – Text passt immer vollständig drauf
+    let f1 = 36, f2 = 24; X.font = `900 ${f1}px ${FONT}`;
+    const z1 = `❤️ ${danke}`, z2 = fuer;
+    const maxText = SB - 60;
+    while ((X.measureText(z1).width > maxText) && f1 > 18) { f1 -= 2; X.font = `900 ${f1}px ${FONT}`; }
+    X.font = `800 ${f2}px ${FONT}`; while (X.measureText(z2).width > maxText && f2 > 14) { f2 -= 1; X.font = `800 ${f2}px ${FONT}`; }
+    X.font = `900 ${f1}px ${FONT}`; const w1 = X.measureText(z1).width; X.font = `800 ${f2}px ${FONT}`; const w2 = X.measureText(z2).width;
+    const bw = Math.max(w1, w2) + 60, bh = f1 + f2 + 34;
+    // rein (0–20 %), mittig schweben (20–80 %, Banner komplett im sicheren Bereich), raus (80–100 %)
+    const mitte = 540 - 120 - bw / 2, start = W + 160, ziel = -(bw + 400);
+    const x = q < .2 ? start + (mitte - start) * (1 - (1 - q / .2) ** 2) : q < .8 ? mitte - (q - .2) * 40 : (mitte - 24) + (ziel - mitte) * ((q - .8) / .2) ** 2, y = 790 + Math.sin(t * .003) * 6;
+    X.save(); X.translate(x, y);
+    X.fillStyle = '#fff'; X.beginPath(); X.ellipse(0, 0, 70, 18, 0, 0, 7); X.fill(); X.strokeStyle = INK; X.lineWidth = 3; X.stroke();
+    X.fillStyle = '#e8433c'; X.fillRect(-10, -50, 24, 100); X.fillRect(50, -26, 12, 52);
+    X.fillStyle = '#9fe3f0'; X.beginPath(); X.ellipse(-44, -4, 14, 8, 0, 0, 7); X.fill();
+    X.strokeStyle = '#999'; X.lineWidth = 2; X.beginPath(); X.moveTo(70, 0); X.lineTo(120, -bh / 2 + 10); X.moveTo(70, 0); X.lineTo(120, bh / 2 - 10); X.stroke();
+    X.translate(120, 0); X.rotate(Math.sin(t * .004) * .02);
+    karte(0, -bh / 2, bw, bh, '#fffaf0', 18);
+    X.fillStyle = PINK; X.fillRect(4, -bh / 2 + 4, 10, bh - 8); X.fillRect(bw - 14, -bh / 2 + 4, 10, bh - 8);
+    text(z1, bw / 2, -bh / 2 + 16 + f1 / 2, f1, PINK, 'center', 900);
+    text(z2, bw / 2, bh / 2 - 14 - f2 / 2, f2, INK, 'center', 800);
+    X.restore();
   } else if (s.art === 'yacht') {                                 // Yacht mit Namen am Rumpf
     const x = -320 + q * (W + 640), y = 1650;
     X.fillStyle = 'rgba(255,255,255,.5)'; X.beginPath(); X.ellipse(x - 220, y + 30, 140, 10, 0, 0, 7); X.fill();
@@ -1214,7 +1279,7 @@ function showsZeichnen(t) {
     X.fillStyle = '#fff'; rr(x - 120, y - 70, 220, 62, 14); X.fill(); X.stroke(); X.fillStyle = '#9fe3f0'; for (let k = 0; k < 5; k++) X.fillRect(x - 104 + k * 40, y - 56, 28, 22);
     X.fillStyle = GELB; X.fillRect(x - 220, y + 12, 400, 6);
     text(name, x, y + 30, 26, '#2f6fb3', 'center', 900, 360);
-    schild(540, 1500, danke, '🛥️ ' + gift, PINK, ein);
+    schild(540, 1500, danke, '🛥️ ' + fuer, PINK, ein);
   } else if (s.art === 'feuerwerk' || s.art === 'goldregen' || s.art === 'megashow') {
     if (s.art === 'goldregen') for (let i = 0; i < 60; i++) { const x = (i * 71) % 1080, y = (t * (.3 + (i % 4) * .08) + i * 97) % 1500 + 420; X.fillStyle = i % 2 ? '#ffd23f' : '#ffe9a8'; X.globalAlpha = .85; X.beginPath(); X.arc(x, y, 3 + (i % 3), 0, 7); X.fill(); }
     X.globalAlpha = 1;
@@ -1222,9 +1287,9 @@ function showsZeichnen(t) {
     X.save(); X.globalAlpha = ein; X.translate(540, 1000); const sc = .9 + Math.sin(age * 3) * .04; X.scale(sc, sc);
     X.shadowColor = s.art === 'feuerwerk' ? '#ff6fa3' : '#ffd23f'; X.shadowBlur = 30;
     umriss(s.art === 'megashow' ? '👑 ' + name : name, 0, 0, s.art === 'megashow' ? 66 : 56, '#fff');
-    X.shadowBlur = 0; umriss(`${s.art === 'megashow' ? 'Danke für ' : 'Danke für '}${gift}!`, 0, 64, 32, GELB);
+    X.shadowBlur = 0; umriss(`Danke ${fuer}!`, 0, 64, 32, GELB);
     X.restore();
-  } else schild(540, 1000 - q * 60, danke, gift, PINK, ein, 520);      // kleine Geschenke: Schild über der Insel
+  } else schild(540, 1000 - q * 60, danke, fuer, PINK, ein, 560);      // kleine Geschenke: Schild über der Insel
 }
 function umriss(t, x, y, size, farbe) {                          // gut lesbar auf jedem Hintergrund
   let fs = size; X.font = `900 ${fs}px ${FONT}`; while (X.measureText(t).width > SB - 20 && fs > 16) { fs -= 2; X.font = `900 ${fs}px ${FONT}`; }
@@ -1345,9 +1410,9 @@ function overlay(t) {
 // Häuser: in der Übersicht als ein fertiges Bild, neu gezeichnet nur wenn sich etwas ändert (höchstens 1× pro Sekunde).
 let HC = null, HC_BOX = null, HC_SIG = '', hcGeprueft = 0, hcGebaut = 0;
 const hausLive = (p, t) => bau[p.id] || (pop[p.id] && t - pop[p.id] < 700);
-function hausSignatur(t) { let s = K + ':' + (S.fertig || []).join(',') + (S.projekt ? S.projekt.id + Math.floor(S.projekt.stand / S.projekt.ziel * 50) : '') + Object.keys(GEB_BAU).filter(id => t - GEB_BAU[id] < 4200).join(',') + ':'; for (const p of S.spieler) s += p.platz + '.' + p.stufe + (p.farbe || '') + p.anbauten.length + p.name.length + (hausLive(p, t) ? 'L' : '') + '|'; return s; }
+function hausSignatur(t) { let s = K + ':' + (S.fertig || []).join(',') + Object.keys(GEB_BAU).filter(i => t - GEB_BAU[i] < 5400).join(',') + ':'; for (const p of S.spieler) s += p.platz + '.' + p.stufe + (p.farbe || '') + p.anbauten.length + p.name.length + (hausLive(p, t) ? 'L' : '') + '|'; return s; }
 function hausCacheBauen(t) {
-  const B = BASIS_BOX, hq = Math.min(1, Math.max(.45, zUebersicht() * Q0 * 1.6)), w = Math.ceil(B.w * hq), h = Math.ceil(B.h * hq);
+  const B = BASIS_BOX, hq = Math.min(1, Math.max(.3, zUebersicht() * Q0 * 1.6)), w = Math.ceil(B.w * hq), h = Math.ceil(B.h * hq);
   if (!HC || HC.width !== w || HC.height !== h) { HC = document.createElement('canvas'); HC.width = w; HC.height = h; }
   const hx = HC.getContext('2d'); hx.setTransform(1, 0, 0, 1, 0, 0); hx.clearRect(0, 0, w, h); hx.setTransform(hq, 0, 0, hq, -B.x * hq, -B.y * hq);
   const echt = X; X = hx;
