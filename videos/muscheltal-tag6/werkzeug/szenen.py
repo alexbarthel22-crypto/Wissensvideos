@@ -175,9 +175,11 @@ f"""      const l2 = line("L2")[0], vi = at("L2", "Strandvilla"), TB = line("L2w
       tl.fromTo("#s02-box", {{ opacity: 0, scale: .5 }}, {{ opacity: 1, scale: 1, duration: .35, ease: "back.out(2)" }}, vi + .1);
       tl.fromTo("#s02-fv", {{ opacity: 0 }}, {{ opacity: 1, duration: .3 }}, vi + .3);
       tl.to("#s02-fv", {{ opacity: 0, duration: .2 }}, TB);
-      tl.set("#s02-col", {{ y: -(N - 3) * H }}, 0);
-      tl.fromTo("#s02-col", {{ y: -(N - 3) * H }}, {{ y: -(W - 1) * H, duration: TB - (vi + .6), ease: "power3.out", immediateRender: false }}, vi + .6);
-      tl.fromTo("#s02-col", {{ filter: "blur(5px)" }}, {{ filter: "blur(0px)", duration: (TB - vi - .6) * .8, ease: "power2.in", immediateRender: false }}, vi + .6);
+      tl.set("#s02-col", {{ y: 0 }}, 0);
+      const T1 = TB - 1.4;
+      tl.fromTo("#s02-col", {{ y: 0 }}, {{ y: -(W - 9) * H, duration: T1 - (vi + .6), ease: "none", immediateRender: false }}, vi + .6);
+      tl.fromTo("#s02-col", {{ y: -(W - 9) * H }}, {{ y: -(W - 1) * H, duration: 1.4, ease: "power3.out", immediateRender: false }}, T1);
+      tl.fromTo("#s02-col", {{ filter: "blur(5px)" }}, {{ filter: "blur(0px)", duration: 1.2, ease: "power2.in", immediateRender: false }}, T1);
       tl.to("#s02-r" + W, {{ color: "#2e9e5b", scale: 1.15, duration: .2, ease: "back.out(3)" }}, TB);
       tl.to("#s02-band", {{ backgroundColor: "#7dff9e", duration: .15, yoyo: true, repeat: 5 }}, TB);
       tl.fromTo("#s02-st", {{ opacity: 0, scale: 2.6 }}, {{ opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }}, TB + .2);
