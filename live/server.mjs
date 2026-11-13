@@ -6,6 +6,7 @@ import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
 import { spawn } from 'node:child_process';
+import os from 'node:os';
 import { fileURLToPath } from 'node:url';
 
 const DIR = path.dirname(fileURLToPath(import.meta.url));
@@ -146,6 +147,14 @@ function follow(u) {
   gibMuscheln(p, CFG.muschelnFuerFollow, 'follow');
 }
 
+function teilen(u) {
+  const p = spieler(u); if (!p) return;
+  inKasse(CFG.kasse.proShare);
+  sende({ typ: 'teilen', id: p.id });
+  sag(`Danke ${sprechName(p)} fürs Teilen!`, 3);
+  zustand();
+}
+
 // ---------- Gemeinschaftsprojekt + Abstimmung ----------
 function starteAbstimmung() {
   if (S.abstimmung || S.projekt) return;
@@ -186,6 +195,7 @@ setInterval(() => {
 
 // ---------- Stimme (macOS „say“, unbegrenzt, offline) ----------
 const warte = []; let spricht = false; const gesprochen = [];
+const TON_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'muscheltal-ton-')); let tonNr = 0;
 let stimme = CFG.stimme.mac;
 function sag(text, prio = 2) {
   sende({ typ: 'ansage', text });
@@ -202,10 +212,20 @@ function weiter() {
   if (spricht || !warte.length) return;
   if (process.platform !== 'darwin') { warte.length = 0; return; }
   const { text } = warte.shift(); spricht = true; gesprochen.push(Date.now());
-  const pr = spawn('say', ['-v', stimme, '-r', String(CFG.stimme.tempo), text]);
+  const aufSeite = CFG.stimme.wiedergabe !== 'mac' && kunden.size > 0;
+  const datei = path.join(TON_DIR, `s${++tonNr % 20}.wav`);
+  const args = ['-v', stimme, '-r', String(CFG.stimme.tempo)];
+  if (aufSeite) args.push('-o', datei, '--file-format=WAVE', '--data-format=LEI16@22050');
+  const pr = spawn('say', [...args, text]);
   let fehler = '';
   pr.stderr.on('data', d => fehler += d);
   pr.on('close', code => {
+    if (aufSeite && code === 0) {                      // Seite spielt ab; warten, bis die Ansage vorbei ist
+      let ms = 2000; try { ms = (fs.statSync(datei).size - 44) / 44.1 + 400; } catch {}
+      sende({ typ: 'stimme', url: '/ton/' + path.basename(datei) + '?' + Date.now() });
+      setTimeout(() => { spricht = false; weiter(); }, ms);
+      return;
+    }
     spricht = false;
     if (code !== 0 && /voice|stimme/i.test(fehler)) {
       const ersatz = CFG.stimme.macErsatz.shift();
@@ -236,11 +256,11 @@ function oeffentlich() {
     stufen: CFG.stufen.map(s => s.name), stufenAb: CFG.stufen.map(s => s.ab),
     projekt: S.projekt, fertig: S.fertig, abstimmung: abst, kasse: S.kasse,
     bewohner, ziel: zielJetzt(), strassen: CFG.strassen,
-    tiktokName: CFG.tiktokName, test: TEST,
+    tiktokName: CFG.tiktokName, test: TEST, ton: CFG.ton, ort: CFG.ort,
   };
 }
 
-const TYPEN = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.png': 'image/png', '.woff2': 'font/woff2', '.svg': 'image/svg+xml' };
+const TYPEN = { '.mp3': 'audio/mpeg', '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.png': 'image/png', '.woff2': 'font/woff2', '.svg': 'image/svg+xml' };
 http.createServer((req, res) => {
   const url = new URL(req.url, 'http://x');
   if (url.pathname === '/sag') {
@@ -253,6 +273,10 @@ http.createServer((req, res) => {
     res.write(`data: ${JSON.stringify({ typ: 'zustand', s: oeffentlich() })}\n\n`);
     kunden.add(res); req.on('close', () => kunden.delete(res));
     return;
+  }
+  if (url.pathname.startsWith('/ton/')) {
+    const f = path.join(TON_DIR, path.basename(url.pathname));
+    return fs.readFile(f, (e, d) => { if (e) { res.writeHead(404); return res.end(); } res.writeHead(200, { 'Content-Type': 'audio/wav' }); res.end(d); });
   }
   const datei = path.join(DIR, 'seite', path.normalize(url.pathname === '/' ? '/index.html' : url.pathname).replace(/^(\.\.[/\\])+/, ''));
   if (!datei.startsWith(path.join(DIR, 'seite'))) { res.writeHead(403); return res.end(); }
@@ -272,6 +296,7 @@ async function verbinde() {
   c.on(WebcastEvent.CHAT, d => d.user && kommentar(d.user, d.comment));
   c.on(WebcastEvent.LIKE, d => d.user && like(d.user, d.likeCount || 1));
   c.on(WebcastEvent.FOLLOW, d => d.user && follow(d.user));
+  c.on(WebcastEvent.SHARE, d => d.user && teilen(d.user));
   c.on(WebcastEvent.GIFT, d => {
     const g = d.giftDetails || {};
     if (g.giftType === 1 && !d.repeatEnd) return; // Serie läuft noch – erst am Ende zählen
@@ -328,7 +353,7 @@ function simulator() {
     else if (r < .7) like(u, 1 + Math.floor(Math.random() * 15));
     else if (r < .9) kommentar(u, worte[Math.floor(Math.random() * worte.length)]);
     else if (r < .97) { const g = gifts[Math.floor(Math.random() * (Math.random() < .9 ? 4 : gifts.length))]; geschenk(u, g[0], g[1], 1 + Math.floor(Math.random() * 3)); }
-    else follow(u);
+    else if (Math.random() < .5) teilen(u); else follow(u);
   }, 700);
 }
 

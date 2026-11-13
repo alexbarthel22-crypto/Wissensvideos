@@ -10,7 +10,9 @@
     ],
     "tempo": 185,
     "maxProMinute": 8,
-    "maxWarteschlange": 4
+    "maxWarteschlange": 4,
+    "wiedergabe": "seite",
+    "_hinweis": "wiedergabe 'seite': Stimme läuft über die Live-Seite (zusammen mit der Musik im Stream-Ton). 'mac': direkt über die Mac-Lautsprecher."
   },
   "stufen": [
     {
@@ -229,6 +231,19 @@
   ],
   "kasse": {
     "proLike": 1,
-    "proFollow": 5
+    "proFollow": 5,
+    "proShare": 2
+  },
+  "ton": {
+    "musik": 0.32,
+    "musikBeiStimme": 0.1,
+    "meer": 0.22,
+    "stimme": 1.0
+  },
+  "ort": {
+    "name": "Hamburg (22529)",
+    "breite": 53.58,
+    "laenge": 9.95,
+    "_hinweis": "Tag/Nacht, Sonnenauf- und -untergang wie auf muscheltal.de"
   }
 }

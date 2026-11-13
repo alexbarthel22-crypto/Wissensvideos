@@ -98,7 +98,7 @@ function basisZeichnen(k) {
   const B = box(k), Q = Math.min(2.2, 4600 / Math.max(B.w, B.h));
   const cv = document.createElement('canvas'); cv.width = B.w * Q; cv.height = B.h * Q;
   const b = cv.getContext('2d'); b.setTransform(Q, 0, 0, Q, -B.x * Q, -B.y * Q);
-  const R = zufall(7);
+  const R = zufall(7); LICHTER = [];
   const form = s => { b.beginPath(); for (let i = 0; i <= 240; i++) { const a = i / 240 * 6.2832, r = rand(a) * s; const x = IX + Math.cos(a) * RX * r, y = IY + Math.sin(a) * RY * r; i ? b.lineTo(x, y) : b.moveTo(x, y); } b.closePath(); };
   const amRand = (a, s) => { const r = rand(a) * s; return [IX + Math.cos(a) * RX * r, IY + Math.sin(a) * RY * r]; };
   // Wasser am Ufer, Strand, Wiese
@@ -164,6 +164,7 @@ function basisZeichnen(k) {
   b.fillStyle = 'rgba(0,0,0,.15)'; b.fillRect(sx - 15, sy + 6, 36, 200);
   b.fillStyle = '#b07a45'; b.fillRect(sx - 18, sy, 36, 200); b.strokeStyle = '#8a5a2b'; b.lineWidth = 1.2; for (let v = sy; v < sy + 200; v += 7) { b.beginPath(); b.moveTo(sx - 18, v); b.lineTo(sx + 18, v); b.stroke(); }
   b.fillStyle = '#6b4423'; for (let v = sy + 20; v < sy + 200; v += 40) { b.beginPath(); b.arc(sx - 18, v, 3.5, 0, 7); b.arc(sx + 18, v, 3.5, 0, 7); b.fill(); }
+  laterne(b, sx - 20, sy + 70); laterne(b, sx + 22, sy + 150); laterne(b, sx - 20, sy + 196);
   boot(b, sx + 42, sy + 110, '#e8433c'); boot(b, sx - 42, sy + 160, '#3fa0e8');
   BASIS = cv; BASIS_K = k; BASIS_BOX = B;
 }
@@ -180,7 +181,7 @@ function park(b, p, i) {
 function baum(c, x, y, s) { c.fillStyle = 'rgba(0,0,0,.15)'; c.beginPath(); c.ellipse(x + 4, y + 3, 14 * s, 6 * s, 0, 0, 7); c.fill(); c.fillStyle = '#8a5a2b'; c.fillRect(x - 2 * s, y - 8 * s, 4 * s, 10 * s); c.fillStyle = '#3f9b45'; c.beginPath(); c.arc(x, y - 14 * s, 12 * s, 0, 7); c.fill(); c.fillStyle = '#57b85a'; c.beginPath(); c.arc(x - 3 * s, y - 17 * s, 7 * s, 0, 7); c.fill(); }
 function busch(c, x, y) { c.fillStyle = '#3f9b45'; c.beginPath(); c.arc(x - 6, y, 7, 0, 7); c.arc(x + 6, y, 7, 0, 7); c.arc(x, y - 5, 8, 0, 7); c.fill(); c.fillStyle = '#ff6fa3'; c.beginPath(); c.arc(x - 4, y - 4, 1.8, 0, 7); c.arc(x + 5, y - 1, 1.8, 0, 7); c.fill(); }
 function bank(c, x, y) { c.fillStyle = '#8a5a2b'; c.fillRect(x - 12, y - 8, 24, 3); c.fillRect(x - 12, y - 3, 24, 4); c.fillStyle = INK; c.fillRect(x - 10, y + 1, 2, 4); c.fillRect(x + 8, y + 1, 2, 4); }
-function laterne(c, x, y) { c.fillStyle = INK; c.fillRect(x - 1, y - 22, 2.5, 24); c.fillStyle = '#ffe9a8'; c.beginPath(); c.arc(x, y - 23, 4, 0, 7); c.fill(); c.strokeStyle = INK; c.lineWidth = 1; c.stroke(); }
+function laterne(c, x, y) { LICHTER.push({ x, y: y - 23 }); c.fillStyle = INK; c.fillRect(x - 1, y - 22, 2.5, 24); c.fillStyle = '#ffe9a8'; c.beginPath(); c.arc(x, y - 23, 4, 0, 7); c.fill(); c.strokeStyle = INK; c.lineWidth = 1; c.stroke(); }
 function blumenTopf(c, x, y) { c.fillStyle = '#c96a3a'; c.beginPath(); c.roundRect(x - 5, y - 2, 10, 7, 2); c.fill(); c.fillStyle = '#3f9b45'; c.beginPath(); c.arc(x, y - 4, 5, 0, 7); c.fill(); c.fillStyle = '#ff6fa3'; c.beginPath(); c.arc(x - 2, y - 5, 1.6, 0, 7); c.arc(x + 2, y - 3, 1.6, 0, 7); c.fill(); }
 function handtuch(c, x, y, a, col) { c.save(); c.translate(x, y); c.rotate(a + Math.PI / 2); c.fillStyle = col; c.fillRect(-7, -12, 14, 24); c.fillStyle = 'rgba(255,255,255,.7)'; c.fillRect(-7, -6, 14, 3); c.fillRect(-7, 3, 14, 3); c.restore(); }
 function liege(c, x, y) { c.fillStyle = '#fff'; c.fillRect(x - 6, y - 12, 12, 22); c.fillStyle = '#3fa0e8'; for (let v = -10; v < 10; v += 5) c.fillRect(x - 5, y + v, 10, 2.5); }
@@ -240,6 +241,8 @@ function ereignis(e) {
     case 'ziel': banner.push({ t: 0, oben: '🎉 Bewohner-Ziel erreicht!', unten: e.name + ' wird auf der Haupt-Insel gebaut', farbe: '#9b5de5' }); feuerwerk(); break;
     case 'projekt': case 'fertig': funken({ x: IX, y: IY }, e.typ === 'fertig' ? '🎉' : '🚧', 30); if (e.typ === 'fertig') feuerwerk(); break;
     case 'ansage': untertitel = { text: e.text, t: jetzt }; break;
+    case 'stimme': stimmeAbspielen(e.url); break;
+    case 'teilen': banner.push({ t: 0, oben: `🔁 ${p ? p.name : ''}`, unten: 'teilt den Stream · +2 🐚 in die Muschelkasse', farbe: '#3fa0e8' }); break;
   }
 }
 function wachsen(kz) {
@@ -392,6 +395,92 @@ function bauZeichnen(c, p, f, t, b) {
   if (b.alt >= 0 && age > .2 && age < 1.6) { const q = (age - .2) / 1.4, x = 120 - q * 120, y = -hoch - 30 + Math.sin(q * 3) * 8; c.strokeStyle = '#fff'; c.lineWidth = 2.2; c.beginPath(); c.moveTo(x - 9, y - 3); c.quadraticCurveTo(x - 4, y - 7, x, y); c.quadraticCurveTo(x + 4, y - 7, x + 9, y - 3); c.stroke(); c.fillStyle = '#d9a66a'; c.fillRect(x - 8, y + 4, 16, 2.5); }
   return true;
 }
+
+// ================= Tageszeit wie auf muscheltal.de (Sonnenauf-/-untergang Hamburg, je 45 Min. Übergang) =================
+const PARAM = new URLSearchParams(location.search);
+function jetztZeit() {                                           // ?zeit=21:30 zum Ausprobieren
+  const z = PARAM.get('zeit'), d = new Date();
+  if (z) { const [h, m] = z.split(':').map(Number); d.setHours(h, m || 0, 0, 0); }
+  return d;
+}
+function sonnenzeiten(d, breite, laenge) {                       // Sonnenaufgangs-Gleichung (NOAA, vereinfacht)
+  const rad = Math.PI / 180, J = d.getTime() / 86400000 + 2440587.5;
+  const n = Math.round(J - 2451545 + .0008), Js = n - laenge / 360;
+  const M = (357.5291 + .98560028 * Js) % 360, C = 1.9148 * Math.sin(M * rad) + .02 * Math.sin(2 * M * rad) + .0003 * Math.sin(3 * M * rad);
+  const L = (M + C + 180 + 102.9372) % 360, Jt = 2451545 + Js + .0053 * Math.sin(M * rad) - .0069 * Math.sin(2 * L * rad);
+  const dek = Math.asin(Math.sin(L * rad) * Math.sin(23.4397 * rad));
+  const w = Math.acos((Math.sin(-.833 * rad) - Math.sin(breite * rad) * Math.sin(dek)) / (Math.cos(breite * rad) * Math.cos(dek))) / rad;
+  const zuDatum = j => new Date((j - 2440587.5) * 86400000);
+  return { auf: zuDatum(Jt - w / 360), unter: zuDatum(Jt + w / 360) };
+}
+let LICHT = { nacht: 0, rot: 0 }, lichtSeit = 0;
+function tageslicht(t) {
+  if (t - lichtSeit < 5000 && lichtSeit) return LICHT;
+  lichtSeit = t;
+  const o = S.ort || { breite: 53.58, laenge: 9.95 }, d = jetztZeit(), { auf, unter } = sonnenzeiten(d, o.breite, o.laenge);
+  const min = (d - auf) / 60000, min2 = (d - unter) / 60000;
+  let nacht, rot = 0;
+  if (min < 0) nacht = 1;
+  else if (min < 45) { nacht = 1 - min / 45; rot = Math.sin(min / 45 * Math.PI) * .8; }
+  else if (min2 < 0) nacht = 0;
+  else if (min2 < 45) { nacht = min2 / 45; rot = Math.sin(min2 / 45 * Math.PI); }
+  else nacht = 1;
+  LICHT = { nacht, rot, uhr: d.toTimeString().slice(0, 5), auf: auf.toTimeString().slice(0, 5), unter: unter.toTimeString().slice(0, 5) };
+  return LICHT;
+}
+const GLUT = (() => {                                            // weicher Lichtschein als Sprite
+  const c = document.createElement('canvas'); c.width = c.height = 128; const g = c.getContext('2d');
+  const r = g.createRadialGradient(64, 64, 0, 64, 64, 64); r.addColorStop(0, 'rgba(255,225,150,1)'); r.addColorStop(.35, 'rgba(255,190,90,.45)'); r.addColorStop(1, 'rgba(255,170,60,0)');
+  g.fillStyle = r; g.fillRect(0, 0, 128, 128); return c;
+})();
+let LICHTER = [];
+function nachtZeichnen(t) {
+  const L = tageslicht(t); if (L.nacht <= .01 && L.rot <= .01) return;
+  // Abdunkeln (multiplizieren) + Abendrot
+  X.save(); X.setTransform(1, 0, 0, 1, 0, 0); X.globalCompositeOperation = 'multiply';
+  const n = L.nacht * .74, r = L.rot * .35;
+  X.fillStyle = `rgb(${255 - n * 215 | 0},${255 - n * 198 - r * 90 | 0},${255 - n * 125 - r * 160 | 0})`; X.fillRect(0, 0, W, H);
+  X.restore();
+  if (L.nacht < .15) return;
+  // Lichter: Laternen, Fenster der Häuser, Platz
+  const a = Math.min(1, (L.nacht - .15) / .5), flackern = .9 + Math.sin(t * .01) * .05;
+  X.save(); X.globalCompositeOperation = 'lighter';
+  LICHTER.forEach(l => { if (sichtbar(l.x, l.y, 40)) { X.globalAlpha = .85 * a; X.drawImage(GLUT, l.x - 34, l.y - 34, 68, 68); } });
+  for (let i = 0; i < 8; i++) { const w = i / 8 * 6.283, x = IX + Math.cos(w) * (PLATZ_R - 22), y = IY + Math.sin(w) * (PLATZ_R - 22) - 26; X.globalAlpha = .7 * a; X.drawImage(GLUT, x - 30, y - 30, 60, 60); }
+  X.globalAlpha = .45 * a * flackern; X.drawImage(GLUT, IX - 110, IY - 110, 220, 220);   // Muschel leuchtet
+  S.spieler.forEach(p => {
+    const pl = platzVon(p); if (!pl || !sichtbar(pl.x, pl.y, 60)) return;
+    const st = p.stufe, gr = st === 0 ? 30 : 34 + st * 4;
+    X.globalAlpha = (st === 0 ? .9 * flackern : .75) * a;
+    if (st === 0) X.drawImage(GLUT, pl.x + 27 - gr / 2, pl.y + 2 - gr / 2, gr, gr);     // Lagerfeuer am Zelt
+    else X.drawImage(GLUT, pl.x - gr / 2, pl.y + HOEHE[st] * .45 - gr / 2, gr, gr);    // Fensterlicht
+  });
+  X.restore();
+}
+
+// ================= Ton: Musik aus den Videos (lizenzfrei, tools/make_music_tropical.py) + Meeresrauschen =================
+const MUSIK = ['musik/suedsee_3.mp3', 'musik/suedsee_9.mp3', 'musik/suedsee_11.mp3'];
+let tonAn = false, musik = null, meerTon = null, musikNr = Math.floor(Math.random() * MUSIK.length), stimmeLaeuft = 0;
+const TON = () => S.ton || { musik: .32, musikBeiStimme: .1, meer: .22, stimme: 1 };
+function tonStarten() {
+  if (tonAn) return;
+  musik = new Audio(MUSIK[musikNr]); musik.volume = 0;
+  musik.onended = () => { musikNr = (musikNr + 1) % MUSIK.length; musik.src = MUSIK[musikNr]; musik.play().catch(() => {}); };
+  meerTon = new Audio('musik/atmo.mp3'); meerTon.loop = true; meerTon.volume = TON().meer;
+  Promise.all([musik.play(), meerTon.play()]).then(() => { tonAn = true; }).catch(() => { tonAn = false; });
+}
+function tonLautstaerke() {
+  if (!musik) return;
+  const ziel = performance.now() < stimmeLaeuft ? TON().musikBeiStimme : TON().musik;
+  musik.volume = Math.max(0, Math.min(1, musik.volume + (ziel - musik.volume) * .08));
+}
+function stimmeAbspielen(url) {
+  const a = new Audio(url); a.volume = TON().stimme;
+  a.onloadedmetadata = () => { stimmeLaeuft = performance.now() + a.duration * 1000 + 300; };
+  stimmeLaeuft = performance.now() + 4000;
+  a.play().catch(() => {});
+}
+addEventListener('click', tonStarten); addEventListener('keydown', tonStarten);
 
 // ================= Zeichen-Hilfen =================
 function rr(x, y, w, h, r) { X.beginPath(); X.roundRect(x, y, w, h, r); }
@@ -759,8 +848,11 @@ function bild(t) {
   platz(t);
   lebenZeichnen(t, dt);
   S.spieler.map(p => [p, platzVon(p)]).filter(([p, pl]) => pl && sichtbar(pl.x, pl.y, 90)).sort((a, b) => a[1].y - b[1].y).forEach(([p, pl]) => haus(p, pl, t));
+  nachtZeichnen(t);
   moewen(t); effekte(t);
   X.setTransform(1, 0, 0, 1, 0, 0);
+  if (!tonAn) { if (!bild.versuch || t - bild.versuch > 3000) { bild.versuch = t; tonStarten(); } if (!PARAM.has('still')) text('🔊 Einmal ins Bild klicken für Musik', 540, 1840, 22, 'rgba(255,255,255,.85)', 'center', 900); }
+  tonLautstaerke();
   const warten = S.spieler.length - ANZAHL; if (warten > 0 && BASIS) text(`+ ${warten} warten auf ein Grundstück`, 540, 1880, 22, '#fff', 'center', 900);
   kopf(t); overlay(t);
   requestAnimationFrame(bild);

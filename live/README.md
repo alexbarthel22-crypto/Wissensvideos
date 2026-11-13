@@ -27,12 +27,24 @@ Eine Mac-Stimme (unbegrenzt, offline) moderiert.
 | Kommentar `rot` `blau` `lila` … | Hausfarbe |
 | Geschenk | 30 Haus-Muscheln pro Diamant, große Geschenke = Feuerwerk |
 | Folgen | neuer **Bewohner** + 5 Muscheln in die Muschelkasse |
+| Stream teilen | 2 Muscheln in die Muschelkasse |
 | Abstimmung alle 10 Min. (`1`/`2`/`3`) | Gemeinschaftsprojekt, wird mit Muscheln aus der Muschelkasse gebaut |
 
 Die Insel startet mit 200 Grundstücken und **wächst live**, sobald alle belegt sind (jeweils ca. 60 neue).
 Ausbauten werden animiert gebaut (Bambusgerüst, Krabben-Bauarbeiter, Sandstaub), die Kamera fährt dabei an das Haus heran; sonst wechselt sie zwischen Übersicht und kleinen Rundfahrten.
 Oben steht immer das **nächste Bauprojekt der Haupt-Insel** – automatisch aus `muscheltal/daten/insel.json` (`baustellen`), Startzahl der Bewohner aus `einwohner.csv`. Straßennamen stehen unter `strassen`.
 Die Bewohnerzahl kommt live von TikTok (Follower), `bewohner.start` ist nur der Startwert, falls TikTok sie nicht liefert.
+
+## Ton (Musik + Stimme)
+- Im Hintergrund läuft die Südsee-Musik aus den Muschel-Tal-Videos (lizenzfrei, erzeugt mit `tools/make_music_tropical.py`, 3 Stücke à 3 Min. im Wechsel) plus Meeresrauschen (`tools/make_ambience.py`).
+- Markus' Ansagen werden über die Live-Seite abgespielt, die Musik wird dabei automatisch leiser. So landet alles im Ton der Link-/Browser-Quelle.
+- Falls ein Browser den Ton blockiert, steht unten „Einmal ins Bild klicken für Musik“ – einmal klicken genügt.
+- Bei **Fensteraufnahme** statt Link-Quelle: in LIVE Studio zusätzlich den Mac-Ton (Systemaudio) aufnehmen.
+- Lautstärken in `einstellungen.json` unter `ton`.
+
+## Tageszeit
+Tag, Sonnenaufgang, Sonnenuntergang (je 45 Min.) und Nacht wie auf muscheltal.de nach der echten Uhrzeit (Hamburg). Nachts leuchten Laternen, Fenster, Lagerfeuer und die Muschel.
+Zum Ausprobieren: `http://localhost:8790/?zeit=21:30`.
 
 ## Stimme
 Standard: **Markus (Erweitert)**. Andere Stimme → in `einstellungen.json` bei `"mac"` eintragen (Namen: `say -v '?' | grep de_DE`).
