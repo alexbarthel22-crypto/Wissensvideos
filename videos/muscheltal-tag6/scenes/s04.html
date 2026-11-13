@@ -5,6 +5,7 @@
     .pl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 28px 12px; border-radius: 999px; color: #fff;
       font-family: "Inter", sans-serif; font-weight: 900; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); white-space: nowrap; }
     .big { position: absolute; left: 0; right: 0; width: fit-content; max-width: 980px; white-space: nowrap; margin: 0 auto; text-align: center; padding: 10px 26px 20px; border-radius: 36px; color: #fff; font-family: "Lilita One", sans-serif; line-height: 1; box-shadow: 0 0 0 8px #2a1b12, 0 16px 0 rgba(0,0,0,.3); }
+    #s04-ff { top: 640px; font-size: 52px; background: linear-gradient(100deg, #ff6a1a, #ff2e7e); }
     #s04-t { top: 280px; font-size: 50px; background: #2e9e5b; }
     #s04-h { position: absolute; left: 70px; right: 70px; top: 390px; padding: 18px 28px 22px; border-radius: 32px; background: #fff; box-shadow: 0 0 0 6px #2a1b12, 0 12px 0 rgba(0,0,0,.3); font-family: "Inter", sans-serif; color: #2a1b12; }
     #s04-h .r { display: flex; align-items: baseline; justify-content: space-between; font-weight: 900; font-size: 42px; } #s04-h .r b { font-size: 66px; color: #2e9e5b; }
@@ -15,6 +16,7 @@
     <div id="s04-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
       <div id="s04-t" class="pl">🎯 Unser großes Ziel</div>
       <div id="s04-h"><div class="r"><div>🐾 Tierheim Pfotenkuss</div><div><b id="s04-n">0</b> / 800</div></div><div class="bar"><i id="s04-b"></i></div><div class="f">Bei 800 Bewohnern wird gebaut – nur noch 79!</div></div>
+      <div id="s04-ff" class="pl">🔥 Schon fast geschafft!</div>
     </div>
   </div>
   <script>
@@ -26,8 +28,10 @@
       const t0 = line("L4")[0], ti = at("L4", "Tierheim"), wi = at("L4", "800"), sv = at("L4", "79");
       tl.fromTo("#s04-t", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, t0);
       tl.fromTo("#s04-h", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, ti - .2);
-      count(tl, "#s04-n", 600, 721, wi, .9, "", "", "power2.out");
-      tl.fromTo("#s04-b", { width: "0%" }, { width: "90.1%", duration: 1, ease: "power2.out" }, wi);
+      count(tl, "#s04-n", 0, 721, ti, wi - ti + .3, "", "", "power2.out");
+      tl.fromTo("#s04-b", { width: "0%" }, { width: "90.1%", duration: wi - ti + .3, ease: "power2.out" }, ti);
+      tl.fromTo("#s04-ff", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, wi + .3);
+      tl.to("#s04-ff", { scale: 1.08, duration: .2, yoyo: true, repeat: 5, ease: "sine.inOut" }, wi + .7);
       tl.to("#s04-b", { opacity: .4, duration: .15, yoyo: true, repeat: 7, ease: "none" }, sv);
       tl.to("#s04-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
       window.__timelines["s04"] = tl;
