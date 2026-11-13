@@ -13,7 +13,8 @@
     "maxWarteschlange": 6,
     "wiedergabe": "seite",
     "_hinweis": "wiedergabe 'seite': Stimme läuft über die Live-Seite (zusammen mit der Musik im Stream-Ton). 'mac': direkt über die Mac-Lautsprecher.",
-    "ruhePauseSek": 60
+    "pauseSek": 1.6,
+    "_pause": "pauseSek: Pause zwischen zwei Sätzen. Markus moderiert ununterbrochen; „…“ in saetze.mjs = Sprechpause."
   },
   "stufen": [
     {

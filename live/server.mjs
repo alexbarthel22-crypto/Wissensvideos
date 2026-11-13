@@ -16,6 +16,7 @@ const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'ut
 const STAND = path.join(DIR, 'stand.json');
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
+const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
 
 // ---------- Spielstand ----------
 const leer = () => ({ spieler: {}, reihenfolge: [], projekt: null, fertig: [], likesGesamt: 0, kasse: 0 });
@@ -146,7 +147,7 @@ function follow(u) {
   sende({ typ: 'follow', id: p.id });
   setzeBewohner(bewohner + 1, 'follow');
   inKasse(CFG.kasse.proFollow);
-  if (!followDank.includes(p)) followDank.push(p); weiter();      // Dank kommt, sobald Markus frei ist
+  if (!followDank.includes(p)) followDank.push(p);               // Dank kommt, sobald Markus frei ist
   gibMuscheln(p, CFG.muschelnFuerFollow, 'follow');
 }
 
@@ -189,71 +190,122 @@ const EV = macheEvents({
 setInterval(zustand, 1000);
 
 // ---------- Stimme (macOS „say“, unbegrenzt, offline) ----------
-const warte = []; let spricht = false; const gesprochen = []; let letzteRede = Date.now();
-// Moderation in ruhigen Momenten (verrät nie, welches Event kommt)
-const TIPPS = [
-  () => 'Neu hier? Jedes Like lässt dein Haus wachsen. Vom Zelt bis zum Muschelschloss!',
-  () => 'Schreibt pool, garten, boot oder palme in die Kommentare, um euer Haus auszubauen.',
-  () => 'Ihr wollt eine andere Farbe? Schreibt einfach rot, blau, lila, gold oder eine andere Farbe.',
-  () => { const s = EV.naechstesIn(); return s > 40 ? `In ${s > 90 ? Math.round(s / 60) + ' Minuten' : 'gut einer Minute'} startet das nächste Überraschungs-Event. Bleibt dran!` : null; },
-  () => { const z = zielJetzt(); return z ? `Folgen heißt einziehen! Noch ${z.ziel - bewohner} Bewohner, dann wird ${z.name} auf der Haupt-Insel gebaut.` : null; },
-  () => `In der Muschelkasse sind schon ${S.kasse.toLocaleString('de-DE')} Muscheln. Jedes Like zählt!`,
-  () => { const top = Object.values(S.spieler).sort((a, b) => b.muscheln - a.muscheln)[0]; return top ? `Das größte Haus hat gerade ${sprechName(top)}. Wer holt sich Platz eins?` : null; },
-  () => 'Teilt den Stream mit Freunden, dann ziehen sie vielleicht bald neben euch ein!',
-];
-let tippNr = 0;
-setInterval(() => {
-  if (spricht || warte.length || Date.now() - letzteRede < (CFG.stimme.ruhePauseSek || 60) * 1000) return;
-  for (let k = 0; k < TIPPS.length; k++) { const t = TIPPS[tippNr++ % TIPPS.length](); if (t) { sag(t, 3); break; } }
-}, 5000);
+// Prio 0: Geschenk-Dank, Event-Ansagen · 1: Follow-Dank, Countdown · 2: Haus-Ausbau · 3: Kleinkram · 4: Dauer-Moderation
+// Untertitel erscheinen genau dann, wenn Markus den Satz spricht. „…“ im Text = Sprechpause.
+const warte = []; let spricht = false; const gesprochen = [];
 const TON_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'muscheltal-ton-')); let tonNr = 0;
-let stimme = CFG.stimme.mac;
+let stimme = CFG.stimme.mac, stilleSeit = Date.now();
+const ECHT = !STILL && process.platform === 'darwin';
+const dauerMs = t => t.length * 62 + (t.match(/…/g) || []).length * 450 + 300;   // Schätzung ohne echte Stimme
+const fuerStimme = t => t.replace(/\s*…\s*/g, ' [[slnc 450]] ').replace(/([!?])\s+/g, '$1 [[slnc 250]] ');
 function sag(text, prio = 2) {
-  sende({ typ: 'ansage', text }); letzteRede = Date.now();
-  if (STILL) return;
+  if (!text) return;
   const jetzt = Date.now();
   while (gesprochen.length && jetzt - gesprochen[0] > 60000) gesprochen.shift();
-  if (prio >= 2 && gesprochen.length >= CFG.stimme.maxProMinute) return; // nicht zuquatschen
-  warte.push({ text, prio });
-  warte.sort((a, b) => a.prio - b.prio);
+  if (prio >= 2 && prio <= 3 && gesprochen.length >= CFG.stimme.maxProMinute) return; // Kleinkram nicht stapeln
+  warte.push({ text, prio, t: jetzt });
+  warte.sort((a, b) => a.prio - b.prio || a.t - b.t);
   // Geschenk-Dank und Event-Ansagen (Prio 0/1) werden nie verworfen, nur Kleinkram
   while (warte.length > CFG.stimme.maxWarteschlange) { const i = warte.findLastIndex(w => w.prio >= 2); if (i < 0) break; warte.splice(i, 1); }
+  // Veraltete Kleinigkeiten (älter als 20 s) fallen weg
+  for (let i = warte.length - 1; i >= 0; i--) if (warte[i].prio >= 2 && jetzt - warte[i].t > 20000) warte.splice(i, 1);
   weiter();
 }
-const followDank = [];
+function fertig() { spricht = false; stilleSeit = Date.now(); setTimeout(weiter, 50); }
 function weiter() {
-  if (spricht) return;
-  if (!warte.length && followDank.length) {               // Follows bedanken, wenn gerade nichts anderes ansteht
-    const n = followDank.splice(0, 4).map(sprechName), z = zielJetzt();
-    const text = (n.length > 1 ? satz('followMehrere', { namen: namenListe(n) }) : satz('followEins', { name: n[0] })) + (z && Math.random() < .5 ? satz('followZiel', { rest: z.ziel - bewohner, projekt: z.name }) : '');
-    sende({ typ: 'ansage', text });
-    if (!STILL) warte.push({ prio: 1, text });
-  }
-  if (!warte.length) return;
-  letzteRede = Date.now();
-  if (process.platform !== 'darwin') { warte.length = 0; return; }
+  if (spricht || !warte.length) return;
   const { text } = warte.shift(); spricht = true; gesprochen.push(Date.now());
+  sende({ typ: 'ansage', text, ms: dauerMs(text) });
+  if (!ECHT) { setTimeout(fertig, dauerMs(text)); return; }
   const aufSeite = CFG.stimme.wiedergabe !== 'mac' && kunden.size > 0;
   const datei = path.join(TON_DIR, `s${++tonNr % 20}.wav`);
   const args = ['-v', stimme, '-r', String(CFG.stimme.tempo)];
   if (aufSeite) args.push('-o', datei, '--file-format=WAVE', '--data-format=LEI16@22050');
-  const pr = spawn('say', [...args, text]);
+  const pr = spawn('say', [...args, fuerStimme(text)]);
   let fehler = '';
   pr.stderr.on('data', d => fehler += d);
   pr.on('close', code => {
     if (aufSeite && code === 0) {                      // Seite spielt ab; warten, bis die Ansage vorbei ist
-      let ms = 2000; try { ms = (fs.statSync(datei).size - 44) / 44.1 + 400; } catch {}
+      let ms = 2000; try { ms = (fs.statSync(datei).size - 44) / 44.1 + 300; } catch {}
       sende({ typ: 'stimme', url: '/ton/' + path.basename(datei) + '?' + Date.now() });
-      setTimeout(() => { spricht = false; weiter(); }, ms);
+      setTimeout(fertig, ms);
       return;
     }
-    spricht = false;
     if (code !== 0 && /voice|stimme/i.test(fehler)) {
       const ersatz = CFG.stimme.macErsatz.shift();
-      if (ersatz) { console.log(`Stimme „${stimme}“ nicht gefunden, nehme „${ersatz}“.`); stimme = ersatz; warte.unshift({ text, prio: 0 }); }
+      if (ersatz) { console.log(`Stimme „${stimme}“ nicht gefunden, nehme „${ersatz}“.`); stimme = ersatz; warte.unshift({ text, prio: 0, t: Date.now() }); }
     }
-    weiter();
+    fertig();
   });
+}
+
+// ---------- Dauer-Moderation: Markus redet immer, mit kurzen Pausen dazwischen ----------
+const followDank = [], begruessen = [], begruesst = new Set();
+let letzterLive = 0, letzterRundgang = 0, modNr = 0, eventModNr = 0, countdownGesagt = '', eventZehnGesagt = '';
+const zufallAus = fs => fs[Math.floor(Math.random() * fs.length)]();
+const grossKlein = t => t.charAt(0).toUpperCase() + t.slice(1);
+const MODERATION = [
+  () => satz('tipp'),
+  () => { const s = EV.naechstesIn(); return s > 45 ? satz('teaser', { zeit: s >= 100 ? `${Math.round(s / 60)} Minuten` : 'gut einer Minute' }) : null; },
+  () => rundgang(),
+  () => satz('fakt'),
+  () => { const z = zielJetzt(); return z ? satz('ziel', { rest: z.ziel - bewohner, projekt: z.name, bewohner, zielzahl: z.ziel }) : null; },
+  () => satz('frage'),
+  () => { const t = Object.values(S.spieler).sort((a, b) => b.muscheln - a.muscheln); return t.length > 1 ? satz('rangliste', { erster: sprechName(t[0]), zweiter: sprechName(t[1]) }) : null; },
+  () => rundgang(),
+  () => S.kasse > 0 ? satz('kasse', { kasse: S.kasse.toLocaleString('de-DE') }) : null,
+  () => S.projekt ? satz('projekt', { projekt: S.projekt.name, prozent: Math.floor(S.projekt.stand / S.projekt.ziel * 100) }) : null,
+  () => { const h = new Date().getHours(); return h >= 17 || h < 7 ? satz('abend') : satz('stimmung', { aktive: aktiveAnzahl() }); },
+  () => satz('stimmung', { aktive: aktiveAnzahl() }),
+];
+const aktiveAnzahl = () => Object.values(S.spieler).filter(p => Date.now() - (p.zuletzt || 0) < 600000).length;
+function rundgang() {                                      // Kamera fliegt zu einem Haus, Markus stellt es vor
+  if (Date.now() - letzterRundgang < 40000) return null;
+  const kand = Object.values(S.spieler).filter(p => Date.now() - (p.zuletzt || 0) < 900000 && p.stufe > 0);
+  if (!kand.length) return null;
+  const p = kand[Math.floor(Math.random() * kand.length)], st = CFG.stufen[p.stufe].name;
+  const an = p.anbauten.map(a => CFG.anbauten[a]?.name).filter(Boolean);
+  letzterRundgang = Date.now(); sende({ typ: 'kamera', id: p.id, ms: 9000 });
+  return satz('rundgang', { name: sprechName(p), stufeCap: grossKlein(artikel(st)), stufeDativ: dativ(st), anbauText: an.length ? ' mit ' + namenListe(an) : '' });
+}
+function moderiere() {
+  if (spricht || warte.length || Date.now() - stilleSeit < (CFG.stimme.pauseSek ?? 1.6) * 1000) return;
+  // 1. Follows bedanken
+  if (followDank.length) {
+    const n = followDank.splice(0, 4).map(sprechName), z = zielJetzt();
+    return sag((n.length > 1 ? satz('followMehrere', { namen: namenListe(n) }) : satz('followEins', { name: n[0] })) + (z && Math.random() < .5 ? satz('followZiel', { rest: z.ziel - bewohner, projekt: z.name }) : ''), 1);
+  }
+  // 2. Laufendes Event: abwechselnd Spielstand, Anfeuern und ab und zu ein normaler Satz
+  if (EV.laeuft()) {
+    const art = eventModNr++ % 4;
+    if (art !== 3 && Date.now() - letzterLive > 6000) { const t = EV.liveSatz(); if (t) { letzterLive = Date.now(); return sag(t, 4); } }
+    if (art === 1) return sag(satz('eventAllgemein', { rest: EV.restSek() }), 4);
+    if (art === 3) return sag(zufallAus([() => satz('tipp'), () => satz('stimmung', { aktive: aktiveAnzahl() })]), 4);
+    return;
+  }
+  // 3. Neue Zuschauer begrüßen (nur wenn kein Event moderiert werden muss)
+  if (!EV.laeuft() && begruessen.length) {
+    const n = begruessen.splice(0, 3);
+    return sag(n.length > 1 ? satz('begruessungMehrere', { namen: namenListe(n) }) : satz('begruessungEins', { name: n[0] }), 4);
+  }
+  if (EV.laeuft()) return;
+  // 4. Abwechselnde Moderation
+  for (let k = 0; k < MODERATION.length; k++) { const t = MODERATION[modNr++ % MODERATION.length](); if (t) return sag(t, 4); }
+}
+setInterval(() => {
+  // Countdown-Ansagen (verraten nie, welches Event kommt)
+  const s = EV.naechstesIn(), runde = String(Math.floor(Date.now() / 120000));
+  if (s <= 31 && s >= 29 && countdownGesagt !== runde + 30) { countdownGesagt = runde + 30; sag(satz('countdown30'), 1); }
+  if (s <= 11 && s >= 9 && countdownGesagt !== runde + 10) { countdownGesagt = runde + 10; sag(satz('countdown10'), 1); }
+  const r = EV.restSek();
+  if (r != null && r <= 11 && r >= 9 && eventZehnGesagt !== runde) { eventZehnGesagt = runde; sag(satz('eventNoch10'), 1); }
+  moderiere();
+}, 400);
+function beitritt(u) {                                     // jemand kommt neu in den Stream
+  const id = String(u.uniqueId || '').toLowerCase();
+  if (!id || begruesst.has(id)) return;
+  begruesst.add(id); begruessen.push(sprechName({ name: '@' + u.uniqueId }));
+  if (begruessen.length > 12) begruessen.splice(0, begruessen.length - 12);   // nur die neuesten
 }
 
 // ---------- Seite + Live-Daten (Server-Sent Events) ----------
@@ -319,6 +371,7 @@ async function verbinde() {
   c.on(WebcastEvent.LIKE, d => d.user && like(d.user, d.likeCount || 1));
   c.on(WebcastEvent.FOLLOW, d => d.user && follow(d.user));
   c.on(WebcastEvent.SHARE, d => d.user && teilen(d.user));
+  c.on(WebcastEvent.MEMBER, d => d.user && beitritt(d.user));
   c.on(WebcastEvent.GIFT, d => {
     const g = d.giftDetails || {};
     if (g.giftType === 1 && !d.repeatEnd) return; // Serie läuft noch – erst am Ende zählen
@@ -375,9 +428,10 @@ function simulator() {
     if (EV.laeuft() && r < .3) kommentar(u, evAntwort[Math.floor(Math.random() * evAntwort.length)]);
     else if (r < .7) like(u, 1 + Math.floor(Math.random() * 15));
     else if (r < .9) kommentar(u, worte[Math.floor(Math.random() * worte.length)]);
-    else if (r < .97) { const g = gifts[Math.floor(Math.random() * (Math.random() < .9 ? 4 : gifts.length))]; geschenk(u, g[0], g[1], 1 + Math.floor(Math.random() * 3)); }
+    else if (r < .97) { if (RUHIG && Math.random() < .9) return; const g = gifts[Math.floor(Math.random() * (Math.random() < .9 ? 4 : gifts.length))]; geschenk(u, g[0], g[1], 1 + Math.floor(Math.random() * 3)); }
     else if (Math.random() < .5) teilen(u); else follow(u);
-  }, 700);
+    if (Math.random() < .15) beitritt({ uniqueId: 'zuschauer.' + Math.random().toString(36).slice(2, 6) });
+  }, RUHIG ? 2500 : 700);
 }
 
 if (TEST) simulator(); else versuche();

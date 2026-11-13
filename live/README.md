@@ -66,7 +66,13 @@ Jedes Geschenk wird bedankt (Markus) und bekommt eine Show mit dem Namen des Spe
 Große Geschenke werden vor kleinen gezeigt.
 
 ## Moderation
-Markus bedankt sich immer für Geschenke, für Follows sobald er gerade frei ist (mehrere werden zusammengefasst), sagt Events an und gibt in ruhigen Momenten Tipps (verrät aber nie das nächste Event).
+Markus redet ununterbrochen – mit kurzen, natürlichen Pausen (`…` in `saetze.mjs` = Sprechpause, Abstand zwischen Sätzen: `stimme.pauseSek`). Untertitel erscheinen genau dann, wenn er spricht.
+Reihenfolge, wenn er frei ist:
+1. Geschenke bedanken (immer, sofort) · Event-Ansagen · Countdown („noch dreißig Sekunden“, „zehn Sekunden“)
+2. Follows bedanken (mehrere zusammengefasst)
+3. Während eines Events: Spielstand live kommentieren, anfeuern, ab und zu ein Tipp
+4. Sonst: neue Zuschauer begrüßen, Rundgang (Kamera fliegt zu einem Haus, Markus stellt es vor), Tipps, Muschel-Tal-Fakten, Fragen an den Chat, Rangliste, Muschelkasse, Bauprojekt, Bewohner-Ziel, Teaser fürs nächste Event (ohne es zu verraten), Abendstimmung
+Für jede Situation gibt es mehrere Varianten; der zuletzt benutzte Satz wird ausgelassen.
 
 ## Vollautomatisch
 `Muschel-Tal LIVE starten.command` wartet, bis dein LIVE läuft, verbindet sich selbst, verbindet sich nach Abbrüchen neu und startet sich nach Fehlern automatisch wieder. Der Spielstand bleibt erhalten.

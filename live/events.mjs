@@ -157,6 +157,29 @@ export function macheEvents(api) {
     },
   };
 
+  // Live-Kommentare während der Events (Markus kommentiert, solange nichts anderes ansteht)
+  const TEAMNAME = { rot: 'Rot', blau: 'Blau', gelb: 'Gelb', gruen: 'Grün', muschel: 'Muschel', kokos: 'Kokos' };
+  const rest = e => Math.max(0, Math.round((e.ende - Date.now()) / 1000));
+  const LIVE = {
+    sturmflut: e => { const f = e.ziel - e.stand; return f <= 0 ? null : zufall([`Noch ${zahl(f)} Likes … der Deich wackelt!`, `${rest(e)} Sekunden … noch ${zahl(f)} Likes! … Haltet den Deich!`, f < e.ziel * .25 ? 'Fast geschafft … nur noch ein bisschen!' : `Die Wellen werden höher … liked, liked, liked!`]); },
+    krabbenrennen: e => { const r = Object.entries(e.teams).sort((a, b) => b[1] - a[1]); if (!r[0][1]) return 'Die Krabben stehen am Start … wählt ein Team oder liked einfach los!'; return zufall([`Team ${TEAMNAME[r[0][0]]} liegt vorne! … Aber ${TEAMNAME[r[1][0]]} holt auf!`, `Was für ein Rennen … ${TEAMNAME[r[0][0]]} vorne, … ${TEAMNAME[r[1][0]]} direkt dahinter!`, `Noch ${rest(e)} Sekunden … Team ${TEAMNAME[r[0][0]]} führt!`]); },
+    teamduell: e => { const [a, b] = e.t.muschel >= e.t.kokos ? ['muschel', 'kokos'] : ['kokos', 'muschel']; return e.t[a] === e.t[b] ? 'Gleichstand! … Wer legt nach?' : zufall([`Team ${TEAMNAME[a]} liegt vorne … ${zahl(e.t[a])} zu ${zahl(e.t[b])}!`, `Kommt schon, Team ${TEAMNAME[b]} … ihr könnt das noch drehen!`]); },
+    gluecksrad: () => ['Das Rad dreht sich … und dreht sich …', 'Wer wird es? … Spannung!', 'Langsamer … langsamer …'],
+    schatzsuche: e => { const z = [0, 0, 0, 0]; Object.values(e.tipp).forEach(i => z[i]++); const m = z.indexOf(Math.max(...z)); return z[m] ? zufall([`Die meisten tippen auf ${'ABCD'[m]} … aber stimmt das?`, `${'ABCD'[m]} ist gerade beliebt … ich sag nichts!`]) : 'A, B, C oder D? … Wo ist der Schatz?'; },
+    zahlenraten: e => e.hinweis ? zufall([`${e.hinweis.replace(/ ⬆️| ⬇️/, '')} … weiter raten!`, `Heiß oder kalt? … ${e.hinweis.replace(/ ⬆️| ⬇️/, '')}!`]) : 'Eine Zahl zwischen eins und hundert … wer traut sich?',
+    strandparty: e => e.boom ? 'Die Party kocht! … Weiter so!' : `Noch ${zahl(Math.max(0, e.ziel - e.stand))} Likes … bis zum Feuerwerk!`,
+    flaschenpost: () => ['Die Flasche treibt näher … wer schreibt zuerst flasche?', 'Was da wohl drin ist? … Schreibt flasche!', 'Noch hat sie keiner … schnell, flasche schreiben!'],
+    moewenalarm: e => [`Noch ${5 - e.faenger.length} Plätze … schreibt fang!`, 'Die Möwe fliegt Kreise … fangt sie!', e.faenger.length ? `${e.faenger.length} haben schon zugegriffen … wer noch?` : 'Noch hat niemand die Möwe erwischt!'],
+    meeresbesuch: e => [e.gruss.size ? `Schon ${e.gruss.size} Grüße … schreibt hallo!` : 'Sagt doch mal hallo!', 'Schaut mal, wie schön … so nah an der Insel!', 'Jeder Gruß bringt zehn Muscheln … schreibt hallo!'],
+    muschelregen: e => [`Noch ${rest(e)} Sekunden … jedes Like zählt doppelt!`, 'Es regnet Muscheln … jetzt liken lohnt sich doppelt!', 'Die Häuser wachsen gerade doppelt so schnell!'],
+    bauturbo: e => [`Noch ${rest(e)} Sekunden Bau-Turbo … dreifache Muscheln!`, 'Die Krabben bauen im Turbo-Tempo!', 'Jetzt liken … dreifach für euer Haus!'],
+    sternschnuppe: e => [`${e.wuensche.size} Wünsche … schnell, schreibt wunsch!`, 'Was wünscht ihr euch? … Schreibt wunsch!', 'Augen zu … und wünschen!'],
+    abstimmung: e => { const z = e.wahl.map(() => 0); Object.values(e.st).forEach(i => z[i]++); const m = z.indexOf(Math.max(...z)), sum = z.reduce((a, b) => a + b, 0);
+      if (!sum) return ['Was sollen wir bauen? … 1, 2 oder 3!', `${e.wahl.map((w, i) => `${i + 1} … ${w.name}`).join(', ')}. … Ihr entscheidet!`];
+      const zweit = z.map((v, i) => [v, i]).sort((a, b) => b[0] - a[0])[1];
+      return [`${e.wahl[m].name} liegt vorne … mit ${z[m] === 1 ? 'einer Stimme' : z[m] + ' Stimmen'}!`, sum === 1 ? `Die erste Stimme ist da … für ${e.wahl[m].name}!` : `Schon ${sum} Stimmen … ${e.wahl[m].name} führt!`, zweit && zweit[0] ? `${e.wahl[zweit[1]].name} ist dicht dran … noch ist alles offen!` : `Wer stimmt noch ab? … 1, 2 oder 3!`, `Noch ${rest(e)} Sekunden … stimmt ab!`]; },
+  };
+
   function starte(id) {
     const d = DEFS[id]; ev = { id, d, t0: Date.now(), ende: Date.now() + d.dauer * 1000 }; ergebnis = null;
     const ansage = d.start(ev); verlauf = [id, ...verlauf].slice(0, 6);
@@ -196,6 +219,12 @@ export function macheEvents(api) {
       return { event: a, ergebnis: ergebnis && { titel: ergebnis.titel, icon: ergebnis.icon, text: ergebnis.text, id: ergebnis.id, gut: !!ergebnis.gut, extra: ergebnis.extra }, eventIn: ev ? 0 : Math.max(0, Math.round((naechstes - Date.now()) / 1000)) };
     },
     laeuft: () => !!ev,
+    liveSatz() {                                          // abwechslungsreich: nie derselbe Satz wie zuletzt
+      if (!ev || ev.frueh || rest(ev) <= 3 || !LIVE[ev.id]) return null;
+      const opts = [].concat(LIVE[ev.id](ev)).filter(x => x && x !== ev.letzterLive);
+      if (!opts.length) return null; ev.letzterLive = zufall(opts); return ev.letzterLive;
+    },
+    restSek: () => ev ? rest(ev) : null,
     starte(id) { if (ev) beende(); ergebnis = null; starte(id); },   // nur für den Test-Modus
   };
 }

@@ -241,7 +241,7 @@ function ereignis(e) {
     case 'follow': banner.push({ t: 0, oben: `🏠 ${p ? p.name : ''}`, unten: 'ist jetzt Bewohner · +5 🐚 in die Muschelkasse', farbe: TUERKIS }); break;
     case 'ziel': banner.push({ t: 0, oben: '🎉 Bewohner-Ziel erreicht!', unten: e.name + ' wird auf der Haupt-Insel gebaut', farbe: '#9b5de5' }); feuerwerk(); break;
     case 'projekt': case 'fertig': funken({ x: IX, y: IY }, e.typ === 'fertig' ? '🎉' : '🚧', 30); if (e.typ === 'fertig') feuerwerk(); break;
-    case 'ansage': untertitel = { text: e.text, t: jetzt }; break;
+    case 'ansage': untertitel = { text: e.text, t: jetzt, d: Math.max(2.5, (e.ms || 4000) / 1000 + .5) }; break;
     case 'stimme': stimmeAbspielen(e.url); break;
     case 'teilen': banner.push({ t: 0, oben: `🔁 ${p ? p.name : ''}`, unten: 'teilt den Stream · +2 🐚 in die Muschelkasse', farbe: '#3fa0e8' }); break;
   }
@@ -1025,12 +1025,16 @@ function overlay(t) {
     text(b.oben, 0, -20, 38, '#fff', 'center', 900, SB - 50); text(b.unten, 0, 28, 26, '#fff', 'center', 800, SB - 50);
     X.restore();
   }
-  const ua = (t - untertitel.t) / 1000;
-  if (untertitel.text && ua < 5) {
-    X.globalAlpha = Math.min(1, (5 - ua) * 2);
-    X.font = `800 24px ${FONT}`; const w = Math.min(SB, X.measureText(untertitel.text).width + 44), uy = KOPF_UNTEN + 22;
-    X.fillStyle = 'rgba(42,27,18,.85)'; rr(540 - w / 2, uy, w, 48, 24); X.fill();
-    text(untertitel.text, 540, uy + 24, 24, '#fff', 'center', 800, SB - 40);
+  const ua = (t - untertitel.t) / 1000, ud = untertitel.d || 5;
+  if (untertitel.text && ua < ud) {                                 // so lange wie Markus spricht, lange Sätze umbrechen
+    X.globalAlpha = Math.min(1, (ud - ua) * 3, ua * 6);
+    X.font = `800 24px ${FONT}`;
+    const zeilen = [], max = SB - 50; let z = '';
+    untertitel.text.split(' ').forEach(w => { const n = z ? z + ' ' + w : w; if (X.measureText(n).width > max && z) { zeilen.push(z); z = w; } else z = n; });
+    if (z) zeilen.push(z);
+    const w = Math.min(SB, Math.max(...zeilen.map(l => X.measureText(l).width)) + 44), h = 18 + zeilen.length * 30, uy = KOPF_UNTEN + 22;
+    X.fillStyle = 'rgba(42,27,18,.85)'; rr(540 - w / 2, uy, w, h, 24); X.fill();
+    zeilen.forEach((l, i) => text(l, 540, uy + 24 + i * 30, 24, '#fff', 'center', 800, max));
     X.globalAlpha = 1;
   }
   if (S.test) text('TEST-MODUS', SR, OBEN - 18, 18, 'rgba(255,255,255,.8)', 'right', 900);
