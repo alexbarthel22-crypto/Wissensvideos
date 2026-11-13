@@ -1,0 +1,27 @@
+#!/bin/bash
+# Doppelklick: Markus liest Beispiel-Ansagen aus dem Stream vor.
+STIMME="Markus (Erweitert)"
+say -v "$STIMME" "Test" 2>/dev/null || STIMME="Markus (Enhanced)"
+say -v "$STIMME" "Test" 2>/dev/null || STIMME="Markus"
+sag() { echo "🎙️  $1"; say -v "$STIMME" -r 185 "$1"; sleep 0.6; }
+echo "Stimme: $STIMME"; echo
+echo "— Geschenke —"
+sag "Danke lena sun für Rose!"
+sag "Danke tim wave für 5 mal Rose!"
+sag "Wow, vielen Dank mia meer für Money Gun!"
+sag "Wahnsinn! Riesigen Dank an surfer ben für Lion! Das ganze Muschel-Tal feiert dich!"
+echo; echo "— Follows (gesammelt, wenn Markus frei ist) —"
+sag "Danke perle fürs Folgen!"
+sag "Danke lena, tim und mia fürs Folgen! Noch 74 Bewohner bis zum Tierheim Pfotenkuss."
+echo; echo "— Teilen —"
+sag "Danke koko nuss fürs Teilen!"
+echo; echo "— Bewohner-Ziel —"
+sag "Wahnsinn! 800 Bewohner! Tierheim Pfotenkuss auf der Haupt-Insel ist fertig!"
+echo; echo "— Events —"
+sag "Achtung, Sturmflut! Liked zusammen 1.200 mal in 60 Sekunden, damit der Deich hält!"
+sag "Geschafft! Der Deich hält! Alle Helfer bekommen 20 Muscheln."
+sag "Das Muschel-Glücksrad dreht sich! Alle, die gerade aktiv sind, sind im Lostopf."
+sag "jonas insel gewinnt einen Pool! Glückwunsch!"
+echo; echo "— Ruhige Momente —"
+sag "In 3 Minuten startet das nächste Überraschungs-Event. Bleibt dran!"
+echo; echo "Fertig. Fenster kann geschlossen werden."
