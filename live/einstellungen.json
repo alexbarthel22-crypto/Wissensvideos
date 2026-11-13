@@ -3,10 +3,11 @@
   "port": 8790,
   "stimme": {
     "an": true,
-    "mac": "Markus (Erweitert)",
+    "mac": "Anna (Premium)",
     "macErsatz": [
-      "Markus (Enhanced)",
-      "Markus"
+      "Anna (Erweitert)",
+      "Anna (Enhanced)",
+      "Anna"
     ],
     "tempo": 185,
     "maxProMinute": 10,
@@ -14,7 +15,7 @@
     "wiedergabe": "seite",
     "_hinweis": "wiedergabe 'seite': Stimme läuft über die Live-Seite (zusammen mit der Musik im Stream-Ton). 'mac': direkt über die Mac-Lautsprecher.",
     "pauseSek": 1.6,
-    "_pause": "pauseSek: Pause zwischen zwei Sätzen. Markus moderiert ununterbrochen; „…“ in saetze.mjs = Sprechpause."
+    "_pause": "pauseSek: Pause zwischen zwei Sätzen. Anna moderiert ununterbrochen; „…“ in saetze.mjs = Sprechpause."
   },
   "stufen": [
     {
@@ -240,7 +241,10 @@
     "musik": 0.32,
     "musikBeiStimme": 0.1,
     "meer": 0.22,
-    "stimme": 1.0
+    "stimme": 1.0,
+    "musikAufMac": true,
+    "musikAufMacLautstaerke": 0.18,
+    "_hinweis": "Normal laufen Musik und Stimme über die Live-Seite. Blockiert der Browser den Ton, spielt das Programm beides über die Mac-Lautsprecher (musikAufMac)."
   },
   "ort": {
     "name": "Hamburg (22529)",

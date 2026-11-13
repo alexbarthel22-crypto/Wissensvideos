@@ -135,7 +135,7 @@ function basisZeichnen(k) {
       b.font = `900 15px ${FONT}`; const tw = b.measureText(s.name).width + 22;
       b.fillStyle = '#2f6fb3'; b.beginPath(); b.roundRect(-tw / 2, -11, tw, 22, 5); b.fill();
       b.strokeStyle = '#fff'; b.lineWidth = 1.6; b.beginPath(); b.roundRect(-tw / 2 + 2.5, -8.5, tw - 5, 17, 3.5); b.stroke();
-      b.fillStyle = '#fff'; b.fillText(s.name, 0, .5); b.restore();
+      b.textBaseline = 'alphabetic'; const m = b.measureText('Hgä'); b.fillStyle = '#fff'; b.fillText(s.name, 0, (m.actualBoundingBoxAscent - m.actualBoundingBoxDescent) / 2); b.textBaseline = 'middle'; b.restore();
     });
   });
   b.restore();
@@ -299,11 +299,11 @@ let LEUTE = [], JOGGER = [];
 const HAUT = ['#f6d1b0', '#e8b48a', '#c98b5e', '#8d5a3b', '#f2c9a0'], HAAR = ['#2a1b12', '#6b3f1d', '#e0b43a', '#c0502a', '#333'], SHIRT = ['#e8433c', '#3fa0e8', '#ffd23f', '#ff6fa3', '#2fb3a0', '#b58ad0', '#fff', '#ff8a2a'];
 function spaziergaenger() {
   const R = zufall(99), n = Math.min(70, 16 + Math.round(ANZAHL / 9));
-  LEUTE = Array.from({ length: n }, (_, i) => ({ seg: SEG[Math.floor(R() * SEG.length)], v: R(), dir: R() < .5 ? -1 : 1, tempo: .018 + R() * .02, spur: (R() - .5) * 14, haut: HAUT[i % 5], haar: HAAR[(i * 3) % 5], shirt: SHIRT[i % 8], hose: ['#3a5a8a', '#2a1b12', '#e8e0d0'][i % 3], pause: 0 }));
-  JOGGER = Array.from({ length: Math.round(4 * K) }, (_, i) => ({ a: R() * 6.283, tempo: (.00009 + R() * .00005) * (R() < .5 ? -1 : 1), shirt: ['#39ff8f', '#ff3fa4', '#ffe83f', '#3ff0ff'][i % 4], haut: HAUT[(i * 2) % 5] }));
+  LEUTE = Array.from({ length: n }, (_, i) => ({ seg: SEG[Math.floor(R() * SEG.length)], v: R(), dir: R() < .5 ? -1 : 1, tempo: .014 + R() * .008, spur: (R() - .5) * 14, haut: HAUT[i % 5], haar: HAAR[(i * 3) % 5], shirt: SHIRT[i % 8], hose: ['#3a5a8a', '#2a1b12', '#e8e0d0'][i % 3], pause: 0 }));
+  JOGGER = Array.from({ length: Math.round(4 * K) }, (_, i) => ({ a: R() * 6.283, tempo: (.000045 + R() * .00002) * (R() < .5 ? -1 : 1) / K, shirt: ['#39ff8f', '#ff3fa4', '#ffe83f', '#3ff0ff'][i % 4], haut: HAUT[(i * 2) % 5] }));
 }
 function figur(x, y, f, t, laufen, jogger) {
-  const s = Math.sin(t * (jogger ? .025 : .012)) * (laufen ? 3 : 0);
+  const s = Math.sin(t * (jogger ? .016 : .009)) * (laufen ? 3 : 0);
   X.fillStyle = 'rgba(0,0,0,.18)'; X.beginPath(); X.ellipse(x + 2, y + 1, 5, 2, 0, 0, 7); X.fill();
   X.strokeStyle = jogger ? '#222' : f.hose; X.lineWidth = 2.6; X.lineCap = 'round';
   X.beginPath(); X.moveTo(x - 1.5, y - 7); X.lineTo(x - 1.5 + s * .6, y); X.moveTo(x + 1.5, y - 7); X.lineTo(x + 1.5 - s * .6, y); X.stroke();
@@ -317,7 +317,7 @@ function lebenZeichnen(t, dt) {
   LEUTE.forEach(p => {
     const s = p.seg; if (!s) return;
     if (p.pause > 0) p.pause -= dt; else {
-      p.v += p.dir * p.tempo * dt / (s.bis - s.von) * 60;
+      p.v += p.dir * p.tempo * dt / (s.bis - s.von);       // tempo = Pixel pro Millisekunde (normales Gehtempo)
       if (p.v < 0 || p.v > 1) { p.dir *= -1; p.v = Math.max(0, Math.min(1, p.v)); if (Math.random() < .5) { const n = SEG[Math.floor(Math.random() * SEG.length)]; p.seg = n; p.v = Math.random(); } }
       if (Math.random() < .0015) p.pause = 1500 + Math.random() * 2500;
     }
@@ -479,16 +479,22 @@ function stimmeAbspielen(url) {
   const a = new Audio(url); a.volume = TON().stimme;
   a.onloadedmetadata = () => { stimmeLaeuft = performance.now() + a.duration * 1000 + 300; };
   stimmeLaeuft = performance.now() + 4000;
-  a.play().catch(() => {});
+  a.play().catch(() => { tonAn = false; });
 }
 addEventListener('click', tonStarten); addEventListener('keydown', tonStarten);
+// Meldet dem Programm, ob hier wirklich Ton läuft – sonst spielt das Programm Stimme und Musik über die Mac-Lautsprecher
+setInterval(() => fetch('/tonstatus?an=' + (tonAn && musik && !musik.paused ? 1 : 0)).catch(() => {}), 4000);
 
 // ================= Zeichen-Hilfen =================
 function rr(x, y, w, h, r) { X.beginPath(); X.roundRect(x, y, w, h, r); }
+// Text exakt mittig auf y (gemessen statt textBaseline 'middle' – sieht in Chrome, Safari und LIVE Studio gleich aus)
+const MITTE_CACHE = {};
+function mitteVersatz() { const k = X.font; if (MITTE_CACHE[k] == null) { X.textBaseline = 'alphabetic'; const m = X.measureText('Hgä'); MITTE_CACHE[k] = (m.actualBoundingBoxAscent - m.actualBoundingBoxDescent) / 2; } return MITTE_CACHE[k]; }
 function text(t, x, y, size, col = INK, align = 'left', weight = 900, maxW) {
-  X.font = `${weight} ${size}px ${FONT}`; X.fillStyle = col; X.textAlign = align; X.textBaseline = 'middle';
+  X.font = `${weight} ${size}px ${FONT}`; X.fillStyle = col; X.textAlign = align;
   if (maxW) { let s = size; while (X.measureText(t).width > maxW && s > 10) { s -= 1; X.font = `${weight} ${s}px ${FONT}`; } }
-  X.fillText(t, x, y);
+  const v = mitteVersatz(); X.textBaseline = 'alphabetic';
+  X.fillText(t, x, y + v);
 }
 function karte(x, y, w, h, fill, r = 999) {                // Homepage-Stil: Rahmen + harter Schatten
   X.fillStyle = INK; rr(x + 10, y + 10, w, h, r); X.fill();
@@ -731,7 +737,7 @@ function haus(p, pl, t) {
   while (X.measureText(n).width > pl.w - 12 && fs > 6.5) { fs -= .5; X.font = `900 ${fs}px ${FONT}`; }
   const w = X.measureText(n).width + 8;
   X.fillStyle = 'rgba(255,255,255,.93)'; rr(pl.x - w / 2, pl.y + 8, w, 15, 7.5); X.fill();
-  X.fillStyle = INK; X.textAlign = 'center'; X.textBaseline = 'middle'; X.fillText(n, pl.x, pl.y + 16);
+  X.fillStyle = INK; X.textAlign = 'center'; const nv = mitteVersatz(); X.textBaseline = 'alphabetic'; X.fillText(n, pl.x, pl.y + 15.5 + nv);
 }
 
 // ================= Kopfzeile =================
@@ -931,7 +937,7 @@ function showsZeichnen(t) {
 }
 function umriss(t, x, y, size, farbe) {                          // gut lesbar auf jedem Hintergrund
   let fs = size; X.font = `900 ${fs}px ${FONT}`; while (X.measureText(t).width > SB - 20 && fs > 16) { fs -= 2; X.font = `900 ${fs}px ${FONT}`; }
-  X.textAlign = 'center'; X.textBaseline = 'middle'; X.lineJoin = 'round'; X.lineWidth = fs * .22; X.strokeStyle = INK; X.strokeText(t, x, y); X.fillStyle = farbe; X.fillText(t, x, y);
+  X.textAlign = 'center'; const v = mitteVersatz(); X.textBaseline = 'alphabetic'; X.lineJoin = 'round'; X.lineWidth = fs * .22; X.strokeStyle = INK; X.strokeText(t, x, y + v); X.fillStyle = farbe; X.fillText(t, x, y + v);
 }
 function schild(x, y, oben, unten, farbe, a, w = 620) {
   w = Math.min(w, SB); X.save(); X.globalAlpha = Math.max(0, a); X.translate(Math.max(SL + w / 2, Math.min(SR - w / 2, x)), y);
@@ -1026,7 +1032,7 @@ function overlay(t) {
     X.restore();
   }
   const ua = (t - untertitel.t) / 1000, ud = untertitel.d || 5;
-  if (untertitel.text && ua < ud) {                                 // so lange wie Markus spricht, lange Sätze umbrechen
+  if (untertitel.text && ua < ud) {                                 // so lange wie Anna spricht, lange Sätze umbrechen
     X.globalAlpha = Math.min(1, (ud - ua) * 3, ua * 6);
     X.font = `800 24px ${FONT}`;
     const zeilen = [], max = SB - 50; let z = '';

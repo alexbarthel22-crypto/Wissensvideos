@@ -8,7 +8,7 @@ Eine Mac-Stimme (unbegrenzt, offline) moderiert.
 2. **Nur diesen Ordner `live/`** herunterladen (er funktioniert allein – Bewohnerzahl und Bauprojekte holt er sich selbst aus dem Repo). Den Ordner kannst du beliebig umbenennen und ablegen.
 3. Im Ordner auf **„Muschel-Tal LIVE testen.command“** doppelklicken.
    Falls der Mac warnt: Rechtsklick → „Öffnen“ → „Öffnen“.
-   Es öffnet sich die Insel mit Test-Zuschauern, Markus spricht.
+   Es öffnet sich die Insel mit Test-Zuschauern, Anna spricht.
 
 **Update auf eine neue Version:** neuen Ordner holen und deine `stand.json` (Spielstand) und `sperrliste.txt` hineinkopieren.
 
@@ -60,7 +60,7 @@ Alle Events laufen komplett im Stream, mitmachen per Like oder Kommentar – nie
 | 🗳️ Abstimmung | `1` `2` `3` | nächstes Gemeinschaftsprojekt |
 
 ## Geschenk-Shows
-Jedes Geschenk wird bedankt (Markus) und bekommt eine Show mit dem Namen des Spenders – je wertvoller, desto größer:
+Jedes Geschenk wird bedankt (Anna) und bekommt eine Show mit dem Namen des Spenders – je wertvoller, desto größer:
 - unter 10 Coins: Herzregen, Muschel-Konfetti oder Seifenblasen am Haus + Danke-Schild
 - 10–99 Coins: springender Delfin mit Banner, Heißluftballon mit Namen oder Flugzeug mit Danke-Banner
 - 100–999 Coins: Feuerwerk mit Namen, Yacht mit Namen am Rumpf oder Goldregen (Kamera fährt zum Haus)
@@ -68,12 +68,12 @@ Jedes Geschenk wird bedankt (Markus) und bekommt eine Show mit dem Namen des Spe
 Große Geschenke werden vor kleinen gezeigt.
 
 ## Moderation
-Markus redet ununterbrochen – mit kurzen, natürlichen Pausen (`…` in `saetze.mjs` = Sprechpause, Abstand zwischen Sätzen: `stimme.pauseSek`). Untertitel erscheinen genau dann, wenn er spricht.
+Anna redet ununterbrochen – mit kurzen, natürlichen Pausen (`…` in `saetze.mjs` = Sprechpause, Abstand zwischen Sätzen: `stimme.pauseSek`). Untertitel erscheinen genau dann, wenn er spricht.
 Reihenfolge, wenn er frei ist:
 1. Geschenke bedanken (immer, sofort) · Event-Ansagen · Countdown („noch dreißig Sekunden“, „zehn Sekunden“)
 2. Follows bedanken (mehrere zusammengefasst)
 3. Während eines Events: Spielstand live kommentieren, anfeuern, ab und zu ein Tipp
-4. Sonst: neue Zuschauer begrüßen, Rundgang (Kamera fliegt zu einem Haus, Markus stellt es vor), Tipps, Muschel-Tal-Fakten, Fragen an den Chat, Rangliste, Muschelkasse, Bauprojekt, Bewohner-Ziel, Teaser fürs nächste Event (ohne es zu verraten), Abendstimmung
+4. Sonst: neue Zuschauer begrüßen, Rundgang (Kamera fliegt zu einem Haus, Anna stellt es vor), Tipps, Muschel-Tal-Fakten, Fragen an den Chat, Rangliste, Muschelkasse, Bauprojekt, Bewohner-Ziel, Teaser fürs nächste Event (ohne es zu verraten), Abendstimmung
 Für jede Situation gibt es mehrere Varianten; der zuletzt benutzte Satz wird ausgelassen.
 
 ## Vollautomatisch
@@ -83,12 +83,12 @@ Der Mac bleibt automatisch wach, solange das Programm läuft (`caffeinate`). Das
 ## Schutz vor anstößigen Namen
 - Namen mit anstößigen Wörtern (auch mit Zahlen/Sonderzeichen geschrieben, z. B. „f4ck“) werden zu „Bewohner 12“: nicht angezeigt, nicht vorgelesen. Liste in `filter.mjs`.
 - `sperrliste.txt`: ein TikTok-Name pro Zeile – diese Person wird komplett ignoriert (kein Haus, keine Begrüßung, kein Dank). Gilt nach spätestens 30 s, auch während des Streams.
-- Kommentar-Texte werden nie vorgelesen oder angezeigt. Jeder Satz von Markus wird vor dem Sprechen noch einmal geprüft.
+- Kommentar-Texte werden nie vorgelesen oder angezeigt. Jeder Satz von Anna wird vor dem Sprechen noch einmal geprüft.
 - Zusätzlich empfohlen: in den TikTok-LIVE-Einstellungen den Stichwort-Filter für Kommentare einschalten.
 
 ## Ton (Musik + Stimme)
 - Im Hintergrund läuft die Südsee-Musik aus den Muschel-Tal-Videos (lizenzfrei, erzeugt mit `tools/make_music_tropical.py`, 3 Stücke à 3 Min. im Wechsel) plus Meeresrauschen (`tools/make_ambience.py`).
-- Markus' Ansagen werden über die Live-Seite abgespielt, die Musik wird dabei automatisch leiser. So landet alles im Ton der Link-/Browser-Quelle.
+- Annas Ansagen werden über die Live-Seite abgespielt, die Musik wird dabei automatisch leiser. So landet alles im Ton der Link-/Browser-Quelle.
 - Falls ein Browser den Ton blockiert, steht unten „Einmal ins Bild klicken für Musik“ – einmal klicken genügt.
 - Bei **Fensteraufnahme** statt Link-Quelle: in LIVE Studio zusätzlich den Mac-Ton (Systemaudio) aufnehmen.
 - Lautstärken in `einstellungen.json` unter `ton`.
@@ -98,7 +98,7 @@ Tag, Sonnenaufgang, Sonnenuntergang (je 45 Min.) und Nacht wie auf muscheltal.de
 Zum Ausprobieren: `http://localhost:8790/?zeit=21:30`.
 
 ## Stimme
-Standard: **Markus (Erweitert)**. Andere Stimme → in `einstellungen.json` bei `"mac"` eintragen (Namen: `say -v '?' | grep de_DE`).
+Standard: **Anna (Premium)**. Andere Stimme → in `einstellungen.json` bei `"mac"` eintragen (Namen: `say -v '?' | grep de_DE`).
 Ohne Stimme starten: `node server.mjs --still`.
 
 ## Hinweise

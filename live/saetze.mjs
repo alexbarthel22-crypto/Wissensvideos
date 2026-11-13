@@ -1,4 +1,4 @@
-// Muschel-Tal LIVE – was Markus sagt. Für jede Situation mehrere Varianten;
+// Muschel-Tal LIVE – was Anna sagt. Für jede Situation mehrere Varianten;
 // die zuletzt benutzten werden ausgelassen, damit er sich nicht wiederholt.
 // Platzhalter: {name} {namen} {geschenk} {anzahl} {stufe} {anbau} {rest} {projekt} {kasse} {zahl}
 

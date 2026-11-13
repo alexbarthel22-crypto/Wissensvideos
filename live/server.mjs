@@ -167,7 +167,7 @@ function follow(u) {
   sende({ typ: 'follow', id: p.id });
   setzeBewohner(bewohner + 1, 'follow');
   inKasse(CFG.kasse.proFollow);
-  if (!followDank.includes(p)) followDank.push(p);               // Dank kommt, sobald Markus frei ist
+  if (!followDank.includes(p)) followDank.push(p);               // Dank kommt, sobald Anna frei ist
   gibMuscheln(p, CFG.muschelnFuerFollow, 'follow');
 }
 
@@ -211,7 +211,7 @@ setInterval(zustand, 1000);
 
 // ---------- Stimme (macOS „say“, unbegrenzt, offline) ----------
 // Prio 0: Geschenk-Dank, Event-Ansagen · 1: Follow-Dank, Countdown · 2: Haus-Ausbau · 3: Kleinkram · 4: Dauer-Moderation
-// Untertitel erscheinen genau dann, wenn Markus den Satz spricht. „…“ im Text = Sprechpause.
+// Untertitel erscheinen genau dann, wenn Anna den Satz spricht. „…“ im Text = Sprechpause.
 const warte = []; let spricht = false; const gesprochen = [];
 const TON_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'muscheltal-ton-')); let tonNr = 0;
 let stimme = CFG.stimme.mac, stilleSeit = Date.now();
@@ -238,7 +238,7 @@ function weiter() {
   const { text } = warte.shift(); spricht = true; gesprochen.push(Date.now());
   sende({ typ: 'ansage', text, ms: dauerMs(text) });
   if (!ECHT) { setTimeout(fertig, dauerMs(text)); return; }
-  const aufSeite = CFG.stimme.wiedergabe !== 'mac' && kunden.size > 0;
+  const aufSeite = CFG.stimme.wiedergabe !== 'mac' && seiteHatTon();
   const datei = path.join(TON_DIR, `s${++tonNr % 20}.wav`);
   const args = ['-v', stimme, '-r', String(CFG.stimme.tempo)];
   if (aufSeite) args.push('-o', datei, '--file-format=WAVE', '--data-format=LEI16@22050');
@@ -260,7 +260,26 @@ function weiter() {
   });
 }
 
-// ---------- Dauer-Moderation: Markus redet immer, mit kurzen Pausen dazwischen ----------
+// ---------- Ton-Absicherung ----------
+// Läuft auf keiner Live-Seite Ton (Browser blockiert ihn), spielen Stimme und Musik direkt über die Mac-Lautsprecher.
+let tonOkSeit = 0, lokalMusik = null, lokalNr = 0;
+const seiteHatTon = () => Date.now() - tonOkSeit < 12000;
+const MUSIK_DATEIEN = ['suedsee_3.mp3', 'suedsee_9.mp3', 'suedsee_11.mp3'].map(f => path.join(DIR, 'seite', 'musik', f));
+function musikLokal() {
+  const brauche = process.platform === 'darwin' && CFG.ton.musikAufMac !== false && !seiteHatTon() && Date.now() - START > 15000;
+  if (brauche && !lokalMusik) {
+    const f = MUSIK_DATEIEN[lokalNr++ % MUSIK_DATEIEN.length];
+    lokalMusik = spawn('afplay', ['-v', String(CFG.ton.musikAufMacLautstaerke ?? .18), f]);
+    lokalMusik.on('close', () => { lokalMusik = null; });
+    console.log('🎵 Kein Ton auf der Live-Seite – Musik und Stimme laufen über die Mac-Lautsprecher.');
+  }
+  if (!brauche && lokalMusik) { lokalMusik.kill(); lokalMusik = null; }
+}
+const START = Date.now();
+setInterval(musikLokal, 3000);
+process.on('exit', () => lokalMusik?.kill());
+
+// ---------- Dauer-Moderation: Anna redet immer, mit kurzen Pausen dazwischen ----------
 const followDank = [], begruessen = [], begruesst = new Set();
 let letzterLive = 0, letzterRundgang = 0, modNr = 0, eventModNr = 0, countdownGesagt = '', eventZehnGesagt = '';
 const zufallAus = fs => fs[Math.floor(Math.random() * fs.length)]();
@@ -280,7 +299,7 @@ const MODERATION = [
   () => satz('stimmung', { aktive: aktiveAnzahl() }),
 ];
 const aktiveAnzahl = () => Object.values(S.spieler).filter(p => Date.now() - (p.zuletzt || 0) < 600000).length;
-function rundgang() {                                      // Kamera fliegt zu einem Haus, Markus stellt es vor
+function rundgang() {                                      // Kamera fliegt zu einem Haus, Anna stellt es vor
   if (Date.now() - letzterRundgang < 40000) return null;
   const kand = Object.values(S.spieler).filter(p => !p.gesperrt && Date.now() - (p.zuletzt || 0) < 900000 && p.stufe > 0);
   if (!kand.length) return null;
@@ -361,6 +380,10 @@ http.createServer((req, res) => {
     const id = url.searchParams.get('event'), art = url.searchParams.get('geschenk');
     if (id) EV.starte(id);
     if (art) { const p = Object.values(S.spieler)[3]; geschenk({ uniqueId: p.name.slice(1) }, url.searchParams.get('name') || 'Rose', +url.searchParams.get('coins') || 1, 1); }
+    res.writeHead(204); return res.end();
+  }
+  if (url.pathname === '/tonstatus') {                       // Live-Seite meldet, ob ihr Ton läuft
+    if (url.searchParams.get('an') === '1') tonOkSeit = Date.now();
     res.writeHead(204); return res.end();
   }
   if (url.pathname === '/events') {

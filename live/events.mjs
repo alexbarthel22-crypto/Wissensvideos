@@ -157,7 +157,7 @@ export function macheEvents(api) {
     },
   };
 
-  // Live-Kommentare während der Events (Markus kommentiert, solange nichts anderes ansteht)
+  // Live-Kommentare während der Events (Anna kommentiert, solange nichts anderes ansteht)
   const TEAMNAME = { rot: 'Rot', blau: 'Blau', gelb: 'Gelb', gruen: 'Grün', muschel: 'Muschel', kokos: 'Kokos' };
   const rest = e => Math.max(0, Math.round((e.ende - Date.now()) / 1000));
   const LIVE = {

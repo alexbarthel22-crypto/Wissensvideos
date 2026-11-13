@@ -1,8 +1,9 @@
 #!/bin/bash
-# Doppelklick: Markus liest Beispiel-Ansagen aus dem Stream vor.
-STIMME="Markus (Erweitert)"
-say -v "$STIMME" "Test" 2>/dev/null || STIMME="Markus (Enhanced)"
-say -v "$STIMME" "Test" 2>/dev/null || STIMME="Markus"
+# Doppelklick: Anna liest Beispiel-Ansagen aus dem Stream vor.
+STIMME="Anna (Premium)"
+say -v "$STIMME" "" 2>/dev/null || STIMME="Anna (Erweitert)"
+say -v "$STIMME" "" 2>/dev/null || STIMME="Anna (Enhanced)"
+say -v "$STIMME" "" 2>/dev/null || STIMME="Anna"
 sag() { echo "🎙️  $1"; say -v "$STIMME" -r 185 "$1"; sleep 0.6; }
 echo "Stimme: $STIMME"; echo
 echo "— Geschenke —"
@@ -10,14 +11,14 @@ sag "Danke lena sun für Rose!"
 sag "Danke tim wave für 5 mal Rose!"
 sag "Wow, vielen Dank mia meer für Money Gun!"
 sag "Wahnsinn! Riesigen Dank an surfer ben für Lion! Das ganze Muschel-Tal feiert dich!"
-echo; echo "— Varianten (Markus wechselt ab, nie zweimal dasselbe hintereinander) —"
+echo; echo "— Varianten (Anna wechselt ab, nie zweimal dasselbe hintereinander) —"
 sag "Oh, Rose von lena sun! Dankeschön!"
 sag "Lieben Dank für 3 mal Rose, tim wave!"
 sag "Rose von mia meer! Die Krabben freuen sich!"
 sag "Schaut mal, Perfume von mia meer! Tausend Dank!"
 sag "surfer ben, du bist eine Legende! Danke für Lion!"
 sag "Ich bin sprachlos! Universe von koko nuss! Das gibt eine Mega-Show!"
-echo; echo "— Follows (gesammelt, wenn Markus frei ist) —"
+echo; echo "— Follows (gesammelt, wenn Anna frei ist) —"
 sag "Danke perle fürs Folgen!"
 sag "Willkommen als Bewohner, jonas! Danke fürs Folgen!"
 sag "Ein neuer Bewohner! Danke nina!"
