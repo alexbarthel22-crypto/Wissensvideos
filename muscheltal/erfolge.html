@@ -82,6 +82,28 @@ main{max-width:720px}
 .grid .lupe .lupeic svg{width:28px;height:28px}
 .plang .e.plan{padding:8px 6px}.plang .e.plan .ic{width:30px;height:30px;font-size:15px}.plang .e.plan p{font-size:10.5px}
 .count{flex-wrap:wrap}
+
+/* noch kompakter: nur Symbol, Name, Anteil – Erklärung im Pop-up beim Antippen */
+.grid{grid-template-columns:repeat(4,1fr);gap:8px}
+@media(min-width:560px){.grid{grid-template-columns:repeat(5,1fr)}}
+.grid .e{padding:8px 4px 7px;gap:4px;cursor:pointer;border-radius:14px;-webkit-tap-highlight-color:transparent}
+.grid .e:active{transform:scale(.96)}
+.grid .e p,.grid .e .tag{display:none}
+.grid .e .ic{width:42px;height:42px;font-size:21px}
+.grid .coinic .coin{width:44px;height:44px}
+.grid>.e{min-width:0;overflow:hidden}.grid .e>div:last-child{max-width:100%}.grid .e h2{font-size:11px;line-height:1.12;hyphens:auto;-webkit-hyphens:auto;overflow-wrap:anywhere;max-width:100%}.grid .pct{max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.grid .ach{padding:1px 6px 1px 1px}.grid .ach .coin{width:16px;height:16px}.grid .ach b{font-size:10.5px}
+.grid .pct{font-size:8px;padding:1px 5px;margin-top:3px}
+.plang .e.plan{padding:8px 4px}.plang .e.plan .ic{width:30px;height:30px;font-size:15px}
+.plang .e.plan>div:last-child::after{content:"Bald";font-size:10.5px;font-weight:900;color:var(--soft)}
+#ep{position:fixed;inset:0;background:rgba(42,27,18,.45);display:none;align-items:center;justify-content:center;padding:20px;z-index:9}
+#ep.on{display:flex}
+#ep .box{position:relative;background:#fff8ec;border:3px solid var(--ink);border-radius:22px;box-shadow:5px 5px 0 var(--ink);max-width:340px;width:100%;padding:22px 18px 18px;text-align:center}
+#ep .box .ic{width:76px;height:76px;margin:0 auto 6px;border-radius:50%;display:grid;place-items:center;font-size:38px;border:3px solid var(--ink);background:#fff;overflow:hidden}
+#ep .box .ic svg{max-width:100%;max-height:100%}#ep .box .coin{width:84px;height:84px}
+#ep h2{margin:6px 0 4px;font-size:22px}#ep p{margin:0 0 10px;color:var(--soft);font-weight:700;font-size:15px}
+#ep .tags{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}#ep .tags span{display:inline-block;font-size:12px;font-weight:900;border-radius:999px;padding:3px 10px;background:#fff;border:2px solid var(--ink)}
+#ep .zu{position:absolute;right:10px;top:8px;border:0;background:none;font-size:24px;font-weight:900;cursor:pointer;color:var(--ink)}
 </style>
 </head>
 <body>
@@ -128,13 +150,24 @@ main{max-width:720px}
 <script>
 // Anteil der Bewohner je Erfolg (live aus den gespeicherten Erfolgen; Bewohnerliste und Gründer aus dem letzten Update)
 const BEW=new Set(/*BEW*/[]),GRUEND=/*GRUEND*/0,ENT=/*ENT*/{},ENTA=/*ENTA*/{};
-const pct=(n)=>{if(!BEW.size)return'';if(!n)return'👥 noch niemand';const p=n/BEW.size*100;return'👥 '+(p<1?'<1':Math.round(p))+' % haben ihn';};
-function zeige(z){document.querySelectorAll('.pct').forEach(s=>{const k=s.dataset.k;s.textContent=pct(k==='GRUENDER'?GRUEND:(z[k]||0));});}
+const pct=(n)=>{if(!BEW.size)return'';if(!n)return'👥 Noch niemand hat ihn';const p=n/BEW.size*100;return'👥 '+(p<1?'<1':Math.round(p))+' % der Bewohner haben ihn';};
+function zeige(z){document.querySelectorAll('.pct').forEach(s=>{const k=s.dataset.k,n=k==='GRUENDER'?GRUEND:(z[k]||0);s.dataset.lang=pct(n);s.textContent=!BEW.size?'':n?'👥 '+(n/BEW.size*100<1?'<1':Math.round(n/BEW.size*100))+' %':'👥 0 %';});}
 zeige({});
 fetch('/api/erfolge',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(d=>{if(!d||!d.erfolge)return;const z={};
  for(const [n,m] of Object.entries(d.erfolge)){const nm=n.toLowerCase().replace(/^@/,'');if(!BEW.has(nm))continue;const ent=ENT[nm]||{};
   for(const [k,ts] of Object.entries(m)){const x=ent[k];if(x&&(Array.isArray(x)?ts>=x[0]&&ts<=x[1]:ts<=x))continue;const a=ENTA[k];if(a&&ts>=a[0]&&ts<=a[1])continue;z[k]=(z[k]||0)+1;}}
  zeige(z);}).catch(()=>{});
+</script>
+<div id="ep" role="dialog" aria-modal="true"><div class="box"><button class="zu" aria-label="Schließen">✕</button><div class="inh"></div></div></div>
+<script>
+// Antippen einer Kachel: Erklärung im Pop-up
+(()=>{const ep=document.getElementById('ep'),inh=ep.querySelector('.inh');const zu=()=>ep.classList.remove('on');ep.onclick=e=>{if(e.target===ep||e.target.closest('.zu'))zu();};document.addEventListener('keydown',e=>{if(e.key==='Escape')zu();});
+ document.querySelectorAll('.grid .e').forEach(el=>{el.setAttribute('role','button');el.tabIndex=0;const auf=()=>{const ic=el.querySelector('.ic'),h=el.querySelector('h2'),ach=el.querySelector('.ach b'),p=el.querySelector('p'),tg=el.querySelector('.tag'),pc=el.querySelector('.pct');
+  const name=h?h.textContent:ach?ach.textContent:'In Planung';
+  inh.innerHTML='<div class="ic">'+(ic?ic.innerHTML:'')+'</div><h2></h2><p></p><div class="tags"></div>';inh.querySelector('h2').textContent=el.classList.contains('plan')?'🔜 In Planung':name;inh.querySelector('p').textContent=p?p.textContent:'';
+  const t=inh.querySelector('.tags');for(const x of[tg,pc])if(x&&x.textContent.trim()){const s=document.createElement('span');s.textContent=x.dataset.lang||x.textContent;t.appendChild(s);}
+  const box=ep.querySelector('.box'),cs=getComputedStyle(el);box.style.borderColor=cs.borderTopColor;ep.classList.add('on');};
+  el.onclick=auf;el.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();auf();}};});})();
 </script>
 </body>
 </html>
