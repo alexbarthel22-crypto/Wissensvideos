@@ -15,6 +15,8 @@ fi
 source ./tunnel.sh
 starte_tunnel
 trap stoppe_tunnel EXIT
+# Ton-Tab im Browser öffnen: Anna + Musik laufen dort (einmal „Ton starten“ klicken, Tab offen lassen)
+( sleep 4; open "http://localhost:8790/?ton" ) &
 while true; do
   caffeinate -dimsu node server.mjs      # Mac bleibt wach, solange das Programm läuft
   [ $? -eq 2 ] && { read -r -p "Enter drücken zum Schließen"; exit 0; }   # läuft schon in einem anderen Fenster

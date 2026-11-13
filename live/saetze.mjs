@@ -211,9 +211,10 @@ const zuletzt = {};
 export function satz(art, werte = {}) {
   const liste = SAETZE[art]; if (!liste) return '';
   const weg = zuletzt[art] || [];
-  const frei = liste.map((_, i) => i).filter(i => !weg.includes(i));
+  let frei = liste.map((_, i) => i).filter(i => !weg.includes(i));
+  if (!frei.length) frei = liste.map((_, i) => i);                  // Gruppen mit nur einem Satz: einfach wiederholen
   const i = frei[Math.floor(Math.random() * frei.length)];
-  zuletzt[art] = [i, ...weg].slice(0, Math.max(1, Math.floor(liste.length / 2)));
+  zuletzt[art] = [i, ...weg].slice(0, Math.floor(liste.length / 2));
   return liste[i].replace(/\{(\w+)\}/g, (_, k) => werte[k] ?? '');
 }
 export const namenListe = n => n.length > 1 ? `${n.slice(0, -1).join(', ')} und ${n.at(-1)}` : n[0];

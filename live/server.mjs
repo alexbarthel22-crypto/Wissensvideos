@@ -18,7 +18,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-13 g';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-13 h';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -387,6 +387,7 @@ function vorwaermen() {
   const offen = [...festeSaetze(), ...Object.values(require_preis())].filter(Boolean);
   let i = 0, fertigN = 0;
   const naechster = () => {
+    if (spricht || warte.length) return setTimeout(naechster, 1500);
     while (i < offen.length) {
       const text = offen[i++], key = crypto.createHash('md5').update(`${stimme}|${CFG.stimme.tempo}|${ohnePausen}|${text}`).digest('hex'), ziel = path.join(CACHE_DIR, key + '.wav');
       if (fs.existsSync(ziel)) continue;
@@ -410,12 +411,18 @@ try { const f = fs.readdirSync(CACHE_DIR).map(n => ({ n, t: fs.statSync(path.joi
 // Läuft auf keiner Live-Seite Ton (Browser blockiert ihn), spielen Stimme und Musik direkt über die Mac-Lautsprecher.
 var sayProzess = null, lokalMusik = null, lokalNr = 0, tonSeite = null, stimmeFehlerBis = 0, unbestaetigt = 0;
 const tonStatus = new Map();                               // Seiten-Nr. -> { an, zeit, vorschau, seit }
-const seiteHatTon = () => { const st = tonStatus.get(tonSeite); return !!st && st.an && Date.now() - st.zeit < 10000; };
+const seiteHatTon = () => { const st = tonStatus.get(tonSeite); return !!st && st.an && Date.now() - st.zeit < 15000; };
 // Genau EINE Seite spielt Ton: bevorzugt eine, auf der Ton schon läuft, sonst die zuerst geöffnete (keine Vorschau)
 // Spielt die gewählte Seite nach 8 s noch keinen Ton, kommt die nächste dran (LIVE Studio lädt die Seite manchmal doppelt).
 let rolleSeit = 0; const tonFehl = new Map();             // Seiten-Nr. -> wann zuletzt ohne Ton
 function waehleTonSeite() {
   if (CFG.stimme.wiedergabe === 'mac') { if (tonSeite !== null) { tonSeite = null; sende({ typ: 'tonRolle', id: null }); } return; }
+  if (CFG.stimme.wiedergabe === 'browser') {               // nur der Ton-Tab (?ton) spielt Ton – nie die Seite in LIVE Studio
+    const tabs = [...kunden.keys()].filter(id => tonStatus.get(id)?.tonseite);
+    const neu = tabs.includes(tonSeite) ? tonSeite : (tabs.find(id => tonStatus.get(id)?.an) ?? tabs[0] ?? null);
+    if (neu !== tonSeite) { tonSeite = neu; sende({ typ: 'tonRolle', id: tonSeite }); if (tonSeite != null) console.log(`🔊 Ton-Tab verbunden (#${tonSeite}).`); }
+    return;
+  }
   const offen = [...kunden.keys()].filter(id => !tonStatus.get(id)?.vorschau);
   const mitTon = offen.filter(id => tonStatus.get(id)?.an);
   let neu = tonSeite;
@@ -661,7 +668,7 @@ const server = http.createServer((req, res) => {
     const neu = !id || !kunden.has(id);
     if (neu && !id) id = ++seitenNr;
     kunden.set(id, Date.now());
-    if (url.searchParams.has('an')) { const alt = tonStatus.get(id) || {}; tonStatus.set(id, { ...alt, an: url.searchParams.get('an') === '1', ac: url.searchParams.get('ac'), vorschau: url.searchParams.get('vorschau') === '1', zeit: Date.now() }); }
+    if (url.searchParams.has('an')) { const alt = tonStatus.get(id) || {}; tonStatus.set(id, { ...alt, an: url.searchParams.get('an') === '1', ac: url.searchParams.get('ac'), vorschau: url.searchParams.get('vorschau') === '1', tonseite: url.searchParams.get('tonseite') === '1', zeit: Date.now() }); }
     waehleTonSeite();
     const n = +url.searchParams.get('n') || 0, sv = +url.searchParams.get('sv');
     if (!letzterZustand) zustand();
@@ -796,4 +803,10 @@ function simulator() {
 
 if (TEST && !process.argv.includes('--leer')) simulator(); else if (!TEST) versuche();
 // Spielstand sichern beim Beenden – egal wie: ctrl+C, Terminalfenster schließen, Mac fährt herunter
+// Sicherheitsnetz: ein unerwarteter Fehler darf nie den LIVE beenden – melden und weiterlaufen
+for (const art of ['uncaughtException', 'unhandledRejection']) process.on(art, e => {
+  if (e?.code === 'EADDRINUSE') return;
+  console.log('⚠️  Interner Fehler (Programm läuft weiter):', e?.stack?.split('\n').slice(0, 3).join(' | ') || e);
+  if (spricht && Date.now() - sprichtSeit > 3000) fertig();
+});
 for (const sig of ['SIGINT', 'SIGHUP', 'SIGTERM']) process.on(sig, () => { geaendert = true; speichern(); process.exit(0); });

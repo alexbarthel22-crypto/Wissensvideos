@@ -537,6 +537,7 @@ function nachtZeichnen(t) {
 // Sind mehrere Seiten offen (z. B. Browser + LIVE Studio), bestimmt das Programm, welche Seite Ton spielt (tonRolle).
 const MUSIK = [1, 2, 3, 4, 5].map(i => `musik/insel_${i}.mp3`);   // 5 Stücke à 7 Min. (35 Min. ohne Wiederholung), tools/make_music_live.py
 const VORSCHAU = PARAM.has('vorschau') || PARAM.has('still');     // ?vorschau = Bild ohne Ton
+const TONSEITE = PARAM.has('ton');                                // ?ton = nur Ton (Musik + Anna) für den Mac, kein Bild
 let meineId = null, tonRolle = false, tonAn = false, musikNr = Math.floor(Math.random() * MUSIK.length), stimmeLaeuft = 0, AC = null;
 const TON = () => S.ton || { musik: .32, musikBeiStimme: .1, meer: .22, stimme: 1 };
 const musik = new Audio(MUSIK[musikNr]); musik.preload = 'auto'; musik.volume = 0;
@@ -604,7 +605,7 @@ async function stimmeAbspielen(url) {                             // Stimme übe
 setInterval(() => { if (tonRolle && (musik.paused || (AC && AC.state !== 'running'))) tonStarten(); }, 4000);   // Ton nach Unterbrechung selbst wieder an
 addEventListener('click', tonStarten); addEventListener('keydown', tonStarten); addEventListener('touchstart', tonStarten);
 // Meldet dem Programm, ob hier wirklich Ton läuft – sonst übernimmt der Mac (Lautsprecher)
-const tonText = () => `&an=${tonRolle && tonAn && !musik.paused ? 1 : 0}&ac=${AC ? AC.state : 'kein'}&vorschau=${VORSCHAU ? 1 : 0}`;   // Tonstatus reist mit jeder Abfrage mit
+const tonText = () => `${TONSEITE ? '&tonseite=1' : ''}&an=${tonRolle && tonAn && !musik.paused ? 1 : 0}&ac=${AC ? AC.state : 'kein'}&vorschau=${VORSCHAU ? 1 : 0}`;   // Tonstatus reist mit jeder Abfrage mit
 
 // ================= Zeichen-Hilfen =================
 function rr(x, y, w, h, r) { X.beginPath(); X.roundRect(x, y, w, h, r); }
@@ -1576,7 +1577,20 @@ function bild(t) {
   overlay(t);
 }
 verbinde();
-requestAnimationFrame(bild);
+if (TONSEITE) {                                                   // Ton-Tab: kein Bild zeichnen (spart Rechenleistung), nur Ton + Statusanzeige
+  C.style.display = 'none';
+  document.body.insertAdjacentHTML('beforeend', `<div id="tonbox" style="font:800 28px system-ui;color:#fff;background:#0f3b5c;position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;text-align:center;padding:24px">
+    <div style="font-size:64px">🔊</div><div>Muschel-Tal LIVE – Ton</div>
+    <button id="tonknopf" style="font:900 30px system-ui;padding:22px 36px;border-radius:999px;border:0;background:#ffd23f;color:#2a1b12;cursor:pointer">Ton starten</button>
+    <div id="tonstat" style="font-size:20px;opacity:.85">Einmal klicken – dann diesen Tab offen lassen (darf im Hintergrund sein).</div></div>`);
+  document.getElementById('tonknopf').onclick = () => tonStarten();
+  setInterval(() => {
+    const ok = tonRolle && tonAn && AC && AC.state === 'running';
+    document.getElementById('tonknopf').style.display = ok ? 'none' : '';
+    document.getElementById('tonstat').textContent = ok ? '✅ Ton läuft – Anna und Musik kommen von hier. Tab offen lassen!' : tonRolle ? 'Bitte einmal auf „Ton starten“ klicken.' : 'Warte auf das Programm …';
+    tonLautstaerke();
+  }, 500);
+} else requestAnimationFrame(bild);
 
 </script>
 </body>
