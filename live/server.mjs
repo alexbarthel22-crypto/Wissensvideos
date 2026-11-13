@@ -147,10 +147,16 @@ function geschenk(u, name, diamanten, anzahl) {
 if (S.kasse == null) S.kasse = S.likesGesamt || 0;
 function inKasse(n) {
   S.kasse += n; geaendert = true;
-  if (S.projekt) {
-    S.projekt.stand = Math.min(S.projekt.ziel, S.projekt.stand + n);
-    if (S.projekt.stand >= S.projekt.ziel) projektFertig();
-  }
+  finanziere();
+}
+// Gebäude werden aus der Muschelkasse bezahlt: läuft ein Bau, fließen die Muscheln aus der Kasse in die Baustelle
+function finanziere() {
+  if (!S.projekt || S.kasse <= 0) return 0;
+  const t = Math.min(S.kasse, S.projekt.ziel - S.projekt.stand);
+  if (t <= 0) return 0;
+  S.kasse -= t; S.projekt.stand += t; geaendert = true;
+  if (S.projekt.stand >= S.projekt.ziel) projektFertig();
+  return t;
 }
 
 // ---------- Bauprojekte + Bewohnerzahl der Homepage ----------
@@ -210,7 +216,10 @@ function teilen(u) {
 // ---------- Gemeinschaftsprojekt (wird per Abstimmungs-Event gewählt) ----------
 function projektStarten(pr) {
   S.projekt = { id: pr.id, name: pr.name, ziel: pr.ziel, stand: 0 }; geaendert = true;
-  sende({ typ: 'projekt', id: pr.id }); zustand();
+  sende({ typ: 'projekt', id: pr.id });
+  const aus = finanziere();                                  // Erspartes aus der Muschelkasse fließt sofort in den Bau
+  if (aus > 0 && S.projekt) sag(`${aus.toLocaleString('de-DE')} Muscheln aus der Muschelkasse fließen sofort in den Bau. … Jedes Like baut weiter mit!`, 1);
+  zustand();
 }
 function projektFertig() {
   const pr = S.projekt; S.fertig.push(pr.id); S.projekt = null; geaendert = true;

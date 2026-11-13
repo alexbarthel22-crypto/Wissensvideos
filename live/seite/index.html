@@ -1416,7 +1416,10 @@ function kopf(t) {
   } else if (seite === 1) {
     text('🏆 Beste Häuser', SL + 22, y3 + 26, 23, INK, 'left', 900, lw - 44);
     [...S.spieler].sort((a, b) => b.stufe - a.stufe || (b.eventMuscheln || 0) - (a.eventMuscheln || 0) || b.muscheln - a.muscheln).slice(0, 3).forEach((p, k) => {
-      const y = y3 + 58 + k * 25; text(`${k + 1}. ${p.name}`, SL + 22, y, 20, INK, 'left', 800, lw - 44 - 175 - 16); text(S.stufen[p.stufe] || '', SL + lw - 22, y, 18, '#8a5a2b', 'right', 900, 175);
+      const y = y3 + 58 + k * 25, m = p.muscheln >= 100000 ? Math.round(p.muscheln / 1000).toLocaleString('de-DE') + 'k' : (p.muscheln || 0).toLocaleString('de-DE');
+      text(`${k + 1}. ${p.name}`, SL + 22, y, 20, INK, 'left', 800, 196);                      // Name · Haus-Stufe · Muschel-Kontostand
+      text(S.stufen[p.stufe] || '', SL + lw - 22 - 116, y, 18, '#8a5a2b', 'right', 900, 172);
+      text(`${m} 🐚`, SL + lw - 22, y, 18, INK, 'right', 900, 108);
     });
   } else {
     [['❤️', 'Liken = dein Haus wächst'], ['🏠', 'Schreib „haus“ = du siehst dein Haus'], ['🎨', 'Schreib „rot“, „blau“ … = Farbe']].forEach(([i, s], k) => {

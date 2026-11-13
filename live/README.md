@@ -30,7 +30,7 @@ Eine Mac-Stimme (unbegrenzt, offline) moderiert.
 | Erster Like/Kommentar | eigenes Grundstück mit @Namen – wer früher kommt, wohnt näher an der Muschel |
 | 1 Like | 1 Muschel in die **Muschelkasse der Live-Insel** (getrennt von der Inselkasse der Haupt-Insel) + 1 Muschel fürs eigene Haus |
 | Haus-Stufen (20) | Zelt → Hängematten-Camp → Strohhütte → Fischerhütte → Stelzenhütte → Baumhaus → Bungalow → Surferhütte → Strandhaus → Leuchtturmhaus → Ferienhaus → Poolhaus → Villa → Glasvilla → Luxusvilla → Inselvilla mit Hubschrauberlandeplatz → Strandpalast → Korallenpalast → Muschelschloss → Perlenschloss |
-| Rangliste „Beste Häuser“ | höchste Haus-Stufe zuerst, bei Gleichstand entscheiden die Muscheln aus Events |
+| Rangliste „Beste Häuser“ | Name · Haus-Stufe · Muschel-Kontostand; höchste Haus-Stufe zuerst, bei Gleichstand entscheiden die Muscheln aus Events |
 | Kommentar `palme` `flagge` `garten` `laterne` `pool` `boot` | Anbau (ab bestimmter Stufe) |
 | Kommentar `rot` `blau` `lila` … | Hausfarbe |
 | Kommentar `haus` (auch Haus!, hauus, house, huas, mein haus …) | ab und zu fliegt die Kamera zum eigenen Haus, Anna: „…, hier ist dein Haus!“ |
@@ -94,7 +94,7 @@ Like-Ziele liegen bei ca. 80 % des normalen Like-Tempos: schaffbar, wenn alle mi
 | 🕵️ Wer bin ich? | Tier erraten (3 Hinweise) | 50 🐚 |
 
 ## Stadtgebäude (ohne Limit)
-Per Abstimmung wählt der Chat das nächste Gemeinschafts-Gebäude, bezahlt wird aus der Muschelkasse:
+Per Abstimmung wählt der Chat das nächste Gemeinschafts-Gebäude, bezahlt wird aus der Muschelkasse (während des Baus fließt alles aus der Kasse in die Baustelle, die Kasse sinkt entsprechend; was übrig bleibt, bleibt in der Kasse):
 Rathaus, Schule, Krankenhaus, Feuerwache, Polizeistation, Supermarkt, Kino, Bibliothek, Post, Café, Eisdiele, Museum, Sporthalle, Markthalle, Hotel, Apotheke, Aquarium, Theater, Schwimmbad, Kindergarten, Restaurant, Friseur, Muschelbank, Inselbahnhof – alle im tropischen Strand-Stil (Palmen, Markisen, Stroh- und Ziegeldächer).
 Gebäude dürfen mehrfach gebaut werden (noch nicht gebaute kommen bei der Abstimmung zuerst). Bauplätze: zuerst das Stadtzentrum um den Muschelplatz, dann über die ganze Insel verteilt (fest vorgemerkt, Häuser ziehen nie um). Reichen die Plätze nicht, wächst die Insel – bis ca. 60 Gebäude und 1.800 Grundstücke.
 Während des Baus: lebendige Baustelle (Kran mit Last, Krabben-Bauarbeiter, Schubkarre, Betonmischer, Funken, Prozent-Schild); ab und zu fliegt die Kamera hin und Anna berichtet. Steigt ein Haus eine Stufe auf: Bau-Animation und Feuerwerk direkt über dem Haus (je höher die Stufe, desto größer). Bei Fertigstellung eines Gebäudes: Bau-Animation (Gerüst, Kran, Krabben, Staub, Gebäude wächst nach oben), dann Feuerwerk.
