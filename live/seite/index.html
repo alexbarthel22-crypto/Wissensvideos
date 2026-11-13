@@ -542,7 +542,11 @@ const MITTE_CACHE = {};
 function mitteVersatz() { const k = X.font; if (MITTE_CACHE[k] == null) { X.textBaseline = 'alphabetic'; const m = X.measureText('Hgä'); MITTE_CACHE[k] = (m.actualBoundingBoxAscent - m.actualBoundingBoxDescent) / 2; } return MITTE_CACHE[k]; }
 function text(t, x, y, size, col = INK, align = 'left', weight = 900, maxW) {
   X.font = `${weight} ${size}px ${FONT}`; X.fillStyle = col; X.textAlign = align;
-  if (maxW) { let s = size; while (X.measureText(t).width > maxW && s > 10) { s -= 1; X.font = `${weight} ${s}px ${FONT}`; } }
+  if (maxW) {
+    const min = Math.max(12, Math.round(size * .7));            // lesbar bleiben: höchstens auf 70 % verkleinern, dann kürzen
+    let s = size; while (X.measureText(t).width > maxW && s > min) { s -= 1; X.font = `${weight} ${s}px ${FONT}`; }
+    if (X.measureText(t).width > maxW) { let k = t.length; while (k > 1 && X.measureText(t.slice(0, k) + '…').width > maxW) k--; t = t.slice(0, k) + '…'; }
+  }
   const v = mitteVersatz(); X.textBaseline = 'alphabetic';
   X.fillText(t, x, y + v);
 }
@@ -918,8 +922,8 @@ function haus(p, pl, t) {
   if (a.includes('boot')) { X.fillStyle = '#8a5a2b'; X.beginPath(); X.roundRect(pl.x + 14, pl.y + 4, 22, 6, 3); X.fill(); X.fillStyle = '#fff'; X.beginPath(); X.moveTo(pl.x + 24, pl.y + 3); X.lineTo(pl.x + 24, pl.y - 10); X.lineTo(pl.x + 32, pl.y + 3); X.fill(); }
   // Name auf dem Grundstück
   const n = p.name; let fs = 11; X.font = `900 ${fs}px ${FONT}`;
-  while (X.measureText(n).width > pl.w - 12 && fs > 6.5) { fs -= .5; X.font = `900 ${fs}px ${FONT}`; }
-  const w = X.measureText(n).width + 8;
+  while (X.measureText(n).width > pl.w - 18 && fs > 6.5) { fs -= .5; X.font = `900 ${fs}px ${FONT}`; }
+  const w = X.measureText(n).width + 12;
   X.fillStyle = 'rgba(255,255,255,.93)'; rr(pl.x - w / 2, pl.y + 8, w, 15, 7.5); X.fill();
   X.fillStyle = INK; X.textAlign = 'center'; const nv = mitteVersatz(); X.textBaseline = 'alphabetic'; X.fillText(n, pl.x, pl.y + 15.5 + nv);
 }
@@ -973,7 +977,7 @@ function gebaeude(c, id, t) {
   else if (g.dach === 'rund') { c.fillStyle = g.dachFarbe; c.beginPath(); c.ellipse(0, -H, W2 + 4, 22, 0, Math.PI, 0); c.fill(); c.stroke(); c.strokeStyle = 'rgba(255,255,255,.5)'; c.lineWidth = 2; for (let k = -2; k <= 2; k++) { c.beginPath(); c.moveTo(k * 18, -H); c.lineTo(k * 12, -H - 20); c.stroke(); } }
   else { c.fillStyle = g.dachFarbe; c.fillRect(-W2 - 4, -H - 7, W2 * 2 + 8, 8); c.strokeStyle = INK; c.lineWidth = 2; c.strokeRect(-W2 - 4, -H - 7, W2 * 2 + 8, 8); }
   // Schild mit Namen
-  c.font = `900 11px ${FONT}`; const sw = c.measureText(g.schild).width + 14, sy = g.dach === 'flach' || g.dach === 'rund' ? -H - 22 : -H + 8;
+  c.font = `900 11px ${FONT}`; const sw = c.measureText(g.schild).width + 20, sy = g.dach === 'flach' || g.dach === 'rund' ? -H - 22 : -H + 8;
   c.fillStyle = '#fff'; c.beginPath(); c.roundRect(-sw / 2, sy, sw, 15, 4); c.fill(); c.strokeStyle = g.akzent; c.lineWidth = 2; c.stroke();
   c.fillStyle = INK; c.textAlign = 'center'; c.textBaseline = 'alphabetic'; c.fillText(g.schild, 0, sy + 11.5);
   // Besonderheiten
@@ -1023,8 +1027,9 @@ function baustelle(c, prozent, name, t) {
   for (let k = 0; k < 3; k++) { const ph = (t * .0008 + k / 3) % 1; c.fillStyle = `rgba(240,220,160,${(1 - ph) * .45})`; c.beginPath(); c.arc(-30 + k * 30, -4 - ph * 18, 5 + ph * 8, 0, 7); c.fill(); }
   // Bauzaun + Schild mit Fortschritt
   for (let x = -W2 - 6; x <= W2 + 6; x += 8) { c.fillStyle = (x / 8 | 0) % 2 ? '#e8433c' : '#fff'; c.fillRect(x, 4, 8, 5); }
-  c.fillStyle = '#fff'; c.beginPath(); c.roundRect(-46, -128, 92, 22, 5); c.fill(); c.strokeStyle = '#ffb02e'; c.lineWidth = 2; c.stroke();
-  c.fillStyle = INK; c.font = `900 10px ${FONT}`; c.textAlign = 'center'; c.textBaseline = 'alphabetic'; c.fillText(`🏗️ ${name} ${Math.floor(prozent * 100)}%`, 0, -113);
+  c.font = `900 10px ${FONT}`; const st = `🏗️ ${name} ${Math.floor(prozent * 100)}%`, sb = c.measureText(st).width + 20;
+  c.fillStyle = '#fff'; c.beginPath(); c.roundRect(-sb / 2, -128, sb, 22, 5); c.fill(); c.strokeStyle = '#ffb02e'; c.lineWidth = 2; c.stroke();
+  c.fillStyle = INK; c.textAlign = 'center'; c.textBaseline = 'alphabetic'; c.fillText(st, 0, -113);
 }
 // Bau-Animation bei Fertigstellung (Gerüst, Krabben, Staub, Gebäude wächst nach oben), Schlüssel = Bauplatz-Nr.
 const GEB_BAU = {};
@@ -1073,7 +1078,7 @@ function eventPanel(t, y) {
     const pz = e.preis ? 24 : 0, hoch = (e.rennen ? 250 : e.rad ? 300 : e.regenbogen ? 150 : e.balken ? 92 + e.balken.length * 36 : 104) + pz;
     karte(SL, y, SB, hoch, '#fff', 30);
     X.fillStyle = PINK; rr(SL, y, SB, 46, [30, 30, 0, 0]); X.fill(); X.strokeStyle = INK; X.lineWidth = 7; rr(SL, y, SB, hoch, 30); X.stroke();
-    text(`${e.icon} ${e.titel}`, SL + 26, y + 24, 25, '#fff', 'left', 900, SB - 170);
+    text(`${e.icon} ${e.titel}`, SL + 26, y + 24, 25, '#fff', 'left', 900, SB - (e.faktor > 1 ? 210 : 160));
     text(`⏱ ${zeit(e.rest)}`, SR - 26, y + 24, 23, '#fff', 'right', 900);
     if (e.faktor > 1) text(`×${e.faktor}`, SR - 120, y + 24, 23, GELB, 'right', 900);
     text(e.text, 540, y + 70, 19, INK, 'center', 800, SB - 50);
@@ -1130,7 +1135,7 @@ function gluecksRad(t, y, e) {
   for (let i = 0; i < n; i++) {
     X.fillStyle = ['#ffd23f', '#7fe0c8', '#ff8fb8', '#b58ad0', '#3fa0e8', '#ff8a2a'][i % 6];
     X.beginPath(); X.moveTo(cx, cy); X.arc(cx, cy, R, w + i / n * 6.283, w + (i + 1) / n * 6.283); X.closePath(); X.fill();
-    X.save(); X.translate(cx, cy); X.rotate(w + (i + .5) / n * 6.283); text(namen[i].slice(0, 13), R - 8, 0, 11, INK, 'right', 900); X.restore();
+    X.save(); X.translate(cx, cy); X.rotate(w + (i + .5) / n * 6.283); text(namen[i], R - 10, 0, 11, INK, 'right', 900, R - 26); X.restore();
   }
   X.strokeStyle = INK; X.lineWidth = 5; X.beginPath(); X.arc(cx, cy, R, 0, 7); X.stroke();
   X.fillStyle = GELB; X.beginPath(); X.arc(cx, cy, 14, 0, 7); X.fill(); X.stroke();
@@ -1138,7 +1143,7 @@ function gluecksRad(t, y, e) {
 }
 function countdownKarte(x, y, w, h, t) {
   karte(x, y, w, h, '#2a1b12', 28);
-  text('⏳ Nächstes Event', x + w / 2, y + 24, 17, GELB, 'center', 900, w - 20);
+  text('⏳ Nächstes Event', x + w / 2, y + 24, 17, GELB, 'center', 900, w - 40);
   const s = S.eventIn || 0, puls = s <= 10 ? 1 + Math.sin(t * .012) * .08 : 1;
   X.save(); X.translate(x + w / 2, y + 62); X.scale(puls, puls); text(zeit(s), 0, 0, 40, '#fff', 'center', 900); X.restore();
   text('❓❓❓', x + w / 2, y + 96, 16, '#fff', 'center', 900);
@@ -1324,8 +1329,9 @@ function kopf(t) {
   if (z) {
     karte(SL, y2, SB, 92, '#fff', 30);
     const f = Math.min(1, bw / z.ziel);
-    text(`${z.icon || '🏗️'} ${z.name}`, SL + 24, y2 + 26, 26, INK, 'left', 900, 500);
-    text(`${bw.toLocaleString('de-DE')} / ${z.ziel.toLocaleString('de-DE')}`, SR - 24, y2 + 26, 25, INK, 'right', 900, 280);
+    const zahlText = `${bw.toLocaleString('de-DE')} / ${z.ziel.toLocaleString('de-DE')}`; X.font = `900 25px ${FONT}`; const zw = Math.min(260, X.measureText(zahlText).width);
+    text(`${z.icon || '🏗️'} ${z.name}`, SL + 24, y2 + 26, 26, INK, 'left', 900, SB - 48 - zw - 24);
+    text(zahlText, SR - 24, y2 + 26, 25, INK, 'right', 900, 260);
     X.fillStyle = 'rgba(42,27,18,.1)'; rr(SL + 24, y2 + 48, SB - 48, 26, 13); X.fill();
     const g = X.createLinearGradient(SL, 0, SR, 0); g.addColorStop(0, TUERKIS); g.addColorStop(1, '#7fe0c8');
     X.fillStyle = g; rr(SL + 24, y2 + 48, Math.max(26, (SB - 48) * f), 26, 13); X.fill();
@@ -1353,7 +1359,7 @@ function kopf(t) {
   } else if (seite === 1) {
     text('🏆 Beste Häuser', SL + 22, y3 + 24, 20, INK, 'left', 900, lw - 44);
     [...S.spieler].sort((a, b) => b.stufe - a.stufe || (b.eventMuscheln || 0) - (a.eventMuscheln || 0) || b.muscheln - a.muscheln).slice(0, 3).forEach((p, k) => {
-      const y = y3 + 52 + k * 22; text(`${k + 1}. ${p.name}`, SL + 22, y, 17, INK, 'left', 800, lw - 200); text(S.stufen[p.stufe] || '', SL + lw - 22, y, 15, '#8a5a2b', 'right', 900, 160);
+      const y = y3 + 52 + k * 22; text(`${k + 1}. ${p.name}`, SL + 22, y, 17, INK, 'left', 800, lw - 44 - 170 - 16); text(S.stufen[p.stufe] || '', SL + lw - 22, y, 15, '#8a5a2b', 'right', 900, 170);
     });
   } else {
     [['❤️', 'Liken = dein Haus wächst'], ['🏠', 'Schreib „haus“ = du siehst dein Haus'], ['🎨', 'Schreib eine Farbe, z. B. „rot“ = neue Farbe']].forEach(([i, s], k) => {
