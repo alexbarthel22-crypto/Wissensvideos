@@ -506,6 +506,12 @@ http.createServer((req, res) => {
     if (e) { res.writeHead(404); return res.end('nicht gefunden'); }
     res.writeHead(200, { 'Content-Type': TYPEN[path.extname(datei)] || 'application/octet-stream' }); res.end(d);
   });
+}).on('error', e => {
+  if (e.code === 'EADDRINUSE') {                            // Programm läuft schon in einem anderen Fenster
+    console.log(`\n⚠️  Muschel-Tal LIVE läuft schon (in einem anderen Terminalfenster). Dieses Fenster kannst du schließen.\n`);
+    process.exit(2);
+  }
+  throw e;
 }).listen(CFG.port, () => {
   console.log(`\n🐚 Muschel-Tal LIVE läuft:  http://localhost:${CFG.port}`);
   console.log('   Diese Adresse in TikTok LIVE Studio als Link-/Browser-Quelle (1080×1920) einfügen.\n');
@@ -583,4 +589,5 @@ function simulator() {
 }
 
 if (TEST && !process.argv.includes('--leer')) simulator(); else if (!TEST) versuche();
-process.on('SIGINT', () => { geaendert = true; speichern(); process.exit(0); });
+// Spielstand sichern beim Beenden – egal wie: ctrl+C, Terminalfenster schließen, Mac fährt herunter
+for (const sig of ['SIGINT', 'SIGHUP', 'SIGTERM']) process.on(sig, () => { geaendert = true; speichern(); process.exit(0); });

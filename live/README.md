@@ -10,7 +10,9 @@ Eine Mac-Stimme (unbegrenzt, offline) moderiert.
    Falls der Mac warnt: Rechtsklick → „Öffnen“ → „Öffnen“.
    Es öffnet sich die Insel mit Test-Zuschauern, Anna spricht.
 
+**Spielstand:** wird automatisch in `stand.json` gespeichert (alle 10 Sekunden, beim Stream-Ende und beim Schließen des Fensters). Beim nächsten Start geht alles genau dort weiter. Einfach immer denselben Ordner benutzen.
 **Update auf eine neue Version:** neuen Ordner holen und deine `stand.json` (Spielstand) und `sperrliste.txt` hineinkopieren.
+**Ganz von vorne:** `stand.json` löschen.
 
 ## Stream starten
 1. In TikTok LIVE Studio den LIVE starten (Hochformat).

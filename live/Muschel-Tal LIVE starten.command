@@ -9,6 +9,7 @@ fi
 [ -d node_modules ] || npm install --silent
 while true; do
   caffeinate -dimsu node server.mjs      # Mac bleibt wach, solange das Programm läuft
+  [ $? -eq 2 ] && { read -r -p "Enter drücken zum Schließen"; exit 0; }   # läuft schon in einem anderen Fenster
   echo "Programm beendet – Neustart in 3 Sekunden (zum Beenden: Fenster schließen)."
   sleep 3
 done
