@@ -18,7 +18,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-14 i';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-14 j';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -325,6 +325,7 @@ setInterval(() => {
 function fertig() { spricht = false; stilleSeit = Date.now(); setTimeout(weiter, 50); }
 function weiter() {
   if (spricht || !warte.length) return;
+  if (ECHT && !PIPER.bereit && piperErwartet()) { clearTimeout(weiter.t); weiter.t = setTimeout(weiter, 400); return; }   // Stimme startet gerade – kurz warten, nie die Mac-Stimme
   const { text } = warte.shift(); spricht = true; sprichtSeit = Date.now(); gesprochen.push(Date.now()); letzteAnsageZeit = Date.now();
   sende({ typ: 'ansage', text, ms: dauerMs(text) });
   if (!ECHT) { setTimeout(fertig, dauerMs(text)); return; }
@@ -388,7 +389,10 @@ function weiter() {
 
 // ---------- Piper: Annas Stimme offline im eigenen Prozess (werkzeug/stimme-…/…onnx) ----------
 // Wird beim Start geladen. Hängt der Prozess, startet er neu. Fehlt das Modell, spricht wie bisher der Mac (say).
-const PIPER = { bereit: false, name: '', w: null, auftraege: new Map(), nr: 0 };
+var PIPER = { bereit: false, name: '', w: null, auftraege: new Map(), nr: 0 };
+// Mac-Stimme (say) nur, wenn es gar kein Piper-Modell gibt oder in den Einstellungen engine 'mac' steht
+var piperDa = null, piperDaZeit = 0;
+var piperErwartet = () => { if (CFG.stimme.engine === 'mac') return false; if (Date.now() - piperDaZeit > 10000) { piperDaZeit = Date.now(); try { piperDa = fs.readdirSync(path.join(DIR, 'werkzeug', CFG.stimme.piperModell || 'stimme-kerstin')).some(f => f.endsWith('.onnx')); } catch { piperDa = false; } } return piperDa; };
 function piperStarten() {
   const ordner = path.join(DIR, 'werkzeug', CFG.stimme.piperModell || 'stimme-kerstin');
   let modell = null; try { modell = fs.readdirSync(ordner).find(f => f.endsWith('.onnx')); } catch {}
@@ -417,7 +421,7 @@ let langsam = 0;
 // Beim Start alle festen Sätze leise im Hintergrund vorab erzeugen (niedrige Priorität), damit sie im LIVE sofort kommen
 function vorwaermen() {
   if (!ECHT) return;
-  if (PIPER.bereit || PIPER.w) return;                     // Piper braucht kein Vorab-Erzeugen
+  if (PIPER.bereit || PIPER.w || piperErwartet()) return;  // Piper braucht kein Vorab-Erzeugen (und keine Mac-Stimme)
   const offen = [...festeSaetze(), ...Object.values(require_preis())].filter(Boolean);
   let i = 0, fertigN = 0;
   const naechster = () => {
