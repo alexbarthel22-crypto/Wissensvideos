@@ -431,7 +431,7 @@ function beitritt(u) {                                     // jemand kommt neu i
 }
 
 // ---------- Seite + Live-Daten (Server-Sent Events) ----------
-const kunden = new Map(); let letzteSeitenAnsage = '', seitenNr = 0;
+const kunden = new Map(); let letzteSeitenAnsage = 0, seitenNr = 0;
 function sende(ev) { const s = `data: ${JSON.stringify(ev)}\n\n`; for (const k of kunden.values()) k.write(s); }
 let zLetzt = 0, zOffen = false;
 function zustand() {
@@ -453,12 +453,13 @@ function oeffentlich() {
 const TYPEN = { '.mp3': 'audio/mpeg', '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.png': 'image/png', '.woff2': 'font/woff2', '.svg': 'image/svg+xml' };
 http.createServer((req, res) => {
   const url = new URL(req.url, 'http://x');
-  if (url.pathname === '/sag') {
-    const t = String(url.searchParams.get('t') || '').slice(0, 200);
-    if (t && t !== letzteSeitenAnsage) { letzteSeitenAnsage = t; sag(t, 0); setTimeout(() => letzteSeitenAnsage = '', 15000); }
+  if (url.pathname === '/wachsen') {                         // Seite meldet: Insel ist gewachsen (nur Zahl, kein freier Text)
+    const n = Math.min(5000, Math.max(0, parseInt(url.searchParams.get('n'), 10) || 0));
+    if (n && Date.now() - letzteSeitenAnsage > 15000) { letzteSeitenAnsage = Date.now(); sag(`Die Insel wächst! … ${n} neue Grundstücke sind dazugekommen.`, 0); }
     res.writeHead(204); return res.end();
   }
-  if (TEST && url.pathname === '/test') {                 // nur Test-Modus: Event / Geschenk-Show auslösen
+  // Test-Zugänge nur direkt am Mac – nie über den öffentlichen Link (Cloudflare setzt cf-ray / cf-connecting-ip)
+  if (TEST && url.pathname === '/test' && !req.headers['cf-ray'] && !req.headers['cf-connecting-ip']) {                 // nur Test-Modus: Event / Geschenk-Show auslösen
     const id = url.searchParams.get('event'), art = url.searchParams.get('geschenk');
     if (url.searchParams.has('stadt')) { const n = +url.searchParams.get('stadt'), ids = CFG.abstimmung.projekte.map(x => x.id); S.fertig = Array.from({ length: n }, (_, i) => ids[i % ids.length]); const pr = CFG.abstimmung.projekte[n % ids.length]; S.projekt = pr ? { id: pr.id, name: pr.name, ziel: pr.ziel, stand: Math.round(pr.ziel * .45) } : null; zustand(); }
     if (url.searchParams.has('fertigbauen') && S.projekt) { S.projekt.stand = S.projekt.ziel - 1; inKasse(1); }
@@ -487,7 +488,7 @@ http.createServer((req, res) => {
     res.writeHead(204); return res.end();
   }
   if (url.pathname === '/events') {
-    res.writeHead(200, { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-cache', Connection: 'keep-alive' });
+    res.writeHead(200, { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-cache, no-transform', Connection: 'keep-alive', 'X-Accel-Buffering': 'no' });
     res.write(`data: ${JSON.stringify({ typ: 'zustand', s: oeffentlich() })}\n\n`);
     const id = ++seitenNr; kunden.set(id, res);
     res.write(`data: ${JSON.stringify({ typ: 'hallo', id })}\n\n`);

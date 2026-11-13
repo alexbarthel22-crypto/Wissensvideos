@@ -287,7 +287,7 @@ function wachsen(kz) {
   WACHS = { t: performance.now(), von: kAlt, bis: kz };
   const neu = ANZAHL - vorher;
   banner.push({ t: 0, oben: '🏝️ Die Insel wächst!', unten: `+${neu} neue Grundstücke · jetzt ${ANZAHL}`, farbe: '#ff8a2a' });
-  fetch('/sag?t=' + encodeURIComponent(`Die Insel wächst! ${neu} neue Grundstücke sind dazugekommen.`)).catch(() => {});
+  fetch('/wachsen?n=' + neu).catch(() => {});
 }
 function funken(pl, z, n) { n = Math.min(n, 200 - fx.length); for (let i = 0; i < n; i++) fx.push({ x: pl.x, y: pl.y - 30, vx: (Math.random() - .5) * 5, vy: -2 - Math.random() * 5, t: performance.now(), z, s: 18 + Math.random() * 14 }); }
 function feuerwerk() {

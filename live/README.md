@@ -15,11 +15,14 @@ Eine Mac-Stimme (unbegrenzt, offline) moderiert.
 **Ganz von vorne:** `stand.json` löschen.
 
 ## Stream starten
-1. In TikTok LIVE Studio den LIVE starten (Hochformat).
-2. **„Muschel-Tal LIVE starten.command“** doppelklicken. Das Programm wartet, bis der LIVE von @muscheltal läuft, und verbindet sich dann selbst.
-3. In LIVE Studio als Quelle hinzufügen: **Link/Browser** → `http://localhost:8790` (1080 × 1920).
-   Gibt es keine Link-Quelle: Browserfenster mit der Seite als **Fensteraufnahme** hinzufügen.
-4. Ende: LIVE beenden, dann im Terminalfenster `ctrl + C`. Der Spielstand liegt in `stand.json` und geht beim nächsten Stream weiter.
+1. **„Muschel-Tal LIVE starten.command“** doppelklicken. Beim ersten Mal lädt es einmalig das Tunnel-Programm „cloudflared“ (Cloudflare) und die TikTok-Anbindung.
+2. Im Terminal erscheint ein **🔗 Link** (`https://….trycloudflare.com`) – er ist schon in der Zwischenablage.
+3. **LIVE Studio** → Quelle **„Link“** → einfügen (⌘V) → 1080 × 1920. Der Link ist bei jedem Start neu: die vorhandene Link-Quelle bearbeiten und den neuen Link einfügen.
+4. **LIVE starten.** Im Terminal muss nach ca. 20 s **„✅ Mit dem LIVE von @muscheltal verbunden“** stehen.
+5. Ende: LIVE stoppen, dann das Terminalfenster schließen (Spielstand wird gespeichert, Link wird geschlossen).
+
+**Zum Link:** LIVE Studio nimmt nur echte https-Adressen an. Der Tunnel macht die Insel-Seite nur während das Programm läuft unter dem zufälligen Link erreichbar. Wer den Link kennt, sieht nur die Insel – steuern kann man darüber nichts (Test-Zugänge sind gesperrt, Anna spricht nur ihre eigenen Sätze).
+**Klappt der Link nicht:** Notlösung Fensteraufnahme – `http://localhost:8790` im Browser öffnen, Fenster möglichst hoch, in LIVE Studio „Fensteraufnahme“ + Systemton.
 
 ## Regeln (änderbar in `einstellungen.json`)
 | Aktion | Wirkung |
