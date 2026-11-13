@@ -61,9 +61,10 @@ const SAETZE = {
     'Geteilt von {name}! Danke!',
   ],
   neu: [
-    'Willkommen, {name}! Dein Zelt steht.',
-    '{name} ist da! Das Zelt steht schon.',
-    'Ein Zelt für {name}!',
+    '{name} baut das erste Zelt!',
+    'Neues Zelt auf der Insel! Willkommen, {name}!',
+    '{name} ist eingezogen! Das Zelt steht.',
+    'Ein Zelt für {name}! Willkommen!',
   ],
   stufe: [
     '{name} hat jetzt {stufe}!',

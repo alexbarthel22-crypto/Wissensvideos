@@ -264,7 +264,13 @@ function ereignis(e) {
       else if ((n > ANZAHL || gebPlaetzeBei(K) < (S.fertig || []).length + 1) && K < K_MAX && !WACHS) wachsen(kFuer(n + 60, (S.fertig || []).length + 4));     // erst wachsen, wenn alles voll ist – dann gleich ein großes Stück
       break;
     }
-    case 'neu': bau[e.id] = { t: jetzt + 250, alt: -1, neu: 0, D: 1.9 }; break;
+    case 'neu': {                                                  // erstes Like: Zelt wird gebaut – Banner, Funken, Kamera
+      bau[e.id] = { t: jetzt + 250, alt: -1, neu: 0, D: 1.9 };
+      banner.push({ t: 0, oben: `🏕️ ${e.name || 'Neuer Bewohner'}`, unten: 'baut das erste Zelt auf der Insel!', farbe: '#2fb3a0' });
+      const zeig = () => { const q = sp(e.id), qp = q && platzVon(q); if (qp) { funken(qp, '🎉', 14); fokus(qp, 4500, true); } return !!qp; };
+      if (!zeig()) setTimeout(zeig, 1300);                          // Bewohnerliste kommt höchstens 1×/s
+      break;
+    }
     case 'stufe': if (p) { bau[e.id] = { t: jetzt, alt: p.stufe, neu: e.stufe, D: 4.8 }; if (pl) { fokus(pl, 8500); funken(pl, '✨', 8); setTimeout(() => { hausFeuerwerk(pl, e.stufe); funken(pl, '✨', 14); }, 4300); } } break;
     case 'anbau': case 'farbe': if (pl) { pop[e.id] = jetzt; funken(pl, '🔨', 5); fokus(pl, 2600, true); } break;
     case 'geschenk': if (pl) funken(pl, '💖', 10 + Math.min(30, e.diamanten)); break;

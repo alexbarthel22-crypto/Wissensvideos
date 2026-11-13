@@ -17,7 +17,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-13 d';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-13 e';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -56,8 +56,8 @@ function spieler(u) {
   if (!p) {
     p = S.spieler[id] = { id, name: anzeigeName(u, S.reihenfolge.length), muscheln: 0, stufe: 0, anbauten: [], farbe: null, platz: S.reihenfolge.length, zuletzt: Date.now() };
     S.reihenfolge.push(id);
-    sende({ typ: 'neu', id });
-    sag(satz('neu', { name: sprechName(p) }), 2);
+    sende({ typ: 'neu', id, name: p.name });
+    sag(satz('neu', { name: sprechName(p) }), 1);   // erstes Zelt wird immer angesagt
     // Erstes Like/Kommentar: Zelt steht sofort, Kamera zeigt es kurz (startMuscheln optional, Standard 0)
     const start = CFG.startMuscheln ?? 0;
     if (start > 0) setImmediate(() => gibMuscheln(p, start, 'start'));
