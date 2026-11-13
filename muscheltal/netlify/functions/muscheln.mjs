@@ -144,7 +144,28 @@ export default async (req) => {
     if (s.abgeholt) return json({ ok: false, schon: true });
     const sum = s.betrag + (J ? J.z : 0);
     const ok = await setze("login", heute + "_" + s.tag, sum);
-    return json({ ok, tag: s.tag, betrag: s.betrag, job: J, summe: sum });
+    // Geheime Erfolge beim Login: 7/30/100 Tage am Stück, Heiligabend, Silvester (je +10 Muscheln, nur einmal)
+    const neu = [];
+    if (ok) {
+      const tage = new Set((await buch(store, nm)).filter(e => e.art === "login").map(e => e.id.slice(0, 10)));
+      let lauf = 0, d0 = heute;
+      while (tage.has(d0) && lauf < 400) { lauf++; d0 = gestern(d0); }
+      const md = heute.slice(5), K = [];
+      if (lauf >= 7) K.push("TAG7");
+      if (lauf >= 30) K.push("TAG30");
+      if (lauf >= 100) K.push("TAG100");
+      if (md === "12-24") K.push("HEILIG");
+      if (md === "12-31") K.push("SILVESTER");
+      const es = getStore("erfolge");
+      for (const k of K) {
+        const pre = "e/" + nm + "/" + k + "/";
+        if ((await es.list({ prefix: pre })).blobs.length) continue;
+        await es.set(pre + Date.now(), "1");
+        await setze("erf", k, 10);
+        neu.push(k);
+      }
+    }
+    return json({ ok, tag: s.tag, betrag: s.betrag, job: J, summe: sum, neu });
   }
   if (act === "quests") {
     // Aufgaben des Tages: Wer gestern keine erledigt hat, behält die alten; sonst gelten die neu vorgeschlagenen
