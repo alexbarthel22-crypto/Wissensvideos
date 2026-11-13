@@ -3075,6 +3075,7 @@ $('faq').innerHTML=[
  ['Ich habe gerade gefolgt. Wo ist meine Hütte?','Neue Einwohner kommen beim nächsten Update dazu. Deine Nummer richtet sich danach, wann du gefolgt bist.'],
  ['Was sind die Inseln mit ???','Auf der Haupt-Insel ist Platz für '+fmt(MAIN.plaetze)+' Einwohner. Danach öffnen neue Inseln – bei '+ISL.slice(1).map(v=>fmt(v.ab+1)).join(', ').replace(/, ([^,]*)$/,' und $1')+' Followern. Je später, desto schöner. Und irgendwo am Rand der Karte versteckt sich noch eine geheime Insel …'],
  ['Ist das hier alles umsonst?','Ja, komplett. Folgen reicht.'],
+ ['Ich habe im LIVE-Stream eine Hütte bekommen. Wo ist die hier?','Die LIVE-Insel kann nur im LIVE-Stream weiter erkundet werden. Sie läuft separat und kann hier nicht besucht werden.'],
  ['Ich habe einen Fehler auf der Seite entdeckt. Was mache ich?','Schreib '+ACC+' auf TikTok eine Nachricht oder einen Kommentar und beschreib kurz, was nicht stimmt – am besten mit Screenshot. Danke fürs Helfen!'],
  ['Ich will nicht auf der Karte stehen.','Kein Problem. Schreib '+ACC+' auf TikTok eine Nachricht, dann nehmen wir deinen Namen raus.']
 ].map(f=>'<details><summary>'+esc(f[0])+'</summary><p>🏝️ '+esc(f[1])+'</p></details>').join('');
