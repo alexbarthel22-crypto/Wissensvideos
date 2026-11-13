@@ -245,7 +245,7 @@
     },
     {
      "name": "jubel",
-     "at": "L2w:Freund",
+     "at": "L2w:Strandvilla",
      "volume": 0.35
     }
    ],
@@ -259,7 +259,7 @@
     },
     {
      "id": "L2w",
-     "text": "*g:Glückwunsch, *y:@sklmq3|S-K-L-M-Q-drei! / Du ziehst zu *p:Emilia und *p:Lea – / mit einem *p:Freund deiner Wahl!",
+     "text": "*g:Glückwunsch, *y:@sklmq3|S-K-L-M-Q-drei! / Du ziehst zu *p:Emilia und *p:Lea / in die *b:Strandvilla!",
      "speed": 1.1,
      "style": "Style: a young German guy, around 20, genuinely excited, talking to his followers like friends, energetic and warm, natural German intonation, not an announcer, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
      "pause": 3.2
@@ -330,11 +330,6 @@
  "style": "Style: a real, natural-sounding young man telling his friends something he is genuinely excited about. Conversational, warm, honest emotion in the voice, not like an announcer or an advertisement. Emphasize the important words naturally.\nPace: brisk but natural.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
  "loudness": -5,
  "pitch": 0,
- "music": {
-  "src": "assets/music/suedsee.wav",
-  "volume": 1.0,
-  "note": "tools/make_music_tropical.py, im Code erzeugt (lizenzfrei), unter der Stimme automatisch leiser"
- },
  "bgvideo": {
   "src": "assets/bg.mp4"
  },
