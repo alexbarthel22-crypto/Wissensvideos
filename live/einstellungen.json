@@ -3,12 +3,8 @@
   "port": 8790,
   "stimme": {
     "an": true,
-    "mac": "Anna (Premium)",
-    "macErsatz": [
-      "Anna (Erweitert)",
-      "Anna (Enhanced)",
-      "Anna"
-    ],
+    "mac": "Anna",
+    "macErsatz": [],
     "tempo": 185,
     "maxProMinute": 10,
     "maxWarteschlange": 6,
@@ -17,7 +13,8 @@
     "pauseSek": 4,
     "_pause": "pauseSek: Pause zwischen zwei Moderations-Sätzen (4 s → etwa alle 5–10 s ein Satz). Danke für Geschenke, Follows usw. kommt sofort.",
     "maxErzeugenSek": 4,
-    "_tempo": "maxErzeugenSek: Braucht die Stimme länger, um einen Satz zu erzeugen (2× hintereinander), wechselt das Programm automatisch auf die nächste schnellere Stimme aus macErsatz. Fertige Sätze werden in werkzeug/stimme gespeichert und sofort wiederverwendet."
+    "_tempo": "maxErzeugenSek: Braucht die Stimme länger, um einen Satz zu erzeugen (2× hintereinander), wechselt das Programm automatisch auf die nächste schnellere Stimme aus macErsatz. Fertige Sätze werden in werkzeug/stimme gespeichert und sofort wiederverwendet.",
+    "_stimme": "Stimme „Anna“ (normal) – schnell genug auch während des LIVEs. „Anna (Premium)“ klingt besser, braucht auf diesem Mac aber ca. 10 s pro Satz."
   },
   "stufen": [
     {

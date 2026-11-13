@@ -18,7 +18,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-13 f';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-13 g';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -114,11 +114,35 @@ function like(u, anzahl) {
   gibMuscheln(p, anzahl * CFG.muschelnProLike * faktor, 'like');
 }
 
+// Wer noch kein Haus hat und „haus“ oder eine Farbe schreibt, bekommt den Hinweis: erst liken (höchstens 1× pro Minute)
+const likeHinweis = {};
+function erstLiken(u, art) {
+  const id = String(u.uniqueId || '').toLowerCase();
+  if (Date.now() - (likeHinweis[id] || 0) < 60000 || anstoessig(u.uniqueId) || anstoessig(u.nickname)) return;
+  likeHinweis[id] = Date.now();
+  const name = sprechName({ name: '@' + u.uniqueId });
+  sende({ typ: 'erstLiken', name: '@' + u.uniqueId, art });
+  sag(art === 'farbe' ? `${name}, like einmal! Dann bekommst du ein Haus zum Streichen.` : `${name}, du hast noch kein Haus. Like einmal, dann wird es gebaut!`, 1);
+}
+function farbeAus(p, t) {                                 // „blau“ → Haus wird animiert blau gestrichen
+  const wort = t.split(/[^a-zäöüß]+/).find(w => CFG.farben[w]); if (!wort) return;
+  const f = CFG.farben[wort]; if (p.farbe === f) return;
+  const anzeige = { gruen: 'grün', tuerkis: 'türkis', weiss: 'weiß' }[wort] || wort;
+  sende({ typ: 'farbe', id: p.id, name: p.name, alt: p.farbe, neu: f, wort: anzeige });
+  p.farbe = f; geaendert = true;
+  sag(`${sprechName(p)} streicht das Haus ${anzeige}!`, 2);
+}
 function kommentar(u, text) {
-  const neu = !S.spieler[String(u.uniqueId || '').toLowerCase()];
+  const id0 = String(u.uniqueId || '').toLowerCase(), t = String(text || '').toLowerCase().trim();
+  if (!id0 || gesperrt(id0)) return;
+  // Kein Haus: nur bei Event-Antworten wird eins gebaut (Mitmachen zählt). „haus“ und Farben → Hinweis „erst liken“
+  if (!S.spieler[id0] && !EV.laeuft()) {
+    if (istHausWunsch(t)) return erstLiken(u, 'haus');
+    if (t.split(/[^a-zäöüß]+/).some(w => CFG.farben[w])) return erstLiken(u, 'farbe');
+    return;
+  }
   const p = spieler(u); if (!p) return;
-  if (neu) gibMuscheln(p, CFG.muschelnFuerErstenKommentar, 'kommentar');
-  const t = String(text || '').toLowerCase().trim();
+  farbeAus(p, t);                                          // Farbe gilt immer – auch wenn das Wort gleichzeitig eine Event-Antwort ist
   if (EV.kommentar(p, t)) { geaendert = true; zustand(); return; }   // Event-Antworten (rot, flasche, A, 42 …)
   if (istHausWunsch(t) && !hausWunsch.includes(p.id) && Date.now() - (hausGezeigt[p.id] || 0) > 120000) {
     hausWunsch.push(p.id); if (hausWunsch.length > 20) hausWunsch.shift();
@@ -133,8 +157,6 @@ function kommentar(u, text) {
       sende({ typ: 'anbau', id: p.id, was: wort });
       sag(satz('anbau', { name: sprechName(p), anbau: { Boot: 'ein Boot', Palme: 'eine Palme', Laterne: 'eine Laterne', Flagge: 'eine Flagge' }[ab.name] || 'einen ' + ab.name }), 3);
     }
-    const f = CFG.farben[wort];
-    if (f && p.farbe !== f) { p.farbe = f; geaendert = true; sende({ typ: 'farbe', id: p.id }); }
   }
   zustand();
 }
@@ -484,7 +506,7 @@ function moderiere() {
   if (likeDank.length) { const p = likeDank.shift(); return sag(satz('likeDank', { name: sprechName(p) }), 1); }
   // 1b. Wer „haus“ geschrieben hat: Kamera fliegt zum Haus (ab und zu, nicht während Events)
   const kameraEvent = ['schatzsuche', 'meeresbesuch', 'flaschenpost', 'moewenalarm', 'hausbesuch'].includes(EV.id());
-  if (!kameraEvent && hausWunsch.length && Date.now() - letztesHausZeigen > (EV.laeuft() ? 20000 : 12000)) {
+  if (!kameraEvent && hausWunsch.length && Date.now() - letztesHausZeigen > (EV.laeuft() ? 15000 : 8000)) {
     const p = S.spieler[hausWunsch.shift()];
     if (p && !p.gesperrt) {
       letztesHausZeigen = letzterRundgang = Date.now(); hausGezeigt[p.id] = Date.now();
