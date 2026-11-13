@@ -281,10 +281,12 @@ function sag(text, prio = 2) {
   for (let i = warte.length - 1; i >= 0; i--) if (warte[i].prio >= 2 && jetzt - warte[i].t > 20000) warte.splice(i, 1);
   weiter();
 }
+let sprichtSeit = 0;
+setInterval(() => { if (spricht && Date.now() - sprichtSeit > 20000) { console.log('⚠️  Ansage hing über 20 s – Anna macht weiter.'); try { sayProzess?.kill(); } catch {} fertig(); } }, 2000);
 function fertig() { spricht = false; stilleSeit = Date.now(); setTimeout(weiter, 50); }
 function weiter() {
   if (spricht || !warte.length) return;
-  const { text } = warte.shift(); spricht = true; gesprochen.push(Date.now()); letzteAnsageZeit = Date.now();
+  const { text } = warte.shift(); spricht = true; sprichtSeit = Date.now(); gesprochen.push(Date.now()); letzteAnsageZeit = Date.now();
   sende({ typ: 'ansage', text, ms: dauerMs(text) });
   if (!ECHT) { setTimeout(fertig, dauerMs(text)); return; }
   const aufSeite = CFG.stimme.wiedergabe !== 'mac' && seiteHatTon() && Date.now() > stimmeFehlerBis;
@@ -292,12 +294,19 @@ function weiter() {
   const args = ['-v', stimme, '-r', String(CFG.stimme.tempo)];
   if (aufSeite) args.push('-o', datei, '--file-format=WAVE', '--data-format=LEI16@22050');
   else if (CFG.stimme.macGeraet) args.push('-a', CFG.stimme.macGeraet);   // z. B. „BlackHole 2ch“ → direkt in LIVE Studio
-  const pr = spawn('say', [...args, fuerStimme(text)]);
+  const pr = sayProzess = spawn('say', [...args, fuerStimme(text)]);
+  pr.on('error', e => { console.log('⚠️  say-Fehler:', e.message); fertig(); });
   let fehler = '';
   pr.stderr.on('data', d => fehler += d);
   pr.on('close', code => {
     if (aufSeite && code === 0) {                      // Seite spielt ab; warten, bis die Ansage vorbei ist
-      let ms = 2000; try { ms = (fs.statSync(datei).size - 44) / 44.1 + 300; } catch {}
+      let ms = 2000;
+      try {                                            // Dauer aus dem WAV-Kopf (Bytes pro Sekunde), nicht geschätzt
+        const b = fs.readFileSync(datei), rate = b.readUInt32LE(28) || 44100;
+        let o = 12, daten = b.length - 44;
+        while (o + 8 <= b.length) { const id = b.toString('ascii', o, o + 4), gr = b.readUInt32LE(o + 4); if (id === 'data') { daten = Math.min(gr, b.length - o - 8); break; } o += 8 + gr + (gr & 1); }
+        ms = Math.min(15000, daten / rate * 1000 + 300);
+      } catch {}
       sende({ typ: 'stimme', id: tonSeite, url: '/ton/' + path.basename(datei) + '?' + Date.now() });
       if (++unbestaetigt >= 3) { unbestaetigt = 0; stimmeFehlerBis = Date.now() + 60000; console.log('🔈 Live-Seite bestätigt Annas Stimme nicht – spreche 1 Minute über die Mac-Lautsprecher.'); }
       setTimeout(fertig, ms);
@@ -313,13 +322,14 @@ function weiter() {
 
 // ---------- Ton-Absicherung ----------
 // Läuft auf keiner Live-Seite Ton (Browser blockiert ihn), spielen Stimme und Musik direkt über die Mac-Lautsprecher.
-var lokalMusik = null, lokalNr = 0, tonSeite = null, stimmeFehlerBis = 0, unbestaetigt = 0;
+var sayProzess = null, lokalMusik = null, lokalNr = 0, tonSeite = null, stimmeFehlerBis = 0, unbestaetigt = 0;
 const tonStatus = new Map();                               // Seiten-Nr. -> { an, zeit, vorschau, seit }
 const seiteHatTon = () => { const st = tonStatus.get(tonSeite); return !!st && st.an && Date.now() - st.zeit < 10000; };
 // Genau EINE Seite spielt Ton: bevorzugt eine, auf der Ton schon läuft, sonst die zuerst geöffnete (keine Vorschau)
 // Spielt die gewählte Seite nach 8 s noch keinen Ton, kommt die nächste dran (LIVE Studio lädt die Seite manchmal doppelt).
 let rolleSeit = 0; const tonFehl = new Map();             // Seiten-Nr. -> wann zuletzt ohne Ton
 function waehleTonSeite() {
+  if (CFG.stimme.wiedergabe === 'mac') { if (tonSeite !== null) { tonSeite = null; sende({ typ: 'tonRolle', id: null }); } return; }
   const offen = [...kunden.keys()].filter(id => !tonStatus.get(id)?.vorschau);
   const mitTon = offen.filter(id => tonStatus.get(id)?.an);
   let neu = tonSeite;
@@ -334,12 +344,13 @@ function waehleTonSeite() {
 }
 const MUSIK_DATEIEN = [1, 2, 3, 4, 5].map(i => `insel_${i}.mp3`).map(f => path.join(DIR, 'seite', 'musik', f));
 function musikLokal() {
-  const brauche = process.platform === 'darwin' && CFG.ton.musikAufMac !== false && !seiteHatTon() && Date.now() - START > 15000;
+  const macModus = CFG.stimme.wiedergabe === 'mac';
+  const brauche = process.platform === 'darwin' && CFG.ton.musikAufMac !== false && (macModus || (!seiteHatTon() && Date.now() - START > 15000));
   if (brauche && !lokalMusik) {
     const f = MUSIK_DATEIEN[lokalNr++ % MUSIK_DATEIEN.length];
     lokalMusik = spawn('afplay', ['-v', String(CFG.ton.musikAufMacLautstaerke ?? .18), f]);
     lokalMusik.on('close', () => { lokalMusik = null; });
-    console.log('🎵 Kein Ton auf der Live-Seite – Musik und Stimme laufen über die Mac-Lautsprecher.');
+    if (!macModus) console.log('🎵 Kein Ton auf der Live-Seite – Musik und Stimme laufen über die Mac-Lautsprecher.');
   }
   if (!brauche && lokalMusik) { lokalMusik.kill(); lokalMusik = null; }
 }
@@ -399,7 +410,8 @@ function rundgang() {                                      // Kamera fliegt zu e
   return satz('rundgang', { name: sprechName(p), stufeCap: grossKlein(artikel(st)), stufeDativ: dativ(st), anbauText: an.length ? ' mit ' + namenListe(an) : '' });
 }
 function moderiere() {
-  if (spricht || warte.length || Date.now() - stilleSeit < (CFG.stimme.pauseSek ?? 1.6) * 1000) return;
+  const dringend = followDank.length || likeDank.length;     // Dank kommt sofort, Moderation erst nach der Pause
+  if (spricht || warte.length || Date.now() - stilleSeit < (dringend ? .8 : (CFG.stimme.pauseSek ?? 4)) * 1000) return;
   // 1. Follows bedanken
   if (followDank.length) {
     return sag(satz('followEins', { name: sprechName(followDank.shift()) }), 1);   // einzeln, kurz

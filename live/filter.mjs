@@ -32,7 +32,7 @@ const WOERTER = [
 // Harmlose Wörter, die eins der obigen enthalten (werden vor der Prüfung entfernt)
 const AUSNAHMEN = ['kanal', 'analys', 'marsch', 'dickens', 'sussex', 'essex', 'documen', 'cucumber', 'cocktail', 'peacock', 'hancock', 'heilig', 'heilbron',
   'scheibe', 'methode', 'something', 'cumulus', 'circum', 'siegfried', 'siegmund', 'siegen', 'sieger', 'nugget', 'nigeria', 'meteor',
-  'methan', 'crackers', 'dickie', 'annalena', 'analena', 'minute', 'banal', 'fagot', 'fackel'].map(normal);
+  'methan', 'crackers', 'dickie', 'annalena', 'analena', 'minute', 'banal', 'fagot', 'fackel', 'nachbarschaft', 'bikini', 'barsch', 'karsch'].map(normal);
 
 export function anstoessig(text) {
   let n = normal(text);

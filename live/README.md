@@ -139,6 +139,14 @@ Der Mac bleibt automatisch wach, solange das Programm läuft (`caffeinate`). Das
 - „Muschel-Tal LIVE starten.command“ öffnet keinen Browser-Tab mehr (spart einen zweiten Durchlauf). Brauchst du doch einen (Fensteraufnahme): `http://localhost:8790` selbst öffnen.
 
 ## Ton (Musik + Stimme)
+**Wichtig (LIVE Studio auf dem Mac):** Der Ton der Link-Quelle kommt bei LIVE Studio nicht im Stream an. Darum laufen Anna und die Musik über den Mac-Ton (`"wiedergabe": "mac"` in einstellungen.json) und gelangen über das kostenlose Programm **BlackHole** als „Mikrofon“ in LIVE Studio:
+1. BlackHole 2ch installieren (kostenlos): existential.audio/blackhole – oder im Terminal `brew install blackhole-2ch`. Danach Mac neu starten.
+2. Programm **Audio-MIDI-Setup** öffnen → unten links **+** → **Gerät mit mehreren Ausgängen erstellen** → Haken bei **MacBook-Lautsprecher** (bzw. deinen Lautsprechern) und **BlackHole 2ch**.
+3. **Systemeinstellungen → Ton → Ausgabe:** „Gerät mit mehreren Ausgängen“ wählen. (Die Lautstärketasten gehen dann nicht – Lautstärke im Audio-MIDI-Setup.)
+4. **LIVE Studio → Mikrofon: „BlackHole 2ch“.** Bei der Link-Quelle den Ton aus.
+5. Test: Programm starten – wenn Anna spricht, schlägt in LIVE Studio der Mikrofon-Pegel aus.
+Nach dem Stream kannst du in den Systemeinstellungen wieder die normalen Lautsprecher wählen.
+
 - **Es spielt immer nur eine Seite Ton**, auch wenn Browser und LIVE Studio gleichzeitig offen sind (die zuerst geöffnete). Vor dem LIVE deshalb alte Browser-Tabs mit der Insel schließen – oder sie mit `?vorschau` öffnen (Bild ohne Ton).
 - Im Hintergrund läuft lizenzfreie Südsee-Musik im Stil der Muschel-Tal-Videos (erzeugt mit `tools/make_music_live.py`): 5 Stücke à 7 Min. (35 Min. ohne Wiederholung), jedes mit eigener Tonart und Tempo, Songform mit Strophe, Refrain, Zwischenteil und ruhigen Stellen, wechselnden Instrumenten (Ukulele, Marimba, Steeldrum, Flöte, Pad, Bongos) und immer neuen Melodien. Dazu Meeresrauschen (`tools/make_ambience.py`).
 - Anna spricht kurze Sätze, etwa alle 2–4 Sekunden einer, je Satz nur eine Sache. Geschenke werden immer mit Namen bedankt („Danke für die Rose“) – je wertvoller, desto größer der Dank (4 Stufen: unter 20, ab 20, ab 200, ab 1.000 Coins).
