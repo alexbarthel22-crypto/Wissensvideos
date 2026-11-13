@@ -9,6 +9,7 @@ import { spawn } from 'node:child_process';
 import os from 'node:os';
 import { fileURLToPath } from 'node:url';
 import { macheEvents } from './events.mjs';
+import { satz, namenListe } from './saetze.mjs';
 
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
@@ -36,7 +37,7 @@ function spieler(u) {
     p = S.spieler[id] = { id, name: '@' + u.uniqueId, muscheln: 0, stufe: 0, anbauten: [], farbe: null, platz: S.reihenfolge.length, zuletzt: Date.now() };
     S.reihenfolge.push(id);
     sende({ typ: 'neu', id });
-    sag(`Willkommen im Muschel-Tal, ${sprechName(p)}! Dein Zelt steht.`, 3);
+    sag(satz('neu', { name: sprechName(p) }), 3);
   }
   return p;
 }
@@ -49,11 +50,12 @@ function gibMuscheln(p, n, grund) {
   geaendert = true;
   if (p.stufe > vorher) {
     sende({ typ: 'stufe', id: p.id, stufe: p.stufe });
-    sag(`${sprechName(p)} hat jetzt ${artikel(CFG.stufen[p.stufe].name)}!`, 2);
+    sag(satz('stufe', { name: sprechName(p), stufe: artikel(CFG.stufen[p.stufe].name), stufeDativ: dativ(CFG.stufen[p.stufe].name), stufeName: CFG.stufen[p.stufe].name }), 2);
   }
   zustand();
 }
 
+const dativ = n => (/^(Strohhütte|Stelzenhütte|Villa|Luxusvilla)$/.test(n) ? 'einer ' : 'einem ') + n;
 const artikel = n => (/^(Strohhütte|Stelzenhütte|Villa|Luxusvilla)$/.test(n) ? 'eine ' : /^(Bungalow|Strandpalast)$/.test(n) ? 'einen ' : 'ein ') + n;
 // Namen für die Stimme lesbar machen: "lena_xx.22" -> "lena xx"
 const sprechName = p => p.name.replace(/^@/, '').replace(/[._]+/g, ' ').replace(/\d{3,}/g, '').trim() || 'Neuer Bewohner';
@@ -81,7 +83,7 @@ function kommentar(u, text) {
       if (p.muscheln < ab.kosten) { sende({ typ: 'info', id: p.id, text: `${ab.name}: ${ab.kosten} 🐚` }); continue; }
       p.anbauten.push(wort); geaendert = true;
       sende({ typ: 'anbau', id: p.id, was: wort });
-      sag(`${sprechName(p)} baut ${ab.name === 'Boot' ? 'ein Boot' : ab.name === 'Palme' ? 'eine Palme' : ab.name === 'Laterne' ? 'eine Laterne' : ab.name === 'Flagge' ? 'eine Flagge' : 'einen ' + ab.name}.`, 3);
+      sag(satz('anbau', { name: sprechName(p), anbau: { Boot: 'ein Boot', Palme: 'eine Palme', Laterne: 'eine Laterne', Flagge: 'eine Flagge' }[ab.name] || 'einen ' + ab.name }), 3);
     }
     const f = CFG.farben[wort];
     if (f && p.farbe !== f) { p.farbe = f; geaendert = true; sende({ typ: 'farbe', id: p.id }); }
@@ -96,8 +98,7 @@ function geschenk(u, name, diamanten, anzahl) {
   EV.geschenkShow(p, name, anzahl, d);
   inKasse(d * CFG.kasse.proCoin);
   const wie = anzahl > 1 ? `${anzahl} mal ${name}` : name;
-  sag(d >= 1000 ? `Wahnsinn! Riesigen Dank an ${sprechName(p)} für ${wie}! Das ganze Muschel-Tal feiert dich!`
-    : d >= 100 ? `Wow, vielen Dank ${sprechName(p)} für ${wie}!` : `Danke ${sprechName(p)} für ${wie}!`, 0);
+  sag(satz(d >= 1000 ? 'geschenkGross' : d >= 100 ? 'geschenkMittel' : 'geschenkKlein', { name: sprechName(p), geschenk: wie }), 0);
   gibMuscheln(p, d * CFG.muschelnProCoin, 'geschenk');
 }
 
@@ -136,7 +137,7 @@ function setzeBewohner(n, quelle) {
   bewohner = n; S.bewohner = n; geaendert = true;
   if (vorher && bewohner >= vorher.ziel) {
     sende({ typ: 'ziel', name: vorher.name });
-    sag(`Wahnsinn! ${bewohner} Bewohner! ${vorher.name} auf der ${vorher.ort} ist fertig!`, 0);
+    sag(satz('zielErreicht', { zahl: bewohner, projekt: vorher.name }), 0);
   }
   zustand();
 }
@@ -153,7 +154,7 @@ function teilen(u) {
   const p = spieler(u); if (!p) return;
   inKasse(CFG.kasse.proShare);
   sende({ typ: 'teilen', id: p.id });
-  sag(`Danke ${sprechName(p)} fürs Teilen!`, 3);
+  sag(satz('teilen', { name: sprechName(p) }), 3);
   zustand();
 }
 
@@ -165,7 +166,7 @@ function projektStarten(pr) {
 function projektFertig() {
   const pr = S.projekt; S.fertig.push(pr.id); S.projekt = null; geaendert = true;
   sende({ typ: 'fertig', id: pr.id });
-  sag(`Geschafft! ${pr.name} ist fertig. Danke an alle!`, 0);
+  sag(satz('projektFertig', { projekt: pr.name }), 0);
 }
 
 // ---------- Überraschungs-Events (events.mjs) ----------
@@ -224,7 +225,7 @@ function weiter() {
   if (spricht) return;
   if (!warte.length && followDank.length) {               // Follows bedanken, wenn gerade nichts anderes ansteht
     const n = followDank.splice(0, 4).map(sprechName), z = zielJetzt();
-    const text = (n.length > 1 ? `Danke ${n.slice(0, -1).join(', ')} und ${n.at(-1)} fürs Folgen!` : `Danke ${n[0]} fürs Folgen!`) + (z && Math.random() < .5 ? ` Noch ${z.ziel - bewohner} Bewohner bis zum ${z.name}.` : '');
+    const text = (n.length > 1 ? satz('followMehrere', { namen: namenListe(n) }) : satz('followEins', { name: n[0] })) + (z && Math.random() < .5 ? satz('followZiel', { rest: z.ziel - bewohner, projekt: z.name }) : '');
     sende({ typ: 'ansage', text });
     if (!STILL) warte.push({ prio: 1, text });
   }
@@ -332,7 +333,7 @@ async function verbinde() {
   const fol = info => { const f = suche(info, 'follower_count'); if (f) setzeBewohner(Number(f), 'tiktok'); };
   fol(st.roomInfo || c.roomInfo);
   clearInterval(verbinde.t); verbinde.t = setInterval(() => c.fetchRoomInfo().then(fol).catch(() => {}), 300000);
-  sag('Muschel-Tal live ist gestartet. Liked, kommentiert und baut eure Häuser!', 0);
+  sag(satz('start'), 0);
 }
 function suche(o, key, tiefe = 0) {
   if (!o || typeof o !== 'object' || tiefe > 6) return null;

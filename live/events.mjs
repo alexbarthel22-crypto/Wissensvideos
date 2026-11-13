@@ -4,6 +4,8 @@
 
 const zufall = a => a[Math.floor(Math.random() * a.length)];
 const klemme = (x, a, b) => Math.max(a, Math.min(b, x));
+// Wer ohne Team liked, kommt ins Team mit den wenigsten Mitgliedern
+const kleinstes = (wahl, teams) => { const z = Object.fromEntries(teams.map(t => [t, 0])); Object.values(wahl).forEach(t => z[t]++); return teams.sort((a, b) => z[a] - z[b])[0]; };
 const zahl = n => Math.round(n).toLocaleString('de-DE');
 
 export function macheEvents(api) {
@@ -36,10 +38,10 @@ export function macheEvents(api) {
     krabbenrennen: {
       titel: 'Krabbenrennen', icon: '🦀', dauer: 60,
       start(e) { e.teams = { rot: 0, blau: 0, gelb: 0, gruen: 0 }; e.wahl = {}; e.ziel = klemme(Math.round(api.likeRate() * .45 / 10) * 10, 60, 20000);
-        return `Krabbenrennen! Schreibt rot, blau, gelb oder grün für euer Team, dann treiben eure Likes eure Krabbe an!`; },
+        return `Krabbenrennen! Schreibt rot, blau, gelb oder grün für euer Team, oder liked einfach, dann bekommt ihr ein Team!`; },
       kommentar(e, p, t) { const m = { rot: 'rot', blau: 'blau', gelb: 'gelb', grün: 'gruen', gruen: 'gruen' }[t]; if (m) { e.wahl[p.id] = m; return true; } },
-      like(e, p, n) { const tm = e.wahl[p.id]; if (tm) { e.teams[tm] += n; if (e.teams[tm] >= e.ziel) e.frueh = true; } },
-      anzeige: e => ({ text: 'Team wählen: rot · blau · gelb · grün – dann liken!', rennen: Object.entries(e.teams).map(([k, v]) => ({ name: k, wert: v, max: e.ziel })) }),
+      like(e, p, n) { const tm = e.wahl[p.id] || (e.wahl[p.id] = kleinstes(e.wahl, Object.keys(e.teams))); e.teams[tm] += n; if (e.teams[tm] >= e.ziel) e.frueh = true; },
+      anzeige: e => ({ text: 'Team wählen: rot · blau · gelb · grün – oder einfach liken!', rennen: Object.entries(e.teams).map(([k, v]) => ({ name: k, wert: v, max: e.ziel })) }),
       ende(e) {
         const [sieger, w] = Object.entries(e.teams).sort((a, b) => b[1] - a[1])[0];
         if (!w) return { text: 'Keine Krabbe ist losgelaufen …', sag: 'Die Krabben haben sich nicht bewegt. Nächstes Mal!' };
@@ -52,8 +54,8 @@ export function macheEvents(api) {
       titel: 'Team-Duell', icon: '⚔️', dauer: 75,
       start(e) { e.t = { muschel: 0, kokos: 0 }; e.wahl = {}; return `Team-Duell! Schreibt muschel oder kokos und liked für euer Team!`; },
       kommentar(e, p, t) { if (t === 'muschel' || t === 'kokos') { e.wahl[p.id] = t; return true; } },
-      like(e, p, n) { const tm = e.wahl[p.id]; if (tm) e.t[tm] += n; },
-      anzeige: e => { const m = Math.max(10, e.t.muschel + e.t.kokos); return { text: 'Schreib „muschel“ oder „kokos“, dann liken!', balken: [{ name: '🐚 Team Muschel', wert: e.t.muschel, max: m, farbe: '#ff8fb8' }, { name: '🥥 Team Kokos', wert: e.t.kokos, max: m, farbe: '#b07a45' }] }; },
+      like(e, p, n) { const tm = e.wahl[p.id] || (e.wahl[p.id] = kleinstes(e.wahl, ['muschel', 'kokos'])); e.t[tm] += n; },
+      anzeige: e => { const m = Math.max(10, e.t.muschel + e.t.kokos); return { text: '„muschel“ oder „kokos“ schreiben – oder einfach liken!', balken: [{ name: '🐚 Team Muschel', wert: e.t.muschel, max: m, farbe: '#ff8fb8' }, { name: '🥥 Team Kokos', wert: e.t.kokos, max: m, farbe: '#b07a45' }] }; },
       ende(e) {
         if (e.t.muschel === e.t.kokos) return { text: 'Unentschieden!', sag: 'Unentschieden! Was für ein Duell.' };
         const s = e.t.muschel > e.t.kokos ? 'muschel' : 'kokos'; const fans = Object.entries(e.wahl).filter(([, t]) => t === s).map(([id]) => api.spieler(id)); fans.forEach(p => api.belohne(p, 30));

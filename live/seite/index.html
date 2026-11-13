@@ -781,8 +781,8 @@ function eventPanel(t, y) {
 function krabbenRennen(t, y, teams) {
   const farbe = { rot: '#e8433c', blau: '#3fa0e8', gelb: '#ffd23f', gruen: '#57b85a' };
   teams.forEach((tm, i) => {
-    const yy = y + 12 + i * 36, x0 = SL + 70, x1 = SR - 60, f = Math.min(1, tm.wert / tm.max);
-    X.fillStyle = '#f3dfa6'; rr(x0 - 10, yy - 13, x1 - x0 + 20, 26, 13); X.fill();
+    const yy = y + 12 + i * 36, x0 = SL + 100, x1 = SR - 60, f = Math.min(1, tm.wert / tm.max);
+    X.fillStyle = '#f3dfa6'; rr(x0 - 18, yy - 13, x1 - x0 + 28, 26, 13); X.fill();
     X.strokeStyle = INK; X.lineWidth = 2; X.setLineDash([6, 6]); X.beginPath(); X.moveTo(x1, yy - 13); X.lineTo(x1, yy + 13); X.stroke(); X.setLineDash([]);
     text({ rot: 'Rot', blau: 'Blau', gelb: 'Gelb', gruen: 'Grün' }[tm.name], SL + 22, yy, 16, INK, 'left', 900);
     X.save(); X.translate(x0 + (x1 - x0) * f, yy + 2);
