@@ -3,19 +3,18 @@
   "port": 8790,
   "stimme": {
     "an": true,
-    "mac": "Anna (Premium)",
-    "macErsatz": [
-      "Anna (Erweitert)",
-      "Anna (Enhanced)",
-      "Anna"
-    ],
+    "mac": "Anna",
+    "macErsatz": [],
     "tempo": 185,
     "maxProMinute": 10,
     "maxWarteschlange": 6,
-    "wiedergabe": "seite",
-    "_hinweis": "wiedergabe 'seite': Stimme läuft über die Live-Seite (zusammen mit der Musik im Stream-Ton). 'mac': direkt über die Mac-Lautsprecher.",
-    "pauseSek": 0.6,
-    "_pause": "pauseSek: Pause zwischen zwei Sätzen (0,6 s → alle 2–4 s ein neuer kurzer Satz). „…“ in saetze.mjs = kurze Sprechpause."
+    "wiedergabe": "mac",
+    "_hinweis": "wiedergabe 'mac' (Standard): Anna und Musik laufen über den Mac-Ton – mit BlackHole als Mikrofon in LIVE Studio landen sie sicher im Stream (siehe README). 'seite': Ton über die Link-Quelle (geht bei LIVE Studio auf dem Mac nicht zuverlässig).",
+    "pauseSek": 4,
+    "_pause": "pauseSek: Pause zwischen zwei Moderations-Sätzen (4 s → etwa alle 5–10 s ein Satz). Danke für Geschenke, Follows usw. kommt sofort.",
+    "maxErzeugenSek": 4,
+    "_tempo": "maxErzeugenSek: Braucht die Stimme länger, um einen Satz zu erzeugen (2× hintereinander), wechselt das Programm automatisch auf die nächste schnellere Stimme aus macErsatz. Fertige Sätze werden in werkzeug/stimme gespeichert und sofort wiederverwendet.",
+    "_stimme": "Stimme „Anna“ (normal) – schnell genug auch während des LIVEs. „Anna (Premium)“ klingt besser, braucht auf diesem Mac aber ca. 10 s pro Satz."
   },
   "stufen": [
     {
@@ -415,7 +414,7 @@
     "meer": 0.22,
     "stimme": 1.0,
     "musikAufMac": true,
-    "musikAufMacLautstaerke": 0.18,
+    "musikAufMacLautstaerke": 0.15,
     "_hinweis": "Normal laufen Musik und Stimme über die Live-Seite. Blockiert der Browser den Ton, spielt das Programm beides über die Mac-Lautsprecher (musikAufMac)."
   },
   "ort": {
@@ -426,8 +425,8 @@
   },
   "muschelnProCoin": 1,
   "events": {
-    "alleMinuten": 3,
-    "_hinweis": "Alle 3 Minuten ein zufälliges Überraschungs-Event (40 verschiedene, siehe events.mjs). Nie dasselbe wie eins der letzten 10."
+    "alleMinuten": 2,
+    "_hinweis": "Alle 2 Minuten ein zufälliges Überraschungs-Event (50 verschiedene, siehe events.mjs). Nie dasselbe wie eins der letzten 10."
   },
   "folgeAufrufMinuten": 3,
   "startMuscheln": 0,

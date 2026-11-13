@@ -44,11 +44,11 @@ Ausbauten werden animiert gebaut (Bambusgerüst, Krabben-Bauarbeiter, Sandstaub)
 Oben steht immer das **nächste Bauprojekt der Haupt-Insel** – automatisch aus `muscheltal/daten/insel.json` (`baustellen`), Startzahl der Bewohner aus `einwohner.csv`. Straßennamen stehen unter `strassen`.
 Die Bewohnerzahl kommt live von TikTok (Follower), `bewohner.start` ist nur der Startwert, falls TikTok sie nicht liefert.
 
-## Überraschungs-Events (alle 3 Minuten, 40 verschiedene)
+## Überraschungs-Events (alle 2 Minuten, 50 verschiedene)
 Rechts oben läuft ein Countdown „Nächstes Event“ – welches kommt, bleibt geheim (❓❓❓). Nie dasselbe wie eins der letzten 10.
 Beim Start sagt Anna, was am Ende passiert (steht auch im Event-Feld unter 🏆). Am Ende nennt sie die Gewinner mit Namen (im Ergebnis-Feld unter 🏆).
 Alle Events laufen komplett im Stream und ohne Rauszoomen (die Kamera bleibt bei den Häusern), mitmachen per Like oder Kommentar – niemand muss den Stream verlassen, nichts ist an Geschenke gebunden.
-Like-Ziele liegen bei ca. 80 % des normalen Like-Tempos: schaffbar, wenn alle mitmachen. Alle 40 Events sind automatisch geprüft (Test-Zuschauer machen mit, Belohnungen kommen an).
+Like-Ziele liegen bei ca. 80 % des normalen Like-Tempos: schaffbar, wenn alle mitmachen. Alle Events sind automatisch geprüft (Test-Zuschauer machen mit, Belohnungen kommen an).
 
 | Event | Mitmachen | Belohnung |
 |---|---|---|
@@ -92,6 +92,16 @@ Like-Ziele liegen bei ca. 80 % des normalen Like-Tempos: schaffbar, wenn alle mi
 | 🎭 Motto des Tages | `1` `2` `3` | Mehrheit 10 🐚 |
 | 🎁 Mystery-Box | `box` | 3–50 🐚 für jeden |
 | 🕵️ Wer bin ich? | Tier erraten (3 Hinweise) | 50 🐚 |
+| 🎨 Inselfarbe | `rot` / `blau` / `grün` | Mehrheit 10 🐚 |
+| 🧴 Sonnencreme | `creme` (erste 10) | 15 🐚 |
+| 🍨 Eis-Bestellung | `1` `2` `3` | Mehrheit 15 🐚 |
+| 🏴‍☠️ Piratenschatz | gemeinsam liken | 25 🐚 für alle Helfer |
+| 🐚 Glücksmuschel | `muschel` | einer gewinnt 80 🐚 |
+| 🍹 Happy Hour | liken | Likes zählen doppelt |
+| 🎤 Reim-Zeit | Reim schreiben (erste 10) | 10 🐚 |
+| ⛵ Bootsrennen | `segel` / `motor`, dann liken | Siegerboot 25 🐚 |
+| ✈️ Traumurlaub | `1` `2` `3` | Mehrheit 10 🐚 |
+| 💖 Komplimente | `schön` / `toll` | 5 🐚, ab 10 Bonus 10 🐚 |
 
 ## Stadtgebäude (ohne Limit)
 Per Abstimmung wählt der Chat das nächste Gemeinschafts-Gebäude, bezahlt wird aus der Muschelkasse (beim Baustart fließt die Hälfte des Ersparten in die Baustelle, danach 70 % jeder neuen Muschel – die Kasse ist nie leer). Kosten realistisch: Café/Eisdiele/Friseur 6.000 … Krankenhaus 35.000 Muscheln (einstellbar in einstellungen.json):
@@ -139,6 +149,14 @@ Der Mac bleibt automatisch wach, solange das Programm läuft (`caffeinate`). Das
 - „Muschel-Tal LIVE starten.command“ öffnet keinen Browser-Tab mehr (spart einen zweiten Durchlauf). Brauchst du doch einen (Fensteraufnahme): `http://localhost:8790` selbst öffnen.
 
 ## Ton (Musik + Stimme)
+**Wichtig (LIVE Studio auf dem Mac):** Der Ton der Link-Quelle kommt bei LIVE Studio nicht im Stream an. Darum laufen Anna und die Musik über den Mac-Ton (`"wiedergabe": "mac"` in einstellungen.json) und gelangen über das kostenlose Programm **BlackHole** als „Mikrofon“ in LIVE Studio:
+1. BlackHole 2ch installieren (kostenlos): existential.audio/blackhole – oder im Terminal `brew install blackhole-2ch`. Danach Mac neu starten.
+2. Programm **Audio-MIDI-Setup** öffnen → unten links **+** → **Gerät mit mehreren Ausgängen erstellen** → Haken bei **MacBook-Lautsprecher** (bzw. deinen Lautsprechern) und **BlackHole 2ch**.
+3. **Systemeinstellungen → Ton → Ausgabe:** „Gerät mit mehreren Ausgängen“ wählen. (Die Lautstärketasten gehen dann nicht – Lautstärke im Audio-MIDI-Setup.)
+4. **LIVE Studio → Mikrofon: „BlackHole 2ch“.** Bei der Link-Quelle den Ton aus.
+5. Test: Programm starten – wenn Anna spricht, schlägt in LIVE Studio der Mikrofon-Pegel aus.
+Nach dem Stream kannst du in den Systemeinstellungen wieder die normalen Lautsprecher wählen.
+
 - **Es spielt immer nur eine Seite Ton**, auch wenn Browser und LIVE Studio gleichzeitig offen sind (die zuerst geöffnete). Vor dem LIVE deshalb alte Browser-Tabs mit der Insel schließen – oder sie mit `?vorschau` öffnen (Bild ohne Ton).
 - Im Hintergrund läuft lizenzfreie Südsee-Musik im Stil der Muschel-Tal-Videos (erzeugt mit `tools/make_music_live.py`): 5 Stücke à 7 Min. (35 Min. ohne Wiederholung), jedes mit eigener Tonart und Tempo, Songform mit Strophe, Refrain, Zwischenteil und ruhigen Stellen, wechselnden Instrumenten (Ukulele, Marimba, Steeldrum, Flöte, Pad, Bongos) und immer neuen Melodien. Dazu Meeresrauschen (`tools/make_ambience.py`).
 - Anna spricht kurze Sätze, etwa alle 2–4 Sekunden einer, je Satz nur eine Sache. Geschenke werden immer mit Namen bedankt („Danke für die Rose“) – je wertvoller, desto größer der Dank (4 Stufen: unter 20, ab 20, ab 200, ab 1.000 Coins).

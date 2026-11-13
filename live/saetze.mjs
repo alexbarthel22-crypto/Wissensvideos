@@ -61,9 +61,10 @@ const SAETZE = {
     'Geteilt von {name}! Danke!',
   ],
   neu: [
-    'Willkommen, {name}! Dein Zelt steht.',
-    '{name} ist da! Das Zelt steht schon.',
-    'Ein Zelt für {name}!',
+    '{name} baut das erste Zelt!',
+    'Neues Zelt auf der Insel! Willkommen, {name}!',
+    '{name} ist eingezogen! Das Zelt steht.',
+    'Ein Zelt für {name}! Willkommen!',
   ],
   stufe: [
     '{name} hat jetzt {stufe}!',
@@ -216,3 +217,5 @@ export function satz(art, werte = {}) {
   return liste[i].replace(/\{(\w+)\}/g, (_, k) => werte[k] ?? '');
 }
 export const namenListe = n => n.length > 1 ? `${n.slice(0, -1).join(', ')} und ${n.at(-1)}` : n[0];
+// Alle Sätze ohne Platzhalter (werden beim Start vorab als Sprachdatei erzeugt)
+export const festeSaetze = () => Object.values(SAETZE).flat().filter(t => !t.includes('{'));

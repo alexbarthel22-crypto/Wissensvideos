@@ -17,7 +17,7 @@
 // Oben (y 150–520) feste Infos, darunter die große Insel. Bei Ausbauten fährt die Kamera an das Haus heran.
 const C = document.getElementById('c');
 // Sparsam: intern 720×1280 (das kommt bei TikTok ohnehin an), gezeichnet wird weiter im 1080er-Raster. ?aufloesung=1080 = volle Größe
-const Q0 = (+new URLSearchParams(location.search).get('aufloesung') || Math.round(Math.min(1080, Math.max(720, innerHeight * (devicePixelRatio || 1) * 9 / 16)))) / 1080;   // so scharf wie die Quelle (LIVE Studio 1080×1920 → 1080)
+const Q0 = (+new URLSearchParams(location.search).get('aufloesung') || 1080) / 1080;   // so scharf wie die Quelle (LIVE Studio 1080×1920 → 1080)
 C.width = Math.round(1080 * Q0); C.height = Math.round(1920 * Q0);
 let X = C.getContext('2d', { alpha: false });
 const FPS = 30;
@@ -27,7 +27,7 @@ const INK = '#2a1b12', GELB = '#ffd23f', PINK = '#e8467c', TUERKIS = '#2fb3a0';
 const LOGO = new Image(); LOGO.src = 'logo.svg';
 
 let S = { spieler: [], stufen: ['Zelt'], stufenAb: [0], projekt: null, fertig: [], abstimmung: null, kasse: 0, bewohner: 0, ziel: null, strassen: [] };
-const fx = [], banner = [], pop = {};
+const fx = [], banner = [], pop = {}, streich = {};               // streich: laufende Anstrich-Animationen id -> {t, alt, neu}
 let untertitel = { text: '', t: 0 };
 
 // ================= Insel-Geometrie (wächst mit) =================
@@ -264,9 +264,23 @@ function ereignis(e) {
       else if ((n > ANZAHL || gebPlaetzeBei(K) < (S.fertig || []).length + 1) && K < K_MAX && !WACHS) wachsen(kFuer(n + 60, (S.fertig || []).length + 4));     // erst wachsen, wenn alles voll ist – dann gleich ein großes Stück
       break;
     }
-    case 'neu': bau[e.id] = { t: jetzt + 250, alt: -1, neu: 0, D: 1.9 }; break;
+    case 'neu': {                                                  // erstes Like: Zelt wird gebaut – Banner, Funken, Kamera
+      bau[e.id] = { t: jetzt + 250, alt: -1, neu: 0, D: 1.9 };
+      banner.push({ t: 0, oben: `🏕️ ${e.name || 'Neuer Bewohner'}`, unten: 'baut das erste Zelt auf der Insel!', farbe: '#2fb3a0' });
+      const zeig = () => { const q = sp(e.id), qp = q && platzVon(q); if (qp) { funken(qp, '🎉', 14); fokus(qp, 4500, true); } return !!qp; };
+      if (!zeig()) setTimeout(zeig, 1300);                          // Bewohnerliste kommt höchstens 1×/s
+      break;
+    }
     case 'stufe': if (p) { bau[e.id] = { t: jetzt, alt: p.stufe, neu: e.stufe, D: 4.8 }; if (pl) { fokus(pl, 8500); funken(pl, '✨', 8); setTimeout(() => { hausFeuerwerk(pl, e.stufe); funken(pl, '✨', 14); }, 4300); } } break;
-    case 'anbau': case 'farbe': if (pl) { pop[e.id] = jetzt; funken(pl, '🔨', 5); fokus(pl, 2600, true); } break;
+    case 'anbau': if (pl) { pop[e.id] = jetzt; funken(pl, '🔨', 5); fokus(pl, 2600, true); } break;
+    case 'erstLiken': banner.push({ t: 0, oben: `❤️ ${e.name}`, unten: e.art === 'farbe' ? 'Like einmal – dann kannst du dein Haus streichen!' : 'Like einmal – dann wird dein Haus gebaut!', farbe: PINK }); break;
+    case 'farbe': {                                                // Haus wird animiert neu gestrichen (Farbrolle von links nach rechts)
+      streich[e.id] = { t: jetzt + 600, alt: e.alt, neu: e.neu };
+      banner.push({ t: 0, oben: `🎨 ${e.name || ''}`, unten: `streicht das Haus ${e.wort || 'neu'}!`, farbe: e.neu || PINK });
+      const zeig = () => { const q = sp(e.id), qp = q && platzVon(q); if (qp) fokus(qp, STREICH_MS + 1500); return !!qp; };
+      if (!zeig()) setTimeout(zeig, 1300);
+      break;
+    }
     case 'geschenk': if (pl) funken(pl, '💖', 10 + Math.min(30, e.diamanten)); break;
     case 'show':
       if (e.coins < 10) { banner.push({ t: 0, oben: `🎁 Danke ${e.name}!`, unten: `für ${e.fuer || e.gift} · +${e.coins} 🐚`, farbe: PINK }); if (pl) funken(pl, { herzregen: '💖', muschelkonfetti: '🐚', seifenblasen: '🫧' }[e.art] || '💖', 16); }
@@ -960,8 +974,12 @@ const HAUS = [A[0], N.camp, A[1], N.fischer, A[2], N.baumhaus, A[3], N.surfer, A
 const HOEHE = [-38, -40, -46, -42, -62, -86, -46, -46, -64, -84, -76, -48, -66, -66, -60, -70, -82, -62, -82, -88];   // Dach-Oberkante je Stufe (für die Flagge)
 
 
-function haus(p, pl, t) {
-  const c = X, f = p.farbe || FARBEN[p.platz % FARBEN.length], st = Math.min(p.stufe, HAUS.length - 1), a = p.anbauten || [];
+const STREICH_MS = 2600;
+function haus(p, pl, t, roh) {
+  const sa = roh ? null : streich[p.id], sq = sa ? (t - sa.t) / STREICH_MS : 2;
+  if (sa && sq >= 0 && sq < 1) return hausGestrichen(p, pl, t, sa, sq);
+  if (sa && sq >= 1.3) delete streich[p.id];
+  const c = X, f = (sa && sq < 0 ? sa.alt : null) || p.farbe || FARBEN[p.platz % FARBEN.length], st = Math.min(p.stufe, HAUS.length - 1), a = p.anbauten || [];
   const seit = pop[p.id] ? t - pop[p.id] : 9999, hops = seit < 700 ? 1 + Math.sin(seit / 700 * Math.PI) * .3 : 1;
   c.save(); c.translate(pl.x, pl.y);
   // Grundstück-Deko: ab Bungalow eigener Rasen mit Hecke, Weg zur Straße
@@ -983,6 +1001,19 @@ function haus(p, pl, t) {
   const w = X.measureText(n).width + 12;
   X.fillStyle = 'rgba(255,255,255,.93)'; rr(pl.x - w / 2, pl.y + 8, w, 15, 7.5); X.fill();
   X.fillStyle = INK; X.textAlign = 'center'; const nv = mitteVersatz(); X.textBaseline = 'alphabetic'; X.fillText(n, pl.x, pl.y + 15.5 + nv);
+}
+
+// Anstrich: links schon neue Farbe, rechts noch alte – dazwischen fährt eine Farbrolle hoch und runter, Kleckse spritzen
+function hausGestrichen(p, pl, t, sa, q) {
+  const e = q < .5 ? 2 * q * q : 1 - (-2 * q + 2) ** 2 / 2, kante = pl.x - 60 + 120 * e;
+  const alt = { ...p, farbe: sa.alt || FARBEN[p.platz % FARBEN.length] }, neu = { ...p, farbe: sa.neu };
+  X.save(); X.beginPath(); X.rect(kante, pl.y - 200, 400, 400); X.clip(); haus(alt, pl, t, true); X.restore();     // rechts: alt
+  X.save(); X.beginPath(); X.rect(kante - 400, pl.y - 200, 400, 400); X.clip(); haus(neu, pl, t, true); X.restore(); // links: neu
+  const ry = pl.y - 30 + Math.sin(t * .02) * 22;                    // Farbrolle
+  X.strokeStyle = INK; X.lineWidth = 3; X.beginPath(); X.moveTo(kante + 4, ry); X.lineTo(kante + 16, ry + 20); X.lineTo(kante + 16, ry + 42); X.stroke();
+  X.fillStyle = '#8a5a2b'; X.fillRect(kante + 13, ry + 40, 6, 14);
+  X.fillStyle = sa.neu; X.strokeStyle = INK; X.lineWidth = 2; rr(kante - 8, ry - 9, 14, 20, 5); X.fill(); X.stroke();
+  if (Math.random() < .35 && fx.length < 400) fx.push({ x: kante, y: ry, vx: (Math.random() - .5) * 2.5, vy: -1 - Math.random() * 2, t: performance.now(), punkt: sa.neu, s: 2 + Math.random() * 2.5 });
 }
 
 // ================= Stadtgebäude der Gemeinschaft (tropischer Strand-Stil) =================
@@ -1215,10 +1246,10 @@ function gluecksRad(t, y, e) {
 }
 function countdownKarte(x, y, w, h, t) {
   karte(x, y, w, h, '#2a1b12', 28);
-  text('⏳ Nächstes Event', x + w / 2, y + 26, 21, GELB, 'center', 900, w - 40);
+  text('⏳ Nächstes Event', x + w / 2, y + 30, 25, GELB, 'center', 900, w - 36);
   const s = S.eventIn || 0, puls = s <= 10 ? 1 + Math.sin(t * .012) * .08 : 1;
-  X.save(); X.translate(x + w / 2, y + 68); X.scale(puls, puls); text(zeit(s), 0, 0, 46, '#fff', 'center', 900); X.restore();
-  text('❓❓❓', x + w / 2, y + 108, 18, '#fff', 'center', 900);
+  X.save(); X.translate(x + w / 2, y + 80); X.scale(puls, puls); text(zeit(s), 0, 0, 56, '#fff', 'center', 900); X.restore();
+  text('❓❓❓', x + w / 2, y + 128, 22, '#fff', 'center', 900);
 }
 
 // ---------- Effekte der Events auf der Insel (Welt-Koordinaten) ----------
@@ -1392,57 +1423,57 @@ function kopf(t) {
   X.globalAlpha = .75; text('by @muscheltal', 98, 70, 22, INK, 'left', 800, 360); X.globalAlpha = 1;
   X.restore();
   // Muschelkasse der Live-Insel
-  karte(612, OBEN, SR - 612, 92, '#fff', 999);
-  text('🐚 ' + (S.kasse || 0).toLocaleString('de-DE'), 786, OBEN + 34, 38, INK, 'center', 900, 300);
-  text('Like 1 · Teilen 2 · Folgen 5', 786, OBEN + 72, 22, '#8a5a2b', 'center', 900, 312);
+  karte(612, OBEN, SR - 612, 96, '#fff', 999);
+  text('🐚 ' + (S.kasse || 0).toLocaleString('de-DE'), 786, OBEN + 34, 40, INK, 'center', 900, 300);
+  text('Like 1 · Teilen 2 · Folgen 5', 786, OBEN + 74, 24, '#8a5a2b', 'center', 900, 286);
   // Nächstes Bauprojekt der Haupt-Insel (kommt automatisch von muscheltal.de; gibt es keins, entfällt die Zeile)
   const z = S.ziel, bw = S.bewohner || 0;
   let y2 = OBEN + 116;
   if (z) {
-    karte(SL, y2, SB, 104, '#fff', 30);
+    karte(SL, y2, SB, 110, '#fff', 30);
     const f = Math.min(1, bw / z.ziel);
-    const zahlText = `${bw.toLocaleString('de-DE')} / ${z.ziel.toLocaleString('de-DE')}`; X.font = `900 25px ${FONT}`; const zw = Math.min(260, X.measureText(zahlText).width);
-    text(`${z.icon || '🏗️'} ${z.name}`, SL + 24, y2 + 26, 26, INK, 'left', 900, SB - 48 - zw - 24);
-    text(zahlText, SR - 24, y2 + 26, 25, INK, 'right', 900, 260);
-    X.fillStyle = 'rgba(42,27,18,.1)'; rr(SL + 24, y2 + 50, SB - 48, 34, 17); X.fill();
+    const zahlText = `${bw.toLocaleString('de-DE')} / ${z.ziel.toLocaleString('de-DE')}`; X.font = `900 28px ${FONT}`; const zw = Math.min(260, X.measureText(zahlText).width);
+    text(`${z.icon || '🏗️'} ${z.name}`, SL + 24, y2 + 28, 29, INK, 'left', 900, SB - 48 - zw - 24);
+    text(zahlText, SR - 24, y2 + 28, 28, INK, 'right', 900, 260);
+    X.fillStyle = 'rgba(42,27,18,.1)'; rr(SL + 24, y2 + 54, SB - 48, 38, 19); X.fill();
     const g = X.createLinearGradient(SL, 0, SR, 0); g.addColorStop(0, TUERKIS); g.addColorStop(1, '#7fe0c8');
-    X.fillStyle = g; rr(SL + 24, y2 + 50, Math.max(34, (SB - 48) * f), 34, 17); X.fill();
-    X.strokeStyle = INK; X.lineWidth = 3.5; rr(SL + 24, y2 + 50, SB - 48, 34, 17); X.stroke();
-    text(`${z.ort || 'Haupt-Insel'} · Folgen = einziehen 🏠 · noch ${Math.max(0, z.ziel - bw)} Bewohner`, 540, y2 + 67, 20, INK, 'center', 900, SB - 80);
+    X.fillStyle = g; rr(SL + 24, y2 + 54, Math.max(38, (SB - 48) * f), 38, 19); X.fill();
+    X.strokeStyle = INK; X.lineWidth = 3.5; rr(SL + 24, y2 + 54, SB - 48, 38, 19); X.stroke();
+    text(`${z.ort || 'Haupt-Insel'} · Folgen = einziehen 🏠 · noch ${Math.max(0, z.ziel - bw)} Bewohner`, 540, y2 + 74, 23, INK, 'center', 900, SB - 80);
   } else y2 = OBEN + 2;
   // Laufendes Event / Ergebnis, sonst Infos (wechselnd) + Countdown zum nächsten Event
-  const y3 = y2 + 126, ep = eventPanel(t, y3);
+  const y3 = y2 + 132, ep = eventPanel(t, y3);
   if (ep) return ep;
   const seiten = S.projekt ? 4 : 3;
   if (t - seiteSeit > 7000) { seite = (seite + 1) % seiten; seiteSeit = t; }
   const lw = 540;
-  karte(SL, y3, lw, 130, '#fff3c4', 28);
+  karte(SL, y3, lw, 156, '#fff3c4', 28);
   if (seite === 3 && S.projekt) {
     const pr = S.projekt;
-    text(`🏗️ Wir bauen: ${pr.name}`, SL + 22, y3 + 30, 25, INK, 'left', 900, lw - 44);
-    X.fillStyle = 'rgba(42,27,18,.1)'; rr(SL + 22, y3 + 52, lw - 44, 26, 13); X.fill();
-    X.fillStyle = GELB; rr(SL + 22, y3 + 52, Math.max(26, (lw - 44) * pr.stand / pr.ziel), 26, 13); X.fill();
-    X.strokeStyle = INK; X.lineWidth = 3; rr(SL + 22, y3 + 52, lw - 44, 26, 13); X.stroke();
-    text(`${Math.floor(pr.stand).toLocaleString('de-DE')} / ${pr.ziel.toLocaleString('de-DE')} 🐚 aus der Muschelkasse`, SL + 22, y3 + 104, 20, '#8a5a2b', 'left', 800, lw - 44);
+    text(`🏗️ Wir bauen: ${pr.name}`, SL + 22, y3 + 32, 28, INK, 'left', 900, lw - 44);
+    X.fillStyle = 'rgba(42,27,18,.1)'; rr(SL + 22, y3 + 58, lw - 44, 32, 16); X.fill();
+    X.fillStyle = GELB; rr(SL + 22, y3 + 58, Math.max(32, (lw - 44) * pr.stand / pr.ziel), 32, 16); X.fill();
+    X.strokeStyle = INK; X.lineWidth = 3; rr(SL + 22, y3 + 58, lw - 44, 32, 16); X.stroke();
+    text(`${Math.floor(pr.stand).toLocaleString('de-DE')} / ${pr.ziel.toLocaleString('de-DE')} 🐚 aus der Kasse`, SL + 22, y3 + 122, 24, '#8a5a2b', 'left', 800, lw - 44);
   } else if (seite === 2) {
     [['🎁', '1 Coin = 1 Muschel fürs Haus'], ['✨', 'Jedes Geschenk = eigene Show'], ['🏠', 'Folgen = Hütte hier + Muschel-Tal']].forEach(([i, s], k) => {
-      text(i, SL + 16, y3 + 30 + k * 35, 23, INK, 'left', 400); text(s, SL + 54, y3 + 30 + k * 35, 22, INK, 'left', 800, lw - 74);
+      text(i, SL + 16, y3 + 32 + k * 45, 27, INK, 'left', 400); text(s, SL + 58, y3 + 32 + k * 45, 26, INK, 'left', 800, lw - 78);
     });
   } else if (seite === 1) {
-    text('🏆 Beste Häuser', SL + 22, y3 + 26, 23, INK, 'left', 900, lw - 44);
+    text('🏆 Beste Häuser', SL + 22, y3 + 28, 27, INK, 'left', 900, lw - 44);
     [...S.spieler].sort((a, b) => b.stufe - a.stufe || (b.eventMuscheln || 0) - (a.eventMuscheln || 0) || b.muscheln - a.muscheln).slice(0, 3).forEach((p, k) => {
-      const y = y3 + 58 + k * 25, m = p.muscheln >= 100000 ? Math.round(p.muscheln / 1000).toLocaleString('de-DE') + 'k' : (p.muscheln || 0).toLocaleString('de-DE');
-      text(`${k + 1}. ${p.name}`, SL + 22, y, 20, INK, 'left', 800, 196);                      // Name · Haus-Stufe · Muschel-Kontostand
-      text(S.stufen[p.stufe] || '', SL + lw - 22 - 116, y, 18, '#8a5a2b', 'right', 900, 172);
-      text(`${m} 🐚`, SL + lw - 22, y, 18, INK, 'right', 900, 108);
+      const y = y3 + 66 + k * 34, m = p.muscheln >= 100000 ? Math.round(p.muscheln / 1000).toLocaleString('de-DE') + 'k' : (p.muscheln || 0).toLocaleString('de-DE');
+      text(`${k + 1}. ${p.name}`, SL + 22, y, 24, INK, 'left', 800, 186);                      // Name · Haus-Stufe · Muschel-Kontostand
+      text(S.stufen[p.stufe] || '', SL + lw - 22 - 122, y, 21, '#8a5a2b', 'right', 900, 178);
+      text(`${m} 🐚`, SL + lw - 22, y, 22, INK, 'right', 900, 114);
     });
   } else {
     [['❤️', 'Liken = dein Haus wächst'], ['🏠', 'Schreib „haus“ = du siehst dein Haus'], ['🎨', 'Schreib „rot“, „blau“ … = Farbe']].forEach(([i, s], k) => {
-      text(i, SL + 16, y3 + 30 + k * 35, 23, INK, 'left', 400); text(s, SL + 54, y3 + 30 + k * 35, 22, INK, 'left', 800, lw - 74);
+      text(i, SL + 16, y3 + 32 + k * 45, 27, INK, 'left', 400); text(s, SL + 58, y3 + 32 + k * 45, 26, INK, 'left', 800, lw - 78);
     });
   }
-  countdownKarte(SL + lw + 18, y3, SR - SL - lw - 18, 130, t);
-  return y3 + 130;
+  countdownKarte(SL + lw + 18, y3, SR - SL - lw - 18, 156, t);
+  return y3 + 156;
 }
 let KOPF_UNTEN = 670;
 
@@ -1490,7 +1521,7 @@ function overlay(t) {
 // ---------- Zwischenspeicher (spart viel Rechenleistung) ----------
 // Häuser: in der Übersicht als ein fertiges Bild, neu gezeichnet nur wenn sich etwas ändert (höchstens 1× pro Sekunde).
 let HC = null, HC_BOX = null, HC_SIG = '', hcGeprueft = 0, hcGebaut = 0;
-const hausLive = (p, t) => bau[p.id] || (pop[p.id] && t - pop[p.id] < 700);
+const hausLive = (p, t) => bau[p.id] || (pop[p.id] && t - pop[p.id] < 700) || (streich[p.id] && t - streich[p.id].t < STREICH_MS);
 function hausSignatur(t) { let s = K + ':' + (S.fertig || []).join(',') + Object.keys(GEB_BAU).filter(i => t - GEB_BAU[i] < 5400).join(',') + ':'; for (const p of S.spieler) s += p.platz + '.' + p.stufe + (p.farbe || '') + p.anbauten.length + p.name.length + (hausLive(p, t) ? 'L' : '') + '|'; return s; }
 function hausCacheBauen(t) {
   const B = BASIS_BOX, hq = Math.min(1, Math.max(.3, zUebersicht() * Q0 * 1.6)), w = Math.ceil(B.w * hq), h = Math.ceil(B.h * hq);

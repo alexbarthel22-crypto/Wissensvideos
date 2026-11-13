@@ -8,15 +8,17 @@ import path from 'node:path';
 import { spawn } from 'node:child_process';
 import os from 'node:os';
 import zlib from 'node:zlib';
+import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { macheEvents } from './events.mjs';
-import { satz, namenListe } from './saetze.mjs';
+import { satz, namenListe, festeSaetze } from './saetze.mjs';
 import { geschenkFormen } from './geschenke.mjs';
 import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './filter.mjs';
 
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
+const VERSION = '2026-11-13 g';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -55,8 +57,8 @@ function spieler(u) {
   if (!p) {
     p = S.spieler[id] = { id, name: anzeigeName(u, S.reihenfolge.length), muscheln: 0, stufe: 0, anbauten: [], farbe: null, platz: S.reihenfolge.length, zuletzt: Date.now() };
     S.reihenfolge.push(id);
-    sende({ typ: 'neu', id });
-    sag(satz('neu', { name: sprechName(p) }), 2);
+    sende({ typ: 'neu', id, name: p.name });
+    sag(satz('neu', { name: sprechName(p) }), 1);   // erstes Zelt wird immer angesagt
     // Erstes Like/Kommentar: Zelt steht sofort, Kamera zeigt es kurz (startMuscheln optional, Standard 0)
     const start = CFG.startMuscheln ?? 0;
     if (start > 0) setImmediate(() => gibMuscheln(p, start, 'start'));
@@ -112,11 +114,35 @@ function like(u, anzahl) {
   gibMuscheln(p, anzahl * CFG.muschelnProLike * faktor, 'like');
 }
 
+// Wer noch kein Haus hat und „haus“ oder eine Farbe schreibt, bekommt den Hinweis: erst liken (höchstens 1× pro Minute)
+const likeHinweis = {};
+function erstLiken(u, art) {
+  const id = String(u.uniqueId || '').toLowerCase();
+  if (Date.now() - (likeHinweis[id] || 0) < 60000 || anstoessig(u.uniqueId) || anstoessig(u.nickname)) return;
+  likeHinweis[id] = Date.now();
+  const name = sprechName({ name: '@' + u.uniqueId });
+  sende({ typ: 'erstLiken', name: '@' + u.uniqueId, art });
+  sag(art === 'farbe' ? `${name}, like einmal! Dann bekommst du ein Haus zum Streichen.` : `${name}, du hast noch kein Haus. Like einmal, dann wird es gebaut!`, 1);
+}
+function farbeAus(p, t) {                                 // „blau“ → Haus wird animiert blau gestrichen
+  const wort = t.split(/[^a-zäöüß]+/).find(w => CFG.farben[w]); if (!wort) return;
+  const f = CFG.farben[wort]; if (p.farbe === f) return;
+  const anzeige = { gruen: 'grün', tuerkis: 'türkis', weiss: 'weiß' }[wort] || wort;
+  sende({ typ: 'farbe', id: p.id, name: p.name, alt: p.farbe, neu: f, wort: anzeige });
+  p.farbe = f; geaendert = true;
+  sag(`${sprechName(p)} streicht das Haus ${anzeige}!`, 2);
+}
 function kommentar(u, text) {
-  const neu = !S.spieler[String(u.uniqueId || '').toLowerCase()];
+  const id0 = String(u.uniqueId || '').toLowerCase(), t = String(text || '').toLowerCase().trim();
+  if (!id0 || gesperrt(id0)) return;
+  // Kein Haus: nur bei Event-Antworten wird eins gebaut (Mitmachen zählt). „haus“ und Farben → Hinweis „erst liken“
+  if (!S.spieler[id0] && !EV.laeuft()) {
+    if (istHausWunsch(t)) return erstLiken(u, 'haus');
+    if (t.split(/[^a-zäöüß]+/).some(w => CFG.farben[w])) return erstLiken(u, 'farbe');
+    return;
+  }
   const p = spieler(u); if (!p) return;
-  if (neu) gibMuscheln(p, CFG.muschelnFuerErstenKommentar, 'kommentar');
-  const t = String(text || '').toLowerCase().trim();
+  farbeAus(p, t);                                          // Farbe gilt immer – auch wenn das Wort gleichzeitig eine Event-Antwort ist
   if (EV.kommentar(p, t)) { geaendert = true; zustand(); return; }   // Event-Antworten (rot, flasche, A, 42 …)
   if (istHausWunsch(t) && !hausWunsch.includes(p.id) && Date.now() - (hausGezeigt[p.id] || 0) > 120000) {
     hausWunsch.push(p.id); if (hausWunsch.length > 20) hausWunsch.shift();
@@ -131,8 +157,6 @@ function kommentar(u, text) {
       sende({ typ: 'anbau', id: p.id, was: wort });
       sag(satz('anbau', { name: sprechName(p), anbau: { Boot: 'ein Boot', Palme: 'eine Palme', Laterne: 'eine Laterne', Flagge: 'eine Flagge' }[ab.name] || 'einen ' + ab.name }), 3);
     }
-    const f = CFG.farben[wort];
-    if (f && p.farbe !== f) { p.farbe = f; geaendert = true; sende({ typ: 'farbe', id: p.id }); }
   }
   zustand();
 }
@@ -265,7 +289,8 @@ const TON_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'muscheltal-ton-')); let t
 let stimme = CFG.stimme.mac, stilleSeit = Date.now();
 const ECHT = !STILL && process.platform === 'darwin';
 const dauerMs = t => t.length * 62 + (t.match(/…/g) || []).length * 450 + 300;   // Schätzung ohne echte Stimme
-const fuerStimme = t => t.replace(/\s*…\s*/g, ' [[slnc 250]] ').replace(/([!?])\s+/g, '$1 [[slnc 150]] ');
+let ohnePausen = false;                                    // manche Premium-Stimmen hängen an [[slnc]]-Befehlen
+const fuerStimme = t => ohnePausen ? t.replace(/\s*…\s*/g, ', ') : t.replace(/\s*…\s*/g, ' [[slnc 250]] ').replace(/([!?])\s+/g, '$1 [[slnc 150]] ');
 function sag(text, prio = 2) {
   if (!text) return;
   if (satzAnstoessig(text)) { console.log('🚫 Satz nicht gesprochen (Filter):', text); return; }
@@ -281,45 +306,116 @@ function sag(text, prio = 2) {
   for (let i = warte.length - 1; i >= 0; i--) if (warte[i].prio >= 2 && jetzt - warte[i].t > 20000) warte.splice(i, 1);
   weiter();
 }
+let sprichtSeit = 0;
+// Sicherung: Sprache erzeugen darf max. 10 s dauern, Abspielen max. 20 s. Hängt das Erzeugen öfter, hilft sich das Programm selbst.
+let schritt = '', haenger = 0;
+setInterval(() => {
+  const grenze = schritt === 'erzeugen' ? 25000 : 20000;
+  if (!spricht || Date.now() - sprichtSeit < grenze) return;
+  console.log(`⚠️  Ansage hing beim ${schritt === 'erzeugen' ? 'Erzeugen der Sprache (say, Stimme „' + stimme + '“)' : schritt === 'abspielen' ? 'Abspielen (afplay)' : 'Warten (' + schritt + ')'} – Anna macht weiter.`);
+  if (schritt === 'erzeugen' && ++haenger >= 2) {
+    haenger = 0;
+    if (!ohnePausen) { ohnePausen = true; console.log('   → Versuche es ab jetzt ohne Sprechpausen-Befehle.'); }
+    else { const e = CFG.stimme.macErsatz.shift(); if (e) { stimme = e; console.log(`   → Wechsle auf die Stimme „${e}“.`); } }
+  }
+  sprichtSeit = Date.now();
+  if (sayProzess && sayProzess.exitCode === null) { try { sayProzess.kill(); } catch { fertig(); } } else fertig();
+}, 1000);
 function fertig() { spricht = false; stilleSeit = Date.now(); setTimeout(weiter, 50); }
 function weiter() {
   if (spricht || !warte.length) return;
-  const { text } = warte.shift(); spricht = true; gesprochen.push(Date.now()); letzteAnsageZeit = Date.now();
+  const { text } = warte.shift(); spricht = true; sprichtSeit = Date.now(); gesprochen.push(Date.now()); letzteAnsageZeit = Date.now();
   sende({ typ: 'ansage', text, ms: dauerMs(text) });
   if (!ECHT) { setTimeout(fertig, dauerMs(text)); return; }
   const aufSeite = CFG.stimme.wiedergabe !== 'mac' && seiteHatTon() && Date.now() > stimmeFehlerBis;
-  const datei = path.join(TON_DIR, `s${++tonNr % 20}.wav`);
+  // Sprach-Speicher: schon einmal erzeugte Sätze werden sofort wieder abgespielt (spart die lange Erzeugung)
+  const key = crypto.createHash('md5').update(`${stimme}|${CFG.stimme.tempo}|${ohnePausen}|${text}`).digest('hex');
+  const fertigDatei = path.join(CACHE_DIR, key + '.wav'), datei = path.join(TON_DIR, `s${++tonNr % 20}.wav`);
   const args = ['-v', stimme, '-r', String(CFG.stimme.tempo)];
-  if (aufSeite) args.push('-o', datei, '--file-format=WAVE', '--data-format=LEI16@22050');
-  else if (CFG.stimme.macGeraet) args.push('-a', CFG.stimme.macGeraet);   // z. B. „BlackHole 2ch“ → direkt in LIVE Studio
-  const pr = spawn('say', [...args, fuerStimme(text)]);
+  // Immer erst eine Sprachdatei erzeugen (say hängt sonst manchmal an Mehrfach-Ausgabe/BlackHole), dann abspielen
+  args.push('-o', datei, '--file-format=WAVE', '--data-format=LEI16@22050');
+  schritt = 'erzeugen'; const t0say = Date.now();
   let fehler = '';
-  pr.stderr.on('data', d => fehler += d);
-  pr.on('close', code => {
-    if (aufSeite && code === 0) {                      // Seite spielt ab; warten, bis die Ansage vorbei ist
-      let ms = 2000; try { ms = (fs.statSync(datei).size - 44) / 44.1 + 300; } catch {}
+  const nachErzeugen = code => {
+    if (aufSeite && code === 0) {
+      schritt = 'seite';                      // Seite spielt ab; warten, bis die Ansage vorbei ist
+      let ms = 2000;
+      try {                                            // Dauer aus dem WAV-Kopf (Bytes pro Sekunde), nicht geschätzt
+        const b = fs.readFileSync(datei), rate = b.readUInt32LE(28) || 44100;
+        let o = 12, daten = b.length - 44;
+        while (o + 8 <= b.length) { const id = b.toString('ascii', o, o + 4), gr = b.readUInt32LE(o + 4); if (id === 'data') { daten = Math.min(gr, b.length - o - 8); break; } o += 8 + gr + (gr & 1); }
+        ms = Math.min(15000, daten / rate * 1000 + 300);
+      } catch {}
       sende({ typ: 'stimme', id: tonSeite, url: '/ton/' + path.basename(datei) + '?' + Date.now() });
       if (++unbestaetigt >= 3) { unbestaetigt = 0; stimmeFehlerBis = Date.now() + 60000; console.log('🔈 Live-Seite bestätigt Annas Stimme nicht – spreche 1 Minute über die Mac-Lautsprecher.'); }
       setTimeout(fertig, ms);
       return;
     }
+    if (code === 0 && !ausSpeicher) {
+      haenger = 0; const d = Date.now() - t0say;
+      try { fs.copyFileSync(datei, fertigDatei); } catch {}
+      if (d > 4000) console.log(`🐢 Sprache erzeugen dauerte ${(d / 1000).toFixed(1)} s`);
+      // Zu langsam (Premium-Stimmen brauchen auf manchen Macs ~10 s): automatisch auf die schnellere Stimme wechseln
+      langsam = d > (CFG.stimme.maxErzeugenSek ?? 4) * 1000 ? langsam + 1 : 0;
+      if (langsam >= 2) { const e = CFG.stimme.macErsatz.shift(); if (e) { console.log(`   → „${stimme}“ ist auf diesem Mac zu langsam – wechsle auf „${e}“.`); stimme = e; } langsam = 0; }
+    }
+    if (!aufSeite && code === 0) {                     // Mac-Ton: Datei mit afplay abspielen (wie die Musik)
+      schritt = 'abspielen';
+      const ap = sayProzess = spawn('afplay', ['-v', String(CFG.ton.stimmeAufMac ?? 1), ausSpeicher ? fertigDatei : datei]);
+      ap.on('error', e => { console.log('⚠️  afplay-Fehler:', e.message); fertig(); });
+      ap.on('close', () => fertig());
+      return;
+    }
+    if (code !== 0 && fehler) console.log('⚠️  say meldet:', fehler.trim().slice(0, 200));
     if (code !== 0 && /voice|stimme/i.test(fehler)) {
       const ersatz = CFG.stimme.macErsatz.shift();
       if (ersatz) { console.log(`Stimme „${stimme}“ nicht gefunden, nehme „${ersatz}“.`); stimme = ersatz; warte.unshift({ text, prio: 0, t: Date.now() }); }
     }
     fertig();
-  });
+  };
+  const ausSpeicher = fs.existsSync(fertigDatei);
+  if (ausSpeicher) { if (aufSeite) try { fs.copyFileSync(fertigDatei, datei); } catch {} return nachErzeugen(0); }
+  const pr = sayProzess = spawn('say', [...args, fuerStimme(text)]);
+  pr.on('error', e => { console.log('⚠️  say-Fehler:', e.message); fertig(); });
+  pr.stderr.on('data', d => fehler += d);
+  pr.on('close', nachErzeugen);
 }
+let langsam = 0;
+// Beim Start alle festen Sätze leise im Hintergrund vorab erzeugen (niedrige Priorität), damit sie im LIVE sofort kommen
+function vorwaermen() {
+  if (!ECHT) return;
+  const offen = [...festeSaetze(), ...Object.values(require_preis())].filter(Boolean);
+  let i = 0, fertigN = 0;
+  const naechster = () => {
+    while (i < offen.length) {
+      const text = offen[i++], key = crypto.createHash('md5').update(`${stimme}|${CFG.stimme.tempo}|${ohnePausen}|${text}`).digest('hex'), ziel = path.join(CACHE_DIR, key + '.wav');
+      if (fs.existsSync(ziel)) continue;
+      const tmp = ziel + '.tmp.wav';
+      const pr = spawn('nice', ['-n', '15', 'say', '-v', stimme, '-r', String(CFG.stimme.tempo), '-o', tmp, '--file-format=WAVE', '--data-format=LEI16@22050', fuerStimme(text)]);
+      pr.on('error', () => setTimeout(naechster, 1000));
+      pr.on('close', c => { if (c === 0) { try { fs.renameSync(tmp, ziel); fertigN++; } catch {} } setTimeout(naechster, 200); });
+      return;
+    }
+    if (fertigN) console.log(`🗣️  ${fertigN} feste Sätze vorab erzeugt – kommen im LIVE sofort.`);
+  };
+  setTimeout(naechster, 5000);
+}
+const require_preis = () => EV.preise ? EV.preise() : {};
+setTimeout(vorwaermen, 3000);
+// Sprach-Speicher in werkzeug/stimme (bleibt zwischen den Streams erhalten, höchstens 2.000 Sätze)
+const CACHE_DIR = path.join(DIR, 'werkzeug', 'stimme'); fs.mkdirSync(CACHE_DIR, { recursive: true });
+try { const f = fs.readdirSync(CACHE_DIR).map(n => ({ n, t: fs.statSync(path.join(CACHE_DIR, n)).mtimeMs })).sort((a, b) => b.t - a.t); f.slice(2000).forEach(x => fs.unlinkSync(path.join(CACHE_DIR, x.n))); } catch {}
 
 // ---------- Ton-Absicherung ----------
 // Läuft auf keiner Live-Seite Ton (Browser blockiert ihn), spielen Stimme und Musik direkt über die Mac-Lautsprecher.
-var lokalMusik = null, lokalNr = 0, tonSeite = null, stimmeFehlerBis = 0, unbestaetigt = 0;
+var sayProzess = null, lokalMusik = null, lokalNr = 0, tonSeite = null, stimmeFehlerBis = 0, unbestaetigt = 0;
 const tonStatus = new Map();                               // Seiten-Nr. -> { an, zeit, vorschau, seit }
 const seiteHatTon = () => { const st = tonStatus.get(tonSeite); return !!st && st.an && Date.now() - st.zeit < 10000; };
 // Genau EINE Seite spielt Ton: bevorzugt eine, auf der Ton schon läuft, sonst die zuerst geöffnete (keine Vorschau)
 // Spielt die gewählte Seite nach 8 s noch keinen Ton, kommt die nächste dran (LIVE Studio lädt die Seite manchmal doppelt).
 let rolleSeit = 0; const tonFehl = new Map();             // Seiten-Nr. -> wann zuletzt ohne Ton
 function waehleTonSeite() {
+  if (CFG.stimme.wiedergabe === 'mac') { if (tonSeite !== null) { tonSeite = null; sende({ typ: 'tonRolle', id: null }); } return; }
   const offen = [...kunden.keys()].filter(id => !tonStatus.get(id)?.vorschau);
   const mitTon = offen.filter(id => tonStatus.get(id)?.an);
   let neu = tonSeite;
@@ -334,12 +430,13 @@ function waehleTonSeite() {
 }
 const MUSIK_DATEIEN = [1, 2, 3, 4, 5].map(i => `insel_${i}.mp3`).map(f => path.join(DIR, 'seite', 'musik', f));
 function musikLokal() {
-  const brauche = process.platform === 'darwin' && CFG.ton.musikAufMac !== false && !seiteHatTon() && Date.now() - START > 15000;
+  const macModus = CFG.stimme.wiedergabe === 'mac';
+  const brauche = process.platform === 'darwin' && CFG.ton.musikAufMac !== false && (macModus || (!seiteHatTon() && Date.now() - START > 15000));
   if (brauche && !lokalMusik) {
     const f = MUSIK_DATEIEN[lokalNr++ % MUSIK_DATEIEN.length];
     lokalMusik = spawn('afplay', ['-v', String(CFG.ton.musikAufMacLautstaerke ?? .18), f]);
     lokalMusik.on('close', () => { lokalMusik = null; });
-    console.log('🎵 Kein Ton auf der Live-Seite – Musik und Stimme laufen über die Mac-Lautsprecher.');
+    if (!macModus) console.log('🎵 Kein Ton auf der Live-Seite – Musik und Stimme laufen über die Mac-Lautsprecher.');
   }
   if (!brauche && lokalMusik) { lokalMusik.kill(); lokalMusik = null; }
 }
@@ -399,7 +496,8 @@ function rundgang() {                                      // Kamera fliegt zu e
   return satz('rundgang', { name: sprechName(p), stufeCap: grossKlein(artikel(st)), stufeDativ: dativ(st), anbauText: an.length ? ' mit ' + namenListe(an) : '' });
 }
 function moderiere() {
-  if (spricht || warte.length || Date.now() - stilleSeit < (CFG.stimme.pauseSek ?? 1.6) * 1000) return;
+  const dringend = followDank.length || likeDank.length;     // Dank kommt sofort, Moderation erst nach der Pause
+  if (spricht || warte.length || Date.now() - stilleSeit < (dringend ? .8 : (CFG.stimme.pauseSek ?? 4)) * 1000) return;
   // 1. Follows bedanken
   if (followDank.length) {
     return sag(satz('followEins', { name: sprechName(followDank.shift()) }), 1);   // einzeln, kurz
@@ -408,7 +506,7 @@ function moderiere() {
   if (likeDank.length) { const p = likeDank.shift(); return sag(satz('likeDank', { name: sprechName(p) }), 1); }
   // 1b. Wer „haus“ geschrieben hat: Kamera fliegt zum Haus (ab und zu, nicht während Events)
   const kameraEvent = ['schatzsuche', 'meeresbesuch', 'flaschenpost', 'moewenalarm', 'hausbesuch'].includes(EV.id());
-  if (!kameraEvent && hausWunsch.length && Date.now() - letztesHausZeigen > (EV.laeuft() ? 20000 : 12000)) {
+  if (!kameraEvent && hausWunsch.length && Date.now() - letztesHausZeigen > (EV.laeuft() ? 15000 : 8000)) {
     const p = S.spieler[hausWunsch.shift()];
     if (p && !p.gesperrt) {
       letztesHausZeigen = letzterRundgang = Date.now(); hausGezeigt[p.id] = Date.now();
@@ -594,7 +692,7 @@ const server = http.createServer((req, res) => {
   }
   throw e;
 }).listen(CFG.port, () => {
-  console.log(`\n🐚 Muschel-Tal LIVE läuft:  http://localhost:${CFG.port}`);
+  console.log(`\n🐚 Muschel-Tal LIVE läuft:  http://localhost:${CFG.port}   (Version ${VERSION})`);
   console.log('   Diese Adresse in TikTok LIVE Studio als Link-/Browser-Quelle (1080×1920) einfügen.\n');
 });
 
