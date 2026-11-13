@@ -48,6 +48,20 @@ const SAETZE = {
     ' Nur noch {rest} Bewohner, dann wird {projekt} gebaut!',
     ' Wir brauchen noch {rest} Bewohner für {projekt}.',
   ],
+  hinweis: [
+    'Folgt mir … und eure Hütte wird live gebaut … und euer Platz in Muschel-Tal ist reserviert!',
+    'Dein erster Like baut deine Hütte. … Mehr Likes vergrößern deine Hütte.',
+    'Sammle Muscheln durch Events … und steige in der Rangliste auf!',
+    'Neu hier? … Dein erster Like baut deine Hütte! … Und jedes weitere Like macht sie größer.',
+    'Folgen lohnt sich … deine Hütte wird live gebaut … und dein Platz in Muschel-Tal ist dir sicher!',
+    'Bei jedem Event gibt es Muscheln zu gewinnen … damit kletterst du in der Rangliste nach oben!',
+  ],
+  likeDank: [
+    'Wow, {name}! … Danke für die vielen Likes! … Dein Haus wächst und wächst.',
+    'Danke {name} für so viele Likes! … Da freuen sich die Krabben-Bauarbeiter!',
+    '{name} liked wie verrückt! … Danke dir! … Das bringt Muscheln in die Kasse.',
+    'Was für ein Like-Regen von {name}! … Danke!',
+  ],
   teilen: [
     'Danke {name} fürs Teilen!',
     '{name} hat den Stream geteilt! Danke dir!',
