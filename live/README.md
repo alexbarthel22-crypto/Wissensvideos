@@ -149,6 +149,8 @@ Der Mac bleibt automatisch wach, solange das Programm läuft (`caffeinate`). Das
 - „Muschel-Tal LIVE starten.command“ öffnet keinen Browser-Tab mehr (spart einen zweiten Durchlauf). Brauchst du doch einen (Fensteraufnahme): `http://localhost:8790` selbst öffnen.
 
 ## Ton (Musik + Stimme)
+**Annas Stimme = Piper (offline):** Der macOS-Sprachdienst (`say`) blockiert, sobald LIVE Studio live ist. Darum erzeugt das Programm Annas Stimme selbst mit der freien Offline-Sprachsoftware **Piper** (deutsche Frauenstimme „Kerstin“, unbegrenzt, kostenlos). Beim ersten Start lädt „Muschel-Tal LIVE starten“ einmalig die Programmteile (npm) und die Stimme (ca. 60 MB). Ein Satz entsteht in ca. 0,2 s; hängt die Stimme, startet sie automatisch neu. Im Terminal steht dann „🗣️ Anna spricht mit der Offline-Stimme …“.
+
 **Wichtig (LIVE Studio auf dem Mac):** Der Ton der Link-Quelle kommt bei LIVE Studio nicht im Stream an. Darum laufen Anna und die Musik über den Mac-Ton (`"wiedergabe": "mac"` in einstellungen.json) und gelangen über das kostenlose Programm **BlackHole** als „Mikrofon“ in LIVE Studio:
 1. BlackHole 2ch installieren (kostenlos): existential.audio/blackhole – oder im Terminal `brew install blackhole-2ch`. Danach Mac neu starten.
 2. Programm **Audio-MIDI-Setup** öffnen → unten links **+** → **Gerät mit mehreren Ausgängen erstellen** → Haken bei **MacBook-Lautsprecher** (bzw. deinen Lautsprechern) und **BlackHole 2ch**.

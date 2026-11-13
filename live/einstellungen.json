@@ -14,7 +14,11 @@
     "_pause": "pauseSek: Pause zwischen zwei Moderations-Sätzen (9 s → etwa alle 10–12 s eine Durchsage). Dank für Geschenke, Follows usw. kommt sofort.",
     "maxErzeugenSek": 4,
     "_tempo": "maxErzeugenSek: Braucht die Stimme länger, um einen Satz zu erzeugen (2× hintereinander), wechselt das Programm automatisch auf die nächste schnellere Stimme aus macErsatz. Fertige Sätze werden in werkzeug/stimme gespeichert und sofort wiederverwendet.",
-    "_stimme": "Stimme „Anna“ (normal) – schnell genug auch während des LIVEs. „Anna (Premium)“ klingt besser, braucht auf diesem Mac aber ca. 10 s pro Satz."
+    "_stimme": "Stimme „Anna“ (normal) – schnell genug auch während des LIVEs. „Anna (Premium)“ klingt besser, braucht auf diesem Mac aber ca. 10 s pro Satz.",
+    "engine": "piper",
+    "piperModell": "stimme-kerstin",
+    "piperTempo": 1.08,
+    "_engine": "engine 'piper' (Standard): Annas Stimme entsteht offline im Programm (Piper, Stimme „Kerstin“, wird beim ersten Start geladen) – unabhängig vom macOS-Sprachdienst, der während des LIVEs hängt. 'mac': Mac-Stimme (say). piperTempo: >1 = schneller."
   },
   "stufen": [
     {
