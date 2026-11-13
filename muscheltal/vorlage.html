@@ -618,8 +618,8 @@ const XM={x:Math.cos(4.45)*(EXT0+260),y:Math.sin(4.45)*(EXT0+260)*.92,r:120,open
 // 🔴 TikTok-LIVE-Insel: weit unten zwischen Schildkröten-Atoll und Kokos-Küste, verhüllt – gebaut wird nur im LIVE
 const LV={x:200,y:2950,r:690};
 // 🏰 Schlossinsel ganz am Rand (unten links)
-const SCH={x:-1550,y:3080,r:115};
-const BOX=(()=>{let a=Math.min(XM.x-XM.r,LV.x-LV.r,SCH.x-SCH.r)-200,b=XM.y-XM.r-200,c=Math.max(XM.x+XM.r,LV.x+LV.r)+200,d=Math.max(XM.y+XM.r,LV.y+LV.r+60,SCH.y+SCH.r+80)+200;for(const v of ISL){a=Math.min(a,v.x-v.R-220);b=Math.min(b,v.y-v.R-220);c=Math.max(c,v.x+v.R+220);d=Math.max(d,v.y+v.R+220);}return{x0:a,y0:b,x1:c,y1:d};})();
+const SCH={x:-16500,y:29000,r:115};// ganz außen: beim maximalen Herauszoomen unten links am Rand
+const BOX=(()=>{let a=Math.min(XM.x-XM.r,LV.x-LV.r)-200,b=XM.y-XM.r-200,c=Math.max(XM.x+XM.r,LV.x+LV.r)+200,d=Math.max(XM.y+XM.r,LV.y+LV.r+60)+200;for(const v of ISL){a=Math.min(a,v.x-v.R-220);b=Math.min(b,v.y-v.R-220);c=Math.max(c,v.x+v.R+220);d=Math.max(d,v.y+v.R+220);}return{x0:a,y0:b,x1:c,y1:d};})();
 
 // Bauplätze (inkl. Hafen-Erweiterung) – dort steht keine Deko, keine Bank, keine Laterne
 const inPlot=(v,x,y,pad=4)=>v.resv.some(([k,m])=>{let x0=v.x+(5*k+1)*S-9-pad,x1=v.x+(5*k+4)*S+9+pad;const y0=v.y+(4*m+1)*S*.9-8-pad,y1=v.y+(4*m+3)*S*.9+8+pad;if(HAFEN.has(v.i+':'+k+','+m)){if(k<0)x0-=220;else x1+=220;}return x>x0&&x<x1&&y>y0&&y<y1;});
@@ -3142,7 +3142,8 @@ function draw(){{const k=kind();REGEN.on=k==="rain"||k==="storm";}
  // Beschriftung (herausgezoomt)
  if(zr<.8&&z>fitAll().z*.6){c.textAlign='center';c.lineJoin='round';const fz=Math.max(.95,Math.min(1.15,zr/.5));const lab=(t,x,y,fs,col)=>{fs*=fz;c.font='900 '+fs/z+'px '+FONT;c.lineWidth=4/z;c.strokeStyle='#2a1b12';c.fillStyle=col;c.strokeText(t,x,y);c.fillText(t,x,y);};
   for(const v of ISL){const yb=v.y+v.R*.92+26*fz/z;if(v.open){lab(v.emoji+' '+v.name,v.x,yb,14,'#ffd23f');lab(fmt(v.people.length)+(v.plaetze?' / '+fmt(v.plaetze):'')+' Einwohner',v.x,yb+16*fz/z,10,'#fff');}else{lab('???',v.x,yb,18,'#fff');lab('🔒 ab '+fmt(v.ab+1)+' Followern',v.x,yb+17*fz/z,11,'#ffd23f');}}
-  lab('???',XM.x,XM.y+XM.r+30*fz/z,18,'#fff');{const yb=LV.y+LV.r*.82+30*fz/z;lab('🔴 TikTok LIVE-Insel',LV.x,yb,14,'#fff');lab('🏰 Schlossinsel',SCH.x,SCH.y+SCH.r*.82+28*fz/z,12,'#ffd23f');lab('Mitbauen nur im LIVE',LV.x,yb+16*fz/z,10,'#ffd23f');}}
+  lab('???',XM.x,XM.y+XM.r+30*fz/z,18,'#fff');{const yb=LV.y+LV.r*.82+30*fz/z;lab('🔴 TikTok LIVE-Insel',LV.x,yb,14,'#fff');lab('Mitbauen nur im LIVE',LV.x,yb+16*fz/z,10,'#ffd23f');}}
+ if(z*SCH.r<14){const pr=REDUCED?1:.85+.15*Math.sin(T*2.2),gr=c.createRadialGradient(SCH.x,SCH.y,0,SCH.x,SCH.y,22/z);gr.addColorStop(0,`rgba(255,215,120,${.55*pr})`);gr.addColorStop(1,'rgba(255,215,120,0)');c.fillStyle=gr;c.beginPath();c.arc(SCH.x,SCH.y,22/z,0,TAU);c.fill();c.font=(20/z)+'px '+FONT;c.textAlign='center';c.textBaseline='middle';c.fillText('🏰',SCH.x,SCH.y);c.textBaseline='alphabetic';}
  c.setTransform(DPR,0,0,DPR,0,0);
  if(K==='rain'||K==='storm'){const sl=WFg*3;c.strokeStyle='rgba(215,230,255,.5)';c.lineWidth=1.1;c.beginPath();for(let i=0;i<(K==='storm'?170:120);i++){const sp=520+hash(i,42)*220,y=((hash(i,41)*(H+40)+T*sp)%(H+40))-20,x=((hash(i,40)*W*1.3+T*sl*40)%(W*1.3))-W*.15;c.moveTo(x,y);c.lineTo(x-sl*2.5,y+15);}c.stroke();}
  if(K==='snow'){c.fillStyle='rgba(235,242,255,.14)';c.fillRect(0,0,W,H);c.fillStyle='#fff';c.strokeStyle='rgba(70,95,130,.45)';c.lineWidth=.8;for(let i=0;i<110;i++){const sp=28+hash(i,43)*40,y=((hash(i,41)*(H+20)+T*sp)%(H+20))-10,x=(((hash(i,40)*W+Math.sin(T*.8+i)*14+T*WFg*10)%W)+W)%W;c.beginPath();c.arc(x,y,1.5+hash(i,44)*2,0,TAU);c.fill();c.stroke();}}
@@ -3205,7 +3206,7 @@ if(!REDUCED)requestAnimationFrame(loop);
 let raf=0;function kick(){if(!raf)raf=requestAnimationFrame(()=>{raf=0;draw();});}
 
 // ---------- Bedienung ----------
-function clamp(){cam.z=Math.max(fitAll().z*.12,Math.min(10,cam.z));const mx=(BOX.x1-BOX.x0)*3,my=(BOX.y1-BOX.y0)*3,cx=(BOX.x0+BOX.x1)/2,cy=(BOX.y0+BOX.y1)/2;cam.x=Math.max(cx-mx,Math.min(cx+mx,cam.x));cam.y=Math.max(cy-my,Math.min(cy+my,cam.y));}
+function clamp(){cam.z=Math.max(fitAll().z*.12,Math.min(10,cam.z));const mx=(BOX.x1-BOX.x0)*3,my=(BOX.y1-BOX.y0)*3,cx=(BOX.x0+BOX.x1)/2,cy=(BOX.y0+BOX.y1)/2;cam.x=Math.max(Math.min(cx-mx,SCH.x-400),Math.min(cx+mx,cam.x));cam.y=Math.max(cy-my,Math.min(Math.max(cy+my,SCH.y+400),cam.y));}
 let fly=0;function flyTo(t,ms=750){cancelAnimationFrame(fly);const f={...cam},t0=performance.now();const step=n=>{const k=Math.min(1,(n-t0)/ms),e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;cam.x=f.x+(t.x-f.x)*e;cam.y=f.y+(t.y-f.y)*e;cam.z=Math.exp(Math.log(f.z)+(Math.log(t.z)-Math.log(f.z))*e);draw();if(k<1)fly=requestAnimationFrame(step);};fly=requestAnimationFrame(step);}
 function zoomAt(f,sx=W/2,sy=H/2){const [wx,wy]=s2w(sx,sy);cam.z*=f;clamp();const [nx,ny]=s2w(sx,sy);cam.x+=wx-nx;cam.y+=wy-ny;clamp();kick();}
 const pts=new Map();let moved=0,pinch=0;
