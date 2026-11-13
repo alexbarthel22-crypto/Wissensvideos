@@ -233,10 +233,21 @@ function palme(c, x, y, s, t) {
 }
 
 // ================= Live-Daten =================
-function verbinde() {
-  const es = new EventSource('/events');
-  es.onmessage = m => ereignis(JSON.parse(m.data));
-  es.onerror = () => { es.close(); setTimeout(verbinde, 2000); };
+// Live-Daten per einfacher Abfrage (funktioniert auch durch den https-Tunnel für LIVE Studio)
+let pollN = 0, pollSV = -1, SPIELER = [];
+async function verbinde() {
+  for (;;) {
+    try {
+      const r = await fetch(`poll?id=${meineId || ''}&n=${pollN}&sv=${pollSV}`, { cache: 'no-store' });
+      const d = await r.json();
+      meineId = d.id;
+      if (d.spieler) { SPIELER = d.spieler; pollSV = d.sv; S.spieler = SPIELER; }
+      for (const e of d.ev) { if (e.typ === 'zustand') e.s.spieler = SPIELER; ereignis(e); }
+      const rolle = !VORSCHAU && d.tonSeite === meineId; if (rolle !== tonRolle) { tonRolle = rolle; if (rolle) tonStarten(); else tonStoppen(); }
+      pollN = d.n;
+      await new Promise(r => setTimeout(r, 300));
+    } catch { await new Promise(r => setTimeout(r, 1500)); }
+  }
 }
 const sp = id => S.spieler.find(p => p.id === id);
 const platzVon = p => p.platz < ANZAHL ? PLAETZE[p.platz] : null;

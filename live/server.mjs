@@ -7,6 +7,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { spawn } from 'node:child_process';
 import os from 'node:os';
+import zlib from 'node:zlib';
 import { fileURLToPath } from 'node:url';
 import { macheEvents } from './events.mjs';
 import { satz, namenListe } from './saetze.mjs';
@@ -431,18 +432,28 @@ function beitritt(u) {                                     // jemand kommt neu i
 }
 
 // ---------- Seite + Live-Daten (Server-Sent Events) ----------
-const kunden = new Map(); let letzteSeitenAnsage = 0, seitenNr = 0;
-function sende(ev) { const s = `data: ${JSON.stringify(ev)}\n\n`; for (const k of kunden.values()) k.write(s); }
+// ---------- Live-Daten an die Seite: einfache Abfragen (/poll), funktionieren auch durch den Cloudflare-Tunnel ----------
+// Jede Seite fragt ca. 3× pro Sekunde nach. Ereignisse liegen nummeriert in einer Liste; die große Bewohnerliste
+// wird nur mitgeschickt, wenn sie sich geändert hat, und die Antwort wird gepackt (gzip).
+const kunden = new Map(); let letzteSeitenAnsage = 0, seitenNr = 0;      // Seiten-Nr. -> zuletzt gesehen
+const LOG = [], listeZeit = new Map(); let seq = 0, letzterZustand = null, spielerJSON = '[]', spielerVer = 0;
+function sende(ev) { LOG.push({ n: ++seq, ev }); if (LOG.length > 400) LOG.splice(0, LOG.length - 400); }
 let zLetzt = 0, zOffen = false;
 function zustand() {
   if (Date.now() - zLetzt < 250) { if (!zOffen) { zOffen = true; setTimeout(() => { zOffen = false; zustand(); }, 260); } return; }
   zLetzt = Date.now();
-  sende({ typ: 'zustand', s: oeffentlich() });
+  const o = oeffentlich(), sj = JSON.stringify(o.spieler); delete o.spieler;
+  if (sj !== spielerJSON) { spielerJSON = sj; spielerVer++; }
+  letzterZustand = { typ: 'zustand', s: o }; sende(letzterZustand);
 }
+setInterval(() => {                                         // Seiten, die nicht mehr fragen, gelten als geschlossen
+  let weg = false; for (const [id, z] of kunden) if (Date.now() - z > 8000) { kunden.delete(id); tonStatus.delete(id); weg = true; }
+  if (weg) waehleTonSeite();
+}, 3000);
 function oeffentlich() {
   return {
     ...EV.oeffentlich(),
-    spieler: S.reihenfolge.map(id => S.spieler[id]).filter(p => p && !p.gesperrt),
+    spieler: S.reihenfolge.map(id => S.spieler[id]).filter(p => p && !p.gesperrt).map(p => ({ id: p.id, name: p.name, muscheln: p.muscheln, stufe: p.stufe, anbauten: p.anbauten, farbe: p.farbe, platz: p.platz, eventMuscheln: p.eventMuscheln })),
     stufen: CFG.stufen.map(s => s.name), stufenAb: CFG.stufen.map(s => s.ab),
     projekt: S.projekt, fertig: S.fertig, kasse: S.kasse,
     bewohner, ziel: zielJetzt(), strassen: CFG.strassen,
@@ -487,15 +498,22 @@ http.createServer((req, res) => {
     waehleTonSeite();
     res.writeHead(204); return res.end();
   }
-  if (url.pathname === '/events') {
-    res.writeHead(200, { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-cache, no-transform', Connection: 'keep-alive', 'X-Accel-Buffering': 'no' });
-    res.write(`data: ${JSON.stringify({ typ: 'zustand', s: oeffentlich() })}\n\n`);
-    const id = ++seitenNr; kunden.set(id, res);
-    res.write(`data: ${JSON.stringify({ typ: 'hallo', id })}\n\n`);
-    res.write(`data: ${JSON.stringify({ typ: 'tonRolle', id: tonSeite })}\n\n`);
-    waehleTonSeite();
-    req.on('close', () => { kunden.delete(id); tonStatus.delete(id); waehleTonSeite(); });
-    return;
+  if (url.pathname === '/poll') {
+    let id = +url.searchParams.get('id') || 0;
+    const neu = !id || !kunden.has(id);
+    if (neu && !id) id = ++seitenNr;
+    kunden.set(id, Date.now()); if (neu) waehleTonSeite();
+    const n = +url.searchParams.get('n') || 0, sv = +url.searchParams.get('sv');
+    if (!letzterZustand) zustand();
+    // Erste Abfrage oder zu weit zurück: nur den aktuellen Zustand (keine alten Shows/Banner nachspielen)
+    let ev = (!n || (LOG[0] && n < LOG[0].n - 1)) ? [letzterZustand] : LOG.filter(x => x.n > n).map(x => x.ev);
+    const z = ev.filter(e => e.typ === 'zustand').pop(); ev = ev.filter(e => e.typ !== 'zustand'); if (z) ev.push(z);   // nur der neueste Zustand
+    const mitListe = sv !== spielerVer && (Date.now() - (listeZeit.get(id) || 0) > 900);      // Bewohnerliste höchstens 1×/s
+    if (mitListe) listeZeit.set(id, Date.now());
+    const antwort = { id, n: seq, ev, tonSeite, sv: mitListe ? spielerVer : sv, spieler: mitListe ? JSON.parse(spielerJSON) : undefined };
+    let body = Buffer.from(JSON.stringify(antwort)); const kopf = { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' };
+    if (/gzip/.test(req.headers['accept-encoding'] || '') && body.length > 1024) { body = zlib.gzipSync(body); kopf['Content-Encoding'] = 'gzip'; }
+    res.writeHead(200, kopf); return res.end(body);
   }
   if (url.pathname.startsWith('/ton/')) {
     const f = path.join(TON_DIR, path.basename(url.pathname));
