@@ -551,7 +551,13 @@ def baue(rows, out):
     for datei in ("erfolge.html", "regeln.html"):
         quelle = os.path.join(HIER, datei)
         if os.path.exists(quelle):
-            open(os.path.join(out, datei), "w", encoding="utf-8").write(open(quelle, encoding="utf-8").read())
+            txt = open(quelle, encoding="utf-8").read()
+            if datei == "erfolge.html":  # Bewohner, Gründer und Erfolgs-Entzug für die %-Angaben
+                txt = (txt.replace("/*BEW*/[]", json.dumps([r[0].lower().lstrip("@") for r in sauber], ensure_ascii=False))
+                       .replace("/*GRUEND*/0", str(sum(1 for r in sauber if r[4])))
+                       .replace("/*ENT*/{}", json.dumps({k.lower().lstrip("@"): v for k, v in (insel.get("erfolg_entzug") or {}).items()}, ensure_ascii=False))
+                       .replace("/*ENTA*/{}", json.dumps(insel.get("erfolg_entzug_alle") or {}, ensure_ascii=False)))
+            open(os.path.join(out, datei), "w", encoding="utf-8").write(txt)
     uebersicht(sauber, insel, out)
     nachrichten(insel, out)
     berufe(sauber, insel, out)
