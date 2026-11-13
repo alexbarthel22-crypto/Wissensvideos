@@ -217,3 +217,5 @@ export function satz(art, werte = {}) {
   return liste[i].replace(/\{(\w+)\}/g, (_, k) => werte[k] ?? '');
 }
 export const namenListe = n => n.length > 1 ? `${n.slice(0, -1).join(', ')} und ${n.at(-1)}` : n[0];
+// Alle Sätze ohne Platzhalter (werden beim Start vorab als Sprachdatei erzeugt)
+export const festeSaetze = () => Object.values(SAETZE).flat().filter(t => !t.includes('{'));

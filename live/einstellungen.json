@@ -15,7 +15,9 @@
     "wiedergabe": "mac",
     "_hinweis": "wiedergabe 'mac' (Standard): Anna und Musik laufen über den Mac-Ton – mit BlackHole als Mikrofon in LIVE Studio landen sie sicher im Stream (siehe README). 'seite': Ton über die Link-Quelle (geht bei LIVE Studio auf dem Mac nicht zuverlässig).",
     "pauseSek": 4,
-    "_pause": "pauseSek: Pause zwischen zwei Moderations-Sätzen (4 s → etwa alle 5–10 s ein Satz). Danke für Geschenke, Follows usw. kommt sofort."
+    "_pause": "pauseSek: Pause zwischen zwei Moderations-Sätzen (4 s → etwa alle 5–10 s ein Satz). Danke für Geschenke, Follows usw. kommt sofort.",
+    "maxErzeugenSek": 4,
+    "_tempo": "maxErzeugenSek: Braucht die Stimme länger, um einen Satz zu erzeugen (2× hintereinander), wechselt das Programm automatisch auf die nächste schnellere Stimme aus macErsatz. Fertige Sätze werden in werkzeug/stimme gespeichert und sofort wiederverwendet."
   },
   "stufen": [
     {

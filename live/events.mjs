@@ -568,6 +568,7 @@ export function macheEvents(api) {
       return { event: a, ergebnis: ergebnis && { titel: ergebnis.titel, icon: ergebnis.icon, text: ergebnis.text, id: ergebnis.id, gut: !!ergebnis.gut, extra: ergebnis.extra, gewinner: ergebnis.gewinnerText }, eventIn: ev ? 0 : Math.max(0, Math.round((naechstes - Date.now()) / 1000)) };
     },
     laeuft: () => !!ev,
+    preise: () => PREIS,
     id: () => ev?.id || null,
     liveSatz() {                                          // abwechslungsreich: nie derselbe Satz wie zuletzt
       if (!ev || ev.frueh || rest(ev) <= 3 || !LIVE[ev.id]) return null;

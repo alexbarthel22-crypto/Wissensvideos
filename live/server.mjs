@@ -8,16 +8,17 @@ import path from 'node:path';
 import { spawn } from 'node:child_process';
 import os from 'node:os';
 import zlib from 'node:zlib';
+import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { macheEvents } from './events.mjs';
-import { satz, namenListe } from './saetze.mjs';
+import { satz, namenListe, festeSaetze } from './saetze.mjs';
 import { geschenkFormen } from './geschenke.mjs';
 import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './filter.mjs';
 
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-13 e';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-13 f';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -287,7 +288,7 @@ let sprichtSeit = 0;
 // Sicherung: Sprache erzeugen darf max. 10 s dauern, Abspielen max. 20 s. Hängt das Erzeugen öfter, hilft sich das Programm selbst.
 let schritt = '', haenger = 0;
 setInterval(() => {
-  const grenze = schritt === 'erzeugen' ? 10000 : 20000;
+  const grenze = schritt === 'erzeugen' ? 25000 : 20000;
   if (!spricht || Date.now() - sprichtSeit < grenze) return;
   console.log(`⚠️  Ansage hing beim ${schritt === 'erzeugen' ? 'Erzeugen der Sprache (say, Stimme „' + stimme + '“)' : schritt === 'abspielen' ? 'Abspielen (afplay)' : 'Warten (' + schritt + ')'} – Anna macht weiter.`);
   if (schritt === 'erzeugen' && ++haenger >= 2) {
@@ -305,16 +306,15 @@ function weiter() {
   sende({ typ: 'ansage', text, ms: dauerMs(text) });
   if (!ECHT) { setTimeout(fertig, dauerMs(text)); return; }
   const aufSeite = CFG.stimme.wiedergabe !== 'mac' && seiteHatTon() && Date.now() > stimmeFehlerBis;
-  const datei = path.join(TON_DIR, `s${++tonNr % 20}.wav`);
+  // Sprach-Speicher: schon einmal erzeugte Sätze werden sofort wieder abgespielt (spart die lange Erzeugung)
+  const key = crypto.createHash('md5').update(`${stimme}|${CFG.stimme.tempo}|${ohnePausen}|${text}`).digest('hex');
+  const fertigDatei = path.join(CACHE_DIR, key + '.wav'), datei = path.join(TON_DIR, `s${++tonNr % 20}.wav`);
   const args = ['-v', stimme, '-r', String(CFG.stimme.tempo)];
   // Immer erst eine Sprachdatei erzeugen (say hängt sonst manchmal an Mehrfach-Ausgabe/BlackHole), dann abspielen
   args.push('-o', datei, '--file-format=WAVE', '--data-format=LEI16@22050');
   schritt = 'erzeugen'; const t0say = Date.now();
-  const pr = sayProzess = spawn('say', [...args, fuerStimme(text)]);
-  pr.on('error', e => { console.log('⚠️  say-Fehler:', e.message); fertig(); });
   let fehler = '';
-  pr.stderr.on('data', d => fehler += d);
-  pr.on('close', code => {
+  const nachErzeugen = code => {
     if (aufSeite && code === 0) {
       schritt = 'seite';                      // Seite spielt ab; warten, bis die Ansage vorbei ist
       let ms = 2000;
@@ -329,10 +329,17 @@ function weiter() {
       setTimeout(fertig, ms);
       return;
     }
-    if (code === 0) { haenger = 0; if (Date.now() - t0say > 4000) console.log(`🐢 Sprache erzeugen dauerte ${((Date.now() - t0say) / 1000).toFixed(1)} s`); }
+    if (code === 0 && !ausSpeicher) {
+      haenger = 0; const d = Date.now() - t0say;
+      try { fs.copyFileSync(datei, fertigDatei); } catch {}
+      if (d > 4000) console.log(`🐢 Sprache erzeugen dauerte ${(d / 1000).toFixed(1)} s`);
+      // Zu langsam (Premium-Stimmen brauchen auf manchen Macs ~10 s): automatisch auf die schnellere Stimme wechseln
+      langsam = d > (CFG.stimme.maxErzeugenSek ?? 4) * 1000 ? langsam + 1 : 0;
+      if (langsam >= 2) { const e = CFG.stimme.macErsatz.shift(); if (e) { console.log(`   → „${stimme}“ ist auf diesem Mac zu langsam – wechsle auf „${e}“.`); stimme = e; } langsam = 0; }
+    }
     if (!aufSeite && code === 0) {                     // Mac-Ton: Datei mit afplay abspielen (wie die Musik)
       schritt = 'abspielen';
-      const ap = sayProzess = spawn('afplay', ['-v', String(CFG.ton.stimmeAufMac ?? 1), datei]);
+      const ap = sayProzess = spawn('afplay', ['-v', String(CFG.ton.stimmeAufMac ?? 1), ausSpeicher ? fertigDatei : datei]);
       ap.on('error', e => { console.log('⚠️  afplay-Fehler:', e.message); fertig(); });
       ap.on('close', () => fertig());
       return;
@@ -343,8 +350,39 @@ function weiter() {
       if (ersatz) { console.log(`Stimme „${stimme}“ nicht gefunden, nehme „${ersatz}“.`); stimme = ersatz; warte.unshift({ text, prio: 0, t: Date.now() }); }
     }
     fertig();
-  });
+  };
+  const ausSpeicher = fs.existsSync(fertigDatei);
+  if (ausSpeicher) { if (aufSeite) try { fs.copyFileSync(fertigDatei, datei); } catch {} return nachErzeugen(0); }
+  const pr = sayProzess = spawn('say', [...args, fuerStimme(text)]);
+  pr.on('error', e => { console.log('⚠️  say-Fehler:', e.message); fertig(); });
+  pr.stderr.on('data', d => fehler += d);
+  pr.on('close', nachErzeugen);
 }
+let langsam = 0;
+// Beim Start alle festen Sätze leise im Hintergrund vorab erzeugen (niedrige Priorität), damit sie im LIVE sofort kommen
+function vorwaermen() {
+  if (!ECHT) return;
+  const offen = [...festeSaetze(), ...Object.values(require_preis())].filter(Boolean);
+  let i = 0, fertigN = 0;
+  const naechster = () => {
+    while (i < offen.length) {
+      const text = offen[i++], key = crypto.createHash('md5').update(`${stimme}|${CFG.stimme.tempo}|${ohnePausen}|${text}`).digest('hex'), ziel = path.join(CACHE_DIR, key + '.wav');
+      if (fs.existsSync(ziel)) continue;
+      const tmp = ziel + '.tmp.wav';
+      const pr = spawn('nice', ['-n', '15', 'say', '-v', stimme, '-r', String(CFG.stimme.tempo), '-o', tmp, '--file-format=WAVE', '--data-format=LEI16@22050', fuerStimme(text)]);
+      pr.on('error', () => setTimeout(naechster, 1000));
+      pr.on('close', c => { if (c === 0) { try { fs.renameSync(tmp, ziel); fertigN++; } catch {} } setTimeout(naechster, 200); });
+      return;
+    }
+    if (fertigN) console.log(`🗣️  ${fertigN} feste Sätze vorab erzeugt – kommen im LIVE sofort.`);
+  };
+  setTimeout(naechster, 5000);
+}
+const require_preis = () => EV.preise ? EV.preise() : {};
+setTimeout(vorwaermen, 3000);
+// Sprach-Speicher in werkzeug/stimme (bleibt zwischen den Streams erhalten, höchstens 2.000 Sätze)
+const CACHE_DIR = path.join(DIR, 'werkzeug', 'stimme'); fs.mkdirSync(CACHE_DIR, { recursive: true });
+try { const f = fs.readdirSync(CACHE_DIR).map(n => ({ n, t: fs.statSync(path.join(CACHE_DIR, n)).mtimeMs })).sort((a, b) => b.t - a.t); f.slice(2000).forEach(x => fs.unlinkSync(path.join(CACHE_DIR, x.n))); } catch {}
 
 // ---------- Ton-Absicherung ----------
 // Läuft auf keiner Live-Seite Ton (Browser blockiert ihn), spielen Stimme und Musik direkt über die Mac-Lautsprecher.
