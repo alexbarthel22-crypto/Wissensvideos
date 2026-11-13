@@ -101,11 +101,25 @@ def importiere_liste(pfad, rows):
         verloren = [(n, jobs[n]) for n in list(jobs) if n.lower().lstrip("@") in weg_namen]
         for n, j in verloren:
             del jobs[n]
+        # Zieht eine Leitung aus, übernimmt die dienstälteste Mitarbeiterin am selben Ort (frühester Eintrag in jobs)
+        nachfolge = []
+        for n, j in verloren:
+            if "Leitung" not in str(j[0]):
+                continue
+            if any(v and v[1] == j[1] and v[0] == j[0] for v in jobs.values()):
+                continue  # dort gibt es noch eine Leitung
+            for m, v in jobs.items():
+                if v and v[1] == j[1] and "Leitung" not in str(v[0]):
+                    jobs[m] = [j[0]] + list(v[1:])
+                    nachfolge.append((m, j[0], j[1]))
+                    break
         if verloren:
             json.dump(insel, open(INSEL, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
             print("⚠️  JOB VERLOREN (entfolgt):")
             for n, j in verloren:
                 print(f"   @{n.lstrip('@')}: {j[0]} – {j[1]}")
+            for m, rolle, ort in nachfolge:
+                print(f"⭐ NEUE {rolle.upper()}: @{m.lstrip('@')} übernimmt {ort}")
         for a in insel.get("aemter") or []:
             if str(a[1]).lower().lstrip("@") in weg_namen:
                 print(f"⚠️  AMT BETROFFEN (entfolgt): {a[1]} war {a[0]} – bitte von Hand regeln")
