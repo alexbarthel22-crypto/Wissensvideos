@@ -52,11 +52,32 @@ async function zuruecksetzen(store) {
     }
   }
 }
+// Teil-Zurücksetzen auf einen Zeitpunkt: alles, was ab „ab“ (ms) passiert ist, wird gelöscht (Buchungen, Spenden,
+// Erfolge, Story, Aufgabenliste von heute; Beanspruchung nur, wenn sie erst danach erfolgte). Läuft je Eintrag genau einmal.
+const HEUTE_9 = 1794556800000; // 13.11.2026 9:00 Uhr (Berlin)
+const ZURUECK = [["toca_lexi00", 1, HEUTE_9]];
+async function zurueckAuf(store) {
+  for (const [n, nr, ab] of ZURUECK) {
+    const mk = "x/zurueck/" + n + "/" + nr;
+    if (await store.get(mk)) continue;
+    await store.set(mk, String(Date.now()));
+    const c = JSON.parse((await store.get("c/" + n)) || "null");
+    if (c && Number(c.ts) >= ab) await store.delete("c/" + n);
+    for (const k of await liste(store, "b/" + n + "/")) if (Number(await store.get(k)) >= ab) await store.delete(k);
+    for (const k of await liste(store, "q/" + n + "/")) if (k.endsWith("/" + tag(ab))) await store.delete(k);
+    const kasse = getStore({ name: "inselkasse", consistency: "strong" });
+    for (const k of await liste(kasse, "s/" + n + "/")) if (Number(String(k.split("/")[2]).split("-")[0]) >= ab) await kasse.delete(k);
+    for (const k of await liste(kasse, "b/" + n + "/")) if (Number(String(k.split("/").pop()).split("-")[0]) >= ab) await kasse.delete(k);
+    const es = getStore("erfolge");
+    for (const k of await liste(es, "e/" + n + "/")) if (Number(k.split("/").pop()) >= ab) await es.delete(k);
+  }
+}
 const TEXT = { login: "Login-Serie", quest: "Aufgabe", qbonus: "Alle 3 Aufgaben", shell: "Schwebende Muschel", erf: "Neuer Erfolg", story: "Story geteilt", spende: "Spende Inselkasse" };
 
 export default async (req) => {
   const store = getStore({ name: "muscheln", consistency: "strong" });
   await zuruecksetzen(store);
+  await zurueckAuf(store);
   const url = new URL(req.url);
   if (req.method === "GET" && url.searchParams.get("top")) {
     // Muschel-Rangliste: Top 10 der beanspruchten Namen nach Kontostand, Pfeile im Vergleich zu gestern, optional eigener Platz
