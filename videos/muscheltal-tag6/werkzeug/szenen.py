@@ -91,9 +91,9 @@ CMT = """.cmt { position: absolute; left: 140px; width: 800px; border-radius: 30
 NS = (D.parent / "werkzeug" / "slot.txt").read_text().split(); WI = NS.index("sklmq3")
 
 # s01 – Hook im Stil von Tag 1: pinke Balken, Wörter springen groß hervor, Sticker „GEBAUT!“
-QL = [[("ICH", "Ich"), ("BAUE", "baue"), ("ALLES,", "ALLES")], [("WAS", "was"), ("IHR", "ihr"), ("IN", "in"), ("DIE", "die")], [("KOMMENTARE", "Kommentare")], [("SCHREIBT!", "schreibt")]]
+QL = [[("AUF", "Auf"), ("DIESER", "dieser")], [("INSEL", "Insel"), ("WIRD", "wird"), ("NUR", "nur")], [("GEBAUT,", "gebaut"), ("WAS", "was")], [("IHR", "ihr"), ("WOLLT!", "wollt")]]
 QW = [w for ln in QL for w in ln]
-YW = ("ALLES,", "KOMMENTARE", "SCHREIBT!")
+YW = ("GEBAUT,", "IHR", "WOLLT!")
 SP = [(110, 560, 46), (900, 600, 34), (70, 960, 30), (930, 1010, 44), (180, 1230, 38), (820, 1200, 30)]
 scene("s01", LILITA + "\n    " + PT + "\n" + FL + """
     #s01-ray { position: absolute; left: -460px; top: 300px; width: 2000px; height: 2000px; border-radius: 50%; background: repeating-conic-gradient(rgba(255,250,210,.28) 0 8deg, rgba(255,255,255,0) 8deg 20deg); -webkit-mask: radial-gradient(circle, #000 15%, transparent 60%); }
@@ -107,12 +107,12 @@ scene("s01", LILITA + "\n    " + PT + "\n" + FL + """
       <div id="s01-gk" data-layout-ignore>GEBAUT!</div>
       <div id="s01-hk">""" + "".join('<div class="ln" id="s01-l' + str(j) + '">' + "".join(f'<span id="s01-w{QW.index(w)}">{w[0]}</span>' for w in ln) + '</div>' for j, ln in enumerate(QL)) + """</div>
       """ + "".join(f'<div class="s01-sp" id="s01-sp{k}" data-layout-ignore style="left:{x}px;top:{y}px;font-size:{f}px">✦</div>' for k, (x, y, f) in enumerate(SP)) + drops("s01-p", 22, 5, 'sc', 540, 900, "🏗️", 600, 820)[0],
-"""      const sc = at("L1", "schreibt");
+"""      const sc = at("L1", "wollt");
       tl.set(["#s01-ray"], { opacity: 1 }, 0);
       tl.fromTo("#s01-ray", { rotation: 0 }, { rotation: 40, duration: 4, ease: "none" }, 0);
       tl.fromTo("#s01-gk", { rotation: -6 }, { rotation: -2, duration: .5, yoyo: true, repeat: 5, ease: "sine.inOut" }, 0);
       """ + "\n      ".join(
-        f'tl.set("#s01-w{i}", {{ zIndex: 5 }}, at("L1", "{k}") - .03); tl.to("#s01-w{i}", {{ scale: {1.4 if len(w) > 7 else (1.45 if len(w) < 4 else 1.65)}, rotation: {(-1)**i * 3}, duration: .1, ease: "back.out(3)" }}, at("L1", "{k}") - .03); tl.to("#s01-w{i}", {{ scale: 1, rotation: 0, duration: .22, ease: "power2.inOut" }}, at("L1", "{k}") + .17); tl.set("#s01-w{i}", {{ zIndex: 0 }}, at("L1", "{k}") + .4);'
+        f'tl.set("#s01-w{i}", {{ zIndex: 5 }}, at("L1", "{k}") - .03); tl.to("#s01-w{i}", {{ scale: {1.35 if len(w) > 7 else (1.38 if len(w) <= 5 else 1.5)}, rotation: {(-1)**i * 3}, duration: .1, ease: "back.out(3)" }}, at("L1", "{k}") - .03); tl.to("#s01-w{i}", {{ scale: 1, rotation: 0, duration: .22, ease: "power2.inOut" }}, at("L1", "{k}") + .17); tl.set("#s01-w{i}", {{ zIndex: 0 }}, at("L1", "{k}") + .4);'
         + (f' tl.to("#s01-w{i}", {{ color: "#ffe500", duration: .05 }}, at("L1", "{k}") - .02);' if w in YW else '')
         for i, (w, k) in enumerate(QW)) + """
       """ + "\n      ".join(f'tl.fromTo("#s01-sp{k}", {{ opacity: 0, scale: .2, rotation: 0 }}, {{ opacity: 1, scale: 1, rotation: 90, duration: .3, yoyo: true, repeat: 3, ease: "sine.inOut", immediateRender: false }}, {k * .2:.2f});' for k in range(len(SP))) + """
@@ -169,13 +169,14 @@ f"""      const l2 = line("L2")[0], vi = at("L2", "Strandvilla"), TB = line("L2w
       tl.fromTo("#s02-fr", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, fr - .2);""", blur=True)
 
 # s03 – Eure Wünsche: Kommentar-Screenshot + fertiger Laden
-WU = [("L3a", "c_sophia.jpg", "🛟 Rettungsschwimmerin @soph_221144", "#e8262f", "Rettungsschwimmerin"),
+WU = [("L3a", "c_sophia.jpg", "🛟 Rettungsschwimmerin @soph_221144".replace("Rettungsschwimmerin ", ""), "#e8262f", "Rettungsschwimmerin"),
       ("L3b", "c_charlie.jpg", "🍕 Porto Pizza · @charlie._.pink", "#2e9e5b", "Porto"),
       ("L3c", "c_amelie.jpg", "🧋 Boba Beach · @_amiesspamm", "#d4469c", "Boba"),
-      ("L3d", "c_jule.jpg", "🍦 Kiosk Kunterbunt · @ju1e_smt", "#18a6b8", "Kunterbunt"),
-      ("L3e", "c_mia.jpg", "🛒 Meerkauf · @mia_04_", "#2a6bff", "Meerkauf"),
+      ("L3d", "c_jule.jpg", "🍦 @ju1e_smt & @vanessa_k1n", "#18a6b8", "Kunterbunt"),
+      ("L3e", "c_mia.jpg", "🛒 @mia_04_ & @leonie27628", "#2a6bff", "Meerkauf"),
       ("L3f", "c_baeckerin.jpg", "🥐 Neu im Bäckerei-Team!", "#ff6a1a", "neue")]
 scene("s03", LILITA + "\n    " + PILL + "\n    " + CMT + """
+    .s03-d { max-width: 1000px; }
     #s03-t { top: 260px; font-size: 46px; background: #7b3fe0; }
     .s03-c { top: 360px; }
     .s03-d { top: 560px; font-size: 44px; }""",
@@ -197,32 +198,50 @@ scene("s04", LILITA + "\n    " + PILL + "\n    " + BIG + """
     #s04-h .bar { height: 30px; border-radius: 15px; background: #ece4d8; margin-top: 10px; overflow: hidden; } #s04-h .bar i { display: block; height: 100%; width: 0; border-radius: 15px; background: linear-gradient(90deg, #2e9e5b, #8be06a); }
     #s04-h .f { margin-top: 8px; font-weight: 900; font-size: 34px; color: #e2560c; }""",
 """      <div id="s04-t" class="pl">🗳️ Ihr habt abgestimmt: Tierheim zuerst!</div>
-      <div id="s04-h"><div class="r"><div>🐾 Tierheim Pfotenkuss</div><div><b id="s04-n">0</b> / 800</div></div><div class="bar"><i id="s04-b"></i></div><div class="f">Nur noch 77 Bewohner!</div></div>""",
-"""      const t0 = line("L4")[0], ti = at("L4", "Tierheim"), wi = at("L4", "Wir"), sv = at("L4", "77");
+      <div id="s04-h"><div class="r"><div>🐾 Tierheim Pfotenkuss</div><div><b id="s04-n">0</b> / 800</div></div><div class="bar"><i id="s04-b"></i></div><div class="f">Nur noch 79 Bewohner!</div></div>""",
+"""      const t0 = line("L4")[0], ti = at("L4", "Tierheim"), wi = at("L4", "Wir"), sv = at("L4", "79");
       tl.fromTo("#s04-t", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, ti - .3);
       tl.fromTo("#s04-h", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, wi - .2);
-      count(tl, "#s04-n", 600, 723, wi, .9, "", "", "power2.out");
-      tl.fromTo("#s04-b", { width: "0%" }, { width: "90.4%", duration: 1, ease: "power2.out" }, wi);
+      count(tl, "#s04-n", 600, 721, wi, .9, "", "", "power2.out");
+      tl.fromTo("#s04-b", { width: "0%" }, { width: "90.1%", duration: 1, ease: "power2.out" }, wi);
       tl.to("#s04-b", { opacity: .4, duration: .15, yoyo: true, repeat: 7, ease: "none" }, sv);""")
 
-# s05 – Aufruf: Was soll ich als Nächstes bauen? Folgen = Haus
-scene("s05", LILITA + "\n    " + PILL + "\n" + FOLLOW + """
-    #s05-q { top: 280px; font-size: 62px; background: linear-gradient(100deg, #ff2e7e, #7b3fe0); transform: rotate(-2deg); font-family: "Lilita One", sans-serif; font-weight: 400; }
-    #s05-k { top: 400px; font-size: 44px; background: #fff; color: #2a1b12; }
-    #s05-btn { top: 560px; } #s05-hand { left: 690px; top: 610px; }
-    #s05-h { top: 720px; font-size: 44px; background: #2e9e5b; }""",
-"""      <div id="s05-q" class="pl">🏗️ WAS BAUE ICH ALS NÄCHSTES?</div>
-      <div id="s05-k" class="pl">💬 Schreib's in die Kommentare!</div>
+# s06 – Teaser: nächste Verlosung auf Maries Party-Yacht
+scene("s06", LILITA + "\n    " + PILL + "\n    " + BIG + "\n    " + PT + """
+    #s06-t { top: 270px; font-size: 48px; background: #7b3fe0; }
+    #s06-b { top: 380px; font-size: 92px; background: linear-gradient(135deg, #ff3d7f, #ff9a3d); transform: rotate(-2deg); }
+    #s06-y { top: 560px; font-size: 46px; background: #fff; color: #18a6b8; }""",
+"""      <div id="s06-t" class="pl">🎟️ Im nächsten Video:</div>
+      <div id="s06-b" class="big">2 PLÄTZE ZU GEWINNEN!</div>
+      <div id="s06-y" class="pl">🛥️ auf Maries Party-Yacht @marie18034</div>""" + drops("s06-p", 18, 23, 'at("L6", "Party") - .1', 540, 700, "🎉", 560, 760)[0],
+"""      const t0 = line("L6")[0], zw = at("L6", "zwei"), pa = at("L6", "Party");
+      tl.fromTo("#s06-t", { opacity: 0, y: -30 }, { opacity: 1, y: 0, duration: .25, ease: "back.out(2)" }, t0);
+      tl.fromTo("#s06-b", { opacity: 0, scale: 3 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(1.8)" }, zw - .15);
+      tl.to("#s06-b", { scale: 1.08, duration: .18, yoyo: true, repeat: 5, ease: "sine.inOut" }, zw + .3);
+      tl.fromTo("#s06-y", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, pa - .25);
+""" + drops("s06-p", 18, 23, 'at("L6", "Party") - .1', 540, 700, "🎉", 560, 760)[1])
+
+# s05 – Folgen-Aufruf, dann Hütte mit deinem Namen
+scene("s05", LILITA + "\n    " + PILL + "\n" + FOLLOW + "\n    " + PT + """
+    #s05-t { top: 290px; font-size: 52px; background: #2e9e5b; }
+    #s05-btn { top: 400px; } #s05-hand { left: 690px; top: 450px; }
+    #s05-fr { position: absolute; left: 360px; top: 680px; width: 360px; height: 450px; border-radius: 34px; border: 9px dashed #ffe14a; box-shadow: 0 0 34px 6px rgba(255,225,74,.7); }
+    #s05-st { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 400px; color: #2e9e5b; border-color: #2e9e5b; background: #fff; transform: rotate(-4deg); font-size: 60px; white-space: nowrap; font-family: "Lilita One", sans-serif; }""",
+"""      <div id="s05-t" class="pl">🏝️ Folgen = eigene Hütte</div>
       <div id="s05-btn" class="fbtn">+ Folgen<div id="s05-btn2" class="fbtn2">✓ Gefolgt</div></div>
       <div id="s05-hand" class="fhand" data-layout-ignore>👆</div>
-      <div id="s05-h" class="pl">🏠 Dein eigenes Haus mit @Namen</div>""",
-"""      const t0 = line("L5")[0], ko = at("L5", "Kommentare"), fo = at("L5", "folge"), ha = at("L5", "Haus");
-      tl.fromTo("#s05-q", { opacity: 0, scale: 2.6 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, t0 - .1);
-      tl.fromTo("#s05-k", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .28, ease: "back.out(2)" }, ko - .3);
-      tl.to("#s05-k", { scale: 1.08, duration: .2, yoyo: true, repeat: 3, ease: "sine.inOut" }, ko + .1);
-      tl.fromTo("#s05-btn", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, fo - .45);
-      tl.fromTo("#s05-hand", { opacity: 0, x: 160, y: 160 }, { opacity: 1, x: 0, y: 0, duration: .25, ease: "power3.out" }, fo - .35);
-      tl.to("#s05-hand", { y: -26, scale: .9, duration: .1, yoyo: true, repeat: 1 }, fo - .05);
-      tl.to("#s05-btn2", { opacity: 1, duration: .05 }, fo + .05);
+      <div id="s05-fr" data-layout-ignore></div>
+      <div id="s05-st" class="stamp" data-layout-ignore>🏠 MIT DEINEM NAMEN!</div>""" + drops("s05-p", 14, 13, 'hu', 540, 820, "🎉", 480, 700)[0],
+"""      const t0 = line("L5")[0], fo = at("L5", "folge"), hu = at("L5", "Hütte"), na = at("L5", "Namen");
+      tl.fromTo("#s05-t", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, t0 - .1);
+      tl.fromTo("#s05-btn", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, t0);
+      tl.fromTo("#s05-hand", { opacity: 0, x: 160, y: 160 }, { opacity: 1, x: 0, y: 0, duration: .25, ease: "power3.out" }, t0 + .1);
+      tl.to("#s05-hand", { y: -26, scale: .9, duration: .1, yoyo: true, repeat: 1 }, fo + .05);
+      tl.to("#s05-btn2", { opacity: 1, duration: .05 }, fo + .15);
+      tl.fromTo("#s05-btn", { scale: 1 }, { scale: 1.15, duration: .12, yoyo: true, repeat: 1, immediateRender: false }, fo + .15);
       tl.to("#s05-hand", { opacity: 0, duration: .2 }, fo + .5);
-      tl.fromTo("#s05-h", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, ha - .4);""", blur=False)
+      tl.fromTo("#s05-fr", { opacity: 0, scale: 1.4 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, hu - .2);
+      tl.to("#s05-fr", { borderColor: "#2e9e5b", borderStyle: "solid", boxShadow: "0 0 50px 14px rgba(46,158,91,.9)", duration: .2 }, na - .1);
+      tl.to(["#s05-btn", "#s05-t"], { opacity: 0, duration: .2 }, na - .35);
+      tl.fromTo("#s05-st", { opacity: 0, scale: 2.6 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, na - .2);
+""" + drops("s05-p", 14, 13, 'hu', 540, 820, "🎉", 480, 700)[1], blur=False)
