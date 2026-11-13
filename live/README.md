@@ -154,7 +154,8 @@ Der Mac bleibt automatisch wach, solange das Programm läuft (`caffeinate`). Das
 2. Programm **Audio-MIDI-Setup** öffnen → unten links **+** → **Gerät mit mehreren Ausgängen erstellen** → Haken bei **MacBook-Lautsprecher** (bzw. deinen Lautsprechern) und **BlackHole 2ch**.
 3. **Systemeinstellungen → Ton → Ausgabe:** „Gerät mit mehreren Ausgängen“ wählen. (Die Lautstärketasten gehen dann nicht – Lautstärke im Audio-MIDI-Setup.)
 4. **LIVE Studio → Mikrofon: „BlackHole 2ch“.** Bei der Link-Quelle den Ton aus.
-5. Test: Programm starten – wenn Anna spricht, schlägt in LIVE Studio der Mikrofon-Pegel aus.
+5. Beim Start öffnet sich automatisch ein **Ton-Tab** im Browser (http://localhost:8790/?ton): einmal **„Ton starten“** klicken und den Tab offen lassen (darf im Hintergrund sein). Anna und die Musik laufen dort – ohne für jeden Satz ein neues Programm zu starten (das hing an der Mehrfach-Ausgabe). Ist der Tab zu, übernimmt automatisch der Mac (say/afplay).
+6. Test: wenn Anna spricht, schlägt in LIVE Studio der Mikrofon-Pegel aus.
 Nach dem Stream kannst du in den Systemeinstellungen wieder die normalen Lautsprecher wählen.
 
 - **Es spielt immer nur eine Seite Ton**, auch wenn Browser und LIVE Studio gleichzeitig offen sind (die zuerst geöffnete). Vor dem LIVE deshalb alte Browser-Tabs mit der Insel schließen – oder sie mit `?vorschau` öffnen (Bild ohne Ton).
