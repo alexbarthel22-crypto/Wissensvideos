@@ -17,7 +17,7 @@
 // Oben (y 150–520) feste Infos, darunter die große Insel. Bei Ausbauten fährt die Kamera an das Haus heran.
 const C = document.getElementById('c');
 // Sparsam: intern 720×1280 (das kommt bei TikTok ohnehin an), gezeichnet wird weiter im 1080er-Raster. ?aufloesung=1080 = volle Größe
-const Q0 = (+new URLSearchParams(location.search).get('aufloesung') || 720) / 1080;
+const Q0 = (+new URLSearchParams(location.search).get('aufloesung') || Math.round(Math.min(1080, Math.max(720, innerHeight * (devicePixelRatio || 1) * 9 / 16)))) / 1080;   // so scharf wie die Quelle (LIVE Studio 1080×1920 → 1080)
 C.width = Math.round(1080 * Q0); C.height = Math.round(1920 * Q0);
 let X = C.getContext('2d', { alpha: false });
 const FPS = 30;
@@ -245,7 +245,7 @@ async function verbinde() {
       for (const e of d.ev) { if (e.typ === 'zustand') e.s.spieler = SPIELER; ereignis(e); }
       const rolle = !VORSCHAU && d.tonSeite === meineId; if (rolle !== tonRolle) { tonRolle = rolle; if (rolle) tonStarten(); else tonStoppen(); }
       pollN = d.n;
-      await new Promise(r => setTimeout(r, 300));
+      await new Promise(r => setTimeout(r, 200));
     } catch { await new Promise(r => setTimeout(r, 1500)); }
   }
 }
@@ -518,6 +518,7 @@ const TON = () => S.ton || { musik: .32, musikBeiStimme: .1, meer: .22, stimme: 
 const musik = new Audio(MUSIK[musikNr]); musik.preload = 'auto'; musik.volume = 0;
 musik.onended = () => { musikNr = (musikNr + 1) % MUSIK.length; musik.src = MUSIK[musikNr]; if (tonRolle) musik.play().catch(() => {}); };
 const meerTon = new Audio('musik/atmo.mp3'); meerTon.loop = true; meerTon.volume = 0;
+const stimmeEl = new Audio(); stimmeEl.onloadedmetadata = () => { stimmeLaeuft = performance.now() + stimmeEl.duration * 1000 + 300; };
 function tonStarten() {                                           // nur freischalten/fortsetzen, nie neue Player
   if (VORSCHAU) return;
   try { if (!AC) AC = new (window.AudioContext || window.webkitAudioContext)(); if (AC.state === 'suspended') AC.resume(); } catch {}
@@ -534,7 +535,13 @@ function tonLautstaerke() {
 }
 const meldeStimme = ok => fetch(`/tonstatus?id=${meineId}&stimme=${ok ? 1 : 0}`).catch(() => {});
 async function stimmeAbspielen(url) {                             // Stimme über Web Audio: einmal freigeschaltet, spielt sie immer
-  if (!tonRolle || !AC || AC.state !== 'running') return meldeStimme(false);
+  if (tonRolle && AC && AC.state !== 'running') { try { await AC.resume(); } catch {} }   // z. B. nach Pause beim Live-Gehen
+  if (tonRolle && musik.paused) musik.play().catch(() => {});
+  if (!tonRolle) return meldeStimme(false);
+  if (!AC || AC.state !== 'running') {                            // Ersatzweg: wie die Musik über ein Audio-Element
+    stimmeEl.src = url; stimmeEl.volume = Math.min(1, TON().stimme);
+    return stimmeEl.play().then(() => { stimmeLaeuft = performance.now() + 4000; meldeStimme(true); }).catch(() => meldeStimme(false));
+  }
   try {
     const daten = await (await fetch(url)).arrayBuffer(), puffer = await AC.decodeAudioData(daten);
     const q = AC.createBufferSource(), g = AC.createGain(); q.buffer = puffer; g.gain.value = TON().stimme;
@@ -542,9 +549,10 @@ async function stimmeAbspielen(url) {                             // Stimme übe
     stimmeLaeuft = performance.now() + puffer.duration * 1000 + 300; meldeStimme(true);
   } catch { meldeStimme(false); }
 }
+setInterval(() => { if (tonRolle && (musik.paused || (AC && AC.state !== 'running'))) tonStarten(); }, 4000);   // Ton nach Unterbrechung selbst wieder an
 addEventListener('click', tonStarten); addEventListener('keydown', tonStarten); addEventListener('touchstart', tonStarten);
 // Meldet dem Programm, ob hier wirklich Ton läuft – sonst übernimmt der Mac (Lautsprecher)
-setInterval(() => meineId != null && fetch(`/tonstatus?id=${meineId}&an=${tonRolle && tonAn && !musik.paused && AC && AC.state === 'running' ? 1 : 0}&vorschau=${VORSCHAU ? 1 : 0}`).catch(() => {}), 3000);
+setInterval(() => meineId != null && fetch(`/tonstatus?id=${meineId}&an=${tonRolle && tonAn && !musik.paused ? 1 : 0}&ac=${AC ? AC.state : 'kein'}&vorschau=${VORSCHAU ? 1 : 0}`).catch(() => {}), 3000);
 
 // ================= Zeichen-Hilfen =================
 function rr(x, y, w, h, r) { X.beginPath(); X.roundRect(x, y, w, h, r); }
@@ -1086,36 +1094,36 @@ function zeit(s) { return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0
 function eventPanel(t, y) {
   const e = S.event, r = S.ergebnis;
   if (e) {
-    const pz = e.preis ? 24 : 0, hoch = (e.rennen ? 250 : e.rad ? 300 : e.regenbogen ? 150 : e.balken ? 92 + e.balken.length * 36 : 104) + pz;
+    const pz = e.preis ? 30 : 0, hoch = (e.rennen ? 256 : e.rad ? 306 : e.regenbogen ? 156 : e.balken ? 100 + e.balken.length * 40 : 110) + pz;
     karte(SL, y, SB, hoch, '#fff', 30);
     X.fillStyle = PINK; rr(SL, y, SB, 46, [30, 30, 0, 0]); X.fill(); X.strokeStyle = INK; X.lineWidth = 7; rr(SL, y, SB, hoch, 30); X.stroke();
     text(`${e.icon} ${e.titel}`, SL + 26, y + 24, 25, '#fff', 'left', 900, SB - (e.faktor > 1 ? 210 : 160));
     text(`⏱ ${zeit(e.rest)}`, SR - 26, y + 24, 23, '#fff', 'right', 900);
     if (e.faktor > 1) text(`×${e.faktor}`, SR - 120, y + 24, 23, GELB, 'right', 900);
-    text(e.text, 540, y + 70, 19, INK, 'center', 800, SB - 50);
-    if (e.preis) text('🏆 ' + e.preis, 540, y + 94, 15, '#8a5a2b', 'center', 800, SB - 50);
+    text(e.text, 540, y + 74, 23, INK, 'center', 800, SB - 50);
+    if (e.preis) text('🏆 ' + e.preis, 540, y + 104, 19, '#8a5a2b', 'center', 800, SB - 50);
     // Zeitbalken
     X.fillStyle = 'rgba(42,27,18,.12)'; X.fillRect(SL + 8, y + 44, SB - 16, 4); X.fillStyle = GELB; X.fillRect(SL + 8, y + 44, (SB - 16) * e.rest / e.dauer, 4);
-    let yy = y + 94 + pz;
+    let yy = y + 100 + pz;
     (e.balken || []).forEach(b => {
-      X.fillStyle = 'rgba(42,27,18,.08)'; rr(SL + 24, yy, SB - 48, 28, 14); X.fill();
-      X.fillStyle = b.farbe; rr(SL + 24, yy, Math.max(28, (SB - 48) * Math.min(1, b.wert / b.max)), 28, 14); X.fill();
-      text(b.name, SL + 40, yy + 15, 18, INK, 'left', 900, SB - 220);
-      text(b.max > b.wert && e.id !== 'abstimmung' && e.id !== 'schatzsuche' && e.id !== 'teamduell' ? `${b.wert.toLocaleString('de-DE')} / ${b.max.toLocaleString('de-DE')}` : b.wert.toLocaleString('de-DE'), SR - 40, yy + 15, 18, INK, 'right', 900);
-      yy += 36;
+      X.fillStyle = 'rgba(42,27,18,.08)'; rr(SL + 24, yy, SB - 48, 32, 16); X.fill();
+      X.fillStyle = b.farbe; rr(SL + 24, yy, Math.max(32, (SB - 48) * Math.min(1, b.wert / b.max)), 32, 16); X.fill();
+      text(b.name, SL + 40, yy + 17, 21, INK, 'left', 900, SB - 240);
+      text(b.max > b.wert && e.id !== 'abstimmung' && e.id !== 'schatzsuche' && e.id !== 'teamduell' ? `${b.wert.toLocaleString('de-DE')} / ${b.max.toLocaleString('de-DE')}` : b.wert.toLocaleString('de-DE'), SR - 40, yy + 17, 21, INK, 'right', 900, 180);
+      yy += 40;
     });
-    if (e.rennen) krabbenRennen(t, y + 92 + pz, e.rennen);
-    if (e.rad) gluecksRad(t, y + 92 + pz, e);
+    if (e.rennen) krabbenRennen(t, y + 98 + pz, e.rennen);
+    if (e.rad) gluecksRad(t, y + 98 + pz, e);
     if (e.regenbogen) { const fb = ['#e8433c', '#ff8a2a', '#ffd23f', '#57b85a', '#3fa0e8', '#9b5de5'], cy = y + 92 + pz + 52;
       e.regenbogen.forEach((an, i) => { X.strokeStyle = an ? fb[i] : 'rgba(42,27,18,.1)'; X.lineWidth = 9; X.beginPath(); X.arc(540, cy, 120 - i * 10, Math.PI, 0); X.stroke(); }); }
     return y + hoch;
   }
   if (r) {
-    const h = r.gewinner ? 136 : 104;
+    const h = r.gewinner ? 150 : 112;
     karte(SL, y, SB, h, r.gut ? '#fff3c4' : '#fff', 30);
-    text(`${r.icon} ${r.titel}`, 540, y + 30, 22, '#8a5a2b', 'center', 900, SB - 50);
-    text(r.text, 540, y + 68, 24, INK, 'center', 900, SB - 50);
-    if (r.gewinner) text(r.gewinner, 540, y + 104, 20, PINK, 'center', 900, SB - 50);
+    text(`${r.icon} ${r.titel}`, 540, y + 32, 24, '#8a5a2b', 'center', 900, SB - 50);
+    text(r.text, 540, y + 74, 27, INK, 'center', 900, SB - 50);
+    if (r.gewinner) text(r.gewinner, 540, y + 116, 23, PINK, 'center', 900, SB - 50);
     return y + h;
   }
   return null;
@@ -1154,10 +1162,10 @@ function gluecksRad(t, y, e) {
 }
 function countdownKarte(x, y, w, h, t) {
   karte(x, y, w, h, '#2a1b12', 28);
-  text('⏳ Nächstes Event', x + w / 2, y + 24, 17, GELB, 'center', 900, w - 40);
+  text('⏳ Nächstes Event', x + w / 2, y + 26, 21, GELB, 'center', 900, w - 40);
   const s = S.eventIn || 0, puls = s <= 10 ? 1 + Math.sin(t * .012) * .08 : 1;
-  X.save(); X.translate(x + w / 2, y + 62); X.scale(puls, puls); text(zeit(s), 0, 0, 40, '#fff', 'center', 900); X.restore();
-  text('❓❓❓', x + w / 2, y + 96, 16, '#fff', 'center', 900);
+  X.save(); X.translate(x + w / 2, y + 68); X.scale(puls, puls); text(zeit(s), 0, 0, 46, '#fff', 'center', 900); X.restore();
+  text('❓❓❓', x + w / 2, y + 108, 18, '#fff', 'center', 900);
 }
 
 // ---------- Effekte der Events auf der Insel (Welt-Koordinaten) ----------
@@ -1314,7 +1322,7 @@ function umriss(t, x, y, size, farbe) {                          // gut lesbar a
 function schild(x, y, oben, unten, farbe, a, w = 620) {
   w = Math.min(w, SB); X.save(); X.globalAlpha = Math.max(0, a); X.translate(Math.max(SL + w / 2, Math.min(SR - w / 2, x)), y);
   karte(-w / 2, -50, w, 100, farbe, 30);
-  text(oben, 0, -14, 32, '#fff', 'center', 900, w - 40); text(unten, 0, 26, 22, '#fff', 'center', 800, w - 40);
+  text(oben, 0, -14, 34, '#fff', 'center', 900, w - 44); text(unten, 0, 27, 26, '#fff', 'center', 800, w - 44);
   X.restore();
 }
 
@@ -1332,53 +1340,53 @@ function kopf(t) {
   X.restore();
   // Muschelkasse der Live-Insel
   karte(612, OBEN, SR - 612, 92, '#fff', 999);
-  text('🐚 ' + (S.kasse || 0).toLocaleString('de-DE'), 786, OBEN + 36, 38, INK, 'center', 900, 300);
-  text('Like = 1 · Teilen = 2 · Folgen = 5', 786, OBEN + 72, 18, '#8a5a2b', 'center', 900, 310);
+  text('🐚 ' + (S.kasse || 0).toLocaleString('de-DE'), 786, OBEN + 34, 38, INK, 'center', 900, 300);
+  text('Like 1 · Teilen 2 · Folgen 5', 786, OBEN + 72, 22, '#8a5a2b', 'center', 900, 312);
   // Nächstes Bauprojekt der Haupt-Insel (kommt automatisch von muscheltal.de; gibt es keins, entfällt die Zeile)
   const z = S.ziel, bw = S.bewohner || 0;
   let y2 = OBEN + 116;
   if (z) {
-    karte(SL, y2, SB, 92, '#fff', 30);
+    karte(SL, y2, SB, 104, '#fff', 30);
     const f = Math.min(1, bw / z.ziel);
     const zahlText = `${bw.toLocaleString('de-DE')} / ${z.ziel.toLocaleString('de-DE')}`; X.font = `900 25px ${FONT}`; const zw = Math.min(260, X.measureText(zahlText).width);
     text(`${z.icon || '🏗️'} ${z.name}`, SL + 24, y2 + 26, 26, INK, 'left', 900, SB - 48 - zw - 24);
     text(zahlText, SR - 24, y2 + 26, 25, INK, 'right', 900, 260);
-    X.fillStyle = 'rgba(42,27,18,.1)'; rr(SL + 24, y2 + 48, SB - 48, 26, 13); X.fill();
+    X.fillStyle = 'rgba(42,27,18,.1)'; rr(SL + 24, y2 + 50, SB - 48, 34, 17); X.fill();
     const g = X.createLinearGradient(SL, 0, SR, 0); g.addColorStop(0, TUERKIS); g.addColorStop(1, '#7fe0c8');
-    X.fillStyle = g; rr(SL + 24, y2 + 48, Math.max(26, (SB - 48) * f), 26, 13); X.fill();
-    X.strokeStyle = INK; X.lineWidth = 3.5; rr(SL + 24, y2 + 48, SB - 48, 26, 13); X.stroke();
-    text(`${z.ort || 'Haupt-Insel'} · Folgen = einziehen 🏠 · noch ${Math.max(0, z.ziel - bw)} Bewohner`, 540, y2 + 62, 16, INK, 'center', 900, SB - 70);
+    X.fillStyle = g; rr(SL + 24, y2 + 50, Math.max(34, (SB - 48) * f), 34, 17); X.fill();
+    X.strokeStyle = INK; X.lineWidth = 3.5; rr(SL + 24, y2 + 50, SB - 48, 34, 17); X.stroke();
+    text(`${z.ort || 'Haupt-Insel'} · Folgen = einziehen 🏠 · noch ${Math.max(0, z.ziel - bw)} Bewohner`, 540, y2 + 67, 20, INK, 'center', 900, SB - 80);
   } else y2 = OBEN + 2;
   // Laufendes Event / Ergebnis, sonst Infos (wechselnd) + Countdown zum nächsten Event
-  const y3 = y2 + 114, ep = eventPanel(t, y3);
+  const y3 = y2 + 126, ep = eventPanel(t, y3);
   if (ep) return ep;
   const seiten = S.projekt ? 4 : 3;
   if (t - seiteSeit > 7000) { seite = (seite + 1) % seiten; seiteSeit = t; }
   const lw = 540;
-  karte(SL, y3, lw, 112, '#fff3c4', 28);
+  karte(SL, y3, lw, 130, '#fff3c4', 28);
   if (seite === 3 && S.projekt) {
     const pr = S.projekt;
-    text(`🏗️ Wir bauen: ${pr.name}`, SL + 22, y3 + 28, 23, INK, 'left', 900, lw - 44);
-    X.fillStyle = 'rgba(42,27,18,.1)'; rr(SL + 22, y3 + 48, lw - 44, 20, 10); X.fill();
-    X.fillStyle = GELB; rr(SL + 22, y3 + 48, Math.max(20, (lw - 44) * pr.stand / pr.ziel), 20, 10); X.fill();
-    X.strokeStyle = INK; X.lineWidth = 3; rr(SL + 22, y3 + 48, lw - 44, 20, 10); X.stroke();
-    text(`${Math.floor(pr.stand).toLocaleString('de-DE')} / ${pr.ziel.toLocaleString('de-DE')} 🐚 aus der Muschelkasse`, SL + 22, y3 + 88, 16, '#8a5a2b', 'left', 800, lw - 44);
+    text(`🏗️ Wir bauen: ${pr.name}`, SL + 22, y3 + 30, 25, INK, 'left', 900, lw - 44);
+    X.fillStyle = 'rgba(42,27,18,.1)'; rr(SL + 22, y3 + 52, lw - 44, 26, 13); X.fill();
+    X.fillStyle = GELB; rr(SL + 22, y3 + 52, Math.max(26, (lw - 44) * pr.stand / pr.ziel), 26, 13); X.fill();
+    X.strokeStyle = INK; X.lineWidth = 3; rr(SL + 22, y3 + 52, lw - 44, 26, 13); X.stroke();
+    text(`${Math.floor(pr.stand).toLocaleString('de-DE')} / ${pr.ziel.toLocaleString('de-DE')} 🐚 aus der Muschelkasse`, SL + 22, y3 + 104, 20, '#8a5a2b', 'left', 800, lw - 44);
   } else if (seite === 2) {
-    [['🎁', 'Geschenk: 1 Coin = 1 Muschel fürs Haus'], ['✨', 'Jedes Geschenk bekommt eine Show'], ['🏠', 'Folgen = deine Hütte hier + in Muschel-Tal']].forEach(([i, s], k) => {
-      text(i, SL + 18, y3 + 28 + k * 29, 20, INK, 'left', 400); text(s, SL + 54, y3 + 28 + k * 29, 18, INK, 'left', 800, lw - 74);
+    [['🎁', '1 Coin = 1 Muschel fürs Haus'], ['✨', 'Jedes Geschenk = eigene Show'], ['🏠', 'Folgen = Hütte hier + Muschel-Tal']].forEach(([i, s], k) => {
+      text(i, SL + 16, y3 + 30 + k * 35, 23, INK, 'left', 400); text(s, SL + 54, y3 + 30 + k * 35, 22, INK, 'left', 800, lw - 74);
     });
   } else if (seite === 1) {
-    text('🏆 Beste Häuser', SL + 22, y3 + 24, 20, INK, 'left', 900, lw - 44);
+    text('🏆 Beste Häuser', SL + 22, y3 + 26, 23, INK, 'left', 900, lw - 44);
     [...S.spieler].sort((a, b) => b.stufe - a.stufe || (b.eventMuscheln || 0) - (a.eventMuscheln || 0) || b.muscheln - a.muscheln).slice(0, 3).forEach((p, k) => {
-      const y = y3 + 52 + k * 22; text(`${k + 1}. ${p.name}`, SL + 22, y, 17, INK, 'left', 800, lw - 44 - 170 - 16); text(S.stufen[p.stufe] || '', SL + lw - 22, y, 15, '#8a5a2b', 'right', 900, 170);
+      const y = y3 + 58 + k * 25; text(`${k + 1}. ${p.name}`, SL + 22, y, 20, INK, 'left', 800, lw - 44 - 175 - 16); text(S.stufen[p.stufe] || '', SL + lw - 22, y, 18, '#8a5a2b', 'right', 900, 175);
     });
   } else {
-    [['❤️', 'Liken = dein Haus wächst'], ['🏠', 'Schreib „haus“ = du siehst dein Haus'], ['🎨', 'Schreib eine Farbe, z. B. „rot“ = neue Farbe']].forEach(([i, s], k) => {
-      text(i, SL + 18, y3 + 28 + k * 29, 20, INK, 'left', 400); text(s, SL + 54, y3 + 28 + k * 29, 18, INK, 'left', 800, lw - 74);
+    [['❤️', 'Liken = dein Haus wächst'], ['🏠', 'Schreib „haus“ = du siehst dein Haus'], ['🎨', 'Schreib „rot“, „blau“ … = Farbe']].forEach(([i, s], k) => {
+      text(i, SL + 16, y3 + 30 + k * 35, 23, INK, 'left', 400); text(s, SL + 54, y3 + 30 + k * 35, 22, INK, 'left', 800, lw - 74);
     });
   }
-  countdownKarte(SL + lw + 18, y3, SR - SL - lw - 18, 112, t);
-  return y3 + 112;
+  countdownKarte(SL + lw + 18, y3, SR - SL - lw - 18, 130, t);
+  return y3 + 130;
 }
 let KOPF_UNTEN = 670;
 
@@ -1405,19 +1413,19 @@ function overlay(t) {
     const age = (t - b.t) / 1000, k = Math.max(0, Math.min(1, age * 4, (3.2 - age) * 4));
     X.save(); X.globalAlpha = k; X.translate(540, KOPF_UNTEN + 210); X.scale(.85 + .15 * k, .85 + .15 * k);
     karte(-SB / 2, -62, SB, 124, b.farbe, 40);
-    text(b.oben, 0, -20, 38, '#fff', 'center', 900, SB - 50); text(b.unten, 0, 28, 26, '#fff', 'center', 800, SB - 50);
+    text(b.oben, 0, -20, 40, '#fff', 'center', 900, SB - 50); text(b.unten, 0, 29, 29, '#fff', 'center', 800, SB - 50);
     X.restore();
   }
   const ua = (t - untertitel.t) / 1000, ud = untertitel.d || 5;
   if (untertitel.text && ua < ud) {                                 // so lange wie Anna spricht, lange Sätze umbrechen
     X.globalAlpha = Math.min(1, (ud - ua) * 3, ua * 6);
-    X.font = `800 24px ${FONT}`;
+    X.font = `800 28px ${FONT}`;
     const zeilen = [], max = SB - 50; let z = '';
     untertitel.text.split(' ').forEach(w => { const n = z ? z + ' ' + w : w; if (X.measureText(n).width > max && z) { zeilen.push(z); z = w; } else z = n; });
     if (z) zeilen.push(z);
-    const w = Math.min(SB, Math.max(...zeilen.map(l => X.measureText(l).width)) + 44), h = 18 + zeilen.length * 30, uy = KOPF_UNTEN + 22;
+    const w = Math.min(SB, Math.max(...zeilen.map(l => X.measureText(l).width)) + 48), h = 20 + zeilen.length * 35, uy = KOPF_UNTEN + 22;
     X.fillStyle = 'rgba(42,27,18,.85)'; rr(540 - w / 2, uy, w, h, 24); X.fill();
-    zeilen.forEach((l, i) => text(l, 540, uy + 24 + i * 30, 24, '#fff', 'center', 800, max));
+    zeilen.forEach((l, i) => text(l, 540, uy + 27 + i * 35, 28, '#fff', 'center', 800, max));
     X.globalAlpha = 1;
   }
   if (S.test) text('TEST-MODUS', SR, OBEN - 18, 18, 'rgba(255,255,255,.8)', 'right', 900);

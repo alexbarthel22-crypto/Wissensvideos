@@ -263,7 +263,7 @@ function sag(text, prio = 2) {
 function fertig() { spricht = false; stilleSeit = Date.now(); setTimeout(weiter, 50); }
 function weiter() {
   if (spricht || !warte.length) return;
-  const { text } = warte.shift(); spricht = true; gesprochen.push(Date.now());
+  const { text } = warte.shift(); spricht = true; gesprochen.push(Date.now()); letzteAnsageZeit = Date.now();
   sende({ typ: 'ansage', text, ms: dauerMs(text) });
   if (!ECHT) { setTimeout(fertig, dauerMs(text)); return; }
   const aufSeite = CFG.stimme.wiedergabe !== 'mac' && seiteHatTon() && Date.now() > stimmeFehlerBis;
@@ -312,6 +312,13 @@ function musikLokal() {
   if (!brauche && lokalMusik) { lokalMusik.kill(); lokalMusik = null; }
 }
 const START = Date.now();
+// Alle 30 s eine kurze Statuszeile im Terminal – hilft bei der Fehlersuche während des LIVEs
+var letzteAnsageZeit = 0;
+setInterval(() => {
+  const seiten = [...kunden.keys()].map(id => { const t = tonStatus.get(id) || {}; return `#${id}${t.vorschau ? '(Vorschau)' : ''}${id === tonSeite ? '★' : ''} Ton ${t.an ? 'an' : 'aus'}/${t.ac || '?'}`; });
+  const weg = ECHT ? (CFG.stimme.wiedergabe !== 'mac' && seiteHatTon() && Date.now() > stimmeFehlerBis ? 'Seite (Stream)' : 'Mac-Lautsprecher') : 'aus (Test)';
+  console.log(`ℹ️  ${new Date().toLocaleTimeString('de-DE')} · Seiten: ${seiten.join(', ') || 'keine!'} · Anna über: ${weg} · letzte Ansage vor ${letzteAnsageZeit ? Math.round((Date.now() - letzteAnsageZeit) / 1000) + ' s' : '–'}`);
+}, 30000);
 setInterval(musikLokal, 3000);
 process.on('exit', () => lokalMusik?.kill());
 
@@ -492,7 +499,8 @@ http.createServer((req, res) => {
   }
   if (url.pathname === '/tonstatus') {                       // Live-Seite meldet, ob ihr Ton läuft
     const id = +url.searchParams.get('id'), alt = tonStatus.get(id) || {};
-    if (url.searchParams.has('an')) tonStatus.set(id, { ...alt, an: url.searchParams.get('an') === '1', vorschau: url.searchParams.get('vorschau') === '1', zeit: Date.now() });
+    if (url.searchParams.has('an')) tonStatus.set(id, { ...alt, an: url.searchParams.get('an') === '1', ac: url.searchParams.get('ac'), vorschau: url.searchParams.get('vorschau') === '1', zeit: Date.now() });
+    if (url.searchParams.get('stimme') === '1' && alt.stimmeOk !== true) { tonStatus.set(id, { ...tonStatus.get(id), stimmeOk: true }); console.log(`🔊 Anna spricht über die Live-Seite #${id} (Stream-Ton).`); }
     if (url.searchParams.get('stimme') === '0') { stimmeFehlerBis = Date.now() + 60000; console.log('🔈 Stimme auf der Seite blockiert – spreche über die Mac-Lautsprecher.'); }
     if (url.searchParams.get('stimme') === '1') stimmeFehlerBis = 0;
     waehleTonSeite();
