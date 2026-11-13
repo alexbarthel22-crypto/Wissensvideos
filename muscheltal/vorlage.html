@@ -1898,7 +1898,7 @@ function schCorgi(c,t){const q=corgiPos(REDUCED?3:t),moving=q.moving&&!REDUCED,s
  c.fillStyle='#e8433c';c.beginPath();c.roundRect(-1.9,1.25,2.5,.55,.25);c.fill();c.fillStyle='#ffd23f';c.beginPath();c.arc(-.5,2.1,.38,0,TAU);c.fill();c.fillStyle='#c89a1a';c.font='900 .35px '+FONT;c.textAlign='center';c.fillText('P',-.5,2.22);
  c.restore();c.restore();
  // Name über Pimpsi, wenn nah
- if(S*cam.z>34){c.font='800 1.6px '+FONT;c.textAlign='center';const tx='🐶 Pimpsi',tw=c.measureText(tx).width+1.6;c.fillStyle='rgba(255,248,231,.92)';c.beginPath();c.roundRect(q.x-tw/2,q.y-7.4,tw,2.4,1.2);c.fill();c.fillStyle='#2a1b12';c.fillText(tx,q.x,q.y-5.7);}}
+ if(S*cam.z>30)NAMES.push(['🐶 Pimpsi',SCH.x+q.x,SCH.y+q.y-6.4,'#fff8e7',1.9,'#2a1b12']);}
 function drawSchloss(c,nl){const t=REDUCED?0:T,X=SCH.x,Y=SCH.y,INK='#2a1b12',GOLD='#e8b84a',ROOF='#6f8fe0',ROOF2='#4f6fc8',WALL='#fff6f2',WALL2='#f2e2e6',PINK='#ffb3cf';c.save();c.translate(X,Y);
  // Wellenringe ums Inselchen
  for(let k=0;k<2;k++){const ph=REDUCED?k/2:(t*.15+k/2)%1;c.strokeStyle=`rgba(255,255,255,${(1-ph)*.45})`;c.lineWidth=1.4;c.save();c.translate(-X,-Y);schShape(c,10+ph*26);c.restore();c.stroke();}
@@ -1981,8 +1981,9 @@ function drawSchloss(c,nl){const t=REDUCED?0:T,X=SCH.x,Y=SCH.y,INK='#2a1b12',GOL
  // vordere Ecktürme
  tower(-30,-34,0,11,19);tower(30,-34,0,11,19);
  c.restore();
- schSauna(c,nl,t);schJacuzzi(c,nl,t);schCorgiEcke(c,t);schCorgi(c,t);
- schBaum(c,98,56,1.05,t,['#2e8a4a','#4fae5a','#7fd08a','#ff8fb8']);schBaum(c,-26,86,.85,t,BG);schBaum(c,28,84,.85,t,[...BG,'#fff']);
+ schSauna(c,nl,t);schJacuzzi(c,nl,t);schCorgiEcke(c,t);
+ // Tiefen-Reihenfolge wie bei Passanten: wer weiter vorne steht (größeres y), wird später gezeichnet
+ {const cq=corgiPos(REDUCED?3:t);const D=[[56,()=>schBaum(c,98,56,1.05,t,['#2e8a4a','#4fae5a','#7fd08a','#ff8fb8'])],[86,()=>schBaum(c,-26,86,.85,t,BG)],[84,()=>schBaum(c,28,84,.85,t,[...BG,'#fff'])],[cq.y+2,()=>schCorgi(c,t)]];D.sort((a,b)=>a[0]-b[0]);for(const [,f] of D)f();}
  // Glitzer
  if(!REDUCED)for(let k=0;k<9;k++){const ph=(t*.5+k*.37)%1,a=Math.sin(ph*Math.PI);if(a<.15)continue;const sx=-36+hash(k,41)*72,sy=-80+hash(k,42)*70;c.globalAlpha=a;c.fillStyle='#fff6c4';c.beginPath();for(let j=0;j<8;j++){const r=j%2?.5:1.8,an=j/8*TAU;c.lineTo(sx+Math.cos(an)*r,sy+Math.sin(an)*r);}c.closePath();c.fill();}c.globalAlpha=1;
  // Bewohner vor dem Tor (antippbar)
