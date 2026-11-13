@@ -17,7 +17,7 @@
 // Oben (y 150–520) feste Infos, darunter die große Insel. Bei Ausbauten fährt die Kamera an das Haus heran.
 const C = document.getElementById('c');
 // Sparsam: intern 720×1280 (das kommt bei TikTok ohnehin an), gezeichnet wird weiter im 1080er-Raster. ?aufloesung=1080 = volle Größe
-const Q0 = (+new URLSearchParams(location.search).get('aufloesung') || Math.round(Math.min(1080, Math.max(720, innerHeight * (devicePixelRatio || 1) * 9 / 16)))) / 1080;   // so scharf wie die Quelle (LIVE Studio 1080×1920 → 1080)
+const Q0 = (+new URLSearchParams(location.search).get('aufloesung') || 1080) / 1080;   // so scharf wie die Quelle (LIVE Studio 1080×1920 → 1080)
 C.width = Math.round(1080 * Q0); C.height = Math.round(1920 * Q0);
 let X = C.getContext('2d', { alpha: false });
 const FPS = 30;
@@ -1215,10 +1215,10 @@ function gluecksRad(t, y, e) {
 }
 function countdownKarte(x, y, w, h, t) {
   karte(x, y, w, h, '#2a1b12', 28);
-  text('⏳ Nächstes Event', x + w / 2, y + 26, 21, GELB, 'center', 900, w - 40);
+  text('⏳ Nächstes Event', x + w / 2, y + 30, 25, GELB, 'center', 900, w - 36);
   const s = S.eventIn || 0, puls = s <= 10 ? 1 + Math.sin(t * .012) * .08 : 1;
-  X.save(); X.translate(x + w / 2, y + 68); X.scale(puls, puls); text(zeit(s), 0, 0, 46, '#fff', 'center', 900); X.restore();
-  text('❓❓❓', x + w / 2, y + 108, 18, '#fff', 'center', 900);
+  X.save(); X.translate(x + w / 2, y + 80); X.scale(puls, puls); text(zeit(s), 0, 0, 56, '#fff', 'center', 900); X.restore();
+  text('❓❓❓', x + w / 2, y + 128, 22, '#fff', 'center', 900);
 }
 
 // ---------- Effekte der Events auf der Insel (Welt-Koordinaten) ----------
@@ -1392,57 +1392,57 @@ function kopf(t) {
   X.globalAlpha = .75; text('by @muscheltal', 98, 70, 22, INK, 'left', 800, 360); X.globalAlpha = 1;
   X.restore();
   // Muschelkasse der Live-Insel
-  karte(612, OBEN, SR - 612, 92, '#fff', 999);
-  text('🐚 ' + (S.kasse || 0).toLocaleString('de-DE'), 786, OBEN + 34, 38, INK, 'center', 900, 300);
-  text('Like 1 · Teilen 2 · Folgen 5', 786, OBEN + 72, 22, '#8a5a2b', 'center', 900, 312);
+  karte(612, OBEN, SR - 612, 96, '#fff', 999);
+  text('🐚 ' + (S.kasse || 0).toLocaleString('de-DE'), 786, OBEN + 34, 40, INK, 'center', 900, 300);
+  text('Like 1 · Teilen 2 · Folgen 5', 786, OBEN + 74, 24, '#8a5a2b', 'center', 900, 286);
   // Nächstes Bauprojekt der Haupt-Insel (kommt automatisch von muscheltal.de; gibt es keins, entfällt die Zeile)
   const z = S.ziel, bw = S.bewohner || 0;
   let y2 = OBEN + 116;
   if (z) {
-    karte(SL, y2, SB, 104, '#fff', 30);
+    karte(SL, y2, SB, 110, '#fff', 30);
     const f = Math.min(1, bw / z.ziel);
-    const zahlText = `${bw.toLocaleString('de-DE')} / ${z.ziel.toLocaleString('de-DE')}`; X.font = `900 25px ${FONT}`; const zw = Math.min(260, X.measureText(zahlText).width);
-    text(`${z.icon || '🏗️'} ${z.name}`, SL + 24, y2 + 26, 26, INK, 'left', 900, SB - 48 - zw - 24);
-    text(zahlText, SR - 24, y2 + 26, 25, INK, 'right', 900, 260);
-    X.fillStyle = 'rgba(42,27,18,.1)'; rr(SL + 24, y2 + 50, SB - 48, 34, 17); X.fill();
+    const zahlText = `${bw.toLocaleString('de-DE')} / ${z.ziel.toLocaleString('de-DE')}`; X.font = `900 28px ${FONT}`; const zw = Math.min(260, X.measureText(zahlText).width);
+    text(`${z.icon || '🏗️'} ${z.name}`, SL + 24, y2 + 28, 29, INK, 'left', 900, SB - 48 - zw - 24);
+    text(zahlText, SR - 24, y2 + 28, 28, INK, 'right', 900, 260);
+    X.fillStyle = 'rgba(42,27,18,.1)'; rr(SL + 24, y2 + 54, SB - 48, 38, 19); X.fill();
     const g = X.createLinearGradient(SL, 0, SR, 0); g.addColorStop(0, TUERKIS); g.addColorStop(1, '#7fe0c8');
-    X.fillStyle = g; rr(SL + 24, y2 + 50, Math.max(34, (SB - 48) * f), 34, 17); X.fill();
-    X.strokeStyle = INK; X.lineWidth = 3.5; rr(SL + 24, y2 + 50, SB - 48, 34, 17); X.stroke();
-    text(`${z.ort || 'Haupt-Insel'} · Folgen = einziehen 🏠 · noch ${Math.max(0, z.ziel - bw)} Bewohner`, 540, y2 + 67, 20, INK, 'center', 900, SB - 80);
+    X.fillStyle = g; rr(SL + 24, y2 + 54, Math.max(38, (SB - 48) * f), 38, 19); X.fill();
+    X.strokeStyle = INK; X.lineWidth = 3.5; rr(SL + 24, y2 + 54, SB - 48, 38, 19); X.stroke();
+    text(`${z.ort || 'Haupt-Insel'} · Folgen = einziehen 🏠 · noch ${Math.max(0, z.ziel - bw)} Bewohner`, 540, y2 + 74, 23, INK, 'center', 900, SB - 80);
   } else y2 = OBEN + 2;
   // Laufendes Event / Ergebnis, sonst Infos (wechselnd) + Countdown zum nächsten Event
-  const y3 = y2 + 126, ep = eventPanel(t, y3);
+  const y3 = y2 + 132, ep = eventPanel(t, y3);
   if (ep) return ep;
   const seiten = S.projekt ? 4 : 3;
   if (t - seiteSeit > 7000) { seite = (seite + 1) % seiten; seiteSeit = t; }
   const lw = 540;
-  karte(SL, y3, lw, 130, '#fff3c4', 28);
+  karte(SL, y3, lw, 156, '#fff3c4', 28);
   if (seite === 3 && S.projekt) {
     const pr = S.projekt;
-    text(`🏗️ Wir bauen: ${pr.name}`, SL + 22, y3 + 30, 25, INK, 'left', 900, lw - 44);
-    X.fillStyle = 'rgba(42,27,18,.1)'; rr(SL + 22, y3 + 52, lw - 44, 26, 13); X.fill();
-    X.fillStyle = GELB; rr(SL + 22, y3 + 52, Math.max(26, (lw - 44) * pr.stand / pr.ziel), 26, 13); X.fill();
-    X.strokeStyle = INK; X.lineWidth = 3; rr(SL + 22, y3 + 52, lw - 44, 26, 13); X.stroke();
-    text(`${Math.floor(pr.stand).toLocaleString('de-DE')} / ${pr.ziel.toLocaleString('de-DE')} 🐚 aus der Muschelkasse`, SL + 22, y3 + 104, 20, '#8a5a2b', 'left', 800, lw - 44);
+    text(`🏗️ Wir bauen: ${pr.name}`, SL + 22, y3 + 32, 28, INK, 'left', 900, lw - 44);
+    X.fillStyle = 'rgba(42,27,18,.1)'; rr(SL + 22, y3 + 58, lw - 44, 32, 16); X.fill();
+    X.fillStyle = GELB; rr(SL + 22, y3 + 58, Math.max(32, (lw - 44) * pr.stand / pr.ziel), 32, 16); X.fill();
+    X.strokeStyle = INK; X.lineWidth = 3; rr(SL + 22, y3 + 58, lw - 44, 32, 16); X.stroke();
+    text(`${Math.floor(pr.stand).toLocaleString('de-DE')} / ${pr.ziel.toLocaleString('de-DE')} 🐚 aus der Kasse`, SL + 22, y3 + 122, 24, '#8a5a2b', 'left', 800, lw - 44);
   } else if (seite === 2) {
     [['🎁', '1 Coin = 1 Muschel fürs Haus'], ['✨', 'Jedes Geschenk = eigene Show'], ['🏠', 'Folgen = Hütte hier + Muschel-Tal']].forEach(([i, s], k) => {
-      text(i, SL + 16, y3 + 30 + k * 35, 23, INK, 'left', 400); text(s, SL + 54, y3 + 30 + k * 35, 22, INK, 'left', 800, lw - 74);
+      text(i, SL + 16, y3 + 32 + k * 45, 27, INK, 'left', 400); text(s, SL + 58, y3 + 32 + k * 45, 26, INK, 'left', 800, lw - 78);
     });
   } else if (seite === 1) {
-    text('🏆 Beste Häuser', SL + 22, y3 + 26, 23, INK, 'left', 900, lw - 44);
+    text('🏆 Beste Häuser', SL + 22, y3 + 28, 27, INK, 'left', 900, lw - 44);
     [...S.spieler].sort((a, b) => b.stufe - a.stufe || (b.eventMuscheln || 0) - (a.eventMuscheln || 0) || b.muscheln - a.muscheln).slice(0, 3).forEach((p, k) => {
-      const y = y3 + 58 + k * 25, m = p.muscheln >= 100000 ? Math.round(p.muscheln / 1000).toLocaleString('de-DE') + 'k' : (p.muscheln || 0).toLocaleString('de-DE');
-      text(`${k + 1}. ${p.name}`, SL + 22, y, 20, INK, 'left', 800, 196);                      // Name · Haus-Stufe · Muschel-Kontostand
-      text(S.stufen[p.stufe] || '', SL + lw - 22 - 116, y, 18, '#8a5a2b', 'right', 900, 172);
-      text(`${m} 🐚`, SL + lw - 22, y, 18, INK, 'right', 900, 108);
+      const y = y3 + 66 + k * 34, m = p.muscheln >= 100000 ? Math.round(p.muscheln / 1000).toLocaleString('de-DE') + 'k' : (p.muscheln || 0).toLocaleString('de-DE');
+      text(`${k + 1}. ${p.name}`, SL + 22, y, 24, INK, 'left', 800, 186);                      // Name · Haus-Stufe · Muschel-Kontostand
+      text(S.stufen[p.stufe] || '', SL + lw - 22 - 122, y, 21, '#8a5a2b', 'right', 900, 178);
+      text(`${m} 🐚`, SL + lw - 22, y, 22, INK, 'right', 900, 114);
     });
   } else {
     [['❤️', 'Liken = dein Haus wächst'], ['🏠', 'Schreib „haus“ = du siehst dein Haus'], ['🎨', 'Schreib „rot“, „blau“ … = Farbe']].forEach(([i, s], k) => {
-      text(i, SL + 16, y3 + 30 + k * 35, 23, INK, 'left', 400); text(s, SL + 54, y3 + 30 + k * 35, 22, INK, 'left', 800, lw - 74);
+      text(i, SL + 16, y3 + 32 + k * 45, 27, INK, 'left', 400); text(s, SL + 58, y3 + 32 + k * 45, 26, INK, 'left', 800, lw - 78);
     });
   }
-  countdownKarte(SL + lw + 18, y3, SR - SL - lw - 18, 130, t);
-  return y3 + 130;
+  countdownKarte(SL + lw + 18, y3, SR - SL - lw - 18, 156, t);
+  return y3 + 156;
 }
 let KOPF_UNTEN = 670;
 
