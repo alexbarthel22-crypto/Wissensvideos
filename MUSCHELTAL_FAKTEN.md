@@ -308,7 +308,7 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 
 ## Video Tag 6 (13.11., `videos/muscheltal-tag6/`)
 - Hook (Stil wie Tag 1): „Auf dieser Insel leben mehr Tiere als Menschen!“ (Sticker „🐾 STREUNER-ALARM!“, ca. 200 Streuner auf dem Muschelplatz) → „Das ist Muschel-Tal – die Welt, in der ihr alles entscheidet!“ → Ziel Tierheim (bei 800, noch 79) → neue Läden mit Kommentaren → Villa-Verlosung → Teaser Yacht → Folgen = Hütte mit Namen.
-- **Villa-Verlosung (aus Tag 5 versprochen):** Gewinner **@sklmq3** (Nr. 494, Kokos-Küste), am 13.11. per Zufall (Python `secrets.choice`) aus allen 722 Bewohnern außer @emiliamarie155 & @lea.3818730 gezogen. Zieht zu Emilia & Lea in die Strandvilla (ohne Freund – vom Nutzer gestrichen). ⚠️ Homepage: @sklmq3 in die Strandvilla eintragen.
+- **Villa-Verlosung (aus Tag 5 versprochen):** Gewinner **@k.lil3001** (Nr. 196, Haupt-Insel) – vom Nutzer festgelegt, im Video als Live-Verlosung (zuerst per Zufall gezogen: @sklmq3, verworfen). Zieht zu Emilia & Lea in die Strandvilla (ohne Freund – vom Nutzer gestrichen). ⚠️ Homepage: @k.lil3001 in die Strandvilla eintragen.
 - Kommentar-Wünsche umgesetzt (Screenshots im Video): 🛟 Rettungsschwimmerin @soph_221144 (Sophia), 🍕 Porto Pizza @charlie._.pink (Charlie), 🧋 Boba Beach @_amiesspamm (Amelie), 🍦 Kiosk Kunterbunt @ju1e_smt (Jule) mit @vanessa_k1n (Vanessa), 🛒 Meerkauf @mia_04_ (Mia), 🥐 Bäckerei bekommt eine neue Mitarbeiterin: @_privat_033 (Kommentar als „shxrlxen“; steht auf der Homepage schon im Bäckerei-Team).
 - Abstimmung: **Tierheim kommt zuerst** (bei 800). **721 Bewohner** (laut Nutzer) → noch 79.
 - Aufruf: „Was soll ich als Nächstes bauen? Schreib's in die Kommentare!“ + Folgen = eigenes Haus.

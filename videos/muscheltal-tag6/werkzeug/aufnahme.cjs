@@ -12,7 +12,7 @@ await p.evaluate(()=>{petsStep();let sd=11;const R=()=>(sd=(sd*16807)%2147483647
   const [x0,y0]=rNode(a.v,a.k,a.m),[x1,y1]=rNode(a.v,a.k+dk,a.m+dm),t=R();a.x=x0+(x1-x0)*t;a.y=y0+(y1-y0)*t;a.pause=R()*3;}});
 const G=await p.evaluate(()=>{const a=fitAll(),m=fitMain();const g=n=>{const x=GEB.find(q=>q.typ===n);return{x:x.cx,y:x.cy}};const f=n=>{const q=PEOPLE.find(q=>q.name.replace('@','')===n);return{x:q.p.x,y:q.p.y}};
  const ti=BAU.find(b=>/tierheim/i.test(JSON.stringify(b.name||b.n||b.titel||'')))||BAU.find(b=>b.ziel===800)||BAU[0];
- return{N,a,m,v:g('villa'),ba:g('baeckerei'),win:f('sklmq3'),pz:{x:KI.x+KI.po,y:KI.cy},bo:{x:KI.x+KI.bo,y:KI.cy},ki:{x:KI.x+KI.ko,y:KI.cy},mk:{x:MKT.cx,y:MKT.cy},ti:{x:ti.cx,y:ti.cy},ya:{x:YACHT.cx!=null?YACHT.cx:YACHT[0],y:YACHT.cy!=null?YACHT.cy:YACHT[1]},last:(()=>{const q=PEOPLE.filter(q=>q.p&&q.isl===ISL[1]&&q.name.length>=12).sort((a,b)=>b.nr-a.nr)[0];window.__LAST=q;q.orig=q.name;return{x:q.p.x,y:q.p.y,nr:q.nr}})()};});
+ return{N,a,m,v:g('villa'),ba:g('baeckerei'),win:f('k.lil3001'),pz:{x:KI.x+KI.po,y:KI.cy},bo:{x:KI.x+KI.bo,y:KI.cy},ki:{x:KI.x+KI.ko,y:KI.cy},mk:{x:MKT.cx,y:MKT.cy},ti:{x:ti.cx,y:ti.cy},ya:{x:YACHT.cx!=null?YACHT.cx:YACHT[0],y:YACHT.cy!=null?YACHT.cy:YACHT[1]},last:(()=>{const q=PEOPLE.filter(q=>q.p&&q.isl===ISL[1]&&q.name.length>=12).sort((a,b)=>b.nr-a.nr)[0];window.__LAST=q;q.orig=q.name;return{x:q.p.x,y:q.p.y,nr:q.nr}})()};});
 console.error(JSON.stringify(G));
 const S3=n=>L['L3'+n].start,E3=n=>L['L3'+n].end;
 const HZ=6.2,HY=G.last.y+40/(HZ*2.6667);

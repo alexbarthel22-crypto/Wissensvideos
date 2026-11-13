@@ -88,7 +88,7 @@ CMT = """.cmt { position: absolute; left: 140px; width: 800px; border-radius: 30
     .cmt img { display: block; width: 100%; border-radius: 23px; }"""
 
 
-NS = (D.parent / "werkzeug" / "slot.txt").read_text().split(); WI = NS.index("sklmq3")
+NS = (D.parent / "werkzeug" / "slot.txt").read_text().split(); WI = NS.index("k.lil3001")
 
 # s01 – Hook im Stil von Tag 1: pinke Balken, Wörter springen groß hervor, Sticker „GEBAUT!“
 QL = [[("AUF", "Auf"), ("DIESER", "dieser")], [("INSEL", "Insel"), ("LEBEN", "leben")], [("MEHR", "mehr"), ("TIERE", "Tiere")], [("ALS", "als"), ("MENSCHEN!", "Menschen")]]
@@ -164,7 +164,7 @@ f"""      <div id="s02-dim"></div>
       <div id="s02-fv">➕ Folgen & Bewohner werden = teilnehmen!</div>
       <div id="s02-cfw"></div>
       <div id="s02-st" class="stamp" data-layout-ignore>🏖️ GEWONNEN!</div>
-      <div id="s02-wn" class="pl">🎉 @sklmq3 zieht in die Villa!</div>
+      <div id="s02-wn" class="pl">🎉 @k.lil3001 zieht in die Villa!</div>
       <div id="s02-ml" class="pl">👭 zu Emilia & Lea</div>
 """,
 f"""      const l2 = line("L2")[0], vi = at("L2", "Strandvilla"), TB = line("L2w")[0] - .25, gl = at("L2w", "Glückwunsch"), em = at("L2w", "Emilia"), H = 130, N = {len(NS)}, W = {WI};
@@ -210,18 +210,22 @@ scene("s03", LILITA + "\n    " + PILL + "\n    " + CMT + """
 
 # s04 – Tierheim kommt zuerst
 scene("s04", LILITA + "\n    " + PILL + "\n    " + BIG + """
+    #s04-ff { top: 640px; font-size: 52px; background: linear-gradient(100deg, #ff6a1a, #ff2e7e); }
     #s04-t { top: 280px; font-size: 50px; background: #2e9e5b; }
     #s04-h { position: absolute; left: 70px; right: 70px; top: 390px; padding: 18px 28px 22px; border-radius: 32px; background: #fff; box-shadow: 0 0 0 6px #2a1b12, 0 12px 0 rgba(0,0,0,.3); font-family: "Inter", sans-serif; color: #2a1b12; }
     #s04-h .r { display: flex; align-items: baseline; justify-content: space-between; font-weight: 900; font-size: 42px; } #s04-h .r b { font-size: 66px; color: #2e9e5b; }
     #s04-h .bar { height: 30px; border-radius: 15px; background: #ece4d8; margin-top: 10px; overflow: hidden; } #s04-h .bar i { display: block; height: 100%; width: 0; border-radius: 15px; background: linear-gradient(90deg, #2e9e5b, #8be06a); }
     #s04-h .f { margin-top: 8px; font-weight: 900; font-size: 34px; color: #e2560c; }""",
 """      <div id="s04-t" class="pl">🎯 Unser großes Ziel</div>
-      <div id="s04-h"><div class="r"><div>🐾 Tierheim Pfotenkuss</div><div><b id="s04-n">0</b> / 800</div></div><div class="bar"><i id="s04-b"></i></div><div class="f">Bei 800 Bewohnern wird gebaut – nur noch 79!</div></div>""",
+      <div id="s04-h"><div class="r"><div>🐾 Tierheim Pfotenkuss</div><div><b id="s04-n">0</b> / 800</div></div><div class="bar"><i id="s04-b"></i></div><div class="f">Bei 800 Bewohnern wird gebaut – nur noch 79!</div></div>
+      <div id="s04-ff" class="pl">🔥 Schon fast geschafft!</div>""",
 """      const t0 = line("L4")[0], ti = at("L4", "Tierheim"), wi = at("L4", "800"), sv = at("L4", "79");
       tl.fromTo("#s04-t", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, t0);
       tl.fromTo("#s04-h", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, ti - .2);
-      count(tl, "#s04-n", 600, 721, wi, .9, "", "", "power2.out");
-      tl.fromTo("#s04-b", { width: "0%" }, { width: "90.1%", duration: 1, ease: "power2.out" }, wi);
+      count(tl, "#s04-n", 0, 721, ti, wi - ti + .3, "", "", "power2.out");
+      tl.fromTo("#s04-b", { width: "0%" }, { width: "90.1%", duration: wi - ti + .3, ease: "power2.out" }, ti);
+      tl.fromTo("#s04-ff", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, wi + .3);
+      tl.to("#s04-ff", { scale: 1.08, duration: .2, yoyo: true, repeat: 5, ease: "sine.inOut" }, wi + .7);
       tl.to("#s04-b", { opacity: .4, duration: .15, yoyo: true, repeat: 7, ease: "none" }, sv);""")
 
 # s06 – Teaser: nächste Verlosung auf Maries Party-Yacht

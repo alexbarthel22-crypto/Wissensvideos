@@ -75,7 +75,7 @@
      "text": "Das ist *p:Muschel-Tal – / die Welt, in der *y:ihr *y:alles *g:entscheidet!",
      "speed": 1.1,
      "style": "Style: a young German guy, around 20, genuinely excited, talking to his followers like friends, energetic and warm, natural German intonation, not an announcer, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-     "pause": 0.35
+     "pause": 0.1
     }
    ]
   },
@@ -89,14 +89,19 @@
      "volume": 0.4
     },
     {
-     "name": "ka-ching",
-     "at": "L4:800",
-     "volume": 0.35
-    },
-    {
      "name": "pop",
      "at": "L4:79",
      "volume": 0.4
+    },
+    {
+     "name": "slot-ticks",
+     "at": "L4:Tierheim+0.3",
+     "volume": 0.3
+    },
+    {
+     "name": "yippee",
+     "at": "L4:79",
+     "volume": 0.6
     }
    ],
    "lines": [
@@ -129,19 +134,9 @@
      "volume": 0.3
     },
     {
-     "name": "pop",
-     "at": "L3b:Porto",
-     "volume": 0.35
-    },
-    {
      "name": "whoosh",
      "at": "L3c:Amelie-0.2",
      "volume": 0.3
-    },
-    {
-     "name": "pop",
-     "at": "L3c:Boba",
-     "volume": 0.35
     },
     {
      "name": "whoosh",
@@ -149,19 +144,9 @@
      "volume": 0.3
     },
     {
-     "name": "pop",
-     "at": "L3d:Kunterbunt",
-     "volume": 0.35
-    },
-    {
      "name": "whoosh",
      "at": "L3e:Mia-0.2",
      "volume": 0.3
-    },
-    {
-     "name": "pop",
-     "at": "L3e:Meerkauf",
-     "volume": 0.35
     },
     {
      "name": "whoosh",
@@ -172,12 +157,52 @@
      "name": "ka-ching",
      "at": "L3f:neue",
      "volume": 0.4
+    },
+    {
+     "name": "jubel",
+     "at": "L3b:Porto",
+     "volume": 0.45
+    },
+    {
+     "name": "ka-ching",
+     "at": "L3b:Porto",
+     "volume": 0.3
+    },
+    {
+     "name": "jubel",
+     "at": "L3c:Boba",
+     "volume": 0.45
+    },
+    {
+     "name": "ka-ching",
+     "at": "L3c:Boba",
+     "volume": 0.3
+    },
+    {
+     "name": "jubel",
+     "at": "L3d:Kunterbunt",
+     "volume": 0.45
+    },
+    {
+     "name": "ka-ching",
+     "at": "L3d:Kunterbunt",
+     "volume": 0.3
+    },
+    {
+     "name": "jubel",
+     "at": "L3e:Meerkauf",
+     "volume": 0.45
+    },
+    {
+     "name": "ka-ching",
+     "at": "L3e:Meerkauf",
+     "volume": 0.3
     }
    ],
    "lines": [
     {
      "id": "L3a",
-     "text": "*p:Sophia wollte *r:Rettungsschwimmerin sein – / jetzt rennt sie *g:Tag und *g:Nacht um die Insel!",
+     "text": "*p:Sophia wollte *r:Rettungsschwimmerin sein – / jetzt rennt sie *g:Tag und *g:Nacht um die Insel, / um den *b:Strand im Blick zu behalten!",
      "speed": 1.12,
      "style": "Style: a young German guy, around 20, genuinely excited, talking to his followers like friends, energetic and warm, natural German intonation, not an announcer, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
      "pause": 0.6
@@ -259,10 +284,10 @@
     },
     {
      "id": "L2w",
-     "text": "*g:Glückwunsch, *y:@sklmq3|S-K-L-M-Q-drei! / Du ziehst zu *p:Emilia und *p:Lea / in die *b:Strandvilla!",
+     "text": "*g:Glückwunsch, *y:@k.lil3001|K-Lil-dreitausendeins! / Du ziehst zu *p:Emilia und *p:Lea / in die *b:Strandvilla!",
      "speed": 1.1,
      "style": "Style: a young German guy, around 20, genuinely excited, talking to his followers like friends, energetic and warm, natural German intonation, not an announcer, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-     "pause": 3.2
+     "pause": 5.0
     }
    ]
   },
