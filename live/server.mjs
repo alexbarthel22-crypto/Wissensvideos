@@ -8,6 +8,7 @@ import path from 'node:path';
 import { spawn } from 'node:child_process';
 import os from 'node:os';
 import { fileURLToPath } from 'node:url';
+import { macheEvents } from './events.mjs';
 
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
@@ -16,7 +17,7 @@ const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 
 // ---------- Spielstand ----------
-const leer = () => ({ spieler: {}, reihenfolge: [], projekt: null, fertig: [], abstimmung: null, likesGesamt: 0, kasse: 0 });
+const leer = () => ({ spieler: {}, reihenfolge: [], projekt: null, fertig: [], likesGesamt: 0, kasse: 0 });
 let S = leer();
 try { S = { ...leer(), ...JSON.parse(fs.readFileSync(STAND, 'utf8')) }; } catch {}
 if (TEST && process.argv.includes('--neu')) S = leer();
@@ -30,11 +31,12 @@ function spieler(u) {
   const id = String(u.uniqueId || '').toLowerCase();
   if (!id) return null;
   let p = S.spieler[id];
+  if (p) p.zuletzt = Date.now();
   if (!p) {
-    p = S.spieler[id] = { id, name: '@' + u.uniqueId, muscheln: 0, stufe: 0, anbauten: [], farbe: null, platz: S.reihenfolge.length };
+    p = S.spieler[id] = { id, name: '@' + u.uniqueId, muscheln: 0, stufe: 0, anbauten: [], farbe: null, platz: S.reihenfolge.length, zuletzt: Date.now() };
     S.reihenfolge.push(id);
     sende({ typ: 'neu', id });
-    sag(`Willkommen im Muschel-Tal, ${sprechName(p)}! Dein Zelt steht.`, 1);
+    sag(`Willkommen im Muschel-Tal, ${sprechName(p)}! Dein Zelt steht.`, 3);
   }
   return p;
 }
@@ -59,9 +61,10 @@ const sprechName = p => p.name.replace(/^@/, '').replace(/[._]+/g, ' ').replace(
 // ---------- Ereignisse ----------
 function like(u, anzahl) {
   const p = spieler(u); if (!p) return;
-  S.likesGesamt += anzahl;
+  S.likesGesamt += anzahl; likeLog.push([Date.now(), anzahl]);
   inKasse(anzahl * CFG.kasse.proLike);
-  gibMuscheln(p, anzahl * CFG.muschelnProLike, 'like');
+  const faktor = EV.like(p, anzahl);                       // Muschelregen ×2, Bau-Turbo ×3
+  gibMuscheln(p, anzahl * CFG.muschelnProLike * faktor, 'like');
 }
 
 function kommentar(u, text) {
@@ -69,11 +72,7 @@ function kommentar(u, text) {
   const p = spieler(u); if (!p) return;
   if (neu) gibMuscheln(p, CFG.muschelnFuerErstenKommentar, 'kommentar');
   const t = String(text || '').toLowerCase().trim();
-  // Abstimmung: 1 / 2 / 3
-  const a = S.abstimmung;
-  if (a && /^[123]$/.test(t)) {
-    a.stimmen[p.id] = Number(t) - 1; geaendert = true; zustand(); return;
-  }
+  if (EV.kommentar(p, t)) { geaendert = true; zustand(); return; }   // Event-Antworten (rot, flasche, A, 42 …)
   for (const wort of t.split(/[^a-zäöüß]+/)) {
     const ab = CFG.anbauten[wort];
     if (ab) {
@@ -94,8 +93,11 @@ function geschenk(u, name, diamanten, anzahl) {
   const p = spieler(u); if (!p) return;
   const d = Math.max(1, diamanten || 1) * Math.max(1, anzahl || 1);   // Coins insgesamt: 1 Coin = 1 Muschel (= 0,01 €)
   sende({ typ: 'geschenk', id: p.id, name, anzahl, diamanten: d });
+  EV.geschenkShow(p, name, anzahl, d);
   inKasse(d * CFG.kasse.proCoin);
-  sag(anzahl > 1 ? `Danke ${sprechName(p)} für ${anzahl} mal ${name}!` : `Danke ${sprechName(p)} für ${name}!`, 0);
+  const wie = anzahl > 1 ? `${anzahl} mal ${name}` : name;
+  sag(d >= 1000 ? `Wahnsinn! Riesigen Dank an ${sprechName(p)} für ${wie}! Das ganze Muschel-Tal feiert dich!`
+    : d >= 100 ? `Wow, vielen Dank ${sprechName(p)} für ${wie}!` : `Danke ${sprechName(p)} für ${wie}!`, 0);
   gibMuscheln(p, d * CFG.muschelnProCoin, 'geschenk');
 }
 
@@ -143,8 +145,7 @@ function follow(u) {
   sende({ typ: 'follow', id: p.id });
   setzeBewohner(bewohner + 1, 'follow');
   inKasse(CFG.kasse.proFollow);
-  const z = zielJetzt();
-  sag(`${sprechName(p)} zieht ins Muschel-Tal ein!${z ? ` Noch ${z.ziel - bewohner} Bewohner bis zum ${z.name}.` : ''}`, 1);
+  if (!followDank.includes(p)) followDank.push(p); weiter();      // Dank kommt, sobald Markus frei ist
   gibMuscheln(p, CFG.muschelnFuerFollow, 'follow');
 }
 
@@ -156,61 +157,79 @@ function teilen(u) {
   zustand();
 }
 
-// ---------- Gemeinschaftsprojekt + Abstimmung ----------
-function starteAbstimmung() {
-  if (S.abstimmung || S.projekt) return;
-  const offen = CFG.abstimmung.projekte.filter(x => !S.fertig.includes(x.id));
-  if (!offen.length) return;
-  const wahl = offen.sort(() => Math.random() - .5).slice(0, 3);
-  S.abstimmung = { optionen: wahl.map(x => x.id), stimmen: {}, endet: Date.now() + CFG.abstimmung.dauerSekunden * 1000 };
-  sag(`Abstimmung! Was bauen wir als Nächstes? Schreibt 1 für ${wahl[0].name}, 2 für ${wahl[1]?.name}${wahl[2] ? ', oder 3 für ' + wahl[2].name : ''}.`, 0);
-  zustand();
-}
-function beendeAbstimmung() {
-  const a = S.abstimmung; if (!a) return;
-  const z = a.optionen.map(() => 0); Object.values(a.stimmen).forEach(i => z[i]++);
-  const sieger = z.indexOf(Math.max(...z));
-  const pr = CFG.abstimmung.projekte.find(x => x.id === a.optionen[sieger]);
-  S.abstimmung = null;
-  S.projekt = { id: pr.id, name: pr.name, ziel: pr.ziel, stand: 0 };
-  geaendert = true;
-  sende({ typ: 'projekt', id: pr.id });
-  sag(`Entschieden: Wir bauen ${pr.name === 'Brücke' || pr.name === 'Eisdiele' ? 'eine ' + pr.name : pr.name === 'Riesenrad' ? 'ein Riesenrad' : 'einen ' + pr.name}! Jedes Like hilft mit.`, 0);
-  zustand();
+// ---------- Gemeinschaftsprojekt (wird per Abstimmungs-Event gewählt) ----------
+function projektStarten(pr) {
+  S.projekt = { id: pr.id, name: pr.name, ziel: pr.ziel, stand: 0 }; geaendert = true;
+  sende({ typ: 'projekt', id: pr.id }); zustand();
 }
 function projektFertig() {
   const pr = S.projekt; S.fertig.push(pr.id); S.projekt = null; geaendert = true;
   sende({ typ: 'fertig', id: pr.id });
   sag(`Geschafft! ${pr.name} ist fertig. Danke an alle!`, 0);
-  naechsteAbstimmung = Date.now() + 20000;
 }
-let naechsteAbstimmung = Date.now() + (TEST ? 15000 : 60000);
-setInterval(() => {
-  const a = S.abstimmung;
-  if (a && Date.now() >= a.endet) beendeAbstimmung();
-  if (!a && !S.projekt && Date.now() >= naechsteAbstimmung) {
-    starteAbstimmung(); naechsteAbstimmung = Date.now() + CFG.abstimmung.alleMinuten * 60000;
-  }
-  zustand();
-}, 1000);
+
+// ---------- Überraschungs-Events (events.mjs) ----------
+const likeLog = [];
+function belohne(p, n, extra) {
+  if (!p) return;
+  if (extra?.farbe) { p.farbe = extra.farbe; sende({ typ: 'farbe', id: p.id }); }
+  if (extra?.anbau && !p.anbauten.includes(extra.anbau)) { p.anbauten.push(extra.anbau); sende({ typ: 'anbau', id: p.id, was: extra.anbau }); }
+  gibMuscheln(p, n, 'event');
+}
+const EV = macheEvents({
+  CFG, test: TEST, sende, zustand: () => zustand(), sag: (t, pr) => sag(t, pr), belohne, name: p => sprechName(p), artikel: n => artikel(n),
+  spieler: id => S.spieler[id],
+  aktive: min => Object.values(S.spieler).filter(p => Date.now() - (p.zuletzt || 0) < min * 60000),
+  likeRate: () => { const t = Date.now() - 300000; while (likeLog.length && likeLog[0][0] < t) likeLog.shift(); return likeLog.reduce((a, [, n]) => a + n, 0) / 5; },
+  hatProjekt: () => !!S.projekt,
+  offeneProjekte: () => CFG.abstimmung.projekte.filter(x => !S.fertig.includes(x.id)),
+  projektStarten,
+});
+setInterval(zustand, 1000);
 
 // ---------- Stimme (macOS „say“, unbegrenzt, offline) ----------
-const warte = []; let spricht = false; const gesprochen = [];
+const warte = []; let spricht = false; const gesprochen = []; let letzteRede = Date.now();
+// Moderation in ruhigen Momenten (verrät nie, welches Event kommt)
+const TIPPS = [
+  () => 'Neu hier? Jedes Like lässt dein Haus wachsen. Vom Zelt bis zum Muschelschloss!',
+  () => 'Schreibt pool, garten, boot oder palme in die Kommentare, um euer Haus auszubauen.',
+  () => 'Ihr wollt eine andere Farbe? Schreibt einfach rot, blau, lila, gold oder eine andere Farbe.',
+  () => { const s = EV.naechstesIn(); return s > 40 ? `In ${s > 90 ? Math.round(s / 60) + ' Minuten' : 'gut einer Minute'} startet das nächste Überraschungs-Event. Bleibt dran!` : null; },
+  () => { const z = zielJetzt(); return z ? `Folgen heißt einziehen! Noch ${z.ziel - bewohner} Bewohner, dann wird ${z.name} auf der Haupt-Insel gebaut.` : null; },
+  () => `In der Muschelkasse sind schon ${S.kasse.toLocaleString('de-DE')} Muscheln. Jedes Like zählt!`,
+  () => { const top = Object.values(S.spieler).sort((a, b) => b.muscheln - a.muscheln)[0]; return top ? `Das größte Haus hat gerade ${sprechName(top)}. Wer holt sich Platz eins?` : null; },
+  () => 'Teilt den Stream mit Freunden, dann ziehen sie vielleicht bald neben euch ein!',
+];
+let tippNr = 0;
+setInterval(() => {
+  if (spricht || warte.length || Date.now() - letzteRede < (CFG.stimme.ruhePauseSek || 60) * 1000) return;
+  for (let k = 0; k < TIPPS.length; k++) { const t = TIPPS[tippNr++ % TIPPS.length](); if (t) { sag(t, 3); break; } }
+}, 5000);
 const TON_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'muscheltal-ton-')); let tonNr = 0;
 let stimme = CFG.stimme.mac;
 function sag(text, prio = 2) {
-  sende({ typ: 'ansage', text });
+  sende({ typ: 'ansage', text }); letzteRede = Date.now();
   if (STILL) return;
   const jetzt = Date.now();
   while (gesprochen.length && jetzt - gesprochen[0] > 60000) gesprochen.shift();
   if (prio >= 2 && gesprochen.length >= CFG.stimme.maxProMinute) return; // nicht zuquatschen
   warte.push({ text, prio });
   warte.sort((a, b) => a.prio - b.prio);
-  if (warte.length > CFG.stimme.maxWarteschlange) warte.pop();
+  // Geschenk-Dank und Event-Ansagen (Prio 0/1) werden nie verworfen, nur Kleinkram
+  while (warte.length > CFG.stimme.maxWarteschlange) { const i = warte.findLastIndex(w => w.prio >= 2); if (i < 0) break; warte.splice(i, 1); }
   weiter();
 }
+const followDank = [];
 function weiter() {
-  if (spricht || !warte.length) return;
+  if (spricht) return;
+  if (!warte.length && followDank.length) {               // Follows bedanken, wenn gerade nichts anderes ansteht
+    const n = followDank.splice(0, 4).map(sprechName), z = zielJetzt();
+    const text = (n.length > 1 ? `Danke ${n.slice(0, -1).join(', ')} und ${n.at(-1)} fürs Folgen!` : `Danke ${n[0]} fürs Folgen!`) + (z && Math.random() < .5 ? ` Noch ${z.ziel - bewohner} Bewohner bis zum ${z.name}.` : '');
+    sende({ typ: 'ansage', text });
+    if (!STILL) warte.push({ prio: 1, text });
+  }
+  if (!warte.length) return;
+  letzteRede = Date.now();
   if (process.platform !== 'darwin') { warte.length = 0; return; }
   const { text } = warte.shift(); spricht = true; gesprochen.push(Date.now());
   const aufSeite = CFG.stimme.wiedergabe !== 'mac' && kunden.size > 0;
@@ -246,16 +265,11 @@ function zustand() {
   sende({ typ: 'zustand', s: oeffentlich() });
 }
 function oeffentlich() {
-  const a = S.abstimmung;
-  let abst = null;
-  if (a) {
-    const z = a.optionen.map(() => 0); Object.values(a.stimmen).forEach(i => z[i]++);
-    abst = { optionen: a.optionen.map(id => CFG.abstimmung.projekte.find(x => x.id === id).name), stimmen: z, rest: Math.max(0, Math.round((a.endet - Date.now()) / 1000)) };
-  }
   return {
+    ...EV.oeffentlich(),
     spieler: S.reihenfolge.map(id => S.spieler[id]),
     stufen: CFG.stufen.map(s => s.name), stufenAb: CFG.stufen.map(s => s.ab),
-    projekt: S.projekt, fertig: S.fertig, abstimmung: abst, kasse: S.kasse,
+    projekt: S.projekt, fertig: S.fertig, kasse: S.kasse,
     bewohner, ziel: zielJetzt(), strassen: CFG.strassen,
     tiktokName: CFG.tiktokName, test: TEST, ton: CFG.ton, ort: CFG.ort,
   };
@@ -267,6 +281,12 @@ http.createServer((req, res) => {
   if (url.pathname === '/sag') {
     const t = String(url.searchParams.get('t') || '').slice(0, 200);
     if (t && t !== letzteSeitenAnsage) { letzteSeitenAnsage = t; sag(t, 0); setTimeout(() => letzteSeitenAnsage = '', 15000); }
+    res.writeHead(204); return res.end();
+  }
+  if (TEST && url.pathname === '/test') {                 // nur Test-Modus: Event / Geschenk-Show auslösen
+    const id = url.searchParams.get('event'), art = url.searchParams.get('geschenk');
+    if (id) EV.starte(id);
+    if (art) { const p = Object.values(S.spieler)[3]; geschenk({ uniqueId: p.name.slice(1) }, url.searchParams.get('name') || 'Rose', +url.searchParams.get('coins') || 1, 1); }
     res.writeHead(204); return res.end();
   }
   if (url.pathname === '/events') {
@@ -350,7 +370,8 @@ function simulator() {
     if (Math.random() < .04) { namen.push('gast.' + Math.random().toString(36).slice(2, 7)); n = namen.length; }
     const u = { uniqueId: namen[Math.floor(Math.random() * n)] };
     const r = Math.random();
-    if (S.abstimmung && r < .3) kommentar(u, String(1 + Math.floor(Math.random() * 3)));
+    const evAntwort = ['1', '2', '3', 'rot', 'blau', 'gelb', 'grün', 'muschel', 'kokos', 'flasche', 'hallo', 'a', 'b', 'c', 'd', String(1 + Math.floor(Math.random() * 100)), 'fang', 'wunsch'];
+    if (EV.laeuft() && r < .3) kommentar(u, evAntwort[Math.floor(Math.random() * evAntwort.length)]);
     else if (r < .7) like(u, 1 + Math.floor(Math.random() * 15));
     else if (r < .9) kommentar(u, worte[Math.floor(Math.random() * worte.length)]);
     else if (r < .97) { const g = gifts[Math.floor(Math.random() * (Math.random() < .9 ? 4 : gifts.length))]; geschenk(u, g[0], g[1], 1 + Math.floor(Math.random() * 3)); }

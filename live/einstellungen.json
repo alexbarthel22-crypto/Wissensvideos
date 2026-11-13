@@ -9,10 +9,11 @@
       "Markus"
     ],
     "tempo": 185,
-    "maxProMinute": 8,
-    "maxWarteschlange": 4,
+    "maxProMinute": 10,
+    "maxWarteschlange": 6,
     "wiedergabe": "seite",
-    "_hinweis": "wiedergabe 'seite': Stimme läuft über die Live-Seite (zusammen mit der Musik im Stream-Ton). 'mac': direkt über die Mac-Lautsprecher."
+    "_hinweis": "wiedergabe 'seite': Stimme läuft über die Live-Seite (zusammen mit der Musik im Stream-Ton). 'mac': direkt über die Mac-Lautsprecher.",
+    "ruhePauseSek": 60
   },
   "stufen": [
     {
@@ -108,7 +109,6 @@
     "gold": "#E0B43A"
   },
   "abstimmung": {
-    "alleMinuten": 10,
     "dauerSekunden": 90,
     "projekte": [
       {
@@ -247,5 +247,9 @@
     "laenge": 9.95,
     "_hinweis": "Tag/Nacht, Sonnenauf- und -untergang wie auf muscheltal.de"
   },
-  "muschelnProCoin": 1
+  "muschelnProCoin": 1,
+  "events": {
+    "alleMinuten": 5,
+    "_hinweis": "Alle 5 Minuten ein zufälliges Überraschungs-Event (siehe events.mjs). Nie dasselbe wie eins der letzten 4."
+  }
 }

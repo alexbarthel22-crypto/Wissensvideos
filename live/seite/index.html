@@ -232,11 +232,12 @@ function ereignis(e) {
     case 'neu': bau[e.id] = { t: jetzt + 250, alt: -1, neu: 0, D: 1.9 }; break;
     case 'stufe': if (p) { bau[e.id] = { t: jetzt, alt: p.stufe, neu: e.stufe, D: 3.8 }; if (pl) fokus(pl, 5200); } break;
     case 'anbau': case 'farbe': if (pl) { pop[e.id] = jetzt; funken(pl, '🔨', 5); fokus(pl, 2600, true); } break;
-    case 'geschenk':
-      banner.push({ t: 0, oben: `🎁 ${p ? p.name : ''}`, unten: (e.anzahl > 1 ? e.anzahl + '× ' : '') + e.name, farbe: PINK });
-      if (pl) { funken(pl, '💖', 12 + Math.min(30, e.diamanten)); fokus(pl, 4000); }
-      if (e.diamanten >= 100) feuerwerk();
-      break;
+    case 'geschenk': if (pl) funken(pl, '💖', 10 + Math.min(30, e.diamanten)); break;
+    case 'show': showStart(e); break;
+    case 'kamera': if (pl) fokus(pl, e.ms || 15000); break;
+    case 'feuerwerk': feuerwerk(); break;
+    case 'eventStart': fokusBis = 0; tourModus = 0; tourBis = jetzt + 70000; banner.push({ t: 0, oben: '⚡ Überraschungs-Event!', unten: 'Jetzt mitmachen!', farbe: '#9b5de5' }); funken({ x: IX, y: IY }, '⚡', 20); break;
+    case 'eventEnde': if (e.gut) { const q = e.spielerId && sp(e.spielerId), qp = q && platzVon(q); if (qp) { funken(qp, '🎉', 24); fokus(qp, 5000); } else feuerwerk(); } break;
     case 'follow': banner.push({ t: 0, oben: `🏠 ${p ? p.name : ''}`, unten: 'ist jetzt Bewohner · +5 🐚 in die Muschelkasse', farbe: TUERKIS }); break;
     case 'ziel': banner.push({ t: 0, oben: '🎉 Bewohner-Ziel erreicht!', unten: e.name + ' wird auf der Haupt-Insel gebaut', farbe: '#9b5de5' }); feuerwerk(); break;
     case 'projekt': case 'fertig': funken({ x: IX, y: IY }, e.typ === 'fertig' ? '🎉' : '🚧', 30); if (e.typ === 'fertig') feuerwerk(); break;
@@ -735,6 +736,210 @@ function haus(p, pl, t) {
 
 // ================= Kopfzeile =================
 let seite = 0, seiteSeit = 0;
+// ================= Überraschungs-Events: Panel, Countdown, Effekte =================
+const SHOWS = [];                                                 // Geschenk-Shows nacheinander
+function showStart(e) {                                           // große Geschenke zuerst, bei Stau fallen kleine Shows weg
+  const neu = { ...e, t: 0 }, ab = SHOWS[0]?.t ? 1 : 0;
+  let i = SHOWS.length; while (i > ab && SHOWS[i - 1].coins < neu.coins) i--;
+  SHOWS.splice(i, 0, neu);
+  while (SHOWS.length > 5) { const k = SHOWS.findLastIndex((x, j) => j >= ab && x.coins < 100); if (k < 0) break; SHOWS.splice(k, 1); }
+}
+function zeit(s) { return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; }
+
+function eventPanel(t, y) {
+  const e = S.event, r = S.ergebnis;
+  if (e) {
+    const hoch = e.rennen ? 250 : e.rad ? 300 : e.balken ? 92 + e.balken.length * 36 : 104;
+    karte(SL, y, SB, hoch, '#fff', 30);
+    X.fillStyle = PINK; rr(SL, y, SB, 46, [30, 30, 0, 0]); X.fill(); X.strokeStyle = INK; X.lineWidth = 7; rr(SL, y, SB, hoch, 30); X.stroke();
+    text(`${e.icon} ${e.titel}`, SL + 26, y + 24, 25, '#fff', 'left', 900, SB - 170);
+    text(`⏱ ${zeit(e.rest)}`, SR - 26, y + 24, 23, '#fff', 'right', 900);
+    if (e.faktor > 1) text(`×${e.faktor}`, SR - 120, y + 24, 23, GELB, 'right', 900);
+    text(e.text, 540, y + 70, 19, INK, 'center', 800, SB - 50);
+    // Zeitbalken
+    X.fillStyle = 'rgba(42,27,18,.12)'; X.fillRect(SL + 8, y + 44, SB - 16, 4); X.fillStyle = GELB; X.fillRect(SL + 8, y + 44, (SB - 16) * e.rest / e.dauer, 4);
+    let yy = y + 94;
+    (e.balken || []).forEach(b => {
+      X.fillStyle = 'rgba(42,27,18,.08)'; rr(SL + 24, yy, SB - 48, 28, 14); X.fill();
+      X.fillStyle = b.farbe; rr(SL + 24, yy, Math.max(28, (SB - 48) * Math.min(1, b.wert / b.max)), 28, 14); X.fill();
+      text(b.name, SL + 40, yy + 15, 18, INK, 'left', 900, SB - 220);
+      text(b.max > b.wert && e.id !== 'abstimmung' && e.id !== 'schatzsuche' && e.id !== 'teamduell' ? `${b.wert.toLocaleString('de-DE')} / ${b.max.toLocaleString('de-DE')}` : b.wert.toLocaleString('de-DE'), SR - 40, yy + 15, 18, INK, 'right', 900);
+      yy += 36;
+    });
+    if (e.rennen) krabbenRennen(t, y + 92, e.rennen);
+    if (e.rad) gluecksRad(t, y + 92, e);
+    return y + hoch;
+  }
+  if (r) {
+    karte(SL, y, SB, 104, r.gut ? '#fff3c4' : '#fff', 30);
+    text(`${r.icon} ${r.titel}`, 540, y + 30, 22, '#8a5a2b', 'center', 900, SB - 50);
+    text(r.text, 540, y + 68, 24, INK, 'center', 900, SB - 50);
+    return y + 104;
+  }
+  return null;
+}
+function krabbenRennen(t, y, teams) {
+  const farbe = { rot: '#e8433c', blau: '#3fa0e8', gelb: '#ffd23f', gruen: '#57b85a' };
+  teams.forEach((tm, i) => {
+    const yy = y + 12 + i * 36, x0 = SL + 70, x1 = SR - 60, f = Math.min(1, tm.wert / tm.max);
+    X.fillStyle = '#f3dfa6'; rr(x0 - 10, yy - 13, x1 - x0 + 20, 26, 13); X.fill();
+    X.strokeStyle = INK; X.lineWidth = 2; X.setLineDash([6, 6]); X.beginPath(); X.moveTo(x1, yy - 13); X.lineTo(x1, yy + 13); X.stroke(); X.setLineDash([]);
+    text({ rot: 'Rot', blau: 'Blau', gelb: 'Gelb', gruen: 'Grün' }[tm.name], SL + 22, yy, 16, INK, 'left', 900);
+    X.save(); X.translate(x0 + (x1 - x0) * f, yy + 2);
+    X.fillStyle = farbe[tm.name]; X.beginPath(); X.ellipse(0, 0, 13, 8, 0, 0, 7); X.fill(); X.strokeStyle = INK; X.lineWidth = 1.5; X.stroke();
+    const b = Math.sin(t * .03 + i) * 3; X.strokeStyle = farbe[tm.name]; X.lineWidth = 2; for (let k = -1; k <= 1; k += 2) { X.beginPath(); X.moveTo(k * 8, 3); X.lineTo(k * 15, 8 + b * k); X.stroke(); }
+    X.fillStyle = '#fff'; X.beginPath(); X.arc(-4, -9, 3, 0, 7); X.arc(4, -9, 3, 0, 7); X.fill(); X.fillStyle = INK; X.beginPath(); X.arc(-4, -9, 1.5, 0, 7); X.arc(4, -9, 1.5, 0, 7); X.fill();
+    X.restore();
+    text(String(tm.wert), x1 + 34, yy, 15, INK, 'center', 900);
+  });
+}
+const RAD = { start: 0, id: null };
+function gluecksRad(t, y, e) {
+  if (RAD.id !== e.rad.gewinner + e.dauer) { RAD.id = e.rad.gewinner + e.dauer; RAD.start = t; }
+  const n = Math.min(12, e.rad.namen.length), namen = e.rad.namen.slice(0, n), gi = Math.max(0, namen.indexOf(e.rad.gewinner));
+  if (namen.indexOf(e.rad.gewinner) < 0) namen[0] = e.rad.gewinner;
+  const q = Math.min(1, (t - RAD.start) / ((e.dauer - 1) * 1000)), ease = 1 - Math.pow(1 - q, 3);
+  const zielW = -Math.PI / 2 - (gi + .5) / n * 6.283 - 6.283 * 6, w = zielW * ease;
+  const cx = 540, cy = y + 104, R = 96;
+  for (let i = 0; i < n; i++) {
+    X.fillStyle = ['#ffd23f', '#7fe0c8', '#ff8fb8', '#b58ad0', '#3fa0e8', '#ff8a2a'][i % 6];
+    X.beginPath(); X.moveTo(cx, cy); X.arc(cx, cy, R, w + i / n * 6.283, w + (i + 1) / n * 6.283); X.closePath(); X.fill();
+    X.save(); X.translate(cx, cy); X.rotate(w + (i + .5) / n * 6.283); text(namen[i].slice(0, 13), R - 8, 0, 11, INK, 'right', 900); X.restore();
+  }
+  X.strokeStyle = INK; X.lineWidth = 5; X.beginPath(); X.arc(cx, cy, R, 0, 7); X.stroke();
+  X.fillStyle = GELB; X.beginPath(); X.arc(cx, cy, 14, 0, 7); X.fill(); X.stroke();
+  X.fillStyle = PINK; X.beginPath(); X.moveTo(cx, cy - R + 10); X.lineTo(cx - 12, cy - R - 16); X.lineTo(cx + 12, cy - R - 16); X.closePath(); X.fill(); X.lineWidth = 3; X.stroke();
+}
+function countdownKarte(x, y, w, h, t) {
+  karte(x, y, w, h, '#2a1b12', 28);
+  text('⏳ Nächstes Event', x + w / 2, y + 24, 17, GELB, 'center', 900, w - 20);
+  const s = S.eventIn || 0, puls = s <= 10 ? 1 + Math.sin(t * .012) * .08 : 1;
+  X.save(); X.translate(x + w / 2, y + 62); X.scale(puls, puls); text(zeit(s), 0, 0, 40, '#fff', 'center', 900); X.restore();
+  text('❓❓❓', x + w / 2, y + 96, 16, '#fff', 'center', 900);
+}
+
+// ---------- Effekte der Events auf der Insel (Welt-Koordinaten) ----------
+function schatzKreuze() {
+  const e = S.event?.id === 'schatzsuche' ? S.event : S.ergebnis?.extra?.seed != null ? S.ergebnis : null;
+  const seed = e?.extra?.seed; if (seed == null) return [];
+  const R = zufall(seed), out = [];
+  for (let k = 0; k < 4; k++) { const a = k / 4 * 6.283 + R() * 1.2, r = .45 + R() * .35; out.push({ x: IX + Math.cos(a) * RX * K * r, y: IY + Math.sin(a) * RY * K * r }); }
+  return out;
+}
+function eventWelt(t) {
+  const e = S.event, id = e?.id;
+  // Schatzsuche: Kreuze A–D, nach dem Ende die Schatztruhe
+  schatzKreuze().forEach((p, i) => {
+    const los = S.ergebnis?.extra?.loesung;
+    X.strokeStyle = '#e8433c'; X.lineWidth = 9; X.lineCap = 'round';
+    X.beginPath(); X.moveTo(p.x - 18, p.y - 18); X.lineTo(p.x + 18, p.y + 18); X.moveTo(p.x + 18, p.y - 18); X.lineTo(p.x - 18, p.y + 18); X.stroke();
+    karte(p.x - 22, p.y - 70, 44, 40, '#fff', 12); text('ABCD'[i], p.x, p.y - 50, 28, INK, 'center', 900);
+    if (los === i) { X.font = `64px ${FONT}`; X.textAlign = 'center'; X.fillText('💰', p.x, p.y - 4 - Math.abs(Math.sin(t * .006)) * 10); }
+  });
+  if (id === 'meeresbesuch') meerTier(t, e.extra.art, (e.dauer - e.rest) / e.dauer);
+  if (id === 'flaschenpost') { const q = Math.min(1, (e.dauer - e.rest) / 20), a = 2.2, r = rand(a) * K * (1.4 - q * .36), x = IX + Math.cos(a) * RX * r, y = IY + Math.sin(a) * RY * r + Math.sin(t * .004) * 6; X.save(); X.translate(x, y); X.rotate(.6 + Math.sin(t * .003) * .2); X.fillStyle = 'rgba(120,200,150,.85)'; rr(-8, -24, 16, 40, 6); X.fill(); X.fillStyle = '#b07a45'; X.fillRect(-4, -32, 8, 9); X.fillStyle = '#fff3c4'; X.fillRect(-5, -14, 10, 18); X.restore(); }
+  if (id === 'moewenalarm') { const a = t * .0012, x = IX + Math.cos(a) * 230, y = IY - 120 + Math.sin(a * 2) * 90, f = Math.sin(t * .02) * 10; X.strokeStyle = '#fff'; X.lineWidth = 6; X.lineCap = 'round'; X.beginPath(); X.moveTo(x - 30, y - f); X.quadraticCurveTo(x - 14, y - 16, x, y); X.quadraticCurveTo(x + 14, y - 16, x + 30, y - f); X.stroke(); X.fillStyle = '#ffd3e2'; X.beginPath(); X.arc(x, y + 14, 9, 0, 7); X.fill(); X.strokeStyle = '#e8467c'; X.lineWidth = 2; X.stroke(); }
+}
+function meerTier(t, art, q) {
+  const a = -.4 + q * 1.6, r = rand(a) * K * 1.25, x = IX + Math.cos(a) * RX * r, y = IY + Math.sin(a) * RY * r;
+  X.save(); X.translate(x, y);
+  if (art === 'wal') {
+    X.fillStyle = '#3a5a8a'; X.beginPath(); X.ellipse(0, 0, 90, 34, -.1, 0, 7); X.fill(); X.beginPath(); X.moveTo(80, -6); X.lineTo(130, -36); X.lineTo(122, 0); X.lineTo(130, 30); X.closePath(); X.fill();
+    X.fillStyle = '#c9d8ea'; X.beginPath(); X.ellipse(-10, 14, 60, 14, -.1, 0, Math.PI); X.fill(); X.fillStyle = '#fff'; X.beginPath(); X.arc(-55, -6, 5, 0, 7); X.fill(); X.fillStyle = INK; X.beginPath(); X.arc(-55, -6, 2.5, 0, 7); X.fill();
+    const h = (t * .003) % 1; X.strokeStyle = 'rgba(220,250,255,.9)'; X.lineWidth = 5; for (let k = -1; k <= 1; k++) { X.beginPath(); X.moveTo(-30, -34); X.quadraticCurveTo(-30 + k * 30, -34 - 70 * h, -30 + k * 50, -34 - 40 * h); X.stroke(); }
+  } else if (art === 'delfine') {
+    for (let k = 0; k < 3; k++) { const ph = (t * .0012 + k * .33) % 1, hy = -Math.sin(ph * Math.PI) * 60; X.save(); X.translate(k * 70 - 70, hy); X.rotate(-Math.cos(ph * Math.PI) * .8); X.fillStyle = '#5b8fc2'; X.beginPath(); X.ellipse(0, 0, 32, 11, 0, 0, 7); X.fill(); X.beginPath(); X.moveTo(-2, -9); X.lineTo(8, -24); X.lineTo(12, -8); X.fill(); X.beginPath(); X.moveTo(28, 0); X.lineTo(44, -10); X.lineTo(44, 10); X.fill(); X.restore(); }
+  } else {
+    X.fillStyle = '#6b4423'; X.beginPath(); X.moveTo(-90, 0); X.lineTo(90, 0); X.lineTo(70, 34); X.lineTo(-70, 34); X.closePath(); X.fill();
+    X.strokeStyle = INK; X.lineWidth = 4; X.beginPath(); X.moveTo(0, 0); X.lineTo(0, -130); X.stroke();
+    X.fillStyle = '#fff3e0'; X.beginPath(); X.moveTo(4, -120); X.quadraticCurveTo(60, -80, 4, -20); X.fill(); X.beginPath(); X.moveTo(-4, -110); X.quadraticCurveTo(-55, -70, -4, -24); X.fill();
+    X.fillStyle = INK; X.fillRect(0, -150, 34, 22); X.font = `18px ${FONT}`; X.textAlign = 'center'; X.fillText('☠️', 17, -138);
+  }
+  X.restore();
+}
+// ---------- Bildschirm-Effekte (Sturm, Party, Regen …) ----------
+function eventBildschirm(t) {
+  const e = S.event, id = e?.id;
+  X.setTransform(1, 0, 0, 1, 0, 0);
+  if (id === 'sturmflut') {
+    X.fillStyle = 'rgba(30,40,70,.28)'; X.fillRect(0, 0, W, H);
+    X.strokeStyle = 'rgba(200,220,255,.5)'; X.lineWidth = 2; for (let i = 0; i < 120; i++) { const x = (i * 97 + t * .9) % 1300 - 100, y = (i * 211 + t * 1.6) % 2000; X.beginPath(); X.moveTo(x, y); X.lineTo(x - 10, y + 26); X.stroke(); }
+    if (Math.sin(t * .0013) > .995) { X.fillStyle = 'rgba(255,255,255,.35)'; X.fillRect(0, 0, W, H); }
+  }
+  if (id === 'strandparty') { X.save(); X.globalCompositeOperation = 'lighter'; for (let i = 0; i < 4; i++) { const x = 540 + Math.sin(t * .0015 + i * 1.7) * 380, y = 1250 + Math.cos(t * .0011 + i) * 420; const g = X.createRadialGradient(x, y, 0, x, y, 260); g.addColorStop(0, ['rgba(255,80,180,.35)', 'rgba(80,200,255,.35)', 'rgba(255,220,60,.3)', 'rgba(150,90,255,.35)'][i]); g.addColorStop(1, 'rgba(0,0,0,0)'); X.fillStyle = g; X.fillRect(x - 260, y - 260, 520, 520); } X.restore(); }
+  if (id === 'muschelregen' || id === 'bauturbo') {
+    for (let i = 0; i < 40; i++) { const x = (i * 137) % 1000 + 40, y = (t * (.25 + (i % 5) * .05) + i * 233) % 1500 + 450; X.font = `${24 + (i % 3) * 8}px ${FONT}`; X.textAlign = 'center'; X.globalAlpha = .9; X.fillText(id === 'bauturbo' ? (i % 2 ? '⚡' : '🔨') : (i % 3 ? '🐚' : '✨'), x, y); }
+    X.globalAlpha = 1;
+  }
+  if (id === 'sternschnuppe') { X.fillStyle = 'rgba(10,20,60,.25)'; X.fillRect(0, 0, W, H); for (let i = 0; i < 3; i++) { const q = ((t * .0004 + i * .37) % 1), x = 1100 - q * 1300, y = 500 + i * 200 + q * 500; const g = X.createLinearGradient(x, y, x + 160, y - 60); g.addColorStop(0, '#fff'); g.addColorStop(1, 'rgba(255,255,255,0)'); X.strokeStyle = g; X.lineWidth = 4; X.beginPath(); X.moveTo(x, y); X.lineTo(x + 160, y - 60); X.stroke(); stern(X, x, y, 10); } }
+}
+
+// ---------- Geschenk-Shows ----------
+const SHOW_DAUER = { herzregen: 5, muschelkonfetti: 5, seifenblasen: 5, delfin: 6.5, ballon: 7, flugzeug: 7, feuerwerk: 7, yacht: 7.5, goldregen: 7, megashow: 10 };
+function showsZeichnen(t) {
+  const s = SHOWS[0]; if (!s) return;
+  if (!s.t) { s.t = t; const p = sp(s.id), pl = p && platzVon(p); s.pl = pl; if (pl && (s.coins >= 100)) fokus(pl, SHOW_DAUER[s.art] * 1000); if (s.art === 'feuerwerk' || s.art === 'megashow') feuerwerk(); }
+  const age = (t - s.t) / 1000, D = SHOW_DAUER[s.art] || 6, q = age / D;
+  if (age > D) { SHOWS.shift(); return; }
+  const name = s.name, danke = `Danke ${name}!`, gift = `${s.anzahl > 1 ? s.anzahl + '× ' : ''}${s.gift}`;
+  // Weltbezogene Effekte am Haus des Spenders
+  if (s.pl && ['herzregen', 'muschelkonfetti', 'seifenblasen', 'megashow', 'goldregen'].includes(s.art)) {
+    const zeichen = { herzregen: '💖', muschelkonfetti: '🐚', seifenblasen: '🫧', megashow: '⭐', goldregen: '✨' }[s.art];
+    if (Math.random() < .5) fx.push({ x: s.pl.x + (Math.random() - .5) * 60, y: s.pl.y - 20, vx: (Math.random() - .5) * 3, vy: -3 - Math.random() * 4, t, z: zeichen, s: 18 + Math.random() * 16 });
+  }
+  X.setTransform(1, 0, 0, 1, 0, 0);
+  const ein = Math.min(1, age * 3, (D - age) * 3);
+  if (s.art === 'delfin') {                                       // Delfin springt mit Banner über das Bild
+    const x = -150 + q * (W + 300), y = 1180 - Math.sin(q * Math.PI) * 420;
+    X.save(); X.translate(x, y); X.rotate(-Math.cos(q * Math.PI) * .7);
+    X.fillStyle = '#5b8fc2'; X.beginPath(); X.ellipse(0, 0, 80, 26, 0, 0, 7); X.fill(); X.beginPath(); X.moveTo(-6, -22); X.lineTo(20, -60); X.lineTo(30, -20); X.fill(); X.beginPath(); X.moveTo(-74, 0); X.lineTo(-112, -24); X.lineTo(-112, 24); X.fill();
+    X.fillStyle = '#c9dcef'; X.beginPath(); X.ellipse(10, 10, 56, 12, 0, 0, Math.PI); X.fill(); X.fillStyle = INK; X.beginPath(); X.arc(52, -6, 4, 0, 7); X.fill(); X.restore();
+    schild(x - 30, y + 70, danke, gift, PINK, ein);
+  } else if (s.art === 'ballon') {                                // Heißluftballon mit Namen
+    const x = 160 + q * 760, y = 1500 - q * 700 + Math.sin(t * .002) * 10;
+    X.fillStyle = '#e8433c'; X.beginPath(); X.ellipse(x, y, 110, 130, 0, 0, 7); X.fill();
+    X.fillStyle = '#ffd23f'; for (let k = -2; k <= 2; k += 2) { X.beginPath(); X.ellipse(x + k * 30, y, 16, 128, 0, 0, 7); X.fill(); }
+    X.strokeStyle = INK; X.lineWidth = 2; X.beginPath(); X.moveTo(x - 60, y + 108); X.lineTo(x - 26, y + 170); X.moveTo(x + 60, y + 108); X.lineTo(x + 26, y + 170); X.stroke();
+    X.fillStyle = '#8a5a2b'; rr(x - 30, y + 168, 60, 40, 6); X.fill();
+    schild(x, y - 6, name, '🎈 ' + gift, 'rgba(42,27,18,.85)', ein, 300);
+  } else if (s.art === 'flugzeug') {                              // Flugzeug zieht Banner
+    const x = W + 200 - q * (W + 1100), y = 760;
+    X.fillStyle = '#fff'; X.beginPath(); X.ellipse(x, y, 70, 18, 0, 0, 7); X.fill(); X.fillStyle = '#e8433c'; X.fillRect(x - 10, y - 50, 24, 100); X.fillRect(x + 50, y - 26, 12, 52);
+    X.fillStyle = '#9fe3f0'; X.beginPath(); X.ellipse(x - 44, y - 4, 14, 8, 0, 0, 7); X.fill();
+    X.strokeStyle = '#ccc'; X.lineWidth = 2; X.beginPath(); X.moveTo(x + 70, y); X.lineTo(x + 130, y); X.stroke();
+    X.font = `900 34px ${FONT}`; const bw = X.measureText(`❤️ ${danke}`).width + 60;
+    X.save(); X.translate(x + 130, y - 30); for (let k = 0; k < bw; k += 20) { X.fillStyle = k % 40 ? '#fff' : '#fff3c4'; X.fillRect(k, Math.sin(t * .01 + k * .05) * 4, 20, 60); }
+    text(`❤️ ${danke}`, bw / 2, 30, 34, PINK, 'center', 900); X.restore();
+  } else if (s.art === 'yacht') {                                 // Yacht mit Namen am Rumpf
+    const x = -320 + q * (W + 640), y = 1650;
+    X.fillStyle = 'rgba(255,255,255,.5)'; X.beginPath(); X.ellipse(x - 220, y + 30, 140, 10, 0, 0, 7); X.fill();
+    X.fillStyle = '#fff'; X.beginPath(); X.moveTo(x - 220, y - 10); X.lineTo(x + 230, y - 10); X.lineTo(x + 180, y + 50); X.lineTo(x - 200, y + 50); X.closePath(); X.fill(); X.strokeStyle = INK; X.lineWidth = 4; X.stroke();
+    X.fillStyle = '#fff'; rr(x - 120, y - 70, 220, 62, 14); X.fill(); X.stroke(); X.fillStyle = '#9fe3f0'; for (let k = 0; k < 5; k++) X.fillRect(x - 104 + k * 40, y - 56, 28, 22);
+    X.fillStyle = GELB; X.fillRect(x - 220, y + 12, 400, 6);
+    text(name, x, y + 30, 26, '#2f6fb3', 'center', 900, 360);
+    schild(540, 1500, danke, '🛥️ ' + gift, PINK, ein);
+  } else if (s.art === 'feuerwerk' || s.art === 'goldregen' || s.art === 'megashow') {
+    if (s.art === 'goldregen') for (let i = 0; i < 60; i++) { const x = (i * 71) % 1080, y = (t * (.3 + (i % 4) * .08) + i * 97) % 1500 + 420; X.fillStyle = i % 2 ? '#ffd23f' : '#ffe9a8'; X.globalAlpha = .85; X.beginPath(); X.arc(x, y, 3 + (i % 3), 0, 7); X.fill(); }
+    X.globalAlpha = 1;
+    if (s.art === 'megashow') { X.save(); X.globalCompositeOperation = 'lighter'; const g = X.createRadialGradient(540, 1290, 0, 540, 1290, 700); g.addColorStop(0, `rgba(255,215,90,${.35 * ein})`); g.addColorStop(1, 'rgba(0,0,0,0)'); X.fillStyle = g; X.fillRect(0, 0, W, H); X.restore(); if (Math.random() < .04) feuerwerk(); }
+    X.save(); X.globalAlpha = ein; X.translate(540, 1000); const sc = .9 + Math.sin(age * 3) * .04; X.scale(sc, sc);
+    X.shadowColor = s.art === 'feuerwerk' ? '#ff6fa3' : '#ffd23f'; X.shadowBlur = 30;
+    umriss(s.art === 'megashow' ? '👑 ' + name : name, 0, 0, s.art === 'megashow' ? 66 : 56, '#fff');
+    X.shadowBlur = 0; umriss(`${s.art === 'megashow' ? 'Danke für ' : 'Danke für '}${gift}!`, 0, 64, 32, GELB);
+    X.restore();
+  } else schild(540, 1000 - q * 60, danke, gift, PINK, ein, 520);      // kleine Geschenke: Schild über der Insel
+}
+function umriss(t, x, y, size, farbe) {                          // gut lesbar auf jedem Hintergrund
+  let fs = size; X.font = `900 ${fs}px ${FONT}`; while (X.measureText(t).width > SB - 20 && fs > 16) { fs -= 2; X.font = `900 ${fs}px ${FONT}`; }
+  X.textAlign = 'center'; X.textBaseline = 'middle'; X.lineJoin = 'round'; X.lineWidth = fs * .22; X.strokeStyle = INK; X.strokeText(t, x, y); X.fillStyle = farbe; X.fillText(t, x, y);
+}
+function schild(x, y, oben, unten, farbe, a, w = 620) {
+  w = Math.min(w, SB); X.save(); X.globalAlpha = Math.max(0, a); X.translate(Math.max(SL + w / 2, Math.min(SR - w / 2, x)), y);
+  karte(-w / 2, -50, w, 100, farbe, 30);
+  text(oben, 0, -14, 32, '#fff', 'center', 900, w - 40); text(unten, 0, 26, 22, '#fff', 'center', 800, w - 40);
+  X.restore();
+}
+
 // Sicherer Bereich: TikTok legt oben Profil-Leiste/Zuschauer/Ranking darüber, schmale Handys schneiden links/rechts je ~10 % ab.
 // Alle Texte und Balken bleiben deshalb in x 120–960, ab y 330.
 const SL = 120, SR = 960, SB = SR - SL, OBEN = 330;
@@ -765,41 +970,31 @@ function kopf(t) {
     X.strokeStyle = INK; X.lineWidth = 3.5; rr(SL + 24, y2 + 48, SB - 48, 26, 13); X.stroke();
     text(`${z.ort || 'Haupt-Insel'} · Folgen = einziehen 🏠 · noch ${Math.max(0, z.ziel - bw)} Bewohner`, 540, y2 + 62, 16, INK, 'center', 900, SB - 70);
   } else text(`🏠 ${bw.toLocaleString('de-DE')} Bewohner · Folgen = einziehen`, 540, y2 + 46, 28, INK, 'center', 900, SB - 40);
-  // Abstimmung, sonst Regeln/Projekt + Top 3
-  const a = S.abstimmung, y3 = y2 + 114;
-  if (a) {
-    karte(SL, y3, SB, 178, '#fff', 30);
-    text(`🗳️ Was bauen wir? Schreib 1, 2 oder 3 · ${a.rest}s`, 540, y3 + 28, 25, INK, 'center', 900, SB - 40);
-    const sum = a.stimmen.reduce((x, y) => x + y, 0) || 1;
-    a.optionen.forEach((o, i) => {
-      const y = y3 + 52 + i * 40, f = a.stimmen[i] / sum;
-      X.fillStyle = 'rgba(42,27,18,.08)'; rr(SL + 24, y, SB - 48, 32, 16); X.fill();
-      X.fillStyle = [GELB, '#7fe0c8', '#ff8fb8'][i]; rr(SL + 24, y, Math.max(32, (SB - 48) * f), 32, 16); X.fill();
-      text(`${i + 1}  ${o}`, SL + 42, y + 17, 21, INK, 'left', 900, SB - 160); text(String(a.stimmen[i]), SR - 42, y + 17, 21, INK, 'right', 900);
-    });
-    return y3 + 178;
-  }
-  if (t - seiteSeit > 8000) { seite = (seite + 1) % (S.projekt ? 2 : 1); seiteSeit = t; }
-  const lw = 510;
+  // Laufendes Event / Ergebnis, sonst Infos (wechselnd) + Countdown zum nächsten Event
+  const y3 = y2 + 114, ep = eventPanel(t, y3);
+  if (ep) return ep;
+  const seiten = S.projekt ? 3 : 2;
+  if (t - seiteSeit > 7000) { seite = (seite + 1) % seiten; seiteSeit = t; }
+  const lw = 540;
   karte(SL, y3, lw, 112, '#fff3c4', 28);
-  if (seite === 1 && S.projekt) {
+  if (seite === 2 && S.projekt) {
     const pr = S.projekt;
     text(`🏗️ Wir bauen: ${pr.name}`, SL + 22, y3 + 28, 23, INK, 'left', 900, lw - 44);
     X.fillStyle = 'rgba(42,27,18,.1)'; rr(SL + 22, y3 + 48, lw - 44, 20, 10); X.fill();
     X.fillStyle = GELB; rr(SL + 22, y3 + 48, Math.max(20, (lw - 44) * pr.stand / pr.ziel), 20, 10); X.fill();
     X.strokeStyle = INK; X.lineWidth = 3; rr(SL + 22, y3 + 48, lw - 44, 20, 10); X.stroke();
     text(`${Math.floor(pr.stand).toLocaleString('de-DE')} / ${pr.ziel.toLocaleString('de-DE')} 🐚 aus der Muschelkasse`, SL + 22, y3 + 88, 16, '#8a5a2b', 'left', 800, lw - 44);
+  } else if (seite === 1) {
+    text('🏆 Größte Häuser', SL + 22, y3 + 24, 20, INK, 'left', 900, lw - 44);
+    [...S.spieler].sort((x, y) => y.muscheln - x.muscheln).slice(0, 3).forEach((p, k) => {
+      const y = y3 + 52 + k * 22; text(`${k + 1}. ${p.name}`, SL + 22, y, 17, INK, 'left', 800, lw - 200); text(S.stufen[p.stufe] || '', SL + lw - 22, y, 15, '#8a5a2b', 'right', 900, 160);
+    });
   } else {
     [['❤️', 'Liken = Haus wächst'], ['💬', 'pool · garten · boot · palme · rot …'], ['🎁', '1 Coin = 1 Muschel']].forEach(([i, s], k) => {
       text(i, SL + 18, y3 + 28 + k * 29, 20, INK, 'left', 400); text(s, SL + 54, y3 + 28 + k * 29, 19, INK, 'left', 800, lw - 74);
     });
   }
-  const tx = SL + lw + 18, tw = SR - tx;
-  karte(tx, y3, tw, 112, '#fff', 28);
-  text('🏆 Top-Häuser', tx + tw / 2, y3 + 22, 18, INK, 'center', 900, tw - 20);
-  [...S.spieler].sort((x, y) => y.muscheln - x.muscheln).slice(0, 3).forEach((p, k) => {
-    const y = y3 + 49 + k * 24; text(`${k + 1}. ${p.name}`, tx + 14, y, 16, INK, 'left', 800, tw - 28);
-  });
+  countdownKarte(SL + lw + 18, y3, SR - SL - lw - 18, 112, t);
   return y3 + 112;
 }
 let KOPF_UNTEN = 670;
@@ -817,9 +1012,12 @@ function effekte(t) {
 }
 function overlay(t) {
   X.setTransform(1, 0, 0, 1, 0, 0);
-  if (banner.length && !banner[0].t) banner[0].t = t;
-  while (banner.length && t - banner[0].t > 3200) { banner.shift(); if (banner[0]) banner[0].t = t; }
-  const b = banner[0];
+  if (banner.length > 6) banner.splice(1, banner.length - 6);
+  const showLaeuft = SHOWS[0]?.t && SHOWS[0].coins >= 10;            // große Geschenk-Show hat Vorrang
+  if (showLaeuft && banner[0]) banner[0].t = 0;
+  if (!showLaeuft && banner.length && !banner[0].t) banner[0].t = t;
+  while (!showLaeuft && banner.length && banner[0].t && t - banner[0].t > 3200) { banner.shift(); if (banner[0]) banner[0].t = t; }
+  const b = showLaeuft ? null : banner[0];
   if (b) {
     const age = (t - b.t) / 1000, k = Math.max(0, Math.min(1, age * 4, (3.2 - age) * 4));
     X.save(); X.globalAlpha = k; X.translate(540, KOPF_UNTEN + 210); X.scale(.85 + .15 * k, .85 + .15 * k);
@@ -855,8 +1053,10 @@ function bild(t) {
   platz(t);
   lebenZeichnen(t, dt);
   S.spieler.map(p => [p, platzVon(p)]).filter(([p, pl]) => pl && sichtbar(pl.x, pl.y, 90)).sort((a, b) => a[1].y - b[1].y).forEach(([p, pl]) => haus(p, pl, t));
+  eventWelt(t);
   nachtZeichnen(t);
   moewen(t); effekte(t);
+  eventBildschirm(t); showsZeichnen(t);
   X.setTransform(1, 0, 0, 1, 0, 0);
   if (!tonAn) { if (!bild.versuch || t - bild.versuch > 3000) { bild.versuch = t; tonStarten(); } if (!PARAM.has('still')) text('🔊 Einmal ins Bild klicken für Musik', 540, 1840, 22, 'rgba(255,255,255,.85)', 'center', 900); }
   tonLautstaerke();
