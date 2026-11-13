@@ -573,7 +573,8 @@ function tt(art, text) {                                     // jedes echte TikT
 }
 async function verbinde() {
   const { TikTokLiveConnection, WebcastEvent } = await import('tiktok-live-connector');
-  const opt = { enableExtendedGiftInfo: true, processInitialData: false };
+  // Keine Geschenkliste abfragen: die braucht bei Eulerstream einen Bezahl-Plan. Name + Coins kommen mit jedem Geschenk.
+  const opt = { enableExtendedGiftInfo: false, processInitialData: false };
   if (CFG.eulerApiKey) opt.signApiKey = CFG.eulerApiKey;   // optional: eigener Schlüssel von eulerstream.com (stabiler)
   const c = new TikTokLiveConnection(CFG.tiktokName, opt);
   const nm = d => '@' + (d.user?.uniqueId || '?');
