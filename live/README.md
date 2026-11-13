@@ -25,7 +25,7 @@ Eine Mac-Stimme (unbegrenzt, offline) moderiert.
 | Haus-Stufen | Zelt → Strohhütte → Stelzenhütte → Bungalow → Strandhaus → Ferienhaus → Villa → Luxusvilla → Strandpalast → Muschelschloss |
 | Kommentar `palme` `flagge` `garten` `laterne` `pool` `boot` | Anbau (ab bestimmter Stufe) |
 | Kommentar `rot` `blau` `lila` … | Hausfarbe |
-| Geschenk | 30 Haus-Muscheln pro Diamant, große Geschenke = Feuerwerk |
+| Geschenk | **1 Coin = 1 Muschel (= 0,01 €)** – für die Muschelkasse und fürs eigene Haus, große Geschenke = Feuerwerk |
 | Folgen | neuer **Bewohner** + 5 Muscheln in die Muschelkasse |
 | Stream teilen | 2 Muscheln in die Muschelkasse |
 | Abstimmung alle 10 Min. (`1`/`2`/`3`) | Gemeinschaftsprojekt, wird mit Muscheln aus der Muschelkasse gebaut |

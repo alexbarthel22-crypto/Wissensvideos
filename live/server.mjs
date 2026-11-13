@@ -92,10 +92,11 @@ function kommentar(u, text) {
 
 function geschenk(u, name, diamanten, anzahl) {
   const p = spieler(u); if (!p) return;
-  const d = Math.max(1, diamanten || 1) * Math.max(1, anzahl || 1);
+  const d = Math.max(1, diamanten || 1) * Math.max(1, anzahl || 1);   // Coins insgesamt: 1 Coin = 1 Muschel (= 0,01 €)
   sende({ typ: 'geschenk', id: p.id, name, anzahl, diamanten: d });
+  inKasse(d * CFG.kasse.proCoin);
   sag(anzahl > 1 ? `Danke ${sprechName(p)} für ${anzahl} mal ${name}!` : `Danke ${sprechName(p)} für ${name}!`, 0);
-  gibMuscheln(p, d * CFG.muschelnProDiamant, 'geschenk');
+  gibMuscheln(p, d * CFG.muschelnProCoin, 'geschenk');
 }
 
 // ---------- Muschelkasse der Live-Insel (getrennt von der Inselkasse der Haupt-Insel) ----------

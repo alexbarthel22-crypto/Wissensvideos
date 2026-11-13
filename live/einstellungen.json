@@ -57,7 +57,6 @@
     }
   ],
   "muschelnProLike": 1,
-  "muschelnProDiamant": 30,
   "muschelnFuerFollow": 25,
   "anbauten": {
     "palme": {
@@ -232,7 +231,9 @@
   "kasse": {
     "proLike": 1,
     "proFollow": 5,
-    "proShare": 2
+    "proShare": 2,
+    "proCoin": 1,
+    "_hinweis": "1 Muschel = 1 Coin = 0,01 €. Geschenke: jeder ausgegebene Coin = 1 Muschel für die Kasse und fürs eigene Haus."
   },
   "ton": {
     "musik": 0.32,
@@ -245,5 +246,6 @@
     "breite": 53.58,
     "laenge": 9.95,
     "_hinweis": "Tag/Nacht, Sonnenauf- und -untergang wie auf muscheltal.de"
-  }
+  },
+  "muschelnProCoin": 1
 }

@@ -263,8 +263,8 @@ function feuerwerk() {
 }
 
 // ================= Kamera: Übersicht, kleine Rundfahrten, Zoom bei Ausbauten =================
-const MITTE_Y = 1215;
-const zUebersicht = () => Math.min(1040 / (2 * RX * K * 1.07), 1360 / (2 * RY * K * 1.07));
+const MITTE_Y = 1290;
+const zUebersicht = () => Math.min(900 / (2 * RX * K * 1.07), 1200 / (2 * RY * K * 1.07));
 const cam = { x: IX, y: IY, z: 1 }, ZIEL = { x: IX, y: IY, z: 1 };
 let fokusBis = 0, fokusLetzt = 0, tourBis = 0, tourModus = 0;
 function fokus(pl, ms, leise) {
@@ -735,67 +735,74 @@ function haus(p, pl, t) {
 
 // ================= Kopfzeile =================
 let seite = 0, seiteSeit = 0;
+// Sicherer Bereich: TikTok legt oben Profil-Leiste/Zuschauer/Ranking darüber, schmale Handys schneiden links/rechts je ~10 % ab.
+// Alle Texte und Balken bleiben deshalb in x 120–960, ab y 330.
+const SL = 120, SR = 960, SB = SR - SL, OBEN = 330;
 function kopf(t) {
   X.setTransform(1, 0, 0, 1, 0, 0);
-  // Logo wie auf muscheltal.de: gelbe Pille, Muschel-Logo, leicht gedreht
-  X.save(); X.translate(36, 150); X.rotate(-2 * Math.PI / 180);
-  X.font = `900 52px ${FONT}`; const lw = Math.max(X.measureText('MUSCHEL-TAL').width, 300) + 150;
-  karte(0, 0, lw, 112, GELB);
-  if (LOGO.complete && LOGO.naturalWidth) X.drawImage(LOGO, 8, 8, 96, 96);
-  text('MUSCHEL-TAL', 116, 44, 52, INK, 'left', 900);
-  X.globalAlpha = .75; text('by @muscheltal', 118, 86, 27, INK, 'left', 800); X.globalAlpha = 1;
+  // Logo wie auf muscheltal.de
+  X.save(); X.translate(SL, OBEN); X.rotate(-2 * Math.PI / 180);
+  karte(0, 0, 474, 92, GELB);
+  if (LOGO.complete && LOGO.naturalWidth) X.drawImage(LOGO, 7, 7, 78, 78);
+  text('MUSCHEL-TAL', 96, 36, 42, INK, 'left', 900, 360);
+  X.globalAlpha = .75; text('by @muscheltal', 98, 70, 22, INK, 'left', 800, 360); X.globalAlpha = 1;
   X.restore();
-  // Muschelkasse
-  karte(668, 150, 376, 112, '#fff', 999);
-  text('🐚 ' + (S.kasse || 0).toLocaleString('de-DE'), 856, 186, 44, INK, 'center', 900, 330);
-  text('Muschelkasse Live-Insel', 856, 222, 21, INK, 'center', 900, 330);
-  text('❤️ Like = 1 · ➕ Folgen = 5', 856, 246, 17, '#8a5a2b', 'center', 800, 330);
-  // Bewohner-Ziel
-  const z = S.ziel, bw = S.bewohner || 0;
-  karte(36, 288, 1008, 104, '#fff', 34);
+  // Muschelkasse der Live-Insel
+  karte(612, OBEN, SR - 612, 92, '#fff', 999);
+  text('🐚 ' + (S.kasse || 0).toLocaleString('de-DE'), 786, OBEN + 30, 36, INK, 'center', 900, 300);
+  text('Muschelkasse Live-Insel', 786, OBEN + 60, 17, INK, 'center', 900, 300);
+  text('Like 1 · Coin 1 · Folgen 5 · Teilen 2', 786, OBEN + 79, 13, '#8a5a2b', 'center', 800, 300);
+  // Nächstes Bauprojekt der Haupt-Insel
+  const z = S.ziel, bw = S.bewohner || 0, y2 = OBEN + 116;
+  karte(SL, y2, SB, 92, '#fff', 30);
   if (z) {
     const f = Math.min(1, bw / z.ziel);
-    text(`${z.icon || '🏗️'} ${z.name}${z.ort ? ' · ' + z.ort : ''}`, 66, 320, 30, INK, 'left', 900, 600);
-    text(`${bw.toLocaleString('de-DE')} / ${z.ziel.toLocaleString('de-DE')} Bewohner`, 1014, 320, 28, INK, 'right', 900, 400);
-    X.fillStyle = 'rgba(42,27,18,.1)'; rr(66, 346, 948, 26, 13); X.fill();
-    const g = X.createLinearGradient(66, 0, 1014, 0); g.addColorStop(0, TUERKIS); g.addColorStop(1, '#7fe0c8');
-    X.fillStyle = g; rr(66, 346, Math.max(26, 948 * f), 26, 13); X.fill();
-    X.strokeStyle = INK; X.lineWidth = 3.5; rr(66, 346, 948, 26, 13); X.stroke();
-    text(`Nächstes Bauprojekt · Folgen = einziehen 🏠 · noch ${Math.max(0, z.ziel - bw)} Bewohner`, 540, 360, 18, INK, 'center', 900, 900);
-  } else text(`🏠 ${bw.toLocaleString('de-DE')} Bewohner · Folgen = einziehen`, 540, 340, 32, INK, 'center');
-  // Untere Info-Zeile: Abstimmung, sonst abwechselnd Regeln / Projekt + Top 3
-  const a = S.abstimmung;
+    text(`${z.icon || '🏗️'} ${z.name}`, SL + 24, y2 + 26, 26, INK, 'left', 900, 500);
+    text(`${bw.toLocaleString('de-DE')} / ${z.ziel.toLocaleString('de-DE')}`, SR - 24, y2 + 26, 25, INK, 'right', 900, 280);
+    X.fillStyle = 'rgba(42,27,18,.1)'; rr(SL + 24, y2 + 48, SB - 48, 26, 13); X.fill();
+    const g = X.createLinearGradient(SL, 0, SR, 0); g.addColorStop(0, TUERKIS); g.addColorStop(1, '#7fe0c8');
+    X.fillStyle = g; rr(SL + 24, y2 + 48, Math.max(26, (SB - 48) * f), 26, 13); X.fill();
+    X.strokeStyle = INK; X.lineWidth = 3.5; rr(SL + 24, y2 + 48, SB - 48, 26, 13); X.stroke();
+    text(`${z.ort || 'Haupt-Insel'} · Folgen = einziehen 🏠 · noch ${Math.max(0, z.ziel - bw)} Bewohner`, 540, y2 + 62, 16, INK, 'center', 900, SB - 70);
+  } else text(`🏠 ${bw.toLocaleString('de-DE')} Bewohner · Folgen = einziehen`, 540, y2 + 46, 28, INK, 'center', 900, SB - 40);
+  // Abstimmung, sonst Regeln/Projekt + Top 3
+  const a = S.abstimmung, y3 = y2 + 114;
   if (a) {
-    karte(36, 416, 1008, 196, '#fff', 34);
-    text(`🗳️ Was bauen wir? Schreib 1, 2 oder 3 · ${a.rest}s`, 540, 448, 29, INK, 'center', 900, 950);
+    karte(SL, y3, SB, 178, '#fff', 30);
+    text(`🗳️ Was bauen wir? Schreib 1, 2 oder 3 · ${a.rest}s`, 540, y3 + 28, 25, INK, 'center', 900, SB - 40);
     const sum = a.stimmen.reduce((x, y) => x + y, 0) || 1;
     a.optionen.forEach((o, i) => {
-      const y = 474 + i * 42, f = a.stimmen[i] / sum;
-      X.fillStyle = 'rgba(42,27,18,.08)'; rr(66, y, 948, 34, 17); X.fill();
-      X.fillStyle = [GELB, '#7fe0c8', '#ff8fb8'][i]; rr(66, y, Math.max(34, 948 * f), 34, 17); X.fill();
-      text(`${i + 1}  ${o}`, 86, y + 18, 23, INK, 'left', 900); text(String(a.stimmen[i]), 994, y + 18, 23, INK, 'right', 900);
+      const y = y3 + 52 + i * 40, f = a.stimmen[i] / sum;
+      X.fillStyle = 'rgba(42,27,18,.08)'; rr(SL + 24, y, SB - 48, 32, 16); X.fill();
+      X.fillStyle = [GELB, '#7fe0c8', '#ff8fb8'][i]; rr(SL + 24, y, Math.max(32, (SB - 48) * f), 32, 16); X.fill();
+      text(`${i + 1}  ${o}`, SL + 42, y + 17, 21, INK, 'left', 900, SB - 160); text(String(a.stimmen[i]), SR - 42, y + 17, 21, INK, 'right', 900);
     });
-    return;
+    return y3 + 178;
   }
   if (t - seiteSeit > 8000) { seite = (seite + 1) % (S.projekt ? 2 : 1); seiteSeit = t; }
-  karte(36, 416, 626, 120, '#fff3c4', 30);
+  const lw = 510;
+  karte(SL, y3, lw, 112, '#fff3c4', 28);
   if (seite === 1 && S.projekt) {
     const pr = S.projekt;
-    text(`🏗️ Wir bauen: ${pr.name}`, 62, 448, 27, INK, 'left', 900, 580);
-    X.fillStyle = 'rgba(42,27,18,.1)'; rr(62, 470, 574, 22, 11); X.fill();
-    X.fillStyle = GELB; rr(62, 470, Math.max(22, 574 * pr.stand / pr.ziel), 22, 11); X.fill();
-    X.strokeStyle = INK; X.lineWidth = 3; rr(62, 470, 574, 22, 11); X.stroke();
-    text(`${Math.floor(pr.stand).toLocaleString('de-DE')} / ${pr.ziel.toLocaleString('de-DE')} 🐚 aus der Muschelkasse`, 62, 512, 19, '#8a5a2b', 'left', 800, 574);
+    text(`🏗️ Wir bauen: ${pr.name}`, SL + 22, y3 + 28, 23, INK, 'left', 900, lw - 44);
+    X.fillStyle = 'rgba(42,27,18,.1)'; rr(SL + 22, y3 + 48, lw - 44, 20, 10); X.fill();
+    X.fillStyle = GELB; rr(SL + 22, y3 + 48, Math.max(20, (lw - 44) * pr.stand / pr.ziel), 20, 10); X.fill();
+    X.strokeStyle = INK; X.lineWidth = 3; rr(SL + 22, y3 + 48, lw - 44, 20, 10); X.stroke();
+    text(`${Math.floor(pr.stand).toLocaleString('de-DE')} / ${pr.ziel.toLocaleString('de-DE')} 🐚 aus der Muschelkasse`, SL + 22, y3 + 88, 16, '#8a5a2b', 'left', 800, lw - 44);
   } else {
-    [['❤️', 'Liken = Haus wächst'], ['💬', 'pool · garten · boot · palme · rot · blau …'], ['🎁', 'Geschenk = großer Ausbau']].forEach(([i, s], k) => {
-      text(i, 60, 446 + k * 32, 23, INK, 'left', 400); text(s, 100, 446 + k * 32, 22, INK, 'left', 800, 540);
+    [['❤️', 'Liken = Haus wächst'], ['💬', 'pool · garten · boot · palme · rot …'], ['🎁', '1 Coin = 1 Muschel']].forEach(([i, s], k) => {
+      text(i, SL + 18, y3 + 28 + k * 29, 20, INK, 'left', 400); text(s, SL + 54, y3 + 28 + k * 29, 19, INK, 'left', 800, lw - 74);
     });
   }
-  karte(686, 416, 358, 120, '#fff', 30);
-  const top = [...S.spieler].sort((x, y) => y.muscheln - x.muscheln).slice(0, 3);
-  text('🏆 Top-Häuser', 865, 438, 21, INK, 'center', 900);
-  top.forEach((p, k) => { const y = 466 + k * 26; text(`${k + 1}. ${p.name}`, 706, y, 19, INK, 'left', 800, 190); text(S.stufen[p.stufe] || '', 1026, y, 17, '#8a5a2b', 'right', 900, 120); });
+  const tx = SL + lw + 18, tw = SR - tx;
+  karte(tx, y3, tw, 112, '#fff', 28);
+  text('🏆 Top-Häuser', tx + tw / 2, y3 + 22, 18, INK, 'center', 900, tw - 20);
+  [...S.spieler].sort((x, y) => y.muscheln - x.muscheln).slice(0, 3).forEach((p, k) => {
+    const y = y3 + 49 + k * 24; text(`${k + 1}. ${p.name}`, tx + 14, y, 16, INK, 'left', 800, tw - 28);
+  });
+  return y3 + 112;
 }
+let KOPF_UNTEN = 670;
 
 function effekte(t) {
   for (let i = fx.length - 1; i >= 0; i--) {
@@ -815,20 +822,20 @@ function overlay(t) {
   const b = banner[0];
   if (b) {
     const age = (t - b.t) / 1000, k = Math.max(0, Math.min(1, age * 4, (3.2 - age) * 4));
-    X.save(); X.globalAlpha = k; X.translate(540, 760); X.scale(.85 + .15 * k, .85 + .15 * k);
-    karte(-440, -66, 880, 132, b.farbe, 40);
-    text(b.oben, 0, -22, 42, '#fff', 'center', 900, 820); text(b.unten, 0, 28, 30, '#fff', 'center', 800, 820);
+    X.save(); X.globalAlpha = k; X.translate(540, KOPF_UNTEN + 210); X.scale(.85 + .15 * k, .85 + .15 * k);
+    karte(-SB / 2, -62, SB, 124, b.farbe, 40);
+    text(b.oben, 0, -20, 38, '#fff', 'center', 900, SB - 50); text(b.unten, 0, 28, 26, '#fff', 'center', 800, SB - 50);
     X.restore();
   }
   const ua = (t - untertitel.t) / 1000;
   if (untertitel.text && ua < 5) {
     X.globalAlpha = Math.min(1, (5 - ua) * 2);
-    X.font = `800 27px ${FONT}`; const w = Math.min(1008, X.measureText(untertitel.text).width + 50);
-    X.fillStyle = 'rgba(42,27,18,.85)'; rr(540 - w / 2, S.abstimmung ? 636 : 562, w, 52, 26); X.fill();
-    text(untertitel.text, 540, (S.abstimmung ? 636 : 562) + 26, 27, '#fff', 'center', 800, 960);
+    X.font = `800 24px ${FONT}`; const w = Math.min(SB, X.measureText(untertitel.text).width + 44), uy = KOPF_UNTEN + 22;
+    X.fillStyle = 'rgba(42,27,18,.85)'; rr(540 - w / 2, uy, w, 48, 24); X.fill();
+    text(untertitel.text, 540, uy + 24, 24, '#fff', 'center', 800, SB - 40);
     X.globalAlpha = 1;
   }
-  if (S.test) text('TEST-MODUS', 1040, 128, 20, 'rgba(255,255,255,.8)', 'right', 900);
+  if (S.test) text('TEST-MODUS', SR, OBEN - 18, 18, 'rgba(255,255,255,.8)', 'right', 900);
 }
 
 let tLetzt = 0;
@@ -853,8 +860,8 @@ function bild(t) {
   X.setTransform(1, 0, 0, 1, 0, 0);
   if (!tonAn) { if (!bild.versuch || t - bild.versuch > 3000) { bild.versuch = t; tonStarten(); } if (!PARAM.has('still')) text('🔊 Einmal ins Bild klicken für Musik', 540, 1840, 22, 'rgba(255,255,255,.85)', 'center', 900); }
   tonLautstaerke();
-  const warten = S.spieler.length - ANZAHL; if (warten > 0 && BASIS) text(`+ ${warten} warten auf ein Grundstück`, 540, 1880, 22, '#fff', 'center', 900);
-  kopf(t); overlay(t);
+  const warten = S.spieler.length - ANZAHL; if (warten > 0 && BASIS) text(`+ ${warten} warten auf ein Grundstück`, 540, 1880, 20, '#fff', 'center', 900);
+  KOPF_UNTEN = kopf(t); overlay(t);
   requestAnimationFrame(bild);
 }
 verbinde();
