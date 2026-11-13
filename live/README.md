@@ -20,14 +20,17 @@ Eine Mac-Stimme (unbegrenzt, offline) moderiert.
 ## Regeln (änderbar in `einstellungen.json`)
 | Aktion | Wirkung |
 |---|---|
-| Erster Like/Kommentar | eigenes Grundstück mit @Namen (Zelt) |
-| 1 Like | 1 Muschel 🐚 |
-| Muscheln | Zelt (0) → Hütte (30) → Haus (150) → Villa (500) → Palast (1500) |
-| Kommentar `garten` `pool` `boot` `palme` `laterne` `flagge` | Anbau (ab bestimmter Stufe + Mindest-Muscheln) |
+| Erster Like/Kommentar | eigenes Grundstück mit @Namen – wer früher kommt, wohnt näher an der Muschel |
+| 1 Like | 1 Muschel in der **Muschelkasse** + 1 Muschel fürs eigene Haus |
+| Haus-Stufen | Zelt → Strohhütte → Stelzenhütte → Bungalow → Strandhaus → Ferienhaus → Villa → Luxusvilla → Strandpalast → Muschelschloss |
+| Kommentar `palme` `flagge` `garten` `laterne` `pool` `boot` | Anbau (ab bestimmter Stufe) |
 | Kommentar `rot` `blau` `lila` … | Hausfarbe |
-| Geschenk | 30 Muscheln pro Diamant (Rose = 30), große Geschenke = Feuerwerk |
-| Folgen | 25 Muscheln + Einzug-Banner |
-| Abstimmung alle 10 Min. (`1`/`2`/`3`) | Gemeinschaftsprojekt in der Inselmitte, 25 % aller Muscheln fließen hinein |
+| Geschenk | 30 Haus-Muscheln pro Diamant, große Geschenke = Feuerwerk |
+| Folgen | neuer **Bewohner** (zählt fürs Bewohner-Ziel, z. B. Tierheim bei 1.000) |
+| Abstimmung alle 10 Min. (`1`/`2`/`3`) | Gemeinschaftsprojekt, wird mit Muscheln aus der Muschelkasse gebaut |
+
+Bei jedem Ausbau fährt die Kamera kurz an das Haus heran. Straßennamen stehen unter `strassen`, Bewohner-Ziele unter `bewohner.ziele`.
+Die Bewohnerzahl kommt live von TikTok (Follower), `bewohner.start` ist nur der Startwert, falls TikTok sie nicht liefert.
 
 ## Stimme
 Standard: **Markus (Erweitert)**. Andere Stimme → in `einstellungen.json` bei `"mac"` eintragen (Namen: `say -v '?' | grep de_DE`).

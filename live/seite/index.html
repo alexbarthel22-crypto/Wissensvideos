@@ -14,311 +14,536 @@
 <canvas id="c" width="1080" height="1920"></canvas>
 <script>
 // Muschel-Tal LIVE – Bühne 1080×1920 (TikTok-Hochformat).
-// Wichtig: TikTok legt unten links die Kommentare und oben die Profil-Leiste darüber.
-// Deshalb: Infos oben (y 150–470), Insel in der Mitte, unten nur Meer.
+// Oben (y 150–520) feste Infos, darunter die große Insel. Bei Ausbauten fährt die Kamera an das Haus heran.
 const C = document.getElementById('c'), X = C.getContext('2d');
 const W = 1080, H = 1920;
-const FONT = '"Arial Rounded MT Bold","Nunito","Varela Round",system-ui,sans-serif';
-const INK = '#2a1b12', GELB = '#ffd23f', PINK = '#e8467c';
+const FONT = '"SF Pro Rounded",ui-rounded,"Arial Rounded MT Bold","Nunito","Varela Round",system-ui,sans-serif';
+const INK = '#2a1b12', GELB = '#ffd23f', PINK = '#e8467c', TUERKIS = '#2fb3a0';
+const LOGO = new Image(); LOGO.src = 'logo.svg';
 
-let S = { spieler: [], stufen: ['Zelt', 'Hütte', 'Haus', 'Villa', 'Palast'], stufenAb: [0, 30, 150, 500, 1500], projekt: null, fertig: [], abstimmung: null, likesGesamt: 0 };
-const fx = [];          // Effekte (Sterne, Herzen, Muscheln)
-const banner = [];      // große Einblendungen (Geschenke, Follows)
-const pop = {};         // id -> Zeitpunkt des letzten „Wachsens“
+let S = { spieler: [], stufen: ['Zelt'], stufenAb: [0], projekt: null, fertig: [], abstimmung: null, kasse: 0, bewohner: 0, ziel: null, strassen: [] };
+const fx = [], banner = [], pop = {};
 let untertitel = { text: '', t: 0 };
 
-// ---------- Insel & Grundstücke ----------
-const IX = 540, IY = 905, RX = 470, RY = 375;           // Insel-Ellipse
-function inselRand(a, t) {                              // leicht unregelmäßiger Rand
-  return 1 + .045 * Math.sin(a * 3 + 1) + .035 * Math.sin(a * 5 + 2) + .02 * Math.sin(a * 9 + t * .0004);
-}
-const PLAETZE = (() => {                                // Raster-Plätze, nach Abstand zur Mitte sortiert
-  const out = [], dx = 104, dy = 92;
-  for (let r = -6; r <= 6; r++) for (let q = -6; q <= 6; q++) {
-    const x = IX + q * dx + (r & 1 ? dx / 2 : 0), y = IY + r * dy;
-    const nx = (x - IX) / (RX - 70), ny = (y - IY) / (RY - 62);
-    const d = nx * nx + ny * ny;
-    if (d <= 1 && Math.hypot(x - IX, (y - IY) * 1.25) > 150) out.push({ x, y, d });
+// ================= Insel-Geometrie =================
+const IX = 540, IY = 1205, RX = 520, RY = 690;               // große Insel unter der Kopfzeile
+const rand = a => 1 + .035 * Math.sin(a * 3 + 1) + .03 * Math.sin(a * 5 + 2) + .018 * Math.sin(a * 11 + .5);
+function innen(x, y, s) { const dx = (x - IX) / RX, dy = (y - IY) / RY, a = Math.atan2(dy, dx); return Math.hypot(dx, dy) <= rand(a) * s; }
+const PLATZ_R = 168;                                           // Muschelplatz in der Mitte
+const PX = 250, PY = 176, STR = 30, PL = 72;                  // Raster: Straßenabstand, Straßenbreite, Grundstück
+const XS = [], YS = [];
+for (let k = -3; k <= 3; k++) XS.push(IX + k * PX);
+for (let k = -5; k <= 5; k++) YS.push(IY + k * PY);
+
+// Grundstücke: 3 × 2 je Block, nur ganz auf der Wiese und außerhalb des Platzes; früher = näher an der Muschel
+const PLAETZE = (() => {
+  const out = [];
+  for (let i = 0; i < XS.length - 1; i++) for (let j = 0; j < YS.length - 1; j++) {
+    const bx = XS[i] + STR / 2 + 3, by = YS[j] + STR / 2 + 3, bw = PX - STR - 6, bh = PY - STR - 6;
+    for (let q = 0; q < 3; q++) for (let r = 0; r < 2; r++) {
+      const x0 = bx + q * bw / 3, y0 = by + r * bh / 2, w = bw / 3, h = bh / 2;
+      const ok = [[x0, y0], [x0 + w, y0], [x0, y0 + h], [x0 + w, y0 + h]].every(([x, y]) => innen(x, y, .935));
+      const cx = x0 + w / 2, cy = y0 + h / 2;
+      if (ok && Math.hypot(cx - IX, cy - IY) > PLATZ_R + 30) out.push({ x: cx, y: cy + h * .28, x0, y0, w, h, d: Math.hypot(cx - IX, (cy - IY) * .8) });
+    }
   }
   return out.sort((a, b) => a.d - b.d);
 })();
 
-// ---------- Live-Daten ----------
+// Straßen: jede Linie (nördl./südl. bzw. westl./östl. vom Platz getrennt) bekommt einen eigenen Namen
+function strassen(namen) {
+  const seg = [];
+  const teile = (fest, von, bis, senkrecht) => {
+    // Abschnitte auf der Wiese finden und am Platz trennen
+    let start = null; const step = 6;
+    for (let v = von; v <= bis + step; v += step) {
+      const x = senkrecht ? fest : v, y = senkrecht ? v : fest;
+      const auf = v <= bis && innen(x, y, .93) && Math.hypot(x - IX, y - IY) > PLATZ_R + 4;
+      if (auf && start === null) start = v;
+      if (!auf && start !== null) { if (v - start > 120) seg.push({ senkrecht, fest, von: start, bis: v - step }); start = null; }
+    }
+  };
+  XS.forEach(x => teile(x, IY - RY, IY + RY, true));
+  YS.forEach(y => teile(y, IX - RX, IX + RX, false));
+  seg.forEach((s, i) => s.name = namen[i % namen.length] || '');
+  return seg;
+}
+
+// ================= Statische Insel vorzeichnen (scharf auch beim Heranzoomen) =================
+const Q = 2.4, OX = -40, OY = 470, OW = 1160, OH = 1470;
+let BASIS = null, BASIS_NAMEN = '';
+function basisZeichnen() {
+  const cv = document.createElement('canvas'); cv.width = OW * Q; cv.height = OH * Q;
+  const b = cv.getContext('2d'); b.setTransform(Q, 0, 0, Q, -OX * Q, -OY * Q);
+  const form = s => { b.beginPath(); for (let i = 0; i <= 180; i++) { const a = i / 180 * 6.2832, k = rand(a) * s; const x = IX + Math.cos(a) * RX * k, y = IY + Math.sin(a) * RY * k; i ? b.lineTo(x, y) : b.moveTo(x, y); } b.closePath(); };
+  b.fillStyle = 'rgba(127,224,200,.55)'; form(1.1); b.fill();
+  b.fillStyle = 'rgba(255,255,255,.35)'; b.lineWidth = 3; b.strokeStyle = 'rgba(255,255,255,.5)'; form(1.06); b.stroke();
+  b.fillStyle = '#f3dfa6'; form(1.035); b.fill();
+  b.fillStyle = '#e9cf8c'; for (let i = 0; i < 900; i++) { const a = Math.random() * 6.283, r = 1 + Math.random() * .03; b.fillRect(IX + Math.cos(a) * RX * rand(a) * r, IY + Math.sin(a) * RY * rand(a) * r, 1.5, 1.5); }
+  b.fillStyle = '#7cc85a'; form(.95); b.fill();
+  b.save(); form(.95); b.clip();
+  for (let i = 0; i < 2600; i++) { b.fillStyle = Math.random() < .5 ? 'rgba(255,255,255,.07)' : 'rgba(40,110,30,.08)'; b.beginPath(); b.arc(IX - RX + Math.random() * RX * 2, IY - RY + Math.random() * RY * 2, 2 + Math.random() * 5, 0, 7); b.fill(); }
+  // Grundstücke: leicht hellere Rasenflächen mit Kante
+  PLAETZE.forEach(p => { b.fillStyle = 'rgba(255,255,255,.07)'; b.beginPath(); b.roundRect(p.x0 + 3, p.y0 + 3, p.w - 6, p.h - 6, 6); b.fill(); b.strokeStyle = 'rgba(60,120,40,.25)'; b.lineWidth = 1.2; b.stroke(); });
+  // Straßen (Sandwege wie auf muscheltal.de) mit Bordstein
+  const SEG = strassen(S.strassen);
+  const weg = (w, col) => { b.strokeStyle = col; b.lineWidth = w; b.lineCap = 'round'; SEG.forEach(s => { b.beginPath(); if (s.senkrecht) { b.moveTo(s.fest, s.von); b.lineTo(s.fest, s.bis); } else { b.moveTo(s.von, s.fest); b.lineTo(s.bis, s.fest); } b.stroke(); }); };
+  weg(STR + 5, '#d9b46a'); weg(STR, '#f0dca0');
+  b.fillStyle = 'rgba(160,120,60,.18)'; SEG.forEach(s => { for (let v = s.von; v < s.bis; v += 9) { const o = (Math.random() - .5) * STR * .7; s.senkrecht ? b.fillRect(s.fest + o, v, 1.6, 1.6) : b.fillRect(v, s.fest + o, 1.6, 1.6); } });
+  // Straßennamen auf dem Weg + Straßenschild am Anfang
+  b.textAlign = 'center'; b.textBaseline = 'middle';
+  SEG.forEach(s => {
+    const len = s.bis - s.von, n = len > 520 ? 2 : 1;
+    for (let k = 0; k < n; k++) {
+      const v = s.von + len * (k + 1) / (n + 1);
+      b.save(); s.senkrecht ? (b.translate(s.fest, v), b.rotate(-Math.PI / 2)) : b.translate(v, s.fest);
+      b.font = `900 15px ${FONT}`; const tw = b.measureText(s.name).width + 22;
+      b.fillStyle = '#2f6fb3'; b.beginPath(); b.roundRect(-tw / 2, -11, tw, 22, 5); b.fill();         // blaues Straßenschild
+      b.strokeStyle = '#fff'; b.lineWidth = 1.6; b.beginPath(); b.roundRect(-tw / 2 + 2.5, -8.5, tw - 5, 17, 3.5); b.stroke();
+      b.fillStyle = '#fff'; b.fillText(s.name, 0, .5);
+      b.restore();
+    }
+  });
+  b.restore();
+  // Palmen und Strandkörbe am Ufer
+  for (let i = 0; i < 26; i++) { const a = i / 26 * 6.283 + .1, k = rand(a) * .995; palme(b, IX + Math.cos(a) * RX * k, IY + Math.sin(a) * RY * k, .75, i * 300); }
+  for (let i = 0; i < 9; i++) { const a = i / 9 * 6.283 + .45, k = rand(a) * 1.015; schirm(b, IX + Math.cos(a) * RX * k, IY + Math.sin(a) * RY * k, ['#e8433c', '#3fa0e8', '#ffb02e', '#ff6fa3'][i % 4]); }
+  BASIS = cv; BASIS_NAMEN = S.strassen.join();
+}
+function schirm(c, x, y, col) {
+  c.fillStyle = '#fff'; c.beginPath(); c.roundRect(x - 12, y + 2, 24, 9, 3); c.fill();
+  c.fillStyle = 'rgba(0,0,0,.12)'; c.beginPath(); c.ellipse(x + 6, y + 8, 16, 6, 0, 0, 7); c.fill();
+  c.strokeStyle = '#6b4423'; c.lineWidth = 2; c.beginPath(); c.moveTo(x, y + 6); c.lineTo(x, y - 14); c.stroke();
+  for (let i = 0; i < 6; i++) { c.fillStyle = i % 2 ? '#fff' : col; c.beginPath(); c.moveTo(x, y - 18); c.arc(x, y - 18, 16, Math.PI + i * Math.PI / 6, Math.PI + (i + 1) * Math.PI / 6); c.fill(); }
+}
+function palme(c, x, y, s, t) {
+  c.save(); c.translate(x, y); c.scale(s, s);
+  c.fillStyle = 'rgba(0,0,0,.15)'; c.beginPath(); c.ellipse(10, 4, 26, 9, 0, 0, 7); c.fill();
+  c.strokeStyle = '#8a5a2b'; c.lineWidth = 9; c.lineCap = 'round';
+  c.beginPath(); c.moveTo(0, 0); c.quadraticCurveTo(-8, -30, 4, -58); c.stroke();
+  c.strokeStyle = '#6b4423'; c.lineWidth = 1.5; for (let i = 1; i < 6; i++) { c.beginPath(); c.moveTo(-5 + i * .3, -i * 10); c.lineTo(4 - i * .2, -i * 10 - 2); c.stroke(); }
+  const w = Math.sin(t * .002) * .08;
+  for (let i = 0; i < 7; i++) { c.save(); c.translate(4, -58); c.rotate(i * .9 + w); c.fillStyle = i % 2 ? '#3f9b45' : '#57b85a'; c.beginPath(); c.ellipse(21, 0, 25, 7.5, 0, 0, 7); c.fill(); c.restore(); }
+  c.fillStyle = '#6b3f1d'; c.beginPath(); c.arc(1, -55, 4.5, 0, 7); c.arc(8, -54, 4.5, 0, 7); c.arc(4, -50, 4.5, 0, 7); c.fill();
+  c.restore();
+}
+
+// ================= Live-Daten =================
 function verbinde() {
   const es = new EventSource('/events');
   es.onmessage = m => ereignis(JSON.parse(m.data));
   es.onerror = () => { es.close(); setTimeout(verbinde, 2000); };
 }
-function sp(id) { return S.spieler.find(p => p.id === id); }
-function platzVon(p) { return PLAETZE[p.platz]; }
+const sp = id => S.spieler.find(p => p.id === id);
+const platzVon = p => PLAETZE[p.platz];
 function ereignis(e) {
   const p = e.id && sp(e.id), pl = p && platzVon(p);
   switch (e.typ) {
-    case 'zustand': S = e.s; break;
+    case 'zustand': S = e.s; if (!BASIS || BASIS_NAMEN !== S.strassen.join()) basisZeichnen(); break;
     case 'neu': setTimeout(() => { const q = sp(e.id); if (q && platzVon(q)) { pop[e.id] = performance.now(); funken(platzVon(q), '✨', 8); } }, 300); break;
-    case 'stufe': if (pl) { pop[e.id] = performance.now(); funken(pl, '⭐', 16); } break;
-    case 'anbau': case 'farbe': if (pl) { pop[e.id] = performance.now(); funken(pl, '🔨', 5); } break;
+    case 'stufe': if (pl) { pop[e.id] = performance.now(); funken(pl, '⭐', 18); fokus(pl, 4200); } break;
+    case 'anbau': case 'farbe': if (pl) { pop[e.id] = performance.now(); funken(pl, '🔨', 5); fokus(pl, 2600, true); } break;
     case 'geschenk':
-      banner.push({ t: performance.now(), oben: `🎁 ${p ? p.name : ''}`, unten: (e.anzahl > 1 ? e.anzahl + '× ' : '') + e.name, farbe: PINK });
-      if (pl) funken(pl, '💖', 12 + Math.min(30, e.diamanten));
+      banner.push({ t: 0, oben: `🎁 ${p ? p.name : ''}`, unten: (e.anzahl > 1 ? e.anzahl + '× ' : '') + e.name, farbe: PINK });
+      if (pl) { funken(pl, '💖', 12 + Math.min(30, e.diamanten)); fokus(pl, 4000); }
       if (e.diamanten >= 100) feuerwerk();
       break;
-    case 'follow': banner.push({ t: performance.now(), oben: `🏠 ${p ? p.name : ''}`, unten: 'zieht ein – danke fürs Folgen!', farbe: '#2fb3a0' }); break;
+    case 'follow': banner.push({ t: 0, oben: `🏠 ${p ? p.name : ''}`, unten: 'ist jetzt Bewohner – danke fürs Folgen!', farbe: TUERKIS }); break;
+    case 'ziel': banner.push({ t: 0, oben: '🎉 Bewohner-Ziel erreicht!', unten: e.name + ' wird gebaut', farbe: '#9b5de5' }); feuerwerk(); break;
     case 'projekt': case 'fertig': funken({ x: IX, y: IY }, e.typ === 'fertig' ? '🎉' : '🚧', 30); if (e.typ === 'fertig') feuerwerk(); break;
     case 'ansage': untertitel = { text: e.text, t: performance.now() }; break;
   }
 }
-function funken(pl, zeichen, n) {
-  for (let i = 0; i < n; i++) fx.push({ x: pl.x, y: pl.y - 30, vx: (Math.random() - .5) * 7, vy: -3 - Math.random() * 6, t: performance.now(), z: zeichen, s: 26 + Math.random() * 18 });
-}
+function funken(pl, z, n) { for (let i = 0; i < n; i++) fx.push({ x: pl.x, y: pl.y - 30, vx: (Math.random() - .5) * 5, vy: -2 - Math.random() * 5, t: performance.now(), z, s: 18 + Math.random() * 14 }); }
 function feuerwerk() {
-  for (let k = 0; k < 5; k++) setTimeout(() => {
-    const x = 200 + Math.random() * 680, y = 560 + Math.random() * 300, col = ['#ffd23f', '#ff6fa3', '#7fe0c8', '#fff', '#ff8a2a'][k % 5];
-    for (let i = 0; i < 40; i++) { const a = i / 40 * 6.283, v = 4 + Math.random() * 3; fx.push({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v, t: performance.now(), punkt: col, s: 7 }); }
-  }, k * 260);
+  for (let k = 0; k < 6; k++) setTimeout(() => {
+    const x = IX - 380 + Math.random() * 760, y = 700 + Math.random() * 600, col = ['#ffd23f', '#ff6fa3', '#7fe0c8', '#fff', '#ff8a2a', '#b58ad0'][k];
+    for (let i = 0; i < 44; i++) { const a = i / 44 * 6.283, v = 3 + Math.random() * 3; fx.push({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v, t: performance.now(), punkt: col, s: 5 }); }
+  }, k * 240);
 }
 
-// ---------- Zeichnen: Hilfen ----------
-function rr(x, y, w, h, r) { X.beginPath(); X.roundRect(x, y, w, h, r); }
-function plakette(x, y, w, h, fill, r = 26) {
-  X.fillStyle = INK; rr(x + 6, y + 8, w, h, r); X.fill();
-  X.fillStyle = fill; rr(x, y, w, h, r); X.fill();
-  X.lineWidth = 6; X.strokeStyle = INK; X.stroke();
+// ================= Kamera =================
+const cam = { x: IX, y: IY, z: 1 }, ZIEL = { x: IX, y: IY, z: 1 };
+let fokusBis = 0, fokusLetzt = 0;
+const MITTE_Y = 1205;                                     // Bildschirm-Punkt, auf den die Kamera zielt
+function fokus(pl, ms, leise) {
+  const t = performance.now();
+  if (leise && t < fokusBis) return;                      // kleine Ereignisse unterbrechen keinen laufenden Zoom
+  if (t - fokusLetzt < 1800 && t < fokusBis) return;
+  fokusLetzt = t; fokusBis = t + ms;
+  Object.assign(ZIEL, { x: pl.x, y: pl.y - 30, z: 2.6 });
 }
+function kamera(t) {
+  if (t > fokusBis) Object.assign(ZIEL, { x: IX, y: IY, z: 1 });
+  const k = .055; cam.x += (ZIEL.x - cam.x) * k; cam.y += (ZIEL.y - cam.y) * k; cam.z += (ZIEL.z - cam.z) * k;
+  X.setTransform(cam.z, 0, 0, cam.z, 540 - cam.x * cam.z, MITTE_Y - cam.y * cam.z);
+}
+
+// ================= Zeichen-Hilfen =================
+function rr(x, y, w, h, r) { X.beginPath(); X.roundRect(x, y, w, h, r); }
 function text(t, x, y, size, col = INK, align = 'left', weight = 900, maxW) {
   X.font = `${weight} ${size}px ${FONT}`; X.fillStyle = col; X.textAlign = align; X.textBaseline = 'middle';
-  if (maxW) { let s = size; while (X.measureText(t).width > maxW && s > 12) { s -= 2; X.font = `${weight} ${s}px ${FONT}`; } }
+  if (maxW) { let s = size; while (X.measureText(t).width > maxW && s > 10) { s -= 1; X.font = `${weight} ${s}px ${FONT}`; } }
   X.fillText(t, x, y);
 }
-function dunkler(hex, f = .75) {
-  const n = parseInt(hex.slice(1), 16);
-  return `rgb(${(n >> 16 & 255) * f | 0},${(n >> 8 & 255) * f | 0},${(n & 255) * f | 0})`;
+function karte(x, y, w, h, fill, r = 999) {                // Homepage-Stil: Rahmen + harter Schatten
+  X.fillStyle = INK; rr(x + 10, y + 10, w, h, r); X.fill();
+  X.fillStyle = fill; rr(x, y, w, h, r); X.fill();
+  X.lineWidth = 7; X.strokeStyle = INK; X.stroke();
 }
+const mix = (hex, f) => { const n = parseInt(hex.slice(1), 16); const k = v => Math.max(0, Math.min(255, f < 1 ? v * f : v + (255 - v) * (f - 1))) | 0; return `rgb(${k(n >> 16 & 255)},${k(n >> 8 & 255)},${k(n & 255)})`; };
 
-// ---------- Meer & Insel ----------
+// ================= Meer =================
 function meer(t) {
-  const g = X.createLinearGradient(0, 0, 0, H);
-  g.addColorStop(0, '#36bfb0'); g.addColorStop(1, '#1f8f86');
-  X.fillStyle = g; X.fillRect(0, 0, W, H);
-  X.strokeStyle = 'rgba(255,255,255,.22)'; X.lineWidth = 4; X.lineCap = 'round';
-  for (let i = 0; i < 46; i++) {                               // kleine Wellen
-    const x = (i * 197 + t * .012 * (1 + i % 3)) % (W + 80) - 40, y = (i * 331) % H;
-    X.beginPath(); X.moveTo(x, y); X.quadraticCurveTo(x + 14, y - 8, x + 28, y); X.stroke();
-  }
-  for (let i = 0; i < 3; i++) {                                 // Segelboote
-    const x = (i * 400 + t * .02 * (i ? -1 : 1) % (W + 200) + W + 200) % (W + 200) - 100, y = 1450 + i * 150;
-    X.fillStyle = '#fff'; X.beginPath(); X.moveTo(x, y - 54); X.lineTo(x, y - 6); X.lineTo(x + 34, y - 6); X.fill();
-    X.fillStyle = '#e8433c'; X.beginPath(); X.moveTo(x - 4, y - 46); X.lineTo(x - 4, y - 8); X.lineTo(x - 26, y - 8); X.fill();
-    X.fillStyle = '#8a5a2b'; rr(x - 34, y - 4, 76, 14, 7); X.fill();
-  }
+  const g = X.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#3ec3b4'); g.addColorStop(1, '#1d8a82');
+  X.setTransform(1, 0, 0, 1, 0, 0); X.fillStyle = g; X.fillRect(0, 0, W, H);
 }
-function insel(t) {
-  const form = (s) => {
-    X.beginPath();
-    for (let i = 0; i <= 90; i++) {
-      const a = i / 90 * 6.2832, k = inselRand(a, t) * s;
-      const x = IX + Math.cos(a) * RX * k, y = IY + Math.sin(a) * RY * k;
-      i ? X.lineTo(x, y) : X.moveTo(x, y);
-    }
-    X.closePath();
-  };
-  X.fillStyle = 'rgba(127,224,200,.55)'; form(1.13); X.fill();   // Flachwasser
-  X.fillStyle = '#f3dfa6'; form(1.04); X.fill();                  // Strand
-  X.fillStyle = '#7cc85a'; form(.93); X.fill();                    // Wiese
-  X.fillStyle = 'rgba(255,255,255,.08)';
-  for (let i = 0; i < 160; i++) { const a = i * 2.39, r = Math.sqrt(i / 160) * .9; X.beginPath(); X.arc(IX + Math.cos(a) * RX * r, IY + Math.sin(a) * RY * r, 10, 0, 7); X.fill(); }
-  // Sandplatz in der Mitte
-  X.fillStyle = '#f0d58e'; X.beginPath(); X.ellipse(IX, IY, 150, 118, 0, 0, 7); X.fill();
-  X.strokeStyle = '#d9b46a'; X.lineWidth = 5; X.stroke();
-  // Palmen am Strand
-  for (let i = 0; i < 14; i++) {
-    const a = i / 14 * 6.283 + .2, k = inselRand(a, 0) * .99;
-    palme(IX + Math.cos(a) * RX * k, IY + Math.sin(a) * RY * k, .8, t + i * 500);
+function wellen(t) {
+  X.strokeStyle = 'rgba(255,255,255,.22)'; X.lineWidth = 3; X.lineCap = 'round';
+  for (let i = 0; i < 70; i++) {
+    const x = (i * 197 + t * .01 * (1 + i % 3)) % 1400 - 160, y = 300 + (i * 331) % 1800;
+    if (innen(x, y, 1.12)) continue;
+    X.beginPath(); X.moveTo(x, y); X.quadraticCurveTo(x + 12, y - 7, x + 24, y); X.stroke();
   }
-}
-function palme(x, y, s, t) {
-  X.save(); X.translate(x, y); X.scale(s, s);
-  X.fillStyle = 'rgba(0,0,0,.15)'; X.beginPath(); X.ellipse(10, 4, 26, 9, 0, 0, 7); X.fill();
-  X.strokeStyle = '#8a5a2b'; X.lineWidth = 9; X.lineCap = 'round';
-  X.beginPath(); X.moveTo(0, 0); X.quadraticCurveTo(-8, -30, 4, -58); X.stroke();
-  const w = Math.sin(t * .002) * .08;
-  X.fillStyle = '#3f9b45';
-  for (let i = 0; i < 6; i++) { X.save(); X.translate(4, -58); X.rotate(i * 1.05 + w); X.beginPath(); X.ellipse(20, 0, 24, 8, 0, 0, 7); X.fill(); X.restore(); }
-  X.fillStyle = '#6b3f1d'; X.beginPath(); X.arc(2, -55, 5, 0, 7); X.arc(8, -54, 5, 0, 7); X.fill();
-  X.restore();
 }
 
-// ---------- Häuser ----------
+// ================= Muschelplatz mit Luxus-Muschel =================
+function platz(t) {
+  const c = X;
+  // Marmorplatz mit Sternmuster
+  c.fillStyle = 'rgba(0,0,0,.12)'; c.beginPath(); c.arc(IX + 5, IY + 7, PLATZ_R, 0, 7); c.fill();
+  for (let i = 0; i < 24; i++) { c.fillStyle = i % 2 ? '#f6efe2' : '#ebe0cc'; c.beginPath(); c.moveTo(IX, IY); c.arc(IX, IY, PLATZ_R, i / 24 * 6.283, (i + 1) / 24 * 6.283); c.fill(); }
+  c.strokeStyle = '#c99a2e'; c.lineWidth = 5; c.beginPath(); c.arc(IX, IY, PLATZ_R - 2, 0, 7); c.stroke();
+  c.strokeStyle = '#e8c766'; c.lineWidth = 2; c.beginPath(); c.arc(IX, IY, PLATZ_R - 10, 0, 7); c.stroke();
+  // Hecken + goldene Laternen rundherum
+  for (let i = 0; i < 8; i++) {
+    const a = i / 8 * 6.283 + Math.PI / 8, x = IX + Math.cos(a) * (PLATZ_R - 26), y = IY + Math.sin(a) * (PLATZ_R - 26);
+    c.fillStyle = '#3f9b45'; c.beginPath(); c.arc(x, y, 12, 0, 7); c.fill(); c.fillStyle = '#57b85a'; c.beginPath(); c.arc(x - 3, y - 3, 7, 0, 7); c.fill();
+    c.fillStyle = ['#ff6fa3', '#fff', '#ffd23f'][i % 3]; for (let k = 0; k < 4; k++) { c.beginPath(); c.arc(x + Math.cos(k * 1.6) * 7, y + Math.sin(k * 1.6) * 7, 2.2, 0, 7); c.fill(); }
+    const a2 = i / 8 * 6.283, lx = IX + Math.cos(a2) * (PLATZ_R - 22), ly = IY + Math.sin(a2) * (PLATZ_R - 22);
+    c.fillStyle = '#b8862a'; c.fillRect(lx - 1.5, ly - 24, 3, 24); c.fillStyle = '#ffe9a8'; c.shadowColor = '#ffd23f'; c.shadowBlur = 12; c.beginPath(); c.arc(lx, ly - 26, 5, 0, 7); c.fill(); c.shadowBlur = 0;
+  }
+  // Brunnenbecken
+  const g = c.createRadialGradient(IX, IY, 20, IX, IY, 104); g.addColorStop(0, '#9ff0e4'); g.addColorStop(1, '#2fb3a0');
+  c.fillStyle = '#d8c7a6'; c.beginPath(); c.ellipse(IX, IY + 8, 112, 96, 0, 0, 7); c.fill();
+  c.fillStyle = g; c.beginPath(); c.ellipse(IX, IY + 6, 102, 86, 0, 0, 7); c.fill();
+  const rg = c.createLinearGradient(IX - 110, 0, IX + 110, 0); rg.addColorStop(0, '#b8862a'); rg.addColorStop(.5, '#ffe9a8'); rg.addColorStop(1, '#b8862a');
+  c.strokeStyle = rg; c.lineWidth = 6; c.beginPath(); c.ellipse(IX, IY + 6, 104, 88, 0, 0, 7); c.stroke();
+  c.strokeStyle = 'rgba(255,255,255,.55)'; c.lineWidth = 1.5;
+  for (let i = 0; i < 3; i++) { const r = ((t * .02 + i * 30) % 90); c.globalAlpha = 1 - r / 90; c.beginPath(); c.ellipse(IX, IY + 20, 30 + r * .7, 18 + r * .5, 0, 0, 7); c.stroke(); }
+  c.globalAlpha = 1;
+  // Wasserfontänen
+  for (let i = 0; i < 6; i++) {
+    const a = i / 6 * 6.283 + .3, x = IX + Math.cos(a) * 82, y = IY + 6 + Math.sin(a) * 68, h = 26 + Math.sin(t * .006 + i) * 4;
+    c.strokeStyle = 'rgba(220,250,255,.85)'; c.lineWidth = 2.5; c.beginPath(); c.moveTo(x, y); c.quadraticCurveTo(x + (IX - x) * .25, y - h * 1.6, x + (IX - x) * .45, y - h * .2); c.stroke();
+  }
+  // Sockel: runder Marmorsockel in zwei Stufen mit Goldbändern
+  const sg = c.createLinearGradient(IX - 60, 0, IX + 60, 0); sg.addColorStop(0, '#d9ccb4'); sg.addColorStop(.45, '#fbf6ec'); sg.addColorStop(1, '#cbbda2');
+  const gb = c.createLinearGradient(IX - 60, 0, IX + 60, 0); gb.addColorStop(0, '#a87420'); gb.addColorStop(.5, '#ffe9a8'); gb.addColorStop(1, '#a87420');
+  [[58, 20, 34], [42, 14, 18]].forEach(([rx, ry, y]) => {
+    c.fillStyle = sg; c.beginPath(); c.ellipse(IX, IY + y + 10, rx, ry, 0, 0, Math.PI); c.lineTo(IX - rx, IY + y); c.ellipse(IX, IY + y, rx, ry, 0, Math.PI, 0, true); c.closePath(); c.fill();
+    c.fillStyle = gb; c.fillRect(IX - rx, IY + y + 3, rx * 2, 3);
+    c.fillStyle = '#fbf6ec'; c.beginPath(); c.ellipse(IX, IY + y, rx, ry, 0, 0, 7); c.fill(); c.strokeStyle = gb; c.lineWidth = 2.5; c.stroke();
+  });
+  // Die Muschel (Jakobsmuschel, perlmutt + Gold)
+  c.save(); c.translate(IX, IY + 4);
+  c.shadowColor = 'rgba(255,215,120,.9)'; c.shadowBlur = 30 + Math.sin(t * .003) * 10;
+  const f = 76, rippen = 13;
+  const pg = c.createRadialGradient(0, -10, 6, 0, -20, f * 1.25);
+  pg.addColorStop(0, '#fffaf2'); pg.addColorStop(.35, '#ffe1ec'); pg.addColorStop(.6, '#ffd9b0'); pg.addColorStop(.8, '#d9f3f2'); pg.addColorStop(1, '#f2c4dc');
+  c.beginPath(); c.moveTo(0, 18);
+  for (let i = 0; i <= rippen; i++) { const a = Math.PI + .25 + i / rippen * (Math.PI - .5), a2 = a + (Math.PI - .5) / rippen / 2; c.lineTo(Math.cos(a) * f, Math.sin(a) * f * .95 + 8); if (i < rippen) c.quadraticCurveTo(Math.cos(a2) * f * 1.12, Math.sin(a2) * f * 1.06 + 8, Math.cos(a2 + (Math.PI - .5) / rippen / 2) * f, Math.sin(a2 + (Math.PI - .5) / rippen / 2) * f * .95 + 8); }
+  c.closePath(); c.fillStyle = pg; c.fill(); c.shadowBlur = 0;
+  const gold = c.createLinearGradient(-f, -f, f, 20); gold.addColorStop(0, '#a87420'); gold.addColorStop(.3, '#ffe9a8'); gold.addColorStop(.55, '#d4a23a'); gold.addColorStop(.8, '#fff3c4'); gold.addColorStop(1, '#a87420');
+  c.strokeStyle = gold; c.lineWidth = 4; c.stroke();
+  for (let i = 0; i <= rippen; i++) { const a = Math.PI + .25 + i / rippen * (Math.PI - .5); c.strokeStyle = 'rgba(196,140,60,.55)'; c.lineWidth = 1.8; c.beginPath(); c.moveTo(0, 14); c.lineTo(Math.cos(a) * f * .96, Math.sin(a) * f * .92 + 8); c.stroke(); }
+  // Schimmer, der über die Muschel wandert
+  const sx = ((t * .05) % 220) - 110, sh = c.createLinearGradient(sx - 20, 0, sx + 20, 0); sh.addColorStop(0, 'rgba(255,255,255,0)'); sh.addColorStop(.5, 'rgba(255,255,255,.55)'); sh.addColorStop(1, 'rgba(255,255,255,0)');
+  c.save(); c.clip(); c.fillStyle = sh; c.fillRect(-f, -f, f * 2, f * 1.5); c.restore();
+  // Schloss (Scharnier) in Gold
+  c.fillStyle = gold; c.beginPath(); c.moveTo(-18, 22); c.lineTo(-10, 10); c.lineTo(10, 10); c.lineTo(18, 22); c.closePath(); c.fill(); c.strokeStyle = '#8a5a1a'; c.lineWidth = 1.5; c.stroke();
+  // Perle
+  const pe = c.createRadialGradient(-4, 0, 1, 0, 4, 14); pe.addColorStop(0, '#fff'); pe.addColorStop(.5, '#f6eefa'); pe.addColorStop(1, '#cfc4e6');
+  c.shadowColor = '#fff'; c.shadowBlur = 16; c.fillStyle = pe; c.beginPath(); c.arc(0, 4, 12, 0, 7); c.fill(); c.shadowBlur = 0;
+  c.fillStyle = 'rgba(255,255,255,.95)'; c.beginPath(); c.arc(-4, 0, 3.5, 0, 7); c.fill();
+  // Funkeln
+  for (let i = 0; i < 7; i++) { const ph = (t * .0015 + i * .29) % 1, s = Math.sin(ph * Math.PI) * 8, a = i * 1.7; stern(c, Math.cos(a) * 64, Math.sin(a) * 40 - 26, s); }
+  c.restore();
+  // Fertige Gemeinschaftsprojekte am Platzrand
+  (S.fertig || []).forEach((id, i) => { const a = -Math.PI * .75 + i * .55, x = IX + Math.cos(a) * (PLATZ_R + 34), y = IY + Math.sin(a) * (PLATZ_R + 34); c.font = `46px ${FONT}`; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText(ICON[id] || '🏛️', x, y); });
+  if (S.projekt) { const x = IX + PLATZ_R * .78, y = IY - PLATZ_R * .78; c.font = `40px ${FONT}`; c.textAlign = 'center'; c.fillText('🏗️', x, y); }
+}
+function stern(c, x, y, s) { if (s <= 0) return; c.fillStyle = '#fff'; c.beginPath(); c.moveTo(x, y - s); c.quadraticCurveTo(x, y, x + s, y); c.quadraticCurveTo(x, y, x, y + s); c.quadraticCurveTo(x, y, x - s, y); c.quadraticCurveTo(x, y, x, y - s); c.fill(); }
+const ICON = { leuchtturm: '🗼', markt: '🏪', bruecke: '🌉', riesenrad: '🎡', brunnen: '⛲', hafen: '⚓', eisdiele: '🍦', kino: '🎬' };
+
+// ================= Häuser (10 Stufen) =================
+const FARBEN = ['#e8433c', '#3fa0e8', '#ffb02e', '#b58ad0', '#2fb3a0', '#ff6fa3', '#57b85a', '#ff8a2a'];
+function fenster(c, x, y, w, h, rahmen = '#fff') { c.fillStyle = rahmen; c.fillRect(x - 1.5, y - 1.5, w + 3, h + 3); c.fillStyle = '#9fe3f0'; c.fillRect(x, y, w, h); c.fillStyle = 'rgba(255,255,255,.7)'; c.beginPath(); c.moveTo(x, y + h * .6); c.lineTo(x + w * .5, y); c.lineTo(x + w * .75, y); c.lineTo(x, y + h); c.fill(); c.strokeStyle = rahmen; c.lineWidth = 1.2; c.beginPath(); c.moveTo(x + w / 2, y); c.lineTo(x + w / 2, y + h); c.moveTo(x, y + h / 2); c.lineTo(x + w, y + h / 2); c.stroke(); }
+function tuer(c, x, y, w, h, col) { c.fillStyle = col; c.beginPath(); c.roundRect(x, y, w, h, [w / 2, w / 2, 0, 0]); c.fill(); c.strokeStyle = INK; c.lineWidth = 1.5; c.stroke(); c.fillStyle = '#ffd23f'; c.beginPath(); c.arc(x + w * .75, y + h * .55, 1.4, 0, 7); c.fill(); }
+function stroh(c, pts) { c.fillStyle = '#d9a63a'; c.beginPath(); pts.forEach(([x, y], i) => i ? c.lineTo(x, y) : c.moveTo(x, y)); c.closePath(); c.fill(); c.strokeStyle = INK; c.lineWidth = 2; c.stroke(); c.save(); c.clip(); c.strokeStyle = 'rgba(138,90,43,.55)'; c.lineWidth = 1; for (let i = -40; i < 40; i += 4) { c.beginPath(); c.moveTo(i, -80); c.lineTo(i * 1.6, 0); c.stroke(); } c.restore(); }
+function ziegel(c, x0, y0, x1, y1, xs, col) { // Satteldach mit Ziegelreihen
+  c.fillStyle = col; c.beginPath(); c.moveTo(x0, y1); c.lineTo(xs, y0); c.lineTo(x1, y1); c.closePath(); c.fill(); c.strokeStyle = INK; c.lineWidth = 2; c.stroke();
+  c.save(); c.clip(); c.strokeStyle = mix(col, .75); c.lineWidth = 1.2; for (let y = y0 + 5; y < y1; y += 5) { c.beginPath(); c.moveTo(x0, y); c.lineTo(x1, y); c.stroke(); } c.restore();
+}
+function blumen(c, x, y, n, w) { for (let i = 0; i < n; i++) { c.fillStyle = '#3f9b45'; c.beginPath(); c.arc(x + i * w / n, y, 3.2, 0, 7); c.fill(); c.fillStyle = ['#ff6fa3', '#ffd23f', '#fff', '#e8433c'][i % 4]; c.beginPath(); c.arc(x + i * w / n, y - 1.5, 1.8, 0, 7); c.fill(); } }
+
+const HAUS = [
+  // 0 Zelt: gestreiftes Zelt, Heringe, Lagerfeuer
+  (c, f, t) => {
+    c.fillStyle = f; c.beginPath(); c.moveTo(-24, 0); c.lineTo(0, -34); c.lineTo(24, 0); c.closePath(); c.fill();
+    c.save(); c.clip(); c.fillStyle = 'rgba(255,255,255,.5)'; for (let i = -24; i < 24; i += 10) c.fillRect(i, -40, 4, 40); c.restore();
+    c.strokeStyle = INK; c.lineWidth = 2; c.beginPath(); c.moveTo(-24, 0); c.lineTo(0, -34); c.lineTo(24, 0); c.closePath(); c.stroke();
+    c.fillStyle = mix(f, .45); c.beginPath(); c.moveTo(-7, 0); c.lineTo(0, -18); c.lineTo(7, 0); c.fill();
+    c.strokeStyle = '#6b4423'; c.lineWidth = 1; c.beginPath(); c.moveTo(-24, 0); c.lineTo(-30, 4); c.moveTo(24, 0); c.lineTo(30, 4); c.stroke();
+    c.fillStyle = '#8a5a2b'; c.fillRect(22, 6, 10, 3); c.fillStyle = `rgba(255,${140 + Math.sin(t * .02) * 40 | 0},40,.95)`; c.beginPath(); c.moveTo(23, 6); c.quadraticCurveTo(27, -4 - Math.sin(t * .03) * 2, 31, 6); c.fill();
+  },
+  // 1 Strohhütte
+  (c, f) => {
+    c.fillStyle = '#c8935a'; c.fillRect(-20, -22, 40, 22); c.strokeStyle = INK; c.lineWidth = 2; c.strokeRect(-20, -22, 40, 22);
+    c.strokeStyle = 'rgba(107,63,29,.5)'; c.lineWidth = 1; for (let x = -16; x < 20; x += 5) { c.beginPath(); c.moveTo(x, -22); c.lineTo(x, 0); c.stroke(); }
+    c.fillStyle = f; c.fillRect(-5, -14, 10, 14); c.fillStyle = mix(f, .7); c.fillRect(-5, -14, 4, 14);
+    fenster(c, 9, -16, 6, 6, '#8a5a2b');
+    stroh(c, [[-28, -18], [0, -44], [28, -18]]);
+  },
+  // 2 Stelzenhütte (wie auf muscheltal.de)
+  (c, f) => {
+    c.fillStyle = '#6b4423'; [-17, -6, 6, 17].forEach(x => c.fillRect(x - 2, -10, 4, 12));
+    c.strokeStyle = '#8a5a2b'; c.lineWidth = 1.5; for (let i = 0; i < 4; i++) { c.beginPath(); c.moveTo(22, -10 + i * 3); c.lineTo(28, -10 + i * 3); c.stroke(); } c.beginPath(); c.moveTo(22, -12); c.lineTo(22, 2); c.moveTo(28, -12); c.lineTo(28, 2); c.stroke();
+    c.fillStyle = '#b07a45'; c.fillRect(-24, -14, 48, 4); c.fillStyle = '#c8935a'; c.fillRect(-21, -36, 42, 22); c.strokeStyle = INK; c.lineWidth = 2; c.strokeRect(-21, -36, 42, 22);
+    fenster(c, -16, -31, 8, 8, '#8a5a2b'); c.fillStyle = f; c.fillRect(-20, -31, 3, 8); c.fillRect(-7, -31, 3, 8);
+    tuer(c, 5, -30, 9, 16, f);
+    stroh(c, [[-31, -32], [0, -60], [31, -32]]);
+  },
+  // 3 Bungalow: Holzhaus, Veranda, Blumenkasten, Briefkasten
+  (c, f) => {
+    c.fillStyle = '#b07a45'; c.fillRect(-30, -2, 60, 4);
+    c.fillStyle = '#fff3e0'; c.fillRect(-26, -30, 52, 28); c.strokeStyle = 'rgba(138,90,43,.35)'; c.lineWidth = 1; for (let y = -26; y < 0; y += 4) { c.beginPath(); c.moveTo(-26, y); c.lineTo(26, y); c.stroke(); }
+    c.strokeStyle = INK; c.lineWidth = 2; c.strokeRect(-26, -30, 52, 28);
+    fenster(c, -20, -24, 11, 10); fenster(c, 10, -24, 11, 10); blumen(c, -21, -12, 4, 13); blumen(c, 9, -12, 4, 13);
+    tuer(c, -5, -20, 10, 18, f);
+    c.fillStyle = f; c.beginPath(); c.moveTo(-32, -28); c.lineTo(-20, -44); c.lineTo(20, -44); c.lineTo(32, -28); c.closePath(); c.fill(); c.stroke();
+    c.fillStyle = mix(f, .8); c.fillRect(-20, -44, 40, 3);
+    c.fillStyle = '#6b4423'; c.fillRect(31, -8, 2, 10); c.fillStyle = f; c.fillRect(28, -12, 8, 5);
+  },
+  // 4 Strandhaus: Holzverkleidung, Ziegeldach, Schornstein, Bullauge, Surfbrett, Zaun
+  (c, f, t) => {
+    c.fillStyle = '#fff'; for (let x = -32; x <= 32; x += 5) c.fillRect(x, -6, 2, 8); c.fillRect(-32, -4, 66, 2);
+    c.fillStyle = mix(f, 1.55); c.fillRect(-26, -36, 52, 34); c.strokeStyle = mix(f, 1.2); c.lineWidth = 1; for (let y = -32; y < -2; y += 4) { c.beginPath(); c.moveTo(-26, y); c.lineTo(26, y); c.stroke(); }
+    c.strokeStyle = INK; c.lineWidth = 2; c.strokeRect(-26, -36, 52, 34);
+    fenster(c, -20, -26, 10, 12); fenster(c, 11, -26, 10, 12);
+    tuer(c, -5, -22, 10, 20, '#fff');
+    c.fillStyle = '#9fe3f0'; c.strokeStyle = '#fff'; c.lineWidth = 2; c.beginPath(); c.arc(0, -44, 4, 0, 7); c.fill(); c.stroke();
+    ziegel(c, -32, -62, 32, -34, 0, f);
+    c.fillStyle = '#b07a45'; c.fillRect(14, -62, 7, 14); c.strokeStyle = INK; c.lineWidth = 1.5; c.strokeRect(14, -62, 7, 14);
+    c.fillStyle = `rgba(220,220,220,${.5 + Math.sin(t * .004) * .2})`; c.beginPath(); c.arc(18 + Math.sin(t * .003) * 2, -68, 3.5, 0, 7); c.arc(20, -73, 2.5, 0, 7); c.fill();
+    c.fillStyle = '#ffd23f'; c.beginPath(); c.ellipse(-30, -14, 3.5, 13, -.15, 0, 7); c.fill(); c.strokeStyle = INK; c.lineWidth = 1.2; c.stroke(); c.fillStyle = '#e8433c'; c.fillRect(-31, -20, 2, 12);
+  },
+  // 5 Ferienhaus: 2 Etagen, Balkon, Markise, Liegestuhl
+  (c, f) => {
+    c.fillStyle = '#fffaf0'; c.fillRect(-28, -58, 56, 58); c.strokeStyle = INK; c.lineWidth = 2; c.strokeRect(-28, -58, 56, 58);
+    fenster(c, -22, -50, 10, 11); fenster(c, -4, -50, 10, 11); fenster(c, 14, -50, 8, 11);
+    c.fillStyle = '#fff'; c.fillRect(-30, -33, 60, 3); c.strokeStyle = '#8a5a2b'; c.lineWidth = 1; for (let x = -28; x < 30; x += 4) { c.beginPath(); c.moveTo(x, -38); c.lineTo(x, -30); c.stroke(); } c.beginPath(); c.moveTo(-30, -38); c.lineTo(30, -38); c.stroke();
+    for (let i = 0; i < 8; i++) { c.fillStyle = i % 2 ? '#fff' : f; c.beginPath(); c.moveTo(-28 + i * 7, -22); c.lineTo(-21 + i * 7, -22); c.lineTo(-20 + i * 7, -14); c.lineTo(-29 + i * 7, -14); c.fill(); }
+    fenster(c, -22, -12, 12, 10); tuer(c, 2, -14, 11, 14, f); fenster(c, 17, -12, 7, 10);
+    c.fillStyle = mix(f, .8); c.beginPath(); c.moveTo(-33, -56); c.lineTo(0, -74); c.lineTo(33, -56); c.closePath(); c.fill(); c.stroke();
+    c.fillStyle = '#3f9b45'; c.beginPath(); c.arc(-32, -4, 5, 0, 7); c.arc(32, -4, 5, 0, 7); c.fill(); c.fillStyle = '#b07a45'; c.fillRect(-35, -2, 6, 5); c.fillRect(29, -2, 6, 5);
+    c.strokeStyle = f; c.lineWidth = 2; c.beginPath(); c.moveTo(18, 6); c.lineTo(30, 2); c.stroke();
+  },
+  // 6 Villa: Flachdach-Terrasse mit Schirm, große Glasfront, Pool davor
+  (c, f) => {
+    c.fillStyle = '#3fa0e8'; c.beginPath(); c.roundRect(-30, 0, 60, 10, 3); c.fill(); c.strokeStyle = '#fff'; c.lineWidth = 2; c.stroke(); c.fillStyle = 'rgba(255,255,255,.5)'; c.fillRect(-22, 3, 14, 2);
+    c.fillStyle = '#fff'; c.fillRect(-34, -40, 68, 40); c.fillStyle = '#c8935a'; c.fillRect(6, -40, 28, 40); c.strokeStyle = 'rgba(107,63,29,.4)'; c.lineWidth = 1; for (let x = 10; x < 34; x += 4) { c.beginPath(); c.moveTo(x, -40); c.lineTo(x, 0); c.stroke(); }
+    c.strokeStyle = INK; c.lineWidth = 2; c.strokeRect(-34, -40, 68, 40);
+    c.fillStyle = '#9fe3f0'; c.fillRect(-30, -30, 32, 28); c.strokeStyle = '#33313b'; c.lineWidth = 1.5; for (let x = -30; x <= 2; x += 8) { c.beginPath(); c.moveTo(x, -30); c.lineTo(x, -2); c.stroke(); } c.strokeRect(-30, -30, 32, 28);
+    c.fillStyle = 'rgba(255,255,255,.6)'; c.beginPath(); c.moveTo(-28, -10); c.lineTo(-18, -30); c.lineTo(-13, -30); c.lineTo(-26, -4); c.fill();
+    fenster(c, 12, -32, 16, 10, '#fff'); tuer(c, 14, -18, 12, 18, '#6b4423');
+    c.fillStyle = mix(f, .85); c.fillRect(-37, -45, 74, 6); c.strokeStyle = INK; c.strokeRect(-37, -45, 74, 6);
+    c.strokeStyle = '#fff'; c.lineWidth = 1.2; c.beginPath(); c.moveTo(-34, -52); c.lineTo(34, -52); c.stroke();
+    c.strokeStyle = '#6b4423'; c.beginPath(); c.moveTo(-14, -45); c.lineTo(-14, -62); c.stroke();
+    c.fillStyle = f; c.beginPath(); c.ellipse(-14, -63, 14, 5, 0, Math.PI, 0); c.fill();
+  },
+  // 7 Luxusvilla: zwei Flügel, Goldkanten, leuchtender Infinity-Pool, Hecke, Auto
+  (c, f, t) => {
+    c.fillStyle = '#57b85a'; c.beginPath(); c.roundRect(-38, 4, 76, 7, 3); c.fill();
+    const pg = c.createLinearGradient(0, -6, 0, 6); pg.addColorStop(0, '#7fe0f0'); pg.addColorStop(1, '#2f8fd8');
+    c.shadowColor = '#7fe0f0'; c.shadowBlur = 8; c.fillStyle = pg; c.fillRect(-26, -4, 30, 8); c.shadowBlur = 0; c.strokeStyle = '#ffe9a8'; c.lineWidth = 1.5; c.strokeRect(-26, -4, 30, 8);
+    [[-38, -36, 26], [12, -36, 26]].forEach(([x, y, w]) => { c.fillStyle = '#fffaf0'; c.fillRect(x, y, w, 32); c.strokeStyle = INK; c.lineWidth = 2; c.strokeRect(x, y, w, 32); fenster(c, x + 4, y + 6, w - 8, 10, '#e0b43a'); fenster(c, x + 4, y + 20, w - 8, 9, '#e0b43a'); });
+    c.fillStyle = '#fff'; c.fillRect(-12, -52, 24, 48); c.strokeStyle = INK; c.strokeRect(-12, -52, 24, 48);
+    c.fillStyle = '#9fe3f0'; c.fillRect(-8, -46, 16, 22); c.strokeStyle = '#e0b43a'; c.lineWidth = 1.5; c.strokeRect(-8, -46, 16, 22);
+    tuer(c, -5, -20, 10, 16, '#e0b43a');
+    c.fillStyle = f; c.fillRect(-40, -40, 30, 5); c.fillRect(10, -40, 30, 5); c.fillRect(-15, -57, 30, 6);
+    c.strokeStyle = '#e0b43a'; c.lineWidth = 1.5; c.strokeRect(-40, -40, 30, 5); c.strokeRect(10, -40, 30, 5); c.strokeRect(-15, -57, 30, 6);
+    c.fillStyle = '#e8433c'; c.beginPath(); c.roundRect(18, 2, 18, 8, 3); c.fill(); c.fillStyle = '#9fe3f0'; c.fillRect(23, 3, 8, 3); c.fillStyle = INK; c.beginPath(); c.arc(21, 10, 2, 0, 7); c.arc(33, 10, 2, 0, 7); c.fill();
+  },
+  // 8 Strandpalast: Türme mit Kuppeln, Goldflaggen, Bogenfenster, Freitreppe
+  (c, f, t) => {
+    c.fillStyle = '#efe6d6'; for (let i = 0; i < 3; i++) c.fillRect(-14 + i * 2, -4 + i * 3, 28 - i * 4, 3);
+    c.fillStyle = '#fff6e6'; c.fillRect(-34, -42, 68, 38); c.strokeStyle = INK; c.lineWidth = 2; c.strokeRect(-34, -42, 68, 38);
+    for (let i = 0; i < 5; i++) { c.fillStyle = '#9fe3f0'; c.beginPath(); c.roundRect(-29 + i * 12, -34, 8, 14, [4, 4, 0, 0]); c.fill(); c.strokeStyle = '#e0b43a'; c.lineWidth = 1.2; c.stroke(); }
+    tuer(c, -6, -18, 12, 14, '#e0b43a');
+    [-40, 28].forEach(x => {
+      c.fillStyle = '#fff6e6'; c.fillRect(x, -58, 12, 54); c.strokeStyle = INK; c.lineWidth = 2; c.strokeRect(x, -58, 12, 54);
+      fenster(c, x + 3, -50, 6, 8, '#e0b43a');
+      c.fillStyle = f; c.beginPath(); c.arc(x + 6, -58, 8, Math.PI, 0); c.fill(); c.stroke();
+      c.strokeStyle = '#b8862a'; c.lineWidth = 1.5; c.beginPath(); c.moveTo(x + 6, -66); c.lineTo(x + 6, -78); c.stroke();
+      c.fillStyle = '#ffd23f'; c.beginPath(); c.moveTo(x + 6, -78); c.lineTo(x + 15 + Math.sin(t * .006) * 2, -75); c.lineTo(x + 6, -72); c.fill();
+    });
+    const gold = c.createLinearGradient(-14, -70, 14, -42); gold.addColorStop(0, '#b8862a'); gold.addColorStop(.5, '#ffe9a8'); gold.addColorStop(1, '#b8862a');
+    c.fillStyle = gold; c.beginPath(); c.arc(0, -42, 15, Math.PI, 0); c.fill(); c.strokeStyle = INK; c.lineWidth = 2; c.stroke();
+  },
+  // 9 Muschelschloss: Perlmutt-Muschel als Dach, goldene Türme, Banner, Glitzer
+  (c, f, t) => {
+    c.fillStyle = '#efe6d6'; c.fillRect(-16, -4, 32, 6);
+    c.fillStyle = '#fffaf2'; c.fillRect(-32, -36, 64, 34); c.strokeStyle = INK; c.lineWidth = 2; c.strokeRect(-32, -36, 64, 34);
+    for (let i = 0; i < 4; i++) { c.fillStyle = '#9fe3f0'; c.beginPath(); c.roundRect(-26 + i * 15 + (i > 1 ? 4 : 0), -30, 7, 12, [3.5, 3.5, 0, 0]); c.fill(); c.strokeStyle = '#e0b43a'; c.lineWidth = 1.2; c.stroke(); }
+    tuer(c, -6, -18, 12, 16, PINK);
+    [-42, 30].forEach(x => {
+      const g = c.createLinearGradient(x, 0, x + 12, 0); g.addColorStop(0, '#b8862a'); g.addColorStop(.5, '#ffe9a8'); g.addColorStop(1, '#b8862a');
+      c.fillStyle = g; c.fillRect(x, -64, 12, 62); c.strokeStyle = INK; c.lineWidth = 2; c.strokeRect(x, -64, 12, 62);
+      c.fillStyle = f; c.beginPath(); c.moveTo(x - 3, -64); c.lineTo(x + 6, -80); c.lineTo(x + 15, -64); c.closePath(); c.fill(); c.stroke();
+      c.fillStyle = f; c.fillRect(x + 3, -46, 6, 14);
+    });
+    const pg = c.createRadialGradient(0, -40, 4, 0, -50, 34); pg.addColorStop(0, '#fffaf2'); pg.addColorStop(.5, '#ffe1ec'); pg.addColorStop(1, '#d9f3f2');
+    c.fillStyle = pg; c.beginPath(); c.moveTo(-28, -36);
+    for (let i = 0; i <= 7; i++) { const a = Math.PI + i / 7 * Math.PI; c.quadraticCurveTo(Math.cos(a - .22) * 32, -36 + Math.sin(a - .22) * 34, Math.cos(a) * 28, -36 + Math.sin(a) * 30); }
+    c.closePath(); c.fill(); c.strokeStyle = '#e0b43a'; c.lineWidth = 2.5; c.stroke();
+    c.strokeStyle = 'rgba(224,180,58,.6)'; c.lineWidth = 1; for (let i = 1; i < 7; i++) { const a = Math.PI + i / 7 * Math.PI; c.beginPath(); c.moveTo(0, -36); c.lineTo(Math.cos(a) * 27, -36 + Math.sin(a) * 29); c.stroke(); }
+    c.fillStyle = '#fff'; c.shadowColor = '#fff'; c.shadowBlur = 8; c.beginPath(); c.arc(0, -40, 4, 0, 7); c.fill(); c.shadowBlur = 0;
+    for (let i = 0; i < 4; i++) { const ph = (t * .002 + i * .25) % 1; stern(c, -30 + i * 20, -70 + (i % 2) * 14, Math.sin(ph * Math.PI) * 4); }
+  },
+];
+const HOEHE = [-38, -46, -62, -46, -64, -76, -66, -60, -82, -82];   // Dach-Oberkante je Stufe (für die Flagge)
+
 function haus(p, pl, t) {
-  const c = p.farbe || ['#e8433c', '#3fa0e8', '#ffb02e', '#b58ad0', '#2fb3a0', '#ff6fa3'][p.platz % 6];
-  const st = p.stufe, a = p.anbauten || [];
-  const seit = pop[p.id] ? t - pop[p.id] : 9999;
-  const hops = seit < 700 ? 1 + Math.sin(seit / 700 * Math.PI) * .35 : 1;
-  X.save(); X.translate(pl.x, pl.y); X.scale(hops, hops);
-  // Anbauten hinter dem Haus
-  if (a.includes('garten')) { X.fillStyle = '#57b85a'; rr(-54, -8, 108, 30, 14); X.fill(); for (let i = 0; i < 6; i++) { X.fillStyle = ['#ff6fa3', '#ffd23f', '#fff'][i % 3]; X.beginPath(); X.arc(-44 + i * 18, 6 + (i % 2) * 6, 5, 0, 7); X.fill(); } }
-  if (a.includes('pool')) { X.fillStyle = '#fff'; rr(26, -26, 40, 30, 8); X.fill(); X.fillStyle = '#3fa0e8'; rr(30, -22, 32, 22, 6); X.fill(); }
-  // Schatten
-  X.fillStyle = 'rgba(0,0,0,.18)'; X.beginPath(); X.ellipse(4, 6, 34 + st * 5, 11, 0, 0, 7); X.fill();
-  X.lineWidth = 3.5; X.strokeStyle = INK; X.lineJoin = 'round';
-  if (st === 0) {                                   // Zelt
-    X.fillStyle = c; X.beginPath(); X.moveTo(-28, 4); X.lineTo(0, -40); X.lineTo(28, 4); X.closePath(); X.fill(); X.stroke();
-    X.fillStyle = dunkler(c, .55); X.beginPath(); X.moveTo(-8, 4); X.lineTo(0, -22); X.lineTo(8, 4); X.closePath(); X.fill();
-  } else if (st === 1) {                            // Stelzenhütte mit Strohdach (wie auf muscheltal.de)
-    X.fillStyle = '#6b4423'; [-18, 18].forEach(x => X.fillRect(x - 3, -6, 6, 12));
-    X.fillStyle = '#b07a45'; rr(-26, -34, 52, 30, 4); X.fill(); X.stroke();
-    X.fillStyle = c; rr(-8, -24, 16, 20, 3); X.fill();
-    X.fillStyle = '#d9a63a'; X.beginPath(); X.moveTo(-38, -30); X.lineTo(0, -64); X.lineTo(38, -30); X.closePath(); X.fill(); X.stroke();
-    X.strokeStyle = 'rgba(107,63,29,.5)'; X.lineWidth = 2; for (let i = -2; i <= 2; i++) { X.beginPath(); X.moveTo(i * 6, -60); X.lineTo(i * 15, -32); X.stroke(); }
-  } else if (st === 2) {                            // Haus
-    X.fillStyle = '#fff3c4'; rr(-34, -44, 68, 48, 4); X.fill(); X.stroke();
-    X.fillStyle = '#8a5a2b'; rr(-8, -20, 16, 24, 3); X.fill();
-    X.fillStyle = '#7fe0c8'; rr(-28, -34, 14, 12, 2); X.fill(); rr(14, -34, 14, 12, 2); X.fill();
-    X.fillStyle = c; X.beginPath(); X.moveTo(-44, -40); X.lineTo(0, -80); X.lineTo(44, -40); X.closePath(); X.fill(); X.stroke();
-  } else if (st === 3) {                            // Villa
-    X.fillStyle = '#fff'; rr(-50, -56, 100, 60, 6); X.fill(); X.stroke();
-    X.fillStyle = dunkler(c, .9); rr(-50, -56, 100, 12, 4); X.fill(); X.stroke();
-    X.fillStyle = '#7fe0c8'; for (let i = 0; i < 4; i++) { rr(-42 + i * 23, -38, 16, 16, 3); X.fill(); }
-    X.fillStyle = GELB; rr(-9, -18, 18, 22, 3); X.fill(); X.stroke();
-    X.fillStyle = c; rr(-30, -80, 60, 26, 6); X.fill(); X.stroke();
-    X.fillStyle = '#7fe0c8'; rr(-20, -73, 40, 12, 3); X.fill();
-  } else {                                          // Palast
-    X.fillStyle = '#fff3c4'; rr(-58, -60, 116, 64, 6); X.fill(); X.stroke();
-    [-58, 44].forEach(x => { X.fillStyle = '#fff3c4'; rr(x, -92, 14, 96, 4); X.fill(); X.stroke(); X.fillStyle = c; X.beginPath(); X.moveTo(x - 4, -92); X.lineTo(x + 7, -112); X.lineTo(x + 18, -92); X.closePath(); X.fill(); X.stroke(); });
-    X.fillStyle = GELB; X.beginPath(); X.arc(0, -60, 30, Math.PI, 0); X.closePath(); X.fill(); X.stroke();
-    X.fillStyle = c; X.beginPath(); X.arc(0, -92, 5, 0, 7); X.fill();
-    X.fillStyle = '#7fe0c8'; for (let i = 0; i < 4; i++) { rr(-44 + i * 24 + (i > 1 ? 16 : 0), -44, 14, 18, 7); X.fill(); }
-    X.fillStyle = PINK; rr(-11, -24, 22, 28, 11); X.fill(); X.stroke();
-  }
-  // Anbauten vor/neben dem Haus
-  if (a.includes('flagge')) { const h = [-40, -64, -80, -80, -112][st]; X.strokeStyle = INK; X.lineWidth = 3; X.beginPath(); X.moveTo(0, h); X.lineTo(0, h - 26); X.stroke(); X.fillStyle = c; X.beginPath(); X.moveTo(0, h - 26); X.lineTo(18 + Math.sin(t * .006) * 3, h - 20); X.lineTo(0, h - 14); X.fill(); }
-  if (a.includes('palme')) palme(-46, 2, .55, t);
-  if (a.includes('laterne')) { X.fillStyle = INK; X.fillRect(40, -30, 4, 34); X.fillStyle = '#ffd23f'; X.beginPath(); X.arc(42, -32, 7, 0, 7); X.fill(); }
-  if (a.includes('boot')) { X.fillStyle = '#8a5a2b'; rr(-60, 14, 40, 12, 6); X.fill(); X.fillStyle = '#fff'; X.beginPath(); X.moveTo(-42, 12); X.lineTo(-42, -10); X.lineTo(-28, 12); X.fill(); }
-  X.restore();
-  // Name
-  const n = p.name.length > 15 ? p.name.slice(0, 14) + '…' : p.name;
-  X.font = `900 19px ${FONT}`; const w = X.measureText(n).width + 18;
-  X.fillStyle = 'rgba(255,255,255,.92)'; rr(pl.x - w / 2, pl.y + 14, w, 26, 13); X.fill();
-  text(n, pl.x, pl.y + 28, 19, INK, 'center');
+  const c = X, f = p.farbe || FARBEN[p.platz % FARBEN.length], st = Math.min(p.stufe, HAUS.length - 1), a = p.anbauten || [];
+  const seit = pop[p.id] ? t - pop[p.id] : 9999, hops = seit < 700 ? 1 + Math.sin(seit / 700 * Math.PI) * .3 : 1;
+  c.save(); c.translate(pl.x, pl.y);
+  // Grundstück-Deko: ab Bungalow eigener Rasen mit Hecke, Weg zur Straße
+  if (st >= 3) { c.fillStyle = 'rgba(70,150,50,.35)'; c.beginPath(); c.roundRect(-pl.w / 2 + 4, -pl.h * .78 + 4, pl.w - 8, pl.h - 8, 6); c.fill(); }
+  c.fillStyle = '#efd9a0'; c.fillRect(-3, 0, 6, pl.h * .22 + 4);
+  if (a.includes('garten')) { c.fillStyle = '#6b4423'; c.beginPath(); c.roundRect(-34, 2, 22, 8, 3); c.fill(); blumen(c, -32, 5, 5, 20); }
+  if (a.includes('pool') && st < 6) { c.fillStyle = '#fff'; c.beginPath(); c.roundRect(14, 1, 22, 11, 3); c.fill(); c.fillStyle = '#3fa0e8'; c.beginPath(); c.roundRect(16, 3, 18, 7, 2); c.fill(); }
+  c.fillStyle = 'rgba(0,0,0,.18)'; c.beginPath(); c.ellipse(4, 3, 28 + st * 1.5, 7, 0, 0, 7); c.fill();
+  c.scale(hops, hops); c.lineJoin = 'round';
+  HAUS[st](c, f, t + p.platz * 137);
+  if (a.includes('flagge')) { const h = HOEHE[st]; c.strokeStyle = INK; c.lineWidth = 1.5; c.beginPath(); c.moveTo(-2, h); c.lineTo(-2, h - 14); c.stroke(); c.fillStyle = f; c.beginPath(); c.moveTo(-2, h - 14); c.lineTo(9 + Math.sin(t * .006) * 2, h - 11); c.lineTo(-2, h - 8); c.fill(); }
+  c.restore();
+  if (a.includes('palme')) palme(X, pl.x - 30, pl.y - 2, .42, t);
+  if (a.includes('laterne')) { X.fillStyle = INK; X.fillRect(pl.x + 30, pl.y - 22, 2.5, 24); X.fillStyle = '#ffe9a8'; X.shadowColor = '#ffd23f'; X.shadowBlur = 8; X.beginPath(); X.arc(pl.x + 31, pl.y - 24, 4, 0, 7); X.fill(); X.shadowBlur = 0; }
+  if (a.includes('boot')) { X.fillStyle = '#8a5a2b'; X.beginPath(); X.roundRect(pl.x + 14, pl.y + 4, 22, 6, 3); X.fill(); X.fillStyle = '#fff'; X.beginPath(); X.moveTo(pl.x + 24, pl.y + 3); X.lineTo(pl.x + 24, pl.y - 10); X.lineTo(pl.x + 32, pl.y + 3); X.fill(); }
+  // Name auf dem Grundstück
+  const n = p.name; let fs = 11; X.font = `900 ${fs}px ${FONT}`;
+  while (X.measureText(n).width > pl.w - 12 && fs > 6.5) { fs -= .5; X.font = `900 ${fs}px ${FONT}`; }
+  const w = X.measureText(n).width + 8;
+  X.fillStyle = 'rgba(255,255,255,.93)'; rr(pl.x - w / 2, pl.y + 8, w, 15, 7.5); X.fill();
+  X.fillStyle = INK; X.textAlign = 'center'; X.textBaseline = 'middle'; X.fillText(n, pl.x, pl.y + 16);
 }
 
-// ---------- Mitte: Gemeinschaftsprojekt ----------
-const BAU_ICON = { leuchtturm: '🗼', markt: '🏪', bruecke: '🌉', riesenrad: '🎡', brunnen: '⛲', hafen: '⚓', eisdiele: '🍦', kino: '🎬' };
-function mitte(t) {
-  // Fertige Projekte rund um den Platz
-  (S.fertig || []).forEach((id, i) => {
-    const a = -Math.PI / 2 + i * .8, x = IX + Math.cos(a) * 112, y = IY + Math.sin(a) * 86;
-    X.font = `64px ${FONT}`; X.textAlign = 'center'; X.textBaseline = 'middle'; X.fillText(BAU_ICON[id] || '🏛️', x, y);
-  });
-  const pr = S.projekt;
-  if (pr) {
-    // Baustelle: Kran + Fortschritt
-    X.save(); X.translate(IX, IY);
-    X.strokeStyle = '#ffb02e'; X.lineWidth = 7;
-    X.beginPath(); X.moveTo(-30, 20); X.lineTo(-30, -90); X.lineTo(60, -90); X.stroke();
-    const sw = Math.sin(t * .002) * 6;
-    X.strokeStyle = INK; X.lineWidth = 2; X.beginPath(); X.moveTo(40 + sw, -90); X.lineTo(40 + sw, -50); X.stroke();
-    X.fillStyle = '#e8433c'; X.fillRect(32 + sw, -50, 16, 12);
-    const f = pr.stand / pr.ziel;
-    X.fillStyle = 'rgba(0,0,0,.15)'; rr(-80, 34, 160, 22, 11); X.fill();
-    X.fillStyle = GELB; rr(-80, 34, 160 * f, 22, 11); X.fill();
-    X.strokeStyle = INK; X.lineWidth = 3; rr(-80, 34, 160, 22, 11); X.stroke();
-    X.font = `48px ${FONT}`; X.textAlign = 'center'; X.fillText(BAU_ICON[pr.id] || '🏛️', 10, -10);
-    X.restore();
-  } else if (!(S.fertig || []).length) {
-    X.font = `70px ${FONT}`; X.textAlign = 'center'; X.textBaseline = 'middle'; X.fillText('🐚', IX, IY - 6);
-  }
-}
-
-// ---------- Infos oben ----------
+// ================= Kopfzeile =================
+let seite = 0, seiteSeit = 0;
 function kopf(t) {
-  // Titel
-  plakette(40, 150, 600, 96, GELB, 30);
-  text('MUSCHEL-TAL', 72, 186, 54, INK, 'left', 900);
-  text('LIVE · Bau dein Haus!', 74, 228, 26, INK, 'left', 800);
-  // Likes gesamt
-  plakette(664, 150, 376, 96, '#fff', 30);
-  text('🐚 ' + (S.likesGesamt || 0).toLocaleString('de-DE'), 852, 186, 40, INK, 'center');
-  text('Likes gesamt', 852, 226, 22, '#8a5a2b', 'center', 800);
-  // So geht's + Rangliste
-  plakette(40, 276, 600, 236, '#fff3c4', 28);
-  const z = [['❤️', 'Like = 1 Muschel'], ['🏠', 'Zelt › Hütte › Haus › Villa › Palast'], ['💬', 'pool · garten · boot · palme · rot …'], ['🌹', 'Rose = 30 Muscheln + Feuerwerk']];
-  z.forEach(([i, s], k) => { text(i, 70, 314 + k * 52, 32, INK, 'left', 400); text(s, 120, 314 + k * 52, 27, INK, 'left', 800, 500); });
-  plakette(664, 276, 376, 236, '#fff', 28);
-  text('🏆 Größte Häuser', 852, 310, 28, INK, 'center');
-  [...S.spieler].sort((a, b) => b.muscheln - a.muscheln).slice(0, 5).forEach((p, k) => {
-    const y = 352 + k * 34;
-    text(`${k + 1}. ${p.name}`, 686, y, 23, INK, 'left', 800, 230);
-    text(String(p.muscheln), 1020, y, 23, '#8a5a2b', 'right', 900);
-  });
-}
-
-function unten(t) {
-  // Abstimmung oder Projekt-Fortschritt (zwischen Insel und Kommentarbereich)
-  const a = S.abstimmung, pr = S.projekt;
+  X.setTransform(1, 0, 0, 1, 0, 0);
+  // Logo wie auf muscheltal.de: gelbe Pille, Muschel-Logo, leicht gedreht
+  X.save(); X.translate(36, 150); X.rotate(-2 * Math.PI / 180);
+  X.font = `900 52px ${FONT}`; const lw = Math.max(X.measureText('MUSCHEL-TAL').width, 300) + 150;
+  karte(0, 0, lw, 112, GELB);
+  if (LOGO.complete && LOGO.naturalWidth) X.drawImage(LOGO, 8, 8, 96, 96);
+  text('MUSCHEL-TAL', 116, 44, 52, INK, 'left', 900);
+  X.globalAlpha = .75; text('by @muscheltal', 118, 86, 27, INK, 'left', 800); X.globalAlpha = 1;
+  X.restore();
+  // Muschelkasse
+  karte(668, 150, 376, 112, '#fff', 999);
+  text('🐚 ' + (S.kasse || 0).toLocaleString('de-DE'), 856, 192, 44, INK, 'center', 900, 330);
+  text('Muschelkasse · 1 Like = 1 🐚', 856, 236, 21, '#8a5a2b', 'center', 800, 330);
+  // Bewohner-Ziel
+  const z = S.ziel, bw = S.bewohner || 0;
+  karte(36, 288, 1008, 104, '#fff', 34);
+  if (z) {
+    const f = Math.min(1, bw / z.ziel);
+    text(`${z.icon || '🏗️'} ${z.name}`, 66, 320, 30, INK, 'left', 900, 560);
+    text(`${bw.toLocaleString('de-DE')} / ${z.ziel.toLocaleString('de-DE')} Bewohner`, 1014, 320, 28, INK, 'right', 900, 400);
+    X.fillStyle = 'rgba(42,27,18,.1)'; rr(66, 346, 948, 26, 13); X.fill();
+    const g = X.createLinearGradient(66, 0, 1014, 0); g.addColorStop(0, TUERKIS); g.addColorStop(1, '#7fe0c8');
+    X.fillStyle = g; rr(66, 346, Math.max(26, 948 * f), 26, 13); X.fill();
+    X.strokeStyle = INK; X.lineWidth = 3.5; rr(66, 346, 948, 26, 13); X.stroke();
+    text(`Folgen = einziehen 🏠 · noch ${Math.max(0, z.ziel - bw)} bis ${z.ort ? 'zum Bau auf der ' + z.ort : 'zum Ziel'}`, 540, 360, 18, INK, 'center', 900, 900);
+  } else text(`🏠 ${bw.toLocaleString('de-DE')} Bewohner · Folgen = einziehen`, 540, 340, 32, INK, 'center');
+  // Untere Info-Zeile: Abstimmung, sonst abwechselnd Regeln / Projekt + Top 3
+  const a = S.abstimmung;
   if (a) {
-    plakette(40, 1312, 1000, 214, '#fff', 30);
-    text(`🗳️ Was bauen wir? Schreib 1, 2 oder 3  ·  ${a.rest}s`, 540, 1350, 30, INK, 'center', 900, 940);
+    karte(36, 416, 1008, 196, '#fff', 34);
+    text(`🗳️ Was bauen wir? Schreib 1, 2 oder 3 · ${a.rest}s`, 540, 448, 29, INK, 'center', 900, 950);
     const sum = a.stimmen.reduce((x, y) => x + y, 0) || 1;
     a.optionen.forEach((o, i) => {
-      const y = 1388 + i * 44, f = a.stimmen[i] / sum;
-      X.fillStyle = 'rgba(42,27,18,.08)'; rr(70, y, 940, 36, 18); X.fill();
-      X.fillStyle = [GELB, '#7fe0c8', '#ff8fb8'][i]; rr(70, y, Math.max(36, 940 * f), 36, 18); X.fill();
-      text(`${i + 1}  ${o}`, 92, y + 19, 25, INK, 'left', 900);
-      text(String(a.stimmen[i]), 990, y + 19, 25, INK, 'right', 900);
+      const y = 474 + i * 42, f = a.stimmen[i] / sum;
+      X.fillStyle = 'rgba(42,27,18,.08)'; rr(66, y, 948, 34, 17); X.fill();
+      X.fillStyle = [GELB, '#7fe0c8', '#ff8fb8'][i]; rr(66, y, Math.max(34, 948 * f), 34, 17); X.fill();
+      text(`${i + 1}  ${o}`, 86, y + 18, 23, INK, 'left', 900); text(String(a.stimmen[i]), 994, y + 18, 23, INK, 'right', 900);
     });
-  } else if (pr) {
-    plakette(40, 1312, 1000, 104, '#fff', 30);
-    text(`🚧 Wir bauen: ${pr.name}`, 70, 1346, 32, INK, 'left', 900, 620);
-    text(`${Math.floor(pr.stand)} / ${pr.ziel} 🐚`, 1010, 1346, 28, '#8a5a2b', 'right', 900);
-    X.fillStyle = 'rgba(42,27,18,.1)'; rr(70, 1374, 940, 24, 12); X.fill();
-    X.fillStyle = GELB; rr(70, 1374, 940 * pr.stand / pr.ziel, 24, 12); X.fill();
-    X.strokeStyle = INK; X.lineWidth = 3; rr(70, 1374, 940, 24, 12); X.stroke();
+    return;
   }
+  if (t - seiteSeit > 8000) { seite = (seite + 1) % (S.projekt ? 2 : 1); seiteSeit = t; }
+  karte(36, 416, 626, 120, '#fff3c4', 30);
+  if (seite === 1 && S.projekt) {
+    const pr = S.projekt;
+    text(`🏗️ Wir bauen: ${pr.name}`, 62, 448, 27, INK, 'left', 900, 580);
+    X.fillStyle = 'rgba(42,27,18,.1)'; rr(62, 470, 574, 22, 11); X.fill();
+    X.fillStyle = GELB; rr(62, 470, Math.max(22, 574 * pr.stand / pr.ziel), 22, 11); X.fill();
+    X.strokeStyle = INK; X.lineWidth = 3; rr(62, 470, 574, 22, 11); X.stroke();
+    text(`${Math.floor(pr.stand).toLocaleString('de-DE')} / ${pr.ziel.toLocaleString('de-DE')} 🐚 aus der Muschelkasse`, 62, 512, 19, '#8a5a2b', 'left', 800, 574);
+  } else {
+    [['❤️', 'Liken = Haus wächst'], ['💬', 'pool · garten · boot · palme · rot · blau …'], ['🎁', 'Geschenk = großer Ausbau']].forEach(([i, s], k) => {
+      text(i, 60, 446 + k * 32, 23, INK, 'left', 400); text(s, 100, 446 + k * 32, 22, INK, 'left', 800, 540);
+    });
+  }
+  karte(686, 416, 358, 120, '#fff', 30);
+  const top = [...S.spieler].sort((x, y) => y.muscheln - x.muscheln).slice(0, 3);
+  text('🏆 Top-Häuser', 865, 438, 21, INK, 'center', 900);
+  top.forEach((p, k) => { const y = 466 + k * 26; text(`${k + 1}. ${p.name}`, 706, y, 19, INK, 'left', 800, 190); text(S.stufen[p.stufe] || '', 1026, y, 17, '#8a5a2b', 'right', 900, 120); });
 }
 
 function effekte(t) {
   for (let i = fx.length - 1; i >= 0; i--) {
     const f = fx[i], age = (t - f.t) / 1000;
     if (age > 1.6) { fx.splice(i, 1); continue; }
-    const x = f.x + f.vx * age * 60, y = f.y + f.vy * age * 60 + 180 * age * age;
+    const x = f.x + f.vx * age * 60, y = f.y + f.vy * age * 60 + 120 * age * age;
     X.globalAlpha = 1 - age / 1.6;
     if (f.punkt) { X.fillStyle = f.punkt; X.beginPath(); X.arc(x, y, f.s, 0, 7); X.fill(); }
     else { X.font = `${f.s}px ${FONT}`; X.textAlign = 'center'; X.textBaseline = 'middle'; X.fillText(f.z, x, y); }
   }
   X.globalAlpha = 1;
-  // Banner (eins nach dem anderen, je 3,2 s)
+}
+function overlay(t) {
+  X.setTransform(1, 0, 0, 1, 0, 0);
+  if (banner.length && !banner[0].t) banner[0].t = t;
   while (banner.length && t - banner[0].t > 3200) { banner.shift(); if (banner[0]) banner[0].t = t; }
   const b = banner[0];
   if (b) {
-    const age = (t - b.t) / 1000, ein = Math.min(1, age * 4), aus = Math.min(1, (3.2 - age) * 4), k = Math.min(ein, aus);
-    X.save(); X.globalAlpha = k; X.translate(540, 700); X.scale(.8 + .2 * k, .8 + .2 * k);
-    plakette(-440, -70, 880, 140, b.farbe, 36);
-    text(b.oben, 0, -24, 44, '#fff', 'center', 900, 820);
-    text(b.unten, 0, 30, 34, '#fff', 'center', 800, 820);
+    const age = (t - b.t) / 1000, k = Math.max(0, Math.min(1, age * 4, (3.2 - age) * 4));
+    X.save(); X.globalAlpha = k; X.translate(540, 760); X.scale(.85 + .15 * k, .85 + .15 * k);
+    karte(-440, -66, 880, 132, b.farbe, 40);
+    text(b.oben, 0, -22, 42, '#fff', 'center', 900, 820); text(b.unten, 0, 28, 30, '#fff', 'center', 800, 820);
     X.restore();
   }
-  // Untertitel der Moderation
   const ua = (t - untertitel.t) / 1000;
   if (untertitel.text && ua < 5) {
     X.globalAlpha = Math.min(1, (5 - ua) * 2);
-    X.font = `800 28px ${FONT}`;
-    const w = Math.min(1000, X.measureText(untertitel.text).width + 50);
-    X.fillStyle = 'rgba(42,27,18,.82)'; rr(540 - w / 2, 532, w, 54, 27); X.fill();
-    text(untertitel.text, 540, 560, 28, '#fff', 'center', 800, 960);
+    X.font = `800 27px ${FONT}`; const w = Math.min(1008, X.measureText(untertitel.text).width + 50);
+    X.fillStyle = 'rgba(42,27,18,.85)'; rr(540 - w / 2, S.abstimmung ? 636 : 562, w, 52, 26); X.fill();
+    text(untertitel.text, 540, (S.abstimmung ? 636 : 562) + 26, 27, '#fff', 'center', 800, 960);
     X.globalAlpha = 1;
   }
+  if (S.test) text('TEST-MODUS', 1040, 128, 20, 'rgba(255,255,255,.8)', 'right', 900);
 }
 
 function bild(t) {
-  meer(t); insel(t); mitte(t);
-  // Häuser von hinten nach vorne zeichnen
-  const sichtbar = S.spieler.filter(p => platzVon(p)).sort((a, b) => platzVon(a).y - platzVon(b).y);
-  sichtbar.forEach(p => haus(p, platzVon(p), t));
-  if (S.spieler.length > PLAETZE.length) text(`+ ${S.spieler.length - PLAETZE.length} auf der Warteliste`, 540, 1278, 24, '#fff', 'center', 900);
-  kopf(t); unten(t); effekte(t);
-  if (S.test) text('TEST-MODUS', 1040, 128, 22, 'rgba(255,255,255,.8)', 'right', 900);
+  meer(t); kamera(t); wellen(t);
+  if (BASIS) X.drawImage(BASIS, OX, OY, OW, OH);
+  platz(t);
+  S.spieler.filter(p => platzVon(p)).sort((a, b) => platzVon(a).y - platzVon(b).y).forEach(p => haus(p, platzVon(p), t));
+  effekte(t);
+  if (S.spieler.length > PLAETZE.length) { X.setTransform(1, 0, 0, 1, 0, 0); text(`+ ${S.spieler.length - PLAETZE.length} warten auf ein Grundstück`, 540, 1880, 22, '#fff', 'center', 900); }
+  kopf(t); overlay(t);
   requestAnimationFrame(bild);
 }
 verbinde();

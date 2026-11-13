@@ -1,59 +1,199 @@
 {
   "tiktokName": "muscheltal",
   "port": 8790,
-
   "stimme": {
     "an": true,
     "mac": "Markus (Erweitert)",
-    "macErsatz": ["Markus (Enhanced)", "Markus"],
+    "macErsatz": [
+      "Markus (Enhanced)",
+      "Markus"
+    ],
     "tempo": 185,
     "maxProMinute": 8,
     "maxWarteschlange": 4
   },
-
   "stufen": [
-    { "name": "Zelt",   "ab": 0 },
-    { "name": "Hütte",  "ab": 30 },
-    { "name": "Haus",   "ab": 150 },
-    { "name": "Villa",  "ab": 500 },
-    { "name": "Palast", "ab": 1500 }
+    {
+      "name": "Zelt",
+      "ab": 0
+    },
+    {
+      "name": "Strohhütte",
+      "ab": 20
+    },
+    {
+      "name": "Stelzenhütte",
+      "ab": 60
+    },
+    {
+      "name": "Bungalow",
+      "ab": 150
+    },
+    {
+      "name": "Strandhaus",
+      "ab": 300
+    },
+    {
+      "name": "Ferienhaus",
+      "ab": 600
+    },
+    {
+      "name": "Villa",
+      "ab": 1000
+    },
+    {
+      "name": "Luxusvilla",
+      "ab": 2000
+    },
+    {
+      "name": "Strandpalast",
+      "ab": 4000
+    },
+    {
+      "name": "Muschelschloss",
+      "ab": 8000
+    }
   ],
-
   "muschelnProLike": 1,
   "muschelnProDiamant": 30,
   "muschelnFuerFollow": 25,
-  "muschelnFuerErstenKommentar": 5,
-
   "anbauten": {
-    "garten":  { "name": "Garten",     "abStufe": 1, "kosten": 20 },
-    "pool":    { "name": "Pool",       "abStufe": 2, "kosten": 60 },
-    "boot":    { "name": "Boot",       "abStufe": 2, "kosten": 80 },
-    "palme":   { "name": "Palme",      "abStufe": 0, "kosten": 10 },
-    "laterne": { "name": "Laterne",    "abStufe": 1, "kosten": 15 },
-    "flagge":  { "name": "Flagge",     "abStufe": 0, "kosten": 5 }
+    "palme": {
+      "name": "Palme",
+      "abStufe": 0,
+      "kosten": 10
+    },
+    "flagge": {
+      "name": "Flagge",
+      "abStufe": 0,
+      "kosten": 5
+    },
+    "garten": {
+      "name": "Garten",
+      "abStufe": 1,
+      "kosten": 20
+    },
+    "laterne": {
+      "name": "Laterne",
+      "abStufe": 1,
+      "kosten": 15
+    },
+    "pool": {
+      "name": "Pool",
+      "abStufe": 3,
+      "kosten": 150
+    },
+    "boot": {
+      "name": "Boot",
+      "abStufe": 3,
+      "kosten": 200
+    }
   },
-
   "farben": {
-    "rot": "#E8504A", "blau": "#3A8FE0", "grün": "#4DB85A", "gruen": "#4DB85A",
-    "gelb": "#F5C93B", "lila": "#9B5DE5", "rosa": "#F28DC0", "pink": "#F25CA8",
-    "orange": "#F59238", "türkis": "#2EC4B6", "tuerkis": "#2EC4B6", "weiß": "#F4F1E8",
-    "weiss": "#F4F1E8", "schwarz": "#33313B", "gold": "#E0B43A"
+    "rot": "#E8504A",
+    "blau": "#3A8FE0",
+    "grün": "#4DB85A",
+    "gruen": "#4DB85A",
+    "gelb": "#F5C93B",
+    "lila": "#9B5DE5",
+    "rosa": "#F28DC0",
+    "pink": "#F25CA8",
+    "orange": "#F59238",
+    "türkis": "#2EC4B6",
+    "tuerkis": "#2EC4B6",
+    "weiß": "#F4F1E8",
+    "weiss": "#F4F1E8",
+    "schwarz": "#33313B",
+    "gold": "#E0B43A"
   },
-
   "abstimmung": {
     "alleMinuten": 10,
     "dauerSekunden": 90,
     "projekte": [
-      { "id": "leuchtturm", "name": "Leuchtturm",   "ziel": 3000 },
-      { "id": "markt",      "name": "Marktplatz",   "ziel": 2500 },
-      { "id": "bruecke",    "name": "Brücke",       "ziel": 3500 },
-      { "id": "riesenrad",  "name": "Riesenrad",    "ziel": 5000 },
-      { "id": "brunnen",    "name": "Brunnen",      "ziel": 2000 },
-      { "id": "hafen",      "name": "Hafen",        "ziel": 4500 },
-      { "id": "eisdiele",   "name": "Eisdiele",     "ziel": 2500 },
-      { "id": "kino",       "name": "Freiluftkino", "ziel": 4000 }
+      {
+        "id": "leuchtturm",
+        "name": "Leuchtturm",
+        "ziel": 3000
+      },
+      {
+        "id": "markt",
+        "name": "Marktplatz",
+        "ziel": 2500
+      },
+      {
+        "id": "bruecke",
+        "name": "Brücke",
+        "ziel": 3500
+      },
+      {
+        "id": "riesenrad",
+        "name": "Riesenrad",
+        "ziel": 5000
+      },
+      {
+        "id": "brunnen",
+        "name": "Brunnen",
+        "ziel": 2000
+      },
+      {
+        "id": "hafen",
+        "name": "Hafen",
+        "ziel": 4500
+      },
+      {
+        "id": "eisdiele",
+        "name": "Eisdiele",
+        "ziel": 2500
+      },
+      {
+        "id": "kino",
+        "name": "Freiluftkino",
+        "ziel": 4000
+      }
     ]
   },
-
-  "gemeinschaftsAnteil": 0.25
+  "muschelnFuerErstenKommentar": 5,
+  "bewohner": {
+    "start": 724,
+    "ziele": [
+      {
+        "name": "Tierheim Pfotenkuss",
+        "ort": "Haupt-Insel",
+        "ziel": 1000,
+        "icon": "🐾"
+      }
+    ]
+  },
+  "strassen": [
+    "Sonnenallee",
+    "Muschelweg",
+    "Kokosstraße",
+    "Palmenweg",
+    "Strandpromenade",
+    "Seesternweg",
+    "Brandungsallee",
+    "Flip-Flop-Gasse",
+    "Sandburgweg",
+    "Lagunenstraße",
+    "Korallenweg",
+    "Hängemattenweg",
+    "Sonnenschirmgasse",
+    "Surferstraße",
+    "Ananasweg",
+    "Eiswaffelgasse",
+    "Sommerbrise-Allee",
+    "Leuchtturmstraße",
+    "Delfinweg",
+    "Perlenstraße",
+    "Cocktailgasse",
+    "Wellenreiterweg",
+    "Sonnenuntergangsallee",
+    "Hibiskusweg",
+    "Mangoweg",
+    "Möwenweg",
+    "Strandkorbweg",
+    "Badetuchgasse",
+    "Sonnencremeweg",
+    "Urlaubsallee"
+  ]
 }

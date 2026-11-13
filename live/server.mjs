@@ -43,10 +43,6 @@ function gibMuscheln(p, n, grund) {
   const vorher = p.stufe;
   p.muscheln += n;
   p.stufe = stufeVon(p.muscheln);
-  if (S.projekt) {
-    S.projekt.stand = Math.min(S.projekt.ziel, S.projekt.stand + n * CFG.gemeinschaftsAnteil);
-    if (S.projekt.stand >= S.projekt.ziel) projektFertig();
-  }
   geaendert = true;
   if (p.stufe > vorher) {
     sende({ typ: 'stufe', id: p.id, stufe: p.stufe });
@@ -55,14 +51,18 @@ function gibMuscheln(p, n, grund) {
   zustand();
 }
 
-const artikel = n => ({ Zelt: 'ein Zelt', 'Hütte': 'eine Hütte', Haus: 'ein Haus', Villa: 'eine Villa', Palast: 'einen Palast' }[n] || n);
+const artikel = n => (/^(Strohhütte|Stelzenhütte|Villa|Luxusvilla)$/.test(n) ? 'eine ' : /^(Bungalow|Strandpalast)$/.test(n) ? 'einen ' : 'ein ') + n;
 // Namen für die Stimme lesbar machen: "lena_xx.22" -> "lena xx"
 const sprechName = p => p.name.replace(/^@/, '').replace(/[._]+/g, ' ').replace(/\d{3,}/g, '').trim() || 'Neuer Bewohner';
 
 // ---------- Ereignisse ----------
 function like(u, anzahl) {
   const p = spieler(u); if (!p) return;
-  S.likesGesamt += anzahl;
+  S.likesGesamt += anzahl;                         // Muschelkasse: 1 Like = 1 Muschel
+  if (S.projekt) {
+    S.projekt.stand = Math.min(S.projekt.ziel, S.projekt.stand + anzahl);
+    if (S.projekt.stand >= S.projekt.ziel) projektFertig();
+  }
   gibMuscheln(p, anzahl * CFG.muschelnProLike, 'like');
 }
 
@@ -100,10 +100,25 @@ function geschenk(u, name, diamanten, anzahl) {
   gibMuscheln(p, d * CFG.muschelnProDiamant, 'geschenk');
 }
 
+// ---------- Bewohner (= Follower) ----------
+let bewohner = S.bewohner || CFG.bewohner.start;
+const zielJetzt = () => CFG.bewohner.ziele.find(z => z.ziel > bewohner) || null;
+function setzeBewohner(n, quelle) {
+  if (!n || n < 1) return;
+  const vorher = zielJetzt();
+  bewohner = n; S.bewohner = n; geaendert = true;
+  if (vorher && bewohner >= vorher.ziel) {
+    sende({ typ: 'ziel', name: vorher.name });
+    sag(`Wahnsinn! ${bewohner} Bewohner! ${vorher.name} auf der ${vorher.ort} ist fertig!`, 0);
+  }
+  zustand();
+}
 function follow(u) {
   const p = spieler(u); if (!p) return;
   sende({ typ: 'follow', id: p.id });
-  sag(`${sprechName(p)} zieht ins Muschel-Tal ein. Danke fürs Folgen!`, 1);
+  setzeBewohner(bewohner + 1, 'follow');
+  const z = zielJetzt();
+  sag(`${sprechName(p)} zieht ins Muschel-Tal ein!${z ? ` Noch ${z.ziel - bewohner} Bewohner bis zum ${z.name}.` : ''}`, 1);
   gibMuscheln(p, CFG.muschelnFuerFollow, 'follow');
 }
 
@@ -195,7 +210,8 @@ function oeffentlich() {
   return {
     spieler: S.reihenfolge.map(id => S.spieler[id]),
     stufen: CFG.stufen.map(s => s.name), stufenAb: CFG.stufen.map(s => s.ab),
-    projekt: S.projekt, fertig: S.fertig, abstimmung: abst, likesGesamt: S.likesGesamt,
+    projekt: S.projekt, fertig: S.fertig, abstimmung: abst, kasse: S.likesGesamt,
+    bewohner, ziel: zielJetzt(), strassen: CFG.strassen,
     tiktokName: CFG.tiktokName, test: TEST,
   };
 }
@@ -237,7 +253,17 @@ async function verbinde() {
   c.on('disconnected', () => { console.log('Verbindung weg – neuer Versuch in 15 s'); setTimeout(versuche, 15000); });
   const st = await c.connect();
   console.log(`✅ Mit dem LIVE von @${CFG.tiktokName} verbunden (Raum ${st.roomId}).`);
+  // Echte Follower-Zahl = Bewohner (beim Start und alle 5 Minuten)
+  const fol = info => { const f = suche(info, 'follower_count'); if (f) setzeBewohner(Number(f), 'tiktok'); };
+  fol(st.roomInfo || c.roomInfo);
+  clearInterval(verbinde.t); verbinde.t = setInterval(() => c.fetchRoomInfo().then(fol).catch(() => {}), 300000);
   sag('Muschel-Tal live ist gestartet. Liked, kommentiert und baut eure Häuser!', 0);
+}
+function suche(o, key, tiefe = 0) {
+  if (!o || typeof o !== 'object' || tiefe > 6) return null;
+  if (o[key] != null) return o[key];
+  for (const v of Object.values(o)) { const r = suche(v, key, tiefe + 1); if (r != null) return r; }
+  return null;
 }
 async function versuche() {
   try { await verbinde(); }
@@ -253,10 +279,19 @@ function simulator() {
     'lotta.fsthff', 'paulepfpgfn', 'vidafilipa', 'nina_palme', 'ole.anker', 'emma.sonne', 'leo.leuchtturm', 'hanna.hai', 'finn.flut', 'ella.ebbe'];
   const worte = ['pool', 'garten', 'boot', 'palme', 'rot', 'blau', 'lila', 'gelb', 'laterne', 'flagge', 'hallo!', 'wie geht das?', 'türkis'];
   const gifts = [['Rose', 1], ['Rose', 1], ['TikTok', 1], ['Finger Heart', 5], ['Donut', 30], ['Perfume', 20], ['Galaxy', 1000]];
-  let n = 3;
+  // Volle Insel zum Ansehen: viele Bewohner mit allen Haus-Stufen
+  const silben = ['sun', 'meer', 'koko', 'palm', 'surf', 'wave', 'sand', 'perl', 'hai', 'lagu', 'mango', 'ebbe', 'flut', 'riff', 'kiki', 'lia', 'max', 'ben'];
+  for (let i = 0; i < 150; i++) namen.push(silben[i % 18] + (i % 3 ? '.' : '_') + silben[(i * 7) % 18] + (10 + i));
+  namen.slice(0, 140).forEach((nm, i) => {
+    const p = spieler({ uniqueId: nm }); const st = CFG.stufen[(i * 7) % CFG.stufen.length];
+    p.muscheln = st.ab + 5; p.stufe = stufeVon(p.muscheln);
+    p.anbauten = Object.keys(CFG.anbauten).filter((k, j) => (i + j) % 4 === 0 && CFG.anbauten[k].abStufe <= p.stufe);
+  });
+  warte.length = 0;
+  let n = namen.length;
   console.log('🧪 Test-Modus: simulierte Zuschauer.');
   setInterval(() => {
-    if (Math.random() < .08 && n < namen.length) n++;
+    
     const u = { uniqueId: namen[Math.floor(Math.random() * n)] };
     const r = Math.random();
     if (S.abstimmung && r < .3) kommentar(u, String(1 + Math.floor(Math.random() * 3)));
