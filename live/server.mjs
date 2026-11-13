@@ -282,7 +282,7 @@ function sag(text, prio = 2) {
   weiter();
 }
 let sprichtSeit = 0;
-setInterval(() => { if (spricht && Date.now() - sprichtSeit > 20000) { console.log('⚠️  Ansage hing über 20 s – Anna macht weiter.'); try { sayProzess?.kill(); } catch {} fertig(); } }, 2000);
+setInterval(() => { if (spricht && Date.now() - sprichtSeit > 20000) { console.log('⚠️  Ansage hing über 20 s – Anna macht weiter.'); sprichtSeit = Date.now(); if (sayProzess && sayProzess.exitCode === null) { try { sayProzess.kill(); } catch { fertig(); } } else fertig(); } }, 2000);
 function fertig() { spricht = false; stilleSeit = Date.now(); setTimeout(weiter, 50); }
 function weiter() {
   if (spricht || !warte.length) return;
@@ -292,8 +292,8 @@ function weiter() {
   const aufSeite = CFG.stimme.wiedergabe !== 'mac' && seiteHatTon() && Date.now() > stimmeFehlerBis;
   const datei = path.join(TON_DIR, `s${++tonNr % 20}.wav`);
   const args = ['-v', stimme, '-r', String(CFG.stimme.tempo)];
-  if (aufSeite) args.push('-o', datei, '--file-format=WAVE', '--data-format=LEI16@22050');
-  else if (CFG.stimme.macGeraet) args.push('-a', CFG.stimme.macGeraet);   // z. B. „BlackHole 2ch“ → direkt in LIVE Studio
+  // Immer erst eine Sprachdatei erzeugen (say hängt sonst manchmal an Mehrfach-Ausgabe/BlackHole), dann abspielen
+  args.push('-o', datei, '--file-format=WAVE', '--data-format=LEI16@22050');
   const pr = sayProzess = spawn('say', [...args, fuerStimme(text)]);
   pr.on('error', e => { console.log('⚠️  say-Fehler:', e.message); fertig(); });
   let fehler = '';
@@ -312,6 +312,13 @@ function weiter() {
       setTimeout(fertig, ms);
       return;
     }
+    if (!aufSeite && code === 0) {                     // Mac-Ton: Datei mit afplay abspielen (wie die Musik)
+      const ap = sayProzess = spawn('afplay', ['-v', String(CFG.ton.stimmeAufMac ?? 1), datei]);
+      ap.on('error', e => { console.log('⚠️  afplay-Fehler:', e.message); fertig(); });
+      ap.on('close', () => fertig());
+      return;
+    }
+    if (code !== 0 && fehler) console.log('⚠️  say meldet:', fehler.trim().slice(0, 200));
     if (code !== 0 && /voice|stimme/i.test(fehler)) {
       const ersatz = CFG.stimme.macErsatz.shift();
       if (ersatz) { console.log(`Stimme „${stimme}“ nicht gefunden, nehme „${ersatz}“.`); stimme = ersatz; warte.unshift({ text, prio: 0, t: Date.now() }); }
