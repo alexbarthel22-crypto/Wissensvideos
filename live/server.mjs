@@ -125,24 +125,32 @@ function inKasse(n) {
   }
 }
 
-// ---------- Bauprojekte der Homepage (muscheltal/daten/insel.json) ----------
-const INSEL_JSON = path.join(DIR, '..', 'muscheltal', 'daten', 'insel.json');
-const EINW_CSV = path.join(DIR, '..', 'muscheltal', 'daten', 'einwohner.csv');
-let BAUPROJEKTE = CFG.bewohner.ziele;
-function ladeHomepage() {
+// ---------- Bauprojekte + Bewohnerzahl der Homepage ----------
+// Holt muscheltal/daten/insel.json und einwohner.csv direkt aus dem öffentlichen GitHub-Repo (immer aktuell),
+// sonst aus dem Nachbarordner ../muscheltal/daten, sonst aus einstellungen.json. Der Ordner live/ reicht also allein.
+const ROH = CFG.homepageDaten || 'https://raw.githubusercontent.com/alexbarthel22-crypto/Wissensvideos/claude/sweet-hamilton-2bxep9/muscheltal/daten/';
+const LOKAL = path.join(DIR, '..', 'muscheltal', 'daten');
+let BAUPROJEKTE = CFG.bewohner.ziele, bewohnerVonTikTok = false;
+async function holeDatei(name) {
+  try { const r = await fetch(ROH + name, { signal: AbortSignal.timeout(8000) }); if (r.ok) return await r.text(); } catch {}
+  try { return fs.readFileSync(path.join(LOKAL, name), 'utf8'); } catch { return null; }
+}
+async function ladeHomepage() {
+  const j = await holeDatei('insel.json');
   try {
-    const d = JSON.parse(fs.readFileSync(INSEL_JSON, 'utf8'));
+    const d = JSON.parse(j);
     if (Array.isArray(d.baustellen) && d.baustellen.length)
       BAUPROJEKTE = d.baustellen.map(b => ({ name: b.name, icon: b.emoji || '🏗️', ziel: b.ziel, ort: 'Haupt-Insel' }));
   } catch {}
+  const csv = await holeDatei('einwohner.csv');
+  const n = csv ? csv.trim().split('\n').length - 1 : 0;
+  if (n > 0 && !bewohnerVonTikTok && n > bewohner) { bewohner = n; S.bewohner = n; }   // still, ohne Ansage
+  zustand();
 }
-ladeHomepage(); setInterval(ladeHomepage, 600000);
-function startBewohner() {
-  try { return fs.readFileSync(EINW_CSV, 'utf8').trim().split('\n').length - 1; } catch { return CFG.bewohner.start; }
-}
+setTimeout(ladeHomepage, 0); setInterval(ladeHomepage, 600000);
 
 // ---------- Bewohner (= Follower) ----------
-let bewohner = Math.max(S.bewohner || 0, startBewohner());
+let bewohner = Math.max(S.bewohner || 0, CFG.bewohner.start || 0);
 const zielJetzt = () => BAUPROJEKTE.filter(z => z.ziel > bewohner).sort((a, b) => a.ziel - b.ziel)[0] || null;
 function setzeBewohner(n, quelle) {
   if (!n || n < 1) return;
@@ -396,7 +404,7 @@ async function verbinde() {
   const st = await c.connect();
   console.log(`✅ Mit dem LIVE von @${CFG.tiktokName} verbunden (Raum ${st.roomId}).`);
   // Echte Follower-Zahl = Bewohner (beim Start und alle 5 Minuten)
-  const fol = info => { const f = suche(info, 'follower_count'); if (f) setzeBewohner(Number(f), 'tiktok'); };
+  const fol = info => { const f = suche(info, 'follower_count'); if (f) { bewohnerVonTikTok = true; setzeBewohner(Number(f), 'tiktok'); } };
   fol(st.roomInfo || c.roomInfo);
   clearInterval(verbinde.t); verbinde.t = setInterval(() => c.fetchRoomInfo().then(fol).catch(() => {}), 300000);
   sag(satz('start'), 0);

@@ -4,11 +4,13 @@ Automatischer TikTok-LIVE: Zuschauer bauen mit Likes, Kommentaren und Geschenken
 Eine Mac-Stimme (unbegrenzt, offline) moderiert.
 
 ## Einmal einrichten (Mac)
-1. **Node.js** installieren: https://nodejs.org → LTS-Version.
-2. Repo **Wissensvideos** herunterladen (GitHub → Branch `claude/sweet-hamilton-2bxep9` wählen → grüner Knopf „Code“ → „Download ZIP“) und entpacken. Dieser Branch enthält auch die aktuellen Homepage-Daten (Bewohner, Bauprojekte).
-3. Im Ordner `live/` auf **„Muschel-Tal LIVE testen.command“** doppelklicken.
+1. **Node.js** installieren: https://nodejs.org → LTS → „macOS Installer (.pkg)“.
+2. **Nur diesen Ordner `live/`** herunterladen (er funktioniert allein – Bewohnerzahl und Bauprojekte holt er sich selbst aus dem Repo). Den Ordner kannst du beliebig umbenennen und ablegen.
+3. Im Ordner auf **„Muschel-Tal LIVE testen.command“** doppelklicken.
    Falls der Mac warnt: Rechtsklick → „Öffnen“ → „Öffnen“.
    Es öffnet sich die Insel mit Test-Zuschauern, Markus spricht.
+
+**Update auf eine neue Version:** neuen Ordner holen und deine `stand.json` (Spielstand) und `sperrliste.txt` hineinkopieren.
 
 ## Stream starten
 1. In TikTok LIVE Studio den LIVE starten (Hochformat).
