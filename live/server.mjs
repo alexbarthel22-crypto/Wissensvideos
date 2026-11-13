@@ -15,7 +15,7 @@ const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 
 // ---------- Spielstand ----------
-const leer = () => ({ spieler: {}, reihenfolge: [], projekt: null, fertig: [], abstimmung: null, likesGesamt: 0 });
+const leer = () => ({ spieler: {}, reihenfolge: [], projekt: null, fertig: [], abstimmung: null, likesGesamt: 0, kasse: 0 });
 let S = leer();
 try { S = { ...leer(), ...JSON.parse(fs.readFileSync(STAND, 'utf8')) }; } catch {}
 if (TEST && process.argv.includes('--neu')) S = leer();
@@ -58,11 +58,8 @@ const sprechName = p => p.name.replace(/^@/, '').replace(/[._]+/g, ' ').replace(
 // ---------- Ereignisse ----------
 function like(u, anzahl) {
   const p = spieler(u); if (!p) return;
-  S.likesGesamt += anzahl;                         // Muschelkasse: 1 Like = 1 Muschel
-  if (S.projekt) {
-    S.projekt.stand = Math.min(S.projekt.ziel, S.projekt.stand + anzahl);
-    if (S.projekt.stand >= S.projekt.ziel) projektFertig();
-  }
+  S.likesGesamt += anzahl;
+  inKasse(anzahl * CFG.kasse.proLike);
   gibMuscheln(p, anzahl * CFG.muschelnProLike, 'like');
 }
 
@@ -100,9 +97,35 @@ function geschenk(u, name, diamanten, anzahl) {
   gibMuscheln(p, d * CFG.muschelnProDiamant, 'geschenk');
 }
 
+// ---------- Muschelkasse der Live-Insel (getrennt von der Inselkasse der Haupt-Insel) ----------
+if (S.kasse == null) S.kasse = S.likesGesamt || 0;
+function inKasse(n) {
+  S.kasse += n; geaendert = true;
+  if (S.projekt) {
+    S.projekt.stand = Math.min(S.projekt.ziel, S.projekt.stand + n);
+    if (S.projekt.stand >= S.projekt.ziel) projektFertig();
+  }
+}
+
+// ---------- Bauprojekte der Homepage (muscheltal/daten/insel.json) ----------
+const INSEL_JSON = path.join(DIR, '..', 'muscheltal', 'daten', 'insel.json');
+const EINW_CSV = path.join(DIR, '..', 'muscheltal', 'daten', 'einwohner.csv');
+let BAUPROJEKTE = CFG.bewohner.ziele;
+function ladeHomepage() {
+  try {
+    const d = JSON.parse(fs.readFileSync(INSEL_JSON, 'utf8'));
+    if (Array.isArray(d.baustellen) && d.baustellen.length)
+      BAUPROJEKTE = d.baustellen.map(b => ({ name: b.name, icon: b.emoji || '🏗️', ziel: b.ziel, ort: 'Haupt-Insel' }));
+  } catch {}
+}
+ladeHomepage(); setInterval(ladeHomepage, 600000);
+function startBewohner() {
+  try { return fs.readFileSync(EINW_CSV, 'utf8').trim().split('\n').length - 1; } catch { return CFG.bewohner.start; }
+}
+
 // ---------- Bewohner (= Follower) ----------
-let bewohner = S.bewohner || CFG.bewohner.start;
-const zielJetzt = () => CFG.bewohner.ziele.find(z => z.ziel > bewohner) || null;
+let bewohner = Math.max(S.bewohner || 0, startBewohner());
+const zielJetzt = () => BAUPROJEKTE.filter(z => z.ziel > bewohner).sort((a, b) => a.ziel - b.ziel)[0] || null;
 function setzeBewohner(n, quelle) {
   if (!n || n < 1) return;
   const vorher = zielJetzt();
@@ -117,6 +140,7 @@ function follow(u) {
   const p = spieler(u); if (!p) return;
   sende({ typ: 'follow', id: p.id });
   setzeBewohner(bewohner + 1, 'follow');
+  inKasse(CFG.kasse.proFollow);
   const z = zielJetzt();
   sag(`${sprechName(p)} zieht ins Muschel-Tal ein!${z ? ` Noch ${z.ziel - bewohner} Bewohner bis zum ${z.name}.` : ''}`, 1);
   gibMuscheln(p, CFG.muschelnFuerFollow, 'follow');
@@ -192,7 +216,7 @@ function weiter() {
 }
 
 // ---------- Seite + Live-Daten (Server-Sent Events) ----------
-const kunden = new Set();
+const kunden = new Set(); let letzteSeitenAnsage = '';
 function sende(ev) { const s = `data: ${JSON.stringify(ev)}\n\n`; for (const k of kunden) k.write(s); }
 let zLetzt = 0, zOffen = false;
 function zustand() {
@@ -210,7 +234,7 @@ function oeffentlich() {
   return {
     spieler: S.reihenfolge.map(id => S.spieler[id]),
     stufen: CFG.stufen.map(s => s.name), stufenAb: CFG.stufen.map(s => s.ab),
-    projekt: S.projekt, fertig: S.fertig, abstimmung: abst, kasse: S.likesGesamt,
+    projekt: S.projekt, fertig: S.fertig, abstimmung: abst, kasse: S.kasse,
     bewohner, ziel: zielJetzt(), strassen: CFG.strassen,
     tiktokName: CFG.tiktokName, test: TEST,
   };
@@ -219,6 +243,11 @@ function oeffentlich() {
 const TYPEN = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.png': 'image/png', '.woff2': 'font/woff2', '.svg': 'image/svg+xml' };
 http.createServer((req, res) => {
   const url = new URL(req.url, 'http://x');
+  if (url.pathname === '/sag') {
+    const t = String(url.searchParams.get('t') || '').slice(0, 200);
+    if (t && t !== letzteSeitenAnsage) { letzteSeitenAnsage = t; sag(t, 0); setTimeout(() => letzteSeitenAnsage = '', 15000); }
+    res.writeHead(204); return res.end();
+  }
   if (url.pathname === '/events') {
     res.writeHead(200, { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-cache', Connection: 'keep-alive' });
     res.write(`data: ${JSON.stringify({ typ: 'zustand', s: oeffentlich() })}\n\n`);
@@ -281,8 +310,8 @@ function simulator() {
   const gifts = [['Rose', 1], ['Rose', 1], ['TikTok', 1], ['Finger Heart', 5], ['Donut', 30], ['Perfume', 20], ['Galaxy', 1000]];
   // Volle Insel zum Ansehen: viele Bewohner mit allen Haus-Stufen
   const silben = ['sun', 'meer', 'koko', 'palm', 'surf', 'wave', 'sand', 'perl', 'hai', 'lagu', 'mango', 'ebbe', 'flut', 'riff', 'kiki', 'lia', 'max', 'ben'];
-  for (let i = 0; i < 150; i++) namen.push(silben[i % 18] + (i % 3 ? '.' : '_') + silben[(i * 7) % 18] + (10 + i));
-  namen.slice(0, 140).forEach((nm, i) => {
+  for (let i = 0; i < 230; i++) namen.push(silben[i % 18] + (i % 3 ? '.' : '_') + silben[(i * 7) % 18] + (10 + i));
+  namen.slice(0, 195).forEach((nm, i) => {
     const p = spieler({ uniqueId: nm }); const st = CFG.stufen[(i * 7) % CFG.stufen.length];
     p.muscheln = st.ab + 5; p.stufe = stufeVon(p.muscheln);
     p.anbauten = Object.keys(CFG.anbauten).filter((k, j) => (i + j) % 4 === 0 && CFG.anbauten[k].abStufe <= p.stufe);
@@ -292,6 +321,7 @@ function simulator() {
   console.log('🧪 Test-Modus: simulierte Zuschauer.');
   setInterval(() => {
     
+    if (Math.random() < .04) { namen.push('gast.' + Math.random().toString(36).slice(2, 7)); n = namen.length; }
     const u = { uniqueId: namen[Math.floor(Math.random() * n)] };
     const r = Math.random();
     if (S.abstimmung && r < .3) kommentar(u, String(1 + Math.floor(Math.random() * 3)));

@@ -25,91 +25,171 @@ let S = { spieler: [], stufen: ['Zelt'], stufenAb: [0], projekt: null, fertig: [
 const fx = [], banner = [], pop = {};
 let untertitel = { text: '', t: 0 };
 
-// ================= Insel-Geometrie =================
-const IX = 540, IY = 1205, RX = 520, RY = 690;               // große Insel unter der Kopfzeile
+// ================= Insel-Geometrie (wächst mit) =================
+// Maß m(x,y): 1 = Grundform. Die Insel hat Größe K: alles mit m <= K ist Insel. K wächst, wenn alle Grundstücke voll sind.
+const IX = 540, IY = 1205, RX = 520, RY = 690;
 const rand = a => 1 + .035 * Math.sin(a * 3 + 1) + .03 * Math.sin(a * 5 + 2) + .018 * Math.sin(a * 11 + .5);
-function innen(x, y, s) { const dx = (x - IX) / RX, dy = (y - IY) / RY, a = Math.atan2(dy, dx); return Math.hypot(dx, dy) <= rand(a) * s; }
-const PLATZ_R = 168;                                           // Muschelplatz in der Mitte
-const PX = 250, PY = 176, STR = 30, PL = 72;                  // Raster: Straßenabstand, Straßenbreite, Grundstück
+const mass = (x, y) => { const dx = (x - IX) / RX, dy = (y - IY) / RY; return Math.hypot(dx, dy) / rand(Math.atan2(dy, dx)); };
+const innen = (x, y, s) => mass(x, y) <= s;
+const PLATZ_R = 168;
+const PX = 250, PY = 176, STR = 30;
+const GI = 9, GJ = 13;                                          // Raster reicht für sehr große Inseln
 const XS = [], YS = [];
-for (let k = -3; k <= 3; k++) XS.push(IX + k * PX);
-for (let k = -5; k <= 5; k++) YS.push(IY + k * PY);
+for (let k = -GI; k <= GI; k++) XS.push(IX + k * PX);
+for (let k = -GJ; k <= GJ; k++) YS.push(IY + k * PY);
+const RAND_GRAS = .95, RAND_PLATZ = .935;
+let K = 1;                                                      // aktuelle Inselgröße
+const START_PLAETZE = 200, K_MAX = 2.6;
 
-// Grundstücke: 3 × 2 je Block, nur ganz auf der Wiese und außerhalb des Platzes; früher = näher an der Muschel
-const PLAETZE = (() => {
+function zufall(seed) { return () => (seed = (seed * 1664525 + 1013904223) >>> 0) / 4294967296; }
+
+// Alle möglichen Grundstücke (3 × 2 je Block), sortiert nach Abstand zur Muschel.
+// Ein Grundstück gehört zur Insel, sobald K >= sein Maß – so bleiben alte Grundstücke beim Wachsen an ihrem Platz.
+const ALLE = (() => {
   const out = [];
   for (let i = 0; i < XS.length - 1; i++) for (let j = 0; j < YS.length - 1; j++) {
     const bx = XS[i] + STR / 2 + 3, by = YS[j] + STR / 2 + 3, bw = PX - STR - 6, bh = PY - STR - 6;
     for (let q = 0; q < 3; q++) for (let r = 0; r < 2; r++) {
-      const x0 = bx + q * bw / 3, y0 = by + r * bh / 2, w = bw / 3, h = bh / 2;
-      const ok = [[x0, y0], [x0 + w, y0], [x0, y0 + h], [x0 + w, y0 + h]].every(([x, y]) => innen(x, y, .935));
-      const cx = x0 + w / 2, cy = y0 + h / 2;
-      if (ok && Math.hypot(cx - IX, cy - IY) > PLATZ_R + 30) out.push({ x: cx, y: cy + h * .28, x0, y0, w, h, d: Math.hypot(cx - IX, (cy - IY) * .8) });
+      const x0 = bx + q * bw / 3, y0 = by + r * bh / 2, w = bw / 3, h = bh / 2, cx = x0 + w / 2, cy = y0 + h / 2;
+      if (Math.hypot(cx - IX, cy - IY) <= PLATZ_R + 30) continue;
+      const m = Math.max(...[[x0, y0], [x0 + w, y0], [x0, y0 + h], [x0 + w, y0 + h]].map(([x, y]) => mass(x, y))) / RAND_PLATZ;
+      out.push({ x: cx, y: cy + h * .28, cx, cy, x0, y0, w, h, m, mitte: mass(cx, cy) });
     }
   }
-  return out.sort((a, b) => a.d - b.d);
+  return out.sort((a, b) => a.m - b.m || a.y - b.y || a.x - b.x);
 })();
+const plaetzeBei = k => { let n = 0; while (n < ALLE.length && ALLE[n].m <= k) n++; return n; };
+const PLAETZE = ALLE;                                           // Index = Platz-Nr. des Bewohners
+let ANZAHL = 0;
+function kFuer(spieler) {
+  let k = .9; while (k < K_MAX && plaetzeBei(k) < Math.max(START_PLAETZE, spieler + 12)) k += .02;
+  return Math.round(k * 100) / 100;
+}
 
-// Straßen: jede Linie (nördl./südl. bzw. westl./östl. vom Platz getrennt) bekommt einen eigenen Namen
-function strassen(namen) {
+// Straßen: jede Rasterlinie bekommt feste Namen (getrennt nördl./südl. bzw. westl./östl. des Platzes)
+function strassenBei(k, namen) {
   const seg = [];
-  const teile = (fest, von, bis, senkrecht) => {
-    // Abschnitte auf der Wiese finden und am Platz trennen
+  const linien = [];
+  XS.forEach((x, i) => linien.push({ senkrecht: true, fest: x, idx: i - GI }));
+  YS.forEach((y, j) => linien.push({ senkrecht: false, fest: y, idx: j - GJ }));
+  linien.sort((a, b) => Math.abs(a.idx) - Math.abs(b.idx) || (a.senkrecht ? -1 : 1) || a.idx - b.idx);
+  let nr = 0;
+  linien.forEach(L => {
+    const lang = L.senkrecht ? RY : RX, von = (L.senkrecht ? IY : IX) - lang * K_MAX * 1.1, bis = -von + 2 * (L.senkrecht ? IY : IX);
+    const teile = L.idx === 0 ? 2 : 1, name = [namen[nr % namen.length], namen[(nr + 1) % namen.length]]; nr += teile;
     let start = null; const step = 6;
     for (let v = von; v <= bis + step; v += step) {
-      const x = senkrecht ? fest : v, y = senkrecht ? v : fest;
-      const auf = v <= bis && innen(x, y, .93) && Math.hypot(x - IX, y - IY) > PLATZ_R + 4;
+      const x = L.senkrecht ? L.fest : v, y = L.senkrecht ? v : L.fest;
+      const auf = v <= bis && innen(x, y, k * RAND_GRAS) && Math.hypot(x - IX, y - IY) > PLATZ_R + 4;
       if (auf && start === null) start = v;
-      if (!auf && start !== null) { if (v - start > 120) seg.push({ senkrecht, fest, von: start, bis: v - step }); start = null; }
+      if (!auf && start !== null) {
+        if (v - start > 100) seg.push({ ...L, von: start, bis: v - step, name: teile === 2 && v > (L.senkrecht ? IY : IX) ? name[1] : name[0] });
+        start = null;
+      }
     }
-  };
-  XS.forEach(x => teile(x, IY - RY, IY + RY, true));
-  YS.forEach(y => teile(y, IX - RX, IX + RX, false));
-  seg.forEach((s, i) => s.name = namen[i % namen.length] || '');
+  });
   return seg;
 }
 
-// ================= Statische Insel vorzeichnen (scharf auch beim Heranzoomen) =================
-const Q = 2.4, OX = -40, OY = 470, OW = 1160, OH = 1470;
-let BASIS = null, BASIS_NAMEN = '';
-function basisZeichnen() {
-  const cv = document.createElement('canvas'); cv.width = OW * Q; cv.height = OH * Q;
-  const b = cv.getContext('2d'); b.setTransform(Q, 0, 0, Q, -OX * Q, -OY * Q);
-  const form = s => { b.beginPath(); for (let i = 0; i <= 180; i++) { const a = i / 180 * 6.2832, k = rand(a) * s; const x = IX + Math.cos(a) * RX * k, y = IY + Math.sin(a) * RY * k; i ? b.lineTo(x, y) : b.moveTo(x, y); } b.closePath(); };
-  b.fillStyle = 'rgba(127,224,200,.55)'; form(1.1); b.fill();
-  b.fillStyle = 'rgba(255,255,255,.35)'; b.lineWidth = 3; b.strokeStyle = 'rgba(255,255,255,.5)'; form(1.06); b.stroke();
-  b.fillStyle = '#f3dfa6'; form(1.035); b.fill();
-  b.fillStyle = '#e9cf8c'; for (let i = 0; i < 900; i++) { const a = Math.random() * 6.283, r = 1 + Math.random() * .03; b.fillRect(IX + Math.cos(a) * RX * rand(a) * r, IY + Math.sin(a) * RY * rand(a) * r, 1.5, 1.5); }
-  b.fillStyle = '#7cc85a'; form(.95); b.fill();
-  b.save(); form(.95); b.clip();
-  for (let i = 0; i < 2600; i++) { b.fillStyle = Math.random() < .5 ? 'rgba(255,255,255,.07)' : 'rgba(40,110,30,.08)'; b.beginPath(); b.arc(IX - RX + Math.random() * RX * 2, IY - RY + Math.random() * RY * 2, 2 + Math.random() * 5, 0, 7); b.fill(); }
-  // Grundstücke: leicht hellere Rasenflächen mit Kante
-  PLAETZE.forEach(p => { b.fillStyle = 'rgba(255,255,255,.07)'; b.beginPath(); b.roundRect(p.x0 + 3, p.y0 + 3, p.w - 6, p.h - 6, 6); b.fill(); b.strokeStyle = 'rgba(60,120,40,.25)'; b.lineWidth = 1.2; b.stroke(); });
-  // Straßen (Sandwege wie auf muscheltal.de) mit Bordstein
-  const SEG = strassen(S.strassen);
+// ================= Statische Insel vorzeichnen =================
+let BASIS = null, BASIS_K = 0, BASIS_BOX = null, SEG = [], ALT = null;
+function box(k) { const s = k * 1.32; return { x: IX - RX * s, y: IY - RY * s, w: RX * s * 2, h: RY * s * 2 + 220 }; }
+function basisZeichnen(k) {
+  const B = box(k), Q = Math.min(2.2, 4600 / Math.max(B.w, B.h));
+  const cv = document.createElement('canvas'); cv.width = B.w * Q; cv.height = B.h * Q;
+  const b = cv.getContext('2d'); b.setTransform(Q, 0, 0, Q, -B.x * Q, -B.y * Q);
+  const R = zufall(7);
+  const form = s => { b.beginPath(); for (let i = 0; i <= 240; i++) { const a = i / 240 * 6.2832, r = rand(a) * s; const x = IX + Math.cos(a) * RX * r, y = IY + Math.sin(a) * RY * r; i ? b.lineTo(x, y) : b.moveTo(x, y); } b.closePath(); };
+  const amRand = (a, s) => { const r = rand(a) * s; return [IX + Math.cos(a) * RX * r, IY + Math.sin(a) * RY * r]; };
+  // Wasser am Ufer, Strand, Wiese
+  b.fillStyle = 'rgba(127,224,200,.5)'; form(k * 1.1); b.fill();
+  b.strokeStyle = 'rgba(255,255,255,.55)'; b.lineWidth = 3; form(k * 1.06); b.stroke();
+  b.fillStyle = '#f3dfa6'; form(k * 1.035); b.fill();
+  b.fillStyle = '#e6c985'; for (let i = 0; i < 2500 * k; i++) { const a = R() * 6.283, [x, y] = amRand(a, k * (RAND_GRAS + R() * .085)); b.fillRect(x, y, 1.6, 1.6); }
+  b.fillStyle = '#7cc85a'; form(k * RAND_GRAS); b.fill();
+  b.save(); form(k * RAND_GRAS); b.clip();
+  for (let i = 0; i < 5000 * k * k; i++) { b.fillStyle = R() < .5 ? 'rgba(255,255,255,.07)' : 'rgba(40,110,30,.09)'; b.beginPath(); b.arc(IX + (R() * 2 - 1) * RX * k, IY + (R() * 2 - 1) * RY * k, 2 + R() * 5, 0, 7); b.fill(); }
+  // Grundstücke (Rasen mit Kante)
+  const n = plaetzeBei(k);
+  for (let i = 0; i < n; i++) { const p = ALLE[i]; b.fillStyle = 'rgba(255,255,255,.07)'; b.beginPath(); b.roundRect(p.x0 + 3, p.y0 + 3, p.w - 6, p.h - 6, 6); b.fill(); b.strokeStyle = 'rgba(60,120,40,.28)'; b.lineWidth = 1.2; b.stroke(); }
+  // Parks auf den Restflächen am Rand
+  for (let i = n; i < ALLE.length; i++) { const p = ALLE[i]; if (p.mitte <= k * .9) park(b, p, i); }
+  // Straßen mit Bordstein und Sandkörnern
+  SEG = strassenBei(k, S.strassen.length ? S.strassen : ['Sonnenallee']);
   const weg = (w, col) => { b.strokeStyle = col; b.lineWidth = w; b.lineCap = 'round'; SEG.forEach(s => { b.beginPath(); if (s.senkrecht) { b.moveTo(s.fest, s.von); b.lineTo(s.fest, s.bis); } else { b.moveTo(s.von, s.fest); b.lineTo(s.bis, s.fest); } b.stroke(); }); };
-  weg(STR + 5, '#d9b46a'); weg(STR, '#f0dca0');
-  b.fillStyle = 'rgba(160,120,60,.18)'; SEG.forEach(s => { for (let v = s.von; v < s.bis; v += 9) { const o = (Math.random() - .5) * STR * .7; s.senkrecht ? b.fillRect(s.fest + o, v, 1.6, 1.6) : b.fillRect(v, s.fest + o, 1.6, 1.6); } });
-  // Straßennamen auf dem Weg + Straßenschild am Anfang
+  weg(STR + 6, '#d9b46a'); weg(STR, '#f0dca0');
+  SEG.forEach(s => { for (let v = s.von; v < s.bis; v += 4) { const o = (R() - .5) * STR * .8; b.fillStyle = R() < .15 ? 'rgba(255,255,255,.8)' : 'rgba(160,120,60,.22)'; s.senkrecht ? b.fillRect(s.fest + o, v, 1.5, 1.5) : b.fillRect(v, s.fest + o, 1.5, 1.5); } });
+  // Laternen + Blumen an den Kreuzungen
+  XS.forEach(x => YS.forEach(y => {
+    if (!innen(x, y, k * .9) || Math.hypot(x - IX, y - IY) < PLATZ_R + 30) return;
+    blumenTopf(b, x - STR / 2 - 6, y - STR / 2 - 6); laterne(b, x + STR / 2 + 5, y - STR / 2 - 3);
+  }));
+  // Straßenschilder (feste Stellen je Block, damit sie beim Wachsen nicht springen)
   b.textAlign = 'center'; b.textBaseline = 'middle';
   SEG.forEach(s => {
-    const len = s.bis - s.von, n = len > 520 ? 2 : 1;
-    for (let k = 0; k < n; k++) {
-      const v = s.von + len * (k + 1) / (n + 1);
+    const raster = s.senkrecht ? YS : XS, d = s.senkrecht ? PY : PX;
+    raster.forEach((r0, idx) => {
+      if (s.senkrecht ? (idx % 3 !== 1) : (idx % 2 !== 0)) return;
+      const v = r0 + d / 2; if (v < s.von + 50 || v > s.bis - 50) return;
       b.save(); s.senkrecht ? (b.translate(s.fest, v), b.rotate(-Math.PI / 2)) : b.translate(v, s.fest);
       b.font = `900 15px ${FONT}`; const tw = b.measureText(s.name).width + 22;
-      b.fillStyle = '#2f6fb3'; b.beginPath(); b.roundRect(-tw / 2, -11, tw, 22, 5); b.fill();         // blaues Straßenschild
+      b.fillStyle = '#2f6fb3'; b.beginPath(); b.roundRect(-tw / 2, -11, tw, 22, 5); b.fill();
       b.strokeStyle = '#fff'; b.lineWidth = 1.6; b.beginPath(); b.roundRect(-tw / 2 + 2.5, -8.5, tw - 5, 17, 3.5); b.stroke();
-      b.fillStyle = '#fff'; b.fillText(s.name, 0, .5);
-      b.restore();
-    }
+      b.fillStyle = '#fff'; b.fillText(s.name, 0, .5); b.restore();
+    });
   });
   b.restore();
-  // Palmen und Strandkörbe am Ufer
-  for (let i = 0; i < 26; i++) { const a = i / 26 * 6.283 + .1, k = rand(a) * .995; palme(b, IX + Math.cos(a) * RX * k, IY + Math.sin(a) * RY * k, .75, i * 300); }
-  for (let i = 0; i < 9; i++) { const a = i / 9 * 6.283 + .45, k = rand(a) * 1.015; schirm(b, IX + Math.cos(a) * RX * k, IY + Math.sin(a) * RY * k, ['#e8433c', '#3fa0e8', '#ffb02e', '#ff6fa3'][i % 4]); }
-  BASIS = cv; BASIS_NAMEN = S.strassen.join();
+  // Strand: Palmen, Schirme, Handtücher, Liegen, Sandburgen, Seesterne, Muscheln, Volleyball, Rettungsturm
+  const umfang = Math.round(34 * k);
+  for (let i = 0; i < umfang; i++) {
+    const a = i / umfang * 6.283 + .07, [x, y] = amRand(a, k * .985);
+    if (Math.abs(a - Math.PI / 2) > .12) palme(b, x, y, .72, i * 300);
+  }
+  for (let i = 0; i < 20 * k; i++) {
+    const a = R() * 6.283; if (Math.abs(a - Math.PI / 2) < .12) continue;
+    const [x, y] = amRand(a, k * (1.005 + R() * .02)), w = R();
+    if (w < .25) schirm(b, x, y, ['#e8433c', '#3fa0e8', '#ffb02e', '#ff6fa3'][i % 4]);
+    else if (w < .45) handtuch(b, x, y, a, ['#ff6fa3', '#3fa0e8', '#ffd23f', '#2fb3a0'][i % 4]);
+    else if (w < .6) liege(b, x, y);
+    else if (w < .72) sandburg(b, x, y);
+    else if (w < .86) seestern(b, x, y, R() * 6);
+    else muschelChen(b, x, y);
+  }
+  { const [x, y] = amRand(-.35, k * 1.01); volleyball(b, x, y); }
+  { const [x, y] = amRand(2.6, k * 1.008); rettungsturm(b, x, y); }
+  // Steinchen im Flachwasser
+  for (let i = 0; i < 12 * k; i++) { const a = R() * 6.283, [x, y] = amRand(a, k * (1.06 + R() * .03)); b.fillStyle = '#9aa6a0'; b.beginPath(); b.ellipse(x, y, 6 + R() * 6, 4 + R() * 3, 0, 0, 7); b.fill(); b.fillStyle = 'rgba(255,255,255,.3)'; b.beginPath(); b.ellipse(x - 2, y - 2, 3, 1.5, 0, 0, 7); b.fill(); }
+  // Steg im Süden mit Booten
+  const [sx, sy] = amRand(Math.PI / 2, k * .99);
+  b.fillStyle = 'rgba(0,0,0,.15)'; b.fillRect(sx - 15, sy + 6, 36, 200);
+  b.fillStyle = '#b07a45'; b.fillRect(sx - 18, sy, 36, 200); b.strokeStyle = '#8a5a2b'; b.lineWidth = 1.2; for (let v = sy; v < sy + 200; v += 7) { b.beginPath(); b.moveTo(sx - 18, v); b.lineTo(sx + 18, v); b.stroke(); }
+  b.fillStyle = '#6b4423'; for (let v = sy + 20; v < sy + 200; v += 40) { b.beginPath(); b.arc(sx - 18, v, 3.5, 0, 7); b.arc(sx + 18, v, 3.5, 0, 7); b.fill(); }
+  boot(b, sx + 42, sy + 110, '#e8433c'); boot(b, sx - 42, sy + 160, '#3fa0e8');
+  BASIS = cv; BASIS_K = k; BASIS_BOX = B;
 }
+function park(b, p, i) {
+  const x = p.cx, y = p.cy, R = zufall(i * 31 + 5), art = i % 6;
+  b.fillStyle = 'rgba(90,170,70,.5)'; b.beginPath(); b.roundRect(p.x0 + 4, p.y0 + 4, p.w - 8, p.h - 8, 10); b.fill();
+  if (art === 0) { baum(b, x - 14, y + 4, 1); baum(b, x + 12, y - 6, .8); baum(b, x + 4, y + 16, .7); }
+  else if (art === 1) { bank(b, x - 10, y + 8); laterne(b, x + 18, y + 8); busch(b, x + 2, y - 14); }
+  else if (art === 2) { b.fillStyle = '#6b4423'; b.beginPath(); b.ellipse(x, y, 24, 14, 0, 0, 7); b.fill(); for (let k = 0; k < 18; k++) { b.fillStyle = ['#ff6fa3', '#ffd23f', '#fff', '#e8433c', '#b58ad0'][k % 5]; b.beginPath(); b.arc(x + Math.cos(k * 2.4) * (k % 3 * 7 + 4), y + Math.sin(k * 2.4) * (k % 3 * 4 + 2), 2.6, 0, 7); b.fill(); } }
+  else if (art === 3) { b.fillStyle = '#f3dfa6'; b.beginPath(); b.roundRect(x - 20, y - 12, 40, 26, 4); b.fill(); b.strokeStyle = '#b07a45'; b.lineWidth = 3; b.stroke(); b.fillStyle = '#e8433c'; b.fillRect(x - 8, y - 2, 7, 7); b.fillStyle = '#3fa0e8'; b.beginPath(); b.arc(x + 8, y + 4, 4, 0, 7); b.fill(); }
+  else if (art === 4) { b.fillStyle = '#5fc7e8'; b.beginPath(); b.ellipse(x, y, 26, 15, 0, 0, 7); b.fill(); b.strokeStyle = '#d9c7a0'; b.lineWidth = 3; b.stroke(); b.fillStyle = '#57b85a'; b.beginPath(); b.arc(x - 8, y, 4, 0, 7); b.arc(x + 9, y + 4, 3, 0, 7); b.fill(); b.fillStyle = '#ff8fb8'; b.beginPath(); b.arc(x - 8, y - 1, 1.6, 0, 7); b.fill(); }
+  else { palme(b, x - 16, y + 10, .45, i); palme(b, x + 16, y + 10, .45, i + 9); b.strokeStyle = '#ffb02e'; b.lineWidth = 3; b.beginPath(); b.moveTo(x - 14, y - 12); b.quadraticCurveTo(x, y - 2, x + 14, y - 12); b.stroke(); }
+}
+function baum(c, x, y, s) { c.fillStyle = 'rgba(0,0,0,.15)'; c.beginPath(); c.ellipse(x + 4, y + 3, 14 * s, 6 * s, 0, 0, 7); c.fill(); c.fillStyle = '#8a5a2b'; c.fillRect(x - 2 * s, y - 8 * s, 4 * s, 10 * s); c.fillStyle = '#3f9b45'; c.beginPath(); c.arc(x, y - 14 * s, 12 * s, 0, 7); c.fill(); c.fillStyle = '#57b85a'; c.beginPath(); c.arc(x - 3 * s, y - 17 * s, 7 * s, 0, 7); c.fill(); }
+function busch(c, x, y) { c.fillStyle = '#3f9b45'; c.beginPath(); c.arc(x - 6, y, 7, 0, 7); c.arc(x + 6, y, 7, 0, 7); c.arc(x, y - 5, 8, 0, 7); c.fill(); c.fillStyle = '#ff6fa3'; c.beginPath(); c.arc(x - 4, y - 4, 1.8, 0, 7); c.arc(x + 5, y - 1, 1.8, 0, 7); c.fill(); }
+function bank(c, x, y) { c.fillStyle = '#8a5a2b'; c.fillRect(x - 12, y - 8, 24, 3); c.fillRect(x - 12, y - 3, 24, 4); c.fillStyle = INK; c.fillRect(x - 10, y + 1, 2, 4); c.fillRect(x + 8, y + 1, 2, 4); }
+function laterne(c, x, y) { c.fillStyle = INK; c.fillRect(x - 1, y - 22, 2.5, 24); c.fillStyle = '#ffe9a8'; c.beginPath(); c.arc(x, y - 23, 4, 0, 7); c.fill(); c.strokeStyle = INK; c.lineWidth = 1; c.stroke(); }
+function blumenTopf(c, x, y) { c.fillStyle = '#c96a3a'; c.beginPath(); c.roundRect(x - 5, y - 2, 10, 7, 2); c.fill(); c.fillStyle = '#3f9b45'; c.beginPath(); c.arc(x, y - 4, 5, 0, 7); c.fill(); c.fillStyle = '#ff6fa3'; c.beginPath(); c.arc(x - 2, y - 5, 1.6, 0, 7); c.arc(x + 2, y - 3, 1.6, 0, 7); c.fill(); }
+function handtuch(c, x, y, a, col) { c.save(); c.translate(x, y); c.rotate(a + Math.PI / 2); c.fillStyle = col; c.fillRect(-7, -12, 14, 24); c.fillStyle = 'rgba(255,255,255,.7)'; c.fillRect(-7, -6, 14, 3); c.fillRect(-7, 3, 14, 3); c.restore(); }
+function liege(c, x, y) { c.fillStyle = '#fff'; c.fillRect(x - 6, y - 12, 12, 22); c.fillStyle = '#3fa0e8'; for (let v = -10; v < 10; v += 5) c.fillRect(x - 5, y + v, 10, 2.5); }
+function sandburg(c, x, y) { c.fillStyle = '#e0c27a'; c.fillRect(x - 10, y - 8, 20, 10); c.fillRect(x - 12, y - 14, 6, 8); c.fillRect(x + 6, y - 14, 6, 8); c.fillRect(x - 3, y - 18, 6, 10); c.fillStyle = '#e8433c'; c.beginPath(); c.moveTo(x, y - 18); c.lineTo(x, y - 26); c.lineTo(x + 6, y - 23); c.fill(); c.fillStyle = '#3fa0e8'; c.fillRect(x + 12, y - 4, 6, 6); }
+function seestern(c, x, y, r) { c.save(); c.translate(x, y); c.rotate(r); c.fillStyle = '#ff8a4c'; c.beginPath(); for (let i = 0; i < 10; i++) { const rr = i % 2 ? 2.5 : 7, a = i / 10 * 6.283; c.lineTo(Math.cos(a) * rr, Math.sin(a) * rr); } c.fill(); c.restore(); }
+function muschelChen(c, x, y) { c.fillStyle = '#ffd3e2'; c.beginPath(); c.arc(x, y, 5, Math.PI, 0); c.lineTo(x, y + 3); c.fill(); c.strokeStyle = '#e8467c'; c.lineWidth = .8; c.stroke(); }
+function volleyball(c, x, y) { c.strokeStyle = '#fff'; c.lineWidth = 1.5; c.beginPath(); c.moveTo(x - 30, y); c.lineTo(x + 30, y); c.stroke(); c.fillStyle = INK; c.fillRect(x - 31, y - 14, 2.5, 16); c.fillRect(x + 29, y - 14, 2.5, 16); c.strokeStyle = 'rgba(255,255,255,.9)'; c.beginPath(); c.moveTo(x - 30, y - 12); c.lineTo(x + 30, y - 12); c.stroke(); c.fillStyle = '#ffd23f'; c.beginPath(); c.arc(x + 12, y - 26, 4, 0, 7); c.fill(); }
+function rettungsturm(c, x, y) { c.strokeStyle = '#fff'; c.lineWidth = 2.5; c.beginPath(); c.moveTo(x - 10, y); c.lineTo(x - 6, y - 24); c.moveTo(x + 10, y); c.lineTo(x + 6, y - 24); c.stroke(); c.fillStyle = '#e8433c'; c.fillRect(x - 10, y - 36, 20, 13); c.fillStyle = '#fff'; c.fillRect(x - 2, y - 34, 4, 9); c.fillRect(x - 6, y - 31, 12, 3); c.fillStyle = '#e8433c'; c.beginPath(); c.moveTo(x - 13, y - 36); c.lineTo(x, y - 44); c.lineTo(x + 13, y - 36); c.fill(); }
+function boot(c, x, y, col) { c.fillStyle = 'rgba(0,0,0,.15)'; c.beginPath(); c.ellipse(x + 3, y + 4, 12, 26, 0, 0, 7); c.fill(); c.fillStyle = col; c.beginPath(); c.ellipse(x, y, 11, 25, 0, 0, 7); c.fill(); c.fillStyle = '#fff'; c.beginPath(); c.ellipse(x, y, 7, 19, 0, 0, 7); c.fill(); c.fillStyle = '#b07a45'; c.fillRect(x - 7, y - 3, 14, 3); }
 function schirm(c, x, y, col) {
   c.fillStyle = '#fff'; c.beginPath(); c.roundRect(x - 12, y + 2, 24, 9, 3); c.fill();
   c.fillStyle = 'rgba(0,0,0,.12)'; c.beginPath(); c.ellipse(x + 6, y + 8, 16, 6, 0, 0, 7); c.fill();
@@ -135,48 +215,182 @@ function verbinde() {
   es.onerror = () => { es.close(); setTimeout(verbinde, 2000); };
 }
 const sp = id => S.spieler.find(p => p.id === id);
-const platzVon = p => PLAETZE[p.platz];
+const platzVon = p => p.platz < ANZAHL ? PLAETZE[p.platz] : null;
+const bau = {};                                                  // laufende Bau-Animationen: id -> {t, alt, neu, D}
+let WACHS = null, STRASSEN_ALT = '';
 function ereignis(e) {
-  const p = e.id && sp(e.id), pl = p && platzVon(p);
+  const p = e.id && sp(e.id), pl = p && platzVon(p), jetzt = performance.now();
   switch (e.typ) {
-    case 'zustand': S = e.s; if (!BASIS || BASIS_NAMEN !== S.strassen.join()) basisZeichnen(); break;
-    case 'neu': setTimeout(() => { const q = sp(e.id); if (q && platzVon(q)) { pop[e.id] = performance.now(); funken(platzVon(q), '✨', 8); } }, 300); break;
-    case 'stufe': if (pl) { pop[e.id] = performance.now(); funken(pl, '⭐', 18); fokus(pl, 4200); } break;
-    case 'anbau': case 'farbe': if (pl) { pop[e.id] = performance.now(); funken(pl, '🔨', 5); fokus(pl, 2600, true); } break;
+    case 'zustand': {
+      S = e.s;
+      const n = S.spieler.length;
+      if (!BASIS || STRASSEN_ALT !== S.strassen.join()) { K = Math.max(K, kFuer(n)); STRASSEN_ALT = S.strassen.join(); basisZeichnen(K); ANZAHL = plaetzeBei(K); spaziergaenger(); }
+      else if (n > ANZAHL && K < K_MAX && !WACHS) wachsen(kFuer(n + 60));     // erst wachsen, wenn alles voll ist – dann gleich ein großes Stück
+      break;
+    }
+    case 'neu': bau[e.id] = { t: jetzt + 250, alt: -1, neu: 0, D: 1.9 }; break;
+    case 'stufe': if (p) { bau[e.id] = { t: jetzt, alt: p.stufe, neu: e.stufe, D: 3.8 }; if (pl) fokus(pl, 5200); } break;
+    case 'anbau': case 'farbe': if (pl) { pop[e.id] = jetzt; funken(pl, '🔨', 5); fokus(pl, 2600, true); } break;
     case 'geschenk':
       banner.push({ t: 0, oben: `🎁 ${p ? p.name : ''}`, unten: (e.anzahl > 1 ? e.anzahl + '× ' : '') + e.name, farbe: PINK });
       if (pl) { funken(pl, '💖', 12 + Math.min(30, e.diamanten)); fokus(pl, 4000); }
       if (e.diamanten >= 100) feuerwerk();
       break;
-    case 'follow': banner.push({ t: 0, oben: `🏠 ${p ? p.name : ''}`, unten: 'ist jetzt Bewohner – danke fürs Folgen!', farbe: TUERKIS }); break;
-    case 'ziel': banner.push({ t: 0, oben: '🎉 Bewohner-Ziel erreicht!', unten: e.name + ' wird gebaut', farbe: '#9b5de5' }); feuerwerk(); break;
+    case 'follow': banner.push({ t: 0, oben: `🏠 ${p ? p.name : ''}`, unten: 'ist jetzt Bewohner · +5 🐚 in die Muschelkasse', farbe: TUERKIS }); break;
+    case 'ziel': banner.push({ t: 0, oben: '🎉 Bewohner-Ziel erreicht!', unten: e.name + ' wird auf der Haupt-Insel gebaut', farbe: '#9b5de5' }); feuerwerk(); break;
     case 'projekt': case 'fertig': funken({ x: IX, y: IY }, e.typ === 'fertig' ? '🎉' : '🚧', 30); if (e.typ === 'fertig') feuerwerk(); break;
-    case 'ansage': untertitel = { text: e.text, t: performance.now() }; break;
+    case 'ansage': untertitel = { text: e.text, t: jetzt }; break;
   }
+}
+function wachsen(kz) {
+  ALT = { cv: BASIS, box: BASIS_BOX };
+  const vorher = ANZAHL, kAlt = K; K = kz;
+  basisZeichnen(K); ANZAHL = plaetzeBei(K); spaziergaenger();
+  WACHS = { t: performance.now(), von: kAlt, bis: kz };
+  const neu = ANZAHL - vorher;
+  banner.push({ t: 0, oben: '🏝️ Die Insel wächst!', unten: `+${neu} neue Grundstücke · jetzt ${ANZAHL}`, farbe: '#ff8a2a' });
+  fetch('/sag?t=' + encodeURIComponent(`Die Insel wächst! ${neu} neue Grundstücke sind dazugekommen.`)).catch(() => {});
 }
 function funken(pl, z, n) { for (let i = 0; i < n; i++) fx.push({ x: pl.x, y: pl.y - 30, vx: (Math.random() - .5) * 5, vy: -2 - Math.random() * 5, t: performance.now(), z, s: 18 + Math.random() * 14 }); }
 function feuerwerk() {
   for (let k = 0; k < 6; k++) setTimeout(() => {
-    const x = IX - 380 + Math.random() * 760, y = 700 + Math.random() * 600, col = ['#ffd23f', '#ff6fa3', '#7fe0c8', '#fff', '#ff8a2a', '#b58ad0'][k];
-    for (let i = 0; i < 44; i++) { const a = i / 44 * 6.283, v = 3 + Math.random() * 3; fx.push({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v, t: performance.now(), punkt: col, s: 5 }); }
+    const x = IX + (Math.random() - .5) * RX * K * 1.4, y = IY + (Math.random() - .5) * RY * K, col = ['#ffd23f', '#ff6fa3', '#7fe0c8', '#fff', '#ff8a2a', '#b58ad0'][k];
+    for (let i = 0; i < 44; i++) { const a = i / 44 * 6.283, v = (3 + Math.random() * 3) * K; fx.push({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v, t: performance.now(), punkt: col, s: 5 * K }); }
   }, k * 240);
 }
 
-// ================= Kamera =================
+// ================= Kamera: Übersicht, kleine Rundfahrten, Zoom bei Ausbauten =================
+const MITTE_Y = 1215;
+const zUebersicht = () => Math.min(1040 / (2 * RX * K * 1.07), 1360 / (2 * RY * K * 1.07));
 const cam = { x: IX, y: IY, z: 1 }, ZIEL = { x: IX, y: IY, z: 1 };
-let fokusBis = 0, fokusLetzt = 0;
-const MITTE_Y = 1205;                                     // Bildschirm-Punkt, auf den die Kamera zielt
+let fokusBis = 0, fokusLetzt = 0, tourBis = 0, tourModus = 0;
 function fokus(pl, ms, leise) {
   const t = performance.now();
-  if (leise && t < fokusBis) return;                      // kleine Ereignisse unterbrechen keinen laufenden Zoom
+  if (leise && t < fokusBis) return;
   if (t - fokusLetzt < 1800 && t < fokusBis) return;
   fokusLetzt = t; fokusBis = t + ms;
-  Object.assign(ZIEL, { x: pl.x, y: pl.y - 30, z: 2.6 });
+  Object.assign(ZIEL, { x: pl.x, y: pl.y - 30, z: 2.5 });
 }
 function kamera(t) {
-  if (t > fokusBis) Object.assign(ZIEL, { x: IX, y: IY, z: 1 });
-  const k = .055; cam.x += (ZIEL.x - cam.x) * k; cam.y += (ZIEL.y - cam.y) * k; cam.z += (ZIEL.z - cam.z) * k;
+  if (t > fokusBis) {
+    if (t > tourBis) {                                           // abwechselnd: Übersicht (9 s) und Rundfahrt (8 s)
+      tourModus = (tourModus + 1) % 2; tourBis = t + (tourModus ? 8000 : 9000);
+      const bewohnt = S.spieler.map(platzVon).filter(Boolean);
+      if (tourModus && bewohnt.length > 4 && zUebersicht() < .9) { const pl = bewohnt[Math.floor(Math.random() * bewohnt.length)]; Object.assign(ZIEL, { x: pl.x, y: pl.y, z: 1.55 }); }
+      else { tourModus = 0; Object.assign(ZIEL, { x: IX, y: IY, z: zUebersicht() }); }
+    }
+    if (!tourModus) Object.assign(ZIEL, { x: IX, y: IY, z: zUebersicht() });
+  }
+  const k = t < fokusBis ? .06 : .025;
+  cam.x += (ZIEL.x - cam.x) * k; cam.y += (ZIEL.y - cam.y) * k; cam.z += (ZIEL.z - cam.z) * k;
   X.setTransform(cam.z, 0, 0, cam.z, 540 - cam.x * cam.z, MITTE_Y - cam.y * cam.z);
+}
+function sichtbar(x, y, r = 120) {                               // nur zeichnen, was im Bild ist
+  const sx = 540 + (x - cam.x) * cam.z, sy = MITTE_Y + (y - cam.y) * cam.z, rr = r * cam.z;
+  return sx > -rr && sx < W + rr && sy > 400 - rr && sy < H + rr;
+}
+
+// ================= Leben auf der Insel: Spaziergänger, Jogger, Boote, Möwen =================
+let LEUTE = [], JOGGER = [];
+const HAUT = ['#f6d1b0', '#e8b48a', '#c98b5e', '#8d5a3b', '#f2c9a0'], HAAR = ['#2a1b12', '#6b3f1d', '#e0b43a', '#c0502a', '#333'], SHIRT = ['#e8433c', '#3fa0e8', '#ffd23f', '#ff6fa3', '#2fb3a0', '#b58ad0', '#fff', '#ff8a2a'];
+function spaziergaenger() {
+  const R = zufall(99), n = Math.min(70, 16 + Math.round(ANZAHL / 9));
+  LEUTE = Array.from({ length: n }, (_, i) => ({ seg: SEG[Math.floor(R() * SEG.length)], v: R(), dir: R() < .5 ? -1 : 1, tempo: .018 + R() * .02, spur: (R() - .5) * 14, haut: HAUT[i % 5], haar: HAAR[(i * 3) % 5], shirt: SHIRT[i % 8], hose: ['#3a5a8a', '#2a1b12', '#e8e0d0'][i % 3], pause: 0 }));
+  JOGGER = Array.from({ length: Math.round(4 * K) }, (_, i) => ({ a: R() * 6.283, tempo: (.00009 + R() * .00005) * (R() < .5 ? -1 : 1), shirt: ['#39ff8f', '#ff3fa4', '#ffe83f', '#3ff0ff'][i % 4], haut: HAUT[(i * 2) % 5] }));
+}
+function figur(x, y, f, t, laufen, jogger) {
+  const s = Math.sin(t * (jogger ? .025 : .012)) * (laufen ? 3 : 0);
+  X.fillStyle = 'rgba(0,0,0,.18)'; X.beginPath(); X.ellipse(x + 2, y + 1, 5, 2, 0, 0, 7); X.fill();
+  X.strokeStyle = jogger ? '#222' : f.hose; X.lineWidth = 2.6; X.lineCap = 'round';
+  X.beginPath(); X.moveTo(x - 1.5, y - 7); X.lineTo(x - 1.5 + s * .6, y); X.moveTo(x + 1.5, y - 7); X.lineTo(x + 1.5 - s * .6, y); X.stroke();
+  if (jogger) { X.fillStyle = '#fff'; X.fillRect(x - 3 + s * .6, y - 1, 3, 2); X.fillRect(x + s * -.6, y - 1, 3, 2); }
+  X.fillStyle = f.shirt; X.beginPath(); X.roundRect(x - 4, y - 15, 8, 9, 3); X.fill();
+  X.fillStyle = f.haut; X.beginPath(); X.arc(x, y - 18.5, 3.6, 0, 7); X.fill();
+  X.fillStyle = jogger ? f.shirt : f.haar; X.beginPath(); X.arc(x, y - 19.5, 3.7, Math.PI, 0); X.fill();
+}
+function lebenZeichnen(t, dt) {
+  // Spaziergänger auf den Straßen
+  LEUTE.forEach(p => {
+    const s = p.seg; if (!s) return;
+    if (p.pause > 0) p.pause -= dt; else {
+      p.v += p.dir * p.tempo * dt / (s.bis - s.von) * 60;
+      if (p.v < 0 || p.v > 1) { p.dir *= -1; p.v = Math.max(0, Math.min(1, p.v)); if (Math.random() < .5) { const n = SEG[Math.floor(Math.random() * SEG.length)]; p.seg = n; p.v = Math.random(); } }
+      if (Math.random() < .0015) p.pause = 1500 + Math.random() * 2500;
+    }
+    const v = s.von + (s.bis - s.von) * p.v, x = s.senkrecht ? s.fest + p.spur : v, y = s.senkrecht ? v : s.fest + p.spur;
+    if (sichtbar(x, y, 30)) figur(x, y, p, t, p.pause <= 0, false);
+  });
+  // Jogger am Strand
+  JOGGER.forEach(j => { j.a += j.tempo * dt; const r = rand(j.a) * K * 1.012, x = IX + Math.cos(j.a) * RX * r, y = IY + Math.sin(j.a) * RY * r; if (sichtbar(x, y, 30)) figur(x, y, j, t, true, true); });
+}
+function meerLeben(t) {
+  X.strokeStyle = 'rgba(255,255,255,.22)'; X.lineWidth = 3 / Math.max(.6, cam.z); X.lineCap = 'round';
+  const R = zufall(3), sp = RX * K * 1.6;
+  for (let i = 0; i < 140; i++) {
+    const x = IX - sp + ((R() * sp * 2 + t * .01 * (1 + i % 3)) % (sp * 2)), y = IY - RY * K * 1.4 + R() * RY * K * 2.8;
+    if (innen(x, y, K * 1.1) || !sichtbar(x, y, 20)) continue;
+    X.beginPath(); X.moveTo(x, y); X.quadraticCurveTo(x + 12, y - 7, x + 24, y); X.stroke();
+  }
+  for (let i = 0; i < 5; i++) {                                  // Segelboote rund um die Insel
+    const a = i * 1.26 + t * .000025 * (i % 2 ? 1 : -1), r = rand(a) * K * (1.22 + (i % 3) * .06), x = IX + Math.cos(a) * RX * r, y = IY + Math.sin(a) * RY * r;
+    if (!sichtbar(x, y, 60)) continue;
+    X.fillStyle = 'rgba(255,255,255,.35)'; X.beginPath(); X.ellipse(x - 30, y + 4, 20, 3, 0, 0, 7); X.fill();
+    X.fillStyle = '#fff'; X.beginPath(); X.moveTo(x, y - 50); X.lineTo(x, y - 6); X.lineTo(x + 30, y - 6); X.fill();
+    X.fillStyle = ['#e8433c', '#ffd23f', '#3fa0e8', '#ff6fa3', '#2fb3a0'][i]; X.beginPath(); X.moveTo(x - 3, y - 44); X.lineTo(x - 3, y - 8); X.lineTo(x - 22, y - 8); X.fill();
+    X.fillStyle = '#8a5a2b'; X.beginPath(); X.roundRect(x - 30, y - 4, 70, 12, 6); X.fill();
+  }
+}
+function moewen(t) {
+  for (let i = 0; i < 4; i++) {
+    const p = ((t * .00003 + i * .27) % 1), x = IX - RX * K * 1.3 + p * RX * K * 2.6, y = IY - RY * K * .9 + i * 160 + Math.sin(t * .001 + i) * 30, f = Math.sin(t * .01 + i * 2) * 5;
+    X.strokeStyle = '#fff'; X.lineWidth = 2.5; X.lineCap = 'round';
+    X.beginPath(); X.moveTo(x - 12, y - f); X.quadraticCurveTo(x - 6, y - 6, x, y); X.quadraticCurveTo(x + 6, y - 6, x + 12, y - f); X.stroke();
+  }
+}
+
+// ================= Bau-Animation (Bambus-Gerüst, Krabben-Bauarbeiter, Sandstaub) =================
+function krabbe(c, x, y, t) {
+  const h = Math.sin(t * .03);
+  c.fillStyle = '#e8433c'; c.beginPath(); c.ellipse(x, y, 8, 5.5, 0, 0, 7); c.fill(); c.strokeStyle = INK; c.lineWidth = 1; c.stroke();
+  c.strokeStyle = '#e8433c'; c.lineWidth = 1.6; for (let i = -1; i <= 1; i += 2) for (let k = 0; k < 3; k++) { c.beginPath(); c.moveTo(x + i * 6, y + 1 + k * 1.5); c.lineTo(x + i * 11, y + 4 + k * 2); c.stroke(); }
+  c.fillStyle = '#e8433c'; c.beginPath(); c.arc(x - 10, y - 4, 3, 0, 7); c.fill();
+  c.save(); c.translate(x + 9, y - 3); c.rotate(-.6 + h * .9); c.fillStyle = '#8a5a2b'; c.fillRect(0, -1, 9, 2); c.fillStyle = '#9aa6a0'; c.fillRect(7, -3.5, 4, 7); c.restore();
+  c.fillStyle = '#fff'; c.beginPath(); c.arc(x - 2.5, y - 7, 2, 0, 7); c.arc(x + 2.5, y - 7, 2, 0, 7); c.fill(); c.fillStyle = INK; c.beginPath(); c.arc(x - 2.5, y - 7, 1, 0, 7); c.arc(x + 2.5, y - 7, 1, 0, 7); c.fill();
+  c.fillStyle = '#ffd23f'; c.beginPath(); c.arc(x, y - 4.5, 6, Math.PI, 0); c.fill(); c.fillRect(x - 7.5, y - 5, 15, 1.8);
+  if (h > .85) stern(c, x + 20, y - 2, 4);
+}
+function bauZeichnen(c, p, f, t, b) {
+  const age = (t - b.t) / 1000, D = b.D;
+  if (age < 0) { if (b.alt >= 0) HAUS[b.alt](c, f, t); return true; }
+  if (age > D) { delete bau[p.id]; pop[p.id] = t; const pl = platzVon(p); if (pl) funken(pl, b.alt < 0 ? '✨' : '⭐', b.alt < 0 ? 8 : 18); return false; }
+  const hoch = -HOEHE[b.neu] + 14;
+  // altes Haus verschwindet in einer Sandwolke
+  if (b.alt >= 0 && age < .6) { c.save(); c.globalAlpha = 1 - age / .6; c.scale(1, 1 - age * .5); HAUS[b.alt](c, f, t); c.restore(); }
+  const start = b.alt >= 0 ? .45 : .1, ende = D - .55, prog = Math.max(0, Math.min(1, (age - start) / (ende - start)));
+  const oben = 6 - prog * hoch;
+  // neues Haus wächst von unten nach oben
+  if (age > start) { c.save(); c.beginPath(); c.rect(-60, oben, 120, hoch + 20); c.clip(); HAUS[b.neu](c, f, t); c.restore(); }
+  // Bambus-Gerüst
+  const gA = Math.min(1, (age - start) * 4, (D - age) * 3);
+  if (gA > 0 && b.alt !== -1) {
+    c.save(); c.globalAlpha = gA;
+    const breit = 34 + b.neu * 1.5;
+    c.strokeStyle = '#c9a25a'; c.lineWidth = 2.6;
+    [-breit, -breit / 3, breit / 3, breit].forEach(x => { c.beginPath(); c.moveTo(x, 6); c.lineTo(x, -hoch - 4); c.stroke(); c.fillStyle = '#a07a3a'; for (let y = 0; y > -hoch; y -= 12) c.fillRect(x - 1.8, y, 3.6, 1.6); });
+    c.strokeStyle = '#b8904a'; c.lineWidth = 2;
+    for (let y = -6; y > -hoch - 2; y -= 16) { c.beginPath(); c.moveTo(-breit - 3, y); c.lineTo(breit + 3, y); c.stroke(); c.fillStyle = '#8a5a2b'; [-breit, breit].forEach(x => { c.beginPath(); c.arc(x, y, 1.8, 0, 7); c.fill(); }); }
+    c.strokeStyle = 'rgba(138,90,43,.6)'; c.lineWidth = 1; c.beginPath(); c.moveTo(-breit, 6); c.lineTo(-breit / 3, -hoch / 2); c.moveTo(breit, 6); c.lineTo(breit / 3, -hoch / 2); c.stroke();
+    // Bretterstapel + Krabben-Bauarbeiter oben am Gerüst
+    c.fillStyle = '#d9a66a'; for (let k = 0; k < 3; k++) c.fillRect(breit + 6, 2 - k * 3, 18, 2.5);
+    krabbe(c, -breit / 3 + Math.sin(t * .002) * breit * .5, oben - 6, t);
+    if (age < D - .8) krabbe(c, breit + 14, -8, t + 500);
+    c.restore();
+  }
+  // Sandstaub
+  for (let k = 0; k < 6; k++) { const ph = ((age * 1.2 + k / 6) % 1), a = 1 - ph; if (age > D - .4) break; c.fillStyle = `rgba(240,220,160,${a * .55})`; c.beginPath(); c.arc((k - 2.5) * 12 + ph * (k % 2 ? 10 : -10), 4 - ph * 16, 4 + ph * 8, 0, 7); c.fill(); }
+  // Möwe bringt ein Brett (am Anfang)
+  if (b.alt >= 0 && age > .2 && age < 1.6) { const q = (age - .2) / 1.4, x = 120 - q * 120, y = -hoch - 30 + Math.sin(q * 3) * 8; c.strokeStyle = '#fff'; c.lineWidth = 2.2; c.beginPath(); c.moveTo(x - 9, y - 3); c.quadraticCurveTo(x - 4, y - 7, x, y); c.quadraticCurveTo(x + 4, y - 7, x + 9, y - 3); c.stroke(); c.fillStyle = '#d9a66a'; c.fillRect(x - 8, y + 4, 16, 2.5); }
+  return true;
 }
 
 // ================= Zeichen-Hilfen =================
@@ -198,15 +412,6 @@ function meer(t) {
   const g = X.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#3ec3b4'); g.addColorStop(1, '#1d8a82');
   X.setTransform(1, 0, 0, 1, 0, 0); X.fillStyle = g; X.fillRect(0, 0, W, H);
 }
-function wellen(t) {
-  X.strokeStyle = 'rgba(255,255,255,.22)'; X.lineWidth = 3; X.lineCap = 'round';
-  for (let i = 0; i < 70; i++) {
-    const x = (i * 197 + t * .01 * (1 + i % 3)) % 1400 - 160, y = 300 + (i * 331) % 1800;
-    if (innen(x, y, 1.12)) continue;
-    X.beginPath(); X.moveTo(x, y); X.quadraticCurveTo(x + 12, y - 7, x + 24, y); X.stroke();
-  }
-}
-
 // ================= Muschelplatz mit Luxus-Muschel =================
 function platz(t) {
   const c = X;
@@ -425,7 +630,7 @@ function haus(p, pl, t) {
   if (a.includes('pool') && st < 6) { c.fillStyle = '#fff'; c.beginPath(); c.roundRect(14, 1, 22, 11, 3); c.fill(); c.fillStyle = '#3fa0e8'; c.beginPath(); c.roundRect(16, 3, 18, 7, 2); c.fill(); }
   c.fillStyle = 'rgba(0,0,0,.18)'; c.beginPath(); c.ellipse(4, 3, 28 + st * 1.5, 7, 0, 0, 7); c.fill();
   c.scale(hops, hops); c.lineJoin = 'round';
-  HAUS[st](c, f, t + p.platz * 137);
+  if (!(bau[p.id] && bauZeichnen(c, p, f, t, bau[p.id]))) HAUS[st](c, f, t + p.platz * 137);
   if (a.includes('flagge')) { const h = HOEHE[st]; c.strokeStyle = INK; c.lineWidth = 1.5; c.beginPath(); c.moveTo(-2, h); c.lineTo(-2, h - 14); c.stroke(); c.fillStyle = f; c.beginPath(); c.moveTo(-2, h - 14); c.lineTo(9 + Math.sin(t * .006) * 2, h - 11); c.lineTo(-2, h - 8); c.fill(); }
   c.restore();
   if (a.includes('palme')) palme(X, pl.x - 30, pl.y - 2, .42, t);
@@ -453,20 +658,21 @@ function kopf(t) {
   X.restore();
   // Muschelkasse
   karte(668, 150, 376, 112, '#fff', 999);
-  text('🐚 ' + (S.kasse || 0).toLocaleString('de-DE'), 856, 192, 44, INK, 'center', 900, 330);
-  text('Muschelkasse · 1 Like = 1 🐚', 856, 236, 21, '#8a5a2b', 'center', 800, 330);
+  text('🐚 ' + (S.kasse || 0).toLocaleString('de-DE'), 856, 186, 44, INK, 'center', 900, 330);
+  text('Muschelkasse Live-Insel', 856, 222, 21, INK, 'center', 900, 330);
+  text('❤️ Like = 1 · ➕ Folgen = 5', 856, 246, 17, '#8a5a2b', 'center', 800, 330);
   // Bewohner-Ziel
   const z = S.ziel, bw = S.bewohner || 0;
   karte(36, 288, 1008, 104, '#fff', 34);
   if (z) {
     const f = Math.min(1, bw / z.ziel);
-    text(`${z.icon || '🏗️'} ${z.name}`, 66, 320, 30, INK, 'left', 900, 560);
+    text(`${z.icon || '🏗️'} ${z.name}${z.ort ? ' · ' + z.ort : ''}`, 66, 320, 30, INK, 'left', 900, 600);
     text(`${bw.toLocaleString('de-DE')} / ${z.ziel.toLocaleString('de-DE')} Bewohner`, 1014, 320, 28, INK, 'right', 900, 400);
     X.fillStyle = 'rgba(42,27,18,.1)'; rr(66, 346, 948, 26, 13); X.fill();
     const g = X.createLinearGradient(66, 0, 1014, 0); g.addColorStop(0, TUERKIS); g.addColorStop(1, '#7fe0c8');
     X.fillStyle = g; rr(66, 346, Math.max(26, 948 * f), 26, 13); X.fill();
     X.strokeStyle = INK; X.lineWidth = 3.5; rr(66, 346, 948, 26, 13); X.stroke();
-    text(`Folgen = einziehen 🏠 · noch ${Math.max(0, z.ziel - bw)} bis ${z.ort ? 'zum Bau auf der ' + z.ort : 'zum Ziel'}`, 540, 360, 18, INK, 'center', 900, 900);
+    text(`Nächstes Bauprojekt · Folgen = einziehen 🏠 · noch ${Math.max(0, z.ziel - bw)} Bewohner`, 540, 360, 18, INK, 'center', 900, 900);
   } else text(`🏠 ${bw.toLocaleString('de-DE')} Bewohner · Folgen = einziehen`, 540, 340, 32, INK, 'center');
   // Untere Info-Zeile: Abstimmung, sonst abwechselnd Regeln / Projekt + Top 3
   const a = S.abstimmung;
@@ -536,13 +742,26 @@ function overlay(t) {
   if (S.test) text('TEST-MODUS', 1040, 128, 20, 'rgba(255,255,255,.8)', 'right', 900);
 }
 
+let tLetzt = 0;
 function bild(t) {
-  meer(t); kamera(t); wellen(t);
-  if (BASIS) X.drawImage(BASIS, OX, OY, OW, OH);
+  const dt = Math.min(100, t - (tLetzt || t)); tLetzt = t;
+  meer(t); kamera(t); meerLeben(t);
+  if (BASIS) {
+    if (WACHS) {                                                    // Insel wächst: neues Land breitet sich vom alten Ufer aus
+      const q = Math.min(1, (t - WACHS.t) / 4200), e = q < .5 ? 2 * q * q : 1 - (-2 * q + 2) ** 2 / 2, kk = WACHS.von + (WACHS.bis - WACHS.von) * e;
+      X.drawImage(ALT.cv, ALT.box.x, ALT.box.y, ALT.box.w, ALT.box.h);
+      X.save(); X.beginPath(); for (let i = 0; i <= 180; i++) { const a = i / 180 * 6.2832, r = rand(a) * kk * 1.1; i ? X.lineTo(IX + Math.cos(a) * RX * r, IY + Math.sin(a) * RY * r) : X.moveTo(IX + Math.cos(a) * RX * r, IY + Math.sin(a) * RY * r); } X.closePath(); X.clip();
+      X.drawImage(BASIS, BASIS_BOX.x, BASIS_BOX.y, BASIS_BOX.w, BASIS_BOX.h); X.restore();
+      X.strokeStyle = `rgba(255,255,255,${.8 * (1 - q)})`; X.lineWidth = 10; X.beginPath(); for (let i = 0; i <= 180; i++) { const a = i / 180 * 6.2832, r = rand(a) * kk * 1.1; i ? X.lineTo(IX + Math.cos(a) * RX * r, IY + Math.sin(a) * RY * r) : X.moveTo(IX + Math.cos(a) * RX * r, IY + Math.sin(a) * RY * r); } X.closePath(); X.stroke();
+      if (q >= 1) { WACHS = null; ALT = null; }
+    } else X.drawImage(BASIS, BASIS_BOX.x, BASIS_BOX.y, BASIS_BOX.w, BASIS_BOX.h);
+  }
   platz(t);
-  S.spieler.filter(p => platzVon(p)).sort((a, b) => platzVon(a).y - platzVon(b).y).forEach(p => haus(p, platzVon(p), t));
-  effekte(t);
-  if (S.spieler.length > PLAETZE.length) { X.setTransform(1, 0, 0, 1, 0, 0); text(`+ ${S.spieler.length - PLAETZE.length} warten auf ein Grundstück`, 540, 1880, 22, '#fff', 'center', 900); }
+  lebenZeichnen(t, dt);
+  S.spieler.map(p => [p, platzVon(p)]).filter(([p, pl]) => pl && sichtbar(pl.x, pl.y, 90)).sort((a, b) => a[1].y - b[1].y).forEach(([p, pl]) => haus(p, pl, t));
+  moewen(t); effekte(t);
+  X.setTransform(1, 0, 0, 1, 0, 0);
+  const warten = S.spieler.length - ANZAHL; if (warten > 0 && BASIS) text(`+ ${warten} warten auf ein Grundstück`, 540, 1880, 22, '#fff', 'center', 900);
   kopf(t); overlay(t);
   requestAnimationFrame(bild);
 }

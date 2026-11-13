@@ -158,11 +158,12 @@
     "ziele": [
       {
         "name": "Tierheim Pfotenkuss",
-        "ort": "Haupt-Insel",
-        "ziel": 1000,
-        "icon": "🐾"
+        "icon": "🐾",
+        "ziel": 800,
+        "ort": "Haupt-Insel"
       }
-    ]
+    ],
+    "_hinweis": "Bauprojekte + Startzahl kommen automatisch aus muscheltal/daten (insel.json, einwohner.csv). Diese Werte gelten nur, wenn die Dateien fehlen."
   },
   "strassen": [
     "Sonnenallee",
@@ -194,6 +195,40 @@
     "Strandkorbweg",
     "Badetuchgasse",
     "Sonnencremeweg",
-    "Urlaubsallee"
-  ]
+    "Urlaubsallee",
+    "Wellenweg",
+    "Kokosnussallee",
+    "Sandalenweg",
+    "Bikinigasse",
+    "Schnorchelweg",
+    "Taucherstraße",
+    "Strandbadweg",
+    "Sonnenhutgasse",
+    "Ferienstraße",
+    "Inselring",
+    "Riffstraße",
+    "Lagunenring",
+    "Papageienweg",
+    "Tukanweg",
+    "Limonadenweg",
+    "Melonenweg",
+    "Sandstrandallee",
+    "Sonnenstrahlweg",
+    "Brisenweg",
+    "Ebbeweg",
+    "Flutstraße",
+    "Schatzinselweg",
+    "Kompassweg",
+    "Ankerweg",
+    "Segelweg",
+    "Fischerweg",
+    "Krabbenweg",
+    "Strandgutweg",
+    "Kajakweg",
+    "Sommerweg"
+  ],
+  "kasse": {
+    "proLike": 1,
+    "proFollow": 5
+  }
 }

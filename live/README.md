@@ -21,15 +21,17 @@ Eine Mac-Stimme (unbegrenzt, offline) moderiert.
 | Aktion | Wirkung |
 |---|---|
 | Erster Like/Kommentar | eigenes Grundstück mit @Namen – wer früher kommt, wohnt näher an der Muschel |
-| 1 Like | 1 Muschel in der **Muschelkasse** + 1 Muschel fürs eigene Haus |
+| 1 Like | 1 Muschel in die **Muschelkasse der Live-Insel** (getrennt von der Inselkasse der Haupt-Insel) + 1 Muschel fürs eigene Haus |
 | Haus-Stufen | Zelt → Strohhütte → Stelzenhütte → Bungalow → Strandhaus → Ferienhaus → Villa → Luxusvilla → Strandpalast → Muschelschloss |
 | Kommentar `palme` `flagge` `garten` `laterne` `pool` `boot` | Anbau (ab bestimmter Stufe) |
 | Kommentar `rot` `blau` `lila` … | Hausfarbe |
 | Geschenk | 30 Haus-Muscheln pro Diamant, große Geschenke = Feuerwerk |
-| Folgen | neuer **Bewohner** (zählt fürs Bewohner-Ziel, z. B. Tierheim bei 1.000) |
+| Folgen | neuer **Bewohner** + 5 Muscheln in die Muschelkasse |
 | Abstimmung alle 10 Min. (`1`/`2`/`3`) | Gemeinschaftsprojekt, wird mit Muscheln aus der Muschelkasse gebaut |
 
-Bei jedem Ausbau fährt die Kamera kurz an das Haus heran. Straßennamen stehen unter `strassen`, Bewohner-Ziele unter `bewohner.ziele`.
+Die Insel startet mit 200 Grundstücken und **wächst live**, sobald alle belegt sind (jeweils ca. 60 neue).
+Ausbauten werden animiert gebaut (Bambusgerüst, Krabben-Bauarbeiter, Sandstaub), die Kamera fährt dabei an das Haus heran; sonst wechselt sie zwischen Übersicht und kleinen Rundfahrten.
+Oben steht immer das **nächste Bauprojekt der Haupt-Insel** – automatisch aus `muscheltal/daten/insel.json` (`baustellen`), Startzahl der Bewohner aus `einwohner.csv`. Straßennamen stehen unter `strassen`.
 Die Bewohnerzahl kommt live von TikTok (Follower), `bewohner.start` ist nur der Startwert, falls TikTok sie nicht liefert.
 
 ## Stimme
