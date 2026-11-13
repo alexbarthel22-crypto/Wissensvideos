@@ -7,9 +7,11 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { spawn } from 'node:child_process';
 import os from 'node:os';
+import zlib from 'node:zlib';
 import { fileURLToPath } from 'node:url';
 import { macheEvents } from './events.mjs';
 import { satz, namenListe } from './saetze.mjs';
+import { geschenkFormen } from './geschenke.mjs';
 import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './filter.mjs';
 
 const DIR = path.dirname(fileURLToPath(import.meta.url));
@@ -53,7 +55,11 @@ function spieler(u) {
     p = S.spieler[id] = { id, name: anzeigeName(u, S.reihenfolge.length), muscheln: 0, stufe: 0, anbauten: [], farbe: null, platz: S.reihenfolge.length, zuletzt: Date.now() };
     S.reihenfolge.push(id);
     sende({ typ: 'neu', id });
-    sag(satz('neu', { name: sprechName(p) }), 3);
+    sag(satz('neu', { name: sprechName(p) }), 2);
+    // Erstes Like/Kommentar: Zelt steht sofort, Kamera zeigt es kurz (startMuscheln optional, Standard 0)
+    const start = CFG.startMuscheln ?? 0;
+    if (start > 0) setImmediate(() => gibMuscheln(p, start, 'start'));
+    if (!hausWunsch.includes(id)) hausWunsch.unshift(id);
   }
   return p;
 }
@@ -66,7 +72,7 @@ function gibMuscheln(p, n, grund) {
   geaendert = true;
   if (p.stufe > vorher) {
     sende({ typ: 'stufe', id: p.id, stufe: p.stufe });
-    sag(satz('stufe', { name: sprechName(p), stufe: artikel(CFG.stufen[p.stufe].name), stufeDativ: dativ(CFG.stufen[p.stufe].name), stufeName: CFG.stufen[p.stufe].name }), 2);
+    if (grund !== 'start') sag(satz('stufe', { name: sprechName(p), stufe: artikel(CFG.stufen[p.stufe].name), stufeDativ: dativ(CFG.stufen[p.stufe].name), stufeName: CFG.stufen[p.stufe].name }), 2);
   }
   zustand();
 }
@@ -129,11 +135,11 @@ function kommentar(u, text) {
 function geschenk(u, name, diamanten, anzahl) {
   const p = spieler(u); if (!p) { inKasse(Math.max(1, diamanten || 1) * Math.max(1, anzahl || 1) * CFG.kasse.proCoin); return; }
   const d = Math.max(1, diamanten || 1) * Math.max(1, anzahl || 1);   // Coins insgesamt: 1 Coin = 1 Muschel (= 0,01 €)
-  sende({ typ: 'geschenk', id: p.id, name, anzahl, diamanten: d });
-  EV.geschenkShow(p, name, anzahl, d);
+  const g = geschenkFormen(name, anzahl);                  // deutsch, mit Artikel: „für die Rose“, „einen Löwen“
+  sende({ typ: 'geschenk', id: p.id, name: g.name, anzahl, diamanten: d });
+  EV.geschenkShow(p, g, anzahl, d);
   inKasse(d * CFG.kasse.proCoin);
-  const wie = anzahl > 1 ? `${anzahl} mal ${name}` : name;
-  sag(satz(d >= 1000 ? 'geschenkGross' : d >= 100 ? 'geschenkMittel' : 'geschenkKlein', { name: sprechName(p), geschenk: wie }), 0);
+  sag(satz(d >= 1000 ? 'geschenkGross' : d >= 100 ? 'geschenkMittel' : 'geschenkKlein', { name: sprechName(p), fuer: g.fuer, einAkk: g.einAkk, einNom: g.einNom, EinNom: grossKlein(g.einNom) }), 0);
   gibMuscheln(p, d * CFG.muschelnProCoin, 'geschenk');
 }
 
@@ -141,10 +147,16 @@ function geschenk(u, name, diamanten, anzahl) {
 if (S.kasse == null) S.kasse = S.likesGesamt || 0;
 function inKasse(n) {
   S.kasse += n; geaendert = true;
-  if (S.projekt) {
-    S.projekt.stand = Math.min(S.projekt.ziel, S.projekt.stand + n);
-    if (S.projekt.stand >= S.projekt.ziel) projektFertig();
-  }
+  finanziere();
+}
+// Gebäude werden aus der Muschelkasse bezahlt: läuft ein Bau, fließen die Muscheln aus der Kasse in die Baustelle
+function finanziere() {
+  if (!S.projekt || S.kasse <= 0) return 0;
+  const t = Math.min(S.kasse, S.projekt.ziel - S.projekt.stand);
+  if (t <= 0) return 0;
+  S.kasse -= t; S.projekt.stand += t; geaendert = true;
+  if (S.projekt.stand >= S.projekt.ziel) projektFertig();
+  return t;
 }
 
 // ---------- Bauprojekte + Bewohnerzahl der Homepage ----------
@@ -204,7 +216,10 @@ function teilen(u) {
 // ---------- Gemeinschaftsprojekt (wird per Abstimmungs-Event gewählt) ----------
 function projektStarten(pr) {
   S.projekt = { id: pr.id, name: pr.name, ziel: pr.ziel, stand: 0 }; geaendert = true;
-  sende({ typ: 'projekt', id: pr.id }); zustand();
+  sende({ typ: 'projekt', id: pr.id });
+  const aus = finanziere();                                  // Erspartes aus der Muschelkasse fließt sofort in den Bau
+  if (aus > 0 && S.projekt) sag(`${aus.toLocaleString('de-DE')} Muscheln aus der Muschelkasse fließen sofort in den Bau. … Jedes Like baut weiter mit!`, 1);
+  zustand();
 }
 function projektFertig() {
   const pr = S.projekt; S.fertig.push(pr.id); S.projekt = null; geaendert = true;
@@ -227,8 +242,10 @@ const EV = macheEvents({
   spieler: id => S.spieler[id],
   aktive: min => Object.values(S.spieler).filter(p => !p.gesperrt && Date.now() - (p.zuletzt || 0) < min * 60000),
   likeRate: () => { const t = Date.now() - 300000; while (likeLog.length && likeLog[0][0] < t) likeLog.shift(); return likeLog.reduce((a, [, n]) => a + n, 0) / 5; },
+  rekord: v => { if (v != null) { S.likeRekord = v; geaendert = true; } return S.likeRekord || 150; },
   hatProjekt: () => !!S.projekt,
-  offeneProjekte: () => CFG.abstimmung.projekte.filter(x => !S.fertig.includes(x.id)),
+  // kein Limit: noch nicht gebaute zuerst (gemischt), danach schon gebaute (gemischt)
+  offeneProjekte: () => { const m = a => a.sort(() => Math.random() - .5); return [...m(CFG.abstimmung.projekte.filter(x => !S.fertig.includes(x.id))), ...m(CFG.abstimmung.projekte.filter(x => S.fertig.includes(x.id)))]; },
   projektStarten,
 });
 setInterval(zustand, 1000);
@@ -259,13 +276,14 @@ function sag(text, prio = 2) {
 function fertig() { spricht = false; stilleSeit = Date.now(); setTimeout(weiter, 50); }
 function weiter() {
   if (spricht || !warte.length) return;
-  const { text } = warte.shift(); spricht = true; gesprochen.push(Date.now());
+  const { text } = warte.shift(); spricht = true; gesprochen.push(Date.now()); letzteAnsageZeit = Date.now();
   sende({ typ: 'ansage', text, ms: dauerMs(text) });
   if (!ECHT) { setTimeout(fertig, dauerMs(text)); return; }
   const aufSeite = CFG.stimme.wiedergabe !== 'mac' && seiteHatTon() && Date.now() > stimmeFehlerBis;
   const datei = path.join(TON_DIR, `s${++tonNr % 20}.wav`);
   const args = ['-v', stimme, '-r', String(CFG.stimme.tempo)];
   if (aufSeite) args.push('-o', datei, '--file-format=WAVE', '--data-format=LEI16@22050');
+  else if (CFG.stimme.macGeraet) args.push('-a', CFG.stimme.macGeraet);   // z. B. „BlackHole 2ch“ → direkt in LIVE Studio
   const pr = spawn('say', [...args, fuerStimme(text)]);
   let fehler = '';
   pr.stderr.on('data', d => fehler += d);
@@ -273,6 +291,7 @@ function weiter() {
     if (aufSeite && code === 0) {                      // Seite spielt ab; warten, bis die Ansage vorbei ist
       let ms = 2000; try { ms = (fs.statSync(datei).size - 44) / 44.1 + 300; } catch {}
       sende({ typ: 'stimme', id: tonSeite, url: '/ton/' + path.basename(datei) + '?' + Date.now() });
+      if (++unbestaetigt >= 3) { unbestaetigt = 0; stimmeFehlerBis = Date.now() + 60000; console.log('🔈 Live-Seite bestätigt Annas Stimme nicht – spreche 1 Minute über die Mac-Lautsprecher.'); }
       setTimeout(fertig, ms);
       return;
     }
@@ -286,15 +305,24 @@ function weiter() {
 
 // ---------- Ton-Absicherung ----------
 // Läuft auf keiner Live-Seite Ton (Browser blockiert ihn), spielen Stimme und Musik direkt über die Mac-Lautsprecher.
-let lokalMusik = null, lokalNr = 0, tonSeite = null, stimmeFehlerBis = 0;
+var lokalMusik = null, lokalNr = 0, tonSeite = null, stimmeFehlerBis = 0, unbestaetigt = 0;
 const tonStatus = new Map();                               // Seiten-Nr. -> { an, zeit, vorschau, seit }
 const seiteHatTon = () => { const st = tonStatus.get(tonSeite); return !!st && st.an && Date.now() - st.zeit < 10000; };
 // Genau EINE Seite spielt Ton: bevorzugt eine, auf der Ton schon läuft, sonst die zuerst geöffnete (keine Vorschau)
+// Spielt die gewählte Seite nach 8 s noch keinen Ton, kommt die nächste dran (LIVE Studio lädt die Seite manchmal doppelt).
+let rolleSeit = 0; const tonFehl = new Map();             // Seiten-Nr. -> wann zuletzt ohne Ton
 function waehleTonSeite() {
   const offen = [...kunden.keys()].filter(id => !tonStatus.get(id)?.vorschau);
   const mitTon = offen.filter(id => tonStatus.get(id)?.an);
-  let neu = offen.includes(tonSeite) && (tonStatus.get(tonSeite)?.an || !mitTon.length) ? tonSeite : (mitTon[0] ?? offen[0] ?? null);
-  if (neu !== tonSeite) { tonSeite = neu; sende({ typ: 'tonRolle', id: tonSeite }); }
+  let neu = tonSeite;
+  if (!offen.includes(tonSeite)) neu = null;
+  else if (!tonStatus.get(tonSeite)?.an && Date.now() - rolleSeit > 8000) {   // hängt – weiterreichen
+    tonFehl.set(tonSeite, Date.now());
+    const andere = offen.filter(id => id !== tonSeite).sort((a, b) => (tonFehl.get(a) || 0) - (tonFehl.get(b) || 0));
+    if (andere.length) neu = mitTon[0] ?? andere[0];
+  }
+  if (neu == null) neu = mitTon[0] ?? [...offen].sort((a, b) => (tonFehl.get(a) || 0) - (tonFehl.get(b) || 0))[0] ?? null;
+  if (neu !== tonSeite) { tonSeite = neu; rolleSeit = Date.now(); sende({ typ: 'tonRolle', id: tonSeite }); if (tonSeite != null) console.log(`🔊 Ton-Aufgabe → Live-Seite #${tonSeite}`); }
 }
 const MUSIK_DATEIEN = ['suedsee_3.mp3', 'suedsee_9.mp3', 'suedsee_11.mp3'].map(f => path.join(DIR, 'seite', 'musik', f));
 function musikLokal() {
@@ -308,6 +336,13 @@ function musikLokal() {
   if (!brauche && lokalMusik) { lokalMusik.kill(); lokalMusik = null; }
 }
 const START = Date.now();
+// Alle 30 s eine kurze Statuszeile im Terminal – hilft bei der Fehlersuche während des LIVEs
+var letzteAnsageZeit = 0;
+setInterval(() => {
+  const seiten = [...kunden.keys()].map(id => { const t = tonStatus.get(id) || {}; return `#${id}${t.vorschau ? '(Vorschau)' : ''}${id === tonSeite ? '★' : ''} Ton ${t.an ? 'an' : 'aus'}/${t.ac || '?'}`; });
+  const weg = ECHT ? (CFG.stimme.wiedergabe !== 'mac' && seiteHatTon() && Date.now() > stimmeFehlerBis ? 'Seite (Stream)' : 'Mac-Lautsprecher') : 'aus (Test)';
+  console.log(`ℹ️  ${new Date().toLocaleTimeString('de-DE')} · TikTok: ${tiktokStatus} (${tiktokEreignisse} Ereignisse${tiktokLetztes ? ', letztes vor ' + Math.round((Date.now() - tiktokLetztes) / 1000) + ' s' : ''}) · Seiten: ${seiten.join(', ') || 'keine!'} · Anna über: ${weg} · letzte Ansage vor ${letzteAnsageZeit ? Math.round((Date.now() - letzteAnsageZeit) / 1000) + ' s' : '–'}`);
+}, 30000);
 setInterval(musikLokal, 3000);
 process.on('exit', () => lokalMusik?.kill());
 
@@ -330,10 +365,17 @@ const MODERATION = [
   () => rundgang(),
   () => S.kasse > 0 ? satz('kasse', { kasse: S.kasse.toLocaleString('de-DE') }) : null,
   () => S.projekt ? satz('projekt', { projekt: S.projekt.name, prozent: Math.floor(S.projekt.stand / S.projekt.ziel * 100) }) : null,
+  () => baustelleZeigen(),
   () => { const h = new Date().getHours(); return h >= 17 || h < 7 ? satz('abend') : satz('stimmung', { aktive: aktiveAnzahl() }); },
   () => satz('stimmung', { aktive: aktiveAnzahl() }),
 ];
 const aktiveAnzahl = () => Object.values(S.spieler).filter(p => Date.now() - (p.zuletzt || 0) < 600000).length;
+function baustelleZeigen() {                                // Kamera fliegt zur Baustelle, Anna berichtet
+  if (!S.projekt || Date.now() - letzterRundgang < 30000) return null;
+  letzterRundgang = Date.now(); sende({ typ: 'kameraBau', ms: 8000 });
+  const def = CFG.abstimmung.projekte.find(x => x.id === S.projekt.id) || {};
+  return satz('baustelleZeigen', { Projekt: grossKlein(def.der || S.projekt.name), ein: def.ein || S.projekt.name, prozent: Math.floor(S.projekt.stand / S.projekt.ziel * 100), rest: Math.max(0, Math.ceil(S.projekt.ziel - S.projekt.stand)).toLocaleString('de-DE') });
+}
 function rundgang() {                                      // Kamera fliegt zu einem Haus, Anna stellt es vor
   if (Date.now() - letzterRundgang < 40000) return null;
   const kand = Object.values(S.spieler).filter(p => !p.gesperrt && Date.now() - (p.zuletzt || 0) < 900000 && p.stufe > 0);
@@ -379,6 +421,24 @@ function moderiere() {
   for (let k = 0; k < MODERATION.length; k++) { const t = MODERATION[modNr++ % MODERATION.length](); if (t) return sag(t, 4); }
   sag(satz('stimmung', { aktive: aktiveAnzahl() }), 4);
 }
+// Rangliste beobachten: Änderungen in den Top 3 ansagen (höchstens alle 15 s, wichtigste Änderung zuerst)
+let topVorher = null, topAnsage = 0;
+setInterval(() => {
+  const top = Object.values(S.spieler).filter(p => !p.gesperrt).sort(rangFolge).slice(0, 3).map(p => p.id);
+  if (!topVorher) { topVorher = top; return; }
+  if (Date.now() - topAnsage < 15000) return;
+  for (let i = 0; i < top.length; i++) {
+    if (top[i] === topVorher[i]) continue;
+    const p = S.spieler[top[i]], neuDrin = !topVorher.includes(top[i]);
+    if (i > 0 && !neuDrin) continue;                        // nur Platz 1 oder Neueinsteiger ansagen
+    topAnsage = Date.now();
+    sende({ typ: 'rangliste', id: p.id, platz: i + 1 });
+    sag(i === 0 ? satz('topEins', { name: sprechName(p) }) : satz('topNeu', { name: sprechName(p), platz: i === 1 ? 'zwei' : 'drei' }), 1);
+    break;
+  }
+  topVorher = top;
+}, 3000);
+
 // Alle 3 Minuten: Aufruf zum Folgen (mit Banner)
 setInterval(() => { sende({ typ: 'folgeAufruf' }); sag(satz('folgeAufruf'), 1); }, (CFG.folgeAufrufMinuten || 3) * 60000);
 setInterval(() => {
@@ -403,18 +463,32 @@ function beitritt(u) {                                     // jemand kommt neu i
 }
 
 // ---------- Seite + Live-Daten (Server-Sent Events) ----------
-const kunden = new Map(); let letzteSeitenAnsage = '', seitenNr = 0;
-function sende(ev) { const s = `data: ${JSON.stringify(ev)}\n\n`; for (const k of kunden.values()) k.write(s); }
+// ---------- Live-Daten an die Seite: einfache Abfragen (/poll), funktionieren auch durch den Cloudflare-Tunnel ----------
+// Jede Seite fragt ca. 3× pro Sekunde nach. Ereignisse liegen nummeriert in einer Liste; die große Bewohnerliste
+// wird nur mitgeschickt, wenn sie sich geändert hat, und die Antwort wird gepackt (gzip).
+const kunden = new Map(); let letzteSeitenAnsage = 0, seitenNr = 0;      // Seiten-Nr. -> zuletzt gesehen
+const LOG = [], listeZeit = new Map(); let seq = 0, letzterZustand = null, spielerJSON = '[]', spielerVer = 0;
+const wartende = new Set();                                  // offene Abfragen der Live-Seiten (Long-Poll)
+function sende(ev) {
+  LOG.push({ n: ++seq, ev }); if (LOG.length > 400) LOG.splice(0, LOG.length - 400);
+  if (wartende.size) setImmediate(() => { for (const f of wartende) f(); wartende.clear(); });
+}
 let zLetzt = 0, zOffen = false;
 function zustand() {
   if (Date.now() - zLetzt < 250) { if (!zOffen) { zOffen = true; setTimeout(() => { zOffen = false; zustand(); }, 260); } return; }
   zLetzt = Date.now();
-  sende({ typ: 'zustand', s: oeffentlich() });
+  const o = oeffentlich(), sj = JSON.stringify(o.spieler); delete o.spieler;
+  if (sj !== spielerJSON) { spielerJSON = sj; spielerVer++; }
+  letzterZustand = { typ: 'zustand', s: o }; sende(letzterZustand);
 }
+setInterval(() => {                                         // Seiten, die nicht mehr fragen, gelten als geschlossen
+  let weg = false; for (const [id, z] of kunden) if (Date.now() - z > 8000) { kunden.delete(id); tonStatus.delete(id); weg = true; }
+  if (weg) waehleTonSeite();
+}, 3000);
 function oeffentlich() {
   return {
     ...EV.oeffentlich(),
-    spieler: S.reihenfolge.map(id => S.spieler[id]).filter(p => p && !p.gesperrt),
+    spieler: S.reihenfolge.map(id => S.spieler[id]).filter(p => p && !p.gesperrt).map(p => ({ id: p.id, name: p.name, muscheln: p.muscheln, stufe: p.stufe, anbauten: p.anbauten, farbe: p.farbe, platz: p.platz, eventMuscheln: p.eventMuscheln })),
     stufen: CFG.stufen.map(s => s.name), stufenAb: CFG.stufen.map(s => s.ab),
     projekt: S.projekt, fertig: S.fertig, kasse: S.kasse,
     bewohner, ziel: zielJetzt(), strassen: CFG.strassen,
@@ -423,16 +497,17 @@ function oeffentlich() {
 }
 
 const TYPEN = { '.mp3': 'audio/mpeg', '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.png': 'image/png', '.woff2': 'font/woff2', '.svg': 'image/svg+xml' };
-http.createServer((req, res) => {
+const server = http.createServer((req, res) => {
   const url = new URL(req.url, 'http://x');
-  if (url.pathname === '/sag') {
-    const t = String(url.searchParams.get('t') || '').slice(0, 200);
-    if (t && t !== letzteSeitenAnsage) { letzteSeitenAnsage = t; sag(t, 0); setTimeout(() => letzteSeitenAnsage = '', 15000); }
+  if (url.pathname === '/wachsen') {                         // Seite meldet: Insel ist gewachsen (nur Zahl, kein freier Text)
+    const n = Math.min(5000, Math.max(0, parseInt(url.searchParams.get('n'), 10) || 0));
+    if (n && Date.now() - letzteSeitenAnsage > 15000) { letzteSeitenAnsage = Date.now(); sag(`Die Insel wächst! … ${n} neue Grundstücke sind dazugekommen.`, 0); }
     res.writeHead(204); return res.end();
   }
-  if (TEST && url.pathname === '/test') {                 // nur Test-Modus: Event / Geschenk-Show auslösen
+  // Test-Zugänge nur direkt am Mac – nie über den öffentlichen Link (Cloudflare setzt cf-ray / cf-connecting-ip)
+  if (TEST && url.pathname === '/test' && !req.headers['cf-ray'] && !req.headers['cf-connecting-ip']) {                 // nur Test-Modus: Event / Geschenk-Show auslösen
     const id = url.searchParams.get('event'), art = url.searchParams.get('geschenk');
-    if (url.searchParams.has('stadt')) { const n = +url.searchParams.get('stadt'), ids = CFG.abstimmung.projekte.map(x => x.id); S.fertig = ids.slice(0, n); const pr = CFG.abstimmung.projekte[n]; S.projekt = pr ? { id: pr.id, name: pr.name, ziel: pr.ziel, stand: Math.round(pr.ziel * .45) } : null; zustand(); }
+    if (url.searchParams.has('stadt')) { const n = +url.searchParams.get('stadt'), ids = CFG.abstimmung.projekte.map(x => x.id); S.fertig = Array.from({ length: n }, (_, i) => ids[i % ids.length]); const pr = CFG.abstimmung.projekte[n % ids.length]; S.projekt = pr ? { id: pr.id, name: pr.name, ziel: pr.ziel, stand: Math.round(pr.ziel * .45) } : null; zustand(); }
     if (url.searchParams.has('fertigbauen') && S.projekt) { S.projekt.stand = S.projekt.ziel - 1; inKasse(1); }
     if (id) EV.starte(id);
     const nutzer = url.searchParams.get('user');               // gezielt als Test-Zuschauer handeln
@@ -452,21 +527,41 @@ http.createServer((req, res) => {
   }
   if (url.pathname === '/tonstatus') {                       // Live-Seite meldet, ob ihr Ton läuft
     const id = +url.searchParams.get('id'), alt = tonStatus.get(id) || {};
-    if (url.searchParams.has('an')) tonStatus.set(id, { ...alt, an: url.searchParams.get('an') === '1', vorschau: url.searchParams.get('vorschau') === '1', zeit: Date.now() });
+    if (url.searchParams.has('an')) tonStatus.set(id, { ...alt, an: url.searchParams.get('an') === '1', ac: url.searchParams.get('ac'), vorschau: url.searchParams.get('vorschau') === '1', zeit: Date.now() });
+    if (url.searchParams.get('stimme') === '1' && alt.stimmeOk !== true) { tonStatus.set(id, { ...tonStatus.get(id), stimmeOk: true }); console.log(`🔊 Anna spricht über die Live-Seite #${id} (Stream-Ton).`); }
+    if (url.searchParams.get('stimme') === '0') console.log(`   Grund (Seite #${id}): ${url.searchParams.get('grund') || '?'}`);
     if (url.searchParams.get('stimme') === '0') { stimmeFehlerBis = Date.now() + 60000; console.log('🔈 Stimme auf der Seite blockiert – spreche über die Mac-Lautsprecher.'); }
-    if (url.searchParams.get('stimme') === '1') stimmeFehlerBis = 0;
+    if (url.searchParams.get('stimme') === '1') { stimmeFehlerBis = 0; unbestaetigt = 0; }
     waehleTonSeite();
     res.writeHead(204); return res.end();
   }
-  if (url.pathname === '/events') {
-    res.writeHead(200, { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-cache', Connection: 'keep-alive' });
-    res.write(`data: ${JSON.stringify({ typ: 'zustand', s: oeffentlich() })}\n\n`);
-    const id = ++seitenNr; kunden.set(id, res);
-    res.write(`data: ${JSON.stringify({ typ: 'hallo', id })}\n\n`);
-    res.write(`data: ${JSON.stringify({ typ: 'tonRolle', id: tonSeite })}\n\n`);
+  if (url.pathname === '/poll') {
+    // Nichts Neues? Kurz offen halten und sofort antworten, wenn etwas passiert (max. 8 s)
+    const nAlt = +url.searchParams.get('n') || 0;
+    if (url.searchParams.get('w') === '1' && nAlt && nAlt >= seq && !req._gewartet) {
+      req._gewartet = true; const id0 = +url.searchParams.get('id') || 0; if (id0) kunden.set(id0, Date.now());
+      let fertigF; const t = setTimeout(() => { wartende.delete(fertigF); fertigF(); }, 8000);
+      fertigF = () => { clearTimeout(t); server.emit('request', req, res); };
+      wartende.add(fertigF); req.on('close', () => { clearTimeout(t); wartende.delete(fertigF); });
+      return;
+    }
+    let id = +url.searchParams.get('id') || 0;
+    const neu = !id || !kunden.has(id);
+    if (neu && !id) id = ++seitenNr;
+    kunden.set(id, Date.now());
+    if (url.searchParams.has('an')) { const alt = tonStatus.get(id) || {}; tonStatus.set(id, { ...alt, an: url.searchParams.get('an') === '1', ac: url.searchParams.get('ac'), vorschau: url.searchParams.get('vorschau') === '1', zeit: Date.now() }); }
     waehleTonSeite();
-    req.on('close', () => { kunden.delete(id); tonStatus.delete(id); waehleTonSeite(); });
-    return;
+    const n = +url.searchParams.get('n') || 0, sv = +url.searchParams.get('sv');
+    if (!letzterZustand) zustand();
+    // Erste Abfrage oder zu weit zurück: nur den aktuellen Zustand (keine alten Shows/Banner nachspielen)
+    let ev = (!n || (LOG[0] && n < LOG[0].n - 1)) ? [letzterZustand] : LOG.filter(x => x.n > n).map(x => x.ev);
+    const z = ev.filter(e => e.typ === 'zustand').pop(); ev = ev.filter(e => e.typ !== 'zustand'); if (z) ev.push(z);   // nur der neueste Zustand
+    const mitListe = sv !== spielerVer && (Date.now() - (listeZeit.get(id) || 0) > 900);      // Bewohnerliste höchstens 1×/s
+    if (mitListe) listeZeit.set(id, Date.now());
+    const antwort = { id, n: seq, ev, tonSeite, sv: mitListe ? spielerVer : sv, spieler: mitListe ? JSON.parse(spielerJSON) : undefined };
+    let body = Buffer.from(JSON.stringify(antwort)); const kopf = { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' };
+    if (/gzip/.test(req.headers['accept-encoding'] || '') && body.length > 1024) { body = zlib.gzipSync(body); kopf['Content-Encoding'] = 'gzip'; }
+    res.writeHead(200, kopf); return res.end(body);
   }
   if (url.pathname.startsWith('/ton/')) {
     const f = path.join(TON_DIR, path.basename(url.pathname));
@@ -478,30 +573,62 @@ http.createServer((req, res) => {
     if (e) { res.writeHead(404); return res.end('nicht gefunden'); }
     res.writeHead(200, { 'Content-Type': TYPEN[path.extname(datei)] || 'application/octet-stream' }); res.end(d);
   });
+}).on('error', e => {
+  if (e.code === 'EADDRINUSE') {                            // Programm läuft schon in einem anderen Fenster
+    console.log(`\n⚠️  Muschel-Tal LIVE läuft schon (in einem anderen Terminalfenster). Dieses Fenster kannst du schließen.\n`);
+    process.exit(2);
+  }
+  throw e;
 }).listen(CFG.port, () => {
   console.log(`\n🐚 Muschel-Tal LIVE läuft:  http://localhost:${CFG.port}`);
   console.log('   Diese Adresse in TikTok LIVE Studio als Link-/Browser-Quelle (1080×1920) einfügen.\n');
 });
 
 // ---------- TikTok-Verbindung ----------
+var tiktokStatus = TEST ? 'Test-Modus' : 'noch nicht verbunden', tiktokEreignisse = 0, tiktokLetztes = 0, likeLogZeit = 0;
+function tt(art, text) {                                     // jedes echte TikTok-Ereignis kurz im Terminal zeigen
+  tiktokEreignisse++; tiktokLetztes = Date.now();
+  if (art === '❤️' && Date.now() - likeLogZeit < 5000) return; if (art === '❤️') likeLogZeit = Date.now();
+  console.log(`${art} ${text}`);
+}
 async function verbinde() {
   const { TikTokLiveConnection, WebcastEvent } = await import('tiktok-live-connector');
-  const c = new TikTokLiveConnection(CFG.tiktokName, { enableExtendedGiftInfo: true, processInitialData: false });
-  c.on(WebcastEvent.CHAT, d => d.user && kommentar(d.user, d.comment));
-  c.on(WebcastEvent.LIKE, d => d.user && like(d.user, d.likeCount || 1));
-  c.on(WebcastEvent.FOLLOW, d => d.user && follow(d.user));
-  c.on(WebcastEvent.SHARE, d => d.user && teilen(d.user));
-  c.on(WebcastEvent.MEMBER, d => d.user && beitritt(d.user));
+  // Keine Geschenkliste abfragen: die braucht bei Eulerstream einen Bezahl-Plan. Name + Coins kommen mit jedem Geschenk.
+  const opt = { enableExtendedGiftInfo: false, processInitialData: false };
+  if (CFG.eulerApiKey) opt.signApiKey = CFG.eulerApiKey;   // optional: eigener Schlüssel von eulerstream.com (stabiler)
+  const c = new TikTokLiveConnection(CFG.tiktokName, opt);
+  // Neue TikTok-Schnittstelle: Benutzername steht in displayId (früher uniqueId), Kommentar in content, Likes in count
+  const U = u => u && { ...u, uniqueId: u.uniqueId || u.displayId || u.username || '', nickname: u.nickname || '' };
+  const nm = d => '@' + (U(d.user)?.uniqueId || '?');
+  const txt = d => d.content ?? d.comment ?? '';
+  c.on(WebcastEvent.CHAT, d => { const u = U(d.user); if (!u?.uniqueId) return; tt('💬', `${nm(d)}: ${txt(d)}`); kommentar(u, txt(d)); });
+  // TikTok schickt nicht jedes Like einzeln, aber immer die Gesamtzahl (total). Was fehlt, kommt trotzdem in die Kasse.
+  let likeTotal = 0;
+  c.on(WebcastEvent.LIKE, d => {
+    const u = U(d.user), n = +(d.count ?? d.likeCount) || 1, total = +(d.total ?? d.totalLikeCount) || 0;
+    if (u?.uniqueId) { tt('❤️', `${nm(d)} +${n} Likes`); like(u, n); } else { S.likesGesamt += n; inKasse(n * CFG.kasse.proLike); }
+    if (total) {
+      const fehlt = likeTotal ? total - likeTotal - n : 0;
+      if (fehlt > 0 && fehlt < 100000) { S.likesGesamt += fehlt; inKasse(fehlt * CFG.kasse.proLike); geaendert = true; zustand(); }
+      likeTotal = Math.max(likeTotal, total);
+    }
+  });
+  c.on(WebcastEvent.FOLLOW, d => { const u = U(d.user); if (!u?.uniqueId) return; tt('➕', `${nm(d)} folgt`); follow(u); });
+  c.on(WebcastEvent.SHARE, d => { const u = U(d.user); if (!u?.uniqueId) return; tt('🔁', `${nm(d)} teilt`); teilen(u); });
+  c.on(WebcastEvent.MEMBER, d => { const u = U(d.user); if (!u?.uniqueId) return; tt('👋', `${nm(d)} ist da`); beitritt(u); });
   c.on(WebcastEvent.GIFT, d => {
+    d.user = U(d.user);
     const g = d.giftDetails || {};
     if (g.giftType === 1 && !d.repeatEnd) return; // Serie läuft noch – erst am Ende zählen
+    tt('🎁', `${nm(d)}: ${g.giftName || 'Geschenk'} ×${d.repeatCount || 1}`);
     const ex = d.extendedGiftInfo || {};
     geschenk(d.user || {}, g.giftName || ex.name || 'das Geschenk', g.diamondCount || ex.diamond_count || 1, d.repeatCount || 1);
   });
   c.on(WebcastEvent.STREAM_END, () => { console.log('Stream beendet.'); speichern(); });
-  c.on('disconnected', () => { console.log('Verbindung weg – neuer Versuch in 15 s'); setTimeout(versuche, 15000); });
+  c.on('disconnected', () => { tiktokStatus = 'getrennt'; console.log('⚠️  Verbindung zu TikTok weg – neuer Versuch in 15 s'); setTimeout(versuche, 15000); });
   const st = await c.connect();
-  console.log(`✅ Mit dem LIVE von @${CFG.tiktokName} verbunden (Raum ${st.roomId}).`);
+  tiktokStatus = 'verbunden';
+  console.log(`\n✅✅✅ Mit deinem TikTok-LIVE (@${CFG.tiktokName}) verbunden – Likes, Kommentare und Geschenke kommen jetzt an.\n`);
   // Echte Follower-Zahl = Bewohner (beim Start und alle 5 Minuten)
   const fol = info => { const f = suche(info, 'follower_count'); if (f) { bewohnerVonTikTok = true; setzeBewohner(Number(f), 'tiktok'); } };
   fol(st.roomInfo || c.roomInfo);
@@ -517,8 +644,9 @@ function suche(o, key, tiefe = 0) {
 async function versuche() {
   try { await verbinde(); }
   catch (e) {
-    console.log(`⏳ Noch nicht live oder keine Verbindung (${e.message || e}). Neuer Versuch in 20 s …`);
-    setTimeout(versuche, 20000);
+    tiktokStatus = 'nicht verbunden';
+    console.log(`⏳ TikTok: noch nicht verbunden (${e.constructor?.name || ''}: ${e.message || e}${e.errors ? ' – ' + e.errors.map(x => x.message).join(' | ') : ''}). Neuer Versuch in 15 s …`);
+    setTimeout(versuche, 15000);
   }
 }
 
@@ -555,4 +683,5 @@ function simulator() {
 }
 
 if (TEST && !process.argv.includes('--leer')) simulator(); else if (!TEST) versuche();
-process.on('SIGINT', () => { geaendert = true; speichern(); process.exit(0); });
+// Spielstand sichern beim Beenden – egal wie: ctrl+C, Terminalfenster schließen, Mac fährt herunter
+for (const sig of ['SIGINT', 'SIGHUP', 'SIGTERM']) process.on(sig, () => { geaendert = true; speichern(); process.exit(0); });

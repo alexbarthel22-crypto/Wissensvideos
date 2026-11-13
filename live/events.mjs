@@ -75,25 +75,6 @@ export function macheEvents(api) {
         return { text: `Team ${s === 'muschel' ? '🐚 Muschel' : '🥥 Kokos'} gewinnt! Jeder im Team bekommt 30 🐚`, sag: `Team ${s === 'muschel' ? 'Muschel' : 'Kokos'} gewinnt das Duell!`, gut: true };
       },
     },
-    flaschenpost: {
-      titel: 'Flaschenpost!', icon: '🍾', dauer: 60,
-      start(e) { return `Da treibt eine Flaschenpost ans Ufer! Wer zuerst flasche schreibt, darf sie öffnen.`; },
-      kommentar(e, p, t) { if (!e.finder && /flasche/.test(t)) { e.finder = p; e.frueh = true; return true; } },
-      anzeige: e => ({ text: 'Wer zuerst „flasche“ schreibt, öffnet sie!' }),
-      ende(e) {
-        if (!e.finder) return { text: 'Die Flasche ist wieder rausgetrieben …', sag: 'Schade, die Flasche ist wieder aufs Meer getrieben.' };
-        const pr = zufall([{ t: '80 Muscheln', m: 80 }, { t: 'eine Palme und 40 Muscheln', anbau: 'palme', m: 40 }, { t: 'eine Laterne und 40 Muscheln', anbau: 'laterne', m: 40 }, { t: '150 Muscheln', m: 150 }]);
-        api.belohne(e.finder, pr.m, pr); return { text: `${e.finder.name} öffnet die Flasche: ${pr.t}!`, sag: `${api.name(e.finder)} hat die Flaschenpost geöffnet und bekommt ${pr.t}!`, gut: true, id: e.finder.id };
-      },
-    },
-    meeresbesuch: {
-      titel: 'Besuch vom Meer', icon: '🐋', dauer: 45,
-      start(e) { e.art = zufall(['wal', 'delfine', 'piraten']); e.gruss = new Set(); e.titel = { wal: 'Ein Wal!', delfine: 'Delfine!', piraten: 'Piratenschiff!' }[e.art]; e.icon = { wal: '🐋', delfine: '🐬', piraten: '🏴‍☠️' }[e.art];
-        return { wal: 'Schaut mal, ein Wal schwimmt an der Insel vorbei! Schreibt hallo, um ihn zu begrüßen!', delfine: 'Delfine springen vor der Küste! Schreibt hallo!', piraten: 'Ein Piratenschiff! Schreibt hallo, vielleicht sind sie freundlich!' }[e.art]; },
-      kommentar(e, p, t) { if (/^(hallo|hi|hey|ahoi|moin)\b/.test(t) && !e.gruss.has(p.id)) { e.gruss.add(p.id); api.belohne(p, 10); return true; } },
-      anzeige: e => ({ text: `Schreib „hallo“ – jeder Gruß bringt 10 🐚 (${e.gruss.size} Grüße)`, extra: { art: e.art } }),
-      ende(e) { const n = e.gruss.size; return { gut: n > 0, text: n === 1 ? '1 Bewohner hat gegrüßt!' : `${n} Bewohner haben gegrüßt!`, sag: n > 1 ? `${n} von euch haben gegrüßt. Tschüss!` : n === 1 ? 'Einer von euch hat gegrüßt. Tschüss!' : 'Tschüss!' }; },
-    },
     hausbesuch: {
       titel: 'Hausbesuch', icon: '🏠', dauer: 22, moeglich: () => api.aktive(15).length > 0,
       start(e) { e.p = zufall(api.aktive(15)); api.belohne(e.p, 25); api.sende({ typ: 'kamera', id: e.p.id, ms: 20000 });
@@ -107,14 +88,6 @@ export function macheEvents(api) {
       start() { return 'Muschelregen! Eine Minute lang zählt jedes Like doppelt für euer Haus!'; },
       anzeige: () => ({ text: 'Jedes Like zählt doppelt für dein Haus!' }),
       ende: () => ({ text: 'Der Muschelregen ist vorbei.' }),
-    },
-    schatzsuche: {
-      titel: 'Schatzsuche', icon: '🗺️', dauer: 45,
-      start(e) { e.seed = Math.floor(Math.random() * 1e6); e.loesung = Math.floor(Math.random() * 4); e.tipp = {}; return 'Schatzsuche! Auf der Insel sind vier Kreuze: A, B, C und D. Wo ist der Schatz vergraben? Schreibt den Buchstaben!'; },
-      kommentar(e, p, t) { const i = 'abcd'.indexOf(t); if (t.length === 1 && i >= 0) { e.tipp[p.id] = i; return true; } },
-      anzeige: e => { const z = [0, 0, 0, 0]; Object.values(e.tipp).forEach(i => z[i]++); const m = Math.max(1, ...z); return { text: 'Schreib A, B, C oder D!', balken: 'ABCD'.split('').map((b, i) => ({ name: '❌ ' + b, wert: z[i], max: m, farbe: ['#ffd23f', '#7fe0c8', '#ff8fb8', '#b58ad0'][i] })), extra: { seed: e.seed } }; },
-      ende(e) { const b = 'ABCD'[e.loesung], ok = Object.entries(e.tipp).filter(([, i]) => i === e.loesung).map(([id]) => api.spieler(id)); ok.forEach(p => api.belohne(p, 30));
-        return { text: `Der Schatz lag bei ${b}! ${anz(ok.length, 'Schatzsucher bekommt', 'Schatzsucher bekommen')} 30 🐚`, sag: `Der Schatz lag bei ${b}! ${ok.length === 1 ? 'Einer von euch lag' : ok.length + ' von euch lagen'} richtig.`, gut: ok.length > 0, extra: { seed: e.seed, loesung: e.loesung } }; },
     },
     zahlenraten: {
       titel: 'Zahlenraten', icon: '🔢', dauer: 60,
@@ -186,19 +159,12 @@ export function macheEvents(api) {
       anzeige: e => ({ text: `Liken lässt die Ballons platzen! ${e.geplatzt}/12 geplatzt`, balken: [{ name: '🎈 nächster Ballon', wert: e.stand, max: e.schritt, farbe: '#ff6fa3' }], extra: { ballons: 12 - e.geplatzt } }),
       ende: e => ({ text: `${e.geplatzt} Ballons geplatzt!`, sag: e.geplatzt >= 12 ? 'Alle Ballons sind geplatzt! Super!' : `${e.geplatzt} Ballons sind geplatzt.`, gut: e.geplatzt > 0 }),
     },
-    schildkroeten: {
-      titel: 'Schildkröten-Rettung', icon: '🐢', dauer: 60,
-      start(e) { e.ziel = likeZiel(api.likeRate(), 60, 100); e.stand = 0; e.dabei = new Set(); return `Kleine Schildkröten wollen ins Meer! Liked zusammen ${zahl(e.ziel)} mal, dann schaffen sie es!`; },
-      like(e, p, n) { e.stand += n; e.dabei.add(p); if (e.stand >= e.ziel) e.frueh = true; },
-      anzeige: e => ({ text: 'Liken hilft den Schildkröten ins Meer!', balken: [{ name: '🐢 Weg zum Meer', wert: e.stand, max: e.ziel, farbe: '#57b85a' }], extra: { schildkroeten: Math.min(1, e.stand / e.ziel) } }),
-      ende(e) { if (e.stand >= e.ziel) { e.dabei.forEach(p => api.belohne(p, 20)); return { text: 'Alle Schildkröten sind im Meer! 20 🐚 für alle Helfer', sag: 'Geschafft! Alle Schildkröten schwimmen im Meer!', gut: true }; } return { text: 'Ein paar Schildkröten brauchen noch Hilfe …', sag: 'Fast! Nächstes Mal schaffen wir das.' }; },
-    },
     blumen: {
       titel: 'Blumenwiese', icon: '🌺', dauer: 50,
       start(e) { e.p = new Set(); e.ziel = 25; return 'Wir pflanzen eine Blumenwiese! Jeder, der blume schreibt, pflanzt eine Blume. Bei 25 Blumen gibt es Muscheln für alle!'; },
       kommentar(e, p, t) { if (/blum/.test(t)) { e.p.add(p); return true; } },
       anzeige: e => ({ text: 'Schreib „blume“ und pflanze eine Blume!', balken: [{ name: '🌺 Blumen', wert: e.p.size, max: e.ziel, farbe: '#ff8fb8' }], extra: { blumen: e.p.size } }),
-      ende(e) { if (e.p.size >= e.ziel) { e.p.forEach(p => api.belohne(p, 15)); return { text: `${e.p.size} Blumen! Alle Gärtner bekommen 15 🐚`, sag: 'Was für eine schöne Blumenwiese!', gut: true }; } e.p.forEach(p => api.belohne(p, 5)); return { text: `${e.p.size} Blumen gepflanzt · je 5 🐚`, sag: `${e.p.size} Blumen sind gewachsen.`, gut: e.p.size > 0 }; },
+      ende(e) { if (e.p.size >= e.ziel) { e.p.forEach(p => api.belohne(p, 15)); return { text: `${e.p.size} Blumen! Alle Gärtner bekommen 15 🐚`, sag: 'Was für eine schöne Blumenwiese!', gut: true }; } e.p.forEach(p => api.belohne(p, 5, { trost: true })); return { text: `${e.p.size} Blumen gepflanzt · je 5 🐚`, sag: `${e.p.size} Blumen sind gewachsen.`, gut: e.p.size > 0 }; },
     },
     emojiraetsel: {
       titel: 'Emoji-Rätsel', icon: '🧩', dauer: 60,
@@ -215,13 +181,6 @@ export function macheEvents(api) {
       like(e, p, n) { const tm = e.wahl[p.id] || (e.wahl[p.id] = kleinstes(e.wahl, ['links', 'rechts'])); e.t[tm] += n; },
       anzeige: e => { const m = Math.max(10, e.t.links + e.t.rechts); return { text: '„links“ oder „rechts“ schreiben – oder einfach liken!', balken: [{ name: '⬅️ Team Links', wert: e.t.links, max: m, farbe: '#3fa0e8' }, { name: '➡️ Team Rechts', wert: e.t.rechts, max: m, farbe: '#ff8a2a' }] }; },
       ende(e) { if (e.t.links === e.t.rechts) return { text: 'Unentschieden – Satzball vertagt!', sag: 'Unentschieden!' }; const s = e.t.links > e.t.rechts ? 'links' : 'rechts'; const fans = Object.entries(e.wahl).filter(([, x]) => x === s).map(([id]) => api.spieler(id)); fans.forEach(p => api.belohne(p, 25)); return { text: `Team ${s === 'links' ? 'Links' : 'Rechts'} gewinnt! Je 25 🐚`, sag: `Punkt für Team ${s === 'links' ? 'Links' : 'Rechts'}!`, gut: true }; },
-    },
-    haialarm: {
-      titel: 'Hai-Alarm!', icon: '🦈', dauer: 40,
-      start(e) { e.gerettet = []; return 'Hai-Alarm! Alle Schwimmer schnell ans Ufer! Die ersten zehn, die ufer schreiben, sind in Sicherheit!'; },
-      kommentar(e, p, t) { if (/ufer/.test(t) && !e.gerettet.includes(p) && e.gerettet.length < 10) { e.gerettet.push(p); api.belohne(p, 15); if (e.gerettet.length >= 10) e.frueh = true; return true; } },
-      anzeige: e => ({ text: `Schreib „ufer“! (${e.gerettet.length}/10 in Sicherheit)`, extra: { hai: true } }),
-      ende: e => ({ text: e.gerettet.length ? `${e.gerettet.length} Schwimmer gerettet! Je 15 🐚` : 'Der Hai war nur ein Delfin …', sag: e.gerettet.length ? 'Alle in Sicherheit! Der Hai schwimmt weiter.' : 'Puh, das war nur ein Delfin!', gut: e.gerettet.length > 0 }),
     },
     eiswagen: {
       titel: 'Eiswagen', icon: '🍦', dauer: 55,
@@ -245,13 +204,6 @@ export function macheEvents(api) {
       anzeige: e => { const z = [0, 0, 0]; Object.values(e.a).forEach(i => z[i]++); const m = Math.max(1, ...z); return { text: e.f[0] + '  Schreib A, B oder C!', balken: e.f[1].map((o, i) => ({ name: 'ABC'[i] + '  ' + o, wert: z[i], max: m, farbe: ['#ffd23f', '#7fe0c8', '#ff8fb8'][i] })) }; },
       ende(e) { const ok = Object.entries(e.a).filter(([, i]) => i === e.f[2]).map(([id]) => api.spieler(id)); ok.forEach(p => api.belohne(p, 20)); return { text: `Richtig: ${'ABC'[e.f[2]]} – ${e.f[1][e.f[2]]}! ${anz(ok.length, 'richtige Antwort', 'richtige Antworten')} (+20 🐚)`, sag: `Richtig ist ${'ABC'[e.f[2]]}, ${e.f[1][e.f[2]]}!`, gut: ok.length > 0 }; },
     },
-    muschelsammeln: {
-      titel: 'Muscheln sammeln', icon: '🐚', dauer: 45,
-      start(e) { e.s = []; return 'Am Strand liegen zwanzig goldene Muscheln! Schreibt sammeln, jeder darf eine aufheben!'; },
-      kommentar(e, p, t) { if (/samm/.test(t) && !e.s.includes(p) && e.s.length < 20) { e.s.push(p); api.belohne(p, 12); if (e.s.length >= 20) e.frueh = true; return true; } },
-      anzeige: e => ({ text: `Schreib „sammeln“! Noch ${20 - e.s.length} goldene Muscheln`, extra: { goldmuscheln: 20 - e.s.length } }),
-      ende: e => ({ text: `${e.s.length} goldene Muscheln eingesammelt!`, sag: e.s.length >= 20 ? 'Alle Muscheln sind eingesammelt!' : `${e.s.length} Muscheln eingesammelt.`, gut: e.s.length > 0 }),
-    },
     surfcontest: {
       titel: 'Surf-Contest', icon: '🏄', dauer: 60,
       start(e) { e.punkte = {}; return 'Surf-Contest! Schreibt surf, um mitzumachen. Danach bringt jedes Like Punkte. Wer die meisten hat, gewinnt!'; },
@@ -265,7 +217,7 @@ export function macheEvents(api) {
       start(e) { e.w = {}; return 'Kokosnuss-Weitwurf! Schreibt wurf, und eure Kokosnuss fliegt. Der weiteste Wurf gewinnt!'; },
       kommentar(e, p, t) { if (/wurf|wirf/.test(t) && !(p.id in e.w)) { e.w[p.id] = Math.round(5 + Math.random() * 45); return true; } },
       anzeige: e => { const top = Object.entries(e.w).sort((a, b) => b[1] - a[1]).slice(0, 3); return { text: `Schreib „wurf“! (${Object.keys(e.w).length} Würfe)`, balken: top.map(([id, v], i) => ({ name: `🥥 ${api.spieler(id).name}`, wert: v, max: 50, farbe: ['#ffd23f', '#c9d1d9', '#d9a66a'][i] })) }; },
-      ende(e) { const top = Object.entries(e.w).sort((a, b) => b[1] - a[1]); if (!top.length) return { text: 'Keine Kokosnuss geflogen …' }; const p = api.spieler(top[0][0]); api.belohne(p, 40); Object.keys(e.w).forEach(id => id !== p.id && api.belohne(api.spieler(id), 5)); return { text: `${p.name} wirft ${top[0][1]} Meter! +40 🐚`, sag: `${top[0][1]} Meter! ${api.name(p)} gewinnt den Weitwurf!`, gut: true, id: p.id }; },
+      ende(e) { const top = Object.entries(e.w).sort((a, b) => b[1] - a[1]); if (!top.length) return { text: 'Keine Kokosnuss geflogen …' }; const p = api.spieler(top[0][0]); api.belohne(p, 40); Object.keys(e.w).forEach(id => id !== p.id && api.belohne(api.spieler(id), 5, { trost: true })); return { text: `${p.name} wirft ${top[0][1]} Meter! +40 🐚`, sag: `${top[0][1]} Meter! ${api.name(p)} gewinnt den Weitwurf!`, gut: true, id: p.id }; },
     },
     inselfoto: {
       titel: 'Inselfoto', icon: '📸', dauer: 40,
@@ -274,9 +226,134 @@ export function macheEvents(api) {
       anzeige: e => ({ text: `Schreib „cheese“ für das Gruppenfoto! (${e.f.length} auf dem Foto)` }),
       ende: e => e.f.length ? { text: `📸 ${e.f.slice(0, 8).map(p => p.name).join(', ')}${e.f.length > 8 ? ` und ${e.f.length - 8} weitere` : ''}`, sag: `Klick! ${e.f.length} von euch sind auf dem Inselfoto!`, gut: true } : { text: 'Niemand wollte aufs Foto …' },
     },
+    // ======================= 10 weitere Events (40 insgesamt) =======================
+    tauziehen: {
+      titel: 'Tauziehen', icon: '🪢', dauer: 60,
+      start(e) { e.t = { muschel: 0, seestern: 0 }; e.wahl = {}; return 'Tauziehen! Team Muschel gegen Team Seestern! Schreibt muschel oder seestern, oder liked einfach, dann zieht ihr mit!'; },
+      kommentar(e, p, t) { const m = t.includes('seestern') ? 'seestern' : t.includes('muschel') ? 'muschel' : null; if (m) { e.wahl[p.id] = m; return true; } },
+      like(e, p, n) { const tm = e.wahl[p.id] || (e.wahl[p.id] = kleinstes(e.wahl, ['muschel', 'seestern'])); e.t[tm] += n; },
+      anzeige: e => { const sum = Math.max(1, e.t.muschel + e.t.seestern); return { text: '„muschel“ oder „seestern“ schreiben – oder einfach liken!', seil: (e.t.muschel - e.t.seestern) / sum, balken: [{ name: '🐚 Team Muschel', wert: e.t.muschel, max: sum, farbe: '#ff8fb8' }, { name: '⭐ Team Seestern', wert: e.t.seestern, max: sum, farbe: '#ff8a2a' }] }; },
+      ende(e) { if (e.t.muschel === e.t.seestern) return { text: 'Unentschieden – das Seil hält!', sag: 'Unentschieden!' }; const s = e.t.muschel > e.t.seestern ? 'muschel' : 'seestern'; Object.entries(e.wahl).filter(([, x]) => x === s).forEach(([id]) => api.belohne(api.spieler(id), 25)); return { text: `Team ${s === 'muschel' ? 'Muschel' : 'Seestern'} zieht am stärksten! Je 25 🐚`, sag: `Team ${s === 'muschel' ? 'Muschel' : 'Seestern'} gewinnt das Tauziehen!`, gut: true }; },
+    },
+    buchstabensalat: {
+      titel: 'Buchstabensalat', icon: '🔤', dauer: 60,
+      start(e) { e.wort = zufall(['STRAND', 'MUSCHEL', 'PALME', 'WELLE', 'INSEL', 'SONNE', 'KRABBE', 'HAFEN', 'MOEWE', 'LAGUNE', 'KORALLE', 'BOOT']); let m; do { m = e.wort.split('').sort(() => Math.random() - .5).join(''); } while (m === e.wort); e.salat = m;
+        return 'Buchstabensalat! Die Buchstaben sind durcheinander. Wer zuerst das richtige Wort schreibt, gewinnt!'; },
+      kommentar(e, p, t) { if (!e.sieger && wortGleich(t, e.wort)) { e.sieger = p; e.frueh = true; api.belohne(p, 50); return true; } },
+      anzeige: e => ({ text: `Welches Wort ist das?   ${e.salat.split('').join(' ')}   → in den Chat schreiben!` }),
+      ende: e => e.sieger ? { text: `${e.sieger.name} hat's: ${e.wort}! +50 🐚`, sag: `Richtig! ${e.wort.toLowerCase()}!`, gut: true, id: e.sieger.id } : { text: `Das Wort war: ${e.wort}`, sag: `Das Wort war ${e.wort.toLowerCase()}.` },
+    },
+    wuerfeln: {
+      titel: 'Muschel-Würfeln', icon: '🎲', dauer: 45,
+      start(e) { e.w = {}; return 'Muschel-Würfeln! Schreibt würfel, und ihr würfelt einmal. Wer eine Sechs würfelt, gewinnt!'; },
+      kommentar(e, p, t) { if (/w(ue|ü|u)rf/.test(t) && !(p.id in e.w)) { e.w[p.id] = 1 + Math.floor(Math.random() * 6); return true; } },
+      anzeige: e => { const z = [0, 0, 0, 0, 0, 0]; Object.values(e.w).forEach(v => z[v - 1]++); const m = Math.max(1, ...z); return { text: `Schreib „würfel“! (${Object.keys(e.w).length} gewürfelt)`, balken: [{ name: '🎲 Sechsen', wert: z[5], max: Math.max(1, Object.keys(e.w).length), farbe: '#ffd23f' }] }; },
+      ende(e) { const ok = Object.entries(e.w).filter(([, v]) => v === 6).map(([id]) => api.spieler(id)); ok.forEach(p => api.belohne(p, 30)); Object.entries(e.w).filter(([, v]) => v !== 6).forEach(([id]) => api.belohne(api.spieler(id), 3, { trost: true })); return { text: ok.length ? `${anz(ok.length, 'Sechs', 'Sechsen')} gewürfelt! Je 30 🐚` : 'Keine Sechs dabei … Trostpreis: 3 🐚', sag: ok.length ? 'Sechs! Glückwunsch!' : 'Keine Sechs dabei. Alle bekommen einen kleinen Trostpreis.', gut: Object.keys(e.w).length > 0 }; },
+    },
+    papagei: {
+      titel: 'Papagei', icon: '🦜', dauer: 45,
+      start(e) { e.satz = zufall(['ALOHA MUSCHELTAL', 'ICH LIEBE DIE INSEL', 'KOKOS FÜR ALLE', 'SONNE SAND UND MEER', 'HALLO KRABBE']); e.sieger = []; return 'Der Papagei will etwas hören! Die ersten fünf, die seinen Satz nachsprechen, gewinnen!'; },
+      kommentar(e, p, t) { if (normal(t).includes(normal(e.satz)) && !e.sieger.includes(p) && e.sieger.length < 5) { e.sieger.push(p); api.belohne(p, 20); if (e.sieger.length >= 5) e.frueh = true; return true; } },
+      anzeige: e => ({ text: `Schreib nach: „${e.satz.toLowerCase()}“  (${e.sieger.length}/5)` }),
+      ende: e => e.sieger.length ? { text: `Der Papagei ist glücklich! ${e.sieger.map(p => p.name).join(', ')}`, sag: 'Der Papagei ist glücklich!', gut: true } : { text: 'Der Papagei ist beleidigt weggeflogen …' },
+    },
+    regenbogen: {
+      titel: 'Regenbogen malen', icon: '🌈', dauer: 60,
+      start(e) { e.f = {}; return 'Wir malen einen Regenbogen! Schreibt die Farben rot, orange, gelb, grün, blau und lila. Sind alle sechs da, bekommen alle Maler Muscheln!'; },
+      kommentar(e, p, t) { const f = ['rot', 'orange', 'gelb', 'grün', 'gruen', 'blau', 'lila'].find(x => t.includes(x)); if (f) { const k = f === 'gruen' ? 'grün' : f; (e.f[k] ||= new Set()).add(p); if (Object.keys(e.f).length >= 6) e.frueh = true; return true; } },
+      anzeige: e => ({ text: 'Schreib eine Farbe: rot · orange · gelb · grün · blau · lila', regenbogen: ['rot', 'orange', 'gelb', 'grün', 'blau', 'lila'].map(f => !!e.f[f]) }),
+      ende(e) { const maler = new Set(); Object.values(e.f).forEach(s => s.forEach(p => maler.add(p))); const voll = Object.keys(e.f).length >= 6; maler.forEach(p => api.belohne(p, voll ? 20 : 5, voll ? null : { trost: true })); return { text: voll ? `Der Regenbogen ist komplett! ${maler.size} Maler bekommen 20 🐚` : `${Object.keys(e.f).length} von 6 Farben … je 5 🐚`, sag: voll ? 'Was für ein Regenbogen!' : 'Fast! Ein paar Farben haben gefehlt.', gut: maler.size > 0 }; },
+    },
+    likerekord: {
+      titel: 'Like-Rekord', icon: '🏆', dauer: 30,
+      start(e) { e.stand = 0; e.dabei = new Set(); e.rekord = api.rekord(); return `Like-Rekord! Schafft ihr in dreißig Sekunden mehr als ${zahl(e.rekord)} Likes? Los!`; },
+      like(e, p, n) { e.stand += n; e.dabei.add(p); },
+      anzeige: e => ({ text: `30 Sekunden: Rekord brechen!`, balken: [{ name: '🏆 Rekord', wert: e.stand, max: Math.max(e.rekord, 1), farbe: '#ffd23f' }] }),
+      ende(e) { if (e.stand > e.rekord) { api.rekord(e.stand); e.dabei.forEach(p => api.belohne(p, 25)); return { text: `Neuer Rekord: ${zahl(e.stand)} Likes! Je 25 🐚`, sag: `Neuer Rekord! ${zahl(e.stand)} Likes!`, gut: true }; } e.dabei.forEach(p => api.belohne(p, 5, { trost: true })); return { text: `${zahl(e.stand)} Likes – der Rekord bleibt bei ${zahl(e.rekord)}`, sag: 'Knapp! Der Rekord hält noch.' }; },
+    },
+    motto: {
+      titel: 'Motto des Tages', icon: '🎭', dauer: 60,
+      start(e) { e.wahl = zufall([['Piratentag', 'Hawaii-Party', 'Muschel-Tag'], ['Strandgala', 'Surfertag', 'Tropennacht'], ['Insel-Disko', 'Picknicktag', 'Sandburgen-Tag']]); e.st = {}; return `Motto des Tages! Schreibt 1 für ${e.wahl[0]}, 2 für ${e.wahl[1]} oder 3 für ${e.wahl[2]}!`; },
+      kommentar(e, p, t) { if (/^[123]$/.test(t)) { e.st[p.id] = +t - 1; return true; } },
+      anzeige: e => { const z = [0, 0, 0]; Object.values(e.st).forEach(i => z[i]++); const m = Math.max(1, ...z); return { text: 'Welches Motto? Schreib 1, 2 oder 3', balken: e.wahl.map((w, i) => ({ name: `${i + 1}  ${w}`, wert: z[i], max: m, farbe: ['#ffd23f', '#7fe0c8', '#ff8fb8'][i] })) }; },
+      ende(e) { const z = [0, 0, 0]; Object.values(e.st).forEach(i => z[i]++); const m = z.indexOf(Math.max(...z)); if (!z[m]) return { text: 'Kein Motto heute …' }; Object.entries(e.st).filter(([, i]) => i === m).forEach(([id]) => api.belohne(api.spieler(id), 10)); return { text: `Heute ist ${e.wahl[m]}! Je 10 🐚 für alle, die es gewählt haben`, sag: `Das Motto heute: ${e.wahl[m]}!`, gut: true }; },
+    },
+    mysterybox: {
+      titel: 'Mystery-Box', icon: '🎁', dauer: 40,
+      start(e) { e.b = {}; return 'Mystery-Box! Schreibt box, und jeder bekommt eine Überraschung, zwischen einer und fünfzig Muscheln!'; },
+      kommentar(e, p, t) { if (/box/.test(t) && !(p.id in e.b)) { const r = Math.random(); e.b[p.id] = r < .05 ? 50 : r < .25 ? 20 : r < .6 ? 10 : 3; api.belohne(p, e.b[p.id]); return true; } },
+      anzeige: e => ({ text: `Schreib „box“ für eine Überraschung! (${Object.keys(e.b).length} Boxen offen)` }),
+      ende(e) { const top = Object.entries(e.b).sort((a, b) => b[1] - a[1])[0]; if (!top) return { text: 'Keine Box wurde geöffnet …' }; const p = api.spieler(top[0]); return { text: `${Object.keys(e.b).length} Boxen geöffnet – den Hauptgewinn (${top[1]} 🐚) hat ${p.name}!`, sag: `Den größten Gewinn hat ${api.name(p)}!`, gut: true, id: p.id }; },
+    },
+    werbinich: {
+      titel: 'Wer bin ich?', icon: '🕵️', dauer: 60,
+      start(e) { e.r = zufall([['krabbe', 'Krabbe', ['Ich laufe seitwärts.', 'Ich habe Scheren.', 'Auf der Insel helfe ich beim Bauen!']], ['moewe', 'Möwe', ['Ich kann fliegen.', 'Ich klaue gern Pommes.', 'Ich kreische am Strand.']], ['seestern', 'Seestern', ['Ich wohne im Meer.', 'Ich habe meistens fünf Arme.', 'Ich sehe aus wie ein Stern.']], ['delfin', 'Delfin', ['Ich schwimme sehr schnell.', 'Ich springe gern aus dem Wasser.', 'Ich bin sehr schlau und pfeife.']], ['schildkroete', 'Schildkröte', ['Ich trage mein Haus auf dem Rücken.', 'Ich lege Eier in den Sand.', 'Ich bin langsam an Land.']]]);
+        e.t0 = Date.now(); return `Wer bin ich? Ich gebe euch drei Hinweise. Erster Hinweis: ${e.r[2][0]}`; },
+      kommentar(e, p, t) { if (!e.sieger && (normal(t).includes(normal(e.r[0])) || wortGleich(t, e.r[1]))) { e.sieger = p; e.frueh = true; api.belohne(p, 50); return true; } },
+      anzeige: e => { const n = Math.min(3, 1 + Math.floor((Date.now() - e.t0) / 20000)); return { text: `Hinweis: ${e.r[2].slice(0, n).join('  ·  ')}  → Antwort in den Chat!` }; },
+      ende: e => e.sieger ? { text: `${e.sieger.name} hat's erraten: ${e.r[1]}! +50 🐚`, sag: `Richtig, ich bin ${e.r[1] === 'Delfin' || e.r[1] === 'Seestern' ? 'ein' : 'eine'} ${e.r[1]}!`, gut: true, id: e.sieger.id } : { text: `Gesucht war: ${e.r[1]}`, sag: `Ich war ${e.r[1] === 'Delfin' || e.r[1] === 'Seestern' ? 'ein' : 'eine'} ${e.r[1]}!` },
+    },
+    hausparty: {
+      titel: 'Hausparty!', icon: '🎉', dauer: 45, moeglich: () => api.aktive(15).length > 0,
+      start(e) { e.p = zufall(api.aktive(15)); e.g = new Set(); api.sende({ typ: 'kamera', id: e.p.id, ms: 40000 });
+        return `Hausparty bei ${api.name(e.p)}! Schreibt party, dann seid ihr eingeladen!`; },
+      kommentar(e, p, t) { if (/part/.test(t) && p !== e.p && !e.g.has(p.id)) { e.g.add(p.id); api.belohne(p, 10); return true; } },
+      anzeige: e => ({ text: `Party bei ${e.p.name}! Schreib „party“ (${e.g.size} Gäste)` }),
+      ende(e) { const n = e.g.size; if (n) api.belohne(e.p, Math.min(100, n * 5)); return { text: n ? `${anz(n, 'Gast', 'Gäste')} gefeiert! ${e.p.name} bekommt ${Math.min(100, n * 5)} 🐚` : 'Keiner kam zur Party …', sag: n ? `Was für eine Party bei ${api.name(e.p)}!` : 'Schade, keiner kam zur Party.', gut: n > 0, id: e.p.id }; },
+    },
+    leuchtturm: {
+      titel: 'Leuchtturm anzünden', icon: '🗼', dauer: 60,
+      start(e) { e.ziel = likeZiel(api.likeRate(), 60, 100); e.stand = 0; e.dabei = new Set();
+        return `Es wird dunkel auf dem Meer! Liked zusammen ${zahl(e.ziel)} mal, damit der Leuchtturm leuchtet!`; },
+      like(e, p, n) { e.stand += n; e.dabei.add(p); if (e.stand >= e.ziel) e.frueh = true; },
+      anzeige: e => ({ text: 'Liked gemeinsam – der Leuchtturm braucht Strom!', balken: [{ name: '💡 Licht', wert: e.stand, max: e.ziel, farbe: '#ffd23f' }] }),
+      ende(e) { if (e.stand >= e.ziel) { e.dabei.forEach(p => api.belohne(p, 20)); return { text: 'Der Leuchtturm leuchtet! 💡 Alle Helfer bekommen 20 🐚', sag: 'Der Leuchtturm leuchtet! Alle Helfer bekommen zwanzig Muscheln.', gut: true }; }
+        return { text: 'Noch zu dunkel … nächstes Mal!', sag: 'Fast! Nächstes Mal leuchtet er.' }; },
+    },
+    nachbarhilfe: {
+      titel: 'Nachbarschaftshilfe', icon: '🤝', dauer: 50, moeglich: () => api.aktive(15).length > 1,
+      start(e) { const a = api.aktive(15); e.p = a.reduce((m, x) => x.stufe < m.stufe ? x : m, a[0]); e.h = {}; e.summe = 0; api.sende({ typ: 'kamera', id: e.p.id, ms: 45000 });
+        return `Nachbarschaftshilfe! ${api.name(e.p)} hat noch ein kleines Haus. Jedes Like von euch baut jetzt auch bei ${api.name(e.p)} mit!`; },
+      like(e, p, n) { if (p === e.p || e.summe >= 300) return; const m = Math.min(n, 300 - e.summe); e.summe += m; e.h[p.id] = (e.h[p.id] || 0) + m; api.belohne(e.p, m, { trost: true }); },
+      anzeige: e => ({ text: `Liken hilft ${e.p.name} beim Bauen!`, balken: [{ name: '🔨 Hilfe', wert: e.summe, max: 300, farbe: '#7fe0c8' }] }),
+      ende(e) { const t = Object.entries(e.h).sort((a, b) => b[1] - a[1])[0]; if (!t) return { text: `${e.p.name} baut allein weiter …` }; const h = api.spieler(t[0]); api.belohne(h, 30);
+        return { text: `${e.summe} Muscheln für ${e.p.name}! Fleißigster Helfer: ${h.name} (+30 🐚)`, sag: `Danke! Am meisten geholfen hat ${api.name(h)}.`, gut: true, id: e.p.id }; },
+    },
+    inselgruss: {
+      titel: 'Inselgruß', icon: '👋', dauer: 40,
+      start(e) { e.g = new Set(); return 'Inselgruß! Schreibt moin oder hallo – jeder Gruß bringt zehn Muscheln!'; },
+      kommentar(e, p, t) { if (/^(moin|hallo|hi|hey|servus|hallöchen|ahoi)\b/.test(t) && !e.g.has(p.id)) { e.g.add(p.id); api.belohne(p, 10); return true; } },
+      anzeige: e => ({ text: `Schreib „moin“ oder „hallo“! (${e.g.size} Grüße)` }),
+      ende(e) { const n = e.g.size; return { gut: n > 0, text: n ? `${anz(n, 'Gruß', 'Grüße')} – je 10 🐚` : 'Heute grüßt keiner …', sag: n ? `Moin zurück an alle ${n === 1 ? '' : n + ' '}!`.replace(' !', '!') : 'Na gut, dann eben später!' }; },
+    },
+    schatzkiste: {
+      titel: 'Schatzkiste', icon: '🧰', dauer: 45,
+      start(e) { e.los = Math.floor(Math.random() * 3); e.w = {}; return 'Drei Schatzkisten! Nur in einer liegt Gold. Schreibt 1, 2 oder 3!'; },
+      kommentar(e, p, t) { if (/^[123]$/.test(t)) { e.w[p.id] = +t - 1; return true; } },
+      anzeige: e => { const z = [0, 0, 0]; Object.values(e.w).forEach(i => z[i]++); const m = Math.max(1, ...z); return { text: 'Welche Kiste? Schreib 1, 2 oder 3', balken: [0, 1, 2].map(i => ({ name: `🧰 Kiste ${i + 1}`, wert: z[i], max: m, farbe: ['#ffd23f', '#7fe0c8', '#ff8fb8'][i] })) }; },
+      ende(e) { const ok = Object.entries(e.w).filter(([, i]) => i === e.los).map(([id]) => api.spieler(id)); ok.forEach(p => api.belohne(p, 30));
+        return { text: `Das Gold lag in Kiste ${e.los + 1}! ${ok.length ? anz(ok.length, 'Gewinner', 'Gewinner') + ' (+30 🐚)' : 'Diesmal hat keiner richtig getippt.'}`, sag: `Das Gold lag in Kiste ${e.los + 1}!`, gut: ok.length > 0 }; },
+    },
+    wahrfalsch: {
+      titel: 'Wahr oder falsch?', icon: '🤔', dauer: 45,
+      start(e) { e.f = zufall([['Seesterne haben kein Gehirn.', true], ['Möwen können nicht schwimmen.', false], ['Kokosnüsse können übers Meer schwimmen.', true], ['Delfine schlafen mit einem offenen Auge.', true], ['Krabben laufen am liebsten rückwärts.', false], ['Das Meer ist salzig, weil Fische weinen.', false], ['Schildkröten gibt es schon seit den Dinosauriern.', true], ['Sand wird im Sommer nie heiß.', false]]);
+        e.a = {}; return `Wahr oder falsch? ${e.f[0]} Schreibt wahr oder falsch!`; },
+      kommentar(e, p, t) { if (/^(wahr|stimmt|ja)\b/.test(t)) { e.a[p.id] = true; return true; } if (/^(falsch|nein|stimmt nicht)\b/.test(t)) { e.a[p.id] = false; return true; } },
+      anzeige: e => { const w = Object.values(e.a).filter(Boolean).length, f = Object.values(e.a).length - w, m = Math.max(1, w, f); return { text: `${e.f[0]}  Schreib „wahr“ oder „falsch“`, balken: [{ name: '✅ wahr', wert: w, max: m, farbe: '#7fe0c8' }, { name: '❌ falsch', wert: f, max: m, farbe: '#ff8fb8' }] }; },
+      ende(e) { const ok = Object.entries(e.a).filter(([, v]) => v === e.f[1]).map(([id]) => api.spieler(id)); ok.forEach(p => api.belohne(p, 20));
+        return { text: `Das ist ${e.f[1] ? 'wahr' : 'falsch'}! ${ok.length ? anz(ok.length, 'richtige Antwort', 'richtige Antworten') + ' (+20 🐚)' : 'Diesmal lag keiner richtig.'}`, sag: `Das ist ${e.f[1] ? 'wahr' : 'falsch'}!`, gut: ok.length > 0 }; },
+    },
+    inselkoenig: {
+      titel: 'Inselkönig', icon: '👑', dauer: 60,
+      start(e) { e.l = {}; return 'Wer wird Inselkönig? Wer in einer Minute am meisten liked, bekommt die Krone und sechzig Muscheln!'; },
+      like(e, p, n) { e.l[p.id] = (e.l[p.id] || 0) + n; },
+      anzeige: e => { const t = Object.entries(e.l).sort((a, b) => b[1] - a[1]).slice(0, 3), m = Math.max(1, ...t.map(x => x[1])); return { text: 'Am meisten Likes = Krone! 👑', balken: t.length ? t.map(([id, v], i) => ({ name: `${i + 1}. ${api.spieler(id)?.name || ''}`, wert: v, max: m, farbe: ['#ffd23f', '#d9d9d9', '#e0a070'][i] })) : [{ name: 'Noch keiner …', wert: 0, max: 1, farbe: '#ffd23f' }] }; },
+      ende(e) { const t = Object.entries(e.l).sort((a, b) => b[1] - a[1])[0]; if (!t) return { text: 'Der Thron bleibt leer …' }; const k = api.spieler(t[0]); api.belohne(k, 60);
+        return { text: `👑 ${k.name} ist Inselkönig! +60 🐚`, sag: `Neuer Inselkönig: ${api.name(k)}!`, gut: true, id: k.id }; },
+    },
     abstimmung: {
       titel: 'Abstimmung', icon: '🗳️', dauer: 90, moeglich: () => !api.hatProjekt() && api.offeneProjekte().length >= 2,
-      start(e) { e.wahl = api.offeneProjekte().sort(() => Math.random() - .5).slice(0, 3); e.st = {};
+      start(e) { e.wahl = api.offeneProjekte().slice(0, 3).sort(() => Math.random() - .5); e.st = {};
         return `Abstimmung! Was bauen wir als Nächstes? ${e.wahl.map((w, i) => `${i + 1} für ${w.name}`).join(', ')}.`; },
       kommentar(e, p, t) { if (/^[123]$/.test(t) && +t <= e.wahl.length) { e.st[p.id] = +t - 1; return true; } },
       anzeige: e => { const z = e.wahl.map(() => 0); Object.values(e.st).forEach(i => z[i]++); const m = Math.max(1, ...z); return { text: 'Was bauen wir? Schreib 1, 2 oder 3', balken: e.wahl.map((w, i) => ({ name: `${i + 1}  ${w.name}`, wert: z[i], max: m, farbe: ['#ffd23f', '#7fe0c8', '#ff8fb8'][i] })) }; },
@@ -292,44 +369,84 @@ export function macheEvents(api) {
     krabbenrennen: e => { const r = Object.entries(e.teams).sort((a, b) => b[1] - a[1]); if (!r[0][1]) return 'Die Krabben stehen am Start … wählt ein Team oder liked einfach los!'; return zufall([`Team ${TEAMNAME[r[0][0]]} liegt vorne! … Aber ${TEAMNAME[r[1][0]]} holt auf!`, `Was für ein Rennen … ${TEAMNAME[r[0][0]]} vorne, … ${TEAMNAME[r[1][0]]} direkt dahinter!`, `Noch ${rest(e)} Sekunden … Team ${TEAMNAME[r[0][0]]} führt!`]); },
     teamduell: e => { const [a, b] = e.t.muschel >= e.t.kokos ? ['muschel', 'kokos'] : ['kokos', 'muschel']; return e.t[a] === e.t[b] ? 'Gleichstand! … Wer legt nach?' : zufall([`Team ${TEAMNAME[a]} liegt vorne … ${zahl(e.t[a])} zu ${zahl(e.t[b])}!`, `Kommt schon, Team ${TEAMNAME[b]} … ihr könnt das noch drehen!`]); },
     gluecksrad: () => ['Das Rad dreht sich … und dreht sich …', 'Wer wird es? … Spannung!', 'Langsamer … langsamer …'],
-    schatzsuche: e => { const z = [0, 0, 0, 0]; Object.values(e.tipp).forEach(i => z[i]++); const m = z.indexOf(Math.max(...z)); return z[m] ? zufall([`Die meisten tippen auf ${'ABCD'[m]} … aber stimmt das?`, `${'ABCD'[m]} ist gerade beliebt … ich sag nichts!`]) : 'A, B, C oder D? … Wo ist der Schatz?'; },
     zahlenraten: e => e.hinweis ? zufall([`${e.hinweis.replace(/ ⬆️| ⬇️/, '')} … weiter raten!`, `Heiß oder kalt? … ${e.hinweis.replace(/ ⬆️| ⬇️/, '')}!`]) : 'Eine Zahl zwischen eins und hundert … wer traut sich?',
     strandparty: e => e.boom ? 'Die Party kocht! … Weiter so!' : `Noch ${zahl(Math.max(0, e.ziel - e.stand))} Likes … bis zum Feuerwerk!`,
-    flaschenpost: () => ['Die Flasche treibt näher … wer schreibt zuerst flasche?', 'Was da wohl drin ist? … Schreibt flasche!', 'Noch hat sie keiner … schnell, flasche schreiben!'],
     moewenalarm: e => [`Noch ${5 - e.faenger.length} Plätze … schreibt fang!`, 'Die Möwe fliegt Kreise … fangt sie!', e.faenger.length ? `${e.faenger.length} haben schon zugegriffen … wer noch?` : 'Noch hat niemand die Möwe erwischt!'],
-    meeresbesuch: e => [e.gruss.size ? `Schon ${e.gruss.size} Grüße … schreibt hallo!` : 'Sagt doch mal hallo!', 'Schaut mal, wie schön … so nah an der Insel!', 'Jeder Gruß bringt zehn Muscheln … schreibt hallo!'],
     muschelregen: e => [`Noch ${rest(e)} Sekunden … jedes Like zählt doppelt!`, 'Es regnet Muscheln … jetzt liken lohnt sich doppelt!', 'Die Häuser wachsen gerade doppelt so schnell!'],
     bauturbo: e => [`Noch ${rest(e)} Sekunden Bau-Turbo … dreifache Muscheln!`, 'Die Krabben bauen im Turbo-Tempo!', 'Jetzt liken … dreifach für euer Haus!'],
     sternschnuppe: e => [`${e.wuensche.size} Wünsche … schnell, schreibt wunsch!`, 'Was wünscht ihr euch? … Schreibt wunsch!', 'Augen zu … und wünschen!'],
     wortjagd: e => [`Das Wort ist ${e.wort.toLowerCase()} … wer ist am schnellsten?`, `Noch ${3 - e.sieger.length} Plätze … schnell tippen!`],
     cocktail: () => ['Mango, Kokos oder Ananas … was kommt in den Cocktail?', 'Lecker … ich bin gespannt, was ihr mixt!'],
     ballons: e => [`Schon ${e.geplatzt} Ballons geplatzt … liked weiter!`, 'Peng! … Wer bringt den nächsten Ballon zum Platzen?'],
-    schildkroeten: e => [`Noch ${zahl(Math.max(0, e.ziel - e.stand))} Likes … die kleinen Schildkröten krabbeln!`, 'Liked weiter … gleich sind sie im Wasser!'],
     blumen: e => [`Schon ${e.p.size} Blumen … schreibt blume!`, 'Die Wiese wird immer bunter!'],
     emojiraetsel: () => ['Schaut euch die Emojis an … welches Wort ist gemeint?', 'Kleiner Tipp … es hat mit dem Strand zu tun!', 'Wer errät es zuerst?'],
     volleyball: e => { const [a, b] = e.t.links >= e.t.rechts ? ['Links', 'Rechts'] : ['Rechts', 'Links']; return [`Team ${a} liegt vorne … Team ${b}, gebt alles!`, 'Was für ein Ballwechsel!']; },
-    haialarm: e => [`Noch ${10 - e.gerettet.length} Plätze … schreibt ufer!`, 'Schnell raus aus dem Wasser!'],
     eiswagen: e => [`Noch ${zahl(Math.max(0, e.ziel - e.stand))} Likes … bis zum Eiswagen!`, 'Ich höre schon die Eiswagen-Musik …'],
     glueckszahl: e => [`Schon ${Object.keys(e.tipps).length} Tipps … eins bis zehn!`, 'Welche Zahl bringt heute Glück?'],
     strandquiz: e => [`${e.f[0]} … A, B oder C?`, 'Wer weiß es?'],
-    muschelsammeln: e => [`Noch ${20 - e.s.length} goldene Muscheln … schreibt sammeln!`, 'Schnell, bevor die Flut kommt!'],
     surfcontest: e => { const t = Object.entries(e.punkte).sort((a, b) => b[1] - a[1])[0]; return [t && t[1] ? `${api.name(api.spieler(t[0]))} reitet gerade ganz vorne!` : 'Schreibt surf, dann liked!', 'Was für Wellen heute!']; },
     kokoswurf: e => { const t = Object.entries(e.w).sort((a, b) => b[1] - a[1])[0]; return [t ? `Bester Wurf bisher … ${t[1]} Meter!` : 'Schreibt wurf … und die Kokosnuss fliegt!', 'Wer wirft am weitesten?']; },
     inselfoto: e => [`Schon ${e.f.length} auf dem Foto … schreibt cheese!`, 'Alle lächeln … gleich mache ich das Foto!'],
+    tauziehen: e => { const [a, b] = e.t.muschel >= e.t.seestern ? ['Muschel', 'Seestern'] : ['Seestern', 'Muschel']; return [`Team ${a} zieht gerade stärker … Team ${b}, haltet dagegen!`, 'Hau ruck! … Hau ruck!']; },
+    buchstabensalat: () => ['Schaut euch die Buchstaben genau an …', 'Wer bringt die Buchstaben in die richtige Reihenfolge?'],
+    wuerfeln: e => [`Schon ${Object.keys(e.w).length} Würfe … schreibt würfel!`, 'Wer würfelt eine Sechs?'],
+    papagei: e => [`Noch ${5 - e.sieger.length} Plätze … sprecht dem Papagei nach!`, 'Der Papagei wartet …'],
+    regenbogen: e => { const fehlt = ['rot', 'orange', 'gelb', 'grün', 'blau', 'lila'].filter(f => !e.f[f]); return fehlt.length ? [`Es fehlen noch … ${fehlt.join(', ')}!`] : null; },
+    likerekord: e => [`Schon ${zahl(e.stand)} Likes … der Rekord liegt bei ${zahl(e.rekord)}!`, 'Schneller, schneller!'],
+    motto: e => { const z = [0, 0, 0]; Object.values(e.st).forEach(i => z[i]++); const m = z.indexOf(Math.max(...z)); return z[m] ? [`${e.wahl[m]} liegt vorne!`] : ['Eins, zwei oder drei?']; },
+    mysterybox: e => [`Schon ${Object.keys(e.b).length} Boxen offen … schreibt box!`, 'Was wohl in eurer Box ist?'],
+    werbinich: e => { const n = Math.min(3, 1 + Math.floor((Date.now() - e.t0) / 20000)); return [`${['Erster', 'Zweiter', 'Dritter'][n - 1]} Hinweis: ${e.r[2][n - 1]}`]; },
+    hausparty: e => [`Schon ${e.g.size} Gäste … schreibt party!`, `Bei ${api.name(e.p)} ist was los!`],
+    leuchtturm: e => { const f = e.ziel - e.stand; return f <= 0 ? null : [`Noch ${zahl(f)} Likes … dann leuchtet er!`, 'Es flackert schon … weiter liken!']; },
+    nachbarhilfe: e => [`Schon ${e.summe} Muscheln für ${api.name(e.p)} … liked weiter!`, 'Gemeinsam baut es sich schneller!'],
+    inselgruss: e => [e.g.size ? `Schon ${e.g.size} Grüße … schreibt moin!` : 'Sagt doch mal moin!', 'Jeder Gruß bringt zehn Muscheln!'],
+    schatzkiste: () => ['Eins, zwei oder drei … wo ist das Gold?', 'Nur eine Kiste ist die richtige!'],
+    wahrfalsch: e => [`${e.f[0]} … wahr oder falsch?`, 'Was meint ihr?'],
+    inselkoenig: e => { const t = Object.entries(e.l).sort((a, b) => b[1] - a[1])[0]; return [t ? `${api.name(api.spieler(t[0]))} sitzt gerade auf dem Thron!` : 'Der Thron ist noch frei … liked los!', 'Wer holt sich die Krone?']; },
     abstimmung: e => { const z = e.wahl.map(() => 0); Object.values(e.st).forEach(i => z[i]++); const m = z.indexOf(Math.max(...z)), sum = z.reduce((a, b) => a + b, 0);
       if (!sum) return ['Was sollen wir bauen? … 1, 2 oder 3!', `${e.wahl.map((w, i) => `${i + 1} … ${w.name}`).join(', ')}. … Ihr entscheidet!`];
       const zweit = z.map((v, i) => [v, i]).sort((a, b) => b[0] - a[0])[1];
       return [`${e.wahl[m].name} liegt vorne … mit ${z[m] === 1 ? 'einer Stimme' : z[m] + ' Stimmen'}!`, sum === 1 ? `Die erste Stimme ist da … für ${e.wahl[m].name}!` : `Schon ${sum} Stimmen … ${e.wahl[m].name} führt!`, zweit && zweit[0] ? `${e.wahl[zweit[1]].name} ist dicht dran … noch ist alles offen!` : `Wer stimmt noch ab? … 1, 2 oder 3!`, `Noch ${rest(e)} Sekunden … stimmt ab!`]; },
   };
 
+  const PREIS = {
+    sturmflut: 'Hält der Deich, bekommen alle Helfer zwanzig Muscheln.', gluecksrad: 'Der Gewinner bekommt bis zu fünfhundert Muscheln, ein goldenes Dach oder einen Pool.',
+    krabbenrennen: 'Das Siegerteam bekommt fünfundzwanzig Muscheln.', teamduell: 'Jeder im Siegerteam bekommt dreißig Muscheln.',     zahlenraten: 'Wer die Zahl errät, bekommt hundert Muscheln.',
+    strandparty: 'Ist die Stimmung voll, gibt es ein Feuerwerk und fünfzehn Muscheln für alle.', moewenalarm: 'Jeder Fänger bekommt zwanzig Muscheln.',
+    sternschnuppe: 'Einer von euch bekommt einen Anbau geschenkt.', abstimmung: 'Das Gebäude mit den meisten Stimmen wird gebaut.',
+    wortjagd: 'Die Schnellsten bekommen vierzig, fünfundzwanzig und fünfzehn Muscheln.', cocktail: 'Wer die beliebteste Zutat wählt, bekommt fünfzehn Muscheln.',
+    emojiraetsel: 'Die richtige Lösung bringt fünfzig Muscheln.',
+    volleyball: 'Das Siegerteam bekommt fünfundzwanzig Muscheln.', eiswagen: 'Kommt der Eiswagen, gibt es fünfzehn Muscheln für jeden, der geliked hat.',
+    glueckszahl: 'Alle mit der richtigen Zahl bekommen dreißig Muscheln.', strandquiz: 'Jede richtige Antwort bringt zwanzig Muscheln.',     surfcontest: 'Der beste Surfer bekommt sechzig Muscheln.', kokoswurf: 'Der weiteste Wurf bringt vierzig Muscheln.', inselfoto: 'Alle auf dem Foto bekommen acht Muscheln.',
+    tauziehen: 'Das stärkste Team bekommt fünfundzwanzig Muscheln.', buchstabensalat: 'Die richtige Lösung bringt fünfzig Muscheln.', wuerfeln: 'Jede Sechs bringt dreißig Muscheln.',
+    papagei: 'Die ersten fünf bekommen je zwanzig Muscheln.',     likerekord: 'Brecht ihr den Rekord, bekommt jeder fünfundzwanzig Muscheln.', motto: 'Wer das Gewinner-Motto wählt, bekommt zehn Muscheln.', werbinich: 'Wer mich zuerst errät, bekommt fünfzig Muscheln.',
+    hausbesuch: 'Der Besuchte bekommt fünfundzwanzig Muscheln.', muschelregen: 'Eine Minute lang wächst jedes Haus doppelt so schnell.', bauturbo: 'Eine Dreiviertelminute lang wächst jedes Haus dreimal so schnell.',
+    ballons: 'Jeder geplatzte Ballon bringt zehn Muscheln.', blumen: 'Bei fünfundzwanzig Blumen bekommen alle Gärtner fünfzehn Muscheln.', regenbogen: 'Ist der Regenbogen komplett, bekommen alle Maler zwanzig Muscheln.',
+    hausparty: 'Jeder Gast bekommt zehn Muscheln, der Gastgeber fünf pro Gast.', leuchtturm: 'Leuchtet er, bekommen alle Helfer zwanzig Muscheln.',
+    nachbarhilfe: 'Der fleißigste Helfer bekommt dreißig Muscheln.', inselgruss: 'Jeder Gruß bringt zehn Muscheln.', schatzkiste: 'Wer die richtige Kiste wählt, bekommt dreißig Muscheln.',
+    wahrfalsch: 'Jede richtige Antwort bringt zwanzig Muscheln.', inselkoenig: 'Der Inselkönig bekommt sechzig Muscheln.',
+    mysterybox: 'In jeder Box stecken zwischen drei und fünfzig Muscheln.',
+  };
+  // Wer während eines Events Muscheln bekommt, zählt als Gewinner (für die Ansage am Ende)
+  const belohneEcht = api.belohne;
+  api.belohne = (p, n, x) => { if (ev && p && !x?.trost) (ev._belohnt ||= new Map()).set(p.id, p); belohneEcht(p, n, x); };
+  const namenText = ps => { const n = ps.map(p => api.name(p)); return n.length <= 3 ? n.join(n.length === 2 ? ' und ' : ', ').replace(/, ([^,]*)$/, ' und $1') : `${n.slice(0, 3).join(', ')} und ${n.length - 3} weitere`; };
+
   function starte(id) {
     const d = DEFS[id]; ev = { id, d, t0: Date.now(), ende: Date.now() + d.dauer * 1000 }; ergebnis = null;
-    const ansage = d.start(ev); verlauf = [id, ...verlauf].slice(0, 12);
+    const ansage = d.start(ev) + (PREIS[id] ? ' … ' + PREIS[id] : ''); verlauf = [id, ...verlauf].slice(0, 12);
     api.sende({ typ: 'eventStart', id });
     api.sag(ansage, 0); api.zustand();
   }
   function beende() {
-    const r = ev.d.ende(ev) || {}; ergebnis = { ...r, titel: ev.titel || ev.d.titel, icon: ev.icon || ev.d.icon, id: ev.id, bis: Date.now() + 9000 };
+    const r = ev.d.ende(ev) || {}, gew = [...(ev._belohnt?.values() || [])];
+    // Gewinner immer nennen (gesprochen und im Ergebnis), falls der Satz sie noch nicht enthält
+    if (gew.length && ev.id !== 'hausbesuch') {
+      const erster = api.name(gew[0]);
+      if (!r.sag || !r.sag.includes(erster)) r.sag = (r.sag ? r.sag + ' … ' : '') + (gew.length === 1 ? `Gewonnen hat ${erster}!` : `Gewonnen haben ${namenText(gew)}!`);
+      r.gewinnerText = '🏆 ' + gew.slice(0, 4).map(p => p.name).join(', ') + (gew.length > 4 ? ` +${gew.length - 4}` : '');
+    }
+    ergebnis = { ...r, titel: ev.titel || ev.d.titel, icon: ev.icon || ev.d.icon, id: ev.id, bis: Date.now() + 10000 };
     api.sende({ typ: 'eventEnde', id: ev.id, gut: !!r.gut, spielerId: r.id });
     if (r.sag) api.sag(r.sag, 0);
     ev = null; naechstes = Date.now() + MIN - 10000; api.zustand();
@@ -348,7 +465,7 @@ export function macheEvents(api) {
   // ---------- Geschenk-Shows: nach Wert gestaffelt, mit Namen des Spenders ----------
   function geschenkShow(p, gift, anzahl, coins) {
     const art = coins >= 1000 ? 'megashow' : coins >= 100 ? zufall(['feuerwerk', 'yacht', 'goldregen']) : coins >= 10 ? zufall(['delfin', 'ballon', 'flugzeug']) : zufall(['herzregen', 'muschelkonfetti', 'seifenblasen']);
-    api.sende({ typ: 'show', art, id: p.id, name: p.name, gift, anzahl, coins });
+    api.sende({ typ: 'show', art, id: p.id, name: p.name, gift: gift.name, anzeige: gift.anzeige, fuer: gift.fuer, anzahl, coins });
   }
 
   return {
@@ -358,7 +475,8 @@ export function macheEvents(api) {
     naechstesIn: () => ev ? 0 : Math.max(0, Math.round((naechstes - Date.now()) / 1000)),
     oeffentlich() {
       const a = ev ? { id: ev.id, titel: ev.titel || ev.d.titel, icon: ev.icon || ev.d.icon, rest: Math.max(0, Math.round((ev.ende - Date.now()) / 1000)), dauer: ev.d.dauer, faktor: ev.d.faktor || 1, ...ev.d.anzeige(ev) } : null;
-      return { event: a, ergebnis: ergebnis && { titel: ergebnis.titel, icon: ergebnis.icon, text: ergebnis.text, id: ergebnis.id, gut: !!ergebnis.gut, extra: ergebnis.extra }, eventIn: ev ? 0 : Math.max(0, Math.round((naechstes - Date.now()) / 1000)) };
+      if (a) a.preis = PREIS[ev.id] || '';
+      return { event: a, ergebnis: ergebnis && { titel: ergebnis.titel, icon: ergebnis.icon, text: ergebnis.text, id: ergebnis.id, gut: !!ergebnis.gut, extra: ergebnis.extra, gewinner: ergebnis.gewinnerText }, eventIn: ev ? 0 : Math.max(0, Math.round((naechstes - Date.now()) / 1000)) };
     },
     laeuft: () => !!ev,
     id: () => ev?.id || null,
