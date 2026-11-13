@@ -2625,7 +2625,7 @@ function gebSigns(c,z){if(z*S<=4)return;for(const g of GEB){if(GROWK!=null&&GROW
 // Herausgezoomt (Details nur wenige Pixel groß): Gebäude als Bild zwischenspeichern und regelmäßig auffrischen – spart viel Rechenzeit
 const SPR=new Map();
 function sprite(c,key,x0,y0,x1,y1,fn){const zs=cam.z*S;if(zs>=10){fn(c);return;}const m=c.getTransform(),sc=m.a,w=Math.ceil((x1-x0)*sc)+3,h=Math.ceil((y1-y0)*sc)+3;if(w*h>3e6||w<2||h<2){fn(c);return;}
- const fx=m.a*x0+m.e,fy=m.d*y0+m.f,dx=Math.floor(fx)-1,dy=Math.floor(fy)-1,sig=sc+'|'+(fx-dx).toFixed(3)+'|'+(fy-dy).toFixed(3)+'|'+Math.round(nightLevel()*24)+'|'+kind(),now=performance.now();let e=SPR.get(key);
+ const fx=m.a*x0+m.e,fy=m.d*y0+m.f,dx=Math.floor(fx)-1,dy=Math.floor(fy)-1,sig=sc+'|'+(fx-dx).toFixed(3)+'|'+(fy-dy).toFixed(3)+'|'+Math.round(nightLevel()*24)+'|'+kind()+'|'+(WK.on&&WK.me?WK.me.name:''),now=performance.now();let e=SPR.get(key);
  if(!e){e={cv:null,sig:'',want:'',t:0};SPR.set(key,e);}
  if(e.sig!==sig||now-e.t>(zs<4?900:300)){if(e.sig!==sig&&e.want!==sig){e.want=sig;fn(c);return;}// Ansicht bewegt sich: direkt zeichnen, Bild erst bei ruhiger Ansicht
   if(!e.cv)e.cv=document.createElement('canvas');if(e.cv.width!==w||e.cv.height!==h){e.cv.width=w;e.cv.height=h;}
