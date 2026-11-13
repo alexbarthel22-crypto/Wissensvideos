@@ -534,6 +534,28 @@ function tonLautstaerke() {
   musik.volume = Math.max(0, Math.min(1, musik.volume + (ziel - musik.volume) * .15));
   meerTon.volume = TON().meer;
 }
+// Liest eine PCM-WAV-Datei (wie sie „say“ erzeugt) direkt in einen Audio-Puffer
+function wavLesen(buf) {
+  const v = new DataView(buf), tag = o => String.fromCharCode(v.getUint8(o), v.getUint8(o + 1), v.getUint8(o + 2), v.getUint8(o + 3));
+  if (buf.byteLength < 44 || tag(0) !== 'RIFF' || tag(8) !== 'WAVE') throw new Error('keine WAV-Datei');
+  let o = 12, kanaele = 1, rate = 22050, bits = 16, format = 1, start = -1, laenge = 0;
+  while (o + 8 <= buf.byteLength) {
+    const id = tag(o), gr = v.getUint32(o + 4, true);
+    if (id === 'fmt ') { format = v.getUint16(o + 8, true); kanaele = v.getUint16(o + 10, true); rate = v.getUint32(o + 12, true); bits = v.getUint16(o + 22, true); }
+    else if (id === 'data') { start = o + 8; laenge = Math.min(gr, buf.byteLength - start); break; }
+    o += 8 + gr + (gr & 1);
+  }
+  if (start < 0) throw new Error('WAV ohne Daten');
+  const bps = bits / 8, n = Math.floor(laenge / (bps * kanaele)), p = AC.createBuffer(kanaele, Math.max(1, n), rate);
+  for (let k = 0; k < kanaele; k++) {
+    const d = p.getChannelData(k);
+    for (let i = 0; i < n; i++) {
+      const a = start + (i * kanaele + k) * bps;
+      d[i] = format === 3 ? v.getFloat32(a, true) : bits === 16 ? v.getInt16(a, true) / 32768 : bits === 8 ? (v.getUint8(a) - 128) / 128 : v.getInt32(a, true) / 2147483648;
+    }
+  }
+  return p;
+}
 const meldeStimme = (ok, grund = '') => fetch(`/tonstatus?id=${meineId}&stimme=${ok ? 1 : 0}&grund=${encodeURIComponent(String(grund).slice(0, 120))}`).catch(() => {});
 async function stimmeAbspielen(url) {                             // Stimme über Web Audio: einmal freigeschaltet, spielt sie immer
   if (tonRolle && AC && AC.state !== 'running') { try { await AC.resume(); } catch {} }   // z. B. nach Pause beim Live-Gehen
@@ -544,11 +566,17 @@ async function stimmeAbspielen(url) {                             // Stimme übe
     return stimmeEl.play().then(() => { stimmeLaeuft = performance.now() + 4000; meldeStimme(true); }).catch(e => meldeStimme(false, `Audio blockiert (${e.name}), AudioContext ${AC ? AC.state : 'fehlt'}`));
   }
   try {
-    const daten = await (await fetch(url)).arrayBuffer(), puffer = await AC.decodeAudioData(daten);
+    const r = await fetch(url, { cache: 'no-store' }), daten = await r.arrayBuffer();
+    let puffer;
+    try { puffer = wavLesen(daten); }                                // eigener WAV-Leser: braucht keinen Audio-Decoder
+    catch (e1) {
+      try { puffer = await AC.decodeAudioData(daten.slice(0)); }
+      catch (e2) { const k = String.fromCharCode(...new Uint8Array(daten.slice(0, 4))); throw new Error(`${e1.message}; Status ${r.status}, ${daten.byteLength} Bytes, Typ ${r.headers.get('content-type')}, Anfang „${k}“`); }
+    }
     const q = AC.createBufferSource(), g = AC.createGain(); q.buffer = puffer; g.gain.value = TON().stimme;
     q.connect(g); g.connect(AC.destination); q.start();
     stimmeLaeuft = performance.now() + puffer.duration * 1000 + 300; meldeStimme(true);
-  } catch (e) { meldeStimme(false, `Abspielen fehlgeschlagen (${e.name || e})`); }
+  } catch (e) { meldeStimme(false, `Abspielen fehlgeschlagen (${e.name}: ${e.message})`); }
 }
 setInterval(() => { if (tonRolle && (musik.paused || (AC && AC.state !== 'running'))) tonStarten(); }, 4000);   // Ton nach Unterbrechung selbst wieder an
 addEventListener('click', tonStarten); addEventListener('keydown', tonStarten); addEventListener('touchstart', tonStarten);
