@@ -29,7 +29,7 @@ Eine Mac-Stimme (unbegrenzt, offline) moderiert.
 |---|---|
 | Erster Like/Kommentar | eigenes Grundstück mit @Namen – wer früher kommt, wohnt näher an der Muschel |
 | 1 Like | 1 Muschel in die **Muschelkasse der Live-Insel** (getrennt von der Inselkasse der Haupt-Insel) + 1 Muschel fürs eigene Haus |
-| Haus-Stufen (20) | Zelt → Hängematten-Camp → Strohhütte → Fischerhütte → Stelzenhütte → Baumhaus → Bungalow → Surferhütte → Strandhaus → Leuchtturmhaus → Ferienhaus → Poolhaus → Villa → Glasvilla → Luxusvilla → Inselvilla mit Hubschrauberlandeplatz → Strandpalast → Korallenpalast → Muschelschloss → Perlenschloss |
+| Haus-Stufen (60) | Zelt → Hängematten-Camp → Strohhütte → Fischerhütte → Stelzenhütte → Baumhaus → Bungalow → Surferhütte → Strandhaus → Leuchtturmhaus → Ferienhaus → Poolhaus → Villa → Glasvilla → Luxusvilla → Inselvilla mit Hubschrauberlandeplatz → Strandpalast → Korallenpalast → Muschelschloss → Perlenschloss → danach 40 Prachtschlösser (Goldenes Perlenschloss, Sonnenpalast, … Muschel-Tal-Legende), jedes prächtiger: neue Farbe, Leuchten, Krone, Sterne, Türme, Fahnen, Regenbogen |
 | Rangliste „Beste Häuser“ | Name · Haus-Stufe · Muschel-Kontostand; höchste Haus-Stufe zuerst, bei gleicher Stufe die meisten Muscheln (die angezeigte Zahl) |
 | Kommentar `palme` `flagge` `garten` `laterne` `pool` `boot` | Anbau (ab bestimmter Stufe) |
 | Kommentar `rot` `blau` `lila` … | Hausfarbe |

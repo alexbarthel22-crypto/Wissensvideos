@@ -1044,6 +1044,51 @@ const A = HAUS_ALT, N = HAUS_NEU;
 const HAUS = [A[0], N.camp, A[1], N.fischer, A[2], N.baumhaus, A[3], N.surfer, A[4], N.leuchtturm, A[5], N.poolhaus, A[6], N.glasvilla, A[7], N.inselvilla, A[8], N.korallen, A[9], N.perlen];
 const HOEHE = [-38, -40, -46, -42, -62, -86, -46, -46, -64, -84, -76, -48, -66, -66, -60, -70, -82, -62, -82, -88];   // Dach-Oberkante je Stufe (für die Flagge)
 
+// ===== Stufe 21–60: Prachtschlösser – das Perlenschloss wird immer prächtiger (Farbe, Leuchten, Krone, Sterne, Türme, Fahnen, Regenbogen)
+const PRACHT = [   // [Wand, Dach/Akzent, Leuchten]
+  ['#ffe9a8', '#e0b43a', '#ffd23f'], ['#ffd29a', '#ff8a2a', '#ffb703'], ['#ffc4c4', '#e8433c', '#ff7f7f'], ['#ffe1ec', '#ff8fb8', '#ffd1dc'], ['#ffffff', '#e8433c', '#fff3b0'],
+  ['#c8f4ef', '#2ec4b6', '#7fe0c8'], ['#d9f2d0', '#3f9b45', '#a7e8a0'], ['#d6e8fa', '#3a6ea5', '#9cc9f5'], ['#fff6c8', '#c99a2e', '#ffe66d'], ['#e3e8ff', '#5a6acf', '#c9d6ff'],
+  ['#ffffff', '#ff6fa3', 'regenbogen'], ['#e6f6ff', '#7fbfe8', '#bde0fe'], ['#cfe0f5', '#1d4e89', '#5d8fd8'], ['#cfeee4', '#1b7f5a', '#52c49a'], ['#f8d0d4', '#b5172b', '#ff4d6d'],
+  ['#f2fbfc', '#7ac7d6', '#e0fbfc'], ['#f7f7f7', '#9aa7b8', '#ffffff'], ['#e3f4f6', '#3d8fa8', '#a8dadc'], ['#ffe2c6', '#e07a2b', '#f4a261'], ['#cde9f6', '#1d7fb3', '#48cae4'],
+  ['#d9f6fb', '#0096c7', '#90e0ef'], ['#fbe3bd', '#c97f1d', '#e9a03b'], ['#eef2ee', '#b48ead', 'regenbogen'], ['#d8f6f5', '#3fb8b6', '#7fdbda'], ['#fbf1ee', '#c9a0a0', '#f8edeb'],
+  ['#fff1c1', '#c99a2e', '#ffd23f'], ['#fff0b3', '#ff9f1c', '#ffb703'], ['#d6fff3', '#22b38f', '#80ffdb'], ['#e7d8ff', '#5a189a', '#c77dff'], ['#fff8cc', '#e0a800', '#ffd60a'],
+  ['#d6f7f3', '#178f87', '#2ec4b6'], ['#f3dfc2', '#8a4b14', '#e0a35b'], ['#ffd2c4', '#9e1f1f', '#ff5e3a'], ['#d1fbe8', '#05a678', '#06d6a0'], ['#ecdcff', '#7b2cbf', '#c77dff'],
+  ['#ffd6e8', '#c9005a', '#ff006e'], ['#fff3c4', '#e09f00', '#ffbe0b'], ['#ffe0cc', '#d6450a', '#fb5607'], ['#d9e7ff', '#2563d6', '#3a86ff'], ['#fff6d6', '#c99a2e', 'regenbogen'],
+];
+const REGENBOGEN = ['#e8433c', '#ff8a2a', '#ffd23f', '#57b85a', '#3fa0e8', '#9b5de5'];
+function prachtSchloss(c, t, stufe) {
+  const k = stufe - 19, [wand, akz, glanz] = PRACHT[(k - 1) % PRACHT.length], gs = Math.min(1.25, 1 + k * .006);
+  const glow = glanz === 'regenbogen' ? REGENBOGEN[Math.floor(t / 400) % 6] : glanz;
+  c.save(); c.scale(gs, gs);
+  // Leuchten hinter dem Schloss (wird mit der Stufe größer)
+  const r = 58 + Math.min(40, k * 1.5), lg = c.createRadialGradient(0, -48, 6, 0, -48, r);
+  lg.addColorStop(0, glow + 'aa'); lg.addColorStop(1, glow + '00'); c.fillStyle = lg; c.beginPath(); c.arc(0, -48, r, 0, 7); c.fill();
+  // Regenbogen ab Stufe 31
+  if (k >= 11) { c.lineWidth = 3.5; REGENBOGEN.forEach((col, i) => { c.strokeStyle = col; c.globalAlpha = .7; c.beginPath(); c.arc(0, -10, 76 - i * 4, Math.PI, 0); c.stroke(); }); c.globalAlpha = 1; }
+  // Hauptgebäude
+  const pg = c.createLinearGradient(-40, -60, 40, 0); pg.addColorStop(0, '#ffffff'); pg.addColorStop(.55, wand); pg.addColorStop(1, wand);
+  c.fillStyle = pg; c.fillRect(-36, -40, 72, 38); c.strokeStyle = akz; c.lineWidth = 2.5; c.strokeRect(-36, -40, 72, 38);
+  for (let i = 0; i < 4; i++) { c.fillStyle = akz; c.globalAlpha = .55; c.beginPath(); c.roundRect(-28 + i * 15 + (i > 1 ? 4 : 0), -34, 8, 13, [4, 4, 0, 0]); c.fill(); }
+  c.globalAlpha = 1; tuer(c, -7, -20, 14, 18, akz);
+  // Türme: 4, ab Stufe 28 sechs
+  const tuerme = k >= 8 ? [[-60, 52], [-46, 70], [-20, 54], [12, 54], [36, 70], [50, 52]] : [[-46, 70], [-20, 54], [12, 54], [36, 70]];
+  tuerme.forEach(([x, h], i) => {
+    c.fillStyle = pg; c.fillRect(x, -h, 12, h - 2); c.strokeStyle = akz; c.lineWidth = 2; c.strokeRect(x, -h, 12, h - 2);
+    c.fillStyle = akz; c.beginPath(); c.moveTo(x - 2, -h); c.lineTo(x + 6, -h - 14); c.lineTo(x + 14, -h); c.closePath(); c.fill();
+    if (k >= 4) { c.strokeStyle = INK; c.lineWidth = 1.2; c.beginPath(); c.moveTo(x + 6, -h - 14); c.lineTo(x + 6, -h - 26); c.stroke();       // Fahnen ab Stufe 24
+      c.fillStyle = glanz === 'regenbogen' ? REGENBOGEN[i % 6] : glow; c.beginPath(); c.moveTo(x + 6, -h - 26); c.lineTo(x + 16 + Math.sin(t * .006 + i) * 2, -h - 23); c.lineTo(x + 6, -h - 20); c.fill(); }
+  });
+  // Krone über der Mitte ab Stufe 23
+  if (k >= 3) { const y = -92 + Math.sin(t * .003) * 2; c.fillStyle = '#ffd23f'; c.strokeStyle = '#b8862a'; c.lineWidth = 1.5;
+    c.beginPath(); c.moveTo(-12, y); c.lineTo(-12, y - 10); c.lineTo(-6, y - 5); c.lineTo(0, y - 13); c.lineTo(6, y - 5); c.lineTo(12, y - 10); c.lineTo(12, y); c.closePath(); c.fill(); c.stroke();
+    c.fillStyle = '#e8433c'; c.beginPath(); c.arc(0, y - 4, 2.2, 0, 7); c.fill(); }
+  // kreisende Sterne: mehr, je höher die Stufe
+  const n = Math.min(12, 2 + Math.floor(k / 3));
+  for (let i = 0; i < n; i++) { const a = t * .0012 + i / n * 6.283, ph = (t * .002 + i * .3) % 1; stern(c, Math.cos(a) * 54, -46 + Math.sin(a) * 30, 2 + Math.sin(ph * Math.PI) * 3.5); }
+  c.restore();
+}
+for (let st = 20; st < 60; st++) { HAUS.push((c, f, t) => prachtSchloss(c, t, st)); HOEHE.push(-100); }
+
 
 const STREICH_MS = 2600;
 const SCHILDER = [];

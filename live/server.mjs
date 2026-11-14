@@ -18,7 +18,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-14 z5';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-15 a';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -85,7 +85,7 @@ function gibMuscheln(p, n, grund) {
   zustand();
 }
 
-const WEIBLICH = /(hütte|villa|Inselvilla mit Hubschrauberlandeplatz)$/i, MAENNLICH = /^(Bungalow|Strandpalast|Korallenpalast)$/;
+const WEIBLICH = /(hütte|villa|Inselvilla mit Hubschrauberlandeplatz|burg|residenz|legende)$/i, MAENNLICH = /(^Bungalow|palast)$/i;   // die Burg, die Residenz · der Palast · das Schloss/Imperium/Königreich
 const dativ = n => (WEIBLICH.test(n) ? 'einer ' : 'einem ') + n;
 const artikel = n => (WEIBLICH.test(n) ? 'eine ' : MAENNLICH.test(n) ? 'einen ' : 'ein ') + n;
 // Namen für die Stimme lesbar machen: "lena_xx.22" -> "lena xx"
