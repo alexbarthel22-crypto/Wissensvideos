@@ -18,7 +18,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-14 r';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-14 s';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -76,7 +76,7 @@ function gibMuscheln(p, n, grund) {
   geaendert = true;
   if (p.stufe > vorher) {
     sende({ typ: 'stufe', id: p.id, stufe: p.stufe });
-    if (grund !== 'start') sag(satz('stufe', { name: sprechName(p), stufe: artikel(CFG.stufen[p.stufe].name), stufeDativ: dativ(CFG.stufen[p.stufe].name), stufeName: CFG.stufen[p.stufe].name }), 2);
+    if (grund !== 'start' && einmal(p.id, 'stufe', 30000)) sag(satz('stufe', { name: sprechName(p), stufe: artikel(CFG.stufen[p.stufe].name), stufeDativ: dativ(CFG.stufen[p.stufe].name), stufeName: CFG.stufen[p.stufe].name }), 2);
   }
   zustand();
 }
@@ -131,7 +131,7 @@ function farbeAus(p, t) {                                 // „blau“ → Haus
   const anzeige = { gruen: 'grün', tuerkis: 'türkis', weiss: 'weiß' }[wort] || wort;
   sende({ typ: 'farbe', id: p.id, name: p.name, alt: p.farbe, neu: f, wort: anzeige });
   p.farbe = f; geaendert = true;
-  sag(`${sprechName(p)} streicht das Haus ${anzeige}!`, 2);
+  if (einmal(p.id, 'farbe', 60000)) sag(`${sprechName(p)} streicht das Haus ${anzeige}!`, 2);
 }
 function kommentar(u, text) {
   const id0 = String(u.uniqueId || '').toLowerCase(), t = String(text || '').toLowerCase().trim();
@@ -156,7 +156,7 @@ function kommentar(u, text) {
       if (p.muscheln < ab.kosten) { sende({ typ: 'info', id: p.id, text: `${ab.name}: ${ab.kosten} 🐚` }); continue; }
       p.anbauten.push(wort); geaendert = true;
       sende({ typ: 'anbau', id: p.id, was: wort });
-      sag(satz('anbau', { name: sprechName(p), anbau: { Boot: 'ein Boot', Palme: 'eine Palme', Laterne: 'eine Laterne', Flagge: 'eine Flagge' }[ab.name] || 'einen ' + ab.name }), 3);
+      if (einmal(p.id, 'anbau', 60000)) sag(satz('anbau', { name: sprechName(p), anbau: { Boot: 'ein Boot', Palme: 'eine Palme', Laterne: 'eine Laterne', Flagge: 'eine Flagge' }[ab.name] || 'einen ' + ab.name }), 3);
     }
   }
   zustand();
@@ -167,9 +167,12 @@ function geschenk(u, name, diamanten, anzahl) {
   const d = Math.max(1, diamanten || 1) * Math.max(1, anzahl || 1);   // Coins insgesamt: 1 Coin = 1 Muschel (= 0,01 €)
   const g = geschenkFormen(name, anzahl);                  // deutsch, mit Artikel: „für die Rose“, „einen Löwen“
   sende({ typ: 'geschenk', id: p.id, name: g.name, anzahl, diamanten: d });
-  EV.geschenkShow(p, g, anzahl, d);
+  if (d >= 10 || einmal(p.id, 'geschenkShow', 45000)) EV.geschenkShow(p, g, anzahl, d);   // kleine Geschenke: Show/Banner nur einmal, große immer
   inKasse(d * CFG.kasse.proCoin);
-  sag(satz(d >= 1000 ? 'geschenkMega' : d >= 200 ? 'geschenkGross' : d >= 20 ? 'geschenkMittel' : 'geschenkKlein', { name: sprechName(p), fuer: g.fuer, einAkk: g.einAkk, einNom: g.einNom, EinNom: grossKlein(g.einNom) }), 0);
+  const stufeG = d >= 1000 ? 3 : d >= 200 ? 2 : d >= 20 ? 1 : 0, vorher = geschenkStufe.get(p.id);
+  const danken = einmal(p.id, 'geschenk', 45000) || (vorher != null && stufeG > vorher);
+  geschenkStufe.set(p.id, danken ? stufeG : Math.max(stufeG, vorher ?? 0));
+  if (danken) sag(satz(d >= 1000 ? 'geschenkMega' : d >= 200 ? 'geschenkGross' : d >= 20 ? 'geschenkMittel' : 'geschenkKlein', { name: sprechName(p), fuer: g.fuer, einAkk: g.einAkk, einNom: g.einNom, EinNom: grossKlein(g.einNom) }), 0);
   gibMuscheln(p, d * CFG.muschelnProCoin, 'geschenk');
 }
 
@@ -233,15 +236,22 @@ function follow(u) {
   setzeBewohner(bewohner + 1, 'follow');
   sende({ typ: 'follow', id: p.id, name: p.name, nr: bewohner });
   inKasse(CFG.kasse.proFollow);
-  if (!followDank.includes(p)) followDank.push(p);               // Dank kommt, sobald Anna frei ist
+  if (!followDank.includes(p) && einmal(p.id, 'follow', 10 * 60000)) followDank.push(p);   // Dank kommt, sobald Anna frei ist – pro Person nur einmal
   gibMuscheln(p, CFG.muschelnFuerFollow, 'follow');
 }
 
+// Nur einmal danken/ansagen pro Person und Art, auch wenn es oft hintereinander passiert (Muscheln zählen trotzdem jedes Mal)
+const zuletztGedankt = new Map(), geschenkStufe = new Map();
+function einmal(id, art, ms) {
+  const k = id + '|' + art, t = zuletztGedankt.get(k) || 0;
+  if (Date.now() - t < ms) { zuletztGedankt.set(k, Date.now()); return false; }   // weiter hintereinander → Fenster verlängern
+  zuletztGedankt.set(k, Date.now()); return true;
+}
+setInterval(() => { for (const [k, t] of zuletztGedankt) if (Date.now() - t > 3600000) zuletztGedankt.delete(k); }, 600000);
 function teilen(u) {
   const p = spieler(u); if (!p) { inKasse(CFG.kasse.proShare); return; }
   inKasse(CFG.kasse.proShare);
-  sende({ typ: 'teilen', id: p.id });
-  sag(satz('teilen', { name: sprechName(p) }), 1);
+  if (einmal(p.id, 'teilen', 5 * 60000)) { sende({ typ: 'teilen', id: p.id }); sag(satz('teilen', { name: sprechName(p) }), 1); }
   zustand();
 }
 
