@@ -148,6 +148,11 @@ Der Mac bleibt automatisch wach, solange das Programm läuft (`caffeinate`). Das
 - **In LIVE Studio** zusätzlich: Video-Einstellungen auf **720p (720×1280), 30 FPS**, Bitrate ca. 2.500–3.000 kbps. Das entlastet den Mac am meisten.
 - „Muschel-Tal LIVE starten.command“ öffnet keinen Browser-Tab mehr (spart einen zweiten Durchlauf). Brauchst du doch einen (Fensteraufnahme): `http://localhost:8790` selbst öffnen.
 
+## Bildschärfe
+- Die Kamera bleibt immer nah bei den Häusern (keine Gesamtansicht mehr) – große Häuser, große weiße Namensschilder in fester Bildschirmgröße.
+- Schrift „Lilita One“ (Überschriften, Zahlen, Namen) und „Fredoka“ (Text), liegen in `seite/fonts` (frei, SIL Open Font License). Helle Schrift hat eine dunkle Kontur.
+- LIVE Studio: Link-Quelle 1080 × 1920, in den Einstellungen höchste Auflösung (1080p), 30 FPS und die höchste Bitrate wählen.
+
 ## Ton (Musik + Stimme)
 **Annas Stimme = Piper (offline):** Der macOS-Sprachdienst (`say`) blockiert, sobald LIVE Studio live ist. Darum erzeugt das Programm Annas Stimme selbst mit der freien Offline-Sprachsoftware **Piper** (deutsche Frauenstimme „Kerstin“, unbegrenzt, kostenlos). Beim ersten Start lädt „Muschel-Tal LIVE starten“ einmalig die Programmteile (npm) und die Stimme (ca. 60 MB). Ein Satz entsteht in ca. 0,2 s; hängt die Stimme, startet sie automatisch neu. Im Terminal steht dann „🗣️ Anna spricht mit der Offline-Stimme …“.
 
