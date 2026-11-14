@@ -56,7 +56,8 @@ async function zuruecksetzen(store) {
 // Teil-Zurücksetzen auf einen Zeitpunkt: alles, was ab „ab“ (ms) passiert ist, wird gelöscht (Buchungen, Spenden,
 // Erfolge, Story, Aufgabenliste von heute; Beanspruchung nur, wenn sie erst danach erfolgte). Läuft je Eintrag genau einmal.
 const HEUTE_9 = 1794556800000; // 13.11.2026 9:00 Uhr (Berlin)
-const ZURUECK = [["toca_lexi00", 1, HEUTE_9]];
+const TEST_14_11_13 = 1794657600000; // 14.11.2026 13:00 Uhr (Berlin): @charlieeee5108 ist Testkonto
+const ZURUECK = [["toca_lexi00", 1, HEUTE_9], ["charlieeee5108", 1, TEST_14_11_13]];
 async function zurueckAuf(store) {
   for (const [n, nr, ab] of ZURUECK) {
     const mk = "x/zurueck/" + n + "/" + nr;
