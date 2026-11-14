@@ -89,9 +89,9 @@ CMT = """.cmt { position: absolute; left: 140px; width: 800px; border-radius: 30
 
 
 # s01 – Hook im Stil von Tag 1: pinke Balken, Wörter springen groß hervor, Sticker „GEBAUT!“
-QL = [[("DIESE", "Diese")], [("INSEL-WELT", "Insel-Welt")], [("WÄCHST,", "wächst"), ("WENN", "wenn")], [("DU", "du"), ("FOLGST!", "folgst")]]
+QL = [[("DIESE", "Diese")], [("INSEL-WELT", "Insel-Welt")], [("WÄCHST", "wächst"), ("DURCH", "durch")], [("JEDEN", "jeden"), ("FOLLOWER!", "Follower")]]
 QW = [w for ln in QL for w in ln]
-YW = ("WÄCHST,", "DU", "FOLGST!")
+YW = ("WÄCHST", "JEDEN", "FOLLOWER!")
 SP = [(110, 560, 46), (900, 600, 34), (70, 960, 30), (930, 1010, 44), (180, 1230, 38), (820, 1200, 30)]
 scene("s01", LILITA + "\n    " + PT + "\n" + FL + """
     #s01-ray { position: absolute; left: -460px; top: 300px; width: 2000px; height: 2000px; border-radius: 50%; background: repeating-conic-gradient(rgba(255,250,210,.28) 0 8deg, rgba(255,255,255,0) 8deg 20deg); -webkit-mask: radial-gradient(circle, #000 15%, transparent 60%); }
@@ -108,7 +108,7 @@ scene("s01", LILITA + "\n    " + PT + "\n" + FL + """
       
       <div id="s01-hk">""" + "".join('<div class="ln" id="s01-l' + str(j) + '">' + "".join(f'<span id="s01-w{QW.index(w)}">{w[0]}</span>' for w in ln) + '</div>' for j, ln in enumerate(QL)) + """</div>
       """ + "".join(f'<div class="s01-sp" id="s01-sp{k}" data-layout-ignore style="left:{x}px;top:{y}px;font-size:{f}px">✦</div>' for k, (x, y, f) in enumerate(SP)) + drops("s01-p", 22, 5, 'sc', 540, 900, "🏠", 600, 820)[0],
-"""      const sc = at("L1", "folgst");
+"""      const sc = at("L1", "Follower");
       tl.set(["#s01-ray"], { opacity: 1 }, 0);
       tl.fromTo("#s01-ray", { rotation: 0 }, { rotation: 40, duration: 4, ease: "none" }, 0);
       tl.fromTo("#s01-rv", { opacity: .45 }, { opacity: 1, duration: .14, yoyo: true, repeat: 17, ease: "sine.inOut", immediateRender: false }, 0);
@@ -201,10 +201,14 @@ KS = [("🍹 Coco Bay", "#ff6a1a", "Coco", "L3x", "@priv.greto.2"), ("🏊 Kokos
 scene("s03", LILITA + "\n    " + PILL + """
     #s03-t { top: 280px; font-size: 52px; background: #2e9e5b; }
     .s03-d { top: 390px; font-size: 60px; font-family: "Lilita One", sans-serif; font-weight: 400; }
+    #s03-k { top: 620px; font-size: 38px; background: linear-gradient(100deg, #ff2e7e, #7b3fe0); }
     .s03-e { top: 500px; font-size: 42px; background: #fff; color: #2a1b12; }""",
 """      <div id="s03-t" class="pl">🥥 NEU auf der Kokos-Küste!</div>
+      <div id="s03-k" class="pl">💬 Was fehlt euch noch? Kommentiert es! 👇</div>
       """ + "\n      ".join(f'<div id="s03-d{i}" class="pl s03-d" style="background:{c}">{l}</div><div id="s03-e{i}" class="pl s03-e">👑 Leitung: {u}</div>' for i, (l, c, k, li, u) in enumerate(KS)),
-"""      tl.fromTo("#s03-t", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, line("L3")[0]);
+"""      tl.fromTo("#s03-k", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, line("L3k")[0] - .1);
+      tl.to("#s03-k", { scale: 1.08, duration: .2, yoyo: true, repeat: 5, ease: "sine.inOut" }, at("L3k", "Kommentiert"));
+      tl.fromTo("#s03-t", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, line("L3")[0]);
       """ + "\n      ".join(f'tl.fromTo("#s03-d{i}", {{ opacity: 0, scale: .3 }}, {{ opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }}, at("{li}", "{k}") - .1); tl.fromTo("#s03-e{i}", {{ opacity: 0, y: 30 }}, {{ opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }}, line("{li}")[1] + .1); tl.to("#s03-d{i}", {{ scale: 1.08, duration: .18, yoyo: true, repeat: 3, ease: "sine.inOut" }}, at("{li}", "{k}") + .3);'
         + (f' tl.to(["#s03-d{i}", "#s03-e{i}"], {{ opacity: 0, y: -20, duration: .2 }}, line("{KS[i+1][3]}")[0] - .35);' if i < 2 else '') for i, (l, c, k, li, u) in enumerate(KS)))
 

@@ -41,16 +41,16 @@
     },
     {
      "name": "impact-bass-2",
-     "at": "L1:folgst",
+     "at": "L1:Follower",
      "volume": 0.5
     }
    ],
    "lines": [
     {
      "id": "L1",
-     "text": "Diese *g:Insel-Welt *g:wächst, / wenn *y:du *y:folgst!",
+     "text": "Diese *g:Insel-Welt *g:wächst / durch *y:jeden *y:Follower!",
      "speed": 0.95,
-     "style": "Style: a young German guy, around 20, extremely excited and loud, almost shouting with joy, asking an intriguing question with suspense, then excitedly revealing the answer, explosive energy, natural German intonation, normal pitch.\nPace: brisk. Say the sentence exactly once and stop after \"folgst\". \nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
+     "style": "Style: a young German guy, around 20, extremely excited and loud, almost shouting with joy, asking an intriguing question with suspense, then excitedly revealing the answer, explosive energy, natural German intonation, normal pitch.\nPace: brisk. Say the sentence exactly once and stop after \"Follower\". \nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
     }
    ]
   },
@@ -169,6 +169,11 @@
      "name": "ka-ching",
      "at": "L3z:Coast",
      "volume": 0.3
+    },
+    {
+     "name": "pop",
+     "at": "L3k:Kommentiert",
+     "volume": 0.45
     }
    ],
    "lines": [
@@ -199,6 +204,13 @@
      "speed": 1.1,
      "style": "Style: a young German guy, around 20, genuinely excited, talking to his followers like friends, energetic and warm, natural German intonation, not an announcer, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
      "pause": 1.6
+    },
+    {
+     "id": "L3k",
+     "text": "Was *y:fehlt euch noch? / *p:Kommentiert es!",
+     "speed": 1.1,
+     "style": "Style: a young German guy, around 20, genuinely excited, talking to his followers like friends, energetic and warm, natural German intonation, not an announcer, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+     "pause": 1.0
     }
    ]
   },
