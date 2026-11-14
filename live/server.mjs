@@ -18,7 +18,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-14 q';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-14 r';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -766,6 +766,7 @@ const server = http.createServer((req, res) => {
 });
 
 // ---------- TikTok-Verbindung ----------
+var geschenkGesehen = new Map();
 var tiktokStatus = TEST ? 'Test-Modus' : 'noch nicht verbunden', tiktokEreignisse = 0, tiktokLetztes = 0, likeLogZeit = 0;
 function tt(art, text) {                                     // jedes echte TikTok-Ereignis kurz im Terminal zeigen
   tiktokEreignisse++; tiktokLetztes = Date.now();
@@ -799,11 +800,16 @@ async function verbinde() {
   c.on(WebcastEvent.MEMBER, d => { const u = U(d.user); if (!u?.uniqueId) return; tt('👋', `${nm(d)} ist da`); beitritt(u); });
   c.on(WebcastEvent.GIFT, d => {
     d.user = U(d.user);
-    const g = d.giftDetails || {};
-    if (g.giftType === 1 && !d.repeatEnd) return; // Serie läuft noch – erst am Ende zählen
-    tt('🎁', `${nm(d)}: ${g.giftName || 'Geschenk'} ×${d.repeatCount || 1}`);
-    const ex = d.extendedGiftInfo || {};
-    geschenk(d.user || {}, g.giftName || ex.name || 'das Geschenk', g.diamondCount || ex.diamond_count || 1, d.repeatCount || 1);
+    // Neue Schnittstelle: Geschenk steht in d.gift (name, diamondCount, type), früher in d.giftDetails (giftName, giftType)
+    const g = d.gift || d.giftDetails || {}, ex = d.extendedGiftInfo || {};
+    const serie = g.type === 1 || g.giftType === 1 || g.combo;
+    if (serie && !d.repeatEnd) return;                     // Serie (z. B. 5 Rosen) läuft noch – nur einmal am Ende danken
+    const schluessel = `${nm(d)}|${d.giftId || g.id}|${d.groupId || ''}|${d.repeatCount || 1}`;
+    if (geschenkGesehen.has(schluessel)) return;            // dieselbe Meldung kommt manchmal doppelt
+    geschenkGesehen.set(schluessel, Date.now()); for (const [k, t] of geschenkGesehen) if (Date.now() - t > 30000) geschenkGesehen.delete(k);
+    const name = g.name || g.giftName || ex.name || '', coins = g.diamondCount || ex.diamond_count || 1, anzahl = d.repeatCount || d.comboCount || 1;
+    tt('🎁', `${nm(d)}: ${name || 'Geschenk'} ×${anzahl} (${coins * anzahl} Coins)`);
+    geschenk(d.user || {}, name, coins, anzahl);
   });
   c.on(WebcastEvent.STREAM_END, () => { console.log('Stream beendet.'); S.jobs = {}; zustand(); speichern(); });   // Jobs enden mit dem Stream
   c.on('disconnected', () => { tiktokStatus = 'getrennt'; console.log('⚠️  Verbindung zu TikTok weg – neuer Versuch in 15 s'); setTimeout(versuche, 15000); });

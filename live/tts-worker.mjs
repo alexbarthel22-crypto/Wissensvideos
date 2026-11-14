@@ -53,8 +53,18 @@ async function sprich(text) {
   if (Object.keys(cfg.speaker_id_map || {}).length) feeds.sid = new ort.Tensor('int64', BigInt64Array.from([0n]), [1]);
   return (await sitzung.run(feeds)).output.data;
 }
+// Aussprache: englische Wörter so schreiben, wie man sie spricht (nur für die Stimme)
+const AUSSPRACHE = [
+  [/\bLikes\b/gi, 'Leiks'], [/\bLike\b/gi, 'Leik'], [/\bliken\b/gi, 'leiken'], [/\bliked\b/gi, 'leikt'], [/\bgeliked\b/gi, 'geleikt'], [/\blikt\b/gi, 'leikt'],
+  [/Like-/g, 'Leik-'], [/\bEvents\b/gi, 'Iwänts'], [/\bEvent\b/gi, 'Iwänt'], [/Event-/g, 'Iwänt-'], [/\bLIVE\b/g, 'Leif'], [/\blive\b/g, 'leif'],
+  [/\bHappy Hour\b/gi, 'Häppi Auer'], [/\bMystery\b/gi, 'Misteri'], [/\bTeams?\b/gi, m => m.endsWith('s') ? 'Tiems' : 'Tiem'], [/\bSurf/gi, 'Sörf'],
+  [/\bCocktail/gi, 'Kocktäil'], [/\bcool\b/gi, 'kuhl'], [/\bTikTok\b/gi, 'Tick Tock'], [/\bCoins?\b/gi, m => m.endsWith('s') ? 'Keuns' : 'Keun'],
+  [/\bCafé\b/g, 'Kaffee'], [/\bFollower\b/gi, 'Folower'], [/\bStream\b/gi, 'Striem'], [/\bShow\b/gi, 'Schou'], [/\bQuiz\b/gi, 'Kwiss'], [/@/g, ''],
+];
+const sprechbar = t => AUSSPRACHE.reduce((x, [a, b]) => x.replace(a, b), String(t));
 // „…“ = kurze Sprechpause: Teile einzeln sprechen, Stille dazwischen
 async function satz(text) {
+  text = sprechbar(text);
   const teile = String(text).split(/\s*…\s*/).map(t => t.trim()).filter(Boolean);
   const stille = new Float32Array(Math.round(RATE * .25)), stuecke = [];
   for (const [i, t] of teile.entries()) { if (i) stuecke.push(stille); stuecke.push(await sprich(t)); }

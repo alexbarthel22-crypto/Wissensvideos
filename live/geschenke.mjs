@@ -80,6 +80,10 @@ const ART = { m: ['der', 'den', 'ein', 'einen'], w: ['die', 'die', 'eine', 'eine
 
 // Liefert alle Formen für Sätze: name, mehr, fuerDen ("für den Löwen"), einAkk ("einen Löwen"), einNom ("ein Löwe")
 export function geschenkFormen(englisch, anzahl = 1) {
+  if (!String(englisch || '').trim()) {                           // kein Name übermittelt: neutral „dein Geschenk“
+    return anzahl > 1 ? { name: 'Geschenke', anzeige: `${anzahl} Geschenke`, fuer: `deine ${anzahl} Geschenke`, einAkk: `${anzahl} Geschenke`, einNom: `${anzahl} Geschenke` }
+      : { name: 'Geschenk', anzeige: 'Geschenk', fuer: 'dein Geschenk', einAkk: 'ein Geschenk', einNom: 'ein Geschenk' };
+  }
   const e = LISTE[String(englisch || '').toLowerCase().trim()];
   const [name, g, mehr, akk] = e || [String(englisch || 'Geschenk'), 's', String(englisch || 'Geschenke')];
   const a = ART[g], plural = anzahl > 1 || g === 'p';

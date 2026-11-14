@@ -295,7 +295,11 @@ function ereignis(e) {
       if (!zeig()) setTimeout(zeig, 1300);
       break;
     }
-    case 'geschenk': if (pl) funken(pl, '💖', 10 + Math.min(30, e.diamanten)); break;
+    case 'geschenk': if (pl) {                                       // Feier am Haus des Spenders: je wertvoller, desto größer
+      funken(pl, '💖', 10 + Math.min(30, e.diamanten));
+      if (e.diamanten >= 20) { fokus(pl, 6000, true); setTimeout(() => hausFeuerwerk(pl, Math.min(20, 4 + Math.round(Math.log2(e.diamanten) * 2))), 600); }
+      if (e.diamanten >= 200) setTimeout(() => { funken(pl, '🎉', 30); hausFeuerwerk(pl, 20); }, 2600);
+    } break;
     case 'show':
       if (e.coins < 10) { banner.push({ t: 0, oben: `🎁 Danke ${e.name}!`, unten: `für ${e.fuer || e.gift} · +${e.coins} 🐚`, farbe: PINK }); if (pl) funken(pl, { herzregen: '💖', muschelkonfetti: '🐚', seifenblasen: '🫧' }[e.art] || '💖', 16); }
       else showStart(e);
