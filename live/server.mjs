@@ -18,10 +18,27 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-15 a';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-15 b';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
+
+// ---------- Erfolg „Live dabei“ auf muscheltal.de ----------
+// Alle Zuschauer, die im echten LIVE etwas tun (beitreten, kommentieren, liken, folgen, teilen, schenken), werden
+// gesammelt alle 15 s an muscheltal.de gemeldet. Schlüssel liegt nur lokal in live-schluessel.txt (nicht im Repo).
+const LIVE_KEY = (() => { try { return fs.readFileSync(path.join(DIR, 'live-schluessel.txt'), 'utf8').trim(); } catch { return process.env.MUSCHELTAL_LIVE_SCHLUESSEL || ''; } })();
+const liveOffen = new Set(), liveFertig = new Set();
+function liveDabei(id) { id = String(id || '').toLowerCase().replace(/^@/, ''); if (TEST || !LIVE_KEY || !id || liveFertig.has(id)) return; liveOffen.add(id); }
+if (!TEST && LIVE_KEY) setInterval(async () => {
+  if (!liveOffen.size) return;
+  const namen = [...liveOffen].slice(0, 300);
+  try {
+    const r = await fetch('https://muscheltal.de/api/live', { method: 'POST', headers: { 'content-type': 'application/json', 'x-live-schluessel': LIVE_KEY }, body: JSON.stringify({ namen }) });
+    if (r.ok) { for (const n of namen) { liveOffen.delete(n); liveFertig.add(n); } const d = await r.json().catch(() => ({})); if (d.neu) console.log(`📺 muscheltal.de: ${d.neu} neue Zuschauer für „Live dabei“ gemeldet${d.sofort ? ` (${d.sofort} sofort freigeschaltet)` : ''}`); }
+    else if (r.status === 403) console.log('⚠️  muscheltal.de: Live-Schlüssel stimmt nicht (live-schluessel.txt prüfen)');
+  } catch {}
+}, 15000);
+if (!TEST) console.log(LIVE_KEY ? '📺 Erfolg „Live dabei“: Zuschauer werden an muscheltal.de gemeldet' : 'ℹ️  Erfolg „Live dabei“ aus (keine live-schluessel.txt)');
 
 // ---------- Spielstand ----------
 const leer = () => ({ spieler: {}, reihenfolge: [], projekt: null, fertig: [], likesGesamt: 0, kasse: 0 });
@@ -874,7 +891,7 @@ async function verbinde() {
   if (CFG.eulerApiKey) opt.signApiKey = CFG.eulerApiKey;   // optional: eigener Schlüssel von eulerstream.com (stabiler)
   const c = new TikTokLiveConnection(CFG.tiktokName, opt);
   // Neue TikTok-Schnittstelle: Benutzername steht in displayId (früher uniqueId), Kommentar in content, Likes in count
-  const U = u => u && { ...u, uniqueId: u.uniqueId || u.displayId || u.username || '', nickname: u.nickname || '' };
+  const U = u => { const r = u && { ...u, uniqueId: u.uniqueId || u.displayId || u.username || '', nickname: u.nickname || '' }; if (r?.uniqueId) liveDabei(r.uniqueId); return r; };
   const nm = d => '@' + (U(d.user)?.uniqueId || '?');
   const txt = d => d.content ?? d.comment ?? '';
   c.on(WebcastEvent.CHAT, d => { const u = U(d.user); if (!u?.uniqueId) return; tt('💬', `${nm(d)}: ${txt(d)}`); kommentar(u, txt(d)); });

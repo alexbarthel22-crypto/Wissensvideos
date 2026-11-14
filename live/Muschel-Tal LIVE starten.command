@@ -26,6 +26,12 @@ fi
 if pgrep -f "server.mjs --test" >/dev/null; then
   echo "🧪 Ein Probelauf lief noch – wird beendet."; pkill -f "server.mjs --test"; pkill -f "cloudflared tunnel"; sleep 2
 fi
+# Erfolg „Live dabei“ auf muscheltal.de: Schlüssel einmalig eingeben (wird nur auf diesem Mac gespeichert)
+if [ ! -f live-schluessel.txt ]; then
+  echo "📺 Für den Erfolg „Live dabei“ auf muscheltal.de: Schlüssel einfügen und Enter drücken (leer lassen = ohne)."
+  read -r -p "Schlüssel: " LIVE_SCHLUESSEL_EINGABE
+  [ -n "$LIVE_SCHLUESSEL_EINGABE" ] && printf '%s' "$LIVE_SCHLUESSEL_EINGABE" > live-schluessel.txt && echo "✅ Gespeichert."
+fi
 source ./tunnel.sh
 starte_tunnel
 trap stoppe_tunnel EXIT

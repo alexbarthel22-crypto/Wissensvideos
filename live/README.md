@@ -205,3 +205,6 @@ Ohne Stimme starten: `node server.mjs --still`.
 - Alle 30 s zeigt eine **ℹ️-Zeile**: TikTok-Verbindung, Anzahl Ereignisse, Live-Seiten, über welchen Weg Anna spricht.
 - Steht dort dauerhaft „TikTok: nicht verbunden“: kostenlosen Schlüssel auf eulerstream.com holen und in `einstellungen.json` bei `eulerApiKey` eintragen.
 - Bestätigt die Live-Seite Annas Stimme nicht, spricht sie automatisch über die Mac-Lautsprecher.
+
+## Erfolg „Live dabei“ auf muscheltal.de
+Alle Zuschauer, die im echten LIVE etwas tun (beitreten, kommentieren, liken, folgen, teilen, schenken), werden alle 15 s an `https://muscheltal.de/api/live` gemeldet und bekommen dort den Erfolg „📺 Live dabei“. Dafür beim ersten Start den Schlüssel einfügen (wird nur lokal in `live-schluessel.txt` gespeichert, nicht im Repo). Im Test-Modus wird nichts gemeldet.
