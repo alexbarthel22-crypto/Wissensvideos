@@ -18,7 +18,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-15 b';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-15 c';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -582,8 +582,9 @@ try {
 } catch {}
 const musikListe = () => {
   let l = []; try { l = fs.readdirSync(MUSIK_ORDNER).filter(f => f.toLowerCase().endsWith('.mp3') && !/^(atmo|meer)/.test(f)).sort(); } catch {}
-  const cozy = l.filter(f => f.startsWith('cozy_'));          // die entspannte Musik hat Vorrang vor älteren Stücken
-  return cozy.length ? cozy : l;
+  // die ruhige Strand-Musik hat Vorrang (kein Klingklang, keine hohen Töne), dann „cozy“, dann ältere Stücke
+  for (const pre of ['strand_', 'cozy_']) { const t = l.filter(f => f.startsWith(pre)); if (t.length) return t; }
+  return l;
 };
 const MUSIK_DATEIEN = musikListe().map(f => path.join(MUSIK_ORDNER, f));
 if (!MUSIK_DATEIEN.length) console.log('⚠️  Keine Musik gefunden – bitte die MP3-Dateien in den Ordner „werkzeug/musik“ legen (im Programmordner).');
