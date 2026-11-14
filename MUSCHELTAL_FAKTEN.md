@@ -341,3 +341,4 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - Abstimmung: **Tierheim kommt zuerst** (bei 800). **721 Bewohner** (laut Nutzer) → noch 79.
 - Aufruf: „Was soll ich als Nächstes bauen? Schreib's in die Kommentare!“ + Folgen = eigenes Haus.
 - **Teaser:** Im nächsten Video werden **2 Plätze auf Maries Party-Yacht** (@marie18034, White Pearl) verlost.
+- **Update 14.11. (Kokos-Jobs):** Wer einen Job auf der Kokos-Küste hat (Coco Bay, Kokos-Bad, Coast & Cotton, Gebäude 1:…), muss auch dort wohnen – `bau.py` tauscht automatisch mit dem/der Ersten auf Kokos (ohne Job/Nachbarn-Wunsch). Jetzt: @lionaaa013 (Leitung Kokos-Bad) zieht auf die Kokos-Küste, @ello_lein dafür auf die Haupt-Insel (Hütte 62). Kokos-Bad-Schild: Kokosnuss mit mehr Abstand zum Wort. Erfolg „Schöpfer-Kontakt“ bei @haltsmaulimmeroderso entfernt (`erfolg_entzug`).

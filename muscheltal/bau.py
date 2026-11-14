@@ -196,6 +196,12 @@ def _haupt_jobs(insel):
     return {n.lower().lstrip("@") for n, j in (insel.get("jobs") or {}).items() if j and j[1] in orte}
 
 
+def _kokos_jobs(insel):
+    """Wer auf der Kokos-Küste arbeitet (Gebäude mit key 1:… oder Coco Bay, Kokos-Bad, Coast & Cotton) – muss dort wohnen."""
+    orte = {g["name"] for g in insel.get("gebaeude", []) if str(g.get("key", "")).startswith("1:")} | {"Coco Bay", "Kokos-Bad", "Coast & Cotton"}
+    return {n.lower().lstrip("@") for n, j in (insel.get("jobs") or {}).items() if j and j[1] in orte}
+
+
 _ARB_CACHE = {}
 
 
@@ -272,6 +278,17 @@ def insel_je(sauber, insel):
             letzter = max(kand)
             isl[letzter], isl[k] = isl[k], 0
             print(f"Nachbarn: @{sauber[k][0].lstrip('@')} zieht auf die Haupt-Insel, @{sauber[letzter][0].lstrip('@')} zieht dafür um")
+    # Wer einen Job auf der Kokos-Küste hat, muss auch dort wohnen: tauscht mit dem/der Ersten (niedrigste Nr.) auf Kokos,
+    # der/die dort keinen Job hat und keinen Nachbarn-Wunsch → zieht dafür auf die Insel des Arbeiters
+    kj = _kokos_jobs(insel)
+    for k in [j for j, r in enumerate(sauber) if r[0].lower().lstrip("@") in kj and isl[j] != 1 and r[0].lower().lstrip("@") not in wo]:
+        kand = [j for j in range(len(sauber)) if isl[j] == 1 and j not in geschuetzt and j not in mit
+                and sauber[j][0].lower().lstrip("@") not in wo and sauber[j][0].lower().lstrip("@") not in kj]
+        if not kand:
+            break
+        erster = min(kand)
+        isl[erster], isl[k] = isl[k], 1
+        print(f"Kokos-Job: @{sauber[k][0].lstrip('@')} zieht auf die Kokos-Küste, @{sauber[erster][0].lstrip('@')} zieht dafür um")
     return isl
 
 
