@@ -433,7 +433,7 @@
     "_hinweis": "Alle 2 Minuten (von Start zu Start) ein zufälliges Event, jedes dauert 1 Minute (dauerSek). 50 verschiedene, nie dasselbe wie eins der letzten 10.",
     "dauerSek": 60
   },
-  "folgeAufrufMinuten": 3,
+  "folgeAufrufMinuten": 15,
   "startMuscheln": 0,
   "_startMuscheln": "Startbonus beim ersten Like/Kommentar (0 = man startet mit dem Zelt).",
   "eulerApiKey": "",
@@ -450,5 +450,6 @@
   "grossesGrundstueckAbStufe": 12,
   "_grossesGrundstueck": "Ab dieser Stufe (12 = Villa, 800 Muscheln) zieht das Haus auf ein großes Doppel-Grundstück.",
   "muschelnProKommentar": 2,
-  "_muschelnProKommentar": "Muscheln fürs eigene Haus pro Kommentar (höchstens alle 30 Sekunden)."
+  "_muschelnProKommentar": "Muscheln fürs eigene Haus pro Kommentar (höchstens alle 30 Sekunden).",
+  "_folgeAufruf": "Freundlicher Hinweis aufs Folgen höchstens alle 15 Minuten – häufige, gleiche Aufrufe wertet TikTok als „repetitive Trigger“."
 }

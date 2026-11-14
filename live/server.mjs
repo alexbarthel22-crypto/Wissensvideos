@@ -18,7 +18,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-14 v';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-14 w';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -592,9 +592,7 @@ const MODERATION = [
   () => satz('tipp'),
   () => { const s = EV.naechstesIn(); return s > 45 ? satz('teaser', { zeit: s >= 100 ? `${Math.round(s / 60)} Minuten` : 'gut einer Minute' }) : null; },
   () => rundgang(),
-  H,
   () => satz('fakt'),
-  () => satz('geschenkInfo'),
   () => { const z = zielJetzt(); return z ? satz('ziel', { rest: z.ziel - bewohner, projekt: z.name, bewohner, zielzahl: z.ziel }) : null; },
   H,
   () => satz('frage'),
@@ -602,7 +600,6 @@ const MODERATION = [
   () => rundgang(),
   () => S.kasse > 0 ? satz('kasse', { kasse: S.kasse.toLocaleString('de-DE') }) : null,
   () => S.projekt ? satz('projekt', { projekt: S.projekt.name, prozent: Math.floor(S.projekt.stand / S.projekt.ziel * 100) }) : null,
-  H,
   () => baustelleZeigen(),
   () => { const h = new Date().getHours(); return h >= 17 || h < 7 ? satz('abend') : satz('stimmung', { aktive: aktiveAnzahl() }); },
   () => satz('stimmung', { aktive: aktiveAnzahl() }),
@@ -647,7 +644,7 @@ function moderiere() {
   if (EV.laeuft()) {
     const art = eventModNr++ % 4;
     if (art !== 3 && Date.now() - letzterLive > 6000) { const t = EV.liveSatz(); if (t) { letzterLive = Date.now(); return sag(t, 4); } }
-    if (art === 3) return sag(zufallAus([H, H, () => satz('stimmung', { aktive: aktiveAnzahl() })]), 4);
+    if (art === 3) return sag(satz('stimmung', { aktive: aktiveAnzahl() }), 4);
     return sag(satz('eventAllgemein', { rest: EV.restSek() }), 4);   // nie Stille während Events
   }
   // 3. Neue Zuschauer begrüßen (nur wenn kein Event moderiert werden muss)

@@ -159,6 +159,9 @@ Der Mac bleibt automatisch wach, solange das Programm läuft (`caffeinate`). Das
 - **In LIVE Studio** zusätzlich: Video-Einstellungen auf **720p (720×1280), 30 FPS**, Bitrate ca. 2.500–3.000 kbps. Das entlastet den Mac am meisten.
 - „Muschel-Tal LIVE starten.command“ öffnet keinen Browser-Tab mehr (spart einen zweiten Durchlauf). Brauchst du doch einen (Fensteraufnahme): `http://localhost:8790` selbst öffnen.
 
+## TikTok-Regeln (LIVE-Monetarisierung)
+Anna und die Einblendungen werben **nie** für Geschenke: keine Sätze wie „jedes Geschenk bringt …“, keine Coin-Angaben, keine „+X 🐚“ bei Geschenken, keine Versprechen fürs Folgen. Geschenke werden nur bedankt (pro Person einmal). Folgen-Hinweis höchstens alle 15 Minuten, freundlich und ohne Gegenleistung. Verlosungen sind nie an Geschenke gebunden.
+
 ## Bildschärfe
 - Die Kamera bleibt immer nah bei den Häusern (keine Gesamtansicht mehr) – große Häuser, große weiße Namensschilder in fester Bildschirmgröße.
 - Schrift „Lilita One“ (Überschriften, Zahlen, Namen) und „Fredoka“ (Text), liegen in `seite/fonts` (frei, SIL Open Font License). Helle Schrift hat eine dunkle Kontur.

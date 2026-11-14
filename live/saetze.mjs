@@ -38,12 +38,11 @@ const SAETZE = {
     'Nur noch {rest} Bewohner für {projekt}!',
   ],
   hinweis: [
-    'Folgt mir! Eure Hütte wird live gebaut.',
-    'Folgen heißt: Dein Platz in Muschel-Tal ist reserviert!',
     'Dein erster Like baut deine Hütte.',
     'Mehr Likes vergrößern deine Hütte.',
     'Sammle Muscheln durch Events!',
     'Mit Muscheln steigst du in der Rangliste auf.',
+    'Schreib haus, dann zeige ich dir dein Haus.',
   ],
   likeDank: [
     'Danke für die vielen Likes, {name}!',
@@ -102,7 +101,6 @@ const SAETZE = {
     'Schreib rot oder blau für eine neue Farbe!',
     'Schreib haus, dann zeige ich dein Haus!',
     'Teilt den Stream mit Freunden!',
-    'Jeder Coin ist eine Muschel für dein Haus.',
   ],
   fakt: [
     'Auf der Haupt-Insel steht der Muschelpalast.',
@@ -126,7 +124,7 @@ const SAETZE = {
   ],
   ziel: [
     'Noch {rest} Bewohner bis {projekt}!',
-    'Folgen heißt einziehen!',
+    'Bald ist es geschafft!',
   ],
   projekt: [
     '{projekt}: {prozent} Prozent fertig!',
@@ -175,11 +173,6 @@ const SAETZE = {
   begruessungZurueckMehrere: [
     'Willkommen zurück, {namen}!',
   ],
-  geschenkInfo: [
-    'Jedes Geschenk bringt Muscheln für dein Haus.',
-    'Jedes Geschenk bekommt eine eigene Show!',
-    'Ein Coin ist eine Muschel.',
-  ],
   baustelleZeigen: [
     'Hier entsteht {ein}!',
     'Die Baustelle! {prozent} Prozent!',
@@ -194,8 +187,8 @@ const SAETZE = {
     'Neu auf Platz {platz}: {name}!',
   ],
   folgeAufruf: [
-    'Folge mir! Dann bekommst du deine Hütte hier und in Muschel-Tal!',
-    'Folgen lohnt sich! Deine Hütte wartet!',
+    'Wenn dir die Insel gefällt, folg gern muscheltal.',
+    'Schön, dass ihr da seid! Wer mag, folgt muscheltal.',
   ],
   eventNoch10: [
     'Noch zehn Sekunden!',

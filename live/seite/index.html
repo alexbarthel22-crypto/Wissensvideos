@@ -324,12 +324,12 @@ function ereignis(e) {
       if (e.diamanten >= 200) setTimeout(() => { funken(pl, '🎉', 30); hausFeuerwerk(pl, 20); }, 2600);
     } break;
     case 'show':
-      if (e.coins < 10) { banner.push({ t: 0, oben: `🎁 Danke ${e.name}!`, unten: `für ${e.fuer || e.gift} · +${e.coins} 🐚`, farbe: PINK }); if (pl) funken(pl, { herzregen: '💖', muschelkonfetti: '🐚', seifenblasen: '🫧' }[e.art] || '💖', 16); }
+      if (e.coins < 10) { banner.push({ t: 0, oben: `🎁 Danke ${e.name}!`, unten: `für ${e.fuer || e.gift}`, farbe: PINK }); if (pl) funken(pl, { herzregen: '💖', muschelkonfetti: '🐚', seifenblasen: '🫧' }[e.art] || '💖', 16); }
       else showStart(e);
       break;
     case 'hausGezeigt': if (p) { banner.unshift({ t: 0, oben: `🏠 ${p.name}`, unten: 'hier ist dein Haus!', farbe: TUERKIS }); if (pl) { pop[e.id] = jetzt; funken(pl, '⭐', 12); } } break;
     case 'rangliste': if (p) { banner.push({ t: 0, oben: `🏆 ${p.name}`, unten: e.platz === 1 ? 'jetzt Platz 1 – das beste Haus der Insel!' : `neu auf Platz ${e.platz} der besten Häuser`, farbe: '#ff8a2a' }); if (pl) funken(pl, '🏆', 10); } break;
-    case 'folgeAufruf': banner.push({ t: 0, oben: '🏠 Folge @muscheltal!', unten: 'Deine Hütte hier im LIVE + in Muschel-Tal', farbe: TUERKIS }); break;
+    case 'folgeAufruf': banner.push({ t: 0, oben: '🐚 Gefällt dir Muschel-Tal?', unten: 'Folg gern @muscheltal', farbe: TUERKIS }); break;
     case 'kamera': if (pl) fokus(pl, e.ms || 15000); break;
     case 'feuerwerk': feuerwerk(); break;
     case 'kameraBau': { const gp = GP((S.fertig || []).length); if (gp) fokus({ x: gp.x, y: gp.y - 20 }, e.ms || 8000); break; }
@@ -1557,7 +1557,7 @@ function kopf(t) {
     X.strokeStyle = INK; X.lineWidth = 3; rr(SL + 22, y3 + 58, lw - 44, 32, 16); X.stroke();
     text(`${Math.floor(pr.stand).toLocaleString('de-DE')} / ${pr.ziel.toLocaleString('de-DE')} 🐚 aus der Kasse`, SL + 22, y3 + 122, 24, '#8a5a2b', 'left', 800, lw - 44);
   } else if (seite === 2) {
-    [['🎁', '1 Coin = 1 Muschel fürs Haus'], ['✨', 'Jedes Geschenk = eigene Show'], ['🏠', 'Folgen = Hütte hier + Muschel-Tal']].forEach(([i, s], k) => {
+    [['🏆', 'Events = Muscheln gewinnen'], ['💬', 'Kommentieren = mitspielen'], ['🔁', 'Teilen = 2 🐚 für die Kasse']].forEach(([i, s], k) => {
       text(i, SL + 16, y3 + 32 + k * 45, 27, INK, 'left', 400); text(s, SL + 58, y3 + 32 + k * 45, 26, INK, 'left', 800, lw - 78);
     });
   } else if (seite === 1) {
