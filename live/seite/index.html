@@ -409,7 +409,7 @@ function passantenSchilder() {                                   // kleine dunkl
     if (!name) continue;
     const sx = 540 + (x - cam.x) * cam.z, sy = MITTE_Y + (y - 24 - cam.y) * cam.z - 14;
     if (sy < KOPF_UNTEN || sy > H) continue;
-    X.font = schrift(900, 21); const w = Math.min(250, X.measureText(name).width) + 22;
+    X.font = schrift(900, 21); const w = Math.min(250, X.measureText(name).width) + 30;
     X.fillStyle = 'rgba(42,27,18,.8)'; rr(sx - w / 2, sy - 16, w, 31, 15.5); X.fill();
     text(name, sx, sy + 7, 21, '#fff', 'center', 900, 250);
   }
