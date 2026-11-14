@@ -4,6 +4,7 @@
 import { getStore } from "@netlify/blobs";
 import { JOBS } from "../lib/jobs.mjs";
 import { BEWOHNER, NACHBARN } from "../lib/bewohner.mjs";
+import { liveVergeben } from "./live.mjs";
 
 const json = (d, s = 200) => new Response(JSON.stringify(d), { status: s, headers: { "content-type": "application/json", "cache-control": "no-store" } });
 const NAME = /^@[a-z0-9._]{1,40}$/;
@@ -119,6 +120,8 @@ async function nachbarErf(store, nm) {
   if (!(await store.list({ prefix: bp })).blobs.length) await store.set(bp + "10", String(Date.now()));
   return true;
 }
+// Erfolg „Live dabei“: wer im TikTok-LIVE war (Merker live/<name>) und beansprucht ist
+async function liveErf(store, nm) { return (await store.get("live/" + nm)) ? await liveVergeben(store, nm) : false; }
 export default async (req) => {
   const store = getStore({ name: "muscheln", consistency: "strong" });
   await vorarbeit(store);
@@ -161,8 +164,8 @@ export default async (req) => {
     await new Promise(r => setTimeout(r, 300));
     const c = JSON.parse((await store.get("c/" + nm)) || "{}");
     if (c.h !== (await sha(token))) return json({ ok: false, beansprucht: true });
-    const nachbar = await nachbarErf(store, nm);
-    return json({ ok: true, token, neu: nachbar ? ["NACHBAR"] : [] });
+    const nachbar = await nachbarErf(store, nm), live = await liveErf(store, nm);
+    return json({ ok: true, token, neu: [...(nachbar ? ["NACHBAR"] : []), ...(live ? ["LIVE"] : [])] });
   }
   // alle weiteren Aktionen nur mit dem Schlüssel des Besitzers
   const c = JSON.parse((await store.get("c/" + nm)) || "null");
@@ -212,6 +215,7 @@ export default async (req) => {
       }
     }
     if (await nachbarErf(store, nm)) neu.push("NACHBAR");
+    if (await liveErf(store, nm)) neu.push("LIVE");
     return json({ ok, tag: s.tag, betrag: s.betrag, job: J, summe: sum, neu });
   }
   if (act === "quests") {
@@ -272,12 +276,13 @@ export default async (req) => {
     return json({ ok: true, stand: stand - a + (freund ? 10 : 0), gespendet: gesp, freund });
   }
   if (act === "stand") {
+    const live = await liveErf(store, nm);
     const nachbar = await nachbarErf(store, nm);// schon beanspruchte Nachbarn bekommen den Erfolg beim nächsten Besuch
     const B = await buch(store, nm), s = await serie(B);
     const posten = B.filter(e => e.a).map(e => ({ art: e.art, id: e.id, a: e.a, t: TEXT[e.art] || e.art }))
       .sort((x, y) => (y.id > x.id ? 1 : -1)).slice(0, 60);
     return json({
-      ok: true, nachbar, stand: B.reduce((s, e) => s + e.a, 0), serie: s,
+      ok: true, nachbar, live, stand: B.reduce((s, e) => s + e.a, 0), serie: s,
       shells: B.filter(e => e.art === "shell" && e.id.startsWith(heute)).map(e => Number(e.id.split("-").pop())),
       questsDone: B.filter(e => e.art === "quest" && e.id.startsWith(heute)).map(e => Number(e.id.split("-").pop())),
       gespendet: -B.filter(e => e.art === "spende").reduce((s, e) => s + e.a, 0), posten, heute
