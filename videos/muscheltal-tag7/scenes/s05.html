@@ -1,0 +1,36 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+@font-face { font-family: "Lilita One"; src: url("assets/fonts/LilitaOne-Regular.woff2") format("woff2"); font-weight: 400; }
+    .pl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 28px 12px; border-radius: 999px; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); white-space: nowrap; }
+    .big { position: absolute; left: 0; right: 0; width: fit-content; max-width: 980px; white-space: nowrap; margin: 0 auto; text-align: center; padding: 10px 26px 20px; border-radius: 36px; color: #fff; font-family: "Lilita One", sans-serif; line-height: 1; box-shadow: 0 0 0 8px #2a1b12, 0 16px 0 rgba(0,0,0,.3); }
+    #s05-b { top: 280px; font-size: 96px; background: #e8101e; transform: rotate(-2deg); box-shadow: 0 0 0 8px #2a1b12, 0 16px 0 rgba(0,0,0,.3), 0 0 60px 16px rgba(255,20,30,.7); }
+    #s05-dot { display: inline-block; width: 50px; height: 50px; border-radius: 50%; background: #fff; margin-right: 18px; vertical-align: 8px; }
+    #s05-s { top: 450px; font-size: 46px; background: #fff; color: #e8101e; }
+    #s05-e { top: 550px; font-size: 48px; background: linear-gradient(100deg, #ff2e7e, #7b3fe0); }
+  </style>
+  <div id="root" data-composition-id="s05" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s05-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s05-b" class="big"><span id="s05-dot"></span>NEU: LIVE-INSEL</div>
+      <div id="s05-s" class="pl">📱 Im TikTok-Livestream mitbauen</div>
+      <div id="s05-e" class="pl">🏝️ Bau deine eigene Insel!</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      /*__COMMON_JS__*/
+      wrapBt("#s05-stage");
+      const tl = gsap.timeline({ paused: true });
+      const t0 = line("L5")[0], li = at("L5", "Livestream"), ei = at("L5", "eigene");
+      tl.fromTo("#s05-b", { opacity: 0, scale: 3 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(1.8)" }, t0);
+      tl.to("#s05-dot", { opacity: .15, duration: .25, yoyo: true, repeat: 11, ease: "steps(1)" }, t0 + .3);
+      tl.fromTo("#s05-s", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .28, ease: "back.out(2)" }, li - .25);
+      tl.fromTo("#s05-e", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, ei - .2);
+      tl.to("#s05-e", { scale: 1.08, duration: .18, yoyo: true, repeat: 5, ease: "sine.inOut" }, ei + .3);
+      tl.to("#s05-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
+      window.__timelines["s05"] = tl;
+    })();
+  </script>
+</template>

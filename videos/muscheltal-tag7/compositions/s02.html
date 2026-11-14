@@ -1,0 +1,164 @@
+<template>
+  <style>
+        #root { position: absolute; inset: 0; }
+    .stage { position: absolute; inset: 0; overflow: hidden; }
+    .abs { position: absolute; }
+    svg { overflow: visible; }
+    /* Zähler-Box wie in der Referenz: Rahmen in Akzentfarbe, Label in Mono-Versalien, große Zahl */
+    .cbox { position: absolute; left: 290px; width: 500px; top: 268px; height: 126px; border: 3px solid #ff4fb0;
+      border-radius: 32px; background: rgba(13,16,38,.88); text-align: center; box-shadow: 0 0 28px rgba(255,79,176,.35); }
+    .cbox .lab { margin-top: 16px; font-family: "Space Mono", monospace; font-weight: 700; font-size: 28px;
+      letter-spacing: .16em; color: #dfe2f5; }
+    .cbox .num { margin-top: 2px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 56px; color: #fff;
+      letter-spacing: .01em; }
+    .cbox.y { border-color: #ffd43b; box-shadow: 0 0 28px rgba(255,212,59,.3); }
+    .cbox.r { border-color: #ff3b55; box-shadow: 0 0 28px rgba(255,59,85,.35); }
+    .cbox.b { border-color: #4da3ff; box-shadow: 0 0 28px rgba(77,163,255,.3); }
+    .cbox.g { border-color: #39e27a; box-shadow: 0 0 28px rgba(57,226,122,.3); }
+    .mono { font-family: "Space Mono", monospace; font-weight: 700; letter-spacing: .12em; }
+    .heavy { font-family: "Inter", sans-serif; font-weight: 900; }
+    /* Muschel-Tal: Sticker-Look wie auf muscheltal.de. Sicherheitsbereich TikTok: x 40–930, y 200–1120 (Untertitel ab 1150). */
+    .ink { stroke: #2a1b12; }
+    .stk { background: #fff; border: 6px solid #2a1b12; border-radius: 28px; box-shadow: 10px 10px 0 #2a1b12; }
+    .ttl { font-family: "Inter", sans-serif; font-weight: 900; color: #fff; text-align: center; line-height: 1;
+      -webkit-text-stroke: 10px #2a1b12; paint-order: stroke fill; letter-spacing: -.01em; }
+    .kick { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 24px; border-radius: 14px;
+      background: #2a1b12; color: #ffd23f; font-family: "Space Mono", monospace; font-weight: 700; font-size: 34px; letter-spacing: .14em; }
+    /* Text auf farbigem Balken (auffälliger, wie TikTok-Textboxen) */
+    .bt { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; max-width: 740px; text-align: center;
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 66px; line-height: 1.3; color: #fff; }
+    .bt .bx { padding: .06em .4em .14em; border-radius: .6em; -webkit-box-decoration-break: clone; box-decoration-break: clone; box-shadow: 0 10px 0 rgba(0,0,0,.28), 0 16px 30px rgba(0,0,0,.25); }
+    .bt .bx { background: #23285a; } .bt.or .bx { background: #ff5a3c; } .bt.pk .bx { background: #fe2c55; } .bt.tq .bx { background: #18b8c0; } .bt.vi .bx { background: #23285a; } .bt.bl .bx { background: #23285a; }
+    .bt.ye .bx { background: #ffc93c; } .bt.ye { color: #1a0f08; } .bt.gr .bx { background: #00b86b; } .bt.dk .bx { background: #23285a; } .bt.dk { color: #ffc93c; }
+    .bt.sm { font-size: 44px; }
+    .stamp { position: absolute; padding: 6px 30px; border: 10px solid; border-radius: 40px; background: rgba(255,255,255,.94);
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 84px; }
+    /* TikTok-Kommentare (echte Optik) */
+    .tk { position: absolute; left: 60px; width: 800px; background: #fff; border-radius: 30px; padding: 20px 26px 6px; box-shadow: 0 14px 0 rgba(0,0,0,.22); font-family: "Inter", sans-serif; }
+    .tk-h { position: relative; text-align: center; font-weight: 800; font-size: 30px; color: #161823; margin-bottom: 10px; }
+    .tk-h b { position: absolute; right: 4px; top: -4px; font-size: 38px; font-weight: 400; color: #161823; }
+    .tk-c { position: relative; display: flex; gap: 20px; padding: 12px 96px 16px 0; }
+    .tk-a { width: 84px; height: 84px; border-radius: 50%; flex: none; display: grid; place-items: center; color: #fff; font-weight: 900; font-size: 38px; }
+    .tk-u { font-size: 28px; color: #8a8b91; font-weight: 600; }
+    .tk-t { font-size: 34px; color: #161823; font-weight: 500; line-height: 1.22; margin-top: 2px; }
+    .tk-m { font-size: 28px; color: #8a8b91; font-weight: 600; margin-top: 8px; } .tk-m span { margin-left: 30px; }
+    .tk-l { position: absolute; right: 4px; top: 16px; width: 86px; text-align: center; font-size: 28px; color: #8a8b91; font-weight: 600; }
+    .tk-l .hz { position: relative; width: 48px; height: 48px; margin: 0 auto 2px; }
+    .tk-l .hz svg { position: absolute; inset: 0; width: 48px; height: 48px; }
+    .tk-fh { position: absolute; left: 19px; top: 0; width: 50px; height: 50px; opacity: 0; }
+    .tk-pin { display: inline-block; font-size: 28px; font-weight: 800; color: #fe2c55; background: #ffe3ea; border-radius: 6px; padding: 2px 8px; margin-left: 10px; vertical-align: 3px; }
+
+@font-face { font-family: "Lilita One"; src: url("assets/fonts/LilitaOne-Regular.woff2") format("woff2"); font-weight: 400; }
+    .pl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 28px 12px; border-radius: 999px; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); white-space: nowrap; }
+    .cf { position: absolute; left: 530px; top: 640px; width: 20px; height: 30px; border-radius: 4px; }
+    .sl-dim { position: absolute; inset: 0; background: rgba(10,12,40,.5); }
+    .sl-box { position: absolute; left: 190px; width: 700px; top: 480px; height: 390px; border-radius: 34px; background: #fff; overflow: hidden; box-shadow: 0 0 0 7px #2a1b12, 0 0 0 14px #ffc93c, 0 0 0 19px #2a1b12, 0 18px 0 rgba(0,0,0,.35); }
+    .sl-band { position: absolute; left: 0; right: 0; top: 130px; height: 130px; background: #fff3c4; border-top: 5px solid #ffc93c; border-bottom: 5px solid #ffc93c; }
+    .sl-col { position: absolute; left: 0; right: 0; top: 0; }
+    .sl-r { height: 130px; display: grid; place-items: center; font-family: "Inter", sans-serif; font-weight: 900; font-size: 46px; color: #23285a; white-space: nowrap; }
+    .sl-sh { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,0) 30%, rgba(255,255,255,0) 70%, rgba(255,255,255,.95)); }
+    .sl-fv { position: absolute; left: 60px; width: 960px; top: 905px; text-align: center; white-space: nowrap; font-family: "Inter", sans-serif; font-weight: 900; font-size: 40px; color: #fff; text-shadow: 0 2px 6px rgba(0,0,0,.6); }
+    #s02-t { top: 280px; font-size: 52px; background: #ff6a1a; }
+    #s02-c { top: 390px; font-size: 44px; background: #fff; color: #e2560c; }
+    #s02-lv { top: 290px; font-size: 50px; background: #e8262f; }
+    #s02-v { top: 380px; font-size: 42px; background: #fff; color: #e2560c; }
+    #s02-st { left: 0; right: 120px; margin: 0 auto; width: fit-content; top: 900px; color: #2e9e5b; border-color: #2e9e5b; background: #fff; transform: rotate(-4deg); font-size: 60px; white-space: nowrap; font-family: "Lilita One", sans-serif; }
+    #s02-wn { top: 300px; font-size: 48px; background: #2e9e5b; }
+    #s02-tm { top: 400px; font-size: 40px; background: #fff; color: #e2560c; }
+  </style>
+  <div id="root" data-composition-id="s02" data-start="0" data-duration="13.130" data-width="1080" data-height="1920">
+    <div id="s02-stage" class="clip stage" data-start="0" data-duration="13.130" data-track-index="0">
+      <div id="s02-t" class="pl">🥐 Neue Chefin der Bäckerei</div>
+      <div id="s02-c" class="pl">👑 @lona.js</div>
+      <div id="s02-dim" class="sl-dim"></div>
+      <div id="s02-lv" class="pl">🔴 LIVE-VERLOSUNG</div>
+      <div id="s02-v" class="pl">🥐 Ein Job in der Bäckerei</div>
+      <div id="s02-box" class="sl-box"><div id="s02-band" class="sl-band"></div><div class="sl-col" id="s02-col"><div class="sl-r" id="s02-col-0">@zuza_.2281</div><div class="sl-r" id="s02-col-1">@shiloh.yx2</div><div class="sl-r" id="s02-col-2">@d80787103</div><div class="sl-r" id="s02-col-3">@collien_20.2</div><div class="sl-r" id="s02-col-4">@lxtte.090</div><div class="sl-r" id="s02-col-5">@paul.abr2</div><div class="sl-r" id="s02-col-6">@ello_lein</div><div class="sl-r" id="s02-col-7">@fxnna42</div><div class="sl-r" id="s02-col-8">@vanessa_k1n</div><div class="sl-r" id="s02-col-9">@l4n4.2202</div><div class="sl-r" id="s02-col-10">@chiara.k300</div><div class="sl-r" id="s02-col-11">@nervousqx</div><div class="sl-r" id="s02-col-12">@nobody_25110</div><div class="sl-r" id="s02-col-13">@drako3439</div><div class="sl-r" id="s02-col-14">@ce_bear_</div><div class="sl-r" id="s02-col-15">@coussini2</div><div class="sl-r" id="s02-col-16">@romy.cgnnn</div><div class="sl-r" id="s02-col-17">@maxh620</div><div class="sl-r" id="s02-col-18">@benedictknese</div><div class="sl-r" id="s02-col-19">@helmut.schmidt97</div><div class="sl-r" id="s02-col-20">@xo.charlotte5x0</div><div class="sl-r" id="s02-col-21">@arik.xnn</div><div class="sl-r" id="s02-col-22">@josi68872</div><div class="sl-r" id="s02-col-23">@lucia.idk_</div><div class="sl-r" id="s02-col-24">@mto_arld</div><div class="sl-r" id="s02-col-25">@cady.453</div><div class="sl-r" id="s02-col-26">@dilhad.iq7</div><div class="sl-r" id="s02-col-27">@222._._.2</div><div class="sl-r" id="s02-col-28">@s.koelnn_</div><div class="sl-r" id="s02-col-29">@lotta.fsthff</div><div class="sl-r" id="s02-col-30">@leonieswelt30</div><div class="sl-r" id="s02-col-31">@skye.rantsss</div><div class="sl-r" id="s02-col-32">@zoe.5408</div><div class="sl-r" id="s02-col-33">@agni_20106</div><div class="sl-r" id="s02-col-34">@c_o3006</div><div class="sl-r" id="s02-col-35">@leonie_xy</div><div class="sl-r" id="s02-col-36">@emmaabbylaw</div><div class="sl-r" id="s02-col-37">@luisa.m2907</div><div class="sl-r" id="s02-col-38">@niicoleee67</div><div class="sl-r" id="s02-col-39">@max_gtu123</div><div class="sl-r" id="s02-col-40">@julialaner</div><div class="sl-r" id="s02-col-41">@earth2.carina</div><div class="sl-r" id="s02-col-42">@leonnzk48</div><div class="sl-r" id="s02-col-43">@henrik.sca</div><div class="sl-r" id="s02-col-44">@alekskabhv</div><div class="sl-r" id="s02-col-45">@carla.mood21</div><div class="sl-r" id="s02-col-46">@julie.nglll0</div><div class="sl-r" id="s02-col-47">@luna.gsn02</div><div class="sl-r" id="s02-col-48">@m_hmb1307</div><div class="sl-r" id="s02-col-49">@_ph1l0.s0ph14_</div><div class="sl-r" id="s02-col-50">@noahconstabel6</div><div class="sl-r" id="s02-col-51">@nan_tje2011</div><div class="sl-r" id="s02-col-52">@julicrzy2000</div><div class="sl-r" id="s02-col-53">@m.an.dy4</div><div class="sl-r" id="s02-col-54">@luisedbr.11</div><div class="sl-r" id="s02-col-55">@taliasonnen</div><div class="sl-r" id="s02-col-56">@eva_lisches</div><div class="sl-r" id="s02-col-57">@lara81023</div><div class="sl-r" id="s02-col-58">@daria202625</div><div class="sl-r" id="s02-col-59">@adelina.ha2</div><div class="sl-r" id="s02-col-60">@merlin_cgnn</div></div><div class="sl-sh" data-layout-ignore></div></div>
+      <div id="s02-fv" class="sl-fv">➕ Folgen & Bewohner werden = teilnehmen!</div>
+      <div id="s02-cfw"></div>
+      <div id="s02-st" class="stamp" data-layout-ignore>🥐 NEU IM TEAM!</div>
+      <div id="s02-wn" class="pl">🎉 @julicrzy2000 backt mit!</div>
+      <div id="s02-tm" class="pl">👩‍🍳 Team: @lona.js · @_privat_033 · @julicrzy2000</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      
+      const C = {"__dur": 13.13, "L2": [0.2, 5.02], "L2.words": [["die", 0.2, 0.356], ["bäckerei", 0.356, 0.819], ["hat", 0.819, 0.975], ["eine", 0.975, 1.276], ["neue", 1.276, 1.438], ["chefin", 1.438, 1.75], ["lona", 2.03, 2.56], ["und", 2.76, 2.903], ["jetzt", 2.903, 3.056], ["verlose", 3.056, 3.474], ["ich", 3.474, 3.617], ["live", 3.617, 3.893], ["einen", 3.893, 4.173], ["job", 4.173, 4.316], ["in", 4.316, 4.454], ["der", 4.454, 4.597], ["bäckerei", 4.597, 5.02]], "L2w": [9.24, 12.35], "L2w.words": [["glückwunsch", 9.24, 10.95], ["julicrzy2000", 11.14, 11.742], ["du", 11.742, 11.825], ["backst", 11.825, 11.921], ["ab", 11.921, 12.004], ["jetzt", 12.004, 12.097], ["mit", 12.097, 12.183], ["lona", 12.183, 12.35]]};
+      const line = (id) => C[id];
+      const at = (id, word, which = 0) => {
+        const ws = C[id + ".words"];
+        if (typeof word === "number") return ws[word][1 + which];
+        const key = String(word).toLowerCase().replace(/[^\p{L}\p{N}_]/gu, "");
+        const hit = ws.find((w) => w[0].startsWith(key));
+        if (!hit) throw new Error("cue not found: " + id + " " + word);
+        return hit[1 + which];
+      };
+      // Zähler: schreibt Zahlen im deutschen Format (4.100.000.000) als Funktion der Timeline-Zeit
+      const fmt = (n) => Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      const count = (tl, sel, from, to, t, d, pre = "", post = "", ease = "power2.out") => {
+        const el = document.querySelector(sel);
+        const o = { v: from };
+        el.textContent = pre + fmt(from) + post;
+        tl.to(o, { v: to, duration: d, ease, onUpdate: () => { el.textContent = pre + fmt(o.v) + post; } }, t);
+      };
+      // deterministischer Zufall
+      const rng = (seed) => () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let x = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+        x = (x + Math.imul(x ^ (x >>> 7), 61 | x)) ^ x; return ((x ^ (x >>> 14)) >>> 0) / 4294967296; };
+
+            // TikTok-Kommentar: Herz füllt sich rot, Zahl zählt hoch, Herzen schnellen nach oben
+      const HEART = '<svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-10-9.3C.4 8.4 2 4.5 5.6 4c2-.3 3.6.6 4.4 2 .8-1.4 2.4-2.3 4.4-2 3.6.5 5.2 4.4 3.6 7.7C19.5 16.4 12 21 12 21z" fill="none" stroke="#8a8b91" stroke-width="2"/></svg>';
+      const HEART_R = '<svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-10-9.3C.4 8.4 2 4.5 5.6 4c2-.3 3.6.6 4.4 2 .8-1.4 2.4-2.3 4.4-2 3.6.5 5.2 4.4 3.6 7.7C19.5 16.4 12 21 12 21z" fill="#fe2c55"/></svg>';
+      const fmtK = (n) => n >= 10000 ? (n / 1000).toFixed(1).replace(".", ",") + " Tsd." : Math.round(n).toLocaleString("de-DE");
+      function tkLike(tl, id, t, from, to, dur = 1.4, seed = 1) {
+        const box = document.querySelector(id + " .tk-l"), num = box.querySelector("i"), hz = box.querySelector(".hz");
+        hz.innerHTML = HEART + '<span class="red" style="position:absolute;inset:0;opacity:0">' + HEART_R + "</span>";
+        const R = rng(seed);
+        for (let k = 0; k < 7; k++) { const f = document.createElement("div"); f.className = "tk-fh"; f.innerHTML = HEART_R; box.appendChild(f);
+          const dx = (R() - .5) * 160, up = 200 + R() * 220, t0 = t + k * .11;
+          tl.fromTo(f, { opacity: 0, x: 0, y: 0, scale: .5, rotation: 0 }, { opacity: 1, x: dx * .4, y: -60, scale: 1.1, rotation: (R() - .5) * 40, duration: .15, ease: "power2.out" }, t0);
+          tl.to(f, { x: dx, y: -up, scale: .7, opacity: 0, duration: .7, ease: "power1.in" }, t0 + .15); }
+        tl.fromTo(hz.querySelector(".red"), { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .25, ease: "back.out(3)" }, t);
+        tl.fromTo(hz, { scale: 1 }, { scale: 1.3, duration: .12, yoyo: true, repeat: 1, ease: "power2.out" }, t);
+        const o = { v: from }; num.textContent = fmtK(from);
+        tl.to(o, { v: to, duration: dur, ease: "power2.out", onUpdate: () => { num.textContent = fmtK(o.v); } }, t);
+      }
+      // Textbox füllt immer genau den Text: jede Zeile bekommt ihren eigenen Balken
+      function wrapBt(scope) { document.querySelectorAll(scope + " .bt").forEach((el) => { if (!el.querySelector(":scope > .bx")) el.innerHTML = '<span class="bx">' + el.innerHTML + "</span>"; }); }
+
+      wrapBt("#s02-stage");
+      const tl = gsap.timeline({ paused: true });
+      const t0 = line("L2")[0], ch = at("L2", "Chefin"), lv = at("L2", "live"), jo = at("L2", "Job"), TB = line("L2w")[0] - .25, du = at("L2w", "backst");
+      tl.fromTo("#s02-t", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, t0);
+      tl.fromTo("#s02-c", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, ch + .2);
+      tl.to(["#s02-t", "#s02-c"], { opacity: 0, duration: .2 }, lv - .4);
+      tl.fromTo("#s02-dim", { opacity: 0 }, { opacity: 1, duration: .3 }, lv - .3);
+      tl.fromTo("#s02-lv", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, lv - .3);
+      tl.to("#s02-lv", { opacity: .4, duration: .2, yoyo: true, repeat: 7, ease: "steps(1)" }, lv + .1);
+      tl.fromTo("#s02-v", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .28, ease: "back.out(2)" }, jo - .3);
+      tl.fromTo("#s02-box", { opacity: 0, scale: .5 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2)" }, jo - .1);
+      tl.fromTo("#s02-fv", { opacity: 0 }, { opacity: 1, duration: .3 }, jo + .2);
+      tl.to("#s02-fv", { opacity: 0, duration: .2 }, TB);
+      { const T0 = at("L2", "Job") + .5, TB = line("L2w")[0] - .25, H = 130, W = 52, T1 = TB - 1.1;
+      tl.set("#s02-col", { y: 0 }, 0);
+      tl.fromTo("#s02-col", { y: 0 }, { y: -(W - 9) * H, duration: T1 - T0, ease: "none", immediateRender: false }, T0);
+      tl.fromTo("#s02-col", { y: -(W - 9) * H }, { y: -(W - 1) * H, duration: 1.1, ease: "power3.out", immediateRender: false }, T1);
+      tl.fromTo("#s02-col", { filter: "blur(5px)" }, { filter: "blur(0px)", duration: 1.0, ease: "power2.in", immediateRender: false }, T1);
+      tl.to("#s02-col-" + W, { color: "#2e9e5b", scale: 1.15, duration: .2, ease: "back.out(3)" }, TB);
+      tl.to("#s02-band", { backgroundColor: "#7dff9e", duration: .15, yoyo: true, repeat: 5 }, TB); }
+
+      tl.fromTo("#s02-st", { opacity: 0, scale: 2.6 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, TB + .2);
+      const R = rng(71), box = document.getElementById("s02-cfw"), cols = ["#ffd23f", "#e8467c", "#2fb3a0", "#fff", "#7b4fe0", "#ff7a59"];
+      for (let k = 0; k < 60; k++) { const d = document.createElement("div"); d.className = "cf"; d.style.background = cols[k % cols.length]; box.appendChild(d);
+        const a = R() * Math.PI * 2, v = 380 + R() * 560, dx = Math.cos(a) * v, dy = Math.sin(a) * v * .8 - 300;
+        tl.fromTo(d, { opacity: 0, x: 0, y: 0, rotation: 0, scale: .6 }, { opacity: 1, x: dx * .7, y: dy * .7, rotation: (R() - .5) * 720, scale: 1, duration: .45, ease: "power3.out" }, TB);
+        tl.to(d, { x: dx, y: dy + 700, rotation: "+=" + Math.round((R() - .5) * 540), opacity: 0, duration: 1.4, ease: "power1.in" }, TB + .45); }
+      tl.to(["#s02-box", "#s02-st", "#s02-lv", "#s02-v", "#s02-dim"], { opacity: 0, duration: .25 }, du - .5);
+      tl.fromTo("#s02-wn", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, du - .45);
+      tl.fromTo("#s02-tm", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .28, ease: "back.out(2)" }, du);
+      tl.to("#s02-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
+      window.__timelines["s02"] = tl;
+    })();
+  </script>
+</template>

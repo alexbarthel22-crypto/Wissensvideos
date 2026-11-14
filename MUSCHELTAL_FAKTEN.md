@@ -341,3 +341,10 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - Abstimmung: **Tierheim kommt zuerst** (bei 800). **721 Bewohner** (laut Nutzer) → noch 79.
 - Aufruf: „Was soll ich als Nächstes bauen? Schreib's in die Kommentare!“ + Folgen = eigenes Haus.
 - **Teaser:** Im nächsten Video werden **2 Plätze auf Maries Party-Yacht** (@marie18034, White Pearl) verlost.
+
+## Video Tag 7 (14.11., `videos/muscheltal-tag7/`)
+- **721 Bewohner** (laut Nutzer).
+- **Live-Verlosung Bäckerei-Job:** @julicrzy2000 (Nr. 70) – am 14.11. per Zufall (Python `secrets`) aus 690 Bewohnern ohne Job/Amt/Sonder-Wohnort gezogen. Bäckerei: Leitung @lona.js, Team @_privat_033 + @julicrzy2000. ⚠️ Homepage: @julicrzy2000 ins Bäckerei-Team.
+- **Live-Verlosung Yacht (2 Plätze auf Maries Party-Yacht, @marie18034):** @liese975 (Nr. 45) und @pia._.nbg (Nr. 251) – gleiche Ziehung. ⚠️ Homepage: beide wohnen/feiern auf der Yacht.
+- Kokos-Küste: neue Läden 🍹 Coco Bay (@priv.greto.2), 🏊 Kokos-Bad (@lionaaa013), 👗 Coast & Cotton (@emma.hl07).
+- Ankündigung: 🔴 LIVE-Insel – im TikTok-Livestream baut man seine eigene Insel.

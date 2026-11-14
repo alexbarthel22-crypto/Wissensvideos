@@ -1,0 +1,57 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+@font-face { font-family: "Lilita One"; src: url("assets/fonts/LilitaOne-Regular.woff2") format("woff2"); font-weight: 400; }
+    .pl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 28px 12px; border-radius: 999px; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); white-space: nowrap; }
+    .fbtn { position: absolute; left: 0; right: 0; margin: 0 auto; width: 420px; height: 120px; border-radius: 60px; background: #fe2c55; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 56px; display: grid; place-items: center; box-shadow: 0 0 0 5px #2a1b12, 0 12px 0 rgba(0,0,0,.25); }
+    .fbtn2 { position: absolute; inset: 0; border-radius: 60px; background: #fff; color: #0a78c2; display: grid; place-items: center; opacity: 0; }
+    .fhand { position: absolute; font-size: 120px; }
+    .pt { position: absolute; width: 80px; height: 80px; font-size: 70px; text-align: center; line-height: 80px; opacity: 0; }
+    #s6-t { top: 290px; font-size: 52px; background: #2e9e5b; }
+    #s6-btn { top: 400px; } #s6-hand { left: 690px; top: 450px; }
+    #s6-fr { position: absolute; left: 360px; top: 680px; width: 360px; height: 450px; border-radius: 34px; border: 9px dashed #ffe14a; box-shadow: 0 0 34px 6px rgba(255,225,74,.7); }
+    #s6-nm { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 1046px; padding: 4px 26px 8px; border-radius: 999px; overflow: hidden; background: linear-gradient(180deg, #fff9d6, #ffd84a 55%, #ffb21a); border: 4px solid #1a0f08; box-shadow: 0 0 26px 8px rgba(255,220,80,.95), 0 6px 0 rgba(0,0,0,.3); font-family: "Inter", sans-serif; font-weight: 900; font-size: 46px; color: #2a1b12; white-space: nowrap; opacity: 0; }
+    #s6-gl { position: absolute; top: -20px; bottom: -20px; left: -120px; width: 70px; background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.95), rgba(255,255,255,0)); transform: skewX(-20deg); }
+    #s6-st { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 400px; color: #2e9e5b; border-color: #2e9e5b; background: #fff; transform: rotate(-4deg); font-size: 60px; white-space: nowrap; font-family: "Lilita One", sans-serif; }
+  </style>
+  <div id="root" data-composition-id="s06" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s06-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s6-t" class="pl">🏝️ Folgen = eigene Hütte</div>
+      <div id="s6-btn" class="fbtn">+ Folgen<div id="s6-btn2" class="fbtn2">✓ Gefolgt</div></div>
+      <div id="s6-hand" class="fhand" data-layout-ignore>👆</div>
+      <div id="s6-fr" data-layout-ignore></div>
+      <div id="s6-nm" data-layout-ignore>@dein_name<i id="s6-gl"></i></div>
+      <div id="s6-st" class="stamp" data-layout-ignore>🏠 MIT DEINEM NAMEN!</div><div class="pt" id="s6-p0" style="left:500px;top:780px">🎉</div><div class="pt" id="s6-p1" style="left:500px;top:780px">🎉</div><div class="pt" id="s6-p2" style="left:500px;top:780px">🎉</div><div class="pt" id="s6-p3" style="left:500px;top:780px">🎉</div><div class="pt" id="s6-p4" style="left:500px;top:780px">🎉</div><div class="pt" id="s6-p5" style="left:500px;top:780px">🎉</div><div class="pt" id="s6-p6" style="left:500px;top:780px">🎉</div><div class="pt" id="s6-p7" style="left:500px;top:780px">🎉</div><div class="pt" id="s6-p8" style="left:500px;top:780px">🎉</div><div class="pt" id="s6-p9" style="left:500px;top:780px">🎉</div><div class="pt" id="s6-p10" style="left:500px;top:780px">🎉</div><div class="pt" id="s6-p11" style="left:500px;top:780px">🎉</div><div class="pt" id="s6-p12" style="left:500px;top:780px">🎉</div><div class="pt" id="s6-p13" style="left:500px;top:780px">🎉</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      /*__COMMON_JS__*/
+      wrapBt("#s06-stage");
+      const tl = gsap.timeline({ paused: true });
+      const t0 = line("L6")[0], fo = at("L6", "folge"), hu = at("L6", "Hütte"), na = at("L6", "Namen");
+      tl.fromTo("#s6-t", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, t0 - .1);
+      tl.fromTo("#s6-btn", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, t0);
+      tl.fromTo("#s6-hand", { opacity: 0, x: 160, y: 160 }, { opacity: 1, x: 0, y: 0, duration: .25, ease: "power3.out" }, t0 + .1);
+      tl.to("#s6-hand", { y: -26, scale: .9, duration: .1, yoyo: true, repeat: 1 }, fo + .05);
+      tl.to("#s6-btn2", { opacity: 1, duration: .05 }, fo + .15);
+      tl.fromTo("#s6-btn", { scale: 1 }, { scale: 1.15, duration: .12, yoyo: true, repeat: 1, immediateRender: false }, fo + .15);
+      tl.to("#s6-hand", { opacity: 0, duration: .2 }, fo + .5);
+      tl.fromTo("#s6-nm", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, hu - .1);
+      tl.fromTo("#s6-gl", { x: 0 }, { x: 520, duration: .6, repeat: 3, repeatDelay: .25, ease: "power1.inOut", immediateRender: false }, hu + .2);
+      tl.to("#s6-nm", { boxShadow: "0 0 50px 18px rgba(255,230,90,1), 0 6px 0 rgba(0,0,0,.3)", duration: .3, yoyo: true, repeat: 5, ease: "sine.inOut" }, hu + .2);
+      tl.fromTo("#s6-fr", { opacity: 0, scale: 1.4 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, hu - .2);
+      tl.to("#s6-fr", { borderColor: "#2e9e5b", borderStyle: "solid", boxShadow: "0 0 50px 14px rgba(46,158,91,.9)", duration: .2 }, na - .1);
+      tl.to(["#s6-btn", "#s6-t"], { opacity: 0, duration: .2 }, na - .35);
+      tl.fromTo("#s6-st", { opacity: 0, scale: 2.6 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, na - .2);
+      { const R = rng(13); for (let i = 0; i < 14; i++) { const dx = (R() - .5) * 480 * 2, dy = -700 * (.5 + R() * .6);
+        tl.fromTo("#s6-p" + i, { opacity: 0, x: 0, y: 0, scale: .4, rotation: 0 }, { opacity: 1, x: dx * .6, y: dy * .6, scale: 1, rotation: (R() - .5) * 400, duration: .4, ease: "power3.out" }, hu);
+        tl.to("#s6-p" + i, { x: dx, y: dy * .6 + 900, opacity: 0, rotation: "+=" + Math.round((R() - .5) * 300), duration: 1.3, ease: "power1.in" }, hu + .4); } }
+      
+      window.__timelines["s06"] = tl;
+    })();
+  </script>
+</template>

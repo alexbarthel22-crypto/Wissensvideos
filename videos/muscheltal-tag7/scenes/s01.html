@@ -1,0 +1,64 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+@font-face { font-family: "Lilita One"; src: url("assets/fonts/LilitaOne-Regular.woff2") format("woff2"); font-weight: 400; }
+    .pt { position: absolute; width: 80px; height: 80px; font-size: 70px; text-align: center; line-height: 80px; opacity: 0; }
+    .fl { position: absolute; inset: 0; background: #fff; opacity: 0; }
+    #s01-ray { position: absolute; left: -460px; top: 300px; width: 2000px; height: 2000px; border-radius: 50%; background: repeating-conic-gradient(rgba(255,250,210,.28) 0 8deg, rgba(255,255,255,0) 8deg 20deg); -webkit-mask: radial-gradient(circle, #000 15%, transparent 60%); }
+    #s01-hk { position: absolute; left: 40px; right: 40px; top: 560px; text-align: center; font-family: "Lilita One", sans-serif; }
+    #s01-hk .ln { display: block; width: fit-content; margin: 0 auto 16px; padding: 4px 34px 14px; border-radius: 30px; background: #ff2e7e; box-shadow: 0 0 0 6px #1a0f08, 0 12px 0 rgba(0,0,0,.35); font-size: 118px; line-height: 1.05; white-space: nowrap; transform-origin: 50% 60%; }
+    #s01-hk span { position: relative; display: inline-block; margin: 0 .08em; color: #fff; -webkit-text-stroke: 8px #1a0f08; paint-order: stroke fill; transform-origin: 50% 65%; }
+    #s01-gk { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 420px; padding: 8px 30px 16px; border-radius: 26px; background: #e8101e; border: 8px solid #fff; box-shadow: 0 0 0 6px #1a0f08, 0 12px 0 rgba(0,0,0,.3), 0 0 60px 20px rgba(255,20,30,.8); font-family: "Lilita One", sans-serif; font-size: 76px; line-height: 1; color: #fff; white-space: nowrap; transform: rotate(-4deg); }
+    #s01-gk span { display: inline-block; }
+    #s01-rv { position: absolute; inset: 0; box-shadow: inset 0 0 140px 50px rgba(255,10,20,.9); opacity: 0; }
+    .s01-sp { position: absolute; color: #fff; text-shadow: 0 0 18px #fff, 0 0 30px #ffe14a; opacity: 0; line-height: 1; }
+  </style>
+  <div id="root" data-composition-id="s01" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s01-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s01-ray" data-layout-ignore></div>
+      <div id="s01-fl" class="fl" data-layout-ignore></div>
+      <div id="s01-rv" data-layout-ignore></div>
+      <div id="s01-gk" data-layout-ignore><span id="s01-s1">🔴</span> LIVE-VERLOSUNG! <span id="s01-s2">🛥️</span></div>
+      <div id="s01-hk"><div class="ln" id="s01-l0"><span id="s01-w0">HEUTE</span></div><div class="ln" id="s01-l1"><span id="s01-w1">VERLOSE</span><span id="s01-w2">ICH</span></div><div class="ln" id="s01-l2"><span id="s01-w3">ZWEI</span><span id="s01-w4">PLÄTZE</span></div><div class="ln" id="s01-l3"><span id="s01-w5">AUF</span><span id="s01-w6">EINER</span></div><div class="ln" id="s01-l4"><span id="s01-w7">PARTY-YACHT!</span></div></div>
+      <div class="s01-sp" id="s01-sp0" data-layout-ignore style="left:110px;top:560px;font-size:46px">✦</div><div class="s01-sp" id="s01-sp1" data-layout-ignore style="left:900px;top:600px;font-size:34px">✦</div><div class="s01-sp" id="s01-sp2" data-layout-ignore style="left:70px;top:960px;font-size:30px">✦</div><div class="s01-sp" id="s01-sp3" data-layout-ignore style="left:930px;top:1010px;font-size:44px">✦</div><div class="s01-sp" id="s01-sp4" data-layout-ignore style="left:180px;top:1230px;font-size:38px">✦</div><div class="s01-sp" id="s01-sp5" data-layout-ignore style="left:820px;top:1200px;font-size:30px">✦</div><div class="pt" id="s01-p0" style="left:500px;top:860px">🎉</div><div class="pt" id="s01-p1" style="left:500px;top:860px">🎉</div><div class="pt" id="s01-p2" style="left:500px;top:860px">🎉</div><div class="pt" id="s01-p3" style="left:500px;top:860px">🎉</div><div class="pt" id="s01-p4" style="left:500px;top:860px">🎉</div><div class="pt" id="s01-p5" style="left:500px;top:860px">🎉</div><div class="pt" id="s01-p6" style="left:500px;top:860px">🎉</div><div class="pt" id="s01-p7" style="left:500px;top:860px">🎉</div><div class="pt" id="s01-p8" style="left:500px;top:860px">🎉</div><div class="pt" id="s01-p9" style="left:500px;top:860px">🎉</div><div class="pt" id="s01-p10" style="left:500px;top:860px">🎉</div><div class="pt" id="s01-p11" style="left:500px;top:860px">🎉</div><div class="pt" id="s01-p12" style="left:500px;top:860px">🎉</div><div class="pt" id="s01-p13" style="left:500px;top:860px">🎉</div><div class="pt" id="s01-p14" style="left:500px;top:860px">🎉</div><div class="pt" id="s01-p15" style="left:500px;top:860px">🎉</div><div class="pt" id="s01-p16" style="left:500px;top:860px">🎉</div><div class="pt" id="s01-p17" style="left:500px;top:860px">🎉</div><div class="pt" id="s01-p18" style="left:500px;top:860px">🎉</div><div class="pt" id="s01-p19" style="left:500px;top:860px">🎉</div><div class="pt" id="s01-p20" style="left:500px;top:860px">🎉</div><div class="pt" id="s01-p21" style="left:500px;top:860px">🎉</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      /*__COMMON_JS__*/
+      wrapBt("#s01-stage");
+      const tl = gsap.timeline({ paused: true });
+      const sc = at("L1", "Party-Yacht");
+      tl.set(["#s01-ray"], { opacity: 1 }, 0);
+      tl.fromTo("#s01-ray", { rotation: 0 }, { rotation: 40, duration: 4, ease: "none" }, 0);
+      tl.fromTo("#s01-gk", { rotation: -6 }, { rotation: 2, duration: .07, yoyo: true, repeat: 33, ease: "none" }, 0);
+      tl.fromTo("#s01-gk", { backgroundColor: "#e8101e", color: "#ffffff" }, { backgroundColor: "#ffffff", color: "#e8101e", duration: .01, yoyo: true, repeat: 15, repeatDelay: .14, ease: "none" }, .1);
+      tl.fromTo(["#s01-s1", "#s01-s2"], { rotation: -25, scale: 1 }, { rotation: 25, scale: 1.25, duration: .12, yoyo: true, repeat: 19, ease: "sine.inOut" }, 0);
+      
+      tl.set("#s01-w0", { zIndex: 5 }, at("L1", "Heute") - .03); tl.to("#s01-w0", { scale: 1.38, rotation: 3, duration: .1, ease: "back.out(3)" }, at("L1", "Heute") - .03); tl.to("#s01-w0", { scale: 1, rotation: 0, duration: .22, ease: "power2.inOut" }, at("L1", "Heute") + .17); tl.set("#s01-w0", { zIndex: 0 }, at("L1", "Heute") + .4);
+      tl.set("#s01-w1", { zIndex: 5 }, at("L1", "verlose") - .03); tl.to("#s01-w1", { scale: 1.5, rotation: -3, duration: .1, ease: "back.out(3)" }, at("L1", "verlose") - .03); tl.to("#s01-w1", { scale: 1, rotation: 0, duration: .22, ease: "power2.inOut" }, at("L1", "verlose") + .17); tl.set("#s01-w1", { zIndex: 0 }, at("L1", "verlose") + .4);
+      tl.set("#s01-w2", { zIndex: 5 }, at("L1", "ich") - .03); tl.to("#s01-w2", { scale: 1.38, rotation: 3, duration: .1, ease: "back.out(3)" }, at("L1", "ich") - .03); tl.to("#s01-w2", { scale: 1, rotation: 0, duration: .22, ease: "power2.inOut" }, at("L1", "ich") + .17); tl.set("#s01-w2", { zIndex: 0 }, at("L1", "ich") + .4);
+      tl.set("#s01-w3", { zIndex: 5 }, at("L1", "zwei") - .03); tl.to("#s01-w3", { scale: 1.38, rotation: -3, duration: .1, ease: "back.out(3)" }, at("L1", "zwei") - .03); tl.to("#s01-w3", { scale: 1, rotation: 0, duration: .22, ease: "power2.inOut" }, at("L1", "zwei") + .17); tl.set("#s01-w3", { zIndex: 0 }, at("L1", "zwei") + .4); tl.to("#s01-w3", { color: "#ffe500", duration: .05 }, at("L1", "zwei") - .02);
+      tl.set("#s01-w4", { zIndex: 5 }, at("L1", "Plätze") - .03); tl.to("#s01-w4", { scale: 1.5, rotation: 3, duration: .1, ease: "back.out(3)" }, at("L1", "Plätze") - .03); tl.to("#s01-w4", { scale: 1, rotation: 0, duration: .22, ease: "power2.inOut" }, at("L1", "Plätze") + .17); tl.set("#s01-w4", { zIndex: 0 }, at("L1", "Plätze") + .4); tl.to("#s01-w4", { color: "#ffe500", duration: .05 }, at("L1", "Plätze") - .02);
+      tl.set("#s01-w5", { zIndex: 5 }, at("L1", "auf") - .03); tl.to("#s01-w5", { scale: 1.38, rotation: -3, duration: .1, ease: "back.out(3)" }, at("L1", "auf") - .03); tl.to("#s01-w5", { scale: 1, rotation: 0, duration: .22, ease: "power2.inOut" }, at("L1", "auf") + .17); tl.set("#s01-w5", { zIndex: 0 }, at("L1", "auf") + .4);
+      tl.set("#s01-w6", { zIndex: 5 }, at("L1", "einer") - .03); tl.to("#s01-w6", { scale: 1.38, rotation: 3, duration: .1, ease: "back.out(3)" }, at("L1", "einer") - .03); tl.to("#s01-w6", { scale: 1, rotation: 0, duration: .22, ease: "power2.inOut" }, at("L1", "einer") + .17); tl.set("#s01-w6", { zIndex: 0 }, at("L1", "einer") + .4);
+      tl.set("#s01-w7", { zIndex: 5 }, at("L1", "Party-Yacht") - .03); tl.to("#s01-w7", { scale: 1.35, rotation: -3, duration: .1, ease: "back.out(3)" }, at("L1", "Party-Yacht") - .03); tl.to("#s01-w7", { scale: 1, rotation: 0, duration: .22, ease: "power2.inOut" }, at("L1", "Party-Yacht") + .17); tl.set("#s01-w7", { zIndex: 0 }, at("L1", "Party-Yacht") + .4); tl.to("#s01-w7", { color: "#ffe500", duration: .05 }, at("L1", "Party-Yacht") - .02);
+      tl.fromTo("#s01-sp0", { opacity: 0, scale: .2, rotation: 0 }, { opacity: 1, scale: 1, rotation: 90, duration: .3, yoyo: true, repeat: 3, ease: "sine.inOut", immediateRender: false }, 0.00);
+      tl.fromTo("#s01-sp1", { opacity: 0, scale: .2, rotation: 0 }, { opacity: 1, scale: 1, rotation: 90, duration: .3, yoyo: true, repeat: 3, ease: "sine.inOut", immediateRender: false }, 0.20);
+      tl.fromTo("#s01-sp2", { opacity: 0, scale: .2, rotation: 0 }, { opacity: 1, scale: 1, rotation: 90, duration: .3, yoyo: true, repeat: 3, ease: "sine.inOut", immediateRender: false }, 0.40);
+      tl.fromTo("#s01-sp3", { opacity: 0, scale: .2, rotation: 0 }, { opacity: 1, scale: 1, rotation: 90, duration: .3, yoyo: true, repeat: 3, ease: "sine.inOut", immediateRender: false }, 0.60);
+      tl.fromTo("#s01-sp4", { opacity: 0, scale: .2, rotation: 0 }, { opacity: 1, scale: 1, rotation: 90, duration: .3, yoyo: true, repeat: 3, ease: "sine.inOut", immediateRender: false }, 0.80);
+      tl.fromTo("#s01-sp5", { opacity: 0, scale: .2, rotation: 0 }, { opacity: 1, scale: 1, rotation: 90, duration: .3, yoyo: true, repeat: 3, ease: "sine.inOut", immediateRender: false }, 1.00);
+      tl.fromTo("#s01-fl", { opacity: .9 }, { opacity: 0, duration: .45, immediateRender: false }, sc);
+      tl.to("#s01-l4", { scale: 1.12, duration: .12, yoyo: true, repeat: 1 }, sc);
+      tl.to("#s01-gk", { scale: 1.25, duration: .12, yoyo: true, repeat: 1 }, sc + .05);
+      tl.to("#s01-hk", { x: 12, duration: .04, yoyo: true, repeat: 5, ease: "none" }, sc);
+      { const R = rng(5); for (let i = 0; i < 22; i++) { const dx = (R() - .5) * 600 * 2, dy = -820 * (.5 + R() * .6);
+        tl.fromTo("#s01-p" + i, { opacity: 0, x: 0, y: 0, scale: .4, rotation: 0 }, { opacity: 1, x: dx * .6, y: dy * .6, scale: 1, rotation: (R() - .5) * 400, duration: .4, ease: "power3.out" }, sc);
+        tl.to("#s01-p" + i, { x: dx, y: dy * .6 + 900, opacity: 0, rotation: "+=" + Math.round((R() - .5) * 300), duration: 1.3, ease: "power1.in" }, sc + .4); } }
+      tl.to("#s01-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
+      window.__timelines["s01"] = tl;
+    })();
+  </script>
+</template>
