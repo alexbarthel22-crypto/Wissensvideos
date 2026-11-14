@@ -387,7 +387,7 @@ def nachrichten(insel, out):
     import html as H
     erf = open(os.path.join(HIER, "erfolge.html"), encoding="utf-8").read()
     head = erf[:erf.index("<style>") + len("<style>")].replace("<title>Erfolge – Muschel-Tal</title>", "<title>News – Muschel-Tal</title>").replace(
-        "Alle Erfolge und Abzeichen der Bewohner von Muschel-Tal.", "Alles, was in Muschel-Tal passiert ist: neue Inseln, Gebäude, Events, Jobs, Bürgermeister.")
+        "Alle Erfolge und Abzeichen der Bewohner von Muschel-Tal.", "Neue Gebäude, neue Berufe und Bauprojekte in Muschel-Tal.")
     css = erf[erf.index("<style>") + len("<style>"):erf.index("</style>")]
     keep = "\n".join(l for l in css.split("\n") if l.startswith((":root", " --f", "*{", "body{", ".top", "main{", ".cta{")))
     start = dt.date.fromisoformat(insel["start"]) if insel.get("start") else None
