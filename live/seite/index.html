@@ -273,7 +273,7 @@ function ereignis(e) {
     }
     case 'neu': {                                                  // erstes Like: Zelt wird gebaut – Banner, Funken, Kamera
       bau[e.id] = { t: jetzt + 250, alt: -1, neu: 0, D: 1.9 };
-      banner.push({ t: 0, oben: `🏕️ ${e.name || 'Neuer Bewohner'}`, unten: 'baut das erste Zelt auf der Insel!', farbe: '#2fb3a0' });
+      banner.push({ t: 0, neuId: e.id, oben: `🏕️ ${e.name || 'Neuer Bewohner'}`, unten: 'baut das erste Zelt auf der Insel!', farbe: '#2fb3a0' });
       const zeig = () => { const q = sp(e.id), qp = q && platzVon(q); if (qp) { funken(qp, '🎉', 14); fokus(qp, 4500, true); } return !!qp; };
       if (!zeig()) setTimeout(zeig, 1300);                          // Bewohnerliste kommt höchstens 1×/s
       break;
@@ -308,7 +308,9 @@ function ereignis(e) {
     case 'ballonPlatzt': for (let i = 0; i < 18; i++) fx.push({ x: IX + (Math.random() - .5) * 500, y: IY - 200 + (Math.random() - .5) * 300, vx: (Math.random() - .5) * 8, vy: (Math.random() - .5) * 8, t: performance.now(), z: ['🎉', '✨', '💥'][i % 3], s: 22 }); break;
     case 'eventStart': banner.push({ t: 0, oben: '⚡ Überraschungs-Event!', unten: 'Jetzt mitmachen!', farbe: '#9b5de5' }); funken({ x: IX, y: IY }, '⚡', 20); break;
     case 'eventEnde': if (e.gut) { const q = e.spielerId && sp(e.spielerId), qp = q && platzVon(q); if (qp) { funken(qp, '🎉', 24); fokus(qp, 5000); } else feuerwerk(); } break;
-    case 'follow': banner.push({ t: 0, oben: `🏠 ${p ? p.name : ''}`, unten: 'ist jetzt Bewohner · +5 🐚 in die Muschelkasse', farbe: TUERKIS }); break;
+    case 'follow': { const pop = { t: 0, art: 'willkommen', name: e.name || (p ? p.name : ''), nr: e.nr, dauer: 4.2 }, i = banner.findIndex(x => x.neuId === e.id);
+      if (i >= 0) { pop.t = banner[i].t; banner[i] = pop; } else banner.splice(banner.length ? 1 : 0, 0, pop); }   // neuer Follower: Zelt-Banner wird zum Willkommens-Pop-up
+      if (pl) { funken(pl, '🐚', 10); fokus(pl, 5000, true); } break;
     case 'ziel': banner.push({ t: 0, oben: '🎉 Bewohner-Ziel erreicht!', unten: e.name + ' wird auf der Haupt-Insel gebaut', farbe: '#9b5de5' }); feuerwerk(); break;
     case 'projekt': { const gp = GEB_PLAETZE[(S.fertig || []).length]; if (gp) { funken({ x: gp.x, y: gp.y - 40 }, '🚧', 14); fokus({ x: gp.x, y: gp.y - 10 }, 5000); } break; }
     case 'fertig': { const gp = GEB_PLAETZE[(S.fertig || []).length]; GEB_BAU[(S.fertig || []).length] = jetzt; if (gp) { fokus({ x: gp.x, y: gp.y - 10 }, 6500); setTimeout(() => { funken({ x: gp.x, y: gp.y - 60 }, '🎉', 30); feuerwerk(); }, 4300); } break; }
@@ -995,7 +997,7 @@ const STREICH_MS = 2600;
 const SCHILDER = [];
 function schilderZeichnen(t) {                                  // weiße Namensschilder mit Haus-Symbol, fester Bildschirmgröße
   X.setTransform(Q0, 0, 0, Q0, 0, 0);
-  const px = 24, liste = SCHILDER.splice(0);
+  const px = 28, liste = SCHILDER.splice(0);
   for (const [nr, name] of Object.entries(S.jobs || {})) {         // Job-Schilder über den Stadtgebäuden
     const gp = GEB_PLAETZE[+nr]; if (!gp || !name) continue;
     const sx = 540 + (gp.x - cam.x) * cam.z, sy = MITTE_Y + (gp.y - 118 - cam.y) * cam.z;
@@ -1009,8 +1011,8 @@ function schilderZeichnen(t) {                                  // weiße Namens
   for (const { p, pl } of liste) {
     const sx = 540 + (pl.x - cam.x) * cam.z, sy = MITTE_Y + (pl.y + 20 - cam.y) * cam.z;
     if (sy < KOPF_UNTEN - 10 || sy > H + 40) continue;
-    const maxW = Math.max(120, pl.w * cam.z + 20);
-    X.font = schrift(900, px); let fs = px; while (X.measureText(p.name).width > maxW - 46 && fs > 15) { fs--; X.font = schrift(900, fs); }
+    const maxW = Math.max(170, pl.w * cam.z + 70);
+    X.font = schrift(900, px); let fs = px; while (X.measureText(p.name).width > maxW - 50 && fs > 18) { fs--; X.font = schrift(900, fs); }
     const w = Math.min(maxW, X.measureText(p.name).width + 50), h = fs + 18, x0 = sx - w / 2, y0 = sy;
     X.fillStyle = 'rgba(42,27,18,.35)'; rr(x0 + 3, y0 + 4, w, h, 12); X.fill();
     X.fillStyle = '#fff'; rr(x0, y0, w, h, 12); X.fill(); X.lineWidth = 3; X.strokeStyle = INK; X.stroke();
@@ -1535,20 +1537,41 @@ function effekte(t) {
   }
   X.globalAlpha = 1;
 }
+// Neuer Follower: weiße Karte mit blauem Leuchtrand, Haus-Symbol, „WILLKOMMEN IN MUSCHEL-TAL!“, großer Name + 🐚
+function willkommenPopup(b, age, k) {
+  const pop = age < .35 ? 1 + Math.sin(age / .35 * Math.PI) * .06 : 1, w = SB, h = 176;
+  X.save(); X.globalAlpha = k; X.translate(540, KOPF_UNTEN + 220); X.scale((.85 + .15 * k) * pop, (.85 + .15 * k) * pop);
+  X.shadowColor = 'rgba(80,170,255,.9)'; X.shadowBlur = 26; X.fillStyle = '#eaf5ff'; rr(-w / 2, -h / 2, w, h, 30); X.fill(); X.shadowBlur = 0;
+  X.lineWidth = 6; X.strokeStyle = '#3f8fe0'; X.stroke();
+  const g = X.createLinearGradient(0, -h / 2, 0, h / 2); g.addColorStop(0, '#ffffff'); g.addColorStop(1, '#dcefff');
+  X.fillStyle = g; rr(-w / 2 + 6, -h / 2 + 6, w - 12, h - 12, 25); X.fill();
+  const ix = -w / 2 + 78;                                             // rundes Haus-Symbol
+  X.fillStyle = '#3f8fe0'; X.beginPath(); X.arc(ix, 0, 50, 0, 7); X.fill(); X.lineWidth = 4; X.strokeStyle = '#fff'; X.stroke();
+  X.fillStyle = '#fff'; X.beginPath(); X.moveTo(ix - 26, 2); X.lineTo(ix, -22); X.lineTo(ix + 26, 2); X.lineTo(ix + 18, 2); X.lineTo(ix + 18, 24); X.lineTo(ix - 18, 24); X.lineTo(ix - 18, 2); X.closePath(); X.fill();
+  X.fillStyle = '#3f8fe0'; X.fillRect(ix - 6, 8, 12, 16);
+  const tx = -w / 2 + 150, tw = w - 180;
+  X.save(); X.letterSpacing = '3px'; text('WILLKOMMEN IN MUSCHEL-TAL!', tx, -46, 27, '#2f6fb3', 'left', 900, tw); X.restore();
+  text(`${b.name} 🐚`, tx, 6, 48, INK, 'left', 900, tw);
+  text(b.nr ? `Danke fürs Folgen · Bewohner Nr. ${b.nr.toLocaleString('de-DE')} · dein Haus entsteht` : 'Danke fürs Folgen · dein Haus entsteht', tx, 52, 23, '#2f6fb3', 'left', 800, tw);
+  X.restore();
+}
 function overlay(t) {
   X.setTransform(Q0, 0, 0, Q0, 0, 0);
   if (banner.length > 6) banner.splice(1, banner.length - 6);
   const showLaeuft = SHOWS[0]?.t && SHOWS[0].coins >= 10;            // große Geschenk-Show hat Vorrang
   if (showLaeuft && banner[0]) banner[0].t = 0;
   if (!showLaeuft && banner.length && !banner[0].t) banner[0].t = t;
-  while (!showLaeuft && banner.length && banner[0].t && t - banner[0].t > 3200) { banner.shift(); if (banner[0]) banner[0].t = t; }
+  while (!showLaeuft && banner.length && banner[0].t && t - banner[0].t > (banner[0].dauer || 3.2) * 1000) { banner.shift(); if (banner[0]) banner[0].t = t; }
   const b = showLaeuft ? null : banner[0];
   if (b) {
-    const age = (t - b.t) / 1000, k = Math.max(0, Math.min(1, age * 4, (3.2 - age) * 4));
-    X.save(); X.globalAlpha = k; X.translate(540, KOPF_UNTEN + 210); X.scale(.85 + .15 * k, .85 + .15 * k);
-    karte(-SB / 2, -62, SB, 124, b.farbe, 40);
-    text(b.oben, 0, -20, 40, '#fff', 'center', 900, SB - 50); text(b.unten, 0, 29, 29, '#fff', 'center', 800, SB - 50);
-    X.restore();
+    const D = b.dauer || 3.2, age = (t - b.t) / 1000, k = Math.max(0, Math.min(1, age * 4, (D - age) * 4));
+    if (b.art === 'willkommen') willkommenPopup(b, age, k);
+    else {
+      X.save(); X.globalAlpha = k; X.translate(540, KOPF_UNTEN + 210); X.scale(.85 + .15 * k, .85 + .15 * k);
+      karte(-SB / 2, -62, SB, 124, b.farbe, 40);
+      text(b.oben, 0, -20, 40, '#fff', 'center', 900, SB - 50); text(b.unten, 0, 29, 29, '#fff', 'center', 800, SB - 50);
+      X.restore();
+    }
   }
   const ua = (t - untertitel.t) / 1000, ud = untertitel.d || 5;
   if (untertitel.text && ua < ud) {                                 // so lange wie Anna spricht, lange Sätze umbrechen

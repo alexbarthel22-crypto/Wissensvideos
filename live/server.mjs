@@ -18,7 +18,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-14 m';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-14 n';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -230,8 +230,8 @@ function setzeBewohner(n, quelle) {
 }
 function follow(u) {
   const p = spieler(u); if (!p) { setzeBewohner(bewohner + 1, 'follow'); inKasse(CFG.kasse.proFollow); return; }
-  sende({ typ: 'follow', id: p.id });
   setzeBewohner(bewohner + 1, 'follow');
+  sende({ typ: 'follow', id: p.id, name: p.name, nr: bewohner });
   inKasse(CFG.kasse.proFollow);
   if (!followDank.includes(p)) followDank.push(p);               // Dank kommt, sobald Anna frei ist
   gibMuscheln(p, CFG.muschelnFuerFollow, 'follow');
