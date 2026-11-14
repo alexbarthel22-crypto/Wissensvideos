@@ -132,6 +132,12 @@ def importiere_liste(pfad, rows):
         aktiv.add(n.lower().lstrip("@"))
         neu += 1
     print(f"Liste: {neu} neu eingezogen, {weg} ausgezogen (komplett gelöscht)")
+    # Ausgezogene dürfen nirgends mehr namentlich auftauchen: Erwähnungen in insel.json melden
+    if weg_namen:
+        roh = open(INSEL, encoding="utf-8").read().lower()
+        for n in weg_namen:
+            if "@" + n in roh:
+                print(f"⚠️  NAME NOCH IN insel.json (News/Texte): @{n} – bitte entfernen")
 
 
 def _gebaeude_bewohner(insel):
@@ -510,6 +516,9 @@ def baue(rows, out):
     os.makedirs(lib, exist_ok=True)
     with open(os.path.join(lib, "jobs.mjs"), "w", encoding="utf-8") as f:
         f.write("// automatisch aus daten/insel.json erzeugt (bau.py) – nicht von Hand ändern\nexport const JOBS = " + json.dumps({k.lower().lstrip("@"): v for k, v in insel.get("jobs", {}).items()}, ensure_ascii=False) + ";\n")
+    # aktuelle Bewohner für die Server-Funktionen (Rangliste zeigt nur, wer noch da ist)
+    with open(os.path.join(lib, "bewohner.mjs"), "w", encoding="utf-8") as f:
+        f.write("// automatisch aus daten/einwohner.csv erzeugt (bau.py) – nicht von Hand ändern\nexport const BEWOHNER = new Set(" + json.dumps(sorted({(r["name"] if isinstance(r, dict) else r[0]).lower().lstrip("@") for r in rows}), ensure_ascii=False) + ");\n")
     try:
         from zoneinfo import ZoneInfo
         jetzt = dt.datetime.now(ZoneInfo("Europe/Berlin"))

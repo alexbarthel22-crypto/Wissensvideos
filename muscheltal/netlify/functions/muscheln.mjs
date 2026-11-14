@@ -3,6 +3,7 @@
 // so ergibt sich der Kontostand aus einer einzigen Liste. Feste Schlüssel (z. B. login/2026-11-10) verhindern Doppelbuchungen.
 import { getStore } from "@netlify/blobs";
 import { JOBS } from "../lib/jobs.mjs";
+import { BEWOHNER } from "../lib/bewohner.mjs";
 
 const json = (d, s = 200) => new Response(JSON.stringify(d), { status: s, headers: { "content-type": "application/json", "cache-control": "no-store" } });
 const NAME = /^@[a-z0-9._]{1,40}$/;
@@ -81,7 +82,7 @@ export default async (req) => {
   const url = new URL(req.url);
   if (req.method === "GET" && url.searchParams.get("top")) {
     // Muschel-Rangliste: Top 10 der beanspruchten Namen nach Kontostand, Pfeile im Vergleich zu gestern, optional eigener Platz
-    const claimed = new Set((await liste(store, "c/")).map(k => k.slice(2)));
+    const claimed = new Set((await liste(store, "c/")).map(k => k.slice(2)).filter(n => BEWOHNER.has(n)));// Ausgezogene nicht mehr anzeigen
     const sum = {};
     for (const k of await liste(store, "b/")) { const [, n, , , a] = k.split("/"); if (claimed.has(n)) sum[n] = (sum[n] || 0) + (Number(a) || 0); }
     const order = Object.entries(sum).filter(([, v]) => v > 0).sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : 1));
