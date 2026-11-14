@@ -1,70 +1,110 @@
 {
- "duration": 26.46,
+ "duration": 27.32,
  "lines": [
   {
    "scene": "s01",
    "id": "L1",
    "words": [
     {
-     "display": "Wir",
-     "spoken": "Wir",
+     "display": "Ich",
+     "spoken": "Ich",
      "color": null,
      "group": 0,
-     "start": 0.05,
-     "end": 0.22
+     "start": 0.0,
+     "end": 0.14
+    },
+    {
+     "display": "bin",
+     "spoken": "bin",
+     "color": null,
+     "group": 0,
+     "start": 0.14,
+     "end": 0.25
+    },
+    {
+     "display": "gerade",
+     "spoken": "gerade",
+     "color": "r",
+     "group": 0,
+     "start": 0.25,
+     "end": 0.58
+    },
+    {
+     "display": "LIVE",
+     "spoken": "LIVE",
+     "color": "r",
+     "group": 0,
+     "start": 0.58,
+     "end": 0.831
+    },
+    {
+     "display": "–",
+     "spoken": "–",
+     "color": null,
+     "group": 0,
+     "start": 0.831,
+     "end": 1.05
+    },
+    {
+     "display": "wir",
+     "spoken": "wir",
+     "color": null,
+     "group": 1,
+     "start": 1.05,
+     "end": 1.2
     },
     {
      "display": "bauen",
      "spoken": "bauen",
      "color": null,
-     "group": 0,
-     "start": 0.22,
-     "end": 0.48
-    },
-    {
-     "display": "gerade",
-     "spoken": "gerade",
-     "color": null,
-     "group": 0,
-     "start": 0.48,
-     "end": 0.8
-    },
-    {
-     "display": "live",
-     "spoken": "live",
-     "color": "r",
-     "group": 0,
-     "start": 0.8,
-     "end": 1.08
+     "group": 1,
+     "start": 1.2,
+     "end": 1.44
     },
     {
      "display": "eure",
      "spoken": "eure",
      "color": null,
      "group": 1,
-     "start": 1.08,
-     "end": 1.42
+     "start": 1.44,
+     "end": 1.72
     },
     {
      "display": "neue",
      "spoken": "neue",
      "color": "y",
      "group": 1,
-     "start": 1.42,
-     "end": 1.62
+     "start": 1.72,
+     "end": 1.98
     },
     {
      "display": "Welt!",
      "spoken": "Welt!",
      "color": "y",
      "group": 1,
-     "start": 1.62,
-     "end": 2.41
+     "start": 1.98,
+     "end": 2.42
+    },
+    {
+     "display": "Kommt",
+     "spoken": "Kommt",
+     "color": "g",
+     "group": 2,
+     "start": 2.42,
+     "end": 2.85
+    },
+    {
+     "display": "rein!",
+     "spoken": "rein!",
+     "color": "g",
+     "group": 2,
+     "start": 2.85,
+     "end": 3.27
     }
    ],
-   "spoken": "Wir bauen gerade live eure neue Welt!",
+   "spoken": "Ich bin gerade LIVE – wir bauen eure neue Welt! Kommt rein!",
    "start": 0.0,
-   "end": 2.41
+   "end": 3.27
   },
   {
    "scene": "s02",
@@ -75,69 +115,69 @@
      "spoken": "Das",
      "color": null,
      "group": 0,
-     "start": 3.79,
-     "end": 3.95
+     "start": 4.65,
+     "end": 4.81
     },
     {
      "display": "ist",
      "spoken": "ist",
      "color": null,
      "group": 0,
-     "start": 3.95,
-     "end": 4.109
+     "start": 4.81,
+     "end": 4.969
     },
     {
      "display": "die",
      "spoken": "die",
      "color": null,
      "group": 0,
-     "start": 4.109,
-     "end": 4.269
+     "start": 4.969,
+     "end": 5.129
     },
     {
      "display": "LIVE-Insel",
      "spoken": "LIVE-Insel",
      "color": "r",
      "group": 0,
-     "start": 4.269,
-     "end": 4.748
+     "start": 5.129,
+     "end": 5.608
     },
     {
      "display": "–",
      "spoken": "–",
      "color": null,
      "group": 0,
-     "start": 4.748,
-     "end": 4.89
+     "start": 5.608,
+     "end": 5.75
     },
     {
      "display": "noch",
      "spoken": "noch",
      "color": null,
      "group": 1,
-     "start": 5.02,
-     "end": 5.293
+     "start": 5.88,
+     "end": 6.153
     },
     {
      "display": "ganz",
      "spoken": "ganz",
      "color": "y",
      "group": 1,
-     "start": 5.293,
-     "end": 5.567
+     "start": 6.153,
+     "end": 6.427
     },
     {
      "display": "leer!",
      "spoken": "leer!",
      "color": "y",
      "group": 1,
-     "start": 5.567,
-     "end": 5.84
+     "start": 6.427,
+     "end": 6.7
     }
    ],
    "spoken": "Das ist die LIVE-Insel – noch ganz leer!",
-   "start": 3.79,
-   "end": 5.84
+   "start": 4.65,
+   "end": 6.7
   },
   {
    "scene": "s02",
@@ -148,45 +188,45 @@
      "spoken": "Zweihundert",
      "color": "y",
      "group": 0,
-     "start": 6.86,
-     "end": 7.382
+     "start": 7.72,
+     "end": 8.242
     },
     {
      "display": "Grundstücke",
      "spoken": "Grundstücke",
      "color": "y",
      "group": 0,
-     "start": 7.382,
-     "end": 7.904
+     "start": 8.242,
+     "end": 8.764
     },
     {
      "display": "warten",
      "spoken": "warten",
      "color": null,
      "group": 1,
-     "start": 7.904,
-     "end": 8.244
+     "start": 8.764,
+     "end": 9.104
     },
     {
      "display": "auf",
      "spoken": "auf",
      "color": null,
      "group": 1,
-     "start": 8.244,
-     "end": 8.414
+     "start": 9.104,
+     "end": 9.274
     },
     {
      "display": "euch!",
      "spoken": "euch!",
      "color": "g",
      "group": 1,
-     "start": 8.414,
-     "end": 8.59
+     "start": 9.274,
+     "end": 9.45
     }
    ],
    "spoken": "Zweihundert Grundstücke warten auf euch!",
-   "start": 6.86,
-   "end": 8.59
+   "start": 7.72,
+   "end": 9.45
   },
   {
    "scene": "s02",
@@ -197,117 +237,117 @@
      "spoken": "Im",
      "color": null,
      "group": 0,
-     "start": 9.81,
-     "end": 9.942
+     "start": 10.67,
+     "end": 10.802
     },
     {
      "display": "Livestream",
      "spoken": "Livestream",
      "color": "p",
      "group": 0,
-     "start": 9.942,
-     "end": 10.356
+     "start": 10.802,
+     "end": 11.216
     },
     {
      "display": "baut",
      "spoken": "baut",
      "color": null,
      "group": 0,
-     "start": 10.356,
-     "end": 10.498
+     "start": 11.216,
+     "end": 11.358
     },
     {
      "display": "ihr",
      "spoken": "ihr",
      "color": null,
      "group": 0,
-     "start": 10.498,
-     "end": 10.634
+     "start": 11.358,
+     "end": 11.494
     },
     {
      "display": "hier",
      "spoken": "hier",
      "color": null,
      "group": 0,
-     "start": 10.634,
-     "end": 10.775
+     "start": 11.494,
+     "end": 11.635
     },
     {
      "display": "euer",
      "spoken": "euer",
      "color": null,
      "group": 1,
-     "start": 10.775,
-     "end": 10.917
+     "start": 11.635,
+     "end": 11.777
     },
     {
      "display": "eigenes",
      "spoken": "eigenes",
      "color": "y",
      "group": 1,
-     "start": 10.917,
-     "end": 11.317
+     "start": 11.777,
+     "end": 12.177
     },
     {
      "display": "Haus",
      "spoken": "Haus",
      "color": "y",
      "group": 1,
-     "start": 11.317,
-     "end": 11.458
+     "start": 12.177,
+     "end": 12.318
     },
     {
      "display": "–",
      "spoken": "–",
      "color": null,
      "group": 1,
-     "start": 11.458,
-     "end": 11.58
+     "start": 12.318,
+     "end": 12.44
     },
     {
      "display": "mit",
      "spoken": "mit",
      "color": null,
      "group": 2,
-     "start": 11.73,
-     "end": 11.872
+     "start": 12.59,
+     "end": 12.732
     },
     {
      "display": "jedem",
      "spoken": "jedem",
      "color": null,
      "group": 2,
-     "start": 11.872,
-     "end": 12.151
+     "start": 12.732,
+     "end": 13.011
     },
     {
      "display": "Like",
      "spoken": "Like",
      "color": "g",
      "group": 2,
-     "start": 12.151,
-     "end": 12.426
+     "start": 13.011,
+     "end": 13.286
     },
     {
      "display": "wächst",
      "spoken": "wächst",
      "color": null,
      "group": 2,
-     "start": 12.426,
-     "end": 12.583
+     "start": 13.286,
+     "end": 13.443
     },
     {
      "display": "es!",
      "spoken": "es!",
      "color": null,
      "group": 2,
-     "start": 12.583,
-     "end": 12.72
+     "start": 13.443,
+     "end": 13.58
     }
    ],
    "spoken": "Im Livestream baut ihr hier euer eigenes Haus – mit jedem Like wächst es!",
-   "start": 9.81,
-   "end": 12.72
+   "start": 10.67,
+   "end": 13.58
   },
   {
    "scene": "s02",
@@ -318,61 +358,61 @@
      "spoken": "Zelt,",
      "color": "y",
      "group": 0,
-     "start": 13.94,
-     "end": 14.37
+     "start": 14.8,
+     "end": 15.23
     },
     {
      "display": "Hütte,",
      "spoken": "Hütte,",
      "color": "y",
      "group": 0,
-     "start": 14.62,
-     "end": 14.94
+     "start": 15.48,
+     "end": 15.8
     },
     {
      "display": "Villa,",
      "spoken": "Villa,",
      "color": "y",
      "group": 0,
-     "start": 15.16,
-     "end": 15.49
+     "start": 16.02,
+     "end": 16.35
     },
     {
      "display": "Schloss",
      "spoken": "Schloss",
      "color": "y",
      "group": 0,
-     "start": 15.66,
-     "end": 15.952
+     "start": 16.52,
+     "end": 16.812
     },
     {
      "display": "–",
      "spoken": "–",
      "color": null,
      "group": 0,
-     "start": 15.952,
-     "end": 16.18
+     "start": 16.812,
+     "end": 17.04
     },
     {
      "display": "ihr",
      "spoken": "ihr",
      "color": "g",
      "group": 1,
-     "start": 16.35,
-     "end": 16.566
+     "start": 17.21,
+     "end": 17.426
     },
     {
      "display": "entscheidet!",
      "spoken": "entscheidet!",
      "color": null,
      "group": 1,
-     "start": 16.566,
-     "end": 17.23
+     "start": 17.426,
+     "end": 18.09
     }
    ],
    "spoken": "Zelt, Hütte, Villa, Schloss – ihr entscheidet!",
-   "start": 13.94,
-   "end": 17.23
+   "start": 14.8,
+   "end": 18.09
   },
   {
    "scene": "s03",
@@ -383,53 +423,53 @@
      "spoken": "Also:",
      "color": null,
      "group": 0,
-     "start": 19.01,
-     "end": 19.34
+     "start": 19.87,
+     "end": 20.2
     },
     {
      "display": "Kommt",
      "spoken": "Kommt",
      "color": "g",
      "group": 0,
-     "start": 19.45,
-     "end": 19.683
+     "start": 20.31,
+     "end": 20.543
     },
     {
      "display": "rein",
      "spoken": "rein",
      "color": "g",
      "group": 0,
-     "start": 19.683,
-     "end": 19.909
+     "start": 20.543,
+     "end": 20.769
     },
     {
      "display": "und",
      "spoken": "und",
      "color": null,
      "group": 1,
-     "start": 19.909,
-     "end": 20.127
+     "start": 20.769,
+     "end": 20.987
     },
     {
      "display": "baut",
      "spoken": "baut",
      "color": "g",
      "group": 1,
-     "start": 20.127,
-     "end": 20.352
+     "start": 20.987,
+     "end": 21.212
     },
     {
      "display": "mit!",
      "spoken": "mit!",
      "color": "g",
      "group": 1,
-     "start": 20.352,
-     "end": 20.57
+     "start": 21.212,
+     "end": 21.43
     }
    ],
    "spoken": "Also: Kommt rein und baut mit!",
-   "start": 19.01,
-   "end": 20.57
+   "start": 19.87,
+   "end": 21.43
   },
   {
    "scene": "s03",
@@ -440,93 +480,93 @@
      "spoken": "Und",
      "color": null,
      "group": 0,
-     "start": 21.79,
-     "end": 21.947
+     "start": 22.65,
+     "end": 22.807
     },
     {
      "display": "folgt",
      "spoken": "folgt",
      "color": "p",
      "group": 0,
-     "start": 21.947,
-     "end": 22.115
+     "start": 22.807,
+     "end": 22.975
     },
     {
      "display": "mir,",
      "spoken": "mir,",
      "color": null,
      "group": 0,
-     "start": 22.115,
-     "end": 22.272
+     "start": 22.975,
+     "end": 23.132
     },
     {
      "display": "um",
      "spoken": "um",
      "color": null,
      "group": 1,
-     "start": 22.272,
-     "end": 22.423
+     "start": 23.132,
+     "end": 23.283
     },
     {
      "display": "einzuziehen",
      "spoken": "einzuziehen",
      "color": "y",
      "group": 1,
-     "start": 22.423,
-     "end": 23.045
+     "start": 23.283,
+     "end": 23.905
     },
     {
      "display": "und",
      "spoken": "und",
      "color": null,
      "group": 2,
-     "start": 23.045,
-     "end": 23.202
+     "start": 23.905,
+     "end": 24.062
     },
     {
      "display": "Teil",
      "spoken": "Teil",
      "color": null,
      "group": 2,
-     "start": 23.202,
-     "end": 23.364
+     "start": 24.062,
+     "end": 24.224
     },
     {
      "display": "des",
      "spoken": "des",
      "color": null,
      "group": 2,
-     "start": 23.364,
-     "end": 23.521
+     "start": 24.224,
+     "end": 24.381
     },
     {
      "display": "Spiels",
      "spoken": "Spiels",
      "color": "p",
      "group": 2,
-     "start": 23.521,
-     "end": 23.695
+     "start": 24.381,
+     "end": 24.555
     },
     {
      "display": "zu",
      "spoken": "zu",
      "color": null,
      "group": 2,
-     "start": 23.695,
-     "end": 23.846
+     "start": 24.555,
+     "end": 24.706
     },
     {
      "display": "werden!",
      "spoken": "werden!",
      "color": null,
      "group": 2,
-     "start": 23.846,
-     "end": 24.16
+     "start": 24.706,
+     "end": 25.02
     }
    ],
    "spoken": "Und folgt mir, um einzuziehen und Teil des Spiels zu werden!",
-   "start": 21.79,
-   "end": 24.16
+   "start": 22.65,
+   "end": 25.02
   },
   {
    "scene": "s03",
@@ -537,37 +577,37 @@
      "spoken": "Bis",
      "color": null,
      "group": 0,
-     "start": 25.28,
-     "end": 25.416
+     "start": 26.14,
+     "end": 26.276
     },
     {
      "display": "gleich",
      "spoken": "gleich",
      "color": "y",
      "group": 0,
-     "start": 25.416,
-     "end": 25.567
+     "start": 26.276,
+     "end": 26.427
     },
     {
      "display": "im",
      "spoken": "im",
      "color": null,
      "group": 0,
-     "start": 25.567,
-     "end": 25.698
+     "start": 26.427,
+     "end": 26.558
     },
     {
      "display": "LIVE!",
      "spoken": "LIVE!",
      "color": "r",
      "group": 0,
-     "start": 25.698,
-     "end": 25.96
+     "start": 26.558,
+     "end": 26.82
     }
    ],
    "spoken": "Bis gleich im LIVE!",
-   "start": 25.28,
-   "end": 25.96
+   "start": 26.14,
+   "end": 26.82
   }
  ]
 }

@@ -90,28 +90,40 @@ CMT = """.cmt { position: absolute; left: 140px; width: 800px; border-radius: 30
 
 
 # s01 – Hook im Stil von Tag 1: pinke Balken, Wörter springen groß hervor, Sticker „GEBAUT!“
-QL = [[("WIR", "Wir"), ("BAUEN", "bauen")], [("GERADE", "gerade"), ("LIVE", "live")], [("EURE", "eure"), ("NEUE", "neue")], [("WELT!", "Welt")]]
+QL = [[("ICH", "Ich"), ("BIN", "bin")], [("GERADE", "gerade"), ("LIVE!", "LIVE")], [("WIR", "wir"), ("BAUEN", "bauen"), ("EURE", "eure")], [("NEUE", "neue"), ("WELT!", "Welt")], [("KOMMT", "Kommt"), ("REIN!", "rein")]]
 QW = [w for ln in QL for w in ln]
-YW = ("LIVE", "NEUE", "WELT!")
+YW = ("LIVE!", "NEUE", "WELT!", "REIN!")
 SP = [(110, 560, 46), (900, 600, 34), (70, 960, 30), (930, 1010, 44), (180, 1230, 38), (820, 1200, 30)]
-scene("s01", LILITA + "\n    " + PT + "\n" + FL + """
+scene("s01", LILITA + "\n    " + PILL + "\n    " + PT + "\n" + FL + """
     #s01-ray { position: absolute; left: -460px; top: 300px; width: 2000px; height: 2000px; border-radius: 50%; background: repeating-conic-gradient(rgba(255,250,210,.28) 0 8deg, rgba(255,255,255,0) 8deg 20deg); -webkit-mask: radial-gradient(circle, #000 15%, transparent 60%); }
-    #s01-hk { position: absolute; left: 40px; right: 40px; top: 600px; text-align: center; font-family: "Lilita One", sans-serif; }
-    #s01-hk .ln { display: block; width: fit-content; margin: 0 auto 16px; padding: 4px 34px 14px; border-radius: 30px; background: #ff2e7e; box-shadow: 0 0 0 6px #1a0f08, 0 12px 0 rgba(0,0,0,.35); font-size: 118px; line-height: 1.05; white-space: nowrap; transform-origin: 50% 60%; }
+    #s01-hk { position: absolute; left: 40px; right: 40px; top: 560px; text-align: center; font-family: "Lilita One", sans-serif; }
+    #s01-hk .ln { display: block; width: fit-content; margin: 0 auto 16px; padding: 4px 34px 14px; border-radius: 30px; background: #ff2e7e; box-shadow: 0 0 0 6px #1a0f08, 0 12px 0 rgba(0,0,0,.35); font-size: 100px; line-height: 1.05; white-space: nowrap; transform-origin: 50% 60%; }
     #s01-hk span { position: relative; display: inline-block; margin: 0 .08em; color: #fff; -webkit-text-stroke: 8px #1a0f08; paint-order: stroke fill; transform-origin: 50% 65%; }
     #s01-gk { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 420px; padding: 8px 30px 16px; border-radius: 26px; background: #2e9e5b; border: 8px solid #fff; box-shadow: 0 0 0 6px #1a0f08, 0 12px 0 rgba(0,0,0,.3), 0 0 60px 20px rgba(80,230,140,.7); font-family: "Lilita One", sans-serif; font-size: 68px; line-height: 1; color: #fff; white-space: nowrap; transform: rotate(-4deg); }
     #s01-gk span { display: inline-block; }
+    #s01-av { position: absolute; left: 0; right: 0; margin: 0 auto; top: 250px; width: 230px; height: 260px; }
+    #s01-ring { position: absolute; left: 15px; top: 0; width: 200px; height: 200px; border-radius: 50%; background: conic-gradient(#ff1f4b, #ff6a1a, #ff1f4b, #ff2e7e, #ff1f4b); box-shadow: 0 0 40px 10px rgba(255,30,70,.7); }
+    #s01-pic { position: absolute; left: 31px; top: 16px; width: 168px; height: 168px; border-radius: 50%; overflow: hidden; background: #fff; border: 6px solid #fff; }
+    #s01-pic svg { width: 100%; height: 100%; }
+    #s01-lb { position: absolute; left: 0; right: 0; margin: 0 auto; top: 176px; width: fit-content; padding: 2px 22px 6px; border-radius: 12px; background: #ff1f4b; border: 5px solid #fff; color: #fff; font-family: "Inter", sans-serif; font-weight: 900; font-size: 40px; letter-spacing: .04em; }
+    #s01-cta { top: 1300px; font-size: 42px; background: #ff1f4b; box-shadow: 0 0 0 5px #fff, 0 10px 0 rgba(0,0,0,.25), 0 0 40px 10px rgba(255,30,70,.6); }
     #s01-rv { position: absolute; inset: 0; box-shadow: inset 0 0 140px 50px rgba(255,10,20,.9); opacity: 0; }
     .s01-sp { position: absolute; color: #fff; text-shadow: 0 0 18px #fff, 0 0 30px #ffe14a; opacity: 0; line-height: 1; }""",
 """      <div id="s01-ray" data-layout-ignore></div>
       <div id="s01-fl" class="fl" data-layout-ignore></div>
       <div id="s01-rv" data-layout-ignore></div>
+      <div id="s01-av" data-layout-ignore><div id="s01-ring"></div><div id="s01-pic">""" + LOGO + """</div><div id="s01-lb">LIVE</div></div>
+      <div id="s01-cta" class="pl">👆 Tippe auf mein Profilbild – komm rein!</div>
       
       <div id="s01-hk">""" + "".join('<div class="ln" id="s01-l' + str(j) + '">' + "".join(f'<span id="s01-w{QW.index(w)}">{w[0]}</span>' for w in ln) + '</div>' for j, ln in enumerate(QL)) + """</div>
       """ + "".join(f'<div class="s01-sp" id="s01-sp{k}" data-layout-ignore style="left:{x}px;top:{y}px;font-size:{f}px">✦</div>' for k, (x, y, f) in enumerate(SP)) + drops("s01-p", 22, 5, 'sc', 540, 900, "🏗️", 600, 820)[0],
-"""      const sc = at("L1", "Welt");
+"""      const sc = at("L1", "rein");
       tl.set(["#s01-ray"], { opacity: 1 }, 0);
       tl.fromTo("#s01-ray", { rotation: 0 }, { rotation: 40, duration: 4, ease: "none" }, 0);
+      tl.fromTo("#s01-ring", { scale: 1, rotation: 0 }, { scale: 1.12, rotation: 40, duration: .3, yoyo: true, repeat: 11, ease: "sine.inOut" }, 0);
+      tl.fromTo("#s01-lb", { scale: 1 }, { scale: 1.15, duration: .3, yoyo: true, repeat: 11, ease: "sine.inOut" }, 0);
+      tl.fromTo("#s01-cta", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, at("L1", "Kommt") - .2);
+      tl.to("#s01-cta", { scale: 1.08, duration: .15, yoyo: true, repeat: 7, ease: "sine.inOut" }, at("L1", "Kommt") + .2);
       tl.fromTo("#s01-rv", { opacity: .45 }, { opacity: 1, duration: .14, yoyo: true, repeat: 17, ease: "sine.inOut", immediateRender: false }, 0);
       
       """ + "\n      ".join(
@@ -120,7 +132,7 @@ scene("s01", LILITA + "\n    " + PT + "\n" + FL + """
         for i, (w, k) in enumerate(QW)) + """
       """ + "\n      ".join(f'tl.fromTo("#s01-sp{k}", {{ opacity: 0, scale: .2, rotation: 0 }}, {{ opacity: 1, scale: 1, rotation: 90, duration: .3, yoyo: true, repeat: 3, ease: "sine.inOut", immediateRender: false }}, {k * .2:.2f});' for k in range(len(SP))) + """
       tl.fromTo("#s01-fl", { opacity: .9 }, { opacity: 0, duration: .45, immediateRender: false }, sc);
-      tl.to("#s01-l3", { scale: 1.12, duration: .12, yoyo: true, repeat: 1 }, sc);
+      tl.to("#s01-l4", { scale: 1.12, duration: .12, yoyo: true, repeat: 1 }, sc);
       
       tl.to("#s01-hk", { x: 12, duration: .04, yoyo: true, repeat: 5, ease: "none" }, sc);
 """ + drops("s01-p", 22, 5, 'sc', 540, 900, "🏗️", 600, 820)[1])
