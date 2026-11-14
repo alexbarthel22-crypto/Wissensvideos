@@ -66,8 +66,8 @@
     #s04-w2 { top: 395px; font-size: 46px; background: #2e9e5b; }
     #s04-y { top: 490px; font-size: 40px; background: #fff; color: #18a6b8; }
   </style>
-  <div id="root" data-composition-id="s04" data-start="0" data-duration="16.500" data-width="1080" data-height="1920">
-    <div id="s04-stage" class="clip stage" data-start="0" data-duration="16.500" data-track-index="0">
+  <div id="root" data-composition-id="s04" data-start="0" data-duration="14.900" data-width="1080" data-height="1920">
+    <div id="s04-stage" class="clip stage" data-start="0" data-duration="14.900" data-track-index="0">
       <div class="sl-dim" id="s04-dim"></div>
       <div id="s04-lv" class="pl">🔴 LIVE-VERLOSUNG</div>
       <div id="s04-v" class="pl">🛥️ 2 Plätze auf Maries Party-Yacht</div>
@@ -82,7 +82,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 16.5, "L4": [0.2, 3.5], "L4.words": [["und", 0.2, 0.347], ["jetzt", 0.347, 0.504], ["die", 0.504, 0.65], ["große", 0.65, 0.938], ["liveverlosung", 0.938, 1.66], ["zwei", 1.84, 2.05], ["plätze", 2.05, 2.456], ["auf", 2.456, 2.659], ["maries", 2.659, 3.065], ["partyyacht", 3.065, 3.5]], "L4a": [7.32, 9.41], "L4a.words": [["platz", 7.32, 7.651], ["eins", 7.651, 7.97], ["liese975", 8.15, 9.41]], "L4b": [12.83, 15.72], "L4b.words": [["und", 12.83, 13.046], ["platz", 13.046, 13.277], ["zwei", 13.277, 13.5], ["pia_nbg", 13.7, 13.969], ["ihr", 13.969, 14.212], ["feiert", 14.212, 14.48], ["ab", 14.48, 14.714], ["jetzt", 14.714, 14.974], ["auf", 14.974, 15.217], ["der", 15.217, 15.46], ["yacht", 15.46, 15.72]]};
+      const C = {"__dur": 14.9, "L4": [0.2, 3.5], "L4.words": [["und", 0.2, 0.347], ["jetzt", 0.347, 0.504], ["die", 0.504, 0.65], ["große", 0.65, 0.938], ["liveverlosung", 0.938, 1.66], ["zwei", 1.84, 2.05], ["plätze", 2.05, 2.456], ["auf", 2.456, 2.659], ["maries", 2.659, 3.065], ["partyyacht", 3.065, 3.5]], "L4a": [6.42, 8.51], "L4a.words": [["platz", 6.42, 6.751], ["eins", 6.751, 7.07], ["liese975", 7.25, 8.51]], "L4b": [11.23, 14.12], "L4b.words": [["und", 11.23, 11.446], ["platz", 11.446, 11.677], ["zwei", 11.677, 11.9], ["pia_nbg", 12.1, 12.369], ["ihr", 12.369, 12.612], ["feiert", 12.612, 12.88], ["ab", 12.88, 13.114], ["jetzt", 13.114, 13.374], ["auf", 13.374, 13.617], ["der", 13.617, 13.86], ["yacht", 13.86, 14.12]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];

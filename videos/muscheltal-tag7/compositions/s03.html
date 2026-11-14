@@ -52,20 +52,21 @@
     .pl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 28px 12px; border-radius: 999px; color: #fff;
       font-family: "Inter", sans-serif; font-weight: 900; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); white-space: nowrap; }
     #s03-t { top: 280px; font-size: 52px; background: #2e9e5b; }
-    .s03-d { top: 390px; font-size: 46px; }
+    .s03-d { top: 390px; font-size: 60px; font-family: "Lilita One", sans-serif; font-weight: 400; }
+    .s03-e { top: 500px; font-size: 42px; background: #fff; color: #2a1b12; }
   </style>
-  <div id="root" data-composition-id="s03" data-start="0" data-duration="9.180" data-width="1080" data-height="1920">
-    <div id="s03-stage" class="clip stage" data-start="0" data-duration="9.180" data-track-index="0">
+  <div id="root" data-composition-id="s03" data-start="0" data-duration="13.080" data-width="1080" data-height="1920">
+    <div id="s03-stage" class="clip stage" data-start="0" data-duration="13.080" data-track-index="0">
       <div id="s03-t" class="pl">🥥 NEU auf der Kokos-Küste!</div>
-      <div id="s03-d0" class="pl s03-d" style="background:#ff6a1a">🍹 Coco Bay · @priv.greto.2</div>
-      <div id="s03-d1" class="pl s03-d" style="background:#18a6b8">🏊 Kokos-Bad · @lionaaa013</div>
-      <div id="s03-d2" class="pl s03-d" style="background:#d4469c">👗 Coast & Cotton · @emma.hl07</div>
+      <div id="s03-d0" class="pl s03-d" style="background:#ff6a1a">🍹 Coco Bay</div><div id="s03-e0" class="pl s03-e">👑 Leitung: @priv.greto.2</div>
+      <div id="s03-d1" class="pl s03-d" style="background:#18a6b8">🏊 Kokos-Bad</div><div id="s03-e1" class="pl s03-e">👑 Leitung: @lionaaa013</div>
+      <div id="s03-d2" class="pl s03-d" style="background:#d4469c">👗 Coast & Cotton</div><div id="s03-e2" class="pl s03-e">👑 Leitung: @emma.hl07</div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 9.18, "L3": [0.2, 2.26], "L3.words": [["und", 0.2, 0.359], ["auf", 0.359, 0.518], ["der", 0.518, 0.677], ["kokosküste", 0.677, 1.301], ["gibt", 1.301, 1.466], ["es", 1.466, 1.619], ["drei", 1.619, 1.783], ["neue", 1.783, 1.948], ["läden", 1.948, 2.26]], "L3x": [2.88, 4.01], "L3x.words": [["die", 2.88, 3.068], ["beach", 3.068, 3.27], ["bar", 3.27, 3.458], ["coco", 3.458, 3.822], ["bay", 3.822, 4.01]], "L3y": [5.13, 5.88], "L3y.words": [["das", 5.13, 5.319], ["kokosbad", 5.319, 5.88]], "L3z": [7.0, 8.5], "L3z.words": [["und", 7.0, 7.166], ["die", 7.166, 7.332], ["boutique", 7.332, 7.824], ["coast", 7.824, 8.002], ["and", 8.002, 8.168], ["cotton", 8.168, 8.5]]};
+      const C = {"__dur": 13.08, "L3": [0.2, 2.26], "L3.words": [["und", 0.2, 0.359], ["auf", 0.359, 0.518], ["der", 0.518, 0.677], ["kokosküste", 0.677, 1.301], ["gibt", 1.301, 1.466], ["es", 1.466, 1.619], ["drei", 1.619, 1.783], ["neue", 1.783, 1.948], ["läden", 1.948, 2.26]], "L3x": [3.48, 4.61], "L3x.words": [["die", 3.48, 3.668], ["beach", 3.668, 3.87], ["bar", 3.87, 4.058], ["coco", 4.058, 4.422], ["bay", 4.422, 4.61]], "L3y": [6.73, 7.48], "L3y.words": [["das", 6.73, 6.919], ["kokosbad", 6.919, 7.48]], "L3z": [9.6, 11.1], "L3z.words": [["und", 9.6, 9.766], ["die", 9.766, 9.932], ["boutique", 9.932, 10.424], ["coast", 10.424, 10.602], ["and", 10.602, 10.768], ["cotton", 10.768, 11.1]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -110,9 +111,9 @@
       wrapBt("#s03-stage");
       const tl = gsap.timeline({ paused: true });
       tl.fromTo("#s03-t", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, line("L3")[0]);
-      tl.fromTo("#s03-d0", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, at("L3x", "Coco") - .1); tl.to("#s03-d0", { scale: 1.08, duration: .18, yoyo: true, repeat: 3, ease: "sine.inOut" }, at("L3x", "Coco") + .3); tl.to("#s03-d0", { opacity: 0, y: -20, duration: .2 }, line("L3y")[0] - .35);
-      tl.fromTo("#s03-d1", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, at("L3y", "Kokos-Bad") - .1); tl.to("#s03-d1", { scale: 1.08, duration: .18, yoyo: true, repeat: 3, ease: "sine.inOut" }, at("L3y", "Kokos-Bad") + .3); tl.to("#s03-d1", { opacity: 0, y: -20, duration: .2 }, line("L3z")[0] - .35);
-      tl.fromTo("#s03-d2", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, at("L3z", "Coast") - .1); tl.to("#s03-d2", { scale: 1.08, duration: .18, yoyo: true, repeat: 3, ease: "sine.inOut" }, at("L3z", "Coast") + .3);
+      tl.fromTo("#s03-d0", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, at("L3x", "Coco") - .1); tl.fromTo("#s03-e0", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, line("L3x")[1] + .1); tl.to("#s03-d0", { scale: 1.08, duration: .18, yoyo: true, repeat: 3, ease: "sine.inOut" }, at("L3x", "Coco") + .3); tl.to(["#s03-d0", "#s03-e0"], { opacity: 0, y: -20, duration: .2 }, line("L3y")[0] - .35);
+      tl.fromTo("#s03-d1", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, at("L3y", "Kokos-Bad") - .1); tl.fromTo("#s03-e1", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, line("L3y")[1] + .1); tl.to("#s03-d1", { scale: 1.08, duration: .18, yoyo: true, repeat: 3, ease: "sine.inOut" }, at("L3y", "Kokos-Bad") + .3); tl.to(["#s03-d1", "#s03-e1"], { opacity: 0, y: -20, duration: .2 }, line("L3z")[0] - .35);
+      tl.fromTo("#s03-d2", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, at("L3z", "Coast") - .1); tl.fromTo("#s03-e2", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, line("L3z")[1] + .1); tl.to("#s03-d2", { scale: 1.08, duration: .18, yoyo: true, repeat: 3, ease: "sine.inOut" }, at("L3z", "Coast") + .3);
       tl.to("#s03-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
       window.__timelines["s03"] = tl;
     })();

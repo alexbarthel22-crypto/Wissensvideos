@@ -36,21 +36,21 @@
     },
     {
      "name": "pop",
-     "at": "L1:Plätze",
+     "at": "L1:Follower",
      "volume": 0.4
     },
     {
      "name": "impact-bass-2",
-     "at": "L1:Party-Yacht",
+     "at": "L1:einziehen",
      "volume": 0.5
     }
    ],
    "lines": [
     {
      "id": "L1",
-     "text": "Heute verlose ich *y:zwei *y:Plätze / auf einer *p:Party-Yacht!",
+     "text": "Diese Insel *g:wächst durch *y:Follower, / die *y:einziehen!",
      "speed": 0.95,
-     "style": "Style: a young German guy, around 20, extremely excited and loud, almost shouting with joy, asking an intriguing question with suspense, then excitedly revealing the answer, explosive energy, natural German intonation, normal pitch.\nPace: brisk. Say the sentence exactly once and stop after \"Party-Yacht\". \nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
+     "style": "Style: a young German guy, around 20, extremely excited and loud, almost shouting with joy, asking an intriguing question with suspense, then excitedly revealing the answer, explosive energy, natural German intonation, normal pitch.\nPace: brisk. Say the sentence exactly once and stop after \"einziehen\". \nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
     }
    ]
   },
@@ -107,6 +107,11 @@
      "name": "yippee",
      "at": "L2w:Glückwunsch",
      "volume": 0.9
+    },
+    {
+     "name": "jubel",
+     "at": "L2w:backst",
+     "volume": 0.35
     }
    ],
    "lines": [
@@ -122,7 +127,7 @@
      "text": "*g:Glückwunsch, *y:@julicrzy2000|Juli-Crazy-zweitausend! / Du backst ab jetzt mit *p:Lona!",
      "speed": 1.1,
      "style": "Style: a young German guy, around 20, genuinely excited, talking to his followers like friends, energetic and warm, natural German intonation, not an announcer, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-     "pause": 4.0
+     "pause": 3.0
     }
    ]
   },
@@ -179,21 +184,21 @@
      "text": "die Beach Bar *y:Coco *y:Bay,",
      "speed": 1.1,
      "style": "Style: a young German guy, around 20, genuinely excited, talking to his followers like friends, energetic and warm, natural German intonation, not an announcer, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-     "pause": 0.4
+     "pause": 1.0
     },
     {
      "id": "L3y",
      "text": "das *b:Kokos-Bad,",
      "speed": 1.1,
      "style": "Style: a young German guy, around 20, genuinely excited, talking to his followers like friends, energetic and warm, natural German intonation, not an announcer, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-     "pause": 0.9
+     "pause": 1.9
     },
     {
      "id": "L3z",
      "text": "und die Boutique *p:Coast and *p:Cotton!",
      "speed": 1.1,
      "style": "Style: a young German guy, around 20, genuinely excited, talking to his followers like friends, energetic and warm, natural German intonation, not an announcer, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-     "pause": 0.9
+     "pause": 1.9
     }
    ]
   },
@@ -248,21 +253,21 @@
      "text": "Und jetzt die große *r:Live-Verlosung: / *y:zwei Plätze auf *p:Maries *b:Party-Yacht!",
      "speed": 1.1,
      "style": "Style: a young German guy, around 20, genuinely excited, talking to his followers like friends, energetic and warm, natural German intonation, not an announcer, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-     "pause": 0.5
+     "pause": 1.8
     },
     {
      "id": "L4a",
      "text": "Platz eins: *y:@liese975|Liese-neun-sieben-fünf!",
      "speed": 1.1,
      "style": "Style: a young German guy, around 20, genuinely excited, talking to his followers like friends, energetic and warm, natural German intonation, not an announcer, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-     "pause": 3.6
+     "pause": 2.7
     },
     {
      "id": "L4b",
      "text": "Und Platz zwei: *y:@pia._.nbg|Pia-N-B-G! / Ihr *g:feiert ab jetzt auf der Yacht!",
      "speed": 1.1,
      "style": "Style: a young German guy, around 20, genuinely excited, talking to his followers like friends, energetic and warm, natural German intonation, not an announcer, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-     "pause": 3.2
+     "pause": 2.5
     }
    ]
   },
@@ -336,5 +341,10 @@
  "ambience": {
   "src": "assets/music/atmo.wav",
   "volume": 0.6
+ },
+ "music": {
+  "src": "assets/music/suedsee.wav",
+  "volume": 1.0,
+  "note": "tools/make_music_tropical.py, im Code erzeugt (lizenzfrei), unter der Stimme automatisch leiser"
  }
 }
