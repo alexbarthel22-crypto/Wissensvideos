@@ -104,7 +104,7 @@ Like-Ziele liegen bei ca. 80 % des normalen Like-Tempos: schaffbar, wenn alle mi
 | 💖 Komplimente | `schön` / `toll` | 5 🐚, ab 10 Bonus 10 🐚 |
 
 ## Jobs
-Ist ein Stadtgebäude fertig, wird dort ein **Job** unter den Zuschauern der letzten 15 Minuten verlost (Banner, Ansage, gelbes 💼-Schild über dem Gebäude). **Gehalt: alle 5 Minuten 5 Muscheln** fürs eigene Haus (einstellbar unter `jobs` in einstellungen.json). Ist gerade niemand da, wird der Job später nachgeholt.
+Ist ein Stadtgebäude fertig, wird dort ein **Job** unter den Zuschauern der letzten 15 Minuten verlost (Banner, Ansage, gelbes 💼-Schild über dem Gebäude). **Gehalt: alle 5 Minuten 5 Muscheln** fürs eigene Haus (einstellbar unter `jobs` in einstellungen.json). Jobs gelten nur während des Streams: bei jedem Neustart werden alle Jobs neu verlost (nacheinander, alle 30 s einer, sobald Zuschauer aktiv sind).
 
 ## Stadtgebäude (ohne Limit)
 Per Abstimmung wählt der Chat das nächste Gemeinschafts-Gebäude, bezahlt wird aus der Muschelkasse (beim Baustart fließt die Hälfte des Ersparten in die Baustelle, danach 70 % jeder neuen Muschel – die Kasse ist nie leer). Kosten realistisch: Café/Eisdiele/Friseur 6.000 … Krankenhaus 35.000 Muscheln (einstellbar in einstellungen.json):

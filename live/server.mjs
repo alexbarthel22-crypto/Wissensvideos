@@ -18,7 +18,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-14 l';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-14 m';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -42,7 +42,7 @@ function namenPruefen() {                                  // auch für Bewohner
   }
 }
 S.fertig = (S.fertig || []).filter(id => CFG.abstimmung.projekte.some(x => x.id === id));
-S.jobs ||= {};                                             // Gebäude-Nr. (Index in S.fertig) -> { id: Spieler, seit }
+S.jobs = {};                                               // Jobs gelten nur für diesen Stream: bei jedem Start neu verlost (Gebäude-Nr. -> { id, seit })
 if (S.projekt && !CFG.abstimmung.projekte.some(x => x.id === S.projekt.id)) S.projekt = null;
 if (S.projekt) S.projekt.ziel = CFG.abstimmung.projekte.find(x => x.id === S.projekt.id).ziel;   // Kosten aus den Einstellungen
 namenPruefen(); setInterval(namenPruefen, 30000);
@@ -275,7 +275,7 @@ function jobVerlosen(nr) {
   sag(`${sprechName(p)} gewinnt den Job ${imGebaeude(def)}! … ${geh === 1 ? 'Eine Muschel' : geh + ' Muscheln'} Gehalt!`, 1);
   zustand(); return true;
 }
-setInterval(() => { for (let i = 0; i < S.fertig.length; i++) if (!S.jobs[i] && jobVerlosen(i)) break; }, 60000);   // offene Jobs nachholen
+setInterval(() => { for (let i = 0; i < S.fertig.length; i++) if (!S.jobs[i] && jobVerlosen(i)) break; }, 30000);   // offene Jobs verlosen (nach dem Start nacheinander, alle 30 s einer)
 setInterval(() => {                                        // Zahltag: Gehalt für alle mit Job
   const geh = CFG.jobs?.gehalt ?? 5; let n = 0;
   for (const j of Object.values(S.jobs)) { const p = S.spieler[j.id]; if (p && !p.gesperrt) { gibMuscheln(p, geh, 'gehalt'); n++; } }
@@ -805,7 +805,7 @@ async function verbinde() {
     const ex = d.extendedGiftInfo || {};
     geschenk(d.user || {}, g.giftName || ex.name || 'das Geschenk', g.diamondCount || ex.diamond_count || 1, d.repeatCount || 1);
   });
-  c.on(WebcastEvent.STREAM_END, () => { console.log('Stream beendet.'); speichern(); });
+  c.on(WebcastEvent.STREAM_END, () => { console.log('Stream beendet.'); S.jobs = {}; zustand(); speichern(); });   // Jobs enden mit dem Stream
   c.on('disconnected', () => { tiktokStatus = 'getrennt'; console.log('⚠️  Verbindung zu TikTok weg – neuer Versuch in 15 s'); setTimeout(versuche, 15000); });
   const st = await c.connect();
   tiktokStatus = 'verbunden';
