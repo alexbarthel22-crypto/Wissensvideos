@@ -76,6 +76,76 @@ def importiere(pfad, rows):
     return n
 
 
+FAKTEN = os.path.join(os.path.dirname(HIER), "MUSCHELTAL_FAKTEN.md")
+
+
+def entferne_ausgezogene(namen):
+    """Wer ausgezogen ist (entfolgt), wird ausnahmslos überall entfernt: Jobs (mit Nachfolge der Leitung),
+    Wohnorte, Nachbarn, Pool, Erfolgs-Entzug, Ämter, alle Texte (News, Chronik …) und die Faktenliste.
+    Die Server-Daten (Konto, Erfolge, Aufgaben, Spenden) löscht die Funktion muscheln.mjs einmal täglich."""
+    namen = {n.lower().lstrip("@") for n in namen if n}
+    if not namen:
+        return
+    insel = json.load(open(INSEL, encoding="utf-8"))
+    jobs = insel.get("jobs") or {}
+    verloren = [(n, jobs[n]) for n in list(jobs) if n.lower().lstrip("@") in namen]
+    for n, j in verloren:
+        del jobs[n]
+    nachfolge = []
+    for n, j in verloren:
+        if "Leitung" not in str(j[0]) or any(v and v[1] == j[1] and v[0] == j[0] for v in jobs.values()):
+            continue
+        for m, v in jobs.items():
+            if v and v[1] == j[1] and "Leitung" not in str(v[0]):
+                jobs[m] = [j[0]] + list(v[1:])
+                nachfolge.append((m, j[0], j[1]))
+                break
+    aemter = []
+    for a in list(insel.get("aemter") or []):
+        if str(a[1]).lower().lstrip("@") in namen:
+            insel["aemter"].remove(a)
+            aemter.append(a)
+    texte = []
+
+    def weg(x, schluessel=""):
+        if isinstance(x, dict):
+            return {k: weg(v, k) for k, v in x.items() if k.lower().lstrip("@") not in namen}
+        if isinstance(x, list):
+            neu = [weg(v, schluessel) for v in x if not (isinstance(v, str) and v.lower().lstrip("@") in namen)]
+            return neu
+        if isinstance(x, str):
+            y = x
+            for n in namen:
+                y = re.sub(r"(?i)(,?\s*(Leitung|Team|von|mit|und)?:?\s*)@" + re.escape(n) + r"(?![a-z0-9._])", "", y)
+            y = re.sub(r"\s{2,}", " ", y).replace(" .", ".").replace(" ,", ",").replace("( )", "").strip()
+            if y != x:
+                texte.append(y[:80])
+            return y
+        return x
+    insel = weg(insel)
+    insel["nachbarn"] = [g for g in (insel.get("nachbarn") or []) if isinstance(g, list) and len(g) >= 2]
+    insel["jobs"] = {k: v for k, v in jobs.items() if k.lower().lstrip("@") not in namen}
+    json.dump(insel, open(INSEL, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
+    # Faktenliste: Namen raus
+    if os.path.exists(FAKTEN):
+        f = open(FAKTEN, encoding="utf-8").read()
+        f2 = f
+        for n in namen:
+            f2 = re.sub(r"(?i)@" + re.escape(n) + r"(?![a-z0-9._])", "(ausgezogen)", f2)
+        if f2 != f:
+            open(FAKTEN, "w", encoding="utf-8").write(f2)
+    if verloren:
+        print("⚠️  JOB VERLOREN (entfolgt):")
+        for n, j in verloren:
+            print(f"   @{n.lstrip('@')}: {j[0]} – {j[1]}")
+    for m, rolle, ort in nachfolge:
+        print(f"⭐ NEUE {rolle.upper()}: @{m.lstrip('@')} übernimmt {ort}")
+    for a in aemter:
+        print(f"⚠️  AMT FREI (entfolgt): {a[1]} war {a[0]}")
+    if texte:
+        print(f"🧹 {len(texte)} Text(e) bereinigt (Namen von Ausgezogenen entfernt)")
+
+
 def importiere_liste(pfad, rows):
     """Komplette Followerliste im Format 'Datum: 2026-11-07 22:54:52 UTC / Anmeldename: name'.
     Neue werden (älteste zuerst) hinten angehängt, wer fehlt, zieht aus, wer wieder folgt, zieht hinten neu ein."""
@@ -94,35 +164,8 @@ def importiere_liste(pfad, rows):
             rows.remove(r)
             weg += 1
             weg_namen.append(r["name"].lower().lstrip("@"))
-    # Wer entfolgt, verliert seinen Job (insel.json → jobs) – gesondert melden
-    if weg_namen:
-        insel = json.load(open(INSEL, encoding="utf-8"))
-        jobs = insel.get("jobs") or {}
-        verloren = [(n, jobs[n]) for n in list(jobs) if n.lower().lstrip("@") in weg_namen]
-        for n, j in verloren:
-            del jobs[n]
-        # Zieht eine Leitung aus, übernimmt die dienstälteste Mitarbeiterin am selben Ort (frühester Eintrag in jobs)
-        nachfolge = []
-        for n, j in verloren:
-            if "Leitung" not in str(j[0]):
-                continue
-            if any(v and v[1] == j[1] and v[0] == j[0] for v in jobs.values()):
-                continue  # dort gibt es noch eine Leitung
-            for m, v in jobs.items():
-                if v and v[1] == j[1] and "Leitung" not in str(v[0]):
-                    jobs[m] = [j[0]] + list(v[1:])
-                    nachfolge.append((m, j[0], j[1]))
-                    break
-        if verloren:
-            json.dump(insel, open(INSEL, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
-            print("⚠️  JOB VERLOREN (entfolgt):")
-            for n, j in verloren:
-                print(f"   @{n.lstrip('@')}: {j[0]} – {j[1]}")
-            for m, rolle, ort in nachfolge:
-                print(f"⭐ NEUE {rolle.upper()}: @{m.lstrip('@')} übernimmt {ort}")
-        for a in insel.get("aemter") or []:
-            if str(a[1]).lower().lstrip("@") in weg_namen:
-                print(f"⚠️  AMT BETROFFEN (entfolgt): {a[1]} war {a[0]} – bitte von Hand regeln")
+    # Wer entfolgt, wird ausnahmslos überall entfernt (Jobs mit Meldung, Texte, Faktenliste …)
+    entferne_ausgezogene(weg_namen)
     aktiv = {r["name"].lower().lstrip("@") for r in rows}
     neu = 0
     for y, m, d, _, n in paare:

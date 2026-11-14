@@ -31,7 +31,7 @@ async function buch(store, nm) {
 // Läuft je Eintrag genau einmal (Merker x/reset/<name>/<nr>); danach kann der Name neu beansprucht werden.
 // [Name, Lauf-Nr., optional: ab Zeitpunkt (ms) – dann werden auch Erfolge und Story-Buchungen ab diesem Zeitpunkt gelöscht]
 const TEST_12_11 = 1794438000000; // 12.11.2026 0:00 Uhr (Berlin): Testlauf mit mehreren Testern
-const RESET = [["leamickunnnn", 1], ...["marina.cgnn", "ju1e_smt", "mimposible", "maja.gnw", "eeli_mxo", "luna.gsn02", "toca_lexi00"].map(n => [n, 1, TEST_12_11])];
+const RESET = [...["marina.cgnn", "ju1e_smt", "mimposible", "maja.gnw", "eeli_mxo", "luna.gsn02", "toca_lexi00"].map(n => [n, 1, TEST_12_11])];
 async function zuruecksetzen(store) {
   for (const [n, nr, ab] of RESET) {
     const mk = "x/reset/" + n + "/" + nr;
@@ -73,12 +73,38 @@ async function zurueckAuf(store) {
     for (const k of await liste(es, "e/" + n + "/")) if (Number(k.split("/").pop()) >= ab) await es.delete(k);
   }
 }
+// Ausgezogene (nicht mehr in der Bewohnerliste): einmal täglich wird ihr Name überall entfernt.
+// Persönliches (Beanspruchung, Kontobuch, Aufgaben, Erfolge) wird gelöscht; Spenden und Story-Boni der
+// Inselkasse bleiben mit gleichem Betrag erhalten, laufen aber unter einer zufälligen Kennung statt dem Namen.
+async function aufraeumen(store) {
+  const mk = "x/aufraeumen/" + tag();
+  if (await store.get(mk)) return;
+  await store.set(mk, String(Date.now()));
+  if (!BEWOHNER || BEWOHNER.size < 100) return; // Sicherheitsnetz: nie bei leerer/kaputter Liste
+  const weg = n => !!n && !n.startsWith("~") && !BEWOHNER.has(n);
+  for (const pre of ["c/", "b/", "q/"])
+    for (const k of await liste(store, pre)) { const n = pre === "c/" ? k.slice(2) : k.split("/")[1]; if (weg(n)) await store.delete(k); }
+  for (const k of await liste(store, "r/")) {
+    const L = JSON.parse((await store.get(k)) || "[]");
+    if (Array.isArray(L) && L.some(weg)) await store.set(k, JSON.stringify(L.filter(n => !weg(n))));
+  }
+  const es = getStore("erfolge");
+  for (const k of await liste(es, "e/")) if (weg(k.split("/")[1])) await es.delete(k);
+  const kasse = getStore({ name: "inselkasse", consistency: "strong" }), anon = {};
+  for (const pre of ["s/", "b/"]) for (const k of await liste(kasse, pre)) {
+    const t = k.split("/"), n = t[1];
+    if (!weg(n)) continue;
+    const id = anon[n] || (anon[n] = "~" + crypto.randomUUID().slice(0, 8));
+    t[1] = id; await kasse.set(t.join("/"), (await kasse.get(k)) || "1"); await kasse.delete(k);
+  }
+}
 const TEXT = { login: "Login-Serie", quest: "Aufgabe", qbonus: "Alle 3 Aufgaben", shell: "Schwebende Muschel", erf: "Neuer Erfolg", story: "Story geteilt", spende: "Spende Inselkasse" };
 
 export default async (req) => {
   const store = getStore({ name: "muscheln", consistency: "strong" });
   await zuruecksetzen(store);
   await zurueckAuf(store);
+  await aufraeumen(store);
   const url = new URL(req.url);
   if (req.method === "GET" && url.searchParams.get("top")) {
     // Muschel-Rangliste: Top 10 der beanspruchten Namen nach Kontostand, Pfeile im Vergleich zu gestern, optional eigener Platz
