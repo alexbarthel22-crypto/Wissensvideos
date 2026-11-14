@@ -350,3 +350,10 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - **Erkunden als Villa-/Yacht-Bewohner (14.11.):** Wer in der Strandvilla oder auf der Yacht wohnt und die Welt erkundet, erscheint nur einmal (als erkundende Figur); nach „Beenden“ ist sie wieder in der Villa/auf der Yacht.
 - **Gemeinsame Uhr (14.11.):** Alle Animationen (Passanten, Jogger, Gäste in Läden, Pimpsi, Rave, Party, Boote …) laufen nach der echten Uhrzeit – alle Besucher sehen dieselben Figuren zur selben Zeit am selben Ort. Ausnahmen: Hunde/Katzen und Radfahrer laufen zufällig; Erkunden sieht nur das eigene Gerät (kein Live-Multiplayer).
 - **FAQ (14.11.):** Bei „Was sind die Inseln mit ???“ ist der Satz „Und irgendwo am Rand der Karte versteckt sich noch eine geheime Insel …“ entfernt.
+
+## Video Tag 7 (14.11., `videos/muscheltal-tag7/`)
+- **721 Bewohner** (laut Nutzer).
+- **Live-Verlosung Bäckerei-Job:** @julicrzy2000 (Nr. 70) – am 14.11. per Zufall (Python `secrets`) aus 690 Bewohnern ohne Job/Amt/Sonder-Wohnort gezogen. Bäckerei: Leitung @lona.js, Team @_privat_033 + @julicrzy2000. ⚠️ Homepage: @julicrzy2000 ins Bäckerei-Team.
+- **Live-Verlosung Yacht (2 Plätze auf Maries Party-Yacht, @marie18034):** @liese975 (Nr. 45) und @pia._.nbg (Nr. 251) – gleiche Ziehung. ⚠️ Homepage: beide wohnen/feiern auf der Yacht.
+- Kokos-Küste: neue Läden 🍹 Coco Bay (@priv.greto.2), 🏊 Kokos-Bad (@lionaaa013), 👗 Coast & Cotton (@emma.hl07).
+- Ankündigung: 🔴 LIVE-Insel – im TikTok-Livestream baut man seine eigene Insel.
