@@ -36,21 +36,21 @@
     },
     {
      "name": "pop",
-     "at": "L1:Follower",
+     "at": "L1:wächst",
      "volume": 0.4
     },
     {
      "name": "impact-bass-2",
-     "at": "L1:einziehen",
+     "at": "L1:folgst",
      "volume": 0.5
     }
    ],
    "lines": [
     {
      "id": "L1",
-     "text": "Diese Insel *g:wächst durch *y:Follower, / die *y:einziehen!",
+     "text": "Diese *g:Insel-Welt *g:wächst, / wenn *y:du *y:folgst!",
      "speed": 0.95,
-     "style": "Style: a young German guy, around 20, extremely excited and loud, almost shouting with joy, asking an intriguing question with suspense, then excitedly revealing the answer, explosive energy, natural German intonation, normal pitch.\nPace: brisk. Say the sentence exactly once and stop after \"einziehen\". \nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
+     "style": "Style: a young German guy, around 20, extremely excited and loud, almost shouting with joy, asking an intriguing question with suspense, then excitedly revealing the answer, explosive energy, natural German intonation, normal pitch.\nPace: brisk. Say the sentence exactly once and stop after \"folgst\". \nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
     }
    ]
   },
@@ -191,14 +191,14 @@
      "text": "das *b:Kokos-Bad,",
      "speed": 1.1,
      "style": "Style: a young German guy, around 20, genuinely excited, talking to his followers like friends, energetic and warm, natural German intonation, not an announcer, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-     "pause": 1.9
+     "pause": 1.6
     },
     {
      "id": "L3z",
      "text": "und die Boutique *p:Coast and *p:Cotton!",
      "speed": 1.1,
      "style": "Style: a young German guy, around 20, genuinely excited, talking to his followers like friends, energetic and warm, natural German intonation, not an announcer, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-     "pause": 1.9
+     "pause": 1.6
     }
    ]
   },
@@ -253,7 +253,7 @@
      "text": "Und jetzt die große *r:Live-Verlosung: / *y:zwei Plätze auf *p:Maries *b:Party-Yacht!",
      "speed": 1.1,
      "style": "Style: a young German guy, around 20, genuinely excited, talking to his followers like friends, energetic and warm, natural German intonation, not an announcer, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-     "pause": 1.8
+     "pause": 1.4
     },
     {
      "id": "L4a",
@@ -319,6 +319,16 @@
      "name": "ka-ching",
      "at": "L6:Namen",
      "volume": 0.4
+    },
+    {
+     "name": "impact-bass-1",
+     "at": "L6b:ersten",
+     "volume": 0.45
+    },
+    {
+     "name": "ka-ching",
+     "at": "L6b:Vorteile",
+     "volume": 0.4
     }
    ],
    "lines": [
@@ -328,6 +338,13 @@
      "speed": 0.95,
      "style": "Style: a young German guy, around 20, genuinely excited, talking to his followers like friends, energetic and warm, natural German intonation, not an announcer, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
      "pause": 0.5
+    },
+    {
+     "id": "L6b",
+     "text": "Sei einer der *y:ersten *y:1.000|tausend / und sichere dir deine *g:Vorteile im *p:Spiel!",
+     "speed": 1.1,
+     "style": "Style: a young German guy, around 20, genuinely excited, talking to his followers like friends, energetic and warm, natural German intonation, not an announcer, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+     "pause": 0.25
     }
    ]
   }
