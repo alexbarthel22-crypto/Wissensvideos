@@ -1691,6 +1691,10 @@ function overlay(t) {
     X.globalAlpha = 1;
   }
   if (S.test) text('TEST-MODUS', SR, OBEN - 18, 18, 'rgba(255,255,255,.8)', 'right', 900);
+  // Kleines Schild: Moderation mit KI-Stimme (Kennzeichnung für TikTok), dezent über dem Logo
+  X.font = schrift(800, 16); const kw = X.measureText('🤖 KI-Stimme').width + 20;
+  X.fillStyle = 'rgba(42,27,18,.55)'; rr(SL + 6, OBEN - 33, kw, 26, 13); X.fill();
+  text('🤖 KI-Stimme', SL + 16, OBEN - 15, 16, '#fff', 'left', 800);
 }
 
 // ---------- Zwischenspeicher (spart viel Rechenleistung) ----------
