@@ -44,7 +44,7 @@ Ausbauten werden animiert gebaut (Bambusgerüst, Krabben-Bauarbeiter, Sandstaub)
 Oben steht immer das **nächste Bauprojekt der Haupt-Insel** – automatisch aus `muscheltal/daten/insel.json` (`baustellen`), Startzahl der Bewohner aus `einwohner.csv`. Straßennamen stehen unter `strassen`.
 Die Bewohnerzahl kommt live von TikTok (Follower), `bewohner.start` ist nur der Startwert, falls TikTok sie nicht liefert.
 
-## Überraschungs-Events (alle 2 Minuten, 50 verschiedene)
+## Überraschungs-Events (alle 2 Minuten, je 1 Minute, 50 verschiedene)
 Rechts oben läuft ein Countdown „Nächstes Event“ – welches kommt, bleibt geheim (❓❓❓). Nie dasselbe wie eins der letzten 10.
 Beim Start sagt Anna, was am Ende passiert (steht auch im Event-Feld unter 🏆). Am Ende nennt sie die Gewinner mit Namen (im Ergebnis-Feld unter 🏆).
 Alle Events laufen komplett im Stream und ohne Rauszoomen (die Kamera bleibt bei den Häusern), mitmachen per Like oder Kommentar – niemand muss den Stream verlassen, nichts ist an Geschenke gebunden.
@@ -102,6 +102,9 @@ Like-Ziele liegen bei ca. 80 % des normalen Like-Tempos: schaffbar, wenn alle mi
 | ⛵ Bootsrennen | `segel` / `motor`, dann liken | Siegerboot 25 🐚 |
 | ✈️ Traumurlaub | `1` `2` `3` | Mehrheit 10 🐚 |
 | 💖 Komplimente | `schön` / `toll` | 5 🐚, ab 10 Bonus 10 🐚 |
+
+## Jobs
+Ist ein Stadtgebäude fertig, wird dort ein **Job** unter den Zuschauern der letzten 15 Minuten verlost (Banner, Ansage, gelbes 💼-Schild über dem Gebäude). **Gehalt: alle 5 Minuten 5 Muscheln** fürs eigene Haus (einstellbar unter `jobs` in einstellungen.json). Ist gerade niemand da, wird der Job später nachgeholt.
 
 ## Stadtgebäude (ohne Limit)
 Per Abstimmung wählt der Chat das nächste Gemeinschafts-Gebäude, bezahlt wird aus der Muschelkasse (beim Baustart fließt die Hälfte des Ersparten in die Baustelle, danach 70 % jeder neuen Muschel – die Kasse ist nie leer). Kosten realistisch: Café/Eisdiele/Friseur 6.000 … Krankenhaus 35.000 Muscheln (einstellbar in einstellungen.json):

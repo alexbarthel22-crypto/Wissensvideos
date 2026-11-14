@@ -280,6 +280,12 @@ function ereignis(e) {
     }
     case 'stufe': if (p) { bau[e.id] = { t: jetzt, alt: p.stufe, neu: e.stufe, D: 4.8 }; if (pl) { fokus(pl, 8500); funken(pl, '✨', 8); setTimeout(() => { hausFeuerwerk(pl, e.stufe); funken(pl, '✨', 14); }, 4300); } } break;
     case 'anbau': if (pl) { pop[e.id] = jetzt; funken(pl, '🔨', 5); fokus(pl, 2600, true); } break;
+    case 'job': {                                                   // Job in einem fertigen Gebäude verlost
+      banner.push({ t: 0, oben: `💼 ${e.name}`, unten: `gewinnt den Job ${e.wo} · ${e.gehalt} 🐚 Gehalt`, farbe: '#ff8a2a' });
+      const gp = GEB_PLAETZE[e.nr]; if (gp) { fokus({ x: gp.x, y: gp.y - 10 }, 6000); funken({ x: gp.x, y: gp.y - 50 }, '💼', 14); }
+      break;
+    }
+    case 'zahltag': banner.push({ t: 0, oben: '💰 Zahltag!', unten: `${e.n} ${e.n === 1 ? 'Job' : 'Jobs'} · je ${e.gehalt} 🐚 Gehalt`, farbe: '#3f9b45' }); break;
     case 'erstLiken': banner.push({ t: 0, oben: `❤️ ${e.name}`, unten: e.art === 'farbe' ? 'Like einmal – dann kannst du dein Haus streichen!' : 'Like einmal – dann wird dein Haus gebaut!', farbe: PINK }); break;
     case 'farbe': {                                                // Haus wird animiert neu gestrichen (Farbrolle von links nach rechts)
       streich[e.id] = { t: jetzt + 600, alt: e.alt, neu: e.neu };
@@ -990,6 +996,16 @@ const SCHILDER = [];
 function schilderZeichnen(t) {                                  // weiße Namensschilder mit Haus-Symbol, fester Bildschirmgröße
   X.setTransform(Q0, 0, 0, Q0, 0, 0);
   const px = 24, liste = SCHILDER.splice(0);
+  for (const [nr, name] of Object.entries(S.jobs || {})) {         // Job-Schilder über den Stadtgebäuden
+    const gp = GEB_PLAETZE[+nr]; if (!gp || !name) continue;
+    const sx = 540 + (gp.x - cam.x) * cam.z, sy = MITTE_Y + (gp.y - 118 - cam.y) * cam.z;
+    if (sx < -200 || sx > W + 200 || sy < KOPF_UNTEN || sy > H) continue;
+    X.font = schrift(900, 22); const tw = Math.min(260, X.measureText(name).width), w = tw + 56, h = 38;
+    X.fillStyle = 'rgba(42,27,18,.35)'; rr(sx - w / 2 + 3, sy + 4, w, h, 12); X.fill();
+    X.fillStyle = '#ffd23f'; rr(sx - w / 2, sy, w, h, 12); X.fill(); X.lineWidth = 3; X.strokeStyle = INK; X.stroke();
+    X.font = `24px ${FONT}`; X.textAlign = 'left'; X.textBaseline = 'middle'; X.fillText('💼', sx - w / 2 + 10, sy + h / 2 + 1);
+    text(name, sx - w / 2 + 44, sy + h / 2 + 8, 22, INK, 'left', 900, 260);
+  }
   for (const { p, pl } of liste) {
     const sx = 540 + (pl.x - cam.x) * cam.z, sy = MITTE_Y + (pl.y + 20 - cam.y) * cam.z;
     if (sy < KOPF_UNTEN - 10 || sy > H + 40) continue;

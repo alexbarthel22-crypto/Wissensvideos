@@ -117,7 +117,7 @@ export function macheEvents(api) {
     },
     bauturbo: {
       titel: 'Bau-Turbo', icon: '⚡', dauer: 45, faktor: 3,
-      start() { return 'Bau-Turbo! 45 Sekunden lang zählt jedes Like dreifach für euer Haus!'; },
+      start() { return 'Bau-Turbo! Eine Minute lang zählt jedes Like dreifach für euer Haus!'; },
       anzeige: () => ({ text: 'Jedes Like zählt dreifach für dein Haus!' }),
       ende: () => ({ text: 'Bau-Turbo vorbei – die Krabben machen Pause.' }),
     },
@@ -266,9 +266,9 @@ export function macheEvents(api) {
     },
     likerekord: {
       titel: 'Like-Rekord', icon: '🏆', dauer: 30,
-      start(e) { e.stand = 0; e.dabei = new Set(); e.rekord = api.rekord(); return `Like-Rekord! Schafft ihr in dreißig Sekunden mehr als ${zahl(e.rekord)} Likes? Los!`; },
+      start(e) { e.stand = 0; e.dabei = new Set(); e.rekord = api.rekord(); return `Like-Rekord! Schafft ihr in einer Minute mehr als ${zahl(e.rekord)} Likes? Los!`; },
       like(e, p, n) { e.stand += n; e.dabei.add(p); },
-      anzeige: e => ({ text: `30 Sekunden: Rekord brechen!`, balken: [{ name: '🏆 Rekord', wert: e.stand, max: Math.max(e.rekord, 1), farbe: '#ffd23f' }] }),
+      anzeige: e => ({ text: `1 Minute: Rekord brechen!`, balken: [{ name: '🏆 Rekord', wert: e.stand, max: Math.max(e.rekord, 1), farbe: '#ffd23f' }] }),
       ende(e) { if (e.stand > e.rekord) { api.rekord(e.stand); e.dabei.forEach(p => api.belohne(p, 25)); return { text: `Neuer Rekord: ${zahl(e.stand)} Likes! Je 25 🐚`, sag: `Neuer Rekord! ${zahl(e.stand)} Likes!`, gut: true }; } e.dabei.forEach(p => api.belohne(p, 5, { trost: true })); return { text: `${zahl(e.stand)} Likes – der Rekord bleibt bei ${zahl(e.rekord)}`, sag: 'Knapp! Der Rekord hält noch.' }; },
     },
     motto: {
@@ -436,6 +436,8 @@ export function macheEvents(api) {
     },
   };
 
+  for (const d of Object.values(DEFS)) d.dauer = CFG.events?.dauerSek ?? 60;   // jedes Event dauert 1 Minute
+
   // Live-Kommentare während der Events (Anna kommentiert, solange nichts anderes ansteht)
   const TEAMNAME = { rot: 'Rot', blau: 'Blau', gelb: 'Gelb', gruen: 'Grün', muschel: 'Muschel', kokos: 'Kokos' };
   const rest = e => Math.max(0, Math.round((e.ende - Date.now()) / 1000));
@@ -505,7 +507,7 @@ export function macheEvents(api) {
     glueckszahl: 'Alle mit der richtigen Zahl bekommen dreißig Muscheln.', strandquiz: 'Jede richtige Antwort bringt zwanzig Muscheln.',     surfcontest: 'Der beste Surfer bekommt sechzig Muscheln.', kokoswurf: 'Der weiteste Wurf bringt vierzig Muscheln.', inselfoto: 'Alle auf dem Foto bekommen acht Muscheln.',
     tauziehen: 'Das stärkste Team bekommt fünfundzwanzig Muscheln.', buchstabensalat: 'Die richtige Lösung bringt fünfzig Muscheln.', wuerfeln: 'Jede Sechs bringt dreißig Muscheln.',
     papagei: 'Die ersten fünf bekommen je zwanzig Muscheln.',     likerekord: 'Brecht ihr den Rekord, bekommt jeder fünfundzwanzig Muscheln.', motto: 'Wer das Gewinner-Motto wählt, bekommt zehn Muscheln.', werbinich: 'Wer mich zuerst errät, bekommt fünfzig Muscheln.',
-    hausbesuch: 'Der Besuchte bekommt fünfundzwanzig Muscheln.', muschelregen: 'Eine Minute lang wächst jedes Haus doppelt so schnell.', bauturbo: 'Eine Dreiviertelminute lang wächst jedes Haus dreimal so schnell.',
+    hausbesuch: 'Der Besuchte bekommt fünfundzwanzig Muscheln.', muschelregen: 'Eine Minute lang wächst jedes Haus doppelt so schnell.', bauturbo: 'Eine Minute lang wächst jedes Haus dreimal so schnell.',
     ballons: 'Jeder geplatzte Ballon bringt zehn Muscheln.', blumen: 'Bei fünfundzwanzig Blumen bekommen alle Gärtner fünfzehn Muscheln.', regenbogen: 'Ist der Regenbogen komplett, bekommen alle Maler zwanzig Muscheln.',
     hausparty: 'Jeder Gast bekommt zehn Muscheln, der Gastgeber fünf pro Gast.', leuchtturm: 'Leuchtet er, bekommen alle Helfer zwanzig Muscheln.',
     nachbarhilfe: 'Der fleißigste Helfer bekommt dreißig Muscheln.', inselgruss: 'Jeder Gruß bringt zehn Muscheln.', schatzkiste: 'Wer die richtige Kiste wählt, bekommt dreißig Muscheln.',
@@ -523,6 +525,7 @@ export function macheEvents(api) {
 
   function starte(id) {
     const d = DEFS[id]; ev = { id, d, t0: Date.now(), ende: Date.now() + d.dauer * 1000 }; ergebnis = null;
+    naechstes = Date.now() + MIN;                           // fester Takt: alle 2 Minuten ein Event (von Start zu Start)
     const ansage = d.start(ev); verlauf = [id, ...verlauf].slice(0, 12);
     api.sende({ typ: 'eventStart', id });
     api.sag(ansage, 0); if (PREIS[id]) api.sag(PREIS[id], 0); api.zustand();   // zwei kurze Sätze statt einem langen
@@ -538,7 +541,7 @@ export function macheEvents(api) {
     ergebnis = { ...r, titel: ev.titel || ev.d.titel, icon: ev.icon || ev.d.icon, id: ev.id, bis: Date.now() + 10000 };
     api.sende({ typ: 'eventEnde', id: ev.id, gut: !!r.gut, spielerId: r.id });
     if (r.sag) api.sag(r.sag, 0);
-    ev = null; naechstes = Date.now() + MIN - 10000; api.zustand();
+    ev = null; naechstes = Math.max(naechstes, Date.now() + 20000); api.zustand();
   }
   function waehle() {
     const moegl = Object.keys(DEFS).filter(id => !verlauf.slice(0, 10).includes(id) && (!DEFS[id].moeglich || DEFS[id].moeglich()));

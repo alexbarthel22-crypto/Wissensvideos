@@ -18,7 +18,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-14 k';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-14 l';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -42,6 +42,7 @@ function namenPruefen() {                                  // auch für Bewohner
   }
 }
 S.fertig = (S.fertig || []).filter(id => CFG.abstimmung.projekte.some(x => x.id === id));
+S.jobs ||= {};                                             // Gebäude-Nr. (Index in S.fertig) -> { id: Spieler, seit }
 if (S.projekt && !CFG.abstimmung.projekte.some(x => x.id === S.projekt.id)) S.projekt = null;
 if (S.projekt) S.projekt.ziel = CFG.abstimmung.projekte.find(x => x.id === S.projekt.id).ziel;   // Kosten aus den Einstellungen
 namenPruefen(); setInterval(namenPruefen, 30000);
@@ -257,7 +258,29 @@ function projektFertig() {
   sende({ typ: 'fertig', id: pr.id });
   const def = CFG.abstimmung.projekte.find(x => x.id === pr.id) || {};
   sag(satz('projektFertig', { Projekt: grossKlein(def.der || pr.name) }), 0);
+  const nr = S.fertig.length - 1; setTimeout(() => jobVerlosen(nr), 8000);   // nach der Bau-Animation: Job verlosen
 }
+
+// ---------- Jobs: Jedes fertige Gebäude bekommt einen Job, verlost unter den Zuschauern (Gehalt: Muscheln) ----------
+const imGebaeude = def => (def.der || '').startsWith('die ') ? 'in der ' + def.name : 'im ' + def.name;
+function jobVerlosen(nr) {
+  const gid = S.fertig[nr]; if (!gid || S.jobs[nr]) return false;
+  const vergeben = new Set(Object.values(S.jobs).map(j => j.id));
+  const kand = Object.values(S.spieler).filter(p => !p.gesperrt && !vergeben.has(p.id) && Date.now() - (p.zuletzt || 0) < 15 * 60000);
+  if (!kand.length) return false;                          // gerade niemand da – wird später nachgeholt
+  const p = kand[Math.floor(Math.random() * kand.length)], def = CFG.abstimmung.projekte.find(x => x.id === gid) || { name: gid };
+  S.jobs[nr] = { id: p.id, seit: Date.now() }; geaendert = true;
+  const geh = CFG.jobs?.gehalt ?? 5;
+  sende({ typ: 'job', nr, id: p.id, name: p.name, wo: imGebaeude(def), gehalt: geh });
+  sag(`${sprechName(p)} gewinnt den Job ${imGebaeude(def)}! … ${geh === 1 ? 'Eine Muschel' : geh + ' Muscheln'} Gehalt!`, 1);
+  zustand(); return true;
+}
+setInterval(() => { for (let i = 0; i < S.fertig.length; i++) if (!S.jobs[i] && jobVerlosen(i)) break; }, 60000);   // offene Jobs nachholen
+setInterval(() => {                                        // Zahltag: Gehalt für alle mit Job
+  const geh = CFG.jobs?.gehalt ?? 5; let n = 0;
+  for (const j of Object.values(S.jobs)) { const p = S.spieler[j.id]; if (p && !p.gesperrt) { gibMuscheln(p, geh, 'gehalt'); n++; } }
+  if (n) { sende({ typ: 'zahltag', n, gehalt: geh }); sag(`Zahltag! … Alle mit Job bekommen ${geh} Muscheln Gehalt.`, 2); }
+}, (CFG.jobs?.gehaltMinuten ?? 5) * 60000);
 
 // ---------- Überraschungs-Events (events.mjs) ----------
 const likeLog = [];
@@ -648,6 +671,7 @@ function oeffentlich() {
     spieler: S.reihenfolge.map(id => S.spieler[id]).filter(p => p && !p.gesperrt).map(p => ({ id: p.id, name: p.name, muscheln: p.muscheln, stufe: p.stufe, anbauten: p.anbauten, farbe: p.farbe, platz: p.platz, eventMuscheln: p.eventMuscheln })),
     stufen: CFG.stufen.map(s => s.name), stufenAb: CFG.stufen.map(s => s.ab),
     projekt: S.projekt, fertig: S.fertig, kasse: S.kasse,
+    jobs: Object.fromEntries(Object.entries(S.jobs).map(([nr, j]) => [nr, S.spieler[j.id]?.name || ''])),
     bewohner, ziel: zielJetzt(), strassen: CFG.strassen,
     tiktokName: CFG.tiktokName, test: TEST, ton: CFG.ton, ort: CFG.ort,
   };

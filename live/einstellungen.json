@@ -430,7 +430,8 @@
   "muschelnProCoin": 1,
   "events": {
     "alleMinuten": 2,
-    "_hinweis": "Alle 2 Minuten ein zufälliges Überraschungs-Event (50 verschiedene, siehe events.mjs). Nie dasselbe wie eins der letzten 10."
+    "_hinweis": "Alle 2 Minuten (von Start zu Start) ein zufälliges Event, jedes dauert 1 Minute (dauerSek). 50 verschiedene, nie dasselbe wie eins der letzten 10.",
+    "dauerSek": 60
   },
   "folgeAufrufMinuten": 3,
   "startMuscheln": 0,
@@ -438,5 +439,10 @@
   "eulerApiKey": "",
   "_eulerApiKey": "Optional: kostenloser Schlüssel von eulerstream.com, falls die TikTok-Verbindung nicht klappt.",
   "likeDankAb": 50,
-  "_likeDankAb": "Wer innerhalb einer Minute so viele Likes gibt, bekommt ein Danke von Anna (pro Person höchstens alle 3 Minuten)."
+  "_likeDankAb": "Wer innerhalb einer Minute so viele Likes gibt, bekommt ein Danke von Anna (pro Person höchstens alle 3 Minuten).",
+  "jobs": {
+    "gehalt": 5,
+    "gehaltMinuten": 5,
+    "_hinweis": "Jedes fertige Stadtgebäude bekommt einen Job, verlost unter den Zuschauern der letzten 15 Minuten. Gehalt: alle 5 Minuten 5 Muscheln fürs eigene Haus."
+  }
 }
