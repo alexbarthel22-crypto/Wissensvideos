@@ -4148,7 +4148,17 @@ function mkRoute(x0,y0,x1,y1){const st=3,X0=Math.min(x0,x1)-60,Y0=Math.min(y0,y1
  const pts=[];let c=end;while(c!==prev[c]){let x=X0+(c%nx)*st,y=Y0+((c/nx)|0)*st;const w=wegAbst(x,y);if(w){if(w.dx<4)x=w.cx;if(w.dy<4)y=w.cy;}pts.unshift([x,y]);c=prev[c];}
  pts.unshift([x0,y0]);pts.push([x1,y1]);const out=[pts[0]];for(let a=1;a<pts.length-1;a++){const p0=out[out.length-1],p1=pts[a],p2=pts[a+1];if(Math.abs((p1[0]-p0[0])*(p2[1]-p1[1])-(p1[1]-p0[1])*(p2[0]-p1[0]))>.01)out.push(p1);}out.push(pts[pts.length-1]);return out;}
 function mkHin(i){const id=(MK.quests||[])[i];const z=id&&mkZiel2(id);if(!z)return;MK.hin={i,z,t:0};mkHinUpd(true);const q=mkQDef(id);mkToast(q.ic+' Folge der Linie'+(z.r?' bis '+(id==='steg'?'auf den Steg':id==='bm'?'zur Bürgermeisterin':id==='beet'?'zum Beet':id==='werkstatt'?'zum Rolltor – mit dem 🛵 Moped':id==='bau'?'zum Bauzaun':id==='villa'?'zum Tor':id==='palast'?'zum Eingang':id==='yacht'?'ans Ufer gegenüber der Yacht':id.startsWith('nagel')?'an den Maniküre-Tisch':'an die Theke'):' bis zur Hütte'));}
-function mkHinUpd(force){const h=MK.hin;if(!h||!WK.on)return;const t=performance.now();if(!force&&t-h.t<900)return;h.t=t;const z=mkZiel2(MK.quests[h.i])||h.z;h.z=z;const L=WK.L||{h:1};h.pts=mkRoute(WK.x,WK.y+4.4*(L.h||1),z.x,z.y);}
+// Weg zur Aufgabe: einmal den kürzesten Weg berechnen und dann nur noch abfahren (kein Hin- und Herspringen an Kreuzungen).
+// Neu berechnet wird nur, wenn das Ziel sich bewegt oder man deutlich vom Weg abweicht.
+function mkHinUpd(force){const h=MK.hin;if(!h||!WK.on)return;const t=performance.now(),L=WK.L||{h:1},fx=WK.x,fy=WK.y+4.4*(L.h||1);
+ const z=mkZiel2(MK.quests[h.i])||h.z;h.z=z;
+ const neu=()=>{h.full=mkRoute(fx,fy,z.x,z.y);h.zp=[z.x,z.y];h.bi=0;h.t=t;};
+ if(force||!h.full||Math.hypot(z.x-h.zp[0],z.y-h.zp[1])>10||(h.full.length<=2&&t-h.t>2000))neu();// sehr weit weg: erst grobe Richtung, sobald möglich echter Weg
+ // nächsten Punkt auf dem restlichen Weg suchen (nur vorwärts, damit der Weg nicht zurückspringt)
+ const F=h.full;let best=1e9,bi=h.bi||0,bp=null;
+ for(let k=h.bi||0;k<F.length-1&&k<(h.bi||0)+80;k++){const [ax,ay]=F[k],[bx,by]=F[k+1],dx=bx-ax,dy=by-ay,l2=dx*dx+dy*dy||1,u=Math.max(0,Math.min(1,((fx-ax)*dx+(fy-ay)*dy)/l2)),px=ax+dx*u,py=ay+dy*u,d=Math.hypot(fx-px,fy-py);if(d<best-.01){best=d;bi=k;bp=[px,py];}}
+ if(best>14&&t-h.t>1500){neu();h.pts=h.full;return;}// deutlich vom Weg ab → neuen kürzesten Weg
+ h.bi=bi;h.pts=bp?[[fx,fy],bp,...F.slice(bi+1)]:F;}
 // feine, transparente Linie: auf dem Boden (vor Gebäuden gezeichnet) und auf Ladengeländen über dem Boden, unter allen Gegenständen
 function MKLINE(c,g){const h=MK.hin;if(!h||!h.pts||!WK.on)return;c.save();world(c);if(g){c.beginPath();c.rect(g.x0,g.y0,g.x1-g.x0,g.y1-g.y0);c.clip();}
  c.lineCap='round';c.lineJoin='round';c.beginPath();h.pts.forEach(([x,y],i)=>i?c.lineTo(x,y):c.moveTo(x,y));c.strokeStyle='rgba(42,27,18,.45)';c.lineWidth=3.2;c.stroke();c.strokeStyle='#ffd23f';c.lineWidth=2.3;c.stroke();c.setLineDash([1.4,2.6]);c.lineDashOffset=-T*7;c.strokeStyle='#fff6c8';c.lineWidth=.9;c.stroke();c.setLineDash([]);
