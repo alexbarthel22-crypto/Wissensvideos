@@ -18,7 +18,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-14 y';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-14 z';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -579,12 +579,33 @@ function musikLokal() {
   if (!brauche && lokalMusik) { lokalMusik.kill(); lokalMusik = null; }
 }
 const START = Date.now();
+// Ton-Ausgabe des Macs prüfen: Damit die Zuschauer Anna hören, muss sie auf „Gerät mit mehreren Ausgängen“ (mit BlackHole) stehen
+var tonAusgabe = '', tonAusgabeOk = null;
+function tonAusgabePruefen() {
+  if (process.platform !== 'darwin') return;
+  const pr = spawn('system_profiler', ['SPAudioDataType', '-json']); let out = '';
+  pr.stdout.on('data', d => out += d); pr.on('error', () => {});
+  pr.on('close', () => {
+    try {
+      const geraete = JSON.parse(out).SPAudioDataType.flatMap(x => x._items || []);
+      const aus = geraete.find(g => g.coreaudio_default_audio_output_device === 'spaudio_yes');
+      if (!aus) return;
+      const name = aus._name || '', ok = /mehrere|multi|blackhole|aggregat/i.test(name);
+      if (ok !== tonAusgabeOk || name !== tonAusgabe) {
+        if (ok) console.log(`✅ Ton-Ausgabe des Macs: „${name}“ – Anna und Musik gehen in den Stream.`);
+        else console.log(`\n⚠️⚠️⚠️  Ton-Ausgabe des Macs steht auf „${name}“ – die ZUSCHAUER HÖREN ANNA NICHT!\n          Systemeinstellungen → Ton → Ausgabe: „Gerät mit mehreren Ausgängen“ wählen.\n`);
+      }
+      tonAusgabe = name; tonAusgabeOk = ok;
+    } catch {}
+  });
+}
+setTimeout(tonAusgabePruefen, 2000); setInterval(tonAusgabePruefen, 30000);
 // Alle 30 s eine kurze Statuszeile im Terminal – hilft bei der Fehlersuche während des LIVEs
 var letzteAnsageZeit = 0;
 setInterval(() => {
   const seiten = [...kunden.keys()].map(id => { const t = tonStatus.get(id) || {}; return `#${id}${t.vorschau ? '(Vorschau)' : ''}${id === tonSeite ? '★' : ''} Ton ${t.an ? 'an' : 'aus'}/${t.ac || '?'}`; });
   const weg = ECHT ? (CFG.stimme.wiedergabe !== 'mac' && seiteHatTon() && Date.now() > stimmeFehlerBis ? 'Seite (Stream)' : 'Mac-Lautsprecher') : 'aus (Test)';
-  console.log(`ℹ️  ${new Date().toLocaleTimeString('de-DE')} · TikTok: ${tiktokStatus} (${tiktokEreignisse} Ereignisse${tiktokLetztes ? ', letztes vor ' + Math.round((Date.now() - tiktokLetztes) / 1000) + ' s' : ''}) · Seiten: ${seiten.join(', ') || 'keine!'} · Anna über: ${weg} · letzte Ansage vor ${letzteAnsageZeit ? Math.round((Date.now() - letzteAnsageZeit) / 1000) + ' s' : '–'}`);
+  console.log(`ℹ️  ${new Date().toLocaleTimeString('de-DE')} · TikTok: ${tiktokStatus} (${tiktokEreignisse} Ereignisse${tiktokLetztes ? ', letztes vor ' + Math.round((Date.now() - tiktokLetztes) / 1000) + ' s' : ''}) · Seiten: ${seiten.join(', ') || 'keine!'} · Anna über: ${weg}${tonAusgabe ? ` (Mac-Ausgabe: ${tonAusgabe}${tonAusgabeOk ? ' ✅' : ' ⚠️ falsch!'})` : ''} · letzte Ansage vor ${letzteAnsageZeit ? Math.round((Date.now() - letzteAnsageZeit) / 1000) + ' s' : '–'}`);
 }, 30000);
 setInterval(musikLokal, 3000);
 process.on('exit', () => lokalMusik?.kill());
