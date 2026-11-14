@@ -346,6 +346,10 @@ footer a{color:var(--soft)}
 .btn.rangb{background:#ffd23f}
 .trs{text-align:center}.trsb{font-size:44px;line-height:1;margin-bottom:10px}.trsw{margin:12px auto 14px;width:170px;height:76px;border-radius:18px;background:linear-gradient(135deg,#2a1b12,#4a3420);border:3px solid #e8b84a;display:flex;align-items:center;justify-content:center;box-shadow:inset 0 0 18px rgba(0,0,0,.45)}.trsw span{font-size:32px;font-weight:900;color:#ffe08a;white-space:nowrap}.trsw.trsp span{animation:trspa .18s ease-out}.trsw.win{background:linear-gradient(135deg,#ffcf4a,#ff9fc2);border-color:#fff}.trsw.win span{color:#2a1b12;animation:trsw .6s ease-out}@keyframes trspa{from{transform:translateY(-10px);opacity:.3}to{transform:none;opacity:1}}@keyframes trsw{0%{transform:scale(.4)}60%{transform:scale(1.25)}100%{transform:scale(1)}}
 .qchip.wackel{animation:qwack 1.3s ease-in-out 2}@keyframes qwack{0%,100%{transform:rotate(0) scale(1)}10%{transform:rotate(-9deg) scale(1.08)}20%{transform:rotate(8deg) scale(1.1)}30%{transform:rotate(-7deg) scale(1.08)}40%{transform:rotate(6deg) scale(1.05)}50%{transform:rotate(-3deg)}60%{transform:rotate(0)}}
+.lvbtns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.lvbtns .btn{margin:0;text-align:center;justify-content:center}
+.lrtabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:10px 0 4px}.lrtabs button{border:3px solid #2a1b12;border-radius:14px;background:#fff;font:900 14px inherit;font-family:inherit;padding:8px 4px;cursor:pointer;box-shadow:0 3px 0 #2a1b12}.lrtabs button.on{background:#ff3d6e;color:#fff}
+.lrdat{text-align:center;font-weight:800;font-size:13px;color:#7a5a45;margin:4px 0}.lrlive{color:#e8174a;font-weight:900}.rpage .lrs{font-size:9.5px;font-weight:800;opacity:.85;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.lrs2{font-weight:800;opacity:.7;font-size:11px}.lrav{display:grid;place-items:center;height:100%;font-size:24px}
+.lrinfo{background:#fff;border:3px solid #2a1b12;border-radius:18px;box-shadow:0 4px 0 #2a1b12;padding:10px 14px;margin:14px 0 10px;text-align:left}.lrinfo ul{margin:6px 0 4px;padding-left:4px;list-style:none;font-weight:800;font-size:14px;line-height:1.7}.lrinfo small{color:#7a5a45;font-weight:700}.lrgo{display:block;text-align:center;margin:0 0 20px}
 </style>
 </head>
 <body>
@@ -413,6 +417,7 @@ footer a{color:var(--soft)}
    <p class="news" id="news"></p>
   </div>
   <div class="rangbox" id="rangbox" hidden></div>
+  <div class="rangbox lrbox" id="lrbox" hidden></div>
   <a class="btn wide jobs" href="news.html">📰 News aus Muschel-Tal</a>
  </section>
 
@@ -3321,7 +3326,7 @@ function lvCover(c,nl){const t=REDUCED?0:T,X=LV.x,Y=LV.y,R=LV.r;
  {let fs=10.5;const tx='Mitbauen nur im TikTok LIVE 🔴';do{c.font='800 '+fs+'px '+FONT;fs-=.5;}while(c.measureText(tx).width>w-18&&fs>5);c.fillStyle='#ffd23f';c.fillText(tx,X,sy+54);}c.restore();
  if(nl>0){c.fillStyle=`rgba(254,44,85,${.25*nl*(.6+.4*Math.sin(t*3))})`;c.beginPath();c.ellipse(X,Y,R*.6,R*.45,0,0,TAU);c.fill();}}
 const lvAt=(wx,wy)=>Math.hypot(wx-LV.x,(wy-LV.y)/.82)<LV.r;
-function lvInfo(){popup('<div class="big">🔴</div><h2>TikTok LIVE-Insel</h2><p>Gebaut wird hier <b>nur gemeinsam im TikTok LIVE</b> von <a href="'+ACCURL+'" target="_blank" rel="noopener">'+esc(ACC)+'</a> – schau im LIVE vorbei und bau mit!</p><a class="btn hib" href="'+ACCURL+'/live" target="_blank" rel="noopener">🔴 Zum LIVE</a>');}
+function lvInfo(){popup('<div class="big">🔴</div><h2>TikTok LIVE-Insel</h2><p>Gebaut wird hier <b>nur gemeinsam im TikTok LIVE</b> von <a href="'+ACCURL+'" target="_blank" rel="noopener">'+esc(ACC)+'</a> – schau im LIVE vorbei und bau mit!</p><div class="lvbtns"><a class="btn hib" href="'+ACCURL+'/live" target="_blank" rel="noopener">🔴 Zum LIVE</a><a class="btn" href="#liverang">🏆 Rangliste</a></div>');}
 function xmFog(c){const n=16;for(let k=0;k<n;k++){const a=k/n*TAU+(REDUCED?0:T*.05),r=XM.r*(.35+.55*hash(k,90)),x=XM.x+Math.cos(a)*r,y=XM.y+Math.sin(a)*r*.85,s=XM.r*(.45+.25*hash(k,91));
  c.fillStyle='rgba(245,248,252,.86)';c.beginPath();c.arc(x,y,s,0,TAU);c.fill();}
  c.fillStyle='rgba(255,255,255,.9)';c.beginPath();c.ellipse(XM.x,XM.y,XM.r*.75,XM.r*.62,0,0,TAU);c.fill();
@@ -4265,6 +4270,31 @@ async function rangTeilen(btn){const d=RANG.d;if(!d||!d.top||!d.top.length)retur
  }catch(e){}btn.innerHTML=lab;}
 document.addEventListener('click',ev=>{const a=ev.target.closest('[data-rang],a[href="#rangliste"]');if(!a)return;ev.preventDefault();const k=a.dataset.rang;if(k==='zu')rangZu();else if(k==='teilen')rangTeilen(a);else{history.replaceState(null,'','#rangliste');rangSeite();}});
 if(location.hash==='#rangliste')setTimeout(rangSeite,600);
+// ================= LIVE-Rangliste (aus dem TikTok-LIVE: insgesamt + letzter Stream) =================
+const LR={d:null,t:0,tab:'gesamt'};
+async function lrLaden(){if(LR.d&&Date.now()-LR.t<60000)return LR.d;try{const r=await fetch('/api/live?rang=1',{cache:'no-store'});if(r.ok){LR.d=await r.json();LR.t=Date.now();}}catch(e){}return LR.d;}
+const lrName=r=>r.id?'@'+r.id:r.n;
+const LR_INFO='<div class="lrinfo"><b>So steigst du auf 🚀</b><ul><li>🔴 Oft im LIVE von '+esc(ACC)+' dabei sein</li><li>❤️ Liken – jedes Like bringt Muscheln</li><li>🔁 Den LIVE teilen und ➕ folgen</li><li>💬 Bei Events und Mini-Aufgaben mitmachen</li><li>🎁 Geschenke bringen extra viele Muscheln</li></ul><small>Mit genug Muscheln wächst dein Haus auf der LIVE-Insel – bis zum Prachtschloss.</small></div>';
+async function lrKasten(){const box=$('lrbox');if(!box)return;const d=await lrLaden();box.hidden=false;const L=d&&d.gesamt||[];
+ box.innerHTML='<h3>🔴 LIVE-Rangliste</h3>'+(L.length?L.slice(0,3).map((r,i)=>'<div class="trow">'+['🥇','🥈','🥉'][i]+' <span>'+esc(lrName(r))+'</span><b>'+fmt(r.m)+'&nbsp;🐚</b></div>').join(''):'<div class="trow"><span>Noch leer – im nächsten LIVE geht’s los! 🐚</span></div>')
+  +'<a class="tlink" href="#liverang">Ganze LIVE-Rangliste (Top 10) →</a>';}
+function lrListe(L,leer){if(!L||!L.length)return'<div class="mkbox">'+leer+'</div>';const T3=L.slice(0,3),pod=(r,cls,pl)=>r?'<div class="pd '+cls+'">'+(cls==='g1'?'<span class="crown">👑</span>':'')+'<div class="av">'+(rangAv(lrName(r))?'<img src="'+rangAv(lrName(r))+'" alt="">':'<span class="lrav">🐚</span>')+'</div><div class="blk"><div class="pl">'+pl+'</div><div class="n">'+esc(lrName(r))+'</div><div class="v">'+fmt(r.m)+'&nbsp;🐚</div>'+(r.s?'<div class="lrs">'+esc(r.s)+'</div>':'')+'</div></div>':'<div></div>';
+ return'<div class="stage"><div class="sun"></div><div class="wave"></div><span class="palm" style="left:4px">🌴</span><span class="palm" style="right:6px">🌴</span><h4>★ TOP 10 ★</h4><div class="pod">'+pod(T3[1],'g2','🥈')+pod(T3[0],'g1','🥇')+pod(T3[2],'g3','🥉')+'</div></div>'
+  +(L.length>3?'<div class="rl">'+L.slice(3).map((r,i)=>'<div class="rr"><span class="nr">'+(i+4)+'</span><span class="a">'+(rangAv(lrName(r))?'<img src="'+rangAv(lrName(r))+'" alt="">':'🐚')+'</span><span class="nm">'+esc(lrName(r))+(r.s?' <small class="lrs2">'+esc(r.s)+'</small>':'')+'</span><b>'+fmt(r.m)+'&nbsp;🐚</b></div>').join('')+'</div>':'');}
+async function lrSeite(){let e=$('lrpage');if(!e){e=document.createElement('div');e.id='lrpage';e.className='mkpage rpage';document.body.appendChild(e);}e.hidden=false;document.body.style.overflow='hidden';$('pg').hidden=true;
+ e.innerHTML='<a class="mkback" href="#" data-lr="zu">← Zur Karte</a><h1>🔴 LIVE-Rangliste</h1><div class="mktag">Die 10 besten Muschel-Sammler aus dem TikTok-LIVE</div><div class="mkbox">⏳ Lade …</div>';
+ LR.t=0;const d=await lrLaden();if(e.hidden)return;lrZeig(e,d);}
+function lrZeig(e,d){const st=d&&d.stream,tab=LR.tab,live=d&&d.live&&Date.now()-(d.ts||0)<15*60000;
+ const dat=st&&st.start?new Date(st.start).toLocaleDateString('de-DE',{day:'numeric',month:'numeric'})+', '+new Date(st.start).toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})+' Uhr':'';
+ e.innerHTML='<a class="mkback" href="#" data-lr="zu">← Zur Karte</a><h1>🔴 LIVE-Rangliste</h1><div class="mktag">Die 10 besten Muschel-Sammler aus dem TikTok-LIVE'+(live?' · <span class="lrlive">● gerade LIVE</span>':'')+'</div>'
+  +'<div class="lrtabs"><button type="button" data-lr="gesamt" class="'+(tab==='gesamt'?'on':'')+'">🏆 Insgesamt</button><button type="button" data-lr="stream" class="'+(tab==='stream'?'on':'')+'">'+(live?'🔴 Dieser Stream':'📺 Letzter Stream')+'</button></div>'
+  +(tab==='stream'&&dat?'<div class="lrdat">Stream vom '+dat+'</div>':'')
+  +lrListe(tab==='gesamt'?d&&d.gesamt:st&&st.top,tab==='gesamt'?'<b>Noch ist die LIVE-Rangliste leer.</b><br>Im nächsten LIVE sammelst du die ersten Muscheln! 🐚':'<b>Noch kein Stream gespeichert.</b><br>Nach dem nächsten LIVE steht hier die Rangliste. 🐚')
+  +LR_INFO+'<a class="btn hib lrgo" href="'+ACCURL+'/live" target="_blank" rel="noopener">🔴 Zum LIVE</a>';}
+function lrZu(){const e=$('lrpage');if(e)e.hidden=true;document.body.style.overflow='';if(location.hash==='#liverang')history.replaceState(null,'',location.pathname+location.search);}
+document.addEventListener('click',ev=>{const a=ev.target.closest('[data-lr],a[href="#liverang"]');if(!a)return;ev.preventDefault();const k=a.dataset.lr;if(k==='zu')lrZu();else if(k==='gesamt'||k==='stream'){LR.tab=k;lrZeig($('lrpage'),LR.d);}else{history.replaceState(null,'','#liverang');lrSeite();}});
+if(location.hash==='#liverang')setTimeout(lrSeite,600);
+lrKasten();setInterval(()=>{if(!document.hidden)lrKasten();},120000);
 rangKasten();setInterval(()=>{if(!document.hidden)rangKasten();},120000);
 
 liveText();loadWx();setInterval(liveText,15000);setInterval(loadWx,15*60e3);
