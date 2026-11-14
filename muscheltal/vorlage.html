@@ -4223,18 +4223,18 @@ setInterval(()=>{if(!WK.on){const b=$('mkact');if(b)b.remove();return;}mkNahe();
 if(mkClaim())mkStand();
 
 // ================= Muschel-Rangliste (Top 10 der beanspruchten Namen nach Muschel-Vermögen) =================
-const RANG={d:null,t:0};
-async function rangLaden(){if(RANG.d&&Date.now()-RANG.t<60000)return RANG.d;const c=mkClaim();try{const r=await fetch('/api/muscheln?top=1'+(c?'&name='+encodeURIComponent(c.n):''),{cache:'no-store'});if(r.ok){RANG.d=await r.json();RANG.t=Date.now();}}catch(e){}return RANG.d;}
+const RANG={d:null,t:0};try{const c=JSON.parse(localStorage.getItem('mt-rang')||'null');if(c&&Date.now()-c.t<864e5){RANG.d=c.d;RANG.t=c.t;}}catch(e){}// zuletzt gesehene Rangliste sofort zeigen
+async function rangLaden(){if(RANG.d&&Date.now()-RANG.t<60000)return RANG.d;const c=mkClaim();try{const r=await fetch('/api/muscheln?top=1'+(c?'&name='+encodeURIComponent(c.n):''),{cache:'no-store'});if(r.ok){RANG.d=await r.json();RANG.t=Date.now();try{localStorage.setItem('mt-rang',JSON.stringify({t:RANG.t,d:RANG.d}));}catch(e){}}}catch(e){}return RANG.d;}
 const rangAv=n=>{const p=byName.get(String(n).toLowerCase());return p?avatarURL(p):'';};
 const rangPfeil=d=>d==='neu'?' <span class="rup">neu</span>':d>0?' <span class="rup">▲'+d+'</span>':d<0?' <span class="rdn">▼'+(-d)+'</span>':'';
 // Kasten auf der Startseite (unter „Gerade auf den Inseln“)
-async function rangKasten(){const box=$('rangbox');if(!box)return;const d=await rangLaden();if(!d||!d.top||!d.top.length){box.hidden=true;return;}box.hidden=false;
+async function rangKasten(){const box=$('rangbox');if(!box)return;const d=RANG.d&&Date.now()-RANG.t<60000?RANG.d:(RANG.d&&rangLaden().then(()=>{if(Date.now()-RANG.t<60000)rangKasten();}),RANG.d||await rangLaden());if(!d||!d.top||!d.top.length){box.hidden=true;return;}box.hidden=false;
  const c=mkClaim();box.innerHTML='<h3>🏆 Reichste Muschelsammler</h3>'+d.top.slice(0,3).map((r,i)=>'<div class="trow">'+['🥇','🥈','🥉'][i]+' <span>'+esc(r.n)+'</span><b>'+fmt(r.stand)+'&nbsp;🐚</b></div>').join('')
   +(c&&d.platz&&d.platz>3?'<div class="trow me">#'+d.platz+' <span>'+esc(c.n)+' (du)</span><b>'+fmt(d.stand)+'&nbsp;🐚</b></div>':'')+(c?'':'<a class="tlink" href="#" data-mk="suche">🔐 Mitmachen: Usernamen beanspruchen</a>')+'<a class="tlink" href="#rangliste">Ganze Rangliste (Top 10) →</a>';}
 // eigene Seite
 async function rangSeite(){let e=$('rangpage');if(!e){e=document.createElement('div');e.id='rangpage';e.className='mkpage rpage';document.body.appendChild(e);}e.hidden=false;document.body.style.overflow='hidden';
  e.innerHTML='<a class="mkback" href="#" data-rang="zu">← Zur Karte</a><h1>🏆 Muschel-Rangliste</h1><div class="mktag">Die 10 reichsten Muschelsammler von Muschel-Tal</div><div class="mkbox">⏳ Lade …</div>';
- RANG.t=0;const d=await rangLaden();if(e.hidden)return;
+ const alt=RANG.d;let d=alt;if(!d||Date.now()-RANG.t>60000){if(alt)setTimeout(async()=>{RANG.t=0;const n=await rangLaden();if(n&&JSON.stringify(n)!==JSON.stringify(alt)&&!e.hidden)rangSeite();},0);else{RANG.t=0;d=await rangLaden();}}if(e.hidden)return;
  if(!d||!d.top){e.querySelector('.mkbox').textContent='Gerade keine Verbindung – bitte gleich nochmal versuchen.';return;}
  if(!d.top.length){e.querySelector('.mkbox').innerHTML='<b>Noch ist die Rangliste leer.</b><br>Beanspruche deinen Usernamen, hol dir deine Muscheln ab – und sei die/der Erste! 🐚'+(mkClaim()?'':'<br><a href="#" data-mk="suche" style="display:inline-block;margin-top:8px;color:#e8467c;font-weight:900">🔐 Jetzt Usernamen beanspruchen →</a>');return;}
  const T3=d.top.slice(0,3),pod=(r,cls,pl)=>r?'<div class="pd '+cls+'">'+(cls==='g1'?'<span class="crown">👑</span>':'')+'<div class="av"><img src="'+rangAv(r.n)+'" alt=""></div><div class="blk"><div class="pl">'+pl+'</div><div class="n">'+esc(r.n)+'</div><div class="v">'+fmt(r.stand)+'&nbsp;🐚</div></div></div>':'<div></div>';
@@ -4273,11 +4273,11 @@ async function rangTeilen(btn){const d=RANG.d;if(!d||!d.top||!d.top.length)retur
 document.addEventListener('click',ev=>{const a=ev.target.closest('[data-rang],a[href="#rangliste"]');if(!a)return;ev.preventDefault();const k=a.dataset.rang;if(k==='zu')rangZu();else if(k==='teilen')rangTeilen(a);else{history.replaceState(null,'','#rangliste');rangSeite();}});
 if(location.hash==='#rangliste')setTimeout(rangSeite,600);
 // ================= LIVE-Rangliste (aus dem TikTok-LIVE: insgesamt + letzter Stream) =================
-const LR={d:null,t:0,tab:'gesamt'};
-async function lrLaden(){if(LR.d&&Date.now()-LR.t<60000)return LR.d;try{const r=await fetch('/api/live?rang=1',{cache:'no-store'});if(r.ok){LR.d=await r.json();LR.t=Date.now();}}catch(e){}return LR.d;}
+const LR={d:null,t:0,tab:'gesamt'};try{const c=JSON.parse(localStorage.getItem('mt-lrang')||'null');if(c&&Date.now()-c.t<864e5){LR.d=c.d;LR.t=c.t;}}catch(e){}
+async function lrLaden(){if(LR.d&&Date.now()-LR.t<60000)return LR.d;try{const r=await fetch('/api/live?rang=1',{cache:'no-store'});if(r.ok){LR.d=await r.json();LR.t=Date.now();try{localStorage.setItem('mt-lrang',JSON.stringify({t:LR.t,d:LR.d}));}catch(e){}}}catch(e){}return LR.d;}
 const lrName=r=>r.id?'@'+r.id:r.n;
 const LR_INFO='<div class="lrinfo"><b>So steigst du auf 🚀</b><ul><li>🔴 Oft im LIVE von '+esc(ACC)+' dabei sein</li><li>❤️ Liken – jedes Like bringt Muscheln</li><li>🔁 Den LIVE teilen und ➕ folgen</li><li>💬 Bei Events und Mini-Aufgaben mitmachen</li><li>🎁 Geschenke bringen extra viele Muscheln</li></ul><small>Mit genug Muscheln wächst dein Haus auf der LIVE-Insel – bis zum Prachtschloss.</small></div>';
-async function lrKasten(){const box=$('lrbox');if(!box)return;const d=await lrLaden();box.hidden=false;const L=d&&d.gesamt||[];
+async function lrKasten(){const box=$('lrbox');if(!box)return;const d=LR.d&&Date.now()-LR.t<60000?LR.d:(LR.d&&lrLaden().then(()=>{if(Date.now()-LR.t<60000)lrKasten();}),LR.d||await lrLaden());box.hidden=false;const L=d&&d.gesamt||[];
  box.innerHTML='<h3>🔴 LIVE-Rangliste</h3>'+(L.length?L.slice(0,3).map((r,i)=>'<div class="trow">'+['🥇','🥈','🥉'][i]+' <span>'+esc(lrName(r))+'</span><b>'+fmt(r.m)+'&nbsp;🐚</b></div>').join(''):'<div class="trow"><span>Noch leer – im nächsten LIVE geht’s los! 🐚</span></div>')
   +'<a class="tlink" href="#liverang">Ganze LIVE-Rangliste (Top 10) →</a>';}
 function lrListe(L,leer){if(!L||!L.length)return'<div class="mkbox">'+leer+'</div>';const T3=L.slice(0,3),pod=(r,cls,pl)=>r?'<div class="pd '+cls+'">'+(cls==='g1'?'<span class="crown">👑</span>':'')+'<div class="av">'+(rangAv(lrName(r))?'<img src="'+rangAv(lrName(r))+'" alt="">':'<span class="lrav">🐚</span>')+'</div><div class="blk"><div class="pl">'+pl+'</div><div class="n">'+esc(lrName(r))+'</div><div class="v">'+fmt(r.m)+'&nbsp;🐚</div>'+(r.s?'<div class="lrs">'+esc(r.s)+'</div>':'')+'</div></div>':'<div></div>';
@@ -4285,7 +4285,7 @@ function lrListe(L,leer){if(!L||!L.length)return'<div class="mkbox">'+leer+'</di
   +(L.length>3?'<div class="rl">'+L.slice(3).map((r,i)=>'<div class="rr"><span class="nr">'+(i+4)+'</span><span class="a">'+(rangAv(lrName(r))?'<img src="'+rangAv(lrName(r))+'" alt="">':'🐚')+'</span><span class="nm">'+esc(lrName(r))+(r.s?' <small class="lrs2">'+esc(r.s)+'</small>':'')+'</span><b>'+fmt(r.m)+'&nbsp;🐚</b></div>').join('')+'</div>':'');}
 async function lrSeite(){let e=$('lrpage');if(!e){e=document.createElement('div');e.id='lrpage';e.className='mkpage rpage';document.body.appendChild(e);}e.hidden=false;document.body.style.overflow='hidden';$('pg').hidden=true;
  e.innerHTML='<a class="mkback" href="#" data-lr="zu">← Zur Karte</a><h1>🔴 LIVE-Rangliste</h1><div class="mktag">Die 10 besten Muschel-Sammler aus dem TikTok-LIVE</div><div class="mkbox">⏳ Lade …</div>';
- LR.t=0;const d=await lrLaden();if(e.hidden)return;lrZeig(e,d);}
+ if(LR.d){lrZeig(e,LR.d);const alt=JSON.stringify(LR.d);LR.t=0;lrLaden().then(n=>{if(n&&JSON.stringify(n)!==alt&&!e.hidden)lrZeig(e,n);});return;}LR.t=0;const d=await lrLaden();if(e.hidden)return;lrZeig(e,d);}
 function lrZeig(e,d){const st=d&&d.stream,tab=LR.tab,live=d&&d.live&&Date.now()-(d.ts||0)<15*60000;
  const dat=st&&st.start?new Date(st.start).toLocaleDateString('de-DE',{day:'numeric',month:'numeric'})+', '+new Date(st.start).toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})+' Uhr':'';
  e.innerHTML='<a class="mkback" href="#" data-lr="zu">← Zur Karte</a><h1>🔴 LIVE-Rangliste</h1><div class="mktag">Die 10 besten Muschel-Sammler aus dem TikTok-LIVE'+(live?' · <span class="lrlive">● gerade LIVE</span>':'')+'</div>'

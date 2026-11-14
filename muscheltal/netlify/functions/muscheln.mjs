@@ -122,19 +122,32 @@ async function nachbarErf(store, nm) {
 }
 // Erfolg „Live dabei“: wer im TikTok-LIVE war (Merker live/<name>) und beansprucht ist
 async function liveErf(store, nm) { return (await store.get("live/" + nm)) ? await liveVergeben(store, nm) : false; }
+// Muschel-Rangliste zwischenspeichern (Server-Speicher + Blob, 45 s): das Durchzählen aller Buchungen dauert,
+// die Rangliste soll aber sofort da sein
+let RANGC = { t: 0, d: null };
+async function rangDaten(store) {
+  const jetzt = Date.now();
+  if (RANGC.d && jetzt - RANGC.t < 45000) return RANGC.d;
+  try { const c = JSON.parse((await store.get("x/rangcache")) || "null"); if (c && jetzt - c.t < 45000) { RANGC = { t: c.t, d: c.d }; return c.d; } } catch (e) {}
+  const claimed = new Set((await liste(store, "c/")).map(k => k.slice(2)).filter(n => BEWOHNER.has(n)));// Ausgezogene nicht mehr anzeigen
+  const sum = {};
+  for (const k of await liste(store, "b/")) { const [, n, , , a] = k.split("/"); if (claimed.has(n)) sum[n] = (sum[n] || 0) + (Number(a) || 0); }
+  const order = Object.entries(sum).filter(([, v]) => v > 0).sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : 1));
+  const heute = tag(), key = "r/" + heute;
+  const [hat, vorRoh] = await Promise.all([store.get(key), store.get("r/" + gestern(heute))]);
+  if (!hat) await store.set(key, JSON.stringify(order.slice(0, 50).map(x => x[0])));
+  const d = { order, vor: JSON.parse(vorRoh || "null") };
+  RANGC = { t: jetzt, d };
+  await store.set("x/rangcache", JSON.stringify({ t: jetzt, d }));
+  return d;
+}
 export default async (req) => {
   const store = getStore({ name: "muscheln", consistency: "strong" });
   await vorarbeit(store);
   const url = new URL(req.url);
   if (req.method === "GET" && url.searchParams.get("top")) {
     // Muschel-Rangliste: Top 10 der beanspruchten Namen nach Kontostand, Pfeile im Vergleich zu gestern, optional eigener Platz
-    const claimed = new Set((await liste(store, "c/")).map(k => k.slice(2)).filter(n => BEWOHNER.has(n)));// Ausgezogene nicht mehr anzeigen
-    const sum = {};
-    for (const k of await liste(store, "b/")) { const [, n, , , a] = k.split("/"); if (claimed.has(n)) sum[n] = (sum[n] || 0) + (Number(a) || 0); }
-    const order = Object.entries(sum).filter(([, v]) => v > 0).sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : 1));
-    const heute = tag(), key = "r/" + heute;
-    if (!(await store.get(key))) await store.set(key, JSON.stringify(order.slice(0, 50).map(x => x[0])));
-    const vor = JSON.parse((await store.get("r/" + gestern(heute))) || "null");
+    const { order, vor } = await rangDaten(store);
     const top = order.slice(0, 10).map(([n, v], i) => { const j = vor ? vor.indexOf(n) : -1; return { n: "@" + n, stand: v, d: vor ? (j < 0 ? "neu" : j - i) : null }; });
     const me = (url.searchParams.get("name") || "").trim().toLowerCase().replace(/^@/, "");
     let platz = null, stand = null;
