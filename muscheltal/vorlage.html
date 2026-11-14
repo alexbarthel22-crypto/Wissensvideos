@@ -855,6 +855,9 @@ const KBAD={name:'Kokos-Bad',hw:46,hh:32,...kBlk(-3,2)};
 const KMODE={name:'Coast & Cotton',hw:46,hh:32,...kBlk(4,-1)};
 // Coco Bay: Küstenstreifen ganz im Süden – vom Weg bis ans Wasser (Ursprung = Oberkante am Weg)
 const KBAR=(()=>{const b=kBlk(0,7);let yc=b.y0;while(inside(KOKV,b.cx,yc,0)&&yc<b.y0+80)yc+=1;return{name:'Coco Bay',key:b.key,cx:b.cx,cy:b.y0+2,hw:46,dep:yc-b.y0+BEX-3};})();
+// Feste Bauten ohne GEB-Eintrag: erscheinen beim „Wachsen sehen“ erst als Ereignis (nicht von Anfang an)
+const EXG=[{o:MKT,v:MAIN,t:'🛒 Supermarkt Meerkauf eröffnet'},{o:KI,v:MAIN,t:'🍦 Kiosk-Steg im Norden: Kiosk Kunterbunt, Boba Beach & Porto Pizza eröffnen'},{o:KBAR,v:KOKV,t:'🍹 Beach Bar Coco Bay eröffnet'},{o:KBAD,v:KOKV,t:'🏊 Kokos-Bad eröffnet'},{o:KMODE,v:KOKV,t:'👗 Coast & Cotton eröffnet'}];
+const exDa=o=>{try{if(GROWK==null)return true;const e=EXG.find(e=>e.o===o);return!(e&&GROWV===e.v&&GROWK<(e.at??1));}catch(err){return true;}};
 const KSHOPS=[KBAR,KBAD,KMODE],KSKEYS=new Set(KSHOPS.map(s=>s.key));
 const ksTeam=s=>PEOPLE.filter(p=>p.ort===s.name&&p.beruf).sort((a,b)=>(b.beruf==='Leitung')-(a.beruf==='Leitung'));
 // Laufbereich (f = Höhe der Füße): Hindernisse eng an den Gegenständen, alles andere begehbar
@@ -896,8 +899,8 @@ function modeSchild(c){const TC='#c8745a',INK='#2a1b12';c.fillStyle='#fff8f0';c.
   c.strokeStyle=INK;c.lineWidth=.3;c.beginPath();c.moveTo(-14.6,-31.4);c.lineTo(-12.2,-33);c.lineTo(-9.8,-31.4);c.closePath();c.stroke();c.beginPath();c.arc(-12.2,-33.6,.55,Math.PI,TAU*.95);c.stroke();
   c.save();c.translate(0,-40);ksPlak(c,KMODE,0,TC);c.restore();}
 function ksSignFront(c,x,y,tn){if(!KOKV.open||S*cam.z<=6)return;const f=y+4.4;
- for(const [sh,fn] of[[KBAD,badSchild],[KMODE,modeSchild]]){const lx=x-sh.cx,ff=f-sh.cy;if(Math.abs(lx)<21&&ff<-29.2&&ff>-46)tintDraw(c,tn,sh.cx-18,sh.cy-41,sh.cx+18,sh.cy-28.8,o=>{o.save();o.translate(sh.cx,sh.cy);fn(o);o.restore();});}
- {const lx=x-KBAR.cx,ff=f-KBAR.cy;if(Math.abs(lx)<18&&ff<6&&ff>-18)tintDraw(c,tn,KBAR.cx-15,KBAR.cy-11.6,KBAR.cx+15,KBAR.cy+6.4,o=>{o.save();o.translate(KBAR.cx,KBAR.cy+10);barSchild(o);o.restore();});}}
+ for(const [sh,fn] of[[KBAD,badSchild],[KMODE,modeSchild]]){if(!exDa(sh))continue;const lx=x-sh.cx,ff=f-sh.cy;if(Math.abs(lx)<21&&ff<-29.2&&ff>-46)tintDraw(c,tn,sh.cx-18,sh.cy-41,sh.cx+18,sh.cy-28.8,o=>{o.save();o.translate(sh.cx,sh.cy);fn(o);o.restore();});}
+ if(exDa(KBAR)){const lx=x-KBAR.cx,ff=f-KBAR.cy;if(Math.abs(lx)<18&&ff<6&&ff>-18)tintDraw(c,tn,KBAR.cx-15,KBAR.cy-11.6,KBAR.cx+15,KBAR.cy+6.4,o=>{o.save();o.translate(KBAR.cx,KBAR.cy+10);barSchild(o);o.restore();});}}
 // 🍹 Coco Bay – Beach Bar direkt am Sandstrand
 function drawCocoBay(c,nl){const t=REDUCED?0:T,X=KBAR.cx,Y=KBAR.cy,D=KBAR.dep,INK='#2a1b12';c.save();c.translate(X,Y);
  // Sand bis ans Wasser, mit Muscheln und Seestern
@@ -1805,7 +1808,7 @@ function schStage(c,nl,t){const X=80,B=14;c.save();c.translate(X,B);c.scale(.72,
  if(!REDUCED&&Math.sin(t*1.7)>.7)for(const sx of[-24,24]){const g=c.createLinearGradient(0,-2,0,-24);g.addColorStop(0,'rgba(255,255,255,.7)');g.addColorStop(1,'rgba(255,255,255,0)');c.fillStyle=g;c.beginPath();c.moveTo(sx-1,-2);c.lineTo(sx+1,-2);c.lineTo(sx+4,-24);c.lineTo(sx-4,-24);c.closePath();c.fill();}
  if(!REDUCED)for(let k=0;k<16;k++){const ph=(t*.3+k*.137)%1,x=-34+hash(k,91)*68+Math.sin(t+k)*2,y=-30+ph*44;c.fillStyle=['#ff3d7f','#ffd23f','#4fc3dc','#7dd3a8','#b58ad0'][k%5];c.save();c.translate(x,y);c.rotate(t*3+k);c.fillRect(-.5,-.25,1,.5);c.restore();}
  // Tanzende Fans vor der Bühne (abends mehr, mit Leuchtstäben)
- const n=night?7:3;for(let k=0;k<n;k++){const fx=-26+k*(52/Math.max(1,n-1)),fy=10+(k%2)*5,b=REDUCED?0:Math.abs(Math.sin(t*6+k))*1;c.save();c.translate(fx,fy-b);c.fillStyle='rgba(0,0,0,.18)';c.beginPath();c.ellipse(0,4.4+b,1.8,.5,0,0,TAU);c.fill();person(c,k===0?RAVEF[0]:k===1?RAVEF[1]:look(9000+k*31),REDUCED?0:Math.sin(t*6+k)*.6,'back',0);if(k%2===0){const up=REDUCED?0:Math.sin(t*6+k)*.8;c.strokeStyle=['#7dff6a','#ff4fd8','#4fe0ff','#ffe14f'][k%4];c.lineWidth=.55;c.lineCap='round';c.beginPath();c.moveTo(1.4,-4-up);c.lineTo(2.4,-6.8-up);c.stroke();}c.restore();}
+ const n=3;for(let k=0;k<n;k++){const fx=-26+k*(52/Math.max(1,n-1)),fy=10+(k%2)*5,b=REDUCED?0:Math.abs(Math.sin(t*6+k))*1;c.save();c.translate(fx,fy-b);c.fillStyle='rgba(0,0,0,.18)';c.beginPath();c.ellipse(0,4.4+b,1.8,.5,0,0,TAU);c.fill();person(c,k===0?RAVEF[0]:k===1?RAVEF[1]:look(9000+k*31),REDUCED?0:Math.sin(t*6+k)*.6,'back',0);if(k%2===0){const up=REDUCED?0:Math.sin(t*6+k)*.8;c.strokeStyle=['#7dff6a','#ff4fd8','#4fe0ff','#ffe14f'][k%4];c.lineWidth=.55;c.lineCap='round';c.beginPath();c.moveTo(1.4,-4-up);c.lineTo(2.4,-6.8-up);c.stroke();}c.restore();}
  c.restore();}
 function schJacuzzi(c,nl,t){const X=-56,Y=66;c.save();c.translate(X,Y);c.scale(.8,.8);
  c.fillStyle='#d8c6a8';c.beginPath();c.roundRect(-20,-8,40,22,4);c.fill();for(let x=-18;x<20;x+=3){c.fillStyle='rgba(120,90,60,.2)';c.fillRect(x,-8,.3,22);}
@@ -3220,7 +3223,7 @@ function xmFog(c){const n=16;for(let k=0;k<n;k++){const a=k/n*TAU+(REDUCED?0:T*.
  if(!REDUCED){const s=Math.pow(Math.max(0,Math.sin(T*.9)),10);if(s>.05){c.fillStyle=`rgba(255,210,80,${s})`;const x=XM.x+18,y=XM.y-14;c.beginPath();for(let k=0;k<10;k++){const r=k%2?2.5:7,a=k/10*TAU-Math.PI/2;c.lineTo(x+Math.cos(a)*r,y+Math.sin(a)*r);}c.closePath();c.fill();}}}
 
 function draw(){{const k=kind();REGEN.on=k==="rain"||k==="storm";}
- if(!W)return;sunUpdate();if(cam.z!==ZL){ZL=cam.z;ZCH=performance.now();}const key=[W,H,limit,SUN.key,kind(),nightLevel()>.5,GROWV?GROWV.i:'',GROWK==null?'':GEB.map(g=>GROWV===g.v&&GROWK<g.at?0:1).join('')+BAU.map(b=>bauOn(b)?1:0).join('')].join(',');
+ if(!W)return;sunUpdate();if(cam.z!==ZL){ZL=cam.z;ZCH=performance.now();}const key=[W,H,limit,SUN.key,kind(),nightLevel()>.5,GROWV?GROWV.i:'',GROWK==null?'':GEB.map(g=>GROWV===g.v&&GROWK<g.at?0:1).join('')+BAU.map(b=>bauOn(b)?1:0).join('')+EXG.map(e=>exDa(e.o)?1:0).join('')].join(',');
  if(key!==baseKey||!baseOk()){baseBuild();baseKey=key;}
  const c=ctx,z=cam.z,zr=z/fitMain().z;baseBlit(c,base);world(c);
  const [x0,y0]=s2w(-40,-40),[x1,y1]=s2w(W+40,H+40),vis=(x,y)=>x>x0&&x<x1&&y>y0&&y<y1,visR=(x,y,r)=>x>x0-r&&x<x1+r&&y>y0-r&&y<y1+r;
@@ -3243,7 +3246,7 @@ function draw(){{const k=kind();REGEN.on=k==="rain"||k==="storm";}
   if(z*S>30&&sel!==p)NAMES.push(MYp?['🎖️ Bürgermeisterin '+p.name,x,y-12.5*L.h,'#ffd23f',0,'#2a1b12']:[(p.beruf==='Palast-Leitung'?'👑 ':'⭐ ')+p.beruf+' '+p.name,x,y-12.5*L.h-(Math.abs(x)<30?4:0)]);TAPS.push([x,y,p]);}
  // Jogger am Strand: tagsüber 4–6, abends/nachts 2–4 (hier nur vormerken, gezeichnet nach den Küstenhütten)
  const JD=[];if(GROWK==null){if(!JOG.list)jogInit();const nJ=nl>.5?3:5;for(let i=0;i<Math.min(nJ,JOG.list.length);i++){const j=JOG.list[i];if(j.q.nr>limit||j.q===sel||(WK.on&&j.q===WK.me))continue;OUTG.add(j.q);if(z*S<=8)continue;const [x,y,dx]=jogPos(j);if(vis(x,y))JD.push([j,x,y,dx]);}}
- if(WK.on&&typeof MKLINE==='function')MKLINE(c,null);if(visR(MKT.cx,MKT.cy,70))sprite(c,'markt',MKT.cx-55,MKT.cy-50,MKT.cx+55,MKT.cy+40,o=>drawMarkt(o,nl));if(KOKV.open){if(visR(KBAD.cx,KBAD.cy,70))sprite(c,'kbad',KBAD.cx-55,KBAD.cy-52,KBAD.cx+55,KBAD.cy+40,o=>drawKokosBad(o,nl));if(visR(KMODE.cx,KMODE.cy,70))sprite(c,'kmode',KMODE.cx-55,KMODE.cy-52,KMODE.cx+55,KMODE.cy+40,o=>drawCostCotton(o,nl));if(visR(KBAR.cx,KBAR.cy+20,70))sprite(c,'kbar',KBAR.cx-55,KBAR.cy-28,KBAR.cx+55,KBAR.cy+KBAR.dep+12,o=>drawCocoBay(o,nl));}for(const g of GEB)if(visR(g.cx,g.cy,90)){const gk=GROWK!=null&&GROWV===g.v;if(gk&&GROWK<g.at)continue;const pk=gk?Math.min(1,(GROWK-g.at)/.03):1;if(pk<1){c.save();c.translate(g.cx,g.cy);const sc=.3+.7*pk+Math.sin(pk*Math.PI)*.12;c.scale(sc,sc);c.translate(-g.cx,-g.cy);c.globalAlpha=pk;drawGeb(c,g,nl,z);c.restore();c.globalAlpha=1;for(let i=0;i<14;i++){const a=i/14*TAU,r2=10+pk*40;c.fillStyle=['#ffd23f','#ff6fa3','#4fc3dc','#7dd3a8'][i%4];c.beginPath();c.arc(g.cx+Math.cos(a)*r2,g.cy+Math.sin(a)*r2*.8,1.6*(1-pk)+.3,0,TAU);c.fill();}}else sprite(c,'g'+g.key,g.x0-45,g.y0-65,g.x1+45,g.y1+35,o=>drawGeb(o,g,nl,z));for(const p of PEOPLE)if(p.ort===g.name)OUTG.add(p);if(!gk)guests(c,g,nl,z,OUTG);}
+ if(WK.on&&typeof MKLINE==='function')MKLINE(c,null);if(exDa(MKT)&&visR(MKT.cx,MKT.cy,70))sprite(c,'markt',MKT.cx-55,MKT.cy-50,MKT.cx+55,MKT.cy+40,o=>drawMarkt(o,nl));if(KOKV.open){if(exDa(KBAD)&&visR(KBAD.cx,KBAD.cy,70))sprite(c,'kbad',KBAD.cx-55,KBAD.cy-52,KBAD.cx+55,KBAD.cy+40,o=>drawKokosBad(o,nl));if(exDa(KMODE)&&visR(KMODE.cx,KMODE.cy,70))sprite(c,'kmode',KMODE.cx-55,KMODE.cy-52,KMODE.cx+55,KMODE.cy+40,o=>drawCostCotton(o,nl));if(exDa(KBAR)&&visR(KBAR.cx,KBAR.cy+20,70))sprite(c,'kbar',KBAR.cx-55,KBAR.cy-28,KBAR.cx+55,KBAR.cy+KBAR.dep+12,o=>drawCocoBay(o,nl));}for(const g of GEB)if(visR(g.cx,g.cy,90)){const gk=GROWK!=null&&GROWV===g.v;if(gk&&GROWK<g.at)continue;const pk=gk?Math.min(1,(GROWK-g.at)/.03):1;if(pk<1){c.save();c.translate(g.cx,g.cy);const sc=.3+.7*pk+Math.sin(pk*Math.PI)*.12;c.scale(sc,sc);c.translate(-g.cx,-g.cy);c.globalAlpha=pk;drawGeb(c,g,nl,z);c.restore();c.globalAlpha=1;for(let i=0;i<14;i++){const a=i/14*TAU,r2=10+pk*40;c.fillStyle=['#ffd23f','#ff6fa3','#4fc3dc','#7dd3a8'][i%4];c.beginPath();c.arc(g.cx+Math.cos(a)*r2,g.cy+Math.sin(a)*r2*.8,1.6*(1-pk)+.3,0,TAU);c.fill();}}else sprite(c,'g'+g.key,g.x0-45,g.y0-65,g.x1+45,g.y1+35,o=>drawGeb(o,g,nl,z));for(const p of PEOPLE)if(p.ort===g.name)OUTG.add(p);if(!gk)guests(c,g,nl,z,OUTG);}
  // kleiner Pool an Hütten (I.pool): Richtung Meer, mit Leiter, Quietscheente, Flamingo, Liege
  if(z*S>8)for(const n of I.pool||[]){const q=byName.get('@'+n.toLowerCase().replace(/^@/,''));if(!q||!q.p||!vis(q.p.x,q.p.y))continue;const ps=poolSpot(q);if(!ps)continue;const px=ps[0],py=ps[1];
   if(ps[2]){c.save();c.translate(px,py);c.fillStyle='rgba(30,60,20,.25)';c.beginPath();c.roundRect(-2.6,-5.2,6.2,12,1.8);c.fill();c.fillStyle='#e9dcc4';c.beginPath();c.roundRect(-3.1,-6,6.2,12,1.8);c.fill();c.fillStyle='#2cc2d6';c.beginPath();c.roundRect(-2.3,-5.2,4.6,10.4,1.3);c.fill();c.strokeStyle='#fff';c.lineWidth=.4;c.stroke();
@@ -3332,7 +3335,7 @@ function draw(){{const k=kind();REGEN.on=k==="rain"||k==="storm";}
  if(visR(SCH.x,SCH.y,SCH.r+60))sprite(c,'schloss',SCH.x-150,SCH.y-160,SCH.x+150,SCH.y+140,o=>drawSchloss(o,nl));
  if(visR(YACHT.cx,YACHT.cy,60))sprite(c,'yacht',YACHT.cx-150,YACHT.cy-70,YACHT.cx+150,YACHT.cy+45,o=>drawYacht(o,nl,z));
  drawStege(c,nl,z,visR);
- if(visR(KI.x,(KI.cy+KI.y0)/2,90))sprite(c,'kiosk',KI.x-KI.W-14,KI.cy-KI.H-36,KI.x+KI.W+14,KI.y0+14,o=>drawKiosk(o,nl));
+ if(exDa(KI)&&visR(KI.x,(KI.cy+KI.y0)/2,90))sprite(c,'kiosk',KI.x-KI.W-14,KI.cy-KI.H-36,KI.x+KI.W+14,KI.y0+14,o=>drawKiosk(o,nl));
  {const rp=RETTER();if(rp){const q=retterPos(REDUCED?0:T);if(vis(q.x,q.y))drawRetter(c,z);}}
  if(!GROWV&&visR(XM.x,XM.y,XM.r*2))xmFog(c);
  if(!GROWV&&visR(LV.x,LV.y,LV.r*1.3))lvCover(c,nl);
@@ -3368,8 +3371,8 @@ function draw(){{const k=kind();REGEN.on=k==="rain"||k==="storm";}
    else if(g.typ==='strandbar'){const W=(g.x1-g.x0)/2,H=(g.y1-g.y0)/2,sx=(g.sea-g.cx)*d,bx=sx-30;glow(X(bx),Y(-2),20,'255,170,90',.55*nl);for(const [lx,ly] of[[sx-42,-24],[W-4,-24],[W-4,24],[sx-42,24],[(sx-44+W)/2,-24],[(sx-44+W)/2,24]])glow(X(lx),Y(ly-7.5),7,'255,160,60',.75*nl*(.85+.15*Math.sin(T*11+lx)));
     for(let k=0;k<4;k++)glow(X(bx-11+k*7.3),Y(-6.6),4,['255,120,180','255,220,100','100,240,220','255,160,90'][k],.8*nl);for(const [lx,ly] of[[sx+11,-14.8],[sx+11,13.2],[sx+31,-2.8]])glow(X(lx),Y(ly),5,'255,200,110',.7*nl);glow(X(W-13),Y(-1),9,`${(T*80|0)%2?'255,60,160':'60,200,255'}`,.55*nl);for(let x=sx+6;x<W-2;x+=8)for(const yy of[-26.6,26.6])glow(X(x),Y(yy),2.2,'255,225,160',.55*nl);}}
   if(visR(YACHT.cx,YACHT.cy,60))yachtGlow(glow,nl);
-  if(visR(KI.x,KI.cy,60))kioskGlow(glow,nl);if(visR(SCH.x,SCH.y,SCH.r+40))schlossGlow(glow,nl);stegGlow(glow,nl,visR);{const rq=RETTER()&&retterPos(REDUCED?0:T);if(rq&&visR(rq.x,rq.y,20))retterGlow(glow,nl);}
-  if(visR(MKT.cx,MKT.cy,70))marktGlow(glow,nl);if(KOKV.open){if(visR(KBAD.cx,KBAD.cy,70))kokosBadGlow(glow,nl);if(visR(KMODE.cx,KMODE.cy,70))costCottonGlow(glow,nl);if(visR(KBAR.cx,KBAR.cy+20,70))cocoGlow(glow,nl);}
+  if(exDa(KI)&&visR(KI.x,KI.cy,60))kioskGlow(glow,nl);if(visR(SCH.x,SCH.y,SCH.r+40))schlossGlow(glow,nl);stegGlow(glow,nl,visR);{const rq=RETTER()&&retterPos(REDUCED?0:T);if(rq&&visR(rq.x,rq.y,20))retterGlow(glow,nl);}
+  if(exDa(MKT)&&visR(MKT.cx,MKT.cy,70))marktGlow(glow,nl);if(KOKV.open){if(exDa(KBAD)&&visR(KBAD.cx,KBAD.cy,70))kokosBadGlow(glow,nl);if(exDa(KMODE)&&visR(KMODE.cx,KMODE.cy,70))costCottonGlow(glow,nl);if(exDa(KBAR)&&visR(KBAR.cx,KBAR.cy+20,70))cocoGlow(glow,nl);}
   // Strandvilla nachts: warme Fenster, türkis leuchtender Pool, Fackeln, Feuerschale, Wegleuchten
   for(const g of GEB)if(g.typ==='villa'&&gDa(g)&&visR(g.cx,g.cy,90)){const W=(g.x1-g.x0)/2,H=(g.y1-g.y0)/2,d=g.dir||1,sx=(g.sea-g.cx)*d,vx=-W+24,X=lx=>g.cx+lx*d,Y=ly=>g.cy+ly;
    glow(X(vx),Y(-4),26,'255,200,120',.5*nl);glow(X(vx),Y(-27),16,'255,210,140',.4*nl);glow(X((sx-6+W-4)/2),Y(-2),26,'90,230,255',.45*nl);
@@ -3498,16 +3501,17 @@ function islInView(){let best=MAIN,bd=1e9;for(const v of ISL){if(!v.open)continu
 function fitIsl(v){if(v===MAIN)return fitMain(freeY());const [t,b]=freeY(),r=Math.max(v.R*.7,v.plaza+120),z=Math.min((W-20)/(2*r),(b-t)/(2*r*.92));return{x:v.x,y:v.y+(H/2-(t+b)/2)/z,z};}
 let GROWK=null,GROWV=null,MAYOR_AT=.73;
 $('growbtn').onclick=()=>{if(growing||!N)return;const v=islInView();growing=true;unsel();GROWV=v;GROWK=0;flyTo(fitIsl(v),600);
- const lo=v.von-1,hi=Math.max(lo+1,...PEOPLE.filter(p=>p.isl===v).map(p=>p.nr)),geb=GEB.filter(g=>g.v===v),bau=BAU.filter(b=>b.v===v);
+ const lo=v.von-1,hi=Math.max(lo+1,...PEOPLE.filter(p=>p.isl===v).map(p=>p.nr)),geb=GEB.filter(g=>g.v===v),bau=BAU.filter(b=>b.v===v),exg=EXG.filter(e=>e.v===v);
  // Zeitpunkte der Veränderungen (Anteil der Animation): erst Einzüge, dann Bürgermeisterin, dann Bauten
  const EV=[];if(v!==MAIN)EV.push([0,'🏝️ '+v.name+' wird eröffnet']);else EV.push([0,'🏝️ Muschel-Tal wird gegründet']);
- const nEv=geb.length+bau.length+(v===MAIN?1:0),step=.26/Math.max(1,nEv);let ei=0;
+ const nEv=geb.length+bau.length+exg.length+(v===MAIN?1:0),step=.26/Math.max(1,nEv);let ei=0;
  if(v===MAIN&&PEOPLE.some(p=>p.beruf&&p.beruf.startsWith('Bürgermeister'))){MAYOR_AT=.73;EV.push([MAYOR_AT,'🎖️ Muschel-Tal bekommt eine Bürgermeisterin']);ei++;}
  geb.forEach((g,i)=>{g.at=.73+step*(ei++);EV.push([g.at,g.emoji+' '+g.name+(g.typ==='villa'?' wird gebaut':' eröffnet')]);});
+ exg.forEach(e=>{e.at=.73+step*(ei++);EV.push([e.at,e.t]);});
  bau.forEach(b=>{b.at=.73+step*(ei++);EV.push([b.at,'🏗️ Baustelle: '+b.name+' (fertig bei '+fmt(b.ziel)+' Einwohnern)']);});
  for(const x of (I.entfernt||[]))if(x.insel==null||ISL[x.insel]===v){x.at=x.at||.9;EV.push([x.at,'🧹 '+x.text]);}
  EV.sort((a,b)=>a[0]-b[0]);
- const t0=performance.now()+600,ms=Math.min(6000,2500+(hi-lo)*3.5)+(geb.length+bau.length)*600;
+ const t0=performance.now()+600,ms=Math.min(6000,2500+(hi-lo)*3.5)+(geb.length+bau.length+exg.length)*600;
  const st=n=>{const k=Math.max(0,Math.min(1,(n-t0)/ms)),kp=Math.min(1,k/.72);GROWK=k;limit=lo+Math.max(0,Math.round((hi-lo)*kp*kp));
   draw();
   if(k<1)requestAnimationFrame(st);else setTimeout(()=>{limit=N;growing=false;GROWK=null;GROWV=null;draw();},1200);};requestAnimationFrame(st);};
