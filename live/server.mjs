@@ -18,7 +18,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-15 d';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-15 e';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -468,7 +468,7 @@ function weiter() {
   if (!ECHT) { setTimeout(fertig, dauerMs(text)); return; }
   const aufSeite = CFG.stimme.wiedergabe !== 'mac' && seiteHatTon() && Date.now() > stimmeFehlerBis;
   // Sprach-Speicher: schon einmal erzeugte Sätze werden sofort wieder abgespielt (spart die lange Erzeugung)
-  const key = crypto.createHash('md5').update(`${PIPER.bereit ? 'piper:' + PIPER.name : stimme}|${CFG.stimme.tempo}|${ohnePausen}|${text}`).digest('hex');
+  const key = crypto.createHash('md5').update(`${PIPER.bereit ? 'piper2:' + PIPER.name : stimme}|${CFG.stimme.tempo}|${ohnePausen}|${text}`).digest('hex');
   const fertigDatei = path.join(CACHE_DIR, key + '.wav'), datei = path.join(TON_DIR, `s${++tonNr % 20}.wav`);
   const args = ['-v', stimme, '-r', String(CFG.stimme.tempo)];
   // Immer erst eine Sprachdatei erzeugen (say hängt sonst manchmal an Mehrfach-Ausgabe/BlackHole), dann abspielen
@@ -551,7 +551,14 @@ function piperStarten() {
     setTimeout(piperStarten, 2000);
   });
 }
-PIPER.sprich = (text, datei, cb) => { const id = ++PIPER.nr; PIPER.auftraege.set(id, cb); PIPER.w.send({ id, text, datei }); };
+PIPER.sprich = (text, datei, cb) => { const id = ++PIPER.nr; PIPER.auftraege.set(id, cb); PIPER.w.send({ id, text, datei, gefuehl: gefuehlVon(text) }); };
+// Welches Gefühl passt zum Satz? (Jubel bei großen Momenten, freundlich bei Begrüßung/Dank, spannend bei Events)
+function gefuehlVon(t) {
+  if (/Wahnsinn|Wow|Unglaublich|sprachlos|Legende|Riesigen Dank|Feuerwerk|Glückwunsch|Platz eins|Aufgestiegen|großen Grundstück|gewinnt|Gewonnen|Geschafft|geschafft|Rekord|Likes!|Party/.test(t)) return 'jubel';
+  if (/^(Hallo|Hi|Hey|Willkommen|Danke|Lieben Dank|Vielen Dank|Schön|Neuer Bewohner|Neues Zelt|Ein Zelt|Da ist ja)/.test(t) || /Danke|Willkommen|Hallo/.test(t)) return 'froh';
+  if (/Achtung|Sekunden|Event|Abstimmung|Mini-Aufgabe|Schnell|Los, los|Wer |Was |Gleich|!$/.test(t)) return 'spannend';
+  return 'normal';
+}
 PIPER.neustart = () => { const w = PIPER.w; PIPER.bereit = false; PIPER.w = null; for (const cb of PIPER.auftraege.values()) cb(false); PIPER.auftraege.clear(); try { w?.kill(); } catch {} setTimeout(piperStarten, 500); };
 setTimeout(piperStarten, 200);
 let langsam = 0;
@@ -564,7 +571,7 @@ function vorwaermen() {
   const naechster = () => {
     if (spricht || warte.length) return setTimeout(naechster, 1500);
     while (i < offen.length) {
-      const text = offen[i++], key = crypto.createHash('md5').update(`${PIPER.bereit ? 'piper:' + PIPER.name : stimme}|${CFG.stimme.tempo}|${ohnePausen}|${text}`).digest('hex'), ziel = path.join(CACHE_DIR, key + '.wav');
+      const text = offen[i++], key = crypto.createHash('md5').update(`${PIPER.bereit ? 'piper2:' + PIPER.name : stimme}|${CFG.stimme.tempo}|${ohnePausen}|${text}`).digest('hex'), ziel = path.join(CACHE_DIR, key + '.wav');
       if (fs.existsSync(ziel)) continue;
       const tmp = ziel + '.tmp.wav';
       const pr = spawn('nice', ['-n', '15', 'say', '-v', stimme, '-r', String(CFG.stimme.tempo), '-o', tmp, '--file-format=WAVE', '--data-format=LEI16@22050', fuerStimme(text)]);

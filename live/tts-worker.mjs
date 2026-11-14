@@ -43,13 +43,22 @@ function phoneme(text) {
 }
 
 const sitzung = await ort.InferenceSession.create(MODELL, { intraOpNumThreads: 2, interOpNumThreads: 1, graphOptimizationLevel: 'all' });
+// Gefühle: wie lebhaft, wie schnell, wie hoch (Tonhöhe über die Abspielrate)
+const GEFUEHLE = {
+  flach:    { leb: 0, tempo: 1.08, hoehe: 1.0 },     // wie früher (nur zum Vergleich)
+  normal:   { leb: .45, tempo: 1.06, hoehe: 1.0 },
+  froh:     { leb: .75, tempo: 1.08, hoehe: 1.03 },
+  spannend: { leb: .7,  tempo: 1.12, hoehe: 1.0 },
+  jubel:    { leb: 1.15, tempo: 1.12, hoehe: 1.06 },
+};
+let G = { leb: LEBHAFT, tempo: TEMPO, hoehe: 1 };
 async function sprich(text) {
   const ids = await phoneme(text);
   const lang = BigInt64Array.from(ids.map(BigInt));
   const feeds = {
     input: new ort.Tensor('int64', lang, [1, ids.length]),
     input_lengths: new ort.Tensor('int64', BigInt64Array.from([BigInt(ids.length)]), [1]),
-    scales: new ort.Tensor('float32', Float32Array.from([cfg.inference.noise_scale + LEBHAFT * .25, cfg.inference.length_scale / TEMPO, cfg.inference.noise_w + LEBHAFT * .2]), [3]),
+    scales: new ort.Tensor('float32', Float32Array.from([cfg.inference.noise_scale + G.leb * .25, cfg.inference.length_scale / G.tempo * G.hoehe, cfg.inference.noise_w + G.leb * .2]), [3]),
   };
   if (Object.keys(cfg.speaker_id_map || {}).length) feeds.sid = new ort.Tensor('int64', BigInt64Array.from([0n]), [1]);
   return (await sitzung.run(feeds)).output.data;
@@ -74,16 +83,17 @@ async function satz(text) {
   let o = 0; for (const s of stuecke) for (let i = 0; i < s.length; i++) pcm[o++] = Math.max(-32768, Math.min(32767, Math.round(s[i] * 32767)));
   const kopf = Buffer.alloc(44);
   kopf.write('RIFF', 0); kopf.writeUInt32LE(36 + pcm.byteLength, 4); kopf.write('WAVE', 8); kopf.write('fmt ', 12);
-  kopf.writeUInt32LE(16, 16); kopf.writeUInt16LE(1, 20); kopf.writeUInt16LE(1, 22); kopf.writeUInt32LE(RATE, 24);
-  kopf.writeUInt32LE(RATE * 2, 28); kopf.writeUInt16LE(2, 32); kopf.writeUInt16LE(16, 34); kopf.write('data', 36); kopf.writeUInt32LE(pcm.byteLength, 40);
+  kopf.writeUInt32LE(16, 16); kopf.writeUInt16LE(1, 20); kopf.writeUInt16LE(1, 22); kopf.writeUInt32LE(Math.round(RATE * G.hoehe), 24);
+  kopf.writeUInt32LE(Math.round(RATE * G.hoehe) * 2, 28); kopf.writeUInt16LE(2, 32); kopf.writeUInt16LE(16, 34); kopf.write('data', 36); kopf.writeUInt32LE(pcm.byteLength, 40);
   return Buffer.concat([kopf, Buffer.from(pcm.buffer)]);
 }
 
 // Aufträge nacheinander abarbeiten
 let kette = Promise.resolve();
-process.on('message', ({ id, text, datei }) => {
+process.on('message', ({ id, text, datei, gefuehl }) => {
   kette = kette.then(async () => {
-    const t0 = Date.now();
+    const t0 = Date.now(), g = GEFUEHLE[gefuehl] || GEFUEHLE.normal;
+    G = LEBHAFT ? { ...g, leb: g.leb + LEBHAFT } : g;            // piperLebhaft aus den Einstellungen kommt obendrauf
     try { fs.writeFileSync(datei, await satz(text)); process.send({ id, ok: true, ms: Date.now() - t0 }); }
     catch (e) { process.send({ id, ok: false, fehler: String(e?.message || e) }); }
   });
