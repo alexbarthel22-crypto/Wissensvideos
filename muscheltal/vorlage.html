@@ -1973,6 +1973,78 @@ function schCorgi(c,t){const q=corgiPos(REDUCED?3:t),moving=q.moving&&!REDUCED,s
  c.fillStyle='#e8433c';c.beginPath();c.moveTo(3,-1.35);c.quadraticCurveTo(4.6,-.9,5.7,-1.3);c.lineTo(5.7,-.8);c.quadraticCurveTo(4.6,-.4,3,-.85);c.closePath();c.fill();c.fillStyle='#ffd23f';c.beginPath();c.arc(4.6,-.25,.38,0,TAU);c.fill();
  c.restore();
  if(S*cam.z>30)NAMES.push(['🐶 Pimpsi',SCH.x+q.x,SCH.y+q.y-6.4,'#fff8e7',1.9,'#2a1b12']);}
+// 🛥️ Luxus-Yacht „ALEX ONE“ vor dem Schloss (Seitenansicht, Bug rechts): dunkelblauer Rumpf mit Goldlinie, 3 Decks mit getönten Panoramafenstern,
+// Radarbogen, Flybridge, Sonnendeck mit Whirlpool, Heck-Badeplattform mit Treppe, Beiboot + Jetski, Unterwasserlicht nachts
+function schYacht(c,nl,t){const X=-58,Y=140,bob=REDUCED?0:Math.sin(t*.9)*.45,rk=REDUCED?0:Math.sin(t*.7)*.006,INK='#0d1626',NAVY='#14264a',NAVY2='#0c1a35',GOLD='#e8b84a',WH='#fbfbf8',WH2='#e7e9ee',GL='#1c3b4e',TEAK='#c48a52';
+ // Festmacherleinen zum Steg
+ c.strokeStyle='rgba(220,200,160,.95)';c.lineWidth=.35;for(const [ax,ay,yx,yy] of[[-5,124,-58+.85*44,140-.85*11.8],[-5,134,-58+.85*50,140-.85*13]]){c.beginPath();c.moveTo(ax,ay);c.quadraticCurveTo((ax+yx)/2,(ay+yy)/2+2,yx,yy);c.stroke();}
+ c.save();c.translate(X,Y);c.scale(.85,.85);
+ // Unterwasserlicht (nachts) + Spiegelung/Schatten
+ if(nl>.3){const g=c.createRadialGradient(0,4,2,0,4,62);g.addColorStop(0,`rgba(80,200,255,${.45*nl})`);g.addColorStop(1,'rgba(80,200,255,0)');c.fillStyle=g;c.beginPath();c.ellipse(0,5,64,10,0,0,TAU);c.fill();}
+ c.fillStyle='rgba(8,40,70,.28)';c.beginPath();c.ellipse(2,2.6,60,5.4,0,0,TAU);c.fill();
+ // Bugwelle + Kielwasser
+ c.strokeStyle='rgba(255,255,255,.55)';c.lineWidth=.6;for(let k=0;k<3;k++){const ph=REDUCED?k/3:(t*.4+k/3)%1;c.globalAlpha=1-ph;c.beginPath();c.ellipse(0,1.2,56+ph*8,3+ph*2,0,0,TAU);c.stroke();}c.globalAlpha=1;
+ c.translate(0,bob);c.rotate(rk);
+ // --- Beiboot hinten links (an der Badeplattform) ---
+ {const bx=-66,by=0;c.fillStyle='rgba(8,40,70,.25)';c.beginPath();c.ellipse(bx,by+1.2,9,1.6,0,0,TAU);c.fill();c.fillStyle='#fff';c.beginPath();c.moveTo(bx-8,by-3);c.lineTo(bx+6,by-3);c.quadraticCurveTo(bx+9.5,by-2.6,bx+9,by-1);c.quadraticCurveTo(bx+6,by+.6,bx-7,by+.4);c.closePath();c.fill();c.strokeStyle=INK;c.lineWidth=.25;c.stroke();
+  c.fillStyle=NAVY;c.fillRect(bx-7.6,by-1.6,15,.7);c.fillStyle='#c48a52';c.fillRect(bx-6,by-3.6,9,.7);c.fillStyle=GL;c.beginPath();c.moveTo(bx+1,by-3.6);c.lineTo(bx+3.6,by-6);c.lineTo(bx+4.6,by-6);c.lineTo(bx+3.6,by-3.6);c.closePath();c.fill();
+  c.strokeStyle='rgba(220,200,160,.9)';c.lineWidth=.25;c.beginPath();c.moveTo(bx+8.6,by-2.4);c.quadraticCurveTo(bx+12,by-.6,bx+15,by-2.2);c.stroke();}
+ // --- Rumpf ---
+ const hull=()=>{c.beginPath();c.moveTo(-55,-1.5);c.lineTo(-55,-11);c.lineTo(38,-11.5);c.quadraticCurveTo(52,-12,60,-15.5);c.quadraticCurveTo(57,-6,46,-1.2);c.quadraticCurveTo(10,1.2,-50,.4);c.quadraticCurveTo(-55,.2,-55,-1.5);c.closePath();};
+ {const g=c.createLinearGradient(0,-15,0,1);g.addColorStop(0,'#22406f');g.addColorStop(.6,NAVY);g.addColorStop(1,NAVY2);hull();c.fillStyle=g;c.fill();c.strokeStyle=INK;c.lineWidth=.45;c.stroke();}
+ // Wasserlinie (Antifouling) + Goldlinien
+ c.save();hull();c.clip();c.fillStyle='#8a1c2c';c.fillRect(-60,-1.4,130,3);c.fillStyle=GOLD;c.fillRect(-60,-9.6,130,.45);c.fillRect(-60,-3.2,130,.3);
+ // Rumpffenster: lange getönte Bänder + Bullaugen
+ c.fillStyle='#0a1222';c.beginPath();c.roundRect(-30,-8,22,2.4,1.2);c.fill();c.beginPath();c.roundRect(-4,-8,24,2.4,1.2);c.fill();c.fillStyle='rgba(120,190,230,.35)';c.fillRect(-29,-7.6,20,.5);c.fillRect(-3,-7.6,22,.5);
+ for(let k=0;k<5;k++){const px=25+k*4.2;c.fillStyle=GOLD;c.beginPath();c.arc(px,-6.4,.85,0,TAU);c.fill();c.fillStyle=nl>.4?'#ffe2a0':'#2a4a6a';c.beginPath();c.arc(px,-6.4,.55,0,TAU);c.fill();}
+ c.restore();
+ // Name am Bug + Heimathafen
+ c.save();c.font='italic 900 2.4px '+FONT;c.fillStyle=GOLD;c.textAlign='left';c.fillText('ALEX ONE',30,-3.9);c.font='800 1.1px '+FONT;c.fillText('MUSCHEL-TAL ✦',-52,-4.4);c.restore();
+ // Badeplattform + Treppe am Heck
+ c.fillStyle=TEAK;c.fillRect(-60,-3.2,6,1.3);c.fillStyle='#9a6a3a';for(let x=-59.6;x<-54;x+=1)c.fillRect(x,-3.2,.15,1.3);c.strokeStyle='#c9ced8';c.lineWidth=.25;for(let k=0;k<3;k++){c.beginPath();c.moveTo(-58+k*1.4,-1.9);c.lineTo(-58+k*1.4,1.2);c.stroke();}
+ // Jetski auf der Plattform
+ {c.fillStyle='#fff';c.beginPath();c.moveTo(-59.6,-3.2);c.quadraticCurveTo(-58,-5.6,-55.4,-4.6);c.lineTo(-54.6,-3.2);c.closePath();c.fill();c.fillStyle='#ff4f8b';c.fillRect(-59,-4.4,2.6,.6);c.strokeStyle=INK;c.lineWidth=.2;c.beginPath();c.moveTo(-56.4,-4.9);c.lineTo(-55.6,-6);c.stroke();}
+ // --- Hauptdeck (Aufbau 1) ---
+ const deck=(x0,x1,y0,h,slant,col)=>{c.beginPath();c.moveTo(x0,y0);c.lineTo(x0,y0-h);c.lineTo(x1-slant,y0-h);c.quadraticCurveTo(x1-slant*.35,y0-h*.9,x1,y0);c.closePath();c.fillStyle=col;c.fill();c.strokeStyle='rgba(13,22,38,.45)';c.lineWidth=.3;c.stroke();};
+ // Teak-Deck am Heck mit Loungesofa + Tisch
+ c.fillStyle=TEAK;c.fillRect(-55,-12.2,14,1.2);c.fillStyle='#fff';c.beginPath();c.roundRect(-53.6,-15,8,2.6,.8);c.fill();c.fillStyle='#d9e2ec';c.fillRect(-53.4,-13.4,7.6,1);c.fillStyle='#e8b84a';c.beginPath();c.arc(-48,-13.9,.6,0,TAU);c.fill();c.fillStyle='#ff6fa3';c.beginPath();c.arc(-51,-14,.55,0,TAU);c.fill();
+ deck(-42,40,-11.5,9,9,WH);
+ {const g=c.createLinearGradient(0,-19,0,-13);g.addColorStop(0,'#2d5d76');g.addColorStop(1,GL);c.fillStyle=g;c.beginPath();c.moveTo(-39,-14);c.lineTo(-39,-18.4);c.lineTo(28,-18.4);c.quadraticCurveTo(33,-17.6,35,-14);c.closePath();c.fill();
+  c.fillStyle='rgba(255,255,255,.28)';for(let k=0;k<6;k++){const x=-34+k*11;c.beginPath();c.moveTo(x,-18.4);c.lineTo(x+3,-18.4);c.lineTo(x+1,-14);c.lineTo(x-2,-14);c.closePath();c.fill();}
+  if(nl>.4){c.fillStyle=`rgba(255,215,140,${.55*nl})`;for(let k=0;k<7;k++)c.fillRect(-37+k*10,-17.8,6,3.2);}
+  c.strokeStyle='rgba(255,255,255,.6)';c.lineWidth=.2;for(let k=0;k<8;k++){const x=-39+k*9.4;c.beginPath();c.moveTo(x,-18.4);c.lineTo(x,-14);c.stroke();}}
+ // Reling Hauptdeck (Glas + Edelstahl)
+ c.fillStyle='rgba(190,230,245,.35)';c.fillRect(-55,-14.4,13,2.2);c.strokeStyle='#d8dde6';c.lineWidth=.3;c.beginPath();c.moveTo(-55,-14.6);c.lineTo(-42,-14.6);c.moveTo(40,-12);c.lineTo(56,-13.4);c.stroke();
+ // Sonnendeck am Bug: Liegen + Whirlpool
+ {c.fillStyle=TEAK;c.beginPath();c.moveTo(38,-11.6);c.lineTo(52,-12.6);c.lineTo(52,-12);c.lineTo(38,-11);c.closePath();c.fill();
+  c.fillStyle='#fff';c.beginPath();c.roundRect(41,-13.6,9,1.8,.8);c.fill();c.fillStyle='#ffd6e6';c.fillRect(41.4,-13.4,2,1.4);c.fillStyle='#8ee0ff';c.beginPath();c.ellipse(47.6,-13.2,1.6,.5,0,0,TAU);c.fill();}
+ // --- Oberdeck (Aufbau 2) ---
+ deck(-32,24,-20.4,7.4,8,WH2);c.fillStyle=WH;c.fillRect(-34,-21,58,1.1);
+ {c.fillStyle='#1a3446';c.beginPath();c.moveTo(-28,-22.4);c.lineTo(-28,-26.4);c.lineTo(14,-26.4);c.quadraticCurveTo(18,-25.8,20,-22.4);c.closePath();c.fill();c.fillStyle='rgba(255,255,255,.25)';for(let k=0;k<5;k++){const x=-24+k*9;c.beginPath();c.moveTo(x,-26.4);c.lineTo(x+2.4,-26.4);c.lineTo(x+.8,-22.4);c.lineTo(x-1.6,-22.4);c.closePath();c.fill();}
+  if(nl>.4){c.fillStyle=`rgba(255,205,130,${.5*nl})`;for(let k=0;k<5;k++)c.fillRect(-26+k*9,-26,6,3.2);}}
+ // Personen an Deck: Kapitän auf der Brücke, Crew mit Tablett hinten
+ {const pp=(x,y,shirt,hat)=>{c.fillStyle=shirt;c.fillRect(x-.8,y-2.6,1.6,2.6);c.fillStyle='#f3c9a0';c.beginPath();c.arc(x,y-3.4,.8,0,TAU);c.fill();if(hat){c.fillStyle='#fff';c.fillRect(x-.9,y-4.5,1.8,.6);c.fillStyle='#1a1a1a';c.fillRect(x-1,y-4,2,.25);}};
+  pp(-46,-15,'#fff',true);c.fillStyle='#c9ced8';c.fillRect(-45.2,-17.4,1.6,.3);c.fillStyle='#ff6fa3';c.fillRect(-44.8,-18,.3,.6);
+  pp(-4,-28.8,'#fff',true);}
+ // --- Flybridge mit Radarbogen ---
+ deck(-20,12,-28.6,4,4,WH);c.fillStyle='rgba(190,230,245,.45)';c.fillRect(-22,-31.6,6,2.8);
+ c.fillStyle='#fff';c.beginPath();c.roundRect(-14,-31.4,6,1.4,.6);c.fill();c.beginPath();c.roundRect(-7,-31.4,6,1.4,.6);c.fill();
+ {c.strokeStyle=WH;c.lineWidth=1.6;c.lineCap='round';c.beginPath();c.moveTo(-6,-32.4);c.quadraticCurveTo(-1,-40,6,-39.4);c.lineTo(10,-32.6);c.stroke();c.strokeStyle=GOLD;c.lineWidth=.35;c.beginPath();c.moveTo(-6,-32.4);c.quadraticCurveTo(-1,-40,6,-39.4);c.stroke();
+  // Radarkuppeln + Antennen
+  c.fillStyle='#fff';for(const rx of[1,6]){c.beginPath();c.arc(rx,-40.4,1.4,Math.PI,0);c.fill();c.fillRect(rx-1.4,-40.4,2.8,.6);}
+  c.strokeStyle='#c9ced8';c.lineWidth=.25;c.beginPath();c.moveTo(3.6,-40);c.lineTo(3.6,-46);c.moveTo(8.4,-39.6);c.lineTo(8.4,-44);c.stroke();
+  {const a=REDUCED?0:t*2.4;c.strokeStyle='#2a2a30';c.lineWidth=.45;c.beginPath();c.moveTo(3.6-Math.cos(a)*2.2,-46);c.lineTo(3.6+Math.cos(a)*2.2,-46);c.stroke();}
+  // Positionslampen + Ankerlicht
+  c.fillStyle=nl>.3?'#fff7c0':'#ddd';c.beginPath();c.arc(8.4,-44.3,.4,0,TAU);c.fill();}
+ // Flagge am Heck (rosa mit Muschel)
+ {const fl=REDUCED?0:Math.sin(t*3.2)*.5;c.strokeStyle='#c9ced8';c.lineWidth=.3;c.beginPath();c.moveTo(-54.4,-12);c.lineTo(-56.2,-19);c.stroke();c.fillStyle='#ff8fb8';c.beginPath();c.moveTo(-56.2,-19);c.quadraticCurveTo(-58.6,-18.6+fl,-60.6,-19+fl);c.lineTo(-60.2,-16+fl);c.quadraticCurveTo(-58.2,-15.8,-56,-16.2);c.closePath();c.fill();c.fillStyle='#fff';c.beginPath();c.arc(-58.4,-17.4+fl*.6,.5,Math.PI,0);c.fill();}
+ // Lichterkette vom Bug zum Radarbogen (nachts leuchtend)
+ {const pts=[];for(let k=0;k<=14;k++){const u=k/14,x=56+(-50)*u,y=-13.4+(-39.4+13.4)*u+Math.sin(u*Math.PI)*3;pts.push([x,y]);}
+  c.strokeStyle='rgba(220,220,230,.6)';c.lineWidth=.12;c.beginPath();pts.forEach(([x,y],i)=>i?c.lineTo(x,y):c.moveTo(x,y));c.stroke();
+  for(const [x,y] of pts){c.fillStyle=nl>.3?['#ffe08a','#ff9fc2','#9fe6ff'][Math.round(x)%3<0?0:Math.round(x)%3]:'rgba(255,255,255,.8)';c.beginPath();c.arc(x,y,.35,0,TAU);c.fill();}}
+ // Glitzer auf dem Rumpf
+ if(!REDUCED)for(let k=0;k<3;k++){const ph=(t*.45+k*.33)%1,a=Math.sin(ph*Math.PI);if(a<.2)continue;c.globalAlpha=a;c.fillStyle='#fff6c4';const sx=-40+k*34+ph*6,sy=-9.8;c.beginPath();for(let j=0;j<8;j++){const r=j%2?.25:1.1,an=j/8*TAU;c.lineTo(sx+Math.cos(an)*r,sy+Math.sin(an)*r);}c.closePath();c.fill();}
+ c.globalAlpha=1;c.restore();}
 function drawSchloss(c,nl){const t=REDUCED?0:T,X=SCH.x,Y=SCH.y,INK='#2a1b12',GOLD='#e8b84a',ROOF='#6f8fe0',ROOF2='#4f6fc8',WALL='#fff6f2',WALL2='#f2e2e6',PINK='#ffb3cf';c.save();c.translate(X,Y);
  // Wellenringe ums Inselchen
  for(let k=0;k<2;k++){const ph=REDUCED?k/2:(t*.15+k/2)%1;c.strokeStyle=`rgba(255,255,255,${(1-ph)*.45})`;c.lineWidth=1.4;c.save();c.translate(-X,-Y);schShape(c,10+ph*26);c.restore();c.stroke();}
@@ -2060,12 +2132,13 @@ function drawSchloss(c,nl){const t=REDUCED?0:T,X=SCH.x,Y=SCH.y,INK='#2a1b12',GOL
  {const cq=corgiPos(REDUCED?3:t);const D=[[56,()=>schBaum(c,98,56,1.05,t,['#2e8a4a','#4fae5a','#7fd08a','#ff8fb8'])],[86,()=>schBaum(c,-26,86,.85,t,BG)],[84,()=>schBaum(c,28,84,.85,t,[...BG,'#fff'])],[cq.y+2,()=>schCorgi(c,t)],[52,()=>schTresor(c,nl,t)]];D.sort((a,b)=>a[0]-b[0]);for(const [,f] of D)f();}
  // Glitzer
  if(!REDUCED)for(let k=0;k<9;k++){const ph=(t*.5+k*.37)%1,a=Math.sin(ph*Math.PI);if(a<.15)continue;const sx=-36+hash(k,41)*72,sy=-80+hash(k,42)*70;c.globalAlpha=a;c.fillStyle='#fff6c4';c.beginPath();for(let j=0;j<8;j++){const r=j%2?.5:1.8,an=j/8*TAU;c.lineTo(sx+Math.cos(an)*r,sy+Math.sin(an)*r);}c.closePath();c.fill();}c.globalAlpha=1;
+ schYacht(c,nl,t);
  // Bewohner vor dem Tor (antippbar)
  for(const p of PEOPLE.filter(q=>q.gb===SCH)){if(imSpiel(p))continue;const L=p.L||(p.L=look(p.k)),px=0,py=-1;c.save();c.translate(px,py);c.fillStyle='rgba(0,0,0,.18)';c.beginPath();c.ellipse(0,4.4,2,.6,0,0,TAU);c.fill();person(c,L,0,true,.3+Math.abs(Math.sin(t*2))*.6);
   c.scale(L.h,L.h);c.fillStyle=GOLD;c.beginPath();c.moveTo(-1.4,-5.6);c.lineTo(-1.4,-6.9);c.lineTo(-.7,-6.3);c.lineTo(0,-7.2);c.lineTo(.7,-6.3);c.lineTo(1.4,-6.9);c.lineTo(1.4,-5.6);c.closePath();c.fill();c.restore();
   TAPS.push([X+px,Y+py,p]);TAPS.push([X+px,Y+py-10,p]);if(S*cam.z>30&&sel!==p)NAMES.push(['👑 '+p.name,X+px,Y+py-12.4*(L.h||1),'#141414',0,'#f2c94c']);}
  c.restore();}
-function schlossGlow(glow,nl){const X=SCH.x,Y=SCH.y;glow(X,Y-50,34,'255,210,150',.35*nl);if(nl>.3){for(let k=0;k<4;k++){const a=T*1.5+k*1.57;glow(X+80+Math.cos(a)*24,Y-10+Math.sin(a)*8,22,['255,60,160','60,200,255','160,80,255','255,220,60'][k],.45*nl);}glow(X-80,Y-16,20,'255,80,150',.4*nl);glow(X-56,Y+68,16,'120,230,255',.5*nl);}glow(X,Y-20,46,'255,210,150',.45*nl);for(const s of[-1,1])for(const y of[14,70])glow(X+s*9,Y+y-8,6,'255,220,140',.7*nl);glow(X,Y+48,12,'150,220,255',.35*nl);glow(X-87,Y+42,6,'255,200,110',.6*nl);}
+function schlossGlow(glow,nl){const X=SCH.x,Y=SCH.y;{const yx=X-58,yy=Y+140,s=.85;glow(yx,yy+4,44,'80,200,255',.35*nl);for(let k=0;k<7;k++)glow(yx+(-34+k*10)*s,yy-16*s,5,'255,215,140',.3*nl);for(let k=0;k<5;k++)glow(yx+(-23+k*9)*s,yy-24.4*s,4.5,'255,200,130',.28*nl);for(let k=0;k<=14;k+=2){const u=k/14;glow(yx+(56-50*u)*s,yy+(-13.4-26*u-Math.sin(u*Math.PI)*3)*s,2.2,['255,220,140','255,160,200','160,230,255'][k%3],.55*nl);}glow(yx+8.4*s,yy-44.3*s,2.6,'255,250,200',.7*nl);}glow(X,Y-50,34,'255,210,150',.35*nl);if(nl>.3){for(let k=0;k<4;k++){const a=T*1.5+k*1.57;glow(X+80+Math.cos(a)*24,Y-10+Math.sin(a)*8,22,['255,60,160','60,200,255','160,80,255','255,220,60'][k],.45*nl);}glow(X-80,Y-16,20,'255,80,150',.4*nl);glow(X-56,Y+68,16,'120,230,255',.5*nl);}glow(X,Y-20,46,'255,210,150',.45*nl);for(const s of[-1,1])for(const y of[14,70])glow(X+s*9,Y+y-8,6,'255,220,140',.7*nl);glow(X,Y+48,12,'150,220,255',.35*nl);glow(X-87,Y+42,6,'255,200,110',.6*nl);}
 function lvShape(c,off){c.beginPath();for(let i=0;i<=48;i++){const a=i/48*TAU,rr=LV.r*(1+.1*Math.sin(3*a+2.2)+.07*Math.sin(5*a+.7))+off;const x=LV.x+Math.cos(a)*rr,y=LV.y+Math.sin(a)*rr*.82;i?c.lineTo(x,y):c.moveTo(x,y);}c.closePath();}
 function xmShape(c,off){c.beginPath();for(let i=0;i<=40;i++){const a=i/40*TAU,rr=XM.r*(1+.12*Math.sin(3*a+1)+.06*Math.sin(7*a))+off;const x=XM.x+Math.cos(a)*rr,y=XM.y+Math.sin(a)*rr*.85;i?c.lineTo(x,y):c.moveTo(x,y);}c.closePath();}
 function drawBase(){
@@ -3360,7 +3433,7 @@ function draw(){{const k=kind();REGEN.on=k==="rain"||k==="storm";}
   if(WAIT.length){const n=Math.min(WAIT.length,14);for(let k=0;k<n;k++){const t=.25+k/n*.7,x=PIER0[0]+(PIER1[0]-PIER0[0])*t+(k%2?2:-2),y=PIER0[1]+(PIER1[1]-PIER0[1])*t;c.fillStyle=ROOFS[k%ROOFS.length];c.beginPath();c.arc(x,y-2,1.6,0,TAU);c.fill();c.fillStyle='#f3c9a0';c.beginPath();c.arc(x,y-4.4,1.1,0,TAU);c.fill();}}}
  for(const b of BOATS){if(!b.seg)boatRoute(b);const sg=b.seg,A=sg.a1-sg.a0,u0=b.ph/TAU+T*Math.abs(b.sp)*(nl>.5?.4:1)/(sg.loop?TAU:2*A);let a,fw;if(sg.loop){a=sg.a0+((u0%1)+1)%1*A;fw=1;}else{const u=((u0%1)+1)%1;fw=u<.5?1:-1;a=sg.a0+(u<.5?u*2:2-u*2)*A;}if(b.sp<0&&sg.loop){a=sg.a1-(a-sg.a0);fw=-1;}
   const [x,y]=polar(MAIN,a,sg.r+Math.sin(T*.3+b.ph)*6);if(!vis(x,y))continue;sailboat(c,x,y,-Math.sin(a)*fw>=0?1:-1,b.c,b.ph);}
- if(visR(SCH.x,SCH.y,SCH.r+60))sprite(c,'schloss',SCH.x-150,SCH.y-160,SCH.x+150,SCH.y+140,o=>drawSchloss(o,nl));
+ if(visR(SCH.x,SCH.y,SCH.r+60))sprite(c,'schloss',SCH.x-150,SCH.y-160,SCH.x+150,SCH.y+168,o=>drawSchloss(o,nl));
  if(visR(YACHT.cx,YACHT.cy,60))sprite(c,'yacht',YACHT.cx-150,YACHT.cy-70,YACHT.cx+150,YACHT.cy+45,o=>drawYacht(o,nl,z));
  drawStege(c,nl,z,visR);
  if(exDa(KI)&&visR(KI.x,(KI.cy+KI.y0)/2,90))sprite(c,'kiosk',KI.x-KI.W-14,KI.cy-KI.H-36,KI.x+KI.W+14,KI.y0+14,o=>drawKiosk(o,nl));
