@@ -55,6 +55,7 @@ async function sprich(text) {
 }
 // Aussprache: englische Wörter so schreiben, wie man sie spricht (nur für die Stimme)
 const AUSSPRACHE = [
+  [/\bWow\b/gi, 'Wau'], [/\bHi\b/g, 'Hai'], [/\bHey\b/gi, 'Häi'], [/\bParty\b/gi, 'Parti'], [/\bOkay\b/gi, 'Oukäi'],
   [/\bLikes\b/gi, 'Leiks'], [/\bLike\b/gi, 'Leik'], [/\bliken\b/gi, 'leiken'], [/\bliked\b/gi, 'leikt'], [/\bgeliked\b/gi, 'geleikt'], [/\blikt\b/gi, 'leikt'],
   [/Like-/g, 'Leik-'], [/\bEvents\b/gi, 'Iwänts'], [/\bEvent\b/gi, 'Iwänt'], [/Event-/g, 'Iwänt-'], [/\bLIVE\b/g, 'Leif'], [/\blive\b/g, 'leif'],
   [/\bHappy Hour\b/gi, 'Häppi Auer'], [/\bMystery\b/gi, 'Misteri'], [/\bTeams?\b/gi, m => m.endsWith('s') ? 'Tiems' : 'Tiem'], [/\bSurf/gi, 'Sörf'],
