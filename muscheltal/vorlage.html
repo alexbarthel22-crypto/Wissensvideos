@@ -3784,7 +3784,8 @@ let GR=null;
 function gruss(){try{if(!mkOwn(sel))return null;if(!GR){const z=grussZeit();let L={};try{L=JSON.parse(localStorage.getItem('mt-gruss2')||'{}')||{};}catch(e){}const A=GRUSS[z].filter(x=>x!==L[z]),t=A[Math.floor(Math.random()*A.length)];L[z]=t;try{localStorage.setItem('mt-gruss2',JSON.stringify(L));}catch(e){}GR={t,bis:Date.now()+6500};}
  return Date.now()<GR.bis?GR.t:null;}catch(e){return null;}}
 // Erkunden als jemand: mit eigenem beanspruchten Namen nur als man selbst; fremde beanspruchte Namen nie
-function darfErkunden(p){if(!p)return false;try{if(mkClaim())return mkOwn(p);const n=p.name.toLowerCase();if(!MK.bea.has(n)){mkBea(n).then(()=>{if(!MK.bea.has(n))MK.bea.set(n,false);if(sel===p)walkLabel();});return false;}return !MK.bea.get(n);}catch(e){return true;}}
+function darfErkunden(p){if(!p||p.gb===SCH)return false;// als @echter.alex nie erkunden
+try{if(mkClaim())return mkOwn(p);const n=p.name.toLowerCase();if(!MK.bea.has(n)){mkBea(n).then(()=>{if(!MK.bea.has(n))MK.bea.set(n,false);if(sel===p)walkLabel();});return false;}return !MK.bea.get(n);}catch(e){return true;}}
 function walkLabel(){if(typeof mkChip==='function')try{mkChip();const e=$('mkcard');if(e&&!e.hidden!==!!(MK.d&&mkMe()&&(WK.on?WK.me===mkMe():sel===mkMe())))mkCard();}catch(e){}const b=$('walkbtn'),bar=b.parentNode;if(!sel||!darfErkunden(sel)){bar.hidden=true;return;}bar.hidden=false;b.classList.toggle('wackel',!walkedSet().has(sel.name.toLowerCase()));const t='Als '+sel.name+' Muschel-Tal erkunden';if(b.dataset.t===t)return;b.dataset.t=t;b.textContent=t;b.style.fontSize='';let fs=19;while(b.scrollWidth>b.clientWidth&&fs>12){fs-=.5;b.style.fontSize=fs+'px';}}
 walkLabel();setInterval(walkLabel,800);
 $('walkbtn').onclick=walkStart;$('walkend').onclick=walkEnd;
