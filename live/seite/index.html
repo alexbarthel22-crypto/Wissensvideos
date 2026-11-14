@@ -313,6 +313,8 @@ function ereignis(e) {
       const g = GEB_PLAETZE[e.nr]; if (g) { fokus({ x: g.x, y: g.y - 20 }, 8000); setTimeout(() => { funken({ x: g.x, y: g.y - 60 }, '🎉', 24); hausFeuerwerk({ x: g.x, y: g.y }, 14); }, 4800); }
       break;
     }
+    case 'aufgabe': funken({ x: cam.x, y: cam.y }, '⚡', 10); break;
+    case 'aufgabeEnde': banner.push({ t: 0, oben: e.gut ? '✅ Mini-Aufgabe geschafft!' : '⏱ Mini-Aufgabe vorbei', unten: e.text, farbe: e.gut ? '#2fb3a0' : '#8a5a2b' }); if (e.gut) MOMENTE.push({ art: 'konfetti', t: jetzt }); break;
     case 'erstLiken': banner.push({ t: 0, oben: `❤️ ${e.name}`, unten: e.art === 'farbe' ? 'Like einmal – dann kannst du dein Haus streichen!' : 'Like einmal – dann wird dein Haus gebaut!', farbe: PINK }); break;
     case 'farbe': {                                                // Haus wird animiert neu gestrichen (Farbrolle von links nach rechts)
       streich[e.id] = { t: jetzt + 600, alt: e.alt, neu: e.neu };
@@ -1599,6 +1601,19 @@ function kopf(t) {
   const seiten = S.projekt ? 4 : 3;
   if (t - seiteSeit > 7000) { seite = (seite + 1) % seiten; seiteSeit = t; }
   const lw = 540;
+  if (S.aufgabe) {                                                // Mini-Aufgabe: gut sichtbar im Infofeld
+    const a = S.aufgabe, puls = 1 + Math.sin(t * .008) * .015;
+    X.save(); X.translate(SL + lw / 2, y3 + 78); X.scale(puls, puls); X.translate(-(SL + lw / 2), -(y3 + 78));
+    karte(SL, y3, lw, 156, '#ffe36e', 28); X.restore();
+    text('⚡ Mini-Aufgabe', SL + 22, y3 + 30, 26, INK, 'left', 900, lw - 140);
+    text(`⏱ ${a.rest}s`, SL + lw - 22, y3 + 30, 24, INK, 'right', 900, 110);
+    text(a.text, SL + 22, y3 + 72, 23, INK, 'left', 800, lw - 44);
+    X.fillStyle = 'rgba(42,27,18,.12)'; rr(SL + 22, y3 + 102, lw - 44, 30, 15); X.fill();
+    X.fillStyle = '#2fb3a0'; rr(SL + 22, y3 + 102, Math.max(30, (lw - 44) * Math.min(1, a.stand / a.ziel)), 30, 15); X.fill();
+    text(`${a.stand} / ${a.ziel}`, SL + lw / 2, y3 + 123, 20, INK, 'center', 900, 200);
+    countdownKarte(SL + lw + 18, y3, SR - SL - lw - 18, 156, t);
+    return y3 + 156;
+  }
   karte(SL, y3, lw, 156, '#fff3c4', 28);
   if (seite === 3 && S.projekt) {
     const pr = S.projekt;
@@ -1701,6 +1716,45 @@ function momenteZeichnen(t) {
         else { const y = 1960 - q * 420 * p.v, x = p.x + Math.sin(q * 2 + p.d) * 25; X.font = `${26 + p.d * 3}px ${FONT}`; X.textAlign = 'center'; X.fillText('❤️', x, y); }
       }
       X.globalAlpha = 1;
+    } else if (m.art === 'delfine') {                              // drei Delfine springen unten durchs Bild
+      if (q > 7) { MOMENTE.splice(i, 1); continue; }
+      for (let k = 0; k < 3; k++) {
+        const x = -120 + q / 7 * 1350 - k * 110, ph = (q * 1.1 + k * .33) % 1, y = 1700 - Math.sin(ph * Math.PI) * 170;
+        X.save(); X.translate(x, y); X.rotate(-Math.cos(ph * Math.PI) * .9);
+        X.fillStyle = '#5b8fc2'; X.beginPath(); X.ellipse(0, 0, 46, 15, 0, 0, 7); X.fill();
+        X.beginPath(); X.moveTo(-40, 0); X.lineTo(-64, -14); X.lineTo(-60, 0); X.lineTo(-64, 14); X.closePath(); X.fill();
+        X.beginPath(); X.moveTo(-4, -12); X.lineTo(8, -30); X.lineTo(14, -12); X.closePath(); X.fill();
+        X.fillStyle = '#cfe3f5'; X.beginPath(); X.ellipse(4, 6, 32, 7, 0, 0, Math.PI); X.fill();
+        X.fillStyle = INK; X.beginPath(); X.arc(30, -3, 2.6, 0, 7); X.fill(); X.restore();
+        if (ph > .92 || ph < .05) { X.fillStyle = 'rgba(255,255,255,.8)'; for (let s = 0; s < 6; s++) { X.beginPath(); X.arc(x + (s - 3) * 9, 1700 + Math.random() * 6, 4, 0, 7); X.fill(); } }
+      }
+    } else if (m.art === 'krabben') {                              // Krabben-Parade am unteren Rand
+      if (q > 9) { MOMENTE.splice(i, 1); continue; }
+      for (let k = 0; k < 6; k++) {
+        const x = 1180 - q / 9 * 1400 + k * 70, y = 1830 + Math.sin(q * 8 + k) * 4, b = Math.sin(t * .03 + k) * 4;
+        X.fillStyle = '#e8433c'; X.beginPath(); X.ellipse(x, y, 24, 15, 0, 0, 7); X.fill(); X.strokeStyle = INK; X.lineWidth = 2; X.stroke();
+        X.strokeStyle = '#e8433c'; X.lineWidth = 4; for (const d of [-1, 1]) { X.beginPath(); X.moveTo(x + d * 18, y + 6); X.lineTo(x + d * 30, y + 16 + b * d); X.stroke(); }
+        X.fillStyle = '#e8433c'; X.beginPath(); X.arc(x - 30, y - 12 + b, 8, 0, 7); X.arc(x + 30, y - 12 - b, 8, 0, 7); X.fill();
+        X.fillStyle = '#fff'; X.beginPath(); X.arc(x - 7, y - 16, 5, 0, 7); X.arc(x + 7, y - 16, 5, 0, 7); X.fill();
+        X.fillStyle = INK; X.beginPath(); X.arc(x - 7, y - 16, 2.3, 0, 7); X.arc(x + 7, y - 16, 2.3, 0, 7); X.fill();
+      }
+    } else if (m.art === 'blasen') {                               // Seifenblasen steigen auf
+      if (q > 6) { MOMENTE.splice(i, 1); continue; }
+      m.teile ||= Array.from({ length: 34 }, () => ({ x: Math.random() * 1080, v: .5 + Math.random() * .7, r: 12 + Math.random() * 26, d: Math.random() * 6 }));
+      X.globalAlpha = Math.min(1, (6 - q) * 1.5);
+      for (const b of m.teile) { const y = 1960 - q * 330 * b.v, x = b.x + Math.sin(q * 2 + b.d) * 30;
+        const g = X.createRadialGradient(x - b.r * .3, y - b.r * .3, 1, x, y, b.r); g.addColorStop(0, 'rgba(255,255,255,.8)'); g.addColorStop(.7, 'rgba(160,220,255,.18)'); g.addColorStop(1, 'rgba(255,170,230,.45)');
+        X.fillStyle = g; X.beginPath(); X.arc(x, y, b.r, 0, 7); X.fill(); }
+      X.globalAlpha = 1;
+    } else if (m.art === 'drachen') {                              // bunter Drachen schwebt durchs Bild
+      if (q > 10) { MOMENTE.splice(i, 1); continue; }
+      const x = 1200 - q / 10 * 1400, y = 1050 + Math.sin(q * 1.6) * 60;
+      X.save(); X.translate(x, y); X.rotate(Math.sin(q * 2) * .15);
+      const f = ['#e8433c', '#ffd23f', '#3fa0e8', '#57b85a'];
+      [[0, -60, 40, 0], [40, 0, 0, 80], [0, 80, -40, 0], [-40, 0, 0, -60]].forEach(([x1, y1, x2, y2], k) => { X.fillStyle = f[k]; X.beginPath(); X.moveTo(0, 0); X.lineTo(x1, y1); X.lineTo(x2, y2); X.closePath(); X.fill(); });
+      X.strokeStyle = INK; X.lineWidth = 3; X.beginPath(); X.moveTo(0, -60); X.lineTo(40, 0); X.lineTo(0, 80); X.lineTo(-40, 0); X.closePath(); X.stroke();
+      X.strokeStyle = '#fff'; X.lineWidth = 2; X.beginPath(); X.moveTo(0, 80); for (let s = 1; s < 8; s++) X.quadraticCurveTo(s * 14 - 7, 80 + s * 18 + Math.sin(t * .01 + s) * 8, s * 14, 80 + s * 20); X.stroke();
+      X.restore();
     } else MOMENTE.splice(i, 1);
   }
 }

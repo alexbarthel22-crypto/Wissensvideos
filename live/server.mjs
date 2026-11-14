@@ -18,7 +18,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-15 c';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-15 d';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -127,6 +127,7 @@ let letztesHausZeigen = 0;
 function like(u, anzahl) {
   const p = spieler(u); if (!p) { S.likesGesamt += anzahl; inKasse(anzahl * CFG.kasse.proLike); return; }
   S.likesGesamt += anzahl; likeLog.push([Date.now(), anzahl]);
+  if (aufgabe?.art === 'likes') { aufgabe.stand += anzahl; aufgabe.dabei.add(p.id); }
   inKasse(anzahl * CFG.kasse.proLike);
   const ls = likeSerie[p.id] ||= { n: 0, t0: Date.now(), dank: 0 };
   if (Date.now() - ls.t0 > 60000) { ls.n = 0; ls.t0 = Date.now(); }
@@ -160,12 +161,16 @@ function kommentar(u, text) {
   // Kein Haus: nur bei Event-Antworten wird eins gebaut (Mitmachen zählt). „haus“ und Farben → Hinweis „erst liken“
   if (!S.spieler[id0]) {
     if (istHausWunsch(t)) return erstLiken(u, 'haus');      // „haus“ ohne Haus → erst liken (auch während Events)
-    if (!EV.laeuft()) { if (t.split(/[^a-zäöüß]+/).some(w => CFG.farben[w])) erstLiken(u, 'farbe'); return; }
-    if (!EV.waereAntwort(t)) return;                        // während Events: nur echte Event-Antworten bauen ein Zelt
+    const loestAufgabe = aufgabe?.art === 'wort' && normal(t).includes(normal(aufgabe.wort));   // Mini-Aufgabe mitmachen baut ein Zelt
+    if (!loestAufgabe) {
+      if (!EV.laeuft()) { if (t.split(/[^a-zäöüß]+/).some(w => CFG.farben[w])) erstLiken(u, 'farbe'); return; }
+      if (!EV.waereAntwort(t)) return;                      // während Events: nur echte Event-Antworten bauen ein Zelt
+    }
   }
   const p = spieler(u); if (!p) return;
   if (Date.now() - (p.kommentarBonus || 0) > 30000) { p.kommentarBonus = Date.now(); gibMuscheln(p, CFG.muschelnProKommentar ?? 2, 'kommentar'); }
   farbeAus(p, t);                                          // Farbe gilt immer – auch wenn das Wort gleichzeitig eine Event-Antwort ist
+  if (aufgabeKommentar(p, t)) return;
   if (EV.kommentar(p, t)) { geaendert = true; zustand(); return; }   // Event-Antworten (rot, flasche, A, 42 …)
   if (istHausWunsch(t) && !hausWunsch.includes(p.id) && Date.now() - (hausGezeigt[p.id] || 0) > 120000) {
     hausWunsch.push(p.id); if (hausWunsch.length > 20) hausWunsch.shift();
@@ -295,18 +300,50 @@ setInterval(() => {
     sende({ typ: 'meilenstein', zahl }); sag(`${zahl.toLocaleString('de-DE')} Likes! … Danke an alle! … Großes Feuerwerk!`, 1);
   }
   // Kleine Überraschung zwischendurch (nicht während Events), etwa jede Minute
-  if (!EV.laeuft() && jetzt - letzterMoment > 50000 + Math.random() * 40000) {
+  if (!EV.laeuft() && jetzt - letzterMoment > 20000 + Math.random() * 15000) {
     letzterMoment = jetzt;
-    const arten = ['ballon', 'moewen', 'konfetti', 'muschelShow', 'hausParty'];
+    const arten = ['ballon', 'moewen', 'konfetti', 'muschelShow', 'hausParty', 'delfine', 'krabben', 'blasen', 'drachen'];
     const art = arten[Math.floor(Math.random() * arten.length)], aktive = Object.values(S.spieler).filter(p => !p.gesperrt && jetzt - (p.zuletzt || 0) < 900000);
     const p = aktive[Math.floor(Math.random() * aktive.length)];
     if (art === 'hausParty' && !p) return;
     sende({ typ: 'moment', art, id: p?.id, name: p?.name });
-    const satzMoment = { ballon: 'Schaut mal … ein Heißluftballon über der Insel!', moewen: 'Da fliegt ein Möwenschwarm vorbei!', konfetti: 'Einfach so … Konfetti für alle!', muschelShow: 'Die große Muschel leuchtet … Lichtershow!', hausParty: p ? `Kleine Party bei ${sprechName(p)}!` : '' }[art];
-    if (satzMoment) sag(satzMoment, 3);
+    const satzMoment = { ballon: 'Schaut mal … ein Heißluftballon über der Insel!', moewen: 'Da fliegt ein Möwenschwarm vorbei!', konfetti: 'Einfach so … Konfetti für alle!', muschelShow: 'Die große Muschel leuchtet … Lichtershow!', hausParty: p ? `Kleine Party bei ${sprechName(p)}!` : '', delfine: 'Delfine! … Seht ihr sie springen?', krabben: 'Die Krabben machen eine Parade!', blasen: 'Seifenblasen über der Insel!', drachen: 'Da fliegt ein Drachen!' }[art];
+    if (satzMoment && (art === 'hausParty' || Math.random() < .5)) sag(satzMoment, 3);
   }
 }, 2000);
 const zufallText = a => a[Math.floor(Math.random() * a.length)];
+
+// ---------- Mini-Aufgaben zwischen den Events: es gibt immer etwas zu tun ----------
+var aufgabe = null, naechsteAufgabe = Date.now() + 30000;
+const AUFGABE_WORTE = ['sonne', 'palme', 'welle', 'muschel', 'strand', 'krabbe', 'kokos', 'sand', 'insel', 'urlaub', 'möwe', 'eis', 'surfen', 'lagune'];
+setInterval(() => {
+  const jetzt = Date.now();
+  if (aufgabe) {
+    const fertigA = jetzt > aufgabe.bis || (aufgabe.art === 'wort' && aufgabe.gewinner.length >= 5) || (aufgabe.art === 'likes' && aufgabe.stand >= aufgabe.ziel);
+    if (!fertigA) return;
+    if (aufgabe.art === 'likes' && aufgabe.stand >= aufgabe.ziel) for (const id of aufgabe.dabei) { const q = S.spieler[id]; if (q) gibMuscheln(q, 3, 'aufgabe'); }
+    const geschafft = aufgabe.art === 'wort' ? aufgabe.gewinner.length > 0 : aufgabe.stand >= aufgabe.ziel;
+    sende({ typ: 'aufgabeEnde', gut: geschafft, text: aufgabe.art === 'wort' ? (geschafft ? aufgabe.gewinner.map(id => S.spieler[id]?.name).filter(Boolean).slice(0, 5).join(', ') + ' · je 5 🐚' : 'Diesmal war keiner schnell genug') : (geschafft ? `${aufgabe.dabei.size} Liker · je 3 🐚` : 'Knapp verpasst!') });
+    if (geschafft) sag(zufallText(['Aufgabe geschafft!', 'Super, geschafft!', 'Stark gemacht!']), 3);
+    aufgabe = null; naechsteAufgabe = jetzt + 30000 + Math.random() * 20000; zustand(); return;
+  }
+  if (EV.laeuft() || jetzt < naechsteAufgabe || EV.naechstesIn() < 40) return;
+  if (Math.random() < .65) {
+    const wort = zufallText(AUFGABE_WORTE);
+    aufgabe = { art: 'wort', wort, text: `Schreib „${wort}“ – die ersten 5 bekommen 5 🐚`, gewinner: [], bis: jetzt + 25000 };
+    sag(`Mini-Aufgabe! … Schreibt ${wort}! … Die ersten fünf bekommen Muscheln.`, 2);
+  } else {
+    const ziel = Math.max(30, Math.round(likeRateMin() * .35 / 10) * 10);
+    aufgabe = { art: 'likes', ziel, stand: 0, dabei: new Set(), text: `Liked zusammen ${ziel}-mal – alle Liker bekommen 3 🐚`, bis: jetzt + 25000 };
+    sag(`Mini-Aufgabe! … Liked zusammen ${ziel} mal!`, 2);
+  }
+  sende({ typ: 'aufgabe' }); zustand();
+}, 1000);
+function aufgabeKommentar(p, t) {                        // gibt true zurück, wenn der Kommentar die Aufgabe löst
+  if (aufgabe?.art !== 'wort' || aufgabe.gewinner.includes(p.id) || aufgabe.gewinner.length >= 5) return false;
+  if (!normal(t).includes(normal(aufgabe.wort))) return false;
+  aufgabe.gewinner.push(p.id); gibMuscheln(p, 5, 'aufgabe'); zustand(); return true;
+}
 const likeRateMin = () => { const t = Date.now() - 300000; return likeLog.filter(([z]) => z > t).reduce((a, [, n]) => a + n, 0) / 5; };
 
 // ---------- Gemeinschaftsprojekt (wird per Abstimmungs-Event gewählt) ----------
@@ -781,7 +818,7 @@ function oeffentlich() {
     spieler: S.reihenfolge.map(id => S.spieler[id]).filter(p => p && !p.gesperrt).map(p => ({ id: p.id, name: p.name, muscheln: p.muscheln, stufe: p.stufe, anbauten: p.anbauten, farbe: p.farbe, platz: p.platz, eventMuscheln: p.eventMuscheln })),
     stufen: CFG.stufen.map(s => s.name), stufenAb: CFG.stufen.map(s => s.ab),
     projekt: S.projekt, fertig: S.fertig, kasse: S.kasse,
-    villen: S.villen, musik: MUSIK_DATEIEN.map(f => path.basename(f)),
+    villen: S.villen, aufgabe: aufgabe && { text: aufgabe.text, rest: Math.max(0, Math.round((aufgabe.bis - Date.now()) / 1000)), stand: aufgabe.art === 'wort' ? aufgabe.gewinner.length : aufgabe.stand, ziel: aufgabe.art === 'wort' ? 5 : aufgabe.ziel, art: aufgabe.art }, musik: MUSIK_DATEIEN.map(f => path.basename(f)),
     jobs: Object.fromEntries(Object.entries(S.jobs).map(([nr, j]) => [nr, S.spieler[j.id]?.name || ''])),
     bewohner, ziel: zielJetzt(), strassen: CFG.strassen,
     tiktokName: CFG.tiktokName, test: TEST, ton: CFG.ton, ort: CFG.ort, bildrate: CFG.bildrate || 30,
