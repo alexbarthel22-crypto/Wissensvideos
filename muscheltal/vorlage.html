@@ -1527,7 +1527,9 @@ function palLion(c,x,y,s,gold,ink){const TW=Math.PI*2;c.fillStyle='rgba(40,30,10
 
 // ---------- Kamera ----------
 const cv=$('map'),ctx=cv.getContext('2d'),base=document.createElement('canvas'),bx=base.getContext('2d'),fgc=document.createElement('canvas'),fx=fgc.getContext('2d');let fgOn=false;
-let W=0,H=0,DPR=1,T=0,baseKey='',selT=0,selN=0,selStop=null,selStopN=-1;
+// gemeinsame Uhr: alle Geräte zeigen Passanten, Gäste, Jogger usw. zur selben Zeit am selben Ort (Sekunden seit 1.1.2026, echte Uhrzeit)
+const TEPOCH=Date.UTC(2026,0,1),TNOW=()=>(Date.now()-TEPOCH)/1000;
+let W=0,H=0,DPR=1,T=TNOW(),baseKey='',selT=0,selN=0,selStop=null,selStopN=-1;
 // Nachbarpaare (beide eingezogen)
 let NBP_=null;const NBW_Y=3.2;var NBW_COL='#e8433c';const NBPget=()=>NBP_||(NBP_=(I.nachbarn||[]).flatMap(pr=>{const G=pr.map(n=>byName.get('@'+String(n).toLowerCase().replace(/^@/,'')));if(G.length<3)return[G];if(G.some(q=>!q||!q.p))return[];G.sort((a,b)=>a.p.gx-b.p.gx);return G.slice(1).map((q,i)=>[G[i],q]);}).filter(([a,b])=>a&&b&&a.p&&b.p&&!a.gb&&!b.gb));
 const cam={x:0,y:0,z:1},NAMES=[],TAPS=[],TEAMN=new Map();
@@ -3482,7 +3484,7 @@ let onScreen=true,last=0;
 if('IntersectionObserver' in window)new IntersectionObserver(e=>{onScreen=e[0].isIntersecting;},{threshold:0}).observe($('hero'));
 // Bildrate passt sich dem Gerät an: bis 60 Bilder/s (auch auf 120-Hz-Displays max. 60), bei schwachen Geräten 30
 const FR={hi:true,ema:6,gap:16.7};
-function loop(n){requestAnimationFrame(loop);if(!onScreen||document.hidden)return;const dt=n-last;if(dt<(FR.hi?13:30))return;if(dt<120)FR.gap=FR.gap*.9+dt*.1;last=n;T=n/1000;const a=performance.now();draw();FR.ema=FR.ema*.9+(performance.now()-a)*.1;
+function loop(n){requestAnimationFrame(loop);if(!onScreen||document.hidden)return;const dt=n-last;if(dt<(FR.hi?13:30))return;if(dt<120)FR.gap=FR.gap*.9+dt*.1;last=n;T=TNOW();const a=performance.now();draw();FR.ema=FR.ema*.9+(performance.now()-a)*.1;
  if(FR.hi&&(FR.ema>12||FR.gap>26))FR.hi=false;else if(!FR.hi&&FR.ema<8&&FR.gap<40)FR.hi=true;}
 if(!REDUCED)requestAnimationFrame(loop);
 let raf=0;function kick(){if(!raf)raf=requestAnimationFrame(()=>{raf=0;draw();});}
