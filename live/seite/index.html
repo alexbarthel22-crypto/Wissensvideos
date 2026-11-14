@@ -383,11 +383,11 @@ let LEUTE = [], JOGGER = [];
 const HAUT = ['#f6d1b0', '#e8b48a', '#c98b5e', '#8d5a3b', '#f2c9a0'], HAAR = ['#2a1b12', '#6b3f1d', '#e0b43a', '#c0502a', '#333'], SHIRT = ['#e8433c', '#3fa0e8', '#ffd23f', '#ff6fa3', '#2fb3a0', '#b58ad0', '#fff', '#ff8a2a'];
 function spaziergaenger() {
   const R = zufall(99), n = Math.min(70, 16 + Math.round(ANZAHL / 9));
-  LEUTE = Array.from({ length: n }, (_, i) => ({ seg: SEG[Math.floor(R() * SEG.length)], v: R(), dir: R() < .5 ? -1 : 1, tempo: .014 + R() * .008, spur: (R() - .5) * 14, haut: HAUT[i % 5], haar: HAAR[(i * 3) % 5], shirt: SHIRT[i % 8], hose: ['#3a5a8a', '#2a1b12', '#e8e0d0'][i % 3], pause: 0 }));
-  JOGGER = Array.from({ length: Math.round(4 * K) }, (_, i) => ({ a: R() * 6.283, tempo: (.000045 + R() * .00002) * (R() < .5 ? -1 : 1) / K, shirt: ['#39ff8f', '#ff3fa4', '#ffe83f', '#3ff0ff'][i % 4], haut: HAUT[(i * 2) % 5] }));
+  LEUTE = Array.from({ length: n }, (_, i) => ({ seg: SEG[Math.floor(R() * SEG.length)], v: R(), dir: R() < .5 ? -1 : 1, tempo: .009 + R() * .004, spur: (R() - .5) * 14, haut: HAUT[i % 5], haar: HAAR[(i * 3) % 5], shirt: SHIRT[i % 8], hose: ['#3a5a8a', '#2a1b12', '#e8e0d0'][i % 3], pause: 0 }));
+  JOGGER = Array.from({ length: Math.round(4 * K) }, (_, i) => ({ a: R() * 6.283, tempo: (.000011 + R() * .000004) * (R() < .5 ? -1 : 1) / K, shirt: ['#39ff8f', '#ff3fa4', '#ffe83f', '#3ff0ff'][i % 4], haut: HAUT[(i * 2) % 5] }));
 }
 function figur(x, y, f, t, laufen, jogger) {
-  const s = Math.sin(t * (jogger ? .016 : .009)) * (laufen ? 3 : 0);
+  const s = Math.sin(t * (jogger ? .011 : .0062)) * (laufen ? 3 : 0);   // ruhige Schritte
   X.fillStyle = 'rgba(0,0,0,.18)'; X.beginPath(); X.ellipse(x + 2, y + 1, 5, 2, 0, 0, 7); X.fill();
   X.strokeStyle = jogger ? '#222' : f.hose; X.lineWidth = 2.6; X.lineCap = 'round';
   X.beginPath(); X.moveTo(x - 1.5, y - 7); X.lineTo(x - 1.5 + s * .6, y); X.moveTo(x + 1.5, y - 7); X.lineTo(x + 1.5 - s * .6, y); X.stroke();
@@ -395,6 +395,24 @@ function figur(x, y, f, t, laufen, jogger) {
   X.fillStyle = f.shirt; X.beginPath(); X.roundRect(x - 4, y - 15, 8, 9, 3); X.fill();
   X.fillStyle = f.haut; X.beginPath(); X.arc(x, y - 18.5, 3.6, 0, 7); X.fill();
   X.fillStyle = jogger ? f.shirt : f.haar; X.beginPath(); X.arc(x, y - 19.5, 3.7, Math.PI, 0); X.fill();
+}
+// Jede Figur trägt den Namen eines Zuschauers (bleibt fest, bis es den Namen nicht mehr gibt)
+const PASSANTEN = [];
+function passantName(f) {
+  if (!S.spieler?.length) return '';
+  if (!f.nameId || !S.spieler.some(q => q.id === f.nameId)) f.nameId = S.spieler[Math.floor(Math.random() * S.spieler.length)].id;
+  return S.spieler.find(q => q.id === f.nameId)?.name || '';
+}
+function passantenSchilder() {                                   // kleine dunkle Namensschilder über dem Kopf
+  X.setTransform(Q0, 0, 0, Q0, 0, 0);
+  for (const { x, y, name } of PASSANTEN.splice(0)) {
+    if (!name) continue;
+    const sx = 540 + (x - cam.x) * cam.z, sy = MITTE_Y + (y - 24 - cam.y) * cam.z - 14;
+    if (sy < KOPF_UNTEN || sy > H) continue;
+    X.font = schrift(900, 21); const w = Math.min(250, X.measureText(name).width) + 22;
+    X.fillStyle = 'rgba(42,27,18,.8)'; rr(sx - w / 2, sy - 16, w, 31, 15.5); X.fill();
+    text(name, sx, sy + 7, 21, '#fff', 'center', 900, 250);
+  }
 }
 function lebenZeichnen(t, dt) {
   // Spaziergänger auf den Straßen
@@ -406,10 +424,10 @@ function lebenZeichnen(t, dt) {
       if (Math.random() < .0015) p.pause = 1500 + Math.random() * 2500;
     }
     const v = s.von + (s.bis - s.von) * p.v, x = s.senkrecht ? s.fest + p.spur : v, y = s.senkrecht ? v : s.fest + p.spur;
-    if (sichtbar(x, y, 30)) figur(x, y, p, t, p.pause <= 0, false);
+    if (sichtbar(x, y, 30)) { figur(x, y, p, t, p.pause <= 0, false); PASSANTEN.push({ x, y, name: passantName(p) }); }
   });
   // Jogger am Strand
-  JOGGER.forEach(j => { j.a += j.tempo * dt; const r = rand(j.a) * K * 1.012, x = IX + Math.cos(j.a) * RX * r, y = IY + Math.sin(j.a) * RY * r; if (sichtbar(x, y, 30)) figur(x, y, j, t, true, true); });
+  JOGGER.forEach(j => { j.a += j.tempo * dt; const r = rand(j.a) * K * 1.012, x = IX + Math.cos(j.a) * RX * r, y = IY + Math.sin(j.a) * RY * r; if (sichtbar(x, y, 30)) { figur(x, y, j, t, true, true); PASSANTEN.push({ x, y, name: passantName(j) }); } });
 }
 function meerLeben(t) {
   X.strokeStyle = 'rgba(255,255,255,.22)'; X.lineWidth = 3 / Math.max(.6, cam.z); X.lineCap = 'round';
@@ -1632,7 +1650,7 @@ function bild(t) {
   eventWelt(t);
   nachtZeichnen(t);
   moewen(t); effekte(t);
-  schilderZeichnen(t);
+  schilderZeichnen(t); passantenSchilder();
   eventBildschirm(t); showsZeichnen(t);
   X.setTransform(Q0, 0, 0, Q0, 0, 0);
   if (tonRolle && !(tonAn && AC && AC.state === 'running')) { if (!bild.versuch || t - bild.versuch > 3000) { bild.versuch = t; tonStarten(); } text('🔊 Einmal ins Bild klicken für Ton', 540, 1840, 22, 'rgba(255,255,255,.85)', 'center', 900); }
