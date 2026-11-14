@@ -1385,7 +1385,7 @@ function drawYacht(c,nl0,z){const nl=Math.max(nl0,.6),Y=YACHT,t=REDUCED?0:T,day=
  c.fillStyle='#ff6fa3';c.font='1.4px '+FONT;c.textAlign='center';c.fillText('💗',-16.6,-11.1);
  c.restore();c.translate(0,bob);
  // Bewohnerin(nen) an Deck – höchstens 4 Plätze; die erste läuft zwischen Bug und Heck hin und her (immer im Vordergrund)
- const B=PEOPLE.filter(p=>p.gb===Y);B.forEach((p,k)=>{if(k>=Y.spots.length)return;const q=yachtPos(k,t),sx=q.x,sy=q.y,L=p.LY||(p.LY={...look(p.k)});
+ const B=PEOPLE.filter(p=>p.gb===Y);B.forEach((p,k)=>{if(k>=Y.spots.length||imSpiel(p))return;const q=yachtPos(k,t),sx=q.x,sy=q.y,L=p.LY||(p.LY={...look(p.k)});
   if(q.mv){// Marie feiert immer: auch beim Laufen hüpft sie mit erhobenem Arm
    const hop=REDUCED?0:Math.abs(Math.sin(t*6+k))*.7;c.save();c.translate(sx,sy-4.4-hop);c.fillStyle='rgba(60,40,20,.2)';c.beginPath();c.ellipse(0,4.4+hop,2,.6,0,0,TAU);c.fill();c.scale(q.dir,1);person(c,L,REDUCED?0:Math.sin(t*9+k)*1.1,false,REDUCED?.4:.6+Math.abs(Math.sin(t*5+k))*1.2);c.restore();}else{c.save();c.translate(sx,sy-4.4);if(q.dir<0)c.scale(-1,1);c.fillStyle='rgba(60,40,20,.2)';c.beginPath();c.ellipse(0,4.4,2,.6,0,0,TAU);c.fill();
   const dance=!REDUCED,wv=dance?.4+Math.abs(Math.sin(t*5+k))*1.2:.3+Math.abs(Math.sin(t*1.4+k))*.6;if(dance)c.translate(0,-Math.abs(Math.sin(t*5+k))*.5);person(c,L,0,true,wv);c.scale(L.h,L.h);c.fillStyle='rgba(255,255,255,.85)';c.fillRect(2.2,-4.4,.9,1.4);c.fillStyle='#ff6fa3';c.fillRect(2.25,-3.9,.8,.8);c.restore();}
@@ -2575,7 +2575,8 @@ function drawVilla(c,g,nl,z,W,H,sx,ink){const t=REDUCED?0:T,day=nl<.5,gold='#d9a
  for(const x of[vx-15,vx-6]){c.fillStyle='#e9e2d2';c.fillRect(x-1,-35.6,2,2);palm(c,{x,y:-35.6,ph:x,s:.55});}
  // Bewohner der Villa auf dem Deck: Cocktail in der Hand; Name in Gold
  // die Bewohnerinnen halten sich auf dem Grundstück auf: Pooldeck, Koi-Teich, Garten – gehen gemütlich hin und her
- const B=PEOPLE.filter(p=>p.gb===g);if(z*S>8)B.forEach((p,k)=>{const R=villaRoute(g,k),pos=villaPos(R,t,k),lx=pos.x,ly=pos.y,mv=pos.mv,a=[0,0],b=[pos.dx,pos.dy];
+ const B=PEOPLE.filter(p=>p.gb===g);if(z*S>8)B.forEach((p,k)=>{if(imSpiel(p))return;// wer gerade erkundet, ist unterwegs – nicht zusätzlich in der Villa
+  const R=villaRoute(g,k),pos=villaPos(R,t,k),lx=pos.x,ly=pos.y,mv=pos.mv,a=[0,0],b=[pos.dx,pos.dy];
   const L=p.LV||(p.LV={...look(p.k)});c.save();c.translate(lx,ly);c.fillStyle='rgba(30,40,20,.22)';c.beginPath();c.ellipse(0,4.4,2.4,.8,0,0,TAU);c.fill();const dx=b[0]-a[0],dy=b[1]-a[1],vert=mv&&Math.abs(dy)>Math.abs(dx);if(mv?(!vert&&dx<0):k)c.scale(-1,1);
   if(mv)person(c,L,Math.sin(t*9+k)*(vert?.55:1.1),vert?(dy>0?true:'back'):false,0);else person(c,L,0,true,.4+Math.abs(Math.sin(t*1.6+k))*.6);c.scale(L.h,L.h);c.fillStyle='rgba(255,255,255,.8)';c.fillRect(2.2,-4.4,.9,1.4);c.fillStyle=k?'#ff6fa3':'#ffd23f';c.fillRect(2.25,-3.9,.8,.8);c.restore();
   const wx=g.cx+lx*(g.dir||1),wy=g.cy+ly;TAPS.push([wx,wy,p]);if(z*S>30&&sel!==p)NAMES.push(['🏖️ '+p.name,wx,wy-11.5-k*4.4,'#d9a63a',2.4,'#2a1b12']);});}
