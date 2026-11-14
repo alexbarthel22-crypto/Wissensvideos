@@ -18,7 +18,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-14 z4';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-14 z5';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -618,7 +618,7 @@ process.on('exit', () => lokalMusik?.kill());
 const followDank = [], begruessen = [], begruesst = new Set();
 let letzterLive = 0, letzterRundgang = 0, modNr = 0, eventModNr = 0, countdownGesagt = '', eventZehnGesagt = '';
 // Rangliste: beste Haus-Stufe zuerst, bei Gleichstand entscheiden die Muscheln aus Events
-const rangFolge = (a, b) => b.stufe - a.stufe || (b.eventMuscheln || 0) - (a.eventMuscheln || 0) || b.muscheln - a.muscheln;
+const rangFolge = (a, b) => b.stufe - a.stufe || b.muscheln - a.muscheln || (b.eventMuscheln || 0) - (a.eventMuscheln || 0);   // Stufe, dann die angezeigten Muscheln
 const zufallAus = fs => fs[Math.floor(Math.random() * fs.length)]();
 const grossKlein = t => t.charAt(0).toUpperCase() + t.slice(1);
 const H = () => satz('hinweis');                              // die wichtigsten Hinweise kommen oft
