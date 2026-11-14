@@ -3525,7 +3525,7 @@ function zeigePass(p,third,walk){if(third&&p&&p.gb===SCH)schoepferKontakt();mpP=
  $('mpwho').hidden=!walk;$('mpalt').hidden=!!walk;
  if(walk){const me=WK.me?WK.me.name:'Gast';$('mpwho').textContent=walk==='huette'?'Du bist als '+me+' unterwegs und hast die Hütte von '+p.name+' gefunden 🏠':'Du hast als '+me+' Muschel-Tal erkundet und dabei zufällig '+p.name+' unterwegs getroffen 👋';$('mpgo').textContent='🚶 Weiter erkunden';$('mp').querySelector('h2').textContent='🪪 Muschelpass von '+p.name;return;}
  bonUpd(p);
- $('mpgo').textContent=third&&p.gb===SCH?'🏰 Zum Schloss':third?'🏠 Zu '+p.name+(/[sßxz]$/i.test(p.name)?'’':'s')+' Hütte':'🏠 Zu meiner Hütte';$('mpshare').hidden=false;$('mpalt').textContent=third?'Meinen eigenen Namen suchen':'Anderen Namen suchen';
+ $('mpgo').textContent=p.gb===SCH?'🏰 Zum Schloss':third?'🏠 Zu '+p.name+(/[sßxz]$/i.test(p.name)?'’':'s')+' Hütte':'🏠 Zu meiner Hütte';$('mpshare').hidden=false;$('mpalt').textContent=third?'Meinen eigenen Namen suchen':'Anderen Namen suchen';
  $('mp').querySelector('h2').textContent=third?'🪪 Muschelpass von '+p.name:'🪪 Muschelpass';
  if(!third)try{localStorage.setItem('mt-me',p.name);}catch(e){}}
 document.addEventListener('click',e=>{const b=e.target.closest('.mpshi');if(b){const p=byName.get((b.dataset.n||'').toLowerCase());if(p){mpP=p;$('mpshare').click();}return;}
@@ -3779,8 +3779,8 @@ function mkToast(t){let e=$('mktoast');if(!e){e=document.createElement('div');e.
 // ---------- Muschelpass: Vermögen nur für den Besitzer, Hinweis „Username beansprucht“, Kasten zum Beanspruchen ----------
 async function mkPass(p,third,walk){const dd=$('mpverm');if(!dd)return;const own=!third&&!walk&&mkOwn(p),c=mkClaim();
  document.querySelectorAll('#mp .clm,#mp .gone,#mp .qok').forEach(e=>e.remove());
- if(p.gb===SCH)dd.innerHTML='<span class="unend">∞</span>&nbsp;🐚';
- else if(own){dd.innerHTML='<span class="lockv">⏳</span>';const d=MK.d||await mkStand();if(mpP!==p)return;const ab=d&&d.serie&&!d.serie.abgeholt;
+ if(p.gb===SCH){dd.innerHTML='<span class="unend">∞</span>&nbsp;🐚';return;}// Schöpfer: nicht beanspruchbar
+ if(own){dd.innerHTML='<span class="lockv">⏳</span>';const d=MK.d||await mkStand();if(mpP!==p)return;const ab=d&&d.serie&&!d.serie.abgeholt;
   dd.innerHTML=(d?fmt(d.stand)+'&nbsp;🐚':'–')+(ab?'<a href="#" data-mk="login" class="mkglow">'+(d.serie.betrag+((mkJob(p)||{}).z||0))+'&nbsp;🐚 abholbar</a>':'')+'<div class="mb3"><a href="#" data-mk="konto" class="p"><span>🐚</span>Konto</a><a href="#" data-mk="shop"><span>🛍️</span>Shop</a><a href="#" data-mk="spenden"><span>💛</span>Spenden</a></div>';}
  else dd.innerHTML='<span class="lockv">🔒 Nur '+esc(p.name)+' sieht den Kontostand</span>';
  const bea=await mkBea(p.name);if(mpP!==p)return;

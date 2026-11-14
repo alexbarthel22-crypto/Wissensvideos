@@ -136,6 +136,7 @@ export default async (req) => {
   const nm = name.slice(1), heute = tag();
 
   if (act === "claim") {
+    if (nm === "echter.alex") return json({ ok: false, beansprucht: true });// Schöpfer: nicht beanspruchbar
     if (await store.get("c/" + nm)) return json({ ok: false, beansprucht: true });
     const token = crypto.randomUUID() + "-" + crypto.randomUUID();
     await store.set("c/" + nm, JSON.stringify({ h: await sha(token), ts: Date.now() }));
