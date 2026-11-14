@@ -578,7 +578,8 @@ def baue(rows, out):
         f.write("// automatisch aus daten/insel.json erzeugt (bau.py) – nicht von Hand ändern\nexport const JOBS = " + json.dumps({k.lower().lstrip("@"): v for k, v in insel.get("jobs", {}).items()}, ensure_ascii=False) + ";\n")
     # aktuelle Bewohner für die Server-Funktionen (Rangliste zeigt nur, wer noch da ist)
     with open(os.path.join(lib, "bewohner.mjs"), "w", encoding="utf-8") as f:
-        f.write("// automatisch aus daten/einwohner.csv erzeugt (bau.py) – nicht von Hand ändern\nexport const BEWOHNER = new Set(" + json.dumps(sorted({(r["name"] if isinstance(r, dict) else r[0]).lower().lstrip("@") for r in rows}), ensure_ascii=False) + ");\n")
+        f.write("// automatisch aus daten/einwohner.csv erzeugt (bau.py) – nicht von Hand ändern\nexport const BEWOHNER = new Set(" + json.dumps(sorted({(r["name"] if isinstance(r, dict) else r[0]).lower().lstrip("@") for r in rows}), ensure_ascii=False) + ");\n"
+                + "export const NACHBARN = new Set(" + json.dumps(sorted({str(n).lower().lstrip("@") for g in (json.load(open(INSEL, encoding="utf-8")).get("nachbarn") or []) for n in g}), ensure_ascii=False) + ");\n")
     try:
         from zoneinfo import ZoneInfo
         jetzt = dt.datetime.now(ZoneInfo("Europe/Berlin"))
@@ -639,7 +640,6 @@ def baue(rows, out):
             if datei == "erfolge.html":  # Bewohner, Gründer und Erfolgs-Entzug für die %-Angaben
                 txt = (txt.replace("/*BEW*/[]", json.dumps([r[0].lower().lstrip("@") for r in sauber], ensure_ascii=False))
                        .replace("/*GRUEND*/0", str(sum(1 for r in sauber if r[4])))
-                       .replace("/*NACHB*/0", str(len({str(n).lower().lstrip("@") for g in (insel.get("nachbarn") or []) for n in g} & {r[0].lower().lstrip("@") for r in sauber})))
                        .replace("/*ENT*/{}", json.dumps({k.lower().lstrip("@"): v for k, v in (insel.get("erfolg_entzug") or {}).items()}, ensure_ascii=False))
                        .replace("/*ENTA*/{}", json.dumps(insel.get("erfolg_entzug_alle") or {}, ensure_ascii=False)))
             open(os.path.join(out, datei), "w", encoding="utf-8").write(txt)

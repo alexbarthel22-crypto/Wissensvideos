@@ -157,9 +157,9 @@ main{max-width:720px}
 </main>
 <script>
 // Anteil der Bewohner je Erfolg (live aus den gespeicherten Erfolgen; Bewohnerliste und Gründer aus dem letzten Update)
-const BEW=new Set(/*BEW*/[]),GRUEND=/*GRUEND*/0,NACHBN=/*NACHB*/0,ENT=/*ENT*/{},ENTA=/*ENTA*/{};
+const BEW=new Set(/*BEW*/[]),GRUEND=/*GRUEND*/0,ENT=/*ENT*/{},ENTA=/*ENTA*/{};
 const pct=(n)=>{if(!BEW.size)return'';if(!n)return'👥 Noch niemand hat ihn';const p=n/BEW.size*100;return'👥 '+(p<1?'<1':Math.round(p))+' % der Bewohner haben ihn';};
-function zeige(z){document.querySelectorAll('.pct').forEach(s=>{const k=s.dataset.k,n=k==='GRUENDER'?GRUEND:k==='NACHBAR'?NACHBN:(z[k]||0);s.dataset.lang=pct(n);s.textContent=!BEW.size?'':n?'👥 '+(n/BEW.size*100<1?'<1':Math.round(n/BEW.size*100))+' %':'👥 0 %';});}
+function zeige(z){document.querySelectorAll('.pct').forEach(s=>{const k=s.dataset.k,n=k==='GRUENDER'?GRUEND:(z[k]||0);s.dataset.lang=pct(n);s.textContent=!BEW.size?'':n?'👥 '+(n/BEW.size*100<1?'<1':Math.round(n/BEW.size*100))+' %':'👥 0 %';});}
 zeige({});
 fetch('/api/erfolge',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(d=>{if(!d||!d.erfolge)return;const z={};
  for(const [n,m] of Object.entries(d.erfolge)){const nm=n.toLowerCase().replace(/^@/,'');if(!BEW.has(nm))continue;const ent=ENT[nm]||{};
