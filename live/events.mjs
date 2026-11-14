@@ -563,6 +563,15 @@ export function macheEvents(api) {
   return {
     like(p, n) { if (ev?.d.like) ev.d.like(ev, p, n); return ev?.d.faktor || 1; },
     kommentar(p, t) { return !!(ev?.d.kommentar && ev.d.kommentar(ev, p, t)); },
+    // Probelauf: wäre dieser Kommentar eine Event-Antwort? (an einer Kopie, ohne Belohnung oder Ansage)
+    waereAntwort(t) {
+      if (!ev?.d.kommentar) return false;
+      const probe = { id: '__probe__', name: '', muscheln: 0, stufe: 0, anbauten: [] }, merk = [api.belohne, api.sende, api.sag];
+      api.belohne = () => {}; api.sende = () => {}; api.sag = () => {};
+      try { const kopie = structuredClone({ ...ev, d: null }); kopie.d = ev.d; return !!ev.d.kommentar(kopie, probe, t); }
+      catch { return false; }
+      finally { [api.belohne, api.sende, api.sag] = merk; }
+    },
     geschenkShow,
     naechstesIn: () => ev ? 0 : Math.max(0, Math.round((naechstes - Date.now()) / 1000)),
     oeffentlich() {

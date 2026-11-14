@@ -18,7 +18,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-14 n';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-14 o';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -137,10 +137,10 @@ function kommentar(u, text) {
   const id0 = String(u.uniqueId || '').toLowerCase(), t = String(text || '').toLowerCase().trim();
   if (!id0 || gesperrt(id0)) return;
   // Kein Haus: nur bei Event-Antworten wird eins gebaut (Mitmachen zählt). „haus“ und Farben → Hinweis „erst liken“
-  if (!S.spieler[id0] && !EV.laeuft()) {
-    if (istHausWunsch(t)) return erstLiken(u, 'haus');
-    if (t.split(/[^a-zäöüß]+/).some(w => CFG.farben[w])) return erstLiken(u, 'farbe');
-    return;
+  if (!S.spieler[id0]) {
+    if (istHausWunsch(t)) return erstLiken(u, 'haus');      // „haus“ ohne Haus → erst liken (auch während Events)
+    if (!EV.laeuft()) { if (t.split(/[^a-zäöüß]+/).some(w => CFG.farben[w])) erstLiken(u, 'farbe'); return; }
+    if (!EV.waereAntwort(t)) return;                        // während Events: nur echte Event-Antworten bauen ein Zelt
   }
   const p = spieler(u); if (!p) return;
   farbeAus(p, t);                                          // Farbe gilt immer – auch wenn das Wort gleichzeitig eine Event-Antwort ist
