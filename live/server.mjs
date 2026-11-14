@@ -18,7 +18,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-14 w';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-14 x';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -556,7 +556,11 @@ function waehleTonSeite() {
   if (neu == null) neu = mitTon[0] ?? [...offen].sort((a, b) => (tonFehl.get(a) || 0) - (tonFehl.get(b) || 0))[0] ?? null;
   if (neu !== tonSeite) { tonSeite = neu; rolleSeit = Date.now(); sende({ typ: 'tonRolle', id: tonSeite }); if (tonSeite != null) console.log(`🔊 Ton-Aufgabe → Live-Seite #${tonSeite}`); }
 }
-const MUSIK_DATEIEN = [1, 2, 3, 4, 5].map(i => `insel_${i}.mp3`).map(f => path.join(DIR, 'seite', 'musik', f));
+// Musik: jede MP3 im Ordner seite/musik (außer dem Meeresrauschen) – neue und alte Stücke
+const musikListe = () => { try { return fs.readdirSync(path.join(DIR, 'seite', 'musik')).filter(f => f.endsWith('.mp3') && !f.startsWith('atmo')).sort(); } catch { return []; } };
+const MUSIK_DATEIEN = musikListe().map(f => path.join(DIR, 'seite', 'musik', f));
+if (!MUSIK_DATEIEN.length) console.log('⚠️  Keine Musik gefunden – bitte die MP3-Dateien in den Ordner seite/musik legen.');
+else console.log(`🎵 ${MUSIK_DATEIEN.length} ${MUSIK_DATEIEN.length === 1 ? "Musikstück" : "Musikstücke"} gefunden.`);
 function musikLokal() {
   const macModus = CFG.stimme.wiedergabe === 'mac';
   const brauche = process.platform === 'darwin' && CFG.ton.musikAufMac !== false && (macModus || (!seiteHatTon() && Date.now() - START > 15000));
@@ -728,7 +732,7 @@ function oeffentlich() {
     spieler: S.reihenfolge.map(id => S.spieler[id]).filter(p => p && !p.gesperrt).map(p => ({ id: p.id, name: p.name, muscheln: p.muscheln, stufe: p.stufe, anbauten: p.anbauten, farbe: p.farbe, platz: p.platz, eventMuscheln: p.eventMuscheln })),
     stufen: CFG.stufen.map(s => s.name), stufenAb: CFG.stufen.map(s => s.ab),
     projekt: S.projekt, fertig: S.fertig, kasse: S.kasse,
-    villen: S.villen,
+    villen: S.villen, musik: MUSIK_DATEIEN.map(f => path.basename(f)),
     jobs: Object.fromEntries(Object.entries(S.jobs).map(([nr, j]) => [nr, S.spieler[j.id]?.name || ''])),
     bewohner, ziel: zielJetzt(), strassen: CFG.strassen,
     tiktokName: CFG.tiktokName, test: TEST, ton: CFG.ton, ort: CFG.ort, bildrate: CFG.bildrate || 30,
