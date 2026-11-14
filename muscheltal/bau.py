@@ -639,6 +639,7 @@ def baue(rows, out):
             if datei == "erfolge.html":  # Bewohner, Gründer und Erfolgs-Entzug für die %-Angaben
                 txt = (txt.replace("/*BEW*/[]", json.dumps([r[0].lower().lstrip("@") for r in sauber], ensure_ascii=False))
                        .replace("/*GRUEND*/0", str(sum(1 for r in sauber if r[4])))
+                       .replace("/*NACHB*/0", str(len({str(n).lower().lstrip("@") for g in (insel.get("nachbarn") or []) for n in g} & {r[0].lower().lstrip("@") for r in sauber})))
                        .replace("/*ENT*/{}", json.dumps({k.lower().lstrip("@"): v for k, v in (insel.get("erfolg_entzug") or {}).items()}, ensure_ascii=False))
                        .replace("/*ENTA*/{}", json.dumps(insel.get("erfolg_entzug_alle") or {}, ensure_ascii=False)))
             open(os.path.join(out, datei), "w", encoding="utf-8").write(txt)
