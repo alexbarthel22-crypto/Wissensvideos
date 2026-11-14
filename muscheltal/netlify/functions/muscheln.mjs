@@ -101,11 +101,17 @@ async function aufraeumen(store) {
 }
 const TEXT = { login: "Login-Serie", quest: "Aufgabe", qbonus: "Alle 3 Aufgaben", shell: "Schwebende Muschel", erf: "Neuer Erfolg", story: "Story geteilt", spende: "Spende Inselkasse", tresor: "Tresor des Schöpfers" };
 
+// Einmal-Aufgaben (Zurücksetzen, Aufräumen) nur einmal pro Tag und Server-Instanz prüfen – spart bei jeder Muschel-Aktion
+// rund 10 Speicherabfragen (schnellere Gutschriften)
+let VOR = { tag: "", p: null };
+function vorarbeit(store) {
+  const t = tag();
+  if (VOR.tag !== t) VOR = { tag: t, p: (async () => { await zuruecksetzen(store); await zurueckAuf(store); await aufraeumen(store); })().catch(() => { VOR.tag = ""; }) };
+  return VOR.p;
+}
 export default async (req) => {
   const store = getStore({ name: "muscheln", consistency: "strong" });
-  await zuruecksetzen(store);
-  await zurueckAuf(store);
-  await aufraeumen(store);
+  await vorarbeit(store);
   const url = new URL(req.url);
   if (req.method === "GET" && url.searchParams.get("top")) {
     // Muschel-Rangliste: Top 10 der beanspruchten Namen nach Kontostand, Pfeile im Vergleich zu gestern, optional eigener Platz
