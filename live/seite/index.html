@@ -276,7 +276,7 @@ function ereignis(e) {
     case 'zustand': {
       S = e.s;
       if (S.musik?.length && S.musik.join() !== MUSIK.map(m => m.slice(6)).join()) {   // Musikliste vom Programm übernehmen
-        MUSIK = S.musik.map(f => 'musik/' + f); musikNr = Math.floor(Math.random() * MUSIK.length); musik.src = MUSIK[musikNr]; if (tonRolle) musik.play().catch(() => {});
+        MUSIK = S.musik.map(f => 'musik/' + f); musikFehler = 0; musikNr = Math.floor(Math.random() * MUSIK.length); musik.src = MUSIK[musikNr]; if (tonRolle) musik.play().catch(() => {});
       }
       if (S.bildrate && !new URLSearchParams(location.search).get('fps')) FPS = Math.max(15, Math.min(30, S.bildrate));
       const n = S.spieler.length;
@@ -605,7 +605,9 @@ const TONSEITE = PARAM.has('ton');                                // ?ton = nur 
 let meineId = null, tonRolle = false, tonAn = false, musikNr = Math.floor(Math.random() * MUSIK.length), stimmeLaeuft = 0, AC = null;
 const TON = () => S.ton || { musik: .32, musikBeiStimme: .1, meer: .22, stimme: 1 };
 const musik = new Audio(MUSIK[musikNr]); musik.preload = 'auto'; musik.volume = 0;
-musik.onerror = () => { if (MUSIK.length > 1) { musikNr = (musikNr + 1) % MUSIK.length; musik.src = MUSIK[musikNr]; if (tonRolle) musik.play().catch(() => {}); } };   // Datei fehlt: nächstes Stück
+let musikFehler = 0;
+musik.onerror = () => { if (++musikFehler >= MUSIK.length) return; musikNr = (musikNr + 1) % MUSIK.length; musik.src = MUSIK[musikNr]; if (tonRolle) musik.play().catch(() => {}); };   // Datei fehlt: nächstes Stück, aber nicht endlos
+musik.onplaying = () => { musikFehler = 0; };
 musik.onended = () => { musikNr = (musikNr + 1) % MUSIK.length; musik.src = MUSIK[musikNr]; if (tonRolle) musik.play().catch(() => {}); };
 const meerTon = new Audio('musik/atmo.mp3'); meerTon.loop = true; meerTon.volume = 0;
 const stimmeEl = new Audio(); stimmeEl.onloadedmetadata = () => { stimmeLaeuft = performance.now() + stimmeEl.duration * 1000 + 300; };
@@ -670,7 +672,7 @@ async function stimmeAbspielen(url) {                             // Stimme übe
 setInterval(() => { if (tonRolle && (musik.paused || (AC && AC.state !== 'running'))) tonStarten(); }, 4000);   // Ton nach Unterbrechung selbst wieder an
 addEventListener('click', tonStarten); addEventListener('keydown', tonStarten); addEventListener('touchstart', tonStarten);
 // Meldet dem Programm, ob hier wirklich Ton läuft – sonst übernimmt der Mac (Lautsprecher)
-const tonText = () => `${TONSEITE ? '&tonseite=1' : ''}&an=${tonRolle && tonAn && !musik.paused ? 1 : 0}&ac=${AC ? AC.state : 'kein'}&vorschau=${VORSCHAU ? 1 : 0}`;   // Tonstatus reist mit jeder Abfrage mit
+const tonText = () => `${TONSEITE ? '&tonseite=1' : ''}&an=${tonRolle && ((AC && AC.state === 'running') || (tonAn && !musik.paused)) ? 1 : 0}&ac=${AC ? AC.state : 'kein'}&vorschau=${VORSCHAU ? 1 : 0}`;   // Tonstatus reist mit jeder Abfrage mit
 
 // ================= Zeichen-Hilfen =================
 function rr(x, y, w, h, r) { X.beginPath(); X.roundRect(x, y, w, h, r); }
