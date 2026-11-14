@@ -535,7 +535,7 @@ function piperStarten() {
   let modell = null; try { modell = fs.readdirSync(ordner).find(f => f.endsWith('.onnx')); } catch {}
   if (!modell || CFG.stimme.engine === 'mac') { if (!modell && ECHT) console.log('ℹ️  Piper-Stimme nicht gefunden – Anna spricht mit der Mac-Stimme.'); return; }
   PIPER.name = modell.replace('.onnx', '');
-  const w = PIPER.w = fork(path.join(DIR, 'tts-worker.mjs'), [path.join(ordner, modell), String(CFG.stimme.piperTempo ?? 1.08)], { stdio: ['ignore', 'ignore', 'pipe', 'ipc'] });
+  const w = PIPER.w = fork(path.join(DIR, 'tts-worker.mjs'), [path.join(ordner, modell), String(CFG.stimme.piperTempo ?? 1.08), String(CFG.stimme.piperLebhaft ?? 0)], { stdio: ['ignore', 'ignore', 'pipe', 'ipc'] });
   let fehlerText = ''; w.stderr.on('data', d => { fehlerText = (fehlerText + d).slice(-400); });
   w.on('message', m => {
     if (m.bereit) { PIPER.bereit = true; console.log(`🗣️  Anna spricht mit der Offline-Stimme „${PIPER.name}“ (Piper) – unabhängig vom macOS-Sprachdienst.`); return; }

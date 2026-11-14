@@ -18,7 +18,9 @@
     "engine": "piper",
     "piperModell": "stimme-kerstin",
     "piperTempo": 1.08,
-    "_engine": "engine 'piper' (Standard): Annas Stimme entsteht offline im Programm (Piper, Stimme „Kerstin“, wird beim ersten Start geladen) – unabhängig vom macOS-Sprachdienst, der während des LIVEs hängt. 'mac': Mac-Stimme (say). piperTempo: >1 = schneller."
+    "_engine": "engine 'piper' (Standard): Annas Stimme entsteht offline im Programm (Piper, Stimme „Kerstin“, wird beim ersten Start geladen) – unabhängig vom macOS-Sprachdienst, der während des LIVEs hängt. 'mac': Mac-Stimme (say). piperTempo: >1 = schneller.",
+    "piperLebhaft": 0,
+    "_lebhaft": "piperLebhaft: 0 = normal, 1 = lebhaftere Betonung (mehr Schwung in Tonhöhe und Rhythmus)."
   },
   "stufen": [
     {

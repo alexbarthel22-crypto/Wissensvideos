@@ -8,6 +8,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const MODELL = process.argv[2];
 const TEMPO = +(process.argv[3] || 1);                       // > 1 = schneller
+const LEBHAFT = +(process.argv[4] || 0);                     // > 0: lebhaftere Betonung (mehr Variation in Tonhöhe und Rhythmus)
 const cfg = JSON.parse(fs.readFileSync(MODELL + '.json', 'utf8'));
 const RATE = cfg.audio.sample_rate;
 const BUILD = path.dirname(require.resolve('@diffusionstudio/piper-wasm/build/piper_phonemize.js'));
@@ -48,7 +49,7 @@ async function sprich(text) {
   const feeds = {
     input: new ort.Tensor('int64', lang, [1, ids.length]),
     input_lengths: new ort.Tensor('int64', BigInt64Array.from([BigInt(ids.length)]), [1]),
-    scales: new ort.Tensor('float32', Float32Array.from([cfg.inference.noise_scale, cfg.inference.length_scale / TEMPO, cfg.inference.noise_w]), [3]),
+    scales: new ort.Tensor('float32', Float32Array.from([cfg.inference.noise_scale + LEBHAFT * .25, cfg.inference.length_scale / TEMPO, cfg.inference.noise_w + LEBHAFT * .2]), [3]),
   };
   if (Object.keys(cfg.speaker_id_map || {}).length) feeds.sid = new ort.Tensor('int64', BigInt64Array.from([0n]), [1]);
   return (await sitzung.run(feeds)).output.data;
