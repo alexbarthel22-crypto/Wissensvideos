@@ -89,9 +89,9 @@ CMT = """.cmt { position: absolute; left: 140px; width: 800px; border-radius: 30
 
 
 # s01 – Hook im Stil von Tag 1: pinke Balken, Wörter springen groß hervor, Sticker „GEBAUT!“
-QL = [[("DIESE", "Diese"), ("INSEL", "Insel")], [("WÄCHST", "wächst"), ("DURCH", "durch")], [("FOLLOWER,", "Follower")], [("DIE", "die"), ("EINZIEHEN!", "einziehen")]]
+QL = [[("DIESE", "Diese")], [("INSEL-WELT", "Insel-Welt")], [("WÄCHST,", "wächst"), ("WENN", "wenn")], [("DU", "du"), ("FOLGST!", "folgst")]]
 QW = [w for ln in QL for w in ln]
-YW = ("WÄCHST", "FOLLOWER,", "EINZIEHEN!")
+YW = ("WÄCHST,", "DU", "FOLGST!")
 SP = [(110, 560, 46), (900, 600, 34), (70, 960, 30), (930, 1010, 44), (180, 1230, 38), (820, 1200, 30)]
 scene("s01", LILITA + "\n    " + PT + "\n" + FL + """
     #s01-ray { position: absolute; left: -460px; top: 300px; width: 2000px; height: 2000px; border-radius: 50%; background: repeating-conic-gradient(rgba(255,250,210,.28) 0 8deg, rgba(255,255,255,0) 8deg 20deg); -webkit-mask: radial-gradient(circle, #000 15%, transparent 60%); }
@@ -108,7 +108,7 @@ scene("s01", LILITA + "\n    " + PT + "\n" + FL + """
       <div id="s01-gk" data-layout-ignore><span id="s01-s1">🏠</span> 1 FOLLOWER = 1 HÜTTE <span id="s01-s2">🏠</span></div>
       <div id="s01-hk">""" + "".join('<div class="ln" id="s01-l' + str(j) + '">' + "".join(f'<span id="s01-w{QW.index(w)}">{w[0]}</span>' for w in ln) + '</div>' for j, ln in enumerate(QL)) + """</div>
       """ + "".join(f'<div class="s01-sp" id="s01-sp{k}" data-layout-ignore style="left:{x}px;top:{y}px;font-size:{f}px">✦</div>' for k, (x, y, f) in enumerate(SP)) + drops("s01-p", 22, 5, 'sc', 540, 900, "🏠", 600, 820)[0],
-"""      const sc = at("L1", "einziehen");
+"""      const sc = at("L1", "folgst");
       tl.set(["#s01-ray"], { opacity: 1 }, 0);
       tl.fromTo("#s01-ray", { rotation: 0 }, { rotation: 40, duration: 4, ease: "none" }, 0);
       tl.fromTo("#s01-gk", { rotation: -6 }, { rotation: 2, duration: .07, yoyo: true, repeat: 33, ease: "none" }, 0);
@@ -271,13 +271,15 @@ scene("s06", LILITA + "\n    " + PILL + "\n" + FOLLOW + "\n    " + PT + """
     #s6-fr { position: absolute; left: 360px; top: 680px; width: 360px; height: 450px; border-radius: 34px; border: 9px dashed #ffe14a; box-shadow: 0 0 34px 6px rgba(255,225,74,.7); }
     #s6-nm { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 1046px; padding: 4px 26px 8px; border-radius: 999px; overflow: hidden; background: linear-gradient(180deg, #fff9d6, #ffd84a 55%, #ffb21a); border: 4px solid #1a0f08; box-shadow: 0 0 26px 8px rgba(255,220,80,.95), 0 6px 0 rgba(0,0,0,.3); font-family: "Inter", sans-serif; font-weight: 900; font-size: 46px; color: #2a1b12; white-space: nowrap; opacity: 0; }
     #s6-gl { position: absolute; top: -20px; bottom: -20px; left: -120px; width: 70px; background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.95), rgba(255,255,255,0)); transform: skewX(-20deg); }
+    #s6-vt { top: 540px; font-size: 48px; background: linear-gradient(135deg, #ffb21a, #ff6a1a); box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25), 0 0 40px 10px rgba(255,190,60,.7); }
     #s6-st { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 400px; color: #2e9e5b; border-color: #2e9e5b; background: #fff; transform: rotate(-4deg); font-size: 60px; white-space: nowrap; font-family: "Lilita One", sans-serif; }""",
 """      <div id="s6-t" class="pl">🏝️ Folgen = eigene Hütte</div>
       <div id="s6-btn" class="fbtn">+ Folgen<div id="s6-btn2" class="fbtn2">✓ Gefolgt</div></div>
       <div id="s6-hand" class="fhand" data-layout-ignore>👆</div>
       <div id="s6-fr" data-layout-ignore></div>
       <div id="s6-nm" data-layout-ignore>@dein_name<i id="s6-gl"></i></div>
-      <div id="s6-st" class="stamp" data-layout-ignore>🏠 MIT DEINEM NAMEN!</div>""" + drops("s6-p", 14, 13, 'hu', 540, 820, "🎉", 480, 700)[0],
+      <div id="s6-st" class="stamp" data-layout-ignore>🏠 MIT DEINEM NAMEN!</div>
+      <div id="s6-vt" class="pl">⭐ Die ersten 1.000: Vorteile im Spiel!</div>""" + drops("s6-p", 14, 13, 'hu', 540, 820, "🎉", 480, 700)[0],
 """      const t0 = line("L6")[0], fo = at("L6", "folge"), hu = at("L6", "Hütte"), na = at("L6", "Namen");
       tl.fromTo("#s6-t", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, t0 - .1);
       tl.fromTo("#s6-btn", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, t0);
@@ -292,5 +294,7 @@ scene("s06", LILITA + "\n    " + PILL + "\n" + FOLLOW + "\n    " + PT + """
       tl.fromTo("#s6-fr", { opacity: 0, scale: 1.4 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, hu - .2);
       tl.to("#s6-fr", { borderColor: "#2e9e5b", borderStyle: "solid", boxShadow: "0 0 50px 14px rgba(46,158,91,.9)", duration: .2 }, na - .1);
       tl.to(["#s6-btn", "#s6-t"], { opacity: 0, duration: .2 }, na - .35);
+      tl.fromTo("#s6-vt", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, at("L6b", "ersten") - .2);
+      tl.to("#s6-vt", { scale: 1.08, duration: .2, yoyo: true, repeat: 5, ease: "sine.inOut" }, at("L6b", "Vorteile"));
       tl.fromTo("#s6-st", { opacity: 0, scale: 2.6 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, na - .2);
 """ + drops("s6-p", 14, 13, 'hu', 540, 820, "🎉", 480, 700)[1], blur=False)

@@ -1,5 +1,5 @@
 {
- "duration": 55.05,
+ "duration": 57.19,
  "lines": [
   {
    "scene": "s01",
@@ -10,61 +10,53 @@
      "spoken": "Diese",
      "color": null,
      "group": 0,
-     "start": 0.05,
-     "end": 0.35
+     "start": 0.03,
+     "end": 0.28
     },
     {
-     "display": "Insel",
-     "spoken": "Insel",
-     "color": null,
-     "group": 0,
-     "start": 0.35,
-     "end": 0.58
-    },
-    {
-     "display": "wächst",
-     "spoken": "wächst",
+     "display": "Insel-Welt",
+     "spoken": "Insel-Welt",
      "color": "g",
      "group": 0,
-     "start": 0.58,
-     "end": 0.84
+     "start": 0.28,
+     "end": 0.75
     },
     {
-     "display": "durch",
-     "spoken": "durch",
-     "color": null,
+     "display": "wächst,",
+     "spoken": "wächst,",
+     "color": "g",
      "group": 0,
-     "start": 0.84,
-     "end": 1.13
+     "start": 0.75,
+     "end": 1.2
     },
     {
-     "display": "Follower,",
-     "spoken": "Follower,",
-     "color": "y",
-     "group": 0,
-     "start": 1.13,
-     "end": 1.76
-    },
-    {
-     "display": "die",
-     "spoken": "die",
+     "display": "wenn",
+     "spoken": "wenn",
      "color": null,
      "group": 1,
-     "start": 1.76,
-     "end": 1.96
+     "start": 1.2,
+     "end": 1.36
     },
     {
-     "display": "einziehen!",
-     "spoken": "einziehen!",
+     "display": "du",
+     "spoken": "du",
      "color": "y",
      "group": 1,
-     "start": 1.96,
-     "end": 2.57
+     "start": 1.36,
+     "end": 1.58
+    },
+    {
+     "display": "folgst!",
+     "spoken": "folgst!",
+     "color": "y",
+     "group": 1,
+     "start": 1.58,
+     "end": 2.1
     }
    ],
-   "spoken": "Diese Insel wächst durch Follower, die einziehen!",
+   "spoken": "Diese Insel-Welt wächst, wenn du folgst!",
    "start": 0.0,
-   "end": 2.57
+   "end": 2.1
   },
   {
    "scene": "s01b",
@@ -75,109 +67,109 @@
      "spoken": "Das",
      "color": null,
      "group": 0,
-     "start": 3.05,
-     "end": 3.294
+     "start": 2.58,
+     "end": 2.824
     },
     {
      "display": "ist",
      "spoken": "ist",
      "color": null,
      "group": 0,
-     "start": 3.294,
-     "end": 3.539
+     "start": 2.824,
+     "end": 3.069
     },
     {
      "display": "Muschel-Tal:",
      "spoken": "Muschel-Tal:",
      "color": "p",
      "group": 0,
-     "start": 3.539,
-     "end": 4.28
+     "start": 3.069,
+     "end": 3.81
     },
     {
      "display": "Wer",
      "spoken": "Wer",
      "color": null,
      "group": 1,
-     "start": 4.58,
-     "end": 4.704
+     "start": 4.11,
+     "end": 4.234
     },
     {
      "display": "mir",
      "spoken": "mir",
      "color": null,
      "group": 1,
-     "start": 4.704,
-     "end": 4.827
+     "start": 4.234,
+     "end": 4.357
     },
     {
      "display": "folgt,",
      "spoken": "folgt,",
      "color": "g",
      "group": 1,
-     "start": 4.827,
-     "end": 4.96
+     "start": 4.357,
+     "end": 4.49
     },
     {
      "display": "bekommt",
      "spoken": "bekommt",
      "color": null,
      "group": 1,
-     "start": 5.11,
-     "end": 5.352
+     "start": 4.64,
+     "end": 4.882
     },
     {
      "display": "hier",
      "spoken": "hier",
      "color": null,
      "group": 1,
-     "start": 5.352,
-     "end": 5.476
+     "start": 4.882,
+     "end": 5.006
     },
     {
      "display": "eine",
      "spoken": "eine",
      "color": null,
      "group": 2,
-     "start": 5.476,
-     "end": 5.705
+     "start": 5.006,
+     "end": 5.235
     },
     {
      "display": "Hütte",
      "spoken": "Hütte",
      "color": "y",
      "group": 2,
-     "start": 5.705,
-     "end": 5.939
+     "start": 5.235,
+     "end": 5.469
     },
     {
      "display": "mit",
      "spoken": "mit",
      "color": null,
      "group": 2,
-     "start": 5.939,
-     "end": 6.058
+     "start": 5.469,
+     "end": 5.588
     },
     {
      "display": "seinem",
      "spoken": "seinem",
      "color": null,
      "group": 2,
-     "start": 6.058,
-     "end": 6.296
+     "start": 5.588,
+     "end": 5.826
     },
     {
      "display": "Namen!",
      "spoken": "Namen!",
      "color": "y",
      "group": 2,
-     "start": 6.296,
-     "end": 6.53
+     "start": 5.826,
+     "end": 6.06
     }
    ],
    "spoken": "Das ist Muschel-Tal: Wer mir folgt, bekommt hier eine Hütte mit seinem Namen!",
-   "start": 3.05,
-   "end": 6.53
+   "start": 2.58,
+   "end": 6.06
   },
   {
    "scene": "s02",
@@ -188,141 +180,141 @@
      "spoken": "Die",
      "color": null,
      "group": 0,
-     "start": 7.31,
-     "end": 7.466
+     "start": 6.84,
+     "end": 6.996
     },
     {
      "display": "Bäckerei",
      "spoken": "Bäckerei",
      "color": "y",
      "group": 0,
-     "start": 7.466,
-     "end": 7.929
+     "start": 6.996,
+     "end": 7.459
     },
     {
      "display": "hat",
      "spoken": "hat",
      "color": null,
      "group": 0,
-     "start": 7.929,
-     "end": 8.085
+     "start": 7.459,
+     "end": 7.615
     },
     {
      "display": "eine",
      "spoken": "eine",
      "color": null,
      "group": 0,
-     "start": 8.085,
-     "end": 8.386
+     "start": 7.615,
+     "end": 7.916
     },
     {
      "display": "neue",
      "spoken": "neue",
      "color": null,
      "group": 0,
-     "start": 8.386,
-     "end": 8.548
+     "start": 7.916,
+     "end": 8.078
     },
     {
      "display": "Chefin:",
      "spoken": "Chefin:",
      "color": "g",
      "group": 0,
-     "start": 8.548,
-     "end": 8.86
+     "start": 8.078,
+     "end": 8.39
     },
     {
      "display": "Lona!",
      "spoken": "Lona!",
      "color": "p",
      "group": 0,
-     "start": 9.14,
-     "end": 9.67
+     "start": 8.67,
+     "end": 9.2
     },
     {
      "display": "Und",
      "spoken": "Und",
      "color": null,
      "group": 1,
-     "start": 9.87,
-     "end": 10.013
+     "start": 9.4,
+     "end": 9.543
     },
     {
      "display": "jetzt",
      "spoken": "jetzt",
      "color": null,
      "group": 1,
-     "start": 10.013,
-     "end": 10.166
+     "start": 9.543,
+     "end": 9.696
     },
     {
      "display": "verlose",
      "spoken": "verlose",
      "color": null,
      "group": 1,
-     "start": 10.166,
-     "end": 10.584
+     "start": 9.696,
+     "end": 10.114
     },
     {
      "display": "ich",
      "spoken": "ich",
      "color": null,
      "group": 1,
-     "start": 10.584,
-     "end": 10.727
+     "start": 10.114,
+     "end": 10.257
     },
     {
      "display": "live",
      "spoken": "live",
      "color": "r",
      "group": 1,
-     "start": 10.727,
-     "end": 11.003
+     "start": 10.257,
+     "end": 10.533
     },
     {
      "display": "einen",
      "spoken": "einen",
      "color": null,
      "group": 2,
-     "start": 11.003,
-     "end": 11.283
+     "start": 10.533,
+     "end": 10.813
     },
     {
      "display": "Job",
      "spoken": "Job",
      "color": "y",
      "group": 2,
-     "start": 11.283,
-     "end": 11.426
+     "start": 10.813,
+     "end": 10.956
     },
     {
      "display": "in",
      "spoken": "in",
      "color": null,
      "group": 2,
-     "start": 11.426,
-     "end": 11.564
+     "start": 10.956,
+     "end": 11.094
     },
     {
      "display": "der",
      "spoken": "der",
      "color": null,
      "group": 2,
-     "start": 11.564,
-     "end": 11.707
+     "start": 11.094,
+     "end": 11.237
     },
     {
      "display": "Bäckerei!",
      "spoken": "Bäckerei!",
      "color": null,
      "group": 2,
-     "start": 11.707,
-     "end": 12.13
+     "start": 11.237,
+     "end": 11.66
     }
    ],
    "spoken": "Die Bäckerei hat eine neue Chefin: Lona! Und jetzt verlose ich live einen Job in der Bäckerei!",
-   "start": 7.31,
-   "end": 12.13
+   "start": 6.84,
+   "end": 11.66
   },
   {
    "scene": "s02",
@@ -333,69 +325,69 @@
      "spoken": "Glückwunsch,",
      "color": "g",
      "group": 0,
-     "start": 15.35,
-     "end": 17.06
+     "start": 14.88,
+     "end": 16.59
     },
     {
      "display": "@julicrzy2000",
      "spoken": "Juli Crazy zweitausend!",
      "color": "y",
      "group": 0,
-     "start": 17.25,
-     "end": 17.852
+     "start": 16.78,
+     "end": 17.382
     },
     {
      "display": "Du",
      "spoken": "Du",
      "color": null,
      "group": 1,
-     "start": 17.852,
-     "end": 17.935
+     "start": 17.382,
+     "end": 17.465
     },
     {
      "display": "backst",
      "spoken": "backst",
      "color": null,
      "group": 1,
-     "start": 17.935,
-     "end": 18.031
+     "start": 17.465,
+     "end": 17.561
     },
     {
      "display": "ab",
      "spoken": "ab",
      "color": null,
      "group": 1,
-     "start": 18.031,
-     "end": 18.114
+     "start": 17.561,
+     "end": 17.644
     },
     {
      "display": "jetzt",
      "spoken": "jetzt",
      "color": null,
      "group": 1,
-     "start": 18.114,
-     "end": 18.207
+     "start": 17.644,
+     "end": 17.737
     },
     {
      "display": "mit",
      "spoken": "mit",
      "color": null,
      "group": 1,
-     "start": 18.207,
-     "end": 18.293
+     "start": 17.737,
+     "end": 17.823
     },
     {
      "display": "Lona!",
      "spoken": "Lona!",
      "color": "p",
      "group": 1,
-     "start": 18.293,
-     "end": 18.46
+     "start": 17.823,
+     "end": 17.99
     }
    ],
    "spoken": "Glückwunsch, Juli Crazy zweitausend! Du backst ab jetzt mit Lona!",
-   "start": 15.35,
-   "end": 18.46
+   "start": 14.88,
+   "end": 17.99
   },
   {
    "scene": "s03",
@@ -406,77 +398,77 @@
      "spoken": "Und",
      "color": null,
      "group": 0,
-     "start": 19.44,
-     "end": 19.599
+     "start": 18.97,
+     "end": 19.129
     },
     {
      "display": "auf",
      "spoken": "auf",
      "color": null,
      "group": 0,
-     "start": 19.599,
-     "end": 19.758
+     "start": 19.129,
+     "end": 19.288
     },
     {
      "display": "der",
      "spoken": "der",
      "color": null,
      "group": 0,
-     "start": 19.758,
-     "end": 19.917
+     "start": 19.288,
+     "end": 19.447
     },
     {
      "display": "Kokos-Küste",
      "spoken": "Kokos-Küste",
      "color": "b",
      "group": 0,
-     "start": 19.917,
-     "end": 20.541
+     "start": 19.447,
+     "end": 20.071
     },
     {
      "display": "gibt",
      "spoken": "gibt",
      "color": null,
      "group": 0,
-     "start": 20.541,
-     "end": 20.706
+     "start": 20.071,
+     "end": 20.236
     },
     {
      "display": "es",
      "spoken": "es",
      "color": null,
      "group": 0,
-     "start": 20.706,
-     "end": 20.859
+     "start": 20.236,
+     "end": 20.389
     },
     {
      "display": "drei",
      "spoken": "drei",
      "color": "g",
      "group": 1,
-     "start": 20.859,
-     "end": 21.023
+     "start": 20.389,
+     "end": 20.553
     },
     {
      "display": "neue",
      "spoken": "neue",
      "color": "g",
      "group": 1,
-     "start": 21.023,
-     "end": 21.188
+     "start": 20.553,
+     "end": 20.718
     },
     {
      "display": "Läden:",
      "spoken": "Läden:",
      "color": null,
      "group": 1,
-     "start": 21.188,
-     "end": 21.5
+     "start": 20.718,
+     "end": 21.03
     }
    ],
    "spoken": "Und auf der Kokos-Küste gibt es drei neue Läden:",
-   "start": 19.44,
-   "end": 21.5
+   "start": 18.97,
+   "end": 21.03
   },
   {
    "scene": "s03",
@@ -487,45 +479,45 @@
      "spoken": "die",
      "color": null,
      "group": 0,
-     "start": 22.72,
-     "end": 22.908
+     "start": 22.25,
+     "end": 22.438
     },
     {
      "display": "Beach",
      "spoken": "Beach",
      "color": null,
      "group": 0,
-     "start": 22.908,
-     "end": 23.11
+     "start": 22.438,
+     "end": 22.64
     },
     {
      "display": "Bar",
      "spoken": "Bar",
      "color": null,
      "group": 0,
-     "start": 23.11,
-     "end": 23.298
+     "start": 22.64,
+     "end": 22.828
     },
     {
      "display": "Coco",
      "spoken": "Coco",
      "color": "y",
      "group": 0,
-     "start": 23.298,
-     "end": 23.662
+     "start": 22.828,
+     "end": 23.192
     },
     {
      "display": "Bay,",
      "spoken": "Bay,",
      "color": "y",
      "group": 0,
-     "start": 23.662,
-     "end": 23.85
+     "start": 23.192,
+     "end": 23.38
     }
    ],
    "spoken": "die Beach Bar Coco Bay,",
-   "start": 22.72,
-   "end": 23.85
+   "start": 22.25,
+   "end": 23.38
   },
   {
    "scene": "s03",
@@ -536,21 +528,21 @@
      "spoken": "das",
      "color": null,
      "group": 0,
-     "start": 25.97,
-     "end": 26.159
+     "start": 25.2,
+     "end": 25.389
     },
     {
      "display": "Kokos-Bad,",
      "spoken": "Kokos-Bad,",
      "color": "b",
      "group": 0,
-     "start": 26.159,
-     "end": 26.72
+     "start": 25.389,
+     "end": 25.95
     }
    ],
    "spoken": "das Kokos-Bad,",
-   "start": 25.97,
-   "end": 26.72
+   "start": 25.2,
+   "end": 25.95
   },
   {
    "scene": "s03",
@@ -561,53 +553,53 @@
      "spoken": "und",
      "color": null,
      "group": 0,
-     "start": 28.84,
-     "end": 29.006
+     "start": 27.77,
+     "end": 27.936
     },
     {
      "display": "die",
      "spoken": "die",
      "color": null,
      "group": 0,
-     "start": 29.006,
-     "end": 29.172
+     "start": 27.936,
+     "end": 28.102
     },
     {
      "display": "Boutique",
      "spoken": "Boutique",
      "color": null,
      "group": 0,
-     "start": 29.172,
-     "end": 29.664
+     "start": 28.102,
+     "end": 28.594
     },
     {
      "display": "Coast",
      "spoken": "Coast",
      "color": "p",
      "group": 0,
-     "start": 29.664,
-     "end": 29.842
+     "start": 28.594,
+     "end": 28.772
     },
     {
      "display": "and",
      "spoken": "and",
      "color": null,
      "group": 0,
-     "start": 29.842,
-     "end": 30.008
+     "start": 28.772,
+     "end": 28.938
     },
     {
      "display": "Cotton!",
      "spoken": "Cotton!",
      "color": "p",
      "group": 0,
-     "start": 30.008,
-     "end": 30.34
+     "start": 28.938,
+     "end": 29.27
     }
    ],
    "spoken": "und die Boutique Coast and Cotton!",
-   "start": 28.84,
-   "end": 30.34
+   "start": 27.77,
+   "end": 29.27
   },
   {
    "scene": "s04",
@@ -618,85 +610,85 @@
      "spoken": "Und",
      "color": null,
      "group": 0,
-     "start": 32.52,
-     "end": 32.667
+     "start": 31.05,
+     "end": 31.197
     },
     {
      "display": "jetzt",
      "spoken": "jetzt",
      "color": null,
      "group": 0,
-     "start": 32.667,
-     "end": 32.824
+     "start": 31.197,
+     "end": 31.354
     },
     {
      "display": "die",
      "spoken": "die",
      "color": null,
      "group": 0,
-     "start": 32.824,
-     "end": 32.97
+     "start": 31.354,
+     "end": 31.5
     },
     {
      "display": "große",
      "spoken": "große",
      "color": null,
      "group": 0,
-     "start": 32.97,
-     "end": 33.258
+     "start": 31.5,
+     "end": 31.788
     },
     {
      "display": "Live-Verlosung:",
      "spoken": "Live-Verlosung:",
      "color": "r",
      "group": 0,
-     "start": 33.258,
-     "end": 33.98
+     "start": 31.788,
+     "end": 32.51
     },
     {
      "display": "zwei",
      "spoken": "zwei",
      "color": "y",
      "group": 1,
-     "start": 34.16,
-     "end": 34.37
+     "start": 32.69,
+     "end": 32.9
     },
     {
      "display": "Plätze",
      "spoken": "Plätze",
      "color": null,
      "group": 1,
-     "start": 34.37,
-     "end": 34.776
+     "start": 32.9,
+     "end": 33.306
     },
     {
      "display": "auf",
      "spoken": "auf",
      "color": null,
      "group": 1,
-     "start": 34.776,
-     "end": 34.979
+     "start": 33.306,
+     "end": 33.509
     },
     {
      "display": "Maries",
      "spoken": "Maries",
      "color": "p",
      "group": 1,
-     "start": 34.979,
-     "end": 35.385
+     "start": 33.509,
+     "end": 33.915
     },
     {
      "display": "Party-Yacht!",
      "spoken": "Party-Yacht!",
      "color": "b",
      "group": 1,
-     "start": 35.385,
-     "end": 35.82
+     "start": 33.915,
+     "end": 34.35
     }
    ],
    "spoken": "Und jetzt die große Live-Verlosung: zwei Plätze auf Maries Party-Yacht!",
-   "start": 32.52,
-   "end": 35.82
+   "start": 31.05,
+   "end": 34.35
   },
   {
    "scene": "s04",
@@ -707,29 +699,29 @@
      "spoken": "Platz",
      "color": null,
      "group": 0,
-     "start": 38.74,
-     "end": 39.071
+     "start": 37.27,
+     "end": 37.601
     },
     {
      "display": "eins:",
      "spoken": "eins:",
      "color": null,
      "group": 0,
-     "start": 39.071,
-     "end": 39.39
+     "start": 37.601,
+     "end": 37.92
     },
     {
      "display": "@liese975",
      "spoken": "Liese neun sieben fünf!",
      "color": "y",
      "group": 0,
-     "start": 39.57,
-     "end": 40.83
+     "start": 38.1,
+     "end": 39.36
     }
    ],
    "spoken": "Platz eins: Liese neun sieben fünf!",
-   "start": 38.74,
-   "end": 40.83
+   "start": 37.27,
+   "end": 39.36
   },
   {
    "scene": "s04",
@@ -740,93 +732,93 @@
      "spoken": "Und",
      "color": null,
      "group": 0,
-     "start": 43.55,
-     "end": 43.766
+     "start": 42.08,
+     "end": 42.296
     },
     {
      "display": "Platz",
      "spoken": "Platz",
      "color": null,
      "group": 0,
-     "start": 43.766,
-     "end": 43.997
+     "start": 42.296,
+     "end": 42.527
     },
     {
      "display": "zwei:",
      "spoken": "zwei:",
      "color": null,
      "group": 0,
-     "start": 43.997,
-     "end": 44.22
+     "start": 42.527,
+     "end": 42.75
     },
     {
      "display": "@pia._.nbg",
      "spoken": "Pia N B G!",
      "color": "y",
      "group": 0,
-     "start": 44.42,
-     "end": 44.689
+     "start": 42.95,
+     "end": 43.219
     },
     {
      "display": "Ihr",
      "spoken": "Ihr",
      "color": null,
      "group": 1,
-     "start": 44.689,
-     "end": 44.932
+     "start": 43.219,
+     "end": 43.462
     },
     {
      "display": "feiert",
      "spoken": "feiert",
      "color": "g",
      "group": 1,
-     "start": 44.932,
-     "end": 45.2
+     "start": 43.462,
+     "end": 43.73
     },
     {
      "display": "ab",
      "spoken": "ab",
      "color": null,
      "group": 1,
-     "start": 45.2,
-     "end": 45.434
+     "start": 43.73,
+     "end": 43.964
     },
     {
      "display": "jetzt",
      "spoken": "jetzt",
      "color": null,
      "group": 1,
-     "start": 45.434,
-     "end": 45.694
+     "start": 43.964,
+     "end": 44.224
     },
     {
      "display": "auf",
      "spoken": "auf",
      "color": null,
      "group": 1,
-     "start": 45.694,
-     "end": 45.937
+     "start": 44.224,
+     "end": 44.467
     },
     {
      "display": "der",
      "spoken": "der",
      "color": null,
      "group": 1,
-     "start": 45.937,
-     "end": 46.18
+     "start": 44.467,
+     "end": 44.71
     },
     {
      "display": "Yacht!",
      "spoken": "Yacht!",
      "color": null,
      "group": 1,
-     "start": 46.18,
-     "end": 46.44
+     "start": 44.71,
+     "end": 44.97
     }
    ],
    "spoken": "Und Platz zwei: Pia N B G! Ihr feiert ab jetzt auf der Yacht!",
-   "start": 43.55,
-   "end": 46.44
+   "start": 42.08,
+   "end": 44.97
   },
   {
    "scene": "s05",
@@ -837,109 +829,109 @@
      "spoken": "Neu:",
      "color": "r",
      "group": 0,
-     "start": 47.42,
-     "end": 47.69
+     "start": 45.95,
+     "end": 46.22
     },
     {
      "display": "die",
      "spoken": "die",
      "color": null,
      "group": 0,
-     "start": 47.92,
-     "end": 48.07
+     "start": 46.45,
+     "end": 46.6
     },
     {
      "display": "LIVE-Insel!",
      "spoken": "LIVE-Insel!",
      "color": "r",
      "group": 0,
-     "start": 48.07,
-     "end": 48.52
+     "start": 46.6,
+     "end": 47.05
     },
     {
      "display": "Komm",
      "spoken": "Komm",
      "color": null,
      "group": 1,
-     "start": 48.73,
-     "end": 48.855
+     "start": 47.26,
+     "end": 47.385
     },
     {
      "display": "in",
      "spoken": "in",
      "color": null,
      "group": 1,
-     "start": 48.855,
-     "end": 48.972
+     "start": 47.385,
+     "end": 47.502
     },
     {
      "display": "meinen",
      "spoken": "meinen",
      "color": null,
      "group": 1,
-     "start": 48.972,
-     "end": 49.213
+     "start": 47.502,
+     "end": 47.743
     },
     {
      "display": "Livestream",
      "spoken": "Livestream",
      "color": "p",
      "group": 1,
-     "start": 49.213,
-     "end": 49.58
+     "start": 47.743,
+     "end": 48.11
     },
     {
      "display": "und",
      "spoken": "und",
      "color": null,
      "group": 2,
-     "start": 49.58,
-     "end": 49.7
+     "start": 48.11,
+     "end": 48.23
     },
     {
      "display": "bau",
      "spoken": "bau",
      "color": null,
      "group": 2,
-     "start": 49.7,
-     "end": 49.821
+     "start": 48.23,
+     "end": 48.351
     },
     {
      "display": "dort",
      "spoken": "dort",
      "color": null,
      "group": 2,
-     "start": 49.821,
-     "end": 49.946
+     "start": 48.351,
+     "end": 48.476
     },
     {
      "display": "deine",
      "spoken": "deine",
      "color": null,
      "group": 2,
-     "start": 49.946,
-     "end": 50.183
+     "start": 48.476,
+     "end": 48.713
     },
     {
      "display": "eigene",
      "spoken": "eigene",
      "color": "y",
      "group": 2,
-     "start": 50.183,
-     "end": 50.533
+     "start": 48.713,
+     "end": 49.063
     },
     {
      "display": "Insel!",
      "spoken": "Insel!",
      "color": "y",
      "group": 2,
-     "start": 50.533,
-     "end": 50.77
+     "start": 49.063,
+     "end": 49.3
     }
    ],
    "spoken": "Neu: die LIVE-Insel! Komm in meinen Livestream und bau dort deine eigene Insel!",
-   "start": 47.42,
-   "end": 50.77
+   "start": 45.95,
+   "end": 49.3
   },
   {
    "scene": "s06",
@@ -950,109 +942,214 @@
      "spoken": "Und",
      "color": null,
      "group": 0,
-     "start": 51.65,
-     "end": 51.796
+     "start": 50.18,
+     "end": 50.326
     },
     {
      "display": "folge",
      "spoken": "folge",
      "color": "g",
      "group": 0,
-     "start": 51.796,
-     "end": 52.083
+     "start": 50.326,
+     "end": 50.613
     },
     {
      "display": "mir",
      "spoken": "mir",
      "color": null,
      "group": 0,
-     "start": 52.083,
-     "end": 52.229
+     "start": 50.613,
+     "end": 50.759
     },
     {
      "display": "–",
      "spoken": "–",
      "color": null,
      "group": 0,
-     "start": 52.229,
-     "end": 52.36
+     "start": 50.759,
+     "end": 50.89
     },
     {
      "display": "dann",
      "spoken": "dann",
      "color": null,
      "group": 1,
-     "start": 52.6,
-     "end": 52.727
+     "start": 51.13,
+     "end": 51.257
     },
     {
      "display": "bekommst",
      "spoken": "bekommst",
      "color": null,
      "group": 1,
-     "start": 52.727,
-     "end": 52.982
+     "start": 51.257,
+     "end": 51.512
     },
     {
      "display": "du",
      "spoken": "du",
      "color": null,
      "group": 1,
-     "start": 52.982,
-     "end": 53.101
+     "start": 51.512,
+     "end": 51.631
     },
     {
      "display": "eine",
      "spoken": "eine",
      "color": null,
      "group": 1,
-     "start": 53.101,
-     "end": 53.338
+     "start": 51.631,
+     "end": 51.868
     },
     {
      "display": "Hütte",
      "spoken": "Hütte",
      "color": "y",
      "group": 1,
-     "start": 53.338,
-     "end": 53.579
+     "start": 51.868,
+     "end": 52.109
     },
     {
      "display": "mit",
      "spoken": "mit",
      "color": null,
      "group": 2,
-     "start": 53.579,
-     "end": 53.702
+     "start": 52.109,
+     "end": 52.232
     },
     {
      "display": "deinem",
      "spoken": "deinem",
      "color": null,
      "group": 2,
-     "start": 53.702,
-     "end": 53.948
+     "start": 52.232,
+     "end": 52.478
     },
     {
      "display": "eigenen",
      "spoken": "eigenen",
      "color": "y",
      "group": 2,
-     "start": 53.948,
-     "end": 54.308
+     "start": 52.478,
+     "end": 52.838
     },
     {
      "display": "Namen!",
      "spoken": "Namen!",
      "color": "y",
      "group": 2,
-     "start": 54.308,
-     "end": 54.55
+     "start": 52.838,
+     "end": 53.08
     }
    ],
    "spoken": "Und folge mir – dann bekommst du eine Hütte mit deinem eigenen Namen!",
-   "start": 51.65,
-   "end": 54.55
+   "start": 50.18,
+   "end": 53.08
+  },
+  {
+   "scene": "s06",
+   "id": "L6b",
+   "words": [
+    {
+     "display": "Sei",
+     "spoken": "Sei",
+     "color": null,
+     "group": 0,
+     "start": 53.55,
+     "end": 53.708
+    },
+    {
+     "display": "einer",
+     "spoken": "einer",
+     "color": null,
+     "group": 0,
+     "start": 53.708,
+     "end": 54.018
+    },
+    {
+     "display": "der",
+     "spoken": "der",
+     "color": null,
+     "group": 0,
+     "start": 54.018,
+     "end": 54.176
+    },
+    {
+     "display": "ersten",
+     "spoken": "ersten",
+     "color": "y",
+     "group": 0,
+     "start": 54.176,
+     "end": 54.491
+    },
+    {
+     "display": "1.000",
+     "spoken": "tausend",
+     "color": "y",
+     "group": 0,
+     "start": 54.491,
+     "end": 54.813
+    },
+    {
+     "display": "und",
+     "spoken": "und",
+     "color": null,
+     "group": 1,
+     "start": 54.813,
+     "end": 54.971
+    },
+    {
+     "display": "sichere",
+     "spoken": "sichere",
+     "color": null,
+     "group": 1,
+     "start": 54.971,
+     "end": 55.433
+    },
+    {
+     "display": "dir",
+     "spoken": "dir",
+     "color": null,
+     "group": 1,
+     "start": 55.433,
+     "end": 55.591
+    },
+    {
+     "display": "deine",
+     "spoken": "deine",
+     "color": null,
+     "group": 1,
+     "start": 55.591,
+     "end": 55.901
+    },
+    {
+     "display": "Vorteile",
+     "spoken": "Vorteile",
+     "color": "g",
+     "group": 1,
+     "start": 55.901,
+     "end": 56.369
+    },
+    {
+     "display": "im",
+     "spoken": "im",
+     "color": null,
+     "group": 1,
+     "start": 56.369,
+     "end": 56.521
+    },
+    {
+     "display": "Spiel!",
+     "spoken": "Spiel!",
+     "color": "p",
+     "group": 1,
+     "start": 56.521,
+     "end": 56.69
+    }
+   ],
+   "spoken": "Sei einer der ersten tausend und sichere dir deine Vorteile im Spiel!",
+   "start": 53.55,
+   "end": 56.69
   }
  ]
 }

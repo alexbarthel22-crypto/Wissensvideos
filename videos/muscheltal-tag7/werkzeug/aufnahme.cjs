@@ -15,7 +15,7 @@ const G=await p.evaluate(()=>{const a=fitAll(),m=fitMain();const g=n=>{const x=G
   last:(()=>{const q=PEOPLE.filter(q=>q.p&&q.isl===ISL[1]&&q.name.length>=12).sort((a,b)=>b.nr-a.nr)[0];window.__LAST=q;q.orig=q.name;return{x:q.p.x,y:q.p.y,nr:q.nr}})()};});
 console.error(JSON.stringify(G));
 const HZ=6.2,HY=G.last.y+40/(HZ*2.6667),KZ=1080/(2.6667*2.3*G.k.r),LZ=1080/(2.6667*2.4*G.lv.r);
-const GS=at('L1','Follower')-.1,GE=L.L1.end+.5;
+const GS=at('L1','wächst')-.1,GE=L.L1.end+.5;
 const K=[[0,G.m.x+40,G.m.y-50,G.m.z*.8],[L.L1.end,G.m.x,G.m.y-10,G.m.z*1.1],[L.L1b.start+.1,G.m.x,G.m.y-10,G.m.z*1.6],[L.L1b.end,G.m.x,G.m.y,G.m.z*1.15],
  [L.L2.start-.1,G.ba.x,G.ba.y-4,4.6],[L.L2w.start-.3,G.ba.x,G.ba.y-4,4.8],[L.L2w.end+.2,G.ba.x,G.ba.y-6,6.2],[L.L2w.end+.8,G.ba.x,G.ba.y-6,6.4],
  [L.L3.start+.2,G.k.x,G.k.y,KZ],[L.L3x.start-.15,G.kb.x,G.kb.y-6,4.0],[L.L3y.start-.4,G.kb.x,G.kb.y-6,4.4],[L.L3y.start-.05,G.kd.x,G.kd.y-6,4.0],[L.L3z.start-.4,G.kd.x,G.kd.y-6,4.4],[L.L3z.start-.05,G.km.x,G.km.y-6,4.0],[L.L4.start-.7,G.km.x,G.km.y-6,4.6],
