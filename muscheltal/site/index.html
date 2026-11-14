@@ -2358,7 +2358,8 @@ let LAMPG=null;function lampsFront(c,x,y,tn){if(S*cam.z<=6)return;if(!LAMPG){LAM
 // Figur hinter der Strandvilla: Dachterrasse/Dach wird über die Figur gezeichnet (nur im Bereich der Figur)
 function villaFront(c,x,y,tn){for(const g of GEB){if(g.typ!=='villa'||(GROWK!=null&&GROWV===g.v&&GROWK<g.at))continue;const W=(g.x1-g.x0)/2,d=g.dir||1,vx=-W+24,lx=(x-g.cx)*d,ly=y-g.cy;if(Math.abs(lx-vx)>27||ly<-46||ly>-26)continue;
  const n1=NAMES.length,n2=TAPS.length,n3=FIGS.length,x0=x-3.4,y0=y-13,x1=x+3.4,y1=y+5.4;tintDraw(c,tn,x0,y0,x1,y1,o=>{o.save();o.beginPath();o.rect(x0,y0,x1-x0,y1-y0);o.clip();drawGeb(o,g,tn,cam.z);o.restore();});NAMES.length=n1;TAPS.length=n2;FIGS.length=n3;}}
-function hutsFront(c,x,y,tn){lampsFront(c,x,y,tn);ksSignFront(c,x,y,tn);villaFront(c,x,y,tn);palmsFront(c,x,y,tn);doenerFront(c,x,y,tn);if(Math.abs(x)<130*PAL_S&&Math.abs(y)<80*PAL_S)palFront(c,x,y,tn);acaiFront(c,x,y,tn);plotSignFront(c,x,y,tn);const px=S*cam.z;if(px<7)return;const K=kind(),wet=K==='rain'||K==='storm',snow=K==='snow';
+function hutsFront(c,x,y,tn){if(tn===undefined)tn=nightLevel();// nachts immer abgedunkelt nachzeichnen (sonst leuchtet die Hütte vor einer Figur plötzlich hell)
+ lampsFront(c,x,y,tn);ksSignFront(c,x,y,tn);villaFront(c,x,y,tn);palmsFront(c,x,y,tn);doenerFront(c,x,y,tn);if(Math.abs(x)<130*PAL_S&&Math.abs(y)<80*PAL_S)palFront(c,x,y,tn);acaiFront(c,x,y,tn);plotSignFront(c,x,y,tn);const px=S*cam.z;if(px<7)return;const K=kind(),wet=K==='rain'||K==='storm',snow=K==='snow';
  for(const v of ISL){if(!v.open||!v.cell||Math.hypot(x-v.x,y-v.y)>v.R+40)continue;const gx=Math.round((x-v.x)/S),gy=Math.round((y-v.y)/(S*.9));
   for(let dy=0;dy<=2;dy++)for(let dx=-1;dx<=1;dx++){const q=v.cell.get((gx+dx)+','+(gy+dy));if(!q||q.nr>limit||!q.p||q.p.y<=y-.5||q.p.y-y>24||Math.abs(q.p.x-x)>12)continue;tintDraw(c,tn,q.p.x-12,q.p.y-16,q.p.x+12,q.p.y+11,o=>hutBody(o,v,q,px,wet,snow));}}}
 // Figuren dieses Bildes merken (für „Passant vor Namensschild“)
