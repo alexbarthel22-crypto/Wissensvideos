@@ -599,7 +599,7 @@ function nachtZeichnen(t) {
 // ================= Ton: Musik aus den Videos (lizenzfrei, tools/make_music_tropical.py) + Meeresrauschen + Stimme =================
 // Es gibt genau EINEN Musik-Player, EINEN Meeres-Player und EINEN Audio-Kontext für die Stimme – sie werden nie neu angelegt.
 // Sind mehrere Seiten offen (z. B. Browser + LIVE Studio), bestimmt das Programm, welche Seite Ton spielt (tonRolle).
-let MUSIK = [1, 2, 3, 4, 5].map(i => `musik/insel_${i}.mp3`);   // wird durch die Liste vom Programm ersetzt (alle MP3s im Ordner seite/musik)
+let MUSIK = [1, 2, 3, 4, 5].map(i => `musik/cozy_${i}.mp3`);   // wird durch die Liste vom Programm ersetzt (alle MP3s im Ordner seite/musik)
 const VORSCHAU = PARAM.has('vorschau') || PARAM.has('still');     // ?vorschau = Bild ohne Ton
 const TONSEITE = PARAM.has('ton');                                // ?ton = nur Ton (Musik + Anna) für den Mac, kein Bild
 let meineId = null, tonRolle = false, tonAn = false, musikNr = Math.floor(Math.random() * MUSIK.length), stimmeLaeuft = 0, AC = null;
@@ -609,7 +609,7 @@ let musikFehler = 0;
 musik.onerror = () => { if (++musikFehler >= MUSIK.length) return; musikNr = (musikNr + 1) % MUSIK.length; musik.src = MUSIK[musikNr]; if (tonRolle) musik.play().catch(() => {}); };   // Datei fehlt: nächstes Stück, aber nicht endlos
 musik.onplaying = () => { musikFehler = 0; };
 musik.onended = () => { musikNr = (musikNr + 1) % MUSIK.length; musik.src = MUSIK[musikNr]; if (tonRolle) musik.play().catch(() => {}); };
-const meerTon = new Audio('musik/atmo.mp3'); meerTon.loop = true; meerTon.volume = 0;
+const meerTon = new Audio('musik/meer_sanft.mp3'); meerTon.loop = true; meerTon.volume = 0;   // sanftes, dumpfes Meeresrauschen (ohne Zischen)
 const stimmeEl = new Audio(); stimmeEl.onloadedmetadata = () => { stimmeLaeuft = performance.now() + stimmeEl.duration * 1000 + 300; };
 function tonStarten() {                                           // nur freischalten/fortsetzen, nie neue Player
   if (VORSCHAU) return;

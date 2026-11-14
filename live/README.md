@@ -180,7 +180,7 @@ Anna und die Einblendungen werben **nie** für Geschenke: keine Sätze wie „je
 Nach dem Stream kannst du in den Systemeinstellungen wieder die normalen Lautsprecher wählen.
 
 - **Es spielt immer nur eine Seite Ton**, auch wenn Browser und LIVE Studio gleichzeitig offen sind (die zuerst geöffnete). Vor dem LIVE deshalb alte Browser-Tabs mit der Insel schließen – oder sie mit `?vorschau` öffnen (Bild ohne Ton).
-- Im Hintergrund läuft lizenzfreie Südsee-Musik im Stil der Muschel-Tal-Videos (erzeugt mit `tools/make_music_live.py`): 5 Stücke à 7 Min. (35 Min. ohne Wiederholung), jedes mit eigener Tonart und Tempo, Songform mit Strophe, Refrain, Zwischenteil und ruhigen Stellen, wechselnden Instrumenten (Ukulele, Marimba, Steeldrum, Flöte, Pad, Bongos) und immer neuen Melodien. Dazu Meeresrauschen (`tools/make_ambience.py`).
+- Im Hintergrund läuft entspannte, lizenzfreie Strandmusik („cozy“, erzeugt mit `tools/make_music_cozy.py`): 5 Stücke à 7 Min., langsam (76–84 bpm), tiefe weiche Klänge (Nylon-Gitarre, warmer Pad, E-Piano, weicher Bass), Höhen über ca. 3 kHz abgesenkt – angenehm auch über Stunden. Dazu sanftes, dumpfes Meeresrauschen. Musik liegt in `werkzeug/musik` (Updates überschreiben sie nie; neue Stücke aus „Downloads“ werden beim Start übernommen).
 - Anna spricht kurze Sätze, etwa alle 2–4 Sekunden einer, je Satz nur eine Sache. Geschenke werden immer mit Namen bedankt („Danke für die Rose“) – je wertvoller, desto größer der Dank (4 Stufen: unter 20, ab 20, ab 200, ab 1.000 Coins).
 - Annas Ansagen werden über die Live-Seite abgespielt, die Musik wird dabei automatisch leiser. So landet alles im Ton der Link-/Browser-Quelle.
 - Falls ein Browser den Ton blockiert, steht unten „Einmal ins Bild klicken für Musik“ – einmal klicken genügt.

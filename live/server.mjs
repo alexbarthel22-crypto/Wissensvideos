@@ -18,7 +18,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-14 z3';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-14 z4';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -563,7 +563,11 @@ try {
   fs.mkdirSync(MUSIK_ORDNER, { recursive: true });
   for (const f of fs.readdirSync(path.join(DIR, 'seite', 'musik'))) if (f.toLowerCase().endsWith('.mp3') && !fs.existsSync(path.join(MUSIK_ORDNER, f))) fs.copyFileSync(path.join(DIR, 'seite', 'musik', f), path.join(MUSIK_ORDNER, f));
 } catch {}
-const musikListe = () => { try { return fs.readdirSync(MUSIK_ORDNER).filter(f => f.toLowerCase().endsWith('.mp3') && !f.startsWith('atmo')).sort(); } catch { return []; } };
+const musikListe = () => {
+  let l = []; try { l = fs.readdirSync(MUSIK_ORDNER).filter(f => f.toLowerCase().endsWith('.mp3') && !/^(atmo|meer)/.test(f)).sort(); } catch {}
+  const cozy = l.filter(f => f.startsWith('cozy_'));          // die entspannte Musik hat Vorrang vor älteren Stücken
+  return cozy.length ? cozy : l;
+};
 const MUSIK_DATEIEN = musikListe().map(f => path.join(MUSIK_ORDNER, f));
 if (!MUSIK_DATEIEN.length) console.log('⚠️  Keine Musik gefunden – bitte die MP3-Dateien in den Ordner „werkzeug/musik“ legen (im Programmordner).');
 else console.log(`🎵 ${MUSIK_DATEIEN.length} ${MUSIK_DATEIEN.length === 1 ? "Musikstück" : "Musikstücke"} gefunden.`);
