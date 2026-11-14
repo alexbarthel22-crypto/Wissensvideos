@@ -18,7 +18,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-15 f';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-15 g';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -51,6 +51,7 @@ async function rangMelden(sofort) {
   try { const r = await fetch('https://muscheltal.de/api/live', { method: 'POST', headers: { 'content-type': 'application/json', 'x-live-schluessel': LIVE_KEY }, body: JSON.stringify({ rang }) }); if (r.ok) rangLetzt = k; } catch {}
 }
 if (!TEST && LIVE_KEY) setInterval(() => rangMelden(false), 120000);
+if (!TEST && LIVE_KEY) setTimeout(() => rangMelden(true), 15000);   // gleich beim Start: Gesamt-Rangliste (auch aus früheren Streams) übertragen
 if (!TEST) console.log(LIVE_KEY ? '📺 Erfolg „Live dabei“: Zuschauer werden an muscheltal.de gemeldet' : 'ℹ️  Erfolg „Live dabei“ aus (keine live-schluessel.txt)');
 
 // ---------- Spielstand ----------
