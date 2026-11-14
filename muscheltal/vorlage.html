@@ -463,6 +463,8 @@ const WALLS=['#d9a066','#e4b47c','#cf9459','#e9c48f'],ROOFS=['#e8467c','#f4a51c'
 // Jetzt (Berlin) als 'JJJJ-MM-TTTHH:MM'; Ämter/Jobs gelten bis zum angegebenen Zeitpunkt (z. B. Montag 12:00)
 const JETZT=(()=>{try{const p=Object.fromEntries(new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Berlin',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date()).map(x=>[x.type,x.value]));return p.year+'-'+p.month+'-'+p.day+'T'+p.hour+':'+p.minute;}catch(e){return new Date().toISOString().slice(0,16);}})(),
  bisOK=t=>!t||JETZT<(t.length>10?t:t+'T24:00'),aktiv=b=>!b||bisOK(b[2]);
+// wer zuerst in einem Gebäude/auf der Yacht wohnte, steht vorne (Reihenfolge in insel.json → wohnorte)
+const WRANG=Object.keys(I.wohnorte||{}).map(k=>'@'+k.toLowerCase().replace(/^@/,'')),wohnRang=(a,b)=>WRANG.indexOf(a.name.toLowerCase())-WRANG.indexOf(b.name.toLowerCase());
 const WOHN={};for(const [k,o] of Object.entries(I.wohnorte||{})){if(Array.isArray(o)&&!bisOK(o[1]))continue;WOHN['@'+k.toLowerCase().replace(/^@/,'')]=Array.isArray(o)?o[0]:o;}
 const PEOPLE=R.map((r,i)=>{const nr=i+1,v=r[5]!=null&&ISL[r[5]]?ISL[r[5]]:islandOf(nr);const wh=WOHN[r[0].toLowerCase()]||null;return{home:wh==='Muschelpalast'?null:wh,palast:wh==='Muschelpalast',name:r[0],seit:r[1],mark:r[2],slot:typeof r[3]==='number'?r[3]:null,gr:r[4]==null?nr<=500:!!r[4],nr,isl:v,wait:!v.open,p:null};});
 // Sonder-Bewohner (z. B. @echter.alex auf der Schlossinsel): wohnen dort, zählen aber nicht als Einwohner (keine Nummer, nicht in der Suche)
@@ -1324,7 +1326,7 @@ const YACHT=(()=>{const a=Math.PI+.3,[x,y]=polar(MAIN,a,coastAt(MAIN,a)+BEX+150)
  spots:[[18.6,-8.6],[-23,-8.6],[-10.6,-8.4],[32.2,-3.2]]};})();
 // Länge der Yacht (Rumpf wird in x gestreckt); Bewohnerin läuft an Deck zwischen Bug und Heck hin und her
 const YL=1.32;
-function yachtPos(k,t){const Y=YACHT;if(k>0){const [sx,sy]=Y.spots[k%4];return{x:sx*YL,y:sy,mv:false,dir:1};}
+function yachtPos(k,t){const Y=YACHT;if(k>0){const [sx,sy]=Y.spots[[3,1,0,2][k%4]];return{x:sx*YL,y:sy,mv:false,dir:1};}
  const A=-20*YL,B=18.6*YL,len=B-A,dur=len/GV,P=7,per=2*(P+dur);let u=((t%per)+per)%per;
  if(u<P)return{x:B,y:-8.6,mv:false,dir:1,end:'heck'};u-=P;if(u<dur)return{x:B-u*GV,y:-8.6,mv:true,dir:-1};u-=dur;if(u<P)return{x:A,y:-8.6,mv:false,dir:-1,end:'bug'};u-=P;return{x:A+u*GV,y:-8.6,mv:true,dir:1};}
 function drawYacht(c,nl0,z){const nl=Math.max(nl0,.6),Y=YACHT,t=REDUCED?0:T,day=false,bob=Math.sin(t*1.1)*.5,rk=Math.sin(t*.8)*.012;c.save();c.translate(Y.cx,Y.cy);c.save();c.scale(YL,1);
@@ -1385,18 +1387,18 @@ function drawYacht(c,nl0,z){const nl=Math.max(nl0,.6),Y=YACHT,t=REDUCED?0:T,day=
  c.fillStyle='#ff6fa3';c.font='1.4px '+FONT;c.textAlign='center';c.fillText('💗',-16.6,-11.1);
  c.restore();c.translate(0,bob);
  // Bewohnerin(nen) an Deck – höchstens 4 Plätze; die erste läuft zwischen Bug und Heck hin und her (immer im Vordergrund)
- const B=PEOPLE.filter(p=>p.gb===Y);B.forEach((p,k)=>{if(k>=Y.spots.length||imSpiel(p))return;const q=yachtPos(k,t),sx=q.x,sy=q.y,L=p.LY||(p.LY={...look(p.k)});
+ const B=PEOPLE.filter(p=>p.gb===Y).sort(wohnRang);B.forEach((p,k)=>{if(k>=Y.spots.length||imSpiel(p))return;const q=yachtPos(k,t),sx=q.x,sy=q.y,L=p.LY||(p.LY={...look(p.k)});
   if(q.mv){// Marie feiert immer: auch beim Laufen hüpft sie mit erhobenem Arm
    const hop=REDUCED?0:Math.abs(Math.sin(t*6+k))*.7;c.save();c.translate(sx,sy-4.4-hop);c.fillStyle='rgba(60,40,20,.2)';c.beginPath();c.ellipse(0,4.4+hop,2,.6,0,0,TAU);c.fill();c.scale(q.dir,1);person(c,L,REDUCED?0:Math.sin(t*9+k)*1.1,false,REDUCED?.4:.6+Math.abs(Math.sin(t*5+k))*1.2);c.restore();}else{c.save();c.translate(sx,sy-4.4);if(q.dir<0)c.scale(-1,1);c.fillStyle='rgba(60,40,20,.2)';c.beginPath();c.ellipse(0,4.4,2,.6,0,0,TAU);c.fill();
   const dance=!REDUCED,wv=dance?.4+Math.abs(Math.sin(t*5+k))*1.2:.3+Math.abs(Math.sin(t*1.4+k))*.6;if(dance)c.translate(0,-Math.abs(Math.sin(t*5+k))*.5);person(c,L,0,true,wv);c.scale(L.h,L.h);c.fillStyle='rgba(255,255,255,.85)';c.fillRect(2.2,-4.4,.9,1.4);c.fillStyle='#ff6fa3';c.fillRect(2.25,-3.9,.8,.8);c.restore();}
-  const wx=Y.cx+sx,wy=Y.cy+sy+bob;TAPS.push([wx,wy-4.4,p]);if(z*S>30&&sel!==p)NAMES.push(['🛥️ '+p.name,wx,wy-16,'#d9a63a',2.4,'#2a1b12']);});
+  const wx=Y.cx+sx,wy=Y.cy+sy+bob;TAPS.push([wx,wy-4.4,p]);if(z*S>30&&sel!==p)NAMES.push(['🛥️ '+p.name,wx,wy-16-(k===0?4.6:0),'#d9a63a',2.4,'#2a1b12']);});
  if(!REDUCED){for(let k=0;k<6;k++){const ph=(t*.35+k/6)%1,x=(-14+k*7)*YL*.6+Math.sin(ph*6+k)*2,y=-24-ph*12;c.globalAlpha=1-ph;c.fillStyle=['#ff6fa3','#ffd23f','#7fe0ff','#b58ad0','#fff','#2fb3a0'][k];c.font='900 '+(1.6+ph)+'px '+FONT;c.textAlign='center';c.fillText(k%2?'♪':'♫',x,y);}
   for(let k=0;k<14;k++){const ph=(t*.2+k/14)%1,x=-30*YL+((k*37)%60)*YL+Math.sin(t+k)*1.5,y=-30+ph*28;c.globalAlpha=(1-ph)*.9;c.fillStyle=['#ff6fa3','#ffd23f','#7fe0ff','#b58ad0','#2fb3a0'][k%5];c.save();c.translate(x,y);c.rotate(t*3+k);c.fillRect(-.35,-.18,.7,.36);c.restore();}c.globalAlpha=1;}
  c.restore();}
 function yachtGlow(glow0,nl){const Y=YACHT,x=Y.cx,y=Y.cy,glow=(gx,gy,r,col,a)=>glow0(x+(gx-x)*YL,gy,r,col,a);glow(x+2,y-21,16,'255,120,200',.55*nl*(.7+.3*Math.sin(T*5)));glow(x+2,y-13,18,'255,200,130',.45*nl);glow(x+25,y-8,8,'80,230,255',.6*nl);for(let k=1;k<9;k++){const u=k/9;glow(x-34+27*u,y-6-20.4*u+6*u*(1-u),2.2,'255,210,150',.7*nl);}for(let k=1;k<7;k++){const u=k/7;glow(x+15+16*u,y-26.4+21.4*u+4.8*u*(1-u),2.2,'255,190,220',.7*nl);}for(let k=0;k<5;k++)glow(x-19+k*5.4,y+1.6,2.6,'255,220,150',.7*nl);}
 // Bewohnerin der Yacht platzieren (wohnorte → "Yacht")
 for(const p of PEOPLE)if(p.home==='Schloss'){p.isl=MAIN;p.wait=false;p.gb=SCH;p.p={x:SCH.x,y:SCH.y-1};}
-for(const p of PEOPLE)if(p.home==='Yacht'){p.isl=MAIN;p.wait=false;p.gb=YACHT;const k=PEOPLE.filter(q=>q.home==='Yacht').indexOf(p),[sx,sy]=YACHT.spots[k%4];p.p={x:YACHT.cx+sx*1.32,y:YACHT.cy+sy-4.4};}
+for(const p of PEOPLE)if(p.home==='Yacht'){p.isl=MAIN;p.wait=false;p.gb=YACHT;const k=PEOPLE.filter(q=>q.home==='Yacht').indexOf(p),[sx,sy]=YACHT.spots[[3,1,0,2][k%4]];p.p={x:YACHT.cx+sx*1.32,y:YACHT.cy+sy-4.4};}
 // Kokos-Küste: Platz in der Breite so schmal, dass er die Wege links/rechts nicht überdeckt
 const KOKX=.86;
 // nahe vor/über einer Hütte (Dach würde Sitzende überdecken)
@@ -2577,7 +2579,7 @@ function drawVilla(c,g,nl,z,W,H,sx,ink){const t=REDUCED?0:T,day=nl<.5,gold='#d9a
  for(const x of[vx-15,vx-6]){c.fillStyle='#e9e2d2';c.fillRect(x-1,-35.6,2,2);palm(c,{x,y:-35.6,ph:x,s:.55});}
  // Bewohner der Villa auf dem Deck: Cocktail in der Hand; Name in Gold
  // die Bewohnerinnen halten sich auf dem Grundstück auf: Pooldeck, Koi-Teich, Garten – gehen gemütlich hin und her
- const B=PEOPLE.filter(p=>p.gb===g);if(z*S>8)B.forEach((p,k)=>{if(imSpiel(p))return;// wer gerade erkundet, ist unterwegs – nicht zusätzlich in der Villa
+ const B=PEOPLE.filter(p=>p.gb===g).sort(wohnRang);if(z*S>8)B.forEach((p,k)=>{if(imSpiel(p))return;// wer gerade erkundet, ist unterwegs – nicht zusätzlich in der Villa
   const R=villaRoute(g,k),pos=villaPos(R,t,k),lx=pos.x,ly=pos.y,mv=pos.mv,a=[0,0],b=[pos.dx,pos.dy];
   const L=p.LV||(p.LV={...look(p.k)});c.save();c.translate(lx,ly);c.fillStyle='rgba(30,40,20,.22)';c.beginPath();c.ellipse(0,4.4,2.4,.8,0,0,TAU);c.fill();const dx=b[0]-a[0],dy=b[1]-a[1],vert=mv&&Math.abs(dy)>Math.abs(dx);if(mv?(!vert&&dx<0):k)c.scale(-1,1);
   if(mv)person(c,L,Math.sin(t*9+k)*(vert?.55:1.1),vert?(dy>0?true:'back'):false,0);else person(c,L,0,true,.4+Math.abs(Math.sin(t*1.6+k))*.6);c.scale(L.h,L.h);c.fillStyle='rgba(255,255,255,.8)';c.fillRect(2.2,-4.4,.9,1.4);c.fillStyle=k?'#ff6fa3':'#ffd23f';c.fillRect(2.25,-3.9,.8,.8);c.restore();

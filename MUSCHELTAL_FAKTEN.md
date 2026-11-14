@@ -357,3 +357,5 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - **Live-Verlosung Yacht (2 Plätze auf Maries Party-Yacht, @marie18034):** @liese975 (Nr. 45) und @pia._.nbg (Nr. 251) – gleiche Ziehung. ⚠️ Homepage: beide wohnen/feiern auf der Yacht.
 - Kokos-Küste: neue Läden 🍹 Coco Bay (@priv.greto.2), 🏊 Kokos-Bad (@lionaaa013), 👗 Coast & Cotton (@emma.hl07).
 - Ankündigung: 🔴 LIVE-Insel – im TikTok-Livestream baut man seine eigene Insel.
+- **Homepage-Abgleich Video Tag 7 (14.11.):** @julicrzy2000 im Bäckerei-Team (News-Eintrag), @liese975 + @pia._.nbg wohnen auf Maries Yacht (White Pearl, je eigener Platz, Namensschilder ohne Überlappung), @k.lil3001 wohnt in der Strandvilla (zu Emilia & Lea). Ihre Hütten 56/220/285 übernehmen die Nachrücker @finja_oder_finein, @amelie.xx512, @_leela.1 (von der Kokos-Küste auf die Haupt-Insel).
+- **Offen:** @lucy.osw soll im Team der Moped-Werkstatt arbeiten – ist aber (Stand 14.11.) noch keine Bewohnerin. Job eintragen, sobald sie mit der nächsten Followerliste einzieht.
