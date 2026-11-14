@@ -18,7 +18,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-14 x';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-14 y';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -557,9 +557,15 @@ function waehleTonSeite() {
   if (neu !== tonSeite) { tonSeite = neu; rolleSeit = Date.now(); sende({ typ: 'tonRolle', id: tonSeite }); if (tonSeite != null) console.log(`🔊 Ton-Aufgabe → Live-Seite #${tonSeite}`); }
 }
 // Musik: jede MP3 im Ordner seite/musik (außer dem Meeresrauschen) – neue und alte Stücke
-const musikListe = () => { try { return fs.readdirSync(path.join(DIR, 'seite', 'musik')).filter(f => f.endsWith('.mp3') && !f.startsWith('atmo')).sort(); } catch { return []; } };
-const MUSIK_DATEIEN = musikListe().map(f => path.join(DIR, 'seite', 'musik', f));
-if (!MUSIK_DATEIEN.length) console.log('⚠️  Keine Musik gefunden – bitte die MP3-Dateien in den Ordner seite/musik legen.');
+// Musik liegt in werkzeug/musik (wird von Updates nie überschrieben). Stücke aus seite/musik werden einmalig dorthin kopiert.
+const MUSIK_ORDNER = path.join(DIR, 'werkzeug', 'musik');
+try {
+  fs.mkdirSync(MUSIK_ORDNER, { recursive: true });
+  for (const f of fs.readdirSync(path.join(DIR, 'seite', 'musik'))) if (f.toLowerCase().endsWith('.mp3') && !fs.existsSync(path.join(MUSIK_ORDNER, f))) fs.copyFileSync(path.join(DIR, 'seite', 'musik', f), path.join(MUSIK_ORDNER, f));
+} catch {}
+const musikListe = () => { try { return fs.readdirSync(MUSIK_ORDNER).filter(f => f.toLowerCase().endsWith('.mp3') && !f.startsWith('atmo')).sort(); } catch { return []; } };
+const MUSIK_DATEIEN = musikListe().map(f => path.join(MUSIK_ORDNER, f));
+if (!MUSIK_DATEIEN.length) console.log('⚠️  Keine Musik gefunden – bitte die MP3-Dateien in den Ordner „werkzeug/musik“ legen (im Programmordner).');
 else console.log(`🎵 ${MUSIK_DATEIEN.length} ${MUSIK_DATEIEN.length === 1 ? "Musikstück" : "Musikstücke"} gefunden.`);
 function musikLokal() {
   const macModus = CFG.stimme.wiedergabe === 'mac';
@@ -810,6 +816,7 @@ const server = http.createServer((req, res) => {
     const f = path.join(TON_DIR, path.basename(url.pathname));
     return fs.readFile(f, (e, d) => { if (e) { res.writeHead(404); return res.end(); } res.writeHead(200, { 'Content-Type': 'audio/wav' }); res.end(d); });
   }
+  if (url.pathname.startsWith('/musik/')) { const m = path.join(MUSIK_ORDNER, path.basename(decodeURIComponent(url.pathname))); if (fs.existsSync(m)) return fs.readFile(m, (e, d) => { if (e) { res.writeHead(404); return res.end(); } res.writeHead(200, { 'Content-Type': 'audio/mpeg' }); res.end(d); }); }
   const datei = path.join(DIR, 'seite', path.normalize(url.pathname === '/' ? '/index.html' : url.pathname).replace(/^(\.\.[/\\])+/, ''));
   if (!datei.startsWith(path.join(DIR, 'seite'))) { res.writeHead(403); return res.end(); }
   fs.readFile(datei, (e, d) => {

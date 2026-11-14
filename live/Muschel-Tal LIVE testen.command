@@ -8,6 +8,9 @@ if [ ! -d node_modules/onnxruntime-node ] || [ ! -d node_modules/@diffusionstudi
   echo "📦 Installiere Programmteile (einmalig, kann ein paar Minuten dauern) …"
   ONNXRUNTIME_NODE_INSTALL=skip npm install --silent
 fi
+# Musik: liegt in werkzeug/musik (Updates überschreiben das nie). Neue Stücke aus „Downloads“ automatisch übernehmen.
+mkdir -p werkzeug/musik
+for f in "$HOME"/Downloads/insel_*.mp3; do [ -f "$f" ] && [ ! -f "werkzeug/musik/$(basename "$f")" ] && cp "$f" werkzeug/musik/ && echo "🎵 Musik übernommen: $(basename "$f")"; done
 # Annas Offline-Stimme (Piper, „Kerstin“, ca. 60 MB) einmalig laden
 if [ ! -f werkzeug/stimme-kerstin/de-kerstin-low.onnx ]; then
   echo "⬇️  Lade einmalig Annas Offline-Stimme (ca. 60 MB) …"
