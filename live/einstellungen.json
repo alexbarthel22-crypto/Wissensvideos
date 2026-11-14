@@ -27,79 +27,79 @@
     },
     {
       "name": "Hängematten-Camp",
-      "ab": 10
+      "ab": 5
     },
     {
       "name": "Strohhütte",
-      "ab": 25
+      "ab": 15
     },
     {
       "name": "Fischerhütte",
-      "ab": 50
+      "ab": 30
     },
     {
       "name": "Stelzenhütte",
-      "ab": 90
+      "ab": 50
     },
     {
       "name": "Baumhaus",
-      "ab": 150
+      "ab": 80
     },
     {
       "name": "Bungalow",
-      "ab": 230
+      "ab": 120
     },
     {
       "name": "Surferhütte",
-      "ab": 350
+      "ab": 170
     },
     {
       "name": "Strandhaus",
-      "ab": 500
+      "ab": 240
     },
     {
       "name": "Leuchtturmhaus",
-      "ab": 700
+      "ab": 330
     },
     {
       "name": "Ferienhaus",
-      "ab": 1000
+      "ab": 450
     },
     {
       "name": "Poolhaus",
-      "ab": 1400
+      "ab": 600
     },
     {
       "name": "Villa",
-      "ab": 2000
+      "ab": 800
     },
     {
       "name": "Glasvilla",
-      "ab": 2800
+      "ab": 1050
     },
     {
       "name": "Luxusvilla",
-      "ab": 4000
+      "ab": 1400
     },
     {
       "name": "Inselvilla mit Hubschrauberlandeplatz",
-      "ab": 5500
+      "ab": 1850
     },
     {
       "name": "Strandpalast",
-      "ab": 7500
+      "ab": 2400
     },
     {
       "name": "Korallenpalast",
-      "ab": 10000
+      "ab": 3100
     },
     {
       "name": "Muschelschloss",
-      "ab": 14000
+      "ab": 4000
     },
     {
       "name": "Perlenschloss",
-      "ab": 20000
+      "ab": 5200
     }
   ],
   "muschelnProLike": 1,
@@ -446,5 +446,9 @@
     "_hinweis": "Jedes fertige Stadtgebäude bekommt einen Job, verlost unter den Zuschauern der letzten 15 Minuten. Gehalt: alle 5 Minuten 5 Muscheln fürs eigene Haus."
   },
   "bildrate": 30,
-  "_bildrate": "Bilder pro Sekunde der Insel (15–30). Ruckelt der Mac im LIVE, auf 24 oder 20 stellen – spart deutlich Rechenleistung, TikTok sendet ohnehin mit 30."
+  "_bildrate": "Bilder pro Sekunde der Insel (15–30). Ruckelt der Mac im LIVE, auf 24 oder 20 stellen – spart deutlich Rechenleistung, TikTok sendet ohnehin mit 30.",
+  "grossesGrundstueckAbStufe": 12,
+  "_grossesGrundstueck": "Ab dieser Stufe (12 = Villa, 800 Muscheln) zieht das Haus auf ein großes Doppel-Grundstück.",
+  "muschelnProKommentar": 2,
+  "_muschelnProKommentar": "Muscheln fürs eigene Haus pro Kommentar (höchstens alle 30 Sekunden)."
 }

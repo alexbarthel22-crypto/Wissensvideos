@@ -72,6 +72,11 @@ const GEB_PLAETZE = GEB_BLOECKE.map(([bi, bj, z]) => {
   return { x0, y0: by, w, h: bh, x: x0 + w / 2, y: by + bh * .9, i, j, q0, m: z >= 0 ? -100 + z : m };   // Zentrum zuerst
 }).sort((a, b) => a.m - b.m);
 const gebPlaetzeBei = k => GEB_PLAETZE.filter(g => g.m <= k).length;
+// Gebäude überspringen die Plätze, die große Grundstücke (Villen) belegen
+const villaNrn = () => new Set(Object.values(S.villen || {}));
+function gebNr(n) { const v = villaNrn(); let i = -1; for (let k = 0; k <= n; k++) { i++; while (v.has(i)) i++; } return i; }
+const GP = n => GEB_PLAETZE[gebNr(n)];
+const gebBedarf = (gebaeude) => Math.max(gebNr(gebaeude), ...[...villaNrn()]) + 1;
 const istGebZelle = (i, j, q) => GEB_PLAETZE.some(g => g.i === i && g.j === j && (q === g.q0 || q === g.q0 + 1));
 // Alle möglichen Grundstücke (3 × 2 je Block), sortiert nach Abstand zur Muschel.
 // Ein Grundstück gehört zur Insel, sobald K >= sein Maß – so bleiben alte Grundstücke beim Wachsen an ihrem Platz.
@@ -92,7 +97,7 @@ const plaetzeBei = k => { let n = 0; while (n < ALLE.length && ALLE[n].m <= k) n
 const PLAETZE = ALLE;                                           // Index = Platz-Nr. des Bewohners
 let ANZAHL = 0;
 function kFuer(spieler, gebaeude = (S.fertig || []).length + 1) {
-  let k = .9; while (k < K_MAX && (plaetzeBei(k) < Math.max(START_PLAETZE, spieler + 12) || gebPlaetzeBei(k) < gebaeude + 1)) k += .02;
+  let k = .9; while (k < K_MAX && (plaetzeBei(k) < Math.max(START_PLAETZE, spieler + 12) || gebPlaetzeBei(k) < gebBedarf(gebaeude))) k += .02;
   return Math.round(k * 100) / 100;
 }
 
@@ -258,7 +263,11 @@ async function verbinde() {
   }
 }
 const sp = id => S.spieler.find(p => p.id === id);
-const platzVon = p => p.platz < ANZAHL ? PLAETZE[p.platz] : null;
+const platzVon = p => {
+  const v = S.villen?.[p.id];                                   // großes Grundstück (Doppelplatz)
+  if (v != null) { const g = GEB_PLAETZE[v]; if (g && g.m <= K) return { x: g.x, y: g.y - 6, cx: g.x, cy: g.y0 + g.h / 2, x0: g.x0, y0: g.y0, w: g.w, h: g.h, gross: true }; }
+  return p.platz < ANZAHL ? PLAETZE[p.platz] : null;
+};
 const bau = {};                                                  // laufende Bau-Animationen: id -> {t, alt, neu, D}
 let WACHS = null, STRASSEN_ALT = '';
 function ereignis(e) {
@@ -269,7 +278,7 @@ function ereignis(e) {
       if (S.bildrate && !new URLSearchParams(location.search).get('fps')) FPS = Math.max(15, Math.min(30, S.bildrate));
       const n = S.spieler.length;
       if (!BASIS || STRASSEN_ALT !== S.strassen.join()) { K = Math.max(K, kFuer(n)); STRASSEN_ALT = S.strassen.join(); basisZeichnen(K); ANZAHL = plaetzeBei(K); spaziergaenger(); }
-      else if ((n > ANZAHL || gebPlaetzeBei(K) < (S.fertig || []).length + 1) && K < K_MAX && !WACHS) wachsen(kFuer(n + 60, (S.fertig || []).length + 4));     // erst wachsen, wenn alles voll ist – dann gleich ein großes Stück
+      else if ((n > ANZAHL || gebPlaetzeBei(K) < gebBedarf((S.fertig || []).length)) && K < K_MAX && !WACHS) wachsen(kFuer(n + 60, (S.fertig || []).length + 4));     // erst wachsen, wenn alles voll ist – dann gleich ein großes Stück
       break;
     }
     case 'neu': {                                                  // erstes Like: Zelt wird gebaut – Banner, Funken, Kamera
@@ -283,7 +292,7 @@ function ereignis(e) {
     case 'anbau': if (pl) { pop[e.id] = jetzt; funken(pl, '🔨', 5); fokus(pl, 2600, true); } break;
     case 'job': {                                                   // Job in einem fertigen Gebäude verlost
       banner.push({ t: 0, oben: `💼 ${e.name}`, unten: `gewinnt den Job ${e.wo} · ${e.gehalt} 🐚 Gehalt`, farbe: '#ff8a2a' });
-      const gp = GEB_PLAETZE[e.nr]; if (gp) { fokus({ x: gp.x, y: gp.y - 10 }, 6000); funken({ x: gp.x, y: gp.y - 50 }, '💼', 14); }
+      const gp = GP(e.nr); if (gp) { fokus({ x: gp.x, y: gp.y - 10 }, 6000); funken({ x: gp.x, y: gp.y - 50 }, '💼', 14); }
       break;
     }
     case 'zahltag': banner.push({ t: 0, oben: '💰 Zahltag!', unten: `${e.n} ${e.n === 1 ? 'Job' : 'Jobs'} · je ${e.gehalt} 🐚 Gehalt`, farbe: '#3f9b45' }); break;
@@ -295,6 +304,12 @@ function ereignis(e) {
       else if (e.art === 'hausParty') { if (pl) { fokus(pl, 6000); funken(pl, '🎉', 20); setTimeout(() => hausFeuerwerk(pl, 6), 800); } }
       else MOMENTE.push({ art: e.art, t: jetzt });
       break;
+    case 'umzug': {                                                  // Haus zieht aufs große Grundstück
+      if (p) { bau[e.id] = { t: jetzt + 600, alt: Math.max(0, p.stufe - 1), neu: p.stufe, D: 4.8 }; }
+      banner.unshift({ t: 0, oben: `🏡 ${e.name}`, unten: 'zieht aufs große Grundstück – doppelt so viel Platz!', farbe: '#3f9b45', dauer: 4 });
+      const g = GEB_PLAETZE[e.nr]; if (g) { fokus({ x: g.x, y: g.y - 20 }, 8000); setTimeout(() => { funken({ x: g.x, y: g.y - 60 }, '🎉', 24); hausFeuerwerk({ x: g.x, y: g.y }, 14); }, 4800); }
+      break;
+    }
     case 'erstLiken': banner.push({ t: 0, oben: `❤️ ${e.name}`, unten: e.art === 'farbe' ? 'Like einmal – dann kannst du dein Haus streichen!' : 'Like einmal – dann wird dein Haus gebaut!', farbe: PINK }); break;
     case 'farbe': {                                                // Haus wird animiert neu gestrichen (Farbrolle von links nach rechts)
       streich[e.id] = { t: jetzt + 600, alt: e.alt, neu: e.neu };
@@ -317,7 +332,7 @@ function ereignis(e) {
     case 'folgeAufruf': banner.push({ t: 0, oben: '🏠 Folge @muscheltal!', unten: 'Deine Hütte hier im LIVE + in Muschel-Tal', farbe: TUERKIS }); break;
     case 'kamera': if (pl) fokus(pl, e.ms || 15000); break;
     case 'feuerwerk': feuerwerk(); break;
-    case 'kameraBau': { const gp = GEB_PLAETZE[(S.fertig || []).length]; if (gp) fokus({ x: gp.x, y: gp.y - 20 }, e.ms || 8000); break; }
+    case 'kameraBau': { const gp = GP((S.fertig || []).length); if (gp) fokus({ x: gp.x, y: gp.y - 20 }, e.ms || 8000); break; }
     case 'ballonPlatzt': for (let i = 0; i < 18; i++) fx.push({ x: IX + (Math.random() - .5) * 500, y: IY - 200 + (Math.random() - .5) * 300, vx: (Math.random() - .5) * 8, vy: (Math.random() - .5) * 8, t: performance.now(), z: ['🎉', '✨', '💥'][i % 3], s: 22 }); break;
     case 'eventStart': banner.push({ t: 0, oben: '⚡ Überraschungs-Event!', unten: 'Jetzt mitmachen!', farbe: '#9b5de5' }); funken({ x: IX, y: IY }, '⚡', 20); break;
     case 'eventEnde': if (e.gut) { const q = e.spielerId && sp(e.spielerId), qp = q && platzVon(q); if (qp) { funken(qp, '🎉', 24); fokus(qp, 5000); } else feuerwerk(); } break;
@@ -325,8 +340,8 @@ function ereignis(e) {
       if (i >= 0) { pop.t = banner[i].t; banner[i] = pop; } else banner.splice(banner.length ? 1 : 0, 0, pop); }   // neuer Follower: Zelt-Banner wird zum Willkommens-Pop-up
       if (pl) { funken(pl, '🐚', 10); fokus(pl, 5000, true); } break;
     case 'ziel': banner.push({ t: 0, oben: '🎉 Bewohner-Ziel erreicht!', unten: e.name + ' wird auf der Haupt-Insel gebaut', farbe: '#9b5de5' }); feuerwerk(); break;
-    case 'projekt': { const gp = GEB_PLAETZE[(S.fertig || []).length]; if (gp) { funken({ x: gp.x, y: gp.y - 40 }, '🚧', 14); fokus({ x: gp.x, y: gp.y - 10 }, 5000); } break; }
-    case 'fertig': { const gp = GEB_PLAETZE[(S.fertig || []).length]; GEB_BAU[(S.fertig || []).length] = jetzt; if (gp) { fokus({ x: gp.x, y: gp.y - 10 }, 6500); setTimeout(() => { funken({ x: gp.x, y: gp.y - 60 }, '🎉', 30); feuerwerk(); }, 4300); } break; }
+    case 'projekt': { const gp = GP((S.fertig || []).length); if (gp) { funken({ x: gp.x, y: gp.y - 40 }, '🚧', 14); fokus({ x: gp.x, y: gp.y - 10 }, 5000); } break; }
+    case 'fertig': { const gp = GP((S.fertig || []).length); GEB_BAU[(S.fertig || []).length] = jetzt; if (gp) { fokus({ x: gp.x, y: gp.y - 10 }, 6500); setTimeout(() => { funken({ x: gp.x, y: gp.y - 60 }, '🎉', 30); feuerwerk(); }, 4300); } break; }
     case 'ansage': untertitel = { text: e.text, t: jetzt, d: Math.max(2.5, (e.ms || 4000) / 1000 + .5) }; break;
     case 'stimme': if (e.id === meineId) stimmeAbspielen(e.url); break;
     case 'hallo': meineId = e.id; break;
@@ -1030,7 +1045,7 @@ function schilderZeichnen(t) {                                  // weiße Namens
   X.setTransform(Q0, 0, 0, Q0, 0, 0);
   const px = 28, liste = SCHILDER.splice(0);
   for (const [nr, name] of Object.entries(S.jobs || {})) {         // Job-Schilder über den Stadtgebäuden
-    const gp = GEB_PLAETZE[+nr]; if (!gp || !name) continue;
+    const gp = GP(+nr); if (!gp || !name) continue;
     const sx = 540 + (gp.x - cam.x) * cam.z, sy = MITTE_Y + (gp.y - 118 - cam.y) * cam.z;
     if (sx < -200 || sx > W + 200 || sy < KOPF_UNTEN || sy > H) continue;
     X.font = schrift(900, 22); const tw = Math.min(260, X.measureText(name).width), w = tw + 56, h = 38;
@@ -1061,16 +1076,22 @@ function haus(p, pl, t, roh) {
   const seit = pop[p.id] ? t - pop[p.id] : 9999, hops = seit < 700 ? 1 + Math.sin(seit / 700 * Math.PI) * .3 : 1;
   c.save(); c.translate(pl.x, pl.y);
   // Grundstück-Deko: ab Bungalow eigener Rasen mit Hecke, Weg zur Straße
-  if (st >= 6) { c.fillStyle = 'rgba(70,150,50,.35)'; c.beginPath(); c.roundRect(-pl.w / 2 + 4, -pl.h * .78 + 4, pl.w - 8, pl.h - 8, 6); c.fill(); }
+  if (st >= 6 && !pl.gross) { c.fillStyle = 'rgba(70,150,50,.35)'; c.beginPath(); c.roundRect(-pl.w / 2 + 4, -pl.h * .78 + 4, pl.w - 8, pl.h - 8, 6); c.fill(); }
+  if (pl.gross) {                                                 // großes Grundstück: Rasen, Hecke, Weg, Pool, Palmen
+    c.fillStyle = 'rgba(70,150,50,.45)'; c.beginPath(); c.roundRect(-pl.w / 2 + 6, -pl.h * .86, pl.w - 12, pl.h - 12, 10); c.fill();
+    c.strokeStyle = '#3f8a3a'; c.lineWidth = 6; c.stroke();
+    c.fillStyle = '#fff'; c.beginPath(); c.roundRect(pl.w * .18, -pl.h * .62, 54, 30, 8); c.fill(); c.fillStyle = '#3fa0e8'; c.beginPath(); c.roundRect(pl.w * .18 + 4, -pl.h * .62 + 4, 46, 22, 6); c.fill();
+  }
   c.fillStyle = '#efd9a0'; c.fillRect(-3, 0, 6, pl.h * .22 + 4);
   if (a.includes('garten')) { c.fillStyle = '#6b4423'; c.beginPath(); c.roundRect(-34, 2, 22, 8, 3); c.fill(); blumen(c, -32, 5, 5, 20); }
   if (a.includes('pool') && st < 11) { c.fillStyle = '#fff'; c.beginPath(); c.roundRect(14, 1, 22, 11, 3); c.fill(); c.fillStyle = '#3fa0e8'; c.beginPath(); c.roundRect(16, 3, 18, 7, 2); c.fill(); }
   c.fillStyle = 'rgba(0,0,0,.18)'; c.beginPath(); c.ellipse(4, 3, 28 + st * .8, 7, 0, 0, 7); c.fill();
-  c.scale(hops, hops); c.lineJoin = 'round';
+  const gs = pl.gross ? 1.75 : 1; c.scale(hops * gs, hops * gs); c.lineJoin = 'round';
   if (!(bau[p.id] && bauZeichnen(c, p, f, t, bau[p.id]))) HAUS[st](c, f, t + p.platz * 137);
   if (a.includes('flagge')) { const h = HOEHE[st]; c.strokeStyle = INK; c.lineWidth = 1.5; c.beginPath(); c.moveTo(-2, h); c.lineTo(-2, h - 14); c.stroke(); c.fillStyle = f; c.beginPath(); c.moveTo(-2, h - 14); c.lineTo(9 + Math.sin(t * .006) * 2, h - 11); c.lineTo(-2, h - 8); c.fill(); }
   c.restore();
-  if (a.includes('palme')) palme(X, pl.x - 30, pl.y - 2, .42, t);
+  if (a.includes('palme') || pl.gross) palme(X, pl.x - (pl.gross ? 70 : 30), pl.y - 2, pl.gross ? .7 : .42, t);
+  if (pl.gross) palme(X, pl.x + 74, pl.y - 6, .6, t + 900);
   if (a.includes('laterne')) { X.fillStyle = INK; X.fillRect(pl.x + 30, pl.y - 22, 2.5, 24); X.fillStyle = '#ffe9a8'; X.shadowColor = '#ffd23f'; X.shadowBlur = 8; X.beginPath(); X.arc(pl.x + 31, pl.y - 24, 4, 0, 7); X.fill(); X.shadowBlur = 0; }
   if (a.includes('boot')) { X.fillStyle = '#8a5a2b'; X.beginPath(); X.roundRect(pl.x + 14, pl.y + 4, 22, 6, 3); X.fill(); X.fillStyle = '#fff'; X.beginPath(); X.moveTo(pl.x + 24, pl.y + 3); X.lineTo(pl.x + 24, pl.y - 10); X.lineTo(pl.x + 32, pl.y + 3); X.fill(); }
   // Name auf dem Grundstück – in der Nahansicht als großes Schild in Bildschirmgröße (wird nach der Welt gezeichnet)
@@ -1203,7 +1224,7 @@ function baustelle(c, prozent, name, t) {
 const GEB_BAU = {};
 function gebaeudeZeichnen(t, imCache) {
   (S.fertig || []).forEach((id, i) => {
-    const pl = GEB_PLAETZE[i]; if (!pl) return;
+    const pl = GP(i); if (!pl) return;
     const anim = GEB_BAU[i], age = anim ? (t - anim) / 1000 : 99, D = 5.2;
     if (imCache === (age < D + .2)) return;                      // läuft die Bau-Animation: live zeichnen, sonst aus dem Zwischenspeicher
     if (!imCache && !sichtbar(pl.x, pl.y - 40, 180)) return;
@@ -1225,7 +1246,7 @@ function gebaeudeZeichnen(t, imCache) {
     X.restore();
   });
   // Baustelle des laufenden Projekts: live, mit Kran, Krabben, Betonmischer und Funken
-  if (S.projekt && !imCache) { const pl = GEB_PLAETZE[(S.fertig || []).length]; if (pl && sichtbar(pl.x, pl.y - 40, 200)) { X.save(); X.translate(pl.x, pl.y); baustelle(X, S.projekt.stand / S.projekt.ziel, S.projekt.name, t); X.restore(); } }
+  if (S.projekt && !imCache) { const pl = GP((S.fertig || []).length); if (pl && sichtbar(pl.x, pl.y - 40, 200)) { X.save(); X.translate(pl.x, pl.y); baustelle(X, S.projekt.stand / S.projekt.ziel, S.projekt.name, t); X.restore(); } }
 }
 
 // ================= Kopfzeile =================

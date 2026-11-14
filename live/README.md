@@ -103,6 +103,14 @@ Like-Ziele liegen bei ca. 80 % des normalen Like-Tempos: schaffbar, wenn alle mi
 | ✈️ Traumurlaub | `1` `2` `3` | Mehrheit 10 🐚 |
 | 💖 Komplimente | `schön` / `toll` | 5 🐚, ab 10 Bonus 10 🐚 |
 
+## Große Grundstücke
+Ab Stufe 12 (Villa, 800 Muscheln) zieht das Haus auf ein **großes Doppel-Grundstück** (so groß wie ein Stadtgebäude-Platz) – mit Rasen, Hecke, Pool, Palmen und größerem Haus. Einstellbar: `grossesGrundstueckAbStufe`.
+
+## Fortschritt
+- TikTok schickt bei vielen Likes nicht jedes einzeln mit Namen: die fehlenden Likes werden anteilig auf die Zuschauer verteilt, die gerade liken.
+- Kommentare bringen 2 Muscheln (höchstens alle 30 s).
+- Stufen-Grenzen: 0, 5, 15, 30, 50, 80, 120, 170, 240, 330, 450, 600, 800, 1.050, 1.400, 1.850, 2.400, 3.100, 4.000, 5.200 Muscheln.
+
 ## Jobs
 Ist ein Stadtgebäude fertig, wird dort ein **Job** unter den Zuschauern der letzten 15 Minuten verlost (Banner, Ansage, gelbes 💼-Schild über dem Gebäude). **Gehalt: alle 5 Minuten 5 Muscheln** fürs eigene Haus (einstellbar unter `jobs` in einstellungen.json). Jobs gelten nur während des Streams: bei jedem Neustart werden alle Jobs neu verlost (nacheinander, alle 30 s einer, sobald Zuschauer aktiv sind).
 

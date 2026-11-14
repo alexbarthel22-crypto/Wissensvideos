@@ -18,7 +18,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-14 t';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-14 u';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -42,12 +42,15 @@ function namenPruefen() {                                  // auch für Bewohner
   }
 }
 S.fertig = (S.fertig || []).filter(id => CFG.abstimmung.projekte.some(x => x.id === id));
+S.villen ||= {};                                           // Spieler-ID -> Nr. des großen Grundstücks (Doppelplatz, wie Gebäudeplätze)
 S.jobs = {};                                               // Jobs gelten nur für diesen Stream: bei jedem Start neu verlost (Gebäude-Nr. -> { id, seit })
 if (S.projekt && !CFG.abstimmung.projekte.some(x => x.id === S.projekt.id)) S.projekt = null;
 if (S.projekt) S.projekt.ziel = CFG.abstimmung.projekte.find(x => x.id === S.projekt.id).ziel;   // Kosten aus den Einstellungen
 namenPruefen(); setInterval(namenPruefen, 30000);
 
 const stufeVon = m => { let i = 0; CFG.stufen.forEach((s, k) => { if (m >= s.ab) i = k; }); return i; };
+// Neue Stufen-Grenzen gelten auch für gespeicherte Häuser (nur nach oben)
+for (const q of Object.values(S.spieler || {})) { const st = stufeVon(q.muscheln || 0); if (st > (q.stufe || 0)) q.stufe = st; }
 for (const p of Object.values(S.spieler)) p.stufe = stufeVon(p.muscheln);   // nach Änderung der Stufen
 
 function spieler(u) {
@@ -76,6 +79,7 @@ function gibMuscheln(p, n, grund) {
   geaendert = true;
   if (p.stufe > vorher) {
     sende({ typ: 'stufe', id: p.id, stufe: p.stufe });
+    if (p.stufe >= (CFG.grossesGrundstueckAbStufe ?? 12) && S.villen[p.id] == null) setTimeout(() => villaVergeben(p), 5500);
     if (grund !== 'start' && einmal(p.id, 'stufe', 30000)) sag(satz('stufe', { name: sprechName(p), stufe: artikel(CFG.stufen[p.stufe].name), stufeDativ: dativ(CFG.stufen[p.stufe].name), stufeName: CFG.stufen[p.stufe].name }), 2);
   }
   zustand();
@@ -143,6 +147,7 @@ function kommentar(u, text) {
     if (!EV.waereAntwort(t)) return;                        // während Events: nur echte Event-Antworten bauen ein Zelt
   }
   const p = spieler(u); if (!p) return;
+  if (Date.now() - (p.kommentarBonus || 0) > 30000) { p.kommentarBonus = Date.now(); gibMuscheln(p, CFG.muschelnProKommentar ?? 2, 'kommentar'); }
   farbeAus(p, t);                                          // Farbe gilt immer – auch wenn das Wort gleichzeitig eine Event-Antwort ist
   if (EV.kommentar(p, t)) { geaendert = true; zustand(); return; }   // Event-Antworten (rot, flasche, A, 42 …)
   if (istHausWunsch(t) && !hausWunsch.includes(p.id) && Date.now() - (hausGezeigt[p.id] || 0) > 120000) {
@@ -301,6 +306,19 @@ function projektFertig() {
   const def = CFG.abstimmung.projekte.find(x => x.id === pr.id) || {};
   sag(satz('projektFertig', { Projekt: grossKlein(def.der || pr.name) }), 0);
   const nr = S.fertig.length - 1; setTimeout(() => jobVerlosen(nr), 8000);   // nach der Bau-Animation: Job verlosen
+}
+
+// ---------- Große Grundstücke: ab einer Stufe zieht das Haus auf einen Doppelplatz ----------
+// Große Grundstücke nutzen dieselben Bauplätze wie die Stadtgebäude – mit Abstand dahinter, Gebäude überspringen sie.
+function villaVergeben(p) {
+  if (!p || S.villen[p.id] != null) return;
+  const belegt = new Set(Object.values(S.villen));
+  let nr = S.fertig.length + 4 + Object.keys(S.villen).length;
+  while (belegt.has(nr)) nr++;
+  S.villen[p.id] = nr; geaendert = true;
+  sende({ typ: 'umzug', id: p.id, name: p.name, nr });
+  sag(`${sprechName(p)} zieht aufs große Grundstück! … Doppelt so viel Platz!`, 1);
+  zustand();
 }
 
 // ---------- Jobs: Jedes fertige Gebäude bekommt einen Job, verlost unter den Zuschauern (Gehalt: Muscheln) ----------
@@ -713,6 +731,7 @@ function oeffentlich() {
     spieler: S.reihenfolge.map(id => S.spieler[id]).filter(p => p && !p.gesperrt).map(p => ({ id: p.id, name: p.name, muscheln: p.muscheln, stufe: p.stufe, anbauten: p.anbauten, farbe: p.farbe, platz: p.platz, eventMuscheln: p.eventMuscheln })),
     stufen: CFG.stufen.map(s => s.name), stufenAb: CFG.stufen.map(s => s.ab),
     projekt: S.projekt, fertig: S.fertig, kasse: S.kasse,
+    villen: S.villen,
     jobs: Object.fromEntries(Object.entries(S.jobs).map(([nr, j]) => [nr, S.spieler[j.id]?.name || ''])),
     bewohner, ziel: zielJetzt(), strassen: CFG.strassen,
     tiktokName: CFG.tiktokName, test: TEST, ton: CFG.ton, ort: CFG.ort, bildrate: CFG.bildrate || 30,
@@ -827,13 +846,19 @@ async function verbinde() {
   const txt = d => d.content ?? d.comment ?? '';
   c.on(WebcastEvent.CHAT, d => { const u = U(d.user); if (!u?.uniqueId) return; tt('💬', `${nm(d)}: ${txt(d)}`); kommentar(u, txt(d)); });
   // TikTok schickt nicht jedes Like einzeln, aber immer die Gesamtzahl (total). Was fehlt, kommt trotzdem in die Kasse.
-  let likeTotal = 0;
+  let likeTotal = 0; const aktiveLiker = new Map();
   c.on(WebcastEvent.LIKE, d => {
     const u = U(d.user), n = +(d.count ?? d.likeCount) || 1, total = +(d.total ?? d.totalLikeCount) || 0;
-    if (u?.uniqueId) { tt('❤️', `${nm(d)} +${n} Likes`); like(u, n); } else { S.likesGesamt += n; inKasse(n * CFG.kasse.proLike); }
+    if (u?.uniqueId) { tt('❤️', `${nm(d)} +${n} Likes`); like(u, n); const id = String(u.uniqueId).toLowerCase(), alt = aktiveLiker.get(id); aktiveLiker.set(id, { n: (alt && Date.now() - alt.t < 30000 ? alt.n : 0) + n, t: Date.now() }); } else { S.likesGesamt += n; inKasse(n * CFG.kasse.proLike); }
     if (total) {
       const fehlt = likeTotal ? total - likeTotal - n : 0;
-      if (fehlt > 0 && fehlt < 100000) { S.likesGesamt += fehlt; inKasse(fehlt * CFG.kasse.proLike); geaendert = true; zustand(); }
+      if (fehlt > 0 && fehlt < 100000) {
+        S.likesGesamt += fehlt; inKasse(fehlt * CFG.kasse.proLike);
+        // Die fehlenden Likes gehören den Leuten, die gerade liken: anteilig auf ihre Häuser verteilen
+        const jetzt = Date.now(), liste = [...aktiveLiker].filter(([, v]) => jetzt - v.t < 30000), summe = liste.reduce((a, [, v]) => a + v.n, 0);
+        if (summe) for (const [id, v] of liste) { const q = S.spieler[id], anteil = Math.round(fehlt * v.n / summe); if (q && anteil > 0) gibMuscheln(q, anteil * CFG.muschelnProLike, 'like'); }
+        geaendert = true; zustand();
+      }
       likeTotal = Math.max(likeTotal, total);
     }
   });
