@@ -98,7 +98,7 @@ async function aufraeumen(store) {
     t[1] = id; await kasse.set(t.join("/"), (await kasse.get(k)) || "1"); await kasse.delete(k);
   }
 }
-const TEXT = { login: "Login-Serie", quest: "Aufgabe", qbonus: "Alle 3 Aufgaben", shell: "Schwebende Muschel", erf: "Neuer Erfolg", story: "Story geteilt", spende: "Spende Inselkasse" };
+const TEXT = { login: "Login-Serie", quest: "Aufgabe", qbonus: "Alle 3 Aufgaben", shell: "Schwebende Muschel", erf: "Neuer Erfolg", story: "Story geteilt", spende: "Spende Inselkasse", tresor: "Tresor des Schöpfers" };
 
 export default async (req) => {
   const store = getStore({ name: "muscheln", consistency: "strong" });
@@ -225,6 +225,15 @@ export default async (req) => {
     const k = String(d.key || "").toUpperCase();
     if (!/^[A-Z]{2,12}$/.test(k)) return json({ fehler: "Erfolg" }, 400);
     return json({ ok: await setze("erf", k, 10) });
+  }
+  // Tresor des Schöpfers (Schlossinsel): einmalige Verlosung je Name – 3, 5, 7 oder 10 Muscheln (je 25 %)
+  if (act === "tresor") {
+    const pre = "b/" + nm + "/tresor/einmal/";
+    const L = (await store.list({ prefix: pre })).blobs;
+    if (L.length) return json({ ok: false, betrag: Number(L[0].key.slice(pre.length)) || 0 });
+    const betrag = [3, 5, 7, 10][crypto.getRandomValues(new Uint32Array(1))[0] % 4];
+    await store.set(pre + betrag, String(Date.now()));
+    return json({ ok: true, betrag });
   }
   if (act === "story") return json({ ok: await setze("story", woche(heute), 25) });
   if (act === "spende") {

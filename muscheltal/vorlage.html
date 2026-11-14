@@ -343,6 +343,7 @@ footer a{color:var(--soft)}
 .rfoot{text-align:center;font-size:12.5px;color:#7a5a2b;font-weight:700;margin-top:10px;line-height:1.4}
 .rangbox{background:#fff;border:3px solid #2a1b12;border-radius:20px;box-shadow:0 4px 0 #2a1b12;padding:10px 13px;margin:12px 0}.rangbox h3{margin:0 0 6px;font-size:16px}.rangbox .trow{display:flex;gap:8px;align-items:center;font-weight:800;font-size:14px;padding:3px 0}.rangbox .trow span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.rangbox .trow b{margin-left:auto;white-space:nowrap}.rangbox .trow.me{color:#e8467c}.rangbox .tlink{display:block;margin-top:6px;font-weight:900;color:#0a8fd0;font-size:13.5px;text-decoration:none}
 .btn.rangb{background:#ffd23f}
+.trs{text-align:center}.trsb{font-size:44px;line-height:1;margin-bottom:10px}.trsw{margin:12px auto 14px;width:170px;height:76px;border-radius:18px;background:linear-gradient(135deg,#2a1b12,#4a3420);border:3px solid #e8b84a;display:flex;align-items:center;justify-content:center;box-shadow:inset 0 0 18px rgba(0,0,0,.45)}.trsw span{font-size:32px;font-weight:900;color:#ffe08a;white-space:nowrap}.trsw.trsp span{animation:trspa .18s ease-out}.trsw.win{background:linear-gradient(135deg,#ffcf4a,#ff9fc2);border-color:#fff}.trsw.win span{color:#2a1b12;animation:trsw .6s ease-out}@keyframes trspa{from{transform:translateY(-10px);opacity:.3}to{transform:none;opacity:1}}@keyframes trsw{0%{transform:scale(.4)}60%{transform:scale(1.25)}100%{transform:scale(1)}}
 </style>
 </head>
 <body>
@@ -1864,7 +1865,7 @@ const GOLDT='#e8b84a';function schTresor(c,nl,t){const X=62,Y=52,SH=['#ffd1dc','
  c.strokeStyle=GOLDT;c.lineWidth=.55;c.beginPath();c.arc(0,-10.2,6.6,0,TAU);c.stroke();
  c.fillStyle='#3d414b';c.beginPath();c.arc(7.4,-15.4,1.3,0,TAU);c.fill();c.fillStyle='#d8dce4';c.beginPath();c.arc(7.4,-15.4,.9,0,TAU);c.fill();c.strokeStyle='#3d414b';c.lineWidth=.18;c.beginPath();c.moveTo(7.4,-15.4);c.lineTo(7.4+Math.cos(t*.7)*.75,-15.4+Math.sin(t*.7)*.75);c.stroke();
  // Schild „TRESOR“ + ∞
- c.fillStyle='#2a1b12';c.beginPath();c.roundRect(-7.6,-23.6,15.2,3.6,1.2);c.fill();c.strokeStyle=GOLDT;c.lineWidth=.3;c.stroke();c.fillStyle='#ffe08a';c.font='900 2.2px '+FONT;c.textAlign='center';c.fillText('🐚 TRESOR ∞',0,-21.1);
+ {c.font='900 2.2px '+FONT;const tw=c.measureText('🐚 TRESOR ∞').width,bw=tw+2.4;c.fillStyle='#2a1b12';c.beginPath();c.roundRect(-bw/2,-23.6,bw,3.6,1.2);c.fill();c.strokeStyle=GOLDT;c.lineWidth=.3;c.stroke();c.fillStyle='#ffe08a';c.textAlign='center';c.textBaseline='alphabetic';c.fillText('🐚 TRESOR ∞',0,-21.1);}
  // Glitzern über den Muscheln
  if(!REDUCED)for(let k=0;k<4;k++){const ph=(t*.8+k*.27)%1,a=Math.sin(ph*Math.PI);const sx=-5+hash(k,91)*10,sy=-14+hash(k,92)*8-ph*3;c.globalAlpha=a;c.fillStyle='#fff8c4';c.beginPath();for(let j=0;j<8;j++){const r=j%2?.25:.9,an=j/8*TAU;c.lineTo(sx+Math.cos(an)*r,sy+Math.sin(an)*r);}c.closePath();c.fill();}
  c.globalAlpha=1;if(nl>.3){c.fillStyle=`rgba(255,220,140,${.18*nl})`;c.beginPath();c.arc(0,-10,9,0,TAU);c.fill();}
@@ -3468,7 +3469,7 @@ cv.addEventListener('pointermove',e=>{if(!pts.has(e.pointerId))return;const o=pt
  if(pts.size===1){cam.x-=(n[0]-o[0])/cam.z;cam.y-=(n[1]-o[1])/cam.z;moved+=Math.abs(n[0]-o[0])+Math.abs(n[1]-o[1]);clamp();kick();}
  else if(pts.size===2){const [a,b]=[...pts.values()];const d=Math.hypot(a[0]-b[0],a[1]-b[1]);if(pinch)zoomAt(d/pinch,(a[0]+b[0])/2,(a[1]+b[1])/2);pinch=d;moved+=99;}});
 const up=e=>{if(!pts.has(e.pointerId))return;pts.delete(e.pointerId);if(pts.size<2)pinch=0;cv.classList.remove('drag');
- if(pts.size===0&&moved<6){const [wx,wy]=s2w(e.offsetX,e.offsetY);if(bauSignAt(wx,wy)){zuBauprojekten();return;}if(lvAt(wx,wy)){lvInfo();return;}let best=null,bd=14;
+ if(pts.size===0&&moved<6){const [wx,wy]=s2w(e.offsetX,e.offsetY);if(bauSignAt(wx,wy)){zuBauprojekten();return;}if(tresorAt(wx,wy)){tresorTap();return;}if(lvAt(wx,wy)){lvInfo();return;}let best=null,bd=14;
   for(const v of ISL){if(Math.hypot(wx-v.x,wy-v.y)>v.R+30)continue;const gx=Math.round((wx-v.x)/S),gy=Math.round((wy-v.y)/(S*.9));for(let dx=-1;dx<=1;dx++)for(let dy=-1;dy<=1;dy++){const q=v.cell.get((gx+dx)+','+(gy+dy));if(!q||q.nr>limit)continue;const d=Math.hypot(q.p.x-wx,q.p.y-wy);if(d<bd){bd=d;best=q;}}}
   {let tb=null,td=9;for(const [tx,ty,tq] of TAPS){const d=Math.hypot(tx-wx,(ty-3)-wy);if(d<td){td=d;tb=tq;}}if(tb){zeigePass(tb,true);return;}}
   if(best)select(best);else if(sel){q.value='';$('qx').hidden=true;sg.hidden=true;unsel();}}};
@@ -3554,6 +3555,20 @@ let mpWalk=false;
 function schoepferKontakt(){let me=null;try{me=WK.on&&WK.me?WK.me:((typeof mkMe==='function'&&mkMe())||byName.get((localStorage.getItem('mt-me')||'').toLowerCase()));}catch(e){}
  if(!me||me.gb===SCH)return;const neu=gibErf(me,'SCHOEPFER');if(!neu)return;
  setTimeout(()=>popup('<div class="big">🤝</div><h2>Geheimer Erfolg! ✨</h2><p>'+esc(me.name)+', du hattest Kontakt zum Muschel-Tal-Schöpfer: <b>„Schöpfer-Kontakt“</b></p><button class="btn hib" type="button" onclick="document.getElementById(\'pg\').hidden=true">Weiter</button>'),350);}
+// Tresor des Schöpfers (Schlossinsel): antippen → einmalige Verlosung (nur beanspruchte Namen), 5 s, je 25 % auf 3/5/7/10 🐚
+function tresorAt(wx,wy){if(cam.z*S<=6)return false;const x=SCH.x+62,y=SCH.y+52;return wx>x-13&&wx<x+13&&wy>y-25&&wy<y+3;}
+async function tresorTap(){if(!mkClaim()){mkSperre();return;}const c=mkClaim(),TK='mt-tresor-'+c.n;let alt=null;try{alt=localStorage.getItem(TK);}catch(e){}
+ if(alt){popup('<div class="big">🔒</div><h2>Tresor schon geöffnet</h2><p>Du hast dich bereits am Tresor des Schöpfers bedient'+(+alt?' und <b>'+alt+' 🐚</b> gewonnen':'')+'. Das geht nur ein einziges Mal.</p>');return;}
+ popup('<div class="trs"><div class="trsb">🔐</div><h2>Der Tresor des Schöpfers</h2><p>Ein einziges Mal darfst du dir etwas aus dem Tresor des Schöpfers nehmen. Viel Glück! 🍀</p><div class="trsw" id="trsw"><span>?</span></div><button class="cbtn hot" type="button" id="trsgo">🎲 Tresor öffnen</button></div>');
+ $('trsgo').onclick=async()=>{const b=$('trsgo');b.disabled=true;b.textContent='🎲 Der Tresor dreht …';const w=$('trsw'),V=[3,5,7,10],t0=performance.now(),D=5000;let res=null,fertig=false;
+  let got=false;mk('tresor').then(d=>{res=d;got=true;}).catch(()=>{got=true;});let i=0,last=0;
+  const tick=n=>{const k=(n-t0)/D,iv=60+Math.pow(Math.min(1,k),2.2)*520;if(n-last>=iv){last=n;i++;w.innerHTML='<span>'+V[i%4]+' 🐚</span>';w.classList.remove('trsp');void w.offsetWidth;w.classList.add('trsp');}
+   if(k<1||!got)return requestAnimationFrame(tick);fertig=true;
+   if(!res||res.fehler){w.innerHTML='<span>😕</span>';b.textContent='Später nochmal versuchen';b.disabled=false;b.onclick=()=>{$('pg').hidden=true;};return;}
+   const a=res.betrag;try{localStorage.setItem(TK,String(a));}catch(e){}w.innerHTML='<span>'+a+' 🐚</span>';w.classList.add('win');
+   b.textContent=res.ok?'🎉 '+a+' Muscheln eingesackt!':'Schon geöffnet';b.disabled=false;b.onclick=()=>{$('pg').hidden=true;};
+   if(res.ok){MK.d=null;mkStand();const h=w.parentNode.querySelector('h2');if(h)h.textContent='🎉 Gewonnen: '+a+' Muscheln!';const pp=w.parentNode.querySelector('p');if(pp)pp.textContent='Die Muscheln liegen jetzt auf deinem Konto. Der Tresor bleibt für dich ab jetzt verschlossen.';}else{const h=w.parentNode.querySelector('h2');if(h)h.textContent='Tresor schon geöffnet';}};
+  requestAnimationFrame(tick);};}
 function zeigePass(p,third,walk){if(third&&p&&p.gb===SCH)schoepferKontakt();mpP=p;mpThird=!!third;mpWalk=!!walk;$('mp').hidden=false;$('mpf').hidden=true;$('mpp').hidden=false;$('mpcardbox').innerHTML=passCard(p);
  $('mpshare').innerHTML=walk?'📲 Pass von '+esc(p.name)+' teilen<small>TikTok · Instagram · WhatsApp-Status</small><span class="bon" id="mpbon" hidden></span>':'📲 In meiner Story teilen<small>TikTok · Instagram · WhatsApp-Status</small><span class="bon" id="mpbon"></span>';
  $('mpwho').hidden=!walk;$('mpalt').hidden=!!walk;
@@ -3782,7 +3797,7 @@ addEventListener('keyup',e=>{const k=e.key.length===1?e.key.toLowerCase():e.key;
 {const hero=$('hero'),pos=e=>{const r=cv.getBoundingClientRect();return[e.clientX-r.left,e.clientY-r.top];},onMap=e=>e.target===cv;
  hero.addEventListener('pointerdown',e=>{if(!WK.on||!onMap(e))return;e.stopPropagation();e.preventDefault();try{cv.setPointerCapture(e.pointerId);}catch(_){}WK.pt=pos(e);WK.tap=[performance.now(),...pos(e)];},true);
  hero.addEventListener('pointermove',e=>{if(!WK.on||!WK.pt)return;e.stopPropagation();WK.pt=pos(e);},true);
- for(const t of['pointerup','pointercancel'])hero.addEventListener(t,e=>{if(!WK.on)return;if(onMap(e))e.stopPropagation();const tp=WK.tap;WK.pt=null;WK.tap=null;if(t==='pointerup'&&tp&&performance.now()-tp[0]<300){const [sx,sy]=pos(e);if(Math.hypot(sx-tp[1],sy-tp[2])<10){if(bauSignAt((sx-W/2)/cam.z+cam.x,(sy-H/2)/cam.z+cam.y)){zuBauprojekten();return;}const r=walkTapWho(sx,sy);if(r)zeigePass(r[0],true,r[1]);}}},true);
+ for(const t of['pointerup','pointercancel'])hero.addEventListener(t,e=>{if(!WK.on)return;if(onMap(e))e.stopPropagation();const tp=WK.tap;WK.pt=null;WK.tap=null;if(t==='pointerup'&&tp&&performance.now()-tp[0]<300){const [sx,sy]=pos(e);if(Math.hypot(sx-tp[1],sy-tp[2])<10){if(bauSignAt((sx-W/2)/cam.z+cam.x,(sy-H/2)/cam.z+cam.y)){zuBauprojekten();return;}if(tresorAt((sx-W/2)/cam.z+cam.x,(sy-H/2)/cam.z+cam.y)){tresorTap();return;}const r=walkTapWho(sx,sy);if(r)zeigePass(r[0],true,r[1]);}}},true);
  hero.addEventListener('wheel',e=>{if(WK.on){e.stopPropagation();}},true);}
 let toastT=0;function toast(t){const e=$('toast');e.textContent=t;e.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>e.hidden=true,4200);}
 // Versteckte Lupe: Erfolg „Lupe“ für den gerade ausgewählten TikTok-Namen (gespeichert in diesem Browser)
