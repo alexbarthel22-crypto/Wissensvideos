@@ -18,7 +18,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-14 s';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-14 t';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -110,7 +110,7 @@ function like(u, anzahl) {
   const ls = likeSerie[p.id] ||= { n: 0, t0: Date.now(), dank: 0 };
   if (Date.now() - ls.t0 > 60000) { ls.n = 0; ls.t0 = Date.now(); }
   ls.n += anzahl;
-  if (ls.n >= (CFG.likeDankAb ?? 50) && Date.now() - ls.dank > 180000 && !likeDank.includes(p)) { ls.dank = Date.now(); likeDank.push(p); }
+  if (ls.n >= (CFG.likeDankAb ?? 50) && Date.now() - ls.dank > 180000 && !likeDank.includes(p)) { ls.dank = Date.now(); likeDank.push(p); sende({ typ: 'likeRegen', id: p.id, name: p.name }); }
   const faktor = EV.like(p, anzahl);                       // Muschelregen ×2, Bau-Turbo ×3
   gibMuscheln(p, anzahl * CFG.muschelnProLike * faktor, 'like');
 }
@@ -254,6 +254,38 @@ function teilen(u) {
   if (einmal(p.id, 'teilen', 5 * 60000)) { sende({ typ: 'teilen', id: p.id }); sag(satz('teilen', { name: sprechName(p) }), 1); }
   zustand();
 }
+
+// ---------- Mehr Abwechslung: Like-Feuerwerk, Meilensteine, kleine Überraschungen ----------
+let letztesLikeFeuer = 0, letzterMeilenstein = null, letzterMoment = Date.now();
+setInterval(() => {
+  const jetzt = Date.now(), l20 = likeLog.filter(([t]) => jetzt - t < 20000).reduce((a, [, n]) => a + n, 0);
+  const normal = Math.max(1, likeRateMin()) / 3;           // übliche Likes pro 20 s
+  // Alle zusammen liken gerade sehr viel → Feuerwerk über der großen Muschel
+  if (l20 >= Math.max(60, normal * 2) && jetzt - letztesLikeFeuer > 60000) {
+    letztesLikeFeuer = jetzt; sende({ typ: 'likeFeuer', n: l20 });
+    sag(zufallText(['Wow, so viele Likes! … Feuerwerk über der Muschel!', 'Was für ein Like-Sturm! … Weiter so!', 'Die Muschel leuchtet … ihr seid der Wahnsinn!']), 2);
+  }
+  // Meilensteine: alle 1.000 Likes ein großes Fest
+  const ms = Math.floor((S.likesGesamt || 0) / (CFG.likeMeilenstein || 1000));
+  if (letzterMeilenstein == null) letzterMeilenstein = ms;
+  else if (ms > letzterMeilenstein) {
+    letzterMeilenstein = ms; const zahl = ms * (CFG.likeMeilenstein || 1000);
+    sende({ typ: 'meilenstein', zahl }); sag(`${zahl.toLocaleString('de-DE')} Likes! … Danke an alle! … Großes Feuerwerk!`, 1);
+  }
+  // Kleine Überraschung zwischendurch (nicht während Events), etwa jede Minute
+  if (!EV.laeuft() && jetzt - letzterMoment > 50000 + Math.random() * 40000) {
+    letzterMoment = jetzt;
+    const arten = ['ballon', 'moewen', 'konfetti', 'muschelShow', 'hausParty'];
+    const art = arten[Math.floor(Math.random() * arten.length)], aktive = Object.values(S.spieler).filter(p => !p.gesperrt && jetzt - (p.zuletzt || 0) < 900000);
+    const p = aktive[Math.floor(Math.random() * aktive.length)];
+    if (art === 'hausParty' && !p) return;
+    sende({ typ: 'moment', art, id: p?.id, name: p?.name });
+    const satzMoment = { ballon: 'Schaut mal … ein Heißluftballon über der Insel!', moewen: 'Da fliegt ein Möwenschwarm vorbei!', konfetti: 'Einfach so … Konfetti für alle!', muschelShow: 'Die große Muschel leuchtet … Lichtershow!', hausParty: p ? `Kleine Party bei ${sprechName(p)}!` : '' }[art];
+    if (satzMoment) sag(satzMoment, 3);
+  }
+}, 2000);
+const zufallText = a => a[Math.floor(Math.random() * a.length)];
+const likeRateMin = () => { const t = Date.now() - 300000; return likeLog.filter(([z]) => z > t).reduce((a, [, n]) => a + n, 0) / 5; };
 
 // ---------- Gemeinschaftsprojekt (wird per Abstimmungs-Event gewählt) ----------
 function projektStarten(pr) {

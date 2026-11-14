@@ -287,6 +287,14 @@ function ereignis(e) {
       break;
     }
     case 'zahltag': banner.push({ t: 0, oben: '💰 Zahltag!', unten: `${e.n} ${e.n === 1 ? 'Job' : 'Jobs'} · je ${e.gehalt} 🐚 Gehalt`, farbe: '#3f9b45' }); break;
+    case 'likeRegen': if (pl) { fokus(pl, 5000, true); funken(pl, '❤️', 26); setTimeout(() => hausFeuerwerk(pl, 8), 500); } banner.push({ t: 0, oben: `❤️ ${e.name}`, unten: 'Like-Regen! Dein Haus wächst und wächst', farbe: '#ff4f8b' }); break;
+    case 'likeFeuer': platzFeuerwerk(10); MOMENTE.push({ art: 'herzen', t: jetzt }); banner.push({ t: 0, oben: '❤️ Like-Feuerwerk!', unten: `${e.n.toLocaleString('de-DE')} Likes in 20 Sekunden`, farbe: '#ff4f8b' }); break;
+    case 'meilenstein': platzFeuerwerk(20); MOMENTE.push({ art: 'konfetti', t: jetzt }); setTimeout(() => platzFeuerwerk(14), 3000); banner.unshift({ t: 0, oben: `🎉 ${e.zahl.toLocaleString('de-DE')} Likes!`, unten: 'Danke an alle – großes Feuerwerk!', farbe: '#9b5de5', dauer: 4.5 }); break;
+    case 'moment':
+      if (e.art === 'muschelShow') platzFeuerwerk(8);
+      else if (e.art === 'hausParty') { if (pl) { fokus(pl, 6000); funken(pl, '🎉', 20); setTimeout(() => hausFeuerwerk(pl, 6), 800); } }
+      else MOMENTE.push({ art: e.art, t: jetzt });
+      break;
     case 'erstLiken': banner.push({ t: 0, oben: `❤️ ${e.name}`, unten: e.art === 'farbe' ? 'Like einmal – dann kannst du dein Haus streichen!' : 'Like einmal – dann wird dein Haus gebaut!', farbe: PINK }); break;
     case 'farbe': {                                                // Haus wird animiert neu gestrichen (Farbrolle von links nach rechts)
       streich[e.id] = { t: jetzt + 600, alt: e.alt, neu: e.neu };
@@ -1578,8 +1586,55 @@ function willkommenPopup(b, age, k) {
   text(b.nr ? `Danke fürs Folgen · Bewohner Nr. ${b.nr.toLocaleString('de-DE')} · dein Haus entsteht` : 'Danke fürs Folgen · dein Haus entsteht', tx, 52, 23, '#2f6fb3', 'left', 800, tw);
   X.restore();
 }
+// Feuerwerk über der großen Muschel in der Mitte (Kamera fliegt hin)
+function platzFeuerwerk(n) {
+  fokus({ x: IX, y: IY + 30 }, 6500);
+  funken({ x: IX, y: IY - 40 }, '✨', 18);
+  const farben = ['#ffd23f', '#ff6fa3', '#7fe0c8', '#fff', '#ff8a2a', '#b58ad0', '#3fa0e8', '#39ff8f'];
+  for (let k = 0; k < n; k++) setTimeout(() => {
+    if (fx.length > 900) return;
+    const x = IX + (Math.random() - .5) * 260, y = IY - 90 - Math.random() * 140, col = farben[k % farben.length], m = 34;
+    for (let i = 0; i < m; i++) { const a = i / m * 6.283, v = 1.4 + Math.random() * 1.4; fx.push({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v, t: performance.now(), punkt: col, s: 3 }); }
+  }, 400 + k * 240);
+}
+// Kleine Überraschungen im Bild (fest auf dem Bildschirm, unabhängig von der Kamera)
+const MOMENTE = [];
+function momenteZeichnen(t) {
+  for (let i = MOMENTE.length - 1; i >= 0; i--) {
+    const m = MOMENTE[i], q = (t - m.t) / 1000;
+    if (m.art === 'ballon') {                                       // Heißluftballon schwebt quer durchs Bild
+      if (q > 12) { MOMENTE.splice(i, 1); continue; }
+      const x = -160 + q / 12 * 1400, y = 1150 + Math.sin(q * 1.3) * 30;
+      X.save(); X.translate(x, y);
+      const st = ['#e8433c', '#ffd23f', '#3fa0e8', '#ff8fb8'];
+      for (let k = 0; k < 4; k++) { X.fillStyle = st[k]; X.beginPath(); X.ellipse(0, -90, 70 - k * 17, 82, 0, 0, 7); X.fill(); }
+      X.strokeStyle = INK; X.lineWidth = 4; X.beginPath(); X.ellipse(0, -90, 70, 82, 0, 0, 7); X.stroke();
+      X.beginPath(); X.moveTo(-34, -20); X.lineTo(-20, 16); X.moveTo(34, -20); X.lineTo(20, 16); X.stroke();
+      X.fillStyle = '#8a5a2b'; rr(-24, 14, 48, 30, 6); X.fill(); X.stroke();
+      karte(-120, 58, 240, 46, '#fff', 23); text('🐚 Muschel-Tal', 0, 89, 26, INK, 'center', 900, 210);
+      X.restore();
+    } else if (m.art === 'moewen') {                                // Möwenschwarm
+      if (q > 7) { MOMENTE.splice(i, 1); continue; }
+      X.strokeStyle = '#fff'; X.lineWidth = 6; X.lineCap = 'round';
+      for (let k = 0; k < 8; k++) {
+        const x = -100 + q / 7 * 1300 - (k % 4) * 70, y = 1000 + (k * 53) % 260 + Math.sin(q * 3 + k) * 12, f = Math.sin(t * .018 + k) * 12;
+        X.beginPath(); X.moveTo(x - 26, y - f); X.quadraticCurveTo(x - 12, y - 14, x, y); X.quadraticCurveTo(x + 12, y - 14, x + 26, y - f); X.stroke();
+      }
+    } else if (m.art === 'konfetti' || m.art === 'herzen') {        // Konfetti von oben / Herzen von unten
+      if (q > 4.5) { MOMENTE.splice(i, 1); continue; }
+      m.teile ||= Array.from({ length: 110 }, (_, k) => ({ x: Math.random() * 1080, v: .6 + Math.random() * .8, d: Math.random() * 6, c: ['#ffd23f', '#ff6fa3', '#7fe0c8', '#3fa0e8', '#ff8a2a', '#b58ad0'][k % 6] }));
+      X.globalAlpha = Math.min(1, (4.5 - q) * 2);
+      for (const p of m.teile) {
+        if (m.art === 'konfetti') { const y = KOPF_UNTEN - 40 + q * 380 * p.v, x = p.x + Math.sin(q * 3 + p.d) * 30; X.fillStyle = p.c; X.save(); X.translate(x, y); X.rotate(q * 4 + p.d); X.fillRect(-7, -4, 14, 8); X.restore(); }
+        else { const y = 1960 - q * 420 * p.v, x = p.x + Math.sin(q * 2 + p.d) * 25; X.font = `${26 + p.d * 3}px ${FONT}`; X.textAlign = 'center'; X.fillText('❤️', x, y); }
+      }
+      X.globalAlpha = 1;
+    } else MOMENTE.splice(i, 1);
+  }
+}
 function overlay(t) {
   X.setTransform(Q0, 0, 0, Q0, 0, 0);
+  momenteZeichnen(t);
   if (banner.length > 6) banner.splice(1, banner.length - 6);
   const showLaeuft = SHOWS[0]?.t && SHOWS[0].coins >= 10;            // große Geschenk-Show hat Vorrang
   if (showLaeuft && banner[0]) banner[0].t = 0;
