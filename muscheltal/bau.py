@@ -604,7 +604,7 @@ def baue(rows, out):
     web["grenzen"] = [g if g != float("inf") else None for g in inselgrenzen(sauber, insel, mit_h)]
     weg = {sauber[j][0].lower().lstrip("@") for j in mit_h}
     web["wohnorte"] = {k: o for k, o in (web.get("wohnorte") or {}).items() if k.lower().lstrip("@") not in weg}
-    data = {"r": sauber, "insel": web}
+    data = {"r": sauber, "insel": web, "s": [[norm(s["name"]), s.get("seit", "")] for s in insel.get("sonder_bewohner") or []]}
     html = open(VORLAGE, encoding="utf-8").read()
     js = json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
     html = html.replace("/*__DATEN__*/null", js)
@@ -671,11 +671,10 @@ def main():
     if a.imp:
         importiere(a.imp, rows)
         speichere_csv(rows)
-    # Sonder-Bewohner (insel.json → sonder_bewohner): wohnen da, auch ohne zu folgen
-    da = {r["name"].lower().lstrip("@") for r in rows}
-    for s in json.load(open(INSEL, encoding="utf-8")).get("sonder_bewohner") or []:
-        if s["name"].lower().lstrip("@") not in da:
-            rows.append({"name": s["name"], "datum": s.get("seit", ""), "markierung": "", "platz": "", "gruender": ""})
+    # Sonder-Bewohner (insel.json → sonder_bewohner): wohnen da, zählen aber NICHT als Einwohner
+    # (keine Nummer, nicht in Liste/Suche/Zählung); sie kommen getrennt als DATA.s in die Karte
+    sn = {s["name"].lower().lstrip("@") for s in json.load(open(INSEL, encoding="utf-8")).get("sonder_bewohner") or []}
+    rows[:] = [r for r in rows if r["name"].lower().lstrip("@") not in sn]
     baue(rows, a.out)
     if os.path.abspath(a.out) == os.path.join(HIER, "site"):
         speichere_csv(rows)  # Häuser (platz) und Auszüge merken
