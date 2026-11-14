@@ -1,0 +1,51 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+@font-face { font-family: "Lilita One"; src: url("assets/fonts/LilitaOne-Regular.woff2") format("woff2"); font-weight: 400; }
+    .pl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 28px 12px; border-radius: 999px; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); white-space: nowrap; }
+    .big { position: absolute; left: 0; right: 0; width: fit-content; max-width: 980px; white-space: nowrap; margin: 0 auto; text-align: center; padding: 10px 26px 20px; border-radius: 36px; color: #fff; font-family: "Lilita One", sans-serif; line-height: 1; box-shadow: 0 0 0 8px #2a1b12, 0 16px 0 rgba(0,0,0,.3); }
+    .fbtn { position: absolute; left: 0; right: 0; margin: 0 auto; width: 420px; height: 120px; border-radius: 60px; background: #fe2c55; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 56px; display: grid; place-items: center; box-shadow: 0 0 0 5px #2a1b12, 0 12px 0 rgba(0,0,0,.25); }
+    .fbtn2 { position: absolute; inset: 0; border-radius: 60px; background: #fff; color: #0a78c2; display: grid; place-items: center; opacity: 0; }
+    .fhand { position: absolute; font-size: 120px; }
+    #s3-k { top: 270px; font-size: 66px; background: linear-gradient(135deg, #ff2e7e, #ff6a1a); transform: rotate(-2deg); }
+    #s3-btn { top: 280px; } #s3-hand { left: 690px; top: 330px; }
+    #s3-e { top: 430px; font-size: 46px; background: #2e9e5b; }
+    #s3-s { top: 520px; font-size: 46px; background: #7b3fe0; }
+    #s3-l { top: 640px; font-size: 56px; background: #e8101e; }
+  </style>
+  <div id="root" data-composition-id="s03" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s03-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s3-k" class="big">📱 KOMMT REIN & BAUT MIT!</div>
+      <div id="s3-btn" class="fbtn">+ Folgen<div id="s3-btn2" class="fbtn2">✓ Gefolgt</div></div>
+      <div id="s3-hand" class="fhand" data-layout-ignore>👆</div>
+      <div id="s3-e" class="pl">🏠 Folgen = einziehen</div>
+      <div id="s3-s" class="pl">🎮 Teil des Spiels werden</div>
+      <div id="s3-l" class="pl">🔴 Bis gleich im LIVE!</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      /*__COMMON_JS__*/
+      wrapBt("#s03-stage");
+      const tl = gsap.timeline({ paused: true });
+      const t5 = line("L5")[0], t6 = line("L6")[0], fo = at("L6", "folgt"), ei = at("L6", "einzuziehen"), sp = at("L6", "Spiels"), t7 = line("L7")[0];
+      tl.fromTo("#s3-k", { opacity: 0, scale: 3 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(1.8)" }, t5 - .05);
+      tl.to("#s3-k", { scale: 1.07, duration: .2, yoyo: true, repeat: 5, ease: "sine.inOut" }, t5 + .4);
+      tl.to("#s3-k", { opacity: 0, y: -30, duration: .2 }, t6 - .25);
+      tl.fromTo("#s3-btn", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, t6 - .15);
+      tl.fromTo("#s3-hand", { opacity: 0, x: 160, y: 160 }, { opacity: 1, x: 0, y: 0, duration: .25, ease: "power3.out" }, t6);
+      tl.to("#s3-hand", { y: -26, scale: .9, duration: .1, yoyo: true, repeat: 1 }, fo + .1);
+      tl.to("#s3-btn2", { opacity: 1, duration: .05 }, fo + .2);
+      tl.to("#s3-hand", { opacity: 0, duration: .2 }, fo + .6);
+      tl.fromTo("#s3-e", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .28, ease: "back.out(2)" }, ei - .2);
+      tl.fromTo("#s3-s", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .28, ease: "back.out(2)" }, sp - .3);
+      tl.fromTo("#s3-l", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, t7 - .1);
+      tl.to("#s3-l", { opacity: .55, duration: .25, yoyo: true, repeat: 7, ease: "steps(1)" }, t7 + .3);
+      
+      window.__timelines["s03"] = tl;
+    })();
+  </script>
+</template>

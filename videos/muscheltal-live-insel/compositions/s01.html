@@ -1,0 +1,149 @@
+<template>
+  <style>
+        #root { position: absolute; inset: 0; }
+    .stage { position: absolute; inset: 0; overflow: hidden; }
+    .abs { position: absolute; }
+    svg { overflow: visible; }
+    /* Zähler-Box wie in der Referenz: Rahmen in Akzentfarbe, Label in Mono-Versalien, große Zahl */
+    .cbox { position: absolute; left: 290px; width: 500px; top: 268px; height: 126px; border: 3px solid #ff4fb0;
+      border-radius: 32px; background: rgba(13,16,38,.88); text-align: center; box-shadow: 0 0 28px rgba(255,79,176,.35); }
+    .cbox .lab { margin-top: 16px; font-family: "Space Mono", monospace; font-weight: 700; font-size: 28px;
+      letter-spacing: .16em; color: #dfe2f5; }
+    .cbox .num { margin-top: 2px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 56px; color: #fff;
+      letter-spacing: .01em; }
+    .cbox.y { border-color: #ffd43b; box-shadow: 0 0 28px rgba(255,212,59,.3); }
+    .cbox.r { border-color: #ff3b55; box-shadow: 0 0 28px rgba(255,59,85,.35); }
+    .cbox.b { border-color: #4da3ff; box-shadow: 0 0 28px rgba(77,163,255,.3); }
+    .cbox.g { border-color: #39e27a; box-shadow: 0 0 28px rgba(57,226,122,.3); }
+    .mono { font-family: "Space Mono", monospace; font-weight: 700; letter-spacing: .12em; }
+    .heavy { font-family: "Inter", sans-serif; font-weight: 900; }
+    /* Muschel-Tal: Sticker-Look wie auf muscheltal.de. Sicherheitsbereich TikTok: x 40–930, y 200–1120 (Untertitel ab 1150). */
+    .ink { stroke: #2a1b12; }
+    .stk { background: #fff; border: 6px solid #2a1b12; border-radius: 28px; box-shadow: 10px 10px 0 #2a1b12; }
+    .ttl { font-family: "Inter", sans-serif; font-weight: 900; color: #fff; text-align: center; line-height: 1;
+      -webkit-text-stroke: 10px #2a1b12; paint-order: stroke fill; letter-spacing: -.01em; }
+    .kick { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 24px; border-radius: 14px;
+      background: #2a1b12; color: #ffd23f; font-family: "Space Mono", monospace; font-weight: 700; font-size: 34px; letter-spacing: .14em; }
+    /* Text auf farbigem Balken (auffälliger, wie TikTok-Textboxen) */
+    .bt { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; max-width: 740px; text-align: center;
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 66px; line-height: 1.3; color: #fff; }
+    .bt .bx { padding: .06em .4em .14em; border-radius: .6em; -webkit-box-decoration-break: clone; box-decoration-break: clone; box-shadow: 0 10px 0 rgba(0,0,0,.28), 0 16px 30px rgba(0,0,0,.25); }
+    .bt .bx { background: #23285a; } .bt.or .bx { background: #ff5a3c; } .bt.pk .bx { background: #fe2c55; } .bt.tq .bx { background: #18b8c0; } .bt.vi .bx { background: #23285a; } .bt.bl .bx { background: #23285a; }
+    .bt.ye .bx { background: #ffc93c; } .bt.ye { color: #1a0f08; } .bt.gr .bx { background: #00b86b; } .bt.dk .bx { background: #23285a; } .bt.dk { color: #ffc93c; }
+    .bt.sm { font-size: 44px; }
+    .stamp { position: absolute; padding: 6px 30px; border: 10px solid; border-radius: 40px; background: rgba(255,255,255,.94);
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 84px; }
+    /* TikTok-Kommentare (echte Optik) */
+    .tk { position: absolute; left: 60px; width: 800px; background: #fff; border-radius: 30px; padding: 20px 26px 6px; box-shadow: 0 14px 0 rgba(0,0,0,.22); font-family: "Inter", sans-serif; }
+    .tk-h { position: relative; text-align: center; font-weight: 800; font-size: 30px; color: #161823; margin-bottom: 10px; }
+    .tk-h b { position: absolute; right: 4px; top: -4px; font-size: 38px; font-weight: 400; color: #161823; }
+    .tk-c { position: relative; display: flex; gap: 20px; padding: 12px 96px 16px 0; }
+    .tk-a { width: 84px; height: 84px; border-radius: 50%; flex: none; display: grid; place-items: center; color: #fff; font-weight: 900; font-size: 38px; }
+    .tk-u { font-size: 28px; color: #8a8b91; font-weight: 600; }
+    .tk-t { font-size: 34px; color: #161823; font-weight: 500; line-height: 1.22; margin-top: 2px; }
+    .tk-m { font-size: 28px; color: #8a8b91; font-weight: 600; margin-top: 8px; } .tk-m span { margin-left: 30px; }
+    .tk-l { position: absolute; right: 4px; top: 16px; width: 86px; text-align: center; font-size: 28px; color: #8a8b91; font-weight: 600; }
+    .tk-l .hz { position: relative; width: 48px; height: 48px; margin: 0 auto 2px; }
+    .tk-l .hz svg { position: absolute; inset: 0; width: 48px; height: 48px; }
+    .tk-fh { position: absolute; left: 19px; top: 0; width: 50px; height: 50px; opacity: 0; }
+    .tk-pin { display: inline-block; font-size: 28px; font-weight: 800; color: #fe2c55; background: #ffe3ea; border-radius: 6px; padding: 2px 8px; margin-left: 10px; vertical-align: 3px; }
+
+@font-face { font-family: "Lilita One"; src: url("assets/fonts/LilitaOne-Regular.woff2") format("woff2"); font-weight: 400; }
+    .pt { position: absolute; width: 80px; height: 80px; font-size: 70px; text-align: center; line-height: 80px; opacity: 0; }
+    .fl { position: absolute; inset: 0; background: #fff; opacity: 0; }
+    #s01-ray { position: absolute; left: -460px; top: 300px; width: 2000px; height: 2000px; border-radius: 50%; background: repeating-conic-gradient(rgba(255,250,210,.28) 0 8deg, rgba(255,255,255,0) 8deg 20deg); -webkit-mask: radial-gradient(circle, #000 15%, transparent 60%); }
+    #s01-hk { position: absolute; left: 40px; right: 40px; top: 600px; text-align: center; font-family: "Lilita One", sans-serif; }
+    #s01-hk .ln { display: block; width: fit-content; margin: 0 auto 16px; padding: 4px 34px 14px; border-radius: 30px; background: #ff2e7e; box-shadow: 0 0 0 6px #1a0f08, 0 12px 0 rgba(0,0,0,.35); font-size: 118px; line-height: 1.05; white-space: nowrap; transform-origin: 50% 60%; }
+    #s01-hk span { position: relative; display: inline-block; margin: 0 .08em; color: #fff; -webkit-text-stroke: 8px #1a0f08; paint-order: stroke fill; transform-origin: 50% 65%; }
+    #s01-gk { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 420px; padding: 8px 30px 16px; border-radius: 26px; background: #2e9e5b; border: 8px solid #fff; box-shadow: 0 0 0 6px #1a0f08, 0 12px 0 rgba(0,0,0,.3), 0 0 60px 20px rgba(80,230,140,.7); font-family: "Lilita One", sans-serif; font-size: 68px; line-height: 1; color: #fff; white-space: nowrap; transform: rotate(-4deg); }
+    #s01-gk span { display: inline-block; }
+    #s01-rv { position: absolute; inset: 0; box-shadow: inset 0 0 140px 50px rgba(255,10,20,.9); opacity: 0; }
+    .s01-sp { position: absolute; color: #fff; text-shadow: 0 0 18px #fff, 0 0 30px #ffe14a; opacity: 0; line-height: 1; }
+  </style>
+  <div id="root" data-composition-id="s01" data-start="0" data-duration="3.590" data-width="1080" data-height="1920">
+    <div id="s01-stage" class="clip stage" data-start="0" data-duration="3.590" data-track-index="0">
+      <div id="s01-ray" data-layout-ignore></div>
+      <div id="s01-fl" class="fl" data-layout-ignore></div>
+      <div id="s01-rv" data-layout-ignore></div>
+      
+      <div id="s01-hk"><div class="ln" id="s01-l0"><span id="s01-w0">WIR</span><span id="s01-w1">BAUEN</span></div><div class="ln" id="s01-l1"><span id="s01-w2">GERADE</span><span id="s01-w3">LIVE</span></div><div class="ln" id="s01-l2"><span id="s01-w4">EURE</span><span id="s01-w5">NEUE</span></div><div class="ln" id="s01-l3"><span id="s01-w6">WELT!</span></div></div>
+      <div class="s01-sp" id="s01-sp0" data-layout-ignore style="left:110px;top:560px;font-size:46px">✦</div><div class="s01-sp" id="s01-sp1" data-layout-ignore style="left:900px;top:600px;font-size:34px">✦</div><div class="s01-sp" id="s01-sp2" data-layout-ignore style="left:70px;top:960px;font-size:30px">✦</div><div class="s01-sp" id="s01-sp3" data-layout-ignore style="left:930px;top:1010px;font-size:44px">✦</div><div class="s01-sp" id="s01-sp4" data-layout-ignore style="left:180px;top:1230px;font-size:38px">✦</div><div class="s01-sp" id="s01-sp5" data-layout-ignore style="left:820px;top:1200px;font-size:30px">✦</div><div class="pt" id="s01-p0" style="left:500px;top:860px">🏗️</div><div class="pt" id="s01-p1" style="left:500px;top:860px">🏗️</div><div class="pt" id="s01-p2" style="left:500px;top:860px">🏗️</div><div class="pt" id="s01-p3" style="left:500px;top:860px">🏗️</div><div class="pt" id="s01-p4" style="left:500px;top:860px">🏗️</div><div class="pt" id="s01-p5" style="left:500px;top:860px">🏗️</div><div class="pt" id="s01-p6" style="left:500px;top:860px">🏗️</div><div class="pt" id="s01-p7" style="left:500px;top:860px">🏗️</div><div class="pt" id="s01-p8" style="left:500px;top:860px">🏗️</div><div class="pt" id="s01-p9" style="left:500px;top:860px">🏗️</div><div class="pt" id="s01-p10" style="left:500px;top:860px">🏗️</div><div class="pt" id="s01-p11" style="left:500px;top:860px">🏗️</div><div class="pt" id="s01-p12" style="left:500px;top:860px">🏗️</div><div class="pt" id="s01-p13" style="left:500px;top:860px">🏗️</div><div class="pt" id="s01-p14" style="left:500px;top:860px">🏗️</div><div class="pt" id="s01-p15" style="left:500px;top:860px">🏗️</div><div class="pt" id="s01-p16" style="left:500px;top:860px">🏗️</div><div class="pt" id="s01-p17" style="left:500px;top:860px">🏗️</div><div class="pt" id="s01-p18" style="left:500px;top:860px">🏗️</div><div class="pt" id="s01-p19" style="left:500px;top:860px">🏗️</div><div class="pt" id="s01-p20" style="left:500px;top:860px">🏗️</div><div class="pt" id="s01-p21" style="left:500px;top:860px">🏗️</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      
+      const C = {"__dur": 3.59, "L1": [0.0, 2.41], "L1.words": [["wir", 0.05, 0.22], ["bauen", 0.22, 0.48], ["gerade", 0.48, 0.8], ["live", 0.8, 1.08], ["eure", 1.08, 1.42], ["neue", 1.42, 1.62], ["welt", 1.62, 2.41]]};
+      const line = (id) => C[id];
+      const at = (id, word, which = 0) => {
+        const ws = C[id + ".words"];
+        if (typeof word === "number") return ws[word][1 + which];
+        const key = String(word).toLowerCase().replace(/[^\p{L}\p{N}_]/gu, "");
+        const hit = ws.find((w) => w[0].startsWith(key));
+        if (!hit) throw new Error("cue not found: " + id + " " + word);
+        return hit[1 + which];
+      };
+      // Zähler: schreibt Zahlen im deutschen Format (4.100.000.000) als Funktion der Timeline-Zeit
+      const fmt = (n) => Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      const count = (tl, sel, from, to, t, d, pre = "", post = "", ease = "power2.out") => {
+        const el = document.querySelector(sel);
+        const o = { v: from };
+        el.textContent = pre + fmt(from) + post;
+        tl.to(o, { v: to, duration: d, ease, onUpdate: () => { el.textContent = pre + fmt(o.v) + post; } }, t);
+      };
+      // deterministischer Zufall
+      const rng = (seed) => () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let x = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+        x = (x + Math.imul(x ^ (x >>> 7), 61 | x)) ^ x; return ((x ^ (x >>> 14)) >>> 0) / 4294967296; };
+
+            // TikTok-Kommentar: Herz füllt sich rot, Zahl zählt hoch, Herzen schnellen nach oben
+      const HEART = '<svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-10-9.3C.4 8.4 2 4.5 5.6 4c2-.3 3.6.6 4.4 2 .8-1.4 2.4-2.3 4.4-2 3.6.5 5.2 4.4 3.6 7.7C19.5 16.4 12 21 12 21z" fill="none" stroke="#8a8b91" stroke-width="2"/></svg>';
+      const HEART_R = '<svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-10-9.3C.4 8.4 2 4.5 5.6 4c2-.3 3.6.6 4.4 2 .8-1.4 2.4-2.3 4.4-2 3.6.5 5.2 4.4 3.6 7.7C19.5 16.4 12 21 12 21z" fill="#fe2c55"/></svg>';
+      const fmtK = (n) => n >= 10000 ? (n / 1000).toFixed(1).replace(".", ",") + " Tsd." : Math.round(n).toLocaleString("de-DE");
+      function tkLike(tl, id, t, from, to, dur = 1.4, seed = 1) {
+        const box = document.querySelector(id + " .tk-l"), num = box.querySelector("i"), hz = box.querySelector(".hz");
+        hz.innerHTML = HEART + '<span class="red" style="position:absolute;inset:0;opacity:0">' + HEART_R + "</span>";
+        const R = rng(seed);
+        for (let k = 0; k < 7; k++) { const f = document.createElement("div"); f.className = "tk-fh"; f.innerHTML = HEART_R; box.appendChild(f);
+          const dx = (R() - .5) * 160, up = 200 + R() * 220, t0 = t + k * .11;
+          tl.fromTo(f, { opacity: 0, x: 0, y: 0, scale: .5, rotation: 0 }, { opacity: 1, x: dx * .4, y: -60, scale: 1.1, rotation: (R() - .5) * 40, duration: .15, ease: "power2.out" }, t0);
+          tl.to(f, { x: dx, y: -up, scale: .7, opacity: 0, duration: .7, ease: "power1.in" }, t0 + .15); }
+        tl.fromTo(hz.querySelector(".red"), { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .25, ease: "back.out(3)" }, t);
+        tl.fromTo(hz, { scale: 1 }, { scale: 1.3, duration: .12, yoyo: true, repeat: 1, ease: "power2.out" }, t);
+        const o = { v: from }; num.textContent = fmtK(from);
+        tl.to(o, { v: to, duration: dur, ease: "power2.out", onUpdate: () => { num.textContent = fmtK(o.v); } }, t);
+      }
+      // Textbox füllt immer genau den Text: jede Zeile bekommt ihren eigenen Balken
+      function wrapBt(scope) { document.querySelectorAll(scope + " .bt").forEach((el) => { if (!el.querySelector(":scope > .bx")) el.innerHTML = '<span class="bx">' + el.innerHTML + "</span>"; }); }
+
+      wrapBt("#s01-stage");
+      const tl = gsap.timeline({ paused: true });
+      const sc = at("L1", "Welt");
+      tl.set(["#s01-ray"], { opacity: 1 }, 0);
+      tl.fromTo("#s01-ray", { rotation: 0 }, { rotation: 40, duration: 4, ease: "none" }, 0);
+      tl.fromTo("#s01-rv", { opacity: .45 }, { opacity: 1, duration: .14, yoyo: true, repeat: 17, ease: "sine.inOut", immediateRender: false }, 0);
+      
+      tl.set("#s01-w0", { zIndex: 5 }, at("L1", "Wir") - .03); tl.to("#s01-w0", { scale: 1.38, rotation: 3, duration: .1, ease: "back.out(3)" }, at("L1", "Wir") - .03); tl.to("#s01-w0", { scale: 1, rotation: 0, duration: .22, ease: "power2.inOut" }, at("L1", "Wir") + .17); tl.set("#s01-w0", { zIndex: 0 }, at("L1", "Wir") + .4);
+      tl.set("#s01-w1", { zIndex: 5 }, at("L1", "bauen") - .03); tl.to("#s01-w1", { scale: 1.38, rotation: -3, duration: .1, ease: "back.out(3)" }, at("L1", "bauen") - .03); tl.to("#s01-w1", { scale: 1, rotation: 0, duration: .22, ease: "power2.inOut" }, at("L1", "bauen") + .17); tl.set("#s01-w1", { zIndex: 0 }, at("L1", "bauen") + .4);
+      tl.set("#s01-w2", { zIndex: 5 }, at("L1", "gerade") - .03); tl.to("#s01-w2", { scale: 1.5, rotation: 3, duration: .1, ease: "back.out(3)" }, at("L1", "gerade") - .03); tl.to("#s01-w2", { scale: 1, rotation: 0, duration: .22, ease: "power2.inOut" }, at("L1", "gerade") + .17); tl.set("#s01-w2", { zIndex: 0 }, at("L1", "gerade") + .4);
+      tl.set("#s01-w3", { zIndex: 5 }, at("L1", "live") - .03); tl.to("#s01-w3", { scale: 1.38, rotation: -3, duration: .1, ease: "back.out(3)" }, at("L1", "live") - .03); tl.to("#s01-w3", { scale: 1, rotation: 0, duration: .22, ease: "power2.inOut" }, at("L1", "live") + .17); tl.set("#s01-w3", { zIndex: 0 }, at("L1", "live") + .4); tl.to("#s01-w3", { color: "#ffe500", duration: .05 }, at("L1", "live") - .02);
+      tl.set("#s01-w4", { zIndex: 5 }, at("L1", "eure") - .03); tl.to("#s01-w4", { scale: 1.38, rotation: 3, duration: .1, ease: "back.out(3)" }, at("L1", "eure") - .03); tl.to("#s01-w4", { scale: 1, rotation: 0, duration: .22, ease: "power2.inOut" }, at("L1", "eure") + .17); tl.set("#s01-w4", { zIndex: 0 }, at("L1", "eure") + .4);
+      tl.set("#s01-w5", { zIndex: 5 }, at("L1", "neue") - .03); tl.to("#s01-w5", { scale: 1.38, rotation: -3, duration: .1, ease: "back.out(3)" }, at("L1", "neue") - .03); tl.to("#s01-w5", { scale: 1, rotation: 0, duration: .22, ease: "power2.inOut" }, at("L1", "neue") + .17); tl.set("#s01-w5", { zIndex: 0 }, at("L1", "neue") + .4); tl.to("#s01-w5", { color: "#ffe500", duration: .05 }, at("L1", "neue") - .02);
+      tl.set("#s01-w6", { zIndex: 5 }, at("L1", "Welt") - .03); tl.to("#s01-w6", { scale: 1.38, rotation: 3, duration: .1, ease: "back.out(3)" }, at("L1", "Welt") - .03); tl.to("#s01-w6", { scale: 1, rotation: 0, duration: .22, ease: "power2.inOut" }, at("L1", "Welt") + .17); tl.set("#s01-w6", { zIndex: 0 }, at("L1", "Welt") + .4); tl.to("#s01-w6", { color: "#ffe500", duration: .05 }, at("L1", "Welt") - .02);
+      tl.fromTo("#s01-sp0", { opacity: 0, scale: .2, rotation: 0 }, { opacity: 1, scale: 1, rotation: 90, duration: .3, yoyo: true, repeat: 3, ease: "sine.inOut", immediateRender: false }, 0.00);
+      tl.fromTo("#s01-sp1", { opacity: 0, scale: .2, rotation: 0 }, { opacity: 1, scale: 1, rotation: 90, duration: .3, yoyo: true, repeat: 3, ease: "sine.inOut", immediateRender: false }, 0.20);
+      tl.fromTo("#s01-sp2", { opacity: 0, scale: .2, rotation: 0 }, { opacity: 1, scale: 1, rotation: 90, duration: .3, yoyo: true, repeat: 3, ease: "sine.inOut", immediateRender: false }, 0.40);
+      tl.fromTo("#s01-sp3", { opacity: 0, scale: .2, rotation: 0 }, { opacity: 1, scale: 1, rotation: 90, duration: .3, yoyo: true, repeat: 3, ease: "sine.inOut", immediateRender: false }, 0.60);
+      tl.fromTo("#s01-sp4", { opacity: 0, scale: .2, rotation: 0 }, { opacity: 1, scale: 1, rotation: 90, duration: .3, yoyo: true, repeat: 3, ease: "sine.inOut", immediateRender: false }, 0.80);
+      tl.fromTo("#s01-sp5", { opacity: 0, scale: .2, rotation: 0 }, { opacity: 1, scale: 1, rotation: 90, duration: .3, yoyo: true, repeat: 3, ease: "sine.inOut", immediateRender: false }, 1.00);
+      tl.fromTo("#s01-fl", { opacity: .9 }, { opacity: 0, duration: .45, immediateRender: false }, sc);
+      tl.to("#s01-l3", { scale: 1.12, duration: .12, yoyo: true, repeat: 1 }, sc);
+      
+      tl.to("#s01-hk", { x: 12, duration: .04, yoyo: true, repeat: 5, ease: "none" }, sc);
+      { const R = rng(5); for (let i = 0; i < 22; i++) { const dx = (R() - .5) * 600 * 2, dy = -820 * (.5 + R() * .6);
+        tl.fromTo("#s01-p" + i, { opacity: 0, x: 0, y: 0, scale: .4, rotation: 0 }, { opacity: 1, x: dx * .6, y: dy * .6, scale: 1, rotation: (R() - .5) * 400, duration: .4, ease: "power3.out" }, sc);
+        tl.to("#s01-p" + i, { x: dx, y: dy * .6 + 900, opacity: 0, rotation: "+=" + Math.round((R() - .5) * 300), duration: 1.3, ease: "power1.in" }, sc + .4); } }
+      tl.to("#s01-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
+      window.__timelines["s01"] = tl;
+    })();
+  </script>
+</template>
