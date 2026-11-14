@@ -18,7 +18,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-14 p';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-14 q';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -673,7 +673,7 @@ function oeffentlich() {
     projekt: S.projekt, fertig: S.fertig, kasse: S.kasse,
     jobs: Object.fromEntries(Object.entries(S.jobs).map(([nr, j]) => [nr, S.spieler[j.id]?.name || ''])),
     bewohner, ziel: zielJetzt(), strassen: CFG.strassen,
-    tiktokName: CFG.tiktokName, test: TEST, ton: CFG.ton, ort: CFG.ort,
+    tiktokName: CFG.tiktokName, test: TEST, ton: CFG.ton, ort: CFG.ort, bildrate: CFG.bildrate || 30,
   };
 }
 

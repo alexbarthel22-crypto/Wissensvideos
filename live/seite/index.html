@@ -25,7 +25,7 @@ const C = document.getElementById('c');
 const Q0 = (+new URLSearchParams(location.search).get('aufloesung') || 1080) / 1080;   // so scharf wie die Quelle (LIVE Studio 1080×1920 → 1080)
 C.width = Math.round(1080 * Q0); C.height = Math.round(1920 * Q0);
 let X = C.getContext('2d', { alpha: false });
-const FPS = 30;
+let FPS = +new URLSearchParams(location.search).get('fps') || 30;    // Bildrate: aus dem Link (?fps=24) oder einstellungen.json (bildrate)
 const W = 1080, H = 1920;
 const FONT = '"Fredoka","SF Pro Rounded",ui-rounded,"Arial Rounded MT Bold",system-ui,sans-serif';        // Fließtext: rund, fett
 const TITEL = '"Lilita One","Fredoka","Arial Rounded MT Bold",system-ui,sans-serif';                      // Überschriften, Zahlen, Namen: extra fett
@@ -266,6 +266,7 @@ function ereignis(e) {
   switch (e.typ) {
     case 'zustand': {
       S = e.s;
+      if (S.bildrate && !new URLSearchParams(location.search).get('fps')) FPS = Math.max(15, Math.min(30, S.bildrate));
       const n = S.spieler.length;
       if (!BASIS || STRASSEN_ALT !== S.strassen.join()) { K = Math.max(K, kFuer(n)); STRASSEN_ALT = S.strassen.join(); basisZeichnen(K); ANZAHL = plaetzeBei(K); spaziergaenger(); }
       else if ((n > ANZAHL || gebPlaetzeBei(K) < (S.fertig || []).length + 1) && K < K_MAX && !WACHS) wachsen(kFuer(n + 60, (S.fertig || []).length + 4));     // erst wachsen, wenn alles voll ist – dann gleich ein großes Stück
