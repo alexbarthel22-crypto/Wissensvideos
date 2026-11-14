@@ -212,3 +212,6 @@ Ohne Stimme starten: `node server.mjs --still`.
 
 ## Erfolg „Live dabei“ auf muscheltal.de
 Alle Zuschauer, die im echten LIVE etwas tun (beitreten, kommentieren, liken, folgen, teilen, schenken), werden alle 15 s an `https://muscheltal.de/api/live` gemeldet und bekommen dort den Erfolg „📺 Live dabei“. Dafür beim ersten Start den Schlüssel einfügen (wird nur lokal in `live-schluessel.txt` gespeichert, nicht im Repo). Im Test-Modus wird nichts gemeldet.
+
+## LIVE-Rangliste auf muscheltal.de
+Mit demselben Schlüssel schickt die App alle 2 Minuten (nur bei Änderungen) und am Stream-Ende die **Top 10 insgesamt** und die **Top 10 des aktuellen/letzten Streams** (gesammelte Muscheln in diesem Stream) an `https://muscheltal.de/api/live`. Die Homepage zeigt sie unter „🔴 LIVE-Rangliste“ (Startseite + Knopf „🏆 Rangliste“ auf der LIVE-Insel). Ein neuer Stream beginnt beim Verbinden, wenn der letzte vor über 30 Min. endete.
