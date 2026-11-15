@@ -711,7 +711,7 @@ export function macheEvents(api) {
 
   function starte(id) {
     const d = DEFS[id]; ev = { id, d, t0: Date.now(), ende: Date.now() + d.dauer * 1000 }; ergebnis = null;
-    naechstes = Date.now() + MIN;                           // fester Takt: alle 3 Minuten ein Event (von Start zu Start)
+    naechstes = Date.now() + MIN;                           // fester Takt: alle 2,5 Minuten ein Event (von Start zu Start)
     const ansage = d.start(ev); verlauf = [id, ...verlauf].slice(0, 12);
     api.sende({ typ: 'eventStart', id });
     api.sag(ansage, 0); if (PREIS[id]) api.sag(PREIS[id], 0); api.zustand();   // zwei kurze Sätze statt einem langen
@@ -729,12 +729,12 @@ export function macheEvents(api) {
     if (r.sag) api.sag(r.sag, 0);
     ev = null; naechstes = Math.max(naechstes, Date.now() + 20000); api.zustand();
   }
-  // Jedes dritte Event ist ein Leuchtturm-Event – immer in derselben Reihenfolge
+  // Jedes dritte Event ist ein Leuchtturm-Event – das erste schon als 2. Event nach dem Start, immer in derselben Reihenfolge
   const TURM_FOLGE = ['staedteneu', 'baukolonne', 'staedteduell', 'leuchtsignal', 'turmquiz', 'aufholjagd'];
   let eventZahl = 0, turmNr = 0;
   function waehle() {
     eventZahl++;
-    if (eventZahl % 3 === 0) for (let k = 0; k < TURM_FOLGE.length; k++) { const id = TURM_FOLGE[turmNr++ % TURM_FOLGE.length]; if (!DEFS[id].moeglich || DEFS[id].moeglich()) return id; }
+    if (eventZahl % 3 === 2) for (let k = 0; k < TURM_FOLGE.length; k++) { const id = TURM_FOLGE[turmNr++ % TURM_FOLGE.length]; if (!DEFS[id].moeglich || DEFS[id].moeglich()) return id; }
     const moegl = Object.keys(DEFS).filter(id => !LIKE_EVENTS.has(id) && !TURM_FOLGE.includes(id) && !verlauf.slice(0, 10).includes(id) && (!DEFS[id].moeglich || DEFS[id].moeglich()));
     if (moegl.includes('abstimmung') && Math.random() < .5) return 'abstimmung';
     return zufall(moegl.filter(x => x !== 'abstimmung').length ? moegl.filter(x => x !== 'abstimmung') : moegl);
