@@ -29,6 +29,28 @@ export function geminiStimme({ dir, cacheDir, cfg }) {
   const STIL_MODELLE = cfg.geminiStilModelle || [];          // Standard: KEINE Anweisung an Gemini – nur der reine Satz (nichts, was vorgelesen werden könnte)
   // Prüfung: Ist die Aufnahme viel länger als der Text? Dann wurde etwas dazugesprochen (z. B. die Anweisung) → verwerfen
   const silben = t => (String(t).toLowerCase().match(/[aeiouyäöü]+/g) || []).length || 1;
+  // Kontrolle: Aufnahme von Gemini in Text zurückverwandeln und mit dem Satz vergleichen (fängt dazuerfundene Wörter ab)
+  const PRUEF = cfg.geminiPruefModell || 'gemini-flash-latest';
+  const ZAHL = /^(\d+|ein|eins|eine|einen|einer|zwei|drei|vier|fünf|sechs|sieben|acht|neun|zehn|elf|zwölf|zwanzig|dreißig|vierzig|fünfzig|sechzig|siebzig|achtzig|neunzig|hundert|tausend|und|[a-zäöüß]*(zehn|zig|ßig|hundert|tausend))$/;
+  const woerter = t => String(t).toLowerCase().replace(/[^a-zäöüß0-9]+/g, ' ').trim().split(' ').filter(w => w && !ZAHL.test(w));
+  function abstand(a, b) { const d = Array.from({ length: a.length + 1 }, (_, i) => [i]); for (let j = 1; j <= b.length; j++) d[0][j] = j;
+    for (let i = 1; i <= a.length; i++) for (let j = 1; j <= b.length; j++) d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+    return d[a.length][b.length]; }
+  async function pruefe(pcm, text) {                            // true = passt, false = verwerfen
+    const soll = woerter(text); if (soll.length < 3) return true;   // Namen/Kurzes: Längenprüfung genügt
+    try {
+      const ctrl = new AbortController(), t = setTimeout(() => ctrl.abort(), 8000);
+      const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${PRUEF}:generateContent`, {
+        method: 'POST', signal: ctrl.signal, headers: { 'content-type': 'application/json', 'x-goog-api-key': schluessel },
+        body: JSON.stringify({ contents: [{ parts: [{ inlineData: { mimeType: 'audio/wav', data: wav(pcm).toString('base64') } }, { text: 'Transkribiere diese deutsche Sprachaufnahme wortwörtlich. Gib nur den gesprochenen Text aus.' }] }], generationConfig: { thinkingConfig: { thinkingBudget: 0 } } }),
+      }).finally(() => clearTimeout(t));
+      if (!r.ok) throw new Error('Prüfung ' + r.status);
+      const ist = woerter((await r.json())?.candidates?.[0]?.content?.parts?.map(p => p.text || '').join(' ') || '');
+      const extra = ist.length > soll.length, fehler = abstand(ist, soll);
+      if (extra || fehler > Math.max(1, Math.round(soll.length * .2))) { console.log(`🚫 Leda: Aufnahme verworfen – gehört: „${ist.join(' ')}“`); return false; }
+      return true;
+    } catch (e) { if (!pruefe.gewarnt) { pruefe.gewarnt = true; console.log(`ℹ️  Leda: Kontrolle der Aufnahmen gerade nicht möglich (${e.message}) – nur Längenprüfung.`); } return true; }
+  }
   const zuLang = (pcm, text) => pcm.length / RATE > silben(text) / 3 + (String(text).match(/…/g) || []).length * .7 + 1.1;
 
   // ---------- Kontingent: pro Modell Anfragen pro Minute und pro Tag (Google zählt den Tag nach Pazifik-Zeit) ----------
@@ -117,10 +139,10 @@ export function geminiStimme({ dir, cacheDir, cfg }) {
           zaehlen(m);
           try {
             let pcm = await geminiAnfrage(m, text, gefuehl, STIL_MODELLE.includes(m));
-            if (zuLang(pcm, text)) {                            // etwas dazugesprochen → einmal nur mit reinem Text
-              if (!nutzbar(m) || restMin(m) < 1) throw new Error('Aufnahme verworfen (zu lang)');
+            if (zuLang(pcm, text) || !await pruefe(pcm, text)) {   // etwas dazugesprochen → einmal neu
+              if (!nutzbar(m) || restMin(m) < 1) throw new Error('Aufnahme verworfen');
               zaehlen(m); pcm = await geminiAnfrage(m, text, gefuehl, false);
-              if (zuLang(pcm, text)) throw new Error('Aufnahme verworfen (zu lang)');
+              if (zuLang(pcm, text) || !await pruefe(pcm, text)) throw new Error('Aufnahme verworfen');
             }
             speichere(gDatei(text, gefuehl), pcm); return pcm;
           }
