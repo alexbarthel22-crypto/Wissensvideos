@@ -18,8 +18,8 @@
       <div id="s5-btn" class="fbtn">+ Folgen<div id="s5-btn2" class="fbtn2">✓ Gefolgt</div></div>
       <div id="s5-hand" class="fhand" data-layout-ignore>👆</div>
       <div id="s5-n" class="pl">🐾 Nur noch 50 bis zum Tierheim!</div>
-      <div id="s5-t" class="pl">🐾 Sei der 800. Bewohner!</div>
-      <div id="s5-h" class="pl">🏠 Tierheim eröffnen – Tiere retten</div>
+      <div id="s5-t" class="pl">💬 Was sollen wir für dich bauen?</div>
+      <div id="s5-h" class="pl">👇 Schreib es in die Kommentare!</div>
     </div>
   </div>
   <script>
@@ -28,7 +28,7 @@
       /*__COMMON_JS__*/
       wrapBt("#s05-stage");
       const tl = gsap.timeline({ paused: true });
-      const t5 = line("L5")[0], fo = at("L5", "Folg"), du = at("L5", "du"), ti = at("L5", "Folg") + .6, nb = at("L5", "Bau");
+      const t5 = line("L5")[0], fo = at("L5", "Folg"), du = at("L5", "kommentiere"), ti = at("L5", "Folg") + .6, nb = at("L5", "Bau");
       tl.fromTo("#s5-n", { opacity: 0, scale: 2.2 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, t5);
       tl.to("#s5-n", { opacity: 0, y: -30, duration: .2 }, fo - .3);
       tl.fromTo("#s5-btn", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, fo - .2);

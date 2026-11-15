@@ -60,19 +60,19 @@
     #s5-n { top: 280px; font-size: 50px; background: #e8262f; }
     #s5-h { top: 560px; font-size: 44px; background: #fff; color: #2e9e5b; }
   </style>
-  <div id="root" data-composition-id="s05" data-start="0" data-duration="5.890" data-width="1080" data-height="1920">
-    <div id="s05-stage" class="clip stage" data-start="0" data-duration="5.890" data-track-index="0">
+  <div id="root" data-composition-id="s05" data-start="0" data-duration="6.570" data-width="1080" data-height="1920">
+    <div id="s05-stage" class="clip stage" data-start="0" data-duration="6.570" data-track-index="0">
       <div id="s5-btn" class="fbtn">+ Folgen<div id="s5-btn2" class="fbtn2">✓ Gefolgt</div></div>
       <div id="s5-hand" class="fhand" data-layout-ignore>👆</div>
       <div id="s5-n" class="pl">🐾 Nur noch 50 bis zum Tierheim!</div>
-      <div id="s5-t" class="pl">🐾 Sei der 800. Bewohner!</div>
-      <div id="s5-h" class="pl">🏠 Tierheim eröffnen – Tiere retten</div>
+      <div id="s5-t" class="pl">💬 Was sollen wir für dich bauen?</div>
+      <div id="s5-h" class="pl">👇 Schreib es in die Kommentare!</div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 5.89, "L5": [0.2, 3.89], "L5.words": [["nur", 0.2, 0.345], ["noch", 0.345, 0.496], ["50", 0.496, 0.792], ["follower", 0.792, 1.224], ["bis", 1.224, 1.369], ["zum", 1.369, 1.515], ["bau", 1.515, 1.66], ["folg", 1.88, 2.036], ["mir", 2.036, 2.186], ["", 2.186, 2.32], ["vielleicht", 2.48, 2.808], ["bist", 2.808, 2.966], ["du", 2.966, 3.114], ["der", 3.114, 3.267], ["800", 3.267, 3.89]]};
+      const C = {"__dur": 6.57, "L5": [0.2, 4.57], "L5.words": [["nur", 0.2, 0.379], ["noch", 0.379, 0.565], ["50", 0.565, 0.93], ["follower", 0.93, 1.462], ["bis", 1.462, 1.641], ["zum", 1.641, 1.821], ["bau", 1.821, 2.0], ["folg", 2.3, 2.441], ["mir", 2.441, 2.578], ["", 2.578, 2.7], ["und", 2.96, 3.135], ["kommentiere", 3.135, 3.83], ["was", 3.94, 4.017], ["wir", 4.017, 4.095], ["noch", 4.095, 4.175], ["für", 4.175, 4.252], ["dich", 4.252, 4.332], ["bauen", 4.332, 4.415], ["sollen", 4.415, 4.57]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -116,7 +116,7 @@
 
       wrapBt("#s05-stage");
       const tl = gsap.timeline({ paused: true });
-      const t5 = line("L5")[0], fo = at("L5", "Folg"), du = at("L5", "du"), ti = at("L5", "Folg") + .6, nb = at("L5", "Bau");
+      const t5 = line("L5")[0], fo = at("L5", "Folg"), du = at("L5", "kommentiere"), ti = at("L5", "Folg") + .6, nb = at("L5", "Bau");
       tl.fromTo("#s5-n", { opacity: 0, scale: 2.2 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, t5);
       tl.to("#s5-n", { opacity: 0, y: -30, duration: .2 }, fo - .3);
       tl.fromTo("#s5-btn", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, fo - .2);
