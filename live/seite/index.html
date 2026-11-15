@@ -407,9 +407,12 @@ function fokus(pl, ms, leise, zoom) {
 function kamera(t) {
   if (t > fokusBis) {
     if (t > tourBis) {                                           // immer nah dran (wie ein Kamerakran): langsam von Haus zu Haus, ab und zu der Muschelplatz
-      tourBis = t + 11000; tourModus = (tourModus + 1) % 4;
-      const bewohnt = S.spieler.map(platzVon).filter(Boolean);
-      if (bewohnt.length && tourModus) { const pl = bewohnt[Math.floor(Math.random() * bewohnt.length)]; Object.assign(ZIEL, { x: pl.x, y: pl.y - 20, z: NAH }); }
+      // Rundflug (je 11 s): Haus · Leuchtturm · Haus · Leuchtturm-Panorama (weiter weg) · Haus · Leuchtturm · Muschelplatz · Leuchtturm-Panorama
+      tourBis = t + 11000; tourModus = (tourModus + 1) % 8;
+      const bewohnt = S.spieler.map(platzVon).filter(Boolean), l = S.staedte || [];
+      if (tourModus === 3 || tourModus === 7) turmPanorama(11000);
+      else if (tourModus % 2 === 1) turmBlick(l.length ? l[Math.floor(Math.random() * Math.min(10, l.length))].name : 'Deine Stadt?', 11000);
+      else if (bewohnt.length && tourModus !== 6) { const pl = bewohnt[Math.floor(Math.random() * bewohnt.length)]; Object.assign(ZIEL, { x: pl.x, y: pl.y - 20, z: NAH }); }
       else Object.assign(ZIEL, { x: IX, y: IY + 40, z: NAH * .8 });
     }
   }
@@ -449,8 +452,9 @@ function passantName(f) {
 }
 function passantenSchilder() {                                   // kleine dunkle Namensschilder über dem Kopf
   X.setTransform(Q0, 0, 0, Q0, 0, 0);
+  const weit = cam.z < 1.15;                                       // weit weg (Leuchtturm-Panorama): keine Namensschilder
   for (const { x, y, name } of PASSANTEN.splice(0)) {
-    if (!name) continue;
+    if (!name || weit) continue;
     const sx = 540 + (x - cam.x) * cam.z, sy = MITTE_Y + (y - 24 - cam.y) * cam.z - 14;
     if (sy < KOPF_UNTEN || sy > H) continue;
     X.font = schrift(900, 21); const w = Math.min(250, X.measureText(name).width) + 30;
@@ -824,6 +828,15 @@ function turmBlick(name, ms) {
   const h = turmHoehe(st.stock), oben = p0.y - h - 110 * Math.max(1, h / 170), unten = p0.y + 20, sOben = KOPF_UNTEN + 120, sUnten = H - 70;
   const z = Math.max(1.1, Math.min(3.2, (sUnten - sOben) / (unten - oben))), mitteWelt = (oben + unten) / 2, mitteSchirm = (sOben + sUnten) / 2;
   fokus({ x: p0.x, y: mitteWelt - (mitteSchirm - MITTE_Y) / z + 30 }, ms, true, z);
+}
+// Panorama: weiter weg, damit mehrere Leuchttürme gleichzeitig zu sehen sind (oberer Küstenbogen, unter dem Kopfbereich)
+function turmPanorama(ms) {
+  const l = (S.staedte || []).length ? S.staedte : [{ name: 'Deine Stadt?', stock: 0 }], n = Math.min(l.length, 15), pl = turmPlaetze(l.length).slice(0, n);
+  let hMax = 0; l.slice(0, n).forEach(st => { const h = turmHoehe(st.stock); hMax = Math.max(hMax, h + 110 * Math.max(1, h / 170)); });
+  const x0 = Math.min(...pl.map(p => p.x)) - 60, x1 = Math.max(...pl.map(p => p.x)) + 60, oben = Math.min(...pl.map(p => p.y)) - hMax, unten = Math.max(...pl.map(p => p.y)) + 30;
+  const sOben = KOPF_UNTEN + 110, sUnten = H - 60, z = Math.max(.45, Math.min(2.2, (sUnten - sOben) / (unten - oben), 1000 / (x1 - x0)));
+  const mitteWelt = (oben + unten) / 2, mitteSchirm = (sOben + sUnten) / 2;
+  fokusBis = 0; fokus({ x: (x0 + x1) / 2, y: mitteWelt - (mitteSchirm - MITTE_Y) / z + 30 }, ms, true, z);
 }
 function turmPos(name) { const l = (S.staedte || []).length ? S.staedte : [{ name: 'Deine Stadt?', stock: 0 }], i = l.findIndex(x => x.name === name); return i < 0 ? null : turmPlaetze(l.length)[i]; }
 function leuchttuerme(t) {
