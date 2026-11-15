@@ -1,7 +1,7 @@
 """Korrigiert geschätzte Wortzeiten im Hook L1 (Werte bei speed 1.15 gemessen, skaliert auf speed 0.95)."""
 import json
 p='assets/voice/timings.json';t=json.load(open(p));L={x['id']:x for x in t['lines']}
-fix={'Diese':0.03,'Insel-Welt':.3,'wächst':1.15,'durch':1.48,'jeden':1.74,'Follower!':1.95}
+fix={'Nur':0.02,'noch':.14,'50':.45,'Follower':.95,'dann':1.55,'retten':1.78,'wir':2.08,'hunderte':2.28,'Tiere!':2.82}
 ws=L['L1']['words']
 for w in ws: w['start']=fix[w['display']] if w['display'] in fix else w['start']
 for a,b in zip(ws,ws[1:]): a['end']=b['start']
