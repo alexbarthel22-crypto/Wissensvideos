@@ -765,7 +765,7 @@ function platzZeichnen(t) {
     const cx = PLATZ_CV.getContext('2d'); cx.setTransform(PLATZ_Q, 0, 0, PLATZ_Q, (PLATZ_RAND - IX) * PLATZ_Q, (PLATZ_RAND - IY) * PLATZ_Q);
     const echt = X; X = cx; platz(0); X = echt;
   }
-  X.drawImage(PLATZ_CV, IX - PLATZ_RAND, IY - PLATZ_RAND, PLATZ_RAND * 2, PLATZ_RAND * 2);
+  if (!ausschnitt(PLATZ_CV, { x: IX - PLATZ_RAND, y: IY - PLATZ_RAND, w: PLATZ_RAND * 2, h: PLATZ_RAND * 2 })) return;   // Platz nicht im Bild: nichts zeichnen
   const c = X;
   c.strokeStyle = 'rgba(255,255,255,.55)'; c.lineWidth = 1.5;
   for (let i = 0; i < 3; i++) { const r = ((t * .02 + i * 30) % 90); c.globalAlpha = 1 - r / 90; c.beginPath(); c.ellipse(IX, IY + 20, 30 + r * .7, 18 + r * .5, 0, 0, 7); c.stroke(); }
@@ -873,8 +873,7 @@ const HAUS_ALT = [
   // 7 Luxusvilla: zwei Flügel, Goldkanten, leuchtender Infinity-Pool, Hecke, Auto
   (c, f, t) => {
     c.fillStyle = '#57b85a'; c.beginPath(); c.roundRect(-38, 4, 76, 7, 3); c.fill();
-    const pg = c.createLinearGradient(0, -6, 0, 6); pg.addColorStop(0, '#7fe0f0'); pg.addColorStop(1, '#2f8fd8');
-    c.shadowColor = '#7fe0f0'; c.shadowBlur = 8; c.fillStyle = pg; c.fillRect(-26, -4, 30, 8); c.shadowBlur = 0; c.strokeStyle = '#ffe9a8'; c.lineWidth = 1.5; c.strokeRect(-26, -4, 30, 8);
+        leuchte(c, 'pool', -11, 0, 48, 26, (g, k) => { const q = g.createLinearGradient(0, -6, 0, 6); q.addColorStop(0, '#7fe0f0'); q.addColorStop(1, '#2f8fd8'); g.shadowColor = '#7fe0f0'; g.shadowBlur = 8 * k; g.fillStyle = q; g.fillRect(-15, -4, 30, 8); }); c.strokeStyle = '#ffe9a8'; c.lineWidth = 1.5; c.strokeRect(-26, -4, 30, 8);
     [[-38, -36, 26], [12, -36, 26]].forEach(([x, y, w]) => { c.fillStyle = '#fffaf0'; c.fillRect(x, y, w, 32); c.strokeStyle = INK; c.lineWidth = 2; c.strokeRect(x, y, w, 32); fenster(c, x + 4, y + 6, w - 8, 10, '#e0b43a'); fenster(c, x + 4, y + 20, w - 8, 9, '#e0b43a'); });
     c.fillStyle = '#fff'; c.fillRect(-12, -52, 24, 48); c.strokeStyle = INK; c.strokeRect(-12, -52, 24, 48);
     c.fillStyle = '#9fe3f0'; c.fillRect(-8, -46, 16, 22); c.strokeStyle = '#e0b43a'; c.lineWidth = 1.5; c.strokeRect(-8, -46, 16, 22);
@@ -916,7 +915,7 @@ const HAUS_ALT = [
     for (let i = 0; i <= 7; i++) { const a = Math.PI + i / 7 * Math.PI; c.quadraticCurveTo(Math.cos(a - .22) * 32, -36 + Math.sin(a - .22) * 34, Math.cos(a) * 28, -36 + Math.sin(a) * 30); }
     c.closePath(); c.fill(); c.strokeStyle = '#e0b43a'; c.lineWidth = 2.5; c.stroke();
     c.strokeStyle = 'rgba(224,180,58,.6)'; c.lineWidth = 1; for (let i = 1; i < 7; i++) { const a = Math.PI + i / 7 * Math.PI; c.beginPath(); c.moveTo(0, -36); c.lineTo(Math.cos(a) * 27, -36 + Math.sin(a) * 29); c.stroke(); }
-    c.fillStyle = '#fff'; c.shadowColor = '#fff'; c.shadowBlur = 8; c.beginPath(); c.arc(0, -40, 4, 0, 7); c.fill(); c.shadowBlur = 0;
+    leuchte(c, 'weiss', 0, -40, 18, 18, (g, k) => { g.fillStyle = '#fff'; g.shadowColor = '#fff'; g.shadowBlur = 8 * k; g.beginPath(); g.arc(0, 0, 4, 0, 7); g.fill(); });
     for (let i = 0; i < 4; i++) { const ph = (t * .002 + i * .25) % 1; stern(c, -30 + i * 20, -70 + (i % 2) * 14, Math.sin(ph * Math.PI) * 4); }
   },
 ];
@@ -1145,7 +1144,7 @@ function haus(p, pl, t, roh) {
   c.restore();
   if (a.includes('palme') || pl.gross) palme(X, pl.x - (pl.gross ? 70 : 30), pl.y - 2, pl.gross ? .7 : .42, t);
   if (pl.gross) palme(X, pl.x + 74, pl.y - 6, .6, t + 900);
-  if (a.includes('laterne')) { X.fillStyle = INK; X.fillRect(pl.x + 30, pl.y - 22, 2.5, 24); X.fillStyle = '#ffe9a8'; X.shadowColor = '#ffd23f'; X.shadowBlur = 8; X.beginPath(); X.arc(pl.x + 31, pl.y - 24, 4, 0, 7); X.fill(); X.shadowBlur = 0; }
+  if (a.includes('laterne')) { X.fillStyle = INK; X.fillRect(pl.x + 30, pl.y - 22, 2.5, 24); X.drawImage(laternenGlut(), pl.x + 31 - 9, pl.y - 24 - 9, 18, 18); }
   if (a.includes('boot')) { X.fillStyle = '#8a5a2b'; X.beginPath(); X.roundRect(pl.x + 14, pl.y + 4, 22, 6, 3); X.fill(); X.fillStyle = '#fff'; X.beginPath(); X.moveTo(pl.x + 24, pl.y + 3); X.lineTo(pl.x + 24, pl.y - 10); X.lineTo(pl.x + 32, pl.y + 3); X.fill(); }
   // Name auf dem Grundstück – in der Nahansicht als großes Schild in Bildschirmgröße (wird nach der Welt gezeichnet)
   if (cam.z >= 1.15) { if (!roh) SCHILDER.push({ p, pl }); return; }
@@ -1659,10 +1658,13 @@ function effekte(t) {
 function willkommenPopup(b, age, k) {
   const pop = age < .35 ? 1 + Math.sin(age / .35 * Math.PI) * .06 : 1, w = SB, h = 176;
   X.save(); X.globalAlpha = k; X.translate(540, KOPF_UNTEN + 220); X.scale((.85 + .15 * k) * pop, (.85 + .15 * k) * pop);
-  X.shadowColor = 'rgba(80,170,255,.9)'; X.shadowBlur = 26; X.fillStyle = '#eaf5ff'; rr(-w / 2, -h / 2, w, h, 30); X.fill(); X.shadowBlur = 0;
-  X.lineWidth = 6; X.strokeStyle = '#3f8fe0'; X.stroke();
-  const g = X.createLinearGradient(0, -h / 2, 0, h / 2); g.addColorStop(0, '#ffffff'); g.addColorStop(1, '#dcefff');
-  X.fillStyle = g; rr(-w / 2 + 6, -h / 2 + 6, w - 12, h - 12, 25); X.fill();
+  X.drawImage(leuchtBild('willkommen' + w, w + 90, h + 90, (c, k) => {   // Karte mit Leuchtrand einmal vorzeichnen
+    const echt = X; X = c;
+    X.shadowColor = 'rgba(80,170,255,.9)'; X.shadowBlur = 26 * k * 3.1; X.fillStyle = '#eaf5ff'; rr(-w / 2, -h / 2, w, h, 30); X.fill(); X.shadowBlur = 0;
+    X.lineWidth = 6; X.strokeStyle = '#3f8fe0'; X.stroke();
+    const g = X.createLinearGradient(0, -h / 2, 0, h / 2); g.addColorStop(0, '#ffffff'); g.addColorStop(1, '#dcefff');
+    X.fillStyle = g; rr(-w / 2 + 6, -h / 2 + 6, w - 12, h - 12, 25); X.fill(); X = echt;
+  }, 2), -w / 2 - 45, -h / 2 - 45, w + 90, h + 90);
   const ix = -w / 2 + 78;                                             // rundes Haus-Symbol
   X.fillStyle = '#3f8fe0'; X.beginPath(); X.arc(ix, 0, 50, 0, 7); X.fill(); X.lineWidth = 4; X.strokeStyle = '#fff'; X.stroke();
   X.fillStyle = '#fff'; X.beginPath(); X.moveTo(ix - 26, 2); X.lineTo(ix, -22); X.lineTo(ix + 26, 2); X.lineTo(ix + 18, 2); X.lineTo(ix + 18, 24); X.lineTo(ix - 18, 24); X.lineTo(ix - 18, 2); X.closePath(); X.fill();
@@ -1813,6 +1815,25 @@ function hausCacheBauen(t) {
 // Kopfzeile: 10× pro Sekunde neu (bei Krabbenrennen/Glücksrad jedes Bild)
 let KC = null, KX = null, kopfZeit = 0;
 let tLetzt = 0, frameZeit = 0;
+// Leuchten einmal vorzeichnen (statt jedes Bild mit Schatten-Unschärfe) – sieht gleich aus, kostet fast nichts
+var LEUCHT = {};
+function leuchtBild(key, w, h, malen, f = 8) {             // malen(g) zeichnet in lokalen Einheiten, Mitte = (0,0)
+  if (LEUCHT[key]) return LEUCHT[key];
+  const c = document.createElement('canvas'); c.width = Math.ceil(w * f); c.height = Math.ceil(h * f); const g = c.getContext('2d');
+  g.setTransform(f, 0, 0, f, w * f / 2, h * f / 2); malen(g, f / 3.1);           // Unschärfe wie bei Nah-Kamera
+  return LEUCHT[key] = c;
+}
+function leuchte(c, key, x, y, w, h, malen) { c.drawImage(leuchtBild(key, w, h, malen), x - w / 2, y - h / 2, w, h); }
+function laternenGlut() { return leuchtBild('laterne', 18, 18, (g, k) => { g.shadowColor = '#ffd23f'; g.shadowBlur = 8 * k; g.fillStyle = '#ffe9a8'; g.beginPath(); g.arc(0, 0, 4, 0, 7); g.fill(); }); }
+// Nur den sichtbaren Ausschnitt eines großen vorgezeichneten Bildes kopieren (statt Millionen Pixel pro Bild)
+function ausschnitt(cv, box) {
+  const wx0 = cam.x - 540 / cam.z - 8, wx1 = cam.x + 540 / cam.z + 8, wy0 = cam.y - MITTE_Y / cam.z - 8, wy1 = cam.y + (H - MITTE_Y) / cam.z + 8;
+  const x0 = Math.max(box.x, wx0), x1 = Math.min(box.x + box.w, wx1), y0 = Math.max(box.y, wy0), y1 = Math.min(box.y + box.h, wy1);
+  if (x1 <= x0 || y1 <= y0) return false;
+  const fx = cv.width / box.w, fy = cv.height / box.h;
+  X.drawImage(cv, (x0 - box.x) * fx, (y0 - box.y) * fy, (x1 - x0) * fx, (y1 - y0) * fy, x0, y0, x1 - x0, y1 - y0);
+  return true;
+}
 function bild(t) {
   requestAnimationFrame(bild);
   if (t - frameZeit < 1000 / FPS - 3) return;                      // höchstens 30 Bilder pro Sekunde
@@ -1822,12 +1843,12 @@ function bild(t) {
   if (BASIS) {
     if (WACHS) {                                                    // Insel wächst: neues Land breitet sich vom alten Ufer aus
       const q = Math.min(1, (t - WACHS.t) / 4200), e = q < .5 ? 2 * q * q : 1 - (-2 * q + 2) ** 2 / 2, kk = WACHS.von + (WACHS.bis - WACHS.von) * e;
-      X.drawImage(ALT.cv, ALT.box.x, ALT.box.y, ALT.box.w, ALT.box.h);
+      ausschnitt(ALT.cv, ALT.box);
       X.save(); X.beginPath(); for (let i = 0; i <= 180; i++) { const a = i / 180 * 6.2832, r = rand(a) * kk * 1.1; i ? X.lineTo(IX + Math.cos(a) * RX * r, IY + Math.sin(a) * RY * r) : X.moveTo(IX + Math.cos(a) * RX * r, IY + Math.sin(a) * RY * r); } X.closePath(); X.clip();
-      X.drawImage(BASIS, BASIS_BOX.x, BASIS_BOX.y, BASIS_BOX.w, BASIS_BOX.h); X.restore();
+      ausschnitt(BASIS, BASIS_BOX); X.restore();
       X.strokeStyle = `rgba(255,255,255,${.8 * (1 - q)})`; X.lineWidth = 10; X.beginPath(); for (let i = 0; i <= 180; i++) { const a = i / 180 * 6.2832, r = rand(a) * kk * 1.1; i ? X.lineTo(IX + Math.cos(a) * RX * r, IY + Math.sin(a) * RY * r) : X.moveTo(IX + Math.cos(a) * RX * r, IY + Math.sin(a) * RY * r); } X.closePath(); X.stroke();
       if (q >= 1) { WACHS = null; ALT = null; }
-    } else X.drawImage(BASIS, BASIS_BOX.x, BASIS_BOX.y, BASIS_BOX.w, BASIS_BOX.h);
+    } else ausschnitt(BASIS, BASIS_BOX);
   }
   platzZeichnen(t);
   lebenZeichnen(t, dt);
@@ -1851,7 +1872,7 @@ function bild(t) {
     kopfZeit = t; const echt = X; X = KX; X.setTransform(1, 0, 0, 1, 0, 0); X.clearRect(0, 0, KC.width, KC.height);
     KOPF_UNTEN = kopf(t); X = echt;
   }
-  X.setTransform(1, 0, 0, 1, 0, 0); X.drawImage(KC, 0, 0);
+  X.setTransform(1, 0, 0, 1, 0, 0); { const kh = Math.min(KC.height, Math.ceil((KOPF_UNTEN + 90) * Q0)); X.drawImage(KC, 0, 0, KC.width, kh, 0, 0, KC.width, kh); }
   overlay(t);
 }
 document.fonts?.load(`400 40px ${TITEL}`).then(() => document.fonts.load(`700 30px ${FONT}`)).then(() => { HC_SIG = ''; if (BASIS) { BASIS = null; } }).catch(() => {});
