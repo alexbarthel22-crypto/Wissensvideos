@@ -20,7 +20,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-15 n';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-15 o';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -467,7 +467,7 @@ let sprichtSeit = 0, ansageNr = 0;
 // Sicherung: Sprache erzeugen darf max. 10 s dauern, Abspielen max. 20 s. Hängt das Erzeugen öfter, hilft sich das Programm selbst.
 let schritt = '', haenger = 0;
 setInterval(() => {
-  const grenze = schritt === 'piper' ? 8000 : schritt === 'gemini' ? 20000 : schritt === 'erzeugen' ? 25000 : 20000;
+  const grenze = schritt === 'piper' ? 8000 : schritt === 'gemini' ? 35000 : schritt === 'erzeugen' ? 25000 : 20000;
   if (schritt === 'piper' && spricht && Date.now() - sprichtSeit >= grenze) { console.log('⚠️  Piper hing – starte die Stimme neu.'); sprichtSeit = Date.now(); PIPER.neustart(); return; }
   if (!spricht || Date.now() - sprichtSeit < grenze) return;
   console.log(`⚠️  Ansage hing beim ${schritt === 'erzeugen' ? 'Erzeugen der Sprache (say, Stimme „' + stimme + '“)' : schritt === 'abspielen' ? 'Abspielen (afplay)' : 'Warten (' + schritt + ')'} – Kerstin macht weiter.`);
@@ -482,13 +482,15 @@ setInterval(() => {
 function fertig() { ansageNr++; spricht = false; stilleSeit = Date.now(); setTimeout(weiter, 50); }
 function weiter() {
   if (spricht || !warte.length) return;
-  if (ECHT && !PIPER.bereit && piperErwartet()) { clearTimeout(weiter.t); weiter.t = setTimeout(weiter, 400); return; }   // Stimme startet gerade – kurz warten, nie die Mac-Stimme
+  if (ECHT && !LEDA.aktiv() && !PIPER.bereit && piperErwartet()) { clearTimeout(weiter.t); weiter.t = setTimeout(weiter, 400); return; }   // Stimme startet gerade – kurz warten, nie die Mac-Stimme
   const { text } = warte.shift(); spricht = true; sprichtSeit = Date.now(); gesprochen.push(Date.now()); letzteAnsageZeit = Date.now();
-  sende({ typ: 'ansage', text, ms: dauerMs(text) });
+  let untertitelDa = false;
+  const untertitel = () => { if (!untertitelDa) { untertitelDa = true; sende({ typ: 'ansage', text, ms: dauerMs(text) }); } };
+  if (!(ECHT && LEDA.aktiv())) untertitel();                // bei Leda erst, wenn die Stimme bereit ist (fällt ein Satz weg, kein stummer Untertitel)
   if (!ECHT) { setTimeout(fertig, dauerMs(text)); return; }
   const aufSeite = CFG.stimme.wiedergabe !== 'mac' && seiteHatTon() && Date.now() > stimmeFehlerBis;
   // Sprach-Speicher: schon einmal erzeugte Sätze werden sofort wieder abgespielt (spart die lange Erzeugung)
-  const key = crypto.createHash('md5').update(`${LEDA.an() ? 'gemini:' + LEDA.stimme : PIPER.bereit ? 'piper2:' + PIPER.name : stimme}|${CFG.stimme.tempo}|${ohnePausen}|${text}`).digest('hex');
+  const key = crypto.createHash('md5').update(`${LEDA.aktiv() ? 'gemini:' + LEDA.stimme : PIPER.bereit ? 'piper2:' + PIPER.name : stimme}|${CFG.stimme.tempo}|${ohnePausen}|${text}`).digest('hex');
   const fertigDatei = path.join(CACHE_DIR, key + '.wav'), datei = path.join(TON_DIR, `s${++tonNr % 20}.wav`);
   const args = ['-v', stimme, '-r', String(CFG.stimme.tempo)];
   // Immer erst eine Sprachdatei erzeugen (say hängt sonst manchmal an Mehrfach-Ausgabe/BlackHole), dann abspielen
@@ -533,18 +535,19 @@ function weiter() {
     fertig();
   };
   const ausSpeicher = fs.existsSync(fertigDatei);
-  if (ausSpeicher) { if (aufSeite) try { fs.copyFileSync(fertigDatei, datei); } catch {} return nachErzeugen(0); }
+  if (ausSpeicher) { untertitel(); if (aufSeite) try { fs.copyFileSync(fertigDatei, datei); } catch {} return nachErzeugen(0); }
   // Nächsten Satz schon vorab bei Leda erzeugen, damit er ohne Wartezeit kommt
   if (warte[0]) LEDA.vorab(warte[0].text, gefuehlVon(warte[0].text), namenIn(warte[0].text));
-  if (LEDA.an()) {                                         // Leda (Gemini): menschliche Stimme mit Gefühl; klappt es nicht, spricht Kerstin
+  if (LEDA.aktiv()) {                                      // Leda (Gemini): menschliche Stimme mit Gefühl – nur sie spricht
     schritt = 'gemini';
     const nr = ++ansageNr;
     return LEDA.satz(text, gefuehlVon(text), datei, namenIn(text)).then(ok => {
       if (nr !== ansageNr || !spricht) return;             // inzwischen abgebrochen (Sicherung hat übernommen)
-      if (ok) return nachErzeugen(0);
+      if (ok) { untertitel(); return nachErzeugen(0); }
       ersatzGesprochen = true;
-      if (PIPER.bereit) { schritt = 'piper'; return PIPER.sprich(text, datei, ok2 => nachErzeugen(ok2 ? 0 : 1)); }
-      nachErzeugen(1);
+      // Ersatzstimme nur, wenn in den Einstellungen gewünscht (Standard: keine – dann fällt der Satz weg)
+      if (CFG.stimme.ersatz === 'kerstin' && PIPER.bereit) { untertitel(); schritt = 'piper'; return PIPER.sprich(text, datei, ok2 => nachErzeugen(ok2 ? 0 : 1)); }
+      fertig();
     });
   }
   if (PIPER.bereit) {                                      // Piper: eigene Offline-Stimme, unabhängig vom macOS-Sprachdienst
@@ -564,6 +567,7 @@ var PIPER = { bereit: false, name: '', w: null, auftraege: new Map(), nr: 0 };
 var piperDa = null, piperDaZeit = 0;
 var piperErwartet = () => { if (CFG.stimme.engine === 'mac') return false; if (Date.now() - piperDaZeit > 10000) { piperDaZeit = Date.now(); try { piperDa = fs.readdirSync(path.join(DIR, 'werkzeug', CFG.stimme.piperModell || 'stimme-kerstin')).some(f => f.endsWith('.onnx')); } catch { piperDa = false; } } return piperDa; };
 function piperStarten() {
+  if (LEDA.aktiv() && CFG.stimme.ersatz !== 'kerstin') return;   // nur Leda: Kerstin wird gar nicht geladen (spart Rechenleistung)
   const ordner = path.join(DIR, 'werkzeug', CFG.stimme.piperModell || 'stimme-kerstin');
   let modell = null; try { modell = fs.readdirSync(ordner).find(f => f.endsWith('.onnx')); } catch {}
   if (!modell || CFG.stimme.engine === 'mac') { if (!modell && ECHT) console.log('ℹ️  Kerstin-Stimme nicht gefunden – ersatzweise spricht die Mac-Stimme.'); return; }
@@ -598,13 +602,14 @@ let langsam = 0;
 // Beim Start alle festen Sätze leise im Hintergrund vorab erzeugen (niedrige Priorität), damit sie im LIVE sofort kommen
 function vorwaermen() {
   if (!ECHT) return;
-  if (LEDA.an()) {                                          // Leda: feste Sätze nach und nach im Leerlauf erzeugen (einmalig, danach gespeichert)
+  if (LEDA.aktiv()) {                                       // Leda: feste Sätze nach und nach im Leerlauf erzeugen (einmalig, danach gespeichert)
     const offen = [...new Set(festeSaetzeAus(['aufruf', 'folgeAufruf', 'countdown30', 'countdown10', 'eventNoch10', 'start']))];   // nur Sätze, die wirklich vorkommen
     let i = 0;
     const naechster = () => {
-      if (!LEDA.an() || i >= offen.length) return;
+      if (!LEDA.aktiv() || i >= offen.length) return;
       if (spricht || warte.length) return setTimeout(naechster, 2000);
-      const t = offen[i++]; LEDA.satz(t, gefuehlVon(t), null, []).finally(() => setTimeout(naechster, 2500));
+      if (LEDA.frei() < 4) return setTimeout(naechster, 5000);                 // Limit gehört den echten Ansagen
+      const t = offen[i++]; LEDA.satz(t, gefuehlVon(t), null, [], 0).finally(() => setTimeout(naechster, 8000));
     };
     return setTimeout(naechster, 8000);
   }
@@ -631,7 +636,7 @@ setTimeout(vorwaermen, 3000);
 // Sprach-Speicher in werkzeug/stimme (bleibt zwischen den Streams erhalten, höchstens 2.000 Sätze)
 const CACHE_DIR = path.join(DIR, 'werkzeug', 'stimme'); fs.mkdirSync(CACHE_DIR, { recursive: true });
 var LEDA = geminiStimme({ dir: DIR, cacheDir: CACHE_DIR, cfg: CFG.stimme });
-if (ECHT) console.log(LEDA.an() ? `🎙️  Moderation: Leda (Gemini, mit Gefühl) – Kerstin springt ein, falls Gemini nicht antwortet.` : CFG.stimme.engine === 'gemini' ? 'ℹ️  Kein Gemini-Schlüssel (gemini-schluessel.txt) – Kerstin moderiert.' : '');
+if (ECHT) console.log(LEDA.an() ? `🎙️  Moderation: Leda (Gemini, mit Gefühl) – nur Leda spricht.` : CFG.stimme.engine === 'gemini' ? 'ℹ️  Kein Gemini-Schlüssel (gemini-schluessel.txt) – Kerstin moderiert.' : '');
 try { const f = fs.readdirSync(CACHE_DIR).map(n => ({ n, t: fs.statSync(path.join(CACHE_DIR, n)).mtimeMs })).sort((a, b) => b.t - a.t); f.slice(2000).forEach(x => fs.unlinkSync(path.join(CACHE_DIR, x.n))); } catch {}
 
 // ---------- Ton-Absicherung ----------
@@ -716,7 +721,7 @@ var letzteAnsageZeit = 0;
 setInterval(() => {
   const seiten = [...kunden.keys()].map(id => { const t = tonStatus.get(id) || {}; return `#${id}${t.vorschau ? '(Vorschau)' : ''}${id === tonSeite ? '★' : ''} Ton ${t.an ? 'an' : 'aus'}/${t.ac || '?'}`; });
   const weg = ECHT ? (CFG.stimme.wiedergabe !== 'mac' && seiteHatTon() && Date.now() > stimmeFehlerBis ? 'Seite (Stream)' : 'Mac-Lautsprecher') : 'aus (Test)';
-  console.log(`ℹ️  ${new Date().toLocaleTimeString('de-DE')} · TikTok: ${tiktokStatus} (${tiktokEreignisse} Ereignisse${tiktokLetztes ? ', letztes vor ' + Math.round((Date.now() - tiktokLetztes) / 1000) + ' s' : ''}) · Seiten: ${seiten.join(', ') || 'keine!'} · Stimme: ${LEDA.an() ? 'Leda' : 'Kerstin'} über ${weg}${tonAusgabe ? ` (Mac-Ausgabe: ${tonAusgabe})` : ''} · letzte Ansage vor ${letzteAnsageZeit ? Math.round((Date.now() - letzteAnsageZeit) / 1000) + ' s' : '–'}`);
+  console.log(`ℹ️  ${new Date().toLocaleTimeString('de-DE')} · TikTok: ${tiktokStatus} (${tiktokEreignisse} Ereignisse${tiktokLetztes ? ', letztes vor ' + Math.round((Date.now() - tiktokLetztes) / 1000) + ' s' : ''}) · Seiten: ${seiten.join(', ') || 'keine!'} · Stimme: ${LEDA.aktiv() ? 'Leda' : 'Kerstin'} über ${weg}${tonAusgabe ? ` (Mac-Ausgabe: ${tonAusgabe})` : ''} · letzte Ansage vor ${letzteAnsageZeit ? Math.round((Date.now() - letzteAnsageZeit) / 1000) + ' s' : '–'}`);
 }, 30000);
 setInterval(musikLokal, 3000);
 process.on('exit', () => lokalMusik?.kill());
