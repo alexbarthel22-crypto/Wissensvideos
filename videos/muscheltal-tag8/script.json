@@ -236,6 +236,26 @@
      "name": "impact-bass-2",
      "at": "L4:getrennt",
      "volume": 0.4
+    },
+    {
+     "name": "pop",
+     "at": "L4b:Häuser",
+     "volume": 0.4
+    },
+    {
+     "name": "ka-ching",
+     "at": "L4b:Likes",
+     "volume": 0.4
+    },
+    {
+     "name": "impact-bass-1",
+     "at": "L4c:größten",
+     "volume": 0.4
+    },
+    {
+     "name": "yippee",
+     "at": "L4c:Mary",
+     "volume": 0.6
     }
    ],
    "lines": [
@@ -244,7 +264,21 @@
      "text": "Und gestern war ich zum ersten Mal *r:LIVE – / auf der *r:LIVE-Insel: / einer *y:eigenen *y:Insel, / *g:getrennt von der *b:Muschel-Tal-Region!",
      "speed": 1.1,
      "style": "Style: a young German guy, around 20, genuinely excited, talking to his followers like friends, energetic and warm, natural German intonation, not an announcer, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-     "pause": 0.8
+     "pause": 0.6
+    },
+    {
+     "id": "L4b",
+     "text": "Und schaut, was ihr dort gebaut habt: / *y:87|siebenundachtzig *y:Häuser, / eine *g:Schule, ein *g:Kino, ein *g:Aquarium – / mit über *p:130.000|hundertdreißigtausend *p:Likes!",
+     "speed": 1.05,
+     "style": "Style: a young German guy, around 20, genuinely excited, talking to his followers like friends, energetic and warm, natural German intonation, not an announcer, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+     "pause": 0.5
+    },
+    {
+     "id": "L4c",
+     "text": "Die *y:größten Häuser haben: / *p:Anna, *p:Jule und *p:Mary!",
+     "speed": 1.05,
+     "style": "Style: a young German guy, around 20, genuinely excited, talking to his followers like friends, energetic and warm, natural German intonation, not an announcer, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+     "pause": 0.4
     }
    ]
   },
