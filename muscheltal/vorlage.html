@@ -903,6 +903,8 @@ function ksWalk(x,y){
 function ksStand(p){for(const s of KSHOPS)if(p.ort===s.name&&p.beruf){const k=Math.max(0,ksTeam(s).indexOf(p));
   if(s===KBAR)return{x:s.cx-3+k*6,y:s.cy+21,kind:'row',onRow:true,mayor:true};
   if(s===KBAD)return{x:s.cx+18+k*5,y:s.cy-12.2,kind:'row',onRow:true,mayor:true};
+  if(s===KDROG)return{x:s.cx-12.4-k*6,y:s.cy-3,kind:'row',onRow:true,mayor:true};
+  if(s===KCLUB)return{x:s.cx-17.4-k*6,y:s.cy-3,kind:'row',onRow:true,mayor:true};
   return{x:s.cx+12.4+k*6,y:s.cy-3,kind:'row',onRow:true,mayor:true};}return null;}
 // Personal-Plakette über dem Schild
 function ksPlak(c,s,y,col){const T2=Object.entries(I.jobs||{}).filter(([n,j])=>j&&j[1]===s.name).map(([n,j])=>({name:'@'+n,beruf:j[0]})).sort((a,b)=>(b.beruf==='Leitung')-(a.beruf==='Leitung'));
