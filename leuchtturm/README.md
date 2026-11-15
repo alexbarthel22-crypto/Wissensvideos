@@ -3,7 +3,7 @@
 Ein eigenes LIVE-Spiel: Jede Stadt, jedes Dorf, jede Gemeinde aus Deutschland, Österreich und der Schweiz bekommt eine kleine Insel mit Leuchtturm.
 
 ## So spielen die Zuschauer
-- **Stadt in den Chat schreiben**: Jedes Mal +1 m für diese Stadt (pro Person alle 3 s). Man kann auch andere Städte schreiben und anfeuern. Die erste Stadt ist die eigene Heimatstadt. Tippfehler wie „Hambrug“ oder „Koeln“ werden erkannt.
+- **Stadt in den Chat schreiben – so oft man will**: Jeder Kommentar mit einer Stadt macht ihren Turm 1 m höher (pro Person alle 3 s). Mehrfach kommentieren ist ausdrücklich erwünscht und wird im Bild und von Leda immer wieder betont. Man kann auch andere Städte schreiben und anfeuern. Die erste Stadt ist die eigene Heimatstadt. Tippfehler wie „Hambrug“ oder „Koeln“ werden erkannt.
 - **Jeder andere Kommentar**: +1 m für die Heimatstadt (alle 30 s).
 - Emoji-Boni (❤️/🎁 im Chat) sind aus, weil Emojis im TikTok-Chat nicht zuverlässig ankommen.
 - **Gründer**: Wer eine Stadt als Erstes schreibt, steht für immer am Leuchtturm.

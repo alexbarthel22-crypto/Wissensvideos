@@ -648,7 +648,7 @@ function kopf(t) {
   X.save(); X.translate(540, yP + 36); X.scale(pp, pp);
   X.fillStyle = 'rgba(10,30,60,.5)'; rr(-(RR - RL) / 2 + 6, -36 + 6, RR - RL, 72, 36); X.fill();
   X.fillStyle = GELB; rr(-(RR - RL) / 2, -36, RR - RL, 72, 36); X.fill(); X.lineWidth = 5; X.strokeStyle = INK; X.stroke();
-  text('✍️ Stadt kommentieren = Turm +1 m höher!', 0, 0, 36, INK, 'center', 900, RR - RL - 40);
+  text(Math.floor(t / 6000) % 2 ? '🔁 Immer wieder kommentieren – jedes Mal +1 m!' : '✍️ Stadt kommentieren = Turm +1 m höher!', 0, 0, 34, INK, 'center', 900, RR - RL - 40);
   X.restore();
   // Laufband mit wechselnden Fakten und Mitmach-Ideen
   const fakten = [];
@@ -661,7 +661,7 @@ function kopf(t) {
   if (S.regionen?.[0]) fakten.push(`🗺️ Stärkstes Bundesland: ${S.regionen[0].name}`);
   if (S.heute?.[0]) fakten.push(`☀️ Heute vorne: ${S.heute[0].name} (+${fmt(S.heute[0].m)} m)`);
   if (S.sieger) fakten.push(`🏆 Letzte Stadt des Tages: ${S.sieger}`);
-  fakten.push('🗼 Auch andere Städte schreiben – jede wächst!', '🤝 Holt Leute aus eurer Stadt in den Chat!', '💬 Aus welcher Stadt schaust du zu?');
+  fakten.push('🔁 Mehrfach kommentieren erlaubt: jedes Mal +1 m!', '🗼 Auch andere Städte schreiben – jede wächst!', '🤝 Holt Leute aus eurer Stadt in den Chat!', '💬 Aus welcher Stadt schaust du zu?');
   const f = fakten[Math.floor(t / 5000) % fakten.length];
   X.fillStyle = 'rgba(10,30,60,.78)'; rr(RL, yP + 82, RR - RL, 48, 24); X.fill();
   text(f, 540, yP + 106, 25, '#fff', 'center', 900, RR - RL - 30);
@@ -716,9 +716,9 @@ function erklaerung(t) {
   const rest = erklaerBis - t; if (rest <= 0) return;
   const a = 9000 - rest, al = Math.min(1, a / 400, rest / 400), y0 = 660;
   X.save(); X.globalAlpha = al;
-  karte(RL, y0, RR - RL, 560, '#fffaf0', 40);
+  karte(RL, y0, RR - RL, 570, '#fffaf0', 40);
   text('🗼 So geht das Rennen', 540, y0 + 58, 44, INK, 'center', 900, RR - RL - 40);
-  [['✍️', 'Stadt kommentieren = +1 m höher', 'jedes Mal – Dorf, Stadt oder Gemeinde'], ['🏝️', 'Jede Stadt bekommt eine Insel', 'mit eigenem Leuchtturm'], ['🗼', 'Auch andere Städte schreiben', 'jede Stadt, die du schreibst, wächst'], ['🤝', 'Holt Leute aus eurer Stadt dazu', 'zusammen wächst der Turm schneller'], ['🏆', 'Jede Minute ein Event', '60 verschiedene, mit Bonus-Metern']].forEach(([ic, z1, z2], i) => {
+  [['✍️', 'Stadt kommentieren = +1 m höher', 'Dorf, Stadt oder Gemeinde'], ['🔁', 'Immer wieder kommentieren!', 'jeder Kommentar mit deiner Stadt = noch 1 m'], ['🏝️', 'Jede Stadt bekommt eine Insel', 'mit eigenem Leuchtturm'], ['🗼', 'Auch andere Städte schreiben', 'jede Stadt, die du schreibst, wächst'], ['🏆', 'Jede Minute ein Event', '60 verschiedene, mit Bonus-Metern']].forEach(([ic, z1, z2], i) => {
     const y = y0 + 132 + i * 88, sch = Math.min(1, Math.max(0, (a - 300 - i * 450) / 350));
     X.globalAlpha = al * sch; text(ic, RL + 55, y + 8, 50, INK, 'center', 400); text(z1, RL + 105, y - 8, 33, INK, 'left', 900, RR - RL - 130); text(z2, RL + 105, y + 28, 24, '#6b5a4a', 'left', 800, RR - RL - 130);
   });

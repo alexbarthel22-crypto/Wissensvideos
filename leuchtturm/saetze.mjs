@@ -2,7 +2,7 @@
 // Wichtig (TikTok-Regeln): nie zu Herzen/Folgen/Teilen/Geschenken auffordern, nie Belohnungen dafür versprechen.
 const SAETZE = {
   start: [
-    'Willkommen beim Leuchtturm-Rennen! … Schreibt eure Stadt in den Chat!',
+    'Willkommen beim Leuchtturm-Rennen! … Schreibt eure Stadt in den Chat, immer wieder! … Jedes Mal wird ihr Turm einen Meter höher!',
     'Das Leuchtturm-Rennen geht los! … Welche Stadt baut den höchsten Leuchtturm?',
   ],
   erklaeren: [
@@ -10,6 +10,9 @@ const SAETZE = {
     'Jedes Mal, wenn ihr eure Stadt in den Chat schreibt, wächst ihr Leuchtturm um einen Meter!',
     'Ihr könnt auch andere Städte schreiben! … Jede Stadt, die ihr schreibt, wächst einen Meter!',
     'Schreibt eure Stadt, immer wieder! … Jedes Mal ein Meter mehr!',
+    'Ihr könnt so oft kommentieren, wie ihr wollt! … Jeder Kommentar mit eurer Stadt macht ihren Turm einen Meter höher!',
+    'Nicht nur einmal schreiben! … Jedes Mal, wenn ihr eure Stadt kommentiert, wächst ihr Leuchtturm einen Meter!',
+    'Mehrfach kommentieren lohnt sich! … Jedes Mal ein Meter mehr für eure Stadt!',
     'Welche Stadt baut den höchsten Leuchtturm? … Schreibt eure Stadt in den Chat!',
     'Dorf, Stadt oder Gemeinde, alles zählt! … Schreibt einfach euren Ort in den Chat.',
     'Holt eure Freunde aus eurer Stadt dazu, zusammen wächst der Leuchtturm schneller!',
@@ -22,7 +25,7 @@ const SAETZE = {
   ],
   neueStadt: [
     'Eine neue Insel für {stadt}!',
-    '{stadt} ist dabei! … Der erste Stein liegt.',
+    '{stadt} ist dabei! … Schreibt {stadt} immer wieder, jedes Mal ein Meter mehr!',
     'Willkommen im Rennen, {stadt}!',
   ],
   neueStadtName: [
