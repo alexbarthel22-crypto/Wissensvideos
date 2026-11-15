@@ -4,6 +4,10 @@
 
 const SAETZE = {
   // Geschenke: immer mit Geschenk-Namen, je wertvoller desto größer der Dank
+  danke: [                                                      // Geschenk: nur Danke + Name (ohne Geschenk-Namen)
+    'Danke, {name}!',
+    'Danke dir, {name}!',
+  ],
   geschenkKlein: [
     'Danke {name} für {fuer}!',
     'Danke für {fuer}, {name}!',

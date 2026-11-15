@@ -131,7 +131,7 @@ Während des Baus: lebendige Baustelle (Kran mit Last, Krabben-Bauarbeiter, Schu
 TikTok liefert die Geschenk-Namen auf Englisch – `geschenke.mjs` übersetzt sie mit Artikel und Mehrzahl: „Danke für die Rose“, „für den Löwen“, „für das Parfüm“, „für 3 Rosen“. Unbekannte Geschenke: „für das Geschenk „…““.
 
 ## Geschenk-Shows
-**Geschenke:** Das Programm reagiert nicht automatisch auf Geschenke (kein Dank, keine Show, keine Muscheln) – TikTok wertet automatisches Bedanken/Belohnen als „mechanisches Auffordern zum Senden von Geschenken“. Bedanken kannst du dich selbst.
+**Geschenke:** nur ein schlichtes „Danke, Name!“ (Leda) mit Herz-Animation – für jedes Geschenk gleich, ohne Geschenk-Namen, ohne Abstufung nach Wert, ohne Muscheln, pro Person höchstens alle 10 Minuten.
 - unter 10 Coins: Herzregen, Muschel-Konfetti oder Seifenblasen am Haus + Danke-Schild
 - 10–99 Coins: springender Delfin mit Banner, Heißluftballon mit Namen oder Flugzeug mit Danke-Banner
 - 100–999 Coins: Feuerwerk mit Namen, Yacht mit Namen am Rumpf oder Goldregen (Kamera fährt zum Haus)

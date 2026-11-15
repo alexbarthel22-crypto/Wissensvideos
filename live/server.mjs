@@ -20,7 +20,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-16 e';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-16 f';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -205,12 +205,15 @@ function kommentar(u, text) {
   zustand();
 }
 
-// TikTok-Regeln: Geschenke lösen KEINE automatische Reaktion aus – kein Dank, keine Show, keine Muscheln, nichts für die Kasse.
-// (Automatisches Bedanken/Belohnen wertet TikTok als „mechanisches Auffordern zum Senden von Geschenken“.)
-// Bedanken kannst du dich selbst, wenn du magst – das Programm bleibt still.
+// Geschenke: nur ein schlichtes „Danke, Name!“ mit Herz-Animation – für jedes Geschenk gleich (kein Geschenk-Name,
+// keine Abstufung nach Wert, keine Muscheln, nichts für die Kasse) und pro Person höchstens alle 10 Minuten.
 function geschenk(u, name, diamanten, anzahl) {
-  const id = String(u?.uniqueId || '').toLowerCase(), p = S.spieler[id];
-  if (p) p.zuletzt = Date.now();
+  const id = String(u?.uniqueId || '').toLowerCase(); if (!id || gesperrt(id)) return;
+  const p = S.spieler[id]; if (p) p.zuletzt = Date.now();
+  if (!einmal(id, 'geschenkDanke', 10 * 60000)) return;
+  const nameAnzeige = p?.name || '@' + u.uniqueId;
+  sende({ typ: 'danke', id: p?.id || null, name: nameAnzeige });
+  sag(satz('danke', { name: sprechName({ name: nameAnzeige }) }), 1);
 }
 
 // ---------- Muschelkasse der Live-Insel (getrennt von der Inselkasse der Haupt-Insel) ----------

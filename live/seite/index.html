@@ -330,6 +330,10 @@ function ereignis(e) {
       if (e.diamanten >= 20) { fokus(pl, 6000, true); setTimeout(() => hausFeuerwerk(pl, Math.min(20, 4 + Math.round(Math.log2(e.diamanten) * 2))), 600); }
       if (e.diamanten >= 200) setTimeout(() => { funken(pl, '🎉', 30); hausFeuerwerk(pl, 20); }, 2600);
     } break;
+    case 'danke':                                                    // Geschenk: schlichtes Danke mit Herzen – für alle gleich
+      banner.unshift({ t: 0, oben: `💖 Danke ${e.name}!`, unten: 'Schön, dass du da bist!', farbe: PINK, dauer: 3.5 }); MOMENTE.push({ art: 'herzen', t: jetzt });
+      if (pl) { fokus(pl, 4000, true); funken(pl, '💖', 24); setTimeout(() => hausFeuerwerk(pl, 8), 400); }
+      break;
     case 'show':
       if (e.coins < 10) { banner.push({ t: 0, oben: `🎁 Danke ${e.name}!`, unten: `für ${e.fuer || e.gift}`, farbe: PINK }); if (pl) funken(pl, { herzregen: '💖', muschelkonfetti: '🐚', seifenblasen: '🫧' }[e.art] || '💖', 16); }
       else showStart(e);
