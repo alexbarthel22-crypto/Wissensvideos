@@ -7,7 +7,9 @@ const SAETZE = {
   ],
   erklaeren: [
     'Schreibt eure Stadt in den Chat, dann bekommt sie eine eigene Insel mit Leuchtturm!',
-    'Jeder Kommentar macht den Leuchtturm eurer Stadt einen Meter höher!',
+    'Jedes Mal, wenn ihr eure Stadt in den Chat schreibt, wächst ihr Leuchtturm um einen Meter!',
+    'Ihr könnt auch andere Städte schreiben! … Jede Stadt, die ihr schreibt, wächst einen Meter!',
+    'Schreibt eure Stadt, immer wieder! … Jedes Mal ein Meter mehr!',
     'Welche Stadt baut den höchsten Leuchtturm? … Schreibt eure Stadt in den Chat!',
     'Dorf, Stadt oder Gemeinde, alles zählt! … Schreibt einfach euren Ort in den Chat.',
     'Holt eure Freunde aus eurer Stadt dazu, zusammen wächst der Leuchtturm schneller!',
@@ -55,7 +57,30 @@ const SAETZE = {
     'Schön, dass du da bist, {name}!',
   ],
   teilen: [
-    'Danke fürs Teilen, {name}!',
+    'Danke fürs Teilen, {name}! … Schreib deine Stadt, dann bekommt ihr Turm einen Bonus!',
+  ],
+  teilenStadt: [
+    'Danke fürs Teilen, {name}! … Ein Bonus für den Turm von {stadt}!',
+    'Wow, danke fürs Teilen, {name}! … {stadt} bekommt einen Extra-Schub!',
+  ],
+  geschenkDank: [
+    'Tausend Danke, {name}, das geht alles in deinen Turm!',
+  ],
+  geschenkDankOhne: [
+    'Tausend Danke, {name}! … Schreib deine Stadt, dann geht alles in deinen Turm!',
+  ],
+  herzDank: [
+    'Danke für den Herzregen, {name}! … Schreib deine Stadt und bau mit!',
+    'Was für ein Herzregen, {name}! … Aus welcher Stadt kommst du? Schreib sie in den Chat!',
+  ],
+  herzDankStadt: [
+    'Danke für den Herzregen, {name}! … Schreib {stadt} weiter in den Chat!',
+    'Herzregen von {name}! … Los, {stadt}, baut weiter!',
+  ],
+  herzMeilenstein: [
+    'Wahnsinn! … Schon {zahl} Herzen! … Ihr seid unglaublich!',
+    'Wow! … {zahl} Herzen! … Danke, ihr seid die Besten!',
+    'Unglaublich, {zahl} Herzen! … Was für eine Stimmung!',
   ],
   begruessungEins: [
     'Hallo {name}!',

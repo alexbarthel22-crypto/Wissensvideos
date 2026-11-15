@@ -1,6 +1,7 @@
-// Leuchtturm-Rennen – Städte-Events. Alle 2 Minuten eins, jedes ca. 1 Minute.
+// Leuchtturm-Rennen – Städte-Events (60 Stück, mit events-extra.mjs). Jede Minute eins, jedes ca. 40 Sekunden.
 // Alles läuft über den Chat (keine Belohnung für Herzen/Folgen/Teilen/Geschenke – TikTok-Regeln).
 import { normal } from './filter.mjs';
+import { extraEvents } from './events-extra.mjs';
 
 const zufall = a => a[Math.floor(Math.random() * a.length)];
 const anz = (n, ein, mehr) => n === 1 ? `1 ${ein}` : `${n} ${mehr}`;
@@ -44,7 +45,7 @@ export function macheEvents(api) {
     },
     staedteduell: {
       titel: 'Städte-Duell', icon: '⚔️', moeglich: () => api.staedte().length >= 2,
-      start(e) { const [a, b] = api.staedte(); e.a = a.name; e.b = b.name; e.w = { [e.a]: new Set(), [e.b]: new Set() }; api.sende({ typ: 'duell', a: e.a, b: e.b }); return `Städte-Duell! ${e.a} gegen ${e.b}! Welche Stadt hat in einer Minute mehr Leute im Chat? Der Sieger bekommt fünfzig Meter!`; },
+      start(e) { const [a, b] = api.staedte(); e.a = a.name; e.b = b.name; e.w = { [e.a]: new Set(), [e.b]: new Set() }; api.sende({ typ: 'duell', a: e.a, b: e.b }); return `Städte-Duell! ${e.a} gegen ${e.b}! Welche Stadt hat jetzt mehr Leute im Chat? Der Sieger bekommt fünfzig Meter!`; },
       kommentar(e, p) { if (p.stadt && e.w[p.stadt]) e.w[p.stadt].add(p.id); return false; },
       anzeige: e => { const a = e.w[e.a].size, b = e.w[e.b].size, m = Math.max(1, a, b); return { text: `${e.a} gegen ${e.b} – wer hat mehr Leute im Chat?`, balken: [{ name: '🗼 ' + e.a, wert: a, max: m, farbe: '#3fa0e8' }, { name: '🗼 ' + e.b, wert: b, max: m, farbe: '#ff8fb8' }] }; },
       ende(e) { const a = e.w[e.a].size, b = e.w[e.b].size; if (a === b) return { text: `Unentschieden ${a}:${b}!`, sag: 'Unentschieden!' }; const s = a > b ? e.a : e.b; api.turmWachsen(s, 50); return { text: `${s} gewinnt das Duell (${Math.max(a, b)}:${Math.min(a, b)})! +50 Meter`, sag: `${s} gewinnt das Städte-Duell!`, gut: true, stadt: s }; },
@@ -71,14 +72,14 @@ export function macheEvents(api) {
     },
     aufholjagd: {
       titel: 'Aufholjagd', icon: '🚀', moeglich: () => api.staedte().length >= 4,
-      start(e) { e.hinten = new Set(api.staedte().slice(3).map(s => s.name)); e.z = {}; e.plus = {}; return 'Aufholjagd! Eine Minute lang wachsen alle Städte ab Platz vier doppelt so schnell. Schreibt in den Chat!'; },
+      start(e) { e.hinten = new Set(api.staedte().slice(3).map(s => s.name)); e.z = {}; e.plus = {}; return 'Aufholjagd! Jetzt wachsen alle Städte ab Platz vier doppelt so schnell. Schreibt in den Chat!'; },
       kommentar(e, p) { if (!p.stadt || !e.hinten.has(p.stadt) || Date.now() - (e.z[p.id] || 0) < 10000) return; e.z[p.id] = Date.now(); e.plus[p.stadt] = (e.plus[p.stadt] || 0) + 2; api.turmWachsen(p.stadt, 2, p); return false; },
       anzeige: e => ({ text: `Ab Platz 4 wächst jede Stadt doppelt!  (${Object.values(e.plus).reduce((a, b) => a + b, 0)} Meter extra)` }),
       ende(e) { const top = Object.entries(e.plus).sort((a, b) => b[1] - a[1])[0]; return top ? { text: `Am meisten aufgeholt: ${top[0]} (+${top[1]})`, sag: `${top[0]} hat am meisten aufgeholt!`, gut: true } : { text: 'Aufholjagd vorbei.' }; },
     },
     laenderduell: {
       titel: 'Länder-Duell', icon: '🌐',
-      start(e) { e.w = { DE: new Set(), AT: new Set(), CH: new Set() }; return 'Länder-Duell! Deutschland, Österreich oder Schweiz! Welches Land hat in einer Minute die meisten Leute im Chat? Alle Städte des Siegerlandes bekommen zehn Meter!'; },
+      start(e) { e.w = { DE: new Set(), AT: new Set(), CH: new Set() }; return 'Länder-Duell! Deutschland, Österreich oder Schweiz! Welches Land hat jetzt die meisten Leute im Chat? Alle Städte des Siegerlandes bekommen zehn Meter!'; },
       kommentar(e, p) { const s = stadtVon(p); if (s && e.w[s.land]) e.w[s.land].add(p.id); return false; },
       anzeige: e => { const z = Object.keys(LAENDER).map(k => e.w[k].size), m = Math.max(1, ...z); return { text: 'Welches Land hat die meisten Leute im Chat?', balken: Object.keys(LAENDER).map((k, i) => ({ name: LAENDER[k], wert: z[i], max: m, farbe: ['#e8433c', '#ff8a2a', '#3fa0e8'][i] })) }; },
       ende(e) { const best = Object.keys(LAENDER).sort((a, b) => e.w[b].size - e.w[a].size)[0]; if (!e.w[best].size) return { text: 'Kein Land hat mitgemacht …' };
@@ -87,14 +88,14 @@ export function macheEvents(api) {
     },
     nachbarduell: {
       titel: 'Nachbar-Duell', icon: '🏘️', moeglich: () => !!nachbarPaar(),
-      start(e) { const [a, b, km] = nachbarPaar(); e.a = a; e.b = b; e.w = { [a]: new Set(), [b]: new Set() }; api.sende({ typ: 'duell', a, b }); return `Nachbar-Duell! ${a} gegen ${b}, nur ${km} Kilometer auseinander! Welche Stadt hat in einer Minute mehr Leute im Chat? Der Sieger bekommt vierzig Meter!`; },
+      start(e) { const [a, b, km] = nachbarPaar(); e.a = a; e.b = b; e.w = { [a]: new Set(), [b]: new Set() }; api.sende({ typ: 'duell', a, b }); return `Nachbar-Duell! ${a} gegen ${b}, nur ${km} Kilometer auseinander! Welche Stadt hat jetzt mehr Leute im Chat? Der Sieger bekommt vierzig Meter!`; },
       kommentar(e, p) { if (p.stadt && e.w[p.stadt]) e.w[p.stadt].add(p.id); return false; },
       anzeige: e => { const a = e.w[e.a].size, b = e.w[e.b].size, m = Math.max(1, a, b); return { text: `Nachbarn: ${e.a} gegen ${e.b} – wer hat mehr Leute im Chat?`, balken: [{ name: '🏘️ ' + e.a, wert: a, max: m, farbe: '#3fa0e8' }, { name: '🏘️ ' + e.b, wert: b, max: m, farbe: '#ff8fb8' }] }; },
       ende(e) { const a = e.w[e.a].size, b = e.w[e.b].size; if (a === b) return { text: `Unentschieden ${a}:${b}!`, sag: 'Unentschieden unter Nachbarn!' }; const s = a > b ? e.a : e.b; api.turmWachsen(s, 40); return { text: `${s} gewinnt das Nachbar-Duell (${Math.max(a, b)}:${Math.min(a, b)})! +40 m`, sag: `${s} gewinnt das Nachbar-Duell!`, gut: true, stadt: s }; },
     },
     regionenduell: {
       titel: 'Bundesland-Duell', icon: '🗺️', moeglich: () => new Set(api.staedte().map(s => s.region).filter(Boolean)).size >= 2,
-      start(e) { e.w = {}; return 'Bundesland-Duell! Welches Bundesland oder welcher Kanton hat in einer Minute die meisten Leute im Chat? Alle Städte des Siegers bekommen fünfzehn Meter!'; },
+      start(e) { e.w = {}; return 'Bundesland-Duell! Welches Bundesland oder welcher Kanton hat jetzt die meisten Leute im Chat? Alle Städte des Siegers bekommen fünfzehn Meter!'; },
       kommentar(e, p) { const s = stadtVon(p); if (s?.region) (e.w[s.region] ||= new Set()).add(p.id); return false; },
       anzeige: e => { const z = Object.entries(e.w).map(([k, v]) => [k, v.size]).sort((a, b) => b[1] - a[1]).slice(0, 3), m = Math.max(1, ...z.map(x => x[1])); return { text: 'Welches Bundesland hat die meisten Leute im Chat?', balken: z.map(([k, n], i) => ({ name: k, wert: n, max: m, farbe: ['#57b85a', '#ffd23f', '#3fa0e8'][i] })) }; },
       ende(e) { const best = Object.entries(e.w).sort((a, b) => b[1].size - a[1].size)[0]; if (!best) return { text: 'Kein Bundesland hat mitgemacht …' };
@@ -109,7 +110,7 @@ export function macheEvents(api) {
     },
     turbo: {
       titel: 'Bau-Turbo', icon: '⚡',
-      start(e) { e.n = 0; return 'Bau-Turbo! Eine Minute lang zählt jeder Kommentar alle zehn Sekunden, statt alle dreißig! Schreibt in den Chat!'; },
+      start(e) { e.n = 0; return 'Bau-Turbo! Jetzt zählt jeder Kommentar alle zehn Sekunden, statt alle dreißig! Schreibt in den Chat!'; },
       anzeige: e => ({ text: `⚡ Jeder Kommentar zählt alle 10 Sekunden!  (${e.n} Meter im Turbo)` }),
       ende: e => ({ text: `Turbo vorbei – ${e.n} Meter gebaut!`, sag: 'Der Turbo ist vorbei! … Stark gebaut!', gut: e.n > 0 }),
     },
@@ -146,17 +147,20 @@ export function macheEvents(api) {
     },
   };
 
+  const X = extraEvents(api, { zufall, wortGleich, listeTxt, anz, stadtVon }); Object.assign(DEFS, X.D);
+  for (const id of ['staedteneu', 'baukolonne', 'nebel']) DEFS[id].stadt = true;
   const PREIS = {
     staedteneu: 'Jede neue Stadt startet mit zwanzig Metern.', baukolonne: 'Jeder bringt seiner Stadt fünf Meter.', staedteduell: 'Die Siegerstadt bekommt fünfzig Meter.',
     leuchtsignal: 'Die ersten fünf bringen ihrer Stadt je fünfzehn Meter.', turmquiz: 'Jede richtige Antwort bringt der eigenen Stadt zehn Meter.', aufholjagd: 'Ab Platz vier wächst jede Stadt doppelt.',
     laenderduell: 'Alle Städte des Siegerlandes bekommen zehn Meter.', turbo: 'Jeder Kommentar zählt alle zehn Sekunden.', glueckslos: 'Drei Gewinner bringen ihrer Stadt bis zu fünfundzwanzig Meter.',
     sturm: 'Jeder Helfer bringt drei Meter.', nachbarduell: 'Die Siegerstadt bekommt vierzig Meter.', regionenduell: 'Alle Städte des Siegers bekommen fünfzehn Meter.', herzregen: 'Jedes Herz im Chat bringt zwei Meter.', nebel: 'Die ersten zehn Städte bekommen acht Meter.', schaetzen: 'Wer am nächsten dran ist, bringt seiner Stadt zwanzig Meter.',
+    ...X.P,
   };
 
   function starte(id) {
     const d = DEFS[id]; ev = { id, d, t0: Date.now(), ende: Date.now() + DAUER * 1000 }; ergebnis = null;
     naechstes = Date.now() + MIN;
-    const ansage = d.start(ev); verlauf = [id, ...verlauf].slice(0, 6);
+    const ansage = d.start(ev); verlauf = [id, ...verlauf].slice(0, Math.min(30, Object.keys(DEFS).length - 5));
     api.sende({ typ: 'eventStart', id });
     api.sag(ansage, 0); api.zustand();
   }
@@ -169,7 +173,7 @@ export function macheEvents(api) {
     api.sende({ typ: 'eventEnde', gut: !!r.gut });
     ev = null; naechstes = Math.max(naechstes, Date.now() + 20000); api.zustand();
   }
-  // Erstes Event: „Neue Städte willkommen“, danach zufällig (keins der letzten 6)
+  // Erstes Event: „Neue Städte willkommen“, danach zufällig (keins der letzten 30)
   function waehle() {
     zahl++;
     if (zahl === 1) return 'staedteneu';
@@ -194,6 +198,9 @@ export function macheEvents(api) {
     },
     turbo: () => ev?.id === 'turbo' ? ev : null,
     herzregen: () => ev?.id === 'herzregen' ? ev : null,
+    doppel: () => ev?.id === 'doppelmeter' ? ev : null,
+    stadtEvent: () => !!ev?.d.stadt,
+    anzahl: () => Object.keys(DEFS).length,
     laeuft: () => !!ev, id: () => ev?.id || null,
     naechstesIn: () => ev ? 0 : Math.max(0, Math.round((naechstes - Date.now()) / 1000)),
     restSek: () => ev ? rest(ev) : null,

@@ -50,9 +50,9 @@
     "_hinweis": "Normal laufen Musik und Stimme über die Live-Seite. Blockiert der Browser den Ton, spielt das Programm beides über die Mac-Lautsprecher (musikAufMac)."
   },
   "events": {
-    "alleMinuten": 2,
-    "dauerSek": 60,
-    "_hinweis": "Alle 2 Minuten (von Start zu Start) ein Städte-Event, jedes dauert etwa 1 Minute."
+    "alleMinuten": 1,
+    "dauerSek": 40,
+    "_hinweis": "Jede Minute (von Start zu Start) eines von 60 Städte-Events, jedes dauert 40 Sekunden, danach 9 s Ergebnis."
   },
   "turm": {
     "proKommentarSek": 30,
@@ -70,7 +70,13 @@
     "erklaerenMinuten": 3,
     "_erklaeren": "So oft erklärt Leda das Spiel („Schreibt eure Stadt in den Chat …“).",
     "spotlightMinuten": 2,
-    "_spotlight": "So oft zoomt die Kamera kurz auf die führende Stadt (sonst steht sie still – spart Rechenleistung)."
+    "_spotlight": "So oft zoomt die Kamera kurz auf die führende Stadt (sonst steht sie still – spart Rechenleistung).",
+    "stadtSchreibenSek": 3,
+    "_stadtSchreiben": "Jedes Mal, wenn jemand eine Stadt schreibt (auch eine andere als die eigene): +1 m für diese Stadt, pro Person höchstens alle stadtSchreibenSek Sekunden.",
+    "teilenMeter": 30,
+    "geschenkMeterProMuenze": 5,
+    "herzDankSek": 60,
+    "_bonus": "teilenMeter: Bonus für den eigenen Turm beim Teilen des Streams (pro Person alle 10 Min.). geschenkMeterProMuenze: Meter je Coin eines Geschenks. herzDankSek: Leda dankt höchstens so oft für Herzregen. Achtung TikTok-Regeln: nie vorher Belohnungen für Teilen/Geschenke ankündigen."
   },
   "eulerApiKey": "",
   "ort": {

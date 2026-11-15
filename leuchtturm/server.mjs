@@ -21,7 +21,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-16 b';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-16 c';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 // Stimmen und Kerstin-Modell mit Muschel-Tal LIVE teilen (gleicher Speicher = schon erzeugte Leda-Sätze kosten nichts)
@@ -63,14 +63,18 @@ function spieler(u) {
 // Für die Stimme: Klarname („lara91554“ → „Lara“), sonst bereinigter Name. Namen werden bei Leda als eigenes Stück gespeichert.
 const GESPROCHENE_NAMEN = new Set();
 const sprechName = p => { const n = klarname(p.name) || String(p.name).replace(/^@/, '').replace(/[._]+/g, ' ').replace(/\d{3,}/g, '').trim() || 'Gast'; if (GESPROCHENE_NAMEN.size > 3000) GESPROCHENE_NAMEN.clear(); GESPROCHENE_NAMEN.add(n); return n; };
+// Voller TikTok-Name zum Sprechen (Danke für Geschenke/Teilen): „@lara_91554“ → „lara 91554“
+const vollName = p => { const n = String(p.name || '').replace(/^@/, '').replace(/[._]+/g, ' ').trim() || 'Gast'; if (GESPROCHENE_NAMEN.size > 3000) GESPROCHENE_NAMEN.clear(); GESPROCHENE_NAMEN.add(n); return n; };
 const namenIn = t => [...GESPROCHENE_NAMEN, ...Object.keys(S.staedte)].filter(n => t.includes(n));
 const einmalZeit = new Map();
 function einmal(id, art, ms) { const k = id + '|' + art, t = einmalZeit.get(k) || 0; if (Date.now() - t < ms) return false; einmalZeit.set(k, Date.now()); return true; }
 
 // ---------- Leuchttürme ----------
-const TURM_UPGRADES = [[10, 'eine Fahne'], [25, 'leuchtende Fenster'], [50, 'eine goldene Galerie'], [100, 'den ersten Farbring'], [150, 'einen Möwenschwarm'],
-  [250, 'ein buntes Leuchtfeuer'], [400, 'Funkelsterne'], [500, 'die Wolken'], [750, 'einen Regenbogen'], [1000, 'eine goldene Krone'], [1500, 'einen Hubschrauber'],
-  [2000, 'eine Diamant-Spitze'], [3000, 'Mond und Sterne'], [5000, 'eine Rakete'], [7500, 'ein Nordlicht'], [10000, 'Planetenringe']];
+const TURM_UPGRADES = [[10, 'eine Fahne'], [20, 'einen Rettungsring'], [25, 'leuchtende Fenster'], [35, 'Blumenkästen'], [50, 'eine goldene Galerie'], [75, 'einen Balkon mit Fernrohr'],
+  [100, 'den ersten Farbring'], [120, 'eine Wetterfahne'], [150, 'einen Möwenschwarm'], [200, 'eine Lichterkette'], [250, 'ein buntes Leuchtfeuer'], [300, 'einen zweiten Rundgang'], [400, 'Funkelsterne'],
+  [500, 'die Wolken'], [600, 'eine Wimpelkette'], [750, 'einen Regenbogen'], [850, 'einen Zeppelin'], [1000, 'eine goldene Krone'], [1200, 'Heißluftballons'], [1500, 'einen Hubschrauber'],
+  [2000, 'eine Diamant-Spitze'], [2500, 'einen Satelliten'], [3000, 'Mond und Sterne'], [4000, 'Sternschnuppen'], [5000, 'eine Rakete'], [6000, 'einen Astronauten'], [7500, 'ein Nordlicht'],
+  [8500, 'einen Ringplaneten'], [10000, 'Planetenringe'], [12500, 'eine Galaxie'], [15000, 'einen Kometen'], [20000, 'eine eigene Sonne']];
 const rangListe = () => Object.values(S.staedte).sort((a, b) => b.stock - a.stock);
 let fuehrender = null, fuehrungAnsage = 0, upAnsage = 0, neuAnsage = 0;
 const plusPuffer = new Map();                                // „+1“-Anzeigen sammeln (nicht jedes Stockwerk einzeln schicken)
@@ -112,26 +116,29 @@ function eventAntwort(p, t, probe) {
   if (w.length > 1 && w.length <= 6) for (const x of w) if (x && versuch(x)) return true;
   return false;
 }
-const STADT_EVENTS = new Set(['staedteneu', 'baukolonne', 'nebel']);   // hier ist die Stadt die Antwort
 function kommentar(u, text) {
   const t = String(text || '').toLowerCase().trim();
   const p = spieler(u); if (!p) return;
-  // 1. Stadt wählen (einmal). Ist der Kommentar gerade eine andere Event-Antwort („licht“, „los“ …), zählen kleine Orte nur mit „aus …“
-  if (!p.stadt && EV.id() !== 'turmquiz') {
-    const antwort = EV.laeuft() && !STADT_EVENTS.has(EV.id()) && eventAntwort(null, text, true);
-    const st = stadtAus(text, antwort);
-    if (st) {
-      p.stadt = st; p.stadtZeit = Date.now(); geaendert = true;
-      const neu = !S.staedte[st];
-      const s = S.staedte[st] ||= { name: st, stock: 0, leute: 0, seit: Date.now(), land: landVon(st), ...infoVon(st), gruender: p.name };
-      if (neu) S.neueste = st;
-      s.leute++;
-      turmWachsen(st, 1, p);
-      sende({ typ: neu ? 'neueStadt' : 'beitritt', stadt: st, name: p.name });
-      if (neu && Date.now() - neuAnsage > 15000) { neuAnsage = Date.now(); sag(klarname(p.name) ? satz('neueStadtName', { name: sprechName(p), stadt: st }) : satz('neueStadt', { stadt: st }), 2); }
-      eventAntwort(p, text);
-      return;
+  // 1. Stadt im Kommentar? Jedes Mal, wenn jemand eine Stadt schreibt: +1 m für DIESE Stadt (pro Person alle 3 s).
+  //    Die erste geschriebene Stadt wird die Heimatstadt (für Kommentare, Emojis, Events). Andere Städte anfeuern geht immer.
+  //    Ist der Kommentar gerade eine andere Event-Antwort („licht“, „los“ …), zählen kleine Orte nur mit „aus …“.
+  let st = null;
+  if (EV.id() !== 'turmquiz' && !/^(hauptstadtquiz|flussquiz|buchstabensalat|emojiraetsel)$/.test(EV.id() || '')) {
+    const antwort = EV.laeuft() && !EV.stadtEvent() && eventAntwort(null, text, true);
+    st = stadtAus(text, antwort);
+  }
+  if (st) {
+    stadtNeu(st, p);
+    if (!p.stadt) { p.stadt = st; S.staedte[st].leute++; geaendert = true; if (p.guthaben) { turmWachsen(st, p.guthaben, p, 'geschenk'); p.guthaben = 0; } if (!S.staedte[st]._neu) sende({ typ: 'beitritt', stadt: st, name: p.name }); }
+    delete S.staedte[st]._neu;
+    const jetzt = Date.now();
+    if (jetzt - (p.schreibZeit || 0) >= (CFG.turm.stadtSchreibenSek ?? 3) * 1000) {
+      p.schreibZeit = jetzt; if (st === p.stadt) p.stadtZeit = jetzt;
+      const s = S.staedte[st], d = EV.doppel(), n = (d ? 2 : 1) * (s.fieberBis > jetzt ? 2 : 1);
+      fieberPruefen(s, p); turmWachsen(st, n, p, 'stadt'); if (d) d.n += n / 2;
     }
+    eventAntwort(p, text);
+    return;
   }
   // 2. Event-Antwort
   eventAntwort(p, text);
@@ -157,12 +164,34 @@ function kommentar(u, text) {
   p.stadtZeit = jetzt;
   turmWachsen(s.name, fieber, p); if (turbo) turbo.n += fieber;
 }
+// Neue Stadt anlegen (Gründer = wer sie als Erstes schreibt)
+function stadtNeu(st, p) {
+  if (S.staedte[st]) return false;
+  S.staedte[st] = { name: st, stock: 0, leute: 0, seit: Date.now(), land: landVon(st), ...infoVon(st), gruender: p?.name || '', _neu: true };
+  S.neueste = st; geaendert = true;
+  sende({ typ: 'neueStadt', stadt: st, name: p?.name || '' });
+  if (Date.now() - neuAnsage > 15000) { neuAnsage = Date.now(); sag(p && klarname(p.name) ? satz('neueStadtName', { name: sprechName(p), stadt: st }) : satz('neueStadt', { stadt: st }), 2); }
+  return true;
+}
 const GESCHENK_EMOJI = /🎁/u, HERZ_EMOJI = /(❤|♥|💖|💗|💓|💕|💞|💘|💝|🧡|💛|💚|💙|💜|🤍|🖤|🤎|🩷|🩵|🩶|😍|🥰|<3)/u;
 let bauschubAnsage = 0;
 
 // Herzen: still – je X Herzen einer Person 1 Stockwerk für ihre Stadt (wird nie angesagt oder angezeigt)
+const MEILENSTEINE = [[100, 'hundert'], [500, 'fünfhundert'], [1000, 'tausend'], [2500, 'zweitausendfünfhundert'], [5000, 'fünftausend'], [10000, 'zehntausend'], [25000, 'fünfundzwanzigtausend'], [50000, 'fünfzigtausend'], [100000, 'hunderttausend'], [250000, 'zweihundertfünfzigtausend'], [500000, 'fünfhunderttausend'], [1000000, 'eine Million']];
+let herzenStream = 0, herzDankZeit = 0;
+function herzenZaehlen(n) {
+  const vorher = herzenStream; herzenStream += n;
+  const m = MEILENSTEINE.filter(([z]) => vorher < z && herzenStream >= z).pop();
+  if (m) { sende({ typ: 'herzMeilenstein', n: m[0] }); sag(satz('herzMeilenstein', { zahl: m[1] }), 1); }
+}
 function like(u, anzahl) {
-  S.likesGesamt += anzahl; likeLog.push([Date.now(), anzahl]);
+  S.likesGesamt += anzahl; likeLog.push([Date.now(), anzahl]); herzenZaehlen(anzahl);
+  // Danke für den Herzregen (höchstens 1× pro Minute, jede Person höchstens alle 10 Minuten) – und zum Mitbauen einladen
+  const lid = String(u?.uniqueId || '').toLowerCase();
+  if (lid && !gesperrt(lid) && Date.now() - herzDankZeit > (CFG.turm.herzDankSek ?? 60) * 1000 && einmal(lid, 'herzdank', 10 * 60000)) {
+    herzDankZeit = Date.now(); const nm = S.spieler[lid]?.name || '@' + u.uniqueId;
+    sende({ typ: 'herzdank', name: nm }); sag(satz(S.spieler[lid]?.stadt ? 'herzDankStadt' : 'herzDank', { name: sprechName({ name: nm }), stadt: S.spieler[lid]?.stadt || '' }), 2);
+  }
   const pro = CFG.turm.herzenProStockwerk ?? 10, p = S.spieler[String(u?.uniqueId || '').toLowerCase()];
   if (!pro || !p?.stadt || !S.staedte[p.stadt]) return;
   p.herzen = (p.herzen || 0) + anzahl;
@@ -176,23 +205,30 @@ function follow(u) {
   sende({ typ: 'follow', name: S.spieler[id]?.name || '@' + u.uniqueId });
   if (einmal(id, 'follow', 10 * 60000)) followDank.push({ name: sprechName({ name: '@' + u.uniqueId }) });
 }
+// Teilen: besonderer Bonus für den eigenen Turm (pro Person höchstens alle 10 Minuten)
 function teilen(u) {
   const id = String(u.uniqueId || '').toLowerCase(); if (!id || gesperrt(id)) return;
-  if (einmal(id, 'teilen', 10 * 60000)) sag(satz('teilen', { name: sprechName({ name: '@' + u.uniqueId }) }), 1);
+  if (!einmal(id, 'teilen', 10 * 60000)) return;
+  const p = spieler(u); if (!p) return; const n = CFG.turm.teilenMeter ?? 30;
+  if (p.stadt && S.staedte[p.stadt]) { turmWachsen(p.stadt, n, p, 'teilen'); } else p.guthaben = (p.guthaben || 0) + n;
+  sende({ typ: 'teilen', name: p.name, stadt: p.stadt || null, n });
+  sag(satz(p.stadt ? 'teilenStadt' : 'teilen', { name: vollName(p), stadt: p.stadt || '' }), 1);
 }
-function geschenk(u) {
+// Geschenke: „Tausend Danke, @name, das geht alles in deinen Turm!“ – Meter nach Wert (Coins)
+function geschenk(u, gname = '', coins = 1, anzahl = 1) {
   const id = String(u?.uniqueId || '').toLowerCase(); if (!id || gesperrt(id)) return;
-  if (!einmal(id, 'geschenk', 10 * 60000)) return;
-  const name = S.spieler[id]?.name || '@' + u.uniqueId;
-  sende({ typ: 'danke', name, stadt: S.spieler[id]?.stadt || null });
-  sag(satz('danke', { name: sprechName({ name }) }), 1);
+  const p = spieler(u); if (!p) return;
+  const n = Math.max(1, Math.round((coins || 1) * (anzahl || 1) * (CFG.turm.geschenkMeterProMuenze ?? 5)));
+  if (p.stadt && S.staedte[p.stadt]) turmWachsen(p.stadt, n, p, 'geschenk'); else p.guthaben = (p.guthaben || 0) + n;
+  sende({ typ: 'danke', name: p.name, stadt: p.stadt || null, n });
+  if (einmal(id, 'geschenkDank', 20000)) sag(satz(p.stadt ? 'geschenkDank' : 'geschenkDankOhne', { name: vollName(p) }), 1);
 }
 
 // ---------- Städte-Events ----------
 const EV = macheEvents({
   CFG, test: TEST, sende: e => sende(e), zustand: () => zustand(), sag: (t, pr) => sag(t, pr), name: p => sprechName(p),
-  spieler: id => S.spieler[id], stadt: n => S.staedte[n], staedte: () => rangListe(), stadtAus: t => stadtAus(t),
-  turmWachsen: (n, um, p) => turmWachsen(n, um, p),
+  spieler: id => S.spieler[id], stadt: n => S.staedte[n], staedte: () => rangListe(), stadtNeu: (st, p) => stadtNeu(st, p), stadtAus: t => stadtAus(t),
+  turmWachsen: (n, um, p) => n && S.staedte[n] ? turmWachsen(n, um, p) : p && p.id !== '__probe__' && (p.guthaben = (p.guthaben || 0) + um),   // ohne Stadt: Guthaben, bis die Stadt feststeht
 });
 
 // ---------- Stimme (macOS „say“, unbegrenzt, offline) ----------
@@ -662,7 +698,7 @@ async function verbinde() {
     if (u?.uniqueId) { tt('❤️', `${nm(d)} +${n} Likes`); like(u, n); const id = String(u.uniqueId).toLowerCase(), alt = aktiveLiker.get(id); aktiveLiker.set(id, { n: (alt && Date.now() - alt.t < 30000 ? alt.n : 0) + n, t: Date.now() }); } else { S.likesGesamt += n; inKasse(n * CFG.kasse.proLike); }
     if (total) {
       const fehlt = likeTotal ? total - likeTotal - n : 0;   // TikTok meldet nicht jedes Like einzeln – die fehlenden zählen trotzdem
-      if (fehlt > 0 && fehlt < 100000) { S.likesGesamt += fehlt; geaendert = true; }
+      if (fehlt > 0 && fehlt < 100000) { S.likesGesamt += fehlt; geaendert = true; herzenZaehlen(fehlt); }
       likeTotal = Math.max(likeTotal, total);
     }
   });
