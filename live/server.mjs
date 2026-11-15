@@ -20,7 +20,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-16 d';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-16 e';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -205,18 +205,12 @@ function kommentar(u, text) {
   zustand();
 }
 
+// TikTok-Regeln: Geschenke lösen KEINE automatische Reaktion aus – kein Dank, keine Show, keine Muscheln, nichts für die Kasse.
+// (Automatisches Bedanken/Belohnen wertet TikTok als „mechanisches Auffordern zum Senden von Geschenken“.)
+// Bedanken kannst du dich selbst, wenn du magst – das Programm bleibt still.
 function geschenk(u, name, diamanten, anzahl) {
-  const p = spieler(u); if (!p) { inKasse(Math.max(1, diamanten || 1) * Math.max(1, anzahl || 1) * CFG.kasse.proCoin); return; }
-  const d = Math.max(1, diamanten || 1) * Math.max(1, anzahl || 1);   // Coins insgesamt: 1 Coin = 1 Muschel (= 0,01 €)
-  const g = geschenkFormen(name, anzahl);                  // deutsch, mit Artikel: „für die Rose“, „einen Löwen“
-  sende({ typ: 'geschenk', id: p.id, name: g.name, anzahl, diamanten: d });
-  if (d >= 10 || einmal(p.id, 'geschenkShow', 45000)) EV.geschenkShow(p, g, anzahl, d);   // kleine Geschenke: Show/Banner nur einmal, große immer
-  inKasse(d * CFG.kasse.proCoin);
-  const stufeG = d >= 1000 ? 3 : d >= 200 ? 2 : d >= 20 ? 1 : 0, vorher = geschenkStufe.get(p.id);
-  const danken = einmal(p.id, 'geschenk', 45000) || (vorher != null && stufeG > vorher);
-  geschenkStufe.set(p.id, danken ? stufeG : Math.max(stufeG, vorher ?? 0));
-  if (danken) sag(satz(d >= 1000 ? 'geschenkMega' : d >= 200 ? 'geschenkGross' : d >= 20 ? 'geschenkMittel' : 'geschenkKlein', { name: sprechName(p), fuer: g.fuer, einAkk: g.einAkk, einNom: g.einNom, EinNom: grossKlein(g.einNom) }), 0);
-  gibMuscheln(p, d * CFG.muschelnProCoin, 'geschenk');
+  const id = String(u?.uniqueId || '').toLowerCase(), p = S.spieler[id];
+  if (p) p.zuletzt = Date.now();
 }
 
 // ---------- Muschelkasse der Live-Insel (getrennt von der Inselkasse der Haupt-Insel) ----------
