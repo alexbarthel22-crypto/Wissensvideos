@@ -20,7 +20,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-15 s';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-15 t';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -1027,9 +1027,20 @@ async function verbinde() {
     geschenk(d.user || {}, name, coins, anzahl);
   });
   c.on(WebcastEvent.STREAM_END, () => { console.log('Stream beendet.'); if (S.stream) { S.stream.ende = Date.now(); geaendert = true; } rangMelden(true); S.jobs = {}; zustand(); speichern(); });   // Jobs enden mit dem Stream
-  c.on('disconnected', () => { tiktokStatus = 'getrennt'; console.log('⚠️  Verbindung zu TikTok weg – neuer Versuch in 15 s'); setTimeout(versuche, 15000); });
+  c.on('disconnected', () => { if (c.absichtlich) return; tiktokStatus = 'getrennt'; console.log('⚠️  Verbindung zu TikTok weg – neuer Versuch in 15 s'); setTimeout(versuche, 15000); });
   const st = await c.connect();
-  tiktokStatus = 'verbunden';
+  tiktokStatus = 'verbunden'; const seit = Date.now(), raum = st?.roomId || c.roomId || '?';
+  console.log(`🔗 TikTok-Raum ${raum}`);
+  // Wächter: Kommen 90 s lang keine Ereignisse an, hängt die Verbindung oft an einem alten Raum (z. B. Programm vor „LIVE gehen“
+  // gestartet oder LIVE neu gestartet) → neu verbinden, dann wird der aktuelle Raum genommen.
+  clearInterval(verbinde.w);
+  verbinde.w = setInterval(() => {
+    if (tiktokStatus !== 'verbunden' || Date.now() - Math.max(tiktokLetztes, seit) < (CFG.tiktokStilleSek ?? 90) * 1000) return;
+    clearInterval(verbinde.w); c.absichtlich = true;
+    console.log(`🔄 Seit ${CFG.tiktokStilleSek ?? 90} s kommt nichts von TikTok an – verbinde neu (aktueller LIVE-Raum) …`);
+    tiktokStatus = 'verbinde neu'; try { Promise.resolve(c.disconnect()).catch(() => {}); } catch {}
+    setTimeout(versuche, 3000);
+  }, 15000);
   // neuer Stream (für die Stream-Rangliste): wenn noch keiner läuft oder der letzte vor über 30 Min. endete
   if (!S.stream || (S.stream.ende && Date.now() - S.stream.ende > 30 * 60000)) { S.stream = { start: Date.now(), m: {} }; geaendert = true; } else if (S.stream.ende) { delete S.stream.ende; }
   setTimeout(() => rangMelden(true), 5000);
