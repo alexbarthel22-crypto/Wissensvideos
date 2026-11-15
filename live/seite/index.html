@@ -805,7 +805,7 @@ const ICON = { leuchtturm: '🗼', markt: '🏪', bruecke: '🌉', riesenrad: '�
 // Türme stehen im Meer an der linken, oberen und rechten Küste (nie unten) und werden VOR der Insel gezeichnet:
 // Die Insel liegt immer obenauf, egal wie hoch ein Turm wird. Die Zahl wächst ohne Grenze, die gezeichnete Höhe
 // wächst immer langsamer; ganz oben verschwindet die Spitze in Wolken.
-const TURM_MAX = 470;
+const TURM_MAX = 470, TURM_BREITE = new Map();
 const turmHoehe = n => Math.min(TURM_MAX, 34 + 62 * Math.log2(1 + n / 4));
 // Ringe im Meer: Ring 1 (Küste) hat 15 Plätze, jeder weitere Ring liegt weiter draußen und hat 4 Plätze mehr.
 // Bessere Plätze = näher an der Insel und oben in der Mitte. Unten (Steg) steht nie ein Turm.
@@ -887,7 +887,7 @@ function leuchttuerme(t) {
     // Ganz hoch: Wolken um die Spitze
     if (wolke) { for (let k = 0; k < 6; k++) { const wx = x - 55 + k * 22 + Math.sin(t * .001 + k) * 4, wy = oben + 48 + (k % 2) * 9; c.fillStyle = 'rgba(120,140,170,.35)'; c.beginPath(); c.ellipse(wx + 3, wy + 5, 24, 12, 0, 0, 7); c.fill(); c.fillStyle = '#ffffff'; c.beginPath(); c.ellipse(wx, wy, 24, 12, 0, 0, 7); c.fill(); } }
     // Name + Stockwerke (gut lesbar)
-    X.font = schrift(900, 18); const bw = Math.max(X.measureText(st.leer ? '🗼 Deine Stadt?' : `${i + 1}. ${st.name}`).width, 150) + 26;
+    const tx = st.leer ? '🗼 Deine Stadt?' : `${i + 1}. ${st.name}`; let bw = TURM_BREITE.get(tx); if (bw == null) { X.font = schrift(900, 18); bw = Math.max(X.measureText(tx).width, 150) + 26; TURM_BREITE.set(tx, bw); }
     c.fillStyle = 'rgba(42,27,18,.85)'; rr(x - bw / 2, oben - 80, bw, 42, 14); c.fill(); c.strokeStyle = i ? '#fff' : '#ffd23f'; c.lineWidth = 2; c.stroke();
     text(st.leer ? '🗼 Deine Stadt?' : `${i + 1}. ${st.name}`, x, oben - 64, 18, i ? '#fff' : GELB, 'center', 900, 190);
     text(st.leer ? 'Schreib sie in den Chat!' : `${st.stock.toLocaleString('de-DE')} Stockwerke`, x, oben - 47, 12, '#fff', 'center', 800, 190);
@@ -1928,7 +1928,7 @@ function hausCacheBauen(t) {
   S.spieler.map(p => [p, platzVon(p)]).filter(([p, pl]) => pl && !hausLive(p, t)).sort((a, b) => a[1].y - b[1].y).forEach(([p, pl]) => haus(p, pl, t));
   X = echt; HC_BOX = B; hcGebaut = t;
 }
-// Kopfzeile: 10× pro Sekunde neu (bei Krabbenrennen/Glücksrad jedes Bild)
+// Kopfzeile: 4× pro Sekunde neu (10× bei Mini-Aufgabe, bei Krabbenrennen/Glücksrad jedes Bild)
 let KC = null, KX = null, kopfZeit = 0;
 let tLetzt = 0, frameZeit = 0;
 // ===== Scharfe Insel-Kacheln: dort, wo die Kamera hinschaut, die Insel in voller Bildschirm-Auflösung vorzeichnen =====
@@ -1959,6 +1959,8 @@ function kachelnBei(x, y, z, out) {                             // Kacheln, die 
 }
 function inselZeichnen() {
   kachelBild++;
+  // Weiter weg (Panorama, Leuchtturm-Blick) ist das Übersichtsbild scharf genug – keine Kacheln bauen (spart Rechenzeit)
+  if (cam.z < 2.2) { ausschnitt(BASIS, BASIS_BOX); if (ZIEL.z >= 2.2) kachelVorbauen(); return; }
   const T = X.getTransform(), sicht = kachelnBei(cam.x, cam.y, cam.z, []), da = [];
   let fehlt = false;
   for (const [L, ix, iy] of sicht) { const k = KACHELN.get(L + ':' + ix + ',' + iy); if (k) { k.zuletzt = kachelBild; da.push(k); } else fehlt = true; }
@@ -1968,7 +1970,13 @@ function inselZeichnen() {
     X.drawImage(k.cv, (dx0 - T.e) / T.a, (dy0 - T.f) / T.d, (dx1 - dx0) / T.a, (dy1 - dy0) / T.d);
   }
   // fehlende Kacheln (jetzt sichtbare zuerst, dann am Kamera-Ziel) nach und nach im Leerlauf bauen
-  KACHEL_WARTE = [...sicht, ...kachelnBei(ZIEL.x, ZIEL.y, ZIEL.z, [])].filter(([L, ix, iy]) => !KACHELN.has(L + ':' + ix + ',' + iy));
+  // Kamera fliegt gerade? Dann nur fürs Ziel vorbauen – Zwischenstationen sind gleich wieder weg
+  const fliegt = Math.hypot(ZIEL.x - cam.x, ZIEL.y - cam.y) > 60 || Math.abs(ZIEL.z - cam.z) > .1;
+  KACHEL_WARTE = [...(fliegt ? [] : sicht), ...kachelnBei(ZIEL.x, ZIEL.y, ZIEL.z, [])].filter(([L, ix, iy]) => !KACHELN.has(L + ':' + ix + ',' + iy));
+  if (KACHEL_WARTE.length && !kachelPlan) kachelPlan = (window.requestIdleCallback || (f => setTimeout(f, 1)))(kachelArbeit, { timeout: 300 });
+}
+function kachelVorbauen() {
+  KACHEL_WARTE = kachelnBei(ZIEL.x, ZIEL.y, ZIEL.z, []).filter(([L, ix, iy]) => !KACHELN.has(L + ':' + ix + ',' + iy));
   if (KACHEL_WARTE.length && !kachelPlan) kachelPlan = (window.requestIdleCallback || (f => setTimeout(f, 1)))(kachelArbeit, { timeout: 300 });
 }
 var kachelPlan = 0;
@@ -2043,7 +2051,7 @@ function bild(t) {
   lebenZeichnen(t, dt);
   if (cam.z < 1.15 && BASIS) {                                     // Übersicht: Häuser aus dem Zwischenspeicher
     if (t - hcGeprueft > 250) { hcGeprueft = t; const sig = hausSignatur(t); if (sig !== HC_SIG && (t - hcGebaut > 1000 || !HC)) { HC_SIG = sig; hausCacheBauen(t); } }
-    if (HC) X.drawImage(HC, HC_BOX.x, HC_BOX.y, HC_BOX.w, HC_BOX.h);
+    if (HC) ausschnitt(HC, HC_BOX);
     gebaeudeZeichnen(t, false);
     S.spieler.filter(p => hausLive(p, t)).map(p => [p, platzVon(p)]).filter(([, pl]) => pl).forEach(([p, pl]) => haus(p, pl, t));
   } else { gebaeudeZeichnen(t, true); gebaeudeZeichnen(t, false); } if (cam.z >= 1.15) S.spieler.map(p => [p, platzVon(p)]).filter(([p, pl]) => pl && sichtbar(pl.x, pl.y, 90)).sort((a, b) => a[1].y - b[1].y).forEach(([p, pl]) => haus(p, pl, t));
@@ -2057,14 +2065,14 @@ function bild(t) {
   tonLautstaerke();
   const warten = S.spieler.length - ANZAHL; if (warten > 0 && BASIS) text(`+ ${warten} warten auf ein Grundstück`, 540, 1880, 20, '#fff', 'center', 900);
   if (!KC) { KC = document.createElement('canvas'); KC.width = C.width; KC.height = Math.ceil(1200 * Q0); KX = KC.getContext('2d'); }
-  if (t - kopfZeit > 100 || (S.event && (S.event.rennen || S.event.rad))) {
+  if (t - kopfZeit > (S.aufgabe ? 100 : 250) || (S.event && (S.event.rennen || S.event.rad))) {
     kopfZeit = t; const echt = X; X = KX; X.setTransform(1, 0, 0, 1, 0, 0); X.clearRect(0, 0, KC.width, KC.height);
     KOPF_UNTEN = kopf(t); X = echt;
   }
   X.setTransform(1, 0, 0, 1, 0, 0); { const kh = Math.min(KC.height, Math.ceil((KOPF_UNTEN + 90) * Q0)); X.drawImage(KC, 0, 0, KC.width, kh, 0, 0, KC.width, kh); }
   overlay(t);
 }
-document.fonts?.load(`400 40px ${TITEL}`).then(() => document.fonts.load(`700 30px ${FONT}`)).then(() => { HC_SIG = ''; STR_BILD = {}; if (BASIS) { BASIS = null; } }).catch(() => {});
+document.fonts?.load(`400 40px ${TITEL}`).then(() => document.fonts.load(`700 30px ${FONT}`)).then(() => { HC_SIG = ''; STR_BILD = {}; TURM_BREITE.clear(); if (BASIS) { BASIS = null; } }).catch(() => {});
 verbinde();
 if (TONSEITE) {                                                   // Ton-Tab: kein Bild zeichnen (spart Rechenleistung), nur Ton + Statusanzeige
   C.style.display = 'none';
