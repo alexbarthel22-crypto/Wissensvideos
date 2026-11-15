@@ -68,10 +68,12 @@ export function stadtAus(text, streng = false) {
   // alle anderen Orte: exakt (Tippfehler nur bei den bekannten Städten), bei Allerweltswörtern nur mit Absicht
   const ort = ORTE.get(k);
   if (ort && ((!MEHRDEUTIG.has(k) && k.length >= 3 && !streng) || absicht)) return ort;
-  return (w.length === 1 && !streng ? aehnlich(k) : null) || null;
+  const r = (w.length === 1 && !streng ? aehnlich(k) : null) || null;
+  if (!r && /ae|oe|ue/.test(k)) return stadtAus((absicht ? 'aus ' : '') + k.replace(/ae/g, 'a').replace(/oe/g, 'o').replace(/ue/g, 'u'), streng);   // „Toelz“ = „Tölz“
+  return r;
 }
 
 // Land eines Ortes (DE, AT, CH, LI, LU) – für das Länder-Duell. Bekannte Regionen/Länder ohne Eintrag: geschätzt.
-const LAND_EXTRA = { Tirol: 'AT', Kärnten: 'AT', Steiermark: 'AT', Vorarlberg: 'AT', Burgenland: 'AT', Oberösterreich: 'AT', Niederösterreich: 'AT', Österreich: 'AT', Zillertal: 'AT', Ötztal: 'AT', Hallstatt: 'AT',
+const LAND_EXTRA = { Wien: 'AT', 'St. Pölten': 'AT', Tirol: 'AT', Kärnten: 'AT', Steiermark: 'AT', Vorarlberg: 'AT', Burgenland: 'AT', Oberösterreich: 'AT', Niederösterreich: 'AT', Österreich: 'AT', Zillertal: 'AT', Ötztal: 'AT', Hallstatt: 'AT',
   Schweiz: 'CH', 'St. Gallen': 'CH', Genf: 'CH', Neuenburg: 'CH', Luxemburg: 'LU', Südtirol: 'IT', Bozen: 'IT', Meran: 'IT', Mallorca: 'ES' };
 export function landVon(name) { return LAND_EXTRA[name] || LAND.get(name) || 'DE'; }

@@ -1,0 +1,714 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Leuchtturm-Rennen</title>
+<style>
+  @font-face{font-family:'Lilita One';src:url(fonts/lilita-one-latin-400-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+  @font-face{font-family:'Lilita One';src:url(fonts/lilita-one-latin-ext-400-normal.woff2) format('woff2');unicode-range:U+0100-02AF,U+0304,U+0308,U+0329,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+  @font-face{font-family:'Fredoka';font-weight:700;src:url(fonts/fredoka-latin-700-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+  @font-face{font-family:'Fredoka';font-weight:700;src:url(fonts/fredoka-latin-ext-700-normal.woff2) format('woff2');unicode-range:U+0100-02AF,U+0304,U+0308,U+0329,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+  @font-face{font-family:'Fredoka';font-weight:600;src:url(fonts/fredoka-latin-600-normal.woff2) format('woff2')}
+  html,body{margin:0;height:100%;background:#0f5f8f;overflow:hidden}
+  body{display:flex;align-items:center;justify-content:center}
+  canvas{height:100vh;width:auto;max-width:100vw;object-fit:contain;display:block}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script>
+// Leuchtturm-Rennen – Bühne 1080×1920 (TikTok-Hochformat).
+// Oben feste Infos (Top 5, Event), darunter ein Meer voller kleiner Inseln: jede Stadt eine Insel mit Leuchtturm.
+// Die Kamera steht fast immer still (spart Rechenleistung) – Leben kommt von vielen kleinen Animationen.
+const C = document.getElementById('c');
+const PARAM = new URLSearchParams(location.search);
+const Q0 = (+PARAM.get('aufloesung') || 1080) / 1080;
+C.width = Math.round(1080 * Q0); C.height = Math.round(1920 * Q0);
+let X = C.getContext('2d', { alpha: false });
+let FPS = +PARAM.get('fps') || 30;
+const W = 1080, H = 1920;
+const FONT = '"Fredoka","SF Pro Rounded",ui-rounded,"Arial Rounded MT Bold",system-ui,sans-serif';
+const TITEL = '"Lilita One","Fredoka","Arial Rounded MT Bold",system-ui,sans-serif';
+const schrift = (gew, px) => gew >= 900 ? `400 ${px}px ${TITEL}` : `${Math.min(700, Math.max(600, gew))} ${px}px ${FONT}`;
+const INK = '#2a1b12', GELB = '#ffd23f', PINK = '#e8467c', TUERKIS = '#2fb3a0', ROT = '#e8433c', BLAU = '#3fa0e8';
+const HORIZONT = 470;
+let S = { staedte: [], anzahlStaedte: 0, event: null, ergebnis: null, eventIn: 120 };
+let untertitel = { text: '', t: 0 };
+const zufall = (a, b) => a + Math.random() * (b - a);
+const FLAGGE = { DE: '🇩🇪', AT: '🇦🇹', CH: '🇨🇭', LI: '🇱🇮', LU: '🇱🇺', IT: '🇮🇹', ES: '🇪🇸', FR: '🇫🇷', NL: '🇳🇱', PL: '🇵🇱' };
+const flagge = l => FLAGGE[l] || '🌍';
+const fmt = n => Number(n || 0).toLocaleString('de-DE');
+const stw = n => `${fmt(n)} ${n === 1 ? 'Stockwerk' : 'Stockwerke'}`;
+
+// ================= Zeichen-Hilfen =================
+function rr(x, y, w, h, r) { X.beginPath(); X.roundRect(x, y, w, h, r); }
+const MITTE_CACHE = {};
+function mitteVersatz() { const k = X.font; if (MITTE_CACHE[k] == null) { X.textBaseline = 'alphabetic'; const m = X.measureText('Hgä'); MITTE_CACHE[k] = (m.actualBoundingBoxAscent - m.actualBoundingBoxDescent) / 2; } return MITTE_CACHE[k]; }
+function text(t, x, y, size, col = INK, align = 'left', weight = 900, maxW) {
+  X.font = schrift(weight, size); X.fillStyle = col; X.textAlign = align;
+  let s = size;
+  if (maxW) {
+    const min = Math.max(12, Math.round(size * .7));
+    while (X.measureText(t).width > maxW && s > min) { s -= 1; X.font = schrift(weight, s); }
+    if (X.measureText(t).width > maxW) { let k = t.length; while (k > 1 && X.measureText(t.slice(0, k) + '…').width > maxW) k--; t = t.slice(0, k) + '…'; }
+  }
+  const v = mitteVersatz(); X.textBaseline = 'alphabetic';
+  if (col === '#fff' || col === GELB) { X.lineJoin = 'round'; X.lineWidth = Math.max(2, s * .16); X.strokeStyle = 'rgba(20,30,50,.8)'; X.strokeText(t, x, y + v); }
+  X.fillText(t, x, y + v);
+}
+function karte(x, y, w, h, fill, r = 28) {
+  X.fillStyle = 'rgba(10,30,60,.55)'; rr(x + 8, y + 8, w, h, r); X.fill();
+  X.fillStyle = fill; rr(x, y, w, h, r); X.fill();
+  X.lineWidth = 6; X.strokeStyle = INK; X.stroke();
+}
+function stern(c, x, y, s) { if (s <= 0) return; c.fillStyle = '#fff'; c.beginPath(); c.moveTo(x, y - s); c.quadraticCurveTo(x, y, x + s, y); c.quadraticCurveTo(x, y, x, y + s); c.quadraticCurveTo(x, y, x - s, y); c.quadraticCurveTo(x, y, x, y - s); c.fill(); }
+function zeit(s) { return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; }
+function umbrechen(txt, px, gew, max, n) {
+  X.font = schrift(gew, px);
+  const worte = String(txt || '').split(' '), out = []; let z = '';
+  for (const w of worte) { const neu = z ? z + ' ' + w : w; if (z && X.measureText(neu).width > max && out.length < n - 1) { out.push(z); z = w; } else z = neu; }
+  if (z) out.push(z); return out;
+}
+const GLUT = (() => {
+  const c = document.createElement('canvas'); c.width = c.height = 128; const g = c.getContext('2d');
+  const r = g.createRadialGradient(64, 64, 0, 64, 64, 64); r.addColorStop(0, 'rgba(255,235,160,1)'); r.addColorStop(.35, 'rgba(255,200,100,.45)'); r.addColorStop(1, 'rgba(255,170,60,0)');
+  g.fillStyle = r; g.fillRect(0, 0, 128, 128); return c;
+})();
+const ease = q => q < .5 ? 2 * q * q : 1 - (-2 * q + 2) ** 2 / 2;
+const pop = q => q >= 1 ? 1 : 1 + 2.7 * (q - 1) ** 3 + 1.7 * (q - 1) ** 2;   // überschwingt leicht
+
+// ================= Tag und Nacht (wie muscheltal.de, Ort aus einstellungen.json) =================
+function sonnenzeiten(d, breite, laenge) {
+  const rad = Math.PI / 180, J = d.getTime() / 86400000 + 2440587.5;
+  const n = Math.round(J - 2451545 + .0008), Js = n - laenge / 360;
+  const M = (357.5291 + .98560028 * Js) % 360, Cc = 1.9148 * Math.sin(M * rad) + .02 * Math.sin(2 * M * rad) + .0003 * Math.sin(3 * M * rad);
+  const L = (M + Cc + 180 + 102.9372) % 360, Jt = 2451545 + Js + .0053 * Math.sin(M * rad) - .0069 * Math.sin(2 * L * rad);
+  const dek = Math.asin(Math.sin(L * rad) * Math.sin(23.4397 * rad));
+  const w = Math.acos((Math.sin(-.833 * rad) - Math.sin(breite * rad) * Math.sin(dek)) / (Math.cos(breite * rad) * Math.cos(dek))) / rad;
+  const zuDatum = j => new Date((j - 2440587.5) * 86400000);
+  return { auf: zuDatum(Jt - w / 360), unter: zuDatum(Jt + w / 360) };
+}
+let LICHT = { nacht: 0, rot: 0 }, lichtSeit = 0;
+function tageslicht(t) {
+  if (lichtSeit && t - lichtSeit < 5000) return LICHT;
+  lichtSeit = t;
+  const o = S.ort || { breite: 53.58, laenge: 9.95 }, d = new Date();
+  const z = PARAM.get('zeit'); if (z) { const [h, m] = z.split(':').map(Number); d.setHours(h, m || 0, 0, 0); }
+  const { auf, unter } = sonnenzeiten(d, o.breite, o.laenge), min = (d - auf) / 60000, min2 = (d - unter) / 60000;
+  let nacht, rot = 0;
+  if (min < 0) nacht = 1; else if (min < 45) { nacht = 1 - min / 45; rot = Math.sin(min / 45 * Math.PI) * .8; }
+  else if (min2 < 0) nacht = 0; else if (min2 < 45) { nacht = min2 / 45; rot = Math.sin(min2 / 45 * Math.PI); } else nacht = 1;
+  const neu = { nacht, rot };
+  if (Math.abs(neu.nacht - LICHT.nacht) > .02 || Math.abs(neu.rot - LICHT.rot) > .02) HG = null;   // Hintergrund neu malen
+  LICHT = neu; return LICHT;
+}
+
+// ================= Live-Daten (Long-Poll, klappt auch durch den Tunnel) =================
+let pollN = 0;
+async function verbinde() {
+  for (;;) {
+    try {
+      const r = await fetch(`poll?id=${meineId || ''}&n=${pollN}&sv=0&w=1${tonText()}`, { cache: 'no-store' });
+      const d = await r.json();
+      meineId = d.id;
+      for (const e of d.ev) ereignis(e);
+      const rolle = !VORSCHAU && d.tonSeite === meineId; if (rolle !== tonRolle) { tonRolle = rolle; if (rolle) tonStarten(); else tonStoppen(); }
+      pollN = d.n;
+      if (tonRolle && (musik.paused || (AC && AC.state !== 'running'))) tonStarten();
+    } catch { await new Promise(r => setTimeout(r, 1500)); }
+  }
+}
+const banner = [], schwebend = [], fx = [], boote = [];
+let erklaerBis = 0, siegerShow = null, blitzT = -1e9, duell = null, fuehrungT = -1e9, startT = performance.now();
+function zeige(icon, titel, unter, farbe = BLAU, ms = 3800) { banner.push({ icon, titel, unter, farbe, ms }); if (banner.length > 6) banner.splice(1, 1); }
+function ereignis(e) {
+  const jetzt = performance.now();
+  switch (e.typ) {
+    case 'zustand': {
+      S = e.s;
+      if (S.musik?.length && S.musik.join() !== MUSIK.map(m => m.slice(6)).join()) {
+        MUSIK = S.musik.map(f => 'musik/' + f); musikFehler = 0; musikNr = Math.floor(Math.random() * MUSIK.length); musik.src = MUSIK[musikNr]; if (tonRolle) musik.play().catch(() => {});
+      }
+      if (S.bildrate && !PARAM.get('fps')) FPS = Math.max(15, Math.min(30, S.bildrate));
+      break;
+    }
+    case 'plus': for (const p of e.l) { schwebend.push({ stadt: p.stadt, n: p.n, wer: p.wer, t: jetzt }); const q = POS[p.stadt]; if (q) q.puls = jetzt; } if (schwebend.length > 30) schwebend.splice(0, schwebend.length - 30); break;
+    case 'neueStadt': neuT[e.stadt] = jetzt; zeige('🏝️', `Neue Insel: ${e.stadt}!`, e.name ? `${e.name} holt ${e.stadt} ins Rennen` : 'Willkommen im Rennen!', TUERKIS);
+      boote.push({ stadt: e.stadt, t: jetzt, von: Math.random() < .5 ? -80 : W + 80 }); konfetti(e.stadt, 40); break;
+    case 'beitritt': schwebend.push({ stadt: e.stadt, n: 0, wer: (e.name || '').replace(/^@/, ''), t: jetzt, neu: true }); break;
+    case 'fuehrung': fuehrungT = jetzt; zeige('👑', `${e.stadt} führt!`, 'Wechsel an der Spitze!', '#e0a020', 4200); feuerwerk(e.stadt, 3); break;
+    case 'upgrade': zeige('✨', `${e.stadt}: ${e.was}!`, `${stw(e.stock)} erreicht`, '#9b5de5'); feuerwerk(e.stadt, 2); break;
+    case 'fieber': zeige('🔥', `Städte-Fieber in ${e.stadt}!`, 'Jetzt zählt alles doppelt!', '#ff6a2a', 4200); break;
+    case 'danke': case 'follow': herzen.push({ name: (e.name || '').replace(/^@/, ''), t: jetzt }); break;
+    case 'erklaeren': erklaerBis = jetzt + 9000; break;
+    case 'tagessieger': siegerShow = { stadt: e.stadt, t: jetzt }; feuerwerk(e.stadt, 6); break;
+    case 'duell': duell = { a: e.a, b: e.b }; break;
+    case 'blitz': blitzT = jetzt; break;
+    case 'sturm': case 'nebel': break;
+    case 'eventStart': eventStartT = jetzt; duell = e.id === 'staedteduell' ? duell : null; break;
+    case 'eventEnde': duell = null; if (e.gut) konfetti(S.staedte[0]?.name, 50); break;
+    case 'spotlight': spotlight(e.stadt); break;
+    case 'ansage': untertitel = { text: String(e.text || '').replace(/\s*…\s*/g, ' '), t: jetzt, d: Math.max(2.5, (e.ms || 4000) / 1000 + .5) }; break;
+    case 'stimme': if (e.id === meineId) stimmeAbspielen(e.url); break;
+    case 'tonRolle': tonRolle = !VORSCHAU && e.id === meineId; if (tonRolle) tonStarten(); else tonStoppen(); break;
+  }
+}
+let eventStartT = -1e9;
+const neuT = {}, herzen = [];
+
+
+// ================= Ton: Musik aus den Videos (lizenzfrei, tools/make_music_tropical.py) + Meeresrauschen + Stimme =================
+// Es gibt genau EINEN Musik-Player, EINEN Meeres-Player und EINEN Audio-Kontext für die Stimme – sie werden nie neu angelegt.
+// Sind mehrere Seiten offen (z. B. Browser + LIVE Studio), bestimmt das Programm, welche Seite Ton spielt (tonRolle).
+let MUSIK = [1, 2, 3, 4, 5].map(i => `musik/lagune_${i}.mp3`);   // wird durch die Liste vom Programm ersetzt (alle MP3s im Ordner seite/musik)
+const VORSCHAU = PARAM.has('vorschau') || PARAM.has('still');     // ?vorschau = Bild ohne Ton
+const TONSEITE = PARAM.has('ton');                                // ?ton = nur Ton (Musik + Kerstin) für den Mac, kein Bild
+let meineId = null, tonRolle = false, tonAn = false, musikNr = Math.floor(Math.random() * MUSIK.length), stimmeLaeuft = 0, AC = null;
+const TON = () => S.ton || { musik: .32, musikBeiStimme: .1, meer: .22, stimme: 1 };
+const musik = new Audio(MUSIK[musikNr]); musik.preload = 'auto'; musik.volume = 0;
+let musikFehler = 0;
+musik.onerror = () => { if (++musikFehler >= MUSIK.length) return; musikNr = (musikNr + 1) % MUSIK.length; musik.src = MUSIK[musikNr]; if (tonRolle) musik.play().catch(() => {}); };   // Datei fehlt: nächstes Stück, aber nicht endlos
+musik.onplaying = () => { musikFehler = 0; };
+musik.onended = () => { musikNr = (musikNr + 1) % MUSIK.length; musik.src = MUSIK[musikNr]; if (tonRolle) musik.play().catch(() => {}); };
+const meerTon = new Audio('musik/meer_sanft.mp3'); meerTon.loop = true; meerTon.volume = 0;   // sanftes, dumpfes Meeresrauschen (ohne Zischen)
+const stimmeEl = new Audio(); stimmeEl.onloadedmetadata = () => { stimmeLaeuft = performance.now() + stimmeEl.duration * 1000 + 300; };
+function tonStarten() {                                           // nur freischalten/fortsetzen, nie neue Player
+  if (VORSCHAU) return;
+  try { if (!AC) AC = new (window.AudioContext || window.webkitAudioContext)(); if (AC.state === 'suspended') AC.resume(); } catch {}
+  if (!tonRolle) return;
+  if (musik.paused) musik.play().then(() => { tonAn = true; }).catch(() => { tonAn = false; }); else tonAn = true;
+  if (meerTon.paused) meerTon.play().catch(() => {});
+}
+function tonStoppen() { musik.pause(); meerTon.pause(); tonAn = false; }
+function tonLautstaerke() {
+  if (!tonRolle) { if (!musik.paused || !meerTon.paused) tonStoppen(); return; }
+  const ziel = performance.now() < stimmeLaeuft ? TON().musikBeiStimme : TON().musik;
+  musik.volume = Math.max(0, Math.min(1, musik.volume + (ziel - musik.volume) * .15));
+  meerTon.volume = TON().meer;
+}
+// Liest eine PCM-WAV-Datei (wie sie „say“ erzeugt) direkt in einen Audio-Puffer
+function wavLesen(buf) {
+  const v = new DataView(buf), tag = o => String.fromCharCode(v.getUint8(o), v.getUint8(o + 1), v.getUint8(o + 2), v.getUint8(o + 3));
+  if (buf.byteLength < 44 || tag(0) !== 'RIFF' || tag(8) !== 'WAVE') throw new Error('keine WAV-Datei');
+  let o = 12, kanaele = 1, rate = 22050, bits = 16, format = 1, start = -1, laenge = 0;
+  while (o + 8 <= buf.byteLength) {
+    const id = tag(o), gr = v.getUint32(o + 4, true);
+    if (id === 'fmt ') { format = v.getUint16(o + 8, true); kanaele = v.getUint16(o + 10, true); rate = v.getUint32(o + 12, true); bits = v.getUint16(o + 22, true); }
+    else if (id === 'data') { start = o + 8; laenge = Math.min(gr, buf.byteLength - start); break; }
+    o += 8 + gr + (gr & 1);
+  }
+  if (start < 0) throw new Error('WAV ohne Daten');
+  const bps = bits / 8, n = Math.floor(laenge / (bps * kanaele)), p = AC.createBuffer(kanaele, Math.max(1, n), rate);
+  for (let k = 0; k < kanaele; k++) {
+    const d = p.getChannelData(k);
+    for (let i = 0; i < n; i++) {
+      const a = start + (i * kanaele + k) * bps;
+      d[i] = format === 3 ? v.getFloat32(a, true) : bits === 16 ? v.getInt16(a, true) / 32768 : bits === 8 ? (v.getUint8(a) - 128) / 128 : v.getInt32(a, true) / 2147483648;
+    }
+  }
+  return p;
+}
+const meldeStimme = (ok, grund = '') => fetch(`/tonstatus?id=${meineId}&stimme=${ok ? 1 : 0}&grund=${encodeURIComponent(String(grund).slice(0, 120))}`).catch(() => {});
+async function stimmeAbspielen(url) {                             // Stimme über Web Audio: einmal freigeschaltet, spielt sie immer
+  if (tonRolle && AC && AC.state !== 'running') { try { await AC.resume(); } catch {} }   // z. B. nach Pause beim Live-Gehen
+  if (tonRolle && musik.paused) musik.play().catch(() => {});
+  if (!tonRolle) return meldeStimme(false, 'diese Seite hat keine Ton-Aufgabe');
+  if (!AC || AC.state !== 'running') {                            // Ersatzweg: wie die Musik über ein Audio-Element
+    stimmeEl.src = url; stimmeEl.volume = Math.min(1, TON().stimme);
+    return stimmeEl.play().then(() => { stimmeLaeuft = performance.now() + 4000; meldeStimme(true); }).catch(e => meldeStimme(false, `Audio blockiert (${e.name}), AudioContext ${AC ? AC.state : 'fehlt'}`));
+  }
+  try {
+    const r = await fetch(url, { cache: 'no-store' }), daten = await r.arrayBuffer();
+    let puffer;
+    try { puffer = wavLesen(daten); }                                // eigener WAV-Leser: braucht keinen Audio-Decoder
+    catch (e1) {
+      try { puffer = await AC.decodeAudioData(daten.slice(0)); }
+      catch (e2) { const k = String.fromCharCode(...new Uint8Array(daten.slice(0, 4))); throw new Error(`${e1.message}; Status ${r.status}, ${daten.byteLength} Bytes, Typ ${r.headers.get('content-type')}, Anfang „${k}“`); }
+    }
+    const q = AC.createBufferSource(), g = AC.createGain(); q.buffer = puffer; g.gain.value = TON().stimme;
+    q.connect(g); g.connect(AC.destination); q.start();
+    stimmeLaeuft = performance.now() + puffer.duration * 1000 + 300; meldeStimme(true);
+  } catch (e) { meldeStimme(false, `Abspielen fehlgeschlagen (${e.name}: ${e.message})`); }
+}
+setInterval(() => { if (tonRolle && (musik.paused || (AC && AC.state !== 'running'))) tonStarten(); }, 4000);   // Ton nach Unterbrechung selbst wieder an
+addEventListener('click', tonStarten); addEventListener('keydown', tonStarten); addEventListener('touchstart', tonStarten);
+// Meldet dem Programm, ob hier wirklich Ton läuft – sonst übernimmt der Mac (Lautsprecher)
+const tonText = () => `${TONSEITE ? '&tonseite=1' : ''}&an=${tonRolle && ((AC && AC.state === 'running') || (tonAn && !musik.paused)) ? 1 : 0}&ac=${AC ? AC.state : 'kein'}&vorschau=${VORSCHAU ? 1 : 0}`;   // Tonstatus reist mit jeder Abfrage mit
+
+// ================= Inselplätze: Rang 1 vorne in der Mitte, dahinter Reihen mit immer kleineren Inseln =================
+const REIHEN = [
+  { y: 1290, s: 1.1, xs: [540] },
+  { y: 1135, s: .9, xs: [215, 865] },
+  { y: 985, s: .72, xs: [125, 385, 695, 955] },
+  { y: 850, s: .58, xs: [95, 273, 451, 629, 807, 985] },
+  { y: 725, s: .47, xs: [68, 203, 338, 473, 608, 743, 878, 1013] },
+];
+const PLAETZE = REIHEN.flatMap((r, ri) => r.xs.map(x => ({ x, y: r.y, s: r.s, reihe: ri })));
+const POS = {};                                                    // Stadt → aktuelle (gleitende) Position
+const turmHoehe = n => 30 + 80 * Math.log10(1 + n);                // wächst unendlich, aber immer langsamer
+const hash = s => { let h = 7; for (const c of String(s)) h = (h * 31 + c.charCodeAt(0)) >>> 0; return h; };
+function sichtbareStaedte() {
+  const l = S.staedte?.length ? S.staedte.slice(0, PLAETZE.length) : [{ name: 'Deine Stadt?', stock: 0, leer: true }, { name: 'Deine Stadt? ', stock: 0, leer: true }, { name: ' Deine Stadt?', stock: 0, leer: true }];
+  const jetzt = performance.now();
+  l.forEach((st, i) => {
+    const z = PLAETZE[i], q = POS[st.name];
+    if (!q) POS[st.name] = { x: z.x, y: z.y, s: z.s, puls: -1e9, seit: jetzt };
+    else { q.x += (z.x - q.x) * .06; q.y += (z.y - q.y) * .06; q.s += (z.s - q.s) * .06; }
+    POS[st.name].rang = i; POS[st.name].da = jetzt;
+  });
+  for (const k in POS) if (jetzt - POS[k].da > 5000) delete POS[k];
+  return l;
+}
+
+// ================= Hintergrund (einmal gemalt, nur bei Tageszeit-Wechsel neu) =================
+let HG = null;
+const mischen = (a, b, f) => { const p = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16)); const A = p(a), B = p(b); return '#' + A.map((v, i) => Math.round(v + (B[i] - v) * f).toString(16).padStart(2, '0')).join(''); };
+function hintergrund() {
+  const L = LICHT, c = document.createElement('canvas'); c.width = W * Q0; c.height = H * Q0; const g = c.getContext('2d'); g.scale(Q0, Q0);
+  const n = L.nacht, r = L.rot;
+  const himmel = g.createLinearGradient(0, 0, 0, HORIZONT + 80);
+  himmel.addColorStop(0, mischen(mischen('#5ec8f2', '#0b1640', n), '#ff8a5c', r * .4)); himmel.addColorStop(1, mischen(mischen('#c8f0ff', '#2a3a78', n), '#ffc08a', r * .6));
+  g.fillStyle = himmel; g.fillRect(0, 0, W, HORIZONT + 80);
+  if (n > .3) for (let i = 0; i < 90; i++) { g.globalAlpha = (n - .3) * (.4 + (i % 5) / 8); stern(g, (i * 137) % W, (i * 71) % (HORIZONT + 40), 1.5 + (i % 3)); } g.globalAlpha = 1;
+  // ferne Hügel-Inseln am Horizont
+  g.fillStyle = mischen('#4d9ba8', '#1d2f55', n);
+  for (const [x, w, h] of [[120, 260, 34], [420, 180, 22], [760, 320, 40], [1010, 200, 26]]) { g.beginPath(); g.ellipse(x, HORIZONT + 70, w / 2, h, 0, Math.PI, 0); g.fill(); }
+  const meer = g.createLinearGradient(0, HORIZONT + 70, 0, H);
+  meer.addColorStop(0, mischen('#36b6c9', '#123a6a', n)); meer.addColorStop(.45, mischen('#1f97b8', '#0d2c58', n)); meer.addColorStop(1, mischen('#0f6f9e', '#071a3a', n));
+  g.fillStyle = meer; g.fillRect(0, HORIZONT + 70, W, H);
+  // Sonnen-/Mondglitzern auf dem Wasser
+  g.globalAlpha = .25 + n * .1; g.fillStyle = n > .5 ? '#cfe0ff' : '#fff6c8';
+  for (let i = 0; i < 40; i++) { const y = HORIZONT + 90 + i * 9 + (i % 3) * 3, w = 70 - i; if (w > 4) g.fillRect(820 - w / 2 + Math.sin(i * 2.3) * 30, y, w, 2.5); }
+  g.globalAlpha = 1;
+  return c;
+}
+// ================= Insel-Bilder (3 Varianten, vorgezeichnet) =================
+const INSEL = [0, 1, 2].map(v => {
+  const c = document.createElement('canvas'); c.width = 300 * 2; c.height = 230 * 2; const g = c.getContext('2d'); g.scale(2, 2); g.translate(150, 170);
+  g.fillStyle = 'rgba(255,255,255,.45)'; g.beginPath(); g.ellipse(0, 8, 138, 40, 0, 0, 7); g.fill();     // Brandung
+  g.fillStyle = '#7fd6d0'; g.beginPath(); g.ellipse(0, 6, 128, 34, 0, 0, 7); g.fill();                   // flaches Wasser
+  g.fillStyle = '#e9c27a'; g.beginPath(); g.ellipse(0, 0, 112, 28, 0, 0, 7); g.fill();                   // Sand
+  g.fillStyle = '#f6dc9c'; g.beginPath(); g.ellipse(0, -4, 104, 23, 0, 0, 7); g.fill();
+  g.fillStyle = '#5fb45a'; g.beginPath(); g.ellipse(-8 + v * 6, -9, 72, 15, 0, 0, 7); g.fill();          // Wiese
+  g.fillStyle = '#7cc96a'; g.beginPath(); g.ellipse(-12 + v * 6, -12, 52, 9, 0, 0, 7); g.fill();
+  g.fillStyle = '#8b8f8a'; g.beginPath(); g.ellipse(70 - v * 30, 2, 12, 7, 0, 0, 7); g.fill(); g.fillStyle = '#a9aea8'; g.beginPath(); g.ellipse(67 - v * 30, 0, 7, 4, 0, 0, 7); g.fill();
+  const palme = (x, y, h, k) => {
+    g.strokeStyle = '#8a5a2b'; g.lineWidth = 6; g.lineCap = 'round'; g.beginPath(); g.moveTo(x, y); g.quadraticCurveTo(x + k * 10, y - h / 2, x + k * 16, y - h); g.stroke();
+    g.fillStyle = '#2f9e4a'; for (let i = 0; i < 6; i++) { const a = -Math.PI / 2 + (i - 2.5) * .62; g.beginPath(); g.ellipse(x + k * 16 + Math.cos(a) * 20, y - h + Math.sin(a) * 9 + 6, 24, 7, a, 0, 7); g.fill(); }
+    g.fillStyle = '#6b3d1c'; g.beginPath(); g.arc(x + k * 16, y - h + 4, 4, 0, 7); g.fill();
+  };
+  [[[-78, -4, 64, -1], [86, -2, 52, 1]], [[-84, -2, 54, -1], [-58, -8, 70, -1], [80, -4, 46, 1]], [[90, -6, 66, 1], [-80, 0, 44, -1]]][v].forEach(a => palme(...a));
+  g.fillStyle = '#ff6fa3'; for (let i = 0; i < 5; i++) { g.beginPath(); g.arc(-40 + i * 19 + v * 4, -6 + (i % 2) * 4, 3, 0, 7); g.fill(); }   // Blumen
+  return c;
+});
+
+// ================= Leuchtturm (lokale Einheiten, Fuß bei 0,0) =================
+const TURM_MAX = 380;
+function turm(c, st, rang, t, hMax, nacht, beamExtra) {
+  const n = st.stock, roh = turmHoehe(n), h = Math.min(roh, hMax, TURM_MAX), wolke = roh > h + 2, oben = -h, w0 = 40, w1 = 26, i = hash(st.name) % 7;
+  // hinter dem Turm
+  if (n >= 7500) { c.save(); c.globalAlpha = .4 + Math.sin(t * .002 + i) * .12; ['#7fffd4', '#9b5de5', '#3fa0e8'].forEach((f, k) => { c.strokeStyle = f; c.lineWidth = 10; c.beginPath(); for (let q = 0; q <= 20; q++) { const xx = -120 + q * 12, yy = oben - 60 - k * 16 + Math.sin(q * .6 + t * .003 + k) * 10; q ? c.lineTo(xx, yy) : c.moveTo(xx, yy); } c.stroke(); }); c.restore(); }
+  if (n >= 750) { c.save(); c.globalAlpha = .55; ['#e8433c', '#ff8a2a', '#ffd23f', '#57b85a', '#3fa0e8', '#9b5de5'].forEach((f, k) => { c.strokeStyle = f; c.lineWidth = 6; c.beginPath(); c.arc(0, oben + 70, 78 - k * 6, Math.PI * 1.08, Math.PI * 1.92); c.stroke(); }); c.restore(); }
+  if (n >= 3000) { c.fillStyle = '#fff6c8'; c.beginPath(); c.arc(84, oben - 40, 13, 0, 7); c.fill(); for (let k = 0; k < 7; k++) stern(c, -60 + ((k * 37) % 120), oben - 90 + ((k * 23) % 40), 3 + Math.sin(t * .004 + k) * 2); }
+  // Schaft: rot-weiß, alle 100 Stockwerke ein farbiger Ring
+  c.save(); c.beginPath(); c.moveTo(-w0 / 2, -6); c.lineTo(-w1 / 2, oben + 16); c.lineTo(w1 / 2, oben + 16); c.lineTo(w0 / 2, -6); c.closePath(); c.clip();
+  for (let yy = -6, k = 0; yy > oben; yy -= 16, k++) { c.fillStyle = k % 2 ? '#fff' : ROT; c.fillRect(-w0, yy - 16, w0 * 2, 16); }
+  const ringe = Math.min(12, Math.floor(n / 100)), RF = ['#3fa0e8', '#2fb3a0', '#ffd23f', '#b58ad0', '#ff8a2a', '#57b85a'];
+  for (let r = 0; r < ringe; r++) { c.fillStyle = RF[r % RF.length]; c.fillRect(-w0, oben + 28 + r * 9, w0 * 2, 5); }
+  c.fillStyle = 'rgba(0,0,0,.12)'; c.fillRect(w1 / 4, oben, w0, h);                                // Schatten-Seite
+  c.restore();
+  c.strokeStyle = INK; c.lineWidth = 2.5; c.beginPath(); c.moveTo(-w0 / 2, -6); c.lineTo(-w1 / 2, oben + 16); c.moveTo(w0 / 2, -6); c.lineTo(w1 / 2, oben + 16); c.stroke();
+  c.fillStyle = '#6b4a2b'; c.beginPath(); c.roundRect(-6, -24, 12, 18, [6, 6, 0, 0]); c.fill();      // Tür
+  if (n >= 25 || nacht > .4) { c.fillStyle = nacht > .4 ? '#ffd76a' : '#ffe9a8'; for (let yy = -48; yy > oben + 46; yy -= 46) c.fillRect(-3, yy - 6, 6, 9); }
+  // Galerie + Laterne + Dach
+  c.fillStyle = n >= 50 ? '#e0b43a' : INK; c.fillRect(-w1 / 2 - 6, oben + 12, w1 + 12, 5);
+  c.fillStyle = '#ffe9a8'; c.fillRect(-8, oben - 4, 16, 17); c.strokeStyle = INK; c.lineWidth = 2; c.strokeRect(-8, oben - 4, 16, 17);
+  c.fillStyle = n >= 1000 ? '#e0b43a' : ROT; c.beginPath(); c.moveTo(-12, oben - 4); c.lineTo(0, oben - 18); c.lineTo(12, oben - 4); c.closePath(); c.fill(); c.stroke();
+  if (n >= 2000) { const fl = .6 + Math.sin(t * .008 + i) * .4; c.fillStyle = `rgba(200,240,255,${.7 + fl * .3})`; c.beginPath(); c.moveTo(0, oben - 40); c.lineTo(-6, oben - 27); c.lineTo(0, oben - 18); c.lineTo(6, oben - 27); c.closePath(); c.fill(); stern(c, 5, oben - 38, 3 * fl + 1); }
+  else if (n >= 10) { c.strokeStyle = INK; c.lineWidth = 1.5; c.beginPath(); c.moveTo(0, oben - 18); c.lineTo(0, oben - 38); c.stroke(); c.fillStyle = ['#3fa0e8', '#57b85a', '#ff8a2a', '#ff6fa3'][i % 4]; c.beginPath(); c.moveTo(0, oben - 38); c.lineTo(16, oben - 33 + Math.sin(t * .006 + i) * 3); c.lineTo(0, oben - 28); c.closePath(); c.fill(); }
+  if (n >= 1000) { c.fillStyle = GELB; for (let z = -1; z <= 1; z++) { c.beginPath(); c.moveTo(z * 7 - 4, oben - 18); c.lineTo(z * 7, oben - 28); c.lineTo(z * 7 + 4, oben - 18); c.fill(); } }
+  // Leuchtfeuer: dreht sich, nachts deutlich heller
+  const g = Math.min(1, .35 + Math.log10(1 + n) / 4) * (.55 + nacht * .7) + beamExtra, dreh = t * .0012 + i;
+  c.save(); c.globalCompositeOperation = 'lighter'; c.globalAlpha = Math.min(1, .6 * g); const gr = 34 * (1 + g); c.drawImage(GLUT, -gr, oben + 4 - gr, gr * 2, gr * 2);
+  c.globalAlpha = Math.min(.6, (n >= 250 ? .26 : .18) * g); c.fillStyle = n >= 250 ? `hsl(${(t * .05 + i * 60) % 360},90%,70%)` : '#fff3b0';
+  const lang = 190 + beamExtra * 400, cx = Math.cos(dreh) * lang; c.beginPath(); c.moveTo(0, oben + 4); c.lineTo(cx, oben + 4 + Math.sin(dreh) * 30 - 22); c.lineTo(cx, oben + 4 + Math.sin(dreh) * 30 + 22); c.closePath(); c.fill(); c.restore();
+  // Upgrades an der Spitze
+  if (n >= 150) { c.strokeStyle = '#fff'; c.lineWidth = 2; for (let k = 0; k < 3; k++) { const a = t * .0012 + k * 2.1 + i, mx = Math.cos(a) * 50, my = oben + 10 + Math.sin(a) * 15, f = Math.sin(t * .02 + k) * 3; c.beginPath(); c.moveTo(mx - 7, my - f); c.quadraticCurveTo(mx - 3, my - 4, mx, my); c.quadraticCurveTo(mx + 3, my - 4, mx + 7, my - f); c.stroke(); } }
+  if (n >= 400) for (let k = 0; k < 5; k++) { const ph = (t * .0013 + k * .23 + i) % 1; stern(c, Math.cos(k * 1.3) * 38, oben - 4 + Math.sin(k * 2.1) * 22, Math.sin(ph * Math.PI) * 6); }
+  if (n >= 1500) { const a = t * .0009 + i, hx = Math.cos(a) * 76, hy = oben - 12 + Math.sin(a * 2) * 12; c.fillStyle = ROT; c.beginPath(); c.ellipse(hx, hy, 10, 6, 0, 0, 7); c.fill(); c.fillStyle = '#9fe3f0'; c.beginPath(); c.ellipse(hx + 3, hy - 1, 4, 3, 0, 0, 7); c.fill(); c.fillStyle = INK; c.fillRect(hx - 16, hy - 1, 7, 2); const r = Math.sin(t * .05) * 13; c.fillRect(hx - r, hy - 11, r * 2, 1.5); }
+  if (n >= 5000) { const ph = (t * .00025 + i * .3) % 1, ry = oben - 30 - ph * 260; c.save(); c.globalAlpha = 1 - ph; c.fillStyle = '#fff'; c.beginPath(); c.moveTo(66, ry - 14); c.lineTo(60, ry); c.lineTo(72, ry); c.closePath(); c.fill(); c.fillStyle = ROT; c.fillRect(62, ry, 8, 10); c.fillStyle = '#ff8a2a'; c.beginPath(); c.moveTo(62, ry + 10); c.lineTo(66, ry + 24); c.lineTo(70, ry + 10); c.fill(); c.restore(); }
+  if (n >= 10000) { c.strokeStyle = 'rgba(255,214,120,.85)'; c.lineWidth = 3; c.beginPath(); c.ellipse(0, oben - 4, 50, 12, -.15, 0, 7); c.stroke(); }
+  if (wolke) for (let k = 0; k < 6; k++) { const wx = -55 + k * 22 + Math.sin(t * .001 + k) * 4, wy = oben + 46 + (k % 2) * 9; c.fillStyle = 'rgba(120,140,170,.35)'; c.beginPath(); c.ellipse(wx + 3, wy + 5, 24, 12, 0, 0, 7); c.fill(); c.fillStyle = '#fff'; c.beginPath(); c.ellipse(wx, wy, 24, 12, 0, 0, 7); c.fill(); }
+  return h;
+}
+// Namensschild als fertiges Bild (wird nur neu gemalt, wenn sich Rang/Zahl ändern)
+const SCHILD = new Map();
+function schildBild(st, rang, gr) {
+  const key = `${st.name}|${rang}|${st.stock}|${gr}|${st.fieber ? 1 : 0}`; let b = SCHILD.get(key); if (b) return b;
+  if (SCHILD.size > 300) SCHILD.clear();
+  const echt = X, c = document.createElement('canvas'), z1 = st.leer ? '🏝️ Deine Stadt?' : `${rang + 1}. ${flagge(st.land)} ${st.name}${st.fieber ? ' 🔥' : ''}`, z2 = st.leer ? 'Schreib sie in den Chat!' : gr < 17 ? `${fmt(st.stock)} 🗼` : stw(st.stock);
+  X = c.getContext('2d'); X.font = schrift(900, gr); const w1 = X.measureText(z1).width; X.font = schrift(800, gr * .62); const w2 = X.measureText(z2).width;
+  const w = Math.min(gr < 17 ? 128 : 330, Math.max(w1, w2) + gr * 1.1), h = gr * 2.2; c.width = Math.ceil((w + 8) * Q0 * 1.5); c.height = Math.ceil((h + 8) * Q0 * 1.5); X.scale(Q0 * 1.5, Q0 * 1.5);
+  X.fillStyle = rang === 0 && !st.leer ? '#2a1b12' : 'rgba(20,35,60,.86)'; rr(2, 2, w, h, h / 2.4); X.fill(); X.strokeStyle = rang === 0 && !st.leer ? GELB : '#fff'; X.lineWidth = rang === 0 ? 3.5 : 2.2; X.stroke();
+  text(z1, 2 + w / 2, 2 + h * .36, gr, rang === 0 && !st.leer ? GELB : '#fff', 'center', 900, w - 14);
+  text(z2, 2 + w / 2, 2 + h * .74, Math.round(gr * .62), '#d6f3ff', 'center', 800, w - 14);
+  X = echt; b = { c, w: w + 8, h: h + 8 }; SCHILD.set(key, b); return b;
+}
+
+// ================= Kamera: steht still, nur beim „Spotlight“ kurz auf die führende Stadt =================
+const cam = { z: 1, x: W / 2, y: H / 2 }; let camZiel = null;
+function spotlight(name) {
+  const q = POS[name]; if (!q || camZiel) return;
+  const st = S.staedte.find(s => s.name === name); const h = (st ? Math.min(turmHoehe(st.stock), TURM_MAX) : 100) * q.s;
+  camZiel = { x: q.x, y: q.y - h * .55 - 20, z: Math.min(1.9, 760 / (h + 260)), t: performance.now(), name };
+}
+function kamera(t) {
+  let zx = W / 2, zy = H / 2, zz = 1;
+  if (camZiel) { const a = t - camZiel.t; if (a < 6500) { zx = camZiel.x; zy = camZiel.y; zz = Math.max(1.25, camZiel.z); } else if (Math.abs(cam.z - 1) < .01) camZiel = null; }
+  const k = .045; cam.x += (zx - cam.x) * k; cam.y += (zy - cam.y) * k; cam.z += (zz - cam.z) * k;
+  const zx2 = Math.max(W / 2 / cam.z, Math.min(W - W / 2 / cam.z, cam.x)), zy2 = Math.max(H / 2 / cam.z, Math.min(H - H / 2 / cam.z, cam.y));
+  X.setTransform(Q0 * cam.z, 0, 0, Q0 * cam.z, Q0 * (W / 2 - zx2 * cam.z), Q0 * (H / 2 - zy2 * cam.z));
+}
+
+// ================= Leben auf dem Meer (billig: wenige Striche pro Bild) =================
+const WELLEN = Array.from({ length: 70 }, (_, i) => ({ x: (i * 157) % W, y: HORIZONT + 110 + ((i * 89) % (H - HORIZONT - 120)), p: i * 1.7 }));
+const MOEWEN = Array.from({ length: 5 }, (_, i) => ({ x: zufall(0, W), y: zufall(560, 1000), v: zufall(.03, .06) * (i % 2 ? 1 : -1), p: i }));
+const SEGLER = [{ x: 200, y: 1480, v: .018, f: '#e8433c' }, { x: 800, y: 1640, v: -.014, f: '#3fa0e8' }, { x: 500, y: 1780, v: .011, f: '#ffd23f' }];
+const SHOWS = { delfin: null, wal: null, ballon: null, flieger: null, fisch: [], flasche: null };
+let naechsteShow = { delfin: 20000, wal: 55000, ballon: 90000, flieger: 140000, fisch: 6000, flasche: 70000 };
+function boot(c, x, y, f, k, flaggeText) {
+  c.save(); c.translate(x, y); c.scale(k, k);
+  c.fillStyle = 'rgba(255,255,255,.5)'; c.beginPath(); c.ellipse(0, 6, 34, 6, 0, 0, 7); c.fill();
+  c.fillStyle = '#8a5a2b'; c.beginPath(); c.moveTo(-28, -4); c.lineTo(28, -4); c.lineTo(20, 8); c.lineTo(-20, 8); c.closePath(); c.fill();
+  c.strokeStyle = INK; c.lineWidth = 2; c.beginPath(); c.moveTo(0, -4); c.lineTo(0, -58); c.stroke();
+  c.fillStyle = '#fff'; c.beginPath(); c.moveTo(2, -56); c.lineTo(28, -10); c.lineTo(2, -10); c.closePath(); c.fill();
+  c.fillStyle = f; c.beginPath(); c.moveTo(-2, -50); c.lineTo(-22, -10); c.lineTo(-2, -10); c.closePath(); c.fill();
+  c.restore();
+  if (flaggeText) { X.save(); text(flaggeText, x, y - 70 * k, 22, '#fff', 'center', 900, 260); X.restore(); }
+}
+function meerLeben(t, dt) {
+  const c = X, L = LICHT;
+  c.strokeStyle = `rgba(255,255,255,${.32 - L.nacht * .16})`; c.lineWidth = 2.5; c.beginPath();
+  for (const w of WELLEN) { const k = .5 + (w.y - HORIZONT) / 1500, x = w.x + Math.sin(t * .0007 + w.p) * 12, y = w.y + Math.sin(t * .0011 + w.p) * 3; c.moveTo(x - 14 * k, y); c.quadraticCurveTo(x, y - 6 * k, x + 14 * k, y); }
+  c.stroke();
+  // Segelboote ziehen ihre Bahnen
+  for (const s of SEGLER) { s.x += s.v * dt; if (s.x > W + 60) s.x = -60; if (s.x < -60) s.x = W + 60; boot(c, s.x, s.y + Math.sin(t * .002 + s.y) * 3, s.f, .9, null); }
+  // Delfin springt
+  if (t > naechsteShow.delfin && !SHOWS.delfin) { SHOWS.delfin = { t, x: zufall(150, 930), y: zufall(1350, 1700), r: Math.random() < .5 ? 1 : -1 }; naechsteShow.delfin = t + zufall(25000, 45000); }
+  if (SHOWS.delfin) { const d = SHOWS.delfin, q = (t - d.t) / 1800; if (q > 1) SHOWS.delfin = null; else {
+    for (const v of [0, .22]) { const qq = q - v; if (qq < 0 || qq > .78) continue; const p = qq / .78, x = d.x + (p - .5) * 220 * d.r, y = d.y - Math.sin(p * Math.PI) * 130, a = Math.atan2(-Math.cos(p * Math.PI) * 130 * Math.PI, 220 * d.r);
+      c.save(); c.translate(x, y); c.rotate(d.r > 0 ? -a + Math.PI * 0 : -a); c.scale(d.r, 1); c.fillStyle = '#6aa5d8'; c.beginPath(); c.ellipse(0, 0, 34, 11, 0, 0, 7); c.fill(); c.fillStyle = '#d8ecff'; c.beginPath(); c.ellipse(4, 4, 24, 5, 0, 0, 7); c.fill();
+      c.fillStyle = '#6aa5d8'; c.beginPath(); c.moveTo(-30, 0); c.lineTo(-46, -10); c.lineTo(-42, 0); c.lineTo(-46, 10); c.closePath(); c.fill(); c.beginPath(); c.moveTo(-2, -9); c.lineTo(8, -22); c.lineTo(12, -8); c.fill(); c.fillStyle = INK; c.beginPath(); c.arc(22, -2, 2, 0, 7); c.fill(); c.restore(); }
+    if (q < .12 || (q > .72 && q < .95)) spritzer(c, d.x + (q < .5 ? -110 : 110) * d.r, d.y, (q < .5 ? q / .12 : (q - .72) / .23));
+  } }
+  // Wal mit Fontäne
+  if (t > naechsteShow.wal && !SHOWS.wal) { SHOWS.wal = { t, x: zufall(200, 880), y: zufall(1450, 1720) }; naechsteShow.wal = t + zufall(60000, 90000); }
+  if (SHOWS.wal) { const d = SHOWS.wal, q = (t - d.t) / 6000; if (q > 1) SHOWS.wal = null; else {
+    const auf = Math.min(1, q * 5, (1 - q) * 5), y = d.y + (1 - auf) * 40;
+    c.save(); c.beginPath(); c.rect(d.x - 150, d.y - 200, 300, 200 + 4); c.clip();
+    c.fillStyle = '#3b6fa8'; c.beginPath(); c.ellipse(d.x, y, 110, 34, 0, Math.PI, 0); c.fill(); c.fillStyle = '#5a8cc4'; c.beginPath(); c.ellipse(d.x - 10, y - 8, 80, 18, 0, Math.PI, 0); c.fill();
+    c.fillStyle = INK; c.beginPath(); c.arc(d.x + 70, y - 14, 3.5, 0, 7); c.fill(); c.restore();
+    if (q > .2 && q < .8) { const f = Math.sin((q - .2) / .6 * Math.PI); c.fillStyle = 'rgba(220,245,255,.85)'; for (let k = 0; k < 9; k++) { const a = -Math.PI / 2 + (k - 4) * .2, r = 90 * f * (.6 + (k % 3) * .2); c.beginPath(); c.arc(d.x + 40 + Math.cos(a) * r * .6, y - 34 + Math.sin(a) * r, 7 * f + 2, 0, 7); c.fill(); } }
+  } }
+  // springende Fische
+  if (t > naechsteShow.fisch) { SHOWS.fisch.push({ t, x: zufall(80, 1000), y: zufall(700, 1800), r: Math.random() < .5 ? 1 : -1, f: ['#ff8a2a', '#ffd23f', '#ff6fa3', '#57b85a'][Math.floor(zufall(0, 4))] }); naechsteShow.fisch = t + zufall(4000, 9000); }
+  SHOWS.fisch = SHOWS.fisch.filter(f => { const q = (t - f.t) / 900; if (q > 1) return false; const x = f.x + q * 60 * f.r, y = f.y - Math.sin(q * Math.PI) * 50; c.fillStyle = f.f; c.beginPath(); c.ellipse(x, y, 9, 5, (q - .5) * 1.6 * f.r, 0, 7); c.fill(); c.beginPath(); c.moveTo(x - 8 * f.r, y); c.lineTo(x - 15 * f.r, y - 5); c.lineTo(x - 15 * f.r, y + 5); c.fill(); return true; });
+}
+function spritzer(c, x, y, q) { if (q < 0 || q > 1) return; c.fillStyle = `rgba(230,250,255,${1 - q})`; for (let k = 0; k < 7; k++) { const a = Math.PI + k / 6 * Math.PI; c.beginPath(); c.arc(x + Math.cos(a) * 26 * q, y + Math.sin(a) * 34 * q, 5 * (1 - q) + 1.5, 0, 7); c.fill(); } }
+function himmelLeben(t, dt) {
+  const c = X;
+  // Möwen über dem Meer
+  c.strokeStyle = '#fff'; c.lineWidth = 2.5; c.lineCap = 'round';
+  for (const m of MOEWEN) { m.x += m.v * dt; if (m.x > W + 30) m.x = -30; if (m.x < -30) m.x = W + 30; const y = m.y + Math.sin(t * .001 + m.p) * 14, f = Math.sin(t * .012 + m.p) * 5; c.beginPath(); c.moveTo(m.x - 11, y - f); c.quadraticCurveTo(m.x - 5, y - 6, m.x, y); c.quadraticCurveTo(m.x + 5, y - 6, m.x + 11, y - f); c.stroke(); }
+  // Heißluftballon mit der führenden Stadt
+  const top = S.staedte?.[0];
+  if (t > naechsteShow.ballon && !SHOWS.ballon && top) { SHOWS.ballon = { t, stadt: top.name, r: Math.random() < .5 ? 1 : -1 }; naechsteShow.ballon = t + zufall(150000, 200000); }
+  if (SHOWS.ballon) { const b = SHOWS.ballon, q = (t - b.t) / 22000; if (q > 1) SHOWS.ballon = null; else {
+    const x = b.r > 0 ? -120 + q * (W + 240) : W + 120 - q * (W + 240), y = 640 + Math.sin(q * 9) * 16;
+    c.strokeStyle = INK; c.lineWidth = 1.5; c.beginPath(); c.moveTo(x - 18, y + 40); c.lineTo(x - 10, y + 70); c.moveTo(x + 18, y + 40); c.lineTo(x + 10, y + 70); c.stroke();
+    ['#e8433c', '#ffd23f', '#3fa0e8', '#ffd23f', '#e8433c'].forEach((f, k) => { c.fillStyle = f; c.beginPath(); c.ellipse(x, y, 46 - k * 9, 52, 0, 0, 7); c.fill(); });
+    c.fillStyle = '#8a5a2b'; c.fillRect(x - 12, y + 68, 24, 16);
+    text(`👑 ${b.stadt}`, x, y - 72, 26, GELB, 'center', 900, 300);
+  } }
+  // Flugzeug mit Banner: Info, nie eine Aufforderung zu Herzen/Folgen/Teilen
+  if (t > naechsteShow.flieger && !SHOWS.flieger) {
+    const txt = [`🗼 ${S.anzahlStaedte || 0} Städte im Rennen`, top ? `👑 ${top.name} führt!` : '🗼 Welche Stadt baut am höchsten?', '✍️ Schreib deine Stadt in den Chat!', S.neueste ? `🆕 Neu dabei: ${S.neueste}` : '🏝️ Jede Stadt bekommt eine Insel'];
+    SHOWS.flieger = { t, txt: txt[Math.floor(zufall(0, txt.length))] }; naechsteShow.flieger = t + zufall(120000, 160000);
+  }
+  if (SHOWS.flieger) { const f = SHOWS.flieger, q = (t - f.t) / 16000; if (q > 1) SHOWS.flieger = null; else {
+    const x = W + 120 - q * (W + 900), y = 590 + Math.sin(q * 12) * 6;
+    c.fillStyle = '#fff'; c.beginPath(); c.ellipse(x, y, 34, 10, 0, 0, 7); c.fill(); c.fillStyle = ROT; c.beginPath(); c.moveTo(x - 4, y); c.lineTo(x + 10, y - 22); c.lineTo(x + 18, y); c.fill(); c.fillStyle = BLAU; c.beginPath(); c.arc(x - 20, y - 2, 4, 0, 7); c.fill();
+    c.strokeStyle = 'rgba(255,255,255,.9)'; c.lineWidth = 1.5; c.beginPath(); c.moveTo(x + 34, y); c.lineTo(x + 70, y); c.stroke();
+    X.font = schrift(900, 28); const bw = X.measureText(f.txt).width + 40;
+    c.fillStyle = '#fff8e0'; c.beginPath(); for (let k = 0; k <= 12; k++) { const xx = x + 70 + k / 12 * bw, yy = y - 26 + Math.sin(t * .01 + k) * 3; k ? c.lineTo(xx, yy) : c.moveTo(xx, yy); } for (let k = 12; k >= 0; k--) { const xx = x + 70 + k / 12 * bw, yy = y + 26 + Math.sin(t * .01 + k) * 3; c.lineTo(xx, yy); } c.closePath(); c.fill(); c.strokeStyle = INK; c.lineWidth = 2.5; c.stroke();
+    text(f.txt, x + 70 + bw / 2, y, 28, INK, 'center', 900);
+  } }
+}
+
+// ================= Effekte: Konfetti, Feuerwerk, „+1“ =================
+const turmSpitze = name => { const q = POS[name]; if (!q) return null; const st = S.staedte.find(s => s.name === name); const z = PLAETZE[q.rang] || q; return { x: q.x, y: q.y - Math.min(turmHoehe(st?.stock || 0), hMaxVon(z), TURM_MAX) * q.s - 10 * q.s }; };
+const hMaxVon = z => Math.max(60, (z.y - HORIZONT - 90) / z.s);
+function konfetti(name, n) { setTimeout(() => { const p = turmSpitze(name) || { x: 540, y: 900 }; for (let i = 0; i < n; i++) fx.push({ art: 'k', x: p.x, y: p.y, vx: zufall(-4, 4), vy: zufall(-9, -3), f: ['#e8433c', '#ffd23f', '#3fa0e8', '#57b85a', '#ff6fa3', '#9b5de5'][i % 6], t: performance.now(), r: zufall(0, 6) }); }, 60); }
+function feuerwerk(name, n) { for (let k = 0; k < n; k++) setTimeout(() => { const p = turmSpitze(name) || { x: 540, y: 800 }, x = p.x + zufall(-120, 120), y = p.y - zufall(60, 200), f = `hsl(${zufall(0, 360)},95%,65%)`; for (let i = 0; i < 26; i++) { const a = i / 26 * 6.283; fx.push({ art: 'f', x, y, vx: Math.cos(a) * zufall(3, 5), vy: Math.sin(a) * zufall(3, 5), f, t: performance.now() }); } }, k * 420 + 80); }
+function effekte(t, dt) {
+  for (let i = fx.length - 1; i >= 0; i--) {
+    const p = fx[i], a = t - p.t, k = dt / 33;
+    if (a > (p.art === 'f' ? 1300 : 2600)) { fx.splice(i, 1); continue; }
+    p.x += p.vx * k; p.y += p.vy * k; p.vy += (p.art === 'f' ? .09 : .28) * k; p.vx *= p.art === 'f' ? .97 : .99;
+    X.globalAlpha = Math.max(0, 1 - a / (p.art === 'f' ? 1300 : 2600)); X.fillStyle = p.f;
+    if (p.art === 'f') { X.beginPath(); X.arc(p.x, p.y, 3.5, 0, 7); X.fill(); } else { X.save(); X.translate(p.x, p.y); X.rotate(p.r + a * .01); X.fillRect(-5, -3, 10, 6); X.restore(); }
+  }
+  X.globalAlpha = 1;
+  if (fx.length > 500) fx.splice(0, fx.length - 500);
+}
+function schwebendZeichnen(t) {
+  for (let i = schwebend.length - 1; i >= 0; i--) {
+    const s = schwebend[i], a = (t - s.t) / 2200; if (a > 1) { schwebend.splice(i, 1); continue; }
+    const p = turmSpitze(s.stadt); if (!p) continue;
+    const k = Math.max(.75, POS[s.stadt]?.s || 1), y = p.y - 40 - a * 90 * k, al = Math.min(1, (1 - a) * 3);
+    X.globalAlpha = al;
+    if (s.neu) text(`👋 ${s.wer} baut mit!`, p.x, y, Math.round(22 * k), '#fff', 'center', 900, 300);
+    else { text(`+${s.n} 🗼`, p.x, y, Math.round(34 * k), GELB, 'center', 900); if (s.wer && a < .8) text(s.wer.replace(/^@/, ''), p.x, y + 30 * k, Math.round(19 * k), '#fff', 'center', 800, 220); }
+    X.globalAlpha = 1;
+  }
+}
+
+// ================= Inseln + Leuchttürme zeichnen (hinten → vorne) =================
+function welt(t) {
+  const l = sichtbareStaedte(), L = LICHT, ev = S.event?.id, jetzt = t;
+  const beamExtra = t - blitzT < 6000 ? Math.max(0, 1 - (t - blitzT) / 6000) * .9 : 0;
+  const folge = l.map((st, i) => ({ st, i, q: POS[st.name] })).sort((a, b) => a.q.y - b.q.y);
+  for (const { st, i, q } of folge) {
+    const neu = neuT[st.name] && t - neuT[st.name] < 1200 ? pop((t - neuT[st.name]) / 1200) : 1;
+    const puls = t - q.puls < 400 ? 1 + .07 * Math.sin((t - q.puls) / 400 * Math.PI) : 1;
+    const s = q.s * neu, x = q.x, y = q.y;
+    if (s <= .02) continue;
+    // Fieber / Duell: leuchtender Ring im Wasser
+    const ring = st.fieber ? '#ff6a2a' : duell && (st.name === duell.a || st.name === duell.b) ? (st.name === duell.a ? ROT : BLAU) : i === 0 && !st.leer ? GELB : null;
+    if (ring) { X.save(); X.globalAlpha = .45 + Math.sin(t * .006) * .15; X.strokeStyle = ring; X.lineWidth = 10 * s; X.beginPath(); X.ellipse(x, y + 4 * s, 140 * s, 40 * s, 0, 0, 7); X.stroke(); X.restore(); }
+    X.drawImage(INSEL[hash(st.name) % 3], x - 150 * s, y - 170 * s, 300 * s, 230 * s);
+    if (st.leer) { X.save(); X.globalAlpha = .55 + Math.sin(t * .004 + i) * .2; text('?', x, y - 70 * s, Math.round(90 * s), '#fff', 'center', 900); X.restore(); }
+    else {
+      X.save(); X.translate(x, y - 6 * s); const sway = ev === 'sturm' ? Math.sin(t * .004 + i) * .035 : 0; X.rotate(sway); X.scale(s * puls, s * puls);
+      const h = turm(X, st, i, t, hMaxVon(PLAETZE[i]), L.nacht, beamExtra); X.restore();
+      st._h = h * s;
+    }
+    // Neue Stadt: Spritzer
+    if (neuT[st.name] && t - neuT[st.name] < 900) spritzer(X, x, y, (t - neuT[st.name]) / 900);
+  }
+  // Ankunfts-Boote für neue Städte
+  for (let k = boote.length - 1; k >= 0; k--) { const b = boote[k], q = POS[b.stadt], a = (t - b.t) / 4500; if (a > 1 || !q) { boote.splice(k, 1); continue; }
+    const e = ease(Math.min(1, a / .7)), zx = q.x + (b.von < 0 ? -110 : 110) * q.s, x = b.von + (zx - b.von) * e; X.globalAlpha = Math.min(1, (1 - a) * 5); boot(X, x, q.y + 30 * q.s, PINK, Math.max(.6, q.s), `🏝️ ${b.stadt}`); X.globalAlpha = 1; }
+  // Schilder obendrauf (vorne zuletzt)
+  for (const { st, i, q } of folge) {
+    const gr = Math.round(Math.max(14, 30 * q.s)), b = schildBild(st, i, gr), hTurm = st.leer ? 60 * q.s : (st._h || 60) + 46 * q.s;
+    const y = q.y - hTurm - b.h / 2 - 6;
+    X.drawImage(b.c, q.x - b.w / 2, y - b.h / 2, b.w, b.h);
+    if (i === 0 && !st.leer) text('👑', q.x, y - b.h / 2 - 22 + Math.sin(t * .004) * 4, 40, INK, 'center', 400);
+    // Event-Symbole über den Türmen
+    if (!st.leer && ev === 'turbo') text('⚡', q.x + b.w / 2 - 6, y - b.h / 2 + Math.sin(t * .01 + i) * 5, Math.round(30 * q.s + 8), INK, 'center', 400);
+    if (!st.leer && ev === 'baukolonne' && t - q.puls < 3000) text('🏗️', q.x - b.w / 2, y - b.h / 2 + Math.sin(t * .008 + i) * 4, Math.round(30 * q.s + 8), INK, 'center', 400);
+    if (!st.leer && duell && (st.name === duell.a || st.name === duell.b)) text('⚔️', q.x + b.w / 2, y - b.h / 2, 40, INK, 'center', 400);
+    if (!st.leer && i === 0 && ev === 'schaetzen') { X.save(); X.globalAlpha = .9; text('❓', q.x + 90, y - 40 + Math.sin(t * .005) * 8, 64, INK, 'center', 400); X.restore(); }
+  }
+}
+// Wetter und Licht der Events (Bildschirm-Ebene)
+function wetter(t) {
+  const ev = S.event?.id;
+  if (ev === 'sturm') {
+    X.fillStyle = 'rgba(20,30,60,.28)'; X.fillRect(0, 0, W, H);
+    X.strokeStyle = 'rgba(200,225,255,.55)'; X.lineWidth = 2; X.beginPath();
+    for (let i = 0; i < 90; i++) { const x = (i * 97 + t * .9) % (W + 200) - 100, y = (i * 211 + t * 1.6) % H; X.moveTo(x, y); X.lineTo(x - 14, y + 34); } X.stroke();
+    if (Math.sin(t * .0021) > .985) { X.fillStyle = 'rgba(255,255,255,.35)'; X.fillRect(0, 0, W, H); }
+  }
+  if (ev === 'nebel') {
+    const q = Math.min(1, (S.event.dauer - S.event.rest) / S.event.dauer);
+    for (let k = 0; k < 4; k++) { X.fillStyle = `rgba(235,242,250,${(.42 - q * .25) * (1 - k * .15)})`; X.beginPath(); for (let i = 0; i <= 12; i++) { const x = i * 90, y = 560 + k * 260 + Math.sin(t * .0005 + i + k) * 40; i ? X.lineTo(x, y) : X.moveTo(x, y); } X.lineTo(W, 560 + k * 260 + 260); X.lineTo(0, 560 + k * 260 + 260); X.fill(); }
+  }
+  if (ev === 'leuchtsignal' && t - blitzT > 6000) { X.fillStyle = 'rgba(5,10,40,.35)'; X.fillRect(0, 0, W, H); }
+  if (t - blitzT < 700) { X.fillStyle = `rgba(255,250,210,${.6 * (1 - (t - blitzT) / 700)})`; X.fillRect(0, 0, W, H); }
+  if (ev === 'glueckslos') for (let i = 0; i < 6; i++) { const p = ((t * .00012 + i / 6) % 1); X.globalAlpha = Math.sin(p * Math.PI); text('🎟️', 90 + i * 180, 1500 - p * 800, 40, INK, 'center', 400); X.globalAlpha = 1; }
+  if (ev === 'turbo') { X.strokeStyle = 'rgba(255,240,150,.35)'; X.lineWidth = 3; X.beginPath(); for (let i = 0; i < 14; i++) { const y = 600 + (i * 83) % 900, x = (t * 1.2 + i * 230) % (W + 300) - 150; X.moveTo(x, y); X.lineTo(x + 120, y); } X.stroke(); }
+}
+
+// ================= Kopfbereich: Titel, Top 5, Event/Countdown, Laufband =================
+const SPALTE = 500;
+function kopf(t) {
+  // Titel
+  X.fillStyle = 'rgba(10,30,60,.55)'; rr(46, 30, 988, 82, 41); X.fill();
+  const gT = X.createLinearGradient(0, 22, 0, 104); gT.addColorStop(0, '#2fb3e8'); gT.addColorStop(1, '#1667b8'); X.fillStyle = gT; rr(40, 22, 988, 82, 41); X.fill(); X.lineWidth = 6; X.strokeStyle = INK; X.stroke();
+  text('🗼 LEUCHTTURM-RENNEN', 534, 64, 54, '#fff', 'center', 900, 900);
+  // Top 5
+  const x0 = 30, y0 = 126, hK = 342; karte(x0, y0, SPALTE, hK, '#fffaf0');
+  X.fillStyle = '#ffd23f'; rr(x0, y0, SPALTE, 58, [28, 28, 0, 0]); X.fill(); X.strokeStyle = INK; X.lineWidth = 6; rr(x0, y0, SPALTE, hK, 28); X.stroke();
+  text('🏆 TOP 5', x0 + 22, y0 + 30, 32, INK, 'left', 900); text(`${S.anzahlStaedte || 0} ${S.anzahlStaedte === 1 ? 'Stadt' : 'Städte'}`, x0 + SPALTE - 22, y0 + 30, 26, INK, 'right', 900);
+  const l = (S.staedte || []).slice(0, 5), max = Math.max(1, ...l.map(s => s.stock));
+  if (!l.length) { text('Noch keine Stadt –', x0 + SPALTE / 2, y0 + 150, 30, INK, 'center', 900); text('schreib deine in den Chat!', x0 + SPALTE / 2, y0 + 195, 30, PINK, 'center', 900); }
+  l.forEach((s, i) => {
+    const y = y0 + 84 + i * 52;
+    X.fillStyle = ['rgba(255,210,63,.55)', 'rgba(190,200,215,.55)', 'rgba(220,150,90,.45)', 'rgba(63,160,232,.18)', 'rgba(63,160,232,.18)'][i]; rr(x0 + 16, y - 21, (SPALTE - 32) * Math.max(.18, s.stock / max), 42, 21); X.fill();
+    text(`${i + 1}.`, x0 + 30, y, 28, INK, 'left', 900); text(`${flagge(s.land)} ${s.name}${s.fieber ? ' 🔥' : ''}`, x0 + 74, y, 28, INK, 'left', 900, 270);
+    text(fmt(s.stock), x0 + SPALTE - 30, y, 28, INK, 'right', 900, 120);
+  });
+  // Event oder Countdown
+  const x1 = 550, e = S.event, r = S.ergebnis;
+  if (e) {
+    karte(x1, y0, SPALTE, hK, '#fff');
+    X.fillStyle = PINK; rr(x1, y0, SPALTE, 58, [28, 28, 0, 0]); X.fill(); X.strokeStyle = INK; X.lineWidth = 6; rr(x1, y0, SPALTE, hK, 28); X.stroke();
+    text(`${e.icon} ${e.titel}`, x1 + 20, y0 + 30, 28, '#fff', 'left', 900, SPALTE - 130); text(`⏱ ${zeit(e.rest)}`, x1 + SPALTE - 20, y0 + 30, 28, '#fff', 'right', 900, 110);
+    X.fillStyle = 'rgba(42,27,18,.12)'; X.fillRect(x1 + 8, y0 + 56, SPALTE - 16, 6); X.fillStyle = GELB; X.fillRect(x1 + 8, y0 + 56, (SPALTE - 16) * e.rest / e.dauer, 6);
+    const bl = (e.balken || []).slice(0, 3), zl = umbrechen(e.text, 25, 800, SPALTE - 36, bl.length ? 3 : 5);
+    zl.forEach((z, i) => text(z, x1 + SPALTE / 2, y0 + 88 + i * 31, 25, INK, 'center', 800, SPALTE - 30));
+    let yy = y0 + 88 + zl.length * 31 + 2;
+    bl.forEach(b => { X.fillStyle = 'rgba(42,27,18,.08)'; rr(x1 + 18, yy, SPALTE - 36, 34, 17); X.fill(); X.fillStyle = b.farbe || BLAU; rr(x1 + 18, yy, Math.max(34, (SPALTE - 36) * Math.min(1, b.wert / Math.max(1, b.max))), 34, 17); X.fill();
+      text(b.name, x1 + 32, yy + 18, 22, INK, 'left', 900, SPALTE - 170); text(fmt(b.wert), x1 + SPALTE - 32, yy + 18, 22, INK, 'right', 900, 110); yy += 40; });
+    if (e.preis) text('🏆 ' + e.preis, x1 + SPALTE / 2, Math.min(y0 + hK - 24, Math.max(yy + 18, y0 + hK - 24)), 21, '#8a5a2b', 'center', 800, SPALTE - 30);
+  } else if (r) {
+    karte(x1, y0, SPALTE, hK, r.gut ? '#fff3c4' : '#fff');
+    text(`${r.icon} ${r.titel}`, x1 + SPALTE / 2, y0 + 44, 28, '#8a5a2b', 'center', 900, SPALTE - 40);
+    umbrechen(r.text, 28, 900, SPALTE - 40, 5).forEach((z, i) => text(z, x1 + SPALTE / 2, y0 + 100 + i * 36, 28, INK, 'center', 900, SPALTE - 30));
+    X.fillStyle = '#16325c'; rr(x1 + 24, y0 + hK - 70, SPALTE - 48, 50, 25); X.fill();
+    text(`⏳ Nächstes Event in ${zeit(S.eventIn || 0)}`, x1 + SPALTE / 2, y0 + hK - 45, 25, '#fff', 'center', 900, SPALTE - 70);
+  } else {
+    karte(x1, y0, SPALTE, hK, '#16325c');
+    text('⏳ Nächstes Event', x1 + SPALTE / 2, y0 + 42, 30, GELB, 'center', 900);
+    const s = S.eventIn || 0, p = s <= 10 ? 1 + Math.sin(t * .012) * .08 : 1;
+    X.save(); X.translate(x1 + SPALTE / 2, y0 + 120); X.scale(p, p); text(zeit(s), 0, 0, 78, '#fff', 'center', 900); X.restore();
+    text('Bonus-Stockwerke für', x1 + SPALTE / 2, y0 + 200, 26, '#d6f3ff', 'center', 800);
+    text('deine Stadt! 🗼', x1 + SPALTE / 2, y0 + 234, 26, '#d6f3ff', 'center', 800);
+    X.fillStyle = 'rgba(255,255,255,.15)'; rr(x1 + 24, y0 + 268, SPALTE - 48, 46, 23); X.fill();
+    text('✍️ Schreib deine Stadt!', x1 + SPALTE / 2, y0 + 291, 26, '#fff', 'center', 900, SPALTE - 70);
+  }
+  // Laufband mit wechselnden Fakten
+  const fakten = [];
+  if (S.anzahlStaedte) fakten.push(`🌍 ${S.anzahlStaedte} ${S.anzahlStaedte === 1 ? 'Stadt' : 'Städte'} · ${stw(S.stockGesamt)} gesamt`);
+  if (S.neueste) fakten.push(`🆕 Neu im Rennen: ${S.neueste}`);
+  if (S.staedte?.[0]?.baumeister) fakten.push(`🏗️ Baumeister von ${S.staedte[0].name}: ${S.staedte[0].baumeister.replace(/^@/, '')}`);
+  if (S.laender) { const z = Object.entries(S.laender).filter(([k]) => FLAGGE[k]).sort((a, b) => b[1] - a[1]).slice(0, 4).map(([k, n]) => `${flagge(k)} ${n}`); if (z.length > 1) fakten.push('Länder: ' + z.join('  ·  ')); }
+  if (S.staedte?.[1]) fakten.push(`⚔️ ${S.staedte[1].name} fehlen ${stw(S.staedte[0].stock - S.staedte[1].stock + 1)} zur Spitze`);
+  if (S.sieger) fakten.push(`🏆 Letzte Stadt des Tages: ${S.sieger}`);
+  fakten.push('💬 Jeder Kommentar = +1 Stockwerk für deine Stadt');
+  const f = fakten[Math.floor(t / 6000) % fakten.length];
+  X.fillStyle = 'rgba(10,30,60,.72)'; rr(30, y0 + hK + 14, 1020, 50, 25); X.fill();
+  text(f, 540, y0 + hK + 39, 26, '#fff', 'center', 900, 980);
+  return y0 + hK + 64;
+}
+
+// ================= Banner, Erklärung, Hinweis, Untertitel =================
+let bannerAktiv = null;
+function bannerZeichnen(t) {
+  if (!bannerAktiv && banner.length) bannerAktiv = { ...banner.shift(), t };
+  const b = bannerAktiv; if (!b) return;
+  const a = t - b.t; if (a > b.ms) { bannerAktiv = null; return; }
+  const ein = pop(Math.min(1, a / 450)), aus = Math.min(1, (b.ms - a) / 300), y = 640;
+  X.save(); X.globalAlpha = aus; X.translate(540, y); X.scale(ein, ein);
+  const w = 940, h = b.unter ? 138 : 104;
+  X.fillStyle = 'rgba(10,30,60,.5)'; rr(-w / 2 + 8, -h / 2 + 8, w, h, 36); X.fill();
+  X.fillStyle = b.farbe; rr(-w / 2, -h / 2, w, h, 36); X.fill(); X.lineWidth = 6; X.strokeStyle = INK; X.stroke();
+  text(b.icon, -w / 2 + 70, 0 + Math.sin(a * .01) * 4, 64, INK, 'center', 400);
+  text(b.titel, 40, b.unter ? -22 : 0, 44, '#fff', 'center', 900, w - 190);
+  if (b.unter) text(b.unter, 40, 34, 28, '#fff', 'center', 800, w - 190);
+  X.restore();
+}
+function herzenZeichnen(t) {
+  for (let i = herzen.length - 1; i >= 0; i--) {
+    const h = herzen[i], a = (t - h.t) / 3200; if (a > 1) { herzen.splice(i, 1); continue; }
+    if (i > 0) { h.t = t; continue; }                                 // eins nach dem anderen
+    const y = 1250 - a * 260, al = Math.min(1, (1 - a) * 4, a * 8);
+    X.globalAlpha = al;
+    for (let k = 0; k < 8; k++) { const p = (a * 1.4 + k / 8) % 1; text('💖', 760 + Math.sin(k * 2 + t * .003) * 120, 1350 - p * 420, 30 + (k % 3) * 8, INK, 'center', 400); }
+    X.fillStyle = PINK; rr(560, y - 40, 460, 80, 40); X.fill(); X.lineWidth = 5; X.strokeStyle = '#fff'; X.stroke();
+    text(`💖 Danke, ${h.name}!`, 790, y, 34, '#fff', 'center', 900, 420);
+    X.globalAlpha = 1;
+  }
+}
+function erklaerung(t) {
+  const rest = erklaerBis - t; if (rest <= 0) return;
+  const a = 9000 - rest, al = Math.min(1, a / 400, rest / 400), y0 = 640;
+  X.save(); X.globalAlpha = al;
+  karte(90, y0, 900, 520, '#fffaf0', 40);
+  text('🗼 So geht das Rennen', 540, y0 + 60, 48, INK, 'center', 900);
+  [['✍️', 'Schreib deine Stadt in den Chat', 'Dorf, Stadt oder Gemeinde – alles zählt'], ['🏝️', 'Deine Stadt bekommt eine Insel', 'mit eigenem Leuchtturm'], ['💬', 'Jeder Kommentar = +1 Stockwerk', 'je mehr aus deiner Stadt, desto schneller'], ['🏆', 'Alle 2 Minuten ein Event', 'mit Bonus-Stockwerken']].forEach(([ic, z1, z2], i) => {
+    const y = y0 + 140 + i * 96, sch = Math.min(1, Math.max(0, (a - 300 - i * 500) / 350));
+    X.globalAlpha = al * sch; text(ic, 170, y + 8, 54, INK, 'center', 400); text(z1, 225, y - 8, 34, INK, 'left', 900, 730); text(z2, 225, y + 30, 25, '#6b5a4a', 'left', 800, 730);
+  });
+  X.restore();
+}
+function siegerZeichnen(t) {
+  const s = siegerShow; if (!s) return; const a = t - s.t; if (a > 15000) { siegerShow = null; return; }
+  const k = pop(Math.min(1, a / 600)); X.save(); X.globalAlpha = Math.min(1, (15000 - a) / 500); X.translate(540, 900); X.scale(k, k);
+  karte(-420, -200, 840, 400, '#fff3c4', 50); text('🏆', 0, -110, 110, INK, 'center', 400); text('Stadt des Tages', 0, 10, 44, '#8a5a2b', 'center', 900); text(s.stadt, 0, 90, 72, PINK, 'center', 900, 760);
+  X.restore();
+}
+function hinweis(t) {
+  if (S.event) return;
+  const p = 1 + Math.sin(t * .004) * .025; X.save(); X.translate(540, 1470); X.scale(p, p);
+  X.fillStyle = 'rgba(10,30,60,.45)'; rr(-400 + 6, -46 + 6, 800, 92, 46); X.fill();
+  X.fillStyle = '#ffffff'; rr(-400, -46, 800, 92, 46); X.fill(); X.lineWidth = 6; X.strokeStyle = INK; X.stroke();
+  text('✍️ Schreib deine Stadt in den Chat!', 0, -12, 38, INK, 'center', 900, 740);
+  text('Jeder Kommentar lässt deinen Leuchtturm wachsen 🗼', 0, 24, 24, '#1667b8', 'center', 800, 740);
+  X.restore();
+}
+function untertitelZeichnen(t) {
+  const ua = (t - untertitel.t) / 1000; if (!untertitel.text || ua > (untertitel.d || 5)) return;
+  const zl = umbrechen(untertitel.text, 30, 800, 860, 3), y = 1580;
+  X.globalAlpha = Math.min(1, ua * 4, ((untertitel.d || 5) - ua) * 3);
+  X.fillStyle = 'rgba(10,20,40,.62)'; rr(90, y - 30, 900, zl.length * 40 + 24, 24); X.fill();
+  zl.forEach((z, i) => text(z, 540, y - 6 + 8 + i * 40, 30, '#fff', 'center', 800, 860));
+  X.globalAlpha = 1;
+}
+function spotlightZeichnen(t) {
+  if (!camZiel || t - camZiel.t > 6500) return;
+  const a = t - camZiel.t, st = S.staedte.find(s => s.name === camZiel.name); if (!st) return;
+  X.globalAlpha = Math.min(1, a / 600, (6500 - a) / 400);
+  X.fillStyle = '#2a1b12'; rr(140, 1560, 800, 96, 48); X.fill(); X.strokeStyle = GELB; X.lineWidth = 5; X.stroke();
+  text(`👑 ${st.name} führt mit ${fmt(st.stock)} ${st.stock === 1 ? 'Stockwerk' : 'Stockwerken'}`, 540, 1608, 32, GELB, 'center', 900, 740);
+  X.globalAlpha = 1;
+}
+
+// ================= Bildablauf =================
+let frameZeit = 0, tLetzt = 0, KC = null, KX = null, kopfZeit = 0, KOPF_UNTEN = 540;
+function bild(t) {
+  requestAnimationFrame(bild);
+  if (t - frameZeit < 1000 / FPS - 3) return;
+  frameZeit = t; const dt = Math.min(100, t - (tLetzt || t)); tLetzt = t;
+  tageslicht(t);
+  if (!HG) HG = hintergrund();
+  kamera(t);
+  X.drawImage(HG, 0, 0, W, H);
+  meerLeben(t, dt);
+  welt(t);
+  himmelLeben(t, dt);
+  effekte(t, dt);
+  schwebendZeichnen(t);
+  X.setTransform(Q0, 0, 0, Q0, 0, 0);
+  wetter(t);
+  hinweis(t); spotlightZeichnen(t); untertitelZeichnen(t);
+  if (!KC) { KC = document.createElement('canvas'); KC.width = C.width; KC.height = Math.ceil(560 * Q0); KX = KC.getContext('2d'); }
+  if (t - kopfZeit > 250) { kopfZeit = t; const echt = X; X = KX; X.setTransform(Q0, 0, 0, Q0, 0, 0); X.clearRect(0, 0, W, 560); KOPF_UNTEN = kopf(t); X = echt; }
+  X.setTransform(1, 0, 0, 1, 0, 0); X.drawImage(KC, 0, 0); X.setTransform(Q0, 0, 0, Q0, 0, 0);
+  bannerZeichnen(t); herzenZeichnen(t); erklaerung(t); siegerZeichnen(t);
+  if (tonRolle && !(tonAn && AC && AC.state === 'running')) { if (!bild.versuch || t - bild.versuch > 3000) { bild.versuch = t; tonStarten(); } text('🔊 Einmal ins Bild klicken für Ton', 540, 1880, 22, '#fff', 'center', 900); }
+  else if (!VORSCHAU) text('🎙️ KI-Stimme', 1040, 1890, 18, 'rgba(255,255,255,.7)', 'right', 800);
+  tonLautstaerke();
+}
+document.fonts?.load(`400 40px ${TITEL}`).then(() => document.fonts.load(`700 30px ${FONT}`)).then(() => { SCHILD.clear(); for (const k in MITTE_CACHE) delete MITTE_CACHE[k]; }).catch(() => {});
+verbinde();
+if (TONSEITE) {
+  C.style.display = 'none';
+  document.body.insertAdjacentHTML('beforeend', `<div id="tonbox" style="font:800 28px system-ui;color:#fff;background:#0f3b5c;position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;text-align:center;padding:24px">
+    <div style="font-size:64px">🔊</div><div>Leuchtturm-Rennen – Ton</div>
+    <button id="tonknopf" style="font:900 30px system-ui;padding:22px 36px;border-radius:999px;border:0;background:#ffd23f;color:#2a1b12;cursor:pointer">Ton starten</button>
+    <div id="tonstat" style="font-size:20px;opacity:.85">Einmal klicken – dann diesen Tab offen lassen (darf im Hintergrund sein).</div></div>`);
+  document.getElementById('tonknopf').onclick = () => tonStarten();
+  setInterval(() => {
+    const ok = tonRolle && tonAn && AC && AC.state === 'running';
+    document.getElementById('tonknopf').style.display = ok ? 'none' : '';
+    document.getElementById('tonstat').textContent = ok ? '✅ Ton läuft – Stimme und Musik kommen von hier. Tab offen lassen!' : tonRolle ? 'Bitte einmal auf „Ton starten“ klicken.' : 'Warte auf das Programm …';
+    tonLautstaerke();
+  }, 500);
+} else requestAnimationFrame(bild);
+</script>
+</body>
+</html>
