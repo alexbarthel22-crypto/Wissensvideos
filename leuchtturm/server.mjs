@@ -21,7 +21,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-16 c';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-16 d';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 // Stimmen und Kerstin-Modell mit Muschel-Tal LIVE teilen (gleicher Speicher = schon erzeugte Leda-Sätze kosten nichts)
@@ -82,7 +82,7 @@ function turmWachsen(name, um, p, art) {
   const s = S.staedte[name]; if (!s || um <= 0) return;
   const vorher = s.stock; s.stock += um; geaendert = true; zaehle(name, um);
   if (p) { p.beitrag = (p.beitrag || 0) + um; s.baumeister ||= {}; s.baumeister[p.name] = (s.baumeister[p.name] || 0) + um; }
-  const pp = plusPuffer.get(name) || { n: 0, wer: null, art: '' }; pp.n += um; if (p) pp.wer = p.name; if (art) pp.art = art; plusPuffer.set(name, pp);
+  if (art !== 'still') { const pp = plusPuffer.get(name) || { n: 0, wer: null, art: '' }; pp.n += um; if (p) pp.wer = p.name; if (art) pp.art = art; plusPuffer.set(name, pp); }
   const up = TURM_UPGRADES.filter(([n]) => vorher < n && s.stock >= n).pop();
   if (up) { sende({ typ: 'upgrade', stadt: name, stock: up[0], was: up[1] }); if (Date.now() - upAnsage > 20000) { upAnsage = Date.now(); sag(satz('upgrade', { stadt: name, was: up[1] }), 2); } }
   fuehrungPruefen();
@@ -123,13 +123,13 @@ function kommentar(u, text) {
   //    Die erste geschriebene Stadt wird die Heimatstadt (für Kommentare, Emojis, Events). Andere Städte anfeuern geht immer.
   //    Ist der Kommentar gerade eine andere Event-Antwort („licht“, „los“ …), zählen kleine Orte nur mit „aus …“.
   let st = null;
-  if (EV.id() !== 'turmquiz' && !/^(hauptstadtquiz|flussquiz|buchstabensalat|emojiraetsel)$/.test(EV.id() || '')) {
+  if (EV.id() !== 'turmquiz' && !/^(hauptstadtquiz|buchstabensalat|emojiraetsel)$/.test(EV.id() || '')) {
     const antwort = EV.laeuft() && !EV.stadtEvent() && eventAntwort(null, text, true);
     st = stadtAus(text, antwort);
   }
   if (st) {
     stadtNeu(st, p);
-    if (!p.stadt) { p.stadt = st; S.staedte[st].leute++; geaendert = true; if (p.guthaben) { turmWachsen(st, p.guthaben, p, 'geschenk'); p.guthaben = 0; } if (!S.staedte[st]._neu) sende({ typ: 'beitritt', stadt: st, name: p.name }); }
+    if (!p.stadt) { p.stadt = st; S.staedte[st].leute++; geaendert = true; if (p.guthaben) { turmWachsen(st, p.guthaben, p, 'still'); p.guthaben = 0; } if (!S.staedte[st]._neu) sende({ typ: 'beitritt', stadt: st, name: p.name }); }
     delete S.staedte[st]._neu;
     const jetzt = Date.now();
     if (jetzt - (p.schreibZeit || 0) >= (CFG.turm.stadtSchreibenSek ?? 3) * 1000) {
@@ -218,9 +218,9 @@ function teilen(u) {
 function geschenk(u, gname = '', coins = 1, anzahl = 1) {
   const id = String(u?.uniqueId || '').toLowerCase(); if (!id || gesperrt(id)) return;
   const p = spieler(u); if (!p) return;
-  const n = Math.max(1, Math.round((coins || 1) * (anzahl || 1) * (CFG.turm.geschenkMeterProMuenze ?? 5)));
-  if (p.stadt && S.staedte[p.stadt]) turmWachsen(p.stadt, n, p, 'geschenk'); else p.guthaben = (p.guthaben || 0) + n;
-  sende({ typ: 'danke', name: p.name, stadt: p.stadt || null, n });
+  const n = Math.max(1, Math.round((coins || 1) * (anzahl || 1) * (CFG.turm.geschenkMeterProMuenze ?? 10)));
+  if (p.stadt && S.staedte[p.stadt]) turmWachsen(p.stadt, n, p, 'still'); else p.guthaben = (p.guthaben || 0) + n;
+  sende({ typ: 'danke', name: p.name, stadt: p.stadt || null });   // Meter werden nicht angezeigt oder angesagt
   if (einmal(id, 'geschenkDank', 20000)) sag(satz(p.stadt ? 'geschenkDank' : 'geschenkDankOhne', { name: vollName(p) }), 1);
 }
 

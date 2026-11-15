@@ -133,10 +133,11 @@ function ereignis(e) {
       if (S.musik?.length && S.musik.join() !== MUSIK.map(m => m.slice(6)).join()) {
         MUSIK = S.musik.map(f => 'musik/' + f); musikFehler = 0; musikNr = Math.floor(Math.random() * MUSIK.length); musik.src = MUSIK[musikNr]; if (tonRolle) musik.play().catch(() => {});
       }
+      eventStartZiel = S.event ? 0 : performance.now() + (S.eventIn || 0) * 1000;
       if (S.bildrate && !PARAM.get('fps')) FPS = Math.max(15, Math.min(30, S.bildrate));
       break;
     }
-    case 'plus': for (const p of e.l) { schwebend.push({ stadt: p.stadt, n: p.n, wer: p.wer, art: p.art, t: jetzt }); const q = POS[p.stadt]; if (q) q.puls = jetzt; } if (schwebend.length > 30) schwebend.splice(0, schwebend.length - 30); break;
+    case 'plus': for (const p of e.l) { if (p.art === 'still' && !p.wer) continue; if (p.art !== 'still') schwebend.push({ stadt: p.stadt, n: p.n, wer: p.wer, art: p.art, t: jetzt }); const q = POS[p.stadt]; if (q) q.puls = jetzt; } if (schwebend.length > 30) schwebend.splice(0, schwebend.length - 30); break;
     case 'neueStadt': neuT[e.stadt] = jetzt; zeige('🏝️', `Neue Insel: ${e.stadt}!`, e.name ? `${e.name} holt ${e.stadt} ins Rennen` : 'Willkommen im Rennen!', TUERKIS);
       boote.push({ stadt: e.stadt, t: jetzt, von: Math.random() < .5 ? -80 : W + 80 }); konfetti(e.stadt, 40); break;
     case 'beitritt': schwebend.push({ stadt: e.stadt, n: 0, wer: (e.name || '').replace(/^@/, ''), t: jetzt, neu: true }); break;
@@ -144,7 +145,7 @@ function ereignis(e) {
     case 'upgrade': zeige('✨', `${e.stadt}: ${e.was}!`, `${stw(e.stock)} erreicht`, '#9b5de5'); feuerwerk(e.stadt, 2); break;
     case 'fieber': zeige('🔥', `Städte-Fieber in ${e.stadt}!`, 'Jetzt zählt alles doppelt!', '#ff6a2a', 4200); break;
     case 'follow': herzen.push({ z1: `💖 Danke, ${(e.name || '').replace(/^@/, '')}!`, t: jetzt, f: PINK, e: '💖' }); break;
-    case 'danke': herzen.push({ z1: `💝 Tausend Danke, ${e.name}!`, z2: e.stadt ? `Alles in den Turm von ${e.stadt}: +${fmt(e.n)} m` : 'Schreib deine Stadt – alles geht in deinen Turm!', t: jetzt, f: '#e0457c', e: '💝', gross: true }); if (e.stadt) { feuerwerk(e.stadt, 2); const q = POS[e.stadt]; if (q) q.puls = jetzt; } break;
+    case 'danke': herzen.push({ z1: `💝 Tausend Danke, ${e.name}!`, z2: '', t: jetzt, f: '#e0457c', e: '💝', gross: true }); if (e.stadt) { feuerwerk(e.stadt, 2); const q = POS[e.stadt]; if (q) q.puls = jetzt; } break;
     case 'teilen': herzen.push({ z1: `🔁 Danke fürs Teilen, ${e.name}!`, z2: e.stadt ? `Bonus für ${e.stadt}: +${fmt(e.n)} m` : 'Schreib deine Stadt für deinen Bonus!', t: jetzt, f: '#1667b8', e: '⭐', gross: true }); if (e.stadt) konfetti(e.stadt, 40); break;
     case 'herzdank': herzen.push({ z1: `❤️ Danke für den Herzregen, ${(e.name || '').replace(/^@/, '')}!`, z2: 'Schreib deine Stadt und bau mit!', t: jetzt, f: PINK, e: '❤️' }); break;
     case 'herzMeilenstein': zeige('❤️', `${fmt(e.n)} Herzen!`, 'Wahnsinn – ihr seid unglaublich!', PINK, 4500); herzRegenT = jetzt + 6000; if (S.staedte[0]) feuerwerk(S.staedte[0].name, 4); break;
@@ -163,7 +164,15 @@ function ereignis(e) {
     case 'tonRolle': tonRolle = !VORSCHAU && e.id === meineId; if (tonRolle) tonStarten(); else tonStoppen(); break;
   }
 }
-let eventStartT = -1e9;
+let eventStartT = -1e9, eventStartZiel = 0;
+function countdownGross(t) {
+  if (!eventStartZiel || S.event) return; const r = (eventStartZiel - t) / 1000; if (r > 5.2 || r < -.3) return;
+  const z = Math.max(1, Math.ceil(r)), q = 1 - (r - Math.floor(r)), k = .6 + pop(Math.min(1, q * 2.5)) * .6;
+  X.save(); X.globalAlpha = Math.min(1, (1 - q) * 3 + .2); X.translate(540, 820); X.scale(k, k);
+  X.fillStyle = 'rgba(10,30,60,.55)'; X.beginPath(); X.arc(8, 8, 130, 0, 7); X.fill(); X.fillStyle = z <= 3 ? PINK : '#1667b8'; X.beginPath(); X.arc(0, 0, 130, 0, 7); X.fill(); X.lineWidth = 8; X.strokeStyle = '#fff'; X.stroke();
+  text(String(z), 0, -10, 150, '#fff', 'center', 900); text('Event startet!', 0, 92, 30, '#fff', 'center', 900);
+  X.restore();
+}
 const neuT = {}, herzen = [], bauschub = []; let herzRegenT = -1e9;
 
 
@@ -408,6 +417,7 @@ const MOEWEN = Array.from({ length: 5 }, (_, i) => ({ x: zufall(0, W), y: zufall
 const SEGLER = [{ x: 200, y: 1480, v: .018, f: '#e8433c' }, { x: 800, y: 1640, v: -.014, f: '#3fa0e8' }, { x: 500, y: 1780, v: .011, f: '#ffd23f' }];
 const SHOWS = { delfin: null, wal: null, ballon: null, flieger: null, fisch: [], flasche: null };
 let naechsteShow = { delfin: 20000, wal: 55000, ballon: 90000, flieger: 140000, fisch: 6000, flasche: 70000 };
+for (const n of (PARAM.get('show') || '').split(',')) if (n in naechsteShow) naechsteShow[n] = 0;   // zum Ausprobieren
 function boot(c, x, y, f, k, flaggeText) {
   c.save(); c.translate(x, y); c.scale(k, k);
   c.fillStyle = 'rgba(255,255,255,.5)'; c.beginPath(); c.ellipse(0, 6, 34, 6, 0, 0, 7); c.fill();
@@ -703,8 +713,11 @@ function hinweis(t) {
   X.fillStyle = 'rgba(10,30,60,.45)'; rr(-430 + 6, -62 + 6, 860, 124, 40); X.fill();
   X.fillStyle = '#ffffff'; rr(-430, -62, 860, 124, 40); X.fill(); X.lineWidth = 6; X.strokeStyle = INK; X.stroke();
   text('✍️ Jedes Mal deine Stadt schreiben = +1 m!', 0, -26, 38, INK, 'center', 900, 800);
-  const wahl = Math.floor(t / 4000) % 3;
-  text(['🗼 Auch andere Städte schreiben – jede wächst +1 m', '❤️ Herz im Chat = +1 m   ·   🎁 im Chat = +25 m Bauschub', '🏆 Jede Minute ein Event mit Bonus-Metern'][wahl], 0, 22, 26, wahl === 1 ? PINK : '#1667b8', 'center', 900, 800);
+  const top = S.staedte?.[0]?.name, zweite = S.staedte?.[1]?.name, neu = S.neueste;
+  const zeilen = ['🗼 Auch andere Städte schreiben – jede wächst +1 m', '🤝 Holt Leute aus eurer Stadt in den Chat!', top ? `👑 Wer stoppt ${top}? Schreib deine Stadt!` : '👑 Wer holt sich Platz 1?',
+    zweite ? `⚔️ ${zweite} jagt die Spitze – feuert an!` : '⚔️ Feuert eure Nachbarstadt an!', neu ? `🆕 ${neu} ist neu dabei – sag Hallo!` : '🆕 Ist dein Dorf schon dabei?', '💬 Aus welcher Stadt schaust du zu?'];
+  const wahl = Math.floor(t / 4500) % zeilen.length;
+  text(zeilen[wahl], 0, 22, 26, wahl % 2 ? PINK : '#1667b8', 'center', 900, 800);
   X.restore();
 }
 function untertitelZeichnen(t) {
@@ -745,7 +758,7 @@ function bild(t) {
   if (!KC) { KC = document.createElement('canvas'); KC.width = C.width; KC.height = Math.ceil(560 * Q0); KX = KC.getContext('2d'); }
   if (t - kopfZeit > 250) { kopfZeit = t; const echt = X; X = KX; X.setTransform(Q0, 0, 0, Q0, 0, 0); X.clearRect(0, 0, W, 560); KOPF_UNTEN = kopf(t); X = echt; }
   X.setTransform(1, 0, 0, 1, 0, 0); X.drawImage(KC, 0, 0); X.setTransform(Q0, 0, 0, Q0, 0, 0);
-  herzRegenZeichnen(t); bannerZeichnen(t); bauschubZeichnen(t); herzenZeichnen(t); erklaerung(t); siegerZeichnen(t);
+  herzRegenZeichnen(t); countdownGross(t); bannerZeichnen(t); bauschubZeichnen(t); herzenZeichnen(t); erklaerung(t); siegerZeichnen(t);
   if (tonRolle && !(tonAn && AC && AC.state === 'running')) { if (!bild.versuch || t - bild.versuch > 3000) { bild.versuch = t; tonStarten(); } text('🔊 Einmal ins Bild klicken für Ton', 540, 1880, 22, '#fff', 'center', 900); }
   else if (!VORSCHAU) text('🎙️ KI-Stimme', 1040, 1890, 18, 'rgba(255,255,255,.7)', 'right', 800);
   tonLautstaerke();

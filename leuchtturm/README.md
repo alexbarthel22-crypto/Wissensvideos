@@ -13,7 +13,7 @@ Ein eigenes LIVE-Spiel: Jede Stadt, jedes Dorf, jede Gemeinde aus Deutschland, �
 - **Turm**: Er wächst ohne Grenze, die Höhe steht in Metern, dazu Höhenzonen. 32 Ausbaustufen, von Fahne und Rettungsring über Lichterkette und Zeppelin bis Astronaut, Galaxie und eigene Sonne. Die Streifenfarbe wechselt mit der Höhe.
 - **Dank**:
   - Für Herzregen dankt Leda und lädt zum Mitbauen ein (höchstens einmal pro Minute). Herz-Meilensteine (100, 500, 1.000 …) werden gefeiert.
-  - Geschenke: „Tausend Danke, @name, das geht alles in deinen Turm!“ (5 m je Coin).
+  - Geschenke: „Tausend Danke, @name, das geht alles in deinen Turm!“ (10 m je Coin ≈ 0,01 €, still – wird nicht angezeigt oder angesagt).
   - Teilen: Bonus +30 m für den eigenen Turm (pro Person alle 10 Minuten).
 
 ## Starten
