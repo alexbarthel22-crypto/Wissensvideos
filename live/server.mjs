@@ -18,7 +18,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-15 f';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-15 h';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -38,6 +38,20 @@ if (!TEST && LIVE_KEY) setInterval(async () => {
     else if (r.status === 403) console.log('⚠️  muscheltal.de: Live-Schlüssel stimmt nicht (live-schluessel.txt prüfen)');
   } catch {}
 }, 15000);
+// LIVE-Rangliste auf muscheltal.de: Top 10 insgesamt + Top 10 im aktuellen/letzten Stream, alle 2 Min. und am Stream-Ende
+let rangLetzt = '';
+async function rangMelden(sofort) {
+  if (TEST || !LIVE_KEY) return;
+  const eintrag = (p, m) => ({ n: p.name, id: String(p.name || '').startsWith('@') ? p.id : null, m, s: CFG.stufen[p.stufe]?.name || '' });
+  const alle = Object.values(S.spieler).filter(p => !p.gesperrt && !gesperrt(p.id));
+  const gesamt = alle.sort(rangFolge).slice(0, 10).map(p => eintrag(p, p.muscheln));
+  const st = S.stream ? { start: S.stream.start, ende: S.stream.ende || 0, top: Object.entries(S.stream.m).map(([id, m]) => [S.spieler[id], m]).filter(([p]) => p && !p.gesperrt && !gesperrt(p.id)).sort((a, b) => b[1] - a[1]).slice(0, 10).map(([p, m]) => eintrag(p, m)) } : null;
+  const rang = { gesamt, stream: st, live: tiktokStatus === 'verbunden' && !(S.stream && S.stream.ende) };
+  const k = JSON.stringify(rang); if (!sofort && k === rangLetzt) return;
+  try { const r = await fetch('https://muscheltal.de/api/live', { method: 'POST', headers: { 'content-type': 'application/json', 'x-live-schluessel': LIVE_KEY }, body: JSON.stringify({ rang }) }); if (r.ok) rangLetzt = k; } catch {}
+}
+if (!TEST && LIVE_KEY) setInterval(() => rangMelden(false), 120000);
+if (!TEST && LIVE_KEY) setTimeout(() => rangMelden(true), 15000);   // gleich beim Start: Gesamt-Rangliste (auch aus früheren Streams) übertragen
 if (!TEST) console.log(LIVE_KEY ? '📺 Erfolg „Live dabei“: Zuschauer werden an muscheltal.de gemeldet' : 'ℹ️  Erfolg „Live dabei“ aus (keine live-schluessel.txt)');
 
 // ---------- Spielstand ----------
@@ -92,6 +106,7 @@ function gibMuscheln(p, n, grund) {
   if (!p || n <= 0) return;
   const vorher = p.stufe;
   p.muscheln += n;
+  if (!TEST && S.stream && !S.stream.ende) S.stream.m[p.id] = (S.stream.m[p.id] || 0) + n;   // Muscheln in diesem Stream (LIVE-Rangliste)
   p.stufe = stufeVon(p.muscheln);
   geaendert = true;
   if (p.stufe > vorher) {
@@ -973,10 +988,13 @@ async function verbinde() {
     tt('🎁', `${nm(d)}: ${name || 'Geschenk'} ×${anzahl} (${coins * anzahl} Coins)`);
     geschenk(d.user || {}, name, coins, anzahl);
   });
-  c.on(WebcastEvent.STREAM_END, () => { console.log('Stream beendet.'); S.jobs = {}; zustand(); speichern(); });   // Jobs enden mit dem Stream
+  c.on(WebcastEvent.STREAM_END, () => { console.log('Stream beendet.'); if (S.stream) { S.stream.ende = Date.now(); geaendert = true; } rangMelden(true); S.jobs = {}; zustand(); speichern(); });   // Jobs enden mit dem Stream
   c.on('disconnected', () => { tiktokStatus = 'getrennt'; console.log('⚠️  Verbindung zu TikTok weg – neuer Versuch in 15 s'); setTimeout(versuche, 15000); });
   const st = await c.connect();
   tiktokStatus = 'verbunden';
+  // neuer Stream (für die Stream-Rangliste): wenn noch keiner läuft oder der letzte vor über 30 Min. endete
+  if (!S.stream || (S.stream.ende && Date.now() - S.stream.ende > 30 * 60000)) { S.stream = { start: Date.now(), m: {} }; geaendert = true; } else if (S.stream.ende) { delete S.stream.ende; }
+  setTimeout(() => rangMelden(true), 5000);
   console.log(`\n✅✅✅ Mit deinem TikTok-LIVE (@${CFG.tiktokName}) verbunden – Likes, Kommentare und Geschenke kommen jetzt an.\n`);
   // Echte Follower-Zahl = Bewohner (beim Start und alle 5 Minuten)
   const fol = info => { const f = suche(info, 'follower_count'); if (f) { bewohnerVonTikTok = true; setzeBewohner(Number(f), 'tiktok'); } };
