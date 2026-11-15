@@ -3,7 +3,7 @@
 // so ergibt sich der Kontostand aus einer einzigen Liste. Feste Schlüssel (z. B. login/2026-11-10) verhindern Doppelbuchungen.
 import { getStore } from "@netlify/blobs";
 import { JOBS } from "../lib/jobs.mjs";
-import { BEWOHNER, NACHBARN } from "../lib/bewohner.mjs";
+import { BEWOHNER, NACHBARN, SEIT } from "../lib/bewohner.mjs";
 import { liveVergeben } from "./live.mjs";
 import { CODES } from "../lib/codes.mjs";
 
@@ -101,7 +101,7 @@ async function aufraeumen(store) {
     t[1] = id; await kasse.set(t.join("/"), (await kasse.get(k)) || "1"); await kasse.delete(k);
   }
 }
-const TEXT = { login: "Login-Serie", quest: "Aufgabe", qbonus: "Alle 3 Aufgaben", shell: "Schwebende Muschel", erf: "Neuer Erfolg", story: "Story geteilt", spende: "Spende Inselkasse", tresor: "Tresor des Schöpfers", code: "Geheimcode aus dem Video" };
+const TEXT = { login: "Login-Serie", quest: "Aufgabe", qbonus: "Alle 3 Aufgaben", shell: "Schwebende Muschel", erf: "Neuer Erfolg", story: "Story geteilt", spende: "Spende Inselkasse", tresor: "Tresor des Schöpfers", code: "Geheimcode aus dem Video", einladung: "Freund eingeladen" };
 
 // Einmal-Aufgaben (Zurücksetzen, Aufräumen) nur einmal pro Tag und Server-Instanz prüfen – spart bei jeder Muschel-Aktion
 // rund 10 Speicherabfragen (schnellere Gutschriften)
@@ -142,6 +142,25 @@ async function rangDaten(store) {
   await store.set("x/rangcache", JSON.stringify({ t: jetzt, d }));
   return d;
 }
+// Freunde einladen: Klick auf den Einladungslink wird mit Zeitpunkt beim Server vermerkt (Token). Beim Beanspruchen zählt
+// die Einladung nur, wenn der Neue erst NACH dem Klick eingezogen ist, nicht sich selbst einlädt und noch nie gezählt wurde.
+// Belohnung: +10 Muscheln für den Einladenden, ab 3 Einladungen Erfolg „Inselbotschafter“ (+10).
+const berlinTag = ms => new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Berlin" }).format(new Date(ms));
+async function einladungPruefen(store, nm, kt) {
+  if (!kt || !/^[0-9a-f-]{36}$/.test(kt)) return null;
+  const k = JSON.parse((await store.get("x/klick/" + kt)) || "null");
+  if (!k || !k.von || k.von === nm || !BEWOHNER.has(k.von)) return null;
+  if (!SEIT || !SEIT[nm] || SEIT[nm] < berlinTag(k.ts)) return null;// war schon vor dem Klick Bewohner
+  if (await store.get("x/eingeladen/" + nm)) return null;
+  await store.set("x/eingeladen/" + nm, JSON.stringify({ von: k.von, ts: Date.now() }));
+  await store.set("b/" + k.von + "/einladung/" + nm + "/10", String(Date.now()));
+  const anzahl = (await store.list({ prefix: "b/" + k.von + "/einladung/" })).blobs.length;
+  if (anzahl >= 3) {
+    const es = getStore("erfolge"), pre = "e/" + k.von + "/BOTSCHAFTER/";
+    if (!(await es.list({ prefix: pre })).blobs.length) { await es.set(pre + Date.now(), "1"); await store.set("b/" + k.von + "/erf/BOTSCHAFTER/10", String(Date.now())); }
+  }
+  return k.von;
+}
 export default async (req) => {
   const store = getStore({ name: "muscheln", consistency: "strong" });
   await vorarbeit(store);
@@ -156,6 +175,12 @@ export default async (req) => {
     const bis10 = platz && platz > 10 && top[9] ? top[9].stand - stand + 1 : null;
     return json({ top, platz, stand, bis10, anzahl: order.length, beansprucht: beansprucht ?? null, einwohner: BEWOHNER.size });
   }
+  if (req.method === "GET" && url.searchParams.get("einladungen")) {
+    // Liste der angerechneten Einladungen (für die Nachbarschaft beim nächsten Listen-Update)
+    const L = [];
+    for (const k of await liste(store, "x/eingeladen/")) { const v = JSON.parse((await store.get(k)) || "{}"); L.push([v.von, k.slice(13), v.ts]); }
+    return json({ einladungen: L });
+  }
   if (req.method === "GET") {
     // öffentlich: nur, ob ein Name beansprucht ist (für den Hinweis im Muschelpass)
     const n = (url.searchParams.get("name") || "").trim().toLowerCase();
@@ -166,6 +191,14 @@ export default async (req) => {
   let d = {};
   try { d = await req.json(); } catch (e) {}
   const name = String(d.name || "").trim().toLowerCase(), act = String(d.act || "");
+  if (act === "klick") {
+    // Einladungslink geöffnet: Werber + Zeitpunkt merken (ohne Anmeldung)
+    const von = String(d.von || "").trim().toLowerCase().replace(/^@/, "");
+    if (!/^[a-z0-9._]{1,40}$/.test(von) || !BEWOHNER.has(von)) return json({ ok: false });
+    const kt = crypto.randomUUID();
+    await store.set("x/klick/" + kt, JSON.stringify({ von, ts: Date.now() }));
+    return json({ ok: true, kt });
+  }
   if (!NAME.test(name)) return json({ fehler: "Name" }, 400);
   const nm = name.slice(1), heute = tag();
 
@@ -179,7 +212,8 @@ export default async (req) => {
     const c = JSON.parse((await store.get("c/" + nm)) || "{}");
     if (c.h !== (await sha(token))) return json({ ok: false, beansprucht: true });
     const nachbar = await nachbarErf(store, nm), live = await liveErf(store, nm);
-    return json({ ok: true, token, neu: [...(nachbar ? ["NACHBAR"] : []), ...(live ? ["LIVE"] : [])] });
+    const von = await einladungPruefen(store, nm, String(d.kt || ""));
+    return json({ ok: true, token, von, neu: [...(nachbar ? ["NACHBAR"] : []), ...(live ? ["LIVE"] : [])] });
   }
   // alle weiteren Aktionen nur mit dem Schlüssel des Besitzers
   const c = JSON.parse((await store.get("c/" + nm)) || "null");
@@ -301,13 +335,16 @@ export default async (req) => {
     return json({ ok: true, stand: stand - a + (freund ? 10 : 0), gespendet: gesp, freund });
   }
   if (act === "stand") {
+    // neue angerechnete Einladungen einmal melden
+    const eingeladen = [];
+    for (const k of await liste(store, "b/" + nm + "/einladung/")) { const n = k.split("/")[3], mk = "x/einlmeld/" + nm + "/" + n; if (!(await store.get(mk))) { await store.set(mk, "1"); eingeladen.push(n); } }
     const live = await liveErf(store, nm);
     const nachbar = await nachbarErf(store, nm);// schon beanspruchte Nachbarn bekommen den Erfolg beim nächsten Besuch
     const B = await buch(store, nm), s = await serie(B);
     const posten = B.filter(e => e.a).map(e => ({ art: e.art, id: e.id, a: e.a, t: TEXT[e.art] || e.art }))
       .sort((x, y) => (y.id > x.id ? 1 : -1)).slice(0, 60);
     return json({
-      ok: true, nachbar, live, stand: B.reduce((s, e) => s + e.a, 0), serie: s,
+      ok: true, nachbar, live, eingeladen, stand: B.reduce((s, e) => s + e.a, 0), serie: s,
       shells: B.filter(e => e.art === "shell" && e.id.startsWith(heute)).map(e => Number(e.id.split("-").pop())),
       questsDone: B.filter(e => e.art === "quest" && e.id.startsWith(heute)).map(e => Number(e.id.split("-").pop())),
       gespendet: -B.filter(e => e.art === "spende").reduce((s, e) => s + e.a, 0), posten, heute

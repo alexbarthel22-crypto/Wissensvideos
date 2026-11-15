@@ -196,6 +196,12 @@ def _haupt_jobs(insel):
     return {n.lower().lstrip("@") for n, j in (insel.get("jobs") or {}).items() if j and j[1] in orte}
 
 
+def _iso(d):
+    """„7.11.2026“ → „2026-11-07“ (für den Server)"""
+    m = re.match(r"\s*(\d{1,2})\.(\d{1,2})\.(\d{4})", d or "")
+    return f"{m[3]}-{int(m[2]):02d}-{int(m[1]):02d}" if m else ""
+
+
 def _kokos_jobs(insel):
     """Wer auf der Kokos-Küste arbeitet (Gebäude mit key 1:… oder Coco Bay, Kokos-Bad, Coast & Cotton) – muss dort wohnen."""
     orte = {g["name"] for g in insel.get("gebaeude", []) if str(g.get("key", "")).startswith("1:")} | {"Coco Bay", "Kokos-Bad", "Coast & Cotton", "KOK(O)S", "CocoCare"}
@@ -602,7 +608,8 @@ def baue(rows, out):
         f.write("// automatisch aus daten/codes.json erzeugt (bau.py) – nicht von Hand ändern\nexport const CODES = " + json.dumps(codes, ensure_ascii=False) + ";\n")
     with open(os.path.join(lib, "bewohner.mjs"), "w", encoding="utf-8") as f:
         f.write("// automatisch aus daten/einwohner.csv erzeugt (bau.py) – nicht von Hand ändern\nexport const BEWOHNER = new Set(" + json.dumps(sorted({(r["name"] if isinstance(r, dict) else r[0]).lower().lstrip("@") for r in rows}), ensure_ascii=False) + ");\n"
-                + "export const NACHBARN = new Set(" + json.dumps(sorted({str(n).lower().lstrip("@") for g in (json.load(open(INSEL, encoding="utf-8")).get("nachbarn") or []) for n in g}), ensure_ascii=False) + ");\n")
+                + "export const NACHBARN = new Set(" + json.dumps(sorted({str(n).lower().lstrip("@") for g in (json.load(open(INSEL, encoding="utf-8")).get("nachbarn") or []) for n in g}), ensure_ascii=False) + ");\n"
+                + "export const SEIT = " + json.dumps({(r["name"] if isinstance(r, dict) else r[0]).lower().lstrip("@"): _iso((r.get("datum") if isinstance(r, dict) else r[1]) or "") for r in rows}, ensure_ascii=False) + ";\n")
     try:
         from zoneinfo import ZoneInfo
         jetzt = dt.datetime.now(ZoneInfo("Europe/Berlin"))
