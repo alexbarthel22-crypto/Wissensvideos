@@ -20,7 +20,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-15 p';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-15 q';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -546,7 +546,7 @@ function weiter() {
       if (ok) { untertitel(); return nachErzeugen(0); }
       ersatzGesprochen = true;
       // Ersatzstimme nur, wenn in den Einstellungen gewünscht (Standard: keine – dann fällt der Satz weg)
-      if (CFG.stimme.ersatz === 'kerstin' && PIPER.bereit) { untertitel(); schritt = 'piper'; return PIPER.sprich(text, datei, ok2 => nachErzeugen(ok2 ? 0 : 1)); }
+      if (CFG.stimme.ersatz === 'kerstin' && PIPER.bereit) { if (Date.now() - (weiter.kerstinMeldung || 0) > 60000) { weiter.kerstinMeldung = Date.now(); console.log('ℹ️  Gemini und Chirp liefern gerade nichts – Kerstin springt ein (letzter Ersatz).'); } untertitel(); schritt = 'piper'; return PIPER.sprich(text, datei, ok2 => nachErzeugen(ok2 ? 0 : 1)); }
       fertig();
     });
   }
