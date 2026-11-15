@@ -350,6 +350,7 @@ footer a{color:var(--soft)}
 .lrtabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:10px 0 4px}.lrtabs button{border:3px solid #2a1b12;border-radius:14px;background:#fff;font:900 14px inherit;font-family:inherit;padding:8px 4px;cursor:pointer;box-shadow:0 3px 0 #2a1b12}.lrtabs button.on{background:#ff3d6e;color:#fff}
 .lrdat{text-align:center;font-weight:800;font-size:13px;color:#7a5a45;margin:4px 0}.lrlive{color:#e8174a;font-weight:900}.rpage .lrs{font-size:9.5px;font-weight:800;opacity:.85;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.lrs2{font-weight:800;opacity:.7;font-size:11px}.lrav{display:grid;place-items:center;height:100%;font-size:24px}
 .lrinfo{background:#fff;border:3px solid #2a1b12;border-radius:18px;box-shadow:0 4px 0 #2a1b12;padding:10px 14px;margin:14px 0 10px;text-align:left}.lrinfo ul{margin:6px 0 4px;padding-left:4px;list-style:none;font-weight:800;font-size:14px;line-height:1.7}.lrinfo small{color:#7a5a45;font-weight:700}.lrgo{display:block;text-align:center;margin:0 0 20px}
+.wk p{margin:6px 0 10px}.wk .cbtn{display:block;width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center;text-decoration:none;box-sizing:border-box}.wkbox{margin:14px 0 4px;background:#fff6e0;border:2px dashed #2a1b12;border-radius:16px;padding:10px 12px;text-align:left}.wkbox b{display:block;margin-bottom:2px}.wkbox span{display:block;font-size:14px;font-weight:700;margin-bottom:8px}
 </style>
 </head>
 <body>
@@ -4296,6 +4297,15 @@ function lrZeig(e,d){const st=d&&d.stream,tab=LR.tab,live=d&&d.live&&Date.now()-
 function lrZu(){const e=$('lrpage');if(e)e.hidden=true;document.body.style.overflow='';if(location.hash==='#liverang')history.replaceState(null,'',location.pathname+location.search);}
 document.addEventListener('click',ev=>{const a=ev.target.closest('[data-lr],a[href="#liverang"]');if(!a)return;ev.preventDefault();const k=a.dataset.lr;if(k==='zu')lrZu();else if(k==='gesamt'||k==='stream'){LR.tab=k;lrZeig($('lrpage'),LR.d);}else{history.replaceState(null,'','#liverang');lrSeite();}});
 if(location.hash==='#liverang')setTimeout(lrSeite,600);
+// Erster Besuch überhaupt: Willkommen-Pop-up – mitspielen geht nur mit beanspruchtem Usernamen
+(()=>{let neu=false;try{neu=!localStorage.getItem('mt-willkommen')&&!localStorage.getItem('mt-claim');if(neu)localStorage.setItem('mt-willkommen','1');}catch(e){}
+ if(!neu||location.hash)return;
+ setTimeout(()=>{if(!$('pg').hidden)return;popup('<div class="wk"><div class="big">🐚</div><h2>Willkommen in Muschel-Tal!</h2>'
+  +'<p>Um <b>mitzuspielen</b> – Muscheln sammeln, Aufgaben, Shop, Spenden und Rangliste – musst du deinen <b>Usernamen beanspruchen</b>.</p>'
+  +'<button class="cbtn hot" type="button" data-mk="suche">🔐 Usernamen beanspruchen</button>'
+  +'<div class="wkbox"><b>Du wohnst noch nicht auf Muschel-Tal?</b><span>Folge '+esc(ACC)+' auf TikTok, um einzuziehen – am nächsten Tag hast du deine Hütte und kannst deinen Namen beanspruchen.</span>'
+  +'<a class="cbtn" href="'+ACCURL+'" target="_blank" rel="noopener">➕ Auf TikTok folgen</a></div>'
+  +'<p class="cft"><a href="#" onclick="document.getElementById(\'pg\').hidden=true;return false">Erst mal nur umschauen</a></p></div>');},1400);})();
 lrKasten();setInterval(()=>{if(!document.hidden)lrKasten();},120000);
 rangKasten();setInterval(()=>{if(!document.hidden)rangKasten();},120000);
 
