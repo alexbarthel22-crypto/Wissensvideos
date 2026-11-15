@@ -21,7 +21,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-16 t';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-16 u';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -196,7 +196,9 @@ function turmWachsen(s, um) {
 }
 function turmKommentar(p, text) {
   S.staedte ||= {};
-  const st = stadtAus(text), jetzt = Date.now();
+  // Ist der Kommentar gerade eine Event- oder Aufgaben-Antwort („welle“, „sand“ …)? Dann zählen kleine Orte nur mit „aus …“
+  const antwort = (EV.laeuft() && !EV.turmEvent?.() && eventAntwort(null, text, true)) || (aufgabe?.art === 'wort' && normal(text).includes(normal(aufgabe.wort)));
+  const st = stadtAus(text, antwort), jetzt = Date.now();
   if (st && !p.stadt && EV.id() !== 'turmquiz') {             // im Städte-Quiz ist der Stadtname eine Antwort, keine Wahl
     p.stadt = st; p.stadtZeit = jetzt;
     const s = S.staedte[st] ||= { name: st, stock: 0, leute: 0, seit: jetzt }; s.leute++; turmWachsen(s, 1);

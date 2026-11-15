@@ -221,3 +221,5 @@ Alle Zuschauer, die im echten LIVE etwas tun (beitreten, kommentieren, liken, fo
 
 ## LIVE-Rangliste auf muscheltal.de
 Mit demselben Schlüssel schickt die App alle 2 Minuten (nur bei Änderungen) und am Stream-Ende die **Top 10 insgesamt** und die **Top 10 des aktuellen/letzten Streams** (gesammelte Muscheln in diesem Stream) an `https://muscheltal.de/api/live`. Die Homepage zeigt sie unter „🔴 LIVE-Rangliste“ (Startseite + Knopf „🏆 Rangliste“ auf der LIVE-Insel). Ein neuer Stream beginnt beim Verbinden, wenn der letzte vor über 30 Min. endete.
+
+**Orte-Liste:** `orte-dach.txt` enthält ca. 11.000 Städte, Gemeinden und Dörfer aus Deutschland, Österreich, der Schweiz, Liechtenstein und Luxemburg (Daten: GeoNames, CC BY 4.0, über das npm-Paket cities.json). `orte-mehrdeutig.txt` listet Ortsnamen, die auch normale Wörter sind („Sand“, „Wald“, „Regen“) – die zählen nur mit „aus …“, „Team …“ oder „von …“. Bundesländer, Kantone und Regionen (Bayern, NRW, Tirol, Ostsee …) stehen zusätzlich in `staedte.mjs`.
