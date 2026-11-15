@@ -1752,7 +1752,7 @@ function kopf(t) {
       text(`${m} 🐚`, SL + lw - 22, y, 22, INK, 'right', 900, 114);
     });
   } else {
-    [['🏆', 'Events = bis 60 🐚 fürs Haus'], S.turmAn ? ['🗼', 'Deine Stadt schreiben = Turm wächst'] : ['💬', 'Erster Kommentar = dein Zelt'], ['🏠', 'Schreib „haus“ = dein Haus sehen']].forEach(([i, s], k) => {
+    [['🏆', 'Events = bis 60 🐚 fürs Haus'], S.turmAn ? ['🗼', 'Deine Stadt schreiben = Turm wächst'] : ['⛺', 'Schreib „Zelt“ = dein Zelt wird gebaut'], ['🏠', 'Schreib „haus“ = dein Haus sehen']].forEach(([i, s], k) => {
       text(i, SL + 16, y3 + 32 + k * 45, 27, INK, 'left', 400); text(s, SL + 58, y3 + 32 + k * 45, 26, INK, 'left', 800, lw - 78);
     });
   }

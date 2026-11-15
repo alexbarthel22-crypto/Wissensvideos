@@ -21,7 +21,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-16 v';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-16 w';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -150,6 +150,9 @@ let letztesHausZeigen = 0;
 function like(u, anzahl) {
   S.likesGesamt += anzahl; likeLog.push([Date.now(), anzahl]);
   inKasse(anzahl * (CFG.kasse.proLike ?? 1)); geaendert = true;
+  // Wer schon ein Haus hat, dessen Haus wächst mit (wird bewusst nirgends angezeigt oder angesagt)
+  const p = S.spieler[String(u?.uniqueId || '').toLowerCase()];
+  if (p && !p.gesperrt) { p.zuletzt = Date.now(); gibMuscheln(p, anzahl * (CFG.muschelnProLike ?? 1), 'like'); }
 }
 
 // Wer noch kein Haus hat und „haus“ oder eine Farbe schreibt, bekommt den Hinweis: erst liken (höchstens 1× pro Minute)
