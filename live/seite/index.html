@@ -343,7 +343,7 @@ function ereignis(e) {
     case 'folgeAufruf': banner.push({ t: 0, oben: '🐚 Gefällt dir Muschel-Tal?', unten: 'Folg gern @muscheltal', farbe: TUERKIS }); break;
     case 'kamera': if (pl) fokus(pl, e.ms || 15000); break;
     case 'feuerwerk': feuerwerk(); break;
-    case 'kameraTurm': { const l = S.staedte || []; banner.push({ t: 0, oben: '🗼 Leuchtturm-Rennen', unten: 'Schreib deine Stadt in den Chat – welche Stadt gewinnt?', farbe: '#3f8fe0', dauer: 5 }); turmBlick(l.length ? l[0].name : 'Deine Stadt?', 9000); break; }
+    case 'kameraTurm': { const l = S.staedte || []; if (e.still) { turmBlick(l.length ? l[Math.floor(Math.random() * Math.min(3, l.length))].name : 'Deine Stadt?', 19000); break; } banner.push({ t: 0, oben: '🗼 Leuchtturm-Rennen', unten: 'Schreib deine Stadt in den Chat – welche Stadt gewinnt?', farbe: '#3f8fe0', dauer: 5 }); turmBlick(l.length ? l[0].name : 'Deine Stadt?', 9000); break; }
     case 'turmNeu': { banner.push({ t: 0, oben: `🗼 ${e.name}`, unten: e.neu ? `baut den ersten Leuchtturm für ${e.stadt}!` : `baut mit am Leuchtturm von ${e.stadt}`, farbe: '#3f8fe0' });
       if (e.neu) setTimeout(() => turmBlick(e.stadt, 6000), 600); break; }
     case 'turmUpgrade': banner.push({ t: 0, oben: `🗼 ${e.stadt}: ${e.stock.toLocaleString('de-DE')} Stockwerke!`, unten: `Neu am Leuchtturm: ${e.was}`, farbe: '#3f8fe0', dauer: 4 }); setTimeout(() => turmBlick(e.stadt, 6000), 400); break;

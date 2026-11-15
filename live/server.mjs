@@ -21,7 +21,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-16 o';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-16 p';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -216,11 +216,14 @@ function turmFuehrung() {
   turmErster = top.name;
 }
 setTimeout(() => { turmErster = Object.values(S.staedte || {}).sort((a, b) => b.stock - a.stock)[0]?.name || null; }, 0);
-// Leuchtturm-Besuch: 1 Minute nach dem Start, danach alle 3 Minuten – läuft gerade ein Event, kommt er direkt danach
+// Leuchtturm-Besuch: 1 Minute nach dem Start, danach alle 2 Minuten – läuft gerade ein Event, kommt er direkt danach
 let turmErklaert = 0, turmBesuchFaellig = Date.now() + 60000;
+let turmEventBlick = 0;
 setInterval(() => {
+  // Während eines Leuchtturm-Events bleibt die Kamera bei den Türmen (alle 20 s neu ausgerichtet)
+  if (EV.turmEvent?.() && Date.now() - turmEventBlick > 20000) { turmEventBlick = Date.now(); sende({ typ: 'kameraTurm', still: true }); return; }
   if (Date.now() < turmBesuchFaellig || EV.laeuft()) return;
-  turmBesuchFaellig = Date.now() + 180000;
+  turmBesuchFaellig = Date.now() + 120000;
   sende({ typ: 'kameraTurm' });
   if (Date.now() - turmErklaert > 6 * 60000) { turmErklaert = Date.now(); sag('Leuchtturm-Rennen! … Schreibt eure Stadt in den Chat, dann wächst ihr Leuchtturm. … Welche Stadt gewinnt?', 3); }
 }, 5000);
