@@ -76,7 +76,9 @@
     "teilenMeter": 30,
     "geschenkMeterProMuenze": 10,
     "herzDankSek": 60,
-    "_bonus": "teilenMeter: Bonus für den eigenen Turm beim Teilen des Streams (pro Person alle 10 Min.). geschenkMeterProMuenze: Meter je Coin eines Geschenks (1 Coin ≈ 0,01 €) – wächst still, wird weder angezeigt noch angesagt. herzDankSek: Leda dankt höchstens so oft für Herzregen. Achtung TikTok-Regeln: nie vorher Belohnungen für Teilen/Geschenke ankündigen."
+    "_bonus": "teilenMeter: Bonus für den eigenen Turm beim Teilen des Streams (pro Person alle 10 Min.). geschenkMeterProMuenze: Meter je Coin eines Geschenks (1 Coin ≈ 0,01 €) – wächst still, wird weder angezeigt noch angesagt. herzDankSek: Leda dankt höchstens so oft für Herzregen. Achtung TikTok-Regeln: nie vorher Belohnungen für Teilen/Geschenke ankündigen.",
+    "sichtbar": 21,
+    "_sichtbar": "So viele Leuchttürme sind gleichzeitig zu sehen (1, 3, 7, 13 oder 21 = ganze Reihen). Weniger = weniger Rechenleistung. Alle anderen Städte zählen trotzdem weiter."
   },
   "eulerApiKey": "",
   "ort": {
@@ -84,5 +86,6 @@
     "breite": 53.58,
     "laenge": 9.95,
     "_hinweis": "Tag/Nacht, Sonnenauf- und -untergang wie auf muscheltal.de"
-  }
+  },
+  "_leistung": "Für alte Macs: bildrate 30 (die Seite geht automatisch auf 24 bzw. 20 Bilder/s herunter, wenn der Mac nicht hinterherkommt)."
 }

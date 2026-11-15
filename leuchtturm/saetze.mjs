@@ -36,6 +36,14 @@ const SAETZE = {
     'Wechsel an der Spitze! … {stadt} führt jetzt!',
     '{stadt} überholt {zweite}!',
   ],
+  platzZwei: [
+    '{stadt} überholt {zweite}! … Jetzt auf Platz zwei!',
+    '{stadt} springt auf Platz zwei!',
+  ],
+  platzDrei: [
+    '{stadt} überholt {zweite} und ist jetzt Dritter!',
+    '{stadt} klettert auf Platz drei!',
+  ],
   upgrade: [
     '{stadt} hat jetzt {was} am Leuchtturm!',
     'Neu bei {stadt}: {was}!',

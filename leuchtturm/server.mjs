@@ -21,7 +21,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-16 d';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-16 e';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 // Stimmen und Kerstin-Modell mit Muschel-Tal LIVE teilen (gleicher Speicher = schon erzeugte Leda-Sätze kosten nichts)
@@ -88,13 +88,25 @@ function turmWachsen(name, um, p, art) {
   fuehrungPruefen();
 }
 setInterval(() => { if (!plusPuffer.size) return; sende({ typ: 'plus', l: [...plusPuffer].map(([stadt, v]) => ({ stadt, n: v.n, wer: v.wer, art: v.art })) }); plusPuffer.clear(); zustand(); }, 700);
+// Platzierungen: Führungswechsel immer (höchstens 1×/Min.), Aufstieg auf Platz 2 oder 3 (Bild höchstens alle 20 s, Stimme alle 45 s)
+let topAlt = [], platzBild = 0, platzStimme = 0;
 function fuehrungPruefen() {
-  const [a, b] = rangListe(); if (!a) return;
+  const l = rangListe(), [a, b] = l; if (!a) return;
   if (fuehrender && a.name !== fuehrender && Date.now() - fuehrungAnsage > 60000) {
-    fuehrungAnsage = Date.now(); sende({ typ: 'fuehrung', stadt: a.name }); sag(satz('fuehrung', { stadt: a.name, zweite: b?.name || '' }), 1);
+    fuehrungAnsage = Date.now(); platzStimme = Date.now(); sende({ typ: 'fuehrung', stadt: a.name }); sag(satz('fuehrung', { stadt: a.name, zweite: b?.name || '' }), 1);
   }
   fuehrender = a.name;
+  const top = l.slice(0, 3).map(s => s.name);
+  if (topAlt.length) for (const platz of [1, 2]) {
+    const st = top[platz], vorher = topAlt.indexOf(st); if (!st || (vorher >= 0 && vorher <= platz)) continue;
+    const ueberholt = topAlt[platz]; if (!ueberholt || ueberholt === st) continue;
+    if (Date.now() - platzBild > 20000) { platzBild = Date.now(); sende({ typ: 'ueberholt', stadt: st, von: ueberholt, platz: platz + 1 }); }
+    if (Date.now() - platzStimme > 45000 && Date.now() - fuehrungAnsage > 20000) { platzStimme = Date.now(); sag(satz(platz === 1 ? 'platzZwei' : 'platzDrei', { stadt: st, zweite: ueberholt }), 2); }
+    break;
+  }
+  topAlt = top;
 }
+setTimeout(() => { topAlt = rangListe().slice(0, 3).map(s => s.name); }, 0);
 setTimeout(() => { fuehrender = rangListe()[0]?.name || null; }, 0);
 // Städte-Fieber: Schreiben viele verschiedene Leute einer Stadt in kurzer Zeit, wächst sie eine Weile doppelt
 const aktivität = new Map();                                  // Stadt → Map(Spieler → Zeit)
@@ -585,7 +597,7 @@ function oeffentlich() {
     ...EV.oeffentlich(), spieler: [],
     staedte: l.slice(0, 40).map(s => ({ name: s.name, stock: s.stock, leute: s.leute, land: s.land, region: s.region || '', gruender: s.gruender || '', fieber: s.fieberBis > Date.now(), baumeister: Object.entries(s.baumeister || {}).sort((a, b) => b[1] - a[1])[0]?.[0] || '' })),
     anzahlStaedte: l.length, woche: top(S.woche?.id === wocheId() ? S.woche.m : {}), heute: top(S.heute?.id === tagId() ? S.heute.m : {}),
-    regionen: Object.entries(l.reduce((m, s) => { if (s.region) { const r = m[s.region] ||= { m: 0, land: s.land }; r.m += s.stock; } return m; }, {})).sort((a, b) => b[1].m - a[1].m).slice(0, 5).map(([name, r]) => ({ name, m: r.m, land: r.land })), neueste: S.neueste || null, stockGesamt: l.reduce((a, s) => a + s.stock, 0), laender: l.reduce((m, s) => (m[s.land || '?'] = (m[s.land || '?'] || 0) + 1, m), {}), ort: CFG.ort, sieger: S.sieger?.[0]?.stadt || null, tiktokName: CFG.tiktokName, test: TEST, ton: CFG.ton, musik: MUSIK_LISTE, bildrate: CFG.bildrate || 30,
+    regionen: Object.entries(l.reduce((m, s) => { if (s.region) { const r = m[s.region] ||= { m: 0, land: s.land }; r.m += s.stock; } return m; }, {})).sort((a, b) => b[1].m - a[1].m).slice(0, 5).map(([name, r]) => ({ name, m: r.m, land: r.land })), neueste: S.neueste || null, stockGesamt: l.reduce((a, s) => a + s.stock, 0), laender: l.reduce((m, s) => (m[s.land || '?'] = (m[s.land || '?'] || 0) + 1, m), {}), ort: CFG.ort, sieger: S.sieger?.[0]?.stadt || null, tiktokName: CFG.tiktokName, test: TEST, sichtbar: CFG.turm.sichtbar ?? 21, ton: CFG.ton, musik: MUSIK_LISTE, bildrate: CFG.bildrate || 30,
   };
 }
 

@@ -134,7 +134,7 @@ function ereignis(e) {
         MUSIK = S.musik.map(f => 'musik/' + f); musikFehler = 0; musikNr = Math.floor(Math.random() * MUSIK.length); musik.src = MUSIK[musikNr]; if (tonRolle) musik.play().catch(() => {});
       }
       eventStartZiel = S.event ? 0 : performance.now() + (S.eventIn || 0) * 1000;
-      if (S.bildrate && !PARAM.get('fps')) FPS = Math.max(15, Math.min(30, S.bildrate));
+      if (S.bildrate && !PARAM.get('fps')) FPS = Math.min(FPS, MAX_FPS());
       break;
     }
     case 'plus': for (const p of e.l) { if (p.art === 'still' && !p.wer) continue; if (p.art !== 'still') schwebend.push({ stadt: p.stadt, n: p.n, wer: p.wer, art: p.art, t: jetzt }); const q = POS[p.stadt]; if (q) q.puls = jetzt; } if (schwebend.length > 30) schwebend.splice(0, schwebend.length - 30); break;
@@ -143,6 +143,7 @@ function ereignis(e) {
     case 'beitritt': schwebend.push({ stadt: e.stadt, n: 0, wer: (e.name || '').replace(/^@/, ''), t: jetzt, neu: true }); break;
     case 'fuehrung': fuehrungT = jetzt; zeige('👑', `${e.stadt} führt!`, 'Wechsel an der Spitze!', '#e0a020', 4200); feuerwerk(e.stadt, 3); break;
     case 'upgrade': zeige('✨', `${e.stadt}: ${e.was}!`, `${stw(e.stock)} erreicht`, '#9b5de5'); feuerwerk(e.stadt, 2); break;
+    case 'ueberholt': zeige('📈', `${e.stadt} überholt ${e.von}!`, `Jetzt auf Platz ${e.platz}`, '#2fa36b', 3200); { const q = POS[e.stadt]; if (q) q.puls = jetzt; } break;
     case 'fieber': zeige('🔥', `Städte-Fieber in ${e.stadt}!`, 'Jetzt zählt alles doppelt!', '#ff6a2a', 4200); break;
     case 'follow': herzen.push({ z1: `💖 Danke, ${(e.name || '').replace(/^@/, '')}!`, t: jetzt, f: PINK, e: '💖' }); break;
     case 'danke': herzen.push({ z1: `💝 Tausend Danke, ${e.name}!`, z2: '', t: jetzt, f: '#e0457c', e: '💝', gross: true }); if (e.stadt) { feuerwerk(e.stadt, 2); const q = POS[e.stadt]; if (q) q.puls = jetzt; } break;
@@ -267,7 +268,7 @@ const POS = {};                                                    // Stadt → 
 const turmHoehe = n => 30 + 80 * Math.log10(1 + n);                // wächst unendlich, aber immer langsamer
 const hash = s => { let h = 7; for (const c of String(s)) h = (h * 31 + c.charCodeAt(0)) >>> 0; return h; };
 function sichtbareStaedte() {
-  const l = S.staedte?.length ? S.staedte.slice(0, PLAETZE.length) : [{ name: 'Deine Stadt?', stock: 0, leer: true }, { name: 'Deine Stadt? ', stock: 0, leer: true }, { name: ' Deine Stadt?', stock: 0, leer: true }];
+  const ANZ = Math.max(1, Math.min(PLAETZE.length, S.sichtbar || PLAETZE.length)), l = S.staedte?.length ? S.staedte.slice(0, ANZ) : [{ name: 'Deine Stadt?', stock: 0, leer: true }, { name: 'Deine Stadt? ', stock: 0, leer: true }, { name: ' Deine Stadt?', stock: 0, leer: true }];
   const jetzt = performance.now();
   l.forEach((st, i) => {
     const z = PLAETZE[i], q = POS[st.name];
@@ -323,17 +324,14 @@ const INSEL = [0, 1, 2].map(v => {
 
 // ================= Leuchtturm (lokale Einheiten, Fuß bei 0,0) =================
 const TURM_MAX = 380;
-function turm(c, st, rang, t, hMax, nacht, beamExtra) {
-  const n = st.stock, roh = turmHoehe(n), h = Math.min(roh, hMax, TURM_MAX), wolke = roh > h + 2, oben = -h, w0 = 40, w1 = 26, i = hash(st.name) % 7;
-  if (n >= 12500) { c.save(); c.globalAlpha = .55; c.translate(0, oben - 20); c.rotate(t * .0002); for (let k = 0; k < 60; k++) { const a = k * .35, r = 8 + k * 1.9; c.fillStyle = k % 3 ? '#cdb8ff' : '#fff'; c.beginPath(); c.arc(Math.cos(a) * r, Math.sin(a) * r * .5, 1.8, 0, 7); c.fill(); } c.restore(); }   // Galaxie
-  if (n >= 20000) { c.save(); c.globalCompositeOperation = 'lighter'; c.globalAlpha = .5; c.drawImage(GLUT, -150, oben - 210, 120, 120); c.restore(); c.fillStyle = '#ffd23f'; c.beginPath(); c.arc(-90, oben - 150, 18, 0, 7); c.fill(); }   // eigene Sonne
-  // hinter dem Turm: je höher, desto „weiter oben“ wirkt die Spitze (Höhenzone als Hof)
+// Turm-Körper (alles, was sich nicht bewegt) als fertiges Bild – wird nur neu gemalt, wenn der Turm wächst
+const TURM_BILD = new Map(), TB_K = 1.3;
+function turmKoerper(c, st, h, n, i, nacht, wolke) {
+  const oben = -h, w0 = 40, w1 = 26;
   if (n >= 2000) { c.save(); c.globalAlpha = .85; const hg = c.createRadialGradient(0, oben, 4, 0, oben, 95); hg.addColorStop(0, n >= 5000 ? '#2a1d6b' : '#3c6fc0'); hg.addColorStop(1, 'rgba(20,20,80,0)'); c.fillStyle = hg; c.beginPath(); c.arc(0, oben, 95, 0, 7); c.fill(); c.restore();
-    for (let k = 0; k < 9; k++) stern(c, Math.cos(k * 2.4) * 70, oben + Math.sin(k * 1.7) * 55, 2 + Math.sin(t * .005 + k) * 1.5); }
-  if (n >= 1000 && n < 5000) { const a = t * .0006 + i, px = Math.cos(a) * 110, py = oben - 50 + Math.sin(a) * 10; c.save(); c.translate(px, py); c.scale(Math.sin(a) > 0 ? -1 : 1, 1); c.fillStyle = '#fff'; c.beginPath(); c.ellipse(0, 0, 14, 4, 0, 0, 7); c.fill(); c.fillStyle = BLAU; c.fillRect(-3, -8, 5, 16); c.restore(); }
-  if (n >= 7500) { c.save(); c.globalAlpha = .4 + Math.sin(t * .002 + i) * .12; ['#7fffd4', '#9b5de5', '#3fa0e8'].forEach((f, k) => { c.strokeStyle = f; c.lineWidth = 10; c.beginPath(); for (let q = 0; q <= 20; q++) { const xx = -120 + q * 12, yy = oben - 60 - k * 16 + Math.sin(q * .6 + t * .003 + k) * 10; q ? c.lineTo(xx, yy) : c.moveTo(xx, yy); } c.stroke(); }); c.restore(); }
+    for (let k = 0; k < 9; k++) stern(c, Math.cos(k * 2.4) * 70, oben + Math.sin(k * 1.7) * 55, 2 + 1); }
   if (n >= 750) { c.save(); c.globalAlpha = .55; ['#e8433c', '#ff8a2a', '#ffd23f', '#57b85a', '#3fa0e8', '#9b5de5'].forEach((f, k) => { c.strokeStyle = f; c.lineWidth = 6; c.beginPath(); c.arc(0, oben + 70, 78 - k * 6, Math.PI * 1.08, Math.PI * 1.92); c.stroke(); }); c.restore(); }
-  if (n >= 3000) { c.fillStyle = '#fff6c8'; c.beginPath(); c.arc(84, oben - 40, 13, 0, 7); c.fill(); for (let k = 0; k < 7; k++) stern(c, -60 + ((k * 37) % 120), oben - 90 + ((k * 23) % 40), 3 + Math.sin(t * .004 + k) * 2); }
+  if (n >= 3000) { c.fillStyle = '#fff6c8'; c.beginPath(); c.arc(84, oben - 40, 13, 0, 7); c.fill(); for (let k = 0; k < 7; k++) stern(c, -60 + ((k * 37) % 120), oben - 90 + ((k * 23) % 40), 3 + 1); }
   // Schaft: rot-weiß, alle 100 Stockwerke ein farbiger Ring
   c.save(); c.beginPath(); c.moveTo(-w0 / 2, -6); c.lineTo(-w1 / 2, oben + 16); c.lineTo(w1 / 2, oben + 16); c.lineTo(w0 / 2, -6); c.closePath(); c.clip();
   const PAL = n >= 10000 ? ['#e0b43a', '#fff8e0'] : n >= 5000 ? ['#7b5cd6', '#ece8ff'] : n >= 1000 ? ['#2f6fd0', '#fff'] : n >= 300 ? ['#e8433c', '#fff6dc'] : [ROT, '#fff'];
@@ -347,7 +345,7 @@ function turm(c, st, rang, t, hMax, nacht, beamExtra) {
   if (n >= 300) { const gy = oben + h * .5, gw = (w0 + (w1 - w0) * .5) / 2 + 6; c.fillStyle = '#e0b43a'; c.fillRect(-gw, gy, gw * 2, 4); c.strokeStyle = INK; c.lineWidth = 1.2; for (let x = -gw; x <= gw; x += 5) { c.beginPath(); c.moveTo(x, gy); c.lineTo(x, gy - 7); c.stroke(); } c.beginPath(); c.moveTo(-gw, gy - 7); c.lineTo(gw, gy - 7); c.stroke(); }   // zweiter Rundgang
   if (n >= 75) { const by = -Math.min(h * .3, 110); c.fillStyle = '#8a5a2b'; c.fillRect(w0 / 2 - 4, by, 22, 4); c.strokeStyle = INK; c.lineWidth = 1.2; c.strokeRect(w0 / 2 - 4, by - 8, 22, 8); c.fillStyle = '#333'; c.save(); c.translate(w0 / 2 + 12, by - 12); c.rotate(-.5); c.fillRect(0, -2, 12, 4); c.restore(); }   // Balkon mit Fernrohr
   if (n >= 20) { c.strokeStyle = '#ff8a2a'; c.lineWidth = 4; c.beginPath(); c.arc(-w0 / 2 + 1, -34, 7, 0, 7); c.stroke(); c.strokeStyle = '#fff'; c.lineWidth = 4; c.setLineDash([4, 5]); c.beginPath(); c.arc(-w0 / 2 + 1, -34, 7, 0, 7); c.stroke(); c.setLineDash([]); }   // Rettungsring
-  if (n >= 200) { const anz = Math.min(40, Math.floor(h / 9)); for (let k = 0; k < anz; k++) { const y = -10 - k * (h - 30) / anz, b = (w0 - (w0 - w1) * (-y / h)) / 2, x = Math.sin(k * .9) * b; if (Math.cos(k * .9) < 0) continue; c.fillStyle = `hsl(${(k * 40 + t * .1) % 360},90%,${55 + Math.sin(t * .01 + k) * 15}%)`; c.beginPath(); c.arc(x, y, 2.2, 0, 7); c.fill(); } }   // Lichterkette
+  if (n >= 200) { const anz = Math.min(40, Math.floor(h / 9)); for (let k = 0; k < anz; k++) { const y = -10 - k * (h - 30) / anz, b = (w0 - (w0 - w1) * (-y / h)) / 2, x = Math.sin(k * .9) * b; if (Math.cos(k * .9) < 0) continue; c.fillStyle = `hsl(${(k * 40) % 360},90%,60%)`; c.beginPath(); c.arc(x, y, 2.2, 0, 7); c.fill(); } }   // Lichterkette
   if (n >= 600) { c.strokeStyle = 'rgba(42,27,18,.6)'; c.lineWidth = 1; c.beginPath(); c.moveTo(0, oben + 14); c.quadraticCurveTo(60, oben + h * .5, 95, -4); c.stroke(); for (let k = 1; k < 9; k++) { const q = k / 9, x = 2 * (1 - q) * q * 60 + q * q * 95, y = (1 - q) * (1 - q) * (oben + 14) + 2 * (1 - q) * q * (oben + h * .5) + q * q * -4; c.fillStyle = ['#e8433c', '#ffd23f', '#3fa0e8', '#57b85a'][k % 4]; c.beginPath(); c.moveTo(x - 4, y); c.lineTo(x + 4, y); c.lineTo(x, y + 9); c.fill(); } }   // Wimpelkette
   if (n >= 25 || nacht > .4) { c.fillStyle = nacht > .4 ? '#ffd76a' : '#ffe9a8'; for (let yy = -48; yy > oben + 46; yy -= 46) c.fillRect(-3, yy - 6, 6, 9); }
   if (n >= 35) for (let yy = -48; yy > oben + 46; yy -= 46) { c.fillStyle = '#57b85a'; c.fillRect(-5, yy + 4, 10, 3); c.fillStyle = '#ff6fa3'; c.beginPath(); c.arc(-3, yy + 3, 1.8, 0, 7); c.arc(2, yy + 3, 1.8, 0, 7); c.fill(); }
@@ -355,9 +353,31 @@ function turm(c, st, rang, t, hMax, nacht, beamExtra) {
   c.fillStyle = n >= 50 ? '#e0b43a' : INK; c.fillRect(-w1 / 2 - 6, oben + 12, w1 + 12, 5);
   c.fillStyle = '#ffe9a8'; c.fillRect(-8, oben - 4, 16, 17); c.strokeStyle = INK; c.lineWidth = 2; c.strokeRect(-8, oben - 4, 16, 17);
   c.fillStyle = n >= 1000 ? '#e0b43a' : ROT; c.beginPath(); c.moveTo(-12, oben - 4); c.lineTo(0, oben - 18); c.lineTo(12, oben - 4); c.closePath(); c.fill(); c.stroke();
+  if (n >= 1000) { c.fillStyle = GELB; for (let z = -1; z <= 1; z++) { c.beginPath(); c.moveTo(z * 7 - 4, oben - 18); c.lineTo(z * 7, oben - 28); c.lineTo(z * 7 + 4, oben - 18); c.fill(); } }
+  if (n >= 8500) { c.fillStyle = '#f2a65a'; c.beginPath(); c.arc(-95, oben - 100, 12, 0, 7); c.fill(); c.strokeStyle = '#ffe0a8'; c.lineWidth = 2; c.beginPath(); c.ellipse(-95, oben - 100, 22, 5, -.3, 0, 7); c.stroke(); }   // Ringplanet
+  if (n >= 10000) { c.strokeStyle = 'rgba(255,214,120,.85)'; c.lineWidth = 3; c.beginPath(); c.ellipse(0, oben - 4, 50, 12, -.15, 0, 7); c.stroke(); }
+  if (wolke || n >= 500) for (let k = 0; k < 7; k++) { const wx = -66 + k * 22 + 0, wy = oben + h * .5 + (k % 2) * 10; c.fillStyle = 'rgba(120,140,170,.35)'; c.beginPath(); c.ellipse(wx + 3, wy + 5, 24, 12, 0, 0, 7); c.fill(); c.fillStyle = '#fff'; c.beginPath(); c.ellipse(wx, wy, 24, 12, 0, 0, 7); c.fill(); }
+}
+function turm(c, st, rang, t, hMax, nacht, beamExtra) {
+  const n = st.stock, roh = turmHoehe(n), h = Math.min(roh, hMax, TURM_MAX), wolke = roh > h + 2, oben = -h, w0 = 40, w1 = 26, i = hash(st.name) % 7;
+  const sk = PLAETZE[rang]?.s || .5, key = `${n}|${Math.round(h)}|${nacht > .4 ? 1 : 0}|${wolke ? 1 : 0}|${sk}`; let b = TURM_BILD.get(st.name);
+  if (!b || b.key !== key) {
+    // nur so groß wie nötig (fast alle Türme sind schmal) und gleich in Bildschirmgröße
+    const xl = n >= 8500 ? 120 : n >= 2000 ? 100 : n >= 500 ? 92 : n >= 20 ? 34 : 28, xr = n >= 2000 ? 100 : n >= 500 ? 98 : n >= 75 ? 44 : 28;
+    const ob = n >= 8500 ? 125 : n >= 2000 ? 100 : 48, k = Q0 * sk * 1.08, cv = document.createElement('canvas');
+    cv.width = Math.ceil((xl + xr) * k); cv.height = Math.ceil((h + ob + 6) * k); const g = cv.getContext('2d'); g.setTransform(k, 0, 0, k, xl * k, (h + ob) * k);
+    turmKoerper(g, st, h, n, i, nacht, wolke); b = { key, cv, x0: xl, y0: h + ob, w: xl + xr, hh: h + ob + 6 }; TURM_BILD.set(st.name, b);
+    if (TURM_BILD.size > 60) for (const kk of TURM_BILD.keys()) { if (!POS[kk]) TURM_BILD.delete(kk); }
+  }
+  // bewegte Teile hinter dem Turm
+  if (n >= 12500) { c.save(); c.globalAlpha = .55; c.translate(0, oben - 20); c.rotate(t * .0002); for (let k = 0; k < 60; k++) { const a = k * .35, r = 8 + k * 1.9; c.fillStyle = k % 3 ? '#cdb8ff' : '#fff'; c.beginPath(); c.arc(Math.cos(a) * r, Math.sin(a) * r * .5, 1.8, 0, 7); c.fill(); } c.restore(); }   // Galaxie
+  if (n >= 20000) { c.save(); c.globalCompositeOperation = 'lighter'; c.globalAlpha = .5; c.drawImage(GLUT, -150, oben - 210, 120, 120); c.restore(); c.fillStyle = '#ffd23f'; c.beginPath(); c.arc(-90, oben - 150, 18, 0, 7); c.fill(); }   // eigene Sonne
+  if (n >= 1000 && n < 5000) { const a = t * .0006 + i, px = Math.cos(a) * 110, py = oben - 50 + Math.sin(a) * 10; c.save(); c.translate(px, py); c.scale(Math.sin(a) > 0 ? -1 : 1, 1); c.fillStyle = '#fff'; c.beginPath(); c.ellipse(0, 0, 14, 4, 0, 0, 7); c.fill(); c.fillStyle = BLAU; c.fillRect(-3, -8, 5, 16); c.restore(); }
+  if (n >= 7500) { c.save(); c.globalAlpha = .4 + Math.sin(t * .002 + i) * .12; ['#7fffd4', '#9b5de5', '#3fa0e8'].forEach((f, k) => { c.strokeStyle = f; c.lineWidth = 10; c.beginPath(); for (let q = 0; q <= 20; q++) { const xx = -120 + q * 12, yy = oben - 60 - k * 16 + Math.sin(q * .6 + t * .003 + k) * 10; q ? c.lineTo(xx, yy) : c.moveTo(xx, yy); } c.stroke(); }); c.restore(); }
+  c.drawImage(b.cv, -b.x0, -b.y0, b.w, b.hh);
+  // bewegte Teile an der Spitze
   if (n >= 2000) { const fl = .6 + Math.sin(t * .008 + i) * .4; c.fillStyle = `rgba(200,240,255,${.7 + fl * .3})`; c.beginPath(); c.moveTo(0, oben - 40); c.lineTo(-6, oben - 27); c.lineTo(0, oben - 18); c.lineTo(6, oben - 27); c.closePath(); c.fill(); stern(c, 5, oben - 38, 3 * fl + 1); }
   else if (n >= 10) { c.strokeStyle = INK; c.lineWidth = 1.5; c.beginPath(); c.moveTo(0, oben - 18); c.lineTo(0, oben - 38); c.stroke(); c.fillStyle = ['#3fa0e8', '#57b85a', '#ff8a2a', '#ff6fa3'][i % 4]; c.beginPath(); c.moveTo(0, oben - 38); c.lineTo(16, oben - 33 + Math.sin(t * .006 + i) * 3); c.lineTo(0, oben - 28); c.closePath(); c.fill(); }
-  if (n >= 1000) { c.fillStyle = GELB; for (let z = -1; z <= 1; z++) { c.beginPath(); c.moveTo(z * 7 - 4, oben - 18); c.lineTo(z * 7, oben - 28); c.lineTo(z * 7 + 4, oben - 18); c.fill(); } }
   // Leuchtfeuer: dreht sich, nachts deutlich heller
   const g = Math.min(1, .35 + Math.log10(1 + n) / 4) * (.55 + nacht * .7) + beamExtra, dreh = t * .0012 + i;
   c.save(); c.globalCompositeOperation = 'lighter'; c.globalAlpha = Math.min(1, .6 * g); const gr = 34 * (1 + g); c.drawImage(GLUT, -gr, oben + 4 - gr, gr * 2, gr * 2);
@@ -374,10 +394,7 @@ function turm(c, st, rang, t, hMax, nacht, beamExtra) {
   if (n >= 2500) { const a = t * .0007 + i, sx = Math.cos(a) * 85, sy = oben - 50 + Math.sin(a) * 25; c.fillStyle = '#9aa6b8'; c.fillRect(sx - 3, sy - 3, 6, 6); c.fillStyle = '#3fa0e8'; c.fillRect(sx - 14, sy - 2, 9, 4); c.fillRect(sx + 5, sy - 2, 9, 4); }   // Satellit
   if (n >= 4000) { const q = (t * .0006 + i * .37) % 1; if (q < .3) { const x0 = 90 - q * 400, y0 = oben - 110 + q * 160; c.strokeStyle = `rgba(255,255,255,${1 - q / .3})`; c.lineWidth = 2; c.beginPath(); c.moveTo(x0, y0); c.lineTo(x0 + 30, y0 - 12); c.stroke(); } }   // Sternschnuppen
   if (n >= 6000) { const ax = -70 + Math.sin(t * .0007 + i) * 10, ay = oben - 60 + Math.cos(t * .0009) * 8; c.save(); c.translate(ax, ay); c.rotate(Math.sin(t * .001) * .4); c.fillStyle = '#fff'; c.beginPath(); c.arc(0, -8, 6, 0, 7); c.fill(); c.fillRect(-5, -3, 10, 12); c.fillStyle = '#3fa0e8'; c.beginPath(); c.arc(0, -8, 3.5, 0, 7); c.fill(); c.restore(); }   // Astronaut
-  if (n >= 8500) { c.fillStyle = '#f2a65a'; c.beginPath(); c.arc(-95, oben - 100, 12, 0, 7); c.fill(); c.strokeStyle = '#ffe0a8'; c.lineWidth = 2; c.beginPath(); c.ellipse(-95, oben - 100, 22, 5, -.3, 0, 7); c.stroke(); }   // Ringplanet
   if (n >= 15000) { const q = (t * .00015 + i * .2) % 1, kx = 140 - q * 300, ky = oben - 160 + q * 50; c.save(); c.globalCompositeOperation = 'lighter'; c.globalAlpha = .7; const g2 = c.createLinearGradient(kx, ky, kx + 60, ky - 15); g2.addColorStop(0, '#fff'); g2.addColorStop(1, 'rgba(120,200,255,0)'); c.strokeStyle = g2; c.lineWidth = 5; c.beginPath(); c.moveTo(kx, ky); c.lineTo(kx + 60, ky - 15); c.stroke(); c.restore(); }   // Komet
-  if (n >= 10000) { c.strokeStyle = 'rgba(255,214,120,.85)'; c.lineWidth = 3; c.beginPath(); c.ellipse(0, oben - 4, 50, 12, -.15, 0, 7); c.stroke(); }
-  if (wolke || n >= 500) for (let k = 0; k < 7; k++) { const wx = -66 + k * 22 + Math.sin(t * .001 + k) * 4, wy = oben + h * .5 + (k % 2) * 10; c.fillStyle = 'rgba(120,140,170,.35)'; c.beginPath(); c.ellipse(wx + 3, wy + 5, 24, 12, 0, 0, 7); c.fill(); c.fillStyle = '#fff'; c.beginPath(); c.ellipse(wx, wy, 24, 12, 0, 0, 7); c.fill(); }
   return h;
 }
 // Namensschild als fertiges Bild (wird nur neu gemalt, wenn sich Rang/Zahl ändern)
@@ -501,7 +518,7 @@ function effekte(t, dt) {
     if (p.art === 'f') { X.beginPath(); X.arc(p.x, p.y, 3.5, 0, 7); X.fill(); } else { X.save(); X.translate(p.x, p.y); X.rotate(p.r + a * .01); X.fillRect(-5, -3, 10, 6); X.restore(); }
   }
   X.globalAlpha = 1;
-  if (fx.length > 500) fx.splice(0, fx.length - 500);
+  if (fx.length > 260) fx.splice(0, fx.length - 260);
 }
 function schwebendZeichnen(t) {
   for (let i = schwebend.length - 1; i >= 0; i--) {
@@ -742,7 +759,7 @@ let frameZeit = 0, tLetzt = 0, KC = null, KX = null, kopfZeit = 0, KOPF_UNTEN = 
 function bild(t) {
   requestAnimationFrame(bild);
   if (t - frameZeit < 1000 / FPS - 3) return;
-  frameZeit = t; const dt = Math.min(100, t - (tLetzt || t)); tLetzt = t;
+  frameZeit = t; const dt = Math.min(100, t - (tLetzt || t)); tLetzt = t; const t0 = performance.now();
   tageslicht(t);
   if (!HG) HG = hintergrund();
   kamera(t);
@@ -762,7 +779,10 @@ function bild(t) {
   if (tonRolle && !(tonAn && AC && AC.state === 'running')) { if (!bild.versuch || t - bild.versuch > 3000) { bild.versuch = t; tonStarten(); } text('🔊 Einmal ins Bild klicken für Ton', 540, 1880, 22, '#fff', 'center', 900); }
   else if (!VORSCHAU) text('🎙️ KI-Stimme', 1040, 1890, 18, 'rgba(255,255,255,.7)', 'right', 800);
   tonLautstaerke();
+  last.summe += performance.now() - t0; last.n++;
+  if (last.n >= 90) { const ms = last.summe / last.n, ziel = MAX_FPS(); FPS = ms > 28 ? Math.min(ziel, 20) : ms > 20 ? Math.min(ziel, 24) : ms < 12 ? ziel : FPS; last.summe = 0; last.n = 0; }
 }
+const last = { summe: 0, n: 0 }, MAX_FPS = () => +PARAM.get('fps') || Math.max(15, Math.min(30, S.bildrate || 30));
 document.fonts?.load(`400 40px ${TITEL}`).then(() => document.fonts.load(`700 30px ${FONT}`)).then(() => { SCHILD.clear(); for (const k in MITTE_CACHE) delete MITTE_CACHE[k]; }).catch(() => {});
 verbinde();
 if (TONSEITE) {
