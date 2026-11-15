@@ -21,6 +21,10 @@ const anz = (n, ein, mehr) => n === 1 ? `1 ${ein}` : `${n} ${mehr}`;
 const likeZiel = (rate, sek, min) => klemme(Math.round(rate * sek / 60 * .8 / 10) * 10, min, 50000);
 const zahl = n => Math.round(n).toLocaleString('de-DE');
 
+// TikTok-Regeln: Events, bei denen Likes etwas bringen (Ziel erreichen, Team gewinnen, Belohnung), laufen nicht mehr.
+// Es bleiben nur Chat-Spiele (Antworten, Raten, Abstimmen) und Überraschungen.
+const LIKE_EVENTS = new Set(['sturmflut', 'krabbenrennen', 'teamduell', 'strandparty', 'ballons', 'volleyball', 'eiswagen', 'surfcontest', 'tauziehen',
+  'likerekord', 'leuchtturm', 'nachbarhilfe', 'inselkoenig', 'piratenschatz', 'bootsrennen', 'muschelregen', 'bauturbo', 'happyhour']);
 export function macheEvents(api) {
   const { CFG } = api;
   const MIN = (CFG.events?.alleMinuten ?? 5) * 60000;
@@ -45,7 +49,7 @@ export function macheEvents(api) {
         e.gewinner = zufall(kand); e.preis = zufall([{ t: '150 Muscheln', m: 150 }, { t: '300 Muscheln', m: 300 }, { t: 'ein goldenes Dach', farbe: '#E0B43A', m: 50 }, { t: 'einen Pool', anbau: 'pool', m: 150 }, { t: '500 Muscheln', m: 500 }]);
         return `Das Muschel-Glücksrad dreht sich! Alle, die gerade aktiv sind, sind im Lostopf.`;
       },
-      anzeige: e => ({ text: 'Im Lostopf: alle, die in den letzten 10 Min. geliked oder kommentiert haben', rad: { namen: e.namen, gewinner: e.gewinner.name } }),
+      anzeige: e => ({ text: 'Im Lostopf: alle, die in den letzten 10 Min. mitgespielt haben', rad: { namen: e.namen, gewinner: e.gewinner.name } }),
       ende(e) { api.belohne(e.gewinner, e.preis.m, e.preis); return { text: `${e.gewinner.name} gewinnt ${e.preis.t}! 🎉`, sag: `${api.name(e.gewinner)} gewinnt ${e.preis.t}! Glückwunsch!`, gut: true, id: e.gewinner.id }; },
     },
     krabbenrennen: {
@@ -432,7 +436,7 @@ export function macheEvents(api) {
         return `Abstimmung! Was bauen wir als Nächstes? ${e.wahl.map((w, i) => `${i + 1} für ${w.name}`).join(', ')}.`; },
       kommentar(e, p, t) { if (/^[123]$/.test(t) && +t <= e.wahl.length) { e.st[p.id] = +t - 1; return true; } },
       anzeige: e => { const z = e.wahl.map(() => 0); Object.values(e.st).forEach(i => z[i]++); const m = Math.max(1, ...z); return { text: 'Was bauen wir? Schreib 1, 2 oder 3', balken: e.wahl.map((w, i) => ({ name: `${i + 1}  ${w.name}`, wert: z[i], max: m, farbe: ['#ffd23f', '#7fe0c8', '#ff8fb8'][i] })) }; },
-      ende(e) { const z = e.wahl.map(() => 0); Object.values(e.st).forEach(i => z[i]++); const w = e.wahl[z.indexOf(Math.max(...z))]; api.projektStarten(w); return { text: `Entschieden: ${w.name}! Gebaut wird mit der Muschelkasse.`, sag: `Entschieden: Wir bauen ${w.ein || w.name}! … Jedes Like hilft mit.`, gut: true }; },
+      ende(e) { const z = e.wahl.map(() => 0); Object.values(e.st).forEach(i => z[i]++); const w = e.wahl[z.indexOf(Math.max(...z))]; api.projektStarten(w); return { text: `Entschieden: ${w.name}! Gebaut wird mit der Muschelkasse.`, sag: `Entschieden: Wir bauen ${w.ein || w.name}! … Mitspielen bei den Events hilft mit.`, gut: true }; },
     },
   };
 
@@ -544,7 +548,7 @@ export function macheEvents(api) {
     ev = null; naechstes = Math.max(naechstes, Date.now() + 20000); api.zustand();
   }
   function waehle() {
-    const moegl = Object.keys(DEFS).filter(id => !verlauf.slice(0, 10).includes(id) && (!DEFS[id].moeglich || DEFS[id].moeglich()));
+    const moegl = Object.keys(DEFS).filter(id => !LIKE_EVENTS.has(id) && !verlauf.slice(0, 10).includes(id) && (!DEFS[id].moeglich || DEFS[id].moeglich()));
     if (moegl.includes('abstimmung') && Math.random() < .5) return 'abstimmung';
     return zufall(moegl.filter(x => x !== 'abstimmung').length ? moegl.filter(x => x !== 'abstimmung') : moegl);
   }

@@ -38,8 +38,8 @@ const SAETZE = {
     'Nur noch {rest} Bewohner für {projekt}!',
   ],
   hinweis: [
-    'Dein erster Like baut deine Hütte.',
-    'Mehr Likes vergrößern deine Hütte.',
+    'Spiel bei den Events mit und sammle Muscheln!',
+    'Schreib haus, dann zeige ich dir dein Haus.',
     'Sammle Muscheln durch Events!',
     'Mit Muscheln steigst du in der Rangliste auf.',
     'Schreib haus, dann zeige ich dir dein Haus.',
@@ -187,9 +187,6 @@ const SAETZE = {
     'Neu auf Platz {platz}: {name}!',
   ],
   aufruf: [                                                     // einzige Moderation ohne Anlass: Liken, Folgen, Teilen (ohne Versprechen)
-    'Dein erster Like baut deine Hütte!',
-    'Tipp aufs Herz, und deine Hütte wächst!',
-    'Mehr Likes, größeres Haus!',
     'Teil den LIVE mit deinen Freunden, dann bauen wir zusammen!',
     'Bring deine Freunde mit und teil den LIVE!',
     'Folg muscheltal, dann verpasst du keinen LIVE.',

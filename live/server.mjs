@@ -20,7 +20,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-15 y';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-16 a';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -144,17 +144,10 @@ let letzterLikeDank = 0;                                    // Like-Dank (einzel
 let letztesHausZeigen = 0;
 
 // ---------- Ereignisse ----------
+// TikTok-Regeln: Likes werden NICHT gegen etwas getauscht – kein Haus, keine Muscheln, nichts für die Kasse.
+// Sie lösen nur gemeinsame Effekte für alle aus (Herzen, Feuerwerk über der Muschel).
 function like(u, anzahl) {
-  const p = spieler(u); if (!p) { S.likesGesamt += anzahl; inKasse(anzahl * CFG.kasse.proLike); return; }
   S.likesGesamt += anzahl; likeLog.push([Date.now(), anzahl]);
-  if (aufgabe?.art === 'likes') { aufgabe.stand += anzahl; aufgabe.dabei.add(p.id); }
-  inKasse(anzahl * CFG.kasse.proLike);
-  const ls = likeSerie[p.id] ||= { n: 0, t0: Date.now(), dank: 0 };
-  if (Date.now() - ls.t0 > 60000) { ls.n = 0; ls.t0 = Date.now(); }
-  ls.n += anzahl;
-  if (ls.n >= (CFG.likeDankAb ?? 50) && Date.now() - ls.dank > 180000 && !likeDank.includes(p)) { ls.dank = Date.now(); likeDank.push(p); sende({ typ: 'likeRegen', id: p.id, name: p.name }); }
-  const faktor = EV.like(p, anzahl);                       // Muschelregen ×2, Bau-Turbo ×3
-  gibMuscheln(p, anzahl * CFG.muschelnProLike * faktor, 'like');
 }
 
 // Wer noch kein Haus hat und „haus“ oder eine Farbe schreibt, bekommt den Hinweis: erst liken (höchstens 1× pro Minute)
@@ -189,16 +182,8 @@ function kommentar(u, text) {
   const id0 = String(u.uniqueId || '').toLowerCase(), t = String(text || '').toLowerCase().trim();
   if (!id0 || gesperrt(id0)) return;
   // Kein Haus: nur bei Event-Antworten wird eins gebaut (Mitmachen zählt). „haus“ und Farben → Hinweis „erst liken“
-  if (!S.spieler[id0]) {
-    if (istHausWunsch(t)) return erstLiken(u, 'haus');      // „haus“ ohne Haus → erst liken (auch während Events)
-    const loestAufgabe = aufgabe?.art === 'wort' && normal(t).includes(normal(aufgabe.wort));   // Mini-Aufgabe mitmachen baut ein Zelt
-    if (!loestAufgabe) {
-      if (!EV.laeuft()) { if (t.split(/[^a-zäöüß]+/).some(w => CFG.farben[w])) erstLiken(u, 'farbe'); return; }
-      if (!eventAntwort(null, t, true)) return;             // während Events: nur echte Event-Antworten bauen ein Zelt
-    }
-  }
+  // Wer zum ersten Mal im Chat mitmacht, bekommt sein Zelt (einmalig – kein Tausch, keine Wiederholung nötig)
   const p = spieler(u); if (!p) return;
-  if (Date.now() - (p.kommentarBonus || 0) > 30000) { p.kommentarBonus = Date.now(); gibMuscheln(p, CFG.muschelnProKommentar ?? 2, 'kommentar'); }
   farbeAus(p, t);                                          // Farbe gilt immer – auch wenn das Wort gleichzeitig eine Event-Antwort ist
   if (aufgabeKommentar(p, t)) return;
   if (eventAntwort(p, t)) { geaendert = true; zustand(); return; }   // Event-Antworten (rot, flasche, A, 42 …) – auch mit Satzzeichen/Emoji/im Satz
@@ -319,7 +304,7 @@ setInterval(() => {
   // Alle zusammen liken gerade sehr viel → Feuerwerk über der großen Muschel
   if (l20 >= Math.max(60, normal * 2) && jetzt - letztesLikeFeuer > 60000) {
     letztesLikeFeuer = jetzt; sende({ typ: 'likeFeuer', n: l20 });
-    if (jetzt - letzterLikeDank >= 60000) letzterLikeDank = jetzt, sag(zufallText(['Wow, so viele Likes! … Feuerwerk über der Muschel!', 'Was für ein Like-Sturm! … Weiter so!', 'Die Muschel leuchtet … ihr seid der Wahnsinn!']), 2);
+    if (jetzt - letzterLikeDank >= 60000) letzterLikeDank = jetzt, sag(zufallText(['Wow, so viele Likes! … Feuerwerk über der Muschel!', 'Was für ein Herzen-Sturm! … Danke an alle!', 'Die Muschel leuchtet … ihr seid der Wahnsinn!']), 2);
   }
   // Meilensteine: alle 1.000 Likes ein großes Fest
   const ms = Math.floor((S.likesGesamt || 0) / (CFG.likeMeilenstein || 1000));
@@ -432,7 +417,7 @@ function belohne(p, n, extra) {
   if (extra?.farbe) { p.farbe = extra.farbe; sende({ typ: 'farbe', id: p.id }); }
   if (extra?.anbau && !p.anbauten.includes(extra.anbau)) { p.anbauten.push(extra.anbau); sende({ typ: 'anbau', id: p.id, was: extra.anbau }); }
   p.eventMuscheln = (p.eventMuscheln || 0) + n;
-  gibMuscheln(p, n, 'event');
+  gibMuscheln(p, n, 'event'); inKasse(n);                 // Mitspielen füllt die gemeinsame Kasse
 }
 const EV = macheEvents({
   CFG, test: TEST, sende, zustand: () => zustand(), sag: (t, pr) => sag(t, pr), belohne, name: p => sprechName(p), artikel: n => artikel(n),
@@ -785,7 +770,7 @@ function moderiere() {
     return sag(satz('followEins', { name: sprechName(followDank.shift()) }), 1);   // einzeln, kurz
   }
   // 1a. Viele Likes von einer Person: bedanken
-  if (likeDank.length) { const p = likeDank.shift(); likeDank.length = 0; if (Date.now() - letzterLikeDank >= 60000) { letzterLikeDank = Date.now(); return sag(satz('likeDank', { name: sprechName(p) }), 1); } }
+  likeDank.length = 0; if (false) { const p = null; if (Date.now() - letzterLikeDank >= 60000) { letzterLikeDank = Date.now(); return sag(satz('likeDank', { name: sprechName(p) }), 1); } }
   // 1b. Wer „haus“ geschrieben hat: Kamera fliegt zum Haus (ab und zu, nicht während Events)
   const kameraEvent = ['schatzsuche', 'meeresbesuch', 'flaschenpost', 'moewenalarm', 'hausbesuch'].includes(EV.id());
   if (!kameraEvent && hausWunsch.length && Date.now() - letztesHausZeigen > (EV.laeuft() ? 15000 : 8000)) {
@@ -1008,14 +993,6 @@ async function verbinde() {
     const u = U(d.user), n = +(d.count ?? d.likeCount) || 1, total = +(d.total ?? d.totalLikeCount) || 0;
     if (u?.uniqueId) { tt('❤️', `${nm(d)} +${n} Likes`); like(u, n); const id = String(u.uniqueId).toLowerCase(), alt = aktiveLiker.get(id); aktiveLiker.set(id, { n: (alt && Date.now() - alt.t < 30000 ? alt.n : 0) + n, t: Date.now() }); } else { S.likesGesamt += n; inKasse(n * CFG.kasse.proLike); }
     if (total) {
-      const fehlt = likeTotal ? total - likeTotal - n : 0;
-      if (fehlt > 0 && fehlt < 100000) {
-        S.likesGesamt += fehlt; inKasse(fehlt * CFG.kasse.proLike);
-        // Die fehlenden Likes gehören den Leuten, die gerade liken: anteilig auf ihre Häuser verteilen
-        const jetzt = Date.now(), liste = [...aktiveLiker].filter(([, v]) => jetzt - v.t < 30000), summe = liste.reduce((a, [, v]) => a + v.n, 0);
-        if (summe) for (const [id, v] of liste) { const q = S.spieler[id], anteil = Math.round(fehlt * v.n / summe); if (q && anteil > 0) gibMuscheln(q, anteil * CFG.muschelnProLike, 'like'); }
-        geaendert = true; zustand();
-      }
       likeTotal = Math.max(likeTotal, total);
     }
   });
