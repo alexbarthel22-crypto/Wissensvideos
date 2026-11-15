@@ -868,8 +868,8 @@ const KOKV=ISL[1];
 const kBlk=(k,m)=>{const x0=KOKV.x+5*k*S,y0=KOKV.y+4*m*S*.9;return{key:'1:'+k+','+m,cx:x0+2.5*S,cy:y0+2*S*.9,y0};};
 const KBAD={name:'Kokos-Bad',hw:46,hh:32,...kBlk(-3,2)};
 const KMODE={name:'Coast & Cotton',hw:46,hh:32,...kBlk(4,-1)};
-const KCLUB={name:'KOK(O)S',hw:46,hh:32,...kBlk(0,-4)};// Nachtclub, Nordseite (grenzt an kein Gebäude, auch nicht über Eck)
-const KDROG={name:'CocoCare',hw:46,hh:32,...kBlk(3,-5)};// Drogerie, Nordostseite
+const KCLUB={name:'KOK(O)S',hw:46,hh:32,...kBlk(3,-5)};// Nachtclub, Nordostseite (grenzt an kein Gebäude, auch nicht über Eck)
+const KDROG={name:'CocoCare',hw:46,hh:32,...kBlk(0,-4)};// Drogerie, Nordseite
 // Coco Bay: Küstenstreifen ganz im Süden – vom Weg bis ans Wasser (Ursprung = Oberkante am Weg)
 const KBAR=(()=>{const b=kBlk(0,7);let yc=b.y0;while(inside(KOKV,b.cx,yc,0)&&yc<b.y0+80)yc+=1;return{name:'Coco Bay',key:b.key,cx:b.cx,cy:b.y0+2,hw:46,dep:yc-b.y0+BEX-3};})();
 // Feste Bauten ohne GEB-Eintrag: erscheinen beim „Wachsen sehen“ erst als Ereignis (nicht von Anfang an)
@@ -4231,8 +4231,8 @@ const MKQ={
  markt:{ic:'🛒',t:'Geh im Meerkauf einkaufen',ort:'Meerkauf',hint:'Zur Eingangstür vom Meerkauf gehen',btn:'🛒 Einkaufen gehen',em:['🛒','🍎','🥖','🧃','🛒']},
  cocobay:{ic:'🍹',t:'Hol dir einen Kokos-Cocktail in der Coco Bay',ort:'Coco Bay',hint:'Zur Theke der Coco Bay am Südstrand der Kokos-Küste gehen',btn:'🍹 Kokos-Cocktail holen',em:['🍹','🥥','🌴','🍍','🍹']},
  kokosbad:{ic:'🏊',t:'Zieh ein paar Bahnen im Kokos-Bad',ort:'Kokos-Bad',hint:'Durch den großen Eingang an den Beckenrand im Kokos-Bad gehen',btn:'🏊 Ins Becken springen',em:['🏊','💦','🌊','🐚','💦']},
- kokos:{ic:'🪩',t:'Lass dich im KOK(O)S auf die Gästeliste setzen',ort:'KOK(O)S',hint:'Zum goldenen Gästeliste-Pult neben dem Türsteher vor dem KOK(O)S im Norden der Kokos-Küste gehen',btn:'📋 Auf die Gästeliste',em:['🪩','📋','✨','🍸','💃']},
- cococare:{ic:'🌸',t:'Teste ein Parfüm am Duft-Tisch von CocoCare',ort:'CocoCare',hint:'Zum Duft-Test-Tisch vor der Drogerie CocoCare im Nordosten der Kokos-Küste gehen',btn:'🌸 Duft testen',em:['🌸','✨','💐','🧴','💖']},
+ kokos:{ic:'🪩',t:'Lass dich im KOK(O)S auf die Gästeliste setzen',ort:'KOK(O)S',hint:'Zum goldenen Gästeliste-Pult neben dem Türsteher vor dem KOK(O)S im Nordosten der Kokos-Küste gehen',btn:'📋 Auf die Gästeliste',em:['🪩','📋','✨','🍸','💃']},
+ cococare:{ic:'🌸',t:'Teste ein Parfüm am Duft-Tisch von CocoCare',ort:'CocoCare',hint:'Zum Duft-Test-Tisch vor der Drogerie CocoCare im Norden der Kokos-Küste gehen',btn:'🌸 Duft testen',em:['🌸','✨','💐','🧴','💖']},
  coast:{ic:'👗',t:'Probier ein Outfit bei Coast & Cotton an',ort:'Coast & Cotton',hint:'Durch den Eingang zum Spiegel vor Coast & Cotton gehen',btn:'👗 Outfit anprobieren',em:['👗','👙','👒','✨','🛍️']},
  anleger:{ic:'⚓',t:'Schau vom Kokos-Anleger aufs Meer',ort:'',hint:'Bis an die Spitze des Kokos-Anlegers im Osten gehen',btn:'⚓ Aufs Meer schauen',em:['⚓','🌊','⛵','🐟','✨']},
  feuer:{ic:'🔥',t:'Wärm dich am Lagerfeuer',ort:'',hint:'Zum Lagerfeuer in der Mitte der Kokos-Küste gehen',btn:'🔥 Am Feuer sitzen',em:['🔥','✨','🪵','🌙','🔥']},
