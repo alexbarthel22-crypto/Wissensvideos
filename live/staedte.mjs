@@ -31,13 +31,14 @@ const KEYS = [...STAEDTE.keys()];          // Tippfehler-Erkennung nur für dies
 
 // Alle Orte in Deutschland, Österreich, Schweiz, Liechtenstein, Luxemburg (GeoNames, ca. 11.000 Städte, Gemeinden, Dörfer)
 // Name wird gekürzt angezeigt: „Neustadt an der Weinstraße“ → „Neustadt“, „Halle (Saale)“ → „Halle“
-const ORTE = new Map(), LAND = new Map(), DIR = path.dirname(fileURLToPath(import.meta.url));
+const ORTE = new Map(), LAND = new Map(), INFO = new Map(), DIR = path.dirname(fileURLToPath(import.meta.url));
 const kurz = n => n.split(/ (?:am|an|im|in|vor|ob|bei|auf)(?= )| \(|, | - |\//)[0].trim();
 const ohneAkzent = t => t.normalize('NFKD').replace(/[\u0300-\u036f]/g, '');
 try {
   for (const z of fs.readFileSync(path.join(DIR, 'orte-dach.txt'), 'utf8').split('\n')) {
-    const [n0, land] = z.split('\t'), n = (n0 || '').trim(); if (!n) continue; const k = kurz(n);
+    const [n0, land, region, lat, lng] = z.split('\t'), n = (n0 || '').trim(); if (!n) continue; const k = kurz(n);
     if (land && !LAND.has(k)) LAND.set(k, land.trim());
+    if (lat && !INFO.has(k)) INFO.set(k, { region: region || '', lat: +lat, lng: +lng });
     for (const key of [schluessel(ohneAkzent(n)), schluessel(ohneAkzent(k))]) if (key && !STAEDTE.has(key) && !ORTE.has(key)) ORTE.set(key, k);
   }
 } catch {}
@@ -76,4 +77,19 @@ export function stadtAus(text, streng = false) {
 // Land eines Ortes (DE, AT, CH, LI, LU) – für das Länder-Duell. Bekannte Regionen/Länder ohne Eintrag: geschätzt.
 const LAND_EXTRA = { Wien: 'AT', 'St. Pölten': 'AT', Tirol: 'AT', Kärnten: 'AT', Steiermark: 'AT', Vorarlberg: 'AT', Burgenland: 'AT', Oberösterreich: 'AT', Niederösterreich: 'AT', Österreich: 'AT', Zillertal: 'AT', Ötztal: 'AT', Hallstatt: 'AT',
   Schweiz: 'CH', 'St. Gallen': 'CH', Genf: 'CH', Neuenburg: 'CH', Luxemburg: 'LU', Südtirol: 'IT', Bozen: 'IT', Meran: 'IT', Mallorca: 'ES' };
+// Bundesland/Kanton und Lage (für Nachbar-Duell und Bundesland-Wertung)
+const I = (region, lat, lng) => ({ region, lat, lng });
+const INFO_EXTRA = { München: I('Bayern', 48.137, 11.575), Nürnberg: I('Bayern', 49.452, 11.077), Frankfurt: I('Hessen', 50.11, 8.682), 'Frankfurt Oder': I('Brandenburg', 52.347, 14.551), Villingen: I('Baden-Württemberg', 48.06, 8.459),
+  Greifswald: I('Mecklenburg-Vorpommern', 54.093, 13.387), Stade: I('Niedersachsen', 53.6, 9.476), Sylt: I('Schleswig-Holstein', 54.9, 8.33), Kühlungsborn: I('Mecklenburg-Vorpommern', 54.15, 11.76), Rügen: I('Mecklenburg-Vorpommern', 54.42, 13.4),
+  Wangerooge: I('Niedersachsen', 53.79, 7.9), Timmendorf: I('Schleswig-Holstein', 53.99, 10.78), 'St. Peter-Ording': I('Schleswig-Holstein', 54.3, 8.64), Wien: I('Wien', 48.208, 16.373), 'St. Pölten': I('Niederösterreich', 48.204, 15.626),
+  Genf: I('Genf', 46.204, 6.143), 'St. Gallen': I('St. Gallen', 47.424, 9.377), Hallstatt: I('Oberösterreich', 47.562, 13.649), 'Wanne-Eickel': I('NRW', 51.53, 7.16), Bozen: I('Südtirol', 46.498, 11.354), Meran: I('Südtirol', 46.67, 11.16), Südtirol: I('Südtirol', 46.6, 11.3),
+  Ruhrgebiet: I('NRW', 51.47, 7.2), Pott: I('NRW', 51.47, 7.2), Sauerland: I('NRW', 51.2, 8.1), Münsterland: I('NRW', 51.9, 7.5), Eifel: I('Rheinland-Pfalz', 50.3, 6.7), Westerwald: I('Rheinland-Pfalz', 50.6, 7.9), Allgäu: I('Bayern', 47.7, 10.3), Franken: I('Bayern', 49.6, 10.8), Oberbayern: I('Bayern', 47.9, 11.6), Chiemsee: I('Bayern', 47.87, 12.43), Schwaben: I('Baden-Württemberg', 48.5, 9.6),
+  Schwarzwald: I('Baden-Württemberg', 48.1, 8.2), Bodensee: I('Baden-Württemberg', 47.6, 9.4), Odenwald: I('Hessen', 49.65, 8.95), Taunus: I('Hessen', 50.25, 8.4), Rhön: I('Hessen', 50.45, 9.95), Ostfriesland: I('Niedersachsen', 53.4, 7.5), Emsland: I('Niedersachsen', 52.8, 7.4), Harz: I('Sachsen-Anhalt', 51.75, 10.7),
+  Spreewald: I('Brandenburg', 51.85, 14.0), Erzgebirge: I('Sachsen', 50.6, 13.0), Vogtland: I('Sachsen', 50.45, 12.2), Zillertal: I('Tirol', 47.2, 11.87), Ötztal: I('Tirol', 47.1, 10.95),
+  Bayern: I('Bayern', 48.8, 11.5), NRW: I('NRW', 51.5, 7.5), Niedersachsen: I('Niedersachsen', 52.6, 9.5), Hessen: I('Hessen', 50.6, 9.0), 'Sachsen-Anhalt': I('Sachsen-Anhalt', 51.9, 11.7), MV: I('Mecklenburg-Vorpommern', 53.8, 12.5),
+  'Schleswig-Holstein': I('Schleswig-Holstein', 54.2, 9.8), 'Rheinland-Pfalz': I('Rheinland-Pfalz', 49.9, 7.4), Saarland: I('Saarland', 49.4, 6.95), 'Baden-Württemberg': I('Baden-Württemberg', 48.6, 9.0),
+  Tirol: I('Tirol', 47.25, 11.4), Kärnten: I('Kärnten', 46.7, 13.9), Steiermark: I('Steiermark', 47.2, 15.0), Vorarlberg: I('Vorarlberg', 47.25, 9.9), Burgenland: I('Burgenland', 47.5, 16.5), Oberösterreich: I('Oberösterreich', 48.1, 14.0), Niederösterreich: I('Niederösterreich', 48.3, 15.8),
+  Luxemburg: I('Luxemburg', 49.61, 6.13) };
+const REGION_EXTRA = { Tirol: 'Tirol', Kärnten: 'Kärnten', Steiermark: 'Steiermark', Vorarlberg: 'Vorarlberg', Burgenland: 'Burgenland', Oberösterreich: 'Oberösterreich', Niederösterreich: 'Niederösterreich', Bayern: 'Bayern', Sachsen: 'Sachsen', Hessen: 'Hessen', Thüringen: 'Thüringen', NRW: 'NRW' };
+export function infoVon(name) { return INFO_EXTRA[name] || INFO.get(name) || (REGION_EXTRA[name] ? { region: REGION_EXTRA[name], lat: null, lng: null } : { region: '', lat: null, lng: null }); }
 export function landVon(name) { return LAND_EXTRA[name] || LAND.get(name) || 'DE'; }

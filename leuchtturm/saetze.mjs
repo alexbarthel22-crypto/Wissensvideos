@@ -7,10 +7,18 @@ const SAETZE = {
   ],
   erklaeren: [
     'Schreibt eure Stadt in den Chat, dann bekommt sie eine eigene Insel mit Leuchtturm!',
-    'Jeder Kommentar macht den Leuchtturm eurer Stadt ein Stockwerk höher!',
+    'Jeder Kommentar macht den Leuchtturm eurer Stadt einen Meter höher!',
     'Welche Stadt baut den höchsten Leuchtturm? … Schreibt eure Stadt in den Chat!',
     'Dorf, Stadt oder Gemeinde, alles zählt! … Schreibt einfach euren Ort in den Chat.',
     'Holt eure Freunde aus eurer Stadt dazu, zusammen wächst der Leuchtturm schneller!',
+    'Schreibt ein Herz-Emoji in den Chat, jedes Herz bringt eurer Stadt einen Meter!',
+    'Schreibt das Päckchen-Emoji in den Chat, das ist ein Mega-Bauschub für eure Stadt!',
+    'Wer seine Stadt als Erstes schreibt, wird Gründer und steht für immer am Leuchtturm!',
+  ],
+  bauschub: [
+    'Mega-Bauschub für {stadt}!',
+    'Bauschub! … {stadt} schießt in die Höhe!',
+    '{stadt} wächst und wächst!',
   ],
   neueStadt: [
     'Eine neue Insel für {stadt}!',
@@ -32,11 +40,11 @@ const SAETZE = {
   ],
   fieber: [
     '{stadt} hat das Städte-Fieber! … Jetzt zählt alles doppelt!',
-    'Städte-Fieber in {stadt}! … Doppelte Stockwerke!',
+    'Städte-Fieber in {stadt}! … Doppelte Meter!',
   ],
   meilenstein: [
-    '{stadt} knackt {zahl} Stockwerke!',
-    '{zahl} Stockwerke für {stadt}! … Wahnsinn!',
+    '{stadt} knackt {zahl} Meter!',
+    '{zahl} Meter für {stadt}! … Wahnsinn!',
   ],
   danke: [
     'Danke, {name}!',
@@ -74,6 +82,7 @@ const SAETZE = {
   ],
   tagessieger: [
     '{stadt} ist die Stadt des Tages!',
+    'Heute hat {stadt} am meisten gebaut! … Stadt des Tages!',
   ],
 };
 

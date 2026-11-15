@@ -14,14 +14,14 @@ import { fileURLToPath } from 'node:url';
 import { macheEvents } from './events.mjs';
 import { satz, namenListe, festeSaetze, festeSaetzeAus } from './saetze.mjs';
 import { klarname } from './vornamen.mjs';
-import { stadtAus, landVon } from './staedte.mjs';
+import { stadtAus, landVon, infoVon } from './staedte.mjs';
 import { geminiStimme } from './gemini-stimme.mjs';
 import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './filter.mjs';
 
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-16 a';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-16 b';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 // Stimmen und Kerstin-Modell mit Muschel-Tal LIVE teilen (gleicher Speicher = schon erzeugte Leda-Sätze kosten nichts)
@@ -30,10 +30,20 @@ const WERKZEUG = [path.join(DIR, 'werkzeug'), ...(MUSCHELTAL ? [path.join(MUSCHE
 const werkzeugMit = sub => WERKZEUG.find(w => fs.existsSync(path.join(w, sub))) || WERKZEUG[0];
 
 // ---------- Spielstand ----------
-const leer = () => ({ staedte: {}, spieler: {}, likesGesamt: 0, sieger: [] });
+const leer = () => ({ staedte: {}, spieler: {}, likesGesamt: 0, sieger: [], woche: { id: '', m: {} }, heute: { id: '', m: {} } });
 let S = leer();
 try { S = { ...leer(), ...JSON.parse(fs.readFileSync(STAND, 'utf8')) }; } catch {}
 if (TEST && process.argv.includes('--neu')) S = leer();
+for (const st of Object.values(S.staedte)) if (st.region == null || st.lat === undefined) Object.assign(st, infoVon(st.name));   // ältere Stände ergänzen
+// Wochen- und Tageswertung (Meter, die in dieser Woche / heute dazugekommen sind)
+const wocheId = () => { const d = new Date(), t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate())), w = t.getUTCDay() || 7; t.setUTCDate(t.getUTCDate() + 4 - w); return t.getUTCFullYear() + '-W' + Math.ceil(((t - Date.UTC(t.getUTCFullYear(), 0, 1)) / 864e5 + 1) / 7); };
+const tagId = () => new Date().toLocaleDateString('sv-SE');
+function zaehle(name, um) {
+  if (S.woche?.id !== wocheId()) S.woche = { id: wocheId(), m: {} };
+  if (S.heute?.id !== tagId()) S.heute = { id: tagId(), m: {} };
+  S.woche.m[name] = (S.woche.m[name] || 0) + um; S.heute.m[name] = (S.heute.m[name] || 0) + um;
+}
+const top = (m, n = 5) => Object.entries(m || {}).sort((a, b) => b[1] - a[1]).slice(0, n).map(([name, m]) => ({ name, m, land: S.staedte[name]?.land || 'DE' }));
 let geaendert = false;
 const speichern = () => { if (!geaendert || TEST) return; fs.writeFileSync(STAND, JSON.stringify(S)); geaendert = false; };
 setInterval(speichern, 10000);
@@ -64,16 +74,16 @@ const TURM_UPGRADES = [[10, 'eine Fahne'], [25, 'leuchtende Fenster'], [50, 'ein
 const rangListe = () => Object.values(S.staedte).sort((a, b) => b.stock - a.stock);
 let fuehrender = null, fuehrungAnsage = 0, upAnsage = 0, neuAnsage = 0;
 const plusPuffer = new Map();                                // „+1“-Anzeigen sammeln (nicht jedes Stockwerk einzeln schicken)
-function turmWachsen(name, um, p) {
+function turmWachsen(name, um, p, art) {
   const s = S.staedte[name]; if (!s || um <= 0) return;
-  const vorher = s.stock; s.stock += um; geaendert = true;
+  const vorher = s.stock; s.stock += um; geaendert = true; zaehle(name, um);
   if (p) { p.beitrag = (p.beitrag || 0) + um; s.baumeister ||= {}; s.baumeister[p.name] = (s.baumeister[p.name] || 0) + um; }
-  const pp = plusPuffer.get(name) || { n: 0, wer: null }; pp.n += um; if (p) pp.wer = p.name; plusPuffer.set(name, pp);
+  const pp = plusPuffer.get(name) || { n: 0, wer: null, art: '' }; pp.n += um; if (p) pp.wer = p.name; if (art) pp.art = art; plusPuffer.set(name, pp);
   const up = TURM_UPGRADES.filter(([n]) => vorher < n && s.stock >= n).pop();
   if (up) { sende({ typ: 'upgrade', stadt: name, stock: up[0], was: up[1] }); if (Date.now() - upAnsage > 20000) { upAnsage = Date.now(); sag(satz('upgrade', { stadt: name, was: up[1] }), 2); } }
   fuehrungPruefen();
 }
-setInterval(() => { if (!plusPuffer.size) return; sende({ typ: 'plus', l: [...plusPuffer].map(([stadt, v]) => ({ stadt, n: v.n, wer: v.wer })) }); plusPuffer.clear(); zustand(); }, 700);
+setInterval(() => { if (!plusPuffer.size) return; sende({ typ: 'plus', l: [...plusPuffer].map(([stadt, v]) => ({ stadt, n: v.n, wer: v.wer, art: v.art })) }); plusPuffer.clear(); zustand(); }, 700);
 function fuehrungPruefen() {
   const [a, b] = rangListe(); if (!a) return;
   if (fuehrender && a.name !== fuehrender && Date.now() - fuehrungAnsage > 60000) {
@@ -113,7 +123,7 @@ function kommentar(u, text) {
     if (st) {
       p.stadt = st; p.stadtZeit = Date.now(); geaendert = true;
       const neu = !S.staedte[st];
-      const s = S.staedte[st] ||= { name: st, stock: 0, leute: 0, seit: Date.now(), land: landVon(st) };
+      const s = S.staedte[st] ||= { name: st, stock: 0, leute: 0, seit: Date.now(), land: landVon(st), ...infoVon(st), gruender: p.name };
       if (neu) S.neueste = st;
       s.leute++;
       turmWachsen(st, 1, p);
@@ -125,14 +135,31 @@ function kommentar(u, text) {
   }
   // 2. Event-Antwort
   eventAntwort(p, text);
-  // 3. Jeder Kommentar: +1 Stockwerk für die eigene Stadt (pro Person höchstens alle 30 s, im Turbo alle 10 s, im Fieber doppelt)
+  // 3. Jeder Kommentar: +1 m für die eigene Stadt (pro Person höchstens alle 30 s, im Turbo alle 10 s, im Fieber doppelt)
+  //    🎁 im Chat = Mega-Bauschub (+25 m, pro Person alle 60 s), ❤️ im Chat = +1 m (pro Person alle 5 s; im Herz-Regen +2 m alle 2 s)
   if (!p.stadt || !S.staedte[p.stadt]) return;
-  const s = S.staedte[p.stadt], turbo = EV.turbo(), abstand = (turbo ? 10 : (CFG.turm.proKommentarSek ?? 30)) * 1000;
+  const s = S.staedte[p.stadt], turbo = EV.turbo(), regen = EV.herzregen(), T = CFG.turm, fieber = s.fieberBis > Date.now() ? 2 : 1;
   fieberPruefen(s, p);
-  if (Date.now() - (p.stadtZeit || 0) < abstand) return;
-  p.stadtZeit = Date.now();
-  const n = s.fieberBis > Date.now() ? 2 : 1; turmWachsen(s.name, n, p); if (turbo) turbo.n += n;
+  const jetzt = Date.now();
+  if (GESCHENK_EMOJI.test(text) && jetzt - (p.geschenkZeit || 0) >= (T.geschenkEmojiSek ?? 60) * 1000) {
+    p.geschenkZeit = jetzt; p.stadtZeit = jetzt; const n = (T.geschenkEmojiMeter ?? 25) * fieber;
+    turmWachsen(s.name, n, p, 'geschenk'); sende({ typ: 'bauschub', stadt: s.name, name: p.name, n }); if (turbo) turbo.n += n;
+    if (Date.now() - bauschubAnsage > 20000) { bauschubAnsage = Date.now(); sag(satz('bauschub', { stadt: s.name }), 2); }
+    return;
+  }
+  if (HERZ_EMOJI.test(text) && jetzt - (p.herzZeit || 0) >= (regen ? 2 : (T.herzEmojiSek ?? 5)) * 1000) {
+    p.herzZeit = jetzt; p.stadtZeit = jetzt; const n = (regen ? 2 : (T.herzEmojiMeter ?? 1)) * fieber;
+    turmWachsen(s.name, n, p, 'herz'); if (regen) regen.n += n; if (turbo) turbo.n += n;
+    return;
+  }
+  const abstand = (turbo ? 10 : (T.proKommentarSek ?? 30)) * 1000;
+  if (jetzt - (p.stadtZeit || 0) < abstand) return;
+  p.stadtZeit = jetzt;
+  turmWachsen(s.name, fieber, p); if (turbo) turbo.n += fieber;
 }
+const GESCHENK_EMOJI = /🎁/u, HERZ_EMOJI = /(❤|♥|💖|💗|💓|💕|💞|💘|💝|🧡|💛|💚|💙|💜|🤍|🖤|🤎|🩷|🩵|🩶|😍|🥰|<3)/u;
+let bauschubAnsage = 0;
+
 // Herzen: still – je X Herzen einer Person 1 Stockwerk für ihre Stadt (wird nie angesagt oder angezeigt)
 function like(u, anzahl) {
   S.likesGesamt += anzahl; likeLog.push([Date.now(), anzahl]);
@@ -488,9 +515,9 @@ function beitritt(u) {
 }
 // Stream-Ende: Stadt des Tages
 function streamEnde() {
-  const top = rangListe()[0]; if (!top) return;
-  S.sieger = [{ stadt: top.name, datum: new Date().toISOString().slice(0, 10), stock: top.stock }, ...(S.sieger || [])].slice(0, 30); geaendert = true;
-  sende({ typ: 'tagessieger', stadt: top.name }); sag(satz('tagessieger', { stadt: top.name }), 0); speichern();
+  const heute = top(S.heute?.id === tagId() ? S.heute.m : {}, 1)[0] || (rangListe()[0] && { name: rangListe()[0].name, m: 0 }); if (!heute) return;
+  S.sieger = [{ stadt: heute.name, datum: tagId(), m: heute.m }, ...(S.sieger || [])].slice(0, 30); geaendert = true;
+  sende({ typ: 'tagessieger', stadt: heute.name, m: heute.m }); sag(satz('tagessieger', { stadt: heute.name }), 0); speichern();
 }
 
 // ---------- Seite + Live-Daten (Server-Sent Events) ----------
@@ -520,8 +547,9 @@ function oeffentlich() {
   const l = rangListe();
   return {
     ...EV.oeffentlich(), spieler: [],
-    staedte: l.slice(0, 40).map(s => ({ name: s.name, stock: s.stock, leute: s.leute, land: s.land, fieber: s.fieberBis > Date.now(), baumeister: Object.entries(s.baumeister || {}).sort((a, b) => b[1] - a[1])[0]?.[0] || '' })),
-    anzahlStaedte: l.length, neueste: S.neueste || null, stockGesamt: l.reduce((a, s) => a + s.stock, 0), laender: l.reduce((m, s) => (m[s.land || '?'] = (m[s.land || '?'] || 0) + 1, m), {}), ort: CFG.ort, sieger: S.sieger?.[0]?.stadt || null, tiktokName: CFG.tiktokName, test: TEST, ton: CFG.ton, musik: MUSIK_LISTE, bildrate: CFG.bildrate || 30,
+    staedte: l.slice(0, 40).map(s => ({ name: s.name, stock: s.stock, leute: s.leute, land: s.land, region: s.region || '', gruender: s.gruender || '', fieber: s.fieberBis > Date.now(), baumeister: Object.entries(s.baumeister || {}).sort((a, b) => b[1] - a[1])[0]?.[0] || '' })),
+    anzahlStaedte: l.length, woche: top(S.woche?.id === wocheId() ? S.woche.m : {}), heute: top(S.heute?.id === tagId() ? S.heute.m : {}),
+    regionen: Object.entries(l.reduce((m, s) => { if (s.region) { const r = m[s.region] ||= { m: 0, land: s.land }; r.m += s.stock; } return m; }, {})).sort((a, b) => b[1].m - a[1].m).slice(0, 5).map(([name, r]) => ({ name, m: r.m, land: r.land })), neueste: S.neueste || null, stockGesamt: l.reduce((a, s) => a + s.stock, 0), laender: l.reduce((m, s) => (m[s.land || '?'] = (m[s.land || '?'] || 0) + 1, m), {}), ort: CFG.ort, sieger: S.sieger?.[0]?.stadt || null, tiktokName: CFG.tiktokName, test: TEST, ton: CFG.ton, musik: MUSIK_LISTE, bildrate: CFG.bildrate || 30,
   };
 }
 
