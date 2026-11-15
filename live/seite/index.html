@@ -803,13 +803,19 @@ const ICON = { leuchtturm: '🗼', markt: '🏪', bruecke: '🌉', riesenrad: '�
 // wächst immer langsamer; ganz oben verschwindet die Spitze in Wolken.
 const TURM_MAX = 470;
 const turmHoehe = n => Math.min(TURM_MAX, 34 + 62 * Math.log2(1 + n / 4));
+// Ringe im Meer: Ring 1 (Küste) hat 15 Plätze, jeder weitere Ring liegt weiter draußen und hat 4 Plätze mehr.
+// Bessere Plätze = näher an der Insel und oben in der Mitte. Unten (Steg) steht nie ein Turm.
 function turmPlaetze(n) {
-  const k = BASIS_K || 1, reihen = [], out = [];
-  for (let i = 0; i < n; i++) reihen.push(i);
-  // Platz 1 oben in der Mitte, dann abwechselnd links/rechts nach außen
-  const ord = []; for (let i = 0; i < n; i++) ord.push(i === 0 ? 0 : (i % 2 ? -1 : 1) * Math.ceil(i / 2));
-  const schritt = n > 1 ? Math.min(.17, 1.15 / Math.max(1, n - 1)) : 0;
-  ord.forEach(o => { const a = Math.PI * 1.5 + o * schritt * Math.PI, r = rand(a) * k * 1.19; out.push({ x: IX + Math.cos(a) * RX * r, y: IY + Math.sin(a) * RY * r }); });
+  const k = BASIS_K || 1, out = [];
+  let i = 0, ring = 0;
+  while (i < n) {
+    const platz = 15 + ring * 4, imRing = Math.min(platz, n - i), schritt = 1.15 / (platz - 1), radius = 1.19 + ring * .2;
+    for (let j = 0; j < imRing; j++, i++) {
+      const o = j === 0 ? 0 : (j % 2 ? -1 : 1) * Math.ceil(j / 2), a = Math.PI * (1.5 + o * schritt + (ring % 2) * schritt / 2), r = rand(a) * k * radius;
+      out.push({ x: IX + Math.cos(a) * RX * r, y: IY + Math.sin(a) * RY * r, ring });
+    }
+    ring++;
+  }
   return out;
 }
 // Kamera so, dass der ganze Turm samt Schild zwischen Kopfbereich und unterem Rand steht
@@ -823,7 +829,8 @@ function turmPos(name) { const l = S.staedte || [], i = l.findIndex(x => x.name 
 function leuchttuerme(t) {
   const l = S.staedte || []; if (!l.length) return;
   const pl = turmPlaetze(l.length), c = X;
-  l.forEach((st, i) => {
+  const folge = l.map((st, i) => i).sort((a, b) => pl[a].y - pl[b].y);
+  folge.forEach(i => { const st = l[i];
     const { x, y } = pl[i], h = turmHoehe(st.stock), w0 = 30 + h * .05, w1 = 18 + h * .025, oben = y - h, wolke = h >= TURM_MAX;
     if (!sichtbar(x, y - h / 2, h / 2 + 160)) return;
     const n = st.stock, ks = Math.max(1, h / 170), um = () => { c.save(); c.translate(x, oben); c.scale(ks, ks); c.translate(-x, -oben); };

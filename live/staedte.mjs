@@ -7,17 +7,40 @@ const LISTE = `Berlin|Hamburg|München|Köln|Frankfurt am Main=Frankfurt|Stuttga
 
 const FUELL = new Set(['ich', 'bin', 'komme', 'komm', 'aus', 'von', 'vom', 'wohne', 'in', 'im', 'team', 'stadt', 'gruesse', 'grusse', 'gruss', 'hallo', 'hi', 'hey', 'moin', 'liebe', 'lg', 'nach', 'fuer', 'go', 'los', 'mit', 'die', 'der', 'das', 'an', 'am', 'aus', 'bei', 'live', 'wir', 'sind']);
 const schluessel = t => norm(t).split(' ').filter(x => x && !FUELL.has(x)).join(' ');
+const ohneUmlaut = k => k.replace(/ae/g, 'a').replace(/oe/g, 'o').replace(/ue/g, 'u');   // „koln“, „munchen“, „zurich“
 const STAEDTE = new Map();          // normalisierter Name/Alias → Anzeigename
 for (const e of LISTE.split('|')) {
   const [anzeige, alias] = e.split('=');
   const name = (alias || anzeige).trim();
-  STAEDTE.set(schluessel(anzeige), name); STAEDTE.set(schluessel(name), name);
+  for (const k of [schluessel(anzeige), schluessel(name)]) { STAEDTE.set(k, name); if (!STAEDTE.has(ohneUmlaut(k))) STAEDTE.set(ohneUmlaut(k), name); }
 }
+
+// Tippfehler: Damerau-Abstand (Vertauschen zählt als 1 Fehler: „hambrug“ → „hamburg“)
+function abstand(a, b) {
+  const d = Array.from({ length: a.length + 1 }, (_, i) => [i]); for (let j = 1; j <= b.length; j++) d[0][j] = j;
+  for (let i = 1; i <= a.length; i++) for (let j = 1; j <= b.length; j++) {
+    d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+    if (i > 1 && j > 1 && a[i - 1] === b[j - 2] && a[i - 2] === b[j - 1]) d[i][j] = Math.min(d[i][j], d[i - 2][j - 2] + 1);
+  }
+  return d[a.length][b.length];
+}
+const KEYS = [...STAEDTE.keys()];
+// Ähnliche Schreibweise: ab 6 Buchstaben 1 Fehler, ab 9 Buchstaben 2 Fehler – nur wenn genau EINE Stadt passt
+function aehnlich(k) {
+  if (k.length < 6 || ALLTAG.has(k)) return null;
+  const max = k.length >= 9 ? 2 : 1, treffer = new Set();
+  for (const s of KEYS) if (Math.abs(s.length - k.length) <= max && s[0] === k[0] && abstand(k, s) <= max) treffer.add(STAEDTE.get(s));
+  return treffer.size === 1 ? [...treffer][0] : null;
+}
+// Alltagswörter, die wie Städte aussehen, nie umdeuten
+const ALLTAG = new Set(['hallo', 'halloo', 'danke', 'schoen', 'schon', 'bitte', 'lieben', 'liebe', 'gruesse', 'haeuser', 'hause', 'zuhause', 'muschel', 'muscheln', 'strand', 'sommer', 'sonne', 'bremse', 'wiener', 'berliner', 'hamburger', 'kieler', 'koelner', 'essens', 'essen']);
 
 // Gibt den Anzeigenamen der Stadt zurück – oder null
 export function stadtAus(text) {
   const w = norm(text).split(' ').filter(x => x && !FUELL.has(x));
   if (w.length >= 2 && w.every(x => x === w[0])) w.length = 1;   // „berlin berlin“
   if (!w.length || w.length > 4) return null;
-  return STAEDTE.get(w.join(' ')) || (w.length > 1 ? STAEDTE.get(w[0]) && w.slice(1).every(x => x.length <= 2) ? STAEDTE.get(w[0]) : null : null) || null;
+  const k = w.join(' ');
+  return STAEDTE.get(k) || (w.length > 1 ? STAEDTE.get(w[0]) && w.slice(1).every(x => x.length <= 2) ? STAEDTE.get(w[0]) : null : null)
+    || (w.length === 1 ? aehnlich(k) : null) || null;
 }
