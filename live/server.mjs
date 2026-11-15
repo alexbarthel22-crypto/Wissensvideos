@@ -21,7 +21,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-16 w';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-16 x';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -692,7 +692,7 @@ setTimeout(vorwaermen, 3000);
 const CACHE_DIR = path.join(DIR, 'werkzeug', 'stimme'); fs.mkdirSync(CACHE_DIR, { recursive: true });
 var LEDA = geminiStimme({ dir: DIR, cacheDir: CACHE_DIR, cfg: CFG.stimme });
 if (ECHT) console.log(LEDA.an() ? `🎙️  Moderation: Leda (Gemini, mit Gefühl) – ${LEDA.info()}.` : CFG.stimme.engine === 'gemini' ? 'ℹ️  Kein Gemini-Schlüssel (gemini-schluessel.txt) – Kerstin moderiert.' : '');
-try { const f = fs.readdirSync(CACHE_DIR).map(n => ({ n, t: fs.statSync(path.join(CACHE_DIR, n)).mtimeMs })).sort((a, b) => b.t - a.t); f.slice(2000).forEach(x => fs.unlinkSync(path.join(CACHE_DIR, x.n))); } catch {}
+try { const f = fs.readdirSync(CACHE_DIR).filter(n => n.endsWith('.wav')).map(n => ({ n, t: fs.statSync(path.join(CACHE_DIR, n)).mtimeMs })).sort((a, b) => b.t - a.t); f.slice(2000).forEach(x => fs.unlinkSync(path.join(CACHE_DIR, x.n))); } catch {}
 
 // ---------- Ton-Absicherung ----------
 // Läuft auf keiner Live-Seite Ton (Browser blockiert ihn), spielen Stimme und Musik direkt über die Mac-Lautsprecher.

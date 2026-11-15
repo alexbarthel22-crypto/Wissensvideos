@@ -31,12 +31,13 @@ const KEYS = [...STAEDTE.keys()];          // Tippfehler-Erkennung nur für dies
 
 // Alle Orte in Deutschland, Österreich, Schweiz, Liechtenstein, Luxemburg (GeoNames, ca. 11.000 Städte, Gemeinden, Dörfer)
 // Name wird gekürzt angezeigt: „Neustadt an der Weinstraße“ → „Neustadt“, „Halle (Saale)“ → „Halle“
-const ORTE = new Map(), DIR = path.dirname(fileURLToPath(import.meta.url));
+const ORTE = new Map(), LAND = new Map(), DIR = path.dirname(fileURLToPath(import.meta.url));
 const kurz = n => n.split(/ (?:am|an|im|in|vor|ob|bei|auf)(?= )| \(|, | - |\//)[0].trim();
 const ohneAkzent = t => t.normalize('NFKD').replace(/[\u0300-\u036f]/g, '');
 try {
   for (const z of fs.readFileSync(path.join(DIR, 'orte-dach.txt'), 'utf8').split('\n')) {
-    const n = z.trim(); if (!n) continue; const k = kurz(n);
+    const [n0, land] = z.split('\t'), n = (n0 || '').trim(); if (!n) continue; const k = kurz(n);
+    if (land && !LAND.has(k)) LAND.set(k, land.trim());
     for (const key of [schluessel(ohneAkzent(n)), schluessel(ohneAkzent(k))]) if (key && !STAEDTE.has(key) && !ORTE.has(key)) ORTE.set(key, k);
   }
 } catch {}
@@ -69,3 +70,8 @@ export function stadtAus(text, streng = false) {
   if (ort && ((!MEHRDEUTIG.has(k) && k.length >= 3 && !streng) || absicht)) return ort;
   return (w.length === 1 && !streng ? aehnlich(k) : null) || null;
 }
+
+// Land eines Ortes (DE, AT, CH, LI, LU) – für das Länder-Duell. Bekannte Regionen/Länder ohne Eintrag: geschätzt.
+const LAND_EXTRA = { Tirol: 'AT', Kärnten: 'AT', Steiermark: 'AT', Vorarlberg: 'AT', Burgenland: 'AT', Oberösterreich: 'AT', Niederösterreich: 'AT', Österreich: 'AT', Zillertal: 'AT', Ötztal: 'AT', Hallstatt: 'AT',
+  Schweiz: 'CH', 'St. Gallen': 'CH', Genf: 'CH', Neuenburg: 'CH', Luxemburg: 'LU', Südtirol: 'IT', Bozen: 'IT', Meran: 'IT', Mallorca: 'ES' };
+export function landVon(name) { return LAND_EXTRA[name] || LAND.get(name) || 'DE'; }
