@@ -20,7 +20,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-15 u';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-15 v';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -175,6 +175,16 @@ function farbeAus(p, t) {                                 // „blau“ → Haus
   p.farbe = f; geaendert = true;
   if (einmal(p.id, 'farbe', 60000)) sag(`${sprechName(p)} streicht das Haus ${anzeige}!`, 2);
 }
+// Chat-Antworten großzügig erkennen: „Rot!“, „rot 🔥“, „ich nehme rot“, „FANG!!“ zählen wie „rot“ / „fang“
+const sauber = t => String(t || '').toLowerCase().replace(/[^\p{L}\p{N}\s]/gu, ' ').replace(/\s+/g, ' ').trim();
+function eventAntwort(p, t, probe) {
+  const versuch = x => probe ? EV.waereAntwort(x) : EV.kommentar(p, x);
+  const s = sauber(t); if (!s) return false;
+  if (versuch(t) || (s !== t && versuch(s))) return true;
+  const w = s.split(' ');
+  if (w.length > 1 && w.length <= 6) for (const x of w) if (x.length >= 1 && versuch(x)) return true;
+  return false;
+}
 function kommentar(u, text) {
   const id0 = String(u.uniqueId || '').toLowerCase(), t = String(text || '').toLowerCase().trim();
   if (!id0 || gesperrt(id0)) return;
@@ -184,14 +194,14 @@ function kommentar(u, text) {
     const loestAufgabe = aufgabe?.art === 'wort' && normal(t).includes(normal(aufgabe.wort));   // Mini-Aufgabe mitmachen baut ein Zelt
     if (!loestAufgabe) {
       if (!EV.laeuft()) { if (t.split(/[^a-zäöüß]+/).some(w => CFG.farben[w])) erstLiken(u, 'farbe'); return; }
-      if (!EV.waereAntwort(t)) return;                      // während Events: nur echte Event-Antworten bauen ein Zelt
+      if (!eventAntwort(null, t, true)) return;             // während Events: nur echte Event-Antworten bauen ein Zelt
     }
   }
   const p = spieler(u); if (!p) return;
   if (Date.now() - (p.kommentarBonus || 0) > 30000) { p.kommentarBonus = Date.now(); gibMuscheln(p, CFG.muschelnProKommentar ?? 2, 'kommentar'); }
   farbeAus(p, t);                                          // Farbe gilt immer – auch wenn das Wort gleichzeitig eine Event-Antwort ist
   if (aufgabeKommentar(p, t)) return;
-  if (EV.kommentar(p, t)) { geaendert = true; zustand(); return; }   // Event-Antworten (rot, flasche, A, 42 …)
+  if (eventAntwort(p, t)) { geaendert = true; zustand(); return; }   // Event-Antworten (rot, flasche, A, 42 …) – auch mit Satzzeichen/Emoji/im Satz
   if (istHausWunsch(t) && !hausWunsch.includes(p.id) && Date.now() - (hausGezeigt[p.id] || 0) > 120000) {
     hausWunsch.push(p.id); if (hausWunsch.length > 20) hausWunsch.shift();
   }
