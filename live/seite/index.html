@@ -1706,7 +1706,7 @@ function kopf(t) {
   }
   karte(SL, y3, lw, 156, '#fff3c4', 28);
   if (seite === seiten - 1 && (S.staedte || []).length) {
-    text('🗼 Welche Stadt gewinnt?', SL + 22, y3 + 28, 27, INK, 'left', 900, lw - 44);
+    text('🗼 Welche Stadt führt?', SL + 22, y3 + 28, 27, INK, 'left', 900, lw - 44);
     (S.staedte || []).slice(0, 3).forEach((st, k) => { const y = y3 + 66 + k * 34;
       text(`${k + 1}. ${st.name}`, SL + 22, y, 24, INK, 'left', 800, 280); text(`${st.stock.toLocaleString('de-DE')} 🏢`, SL + lw - 22, y, 23, INK, 'right', 900, 200); });
   } else if (seite === 3 && S.projekt) {
@@ -1717,7 +1717,7 @@ function kopf(t) {
     X.strokeStyle = INK; X.lineWidth = 3; rr(SL + 22, y3 + 58, lw - 44, 32, 16); X.stroke();
     text(`${Math.floor(pr.stand).toLocaleString('de-DE')} / ${pr.ziel.toLocaleString('de-DE')} 🐚 aus der Kasse`, SL + 22, y3 + 122, 24, '#8a5a2b', 'left', 800, lw - 44);
   } else if (seite === 2) {
-    [['🎁', 'Mini-Aufgabe = 5 🐚 fürs Haus'], ['🏝️', 'Kasse baut Gebäude für alle'], ['🎨', 'Schreib „rot“, „blau“ … = Farbe']].forEach(([i, s], k) => {
+    [['🎁', 'Mini-Aufgabe = 5 🐚 fürs Haus'], ['🏝️', 'Kasse baut Gebäude für alle'], ['🎨', 'Schreib, welche Farbe dein Haus haben soll']].forEach(([i, s], k) => {
       text(i, SL + 16, y3 + 32 + k * 45, 27, INK, 'left', 400); text(s, SL + 58, y3 + 32 + k * 45, 26, INK, 'left', 800, lw - 78);
     });
   } else if (seite === 1) {
