@@ -484,7 +484,10 @@ export function macheEvents(api) {
     },
     turmquiz: {
       titel: 'Städte-Quiz', icon: '🧠', dauer: 45,
-      start(e) { e.f = zufall([['Wo steht der Kölner Dom?', 'köln'], ['Wo steht das Brandenburger Tor?', 'berlin'], ['Wo findet das Oktoberfest statt?', 'münchen'], ['Wo steht die Elbphilharmonie?', 'hamburg'], ['Wo steht der Stephansdom?', 'wien'], ['Wo steht das Holstentor?', 'lübeck'], ['Welche Stadt hat die Bremer Stadtmusikanten?', 'bremen'], ['Wo steht die Frauenkirche mit dem Zwinger?', 'dresden'], ['Wo steht das Völkerschlachtdenkmal?', 'leipzig']]); e.sieger = [];
+      start(e) { e.f = zufall([['Wo steht der Kölner Dom?', 'köln'], ['Was ist die Hauptstadt von Deutschland?', 'berlin'], ['In welcher Stadt ist das Oktoberfest?', 'münchen'],
+        ['Wo ist der Hamburger Hafen?', 'hamburg'], ['Wo steht der Eiffelturm?', 'paris'], ['Wo steht das Kolosseum?', 'rom'], ['In welcher Stadt steht Big Ben?', 'london'],
+        ['Was ist die Hauptstadt von Österreich?', 'wien'], ['Woher kommen die Bremer Stadtmusikanten?', 'bremen'], ['Woher kommen Frankfurter Würstchen?', 'frankfurt'],
+        ['Woher kommen Nürnberger Lebkuchen?', 'nürnberg'], ['Wo steht das Brandenburger Tor?', 'berlin']]); e.sieger = [];
         return `Städte-Quiz! ${e.f[0]} Die ersten fünf Richtigen bringen ihrer Stadt zehn Stockwerke!`; },
       kommentar(e, p, t) { if (!wortGleich(t, e.f[1]) || t.length > e.f[1].length + 4) return; if (!e.sieger.includes(p) && e.sieger.length < 5) { e.sieger.push(p); if (p.stadt) api.turmWachsen(p.stadt, 10); if (e.sieger.length >= 5) e.frueh = true; } return true; },
       anzeige: e => ({ text: `${e.f[0]}  (${e.sieger.length}/5 richtig)` }),
@@ -603,7 +606,7 @@ export function macheEvents(api) {
       anzeige: e => ({ text: `${e.s}  → in den Chat! (${e.dabei.size} Antworten)` }),
       ende(e) { const l = [...e.dabei]; if (!l.length) return { text: 'Keine Antworten …' }; const p = zufall(l); api.belohne(p, 30); return { text: `${l.length} Antworten – ausgelost: ${p.name} (+30 🐚)`, sag: `Ausgelost wurde ${api.name(p)}!`, gut: true, id: p.id }; },
     },
-    ...quizEvent('hauptstadt', 'Hauptstadt-Quiz', '🌍', 'Hauptstadt-Quiz! Wie heißt die Hauptstadt von', [['Spanien', 'madrid'], ['Italien', 'rom'], ['Frankreich', 'paris'], ['Portugal', 'lissabon'], ['Griechenland', 'athen'], ['Österreich', 'wien'], ['Norwegen', 'oslo'], ['Japan', 'tokio']], (f) => `${f[0]}?`),
+    ...quizEvent('hauptstadt', 'Hauptstadt-Quiz', '🌍', 'Hauptstadt-Quiz! Wie heißt die Hauptstadt von', [['Spanien', 'madrid'], ['Italien', 'rom'], ['Frankreich', 'paris'], ['England', 'london'], ['Griechenland', 'athen'], ['Österreich', 'wien'], ['Deutschland', 'berlin'], ['Japan', 'tokio']], (f) => `${f[0]}?`),
     ...quizEvent('tierlaute', 'Tierlaute', '🐮', 'Tierlaute! Welches Tier macht', [['kikeriki', 'hahn'], ['muh', 'kuh'], ['quak', 'frosch'], ['mäh', 'schaf'], ['wau', 'hund'], ['miau', 'katze'], ['iah', 'esel'], ['oink', 'schwein']], (f) => `„${f[0]}“?`),
     ...quizEvent('lueckenwort', 'Lückenwort', '🧩', 'Lückenwort! Welches Wort ist das:', [['M _ S C H _ L', 'muschel'], ['P _ L M _', 'palme'], ['S _ N D B _ R G', 'sandburg'], ['K R _ B B _', 'krabbe'], ['D _ L F _ N', 'delfin'], ['W _ L L _', 'welle'], ['A N _ N _ S', 'ananas'], ['L _ G _ N E', 'lagune']], (f) => f[0], true),
     ...quizEvent('rueckwaerts', 'Rückwärts-Wort', '🔄', 'Rückwärts gelesen! Welches Wort steht hier rückwärts:', [['LEHCSUM', 'muschel'], ['DNARTS', 'strand'], ['EMLAP', 'palme'], ['MRUTTHCUEL', 'leuchtturm'], ['NIFLED', 'delfin'], ['ELLAUQ', 'qualle'], ['LESNI', 'insel'], ['ENNOS', 'sonne']], (f) => f[0], true),
