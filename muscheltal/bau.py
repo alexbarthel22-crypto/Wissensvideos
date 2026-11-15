@@ -526,8 +526,8 @@ def berufe(sauber, insel, out):
     teile = []
     for ort in sorted(orte, key=lambda o: (o != "Muschelpalast", o)):
         leute = sorted(orte[ort], key=lambda x: (rang.get(x[0], 5), nr[x[1].lower()]))
-        li = "".join(f'<a class="p{" chef" if x[0] in rang else ""}" href="./?n={quote("@" + x[1])}"{f' data-bis="{x[2]}"' if x[2] else ""}><b>{H.escape("👑 " if x[0] == "Palast-Leitung" else "⭐ " if rang.get(x[0]) == 1 else "🎖️ " if rang.get(x[0]) == 0 else "")}@{H.escape(x[1])}</b><span>{H.escape(x[0])}{H.escape(" · bis Mo " + ".".join(str(int(t)) for t in reversed(x[2][:10].split("-")[1:])) + "." + (", " + str(int(x[2][11:13])) + " Uhr" if len(x[2]) > 10 else "")) if x[2] else ""}</span></a>' for x in leute)
-        teile.append(f'<section><a class="ort" href="./?ort={quote(ort)}">{emo.get(ort, "📍")} {H.escape(ort)} <small>auf der Karte ansehen →</small></a><div class="pl">{li}</div></section>')
+        li = "".join(f'<a class="p{" chef" if x[0] in rang else ""}" data-s="{H.escape((x[1] + " " + x[0]).lower())}" href="./?n={quote("@" + x[1])}"{f' data-bis="{x[2]}"' if x[2] else ""}><b>{H.escape("👑 " if x[0] == "Palast-Leitung" else "⭐ " if rang.get(x[0]) == 1 else "🎖️ " if rang.get(x[0]) == 0 else "")}@{H.escape(x[1])}</b><span>{H.escape(x[0])}{H.escape(" · bis Mo " + ".".join(str(int(t)) for t in reversed(x[2][:10].split("-")[1:])) + "." + (", " + str(int(x[2][11:13])) + " Uhr" if len(x[2]) > 10 else "")) if x[2] else ""}</span></a>' for x in leute)
+        teile.append(f'<section data-ort="{H.escape(ort.lower())}"><a class="ort" href="./?ort={quote(ort)}">{emo.get(ort, "📍")} {H.escape(ort)} <small>auf der Karte ansehen →</small></a><div class="pl">{li}</div></section>')
     seite = head + "\n" + keep + """
 .hint{background:#fff;border:3px dashed var(--ink);border-radius:18px;padding:14px;margin:4px 0 18px;font-weight:800;text-align:center}
 .hint a{color:var(--hib)}
@@ -539,12 +539,20 @@ section{background:#fff;border:3px solid var(--ink);border-radius:20px;padding:1
 .p b{flex:1 1 auto;min-width:0;overflow-wrap:anywhere}
 .p span{flex:none;font-size:14px;font-weight:900;color:#fff;background:var(--ink);border-radius:999px;padding:2px 10px}
 .p.chef span{background:var(--hib)}
+.such{position:relative;margin:0 0 16px}.such input{width:100%;font:800 17px var(--f);padding:13px 44px 13px 44px;border:3px solid var(--ink);border-radius:16px;background:#fff;box-shadow:3px 3px 0 var(--ink);outline:none;color:var(--ink)}
+.such:before{content:"🔎";position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:18px}
+.such button{position:absolute;right:10px;top:50%;transform:translateY(-50%);border:0;background:#f0e2c8;border-radius:50%;width:28px;height:28px;font:900 15px var(--f);cursor:pointer;color:var(--ink)}
+.p[hidden],section[hidden]{display:none}
+.such input::-webkit-search-cancel-button{-webkit-appearance:none;display:none}
+.leer{text-align:center;font-weight:800;color:#7a5a45;margin:10px 0 18px}
 </style>
 </head>
 <body>
 <header class="top"><a href="./">← Zur Karte</a><small>MUSCHEL-TAL</small><h1>💼 Berufe</h1><p>Wer in Muschel-Tal wo arbeitet – tipp auf einen Ort oder Namen, um auf der Karte hinzukommen.</p>
 <svg viewBox="0 0 400 24" preserveAspectRatio="none"><path d="M0 14 Q25 2 50 14 T100 14 T150 14 T200 14 T250 14 T300 14 T350 14 T400 14 V24 H0Z" fill="#fff4e0"/></svg></header>
 <main>
+ <div class="such"><input id="bs" type="search" placeholder="Beruf, Ort oder Name suchen …" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search"><button type="button" id="bx" hidden aria-label="Suche leeren">✕</button></div>
+ <p class="leer" id="bl" hidden>Nichts gefunden 🐚</p>
  <p class="hint">💬 Du willst auch einen Job auf Muschel-Tal? Schreib es in die Kommentare unter dem neuesten Video von <a href="https://www.tiktok.com/@muscheltal" target="_blank" rel="noopener">@muscheltal</a> auf TikTok!</p>
 """ + "\n".join(teile) + """
  <a class="cta" href="https://www.tiktok.com/@muscheltal" target="_blank" rel="noopener">💬 Auf TikTok kommentieren</a>
@@ -552,6 +560,11 @@ section{background:#fff;border:3px solid var(--ink);border-radius:20px;padding:1
 <script>/* Jobs mit Ablaufdatum: nach dem letzten Tag automatisch ausblenden */
 (()=>{let h;try{const p=Object.fromEntries(new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Berlin',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date()).map(x=>[x.type,x.value]));h=p.year+'-'+p.month+'-'+p.day+'T'+p.hour+':'+p.minute;}catch(e){h=new Date().toISOString().slice(0,16);}
 document.querySelectorAll('[data-bis]').forEach(a=>{const b=a.dataset.bis;if(h>=(b.length>10?b:b+'T24:00'))a.remove();});document.querySelectorAll('section').forEach(s=>{if(!s.querySelector('.p'))s.remove();});})();</script>
+<script>/* Suche: Berufe, Orte und Mitarbeiter (ohne @, Groß-/Kleinschreibung egal) */
+(()=>{const i=document.getElementById('bs'),x=document.getElementById('bx'),l=document.getElementById('bl');
+ const f=()=>{const q=i.value.trim().toLowerCase().replace(/^@/,'');x.hidden=!q;let n=0;
+  document.querySelectorAll('section').forEach(s=>{const ortTreffer=!q||s.dataset.ort.includes(q);let k=0;s.querySelectorAll('.p').forEach(p=>{const ok=ortTreffer||p.dataset.s.includes(q);p.hidden=!ok;if(ok)k++;});s.hidden=!k;n+=k;});l.hidden=n>0;};
+ i.addEventListener('input',f);x.onclick=()=>{i.value='';f();i.focus();};})();</script>
 </body>
 </html>
 """
