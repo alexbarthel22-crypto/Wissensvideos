@@ -761,7 +761,7 @@ function platz(t) {
 
 }
 // Muschelplatz: Marmor, Brunnen, Sockel und Muschel einmal vorzeichnen, nur Wasser und Funkeln live
-let PLATZ_CV = null; const PLATZ_Q = 2.2, PLATZ_RAND = PLATZ_R + 50;
+let PLATZ_CV = null; const PLATZ_Q = 3.2, PLATZ_RAND = PLATZ_R + 50;
 function platzZeichnen(t) {
   if (!PLATZ_CV) {
     const n = Math.ceil(PLATZ_RAND * 2 * PLATZ_Q); PLATZ_CV = document.createElement('canvas'); PLATZ_CV.width = PLATZ_CV.height = n;
