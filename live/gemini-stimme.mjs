@@ -26,7 +26,7 @@ export function geminiStimme({ dir, cacheDir, cfg }) {
     jubel: 'Say with great joy and excitement in German',
     name: 'Say warmly in German',
   };
-  const STIL_MODELLE = cfg.geminiStilModelle || [MODELLE[0]];
+  const STIL_MODELLE = cfg.geminiStilModelle || [];          // Standard: KEINE Anweisung an Gemini – nur der reine Satz (nichts, was vorgelesen werden könnte)
   // Prüfung: Ist die Aufnahme viel länger als der Text? Dann wurde etwas dazugesprochen (z. B. die Anweisung) → verwerfen
   const silben = t => (String(t).toLowerCase().match(/[aeiouyäöü]+/g) || []).length || 1;
   const zuLang = (pcm, text) => pcm.length / RATE > silben(text) / 3 + (String(text).match(/…/g) || []).length * .7 + 1.1;
@@ -100,10 +100,10 @@ export function geminiStimme({ dir, cacheDir, cfg }) {
       return trimmen(pcmAus(Buffer.from(d, 'base64')));
     } finally { clearTimeout(t); }
   }
-  const gDatei = (text, gefuehl) => path.join(cacheDir, 'g_' + md5(`leda2|${stimme}|${gefuehl}|${text}`) + '.pcm');
+  const gDatei = (text, gefuehl) => path.join(cacheDir, 'g_' + md5(`leda3|${stimme}|${STIL_MODELLE.length ? gefuehl : '-'}|${text}`) + '.pcm');
   const gemerkt = (text, gefuehl) => lesePcm(gDatei(text, gefuehl));
   // Alte Aufnahmen (konnten vorgelesene Anweisungen enthalten) einmalig löschen
-  try { if (!fs.existsSync(path.join(cacheDir, 'leda2.ok'))) { for (const f of fs.readdirSync(cacheDir)) if (/^g_.*\.pcm$/.test(f)) fs.unlinkSync(path.join(cacheDir, f)); fs.writeFileSync(path.join(cacheDir, 'leda2.ok'), '1'); } } catch {}
+  try { if (!fs.existsSync(path.join(cacheDir, 'leda3.ok'))) { for (const f of fs.readdirSync(cacheDir)) if (/^g_.*\.pcm$/.test(f)) fs.unlinkSync(path.join(cacheDir, f)); fs.writeFileSync(path.join(cacheDir, 'leda3.ok'), '1'); } } catch {}
 
   // Ein neues Gemini-Stück: freies Modell suchen (Minute + Tag), bei Limit das nächste Modell
   async function geminiNeu(text, gefuehl, warteMs) {
