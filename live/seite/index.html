@@ -301,9 +301,9 @@ function ereignis(e) {
       break;
     }
     case 'zahltag': banner.push({ t: 0, oben: '💰 Zahltag!', unten: `${e.n} ${e.n === 1 ? 'Job' : 'Jobs'} · je ${e.gehalt} 🐚 Gehalt`, farbe: '#3f9b45' }); break;
-    case 'likeRegen': if (pl) { fokus(pl, 5000, true); funken(pl, '❤️', 26); setTimeout(() => hausFeuerwerk(pl, 8), 500); } banner.push({ t: 0, oben: `❤️ ${e.name}`, unten: 'Like-Regen! Dein Haus wächst und wächst', farbe: '#ff4f8b' }); break;
-    case 'likeFeuer': platzFeuerwerk(10); MOMENTE.push({ art: 'herzen', t: jetzt }); banner.push({ t: 0, oben: '❤️ Like-Feuerwerk!', unten: `${e.n.toLocaleString('de-DE')} Likes in 20 Sekunden`, farbe: '#ff4f8b' }); break;
-    case 'meilenstein': platzFeuerwerk(20); MOMENTE.push({ art: 'konfetti', t: jetzt }); setTimeout(() => platzFeuerwerk(14), 3000); banner.unshift({ t: 0, oben: `🎉 ${e.zahl.toLocaleString('de-DE')} Likes!`, unten: 'Danke an alle – großes Feuerwerk!', farbe: '#9b5de5', dauer: 4.5 }); break;
+    case 'likeRegen': if (pl) { fokus(pl, 5000, true); funken(pl, '❤️', 26); setTimeout(() => hausFeuerwerk(pl, 8), 500); } banner.push({ t: 0, oben: `❤️ ${e.name}`, unten: 'Herzen-Regen!', farbe: '#ff4f8b' }); break;
+    case 'likeFeuer': platzFeuerwerk(10); MOMENTE.push({ art: 'herzen', t: jetzt }); banner.push({ t: 0, oben: '❤️ Herzen-Feuerwerk!', unten: `${e.n.toLocaleString('de-DE')} ❤️ in 20 Sekunden`, farbe: '#ff4f8b' }); break;
+    case 'meilenstein': platzFeuerwerk(20); MOMENTE.push({ art: 'konfetti', t: jetzt }); setTimeout(() => platzFeuerwerk(14), 3000); banner.unshift({ t: 0, oben: `🎉 ${e.zahl.toLocaleString('de-DE')} ❤️`, unten: 'Danke an alle – großes Feuerwerk!', farbe: '#9b5de5', dauer: 4.5 }); break;
     case 'moment':
       if (e.art === 'muschelShow') platzFeuerwerk(8);
       else if (e.art === 'hausParty') { if (pl) { fokus(pl, 6000); funken(pl, '🎉', 20); setTimeout(() => hausFeuerwerk(pl, 6), 800); } }
@@ -317,7 +317,7 @@ function ereignis(e) {
     }
     case 'aufgabe': funken({ x: cam.x, y: cam.y }, '⚡', 10); break;
     case 'aufgabeEnde': banner.push({ t: 0, oben: e.gut ? '✅ Mini-Aufgabe geschafft!' : '⏱ Mini-Aufgabe vorbei', unten: e.text, farbe: e.gut ? '#2fb3a0' : '#8a5a2b' }); if (e.gut) MOMENTE.push({ art: 'konfetti', t: jetzt }); break;
-    case 'erstLiken': banner.push({ t: 0, oben: `❤️ ${e.name}`, unten: e.art === 'farbe' ? 'Like einmal – dann kannst du dein Haus streichen!' : 'Like einmal – dann wird dein Haus gebaut!', farbe: PINK }); break;
+    case 'erstLiken': banner.push({ t: 0, oben: `❤️ ${e.name}`, unten: e.art === 'farbe' ? 'Schreib etwas im Chat – dann bekommst du ein Haus!' : 'Schreib etwas im Chat – dann bekommst du ein Haus!', farbe: PINK }); break;
     case 'farbe': {                                                // Haus wird animiert neu gestrichen (Farbrolle von links nach rechts)
       streich[e.id] = { t: jetzt + 600, alt: e.alt, neu: e.neu };
       banner.push({ t: 0, oben: `🎨 ${e.name || ''}`, unten: `streicht das Haus ${e.wort || 'neu'}!`, farbe: e.neu || PINK });

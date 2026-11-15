@@ -20,7 +20,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-16 c';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-16 d';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -305,14 +305,14 @@ setInterval(() => {
   // Alle zusammen liken gerade sehr viel → Feuerwerk über der großen Muschel
   if (l20 >= Math.max(60, normal * 2) && jetzt - letztesLikeFeuer > 60000) {
     letztesLikeFeuer = jetzt; sende({ typ: 'likeFeuer', n: l20 });
-    if (jetzt - letzterLikeDank >= 60000) letzterLikeDank = jetzt, sag(zufallText(['Wow, so viele Likes! … Feuerwerk über der Muschel!', 'Was für ein Herzen-Sturm! … Danke an alle!', 'Die Muschel leuchtet … ihr seid der Wahnsinn!']), 2);
+    if (jetzt - letzterLikeDank >= 60000) letzterLikeDank = jetzt, sag(zufallText(['Wow, so viele Herzen! … Feuerwerk über der Muschel!', 'Was für ein Herzen-Sturm! … Danke an alle!', 'Die Muschel leuchtet … ihr seid der Wahnsinn!']), 2);
   }
   // Meilensteine: alle 1.000 Likes ein großes Fest
   const ms = Math.floor((S.likesGesamt || 0) / (CFG.likeMeilenstein || 1000));
   if (letzterMeilenstein == null) letzterMeilenstein = ms;
   else if (ms > letzterMeilenstein) {
     letzterMeilenstein = ms; const zahl = ms * (CFG.likeMeilenstein || 1000);
-    sende({ typ: 'meilenstein', zahl }); sag(`${zahl.toLocaleString('de-DE')} Likes! … Danke an alle! … Großes Feuerwerk!`, 1);
+    sende({ typ: 'meilenstein', zahl }); sag(`${zahl.toLocaleString('de-DE')} Herzen! … Danke an alle! … Großes Feuerwerk!`, 1);
   }
   // Kleine Überraschung zwischendurch (nicht während Events), etwa jede Minute
   if (!EV.laeuft() && jetzt - letzterMoment > 20000 + Math.random() * 15000) {
@@ -443,8 +443,12 @@ const ECHT = !STILL && process.platform === 'darwin';
 const dauerMs = t => t.length * 62 + (t.match(/…/g) || []).length * 450 + 300;   // Schätzung ohne echte Stimme
 let ohnePausen = false;                                    // manche Premium-Stimmen hängen an [[slnc]]-Befehlen
 const fuerStimme = t => ohnePausen ? t.replace(/\s*…\s*/g, ', ') : t.replace(/\s*…\s*/g, ' [[slnc 250]] ').replace(/([!?])\s+/g, '$1 [[slnc 150]] ');
+const ohneLike = t => String(t)
+  .replace(/\bgeliked\b/gi, 'Herzen geschickt').replace(/\bliked\b/gi, 'schickt Herzen').replace(/\bliken\b/gi, 'Herzen schicken')
+  .replace(/\bLike-/gi, 'Herzen-').replace(/\bLikes\b/gi, 'Herzen').replace(/\bLike\b/gi, 'Herz');
 function sag(text, prio = 2) {
   if (!text) return;
+  text = ohneLike(text);                                    // Das Wort „Like“ wird nie ausgesprochen
   if (satzAnstoessig(text)) { console.log('🚫 Satz nicht gesprochen (Filter):', text); return; }
   const jetzt = Date.now();
   while (gesprochen.length && jetzt - gesprochen[0] > 60000) gesprochen.shift();
