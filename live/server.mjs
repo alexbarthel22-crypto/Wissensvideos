@@ -11,7 +11,8 @@ import zlib from 'node:zlib';
 import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { macheEvents } from './events.mjs';
-import { satz, namenListe, festeSaetze } from './saetze.mjs';
+import { satz, namenListe, festeSaetze, festeSaetzeAus } from './saetze.mjs';
+import { klarname } from './vornamen.mjs';
 import { geschenkFormen } from './geschenke.mjs';
 import { geminiStimme } from './gemini-stimme.mjs';
 import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './filter.mjs';
@@ -19,7 +20,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-15 l';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-15 m';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -123,7 +124,7 @@ const dativ = n => (WEIBLICH.test(n) ? 'einer ' : 'einem ') + n;
 const artikel = n => (WEIBLICH.test(n) ? 'eine ' : MAENNLICH.test(n) ? 'einen ' : 'ein ') + n;
 // Namen für die Stimme lesbar machen: "lena_xx.22" -> "lena xx"
 const GESPROCHENE_NAMEN = new Set();                        // für Leda: Namen werden als eigenes Stück erzeugt und gespeichert
-const sprechName = p => { const n = p.name.replace(/^@/, '').replace(/[._]+/g, ' ').replace(/\d{3,}/g, '').trim() || 'Neuer Bewohner'; if (GESPROCHENE_NAMEN.size > 3000) GESPROCHENE_NAMEN.clear(); GESPROCHENE_NAMEN.add(n); return n; };
+const sprechName = p => { const n = klarname(p.name) || p.name.replace(/^@/, '').replace(/[._]+/g, ' ').replace(/\d{3,}/g, '').trim() || 'Neuer Bewohner'; if (GESPROCHENE_NAMEN.size > 3000) GESPROCHENE_NAMEN.clear(); GESPROCHENE_NAMEN.add(n); return n; };
 const namenIn = t => [...GESPROCHENE_NAMEN].filter(n => t.includes(n));
 
 // ---------- „haus“ im Chat = eigenes Haus im Stream zeigen (auch Haus!, hauus, house, huas, mein haus …) ----------
@@ -326,7 +327,7 @@ setInterval(() => {
     if (art === 'hausParty' && !p) return;
     sende({ typ: 'moment', art, id: p?.id, name: p?.name });
     const satzMoment = { ballon: 'Schaut mal … ein Heißluftballon über der Insel!', moewen: 'Da fliegt ein Möwenschwarm vorbei!', konfetti: 'Einfach so … Konfetti für alle!', muschelShow: 'Die große Muschel leuchtet … Lichtershow!', hausParty: p ? `Kleine Party bei ${sprechName(p)}!` : '', delfine: 'Delfine! … Seht ihr sie springen?', krabben: 'Die Krabben machen eine Parade!', blasen: 'Seifenblasen über der Insel!', drachen: 'Da fliegt ein Drachen!' }[art];
-    if (satzMoment && (art === 'hausParty' || Math.random() < .5)) sag(satzMoment, 3);
+    // Überraschungsmomente nur sichtbar, ohne Ansage (spart Gemini-Kontingent)
   }
 }, 2000);
 const zufallText = a => a[Math.floor(Math.random() * a.length)];
@@ -369,7 +370,7 @@ function projektStarten(pr) {
   S.projekt = { id: pr.id, name: pr.name, ziel: pr.ziel, stand: 0 }; geaendert = true;
   sende({ typ: 'projekt', id: pr.id });
   const aus = finanziere(S.kasse * (CFG.kasse.startAnteil ?? .5));   // die Hälfte des Ersparten fließt sofort in den Bau
-  if (aus > 0 && S.projekt) sag(`${aus.toLocaleString('de-DE')} Muscheln aus der Kasse gehen in den Bau!`, 1);
+
   zustand();
 }
 function projektFertig() {
@@ -597,7 +598,7 @@ let langsam = 0;
 function vorwaermen() {
   if (!ECHT) return;
   if (LEDA.an()) {                                          // Leda: feste Sätze nach und nach im Leerlauf erzeugen (einmalig, danach gespeichert)
-    const offen = [...new Set([...festeSaetze(), ...Object.values(require_preis())].filter(Boolean))];
+    const offen = [...new Set(festeSaetzeAus(['aufruf', 'folgeAufruf', 'countdown30', 'countdown10', 'eventNoch10', 'start']))];   // nur Sätze, die wirklich vorkommen
     let i = 0;
     const naechster = () => {
       if (!LEDA.an() || i >= offen.length) return;
@@ -721,6 +722,7 @@ process.on('exit', () => lokalMusik?.kill());
 
 // ---------- Dauer-Moderation: Kerstin redet immer, mit kurzen Pausen dazwischen ----------
 const followDank = [], begruessen = [], begruesst = new Set();
+let letzteBegruessung = 0, letzterAufruf = 0;
 let letzterLive = 0, letzterRundgang = 0, modNr = 0, eventModNr = 0, countdownGesagt = '', eventZehnGesagt = '';
 // Rangliste: beste Haus-Stufe zuerst, bei Gleichstand entscheiden die Muscheln aus Events
 const rangFolge = (a, b) => b.stufe - a.stufe || b.muscheln - a.muscheln || (b.eventMuscheln || 0) - (a.eventMuscheln || 0);   // Stufe, dann die angezeigten Muscheln
@@ -782,21 +784,23 @@ function moderiere() {
   }
   // 2. Laufendes Event: abwechselnd Spielstand, Anfeuern und ab und zu ein normaler Satz
   if (EV.laeuft()) {
-    const art = eventModNr++ % 4;
-    if (art !== 3 && Date.now() - letzterLive > 6000) { const t = EV.liveSatz(); if (t) { letzterLive = Date.now(); return sag(t, 4); } }
-    if (art === 3) return sag(satz('stimmung', { aktive: aktiveAnzahl() }), 4);
-    return sag(satz('eventAllgemein', { rest: EV.restSek() }), 4);   // nie Stille während Events
+    // nur Spielstand mit den Namen der Mitspieler (Interaktion), kein Füll-Gerede – spart Gemini-Kontingent
+    if (Date.now() - letzterLive > 12000) { const t = EV.liveSatz(); if (t) { letzterLive = Date.now(); return sag(t, 4); } }
+    return;
   }
   // 3. Neue Zuschauer begrüßen (nur wenn kein Event moderiert werden muss)
-  if (!EV.laeuft() && begruessen.length) {                  // immer einzeln und kurz
-    const b = begruessen.shift();
+  // Nur wer einen Klarnamen hat (lara91554 → „Lara“), höchstens alle 20 s – sonst kommt der Dank erst bei der ersten Interaktion
+  while (begruessen.length && !begruessen[0].klar) begruessen.shift();
+  if (!EV.laeuft() && begruessen.length && Date.now() - letzteBegruessung > 20000) {
+    const b = begruessen.shift(); letzteBegruessung = Date.now();
     if (b.zurueck) return sag(b.besuche >= 3 && Math.random() < .5 ? satz('begruessungTreu', { name: b.name, besuche: b.besuche }) : satz('begruessungZurueck', { name: b.name }), 4);
     return sag(satz('begruessungEins', { name: b.name }), 4);
   }
   if (EV.laeuft()) return;
-  // 4. Abwechselnde Moderation
-  for (let k = 0; k < MODERATION.length; k++) { const t = MODERATION[modNr++ % MODERATION.length](); if (t) return sag(t, 4); }
-  sag(satz('stimmung', { aktive: aktiveAnzahl() }), 4);
+  // 4. Ohne Anlass nur: Aufruf zum Liken, Folgen, Teilen (feste Sätze → einmal erzeugt, danach kostenlos aus dem Speicher)
+  if (Date.now() - letzterAufruf > (CFG.stimme.aufrufSek ?? 30) * 1000) { letzterAufruf = Date.now(); return sag(satz('aufruf'), 4); }
+  // Kamera bleibt lebendig: fliegt ab und zu zu einem Haus oder zur Baustelle – ohne Ansage
+  if (Math.random() < .5) rundgang(); else baustelleZeigen();
 }
 // Rangliste beobachten: Änderungen in den Top 3 ansagen (höchstens alle 15 s, wichtigste Änderung zuerst)
 let topVorher = null, topAnsage = 0;
@@ -834,8 +838,8 @@ function beitritt(u) {                                     // jemand kommt neu i
   const p = S.spieler[id];
   if (p && !p.gesperrt) {                                  // kennt die Insel schon: „Willkommen zurück“
     p.besuche = (p.besuche || 1) + 1; geaendert = true;
-    begruessen.push({ name: sprechName(p), zurueck: true, besuche: p.besuche, stufe: CFG.stufen[p.stufe].name });
-  } else begruessen.push({ name: sprechName({ name: '@' + u.uniqueId }), zurueck: false });
+    begruessen.push({ name: sprechName(p), klar: !!klarname(p.name), zurueck: true, besuche: p.besuche, stufe: CFG.stufen[p.stufe].name });
+  } else begruessen.push({ name: sprechName({ name: '@' + u.uniqueId }), klar: !!klarname(u.uniqueId), zurueck: false });
   if (begruessen.length > 6) begruessen.splice(0, begruessen.length - 6);   // bei vielen Neuen: nur die neuesten
 }
 

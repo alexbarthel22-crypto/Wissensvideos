@@ -186,6 +186,15 @@ const SAETZE = {
     '{name} ist jetzt auf Platz {platz}!',
     'Neu auf Platz {platz}: {name}!',
   ],
+  aufruf: [                                                     // einzige Moderation ohne Anlass: Liken, Folgen, Teilen (ohne Versprechen)
+    'Dein erster Like baut deine Hütte!',
+    'Tipp aufs Herz, und deine Hütte wächst!',
+    'Mehr Likes, größeres Haus!',
+    'Teil den LIVE mit deinen Freunden, dann bauen wir zusammen!',
+    'Bring deine Freunde mit und teil den LIVE!',
+    'Folg muscheltal, dann verpasst du keinen LIVE.',
+    'Wer mag, folgt muscheltal.',
+  ],
   folgeAufruf: [
     'Wenn dir die Insel gefällt, folg gern muscheltal.',
     'Schön, dass ihr da seid! Wer mag, folgt muscheltal.',
@@ -207,4 +216,5 @@ export function satz(art, werte = {}) {
 }
 export const namenListe = n => n.length > 1 ? `${n.slice(0, -1).join(', ')} und ${n.at(-1)}` : n[0];
 // Alle Sätze ohne Platzhalter (werden beim Start vorab als Sprachdatei erzeugt)
+export const festeSaetzeAus = gruppen => gruppen.flatMap(g => SAETZE[g] || []).filter(t => !t.includes('{'));
 export const festeSaetze = () => Object.values(SAETZE).flat().filter(t => !t.includes('{'));

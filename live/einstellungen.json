@@ -11,6 +11,8 @@
     "wiedergabe": "browser",
     "_hinweis": "wiedergabe 'browser' (Standard): Kerstin + Musik laufen im Ton-Tab (http://localhost:8790/?ton, öffnet sich beim Start) über den Mac-Ton → BlackHole → LIVE Studio. Ist der Ton-Tab zu, übernimmt automatisch der Mac (say/afplay). 'mac': immer say/afplay. 'seite': Ton über die Link-Quelle.",
     "pauseSek": 3,
+    "aufrufSek": 30,
+    "_aufruf": "Ohne Anlass spricht die Stimme nur einen Aufruf zum Liken/Folgen/Teilen, höchstens alle aufrufSek Sekunden. Sonst nur bei Interaktionen (Likes, Follows, Teilen, Geschenke, Kommentare, Events).",
     "_pause": "pauseSek: Pause zwischen zwei Moderations-Sätzen (3 s → etwa alle 4–6 s eine Durchsage). Dank für Geschenke, Follows usw. kommt sofort.",
     "maxErzeugenSek": 4,
     "_tempo": "maxErzeugenSek: Braucht die Stimme länger, um einen Satz zu erzeugen (2× hintereinander), wechselt das Programm automatisch auf die nächste schnellere Stimme aus macErsatz. Fertige Sätze werden in werkzeug/stimme gespeichert und sofort wiederverwendet.",
