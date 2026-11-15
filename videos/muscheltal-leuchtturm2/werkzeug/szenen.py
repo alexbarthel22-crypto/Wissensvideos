@@ -116,7 +116,7 @@ scene("s01", LILITA + "\n    " + PILL + "\n    " + PT + "\n" + FL + """
       <div id="s01-cta" class="pl">🗼 NEU: Leuchtturm-Rennen!</div>
       
       <div id="s01-hk">""" + "".join('<div class="ln" id="s01-l' + str(j) + '">' + "".join(f'<span id="s01-w{QW.index(w)}">{w[0]}</span>' for w in ln) + '</div>' for j, ln in enumerate(QL)) + """</div>
-      """ + "".join(f'<div class="s01-sp" id="s01-sp{k}" data-layout-ignore style="left:{x}px;top:{y}px;font-size:{f}px">✦</div>' for k, (x, y, f) in enumerate(SP)) + drops("s01-p", 22, 5, 'sc', 540, 900, "🏗️", 600, 820)[0],
+      """ + "".join(f'<div class="s01-sp" id="s01-sp{k}" data-layout-ignore style="left:{x}px;top:{y}px;font-size:{f}px">✦</div>' for k, (x, y, f) in enumerate(SP)) + drops("s01-p", 0, 5, 'sc', 540, 900, "🏗️", 600, 820)[0],
 """      const sc = at("L1", "leer");
       tl.set(["#s01-ray"], { opacity: 1 }, 0);
       tl.fromTo("#s01-ray", { rotation: 0 }, { rotation: 40, duration: 4, ease: "none" }, 0);
@@ -127,7 +127,7 @@ scene("s01", LILITA + "\n    " + PILL + "\n    " + PT + "\n" + FL + """
       tl.fromTo("#s01-rv", { opacity: .45 }, { opacity: 1, duration: .14, yoyo: true, repeat: 17, ease: "sine.inOut", immediateRender: false }, 0);
       
       """ + "\n      ".join(
-        f'tl.set("#s01-w{i}", {{ zIndex: 5 }}, at("L1", "{k}") - .03); tl.to("#s01-w{i}", {{ scale: {1.35 if len(w) > 7 else (1.38 if len(w) <= 5 else 1.5)}, rotation: {(-1)**i * 3}, duration: .1, ease: "back.out(3)" }}, at("L1", "{k}") - .03); tl.to("#s01-w{i}", {{ scale: 1, rotation: 0, duration: .22, ease: "power2.inOut" }}, at("L1", "{k}") + .17); tl.set("#s01-w{i}", {{ zIndex: 0 }}, at("L1", "{k}") + .4);'
+        f'tl.set("#s01-w{i}", {{ zIndex: 5 }}, at("L1", "{k}") - .03); tl.to("#s01-w{i}", {{ scale: 1.1, rotation: {(-1)**i * 3}, duration: .1, ease: "back.out(3)" }}, at("L1", "{k}") - .03); tl.to("#s01-w{i}", {{ scale: 1, rotation: 0, duration: .22, ease: "power2.inOut" }}, at("L1", "{k}") + .17); tl.set("#s01-w{i}", {{ zIndex: 0 }}, at("L1", "{k}") + .4);'
         + (f' tl.to("#s01-w{i}", {{ color: "#ffe500", duration: .05 }}, at("L1", "{k}") - .02);' if w in YW else '')
         for i, (w, k) in enumerate(QW)) + """
       """ + "\n      ".join(f'tl.fromTo("#s01-sp{k}", {{ opacity: 0, scale: .2, rotation: 0 }}, {{ opacity: 1, scale: 1, rotation: 90, duration: .3, yoyo: true, repeat: 3, ease: "sine.inOut", immediateRender: false }}, {k * .2:.2f});' for k in range(len(SP))) + """
@@ -135,18 +135,18 @@ scene("s01", LILITA + "\n    " + PILL + "\n    " + PT + "\n" + FL + """
       tl.to("#s01-l4", { scale: 1.12, duration: .12, yoyo: true, repeat: 1 }, sc);
       
       tl.to("#s01-hk", { x: 12, duration: .04, yoyo: true, repeat: 5, ease: "none" }, sc);
-""" + drops("s01-p", 22, 5, 'sc', 540, 900, "🏗️", 600, 820)[1])
+""" + drops("s01-p", 0, 5, 'sc', 540, 900, "🏗️", 600, 820)[1])
 
 
 
 
 # s02 – Leuchtturm-Rennen: Regeln mit wachsendem Turm
 scene("s02", LILITA + "\n    " + PILL + "\n    " + BIG + """
-    #s2-b { top: 270px; font-size: 66px; background: linear-gradient(135deg, #ffb21a, #ff6a1a); transform: rotate(-2deg); box-shadow: 0 0 0 8px #2a1b12, 0 16px 0 rgba(0,0,0,.3), 0 0 50px 14px rgba(255,200,40,.6); }
-    #s2-n { top: 200px; left: auto; right: 60px; margin: 0; font-size: 40px; background: #e8101e; transform: rotate(8deg); z-index: 3; }
-    #s2-q { top: 420px; font-size: 46px; background: #fff; color: #2a1b12; }
-    #s2-c { top: 420px; font-size: 44px; background: #7b3fe0; }
-    #s2-k { top: 520px; font-size: 44px; background: #2e9e5b; }
+    #s2-b { top: 158px; font-size: 58px; background: linear-gradient(135deg, #ffb21a, #ff6a1a); transform: rotate(-2deg); box-shadow: 0 0 0 8px #2a1b12, 0 16px 0 rgba(0,0,0,.3), 0 0 50px 14px rgba(255,200,40,.6); }
+    #s2-n { top: 135px; left: auto; right: 60px; margin: 0; font-size: 40px; background: #e8101e; transform: rotate(8deg); z-index: 3; }
+    #s2-q { top: 288px; font-size: 46px; background: #fff; color: #2a1b12; }
+    #s2-c { top: 288px; font-size: 44px; background: #7b3fe0; }
+    #s2-k { top: 378px; font-size: 44px; background: #2e9e5b; }
     #tw { position: absolute; left: 0; right: 0; margin: 0 auto; width: 200px; bottom: 560px; display: flex; flex-direction: column-reverse; align-items: center; }
     #tw .base { width: 180px; height: 34px; border-radius: 10px; background: #8a6a50; border: 5px solid #2a1b12; }
     #tw .fl { width: 120px; height: 46px; border: 5px solid #2a1b12; border-bottom: 0; background: repeating-linear-gradient(180deg, #e8262f 0 23px, #fff 23px 46px); }
@@ -155,38 +155,32 @@ scene("s02", LILITA + "\n    " + PILL + "\n    " + BIG + """
     #tw .top b { position: absolute; left: 20px; top: 0; width: 110px; height: 24px; background: #e8262f; border: 5px solid #2a1b12; border-radius: 40px 40px 6px 6px; }
     #tw-l { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; bottom: 470px; padding: 6px 26px 10px; border-radius: 18px; background: #2a1b12; color: #fff; font-family: "Lilita One", sans-serif; font-size: 46px; }
     .cm { position: absolute; left: 90px; padding: 10px 22px 14px; border-radius: 22px; background: #fff; box-shadow: 0 0 0 4px #2a1b12, 0 8px 0 rgba(0,0,0,.25); font-family: "Inter", sans-serif; font-weight: 800; font-size: 34px; color: #2a1b12; }""",
-"""      <div id="s2-b" class="big">🗼 LEUCHTTURM-RENNEN</div>
-      <div id="s2-n" class="pl">NEU!</div>
+"""      <div id="s2-b" class="big">🗼 NEU: LEUCHTTURM-RENNEN</div>
       <div id="s2-q" class="pl">🏆 Welche Stadt baut am höchsten?</div>
       <div id="s2-c" class="pl">💬 Schreib deine Stadt in den Chat</div>
       <div id="s2-k" class="pl">⬆️ Jedes Mal = +1 Meter</div>
-      """ + "".join(f'<div class="cm" id="cm{i}" style="top:{640 + i * 90}px">{t}</div>' for i, t in enumerate(["💬 Hamburg", "💬 Hamburg 🔥", "💬 Hamburg!!"])),
+      """,
 """      const t2 = line("L2")[0], le = at("L2", "Leuchtturm-Rennen"), t3 = line("L3")[0], st = at("L3", "Stadt"), lt = at("L3", "Leuchtturm"), t4 = line("L4")[0], ko = at("L4", "schreibst"), sw = at("L4", "Meter");
       tl.fromTo("#s2-b", { opacity: 0, scale: 3 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(1.8)" }, le - .2);
-      tl.fromTo("#s2-n", { opacity: 0, scale: .2 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(3)" }, t2 - .05);
-      tl.to("#s2-n", { scale: 1.15, duration: .2, yoyo: true, repeat: 15, ease: "sine.inOut" }, t2 + .3);
       tl.fromTo("#s2-q", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .28, ease: "back.out(2)" }, at("L2", "welche") - .1);
       tl.to("#s2-q", { opacity: 0, y: -20, duration: .2 }, t3 - .25);
       tl.fromTo("#s2-c", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, st - .2);
-      tl.fromTo("#cm0", { opacity: 0, x: -200 }, { opacity: 1, x: 0, duration: .3, ease: "back.out(2)" }, st);
-      tl.fromTo("#s2-k", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, ko - .2);
-      tl.fromTo("#cm1", { opacity: 0, x: -200 }, { opacity: 1, x: 0, duration: .3, ease: "back.out(2)" }, ko);
-      tl.fromTo("#cm2", { opacity: 0, x: -200 }, { opacity: 1, x: 0, duration: .3, ease: "back.out(2)" }, sw);""")
+      tl.fromTo("#s2-k", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, ko - .2);""")
 
 # s03 – Noch kein Turm – deine Stadt kann die erste sein + Profilbild
 scene("s03", LILITA + "\n    " + PILL + "\n    " + BIG + """
-    #s3-k { top: 270px; font-size: 60px; background: #e8101e; transform: rotate(-2deg); box-shadow: 0 0 0 8px #2a1b12, 0 16px 0 rgba(0,0,0,.3), 0 0 50px 14px rgba(255,20,30,.6); }
-    #s3-e { top: 420px; font-size: 54px; background: linear-gradient(135deg, #ffb21a, #ff6a1a); font-family: "Lilita One", sans-serif; font-weight: 400; }
-    #s3-pa { position: absolute; left: 925px; top: 1080px; width: 130px; height: 150px; }
+    #s3-k { top: 175px; font-size: 60px; background: #e8101e; transform: rotate(-2deg); box-shadow: 0 0 0 8px #2a1b12, 0 16px 0 rgba(0,0,0,.3), 0 0 50px 14px rgba(255,20,30,.6); }
+    #s3-e { top: 330px; font-size: 54px; background: linear-gradient(135deg, #ffb21a, #ff6a1a); font-family: "Lilita One", sans-serif; font-weight: 400; }
+    #s3-pa { position: absolute; left: 928px; top: 950px; width: 130px; height: 150px; }
     #s3-ring { position: absolute; left: 5px; top: 0; width: 120px; height: 120px; border-radius: 50%; background: conic-gradient(#ff1f4b, #ff6a1a, #ff1f4b, #ff2e7e, #ff1f4b); box-shadow: 0 0 40px 10px rgba(255,30,70,.8); }
     #s3-pic { position: absolute; left: 15px; top: 10px; width: 100px; height: 100px; border-radius: 50%; overflow: hidden; background: #fff; border: 4px solid #fff; }
     #s3-pic svg { width: 100%; height: 100%; }
     #s3-lb { position: absolute; left: 0; right: 0; margin: 0 auto; top: 108px; width: fit-content; padding: 1px 12px 4px; border-radius: 8px; background: #ff1f4b; border: 3px solid #fff; color: #fff; font-family: "Inter", sans-serif; font-weight: 900; font-size: 24px; }
-    #s3-ph { left: auto; right: 170px; margin: 0; top: 1115px; font-size: 38px; background: #ff1f4b; box-shadow: 0 0 0 5px #fff, 0 10px 0 rgba(0,0,0,.25); }""",
+    #s3-ph { left: auto; right: 12px; margin: 0; top: 1124px; font-size: 26px; padding: 5px 13px 8px; background: #ff1f4b; box-shadow: 0 0 0 5px #fff, 0 10px 0 rgba(0,0,0,.25); }""",
 """      <div id="s3-k" class="big">🌊 NOCH KEIN EINZIGER TURM!</div>
       <div id="s3-e" class="pl">👑 Wer zuerst schreibt, wird Gründer!</div>
       <div id="s3-pa" data-layout-ignore><div id="s3-ring"></div><div id="s3-pic">""" + LOGO + """</div><div id="s3-lb">LIVE</div></div>
-      <div id="s3-ph" class="pl">Tippen & reinkommen! 👉</div>""",
+      <div id="s3-ph" class="pl">👆 Tippen!</div>""",
 """      const t5 = line("L5")[0], er = at("L5", "Gründer"), t6 = line("L6")[0], pr = at("L6", "Profilbild");
       tl.fromTo("#s3-k", { opacity: 0, scale: 3 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(1.8)" }, t5 - .05);
       tl.to("#s3-k", { x: 10, duration: .05, yoyo: true, repeat: 7, ease: "none" }, t5 + .3);
@@ -194,5 +188,5 @@ scene("s03", LILITA + "\n    " + PILL + "\n    " + BIG + """
       tl.to("#s3-e", { scale: 1.08, duration: .2, yoyo: true, repeat: 5, ease: "sine.inOut" }, er);
       tl.fromTo("#s3-pa", { opacity: 0, scale: .2 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, pr - .2);
       tl.fromTo("#s3-ring", { scale: 1, rotation: 0 }, { scale: 1.15, rotation: 40, duration: .3, yoyo: true, repeat: 11, ease: "sine.inOut" }, pr);
-      tl.fromTo("#s3-ph", { opacity: 0, x: -80 }, { opacity: 1, x: 0, duration: .3, ease: "back.out(2)" }, pr + .1);
-      tl.to("#s3-ph", { x: 20, duration: .25, yoyo: true, repeat: 9, ease: "sine.inOut" }, pr + .5);""", blur=False)
+      tl.fromTo("#s3-ph", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, pr + .1);
+      tl.to("#s3-ph", { y: -12, duration: .25, yoyo: true, repeat: 9, ease: "sine.inOut" }, pr + .5);""", blur=False)
