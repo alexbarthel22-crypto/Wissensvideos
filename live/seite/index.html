@@ -133,6 +133,12 @@ function basisZeichnen(k) {
   const B = box(k), Q = Math.min(2.4, 4600 / Math.max(B.w, B.h));        // hoch aufgelöst: die Kamera ist immer nah dran
   const cv = document.createElement('canvas'); cv.width = B.w * Q; cv.height = B.h * Q;
   const b = cv.getContext('2d'); b.setTransform(Q, 0, 0, Q, -B.x * Q, -B.y * Q);
+  if (typeof KACHELN !== "undefined") KACHELN.clear(); inselMalen(b, k);
+  BASIS = cv; BASIS_K = k; BASIS_BOX = B;
+}
+// Die ganze Insel zeichnen – entweder komplett (Übersichtsbild) oder nur eine scharfe Kachel (KACHEL gesetzt: Rest wird übersprungen)
+function drin(x, y, m = 12) { return !KACHEL || (x > KACHEL.x0 - m && x < KACHEL.x1 + m && y > KACHEL.y0 - m && y < KACHEL.y1 + m); }
+function inselMalen(b, k) {
   const R = zufall(7); LICHTER = [];
   const form = s => { b.beginPath(); for (let i = 0; i <= 240; i++) { const a = i / 240 * 6.2832, r = rand(a) * s; const x = IX + Math.cos(a) * RX * r, y = IY + Math.sin(a) * RY * r; i ? b.lineTo(x, y) : b.moveTo(x, y); } b.closePath(); };
   const amRand = (a, s) => { const r = rand(a) * s; return [IX + Math.cos(a) * RX * r, IY + Math.sin(a) * RY * r]; };
@@ -140,23 +146,23 @@ function basisZeichnen(k) {
   b.fillStyle = 'rgba(127,224,200,.5)'; form(k * 1.1); b.fill();
   b.strokeStyle = 'rgba(255,255,255,.55)'; b.lineWidth = 3; form(k * 1.06); b.stroke();
   b.fillStyle = '#f3dfa6'; form(k * 1.035); b.fill();
-  b.fillStyle = '#e6c985'; for (let i = 0; i < 2500 * Math.min(k, 2.5); i++) { const a = R() * 6.283, [x, y] = amRand(a, k * (RAND_GRAS + R() * .085)); b.fillRect(x, y, 1.6, 1.6); }
+  b.fillStyle = '#e6c985'; for (let i = 0; i < 2500 * Math.min(k, 2.5); i++) { const a = R() * 6.283, [x, y] = amRand(a, k * (RAND_GRAS + R() * .085)); if (drin(x, y)) b.fillRect(x, y, 1.6, 1.6); }
   b.fillStyle = '#7cc85a'; form(k * RAND_GRAS); b.fill();
   b.save(); form(k * RAND_GRAS); b.clip();
-  for (let i = 0; i < 5000 * Math.min(k, 2) ** 2; i++) { b.fillStyle = R() < .5 ? 'rgba(255,255,255,.07)' : 'rgba(40,110,30,.09)'; b.beginPath(); b.arc(IX + (R() * 2 - 1) * RX * k, IY + (R() * 2 - 1) * RY * k, 2 + R() * 5, 0, 7); b.fill(); }
+  for (let i = 0; i < 5000 * Math.min(k, 2) ** 2; i++) { const hell = R() < .5, x = IX + (R() * 2 - 1) * RX * k, y = IY + (R() * 2 - 1) * RY * k, r = 2 + R() * 5; if (!drin(x, y)) continue; b.fillStyle = hell ? 'rgba(255,255,255,.07)' : 'rgba(40,110,30,.09)'; b.beginPath(); b.arc(x, y, r, 0, 7); b.fill(); }
   // Grundstücke (Rasen mit Kante)
   const n = plaetzeBei(k);
-  for (let i = 0; i < n; i++) { const p = ALLE[i]; b.fillStyle = 'rgba(255,255,255,.07)'; b.beginPath(); b.roundRect(p.x0 + 3, p.y0 + 3, p.w - 6, p.h - 6, 6); b.fill(); b.strokeStyle = 'rgba(60,120,40,.28)'; b.lineWidth = 1.2; b.stroke(); }
+  for (let i = 0; i < n; i++) { const p = ALLE[i]; if (!drin(p.x0 + p.w / 2, p.y0 + p.h / 2, Math.max(p.w, p.h))) continue; b.fillStyle = 'rgba(255,255,255,.07)'; b.beginPath(); b.roundRect(p.x0 + 3, p.y0 + 3, p.w - 6, p.h - 6, 6); b.fill(); b.strokeStyle = 'rgba(60,120,40,.28)'; b.lineWidth = 1.2; b.stroke(); }
   // Parks auf den Restflächen am Rand
-  for (let i = n; i < ALLE.length; i++) { const p = ALLE[i]; if (p.mitte <= k * .9) park(b, p, i); }
+  for (let i = n; i < ALLE.length; i++) { const p = ALLE[i]; if (p.mitte <= k * .9 && drin(p.x0 + p.w / 2, p.y0 + p.h / 2, Math.max(p.w, p.h))) park(b, p, i); }
   // Straßen mit Bordstein und Sandkörnern
   SEG = strassenBei(k, S.strassen.length ? S.strassen : ['Sonnenallee']); STR_SCHILDER = [];
   const weg = (w, col) => { b.strokeStyle = col; b.lineWidth = w; b.lineCap = 'round'; SEG.forEach(s => { b.beginPath(); if (s.senkrecht) { b.moveTo(s.fest, s.von); b.lineTo(s.fest, s.bis); } else { b.moveTo(s.von, s.fest); b.lineTo(s.bis, s.fest); } b.stroke(); }); };
   weg(STR + 6, '#d9b46a'); weg(STR, '#f0dca0');
-  SEG.forEach(s => { for (let v = s.von; v < s.bis; v += 4) { const o = (R() - .5) * STR * .8; b.fillStyle = R() < .15 ? 'rgba(255,255,255,.8)' : 'rgba(160,120,60,.22)'; s.senkrecht ? b.fillRect(s.fest + o, v, 1.5, 1.5) : b.fillRect(v, s.fest + o, 1.5, 1.5); } });
+  SEG.forEach(s => { for (let v = s.von; v < s.bis; v += 4) { const o = (R() - .5) * STR * .8, hell = R() < .15, px = s.senkrecht ? s.fest + o : v, py = s.senkrecht ? v : s.fest + o; if (!drin(px, py)) continue; b.fillStyle = hell ? 'rgba(255,255,255,.8)' : 'rgba(160,120,60,.22)'; b.fillRect(px, py, 1.5, 1.5); } });
   // Laternen + Blumen an den Kreuzungen
   XS.forEach(x => YS.forEach(y => {
-    if (!innen(x, y, k * .9) || Math.hypot(x - IX, y - IY) < PLATZ_R + 30) return;
+    if (!innen(x, y, k * .9) || Math.hypot(x - IX, y - IY) < PLATZ_R + 30 || !drin(x, y, 60)) return;
     blumenTopf(b, x - STR / 2 - 6, y - STR / 2 - 6); laterne(b, x + STR / 2 + 5, y - STR / 2 - 3);
   }));
   // Straßenschilder (feste Stellen je Block, damit sie beim Wachsen nicht springen)
@@ -174,16 +180,17 @@ function basisZeichnen(k) {
   const umfang = Math.round(34 * k);
   for (let i = 0; i < umfang; i++) {
     const a = i / umfang * 6.283 + .07, [x, y] = amRand(a, k * .985);
-    if (Math.abs(a - Math.PI / 2) > .12) palme(b, x, y, .72, i * 300);
+    if (Math.abs(a - Math.PI / 2) > .12 && drin(x, y, 90)) palme(b, x, y, .72, i * 300);
   }
   for (let i = 0; i < 20 * k; i++) {
     const a = R() * 6.283; if (Math.abs(a - Math.PI / 2) < .12) continue;
-    const [x, y] = amRand(a, k * (1.005 + R() * .02)), w = R();
+    const [x, y] = amRand(a, k * (1.005 + R() * .02)), w = R(), dreh = w >= .72 && w < .86 ? R() * 6 : 0;
+    if (!drin(x, y, 50)) continue;
     if (w < .25) schirm(b, x, y, ['#e8433c', '#3fa0e8', '#ffb02e', '#ff6fa3'][i % 4]);
     else if (w < .45) handtuch(b, x, y, a, ['#ff6fa3', '#3fa0e8', '#ffd23f', '#2fb3a0'][i % 4]);
     else if (w < .6) liege(b, x, y);
     else if (w < .72) sandburg(b, x, y);
-    else if (w < .86) seestern(b, x, y, R() * 6);
+    else if (w < .86) seestern(b, x, y, dreh);
     else muschelChen(b, x, y);
   }
   { const [x, y] = amRand(-.35, k * 1.01); volleyball(b, x, y); }
@@ -197,7 +204,6 @@ function basisZeichnen(k) {
   b.fillStyle = '#6b4423'; for (let v = sy + 20; v < sy + 200; v += 40) { b.beginPath(); b.arc(sx - 18, v, 3.5, 0, 7); b.arc(sx + 18, v, 3.5, 0, 7); b.fill(); }
   laterne(b, sx - 20, sy + 70); laterne(b, sx + 22, sy + 150); laterne(b, sx - 20, sy + 196);
   boot(b, sx + 42, sy + 110, '#e8433c'); boot(b, sx - 42, sy + 160, '#3fa0e8');
-  BASIS = cv; BASIS_K = k; BASIS_BOX = B;
 }
 function park(b, p, i) {
   const x = p.cx, y = p.cy, R = zufall(i * 31 + 5), art = i % 6;
@@ -1812,6 +1818,52 @@ function hausCacheBauen(t) {
 // Kopfzeile: 10× pro Sekunde neu (bei Krabbenrennen/Glücksrad jedes Bild)
 let KC = null, KX = null, kopfZeit = 0;
 let tLetzt = 0, frameZeit = 0;
+// ===== Scharfe Insel-Kacheln: dort, wo die Kamera hinschaut, die Insel in voller Bildschirm-Auflösung vorzeichnen =====
+// (das Übersichtsbild BASIS ist ~2× vergrößert und dadurch weich; es dient nur als Platzhalter, bis die Kachel fertig ist)
+const KACHEL_W = 170;                                           // Welt-Einheiten je Kachel (bei Nah-Kamera ≈ 527 Bildpunkte)
+var KACHELN = new Map(), KACHEL = null, KACHEL_WARTE = [], kachelBild = 0;
+const KACHEL_STUFEN = [NAH, 3.2, NAH * .8];                     // Zoom-Stufen der Kamera
+const kachelStufe = z => KACHEL_STUFEN.reduce((a, b) => Math.abs(b - z) < Math.abs(a - z) ? b : a);
+function kachelBauen(L, ix, iy) {
+  const f = L * Q0, x0 = ix * KACHEL_W, y0 = iy * KACHEL_W, n = Math.round(KACHEL_W * f);
+  const cv = document.createElement('canvas'); cv.width = cv.height = n;
+  const b = cv.getContext('2d'); b.setTransform(f, 0, 0, f, -x0 * f, -y0 * f);
+  b.beginPath(); b.rect(x0, y0, KACHEL_W, KACHEL_W); b.clip();
+  const merk = [LICHTER, SEG, STR_SCHILDER];
+  KACHEL = { x0, y0, x1: x0 + KACHEL_W, y1: y0 + KACHEL_W };
+  try { inselMalen(b, BASIS_K); } finally { KACHEL = null; [LICHTER, SEG, STR_SCHILDER] = merk; }
+  KACHELN.set(L + ':' + ix + ',' + iy, { cv, x0, y0, zuletzt: kachelBild });
+  if (KACHELN.size > 60) {                                      // Speicher klein halten: am längsten ungenutzte Kacheln weg
+    const alt = [...KACHELN.entries()].sort((a, b) => a[1].zuletzt - b[1].zuletzt).slice(0, KACHELN.size - 60);
+    for (const [k] of alt) KACHELN.delete(k);
+  }
+}
+function kachelnBei(x, y, z, out) {                             // Kacheln, die bei Kamera-Mitte (x, y) und Zoom z im Bild sind
+  const B = BASIS_BOX, L = kachelStufe(z);
+  const x0 = Math.max(B.x, x - 540 / z - 10), x1 = Math.min(B.x + B.w, x + 540 / z + 10), y0 = Math.max(B.y, y - MITTE_Y / z - 10), y1 = Math.min(B.y + B.h, y + (H - MITTE_Y) / z + 10);
+  for (let iy = Math.floor(y0 / KACHEL_W); iy * KACHEL_W < y1; iy++) for (let ix = Math.floor(x0 / KACHEL_W); ix * KACHEL_W < x1; ix++) out.push([L, ix, iy]);
+  return out;
+}
+function inselZeichnen() {
+  kachelBild++;
+  const T = X.getTransform(), sicht = kachelnBei(cam.x, cam.y, cam.z, []), da = [];
+  let fehlt = false;
+  for (const [L, ix, iy] of sicht) { const k = KACHELN.get(L + ':' + ix + ',' + iy); if (k) { k.zuletzt = kachelBild; da.push(k); } else fehlt = true; }
+  if (fehlt) ausschnitt(BASIS, BASIS_BOX);
+  for (const k of da) {                                         // pixelgenau setzen: keine Nähte, keine Unschärfe
+    const dx0 = Math.round(k.x0 * T.a + T.e), dy0 = Math.round(k.y0 * T.d + T.f), dx1 = Math.round((k.x0 + KACHEL_W) * T.a + T.e), dy1 = Math.round((k.y0 + KACHEL_W) * T.d + T.f);
+    X.drawImage(k.cv, (dx0 - T.e) / T.a, (dy0 - T.f) / T.d, (dx1 - dx0) / T.a, (dy1 - dy0) / T.d);
+  }
+  // fehlende Kacheln (jetzt sichtbare zuerst, dann am Kamera-Ziel) nach und nach im Leerlauf bauen
+  KACHEL_WARTE = [...sicht, ...kachelnBei(ZIEL.x, ZIEL.y, ZIEL.z, [])].filter(([L, ix, iy]) => !KACHELN.has(L + ':' + ix + ',' + iy));
+  if (KACHEL_WARTE.length && !kachelPlan) kachelPlan = (window.requestIdleCallback || (f => setTimeout(f, 1)))(kachelArbeit, { timeout: 300 });
+}
+var kachelPlan = 0;
+function kachelArbeit(frist) {
+  kachelPlan = 0;
+  const [L, ix, iy] = KACHEL_WARTE.shift() || []; if (L == null || !BASIS) return;
+  if (!KACHELN.has(L + ':' + ix + ',' + iy)) kachelBauen(L, ix, iy);
+}
 // Straßenschilder: einmal in Bildschirm-Auflösung vorzeichnen, pro Bild nur die sichtbaren einsetzen (pixelgenau → scharf)
 var STR_SCHILDER = [], STR_BILD = {};
 function strSchildBild(name, senk) {
@@ -1869,7 +1921,7 @@ function bild(t) {
       ausschnitt(BASIS, BASIS_BOX); X.restore();
       X.strokeStyle = `rgba(255,255,255,${.8 * (1 - q)})`; X.lineWidth = 10; X.beginPath(); for (let i = 0; i <= 180; i++) { const a = i / 180 * 6.2832, r = rand(a) * kk * 1.1; i ? X.lineTo(IX + Math.cos(a) * RX * r, IY + Math.sin(a) * RY * r) : X.moveTo(IX + Math.cos(a) * RX * r, IY + Math.sin(a) * RY * r); } X.closePath(); X.stroke();
       if (q >= 1) { WACHS = null; ALT = null; }
-    } else ausschnitt(BASIS, BASIS_BOX);
+    } else inselZeichnen();
   }
   strassenSchilder();
   platzZeichnen(t);
