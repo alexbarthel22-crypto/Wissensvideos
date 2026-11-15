@@ -20,7 +20,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-15 w';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-15 x';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -28,7 +28,7 @@ const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kau
 // ---------- Erfolg „Live dabei“ auf muscheltal.de ----------
 // Alle Zuschauer, die im echten LIVE etwas tun (beitreten, kommentieren, liken, folgen, teilen, schenken), werden
 // gesammelt alle 15 s an muscheltal.de gemeldet. Schlüssel liegt nur lokal in live-schluessel.txt (nicht im Repo).
-const LIVE_KEY = (() => { try { return fs.readFileSync(path.join(DIR, 'live-schluessel.txt'), 'utf8').trim(); } catch { return process.env.MUSCHELTAL_LIVE_SCHLUESSEL || ''; } })();
+const LIVE_KEY = (() => { for (const d of [DIR, path.join(os.homedir(), '.muscheltal')]) { try { return fs.readFileSync(path.join(d, 'live-schluessel.txt'), 'utf8').trim(); } catch {} } return process.env.MUSCHELTAL_LIVE_SCHLUESSEL || ''; })();
 const liveOffen = new Set(), liveFertig = new Set();
 function liveDabei(id) { id = String(id || '').toLowerCase().replace(/^@/, ''); if (TEST || !LIVE_KEY || !id || liveFertig.has(id)) return; liveOffen.add(id); }
 if (!TEST && LIVE_KEY) setInterval(async () => {

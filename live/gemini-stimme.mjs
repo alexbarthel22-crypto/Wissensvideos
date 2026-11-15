@@ -9,7 +9,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 
 export function geminiStimme({ dir, cacheDir, cfg }) {
-  const lies = (datei, env) => { try { return fs.readFileSync(path.join(dir, datei), 'utf8').trim(); } catch { return process.env[env] || ''; } };
+  const lies = (datei, env) => { for (const d of [dir, path.join(process.env.HOME || '', '.muscheltal')]) { try { return fs.readFileSync(path.join(d, datei), 'utf8').trim(); } catch {} } return process.env[env] || ''; };
   const schluessel = lies('gemini-schluessel.txt', 'GEMINI_API_KEY');
   // Notfall-Stimme: eigener Schlüssel – sonst wird der Gemini-Schlüssel versucht (klappt, wenn im selben Projekt die Text-to-Speech-API aktiv ist)
   const chirpSchluessel = lies('google-tts-schluessel.txt', 'GOOGLE_TTS_API_KEY') || schluessel;

@@ -27,24 +27,20 @@ fi
 if pgrep -f "server.mjs --test" >/dev/null; then
   echo "🧪 Ein Probelauf lief noch – wird beendet."; pkill -f "server.mjs --test"; pkill -f "cloudflared tunnel"; sleep 2
 fi
-# Erfolg „Live dabei“ auf muscheltal.de: Schlüssel einmalig eingeben (wird nur auf diesem Mac gespeichert)
-if [ ! -f live-schluessel.txt ]; then
-  echo "📺 Für den Erfolg „Live dabei“ auf muscheltal.de: Schlüssel einfügen und Enter drücken (leer lassen = ohne)."
-  read -r -p "Schlüssel: " LIVE_SCHLUESSEL_EINGABE
-  [ -n "$LIVE_SCHLUESSEL_EINGABE" ] && printf '%s' "$LIVE_SCHLUESSEL_EINGABE" > live-schluessel.txt && echo "✅ Gespeichert."
-fi
-# Notfall-Stimme Chirp-Leda (Google Cloud Text-to-Speech): Schlüssel einmalig eingeben (nur auf diesem Mac gespeichert)
-if [ ! -f google-tts-schluessel.txt ]; then
-  echo "🆘 Für die Notfall-Stimme (Chirp-Leda, wenn Geminis Tageslimit aufgebraucht ist): Google-Cloud-Schlüssel einfügen und Enter (leer = ohne)."
-  read -r -p "Google-TTS-Schlüssel: " TTS_EINGABE
-  [ -n "$TTS_EINGABE" ] && printf '%s' "$TTS_EINGABE" > google-tts-schluessel.txt && echo "✅ Gespeichert."
-fi
-# Moderationsstimme Leda (Google Gemini): Schlüssel einmalig eingeben (wird nur auf diesem Mac gespeichert)
-if [ ! -f gemini-schluessel.txt ]; then
-  echo "🎙️  Für Ledas Stimme (Gemini): API-Schlüssel aus Google AI Studio einfügen und Enter drücken (leer lassen = Kerstin moderiert)."
-  read -r -p "Gemini-Schlüssel: " GEMINI_EINGABE
-  [ -n "$GEMINI_EINGABE" ] && printf '%s' "$GEMINI_EINGABE" > gemini-schluessel.txt && echo "✅ Gespeichert."
-fi
+# Schlüssel: werden einmal abgefragt und dauerhaft in ~/.muscheltal gespeichert (gelten für alle Ordner und Updates).
+# Leer lassen = ohne (wird auch gemerkt). Neu eingeben: Datei in ~/.muscheltal und hier im Ordner löschen.
+mkdir -p "$HOME/.muscheltal"
+schluessel() {   # $1 Datei, $2 Frage, $3 Erklärung
+  if [ ! -f "$1" ] && [ -f "$HOME/.muscheltal/$1" ]; then cp "$HOME/.muscheltal/$1" "$1"; fi
+  if [ ! -f "$1" ]; then
+    echo "$3"; read -r -p "$2 " EINGABE
+    printf '%s' "$EINGABE" > "$1"; cp "$1" "$HOME/.muscheltal/$1"
+    [ -n "$EINGABE" ] && echo "✅ Gespeichert – wird nie wieder abgefragt." || echo "ℹ️  Ohne Schlüssel gemerkt."
+  elif [ ! -f "$HOME/.muscheltal/$1" ]; then cp "$1" "$HOME/.muscheltal/$1"; fi
+}
+schluessel live-schluessel.txt "Schlüssel:" "📺 Für die Rangliste auf muscheltal.de: Netlify-Schlüssel (LIVE_SCHLUESSEL) einfügen und Enter (leer = ohne)."
+schluessel gemini-schluessel.txt "Gemini-Schlüssel:" "🎙️  Für Ledas Stimme: „Gemini API Key“ aus Google einfügen und Enter (leer = Kerstin moderiert)."
+schluessel google-tts-schluessel.txt "Google-TTS-Schlüssel:" "🆘 Für die Notfall-Stimme Chirp-Leda: „TikTok Stimme API“-Schlüssel einfügen und Enter (leer = ohne)."
 source ./tunnel.sh
 starte_tunnel
 trap stoppe_tunnel EXIT
