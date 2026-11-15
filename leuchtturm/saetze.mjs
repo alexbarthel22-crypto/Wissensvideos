@@ -13,8 +13,6 @@ const SAETZE = {
     'Welche Stadt baut den höchsten Leuchtturm? … Schreibt eure Stadt in den Chat!',
     'Dorf, Stadt oder Gemeinde, alles zählt! … Schreibt einfach euren Ort in den Chat.',
     'Holt eure Freunde aus eurer Stadt dazu, zusammen wächst der Leuchtturm schneller!',
-    'Schreibt ein Herz-Emoji in den Chat, jedes Herz bringt eurer Stadt einen Meter!',
-    'Schreibt das Päckchen-Emoji in den Chat, das ist ein Mega-Bauschub für eure Stadt!',
     'Wer seine Stadt als Erstes schreibt, wird Gründer und steht für immer am Leuchtturm!',
   ],
   bauschub: [

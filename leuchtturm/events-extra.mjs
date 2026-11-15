@@ -24,6 +24,7 @@ export function extraEvents(api, h) {
   schnell('leinenlos', 'Leinen los', '⛵', 'leinen los', 'Leinen los! Schreibt leinen los in den Chat!', 15);
   schnell('rettungsring', 'Mann über Bord', '🛟', 'ring', 'Mann über Bord! Werft den Rettungsring, schreibt Ring!');
   schnell('fernrohr', 'Fernrohr', '🔭', 'land in sicht', 'Schaut durchs Fernrohr! Schreibt land in sicht!', 15);
+  schnell('moin', 'Moin-Runde', '👋', 'moin', 'Moin-Runde! Sagt Hallo, schreibt moin in den Chat!');
   schnell('schatzkarte', 'Schatzkarte', '🗺️', 'schatz', 'Eine Schatzkarte ist angespült! Schreibt Schatz!');
 
   // ---------- B) Gemeinschafts-Ziel: schaffen genug Leute das Wort, bekommen alle ihre Städte Meter ----------
@@ -43,18 +44,18 @@ export function extraEvents(api, h) {
   ziel('seemannschor', 'Seemanns-Chor', '🎶', 'hoho', 'Seemanns-Chor! Singt mit, schreibt hoho!', 10, 10);
 
   // ---------- C) Emoji-Runden: jeder einmal, mit dem passenden Emoji ----------
-  const emoji = (id, titel, zeichen, ansage, meter = 3) => {
+  const emoji = (id, titel, zeichen, wort, ansage, meter = 3) => {
     D[id] = { titel, icon: zeichen,
       start(e) { e.w = new Set(); return `${ansage} Jeder bringt seiner Stadt ${meter} Meter!`; },
-      kommentar(e, p, t) { if (!String(t).includes(zeichen)) return; if (!e.w.has(p.id)) { e.w.add(p.id); api.turmWachsen(p.stadt, meter, p); } return true; },
-      anzeige: e => ({ text: `Schreib ${zeichen} in den Chat! Jeder einmal +${meter} m  (${e.w.size} dabei)` }),
+      kommentar(e, p, t) { if (!String(t).includes(zeichen) && !(wortGleich(t, wort) && klein(t).length <= wort.length + 4)) return; if (!e.w.has(p.id)) { e.w.add(p.id); api.turmWachsen(p.stadt, meter, p); } return true; },
+      anzeige: e => ({ text: `Schreib „${wort}“ ${zeichen} in den Chat! Jeder einmal +${meter} m  (${e.w.size} dabei)` }),
       ende: e => e.w.size ? { text: `${anz(e.w.size, 'Person hat', 'Leute haben')} mitgemacht!`, sag: 'Wunderschön! Danke fürs Mitmachen!', gut: true } : { text: 'Diesmal blieb es ruhig.' } };
     P[id] = `Jeder bringt seiner Stadt einmal ${meter} Meter.`;
   };
-  emoji('fischschwarm', 'Fischschwarm', '🐟', 'Ein Fischschwarm zieht vorbei! Schreibt einen Fisch, also das Fisch-Emoji!');
-  emoji('sternenhimmel', 'Sternenhimmel', '⭐', 'Sternenhimmel über dem Meer! Schreibt einen Stern in den Chat!');
-  emoji('delfinshow', 'Delfin-Show', '🐬', 'Delfin-Show! Schreibt das Delfin-Emoji in den Chat!');
-  emoji('muschelsuche', 'Muschelsuche', '🐚', 'Muschelsuche am Strand! Schreibt das Muschel-Emoji in den Chat!');
+  emoji('fischschwarm', 'Fischschwarm', '🐟', 'fisch', 'Ein Fischschwarm zieht vorbei! Schreibt Fisch in den Chat!');
+  emoji('sternenhimmel', 'Sternenhimmel', '⭐', 'stern', 'Sternenhimmel über dem Meer! Schreibt Stern in den Chat!');
+  emoji('delfinshow', 'Delfin-Show', '🐬', 'delfin', 'Delfin-Show! Schreibt Delfin in den Chat!');
+  emoji('muschelsuche', 'Muschelsuche', '🐚', 'muschel', 'Muschelsuche am Strand! Schreibt Muschel in den Chat!');
 
   // ---------- D) Quiz: die ersten fünf Richtigen ----------
   const quiz = (id, titel, icon, fragen, meter = 10) => {

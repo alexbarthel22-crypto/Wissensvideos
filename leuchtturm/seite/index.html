@@ -32,7 +32,7 @@ const FONT = '"Fredoka","SF Pro Rounded",ui-rounded,"Arial Rounded MT Bold",syst
 const TITEL = '"Lilita One","Fredoka","Arial Rounded MT Bold",system-ui,sans-serif';
 const schrift = (gew, px) => gew >= 900 ? `400 ${px}px ${TITEL}` : `${Math.min(700, Math.max(600, gew))} ${px}px ${FONT}`;
 const INK = '#2a1b12', GELB = '#ffd23f', PINK = '#e8467c', TUERKIS = '#2fb3a0', ROT = '#e8433c', BLAU = '#3fa0e8';
-const HORIZONT = 470;
+const HORIZONT = 640;
 let S = { staedte: [], anzahlStaedte: 0, event: null, ergebnis: null, eventIn: 120 };
 let untertitel = { text: '', t: 0 };
 const zufall = (a, b) => a + Math.random() * (b - a);
@@ -169,7 +169,7 @@ let eventStartT = -1e9, eventStartZiel = 0;
 function countdownGross(t) {
   if (!eventStartZiel || S.event) return; const r = (eventStartZiel - t) / 1000; if (r > 5.2 || r < -.3) return;
   const z = Math.max(1, Math.ceil(r)), q = 1 - (r - Math.floor(r)), k = .6 + pop(Math.min(1, q * 2.5)) * .6;
-  X.save(); X.globalAlpha = Math.min(1, (1 - q) * 3 + .2); X.translate(540, 820); X.scale(k, k);
+  X.save(); X.globalAlpha = Math.min(1, (1 - q) * 3 + .2); X.translate(540, 1060); X.scale(k, k);
   X.fillStyle = 'rgba(10,30,60,.55)'; X.beginPath(); X.arc(8, 8, 130, 0, 7); X.fill(); X.fillStyle = z <= 3 ? PINK : '#1667b8'; X.beginPath(); X.arc(0, 0, 130, 0, 7); X.fill(); X.lineWidth = 8; X.strokeStyle = '#fff'; X.stroke();
   text(String(z), 0, -10, 150, '#fff', 'center', 900); text('Event startet!', 0, 92, 30, '#fff', 'center', 900);
   X.restore();
@@ -257,11 +257,11 @@ const tonText = () => `${TONSEITE ? '&tonseite=1' : ''}&an=${tonRolle && ((AC &&
 
 // ================= Inselplätze: Rang 1 vorne in der Mitte, dahinter Reihen mit immer kleineren Inseln =================
 const REIHEN = [
-  { y: 1290, s: 1.1, xs: [540] },
-  { y: 1135, s: .9, xs: [215, 865] },
-  { y: 985, s: .72, xs: [125, 385, 695, 955] },
-  { y: 850, s: .58, xs: [95, 273, 451, 629, 807, 985] },
-  { y: 725, s: .47, xs: [68, 203, 338, 473, 608, 743, 878, 1013] },
+  { y: 1290, s: 1.1, xs: [540] },                                   // nur innerhalb x 112…968 (Handy schneidet die Ränder ab)
+  { y: 1150, s: .88, xs: [255, 825] },
+  { y: 1015, s: .7, xs: [190, 410, 670, 890] },
+  { y: 895, s: .56, xs: [165, 300, 435, 645, 780, 915] },
+  { y: 800, s: .45, xs: [150, 260, 370, 480, 600, 710, 820, 930] },
 ];
 const PLAETZE = REIHEN.flatMap((r, ri) => r.xs.map(x => ({ x, y: r.y, s: r.s, reihe: ri })));
 const POS = {};                                                    // Stadt → aktuelle (gleitende) Position
@@ -430,7 +430,7 @@ function kamera(t) {
 
 // ================= Leben auf dem Meer (billig: wenige Striche pro Bild) =================
 const WELLEN = Array.from({ length: 70 }, (_, i) => ({ x: (i * 157) % W, y: HORIZONT + 110 + ((i * 89) % (H - HORIZONT - 120)), p: i * 1.7 }));
-const MOEWEN = Array.from({ length: 5 }, (_, i) => ({ x: zufall(0, W), y: zufall(560, 1000), v: zufall(.03, .06) * (i % 2 ? 1 : -1), p: i }));
+const MOEWEN = Array.from({ length: 5 }, (_, i) => ({ x: zufall(0, W), y: zufall(820, 1250), v: zufall(.03, .06) * (i % 2 ? 1 : -1), p: i }));
 const SEGLER = [{ x: 200, y: 1480, v: .018, f: '#e8433c' }, { x: 800, y: 1640, v: -.014, f: '#3fa0e8' }, { x: 500, y: 1780, v: .011, f: '#ffd23f' }];
 const SHOWS = { delfin: null, wal: null, ballon: null, flieger: null, fisch: [], flasche: null };
 let naechsteShow = { delfin: 20000, wal: 55000, ballon: 90000, flieger: 140000, fisch: 6000, flasche: 70000 };
@@ -483,7 +483,7 @@ function himmelLeben(t, dt) {
   const top = S.staedte?.[0];
   if (t > naechsteShow.ballon && !SHOWS.ballon && top) { SHOWS.ballon = { t, stadt: top.name, r: Math.random() < .5 ? 1 : -1 }; naechsteShow.ballon = t + zufall(150000, 200000); }
   if (SHOWS.ballon) { const b = SHOWS.ballon, q = (t - b.t) / 22000; if (q > 1) SHOWS.ballon = null; else {
-    const x = b.r > 0 ? -120 + q * (W + 240) : W + 120 - q * (W + 240), y = 640 + Math.sin(q * 9) * 16;
+    const x = b.r > 0 ? -120 + q * (W + 240) : W + 120 - q * (W + 240), y = 880 + Math.sin(q * 9) * 16;
     c.strokeStyle = INK; c.lineWidth = 1.5; c.beginPath(); c.moveTo(x - 18, y + 40); c.lineTo(x - 10, y + 70); c.moveTo(x + 18, y + 40); c.lineTo(x + 10, y + 70); c.stroke();
     ['#e8433c', '#ffd23f', '#3fa0e8', '#ffd23f', '#e8433c'].forEach((f, k) => { c.fillStyle = f; c.beginPath(); c.ellipse(x, y, 46 - k * 9, 52, 0, 0, 7); c.fill(); });
     c.fillStyle = '#8a5a2b'; c.fillRect(x - 12, y + 68, 24, 16);
@@ -495,7 +495,7 @@ function himmelLeben(t, dt) {
     SHOWS.flieger = { t, txt: txt[Math.floor(zufall(0, txt.length))] }; naechsteShow.flieger = t + zufall(120000, 160000);
   }
   if (SHOWS.flieger) { const f = SHOWS.flieger, q = (t - f.t) / 16000; if (q > 1) SHOWS.flieger = null; else {
-    const x = W + 120 - q * (W + 900), y = 590 + Math.sin(q * 12) * 6;
+    const x = W + 120 - q * (W + 900), y = 1240 + Math.sin(q * 12) * 6;
     c.fillStyle = '#fff'; c.beginPath(); c.ellipse(x, y, 34, 10, 0, 0, 7); c.fill(); c.fillStyle = ROT; c.beginPath(); c.moveTo(x - 4, y); c.lineTo(x + 10, y - 22); c.lineTo(x + 18, y); c.fill(); c.fillStyle = BLAU; c.beginPath(); c.arc(x - 20, y - 2, 4, 0, 7); c.fill();
     c.strokeStyle = 'rgba(255,255,255,.9)'; c.lineWidth = 1.5; c.beginPath(); c.moveTo(x + 34, y); c.lineTo(x + 70, y); c.stroke();
     X.font = schrift(900, 28); const bw = X.measureText(f.txt).width + 40;
@@ -561,8 +561,8 @@ function welt(t) {
   // Schilder obendrauf (vorne zuletzt)
   for (const { st, i, q } of folge) {
     const gr = Math.round(Math.max(14, 30 * q.s)), b = schildBild(st, i, gr), hTurm = st.leer ? 60 * q.s : (st._h || 60) + 46 * q.s;
-    const y = q.y - hTurm - b.h / 2 - 6;
-    X.drawImage(b.c, q.x - b.w / 2, y - b.h / 2, b.w, b.h);
+    const y = q.y - hTurm - b.h / 2 - 6, lx = Math.max(RL + b.w / 2, Math.min(RR - b.w / 2, q.x));
+    X.drawImage(b.c, lx - b.w / 2, y - b.h / 2, b.w, b.h);
     if (i === 0 && !st.leer) text('👑', q.x, y - b.h / 2 - 22 + Math.sin(t * .004) * 4, 40, INK, 'center', 400);
     // Event-Symbole über den Türmen
     if (!st.leer && ev === 'turbo') text('⚡', q.x + b.w / 2 - 6, y - b.h / 2 + Math.sin(t * .01 + i) * 5, Math.round(30 * q.s + 8), INK, 'center', 400);
@@ -592,75 +592,78 @@ function wetter(t) {
 
 // ================= Kopfbereich: Titel, Top 5, Event/Countdown, Laufband =================
 const SPALTE = 500;
+// Sichtbarer Bereich auf dem Handy: TikTok schneidet links/rechts je ca. 100 px ab, oben liegt TikToks Kopfzeile (bis ca. 290),
+// unten links der Chat (ab ca. 1330). Alles Wichtige liegt in RL…RR und OBEN…UNTEN.
+const RL = 112, RR = 968, OBEN = 300, SB2 = 424;
 function kopf(t) {
-  // Titel
-  X.fillStyle = 'rgba(10,30,60,.55)'; rr(46, 30, 988, 82, 41); X.fill();
-  const gT = X.createLinearGradient(0, 22, 0, 104); gT.addColorStop(0, '#2fb3e8'); gT.addColorStop(1, '#1667b8'); X.fillStyle = gT; rr(40, 22, 988, 82, 41); X.fill(); X.lineWidth = 6; X.strokeStyle = INK; X.stroke();
-  text('🗼 LEUCHTTURM-RENNEN', 534, 64, 54, '#fff', 'center', 900, 900);
   // Linke Karte wechselt: Gesamt (20 s) → Heute → Woche → Bundesländer (je 8 s)
-  const x0 = 30, y0 = 126, hK = 342, zyk = (t / 1000) % 44;
+  const x0 = RL, y0 = OBEN, hK = 320, zyk = (t / 1000) % 44;
   let titel = '🏆 TOP 5', farbe = '#ffd23f', l = (S.staedte || []).slice(0, 5).map(s => ({ name: s.name, m: s.stock, land: s.land, fieber: s.fieber })), rechts = `${S.anzahlStaedte || 0} ${S.anzahlStaedte === 1 ? 'Stadt' : 'Städte'}`, plus = '';
   if (zyk >= 20 && zyk < 28 && S.heute?.length) { titel = '☀️ HEUTE'; farbe = '#ffb36b'; l = S.heute; rechts = 'gebaut'; plus = '+'; }
-  else if (zyk >= 28 && zyk < 36 && S.woche?.length) { titel = '📅 DIESE WOCHE'; farbe = '#9fd8ff'; l = S.woche; rechts = 'gebaut'; plus = '+'; }
-  else if (zyk >= 36 && S.regionen?.length > 1) { titel = '🗺️ BUNDESLÄNDER'; farbe = '#a8e6a0'; l = S.regionen; rechts = 'gesamt'; }
-  karte(x0, y0, SPALTE, hK, '#fffaf0');
-  X.fillStyle = farbe; rr(x0, y0, SPALTE, 58, [28, 28, 0, 0]); X.fill(); X.strokeStyle = INK; X.lineWidth = 6; rr(x0, y0, SPALTE, hK, 28); X.stroke();
-  text(titel, x0 + 22, y0 + 30, 30, INK, 'left', 900, 330); text(rechts, x0 + SPALTE - 22, y0 + 30, 24, INK, 'right', 900, 140);
+  else if (zyk >= 28 && zyk < 36 && S.woche?.length) { titel = '📅 WOCHE'; farbe = '#9fd8ff'; l = S.woche; rechts = 'gebaut'; plus = '+'; }
+  else if (zyk >= 36 && S.regionen?.length > 1) { titel = '🗺️ LÄNDER'; farbe = '#a8e6a0'; l = S.regionen; rechts = 'gesamt'; }
+  karte(x0, y0, SB2, hK, '#fffaf0');
+  X.fillStyle = farbe; rr(x0, y0, SB2, 54, [28, 28, 0, 0]); X.fill(); X.strokeStyle = INK; X.lineWidth = 6; rr(x0, y0, SB2, hK, 28); X.stroke();
+  text(titel, x0 + 20, y0 + 28, 28, INK, 'left', 900, 250); text(rechts, x0 + SB2 - 20, y0 + 28, 22, INK, 'right', 900, 130);
   const max = Math.max(1, ...l.map(s => s.m));
-  if (!l.length) { text('Noch keine Stadt –', x0 + SPALTE / 2, y0 + 150, 30, INK, 'center', 900); text('schreib deine in den Chat!', x0 + SPALTE / 2, y0 + 195, 30, PINK, 'center', 900); }
+  if (!l.length) { text('Noch keine Stadt –', x0 + SB2 / 2, y0 + 140, 28, INK, 'center', 900, SB2 - 30); text('schreib deine in den Chat!', x0 + SB2 / 2, y0 + 182, 28, PINK, 'center', 900, SB2 - 30); }
   l.forEach((s, i) => {
-    const y = y0 + 84 + i * 52;
-    X.fillStyle = ['rgba(255,210,63,.55)', 'rgba(190,200,215,.55)', 'rgba(220,150,90,.45)', 'rgba(63,160,232,.18)', 'rgba(63,160,232,.18)'][i]; rr(x0 + 16, y - 21, (SPALTE - 32) * Math.max(.18, s.m / max), 42, 21); X.fill();
-    text(`${i + 1}.`, x0 + 30, y, 28, INK, 'left', 900); text(`${flagge(s.land)} ${s.name}${s.fieber ? ' 🔥' : ''}`, x0 + 74, y, 28, INK, 'left', 900, 250);
-    text(`${plus}${fmt(s.m)} m`, x0 + SPALTE - 30, y, 27, INK, 'right', 900, 140);
+    const y = y0 + 80 + i * 49;
+    X.fillStyle = ['rgba(255,210,63,.55)', 'rgba(190,200,215,.55)', 'rgba(220,150,90,.45)', 'rgba(63,160,232,.18)', 'rgba(63,160,232,.18)'][i]; rr(x0 + 12, y - 20, (SB2 - 24) * Math.max(.2, s.m / max), 40, 20); X.fill();
+    text(`${i + 1}.`, x0 + 22, y, 26, INK, 'left', 900); text(`${flagge(s.land)} ${s.name}${s.fieber ? ' 🔥' : ''}`, x0 + 58, y, 26, INK, 'left', 900, 215);
+    text(`${plus}${fmt(s.m)} m`, x0 + SB2 - 20, y, 25, INK, 'right', 900, 120);
   });
-  // Event oder Countdown
-  const x1 = 550, e = S.event, r = S.ergebnis;
+  // Rechte Karte: Event (Titel, Uhr, Balken, Preis) oder Ergebnis oder Countdown
+  const x1 = RR - SB2, e = S.event, r = S.ergebnis;
   if (e) {
-    karte(x1, y0, SPALTE, hK, '#fff');
-    X.fillStyle = PINK; rr(x1, y0, SPALTE, 58, [28, 28, 0, 0]); X.fill(); X.strokeStyle = INK; X.lineWidth = 6; rr(x1, y0, SPALTE, hK, 28); X.stroke();
-    text(`${e.icon} ${e.titel}`, x1 + 20, y0 + 30, 28, '#fff', 'left', 900, SPALTE - 130); text(`⏱ ${zeit(e.rest)}`, x1 + SPALTE - 20, y0 + 30, 28, '#fff', 'right', 900, 110);
-    X.fillStyle = 'rgba(42,27,18,.12)'; X.fillRect(x1 + 8, y0 + 56, SPALTE - 16, 6); X.fillStyle = GELB; X.fillRect(x1 + 8, y0 + 56, (SPALTE - 16) * e.rest / e.dauer, 6);
-    const bl = (e.balken || []).slice(0, 3), zl = umbrechen(e.text, 25, 800, SPALTE - 36, bl.length ? 3 : 5);
-    zl.forEach((z, i) => text(z, x1 + SPALTE / 2, y0 + 88 + i * 31, 25, INK, 'center', 800, SPALTE - 30));
-    let yy = y0 + 88 + zl.length * 31 + 2;
-    bl.forEach(b => { X.fillStyle = 'rgba(42,27,18,.08)'; rr(x1 + 18, yy, SPALTE - 36, 34, 17); X.fill(); X.fillStyle = b.farbe || BLAU; rr(x1 + 18, yy, Math.max(34, (SPALTE - 36) * Math.min(1, b.wert / Math.max(1, b.max))), 34, 17); X.fill();
-      text(b.name, x1 + 32, yy + 18, 22, INK, 'left', 900, SPALTE - 170); text(fmt(b.wert), x1 + SPALTE - 32, yy + 18, 22, INK, 'right', 900, 110); yy += 40; });
-    if (e.preis) text('🏆 ' + e.preis, x1 + SPALTE / 2, Math.min(y0 + hK - 24, Math.max(yy + 18, y0 + hK - 24)), 21, '#8a5a2b', 'center', 800, SPALTE - 30);
+    karte(x1, y0, SB2, hK, '#fff');
+    X.fillStyle = PINK; rr(x1, y0, SB2, 54, [28, 28, 0, 0]); X.fill(); X.strokeStyle = INK; X.lineWidth = 6; rr(x1, y0, SB2, hK, 28); X.stroke();
+    text(`${e.icon} ${e.titel}`, x1 + 18, y0 + 28, 25, '#fff', 'left', 900, SB2 - 120); text(`⏱ ${zeit(e.rest)}`, x1 + SB2 - 18, y0 + 28, 25, '#fff', 'right', 900, 100);
+    X.fillStyle = 'rgba(42,27,18,.12)'; X.fillRect(x1 + 8, y0 + 52, SB2 - 16, 6); X.fillStyle = GELB; X.fillRect(x1 + 8, y0 + 52, (SB2 - 16) * e.rest / e.dauer, 6);
+    const bl = (e.balken || []).slice(0, 3); let yy = y0 + 74;
+    if (!bl.length) { text(e.icon, x1 + SB2 / 2, y0 + 130, 70, INK, 'center', 400); yy = y0 + 190; }
+    bl.forEach(b => { X.fillStyle = 'rgba(42,27,18,.08)'; rr(x1 + 14, yy, SB2 - 28, 38, 19); X.fill(); X.fillStyle = b.farbe || BLAU; rr(x1 + 14, yy, Math.max(38, (SB2 - 28) * Math.min(1, b.wert / Math.max(1, b.max))), 38, 19); X.fill();
+      text(b.name, x1 + 28, yy + 20, 22, INK, 'left', 900, SB2 - 140); text(fmt(b.wert), x1 + SB2 - 28, yy + 20, 22, INK, 'right', 900, 90); yy += 46; });
+    if (e.preis) umbrechen('🏆 ' + e.preis, 21, 800, SB2 - 30, 3).forEach((z, i, a) => text(z, x1 + SB2 / 2, y0 + hK - 22 - (a.length - 1 - i) * 26, 21, '#8a5a2b', 'center', 800, SB2 - 24));
   } else if (r) {
-    karte(x1, y0, SPALTE, hK, r.gut ? '#fff3c4' : '#fff');
-    text(`${r.icon} ${r.titel}`, x1 + SPALTE / 2, y0 + 44, 28, '#8a5a2b', 'center', 900, SPALTE - 40);
-    umbrechen(r.text, 28, 900, SPALTE - 40, 5).forEach((z, i) => text(z, x1 + SPALTE / 2, y0 + 100 + i * 36, 28, INK, 'center', 900, SPALTE - 30));
-    X.fillStyle = '#16325c'; rr(x1 + 24, y0 + hK - 70, SPALTE - 48, 50, 25); X.fill();
-    text(`⏳ Nächstes Event in ${zeit(S.eventIn || 0)}`, x1 + SPALTE / 2, y0 + hK - 45, 25, '#fff', 'center', 900, SPALTE - 70);
+    karte(x1, y0, SB2, hK, r.gut ? '#fff3c4' : '#fff');
+    text(`${r.icon} ${r.titel}`, x1 + SB2 / 2, y0 + 40, 26, '#8a5a2b', 'center', 900, SB2 - 30);
+    umbrechen(r.text, 26, 900, SB2 - 36, 5).forEach((z, i) => text(z, x1 + SB2 / 2, y0 + 92 + i * 33, 26, INK, 'center', 900, SB2 - 24));
+    X.fillStyle = '#16325c'; rr(x1 + 18, y0 + hK - 64, SB2 - 36, 46, 23); X.fill();
+    text(`⏳ Nächstes Event ${zeit(S.eventIn || 0)}`, x1 + SB2 / 2, y0 + hK - 41, 23, '#fff', 'center', 900, SB2 - 60);
   } else {
-    karte(x1, y0, SPALTE, hK, '#16325c');
-    text('⏳ Nächstes Event', x1 + SPALTE / 2, y0 + 42, 30, GELB, 'center', 900);
+    karte(x1, y0, SB2, hK, '#16325c');
+    text('⏳ Nächstes Event', x1 + SB2 / 2, y0 + 42, 28, GELB, 'center', 900, SB2 - 30);
     const s = S.eventIn || 0, p = s <= 10 ? 1 + Math.sin(t * .012) * .08 : 1;
-    X.save(); X.translate(x1 + SPALTE / 2, y0 + 120); X.scale(p, p); text(zeit(s), 0, 0, 78, '#fff', 'center', 900); X.restore();
-    text('60 Events, jede Minute –', x1 + SPALTE / 2, y0 + 200, 26, '#d6f3ff', 'center', 800);
-    text('Bonus-Meter für dich! 🗼', x1 + SPALTE / 2, y0 + 234, 26, '#d6f3ff', 'center', 800);
-    X.fillStyle = 'rgba(255,255,255,.15)'; rr(x1 + 24, y0 + 268, SPALTE - 48, 46, 23); X.fill();
-    text('✍️ Schreib deine Stadt!', x1 + SPALTE / 2, y0 + 291, 26, '#fff', 'center', 900, SPALTE - 70);
+    X.save(); X.translate(x1 + SB2 / 2, y0 + 120); X.scale(p, p); text(zeit(s), 0, 0, 76, '#fff', 'center', 900); X.restore();
+    text('Bonus-Meter für', x1 + SB2 / 2, y0 + 198, 25, '#d6f3ff', 'center', 800);
+    text('deine Stadt! 🗼', x1 + SB2 / 2, y0 + 230, 25, '#d6f3ff', 'center', 800);
+    X.fillStyle = 'rgba(255,255,255,.15)'; rr(x1 + 18, y0 + 260, SB2 - 36, 44, 22); X.fill();
+    text('Jede Minute ein Event', x1 + SB2 / 2, y0 + 282, 23, '#fff', 'center', 900, SB2 - 60);
   }
-  // Laufband mit wechselnden Fakten
+  // Die wichtigste Regel – groß und immer sichtbar
+  const yP = y0 + hK + 14, pp = 1 + Math.sin(t * .005) * .015;
+  X.save(); X.translate(540, yP + 36); X.scale(pp, pp);
+  X.fillStyle = 'rgba(10,30,60,.5)'; rr(-(RR - RL) / 2 + 6, -36 + 6, RR - RL, 72, 36); X.fill();
+  X.fillStyle = GELB; rr(-(RR - RL) / 2, -36, RR - RL, 72, 36); X.fill(); X.lineWidth = 5; X.strokeStyle = INK; X.stroke();
+  text('✍️ Stadt kommentieren = Turm +1 m höher!', 0, 0, 36, INK, 'center', 900, RR - RL - 40);
+  X.restore();
+  // Laufband mit wechselnden Fakten und Mitmach-Ideen
   const fakten = [];
   if (S.anzahlStaedte) fakten.push(`🌍 ${S.anzahlStaedte} ${S.anzahlStaedte === 1 ? 'Stadt' : 'Städte'} · ${stw(S.stockGesamt)} gesamt`);
-  if (S.neueste) fakten.push(`🆕 Neu im Rennen: ${S.neueste}`);
-  if (S.staedte?.[0]?.baumeister) fakten.push(`🏗️ Fleißigster Baumeister von ${S.staedte[0].name}: ${S.staedte[0].baumeister.replace(/^@/, '')}`);
-  if (S.laender) { const z = Object.entries(S.laender).filter(([k]) => FLAGGE[k]).sort((a, b) => b[1] - a[1]).slice(0, 4).map(([k, n]) => `${flagge(k)} ${n}`); if (z.length > 1) fakten.push('Länder: ' + z.join('  ·  ')); }
+  if (S.neueste) fakten.push(`🆕 ${S.neueste} ist neu dabei – sag Hallo!`);
+  if (S.staedte?.[0]) fakten.push(`👑 Wer stoppt ${S.staedte[0].name}? Schreib deine Stadt!`);
   if (S.staedte?.[1]) fakten.push(`⚔️ ${S.staedte[1].name} fehlen ${stw(S.staedte[0].stock - S.staedte[1].stock + 1)} zur Spitze`);
-  if (S.sieger) fakten.push(`🏆 Letzte Stadt des Tages: ${S.sieger}`);
-  fakten.push('✍️ Jedes Mal deine Stadt schreiben = +1 m');
-  fakten.push('🗼 Auch andere Städte schreiben: jede wächst +1 m');
-  fakten.push('❤️ Herz im Chat = +1 m  ·  🎁 im Chat = +25 m');
+  if (S.staedte?.[0]?.baumeister) fakten.push(`🏗️ Top-Baumeister ${S.staedte[0].name}: ${S.staedte[0].baumeister.replace(/^@/, '')}`);
   if (S.staedte?.[0]?.gruender) fakten.push(`🏳️ Gründer von ${S.staedte[0].name}: ${S.staedte[0].gruender.replace(/^@/, '')}`);
   if (S.regionen?.[0]) fakten.push(`🗺️ Stärkstes Bundesland: ${S.regionen[0].name}`);
   if (S.heute?.[0]) fakten.push(`☀️ Heute vorne: ${S.heute[0].name} (+${fmt(S.heute[0].m)} m)`);
-  const f = fakten[Math.floor(t / 6000) % fakten.length];
-  X.fillStyle = 'rgba(10,30,60,.72)'; rr(30, y0 + hK + 14, 1020, 50, 25); X.fill();
-  text(f, 540, y0 + hK + 39, 26, '#fff', 'center', 900, 980);
-  return y0 + hK + 64;
+  if (S.sieger) fakten.push(`🏆 Letzte Stadt des Tages: ${S.sieger}`);
+  fakten.push('🗼 Auch andere Städte schreiben – jede wächst!', '🤝 Holt Leute aus eurer Stadt in den Chat!', '💬 Aus welcher Stadt schaust du zu?');
+  const f = fakten[Math.floor(t / 5000) % fakten.length];
+  X.fillStyle = 'rgba(10,30,60,.78)'; rr(RL, yP + 82, RR - RL, 48, 24); X.fill();
+  text(f, 540, yP + 106, 25, '#fff', 'center', 900, RR - RL - 30);
+  return yP + 130;
 }
 
 // ================= Banner, Erklärung, Hinweis, Untertitel =================
@@ -669,24 +672,24 @@ function bannerZeichnen(t) {
   if (!bannerAktiv && banner.length) bannerAktiv = { ...banner.shift(), t };
   const b = bannerAktiv; if (!b) return;
   const a = t - b.t; if (a > b.ms) { bannerAktiv = null; return; }
-  const ein = pop(Math.min(1, a / 450)), aus = Math.min(1, (b.ms - a) / 300), y = 640;
+  const ein = pop(Math.min(1, a / 450)), aus = Math.min(1, (b.ms - a) / 300), y = 1040;
   X.save(); X.globalAlpha = aus; X.translate(540, y); X.scale(ein, ein);
-  const w = 940, h = b.unter ? 138 : 104;
+  const w = RR - RL, h = b.unter ? 138 : 104;
   X.fillStyle = 'rgba(10,30,60,.5)'; rr(-w / 2 + 8, -h / 2 + 8, w, h, 36); X.fill();
   X.fillStyle = b.farbe; rr(-w / 2, -h / 2, w, h, 36); X.fill(); X.lineWidth = 6; X.strokeStyle = INK; X.stroke();
-  text(b.icon, -w / 2 + 70, 0 + Math.sin(a * .01) * 4, 64, INK, 'center', 400);
-  text(b.titel, 40, b.unter ? -22 : 0, 44, '#fff', 'center', 900, w - 190);
-  if (b.unter) text(b.unter, 40, 34, 28, '#fff', 'center', 800, w - 190);
+  text(b.icon, -w / 2 + 62, 0 + Math.sin(a * .01) * 4, 64, INK, 'center', 400);
+  text(b.titel, 36, b.unter ? -22 : 0, 40, '#fff', 'center', 900, w - 170);
+  if (b.unter) text(b.unter, 36, 34, 26, '#fff', 'center', 800, w - 170);
   X.restore();
 }
 function herzenZeichnen(t) {
   for (let i = herzen.length - 1; i >= 0; i--) {
     const h = herzen[i], a = (t - h.t) / 3200; if (a > 1) { herzen.splice(i, 1); continue; }
     if (i > 0) { h.t = t; continue; }                                 // eins nach dem anderen
-    const y = 1250 - a * 260, al = Math.min(1, (1 - a) * 4, a * 8);
+    const y = 1200 - a * 160, al = Math.min(1, (1 - a) * 4, a * 8);
     X.globalAlpha = al;
     for (let k = 0; k < 8; k++) { const p = (a * 1.4 + k / 8) % 1; text(h.e || '💖', 540 + Math.sin(k * 2 + t * .003) * 380, 1350 - p * 420, 30 + (k % 3) * 8, INK, 'center', 400); }
-    const bw = h.gross ? 900 : 640, bx = 540 - bw / 2, bh = h.z2 ? 112 : 80;
+    const bw = h.gross ? RR - RL : 640, bx = 540 - bw / 2, bh = h.z2 ? 112 : 80;
     X.fillStyle = h.f; rr(bx, y - bh / 2, bw, bh, 40); X.fill(); X.lineWidth = 5; X.strokeStyle = '#fff'; X.stroke();
     text(h.z1, 540, h.z2 ? y - 20 : y, h.gross ? 38 : 32, '#fff', 'center', 900, bw - 40);
     if (h.z2) text(h.z2, 540, y + 26, 26, '#fff', 'center', 800, bw - 40);
@@ -696,7 +699,7 @@ function herzenZeichnen(t) {
 function bauschubZeichnen(t) {
   const b = bauschub[0]; if (!b) return; const a = t - b.t; if (a > 2600) { bauschub.shift(); if (bauschub[0]) bauschub[0].t = t; return; }
   const k = pop(Math.min(1, a / 350)), al = Math.min(1, (2600 - a) / 300);
-  X.save(); X.globalAlpha = al; X.translate(540, 1300); X.scale(k, k); X.rotate(Math.sin(a * .02) * .02);
+  X.save(); X.globalAlpha = al; X.translate(540, 1100); X.scale(k, k); X.rotate(Math.sin(a * .02) * .02);
   X.fillStyle = 'rgba(10,30,60,.5)'; rr(-380 + 7, -58 + 7, 760, 116, 58); X.fill();
   const g = X.createLinearGradient(-380, 0, 380, 0); g.addColorStop(0, '#ff8a2a'); g.addColorStop(.5, '#ffd23f'); g.addColorStop(1, '#ff6fa3'); X.fillStyle = g; rr(-380, -58, 760, 116, 58); X.fill(); X.lineWidth = 6; X.strokeStyle = INK; X.stroke();
   text('🎁 MEGA-BAUSCHUB!', 0, -18, 42, '#fff', 'center', 900, 720); text(`${b.stadt} +${fmt(b.n)} m · ${b.name}`, 0, 28, 28, INK, 'center', 900, 720);
@@ -709,13 +712,13 @@ function herzRegenZeichnen(t) {
 }
 function erklaerung(t) {
   const rest = erklaerBis - t; if (rest <= 0) return;
-  const a = 9000 - rest, al = Math.min(1, a / 400, rest / 400), y0 = 640;
+  const a = 9000 - rest, al = Math.min(1, a / 400, rest / 400), y0 = 660;
   X.save(); X.globalAlpha = al;
-  karte(90, y0, 900, 690, '#fffaf0', 40);
-  text('🗼 So geht das Rennen', 540, y0 + 60, 48, INK, 'center', 900);
-  [['✍️', 'Jedes Mal deine Stadt schreiben = +1 m', 'Dorf, Stadt oder Gemeinde – auch andere Städte wachsen'], ['🏝️', 'Deine Stadt bekommt eine Insel', 'mit eigenem Leuchtturm'], ['💬', 'Jeder Kommentar hilft deiner Stadt', 'je mehr aus deiner Stadt, desto schneller'], ['❤️', 'Herz-Emoji im Chat = +1 m', 'alle 5 Sekunden möglich'], ['🎁', '🎁-Emoji im Chat = +25 m', 'Mega-Bauschub, einmal pro Minute'], ['🏆', 'Jede Minute ein Event', '60 verschiedene, mit Bonus-Metern']].forEach(([ic, z1, z2], i) => {
-    const y = y0 + 135 + i * 92, sch = Math.min(1, Math.max(0, (a - 300 - i * 450) / 350));
-    X.globalAlpha = al * sch; text(ic, 170, y + 8, 54, INK, 'center', 400); text(z1, 225, y - 8, 34, INK, 'left', 900, 730); text(z2, 225, y + 30, 25, '#6b5a4a', 'left', 800, 730);
+  karte(RL, y0, RR - RL, 560, '#fffaf0', 40);
+  text('🗼 So geht das Rennen', 540, y0 + 58, 44, INK, 'center', 900, RR - RL - 40);
+  [['✍️', 'Stadt kommentieren = +1 m höher', 'jedes Mal – Dorf, Stadt oder Gemeinde'], ['🏝️', 'Jede Stadt bekommt eine Insel', 'mit eigenem Leuchtturm'], ['🗼', 'Auch andere Städte schreiben', 'jede Stadt, die du schreibst, wächst'], ['🤝', 'Holt Leute aus eurer Stadt dazu', 'zusammen wächst der Turm schneller'], ['🏆', 'Jede Minute ein Event', '60 verschiedene, mit Bonus-Metern']].forEach(([ic, z1, z2], i) => {
+    const y = y0 + 132 + i * 88, sch = Math.min(1, Math.max(0, (a - 300 - i * 450) / 350));
+    X.globalAlpha = al * sch; text(ic, RL + 55, y + 8, 50, INK, 'center', 400); text(z1, RL + 105, y - 8, 33, INK, 'left', 900, RR - RL - 130); text(z2, RL + 105, y + 28, 24, '#6b5a4a', 'left', 800, RR - RL - 130);
   });
   X.restore();
 }
@@ -725,37 +728,35 @@ function siegerZeichnen(t) {
   karte(-420, -200, 840, 400, '#fff3c4', 50); text('🏆', 0, -110, 110, INK, 'center', 400); text('Stadt des Tages', 0, 10, 44, '#8a5a2b', 'center', 900); text(s.stadt, 0, 80, 72, PINK, 'center', 900, 760); if (s.m) text(`+${fmt(s.m)} m heute gebaut`, 0, 150, 32, '#8a5a2b', 'center', 900);
   X.restore();
 }
-function hinweis(t) {
-  const p = 1 + Math.sin(t * .004) * .02; X.save(); X.translate(540, 1470); X.scale(p, p);
-  X.fillStyle = 'rgba(10,30,60,.45)'; rr(-430 + 6, -62 + 6, 860, 124, 40); X.fill();
-  X.fillStyle = '#ffffff'; rr(-430, -62, 860, 124, 40); X.fill(); X.lineWidth = 6; X.strokeStyle = INK; X.stroke();
-  text('✍️ Jedes Mal deine Stadt schreiben = +1 m!', 0, -26, 38, INK, 'center', 900, 800);
-  const top = S.staedte?.[0]?.name, zweite = S.staedte?.[1]?.name, neu = S.neueste;
-  const zeilen = ['🗼 Auch andere Städte schreiben – jede wächst +1 m', '🤝 Holt Leute aus eurer Stadt in den Chat!', top ? `👑 Wer stoppt ${top}? Schreib deine Stadt!` : '👑 Wer holt sich Platz 1?',
-    zweite ? `⚔️ ${zweite} jagt die Spitze – feuert an!` : '⚔️ Feuert eure Nachbarstadt an!', neu ? `🆕 ${neu} ist neu dabei – sag Hallo!` : '🆕 Ist dein Dorf schon dabei?', '💬 Aus welcher Stadt schaust du zu?'];
-  const wahl = Math.floor(t / 4500) % zeilen.length;
-  text(zeilen[wahl], 0, 22, 26, wahl % 2 ? PINK : '#1667b8', 'center', 900, 800);
-  X.restore();
-}
+function hinweis() {}
 function untertitelZeichnen(t) {
+  let y = KOPF_UNTEN + 12;
+  const e = S.event;
+  if (e?.text) {                                                    // Aufgabe des laufenden Events – groß in der Mitte
+    const zl = umbrechen(e.text, 32, 900, RR - RL - 50, 3), h = zl.length * 40 + 26;
+    X.fillStyle = 'rgba(10,30,60,.45)'; rr(RL + 6, y + 6, RR - RL, h, 26); X.fill();
+    X.fillStyle = '#fff'; rr(RL, y, RR - RL, h, 26); X.fill(); X.lineWidth = 5; X.strokeStyle = PINK; X.stroke();
+    zl.forEach((z, i) => text(z, 540, y + 33 + i * 40, 32, INK, 'center', 900, RR - RL - 40));
+    y += h + 10;
+  }
   const ua = (t - untertitel.t) / 1000; if (!untertitel.text || ua > (untertitel.d || 5)) return;
-  const zl = umbrechen(untertitel.text, 30, 800, 860, 3), y = 1600;
+  const zl = umbrechen(untertitel.text, 28, 800, RR - RL - 40, 3);
   X.globalAlpha = Math.min(1, ua * 4, ((untertitel.d || 5) - ua) * 3);
-  X.fillStyle = 'rgba(10,20,40,.62)'; rr(90, y - 30, 900, zl.length * 40 + 24, 24); X.fill();
-  zl.forEach((z, i) => text(z, 540, y - 6 + 8 + i * 40, 30, '#fff', 'center', 800, 860));
+  X.fillStyle = 'rgba(10,20,40,.72)'; rr(RL, y, RR - RL, zl.length * 36 + 18, 22); X.fill();
+  zl.forEach((z, i) => text(z, 540, y + 27 + i * 36, 28, '#fff', 'center', 800, RR - RL - 30));
   X.globalAlpha = 1;
 }
 function spotlightZeichnen(t) {
   if (!camZiel || t - camZiel.t > 6500) return;
   const a = t - camZiel.t, st = S.staedte.find(s => s.name === camZiel.name); if (!st) return;
   X.globalAlpha = Math.min(1, a / 600, (6500 - a) / 400);
-  X.fillStyle = '#2a1b12'; rr(140, 1560, 800, 96, 48); X.fill(); X.strokeStyle = GELB; X.lineWidth = 5; X.stroke();
-  text(`👑 ${st.name} führt: ${stw(st.stock)} hoch${st.gruender ? ' · Gründer ' + st.gruender.replace(/^@/, '') : ''}`, 540, 1608, 32, GELB, 'center', 900, 740);
+  X.fillStyle = '#2a1b12'; rr(RL, 1180, RR - RL, 90, 45); X.fill(); X.strokeStyle = GELB; X.lineWidth = 5; X.stroke();
+  text(`👑 ${st.name} führt: ${stw(st.stock)} hoch${st.gruender ? ' · Gründer ' + st.gruender.replace(/^@/, '') : ''}`, 540, 1225, 30, GELB, 'center', 900, 740);
   X.globalAlpha = 1;
 }
 
 // ================= Bildablauf =================
-let frameZeit = 0, tLetzt = 0, KC = null, KX = null, kopfZeit = 0, KOPF_UNTEN = 540;
+let frameZeit = 0, tLetzt = 0, KC = null, KX = null, kopfZeit = 0, KOPF_UNTEN = 764;
 function bild(t) {
   requestAnimationFrame(bild);
   if (t - frameZeit < 1000 / FPS - 3) return;
@@ -772,12 +773,12 @@ function bild(t) {
   X.setTransform(Q0, 0, 0, Q0, 0, 0);
   wetter(t);
   hinweis(t); spotlightZeichnen(t); untertitelZeichnen(t);
-  if (!KC) { KC = document.createElement('canvas'); KC.width = C.width; KC.height = Math.ceil(560 * Q0); KX = KC.getContext('2d'); }
-  if (t - kopfZeit > 250) { kopfZeit = t; const echt = X; X = KX; X.setTransform(Q0, 0, 0, Q0, 0, 0); X.clearRect(0, 0, W, 560); KOPF_UNTEN = kopf(t); X = echt; }
+  if (!KC) { KC = document.createElement('canvas'); KC.width = C.width; KC.height = Math.ceil(800 * Q0); KX = KC.getContext('2d'); }
+  if (t - kopfZeit > 250) { kopfZeit = t; const echt = X; X = KX; X.setTransform(Q0, 0, 0, Q0, 0, 0); X.clearRect(0, 0, W, 800); KOPF_UNTEN = kopf(t); X = echt; }
   X.setTransform(1, 0, 0, 1, 0, 0); X.drawImage(KC, 0, 0); X.setTransform(Q0, 0, 0, Q0, 0, 0);
   herzRegenZeichnen(t); countdownGross(t); bannerZeichnen(t); bauschubZeichnen(t); herzenZeichnen(t); erklaerung(t); siegerZeichnen(t);
-  if (tonRolle && !(tonAn && AC && AC.state === 'running')) { if (!bild.versuch || t - bild.versuch > 3000) { bild.versuch = t; tonStarten(); } text('🔊 Einmal ins Bild klicken für Ton', 540, 1880, 22, '#fff', 'center', 900); }
-  else if (!VORSCHAU) text('🎙️ KI-Stimme', 1040, 1890, 18, 'rgba(255,255,255,.7)', 'right', 800);
+  if (tonRolle && !(tonAn && AC && AC.state === 'running')) { if (!bild.versuch || t - bild.versuch > 3000) { bild.versuch = t; tonStarten(); } text('🔊 Einmal ins Bild klicken für Ton', 540, 1300, 22, '#fff', 'center', 900); }
+  else if (!VORSCHAU) text('🎙️ KI-Stimme', RR, 1312, 18, 'rgba(255,255,255,.75)', 'right', 800);
   tonLautstaerke();
   last.summe += performance.now() - t0; last.n++;
   if (last.n >= 90) { const ms = last.summe / last.n, ziel = MAX_FPS(); FPS = ms > 28 ? Math.min(ziel, 20) : ms > 20 ? Math.min(ziel, 24) : ms < 12 ? ziel : FPS; last.summe = 0; last.n = 0; }

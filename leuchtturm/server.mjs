@@ -21,7 +21,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-16 e';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-16 f';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 // Stimmen und Kerstin-Modell mit Muschel-Tal LIVE teilen (gleicher Speicher = schon erzeugte Leda-Sätze kosten nichts)
@@ -160,13 +160,13 @@ function kommentar(u, text) {
   const s = S.staedte[p.stadt], turbo = EV.turbo(), regen = EV.herzregen(), T = CFG.turm, fieber = s.fieberBis > Date.now() ? 2 : 1;
   fieberPruefen(s, p);
   const jetzt = Date.now();
-  if (GESCHENK_EMOJI.test(text) && jetzt - (p.geschenkZeit || 0) >= (T.geschenkEmojiSek ?? 60) * 1000) {
+  if ((T.geschenkEmojiMeter ?? 0) > 0 && GESCHENK_EMOJI.test(text) && jetzt - (p.geschenkZeit || 0) >= (T.geschenkEmojiSek ?? 60) * 1000) {
     p.geschenkZeit = jetzt; p.stadtZeit = jetzt; const n = (T.geschenkEmojiMeter ?? 25) * fieber;
     turmWachsen(s.name, n, p, 'geschenk'); sende({ typ: 'bauschub', stadt: s.name, name: p.name, n }); if (turbo) turbo.n += n;
     if (Date.now() - bauschubAnsage > 20000) { bauschubAnsage = Date.now(); sag(satz('bauschub', { stadt: s.name }), 2); }
     return;
   }
-  if (HERZ_EMOJI.test(text) && jetzt - (p.herzZeit || 0) >= (regen ? 2 : (T.herzEmojiSek ?? 5)) * 1000) {
+  if ((regen || (T.herzEmojiMeter ?? 0) > 0) && HERZ_EMOJI.test(text) && jetzt - (p.herzZeit || 0) >= (regen ? 2 : (T.herzEmojiSek ?? 5)) * 1000) {
     p.herzZeit = jetzt; p.stadtZeit = jetzt; const n = (regen ? 2 : (T.herzEmojiMeter ?? 1)) * fieber;
     turmWachsen(s.name, n, p, 'herz'); if (regen) regen.n += n; if (turbo) turbo.n += n;
     return;

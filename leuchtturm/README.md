@@ -5,7 +5,7 @@ Ein eigenes LIVE-Spiel: Jede Stadt, jedes Dorf, jede Gemeinde aus Deutschland, �
 ## So spielen die Zuschauer
 - **Stadt in den Chat schreiben**: Jedes Mal +1 m für diese Stadt (pro Person alle 3 s). Man kann auch andere Städte schreiben und anfeuern. Die erste Stadt ist die eigene Heimatstadt. Tippfehler wie „Hambrug“ oder „Koeln“ werden erkannt.
 - **Jeder andere Kommentar**: +1 m für die Heimatstadt (alle 30 s).
-- **❤️ Herz-Emoji im Chat**: +1 m (alle 5 s). **🎁 im Chat**: Mega-Bauschub +25 m (einmal pro Minute).
+- Emoji-Boni (❤️/🎁 im Chat) sind aus, weil Emojis im TikTok-Chat nicht zuverlässig ankommen.
 - **Gründer**: Wer eine Stadt als Erstes schreibt, steht für immer am Leuchtturm.
 - **Städte-Fieber**: Schreiben 6 Leute einer Stadt innerhalb von 30 s, zählt 45 s lang alles doppelt.
 - **Jede Minute ein Event** (60 verschiedene: Schnellste, Gemeinschafts-Ziele, Emoji-Runden, Quiz, Städte-Spiele, Duelle, Glück), jedes 40 s lang.

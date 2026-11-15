@@ -149,6 +149,7 @@ export function macheEvents(api) {
 
   const X = extraEvents(api, { zufall, wortGleich, listeTxt, anz, stadtVon }); Object.assign(DEFS, X.D);
   for (const id of ['staedteneu', 'baukolonne', 'nebel']) DEFS[id].stadt = true;
+  delete DEFS.herzregen;                                       // Herz-Emojis kommen im TikTok-Chat nicht zuverlässig an
   const PREIS = {
     staedteneu: 'Jede neue Stadt startet mit zwanzig Metern.', baukolonne: 'Jeder bringt seiner Stadt fünf Meter.', staedteduell: 'Die Siegerstadt bekommt fünfzig Meter.',
     leuchtsignal: 'Die ersten fünf bringen ihrer Stadt je fünfzehn Meter.', turmquiz: 'Jede richtige Antwort bringt der eigenen Stadt zehn Meter.', aufholjagd: 'Ab Platz vier wächst jede Stadt doppelt.',
