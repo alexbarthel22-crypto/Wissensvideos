@@ -13,6 +13,7 @@ import { fileURLToPath } from 'node:url';
 import { macheEvents } from './events.mjs';
 import { satz, namenListe, festeSaetze, festeSaetzeAus } from './saetze.mjs';
 import { klarname } from './vornamen.mjs';
+import { stadtAus } from './staedte.mjs';
 import { geschenkFormen } from './geschenke.mjs';
 import { geminiStimme } from './gemini-stimme.mjs';
 import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './filter.mjs';
@@ -20,7 +21,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-16 f';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-16 g';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -57,7 +58,7 @@ if (!TEST && LIVE_KEY) setTimeout(() => rangMelden(true), 15000);   // gleich be
 if (!TEST) console.log(LIVE_KEY ? '📺 Erfolg „Live dabei“: Zuschauer werden an muscheltal.de gemeldet' : 'ℹ️  Erfolg „Live dabei“ aus (keine live-schluessel.txt)');
 
 // ---------- Spielstand ----------
-const leer = () => ({ spieler: {}, reihenfolge: [], projekt: null, fertig: [], likesGesamt: 0, kasse: 0 });
+const leer = () => ({ spieler: {}, reihenfolge: [], projekt: null, fertig: [], likesGesamt: 0, kasse: 0, staedte: {} });
 let S = leer();
 try { S = { ...leer(), ...JSON.parse(fs.readFileSync(STAND, 'utf8')) }; } catch {}
 if (TEST && process.argv.includes('--neu')) S = leer();
@@ -179,12 +180,41 @@ function eventAntwort(p, t, probe) {
   if (w.length > 1 && w.length <= 6) for (const x of w) if (x.length >= 1 && versuch(x)) return true;
   return false;
 }
+// ---------- Leuchtturm-Rennen: Wer seine Stadt schreibt, baut am Leuchtturm seiner Stadt mit ----------
+// Stadt einmal wählen (Name in den Chat). Danach macht jeder Kommentar den Turm 1 Stockwerk höher – pro Person höchstens alle 30 s.
+let turmErster = null, turmAnsage = 0, turmNeuAnsage = 0;
+function turmKommentar(p, text) {
+  S.staedte ||= {};
+  const st = stadtAus(text), jetzt = Date.now();
+  if (st && !p.stadt) {
+    p.stadt = st; p.stadtZeit = jetzt;
+    const s = S.staedte[st] ||= { name: st, stock: 0, leute: 0 }; s.leute++; s.stock++;
+    sende({ typ: 'turmNeu', stadt: st, name: p.name, neu: s.leute === 1 });
+    if (s.leute === 1 && jetzt - turmNeuAnsage > 30000) { turmNeuAnsage = jetzt; sag(`Ein neuer Leuchtturm für ${st}!`, 3); }
+    geaendert = true; turmFuehrung(); return;
+  }
+  if (!p.stadt || jetzt - (p.stadtZeit || 0) < (CFG.turmSek ?? 30) * 1000) return;
+  p.stadtZeit = jetzt; (S.staedte[p.stadt] ||= { name: p.stadt, stock: 0, leute: 1 }).stock++;
+  geaendert = true; turmFuehrung();
+}
+function turmFuehrung() {
+  const top = Object.values(S.staedte || {}).sort((a, b) => b.stock - a.stock)[0]; if (!top) return;
+  if (turmErster && top.name !== turmErster && Date.now() - turmAnsage > 90000) {
+    turmAnsage = Date.now(); sende({ typ: 'turmFuehrung', stadt: top.name }); sag(`${top.name} führt jetzt im Leuchtturm-Rennen!`, 2);
+  }
+  turmErster = top.name;
+}
+setTimeout(() => { turmErster = Object.values(S.staedte || {}).sort((a, b) => b.stock - a.stock)[0]?.name || null; }, 0);
+// Kamera schaut alle 3 Minuten kurz bei den Leuchttürmen vorbei
+setInterval(() => { if (Object.keys(S.staedte || {}).length && !EV.laeuft()) sende({ typ: 'kameraTurm' }); }, 180000);
+
 function kommentar(u, text) {
   const id0 = String(u.uniqueId || '').toLowerCase(), t = String(text || '').toLowerCase().trim();
   if (!id0 || gesperrt(id0)) return;
   // Kein Haus: nur bei Event-Antworten wird eins gebaut (Mitmachen zählt). „haus“ und Farben → Hinweis „erst liken“
   // Wer zum ersten Mal im Chat mitmacht, bekommt sein Zelt (einmalig – kein Tausch, keine Wiederholung nötig)
   const p = spieler(u); if (!p) return;
+  turmKommentar(p, t);
   farbeAus(p, t);                                          // Farbe gilt immer – auch wenn das Wort gleichzeitig eine Event-Antwort ist
   if (aufgabeKommentar(p, t)) return;
   if (eventAntwort(p, t)) { geaendert = true; zustand(); return; }   // Event-Antworten (rot, flasche, A, 42 …) – auch mit Satzzeichen/Emoji/im Satz
@@ -877,7 +907,7 @@ function oeffentlich() {
     villen: S.villen, aufgabe: aufgabe && { text: aufgabe.text, rest: Math.max(0, Math.round((aufgabe.bis - Date.now()) / 1000)), stand: aufgabe.art === 'wort' ? aufgabe.gewinner.length : aufgabe.stand, ziel: aufgabe.art === 'wort' ? 5 : aufgabe.ziel, art: aufgabe.art }, musik: MUSIK_DATEIEN.map(f => path.basename(f)),
     jobs: Object.fromEntries(Object.entries(S.jobs).map(([nr, j]) => [nr, S.spieler[j.id]?.name || ''])),
     bewohner, ziel: zielJetzt(), strassen: CFG.strassen,
-    tiktokName: CFG.tiktokName, test: TEST, ton: CFG.ton, ort: CFG.ort, bildrate: CFG.bildrate || 30,
+    staedte: Object.values(S.staedte || {}).sort((a, b) => b.stock - a.stock).slice(0, 14), tiktokName: CFG.tiktokName, test: TEST, ton: CFG.ton, ort: CFG.ort, bildrate: CFG.bildrate || 30,
   };
 }
 

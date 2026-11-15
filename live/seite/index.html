@@ -343,6 +343,10 @@ function ereignis(e) {
     case 'folgeAufruf': banner.push({ t: 0, oben: '🐚 Gefällt dir Muschel-Tal?', unten: 'Folg gern @muscheltal', farbe: TUERKIS }); break;
     case 'kamera': if (pl) fokus(pl, e.ms || 15000); break;
     case 'feuerwerk': feuerwerk(); break;
+    case 'kameraTurm': { const l = S.staedte || []; if (l.length) turmBlick(l[0].name, 9000); break; }
+    case 'turmNeu': { banner.push({ t: 0, oben: `🗼 ${e.name}`, unten: e.neu ? `baut den ersten Leuchtturm für ${e.stadt}!` : `baut mit am Leuchtturm von ${e.stadt}`, farbe: '#3f8fe0' });
+      if (e.neu) setTimeout(() => turmBlick(e.stadt, 6000), 600); break; }
+    case 'turmFuehrung': banner.unshift({ t: 0, oben: `🗼 ${e.stadt} führt!`, unten: 'im Leuchtturm-Rennen', farbe: '#e0b43a', dauer: 4 }); break;
     case 'kameraBau': { const gp = GP((S.fertig || []).length); if (gp) fokus({ x: gp.x, y: gp.y - 20 }, e.ms || 8000); break; }
     case 'ballonPlatzt': for (let i = 0; i < 18; i++) fx.push({ x: IX + (Math.random() - .5) * 500, y: IY - 200 + (Math.random() - .5) * 300, vx: (Math.random() - .5) * 8, vy: (Math.random() - .5) * 8, t: performance.now(), z: ['🎉', '✨', '💥'][i % 3], s: 22 }); break;
     case 'eventStart': banner.push({ t: 0, oben: '⚡ Überraschungs-Event!', unten: 'Jetzt mitmachen!', farbe: '#9b5de5' }); funken({ x: IX, y: IY }, '⚡', 20); break;
@@ -392,12 +396,12 @@ const zUebersicht = () => Math.min(900 / (2 * RX * K * 1.07), 1200 / (2 * RY * K
 const NAH = 3.1;                                                // Zoom der Rundfahrt (groß und scharf, wie bei Stadt-Streams)
 const cam = { x: IX, y: IY, z: NAH * .8 }, ZIEL = { x: IX, y: IY, z: NAH * .8 };
 let fokusBis = 0, fokusLetzt = 0, tourBis = 0, tourModus = 0;
-function fokus(pl, ms, leise) {
+function fokus(pl, ms, leise, zoom) {
   const t = performance.now();
   if (leise && t < fokusBis) return;
   if (t - fokusLetzt < 1800 && t < fokusBis) return;
   fokusLetzt = t; fokusBis = t + ms;
-  Object.assign(ZIEL, { x: pl.x, y: pl.y - 30, z: Math.max(NAH, 3.2) });
+  Object.assign(ZIEL, { x: pl.x, y: pl.y - 30, z: zoom || Math.max(NAH, 3.2) });
 }
 function kamera(t) {
   if (t > fokusBis) {
@@ -790,6 +794,65 @@ function platzZeichnen(t) {
 }
 function stern(c, x, y, s) { if (s <= 0) return; c.fillStyle = '#fff'; c.beginPath(); c.moveTo(x, y - s); c.quadraticCurveTo(x, y, x + s, y); c.quadraticCurveTo(x, y, x, y + s); c.quadraticCurveTo(x, y, x - s, y); c.quadraticCurveTo(x, y, x, y - s); c.fill(); }
 const ICON = { leuchtturm: '🗼', markt: '🏪', bruecke: '🌉', riesenrad: '🎡', brunnen: '⛲', hafen: '⚓', eisdiele: '🍦', kino: '🎬' };
+
+
+// ================= Leuchtturm-Rennen =================
+// Türme stehen im Meer an der linken, oberen und rechten Küste (nie unten) und werden VOR der Insel gezeichnet:
+// Die Insel liegt immer obenauf, egal wie hoch ein Turm wird. Die Zahl wächst ohne Grenze, die gezeichnete Höhe
+// wächst immer langsamer; ganz oben verschwindet die Spitze in Wolken.
+const TURM_MAX = 470;
+const turmHoehe = n => Math.min(TURM_MAX, 34 + 62 * Math.log2(1 + n / 4));
+function turmPlaetze(n) {
+  const k = BASIS_K || 1, reihen = [], out = [];
+  for (let i = 0; i < n; i++) reihen.push(i);
+  // Platz 1 oben in der Mitte, dann abwechselnd links/rechts nach außen
+  const ord = []; for (let i = 0; i < n; i++) ord.push(i === 0 ? 0 : (i % 2 ? -1 : 1) * Math.ceil(i / 2));
+  const schritt = n > 1 ? Math.min(.17, 1.15 / Math.max(1, n - 1)) : 0;
+  ord.forEach(o => { const a = Math.PI * 1.5 + o * schritt * Math.PI, r = rand(a) * k * 1.19; out.push({ x: IX + Math.cos(a) * RX * r, y: IY + Math.sin(a) * RY * r }); });
+  return out;
+}
+// Kamera so, dass der ganze Turm samt Schild zwischen Kopfbereich und unterem Rand steht
+function turmBlick(name, ms) {
+  const l = S.staedte || [], st = l.find(x => x.name === name), p0 = st && turmPos(name); if (!p0) return;
+  const h = turmHoehe(st.stock), oben = p0.y - h - 70, unten = p0.y + 20, sOben = KOPF_UNTEN + 120, sUnten = H - 70;
+  const z = Math.max(1.1, Math.min(3.2, (sUnten - sOben) / (unten - oben))), mitteWelt = (oben + unten) / 2, mitteSchirm = (sOben + sUnten) / 2;
+  fokus({ x: p0.x, y: mitteWelt - (mitteSchirm - MITTE_Y) / z + 30 }, ms, true, z);
+}
+function turmPos(name) { const l = S.staedte || [], i = l.findIndex(x => x.name === name); return i < 0 ? null : turmPlaetze(l.length)[i]; }
+function leuchttuerme(t) {
+  const l = S.staedte || []; if (!l.length) return;
+  const pl = turmPlaetze(l.length), c = X;
+  l.forEach((st, i) => {
+    const { x, y } = pl[i], h = turmHoehe(st.stock), w0 = 30 + h * .05, w1 = 18 + h * .025, oben = y - h, wolke = h >= TURM_MAX;
+    if (!sichtbar(x, y - h / 2, h / 2 + 80)) return;
+    // Felsen im Wasser
+    c.fillStyle = 'rgba(255,255,255,.35)'; c.beginPath(); c.ellipse(x, y + 6, 34 + Math.sin(t * .003 + i) * 2, 10, 0, 0, 7); c.fill();
+    c.fillStyle = '#8b8f8a'; c.beginPath(); c.ellipse(x, y, 20 + w0 * .6, 11, 0, 0, 7); c.fill(); c.fillStyle = '#a6aaa4'; c.beginPath(); c.ellipse(x - 5, y - 3, 16, 6, 0, 0, 7); c.fill();
+    // Turm: rot-weiße Streifen, alle 100 Stockwerke ein farbiger Ring
+    c.save(); c.beginPath(); c.moveTo(x - w0 / 2, y); c.lineTo(x - w1 / 2, oben + 14); c.lineTo(x + w1 / 2, oben + 14); c.lineTo(x + w0 / 2, y); c.closePath(); c.clip();
+    for (let yy = y, k = 0; yy > oben; yy -= 16, k++) { c.fillStyle = k % 2 ? '#fff' : '#e8433c'; c.fillRect(x - w0, yy - 16, w0 * 2, 16); }
+    const ringe = Math.min(12, Math.floor(st.stock / 100)), RF = ['#3fa0e8', '#2fb3a0', '#ffd23f', '#b58ad0', '#ff8a2a', '#57b85a'];
+    for (let r = 0; r < ringe; r++) { c.fillStyle = RF[r % RF.length]; c.fillRect(x - w0, oben + 26 + r * 9, w0 * 2, 5); }
+    c.restore();
+    c.strokeStyle = INK; c.lineWidth = 2; c.beginPath(); c.moveTo(x - w0 / 2, y); c.lineTo(x - w1 / 2, oben + 14); c.moveTo(x + w0 / 2, y); c.lineTo(x + w1 / 2, oben + 14); c.stroke();
+    // Galerie + Laterne
+    c.fillStyle = INK; c.fillRect(x - w1 / 2 - 4, oben + 12, w1 + 8, 4);
+    c.fillStyle = '#ffe9a8'; c.fillRect(x - 6, oben - 2, 12, 14); c.strokeStyle = INK; c.lineWidth = 1.5; c.strokeRect(x - 6, oben - 2, 12, 14);
+    c.fillStyle = st.stock >= 1000 ? '#e0b43a' : '#e8433c'; c.beginPath(); c.moveTo(x - 9, oben - 2); c.lineTo(x, oben - 13); c.lineTo(x + 9, oben - 2); c.closePath(); c.fill(); c.stroke();
+    if (st.stock >= 1000) { c.fillStyle = '#ffd23f'; for (let z = -1; z <= 1; z++) { c.beginPath(); c.moveTo(x + z * 6 - 3, oben - 13); c.lineTo(x + z * 6, oben - 21); c.lineTo(x + z * 6 + 3, oben - 13); c.fill(); } }
+    // Leuchtfeuer: strahlt stärker, je höher der Turm
+    const g = Math.min(1, .35 + Math.log10(1 + st.stock) / 4), dreh = t * .0015 + i;
+    c.save(); c.globalCompositeOperation = 'lighter'; c.globalAlpha = .55 * g; c.drawImage(GLUT, x - 28 * (1 + g), oben + 5 - 28 * (1 + g), 56 * (1 + g), 56 * (1 + g));
+    c.globalAlpha = .18 * g; c.fillStyle = '#fff3b0'; c.beginPath(); c.moveTo(x, oben + 5); c.lineTo(x + Math.cos(dreh) * 160, oben + 5 + Math.sin(dreh) * 30 - 18); c.lineTo(x + Math.cos(dreh) * 160, oben + 5 + Math.sin(dreh) * 30 + 18); c.closePath(); c.fill(); c.restore();
+    // Ganz hoch: Wolken um die Spitze
+    if (wolke) { for (let k = 0; k < 6; k++) { const wx = x - 55 + k * 22 + Math.sin(t * .001 + k) * 4, wy = oben + 48 + (k % 2) * 9; c.fillStyle = 'rgba(120,140,170,.35)'; c.beginPath(); c.ellipse(wx + 3, wy + 5, 24, 12, 0, 0, 7); c.fill(); c.fillStyle = '#ffffff'; c.beginPath(); c.ellipse(wx, wy, 24, 12, 0, 0, 7); c.fill(); } }
+    // Name + Stockwerke (gut lesbar)
+    X.font = schrift(900, 18); const bw = Math.max(X.measureText(`${i + 1}. ${st.name}`).width, 96) + 26;
+    c.fillStyle = 'rgba(42,27,18,.85)'; rr(x - bw / 2, oben - 66, bw, 42, 14); c.fill(); c.strokeStyle = i ? '#fff' : '#ffd23f'; c.lineWidth = 2; c.stroke();
+    text(`${i + 1}. ${st.name}`, x, oben - 50, 18, i ? '#fff' : GELB, 'center', 900, 190);
+    text(`${st.stock.toLocaleString('de-DE')} Stockwerke`, x, oben - 33, 12, '#fff', 'center', 800, 190);
+  });
+}
 
 // ================= Häuser (10 Stufen) =================
 const FARBEN = ['#e8433c', '#3fa0e8', '#ffb02e', '#b58ad0', '#2fb3a0', '#ff6fa3', '#57b85a', '#ff8a2a'];
@@ -1604,7 +1667,7 @@ function kopf(t) {
   // Laufendes Event / Ergebnis, sonst Infos (wechselnd) + Countdown zum nächsten Event
   const y3 = y2 + 132, ep = eventPanel(t, y3);
   if (ep) return ep;
-  const seiten = S.projekt ? 4 : 3;
+  const seiten = (S.projekt ? 4 : 3) + ((S.staedte || []).length ? 1 : 0);
   if (t - seiteSeit > 7000) { seite = (seite + 1) % seiten; seiteSeit = t; }
   const lw = 540;
   if (S.aufgabe) {                                                // Mini-Aufgabe: gut sichtbar im Infofeld
@@ -1621,7 +1684,11 @@ function kopf(t) {
     return y3 + 156;
   }
   karte(SL, y3, lw, 156, '#fff3c4', 28);
-  if (seite === 3 && S.projekt) {
+  if (seite === seiten - 1 && (S.staedte || []).length) {
+    text('🗼 Leuchtturm-Rennen', SL + 22, y3 + 28, 27, INK, 'left', 900, lw - 44);
+    (S.staedte || []).slice(0, 3).forEach((st, k) => { const y = y3 + 66 + k * 34;
+      text(`${k + 1}. ${st.name}`, SL + 22, y, 24, INK, 'left', 800, 280); text(`${st.stock.toLocaleString('de-DE')} 🏢`, SL + lw - 22, y, 23, INK, 'right', 900, 200); });
+  } else if (seite === 3 && S.projekt) {
     const pr = S.projekt;
     text(`🏗️ Wir bauen: ${pr.name}`, SL + 22, y3 + 32, 28, INK, 'left', 900, lw - 44);
     X.fillStyle = 'rgba(42,27,18,.1)'; rr(SL + 22, y3 + 58, lw - 44, 32, 16); X.fill();
@@ -1641,7 +1708,7 @@ function kopf(t) {
       text(`${m} 🐚`, SL + lw - 22, y, 22, INK, 'right', 900, 114);
     });
   } else {
-    [['🏆', 'Events = bis 60 🐚 fürs Haus'], ['💬', 'Erster Kommentar = dein Zelt'], ['🏠', 'Schreib „haus“ = dein Haus sehen']].forEach(([i, s], k) => {
+    [['🏆', 'Events = bis 60 🐚 fürs Haus'], ['🗼', 'Schreib deine Stadt = Leuchtturm'], ['🏠', 'Schreib „haus“ = dein Haus sehen']].forEach(([i, s], k) => {
       text(i, SL + 16, y3 + 32 + k * 45, 27, INK, 'left', 400); text(s, SL + 58, y3 + 32 + k * 45, 26, INK, 'left', 800, lw - 78);
     });
   }
@@ -1889,6 +1956,7 @@ function strassenSchilder() {
     if (sc.x < wx0 || sc.x > wx1 || sc.y < wy0 || sc.y > wy1) continue;
     const g = strSchildBild(sc.name, sc.senk);
     const dx = Math.round((sc.x - g.w / 2) * T.a + T.e), dy = Math.round((sc.y - g.h / 2) * T.d + T.f);   // auf ganze Bildpunkte setzen
+    if (Math.abs(T.a - NAH * Q0) > .05) { X.drawImage(g.cv, sc.x - g.w / 2, sc.y - g.h / 2, g.w, g.h); continue; }   // anderer Zoom: in Weltgröße
     X.drawImage(g.cv, (dx - T.e) / T.a, (dy - T.f) / T.d, g.cv.width / T.a, g.cv.height / T.d);
   }
 }
@@ -1917,6 +1985,7 @@ function bild(t) {
   frameZeit = t;
   const dt = Math.min(100, t - (tLetzt || t)); tLetzt = t;
   meer(t); kamera(t); meerLeben(t);
+  leuchttuerme(t);                                                 // Leuchtturm-Rennen: liegt UNTER der Insel – verdeckt sie nie
   if (BASIS) {
     if (WACHS) {                                                    // Insel wächst: neues Land breitet sich vom alten Ufer aus
       const q = Math.min(1, (t - WACHS.t) / 4200), e = q < .5 ? 2 * q * q : 1 - (-2 * q + 2) ** 2 / 2, kk = WACHS.von + (WACHS.bis - WACHS.von) * e;
