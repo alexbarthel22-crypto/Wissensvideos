@@ -21,7 +21,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-16 g';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-16 h';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 // Stimmen und Kerstin-Modell mit Muschel-Tal LIVE teilen (gleicher Speicher = schon erzeugte Leda-Sätze kosten nichts)
@@ -606,6 +606,7 @@ function oeffentlich() {
     ...EV.oeffentlich(), spieler: [],
     staedte: l.slice(0, 40).map(s => ({ name: s.name, stock: s.stock, leute: s.leute, land: s.land, region: s.region || '', gruender: s.gruender || '', fieber: s.fieberBis > Date.now(), baumeister: Object.entries(s.baumeister || {}).sort((a, b) => b[1] - a[1])[0]?.[0] || '' })),
     anzahlStaedte: l.length, woche: top(S.woche?.id === wocheId() ? S.woche.m : {}), heute: top(S.heute?.id === tagId() ? S.heute.m : {}),
+    laenderM: Object.entries(l.reduce((m, s) => { if (['DE', 'AT', 'CH', 'LI', 'LU'].includes(s.land)) m[s.land] = (m[s.land] || 0) + s.stock; return m; }, {})).sort((a, b) => b[1] - a[1]).map(([land, m]) => ({ name: { DE: 'Deutschland', AT: 'Österreich', CH: 'Schweiz', LI: 'Liechtenstein', LU: 'Luxemburg' }[land], m, land })),
     regionen: Object.entries(l.reduce((m, s) => { if (s.region) { const r = m[s.region] ||= { m: 0, land: s.land }; r.m += s.stock; } return m; }, {})).sort((a, b) => b[1].m - a[1].m).slice(0, 5).map(([name, r]) => ({ name, m: r.m, land: r.land })), neueste: S.neueste || null, stockGesamt: l.reduce((a, s) => a + s.stock, 0), laender: l.reduce((m, s) => (m[s.land || '?'] = (m[s.land || '?'] || 0) + 1, m), {}), ort: CFG.ort, sieger: S.sieger?.[0]?.stadt || null, tiktokName: CFG.tiktokName, test: TEST, sichtbar: CFG.turm.sichtbar ?? 21, ton: CFG.ton, musik: MUSIK_LISTE, bildrate: CFG.bildrate || 30,
   };
 }

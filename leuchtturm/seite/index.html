@@ -598,14 +598,15 @@ const SPALTE = 500;
 const RL = 112, RR = 968, OBEN = 300, SB2 = 424;
 function kopf(t) {
   // Linke Karte wechselt: Gesamt (20 s) → Heute → Woche → Bundesländer (je 8 s)
-  const x0 = RL, y0 = OBEN, hK = 320, zyk = (t / 1000) % 44;
+  const x0 = RL, y0 = OBEN, hK = 320, zyk = (t / 1000) % 52;
   let titel = '🏆 TOP 5', farbe = '#ffd23f', l = (S.staedte || []).slice(0, 5).map(s => ({ name: s.name, m: s.stock, land: s.land, fieber: s.fieber })), rechts = `${S.anzahlStaedte || 0} ${S.anzahlStaedte === 1 ? 'Stadt' : 'Städte'}`, plus = '';
   if (zyk >= 20 && zyk < 28 && S.heute?.length) { titel = '☀️ HEUTE'; farbe = '#ffb36b'; l = S.heute; rechts = 'gebaut'; plus = '+'; }
   else if (zyk >= 28 && zyk < 36 && S.woche?.length) { titel = '📅 WOCHE'; farbe = '#9fd8ff'; l = S.woche; rechts = 'gebaut'; plus = '+'; }
-  else if (zyk >= 36 && S.regionen?.length > 1) { titel = '🗺️ LÄNDER'; farbe = '#a8e6a0'; l = S.regionen; rechts = 'gesamt'; }
+  else if (zyk >= 36 && zyk < 44 && S.regionen?.length > 1) { titel = '🗺️ BUNDESLÄNDER'; farbe = '#a8e6a0'; l = S.regionen; rechts = 'gesamt'; }
+  else if (zyk >= 44 && S.laenderM?.length > 1) { titel = '🌍 LÄNDER'; farbe = '#c9b8ff'; l = S.laenderM; rechts = 'gesamt'; }
   karte(x0, y0, SB2, hK, '#fffaf0');
   X.fillStyle = farbe; rr(x0, y0, SB2, 54, [28, 28, 0, 0]); X.fill(); X.strokeStyle = INK; X.lineWidth = 6; rr(x0, y0, SB2, hK, 28); X.stroke();
-  text(titel, x0 + 20, y0 + 28, 28, INK, 'left', 900, 250); text(rechts, x0 + SB2 - 20, y0 + 28, 22, INK, 'right', 900, 130);
+  text(titel, x0 + 20, y0 + 28, 28, INK, 'left', 900, 280); text(rechts, x0 + SB2 - 20, y0 + 28, 22, INK, 'right', 900, 100);
   const max = Math.max(1, ...l.map(s => s.m));
   if (!l.length) { text('Noch keine Stadt –', x0 + SB2 / 2, y0 + 140, 28, INK, 'center', 900, SB2 - 30); text('schreib deine in den Chat!', x0 + SB2 / 2, y0 + 182, 28, PINK, 'center', 900, SB2 - 30); }
   l.forEach((s, i) => {

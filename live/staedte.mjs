@@ -60,7 +60,10 @@ const ALLTAG = new Set(['hallo', 'halloo', 'danke', 'schoen', 'schon', 'bitte', 
 // streng = der Kommentar ist gerade auch eine Event-Antwort → kleine Orte nur mit „aus …“/„Team …“ zählen
 const KEIN_ORT = new Set(['Deutschland', 'Österreich', 'Schweiz', 'Liechtenstein', 'Europa', 'Bayern', 'NRW', 'Niedersachsen', 'Hessen', 'Sachsen', 'Sachsen-Anhalt', 'MV', 'Mecklenburg-Vorpommern',
   'Schleswig-Holstein', 'Rheinland-Pfalz', 'Saarland', 'Baden-Württemberg', 'Thüringen', 'Tirol', 'Kärnten', 'Steiermark', 'Vorarlberg', 'Burgenland', 'Oberösterreich', 'Niederösterreich',
-  'Südtirol', 'Mallorca', 'Aargau', 'Thurgau', 'Graubünden', 'Wallis', 'Tessin', 'Waadt', 'Nordsee', 'Ostsee']);
+  'Südtirol', 'Mallorca', 'Aargau', 'Thurgau', 'Graubünden', 'Wallis', 'Tessin', 'Waadt', 'Nordsee', 'Ostsee',
+  // Landschaften und Regionen sind keine Orte
+  'Ruhrgebiet', 'Pott', 'Sauerland', 'Allgäu', 'Schwarzwald', 'Ostfriesland', 'Eifel', 'Harz', 'Bodensee', 'Spreewald', 'Erzgebirge', 'Vogtland', 'Franken', 'Schwaben',
+  'Oberbayern', 'Emsland', 'Münsterland', 'Westerwald', 'Odenwald', 'Taunus', 'Rhön', 'Chiemsee', 'Zillertal', 'Ötztal', 'Rügen', 'Allgaeu']);
 export const keinOrt = n => KEIN_ORT.has(n);
 export function stadtAus(text, streng = false) { const r = stadtAus0(text, streng); return r && !KEIN_ORT.has(r) ? r : null; }
 function stadtAus0(text, streng = false) {
