@@ -2471,7 +2471,7 @@ let LAMPG=null;function lampsFront(c,x,y,tn){if(S*cam.z<=6)return;if(!LAMPG){LAM
 // Figur hinter der Strandvilla: Dachterrasse/Dach wird über die Figur gezeichnet (nur im Bereich der Figur)
 function villaFront(c,x,y,tn){for(const g of GEB){if(g.typ!=='villa'||(GROWK!=null&&GROWV===g.v&&GROWK<g.at))continue;const W=(g.x1-g.x0)/2,d=g.dir||1,vx=-W+24,lx=(x-g.cx)*d,ly=y-g.cy;if(Math.abs(lx-vx)>27||ly<-46||ly>-26)continue;
  const n1=NAMES.length,n2=TAPS.length,n3=FIGS.length,x0=x-3.4,y0=y-13,x1=x+3.4,y1=y+5.4;tintDraw(c,tn,x0,y0,x1,y1,o=>{o.save();o.beginPath();o.rect(x0,y0,x1-x0,y1-y0);o.clip();drawGeb(o,g,tn,cam.z);o.restore();});NAMES.length=n1;TAPS.length=n2;FIGS.length=n3;}}
-function hutsFront(c,x,y,tn){if(tn===undefined)tn=nightLevel();// nachts immer abgedunkelt nachzeichnen (sonst leuchtet die Hütte vor einer Figur plötzlich hell)
+function hutsFront(c,x,y,tn){if(tn===undefined)tn=NACHTDRAUF?nightLevel():0;// abdunkeln nur, wenn die Nacht schon über das Bild gelegt wurde (sonst doppelt dunkel/grau)
  lampsFront(c,x,y,tn);ksSignFront(c,x,y,tn);villaFront(c,x,y,tn);palmsFront(c,x,y,tn);doenerFront(c,x,y,tn);if(Math.abs(x)<130*PAL_S&&Math.abs(y)<80*PAL_S)palFront(c,x,y,tn);acaiFront(c,x,y,tn);plotSignFront(c,x,y,tn);const px=S*cam.z;if(px<7)return;const K=kind(),wet=K==='rain'||K==='storm',snow=K==='snow';
  for(const v of ISL){if(!v.open||!v.cell||Math.hypot(x-v.x,y-v.y)>v.R+40)continue;const gx=Math.round((x-v.x)/S),gy=Math.round((y-v.y)/(S*.9));
   for(let dy=0;dy<=2;dy++)for(let dx=-1;dx<=1;dx++){const q=v.cell.get((gx+dx)+','+(gy+dy));if(!q||q.nr>limit||!q.p||q.p.y<=y-.5||q.p.y-y>24||Math.abs(q.p.x-x)>12)continue;tintDraw(c,tn,q.p.x-12,q.p.y-16,q.p.x+12,q.p.y+11,o=>hutBody(o,v,q,px,wet,snow));}}}
@@ -3335,7 +3335,8 @@ function xmFog(c){const n=16;for(let k=0;k<n;k++){const a=k/n*TAU+(REDUCED?0:T*.
  c.fillStyle='rgba(255,255,255,.9)';c.beginPath();c.ellipse(XM.x,XM.y,XM.r*.75,XM.r*.62,0,0,TAU);c.fill();
  if(!REDUCED){const s=Math.pow(Math.max(0,Math.sin(T*.9)),10);if(s>.05){c.fillStyle=`rgba(255,210,80,${s})`;const x=XM.x+18,y=XM.y-14;c.beginPath();for(let k=0;k<10;k++){const r=k%2?2.5:7,a=k/10*TAU-Math.PI/2;c.lineTo(x+Math.cos(a)*r,y+Math.sin(a)*r);}c.closePath();c.fill();}}}
 
-function draw(){{const k=kind();REGEN.on=k==="rain"||k==="storm";}
+let NACHTDRAUF=0;
+function draw(){NACHTDRAUF=0;{const k=kind();REGEN.on=k==="rain"||k==="storm";}
  if(!W)return;sunUpdate();if(cam.z!==ZL){ZL=cam.z;ZCH=performance.now();}const key=[W,H,limit,SUN.key,kind(),nightLevel()>.5,GROWV?GROWV.i:'',GROWK==null?'':GEB.map(g=>GROWV===g.v&&GROWK<g.at?0:1).join('')+BAU.map(b=>bauOn(b)?1:0).join('')+EXG.map(e=>exDa(e.o)?1:0).join('')].join(',');
  if(key!==baseKey||!baseOk()){baseBuild();baseKey=key;}
  const c=ctx,z=cam.z,zr=z/fitMain().z;baseBlit(c,base);world(c);
@@ -3464,7 +3465,7 @@ function draw(){{const k=kind();REGEN.on=k==="rain"||k==="storm";}
  world(c);
  // Yacht: Party-Licht rund um die Uhr (tagsüber zusätzlich zum Nachtlicht)
  if(nl<.6&&visR(YACHT.cx,YACHT.cy,60)){c.save();c.globalCompositeOperation='lighter';const gl2=(x,y,r,rgb,a)=>{const g=c.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,`rgba(${rgb},${a})`);g.addColorStop(1,`rgba(${rgb},0)`);c.fillStyle=g;c.beginPath();c.arc(x,y,r,0,TAU);c.fill();};yachtGlow(gl2,.6-nl);c.restore();}
- if(nl>0){c.setTransform(1,0,0,1,0,0);c.fillStyle=`rgba(12,22,70,${.55*nl})`;c.fillRect(0,0,cv.width,cv.height);world(c);c.globalCompositeOperation='lighter';
+ if(nl>0){c.setTransform(1,0,0,1,0,0);c.fillStyle=`rgba(12,22,70,${.55*nl})`;c.fillRect(0,0,cv.width,cv.height);NACHTDRAUF=1;world(c);c.globalCompositeOperation='lighter';
   const pxs=S*z;
   const FIGS=[...TAPS.map(t=>[t[0],t[1],1]),...(PETS.list||[]).filter(a=>a.v.open).map(a=>[a.x,a.y,.6]),...(WK.on?[[WK.x,WK.y,1]]:[])];
   // Licht in Tür/Fenster nur dort, wo keine Figur davor steht
@@ -3524,7 +3525,7 @@ function draw(){{const k=kind();REGEN.on=k==="rain"||k==="storm";}
  world(c);
  // Hütte kurz aufblinken lassen (nach „Zu …s Hütte“ im Muschelpass)
  if(HFLASH){const u=(performance.now()-HFLASH.t0)/1100;if(u>1)HFLASH=null;else if(u>0){const q=HFLASH.q,a=Math.pow(Math.sin(Math.PI*u),2)*.32,px=S*cam.z;const m=c.getTransform(),A=m.transformPoint({x:q.p.x-13,y:q.p.y-17}),B2=m.transformPoint({x:q.p.x+13,y:q.p.y+12}),X=Math.floor(A.x),Y=Math.floor(A.y),w=Math.ceil(B2.x-A.x)+2,h=Math.ceil(B2.y-A.y)+2;
-   if(w>2&&h>2&&w<3000&&h<3000){TOC.width=w;TOC.height=h;const o=TOC.getContext('2d');o.setTransform(m.a,m.b,m.c,m.d,m.e-X,m.f-Y);hutBody(o,q.isl,q,px,false,false);o.setTransform(1,0,0,1,0,0);o.globalCompositeOperation='source-atop';o.fillStyle=`rgba(255,250,215,${a})`;o.fillRect(0,0,w,h);o.globalCompositeOperation='source-over';c.save();c.setTransform(1,0,0,1,0,0);c.globalAlpha=1;c.drawImage(TOC,X,Y);c.restore();
+   if(w>2&&h>2&&w<3000&&h<3000){TOC.width=w;TOC.height=h;const o=TOC.getContext('2d');o.setTransform(m.a,m.b,m.c,m.d,m.e-X,m.f-Y);hutBody(o,q.isl,q,px,false,false);o.setTransform(1,0,0,1,0,0);o.globalCompositeOperation='source-atop';{const nn=nightLevel();if(nn>0){o.fillStyle=`rgba(12,22,70,${.55*nn})`;o.fillRect(0,0,w,h);}}o.fillStyle=`rgba(255,250,215,${a})`;o.fillRect(0,0,w,h);o.globalCompositeOperation='source-over';c.save();c.setTransform(1,0,0,1,0,0);c.globalAlpha=1;c.drawImage(TOC,X,Y);c.restore();
     c.save();c.globalCompositeOperation='lighter';const gg=c.createRadialGradient(q.p.x,q.p.y-2,1,q.p.x,q.p.y-2,18);gg.addColorStop(0,`rgba(255,240,170,${a*.6})`);gg.addColorStop(1,'rgba(255,240,170,0)');c.fillStyle=gg;c.beginPath();c.arc(q.p.x,q.p.y-2,18,0,TAU);c.fill();c.restore();hutsFront(c,q.p.x,q.p.y+.6,nightLevel());}}}
  drawWalker(c,z);
  // Namen ganz oben: nichts (Bäume, Palast, Wolken, Nacht) darf sie verdecken
