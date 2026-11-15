@@ -25,6 +25,12 @@ if pgrep -f "node server.mjs" >/dev/null; then
 fi
 read -r -p "🧪 Probelauf mit Test-Zuschauern starten? (j = ja, Enter = abbrechen) " ok
 [ "$ok" = "j" ] || [ "$ok" = "J" ] || exit 0
+# Moderationsstimme Leda (Google Gemini): Schlüssel einmalig eingeben (wird nur auf diesem Mac gespeichert)
+if [ ! -f gemini-schluessel.txt ]; then
+  echo "🎙️  Für Ledas Stimme (Gemini): API-Schlüssel aus Google AI Studio einfügen und Enter drücken (leer lassen = Kerstin moderiert)."
+  read -r -p "Gemini-Schlüssel: " GEMINI_EINGABE
+  [ -n "$GEMINI_EINGABE" ] && printf '%s' "$GEMINI_EINGABE" > gemini-schluessel.txt && echo "✅ Gespeichert."
+fi
 source ./tunnel.sh
 starte_tunnel
 trap stoppe_tunnel EXIT

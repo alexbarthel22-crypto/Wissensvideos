@@ -33,6 +33,12 @@ if [ ! -f live-schluessel.txt ]; then
   read -r -p "Schlüssel: " LIVE_SCHLUESSEL_EINGABE
   [ -n "$LIVE_SCHLUESSEL_EINGABE" ] && printf '%s' "$LIVE_SCHLUESSEL_EINGABE" > live-schluessel.txt && echo "✅ Gespeichert."
 fi
+# Moderationsstimme Leda (Google Gemini): Schlüssel einmalig eingeben (wird nur auf diesem Mac gespeichert)
+if [ ! -f gemini-schluessel.txt ]; then
+  echo "🎙️  Für Ledas Stimme (Gemini): API-Schlüssel aus Google AI Studio einfügen und Enter drücken (leer lassen = Kerstin moderiert)."
+  read -r -p "Gemini-Schlüssel: " GEMINI_EINGABE
+  [ -n "$GEMINI_EINGABE" ] && printf '%s' "$GEMINI_EINGABE" > gemini-schluessel.txt && echo "✅ Gespeichert."
+fi
 source ./tunnel.sh
 starte_tunnel
 trap stoppe_tunnel EXIT

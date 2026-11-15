@@ -196,7 +196,7 @@ Tag, Sonnenaufgang, Sonnenuntergang (je 45 Min.) und Nacht wie auf muscheltal.de
 Zum Ausprobieren: `http://localhost:8790/?zeit=21:30`.
 
 ## Stimme
-Moderationsstimme: **Kerstin** (Piper, offline, mit Gefühl). Nur als Ersatz: Mac-Stimme. Andere Stimme → in `einstellungen.json` bei `"mac"` eintragen (Namen: `say -v '?' | grep de_DE`).
+Moderationsstimme: **Leda** (Google Gemini, menschlich, mit Gefühl je nach Satz: froh, spannend, jubelnd). Der API-Schlüssel aus Google AI Studio wird beim ersten Start abgefragt und nur lokal in `gemini-schluessel.txt` gespeichert (für den LIVE einen Schlüssel mit Zahlungsart nehmen – der kostenlose ist nach wenigen Sätzen am Limit). Jedes Satzstück wird in `werkzeug/stimme` gespeichert und kostet danach nichts mehr; Namen sind eigene Stücke. Der nächste Satz wird schon erzeugt, während der aktuelle läuft. Antwortet Gemini nicht (Internet, Limit), spricht automatisch **Kerstin** (Piper, offline) – bei Limit für 10 Minuten. Nur Kerstin: `"engine": "piper"`. Letzter Ersatz: Mac-Stimme. Andere Stimme → in `einstellungen.json` bei `"mac"` eintragen (Namen: `say -v '?' | grep de_DE`).
 Ohne Stimme starten: `node server.mjs --still`.
 
 ## Hinweise
