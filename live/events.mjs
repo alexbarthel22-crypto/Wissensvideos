@@ -26,6 +26,7 @@ const zahl = n => Math.round(n).toLocaleString('de-DE');
 const LIKE_EVENTS = new Set(['sturmflut', 'krabbenrennen', 'teamduell', 'strandparty', 'ballons', 'volleyball', 'eiswagen', 'surfcontest', 'tauziehen',
   'likerekord', 'leuchtturm', 'nachbarhilfe', 'inselkoenig', 'piratenschatz', 'bootsrennen', 'muschelregen', 'bauturbo', 'happyhour']);
 const grossKlein = t => t.charAt(0).toUpperCase() + t.slice(1);
+const namenListeTxt = l => l.length <= 1 ? (l[0] || '') : l.slice(0, -1).join(', ') + ' und ' + l[l.length - 1];
 // Quiz-Baukasten: Frage zeigen, die ersten drei richtigen Antworten gewinnen (40/25/15)
 function quizEvent(id, titel, icon, intro, fragen, frageText, zeigen = false) {   // zeigen: Rätsel steht nur auf dem Bildschirm (nicht vorlesbar)
   return { [id]: {
@@ -450,6 +451,52 @@ export function macheEvents(api) {
       anzeige: e => { const z = e.wahl.map(() => 0); Object.values(e.st).forEach(i => z[i]++); const m = Math.max(1, ...z); return { text: 'Was bauen wir? Schreib 1, 2 oder 3', balken: e.wahl.map((w, i) => ({ name: `${i + 1}  ${w.name}`, wert: z[i], max: m, farbe: ['#ffd23f', '#7fe0c8', '#ff8fb8'][i] })) }; },
       ende(e) { const z = e.wahl.map(() => 0); Object.values(e.st).forEach(i => z[i]++); const w = e.wahl[z.indexOf(Math.max(...z))]; api.projektStarten(w); return { text: `Entschieden: ${w.name}! Gebaut wird mit der Muschelkasse.`, sag: `Entschieden: Wir bauen ${w.ein || w.name}! … Mitspielen bei den Events hilft mit.`, gut: true }; },
     },
+    // ===== Leuchtturm-Events (jedes dritte Event, feste Reihenfolge) =====
+    staedteneu: {
+      titel: 'Neue Städte willkommen', icon: '🌍', dauer: 60,
+      start(e) { e.b = new Set(); return 'Neue Städte willkommen! Schreibt eure Stadt in den Chat. Jede Stadt, die jetzt neu dazukommt, startet mit zwanzig Stockwerken!'; },
+      kommentar(e, p, t) { const s = p.stadt && api.stadt(p.stadt); if (!s || !(s.seit >= e.t0) || e.b.has(s.name)) return; e.b.add(s.name); api.turmWachsen(s.name, 20); return true; },
+      anzeige: e => ({ text: `Schreib deine Stadt! Neue Städte starten mit +20 Stockwerken  (${e.b.size} neu)` }),
+      ende: e => e.b.size ? { text: `Neu dabei: ${[...e.b].join(', ')}`, sag: `Willkommen im Rennen, ${namenListeTxt([...e.b])}!`, gut: true } : { text: 'Diesmal kam keine neue Stadt dazu.', sag: 'Diesmal kam keine neue Stadt dazu.' },
+    },
+    baukolonne: {
+      titel: 'Bau-Kolonne', icon: '🏗️', dauer: 60,
+      start(e) { e.leute = new Set(); e.pro = {}; return 'Bau-Kolonne! Schreibt eure Stadt in den Chat. Jeder von euch bringt seiner Stadt einmal fünf Stockwerke!'; },
+      kommentar(e, p, t) { if (!p.stadt || e.leute.has(p.id) || api.stadtAus(t) !== p.stadt) return; e.leute.add(p.id); e.pro[p.stadt] = (e.pro[p.stadt] || 0) + 5; api.turmWachsen(p.stadt, 5); return true; },
+      anzeige: e => ({ text: `Schreib deine Stadt – jeder bringt einmal +5 Stockwerke!  (${e.leute.size} Bauarbeiter)` }),
+      ende(e) { const top = Object.entries(e.pro).sort((a, b) => b[1] - a[1])[0]; return top ? { text: `${e.leute.size} Bauarbeiter! Am meisten gebaut: ${top[0]} (+${top[1]})`, sag: `Am fleißigsten gebaut hat ${top[0]}!`, gut: true } : { text: 'Die Bau-Kolonne hatte frei …', sag: 'Diesmal hat keiner mitgebaut.' }; },
+    },
+    staedteduell: {
+      titel: 'Städte-Duell', icon: '⚔️', dauer: 60, moeglich: () => api.staedte().length >= 2,
+      start(e) { const [a, b] = api.staedte(); e.a = a.name; e.b = b.name; e.w = { [e.a]: new Set(), [e.b]: new Set() }; return `Städte-Duell! ${e.a} gegen ${e.b}! Welche Stadt hat in einer Minute mehr Leute im Chat? Der Sieger bekommt fünfzig Stockwerke!`; },
+      kommentar(e, p, t) { if (!p.stadt || !e.w[p.stadt]) return; e.w[p.stadt].add(p.id); return false; },
+      anzeige: e => { const a = e.w[e.a].size, b = e.w[e.b].size, m = Math.max(1, a, b); return { text: `${e.a} gegen ${e.b} – wer hat mehr Leute im Chat?`, balken: [{ name: '🗼 ' + e.a, wert: a, max: m, farbe: '#3fa0e8' }, { name: '🗼 ' + e.b, wert: b, max: m, farbe: '#ff8fb8' }] }; },
+      ende(e) { const a = e.w[e.a].size, b = e.w[e.b].size; if (a === b) return { text: `Unentschieden ${a}:${b}!`, sag: 'Unentschieden!' }; const s = a > b ? e.a : e.b; api.turmWachsen(s, 50); return { text: `${s} gewinnt das Duell (${Math.max(a, b)}:${Math.min(a, b)})! +50 Stockwerke`, sag: `${s} gewinnt das Städte-Duell!`, gut: true }; },
+    },
+    leuchtsignal: {
+      titel: 'Leuchtfeuer-Signal', icon: '🔦', dauer: 50,
+      start(e) { e.signal = Date.now() + 10000 + Math.random() * 18000; e.sieger = []; e.zufrueh = new Set(); e.gesagt = false;
+        return 'Leuchtfeuer-Signal! Wartet, bis ich Licht an sage. Dann schreibt licht! Die ersten fünf bringen ihrer Stadt fünfzehn Stockwerke. Wer zu früh schreibt, ist raus!'; },
+      tick(e) { if (!e.gesagt && Date.now() >= e.signal) { e.gesagt = true; api.sag('Licht an!', 0); api.zustand(); } },
+      kommentar(e, p, t) { if (!/^licht/.test(t)) return; if (Date.now() < e.signal) { e.zufrueh.add(p.id); return true; } if (p.stadt && !e.zufrueh.has(p.id) && !e.sieger.includes(p) && e.sieger.length < 5) { e.sieger.push(p); api.turmWachsen(p.stadt, 15); if (e.sieger.length >= 5) e.frueh = true; } return true; },
+      anzeige: e => ({ text: Date.now() < e.signal ? `Warte auf „Licht an!“ … nicht zu früh! (${e.zufrueh.size} zu früh)` : `🔦 LICHT AN! „licht“ schreiben!  (${e.sieger.length}/5)` }),
+      ende: e => e.sieger.length ? { text: `Am schnellsten: ${e.sieger.map(p => `${p.name} (${p.stadt})`).join(', ')}`, sag: `Am schnellsten war ${api.name(e.sieger[0])} für ${e.sieger[0].stadt}!`, gut: true, id: e.sieger[0].id } : { text: 'Niemand hat das Signal erwischt …', sag: 'Diesmal war keiner schnell genug.' },
+    },
+    turmquiz: {
+      titel: 'Städte-Quiz', icon: '🧠', dauer: 45,
+      start(e) { e.f = zufall([['Wo steht der Kölner Dom?', 'köln'], ['Wo steht das Brandenburger Tor?', 'berlin'], ['Wo findet das Oktoberfest statt?', 'münchen'], ['Wo steht die Elbphilharmonie?', 'hamburg'], ['Wo steht der Stephansdom?', 'wien'], ['Wo steht das Holstentor?', 'lübeck'], ['Welche Stadt hat die Bremer Stadtmusikanten?', 'bremen'], ['Wo steht die Frauenkirche mit dem Zwinger?', 'dresden'], ['Wo steht das Völkerschlachtdenkmal?', 'leipzig']]); e.sieger = [];
+        return `Städte-Quiz! ${e.f[0]} Die ersten fünf Richtigen bringen ihrer Stadt zehn Stockwerke!`; },
+      kommentar(e, p, t) { if (!wortGleich(t, e.f[1]) || t.length > e.f[1].length + 4) return; if (!e.sieger.includes(p) && e.sieger.length < 5) { e.sieger.push(p); if (p.stadt) api.turmWachsen(p.stadt, 10); if (e.sieger.length >= 5) e.frueh = true; } return true; },
+      anzeige: e => ({ text: `${e.f[0]}  (${e.sieger.length}/5 richtig)` }),
+      ende: e => e.sieger.length ? { text: `Richtig: ${grossKlein(e.f[1])}! Am schnellsten: ${e.sieger.map(p => p.name).join(', ')}`, sag: `Richtig! Am schnellsten war ${api.name(e.sieger[0])}!`, gut: true, id: e.sieger[0].id } : { text: `Lösung: ${grossKlein(e.f[1])}`, sag: 'Diesmal hatte es niemand.' },
+    },
+    aufholjagd: {
+      titel: 'Aufholjagd', icon: '🚀', dauer: 60, moeglich: () => api.staedte().length >= 4,
+      start(e) { e.hinten = new Set(api.staedte().slice(3).map(s => s.name)); e.z = {}; e.plus = {}; return 'Aufholjagd! Eine Minute lang wachsen alle Städte ab Platz vier doppelt so schnell. Schreibt eure Stadt!'; },
+      kommentar(e, p, t) { if (!p.stadt || !e.hinten.has(p.stadt) || Date.now() - (e.z[p.id] || 0) < 10000) return; e.z[p.id] = Date.now(); e.plus[p.stadt] = (e.plus[p.stadt] || 0) + 2; api.turmWachsen(p.stadt, 2); return false; },
+      anzeige: e => ({ text: `Ab Platz 4 wächst jede Stadt doppelt! (${Object.values(e.plus).reduce((a, b) => a + b, 0)} Stockwerke extra)` }),
+      ende(e) { const top = Object.entries(e.plus).sort((a, b) => b[1] - a[1])[0]; return top ? { text: `Aufholjagd vorbei! Am meisten aufgeholt: ${top[0]} (+${top[1]})`, sag: `${top[0]} hat am meisten aufgeholt!`, gut: true } : { text: 'Aufholjagd vorbei.' }; },
+    },
     // ===== Neue Chat-Spiele (ohne Likes) =====
     rechnen: {
       titel: 'Kopfrechnen', icon: '➕', dauer: 45,
@@ -645,6 +692,8 @@ export function macheEvents(api) {
     reimzeit: 'Jeder der ersten zehn Reime bringt zehn Muscheln.', bootsrennen: 'Das Siegerboot bekommt fünfundzwanzig Muscheln.', urlaubsziel: 'Die Mehrheit bekommt zehn Muscheln.',
     kompliment: 'Jedes Kompliment bringt fünf Muscheln, ab zehn gibt es einen Bonus.',
     mysterybox: 'In jeder Box stecken zwischen drei und fünfzig Muscheln.',
+    staedteneu: 'Jede neue Stadt startet mit zwanzig Stockwerken.', baukolonne: 'Jeder bringt seiner Stadt fünf Stockwerke.', staedteduell: 'Die Siegerstadt bekommt fünfzig Stockwerke.',
+    leuchtsignal: 'Die ersten fünf bringen ihrer Stadt je fünfzehn Stockwerke.', turmquiz: 'Jede richtige Antwort bringt der eigenen Stadt zehn Stockwerke.', aufholjagd: 'Ab Platz vier wächst jede Stadt doppelt.',
     rechnen: 'Die schnellsten drei bekommen dreißig, zwanzig und zehn Muscheln.', schaetzen: 'Wer am nächsten dran ist, bekommt vierzig Muscheln.',
     hoeherniedriger: 'Jeder richtige Tipp bringt fünfzehn Muscheln.', minderheit: 'Die kleinere Gruppe bekommt je fünfundzwanzig Muscheln.',
     einzigezahl: 'Der Gewinner bekommt fünfzig Muscheln.', zaehlen: 'Schafft ihr es bis fünfzehn, bekommt jeder Zähler zwanzig Muscheln.',
@@ -680,8 +729,13 @@ export function macheEvents(api) {
     if (r.sag) api.sag(r.sag, 0);
     ev = null; naechstes = Math.max(naechstes, Date.now() + 20000); api.zustand();
   }
+  // Jedes dritte Event ist ein Leuchtturm-Event – immer in derselben Reihenfolge
+  const TURM_FOLGE = ['staedteneu', 'baukolonne', 'staedteduell', 'leuchtsignal', 'turmquiz', 'aufholjagd'];
+  let eventZahl = 0, turmNr = 0;
   function waehle() {
-    const moegl = Object.keys(DEFS).filter(id => !LIKE_EVENTS.has(id) && !verlauf.slice(0, 10).includes(id) && (!DEFS[id].moeglich || DEFS[id].moeglich()));
+    eventZahl++;
+    if (eventZahl % 3 === 0) for (let k = 0; k < TURM_FOLGE.length; k++) { const id = TURM_FOLGE[turmNr++ % TURM_FOLGE.length]; if (!DEFS[id].moeglich || DEFS[id].moeglich()) return id; }
+    const moegl = Object.keys(DEFS).filter(id => !LIKE_EVENTS.has(id) && !TURM_FOLGE.includes(id) && !verlauf.slice(0, 10).includes(id) && (!DEFS[id].moeglich || DEFS[id].moeglich()));
     if (moegl.includes('abstimmung') && Math.random() < .5) return 'abstimmung';
     return zufall(moegl.filter(x => x !== 'abstimmung').length ? moegl.filter(x => x !== 'abstimmung') : moegl);
   }

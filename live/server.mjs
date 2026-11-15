@@ -21,7 +21,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-16 i';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-16 j';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -197,9 +197,9 @@ function turmWachsen(s, um) {
 function turmKommentar(p, text) {
   S.staedte ||= {};
   const st = stadtAus(text), jetzt = Date.now();
-  if (st && !p.stadt) {
+  if (st && !p.stadt && EV.id() !== 'turmquiz') {             // im Städte-Quiz ist der Stadtname eine Antwort, keine Wahl
     p.stadt = st; p.stadtZeit = jetzt;
-    const s = S.staedte[st] ||= { name: st, stock: 0, leute: 0 }; s.leute++; turmWachsen(s, 1);
+    const s = S.staedte[st] ||= { name: st, stock: 0, leute: 0, seit: jetzt }; s.leute++; turmWachsen(s, 1);
     sende({ typ: 'turmNeu', stadt: st, name: p.name, neu: s.leute === 1 });
     if (s.leute === 1 && jetzt - turmNeuAnsage > 30000) { turmNeuAnsage = jetzt; sag(`Ein neuer Leuchtturm für ${st}!`, 3); }
     geaendert = true; turmFuehrung(); return;
@@ -466,6 +466,8 @@ function belohne(p, n, extra) {
 const EV = macheEvents({
   CFG, test: TEST, sende, zustand: () => zustand(), sag: (t, pr) => sag(t, pr), belohne, name: p => sprechName(p), artikel: n => artikel(n),
   spieler: id => S.spieler[id],
+  stadt: n => S.staedte?.[n], staedte: () => Object.values(S.staedte || {}).sort((a, b) => b.stock - a.stock), stadtAus: t => stadtAus(t),
+  turmWachsen: (n, um) => { const s = S.staedte?.[n]; if (s) { turmWachsen(s, um); turmFuehrung(); geaendert = true; } },
   aktive: min => Object.values(S.spieler).filter(p => !p.gesperrt && Date.now() - (p.zuletzt || 0) < min * 60000),
   likeRate: () => { const t = Date.now() - 300000; while (likeLog.length && likeLog[0][0] < t) likeLog.shift(); return likeLog.reduce((a, [, n]) => a + n, 0) / 5; },
   rekord: v => { if (v != null) { S.likeRekord = v; geaendert = true; } return S.likeRekord || 150; },
