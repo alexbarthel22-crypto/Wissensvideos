@@ -20,7 +20,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-15 m';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-15 n';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -140,6 +140,7 @@ function istHausWunsch(text) {
   return false;
 }
 const hausWunsch = [], hausGezeigt = {}, likeSerie = {}, likeDank = [];
+let letzterLikeDank = 0;                                    // Like-Dank (einzeln oder für alle) höchstens 1× pro Minute
 let letztesHausZeigen = 0;
 
 // ---------- Ereignisse ----------
@@ -309,7 +310,7 @@ setInterval(() => {
   // Alle zusammen liken gerade sehr viel → Feuerwerk über der großen Muschel
   if (l20 >= Math.max(60, normal * 2) && jetzt - letztesLikeFeuer > 60000) {
     letztesLikeFeuer = jetzt; sende({ typ: 'likeFeuer', n: l20 });
-    sag(zufallText(['Wow, so viele Likes! … Feuerwerk über der Muschel!', 'Was für ein Like-Sturm! … Weiter so!', 'Die Muschel leuchtet … ihr seid der Wahnsinn!']), 2);
+    if (jetzt - letzterLikeDank >= 60000) letzterLikeDank = jetzt, sag(zufallText(['Wow, so viele Likes! … Feuerwerk über der Muschel!', 'Was für ein Like-Sturm! … Weiter so!', 'Die Muschel leuchtet … ihr seid der Wahnsinn!']), 2);
   }
   // Meilensteine: alle 1.000 Likes ein großes Fest
   const ms = Math.floor((S.likesGesamt || 0) / (CFG.likeMeilenstein || 1000));
@@ -770,7 +771,7 @@ function moderiere() {
     return sag(satz('followEins', { name: sprechName(followDank.shift()) }), 1);   // einzeln, kurz
   }
   // 1a. Viele Likes von einer Person: bedanken
-  if (likeDank.length) { const p = likeDank.shift(); return sag(satz('likeDank', { name: sprechName(p) }), 1); }
+  if (likeDank.length) { const p = likeDank.shift(); likeDank.length = 0; if (Date.now() - letzterLikeDank >= 60000) { letzterLikeDank = Date.now(); return sag(satz('likeDank', { name: sprechName(p) }), 1); } }
   // 1b. Wer „haus“ geschrieben hat: Kamera fliegt zum Haus (ab und zu, nicht während Events)
   const kameraEvent = ['schatzsuche', 'meeresbesuch', 'flaschenpost', 'moewenalarm', 'hausbesuch'].includes(EV.id());
   if (!kameraEvent && hausWunsch.length && Date.now() - letztesHausZeigen > (EV.laeuft() ? 15000 : 8000)) {
@@ -789,9 +790,9 @@ function moderiere() {
     return;
   }
   // 3. Neue Zuschauer begrüßen (nur wenn kein Event moderiert werden muss)
-  // Nur wer einen Klarnamen hat (lara91554 → „Lara“), höchstens alle 20 s – sonst kommt der Dank erst bei der ersten Interaktion
+  // Nur wer einen Klarnamen hat (lara91554 → „Lara“), höchstens alle 30 s – sonst kommt der Dank erst bei der ersten Interaktion
   while (begruessen.length && !begruessen[0].klar) begruessen.shift();
-  if (!EV.laeuft() && begruessen.length && Date.now() - letzteBegruessung > 20000) {
+  if (!EV.laeuft() && begruessen.length && Date.now() - letzteBegruessung > 30000) {
     const b = begruessen.shift(); letzteBegruessung = Date.now();
     if (b.zurueck) return sag(b.besuche >= 3 && Math.random() < .5 ? satz('begruessungTreu', { name: b.name, besuche: b.besuche }) : satz('begruessungZurueck', { name: b.name }), 4);
     return sag(satz('begruessungEins', { name: b.name }), 4);
