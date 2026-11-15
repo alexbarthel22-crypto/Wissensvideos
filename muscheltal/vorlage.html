@@ -353,6 +353,9 @@ footer a{color:var(--soft)}
 .wk p{margin:6px 0 10px}.wk .wkwarum{font-size:14px;font-weight:700;color:#7a5a45;margin:0 0 8px}.wkwack{animation:wkwack 1.6s ease-in-out .6s infinite}@keyframes wkwack{0%,58%,100%{transform:rotate(0) scale(1)}64%{transform:rotate(-3deg) scale(1.05)}70%{transform:rotate(3deg) scale(1.06)}76%{transform:rotate(-2deg) scale(1.04)}82%{transform:rotate(1deg)}88%{transform:rotate(0)}}.wk .cbtn{display:block;width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center;text-decoration:none;box-sizing:border-box}.wkbox{margin:14px 0 4px;background:#fff6e0;border:2px dashed #2a1b12;border-radius:16px;padding:10px 12px;text-align:left}.wkbox b{display:block;margin-bottom:2px}.wkbox span{display:block;font-size:14px;font-weight:700;margin-bottom:8px}
 /* Knöpfe unter „Jetzt einziehen“: jeder in eigener Farbe (gut lesbar) */
 .btn.nb-regeln{background:#ffd23f;color:#2a1b12}.btn.nb-erf{background:#8e5bd6;color:#fff}.btn.wide.nb-einw{background:#2fb3a0;color:#fff}.btn.wide.jobs2{background:#2a1b12;color:#fff}.btn.wide.baub{background:#ff8a2a;color:#fff}.btn.wide.rangb{background:#1f8fd0;color:#fff}
+.codebox{background:#fff;border:3px solid #2a1b12;border-radius:20px;box-shadow:0 4px 0 #2a1b12;padding:10px 13px;margin:12px 0}.codebox h3{margin:0 0 4px;font-size:16px}.codebox p{margin:0 0 8px;font-size:14px;font-weight:700;color:#5a4030}
+.coderow{display:flex;gap:8px}.coderow input{flex:1;min-width:0;font:800 16px inherit;font-family:inherit;padding:9px 12px;border:2px solid #2a1b12;border-radius:12px;text-transform:uppercase;letter-spacing:.06em}.coderow .cbtn{width:auto;margin:0;padding:9px 14px;white-space:nowrap}
+.codemsg{margin-top:8px;font-weight:800;font-size:14px;color:#a33}.codemsg.ok{color:#1f8a55}
 </style>
 </head>
 <body>
@@ -419,6 +422,7 @@ footer a{color:var(--soft)}
    <div class="proj" id="proj"><div class="top"><span id="pjname"></span><small id="pjnum"></small></div><div class="meter"><i id="pjbar"></i></div><p class="sub" id="pjtext"></p></div>
    <p class="news" id="news"></p>
   </div>
+  <div class="codebox" id="codebox"><h3>🔑 Geheimcode aus dem Video</h3><p>In neuen Videos von <a class="accl" href="#" id="codeacc" target="_blank" rel="noopener">@muscheltal</a> ist ein <b>Geheimwort</b> versteckt – schau bis zum Ende! Gilt nur am Tag des Videos.</p><form class="coderow" data-code="1"><input name="c" maxlength="30" placeholder="Code eingeben" autocomplete="off" autocapitalize="characters" spellcheck="false"><button class="cbtn hot" type="submit">Einlösen</button></form><div class="codemsg" hidden></div></div>
   <div class="rangbox" id="rangbox" hidden></div>
   <div class="rangbox lrbox" id="lrbox" hidden></div>
   <a class="btn wide jobs" href="news.html">📰 News aus Muschel-Tal</a>
@@ -4138,6 +4142,7 @@ async function mkSeite(){const me=mkMe();if(!me)return;let e=$('mkpage');if(!e){
  const Q=MK.quests||[],qd=d.questsDone||[];
  e.innerHTML='<a class="mkback" href="#" id="mkback">← Zur Karte</a><h1>🐚 Meine Muscheln</h1><div class="mktag">Deine kleine Schatztruhe in Muschel-Tal</div>'
   +'<div class="mkbox mkhero"><div class="who">'+esc(me.name)+'</div><div class="bal">'+fmt(d.stand)+'&nbsp;🐚</div><div class="mb3"><a href="#" data-mk="shop"><span>🛍️</span>Muschel-Shop</a><a href="#" data-mk="spenden"><span>💛</span>Spenden</a><a href="#" data-mk="auszug"><span>📜</span>Verlauf</a></div></div>'
+  +'<div class="mkbox"><h3>🔑 Geheimcode aus dem Video</h3><p class="mkp">Das Geheimwort steckt im neuesten Video – schau bis zum Ende!</p><form class="coderow" data-code="1"><input name="c" maxlength="30" placeholder="Code eingeben" autocomplete="off" autocapitalize="characters" spellcheck="false"><button class="cbtn hot" type="submit">Einlösen</button></form><div class="codemsg" hidden></div></div>'
   +'<div class="mkbox"><h3>🔥 Deine Serie · Tag '+s.tag+'</h3><div class="ser">'+cells+'</div>'+(s.abgeholt?'<div class="mkdone">✓ Heute abgeholt – morgen gibt’s '+SERIE[s.tag%7]+'&nbsp;🐚</div>':'<button class="btnw wob" type="button" data-mk="login"><span>🐚</span>'+heute+' Muscheln abholen</button>')+'</div>'
   +'<div class="mkbox"><h3>📋 Aufgaben heute</h3>'+(Q.length?Q.map((id,i)=>{const q=mkQDef(id);return'<div class="q"><span>'+q.ic+'</span><span>'+q.t+'</span><b class="'+(qd.includes(i)?'ok':'')+'">'+(qd.includes(i)?MKCK:'')+'+5&nbsp;🐚</b></div>';}).join('')+'<div class="q" style="color:#8a6a40">🎁 Alle 3 geschafft<b class="'+(qd.length>=3?'ok':'')+'">'+(qd.length>=3?MKCK:'')+'+5&nbsp;🐚</b></div>':'<p class="mkp">Starte das Erkunden, dann bekommst du deine Aufgaben.</p>')+'<button class="btnw" type="button" data-mk="erkunden" style="background:#2fb3a0;color:#fff"><span>🧭</span>Jetzt erkunden</button></div>'
   +'<div class="mkbox"><h3>🛍️ Muschel-Shop</h3><div class="empty"><div class="bx">🎁🔒</div><b>Psst … hier entsteht etwas Großes</b><span>Was es geben wird, verraten wir noch nicht. Nur so viel: Spar schon mal deine Muscheln – du wirst sie brauchen! 👀</span></div></div>'
@@ -4422,6 +4427,15 @@ async function rangTeilen(btn){const d=RANG.d;if(!d||!d.top||!d.top.length)retur
  }catch(e){}btn.innerHTML=lab;}
 document.addEventListener('click',ev=>{const a=ev.target.closest('[data-rang],a[href="#rangliste"]');if(!a)return;ev.preventDefault();const k=a.dataset.rang;if(k==='zu')rangZu();else if(k==='teilen')rangTeilen(a);else{history.replaceState(null,'','#rangliste');rangSeite();}});
 if(location.hash==='#rangliste')setTimeout(rangSeite,600);
+// ================= Geheimcode aus dem Video (nur mit beanspruchtem Namen; Server prüft Tag und Einmaligkeit) =================
+{const a=$('codeacc');if(a){a.href=ACCURL;a.textContent=ACC;}}
+document.addEventListener('submit',async ev=>{const f=ev.target.closest('form[data-code]');if(!f)return;ev.preventDefault();const box=f.parentNode,msg=box.querySelector('.codemsg'),inp=f.querySelector('input'),btn=f.querySelector('button'),code=inp.value.trim();
+ const zeig=(t,ok)=>{msg.hidden=false;msg.className='codemsg'+(ok?' ok':'');msg.innerHTML=t;};if(!code){inp.focus();return;}
+ if(!mkClaim()){mkSperre();return;}
+ btn.disabled=true;btn.textContent='⏳';const r=await mk('code',{code});btn.disabled=false;btn.textContent='Einlösen';
+ if(!r){zeig('Gerade keine Verbindung – bitte gleich nochmal versuchen.');return;}
+ if(r.ok){inp.value='';if(MK.d){MK.d.stand=(MK.d.stand||0)+r.betrag;mkAktuell();}setTimeout(()=>mkStand().then(mkAktuell),1500);zeig('🎉 Richtig! <b>+'+r.betrag+'&nbsp;🐚</b> sind auf deinem Konto.',true);if(typeof mkToast==='function')mkToast('🔑 Geheimcode eingelöst · +'+r.betrag+' 🐚');return;}
+ zeig(r.grund==='schon'?'✅ Diesen Code hast du schon eingelöst.':r.grund==='versuche'?'⏳ Zu viele Versuche heute – morgen wieder.':'❌ Leider falsch – oder der Code ist schon abgelaufen.');});
 // ================= LIVE-Rangliste (aus dem TikTok-LIVE: insgesamt + letzter Stream) =================
 const LR={d:null,t:0,tab:'gesamt'};try{const c=JSON.parse(localStorage.getItem('mt-lrang')||'null');if(c&&Date.now()-c.t<864e5){LR.d=c.d;LR.t=c.t;}}catch(e){}
 async function lrLaden(){if(LR.d&&Date.now()-LR.t<60000)return LR.d;try{const r=await fetch('/api/live?rang=1',{cache:'no-store'});if(r.ok){LR.d=await r.json();LR.t=Date.now();try{localStorage.setItem('mt-lrang',JSON.stringify({t:LR.t,d:LR.d}));}catch(e){}}}catch(e){}return LR.d;}

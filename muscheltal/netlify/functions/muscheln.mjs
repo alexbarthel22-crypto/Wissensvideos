@@ -5,6 +5,7 @@ import { getStore } from "@netlify/blobs";
 import { JOBS } from "../lib/jobs.mjs";
 import { BEWOHNER, NACHBARN } from "../lib/bewohner.mjs";
 import { liveVergeben } from "./live.mjs";
+import { CODES } from "../lib/codes.mjs";
 
 const json = (d, s = 200) => new Response(JSON.stringify(d), { status: s, headers: { "content-type": "application/json", "cache-control": "no-store" } });
 const NAME = /^@[a-z0-9._]{1,40}$/;
@@ -100,7 +101,7 @@ async function aufraeumen(store) {
     t[1] = id; await kasse.set(t.join("/"), (await kasse.get(k)) || "1"); await kasse.delete(k);
   }
 }
-const TEXT = { login: "Login-Serie", quest: "Aufgabe", qbonus: "Alle 3 Aufgaben", shell: "Schwebende Muschel", erf: "Neuer Erfolg", story: "Story geteilt", spende: "Spende Inselkasse", tresor: "Tresor des Schöpfers" };
+const TEXT = { login: "Login-Serie", quest: "Aufgabe", qbonus: "Alle 3 Aufgaben", shell: "Schwebende Muschel", erf: "Neuer Erfolg", story: "Story geteilt", spende: "Spende Inselkasse", tresor: "Tresor des Schöpfers", code: "Geheimcode aus dem Video" };
 
 // Einmal-Aufgaben (Zurücksetzen, Aufräumen) nur einmal pro Tag und Server-Instanz prüfen – spart bei jeder Muschel-Aktion
 // rund 10 Speicherabfragen (schnellere Gutschriften)
@@ -263,6 +264,16 @@ export default async (req) => {
     return json({ ok: await setze("erf", k, 10) });
   }
   // Tresor des Schöpfers (Schlossinsel): einmalige Verlosung je Name – 3, 5, 7 oder 10 Muscheln (je 25 %)
+  // Geheimcode aus einem TikTok-Video: gilt nur an den angegebenen Tagen, je Name einmal; höchstens 10 Versuche pro Tag
+  if (act === "code") {
+    const k = String(d.code || "").toUpperCase().replace(/[^A-Z0-9ÄÖÜ]/g, "").slice(0, 30);
+    const vk = "x/codeversuch/" + nm + "/" + heute, vers = Number(await store.get(vk)) || 0;
+    if (vers >= 10) return json({ ok: false, grund: "versuche" });
+    const c = CODES.find(c => c.code === k && heute >= c.von && heute <= c.bis);
+    if (!c) { await store.set(vk, String(vers + 1)); return json({ ok: false, grund: "falsch" }); }
+    const ok = await setze("code", k, c.muscheln);
+    return json({ ok, grund: ok ? null : "schon", betrag: c.muscheln });
+  }
   if (act === "tresor") {
     const pre = "b/" + nm + "/tresor/einmal/";
     const L = (await store.list({ prefix: pre })).blobs;

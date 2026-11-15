@@ -592,6 +592,14 @@ def baue(rows, out):
     with open(os.path.join(lib, "jobs.mjs"), "w", encoding="utf-8") as f:
         f.write("// automatisch aus daten/insel.json erzeugt (bau.py) – nicht von Hand ändern\nexport const JOBS = " + json.dumps({k.lower().lstrip("@"): v for k, v in insel.get("jobs", {}).items()}, ensure_ascii=False) + ";\n")
     # aktuelle Bewohner für die Server-Funktionen (Rangliste zeigt nur, wer noch da ist)
+    # Geheimcodes aus den Videos: nur für den Server (nicht in die öffentliche Seite)
+    try:
+        codes = json.load(open(os.path.join(HIER, "daten", "codes.json"), encoding="utf-8")).get("codes") or []
+    except Exception:
+        codes = []
+    codes = [{"code": re.sub(r"[^A-Z0-9ÄÖÜ]", "", str(c.get("code", "")).upper()), "von": c.get("von", ""), "bis": c.get("bis") or c.get("von", ""), "muscheln": int(c.get("muscheln") or 10)} for c in codes if c.get("code")]
+    with open(os.path.join(lib, "codes.mjs"), "w", encoding="utf-8") as f:
+        f.write("// automatisch aus daten/codes.json erzeugt (bau.py) – nicht von Hand ändern\nexport const CODES = " + json.dumps(codes, ensure_ascii=False) + ";\n")
     with open(os.path.join(lib, "bewohner.mjs"), "w", encoding="utf-8") as f:
         f.write("// automatisch aus daten/einwohner.csv erzeugt (bau.py) – nicht von Hand ändern\nexport const BEWOHNER = new Set(" + json.dumps(sorted({(r["name"] if isinstance(r, dict) else r[0]).lower().lstrip("@") for r in rows}), ensure_ascii=False) + ");\n"
                 + "export const NACHBARN = new Set(" + json.dumps(sorted({str(n).lower().lstrip("@") for g in (json.load(open(INSEL, encoding="utf-8")).get("nachbarn") or []) for n in g}), ensure_ascii=False) + ");\n")
