@@ -60,7 +60,7 @@ export function extraEvents(api, h) {
   // ---------- D) Quiz: die ersten fünf Richtigen ----------
   const quiz = (id, titel, icon, fragen, meter = 10) => {
     D[id] = { titel, icon,
-      start(e) { e.f = typeof fragen === 'function' ? fragen() : zufall(fragen); e.s = []; return `${titel}! ${e.f[0]} Die ersten fünf Richtigen bringen ihrer Stadt ${meter} Meter!`; },
+      start(e) { e.f = typeof fragen === 'function' ? fragen() : zufall(fragen); e.s = []; return `${titel}! ${e.f[0]} Schreibt die Antwort in den Chat! Die ersten fünf Richtigen bringen ihrer Stadt ${meter} Meter!`; },
       kommentar(e, p, t) { const a = [].concat(e.f[1]); if (!a.some(x => wortGleich(t, x) && klein(t).length <= String(x).length + 4)) return; if (!e.s.includes(p) && e.s.length < 5) { e.s.push(p); api.turmWachsen(p.stadt, meter, p); if (e.s.length >= 5) e.frueh = true; } return true; },
       anzeige: e => ({ text: `${e.f[0]}  (${e.s.length}/5 richtig)` }),
       ende: e => { const l = [].concat(e.f[1])[0], L = String(l).charAt(0).toUpperCase() + String(l).slice(1); return e.s.length ? { text: `Richtig: ${L}! Am schnellsten: ${e.s.map(p => p.name).join(', ')}`, sag: `Richtig! Am schnellsten war ${name(e.s[0])}!`, gut: true } : { text: `Lösung: ${L}`, sag: 'Diesmal hatte es niemand.' }; } };
@@ -123,20 +123,20 @@ export function extraEvents(api, h) {
   // ---------- F) Duelle: zwei Lager, wer hat mehr Leute im Chat? ----------
   const duell = (id, titel, icon, ansage, lager, namen, meter, moeglich) => {
     D[id] = { titel, icon, moeglich,
-      start(e) { e.w = { a: new Set(), b: new Set() }; e.ziel = typeof namen === 'function' ? namen() : namen; return `${ansage} Welche Seite hat mehr Leute im Chat? Alle Städte der Sieger bekommen ${meter} Meter!`; },
+      start(e) { e.w = { a: new Set(), b: new Set() }; e.ziel = typeof namen === 'function' ? namen() : namen; return `${ansage} Schreibt jetzt eure Stadt in den Chat! Die Seite mit mehr Leuten gewinnt, alle ihre Städte bekommen ${meter} Meter!`; },
       kommentar(e, p) { const s = stadtVon(p); const k = s && lager(s, e); if (k) e.w[k].add(p.id); return false; },
-      anzeige: e => { const a = e.w.a.size, b = e.w.b.size, m = Math.max(1, a, b); return { text: `${e.ziel[0]} gegen ${e.ziel[1]}! Schreib in den Chat!`, balken: [{ name: e.ziel[0], wert: a, max: m, farbe: '#3fa0e8' }, { name: e.ziel[1], wert: b, max: m, farbe: '#ff8fb8' }] }; },
+      anzeige: e => { const a = e.w.a.size, b = e.w.b.size, m = Math.max(1, a, b); return { text: `${e.ziel[0]} gegen ${e.ziel[1]}! Schreib deine Stadt in den Chat!`, balken: [{ name: e.ziel[0], wert: a, max: m, farbe: '#3fa0e8' }, { name: e.ziel[1], wert: b, max: m, farbe: '#ff8fb8' }] }; },
       ende(e) { const a = e.w.a.size, b = e.w.b.size; if (a === b) return { text: `Unentschieden ${a}:${b}!`, sag: 'Unentschieden!' }; const k = a > b ? 'a' : 'b', st = new Set([...e.w[k]].map(id => api.spieler(id)?.stadt).filter(Boolean)); st.forEach(s => api.turmWachsen(s, meter));
         const n = e.ziel[k === 'a' ? 0 : 1]; return { text: `${n} gewinnt ${Math.max(a, b)}:${Math.min(a, b)}! ${anz(st.size, 'Stadt bekommt', 'Städte bekommen')} +${meter} m`, sag: `${n.replace(/^\S+\s/, '')} gewinnt!`, gut: true }; } };
     P[id] = `Alle Städte der Sieger bekommen ${meter} Meter.`;
   };
-  duell('nordsued', 'Nord gegen Süd', '🧭', 'Nord gegen Süd!', s => s.lat == null ? null : s.lat >= 50.5 ? 'a' : 'b', ['⬆️ Norden', '⬇️ Süden'], 12);
-  duell('ostwest', 'Ost gegen West', '🧭', 'Ost gegen West!', s => s.lng == null ? null : s.lng >= 10.5 ? 'a' : 'b', ['➡️ Osten', '⬅️ Westen'], 12);
-  duell('grossklein', 'Groß gegen Klein', '🐘', 'Die großen Türme gegen die kleinen!', s => api.staedte().findIndex(x => x.name === s.name) < 5 ? 'a' : 'b', ['🐘 Top 5', '🐭 Alle anderen'], 10, () => api.staedte().length >= 7);
+  duell('nordsued', 'Nord gegen Süd', '🧭', 'Nord gegen Süd! Liegt eure Stadt im Norden oder im Süden?', s => s.lat == null ? null : s.lat >= 50.5 ? 'a' : 'b', ['⬆️ Norden', '⬇️ Süden'], 12);
+  duell('ostwest', 'Ost gegen West', '🧭', 'Ost gegen West! Liegt eure Stadt im Osten oder im Westen?', s => s.lng == null ? null : s.lng >= 10.5 ? 'a' : 'b', ['➡️ Osten', '⬅️ Westen'], 12);
+  duell('grossklein', 'Groß gegen Klein', '🐘', 'Die Top fünf gegen alle anderen Städte!', s => api.staedte().findIndex(x => x.name === s.name) < 5 ? 'a' : 'b', ['🐘 Top 5', '🐭 Alle anderen'], 10, () => api.staedte().length >= 7);
   D.dreikampf = { titel: 'Dreikampf', icon: '🥇', moeglich: () => api.staedte().length >= 3,
-    start(e) { e.st = api.staedte().slice(0, 3).map(s => s.name); e.w = Object.fromEntries(e.st.map(n => [n, new Set()])); api.sende({ typ: 'duell', a: e.st[0], b: e.st[1] }); return `Dreikampf! ${listeTxt(e.st)}! Welche Stadt hat die meisten Leute im Chat? Der Sieger bekommt dreißig Meter!`; },
+    start(e) { e.st = api.staedte().slice(0, 3).map(s => s.name); e.w = Object.fromEntries(e.st.map(n => [n, new Set()])); api.sende({ typ: 'duell', a: e.st[0], b: e.st[1] }); return `Dreikampf! ${listeTxt(e.st)}! Schreibt eure Stadt in den Chat! Die Stadt mit den meisten Leuten gewinnt dreißig Meter!`; },
     kommentar(e, p) { if (p.stadt && e.w[p.stadt]) e.w[p.stadt].add(p.id); return false; },
-    anzeige: e => { const m = Math.max(1, ...e.st.map(n => e.w[n].size)); return { text: 'Top 3 – wer hat die meisten Leute im Chat?', balken: e.st.map((n, i) => ({ name: '🗼 ' + n, wert: e.w[n].size, max: m, farbe: ['#ffd23f', '#c0c8d8', '#e0a070'][i] })) }; },
+    anzeige: e => { const m = Math.max(1, ...e.st.map(n => e.w[n].size)); return { text: 'Top 3! Schreib deine Stadt in den Chat – wer hat die meisten Leute?', balken: e.st.map((n, i) => ({ name: '🗼 ' + n, wert: e.w[n].size, max: m, farbe: ['#ffd23f', '#c0c8d8', '#e0a070'][i] })) }; },
     ende(e) { const [a, b] = [...e.st].sort((x, y) => e.w[y].size - e.w[x].size); if (!e.w[a].size || e.w[a].size === e.w[b].size) return { text: 'Kein klarer Sieger!', sag: 'Kein klarer Sieger!' }; api.turmWachsen(a, 30); return { text: `${a} gewinnt den Dreikampf! +30 m`, sag: `${a} gewinnt den Dreikampf!`, gut: true, stadt: a }; } };
   P.dreikampf = 'Die Siegerstadt bekommt dreißig Meter.';
 

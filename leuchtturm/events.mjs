@@ -45,9 +45,9 @@ export function macheEvents(api) {
     },
     staedteduell: {
       titel: 'Städte-Duell', icon: '⚔️', moeglich: () => api.staedte().length >= 2,
-      start(e) { const [a, b] = api.staedte(); e.a = a.name; e.b = b.name; e.w = { [e.a]: new Set(), [e.b]: new Set() }; api.sende({ typ: 'duell', a: e.a, b: e.b }); return `Städte-Duell! ${e.a} gegen ${e.b}! Welche Stadt hat jetzt mehr Leute im Chat? Der Sieger bekommt fünfzig Meter!`; },
+      start(e) { const [a, b] = api.staedte(); e.a = a.name; e.b = b.name; e.w = { [e.a]: new Set(), [e.b]: new Set() }; api.sende({ typ: 'duell', a: e.a, b: e.b }); return `Städte-Duell! ${e.a} gegen ${e.b}! Schreibt jetzt eure Stadt in den Chat! Welche Stadt mehr Leute im Chat hat, gewinnt fünfzig Meter!`; },
       kommentar(e, p) { if (p.stadt && e.w[p.stadt]) e.w[p.stadt].add(p.id); return false; },
-      anzeige: e => { const a = e.w[e.a].size, b = e.w[e.b].size, m = Math.max(1, a, b); return { text: `${e.a} gegen ${e.b} – wer hat mehr Leute im Chat?`, balken: [{ name: '🗼 ' + e.a, wert: a, max: m, farbe: '#3fa0e8' }, { name: '🗼 ' + e.b, wert: b, max: m, farbe: '#ff8fb8' }] }; },
+      anzeige: e => { const a = e.w[e.a].size, b = e.w[e.b].size, m = Math.max(1, a, b); return { text: `${e.a} gegen ${e.b}! Schreib deine Stadt in den Chat – wer hat mehr Leute?`, balken: [{ name: '🗼 ' + e.a, wert: a, max: m, farbe: '#3fa0e8' }, { name: '🗼 ' + e.b, wert: b, max: m, farbe: '#ff8fb8' }] }; },
       ende(e) { const a = e.w[e.a].size, b = e.w[e.b].size; if (a === b) return { text: `Unentschieden ${a}:${b}!`, sag: 'Unentschieden!' }; const s = a > b ? e.a : e.b; api.turmWachsen(s, 50); return { text: `${s} gewinnt das Duell (${Math.max(a, b)}:${Math.min(a, b)})! +50 Meter`, sag: `${s} gewinnt das Städte-Duell!`, gut: true, stadt: s }; },
     },
     leuchtsignal: {
@@ -65,39 +65,39 @@ export function macheEvents(api) {
         ['Wo ist der Hamburger Hafen?', 'hamburg'], ['Wo steht der Eiffelturm?', 'paris'], ['Wo steht das Kolosseum?', 'rom'], ['In welcher Stadt steht Big Ben?', 'london'],
         ['Was ist die Hauptstadt von Österreich?', 'wien'], ['Woher kommen die Bremer Stadtmusikanten?', 'bremen'], ['Woher kommen Frankfurter Würstchen?', 'frankfurt'],
         ['Woher kommen Nürnberger Lebkuchen?', 'nürnberg'], ['Wo steht das Brandenburger Tor?', 'berlin']]); e.sieger = [];
-        return `Städte-Quiz! ${e.f[0]} Die ersten fünf Richtigen bringen ihrer Stadt zehn Meter!`; },
+        return `Städte-Quiz! ${e.f[0]} Schreibt die Antwort in den Chat! Die ersten fünf Richtigen bringen ihrer Stadt zehn Meter!`; },
       kommentar(e, p, t) { if (!wortGleich(t, e.f[1]) || t.length > e.f[1].length + 4) return; if (!e.sieger.includes(p) && e.sieger.length < 5) { e.sieger.push(p); if (p.stadt) api.turmWachsen(p.stadt, 10, p); if (e.sieger.length >= 5) e.frueh = true; } return true; },
       anzeige: e => ({ text: `${e.f[0]}  (${e.sieger.length}/5 richtig)` }),
       ende: e => e.sieger.length ? { text: `Richtig: ${e.f[1].charAt(0).toUpperCase() + e.f[1].slice(1)}! Am schnellsten: ${e.sieger.map(p => p.name).join(', ')}`, sag: `Richtig! Am schnellsten war ${api.name(e.sieger[0])}!`, gut: true } : { text: `Lösung: ${e.f[1]}`, sag: 'Diesmal hatte es niemand.' },
     },
     aufholjagd: {
       titel: 'Aufholjagd', icon: '🚀', moeglich: () => api.staedte().length >= 4,
-      start(e) { e.hinten = new Set(api.staedte().slice(3).map(s => s.name)); e.z = {}; e.plus = {}; return 'Aufholjagd! Jetzt wachsen alle Städte ab Platz vier doppelt so schnell. Schreibt in den Chat!'; },
+      start(e) { e.hinten = new Set(api.staedte().slice(3).map(s => s.name)); e.z = {}; e.plus = {}; return 'Aufholjagd! Schreibt jetzt eure Stadt in den Chat! Alle Städte ab Platz vier wachsen doppelt so schnell!'; },
       kommentar(e, p) { if (!p.stadt || !e.hinten.has(p.stadt) || Date.now() - (e.z[p.id] || 0) < 10000) return; e.z[p.id] = Date.now(); e.plus[p.stadt] = (e.plus[p.stadt] || 0) + 2; api.turmWachsen(p.stadt, 2, p); return false; },
       anzeige: e => ({ text: `Ab Platz 4 wächst jede Stadt doppelt!  (${Object.values(e.plus).reduce((a, b) => a + b, 0)} Meter extra)` }),
       ende(e) { const top = Object.entries(e.plus).sort((a, b) => b[1] - a[1])[0]; return top ? { text: `Am meisten aufgeholt: ${top[0]} (+${top[1]})`, sag: `${top[0]} hat am meisten aufgeholt!`, gut: true } : { text: 'Aufholjagd vorbei.' }; },
     },
     laenderduell: {
       titel: 'Länder-Duell', icon: '🌐',
-      start(e) { e.w = { DE: new Set(), AT: new Set(), CH: new Set() }; return 'Länder-Duell! Deutschland, Österreich oder Schweiz! Welches Land hat jetzt die meisten Leute im Chat? Alle Städte des Siegerlandes bekommen zehn Meter!'; },
+      start(e) { e.w = { DE: new Set(), AT: new Set(), CH: new Set() }; return 'Länder-Duell! Deutschland, Österreich oder Schweiz! Schreibt eure Stadt in den Chat! Das Land mit den meisten Leuten im Chat gewinnt, alle seine Städte bekommen zehn Meter!'; },
       kommentar(e, p) { const s = stadtVon(p); if (s && e.w[s.land]) e.w[s.land].add(p.id); return false; },
-      anzeige: e => { const z = Object.keys(LAENDER).map(k => e.w[k].size), m = Math.max(1, ...z); return { text: 'Welches Land hat die meisten Leute im Chat?', balken: Object.keys(LAENDER).map((k, i) => ({ name: LAENDER[k], wert: z[i], max: m, farbe: ['#e8433c', '#ff8a2a', '#3fa0e8'][i] })) }; },
+      anzeige: e => { const z = Object.keys(LAENDER).map(k => e.w[k].size), m = Math.max(1, ...z); return { text: 'Schreib deine Stadt in den Chat! Welches Land hat die meisten Leute?', balken: Object.keys(LAENDER).map((k, i) => ({ name: LAENDER[k], wert: z[i], max: m, farbe: ['#e8433c', '#ff8a2a', '#3fa0e8'][i] })) }; },
       ende(e) { const best = Object.keys(LAENDER).sort((a, b) => e.w[b].size - e.w[a].size)[0]; if (!e.w[best].size) return { text: 'Kein Land hat mitgemacht …' };
         const st = new Set(); for (const id of e.w[best]) { const p = api.spieler(id); if (p?.stadt) st.add(p.stadt); } st.forEach(n => api.turmWachsen(n, 10));
         return { text: `${LAENDER[best]} gewinnt! ${anz(st.size, 'Stadt bekommt', 'Städte bekommen')} +10`, sag: `${LAENDER[best].slice(5)} gewinnt das Länder-Duell!`, gut: true }; },
     },
     nachbarduell: {
       titel: 'Nachbar-Duell', icon: '🏘️', moeglich: () => !!nachbarPaar(),
-      start(e) { const [a, b, km] = nachbarPaar(); e.a = a; e.b = b; e.w = { [a]: new Set(), [b]: new Set() }; api.sende({ typ: 'duell', a, b }); return `Nachbar-Duell! ${a} gegen ${b}, nur ${km} Kilometer auseinander! Welche Stadt hat jetzt mehr Leute im Chat? Der Sieger bekommt vierzig Meter!`; },
+      start(e) { const [a, b, km] = nachbarPaar(); e.a = a; e.b = b; e.w = { [a]: new Set(), [b]: new Set() }; api.sende({ typ: 'duell', a, b }); return `Nachbar-Duell! ${a} gegen ${b}, nur ${km} Kilometer auseinander! Schreibt jetzt eure Stadt in den Chat! Welche Stadt mehr Leute hat, gewinnt vierzig Meter!`; },
       kommentar(e, p) { if (p.stadt && e.w[p.stadt]) e.w[p.stadt].add(p.id); return false; },
-      anzeige: e => { const a = e.w[e.a].size, b = e.w[e.b].size, m = Math.max(1, a, b); return { text: `Nachbarn: ${e.a} gegen ${e.b} – wer hat mehr Leute im Chat?`, balken: [{ name: '🏘️ ' + e.a, wert: a, max: m, farbe: '#3fa0e8' }, { name: '🏘️ ' + e.b, wert: b, max: m, farbe: '#ff8fb8' }] }; },
+      anzeige: e => { const a = e.w[e.a].size, b = e.w[e.b].size, m = Math.max(1, a, b); return { text: `${e.a} gegen ${e.b}! Schreib deine Stadt in den Chat – wer hat mehr Leute?`, balken: [{ name: '🏘️ ' + e.a, wert: a, max: m, farbe: '#3fa0e8' }, { name: '🏘️ ' + e.b, wert: b, max: m, farbe: '#ff8fb8' }] }; },
       ende(e) { const a = e.w[e.a].size, b = e.w[e.b].size; if (a === b) return { text: `Unentschieden ${a}:${b}!`, sag: 'Unentschieden unter Nachbarn!' }; const s = a > b ? e.a : e.b; api.turmWachsen(s, 40); return { text: `${s} gewinnt das Nachbar-Duell (${Math.max(a, b)}:${Math.min(a, b)})! +40 m`, sag: `${s} gewinnt das Nachbar-Duell!`, gut: true, stadt: s }; },
     },
     regionenduell: {
       titel: 'Bundesland-Duell', icon: '🗺️', moeglich: () => new Set(api.staedte().map(s => s.region).filter(Boolean)).size >= 2,
-      start(e) { e.w = {}; return 'Bundesland-Duell! Welches Bundesland oder welcher Kanton hat jetzt die meisten Leute im Chat? Alle Städte des Siegers bekommen fünfzehn Meter!'; },
+      start(e) { e.w = {}; return 'Bundesland-Duell! Schreibt eure Stadt in den Chat! Das Bundesland oder der Kanton mit den meisten Leuten gewinnt, alle seine Städte bekommen fünfzehn Meter!'; },
       kommentar(e, p) { const s = stadtVon(p); if (s?.region) (e.w[s.region] ||= new Set()).add(p.id); return false; },
-      anzeige: e => { const z = Object.entries(e.w).map(([k, v]) => [k, v.size]).sort((a, b) => b[1] - a[1]).slice(0, 3), m = Math.max(1, ...z.map(x => x[1])); return { text: 'Welches Bundesland hat die meisten Leute im Chat?', balken: z.map(([k, n], i) => ({ name: k, wert: n, max: m, farbe: ['#57b85a', '#ffd23f', '#3fa0e8'][i] })) }; },
+      anzeige: e => { const z = Object.entries(e.w).map(([k, v]) => [k, v.size]).sort((a, b) => b[1] - a[1]).slice(0, 3), m = Math.max(1, ...z.map(x => x[1])); return { text: 'Schreib deine Stadt in den Chat! Welches Bundesland hat die meisten Leute?', balken: z.map(([k, n], i) => ({ name: k, wert: n, max: m, farbe: ['#57b85a', '#ffd23f', '#3fa0e8'][i] })) }; },
       ende(e) { const best = Object.entries(e.w).sort((a, b) => b[1].size - a[1].size)[0]; if (!best) return { text: 'Kein Bundesland hat mitgemacht …' };
         const st = new Set(); for (const id of best[1]) { const p = api.spieler(id); if (p?.stadt) st.add(p.stadt); } st.forEach(n => api.turmWachsen(n, 15));
         return { text: `${best[0]} gewinnt! ${anz(st.size, 'Stadt bekommt', 'Städte bekommen')} +15 m`, sag: `${best[0]} gewinnt das Bundesland-Duell!`, gut: true }; },
@@ -110,7 +110,7 @@ export function macheEvents(api) {
     },
     turbo: {
       titel: 'Bau-Turbo', icon: '⚡',
-      start(e) { e.n = 0; return 'Bau-Turbo! Jetzt zählt jeder Kommentar alle zehn Sekunden, statt alle dreißig! Schreibt in den Chat!'; },
+      start(e) { e.n = 0; return 'Bau-Turbo! Schreibt jetzt so oft ihr könnt in den Chat! Jeder Kommentar zählt alle zehn Sekunden statt alle dreißig!'; },
       anzeige: e => ({ text: `⚡ Jeder Kommentar zählt alle 10 Sekunden!  (${e.n} Meter im Turbo)` }),
       ende: e => ({ text: `Turbo vorbei – ${e.n} Meter gebaut!`, sag: 'Der Turbo ist vorbei! … Stark gebaut!', gut: e.n > 0 }),
     },
