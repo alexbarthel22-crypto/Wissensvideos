@@ -89,9 +89,9 @@ CMT = """.cmt { position: absolute; left: 140px; width: 800px; border-radius: 30
 
 
 # s01 – Hook im Stil von Tag 1: pinke Balken, Wörter springen groß hervor, Sticker „GEBAUT!“
-QL = [[("NUR", "Nur"), ("NOCH", "noch"), ("50", "50")], [("FOLLOWER –", "Follower")], [("DANN", "dann"), ("RETTEN", "retten"), ("WIR", "wir")], [("HUNDERTE", "hunderte")], [("TIERE!", "Tiere")]]
+QL = [[("ICH", "Ich"), ("WAR", "war"), ("ZUM", "zum")], [("ERSTEN", "ersten"), ("MAL", "Mal"), ("LIVE!", "LIVE")], [("IHR", "ihr"), ("HABT", "habt"), ("EINE", "eine")], [("GANZE", "ganze"), ("INSEL", "Insel")], [("GEBAUT!", "gebaut")]]
 QW = [w for ln in QL for w in ln]
-YW = ("50", "HUNDERTE", "TIERE!")
+YW = ("LIVE!", "GANZE", "INSEL", "GEBAUT!")
 SP = [(110, 560, 46), (900, 600, 34), (70, 960, 30), (930, 1010, 44), (180, 1230, 38), (820, 1200, 30)]
 scene("s01", LILITA + "\n    " + PT + "\n" + FL + """
     #s01-ray { position: absolute; left: -460px; top: 300px; width: 2000px; height: 2000px; border-radius: 50%; background: repeating-conic-gradient(rgba(255,250,210,.28) 0 8deg, rgba(255,255,255,0) 8deg 20deg); -webkit-mask: radial-gradient(circle, #000 15%, transparent 60%); }
@@ -107,8 +107,8 @@ scene("s01", LILITA + "\n    " + PT + "\n" + FL + """
       <div id="s01-rv" data-layout-ignore></div>
       
       <div id="s01-hk">""" + "".join('<div class="ln" id="s01-l' + str(j) + '">' + "".join(f'<span id="s01-w{QW.index(w)}">{w[0]}</span>' for w in ln) + '</div>' for j, ln in enumerate(QL)) + """</div>
-      """ + "".join(f'<div class="s01-sp" id="s01-sp{k}" data-layout-ignore style="left:{x}px;top:{y}px;font-size:{f}px">✦</div>' for k, (x, y, f) in enumerate(SP)) + drops("s01-p", 22, 5, 'sc', 540, 900, "🐾", 600, 820)[0],
-"""      const sc = at("L1", "Tiere");
+      """ + "".join(f'<div class="s01-sp" id="s01-sp{k}" data-layout-ignore style="left:{x}px;top:{y}px;font-size:{f}px">✦</div>' for k, (x, y, f) in enumerate(SP)) + drops("s01-p", 22, 5, 'sc', 540, 900, "🎉", 600, 820)[0],
+"""      const sc = at("L1", "gebaut");
       tl.set(["#s01-ray"], { opacity: 1 }, 0);
       tl.fromTo("#s01-ray", { rotation: 0 }, { rotation: 40, duration: 4, ease: "none" }, 0);
       tl.fromTo("#s01-rv", { opacity: .45 }, { opacity: 1, duration: .14, yoyo: true, repeat: 17, ease: "sine.inOut", immediateRender: false }, 0);
@@ -122,7 +122,7 @@ scene("s01", LILITA + "\n    " + PT + "\n" + FL + """
       tl.to("#s01-l4", { scale: 1.12, duration: .12, yoyo: true, repeat: 1 }, sc);
       
       tl.to("#s01-hk", { x: 12, duration: .04, yoyo: true, repeat: 5, ease: "none" }, sc);
-""" + drops("s01-p", 22, 5, 'sc', 540, 900, "🐾", 600, 820)[1])
+""" + drops("s01-p", 22, 5, 'sc', 540, 900, "🎉", 600, 820)[1])
 
 # s01b – Das ist Muschel-Tal: die Welt, in der ihr alles entscheidet
 scene("s01b", LILITA + "\n    " + PILL + """
@@ -211,6 +211,12 @@ scene("s04", LILITA + "\n    " + PILL + "\n    " + BIG + """
     #s4-b { top: 270px; font-size: 88px; background: #e8101e; transform: rotate(-2deg); box-shadow: 0 0 0 8px #2a1b12, 0 16px 0 rgba(0,0,0,.3), 0 0 50px 14px rgba(255,20,30,.6); }
     #s4-dot { display: inline-block; width: 44px; height: 44px; border-radius: 50%; background: #fff; margin-right: 16px; vertical-align: 6px; }
     #s4-e { top: 430px; font-size: 46px; background: #fff; color: #2a1b12; }
+    #s4-pa { position: absolute; left: 925px; top: 1080px; width: 130px; height: 150px; }
+    #s4-ring { position: absolute; left: 5px; top: 0; width: 120px; height: 120px; border-radius: 50%; background: conic-gradient(#ff1f4b, #ff6a1a, #ff1f4b, #ff2e7e, #ff1f4b); box-shadow: 0 0 40px 10px rgba(255,30,70,.8); }
+    #s4-pic { position: absolute; left: 15px; top: 10px; width: 100px; height: 100px; border-radius: 50%; overflow: hidden; background: #fff; border: 4px solid #fff; }
+    #s4-pic svg { width: 100%; height: 100%; }
+    #s4-lb { position: absolute; left: 0; right: 0; margin: 0 auto; top: 108px; width: fit-content; padding: 1px 12px 4px; border-radius: 8px; background: #ff1f4b; border: 3px solid #fff; color: #fff; font-family: "Inter", sans-serif; font-weight: 900; font-size: 24px; }
+    #s4-ph { left: auto; right: 170px; margin: 0; top: 1115px; font-size: 38px; background: #ff1f4b; box-shadow: 0 0 0 5px #fff, 0 10px 0 rgba(0,0,0,.25); }
     #s4-z { top: 290px; font-size: 38px; background: #fff; color: #2a1b12; }
     #s4-l { top: 380px; font-size: 48px; background: #e8467c; }
     #s4-r { position: absolute; left: 90px; right: 90px; top: 290px; padding: 16px 26px 20px; border-radius: 30px; background: #fff; box-shadow: 0 0 0 6px #2a1b12, 0 12px 0 rgba(0,0,0,.3); font-family: "Inter", sans-serif; color: #2a1b12; }
@@ -223,11 +229,13 @@ scene("s04", LILITA + "\n    " + PILL + "\n    " + BIG + """
       <div id="s4-g" class="pl">↔️ Getrennt von der Muschel-Tal-Region</div>
       <div id="s4-z" class="pl">🏠 87 Häuser · 🏫 Schule · 🎬 Kino · 🐠 Aquarium</div>
       <div id="s4-l" class="pl">❤️ über 130.000 Likes!</div>
+      <div id="s4-pa" data-layout-ignore><div id="s4-ring"></div><div id="s4-pic">""" + LOGO + """</div><div id="s4-lb">LIVE</div></div>
+      <div id="s4-ph" class="pl">Steht hier LIVE? Tippen & reinkommen! 👉</div>
       <div id="s4-r"><div class="rh">🏆 Größte Häuser im LIVE</div>
         <div class="rr"><b>🥇</b><span>@anna_hahnlbichler</span><i>Stufe 26</i></div>
         <div class="rr"><b>🥈</b><span>@ju1e_smt</span><i>Stufe 23</i></div>
         <div class="rr"><b>🥉</b><span>@_marydoesart_</span><i>Stufe 22</i></div></div>""",
-"""      const t4 = line("L4")[0], ei = at("L4", "eigenen"), ge = at("L4", "getrennt");
+"""      const t4 = line("L4")[0], ei = at("L4", "eigene"), ge = at("L4", "getrennt");
       tl.fromTo("#s4-b", { opacity: 0, scale: 3 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(1.8)" }, t4 - .05);
       tl.to("#s4-dot", { opacity: .15, duration: .25, yoyo: true, repeat: 13, ease: "steps(1)" }, t4 + .3);
       tl.fromTo("#s4-e", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .28, ease: "back.out(2)" }, ei - .2);
@@ -238,20 +246,30 @@ scene("s04", LILITA + "\n    " + PILL + "\n    " + BIG + """
       tl.fromTo("#s4-l", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .28, ease: "back.out(2)" }, li - .4);
       tl.to(["#s4-z", "#s4-l"], { opacity: 0, y: -30, duration: .2 }, tc - .25);
       tl.fromTo("#s4-r", { opacity: 0, y: -40 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, tc - .1);
+      const td = line("L4d")[0];
+      tl.to("#s4-r", { opacity: 0, y: -30, duration: .2 }, td - .25);
+      tl.fromTo("#s4-pa", { opacity: 0, scale: .2 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, at("L4d", "rechts") - .2);
+      tl.fromTo("#s4-ring", { scale: 1, rotation: 0 }, { scale: 1.15, rotation: 40, duration: .3, yoyo: true, repeat: 9, ease: "sine.inOut" }, at("L4d", "rechts"));
+      tl.fromTo("#s4-ph", { opacity: 0, x: -80 }, { opacity: 1, x: 0, duration: .3, ease: "back.out(2)" }, at("L4d", "Profilbild") - .1);
+      tl.to("#s4-ph", { x: 20, duration: .25, yoyo: true, repeat: 7, ease: "sine.inOut" }, at("L4d", "Profilbild") + .3);
       tl.fromTo("#s4-r .rr", { opacity: 0, x: -60 }, { opacity: 1, x: 0, duration: .25, stagger: .45, ease: "back.out(2)" }, at("L4c", "Anna") - .15);""")
 
 # s05 – Folg mir: der 800. sein
 scene("s05", LILITA + "\n    " + PILL + "\n" + FOLLOW + """
     #s5-btn { top: 280px; } #s5-hand { left: 690px; top: 330px; }
     #s5-t { top: 430px; font-size: 64px; background: linear-gradient(135deg, #2e9e5b, #8be06a); font-family: "Lilita One", sans-serif; font-weight: 400; transform: rotate(-2deg); }
+    #s5-n { top: 280px; font-size: 50px; background: #e8262f; }
     #s5-h { top: 560px; font-size: 44px; background: #fff; color: #2e9e5b; }""",
 """      <div id="s5-btn" class="fbtn">+ Folgen<div id="s5-btn2" class="fbtn2">✓ Gefolgt</div></div>
       <div id="s5-hand" class="fhand" data-layout-ignore>👆</div>
+      <div id="s5-n" class="pl">🐾 Nur noch 50 bis zum Tierheim!</div>
       <div id="s5-t" class="pl">🐾 Sei der 800. Bewohner!</div>
       <div id="s5-h" class="pl">🏠 Tierheim eröffnen – Tiere retten</div>""",
-"""      const t5 = line("L5")[0], fo = at("L5", "Folg"), du = at("L5", "du"), ti = at("L5", "Tierheim");
-      tl.fromTo("#s5-btn", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, t5 - .15);
-      tl.fromTo("#s5-hand", { opacity: 0, x: 160, y: 160 }, { opacity: 1, x: 0, y: 0, duration: .25, ease: "power3.out" }, t5);
+"""      const t5 = line("L5")[0], fo = at("L5", "Folg"), du = at("L5", "du"), ti = at("L5", "Folg") + .6, nb = at("L5", "Bau");
+      tl.fromTo("#s5-n", { opacity: 0, scale: 2.2 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, t5);
+      tl.to("#s5-n", { opacity: 0, y: -30, duration: .2 }, fo - .3);
+      tl.fromTo("#s5-btn", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, fo - .2);
+      tl.fromTo("#s5-hand", { opacity: 0, x: 160, y: 160 }, { opacity: 1, x: 0, y: 0, duration: .25, ease: "power3.out" }, fo - .1);
       tl.to("#s5-hand", { y: -26, scale: .9, duration: .1, yoyo: true, repeat: 1 }, fo + .2);
       tl.to("#s5-btn2", { opacity: 1, duration: .05 }, fo + .3);
       tl.to("#s5-hand", { opacity: 0, duration: .2 }, fo + .7);

@@ -57,12 +57,14 @@
     .fhand { position: absolute; font-size: 120px; }
     #s5-btn { top: 280px; } #s5-hand { left: 690px; top: 330px; }
     #s5-t { top: 430px; font-size: 64px; background: linear-gradient(135deg, #2e9e5b, #8be06a); font-family: "Lilita One", sans-serif; font-weight: 400; transform: rotate(-2deg); }
+    #s5-n { top: 280px; font-size: 50px; background: #e8262f; }
     #s5-h { top: 560px; font-size: 44px; background: #fff; color: #2e9e5b; }
   </style>
-  <div id="root" data-composition-id="s05" data-start="0" data-duration="7.420" data-width="1080" data-height="1920">
-    <div id="s05-stage" class="clip stage" data-start="0" data-duration="7.420" data-track-index="0">
+  <div id="root" data-composition-id="s05" data-start="0" data-duration="5.890" data-width="1080" data-height="1920">
+    <div id="s05-stage" class="clip stage" data-start="0" data-duration="5.890" data-track-index="0">
       <div id="s5-btn" class="fbtn">+ Folgen<div id="s5-btn2" class="fbtn2">✓ Gefolgt</div></div>
       <div id="s5-hand" class="fhand" data-layout-ignore>👆</div>
+      <div id="s5-n" class="pl">🐾 Nur noch 50 bis zum Tierheim!</div>
       <div id="s5-t" class="pl">🐾 Sei der 800. Bewohner!</div>
       <div id="s5-h" class="pl">🏠 Tierheim eröffnen – Tiere retten</div>
     </div>
@@ -70,7 +72,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 7.42, "L5": [0.2, 5.42], "L5.words": [["folg", 0.2, 0.692], ["mir", 0.692, 1.166], ["", 1.166, 1.59], ["vielleicht", 1.75, 2.09], ["bist", 2.09, 2.254], ["du", 2.254, 2.406], ["der", 2.406, 2.565], ["800", 2.565, 3.21], ["der", 3.48, 3.756], ["das", 3.756, 4.031], ["tierheim", 4.031, 4.603], ["eröffnet", 4.603, 5.42]]};
+      const C = {"__dur": 5.89, "L5": [0.2, 3.89], "L5.words": [["nur", 0.2, 0.345], ["noch", 0.345, 0.496], ["50", 0.496, 0.792], ["follower", 0.792, 1.224], ["bis", 1.224, 1.369], ["zum", 1.369, 1.515], ["bau", 1.515, 1.66], ["folg", 1.88, 2.036], ["mir", 2.036, 2.186], ["", 2.186, 2.32], ["vielleicht", 2.48, 2.808], ["bist", 2.808, 2.966], ["du", 2.966, 3.114], ["der", 3.114, 3.267], ["800", 3.267, 3.89]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -114,9 +116,11 @@
 
       wrapBt("#s05-stage");
       const tl = gsap.timeline({ paused: true });
-      const t5 = line("L5")[0], fo = at("L5", "Folg"), du = at("L5", "du"), ti = at("L5", "Tierheim");
-      tl.fromTo("#s5-btn", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, t5 - .15);
-      tl.fromTo("#s5-hand", { opacity: 0, x: 160, y: 160 }, { opacity: 1, x: 0, y: 0, duration: .25, ease: "power3.out" }, t5);
+      const t5 = line("L5")[0], fo = at("L5", "Folg"), du = at("L5", "du"), ti = at("L5", "Folg") + .6, nb = at("L5", "Bau");
+      tl.fromTo("#s5-n", { opacity: 0, scale: 2.2 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, t5);
+      tl.to("#s5-n", { opacity: 0, y: -30, duration: .2 }, fo - .3);
+      tl.fromTo("#s5-btn", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, fo - .2);
+      tl.fromTo("#s5-hand", { opacity: 0, x: 160, y: 160 }, { opacity: 1, x: 0, y: 0, duration: .25, ease: "power3.out" }, fo - .1);
       tl.to("#s5-hand", { y: -26, scale: .9, duration: .1, yoyo: true, repeat: 1 }, fo + .2);
       tl.to("#s5-btn2", { opacity: 1, duration: .05 }, fo + .3);
       tl.to("#s5-hand", { opacity: 0, duration: .2 }, fo + .7);

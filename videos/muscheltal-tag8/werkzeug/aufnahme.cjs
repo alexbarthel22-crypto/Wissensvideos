@@ -15,16 +15,18 @@ const G=await p.evaluate(()=>{const a=fitAll(),m=fitMain();
  return{N,a,m,ti:{x:ti.cx,y:ti.cy},bo:{x:KI.x+KI.bo,y:KI.cy},km:{x:KMODE.cx,y:KMODE.cy},kb:{x:KBAR.cx,y:KBAR.cy},lv:{x:LV.x,y:LV.y,r:LV.r}};});
 console.error(JSON.stringify(G));
 const LZ=1080/(2.6667*2.4*G.lv.r),MX=(G.m.x+G.lv.x)/2,MY=(G.m.y+G.lv.y)/2,WZ=720/(Math.abs(G.lv.y-G.m.y)+900);
-const K=[[0,G.ti.x,G.ti.y-14,3.3],[L.L1.end,G.ti.x+12,G.ti.y-8,3.0],[L.L1b.start+.1,G.m.x,G.m.y-10,G.m.z*1.5],[L.L1b.end,G.m.x,G.m.y,G.m.z*1.15],
+const K=[[0,G.lv.x,G.lv.y,LZ*1.1],[L.L1.end+.3,G.lv.x,G.lv.y,LZ],
+ [L.L4.start+.1,G.m.x,G.m.y,G.m.z*.9],[at('L4','eigene')-.2,MX,MY,WZ],[at('L4','getrennt')+.2,MX,MY,WZ],[L.L4.end+.4,G.lv.x,G.lv.y,LZ],[L.L4d.end+.3,G.lv.x,G.lv.y,LZ*1.05],
+ [L.L1b.start+.1,G.m.x,G.m.y-10,G.m.z*1.5],[L.L1b.end,G.m.x,G.m.y,G.m.z*1.15],
  [L.L2.start+.1,G.ti.x-20,G.ti.y-30,3.4],[L.L2b.start,G.ti.x,G.ti.y-14,3.2],[L.L2b.end+.3,G.ti.x,G.ti.y-14,3.6],
  [L.L3.start+.2,G.m.x,G.m.y,G.m.z*1.2],[L.L3a.start-.05,G.bo.x,G.bo.y-9,4.6],[L.L3aw.end+.6,G.bo.x,G.bo.y-9,5.0],
  [L.L3b.start-.05,G.km.x,G.km.y-15,4.0],[L.L3bw.end+.6,G.km.x,G.km.y-15,4.4],
  [L.L3c.start-.05,G.kb.x,G.kb.y-6,4.0],[L.L3cw.end+.6,G.kb.x,G.kb.y-6,4.4],
- [L.L4.start+.1,G.m.x,G.m.y,G.m.z*.9],[at('L4','eigenen')-.2,MX,MY,WZ],[at('L4','getrennt')+.2,MX,MY,WZ],[L.L4.end+.4,G.lv.x,G.lv.y,LZ],
  [L.L5.start,G.ti.x,G.ti.y-14,3.0],[dur,G.ti.x,G.ti.y-14,3.4]];
+
 const cam=t=>{let j=0;while(j<K.length-1&&K[j+1][0]<=t)j++;const a=K[j],c=K[Math.min(j+1,K.length-1)];let k=c[0]>a[0]?Math.max(0,Math.min(1,(t-a[0])/(c[0]-a[0]))):1;k=k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2;
  return [a[1]+(c[1]-a[1])*k,a[2]+(c[2]-a[2])*k,Math.exp(Math.log(a[3])+(Math.log(c[3])-Math.log(a[3]))*k)*(1+.012*Math.sin(t*.8))];};
-const ST=t=>[null,0,G.N,0,0,t<L.L1.end?1:0];
+const ST=t=>[null,0,G.N,0,0,0];
 const shot=async(t,f)=>{const c=cam(t),z=ST(t);if(!globalThis.CROWD){globalThis.CROWD=1;await p.evaluate(([tx,ty])=>{let sd=7;const R=()=>(sd=(sd*16807)%2147483647)/2147483647;const base=PETS.list.slice(),C=[];
  for(let r=0;r<700;r++){const a=Object.assign({},base[r%base.length]);const ang=R()*6.283,d=.45+Math.sqrt(R())*.65;const x=tx+Math.cos(ang)*d*80,y=ty+Math.sin(ang)*d*58;
   a.x=x;a.y=y;a.pause=1e9;a.wp=null;a.sit=R()<.4?1:0;a.dir=R()<.5?-1:1;a.view=['side','front','side','back'][(R()*4)|0];a.vert=a.view!=='side';a.i=5000+r;C.push(a);}
