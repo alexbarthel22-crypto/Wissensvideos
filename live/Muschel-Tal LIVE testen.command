@@ -25,6 +25,12 @@ if pgrep -f "node server.mjs" >/dev/null; then
 fi
 read -r -p "🧪 Probelauf mit Test-Zuschauern starten? (j = ja, Enter = abbrechen) " ok
 [ "$ok" = "j" ] || [ "$ok" = "J" ] || exit 0
+# Notfall-Stimme Chirp-Leda (Google Cloud Text-to-Speech): Schlüssel einmalig eingeben (nur auf diesem Mac gespeichert)
+if [ ! -f google-tts-schluessel.txt ]; then
+  echo "🆘 Für die Notfall-Stimme (Chirp-Leda, wenn Geminis Tageslimit aufgebraucht ist): Google-Cloud-Schlüssel einfügen und Enter (leer = ohne)."
+  read -r -p "Google-TTS-Schlüssel: " TTS_EINGABE
+  [ -n "$TTS_EINGABE" ] && printf '%s' "$TTS_EINGABE" > google-tts-schluessel.txt && echo "✅ Gespeichert."
+fi
 # Moderationsstimme Leda (Google Gemini): Schlüssel einmalig eingeben (wird nur auf diesem Mac gespeichert)
 if [ ! -f gemini-schluessel.txt ]; then
   echo "🎙️  Für Ledas Stimme (Gemini): API-Schlüssel aus Google AI Studio einfügen und Enter drücken (leer lassen = Kerstin moderiert)."

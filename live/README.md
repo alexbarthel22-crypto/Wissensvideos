@@ -196,7 +196,10 @@ Tag, Sonnenaufgang, Sonnenuntergang (je 45 Min.) und Nacht wie auf muscheltal.de
 Zum Ausprobieren: `http://localhost:8790/?zeit=21:30`.
 
 ## Stimme
-Moderationsstimme: **Leda** (Google Gemini, menschlich, mit Gefühl je nach Satz: froh, spannend, jubelnd). Der API-Schlüssel aus Google AI Studio wird beim ersten Start abgefragt und nur lokal in `gemini-schluessel.txt` gespeichert (für den LIVE einen Schlüssel mit Zahlungsart nehmen – der kostenlose ist nach wenigen Sätzen am Limit). Jedes Satzstück wird in `werkzeug/stimme` gespeichert und kostet danach nichts mehr; Namen sind eigene Stücke. Der nächste Satz wird schon erzeugt, während der aktuelle läuft. Es spricht nur Leda (`"ersatz": "keiner"`): Klappt ein Satz bei Gemini nicht, fällt er weg; gespeicherte Sätze spricht Leda immer. Höchstens `geminiProMinute` Anfragen pro Minute (an das Limit deines Kontos anpassen). Mit `"ersatz": "kerstin"` springt Kerstin (Piper) ein. Nur Kerstin: `"engine": "piper"`. Andere Stimme → in `einstellungen.json` bei `"mac"` eintragen (Namen: `say -v '?' | grep de_DE`).
+Moderationsstimme: **Leda** über Google Gemini (menschlich, mit Gefühl je nach Satz). Gemini-Schlüssel wird beim ersten Start abgefragt (`gemini-schluessel.txt`, nur lokal).
+- **Sparen:** Jedes Satzstück wird in `werkzeug/stimme` gespeichert und danach kostenlos abgespielt; Namen sind eigene Stücke („Danke fürs Folgen,“ + „Lara“).
+- **Kontingent:** Das Programm zählt die Gemini-Anfragen pro Tag mit (`geminiProTag`, Tag nach Pazifik-Zeit wie bei Google) und nutzt nacheinander 3.8 Flash TTS, 3.1 Flash TTS und 2.5 Flash TTS (jedes Modell hat ein eigenes Tageslimit). Höchstens `geminiProMinute` pro Minute und Modell. Wird es knapp, gehen Geschenk-/Follow-Dank und neue Namen vor.
+- **Notfall:** Ist Geminis Kontingent aufgebraucht oder antwortet Gemini nicht, spricht **Chirp-Leda** (Google Cloud Text-to-Speech, `de-DE-Chirp3-HD-Leda`) den ganzen Satz. Schlüssel: `google-tts-schluessel.txt` (Abfrage beim Start) – leer gelassen wird der Gemini-Schlüssel versucht (dafür im selben Google-Projekt die „Cloud Text-to-Speech API“ aktivieren). Die Statuszeile zeigt „Gemini heute noch … neue Sätze, Notfall Chirp: bereit“.
 Ohne Stimme starten: `node server.mjs --still`.
 
 ## Hinweise

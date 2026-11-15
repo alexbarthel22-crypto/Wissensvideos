@@ -1,16 +1,23 @@
-// Muschel-Tal LIVE – Moderationsstimme „Leda“ über Google Gemini (menschlich, mit Gefühl).
-// Jedes Satzstück wird nach dem ersten Mal in werkzeug/stimme gespeichert und kostet danach nichts mehr.
-// Namen werden als eigenes Stück erzeugt, damit „Danke fürs Folgen!“ & Co. nur einmal bezahlt werden.
-// Klappt etwas nicht (kein Internet, Limit, Fehler), meldet satz() false – dann spricht Kerstin (Piper) diesen Satz.
+// Muschel-Tal LIVE – Moderationsstimme „Leda“.
+// Hauptsächlich Google Gemini (menschlich, mit Gefühl). Nur im Notfall (Tageslimit aufgebraucht, Gemini antwortet nicht)
+// spricht „Chirp 3 HD Leda“ (Google Cloud Text-to-Speech, hohe Limits).
+// Sparen: Jedes Satzstück wird nach dem ersten Mal in werkzeug/stimme gespeichert und danach kostenlos abgespielt.
+// Namen sind eigene Stücke („Danke fürs Folgen,“ + „Lara“) – so wiederholt sich fast alles.
+// Gemini-Tageslimit (RPD) wird mitgezählt und mehrere Gemini-Modelle werden nacheinander genutzt (jedes hat ein eigenes Limit).
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 
 export function geminiStimme({ dir, cacheDir, cfg }) {
-  const schluessel = (() => { try { return fs.readFileSync(path.join(dir, 'gemini-schluessel.txt'), 'utf8').trim(); } catch { return process.env.GEMINI_API_KEY || ''; } })();
-  const stimme = cfg.geminiStimme || 'Leda', modell = cfg.geminiModell || 'gemini-3.8-flash-tts';
+  const lies = (datei, env) => { try { return fs.readFileSync(path.join(dir, datei), 'utf8').trim(); } catch { return process.env[env] || ''; } };
+  const schluessel = lies('gemini-schluessel.txt', 'GEMINI_API_KEY');
+  // Notfall-Stimme: eigener Schlüssel – sonst wird der Gemini-Schlüssel versucht (klappt, wenn im selben Projekt die Text-to-Speech-API aktiv ist)
+  const chirpSchluessel = lies('google-tts-schluessel.txt', 'GOOGLE_TTS_API_KEY') || schluessel;
+  let chirpOk = null;
+  const stimme = cfg.geminiStimme || 'Leda', chirpStimme = cfg.chirpStimme || 'de-DE-Chirp3-HD-Leda';
+  const MODELLE = cfg.geminiModelle || [cfg.geminiModell || 'gemini-3.8-flash-tts', 'gemini-3.1-flash-tts-preview', 'gemini-2.5-flash-preview-tts'];
+  const PRO_MIN = cfg.geminiProMinute || 8, PRO_TAG = cfg.geminiProTag || 100;
   const RATE = 24000;
-  let pauseBis = 0, fehlerInFolge = 0;
   const laufend = new Map();                                    // gleiche Stücke nicht doppelt anfragen
   const STIL = {
     normal: 'freundlich, warm und locker, wie eine gut gelaunte Moderatorin am Strand, zügiges Sprechtempo',
@@ -20,22 +27,27 @@ export function geminiStimme({ dir, cacheDir, cfg }) {
     name: 'freundlich und herzlich, nur dieses eine Wort, ohne Pause davor und danach',
   };
 
-  const aktiv = () => !!schluessel && cfg.engine === 'gemini';
-  const an = () => aktiv() && Date.now() > pauseBis;
-  // Anfragen-Bremse: Gemini erlaubt nur eine bestimmte Zahl Anfragen pro Minute (je nach Konto) – nie darüber
-  const proMin = cfg.geminiProMinute || 8, stempel = [];
-  const frei = () => { const j = Date.now(); while (stempel.length && j - stempel[0] > 60000) stempel.shift(); return Math.max(0, proMin - stempel.length); };
-  async function platz(maxWarteMs) {                           // wartet auf einen freien Platz (oder gibt auf)
-    const ende = Date.now() + maxWarteMs;
-    while (true) {
-      if (Date.now() > pauseBis && frei() > 0) { stempel.push(Date.now()); return true; }
-      if (Date.now() > ende) return false;
-      await new Promise(r => setTimeout(r, 250));
-    }
-  }
+  // ---------- Kontingent: pro Modell Anfragen pro Minute und pro Tag (Google zählt den Tag nach Pazifik-Zeit) ----------
+  const ZAEHLER = path.join(cacheDir, 'gemini-zaehler.json');
+  const heute = () => new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Los_Angeles' }).format(new Date());
+  let Z = { tag: heute(), n: {} };
+  try { const z = JSON.parse(fs.readFileSync(ZAEHLER, 'utf8')); if (z.tag === Z.tag) Z = z; } catch {}
+  const minute = Object.fromEntries(MODELLE.map(m => [m, []])), gesperrt = {};
+  const tagPruefen = () => { const t = heute(); if (Z.tag !== t) { Z = { tag: t, n: {} }; for (const m of MODELLE) delete gesperrt[m]; } };
+  const restTag = m => { tagPruefen(); return Math.max(0, PRO_TAG - 2 - (Z.n[m] || 0)); };   // 2 Reserve
+  const restMin = m => { const j = Date.now(), s = minute[m]; while (s.length && j - s[0] > 60000) s.shift(); return Math.max(0, PRO_MIN - s.length); };
+  const nutzbar = m => !(gesperrt[m] > Date.now()) && restTag(m) > 0;
+  const restGesamt = () => MODELLE.filter(nutzbar).reduce((a, m) => a + restTag(m), 0);
+  const zaehlen = m => { minute[m].push(Date.now()); Z.n[m] = (Z.n[m] || 0) + 1; try { fs.writeFileSync(ZAEHLER, JSON.stringify(Z)); } catch {} };
+  // Reserve je nach Wichtigkeit: Geschenk-/Follow-Dank und neue Namen dürfen das letzte Kontingent nutzen, Kleinkram nicht
+  const reserve = prio => prio <= 1 ? 0 : prio === 2 ? 15 : 30;
 
-  // Gemini liefert WAV oder rohes PCM (16 Bit, 24 kHz) → immer Int16-Samples
-  function pcmAus(buf) {
+  const aktiv = () => (!!schluessel || !!chirpSchluessel) && cfg.engine === 'gemini';
+  const an = aktiv;
+  const frei = () => MODELLE.filter(nutzbar).reduce((a, m) => a + restMin(m), 0);
+
+  // ---------- Ton-Helfer ----------
+  function pcmAus(buf) {                                        // WAV oder rohes PCM (16 Bit, 24 kHz) → Int16-Samples
     if (buf.toString('ascii', 0, 4) !== 'RIFF') return new Int16Array(buf.buffer.slice(buf.byteOffset, buf.byteOffset + (buf.length & ~1)));
     let o = 12;
     while (o + 8 <= buf.length) {
@@ -45,49 +57,95 @@ export function geminiStimme({ dir, cacheDir, cfg }) {
     }
     return new Int16Array(0);
   }
-  // Stille am Anfang/Ende abschneiden (sonst entstehen beim Zusammensetzen Lücken)
-  function trimmen(p) {
+  function trimmen(p) {                                         // Stille am Anfang/Ende weg (sonst Lücken beim Zusammensetzen)
     const s = 450; let a = 0, b = p.length - 1;
     while (a < p.length && Math.abs(p[a]) < s) a++;
     while (b > a && Math.abs(p[b]) < s) b--;
     return p.subarray(Math.max(0, a - RATE * .03), Math.min(p.length, b + RATE * .06));
   }
-  const silben = t => (String(t).toLowerCase().match(/[aeiouyäöü]+/g) || []).length || 1;
+  function wav(pcm) {
+    const k = Buffer.alloc(44);
+    k.write('RIFF', 0); k.writeUInt32LE(36 + pcm.byteLength, 4); k.write('WAVE', 8); k.write('fmt ', 12);
+    k.writeUInt32LE(16, 16); k.writeUInt16LE(1, 20); k.writeUInt16LE(1, 22); k.writeUInt32LE(RATE, 24);
+    k.writeUInt32LE(RATE * 2, 28); k.writeUInt16LE(2, 32); k.writeUInt16LE(16, 34); k.write('data', 36); k.writeUInt32LE(pcm.byteLength, 40);
+    return Buffer.concat([k, Buffer.from(pcm.buffer, pcm.byteOffset, pcm.byteLength)]);
+  }
+  const lesePcm = datei => { try { const b = fs.readFileSync(datei); return new Int16Array(b.buffer.slice(b.byteOffset, b.byteOffset + b.length)); } catch { return null; } };
+  const speichere = (datei, pcm) => { try { fs.writeFileSync(datei, Buffer.from(pcm.buffer, pcm.byteOffset, pcm.byteLength)); } catch {} };
+  const md5 = s => crypto.createHash('md5').update(s).digest('hex');
 
-  async function anfrage(text, gefuehl) {
+  // ---------- Gemini ----------
+  async function geminiAnfrage(m, text, gefuehl) {
     const prompt = `### DIRECTOR'S NOTES\nSprich auf Deutsch, ${STIL[gefuehl] || STIL.normal}. Sag genau den Text, nichts dazu.\n\n### TRANSCRIPT\n${text}`;
     const ctrl = new AbortController(), t = setTimeout(() => ctrl.abort(), (cfg.geminiMaxSek || 8) * 1000);
     try {
-      const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${modell}:generateContent`, {
+      const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent`, {
         method: 'POST', signal: ctrl.signal,
         headers: { 'content-type': 'application/json', 'x-goog-api-key': schluessel },
         body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { responseModalities: ['AUDIO'], speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: stimme } } } } }),
       });
       if (!r.ok) {
         const e = new Error(`Gemini ${r.status}`); e.status = r.status;
-        try { const t = await r.text(), m = t.match(/"retryDelay":\s*"(\d+(?:\.\d+)?)s"/); if (m) e.warteSek = +m[1]; e.text = t.slice(0, 300); } catch {}
+        try { const x = await r.text(), w = x.match(/"retryDelay":\s*"(\d+(?:\.\d+)?)s"/); if (w) e.warteSek = +w[1]; e.text = x.slice(0, 400); } catch {}
         throw e;
       }
       const d = (await r.json())?.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
-      if (!d) throw new Error('Gemini: keine Tonspur');
+      if (!d) throw new Error('keine Tonspur');
       return trimmen(pcmAus(Buffer.from(d, 'base64')));
     } finally { clearTimeout(t); }
   }
+  const gDatei = (text, gefuehl) => path.join(cacheDir, 'g_' + md5(`leda1|${stimme}|${gefuehl}|${text}`) + '.pcm');
+  const gAlt = (text, gefuehl) => MODELLE.map(m => path.join(cacheDir, 'g_' + md5(`gemini1|${m}|${stimme}|${gefuehl}|${text}`) + '.pcm'));   // Speicher älterer Versionen
+  const gemerkt = (text, gefuehl) => lesePcm(gDatei(text, gefuehl)) || gAlt(text, gefuehl).map(lesePcm).find(Boolean) || null;
 
-  // Ein Stück (Satzteil oder Name) holen: aus dem Speicher oder neu erzeugen
-  async function stueck(text, gefuehl, warteMs) {
-    const key = crypto.createHash('md5').update(`gemini1|${modell}|${stimme}|${gefuehl}|${text}`).digest('hex');
-    const datei = path.join(cacheDir, 'g_' + key + '.pcm');
-    try { const b = fs.readFileSync(datei); return new Int16Array(b.buffer.slice(b.byteOffset, b.byteOffset + b.length)); } catch {}
+  // Ein neues Gemini-Stück: freies Modell suchen (Minute + Tag), bei Limit das nächste Modell
+  async function geminiNeu(text, gefuehl, warteMs) {
+    const key = 'g|' + gefuehl + '|' + text;
     if (laufend.has(key)) return laufend.get(key);
-    if (warteMs < 0) { const e = new Error('nicht im Speicher'); e.speicher = true; throw e; }
     const p = (async () => {
-      if (!await platz(warteMs)) { const e = new Error('Anfragen-Limit pro Minute – kurz warten'); e.bremse = true; throw e; }
-      let pcm = await anfrage(text, gefuehl);
-      // Gemini dichtet selten etwas dazu (viel zu lang) → einmal neu versuchen (nur wenn noch Platz im Limit ist)
-      if (pcm.length / RATE > silben(text) / 3.2 + 1.2 && frei() > 2) { stempel.push(Date.now()); try { const n = await anfrage(text, gefuehl); if (n.length < pcm.length) pcm = n; } catch {} }
-      try { fs.writeFileSync(datei, Buffer.from(pcm.buffer, pcm.byteOffset, pcm.byteLength)); } catch {}
-      return pcm;
+      const ende = Date.now() + Math.max(0, warteMs);
+      while (true) {
+        const m = MODELLE.find(x => nutzbar(x) && restMin(x) > 0);
+        if (m) {
+          zaehlen(m);
+          try { const pcm = await geminiAnfrage(m, text, gefuehl); speichere(gDatei(text, gefuehl), pcm); return pcm; }
+          catch (e) {
+            if (e.status === 429) {
+              const tag = (e.warteSek || 0) > 600 || /per.?day|PerDay|daily/i.test(e.text || '');
+              gesperrt[m] = Date.now() + (tag ? 24 * 3600000 : Math.max(15, e.warteSek || 30) * 1000);
+              if (tag) { Z.n[m] = PRO_TAG; try { fs.writeFileSync(ZAEHLER, JSON.stringify(Z)); } catch {} }
+              console.log(`ℹ️  Leda: ${m} ${tag ? 'Tageslimit erreicht' : 'Minutenlimit erreicht'} – ${MODELLE.some(nutzbar) ? 'weiter mit dem nächsten Gemini-Modell' : chirpSchluessel ? 'Notfall: Chirp-Leda' : 'nur Gespeichertes'}.`);
+              continue;
+            }
+            if ([400, 403, 404].includes(e.status)) { gesperrt[m] = Date.now() + 30 * 60000; console.log(`⚠️  Leda: ${m} antwortet mit Fehler ${e.status}${e.status === 403 ? ' (Schlüssel/Abrechnung prüfen)' : ''}.`); continue; }
+            throw e;                                            // Netz/zu langsam → Notfallstimme für diesen Satz
+          }
+        }
+        if (!MODELLE.some(nutzbar) || Date.now() > ende) { const e = new Error('Gemini gerade nicht verfügbar'); e.kein = true; throw e; }
+        await new Promise(r => setTimeout(r, 300));             // Minutenlimit: kurz warten
+      }
+    })();
+    laufend.set(key, p);
+    try { return await p; } finally { laufend.delete(key); }
+  }
+
+  // ---------- Chirp 3 HD (Notfall) ----------
+  const cDatei = text => path.join(cacheDir, 'c_' + md5(`chirp1|${chirpStimme}|${text}`) + '.pcm');
+  async function chirp(text) {
+    const d = cDatei(text), alt = lesePcm(d); if (alt) return alt;
+    if (!chirpSchluessel) throw Object.assign(new Error('kein Chirp-Schlüssel'), { kein: true });
+    const key = 'c|' + text; if (laufend.has(key)) return laufend.get(key);
+    const p = (async () => {
+      const ctrl = new AbortController(), t = setTimeout(() => ctrl.abort(), 8000);
+      try {
+        const r = await fetch('https://texttospeech.googleapis.com/v1/text:synthesize', {
+          method: 'POST', signal: ctrl.signal, headers: { 'content-type': 'application/json', 'x-goog-api-key': chirpSchluessel },
+          body: JSON.stringify({ input: { text }, voice: { languageCode: 'de-DE', name: chirpStimme }, audioConfig: { audioEncoding: 'LINEAR16', sampleRateHertz: RATE } }),
+        });
+        if (!r.ok) throw new Error(`Chirp ${r.status}${r.status === 403 ? ' (Text-to-Speech-API im Projekt aktivieren?)' : ''}`);
+        const pcm = trimmen(pcmAus(Buffer.from((await r.json()).audioContent, 'base64')));
+        speichere(d, pcm); return pcm;
+      } finally { clearTimeout(t); }
     })();
     laufend.set(key, p);
     try { return await p; } finally { laufend.delete(key); }
@@ -98,51 +156,43 @@ export function geminiStimme({ dir, cacheDir, cfg }) {
     const liste = [...new Set(namen.filter(n => n && n.length >= 2))].sort((a, b) => b.length - a.length);
     if (!liste.length) return [{ t: text }];
     const esc = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    const re = new RegExp(`@?(${liste.map(esc).join('|')})`, 'g');       // Treffer = Name (gerade Teile = Text, ungerade = Name)
+    const re = new RegExp(`@?(${liste.map(esc).join('|')})`, 'g');
     return text.split(re).map((s, i) => i % 2 ? { t: s, name: true } : { t: s.trim() }).filter(x => x.t && !/^[\s,.!?…:;–-]*$/.test(x.t));
   }
-
-  function wav(pcm) {
-    const k = Buffer.alloc(44);
-    k.write('RIFF', 0); k.writeUInt32LE(36 + pcm.byteLength, 4); k.write('WAVE', 8); k.write('fmt ', 12);
-    k.writeUInt32LE(16, 16); k.writeUInt16LE(1, 20); k.writeUInt16LE(1, 22); k.writeUInt32LE(RATE, 24);
-    k.writeUInt32LE(RATE * 2, 28); k.writeUInt16LE(2, 32); k.writeUInt16LE(16, 34); k.write('data', 36); k.writeUInt32LE(pcm.byteLength, 40);
-    return Buffer.concat([k, Buffer.from(pcm.buffer, pcm.byteOffset, pcm.byteLength)]);
+  function zusammen(teile) {
+    const luecke = new Int16Array(Math.round(RATE * .07)), alle = [];
+    teile.forEach((p, i) => { if (i) alle.push(luecke); alle.push(p); });
+    const out = new Int16Array(alle.reduce((a, p) => a + p.length, 0));
+    let o = 0; for (const p of alle) { out.set(p, o); o += p.length; }
+    return out;
   }
 
-  // Ganzen Satz erzeugen → WAV-Datei. true = geklappt, false = bitte Ersatzstimme
-  // warteMs: so lange darf auf einen freien Platz im Anfragen-Limit gewartet werden; -1 = nur aus dem Speicher
-  async function satz(text, gefuehl, ziel, namen = [], warteMs = (cfg.geminiMaxWarteSek ?? 12) * 1000) {
+  // Ganzen Satz → WAV. Reihenfolge: alles aus dem Gemini-Speicher (gratis) → fehlende Stücke neu bei Gemini (wenn das
+  // Kontingent für diese Wichtigkeit reicht) → Notfall: ganzer Satz mit Chirp-Leda (einheitlicher Klang). true = geklappt.
+  async function satz(text, gefuehl, ziel, namen = [], { prio = 2, warteMs = (cfg.geminiMaxWarteSek ?? 12) * 1000, nurGemini = false } = {}) {
     if (!aktiv()) return false;
-    if (!an() && warteMs > 0 && pauseBis - Date.now() > warteMs) warteMs = -1;   // lange Pause: nur Gespeichertes
-    try {
-      const teile = await Promise.all(stuecke(text, namen).map(s => stueck(s.t, s.name ? 'name' : gefuehl, warteMs)));
-      const luecke = new Int16Array(Math.round(RATE * .07)), alle = [];
-      teile.forEach((p, i) => { if (i) alle.push(luecke); alle.push(p); });
-      const n = alle.reduce((a, p) => a + p.length, 0), out = new Int16Array(n);
-      let o = 0; for (const p of alle) { out.set(p, o); o += p.length; }
-      if (!n) return false;
-      if (ziel) fs.writeFileSync(ziel, wav(out));
-      fehlerInFolge = 0;
-      return true;
-    } catch (e) {
-      if (e.speicher || e.bremse || !ziel) return false;       // still: Satz fällt weg (oder Vorab-Erzeugung)
-      fehlerInFolge++;
-      let warte = 0;
-      if (e.status === 429) warte = Math.max(15, e.warteSek || 30) * 1000;                // Minuten-/Tageslimit: kurz pausieren
-      else if ([400, 401, 403, 404].includes(e.status)) warte = 5 * 60000;               // Schlüssel/Modell falsch
-      else if (fehlerInFolge >= 3) warte = 60000;
-      if (warte) pauseBis = Math.max(pauseBis, Date.now() + warte);
-      const grund = e.name === 'AbortError' ? 'zu langsam' : e.status === 429 ? `Limit erreicht (Google: ${(e.text || '').match(/quota[^"]*|limit[^"]*/i)?.[0]?.slice(0, 90) || 'zu viele Anfragen'})` : e.message;
-      const dauer = warte >= 3600000 ? `${Math.round(warte / 3600000)} Std.` : warte >= 120000 ? `${Math.round(warte / 60000)} Min.` : `${Math.round(warte / 1000)} s`;
-      console.log(`⚠️  Leda (Gemini): ${grund}${warte ? ` – Pause ${dauer} (Gespeichertes spricht Leda weiter)` : ''}.`);
-      if (warte >= 3600000) console.log('   → Das ist das TAGESLIMIT des kostenlosen Zugangs: In AI Studio beim Projekt dieses Schlüssels die Abrechnung (Billing) aktivieren bzw. den Schlüssel aus dem Projekt mit Guthaben nehmen.');
-      return false;
+    const st = stuecke(text, namen).map(s => ({ ...s, g: s.name ? 'name' : gefuehl }));
+    const haben = st.map(s => gemerkt(s.t, s.g)), fehlen = st.filter((s, i) => !haben[i]);
+    let pcm = null, quelle = 'gespeichert';
+    if (!fehlen.length) pcm = zusammen(haben);
+    else if (schluessel && restGesamt() - fehlen.length >= reserve(prio)) {
+      try { const neu = await Promise.all(st.map((s, i) => haben[i] || geminiNeu(s.t, s.g, warteMs))); pcm = zusammen(neu); quelle = 'gemini'; }
+      catch (e) { if (!e.kein) console.log(`⚠️  Leda (Gemini): ${e.name === 'AbortError' ? 'zu langsam' : e.message} – Notfall: Chirp-Leda.`); }
     }
+    if (!pcm && !nurGemini && chirpSchluessel && chirpOk !== false) {
+      try { pcm = zusammen(await Promise.all(st.map(s => chirp(s.t)))); quelle = 'chirp'; }
+      catch (e) { if (!e.kein) console.log(`⚠️  Chirp-Leda: ${e.name === 'AbortError' ? 'zu langsam' : e.message}`); }
+    }
+    if (!pcm || !pcm.length) return false;
+    if (ziel) fs.writeFileSync(ziel, wav(pcm));
+    satz.letzteQuelle = quelle;
+    return true;
   }
-  // Nächsten Satz schon vorab erzeugen, während der aktuelle läuft (landet im Speicher)
-  // nur wenn genug Platz im Limit bleibt (der aktuelle Satz geht immer vor)
-  const vorab = (text, gefuehl, namen) => { if (an() && frei() >= 3) satz(text, gefuehl, null, namen, 0).catch(() => {}); };
+  // Nächsten Satz vorab bei Gemini erzeugen – nur wenn Kontingent reichlich da ist
+  const vorab = (text, gefuehl, namen, prio = 2) => { if (schluessel && restGesamt() > 40 && frei() >= 3) satz(text, gefuehl, null, namen, { prio, warteMs: 0, nurGemini: true }).catch(() => {}); };
+  const info = () => `${schluessel ? 'Gemini heute noch ' + restGesamt() + ' neue Sätze' : 'kein Gemini-Schlüssel'}, Notfall Chirp: ${chirpOk ? 'bereit' : chirpOk === false ? 'nicht verfügbar' : 'wird geprüft'}`;
+  // Notfall-Stimme beim Start einmal prüfen (kurzer Satz, wird gespeichert)
+  if (chirpSchluessel && cfg.engine === 'gemini') chirp('Hallo!').then(() => { chirpOk = true; }, e => { chirpOk = false; console.log(`ℹ️  Notfall-Stimme Chirp-Leda nicht verfügbar: ${e.message}`); });
 
-  return { an, aktiv, frei, satz, vorab, stimme, hatSchluessel: !!schluessel };
+  return { an, aktiv, frei, satz, vorab, info, restGesamt, stimme, hatSchluessel: !!schluessel, hatChirp: () => chirpOk === true };
 }

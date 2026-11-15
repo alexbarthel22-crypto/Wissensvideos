@@ -20,7 +20,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-15 o';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-15 p';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -483,7 +483,7 @@ function fertig() { ansageNr++; spricht = false; stilleSeit = Date.now(); setTim
 function weiter() {
   if (spricht || !warte.length) return;
   if (ECHT && !LEDA.aktiv() && !PIPER.bereit && piperErwartet()) { clearTimeout(weiter.t); weiter.t = setTimeout(weiter, 400); return; }   // Stimme startet gerade – kurz warten, nie die Mac-Stimme
-  const { text } = warte.shift(); spricht = true; sprichtSeit = Date.now(); gesprochen.push(Date.now()); letzteAnsageZeit = Date.now();
+  const { text, prio } = warte.shift(); spricht = true; sprichtSeit = Date.now(); gesprochen.push(Date.now()); letzteAnsageZeit = Date.now();
   let untertitelDa = false;
   const untertitel = () => { if (!untertitelDa) { untertitelDa = true; sende({ typ: 'ansage', text, ms: dauerMs(text) }); } };
   if (!(ECHT && LEDA.aktiv())) untertitel();                // bei Leda erst, wenn die Stimme bereit ist (fällt ein Satz weg, kein stummer Untertitel)
@@ -537,11 +537,11 @@ function weiter() {
   const ausSpeicher = fs.existsSync(fertigDatei);
   if (ausSpeicher) { untertitel(); if (aufSeite) try { fs.copyFileSync(fertigDatei, datei); } catch {} return nachErzeugen(0); }
   // Nächsten Satz schon vorab bei Leda erzeugen, damit er ohne Wartezeit kommt
-  if (warte[0]) LEDA.vorab(warte[0].text, gefuehlVon(warte[0].text), namenIn(warte[0].text));
+  if (warte[0]) LEDA.vorab(warte[0].text, gefuehlVon(warte[0].text), namenIn(warte[0].text), warte[0].prio);
   if (LEDA.aktiv()) {                                      // Leda (Gemini): menschliche Stimme mit Gefühl – nur sie spricht
     schritt = 'gemini';
     const nr = ++ansageNr;
-    return LEDA.satz(text, gefuehlVon(text), datei, namenIn(text)).then(ok => {
+    return LEDA.satz(text, gefuehlVon(text), datei, namenIn(text), { prio }).then(ok => {
       if (nr !== ansageNr || !spricht) return;             // inzwischen abgebrochen (Sicherung hat übernommen)
       if (ok) { untertitel(); return nachErzeugen(0); }
       ersatzGesprochen = true;
@@ -608,8 +608,8 @@ function vorwaermen() {
     const naechster = () => {
       if (!LEDA.aktiv() || i >= offen.length) return;
       if (spricht || warte.length) return setTimeout(naechster, 2000);
-      if (LEDA.frei() < 4) return setTimeout(naechster, 5000);                 // Limit gehört den echten Ansagen
-      const t = offen[i++]; LEDA.satz(t, gefuehlVon(t), null, [], 0).finally(() => setTimeout(naechster, 8000));
+      if (LEDA.frei() < 4 || LEDA.restGesamt() < 40) return setTimeout(naechster, 15000);   // Kontingent gehört den echten Ansagen
+      const t = offen[i++]; LEDA.satz(t, gefuehlVon(t), null, [], { prio: 3, warteMs: 0, nurGemini: true }).finally(() => setTimeout(naechster, 8000));
     };
     return setTimeout(naechster, 8000);
   }
@@ -636,7 +636,7 @@ setTimeout(vorwaermen, 3000);
 // Sprach-Speicher in werkzeug/stimme (bleibt zwischen den Streams erhalten, höchstens 2.000 Sätze)
 const CACHE_DIR = path.join(DIR, 'werkzeug', 'stimme'); fs.mkdirSync(CACHE_DIR, { recursive: true });
 var LEDA = geminiStimme({ dir: DIR, cacheDir: CACHE_DIR, cfg: CFG.stimme });
-if (ECHT) console.log(LEDA.an() ? `🎙️  Moderation: Leda (Gemini, mit Gefühl) – nur Leda spricht.` : CFG.stimme.engine === 'gemini' ? 'ℹ️  Kein Gemini-Schlüssel (gemini-schluessel.txt) – Kerstin moderiert.' : '');
+if (ECHT) console.log(LEDA.an() ? `🎙️  Moderation: Leda (Gemini, mit Gefühl) – ${LEDA.info()}.` : CFG.stimme.engine === 'gemini' ? 'ℹ️  Kein Gemini-Schlüssel (gemini-schluessel.txt) – Kerstin moderiert.' : '');
 try { const f = fs.readdirSync(CACHE_DIR).map(n => ({ n, t: fs.statSync(path.join(CACHE_DIR, n)).mtimeMs })).sort((a, b) => b.t - a.t); f.slice(2000).forEach(x => fs.unlinkSync(path.join(CACHE_DIR, x.n))); } catch {}
 
 // ---------- Ton-Absicherung ----------
@@ -721,7 +721,7 @@ var letzteAnsageZeit = 0;
 setInterval(() => {
   const seiten = [...kunden.keys()].map(id => { const t = tonStatus.get(id) || {}; return `#${id}${t.vorschau ? '(Vorschau)' : ''}${id === tonSeite ? '★' : ''} Ton ${t.an ? 'an' : 'aus'}/${t.ac || '?'}`; });
   const weg = ECHT ? (CFG.stimme.wiedergabe !== 'mac' && seiteHatTon() && Date.now() > stimmeFehlerBis ? 'Seite (Stream)' : 'Mac-Lautsprecher') : 'aus (Test)';
-  console.log(`ℹ️  ${new Date().toLocaleTimeString('de-DE')} · TikTok: ${tiktokStatus} (${tiktokEreignisse} Ereignisse${tiktokLetztes ? ', letztes vor ' + Math.round((Date.now() - tiktokLetztes) / 1000) + ' s' : ''}) · Seiten: ${seiten.join(', ') || 'keine!'} · Stimme: ${LEDA.aktiv() ? 'Leda' : 'Kerstin'} über ${weg}${tonAusgabe ? ` (Mac-Ausgabe: ${tonAusgabe})` : ''} · letzte Ansage vor ${letzteAnsageZeit ? Math.round((Date.now() - letzteAnsageZeit) / 1000) + ' s' : '–'}`);
+  console.log(`ℹ️  ${new Date().toLocaleTimeString('de-DE')} · TikTok: ${tiktokStatus} (${tiktokEreignisse} Ereignisse${tiktokLetztes ? ', letztes vor ' + Math.round((Date.now() - tiktokLetztes) / 1000) + ' s' : ''}) · Seiten: ${seiten.join(', ') || 'keine!'} · Stimme: ${LEDA.aktiv() ? 'Leda (' + LEDA.info() + ')' : 'Kerstin'} über ${weg}${tonAusgabe ? ` (Mac-Ausgabe: ${tonAusgabe})` : ''} · letzte Ansage vor ${letzteAnsageZeit ? Math.round((Date.now() - letzteAnsageZeit) / 1000) + ' s' : '–'}`);
 }, 30000);
 setInterval(musikLokal, 3000);
 process.on('exit', () => lokalMusik?.kill());

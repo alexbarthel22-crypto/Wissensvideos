@@ -33,6 +33,12 @@ if [ ! -f live-schluessel.txt ]; then
   read -r -p "Schlüssel: " LIVE_SCHLUESSEL_EINGABE
   [ -n "$LIVE_SCHLUESSEL_EINGABE" ] && printf '%s' "$LIVE_SCHLUESSEL_EINGABE" > live-schluessel.txt && echo "✅ Gespeichert."
 fi
+# Notfall-Stimme Chirp-Leda (Google Cloud Text-to-Speech): Schlüssel einmalig eingeben (nur auf diesem Mac gespeichert)
+if [ ! -f google-tts-schluessel.txt ]; then
+  echo "🆘 Für die Notfall-Stimme (Chirp-Leda, wenn Geminis Tageslimit aufgebraucht ist): Google-Cloud-Schlüssel einfügen und Enter (leer = ohne)."
+  read -r -p "Google-TTS-Schlüssel: " TTS_EINGABE
+  [ -n "$TTS_EINGABE" ] && printf '%s' "$TTS_EINGABE" > google-tts-schluessel.txt && echo "✅ Gespeichert."
+fi
 # Moderationsstimme Leda (Google Gemini): Schlüssel einmalig eingeben (wird nur auf diesem Mac gespeichert)
 if [ ! -f gemini-schluessel.txt ]; then
   echo "🎙️  Für Ledas Stimme (Gemini): API-Schlüssel aus Google AI Studio einfügen und Enter drücken (leer lassen = Kerstin moderiert)."
