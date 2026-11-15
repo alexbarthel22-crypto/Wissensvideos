@@ -575,12 +575,13 @@
     "_bau": "Gebäude werden aus der Kasse bezahlt: beim Baustart fließt die Hälfte (startAnteil), danach 70 % jeder neuen Muschel (bauAnteil). Die Kasse ist so nie leer."
   },
   "ton": {
-    "musik": 0.28,
-    "musikBeiStimme": 0.1,
+    "musik": 0.38,
+    "musikBeiStimme": 0.15,
     "meer": 0.15,
     "stimme": 1.0,
     "musikAufMac": true,
-    "musikAufMacLautstaerke": 0.15,
+    "musikAufMacLautstaerke": 0.2,
+    "_lautstaerke": "musik = zwischen den Sätzen, musikBeiStimme = während Kerstin spricht (immer deutlich leiser als die Stimme). Werte 0–1.",
     "_hinweis": "Normal laufen Musik und Stimme über die Live-Seite. Blockiert der Browser den Ton, spielt das Programm beides über die Mac-Lautsprecher (musikAufMac)."
   },
   "ort": {
