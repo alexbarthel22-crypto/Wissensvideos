@@ -136,7 +136,7 @@ async function rangDaten(store) {
   const heute = tag(), key = "r/" + heute;
   const [hat, vorRoh] = await Promise.all([store.get(key), store.get("r/" + gestern(heute))]);
   if (!hat) await store.set(key, JSON.stringify(order.slice(0, 50).map(x => x[0])));
-  const d = { order, vor: JSON.parse(vorRoh || "null") };
+  const d = { order, vor: JSON.parse(vorRoh || "null"), beansprucht: claimed.size };
   RANGC = { t: jetzt, d };
   await store.set("x/rangcache", JSON.stringify({ t: jetzt, d }));
   return d;
@@ -147,13 +147,13 @@ export default async (req) => {
   const url = new URL(req.url);
   if (req.method === "GET" && url.searchParams.get("top")) {
     // Muschel-Rangliste: Top 10 der beanspruchten Namen nach Kontostand, Pfeile im Vergleich zu gestern, optional eigener Platz
-    const { order, vor } = await rangDaten(store);
+    const { order, vor, beansprucht } = await rangDaten(store);
     const top = order.slice(0, 10).map(([n, v], i) => { const j = vor ? vor.indexOf(n) : -1; return { n: "@" + n, stand: v, d: vor ? (j < 0 ? "neu" : j - i) : null }; });
     const me = (url.searchParams.get("name") || "").trim().toLowerCase().replace(/^@/, "");
     let platz = null, stand = null;
     if (me) { const i = order.findIndex(x => x[0] === me); if (i >= 0) { platz = i + 1; stand = order[i][1]; } }
     const bis10 = platz && platz > 10 && top[9] ? top[9].stand - stand + 1 : null;
-    return json({ top, platz, stand, bis10, anzahl: order.length });
+    return json({ top, platz, stand, bis10, anzahl: order.length, beansprucht: beansprucht ?? null, einwohner: BEWOHNER.size });
   }
   if (req.method === "GET") {
     // öffentlich: nur, ob ein Name beansprucht ist (für den Hinweis im Muschelpass)
