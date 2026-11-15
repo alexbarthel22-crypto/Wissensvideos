@@ -20,7 +20,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-15 v';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-15 w';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -308,7 +308,7 @@ setInterval(() => { for (const [k, t] of zuletztGedankt) if (Date.now() - t > 36
 function teilen(u) {
   const p = spieler(u); if (!p) { inKasse(CFG.kasse.proShare); return; }
   inKasse(CFG.kasse.proShare);
-  if (einmal(p.id, 'teilen', 5 * 60000)) { sende({ typ: 'teilen', id: p.id }); sag(satz('teilen', { name: sprechName(p) }), 1); }
+  if (einmal(p.id, 'teilen', 5 * 60000)) { gibMuscheln(p, CFG.muschelnFuerTeilen ?? 10, 'teilen'); sende({ typ: 'teilen', id: p.id }); sag(satz('teilen', { name: sprechName(p) }), 1); }   // 10 Muscheln, höchstens alle 5 Min.
   zustand();
 }
 
