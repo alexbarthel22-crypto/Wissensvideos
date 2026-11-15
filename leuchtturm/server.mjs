@@ -14,14 +14,14 @@ import { fileURLToPath } from 'node:url';
 import { macheEvents } from './events.mjs';
 import { satz, namenListe, festeSaetze, festeSaetzeAus } from './saetze.mjs';
 import { klarname } from './vornamen.mjs';
-import { stadtAus, landVon, infoVon } from './staedte.mjs';
+import { stadtAus, landVon, infoVon, keinOrt } from './staedte.mjs';
 import { geminiStimme } from './gemini-stimme.mjs';
 import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './filter.mjs';
 
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-16 f';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-16 g';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 // Stimmen und Kerstin-Modell mit Muschel-Tal LIVE teilen (gleicher Speicher = schon erzeugte Leda-Sätze kosten nichts)
@@ -34,7 +34,11 @@ const leer = () => ({ staedte: {}, spieler: {}, likesGesamt: 0, sieger: [], woch
 let S = leer();
 try { S = { ...leer(), ...JSON.parse(fs.readFileSync(STAND, 'utf8')) }; } catch {}
 if (TEST && process.argv.includes('--neu')) S = leer();
-for (const st of Object.values(S.staedte)) if (st.region == null || st.lat === undefined) Object.assign(st, infoVon(st.name));   // ältere Stände ergänzen
+// Gespeicherte Städte prüfen: Länder/Bundesländer entfernen, Land und Bundesland immer neu bestimmen (z. B. Münster = NRW, nicht Tirol)
+for (const st of Object.values(S.staedte)) {
+  if (keinOrt(st.name)) { delete S.staedte[st.name]; for (const p of Object.values(S.spieler)) if (p.stadt === st.name) p.stadt = null; continue; }
+  Object.assign(st, infoVon(st.name), { land: landVon(st.name) });
+}
 // Wochen- und Tageswertung (Meter, die in dieser Woche / heute dazugekommen sind)
 const wocheId = () => { const d = new Date(), t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate())), w = t.getUTCDay() || 7; t.setUTCDate(t.getUTCDate() + 4 - w); return t.getUTCFullYear() + '-W' + Math.ceil(((t - Date.UTC(t.getUTCFullYear(), 0, 1)) / 864e5 + 1) / 7); };
 const tagId = () => new Date().toLocaleDateString('sv-SE');
@@ -412,7 +416,7 @@ let langsam = 0;
 function vorwaermen() {
   if (!ECHT) return;
   if (LEDA.aktiv()) {                                       // Leda: feste Sätze nach und nach im Leerlauf erzeugen (einmalig, danach gespeichert)
-    const offen = [...new Set(festeSaetzeAus(['erklaeren', 'countdown30', 'countdown10', 'eventNoch10', 'start']))];   // nur Sätze, die wirklich vorkommen
+    const offen = [...new Set(festeSaetzeAus(['erklaeren', 'countdown30', 'countdown10', 'eventNoch10', 'start', 'folgeAufruf']))];   // nur Sätze, die wirklich vorkommen
     let i = 0;
     const naechster = () => {
       if (!LEDA.aktiv() || i >= offen.length) return;
@@ -529,6 +533,7 @@ process.on('exit', () => lokalMusik?.kill());
 // ---------- Moderation: nur bei Anlass, dazu regelmäßig die Spielerklärung ----------
 const begruessen = [], begruesst = new Set();
 let letzteBegruessung = 0, letzteErklaerung = Date.now() - 60000, letzterSpot = Date.now(), countdownGesagt = '', eventZehnGesagt = '';
+let naechsterFolgeAufruf = Date.now() + 90000;
 function moderiere() {
   if (spricht || warte.length || Date.now() - stilleSeit < (followDank.length ? .8 : (CFG.stimme.pauseSek ?? 3)) * 1000) return;
   if (followDank.length) return sag(satz('followEins', { name: followDank.shift().name }), 1);
@@ -537,6 +542,10 @@ function moderiere() {
   if (!EV.laeuft() && begruessen.length && Date.now() - letzteBegruessung > 30000) {
     const b = begruessen.shift(); letzteBegruessung = Date.now();
     return sag(b.stadt ? satz('begruessungStadt', { name: b.name, stadt: b.stadt }) : b.zurueck ? satz('begruessungZurueck', { name: b.name }) : satz('begruessungEins', { name: b.name }), 3);
+  }
+  // Aufruf zum Folgen: alle 3–4 Minuten, kurz und passend zum Spiel – nie mit Belohnung verknüpft
+  if (!EV.laeuft() && Date.now() > naechsterFolgeAufruf) {
+    naechsterFolgeAufruf = Date.now() + (180 + Math.random() * 60) * 1000; sende({ typ: 'folgeAufruf' }); return sag(satz('folgeAufruf'), 3);
   }
   // Spielerklärung alle paar Minuten (feste Sätze → einmal erzeugt, danach kostenlos)
   if (!EV.laeuft() && Date.now() - letzteErklaerung > (CFG.turm.erklaerenMinuten ?? 3) * 60000) {

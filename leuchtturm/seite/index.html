@@ -143,6 +143,7 @@ function ereignis(e) {
     case 'beitritt': schwebend.push({ stadt: e.stadt, n: 0, wer: (e.name || '').replace(/^@/, ''), t: jetzt, neu: true }); break;
     case 'fuehrung': fuehrungT = jetzt; zeige('👑', `${e.stadt} führt!`, 'Wechsel an der Spitze!', '#e0a020', 4200); feuerwerk(e.stadt, 3); break;
     case 'upgrade': zeige('✨', `${e.stadt}: ${e.was}!`, `${stw(e.stock)} erreicht`, '#9b5de5'); feuerwerk(e.stadt, 2); break;
+    case 'folgeAufruf': zeige('➕', 'Folgt dem Leuchtturm-Rennen!', 'Damit du das nächste Rennen nicht verpasst', '#e8467c', 4200); break;
     case 'ueberholt': zeige('📈', `${e.stadt} überholt ${e.von}!`, `Jetzt auf Platz ${e.platz}`, '#2fa36b', 3200); { const q = POS[e.stadt]; if (q) q.puls = jetzt; } break;
     case 'fieber': zeige('🔥', `Städte-Fieber in ${e.stadt}!`, 'Jetzt zählt alles doppelt!', '#ff6a2a', 4200); break;
     case 'follow': herzen.push({ z1: `💖 Danke, ${(e.name || '').replace(/^@/, '')}!`, t: jetzt, f: PINK, e: '💖' }); break;

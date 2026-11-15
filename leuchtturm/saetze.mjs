@@ -101,6 +101,12 @@ const SAETZE = {
     'Willkommen zurück, {name} aus {stadt}!',
     'Hallo {name}! … {stadt} braucht dich!',
   ],
+  folgeAufruf: [
+    'Folgt dem Leuchtturm-Rennen, damit eure Stadt beim nächsten Rennen nicht ohne euch baut!',
+    'Wer folgt, verpasst kein Rennen mehr! … Eure Stadt zählt auf euch!',
+    'Jeder Leuchtturm braucht treue Wächter! … Folgt uns für das nächste Rennen!',
+    'Folgt uns! … Dann seid ihr beim nächsten Städte-Rennen wieder vorne mit dabei!',
+  ],
   countdown30: [
     'In dreißig Sekunden kommt das nächste Event!',
     'Gleich geht es los … noch dreißig Sekunden!',
