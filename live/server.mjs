@@ -20,7 +20,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-15 x';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-15 y';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -288,13 +288,13 @@ function setzeBewohner(n, quelle) {
   }
   zustand();
 }
+// TikTok-Regeln: Für Folgen/Teilen gibt es KEINE Belohnung (keine Muscheln, kein Haus, nichts für die Kasse) – nur ein Danke
 function follow(u) {
-  const p = spieler(u); if (!p) { setzeBewohner(bewohner + 1, 'follow'); inKasse(CFG.kasse.proFollow); return; }
+  const id = String(u.uniqueId || '').toLowerCase(), p = S.spieler[id];
   setzeBewohner(bewohner + 1, 'follow');
-  sende({ typ: 'follow', id: p.id, name: p.name, nr: bewohner });
-  inKasse(CFG.kasse.proFollow);
-  if (!followDank.includes(p) && einmal(p.id, 'follow', 10 * 60000)) followDank.push(p);   // Dank kommt, sobald Kerstin frei ist – pro Person nur einmal
-  gibMuscheln(p, CFG.muschelnFuerFollow, 'follow');
+  if (!id || gesperrt(id)) return;
+  sende({ typ: 'follow', id: p?.id || id, name: p?.name || '@' + u.uniqueId, nr: bewohner });
+  if (p && !followDank.includes(p) && einmal(p.id, 'follow', 10 * 60000)) followDank.push(p);
 }
 
 // Nur einmal danken/ansagen pro Person und Art, auch wenn es oft hintereinander passiert (Muscheln zählen trotzdem jedes Mal)
@@ -306,9 +306,8 @@ function einmal(id, art, ms) {
 }
 setInterval(() => { for (const [k, t] of zuletztGedankt) if (Date.now() - t > 3600000) zuletztGedankt.delete(k); }, 600000);
 function teilen(u) {
-  const p = spieler(u); if (!p) { inKasse(CFG.kasse.proShare); return; }
-  inKasse(CFG.kasse.proShare);
-  if (einmal(p.id, 'teilen', 5 * 60000)) { gibMuscheln(p, CFG.muschelnFuerTeilen ?? 10, 'teilen'); sende({ typ: 'teilen', id: p.id }); sag(satz('teilen', { name: sprechName(p) }), 1); }   // 10 Muscheln, höchstens alle 5 Min.
+  const p = S.spieler[String(u.uniqueId || '').toLowerCase()]; if (!p || p.gesperrt) return;
+  if (einmal(p.id, 'teilen', 10 * 60000)) { sende({ typ: 'teilen', id: p.id }); sag(satz('teilen', { name: sprechName(p) }), 1); }   // nur Danke, keine Belohnung
   zustand();
 }
 
@@ -358,7 +357,7 @@ setInterval(() => {
     aufgabe = null; naechsteAufgabe = jetzt + 30000 + Math.random() * 20000; zustand(); return;
   }
   if (EV.laeuft() || jetzt < naechsteAufgabe || EV.naechstesIn() < 40) return;
-  if (Math.random() < .65) {
+  if (true) {                                              // nur Wort-Aufgaben (keine Like-Aufgaben – TikTok-Regeln)
     const wort = zufallText(AUFGABE_WORTE);
     aufgabe = { art: 'wort', wort, text: `Schreib „${wort}“ – die ersten 5 bekommen 5 🐚`, gewinner: [], bis: jetzt + 25000 };
     sag(`Mini-Aufgabe! … Schreibt ${wort}! … Die ersten fünf bekommen Muscheln.`, 2);
@@ -613,7 +612,7 @@ let langsam = 0;
 function vorwaermen() {
   if (!ECHT) return;
   if (LEDA.aktiv()) {                                       // Leda: feste Sätze nach und nach im Leerlauf erzeugen (einmalig, danach gespeichert)
-    const offen = [...new Set(festeSaetzeAus(['aufruf', 'folgeAufruf', 'countdown30', 'countdown10', 'eventNoch10', 'start']))];   // nur Sätze, die wirklich vorkommen
+    const offen = [...new Set(festeSaetzeAus(['countdown30', 'countdown10', 'eventNoch10', 'start']))];   // nur Sätze, die wirklich vorkommen
     let i = 0;
     const naechster = () => {
       if (!LEDA.aktiv() || i >= offen.length) return;
@@ -814,7 +813,7 @@ function moderiere() {
   }
   if (EV.laeuft()) return;
   // 4. Ohne Anlass nur: Aufruf zum Liken, Folgen, Teilen (feste Sätze → einmal erzeugt, danach kostenlos aus dem Speicher)
-  if (Date.now() - letzterAufruf > (CFG.stimme.aufrufSek ?? 30) * 1000) { letzterAufruf = Date.now(); return sag(satz('aufruf'), 4); }
+  // Keine wiederkehrenden Aufrufe zum Liken/Folgen/Teilen (TikTok-Regeln: keine repetitiven Aufforderungen)
   // Kamera bleibt lebendig: fliegt ab und zu zu einem Haus oder zur Baustelle – ohne Ansage
   if (Math.random() < .5) rundgang(); else baustelleZeigen();
 }
@@ -837,7 +836,7 @@ setInterval(() => {
 }, 3000);
 
 // Alle 3 Minuten: Aufruf zum Folgen (mit Banner)
-setInterval(() => { sende({ typ: 'folgeAufruf' }); sag(satz('folgeAufruf'), 1); }, (CFG.folgeAufrufMinuten || 3) * 60000);
+// (kein Folge-Aufruf mehr – TikTok-Regeln)
 setInterval(() => {
   // Countdown-Ansagen (verraten nie, welches Event kommt)
   const s = EV.naechstesIn(), runde = String(Math.floor(Date.now() / 120000));

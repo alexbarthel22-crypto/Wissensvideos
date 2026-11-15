@@ -1581,7 +1581,7 @@ function kopf(t) {
   // Muschelkasse der Live-Insel
   karte(612, OBEN, SR - 612, 96, '#fff', 999);
   text('🐚 ' + (S.kasse || 0).toLocaleString('de-DE'), 786, OBEN + 34, 40, INK, 'center', 900, 300);
-  text('Like 1 · Teilen 2 · Folgen 5', 786, OBEN + 74, 24, '#8a5a2b', 'center', 900, 286);
+  text('Muschelkasse', 786, OBEN + 74, 24, '#8a5a2b', 'center', 900, 286);
   // Nächstes Bauprojekt der Haupt-Insel (kommt automatisch von muscheltal.de; gibt es keins, entfällt die Zeile)
   const z = S.ziel, bw = S.bewohner || 0;
   let y2 = OBEN + 116;
@@ -1595,7 +1595,7 @@ function kopf(t) {
     const g = X.createLinearGradient(SL, 0, SR, 0); g.addColorStop(0, TUERKIS); g.addColorStop(1, '#7fe0c8');
     X.fillStyle = g; rr(SL + 24, y2 + 54, Math.max(38, (SB - 48) * f), 38, 19); X.fill();
     X.strokeStyle = INK; X.lineWidth = 3.5; rr(SL + 24, y2 + 54, SB - 48, 38, 19); X.stroke();
-    text(`${z.ort || 'Haupt-Insel'} · Folgen = einziehen 🏠 · noch ${Math.max(0, z.ziel - bw)} Bewohner`, 540, y2 + 74, 23, INK, 'center', 900, SB - 80);
+    text(`${z.ort || 'Haupt-Insel'} · ${bw.toLocaleString('de-DE')} Bewohner`, 540, y2 + 74, 23, INK, 'center', 900, SB - 80);
   } else y2 = OBEN + 2;
   // Laufendes Event / Ergebnis, sonst Infos (wechselnd) + Countdown zum nächsten Event
   const y3 = y2 + 132, ep = eventPanel(t, y3);
@@ -1625,7 +1625,7 @@ function kopf(t) {
     X.strokeStyle = INK; X.lineWidth = 3; rr(SL + 22, y3 + 58, lw - 44, 32, 16); X.stroke();
     text(`${Math.floor(pr.stand).toLocaleString('de-DE')} / ${pr.ziel.toLocaleString('de-DE')} 🐚 aus der Kasse`, SL + 22, y3 + 122, 24, '#8a5a2b', 'left', 800, lw - 44);
   } else if (seite === 2) {
-    [['🏆', 'Events = Muscheln gewinnen'], ['💬', 'Kommentieren = mitspielen'], ['🔁', 'Teilen = 2 🐚 für die Kasse']].forEach(([i, s], k) => {
+    [['🏆', 'Events = Muscheln gewinnen'], ['💬', 'Kommentieren = mitspielen'], ['🎁', 'Mini-Aufgaben im Chat lösen']].forEach(([i, s], k) => {
       text(i, SL + 16, y3 + 32 + k * 45, 27, INK, 'left', 400); text(s, SL + 58, y3 + 32 + k * 45, 26, INK, 'left', 800, lw - 78);
     });
   } else if (seite === 1) {
@@ -1637,7 +1637,7 @@ function kopf(t) {
       text(`${m} 🐚`, SL + lw - 22, y, 22, INK, 'right', 900, 114);
     });
   } else {
-    [['❤️', 'Liken = dein Haus wächst'], ['🏠', 'Schreib „haus“ = du siehst dein Haus'], ['🎨', 'Schreib „rot“, „blau“ … = Farbe']].forEach(([i, s], k) => {
+    [['🏝️', 'Spiel mit bei Events im Chat'], ['🏠', 'Schreib „haus“ = du siehst dein Haus'], ['🎨', 'Schreib „rot“, „blau“ … = Farbe']].forEach(([i, s], k) => {
       text(i, SL + 16, y3 + 32 + k * 45, 27, INK, 'left', 400); text(s, SL + 58, y3 + 32 + k * 45, 26, INK, 'left', 800, lw - 78);
     });
   }
@@ -1675,7 +1675,7 @@ function willkommenPopup(b, age, k) {
   const tx = -w / 2 + 150, tw = w - 180;
   X.save(); X.letterSpacing = '3px'; text('WILLKOMMEN IN MUSCHEL-TAL!', tx, -46, 27, '#2f6fb3', 'left', 900, tw); X.restore();
   text(`${b.name} 🐚`, tx, 6, 48, INK, 'left', 900, tw);
-  text(b.nr ? `Danke fürs Folgen · Bewohner Nr. ${b.nr.toLocaleString('de-DE')} · dein Haus entsteht` : 'Danke fürs Folgen · dein Haus entsteht', tx, 52, 23, '#2f6fb3', 'left', 800, tw);
+  text(b.nr ? `Schön, dass du da bist!` : 'Schön, dass du da bist!', tx, 52, 23, '#2f6fb3', 'left', 800, tw);
   X.restore();
 }
 // Feuerwerk über der großen Muschel in der Mitte (Kamera fliegt hin)
