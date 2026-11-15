@@ -20,7 +20,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-16 a';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-16 b';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -144,10 +144,11 @@ let letzterLikeDank = 0;                                    // Like-Dank (einzel
 let letztesHausZeigen = 0;
 
 // ---------- Ereignisse ----------
-// TikTok-Regeln: Likes werden NICHT gegen etwas getauscht – kein Haus, keine Muscheln, nichts für die Kasse.
-// Sie lösen nur gemeinsame Effekte für alle aus (Herzen, Feuerwerk über der Muschel).
+// Likes: 1 Like = 1 Muschel für die gemeinsame Muschelkasse (keine persönliche Belohnung, kein Haus),
+// dazu gemeinsame Effekte für alle (Herzen, Feuerwerk über der Muschel).
 function like(u, anzahl) {
   S.likesGesamt += anzahl; likeLog.push([Date.now(), anzahl]);
+  inKasse(anzahl * (CFG.kasse.proLike ?? 1)); geaendert = true;
 }
 
 // Wer noch kein Haus hat und „haus“ oder eine Farbe schreibt, bekommt den Hinweis: erst liken (höchstens 1× pro Minute)
@@ -993,6 +994,8 @@ async function verbinde() {
     const u = U(d.user), n = +(d.count ?? d.likeCount) || 1, total = +(d.total ?? d.totalLikeCount) || 0;
     if (u?.uniqueId) { tt('❤️', `${nm(d)} +${n} Likes`); like(u, n); const id = String(u.uniqueId).toLowerCase(), alt = aktiveLiker.get(id); aktiveLiker.set(id, { n: (alt && Date.now() - alt.t < 30000 ? alt.n : 0) + n, t: Date.now() }); } else { S.likesGesamt += n; inKasse(n * CFG.kasse.proLike); }
     if (total) {
+      const fehlt = likeTotal ? total - likeTotal - n : 0;   // TikTok meldet nicht jedes Like einzeln – die fehlenden zählen trotzdem
+      if (fehlt > 0 && fehlt < 100000) { S.likesGesamt += fehlt; inKasse(fehlt * (CFG.kasse.proLike ?? 1)); geaendert = true; zustand(); }
       likeTotal = Math.max(likeTotal, total);
     }
   });
