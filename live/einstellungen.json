@@ -608,8 +608,8 @@
   },
   "muschelnProCoin": 1,
   "events": {
-    "alleMinuten": 2.5,
-    "_hinweis": "Alle 2,5 Minuten (von Start zu Start) ein Event; jedes dritte ist ein Leuchtturm-Event (das erste schon als 2. Event nach dem Start), jedes dauert 1 Minute (dauerSek). 50 verschiedene, nie dasselbe wie eins der letzten 10.",
+    "alleMinuten": 2,
+    "_hinweis": "Alle 2 Minuten (von Start zu Start) ein Event; jedes zweite (also alle 4 Minuten) ist ein Leuchtturm-Event, das erste als 2. Event nach dem Start, jedes dauert 1 Minute (dauerSek). 50 verschiedene, nie dasselbe wie eins der letzten 10.",
     "dauerSek": 60
   },
   "folgeAufrufMinuten": 15,
