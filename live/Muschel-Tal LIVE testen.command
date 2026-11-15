@@ -11,12 +11,13 @@ fi
 # Musik: liegt in werkzeug/musik (Updates überschreiben das nie). Neue Stücke aus „Downloads“ automatisch übernehmen.
 mkdir -p werkzeug/musik
 for f in "$HOME"/Downloads/strand_*.mp3 "$HOME"/Downloads/cozy_*.mp3 "$HOME"/Downloads/insel_*.mp3; do [ -f "$f" ] && [ ! -f "werkzeug/musik/$(basename "$f")" ] && cp "$f" werkzeug/musik/ && echo "🎵 Musik übernommen: $(basename "$f")"; done
-# Annas Offline-Stimme (Piper, „Kerstin“, ca. 60 MB) einmalig laden
+# Kerstins Offline-Stimme (Piper, „Kerstin“, ca. 60 MB) einmalig laden
 if [ ! -f werkzeug/stimme-kerstin/de-kerstin-low.onnx ]; then
-  echo "⬇️  Lade einmalig Annas Offline-Stimme (ca. 60 MB) …"
+  echo "⬇️  Lade einmalig Kerstins Offline-Stimme (ca. 60 MB) …"
   mkdir -p werkzeug/stimme-kerstin
   curl -fsSL https://github.com/rhasspy/piper/releases/download/v0.0.2/voice-de-kerstin-low.tar.gz | tar xz -C werkzeug/stimme-kerstin \
-    || echo "⚠️  Stimme konnte nicht geladen werden – Anna spricht dann mit der Mac-Stimme."
+    || { H=https://huggingface.co/rhasspy/piper-voices/resolve/main/de/de_DE/kerstin/low/de_DE-kerstin-low; curl -fsSL -o werkzeug/stimme-kerstin/de-kerstin-low.onnx.json "$H.onnx.json" && curl -fsSL -o werkzeug/stimme-kerstin/de-kerstin-low.onnx "$H.onnx"; } \
+    || echo "⚠️  Stimme konnte nicht geladen werden – dann spricht ersatzweise die Mac-Stimme."
 fi
 # Nicht aus Versehen starten (z. B. wenn das Terminal alte Fenster wiederherstellt) und nie neben dem echten LIVE
 if pgrep -f "node server.mjs" >/dev/null; then

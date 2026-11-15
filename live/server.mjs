@@ -18,7 +18,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-15 h';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-15 i';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -278,7 +278,7 @@ function follow(u) {
   setzeBewohner(bewohner + 1, 'follow');
   sende({ typ: 'follow', id: p.id, name: p.name, nr: bewohner });
   inKasse(CFG.kasse.proFollow);
-  if (!followDank.includes(p) && einmal(p.id, 'follow', 10 * 60000)) followDank.push(p);   // Dank kommt, sobald Anna frei ist – pro Person nur einmal
+  if (!followDank.includes(p) && einmal(p.id, 'follow', 10 * 60000)) followDank.push(p);   // Dank kommt, sobald Kerstin frei ist – pro Person nur einmal
   gibMuscheln(p, CFG.muschelnFuerFollow, 'follow');
 }
 
@@ -435,7 +435,7 @@ setInterval(zustand, 1000);
 
 // ---------- Stimme (macOS „say“, unbegrenzt, offline) ----------
 // Prio 0: Geschenk-Dank, Event-Ansagen · 1: Follow-Dank, Countdown · 2: Haus-Ausbau · 3: Kleinkram · 4: Dauer-Moderation
-// Untertitel erscheinen genau dann, wenn Anna den Satz spricht. „…“ im Text = Sprechpause.
+// Untertitel erscheinen genau dann, wenn Kerstin den Satz spricht. „…“ im Text = Sprechpause.
 const warte = []; let spricht = false; const gesprochen = [], kleinkram = [];   // kleinkram: nur Prio-2/3-Ansagen fürs Limit
 const TON_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'muscheltal-ton-')); let tonNr = 0;
 let stimme = CFG.stimme.mac, stilleSeit = Date.now();
@@ -465,7 +465,7 @@ setInterval(() => {
   const grenze = schritt === 'piper' ? 8000 : schritt === 'erzeugen' ? 25000 : 20000;
   if (schritt === 'piper' && spricht && Date.now() - sprichtSeit >= grenze) { console.log('⚠️  Piper hing – starte die Stimme neu.'); sprichtSeit = Date.now(); PIPER.neustart(); return; }
   if (!spricht || Date.now() - sprichtSeit < grenze) return;
-  console.log(`⚠️  Ansage hing beim ${schritt === 'erzeugen' ? 'Erzeugen der Sprache (say, Stimme „' + stimme + '“)' : schritt === 'abspielen' ? 'Abspielen (afplay)' : 'Warten (' + schritt + ')'} – Anna macht weiter.`);
+  console.log(`⚠️  Ansage hing beim ${schritt === 'erzeugen' ? 'Erzeugen der Sprache (say, Stimme „' + stimme + '“)' : schritt === 'abspielen' ? 'Abspielen (afplay)' : 'Warten (' + schritt + ')'} – Kerstin macht weiter.`);
   if (schritt === 'erzeugen' && ++haenger >= 2) {
     haenger = 0;
     if (!ohnePausen) { ohnePausen = true; console.log('   → Versuche es ab jetzt ohne Sprechpausen-Befehle.'); }
@@ -501,7 +501,7 @@ function weiter() {
         ms = Math.min(15000, daten / rate * 1000 + 300);
       } catch {}
       sende({ typ: 'stimme', id: tonSeite, url: '/ton/' + path.basename(datei) + '?' + Date.now() });
-      if (++unbestaetigt >= 3) { unbestaetigt = 0; stimmeFehlerBis = Date.now() + 60000; console.log('🔈 Live-Seite bestätigt Annas Stimme nicht – spreche 1 Minute über die Mac-Lautsprecher.'); }
+      if (++unbestaetigt >= 3) { unbestaetigt = 0; stimmeFehlerBis = Date.now() + 60000; console.log('🔈 Live-Seite bestätigt Kerstins Stimme nicht – spreche 1 Minute über die Mac-Lautsprecher.'); }
       setTimeout(fertig, ms);
       return;
     }
@@ -539,7 +539,7 @@ function weiter() {
   pr.on('close', nachErzeugen);
 }
 
-// ---------- Piper: Annas Stimme offline im eigenen Prozess (werkzeug/stimme-…/…onnx) ----------
+// ---------- Piper: Kerstins Stimme offline im eigenen Prozess (werkzeug/stimme-…/…onnx) ----------
 // Wird beim Start geladen. Hängt der Prozess, startet er neu. Fehlt das Modell, spricht wie bisher der Mac (say).
 var PIPER = { bereit: false, name: '', w: null, auftraege: new Map(), nr: 0 };
 // Mac-Stimme (say) nur, wenn es gar kein Piper-Modell gibt oder in den Einstellungen engine 'mac' steht
@@ -548,12 +548,12 @@ var piperErwartet = () => { if (CFG.stimme.engine === 'mac') return false; if (D
 function piperStarten() {
   const ordner = path.join(DIR, 'werkzeug', CFG.stimme.piperModell || 'stimme-kerstin');
   let modell = null; try { modell = fs.readdirSync(ordner).find(f => f.endsWith('.onnx')); } catch {}
-  if (!modell || CFG.stimme.engine === 'mac') { if (!modell && ECHT) console.log('ℹ️  Piper-Stimme nicht gefunden – Anna spricht mit der Mac-Stimme.'); return; }
+  if (!modell || CFG.stimme.engine === 'mac') { if (!modell && ECHT) console.log('ℹ️  Kerstin-Stimme nicht gefunden – ersatzweise spricht die Mac-Stimme.'); return; }
   PIPER.name = modell.replace('.onnx', '');
   const w = PIPER.w = fork(path.join(DIR, 'tts-worker.mjs'), [path.join(ordner, modell), String(CFG.stimme.piperTempo ?? 1.08), String(CFG.stimme.piperLebhaft ?? 0)], { stdio: ['ignore', 'ignore', 'pipe', 'ipc'] });
   let fehlerText = ''; w.stderr.on('data', d => { fehlerText = (fehlerText + d).slice(-400); });
   w.on('message', m => {
-    if (m.bereit) { PIPER.bereit = true; console.log(`🗣️  Anna spricht mit der Offline-Stimme „${PIPER.name}“ (Piper) – unabhängig vom macOS-Sprachdienst.`); return; }
+    if (m.bereit) { PIPER.bereit = true; console.log(`🗣️  Kerstin spricht mit der Offline-Stimme „${PIPER.name}“ (Piper) – unabhängig vom macOS-Sprachdienst.`); return; }
     const cb = PIPER.auftraege.get(m.id); PIPER.auftraege.delete(m.id);
     if (!m.ok) console.log('⚠️  Piper:', m.fehler);
     cb?.(m.ok);
@@ -660,7 +660,7 @@ function musikLokal() {
   if (!brauche && lokalMusik) { lokalMusik.kill(); lokalMusik = null; }
 }
 const START = Date.now();
-// Ton-Ausgabe des Macs prüfen: Damit die Zuschauer Anna hören, muss sie auf „Gerät mit mehreren Ausgängen“ (mit BlackHole) stehen
+// Ton-Ausgabe des Macs prüfen: Damit die Zuschauer Kerstin hören, muss sie auf „Gerät mit mehreren Ausgängen“ (mit BlackHole) stehen
 var tonAusgabe = '', tonAusgabeOk = null;
 function tonAusgabePruefen() {
   if (process.platform !== 'darwin') return;
@@ -673,7 +673,7 @@ function tonAusgabePruefen() {
       if (!aus) return;
       const name = aus._name || '', ok = /mehrere|multi|blackhole|aggregat/i.test(name);
       if (ok !== tonAusgabeOk || name !== tonAusgabe) {
-        if (ok) console.log(`✅ Ton-Ausgabe des Macs: „${name}“ – Anna und Musik gehen in den Stream.`);
+        if (ok) console.log(`✅ Ton-Ausgabe des Macs: „${name}“ – Kerstin und Musik gehen in den Stream.`);
         else console.log(`ℹ️  Ton-Ausgabe des Macs: „${name}“ (wenn du BlackHole nutzt, gehört hier „Gerät mit mehreren Ausgängen“ hin).`);
       }
       tonAusgabe = name; tonAusgabeOk = ok;
@@ -686,12 +686,12 @@ var letzteAnsageZeit = 0;
 setInterval(() => {
   const seiten = [...kunden.keys()].map(id => { const t = tonStatus.get(id) || {}; return `#${id}${t.vorschau ? '(Vorschau)' : ''}${id === tonSeite ? '★' : ''} Ton ${t.an ? 'an' : 'aus'}/${t.ac || '?'}`; });
   const weg = ECHT ? (CFG.stimme.wiedergabe !== 'mac' && seiteHatTon() && Date.now() > stimmeFehlerBis ? 'Seite (Stream)' : 'Mac-Lautsprecher') : 'aus (Test)';
-  console.log(`ℹ️  ${new Date().toLocaleTimeString('de-DE')} · TikTok: ${tiktokStatus} (${tiktokEreignisse} Ereignisse${tiktokLetztes ? ', letztes vor ' + Math.round((Date.now() - tiktokLetztes) / 1000) + ' s' : ''}) · Seiten: ${seiten.join(', ') || 'keine!'} · Anna über: ${weg}${tonAusgabe ? ` (Mac-Ausgabe: ${tonAusgabe})` : ''} · letzte Ansage vor ${letzteAnsageZeit ? Math.round((Date.now() - letzteAnsageZeit) / 1000) + ' s' : '–'}`);
+  console.log(`ℹ️  ${new Date().toLocaleTimeString('de-DE')} · TikTok: ${tiktokStatus} (${tiktokEreignisse} Ereignisse${tiktokLetztes ? ', letztes vor ' + Math.round((Date.now() - tiktokLetztes) / 1000) + ' s' : ''}) · Seiten: ${seiten.join(', ') || 'keine!'} · Kerstin über: ${weg}${tonAusgabe ? ` (Mac-Ausgabe: ${tonAusgabe})` : ''} · letzte Ansage vor ${letzteAnsageZeit ? Math.round((Date.now() - letzteAnsageZeit) / 1000) + ' s' : '–'}`);
 }, 30000);
 setInterval(musikLokal, 3000);
 process.on('exit', () => lokalMusik?.kill());
 
-// ---------- Dauer-Moderation: Anna redet immer, mit kurzen Pausen dazwischen ----------
+// ---------- Dauer-Moderation: Kerstin redet immer, mit kurzen Pausen dazwischen ----------
 const followDank = [], begruessen = [], begruesst = new Set();
 let letzterLive = 0, letzterRundgang = 0, modNr = 0, eventModNr = 0, countdownGesagt = '', eventZehnGesagt = '';
 // Rangliste: beste Haus-Stufe zuerst, bei Gleichstand entscheiden die Muscheln aus Events
@@ -717,13 +717,13 @@ const MODERATION = [
   () => satz('stimmung', { aktive: aktiveAnzahl() }),
 ];
 const aktiveAnzahl = () => Object.values(S.spieler).filter(p => Date.now() - (p.zuletzt || 0) < 600000).length;
-function baustelleZeigen() {                                // Kamera fliegt zur Baustelle, Anna berichtet
+function baustelleZeigen() {                                // Kamera fliegt zur Baustelle, Kerstin berichtet
   if (!S.projekt || Date.now() - letzterRundgang < 30000) return null;
   letzterRundgang = Date.now(); sende({ typ: 'kameraBau', ms: 8000 });
   const def = CFG.abstimmung.projekte.find(x => x.id === S.projekt.id) || {};
   return satz('baustelleZeigen', { Projekt: grossKlein(def.der || S.projekt.name), ein: def.ein || S.projekt.name, prozent: Math.floor(S.projekt.stand / S.projekt.ziel * 100), rest: Math.max(0, Math.ceil(S.projekt.ziel - S.projekt.stand)).toLocaleString('de-DE') });
 }
-function rundgang() {                                      // Kamera fliegt zu einem Haus, Anna stellt es vor
+function rundgang() {                                      // Kamera fliegt zu einem Haus, Kerstin stellt es vor
   if (Date.now() - letzterRundgang < 40000) return null;
   const kand = Object.values(S.spieler).filter(p => !p.gesperrt && Date.now() - (p.zuletzt || 0) < 900000 && p.stufe > 0);
   if (!kand.length) return null;
@@ -879,7 +879,7 @@ const server = http.createServer((req, res) => {
   if (url.pathname === '/tonstatus') {                       // Live-Seite meldet, ob ihr Ton läuft
     const id = +url.searchParams.get('id'), alt = tonStatus.get(id) || {};
     if (url.searchParams.has('an')) tonStatus.set(id, { ...alt, an: url.searchParams.get('an') === '1', ac: url.searchParams.get('ac'), vorschau: url.searchParams.get('vorschau') === '1', zeit: Date.now() });
-    if (url.searchParams.get('stimme') === '1' && alt.stimmeOk !== true) { tonStatus.set(id, { ...tonStatus.get(id), stimmeOk: true }); console.log(`🔊 Anna spricht über die Live-Seite #${id} (Stream-Ton).`); }
+    if (url.searchParams.get('stimme') === '1' && alt.stimmeOk !== true) { tonStatus.set(id, { ...tonStatus.get(id), stimmeOk: true }); console.log(`🔊 Kerstin spricht über die Live-Seite #${id} (Stream-Ton).`); }
     if (url.searchParams.get('stimme') === '0') console.log(`   Grund (Seite #${id}): ${url.searchParams.get('grund') || '?'}`);
     if (url.searchParams.get('stimme') === '0') { stimmeFehlerBis = Date.now() + 60000; console.log('🔈 Stimme auf der Seite blockiert – spreche über die Mac-Lautsprecher.'); }
     if (url.searchParams.get('stimme') === '1') { stimmeFehlerBis = 0; unbestaetigt = 0; }

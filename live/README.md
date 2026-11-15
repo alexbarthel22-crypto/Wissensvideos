@@ -8,7 +8,7 @@ Eine Mac-Stimme (unbegrenzt, offline) moderiert.
 2. **Nur diesen Ordner `live/`** herunterladen (er funktioniert allein – Bewohnerzahl und Bauprojekte holt er sich selbst aus dem Repo). Den Ordner kannst du beliebig umbenennen und ablegen.
 3. Im Ordner auf **„Muschel-Tal LIVE testen.command“** doppelklicken.
    Falls der Mac warnt: Rechtsklick → „Öffnen“ → „Öffnen“.
-   Es öffnet sich die Insel mit Test-Zuschauern, Anna spricht.
+   Es öffnet sich die Insel mit Test-Zuschauern, Kerstin spricht.
 
 **Spielstand:** wird automatisch in `stand.json` gespeichert (alle 10 Sekunden, beim Stream-Ende und beim Schließen des Fensters). Beim nächsten Start geht alles genau dort weiter. Einfach immer denselben Ordner benutzen.
 **Update auf eine neue Version:** neuen Ordner holen und deine `stand.json` (Spielstand) und `sperrliste.txt` hineinkopieren.
@@ -21,7 +21,7 @@ Eine Mac-Stimme (unbegrenzt, offline) moderiert.
 4. **LIVE starten.** Im Terminal muss nach ca. 20 s **„✅ Mit dem LIVE von @muscheltal verbunden“** stehen.
 5. Ende: LIVE stoppen, dann das Terminalfenster schließen (Spielstand wird gespeichert, Link wird geschlossen).
 
-**Zum Link:** LIVE Studio nimmt nur echte https-Adressen an. Der Tunnel macht die Insel-Seite nur während das Programm läuft unter dem zufälligen Link erreichbar. Wer den Link kennt, sieht nur die Insel – steuern kann man darüber nichts (Test-Zugänge sind gesperrt, Anna spricht nur ihre eigenen Sätze).
+**Zum Link:** LIVE Studio nimmt nur echte https-Adressen an. Der Tunnel macht die Insel-Seite nur während das Programm läuft unter dem zufälligen Link erreichbar. Wer den Link kennt, sieht nur die Insel – steuern kann man darüber nichts (Test-Zugänge sind gesperrt, Kerstin spricht nur ihre eigenen Sätze).
 **Klappt der Link nicht:** Notlösung Fensteraufnahme – `http://localhost:8790` im Browser öffnen, Fenster möglichst hoch, in LIVE Studio „Fensteraufnahme“ + Systemton.
 
 ## Regeln (änderbar in `einstellungen.json`)
@@ -33,7 +33,7 @@ Eine Mac-Stimme (unbegrenzt, offline) moderiert.
 | Rangliste „Beste Häuser“ | Name · Haus-Stufe · Muschel-Kontostand; höchste Haus-Stufe zuerst, bei gleicher Stufe die meisten Muscheln (die angezeigte Zahl) |
 | Kommentar `palme` `flagge` `garten` `laterne` `pool` `boot` | Anbau (ab bestimmter Stufe) |
 | Kommentar `rot` `blau` `lila` … | Hausfarbe |
-| Kommentar `haus` (auch Haus!, hauus, house, huas, mein haus …) | ab und zu fliegt die Kamera zum eigenen Haus, Anna: „…, hier ist dein Haus!“ |
+| Kommentar `haus` (auch Haus!, hauus, house, huas, mein haus …) | ab und zu fliegt die Kamera zum eigenen Haus, Kerstin: „…, hier ist dein Haus!“ |
 | Geschenk | **1 Coin = 1 Muschel (= 0,01 €)** – für die Muschelkasse und fürs eigene Haus, große Geschenke = Feuerwerk |
 | Folgen | neuer **Bewohner** + 5 Muscheln in die Muschelkasse |
 | Stream teilen | 2 Muscheln in die Muschelkasse |
@@ -46,7 +46,7 @@ Die Bewohnerzahl kommt live von TikTok (Follower), `bewohner.start` ist nur der 
 
 ## Überraschungs-Events (alle 2 Minuten, je 1 Minute, 50 verschiedene)
 Rechts oben läuft ein Countdown „Nächstes Event“ – welches kommt, bleibt geheim (❓❓❓). Nie dasselbe wie eins der letzten 10.
-Beim Start sagt Anna, was am Ende passiert (steht auch im Event-Feld unter 🏆). Am Ende nennt sie die Gewinner mit Namen (im Ergebnis-Feld unter 🏆).
+Beim Start sagt Kerstin, was am Ende passiert (steht auch im Event-Feld unter 🏆). Am Ende nennt sie die Gewinner mit Namen (im Ergebnis-Feld unter 🏆).
 Alle Events laufen komplett im Stream und ohne Rauszoomen (die Kamera bleibt bei den Häusern), mitmachen per Like oder Kommentar – niemand muss den Stream verlassen, nichts ist an Geschenke gebunden.
 Like-Ziele liegen bei ca. 80 % des normalen Like-Tempos: schaffbar, wenn alle mitmachen. Alle Events sind automatisch geprüft (Test-Zuschauer machen mit, Belohnungen kommen an).
 
@@ -122,7 +122,7 @@ Ist ein Stadtgebäude fertig, wird dort ein **Job** unter den Zuschauern der let
 Per Abstimmung wählt der Chat das nächste Gemeinschafts-Gebäude, bezahlt wird aus der Muschelkasse (beim Baustart fließt die Hälfte des Ersparten in die Baustelle, danach 70 % jeder neuen Muschel – die Kasse ist nie leer). Kosten realistisch: Café/Eisdiele/Friseur 6.000 … Krankenhaus 35.000 Muscheln (einstellbar in einstellungen.json):
 Rathaus, Schule, Krankenhaus, Feuerwache, Polizeistation, Supermarkt, Kino, Bibliothek, Post, Café, Eisdiele, Museum, Sporthalle, Markthalle, Hotel, Apotheke, Aquarium, Theater, Schwimmbad, Kindergarten, Restaurant, Friseur, Muschelbank, Inselbahnhof – alle im tropischen Strand-Stil (Palmen, Markisen, Stroh- und Ziegeldächer).
 Gebäude dürfen mehrfach gebaut werden (noch nicht gebaute kommen bei der Abstimmung zuerst). Bauplätze: zuerst das Stadtzentrum um den Muschelplatz, dann über die ganze Insel verteilt (fest vorgemerkt, Häuser ziehen nie um). Reichen die Plätze nicht, wächst die Insel – bis ca. 60 Gebäude und 1.800 Grundstücke.
-Während des Baus: lebendige Baustelle (Kran mit Last, Krabben-Bauarbeiter, Schubkarre, Betonmischer, Funken, Prozent-Schild); ab und zu fliegt die Kamera hin und Anna berichtet. Steigt ein Haus eine Stufe auf: Bau-Animation und Feuerwerk direkt über dem Haus (je höher die Stufe, desto größer). Bei Fertigstellung eines Gebäudes: Bau-Animation (Gerüst, Kran, Krabben, Staub, Gebäude wächst nach oben), dann Feuerwerk.
+Während des Baus: lebendige Baustelle (Kran mit Last, Krabben-Bauarbeiter, Schubkarre, Betonmischer, Funken, Prozent-Schild); ab und zu fliegt die Kamera hin und Kerstin berichtet. Steigt ein Haus eine Stufe auf: Bau-Animation und Feuerwerk direkt über dem Haus (je höher die Stufe, desto größer). Bei Fertigstellung eines Gebäudes: Bau-Animation (Gerüst, Kran, Krabben, Staub, Gebäude wächst nach oben), dann Feuerwerk.
 
 ## Rangliste
 „Beste Häuser“: höchste Haus-Stufe zuerst, bei gleicher Stufe die meisten Muscheln. Neuer Platz 1 oder Neueinsteiger in den Top 3 werden angesagt und als Banner gezeigt.
@@ -131,7 +131,7 @@ Während des Baus: lebendige Baustelle (Kran mit Last, Krabben-Bauarbeiter, Schu
 TikTok liefert die Geschenk-Namen auf Englisch – `geschenke.mjs` übersetzt sie mit Artikel und Mehrzahl: „Danke für die Rose“, „für den Löwen“, „für das Parfüm“, „für 3 Rosen“. Unbekannte Geschenke: „für das Geschenk „…““.
 
 ## Geschenk-Shows
-Jedes Geschenk wird bedankt (Anna) und bekommt eine Show mit dem Namen des Spenders – je wertvoller, desto größer:
+Jedes Geschenk wird bedankt (Kerstin) und bekommt eine Show mit dem Namen des Spenders – je wertvoller, desto größer:
 - unter 10 Coins: Herzregen, Muschel-Konfetti oder Seifenblasen am Haus + Danke-Schild
 - 10–99 Coins: springender Delfin mit Banner, Heißluftballon mit Namen oder Flugzeug mit Danke-Banner
 - 100–999 Coins: Feuerwerk mit Namen, Yacht mit Namen am Rumpf oder Goldregen (Kamera fährt zum Haus)
@@ -139,12 +139,12 @@ Jedes Geschenk wird bedankt (Anna) und bekommt eine Show mit dem Namen des Spend
 Große Geschenke werden vor kleinen gezeigt.
 
 ## Moderation
-Anna redet ununterbrochen – mit kurzen, natürlichen Pausen (`…` in `saetze.mjs` = Sprechpause, Abstand zwischen Sätzen: `stimme.pauseSek`). Untertitel erscheinen genau dann, wenn er spricht.
+Kerstin redet ununterbrochen – mit kurzen, natürlichen Pausen (`…` in `saetze.mjs` = Sprechpause, Abstand zwischen Sätzen: `stimme.pauseSek`). Untertitel erscheinen genau dann, wenn er spricht.
 Reihenfolge, wenn er frei ist:
 1. Geschenke bedanken (immer, sofort) · Event-Ansagen · Countdown („noch dreißig Sekunden“, „zehn Sekunden“)
 2. Follows bedanken (mehrere zusammengefasst)
 3. Während eines Events: Spielstand live kommentieren, anfeuern, ab und zu ein Tipp
-4. Sonst: Häuser zeigen (wer „haus“ geschrieben hat), neue Zuschauer begrüßen, Wiederkehrer mit „Willkommen zurück“ (ab dem 3. Besuch mit Danke für die Treue), erklären was Geschenke bringen, Rundgang (Kamera fliegt zu einem Haus, Anna stellt es vor), Tipps, Muschel-Tal-Fakten, Fragen an den Chat, Rangliste, Muschelkasse, Bauprojekt, Bewohner-Ziel, Teaser fürs nächste Event (ohne es zu verraten), Abendstimmung
+4. Sonst: Häuser zeigen (wer „haus“ geschrieben hat), neue Zuschauer begrüßen, Wiederkehrer mit „Willkommen zurück“ (ab dem 3. Besuch mit Danke für die Treue), erklären was Geschenke bringen, Rundgang (Kamera fliegt zu einem Haus, Kerstin stellt es vor), Tipps, Muschel-Tal-Fakten, Fragen an den Chat, Rangliste, Muschelkasse, Bauprojekt, Bewohner-Ziel, Teaser fürs nächste Event (ohne es zu verraten), Abendstimmung
 Für jede Situation gibt es mehrere Varianten; der zuletzt benutzte Satz wird ausgelassen.
 
 ## Vollautomatisch
@@ -154,7 +154,7 @@ Der Mac bleibt automatisch wach, solange das Programm läuft (`caffeinate`). Das
 ## Schutz vor anstößigen Namen
 - Namen mit anstößigen Wörtern (auch mit Zahlen/Sonderzeichen geschrieben, z. B. „f4ck“) werden zu „Bewohner 12“: nicht angezeigt, nicht vorgelesen. Liste in `filter.mjs`.
 - `sperrliste.txt`: ein TikTok-Name pro Zeile – diese Person wird komplett ignoriert (kein Haus, keine Begrüßung, kein Dank). Gilt nach spätestens 30 s, auch während des Streams.
-- Kommentar-Texte werden nie vorgelesen oder angezeigt. Jeder Satz von Anna wird vor dem Sprechen noch einmal geprüft.
+- Kommentar-Texte werden nie vorgelesen oder angezeigt. Jeder Satz von Kerstin wird vor dem Sprechen noch einmal geprüft.
 - Zusätzlich empfohlen: in den TikTok-LIVE-Einstellungen den Stichwort-Filter für Kommentare einschalten.
 
 ## Leistung (für schwächere Macs)
@@ -164,7 +164,7 @@ Der Mac bleibt automatisch wach, solange das Programm läuft (`caffeinate`). Das
 - „Muschel-Tal LIVE starten.command“ öffnet keinen Browser-Tab mehr (spart einen zweiten Durchlauf). Brauchst du doch einen (Fensteraufnahme): `http://localhost:8790` selbst öffnen.
 
 ## TikTok-Regeln (LIVE-Monetarisierung)
-Anna und die Einblendungen werben **nie** für Geschenke: keine Sätze wie „jedes Geschenk bringt …“, keine Coin-Angaben, keine „+X 🐚“ bei Geschenken, keine Versprechen fürs Folgen. Geschenke werden nur bedankt (pro Person einmal). Folgen-Hinweis höchstens alle 15 Minuten, freundlich und ohne Gegenleistung. Verlosungen sind nie an Geschenke gebunden.
+Kerstin und die Einblendungen werben **nie** für Geschenke: keine Sätze wie „jedes Geschenk bringt …“, keine Coin-Angaben, keine „+X 🐚“ bei Geschenken, keine Versprechen fürs Folgen. Geschenke werden nur bedankt (pro Person einmal). Folgen-Hinweis höchstens alle 15 Minuten, freundlich und ohne Gegenleistung. Verlosungen sind nie an Geschenke gebunden.
 
 ## Bildschärfe
 - Die Kamera bleibt immer nah bei den Häusern (keine Gesamtansicht mehr) – große Häuser, große weiße Namensschilder in fester Bildschirmgröße.
@@ -172,21 +172,21 @@ Anna und die Einblendungen werben **nie** für Geschenke: keine Sätze wie „je
 - LIVE Studio: Link-Quelle 1080 × 1920, in den Einstellungen höchste Auflösung (1080p), 30 FPS und die höchste Bitrate wählen.
 
 ## Ton (Musik + Stimme)
-**Annas Stimme = Piper (offline):** Der macOS-Sprachdienst (`say`) blockiert, sobald LIVE Studio live ist. Darum erzeugt das Programm Annas Stimme selbst mit der freien Offline-Sprachsoftware **Piper** (deutsche Frauenstimme „Kerstin“, unbegrenzt, kostenlos). Beim ersten Start lädt „Muschel-Tal LIVE starten“ einmalig die Programmteile (npm) und die Stimme (ca. 60 MB). Ein Satz entsteht in ca. 0,2 s; hängt die Stimme, startet sie automatisch neu. Im Terminal steht dann „🗣️ Anna spricht mit der Offline-Stimme …“.
+**Kerstins Stimme = Piper (offline):** Der macOS-Sprachdienst (`say`) blockiert, sobald LIVE Studio live ist. Darum erzeugt das Programm Kerstins Stimme selbst mit der freien Offline-Sprachsoftware **Piper** (deutsche Frauenstimme „Kerstin“, unbegrenzt, kostenlos). Beim ersten Start lädt „Muschel-Tal LIVE starten“ einmalig die Programmteile (npm) und die Stimme (ca. 60 MB). Ein Satz entsteht in ca. 0,2 s; hängt die Stimme, startet sie automatisch neu. Im Terminal steht dann „🗣️ Kerstin spricht mit der Offline-Stimme …“.
 
-**Wichtig (LIVE Studio auf dem Mac):** Der Ton der Link-Quelle kommt bei LIVE Studio nicht im Stream an. Darum laufen Anna und die Musik über den Mac-Ton (`"wiedergabe": "mac"` in einstellungen.json) und gelangen über das kostenlose Programm **BlackHole** als „Mikrofon“ in LIVE Studio:
+**Wichtig (LIVE Studio auf dem Mac):** Der Ton der Link-Quelle kommt bei LIVE Studio nicht im Stream an. Darum laufen Kerstin und die Musik über den Mac-Ton (`"wiedergabe": "mac"` in einstellungen.json) und gelangen über das kostenlose Programm **BlackHole** als „Mikrofon“ in LIVE Studio:
 1. BlackHole 2ch installieren (kostenlos): existential.audio/blackhole – oder im Terminal `brew install blackhole-2ch`. Danach Mac neu starten.
 2. Programm **Audio-MIDI-Setup** öffnen → unten links **+** → **Gerät mit mehreren Ausgängen erstellen** → Haken bei **MacBook-Lautsprecher** (bzw. deinen Lautsprechern) und **BlackHole 2ch**.
 3. **Systemeinstellungen → Ton → Ausgabe:** „Gerät mit mehreren Ausgängen“ wählen. (Die Lautstärketasten gehen dann nicht – Lautstärke im Audio-MIDI-Setup.)
 4. **LIVE Studio → Mikrofon: „BlackHole 2ch“.** Bei der Link-Quelle den Ton aus.
-5. Beim Start öffnet sich automatisch ein **Ton-Tab** im Browser (http://localhost:8790/?ton): einmal **„Ton starten“** klicken und den Tab offen lassen (darf im Hintergrund sein). Anna und die Musik laufen dort – ohne für jeden Satz ein neues Programm zu starten (das hing an der Mehrfach-Ausgabe). Ist der Tab zu, übernimmt automatisch der Mac (say/afplay).
-6. Test: wenn Anna spricht, schlägt in LIVE Studio der Mikrofon-Pegel aus.
+5. Beim Start öffnet sich automatisch ein **Ton-Tab** im Browser (http://localhost:8790/?ton): einmal **„Ton starten“** klicken und den Tab offen lassen (darf im Hintergrund sein). Kerstin und die Musik laufen dort – ohne für jeden Satz ein neues Programm zu starten (das hing an der Mehrfach-Ausgabe). Ist der Tab zu, übernimmt automatisch der Mac (say/afplay).
+6. Test: wenn Kerstin spricht, schlägt in LIVE Studio der Mikrofon-Pegel aus.
 Nach dem Stream kannst du in den Systemeinstellungen wieder die normalen Lautsprecher wählen.
 
 - **Es spielt immer nur eine Seite Ton**, auch wenn Browser und LIVE Studio gleichzeitig offen sind (die zuerst geöffnete). Vor dem LIVE deshalb alte Browser-Tabs mit der Insel schließen – oder sie mit `?vorschau` öffnen (Bild ohne Ton).
 - Im Hintergrund läuft ruhige, lizenzfreie Strand-/Urlaubsmusik („strand“, erzeugt mit `tools/make_music_strand.py`): 4 Stücke à 6 Min., langsam (65–68 bpm), Lounge-Stimmung – weicher Akkord-Teppich, warmer Bass, leise gedämpfte Gitarre, weicher Kick + Besen, sparsame tiefe Flöte, leise Wellen. Kein Klingklang, alles über ca. 1,8 kHz abgesenkt. Dazu sanftes, dumpfes Meeresrauschen. Musik liegt in `werkzeug/musik` (Updates überschreiben sie nie; neue Stücke aus „Downloads“ werden beim Start übernommen). Die „strand“-Stücke haben Vorrang vor älteren.
-- Anna spricht kurze Sätze, etwa alle 2–4 Sekunden einer, je Satz nur eine Sache. Geschenke werden immer mit Namen bedankt („Danke für die Rose“) – je wertvoller, desto größer der Dank (4 Stufen: unter 20, ab 20, ab 200, ab 1.000 Coins).
-- Annas Ansagen werden über die Live-Seite abgespielt, die Musik wird dabei automatisch leiser. So landet alles im Ton der Link-/Browser-Quelle.
+- Kerstin spricht kurze Sätze, etwa alle 2–4 Sekunden einer, je Satz nur eine Sache. Geschenke werden immer mit Namen bedankt („Danke für die Rose“) – je wertvoller, desto größer der Dank (4 Stufen: unter 20, ab 20, ab 200, ab 1.000 Coins).
+- Kerstins Ansagen werden über die Live-Seite abgespielt, die Musik wird dabei automatisch leiser. So landet alles im Ton der Link-/Browser-Quelle.
 - Falls ein Browser den Ton blockiert, steht unten „Einmal ins Bild klicken für Musik“ – einmal klicken genügt.
 - Bei **Fensteraufnahme** statt Link-Quelle: in LIVE Studio zusätzlich den Mac-Ton (Systemaudio) aufnehmen.
 - Lautstärken in `einstellungen.json` unter `ton`.
@@ -196,7 +196,7 @@ Tag, Sonnenaufgang, Sonnenuntergang (je 45 Min.) und Nacht wie auf muscheltal.de
 Zum Ausprobieren: `http://localhost:8790/?zeit=21:30`.
 
 ## Stimme
-Standard: **Anna (Premium)**. Andere Stimme → in `einstellungen.json` bei `"mac"` eintragen (Namen: `say -v '?' | grep de_DE`).
+Moderationsstimme: **Kerstin** (Piper, offline, mit Gefühl). Nur als Ersatz: Mac-Stimme. Andere Stimme → in `einstellungen.json` bei `"mac"` eintragen (Namen: `say -v '?' | grep de_DE`).
 Ohne Stimme starten: `node server.mjs --still`.
 
 ## Hinweise
@@ -204,11 +204,11 @@ Ohne Stimme starten: `node server.mjs --still`.
 - Wichtige Infos stehen oben, unten bleibt Platz für TikToks Kommentarspalte.
 - Die Insel ist noch ein Platzhalter; sobald die Live-Insel auf muscheltal.de existiert, wird sie hier eingesetzt.
 
-## Wenn im LIVE nichts reagiert oder Anna stumm ist
+## Wenn im LIVE nichts reagiert oder Kerstin stumm ist
 - Im Terminal muss nach dem Live-Gehen **„✅✅✅ Mit deinem TikTok-LIVE verbunden“** stehen. Danach erscheint jedes Like, jeder Kommentar und jedes Geschenk als Zeile (❤️ 💬 🎁 👋).
-- Alle 30 s zeigt eine **ℹ️-Zeile**: TikTok-Verbindung, Anzahl Ereignisse, Live-Seiten, über welchen Weg Anna spricht.
+- Alle 30 s zeigt eine **ℹ️-Zeile**: TikTok-Verbindung, Anzahl Ereignisse, Live-Seiten, über welchen Weg Kerstin spricht.
 - Steht dort dauerhaft „TikTok: nicht verbunden“: kostenlosen Schlüssel auf eulerstream.com holen und in `einstellungen.json` bei `eulerApiKey` eintragen.
-- Bestätigt die Live-Seite Annas Stimme nicht, spricht sie automatisch über die Mac-Lautsprecher.
+- Bestätigt die Live-Seite Kerstins Stimme nicht, spricht sie automatisch über die Mac-Lautsprecher.
 
 ## Erfolg „Live dabei“ auf muscheltal.de
 Alle Zuschauer, die im echten LIVE etwas tun (beitreten, kommentieren, liken, folgen, teilen, schenken), werden alle 15 s an `https://muscheltal.de/api/live` gemeldet und bekommen dort den Erfolg „📺 Live dabei“. Dafür beim ersten Start den Schlüssel einfügen (wird nur lokal in `live-schluessel.txt` gespeichert, nicht im Repo). Im Test-Modus wird nichts gemeldet.

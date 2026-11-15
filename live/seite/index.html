@@ -150,7 +150,7 @@ function basisZeichnen(k) {
   // Parks auf den Restflächen am Rand
   for (let i = n; i < ALLE.length; i++) { const p = ALLE[i]; if (p.mitte <= k * .9) park(b, p, i); }
   // Straßen mit Bordstein und Sandkörnern
-  SEG = strassenBei(k, S.strassen.length ? S.strassen : ['Sonnenallee']);
+  SEG = strassenBei(k, S.strassen.length ? S.strassen : ['Sonnenallee']); STR_SCHILDER = [];
   const weg = (w, col) => { b.strokeStyle = col; b.lineWidth = w; b.lineCap = 'round'; SEG.forEach(s => { b.beginPath(); if (s.senkrecht) { b.moveTo(s.fest, s.von); b.lineTo(s.fest, s.bis); } else { b.moveTo(s.von, s.fest); b.lineTo(s.bis, s.fest); } b.stroke(); }); };
   weg(STR + 6, '#d9b46a'); weg(STR, '#f0dca0');
   SEG.forEach(s => { for (let v = s.von; v < s.bis; v += 4) { const o = (R() - .5) * STR * .8; b.fillStyle = R() < .15 ? 'rgba(255,255,255,.8)' : 'rgba(160,120,60,.22)'; s.senkrecht ? b.fillRect(s.fest + o, v, 1.5, 1.5) : b.fillRect(v, s.fest + o, 1.5, 1.5); } });
@@ -166,11 +166,7 @@ function basisZeichnen(k) {
     raster.forEach((r0, idx) => {
       if (s.senkrecht ? (idx % 3 !== 1) : (idx % 2 !== 0)) return;
       const v = r0 + d / 2; if (v < s.von + 50 || v > s.bis - 50) return;
-      b.save(); s.senkrecht ? (b.translate(s.fest, v), b.rotate(-Math.PI / 2)) : b.translate(v, s.fest);
-      b.font = `900 15px ${FONT}`; const tw = b.measureText(s.name).width + 22;
-      b.fillStyle = '#2f6fb3'; b.beginPath(); b.roundRect(-tw / 2, -11, tw, 22, 5); b.fill();
-      b.strokeStyle = '#fff'; b.lineWidth = 1.6; b.beginPath(); b.roundRect(-tw / 2 + 2.5, -8.5, tw - 5, 17, 3.5); b.stroke();
-      b.textBaseline = 'alphabetic'; const m = b.measureText('Hgä'); b.fillStyle = '#fff'; b.fillText(s.name, 0, (m.actualBoundingBoxAscent - m.actualBoundingBoxDescent) / 2); b.textBaseline = 'middle'; b.restore();
+      STR_SCHILDER.push(s.senkrecht ? { x: s.fest, y: v, name: s.name, senk: true } : { x: v, y: s.fest, name: s.name, senk: false });   // live & gestochen scharf gezeichnet
     });
   });
   b.restore();
@@ -603,7 +599,7 @@ function nachtZeichnen(t) {
 // Sind mehrere Seiten offen (z. B. Browser + LIVE Studio), bestimmt das Programm, welche Seite Ton spielt (tonRolle).
 let MUSIK = [1, 2, 3, 4, 5].map(i => `musik/cozy_${i}.mp3`);   // wird durch die Liste vom Programm ersetzt (alle MP3s im Ordner seite/musik)
 const VORSCHAU = PARAM.has('vorschau') || PARAM.has('still');     // ?vorschau = Bild ohne Ton
-const TONSEITE = PARAM.has('ton');                                // ?ton = nur Ton (Musik + Anna) für den Mac, kein Bild
+const TONSEITE = PARAM.has('ton');                                // ?ton = nur Ton (Musik + Kerstin) für den Mac, kein Bild
 let meineId = null, tonRolle = false, tonAn = false, musikNr = Math.floor(Math.random() * MUSIK.length), stimmeLaeuft = 0, AC = null;
 const TON = () => S.ton || { musik: .32, musikBeiStimme: .1, meer: .22, stimme: 1 };
 const musik = new Audio(MUSIK[musikNr]); musik.preload = 'auto'; musik.volume = 0;
@@ -689,6 +685,7 @@ function text(t, x, y, size, col = INK, align = 'left', weight = 900, maxW) {
     while (X.measureText(t).width > maxW && s > min) { s -= 1; X.font = schrift(weight, s); }
     if (X.measureText(t).width > maxW) { let k = t.length; while (k > 1 && X.measureText(t.slice(0, k) + '…').width > maxW) k--; t = t.slice(0, k) + '…'; }
   }
+  const T = X.getTransform(); if (!T.b && !T.c && T.a > 0) { x = (Math.round(x * T.a + T.e) - T.e) / T.a; y = (Math.round(y * T.d + T.f) - T.f) / T.d; }   // pixelgenau = schärfer
   const v = mitteVersatz(); X.textBaseline = 'alphabetic';
   // Helle Schrift bekommt eine dunkle Kontur – bleibt nach der Video-Komprimierung von TikTok scharf lesbar
   if (col === '#fff' || col === GELB || col === '#ffffff') { X.lineJoin = 'round'; X.lineWidth = Math.max(2, s * .16); X.strokeStyle = 'rgba(42,27,18,.75)'; X.strokeText(t, x, y + v); }
@@ -1377,7 +1374,7 @@ function krabbenRennen(t, y, teams) {
     const b = Math.sin(t * .03 + i) * 3; X.strokeStyle = farbe[tm.name]; X.lineWidth = 2; for (let k = -1; k <= 1; k += 2) { X.beginPath(); X.moveTo(k * 8, 3); X.lineTo(k * 15, 8 + b * k); X.stroke(); }
     X.fillStyle = '#fff'; X.beginPath(); X.arc(-4, -9, 3, 0, 7); X.arc(4, -9, 3, 0, 7); X.fill(); X.fillStyle = INK; X.beginPath(); X.arc(-4, -9, 1.5, 0, 7); X.arc(4, -9, 1.5, 0, 7); X.fill();
     X.restore();
-    text(String(tm.wert), x1 + 34, yy, 15, INK, 'center', 900);
+    text(String(tm.wert), x1 + 34, yy, 18, INK, 'center', 900);
   });
 }
 const RAD = { start: 0, id: null };
@@ -1391,7 +1388,7 @@ function gluecksRad(t, y, e) {
   for (let i = 0; i < n; i++) {
     X.fillStyle = ['#ffd23f', '#7fe0c8', '#ff8fb8', '#b58ad0', '#3fa0e8', '#ff8a2a'][i % 6];
     X.beginPath(); X.moveTo(cx, cy); X.arc(cx, cy, R, w + i / n * 6.283, w + (i + 1) / n * 6.283); X.closePath(); X.fill();
-    X.save(); X.translate(cx, cy); X.rotate(w + (i + .5) / n * 6.283); text(namen[i], R - 10, 0, 11, INK, 'right', 900, R - 26); X.restore();
+    X.save(); X.translate(cx, cy); X.rotate(w + (i + .5) / n * 6.283); text(namen[i], R - 10, 0, 14, INK, 'right', 900, R - 22); X.restore();
   }
   X.strokeStyle = INK; X.lineWidth = 5; X.beginPath(); X.arc(cx, cy, R, 0, 7); X.stroke();
   X.fillStyle = GELB; X.beginPath(); X.arc(cx, cy, 14, 0, 7); X.fill(); X.stroke();
@@ -1780,7 +1777,7 @@ function overlay(t) {
     }
   }
   const ua = (t - untertitel.t) / 1000, ud = untertitel.d || 5;
-  if (untertitel.text && ua < ud) {                                 // so lange wie Anna spricht, lange Sätze umbrechen
+  if (untertitel.text && ua < ud) {                                 // so lange wie Kerstin spricht, lange Sätze umbrechen
     X.globalAlpha = Math.min(1, (ud - ua) * 3, ua * 6);
     X.font = `800 28px ${FONT}`;
     const zeilen = [], max = SB - 50; let z = '';
@@ -1815,6 +1812,30 @@ function hausCacheBauen(t) {
 // Kopfzeile: 10× pro Sekunde neu (bei Krabbenrennen/Glücksrad jedes Bild)
 let KC = null, KX = null, kopfZeit = 0;
 let tLetzt = 0, frameZeit = 0;
+// Straßenschilder: einmal in Bildschirm-Auflösung vorzeichnen, pro Bild nur die sichtbaren einsetzen (pixelgenau → scharf)
+var STR_SCHILDER = [], STR_BILD = {};
+function strSchildBild(name, senk) {
+  const key = name + (senk ? '|s' : ''); if (STR_BILD[key]) return STR_BILD[key];
+  const f = NAH * Q0, m0 = document.createElement('canvas').getContext('2d'); m0.font = `900 15px ${FONT}`;
+  const tw = Math.ceil(m0.measureText(name).width + 22), bw = tw + 4, bh = 26;
+  const c = document.createElement('canvas'); c.width = Math.ceil((senk ? bh : bw) * f); c.height = Math.ceil((senk ? bw : bh) * f);
+  const b = c.getContext('2d'); b.setTransform(f, 0, 0, f, c.width / 2, c.height / 2); if (senk) b.rotate(-Math.PI / 2);
+  b.font = `900 15px ${FONT}`; b.textAlign = 'center';
+  b.fillStyle = '#2f6fb3'; b.beginPath(); b.roundRect(-tw / 2, -11, tw, 22, 5); b.fill();
+  b.strokeStyle = '#fff'; b.lineWidth = 1.6; b.beginPath(); b.roundRect(-tw / 2 + 2.5, -8.5, tw - 5, 17, 3.5); b.stroke();
+  b.textBaseline = 'alphabetic'; const m = b.measureText('Hgä'); b.fillStyle = '#fff'; b.fillText(name, 0, (m.actualBoundingBoxAscent - m.actualBoundingBoxDescent) / 2);
+  return STR_BILD[key] = { cv: c, w: c.width / f, h: c.height / f };
+}
+function strassenSchilder() {
+  const wx0 = cam.x - 540 / cam.z - 80, wx1 = cam.x + 540 / cam.z + 80, wy0 = cam.y - MITTE_Y / cam.z - 80, wy1 = cam.y + (H - MITTE_Y) / cam.z + 80;
+  const T = X.getTransform();
+  for (const sc of STR_SCHILDER) {
+    if (sc.x < wx0 || sc.x > wx1 || sc.y < wy0 || sc.y > wy1) continue;
+    const g = strSchildBild(sc.name, sc.senk);
+    const dx = Math.round((sc.x - g.w / 2) * T.a + T.e), dy = Math.round((sc.y - g.h / 2) * T.d + T.f);   // auf ganze Bildpunkte setzen
+    X.drawImage(g.cv, (dx - T.e) / T.a, (dy - T.f) / T.d, g.cv.width / T.a, g.cv.height / T.d);
+  }
+}
 // Leuchten einmal vorzeichnen (statt jedes Bild mit Schatten-Unschärfe) – sieht gleich aus, kostet fast nichts
 var LEUCHT = {};
 function leuchtBild(key, w, h, malen, f = 8) {             // malen(g) zeichnet in lokalen Einheiten, Mitte = (0,0)
@@ -1850,6 +1871,7 @@ function bild(t) {
       if (q >= 1) { WACHS = null; ALT = null; }
     } else ausschnitt(BASIS, BASIS_BOX);
   }
+  strassenSchilder();
   platzZeichnen(t);
   lebenZeichnen(t, dt);
   if (cam.z < 1.15 && BASIS) {                                     // Übersicht: Häuser aus dem Zwischenspeicher
@@ -1875,7 +1897,7 @@ function bild(t) {
   X.setTransform(1, 0, 0, 1, 0, 0); { const kh = Math.min(KC.height, Math.ceil((KOPF_UNTEN + 90) * Q0)); X.drawImage(KC, 0, 0, KC.width, kh, 0, 0, KC.width, kh); }
   overlay(t);
 }
-document.fonts?.load(`400 40px ${TITEL}`).then(() => document.fonts.load(`700 30px ${FONT}`)).then(() => { HC_SIG = ''; if (BASIS) { BASIS = null; } }).catch(() => {});
+document.fonts?.load(`400 40px ${TITEL}`).then(() => document.fonts.load(`700 30px ${FONT}`)).then(() => { HC_SIG = ''; STR_BILD = {}; if (BASIS) { BASIS = null; } }).catch(() => {});
 verbinde();
 if (TONSEITE) {                                                   // Ton-Tab: kein Bild zeichnen (spart Rechenleistung), nur Ton + Statusanzeige
   C.style.display = 'none';
@@ -1887,7 +1909,7 @@ if (TONSEITE) {                                                   // Ton-Tab: ke
   setInterval(() => {
     const ok = tonRolle && tonAn && AC && AC.state === 'running';
     document.getElementById('tonknopf').style.display = ok ? 'none' : '';
-    document.getElementById('tonstat').textContent = ok ? '✅ Ton läuft – Anna und Musik kommen von hier. Tab offen lassen!' : tonRolle ? 'Bitte einmal auf „Ton starten“ klicken.' : 'Warte auf das Programm …';
+    document.getElementById('tonstat').textContent = ok ? '✅ Ton läuft – Kerstin und Musik kommen von hier. Tab offen lassen!' : tonRolle ? 'Bitte einmal auf „Ton starten“ klicken.' : 'Warte auf das Programm …';
     tonLautstaerke();
   }, 500);
 } else requestAnimationFrame(bild);
