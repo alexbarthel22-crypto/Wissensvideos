@@ -90,9 +90,9 @@ CMT = """.cmt { position: absolute; left: 140px; width: 800px; border-radius: 30
 
 
 # s01 – Hook im Stil von Tag 1: pinke Balken, Wörter springen groß hervor, Sticker „GEBAUT!“
-QL = [[("ICH", "Ich"), ("BIN", "bin"), ("LIVE!", "LIVE")], [("UND", "und"), ("DIE", "die")], [("INSEL", "Insel"), ("IST", "ist")], [("NOCH", "noch"), ("LEER!", "leer")]]
+QL = [[("DEINE", "Deine"), ("STADT", "Stadt")], [("BRAUCHT", "braucht"), ("DICH!", "dich")], [("KOMM", "komm"), ("IN", "in")], [("MEIN", "mein"), ("LIVE!", "LIVE")]]
 QW = [w for ln in QL for w in ln]
-YW = ("LIVE!", "INSEL", "LEER!")
+YW = ("STADT", "DICH!", "LIVE!")
 SP = [(110, 560, 46), (900, 600, 34), (70, 960, 30), (930, 1010, 44), (180, 1230, 38), (820, 1200, 30)]
 scene("s01", LILITA + "\n    " + PILL + "\n    " + PT + "\n" + FL + """
     #s01-ray { position: absolute; left: -460px; top: 300px; width: 2000px; height: 2000px; border-radius: 50%; background: repeating-conic-gradient(rgba(255,250,210,.28) 0 8deg, rgba(255,255,255,0) 8deg 20deg); -webkit-mask: radial-gradient(circle, #000 15%, transparent 60%); }
@@ -117,13 +117,13 @@ scene("s01", LILITA + "\n    " + PILL + "\n    " + PT + "\n" + FL + """
       
       <div id="s01-hk">""" + "".join('<div class="ln" id="s01-l' + str(j) + '">' + "".join(f'<span id="s01-w{QW.index(w)}">{w[0]}</span>' for w in ln) + '</div>' for j, ln in enumerate(QL)) + """</div>
       """ + "".join(f'<div class="s01-sp" id="s01-sp{k}" data-layout-ignore style="left:{x}px;top:{y}px;font-size:{f}px">✦</div>' for k, (x, y, f) in enumerate(SP)) + drops("s01-p", 0, 5, 'sc', 540, 900, "🏗️", 600, 820)[0],
-"""      const sc = at("L1", "leer");
+"""      const sc = at("L1", "LIVE");
       tl.set(["#s01-ray"], { opacity: 1 }, 0);
       tl.fromTo("#s01-ray", { rotation: 0 }, { rotation: 40, duration: 4, ease: "none" }, 0);
       tl.fromTo("#s01-ring", { scale: 1, rotation: 0 }, { scale: 1.12, rotation: 40, duration: .3, yoyo: true, repeat: 11, ease: "sine.inOut" }, 0);
       tl.fromTo("#s01-lb", { scale: 1 }, { scale: 1.15, duration: .3, yoyo: true, repeat: 11, ease: "sine.inOut" }, 0);
-      tl.fromTo("#s01-cta", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, at("L1", "leer") - .2);
-      tl.to("#s01-cta", { scale: 1.08, duration: .15, yoyo: true, repeat: 7, ease: "sine.inOut" }, at("L1", "leer") + .2);
+      tl.fromTo("#s01-cta", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, at("L1", "LIVE") - .2);
+      tl.to("#s01-cta", { scale: 1.08, duration: .15, yoyo: true, repeat: 7, ease: "sine.inOut" }, at("L1", "LIVE") + .2);
       tl.fromTo("#s01-rv", { opacity: .45 }, { opacity: 1, duration: .14, yoyo: true, repeat: 17, ease: "sine.inOut", immediateRender: false }, 0);
       
       """ + "\n      ".join(
