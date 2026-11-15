@@ -20,12 +20,16 @@ export function geminiStimme({ dir, cacheDir, cfg }) {
   const RATE = 24000;
   const laufend = new Map();                                    // gleiche Stücke nicht doppelt anfragen
   const STIL = {
-    normal: 'freundlich, warm und locker, wie eine gut gelaunte Moderatorin am Strand, zügiges Sprechtempo',
-    froh: 'fröhlich, herzlich und lächelnd, zügiges Sprechtempo',
-    spannend: 'spannend und neugierig machend, etwas aufgeregt, zügiges Sprechtempo',
-    jubel: 'begeistert, jubelnd und überglücklich, voller Energie',
-    name: 'freundlich und herzlich, nur dieses eine Wort, ohne Pause davor und danach',
+    normal: 'Say warmly and cheerfully in German',
+    froh: 'Say happily and warmly in German',
+    spannend: 'Say excitedly in German',
+    jubel: 'Say with great joy and excitement in German',
+    name: 'Say warmly in German',
   };
+  const STIL_MODELLE = cfg.geminiStilModelle || [MODELLE[0]];
+  // Prüfung: Ist die Aufnahme viel länger als der Text? Dann wurde etwas dazugesprochen (z. B. die Anweisung) → verwerfen
+  const silben = t => (String(t).toLowerCase().match(/[aeiouyäöü]+/g) || []).length || 1;
+  const zuLang = (pcm, text) => pcm.length / RATE > silben(text) / 3 + (String(text).match(/…/g) || []).length * .7 + 1.1;
 
   // ---------- Kontingent: pro Modell Anfragen pro Minute und pro Tag (Google zählt den Tag nach Pazifik-Zeit) ----------
   const ZAEHLER = path.join(cacheDir, 'gemini-zaehler.json');
@@ -75,8 +79,10 @@ export function geminiStimme({ dir, cacheDir, cfg }) {
   const md5 = s => crypto.createHash('md5').update(s).digest('hex');
 
   // ---------- Gemini ----------
-  async function geminiAnfrage(m, text, gefuehl) {
-    const prompt = `### DIRECTOR'S NOTES\nSprich auf Deutsch, ${STIL[gefuehl] || STIL.normal}. Sag genau den Text, nichts dazu.\n\n### TRANSCRIPT\n${text}`;
+  // Stil-Anweisung nur kurz und nur beim Hauptmodell; die anderen Modelle bekommen nur den reinen Text
+  // (manche Modelle lesen Anweisungen sonst laut vor – das darf im LIVE nie passieren)
+  async function geminiAnfrage(m, text, gefuehl, mitStil) {
+    const prompt = mitStil ? `${STIL[gefuehl] || STIL.normal}: ${text}` : text;
     const ctrl = new AbortController(), t = setTimeout(() => ctrl.abort(), (cfg.geminiMaxSek || 8) * 1000);
     try {
       const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent`, {
@@ -94,9 +100,10 @@ export function geminiStimme({ dir, cacheDir, cfg }) {
       return trimmen(pcmAus(Buffer.from(d, 'base64')));
     } finally { clearTimeout(t); }
   }
-  const gDatei = (text, gefuehl) => path.join(cacheDir, 'g_' + md5(`leda1|${stimme}|${gefuehl}|${text}`) + '.pcm');
-  const gAlt = (text, gefuehl) => MODELLE.map(m => path.join(cacheDir, 'g_' + md5(`gemini1|${m}|${stimme}|${gefuehl}|${text}`) + '.pcm'));   // Speicher älterer Versionen
-  const gemerkt = (text, gefuehl) => lesePcm(gDatei(text, gefuehl)) || gAlt(text, gefuehl).map(lesePcm).find(Boolean) || null;
+  const gDatei = (text, gefuehl) => path.join(cacheDir, 'g_' + md5(`leda2|${stimme}|${gefuehl}|${text}`) + '.pcm');
+  const gemerkt = (text, gefuehl) => lesePcm(gDatei(text, gefuehl));
+  // Alte Aufnahmen (konnten vorgelesene Anweisungen enthalten) einmalig löschen
+  try { if (!fs.existsSync(path.join(cacheDir, 'leda2.ok'))) { for (const f of fs.readdirSync(cacheDir)) if (/^g_.*\.pcm$/.test(f)) fs.unlinkSync(path.join(cacheDir, f)); fs.writeFileSync(path.join(cacheDir, 'leda2.ok'), '1'); } } catch {}
 
   // Ein neues Gemini-Stück: freies Modell suchen (Minute + Tag), bei Limit das nächste Modell
   async function geminiNeu(text, gefuehl, warteMs) {
@@ -108,7 +115,15 @@ export function geminiStimme({ dir, cacheDir, cfg }) {
         const m = MODELLE.find(x => nutzbar(x) && restMin(x) > 0);
         if (m) {
           zaehlen(m);
-          try { const pcm = await geminiAnfrage(m, text, gefuehl); speichere(gDatei(text, gefuehl), pcm); return pcm; }
+          try {
+            let pcm = await geminiAnfrage(m, text, gefuehl, STIL_MODELLE.includes(m));
+            if (zuLang(pcm, text)) {                            // etwas dazugesprochen → einmal nur mit reinem Text
+              if (!nutzbar(m) || restMin(m) < 1) throw new Error('Aufnahme verworfen (zu lang)');
+              zaehlen(m); pcm = await geminiAnfrage(m, text, gefuehl, false);
+              if (zuLang(pcm, text)) throw new Error('Aufnahme verworfen (zu lang)');
+            }
+            speichere(gDatei(text, gefuehl), pcm); return pcm;
+          }
           catch (e) {
             if (e.status === 429) {
               const tag = (e.warteSek || 0) > 600 || /per.?day|PerDay|daily/i.test(e.text || '');
