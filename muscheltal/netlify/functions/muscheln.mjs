@@ -271,8 +271,9 @@ export default async (req) => {
     if (vers >= 10) return json({ ok: false, grund: "versuche" });
     const c = CODES.find(c => c.code === k && heute >= c.von && heute <= c.bis);
     if (!c) { await store.set(vk, String(vers + 1)); return json({ ok: false, grund: "falsch" }); }
-    const ok = await setze("code", k, c.muscheln);
-    return json({ ok, grund: ok ? null : "schon", betrag: c.muscheln });
+    const betrag = 2 + (crypto.getRandomValues(new Uint32Array(1))[0] % 9);// zufällig 2–10 Muscheln, jede Zahl gleich wahrscheinlich
+    const ok = await setze("code", k, betrag);
+    return json({ ok, grund: ok ? null : "schon", betrag });
   }
   if (act === "tresor") {
     const pre = "b/" + nm + "/tresor/einmal/";
