@@ -21,7 +21,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-16 g';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-16 h';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -182,19 +182,30 @@ function eventAntwort(p, t, probe) {
 }
 // ---------- Leuchtturm-Rennen: Wer seine Stadt schreibt, baut am Leuchtturm seiner Stadt mit ----------
 // Stadt einmal wählen (Name in den Chat). Danach macht jeder Kommentar den Turm 1 Stockwerk höher – pro Person höchstens alle 30 s.
-let turmErster = null, turmAnsage = 0, turmNeuAnsage = 0;
+let turmErster = null, turmAnsage = 0, turmNeuAnsage = 0, turmUpAnsage = 0;
+// Je höher, desto mehr Neues am Turm (dieselbe Liste zeichnet die Seite)
+const TURM_UPGRADES = [[10, 'eine Fahne'], [25, 'leuchtende Fenster'], [50, 'eine goldene Galerie'], [100, 'den ersten Farbring'], [150, 'einen Möwenschwarm'],
+  [250, 'ein buntes Leuchtfeuer'], [400, 'Funkelsterne'], [500, 'die Wolken'], [750, 'einen Regenbogen'], [1000, 'eine goldene Krone'], [1500, 'einen Hubschrauber'],
+  [2000, 'eine Diamant-Spitze'], [3000, 'Mond und Sterne'], [5000, 'eine Rakete'], [7500, 'ein Nordlicht'], [10000, 'Planetenringe']];
+function turmWachsen(s, um) {
+  const vorher = s.stock; s.stock += um;
+  const up = TURM_UPGRADES.filter(([n]) => vorher < n && s.stock >= n).pop();
+  if (!up) return;
+  sende({ typ: 'turmUpgrade', stadt: s.name, stock: up[0], was: up[1] });
+  if (Date.now() - turmUpAnsage > 30000) { turmUpAnsage = Date.now(); sag(`${s.name} hat jetzt ${up[1]} am Leuchtturm!`, 3); }
+}
 function turmKommentar(p, text) {
   S.staedte ||= {};
   const st = stadtAus(text), jetzt = Date.now();
   if (st && !p.stadt) {
     p.stadt = st; p.stadtZeit = jetzt;
-    const s = S.staedte[st] ||= { name: st, stock: 0, leute: 0 }; s.leute++; s.stock++;
+    const s = S.staedte[st] ||= { name: st, stock: 0, leute: 0 }; s.leute++; turmWachsen(s, 1);
     sende({ typ: 'turmNeu', stadt: st, name: p.name, neu: s.leute === 1 });
     if (s.leute === 1 && jetzt - turmNeuAnsage > 30000) { turmNeuAnsage = jetzt; sag(`Ein neuer Leuchtturm für ${st}!`, 3); }
     geaendert = true; turmFuehrung(); return;
   }
   if (!p.stadt || jetzt - (p.stadtZeit || 0) < (CFG.turmSek ?? 30) * 1000) return;
-  p.stadtZeit = jetzt; (S.staedte[p.stadt] ||= { name: p.stadt, stock: 0, leute: 1 }).stock++;
+  p.stadtZeit = jetzt; turmWachsen(S.staedte[p.stadt] ||= { name: p.stadt, stock: 0, leute: 1 }, 1);
   geaendert = true; turmFuehrung();
 }
 function turmFuehrung() {
@@ -206,7 +217,12 @@ function turmFuehrung() {
 }
 setTimeout(() => { turmErster = Object.values(S.staedte || {}).sort((a, b) => b.stock - a.stock)[0]?.name || null; }, 0);
 // Kamera schaut alle 3 Minuten kurz bei den Leuchttürmen vorbei
-setInterval(() => { if (Object.keys(S.staedte || {}).length && !EV.laeuft()) sende({ typ: 'kameraTurm' }); }, 180000);
+let turmErklaert = 0;
+setInterval(() => {
+  if (EV.laeuft()) return;
+  sende({ typ: 'kameraTurm' });
+  if (Date.now() - turmErklaert > 6 * 60000) { turmErklaert = Date.now(); sag('Leuchtturm-Rennen! … Schreibt eure Stadt in den Chat, dann wächst ihr Leuchtturm. … Welche Stadt gewinnt?', 3); }
+}, 180000);
 
 function kommentar(u, text) {
   const id0 = String(u.uniqueId || '').toLowerCase(), t = String(text || '').toLowerCase().trim();

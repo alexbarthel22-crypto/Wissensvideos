@@ -343,9 +343,10 @@ function ereignis(e) {
     case 'folgeAufruf': banner.push({ t: 0, oben: '🐚 Gefällt dir Muschel-Tal?', unten: 'Folg gern @muscheltal', farbe: TUERKIS }); break;
     case 'kamera': if (pl) fokus(pl, e.ms || 15000); break;
     case 'feuerwerk': feuerwerk(); break;
-    case 'kameraTurm': { const l = S.staedte || []; if (l.length) turmBlick(l[0].name, 9000); break; }
+    case 'kameraTurm': { const l = S.staedte || []; banner.push({ t: 0, oben: '🗼 Leuchtturm-Rennen', unten: 'Schreib deine Stadt in den Chat – welche Stadt gewinnt?', farbe: '#3f8fe0', dauer: 5 }); if (l.length) turmBlick(l[0].name, 9000); break; }
     case 'turmNeu': { banner.push({ t: 0, oben: `🗼 ${e.name}`, unten: e.neu ? `baut den ersten Leuchtturm für ${e.stadt}!` : `baut mit am Leuchtturm von ${e.stadt}`, farbe: '#3f8fe0' });
       if (e.neu) setTimeout(() => turmBlick(e.stadt, 6000), 600); break; }
+    case 'turmUpgrade': banner.push({ t: 0, oben: `🗼 ${e.stadt}: ${e.stock.toLocaleString('de-DE')} Stockwerke!`, unten: `Neu am Leuchtturm: ${e.was}`, farbe: '#3f8fe0', dauer: 4 }); setTimeout(() => turmBlick(e.stadt, 6000), 400); break;
     case 'turmFuehrung': banner.unshift({ t: 0, oben: `🗼 ${e.stadt} führt!`, unten: 'im Leuchtturm-Rennen', farbe: '#e0b43a', dauer: 4 }); break;
     case 'kameraBau': { const gp = GP((S.fertig || []).length); if (gp) fokus({ x: gp.x, y: gp.y - 20 }, e.ms || 8000); break; }
     case 'ballonPlatzt': for (let i = 0; i < 18; i++) fx.push({ x: IX + (Math.random() - .5) * 500, y: IY - 200 + (Math.random() - .5) * 300, vx: (Math.random() - .5) * 8, vy: (Math.random() - .5) * 8, t: performance.now(), z: ['🎉', '✨', '💥'][i % 3], s: 22 }); break;
@@ -814,7 +815,7 @@ function turmPlaetze(n) {
 // Kamera so, dass der ganze Turm samt Schild zwischen Kopfbereich und unterem Rand steht
 function turmBlick(name, ms) {
   const l = S.staedte || [], st = l.find(x => x.name === name), p0 = st && turmPos(name); if (!p0) return;
-  const h = turmHoehe(st.stock), oben = p0.y - h - 70, unten = p0.y + 20, sOben = KOPF_UNTEN + 120, sUnten = H - 70;
+  const h = turmHoehe(st.stock), oben = p0.y - h - 110 * Math.max(1, h / 170), unten = p0.y + 20, sOben = KOPF_UNTEN + 120, sUnten = H - 70;
   const z = Math.max(1.1, Math.min(3.2, (sUnten - sOben) / (unten - oben))), mitteWelt = (oben + unten) / 2, mitteSchirm = (sOben + sUnten) / 2;
   fokus({ x: p0.x, y: mitteWelt - (mitteSchirm - MITTE_Y) / z + 30 }, ms, true, z);
 }
@@ -824,7 +825,15 @@ function leuchttuerme(t) {
   const pl = turmPlaetze(l.length), c = X;
   l.forEach((st, i) => {
     const { x, y } = pl[i], h = turmHoehe(st.stock), w0 = 30 + h * .05, w1 = 18 + h * .025, oben = y - h, wolke = h >= TURM_MAX;
-    if (!sichtbar(x, y - h / 2, h / 2 + 80)) return;
+    if (!sichtbar(x, y - h / 2, h / 2 + 160)) return;
+    const n = st.stock, ks = Math.max(1, h / 170), um = () => { c.save(); c.translate(x, oben); c.scale(ks, ks); c.translate(-x, -oben); };
+    // ---- Upgrades hinter dem Turm ----
+    um();
+    if (n >= 7500) { c.save(); c.globalAlpha = .35 + Math.sin(t * .002 + i) * .1; ['#7fffd4', '#9b5de5', '#3fa0e8'].forEach((f, k) => { c.strokeStyle = f; c.lineWidth = 10; c.beginPath(); for (let q = 0; q <= 20; q++) { const xx = x - 120 + q * 12, yy = oben - 60 - k * 16 + Math.sin(q * .6 + t * .003 + k) * 10; q ? c.lineTo(xx, yy) : c.moveTo(xx, yy); } c.stroke(); }); c.restore(); }   // Nordlicht
+    if (n >= 750) { c.save(); c.globalAlpha = .55; ['#e8433c', '#ff8a2a', '#ffd23f', '#57b85a', '#3fa0e8', '#9b5de5'].forEach((f, k) => { c.strokeStyle = f; c.lineWidth = 5; c.beginPath(); c.arc(x, oben + 60, 70 - k * 5, Math.PI * 1.08, Math.PI * 1.92); c.stroke(); }); c.restore(); }   // Regenbogen
+    if (n >= 3000) { c.fillStyle = '#fff6c8'; c.beginPath(); c.arc(x + 82, oben - 40, 13, 0, 7); c.fill(); c.fillStyle = 'rgba(0,0,0,.08)'; c.beginPath(); c.arc(x + 86, oben - 43, 10, 0, 7); c.fill();
+      for (let k = 0; k < 7; k++) stern(c, x - 60 + ((k * 37) % 120), oben - 90 + ((k * 23) % 40), 3 + Math.sin(t * .004 + k) * 2); }   // Mond und Sterne
+    c.restore();
     // Felsen im Wasser
     c.fillStyle = 'rgba(255,255,255,.35)'; c.beginPath(); c.ellipse(x, y + 6, 34 + Math.sin(t * .003 + i) * 2, 10, 0, 0, 7); c.fill();
     c.fillStyle = '#8b8f8a'; c.beginPath(); c.ellipse(x, y, 20 + w0 * .6, 11, 0, 0, 7); c.fill(); c.fillStyle = '#a6aaa4'; c.beginPath(); c.ellipse(x - 5, y - 3, 16, 6, 0, 0, 7); c.fill();
@@ -835,22 +844,34 @@ function leuchttuerme(t) {
     for (let r = 0; r < ringe; r++) { c.fillStyle = RF[r % RF.length]; c.fillRect(x - w0, oben + 26 + r * 9, w0 * 2, 5); }
     c.restore();
     c.strokeStyle = INK; c.lineWidth = 2; c.beginPath(); c.moveTo(x - w0 / 2, y); c.lineTo(x - w1 / 2, oben + 14); c.moveTo(x + w0 / 2, y); c.lineTo(x + w1 / 2, oben + 14); c.stroke();
-    // Galerie + Laterne
-    c.fillStyle = INK; c.fillRect(x - w1 / 2 - 4, oben + 12, w1 + 8, 4);
+    // Fenster (ab 25) – am Schaft, nicht skaliert
+    if (n >= 25) { c.fillStyle = '#ffe9a8'; for (let yy = y - 40; yy > oben + 50; yy -= 70) { const b = w0 - (w0 - w1) * (y - yy) / h; c.fillRect(x - 3, yy - 6, 6, 9); } }
+    // Galerie + Laterne (ab 50 golden) – ab hier wächst die Spitze mit dem Turm mit
+    um();
+    c.fillStyle = n >= 50 ? '#e0b43a' : INK; c.fillRect(x - w1 / 2 - 4, oben + 12, w1 + 8, 4);
     c.fillStyle = '#ffe9a8'; c.fillRect(x - 6, oben - 2, 12, 14); c.strokeStyle = INK; c.lineWidth = 1.5; c.strokeRect(x - 6, oben - 2, 12, 14);
     c.fillStyle = st.stock >= 1000 ? '#e0b43a' : '#e8433c'; c.beginPath(); c.moveTo(x - 9, oben - 2); c.lineTo(x, oben - 13); c.lineTo(x + 9, oben - 2); c.closePath(); c.fill(); c.stroke();
+    if (n >= 2000) { const fl = .6 + Math.sin(t * .008 + i) * .4; c.fillStyle = `rgba(200,240,255,${.7 + fl * .3})`; c.beginPath(); c.moveTo(x, oben - 34); c.lineTo(x - 5, oben - 22); c.lineTo(x, oben - 13); c.lineTo(x + 5, oben - 22); c.closePath(); c.fill(); c.strokeStyle = '#fff'; c.lineWidth = 1; c.stroke(); stern(c, x + 4, oben - 32, 3 * fl + 1); }   // Diamant-Spitze
+    if (n >= 10 && n < 2000) { c.strokeStyle = INK; c.lineWidth = 1.2; c.beginPath(); c.moveTo(x, oben - 13); c.lineTo(x, oben - 30); c.stroke(); c.fillStyle = ['#3fa0e8', '#57b85a', '#ff8a2a', '#ff6fa3'][i % 4]; c.beginPath(); c.moveTo(x, oben - 30); c.lineTo(x + 13, oben - 26 + Math.sin(t * .006 + i) * 2); c.lineTo(x, oben - 22); c.closePath(); c.fill(); }   // Fahne
     if (st.stock >= 1000) { c.fillStyle = '#ffd23f'; for (let z = -1; z <= 1; z++) { c.beginPath(); c.moveTo(x + z * 6 - 3, oben - 13); c.lineTo(x + z * 6, oben - 21); c.lineTo(x + z * 6 + 3, oben - 13); c.fill(); } }
     // Leuchtfeuer: strahlt stärker, je höher der Turm
     const g = Math.min(1, .35 + Math.log10(1 + st.stock) / 4), dreh = t * .0015 + i;
     c.save(); c.globalCompositeOperation = 'lighter'; c.globalAlpha = .55 * g; c.drawImage(GLUT, x - 28 * (1 + g), oben + 5 - 28 * (1 + g), 56 * (1 + g), 56 * (1 + g));
-    c.globalAlpha = .18 * g; c.fillStyle = '#fff3b0'; c.beginPath(); c.moveTo(x, oben + 5); c.lineTo(x + Math.cos(dreh) * 160, oben + 5 + Math.sin(dreh) * 30 - 18); c.lineTo(x + Math.cos(dreh) * 160, oben + 5 + Math.sin(dreh) * 30 + 18); c.closePath(); c.fill(); c.restore();
+    c.globalAlpha = (n >= 250 ? .26 : .18) * g; c.fillStyle = n >= 250 ? `hsl(${(t * .05 + i * 60) % 360},90%,70%)` : '#fff3b0'; c.beginPath(); c.moveTo(x, oben + 5); c.lineTo(x + Math.cos(dreh) * 160, oben + 5 + Math.sin(dreh) * 30 - 18); c.lineTo(x + Math.cos(dreh) * 160, oben + 5 + Math.sin(dreh) * 30 + 18); c.closePath(); c.fill(); c.restore();
+    // ---- Upgrades an der Spitze ----
+    if (n >= 150) { c.strokeStyle = '#fff'; c.lineWidth = 1.6; for (let k = 0; k < 3; k++) { const a = t * .0012 + k * 2.1 + i, mx = x + Math.cos(a) * 45, my = oben + 10 + Math.sin(a) * 14, f = Math.sin(t * .02 + k) * 3; c.beginPath(); c.moveTo(mx - 6, my - f); c.quadraticCurveTo(mx - 3, my - 4, mx, my); c.quadraticCurveTo(mx + 3, my - 4, mx + 6, my - f); c.stroke(); } }   // Möwen
+    if (n >= 400) for (let k = 0; k < 5; k++) { const ph = (t * .0013 + k * .23 + i) % 1; stern(c, x + Math.cos(k * 1.3) * 34, oben - 4 + Math.sin(k * 2.1) * 20, Math.sin(ph * Math.PI) * 5); }   // Funkelsterne
+    if (n >= 1500) { const a = t * .0009 + i, hx = x + Math.cos(a) * 70, hy = oben - 10 + Math.sin(a * 2) * 12; c.fillStyle = '#e8433c'; c.beginPath(); c.ellipse(hx, hy, 9, 5, 0, 0, 7); c.fill(); c.fillStyle = '#9fe3f0'; c.beginPath(); c.ellipse(hx + 3, hy - 1, 3.5, 3, 0, 0, 7); c.fill(); c.fillStyle = INK; c.fillRect(hx - 14, hy - 1, 6, 2); c.fillRect(hx - 9, hy - 9, 1.5, 4); const r = Math.sin(t * .05) * 12; c.fillRect(hx - r, hy - 10, r * 2, 1.5); }   // Hubschrauber
+    if (n >= 5000) { const ph = (t * .00025 + i * .3) % 1, ry = oben - 30 - ph * 260; c.save(); c.globalAlpha = 1 - ph; c.fillStyle = '#fff'; c.beginPath(); c.moveTo(x + 60, ry - 14); c.lineTo(x + 54, ry); c.lineTo(x + 66, ry); c.closePath(); c.fill(); c.fillStyle = '#e8433c'; c.fillRect(x + 56, ry, 8, 10); c.fillStyle = '#ff8a2a'; c.beginPath(); c.moveTo(x + 56, ry + 10); c.lineTo(x + 60, ry + 22 + Math.random() * 6); c.lineTo(x + 64, ry + 10); c.fill(); c.restore(); }   // Rakete
+    if (n >= 10000) { c.save(); c.strokeStyle = 'rgba(255,214,120,.8)'; c.lineWidth = 3; c.beginPath(); c.ellipse(x, oben - 4, 46, 11, -.15, 0, 7); c.stroke(); c.restore(); }   // Planetenring
     // Ganz hoch: Wolken um die Spitze
     if (wolke) { for (let k = 0; k < 6; k++) { const wx = x - 55 + k * 22 + Math.sin(t * .001 + k) * 4, wy = oben + 48 + (k % 2) * 9; c.fillStyle = 'rgba(120,140,170,.35)'; c.beginPath(); c.ellipse(wx + 3, wy + 5, 24, 12, 0, 0, 7); c.fill(); c.fillStyle = '#ffffff'; c.beginPath(); c.ellipse(wx, wy, 24, 12, 0, 0, 7); c.fill(); } }
     // Name + Stockwerke (gut lesbar)
     X.font = schrift(900, 18); const bw = Math.max(X.measureText(`${i + 1}. ${st.name}`).width, 96) + 26;
-    c.fillStyle = 'rgba(42,27,18,.85)'; rr(x - bw / 2, oben - 66, bw, 42, 14); c.fill(); c.strokeStyle = i ? '#fff' : '#ffd23f'; c.lineWidth = 2; c.stroke();
-    text(`${i + 1}. ${st.name}`, x, oben - 50, 18, i ? '#fff' : GELB, 'center', 900, 190);
-    text(`${st.stock.toLocaleString('de-DE')} Stockwerke`, x, oben - 33, 12, '#fff', 'center', 800, 190);
+    c.fillStyle = 'rgba(42,27,18,.85)'; rr(x - bw / 2, oben - 80, bw, 42, 14); c.fill(); c.strokeStyle = i ? '#fff' : '#ffd23f'; c.lineWidth = 2; c.stroke();
+    text(`${i + 1}. ${st.name}`, x, oben - 64, 18, i ? '#fff' : GELB, 'center', 900, 190);
+    text(`${st.stock.toLocaleString('de-DE')} Stockwerke`, x, oben - 47, 12, '#fff', 'center', 800, 190);
+    c.restore();
   });
 }
 
@@ -1685,7 +1706,7 @@ function kopf(t) {
   }
   karte(SL, y3, lw, 156, '#fff3c4', 28);
   if (seite === seiten - 1 && (S.staedte || []).length) {
-    text('🗼 Leuchtturm-Rennen', SL + 22, y3 + 28, 27, INK, 'left', 900, lw - 44);
+    text('🗼 Welche Stadt gewinnt?', SL + 22, y3 + 28, 27, INK, 'left', 900, lw - 44);
     (S.staedte || []).slice(0, 3).forEach((st, k) => { const y = y3 + 66 + k * 34;
       text(`${k + 1}. ${st.name}`, SL + 22, y, 24, INK, 'left', 800, 280); text(`${st.stock.toLocaleString('de-DE')} 🏢`, SL + lw - 22, y, 23, INK, 'right', 900, 200); });
   } else if (seite === 3 && S.projekt) {
@@ -1708,7 +1729,7 @@ function kopf(t) {
       text(`${m} 🐚`, SL + lw - 22, y, 22, INK, 'right', 900, 114);
     });
   } else {
-    [['🏆', 'Events = bis 60 🐚 fürs Haus'], ['🗼', 'Schreib deine Stadt = Leuchtturm'], ['🏠', 'Schreib „haus“ = dein Haus sehen']].forEach(([i, s], k) => {
+    [['🏆', 'Events = bis 60 🐚 fürs Haus'], ['🗼', 'Deine Stadt schreiben = Turm wächst'], ['🏠', 'Schreib „haus“ = dein Haus sehen']].forEach(([i, s], k) => {
       text(i, SL + 16, y3 + 32 + k * 45, 27, INK, 'left', 400); text(s, SL + 58, y3 + 32 + k * 45, 26, INK, 'left', 800, lw - 78);
     });
   }

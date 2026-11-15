@@ -662,7 +662,7 @@ export function macheEvents(api) {
 
   function starte(id) {
     const d = DEFS[id]; ev = { id, d, t0: Date.now(), ende: Date.now() + d.dauer * 1000 }; ergebnis = null;
-    naechstes = Date.now() + MIN;                           // fester Takt: alle 2 Minuten ein Event (von Start zu Start)
+    naechstes = Date.now() + MIN;                           // fester Takt: alle 3 Minuten ein Event (von Start zu Start)
     const ansage = d.start(ev); verlauf = [id, ...verlauf].slice(0, 12);
     api.sende({ typ: 'eventStart', id });
     api.sag(ansage, 0); if (PREIS[id]) api.sag(PREIS[id], 0); api.zustand();   // zwei kurze Sätze statt einem langen
