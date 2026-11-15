@@ -730,7 +730,9 @@ export function macheEvents(api) {
     ev = null; naechstes = Math.max(naechstes, Date.now() + 20000); api.zustand();
   }
   // Jedes dritte Event ist ein Leuchtturm-Event – das erste schon als 2. Event nach dem Start, immer in derselben Reihenfolge
-  const TURM_FOLGE = ['staedteneu', 'baukolonne', 'staedteduell', 'leuchtsignal', 'turmquiz', 'aufholjagd'];
+  // Pro Stream (Programmstart) neu gemischt: „Neue Städte willkommen“ immer zuerst, die anderen fünf in zufälliger Reihenfolge –
+  // innerhalb des Streams wiederholt sich diese Reihenfolge dann immer gleich
+  const TURM_FOLGE = ['staedteneu', ...['baukolonne', 'staedteduell', 'leuchtsignal', 'turmquiz', 'aufholjagd'].sort(() => Math.random() - .5)];
   let eventZahl = 0, turmNr = 0;
   function waehle() {
     eventZahl++;
