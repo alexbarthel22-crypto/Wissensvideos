@@ -343,7 +343,7 @@ function ereignis(e) {
     case 'folgeAufruf': banner.push({ t: 0, oben: '🐚 Gefällt dir Muschel-Tal?', unten: 'Folg gern @muscheltal', farbe: TUERKIS }); break;
     case 'kamera': if (pl) fokus(pl, e.ms || 15000); break;
     case 'feuerwerk': feuerwerk(); break;
-    case 'kameraTurm': { const l = S.staedte || []; banner.push({ t: 0, oben: '🗼 Leuchtturm-Rennen', unten: 'Schreib deine Stadt in den Chat – welche Stadt gewinnt?', farbe: '#3f8fe0', dauer: 5 }); if (l.length) turmBlick(l[0].name, 9000); break; }
+    case 'kameraTurm': { const l = S.staedte || []; banner.push({ t: 0, oben: '🗼 Leuchtturm-Rennen', unten: 'Schreib deine Stadt in den Chat – welche Stadt gewinnt?', farbe: '#3f8fe0', dauer: 5 }); turmBlick(l.length ? l[0].name : 'Deine Stadt?', 9000); break; }
     case 'turmNeu': { banner.push({ t: 0, oben: `🗼 ${e.name}`, unten: e.neu ? `baut den ersten Leuchtturm für ${e.stadt}!` : `baut mit am Leuchtturm von ${e.stadt}`, farbe: '#3f8fe0' });
       if (e.neu) setTimeout(() => turmBlick(e.stadt, 6000), 600); break; }
     case 'turmUpgrade': banner.push({ t: 0, oben: `🗼 ${e.stadt}: ${e.stock.toLocaleString('de-DE')} Stockwerke!`, unten: `Neu am Leuchtturm: ${e.was}`, farbe: '#3f8fe0', dauer: 4 }); setTimeout(() => turmBlick(e.stadt, 6000), 400); break;
@@ -820,14 +820,14 @@ function turmPlaetze(n) {
 }
 // Kamera so, dass der ganze Turm samt Schild zwischen Kopfbereich und unterem Rand steht
 function turmBlick(name, ms) {
-  const l = S.staedte || [], st = l.find(x => x.name === name), p0 = st && turmPos(name); if (!p0) return;
+  const l = (S.staedte || []).length ? S.staedte : [{ name: 'Deine Stadt?', stock: 0 }], st = l.find(x => x.name === name), p0 = st && turmPos(name); if (!p0) return;
   const h = turmHoehe(st.stock), oben = p0.y - h - 110 * Math.max(1, h / 170), unten = p0.y + 20, sOben = KOPF_UNTEN + 120, sUnten = H - 70;
   const z = Math.max(1.1, Math.min(3.2, (sUnten - sOben) / (unten - oben))), mitteWelt = (oben + unten) / 2, mitteSchirm = (sOben + sUnten) / 2;
   fokus({ x: p0.x, y: mitteWelt - (mitteSchirm - MITTE_Y) / z + 30 }, ms, true, z);
 }
-function turmPos(name) { const l = S.staedte || [], i = l.findIndex(x => x.name === name); return i < 0 ? null : turmPlaetze(l.length)[i]; }
+function turmPos(name) { const l = (S.staedte || []).length ? S.staedte : [{ name: 'Deine Stadt?', stock: 0 }], i = l.findIndex(x => x.name === name); return i < 0 ? null : turmPlaetze(l.length)[i]; }
 function leuchttuerme(t) {
-  const l = S.staedte || []; if (!l.length) return;
+  const l = (S.staedte || []).length ? S.staedte : [{ name: 'Deine Stadt?', stock: 0, leer: true }];
   const pl = turmPlaetze(l.length), c = X;
   const folge = l.map((st, i) => i).sort((a, b) => pl[a].y - pl[b].y);
   folge.forEach(i => { const st = l[i];
@@ -874,10 +874,10 @@ function leuchttuerme(t) {
     // Ganz hoch: Wolken um die Spitze
     if (wolke) { for (let k = 0; k < 6; k++) { const wx = x - 55 + k * 22 + Math.sin(t * .001 + k) * 4, wy = oben + 48 + (k % 2) * 9; c.fillStyle = 'rgba(120,140,170,.35)'; c.beginPath(); c.ellipse(wx + 3, wy + 5, 24, 12, 0, 0, 7); c.fill(); c.fillStyle = '#ffffff'; c.beginPath(); c.ellipse(wx, wy, 24, 12, 0, 0, 7); c.fill(); } }
     // Name + Stockwerke (gut lesbar)
-    X.font = schrift(900, 18); const bw = Math.max(X.measureText(`${i + 1}. ${st.name}`).width, 96) + 26;
+    X.font = schrift(900, 18); const bw = Math.max(X.measureText(st.leer ? '🗼 Deine Stadt?' : `${i + 1}. ${st.name}`).width, 150) + 26;
     c.fillStyle = 'rgba(42,27,18,.85)'; rr(x - bw / 2, oben - 80, bw, 42, 14); c.fill(); c.strokeStyle = i ? '#fff' : '#ffd23f'; c.lineWidth = 2; c.stroke();
-    text(`${i + 1}. ${st.name}`, x, oben - 64, 18, i ? '#fff' : GELB, 'center', 900, 190);
-    text(`${st.stock.toLocaleString('de-DE')} Stockwerke`, x, oben - 47, 12, '#fff', 'center', 800, 190);
+    text(st.leer ? '🗼 Deine Stadt?' : `${i + 1}. ${st.name}`, x, oben - 64, 18, i ? '#fff' : GELB, 'center', 900, 190);
+    text(st.leer ? 'Schreib sie in den Chat!' : `${st.stock.toLocaleString('de-DE')} Stockwerke`, x, oben - 47, 12, '#fff', 'center', 800, 190);
     c.restore();
   });
 }
@@ -1695,7 +1695,7 @@ function kopf(t) {
   // Laufendes Event / Ergebnis, sonst Infos (wechselnd) + Countdown zum nächsten Event
   const y3 = y2 + 132, ep = eventPanel(t, y3);
   if (ep) return ep;
-  const seiten = (S.projekt ? 4 : 3) + ((S.staedte || []).length ? 1 : 0);
+  const seiten = (S.projekt ? 4 : 3) + 1;
   if (t - seiteSeit > 7000) { seite = (seite + 1) % seiten; seiteSeit = t; }
   const lw = 540;
   if (S.aufgabe) {                                                // Mini-Aufgabe: gut sichtbar im Infofeld
@@ -1712,8 +1712,9 @@ function kopf(t) {
     return y3 + 156;
   }
   karte(SL, y3, lw, 156, '#fff3c4', 28);
-  if (seite === seiten - 1 && (S.staedte || []).length) {
+  if (seite === seiten - 1) {
     text('🗼 Welche Stadt führt?', SL + 22, y3 + 28, 27, INK, 'left', 900, lw - 44);
+    if (!(S.staedte || []).length) { text('Noch keine Stadt dabei –', SL + 22, y3 + 72, 24, INK, 'left', 800, lw - 44); text('schreib deine in den Chat! 🗼', SL + 22, y3 + 108, 24, INK, 'left', 800, lw - 44); }
     (S.staedte || []).slice(0, 3).forEach((st, k) => { const y = y3 + 66 + k * 34;
       text(`${k + 1}. ${st.name}`, SL + 22, y, 24, INK, 'left', 800, 280); text(`${st.stock.toLocaleString('de-DE')} 🏢`, SL + lw - 22, y, 23, INK, 'right', 900, 200); });
   } else if (seite === 3 && S.projekt) {
