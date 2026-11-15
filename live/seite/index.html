@@ -410,7 +410,8 @@ function kamera(t) {
       // Rundflug (je 11 s): Haus · Leuchtturm · Haus · Leuchtturm-Panorama (weiter weg) · Haus · Leuchtturm · Muschelplatz · Leuchtturm-Panorama
       tourBis = t + 11000; tourModus = (tourModus + 1) % 8;
       const bewohnt = S.spieler.map(platzVon).filter(Boolean), l = S.staedte || [];
-      if (tourModus === 3 || tourModus === 7) turmPanorama(11000);
+      if (!S.turmAn) { if (bewohnt.length && tourModus % 4) { const pl = bewohnt[Math.floor(Math.random() * bewohnt.length)]; Object.assign(ZIEL, { x: pl.x, y: pl.y - 20, z: NAH }); } else Object.assign(ZIEL, { x: IX, y: IY + 40, z: NAH * .8 }); }
+      else if (tourModus === 3 || tourModus === 7) turmPanorama(11000);
       else if (tourModus % 2 === 1) turmBlick(l.length ? l[Math.floor(Math.random() * Math.min(10, l.length))].name : 'Deine Stadt?', 11000);
       else if (bewohnt.length && tourModus !== 6) { const pl = bewohnt[Math.floor(Math.random() * bewohnt.length)]; Object.assign(ZIEL, { x: pl.x, y: pl.y - 20, z: NAH }); }
       else Object.assign(ZIEL, { x: IX, y: IY + 40, z: NAH * .8 });
@@ -840,6 +841,7 @@ function turmPanorama(ms) {
 }
 function turmPos(name) { const l = (S.staedte || []).length ? S.staedte : [{ name: 'Deine Stadt?', stock: 0 }], i = l.findIndex(x => x.name === name); return i < 0 ? null : turmPlaetze(l.length)[i]; }
 function leuchttuerme(t) {
+  if (!S.turmAn) return;                                          // Leuchtturm-Rennen ausgeschaltet
   const l = (S.staedte || []).length ? S.staedte : [{ name: 'Deine Stadt?', stock: 0, leer: true }];
   const pl = turmPlaetze(l.length), c = X;
   const folge = l.map((st, i) => i).sort((a, b) => pl[a].y - pl[b].y);
@@ -1708,7 +1710,7 @@ function kopf(t) {
   // Laufendes Event / Ergebnis, sonst Infos (wechselnd) + Countdown zum nächsten Event
   const y3 = y2 + 132, ep = eventPanel(t, y3);
   if (ep) return ep;
-  const seiten = (S.projekt ? 4 : 3) + 1;
+  const seiten = (S.projekt ? 4 : 3) + (S.turmAn ? 1 : 0);
   if (t - seiteSeit > 7000) { seite = (seite + 1) % seiten; seiteSeit = t; }
   const lw = 540;
   if (S.aufgabe) {                                                // Mini-Aufgabe: gut sichtbar im Infofeld
@@ -1725,7 +1727,7 @@ function kopf(t) {
     return y3 + 156;
   }
   karte(SL, y3, lw, 156, '#fff3c4', 28);
-  if (seite === seiten - 1) {
+  if (S.turmAn && seite === seiten - 1) {
     text('🗼 Welche Stadt führt?', SL + 22, y3 + 28, 27, INK, 'left', 900, lw - 44);
     if (!(S.staedte || []).length) { text('Noch keine Stadt dabei –', SL + 22, y3 + 72, 24, INK, 'left', 800, lw - 44); text('schreib deine in den Chat! 🗼', SL + 22, y3 + 108, 24, INK, 'left', 800, lw - 44); }
     (S.staedte || []).slice(0, 3).forEach((st, k) => { const y = y3 + 66 + k * 34;
@@ -1750,7 +1752,7 @@ function kopf(t) {
       text(`${m} 🐚`, SL + lw - 22, y, 22, INK, 'right', 900, 114);
     });
   } else {
-    [['🏆', 'Events = bis 60 🐚 fürs Haus'], ['🗼', 'Deine Stadt schreiben = Turm wächst'], ['🏠', 'Schreib „haus“ = dein Haus sehen']].forEach(([i, s], k) => {
+    [['🏆', 'Events = bis 60 🐚 fürs Haus'], S.turmAn ? ['🗼', 'Deine Stadt schreiben = Turm wächst'] : ['💬', 'Erster Kommentar = dein Zelt'], ['🏠', 'Schreib „haus“ = dein Haus sehen']].forEach(([i, s], k) => {
       text(i, SL + 16, y3 + 32 + k * 45, 27, INK, 'left', 400); text(s, SL + 58, y3 + 32 + k * 45, 26, INK, 'left', 800, lw - 78);
     });
   }

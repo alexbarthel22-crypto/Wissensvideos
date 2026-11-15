@@ -21,7 +21,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-16 u';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-16 v';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -182,6 +182,7 @@ function eventAntwort(p, t, probe) {
 }
 // ---------- Leuchtturm-Rennen: Wer seine Stadt schreibt, baut am Leuchtturm seiner Stadt mit ----------
 // Stadt einmal wählen (Name in den Chat). Danach macht jeder Kommentar den Turm 1 Stockwerk höher – pro Person höchstens alle 30 s.
+const TURM_AN = CFG.leuchtturm?.an !== false;             // aus: nichts davon im Stream, gespeicherte Städte bleiben
 let turmErster = null, turmAnsage = 0, turmNeuAnsage = 0, turmUpAnsage = 0;
 // Je höher, desto mehr Neues am Turm (dieselbe Liste zeichnet die Seite)
 const TURM_UPGRADES = [[10, 'eine Fahne'], [25, 'leuchtende Fenster'], [50, 'eine goldene Galerie'], [100, 'den ersten Farbring'], [150, 'einen Möwenschwarm'],
@@ -222,6 +223,7 @@ setTimeout(() => { turmErster = Object.values(S.staedte || {}).sort((a, b) => b.
 let turmErklaert = 0, turmBesuchFaellig = Date.now() + 60000;
 let turmEventBlick = 0;
 setInterval(() => {
+  if (!TURM_AN) return;
   // Während eines Leuchtturm-Events bleibt die Kamera bei den Türmen (alle 20 s neu ausgerichtet)
   if (EV.turmEvent?.() && Date.now() - turmEventBlick > 20000) { turmEventBlick = Date.now(); sende({ typ: 'kameraTurm', still: true }); return; }
   if (Date.now() < turmBesuchFaellig || EV.laeuft()) return;
@@ -236,7 +238,7 @@ function kommentar(u, text) {
   // Kein Haus: nur bei Event-Antworten wird eins gebaut (Mitmachen zählt). „haus“ und Farben → Hinweis „erst liken“
   // Wer zum ersten Mal im Chat mitmacht, bekommt sein Zelt (einmalig – kein Tausch, keine Wiederholung nötig)
   const p = spieler(u); if (!p) return;
-  turmKommentar(p, t);
+  if (TURM_AN) turmKommentar(p, t);
   farbeAus(p, t);                                          // Farbe gilt immer – auch wenn das Wort gleichzeitig eine Event-Antwort ist
   if (aufgabeKommentar(p, t)) return;
   if (eventAntwort(p, t)) { geaendert = true; zustand(); return; }   // Event-Antworten (rot, flasche, A, 42 …) – auch mit Satzzeichen/Emoji/im Satz
@@ -931,7 +933,7 @@ function oeffentlich() {
     villen: S.villen, aufgabe: aufgabe && { text: aufgabe.text, rest: Math.max(0, Math.round((aufgabe.bis - Date.now()) / 1000)), stand: aufgabe.art === 'wort' ? aufgabe.gewinner.length : aufgabe.stand, ziel: aufgabe.art === 'wort' ? 5 : aufgabe.ziel, art: aufgabe.art }, musik: MUSIK_DATEIEN.map(f => path.basename(f)),
     jobs: Object.fromEntries(Object.entries(S.jobs).map(([nr, j]) => [nr, S.spieler[j.id]?.name || ''])),
     bewohner, ziel: zielJetzt(), strassen: CFG.strassen,
-    staedte: Object.values(S.staedte || {}).sort((a, b) => b.stock - a.stock).slice(0, 60), tiktokName: CFG.tiktokName, test: TEST, ton: CFG.ton, ort: CFG.ort, bildrate: CFG.bildrate || 30,
+    staedte: TURM_AN ? Object.values(S.staedte || {}).sort((a, b) => b.stock - a.stock).slice(0, 60) : [], turmAn: TURM_AN, tiktokName: CFG.tiktokName, test: TEST, ton: CFG.ton, ort: CFG.ort, bildrate: CFG.bildrate || 30,
   };
 }
 

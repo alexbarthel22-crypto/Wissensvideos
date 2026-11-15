@@ -124,7 +124,9 @@ Rathaus, Schule, Krankenhaus, Feuerwache, Polizeistation, Supermarkt, Kino, Bibl
 Gebäude dürfen mehrfach gebaut werden (noch nicht gebaute kommen bei der Abstimmung zuerst). Bauplätze: zuerst das Stadtzentrum um den Muschelplatz, dann über die ganze Insel verteilt (fest vorgemerkt, Häuser ziehen nie um). Reichen die Plätze nicht, wächst die Insel – bis ca. 60 Gebäude und 1.800 Grundstücke.
 Während des Baus: lebendige Baustelle (Kran mit Last, Krabben-Bauarbeiter, Schubkarre, Betonmischer, Funken, Prozent-Schild); ab und zu fliegt die Kamera hin und Kerstin berichtet. Steigt ein Haus eine Stufe auf: Bau-Animation und Feuerwerk direkt über dem Haus (je höher die Stufe, desto größer). Bei Fertigstellung eines Gebäudes: Bau-Animation (Gerüst, Kran, Krabben, Staub, Gebäude wächst nach oben), dann Feuerwerk.
 
-## Leuchtturm-Rennen
+## Leuchtturm-Rennen (derzeit ausgeschaltet)
+In `einstellungen.json` → `"leuchtturm": { "an": false }`: Im Stream sind keine Türme, Leuchtturm-Events, Ansagen oder Hinweise zu sehen; die gespeicherten Städte und Stockwerke bleiben erhalten. Mit `true` ist alles wieder da.
+
 Wer seine Stadt in den Chat schreibt („Köln“, „aus Hamburg“, „Team Wien“), gehört zu dieser Stadt (einmal wählen). Jeder weitere Kommentar macht den Leuchtturm 1 Stockwerk höher – pro Person höchstens alle 30 s (`turmSek`). Erkannt werden nur Städte aus `staedte.mjs`. Die Türme stehen im Meer links, oben und rechts (nie unten) und werden unter der Insel gezeichnet. Neue Spitzenreiter sagt Leda an; alle 3 Min. fliegt die Kamera kurz zum führenden Turm.
 
 ## Rangliste

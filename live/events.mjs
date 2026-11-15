@@ -739,7 +739,7 @@ export function macheEvents(api) {
   let eventZahl = 0, turmNr = 0;
   function waehle() {
     eventZahl++;
-    if (eventZahl % 2 === 0) for (let k = 0; k < TURM_FOLGE.length; k++) { const id = TURM_FOLGE[turmNr++ % TURM_FOLGE.length]; if (!DEFS[id].moeglich || DEFS[id].moeglich()) return id; }
+    if (CFG.leuchtturm?.an !== false && eventZahl % 2 === 0) for (let k = 0; k < TURM_FOLGE.length; k++) { const id = TURM_FOLGE[turmNr++ % TURM_FOLGE.length]; if (!DEFS[id].moeglich || DEFS[id].moeglich()) return id; }
     const moegl = Object.keys(DEFS).filter(id => !LIKE_EVENTS.has(id) && !TURM_FOLGE.includes(id) && !verlauf.slice(0, 10).includes(id) && (!DEFS[id].moeglich || DEFS[id].moeglich()));
     if (moegl.includes('abstimmung') && Math.random() < .5) return 'abstimmung';
     return zufall(moegl.filter(x => x !== 'abstimmung').length ? moegl.filter(x => x !== 'abstimmung') : moegl);
