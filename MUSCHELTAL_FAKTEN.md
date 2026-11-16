@@ -417,3 +417,10 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - **Karte nicht mehr verzerrt (16.11.):** Die Karte passt ihre Bildgröße automatisch an, sobald sich die Kartenfläche ändert (nicht nur bei Fenster-Resize). Vorher wurde das Bild z. B. auf dem MacBook in die Höhe gezogen (Strandvilla, Hütten, Namen zu lang).
 - **Update 16.11. nachmittags: 773 Einwohner** (Followerliste vom 16.11., 14:38 UTC): 11 neu eingezogen (@emmi.sgb_, @carx_049, @viktoriagrote, @lena.26x, @lea.cl3ve, @rosenrivalin, @bestofklicks, @k3sandrak3, @jason091747, @annezimmer6, @claudia_15_02), 5 ausgezogen (überall entfernt).
 - **Leistung (16.11.):** Karte wird beim Ziehen/Zoomen nicht mehr doppelt gezeichnet; Gebäude-Bilder werden beim Verschieben nur versetzt statt neu gezeichnet (im Stillstand live mit allen Animationen); Berlin-Uhrzeit und Textbreiten werden zwischengespeichert; auf sehr langsamen Geräten senkt die Karte nach einigen Sekunden Ruckeln ihre Pixelzahl leicht (nur dort). Musik wird eine Woche im Browser gespeichert.
+
+## Video Tag 10 (geplant 17.11., `videos/muscheltal-tag10/`)
+- **Start mit Countdown 3 – 2 – 1** (riesig), dann Hook passend zum Thema.
+- **Erste Amtshandlung von Bürgermeisterin @sophia.tsnr** (Nutzer-Screenshot, `assets/img/sophia_amtshandlung.jpg`): „Meine erste Amtshandlung im Amt der Bürgermeisterin von Muschel-Tal wird folgendes sein: **Döner kostet nur noch 2 €!!** Denn jeder sollte in den Genuss eines leckeren Döners kommen!“ ⚠️ Homepage ggf. Dönerbude anpassen (Nutzer entscheidet).
+- **Türsteher im KOK(O)S wird verlost** (Auflösung von „Türsteher gesucht!“ aus Tag 9).
+- Stand laut Nutzer: **787 Bewohner → nur noch 13 bis zum Tierheim Pfotenkuss**.
+- Nutzer überträgt vorher die Änderungen (Jobs/Ämter aus Tag 8/9) auf die Homepage und gibt Bescheid, wann das Video starten soll.
