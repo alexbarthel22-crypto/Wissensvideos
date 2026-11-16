@@ -280,7 +280,7 @@ function ereignis(e) {
       if (S.musik?.length && S.musik.join() !== MUSIK.map(m => m.slice(6)).join()) {   // Musikliste vom Programm übernehmen
         MUSIK = S.musik.map(f => 'musik/' + f); musikFehler = 0; musikNr = Math.floor(Math.random() * MUSIK.length); musik.src = MUSIK[musikNr]; if (tonRolle) musik.play().catch(() => {});
       }
-      if (S.bildrate && !new URLSearchParams(location.search).get('fps')) FPS = Math.max(15, Math.min(30, S.bildrate));
+      if (S.bildrate && !new URLSearchParams(location.search).get('fps')) FPS = Math.min(FPS, MAX_FPS());
       const n = S.spieler.length;
       if (!BASIS || STRASSEN_ALT !== S.strassen.join()) { K = Math.max(K, kFuer(n)); STRASSEN_ALT = S.strassen.join(); basisZeichnen(K); ANZAHL = plaetzeBei(K); spaziergaenger(); }
       else if ((n > ANZAHL || gebPlaetzeBei(K) < gebBedarf((S.fertig || []).length)) && K < K_MAX && !WACHS) wachsen(kFuer(n + 60, (S.fertig || []).length + 4));     // erst wachsen, wenn alles voll ist – dann gleich ein großes Stück
@@ -402,16 +402,16 @@ const cam = { x: IX, y: IY, z: NAH * .8 }, ZIEL = { x: IX, y: IY, z: NAH * .8 };
 let fokusBis = 0, fokusLetzt = 0, tourBis = 0, tourModus = 0;
 function fokus(pl, ms, leise, zoom) {
   const t = performance.now();
-  if (leise && t < fokusBis) return;
-  if (t - fokusLetzt < 1800 && t < fokusBis) return;
+  if (leise && (t < fokusBis || t - fokusLetzt < 12000)) return;   // Nebensachen: höchstens alle 12 s ein Schwenk
+  if (t - fokusLetzt < 4000 && t < fokusBis) return;                // Wichtiges: höchstens alle 4 s
   fokusLetzt = t; fokusBis = t + ms;
-  Object.assign(ZIEL, { x: pl.x, y: pl.y - 30, z: zoom || Math.max(NAH, 3.2) });
+  Object.assign(ZIEL, { x: pl.x, y: pl.y - 30, z: zoom || NAH });
 }
 function kamera(t) {
   if (t > fokusBis) {
     if (t > tourBis) {                                           // immer nah dran (wie ein Kamerakran): langsam von Haus zu Haus, ab und zu der Muschelplatz
       // Rundflug (je 11 s): Haus · Leuchtturm · Haus · Leuchtturm-Panorama (weiter weg) · Haus · Leuchtturm · Muschelplatz · Leuchtturm-Panorama
-      tourBis = t + 16000; tourModus = (tourModus + 1) % 8;
+      tourBis = t + 24000; tourModus = (tourModus + 1) % 8;
       const bewohnt = S.spieler.map(platzVon).filter(Boolean), l = S.staedte || [];
       if (!S.turmAn) { if (bewohnt.length && tourModus % 4) { const pl = bewohnt[Math.floor(Math.random() * bewohnt.length)]; Object.assign(ZIEL, { x: pl.x, y: pl.y - 20, z: NAH }); } else Object.assign(ZIEL, { x: IX, y: IY + 40, z: NAH * .8 }); }
       else if (tourModus === 3 || tourModus === 7) turmPanorama(16000);
@@ -424,6 +424,7 @@ function kamera(t) {
   const dtK = Math.min(100, t - (kamera.letzt || t)); kamera.letzt = t;
   const k = 1 - Math.exp(-dtK / (t < fokusBis ? 1100 : 2600));
   cam.x += (ZIEL.x - cam.x) * k; cam.y += (ZIEL.y - cam.y) * k; cam.z += (ZIEL.z - cam.z) * k;
+  if (Math.abs(ZIEL.x - cam.x) < .25 && Math.abs(ZIEL.y - cam.y) < .25 && Math.abs(ZIEL.z - cam.z) < .002) { cam.x = ZIEL.x; cam.y = ZIEL.y; cam.z = ZIEL.z; }
   X.setTransform(cam.z * Q0, 0, 0, cam.z * Q0, (540 - cam.x * cam.z) * Q0, (MITTE_Y - cam.y * cam.z) * Q0);
 }
 function sichtbar(x, y, r = 120) {                               // nur zeichnen, was im Bild ist
@@ -1942,7 +1943,7 @@ let tLetzt = 0, frameZeit = 0;
 // (das Übersichtsbild BASIS ist ~2× vergrößert und dadurch weich; es dient nur als Platzhalter, bis die Kachel fertig ist)
 const KACHEL_W = 170;                                           // Welt-Einheiten je Kachel (bei Nah-Kamera ≈ 527 Bildpunkte)
 var KACHELN = new Map(), KACHEL = null, KACHEL_WARTE = [], kachelBild = 0;
-const KACHEL_STUFEN = [NAH, 3.2, NAH * .8];                     // Zoom-Stufen der Kamera
+const KACHEL_STUFEN = [NAH, NAH * .8];                          // Zoom-Stufen der Kamera (3,2 ≈ NAH: gleiche Kacheln, weniger Neubauten)
 const kachelStufe = z => KACHEL_STUFEN.reduce((a, b) => Math.abs(b - z) < Math.abs(a - z) ? b : a);
 function kachelBauen(L, ix, iy) {
   const f = L * Q0, x0 = ix * KACHEL_W, y0 = iy * KACHEL_W, n = Math.round(KACHEL_W * f);
@@ -1953,8 +1954,8 @@ function kachelBauen(L, ix, iy) {
   KACHEL = { x0, y0, x1: x0 + KACHEL_W, y1: y0 + KACHEL_W };
   try { inselMalen(b, BASIS_K); } finally { KACHEL = null; [LICHTER, SEG, STR_SCHILDER] = merk; }
   KACHELN.set(L + ':' + ix + ',' + iy, { cv, x0, y0, zuletzt: kachelBild });
-  if (KACHELN.size > 60) {                                      // Speicher klein halten: am längsten ungenutzte Kacheln weg
-    const alt = [...KACHELN.entries()].sort((a, b) => a[1].zuletzt - b[1].zuletzt).slice(0, KACHELN.size - 60);
+  if (KACHELN.size > 90) {                                      // Speicher klein halten: am längsten ungenutzte Kacheln weg
+    const alt = [...KACHELN.entries()].sort((a, b) => a[1].zuletzt - b[1].zuletzt).slice(0, KACHELN.size - 90);
     for (const [k] of alt) KACHELN.delete(k);
   }
 }
@@ -2040,7 +2041,7 @@ function bild(t) {
   requestAnimationFrame(bild);
   if (t - frameZeit < 1000 / FPS - 3) return;                      // höchstens 30 Bilder pro Sekunde
   frameZeit = t;
-  const dt = Math.min(100, t - (tLetzt || t)); tLetzt = t;
+  const dt = Math.min(100, t - (tLetzt || t)); tLetzt = t; const t0 = performance.now();
   meer(t); kamera(t); meerLeben(t);
   leuchttuerme(t);                                                 // Leuchtturm-Rennen: liegt UNTER der Insel – verdeckt sie nie
   if (BASIS) {
@@ -2078,7 +2079,10 @@ function bild(t) {
   }
   X.setTransform(1, 0, 0, 1, 0, 0); { const kh = Math.min(KC.height, Math.ceil((KOPF_UNTEN + 90) * Q0)); X.drawImage(KC, 0, 0, KC.width, kh, 0, 0, KC.width, kh); }
   overlay(t);
+  last.summe += performance.now() - t0; last.n++;
+  if (last.n >= 90) { const ms = last.summe / last.n, ziel = MAX_FPS(); FPS = ms > 28 ? Math.min(ziel, 20) : ms > 20 ? Math.min(ziel, 24) : ms < 12 ? ziel : FPS; last.summe = 0; last.n = 0; }
 }
+const last = { summe: 0, n: 0 }, MAX_FPS = () => +PARAM.get('fps') || Math.max(15, Math.min(30, S.bildrate || 30));
 document.fonts?.load(`400 40px ${TITEL}`).then(() => document.fonts.load(`700 30px ${FONT}`)).then(() => { HC_SIG = ''; STR_BILD = {}; TURM_BREITE.clear(); if (BASIS) { BASIS = null; } }).catch(() => {});
 verbinde();
 if (TONSEITE) {                                                   // Ton-Tab: kein Bild zeichnen (spart Rechenleistung), nur Ton + Statusanzeige

@@ -22,7 +22,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-16 zd';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-16 ze';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -823,13 +823,13 @@ const MODERATION = [
 ];
 const aktiveAnzahl = () => Object.values(S.spieler).filter(p => Date.now() - (p.zuletzt || 0) < 600000).length;
 function baustelleZeigen() {                                // Kamera fliegt zur Baustelle, Kerstin berichtet
-  if (!S.projekt || Date.now() - letzterRundgang < 30000) return null;
+  if (!S.projekt || Date.now() - letzterRundgang < 60000) return null;
   letzterRundgang = Date.now(); sende({ typ: 'kameraBau', ms: 8000 });
   const def = CFG.abstimmung.projekte.find(x => x.id === S.projekt.id) || {};
   return satz('baustelleZeigen', { Projekt: grossKlein(def.der || S.projekt.name), ein: def.ein || S.projekt.name, prozent: Math.floor(S.projekt.stand / S.projekt.ziel * 100), rest: Math.max(0, Math.ceil(S.projekt.ziel - S.projekt.stand)).toLocaleString('de-DE') });
 }
 function rundgang() {                                      // Kamera fliegt zu einem Haus, Kerstin stellt es vor
-  if (Date.now() - letzterRundgang < 40000) return null;
+  if (Date.now() - letzterRundgang < 60000) return null;
   const kand = Object.values(S.spieler).filter(p => !p.gesperrt && Date.now() - (p.zuletzt || 0) < 900000 && p.stufe > 0);
   if (!kand.length) return null;
   const p = kand[Math.floor(Math.random() * kand.length)], st = CFG.stufen[p.stufe].name;
