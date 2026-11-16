@@ -168,8 +168,8 @@ const SAETZE = {
   ],
   hausZeigen: [
     '{name}, hier ist dein Haus!',
-    'Da ist dein Haus, {name}!',
-    'Hier wohnst du, {name}!',
+    'Schau mal, {name}, hier ist dein Haus!',
+    'Hier wohnst du, {name}! … Hier ist dein Haus!',
   ],
   begruessungZurueck: [
     'Willkommen zurück, {name}!',

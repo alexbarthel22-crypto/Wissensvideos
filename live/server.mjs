@@ -22,7 +22,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-16 zb';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-16 zc';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -133,6 +133,13 @@ const namenIn = t => [...GESPROCHENE_NAMEN].filter(n => t.includes(n));
 const HAUS_WORTE = ['haus', 'hause', 'haeus', 'hous', 'house', 'huas', 'hasu', 'hus', 'haeuschen', 'zuhause', 'home', 'hutte', 'huete', 'huette'];
 const abstand = (a, b) => { const d = Array.from({ length: a.length + 1 }, (_, i) => [i]); for (let j = 1; j <= b.length; j++) d[0][j] = j;
   for (let i = 1; i <= a.length; i++) for (let j = 1; j <= b.length; j++) d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)); return d[a.length][b.length]; };
+// Fragen nach dem eigenen Haus („wo ist mein Haus?“, „wo wohne ich“, „zeig mein Zelt“, „wo bin ich?“ …) → Haus wird sofort gezeigt
+function istHausFrage(text) {
+  const n = String(text || '').toLowerCase().replace(/[^a-zäöüß ]+/g, ' ').replace(/\s+/g, ' ').trim();
+  return /\bwo\b.*\b(haus|hause|zelt|zuhause|hütte|huette|wohnung|heim|grundstück)\b/.test(n) || /\bwo (wohn|leb|bin) ich\b|\bwo wohne\b|\bwohne ich\b/.test(n)
+    || /\b(zeig|zeige|zeigt|finde|find|such|suche|sehe|seh)\b.*\b(mein|meine|mich)\b/.test(n) || /\bmein (haus|zelt|zuhause|heim)\b.*\b(wo|zeig|sehen|finden)\b/.test(n)
+    || /\b(hab|habe) ich (ein|schon ein) (haus|zelt)\b/.test(n);
+}
 function istHausWunsch(text) {
   for (const w of String(text || '').split(/\s+/)) {
     const n = normal(w); if (!n) continue;
@@ -141,7 +148,7 @@ function istHausWunsch(text) {
   }
   return false;
 }
-const hausWunsch = [], hausGezeigt = {}, likeSerie = {}, likeDank = [];
+const hausWunsch = [], hausFragen = new Set(), hausGezeigt = {}, likeSerie = {}, likeDank = [];
 let letzterLikeDank = 0;                                    // Like-Dank (einzeln oder für alle) höchstens 1× pro Minute
 let letztesHausZeigen = 0;
 
@@ -250,6 +257,10 @@ function kommentar(u, text) {
     // „Haus“ schreiben: das eigene Haus wächst jedes Mal (pro Person höchstens alle hausSek Sekunden)
     if (Date.now() - (p.hausZeit || 0) >= (CFG.hausSek ?? 3) * 1000) { p.hausZeit = Date.now(); gibMuscheln(p, CFG.hausMuscheln ?? 2, 'haus'); sende({ typ: 'hausPlus', id: p.id }); }
     if (!hausWunsch.includes(p.id) && Date.now() - (hausGezeigt[p.id] || 0) > 300000) { hausWunsch.push(p.id); if (hausWunsch.length > 20) hausWunsch.shift(); }
+  }
+  if (istHausFrage(t) && Date.now() - (hausGezeigt[p.id] || 0) > 60000) {   // ausdrückliche Frage: vorne anstellen, bald zeigen
+    const i = hausWunsch.indexOf(p.id); if (i >= 0) hausWunsch.splice(i, 1);
+    hausWunsch.unshift(p.id); hausFragen.add(p.id); if (hausWunsch.length > 20) hausWunsch.pop();
   }
   for (const wort of t.split(/[^a-zäöüß]+/)) {
     const ab = CFG.anbauten[wort];
@@ -838,8 +849,8 @@ function moderiere() {
   likeDank.length = 0; if (false) { const p = null; if (Date.now() - letzterLikeDank >= 60000) { letzterLikeDank = Date.now(); return sag(satz('likeDank', { name: sprechName(p) }), 1); } }
   // 1b. Wer „haus“ geschrieben hat: Kamera fliegt zum Haus (ab und zu, nicht während Events)
   const kameraEvent = ['schatzsuche', 'meeresbesuch', 'flaschenpost', 'moewenalarm', 'hausbesuch'].includes(EV.id());
-  if (!kameraEvent && hausWunsch.length && Date.now() - letztesHausZeigen > (EV.laeuft() ? 30000 : 20000)) {
-    const p = S.spieler[hausWunsch.shift()];
+  if (!kameraEvent && hausWunsch.length && Date.now() - letztesHausZeigen > (hausFragen.has(hausWunsch[0]) ? 6000 : EV.laeuft() ? 30000 : 20000)) {
+    const hid = hausWunsch.shift(); hausFragen.delete(hid); const p = S.spieler[hid];
     if (p && !p.gesperrt) {
       letztesHausZeigen = letzterRundgang = Date.now(); hausGezeigt[p.id] = Date.now();
       sende({ typ: 'kamera', id: p.id, ms: 9000 }); sende({ typ: 'hausGezeigt', id: p.id });
