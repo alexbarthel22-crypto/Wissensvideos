@@ -1781,11 +1781,11 @@ function palLion(c,x,y,s,gold,ink){const TW=Math.PI*2;c.fillStyle='rgba(40,30,10
 const cv=$('map'),ctx=cv.getContext('2d'),base=document.createElement('canvas'),bx=base.getContext('2d'),fgc=document.createElement('canvas'),fx=fgc.getContext('2d');let fgOn=false;
 // gemeinsame Uhr: alle Geräte zeigen Passanten, Gäste, Jogger usw. zur selben Zeit am selben Ort (Sekunden seit 1.1.2026, echte Uhrzeit)
 const TEPOCH=Date.UTC(2026,0,1),TNOW=()=>(Date.now()-TEPOCH)/1000;
-let W=0,H=0,DPR=1,T=TNOW(),baseKey='',selT=0,selN=0,selStop=null,selStopN=-1;
+let PXMAX=5e6,W=0,H=0,DPR=1,T=TNOW(),baseKey='',selT=0,selN=0,selStop=null,selStopN=-1;
 // Nachbarpaare (beide eingezogen)
 let NBP_=null;const NBW_Y=3.2;var NBW_COL='#e8433c';const NBPget=()=>NBP_||(NBP_=(I.nachbarn||[]).flatMap(pr=>{const G=pr.map(n=>byName.get('@'+String(n).toLowerCase().replace(/^@/,'')));if(G.length<3)return[G];if(G.some(q=>!q||!q.p))return[];G.sort((a,b)=>a.p.gx-b.p.gx);return G.slice(1).map((q,i)=>[G[i],q]);}).filter(([a,b])=>a&&b&&a.p&&b.p&&!a.gb&&!b.gb));
 // Textbreite in großer Schrift messen und herunterrechnen: winzige Schriftgrößen (v. a. mit Emoji) misst Safari/macOS zu schmal → Schilder zu kurz
-{const MT=CanvasRenderingContext2D.prototype.measureText;CanvasRenderingContext2D.prototype.measureText=function(t){const f=this.font,m=/(\d*\.?\d+)px/.exec(f),px=m?+m[1]:60;if(px>=20)return MT.call(this,t);this.font=f.replace(m[0],'60px');const r=MT.call(this,t);this.font=f;return{width:r.width*px/60};};}
+{const MT=CanvasRenderingContext2D.prototype.measureText;const MC=new Map();CanvasRenderingContext2D.prototype.measureText=function(t){const f=this.font,m=/(\d*\.?\d+)px/.exec(f),px=m?+m[1]:60;if(px>=20)return MT.call(this,t);const k=f.replace(m[0],'60px'),key=k+'\u0001'+t;let w=MC.get(key);if(w===undefined){this.font=k;w=MT.call(this,t).width;this.font=f;if(MC.size>4000)MC.clear();MC.set(key,w);}return{width:w*px/60};};}
 const txtW=(c,t,w,f)=>c.measureText(t).width;
 const cam={x:0,y:0,z:1},NAMES=[],TAPS=[],TEAMN=new Map();
 // Team-Schilder: alle Mitarbeiter eines Ladens einheitlich als kleine Schilder in Ladenfarbe, mittig auf dem Weg direkt unter dem Gelände
@@ -1801,7 +1801,7 @@ function fitAll(fr){const w=BOX.x1-BOX.x0,h=BOX.y1-BOX.y0;if(!fr){const z=Math.m
 // neu gezeichnet wird sie erst, wenn der Rand aufgebraucht ist oder der Zoom sich deutlich geändert hat (flüssiges Ziehen auch am Desktop).
 // Große Bildschirme: Pixeldichte so begrenzt, dass höchstens ~5 Mio. Bildpunkte gezeichnet werden (scharf, aber nicht überteuer).
 let BM=0,BASE={x:0,y:0,z:1},ZCH=0;
-function resize(){const b=cv.getBoundingClientRect();W=b.width;H=b.height;DPR=Math.min(2,window.devicePixelRatio||1,Math.max(1,Math.sqrt(5e6/Math.max(1,W*H))));BM=Math.round(Math.min(260,Math.max(W,H)*.3));
+function resize(){const b=cv.getBoundingClientRect();W=b.width;H=b.height;DPR=Math.min(2,window.devicePixelRatio||1,Math.max(1,Math.sqrt(PXMAX/Math.max(1,W*H))));BM=Math.round(Math.min(260,Math.max(W,H)*.3));
  cv.width=W*DPR|0;cv.height=H*DPR|0;base.width=fgc.width=(W+2*BM)*DPR|0;base.height=fgc.height=(H+2*BM)*DPR|0;baseKey='';draw();}
 function baseBuild(){const w0=W,h0=H;W+=2*BM;H+=2*BM;try{drawBase();}finally{W=w0;H=h0;}BASE={x:cam.x,y:cam.y,z:cam.z};}
 // Grundkarte (oder Küstenhütten-Ebene) passend zur aktuellen Kamera auf den Bildschirm legen
@@ -1843,7 +1843,8 @@ const WXT={clear:['☀️ Sonnig','🌙 Klar'],fair:['🌤️ Heiter','🌙 Leic
 function liveText(){const d=berlin(),ph=sunPhase(),w=WXT[kind()][ph.k==='unter'||!ph.k&&nightLevel()>.5?(ph.k?0:1):0],sn=ph.k?(ph.k==='auf'?['🌅','Sonnenaufgang']:['🌇','Sonnenuntergang']):null;
  $('live').innerHTML='LIVE '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')+' '+w.split(' ')[0]+(sn?'<span class="sun" title="'+sn[1]+'">'+sn[0]+'</span>':'');
  $('live').title='Live-Ansicht: '+w.slice(w.indexOf(' ')+1)+(sn?' · '+sn[1]:'');}
-function berlin(){try{const p=Object.fromEntries(new Intl.DateTimeFormat('en-US',{timeZone:'Europe/Berlin',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'}).formatToParts(new Date()).map(x=>[x.type,x.value]));return new Date(+p.year,+p.month-1,+p.day,+p.hour,+p.minute,+p.second);}catch(e){return new Date();}}
+let BERF=null,BERT=-1,BERD=null;// Berlin-Zeit: Formatter nur einmal anlegen, Ergebnis je Sekunde merken (wird viele Male pro Bild gebraucht)
+function berlin(){const n=Date.now(),sk=Math.floor(n/1000);if(sk===BERT&&BERD)return new Date(BERD);try{if(!BERF)BERF=new Intl.DateTimeFormat('en-US',{timeZone:'Europe/Berlin',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'});const p=Object.fromEntries(BERF.formatToParts(new Date(n)).map(x=>[x.type,x.value]));BERD=+new Date(+p.year,+p.month-1,+p.day,+p.hour,+p.minute,+p.second);BERT=sk;return new Date(BERD);}catch(e){return new Date();}}
 async function loadWx(){const o=I.wetter||{lat:51.16,lon:10.45};
  try{const r=await fetch('https://api.open-meteo.com/v1/forecast?latitude='+o.lat+'&longitude='+o.lon+'&current=weather_code,wind_speed_10m&daily=sunrise,sunset&timezone=GMT&forecast_days=1');const j=await r.json();
   if(!WX.fixed)WX.code=j.current.weather_code;WX.wind=j.current.wind_speed_10m;WX.sunrise=Date.parse(j.daily.sunrise[0]+'Z');WX.sunset=Date.parse(j.daily.sunset[0]+'Z');}catch(e){}
@@ -3319,14 +3320,27 @@ function gebDeko(c,g){if(S*cam.z<9)return;const D=DEKO[g.typ];if(!D)return;const
 function gebSigns(c,z){if(z*S<=4)return;for(const g of GEB){if(GROWK!=null&&GROWV===g.v&&GROWK<g.at)continue;c.save();c.translate(g.cx,g.cy);if(g.typ!=='doener'&&!KIO(g))c.scale(g.dir||1,1);if(g.typ==='werkstatt')c.scale(g.dir||1,1);gebSign(c,g);gebDeko(c,g);c.restore();teamBand(c,g);}}
 // Herausgezoomt (Details nur wenige Pixel groß): Gebäude als Bild zwischenspeichern und regelmäßig auffrischen – spart viel Rechenzeit
 const SPR=new Map();
-function sprite(c,key,x0,y0,x1,y1,fn){const zs=cam.z*S;if(zs>=10){fn(c);return;}const m=c.getTransform(),sc=m.a,w=Math.ceil((x1-x0)*sc)+3,h=Math.ceil((y1-y0)*sc)+3;if(w*h>3e6||w<2||h<2){fn(c);return;}
- const fx=m.a*x0+m.e,fy=m.d*y0+m.f,dx=Math.floor(fx)-1,dy=Math.floor(fy)-1,sig=sc+'|'+(fx-dx).toFixed(3)+'|'+(fy-dy).toFixed(3)+'|'+Math.round(nightLevel()*24)+'|'+kind()+'|'+(WK.on&&WK.me?WK.me.name:''),now=performance.now();let e=SPR.get(key);
- if(!e){e={cv:null,sig:'',want:'',t:0};SPR.set(key,e);}
- if(e.sig!==sig||now-e.t>(zs<4?900:300)){if(e.sig!==sig&&e.want!==sig){e.want=sig;fn(c);return;}// Ansicht bewegt sich: direkt zeichnen, Bild erst bei ruhiger Ansicht
-  if(!e.cv)e.cv=document.createElement('canvas');if(e.cv.width!==w||e.cv.height!==h){e.cv.width=w;e.cv.height=h;}
-  const o=e.cv.getContext('2d');o.setTransform(1,0,0,1,0,0);o.clearRect(0,0,w,h);o.setTransform(sc,0,0,sc,(fx-dx)-sc*x0,(fy-dy)-sc*y0);const a1=TAPS.length,a2=NAMES.length,a3=FIGS.length;fn(o);e.taps=TAPS.slice(a1);e.names=NAMES.slice(a2);e.figs=FIGS.slice(a3);e.sig=sig;e.t=now;}
- else{TAPS.push(...e.taps);NAMES.push(...e.names);FIGS.push(...e.figs);}
+// Zwischengespeichertes Bild eines Gebäudes/Ortes. Beim Verschieben der Karte wird das fertige Bild nur versetzt (statt jedes Bild neu
+// zu zeichnen); erst wenn die Ansicht kurz ruht, wird es pixelgenau neu gezeichnet. Neu gezeichnet wird außerdem bei anderem Zoom,
+// Tageszeit/Wetter und regelmäßig für Animationen.
+function sprite(c,key,x0,y0,x1,y1,fn){const zs=cam.z*S,m=c.getTransform(),sc=m.a,w=Math.ceil((x1-x0)*sc)+3,h=Math.ceil((y1-y0)*sc)+3;if(w*h>3e6||w<2||h<2){fn(c);return;}
+ if(zs>=10){// nah dran: im Stillstand live zeichnen (alle Animationen); nur beim Verschieben das beim Start der Bewegung gemachte Bild versetzen
+  const now=performance.now();if(!PANNT(now)){fn(c);return;}const fx=m.a*x0+m.e,fy=m.d*y0+m.f,dx=Math.floor(fx)-1,dy=Math.floor(fy)-1,base='n'+sc+'|'+Math.round(nightLevel()*24)+'|'+kind();let e=SPR.get(key);if(!e){e={cv:null,base:'',frac:'',want:'',t:0,ox:0,oy:0};SPR.set(key,e);}
+  if(e.base!==base||e.ps!==PANS||!e.cv){if(!e.cv)e.cv=document.createElement('canvas');if(e.cv.width!==w||e.cv.height!==h){e.cv.width=w;e.cv.height=h;}const o=e.cv.getContext('2d');o.setTransform(1,0,0,1,0,0);o.clearRect(0,0,w,h);o.setTransform(sc,0,0,sc,(fx-dx)-sc*x0,(fy-dy)-sc*y0);const a1=TAPS.length,a2=NAMES.length,a3=FIGS.length;fn(o);e.taps=TAPS.slice(a1);e.names=NAMES.slice(a2);e.figs=FIGS.slice(a3);e.base=base;e.ps=PANS;e.ox=fx-dx;e.oy=fy-dy;e.frac='';e.t=0;}
+  else{TAPS.push(...e.taps);NAMES.push(...e.names);FIGS.push(...e.figs);}
+  c.save();c.setTransform(1,0,0,1,0,0);c.drawImage(e.cv,fx-e.ox,fy-e.oy);c.restore();return;}
+ const fx=m.a*x0+m.e,fy=m.d*y0+m.f,dx=Math.floor(fx)-1,dy=Math.floor(fy)-1,base=sc+'|'+Math.round(nightLevel()*24)+'|'+kind()+'|'+(WK.on&&WK.me?WK.me.name:''),frac=(fx-dx).toFixed(2)+'|'+(fy-dy).toFixed(2),now=performance.now();let e=SPR.get(key);
+ if(!e){e={cv:null,base:'',frac:'',want:'',t:0,ft:0,ox:0,oy:0};SPR.set(key,e);}
+ const alt=now-e.t>(zs<4?900:300);
+ if(e.base===base&&e.cv&&!(alt&&!PANNT(now))&&(e.frac===frac||PANNT(now))){// gleiches Bild, nur verschoben (oder Animation läuft gleich weiter)
+  TAPS.push(...e.taps);NAMES.push(...e.names);FIGS.push(...e.figs);c.save();c.setTransform(1,0,0,1,0,0);if(e.frac===frac)c.drawImage(e.cv,dx,dy);else c.drawImage(e.cv,fx-e.ox,fy-e.oy);c.restore();return;}
+ if(e.base!==base&&e.want!==base){e.want=base;fn(c);return;}// Zoom ändert sich gerade: direkt zeichnen, Bild erst bei ruhigem Zoom
+ if(!e.cv)e.cv=document.createElement('canvas');if(e.cv.width!==w||e.cv.height!==h){e.cv.width=w;e.cv.height=h;}
+ const o=e.cv.getContext('2d');o.setTransform(1,0,0,1,0,0);o.clearRect(0,0,w,h);o.setTransform(sc,0,0,sc,(fx-dx)-sc*x0,(fy-dy)-sc*y0);const a1=TAPS.length,a2=NAMES.length,a3=FIGS.length;fn(o);e.taps=TAPS.slice(a1);e.names=NAMES.slice(a2);e.figs=FIGS.slice(a3);e.base=base;e.frac=frac;e.ox=fx-dx;e.oy=fy-dy;e.t=now;
  c.save();c.setTransform(1,0,0,1,0,0);c.drawImage(e.cv,dx,dy);c.restore();}
+// Karte wird gerade verschoben? (Kamera bewegte sich in den letzten 250 ms)
+let PANX=0,PANY=0,PANZ=0,PANT=0,PANS=0;function PANNT(now){return now-PANT<250;}
+function panMerk(){if(cam.x!==PANX||cam.y!==PANY){if(cam.z===PANZ){const n=performance.now();if(n-PANT>=250)PANS++;PANT=n;}PANX=cam.x;PANY=cam.y;}PANZ=cam.z;}
 function drawGeb(c,g,nl,z){const ink='#2a1b12';c.save();c.translate(g.cx,g.cy);
  if(g.typ==='doener'){const W=(g.x1-g.x0)/2,H=(g.y1-g.y0)/2;
   c.fillStyle='#ecdcbc';c.beginPath();c.roundRect(-W,-H,2*W,2*H,4);c.fill();c.strokeStyle='rgba(150,120,80,.35)';c.lineWidth=.35;c.beginPath();for(let x=-W+5;x<W;x+=5){c.moveTo(x,-H);c.lineTo(x,H);}for(let y=-H+5;y<H;y+=5){c.moveTo(-W,y);c.lineTo(W,y);}c.stroke();if(typeof MKIN==='function'){c.save();MKIN(c,g);c.restore();}
@@ -3596,7 +3610,7 @@ function xmFog(c){const n=16;for(let k=0;k<n;k++){const a=k/n*TAU+(REDUCED?0:T*.
  if(!REDUCED){const s=Math.pow(Math.max(0,Math.sin(T*.9)),10);if(s>.05){c.fillStyle=`rgba(255,210,80,${s})`;const x=XM.x+18,y=XM.y-14;c.beginPath();for(let k=0;k<10;k++){const r=k%2?2.5:7,a=k/10*TAU-Math.PI/2;c.lineTo(x+Math.cos(a)*r,y+Math.sin(a)*r);}c.closePath();c.fill();}}}
 
 let NACHTDRAUF=0;
-function draw(){NACHTDRAUF=0;{const k=kind();REGEN.on=k==="rain"||k==="storm";}
+function draw(){NACHTDRAUF=0;panMerk();{const k=kind();REGEN.on=k==="rain"||k==="storm";}
  if(!W)return;sunUpdate();if(cam.z!==ZL){ZL=cam.z;ZCH=performance.now();}const key=[W,H,limit,SUN.key,kind(),nightLevel()>.5,GROWV?GROWV.i:'',GROWK==null?'':GEB.map(g=>GROWV===g.v&&GROWK<g.at?0:1).join('')+BAU.map(b=>bauOn(b)?1:0).join('')+EXG.map(e=>exDa(e.o)?1:0).join('')].join(',');
  if(key!==baseKey||!baseOk()){baseBuild();baseKey=key;}
  const c=ctx,z=cam.z,zr=z/fitMain().z;baseBlit(c,base);world(c);
@@ -3832,15 +3846,18 @@ function draw(){NACHTDRAUF=0;{const k=kind();REGEN.on=k==="rain"||k==="storm";}
 let onScreen=true,last=0;
 if('IntersectionObserver' in window)new IntersectionObserver(e=>{onScreen=e[0].isIntersecting;},{threshold:0}).observe($('hero'));
 // Bildrate passt sich dem Gerät an: bis 60 Bilder/s (auch auf 120-Hz-Displays max. 60), bei schwachen Geräten 30
-const FR={hi:true,ema:6,gap:16.7};
+const FR={hi:true,ema:6,gap:16.7,lang:0};
+// Langsames Gerät (z. B. älteres MacBook): bleibt die Karte trotz 30-Bilder-Modus zäh, wird die Pixelzahl schrittweise etwas gesenkt
+function frAnpassen(n){if(n>8000&&FR.gap>45&&!FR.hi){if(!FR.lang)FR.lang=n;else if(n-FR.lang>2500&&PXMAX>1.4e6&&DPR>1){PXMAX=PXMAX>4e6?3e6:PXMAX>2.5e6?2e6:1.4e6;FR.lang=0;FR.gap=33;resize();}}else FR.lang=0;}
 function loop(n){requestAnimationFrame(loop);if(!onScreen||document.hidden)return;const dt=n-last;if(dt<(FR.hi?13:30))return;if(dt<120)FR.gap=FR.gap*.9+dt*.1;last=n;T=TNOW();const a=performance.now();draw();FR.ema=FR.ema*.9+(performance.now()-a)*.1;
- if(FR.hi&&(FR.ema>12||FR.gap>26))FR.hi=false;else if(!FR.hi&&FR.ema<8&&FR.gap<40)FR.hi=true;}
+ if(FR.hi&&(FR.ema>12||FR.gap>26))FR.hi=false;else if(!FR.hi&&FR.ema<8&&FR.gap<40)FR.hi=true;frAnpassen(n);}
 if(!REDUCED)requestAnimationFrame(loop);
-let raf=0;function kick(){if(!raf)raf=requestAnimationFrame(()=>{raf=0;draw();});}
+// Neu zeichnen nach Verschieben/Zoomen: läuft die Animationsschleife, zeichnet sie das nächste Bild ohnehin (sonst doppelt gezeichnet → Ruckeln)
+let raf=0;function kick(){if(!REDUCED)return;if(!raf)raf=requestAnimationFrame(()=>{raf=0;draw();});}
 
 // ---------- Bedienung ----------
 function clamp(){cam.z=Math.max(fitAll().z*.12,Math.min(10,cam.z));const mx=(BOX.x1-BOX.x0)*3,my=(BOX.y1-BOX.y0)*3,cx=(BOX.x0+BOX.x1)/2,cy=(BOX.y0+BOX.y1)/2;cam.x=Math.max(Math.min(cx-mx,SCH.x-400),Math.min(cx+mx,cam.x));cam.y=Math.max(cy-my,Math.min(Math.max(cy+my,SCH.y+400),cam.y));}
-let fly=0;function flyTo(t,ms=750){cancelAnimationFrame(fly);const f={...cam},t0=performance.now();const step=n=>{const k=Math.min(1,(n-t0)/ms),e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;cam.x=f.x+(t.x-f.x)*e;cam.y=f.y+(t.y-f.y)*e;cam.z=Math.exp(Math.log(f.z)+(Math.log(t.z)-Math.log(f.z))*e);draw();if(k<1)fly=requestAnimationFrame(step);};fly=requestAnimationFrame(step);}
+let fly=0;function flyTo(t,ms=750){cancelAnimationFrame(fly);const f={...cam},t0=performance.now();const step=n=>{const k=Math.min(1,(n-t0)/ms),e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;cam.x=f.x+(t.x-f.x)*e;cam.y=f.y+(t.y-f.y)*e;cam.z=Math.exp(Math.log(f.z)+(Math.log(t.z)-Math.log(f.z))*e);if(REDUCED)draw();if(k<1)fly=requestAnimationFrame(step);};fly=requestAnimationFrame(step);}
 function zoomAt(f,sx=W/2,sy=H/2){const [wx,wy]=s2w(sx,sy);cam.z*=f;clamp();const [nx,ny]=s2w(sx,sy);cam.x+=wx-nx;cam.y+=wy-ny;clamp();kick();}
 const pts=new Map();let moved=0,pinch=0;
 cv.addEventListener('pointerdown',e=>{cv.setPointerCapture(e.pointerId);pts.set(e.pointerId,[e.offsetX,e.offsetY]);moved=0;cancelAnimationFrame(fly);if(pts.size===2){const [a,b]=[...pts.values()];pinch=Math.hypot(a[0]-b[0],a[1]-b[1]);}cv.classList.add('drag');$('sugg').hidden=true;});
@@ -3888,7 +3905,7 @@ $('growbtn').onclick=()=>{if(growing||!N)return;const v=islInView();growing=true
  EV.sort((a,b)=>a[0]-b[0]);
  const t0=performance.now()+600,ms=Math.min(6000,2500+(hi-lo)*3.5)+(geb.length+bau.length+exg.length)*600;
  const st=n=>{const k=Math.max(0,Math.min(1,(n-t0)/ms)),kp=Math.min(1,k/.72);GROWK=k;limit=lo+Math.max(0,Math.round((hi-lo)*kp*kp));
-  draw();
+  if(REDUCED)draw();
   if(k<1)requestAnimationFrame(st);else setTimeout(()=>{limit=N;growing=false;GROWK=null;GROWV=null;draw();},1200);};requestAnimationFrame(st);};
 
 // ---------- Auswahl + Inselpass ----------
