@@ -4660,6 +4660,9 @@ rangKasten();setInterval(()=>{if(!document.hidden)rangKasten();},120000);
 
 liveText();loadWx();setInterval(liveText,15000);setInterval(loadWx,15*60e3);
 addEventListener('resize',()=>{resize();});resize();
+// Kartenfläche ändert ihre Größe auch ohne Fenster-Resize (Schriften, Leisten, Safari/macOS) → sonst wird das Bild verzerrt/gestreckt
+if(window.ResizeObserver)new ResizeObserver(()=>{const b=cv.getBoundingClientRect();if(Math.abs(b.width-W)>.5||Math.abs(b.height-H)>.5)resize();}).observe(cv);
+setInterval(()=>{const b=cv.getBoundingClientRect();if(b.width&&(Math.abs(b.width-W)>.5||Math.abs(b.height-H)>.5))resize();},1000);
 let me=null;try{me=byName.get((localStorage.getItem('mt-me')||'').toLowerCase());}catch(e){}
 Object.assign(cam,REDUCED?fitMain(freeY()):fitAll(freeY()));draw();
 {const n=new URLSearchParams(location.search).get('n'),t=n&&byName.get(n.toLowerCase().replace(/^(?!@)/,'@'));if(t)me=t;}
