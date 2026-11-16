@@ -95,7 +95,10 @@ YW = ("GESUCHT!", "DU'S?")
 scene("s01", LILITA + """
     #s01-hk { position: absolute; left: 20px; right: 20px; top: 960px; text-align: center; font-family: "Lilita One", sans-serif; }
     #s01-hk .ln { display: block; width: fit-content; margin: 0 auto 16px; padding: 4px 34px 14px; border-radius: 30px; background: #ff2e7e; box-shadow: 0 0 0 6px #1a0f08, 0 12px 0 rgba(0,0,0,.35); font-size: 108px; line-height: 1.05; white-space: nowrap; transform-origin: 50% 60%; }
-    #s01-hk #s01-l0 { background: #e8101e; font-size: 168px; } #s01-hk #s01-l1 { font-size: 160px; } #s01-hk #s01-l2 { font-size: 128px; }
+    #s01-hk #s01-l0 { background: #ffe500; font-size: 168px; box-shadow: 0 0 0 8px #1a0f08, 0 14px 0 rgba(0,0,0,.4), 0 0 60px 18px rgba(255,229,0,.75); }
+    #s01-hk #s01-l0 span { color: #1a0f08; -webkit-text-stroke: 0; }
+    #s01-hk #s01-l1 { background: #111; font-size: 160px; box-shadow: 0 0 0 8px #00e5ff, 0 14px 0 rgba(0,0,0,.4), 0 0 60px 16px rgba(0,229,255,.75); }
+    #s01-hk #s01-l2 { background: #00b8f0; font-size: 128px; box-shadow: 0 0 0 7px #1a0f08, 0 12px 0 rgba(0,0,0,.4), 0 0 50px 12px rgba(0,200,255,.6); }
     #s01-hk span { position: relative; display: inline-block; margin: 0 .08em; color: #fff; -webkit-text-stroke: 8px #1a0f08; paint-order: stroke fill; transform-origin: 50% 65%; }
     #s01-rv { position: absolute; inset: 0; box-shadow: inset 0 0 140px 50px rgba(255,10,20,.9); opacity: 0; }
     #s01-fl { position: absolute; inset: 0; background: radial-gradient(circle at 50% 75%, rgba(255,255,255,.85), rgba(255,255,255,0) 55%); opacity: 0; }""",
@@ -105,12 +108,12 @@ scene("s01", LILITA + """
 """      const sc = at("L1", "du"), ts = at("L1", "Türsteher");
       tl.fromTo("#s01-rv", { opacity: .45 }, { opacity: 1, duration: .14, yoyo: true, repeat: 17, ease: "sine.inOut", immediateRender: false }, 0);
       """ + "\n      ".join(
-        (f'tl.fromTo("#s01-l{j}", {{ opacity: 0, scaleX: .1 }}, {{ opacity: 1, scaleX: 1, duration: .14, ease: "back.out(2.4)" }}, at("L1", "{ln[0][1]}") - .16);' )
+        (f'tl.fromTo("#s01-l{j}", {{ opacity: 0, scaleX: .1 }}, {{ opacity: 1, scaleX: 1, duration: .14, ease: "back.out(2.4)" }}, at("L1", "{ln[0][1]}") - .16);' if j else 'tl.set("#s01-l0", { opacity: 1 }, 0);')
         for j, ln in enumerate(QL)) + """
       """ + "\n      ".join(
         (f'tl.fromTo("#s01-w{i}", {{ opacity: 0, x: {(-1 if i % 2 == 0 else 1) * 1300}, scale: 2.4, rotation: {(-1 if i % 2 == 0 else 1) * 30}, filter: "blur(12px)" }}, {{ opacity: 1, x: 0, scale: 1, rotation: 0, filter: "blur(0px)", duration: .17, ease: "expo.out" }}, at("L1", "{k}") - .14);'
          if w != "TÜRSTEHER" else
-         f'tl.fromTo("#s01-w{i}", {{ opacity: 0, scale: 5, filter: "blur(16px)" }}, {{ opacity: 1, scale: 1, filter: "blur(0px)", duration: .2, ease: "expo.out" }}, at("L1", "{k}") - .16);')
+         'tl.fromTo("#s01-w{0}", {{ opacity: 1, scale: 1.04, rotation: -2 }}, {{ opacity: 1, scale: 1, rotation: 0, duration: .25, ease: "expo.out", immediateRender: true }}, 0);'.format(i))
         + f' tl.to("#s01-hk", {{ y: 14, duration: .05, yoyo: true, repeat: 1, ease: "none" }}, at("L1", "{k}") + .03);'
         + (f' tl.to("#s01-w{i}", {{ color: "#ffe500", duration: .05 }}, at("L1", "{k}"));' if w in YW else '')
         for i, (w, k) in enumerate(QW)) + """
