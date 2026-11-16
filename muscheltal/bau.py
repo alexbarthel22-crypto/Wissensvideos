@@ -604,6 +604,10 @@ def baue(rows, out):
     except Exception:
         codes = []
     codes = [{"code": re.sub(r"[^A-Z0-9ÄÖÜ]", "", str(c.get("code", "")).upper()), "von": c.get("von", ""), "bis": c.get("bis") or c.get("von", ""), "muscheln": int(c.get("muscheln") or 10)} for c in codes if c.get("code")]
+    # Muschel-Shop: Katalog für Server (Tagesangebot, Kauf) und Seite (DATA.shop)
+    shop = json.load(open(os.path.join(HIER, "daten", "shop.json"), encoding="utf-8"))
+    with open(os.path.join(lib, "shop.mjs"), "w", encoding="utf-8") as f:
+        f.write("// automatisch aus daten/shop.json erzeugt (bau.py) – nicht von Hand ändern\nexport const SHOP = " + json.dumps({"stufen": [s["gewicht"] for s in shop["stufen"]], "kat": list(shop["kategorien"]), "items": {i["id"]: [i["kat"], i["slot"], i["stufe"], i["preis"]] for i in shop["items"]}}, ensure_ascii=False) + ";\n")
     with open(os.path.join(lib, "codes.mjs"), "w", encoding="utf-8") as f:
         f.write("// automatisch aus daten/codes.json erzeugt (bau.py) – nicht von Hand ändern\nexport const CODES = " + json.dumps(codes, ensure_ascii=False) + ";\n")
     with open(os.path.join(lib, "bewohner.mjs"), "w", encoding="utf-8") as f:
@@ -652,7 +656,7 @@ def baue(rows, out):
     web["grenzen"] = [g if g != float("inf") else None for g in inselgrenzen(sauber, insel, mit_h)]
     weg = {sauber[j][0].lower().lstrip("@") for j in mit_h}
     web["wohnorte"] = {k: o for k, o in (web.get("wohnorte") or {}).items() if k.lower().lstrip("@") not in weg}
-    data = {"r": sauber, "insel": web, "s": [[norm(s["name"]), s.get("seit", "")] for s in insel.get("sonder_bewohner") or []]}
+    data = {"r": sauber, "insel": web, "s": [[norm(s["name"]), s.get("seit", "")] for s in insel.get("sonder_bewohner") or []], "shop": {"st": [[x["name"], x["farbe"]] for x in shop["stufen"]], "kat": shop["kategorien"], "it": [[i["id"], i["name"], i["kat"], i["slot"], i["stufe"], i["preis"], i["wert"], i["icon"]] for i in shop["items"]]}}
     html = open(VORLAGE, encoding="utf-8").read()
     js = json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
     html = html.replace("/*__DATEN__*/null", js)
