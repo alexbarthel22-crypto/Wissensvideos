@@ -1,0 +1,49 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+@font-face { font-family: "Lilita One"; src: url("assets/fonts/LilitaOne-Regular.woff2") format("woff2"); font-weight: 400; }
+    .pl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 28px 12px; border-radius: 999px; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); white-space: nowrap; }
+    .big { position: absolute; left: 0; right: 0; width: fit-content; max-width: 980px; white-space: nowrap; margin: 0 auto; text-align: center; padding: 10px 26px 20px; border-radius: 36px; color: #fff; font-family: "Lilita One", sans-serif; line-height: 1; box-shadow: 0 0 0 8px #2a1b12, 0 16px 0 rgba(0,0,0,.3); }
+    #s2-b { top: 270px; font-size: 92px; background: linear-gradient(135deg, #8e2bd6, #ff2e7e); transform: rotate(-2deg); box-shadow: 0 0 0 8px #2a1b12, 0 16px 0 rgba(0,0,0,.3), 0 0 60px 18px rgba(200,60,255,.7); }
+    #s2-k { top: 420px; font-size: 46px; background: #f4a51c; }
+    #s2-o { top: 510px; font-size: 46px; background: #1d1f4a; }
+    #s2-t { top: 270px; font-size: 76px; background: #e8101e; transform: rotate(-2deg); box-shadow: 0 0 0 8px #2a1b12, 0 16px 0 rgba(0,0,0,.3), 0 0 50px 14px rgba(255,20,30,.6); }
+    #s2-c { top: 420px; font-size: 46px; background: #fff; color: #2a1b12; }
+    #s2-d { top: 270px; font-size: 64px; background: linear-gradient(135deg, #2fb3a0, #8be06a); font-family: "Lilita One", sans-serif; font-weight: 400; }
+    #s2-l { top: 390px; font-size: 46px; background: #fff; color: #2a1b12; }
+  </style>
+  <div id="root" data-composition-id="s02" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s02-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s2-b" class="big">🪩 KOK(O)S</div>
+      <div id="s2-k" class="pl">🥥 Nachtclub · Kokos-Küste</div>
+      <div id="s2-o" class="pl">🌙 Geöffnet ab 22 Uhr</div>
+      <div id="s2-t" class="big">🕶️ TÜRSTEHER GESUCHT!</div>
+      <div id="s2-c" class="pl">💬 Willst du's werden? Kommentiere!</div>
+      <div id="s2-d" class="pl">🧴 NEU: Drogerie CocoCare</div>
+      <div id="s2-l" class="pl">⭐ Leitung: @ami652396</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      /*__COMMON_JS__*/
+      wrapBt("#s02-stage");
+      const tl = gsap.timeline({ paused: true });
+      const t2 = line("L2")[0], t2b = line("L2b")[0], t2c = line("L2c")[0];
+      tl.fromTo("#s2-b", { opacity: 0, scale: 3 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(1.8)" }, t2 - .05);
+      tl.fromTo("#s2-k", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .28, ease: "back.out(2)" }, at("L2", "Nachtclub") - .15);
+      tl.fromTo("#s2-o", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, at("L2", "geöffnet") - .15);
+      tl.to(["#s2-b", "#s2-k", "#s2-o"], { opacity: 0, y: -30, duration: .2 }, t2b - .25);
+      tl.fromTo("#s2-t", { opacity: 0, scale: 3 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(1.8)" }, at("L2b", "Türsteher") - .15);
+      tl.to("#s2-t", { x: 10, duration: .05, yoyo: true, repeat: 7, ease: "none" }, at("L2b", "Türsteher") + .2);
+      tl.fromTo("#s2-c", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, at("L2b", "Wer") - .15);
+      tl.to("#s2-c", { scale: 1.08, duration: .18, yoyo: true, repeat: 5, ease: "sine.inOut" }, at("L2b", "Kommentare"));
+      tl.to(["#s2-t", "#s2-c"], { opacity: 0, y: -30, duration: .2 }, t2c - .25);
+      tl.fromTo("#s2-d", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, at("L2c", "Drogerie") - .15);
+      tl.fromTo("#s2-l", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .28, ease: "back.out(2)" }, at("L2c", "geleitet") - .1);
+      tl.to("#s02-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
+      window.__timelines["s02"] = tl;
+    })();
+  </script>
+</template>

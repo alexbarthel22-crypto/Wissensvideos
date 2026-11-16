@@ -1,0 +1,175 @@
+<template>
+  <style>
+        #root { position: absolute; inset: 0; }
+    .stage { position: absolute; inset: 0; overflow: hidden; }
+    .abs { position: absolute; }
+    svg { overflow: visible; }
+    /* Zähler-Box wie in der Referenz: Rahmen in Akzentfarbe, Label in Mono-Versalien, große Zahl */
+    .cbox { position: absolute; left: 290px; width: 500px; top: 268px; height: 126px; border: 3px solid #ff4fb0;
+      border-radius: 32px; background: rgba(13,16,38,.88); text-align: center; box-shadow: 0 0 28px rgba(255,79,176,.35); }
+    .cbox .lab { margin-top: 16px; font-family: "Space Mono", monospace; font-weight: 700; font-size: 28px;
+      letter-spacing: .16em; color: #dfe2f5; }
+    .cbox .num { margin-top: 2px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 56px; color: #fff;
+      letter-spacing: .01em; }
+    .cbox.y { border-color: #ffd43b; box-shadow: 0 0 28px rgba(255,212,59,.3); }
+    .cbox.r { border-color: #ff3b55; box-shadow: 0 0 28px rgba(255,59,85,.35); }
+    .cbox.b { border-color: #4da3ff; box-shadow: 0 0 28px rgba(77,163,255,.3); }
+    .cbox.g { border-color: #39e27a; box-shadow: 0 0 28px rgba(57,226,122,.3); }
+    .mono { font-family: "Space Mono", monospace; font-weight: 700; letter-spacing: .12em; }
+    .heavy { font-family: "Inter", sans-serif; font-weight: 900; }
+    /* Muschel-Tal: Sticker-Look wie auf muscheltal.de. Sicherheitsbereich TikTok: x 40–930, y 200–1120 (Untertitel ab 1150). */
+    .ink { stroke: #2a1b12; }
+    .stk { background: #fff; border: 6px solid #2a1b12; border-radius: 28px; box-shadow: 10px 10px 0 #2a1b12; }
+    .ttl { font-family: "Inter", sans-serif; font-weight: 900; color: #fff; text-align: center; line-height: 1;
+      -webkit-text-stroke: 10px #2a1b12; paint-order: stroke fill; letter-spacing: -.01em; }
+    .kick { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 24px; border-radius: 14px;
+      background: #2a1b12; color: #ffd23f; font-family: "Space Mono", monospace; font-weight: 700; font-size: 34px; letter-spacing: .14em; }
+    /* Text auf farbigem Balken (auffälliger, wie TikTok-Textboxen) */
+    .bt { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; max-width: 740px; text-align: center;
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 66px; line-height: 1.3; color: #fff; }
+    .bt .bx { padding: .06em .4em .14em; border-radius: .6em; -webkit-box-decoration-break: clone; box-decoration-break: clone; box-shadow: 0 10px 0 rgba(0,0,0,.28), 0 16px 30px rgba(0,0,0,.25); }
+    .bt .bx { background: #23285a; } .bt.or .bx { background: #ff5a3c; } .bt.pk .bx { background: #fe2c55; } .bt.tq .bx { background: #18b8c0; } .bt.vi .bx { background: #23285a; } .bt.bl .bx { background: #23285a; }
+    .bt.ye .bx { background: #ffc93c; } .bt.ye { color: #1a0f08; } .bt.gr .bx { background: #00b86b; } .bt.dk .bx { background: #23285a; } .bt.dk { color: #ffc93c; }
+    .bt.sm { font-size: 44px; }
+    .stamp { position: absolute; padding: 6px 30px; border: 10px solid; border-radius: 40px; background: rgba(255,255,255,.94);
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 84px; }
+    /* TikTok-Kommentare (echte Optik) */
+    .tk { position: absolute; left: 60px; width: 800px; background: #fff; border-radius: 30px; padding: 20px 26px 6px; box-shadow: 0 14px 0 rgba(0,0,0,.22); font-family: "Inter", sans-serif; }
+    .tk-h { position: relative; text-align: center; font-weight: 800; font-size: 30px; color: #161823; margin-bottom: 10px; }
+    .tk-h b { position: absolute; right: 4px; top: -4px; font-size: 38px; font-weight: 400; color: #161823; }
+    .tk-c { position: relative; display: flex; gap: 20px; padding: 12px 96px 16px 0; }
+    .tk-a { width: 84px; height: 84px; border-radius: 50%; flex: none; display: grid; place-items: center; color: #fff; font-weight: 900; font-size: 38px; }
+    .tk-u { font-size: 28px; color: #8a8b91; font-weight: 600; }
+    .tk-t { font-size: 34px; color: #161823; font-weight: 500; line-height: 1.22; margin-top: 2px; }
+    .tk-m { font-size: 28px; color: #8a8b91; font-weight: 600; margin-top: 8px; } .tk-m span { margin-left: 30px; }
+    .tk-l { position: absolute; right: 4px; top: 16px; width: 86px; text-align: center; font-size: 28px; color: #8a8b91; font-weight: 600; }
+    .tk-l .hz { position: relative; width: 48px; height: 48px; margin: 0 auto 2px; }
+    .tk-l .hz svg { position: absolute; inset: 0; width: 48px; height: 48px; }
+    .tk-fh { position: absolute; left: 19px; top: 0; width: 50px; height: 50px; opacity: 0; }
+    .tk-pin { display: inline-block; font-size: 28px; font-weight: 800; color: #fe2c55; background: #ffe3ea; border-radius: 6px; padding: 2px 8px; margin-left: 10px; vertical-align: 3px; }
+
+@font-face { font-family: "Lilita One"; src: url("assets/fonts/LilitaOne-Regular.woff2") format("woff2"); font-weight: 400; }
+    .pl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 28px 12px; border-radius: 999px; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); white-space: nowrap; }
+    .cf { position: absolute; left: 530px; top: 640px; width: 20px; height: 30px; border-radius: 4px; }
+    .sl-dim { position: absolute; inset: 0; background: rgba(10,12,40,.5); }
+    .sl-box { position: absolute; left: 190px; width: 700px; top: 480px; height: 390px; border-radius: 34px; background: #fff; overflow: hidden; box-shadow: 0 0 0 7px #2a1b12, 0 0 0 14px #ffc93c, 0 0 0 19px #2a1b12, 0 18px 0 rgba(0,0,0,.35); }
+    .sl-band { position: absolute; left: 0; right: 0; top: 130px; height: 130px; background: #fff3c4; border-top: 5px solid #ffc93c; border-bottom: 5px solid #ffc93c; }
+    .sl-col { position: absolute; left: 0; right: 0; top: 0; }
+    .sl-r { height: 130px; display: grid; place-items: center; font-family: "Inter", sans-serif; font-weight: 900; font-size: 46px; color: #23285a; white-space: nowrap; }
+    .sl-sh { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,0) 30%, rgba(255,255,255,0) 70%, rgba(255,255,255,.95)); }
+    .sl-fv { position: absolute; left: 60px; width: 960px; top: 905px; text-align: center; white-space: nowrap; font-family: "Inter", sans-serif; font-weight: 900; font-size: 40px; color: #fff; text-shadow: 0 2px 6px rgba(0,0,0,.6); }
+    #s3-lv { top: 280px; font-size: 52px; background: #e8262f; }
+    .s3-o { top: 280px; font-size: 58px; font-family: "Lilita One", sans-serif; font-weight: 400; }
+    .s3-d { top: 385px; font-size: 40px; background: #fff; color: #2a1b12; }
+    .s3-w { top: 900px; font-size: 48px; background: #2e9e5b; }
+  </style>
+  <div id="root" data-composition-id="s03" data-start="0" data-duration="17.994" data-width="1080" data-height="1920">
+    <div id="s03-stage" class="clip stage" data-start="0" data-duration="17.994" data-track-index="0">
+      <div id="s3-dim" class="sl-dim"></div>
+      <div id="s3-lv" class="pl">🔴 LIVE: 2 Jobs zu gewinnen!</div>
+      <div id="s3-o0" class="pl s3-o" style="background:#e8433c">🍕 Porto Pizza</div><div id="s3-d0" class="pl s3-d">Pizzeria am Kiosk-Steg</div>
+      <div id="s3-o1" class="pl s3-o" style="background:#1fb3c8">🏊 Kokos-Bad</div><div id="s3-d1" class="pl s3-d">Schwimmbad · Kokos-Küste</div>
+      <div id="s3-box" class="sl-box"><div id="s3-band" class="sl-band"></div><div class="sl-col" id="s3-c0"><div class="sl-r" id="s3-c0-0">@sunny_10341</div><div class="sl-r" id="s3-c0-1">@ivii1315</div><div class="sl-r" id="s3-c0-2">@felixzhlw5i</div><div class="sl-r" id="s3-c0-3">@lottikarotti620</div><div class="sl-r" id="s3-c0-4">@._k1mb3rly1</div><div class="sl-r" id="s3-c0-5">@lisa2011.13</div><div class="sl-r" id="s3-c0-6">@ello_lein</div><div class="sl-r" id="s3-c0-7">@24hrs.of.ilayda</div><div class="sl-r" id="s3-c0-8">@ghaliya367</div><div class="sl-r" id="s3-c0-9">@k.4..n.y</div><div class="sl-r" id="s3-c0-10">@wilma.bchmn</div><div class="sl-r" id="s3-c0-11">@liz_r_238</div><div class="sl-r" id="s3-c0-12">@xnnx...16</div><div class="sl-r" id="s3-c0-13">@juli04652</div><div class="sl-r" id="s3-c0-14">@o1.zoe_</div><div class="sl-r" id="s3-c0-15">@leonnzk48</div><div class="sl-r" id="s3-c0-16">@f.dun5476</div><div class="sl-r" id="s3-c0-17">@canan10715</div><div class="sl-r" id="s3-c0-18">@toni.com08</div><div class="sl-r" id="s3-c0-19">@jxst_lea.tiktok</div><div class="sl-r" id="s3-c0-20">@jette_marlene</div><div class="sl-r" id="s3-c0-21">@mila_31804</div><div class="sl-r" id="s3-c0-22">@amelie_4946</div><div class="sl-r" id="s3-c0-23">@lojibya</div><div class="sl-r" id="s3-c0-24">@l4n4.2202</div><div class="sl-r" id="s3-c0-25">@aleks.paunoc</div><div class="sl-r" id="s3-c0-26">@emilia30112</div><div class="sl-r" id="s3-c0-27">@valentina.ern</div><div class="sl-r" id="s3-c0-28">@len22342i</div><div class="sl-r" id="s3-c0-29">@drako3439</div><div class="sl-r" id="s3-c0-30">@rtxx.sophie</div><div class="sl-r" id="s3-c0-31">@yuris.river</div><div class="sl-r" id="s3-c0-32">@nicenyxxx</div><div class="sl-r" id="s3-c0-33">@lena_666_187</div><div class="sl-r" id="s3-c0-34">@chiara_pizda6</div><div class="sl-r" id="s3-c0-35">@liaa.a108</div><div class="sl-r" id="s3-c0-36">@user.polin0</div><div class="sl-r" id="s3-c0-37">@carla.e45</div><div class="sl-r" id="s3-c0-38">@ce_bear_</div><div class="sl-r" id="s3-c0-39">@y.18sdld0.__fj</div></div><div class="sl-col" id="s3-c1"><div class="sl-r" id="s3-c1-0">@maylooo28</div><div class="sl-r" id="s3-c1-1">@whokilledheli</div><div class="sl-r" id="s3-c1-2">@rafael.k69</div><div class="sl-r" id="s3-c1-3">@xx.soxhxe_</div><div class="sl-r" id="s3-c1-4">@pepefechner</div><div class="sl-r" id="s3-c1-5">@sinabvfyeh5</div><div class="sl-r" id="s3-c1-6">@in.yor_dreams</div><div class="sl-r" id="s3-c1-7">@c.prvttt</div><div class="sl-r" id="s3-c1-8">@xxmelixx954</div><div class="sl-r" id="s3-c1-9">@angie_00e</div><div class="sl-r" id="s3-c1-10">@l1nus7785</div><div class="sl-r" id="s3-c1-11">@t_araxd8</div><div class="sl-r" id="s3-c1-12">@dinonuggets2211</div><div class="sl-r" id="s3-c1-13">@30hania</div><div class="sl-r" id="s3-c1-14">@t1m_tull_prvt</div><div class="sl-r" id="s3-c1-15">@little_nemo89</div><div class="sl-r" id="s3-c1-16">@sophieee_nrb</div><div class="sl-r" id="s3-c1-17">@fabi.ixx.x</div><div class="sl-r" id="s3-c1-18">@patricia_bsss</div><div class="sl-r" id="s3-c1-19">@opfe42</div><div class="sl-r" id="s3-c1-20">@laura_lumpi</div><div class="sl-r" id="s3-c1-21">@x.jil10</div><div class="sl-r" id="s3-c1-22">@hidayaaaa011</div><div class="sl-r" id="s3-c1-23">@merlin_cgnn</div><div class="sl-r" id="s3-c1-24">@insightswithkim</div><div class="sl-r" id="s3-c1-25">@jette7286</div><div class="sl-r" id="s3-c1-26">@lotta.xo4</div><div class="sl-r" id="s3-c1-27">@malin3270</div><div class="sl-r" id="s3-c1-28">@.afterhuors</div><div class="sl-r" id="s3-c1-29">@lara.eve53</div><div class="sl-r" id="s3-c1-30">@mialinox</div><div class="sl-r" id="s3-c1-31">@sxso.xs</div><div class="sl-r" id="s3-c1-32">@hxt.nele</div><div class="sl-r" id="s3-c1-33">@charlotta2012</div><div class="sl-r" id="s3-c1-34">@even_erlav</div><div class="sl-r" id="s3-c1-35">@vivien19383</div><div class="sl-r" id="s3-c1-36">@amelie.aburg</div><div class="sl-r" id="s3-c1-37">@annabella8866</div><div class="sl-r" id="s3-c1-38">@oliwia_smk019</div><div class="sl-r" id="s3-c1-39">@vanill_tocalife</div></div><div class="sl-sh" data-layout-ignore></div></div>
+      <div id="s3-cf0"></div><div id="s3-cf1"></div>
+      <div id="s3-w0" class="pl s3-w">🎉 @nicenyxxx arbeitet jetzt hier!</div>
+      <div id="s3-w1" class="pl s3-w">🎉 @hxt.nele arbeitet jetzt hier!</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      
+      const C = {"__dur": 17.994, "L3": [0.2, 2.02], "L3.words": [["und", 0.2, 0.367], ["heute", 0.367, 0.695], ["verlose", 0.695, 1.185], ["ich", 1.185, 1.352], ["live", 1.352, 1.674], ["zwei", 1.674, 1.847], ["jobs", 1.847, 2.02]], "L3a": [2.74, 5.26], "L3a.words": [["porto", 2.74, 3.009], ["pizza", 3.009, 3.278], ["", 3.278, 3.4], ["die", 3.63, 3.862], ["pizzeria", 3.862, 4.548], ["am", 4.548, 4.772], ["kiosksteg", 4.772, 5.26]], "L3aw": [8.08, 9.284], "L3aw.words": [["glückwunsch", 8.08, 8.593], ["nicenyxxx", 8.593, 9.284]], "L3b": [10.104, 12.934], "L3b.words": [["das", 10.104, 10.291], ["kokosbad", 10.291, 10.847], ["", 10.847, 11.014], ["das", 11.234, 11.421], ["schwimmbad", 11.421, 11.823], ["auf", 11.823, 12.01], ["der", 12.01, 12.198], ["kokosküste", 12.198, 12.934]], "L3bw": [15.754, 17.314], "L3bw.words": [["glückwunsch", 15.754, 16.56], ["hxtnele", 16.56, 17.314]]};
+      const line = (id) => C[id];
+      const at = (id, word, which = 0) => {
+        const ws = C[id + ".words"];
+        if (typeof word === "number") return ws[word][1 + which];
+        const key = String(word).toLowerCase().replace(/[^\p{L}\p{N}_]/gu, "");
+        const hit = ws.find((w) => w[0].startsWith(key));
+        if (!hit) throw new Error("cue not found: " + id + " " + word);
+        return hit[1 + which];
+      };
+      // Zähler: schreibt Zahlen im deutschen Format (4.100.000.000) als Funktion der Timeline-Zeit
+      const fmt = (n) => Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      const count = (tl, sel, from, to, t, d, pre = "", post = "", ease = "power2.out") => {
+        const el = document.querySelector(sel);
+        const o = { v: from };
+        el.textContent = pre + fmt(from) + post;
+        tl.to(o, { v: to, duration: d, ease, onUpdate: () => { el.textContent = pre + fmt(o.v) + post; } }, t);
+      };
+      // deterministischer Zufall
+      const rng = (seed) => () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let x = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+        x = (x + Math.imul(x ^ (x >>> 7), 61 | x)) ^ x; return ((x ^ (x >>> 14)) >>> 0) / 4294967296; };
+
+            // TikTok-Kommentar: Herz füllt sich rot, Zahl zählt hoch, Herzen schnellen nach oben
+      const HEART = '<svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-10-9.3C.4 8.4 2 4.5 5.6 4c2-.3 3.6.6 4.4 2 .8-1.4 2.4-2.3 4.4-2 3.6.5 5.2 4.4 3.6 7.7C19.5 16.4 12 21 12 21z" fill="none" stroke="#8a8b91" stroke-width="2"/></svg>';
+      const HEART_R = '<svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-10-9.3C.4 8.4 2 4.5 5.6 4c2-.3 3.6.6 4.4 2 .8-1.4 2.4-2.3 4.4-2 3.6.5 5.2 4.4 3.6 7.7C19.5 16.4 12 21 12 21z" fill="#fe2c55"/></svg>';
+      const fmtK = (n) => n >= 10000 ? (n / 1000).toFixed(1).replace(".", ",") + " Tsd." : Math.round(n).toLocaleString("de-DE");
+      function tkLike(tl, id, t, from, to, dur = 1.4, seed = 1) {
+        const box = document.querySelector(id + " .tk-l"), num = box.querySelector("i"), hz = box.querySelector(".hz");
+        hz.innerHTML = HEART + '<span class="red" style="position:absolute;inset:0;opacity:0">' + HEART_R + "</span>";
+        const R = rng(seed);
+        for (let k = 0; k < 7; k++) { const f = document.createElement("div"); f.className = "tk-fh"; f.innerHTML = HEART_R; box.appendChild(f);
+          const dx = (R() - .5) * 160, up = 200 + R() * 220, t0 = t + k * .11;
+          tl.fromTo(f, { opacity: 0, x: 0, y: 0, scale: .5, rotation: 0 }, { opacity: 1, x: dx * .4, y: -60, scale: 1.1, rotation: (R() - .5) * 40, duration: .15, ease: "power2.out" }, t0);
+          tl.to(f, { x: dx, y: -up, scale: .7, opacity: 0, duration: .7, ease: "power1.in" }, t0 + .15); }
+        tl.fromTo(hz.querySelector(".red"), { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .25, ease: "back.out(3)" }, t);
+        tl.fromTo(hz, { scale: 1 }, { scale: 1.3, duration: .12, yoyo: true, repeat: 1, ease: "power2.out" }, t);
+        const o = { v: from }; num.textContent = fmtK(from);
+        tl.to(o, { v: to, duration: dur, ease: "power2.out", onUpdate: () => { num.textContent = fmtK(o.v); } }, t);
+      }
+      // Textbox füllt immer genau den Text: jede Zeile bekommt ihren eigenen Balken
+      function wrapBt(scope) { document.querySelectorAll(scope + " .bt").forEach((el) => { if (!el.querySelector(":scope > .bx")) el.innerHTML = '<span class="bx">' + el.innerHTML + "</span>"; }); }
+
+      wrapBt("#s03-stage");
+      const tl = gsap.timeline({ paused: true });
+      const t3 = line("L3")[0];
+      tl.fromTo("#s3-lv", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, t3);
+      tl.to("#s3-lv", { opacity: 0, duration: .2 }, line("L3a")[0] - .3);
+      tl.set(["#s3-c1"], { opacity: 0 }, 0);
+      tl.fromTo("#s3-o0", { opacity: 0, scale: 2.2 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, line("L3a")[0] - .1);
+      tl.fromTo("#s3-d0", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .28, ease: "back.out(2)" }, line("L3a")[0] + .4);
+      tl.fromTo("#s3-dim", { opacity: 0 }, { opacity: 1, duration: .25, immediateRender: false }, line("L3a")[1] + .05);
+      tl.fromTo("#s3-box", { opacity: 0, scale: .5 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)", immediateRender: false }, line("L3a")[1] + .05);
+      tl.set(["#s3-c0", "#s3-c1"], { opacity: 0 }, line("L3a")[1]); tl.set("#s3-c0", { opacity: 1 }, line("L3a")[1]); tl.set("#s3-band", { backgroundColor: "#fff3c4" }, line("L3a")[1]);
+      { const T0 = line("L3a")[1] + .2, TB = line("L3aw")[0] - .25, H = 130, W = 32, T1 = TB - 1.1;
+      tl.set("#s3-c0", { y: 0 }, 0);
+      tl.fromTo("#s3-c0", { y: 0 }, { y: -(W - 9) * H, duration: T1 - T0, ease: "none", immediateRender: false }, T0);
+      tl.fromTo("#s3-c0", { y: -(W - 9) * H }, { y: -(W - 1) * H, duration: 1.1, ease: "power3.out", immediateRender: false }, T1);
+      tl.fromTo("#s3-c0", { filter: "blur(5px)" }, { filter: "blur(0px)", duration: 1.0, ease: "power2.in", immediateRender: false }, T1);
+      tl.to("#s3-c0-" + W, { color: "#2e9e5b", scale: 1.15, duration: .2, ease: "back.out(3)" }, TB);
+      tl.to("#s3-band", { backgroundColor: "#7dff9e", duration: .15, yoyo: true, repeat: 5 }, TB); }
+      { const R = rng(81), box = document.getElementById("s3-cf0"), cols = ["#ffd23f", "#e8467c", "#2fb3a0", "#fff", "#7b4fe0", "#ff7a59"];
+      for (let k = 0; k < 60; k++) { const d = document.createElement("div"); d.className = "cf"; d.style.background = cols[k % cols.length]; box.appendChild(d);
+        const a = R() * Math.PI * 2, v = 380 + R() * 560, dx = Math.cos(a) * v, dy = Math.sin(a) * v * .8 - 300;
+        tl.fromTo(d, { opacity: 0, x: 0, y: 0, rotation: 0, scale: .6 }, { opacity: 1, x: dx * .7, y: dy * .7, rotation: (R() - .5) * 720, scale: 1, duration: .45, ease: "power3.out" }, (line("L3aw")[0] - .25));
+        tl.to(d, { x: dx, y: dy + 700, rotation: "+=" + Math.round((R() - .5) * 540), opacity: 0, duration: 1.4, ease: "power1.in" }, (line("L3aw")[0] - .25) + .45); } }
+      tl.to(["#s3-box", "#s3-dim"], { opacity: 0, duration: .25 }, line("L3aw")[1] + .2);
+      tl.fromTo("#s3-w0", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, line("L3aw")[1] + .2);
+      tl.to(["#s3-w0", "#s3-o0", "#s3-d0"], { opacity: 0, duration: .2 }, line("L3b")[0] - .3);
+      tl.fromTo("#s3-o1", { opacity: 0, scale: 2.2 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, line("L3b")[0] - .1);
+      tl.fromTo("#s3-d1", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .28, ease: "back.out(2)" }, line("L3b")[0] + .4);
+      tl.fromTo("#s3-dim", { opacity: 0.0 }, { opacity: 1, duration: .25, immediateRender: false }, line("L3b")[1] + .05);
+      tl.fromTo("#s3-box", { opacity: 0, scale: .5 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)", immediateRender: false }, line("L3b")[1] + .05);
+      tl.set(["#s3-c0", "#s3-c1"], { opacity: 0 }, line("L3b")[1]); tl.set("#s3-c1", { opacity: 1 }, line("L3b")[1]); tl.set("#s3-band", { backgroundColor: "#fff3c4" }, line("L3b")[1]);
+      { const T0 = line("L3b")[1] + .2, TB = line("L3bw")[0] - .25, H = 130, W = 32, T1 = TB - 1.1;
+      tl.set("#s3-c1", { y: 0 }, 0);
+      tl.fromTo("#s3-c1", { y: 0 }, { y: -(W - 9) * H, duration: T1 - T0, ease: "none", immediateRender: false }, T0);
+      tl.fromTo("#s3-c1", { y: -(W - 9) * H }, { y: -(W - 1) * H, duration: 1.1, ease: "power3.out", immediateRender: false }, T1);
+      tl.fromTo("#s3-c1", { filter: "blur(5px)" }, { filter: "blur(0px)", duration: 1.0, ease: "power2.in", immediateRender: false }, T1);
+      tl.to("#s3-c1-" + W, { color: "#2e9e5b", scale: 1.15, duration: .2, ease: "back.out(3)" }, TB);
+      tl.to("#s3-band", { backgroundColor: "#7dff9e", duration: .15, yoyo: true, repeat: 5 }, TB); }
+      { const R = rng(82), box = document.getElementById("s3-cf1"), cols = ["#ffd23f", "#e8467c", "#2fb3a0", "#fff", "#7b4fe0", "#ff7a59"];
+      for (let k = 0; k < 60; k++) { const d = document.createElement("div"); d.className = "cf"; d.style.background = cols[k % cols.length]; box.appendChild(d);
+        const a = R() * Math.PI * 2, v = 380 + R() * 560, dx = Math.cos(a) * v, dy = Math.sin(a) * v * .8 - 300;
+        tl.fromTo(d, { opacity: 0, x: 0, y: 0, rotation: 0, scale: .6 }, { opacity: 1, x: dx * .7, y: dy * .7, rotation: (R() - .5) * 720, scale: 1, duration: .45, ease: "power3.out" }, (line("L3bw")[0] - .25));
+        tl.to(d, { x: dx, y: dy + 700, rotation: "+=" + Math.round((R() - .5) * 540), opacity: 0, duration: 1.4, ease: "power1.in" }, (line("L3bw")[0] - .25) + .45); } }
+      tl.to(["#s3-box", "#s3-dim"], { opacity: 0, duration: .25 }, line("L3bw")[1] + .2);
+      tl.fromTo("#s3-w1", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, line("L3bw")[1] + .2);
+      tl.to(["#s3-w1", "#s3-o1", "#s3-d1"], { opacity: 0, duration: .2 }, line("L3bw")[1] + 2.0);
+
+      tl.to("#s03-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
+      window.__timelines["s03"] = tl;
+    })();
+  </script>
+</template>
