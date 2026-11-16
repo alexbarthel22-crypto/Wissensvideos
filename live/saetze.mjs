@@ -28,10 +28,7 @@ const SAETZE = {
     'Alle mal herschauen! … {EinNom} von {name}! … Wahnsinn, tausend Dank! … Du bist eine echte Legende! … Die ganze Insel jubelt für dich!',
   ],
   followEins: [
-    'Danke fürs Folgen, {name}!',
-    'Willkommen als Bewohner, {name}!',
-    '{name} zieht ein! Danke!',
-    'Neuer Bewohner: {name}! Danke!',
+    '{name} ist gerade nach Muschel-Tal gezogen, vielen Dank!',
   ],
   followMehrere: [
     'Danke fürs Folgen, {namen}!',

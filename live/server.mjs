@@ -21,7 +21,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-16 z';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-16 za';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -336,7 +336,7 @@ function follow(u) {
   setzeBewohner(bewohner + 1, 'follow');
   if (!id || gesperrt(id)) return;
   sende({ typ: 'follow', id: p?.id || id, name: p?.name || '@' + u.uniqueId, nr: bewohner });
-  if (p && !followDank.includes(p) && einmal(p.id, 'follow', 10 * 60000)) followDank.push(p);
+  if (!followDank.some(x => x.id === id) && einmal(id, 'follow', 10 * 60000)) followDank.push({ id, name: p?.name || '@' + u.uniqueId });
 }
 
 // Nur einmal danken/ansagen pro Person und Art, auch wenn es oft hintereinander passiert (Muscheln zählen trotzdem jedes Mal)
@@ -830,7 +830,8 @@ function moderiere() {
   if (spricht || warte.length || Date.now() - stilleSeit < (dringend ? .8 : (CFG.stimme.pauseSek ?? 4)) * 1000) return;
   // 1. Follows bedanken
   if (followDank.length) {
-    return sag(satz('followEins', { name: sprechName(followDank.shift()) }), 1);   // einzeln, kurz
+    const f = followDank.shift(), voll = String(f.name || '').replace(/^@/, '').replace(/[._]+/g, ' ').trim() || 'Gast';   // voller TikTok-Name
+    return sag(satz('followEins', { name: voll }), 1);
   }
   // 1a. Viele Likes von einer Person: bedanken
   likeDank.length = 0; if (false) { const p = null; if (Date.now() - letzterLikeDank >= 60000) { letzterLikeDank = Date.now(); return sag(satz('likeDank', { name: sprechName(p) }), 1); } }
