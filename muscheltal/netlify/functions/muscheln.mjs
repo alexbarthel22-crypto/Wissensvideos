@@ -6,6 +6,7 @@ import { JOBS } from "../lib/jobs.mjs";
 import { BEWOHNER, NACHBARN, SEIT } from "../lib/bewohner.mjs";
 import { liveVergeben } from "./live.mjs";
 import { CODES } from "../lib/codes.mjs";
+import { SHOP } from "../lib/shop.mjs";
 
 const json = (d, s = 200) => new Response(JSON.stringify(d), { status: s, headers: { "content-type": "application/json", "cache-control": "no-store" } });
 const NAME = /^@[a-z0-9._]{1,40}$/;
@@ -101,7 +102,7 @@ async function aufraeumen(store) {
     t[1] = id; await kasse.set(t.join("/"), (await kasse.get(k)) || "1"); await kasse.delete(k);
   }
 }
-const TEXT = { login: "Login-Serie", quest: "Aufgabe", qbonus: "Alle 3 Aufgaben", shell: "Schwebende Muschel", erf: "Neuer Erfolg", story: "Story geteilt", spende: "Spende Inselkasse", tresor: "Tresor des Schöpfers", code: "Geheimcode aus dem Video", einladung: "Freund eingeladen" };
+const TEXT = { login: "Login-Serie", quest: "Aufgabe", qbonus: "Alle 3 Aufgaben", shell: "Schwebende Muschel", erf: "Neuer Erfolg", story: "Story geteilt", spende: "Spende Inselkasse", tresor: "Tresor des Schöpfers", code: "Geheimcode aus dem Video", einladung: "Freund eingeladen", kauf: "Muschel-Shop" };
 
 // Einmal-Aufgaben (Zurücksetzen, Aufräumen) nur einmal pro Tag und Server-Instanz prüfen – spart bei jeder Muschel-Aktion
 // rund 10 Speicherabfragen (schnellere Gutschriften)
@@ -161,6 +162,31 @@ async function einladungPruefen(store, nm, kt) {
   }
   return k.von;
 }
+// ---------- Muschel-Shop ----------
+// Tagesangebot: je Kategorie 2 Items, Seltenheit nach Gewicht (Stufe zuerst, dann Item), für alle gleich, neu um 0:00 Uhr (Berlin).
+// Einmal am Tag erzeugt und gespeichert (x/shop/<tag>); „Einzigartig“-Items gibt es nur ein einziges Mal (x/einzig/<id>).
+function zufall(seed) { let h = 2166136261; for (const ch of seed) h = Math.imul(h ^ ch.charCodeAt(0), 16777619); return () => { h += 0x6D2B79F5; let t = h; t = Math.imul(t ^ t >>> 15, t | 1); t ^= t + Math.imul(t ^ t >>> 7, t | 61); return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+async function angebot(store, heute) {
+  const k = "x/shop/" + heute, alt = await store.get(k);
+  if (alt) return JSON.parse(alt);
+  const weg = new Set((await liste(store, "x/einzig/")).map(x => x.slice(9))), r = zufall("muschelshop-" + heute), ids = [];
+  for (const kat of SHOP.kat) {
+    let pool = Object.entries(SHOP.items).filter(([id, v]) => v[0] === kat && !weg.has(id));
+    for (let n = 0; n < 2 && pool.length; n++) {
+      const st = [...new Set(pool.map(([, v]) => v[2]))], sum = st.reduce((s, x) => s + SHOP.stufen[x - 1], 0);
+      let z = r() * sum, w = st[st.length - 1]; for (const x of st) { z -= SHOP.stufen[x - 1]; if (z < 0) { w = x; break; } }
+      const kand = pool.filter(([, v]) => v[2] === w), pick = kand[Math.floor(r() * kand.length)][0];
+      ids.push(pick); const rest = pool.filter(([id, v]) => v[1] !== SHOP.items[pick][1]);// zweites Item möglichst aus einem anderen Bereich
+      pool = rest.length ? rest : pool.filter(([id]) => id !== pick);
+    }
+  }
+  await store.set(k, JSON.stringify(ids));
+  return ids;
+}
+const besitz = (B) => [...new Set(B.filter(e => e.art === "kauf").map(e => e.id.slice(11)))];
+async function ausruestungAlle(store) { return JSON.parse((await store.get("x/ausruestung")) || "{}"); }
+const bisMitternacht = () => { const n = Date.now(), h = new Intl.DateTimeFormat("en-GB", { timeZone: TZ, hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23" }).format(new Date(n)).split(":").map(Number); return 86400000 - ((h[0] * 60 + h[1]) * 60 + h[2]) * 1000; };
+
 export default async (req) => {
   const store = getStore({ name: "muscheln", consistency: "strong" });
   await vorarbeit(store);
@@ -175,6 +201,12 @@ export default async (req) => {
     const bis10 = platz && platz > 10 && top[9] ? top[9].stand - stand + 1 : null;
     return json({ top, platz, stand, bis10, anzahl: order.length, beansprucht: beansprucht ?? null, einwohner: BEWOHNER.size });
   }
+  if (req.method === "GET" && url.searchParams.get("shop")) {
+    const ids = await angebot(store, tag());
+    const weg = []; for (const id of ids) if (SHOP.items[id][2] === 10 && await store.get("x/einzig/" + id)) weg.push(id);
+    return json({ tag: tag(), ids, weg, bis: bisMitternacht() });
+  }
+  if (req.method === "GET" && url.searchParams.get("aus")) return new Response(JSON.stringify(await ausruestungAlle(store)), { headers: { "content-type": "application/json", "cache-control": "public, max-age=30" } });
   if (req.method === "GET" && url.searchParams.get("einladungen")) {
     // Liste der angerechneten Einladungen (für die Nachbarschaft beim nächsten Listen-Update)
     const L = [];
@@ -334,6 +366,34 @@ export default async (req) => {
     }
     return json({ ok: true, stand: stand - a + (freund ? 10 : 0), gespendet: gesp, freund });
   }
+  if (act === "kauf") {
+    const id = String(d.id || ""), it = SHOP.items[id];
+    if (!it) return json({ ok: false, grund: "item" });
+    if (!(await angebot(store, heute)).includes(id)) return json({ ok: false, grund: "angebot" });
+    const B = await buch(store, nm), stand = B.reduce((s, e) => s + e.a, 0);
+    if (besitz(B).includes(id)) return json({ ok: false, grund: "schon", stand });
+    if (stand < it[3]) return json({ ok: false, grund: "geld", stand });
+    if (it[2] === 10) {// Einzigartig: nur der erste Käufer bekommt es
+      const ek = "x/einzig/" + id; if (await store.get(ek)) return json({ ok: false, grund: "weg", stand });
+      await store.set(ek, nm); await new Promise(r => setTimeout(r, 300));
+      if ((await store.get(ek)) !== nm) return json({ ok: false, grund: "weg", stand });
+    }
+    await store.set("b/" + nm + "/kauf/" + heute + "-" + id + "/" + (-it[3]), String(Date.now()));
+    return json({ ok: true, stand: stand - it[3], inv: [...besitz(B), id] });
+  }
+  if (act === "anlegen") {
+    // Slot belegen (id) oder leeren (id = null); nur eigene Items
+    const slot = String(d.slot || ""), id = d.id ? String(d.id) : null;
+    if (!Object.values(SHOP.items).some(v => v[1] === slot)) return json({ ok: false });
+    if (id && (!SHOP.items[id] || SHOP.items[id][1] !== slot || !besitz(await buch(store, nm)).includes(id))) return json({ ok: false });
+    const a = JSON.parse((await store.get("a/" + nm)) || "{}");
+    if (id) a[slot] = id; else delete a[slot];
+    await store.set("a/" + nm, JSON.stringify(a));
+    const alle = await ausruestungAlle(store);
+    if (Object.keys(a).length) alle[nm] = a; else delete alle[nm];
+    await store.set("x/ausruestung", JSON.stringify(alle));
+    return json({ ok: true, aus: a });
+  }
   if (act === "stand") {
     // neue angerechnete Einladungen einmal melden
     const eingeladen = [];
@@ -347,7 +407,7 @@ export default async (req) => {
       ok: true, nachbar, live, eingeladen, stand: B.reduce((s, e) => s + e.a, 0), serie: s,
       shells: B.filter(e => e.art === "shell" && e.id.startsWith(heute)).map(e => Number(e.id.split("-").pop())),
       questsDone: B.filter(e => e.art === "quest" && e.id.startsWith(heute)).map(e => Number(e.id.split("-").pop())),
-      gespendet: -B.filter(e => e.art === "spende").reduce((s, e) => s + e.a, 0), posten, heute
+      gespendet: -B.filter(e => e.art === "spende").reduce((s, e) => s + e.a, 0), posten, heute, inv: besitz(B), aus: JSON.parse((await store.get("a/" + nm)) || "{}")
     });
   }
   return json({ fehler: "Aktion" }, 400);

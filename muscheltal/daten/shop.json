@@ -1,0 +1,1623 @@
+{
+ "_hinweis": "Muschel-Shop: Items (wird in Seite + Server gebaut). stufe 1–10, preis in Muscheln. Täglicher Shop: 2 je Kategorie, Stufe nach Gewicht.",
+ "stufen": [
+  {
+   "name": "Gewöhnlich",
+   "farbe": "#b8b2a6",
+   "gewicht": 30
+  },
+  {
+   "name": "Ungewöhnlich",
+   "farbe": "#5fbf6a",
+   "gewicht": 22
+  },
+  {
+   "name": "Selten",
+   "farbe": "#3f8fe0",
+   "gewicht": 15
+  },
+  {
+   "name": "Sehr selten",
+   "farbe": "#2fc0c8",
+   "gewicht": 11
+  },
+  {
+   "name": "Episch",
+   "farbe": "#9b5de5",
+   "gewicht": 8
+  },
+  {
+   "name": "Legendär",
+   "farbe": "#ff9f1c",
+   "gewicht": 6
+  },
+  {
+   "name": "Mythisch",
+   "farbe": "#e5383b",
+   "gewicht": 4
+  },
+  {
+   "name": "Göttlich",
+   "farbe": "#ffd23f",
+   "gewicht": 2.4
+  },
+  {
+   "name": "Kosmisch",
+   "farbe": "#ff4fd8",
+   "gewicht": 1.2
+  },
+  {
+   "name": "Einzigartig",
+   "farbe": "#ffffff",
+   "gewicht": 0.4
+  }
+ ],
+ "kategorien": {
+  "huette": "🏠 Hütte",
+  "fahrt": "🛵 Fortbewegung",
+  "outfit": "👕 Outfit",
+  "pass": "🪪 Muschelpass"
+ },
+ "items": [
+  {
+   "id": "dach_sand",
+   "name": "Sand-Dach",
+   "kat": "huette",
+   "slot": "dach",
+   "stufe": 1,
+   "wert": "#d8c08a",
+   "icon": "🏠",
+   "preis": 35
+  },
+  {
+   "id": "dach_kokos",
+   "name": "Kokos-Dach",
+   "kat": "huette",
+   "slot": "dach",
+   "stufe": 1,
+   "wert": "#8a5a2b",
+   "icon": "🏠",
+   "preis": 35
+  },
+  {
+   "id": "dach_himmel",
+   "name": "Himmelblaues Dach",
+   "kat": "huette",
+   "slot": "dach",
+   "stufe": 2,
+   "wert": "#7fc8f0",
+   "icon": "🏠",
+   "preis": 75
+  },
+  {
+   "id": "dach_mint",
+   "name": "Mint-Dach",
+   "kat": "huette",
+   "slot": "dach",
+   "stufe": 2,
+   "wert": "#8fe0c0",
+   "icon": "🏠",
+   "preis": 75
+  },
+  {
+   "id": "dach_flamingo",
+   "name": "Flamingo-Dach",
+   "kat": "huette",
+   "slot": "dach",
+   "stufe": 3,
+   "wert": "#ff8fb8",
+   "icon": "🏠",
+   "preis": 150
+  },
+  {
+   "id": "dach_lavendel",
+   "name": "Lavendel-Dach",
+   "kat": "huette",
+   "slot": "dach",
+   "stufe": 4,
+   "wert": "#b9a0f0",
+   "icon": "🏠",
+   "preis": 260
+  },
+  {
+   "id": "dach_koralle",
+   "name": "Korallen-Dach",
+   "kat": "huette",
+   "slot": "dach",
+   "stufe": 5,
+   "wert": "#ff6f61",
+   "icon": "🏠",
+   "preis": 420
+  },
+  {
+   "id": "dach_nacht",
+   "name": "Mitternachts-Dach",
+   "kat": "huette",
+   "slot": "dach",
+   "stufe": 6,
+   "wert": "#24305e",
+   "icon": "🏠",
+   "preis": 750
+  },
+  {
+   "id": "dach_perlmutt",
+   "name": "Perlmutt-Dach",
+   "kat": "huette",
+   "slot": "dach",
+   "stufe": 7,
+   "wert": "perlmutt",
+   "icon": "🏠",
+   "preis": 1200
+  },
+  {
+   "id": "dach_gold",
+   "name": "Gold-Dach",
+   "kat": "huette",
+   "slot": "dach",
+   "stufe": 8,
+   "wert": "gold",
+   "icon": "🏠",
+   "preis": 2200
+  },
+  {
+   "id": "dach_sterne",
+   "name": "Sternenhimmel-Dach",
+   "kat": "huette",
+   "slot": "dach",
+   "stufe": 9,
+   "wert": "sterne",
+   "icon": "🏠",
+   "preis": 3500
+  },
+  {
+   "id": "dach_diamant",
+   "name": "Diamant-Dach",
+   "kat": "huette",
+   "slot": "dach",
+   "stufe": 10,
+   "wert": "diamant",
+   "icon": "🏠",
+   "preis": 6000
+  },
+  {
+   "id": "wand_weiss",
+   "name": "Weiße Wand",
+   "kat": "huette",
+   "slot": "wand",
+   "stufe": 1,
+   "wert": "#f4efe6",
+   "icon": "🧱",
+   "preis": 35
+  },
+  {
+   "id": "wand_gelb",
+   "name": "Pastellgelbe Wand",
+   "kat": "huette",
+   "slot": "wand",
+   "stufe": 1,
+   "wert": "#f6e3a1",
+   "icon": "🧱",
+   "preis": 35
+  },
+  {
+   "id": "wand_blau",
+   "name": "Hellblaue Wand",
+   "kat": "huette",
+   "slot": "wand",
+   "stufe": 2,
+   "wert": "#cfe8f6",
+   "icon": "🧱",
+   "preis": 75
+  },
+  {
+   "id": "wand_rosa",
+   "name": "Rosa Wand",
+   "kat": "huette",
+   "slot": "wand",
+   "stufe": 3,
+   "wert": "#f7cfe0",
+   "icon": "🧱",
+   "preis": 150
+  },
+  {
+   "id": "wand_petrol",
+   "name": "Petrol-Wand",
+   "kat": "huette",
+   "slot": "wand",
+   "stufe": 5,
+   "wert": "#3a8f95",
+   "icon": "🧱",
+   "preis": 420
+  },
+  {
+   "id": "wand_schwarz",
+   "name": "Schwarze Wand",
+   "kat": "huette",
+   "slot": "wand",
+   "stufe": 6,
+   "wert": "#2a2430",
+   "icon": "🧱",
+   "preis": 750
+  },
+  {
+   "id": "fahne_muschel_weiss",
+   "name": "Muschel-Fahne Weiß",
+   "kat": "huette",
+   "slot": "fahne",
+   "stufe": 1,
+   "wert": "🐚|#f7f4ec",
+   "icon": "🐚",
+   "preis": 35
+  },
+  {
+   "id": "fahne_muschel_tuerkis",
+   "name": "Muschel-Fahne Türkis",
+   "kat": "huette",
+   "slot": "fahne",
+   "stufe": 2,
+   "wert": "🐚|#2fc0c8",
+   "icon": "🐚",
+   "preis": 75
+  },
+  {
+   "id": "fahne_muschel_gold",
+   "name": "Muschel-Fahne Gold",
+   "kat": "huette",
+   "slot": "fahne",
+   "stufe": 4,
+   "wert": "🐚|gold",
+   "icon": "🐚",
+   "preis": 260
+  },
+  {
+   "id": "fahne_palme_weiss",
+   "name": "Palmen-Fahne Weiß",
+   "kat": "huette",
+   "slot": "fahne",
+   "stufe": 1,
+   "wert": "🌴|#f7f4ec",
+   "icon": "🌴",
+   "preis": 35
+  },
+  {
+   "id": "fahne_palme_gruen",
+   "name": "Palmen-Fahne Grün",
+   "kat": "huette",
+   "slot": "fahne",
+   "stufe": 2,
+   "wert": "🌴|#3fae5a",
+   "icon": "🌴",
+   "preis": 75
+  },
+  {
+   "id": "fahne_palme_gold",
+   "name": "Palmen-Fahne Gold",
+   "kat": "huette",
+   "slot": "fahne",
+   "stufe": 4,
+   "wert": "🌴|gold",
+   "icon": "🌴",
+   "preis": 260
+  },
+  {
+   "id": "fahne_regenbogen_weiss",
+   "name": "Regenbogen-Fahne Weiß",
+   "kat": "huette",
+   "slot": "fahne",
+   "stufe": 2,
+   "wert": "🌈|#f7f4ec",
+   "icon": "🌈",
+   "preis": 75
+  },
+  {
+   "id": "fahne_regenbogen_schwarz",
+   "name": "Regenbogen-Fahne Schwarz",
+   "kat": "huette",
+   "slot": "fahne",
+   "stufe": 3,
+   "wert": "🌈|#222",
+   "icon": "🌈",
+   "preis": 150
+  },
+  {
+   "id": "fahne_regenbogen_gold",
+   "name": "Regenbogen-Fahne Gold",
+   "kat": "huette",
+   "slot": "fahne",
+   "stufe": 5,
+   "wert": "🌈|gold",
+   "icon": "🌈",
+   "preis": 420
+  },
+  {
+   "id": "fahne_pirat_schwarz",
+   "name": "Piraten-Fahne Schwarz",
+   "kat": "huette",
+   "slot": "fahne",
+   "stufe": 3,
+   "wert": "☠️|#222",
+   "icon": "☠️",
+   "preis": 150
+  },
+  {
+   "id": "fahne_pirat_rot",
+   "name": "Piraten-Fahne Rot",
+   "kat": "huette",
+   "slot": "fahne",
+   "stufe": 4,
+   "wert": "☠️|#e5383b",
+   "icon": "☠️",
+   "preis": 260
+  },
+  {
+   "id": "fahne_pirat_gold",
+   "name": "Piraten-Fahne Gold",
+   "kat": "huette",
+   "slot": "fahne",
+   "stufe": 6,
+   "wert": "☠️|gold",
+   "icon": "☠️",
+   "preis": 750
+  },
+  {
+   "id": "fahne_stern_blau",
+   "name": "Stern-Fahne Blau",
+   "kat": "huette",
+   "slot": "fahne",
+   "stufe": 4,
+   "wert": "⭐|#3f8fe0",
+   "icon": "⭐",
+   "preis": 260
+  },
+  {
+   "id": "fahne_stern_lila",
+   "name": "Stern-Fahne Lila",
+   "kat": "huette",
+   "slot": "fahne",
+   "stufe": 5,
+   "wert": "⭐|#9b5de5",
+   "icon": "⭐",
+   "preis": 420
+  },
+  {
+   "id": "fahne_stern_gold",
+   "name": "Stern-Fahne Gold",
+   "kat": "huette",
+   "slot": "fahne",
+   "stufe": 7,
+   "wert": "⭐|gold",
+   "icon": "⭐",
+   "preis": 1200
+  },
+  {
+   "id": "fahne_krone_rot",
+   "name": "Kronen-Fahne Rot",
+   "kat": "huette",
+   "slot": "fahne",
+   "stufe": 6,
+   "wert": "👑|#e5383b",
+   "icon": "👑",
+   "preis": 750
+  },
+  {
+   "id": "fahne_krone_lila",
+   "name": "Kronen-Fahne Lila",
+   "kat": "huette",
+   "slot": "fahne",
+   "stufe": 7,
+   "wert": "👑|#9b5de5",
+   "icon": "👑",
+   "preis": 1200
+  },
+  {
+   "id": "fahne_krone_gold",
+   "name": "Kronen-Fahne Gold",
+   "kat": "huette",
+   "slot": "fahne",
+   "stufe": 9,
+   "wert": "👑|gold",
+   "icon": "👑",
+   "preis": 3500
+  },
+  {
+   "id": "deko_sonnenblume_gelb",
+   "name": "Sonnenblumen Gelb",
+   "kat": "huette",
+   "slot": "deko",
+   "stufe": 1,
+   "wert": "sonnenblume|#ffd23f",
+   "icon": "🌻",
+   "preis": 35
+  },
+  {
+   "id": "deko_sonnenblume_orange",
+   "name": "Sonnenblumen Orange",
+   "kat": "huette",
+   "slot": "deko",
+   "stufe": 2,
+   "wert": "sonnenblume|#ff8a2a",
+   "icon": "🌻",
+   "preis": 75
+  },
+  {
+   "id": "deko_sonnenblume_rosa",
+   "name": "Sonnenblumen Rosa",
+   "kat": "huette",
+   "slot": "deko",
+   "stufe": 3,
+   "wert": "sonnenblume|#ff8fb8",
+   "icon": "🌻",
+   "preis": 150
+  },
+  {
+   "id": "deko_pflanze_terrakotta",
+   "name": "Kübelpflanze Terrakotta",
+   "kat": "huette",
+   "slot": "deko",
+   "stufe": 1,
+   "wert": "pflanze|#c2643a",
+   "icon": "🪴",
+   "preis": 35
+  },
+  {
+   "id": "deko_pflanze_weiss",
+   "name": "Kübelpflanze Weiß",
+   "kat": "huette",
+   "slot": "deko",
+   "stufe": 2,
+   "wert": "pflanze|#f7f4ec",
+   "icon": "🪴",
+   "preis": 75
+  },
+  {
+   "id": "deko_pflanze_gold",
+   "name": "Kübelpflanze Gold",
+   "kat": "huette",
+   "slot": "deko",
+   "stufe": 4,
+   "wert": "pflanze|gold",
+   "icon": "🪴",
+   "preis": 260
+  },
+  {
+   "id": "deko_flamingo_rosa",
+   "name": "Flamingo Rosa",
+   "kat": "huette",
+   "slot": "deko",
+   "stufe": 2,
+   "wert": "flamingo|#ff8fb8",
+   "icon": "🦩",
+   "preis": 75
+  },
+  {
+   "id": "deko_flamingo_weiss",
+   "name": "Flamingo Weiß",
+   "kat": "huette",
+   "slot": "deko",
+   "stufe": 3,
+   "wert": "flamingo|#f7f4ec",
+   "icon": "🦩",
+   "preis": 150
+  },
+  {
+   "id": "deko_flamingo_gold",
+   "name": "Flamingo Gold",
+   "kat": "huette",
+   "slot": "deko",
+   "stufe": 5,
+   "wert": "flamingo|gold",
+   "icon": "🦩",
+   "preis": 420
+  },
+  {
+   "id": "deko_post_rot",
+   "name": "Briefkasten Rot",
+   "kat": "huette",
+   "slot": "deko",
+   "stufe": 2,
+   "wert": "post|#e5383b",
+   "icon": "📮",
+   "preis": 75
+  },
+  {
+   "id": "deko_post_blau",
+   "name": "Briefkasten Blau",
+   "kat": "huette",
+   "slot": "deko",
+   "stufe": 3,
+   "wert": "post|#3f8fe0",
+   "icon": "📮",
+   "preis": 150
+  },
+  {
+   "id": "deko_post_gold",
+   "name": "Briefkasten Gold",
+   "kat": "huette",
+   "slot": "deko",
+   "stufe": 5,
+   "wert": "post|gold",
+   "icon": "📮",
+   "preis": 420
+  },
+  {
+   "id": "deko_laterne_rot",
+   "name": "Laterne Rot",
+   "kat": "huette",
+   "slot": "deko",
+   "stufe": 3,
+   "wert": "laterne|#e5383b",
+   "icon": "🏮",
+   "preis": 150
+  },
+  {
+   "id": "deko_laterne_tuerkis",
+   "name": "Laterne Türkis",
+   "kat": "huette",
+   "slot": "deko",
+   "stufe": 4,
+   "wert": "laterne|#2fc0c8",
+   "icon": "🏮",
+   "preis": 260
+  },
+  {
+   "id": "deko_laterne_gold",
+   "name": "Laterne Gold",
+   "kat": "huette",
+   "slot": "deko",
+   "stufe": 6,
+   "wert": "laterne|gold",
+   "icon": "🏮",
+   "preis": 750
+  },
+  {
+   "id": "deko_ring_rot",
+   "name": "Rettungsring Rot",
+   "kat": "huette",
+   "slot": "deko",
+   "stufe": 3,
+   "wert": "ring|#e5383b",
+   "icon": "🛟",
+   "preis": 150
+  },
+  {
+   "id": "deko_ring_blau",
+   "name": "Rettungsring Blau",
+   "kat": "huette",
+   "slot": "deko",
+   "stufe": 4,
+   "wert": "ring|#3f8fe0",
+   "icon": "🛟",
+   "preis": 260
+  },
+  {
+   "id": "deko_ring_gold",
+   "name": "Rettungsring Gold",
+   "kat": "huette",
+   "slot": "deko",
+   "stufe": 6,
+   "wert": "ring|gold",
+   "icon": "🛟",
+   "preis": 750
+  },
+  {
+   "id": "deko_schirm_gelb",
+   "name": "Sonnenschirm Gelb",
+   "kat": "huette",
+   "slot": "deko",
+   "stufe": 4,
+   "wert": "schirm|#ffd23f",
+   "icon": "⛱️",
+   "preis": 260
+  },
+  {
+   "id": "deko_schirm_pink",
+   "name": "Sonnenschirm Pink",
+   "kat": "huette",
+   "slot": "deko",
+   "stufe": 5,
+   "wert": "schirm|#ff3dbe",
+   "icon": "⛱️",
+   "preis": 420
+  },
+  {
+   "id": "deko_schirm_regenbogen",
+   "name": "Sonnenschirm Regenbogen",
+   "kat": "huette",
+   "slot": "deko",
+   "stufe": 7,
+   "wert": "schirm|regenbogen",
+   "icon": "⛱️",
+   "preis": 1200
+  },
+  {
+   "id": "deko_statue_stein",
+   "name": "Mini-Statue Stein",
+   "kat": "huette",
+   "slot": "deko",
+   "stufe": 5,
+   "wert": "statue|#9a958c",
+   "icon": "🗿",
+   "preis": 420
+  },
+  {
+   "id": "deko_statue_jade",
+   "name": "Mini-Statue Jade",
+   "kat": "huette",
+   "slot": "deko",
+   "stufe": 6,
+   "wert": "statue|#3fae8a",
+   "icon": "🗿",
+   "preis": 750
+  },
+  {
+   "id": "deko_statue_gold",
+   "name": "Mini-Statue Gold",
+   "kat": "huette",
+   "slot": "deko",
+   "stufe": 8,
+   "wert": "statue|gold",
+   "icon": "🗿",
+   "preis": 2200
+  },
+  {
+   "id": "deko_pinata_bunt",
+   "name": "Piñata Bunt",
+   "kat": "huette",
+   "slot": "deko",
+   "stufe": 6,
+   "wert": "pinata|bunt",
+   "icon": "🪅",
+   "preis": 750
+  },
+  {
+   "id": "deko_pinata_pastell",
+   "name": "Piñata Pastell",
+   "kat": "huette",
+   "slot": "deko",
+   "stufe": 7,
+   "wert": "pinata|pastell",
+   "icon": "🪅",
+   "preis": 1200
+  },
+  {
+   "id": "deko_pinata_gold",
+   "name": "Piñata Gold",
+   "kat": "huette",
+   "slot": "deko",
+   "stufe": 9,
+   "wert": "pinata|gold",
+   "icon": "🪅",
+   "preis": 3500
+  },
+  {
+   "id": "deko_kristall_rosa",
+   "name": "Kristall Rosa",
+   "kat": "huette",
+   "slot": "deko",
+   "stufe": 7,
+   "wert": "kristall|#ff8fb8",
+   "icon": "💎",
+   "preis": 1200
+  },
+  {
+   "id": "deko_kristall_lila",
+   "name": "Kristall Lila",
+   "kat": "huette",
+   "slot": "deko",
+   "stufe": 8,
+   "wert": "kristall|#9b5de5",
+   "icon": "💎",
+   "preis": 2200
+  },
+  {
+   "id": "deko_kristall_regenbogen",
+   "name": "Kristall Regenbogen",
+   "kat": "huette",
+   "slot": "deko",
+   "stufe": 10,
+   "wert": "kristall|regenbogen",
+   "icon": "💎",
+   "preis": 6000
+  },
+  {
+   "id": "fz_scooter_schwarz",
+   "name": "E-Scooter Schwarz",
+   "kat": "fahrt",
+   "slot": "fahrzeug",
+   "stufe": 1,
+   "wert": "scooter|#222",
+   "icon": "🛴",
+   "preis": 35
+  },
+  {
+   "id": "fz_scooter_weiss",
+   "name": "E-Scooter Weiß",
+   "kat": "fahrt",
+   "slot": "fahrzeug",
+   "stufe": 1,
+   "wert": "scooter|#f7f4ec",
+   "icon": "🛴",
+   "preis": 35
+  },
+  {
+   "id": "fz_scooter_tuerkis",
+   "name": "E-Scooter Türkis",
+   "kat": "fahrt",
+   "slot": "fahrzeug",
+   "stufe": 2,
+   "wert": "scooter|#2fc0c8",
+   "icon": "🛴",
+   "preis": 75
+  },
+  {
+   "id": "fz_scooter_neonpink",
+   "name": "E-Scooter Neonpink",
+   "kat": "fahrt",
+   "slot": "fahrzeug",
+   "stufe": 4,
+   "wert": "scooter|#ff3dbe",
+   "icon": "🛴",
+   "preis": 260
+  },
+  {
+   "id": "fz_scooter_chrom",
+   "name": "E-Scooter Chrom",
+   "kat": "fahrt",
+   "slot": "fahrzeug",
+   "stufe": 6,
+   "wert": "scooter|silber",
+   "icon": "🛴",
+   "preis": 750
+  },
+  {
+   "id": "fz_scooter_gold",
+   "name": "E-Scooter Gold",
+   "kat": "fahrt",
+   "slot": "fahrzeug",
+   "stufe": 8,
+   "wert": "scooter|gold",
+   "icon": "🛴",
+   "preis": 2200
+  },
+  {
+   "id": "fz_scooter_regenbogen",
+   "name": "E-Scooter Regenbogen",
+   "kat": "fahrt",
+   "slot": "fahrzeug",
+   "stufe": 10,
+   "wert": "scooter|regenbogen",
+   "icon": "🛴",
+   "preis": 6000
+  },
+  {
+   "id": "fz_skate_holz",
+   "name": "Skateboard Holz",
+   "kat": "fahrt",
+   "slot": "fahrzeug",
+   "stufe": 1,
+   "wert": "skate|#c08a50",
+   "icon": "🛹",
+   "preis": 35
+  },
+  {
+   "id": "fz_skate_rot",
+   "name": "Skateboard Rot",
+   "kat": "fahrt",
+   "slot": "fahrzeug",
+   "stufe": 2,
+   "wert": "skate|#e5383b",
+   "icon": "🛹",
+   "preis": 75
+  },
+  {
+   "id": "fz_skate_blau",
+   "name": "Skateboard Blau",
+   "kat": "fahrt",
+   "slot": "fahrzeug",
+   "stufe": 2,
+   "wert": "skate|#3f8fe0",
+   "icon": "🛹",
+   "preis": 75
+  },
+  {
+   "id": "fz_skate_neongruen",
+   "name": "Skateboard Neongrün",
+   "kat": "fahrt",
+   "slot": "fahrzeug",
+   "stufe": 4,
+   "wert": "skate|#7dff6a",
+   "icon": "🛹",
+   "preis": 260
+  },
+  {
+   "id": "fz_skate_galaxy",
+   "name": "Skateboard Galaxy",
+   "kat": "fahrt",
+   "slot": "fahrzeug",
+   "stufe": 7,
+   "wert": "skate|galaxy",
+   "icon": "🛹",
+   "preis": 1200
+  },
+  {
+   "id": "fz_skate_gold",
+   "name": "Skateboard Gold",
+   "kat": "fahrt",
+   "slot": "fahrzeug",
+   "stufe": 9,
+   "wert": "skate|gold",
+   "icon": "🛹",
+   "preis": 3500
+  },
+  {
+   "id": "shirt_weiss",
+   "name": "Weißes Shirt",
+   "kat": "outfit",
+   "slot": "shirt",
+   "stufe": 1,
+   "wert": "#f4f4f4",
+   "icon": "👕",
+   "preis": 35
+  },
+  {
+   "id": "shirt_schwarz",
+   "name": "Schwarzes Shirt",
+   "kat": "outfit",
+   "slot": "shirt",
+   "stufe": 1,
+   "wert": "#222",
+   "icon": "👕",
+   "preis": 35
+  },
+  {
+   "id": "shirt_rot",
+   "name": "Rotes Shirt",
+   "kat": "outfit",
+   "slot": "shirt",
+   "stufe": 2,
+   "wert": "#e5383b",
+   "icon": "👕",
+   "preis": 75
+  },
+  {
+   "id": "shirt_tuerkis",
+   "name": "Türkises Shirt",
+   "kat": "outfit",
+   "slot": "shirt",
+   "stufe": 2,
+   "wert": "#2fc0c8",
+   "icon": "👕",
+   "preis": 75
+  },
+  {
+   "id": "shirt_gelb",
+   "name": "Gelbes Shirt",
+   "kat": "outfit",
+   "slot": "shirt",
+   "stufe": 2,
+   "wert": "#ffd23f",
+   "icon": "👕",
+   "preis": 75
+  },
+  {
+   "id": "shirt_lila",
+   "name": "Lila Shirt",
+   "kat": "outfit",
+   "slot": "shirt",
+   "stufe": 3,
+   "wert": "#9b5de5",
+   "icon": "👕",
+   "preis": 150
+  },
+  {
+   "id": "shirt_neon",
+   "name": "Neonpinkes Shirt",
+   "kat": "outfit",
+   "slot": "shirt",
+   "stufe": 4,
+   "wert": "#ff3dbe",
+   "icon": "👕",
+   "preis": 260
+  },
+  {
+   "id": "shirt_gold",
+   "name": "Goldenes Shirt",
+   "kat": "outfit",
+   "slot": "shirt",
+   "stufe": 5,
+   "wert": "#e8b84a",
+   "icon": "👕",
+   "preis": 420
+  },
+  {
+   "id": "hose_jeans",
+   "name": "Jeans",
+   "kat": "outfit",
+   "slot": "hose",
+   "stufe": 1,
+   "wert": "#3a5a8a",
+   "icon": "👖",
+   "preis": 35
+  },
+  {
+   "id": "hose_beige",
+   "name": "Beige Shorts",
+   "kat": "outfit",
+   "slot": "hose",
+   "stufe": 1,
+   "wert": "#d8c08a",
+   "icon": "👖",
+   "preis": 35
+  },
+  {
+   "id": "hose_schwarz",
+   "name": "Schwarze Hose",
+   "kat": "outfit",
+   "slot": "hose",
+   "stufe": 2,
+   "wert": "#222",
+   "icon": "👖",
+   "preis": 75
+  },
+  {
+   "id": "hose_weiss",
+   "name": "Weiße Hose",
+   "kat": "outfit",
+   "slot": "hose",
+   "stufe": 3,
+   "wert": "#f4f4f4",
+   "icon": "👖",
+   "preis": 150
+  },
+  {
+   "id": "hose_pink",
+   "name": "Pinke Hose",
+   "kat": "outfit",
+   "slot": "hose",
+   "stufe": 4,
+   "wert": "#ff8fb8",
+   "icon": "👖",
+   "preis": 260
+  },
+  {
+   "id": "kopf_cap_rot",
+   "name": "Cap Rot",
+   "kat": "outfit",
+   "slot": "kopf",
+   "stufe": 1,
+   "wert": "cap|#e5383b",
+   "icon": "🧢",
+   "preis": 35
+  },
+  {
+   "id": "kopf_cap_schwarz",
+   "name": "Cap Schwarz",
+   "kat": "outfit",
+   "slot": "kopf",
+   "stufe": 2,
+   "wert": "cap|#222",
+   "icon": "🧢",
+   "preis": 75
+  },
+  {
+   "id": "kopf_cap_gold",
+   "name": "Cap Gold",
+   "kat": "outfit",
+   "slot": "kopf",
+   "stufe": 4,
+   "wert": "cap|gold",
+   "icon": "🧢",
+   "preis": 260
+  },
+  {
+   "id": "kopf_bandana_rot",
+   "name": "Bandana Rot",
+   "kat": "outfit",
+   "slot": "kopf",
+   "stufe": 1,
+   "wert": "bandana|#e5383b",
+   "icon": "🧢",
+   "preis": 35
+  },
+  {
+   "id": "kopf_bandana_blau",
+   "name": "Bandana Blau",
+   "kat": "outfit",
+   "slot": "kopf",
+   "stufe": 2,
+   "wert": "bandana|#3f8fe0",
+   "icon": "🧢",
+   "preis": 75
+  },
+  {
+   "id": "kopf_bandana_schwarz",
+   "name": "Bandana Schwarz",
+   "kat": "outfit",
+   "slot": "kopf",
+   "stufe": 3,
+   "wert": "bandana|#222",
+   "icon": "🧢",
+   "preis": 150
+  },
+  {
+   "id": "kopf_sonnenhut_stroh",
+   "name": "Sonnenhut Stroh",
+   "kat": "outfit",
+   "slot": "kopf",
+   "stufe": 2,
+   "wert": "sonnenhut|#e8cf86",
+   "icon": "🧢",
+   "preis": 75
+  },
+  {
+   "id": "kopf_sonnenhut_weiss",
+   "name": "Sonnenhut Weiß",
+   "kat": "outfit",
+   "slot": "kopf",
+   "stufe": 3,
+   "wert": "sonnenhut|#f7f4ec",
+   "icon": "🧢",
+   "preis": 150
+  },
+  {
+   "id": "kopf_sonnenhut_rosa",
+   "name": "Sonnenhut Rosa",
+   "kat": "outfit",
+   "slot": "kopf",
+   "stufe": 4,
+   "wert": "sonnenhut|#ff8fb8",
+   "icon": "🧢",
+   "preis": 260
+  },
+  {
+   "id": "kopf_party_lila",
+   "name": "Partyhut Lila",
+   "kat": "outfit",
+   "slot": "kopf",
+   "stufe": 2,
+   "wert": "party|#9b5de5",
+   "icon": "🧢",
+   "preis": 75
+  },
+  {
+   "id": "kopf_party_pink",
+   "name": "Partyhut Pink",
+   "kat": "outfit",
+   "slot": "kopf",
+   "stufe": 3,
+   "wert": "party|#ff3dbe",
+   "icon": "🧢",
+   "preis": 150
+  },
+  {
+   "id": "kopf_party_gold",
+   "name": "Partyhut Gold",
+   "kat": "outfit",
+   "slot": "kopf",
+   "stufe": 5,
+   "wert": "party|gold",
+   "icon": "🧢",
+   "preis": 420
+  },
+  {
+   "id": "kopf_blumen_bunt",
+   "name": "Blumenkranz Bunt",
+   "kat": "outfit",
+   "slot": "kopf",
+   "stufe": 3,
+   "wert": "blumen|bunt",
+   "icon": "🧢",
+   "preis": 150
+  },
+  {
+   "id": "kopf_blumen_weiss",
+   "name": "Blumenkranz Weiß",
+   "kat": "outfit",
+   "slot": "kopf",
+   "stufe": 4,
+   "wert": "blumen|#f7f4ec",
+   "icon": "🧢",
+   "preis": 260
+  },
+  {
+   "id": "kopf_blumen_pastell",
+   "name": "Blumenkranz Pastell",
+   "kat": "outfit",
+   "slot": "kopf",
+   "stufe": 5,
+   "wert": "blumen|pastell",
+   "icon": "🧢",
+   "preis": 420
+  },
+  {
+   "id": "kopf_cowboy_braun",
+   "name": "Cowboyhut Braun",
+   "kat": "outfit",
+   "slot": "kopf",
+   "stufe": 4,
+   "wert": "cowboy|#8a5a2b",
+   "icon": "🧢",
+   "preis": 260
+  },
+  {
+   "id": "kopf_cowboy_schwarz",
+   "name": "Cowboyhut Schwarz",
+   "kat": "outfit",
+   "slot": "kopf",
+   "stufe": 5,
+   "wert": "cowboy|#222",
+   "icon": "🧢",
+   "preis": 420
+  },
+  {
+   "id": "kopf_cowboy_weiss",
+   "name": "Cowboyhut Weiß",
+   "kat": "outfit",
+   "slot": "kopf",
+   "stufe": 6,
+   "wert": "cowboy|#f7f4ec",
+   "icon": "🧢",
+   "preis": 750
+  },
+  {
+   "id": "kopf_krone_gold",
+   "name": "Krone Gold",
+   "kat": "outfit",
+   "slot": "kopf",
+   "stufe": 6,
+   "wert": "krone|gold",
+   "icon": "👑",
+   "preis": 750
+  },
+  {
+   "id": "kopf_krone_silber",
+   "name": "Krone Silber",
+   "kat": "outfit",
+   "slot": "kopf",
+   "stufe": 7,
+   "wert": "krone|silber",
+   "icon": "👑",
+   "preis": 1200
+  },
+  {
+   "id": "kopf_krone_rose",
+   "name": "Krone Rosé",
+   "kat": "outfit",
+   "slot": "kopf",
+   "stufe": 8,
+   "wert": "krone|rose",
+   "icon": "👑",
+   "preis": 2200
+  },
+  {
+   "id": "kopf_lorbeer_gruen",
+   "name": "Lorbeerkranz Grün",
+   "kat": "outfit",
+   "slot": "kopf",
+   "stufe": 7,
+   "wert": "lorbeer|#3fae5a",
+   "icon": "👑",
+   "preis": 1200
+  },
+  {
+   "id": "kopf_lorbeer_silber",
+   "name": "Lorbeerkranz Silber",
+   "kat": "outfit",
+   "slot": "kopf",
+   "stufe": 8,
+   "wert": "lorbeer|silber",
+   "icon": "👑",
+   "preis": 2200
+  },
+  {
+   "id": "kopf_lorbeer_gold",
+   "name": "Lorbeerkranz Gold",
+   "kat": "outfit",
+   "slot": "kopf",
+   "stufe": 9,
+   "wert": "lorbeer|gold",
+   "icon": "👑",
+   "preis": 3500
+  },
+  {
+   "id": "kopf_heiligenschein_gelb",
+   "name": "Heiligenschein Gelb",
+   "kat": "outfit",
+   "slot": "kopf",
+   "stufe": 8,
+   "wert": "heiligenschein|#ffd23f",
+   "icon": "👑",
+   "preis": 2200
+  },
+  {
+   "id": "kopf_heiligenschein_rosa",
+   "name": "Heiligenschein Rosa",
+   "kat": "outfit",
+   "slot": "kopf",
+   "stufe": 9,
+   "wert": "heiligenschein|#ff8fb8",
+   "icon": "👑",
+   "preis": 3500
+  },
+  {
+   "id": "kopf_heiligenschein_regenbogen",
+   "name": "Heiligenschein Regenbogen",
+   "kat": "outfit",
+   "slot": "kopf",
+   "stufe": 9,
+   "wert": "heiligenschein|regenbogen",
+   "icon": "👑",
+   "preis": 3500
+  },
+  {
+   "id": "kopf_kristallkrone_eis",
+   "name": "Kristallkrone Eis",
+   "kat": "outfit",
+   "slot": "kopf",
+   "stufe": 9,
+   "wert": "kristallkrone|eis",
+   "icon": "👑",
+   "preis": 3500
+  },
+  {
+   "id": "kopf_kristallkrone_rosa",
+   "name": "Kristallkrone Rosa",
+   "kat": "outfit",
+   "slot": "kopf",
+   "stufe": 9,
+   "wert": "kristallkrone|#ff8fb8",
+   "icon": "👑",
+   "preis": 3500
+  },
+  {
+   "id": "kopf_kristallkrone_regenbogen",
+   "name": "Kristallkrone Regenbogen",
+   "kat": "outfit",
+   "slot": "kopf",
+   "stufe": 10,
+   "wert": "kristallkrone|regenbogen",
+   "icon": "👑",
+   "preis": 6000
+  },
+  {
+   "id": "brille_sonne_schwarz",
+   "name": "Sonnenbrille Schwarz",
+   "kat": "outfit",
+   "slot": "brille",
+   "stufe": 1,
+   "wert": "sonne|#222",
+   "icon": "🕶️",
+   "preis": 35
+  },
+  {
+   "id": "brille_sonne_rot",
+   "name": "Sonnenbrille Rot",
+   "kat": "outfit",
+   "slot": "brille",
+   "stufe": 2,
+   "wert": "sonne|#e5383b",
+   "icon": "🕶️",
+   "preis": 75
+  },
+  {
+   "id": "brille_sonne_weiss",
+   "name": "Sonnenbrille Weiß",
+   "kat": "outfit",
+   "slot": "brille",
+   "stufe": 3,
+   "wert": "sonne|#f7f4ec",
+   "icon": "🕶️",
+   "preis": 150
+  },
+  {
+   "id": "brille_herz_pink",
+   "name": "Herzbrille Pink",
+   "kat": "outfit",
+   "slot": "brille",
+   "stufe": 2,
+   "wert": "herz|#ff3dbe",
+   "icon": "🕶️",
+   "preis": 75
+  },
+  {
+   "id": "brille_herz_rot",
+   "name": "Herzbrille Rot",
+   "kat": "outfit",
+   "slot": "brille",
+   "stufe": 3,
+   "wert": "herz|#e5383b",
+   "icon": "🕶️",
+   "preis": 150
+  },
+  {
+   "id": "brille_herz_gold",
+   "name": "Herzbrille Gold",
+   "kat": "outfit",
+   "slot": "brille",
+   "stufe": 5,
+   "wert": "herz|gold",
+   "icon": "🕶️",
+   "preis": 420
+  },
+  {
+   "id": "brille_stern_gelb",
+   "name": "Sternbrille Gelb",
+   "kat": "outfit",
+   "slot": "brille",
+   "stufe": 3,
+   "wert": "stern|#ffd23f",
+   "icon": "🕶️",
+   "preis": 150
+  },
+  {
+   "id": "brille_stern_lila",
+   "name": "Sternbrille Lila",
+   "kat": "outfit",
+   "slot": "brille",
+   "stufe": 4,
+   "wert": "stern|#9b5de5",
+   "icon": "🕶️",
+   "preis": 260
+  },
+  {
+   "id": "brille_stern_gold",
+   "name": "Sternbrille Gold",
+   "kat": "outfit",
+   "slot": "brille",
+   "stufe": 6,
+   "wert": "stern|gold",
+   "icon": "🕶️",
+   "preis": 750
+  },
+  {
+   "id": "brille_pilot_silber",
+   "name": "Pilotenbrille Silber",
+   "kat": "outfit",
+   "slot": "brille",
+   "stufe": 5,
+   "wert": "pilot|silber",
+   "icon": "🕶️",
+   "preis": 420
+  },
+  {
+   "id": "brille_pilot_gold",
+   "name": "Pilotenbrille Gold",
+   "kat": "outfit",
+   "slot": "brille",
+   "stufe": 6,
+   "wert": "pilot|gold",
+   "icon": "🕶️",
+   "preis": 750
+  },
+  {
+   "id": "brille_pilot_rose",
+   "name": "Pilotenbrille Rosé",
+   "kat": "outfit",
+   "slot": "brille",
+   "stufe": 7,
+   "wert": "pilot|rose",
+   "icon": "🕶️",
+   "preis": 1200
+  },
+  {
+   "id": "pass_sand",
+   "name": "Pass „Sandstrand“",
+   "kat": "pass",
+   "slot": "hintergrund",
+   "stufe": 1,
+   "wert": "sand",
+   "icon": "🪪",
+   "preis": 35
+  },
+  {
+   "id": "pass_meer",
+   "name": "Pass „Meeresblau“",
+   "kat": "pass",
+   "slot": "hintergrund",
+   "stufe": 2,
+   "wert": "meer",
+   "icon": "🪪",
+   "preis": 75
+  },
+  {
+   "id": "pass_sunset",
+   "name": "Pass „Sonnenuntergang“",
+   "kat": "pass",
+   "slot": "hintergrund",
+   "stufe": 3,
+   "wert": "sunset",
+   "icon": "🪪",
+   "preis": 150
+  },
+  {
+   "id": "pass_palmnacht",
+   "name": "Pass „Palmen-Nacht“",
+   "kat": "pass",
+   "slot": "hintergrund",
+   "stufe": 4,
+   "wert": "palmnacht",
+   "icon": "🪪",
+   "preis": 260
+  },
+  {
+   "id": "pass_unterwasser",
+   "name": "Pass „Unterwasser“",
+   "kat": "pass",
+   "slot": "hintergrund",
+   "stufe": 5,
+   "wert": "unterwasser",
+   "icon": "🪪",
+   "preis": 420
+  },
+  {
+   "id": "pass_feuer",
+   "name": "Pass „Lagerfeuer“",
+   "kat": "pass",
+   "slot": "hintergrund",
+   "stufe": 6,
+   "wert": "feuer",
+   "icon": "🪪",
+   "preis": 750
+  },
+  {
+   "id": "pass_polar",
+   "name": "Pass „Polarlicht“",
+   "kat": "pass",
+   "slot": "hintergrund",
+   "stufe": 9,
+   "wert": "polar",
+   "icon": "🪪",
+   "preis": 3500
+  },
+  {
+   "id": "pass_ozeanherz",
+   "name": "Pass „Ozeanherz“",
+   "kat": "pass",
+   "slot": "hintergrund",
+   "stufe": 10,
+   "wert": "ozeanherz",
+   "icon": "🪪",
+   "preis": 6000
+  },
+  {
+   "id": "schild_mint",
+   "name": "Namensschild Mint",
+   "kat": "pass",
+   "slot": "schild",
+   "stufe": 2,
+   "wert": "#2fb3a0",
+   "icon": "🏷️",
+   "preis": 75
+  },
+  {
+   "id": "schild_pink",
+   "name": "Namensschild Pink",
+   "kat": "pass",
+   "slot": "schild",
+   "stufe": 3,
+   "wert": "#ff4fa3",
+   "icon": "🏷️",
+   "preis": 150
+  },
+  {
+   "id": "schild_lila",
+   "name": "Namensschild Lila",
+   "kat": "pass",
+   "slot": "schild",
+   "stufe": 4,
+   "wert": "#9b5de5",
+   "icon": "🏷️",
+   "preis": 260
+  },
+  {
+   "id": "schild_gold",
+   "name": "Namensschild Gold",
+   "kat": "pass",
+   "slot": "schild",
+   "stufe": 5,
+   "wert": "#e8b84a",
+   "icon": "🏷️",
+   "preis": 420
+  },
+  {
+   "id": "schild_schwarzgold",
+   "name": "Namensschild Schwarz-Gold",
+   "kat": "pass",
+   "slot": "schild",
+   "stufe": 6,
+   "wert": "schwarzgold",
+   "icon": "🏷️",
+   "preis": 750
+  },
+  {
+   "id": "schild_regenbogen",
+   "name": "Namensschild Regenbogen",
+   "kat": "pass",
+   "slot": "schild",
+   "stufe": 7,
+   "wert": "regenbogen",
+   "icon": "🏷️",
+   "preis": 1200
+  },
+  {
+   "id": "titel_inselkind",
+   "name": "Titel „Inselkind“",
+   "kat": "pass",
+   "slot": "titel",
+   "stufe": 1,
+   "wert": "🌴 Inselkind",
+   "icon": "🏷️",
+   "preis": 35
+  },
+  {
+   "id": "titel_sammler",
+   "name": "Titel „Muschelsammler“",
+   "kat": "pass",
+   "slot": "titel",
+   "stufe": 1,
+   "wert": "🐚 Muschelsammler",
+   "icon": "🏷️",
+   "preis": 35
+  },
+  {
+   "id": "titel_wellen",
+   "name": "Titel „Wellenreiter“",
+   "kat": "pass",
+   "slot": "titel",
+   "stufe": 2,
+   "wert": "🏄 Wellenreiter",
+   "icon": "🏷️",
+   "preis": 75
+  },
+  {
+   "id": "titel_hai",
+   "name": "Titel „Hai-Flüsterer“",
+   "kat": "pass",
+   "slot": "titel",
+   "stufe": 3,
+   "wert": "🦈 Hai-Flüsterer",
+   "icon": "🏷️",
+   "preis": 150
+  },
+  {
+   "id": "titel_sunset",
+   "name": "Titel „Sonnenuntergangs-Fan“",
+   "kat": "pass",
+   "slot": "titel",
+   "stufe": 3,
+   "wert": "🌅 Sonnenuntergangs-Fan",
+   "icon": "🏷️",
+   "preis": 150
+  },
+  {
+   "id": "titel_royal",
+   "name": "Titel „Insel-Royal“",
+   "kat": "pass",
+   "slot": "titel",
+   "stufe": 6,
+   "wert": "👑 Insel-Royal",
+   "icon": "🏷️",
+   "preis": 750
+  },
+  {
+   "id": "titel_legende",
+   "name": "Titel „Legende von Muschel-Tal“",
+   "kat": "pass",
+   "slot": "titel",
+   "stufe": 7,
+   "wert": "⭐ Legende von Muschel-Tal",
+   "icon": "🏷️",
+   "preis": 1200
+  },
+  {
+   "id": "titel_kosmos",
+   "name": "Titel „Kosmischer Entdecker“",
+   "kat": "pass",
+   "slot": "titel",
+   "stufe": 9,
+   "wert": "🌌 Kosmische Seele",
+   "icon": "🏷️",
+   "preis": 3500
+  }
+ ]
+}

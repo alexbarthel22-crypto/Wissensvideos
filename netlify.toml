@@ -13,3 +13,9 @@
 # Inselkasse (Story teilen = +50 Muscheln), speichert in Netlify Blobs
 [functions]
   directory = "muscheltal/netlify/functions"
+
+# Musik ändert sich selten: eine Woche im Browser zwischenspeichern (schnelleres Laden beim nächsten Besuch)
+[[headers]]
+  for = "/musik/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
