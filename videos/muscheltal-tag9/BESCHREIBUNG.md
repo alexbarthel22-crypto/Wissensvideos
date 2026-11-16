@@ -1,6 +1,6 @@
 # Muschel-Tal – Tag 9 · Beschreibung
 
-**Cover:** `renders/cover.jpg` (Vorlage `cover/thumb.html`, Layout wie Tag 8, lila Leuchtrand) – „TÜRSTEHER GESUCHT! BIST DU'S? 🕶️“, „🪩 Neuer Nachtclub: KOK(O)S“, Karten „LIVE verlost: Job bei Porto Pizza“, „LIVE verlost: Job im Kokos-Bad“, „Nur noch 33 bis zum Tierheim“, „Wer hat gewonnen? 👀“. Hintergrund: der KOK(O)S nachts mit Neon-Schild und roter Teppich-Schlange (Homepage-Aufnahme).
+**Cover:** `renders/cover.jpg` (Vorlage `cover/thumb.html`, Layout wie Tag 8, lila Leuchtrand) – „TÜRSTEHER GESUCHT! BIST DU'S? 🕶️“, „🪩 Neuer Nachtclub: KOK(O)S“, Karten „Neuer Bürgermeister verlost“, „Jobs: Porto Pizza & Kokos-Bad“, „Nur noch 33 bis zum Tierheim“, „Wer hat gewonnen? 👀“. Hintergrund: der KOK(O)S nachts mit Neon-Schild und roter Teppich-Schlange (Homepage-Aufnahme).
 
 ## Hauptversion (zum Posten)
 Türsteher gesucht! 🕶️ Bist du's? 👀
@@ -19,6 +19,8 @@ Glückwunsch, ihr arbeitet jetzt hier! 🎉
 🏝️ Das ist Muschel-Tal: Wer mir folgt, bekommt eine Hütte mit seinem @Namen – schon 767 Bewohner!
 🐾 Nur noch 33 bis zum Tierheim Pfotenkuss!
 🔴 Und wenn ich LIVE bin: komm rein und bau mit an der LIVE-Insel!
+
+🍀 Folg mir – vielleicht gewinnst du beim nächsten Mal!
 
 #muscheltal #fyp #fürdich #foryou #viral
 
