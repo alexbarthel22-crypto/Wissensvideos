@@ -3260,7 +3260,7 @@ function offenNeon(c,x,y,g){const on=Math.sin(T*2.4)>-.6;c.fillStyle=on?'#ff3d7f
 // Position des OFFEN-Schilds je Laden (lokal) – nicht über Namen oder Wegen
 const OFFEN_POS={nagel:[11,-7.8],baeckerei:[8.6,-18.6],doener:[3.7,-22.6],acai:[2.4,-20.6],werkstatt:[-14.3,-24],strandbar:null};
 function gebSign(c,g){const ink='#2a1b12';
- if(g.typ==='doener'){c.strokeStyle=ink;c.lineWidth=.7;c.fillStyle='#ffd23f';c.beginPath();c.roundRect(-25,-33,26,9,2);c.fill();c.stroke();gTxt(c,{},'DÖNER',-12,-26.4,6.2,'#c0392b',null,23);}
+ if(g.typ==='doener'){c.strokeStyle=ink;c.lineWidth=.7;c.fillStyle='#ffd23f';c.beginPath();c.roundRect(-25,-33,26,9,2);c.fill();c.stroke();gTxt(c,{},'DÖNER',-12,-26.4,6.2,'#c0392b',null,23);doenerStern(c);}
  else if(g.typ==='werkstatt'){c.fillStyle='#ffd23f';c.strokeStyle=ink;c.lineWidth=.5;c.beginPath();c.roundRect(-25,-29,38,10,1.6);c.fill();c.stroke();c.strokeStyle='#5a646e';c.lineWidth=1;c.lineCap='round';c.beginPath();c.moveTo(-22.6,-21.6);c.lineTo(-18.8,-26);c.stroke();c.beginPath();c.arc(-18.3,-26.5,1.1,0,TAU);c.stroke();c.fillStyle='#ffd23f';c.beginPath();c.arc(-17.8,-27,.55,0,TAU);c.fill();
   gTxt(c,{},'MOPED',-3,-23.2,4.8,ink,null,24);gTxt(c,{},'WERKSTATT',-3,-20.2,2.6,'#5a646e',null,24);}
  else if(g.typ==='baeckerei')baeckSchild(c);
@@ -3270,7 +3270,9 @@ function gebSign(c,g){const ink='#2a1b12';
   for(const [hx,hy] of[[bx-13,-23.5],[bx+13,-23.5]]){c.fillStyle='#e8467c';for(let k=0;k<5;k++){const a=k/5*TAU;c.beginPath();c.ellipse(hx+Math.cos(a)*.7,hy+Math.sin(a)*.7,.6,.4,a,0,TAU);c.fill();}c.fillStyle='#ffd23f';c.beginPath();c.arc(hx,hy,.3,0,TAU);c.fill();}}
  else if(g.typ==='villa'){const W=(g.x1-g.x0)/2,vx=-W+24;gTxt(c,g,'STRANDVILLA',vx,-16.4,4.4,'#ffd98a',null,40);}}
 // Schild-Rechteck (lokal) je Gebäude, für Verdeckung der eigenen Figur
-function doenerMenu(c){c.fillStyle='#6b3f1d';c.fillRect(14,-13,1,10);c.fillStyle='#2a2a2a';c.fillRect(11,-17,9,9);c.strokeStyle='#8a5a2b';c.lineWidth=.7;c.strokeRect(11,-17,9,9);c.strokeStyle='rgba(255,255,255,.75)';c.lineWidth=.35;c.beginPath();for(let k=0;k<4;k++){c.moveTo(12.3,-15+k*2);c.lineTo(16+k%2*2,-15+k*2);}c.stroke();}
+function doenerMenu(c){c.fillStyle='#6b3f1d';c.fillRect(14,-13,1,10);c.fillStyle='#2a2a2a';c.fillRect(11,-17,9,9);c.strokeStyle='#8a5a2b';c.lineWidth=.7;c.strokeRect(11,-17,9,9);c.textAlign='center';c.fillStyle='#fff';c.font='900 1.5px '+FONT;c.fillText('DÖNER',15.5,-14.6);c.fillStyle='#ffd23f';c.font='900 3.4px '+FONT;c.fillText('2 €',15.5,-10.9);c.fillStyle='rgba(255,255,255,.75)';c.font='800 .95px '+FONT;c.fillText('mit alles',15.5,-9);}
+// Erste Amtshandlung der Bürgermeisterin (17.11.): Döner nur noch 2 € – Stern am Ladenschild
+function doenerStern(c){const bx=1.4,by=-32.6,r=4.4;c.save();c.fillStyle='#e8433c';c.beginPath();for(let i=0;i<24;i++){const an=i/24*TAU-Math.PI/2,rr=i%2?r*.78:r;c.lineTo(bx+Math.cos(an)*rr,by+Math.sin(an)*rr);}c.closePath();c.fill();c.strokeStyle='#2a1b12';c.lineWidth=.45;c.stroke();c.fillStyle='#fff';c.textAlign='center';c.font='900 1.05px '+FONT;c.fillText('NUR',bx,by-1.1);c.font='900 2.5px '+FONT;c.fillText('2 €',bx,by+1.6);c.restore();}
 // Figur hinter der Döner-Menütafel: Tafel wird über ihr nachgezeichnet
 function doenerFront(c,x,y,tn){if(S*cam.z<=6)return;for(const g of GEB){if(g.typ!=='doener')continue;const lx=x-g.cx,ly=y-g.cy;if(lx>7.5&&lx<23.5&&ly<-3.2&&ly>-22)tintDraw(c,tn,g.cx+10,g.cy-18,g.cx+21,g.cy-2,o=>{o.save();o.translate(g.cx,g.cy);doenerMenu(o);o.restore();});}}
 // Team-Plakette: hängt an zwei Schnüren direkt unter dem Ladenschild, kleine Namensschilder in Ladenfarbe (Leitung zuerst mit ⭐)
@@ -3356,7 +3358,7 @@ function drawGeb(c,g,nl,z){const ink='#2a1b12';c.save();c.translate(g.cx,g.cy);
   // Schornstein + Rauch
   c.fillStyle='#8a8078';c.fillRect(2,-28,4,6);if(!REDUCED)for(let k=0;k<4;k++){const ph=(T*.35+k/4)%1;c.fillStyle=`rgba(240,240,240,${.55*(1-ph)})`;c.beginPath();c.arc(4+Math.sin(ph*5+k)*1.5+ph*4,-29-ph*14,1.4+ph*2.6,0,TAU);c.fill();}
   // Schild
-  c.fillStyle='#ffd23f';c.beginPath();c.roundRect(-25,-33,26,9,2);c.fill();c.stroke();gTxt(c,{},'DÖNER',-12,-26.4,6.2,'#c0392b',null,23);
+  c.fillStyle='#ffd23f';c.beginPath();c.roundRect(-25,-33,26,9,2);c.fill();c.stroke();gTxt(c,{},'DÖNER',-12,-26.4,6.2,'#c0392b',null,23);doenerStern(c);
   // Fenster mit Drehspieß
   c.fillStyle='#2f4a63';c.fillRect(-24,-16,20,12);c.fillStyle='rgba(255,170,60,.35)';c.fillRect(-24,-16,20,12);
   c.save();c.beginPath();c.rect(-24,-16,20,12);c.clip();const sp=(T*1.5)%2;c.fillStyle='#8a4a1e';c.beginPath();c.moveTo(-17.5,-15);c.lineTo(-12.5,-15);c.lineTo(-13.6,-5);c.lineTo(-16.4,-5);c.closePath();c.fill();
@@ -3392,7 +3394,7 @@ function drawGeb(c,g,nl,z){const ink='#2a1b12';c.save();c.translate(g.cx,g.cy);
    c.beginPath();c.moveTo(mx+1.6,my+1.2);c.lineTo(mx+2.2,my-2.6);c.lineTo(mx+3,my-2.6);c.lineTo(mx+3.1,my+1.2);c.closePath();c.fill();c.strokeStyle='#2a2a2a';c.lineWidth=.3;c.beginPath();c.moveTo(mx+2.6,my-2.6);c.lineTo(mx+2.2,my-3.4);c.stroke();
    c.fillStyle='#fff';c.fillRect(mx-4,my-4,3.4,3);c.fillStyle='#e8433c';c.font='900 .8px '+FONT;c.textAlign='center';c.fillText('DÖNER',mx-2.3,my-2.2);c.fillStyle='#ffd23f';c.beginPath();c.arc(mx+3.2,my-1.8,.3,0,TAU);c.fill();}
   for(const [x,y] of[[-29.5,4.4],[11.8,4.4]]){c.fillStyle='#c2643a';c.beginPath();c.moveTo(x-1.3,y);c.lineTo(x+1.3,y);c.lineTo(x+1,y+1.8);c.lineTo(x-1,y+1.8);c.closePath();c.fill();c.fillStyle='#3f9b45';c.beginPath();c.arc(x,y-.6,1.2,0,TAU);c.fill();c.fillStyle='#e8433c';for(const [ox,oy] of[[-.6,-1],[.4,-1.3],[.7,-.4]]){c.beginPath();c.arc(x+ox,y+oy,.38,0,TAU);c.fill();}}
-  {const ax=12,ay=19;c.strokeStyle='#8a5a2b';c.lineWidth=.5;c.beginPath();c.moveTo(ax-3,ay+3.4);c.lineTo(ax,ay-3.6);c.lineTo(ax+3,ay+3.4);c.stroke();c.fillStyle='#2a2a2a';c.beginPath();c.roundRect(ax-2.6,ay-2.8,5.2,4.8,.4);c.fill();c.fillStyle='#fff';c.font='900 .85px '+FONT;c.textAlign='center';c.fillText('HEUTE',ax,ay-1.6);c.fillText('MIT ALLEM',ax,ay-.6);c.fillStyle='#ffb02e';c.fillText('& SCHARF 🔥',ax,ay+.5);c.fillStyle='#f3d27a';c.beginPath();c.moveTo(ax-.8,ay+.9);c.lineTo(ax+.8,ay+.9);c.lineTo(ax,ay+1.9);c.closePath();c.fill();}
+  {const ax=12,ay=19;c.strokeStyle='#8a5a2b';c.lineWidth=.5;c.beginPath();c.moveTo(ax-3,ay+3.4);c.lineTo(ax,ay-3.6);c.lineTo(ax+3,ay+3.4);c.stroke();c.fillStyle='#2a2a2a';c.beginPath();c.roundRect(ax-2.6,ay-2.8,5.2,4.8,.4);c.fill();c.fillStyle='#fff';c.font='900 .85px '+FONT;c.textAlign='center';c.fillText('DÖNER',ax,ay-1.6);c.fillStyle='#ffd23f';c.font='900 1.15px '+FONT;c.fillText('NUR 2 €!',ax,ay-.4);c.fillStyle='#fff';c.font='900 .7px '+FONT;c.fillText('MIT ALLES',ax,ay+.5);c.fillStyle='#f3d27a';c.beginPath();c.moveTo(ax-.8,ay+.9);c.lineTo(ax+.8,ay+.9);c.lineTo(ax,ay+1.9);c.closePath();c.fill();}
   dwall(-W+1.5,-H+1.5,-W+1.5,H-1.5);dwall(W-1.5,-H+1.5,W-1.5,H-1.5);dwall(-W+1.5,H-1.5,-10,H-1.5);dwall(10,H-1.5,W-1.5,H-1.5);
   for(const ex of[-10,10]){c.fillStyle='#f7f1e6';c.fillRect(ex-1.2,H-4.6,2.4,4.4);c.fillStyle='#1d5fbf';c.beginPath();c.arc(ex,H-4.8,1.3,Math.PI,0);c.fill();c.fillStyle='#ffd23f';c.beginPath();c.arc(ex,H-5.6,.4,0,TAU);c.fill();}
   if(nl>.5)for(const [x,y] of[[24,-8],[24,10],[25,21]]){c.fillStyle='#ffd27a';c.beginPath();c.ellipse(x+3,y-.6+(REDUCED?0:Math.sin(T*9+x)*.05),.22,.4,0,0,TAU);c.fill();}
