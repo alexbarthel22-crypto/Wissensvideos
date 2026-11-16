@@ -102,14 +102,27 @@ async function aufraeumen(store) {
     t[1] = id; await kasse.set(t.join("/"), (await kasse.get(k)) || "1"); await kasse.delete(k);
   }
 }
-const TEXT = { login: "Login-Serie", quest: "Aufgabe", qbonus: "Alle 3 Aufgaben", shell: "Schwebende Muschel", erf: "Neuer Erfolg", story: "Story geteilt", spende: "Spende Inselkasse", tresor: "Tresor des Schöpfers", code: "Geheimcode aus dem Video", einladung: "Freund eingeladen", kauf: "Muschel-Shop" };
+const TEXT = { login: "Login-Serie", quest: "Aufgabe", qbonus: "Alle 3 Aufgaben", shell: "Schwebende Muschel", erf: "Neuer Erfolg", story: "Story geteilt", spende: "Spende Inselkasse", tresor: "Tresor des Schöpfers", code: "Geheimcode aus dem Video", einladung: "Freund eingeladen", kauf: "Muschel-Shop", null: "Neustart: alle Konten auf 0" };
 
 // Einmal-Aufgaben (Zurücksetzen, Aufräumen) nur einmal pro Tag und Server-Instanz prüfen – spart bei jeder Muschel-Aktion
 // rund 10 Speicherabfragen (schnellere Gutschriften)
 let VOR = { tag: "", p: null };
+// Alle Konten einmalig auf 0 setzen (16.11.): je Name eine Gegenbuchung „Neustart“ über den aktuellen Kontostand.
+// Buchungen bleiben erhalten (Login-Serie, Tresor, Codes, Einladungen, Shop-Inventar zählen weiter nur einmal).
+const NULLUNG = "x/nullung/2026-11-16";
+async function nullen(store) {
+  if (await store.get(NULLUNG)) return;
+  await store.set(NULLUNG, String(Date.now()));
+  const sum = {};
+  for (const k of await liste(store, "b/")) { const [, n, , , a] = k.split("/"); sum[n] = (sum[n] || 0) + (Number(a) || 0); }
+  const id = tag() + "-" + Date.now();
+  for (const [n, v] of Object.entries(sum)) if (v !== 0) await store.set("b/" + n + "/null/" + id + "/" + (-v), "1");
+  RANGC = { t: 0, d: null };
+  for (const k of ["x/rangcache", "r/" + tag()]) await store.delete(k);
+}
 function vorarbeit(store) {
   const t = tag();
-  if (VOR.tag !== t) VOR = { tag: t, p: (async () => { await zuruecksetzen(store); await zurueckAuf(store); await aufraeumen(store); })().catch(() => { VOR.tag = ""; }) };
+  if (VOR.tag !== t) VOR = { tag: t, p: (async () => { await nullen(store); await zuruecksetzen(store); await zurueckAuf(store); await aufraeumen(store); })().catch(() => { VOR.tag = ""; }) };
   return VOR.p;
 }
 // Erfolg „Nachbarn“: nur für beanspruchte Namen, die in der Nachbarn-Liste stehen (+10 Muscheln, einmalig)
