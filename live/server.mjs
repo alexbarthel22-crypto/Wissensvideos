@@ -22,7 +22,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-16 zg';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-16 zh';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -343,11 +343,15 @@ function setzeBewohner(n, quelle) {
   zustand();
 }
 // TikTok-Regeln: Für Folgen/Teilen gibt es KEINE Belohnung (keine Muscheln, kein Haus, nichts für die Kasse) – nur ein Danke
+// Profilbild aus den TikTok-Daten (wird über /bild vom Programm geholt – klappt auch durch den Tunnel)
+const profilBild = u => u?.avatarThumb?.urlList?.[0] || u?.avatarMedium?.urlList?.[0] || u?.avatarLarge?.urlList?.[0] || u?.profilePictureUrl || u?.profilePicture?.url?.[0] || u?.profilePicture?.urls?.[0] || null;
+const BILDER = new Map();
 function follow(u) {
   const id = String(u.uniqueId || '').toLowerCase(), p = S.spieler[id];
   setzeBewohner(bewohner + 1, 'follow');
   if (!id || gesperrt(id)) return;
-  sende({ typ: 'follow', id: p?.id || id, name: p?.name || '@' + u.uniqueId, nr: bewohner });
+  const bildUrl = profilBild(u);
+  sende({ typ: 'follow', id: p?.id || id, name: p?.name || '@' + u.uniqueId, nr: bewohner, bild: bildUrl ? '/bild?u=' + encodeURIComponent(bildUrl) : null });
   if (!followDank.some(x => x.id === id) && einmal(id, 'follow', 10 * 60000)) followDank.push({ id, name: p?.name || '@' + u.uniqueId });
 }
 
@@ -1045,6 +1049,15 @@ const server = http.createServer((req, res) => {
     let body = Buffer.from(JSON.stringify(antwort)); const kopf = { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' };
     if (/gzip/.test(req.headers['accept-encoding'] || '') && body.length > 1024) { body = zlib.gzipSync(body); kopf['Content-Encoding'] = 'gzip'; }
     res.writeHead(200, kopf); return res.end(body);
+  }
+  if (url.pathname === '/bild') {                            // Profilbilder neuer Follower (nur von TikTok-Servern, kurz zwischengespeichert)
+    const q = url.searchParams.get('u') || ''; let h = ''; try { h = new URL(q).hostname; } catch {}
+    if (!/(^|\.)(tiktokcdn(-[a-z]+)?\.com|ibyteimg\.com|byteimg\.com|muscdn\.com|tiktok\.com)$/.test(h)) { res.writeHead(404); return res.end(); }
+    const fertig = b => { if (!b) { res.writeHead(404); return res.end(); } res.writeHead(200, { 'Content-Type': b.typ, 'Cache-Control': 'max-age=3600' }); res.end(b.daten); };
+    if (BILDER.has(q)) return fertig(BILDER.get(q));
+    fetch(q, { signal: AbortSignal.timeout(5000) }).then(async r => { if (!r.ok) throw 0; const b = { typ: r.headers.get('content-type') || 'image/jpeg', daten: Buffer.from(await r.arrayBuffer()) };
+      BILDER.set(q, b); if (BILDER.size > 100) BILDER.delete(BILDER.keys().next().value); fertig(b); }).catch(() => fertig(null));
+    return;
   }
   if (url.pathname.startsWith('/ton/')) {
     const f = path.join(TON_DIR, path.basename(url.pathname));

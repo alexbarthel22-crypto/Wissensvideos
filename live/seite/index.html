@@ -354,7 +354,7 @@ function ereignis(e) {
     case 'ballonPlatzt': for (let i = 0; i < 18; i++) fx.push({ x: IX + (Math.random() - .5) * 500, y: IY - 200 + (Math.random() - .5) * 300, vx: (Math.random() - .5) * 8, vy: (Math.random() - .5) * 8, t: performance.now(), z: ['🎉', '✨', '💥'][i % 3], s: 22 }); break;
     case 'eventStart': banner.push({ t: 0, oben: '⚡ Überraschungs-Event!', unten: 'Jetzt mitmachen!', farbe: '#9b5de5' }); funken({ x: IX, y: IY }, '⚡', 20); break;
     case 'eventEnde': if (e.gut) { const q = e.spielerId && sp(e.spielerId), qp = q && platzVon(q); if (qp) { funken(qp, '🎉', 24); fokus(qp, 5000); } else feuerwerk(); } break;
-    case 'follow': { const pop = { t: 0, art: 'willkommen', name: e.name || (p ? p.name : ''), nr: e.nr, dauer: 6 }, i = banner.findIndex(x => x.neuId === e.id);
+    case 'follow': { const pop = { t: 0, art: 'willkommen', name: e.name || (p ? p.name : ''), nr: e.nr, dauer: 6, bild: e.bild ? Object.assign(new Image(), { src: e.bild }) : null }, i = banner.findIndex(x => x.neuId === e.id);
       if (i >= 0) { pop.t = banner[i].t; banner[i] = pop; } else banner.splice(banner.length ? 1 : 0, 0, pop); }   // neuer Follower: Zelt-Banner wird zum Willkommens-Pop-up
       feuerwerk(); platzFeuerwerk(14); MOMENTE.push({ art: 'konfetti', t: jetzt });   // großer Empfang für neue Bewohner
       if (pl) { funken(pl, '🐚', 16); fokus(pl, 5000, true); } break;
@@ -1787,8 +1787,13 @@ function willkommenPopup(b, age, k) {
   }, 2), -w / 2 - 45, -h / 2 - 45, w + 90, h + 90);
   const ix = -w / 2 + 78;                                             // rundes Haus-Symbol
   X.fillStyle = '#3f8fe0'; X.beginPath(); X.arc(ix, 0, 50, 0, 7); X.fill(); X.lineWidth = 4; X.strokeStyle = '#fff'; X.stroke();
+  if (b.bild && b.bild.complete && b.bild.naturalWidth) {            // Profilbild des neuen Followers (rund, mit Rand)
+    X.save(); X.beginPath(); X.arc(ix, 0, 46, 0, 7); X.clip(); X.drawImage(b.bild, ix - 46, -46, 92, 92); X.restore();
+    X.lineWidth = 5; X.strokeStyle = '#fff'; X.beginPath(); X.arc(ix, 0, 48, 0, 7); X.stroke(); X.lineWidth = 3; X.strokeStyle = '#3f8fe0'; X.beginPath(); X.arc(ix, 0, 51, 0, 7); X.stroke();
+  } else {
   X.fillStyle = '#fff'; X.beginPath(); X.moveTo(ix - 26, 2); X.lineTo(ix, -22); X.lineTo(ix + 26, 2); X.lineTo(ix + 18, 2); X.lineTo(ix + 18, 24); X.lineTo(ix - 18, 24); X.lineTo(ix - 18, 2); X.closePath(); X.fill();
   X.fillStyle = '#3f8fe0'; X.fillRect(ix - 6, 8, 12, 16);
+  }
   const tx = -w / 2 + 150, tw = w - 180;
   X.save(); X.letterSpacing = '3px'; text('NEU IN MUSCHEL-TAL! 🏝️', tx, -46, 27, '#2f6fb3', 'left', 900, tw); X.restore();
   text(`${b.name} 🐚`, tx, 6, 48, INK, 'left', 900, tw);
