@@ -611,8 +611,9 @@ def baue(rows, out):
     with open(os.path.join(lib, "codes.mjs"), "w", encoding="utf-8") as f:
         f.write("// automatisch aus daten/codes.json erzeugt (bau.py) – nicht von Hand ändern\nexport const CODES = " + json.dumps(codes, ensure_ascii=False) + ";\n")
     with open(os.path.join(lib, "bewohner.mjs"), "w", encoding="utf-8") as f:
+        _bew = {(r["name"] if isinstance(r, dict) else r[0]).lower().lstrip("@") for r in rows}
         f.write("// automatisch aus daten/einwohner.csv erzeugt (bau.py) – nicht von Hand ändern\nexport const BEWOHNER = new Set(" + json.dumps(sorted({(r["name"] if isinstance(r, dict) else r[0]).lower().lstrip("@") for r in rows}), ensure_ascii=False) + ");\n"
-                + "export const NACHBARN = new Set(" + json.dumps(sorted({str(n).lower().lstrip("@") for g in (json.load(open(INSEL, encoding="utf-8")).get("nachbarn") or []) for n in g}), ensure_ascii=False) + ");\n"
+                + "export const NACHBARN = new Set(" + json.dumps(sorted({str(n).lower().lstrip("@") for g in (json.load(open(INSEL, encoding="utf-8")).get("nachbarn") or []) if all(str(x).lower().lstrip("@") in _bew for x in g) for n in g}), ensure_ascii=False) + ");\n"  # Erfolg „Nachbar“ erst, wenn alle aus der Gruppe eingezogen sind
                 + "export const SEIT = " + json.dumps({(r["name"] if isinstance(r, dict) else r[0]).lower().lstrip("@"): _iso((r.get("datum") if isinstance(r, dict) else r[1]) or "") for r in rows}, ensure_ascii=False) + ";\n")
     try:
         from zoneinfo import ZoneInfo
