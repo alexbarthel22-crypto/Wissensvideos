@@ -752,10 +752,17 @@ export function macheEvents(api) {
   function waehle() {
     eventZahl++;
     if (CFG.leuchtturm?.an !== false && eventZahl % 2 === 0) for (let k = 0; k < TURM_FOLGE.length; k++) { const id = TURM_FOLGE[turmNr++ % TURM_FOLGE.length]; if (!DEFS[id].moeglich || DEFS[id].moeglich()) return id; }
-    const moegl = Object.keys(DEFS).filter(id => !LIKE_EVENTS.has(id) && !TURM_FOLGE.includes(id) && !verlauf.slice(0, 10).includes(id) && (!DEFS[id].moeglich || DEFS[id].moeglich()));
-    if (moegl.includes('abstimmung') && Math.random() < .2) return 'abstimmung';
-    return zufall(moegl.filter(x => x !== 'abstimmung').length ? moegl.filter(x => x !== 'abstimmung') : moegl);
+    if (Math.random() < .2 && (!DEFS.abstimmung.moeglich || DEFS.abstimmung.moeglich())) return 'abstimmung';
+    // Zufälliger Stapel: jedes Event kommt einmal dran, bevor sich eins wiederholt – danach neu gemischt
+    for (let versuch = 0; versuch < 2; versuch++) {
+      if (!stapel.length) { stapel = Object.keys(DEFS).filter(id => !LIKE_EVENTS.has(id) && !TURM_FOLGE.includes(id) && id !== 'abstimmung').sort(() => Math.random() - .5); if (stapel[0] === verlauf[0]) stapel.push(stapel.shift()); }
+      const i = stapel.findIndex(id => !DEFS[id].moeglich || DEFS[id].moeglich());
+      if (i >= 0) return stapel.splice(i, 1)[0];
+      stapel = [];
+    }
+    return 'wortjagd';
   }
+  let stapel = [];
   setInterval(() => {
     if (ev?.d.tick) ev.d.tick(ev);
     if (ev && (Date.now() >= ev.ende || ev.frueh)) beende();

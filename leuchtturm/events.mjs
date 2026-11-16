@@ -1,4 +1,4 @@
-// Leuchtturm-Rennen – Städte-Events (60 Stück, mit events-extra.mjs). Jede Minute eins, jedes ca. 40 Sekunden.
+// Leuchtturm-Rennen – Städte-Events (60 Stück, mit events-extra.mjs). Jede Minute eins in zufälliger Reihenfolge, jedes ca. 40 Sekunden.
 // Alles läuft über den Chat (keine Belohnung für Herzen/Folgen/Teilen/Geschenke – TikTok-Regeln).
 import { normal } from './filter.mjs';
 import { extraEvents } from './events-extra.mjs';
@@ -174,13 +174,19 @@ export function macheEvents(api) {
     api.sende({ typ: 'eventEnde', gut: !!r.gut });
     ev = null; naechstes = Math.max(naechstes, Date.now() + 20000); api.zustand();
   }
-  // Erstes Event: „Neue Städte willkommen“, danach zufällig (keins der letzten 30)
+  // Immer zufällig: gemischter Stapel, kein Event wiederholt sich, bevor alle dran waren
   function waehle() {
     zahl++;
-    if (zahl === 1) return 'staedteneu';
-    const moegl = Object.keys(DEFS).filter(id => !verlauf.includes(id) && (!DEFS[id].moeglich || DEFS[id].moeglich()));
-    return zufall(moegl.length ? moegl : Object.keys(DEFS));
+    // Zufälliger Stapel: jedes Event kommt einmal dran, bevor sich eins wiederholt – danach neu gemischt
+    for (let versuch = 0; versuch < 2; versuch++) {
+      if (!stapel.length) { stapel = Object.keys(DEFS).sort(() => Math.random() - .5); if (stapel[0] === verlauf[0]) stapel.push(stapel.shift()); }
+      const i = stapel.findIndex(id => !DEFS[id].moeglich || DEFS[id].moeglich());
+      if (i >= 0) return stapel.splice(i, 1)[0];
+      stapel = [];
+    }
+    return 'staedteneu';
   }
+  let stapel = [];
   setInterval(() => {
     if (ev?.d.tick) ev.d.tick(ev);
     if (ev && (Date.now() >= ev.ende || ev.frueh)) beende();
