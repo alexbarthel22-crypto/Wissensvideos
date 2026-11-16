@@ -421,3 +421,10 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - **Leistung (16.11.):** Karte wird beim Ziehen/Zoomen nicht mehr doppelt gezeichnet; Gebäude-Bilder werden beim Verschieben nur versetzt statt neu gezeichnet (im Stillstand live mit allen Animationen); Berlin-Uhrzeit und Textbreiten werden zwischengespeichert; auf sehr langsamen Geräten senkt die Karte nach einigen Sekunden Ruckeln ihre Pixelzahl leicht (nur dort). Musik wird eine Woche im Browser gespeichert.
 - **Neustart der Muschel-Konten (16.11.):** Beim ersten Aufruf nach der Veröffentlichung werden alle Kontostände einmalig auf 0 gesetzt (Gegenbuchung „Neustart: alle Konten auf 0“ im Kontoauszug, `muscheln.mjs` → `nullen`, Merker `x/nullung/2026-11-16`). Bisherige Buchungen bleiben bestehen, damit Login-Serie, Tresor, Geheimcodes, Einladungen und Shop-Inventar nicht doppelt genutzt werden können. Rangliste startet leer. Inselkasse (Spenden) bleibt unverändert.
 - **Nachbarn-Wunsch 16.11.:** @priv.greto.2 + @leana_aaaaaaaa. @leana_aaaaaaaa folgt noch nicht → sobald sie in der Followerliste ist, ziehen beide nebeneinander. Erfolg „Nachbar“ gibt es erst, wenn alle aus dem Paar eingezogen sind.
+
+## Video Tag 10 (geplant 17.11., `videos/muscheltal-tag10/`)
+- **Start mit Countdown 3 – 2 – 1** (riesig), dann Hook passend zum Thema.
+- **Erste Amtshandlung von Bürgermeisterin @sophia.tsnr** (Nutzer-Screenshot, `assets/img/sophia_amtshandlung.jpg`): „Meine erste Amtshandlung im Amt der Bürgermeisterin von Muschel-Tal wird folgendes sein: **Döner kostet nur noch 2 €!!** Denn jeder sollte in den Genuss eines leckeren Döners kommen!“ ⚠️ Homepage ggf. Dönerbude anpassen (Nutzer entscheidet).
+- **Türsteher im KOK(O)S wird verlost** (Auflösung von „Türsteher gesucht!“ aus Tag 9).
+- Stand laut Nutzer: **787 Bewohner → nur noch 13 bis zum Tierheim Pfotenkuss**.
+- Nutzer überträgt vorher die Änderungen (Jobs/Ämter aus Tag 8/9) auf die Homepage und gibt Bescheid, wann das Video starten soll.
