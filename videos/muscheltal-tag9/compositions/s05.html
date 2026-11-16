@@ -59,18 +59,18 @@
     #s5-t { top: 445px; font-size: 64px; background: linear-gradient(135deg, #2e9e5b, #8be06a); font-family: "Lilita One", sans-serif; font-weight: 400; transform: rotate(-2deg); }
     #s5-h { top: 590px; font-size: 44px; background: #fff; color: #2e9e5b; }
   </style>
-  <div id="root" data-composition-id="s05" data-start="0" data-duration="5.210" data-width="1080" data-height="1920">
-    <div id="s05-stage" class="clip stage" data-start="0" data-duration="5.210" data-track-index="0">
+  <div id="root" data-composition-id="s05" data-start="0" data-duration="4.050" data-width="1080" data-height="1920">
+    <div id="s05-stage" class="clip stage" data-start="0" data-duration="4.050" data-track-index="0">
       <div id="s5-btn" class="fbtn">+ Folgen<div id="s5-btn2" class="fbtn2">✓ Gefolgt</div></div>
       <div id="s5-hand" class="fhand" data-layout-ignore>👆</div>
-      <div id="s5-t" class="pl">🕶️ Türsteher gesucht!</div>
-      <div id="s5-h" class="pl">👇 Bewerbung in die Kommentare!</div>
+      <div id="s5-t" class="pl">🍀 Du könntest der Nächste sein!</div>
+      <div id="s5-h" class="pl">🎰 Neue Verlosung in jedem Video!</div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 5.21, "L5": [0.2, 3.21], "L5.words": [["folg", 0.2, 0.37], ["mir", 0.37, 0.534], ["", 0.534, 0.68], ["wir", 0.85, 0.972], ["suchen", 0.972, 1.215], ["einen", 1.215, 1.455], ["türsteher", 1.455, 1.82], ["bewerbung", 2.05, 2.441], ["in", 2.441, 2.567], ["die", 2.567, 2.698], ["kommentare", 2.698, 3.21]]};
+      const C = {"__dur": 4.05, "L5": [0.2, 2.05], "L5.words": [["folg", 0.2, 0.366], ["mir", 0.366, 0.527], ["", 0.527, 0.67], ["vielleicht", 0.8, 1.088], ["gewinnst", 1.088, 1.367], ["du", 1.367, 1.497], ["beim", 1.497, 1.637], ["nächsten", 1.637, 1.915], ["mal", 1.915, 2.05]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -114,7 +114,7 @@
 
       wrapBt("#s05-stage");
       const tl = gsap.timeline({ paused: true });
-      const t5 = line("L5")[0], fo = at("L5", "Folg"), du = at("L5", "Türsteher"), ti = at("L5", "Bewerbung");
+      const t5 = line("L5")[0], fo = at("L5", "Folg"), du = at("L5", "gewinnst"), ti = at("L5", "Mal");
       tl.fromTo("#s5-btn", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, fo - .2);
       tl.fromTo("#s5-hand", { opacity: 0, x: 160, y: 160 }, { opacity: 1, x: 0, y: 0, duration: .25, ease: "power3.out" }, fo - .1);
       tl.to("#s5-hand", { y: -26, scale: .9, duration: .1, yoyo: true, repeat: 1 }, fo + .2);

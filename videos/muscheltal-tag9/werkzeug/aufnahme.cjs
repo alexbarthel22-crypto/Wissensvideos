@@ -16,11 +16,12 @@ const G=await p.evaluate(()=>{const a=fitAll(),m=fitMain();
 console.error(JSON.stringify(G));
 const LZ=1080/(2.6667*2.4*G.lv.r);const K=[[0,G.cl.x,G.cl.y+32,4.0],[L.L1.end+.2,G.cl.x,G.cl.y+32,3.7],
  [L.L1b.start+.1,G.m.x,G.m.y-10,G.m.z*1.5],[L.L1b.end,G.m.x,G.m.y,G.m.z*1.15],
- [L.L2.start,G.cl.x,G.cl.y-22,3.3],[L.L2b.start,G.cl.x,G.cl.y-22,4.0],[L.L2b.end+.3,G.cl.x,G.cl.y-22,4.6],
+ [L.L2.start,G.cl.x,G.cl.y-22,3.3],[L.L2.end+.2,G.cl.x,G.cl.y-22,4.0],
  [L.L2c.start-.15,G.dr.x,G.dr.y-24,4.0],[L.L2c.end+.3,G.dr.x,G.dr.y-24,4.3],
  [L.L3.start+.2,G.m.x,G.m.y,G.m.z*1.2],[L.L3a.start-.05,G.po.x,G.po.y-9,4.6],[L.L3aw.end+.6,G.po.x,G.po.y-9,5.0],
  [L.L3b.start-.05,G.bd.x,G.bd.y-8,4.0],[L.L3bw.end+.6,G.bd.x,G.bd.y-8,4.4],
  [L.L4.start+.1,G.ti.x-20,G.ti.y-30,3.4],[L.L4b.start,G.ti.x,G.ti.y-14,3.2],[L.L4b.end+.3,G.ti.x,G.ti.y-14,3.6],
+ [L.L6.start+.1,0,-55,2.0],[L.L6bw.end+.6,0,-55,2.3],
  [L.L4c.start+.3,G.lv.x,G.lv.y+G.lv.r*.62,LZ*.95],[L.L4c.end+.3,G.lv.x,G.lv.y+G.lv.r*.62,LZ],
  [L.L5.start+.3,G.cl.x,G.cl.y-34,3.0],[dur,G.cl.x,G.cl.y-34,3.2]];
 

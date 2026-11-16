@@ -39,6 +39,7 @@
       tl.fromTo("#s3-lv", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, t3);
       tl.to("#s3-lv", { opacity: 0, duration: .2 }, line("L3a")[0] - .3);
       tl.set(["#s3-c1"], { opacity: 0 }, 0);
+      tl.set(["#s3-box", "#s3-dim"], { opacity: 0 }, 0);
       tl.fromTo("#s3-o0", { opacity: 0, scale: 2.2 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, line("L3a")[0] - .1);
       tl.fromTo("#s3-d0", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .28, ease: "back.out(2)" }, line("L3a")[0] + .4);
       tl.fromTo("#s3-dim", { opacity: 0 }, { opacity: 1, duration: .25, immediateRender: false }, line("L3a")[1] + .05);

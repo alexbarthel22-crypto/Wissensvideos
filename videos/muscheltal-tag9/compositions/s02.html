@@ -64,12 +64,10 @@
     .cm9-t { position: absolute; left: 30px; top: -38px; padding: 4px 20px 8px; border-radius: 16px; background: #2e9e5b; color: #fff; font-family: "Inter", sans-serif; font-weight: 900; font-size: 34px; box-shadow: 0 0 0 5px #1a0f08; transform: rotate(-2deg); white-space: nowrap; }
     #s2-mc { top: 560px; } #s2-md { top: 540px; }
   </style>
-  <div id="root" data-composition-id="s02" data-start="0" data-duration="12.469" data-width="1080" data-height="1920">
-    <div id="s02-stage" class="clip stage" data-start="0" data-duration="12.469" data-track-index="0">
+  <div id="root" data-composition-id="s02" data-start="0" data-duration="8.879" data-width="1080" data-height="1920">
+    <div id="s02-stage" class="clip stage" data-start="0" data-duration="8.879" data-track-index="0">
       <div id="s2-b" class="big">🪩 KOK(O)S</div>
       <div id="s2-k" class="pl">🥥 Nachtclub · Kokos-Küste · ab 22 Uhr</div>
-      <div id="s2-t" class="big">🕶️ TÜRSTEHER GESUCHT!</div>
-      <div id="s2-c" class="pl">💬 Willst du's werden? Kommentiere!</div>
       <div id="s2-d" class="pl">🧴 NEU: Drogerie CocoCare</div>
       <div id="s2-l" class="pl">⭐ Leitung: @ami652396</div>
       <div id="s2-mc" class="cm9"><div class="cm9-t">✅ Euer Wunsch – gebaut!</div><img src="assets/img/cmt_club.jpg"></div>
@@ -79,7 +77,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 12.469, "L2": [0.2, 4.28], "L2.words": [["das", 0.2, 0.345], ["ist", 0.345, 0.49], ["der", 0.49, 0.635], ["kokos", 0.635, 0.92], ["", 0.92, 1.05], ["der", 1.2, 1.357], ["nachtclub", 1.357, 1.688], ["auf", 1.688, 1.845], ["der", 1.845, 2.003], ["kokosküste", 2.003, 2.62], ["geöffnet", 2.79, 3.218], ["ab", 3.218, 3.417], ["22", 3.417, 4.073], ["uhr", 4.073, 4.28]], "L2b": [5.0, 7.87], "L2b.words": [["und", 5.0, 5.136], ["er", 5.136, 5.268], ["sucht", 5.268, 5.414], ["einen", 5.414, 5.681], ["türsteher", 5.681, 6.09], ["wer", 6.3, 6.413], ["will", 6.413, 6.53], ["das", 6.53, 6.644], ["werden", 6.644, 6.87], ["schreib", 7.01, 7.133], ["es", 7.133, 7.237], ["in", 7.237, 7.34], ["die", 7.34, 7.448], ["kommentare", 7.448, 7.87]], "L2c": [8.59, 11.689], "L2c.words": [["direkt", 8.59, 8.862], ["daneben", 8.862, 9.26], ["die", 9.44, 9.563], ["drogerie", 9.563, 9.927], ["cococare", 9.927, 10.4], ["", 10.4, 10.51], ["geleitet", 10.76, 11.23], ["von", 11.23, 11.388], ["ami652396", 11.388, 11.689]]};
+      const C = {"__dur": 8.879, "L2": [0.2, 4.28], "L2.words": [["das", 0.2, 0.345], ["ist", 0.345, 0.49], ["der", 0.49, 0.635], ["kokos", 0.635, 0.92], ["", 0.92, 1.05], ["der", 1.2, 1.357], ["nachtclub", 1.357, 1.688], ["auf", 1.688, 1.845], ["der", 1.845, 2.003], ["kokosküste", 2.003, 2.62], ["geöffnet", 2.79, 3.218], ["ab", 3.218, 3.417], ["22", 3.417, 4.073], ["uhr", 4.073, 4.28]], "L2c": [5.0, 8.099], "L2c.words": [["direkt", 5.0, 5.272], ["daneben", 5.272, 5.67], ["die", 5.85, 5.973], ["drogerie", 5.973, 6.337], ["cococare", 6.337, 6.81], ["", 6.81, 6.92], ["geleitet", 7.17, 7.64], ["von", 7.64, 7.798], ["ami652396", 7.798, 8.099]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -123,17 +121,12 @@
 
       wrapBt("#s02-stage");
       const tl = gsap.timeline({ paused: true });
-      const t2 = line("L2")[0], t2b = line("L2b")[0], t2c = line("L2c")[0];
+      const t2 = line("L2")[0], t2c = line("L2c")[0];
       tl.fromTo("#s2-b", { opacity: 0, scale: 3 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(1.8)" }, t2 - .05);
       tl.fromTo("#s2-k", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .28, ease: "back.out(2)" }, at("L2", "Nachtclub") - .15);
       tl.fromTo("#s2-mc", { opacity: 0, scale: .3, rotation: -12 }, { opacity: 1, scale: 1, rotation: -1.5, duration: .35, ease: "back.out(2.2)" }, at("L2", "Nachtclub") + .2);
       tl.to("#s2-mc", { scale: 1.04, duration: .2, yoyo: true, repeat: 5, ease: "sine.inOut" }, at("L2", "Nachtclub") + .6);
-      tl.to(["#s2-b", "#s2-k", "#s2-mc"], { opacity: 0, y: -30, duration: .2 }, t2b - .25);
-      tl.fromTo("#s2-t", { opacity: 0, scale: 3 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(1.8)" }, at("L2b", "Türsteher") - .15);
-      tl.to("#s2-t", { x: 10, duration: .05, yoyo: true, repeat: 7, ease: "none" }, at("L2b", "Türsteher") + .2);
-      tl.fromTo("#s2-c", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, at("L2b", "Wer") - .15);
-      tl.to("#s2-c", { scale: 1.08, duration: .18, yoyo: true, repeat: 5, ease: "sine.inOut" }, at("L2b", "Kommentare"));
-      tl.to(["#s2-t", "#s2-c"], { opacity: 0, y: -30, duration: .2 }, t2c - .25);
+      tl.to(["#s2-b", "#s2-k", "#s2-mc"], { opacity: 0, y: -30, duration: .2 }, t2c - .25);
       tl.fromTo("#s2-d", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, at("L2c", "Drogerie") - .15);
       tl.fromTo("#s2-l", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .28, ease: "back.out(2)" }, at("L2c", "geleitet") - .1);
       tl.fromTo("#s2-md", { opacity: 0, scale: .3, rotation: -12 }, { opacity: 1, scale: 1, rotation: -1.5, duration: .35, ease: "back.out(2.2)" }, at("L2c", "Drogerie") + .25);

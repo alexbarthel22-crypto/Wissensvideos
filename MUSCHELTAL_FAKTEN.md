@@ -400,8 +400,10 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
   - **Nachbarn:** Die angerechneten Paare liefert `GET /api/muscheln?einladungen=1` – beim nächsten Listen-Update als Nachbarn in `insel.json → nachbarn` eintragen (mit Passwort-Login abrufbar).
 
 ## Video Tag 9 (16.11., `videos/muscheltal-tag9/`)
-- Hook: **Club KOK(O)S sucht einen Türsteher** („Dieser Club sucht einen Türsteher! Bist du's?“) – Kommentar-Aufruf „Wer will Türsteher werden?“. Türsteher wird aus den Kommentaren gewählt (noch offen, Nutzer entscheidet).
+- Hook: **„Türsteher gesucht! Bist du's?“** vor dem Club KOK(O)S (Türsteher-Stelle noch offen, Nutzer entscheidet).
 - Gezeigt: KOK(O)S nachts (Kokos-Küste, ab 22 Uhr), Drogerie CocoCare mit Leitung @ami652396.
 - **Live-Verlosungen (Jobs)**, am 16.11. per Zufall (Python `secrets`) gezogen, nur Bewohner ohne Job/Amt/Sonder-Wohnort (Tag-8-Gewinner ausgeschlossen): 🍕 **Porto Pizza: @nicenyxxx** (aus 475 Bewohnern der Haupt-Insel, Nr. 369), 🏊 **Kokos-Bad: @hxt.nele** (aus 252 Bewohnern der Kokos-Küste, Nr. 148 – wohnt schon auf Kokos). ⚠️ Homepage: beide als Team eintragen.
 - Rechnung mit **767 Bewohnern** → Tierheim Pfotenkuss (800): **nur noch 33**.
 - Kein Geheimcode in diesem Video (Nutzerwunsch).
+- **Ämter neu verlost (16.11.)** – Amtszeit von Bürgermeisterin @lillygyqcf0 und Palast-Leitung @prvt.lott1 abgelaufen (im Video gedankt). Per Zufall (Python `secrets`) aus 474 Bewohnern der Haupt-Insel ohne Job/Amt/Sonder-Wohnort: 🏛️ **Bürgermeister-Amt: @sophia.tsnr** (Nr. 107), 👑 **Palast-Leitung: @mxlan084** (Nr. 150). ⚠️ Homepage: `aemter` + `jobs` + `wohnorte` (Palast-Leitung wohnt im Muschelpalast) umstellen, neue Amtszeit 1 Woche.
+- Türsteher-Aufruf nur noch im Hook („Türsteher gesucht! Bist du's?“), kein Kommentar-Aufruf mehr; Schluss: „Folg mir – vielleicht gewinnst du beim nächsten Mal!“. Im Video eingeblendet: Kommentare von luise (Club-Wunsch) und ✨AMI✨ (Drogerie-Wunsch).

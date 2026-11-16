@@ -21,8 +21,6 @@
     <div id="s02-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
       <div id="s2-b" class="big">🪩 KOK(O)S</div>
       <div id="s2-k" class="pl">🥥 Nachtclub · Kokos-Küste · ab 22 Uhr</div>
-      <div id="s2-t" class="big">🕶️ TÜRSTEHER GESUCHT!</div>
-      <div id="s2-c" class="pl">💬 Willst du's werden? Kommentiere!</div>
       <div id="s2-d" class="pl">🧴 NEU: Drogerie CocoCare</div>
       <div id="s2-l" class="pl">⭐ Leitung: @ami652396</div>
       <div id="s2-mc" class="cm9"><div class="cm9-t">✅ Euer Wunsch – gebaut!</div><img src="assets/img/cmt_club.jpg"></div>
@@ -35,17 +33,12 @@
       /*__COMMON_JS__*/
       wrapBt("#s02-stage");
       const tl = gsap.timeline({ paused: true });
-      const t2 = line("L2")[0], t2b = line("L2b")[0], t2c = line("L2c")[0];
+      const t2 = line("L2")[0], t2c = line("L2c")[0];
       tl.fromTo("#s2-b", { opacity: 0, scale: 3 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(1.8)" }, t2 - .05);
       tl.fromTo("#s2-k", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .28, ease: "back.out(2)" }, at("L2", "Nachtclub") - .15);
       tl.fromTo("#s2-mc", { opacity: 0, scale: .3, rotation: -12 }, { opacity: 1, scale: 1, rotation: -1.5, duration: .35, ease: "back.out(2.2)" }, at("L2", "Nachtclub") + .2);
       tl.to("#s2-mc", { scale: 1.04, duration: .2, yoyo: true, repeat: 5, ease: "sine.inOut" }, at("L2", "Nachtclub") + .6);
-      tl.to(["#s2-b", "#s2-k", "#s2-mc"], { opacity: 0, y: -30, duration: .2 }, t2b - .25);
-      tl.fromTo("#s2-t", { opacity: 0, scale: 3 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(1.8)" }, at("L2b", "Türsteher") - .15);
-      tl.to("#s2-t", { x: 10, duration: .05, yoyo: true, repeat: 7, ease: "none" }, at("L2b", "Türsteher") + .2);
-      tl.fromTo("#s2-c", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, at("L2b", "Wer") - .15);
-      tl.to("#s2-c", { scale: 1.08, duration: .18, yoyo: true, repeat: 5, ease: "sine.inOut" }, at("L2b", "Kommentare"));
-      tl.to(["#s2-t", "#s2-c"], { opacity: 0, y: -30, duration: .2 }, t2c - .25);
+      tl.to(["#s2-b", "#s2-k", "#s2-mc"], { opacity: 0, y: -30, duration: .2 }, t2c - .25);
       tl.fromTo("#s2-d", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, at("L2c", "Drogerie") - .15);
       tl.fromTo("#s2-l", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .28, ease: "back.out(2)" }, at("L2c", "geleitet") - .1);
       tl.fromTo("#s2-md", { opacity: 0, scale: .3, rotation: -12 }, { opacity: 1, scale: 1, rotation: -1.5, duration: .35, ease: "back.out(2.2)" }, at("L2c", "Drogerie") + .25);
