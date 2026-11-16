@@ -430,3 +430,4 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - Nutzer überträgt vorher die Änderungen (Jobs/Ämter aus Tag 8/9) auf die Homepage und gibt Bescheid, wann das Video starten soll.
 - **Update 16.11. abends: 787 Einwohner** (Followerliste vom 16.11., 20:55 UTC): 23 neu eingezogen (u. a. @leana_aaaaaaaa, @0.fynn, @knorri56, @talia.ksr, @jonas_mtb156), 9 ausgezogen (überall entfernt). @vanessa_k1n (Team Kiosk Kunterbunt) entfolgt → Job weg, auch aus dem Kiosk-News-Text entfernt. Rechnung bis Tierheim Pfotenkuss (800): **nur noch 13**.
 - **Döner nur noch 2 € (16.11., erste Amtshandlung von Bürgermeisterin @sophia.tsnr):** an der Dönerbude roter Stern „NUR 2 €“ am Ladenschild, Menütafel „DÖNER 2 € mit alles“, Aufsteller „DÖNER – NUR 2 €! – MIT ALLES“.
+- **Job 16.11.: @leana_aaaaaaaa arbeitet im Team der Coco Bay** (Kokos-Küste, Leitung @priv.greto.2 – die beiden sind auch Nachbarn).
