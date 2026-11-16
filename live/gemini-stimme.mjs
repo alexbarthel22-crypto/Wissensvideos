@@ -1,3 +1,4 @@
+import { sprechText } from './sprechtext.mjs';
 // Muschel-Tal LIVE – Moderationsstimme „Leda“.
 // Hauptsächlich Google Gemini (menschlich, mit Gefühl). Nur im Notfall (Tageslimit aufgebraucht, Gemini antwortet nicht)
 // spricht „Chirp 3 HD Leda“ (Google Cloud Text-to-Speech, hohe Limits).
@@ -191,10 +192,10 @@ export function geminiStimme({ dir, cacheDir, cfg }) {
   // Satz in Stücke teilen: bekannte Namen werden eigene Stücke
   function stuecke(text, namen) {
     const liste = [...new Set(namen.filter(n => n && n.length >= 2))].sort((a, b) => b.length - a.length);
-    if (!liste.length) return [{ t: text }];
+    if (!liste.length) return [{ t: sprechText(text) }].filter(x => x.t);
     const esc = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     const re = new RegExp(`@?(${liste.map(esc).join('|')})`, 'g');
-    return text.split(re).map((s, i) => i % 2 ? { t: s, name: true } : { t: s.trim() }).filter(x => x.t && !/^[\s,.!?…:;–-]*$/.test(x.t));
+    return text.split(re).map((s, i) => i % 2 ? { t: s, name: true } : { t: sprechText(s) }).filter(x => x.t && !/^[\s,.!?…:;–-]*$/.test(x.t));   // Stücke ohne Satzzeichen am Anfang, Zahlen als Wörter
   }
   function zusammen(teile) {
     const luecke = new Int16Array(Math.round(RATE * .07)), alle = [];
