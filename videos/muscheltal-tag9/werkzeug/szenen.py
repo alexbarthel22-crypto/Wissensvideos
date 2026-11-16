@@ -89,13 +89,13 @@ CMT = """.cmt { position: absolute; left: 140px; width: 800px; border-radius: 30
 
 
 # s01 – Hook: Wörter schießen von den Seiten ins Bild, oben bleibt der Club mit Neon-Namen frei
-QL = [[("DIESER", "Dieser"), ("CLUB", "Club")], [("SUCHT", "sucht"), ("EINEN", "einen")], [("TÜRSTEHER!", "Türsteher")], [("BIST", "Bist"), ("DU'S?", "du")]]
+QL = [[("TÜRSTEHER", "Türsteher")], [("GESUCHT!", "gesucht")], [("BIST", "Bist"), ("DU'S?", "du")]]
 QW = [w for ln in QL for w in ln]
-YW = ("CLUB", "TÜRSTEHER!", "DU'S?")
+YW = ("GESUCHT!", "DU'S?")
 scene("s01", LILITA + """
-    #s01-hk { position: absolute; left: 30px; right: 30px; top: 1010px; text-align: center; font-family: "Lilita One", sans-serif; }
+    #s01-hk { position: absolute; left: 20px; right: 20px; top: 960px; text-align: center; font-family: "Lilita One", sans-serif; }
     #s01-hk .ln { display: block; width: fit-content; margin: 0 auto 16px; padding: 4px 34px 14px; border-radius: 30px; background: #ff2e7e; box-shadow: 0 0 0 6px #1a0f08, 0 12px 0 rgba(0,0,0,.35); font-size: 108px; line-height: 1.05; white-space: nowrap; transform-origin: 50% 60%; }
-    #s01-hk #s01-l2 { background: #e8101e; font-size: 118px; }
+    #s01-hk #s01-l0 { background: #e8101e; font-size: 168px; } #s01-hk #s01-l1 { font-size: 160px; } #s01-hk #s01-l2 { font-size: 128px; }
     #s01-hk span { position: relative; display: inline-block; margin: 0 .08em; color: #fff; -webkit-text-stroke: 8px #1a0f08; paint-order: stroke fill; transform-origin: 50% 65%; }
     #s01-rv { position: absolute; inset: 0; box-shadow: inset 0 0 140px 50px rgba(255,10,20,.9); opacity: 0; }
     #s01-fl { position: absolute; inset: 0; background: radial-gradient(circle at 50% 75%, rgba(255,255,255,.85), rgba(255,255,255,0) 55%); opacity: 0; }""",
@@ -109,16 +109,16 @@ scene("s01", LILITA + """
         for j, ln in enumerate(QL)) + """
       """ + "\n      ".join(
         (f'tl.fromTo("#s01-w{i}", {{ opacity: 0, x: {(-1 if i % 2 == 0 else 1) * 1300}, scale: 2.4, rotation: {(-1 if i % 2 == 0 else 1) * 30}, filter: "blur(12px)" }}, {{ opacity: 1, x: 0, scale: 1, rotation: 0, filter: "blur(0px)", duration: .17, ease: "expo.out" }}, at("L1", "{k}") - .14);'
-         if w != "TÜRSTEHER!" else
+         if w != "TÜRSTEHER" else
          f'tl.fromTo("#s01-w{i}", {{ opacity: 0, scale: 5, filter: "blur(16px)" }}, {{ opacity: 1, scale: 1, filter: "blur(0px)", duration: .2, ease: "expo.out" }}, at("L1", "{k}") - .16);')
         + f' tl.to("#s01-hk", {{ y: 14, duration: .05, yoyo: true, repeat: 1, ease: "none" }}, at("L1", "{k}") + .03);'
         + (f' tl.to("#s01-w{i}", {{ color: "#ffe500", duration: .05 }}, at("L1", "{k}"));' if w in YW else '')
         for i, (w, k) in enumerate(QW)) + """
       tl.fromTo("#s01-fl", { opacity: .9 }, { opacity: 0, duration: .4, immediateRender: false }, ts);
-      tl.to("#s01-l2", { scale: 1.12, duration: .1, yoyo: true, repeat: 1 }, ts + .05);
+      tl.to("#s01-l0", { scale: 1.1, duration: .1, yoyo: true, repeat: 1 }, ts + .05);
       tl.to("#s01-hk", { x: 16, duration: .04, yoyo: true, repeat: 7, ease: "none" }, ts + .05);
       tl.fromTo("#s01-fl", { opacity: .7 }, { opacity: 0, duration: .35, immediateRender: false }, sc);
-      tl.to("#s01-l3", { scale: 1.12, duration: .12, yoyo: true, repeat: 1 }, sc + .05);
+      tl.to("#s01-l2", { scale: 1.12, duration: .12, yoyo: true, repeat: 1 }, sc + .05);
       tl.to("#s01-hk", { x: 12, duration: .04, yoyo: true, repeat: 5, ease: "none" }, sc + .05);""")
 
 # s01b – Das ist Muschel-Tal: die Welt, in der ihr alles entscheidet
@@ -158,31 +158,39 @@ def slot_js(cid, band, ns, w, t0, tb):
 # s02 – Club KOK(O)S: Türsteher gesucht + Drogerie CocoCare
 scene("s02", LILITA + "\n    " + PILL + "\n    " + BIG + """
     #s2-b { top: 270px; font-size: 92px; background: linear-gradient(135deg, #8e2bd6, #ff2e7e); transform: rotate(-2deg); box-shadow: 0 0 0 8px #2a1b12, 0 16px 0 rgba(0,0,0,.3), 0 0 60px 18px rgba(200,60,255,.7); }
-    #s2-k { top: 420px; font-size: 46px; background: #f4a51c; }
+    #s2-k { top: 420px; font-size: 42px; background: #f4a51c; }
     #s2-o { top: 510px; font-size: 46px; background: #1d1f4a; }
     #s2-t { top: 270px; font-size: 76px; background: #e8101e; transform: rotate(-2deg); box-shadow: 0 0 0 8px #2a1b12, 0 16px 0 rgba(0,0,0,.3), 0 0 50px 14px rgba(255,20,30,.6); }
     #s2-c { top: 420px; font-size: 46px; background: #fff; color: #2a1b12; }
     #s2-d { top: 270px; font-size: 64px; background: linear-gradient(135deg, #2fb3a0, #8be06a); font-family: "Lilita One", sans-serif; font-weight: 400; }
-    #s2-l { top: 390px; font-size: 46px; background: #fff; color: #2a1b12; }""",
+    #s2-l { top: 390px; font-size: 46px; background: #fff; color: #2a1b12; }
+    .cm9 { position: absolute; left: 70px; width: 940px; padding: 10px; border-radius: 30px; background: linear-gradient(135deg, #ffe14a, #ff2e7e, #7b3fe0); box-shadow: 0 0 0 6px #1a0f08, 0 14px 0 rgba(0,0,0,.35), 0 0 50px 12px rgba(255,60,160,.6); transform: rotate(-1.5deg); }
+    .cm9 img { display: block; width: 100%; border-radius: 20px; }
+    .cm9-t { position: absolute; left: 30px; top: -38px; padding: 4px 20px 8px; border-radius: 16px; background: #2e9e5b; color: #fff; font-family: "Inter", sans-serif; font-weight: 900; font-size: 34px; box-shadow: 0 0 0 5px #1a0f08; transform: rotate(-2deg); white-space: nowrap; }
+    #s2-mc { top: 560px; } #s2-md { top: 540px; }""",
 """      <div id="s2-b" class="big">🪩 KOK(O)S</div>
-      <div id="s2-k" class="pl">🥥 Nachtclub · Kokos-Küste</div>
-      <div id="s2-o" class="pl">🌙 Geöffnet ab 22 Uhr</div>
+      <div id="s2-k" class="pl">🥥 Nachtclub · Kokos-Küste · ab 22 Uhr</div>
       <div id="s2-t" class="big">🕶️ TÜRSTEHER GESUCHT!</div>
       <div id="s2-c" class="pl">💬 Willst du's werden? Kommentiere!</div>
       <div id="s2-d" class="pl">🧴 NEU: Drogerie CocoCare</div>
-      <div id="s2-l" class="pl">⭐ Leitung: @ami652396</div>""",
+      <div id="s2-l" class="pl">⭐ Leitung: @ami652396</div>
+      <div id="s2-mc" class="cm9"><div class="cm9-t">✅ Euer Wunsch – gebaut!</div><img src="assets/img/cmt_club.jpg"></div>
+      <div id="s2-md" class="cm9"><div class="cm9-t">✅ Euer Wunsch – gebaut!</div><img src="assets/img/cmt_drog.jpg"></div>""",
 """      const t2 = line("L2")[0], t2b = line("L2b")[0], t2c = line("L2c")[0];
       tl.fromTo("#s2-b", { opacity: 0, scale: 3 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(1.8)" }, t2 - .05);
       tl.fromTo("#s2-k", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .28, ease: "back.out(2)" }, at("L2", "Nachtclub") - .15);
-      tl.fromTo("#s2-o", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, at("L2", "geöffnet") - .15);
-      tl.to(["#s2-b", "#s2-k", "#s2-o"], { opacity: 0, y: -30, duration: .2 }, t2b - .25);
+      tl.fromTo("#s2-mc", { opacity: 0, scale: .3, rotation: -12 }, { opacity: 1, scale: 1, rotation: -1.5, duration: .35, ease: "back.out(2.2)" }, at("L2", "Nachtclub") + .2);
+      tl.to("#s2-mc", { scale: 1.04, duration: .2, yoyo: true, repeat: 5, ease: "sine.inOut" }, at("L2", "Nachtclub") + .6);
+      tl.to(["#s2-b", "#s2-k", "#s2-mc"], { opacity: 0, y: -30, duration: .2 }, t2b - .25);
       tl.fromTo("#s2-t", { opacity: 0, scale: 3 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(1.8)" }, at("L2b", "Türsteher") - .15);
       tl.to("#s2-t", { x: 10, duration: .05, yoyo: true, repeat: 7, ease: "none" }, at("L2b", "Türsteher") + .2);
       tl.fromTo("#s2-c", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, at("L2b", "Wer") - .15);
       tl.to("#s2-c", { scale: 1.08, duration: .18, yoyo: true, repeat: 5, ease: "sine.inOut" }, at("L2b", "Kommentare"));
       tl.to(["#s2-t", "#s2-c"], { opacity: 0, y: -30, duration: .2 }, t2c - .25);
       tl.fromTo("#s2-d", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, at("L2c", "Drogerie") - .15);
-      tl.fromTo("#s2-l", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .28, ease: "back.out(2)" }, at("L2c", "geleitet") - .1);""")
+      tl.fromTo("#s2-l", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .28, ease: "back.out(2)" }, at("L2c", "geleitet") - .1);
+      tl.fromTo("#s2-md", { opacity: 0, scale: .3, rotation: -12 }, { opacity: 1, scale: 1, rotation: -1.5, duration: .35, ease: "back.out(2.2)" }, at("L2c", "Drogerie") + .25);
+      tl.to("#s2-md", { scale: 1.04, duration: .2, yoyo: true, repeat: 5, ease: "sine.inOut" }, at("L2c", "Drogerie") + .65);""")
 
 # s03 – Zwei Live-Verlosungen: Porto Pizza, Kokos-Bad
 JB = [("L3a", "L3aw", "🍕 Porto Pizza", "Pizzeria am Kiosk-Steg", "nicenyxxx", "#e8433c"), ("L3b", "L3bw", "🏊 Kokos-Bad", "Schwimmbad · Kokos-Küste", "hxt.nele", "#1fb3c8")]

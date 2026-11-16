@@ -31,23 +31,23 @@
       "sfx": [
         {
           "name": "whoosh-short",
-          "at": "L1:Dieser-0.1",
+          "at": "L1:Türsteher-0.1",
           "volume": 0.5
-        },
-        {
-          "name": "impact-bass-1",
-          "at": "L1:Club",
-          "volume": 0.5
-        },
-        {
-          "name": "whoosh-short",
-          "at": "L1:sucht-0.1",
-          "volume": 0.45
         },
         {
           "name": "impact-bass-2",
           "at": "L1:Türsteher",
           "volume": 0.6
+        },
+        {
+          "name": "whoosh-short",
+          "at": "L1:gesucht-0.1",
+          "volume": 0.45
+        },
+        {
+          "name": "impact-bass-1",
+          "at": "L1:gesucht",
+          "volume": 0.55
         },
         {
           "name": "whoosh-short",
@@ -63,9 +63,10 @@
       "lines": [
         {
           "id": "L1",
-          "text": "Dieser *p:Club sucht einen *y:Türsteher! / Bist *g:du's?",
+          "text": "*r:Türsteher *y:gesucht! / Bist *g:du's?",
           "speed": 1.0,
-          "style": "Style: a young German guy, around 20, extremely excited and loud, almost shouting with joy, teasing an exciting job offer, then asking the viewer directly, explosive energy, natural German intonation, normal pitch.\nPace: brisk. Say the sentence exactly once and stop after \"du's\". \nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
+          "style": "Style: a young German guy, around 20, extremely excited and loud, almost shouting with joy, shouting out a big job announcement, then asking the viewer directly, explosive energy, natural German intonation, normal pitch.\nPace: brisk. Say the sentence exactly once and stop after \"du's\". \nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+          "pause": 0.8
         }
       ]
     },

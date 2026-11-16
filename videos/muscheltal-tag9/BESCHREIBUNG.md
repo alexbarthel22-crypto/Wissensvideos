@@ -3,10 +3,10 @@
 **Cover:** `renders/cover.jpg` (Vorlage `cover/thumb.html`, Layout wie Tag 8, lila Leuchtrand) – „TÜRSTEHER GESUCHT! BIST DU'S? 🕶️“, „🪩 Neuer Nachtclub: KOK(O)S“, Karten „LIVE verlost: Job bei Porto Pizza“, „LIVE verlost: Job im Kokos-Bad“, „Nur noch 33 bis zum Tierheim“, „Wer hat gewonnen? 👀“. Hintergrund: der KOK(O)S nachts mit Neon-Schild und roter Teppich-Schlange (Homepage-Aufnahme).
 
 ## Hauptversion (zum Posten)
-Dieser Club sucht einen Türsteher 🕶️ Bist du's? Schreib's in die Kommentare 👇
+Türsteher gesucht! 🕶️ Bist du's? Bewerbung in die Kommentare 👇
 
-🪩 Neu auf der Kokos-Küste: der Nachtclub KOK(O)S – geöffnet ab 22 Uhr
-🧴 Direkt daneben: Drogerie CocoCare, geleitet von @ami652396
+🪩 Ihr habt euch einen Club gewünscht – hier ist er: der KOK(O)S auf der Kokos-Küste, ab 22 Uhr
+🧴 Und eine Drogerie: CocoCare, geleitet von @ami652396
 🎰 LIVE verlost:
 🍕 Porto Pizza: @nicenyxxx
 🏊 Kokos-Bad: @hxt.nele
