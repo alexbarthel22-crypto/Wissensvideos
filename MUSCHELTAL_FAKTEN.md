@@ -374,6 +374,7 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - **Moped-Farbe (14.11.):** Alle Mopeds (eigenes beim Erkunden und die der Passant:innen) haben am Anfang dieselbe Farbe: Pink #ff3d7f.
 - **Erfolgs-Entzug 14.11.:** Sonnenuntergang bei @charlieeee5108 (Testkonto) entfernt.
 - **Erfolgs-Entzug 16.11.:** Sonnenuntergang bei @ben371650 und @xxmelixx954 entfernt.
+- **Erfolgs-Entzug für alle (16.11., 23:25):** Sonnenuntergang bei allen Usern entfernt, die ihn bis jetzt hatten (`erfolg_entzug_alle` → UNTER bis 16.11. 23:25). Ab jetzt kann man ihn neu verdienen.
 - **Erfolg „Live dabei“ 📺 (14.11., automatisch):** Wer bei einem TikTok-LIVE von @muscheltal dabei war (beigetreten, kommentiert, geliked, gefolgt oder Geschenk), bekommt den Erfolg (+10 🐚) – sofort, wenn der Name schon beansprucht ist, sonst beim Beanspruchen/nächsten Besuch. Erfolge-Seite: „Bei einem TikTok-LIVE von @muscheltal dabei gewesen.“ (jetzt 13 Erfolge).
   - **Schnittstelle für die Live-Seite:** `POST https://muscheltal.de/api/live`, Header `x-live-schluessel: <Schlüssel>`, Body `{"namen": ["user1", "@user2", …]}` (max. 300 je Aufruf, am besten gesammelt alle ~15 s). Antwort `{ok, gemeldet, neu, sofort}`. CORS offen, Sperre lässt nur diesen Pfad durch.
   - **Schlüssel:** Netlify → Site → Environment variables → `LIVE_SCHLUESSEL` (mind. 16 Zeichen). Derselbe Schlüssel wird auf dem Stream-Rechner in der Live-Seite eingetragen (nicht ins Repo schreiben!). Ohne gesetzten Schlüssel lehnt der Server alles ab.
