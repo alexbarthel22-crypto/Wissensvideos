@@ -22,7 +22,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-16 zf';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-16 zg';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -898,19 +898,23 @@ function moderiere() {
   // Kamera bleibt lebendig: fliegt ab und zu zu einem Haus oder zur Baustelle – ohne Ansage
   if (Math.random() < .5) rundgang(); else baustelleZeigen();
 }
-// Rangliste beobachten: Änderungen in den Top 3 ansagen (höchstens alle 15 s, wichtigste Änderung zuerst)
+// Rangliste beobachten: jede Änderung in den Top 5 ansagen (Neueinsteiger und Überholer; höchstens alle 12 s, wichtigste zuerst)
 let topVorher = null, topAnsage = 0;
+const PLATZ_WORT = ['eins', 'zwei', 'drei', 'vier', 'fünf'];
 setInterval(() => {
-  const top = Object.values(S.spieler).filter(p => !p.gesperrt).sort(rangFolge).slice(0, 3).map(p => p.id);
+  const top = Object.values(S.spieler).filter(p => !p.gesperrt).sort(rangFolge).slice(0, 5).map(p => p.id);
   if (!topVorher) { topVorher = top; return; }
-  if (Date.now() - topAnsage < 15000) return;
+  if (Date.now() - topAnsage < (CFG.rangAnsageSek ?? 12) * 1000) return;
   for (let i = 0; i < top.length; i++) {
     if (top[i] === topVorher[i]) continue;
-    const p = S.spieler[top[i]], neuDrin = !topVorher.includes(top[i]);
-    if (i > 0 && !neuDrin) continue;                        // nur Platz 1 oder Neueinsteiger ansagen
+    const p = S.spieler[top[i]], vorher = topVorher.indexOf(top[i]);
+    if (vorher >= 0 && vorher <= i) continue;               // nur wer aufgestiegen oder neu dabei ist
+    const ueberholt = vorher > i ? S.spieler[topVorher[i]] : null;
     topAnsage = Date.now();
-    sende({ typ: 'rangliste', id: p.id, platz: i + 1 });
-    sag(i === 0 ? satz('topEins', { name: sprechName(p) }) : satz('topNeu', { name: sprechName(p), platz: i === 1 ? 'zwei' : 'drei' }), 1);
+    sende({ typ: 'rangliste', id: p.id, platz: i + 1, neu: vorher < 0 });
+    if (i === 0) sag(satz('topEins', { name: sprechName(p) }), 1);
+    else if (ueberholt) sag(satz('topUeberholt', { name: sprechName(p), zweite: sprechName(ueberholt), platz: PLATZ_WORT[i] }), 1);
+    else sag(satz('topNeu', { name: sprechName(p), platz: PLATZ_WORT[i] }), 1);
     break;
   }
   topVorher = top;

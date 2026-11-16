@@ -340,7 +340,7 @@ function ereignis(e) {
       else showStart(e);
       break;
     case 'hausGezeigt': if (p) { banner.unshift({ t: 0, oben: `🏠 ${p.name}`, unten: 'hier ist dein Haus!', farbe: TUERKIS }); if (pl) { pop[e.id] = jetzt; funken(pl, '⭐', 12); } } break;
-    case 'rangliste': if (p) { banner.push({ t: 0, oben: `🏆 ${p.name}`, unten: e.platz === 1 ? 'jetzt Platz 1 – das beste Haus der Insel!' : `neu auf Platz ${e.platz} der besten Häuser`, farbe: '#ff8a2a' }); if (pl) funken(pl, '🏆', 10); } break;
+    case 'rangliste': if (p) { banner.push({ t: 0, oben: `🏆 ${p.name}`, unten: e.platz === 1 ? 'jetzt Platz 1 – das beste Haus der Insel!' : e.neu ? `neu auf Platz ${e.platz} der besten Häuser` : `jetzt auf Platz ${e.platz} der besten Häuser`, farbe: '#ff8a2a' }); if (pl) funken(pl, '🏆', 10); } break;
     case 'folgeAufruf': banner.push({ t: 0, oben: '🏝️ Folg @muscheltal', unten: 'und zieh auf die echten Muschel-Tal-Inseln!', farbe: TUERKIS }); break;
     case 'neuHallo': banner.push({ t: 0, oben: `👋 ${e.gruss}, ${e.name}!`, unten: 'Schreib „Zelt“, um mitzumachen', farbe: '#ff8a2a' }); break;
     case 'kamera': if (pl) fokus(pl, e.ms || 15000); break;
@@ -1713,11 +1713,10 @@ function kopf(t) {
     X.strokeStyle = INK; X.lineWidth = 3.5; rr(SL + 24, y2 + 54, SB - 48, 38, 19); X.stroke();
     text(`${z.ort || 'Haupt-Insel'} · ${bw.toLocaleString('de-DE')} Bewohner`, 540, y2 + 74, 23, INK, 'center', 900, SB - 80);
   } else y2 = OBEN + 2;
-  // Laufendes Event / Ergebnis, sonst Infos (wechselnd) + Countdown zum nächsten Event
+  // Laufendes Event / Ergebnis / Mini-Aufgabe – darunter immer eine Zeile mit den Top 5.
+  // Sonst: dauerhaft die Top 5 (Beste Häuser) + Countdown, darunter eine Zeile mit wechselnden Hinweisen.
   const y3 = y2 + 132, ep = eventPanel(t, y3);
-  if (ep) return ep;
-  const seiten = (S.projekt ? 4 : 3) + (S.turmAn ? 1 : 0);
-  if (t - seiteSeit > 7000) { seite = (seite + 1) % seiten; seiteSeit = t; }
+  if (ep) return top5Zeile(ep + 12);
   const lw = 540;
   if (S.aufgabe) {                                                // Mini-Aufgabe: gut sichtbar im Infofeld
     const a = S.aufgabe, puls = 1 + Math.sin(t * .008) * .015;
@@ -1730,40 +1729,37 @@ function kopf(t) {
     X.fillStyle = '#2fb3a0'; rr(SL + 22, y3 + 102, Math.max(30, (lw - 44) * Math.min(1, a.stand / a.ziel)), 30, 15); X.fill();
     text(`${a.stand} / ${a.ziel}`, SL + lw / 2, y3 + 123, 20, INK, 'center', 900, 200);
     countdownKarte(SL + lw + 18, y3, SR - SL - lw - 18, 156, t);
-    return y3 + 156;
+    return top5Zeile(y3 + 168);
   }
-  karte(SL, y3, lw, 156, '#fff3c4', 28);
-  if (S.turmAn && seite === seiten - 1) {
-    text('🗼 Welche Stadt führt?', SL + 22, y3 + 28, 27, INK, 'left', 900, lw - 44);
-    if (!(S.staedte || []).length) { text('Noch keine Stadt dabei –', SL + 22, y3 + 72, 24, INK, 'left', 800, lw - 44); text('schreib deine in den Chat! 🗼', SL + 22, y3 + 108, 24, INK, 'left', 800, lw - 44); }
-    (S.staedte || []).slice(0, 3).forEach((st, k) => { const y = y3 + 66 + k * 34;
-      text(`${k + 1}. ${st.name}`, SL + 22, y, 24, INK, 'left', 800, 280); text(`${st.stock.toLocaleString('de-DE')} 🏢`, SL + lw - 22, y, 23, INK, 'right', 900, 200); });
-  } else if (seite === 3 && S.projekt) {
-    const pr = S.projekt;
-    text(`🏗️ Wir bauen: ${pr.name}`, SL + 22, y3 + 32, 28, INK, 'left', 900, lw - 44);
-    X.fillStyle = 'rgba(42,27,18,.1)'; rr(SL + 22, y3 + 58, lw - 44, 32, 16); X.fill();
-    X.fillStyle = GELB; rr(SL + 22, y3 + 58, Math.max(32, (lw - 44) * pr.stand / pr.ziel), 32, 16); X.fill();
-    X.strokeStyle = INK; X.lineWidth = 3; rr(SL + 22, y3 + 58, lw - 44, 32, 16); X.stroke();
-    text(`${Math.floor(pr.stand).toLocaleString('de-DE')} / ${pr.ziel.toLocaleString('de-DE')} 🐚 aus der Kasse`, SL + 22, y3 + 122, 24, '#8a5a2b', 'left', 800, lw - 44);
-  } else if (seite === 2) {
-    [['🎁', 'Mini-Aufgabe = 5 🐚 fürs Haus'], ['🏝️', 'Kasse baut Gebäude für alle'], ['🎨', 'Schreib, welche Farbe dein Haus haben soll']].forEach(([i, s], k) => {
-      text(i, SL + 16, y3 + 32 + k * 45, 27, INK, 'left', 400); text(s, SL + 58, y3 + 32 + k * 45, 26, INK, 'left', 800, lw - 78);
-    });
-  } else if (seite === 1) {
-    text('🏆 Beste Häuser', SL + 22, y3 + 28, 27, INK, 'left', 900, lw - 44);
-    [...S.spieler].sort((a, b) => b.stufe - a.stufe || b.muscheln - a.muscheln || (b.eventMuscheln || 0) - (a.eventMuscheln || 0)).slice(0, 3).forEach((p, k) => {
-      const y = y3 + 66 + k * 34, m = p.muscheln >= 100000 ? Math.round(p.muscheln / 1000).toLocaleString('de-DE') + 'k' : (p.muscheln || 0).toLocaleString('de-DE');
-      text(`${k + 1}. ${p.name}`, SL + 22, y, 24, INK, 'left', 800, 186);                      // Name · Haus-Stufe · Muschel-Kontostand
-      text(S.stufen[p.stufe] || '', SL + lw - 22 - 122, y, 21, '#8a5a2b', 'right', 900, 178);
-      text(`${m} 🐚`, SL + lw - 22, y, 22, INK, 'right', 900, 114);
-    });
-  } else {
-    [['🏆', 'Events = bis 60 🐚 fürs Haus'], S.turmAn ? ['🗼', 'Deine Stadt schreiben = Turm wächst'] : ['⛺', 'Schreib „Zelt“, um mitzumachen'], ['🏠', 'Schreib „Haus“ – dein Haus wächst jedes Mal']].forEach(([i, s], k) => {
-      text(i, SL + 16, y3 + 32 + k * 45, 27, INK, 'left', 400); text(s, SL + 58, y3 + 32 + k * 45, 26, INK, 'left', 800, lw - 78);
-    });
-  }
-  countdownKarte(SL + lw + 18, y3, SR - SL - lw - 18, 156, t);
-  return y3 + 156;
+  const hK = 190;
+  karte(SL, y3, lw, hK, '#fff3c4', 28);
+  text('🏆 Beste Häuser', SL + 22, y3 + 28, 27, INK, 'left', 900, lw - 44);
+  const top = topFuenf();
+  if (!top.length) { text('Noch niemand dabei –', SL + 22, y3 + 84, 24, INK, 'left', 800, lw - 44); text('schreib „Zelt“, um mitzumachen! ⛺', SL + 22, y3 + 120, 24, INK, 'left', 800, lw - 44); }
+  top.forEach((p, k) => {
+    const y = y3 + 60 + k * 27, m = p.muscheln >= 100000 ? Math.round(p.muscheln / 1000).toLocaleString('de-DE') + 'k' : (p.muscheln || 0).toLocaleString('de-DE');
+    if (k < 3) { X.fillStyle = ['rgba(255,210,63,.5)', 'rgba(190,200,215,.5)', 'rgba(220,150,90,.4)'][k]; rr(SL + 12, y - 13, lw - 24, 26, 13); X.fill(); }
+    text(`${k + 1}. ${p.name}`, SL + 22, y, 22, INK, 'left', 800, 196);
+    text(S.stufen[p.stufe] || '', SL + lw - 22 - 116, y, 19, '#8a5a2b', 'right', 900, 170);
+    text(`${m} 🐚`, SL + lw - 22, y, 20, INK, 'right', 900, 108);
+  });
+  countdownKarte(SL + lw + 18, y3, SR - SL - lw - 18, hK, t);
+  // Wechselnde Hinweise in einer Zeile darunter (alle 5 s)
+  const tipps = [['⛺', 'Schreib „Zelt“, um mitzumachen'], ['🏠', 'Schreib „Haus“ – dein Haus wächst jedes Mal'], ['🏆', 'Events = bis 60 🐚 fürs Haus'], ['🎁', 'Mini-Aufgabe = 5 🐚 fürs Haus'],
+    ['🏝️', 'Kasse baut Gebäude für alle'], ['🎨', 'Schreib, welche Farbe dein Haus haben soll']];
+  if (S.projekt) tipps.push(['🏗️', `Wir bauen: ${S.projekt.name} (${Math.floor(S.projekt.stand).toLocaleString('de-DE')} / ${S.projekt.ziel.toLocaleString('de-DE')} 🐚)`]);
+  const tp = tipps[Math.floor(t / 5000) % tipps.length], yz = y3 + hK + 12;
+  X.fillStyle = 'rgba(42,27,18,.78)'; rr(SL, yz, SB, 46, 23); X.fill();
+  text(`${tp[0]} ${tp[1]}`, 540, yz + 23, 25, '#fff', 'center', 900, SB - 40);
+  return yz + 46;
+}
+// Rangliste: die fünf besten Häuser (Stufe, dann Muscheln – wie im Programm)
+function topFuenf() { return [...S.spieler].sort((a, b) => b.stufe - a.stufe || b.muscheln - a.muscheln || (b.eventMuscheln || 0) - (a.eventMuscheln || 0)).slice(0, 5); }
+function top5Zeile(y) {                                            // schmale Zeile unter Event/Aufgabe – die Rangliste bleibt immer sichtbar
+  const top = topFuenf(); if (!top.length) return y;
+  X.fillStyle = 'rgba(42,27,18,.78)'; rr(SL, y, SB, 46, 23); X.fill();
+  text('🏆 ' + top.map((p, k) => `${k + 1}. ${String(p.name).replace(/^@/, '')}`).join('  ·  '), 540, y + 23, 23, '#fff', 'center', 900, SB - 36);
+  return y + 46;
 }
 let KOPF_UNTEN = 670;
 

@@ -202,6 +202,12 @@ const SAETZE = {
   topNeu: [
     '{name} ist jetzt auf Platz {platz}!',
     'Neu auf Platz {platz}: {name}!',
+    '{name} ist neu in den Top fünf! … Platz {platz}!',
+  ],
+  topUeberholt: [
+    '{name} überholt {zweite} und ist jetzt auf Platz {platz}!',
+    '{name} zieht an {zweite} vorbei! … Platz {platz}!',
+    'Überholt! … {name} ist jetzt auf Platz {platz}!',
   ],
   aufruf: [                                                     // einzige Moderation ohne Anlass: Liken, Folgen, Teilen (ohne Versprechen)
     'Teil den LIVE mit deinen Freunden, dann bauen wir zusammen!',
