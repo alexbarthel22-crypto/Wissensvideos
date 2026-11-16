@@ -21,7 +21,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-16 y';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-16 z';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -853,9 +853,15 @@ function moderiere() {
   }
   // 3. Neue Zuschauer begrüßen (nur wenn kein Event moderiert werden muss)
   // Nur wer einen Klarnamen hat (lara91554 → „Lara“), höchstens alle 30 s – sonst kommt der Dank erst bei der ersten Interaktion
-  while (begruessen.length && !begruessen[0].klar) begruessen.shift();
+  // Neue ohne Zelt werden immer begrüßt (mit Tageszeit und „Schreib Zelt“), Wiederkehrer nur mit Klarnamen
+  while (begruessen.length && begruessen[0].zurueck && !begruessen[0].klar) begruessen.shift();
   if (!EV.laeuft() && begruessen.length && Date.now() - letzteBegruessung > 30000) {
     const b = begruessen.shift(); letzteBegruessung = Date.now();
+    if (!b.zurueck && !S.spieler[b.id]) {
+      const h = new Date().getHours(), gruss = h >= 5 && h < 11 ? 'Guten Morgen' : h < 17 && h >= 11 ? 'Guten Tag' : h >= 17 && h < 23 ? 'Guten Abend' : 'Hallo';
+      sende({ typ: 'neuHallo', name: b.anzeige, gruss });
+      return sag(b.klar ? satz('begruessungZelt', { gruss, name: b.name }) : satz('begruessungZeltOhne', { gruss }), 4);
+    }
     if (b.zurueck) return sag(b.besuche >= 3 && Math.random() < .5 ? satz('begruessungTreu', { name: b.name, besuche: b.besuche }) : satz('begruessungZurueck', { name: b.name }), 4);
     return sag(satz('begruessungEins', { name: b.name }), 4);
   }
@@ -904,7 +910,7 @@ function beitritt(u) {                                     // jemand kommt neu i
   if (p && !p.gesperrt) {                                  // kennt die Insel schon: „Willkommen zurück“
     p.besuche = (p.besuche || 1) + 1; geaendert = true;
     begruessen.push({ name: sprechName(p), klar: !!klarname(p.name), zurueck: true, besuche: p.besuche, stufe: CFG.stufen[p.stufe].name });
-  } else begruessen.push({ name: sprechName({ name: '@' + u.uniqueId }), klar: !!klarname(u.uniqueId), zurueck: false });
+  } else begruessen.push({ id, anzeige: '@' + u.uniqueId, name: sprechName({ name: '@' + u.uniqueId }), klar: !!klarname(u.uniqueId), zurueck: false });
   if (begruessen.length > 6) begruessen.splice(0, begruessen.length - 6);   // bei vielen Neuen: nur die neuesten
 }
 

@@ -341,7 +341,8 @@ function ereignis(e) {
       break;
     case 'hausGezeigt': if (p) { banner.unshift({ t: 0, oben: `🏠 ${p.name}`, unten: 'hier ist dein Haus!', farbe: TUERKIS }); if (pl) { pop[e.id] = jetzt; funken(pl, '⭐', 12); } } break;
     case 'rangliste': if (p) { banner.push({ t: 0, oben: `🏆 ${p.name}`, unten: e.platz === 1 ? 'jetzt Platz 1 – das beste Haus der Insel!' : `neu auf Platz ${e.platz} der besten Häuser`, farbe: '#ff8a2a' }); if (pl) funken(pl, '🏆', 10); } break;
-    case 'folgeAufruf': banner.push({ t: 0, oben: '🐚 Gefällt dir Muschel-Tal?', unten: 'Folg gern @muscheltal', farbe: TUERKIS }); break;
+    case 'folgeAufruf': banner.push({ t: 0, oben: '🏝️ Folg @muscheltal', unten: 'und zieh auf die echten Muschel-Tal-Inseln!', farbe: TUERKIS }); break;
+    case 'neuHallo': banner.push({ t: 0, oben: `👋 ${e.gruss}, ${e.name}!`, unten: 'Schreib „Zelt“, um mitzumachen', farbe: '#ff8a2a' }); break;
     case 'kamera': if (pl) fokus(pl, e.ms || 15000); break;
     case 'feuerwerk': feuerwerk(); break;
     case 'kameraTurm': { const l = S.staedte || []; if (e.still) { turmBlick(l.length ? l[Math.floor(Math.random() * Math.min(3, l.length))].name : 'Deine Stadt?', 19000); break; } banner.push({ t: 0, oben: '🗼 Leuchtturm-Rennen', unten: 'Schreib deine Stadt in den Chat – welche Stadt gewinnt?', farbe: '#3f8fe0', dauer: 5 }); turmBlick(l.length ? l[0].name : 'Deine Stadt?', 9000); break; }

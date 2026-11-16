@@ -86,6 +86,14 @@ const SAETZE = {
     'Willkommen im Muschel-Tal! Los geht\'s!',
   ],
   // ---------- Dauer-Moderation („…“ = kurze Sprechpause) ----------
+  begruessungZelt: [
+    '{gruss}, {name}! … Schreib Zelt, um mitzumachen!',
+    '{gruss}, {name}! … Schreib einfach Zelt in den Chat, dann baust du mit!',
+  ],
+  begruessungZeltOhne: [
+    '{gruss}! … Schreib Zelt, um mitzumachen!',
+    '{gruss} und willkommen auf der Insel! … Schreib Zelt in den Chat, dann bekommst du dein eigenes Zelt!',
+  ],
   begruessungEins: [
     'Hallo {name}!',
     'Willkommen, {name}!',
@@ -197,16 +205,14 @@ const SAETZE = {
     'Wer mag, folgt muscheltal.',
   ],
   folgeAufruf: [
-    'Gefällt dir die Insel? … Dann folg muscheltal, damit du beim nächsten LIVE wieder mitbauen kannst!',
-    'Dein Haus wartet auf dich! … Folg muscheltal, dann verpasst du keinen LIVE.',
-    'Wer folgt, ist beim nächsten Inselabend wieder dabei!',
-    'Die Insel wächst jeden Tag! … Folg muscheltal und schau, was als Nächstes gebaut wird.',
-    'Pssst … wer muscheltal folgt, verpasst kein Event mehr!',
-    'Neu hier? … Folg muscheltal, dann findest du deine Insel jederzeit wieder!',
-    'Damit dein Haus nicht allein bleibt … folg muscheltal!',
-    'Hier entsteht jeden Tag ein Stück Insel! … Folg muscheltal, damit du dabei bist!',
-    'Möwen, Muscheln, Mitbauen! … Folg muscheltal für den nächsten LIVE.',
-    'Ein Klick auf Folgen, und du bist beim nächsten Inselabend wieder da!',
+    'Folg muscheltal, dann ziehst du auf die echten Muschel-Tal-Inseln und spielst mit!',
+    'Wer muscheltal folgt, wird Bewohner der echten Muschel-Tal-Insel! … Und ist beim Spiel dabei!',
+    'Dein Haus auf der echten Insel wartet! … Folg muscheltal, dann ziehst du ein.',
+    'Mit einem Folgen ziehst du auf die Muschel-Tal-Inseln! … Und machst beim großen Inselspiel mit!',
+    'Noch kein Bewohner? … Folg muscheltal, dann bekommst du deinen Platz auf der echten Insel!',
+    'Folg muscheltal! … Dann wohnst du auf den Muschel-Tal-Inseln und baust mit uns weiter!',
+    'Die echte Muschel-Tal-Insel sucht neue Bewohner! … Folg muscheltal und zieh ein!',
+    'Pssst … wer muscheltal folgt, zieht auf die Insel und ist bei jedem Spiel dabei!',
   ],
   eventNoch10: [
     'Noch zehn Sekunden!',
