@@ -204,7 +204,7 @@ def _iso(d):
 
 def _kokos_jobs(insel):
     """Wer auf der Kokos-Küste arbeitet (Gebäude mit key 1:… oder Coco Bay, Kokos-Bad, Coast & Cotton) – muss dort wohnen."""
-    orte = {g["name"] for g in insel.get("gebaeude", []) if str(g.get("key", "")).startswith("1:")} | {"Coco Bay", "Kokos-Bad", "Coast & Cotton", "KOK(O)S", "CocoCare"}
+    orte = {g["name"] for g in insel.get("gebaeude", []) if str(g.get("key", "")).startswith("1:")} | {"Coco Bay", "Kokos-Bad", "Coast & Cotton", "KOK(O)S", "CocoCare", "Game Lagoon"}
     return {n.lower().lstrip("@") for n, j in (insel.get("jobs") or {}).items() if j and j[1] in orte}
 
 
@@ -518,6 +518,7 @@ def berufe(sauber, insel, out):
     emo.setdefault("Coast & Cotton", "👗")
     emo.setdefault("KOK(O)S", "🪩")
     emo.setdefault("CocoCare", "🧴")
+    emo.setdefault("Game Lagoon", "🎮")
     emo.setdefault("Strand", "🛟")
     import datetime as _dt
     try:
