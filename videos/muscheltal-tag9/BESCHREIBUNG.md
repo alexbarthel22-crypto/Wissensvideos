@@ -1,6 +1,6 @@
 # Muschel-Tal – Tag 9 · Beschreibung
 
-**Cover:** `renders/cover.jpg` (Vorlage `cover/thumb.html`, Layout wie Tag 8, lila Leuchtrand) – „TÜRSTEHER GESUCHT! BIST DU'S? 🕶️“, „🪩 Neuer Nachtclub: KOK(O)S“, Karten „Neuer Bürgermeister verlost“, „Jobs: Porto Pizza & Kokos-Bad“, „Nur noch 33 bis zum Tierheim“, „Wer hat gewonnen? 👀“. Hintergrund: der KOK(O)S nachts mit Neon-Schild und roter Teppich-Schlange (Homepage-Aufnahme).
+**Cover:** `renders/cover.jpg` (Vorlage `cover/thumb.html`, Layout wie Tag 8, lila Leuchtrand) – Logo + „TAG 8“ (wie die anderen Tage), „TÜRSTEHER GESUCHT! BIST DU'S? 🕶️“, „🪩 Neuer Nachtclub: KOK(O)S“, Karten „Neuer Bürgermeister verlost“, „Jobs: Porto Pizza & Kokos-Bad“, „Nur noch 33 bis zum Tierheim“, „Wer hat gewonnen? 👀“. Hintergrund: der KOK(O)S nachts mit Neon-Schild und roter Teppich-Schlange (Homepage-Aufnahme).
 
 ## Hauptversion (zum Posten)
 Türsteher gesucht! 🕶️ Bist du's? 👀
