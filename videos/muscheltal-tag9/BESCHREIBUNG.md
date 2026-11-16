@@ -14,11 +14,12 @@ Glückwunsch, ihr arbeitet jetzt hier! 🎉
 
 🏝️ Das ist Muschel-Tal: Wer mir folgt, bekommt eine Hütte mit seinem @Namen – schon 767 Bewohner!
 🐾 Nur noch 33 bis zum Tierheim Pfotenkuss!
+🔴 Und wenn ich LIVE bin: komm rein und bau mit an der LIVE-Insel!
 
 #muscheltal #fyp #fürdich #foryou #viral
 
 ## Angepinnter Kommentar (vom Account selbst)
-Wer soll Türsteher im KOK(O)S werden? 🕶️👇 Bewirb dich hier – der beste Kommentar bekommt den Job!
+Wir suchen einen Türsteher für den KOK(O)S 🕶️ Bewerbung hier in die Kommentare 👇
 
 ## Warum so
 - Erster Satz = Hook aus dem Video (Türsteher gesucht) + direkte Frage → Kommentare (Bewerbungen).

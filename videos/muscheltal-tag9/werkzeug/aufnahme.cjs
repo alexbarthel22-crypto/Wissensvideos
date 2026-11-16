@@ -12,16 +12,17 @@ await p.evaluate(()=>{petsStep();let sd=11;const R=()=>(sd=(sd*16807)%2147483647
   const [x0,y0]=rNode(a.v,a.k,a.m),[x1,y1]=rNode(a.v,a.k+dk,a.m+dm),t=R();a.x=x0+(x1-x0)*t;a.y=y0+(y1-y0)*t;a.pause=R()*3;}});
 const G=await p.evaluate(()=>{const a=fitAll(),m=fitMain();
  const ti=BAU.find(b=>/tierheim/i.test(JSON.stringify(b.name||b.n||b.titel||'')))||BAU.find(b=>b.ziel===800);
- return{N,a,m,ti:{x:ti.cx,y:ti.cy},po:{x:KI.x+KI.po,y:KI.cy},cl:{x:KCLUB.cx,y:KCLUB.cy},dr:{x:KDROG.cx,y:KDROG.cy},bd:{x:KBAD.cx,y:KBAD.cy}};});
+ return{N,a,m,ti:{x:ti.cx,y:ti.cy},po:{x:KI.x+KI.po,y:KI.cy},cl:{x:KCLUB.cx,y:KCLUB.cy},dr:{x:KDROG.cx,y:KDROG.cy},bd:{x:KBAD.cx,y:KBAD.cy},lv:{x:LV.x,y:LV.y,r:LV.r}};});
 console.error(JSON.stringify(G));
-const K=[[0,G.cl.x,G.cl.y-8,4.6],[L.L1.end+.2,G.cl.x,G.cl.y-8,4.1],
+const LZ=1080/(2.6667*2.4*G.lv.r);const K=[[0,G.cl.x,G.cl.y+32,4.0],[L.L1.end+.2,G.cl.x,G.cl.y+32,3.7],
  [L.L1b.start+.1,G.m.x,G.m.y-10,G.m.z*1.5],[L.L1b.end,G.m.x,G.m.y,G.m.z*1.15],
  [L.L2.start,G.cl.x,G.cl.y-6,3.3],[L.L2b.start,G.cl.x,G.cl.y-8,4.0],[L.L2b.end+.3,G.cl.x,G.cl.y-10,4.6],
  [L.L2c.start-.15,G.dr.x,G.dr.y-8,4.0],[L.L2c.end+.3,G.dr.x,G.dr.y-8,4.4],
  [L.L3.start+.2,G.m.x,G.m.y,G.m.z*1.2],[L.L3a.start-.05,G.po.x,G.po.y-9,4.6],[L.L3aw.end+.6,G.po.x,G.po.y-9,5.0],
  [L.L3b.start-.05,G.bd.x,G.bd.y-8,4.0],[L.L3bw.end+.6,G.bd.x,G.bd.y-8,4.4],
  [L.L4.start+.1,G.ti.x-20,G.ti.y-30,3.4],[L.L4b.start,G.ti.x,G.ti.y-14,3.2],[L.L4b.end+.3,G.ti.x,G.ti.y-14,3.6],
- [L.L5.start,G.ti.x,G.ti.y-14,3.0],[dur,G.ti.x,G.ti.y-14,3.4]];
+ [L.L4c.start+.3,G.lv.x,G.lv.y+G.lv.r*.62,LZ*.95],[L.L4c.end+.3,G.lv.x,G.lv.y+G.lv.r*.62,LZ],
+ [L.L5.start+.3,G.cl.x,G.cl.y-34,3.0],[dur,G.cl.x,G.cl.y-34,3.2]];
 
 const cam=t=>{let j=0;while(j<K.length-1&&K[j+1][0]<=t)j++;const a=K[j],c=K[Math.min(j+1,K.length-1)];let k=c[0]>a[0]?Math.max(0,Math.min(1,(t-a[0])/(c[0]-a[0]))):1;k=k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2;
  return [a[1]+(c[1]-a[1])*k,a[2]+(c[2]-a[2])*k,Math.exp(Math.log(a[3])+(Math.log(c[3])-Math.log(a[3]))*k)*(1+.012*Math.sin(t*.8))];};

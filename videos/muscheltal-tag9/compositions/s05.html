@@ -59,18 +59,18 @@
     #s5-t { top: 445px; font-size: 64px; background: linear-gradient(135deg, #2e9e5b, #8be06a); font-family: "Lilita One", sans-serif; font-weight: 400; transform: rotate(-2deg); }
     #s5-h { top: 590px; font-size: 44px; background: #fff; color: #2e9e5b; }
   </style>
-  <div id="root" data-composition-id="s05" data-start="0" data-duration="5.050" data-width="1080" data-height="1920">
-    <div id="s05-stage" class="clip stage" data-start="0" data-duration="5.050" data-track-index="0">
+  <div id="root" data-composition-id="s05" data-start="0" data-duration="5.430" data-width="1080" data-height="1920">
+    <div id="s05-stage" class="clip stage" data-start="0" data-duration="5.430" data-track-index="0">
       <div id="s5-btn" class="fbtn">+ Folgen<div id="s5-btn2" class="fbtn2">✓ Gefolgt</div></div>
       <div id="s5-hand" class="fhand" data-layout-ignore>👆</div>
-      <div id="s5-t" class="pl">🕶️ Wer wird Türsteher?</div>
-      <div id="s5-h" class="pl">👇 Schreib es in die Kommentare!</div>
+      <div id="s5-t" class="pl">🕶️ Türsteher gesucht!</div>
+      <div id="s5-h" class="pl">👇 Bewerbung in die Kommentare!</div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 5.05, "L5": [0.2, 3.05], "L5.words": [["folg", 0.2, 0.38], ["mir", 0.38, 0.555], ["", 0.555, 0.71], ["und", 0.94, 1.071], ["kommentiere", 1.071, 1.59], ["wer", 1.86, 2.029], ["soll", 2.029, 2.204], ["türsteher", 2.204, 2.712], ["werden", 2.712, 3.05]]};
+      const C = {"__dur": 5.43, "L5": [0.2, 3.43], "L5.words": [["folg", 0.2, 0.384], ["mir", 0.384, 0.561], ["", 0.561, 0.72], ["wir", 0.9, 1.029], ["suchen", 1.029, 1.288], ["einen", 1.288, 1.542], ["türsteher", 1.542, 1.93], ["bewerbung", 2.17, 2.595], ["in", 2.595, 2.732], ["die", 2.732, 2.873], ["kommentare", 2.873, 3.43]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -114,7 +114,7 @@
 
       wrapBt("#s05-stage");
       const tl = gsap.timeline({ paused: true });
-      const t5 = line("L5")[0], fo = at("L5", "Folg"), du = at("L5", "Türsteher"), ti = at("L5", "kommentiere");
+      const t5 = line("L5")[0], fo = at("L5", "Folg"), du = at("L5", "Türsteher"), ti = at("L5", "Bewerbung");
       tl.fromTo("#s5-btn", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, fo - .2);
       tl.fromTo("#s5-hand", { opacity: 0, x: 160, y: 160 }, { opacity: 1, x: 0, y: 0, duration: .25, ease: "power3.out" }, fo - .1);
       tl.to("#s5-hand", { y: -26, scale: .9, duration: .1, yoyo: true, repeat: 1 }, fo + .2);

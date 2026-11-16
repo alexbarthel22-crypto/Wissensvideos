@@ -88,49 +88,38 @@ CMT = """.cmt { position: absolute; left: 140px; width: 800px; border-radius: 30
     .cmt img { display: block; width: 100%; border-radius: 23px; }"""
 
 
-# s01 – Hook im Stil von Tag 1: pinke Balken, Wörter springen groß hervor, Sticker „GEBAUT!“
+# s01 – Hook: Wörter schießen von den Seiten ins Bild, oben bleibt der Club mit Neon-Namen frei
 QL = [[("DIESER", "Dieser"), ("CLUB", "Club")], [("SUCHT", "sucht"), ("EINEN", "einen")], [("TÜRSTEHER!", "Türsteher")], [("BIST", "Bist"), ("DU'S?", "du")]]
 QW = [w for ln in QL for w in ln]
 YW = ("CLUB", "TÜRSTEHER!", "DU'S?")
-SP = [(110, 560, 46), (900, 600, 34), (70, 960, 30), (930, 1010, 44), (180, 1230, 38), (820, 1200, 30)]
-scene("s01", LILITA + "\n    " + PT + "\n" + FL + """
-    #s01-ray { position: absolute; left: -460px; top: 300px; width: 2000px; height: 2000px; border-radius: 50%; background: repeating-conic-gradient(rgba(255,250,210,.28) 0 8deg, rgba(255,255,255,0) 8deg 20deg); -webkit-mask: radial-gradient(circle, #000 15%, transparent 60%); }
-    #s01-hk { position: absolute; left: 40px; right: 40px; top: 470px; text-align: center; font-family: "Lilita One", sans-serif; }
-    #s01-hk .ln { display: block; width: fit-content; margin: 0 auto 16px; padding: 4px 34px 14px; border-radius: 30px; background: #ff2e7e; box-shadow: 0 0 0 6px #1a0f08, 0 12px 0 rgba(0,0,0,.35); font-size: 104px; line-height: 1.05; white-space: nowrap; transform-origin: 50% 60%; }
+scene("s01", LILITA + """
+    #s01-hk { position: absolute; left: 30px; right: 30px; top: 1010px; text-align: center; font-family: "Lilita One", sans-serif; }
+    #s01-hk .ln { display: block; width: fit-content; margin: 0 auto 16px; padding: 4px 34px 14px; border-radius: 30px; background: #ff2e7e; box-shadow: 0 0 0 6px #1a0f08, 0 12px 0 rgba(0,0,0,.35); font-size: 108px; line-height: 1.05; white-space: nowrap; transform-origin: 50% 60%; }
+    #s01-hk #s01-l2 { background: #e8101e; font-size: 118px; }
     #s01-hk span { position: relative; display: inline-block; margin: 0 .08em; color: #fff; -webkit-text-stroke: 8px #1a0f08; paint-order: stroke fill; transform-origin: 50% 65%; }
-    #s01-gk { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 1070px; padding: 8px 30px 16px; border-radius: 26px; background: #2e9e5b; border: 8px solid #fff; box-shadow: 0 0 0 6px #1a0f08, 0 12px 0 rgba(0,0,0,.3), 0 0 60px 20px rgba(80,230,140,.7); font-family: "Lilita One", sans-serif; font-size: 68px; line-height: 1; color: #fff; white-space: nowrap; transform: rotate(-4deg); }
-    #s01-gk span { display: inline-block; }
-    #s01-av { position: absolute; left: 0; right: 0; margin: 0 auto; top: 250px; width: 230px; height: 260px; }
-    #s01-ring { position: absolute; left: 15px; top: 0; width: 200px; height: 200px; border-radius: 50%; background: conic-gradient(#ff1f4b, #ff6a1a, #ff1f4b, #ff2e7e, #ff1f4b); box-shadow: 0 0 40px 10px rgba(255,30,70,.7); }
-    #s01-pic { position: absolute; left: 31px; top: 16px; width: 168px; height: 168px; border-radius: 50%; overflow: hidden; background: #fff; border: 6px solid #fff; }
-    #s01-pic svg { width: 100%; height: 100%; }
-    #s01-lb { position: absolute; left: 0; right: 0; margin: 0 auto; top: 176px; width: fit-content; padding: 2px 22px 6px; border-radius: 12px; background: #ff1f4b; border: 5px solid #fff; color: #fff; font-family: "Inter", sans-serif; font-weight: 900; font-size: 40px; letter-spacing: .04em; }
     #s01-rv { position: absolute; inset: 0; box-shadow: inset 0 0 140px 50px rgba(255,10,20,.9); opacity: 0; }
-    .s01-sp { position: absolute; color: #fff; text-shadow: 0 0 18px #fff, 0 0 30px #ffe14a; opacity: 0; line-height: 1; }""",
-"""      <div id="s01-ray" data-layout-ignore></div>
-      <div id="s01-gk" data-layout-ignore>🕶️ JOB FREI!</div>
-      <div id="s01-fl" class="fl" data-layout-ignore></div>
+    #s01-fl { position: absolute; inset: 0; background: radial-gradient(circle at 50% 75%, rgba(255,255,255,.85), rgba(255,255,255,0) 55%); opacity: 0; }""",
+"""      <div id="s01-fl" data-layout-ignore></div>
       <div id="s01-rv" data-layout-ignore></div>
-      
-      <div id="s01-hk">""" + "".join('<div class="ln" id="s01-l' + str(j) + '">' + "".join(f'<span id="s01-w{QW.index(w)}">{w[0]}</span>' for w in ln) + '</div>' for j, ln in enumerate(QL)) + """</div>
-      """ + "".join(f'<div class="s01-sp" id="s01-sp{k}" data-layout-ignore style="left:{x}px;top:{y}px;font-size:{f}px">✦</div>' for k, (x, y, f) in enumerate(SP)) + drops("s01-p", 0, 5, 'sc', 540, 900, "🎉", 600, 820)[0],
-"""      const sc = at("L1", "du");
-      tl.set(["#s01-ray"], { opacity: 1 }, 0);
-      tl.fromTo("#s01-ray", { rotation: 0 }, { rotation: 40, duration: 4, ease: "none" }, 0);
+      <div id="s01-hk">""" + "".join('<div class="ln" id="s01-l' + str(j) + '">' + "".join(f'<span id="s01-w{QW.index(w)}">{w[0]}</span>' for w in ln) + '</div>' for j, ln in enumerate(QL)) + """</div>""",
+"""      const sc = at("L1", "du"), ts = at("L1", "Türsteher");
       tl.fromTo("#s01-rv", { opacity: .45 }, { opacity: 1, duration: .14, yoyo: true, repeat: 17, ease: "sine.inOut", immediateRender: false }, 0);
-      
       """ + "\n      ".join(
-        f'tl.set("#s01-w{i}", {{ zIndex: 5 }}, at("L1", "{k}") - .03); tl.to("#s01-w{i}", {{ scale: 1.1, rotation: {(-1)**i * 3}, duration: .1, ease: "back.out(3)" }}, at("L1", "{k}") - .03); tl.to("#s01-w{i}", {{ scale: 1, rotation: 0, duration: .22, ease: "power2.inOut" }}, at("L1", "{k}") + .17); tl.set("#s01-w{i}", {{ zIndex: 0 }}, at("L1", "{k}") + .4);'
-        + (f' tl.to("#s01-w{i}", {{ color: "#ffe500", duration: .05 }}, at("L1", "{k}") - .02);' if w in YW else '')
+        (f'tl.fromTo("#s01-l{j}", {{ opacity: 0, scaleX: .1 }}, {{ opacity: 1, scaleX: 1, duration: .14, ease: "back.out(2.4)" }}, at("L1", "{ln[0][1]}") - .16);' )
+        for j, ln in enumerate(QL)) + """
+      """ + "\n      ".join(
+        (f'tl.fromTo("#s01-w{i}", {{ opacity: 0, x: {(-1 if i % 2 == 0 else 1) * 1300}, scale: 2.4, rotation: {(-1 if i % 2 == 0 else 1) * 30}, filter: "blur(12px)" }}, {{ opacity: 1, x: 0, scale: 1, rotation: 0, filter: "blur(0px)", duration: .17, ease: "expo.out" }}, at("L1", "{k}") - .14);'
+         if w != "TÜRSTEHER!" else
+         f'tl.fromTo("#s01-w{i}", {{ opacity: 0, scale: 5, filter: "blur(16px)" }}, {{ opacity: 1, scale: 1, filter: "blur(0px)", duration: .2, ease: "expo.out" }}, at("L1", "{k}") - .16);')
+        + f' tl.to("#s01-hk", {{ y: 14, duration: .05, yoyo: true, repeat: 1, ease: "none" }}, at("L1", "{k}") + .03);'
+        + (f' tl.to("#s01-w{i}", {{ color: "#ffe500", duration: .05 }}, at("L1", "{k}"));' if w in YW else '')
         for i, (w, k) in enumerate(QW)) + """
-      """ + "\n      ".join(f'tl.fromTo("#s01-sp{k}", {{ opacity: 0, scale: .2, rotation: 0 }}, {{ opacity: 1, scale: 1, rotation: 90, duration: .3, yoyo: true, repeat: 3, ease: "sine.inOut", immediateRender: false }}, {k * .2:.2f});' for k in range(len(SP))) + """
-      tl.fromTo("#s01-gk", { opacity: 0, scale: 3, rotation: -4 }, { opacity: 1, scale: 1, rotation: -4, duration: .3, ease: "back.out(2)" }, sc - .1);
-      tl.to("#s01-gk", { scale: 1.1, duration: .15, yoyo: true, repeat: 5, ease: "sine.inOut" }, sc + .25);
-      tl.fromTo("#s01-fl", { opacity: .9 }, { opacity: 0, duration: .45, immediateRender: false }, sc);
-      tl.to("#s01-l3", { scale: 1.12, duration: .12, yoyo: true, repeat: 1 }, sc);
-      
-      tl.to("#s01-hk", { x: 12, duration: .04, yoyo: true, repeat: 5, ease: "none" }, sc);
-""" + drops("s01-p", 0, 5, 'sc', 540, 900, "🎉", 600, 820)[1])
+      tl.fromTo("#s01-fl", { opacity: .9 }, { opacity: 0, duration: .4, immediateRender: false }, ts);
+      tl.to("#s01-l2", { scale: 1.12, duration: .1, yoyo: true, repeat: 1 }, ts + .05);
+      tl.to("#s01-hk", { x: 16, duration: .04, yoyo: true, repeat: 7, ease: "none" }, ts + .05);
+      tl.fromTo("#s01-fl", { opacity: .7 }, { opacity: 0, duration: .35, immediateRender: false }, sc);
+      tl.to("#s01-l3", { scale: 1.12, duration: .12, yoyo: true, repeat: 1 }, sc + .05);
+      tl.to("#s01-hk", { x: 12, duration: .04, yoyo: true, repeat: 5, ease: "none" }, sc + .05);""")
 
 # s01b – Das ist Muschel-Tal: die Welt, in der ihr alles entscheidet
 scene("s01b", LILITA + "\n    " + PILL + """
@@ -243,6 +232,31 @@ scene("s04", LILITA + "\n    " + PILL + "\n    " + BIG + """
       tl.fromTo("#s4-ff", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, fu - .2);
       tl.to("#s4-ff", { scale: 1.1, duration: .18, yoyo: true, repeat: 5, ease: "sine.inOut" }, fu + .2);""")
 
+# s04b – LIVE-Hinweis: komm rein und bau mit an der LIVE-Insel
+scene("s04b", LILITA + "\n    " + PILL + "\n    " + BIG + """
+    #s4l-b { top: 270px; font-size: 88px; background: #e8101e; transform: rotate(-2deg); box-shadow: 0 0 0 8px #2a1b12, 0 16px 0 rgba(0,0,0,.3), 0 0 50px 14px rgba(255,20,30,.6); }
+    #s4l-dot { display: inline-block; width: 44px; height: 44px; border-radius: 50%; background: #fff; margin-right: 16px; vertical-align: 6px; }
+    #s4l-e { top: 430px; font-size: 48px; background: #fff; color: #2a1b12; }
+    #s4l-pa { position: absolute; left: 928px; top: 950px; width: 130px; height: 150px; }
+    #s4l-ring { position: absolute; left: 5px; top: 0; width: 120px; height: 120px; border-radius: 50%; background: conic-gradient(#ff1f4b, #ff6a1a, #ff1f4b, #ff2e7e, #ff1f4b); box-shadow: 0 0 40px 10px rgba(255,30,70,.8); }
+    #s4l-pic { position: absolute; left: 15px; top: 10px; width: 100px; height: 100px; border-radius: 50%; overflow: hidden; background: #fff; border: 4px solid #fff; }
+    #s4l-pic svg { width: 100%; height: 100%; }
+    #s4l-lb { position: absolute; left: 0; right: 0; margin: 0 auto; top: 108px; width: fit-content; padding: 1px 12px 4px; border-radius: 8px; background: #ff1f4b; border: 3px solid #fff; color: #fff; font-family: "Inter", sans-serif; font-weight: 900; font-size: 24px; }
+    #s4l-ph { left: auto; right: 12px; margin: 0; top: 1124px; font-size: 26px; padding: 5px 13px 8px; background: #ff1f4b; box-shadow: 0 0 0 5px #fff, 0 10px 0 rgba(0,0,0,.25); }""",
+"""      <div id="s4l-b" class="big"><span id="s4l-dot"></span>LIVE-INSEL</div>
+      <div id="s4l-e" class="pl">🏗️ Komm rein & bau mit!</div>
+      <div id="s4l-pa" data-layout-ignore><div id="s4l-ring"></div><div id="s4l-pic">""" + LOGO + """</div><div id="s4l-lb">LIVE</div></div>
+      <div id="s4l-ph" class="pl">👆 Tippen!</div>""",
+"""      const t = line("L4c")[0], lv = at("L4c", "LIVE"), ko = at("L4c", "Komm");
+      tl.fromTo("#s4l-b", { opacity: 0, scale: 3 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(1.8)" }, lv - .15);
+      tl.to("#s4l-dot", { opacity: .15, duration: .25, yoyo: true, repeat: 11, ease: "steps(1)" }, lv + .2);
+      tl.fromTo("#s4l-pa", { opacity: 0, scale: .2 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.6)" }, lv);
+      tl.fromTo("#s4l-ring", { scale: 1, rotation: 0 }, { scale: 1.15, rotation: 40, duration: .3, yoyo: true, repeat: 9, ease: "sine.inOut" }, lv + .3);
+      tl.fromTo("#s4l-ph", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, lv + .3);
+      tl.to("#s4l-ph", { y: -12, duration: .25, yoyo: true, repeat: 7, ease: "sine.inOut" }, lv + .7);
+      tl.fromTo("#s4l-e", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, ko - .15);
+      tl.to("#s4l-e", { scale: 1.08, duration: .18, yoyo: true, repeat: 5, ease: "sine.inOut" }, ko + .3);""")
+
 # s05 – Folg mir + Kommentar: Wer wird Türsteher?
 scene("s05", LILITA + "\n    " + PILL + "\n" + FOLLOW + """
     #s5-btn { top: 280px; } #s5-hand { left: 690px; top: 330px; }
@@ -250,9 +264,9 @@ scene("s05", LILITA + "\n    " + PILL + "\n" + FOLLOW + """
     #s5-h { top: 590px; font-size: 44px; background: #fff; color: #2e9e5b; }""",
 """      <div id="s5-btn" class="fbtn">+ Folgen<div id="s5-btn2" class="fbtn2">✓ Gefolgt</div></div>
       <div id="s5-hand" class="fhand" data-layout-ignore>👆</div>
-      <div id="s5-t" class="pl">🕶️ Wer wird Türsteher?</div>
-      <div id="s5-h" class="pl">👇 Schreib es in die Kommentare!</div>""",
-"""      const t5 = line("L5")[0], fo = at("L5", "Folg"), du = at("L5", "Türsteher"), ti = at("L5", "kommentiere");
+      <div id="s5-t" class="pl">🕶️ Türsteher gesucht!</div>
+      <div id="s5-h" class="pl">👇 Bewerbung in die Kommentare!</div>""",
+"""      const t5 = line("L5")[0], fo = at("L5", "Folg"), du = at("L5", "Türsteher"), ti = at("L5", "Bewerbung");
       tl.fromTo("#s5-btn", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, fo - .2);
       tl.fromTo("#s5-hand", { opacity: 0, x: 160, y: 160 }, { opacity: 1, x: 0, y: 0, duration: .25, ease: "power3.out" }, fo - .1);
       tl.to("#s5-hand", { y: -26, scale: .9, duration: .1, yoyo: true, repeat: 1 }, fo + .2);
