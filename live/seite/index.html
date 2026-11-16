@@ -1732,21 +1732,27 @@ function kopf(t) {
     return top5Zeile(y3 + 168);
   }
   const hK = 190;
-  karte(SL, y3, lw, hK, '#fff3c4', 28);
-  text('🏆 Beste Häuser', SL + 22, y3 + 28, 27, INK, 'left', 900, lw - 44);
-  const top = topFuenf();
-  if (!top.length) { text('Noch niemand dabei –', SL + 22, y3 + 84, 24, INK, 'left', 800, lw - 44); text('schreib „Zelt“, um mitzumachen! ⛺', SL + 22, y3 + 120, 24, INK, 'left', 800, lw - 44); }
-  top.forEach((p, k) => {
-    const y = y3 + 60 + k * 27, m = p.muscheln >= 100000 ? Math.round(p.muscheln / 1000).toLocaleString('de-DE') + 'k' : (p.muscheln || 0).toLocaleString('de-DE');
-    if (k < 3) { X.fillStyle = ['rgba(255,210,63,.5)', 'rgba(190,200,215,.5)', 'rgba(220,150,90,.4)'][k]; rr(SL + 12, y - 13, lw - 24, 26, 13); X.fill(); }
-    text(`${k + 1}. ${p.name}`, SL + 22, y, 22, INK, 'left', 800, 196);
-    text(S.stufen[p.stufe] || '', SL + lw - 22 - 116, y, 19, '#8a5a2b', 'right', 900, 170);
-    text(`${m} 🐚`, SL + lw - 22, y, 20, INK, 'right', 900, 108);
-  });
+  // Wechselt alle 10 s: „So machst du mit“ (Legende) ↔ „Beste Häuser“ (Top 5)
+  const legende = Math.floor(t / 10000) % 2 === 0, top = topFuenf();
+  karte(SL, y3, lw, hK, legende ? '#ffffff' : '#fff3c4', 28);
+  if (legende || !top.length) {
+    text('✋ So machst du mit', SL + 22, y3 + 28, 27, INK, 'left', 900, lw - 44);
+    [['⛺', 'Schreib „Zelt“ = du bist dabei'], ['🏠', 'Schreib „Haus“ = dein Haus wächst'], ['🏆', 'Events mitspielen = bis 60 🐚'], ['🎨', 'Schreib eine Farbe = Haus streichen'], ['❤️', 'Herzen = Muscheln für die Kasse']].forEach(([i, z], k) => {
+      const y = y3 + 62 + k * 27; text(i, SL + 20, y, 21, INK, 'left', 400); text(z, SL + 56, y, 22, INK, 'left', 800, lw - 76);
+    });
+  } else {
+    text('🏆 Beste Häuser', SL + 22, y3 + 28, 27, INK, 'left', 900, lw - 44);
+    top.forEach((p, k) => {
+      const y = y3 + 60 + k * 27, m = p.muscheln >= 100000 ? Math.round(p.muscheln / 1000).toLocaleString('de-DE') + 'k' : (p.muscheln || 0).toLocaleString('de-DE');
+      if (k < 3) { X.fillStyle = ['rgba(255,210,63,.5)', 'rgba(190,200,215,.5)', 'rgba(220,150,90,.4)'][k]; rr(SL + 12, y - 13, lw - 24, 26, 13); X.fill(); }
+      text(`${k + 1}. ${p.name}`, SL + 22, y, 22, INK, 'left', 800, 196);
+      text(S.stufen[p.stufe] || '', SL + lw - 22 - 116, y, 19, '#8a5a2b', 'right', 900, 170);
+      text(`${m} 🐚`, SL + lw - 22, y, 20, INK, 'right', 900, 108);
+    });
+  }
   countdownKarte(SL + lw + 18, y3, SR - SL - lw - 18, hK, t);
-  // Wechselnde Hinweise in einer Zeile darunter (alle 5 s)
-  const tipps = [['⛺', 'Schreib „Zelt“, um mitzumachen'], ['🏠', 'Schreib „Haus“ – dein Haus wächst jedes Mal'], ['🏆', 'Events = bis 60 🐚 fürs Haus'], ['🎁', 'Mini-Aufgabe = 5 🐚 fürs Haus'],
-    ['🏝️', 'Kasse baut Gebäude für alle'], ['🎨', 'Schreib, welche Farbe dein Haus haben soll']];
+  // Eine Zeile darunter mit weiteren Infos (alle 5 s)
+  const tipps = [['🎁', 'Mini-Aufgaben = 5 🐚 fürs Haus'], ['🏝️', 'Die Kasse baut Gebäude für alle'], ['🗳️', 'Bei Abstimmungen entscheidest du, was gebaut wird']];
   if (S.projekt) tipps.push(['🏗️', `Wir bauen: ${S.projekt.name} (${Math.floor(S.projekt.stand).toLocaleString('de-DE')} / ${S.projekt.ziel.toLocaleString('de-DE')} 🐚)`]);
   const tp = tipps[Math.floor(t / 5000) % tipps.length], yz = y3 + hK + 12;
   X.fillStyle = 'rgba(42,27,18,.78)'; rr(SL, yz, SB, 46, 23); X.fill();

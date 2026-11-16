@@ -22,7 +22,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-16 zh';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-16 zi';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -185,8 +185,9 @@ function farbeAus(p, t) {                                 // „blau“ → Haus
 const sauber = t => String(t || '').toLowerCase().replace(/[^\p{L}\p{N}\s]/gu, ' ').replace(/\s+/g, ' ').trim();
 function eventAntwort(p, t, probe) {
   const versuch = x => probe ? EV.waereAntwort(x) : EV.kommentar(p, x);
+  if (versuch(t)) return true;                             // auch reine Emojis („🐚“)
   const s = sauber(t); if (!s) return false;
-  if (versuch(t) || (s !== t && versuch(s))) return true;
+  if (s !== t && versuch(s)) return true;
   const w = s.split(' ');
   if (w.length > 1 && w.length <= 6) for (const x of w) if (x.length >= 1 && versuch(x)) return true;
   return false;

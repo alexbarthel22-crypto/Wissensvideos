@@ -83,7 +83,7 @@ export function macheEvents(api) {
     teamduell: {
       titel: 'Team-Duell', icon: '⚔️', dauer: 75,
       start(e) { e.t = { muschel: 0, kokos: 0 }; e.wahl = {}; return `Team-Duell! Schreibt muschel oder kokos, immer wieder! Jeder Kommentar ist ein Punkt für euer Team!`; },
-      kommentar(e, p, t) { if (t === 'muschel' || t === 'kokos') { e.wahl[p.id] = t; if (punkt(e, p)) e.t[t]++; return true; } },
+      kommentar(e, p, t) { const m = /mu?sch?e?l|🐚/.test(t) ? 'muschel' : /k[oa]k[oa]s|🥥/.test(t) ? 'kokos' : null; if (m) { e.wahl[p.id] = m; if (punkt(e, p)) e.t[m]++; return true; } },
       anzeige: e => { const m = Math.max(10, e.t.muschel + e.t.kokos); return { text: '„muschel“ oder „kokos“ schreiben – jeder Kommentar = 1 Punkt!', balken: [{ name: '🐚 Team Muschel', wert: e.t.muschel, max: m, farbe: '#ff8fb8' }, { name: '🥥 Team Kokos', wert: e.t.kokos, max: m, farbe: '#b07a45' }] }; },
       ende(e) {
         if (e.t.muschel === e.t.kokos) return { text: 'Unentschieden!', sag: 'Unentschieden! Was für ein Duell.' };
