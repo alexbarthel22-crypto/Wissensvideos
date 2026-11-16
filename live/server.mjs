@@ -22,7 +22,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-16 zc';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-16 zd';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -797,7 +797,7 @@ process.on('exit', () => lokalMusik?.kill());
 
 // ---------- Dauer-Moderation: Kerstin redet immer, mit kurzen Pausen dazwischen ----------
 const followDank = [], begruessen = [], begruesst = new Set();
-let letzteBegruessung = 0, letzterAufruf = 0, naechsterFolgeAufruf = Date.now() + 90000;
+let letzteBegruessung = 0, letzteNeuBegruessung = 0, letzterAufruf = 0, naechsterFolgeAufruf = Date.now() + 90000;
 let letzterLive = 0, letzterRundgang = 0, modNr = 0, eventModNr = 0, countdownGesagt = '', eventZehnGesagt = '';
 // Rangliste: beste Haus-Stufe zuerst, bei Gleichstand entscheiden die Muscheln aus Events
 const rangFolge = (a, b) => b.stufe - a.stufe || b.muscheln - a.muscheln || (b.eventMuscheln || 0) - (a.eventMuscheln || 0);   // Stufe, dann die angezeigten Muscheln
@@ -857,6 +857,18 @@ function moderiere() {
       const st = CFG.stufen[p.stufe].name, an = p.anbauten.map(a => CFG.anbauten[a]?.name).filter(Boolean);
       return sag(satz('hausZeigen', { name: sprechName(p), stufeCap: grossKlein(artikel(st)), anbauText: an.length ? ' mit ' + namenListe(an) : '' }), 1);
     }
+  }
+  // 1c. Neue Zuschauer ohne Zelt schnell begrüßen – auch während Events (dann seltener), mehrere zusammen
+  for (let i = begruessen.length - 1; i >= 0; i--) if (!begruessen[i].zurueck && S.spieler[begruessen[i].id]) begruessen.splice(i, 1);   // hat inzwischen ein Zelt
+  const neue = begruessen.filter(b => !b.zurueck);
+  if (neue.length && Date.now() - letzteNeuBegruessung > (EV.laeuft() ? (CFG.begruessungEventSek ?? 20) : (CFG.begruessungSek ?? 8)) * 1000) {
+    letzteNeuBegruessung = Date.now();
+    const gruppe = neue.slice(-3); for (const b of neue) begruessen.splice(begruessen.indexOf(b), 1);
+    const h = new Date().getHours(), gruss = h >= 5 && h < 11 ? 'Guten Morgen' : h >= 11 && h < 17 ? 'Guten Tag' : h >= 17 && h < 23 ? 'Guten Abend' : 'Hallo';
+    sende({ typ: 'neuHallo', name: gruppe.map(b => b.anzeige).join(', '), gruss });
+    const klar = gruppe.filter(b => b.klar).map(b => b.name);
+    if (gruppe.length === 1) return sag(klar.length ? satz('begruessungZelt', { gruss, name: klar[0] }) : satz('begruessungZeltOhne', { gruss }), 2);
+    return sag(klar.length ? satz('begruessungZeltMehrere', { gruss, namen: namenListe(klar) }) : satz('begruessungZeltOhneMehrere', { gruss }), 2);
   }
   // 2. Laufendes Event: abwechselnd Spielstand, Anfeuern und ab und zu ein normaler Satz
   if (EV.laeuft()) {
@@ -924,7 +936,7 @@ function beitritt(u) {                                     // jemand kommt neu i
     p.besuche = (p.besuche || 1) + 1; geaendert = true;
     begruessen.push({ name: sprechName(p), klar: !!klarname(p.name), zurueck: true, besuche: p.besuche, stufe: CFG.stufen[p.stufe].name });
   } else begruessen.push({ id, anzeige: '@' + u.uniqueId, name: sprechName({ name: '@' + u.uniqueId }), klar: !!klarname(u.uniqueId), zurueck: false });
-  if (begruessen.length > 6) begruessen.splice(0, begruessen.length - 6);   // bei vielen Neuen: nur die neuesten
+  if (begruessen.length > 8) begruessen.splice(0, begruessen.length - 8);   // bei vielen Neuen: nur die neuesten
 }
 
 // ---------- Seite + Live-Daten (Server-Sent Events) ----------

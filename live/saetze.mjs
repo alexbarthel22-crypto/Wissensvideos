@@ -87,6 +87,14 @@ const SAETZE = {
     '{gruss}, {name}! … Schreib Zelt, um mitzumachen!',
     '{gruss}, {name}! … Schreib einfach Zelt in den Chat, dann baust du mit!',
   ],
+  begruessungZeltMehrere: [
+    '{gruss}, {namen}! … Schreibt Zelt, um mitzumachen!',
+    '{gruss}, {namen}! … Schreibt Zelt in den Chat, dann baut ihr mit!',
+  ],
+  begruessungZeltOhneMehrere: [
+    '{gruss} an alle Neuen! … Schreibt Zelt, um mitzumachen!',
+    '{gruss} und willkommen! … Schreibt Zelt in den Chat, dann bekommt ihr euer eigenes Zelt!',
+  ],
   begruessungZeltOhne: [
     '{gruss}! … Schreib Zelt, um mitzumachen!',
     '{gruss} und willkommen auf der Insel! … Schreib Zelt in den Chat, dann bekommst du dein eigenes Zelt!',
