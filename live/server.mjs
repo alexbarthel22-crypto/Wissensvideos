@@ -21,7 +21,7 @@ import { anstoessig, satzAnstoessig, ladeSperrliste, gesperrt, normal } from './
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const CFG = JSON.parse(fs.readFileSync(path.join(DIR, 'einstellungen.json'), 'utf8'));
 const STAND = path.join(DIR, 'stand.json');
-const VERSION = '2026-11-16 x';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
+const VERSION = '2026-11-16 y';                          // bei jeder Änderung hochzählen – steht beim Start im Terminal
 const TEST = process.argv.includes('--test');
 const STILL = process.argv.includes('--still') || !CFG.stimme.an;
 const RUHIG = process.argv.includes('--ruhig');      // Test: wenig Betrieb, kaum Geschenke
@@ -245,8 +245,10 @@ function kommentar(u, text) {
   farbeAus(p, t);                                          // Farbe gilt immer – auch wenn das Wort gleichzeitig eine Event-Antwort ist
   if (aufgabeKommentar(p, t)) return;
   if (eventAntwort(p, t)) { geaendert = true; zustand(); return; }   // Event-Antworten (rot, flasche, A, 42 …) – auch mit Satzzeichen/Emoji/im Satz
-  if (istHausWunsch(t) && !hausWunsch.includes(p.id) && Date.now() - (hausGezeigt[p.id] || 0) > 120000) {
-    hausWunsch.push(p.id); if (hausWunsch.length > 20) hausWunsch.shift();
+  if (istHausWunsch(t)) {
+    // „Haus“ schreiben: das eigene Haus wächst jedes Mal (pro Person höchstens alle hausSek Sekunden)
+    if (Date.now() - (p.hausZeit || 0) >= (CFG.hausSek ?? 3) * 1000) { p.hausZeit = Date.now(); gibMuscheln(p, CFG.hausMuscheln ?? 2, 'haus'); sende({ typ: 'hausPlus', id: p.id }); }
+    if (!hausWunsch.includes(p.id) && Date.now() - (hausGezeigt[p.id] || 0) > 300000) { hausWunsch.push(p.id); if (hausWunsch.length > 20) hausWunsch.shift(); }
   }
   for (const wort of t.split(/[^a-zäöüß]+/)) {
     const ab = CFG.anbauten[wort];
@@ -658,7 +660,7 @@ let langsam = 0;
 function vorwaermen() {
   if (!ECHT) return;
   if (LEDA.aktiv()) {                                       // Leda: feste Sätze nach und nach im Leerlauf erzeugen (einmalig, danach gespeichert)
-    const offen = [...new Set(festeSaetzeAus(['countdown30', 'countdown10', 'eventNoch10', 'start']))];   // nur Sätze, die wirklich vorkommen
+    const offen = [...new Set(festeSaetzeAus(['countdown30', 'countdown10', 'eventNoch10', 'start', 'folgeAufruf']))];   // nur Sätze, die wirklich vorkommen
     let i = 0;
     const naechster = () => {
       if (!LEDA.aktiv() || i >= offen.length) return;
@@ -783,7 +785,7 @@ process.on('exit', () => lokalMusik?.kill());
 
 // ---------- Dauer-Moderation: Kerstin redet immer, mit kurzen Pausen dazwischen ----------
 const followDank = [], begruessen = [], begruesst = new Set();
-let letzteBegruessung = 0, letzterAufruf = 0;
+let letzteBegruessung = 0, letzterAufruf = 0, naechsterFolgeAufruf = Date.now() + 90000;
 let letzterLive = 0, letzterRundgang = 0, modNr = 0, eventModNr = 0, countdownGesagt = '', eventZehnGesagt = '';
 // Rangliste: beste Haus-Stufe zuerst, bei Gleichstand entscheiden die Muscheln aus Events
 const rangFolge = (a, b) => b.stufe - a.stufe || b.muscheln - a.muscheln || (b.eventMuscheln || 0) - (a.eventMuscheln || 0);   // Stufe, dann die angezeigten Muscheln
@@ -834,7 +836,7 @@ function moderiere() {
   likeDank.length = 0; if (false) { const p = null; if (Date.now() - letzterLikeDank >= 60000) { letzterLikeDank = Date.now(); return sag(satz('likeDank', { name: sprechName(p) }), 1); } }
   // 1b. Wer „haus“ geschrieben hat: Kamera fliegt zum Haus (ab und zu, nicht während Events)
   const kameraEvent = ['schatzsuche', 'meeresbesuch', 'flaschenpost', 'moewenalarm', 'hausbesuch'].includes(EV.id());
-  if (!kameraEvent && hausWunsch.length && Date.now() - letztesHausZeigen > (EV.laeuft() ? 15000 : 8000)) {
+  if (!kameraEvent && hausWunsch.length && Date.now() - letztesHausZeigen > (EV.laeuft() ? 30000 : 20000)) {
     const p = S.spieler[hausWunsch.shift()];
     if (p && !p.gesperrt) {
       letztesHausZeigen = letzterRundgang = Date.now(); hausGezeigt[p.id] = Date.now();
@@ -858,6 +860,8 @@ function moderiere() {
     return sag(satz('begruessungEins', { name: b.name }), 4);
   }
   if (EV.laeuft()) return;
+  // 3b. Aufruf zum Folgen: alle 2–3 Minuten, abwechslungsreich, nie mit Belohnung
+  if (Date.now() > naechsterFolgeAufruf) { naechsterFolgeAufruf = Date.now() + (120 + Math.random() * 60) * 1000; sende({ typ: 'folgeAufruf' }); return sag(satz('folgeAufruf'), 3); }
   // 4. Ohne Anlass nur: Aufruf zum Liken, Folgen, Teilen (feste Sätze → einmal erzeugt, danach kostenlos aus dem Speicher)
   // Keine wiederkehrenden Aufrufe zum Liken/Folgen/Teilen (TikTok-Regeln: keine repetitiven Aufforderungen)
   // Kamera bleibt lebendig: fliegt ab und zu zu einem Haus oder zur Baustelle – ohne Ansage

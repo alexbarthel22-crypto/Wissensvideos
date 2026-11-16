@@ -197,8 +197,16 @@ const SAETZE = {
     'Wer mag, folgt muscheltal.',
   ],
   folgeAufruf: [
-    'Wenn dir die Insel gefällt, folg gern muscheltal.',
-    'Schön, dass ihr da seid! Wer mag, folgt muscheltal.',
+    'Gefällt dir die Insel? … Dann folg muscheltal, damit du beim nächsten LIVE wieder mitbauen kannst!',
+    'Dein Haus wartet auf dich! … Folg muscheltal, dann verpasst du keinen LIVE.',
+    'Wer folgt, ist beim nächsten Inselabend wieder dabei!',
+    'Die Insel wächst jeden Tag! … Folg muscheltal und schau, was als Nächstes gebaut wird.',
+    'Pssst … wer muscheltal folgt, verpasst kein Event mehr!',
+    'Neu hier? … Folg muscheltal, dann findest du deine Insel jederzeit wieder!',
+    'Damit dein Haus nicht allein bleibt … folg muscheltal!',
+    'Hier entsteht jeden Tag ein Stück Insel! … Folg muscheltal, damit du dabei bist!',
+    'Möwen, Muscheln, Mitbauen! … Folg muscheltal für den nächsten LIVE.',
+    'Ein Klick auf Folgen, und du bist beim nächsten Inselabend wieder da!',
   ],
   eventNoch10: [
     'Noch zehn Sekunden!',

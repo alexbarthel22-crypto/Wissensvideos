@@ -23,8 +23,9 @@ const zahl = n => Math.round(n).toLocaleString('de-DE');
 
 // TikTok-Regeln: Events, bei denen Likes etwas bringen (Ziel erreichen, Team gewinnen, Belohnung), laufen nicht mehr.
 // Es bleiben nur Chat-Spiele (Antworten, Raten, Abstimmen) und Überraschungen.
-const LIKE_EVENTS = new Set(['sturmflut', 'krabbenrennen', 'teamduell', 'strandparty', 'ballons', 'volleyball', 'eiswagen', 'surfcontest', 'tauziehen',
+const LIKE_EVENTS = new Set(['sturmflut', 'strandparty', 'ballons', 'eiswagen',
   'likerekord', 'leuchtturm', 'nachbarhilfe', 'inselkoenig', 'piratenschatz', 'bootsrennen', 'muschelregen', 'bauturbo', 'happyhour']);
+const punkt = (e, p) => { e.zp ||= {}; if (Date.now() - (e.zp[p.id] || 0) < 3000) return false; e.zp[p.id] = Date.now(); return true; };
 const grossKlein = t => t.charAt(0).toUpperCase() + t.slice(1);
 const namenListeTxt = l => l.length <= 1 ? (l[0] || '') : l.slice(0, -1).join(', ') + ' und ' + l[l.length - 1];
 // Quiz-Baukasten: Frage zeigen, die ersten drei richtigen Antworten gewinnen (40/25/15)
@@ -67,11 +68,10 @@ export function macheEvents(api) {
     },
     krabbenrennen: {
       titel: 'Krabbenrennen', icon: '🦀', dauer: 60,
-      start(e) { e.teams = { rot: 0, blau: 0, gelb: 0, gruen: 0 }; e.wahl = {}; e.ziel = likeZiel(api.likeRate() * .4, 60, 50);
-        return `Krabbenrennen! Schreibt rot, blau, gelb oder grün für euer Team, oder liked einfach, dann bekommt ihr ein Team!`; },
-      kommentar(e, p, t) { const m = { rot: 'rot', blau: 'blau', gelb: 'gelb', grün: 'gruen', gruen: 'gruen' }[t]; if (m) { e.wahl[p.id] = m; return true; } },
-      like(e, p, n) { const tm = e.wahl[p.id] || (e.wahl[p.id] = kleinstes(e.wahl, Object.keys(e.teams))); e.teams[tm] += n; if (e.teams[tm] >= e.ziel) e.frueh = true; },
-      anzeige: e => ({ text: 'Team wählen: rot · blau · gelb · grün – oder einfach liken!', rennen: Object.entries(e.teams).map(([k, v]) => ({ name: k, wert: v, max: e.ziel })) }),
+      start(e) { e.teams = { rot: 0, blau: 0, gelb: 0, gruen: 0 }; e.wahl = {}; e.ziel = 30;
+        return `Krabbenrennen! Schreibt rot, blau, gelb oder grün, immer wieder! Jeder Kommentar bringt eure Krabbe ein Stück weiter!`; },
+      kommentar(e, p, t) { const m = { rot: 'rot', blau: 'blau', gelb: 'gelb', grün: 'gruen', gruen: 'gruen' }[t]; if (m) { e.wahl[p.id] = m; if (punkt(e, p)) { e.teams[m]++; if (e.teams[m] >= e.ziel) e.frueh = true; } return true; } },
+      anzeige: e => ({ text: 'rot · blau · gelb · grün schreiben – jeder Kommentar = 1 Schritt!', rennen: Object.entries(e.teams).map(([k, v]) => ({ name: k, wert: v, max: e.ziel })) }),
       ende(e) {
         const [sieger, w] = Object.entries(e.teams).sort((a, b) => b[1] - a[1])[0];
         if (!w) return { text: 'Keine Krabbe ist losgelaufen …', sag: 'Die Krabben haben sich nicht bewegt. Nächstes Mal!' };
@@ -82,10 +82,9 @@ export function macheEvents(api) {
     },
     teamduell: {
       titel: 'Team-Duell', icon: '⚔️', dauer: 75,
-      start(e) { e.t = { muschel: 0, kokos: 0 }; e.wahl = {}; return `Team-Duell! Schreibt muschel oder kokos und liked für euer Team!`; },
-      kommentar(e, p, t) { if (t === 'muschel' || t === 'kokos') { e.wahl[p.id] = t; return true; } },
-      like(e, p, n) { const tm = e.wahl[p.id] || (e.wahl[p.id] = kleinstes(e.wahl, ['muschel', 'kokos'])); e.t[tm] += n; },
-      anzeige: e => { const m = Math.max(10, e.t.muschel + e.t.kokos); return { text: '„muschel“ oder „kokos“ schreiben – oder einfach liken!', balken: [{ name: '🐚 Team Muschel', wert: e.t.muschel, max: m, farbe: '#ff8fb8' }, { name: '🥥 Team Kokos', wert: e.t.kokos, max: m, farbe: '#b07a45' }] }; },
+      start(e) { e.t = { muschel: 0, kokos: 0 }; e.wahl = {}; return `Team-Duell! Schreibt muschel oder kokos, immer wieder! Jeder Kommentar ist ein Punkt für euer Team!`; },
+      kommentar(e, p, t) { if (t === 'muschel' || t === 'kokos') { e.wahl[p.id] = t; if (punkt(e, p)) e.t[t]++; return true; } },
+      anzeige: e => { const m = Math.max(10, e.t.muschel + e.t.kokos); return { text: '„muschel“ oder „kokos“ schreiben – jeder Kommentar = 1 Punkt!', balken: [{ name: '🐚 Team Muschel', wert: e.t.muschel, max: m, farbe: '#ff8fb8' }, { name: '🥥 Team Kokos', wert: e.t.kokos, max: m, farbe: '#b07a45' }] }; },
       ende(e) {
         if (e.t.muschel === e.t.kokos) return { text: 'Unentschieden!', sag: 'Unentschieden! Was für ein Duell.' };
         const s = e.t.muschel > e.t.kokos ? 'muschel' : 'kokos'; const fans = Object.entries(e.wahl).filter(([, t]) => t === s).map(([id]) => api.spieler(id)); fans.forEach(p => api.belohne(p, 30));
@@ -193,10 +192,9 @@ export function macheEvents(api) {
     },
     volleyball: {
       titel: 'Beachvolleyball', icon: '🏐', dauer: 70,
-      start(e) { e.t = { links: 0, rechts: 0 }; e.wahl = {}; return 'Beachvolleyball! Schreibt links oder rechts für euer Team, oder liked einfach los!'; },
-      kommentar(e, p, t) { if (t.includes('links') || t.includes('rechts')) { e.wahl[p.id] = t.includes('links') ? 'links' : 'rechts'; return true; } },
-      like(e, p, n) { const tm = e.wahl[p.id] || (e.wahl[p.id] = kleinstes(e.wahl, ['links', 'rechts'])); e.t[tm] += n; },
-      anzeige: e => { const m = Math.max(10, e.t.links + e.t.rechts); return { text: '„links“ oder „rechts“ schreiben – oder einfach liken!', balken: [{ name: '⬅️ Team Links', wert: e.t.links, max: m, farbe: '#3fa0e8' }, { name: '➡️ Team Rechts', wert: e.t.rechts, max: m, farbe: '#ff8a2a' }] }; },
+      start(e) { e.t = { links: 0, rechts: 0 }; e.wahl = {}; return 'Beachvolleyball! Schreibt links oder rechts, immer wieder! Jeder Kommentar ist ein Ballwechsel für euer Team!'; },
+      kommentar(e, p, t) { if (t.includes('links') || t.includes('rechts')) { const m = t.includes('links') ? 'links' : 'rechts'; e.wahl[p.id] = m; if (punkt(e, p)) e.t[m]++; return true; } },
+      anzeige: e => { const m = Math.max(10, e.t.links + e.t.rechts); return { text: '„links“ oder „rechts“ schreiben – jeder Kommentar = 1 Punkt!', balken: [{ name: '⬅️ Team Links', wert: e.t.links, max: m, farbe: '#3fa0e8' }, { name: '➡️ Team Rechts', wert: e.t.rechts, max: m, farbe: '#ff8a2a' }] }; },
       ende(e) { if (e.t.links === e.t.rechts) return { text: 'Unentschieden – Satzball vertagt!', sag: 'Unentschieden!' }; const s = e.t.links > e.t.rechts ? 'links' : 'rechts'; const fans = Object.entries(e.wahl).filter(([, x]) => x === s).map(([id]) => api.spieler(id)); fans.forEach(p => api.belohne(p, 25)); return { text: `Team ${s === 'links' ? 'Links' : 'Rechts'} gewinnt! Je 25 🐚`, sag: `Punkt für Team ${s === 'links' ? 'Links' : 'Rechts'}!`, gut: true }; },
     },
     eiswagen: {
@@ -223,10 +221,9 @@ export function macheEvents(api) {
     },
     surfcontest: {
       titel: 'Surf-Contest', icon: '🏄', dauer: 60,
-      start(e) { e.punkte = {}; return 'Surf-Contest! Schreibt surf, um mitzumachen. Danach bringt jedes Like Punkte. Wer die meisten hat, gewinnt!'; },
-      kommentar(e, p, t) { if (/surf/.test(t)) { if (!(p.id in e.punkte)) e.punkte[p.id] = 0; return true; } },
-      like(e, p, n) { if (p.id in e.punkte) e.punkte[p.id] += n; },
-      anzeige: e => { const top = Object.entries(e.punkte).sort((a, b) => b[1] - a[1]).slice(0, 3); const m = Math.max(1, ...top.map(x => x[1])); return { text: `„surf“ schreiben, dann liken! (${Object.keys(e.punkte).length} Surfer)`, balken: top.map(([id, v], i) => ({ name: '🏄 ' + api.spieler(id).name, wert: v, max: m, farbe: ['#3fa0e8', '#7fe0c8', '#b58ad0'][i] })) }; },
+      start(e) { e.punkte = {}; return 'Surf-Contest! Schreibt surf, immer wieder! Jeder Kommentar ist eine Welle. Wer die meisten Wellen reitet, gewinnt!'; },
+      kommentar(e, p, t) { if (/surf/.test(t)) { if (!(p.id in e.punkte)) e.punkte[p.id] = 0; if (punkt(e, p)) e.punkte[p.id]++; return true; } },
+      anzeige: e => { const top = Object.entries(e.punkte).sort((a, b) => b[1] - a[1]).slice(0, 3); const m = Math.max(1, ...top.map(x => x[1])); return { text: `„surf“ schreiben – jeder Kommentar = 1 Welle! (${Object.keys(e.punkte).length} Surfer)`, balken: top.map(([id, v], i) => ({ name: '🏄 ' + api.spieler(id).name, wert: v, max: m, farbe: ['#3fa0e8', '#7fe0c8', '#b58ad0'][i] })) }; },
       ende(e) { const top = Object.entries(e.punkte).sort((a, b) => b[1] - a[1]); if (!top.length || !top[0][1]) return { text: 'Keine Welle erwischt …', sag: 'Heute keine Welle erwischt.' }; const p = api.spieler(top[0][0]); api.belohne(p, 60); return { text: `${p.name} ist Surf-Champion! +60 🐚`, sag: `${api.name(p)} reitet die größte Welle!`, gut: true, id: p.id }; },
     },
     kokoswurf: {
@@ -246,11 +243,25 @@ export function macheEvents(api) {
     // ======================= 10 weitere Events (40 insgesamt) =======================
     tauziehen: {
       titel: 'Tauziehen', icon: '🪢', dauer: 60,
-      start(e) { e.t = { muschel: 0, seestern: 0 }; e.wahl = {}; return 'Tauziehen! Team Muschel gegen Team Seestern! Schreibt muschel oder seestern, oder liked einfach, dann zieht ihr mit!'; },
-      kommentar(e, p, t) { const m = t.includes('seestern') ? 'seestern' : t.includes('muschel') ? 'muschel' : null; if (m) { e.wahl[p.id] = m; return true; } },
-      like(e, p, n) { const tm = e.wahl[p.id] || (e.wahl[p.id] = kleinstes(e.wahl, ['muschel', 'seestern'])); e.t[tm] += n; },
-      anzeige: e => { const sum = Math.max(1, e.t.muschel + e.t.seestern); return { text: '„muschel“ oder „seestern“ schreiben – oder einfach liken!', seil: (e.t.muschel - e.t.seestern) / sum, balken: [{ name: '🐚 Team Muschel', wert: e.t.muschel, max: sum, farbe: '#ff8fb8' }, { name: '⭐ Team Seestern', wert: e.t.seestern, max: sum, farbe: '#ff8a2a' }] }; },
+      start(e) { e.t = { muschel: 0, seestern: 0 }; e.wahl = {}; return 'Tauziehen! Team Muschel gegen Team Seestern! Schreibt muschel oder seestern, immer wieder, jeder Kommentar zieht am Seil!'; },
+      kommentar(e, p, t) { const m = t.includes('seestern') ? 'seestern' : t.includes('muschel') ? 'muschel' : null; if (m) { e.wahl[p.id] = m; if (punkt(e, p)) e.t[m]++; return true; } },
+      anzeige: e => { const sum = Math.max(1, e.t.muschel + e.t.seestern); return { text: '„muschel“ oder „seestern“ schreiben – jeder Kommentar zieht!', seil: (e.t.muschel - e.t.seestern) / sum, balken: [{ name: '🐚 Team Muschel', wert: e.t.muschel, max: sum, farbe: '#ff8fb8' }, { name: '⭐ Team Seestern', wert: e.t.seestern, max: sum, farbe: '#ff8a2a' }] }; },
       ende(e) { if (e.t.muschel === e.t.seestern) return { text: 'Unentschieden – das Seil hält!', sag: 'Unentschieden!' }; const s = e.t.muschel > e.t.seestern ? 'muschel' : 'seestern'; Object.entries(e.wahl).filter(([, x]) => x === s).forEach(([id]) => api.belohne(api.spieler(id), 25)); return { text: `Team ${s === 'muschel' ? 'Muschel' : 'Seestern'} zieht am stärksten! Je 25 🐚`, sag: `Team ${s === 'muschel' ? 'Muschel' : 'Seestern'} gewinnt das Tauziehen!`, gut: true }; },
+    },
+    ahoiruf: {
+      titel: 'Ahoi-Ruf', icon: '⚓', dauer: 45,
+      start(e) { e.s = []; return 'Ahoi-Ruf! Schreibt ahoi in den Chat! Die ersten fünf bekommen je fünfzehn Muscheln!'; },
+      kommentar(e, p, t) { if (!/^a+h+o+i+\b/.test(t)) return; if (!e.s.includes(p) && e.s.length < 5) { e.s.push(p); api.belohne(p, 15); if (e.s.length >= 5) e.frueh = true; } return true; },
+      anzeige: e => ({ text: `„ahoi“ schreiben! Die ersten 5 bekommen 15 🐚  (${e.s.length}/5)` }),
+      ende: e => e.s.length ? { text: `Am schnellsten: ${e.s.map(p => p.name).join(', ')}`, sag: `Ahoi! Am schnellsten war ${api.name(e.s[0])}!`, gut: true, id: e.s[0].id } : { text: 'Diesmal hat keiner gerufen …', sag: 'Diesmal hat keiner Ahoi gerufen.' },
+    },
+    sandburg: {
+      titel: 'Sandburg bauen', icon: '🏰', dauer: 50,
+      start(e) { e.w = new Map(); return 'Wir bauen eine Sandburg! Schreibt sand in den Chat! Schaffen wir zwölf Baumeister, bekommt jeder zehn Muscheln!'; },
+      kommentar(e, p, t) { if (!/\bsand\b/.test(t)) return; e.w.set(p.id, p); return true; },
+      anzeige: e => ({ text: '„sand“ schreiben – gemeinsam 12 Baumeister schaffen!', balken: [{ name: '🏰 Baumeister', wert: e.w.size, max: 12, farbe: '#e9c27a' }] }),
+      ende(e) { if (e.w.size >= 12) { e.w.forEach(p => api.belohne(p, 10)); return { text: `Die Sandburg steht! ${e.w.size} Baumeister bekommen je 10 🐚`, sag: 'Die Sandburg steht! Großartig gebaut!', gut: true }; }
+        return { text: `${e.w.size} von 12 Baumeistern – die Welle war schneller!`, sag: 'Knapp! Die Welle war schneller.' }; },
     },
     buchstabensalat: {
       titel: 'Buchstabensalat', icon: '🔤', dauer: 60,
@@ -621,7 +632,7 @@ export function macheEvents(api) {
   const rest = e => Math.max(0, Math.round((e.ende - Date.now()) / 1000));
   const LIVE = {
     sturmflut: e => { const f = e.ziel - e.stand; return f <= 0 ? null : zufall([`Noch ${zahl(f)} Likes … der Deich wackelt!`, `${rest(e)} Sekunden … noch ${zahl(f)} Likes! … Haltet den Deich!`, f < e.ziel * .25 ? 'Fast geschafft … nur noch ein bisschen!' : `Die Wellen werden höher … liked, liked, liked!`]); },
-    krabbenrennen: e => { const r = Object.entries(e.teams).sort((a, b) => b[1] - a[1]); if (!r[0][1]) return 'Die Krabben stehen am Start … wählt ein Team oder liked einfach los!'; return zufall([`Team ${TEAMNAME[r[0][0]]} liegt vorne! … Aber ${TEAMNAME[r[1][0]]} holt auf!`, `Was für ein Rennen … ${TEAMNAME[r[0][0]]} vorne, … ${TEAMNAME[r[1][0]]} direkt dahinter!`, `Noch ${rest(e)} Sekunden … Team ${TEAMNAME[r[0][0]]} führt!`]); },
+    krabbenrennen: e => { const r = Object.entries(e.teams).sort((a, b) => b[1] - a[1]); if (!r[0][1]) return 'Die Krabben stehen am Start … schreibt rot, blau, gelb oder grün!'; return zufall([`Team ${TEAMNAME[r[0][0]]} liegt vorne! … Aber ${TEAMNAME[r[1][0]]} holt auf!`, `Was für ein Rennen … ${TEAMNAME[r[0][0]]} vorne, … ${TEAMNAME[r[1][0]]} direkt dahinter!`, `Noch ${rest(e)} Sekunden … Team ${TEAMNAME[r[0][0]]} führt!`]); },
     teamduell: e => { const [a, b] = e.t.muschel >= e.t.kokos ? ['muschel', 'kokos'] : ['kokos', 'muschel']; return e.t[a] === e.t[b] ? 'Gleichstand! … Wer legt nach?' : zufall([`Team ${TEAMNAME[a]} liegt vorne … ${zahl(e.t[a])} zu ${zahl(e.t[b])}!`, `Kommt schon, Team ${TEAMNAME[b]} … ihr könnt das noch drehen!`]); },
     gluecksrad: () => ['Das Rad dreht sich … und dreht sich …', 'Wer wird es? … Spannung!', 'Langsamer … langsamer …'],
     zahlenraten: e => e.hinweis ? zufall([`${e.hinweis.replace(/ ⬆️| ⬇️/, '')} … weiter raten!`, `Heiß oder kalt? … ${e.hinweis.replace(/ ⬆️| ⬇️/, '')}!`]) : 'Eine Zahl zwischen eins und hundert … wer traut sich?',
@@ -639,7 +650,7 @@ export function macheEvents(api) {
     eiswagen: e => [`Noch ${zahl(Math.max(0, e.ziel - e.stand))} Likes … bis zum Eiswagen!`, 'Ich höre schon die Eiswagen-Musik …'],
     glueckszahl: e => [`Schon ${Object.keys(e.tipps).length} Tipps … eins bis zehn!`, 'Welche Zahl bringt heute Glück?'],
     strandquiz: e => [`${e.f[0]} … A, B oder C?`, 'Wer weiß es?'],
-    surfcontest: e => { const t = Object.entries(e.punkte).sort((a, b) => b[1] - a[1])[0]; return [t && t[1] ? `${api.name(api.spieler(t[0]))} reitet gerade ganz vorne!` : 'Schreibt surf, dann liked!', 'Was für Wellen heute!']; },
+    surfcontest: e => { const t = Object.entries(e.punkte).sort((a, b) => b[1] - a[1])[0]; return [t && t[1] ? `${api.name(api.spieler(t[0]))} reitet gerade ganz vorne!` : 'Schreibt surf, immer wieder!', 'Was für Wellen heute!']; },
     kokoswurf: e => { const t = Object.entries(e.w).sort((a, b) => b[1] - a[1])[0]; return [t ? `Bester Wurf bisher … ${t[1]} Meter!` : 'Schreibt wurf … und die Kokosnuss fliegt!', 'Wer wirft am weitesten?']; },
     inselfoto: e => [`Schon ${e.f.length} auf dem Foto … schreibt cheese!`, 'Alle lächeln … gleich mache ich das Foto!'],
     tauziehen: e => { const [a, b] = e.t.muschel >= e.t.seestern ? ['Muschel', 'Seestern'] : ['Seestern', 'Muschel']; return [`Team ${a} zieht gerade stärker … Team ${b}, haltet dagegen!`, 'Hau ruck! … Hau ruck!']; },
@@ -675,6 +686,7 @@ export function macheEvents(api) {
   };
 
   const PREIS = {
+    ahoiruf: 'Die ersten fünf bekommen je fünfzehn Muscheln.', sandburg: 'Bei zwölf Baumeistern bekommt jeder zehn Muscheln.',
     sturmflut: 'Hält der Deich, bekommen alle Helfer zwanzig Muscheln.', gluecksrad: 'Der Gewinner bekommt bis zu fünfhundert Muscheln, ein goldenes Dach oder einen Pool.',
     krabbenrennen: 'Das Siegerteam bekommt fünfundzwanzig Muscheln.', teamduell: 'Jeder im Siegerteam bekommt dreißig Muscheln.',     zahlenraten: 'Wer die Zahl errät, bekommt hundert Muscheln.',
     strandparty: 'Ist die Stimmung voll, gibt es ein Feuerwerk und fünfzehn Muscheln für alle.', moewenalarm: 'Jeder Fänger bekommt zwanzig Muscheln.',
@@ -741,7 +753,7 @@ export function macheEvents(api) {
     eventZahl++;
     if (CFG.leuchtturm?.an !== false && eventZahl % 2 === 0) for (let k = 0; k < TURM_FOLGE.length; k++) { const id = TURM_FOLGE[turmNr++ % TURM_FOLGE.length]; if (!DEFS[id].moeglich || DEFS[id].moeglich()) return id; }
     const moegl = Object.keys(DEFS).filter(id => !LIKE_EVENTS.has(id) && !TURM_FOLGE.includes(id) && !verlauf.slice(0, 10).includes(id) && (!DEFS[id].moeglich || DEFS[id].moeglich()));
-    if (moegl.includes('abstimmung') && Math.random() < .5) return 'abstimmung';
+    if (moegl.includes('abstimmung') && Math.random() < .2) return 'abstimmung';
     return zufall(moegl.filter(x => x !== 'abstimmung').length ? moegl.filter(x => x !== 'abstimmung') : moegl);
   }
   setInterval(() => {

@@ -294,6 +294,7 @@ function ereignis(e) {
       break;
     }
     case 'stufe': if (p) { bau[e.id] = { t: jetzt, alt: p.stufe, neu: e.stufe, D: 4.8 }; if (pl) { fokus(pl, 8500); funken(pl, '✨', 8); setTimeout(() => { hausFeuerwerk(pl, e.stufe); funken(pl, '✨', 14); }, 4300); } } break;
+    case 'hausPlus': if (pl) { pop[e.id] = jetzt; funken(pl, '🐚', 4); } break;
     case 'anbau': if (pl) { pop[e.id] = jetzt; funken(pl, '🔨', 5); fokus(pl, 2600, true); } break;
     case 'job': {                                                   // Job in einem fertigen Gebäude verlost
       banner.push({ t: 0, oben: `💼 ${e.name}`, unten: `gewinnt den Job ${e.wo} · ${e.gehalt} 🐚 Gehalt`, farbe: '#ff8a2a' });
@@ -408,16 +409,18 @@ function kamera(t) {
   if (t > fokusBis) {
     if (t > tourBis) {                                           // immer nah dran (wie ein Kamerakran): langsam von Haus zu Haus, ab und zu der Muschelplatz
       // Rundflug (je 11 s): Haus · Leuchtturm · Haus · Leuchtturm-Panorama (weiter weg) · Haus · Leuchtturm · Muschelplatz · Leuchtturm-Panorama
-      tourBis = t + 11000; tourModus = (tourModus + 1) % 8;
+      tourBis = t + 16000; tourModus = (tourModus + 1) % 8;
       const bewohnt = S.spieler.map(platzVon).filter(Boolean), l = S.staedte || [];
       if (!S.turmAn) { if (bewohnt.length && tourModus % 4) { const pl = bewohnt[Math.floor(Math.random() * bewohnt.length)]; Object.assign(ZIEL, { x: pl.x, y: pl.y - 20, z: NAH }); } else Object.assign(ZIEL, { x: IX, y: IY + 40, z: NAH * .8 }); }
-      else if (tourModus === 3 || tourModus === 7) turmPanorama(11000);
-      else if (tourModus % 2 === 1) turmBlick(l.length ? l[Math.floor(Math.random() * Math.min(10, l.length))].name : 'Deine Stadt?', 11000);
+      else if (tourModus === 3 || tourModus === 7) turmPanorama(16000);
+      else if (tourModus % 2 === 1) turmBlick(l.length ? l[Math.floor(Math.random() * Math.min(10, l.length))].name : 'Deine Stadt?', 16000);
       else if (bewohnt.length && tourModus !== 6) { const pl = bewohnt[Math.floor(Math.random() * bewohnt.length)]; Object.assign(ZIEL, { x: pl.x, y: pl.y - 20, z: NAH }); }
       else Object.assign(ZIEL, { x: IX, y: IY + 40, z: NAH * .8 });
     }
   }
-  const k = t < fokusBis ? .05 : .018;
+  // langsam und unabhängig von der Bildrate gleiten (weniger Ruckeln, auch wenn der Mac Bilder auslässt)
+  const dtK = Math.min(100, t - (kamera.letzt || t)); kamera.letzt = t;
+  const k = 1 - Math.exp(-dtK / (t < fokusBis ? 1100 : 2600));
   cam.x += (ZIEL.x - cam.x) * k; cam.y += (ZIEL.y - cam.y) * k; cam.z += (ZIEL.z - cam.z) * k;
   X.setTransform(cam.z * Q0, 0, 0, cam.z * Q0, (540 - cam.x * cam.z) * Q0, (MITTE_Y - cam.y * cam.z) * Q0);
 }
@@ -1752,7 +1755,7 @@ function kopf(t) {
       text(`${m} 🐚`, SL + lw - 22, y, 22, INK, 'right', 900, 114);
     });
   } else {
-    [['🏆', 'Events = bis 60 🐚 fürs Haus'], S.turmAn ? ['🗼', 'Deine Stadt schreiben = Turm wächst'] : ['⛺', 'Schreib „Zelt“ = dein Zelt wird gebaut'], ['🏠', 'Schreib „haus“ = dein Haus sehen']].forEach(([i, s], k) => {
+    [['🏆', 'Events = bis 60 🐚 fürs Haus'], S.turmAn ? ['🗼', 'Deine Stadt schreiben = Turm wächst'] : ['⛺', 'Schreib „Zelt“, um mitzumachen'], ['🏠', 'Schreib „Haus“ – dein Haus wächst jedes Mal']].forEach(([i, s], k) => {
       text(i, SL + 16, y3 + 32 + k * 45, 27, INK, 'left', 400); text(s, SL + 58, y3 + 32 + k * 45, 26, INK, 'left', 800, lw - 78);
     });
   }

@@ -282,7 +282,10 @@
   "muschelnProLike": 1,
   "muschelnFuerFollow": 25,
   "muschelnFuerTeilen": 10,
-  "leuchtturm": { "an": false, "_hinweis": "Leuchtturm-Rennen der Städte: false = im Stream nicht sichtbar (keine Türme, keine Leuchtturm-Events, keine Ansagen). Gespeicherte Städte und Stockwerke bleiben erhalten – mit true ist alles wieder da." },
+  "leuchtturm": {
+    "an": false,
+    "_hinweis": "Leuchtturm-Rennen der Städte: false = im Stream nicht sichtbar (keine Türme, keine Leuchtturm-Events, keine Ansagen). Gespeicherte Städte und Stockwerke bleiben erhalten – mit true ist alles wieder da."
+  },
   "anbauten": {
     "palme": {
       "name": "Palme",
@@ -632,5 +635,8 @@
   "muschelnProKommentar": 2,
   "_muschelnProKommentar": "Muscheln fürs eigene Haus pro Kommentar (höchstens alle 30 Sekunden).",
   "_folgeAufruf": "Freundlicher Hinweis aufs Folgen höchstens alle 15 Minuten – häufige, gleiche Aufrufe wertet TikTok als „repetitive Trigger“.",
-  "_stufen": "60 Haus-Stufen. Ab Stufe 21 wird das Perlenschloss immer prächtiger (neue Farbe, Leuchten, Krone, Sterne, Türme, Fahnen, Regenbogen). Es zählen alle im LIVE gesammelten Muscheln."
+  "_stufen": "60 Haus-Stufen. Ab Stufe 21 wird das Perlenschloss immer prächtiger (neue Farbe, Leuchten, Krone, Sterne, Türme, Fahnen, Regenbogen). Es zählen alle im LIVE gesammelten Muscheln.",
+  "hausSek": 3,
+  "hausMuscheln": 2,
+  "_haus": "„Haus“ schreiben: das eigene Haus bekommt jedes Mal hausMuscheln 🐚 (pro Person höchstens alle hausSek Sekunden)."
 }
