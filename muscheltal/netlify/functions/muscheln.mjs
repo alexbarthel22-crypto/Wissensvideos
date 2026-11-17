@@ -339,13 +339,17 @@ export default async (req) => {
     const h = L.find(e => e.id.startsWith(heute)), g = L.find(e => e.id.startsWith(gestern(heute)));
     const gTag = g ? Number(g.id.split("_")[1]) || 1 : 0;
     const t = h ? Number(h.id.split("_")[1]) || 1 : (gTag ? gTag % 7 + 1 : 1);
-    return { tag: t, abgeholt: !!h, betrag: SERIE[t - 1], job: J };
+    // Treue-Bonus: +1 Muschel je volle Woche ohne Unterbrechung (bis gestern), höchstens +5 – damit nach Tag 7 nicht alles von vorn beginnt
+    const tage = new Set(L.map(e => e.id.slice(0, 10)));
+    let lauf = 0, d0 = gestern(heute); while (tage.has(d0) && lauf < 60) { lauf++; d0 = gestern(d0); }
+    const treue = Math.min(5, Math.floor(lauf / 7));
+    return { tag: t, abgeholt: !!h, betrag: SERIE[t - 1], treue, job: J };
   };
 
   if (act === "login") {
     const B = await buch(store, nm), s = await serie(B);
     if (s.abgeholt) return json({ ok: false, schon: true });
-    const sum = s.betrag + (J ? J.z : 0);
+    const sum = s.betrag + s.treue + (J ? J.z : 0);
     const ok = await setze("login", heute + "_" + s.tag, sum);
     // Geheime Erfolge beim Login: 7/30/100 Tage am Stück, Heiligabend, Silvester (je +10 Muscheln, nur einmal)
     const neu = [];
@@ -370,7 +374,7 @@ export default async (req) => {
     }
     if (await nachbarErf(store, nm)) neu.push("NACHBAR");
     if (await liveErf(store, nm)) neu.push("LIVE");
-    return json({ ok, tag: s.tag, betrag: s.betrag, job: J, summe: sum, neu });
+    return json({ ok, tag: s.tag, betrag: s.betrag, treue: s.treue, job: J, summe: sum, neu });
   }
   if (act === "quests") {
     // Aufgaben des Tages: Wer gestern keine erledigt hat, behält die alten; sonst gelten die neu vorgeschlagenen
@@ -421,7 +425,7 @@ export default async (req) => {
     if (vers >= 10) return json({ ok: false, grund: "versuche" });
     const c = CODES.find(c => c.code === k && heute >= c.von && heute <= c.bis);
     if (!c) { await store.set(vk, String(vers + 1)); return json({ ok: false, grund: "falsch" }); }
-    const betrag = 2 + (crypto.getRandomValues(new Uint32Array(1))[0] % 9);// zufällig 2–10 Muscheln, jede Zahl gleich wahrscheinlich
+    const betrag = 10;// Geheimcode aus dem Video: immer 10 Muscheln
     const ok = await setze("code", k, betrag);
     return json({ ok, grund: ok ? null : "schon", betrag });
   }
