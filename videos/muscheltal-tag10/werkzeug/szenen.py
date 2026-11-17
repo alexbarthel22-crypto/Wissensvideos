@@ -219,13 +219,14 @@ def slot_js(cid, band, ns, w, t0, tb):
 
 
 # s02 – Türsteher-Verlosung im KOK(O)S
-JT = [("L2a", "L2aw", "🕶️ Türsteher", "Nachtclub KOK(O)S · Kokos-Küste", "in.yor_dreams", "#8e2bd6")]
+JT = [("L2a", "L2aw", "🎁 Du gewinnst: Job als Türsteher", "🕶️ im Nachtclub KOK(O)S · Kokos-Küste", "in.yor_dreams", "#8e2bd6")]
 NST = [names("slot_2.txt")]
 scene("s02", LILITA + "\n    " + PILL + "\n    " + CF_CSS.replace("top: 700px", "top: 640px") + "\n" + SLOT_CSS + """
     #st-lv { top: 280px; font-size: 52px; background: #8e2bd6; }
     #st-lv2 { top: 390px; font-size: 40px; background: #fff; color: #2a1b12; }
-    .st-o { top: 280px; font-size: 58px; font-family: "Lilita One", sans-serif; font-weight: 400; }
-    .st-d { top: 385px; font-size: 40px; background: #fff; color: #2a1b12; }
+    .st-o { top: 250px; font-size: 54px; font-family: "Lilita One", sans-serif; font-weight: 400; }
+    .st-d { top: 360px; font-size: 40px; background: #fff; color: #2a1b12; }
+    #st-box { left: 60px; width: 960px; top: 470px; } #st-box .sl-r { font-size: 62px; }
     .st-w { top: 900px; font-size: 48px; background: #2e9e5b; }""",
 """      <div id="st-dim" class="sl-dim"></div>
       <div id="st-lv" class="pl">📝 Ihr habt euch beworben!</div>
@@ -270,29 +271,8 @@ scene("s02d", LILITA + "\n    " + PILL + "\n    " + BIG + """
       tl.to("#sd-p", { scale: 1.06, duration: .18, yoyo: true, repeat: 9, ease: "sine.inOut" }, dn + .3);
       tl.to("#sd-c", { scale: 1.03, duration: .2, yoyo: true, repeat: 5, ease: "sine.inOut" }, te);""")
 
-# s03g – Neu: Gaming-Laden „Game Lagoon“ im GTA-VI-Fieber (nachts, Neon)
-scene("s03g", LILITA + "\n    " + PILL + "\n    " + BIG + """
-    #sg-b { top: 230px; font-size: 96px; background: linear-gradient(135deg, #ff2e9a, #7b3fe0 55%, #00d9ff); transform: rotate(-2deg); box-shadow: 0 0 0 8px #1a0f08, 0 16px 0 rgba(0,0,0,.3), 0 0 70px 20px rgba(255,46,154,.7); }
-    #sg-n { top: 390px; font-size: 44px; background: #2fb3a0; }
-    #sg-g { top: 390px; font-size: 48px; background: #ffe14a; color: #1a0f08; }
-    .sg-p { font-size: 40px; background: #fff; color: #2a1b12; }
-    #sg-1 { top: 395px; } #sg-2 { top: 480px; } #sg-3 { top: 565px; } #sg-g { top: 650px !important; }""",
-"""      <div id="sg-b" class="big">🎮 GAME LAGOON</div>
-      <div id="sg-n" class="pl">🌴 NEU · Kokos-Küste</div>
-      <div id="sg-g" class="pl">⭐ GTA VI vorbestellen!</div>
-      <div id="sg-1" class="pl sg-p">🕹️ Arcade-Automaten</div>
-      <div id="sg-2" class="pl sg-p">🛋️ Gaming-Lounge</div>
-      <div id="sg-3" class="pl sg-p">🚗 Pinkes Cabrio</div>""",
-"""      const ta = line("L7a")[0], tb = line("L7b")[0], gt = at("L7b", "GTA");
-      tl.fromTo("#sg-n", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, ta);
-      tl.fromTo("#sg-b", { opacity: 0, scale: 3.4, rotation: -12, filter: "blur(10px)" }, { opacity: 1, scale: 1, rotation: -2, filter: "blur(0px)", duration: .3, ease: "back.out(1.8)" }, at("L7a", "Game") - .12);
-      tl.to("#sg-b", { scale: 1.06, duration: .2, yoyo: true, repeat: 9, ease: "sine.inOut" }, at("L7a", "Game") + .35);
-      tl.to("#sg-n", { opacity: 0, y: -20, duration: .2 }, tb - .2);
-      tl.fromTo("#sg-g", { opacity: 0, scale: 2.6 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, gt - .1);
-      tl.to("#sg-g", { x: 10, duration: .05, yoyo: true, repeat: 7, ease: "none" }, gt + .25);
-      tl.fromTo("#sg-1", { opacity: 0, x: -300 }, { opacity: 1, x: 0, duration: .28, ease: "back.out(2)" }, at("L7b", "Arcade-Automaten") - .1);
-      tl.fromTo("#sg-2", { opacity: 0, x: 300 }, { opacity: 1, x: 0, duration: .28, ease: "back.out(2)" }, at("L7b", "Gaming-Lounge") - .1);
-      tl.fromTo("#sg-3", { opacity: 0, x: -300 }, { opacity: 1, x: 0, duration: .28, ease: "back.out(2)" }, at("L7b", "Cabrio") - .3);""")
+# s03g – Game Lagoon: nur das Gebäude, keine Textfelder (Kamera fährt langsam heran)
+scene("s03g", LILITA, """      <div></div>""", """      """)
 
 # s03j – 8 Jobs gleichzeitig: große Ankündigung, 8 Glücksräder auf einem Bildschirm, Gebäude im Hintergrund
 J8 = [("🍬", "Kiosk Kunterbunt", "#ff6a9a"), ("🧴", "CocoCare", "#2fb3a0"), ("🧋", "Boba Beach", "#d4469c"), ("👗", "Coast & Cotton", "#7b3fe0"),
@@ -300,24 +280,27 @@ J8 = [("🍬", "Kiosk Kunterbunt", "#ff6a9a"), ("🧴", "CocoCare", "#2fb3a0"), 
 JN = [names(f"jslot_{i}.txt") for i in range(8)]
 JW = 24
 scene("s03j", LILITA + "\n    " + PILL + "\n    " + BIG + "\n    " + CF_CSS.replace("top: 700px", "top: 640px") + """
-    #sj-dim { position: absolute; left: 0; right: 0; top: 0; height: 1000px; background: linear-gradient(180deg, rgba(10,12,40,.65), rgba(10,12,40,.45) 85%, rgba(10,12,40,0)); opacity: 0; }
+    #sj-dim { position: absolute; left: 0; right: 0; top: 0; height: 1920px; background: linear-gradient(180deg, rgba(10,12,40,.65), rgba(10,12,40,.45) 85%, rgba(10,12,40,0)); opacity: 0; }
     #sj-fl { position: absolute; inset: 0; background: #fff; opacity: 0; }
     #sj-8 { position: absolute; left: 0; right: 0; top: 330px; text-align: center; font-family: "Lilita One", sans-serif; font-size: 250px; line-height: 1; color: #ffe14a; -webkit-text-stroke: 18px #1a0f08; paint-order: stroke fill; text-shadow: 0 0 60px #ff2e9a, 0 0 120px #ffb21a; opacity: 0; }
     #sj-a { top: 640px; font-size: 62px; background: #e8101e; transform: rotate(-2deg); box-shadow: 0 0 0 8px #1a0f08, 0 16px 0 rgba(0,0,0,.3), 0 0 60px 16px rgba(255,30,30,.7); }
-    #sj-h { top: 150px; font-size: 58px; background: linear-gradient(135deg, #ffb21a, #ff2e9a); }
-    .jc { position: absolute; width: 480px; height: 150px; border-radius: 24px; background: #fff; overflow: hidden; box-shadow: 0 0 0 5px #1a0f08, 0 10px 0 rgba(0,0,0,.3); opacity: 0; }
-    .jc .jl { height: 52px; display: flex; align-items: center; justify-content: center; gap: 10px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 32px; color: #fff; white-space: nowrap; }
-    .jc .jw { position: relative; height: 98px; overflow: hidden; background: #fff8dc; }
+    #sj-h { top: 120px; font-size: 56px; background: linear-gradient(135deg, #ffb21a, #ff2e9a); }
+    #sj-win { top: 120px; font-size: 56px; background: linear-gradient(135deg, #2e9e5b, #8be06a); }
+    .jc { position: absolute; width: 500px; height: 280px; border-radius: 24px; background: #fff; overflow: hidden; box-shadow: 0 0 0 5px #1a0f08, 0 10px 0 rgba(0,0,0,.3); opacity: 0; }
+    .jc .jl { height: 110px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: "Inter", sans-serif; font-weight: 900; font-size: 38px; color: #fff; white-space: nowrap; line-height: 1.1; }
+    .jc .jl small { font-size: 24px; opacity: .9; letter-spacing: .04em; }
+    .jc .jw { position: relative; height: 170px; overflow: hidden; background: #fff8dc; }
     .jc .jcol { position: absolute; left: 0; right: 0; top: 0; }
-    .jc .jr { height: 98px; display: grid; place-items: center; font-family: "Inter", sans-serif; font-weight: 900; font-size: 36px; color: #23285a; white-space: nowrap; }
+    .jc .jr { height: 170px; display: grid; place-items: center; font-family: "Inter", sans-serif; font-weight: 900; font-size: 46px; color: #23285a; white-space: nowrap; }
     .jc .jsh { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,248,220,.9), rgba(255,248,220,0) 30%, rgba(255,248,220,0) 70%, rgba(255,248,220,.9)); }
-    .jg { position: absolute; width: 480px; height: 150px; border-radius: 24px; box-shadow: 0 0 0 7px #ffe14a, 0 0 40px 14px rgba(255,225,74,.85); opacity: 0; }""",
+    .jg { position: absolute; width: 500px; height: 280px; border-radius: 24px; box-shadow: 0 0 0 7px #ffe14a, 0 0 40px 14px rgba(255,225,74,.85); opacity: 0; }""",
 """      <div id="sj-dim" data-layout-ignore></div>
       <div id="sj-fl" data-layout-ignore></div>
       <div id="sj-8" data-layout-ignore>8 JOBS</div>
       <div id="sj-a" class="big">⚡ ALLE GLEICHZEITIG! ⚡</div>
       <div id="sj-h" class="pl">🎰 8 JOBS · 1 VERLOSUNG</div>
-      """ + "".join(f'<div class="jc" id="sj-c{i}" style="left:{40 + (i % 2) * 520}px;top:{300 + (i // 2) * 168}px"><div class="jl" style="background:{c}">{e} {n}</div><div class="jw"><div class="jcol" id="sj-col{i}">' + "".join(f'<div class="jr" id="sj-r{i}-{k}">@{nm}</div>' for k, nm in enumerate(JN[i])) + '</div><div class="jsh" data-layout-ignore></div></div></div>' f'<div class="jg" id="sj-g{i}" data-layout-ignore style="left:{40 + (i % 2) * 520}px;top:{300 + (i // 2) * 168}px"></div>' for i, (e, n, c) in enumerate(J8)) + """
+      <div id="sj-win" class="pl">🎉 GLÜCKWUNSCH AN ALLE 8!</div>
+      """ + "".join(f'<div class="jc" id="sj-c{i}" style="left:{28 + (i % 2) * 524}px;top:{230 + (i // 2) * 296}px"><div class="jl" style="background:{c}"><small>🎁 DU GEWINNST:</small>{e} {n}</div><div class="jw"><div class="jcol" id="sj-col{i}">' + "".join(f'<div class="jr" id="sj-r{i}-{k}">@{nm}</div>' for k, nm in enumerate(JN[i])) + '</div><div class="jsh" data-layout-ignore></div></div></div>' f'<div class="jg" id="sj-g{i}" data-layout-ignore style="left:{28 + (i % 2) * 524}px;top:{230 + (i // 2) * 296}px"></div>' for i, (e, n, c) in enumerate(J8)) + """
       <div id="sj-cf"></div>""",
 """      const t8 = line("L8")[0], gr = at("L8", "Großes"), ac = at("L8", "acht"), gz = at("L8", "gleichzeitig"), te = line("L8")[1], tw = line("L8w")[0];
       tl.fromTo("#sj-dim", { opacity: 0 }, { opacity: 1, duration: .3 }, t8);
@@ -329,17 +312,18 @@ scene("s03j", LILITA + "\n    " + PILL + "\n    " + BIG + "\n    " + CF_CSS.repl
       tl.fromTo("#sj-fl", { opacity: .7 }, { opacity: 0, duration: .3, immediateRender: false }, gz);
       tl.to(["#sj-8", "#sj-a"], { opacity: 0, scale: .5, y: -200, duration: .25, ease: "power2.in" }, te + .15);
       tl.fromTo("#sj-h", { opacity: 0, y: -60 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, te + .3);
-      const T0 = te + .45, H = 98, W = """ + str(JW) + """, SP = (tw - .5) - T0;
+      const T0 = te + .45, H = 170, W = """ + str(JW) + """, SP = (tw - .5) - T0;
       """ + "\n      ".join(
         f'tl.fromTo("#sj-c{i}", {{ opacity: 0, scale: .4 }}, {{ opacity: 1, scale: 1, duration: .25, ease: "back.out(2.2)" }}, T0 - .1 + {i * .04:.2f});'
         f' tl.fromTo("#sj-col{i}", {{ y: 0 }}, {{ y: -W * H, duration: SP * {.62 + i * .05:.2f}, ease: "power3.out", immediateRender: false }}, T0);'
         f' tl.fromTo("#sj-col{i}", {{ filter: "blur(4px)" }}, {{ filter: "blur(0px)", duration: SP * {.62 + i * .05:.2f}, ease: "power3.in", immediateRender: false }}, T0);'
         f' tl.to("#sj-r{i}-{JW}", {{ color: "#1d9e4b", scale: 1.12, duration: .15, ease: "back.out(3)" }}, T0 + SP * {.62 + i * .05:.2f});'
         f' tl.fromTo("#sj-g{i}", {{ opacity: 1 }}, {{ opacity: 0, duration: .5, immediateRender: false }}, T0 + SP * {.62 + i * .05:.2f});'
-        f' tl.fromTo("#sj-g{i}", {{ opacity: .9 }}, {{ opacity: 0, duration: .55, immediateRender: false }}, T0 + {i} * SP / 8);'
         for i in range(8)) + """
       { """ + CONF_JS.replace("SEED", "61").replace("BOX", "sj-cf").replace("T0", "tw") + """ }
-      tl.to(".jc", { scale: 1.05, duration: .18, yoyo: true, repeat: 5, ease: "sine.inOut" }, tw);""")
+      tl.to(".jc", { scale: 1.04, duration: .18, yoyo: true, repeat: 5, ease: "sine.inOut" }, tw);
+      tl.to("#sj-h", { opacity: 0, duration: .15 }, tw - .1);
+      tl.fromTo("#sj-win", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, tw - .05);""")
 
 # s04 – Streuner + Tierheim: 787 / 800
 scene("s04", LILITA + "\n    " + PILL + "\n    " + BIG + """

@@ -20,7 +20,7 @@ def cent(pcm, sr):
     return float(np.median(cs)) if cs else 0.0
 
 ap = argparse.ArgumentParser(); ap.add_argument("project"); ap.add_argument("--model", required=True); ap.add_argument("--voice", default="Puck")
-ap.add_argument("--ids", default=""); ap.add_argument("--n", type=int, default=3); ap.add_argument("--check", action="store_true")
+ap.add_argument("--ids", default=""); ap.add_argument("--ref", default="", help="Zeilen-ID als Klang-Vorbild (statt Median)"); ap.add_argument("--n", type=int, default=3); ap.add_argument("--check", action="store_true")
 a = ap.parse_args(); P = Path(a.project); C = P / "assets/voice/gemini_cache"
 d = json.load(open(P / "script.json")); L = []
 for s in d["scenes"]:
@@ -29,8 +29,8 @@ for s in d["scenes"]:
         h = hashlib.sha1(json.dumps([sp, l.get("style"), a.voice, a.model]).encode()).hexdigest()[:16]
         L.append((l["id"], sp, l.get("style"), C / f"{h}.wav"))
 val = {i: cent(*sf.read(p, dtype="float32")) for i, _, _, p in L if p.exists()}
-ref = float(np.median(list(val.values())))
-print("Bezug (Median):", round(ref), "Hz"); [print(f"  {i}: {round(v)}") for i, v in val.items()]
+ref = val[a.ref] if a.ref else float(np.median(list(val.values())))
+print("Bezug:" if a.ref else "Bezug (Median):", round(ref), "Hz"); [print(f"  {i}: {round(v)}") for i, v in val.items()]
 if a.check: sys.exit()
 key = os.environ["GEMINI_API_KEY"]
 for i, sp, st, p in L:
