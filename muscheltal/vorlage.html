@@ -993,7 +993,7 @@ function ksWalk(x,y){
  {const s=KGAME,lx=x-s.cx,ly=y-s.cy,f=ly+4.4;if(Math.abs(lx)<=s.hw&&ly<=s.hh&&ly>=-s.hh-5.5){
   if(Math.hypot(Math.abs(lx)-40.6,f-27.6)<3)return false;if(Math.abs(f-30.6)<1.3&&Math.abs(lx)>12.6)return false;if(Math.abs(Math.abs(lx)-44.8)<1.2&&f<31.9&&f>1)return false;// Palmen, Zaun
   if(f<2.2&&Math.abs(lx)<44)return false;// Laden
-  if(inRect(lx,f,-39.4,-29.4,6,8.6)||inRect(lx,f,-27.4,-14.6,11.4,12.8)||Math.hypot((lx+25)/2.4,(f-20)/1.5)<1||Math.hypot((lx+17)/2.4,(f-20)/1.5)<1||inRect(lx,f,-14.6,-9.4,13.6,15.2)||Math.hypot(lx-15.6,f-7.6)<1.8||inRect(lx,f,36.2,41,7.6,9.6)||inRect(lx,f,19.4,38.6,12.6,16.6))return false;// Automaten, Bildschirm, Sitzsäcke, Aufsteller, Pappfigur, Snack-Automat, Foto-Auto
+  if(inRect(lx,f,-39.4,-29.4,6,8.6)||inRect(lx,f,-27.4,-14.6,11.4,12.8)||Math.hypot((lx+25)/2.4,(f-20)/1.5)<1||Math.hypot((lx+17)/2.4,(f-20)/1.5)<1||inRect(lx,f,-14.6,-9.4,13.6,15.2)||(GLGTA()&&(inRect(lx,f,12.4,19.2,6.6,8.4)||inRect(lx,f,-41,-31,19.6,22.2)||Math.hypot(lx-20.4,f-27.4)<.9||Math.hypot(lx-24.2,f-27.4)<.9||inRect(lx,f,22,28.4,5.8,7.6)||Math.hypot(Math.abs(lx)-13.4,f-30.2)<.6))||inRect(lx,f,36.2,41,7.6,9.6)||inRect(lx,f,19.4,38.6,12.6,16.6))return false;// Automaten, Bildschirm, Sitzsäcke, Aufsteller, Pappfigur, Snack-Automat, Foto-Auto
   return true;}}
  for(const s of[KBAD,KMODE]){const lx=x-s.cx,ly=y-s.cy,f=ly+4.4;if(Math.abs(lx)>s.hw||ly>s.hh||ly<-s.hh-5.5)continue;
   if(Math.hypot(Math.abs(lx)-40.6,f-27.6)<3)return false;// Palmen in Kübeln
@@ -1335,7 +1335,9 @@ function glCar(c,x,y){const t=REDUCED?0:T;// pinkes Cabrio auf drehender Bühne 
 function glPalme(c,px,py){const t=REDUCED?0:T,nacht=nightLevel()>.4;c.fillStyle=GL.V;c.beginPath();c.arc(px,py,2.6,0,TAU);c.fill();c.strokeStyle=GL.P;c.lineWidth=.35;c.stroke();c.fillStyle='#4a2e18';c.beginPath();c.arc(px,py,2,0,TAU);c.fill();
  c.strokeStyle='#8a5a2b';c.lineWidth=.7;c.beginPath();c.moveTo(px,py-1);c.quadraticCurveTo(px+.8,py-6,px+.3,py-10);c.stroke();if(nacht){c.strokeStyle=GL.P;c.lineWidth=.22;c.stroke();}
  for(let k=0;k<7;k++){const a=k/7*TAU+t*.2;c.strokeStyle=nacht&&k%2?GL.T:'#3f9b45';c.lineWidth=.6;c.beginPath();c.moveTo(px+.3,py-10);c.quadraticCurveTo(px+.3+Math.cos(a)*2,py-12+Math.sin(a)*1.4,px+.3+Math.cos(a)*4.4,py-10.4+Math.sin(a)*2.2);c.stroke();}}
-function drawGame(c,nl){const t=REDUCED?0:T,X=KGAME.cx,Y=KGAME.cy,nacht=nl>.45;c.save();c.translate(X,Y);
+// GTA-VI-Deko nur bis einschließlich 29.11.2026 (am 30.11. automatisch weg, dann normale Gaming-Deko)
+const GLGTA=()=>berlin()<new Date(2026,10,30);
+function drawGame(c,nl){const t=REDUCED?0:T,X=KGAME.cx,Y=KGAME.cy,nacht=nl>.45,G=GLGTA();c.save();c.translate(X,Y);
  // Boden: pastellige Miami-Fliesen in Rosa und Mint, gemaltes Sonnenuntergangs-Logo in der Mitte
  c.fillStyle='#fde8f1';c.beginPath();c.roundRect(-46,-32,92,64,4);c.fill();c.save();c.clip();
  for(let x=-44;x<44;x+=4)for(let y=2;y<32;y+=4)if(((x+y)/4|0)%2===0){c.fillStyle='#d9f6f2';c.fillRect(x,y,4,4);}c.restore();
@@ -1344,7 +1346,8 @@ function drawGame(c,nl){const t=REDUCED?0:T,X=KGAME.cx,Y=KGAME.cy,nacht=nl>.45;c
  // Dach (dunkles Violett) mit zwei Billboards
  c.fillStyle=GL.V;c.beginPath();c.roundRect(-43,-31,86,8,1.4);c.fill();c.fillStyle='#3a2a60';for(let k=0;k<8;k++)c.fillRect(-40+k*10.4,-29.6,6,1);
  for(const [bx,txt] of[[-30,0],[30,1]]){c.fillStyle='#444';c.fillRect(bx-7,-27,.6,4);c.fillRect(bx+6.4,-27,.6,4);c.fillStyle='#160d2c';c.fillRect(bx-10,-38.4,20,11.6);glSunset(c,bx-9.4,-37.8,18.8,10.4);
-  if(!txt){glLogo(c,bx-3.4,-33.2,1);c.fillStyle='#fff';c.font='900 1.15px '+FONT;c.textAlign='center';glFit(c,'BALD DA!',7.2);c.fillText('BALD DA!',bx+4.4,-30.2);}
+  if(!G){c.fillStyle='#fff';c.font='italic 900 1.7px '+FONT;c.textAlign='center';c.lineWidth=.35;c.strokeStyle=GL.P;const a=txt?'TURNIER':'NEUE GAMES',b=txt?'Jeden Samstag 18 Uhr':'jede Woche bei uns';glFit(c,a,16.6);c.strokeText(a,bx,-33.4);c.fillText(a,bx,-33.4);c.font='800 .95px '+FONT;glFit(c,b,16.6);c.strokeText(b,bx,-31.6);c.fillText(b,bx,-31.6);}
+  else if(!txt){glLogo(c,bx-3.4,-33.2,1);c.fillStyle='#fff';c.font='900 1.15px '+FONT;c.textAlign='center';glFit(c,'BALD DA!',7.2);c.fillText('BALD DA!',bx+4.4,-30.2);}
   else{c.fillStyle='#fff';c.font='italic 900 1.7px '+FONT;c.textAlign='center';c.lineWidth=.35;c.strokeStyle=GL.P;glFit(c,'VORBESTELLEN',13.4);c.strokeText('VORBESTELLEN',bx-1.4,-33.4);c.fillText('VORBESTELLEN',bx-1.4,-33.4);c.font='800 .85px '+FONT;glFit(c,'GTA VI · bei Game Lagoon',13.4);c.strokeText('GTA VI · bei Game Lagoon',bx-1.4,-31.8);glFit(c,'GTA VI · bei Game Lagoon',13.4);c.fillText('GTA VI · bei Game Lagoon',bx-1.4,-31.8);c.fillStyle=GL.Y;c.beginPath();for(let j=0;j<14;j++){const r=j%2?1.1:1.9,a=j/14*TAU;c.lineTo(bx+7.4+Math.cos(a)*r,-36.4+Math.sin(a)*r);}c.closePath();c.fill();c.fillStyle=GL.P;c.font='900 .7px '+FONT;glFit(c,'NEU',2);c.fillText('NEU',bx+7.4,-36.2);}
   for(let k=0;k<5;k++){c.fillStyle=nacht?'#fff6c0':'#cfc6b0';c.beginPath();c.arc(bx-8+k*4,-38.8,.35,0,TAU);c.fill();}}
  // Neon-Streifen
@@ -1365,10 +1368,10 @@ function drawGame(c,nl){const t=REDUCED?0:T,X=KGAME.cx,Y=KGAME.cy,nacht=nl>.45;c
   c.fillStyle='rgba(255,255,255,.18)';c.beginPath();c.moveTo(wx-12,-16.6);c.lineTo(wx-9,-16.6);c.lineTo(wx-14.6,-8);c.lineTo(wx-14.6,-11);c.closePath();c.fill();}
  // Schaufenster rechts: großes Poster, Konsolen-Stapel, Controller-Wand
  {const wx=25;c.fillStyle='#2a2040';c.fillRect(wx-15.4,-17.4,30.8,15.8);c.fillStyle='#1d1630';c.fillRect(wx-14.6,-16.6,29.2,14.4);
-  glSunset(c,wx-14,-16.2,11.6,13.6);glLogo(c,wx-8.2,-11.2,1.05);c.fillStyle='#fff';c.font='900 .8px '+FONT;c.textAlign='center';glFit(c,'VICE CITY · LEONIDA',11);c.fillText('VICE CITY · LEONIDA',wx-8.2,-4.2);
+  glSunset(c,wx-14,-16.2,11.6,13.6);if(G)glLogo(c,wx-8.2,-11.2,1.05);else{c.fillStyle='#fff';c.font='italic 900 2.2px '+FONT;c.textAlign='center';c.lineWidth=.4;c.strokeStyle=GL.P;glFit(c,'GAME',10.6);c.strokeText('GAME',wx-8.2,-10.6);c.fillText('GAME',wx-8.2,-10.6);glFit(c,'NIGHT',10.6);c.strokeText('NIGHT',wx-8.2,-8);c.fillText('NIGHT',wx-8.2,-8);}c.fillStyle='#fff';c.font='900 .8px '+FONT;c.textAlign='center';{const tx=G?'VICE CITY · LEONIDA':'FREITAGS AB 18 UHR';glFit(c,tx,11);c.fillText(tx,wx-8.2,-4.2);}
   for(let k=0;k<3;k++){c.fillStyle=k%2?'#f4f4f4':'#141414';c.beginPath();c.roundRect(wx-1+k*.3,-4.2-k*2.3,6,2,.4);c.fill();c.fillStyle=k%2?'#19d3c5':'#3fa0ff';c.fillRect(wx+.2+k*.3,-3.6-k*2.3,3.6,.25);}
   for(let r=0;r<3;r++)for(let k=0;k<2;k++){const cx=wx+9+k*3.4,cy=-14.2+r*3.6;c.fillStyle=['#141414','#f4f4f4','#ff3d9a','#19d3c5','#9b5de5','#ffd23f'][(r*2+k)%6];c.beginPath();c.roundRect(cx-1.3,cy-.6,2.6,1.3,.6);c.fill();c.fillStyle='rgba(255,255,255,.6)';c.beginPath();c.arc(cx-.6,cy,.18,0,TAU);c.arc(cx+.6,cy,.18,0,TAU);c.fill();}
-  c.fillStyle=GL.Y;c.beginPath();for(let j=0;j<16;j++){const r=j%2?1.4:2.3,a=j/16*TAU;c.lineTo(wx+3+Math.cos(a)*r,-13.6+Math.sin(a)*r);}c.closePath();c.fill();c.fillStyle='#c0392b';c.font='900 .8px '+FONT;glFit(c,'BALD',2.6);c.fillText('BALD',wx+3,-13.7);glFit(c,'DA!',2.6);c.fillText('DA!',wx+3,-12.9);
+  c.fillStyle=GL.Y;c.beginPath();for(let j=0;j<16;j++){const r=j%2?1.4:2.3,a=j/16*TAU;c.lineTo(wx+3+Math.cos(a)*r,-13.6+Math.sin(a)*r);}c.closePath();c.fill();c.fillStyle='#c0392b';c.font='900 .8px '+FONT;if(G){glFit(c,'BALD',2.6);c.fillText('BALD',wx+3,-13.7);glFit(c,'DA!',2.6);c.fillText('DA!',wx+3,-12.9);}else{c.font='900 1.1px '+FONT;glFit(c,'NEU!',2.6);c.fillText('NEU!',wx+3,-13);}
   c.fillStyle='rgba(255,255,255,.18)';c.beginPath();c.moveTo(wx+6,-16.6);c.lineTo(wx+9,-16.6);c.lineTo(wx+3.4,-8);c.lineTo(wx+3.4,-11);c.closePath();c.fill();}
  // Neon über den Fenstern
  for(const wx of[-25,25]){c.strokeStyle=nacht?GL.P:'#ffb3d6';c.lineWidth=.5;c.beginPath();c.moveTo(wx-15.4,-19.2);c.lineTo(wx+15.4,-19.2);c.stroke();c.strokeStyle=nacht?GL.T:'#a8efe8';c.beginPath();c.moveTo(wx-15.4,-20.4);c.lineTo(wx+15.4,-20.4);c.stroke();}
@@ -1387,10 +1390,10 @@ function drawGame(c,nl){const t=REDUCED?0:T,X=KGAME.cx,Y=KGAME.cy,nacht=nl>.45;c
    if(da){const L=g.L||(g.L=look(g.k));c.save();c.translate(bx,by-1.2);c.scale(.95,.95);person(c,L,0,'back');c.restore();TAPS.push([X+bx,Y+by-1.2,g]);}
    c.fillStyle=k?GL.T:GL.P;c.beginPath();c.ellipse(bx,by+1.3,2.7,1.5,0,0,TAU);c.fill();c.beginPath();c.ellipse(bx,by+.2,2.2,1,0,Math.PI,TAU);c.fill();c.fillStyle='rgba(255,255,255,.3)';c.beginPath();c.ellipse(bx-.9,by+.7,1,.45,0,0,TAU);c.fill();}}
  // Aufsteller „GTA VI vorbestellen“
- {const ax=-12,ay=11.6;c.strokeStyle='#8a8a8a';c.lineWidth=.4;c.beginPath();c.moveTo(ax-3,ay+3.4);c.lineTo(ax,ay-3.6);c.lineTo(ax+3,ay+3.4);c.stroke();c.fillStyle='#160d2c';c.beginPath();c.roundRect(ax-2.8,ay-3.2,5.6,5.4,.4);c.fill();c.strokeStyle=GL.P;c.lineWidth=.25;c.stroke();
-  c.fillStyle='#fff';c.font='900 .9px '+FONT;c.textAlign='center';glFit(c,'GTA VI',5);c.fillText('GTA VI',ax,ay-2);c.fillStyle=GL.T2;c.font='800 .7px '+FONT;glFit(c,'JETZT',5);c.fillText('JETZT',ax,ay-.9);glFit(c,'VORBESTELLEN',5);c.fillText('VORBESTELLEN',ax,ay-.1);c.fillStyle=GL.Y;c.font='900 .7px '+FONT;glFit(c,'+ GRATIS POSTER',5);c.fillText('+ GRATIS POSTER',ax,ay+1.1);}
- // Pappaufsteller-Figur mit Sonnenbrille neben dem Eingang
- {const px=15.6,py=7.4;c.fillStyle='rgba(0,0,0,.15)';c.beginPath();c.ellipse(px,py+.3,1.8,.5,0,0,TAU);c.fill();c.fillStyle='#d9c3a0';c.fillRect(px-.3,py-1,.6,1.3);c.fillStyle=GL.O;c.beginPath();c.roundRect(px-1.8,py-8.2,3.6,7.4,.6);c.fill();
+ {const ax=-12,ay=11.6,AU=G?['GTA VI','JETZT','VORBESTELLEN','+ GRATIS POSTER']:['HEUTE','2 FÜR 1','RETRO-GAMES','+ GRATIS SNACK'];c.strokeStyle='#8a8a8a';c.lineWidth=.4;c.beginPath();c.moveTo(ax-3,ay+3.4);c.lineTo(ax,ay-3.6);c.lineTo(ax+3,ay+3.4);c.stroke();c.fillStyle='#160d2c';c.beginPath();c.roundRect(ax-2.8,ay-3.2,5.6,5.4,.4);c.fill();c.strokeStyle=GL.P;c.lineWidth=.25;c.stroke();
+  c.fillStyle='#fff';c.font='900 .9px '+FONT;c.textAlign='center';glFit(c,AU[0],5);c.fillText(AU[0],ax,ay-2);c.fillStyle=GL.T2;c.font='800 .7px '+FONT;glFit(c,AU[1],5);c.fillText(AU[1],ax,ay-.9);glFit(c,AU[2],5);c.fillText(AU[2],ax,ay-.1);c.fillStyle=GL.Y;c.font='900 .7px '+FONT;glFit(c,AU[3],5);c.fillText(AU[3],ax,ay+1.1);}
+ // Pappaufsteller-Duo mit Sonnenbrillen neben dem Eingang (nur GTA-Zeit)
+ if(G)for(const [px,py,col] of[[14.4,7.4,GL.O],[17.2,7.4,GL.T]]){c.fillStyle='rgba(0,0,0,.15)';c.beginPath();c.ellipse(px,py+.3,1.8,.5,0,0,TAU);c.fill();c.fillStyle='#d9c3a0';c.fillRect(px-.3,py-1,.6,1.3);c.fillStyle=col;c.beginPath();c.roundRect(px-1.8,py-8.2,3.6,7.4,.6);c.fill();
   c.fillStyle='#e0a878';c.beginPath();c.arc(px,py-6.6,1,0,TAU);c.fill();c.fillStyle='#2a1b12';c.beginPath();c.arc(px,py-7.1,1,Math.PI,0);c.fill();c.fillStyle='#111';c.fillRect(px-.9,py-6.8,1.8,.4);c.fillStyle='#fff';c.fillRect(px-1.3,py-5.3,2.6,2.6);c.fillStyle=GL.P;c.fillRect(px-1.3,py-5.3,2.6,.6);c.fillStyle='#3a5a8a';c.fillRect(px-1.2,py-2.7,2.4,1.8);c.fillStyle=GL.V;c.font='900 .55px '+FONT;c.textAlign='center';glFit(c,'GTA VI',2.4);c.fillText('GTA VI',px,py-3.4);}
  // Mülltonne & Snack-Automat am Rand
  {const vx=38.6,vy=8.6;c.fillStyle='rgba(0,0,0,.15)';c.fillRect(vx-2.2,vy,4.4,.8);c.fillStyle=GL.T;c.fillRect(vx-2,vy-6.4,4,6.4);c.fillStyle='#e8fbff';c.fillRect(vx-1.6,vy-6,2.4,4.6);for(let r=0;r<3;r++)for(let k=0;k<2;k++){c.fillStyle=['#ff3d9a','#ffd23f','#9b5de5','#ff9f3a','#3fa0ff','#19d3c5'][(r*2+k)%6];c.fillRect(vx-1.4+k*1.1,vy-5.6+r*1.4,.8,.9);}c.fillStyle='#160d2c';c.fillRect(vx+1,vy-5,.6,1.4);c.fillStyle='#fff';c.font='900 .55px '+FONT;c.textAlign='center';glFit(c,'SNACKS',3.8);c.fillText('SNACKS',vx-.4,vy-.4);}
@@ -1402,6 +1405,24 @@ function drawGame(c,nl){const t=REDUCED?0:T,X=KGAME.cx,Y=KGAME.cy,nacht=nl>.45;c
  {const FY=30.6;for(const s2 of[-1,1]){c.strokeStyle=GL.V;c.lineWidth=.45;for(const o of[-2.4,-1.1]){c.beginPath();c.moveTo(s2*44.8,3+o);c.lineTo(s2*44.8,FY+o);c.lineTo(s2*14,FY+o);c.stroke();}
    for(let k=0;k<=10;k++){const x=s2*(14+k*3.08);c.fillStyle=GL.V;c.fillRect(x-.35,FY-3.2,.7,3.2);c.fillStyle=k%2?GL.P:GL.T;c.fillRect(x-.35,FY-3.6,.7,.5);}
    const bx=s2*14,bw=REDUCED?0:Math.sin(t*1.5+s2)*.3;c.strokeStyle='#bbb';c.lineWidth=.12;for(let k=0;k<3;k++){const ex=bx+(k-1)*1.4+bw,ey=FY-9-k%2*1.4;c.beginPath();c.moveTo(bx,FY-3.4);c.lineTo(ex,ey);c.stroke();c.fillStyle=[GL.P,GL.T,GL.Y][k];c.beginPath();c.ellipse(ex,ey-1,1,1.25,0,0,TAU);c.fill();c.fillStyle='rgba(255,255,255,.5)';c.beginPath();c.arc(ex-.35,ey-1.4,.25,0,TAU);c.fill();}}}
+ // ---- zusätzliche GTA-VI-Deko (bis 29.11.) ----
+ if(G){
+  // 5 Fahndungssterne in Neon über der Tür
+  for(let k=0;k<5;k++){const sx=-4.8+k*2.4,sy=-21.8,an=(Math.floor(t*2)%6)>k;c.fillStyle=an||!nacht?(an?'#ffd23f':'#e0d6a0'):'#6a5a30';c.beginPath();for(let j=0;j<10;j++){const r=j%2?.42:.95,a=j/10*TAU-Math.PI/2;c.lineTo(sx+Math.cos(a)*r,sy+Math.sin(a)*r);}c.closePath();c.fill();c.strokeStyle='#2a1b12';c.lineWidth=.12;c.stroke();}
+  // Release-Party-Banner über dem Eingang
+  {const by=22.6,sw=REDUCED?0:Math.sin(t*1.2)*.2;c.strokeStyle='#5a4a6a';c.lineWidth=.45;for(const s2 of[-1,1]){c.beginPath();c.moveTo(s2*13.4,30.4);c.lineTo(s2*13.4,by-1.4);c.stroke();}
+   c.fillStyle=GL.P;c.beginPath();c.moveTo(-12.8,by-1.6);c.lineTo(12.8,by-1.6);c.lineTo(12.8,by+1.4+sw);c.quadraticCurveTo(0,by+2.2,-12.8,by+1.4-sw);c.closePath();c.fill();c.strokeStyle='#fff';c.lineWidth=.18;c.stroke();
+   c.fillStyle='#fff';c.font='italic 900 1.5px '+FONT;c.textAlign='center';glFit(c,'RELEASE-PARTY · GTA VI',24);c.fillText('RELEASE-PARTY · GTA VI',0,by+.6);
+   for(let k=0;k<9;k++){c.fillStyle=[GL.T,GL.Y,'#fff'][k%3];c.beginPath();c.moveTo(-12+k*3,by-1.6);c.lineTo(-11+k*3,by-1.6);c.lineTo(-11.5+k*3,by-.6);c.closePath();c.fill();}}
+  // Jetski auf Anhänger (Vice-Feeling)
+  {const jx=-36.4,jy=21;c.fillStyle='rgba(0,0,0,.18)';c.beginPath();c.ellipse(jx,jy+1.4,4.6,.8,0,0,TAU);c.fill();c.strokeStyle='#666';c.lineWidth=.35;c.beginPath();c.moveTo(jx-4,jy);c.lineTo(jx+4.4,jy);c.lineTo(jx+5.6,jy+.6);c.stroke();c.fillStyle='#222';c.beginPath();c.arc(jx-1.4,jy+.7,.8,0,TAU);c.arc(jx+1.6,jy+.7,.8,0,TAU);c.fill();
+   c.fillStyle='#fff';c.beginPath();c.moveTo(jx-4,jy-.6);c.lineTo(jx+3.8,jy-.6);c.quadraticCurveTo(jx+4.6,jy-1.6,jx+3.2,jy-2.2);c.lineTo(jx-3.4,jy-2.2);c.closePath();c.fill();c.fillStyle=GL.T;c.fillRect(jx-3.6,jy-1.6,7.2,.5);c.fillStyle=GL.P;c.beginPath();c.moveTo(jx-1.6,jy-2.2);c.lineTo(jx+.6,jy-2.2);c.lineTo(jx+.2,jy-3.2);c.lineTo(jx-1.2,jy-3.2);c.closePath();c.fill();c.strokeStyle='#222';c.lineWidth=.25;c.beginPath();c.moveTo(jx+.4,jy-3);c.lineTo(jx+1.4,jy-3.8);c.stroke();}
+  // Pinke Garten-Flamingos am Zaun
+  for(const fx of[20.4,24.2]){const fy=27.4;c.strokeStyle='#c43d7a';c.lineWidth=.18;c.beginPath();c.moveTo(fx,fy);c.lineTo(fx,fy-2.2);c.stroke();c.fillStyle='#ff6fae';c.beginPath();c.ellipse(fx,fy-2.8,1.1,.7,-.2,0,TAU);c.fill();c.strokeStyle='#ff6fae';c.lineWidth=.35;c.beginPath();c.moveTo(fx+.7,fy-3);c.bezierCurveTo(fx+1.3,fy-3.9,fx+.2,fy-4.4,fx+.7,fy-5.2);c.stroke();c.fillStyle='#ff6fae';c.beginPath();c.arc(fx+.8,fy-5.3,.35,0,TAU);c.fill();c.fillStyle='#222';c.fillRect(fx+1,fy-5.4,.5,.2);}
+  // Geld-Palette „$$$“ als Deko
+  {const mx=25.2,my=6.6;c.fillStyle='#a0703a';c.fillRect(mx-3,my-.6,6,.9);c.fillStyle='#7a5228';c.fillRect(mx-2.8,my+.3,.6,.5);c.fillRect(mx+2.2,my+.3,.6,.5);for(let r=0;r<3;r++)for(let k=0;k<3-r;k++){const bx=mx-2.4+k*1.7+r*.85,by=my-1.4-r*1.1;c.fillStyle='#4caf50';c.fillRect(bx,by,1.6,1);c.fillStyle='#e8f5e9';c.fillRect(bx+.55,by+.2,.5,.6);}
+   c.fillStyle=GL.Y;c.font='900 1.1px '+FONT;c.textAlign='center';glFit(c,'$$$',5);c.fillText('$$$',mx,my-5);}
+ }
  for(const s of[-1,1])glPalme(c,s*40.6,25.6);
  c.restore();}
 function gameGlow(glow,nl){const X=KGAME.cx,Y=KGAME.cy;glow(X,Y-33,24,'255,61,154',.5*nl);for(const wx of[-25,25])glow(X+wx,Y-10,15,'25,211,197',.35*nl);glow(X,Y-17,8,'255,61,154',.45*nl);for(const wx of[-30,30])glow(X+wx,Y-33,14,'255,159,58',.3*nl);glow(X-34,Y+3,9,'255,61,154',.35*nl);glow(X+29,Y+14,12,'25,211,197',.3*nl);}
