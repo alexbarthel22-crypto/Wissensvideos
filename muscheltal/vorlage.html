@@ -5128,7 +5128,7 @@ document.addEventListener('click',async ev=>{const a=ev.target.closest('[data-mk
  if(k==='sperre'||['konto','shop','spenden','login','erkunden'].includes(k)&&!mkClaim()){mkSperre();return;}
  if(k==='konto'){$('mp').hidden=true;mkSeite();return;}
  if(k==='einladen'){mkEinladen();return;}
- if(k==='shop'){$('mp').hidden=true;$('pg').hidden=true;const pg=$('mkpage');if(!pg||pg.hidden)await mkSeite();const b=$('mkshop');if(b)b.scrollIntoView({behavior:'smooth',block:'start'});return;}
+ if(k==='shop'){$('mp').hidden=true;$('pg').hidden=true;const pg=$('mkpage');if(!pg||pg.hidden)await mkSeite();const b=$('mkpak')||$('mkshop');/* „Muscheln kaufen“ steht direkt über dem Muschel-Shop */if(b)b.scrollIntoView({behavior:'smooth',block:'start'});return;}
  if(k==='spenden'){mkSpende();return;}
  if(k==='login'){mkLoginPop();return;}
  if(k==='auszug'||k==='kauf'){const b=$('mkka');if(!b)return;const kb=b.querySelector('.kab'),zu=kb.hidden;kb.hidden=!zu;b.querySelector('.chev').textContent=zu?'▴':'▾';if(k==='auszug'&&zu)b.scrollIntoView({behavior:'smooth',block:'center'});return;}
