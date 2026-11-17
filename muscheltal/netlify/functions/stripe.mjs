@@ -12,6 +12,7 @@ export const PAKETE = {
   p800: { cent: 799, muscheln: 800 },
   p1100: { cent: 999, muscheln: 1100 },
   p1750: { cent: 1499, muscheln: 1750 },
+  start: { cent: 399, muscheln: 600, einmal: true },// Startangebot: nur einmal je Name
 };
 const SEITE = "https://muscheltal.de";
 const API = () => process.env.STRIPE_API_BASE || "https://api.stripe.com";
@@ -53,6 +54,7 @@ export default async (req) => {
       const nm = String((o.metadata && o.metadata.name) || "").toLowerCase(), p = PAKETE[o.metadata && o.metadata.paket];
       if (!nm || !p || o.amount_total !== p.cent) return json({ ok: false, grund: "daten" });
       await buchen(store, nm, "euro", o.id, p.muscheln);
+      if (p.einmal) await store.set("x/start/" + nm, o.id);
       if (o.payment_intent) await store.set("x/euro/" + o.payment_intent, JSON.stringify({ nm, m: p.muscheln, cent: p.cent, sid: o.id }));
       return json({ ok: true });
     }
@@ -78,6 +80,7 @@ export default async (req) => {
   if (!c || c.h !== (await sha(String(d.token || "")))) return json({ fehler: "Nicht beansprucht" }, 403);
   const p = PAKETE[d.paket];
   if (!p) return json({ fehler: "Paket" }, 400);
+  if (p.einmal && (await store.get("x/start/" + nm))) return json({ fehler: "Startangebot schon genutzt" }, 409);
   // Zustimmung zur sofortigen Ausführung + Kenntnis vom Verlust des Widerrufsrechts (§ 356 Abs. 5 BGB) ist Pflicht
   if (d.zustimmung !== true) return json({ fehler: "Zustimmung fehlt" }, 400);
   const zeit = new Date().toISOString();

@@ -489,6 +489,8 @@ export default async (req) => {
     const verschieden = new Set(); for (const kk of await liste(store, "x/klopft/" + nm + "/")) verschieden.add(await store.get(kk));
     return json({ ok: true, neu: verschieden.size >= 20 && (await erfGib("KLOPF")) ? ["KLOPF"] : [] });
   }
+  // 💎 Premium-Shop einmal entsperrt → für immer offen
+  if (act === "premium") { await store.set("x/premium/" + nm, String(Date.now())); return json({ ok: true }); }
   // 🔍 Detektiv: Muschelpässe von 50 verschiedenen Bewohnern angesehen
   if (act === "gesehen") {
     const an = String(d.an || "").toLowerCase().replace(/^@/, "");
@@ -576,7 +578,7 @@ export default async (req) => {
     const posten = B.filter(e => e.a).map(e => ({ art: e.art, id: e.id, a: e.a, t: TEXT[e.art] || e.art }))
       .sort((x, y) => (y.id > x.id ? 1 : -1)).slice(0, 60);
     return json({
-      ok: true, nachbar, live, eingeladen, klopfer, likes: { n: likeN }, neu: likeN >= 25 && (await erfGib("HERZ")) ? ["HERZ"] : [], sticker: (await liste(store, "x/sticker/" + nm + "/")).map(k => k.split("/")[3]), geschenk: B.some(e => e.art === "geschenk" && e.id === heute), stand: B.reduce((s, e) => s + e.a, 0), serie: s,
+      ok: true, nachbar, live, eingeladen, klopfer, premium: !!(await store.get("x/premium/" + nm)), startDa: !(await store.get("x/start/" + nm)), likes: { n: likeN }, neu: likeN >= 25 && (await erfGib("HERZ")) ? ["HERZ"] : [], sticker: (await liste(store, "x/sticker/" + nm + "/")).map(k => k.split("/")[3]), geschenk: B.some(e => e.art === "geschenk" && e.id === heute), stand: B.reduce((s, e) => s + e.a, 0), serie: s,
       shells: B.filter(e => e.art === "shell" && e.id.startsWith(heute)).map(e => Number(e.id.split("-").pop())),
       questsDone: B.filter(e => e.art === "quest" && e.id.startsWith(heute)).map(e => Number(e.id.split("-").pop())),
       gespendet: -B.filter(e => e.art === "spende").reduce((s, e) => s + e.a, 0), posten, heute, inv: besitz(B), aus: JSON.parse((await store.get("a/" + nm)) || "{}")
