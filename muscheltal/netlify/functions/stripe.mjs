@@ -11,6 +11,7 @@ export const PAKETE = {
   p450: { cent: 499, muscheln: 450 },
   p800: { cent: 799, muscheln: 800 },
   p1100: { cent: 999, muscheln: 1100 },
+  p1750: { cent: 1499, muscheln: 1750 },
 };
 const SEITE = "https://muscheltal.de";
 const API = () => process.env.STRIPE_API_BASE || "https://api.stripe.com";
