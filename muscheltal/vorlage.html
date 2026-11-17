@@ -2057,6 +2057,10 @@ function walTap(){const p=mitmachen('🐋','Ein Wal!');if(!p)return;
 // Hinweis, wenn gerade ein Wal springt (einmal je Sprung)
 setInterval(()=>{if(document.hidden)return;const L=walAktiv().filter(w=>w.t<4);if(!L.length)return;const w=L[0],k=w.v.i+':'+w.start;if(WALGEMELDET===k)return;WALGEMELDET=k;try{mkToast('🐋 Oh? An der '+walRichtung(w)+'-Küste'+(w.v.i?' der Kokos-Insel':'')+' taucht ein Wal auf!',5000);}catch(e){}},1000);
 // Nebel über noch nicht freigeschalteten Inseln: steht fest (keine Bewegung), lässt nur Umrisse erahnen
+// Nebel einmal in niedriger Auflösung vorberechnen (weich, ändert sich nie) und nur noch hochskaliert zeichnen – spart sehr viel Rechenzeit beim Herauszoomen
+const NEBC={};function nebelZ(c,v){const x0=v.x-v.R*1.7,y0=v.y-v.R*1.6,w=v.R*3.4,h=v.R*3.2;let cv=NEBC[v.i];
+ if(!cv){const k=Math.min(1,320/w);cv=document.createElement('canvas');cv.width=Math.ceil(w*k);cv.height=Math.ceil(h*k);const o=cv.getContext('2d');o.setTransform(k,0,0,k,-x0*k,-y0*k);nebel(o,v);NEBC[v.i]=cv;}
+ const q=c.imageSmoothingQuality;c.imageSmoothingEnabled=true;c.imageSmoothingQuality='low';c.drawImage(cv,x0,y0,w,h);c.imageSmoothingQuality=q;}
 function nebel(c,v){const R=v.R;c.save();
  c.fillStyle='rgba(232,240,246,.6)';shape(c,v,34);c.fill();// geschlossene Nebeldecke etwas über die Küste hinaus
  for(let k=0;k<46;k++){const a=hash(v.i*31+k,811)*TAU,d=Math.sqrt(hash(v.i*31+k,812))*R*1.05,x=v.x+Math.cos(a)*d,y=v.y+Math.sin(a)*d*.92,r=R*(.28+hash(v.i*31+k,813)*.32);
@@ -2139,7 +2143,7 @@ const FLDAUER=180,FLC=new Map();
 function flPlan(h){if(FLC.has(h))return FLC.get(h);const out=[];for(let k=0;k<2;k++){const q=i=>hash(h*17+k*101,880+i),v=(ISL[1]&&ISL[1].open&&q(0)<.4)?ISL[1]:MAIN,start=h*3600+k*1800+60+Math.floor(q(1)*1500);
  let x=0,y=0,a=0,ok=false;for(let tr=0;tr<40&&!ok;tr++){a=hash(h*13+k*7+tr*31,890)*TAU;[x,y]=polar(v,a,coastAt(v,a)+BEX+11);ok=walHindernisse().every(([hx,hy])=>Math.hypot(x-hx,y-hy)>40);}
  if(ok)out.push({fl:h*10+k,v,a,x,y,start});}if(FLC.size>40)FLC.clear();FLC.set(h,out);return out;}
-const flWeg=()=>{try{return JSON.parse(localStorage.getItem('mt-flasche')||'[]');}catch(e){return[];}};
+let FLW=null;const flWeg=()=>{if(FLW)return FLW;try{FLW=JSON.parse(localStorage.getItem('mt-flasche')||'[]');}catch(e){FLW=[];}return FLW;};
 function flAktiv(){if(QP.get('flasche')){const w=flPlan(Math.floor(TNOW()/3600))[0];return w&&!flWeg().includes(w.fl)?[{...w,t:20}]:[];}const n=TNOW(),h=Math.floor(n/3600),weg=flWeg(),out=[];for(const hh of[h-1,h])for(const w of flPlan(hh)){const t=n-w.start;if(t>=0&&t<FLDAUER&&!weg.includes(w.fl))out.push({...w,t});}return out;}
 function flZeichnen(c){const t=REDUCED?0:T;for(const w of flAktiv()){const ang=Math.atan2(Math.sin(w.a)*.92,Math.cos(w.a)),bob=Math.sin(t*2.2+w.fl)*.5;c.save();c.translate(w.x+Math.cos(ang)*bob,w.y+Math.sin(ang)*bob);
  c.strokeStyle=`rgba(255,255,255,${.35+.25*Math.sin(t*3)})`;c.lineWidth=.35;c.beginPath();c.ellipse(0,.6,4.2,1.6,0,0,TAU);c.stroke();c.rotate(ang+.6+Math.sin(t*1.6)*.12);
@@ -2147,7 +2151,7 @@ function flZeichnen(c){const t=REDUCED?0:T;for(const w of flAktiv()){const ang=M
  c.fillStyle='#c8955a';c.fillRect(3.5,-.45,.8,.9);c.fillStyle='#fff4d8';c.fillRect(-1.6,-.5,2.6,1);c.strokeStyle='#d84a4a';c.lineWidth=.2;c.beginPath();c.moveTo(-.3,-.5);c.lineTo(-.3,.5);c.stroke();
  c.fillStyle='rgba(255,255,255,.7)';c.fillRect(-1.8,-.85,2.8,.25);c.restore();}if(!REDUCED&&flAktiv().length)kick();}
 function flAt(wx,wy){for(const w of flAktiv())if(Math.hypot(wx-w.x,wy-w.y)<Math.max(7,16/cam.z))return w;return null;}
-const flMerk=fl=>{try{const a=flWeg().filter(x=>x>fl-40);a.push(fl);localStorage.setItem('mt-flasche',JSON.stringify(a));}catch(e){}};
+const flMerk=fl=>{const a=flWeg().filter(x=>x>fl-40);a.push(fl);FLW=a;try{localStorage.setItem('mt-flasche',JSON.stringify(a));}catch(e){}};
 async function flTap(w){if(!mitmachen('🍾','Flaschenpost!'))return;
  const r=await mk('flasche',{fl:w.fl});if(!r||!r.ok){if(r&&r.grund!=='genug')flMerk(w.fl);popup('<div class="big">🍾</div><h2>'+(r&&r.grund==='genug'?'Genug Flaschen für heute':'Schon weggetrieben')+'</h2><p>'+(r&&r.grund==='genug'?'Du hast heute schon 3 Flaschen geöffnet. Morgen treiben neue an!':'Diese Flasche ist schon weg. Halte Ausschau nach der nächsten!')+'</p>');return;}
  popup('<div class="flpop"><div class="big">📜</div><h2>Flaschenpost!</h2><p class="flq">'+esc(r.q)+'</p><div class="fla">'+r.a.map((x,i)=>'<button class="cbtn" type="button" data-fla="'+i+'">'+esc(x)+'</button>').join('')+'</div><p class="cft">Du hast nur einen Versuch.</p></div>');
@@ -2174,14 +2178,14 @@ function mondTap(s){const p=mitmachen('🌕','Eine Mondmuschel!');if(!p)return;c
  const neu=gibErf(p,'MOND');popup('<div class="big">🌕</div><h2>'+(neu?'Neuer Erfolg! 🎉':'Alle gefunden! 🌕')+'</h2><p>'+(neu?esc(p.name)+', du hast in der Vollmondnacht alle 5 Mondmuscheln gefunden: <b>„Mondsammler“</b> (+10 🐚)!':'Den Erfolg „Mondsammler“ hast du schon.')+'</p>');}
 
 // ---------- 🎁 Tagesgeschenk: vor der eigenen Hütte liegt jeden Tag ein Päckchen mit 1–3 Muscheln (nur für den Besitzer sichtbar) ----------
-const gsHeute=()=>{try{if(localStorage.getItem('mt-geschenk')===berlinTagStr())return true;}catch(e){}return !!(MK.d&&MK.d.geschenk);};
+let GSL=null,GST=0;const gsHeute=()=>{const n=Date.now();if(n-GST>2000){GST=n;try{GSL=localStorage.getItem('mt-geschenk');}catch(e){GSL=null;}}return GSL===berlinTagStr()||!!(MK.d&&MK.d.geschenk);};
 function gsPos(){const me=mkClaim()&&mkMe();if(!me||!me.p||me.gb||gsHeute())return null;return{x:me.p.x+5.5,y:me.p.y+7};}
 function geschenkZeichnen(c){const g=gsPos();if(!g)return;const t=REDUCED?0:T,hop=Math.max(0,Math.sin(t*3))*.6;c.save();c.translate(g.x,g.y-hop);
  c.fillStyle='rgba(0,0,0,.18)';c.beginPath();c.ellipse(0,2.2+hop,2.6,.7,0,0,TAU);c.fill();c.fillStyle='#e8467c';c.fillRect(-2.2,-1.2,4.4,3.4);c.fillStyle='#f25f92';c.fillRect(-2.5,-2,5,1);
  c.fillStyle='#ffd23f';c.fillRect(-.4,-2,.8,4.2);c.fillRect(-2.5,-1.7,5,.4);c.beginPath();c.ellipse(-.8,-2.5,.9,.5,-.5,0,TAU);c.ellipse(.8,-2.5,.9,.5,.5,0,TAU);c.fill();c.restore();if(!REDUCED)kick();}
 function gsAt(wx,wy){const g=gsPos();return g&&Math.hypot(wx-g.x,wy-g.y)<Math.max(5,14/cam.z);}
 const GSSVG='<svg class="gssvg" viewBox="0 0 120 110" width="140" height="128"><g class="gsin"><text x="26" y="44" font-size="20">🐚</text><text x="52" y="30" font-size="20">✨</text><text x="74" y="44" font-size="20">🐚</text></g><g class="gsdk"><rect x="20" y="44" width="80" height="14" rx="3" fill="#f25f92"/><rect x="54" y="44" width="12" height="14" fill="#ffd23f"/><ellipse cx="50" cy="40" rx="10" ry="6" fill="#ffd23f"/><ellipse cx="70" cy="40" rx="10" ry="6" fill="#ffd23f"/></g><rect x="24" y="58" width="72" height="44" rx="4" fill="#e8467c"/><rect x="54" y="58" width="12" height="44" fill="#ffd23f"/></svg>';
-async function gsTap(){const r=await mk('geschenk');try{localStorage.setItem('mt-geschenk',berlinTagStr());}catch(e){}kick();
+async function gsTap(){const r=await mk('geschenk');GSL=berlinTagStr();try{localStorage.setItem('mt-geschenk',berlinTagStr());}catch(e){}kick();
  if(!r||(!r.ok&&r.grund!=='schon')){popup('<div class="big">🎁</div><h2>Hat nicht geklappt</h2><p>Bitte gleich nochmal versuchen.</p>');return;}
  if(!r.ok){popup('<div class="big">🎁</div><h2>Schon ausgepackt</h2><p>Dein Geschenk für heute hast du schon geöffnet. Morgen liegt ein neues vor deiner Hütte!</p>');return;}
  if(MK.d){MK.d.stand=r.stand;MK.d.geschenk=true;}try{mkCard();}catch(e){}popup('<div class="rbpop">'+GSSVG+'</div><h2>Dein Tagesgeschenk! 🎁</h2><p>Vor deiner Hütte lag ein Päckchen – <b>+'+r.betrag+' 🐚</b> für dich! Morgen wartet ein neues.</p>');mkToast('🎁 +'+r.betrag+' 🐚 gutgeschrieben');}
@@ -2227,7 +2231,8 @@ setInterval(()=>{if(document.hidden)return;const say=(k,txt,ms)=>{if(EVGEM.has(k
  try{if(mondDa()&&say('mo'+mondNacht(),'🌕 Vollmond! Heute Nacht leuchten Mondmuscheln am Strand der Haupt-Insel.',6000))return;}catch(e){}
 },1000);
 // ---------- 📅 Feste Termine auf dem Muschelplatz: Fr 20:00 Feuerwerk (10 Min.) · Sa 10–18 Uhr Flohmarkt · So 16–19 Uhr Konzert der Muschelband ----------
-function termin(){const q=QP.get('termin');if(q)return q;const d=berlin(),wd=d.getDay(),h=d.getHours()+d.getMinutes()/60;if(wd===3&&h>=6&&h<12)return'wochenmarkt';if(wd===5&&h>=20&&h<20+10/60)return'feuerwerk';if(wd===6&&h>=10&&h<18)return'flohmarkt';if(wd===0&&h>=16&&h<19)return'konzert';return null;}
+let TERMC=-1,TERMV=null;function termin(){const sk=Date.now()/1000|0;if(sk===TERMC)return TERMV;TERMC=sk;TERMV=termin0();return TERMV;}
+function termin0(){const q=QP.get('termin');if(q)return q;const d=berlin(),wd=d.getDay(),h=d.getHours()+d.getMinutes()/60;if(wd===3&&h>=6&&h<12)return'wochenmarkt';if(wd===5&&h>=20&&h<20+10/60)return'feuerwerk';if(wd===6&&h>=10&&h<18)return'flohmarkt';if(wd===0&&h>=16&&h<19)return'konzert';return null;}
 const TERMTXT={wochenmarkt:'🍎 Heute Wochenmarkt auf dem Muschelplatz!',feuerwerk:'🎆 Jetzt: Feuerwerk über dem Muschelplatz!',flohmarkt:'🧺 Heute Flohmarkt auf dem Muschelplatz!',konzert:'🎵 Die Muschelband spielt live auf dem Muschelplatz!'};
 // freie Flächen auf dem Muschelplatz (einmal berechnet, ohne die Termin-Sperren)
 let TPL=null,TPLC=false;
@@ -3498,7 +3503,7 @@ function acaiArch(c,H){c.strokeStyle='#c79a5e';c.lineWidth=.8;c.beginPath();c.mo
 function acaiTafel(c){{const ax=-17,ay=12;c.strokeStyle='#8a5a2b';c.lineWidth=.5;c.beginPath();c.moveTo(ax-3.4,ay+3.6);c.lineTo(ax,ay-4);c.lineTo(ax+3.4,ay+3.6);c.stroke();c.fillStyle='#8a5a2b';c.beginPath();c.roundRect(ax-3.4,ay-3.4,6.8,6,.6);c.fill();c.fillStyle='#2a3a3a';c.beginPath();c.roundRect(ax-3,ay-3,6,5.2,.4);c.fill();
   c.fillStyle='#fff';c.font='900 1px '+FONT;c.textAlign='center';c.fillText('BOWL',ax,ay-1.7);c.fillText('DES TAGES',ax,ay-.6);acaiBowl(c,ax,ay+.9,.42);c.fillStyle='#ffb3d1';c.font='900 .8px '+FONT;c.fillText('♥ ♥ ♥',ax,ay+2);}}
 // Tierheim: Schild (über dem Weg dahinter), Hundehütten, Kratzbaum und Tafel werden über Figuren dahinter nachgezeichnet
-function thFront(c,x,y,tn){if(S*cam.z<=6)return;const g=GEB.find(q=>q.typ==='tierheim');if(!g||!thDa(g)||Math.abs(x-g.cx)>45||Math.abs(y-g.cy)>60)return;const lx=x-g.cx,ly=y-g.cy,t=REDUCED?0:T;
+let THG_=undefined;function thFront(c,x,y,tn){if(S*cam.z<=6)return;const g=THG_===undefined?(THG_=GEB.find(q=>q.typ==='tierheim')||null):THG_;if(!g||!thDa(g)||Math.abs(x-g.cx)>45||Math.abs(y-g.cy)>60)return;const lx=x-g.cx,ly=y-g.cy,t=REDUCED?0:T;
  if(Math.abs(lx)<21&&ly<-26&&ly>-54)tintDraw(c,tn,g.cx-18,g.cy-45,g.cx+18,g.cy-22,o=>{o.save();o.translate(g.cx,g.cy);gebSign(o,g);o.restore();});
  for(const [hx,hy] of THH)if(Math.abs(lx-hx)<6&&ly<hy+2.6&&ly>hy-12)tintDraw(c,tn,g.cx+hx-6,g.cy+hy-8,g.cx+hx+6,g.cy+hy+4,o=>{o.save();o.translate(g.cx,g.cy);thHuette(o,hx,hy,hy<0?'BELLO':'LUNA');o.restore();});
  if(Math.abs(lx-THK[0])<5&&ly<THK[1]+2&&ly>THK[1]-16)tintDraw(c,tn,g.cx+THK[0]-5,g.cy+THK[1]-11,g.cx+THK[0]+5,g.cy+THK[1]+4,o=>{o.save();o.translate(g.cx,g.cy);thKratzbaum(o,THK[0],THK[1],t);o.restore();});
@@ -3683,7 +3688,7 @@ function drawTierheim(c,g,nl,z){c.scale(g.dir||1,1);// drawGeb spiegelt – das 
 }
 // Nachts: Fenster und Laternen leuchten
 function thGlow(glow,nl,g){for(const wx of[-11,-0,11])glow(g.cx+wx,g.cy-18,7,'255,210,150',.45*nl);for(const s of[-1,1])glow(g.cx+s*5,g.cy-14,5,'255,200,120',.6*nl);}
-const thDa=g=>{try{return gDa(g);}catch(e){return true;}};
+const thDa=g=>!(GROWK!=null&&GROWV===g.v&&GROWK<g.at);// wie gDa (das nur lokal in draw existiert) – ohne teure Fehlerbehandlung
 // Antippen des Tierheims (Haus, Schild oder Tor) öffnet den Tierheim-Shop
 function thAt(wx,wy){const g=GEB.find(q=>q.typ==='tierheim');if(!g||!thDa(g))return false;const lx=wx-g.cx,ly=wy-g.cy;return Math.abs(lx)<22&&ly>-40&&ly<-5||(Math.abs(lx)<7.5&&ly>(g.y1-g.y0)/2-6&&ly<(g.y1-g.y0)/2+2);}
 
@@ -4258,7 +4263,7 @@ function draw(){NACHTDRAUF=0;panMerk();{const k=kind();REGEN.on=k==="rain"||k===
   c.strokeStyle='rgba(255,255,255,.75)';c.lineWidth=2.6;shape(c,v,11,1.2*WFg,T*1.4);c.stroke();
   if(v.i===0){sprite(c,'rathaus',-220,-190,220,150,o=>rathaus(o));if(PJ)beachbar(c);}else{landmark(c,v,nl);if(v.i===1&&v.open&&z*S>5)kokosLive(c,v,nl);}
   if(z*S>5){for(const t of v.palms)if(vis(t.x,t.y))palm(c,t);}else{c.fillStyle='#3a9e4a';for(const t of v.palms)c.fillRect(t.x-2.5,t.y-2.5,5,5);}
-  if(!v.open&&v.i)sprite(c,'nebel'+v.i,v.x-v.R*1.7,v.y-v.R*1.6,v.x+v.R*1.7,v.y+v.R*1.6,o=>nebel(o,v));// noch gesperrte Insel: dichter, fest stehender Nebel
+  if(!v.open&&v.i)nebelZ(c,v);// noch gesperrte Insel: dichter, fest stehender Nebel
   if(GROWK!=null&&GROWV===v&&v.i&&GROWK<.12){c.fillStyle=`rgba(245,248,252,${.85*(1-GROWK/.12)})`;shape(c,v,30);c.fill();}}
  if(GROWK==null){walZeichnen(c);skZeichnen(c);regenbogenZeichnen(c);terminZeichnen(c);flZeichnen(c);mondZeichnen(c);geschenkZeichnen(c);}// Wal, Schildkröte, Regenbogen über den Brandungs-Wellen
  NAMES.length=0;TAPS.length=0;TEAMN.clear();FIGS.length=0;PBT=performance.now()+2.5;for(const b of BAU)if(bauOn(b)&&visR(b.cx,b.cy,b.steg?130:80)){if(b.steg)drawBau(c,b,nl,z);else sprite(c,'bau'+b.name,b.x0-45,b.y0-70,b.x1+45,b.y1+35,o=>drawBau(o,b,nl,z));}const OUTG=new Set();if(WK.on&&WK.me)OUTG.add(WK.me);if(sel&&sel.p&&!sel.gb)OUTG.add(sel);
