@@ -1,3 +1,4 @@
+import json
 import sys
 from pathlib import Path
 D = Path(sys.argv[1]); LOGO = Path(sys.argv[2]).read_text().strip()
@@ -104,7 +105,7 @@ scene("s01", LILITA + "\n    " + PILL + "\n    " + BIG + """
       <div id="e1-fl" data-layout-ignore></div>
       <div id="e1-n" data-layout-ignore>0</div>
       <div id="e1-a" class="big">👥 MENSCHEN</div>
-      <div id="e1-b" class="pl">wohnen schon auf Muschel-Tal! 🏝️</div>""",
+      <div id="e1-b" class="pl">wohnen schon in Muschel-Tal! 🏝️</div>""",
 """      const me = at("L1", "Menschen"), wo = at("L1", "wohnen");
       tl.fromTo("#e1-rv", { opacity: .45 }, { opacity: 1, duration: .14, yoyo: true, repeat: 15, ease: "sine.inOut", immediateRender: false }, 0);
       count(tl, "#e1-n", 0, 787, 0, me - .05, "", "", "power2.out");
@@ -116,18 +117,58 @@ scene("s01", LILITA + "\n    " + PILL + "\n    " + BIG + """
       tl.fromTo("#e1-b", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .28, ease: "back.out(2)" }, wo - .1);
       tl.to("#e1-b", { scale: 1.06, duration: .18, yoyo: true, repeat: 5, ease: "sine.inOut" }, wo + .3);""", blur=True)
 
-# s02 – Zoom aus einer Hütte auf die ganze Insel
-scene("s02", LILITA + "\n    " + PILL + """
-    #e2-p { top: 250px; font-size: 48px; background: linear-gradient(100deg, #ff2e7e, #7b3fe0); }
-    #e2-r { position: absolute; left: 390px; top: 810px; width: 300px; height: 300px; border-radius: 50%; border: 12px solid #ffe14a; box-shadow: 0 0 40px 10px rgba(255,225,74,.8); opacity: 0; }""",
-"""      <div id="e2-r" data-layout-ignore></div>
-      <div id="e2-p" class="pl">🏠 Folgen = Hütte mit deinem @Namen</div>""",
-"""      const t2 = line("L2")[0], fo = at("L2", "folgt");
-      tl.fromTo("#e2-r", { opacity: 1, scale: .4 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2)", immediateRender: false }, t2 - .3);
-      tl.to("#e2-r", { scale: 1.12, duration: .18, yoyo: true, repeat: 3, ease: "sine.inOut" }, t2 + .1);
-      tl.to("#e2-r", { opacity: 0, scale: .2, duration: .3 }, t2 + .9);
-      tl.fromTo("#e2-p", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, fo - .1);
-      tl.to("#e2-p", { scale: 1.06, duration: .18, yoyo: true, repeat: 5, ease: "sine.inOut" }, fo + .4);""")
+# s02 – Alle Bewohner auf einer viel zu kleinen Insel → plötzlich modernisiert und vergrößert
+import csv as _csv, math as _m, random as _r
+EW = [r["name"] for r in _csv.DictReader(open(Path(__file__).resolve().parents[3] / "muscheltal/daten/einwohner.csv"))]
+_rg = _r.Random(7); CX, CY = 540, 760
+SMALL, BIG2 = [], []
+for k, n in enumerate(EW):
+    a = _rg.random() * 6.283; rr = _m.sqrt(_rg.random())
+    if k % 37 == 0: rr = 1.15 + _rg.random() * .25          # ein paar purzeln ins Wasser
+    SMALL.append((CX + _m.cos(a) * rr * 175, CY + _m.sin(a) * rr * 120))
+cols = 22
+for k in range(len(EW)):
+    while True:
+        gx, gy = _rg.uniform(-1, 1), _rg.uniform(-1, 1)
+        if gx * gx + gy * gy < .93: break
+    BIG2.append((CX + gx * 470, CY + gy * 440))
+BLD = [("🏰", 540, 600, 120), ("🏨", 330, 520, 90), ("🎡", 760, 520, 90), ("🏢", 260, 820, 80), ("🏬", 820, 820, 80), ("⛲", 540, 800, 70), ("🎢", 420, 1000, 80), ("🏟️", 680, 1010, 80), ("🌴", 160, 640, 70), ("🌴", 920, 640, 70), ("🌴", 200, 1000, 64), ("🌴", 880, 1000, 64), ("🗼", 540, 420, 80)]
+scene("s02", LILITA + "\n    " + PILL + "\n    " + BIG + """
+    #i2-sea { position: absolute; inset: 0; background: radial-gradient(circle at 50% 40%, #3fd3e0, #0b7fae 70%, #075a86); }
+    .wv { position: absolute; left: -100px; right: -100px; height: 10px; border-radius: 6px; background: rgba(255,255,255,.22); }
+    #i2-isl { position: absolute; left: 340px; top: 620px; width: 400px; height: 280px; border-radius: 50%; background: radial-gradient(circle at 50% 45%, #7fd36a 0 58%, #f4dc9a 60% 74%, #8fe3ec 76%); box-shadow: 0 0 0 10px rgba(255,255,255,.35); }
+    #i2-big { position: absolute; left: 30px; top: 290px; width: 1020px; height: 940px; border-radius: 48% 52% 50% 50%; background: radial-gradient(circle at 50% 45%, #7fd36a 0 70%, #f4dc9a 72% 84%, #8fe3ec 86%); box-shadow: 0 0 0 12px rgba(255,255,255,.35); opacity: 0; }
+    #i2-grid { position: absolute; left: 130px; top: 380px; width: 820px; height: 760px; border-radius: 50%; background: repeating-linear-gradient(0deg, rgba(200,170,120,.55) 0 8px, transparent 8px 70px), repeating-linear-gradient(90deg, rgba(200,170,120,.55) 0 8px, transparent 8px 70px); opacity: 0; }
+    .nm { position: absolute; transform: translate(-50%, -50%); padding: 1px 5px 2px; border-radius: 6px; background: rgba(255,255,255,.92); box-shadow: 0 1px 0 rgba(0,0,0,.25); font-family: "Inter", sans-serif; font-weight: 800; font-size: 11px; color: #2a1b12; white-space: nowrap; }
+    .bd { position: absolute; transform: translate(-50%, -50%); line-height: 1; opacity: 0; z-index: 3; filter: drop-shadow(0 8px 0 rgba(0,0,0,.3)) drop-shadow(0 0 18px rgba(255,255,255,.9)); }
+    #i2-k { top: 170px; font-size: 64px; background: #e8101e; transform: rotate(-2deg); box-shadow: 0 0 0 8px #1a0f08, 0 16px 0 rgba(0,0,0,.3), 0 0 50px 14px rgba(255,20,30,.6); }
+    #i2-u { top: 170px; font-size: 76px; background: linear-gradient(135deg, #2e9e5b, #8be06a); transform: rotate(-2deg); box-shadow: 0 0 0 8px #1a0f08, 0 16px 0 rgba(0,0,0,.3), 0 0 60px 16px rgba(120,255,140,.6); }
+    #i2-fl { position: absolute; inset: 0; background: #fff; opacity: 0; }""",
+"""      <div id="i2-sea" data-layout-ignore></div>
+      """ + "".join(f'<div class="wv" data-layout-ignore style="top:{y}px"></div>' for y in (180, 330, 1290, 1450, 1620)) + """
+      <div id="i2-big" data-layout-ignore></div><div id="i2-grid" data-layout-ignore></div>
+      <div id="i2-isl" data-layout-ignore></div>
+      """ + "".join(f'<div class="bd" id="i2-b{k}" data-layout-ignore style="left:{x}px;top:{y}px;font-size:{int(s * 1.45)}px">{e}</div>' for k, (e, x, y, s) in enumerate(BLD)) + """
+      <div id="i2-names" data-layout-ignore>""" + "".join(f'<div class="nm" id="nm{k}" style="left:{x:.0f}px;top:{y:.0f}px">@{n}</div>' for k, (n, (x, y)) in enumerate(zip(EW, SMALL))) + """</div>
+      <div id="i2-fl" data-layout-ignore></div>
+      <div id="i2-k" class="big">😱 VIEL ZU KLEIN!</div>
+      <div id="i2-u" class="big">⚡ UPGRADE!</div>""",
+"""      const t2 = line("L2")[0], kl = at("L2", "klein"), up = at("L2b", "Upgrade");
+      const BX = """ + json.dumps([[round(x - sx), round(y - sy)] for (x, y), (sx, sy) in zip(BIG2, SMALL)]) + """;
+      tl.fromTo("#i2-names", { scale: .2, opacity: 0 }, { scale: 1, opacity: 1, duration: .45, ease: "back.out(2)", immediateRender: true }, 0);
+      tl.to("#i2-names", { x: 4, duration: .05, yoyo: true, repeat: 30, ease: "none" }, .5);
+      tl.fromTo("#i2-k", { opacity: 0, scale: 3 }, { opacity: 1, scale: 1, duration: .26, ease: "back.out(1.8)" }, kl - .15);
+      tl.to("#i2-k", { x: 12, duration: .04, yoyo: true, repeat: 9, ease: "none" }, kl + .15);
+      tl.to("#i2-k", { opacity: 0, scale: .4, duration: .2 }, up - .25);
+      tl.fromTo("#i2-fl", { opacity: 1 }, { opacity: 0, duration: .5, immediateRender: false }, up - .05);
+      tl.to("#i2-isl", { opacity: 0, scale: 2.5, duration: .4, ease: "power2.out" }, up - .05);
+      tl.fromTo("#i2-big", { opacity: 0, scale: .35 }, { opacity: 1, scale: 1, duration: .55, ease: "back.out(1.6)" }, up - .05);
+      tl.fromTo("#i2-grid", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .55, ease: "back.out(1.6)" }, up + .05);
+      for (let k = 0; k < BX.length; k++) tl.to("#nm" + k, { x: BX[k][0], y: BX[k][1], duration: .7, ease: "power3.out" }, up + (k % 50) * .004);
+      """ + "\n      ".join(f'tl.fromTo("#i2-b{k}", {{ opacity: 0, scale: .2, y: -60 }}, {{ opacity: 1, scale: 1, y: 0, duration: .35, ease: "back.out(2.4)" }}, up + .3 + {k * .06:.2f});' for k in range(len(BLD))) + """
+      tl.to("#i2-names", { opacity: .55, duration: .4 }, up + .5);
+      tl.fromTo("#i2-u", { opacity: 0, scale: 3.4 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(1.8)" }, up - .1);
+      tl.to("#i2-u", { scale: 1.07, duration: .16, yoyo: true, repeat: 7, ease: "sine.inOut" }, up + .3);""")
 
 # s03 – Neu eingezogen: die 5 Neuesten
 scene("s03", LILITA + "\n    " + PILL + """

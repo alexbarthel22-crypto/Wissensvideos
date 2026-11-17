@@ -1,5 +1,5 @@
 {
- "duration": 19.777,
+ "duration": 20.447,
  "lines": [
   {
    "scene": "s01",
@@ -11,149 +11,166 @@
      "color": "y",
      "group": 0,
      "start": 0.0,
-     "end": 1.775
+     "end": 1.564
     },
     {
      "display": "Menschen",
      "spoken": "Menschen",
      "color": "y",
      "group": 0,
-     "start": 1.775,
-     "end": 2.18
+     "start": 1.564,
+     "end": 1.921
     },
     {
      "display": "wohnen",
      "spoken": "wohnen",
      "color": null,
      "group": 1,
-     "start": 2.18,
-     "end": 2.571
+     "start": 1.921,
+     "end": 2.266
     },
     {
      "display": "schon",
      "spoken": "schon",
      "color": null,
      "group": 1,
-     "start": 2.571,
-     "end": 2.781
+     "start": 2.266,
+     "end": 2.45
     },
     {
-     "display": "auf",
-     "spoken": "auf",
+     "display": "in",
+     "spoken": "in",
      "color": null,
      "group": 1,
-     "start": 2.781,
-     "end": 2.976
+     "start": 2.45,
+     "end": 2.617
     },
     {
      "display": "Muschel-Tal!",
      "spoken": "Muschel-Tal!",
      "color": "p",
      "group": 1,
-     "start": 2.976,
-     "end": 3.57
+     "start": 2.617,
+     "end": 3.14
     }
    ],
-   "spoken": "Siebenhundertsiebenundachtzig Menschen wohnen schon auf Muschel-Tal!",
+   "spoken": "Siebenhundertsiebenundachtzig Menschen wohnen schon in Muschel-Tal!",
    "start": 0.0,
-   "end": 3.57
+   "end": 3.14
   },
   {
    "scene": "s02",
    "id": "L2",
    "words": [
     {
-     "display": "Jeder,",
-     "spoken": "Jeder,",
+     "display": "Doch",
+     "spoken": "Doch",
      "color": null,
      "group": 0,
-     "start": 4.85,
-     "end": 5.189
+     "start": 4.42,
+     "end": 4.62
     },
     {
-     "display": "der",
-     "spoken": "der",
+     "display": "die",
+     "spoken": "die",
      "color": null,
      "group": 0,
-     "start": 5.189,
-     "end": 5.362
+     "start": 4.62,
+     "end": 4.814
     },
     {
-     "display": "mir",
-     "spoken": "mir",
+     "display": "Insel",
+     "spoken": "Insel",
      "color": null,
      "group": 0,
-     "start": 5.362,
-     "end": 5.535
+     "start": 4.814,
+     "end": 5.193
     },
     {
-     "display": "folgt,",
-     "spoken": "folgt,",
-     "color": "g",
+     "display": "wird",
+     "spoken": "wird",
+     "color": null,
      "group": 0,
-     "start": 5.535,
-     "end": 5.72
+     "start": 5.193,
+     "end": 5.394
     },
     {
-     "display": "bekommt",
-     "spoken": "bekommt",
+     "display": "viel",
+     "spoken": "viel",
+     "color": "r",
+     "group": 1,
+     "start": 5.394,
+     "end": 5.594
+    },
+    {
+     "display": "zu",
+     "spoken": "zu",
+     "color": "r",
+     "group": 1,
+     "start": 5.594,
+     "end": 5.78
+    },
+    {
+     "display": "klein",
+     "spoken": "klein",
+     "color": "r",
+     "group": 1,
+     "start": 5.78,
+     "end": 5.987
+    },
+    {
+     "display": "…",
+     "spoken": "…",
      "color": null,
      "group": 1,
-     "start": 5.72,
-     "end": 6.071
-    },
-    {
-     "display": "hier",
-     "spoken": "hier",
-     "color": null,
-     "group": 1,
-     "start": 6.071,
-     "end": 6.25
-    },
-    {
-     "display": "eine",
-     "spoken": "eine",
-     "color": null,
-     "group": 1,
-     "start": 6.25,
-     "end": 6.583
-    },
-    {
-     "display": "Hütte",
-     "spoken": "Hütte",
-     "color": "y",
-     "group": 1,
-     "start": 6.583,
-     "end": 6.923
-    },
-    {
-     "display": "mit",
-     "spoken": "mit",
-     "color": null,
-     "group": 2,
-     "start": 6.923,
-     "end": 7.095
-    },
-    {
-     "display": "seinem",
-     "spoken": "seinem",
-     "color": null,
-     "group": 2,
-     "start": 7.095,
-     "end": 7.441
-    },
-    {
-     "display": "Namen!",
-     "spoken": "Namen!",
-     "color": "y",
-     "group": 2,
-     "start": 7.441,
-     "end": 7.78
+     "start": 5.987,
+     "end": 6.16
     }
    ],
-   "spoken": "Jeder, der mir folgt, bekommt hier eine Hütte mit seinem Namen!",
-   "start": 4.85,
-   "end": 7.78
+   "spoken": "Doch die Insel wird viel zu klein …",
+   "start": 4.42,
+   "end": 6.16
+  },
+  {
+   "scene": "s02",
+   "id": "L2b",
+   "words": [
+    {
+     "display": "Zeit",
+     "spoken": "Zeit",
+     "color": null,
+     "group": 0,
+     "start": 7.28,
+     "end": 7.483
+    },
+    {
+     "display": "für",
+     "spoken": "für",
+     "color": null,
+     "group": 0,
+     "start": 7.483,
+     "end": 7.679
+    },
+    {
+     "display": "ein",
+     "spoken": "ein",
+     "color": null,
+     "group": 0,
+     "start": 7.679,
+     "end": 7.876
+    },
+    {
+     "display": "Upgrade!",
+     "spoken": "Upgrade!",
+     "color": "g",
+     "group": 0,
+     "start": 7.876,
+     "end": 8.45
+    }
+   ],
+   "spoken": "Zeit für ein Upgrade!",
+   "start": 7.28,
+   "end": 8.45
   },
   {
    "scene": "s03",
@@ -164,101 +181,101 @@
      "spoken": "Die",
      "color": null,
      "group": 0,
-     "start": 9.06,
-     "end": 9.182
+     "start": 9.73,
+     "end": 9.852
     },
     {
      "display": "Ersten",
      "spoken": "Ersten",
      "color": "g",
      "group": 0,
-     "start": 9.182,
-     "end": 9.426
+     "start": 9.852,
+     "end": 10.096
     },
     {
      "display": "sind",
      "spoken": "sind",
      "color": null,
      "group": 0,
-     "start": 9.426,
-     "end": 9.552
+     "start": 10.096,
+     "end": 10.222
     },
     {
      "display": "schon",
      "spoken": "schon",
      "color": null,
      "group": 0,
-     "start": 9.552,
-     "end": 9.682
+     "start": 10.222,
+     "end": 10.352
     },
     {
      "display": "eingezogen",
      "spoken": "eingezogen",
      "color": "g",
      "group": 0,
-     "start": 9.682,
-     "end": 10.161
+     "start": 10.352,
+     "end": 10.831
     },
     {
      "display": "–",
      "spoken": "–",
      "color": null,
      "group": 0,
-     "start": 10.161,
-     "end": 10.27
+     "start": 10.831,
+     "end": 10.94
     },
     {
      "display": "und",
      "spoken": "und",
      "color": null,
      "group": 1,
-     "start": 10.38,
-     "end": 10.548
+     "start": 11.05,
+     "end": 11.218
     },
     {
      "display": "jeden",
      "spoken": "jeden",
      "color": "r",
      "group": 1,
-     "start": 10.548,
-     "end": 10.879
+     "start": 11.218,
+     "end": 11.549
     },
     {
      "display": "Tag",
      "spoken": "Tag",
      "color": null,
      "group": 1,
-     "start": 10.879,
-     "end": 11.047
+     "start": 11.549,
+     "end": 11.717
     },
     {
      "display": "werden",
      "spoken": "werden",
      "color": null,
      "group": 1,
-     "start": 11.047,
-     "end": 11.383
+     "start": 11.717,
+     "end": 12.053
     },
     {
      "display": "es",
      "spoken": "es",
      "color": null,
      "group": 1,
-     "start": 11.383,
-     "end": 11.546
+     "start": 12.053,
+     "end": 12.216
     },
     {
      "display": "mehr!",
      "spoken": "mehr!",
      "color": null,
      "group": 1,
-     "start": 11.546,
-     "end": 11.72
+     "start": 12.216,
+     "end": 12.39
     }
    ],
    "spoken": "Die Ersten sind schon eingezogen – und jeden Tag werden es mehr!",
-   "start": 9.06,
-   "end": 11.72
+   "start": 9.73,
+   "end": 12.39
   },
   {
    "scene": "s04",
@@ -269,85 +286,85 @@
      "spoken": "Noch",
      "color": null,
      "group": 0,
-     "start": 13.0,
-     "end": 13.212
+     "start": 13.67,
+     "end": 13.882
     },
     {
      "display": "213",
      "spoken": "zweihundertdreizehn",
      "color": "y",
      "group": 0,
-     "start": 13.212,
-     "end": 14.265
+     "start": 13.882,
+     "end": 14.935
     },
     {
      "display": "bis",
      "spoken": "bis",
      "color": null,
      "group": 0,
-     "start": 14.265,
-     "end": 14.47
+     "start": 14.935,
+     "end": 15.14
     },
     {
      "display": "1.000",
      "spoken": "tausend",
      "color": "y",
      "group": 0,
-     "start": 14.47,
-     "end": 14.887
+     "start": 15.14,
+     "end": 15.557
     },
     {
      "display": "–",
      "spoken": "–",
      "color": null,
      "group": 0,
-     "start": 14.887,
-     "end": 15.07
+     "start": 15.557,
+     "end": 15.74
     },
     {
      "display": "dann",
      "spoken": "dann",
      "color": null,
      "group": 1,
-     "start": 15.29,
-     "end": 15.448
+     "start": 15.96,
+     "end": 16.118
     },
     {
      "display": "wird",
      "spoken": "wird",
      "color": null,
      "group": 1,
-     "start": 15.448,
-     "end": 15.607
+     "start": 16.118,
+     "end": 16.277
     },
     {
      "display": "Muschel-Tal",
      "spoken": "Muschel-Tal",
      "color": null,
      "group": 1,
-     "start": 15.607,
-     "end": 16.07
+     "start": 16.277,
+     "end": 16.74
     },
     {
      "display": "zum",
      "spoken": "zum",
      "color": null,
      "group": 1,
-     "start": 16.07,
-     "end": 16.223
+     "start": 16.74,
+     "end": 16.893
     },
     {
      "display": "Spiel!",
      "spoken": "Spiel!",
      "color": "p",
      "group": 1,
-     "start": 16.223,
-     "end": 16.387
+     "start": 16.893,
+     "end": 17.057
     }
    ],
    "spoken": "Noch zweihundertdreizehn bis tausend – dann wird Muschel-Tal zum Spiel!",
-   "start": 13.0,
-   "end": 16.387
+   "start": 13.67,
+   "end": 17.057
   },
   {
    "scene": "s05",
@@ -358,69 +375,69 @@
      "spoken": "Folg",
      "color": "g",
      "group": 0,
-     "start": 17.667,
-     "end": 17.853
+     "start": 18.337,
+     "end": 18.523
     },
     {
      "display": "mir",
      "spoken": "mir",
      "color": null,
      "group": 0,
-     "start": 17.853,
-     "end": 18.033
+     "start": 18.523,
+     "end": 18.703
     },
     {
      "display": "–",
      "spoken": "–",
      "color": null,
      "group": 0,
-     "start": 18.033,
-     "end": 18.193
+     "start": 18.703,
+     "end": 18.863
     },
     {
      "display": "und",
      "spoken": "und",
      "color": null,
      "group": 1,
-     "start": 18.193,
-     "end": 18.373
+     "start": 18.863,
+     "end": 19.043
     },
     {
      "display": "zieh",
      "spoken": "zieh",
      "color": null,
      "group": 1,
-     "start": 18.373,
-     "end": 18.559
+     "start": 19.043,
+     "end": 19.229
     },
     {
      "display": "heute",
      "spoken": "heute",
      "color": "y",
      "group": 1,
-     "start": 18.559,
-     "end": 18.911
+     "start": 19.229,
+     "end": 19.581
     },
     {
      "display": "noch",
      "spoken": "noch",
      "color": null,
      "group": 1,
-     "start": 18.911,
-     "end": 19.097
+     "start": 19.581,
+     "end": 19.767
     },
     {
      "display": "ein!",
      "spoken": "ein!",
      "color": null,
      "group": 1,
-     "start": 19.097,
-     "end": 19.277
+     "start": 19.767,
+     "end": 19.947
     }
    ],
    "spoken": "Folg mir – und zieh heute noch ein!",
-   "start": 17.667,
-   "end": 19.277
+   "start": 18.337,
+   "end": 19.947
   }
  ]
 }
