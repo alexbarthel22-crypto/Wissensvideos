@@ -11,7 +11,8 @@ import { QUIZ } from "../lib/quiz.mjs";
 
 const json = (d, s = 200) => new Response(JSON.stringify(d), { status: s, headers: { "content-type": "application/json", "cache-control": "no-store" } });
 const NAME = /^@[a-z0-9._]{1,40}$/;
-const ERF_CLIENT = new Set(["LUPE", "AUF", "UNTER", "SCOOT", "SCHOEPFER", "WAL", "SCHILD", "MOND"]);
+const ERF_CLIENT = new Set(["LUPE", "AUF", "UNTER", "SCOOT", "SCHOEPFER", "WAL", "SCHILD", "MOND", "WELT"]);
+const STICKER = new Set(["palast", "doener", "bar", "villa", "acai", "werkstatt", "baeckerei", "nagel", "markt", "kiosk", "boba", "pizza", "tierheim", "yacht", "cocobay", "kokosbad", "coast", "kokos", "cococare", "gaming", "feuer", "anleger"]);
 const SERIE = [3, 5, 8, 12, 17, 23, 32];
 const TZ = "Europe/Berlin";
 const tag = (t = Date.now()) => new Intl.DateTimeFormat("sv-SE", { timeZone: TZ, year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date(t));
@@ -458,6 +459,12 @@ export default async (req) => {
     await store.set(k, an); await store.set("x/klopfan/" + an + "/" + Date.now() + "-" + nm, "1");
     return json({ ok: true });
   }
+  // 🧩 Sticker-Album: Ort besucht → Sticker (je Ort einmal)
+  if (act === "sticker") {
+    const id = String(d.id || ""); if (!STICKER.has(id)) return json({ ok: false });
+    await store.set("x/sticker/" + nm + "/" + id, String(Date.now()));
+    return json({ ok: true, sticker: (await liste(store, "x/sticker/" + nm + "/")).map(k => k.split("/")[3]) });
+  }
   if (act === "story") return json({ ok: await setze("story", woche(heute), 25) });
   if (act === "spende") {
     const a = Math.floor(Number(d.betrag));
@@ -516,7 +523,7 @@ export default async (req) => {
     const posten = B.filter(e => e.a).map(e => ({ art: e.art, id: e.id, a: e.a, t: TEXT[e.art] || e.art }))
       .sort((x, y) => (y.id > x.id ? 1 : -1)).slice(0, 60);
     return json({
-      ok: true, nachbar, live, eingeladen, klopfer, geschenk: B.some(e => e.art === "geschenk" && e.id === heute), stand: B.reduce((s, e) => s + e.a, 0), serie: s,
+      ok: true, nachbar, live, eingeladen, klopfer, sticker: (await liste(store, "x/sticker/" + nm + "/")).map(k => k.split("/")[3]), geschenk: B.some(e => e.art === "geschenk" && e.id === heute), stand: B.reduce((s, e) => s + e.a, 0), serie: s,
       shells: B.filter(e => e.art === "shell" && e.id.startsWith(heute)).map(e => Number(e.id.split("-").pop())),
       questsDone: B.filter(e => e.art === "quest" && e.id.startsWith(heute)).map(e => Number(e.id.split("-").pop())),
       gespendet: -B.filter(e => e.art === "spende").reduce((s, e) => s + e.a, 0), posten, heute, inv: besitz(B), aus: JSON.parse((await store.get("a/" + nm)) || "{}")
