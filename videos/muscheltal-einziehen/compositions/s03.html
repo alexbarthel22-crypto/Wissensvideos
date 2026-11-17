@@ -51,21 +51,29 @@
 @font-face { font-family: "Lilita One"; src: url("assets/fonts/LilitaOne-Regular.woff2") format("woff2"); font-weight: 400; }
     .pl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 28px 12px; border-radius: 999px; color: #fff;
       font-family: "Inter", sans-serif; font-weight: 900; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); white-space: nowrap; }
-    #e3-c { position: absolute; left: 120px; right: 120px; top: 230px; padding: 18px 26px 22px; border-radius: 32px; background: #fff; box-shadow: 0 0 0 6px #1a0f08, 0 14px 0 rgba(0,0,0,.3), 0 0 50px 12px rgba(46,158,91,.5); font-family: "Inter", sans-serif; }
-    #e3-c .h { font-family: "Lilita One", sans-serif; font-size: 56px; color: #2e9e5b; text-align: center; margin-bottom: 6px; }
-    #e3-c .r { display: flex; align-items: center; gap: 16px; font-weight: 900; font-size: 42px; color: #2a1b12; padding: 8px 4px; border-top: 3px solid #eef3e8; }
-    #e3-c .r b { font-size: 40px; }
-    #e3-c .r i { margin-left: auto; font-style: normal; font-size: 26px; color: #fff; background: #ff2e7e; padding: 2px 12px 4px; border-radius: 10px; }
+    .fbtn { position: absolute; left: 0; right: 0; margin: 0 auto; width: 420px; height: 120px; border-radius: 60px; background: #fe2c55; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 56px; display: grid; place-items: center; box-shadow: 0 0 0 5px #2a1b12, 0 12px 0 rgba(0,0,0,.25); }
+    .fbtn2 { position: absolute; inset: 0; border-radius: 60px; background: #fff; color: #0a78c2; display: grid; place-items: center; opacity: 0; }
+    .fhand { position: absolute; font-size: 120px; }
+    .cf { position: absolute; left: 530px; top: 760px; width: 20px; height: 30px; border-radius: 4px; }
+    #e5-btn { top: 260px; } #e5-hand { left: 690px; top: 310px; }
+    #e5-hut { position: absolute; left: 0; right: 0; margin: 0 auto; top: 440px; width: 420px; text-align: center; }
+    #e5-hut .e { font-size: 230px; line-height: 1; filter: drop-shadow(0 12px 0 rgba(0,0,0,.25)); }
+    #e5-hut .n { display: inline-block; margin-top: -10px; padding: 6px 26px 10px; border-radius: 18px; background: #fff; box-shadow: 0 0 0 5px #1a0f08; font-family: "Inter", sans-serif; font-weight: 900; font-size: 46px; color: #e8467c; }
   </style>
-  <div id="root" data-composition-id="s03" data-start="0" data-duration="3.940" data-width="1080" data-height="1920">
-    <div id="s03-stage" class="clip stage" data-start="0" data-duration="3.940" data-track-index="0">
-      <div id="e3-c"><div class="h">🆕 Neu eingezogen</div><div class="r" id="e3-r0"><b>🛖</b>@johanna_prx<i>NEU</i></div><div class="r" id="e3-r1"><b>🛖</b>@miskicelma2701<i>NEU</i></div><div class="r" id="e3-r2"><b>🛖</b>@najlahasa307<i>NEU</i></div><div class="r" id="e3-r3"><b>🛖</b>@jonas_mtb156<i>NEU</i></div><div class="r" id="e3-r4"><b>🛖</b>@d9750075<i>NEU</i></div></div>
+  <div id="root" data-composition-id="s03" data-start="0" data-duration="2.770" data-width="1080" data-height="1920">
+    <div id="s03-stage" class="clip stage" data-start="0" data-duration="2.770" data-track-index="0">
+      <div id="e5-dim" data-layout-ignore style="position:absolute;inset:0;background:rgba(10,12,40,.55)"></div>
+      <div id="e5-btn" class="fbtn">+ Folgen<div id="e5-btn2" class="fbtn2">✓ Gefolgt</div></div>
+      <div id="e5-hand" class="fhand" data-layout-ignore>👆</div>
+      <div id="e5-hut"><div class="e">🛖</div><div class="n" id="e5-name">@Dein Name?</div></div>
+      <div id="e5-cf"></div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 3.94, "L3": [0.2, 2.86], "L3.words": [["die", 0.2, 0.322], ["ersten", 0.322, 0.566], ["sind", 0.566, 0.692], ["schon", 0.692, 0.822], ["eingezogen", 0.822, 1.301], ["", 1.301, 1.41], ["und", 1.52, 1.688], ["jeden", 1.688, 2.019], ["tag", 2.019, 2.187], ["werden", 2.187, 2.523], ["es", 2.523, 2.686], ["mehr", 2.686, 2.86]]};
+      const C = {"__dur": 2.77, "L3": [0.2, 1.99], "L3.words": [["folg", 0.2, 0.387], ["mir", 0.387, 0.568], ["", 0.568, 0.73], ["und", 0.91, 1.064], ["zieh", 1.064, 1.222], ["mit", 1.222, 1.376], ["auf", 1.376, 1.529], ["die", 1.529, 1.683], ["inseln", 1.683, 1.99]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -109,9 +117,19 @@
 
       wrapBt("#s03-stage");
       const tl = gsap.timeline({ paused: true });
-      const t3 = line("L3")[0];
-      tl.fromTo("#e3-c", { opacity: 0, y: -60 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, t3 - .1);
-      tl.fromTo("#e3-c .r", { opacity: 0, x: -80 }, { opacity: 1, x: 0, duration: .22, stagger: .3, ease: "back.out(2.4)" }, t3 + .25);
+      const t5 = line("L3")[0], fo = at("L3", "Folg"), he = at("L3", "Inseln");
+      tl.fromTo("#e5-btn", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, t5 - .2);
+      tl.fromTo("#e5-hand", { opacity: 0, x: 160, y: 160 }, { opacity: 1, x: 0, y: 0, duration: .25, ease: "power3.out" }, fo);
+      tl.to("#e5-hand", { y: -26, scale: .9, duration: .1, yoyo: true, repeat: 1 }, fo + .3);
+      tl.to("#e5-btn2", { opacity: 1, duration: .05 }, fo + .4);
+      tl.to("#e5-hand", { opacity: 0, duration: .2 }, fo + .8);
+      tl.fromTo("#e5-hut", { opacity: 0, scale: .2, y: 80 }, { opacity: 1, scale: 1, y: 0, duration: .35, ease: "back.out(2.2)" }, fo + .45);
+      tl.to("#e5-name", { scale: 1.1, duration: .18, yoyo: true, repeat: 7, ease: "sine.inOut" }, he);
+      { const R = rng(55), box = document.getElementById("e5-cf"), cols = ["#ffd23f", "#e8467c", "#2fb3a0", "#fff", "#7b4fe0", "#ff7a59"];
+      for (let k = 0; k < 60; k++) { const d = document.createElement("div"); d.className = "cf"; d.style.background = cols[k % cols.length]; box.appendChild(d);
+        const a = R() * Math.PI * 2, v = 380 + R() * 560, dx = Math.cos(a) * v, dy = Math.sin(a) * v * .8 - 300;
+        tl.fromTo(d, { opacity: 0, x: 0, y: 0, rotation: 0, scale: .6 }, { opacity: 1, x: dx * .7, y: dy * .7, rotation: (R() - .5) * 720, scale: 1, duration: .45, ease: "power3.out" }, (fo + .45));
+        tl.to(d, { x: dx, y: dy + 700, rotation: "+=" + Math.round((R() - .5) * 540), opacity: 0, duration: 1.4, ease: "power1.in" }, (fo + .45) + .45); } }
       tl.to("#s03-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
       window.__timelines["s03"] = tl;
     })();

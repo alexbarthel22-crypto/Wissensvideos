@@ -1,135 +1,151 @@
 {
- "duration": 20.447,
+ "duration": 23.7,
  "lines": [
   {
-   "scene": "s01",
+   "scene": "s02",
    "id": "L1",
    "words": [
     {
-     "display": "787",
-     "spoken": "Siebenhundertsiebenundachtzig",
+     "display": "785",
+     "spoken": "Siebenhundertfünfundachtzig",
      "color": "y",
      "group": 0,
      "start": 0.0,
-     "end": 1.564
+     "end": 1.142
     },
     {
      "display": "Menschen",
      "spoken": "Menschen",
      "color": "y",
      "group": 0,
-     "start": 1.564,
-     "end": 1.921
+     "start": 1.142,
+     "end": 1.433
     },
     {
      "display": "wohnen",
      "spoken": "wohnen",
      "color": null,
-     "group": 1,
-     "start": 1.921,
-     "end": 2.266
+     "group": 0,
+     "start": 1.433,
+     "end": 1.715
     },
     {
-     "display": "schon",
-     "spoken": "schon",
-     "color": null,
-     "group": 1,
-     "start": 2.266,
-     "end": 2.45
-    },
-    {
-     "display": "in",
-     "spoken": "in",
-     "color": null,
-     "group": 1,
-     "start": 2.45,
-     "end": 2.617
-    },
-    {
-     "display": "Muschel-Tal!",
-     "spoken": "Muschel-Tal!",
-     "color": "p",
-     "group": 1,
-     "start": 2.617,
-     "end": 3.14
-    }
-   ],
-   "spoken": "Siebenhundertsiebenundachtzig Menschen wohnen schon in Muschel-Tal!",
-   "start": 0.0,
-   "end": 3.14
-  },
-  {
-   "scene": "s02",
-   "id": "L2",
-   "words": [
-    {
-     "display": "Doch",
-     "spoken": "Doch",
+     "display": "auf",
+     "spoken": "auf",
      "color": null,
      "group": 0,
-     "start": 4.42,
-     "end": 4.62
+     "start": 1.715,
+     "end": 1.856
     },
     {
-     "display": "die",
-     "spoken": "die",
+     "display": "dieser",
+     "spoken": "dieser",
      "color": null,
      "group": 0,
-     "start": 4.62,
-     "end": 4.814
+     "start": 1.856,
+     "end": 1.45
     },
     {
      "display": "Insel",
      "spoken": "Insel",
      "color": null,
      "group": 0,
-     "start": 4.814,
-     "end": 5.193
+     "start": 1.45,
+     "end": 2.414
+    },
+    {
+     "display": "…",
+     "spoken": "…",
+     "color": null,
+     "group": 0,
+     "start": 2.414,
+     "end": 2.79
+    },
+    {
+     "display": "das",
+     "spoken": "das",
+     "color": null,
+     "group": 1,
+     "start": 2.79,
+     "end": 2.981
+    },
+    {
+     "display": "ist",
+     "spoken": "ist",
+     "color": null,
+     "group": 1,
+     "start": 2.981,
+     "end": 3.171
+    },
+    {
+     "display": "Muschel-Tal!",
+     "spoken": "Muschel-Tal!",
+     "color": "p",
+     "group": 1,
+     "start": 3.171,
+     "end": 3.75
+    }
+   ],
+   "spoken": "Siebenhundertfünfundachtzig Menschen wohnen auf dieser Insel … das ist Muschel-Tal!",
+   "start": 0.0,
+   "end": 3.75
+  },
+  {
+   "scene": "s02",
+   "id": "L1k",
+   "words": [
+    {
+     "display": "Doch",
+     "spoken": "Doch",
+     "color": null,
+     "group": 0,
+     "start": 4.37,
+     "end": 4.55
+    },
+    {
+     "display": "sie",
+     "spoken": "sie",
+     "color": null,
+     "group": 0,
+     "start": 4.55,
+     "end": 4.725
     },
     {
      "display": "wird",
      "spoken": "wird",
      "color": null,
      "group": 0,
-     "start": 5.193,
-     "end": 5.394
+     "start": 4.725,
+     "end": 4.905
     },
     {
      "display": "viel",
      "spoken": "viel",
      "color": "r",
-     "group": 1,
-     "start": 5.394,
-     "end": 5.594
+     "group": 0,
+     "start": 4.905,
+     "end": 5.085
     },
     {
      "display": "zu",
      "spoken": "zu",
      "color": "r",
-     "group": 1,
-     "start": 5.594,
-     "end": 5.78
+     "group": 0,
+     "start": 5.085,
+     "end": 5.253
     },
     {
-     "display": "klein",
-     "spoken": "klein",
+     "display": "klein!",
+     "spoken": "klein!",
      "color": "r",
-     "group": 1,
-     "start": 5.78,
-     "end": 5.987
-    },
-    {
-     "display": "…",
-     "spoken": "…",
-     "color": null,
-     "group": 1,
-     "start": 5.987,
-     "end": 6.16
+     "group": 0,
+     "start": 5.253,
+     "end": 5.44
     }
    ],
-   "spoken": "Doch die Insel wird viel zu klein …",
-   "start": 4.42,
-   "end": 6.16
+   "spoken": "Doch sie wird viel zu klein!",
+   "start": 4.37,
+   "end": 5.44
   },
   {
    "scene": "s02",
@@ -140,304 +156,369 @@
      "spoken": "Zeit",
      "color": null,
      "group": 0,
-     "start": 7.28,
-     "end": 7.483
+     "start": 6.56,
+     "end": 6.728
     },
     {
      "display": "für",
      "spoken": "für",
      "color": null,
      "group": 0,
-     "start": 7.483,
-     "end": 7.679
+     "start": 6.728,
+     "end": 6.891
     },
     {
      "display": "ein",
      "spoken": "ein",
      "color": null,
      "group": 0,
-     "start": 7.679,
-     "end": 7.876
+     "start": 6.891,
+     "end": 7.054
     },
     {
      "display": "Upgrade!",
      "spoken": "Upgrade!",
      "color": "g",
      "group": 0,
-     "start": 7.876,
-     "end": 8.45
+     "start": 7.054,
+     "end": 7.53
     }
    ],
    "spoken": "Zeit für ein Upgrade!",
-   "start": 7.28,
-   "end": 8.45
+   "start": 6.56,
+   "end": 7.53
+  },
+  {
+   "scene": "s02",
+   "id": "L2c",
+   "words": [
+    {
+     "display": "Siehst",
+     "spoken": "Siehst",
+     "color": "y",
+     "group": 0,
+     "start": 8.65,
+     "end": 8.842
+    },
+    {
+     "display": "du",
+     "spoken": "du",
+     "color": null,
+     "group": 0,
+     "start": 8.842,
+     "end": 9.01
+    },
+    {
+     "display": "dich?",
+     "spoken": "dich?",
+     "color": "y",
+     "group": 0,
+     "start": 9.01,
+     "end": 9.19
+    },
+    {
+     "display": "Wenn",
+     "spoken": "Wenn",
+     "color": null,
+     "group": 1,
+     "start": 9.44,
+     "end": 9.561
+    },
+    {
+     "display": "nicht",
+     "spoken": "nicht",
+     "color": null,
+     "group": 1,
+     "start": 9.561,
+     "end": 9.686
+    },
+    {
+     "display": "–",
+     "spoken": "–",
+     "color": null,
+     "group": 1,
+     "start": 9.686,
+     "end": 9.79
+    },
+    {
+     "display": "kommentiere:",
+     "spoken": "kommentiere:",
+     "color": null,
+     "group": 1,
+     "start": 10.04,
+     "end": 10.53
+    },
+    {
+     "display": "Wo",
+     "spoken": "Wo",
+     "color": "p",
+     "group": 1,
+     "start": 10.78,
+     "end": 10.952
+    },
+    {
+     "display": "bin",
+     "spoken": "bin",
+     "color": "p",
+     "group": 1,
+     "start": 10.952,
+     "end": 11.131
+    },
+    {
+     "display": "ich?",
+     "spoken": "ich?",
+     "color": "p",
+     "group": 1,
+     "start": 11.131,
+     "end": 11.31
+    }
+   ],
+   "spoken": "Siehst du dich? Wenn nicht – kommentiere: Wo bin ich?",
+   "start": 8.65,
+   "end": 11.31
   },
   {
    "scene": "s03",
    "id": "L3",
    "words": [
     {
-     "display": "Die",
-     "spoken": "Die",
-     "color": null,
-     "group": 0,
-     "start": 9.73,
-     "end": 9.852
-    },
-    {
-     "display": "Ersten",
-     "spoken": "Ersten",
-     "color": "g",
-     "group": 0,
-     "start": 9.852,
-     "end": 10.096
-    },
-    {
-     "display": "sind",
-     "spoken": "sind",
-     "color": null,
-     "group": 0,
-     "start": 10.096,
-     "end": 10.222
-    },
-    {
-     "display": "schon",
-     "spoken": "schon",
-     "color": null,
-     "group": 0,
-     "start": 10.222,
-     "end": 10.352
-    },
-    {
-     "display": "eingezogen",
-     "spoken": "eingezogen",
-     "color": "g",
-     "group": 0,
-     "start": 10.352,
-     "end": 10.831
-    },
-    {
-     "display": "–",
-     "spoken": "–",
-     "color": null,
-     "group": 0,
-     "start": 10.831,
-     "end": 10.94
-    },
-    {
-     "display": "und",
-     "spoken": "und",
-     "color": null,
-     "group": 1,
-     "start": 11.05,
-     "end": 11.218
-    },
-    {
-     "display": "jeden",
-     "spoken": "jeden",
-     "color": "r",
-     "group": 1,
-     "start": 11.218,
-     "end": 11.549
-    },
-    {
-     "display": "Tag",
-     "spoken": "Tag",
-     "color": null,
-     "group": 1,
-     "start": 11.549,
-     "end": 11.717
-    },
-    {
-     "display": "werden",
-     "spoken": "werden",
-     "color": null,
-     "group": 1,
-     "start": 11.717,
-     "end": 12.053
-    },
-    {
-     "display": "es",
-     "spoken": "es",
-     "color": null,
-     "group": 1,
-     "start": 12.053,
-     "end": 12.216
-    },
-    {
-     "display": "mehr!",
-     "spoken": "mehr!",
-     "color": null,
-     "group": 1,
-     "start": 12.216,
-     "end": 12.39
-    }
-   ],
-   "spoken": "Die Ersten sind schon eingezogen – und jeden Tag werden es mehr!",
-   "start": 9.73,
-   "end": 12.39
-  },
-  {
-   "scene": "s04",
-   "id": "L4",
-   "words": [
-    {
-     "display": "Noch",
-     "spoken": "Noch",
-     "color": null,
-     "group": 0,
-     "start": 13.67,
-     "end": 13.882
-    },
-    {
-     "display": "213",
-     "spoken": "zweihundertdreizehn",
-     "color": "y",
-     "group": 0,
-     "start": 13.882,
-     "end": 14.935
-    },
-    {
-     "display": "bis",
-     "spoken": "bis",
-     "color": null,
-     "group": 0,
-     "start": 14.935,
-     "end": 15.14
-    },
-    {
-     "display": "1.000",
-     "spoken": "tausend",
-     "color": "y",
-     "group": 0,
-     "start": 15.14,
-     "end": 15.557
-    },
-    {
-     "display": "–",
-     "spoken": "–",
-     "color": null,
-     "group": 0,
-     "start": 15.557,
-     "end": 15.74
-    },
-    {
-     "display": "dann",
-     "spoken": "dann",
-     "color": null,
-     "group": 1,
-     "start": 15.96,
-     "end": 16.118
-    },
-    {
-     "display": "wird",
-     "spoken": "wird",
-     "color": null,
-     "group": 1,
-     "start": 16.118,
-     "end": 16.277
-    },
-    {
-     "display": "Muschel-Tal",
-     "spoken": "Muschel-Tal",
-     "color": null,
-     "group": 1,
-     "start": 16.277,
-     "end": 16.74
-    },
-    {
-     "display": "zum",
-     "spoken": "zum",
-     "color": null,
-     "group": 1,
-     "start": 16.74,
-     "end": 16.893
-    },
-    {
-     "display": "Spiel!",
-     "spoken": "Spiel!",
-     "color": "p",
-     "group": 1,
-     "start": 16.893,
-     "end": 17.057
-    }
-   ],
-   "spoken": "Noch zweihundertdreizehn bis tausend – dann wird Muschel-Tal zum Spiel!",
-   "start": 13.67,
-   "end": 17.057
-  },
-  {
-   "scene": "s05",
-   "id": "L5",
-   "words": [
-    {
      "display": "Folg",
      "spoken": "Folg",
      "color": "g",
      "group": 0,
-     "start": 18.337,
-     "end": 18.523
+     "start": 13.19,
+     "end": 13.377
     },
     {
      "display": "mir",
      "spoken": "mir",
      "color": null,
      "group": 0,
-     "start": 18.523,
-     "end": 18.703
+     "start": 13.377,
+     "end": 13.558
     },
     {
      "display": "–",
      "spoken": "–",
      "color": null,
      "group": 0,
-     "start": 18.703,
-     "end": 18.863
+     "start": 13.558,
+     "end": 13.72
     },
     {
      "display": "und",
      "spoken": "und",
      "color": null,
      "group": 1,
-     "start": 18.863,
-     "end": 19.043
+     "start": 13.9,
+     "end": 14.054
     },
     {
      "display": "zieh",
      "spoken": "zieh",
      "color": null,
      "group": 1,
-     "start": 19.043,
-     "end": 19.229
+     "start": 14.054,
+     "end": 14.212
     },
     {
-     "display": "heute",
-     "spoken": "heute",
+     "display": "mit",
+     "spoken": "mit",
+     "color": null,
+     "group": 1,
+     "start": 14.212,
+     "end": 14.366
+    },
+    {
+     "display": "auf",
+     "spoken": "auf",
+     "color": null,
+     "group": 1,
+     "start": 14.366,
+     "end": 14.519
+    },
+    {
+     "display": "die",
+     "spoken": "die",
+     "color": null,
+     "group": 1,
+     "start": 14.519,
+     "end": 14.673
+    },
+    {
+     "display": "Inseln!",
+     "spoken": "Inseln!",
      "color": "y",
      "group": 1,
-     "start": 19.229,
-     "end": 19.581
-    },
-    {
-     "display": "noch",
-     "spoken": "noch",
-     "color": null,
-     "group": 1,
-     "start": 19.581,
-     "end": 19.767
-    },
-    {
-     "display": "ein!",
-     "spoken": "ein!",
-     "color": null,
-     "group": 1,
-     "start": 19.767,
-     "end": 19.947
+     "start": 14.673,
+     "end": 14.98
     }
    ],
-   "spoken": "Folg mir – und zieh heute noch ein!",
-   "start": 18.337,
-   "end": 19.947
+   "spoken": "Folg mir – und zieh mit auf die Inseln!",
+   "start": 13.19,
+   "end": 14.98
+  },
+  {
+   "scene": "s04",
+   "id": "L4",
+   "words": [
+    {
+     "display": "Bei",
+     "spoken": "Bei",
+     "color": null,
+     "group": 0,
+     "start": 15.96,
+     "end": 16.118
+    },
+    {
+     "display": "1.000",
+     "spoken": "tausend",
+     "color": "y",
+     "group": 0,
+     "start": 16.118,
+     "end": 16.44
+    },
+    {
+     "display": "Bewohnern",
+     "spoken": "Bewohnern",
+     "color": null,
+     "group": 0,
+     "start": 16.44,
+     "end": 16.914
+    },
+    {
+     "display": "kommt",
+     "spoken": "kommt",
+     "color": null,
+     "group": 1,
+     "start": 16.914,
+     "end": 17.083
+    },
+    {
+     "display": "ein",
+     "spoken": "ein",
+     "color": null,
+     "group": 1,
+     "start": 17.083,
+     "end": 17.241
+    },
+    {
+     "display": "kostenloses,",
+     "spoken": "kostenloses,",
+     "color": "g",
+     "group": 1,
+     "start": 17.241,
+     "end": 17.868
+    },
+    {
+     "display": "eigenes",
+     "spoken": "eigenes",
+     "color": "g",
+     "group": 1,
+     "start": 17.868,
+     "end": 18.331
+    },
+    {
+     "display": "Spiel!",
+     "spoken": "Spiel!",
+     "color": "p",
+     "group": 1,
+     "start": 18.331,
+     "end": 18.5
+    }
+   ],
+   "spoken": "Bei tausend Bewohnern kommt ein kostenloses, eigenes Spiel!",
+   "start": 15.96,
+   "end": 18.5
+  },
+  {
+   "scene": "s04",
+   "id": "L4b",
+   "words": [
+    {
+     "display": "Welt",
+     "spoken": "Welt",
+     "color": null,
+     "group": 0,
+     "start": 19.02,
+     "end": 19.238
+    },
+    {
+     "display": "erkunden,",
+     "spoken": "erkunden,",
+     "color": "g",
+     "group": 0,
+     "start": 19.238,
+     "end": 19.862
+    },
+    {
+     "display": "dekorieren,",
+     "spoken": "dekorieren,",
+     "color": "y",
+     "group": 0,
+     "start": 19.862,
+     "end": 20.689
+    },
+    {
+     "display": "Haustiere",
+     "spoken": "Haustiere",
+     "color": "p",
+     "group": 1,
+     "start": 20.689,
+     "end": 21.321
+    },
+    {
+     "display": "holen,",
+     "spoken": "holen,",
+     "color": null,
+     "group": 1,
+     "start": 21.321,
+     "end": 21.734
+    },
+    {
+     "display": "Freunde",
+     "spoken": "Freunde",
+     "color": "g",
+     "group": 1,
+     "start": 21.734,
+     "end": 22.163
+    },
+    {
+     "display": "finden",
+     "spoken": "finden",
+     "color": null,
+     "group": 1,
+     "start": 22.163,
+     "end": 22.584
+    },
+    {
+     "display": "–",
+     "spoken": "–",
+     "color": null,
+     "group": 1,
+     "start": 22.584,
+     "end": 22.771
+    },
+    {
+     "display": "und",
+     "spoken": "und",
+     "color": null,
+     "group": 2,
+     "start": 22.771,
+     "end": 22.982
+    },
+    {
+     "display": "mehr!",
+     "spoken": "mehr!",
+     "color": "y",
+     "group": 2,
+     "start": 22.982,
+     "end": 23.2
+    }
+   ],
+   "spoken": "Welt erkunden, dekorieren, Haustiere holen, Freunde finden – und mehr!",
+   "start": 19.02,
+   "end": 23.2
   }
  ]
 }

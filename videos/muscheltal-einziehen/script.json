@@ -1,6 +1,6 @@
 {
   "title": "Muschel-Tal – 787 Menschen wohnen schon hier: Folg mir und zieh ein!",
-  "voice": "Gemini TTS (gemini-2.5-pro-preview-tts, Stimme Puck)",
+  "voice": "Google Cloud TTS (de-DE-Chirp3-HD-Puck)",
   "notes": "Tag 8 (15.11.): Hook Tierheim (nur noch 50, 750 Bewohner); Muschel-Tal kurz; Streuner; 3 Live-Job-Verlosungen (Boba Beach @hanna.013, Coast & Cotton @pxlinx.022, Coco Bay @haylie.aeriana); LIVE-Insel als eigene Insel getrennt von Muschel-Tal (Spielstand + Rangliste folgen); Schluss: der 800. sein.",
   "lead_in": 0.0,
   "bg": "#0a5a92",
@@ -12,7 +12,7 @@
     "size": 92,
     "bars": true,
     "color": "rgba(255,255,255,.62)",
-    "css": "@font-face { font-family: 'Lilita One'; src: url('assets/fonts/LilitaOne-Regular.woff2') format('woff2'); font-weight: 400; }\n    .inner.hook { font-family: 'Lilita One', sans-serif; font-weight: 400; font-size: 98px; line-height: 1.12; letter-spacing: .01em; top: -560px; }\n    .inner.hook .bar { background: #ff3d7f !important; padding: .02em .3em .08em; border-radius: .5em; }\n    .inner.hook .w { color: #fff; }\n    .inner .bar .w { margin: 0 .07em; }\n    .inner .bar { border-radius: .55em; padding: .04em .36em .1em; }\n    .inner .w { white-space: nowrap; }\n    .inner.hook .w { display: inline-block; transform-origin: 50% 70%; }\n    .inner.hook .bar { background: none !important; box-shadow: none !important; padding: 0; }\n    .inner.hook .w { background: #ff3d7f; border-radius: .3em; padding: .02em .16em .1em; margin: .07em .03em; box-shadow: 0 0 0 0px #2a1b12, 0 8px 0 rgba(0,0,0,.28); position: relative; transform-origin: 50% 55%; }\n    .inner.hook .w.k-y { position: relative; z-index: 2; }\n    #cgi1.inner.hook, #cgi2.inner.hook { top: 0; }\n    .inner.hook { left: 40px; right: 40px; }\n    #cgi1 .w, #cgi2 .w { margin: .1em .12em; }\n    \n    \n    \n    #cg0,#cg1 { display: none !important; }",
+    "css": "@font-face { font-family: 'Lilita One'; src: url('assets/fonts/LilitaOne-Regular.woff2') format('woff2'); font-weight: 400; }\n    .inner.hook { font-family: 'Lilita One', sans-serif; font-weight: 400; font-size: 98px; line-height: 1.12; letter-spacing: .01em; top: -560px; }\n    .inner.hook .bar { background: #ff3d7f !important; padding: .02em .3em .08em; border-radius: .5em; }\n    .inner.hook .w { color: #fff; }\n    .inner .bar .w { margin: 0 .07em; }\n    .inner .bar { border-radius: .55em; padding: .04em .36em .1em; }\n    .inner .w { white-space: nowrap; }\n    .inner.hook .w { display: inline-block; transform-origin: 50% 70%; }\n    .inner.hook .bar { background: none !important; box-shadow: none !important; padding: 0; }\n    .inner.hook .w { background: #ff3d7f; border-radius: .3em; padding: .02em .16em .1em; margin: .07em .03em; box-shadow: 0 0 0 0px #2a1b12, 0 8px 0 rgba(0,0,0,.28); position: relative; transform-origin: 50% 55%; }\n    .inner.hook .w.k-y { position: relative; z-index: 2; }\n    #cgi1.inner.hook, #cgi2.inner.hook { top: 0; }\n    .inner.hook { left: 40px; right: 40px; }\n    #cgi1 .w, #cgi2 .w { margin: .1em .12em; }\n    \n    \n    \n    #cg4,#cg5,#cg10,#cg11,#cg12 { display: none !important; }",
     "vary": true,
     "pop_scale": 1.2,
     "bar_colors": [
@@ -26,43 +26,18 @@
   },
   "scenes": [
     {
-      "id": "s01",
-      "tag": "",
-      "sfx": [
-        {
-          "name": "slot-ticks",
-          "at": "s01+0.0",
-          "volume": 0.45
-        },
-        {
-          "name": "impact-bass-2",
-          "at": "L1:Menschen",
-          "volume": 0.6
-        },
-        {
-          "name": "yippee",
-          "at": "L1:Muschel-Tal",
-          "volume": 0.5
-        }
-      ],
-      "lines": [
-        {
-          "id": "L1",
-          "text": "*y:787|Siebenhundertsiebenundachtzig *y:Menschen / wohnen schon in *p:Muschel-Tal!",
-          "speed": 1.0,
-          "style": "Style: a young German guy, around 20, a hyped gaming streamer who just got the best news ever – thrilled, emotional, full of joy and suspense, big dynamic intonation, smiling while talking, natural German, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-          "pause": 0.0
-        }
-      ]
-    },
-    {
       "id": "s02",
       "tag": "",
       "sfx": [
         {
-          "name": "sad-trombone",
-          "at": "L2:klein",
-          "volume": 0.35
+          "name": "alarm",
+          "at": "s02+0.0",
+          "volume": 0.45
+        },
+        {
+          "name": "impact-bass-2",
+          "at": "L1k:klein",
+          "volume": 0.55
         },
         {
           "name": "impact-bass-2",
@@ -78,19 +53,48 @@
           "name": "yippee",
           "at": "L2b:Upgrade+0.4",
           "volume": 0.55
+        },
+        {
+          "name": "pop",
+          "at": "L2c:dich",
+          "volume": 0.45
+        },
+        {
+          "name": "notification",
+          "at": "L2c:Wo",
+          "volume": 0.5
+        },
+        {
+          "name": "whoosh",
+          "at": "L1:Muschel-Tal-0.2",
+          "volume": 0.4
         }
       ],
       "lines": [
         {
-          "id": "L2",
-          "text": "Doch die Insel wird / *r:viel *r:zu *r:klein …",
+          "id": "L1",
+          "text": "*y:785|Siebenhundertfünfundachtzig *y:Menschen wohnen auf dieser Insel … / das ist *p:Muschel-Tal!",
+          "speed": 1.0,
+          "style": "Style: a young German guy, around 20, a hyped gaming streamer who just got the best news ever – thrilled, emotional, full of joy and suspense, big dynamic intonation, smiling while talking, natural German, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+          "pause": 0.0
+        },
+        {
+          "id": "L1k",
+          "text": "Doch sie wird *r:viel *r:zu *r:klein!",
+          "speed": 1.1,
+          "style": "Style: a young German guy, around 20, a hyped gaming streamer who just got the best news ever – thrilled, emotional, full of joy and suspense, big dynamic intonation, smiling while talking, natural German, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+          "pause": 0.4
+        },
+        {
+          "id": "L2b",
+          "text": "Zeit für ein *g:Upgrade!",
           "speed": 1.1,
           "style": "Style: a young German guy, around 20, a hyped gaming streamer who just got the best news ever – thrilled, emotional, full of joy and suspense, big dynamic intonation, smiling while talking, natural German, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
           "pause": 0.9
         },
         {
-          "id": "L2b",
-          "text": "Zeit für ein *g:Upgrade!",
+          "id": "L2c",
+          "text": "*y:Siehst du *y:dich? / Wenn nicht – kommentiere: *p:Wo *p:bin *p:ich?",
           "speed": 1.1,
           "style": "Style: a young German guy, around 20, a hyped gaming streamer who just got the best news ever – thrilled, emotional, full of joy and suspense, big dynamic intonation, smiling while talking, natural German, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
           "pause": 0.9
@@ -102,23 +106,23 @@
       "tag": "",
       "sfx": [
         {
-          "name": "notification",
-          "at": "L3:eingezogen",
+          "name": "click",
+          "at": "L3:Folg",
           "volume": 0.5
         },
         {
-          "name": "pop",
-          "at": "L3:jeden",
-          "volume": 0.4
+          "name": "yippee",
+          "at": "L3:Inseln",
+          "volume": 0.55
         }
       ],
       "lines": [
         {
           "id": "L3",
-          "text": "Die *g:Ersten sind schon *g:eingezogen – / und *r:jeden Tag werden es mehr!",
-          "speed": 1.1,
+          "text": "*g:Folg mir – / und zieh mit auf die *y:Inseln!",
+          "speed": 1.05,
           "style": "Style: a young German guy, around 20, a hyped gaming streamer who just got the best news ever – thrilled, emotional, full of joy and suspense, big dynamic intonation, smiling while talking, natural German, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-          "pause": 0.9
+          "pause": 1.5
         }
       ]
     },
@@ -128,47 +132,54 @@
       "sfx": [
         {
           "name": "slot-ticks",
-          "at": "L4:Noch",
+          "at": "L4:Bei",
           "volume": 0.35
         },
         {
           "name": "impact-bass-2",
           "at": "L4:Spiel",
+          "volume": 0.6
+        },
+        {
+          "name": "pop",
+          "at": "L4b:erkunden",
+          "volume": 0.45
+        },
+        {
+          "name": "pop",
+          "at": "L4b:dekorieren",
+          "volume": 0.45
+        },
+        {
+          "name": "pop",
+          "at": "L4b:Haustiere",
+          "volume": 0.45
+        },
+        {
+          "name": "pop",
+          "at": "L4b:Freunde",
+          "volume": 0.45
+        },
+        {
+          "name": "yippee",
+          "at": "L4b:mehr",
           "volume": 0.55
         }
       ],
       "lines": [
         {
           "id": "L4",
-          "text": "Noch *y:213|zweihundertdreizehn bis *y:1.000|tausend – / dann wird Muschel-Tal zum *p:Spiel!",
+          "text": "Bei *y:1.000|tausend Bewohnern / kommt ein *g:kostenloses, *g:eigenes *p:Spiel!",
           "speed": 1.1,
           "style": "Style: a young German guy, around 20, a hyped gaming streamer who just got the best news ever – thrilled, emotional, full of joy and suspense, big dynamic intonation, smiling while talking, natural German, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-          "pause": 0.9
-        }
-      ]
-    },
-    {
-      "id": "s05",
-      "tag": "",
-      "sfx": [
-        {
-          "name": "click",
-          "at": "L5:Folg",
-          "volume": 0.5
+          "pause": 0.6
         },
         {
-          "name": "yippee",
-          "at": "L5:heute",
-          "volume": 0.55
-        }
-      ],
-      "lines": [
-        {
-          "id": "L5",
-          "text": "*g:Folg mir – / und zieh *y:heute noch ein!",
-          "speed": 1.05,
+          "id": "L4b",
+          "text": "Welt *g:erkunden, *y:dekorieren, / *p:Haustiere holen, *g:Freunde finden – / und *y:mehr!",
+          "speed": 1.1,
           "style": "Style: a young German guy, around 20, a hyped gaming streamer who just got the best news ever – thrilled, emotional, full of joy and suspense, big dynamic intonation, smiling while talking, natural German, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-          "pause": 0.9
+          "pause": 0.3
         }
       ]
     }
@@ -178,14 +189,5 @@
   "pitch": 0,
   "bgvideo": {
     "src": "assets/bg.mp4"
-  },
-  "ambience": {
-    "src": "assets/music/atmo.wav",
-    "volume": 0.6
-  },
-  "music": {
-    "src": "assets/music/suedsee.wav",
-    "volume": 1.0,
-    "note": "tools/make_music_tropical.py, im Code erzeugt (lizenzfrei), unter der Stimme automatisch leiser"
   }
 }
