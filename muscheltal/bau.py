@@ -414,13 +414,14 @@ section h2 span{background:var(--sun);border:2px solid var(--ink);border-radius:
 .n .em{width:46px;height:46px;border-radius:50%;background:var(--sand);border:2px solid var(--ink);display:grid;place-items:center;font-size:24px}
 .n h3{margin:2px 0 2px;font-size:18px;line-height:1.25}
 .n p{margin:0;color:var(--soft);font-weight:700;font-size:15px}
+.alt{margin:22px 0 6px}.alt summary{cursor:pointer;list-style:none;display:block;text-align:center;background:#fff;border:3px solid var(--ink);border-radius:999px;padding:10px 16px;font-weight:900;font-size:16px;box-shadow:3px 3px 0 var(--ink)}.alt summary::-webkit-details-marker{display:none}.alt[open] summary{margin-bottom:6px}
 </style>
 </head>
 <body>
 <header class="top"><a href="./">← Zur Karte</a><small>MUSCHEL-TAL</small><h1>📰 News</h1><p>Alles, was auf den Inseln passiert ist – neue Inseln, Gebäude, Events, Jobs und Bürgermeister.</p>
 <svg viewBox="0 0 400 24" preserveAspectRatio="none"><path d="M0 14 Q25 2 50 14 T100 14 T150 14 T200 14 T250 14 T300 14 T350 14 T400 14 V24 H0Z" fill="#fff4e0"/></svg></header>
 <main>
-""" + "\n".join(teile) + """
+""" + "\n".join(teile[:3]) + (f'''<details class="alt"><summary>📂 Ältere News ({len(teile) - 3} Tage)</summary>{"".join(teile[3:])}</details>''' if len(teile) > 3 else "") + """
  <a class="cta" href="https://www.tiktok.com/@muscheltal" target="_blank" rel="noopener">➕ @muscheltal folgen und einziehen</a>
 </main>
 </body>
@@ -565,7 +566,7 @@ section{background:#fff;border:3px solid var(--ink);border-radius:20px;padding:1
  <div class="such"><input id="bs" type="search" placeholder="Beruf, Ort oder Name suchen …" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search"><button type="button" id="bx" hidden aria-label="Suche leeren">✕</button></div>
  <p class="leer" id="bl" hidden>Nichts gefunden 🐚</p>
  <p class="hint">💬 Du willst auch einen Job auf Muschel-Tal? Schreib es in die Kommentare unter dem neuesten Video von <a href="https://www.tiktok.com/@muscheltal" target="_blank" rel="noopener">@muscheltal</a> auf TikTok!</p>
-""" + "\n".join(teile) + """
+""" + "\n".join(teile[:3]) + (f'''<details class="alt"><summary>📂 Ältere News ({len(teile) - 3} Tage)</summary>{"".join(teile[3:])}</details>''' if len(teile) > 3 else "") + """
  <a class="cta" href="https://www.tiktok.com/@muscheltal" target="_blank" rel="noopener">💬 Auf TikTok kommentieren</a>
 </main>
 <script>/* Jobs mit Ablaufdatum: nach dem letzten Tag automatisch ausblenden */
