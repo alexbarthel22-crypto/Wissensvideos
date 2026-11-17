@@ -1,10 +1,10 @@
 // Anonyme Besuchs-Statistik + Auswertung für den Betreiber.
 // Besucher: Die Seite schickt ohne Cookies/ohne Speicher auf dem Gerät gesammelte Werte einer Sitzung (zufällige Sitzungs-Nummer,
 // nur im Arbeitsspeicher) – keine Namen, keine IP-Adressen. Gespeichert als "s/<Tag>/<Sitzung>" (wird bei jeder Meldung überschrieben).
-// Betreiber: GET mit Passwort (gleiches Passwort wie die Zugangssperre, nur als SHA-256-Hash hier) → Auswertung + Übersicht der
+// Betreiber: GET mit Passwort (eigenes Passwort, nur als SHA-256-Hash hier) → Auswertung + Übersicht der
 // beanspruchten Spieler aus den Spieldaten (Muscheln, Serie, Aufgaben, Käufe, Erfolge).
 import { getStore } from "@netlify/blobs";
-const PW_HASH = "e9a96d7241365aba4d836268a2097a9cf904137ee880c889571dbf0c1a4b7956";
+const PW_HASH = "e227d80e4bfb21510b4165198616f10483652d45a3b6c32872dedeab805994a5";
 const TZ = "Europe/Berlin";
 const tag = (t = Date.now()) => new Intl.DateTimeFormat("sv-SE", { timeZone: TZ }).format(new Date(t));
 const stunde = (t) => Number(new Intl.DateTimeFormat("en-GB", { timeZone: TZ, hour: "2-digit", hourCycle: "h23" }).format(new Date(t)));

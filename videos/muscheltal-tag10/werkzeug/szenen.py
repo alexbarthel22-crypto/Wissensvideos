@@ -219,7 +219,7 @@ def slot_js(cid, band, ns, w, t0, tb):
 
 
 # s02 – Türsteher-Verlosung im KOK(O)S
-JT = [("L2a", "L2aw", "🎁 Du gewinnst: Job als Türsteher", "🕶️ im Nachtclub KOK(O)S · Kokos-Küste", "in.yor_dreams", "#8e2bd6")]
+JT = [("L2a", "L2aw", "🎁 Du gewinnst: Job als Türsteher", "🕶️ im Kokos-Club · Kokos-Küste", "marl33n.fls_1301", "#8e2bd6")]
 NST = [names("slot_2.txt")]
 scene("s02", LILITA + "\n    " + PILL + "\n    " + CF_CSS.replace("top: 700px", "top: 640px") + "\n" + SLOT_CSS + """
     #st-lv { top: 280px; font-size: 52px; background: #8e2bd6; }
