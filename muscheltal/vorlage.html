@@ -441,7 +441,7 @@ footer a{color:var(--soft)}
    <div class="st step"><div class="e">💬</div><b>Mit&shy;bestimmen</b><span>in den Kommentaren</span></div>
   </div>
   <a class="btn hib" id="join" target="_blank" rel="noopener">Jetzt einziehen</a>
-  <div class="nowbtn"><a class="btn nb-regeln" href="regeln.html">📜 Regeln</a><button class="btn nb-erf" id="myerf">🏅 Meine Erfolge</button></div>
+  <div class="nowbtn"><a class="btn nb-regeln" href="regeln.html">📜 Regeln</a><button class="btn nb-erf" id="myerf">🏅 Erfolge</button></div>
   <div class="nowbtn"><a class="btn wide nb-einw" href="einwohner.html">👥 Einwohner</a><a class="btn wide jobs2" href="berufe.html">💼 Berufe</a></div>
   <div class="nowbtn"><a class="btn wide baub" href="bau.html">🏗️ Bauprojekte</a><a class="btn wide rangb" href="#rangliste">🏆 Rangliste</a></div>
  </section>
@@ -4230,8 +4230,10 @@ $('foot').innerHTML='<a href="'+ACCURL+'" target="_blank" rel="noopener">'+esc(A
 let PGCB=null;function popup(html,zu){$('pgb').innerHTML=html;$('pg').hidden=false;PGCB=zu||null;}
 new MutationObserver(()=>{if($('pg').hidden&&PGCB){const f=PGCB;PGCB=null;f();}}).observe($('pg'),{attributes:true,attributeFilter:['hidden']});
 $('pgx').onclick=()=>$('pg').hidden=true;$('pg').onclick=e=>{if(e.target===$('pg'))$('pg').hidden=true;};
-$('myerf').onclick=()=>{if(sel){zeigeErfolge(sel);return;}
- popup('<div class="big">🏅</div><h2>Deine Erfolge</h2><p>Folge <a href="'+ACCURL+'" target="_blank" rel="noopener">'+esc(ACC)+'</a> auf TikTok, um einzuziehen – dann such oben deinen Namen und sieh deine Erfolge.</p><a class="btn hib" href="'+ACCURL+'" target="_blank" rel="noopener">➕ '+esc(ACC)+' folgen</a>');};
+$('myerf').onclick=()=>{if(sel){zeigeErfolge(sel);return;}location.href='erfolge.html';};
+// Knopf heißt nur „Meine Erfolge“, wenn ein User ausgewählt ist – sonst „Erfolge“ (Seite mit allen Erfolgen)
+function erfKnopf(){const b=$('myerf');if(b)b.textContent=sel?'🏅 Meine Erfolge':'🏅 Erfolge';}
+setInterval(erfKnopf,500);erfKnopf();
 // Sonnenaufgang/-untergang: wer mit seinem Namen gerade dabei ist, bekommt den Erfolg
 // Sonnenauf-/-untergang gibt es nur, wenn man die Welt gerade als jemand erkundet (nicht beim bloßen Suchen/Auswählen)
 function sonneCheck(){const me=WK.on&&WK.me?WK.me:sel;if(!me||QP.get('zeit')||!WX.sunrise)return;const ph=sunPhase();if(!ph.k)return;const k=ph.k==='auf'?'AUF':'UNTER';if(!gibErf(me,k))return;const i=ERFI[k],p=me;
@@ -4857,6 +4859,7 @@ setInterval(()=>{const b=cv.getBoundingClientRect();if(b.width&&(Math.abs(b.widt
 let me=null;try{me=meinName()||byName.get((localStorage.getItem('mt-me')||'').toLowerCase());}catch(e){}// beanspruchter Name hat Vorrang
 Object.assign(cam,REDUCED?fitMain(freeY()):fitAll(freeY()));draw();
 {const n=new URLSearchParams(location.search).get('n'),t=n&&byName.get(n.toLowerCase().replace(/^(?!@)/,'@'));if(t)me=t;}
+{if(new URLSearchParams(location.search).get('aktion')==='beanspruchen'&&!meinName())setTimeout(()=>{window.scrollTo({top:0});q.focus();q.classList.add('qblink');setTimeout(()=>q.classList.remove('qblink'),2400);mkToast('🔐 Gib hier deinen TikTok-Namen ein');},900);}
 {const o=new URLSearchParams(location.search).get('ort'),t=o&&ortPos(o);// Link auf einen Ort (Berufe, Bauprojekte) hat Vorrang
 if(t)setTimeout(()=>flyTo(t,1600),500);
 else if(me){q.value=me.name;$('qx').hidden=false;setTimeout(()=>select(me),REDUCED?0:600);}
