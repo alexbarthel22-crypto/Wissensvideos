@@ -2000,7 +2000,18 @@ let WFg=1,flash=0,nextFlash=3;
 const WALDAUER=16;
 const WALC=new Map();
 // freies Wasser: rundherum nichts Begehbares (Land, Stege, Plattformen) und weit weg von Yacht/Booten
-function walFrei(x,y){for(let k=0;k<10;k++){const an=k/10*TAU;for(const r of[0,9,16])if(canWalk(x+Math.cos(an)*r,y+Math.sin(an)*r))return false;}try{if(typeof YACHT!=='undefined'&&Math.hypot(x-YACHT.cx,y-YACHT.cy)<90)return false;}catch(e){}for(const v of ISL)if(inside(v,x,y,6))return false;return true;}
+// feste Dinge im/am Wasser, die der Wal nicht berühren darf: Fähr-Steg + Fähre, Anleger mit Booten, Bau-Stege, Kiosk-Steg, Strandbar-Steg, Beach Bar, Yacht
+let WALH=null;function walHindernisse(){if(WALH)return WALH;const P=[];const seg=(a,b,n=12)=>{for(let k=0;k<=n;k++)P.push([a[0]+(b[0]-a[0])*k/n,a[1]+(b[1]-a[1])*k/n]);};
+ try{seg(PIER0,PIER1);P.push(PIER1);}catch(e){}
+ try{for(const g of STEGE){for(let u=0;u<=g.L+g.hl;u+=6)P.push(g.pt(u,0));for(const w of[-g.hw-8,g.hw+8])P.push(g.pt(g.L+g.hl/2,w));}}catch(e){}
+ try{for(const b of BAU){if(b.steg){P.push([b.sx,b.sy]);if(b.cx!=null)seg([b.sx,b.sy],[b.cx,b.cy],8);}}}catch(e){}
+ try{for(const g of GEB)if(g.sea!=null){P.push([g.sea,g.cy]);seg([g.cx,g.cy],[g.sea,g.cy],6);}}catch(e){}
+ try{P.push([KI.x,KI.cy],[KI.x+KI.ko,KI.cy],[KI.x+KI.bo,KI.cy],[KI.x+KI.po,KI.cy]);}catch(e){}
+ try{P.push([KBAR.cx,KBAR.cy+KBAR.dep]);}catch(e){}
+ try{if(typeof YACHT!=='undefined')P.push([YACHT.cx,YACHT.cy]);}catch(e){}
+ return WALH=P;}
+function walFrei(x,y){for(const [hx,hy] of walHindernisse())if(Math.hypot(x-hx,y-hy)<55)return false;if(Math.hypot(x-MAIN.x,(y-MAIN.y)/.92)>MAIN.R+48&&Math.hypot(x-MAIN.x,y-MAIN.y)<MAIN.R+300)return false;// nicht in die Bahn der Segelboote
+for(let k=0;k<10;k++){const an=k/10*TAU;for(const r of[0,9,16])if(canWalk(x+Math.cos(an)*r,y+Math.sin(an)*r))return false;}try{if(typeof YACHT!=='undefined'&&Math.hypot(x-YACHT.cx,y-YACHT.cy)<90)return false;}catch(e){}for(const v of ISL)if(inside(v,x,y,6))return false;return true;}
 function walPlan(v,h){const key=v.i+':'+h;if(WALC.has(key))return WALC.get(key);const L=[];for(let k=0;k<3;k++){const r=i=>hash(h*13+v.i*977+k*31,700+i);const start=h*3600+k*1200+60+Math.floor(r(1)*960);// je Drittelstunde einmal, Minute zufällig
  let x=0,y=0,ok=false;for(let tr=0;tr<40&&!ok;tr++){const q=i=>hash(h*13+v.i*977+k*31+tr*7919,720+i),a=q(2)*TAU,d=coastAt(v,a)+BEX+18+q(3)*16;[x,y]=polar(v,a,d);ok=walFrei(x,y);}
  if(ok)L.push({v,start,x,y,dir:r(4)<.5?-1:1});}WALC.set(key,L);if(WALC.size>12)WALC.delete(WALC.keys().next().value);return L;}
