@@ -3309,8 +3309,14 @@ function schirmZ(c,w,view,st,col){c.save();c.scale(w.h,w.h);const bob=Math.abs(s
  c.fillStyle='#3a2a20';c.beginPath();c.arc(0,-3.8,.32,0,TAU);c.fill();c.restore();c.restore();}
 // Mopeds haben bei allen Usern dieselbe Farbe (Start-Farbe)
 const MOPEDC='#ff3d7f';
+// Vereinfachte Figur für kleine Zoomstufen (gleiche Farben und Maße, ohne Gesicht/Details)
+const MOV_LOD=16;function moverLOD(c,w,x,y,dir,vert,mode){const h=w.h||1,fz=mode&&mode!=='walk'&&mode!=='jog';c.save();c.translate(x,y);c.fillStyle='rgba(0,0,0,.16)';c.beginPath();c.ellipse(0,4.4,fz?3.4:2,.6,0,0,TAU);c.fill();c.scale(h,h);
+ if(fz){c.fillStyle='#2a1b12';const r=mode==='skate'?.45:.9;for(const s of vert?[0]:[-2.8,2.8]){c.beginPath();c.arc(s*(dir||1),4.4/h-r,r,0,TAU);c.fill();}c.fillStyle=w.bikec||w.lackS||'#e8467c';c.fillRect(-3,4.4/h-2.2,6,.9);}
+ c.fillStyle=w.pants||'#2a3a5a';c.fillRect(-1.05,.6,2.1,4.4/h-.6-(fz?1.6:0));c.fillStyle=w.shirt||'#3fa0e8';c.beginPath();c.roundRect(-1.6,-2.6,3.2,3.8,.9);c.fill();
+ c.fillStyle=w.skin||'#e0b08a';c.beginPath();c.arc(0,-4.3,1.75,0,TAU);c.fill();c.fillStyle=w.hair||'#5a3a24';c.beginPath();c.arc(0,-4.6,1.8,Math.PI*1.05,Math.PI*1.95);c.fill();c.restore();}
 function drawMover(c,w,x,y,dir,vert,mode){if(c===ctx&&!drawMover.re)FIGS.push([w,x,y,dir,vert,mode]);
   w=ausL(w);{const A=ausA(w);if(A&&A.fahrzeug&&mode==='moped'){const [f,fc]=teil(A.fahrzeug),cc=FX(fc);if(f==='scooter'||f==='skate'){mode=f;w={...w,mode:f,bikec:cc,lackS:cc};}}}// Shop-Fahrzeug: gleiche Regeln wie das Moped, nur anders gezeichnet
+  if(c===ctx&&cam.z*S<MOV_LOD&&!w.noOcc){moverLOD(c,w,x,y,dir,vert,mode);return;}// Überblick: nur wenige Pixel groß → vereinfachte Figur
   c.save();c.translate(x,y);if(!vert)c.scale(dir,1);
   c.fillStyle='rgba(30,40,20,.25)';c.beginPath();c.ellipse(0,4.4,mode==='walk'?2.6:4.2,.9,0,0,TAU);c.fill();c.lineCap='round';
   if(vert&&mode!=='walk'&&mode!=='inline'&&mode!=='skate'){c.scale(w.h,w.h);riderV(c,w,dir>0);}
@@ -3958,21 +3964,25 @@ function gebDeko(c,g){if(S*cam.z<9)return;const D=DEKO[g.typ];if(!D)return;const
  if(g.typ==='acai'&&nl<.5&&!REDUCED){const x=-28+Math.sin(t*.9)*2.5,y=-20+Math.cos(t*1.3)*1.2,fl=Math.sin(t*40)>0;c.save();c.translate(x,y);c.fillStyle='#2fb3a0';c.beginPath();c.ellipse(0,0,1,.55,-.3,0,TAU);c.fill();c.fillStyle='#e8467c';c.beginPath();c.arc(.8,-.4,.4,0,TAU);c.fill();c.strokeStyle='#2a1b12';c.lineWidth=.12;c.beginPath();c.moveTo(1.1,-.45);c.lineTo(2,-.3);c.stroke();c.fillStyle='rgba(180,240,230,.7)';c.beginPath();c.ellipse(-.1,fl?-1:-.2,1,.35,fl?-.8:.3,0,TAU);c.fill();c.restore();}
  if(g.typ==='strandbar'&&!REDUCED){const x=bx+bw+6+Math.sin(t*.5)*1.5,y=by-6+Math.sin(t*1.1)*1.2,w=Math.sin(t*3);c.strokeStyle='#fff';c.lineWidth=.45;c.lineCap='round';c.beginPath();c.moveTo(x-2.4,y+w*.6);c.quadraticCurveTo(x-1,y-1,x,y);c.quadraticCurveTo(x+1,y-1,x+2.4,y+w*.6);c.stroke();}
  if(g.typ==='werkstatt'&&!REDUCED&&Math.sin(t*1.7)>.85){for(let k=0;k<5;k++){const a=k/5*TAU+t;c.fillStyle='#ffd23f';c.fillRect(bx+6+Math.cos(a)*1.2,by+bw*0-1.6+Math.sin(a)*1.2,.25,.25);}}}
-function gebSigns(c,z){if(z*S<=4)return;for(const g of GEB){if(GROWK!=null&&GROWV===g.v&&GROWK<g.at)continue;c.save();c.translate(g.cx,g.cy);if(g.typ!=='doener'&&!KIO(g))c.scale(g.dir||1,1);if(g.typ==='werkstatt'||g.typ==='tierheim')c.scale(g.dir||1,1);gebSign(c,g);gebDeko(c,g);c.restore();teamBand(c,g);}}
+function gebSign1(c,g){c.save();c.translate(g.cx,g.cy);if(g.typ!=='doener'&&!KIO(g))c.scale(g.dir||1,1);if(g.typ==='werkstatt'||g.typ==='tierheim')c.scale(g.dir||1,1);gebSign(c,g);gebDeko(c,g);c.restore();teamBand(c,g);}
+// im Überblick (kleine Zoomstufe) Schilder + Team-Plaketten aus dem Zwischenspeicher, nah dran live
+function gebSigns(c,z){if(z*S<=4)return;for(const g of GEB){if(GROWK!=null&&GROWV===g.v&&GROWK<g.at)continue;if(z*S<10){{const [a,b]=s2w(-40,-40),[e,f]=s2w(W+40,H+40);if(g.x1<a-40||g.x0>e+40||g.cy<b||g.cy-70>f)continue;}sprite(c,'sign'+g.key,g.x0-30,g.cy-62,g.x1+30,g.cy-8,o=>gebSign1(o,g));}else gebSign1(c,g);}}
 // Herausgezoomt (Details nur wenige Pixel groß): Gebäude als Bild zwischenspeichern und regelmäßig auffrischen – spart viel Rechenzeit
 const SPR=new Map();
 // Zwischengespeichertes Bild eines Gebäudes/Ortes. Beim Verschieben der Karte wird das fertige Bild nur versetzt (statt jedes Bild neu
 // zu zeichnen); erst wenn die Ansicht kurz ruht, wird es pixelgenau neu gezeichnet. Neu gezeichnet wird außerdem bei anderem Zoom,
 // Tageszeit/Wetter und regelmäßig für Animationen.
+// Ab dieser Zoomstufe (Pixel je Rasterfeld) werden Gebäude live gezeichnet; darunter (Überblick, viele Gebäude gleichzeitig) aus dem Zwischenspeicher, regelmäßig aufgefrischt
+const SPR_LIVE=28;
 function sprite(c,key,x0,y0,x1,y1,fn){const zs=cam.z*S,m=c.getTransform(),sc=m.a,w=Math.ceil((x1-x0)*sc)+3,h=Math.ceil((y1-y0)*sc)+3;if(w*h>3e6||w<2||h<2){fn(c);return;}
- if(zs>=10){// nah dran: im Stillstand live zeichnen (alle Animationen); nur beim Verschieben das beim Start der Bewegung gemachte Bild versetzen
+ if(zs>=SPR_LIVE){// nah dran: im Stillstand live zeichnen (alle Animationen); nur beim Verschieben das beim Start der Bewegung gemachte Bild versetzen
   const now=performance.now();if(!PANNT(now)){fn(c);return;}const fx=m.a*x0+m.e,fy=m.d*y0+m.f,dx=Math.floor(fx)-1,dy=Math.floor(fy)-1,base='n'+sc+'|'+Math.round(nightLevel()*24)+'|'+kind();let e=SPR.get(key);if(!e){e={cv:null,base:'',frac:'',want:'',t:0,ox:0,oy:0};SPR.set(key,e);}
   if(e.base!==base||e.ps!==PANS||!e.cv){if(!e.cv)e.cv=document.createElement('canvas');if(e.cv.width!==w||e.cv.height!==h){e.cv.width=w;e.cv.height=h;}const o=e.cv.getContext('2d');o.setTransform(1,0,0,1,0,0);o.clearRect(0,0,w,h);o.setTransform(sc,0,0,sc,(fx-dx)-sc*x0,(fy-dy)-sc*y0);const a1=TAPS.length,a2=NAMES.length,a3=FIGS.length;fn(o);e.taps=TAPS.slice(a1);e.names=NAMES.slice(a2);e.figs=FIGS.slice(a3);e.base=base;e.ps=PANS;e.ox=fx-dx;e.oy=fy-dy;e.frac='';e.t=0;}
   else{TAPS.push(...e.taps);NAMES.push(...e.names);FIGS.push(...e.figs);}
   c.save();c.setTransform(1,0,0,1,0,0);c.drawImage(e.cv,fx-e.ox,fy-e.oy);c.restore();return;}
  const fx=m.a*x0+m.e,fy=m.d*y0+m.f,dx=Math.floor(fx)-1,dy=Math.floor(fy)-1,base=sc+'|'+Math.round(nightLevel()*24)+'|'+kind()+'|'+(WK.on&&WK.me?WK.me.name:''),frac=(fx-dx).toFixed(2)+'|'+(fy-dy).toFixed(2),now=performance.now();let e=SPR.get(key);
- if(!e){e={cv:null,base:'',frac:'',want:'',t:0,ft:0,ox:0,oy:0};SPR.set(key,e);}
- const alt=now-e.t>(zs<4?900:300);
+ if(!e){let h=0;for(const ch of key)h=(h*31+ch.charCodeAt(0))|0;e={cv:null,base:'',frac:'',want:'',t:0,ft:0,ox:0,oy:0,off:Math.abs(h)%240};SPR.set(key,e);}
+ const alt=now-e.t>(zs<4?900:zs<10?600+e.off*2:250+e.off);// Auffrischen versetzt je Gebäude – nie alle im selben Bild
  if(e.base===base&&e.cv&&!(alt&&!PANNT(now))&&(e.frac===frac||PANNT(now))){// gleiches Bild, nur verschoben (oder Animation läuft gleich weiter)
   TAPS.push(...e.taps);NAMES.push(...e.names);FIGS.push(...e.figs);c.save();c.setTransform(1,0,0,1,0,0);if(e.frac===frac)c.drawImage(e.cv,dx,dy);else c.drawImage(e.cv,fx-e.ox,fy-e.oy);c.restore();return;}
  if(e.base!==base&&e.want!==base){e.want=base;fn(c);return;}// Zoom ändert sich gerade: direkt zeichnen, Bild erst bei ruhigem Zoom
