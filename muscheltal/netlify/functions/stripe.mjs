@@ -6,13 +6,13 @@ import { getStore } from "@netlify/blobs";
 import { BEWOHNER } from "../lib/bewohner.mjs";
 
 export const PAKETE = {
-  p150: { cent: 199, muscheln: 180 },
-  p250: { cent: 299, muscheln: 300 },
-  p450: { cent: 499, muscheln: 540 },
-  p800: { cent: 799, muscheln: 960 },
-  p1100: { cent: 999, muscheln: 1320 },
-  p1750: { cent: 1499, muscheln: 2100 },
-  start: { cent: 399, muscheln: 600, einmal: true },// Startangebot: nur einmal je Name
+  p150: { cent: 199, muscheln: 100 },
+  p250: { cent: 299, muscheln: 160 },
+  p450: { cent: 499, muscheln: 280 },
+  p800: { cent: 799, muscheln: 480 },
+  p1100: { cent: 999, muscheln: 630 },
+  p1750: { cent: 1499, muscheln: 1000 },
+  start: { cent: 399, muscheln: 280, einmal: true },// Startangebot: nur einmal je Name
 };
 const SEITE = "https://muscheltal.de";
 const API = () => process.env.STRIPE_API_BASE || "https://api.stripe.com";

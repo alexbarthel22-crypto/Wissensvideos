@@ -78,7 +78,7 @@ function zeig(){const G=DATA.gesamt,T=DATA.tage,n=Math.max(1,G.sitzungen),lm=T.f
  const ORD=['besuch','suche','pass_auf','konto_auf','erkunden','aufgabe','kauf'],tr={};for(const k of ORD)tr[k]=G.trichter[k]||0;
  $('trichter').innerHTML=ORD.map(k=>{const v=tr[k],p=v/n*100;return'<span class="n">'+nm(k)+'</span><span class="t" data-tip="'+nm(k)+': '+fmt(v)+' Besuche ('+Math.round(p)+' %)"><i style="width:'+p+'%"></i></span><span class="z">'+Math.round(p)+' %</span>';}).join('');
  hb('ereignisse',G.ereignisse,{max:30});heat(G.heat);spieler();premium();}
-const PAKN={start:'Startangebot 3,99 € (600 🐚)',p150:'1,99 € (180 🐚)',p250:'2,99 € (300 🐚)',p450:'4,99 € (540 🐚)',p800:'7,99 € (960 🐚)',p1100:'9,99 € (1.320 🐚)',p1750:'14,99 € (2.100 🐚)'};
+const PAKN={start:'Startangebot 3,99 € (280 🐚)',p150:'1,99 € (100 🐚)',p250:'2,99 € (160 🐚)',p450:'4,99 € (280 🐚)',p800:'7,99 € (480 🐚)',p1100:'9,99 € (630 🐚)',p1750:'14,99 € (1.000 🐚)'};
 const eur=c=>(c/100).toLocaleString('de-DE',{style:'currency',currency:'EUR'});
 function premium(){const E=DATA.echtgeld||{kaeufe:0,umsatzCent:0,kaeufer:0,wiederkaeufer:0,startangebot:0,pakete:{},tage:{},stunden:Array(24).fill(0),liste:[],entsperrt:0,erstattetMuscheln:0},P=DATA.gesamt.premium||{},gs=P.gesehen||0;
  const tl=[['Umsatz',eur(E.umsatzCent)],['Käufe',fmt(E.kaeufe)],['Käufer (gesamt)',fmt(E.kaeufer)],['Wiederkäufer',fmt(E.wiederkaeufer)],['Ø pro Kauf',E.kaeufe?eur(E.umsatzCent/E.kaeufe):'–'],['Startangebot gekauft',fmt(E.startangebot)],['Shop entsperrt (Konten, gesamt)',fmt(E.entsperrt)],['Kaufrate (gesehen → bezahlt)',gs?(Math.round((P.bezahlt||0)/gs*1000)/10).toLocaleString('de-DE')+' %':'–'],['Erstattet / zurückgebucht',fmt(E.erstattetMuscheln)+' 🐚']];
