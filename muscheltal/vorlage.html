@@ -3974,10 +3974,15 @@ const SPR=new Map();
 // Tageszeit/Wetter und regelmäßig für Animationen.
 // Ab dieser Zoomstufe (Pixel je Rasterfeld) werden Gebäude live gezeichnet; darunter (Überblick, viele Gebäude gleichzeitig) aus dem Zwischenspeicher, regelmäßig aufgefrischt
 const SPR_LIVE=28;
+// Bildbudget: höchstens ein paar Zwischenspeicher pro Bild neu füllen (Rest folgt in den nächsten Bildern) – keine langen Blockaden
+let FRT0=0,SPRN=0;const sprVoll=()=>SPRN>=2&&performance.now()-FRT0>10;
+// altes Bild des Zwischenspeichers in Weltkoordinaten (skaliert) zeichnen – während Zoom/Verschieben oder bis das neue fertig ist
+function sprAlt(c,e,x0,y0){if(!e||!e.cv||!e.scl)return false;if(e.taps)TAPS.push(...e.taps);if(e.names)NAMES.push(...e.names);if(e.figs)FIGS.push(...e.figs);c.drawImage(e.cv,x0-e.ox/e.scl,y0-e.oy/e.scl,e.cv.width/e.scl,e.cv.height/e.scl);return true;}
 function sprite(c,key,x0,y0,x1,y1,fn){const zs=cam.z*S,m=c.getTransform(),sc=m.a,w=Math.ceil((x1-x0)*sc)+3,h=Math.ceil((y1-y0)*sc)+3;if(w*h>3e6||w<2||h<2){fn(c);return;}
  if(zs>=SPR_LIVE){// nah dran: im Stillstand live zeichnen (alle Animationen); nur beim Verschieben das beim Start der Bewegung gemachte Bild versetzen
   const now=performance.now();if(!PANNT(now)){fn(c);return;}const fx=m.a*x0+m.e,fy=m.d*y0+m.f,dx=Math.floor(fx)-1,dy=Math.floor(fy)-1,base='n'+sc+'|'+Math.round(nightLevel()*24)+'|'+kind();let e=SPR.get(key);if(!e){e={cv:null,base:'',frac:'',want:'',t:0,ox:0,oy:0};SPR.set(key,e);}
-  if(e.base!==base||e.ps!==PANS||!e.cv){if(!e.cv)e.cv=document.createElement('canvas');if(e.cv.width!==w||e.cv.height!==h){e.cv.width=w;e.cv.height=h;}const o=e.cv.getContext('2d');o.setTransform(1,0,0,1,0,0);o.clearRect(0,0,w,h);o.setTransform(sc,0,0,sc,(fx-dx)-sc*x0,(fy-dy)-sc*y0);const a1=TAPS.length,a2=NAMES.length,a3=FIGS.length;fn(o);e.taps=TAPS.slice(a1);e.names=NAMES.slice(a2);e.figs=FIGS.slice(a3);e.base=base;e.ps=PANS;e.ox=fx-dx;e.oy=fy-dy;e.frac='';e.t=0;}
+  if(e.base!==base&&e.cv&&e.ps===PANS&&sprAlt(c,e,x0,y0))return;
+  if(e.base!==base||e.ps!==PANS||!e.cv){if(e.cv&&sprVoll()&&sprAlt(c,e,x0,y0)){kick();return;}SPRN++;if(!e.cv)e.cv=document.createElement('canvas');if(e.cv.width!==w||e.cv.height!==h){e.cv.width=w;e.cv.height=h;}const o=e.cv.getContext('2d');o.setTransform(1,0,0,1,0,0);o.clearRect(0,0,w,h);o.setTransform(sc,0,0,sc,(fx-dx)-sc*x0,(fy-dy)-sc*y0);const a1=TAPS.length,a2=NAMES.length,a3=FIGS.length;fn(o);e.taps=TAPS.slice(a1);e.names=NAMES.slice(a2);e.figs=FIGS.slice(a3);e.base=base;e.ps=PANS;e.ox=fx-dx;e.oy=fy-dy;e.scl=sc;e.frac='';e.t=0;}
   else{TAPS.push(...e.taps);NAMES.push(...e.names);FIGS.push(...e.figs);}
   c.save();c.setTransform(1,0,0,1,0,0);c.drawImage(e.cv,fx-e.ox,fy-e.oy);c.restore();return;}
  const fx=m.a*x0+m.e,fy=m.d*y0+m.f,dx=Math.floor(fx)-1,dy=Math.floor(fy)-1,base=sc+'|'+Math.round(nightLevel()*24)+'|'+kind()+'|'+(WK.on&&WK.me?WK.me.name:''),frac=(fx-dx).toFixed(2)+'|'+(fy-dy).toFixed(2),now=performance.now();let e=SPR.get(key);
@@ -3985,9 +3990,11 @@ function sprite(c,key,x0,y0,x1,y1,fn){const zs=cam.z*S,m=c.getTransform(),sc=m.a
  const alt=now-e.t>(zs<4?900:zs<10?600+e.off*2:250+e.off);// Auffrischen versetzt je Gebäude – nie alle im selben Bild
  if(e.base===base&&e.cv&&!(alt&&!PANNT(now))&&(e.frac===frac||PANNT(now))){// gleiches Bild, nur verschoben (oder Animation läuft gleich weiter)
   TAPS.push(...e.taps);NAMES.push(...e.names);FIGS.push(...e.figs);c.save();c.setTransform(1,0,0,1,0,0);if(e.frac===frac)c.drawImage(e.cv,dx,dy);else c.drawImage(e.cv,fx-e.ox,fy-e.oy);c.restore();return;}
- if(e.base!==base&&e.want!==base){e.want=base;fn(c);return;}// Zoom ändert sich gerade: direkt zeichnen, Bild erst bei ruhigem Zoom
+ if(e.base!==base&&PANNT(now)&&sprAlt(c,e,x0,y0)){e.want=base;return;}// Zoom/Verschieben: altes Bild skaliert, neu erst bei ruhiger Kamera
+ if(e.base!==base&&e.want!==base){e.want=base;if(sprAlt(c,e,x0,y0)){kick();return;}fn(c);return;}// Zoom ändert sich gerade: direkt zeichnen, Bild erst bei ruhigem Zoom
+ if(sprVoll()){if(sprAlt(c,e,x0,y0)||!e.cv){kick();return;}}SPRN++;// Budget voll: altes Bild (oder beim allerersten Bild kurz noch nicht) – nächstes Bild holt es nach
  if(!e.cv)e.cv=document.createElement('canvas');if(e.cv.width!==w||e.cv.height!==h){e.cv.width=w;e.cv.height=h;}
- const o=e.cv.getContext('2d');o.setTransform(1,0,0,1,0,0);o.clearRect(0,0,w,h);o.setTransform(sc,0,0,sc,(fx-dx)-sc*x0,(fy-dy)-sc*y0);const a1=TAPS.length,a2=NAMES.length,a3=FIGS.length;fn(o);e.taps=TAPS.slice(a1);e.names=NAMES.slice(a2);e.figs=FIGS.slice(a3);e.base=base;e.frac=frac;e.ox=fx-dx;e.oy=fy-dy;e.t=now;
+ const o=e.cv.getContext('2d');o.setTransform(1,0,0,1,0,0);o.clearRect(0,0,w,h);o.setTransform(sc,0,0,sc,(fx-dx)-sc*x0,(fy-dy)-sc*y0);const a1=TAPS.length,a2=NAMES.length,a3=FIGS.length;fn(o);e.taps=TAPS.slice(a1);e.names=NAMES.slice(a2);e.figs=FIGS.slice(a3);e.base=base;e.frac=frac;e.ox=fx-dx;e.oy=fy-dy;e.scl=sc;e.t=now;
  c.save();c.setTransform(1,0,0,1,0,0);c.drawImage(e.cv,dx,dy);c.restore();}
 // Karte wird gerade verschoben? (Kamera bewegte sich in den letzten 250 ms)
 let PANX=0,PANY=0,PANZ=0,PANT=0,PANS=0;function PANNT(now){return now-PANT<250;}
@@ -4261,7 +4268,7 @@ function xmFog(c){const n=16;for(let k=0;k<n;k++){const a=k/n*TAU+(REDUCED?0:T*.
  if(!REDUCED){const s=Math.pow(Math.max(0,Math.sin(T*.9)),10);if(s>.05){c.fillStyle=`rgba(255,210,80,${s})`;const x=XM.x+18,y=XM.y-14;c.beginPath();for(let k=0;k<10;k++){const r=k%2?2.5:7,a=k/10*TAU-Math.PI/2;c.lineTo(x+Math.cos(a)*r,y+Math.sin(a)*r);}c.closePath();c.fill();}}}
 
 let NACHTDRAUF=0;
-function draw(){NACHTDRAUF=0;panMerk();{const k=kind();REGEN.on=k==="rain"||k==="storm";}
+function draw(){NACHTDRAUF=0;FRT0=performance.now();SPRN=0;panMerk();{const k=kind();REGEN.on=k==="rain"||k==="storm";}
  if(!W)return;sunUpdate();if(cam.z!==ZL){ZL=cam.z;ZCH=performance.now();}const key=[W,H,limit,SUN.key,kind(),nightLevel()>.5,GROWV?GROWV.i:'',GROWK==null?'':GEB.map(g=>GROWV===g.v&&GROWK<g.at?0:1).join('')+BAU.map(b=>bauOn(b)?1:0).join('')+EXG.map(e=>exDa(e.o)?1:0).join('')].join(',');
  if(key!==baseKey||!baseOk()){baseBuild();baseKey=key;}
  const c=ctx,z=cam.z,zr=z/fitMain().z;baseBlit(c,base);world(c);
