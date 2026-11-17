@@ -55,7 +55,8 @@ export default async (req, context) => {
     h.set("cache-control", "private, no-store");
     return new Response(r.body, { status: r.status, statusText: r.statusText, headers: h });
   }
-  if (url.pathname === "/api/live") return context.next();// Live-Overlay meldet Zuschauer (eigener geheimer Schlüssel)
+  if (url.pathname === "/api/live") return context.next();
+  if (url.pathname === "/api/stripe") return context.next();// Stripe meldet Zahlungen (signiert, eigener geheimer Schlüssel)// Live-Overlay meldet Zuschauer (eigener geheimer Schlüssel)
   if (url.pathname.startsWith("/api/") || url.pathname.startsWith("/.netlify/")) return new Response(JSON.stringify({ fehler: "Gesperrt" }), { status: 403, headers: { "content-type": "application/json", "cache-control": "no-store" } });
   return html(seite(false));
 };

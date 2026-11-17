@@ -124,7 +124,7 @@ async function aufraeumen(store) {
     t[1] = id; await kasse.set(t.join("/"), (await kasse.get(k)) || "1"); await kasse.delete(k);
   }
 }
-const TEXT = { login: "Login-Serie", quest: "Aufgabe", qbonus: "Alle 3 Aufgaben", shell: "Schwebende Muschel", erf: "Neuer Erfolg", story: "Story geteilt", spende: "Spende Inselkasse", tresor: "Tresor des Schöpfers", code: "Geheimcode aus dem Video", einladung: "Freund eingeladen", kauf: "Muschel-Shop", null: "Neustart: alle Konten auf 0", stern: "Sternschnuppe 🌠", regenbogen: "Schatz am Regenbogen 🌈", flasche: "Flaschenpost-Quiz 🍾", geschenk: "Tagesgeschenk 🎁" };
+const TEXT = { login: "Login-Serie", quest: "Aufgabe", qbonus: "Alle 3 Aufgaben", shell: "Schwebende Muschel", erf: "Neuer Erfolg", story: "Story geteilt", spende: "Spende Inselkasse", tresor: "Tresor des Schöpfers", code: "Geheimcode aus dem Video", einladung: "Freund eingeladen", kauf: "Muschel-Shop", null: "Neustart: alle Konten auf 0", stern: "Sternschnuppe 🌠", euro: "Muschel-Paket gekauft 💎", "euro-zurueck": "Muschel-Paket erstattet", regenbogen: "Schatz am Regenbogen 🌈", flasche: "Flaschenpost-Quiz 🍾", geschenk: "Tagesgeschenk 🎁" };
 
 // Einmal-Aufgaben (Zurücksetzen, Aufräumen) nur einmal pro Tag und Server-Instanz prüfen – spart bei jeder Muschel-Aktion
 // rund 10 Speicherabfragen (schnellere Gutschriften)
@@ -167,8 +167,13 @@ async function rangDaten(store) {
   if (RANGC.d && jetzt - RANGC.t < 45000) return RANGC.d;
   try { const c = JSON.parse((await store.get("x/rangcache")) || "null"); if (c && jetzt - c.t < 45000) { RANGC = { t: c.t, d: c.d }; return c.d; } } catch (e) {}
   const claimed = new Set((await liste(store, "c/")).map(k => k.slice(2)).filter(n => BEWOHNER.has(n)));// Ausgezogene nicht mehr anzeigen
-  const sum = {};
-  for (const k of await liste(store, "b/")) { const [, n, , , a] = k.split("/"); if (claimed.has(n)) sum[n] = (sum[n] || 0) + (Number(a) || 0); }
+  // Rangliste zählt nur erspielte Muscheln: Kontostand minus die noch nicht ausgegebenen gekauften Muscheln
+  // (gekaufte gelten als zuerst ausgegeben – wer gekaufte Muscheln im Shop ausgibt, verliert keine erspielten)
+  const sum = {}, kauf = {}, aus = {};
+  for (const k of await liste(store, "b/")) { const [, n, art, , a0] = k.split("/"); if (!claimed.has(n)) continue; const a = Number(a0) || 0;
+    sum[n] = (sum[n] || 0) + a;
+    if (art === "euro" || art === "euro-zurueck") kauf[n] = (kauf[n] || 0) + a; else if (a < 0 && (art === "kauf" || art === "spende")) aus[n] = (aus[n] || 0) - a; }
+  for (const n in kauf) sum[n] -= Math.max(0, kauf[n] - (aus[n] || 0));
   const order = Object.entries(sum).filter(([, v]) => v > 0).sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : 1));
   const heute = tag(), key = "r/" + heute;
   const [hat, vorRoh] = await Promise.all([store.get(key), store.get("r/" + gestern(heute))]);
