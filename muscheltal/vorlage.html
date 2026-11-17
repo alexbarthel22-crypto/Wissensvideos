@@ -1355,6 +1355,11 @@ function glPalme(c,px,py){const t=REDUCED?0:T,nacht=nightLevel()>.4;c.fillStyle=
  for(let k=0;k<7;k++){const a=k/7*TAU+t*.2;c.strokeStyle=nacht&&k%2?GL.T:'#3f9b45';c.lineWidth=.6;c.beginPath();c.moveTo(px+.3,py-10);c.quadraticCurveTo(px+.3+Math.cos(a)*2,py-12+Math.sin(a)*1.4,px+.3+Math.cos(a)*4.4,py-10.4+Math.sin(a)*2.2);c.stroke();}}
 // GTA-VI-Deko nur bis einschließlich 29.11.2026 (am 30.11. automatisch weg, dann normale Gaming-Deko)
 const GLGTA=()=>berlin()<new Date(2026,10,30);
+// Release-Party-Banner über dem Eingang (auch über Figuren, die darunter durchgehen)
+function glBanner(c,t){const by=22.6,sw=REDUCED?0:Math.sin(t*1.2)*.2;c.strokeStyle='#5a4a6a';c.lineWidth=.45;for(const s2 of[-1,1]){c.beginPath();c.moveTo(s2*13.4,30.4);c.lineTo(s2*13.4,by-1.4);c.stroke();}
+   c.fillStyle=GL.P;c.beginPath();c.moveTo(-12.8,by-1.6);c.lineTo(12.8,by-1.6);c.lineTo(12.8,by+1.4+sw);c.quadraticCurveTo(0,by+2.2,-12.8,by+1.4-sw);c.closePath();c.fill();c.strokeStyle='#fff';c.lineWidth=.18;c.stroke();
+   c.fillStyle='#fff';c.font='italic 900 1.5px '+FONT;c.textAlign='center';glFit(c,'RELEASE-PARTY · GTA VI',24);c.fillText('RELEASE-PARTY · GTA VI',0,by+.6);
+   for(let k=0;k<9;k++){c.fillStyle=[GL.T,GL.Y,'#fff'][k%3];c.beginPath();c.moveTo(-12+k*3,by-1.6);c.lineTo(-11+k*3,by-1.6);c.lineTo(-11.5+k*3,by-.6);c.closePath();c.fill();}}
 function drawGame(c,nl){glFarben();const t=REDUCED?0:T,X=KGAME.cx,Y=KGAME.cy,nacht=nl>.45,G=GLGTA();c.save();c.translate(X,Y);
  // Boden: pastellige Miami-Fliesen in Rosa und Mint, gemaltes Sonnenuntergangs-Logo in der Mitte
  c.fillStyle=GL.F1;c.beginPath();c.roundRect(-46,-32,92,64,4);c.fill();c.save();c.clip();
@@ -1427,11 +1432,7 @@ function drawGame(c,nl){glFarben();const t=REDUCED?0:T,X=KGAME.cx,Y=KGAME.cy,nac
  if(G){
   // 5 Fahndungssterne in Neon über der Tür
   for(let k=0;k<5;k++){const sx=-4.8+k*2.4,sy=-21.8,an=(Math.floor(t*2)%6)>k;c.fillStyle=an||!nacht?(an?'#ffd23f':'#e0d6a0'):'#6a5a30';c.beginPath();for(let j=0;j<10;j++){const r=j%2?.42:.95,a=j/10*TAU-Math.PI/2;c.lineTo(sx+Math.cos(a)*r,sy+Math.sin(a)*r);}c.closePath();c.fill();c.strokeStyle='#2a1b12';c.lineWidth=.12;c.stroke();}
-  // Release-Party-Banner über dem Eingang
-  {const by=22.6,sw=REDUCED?0:Math.sin(t*1.2)*.2;c.strokeStyle='#5a4a6a';c.lineWidth=.45;for(const s2 of[-1,1]){c.beginPath();c.moveTo(s2*13.4,30.4);c.lineTo(s2*13.4,by-1.4);c.stroke();}
-   c.fillStyle=GL.P;c.beginPath();c.moveTo(-12.8,by-1.6);c.lineTo(12.8,by-1.6);c.lineTo(12.8,by+1.4+sw);c.quadraticCurveTo(0,by+2.2,-12.8,by+1.4-sw);c.closePath();c.fill();c.strokeStyle='#fff';c.lineWidth=.18;c.stroke();
-   c.fillStyle='#fff';c.font='italic 900 1.5px '+FONT;c.textAlign='center';glFit(c,'RELEASE-PARTY · GTA VI',24);c.fillText('RELEASE-PARTY · GTA VI',0,by+.6);
-   for(let k=0;k<9;k++){c.fillStyle=[GL.T,GL.Y,'#fff'][k%3];c.beginPath();c.moveTo(-12+k*3,by-1.6);c.lineTo(-11+k*3,by-1.6);c.lineTo(-11.5+k*3,by-.6);c.closePath();c.fill();}}
+  glBanner(c,t);
   // Jetski auf Anhänger (Vice-Feeling)
   {const jx=-36.4,jy=21;c.fillStyle='rgba(0,0,0,.18)';c.beginPath();c.ellipse(jx,jy+1.4,4.6,.8,0,0,TAU);c.fill();c.strokeStyle='#666';c.lineWidth=.35;c.beginPath();c.moveTo(jx-4,jy);c.lineTo(jx+4.4,jy);c.lineTo(jx+5.6,jy+.6);c.stroke();c.fillStyle='#222';c.beginPath();c.arc(jx-1.4,jy+.7,.8,0,TAU);c.arc(jx+1.6,jy+.7,.8,0,TAU);c.fill();
    c.fillStyle='#fff';c.beginPath();c.moveTo(jx-4,jy-.6);c.lineTo(jx+3.8,jy-.6);c.quadraticCurveTo(jx+4.6,jy-1.6,jx+3.2,jy-2.2);c.lineTo(jx-3.4,jy-2.2);c.closePath();c.fill();c.fillStyle=GL.T;c.fillRect(jx-3.6,jy-1.6,7.2,.5);c.fillStyle=GL.P;c.beginPath();c.moveTo(jx-1.6,jy-2.2);c.lineTo(jx+.6,jy-2.2);c.lineTo(jx+.2,jy-3.2);c.lineTo(jx-1.2,jy-3.2);c.closePath();c.fill();c.strokeStyle='#222';c.lineWidth=.25;c.beginPath();c.moveTo(jx+.4,jy-3);c.lineTo(jx+1.4,jy-3.8);c.stroke();}
@@ -3326,7 +3327,7 @@ let LAMPG=null;function lampsFront(c,x,y,tn){if(S*cam.z<=6)return;if(!LAMPG){LAM
 function villaFront(c,x,y,tn){for(const g of GEB){if(g.typ!=='villa'||(GROWK!=null&&GROWV===g.v&&GROWK<g.at))continue;const W=(g.x1-g.x0)/2,d=g.dir||1,vx=-W+24,lx=(x-g.cx)*d,ly=y-g.cy;if(Math.abs(lx-vx)>27||ly<-46||ly>-26)continue;
  const n1=NAMES.length,n2=TAPS.length,n3=FIGS.length,x0=x-3.4,y0=y-13,x1=x+3.4,y1=y+5.4;tintDraw(c,tn,x0,y0,x1,y1,o=>{o.save();o.beginPath();o.rect(x0,y0,x1-x0,y1-y0);o.clip();drawGeb(o,g,tn,cam.z);o.restore();});NAMES.length=n1;TAPS.length=n2;FIGS.length=n3;}}
 function hutsFront(c,x,y,tn){if(tn===undefined)tn=NACHTDRAUF?nightLevel():0;// abdunkeln nur, wenn die Nacht schon über das Bild gelegt wurde (sonst doppelt dunkel/grau)
- lampsFront(c,x,y,tn);ksSignFront(c,x,y,tn);villaFront(c,x,y,tn);palmsFront(c,x,y,tn);doenerFront(c,x,y,tn);if(Math.abs(x)<130*PAL_S&&Math.abs(y)<80*PAL_S)palFront(c,x,y,tn);acaiFront(c,x,y,tn);thFront(c,x,y,tn);plotSignFront(c,x,y,tn);const px=S*cam.z;if(px<7)return;const K=kind(),wet=K==='rain'||K==='storm',snow=K==='snow';
+ lampsFront(c,x,y,tn);ksSignFront(c,x,y,tn);villaFront(c,x,y,tn);palmsFront(c,x,y,tn);doenerFront(c,x,y,tn);if(Math.abs(x)<130*PAL_S&&Math.abs(y)<80*PAL_S)palFront(c,x,y,tn);acaiFront(c,x,y,tn);thFront(c,x,y,tn);glFront(c,x,y,tn);plotSignFront(c,x,y,tn);const px=S*cam.z;if(px<7)return;const K=kind(),wet=K==='rain'||K==='storm',snow=K==='snow';
  for(const v of ISL){if(!v.open||!v.cell||Math.hypot(x-v.x,y-v.y)>v.R+40)continue;const gx=Math.round((x-v.x)/S),gy=Math.round((y-v.y)/(S*.9));
   for(let dy=0;dy<=2;dy++)for(let dx=-1;dx<=1;dx++){const q=v.cell.get((gx+dx)+','+(gy+dy));if(!q||q.nr>limit||!q.p||q.p.y<=y-.5||q.p.y-y>24||Math.abs(q.p.x-x)>12)continue;tintDraw(c,tn,q.p.x-12,q.p.y-16,q.p.x+12,q.p.y+11,o=>hutBody(o,v,q,px,wet,snow));}}}
 // Figuren dieses Bildes merken (für „Passant vor Namensschild“)
@@ -3554,6 +3555,8 @@ let THG_=undefined;function thFront(c,x,y,tn){if(S*cam.z<=6)return;const g=THG_=
  for(const [hx,hy] of THH)if(Math.abs(lx-hx)<6&&ly<hy+2.6&&ly>hy-12)tintDraw(c,tn,g.cx+hx-6,g.cy+hy-8,g.cx+hx+6,g.cy+hy+4,o=>{o.save();o.translate(g.cx,g.cy);thHuette(o,hx,hy,hy<0?'BELLO':'LUNA');o.restore();});
  if(Math.abs(lx-THK[0])<5&&ly<THK[1]+2&&ly>THK[1]-16)tintDraw(c,tn,g.cx+THK[0]-5,g.cy+THK[1]-11,g.cx+THK[0]+5,g.cy+THK[1]+4,o=>{o.save();o.translate(g.cx,g.cy);thKratzbaum(o,THK[0],THK[1],t);o.restore();});
  if(Math.abs(lx+12)<4&&ly<17.6&&ly>8)tintDraw(c,tn,g.cx-16,g.cy+13,g.cx-8,g.cy+21,o=>{o.save();o.translate(g.cx,g.cy);const W=(g.x1-g.x0)/2;o.restore();});}
+// Figur geht unter dem Release-Party-Banner durch: Banner wird über ihr nachgezeichnet
+function glFront(c,x,y,tn){if(S*cam.z<=6||!GLGTA())return;const lx=x-KGAME.cx,ly=y-KGAME.cy;if(Math.abs(lx)>17||ly<16||ly>26)return;glFarben();tintDraw(c,tn,KGAME.cx-14,KGAME.cy+20.4,KGAME.cx+14,KGAME.cy+31,o=>{o.save();o.translate(KGAME.cx,KGAME.cy);glBanner(o,REDUCED?0:T);o.restore();});}
 // Figuren hinter dem Blumentor bzw. hinter dem Aufsteller „Bowl des Tages“: Tor/Aufsteller werden über der Figur nachgezeichnet
 function acaiFront(c,x,y,tn){if(S*cam.z<=6)return;for(const g of GEB){if(!KIO(g)||Math.abs(x-g.cx)>45||Math.abs(y-g.cy)>56)continue;const H=(g.y1-g.y0)/2,lx=x-g.cx,ly=y-g.cy;
  if(g.typ==='nagel'){// Ladenschild hängt über dem Weg dahinter: Fußgänger dort laufen hinter dem Schild
