@@ -1,27 +1,30 @@
 // Homepage-Aufnahme Tag 10 (17.11.): Countdown + Türsteher am KOK(O)S nachts, Dönerbude 2 €, CocoCare, Kiosk, Tierheim, LIVE-Insel – davor Tag 9 (16.11.): Club KOK(O)S nachts, CocoCare, Porto Pizza, Kokos-Bad, Tierheim – früher Tag 7 (14.11.): Yacht, Bäckerei, Kokos-Läden, LIVE-Insel, Hütte – früher Tag 6: Hook über der Haupt-Insel, Villa-Verlosung (@sklmq3), Rettungsschwimmerin, Porto Pizza, Boba Beach, Kiosk Kunterbunt, Meerkauf, Bäckerei, Tierheim
 // node aufnahme.cjs <site/index.html> <timings.json> <out> <dauer> [test-zeiten]
 const {chromium}=require('playwright');const fs=require('fs');
-(async()=>{const [site,timf,out,durS,mode,t0S,t1S,test]=process.argv.slice(2);const NACHT=mode==='nacht';const T=JSON.parse(fs.readFileSync(timf));const L={};for(const l of T.lines)L[l.id]=l;
+(async()=>{const [site,timf,out,durS,mode,t0S,t1S,test]=process.argv.slice(2);const NACHT=mode==='nacht'||mode==='abend';const T=JSON.parse(fs.readFileSync(timf));const L={};for(const l of T.lines)L[l.id]=l;
 const at=(id,w)=>{const x=L[id].words.find(q=>q.display.toLowerCase().replace(/[^\p{L}\p{N}_-]/gu,'').startsWith(w.toLowerCase()));return x?x.start:L[id].start;};
 const dur=+durS,N=Math.round(dur*30);const b=await chromium.launch();
 const p=await b.newPage({viewport:{width:405,height:720},deviceScaleFactor:2.6667});
-const HH=NACHT?'23':'14';await p.clock.install({time:new Date(`2026-11-17T${HH}:10:00+01:00`)});await p.goto('file://'+site+(NACHT?'?zeit=nacht&wetter=sonne':'?zeit=tag&wetter=sonne'));await p.clock.runFor(7000);await p.clock.pauseAt(new Date(`2026-11-17T${HH}:11:00+01:00`));
+const HH=mode==='abend'?'21':(NACHT?'23':'14');await p.clock.install({time:new Date(`2026-11-17T${HH}:${mode==='abend'?'30':'10'}:00+01:00`)});await p.goto('file://'+site+(NACHT?'?zeit=nacht&wetter=sonne':'?zeit=tag&wetter=sonne'));await p.clock.runFor(7000);await p.clock.pauseAt(new Date(`2026-11-17T${HH}:${mode==='abend'?'31':'11'}:00+01:00`));
 await p.addStyleTag({content:'body *{visibility:hidden!important}canvas#map{visibility:visible!important;position:fixed!important;left:0!important;top:0!important;width:100vw!important;height:100vh!important;z-index:9}'});await p.evaluate(()=>resize());await p.evaluate(()=>cancelAnimationFrame(fly));
 await p.evaluate(()=>{petsStep();let sd=11;const R=()=>(sd=(sd*16807)%2147483647)/2147483647;
  for(const a of PETS.list){const opts=[[1,0],[-1,0],[0,1],[0,-1]].filter(([dk,dm])=>rValid(a.v,a.k+dk,a.m+dm));if(!opts.length)continue;const [dk,dm]=opts[(R()*opts.length)|0];
   const [x0,y0]=rNode(a.v,a.k,a.m),[x1,y1]=rNode(a.v,a.k+dk,a.m+dm),t=R();a.x=x0+(x1-x0)*t;a.y=y0+(y1-y0)*t;a.pause=R()*3;}});
 const G=await p.evaluate(()=>{const a=fitAll(),m=fitMain();
  const ti=BAU.find(b=>/tierheim/i.test(JSON.stringify(b.name||b.n||b.titel||'')))||BAU.find(b=>b.ziel===800);
- return{N,a,m,ti:{x:ti.cx,y:ti.cy},po:{x:KI.x+KI.po,y:KI.cy},cl:{x:KCLUB.cx,y:KCLUB.cy},dr:{x:KDROG.cx,y:KDROG.cy},bd:{x:KBAD.cx,y:KBAD.cy},lv:{x:LV.x,y:LV.y,r:LV.r},dn:(()=>{const g=GEB.find(q=>q.typ==='doener');return {x:g.cx,y:g.cy}})(),ki:{x:KI.x+KI.ko,y:KI.cy}};});
+ return{N,a,m,ti:{x:ti.cx,y:ti.cy},po:{x:KI.x+KI.po,y:KI.cy},cl:{x:KCLUB.cx,y:KCLUB.cy},dr:{x:KDROG.cx,y:KDROG.cy},bd:{x:KBAD.cx,y:KBAD.cy},lv:{x:LV.x,y:LV.y,r:LV.r},dn:(()=>{const g=GEB.find(q=>q.typ==='doener');return {x:g.cx,y:g.cy}})(),ki:{x:KI.x+KI.ko,y:KI.cy},bo:{x:KI.x+KI.bo,y:KI.cy},gl:{x:KGAME.cx,y:KGAME.cy},km:{x:KMODE.cx,y:KMODE.cy},mk:{x:MKT.cx,y:MKT.cy},sb:(()=>{const g=GEB.find(q=>q.typ==='strandbar');return {x:g.cx,y:g.cy}})()};});
 console.error(JSON.stringify(G));
 const LZ=1080/(2.6667*2.4*G.lv.r);const K=[[0,G.cl.x,G.cl.y+32,4.0],[L.L1.end+.2,G.cl.x,G.cl.y+32,3.7],
  [L.L1b.start+.1,G.m.x,G.m.y-10,G.m.z*1.5],[L.L1b.end,G.m.x,G.m.y,G.m.z*1.15],
  [L.L2.start,G.cl.x,G.cl.y-30,3.4],[L.L2aw.end+.6,G.cl.x,G.cl.y-30,3.6],
  [L.L2d.start-.15,G.dn.x,G.dn.y-40,4.0],[L.L2e.end+.3,G.dn.x,G.dn.y-40,4.3],
- [L.L3.start+.2,G.m.x,G.m.y,G.m.z*1.2],[L.L3a.start-.05,G.dr.x,G.dr.y-8,4.0],[L.L3aw.end+.6,G.dr.x,G.dr.y-8,4.4],
- [L.L3b.start-.05,G.ki.x,G.ki.y-9,4.6],[L.L3bw.end+.6,G.ki.x,G.ki.y-9,5.0],
- [L.L4.start+.1,G.ti.x-20,G.ti.y-30,3.4],[L.L4b.start,G.ti.x,G.ti.y-14,3.2],[L.L4b.end+.3,G.ti.x,G.ti.y-14,3.6],
- [L.L5.start+.3,G.cl.x,G.cl.y-34,3.0],[dur,G.cl.x,G.cl.y-34,3.2]];
+ [L.L7a.start-.1,G.gl.x,G.gl.y-34,3.3],[L.L7b.end+.2,G.gl.x,G.gl.y-34,3.8],
+ [L.L8.start,G.m.x,G.m.y,G.m.z*1.2],[L.L8.end+.3,G.m.x,G.m.y,G.m.z*1.3]];
+{const T0=L.L8.end+.45,SP=(L.L8w.start-.5)-T0,B=[G.ki,G.dr,G.bo,G.km,G.sb,G.po,G.mk,G.gl];
+ for(let i=0;i<8;i++){const t=T0+i*SP/8;K.push([t,B[i].x,B[i].y-40,3.6],[t+SP/8-.002,B[i].x,B[i].y-40,3.8]);}
+ K.push([L.L8w.end+1.2,G.gl.x,G.gl.y-40,3.9]);}
+K.push([L.L4.start+.1,G.ti.x-20,G.ti.y-30,3.4],[L.L4b.start,G.ti.x,G.ti.y-14,3.2],[L.L4b.end+.3,G.ti.x,G.ti.y-14,3.6],
+ [L.L5.start+.3,G.cl.x,G.cl.y-34,3.0],[dur,G.cl.x,G.cl.y-34,3.2]);
 
 const cam=t=>{let j=0;while(j<K.length-1&&K[j+1][0]<=t)j++;const a=K[j],c=K[Math.min(j+1,K.length-1)];let k=c[0]>a[0]?Math.max(0,Math.min(1,(t-a[0])/(c[0]-a[0]))):1;k=k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2;
  return [a[1]+(c[1]-a[1])*k,a[2]+(c[2]-a[2])*k,Math.exp(Math.log(a[3])+(Math.log(c[3])-Math.log(a[3]))*k)*(1+.012*Math.sin(t*.8))];};

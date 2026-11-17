@@ -1,0 +1,44 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+@font-face { font-family: "Lilita One"; src: url("assets/fonts/LilitaOne-Regular.woff2") format("woff2"); font-weight: 400; }
+    .pl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 28px 12px; border-radius: 999px; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); white-space: nowrap; }
+    .big { position: absolute; left: 0; right: 0; width: fit-content; max-width: 980px; white-space: nowrap; margin: 0 auto; text-align: center; padding: 10px 26px 20px; border-radius: 36px; color: #fff; font-family: "Lilita One", sans-serif; line-height: 1; box-shadow: 0 0 0 8px #2a1b12, 0 16px 0 rgba(0,0,0,.3); }
+    #sg-b { top: 230px; font-size: 96px; background: linear-gradient(135deg, #ff2e9a, #7b3fe0 55%, #00d9ff); transform: rotate(-2deg); box-shadow: 0 0 0 8px #1a0f08, 0 16px 0 rgba(0,0,0,.3), 0 0 70px 20px rgba(255,46,154,.7); }
+    #sg-n { top: 390px; font-size: 44px; background: #2fb3a0; }
+    #sg-g { top: 390px; font-size: 48px; background: #ffe14a; color: #1a0f08; }
+    .sg-p { font-size: 40px; background: #fff; color: #2a1b12; }
+    #sg-1 { top: 485px; } #sg-2 { top: 570px; } #sg-3 { top: 655px; }
+  </style>
+  <div id="root" data-composition-id="s03g" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s03g-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="sg-b" class="big">🎮 GAME LAGOON</div>
+      <div id="sg-n" class="pl">🌴 NEU · Kokos-Küste</div>
+      <div id="sg-g" class="pl">⭐ GTA-VI-Fieber!</div>
+      <div id="sg-1" class="pl sg-p">🕹️ Arcade-Automaten</div>
+      <div id="sg-2" class="pl sg-p">🛋️ Gaming-Lounge</div>
+      <div id="sg-3" class="pl sg-p">🚗 Pinkes Cabrio</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      /*__COMMON_JS__*/
+      wrapBt("#s03g-stage");
+      const tl = gsap.timeline({ paused: true });
+      const ta = line("L7a")[0], tb = line("L7b")[0];
+      tl.fromTo("#sg-n", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, ta);
+      tl.fromTo("#sg-b", { opacity: 0, scale: 3.4, rotation: -12, filter: "blur(10px)" }, { opacity: 1, scale: 1, rotation: -2, filter: "blur(0px)", duration: .3, ease: "back.out(1.8)" }, at("L7a", "Game") - .12);
+      tl.to("#sg-b", { scale: 1.06, duration: .2, yoyo: true, repeat: 9, ease: "sine.inOut" }, at("L7a", "Game") + .35);
+      tl.to("#sg-n", { opacity: 0, y: -20, duration: .2 }, tb - .2);
+      tl.fromTo("#sg-g", { opacity: 0, scale: 2.6 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, tb);
+      tl.to("#sg-g", { x: 10, duration: .05, yoyo: true, repeat: 7, ease: "none" }, tb + .3);
+      tl.fromTo("#sg-1", { opacity: 0, x: -300 }, { opacity: 1, x: 0, duration: .28, ease: "back.out(2)" }, at("L7b", "Arcade-Automaten") - .1);
+      tl.fromTo("#sg-2", { opacity: 0, x: 300 }, { opacity: 1, x: 0, duration: .28, ease: "back.out(2)" }, at("L7b", "Gaming-Lounge") - .1);
+      tl.fromTo("#sg-3", { opacity: 0, x: -300 }, { opacity: 1, x: 0, duration: .28, ease: "back.out(2)" }, at("L7b", "Cabrio") - .3);
+      tl.to("#s03g-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
+      window.__timelines["s03g"] = tl;
+    })();
+  </script>
+</template>
