@@ -11,6 +11,7 @@ import { QUIZ } from "../lib/quiz.mjs";
 
 const json = (d, s = 200) => new Response(JSON.stringify(d), { status: s, headers: { "content-type": "application/json", "cache-control": "no-store" } });
 const NAME = /^@[a-z0-9._]{1,40}$/;
+const ERF_CLIENT = new Set(["LUPE", "AUF", "UNTER", "SCOOT", "SCHOEPFER", "WAL", "SCHILD", "MOND"]);
 const SERIE = [3, 5, 8, 12, 17, 23, 32];
 const TZ = "Europe/Berlin";
 const tag = (t = Date.now()) => new Intl.DateTimeFormat("sv-SE", { timeZone: TZ, year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date(t));
@@ -367,7 +368,8 @@ export default async (req) => {
   }
   if (act === "erf") {
     const k = String(d.key || "").toUpperCase();
-    if (!/^[A-Z]{2,12}$/.test(k)) return json({ fehler: "Erfolg" }, 400);
+    // nur Erfolge, die im Browser vergeben werden (alle anderen bucht der Server selbst) – sonst ließen sich mit erfundenen Namen Muscheln erzeugen
+    if (!ERF_CLIENT.has(k)) return json({ fehler: "Erfolg" }, 400);
     return json({ ok: await setze("erf", k, 10) });
   }
   // Tresor des Schöpfers (Schlossinsel): einmalige Verlosung je Name – 3, 5, 7 oder 10 Muscheln (je 25 %)
