@@ -73,12 +73,13 @@ async function echtgeld(tageN) {
 async function spieler() {
   const st = getStore({ name: "muscheln", consistency: "strong" }), es = getStore("erfolge");
   const claimed = new Map(); for (const k of await liste(st, "c/")) claimed.set(k.slice(2), null);
-  const P = {}; for (const n of claimed.keys()) P[n] = { name: "@" + n, stand: 0, logins: 0, letzter: "", serie: 0, aufgaben: 0, kaeufe: 0, ausgegeben: 0, erfolge: 0, tresor: false, code: 0, einladungen: 0 };
+  const P = {}; for (const n of claimed.keys()) P[n] = { name: "@" + n, stand: 0, logins: 0, letzter: "", serie: 0, aufgaben: 0, kaeufe: 0, ausgegeben: 0, erfolge: 0, tresor: false, code: 0, einladungen: 0, euro: 0 };
   const tage = {};
   for (const k of await liste(st, "b/")) {
     const [, n, art, id, a] = k.split("/"), p = P[n]; if (!p) continue; const v = Number(a) || 0; p.stand += v;
     if (art === "login") { p.logins++; const d = id.slice(0, 10); (tage[n] = tage[n] || new Set()).add(d); if (d > p.letzter) p.letzter = d; }
     else if (art === "quest") p.aufgaben++; else if (art === "kauf") { p.kaeufe++; p.ausgegeben -= v; } else if (art === "tresor") p.tresor = true; else if (art === "code") p.code++; else if (art === "einladung") p.einladungen++;
+    else if (art === "euro") { const q = Object.values(PAKETE).find(x => x.muscheln === v); p.euro += q ? q.cent : 0; }
   }
   for (const k of await liste(es, "e/")) { const n = k.split("/")[1]; if (P[n]) P[n].erfolge++; }
   for (const [n, s] of Object.entries(tage)) { let d = [...s].sort().pop(), z = 0; while (s.has(d)) { z++; const t = new Date(d + "T12:00:00Z"); t.setUTCDate(t.getUTCDate() - 1); d = t.toISOString().slice(0, 10); } P[n].serie = z; }
