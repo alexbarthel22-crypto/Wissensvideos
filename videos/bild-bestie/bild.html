@@ -1,0 +1,34 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><style>
+@font-face{font-family:L;src:url(LilitaOne-Regular.woff2)}
+*{box-sizing:border-box;margin:0}
+body{width:1080px;height:1920px;overflow:hidden;position:relative;font-family:Inter,system-ui,sans-serif;background:#7fd36a}
+#bg{position:absolute;left:0;top:120px;width:1080px;height:1920px;background:url(bg_sonne.png) center/cover;filter:saturate(1.35) contrast(1.08)}
+#sky{position:absolute;left:0;right:0;top:0;height:640px;background:linear-gradient(180deg,#2b1a5a 0%,#7a2f7a 22%,#e8467c 45%,#ff8a3c 68%,rgba(255,170,80,0) 100%);mix-blend-mode:normal;opacity:.92}
+#sun{position:absolute;left:400px;top:360px;width:280px;height:280px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,#fff6c8 0 32%,#ffd36a 45%,rgba(255,150,60,.0) 70%)}
+#refl{position:absolute;left:480px;top:560px;width:140px;height:260px;background:repeating-linear-gradient(180deg,rgba(255,220,120,.75) 0 10px,rgba(255,220,120,0) 10px 26px);filter:blur(2px);mix-blend-mode:screen;-webkit-mask:linear-gradient(180deg,#000,transparent)}
+#warm{position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,140,70,.35) 0%,rgba(255,110,50,.22) 100%);mix-blend-mode:multiply}
+#glow{position:absolute;inset:0;background:radial-gradient(circle at 50% 33%,rgba(255,200,120,.45),rgba(255,200,120,0) 55%);mix-blend-mode:screen}
+#vig{position:absolute;inset:0;box-shadow:inset 0 0 220px 60px rgba(40,10,40,.55)}
+#tp{position:absolute;inset:0 0 auto 0;height:520px;background:linear-gradient(180deg,rgba(30,10,50,.55),rgba(30,10,50,0))}
+.c{position:absolute;left:0;right:0;margin:0 auto;width:fit-content;text-align:center}
+#ak{top:70px;padding:8px 30px 12px;border-radius:999px;background:#ffe14a;color:#1a0f08;font:900 44px Inter,sans-serif;letter-spacing:.06em;box-shadow:0 0 0 6px #1a0f08;transform:rotate(-3deg)}
+#h{top:170px;font:400 98px/1.02 L;color:#fff;-webkit-text-stroke:16px #1a0f08;paint-order:stroke fill;filter:drop-shadow(0 10px 0 rgba(0,0,0,.3))}
+#h b{font-weight:400;color:#ffe14a}
+#hz{top:800px;font-size:130px;filter:drop-shadow(0 8px 0 rgba(0,0,0,.25))}
+#st{position:absolute;left:60px;right:60px;bottom:80px;padding:30px 34px 34px;border-radius:40px;background:#fff;box-shadow:0 0 0 8px #1a0f08,0 16px 0 rgba(0,0,0,.3)}
+#st .t{font:400 54px L;color:#ff2e7e;text-align:center;margin-bottom:14px}
+.s{display:flex;align-items:center;gap:22px;padding:14px 0;border-top:4px solid #f4ece0}
+.s i{font-style:normal;flex:none;width:84px;height:84px;border-radius:50%;display:grid;place-items:center;font:400 52px L;color:#fff;box-shadow:0 0 0 5px #1a0f08}
+.s div{font:900 42px/1.15 Inter,sans-serif;color:#2a1b12}
+.s div small{display:block;font-weight:700;font-size:30px;color:#7a6a5a}
+#ft{bottom:40px;font:400 44px L;color:#fff;-webkit-text-stroke:8px #1a0f08;paint-order:stroke fill}
+</style></head><body><div id="bg"></div><div id="warm"></div><div id="sky"></div><div id="sun"></div><div id="refl"></div><div id="glow"></div><div id="vig"></div><div id="tp"></div>
+<div class="c" id="ak">✨ AKTION ✨</div>
+<div class="c" id="h">NEBEN DEINER<br><b>BESTIE WOHNEN?</b> 👯</div>
+<div class="c" id="hz">💖</div>
+<div id="st"><div class="t">So geht's:</div>
+ <div class="s"><i style="background:#ff2e7e">1</i><div>Markiere deine Bestie<small>hier in den Kommentaren 👇</small></div></div>
+ <div class="s"><i style="background:#7b3fe0">2</i><div>Sie folgt @muscheltal<small>und zieht mit ihrer Hütte ein</small></div></div>
+ <div class="s"><i style="background:#2e9e5b">3</i><div>Ihr wohnt nebeneinander!<small>auf der Insel in Muschel-Tal 🏝️</small></div></div>
+</div>
+</body></html>
