@@ -12,7 +12,7 @@ export const PAKETE = {
   p800: { cent: 799, muscheln: 960 },
   p1100: { cent: 999, muscheln: 1320 },
   p1750: { cent: 1499, muscheln: 2100 },
-  start: { cent: 399, muscheln: 665, einmal: true },// Startangebot: nur einmal je Name
+  start: { cent: 399, muscheln: 575, einmal: true },// Startangebot: nur einmal je Name
 };
 const SEITE = "https://muscheltal.de";
 const API = () => process.env.STRIPE_API_BASE || "https://api.stripe.com";
