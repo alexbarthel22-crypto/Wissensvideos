@@ -1930,6 +1930,9 @@ let NBP_=null;const NBW_Y=3.2;var NBW_COL='#e8433c';const NBPget=()=>NBP_||(NBP_
 // Textbreite in großer Schrift messen und herunterrechnen: winzige Schriftgrößen (v. a. mit Emoji) misst Safari/macOS zu schmal → Schilder zu kurz
 {const MT=CanvasRenderingContext2D.prototype.measureText;const MC=new Map();CanvasRenderingContext2D.prototype.measureText=function(t){const f=this.font,m=/(\d*\.?\d+)px/.exec(f),px=m?+m[1]:60;if(px>=20)return MT.call(this,t);const k=f.replace(m[0],'60px'),key=k+'\u0001'+t;let w=MC.get(key);if(w===undefined){this.font=k;w=MT.call(this,t).width;this.font=f;if(MC.size>4000)MC.clear();MC.set(key,w);}return{width:w*px/60};};}
 const txtW=(c,t,w,f)=>c.measureText(t).width;
+// …und kleine Texte genauso in 60px zeichnen und herunterskalieren: so sind gezeichnete und gemessene Breite auf jedem Gerät
+// gleich (iPhone/Safari zeichnete winzige Schrift + Emoji breiter als gemessen → Name ragte aus dem Schild)
+for(const fn of['fillText','strokeText']){const O=CanvasRenderingContext2D.prototype[fn];CanvasRenderingContext2D.prototype[fn]=function(t,x,y,mw){const f=this.font,m=/(\d*\.?\d+)px/.exec(f),px=m?+m[1]:60;if(px>=20)return mw===undefined?O.call(this,t,x,y):O.call(this,t,x,y,mw);const k=px/60;this.save();this.translate(x,y);this.scale(k,k);this.font=f.replace(m[0],'60px');if(fn==='strokeText')this.lineWidth=this.lineWidth/k;mw===undefined?O.call(this,t,0,0):O.call(this,t,0,0,mw/k);this.restore();};}
 const cam={x:0,y:0,z:1},NAMES=[],TAPS=[],TEAMN=new Map();
 // Team-Schilder: alle Mitarbeiter eines Ladens einheitlich als kleine Schilder in Ladenfarbe, mittig auf dem Weg direkt unter dem Gelände
 function teamLbl(g,p,col){}
@@ -4262,7 +4265,7 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-n]');if(b)
 
 // ---------- Texte ----------
 document.querySelectorAll('.acc').forEach(e=>{e.textContent=ACC;e.href=ACCURL;});document.querySelectorAll('.acc2').forEach(e=>e.textContent=ACC);document.querySelectorAll('.acc3').forEach(e=>e.textContent='by '+ACC);$('logolink').href=ACCURL;$('stepf').href=ACCURL;$('join').href=ACCURL;
-$('nTag').textContent=(()=>{if(!I.start)return I.tag||'–';const b=berlin(),[y,m,d]=I.start.split('-').map(Number),t=Math.floor((Date.UTC(b.getFullYear(),b.getMonth(),b.getDate())-Date.UTC(y,m-1,d))/864e5)+1;return t>=1?t:'–';})();$('nEw').textContent=fmt(N);kasseZeigen();
+$('nTag').textContent=(()=>{if(I.tag_aktuell)return I.tag_aktuell;if(!I.start)return I.tag||'–';const b=berlin(),[y,m,d]=I.start.split('-').map(Number),t=Math.floor((Date.UTC(b.getFullYear(),b.getMonth(),b.getDate())-Date.UTC(y,m-1,d))/864e5)+1;return t>=1?t:'–';})();$('nEw').textContent=fmt(N);kasseZeigen();
 {const next=ISL.find(v=>!v.open);const row=(e,t,s,pct,col,tag,tc)=>'<div class="r"><span class="e">'+e+'</span><div><b>'+t+'</b><small>'+s+'</small><div class="m"><i style="width:'+Math.min(100,pct*100)+'%;background:'+col+'"></i></div></div><span class="tag" style="background:'+tc+'">'+tag+'</span></div>';
  $('isl').innerHTML=ISL.map(v=>{if(v.open){const n=v.people.length,cap=v.plaetze,full=cap&&n>=cap;return row(v.emoji,esc(v.name),fmt(einwVon(v))+' Einwohner · '+fmt(n)+(cap?' von '+fmt(cap)+' Hütten':' Hütten'),cap?n/cap:1,v.farbe,full?'VOLL':'OFFEN',full?'var(--hib);color:#fff':'var(--sun)');}
   return row('🔒','???','öffnet ab '+fmt(v.ab+1)+' Followern'+(v===next?' · noch '+fmt(v.ab+1-N):''),N/(v.ab+1),'#c9b59a','BALD','#fff');}).join('')

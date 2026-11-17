@@ -626,6 +626,8 @@ def baue(rows, out):
     insel["stand"] = f"{jetzt.day}. {MONATE[jetzt.month - 1]} {jetzt.year}, {jetzt:%H:%M} Uhr"
     if insel.get("start"):  # Tag 1 = Startdatum, danach zählt der Tag automatisch hoch
         insel["tag"] = max(0, (jetzt.date() - dt.date.fromisoformat(insel["start"])).days + 1)
+    if insel.get("tag_aktuell"):  # Tag des neuesten Videos (von Hand), hat Vorrang vor dem Kalender
+        insel["tag"] = int(insel["tag_aktuell"])
     if insel.get("ereignisse"):  # „Neu:“-Kasten auf der Startseite = neuestes Ereignis
         e = insel["ereignisse"][0]
         insel["news"] = [f"{e[1]} {e[2]} – {e[3]}"]
