@@ -391,7 +391,7 @@ footer a{color:var(--soft)}
 .lrinfo{background:#fff;border:3px solid #2a1b12;border-radius:18px;box-shadow:0 4px 0 #2a1b12;padding:10px 14px;margin:14px 0 10px;text-align:left}.lrinfo ul{margin:6px 0 4px;padding-left:4px;list-style:none;font-weight:800;font-size:14px;line-height:1.7}.lrinfo small{color:#7a5a45;font-weight:700}.lrgo{display:block;text-align:center;margin:0 0 20px}
 .wk p{margin:6px 0 10px}.wk .wkwarum{font-size:14px;font-weight:700;color:#7a5a45;margin:0 0 8px}.wkwack{animation:wkwack 1.6s ease-in-out .6s infinite}@keyframes wkwack{0%,58%,100%{transform:rotate(0) scale(1)}64%{transform:rotate(-3deg) scale(1.05)}70%{transform:rotate(3deg) scale(1.06)}76%{transform:rotate(-2deg) scale(1.04)}82%{transform:rotate(1deg)}88%{transform:rotate(0)}}.wk .cbtn{display:block;width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center;text-decoration:none;box-sizing:border-box}.wkbox{margin:14px 0 4px;background:#fff6e0;border:2px dashed #2a1b12;border-radius:16px;padding:10px 12px;text-align:left}.wkbox b{display:block;margin-bottom:2px}.wkbox span{display:block;font-size:14px;font-weight:700;margin-bottom:8px}
 /* Knöpfe unter „Jetzt einziehen“: jeder in eigener Farbe (gut lesbar) */
-.btn.nb-regeln{background:#ffd23f;color:#2a1b12}.btn.nb-erf{background:#8e5bd6;color:#fff}.btn.wide.nb-einw{background:#2fb3a0;color:#fff}.btn.wide.jobs2{background:#2a1b12;color:#fff}.btn.wide.baub{background:#ff8a2a;color:#fff}.btn.wide.rangb{background:#1f8fd0;color:#fff}
+.btn.wide.nb-stk{background:linear-gradient(90deg,#ff8a3c,#e8467c);color:#fff}.mpstk{background:linear-gradient(90deg,#ff8a3c,#e8467c)!important;color:#fff!important}.btn.nb-regeln{background:#ffd23f;color:#2a1b12}.btn.nb-erf{background:#8e5bd6;color:#fff}.btn.wide.nb-einw{background:#2fb3a0;color:#fff}.btn.wide.jobs2{background:#2a1b12;color:#fff}.btn.wide.baub{background:#ff8a2a;color:#fff}.btn.wide.rangb{background:#1f8fd0;color:#fff}
 .codebox{background:#fff;border:3px solid #2a1b12;border-radius:20px;box-shadow:0 4px 0 #2a1b12;padding:10px 13px;margin:12px 0}.codebox h3{margin:0 0 4px;font-size:16px}.codebox p{margin:0 0 8px;font-size:14px;font-weight:700;color:#5a4030}
 .coderow{display:flex;gap:8px}.coderow input{flex:1;min-width:0;font:800 16px inherit;font-family:inherit;padding:9px 12px;border:2px solid #2a1b12;border-radius:12px;text-transform:uppercase;letter-spacing:.06em}.coderow .cbtn{width:auto;margin:0;padding:9px 14px;white-space:nowrap}
 .codemsg{margin-top:8px;font-weight:800;font-size:14px;color:#a33}.codemsg.ok{color:#1f8a55}
@@ -426,6 +426,7 @@ footer a{color:var(--soft)}
   <div id="mpp" hidden><p class="mpwho" id="mpwho" hidden></p><div id="mpcardbox"></div>
    <button class="mpgo" id="mpgo">🏠 Zu meiner Hütte</button>
    <button class="mpgo klopfb" id="mpklopf" hidden>👋 Anklopfen</button>
+   <button class="mpgo mpstk" id="mpstk" hidden>🧩 Mein Sticker-Album</button>
    <button class="mpsh" id="mpshare">📲 In meiner Story teilen<small>TikTok · Instagram · WhatsApp-Status</small><span class="bon" id="mpbon" hidden></span></button>
    <button class="mpalt" id="mpalt">Anderen Namen suchen</button></div>
  </div></div>
@@ -444,6 +445,7 @@ footer a{color:var(--soft)}
   </div>
   <a class="btn hib" id="join" target="_blank" rel="noopener">Jetzt einziehen</a>
   <div class="nowbtn"><a class="btn nb-regeln" href="regeln.html">📜 Regeln</a><button class="btn nb-erf" id="myerf">🏅 Erfolge</button></div>
+  <div class="nowbtn one"><button class="btn wide nb-stk" id="stkbtn" type="button">🧩 Sticker-Album</button></div>
   <div class="nowbtn"><a class="btn wide nb-einw" href="einwohner.html">👥 Einwohner</a><a class="btn wide jobs2" href="berufe.html">💼 Berufe</a></div>
   <div class="nowbtn"><a class="btn wide baub" href="bau.html">🏗️ Bauprojekte</a><a class="btn wide rangb" href="#rangliste">🏆 Rangliste</a></div>
  </section>
@@ -2204,6 +2206,10 @@ function stkKarte([id,em,name,col,isl],hab,i){const r=((hash(i,77)-.5)*16).toFix
 function stkPop(id){const i=STK.findIndex(s=>s[0]===id);if(i<0)return;const s=STK[i],hab=stkHab().includes(id),n=stkHab().length;
  popup('<div class="stkpop">'+stkKarte(s,hab,i)+'</div><h2>'+(hab?esc(s[2]):'Noch nicht gefunden')+'</h2><p>'+(hab?'✅ In deinem Album – Sticker '+(i+1)+' von '+STK.length+'.':s[4]===2?'Diesen Sticker gibt es nur beim <b>'+esc(s[2])+'</b> ('+STKEV[id]+') – sei dann beim Erkunden auf dem Muschelplatz!':'Irgendwo auf der <b>'+(s[4]?'Kokos-Küste':'Haupt-Insel')+'</b> wartet dieser Sticker. Erkunde die Insel und besuche alle Orte!')+'</p><p class="cft">'+n+'/'+STK.length+' gesammelt'+(n<STK.length?'':' · Album komplett! 🎉')+'</p>');}
 document.addEventListener('click',e=>{const k=e.target.closest('[data-stk]');if(k)stkPop(k.dataset.stk);});
+async function stickerSeite(){if(!mitmachen('🧩','Sticker-Album'))return;let e=$('mkpage');if(!e){e=document.createElement('div');e.id='mkpage';e.className='mkpage';document.body.appendChild(e);}
+ e.hidden=false;document.body.style.overflow='hidden';e.scrollTop=0;const kopf='<a class="mkback" href="#" id="mkback">← Zur Karte</a><h1>🧩 Sticker-Album</h1><div class="mktag">Sammle an jedem Ort von Muschel-Tal einen Sticker</div>';
+ e.innerHTML=kopf+'<div class="mkbox">⏳ Lade …</div>';$('mkback').onclick=ev=>{ev.preventDefault();mkZu();};await mkStand();e.innerHTML=kopf+stkAlbum();$('mkback').onclick=ev=>{ev.preventDefault();mkZu();};}
+$('stkbtn').onclick=()=>stickerSeite();
 function stkAlbum(){const H=stkHab();return'<div class="mkbox" id="mkstk"><h3>🧩 Sticker-Album <span class="stkn">'+H.length+'/'+STK.length+'</span></h3><div class="stkg">'+STK.map((s,i)=>stkKarte(s,H.includes(s[0]),i)).join('')+'</div><p class="cft">Entdecke beim Erkunden alle Orte von Muschel-Tal – jeder Ort hat einen Sticker. Event-Sticker gibt es nur, wenn du während des Events auf dem Muschelplatz bist.</p></div>';}
 let STKL=0;setInterval(async()=>{if(!WK.on||!mkClaim()||!MK.d||STKL)return;const H=stkHab();for(const s of STK){if(H.includes(s[0]))continue;if(s[4]===2){if(termin()!==s[0].slice(3)||QP.get('termin')&&!QP.get('stktest')||Math.hypot(WK.x-MAIN.x,(WK.y-MAIN.y)/.92)>MAIN.plaza+6)continue;}else{let z=null;try{z=mkZiel2(s[0]);}catch(e){}if(!z||Math.hypot(WK.x-z.x,WK.y-z.y)>(z.r||5)+4)continue;}
  STKL=1;const r=await mk('sticker',{id:s[0]});STKL=0;if(!r||!r.ok)return;MK.d.sticker=r.sticker;const n=r.sticker.length;
@@ -4608,7 +4614,7 @@ function zeigePass(p,third,walk){if(third&&p&&p.gb===SCH)schoepferKontakt();mpP=
  $('mpgo').textContent=p.gb===SCH?'🏰 Zum Schloss':third?'🏠 Zu '+p.name+(/[sßxz]$/i.test(p.name)?'’':'s')+' Hütte':'🏠 Zu meiner Hütte';$('mpshare').hidden=p.gb===SCH;// Pass von @echter.alex nicht teilbar
 $('mpalt').textContent=third?'Meinen eigenen Namen suchen':'Anderen Namen suchen';
  $('mp').querySelector('h2').textContent=third?'🪪 Muschelpass von '+p.name:'🪪 Muschelpass';
- klopfKnopf(p);
+ klopfKnopf(p);{const b=$('mpstk'),me=mkClaim()&&mkMe();b.hidden=!(me&&me===p);b.onclick=()=>{$('mp').hidden=true;stickerSeite();};}
  if(!third)try{localStorage.setItem('mt-me',p.name);}catch(e){}}
 document.addEventListener('click',e=>{const b=e.target.closest('.mpshi');if(b){const p=byName.get((b.dataset.n||'').toLowerCase());if(p){mpP=p;$('mpshare').click();}return;}
  const o=e.target.closest('.ortl');if(o&&WK.on&&!$('mp').hidden&&mpWalk){e.preventDefault();return;}if(o){e.preventDefault();const t=ortPos(o.dataset.ort);$('mp').hidden=true;window.scrollTo({top:0,behavior:'smooth'});if(t)flyTo(t,1000);}});
