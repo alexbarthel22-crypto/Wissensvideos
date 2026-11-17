@@ -173,7 +173,7 @@ function zeige(z){document.querySelectorAll('.pct').forEach(s=>{const k=s.datase
 zeige({});
 fetch('/api/erfolge',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(d=>{if(!d||!d.erfolge)return;const z={};
  for(const [n,m] of Object.entries(d.erfolge)){const nm=n.toLowerCase().replace(/^@/,'');if(!BEW.has(nm))continue;const ent=ENT[nm]||{};
-  for(const [k,ts] of Object.entries(m)){const x=ent[k];if(x&&(Array.isArray(x)?ts>=x[0]&&ts<=x[1]:ts<=x))continue;const a=ENTA[k];if(a&&ts>=a[0]&&ts<=a[1])continue;z[k]=(z[k]||0)+1;}}
+  for(const [k,ts] of Object.entries(m)){const x=ent[k];if(x&&(Array.isArray(x)?ts>=x[0]&&ts<=x[1]:ts<=x))continue;const a=ENTA[k];if(a&&(Array.isArray(a[0])?a:[a]).some(z=>ts>=z[0]&&ts<=z[1]))continue;z[k]=(z[k]||0)+1;}}
  zeige(z);}).catch(()=>{});
 </script>
 <div id="ep" role="dialog" aria-modal="true"><div class="box"><button class="zu" aria-label="Schließen">✕</button><div class="inh"></div></div></div>
