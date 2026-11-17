@@ -246,7 +246,7 @@ scene("s02d", LILITA + "\n    " + PILL + "\n    " + BIG + """
       tl.to("#sd-c", { scale: 1.03, duration: .2, yoyo: true, repeat: 5, ease: "sine.inOut" }, te);""")
 
 # s03 – Zwei Live-Verlosungen: CocoCare, Kiosk Kunterbunt
-JB = [("L3a", "L3aw", "🧴 CocoCare", "Drogerie · Kokos-Küste", "tommes.sku", "#2fb3a0"), ("L3b", "L3bw", "🍦 Kiosk Kunterbunt", "Eisstand am Kiosk-Steg", "prvtx_miaa", "#ff6a9a")]
+JB = [("L3a", "L3aw", "🧴 CocoCare", "Drogerie · Kokos-Küste", "tommes.sku", "#2fb3a0"), ("L3b", "L3bw", "🍬 Kiosk Kunterbunt", "Kiosk", "prvtx_miaa", "#ff6a9a")]
 NSS = [names(f"slot_{i}.txt") for i in range(2)]
 scene("s03", LILITA + "\n    " + PILL + "\n    " + CF_CSS.replace("top: 700px", "top: 640px") + "\n" + SLOT_CSS + """
     #s3-lv { top: 280px; font-size: 52px; background: #e8262f; }
