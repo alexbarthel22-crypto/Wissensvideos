@@ -329,7 +329,7 @@ footer a{color:var(--soft)}
 .sit .sbt:disabled{opacity:.75}
 .sit .s1x{font-size:10.5px;font-weight:900;color:#b0329a;margin-top:3px}
 .svp{width:76px;height:76px;margin:2px 0;border-radius:12px;display:grid;place-items:center;font-size:30px;border:2px solid #2a1b12;background:#fffaf0;overflow:hidden}
-.svp.tit{font-size:11px;font-weight:900;padding:4px;line-height:1.2;background:#fff6c7}
+.svp.tit{width:100%;font-weight:900;padding:6px 6px 8px;line-height:1.12;background:linear-gradient(180deg,#fff6c7,#ffe39a);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;text-align:center}.svp.tit .tite{font-size:24px;line-height:1}.svp.tit .titt{display:block;max-width:100%;overflow-wrap:normal;word-break:normal;hyphens:manual;color:#6a4a1b}.kpop .svp.tit{width:100%;max-width:220px;height:auto;min-height:110px}.kpop .svp.tit .tite{font-size:38px}
 .svp .nmS{font-size:11px;padding:3px 6px;max-width:70px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .shleg{display:flex;flex-wrap:wrap;gap:4px;margin-top:10px}.shleg span{font-size:10px;font-weight:900;color:#fff;border-radius:999px;padding:2px 7px;text-shadow:0 1px 0 rgba(0,0,0,.25)}
 .invf{display:flex;gap:6px;overflow-x:auto;margin:0 0 8px;padding-bottom:2px}.invf button{flex:none;border:2px solid #2a1b12;border-radius:999px;background:#f4ece0;font-weight:800;font-size:13px;padding:4px 10px}.invf button.on{background:#2a1b12;color:#fff}
@@ -347,6 +347,7 @@ footer a{color:var(--soft)}
 .nmS{display:inline-block;border-radius:10px;padding:1px 8px;color:#fff}
 .sch-schwarzgold{background:#111;color:#ffd23f!important;border:2px solid #ffd23f}.sch-regenbogen{background:linear-gradient(90deg,#ff4f4f,#ffb43f,#5fc86a,#3f9fe0,#9b5de5)}
 .mptitel{font-size:12px;font-weight:900;color:#6a4a1b;margin-top:2px}
+.mkbox .empty .inv1{white-space:nowrap;font-size:clamp(11px,3.4vw,13px)}
 .mkbox .empty{text-align:center;padding:12px 6px 6px}.mkbox .empty .bx{font-size:42px}.mkbox .empty b{display:block;font-size:16px;margin-top:4px}.mkbox .empty span{font-size:13px;color:#6a5a40;font-weight:700}
 .pgx .ls{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:10px 0 6px}.pgx .ld{border:3px solid #2a1b12;border-radius:13px;background:#fff8ea;padding:4px 2px;text-align:center;font-weight:900;position:relative}.pgx .ld .t{font-size:9.5px;letter-spacing:.06em;color:#8a6a40}.pgx .ld .m{font-size:15px}.pgx .ld .s{font-size:16px;line-height:1.1}
 .pgx .ld.done{background:#d8f5e3;border-color:#2a8a55}.pgx .ld.done .s{opacity:.55}.pgx .ld.done:after{content:'✓';position:absolute;top:-8px;right:-6px;background:#2a8a55;color:#fff;border-radius:50%;width:18px;height:18px;font-size:12px;line-height:18px;border:2px solid #fff}.pgx .ld.heute{background:#ffd23f;transform:scale(1.07);box-shadow:0 3px 0 #2a1b12}.pgx .ld.big{background:linear-gradient(135deg,#ffe59a,#ffb84d)}.pgx .ld.zu{opacity:.65}
@@ -4438,7 +4439,7 @@ const stName=n=>(SHPD.st[n-1]||['?'])[0],stFarbe=n=>(SHPD.st[n-1]||[0,'#999'])[1
 function meinA(){const me=mkMe();return me?ausH(me.name):{};}
 // Vorschaubild: das Item an der eigenen Hütte / Figur / dem eigenen Fahrzeug
 function shopVorschau(id){const it=SIT[id],me=mkMe();if(!it)return'';
- if(it.kat==='pass'){if(it.slot==='titel')return'<div class="svp tit">'+esc(it.wert)+'</div>';if(it.slot==='schild')return'<div class="svp"><span class="nmS'+(it.wert.startsWith('#')?'" style="background:'+it.wert:' sch-'+it.wert)+'">'+esc(me?me.name:'@du')+'</span></div>';return'<div class="mpcard th-'+it.wert+' svp" style="border-radius:12px;box-shadow:none"><div class="hd" style="position:absolute;inset:0;padding:0"></div><span style="position:relative">🪪</span></div>';}
+ if(it.kat==='pass'){if(it.slot==='titel'){const m=String(it.wert).match(/^(\S+)\s+(.*)$/),em=m?m[1]:'🏷️',tx=m?m[2]:it.wert,lw=Math.max(...tx.replace(/-/g,'- ').split(/\s+/).map(w=>w.length)),fs=Math.min(14,Math.max(9,118/(lw*.62)));return'<div class="svp tit"><span class="tite">'+em+'</span><span class="titt" style="font-size:'+fs.toFixed(1)+'px">'+esc(tx).replace(/-/g,'-<wbr>')+'</span></div>';}if(it.slot==='schild')return'<div class="svp"><span class="nmS'+(it.wert.startsWith('#')?'" style="background:'+it.wert:' sch-'+it.wert)+'">'+esc(me?me.name:'@du')+'</span></div>';return'<div class="mpcard th-'+it.wert+' svp" style="border-radius:12px;box-shadow:none"><div class="hd" style="position:absolute;inset:0;padding:0"></div><span style="position:relative">🪪</span></div>';}
  const key=id+'|'+(me?me.name:'');if(SVW.has(key))return'<img class="svw" src="'+SVW.get(key)+'" alt="">';
  const cv=document.createElement('canvas');cv.width=cv.height=160;const c=cv.getContext('2d'),A={...meinA(),[it.slot]:it.wert};c.scale(160/120,160/120);
  const g=c.createRadialGradient(60,62,8,60,62,62);g.addColorStop(0,'#fffaf0');g.addColorStop(1,'#f3e3c0');c.fillStyle=g;c.beginPath();c.arc(60,60,58,0,TAU);c.fill();
@@ -4464,7 +4465,7 @@ function shopZeig(){const box=$('mkshop'),ib=$('mkinv');if(!box)return;const si=
   +Object.keys(SHOPK).map(k=>{const ids=SHD.ids.filter(id=>SIT[id]&&SIT[id].kat===k);return ids.length?'<div class="shk">'+SHOPK[k]+'</div><div class="shg">'+ids.map(id=>shopKarte(id)).join('')+'</div>':'';}).join('')
   +'<div class="shleg">'+SHPD.st.map(([n,f],i)=>'<span style="background:'+f+(i===0||i===7||i===9?';color:#2a1b12;text-shadow:none'+(i===9?';border:1.5px solid #2a1b12':''):'')+'">'+n+'</span>').join('')+'</div>';
  if(!ib)return;const inv=((MK.d&&MK.d.inv)||[]).filter(id=>SIT[id]),ii=ib.querySelector('.inin');
- if(!inv.length){ii.innerHTML='<div class="empty"><div class="bx">🎒</div><b>Noch leer</b><span>Kauf dir oben dein erstes Item – es bleibt für immer deins.</span></div>';return;}
+ if(!inv.length){ii.innerHTML='<div class="empty"><div class="bx">🎒</div><b>Noch leer</b><span class="inv1">Kauf dir oben dein erstes Item!</span></div>';return;}
  const ks=Object.keys(SHOPK).filter(k=>inv.some(id=>SIT[id].kat===k));if(INVF!=='alle'&&!ks.includes(INVF))INVF='alle';
  ii.innerHTML='<div class="invf"><button type="button" data-invf="alle" class="'+(INVF==='alle'?'on':'')+'">Alle '+inv.length+'</button>'+ks.map(k=>'<button type="button" data-invf="'+k+'" class="'+(INVF===k?'on':'')+'">'+SHOPK[k]+'</button>').join('')+'</div>'
   +'<div class="shg">'+inv.filter(id=>INVF==='alle'||SIT[id].kat===INVF).sort((a,b)=>SIT[b].st-SIT[a].st).map(id=>shopKarte(id,true)).join('')+'</div>';}

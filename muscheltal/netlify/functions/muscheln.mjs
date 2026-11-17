@@ -34,9 +34,9 @@ async function buch(store, nm) {
 // Läuft je Eintrag genau einmal (Merker x/reset/<name>/<nr>); danach kann der Name neu beansprucht werden.
 // [Name, Lauf-Nr., optional: ab Zeitpunkt (ms) – dann werden auch Erfolge und Story-Buchungen ab diesem Zeitpunkt gelöscht]
 const TEST_12_11 = 1794438000000; // 12.11.2026 0:00 Uhr (Berlin): Testlauf mit mehreren Testern
-const RESET = [...["marina.cgnn", "ju1e_smt", "mimposible", "maja.gnw", "eeli_mxo", "luna.gsn02", "toca_lexi00"].map(n => [n, 1, TEST_12_11])];
+const RESET = [...["marina.cgnn", "ju1e_smt", "mimposible", "maja.gnw", "eeli_mxo", "luna.gsn02", "toca_lexi00"].map(n => [n, 1, TEST_12_11]), ["haltsmaulimmeroderso", 1, 0, { kasse: false }]];// 17.11.: Beanspruchung entfernt, Konto auf 0 (Spenden in der Inselkasse bleiben)
 async function zuruecksetzen(store) {
-  for (const [n, nr, ab] of RESET) {
+  for (const [n, nr, ab, opt] of RESET) {
     const mk = "x/reset/" + n + "/" + nr;
     if (await store.get(mk)) continue;
     await store.set(mk, String(Date.now()));
@@ -47,7 +47,7 @@ async function zuruecksetzen(store) {
       if (Array.isArray(L) && L.includes(n)) await store.set(k, JSON.stringify(L.filter(x => x !== n)));
     }
     const kasse = getStore({ name: "inselkasse", consistency: "strong" });
-    for (const k of await liste(kasse, "s/" + n + "/")) await kasse.delete(k);
+    if (!(opt && opt.kasse === false)) for (const k of await liste(kasse, "s/" + n + "/")) await kasse.delete(k);
     if (ab) {
       // im Test verdiente Erfolge und Story-Buchungen (Zeitstempel im Schlüssel) ebenfalls entfernen
       const es = getStore("erfolge");
