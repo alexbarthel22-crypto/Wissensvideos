@@ -367,7 +367,7 @@ footer a{color:var(--soft)}
 .qi .go{flex:none;border:2px solid #2a1b12;border-radius:10px;padding:3px 7px;font:800 12px inherit;font-family:inherit;background:#fff;white-space:nowrap;cursor:pointer}
 .qbar{height:12px;border-radius:99px;background:#efe3c8;border:2px solid #2a1b12;overflow:hidden;margin:10px 0 5px}.qbar i{display:block;height:100%;background:linear-gradient(90deg,#2fb3a0,#7fe0c8)}.qft{display:flex;justify-content:space-between;font-size:12.5px;font-weight:800;color:#6a5a40}
 .qact{display:flex;flex-direction:column;align-items:center;width:100%;margin:0 0 10px;padding:10px 12px;border:3px solid #2a1b12;border-radius:18px;background:#fff;box-shadow:0 4px 0 #2a1b12;font-family:inherit;animation:qpop .35s ease-out;cursor:pointer;pointer-events:auto}.qact b{font-size:16px;font-weight:900;text-align:center;line-height:1.2;color:#2a1b12}.qact span{font-size:12px;font-weight:800;color:#2a8a55;margin-top:1px}@keyframes qpop{from{transform:scale(.6);opacity:0}to{transform:scale(1);opacity:1}}
-.mktoast{position:absolute;left:50%;bottom:118px;max-width:calc(100% - 24px);overflow:hidden;text-overflow:ellipsis;transform:translateX(-50%) translateY(8px);z-index:26;background:rgba(42,27,18,.82);color:#ffd23f;border-radius:14px;padding:7px 14px;font-weight:900;font-size:14px;white-space:nowrap;opacity:0;transition:opacity .3s,transform .3s;pointer-events:none}.mktoast.on{opacity:1;transform:translateX(-50%)}
+.mktoast{position:absolute;left:50%;bottom:118px;max-width:calc(100% - 24px);width:max-content;text-align:center;line-height:1.3;transform:translateX(-50%) translateY(8px);z-index:26;background:rgba(42,27,18,.82);color:#ffd23f;border-radius:14px;padding:7px 14px;font-weight:900;font-size:14px;white-space:normal;opacity:0;transition:opacity .3s,transform .3s;pointer-events:none}.mktoast.on{opacity:1;transform:translateX(-50%)}
 /* ===== Muschel-Rangliste ===== */
 .rpage .stage{position:relative;margin:10px 0 0;border:3px solid #2a1b12;border-radius:22px;box-shadow:0 4px 0 #2a1b12;overflow:hidden;background:linear-gradient(#5fd3e6 0%,#9feadf 45%,#ffe8bf 46%,#f6d9a0 100%);padding:12px 8px 0}
 .rpage .sun{position:absolute;right:14px;top:10px;width:46px;height:46px;border-radius:50%;background:radial-gradient(#fff8d0,#ffd86a);box-shadow:0 0 24px #ffe9a0}.rpage .palm{position:absolute;font-size:34px;bottom:62px}.rpage .wave{position:absolute;left:0;right:0;top:44%;height:8px;background:repeating-linear-gradient(90deg,rgba(255,255,255,.7) 0 18px,transparent 18px 30px)}
@@ -1996,8 +1996,8 @@ let WFg=1,flash=0,nextFlash=3;
 
 
 // ---------- 🐋 Wal: springt 3× pro Stunde vor jeder Insel aus dem Meer (für alle gleich: Zeit + Ort aus der Stunde berechnet) ----------
-// Ablauf je Sprung (16 s): 0–5 s Blas-Fontäne, 5–10 s Sprung im Bogen, 10–13 s Platscher, 13–16 s Schwanzflosse taucht ab. Antippen → Erfolg „Wal-Watcher“.
-const WALDAUER=16;
+// Ablauf je Sprung (20 s): 0–9 s Blas-Fontäne, 9–14 s Sprung im Bogen, 14–17 s Platscher, 17–20 s Schwanzflosse taucht ab. Antippen → Erfolg „Wal-Watcher“.
+const WALDAUER=20;
 const WALC=new Map();
 // freies Wasser: rundherum nichts Begehbares (Land, Stege, Plattformen) und weit weg von Yacht/Booten
 // feste Dinge im/am Wasser, die der Wal nicht berühren darf: Fähr-Steg + Fähre, Anleger mit Booten, Bau-Stege, Kiosk-Steg, Strandbar-Steg, Beach Bar, Yacht
@@ -2024,26 +2024,28 @@ function walZeichnen(c){const L=walAktiv();if(!L.length)return;for(const w of L)
   c.fillStyle='#2f4a6a';c.beginPath();c.ellipse(1,1.5,4.2,1.1,.5,0,TAU);c.fill();// Brustflosse
   c.beginPath();c.moveTo(-13,0);c.lineTo(-18,-3.4);c.quadraticCurveTo(-16,0,-18,3.2);c.closePath();c.fill();// Schwanz
   c.fillStyle='#fff';c.beginPath();c.arc(9.4,-1.4,.55,0,TAU);c.fill();c.fillStyle='#1a1a2a';c.beginPath();c.arc(9.5,-1.4,.3,0,TAU);c.fill();};
- if(t<5){// Blas-Fontäne + Rücken
-  const u=t/5;c.fillStyle='rgba(30,60,90,.35)';c.beginPath();c.ellipse(0,0,10,2.4,0,0,TAU);c.fill();c.fillStyle='#3d5a80';c.beginPath();c.ellipse(0,-.6,7,1.6,0,Math.PI,TAU);c.fill();
+ if(t<9){// Blas-Fontäne + Rücken
+  const u=t/9;c.fillStyle='rgba(30,60,90,.35)';c.beginPath();c.ellipse(0,0,10,2.4,0,0,TAU);c.fill();c.fillStyle='#3d5a80';c.beginPath();c.ellipse(0,-.6,7,1.6,0,Math.PI,TAU);c.fill();
   for(let k=0;k<9;k++){const ph=(u*3+k/9)%1,hh=4+ph*9;c.fillStyle=`rgba(235,248,255,${.85*(1-ph)})`;c.beginPath();c.arc(3+Math.sin(k*2.1)*ph*2.6,-1-hh,.7+ph*.9,0,TAU);c.fill();}ring(4+u*3,.5*(1-u));}
- else if(t<10){// Sprung
-  const u=(t-5)/5,hh=Math.sin(u*Math.PI)*20,rot=(-0.95+u*1.9);c.fillStyle='rgba(255,255,255,.55)';for(let k=0;k<10;k++){const a=k/10*TAU;c.beginPath();c.arc(Math.cos(a)*7*(.6+u*.5),Math.sin(a)*2.2,1.1,0,TAU);c.fill();}
+ else if(t<14){// Sprung
+  const u=(t-9)/5,hh=Math.sin(u*Math.PI)*20,rot=(-0.95+u*1.9);c.fillStyle='rgba(255,255,255,.55)';for(let k=0;k<10;k++){const a=k/10*TAU;c.beginPath();c.arc(Math.cos(a)*7*(.6+u*.5),Math.sin(a)*2.2,1.1,0,TAU);c.fill();}
   c.save();c.beginPath();c.rect(-40,-60,80,60.6);c.clip();c.translate(-6+u*12,-hh);c.rotate(rot);koerper();c.restore();
   for(let k=0;k<12;k++){const a=(k/12)*Math.PI,f=Math.max(0,1-u*1.6);c.fillStyle=`rgba(240,250,255,${.8*f})`;c.beginPath();c.arc(Math.cos(a)*6,-Math.sin(a)*7*(1-f+.3),.8,0,TAU);c.fill();}}
- else if(t<13){// Platscher
-  const u=(t-10)/3;for(let k=0;k<16;k++){const a=-Math.PI*(k/15),r=6+u*10;c.fillStyle=`rgba(240,250,255,${.9*(1-u)})`;c.beginPath();c.arc(Math.cos(a)*r,Math.sin(a)*r*.9-u*2,1.1-u*.5,0,TAU);c.fill();}ring(5+u*12,.7*(1-u));ring(2+u*7,.6*(1-u));}
+ else if(t<17){// Platscher
+  const u=(t-14)/3;for(let k=0;k<16;k++){const a=-Math.PI*(k/15),r=6+u*10;c.fillStyle=`rgba(240,250,255,${.9*(1-u)})`;c.beginPath();c.arc(Math.cos(a)*r,Math.sin(a)*r*.9-u*2,1.1-u*.5,0,TAU);c.fill();}ring(5+u*12,.7*(1-u));ring(2+u*7,.6*(1-u));}
  else{// Schwanzflosse taucht ab
-  const u=(t-13)/3;ring(4+u*6,.5*(1-u));c.save();c.beginPath();c.rect(-20,-30,40,30.4);c.clip();c.translate(0,u*7);c.fillStyle='#3d5a80';c.beginPath();c.moveTo(0,0);c.lineTo(0,-4);c.bezierCurveTo(-2,-7,-6,-8,-7,-6.4);c.quadraticCurveTo(-3,-5.6,0,-4.4);c.quadraticCurveTo(3,-5.6,7,-6.4);c.bezierCurveTo(6,-8,2,-7,0,-4);c.fill();c.restore();
+  const u=(t-17)/3;ring(4+u*6,.5*(1-u));c.save();c.beginPath();c.rect(-20,-30,40,30.4);c.clip();c.translate(0,u*7);c.fillStyle='#3d5a80';c.beginPath();c.moveTo(0,0);c.lineTo(0,-4);c.bezierCurveTo(-2,-7,-6,-8,-7,-6.4);c.quadraticCurveTo(-3,-5.6,0,-4.4);c.quadraticCurveTo(3,-5.6,7,-6.4);c.bezierCurveTo(6,-8,2,-7,0,-4);c.fill();c.restore();
   for(let k=0;k<6;k++){c.fillStyle=`rgba(240,250,255,${.8*(1-u)})`;c.beginPath();c.arc(-5+k*2,-6.2+u*5-Math.sin(k)*.6,.5,0,TAU);c.fill();}}
  c.restore();}}
 function walAt(wx,wy){for(const w of walAktiv())if(Math.hypot(wx-w.x,(wy-w.y+6))<Math.max(16,22/cam.z))return w;return null;}
 let WALGEMELDET='';
+// Himmelsrichtung vom Inselmittelpunkt aus (oben auf der Karte = Norden)
+function walRichtung(w){const a=Math.atan2(w.y-w.v.y,w.x-w.v.x),k=((Math.round(a/(Math.PI/4))%8)+8)%8;return['Ost','Südost','Süd','Südwest','West','Nordwest','Nord','Nordost'][k];}
 function walTap(){const p=(WK.on&&WK.me)?WK.me:((typeof mkMe==='function'&&mkMe())||sel);
  if(!p||p.gb===SCH){popup('<div class="big">🐋</div><h2>Ein Wal!</h2><p>Komm wieder, wenn du eingezogen bist – dann bekommst du für einen entdeckten Wal den Erfolg <b>„Wal-Watcher“</b>.</p><a class="btn hib" href="'+ACCURL+'" target="_blank" rel="noopener">➕ '+esc(ACC)+' folgen und einziehen</a>');return;}
  const neu=gibErf(p,'WAL');popup('<div class="big">🐋</div><h2>'+(neu?'Neuer Erfolg! 🎉':'Wieder ein Wal! 🐋')+'</h2><p>'+(neu?esc(p.name)+', du hast einen springenden Wal entdeckt: <b>„Wal-Watcher“</b>':esc(p.name)+' ist schon Wal-Watcher.')+'</p><button class="btn hib" id="zuerf">🏅 Zu meinen Erfolgen</button>');$('zuerf').onclick=()=>{$('pg').hidden=true;zuMeinenErfolgen(p);};if(sel===p&&$('ppass'))$('ppass').innerHTML=passCard(p);}
 // Hinweis, wenn gerade ein Wal springt (einmal je Sprung)
-setInterval(()=>{if(document.hidden)return;const L=walAktiv().filter(w=>w.t<4);if(!L.length)return;const w=L[0],k=w.v.i+':'+w.start;if(WALGEMELDET===k)return;WALGEMELDET=k;try{mkToast('🐋 Ein Wal springt gleich vor der '+(w.v.i?'Kokos-Küste':'Haupt-Insel')+'!');}catch(e){}},1000);
+setInterval(()=>{if(document.hidden)return;const L=walAktiv().filter(w=>w.t<4);if(!L.length)return;const w=L[0],k=w.v.i+':'+w.start;if(WALGEMELDET===k)return;WALGEMELDET=k;try{mkToast('🐋 Oh? An der '+walRichtung(w)+'-Küste'+(w.v.i?' der Kokos-Insel':'')+' taucht ein Wal auf!',5000);}catch(e){}},1000);
 // ---------- Statische Ebene (nur neu, wenn sich die Kamera bewegt) ----------
 // Kokosnuss-Haus (Kokos-Küste)
 const KOKX_F={perlmutt:'#f3d9e8',gold:'#e8b84a',sterne:'#2a3a7a',diamant:'#bfefff'};
@@ -4437,7 +4439,7 @@ function mkAktuell(){try{if(typeof mkCard==='function')mkCard();if(mpP&&!$('mp')
 async function mkStand(){const d=await mk('stand');if(d&&d.ok){MK.d=d;if(d.aus){const c=mkClaim();if(c)ausSetz(c.n,d.aus);}if(d.nachbar)mkNeuErf('NACHBAR');if(d.eingeladen&&d.eingeladen.length)setTimeout(()=>mkEinladenDanke(d.eingeladen),900);if(d.live)mkNeuErf('LIVE');mkCard();}return MK.d;}
 async function mkBea(n){n=n.toLowerCase();if(MK.bea.has(n))return MK.bea.get(n);try{const r=await fetch('/api/muscheln?name='+encodeURIComponent(n),{cache:'no-store'});const d=r.ok?await r.json():null;const b=!!(d&&d.beansprucht);MK.bea.set(n,b);return b;}catch(e){return false;}}
 const mkJob=p=>{if(!p||!p.beruf)return null;const b=p.beruf.toLowerCase(),z=/bürgermeister|palast/.test(b)||(/palast/i.test(p.ort||'')&&b!=='team')?4:b==='leitung'?3:2;const em={Dönerbude:'🥙',Strandbar:'🍹','Açaí-Stand':'🫐','Moped-Werkstatt':'🔧',Bäckerei:'🥐',Muschelpalast:'👑'}[p.ort]||'💼';return{z,em,n:p.beruf+(p.ort?' · '+p.ort:'')};};
-function mkToast(t){let e=$('mktoast');if(!e){e=document.createElement('div');e.id='mktoast';e.className='mktoast';$('hero').appendChild(e);}e.textContent=t;e.classList.add('on');clearTimeout(MK.toastT);MK.toastT=setTimeout(()=>e.classList.remove('on'),2200);}
+function mkToast(t,ms){let e=$('mktoast');if(!e){e=document.createElement('div');e.id='mktoast';e.className='mktoast';$('hero').appendChild(e);}e.textContent=t;e.classList.add('on');clearTimeout(MK.toastT);MK.toastT=setTimeout(()=>e.classList.remove('on'),ms||2200);}
 
 // ---------- Muschelpass: Vermögen nur für den Besitzer, Hinweis „Username beansprucht“, Kasten zum Beanspruchen ----------
 async function mkPass(p,third,walk){const dd=$('mpverm');if(!dd)return;const own=!third&&!walk&&mkOwn(p),c=mkClaim();
