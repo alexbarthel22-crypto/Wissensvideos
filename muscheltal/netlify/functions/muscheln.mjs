@@ -102,7 +102,7 @@ async function aufraeumen(store) {
     t[1] = id; await kasse.set(t.join("/"), (await kasse.get(k)) || "1"); await kasse.delete(k);
   }
 }
-const TEXT = { login: "Login-Serie", quest: "Aufgabe", qbonus: "Alle 3 Aufgaben", shell: "Schwebende Muschel", erf: "Neuer Erfolg", story: "Story geteilt", spende: "Spende Inselkasse", tresor: "Tresor des Schöpfers", code: "Geheimcode aus dem Video", einladung: "Freund eingeladen", kauf: "Muschel-Shop", null: "Neustart: alle Konten auf 0" };
+const TEXT = { login: "Login-Serie", quest: "Aufgabe", qbonus: "Alle 3 Aufgaben", shell: "Schwebende Muschel", erf: "Neuer Erfolg", story: "Story geteilt", spende: "Spende Inselkasse", tresor: "Tresor des Schöpfers", code: "Geheimcode aus dem Video", einladung: "Freund eingeladen", kauf: "Muschel-Shop", null: "Neustart: alle Konten auf 0", stern: "Sternschnuppe 🌠", regenbogen: "Schatz am Regenbogen 🌈" };
 
 // Einmal-Aufgaben (Zurücksetzen, Aufräumen) nur einmal pro Tag und Server-Instanz prüfen – spart bei jeder Muschel-Aktion
 // rund 10 Speicherabfragen (schnellere Gutschriften)
@@ -369,6 +369,22 @@ export default async (req) => {
     const betrag = [3, 5, 7, 10][crypto.getRandomValues(new Uint32Array(1))[0] % 4];
     await store.set(pre + betrag, String(Date.now()));
     return json({ ok: true, betrag });
+  }
+  // Sternschnuppe (nur nachts, 19–6 Uhr Berlin): Rubbellos mit 1–3 Muscheln, höchstens 2× pro Nacht
+  if (act === "stern") {
+    const h = Number(new Intl.DateTimeFormat("en-GB", { timeZone: TZ, hour: "2-digit", hourCycle: "h23" }).format(new Date()));
+    if (!(h >= 19 || h < 6)) return json({ ok: false, grund: "tag" });
+    const nacht = h < 6 ? gestern(heute) : heute, pre = "b/" + nm + "/stern/" + nacht + "-";
+    const schon = (await liste(store, pre)).length;
+    if (schon >= 2) return json({ ok: false, grund: "genug" });
+    const id = String(Number(d.id) || 0).slice(0, 12), betrag = 1 + (crypto.getRandomValues(new Uint32Array(1))[0] % 3);
+    if (!(await setze("stern", nacht + "-" + id, betrag))) return json({ ok: false, grund: "genug" });
+    return json({ ok: true, betrag, rest: 1 - schon });
+  }
+  // Regenbogen: Schatztruhe mit 5 Muscheln, höchstens 1× pro Tag
+  if (act === "regenbogen") {
+    const ok = await setze("regenbogen", heute, 5), B = await buch(store, nm);
+    return json({ ok, grund: ok ? null : "schon", stand: B.reduce((s, e) => s + e.a, 0) });
   }
   if (act === "story") return json({ ok: await setze("story", woche(heute), 25) });
   if (act === "spende") {
