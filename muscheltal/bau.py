@@ -481,7 +481,7 @@ def schnell(out):
     Antippen/Überfahren vorgeladen (bzw. in Chrome vorgerendert), „← Zur Karte“ springt per Zurück sofort
     auf die noch geladene Karte (Back-Forward-Cache) statt sie neu zu laden."""
     css = "<style>@view-transition{navigation:auto}</style>"
-    unter = ["bau.html", "berufe.html", "einwohner.html", "news.html", "regeln.html", "erfolge.html", "impressum.html", "datenschutz.html"]
+    unter = ["bau.html", "berufe.html", "einwohner.html", "news.html", "regeln.html", "erfolge.html", "impressum.html", "datenschutz.html", "agb.html"]
     spec = '<script type="speculationrules">{"prerender":[{"where":{"href_matches":"/*.html"},"eagerness":"moderate"}],"prefetch":[{"where":{"href_matches":"/*"},"eagerness":"moderate"}]}</script>'
     vor = """<script>(()=>{const done=new Set(),pre=u=>{if(done.has(u))return;done.add(u);try{const l=document.createElement('link');l.rel='prefetch';l.href=u;document.head.appendChild(l);fetch(u,{credentials:'same-origin'}).catch(()=>{});}catch(e){}};
 const h=e=>{const a=e.target.closest&&e.target.closest('a[href]');if(!a)return;const u=new URL(a.href,location.href);if(u.origin===location.origin&&u.pathname!==location.pathname)pre(u.pathname);};
@@ -497,7 +497,7 @@ const z=document.querySelector('header.top a[href="./"]');if(z)z.addEventListene
         t = t.replace("</head>", css + (spec if name == "index.html" else "") + "</head>", 1)
         t = t.replace("</body>", vor + "</body>", 1) if "</body>" in t else t + vor
         if name != "index.html" and 'class="legal-fuss"' not in t:  # Impressum/Datenschutz von jeder Seite erreichbar
-            t = t.replace("</body>", '<p class="legal-fuss" style="text-align:center;font:700 13px/1.4 system-ui,sans-serif;margin:24px 0 30px;opacity:.75"><a href="impressum.html" style="color:inherit">Impressum</a> · <a href="datenschutz.html" style="color:inherit">Datenschutz</a></p></body>', 1)
+            t = t.replace("</body>", '<p class="legal-fuss" style="text-align:center;font:700 13px/1.4 system-ui,sans-serif;margin:24px 0 30px;opacity:.75"><a href="impressum.html" style="color:inherit">Impressum</a> · <a href="datenschutz.html" style="color:inherit">Datenschutz</a> · <a href="agb.html" style="color:inherit">AGB</a></p></body>', 1)
         open(f, "w", encoding="utf-8").write(t)
 
 def berufe(sauber, insel, out):
@@ -677,7 +677,7 @@ def baue(rows, out):
             open(os.path.join(out, datei), "w", encoding="utf-8").write(open(quelle, encoding="utf-8").read())
     open(os.path.join(out, "index.html"), "w", encoding="utf-8").write(html)
     # Zusatzseiten (statisch) mitkopieren
-    for datei in ("erfolge.html", "regeln.html", "impressum.html", "datenschutz.html", "statistik.html"):
+    for datei in ("erfolge.html", "regeln.html", "impressum.html", "datenschutz.html", "agb.html", "statistik.html"):
         quelle = os.path.join(HIER, datei)
         if os.path.exists(quelle):
             txt = open(quelle, encoding="utf-8").read()

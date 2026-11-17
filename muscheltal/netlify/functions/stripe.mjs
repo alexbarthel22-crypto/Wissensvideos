@@ -77,6 +77,9 @@ export default async (req) => {
   if (!c || c.h !== (await sha(String(d.token || "")))) return json({ fehler: "Nicht beansprucht" }, 403);
   const p = PAKETE[d.paket];
   if (!p) return json({ fehler: "Paket" }, 400);
+  // Zustimmung zur sofortigen Ausführung + Kenntnis vom Verlust des Widerrufsrechts (§ 356 Abs. 5 BGB) ist Pflicht
+  if (d.zustimmung !== true) return json({ fehler: "Zustimmung fehlt" }, 400);
+  const zeit = new Date().toISOString();
   if (!process.env.STRIPE_SECRET_KEY) return json({ fehler: "Bezahlung noch nicht eingerichtet" }, 503);
   const f = new URLSearchParams({
     mode: "payment", locale: "de", submit_type: "pay",
@@ -88,7 +91,14 @@ export default async (req) => {
     client_reference_id: nm,
     "metadata[name]": nm, "metadata[paket]": d.paket,
     "payment_intent_data[metadata][name]": nm, "payment_intent_data[metadata][paket]": d.paket,
-    "custom_text[submit][message]": "Mit dem Kauf stimmst du zu, dass die Muscheln sofort gutgeschrieben werden. Dadurch erlischt dein Widerrufsrecht.",
+    "metadata[zustimmung]": zeit, "payment_intent_data[metadata][zustimmung]": zeit,
+    "custom_text[submit][message]": "Du hast ausdrücklich verlangt, dass wir vor Ablauf der Widerrufsfrist mit der Ausführung beginnen (sofortige Gutschrift), und bestätigt, dass du dadurch dein Widerrufsrecht verlierst. Es gelten unsere AGB: muscheltal.de/agb.html",
+    // Bestätigung auf dauerhaftem Datenträger: Rechnung per E-Mail mit Vertragsinhalt und Zustimmung (§ 312f Abs. 3 BGB)
+    "invoice_creation[enabled]": "true",
+    "invoice_creation[invoice_data][description]": p.muscheln.toLocaleString("de-DE") + " Muscheln (virtuelle Spielwährung) für das Muschel-Konto " + name + " auf muscheltal.de – sofort gutgeschrieben.",
+    "invoice_creation[invoice_data][custom_fields][0][name]": "Muschel-Konto",
+    "invoice_creation[invoice_data][custom_fields][0][value]": name,
+    "invoice_creation[invoice_data][footer]": "Bestätigung: Du hast am " + zeit.slice(0, 10) + " ausdrücklich verlangt, dass wir vor Ablauf der Widerrufsfrist mit der Ausführung des Vertrags beginnen (sofortige Gutschrift der Muscheln), und bestätigt, dass du dadurch mit Beginn der Ausführung dein Widerrufsrecht verlierst. Das Widerrufsrecht ist mit der Gutschrift erloschen (§ 356 Abs. 5 BGB). Muscheln haben keinen Geldwert und sind nicht übertragbar. Es gelten die AGB mit Widerrufsbelehrung: https://muscheltal.de/agb.html – Alcaba UG (haftungsbeschränkt), Grelckstr. 23a, 22529 Hamburg, HRB 180374, USt-IdNr. DE351239794.",
     success_url: SEITE + "/?kauf=ok",
     cancel_url: SEITE + "/?kauf=abbruch",
   });
