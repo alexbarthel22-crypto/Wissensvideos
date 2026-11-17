@@ -330,7 +330,15 @@ export default async (req) => {
     let bonus = false;
     const B = await buch(store, nm);
     if (B.filter(e => e.art === "quest" && e.id.startsWith(heute)).length >= q.length && q.length === 3) bonus = await setze("qbonus", heute, 5);
-    return json({ ok, bonus });
+    // Erfolge für erledigte Aufgaben insgesamt: 10, 100, 500 (je +10 Muscheln, nur einmal)
+    const neu = [], anz = B.filter(e => e.art === "quest").length, es = getStore("erfolge");
+    for (const [n, k] of [[10, "AUFG10"], [100, "AUFG100"], [500, "AUFG500"]]) {
+      if (anz < n) continue;
+      const pre = "e/" + nm + "/" + k + "/";
+      if ((await es.list({ prefix: pre })).blobs.length) continue;
+      await es.set(pre + Date.now(), "1"); await setze("erf", k, 10); neu.push(k);
+    }
+    return json({ ok, bonus, neu, anz });
   }
   if (act === "shell") {
     const i = Number(d.i);
