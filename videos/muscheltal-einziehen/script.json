@@ -48,7 +48,7 @@
       "lines": [
         {
           "id": "L1",
-          "text": "*y:787|Siebenhundertsiebenundachtzig *y:Menschen / wohnen schon auf *p:Muschel-Tal!",
+          "text": "*y:787|Siebenhundertsiebenundachtzig *y:Menschen / wohnen schon in *p:Muschel-Tal!",
           "speed": 1.0,
           "style": "Style: a young German guy, around 20, a hyped gaming streamer who just got the best news ever – thrilled, emotional, full of joy and suspense, big dynamic intonation, smiling while talking, natural German, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
           "pause": 0.0
@@ -60,25 +60,37 @@
       "tag": "",
       "sfx": [
         {
+          "name": "sad-trombone",
+          "at": "L2:klein",
+          "volume": 0.35
+        },
+        {
+          "name": "impact-bass-2",
+          "at": "L2b:Upgrade",
+          "volume": 0.6
+        },
+        {
           "name": "whoosh",
-          "at": "L2:folgt",
-          "volume": 0.45
+          "at": "L2b:Upgrade-0.2",
+          "volume": 0.5
         },
         {
-          "name": "pop",
-          "at": "L2:Hütte",
-          "volume": 0.45
-        },
-        {
-          "name": "pop",
-          "at": "L2:Namen",
-          "volume": 0.45
+          "name": "yippee",
+          "at": "L2b:Upgrade+0.4",
+          "volume": 0.55
         }
       ],
       "lines": [
         {
           "id": "L2",
-          "text": "Jeder, der mir *g:folgt, / bekommt hier eine *y:Hütte / mit seinem *y:Namen!",
+          "text": "Doch die Insel wird / *r:viel *r:zu *r:klein …",
+          "speed": 1.1,
+          "style": "Style: a young German guy, around 20, a hyped gaming streamer who just got the best news ever – thrilled, emotional, full of joy and suspense, big dynamic intonation, smiling while talking, natural German, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+          "pause": 0.9
+        },
+        {
+          "id": "L2b",
+          "text": "Zeit für ein *g:Upgrade!",
           "speed": 1.1,
           "style": "Style: a young German guy, around 20, a hyped gaming streamer who just got the best news ever – thrilled, emotional, full of joy and suspense, big dynamic intonation, smiling while talking, natural German, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
           "pause": 0.9
