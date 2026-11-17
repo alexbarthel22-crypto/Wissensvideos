@@ -95,7 +95,7 @@ YW = ()
 CT0 = ["0", 'at("L1", "zwei") - .08', 'at("L1", "eins") - .08']
 CT1 = ['at("L1", "zwei") - .1', 'at("L1", "eins") - .1', "wr - .26"]
 CD = [("3", "Drei", "#ff2e7e"), ("2", "zwei", "#00e5ff"), ("1", "eins", "#ffe500")]
-FW = [(4, [(160, 200), (920, 560)]), (5, [(880, 150), (150, 520)]), (6, [(540, 120), (260, 300), (820, 260)]), (0, [(230, 330), (850, 260), (560, 520)]), (1, [(820, 380), (200, 230), (540, 160)]), (2, [(300, 420), (780, 300), (180, 650), (900, 620)]), (3, [(540, 260), (220, 480), (860, 470), (380, 140), (700, 130)])]
+FW = [(7, [(200, 180), (880, 220), (540, 420)]), (8, [(120, 520), (960, 380), (420, 200), (700, 560)]), (9, [(300, 300), (800, 160), (540, 640), (980, 640)]), (10, [(180, 420), (640, 240), (900, 480), (420, 560), (760, 80)]), (4, [(160, 200), (920, 560)]), (5, [(880, 150), (150, 520)]), (6, [(540, 120), (260, 300), (820, 260)]), (0, [(230, 330), (850, 260), (560, 520)]), (1, [(820, 380), (200, 230), (540, 160)]), (2, [(300, 420), (780, 300), (180, 650), (900, 620)]), (3, [(540, 260), (220, 480), (860, 470), (380, 140), (700, 130)])]
 FWC = ["#ff2e9a", "#00e5ff", "#ffe500", "#7cff6a", "#b46bff", "#ff8a1a", "#ffffff"]
 SP = [(30, 930, 70), (985, 960, 60), (20, 1230, 52), (1000, 1260, 66), (50, 1520, 48), (975, 1540, 56), (470, 880, 44)]
 scene("s01", LILITA + "\n    " + CF_CSS.replace("top: 700px", "top: 1120px") + """
@@ -117,6 +117,9 @@ scene("s01", LILITA + "\n    " + CF_CSS.replace("top: 700px", "top: 1120px") + "
     .cw { position: absolute; inset: 0; opacity: 0; mix-blend-mode: screen; }
     .cdg { position: absolute; left: 0; right: 0; top: 760px; height: 760px; text-align: center; font-family: "Lilita One", sans-serif; font-size: 720px; line-height: 760px; color: transparent; -webkit-text-stroke: 10px #fff; opacity: 0; }
     .spt { position: absolute; bottom: -200px; width: 380px; height: 2300px; transform-origin: 50% 100%; background: linear-gradient(0deg, rgba(255,255,255,.35), rgba(255,255,255,0) 85%); clip-path: polygon(42% 100%, 58% 100%, 100% 0, 0 0); mix-blend-mode: screen; opacity: 0; }
+    .cc { position: absolute; width: 18px; height: 30px; border-radius: 4px; opacity: 0; }
+    .gld { position: absolute; width: 10px; height: 10px; border-radius: 50%; background: #ffe14a; box-shadow: 0 0 10px 4px #ffd23f; opacity: 0; }
+    #s01-fin { position: absolute; left: 0; right: 0; top: 0; text-align: center; opacity: 0; }
     .shk { position: absolute; left: 290px; top: 890px; width: 500px; height: 500px; border-radius: 50%; border: 18px solid #fff; opacity: 0; }
     #s01-fl { position: absolute; inset: 0; background: radial-gradient(circle at 50% 70%, rgba(255,255,255,.9), rgba(255,255,255,0) 55%); opacity: 0; }""",
 """      <div id="s01-bu" data-layout-ignore></div>
@@ -126,6 +129,7 @@ scene("s01", LILITA + "\n    " + CF_CSS.replace("top: 700px", "top: 1120px") + "
       """ + "".join(f'<div class="fwr" id="s01-r{b}-{j}" data-layout-ignore style="left:{x}px;top:{y}px"></div>' + "".join(f'<div class="fw" id="s01-f{b}-{j}-{q}" data-layout-ignore style="left:{x}px;top:{y}px;background:{FWC[(j * 3 + q) % 7]};box-shadow:0 0 12px 4px {FWC[(j * 3 + q) % 7]}"></div>' for q in range(22)) for b, pts in FW for j, (x, y) in enumerate(pts)) + "".join(f'<div class="shk" id="s01-sh{k}" data-layout-ignore style="border-color:{c};box-shadow:0 0 40px 10px {c}"></div>' for k, (n, w, c) in enumerate(CD)) + """
       """ + "".join(f'<div class="cw" id="s01-cw{k}" data-layout-ignore style="background: radial-gradient(circle at 50% 60%, {c}, transparent 75%)"></div>' + "".join(f'<div class="cdg" id="s01-g{k}-{g}" data-layout-ignore style="-webkit-text-stroke-color:{c}">{n}</div>' for g in range(2)) for k, (n, w, c) in enumerate(CD)) + """
       <div class="spt" id="s01-sp-l" data-layout-ignore style="left:-60px"></div><div class="spt" id="s01-sp-r" data-layout-ignore style="right:-60px"></div>
+      """ + "".join(f'<div class="cc" id="s01-cc{q}" data-layout-ignore style="left:{-10 if q % 2 == 0 else 1070}px;top:1900px;background:{FWC[q % 7]}"></div>' for q in range(90)) + "".join(f'<div class="gld" id="s01-gd{q}" data-layout-ignore style="left:{(q * 137) % 1060 + 10}px;top:-30px"></div>' for q in range(50)) + """
       <div id="s01-cfx"></div>
       <div id="s01-fl" data-layout-ignore></div>
       <div id="s01-rv" data-layout-ignore></div>
@@ -165,9 +169,17 @@ scene("s01", LILITA + "\n    " + CF_CSS.replace("top: 700px", "top: 1120px") + "
       tl.fromTo("#s01-sp-l", { opacity: .9, rotation: 35 }, { opacity: .9, rotation: -10, duration: .4, yoyo: true, repeat: 6, ease: "sine.inOut", immediateRender: true }, 0);
       tl.fromTo("#s01-sp-r", { opacity: .9, rotation: -35 }, { opacity: .9, rotation: 10, duration: .4, yoyo: true, repeat: 6, ease: "sine.inOut", immediateRender: true }, 0);
       tl.to(["#s01-sp-l", "#s01-sp-r"], { opacity: 0, duration: .3 }, wr + .6);
-      { const R = rng(31); const TB = [0, at("L1", "zwei") - .08, at("L1", "eins") - .08, wr - .05, .4, at("L1", "zwei") + .38, at("L1", "eins") + .3];
+      { const R = rng(31); const TB = [0, at("L1", "zwei") - .08, at("L1", "eins") - .08, wr - .05, .4, at("L1", "zwei") + .38, at("L1", "eins") + .3, wr + .2, wr + .45, wr + .75, wr + 1.05];
       """ + "\n      ".join(f'{{ const T = TB[{b}] + {j * .07:.2f}; tl.fromTo("#s01-r{b}-{j}", {{ opacity: 1, y: {380 + j * 40}, scale: .6 }}, {{ y: 0, scale: 1, duration: .2, ease: "power2.out", immediateRender: false }}, Math.max(0, T - .2)); tl.to("#s01-r{b}-{j}", {{ opacity: 0, scale: 3, duration: .12 }}, T);'
         + "".join(f' {{ const a = {q} / 22 * Math.PI * 2 + R() * .3, v = 170 + R() * 150; tl.fromTo("#s01-f{b}-{j}-{q}", {{ opacity: 1, x: 0, y: 0, scale: 1.2 }}, {{ x: Math.cos(a) * v, y: Math.sin(a) * v, scale: .9, duration: .45, ease: "power3.out", immediateRender: false }}, T); tl.to("#s01-f{b}-{j}-{q}", {{ y: "+=120", opacity: 0, scale: .3, duration: .55, ease: "power1.in" }}, T + .45); }}' for q in range(22)) + ' }' for b, pts in FW for j, (x, y) in enumerate(pts)) + """ }
+      { const R2 = rng(97); for (let q = 0; q < 90; q++) { const L = q % 2 === 0, T = wr + (q % 30) * .012, vx = (L ? 1 : -1) * (250 + R2() * 520), vy = -(1100 + R2() * 700);
+          tl.fromTo("#s01-cc" + q, { opacity: 1, x: 0, y: 0, rotation: 0 }, { x: vx, y: vy, rotation: (R2() - .5) * 900, duration: .55, ease: "power3.out", immediateRender: false }, T);
+          tl.to("#s01-cc" + q, { y: vy + 900, x: vx * 1.25, rotation: "+=" + Math.round((R2() - .5) * 600), opacity: 0, duration: 1.4, ease: "power1.in" }, T + .55); }
+        for (let q = 0; q < 50; q++) { const T = wr + .1 + R2() * .9; tl.fromTo("#s01-gd" + q, { opacity: 1, y: 0 }, { y: 1500 + R2() * 600, duration: 1.6 + R2() * .8, ease: "none", immediateRender: false }, T); tl.to("#s01-gd" + q, { opacity: 0, duration: .3 }, T + 1.4); } }
+      tl.fromTo("#s01-fl", { opacity: 1 }, { opacity: 0, duration: .5, immediateRender: false }, wr - .02);
+      tl.fromTo("#s01-stage", { scale: 1.1 }, { scale: 1, duration: .45, ease: "power2.out", immediateRender: false }, wr - .02);
+      tl.to("#s01-stage", { x: 14, duration: .04, yoyo: true, repeat: 11, ease: "none" }, wr);
+      """ + "\n      ".join(f'tl.fromTo("#s01-cw{k}", {{ opacity: .7 }}, {{ opacity: 0, duration: .35, ease: "power2.out", immediateRender: false }}, wr + {k * .22:.2f});' for k in range(3)) + """
       { """ + CONF_JS.replace("SEED", "77").replace("BOX", "s01-cfx").replace("T0", "(wr - .05)") + """ }
       tl.to("#s01-l0", { scale: 1.05, duration: .18, yoyo: true, repeat: 5, ease: "sine.inOut" }, wr + .3); tl.to("#s01-l2", { scale: 1.05, duration: .18, yoyo: true, repeat: 5, ease: "sine.inOut" }, ts + .3);
       tl.to("#s01-hk", { x: 16, duration: .04, yoyo: true, repeat: 7, ease: "none" }, ts + .05);""")
