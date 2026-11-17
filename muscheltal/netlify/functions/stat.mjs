@@ -80,6 +80,8 @@ export default async (req) => {
   G.dauerSchnitt = G.sitzungen ? Math.round(G.sicht / G.sitzungen) : 0;
   out.gesamt = G;
   if (u.searchParams.get("spieler")) out.spieler = await spieler();
+  // Aufräumen laut Datenschutzerklärung: Einzelwerte älter als 14 Monate löschen (Tagessummen "agg/" bleiben)
+  for (let i = 425; i < 455; i++) for (const k of await liste(store, "s/" + tag(Date.now() - i * 864e5) + "/")) await store.delete(k);
   return json(out);
 };
 export const config = { path: "/api/stat" };
