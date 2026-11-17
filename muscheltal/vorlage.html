@@ -2811,6 +2811,117 @@ const DOGS=[{n:'Golden',b:'#e6b968',d:'#c99443',ear:'flop',tail:'plume',fluffy:1
  {n:'Pudel',b:'#f5f0e7',d:'#ddd3c4',ear:'flop',tail:'pom',curly:1,small:1},{n:'Beagle',b:'#f7f2e9',d:'#8a5428',d2:'#2b2420',ear:'flop',tail:'thin',pat:'beagle'},{n:'Spitz',b:'#f2c272',d:'#d8a050',w:'#fff4dc',ear:'point',tail:'curl',fluffy:1,small:1},
  {n:'Chihuahua',b:'#e8c48e',d:'#c99a5e',w:'#fff2dc',ear:'big',tail:'thin',small:1,pat:'shiba'},{n:'Schäferhund',b:'#c98a45',d:'#2a2420',ear:'point',tail:'plume',pat:'saddle',big:1},{n:'Malteser',b:'#fdfcf8',d:'#ece6da',ear:'flop',tail:'curl',fluffy:1,small:1,curly:1}];
 const COLL=['#e8433c','#2fb3a0','#3fa0e8','#ffd23f','#ff6fa3','#9b6bff'];
+// ---------- 🐾 Haustiere (Tierheim): 8 Arten × 10 Seltenheiten; Katzen/Hunde = Rassen, sonst Farben/Muster/Details. Alle Tiere in 4 Ansichten (seitlich links/rechts, vorne, hinten) ----------
+// Varianten je Art (Index = Stufe-1). b Körper, d dunkel/Zweitfarbe, w hell/Bauch, pat Muster, acc Accessoire, glow Leuchten
+const TCAT=['rot getigert','grau getigert','schwarz','Smoking','Glückskatze','Siam','Russisch Blau','Bengal','Maine Coon','Perser'].map(n=>CATS.find(x=>x.n===n));
+const TDOG=['Labrador','Dackel','Beagle','Mops','Golden','Pudel','Dalmatiner','Corgi','Husky','Shiba'].map(n=>DOGS.find(x=>x.n===n));
+const TV=(a)=>a.map(([b,d,w,pat,acc,glow])=>({b,d,w,pat:pat||'',acc:acc||'',glow:!!glow}));
+const TIERV={
+ pinguin:TV([['#2b2f3a','#171a22','#fbfbf8'],['#8d8f96','#6a6c73','#d9d9dc','flausch'],['#2b2f3a','#171a22','#fbfbf8','schopf'],['#2b2f3a','#171a22','#fbfbf8','kaiser','schal'],['#3f6fb8','#2a4f8a','#eef6ff'],['#f29ac0','#d77aa3','#fff3f8','','krone'],['#19e3d0','#0fa596','#eafffc','','',1],['gold','#b8860b','#fff3c4','','',1],['galaxy','#1a1240','#cfc4ff','sterne','',1],['regenbogen','#555','#fff','','krone',1]]),
+ schwein:TV([['#f6b3c0','#e48a9c','#ffd3dc'],['#5a4a48','#3a2e2c','#7a6866'],['#f6c3cc','#2c2426','#ffd3dc','flecken'],['#f6c3cc','#2c2426','#ffd3dc','flecken','halstuch'],['#9fe3cf','#6cc4aa','#c9f3e6'],['#c8b2f0','#a08ad6','#e6dcff','','blumen'],['#ff3dbe','#c42391','#ffb3e6','','',1],['gold','#b8860b','#fff3c4','','',1],['galaxy','#1a1240','#cfc4ff','sterne','',1],['regenbogen','#555','#fff','','krone',1]]),
+ robbe:TV([['#8e98a3','#6a737d','#c3cad1'],['#f4f4f2','#d9dad6','#ffffff','flausch'],['#9aa1a8','#4c535b','#d0d4d8','flecken'],['#9aa1a8','#4c535b','#d0d4d8','flecken','ball'],['#8fc8f0','#5ea2d4','#d6ecfb'],['#f4a9c6','#d77aa3','#ffe0ec','','krone'],['#3dff9a','#1fb86a','#c9ffe3','','',1],['gold','#b8860b','#fff3c4','','',1],['galaxy','#1a1240','#cfc4ff','sterne','',1],['regenbogen','#555','#fff','','ball',1]]),
+ pferd:TV([['#a0663a','#4a2e1a','#c88a5a'],['#eeeae2','#a9a49a','#ffffff'],['#f2ece2','#7a4a26','#ffffff','flecken'],['#f2ece2','#7a4a26','#ffffff','flecken','schleife'],['#f6b8d2','#a15ed0','#ffe0ee'],['#9fd4f4','#f2a0c8','#e2f3ff','','blumen'],['#c060ff','#ffd23f','#ecc8ff','','',1],['gold','#fff3c4','#ffe9a0','','',1],['galaxy','#c9b8ff','#cfc4ff','sterne','',1],['#ffffff','regenbogen','#ffffff','horn','',1]]),
+ hase:TV([['#f6f3ee','#ddd6cc','#ffffff'],['#a77b55','#7a5536','#e9d6c2'],['#f6f3ee','#2c2a2e','#ffffff','flecken'],['#d8b48a','#a8845e','#f3e3cf','widder','schleife'],['#a9d2f2','#7cb0dc','#e3f1fc'],['#f6b8d2','#e08ab0','#ffe6f0','','blumen'],['#d0ff3d','#8fc41f','#f1ffc9','','',1],['gold','#b8860b','#fff3c4','','',1],['galaxy','#1a1240','#cfc4ff','sterne','',1],['regenbogen','#555','#fff','','krone',1]]),
+ schildi:TV([['#5aa04a','#3b6f32','#a8d88a'],['#a77b45','#6b4a26','#c9b58a'],['#4f8f6a','#e8d35a','#a8d88a','waben'],['#4f8f6a','#e8d35a','#a8d88a','waben','blumen'],['#3fc0c8','#228a92','#a8ecef'],['#f29ac0','#c96a96','#ffd3e6','','krone'],['#ff7a1c','#ffd23f','#ffd0a8','','',1],['gold','#b8860b','#fff3c4','waben','',1],['galaxy','#1a1240','#cfc4ff','sterne','',1],['regenbogen','#555','#c9f0c0','waben','krone',1]])};
+const TART={katze:'Katze',hund:'Hund',pinguin:'Pinguin',schwein:'Schwein',robbe:'Robbe',pferd:'Pony',hase:'Hase',schildi:'Schildkröte'};
+const TEMO={katze:'🐈',hund:'🐕',pinguin:'🐧',schwein:'🐖',robbe:'🦭',pferd:'🐴',hase:'🐇',schildi:'🐢'};
+// Größe relativ zu den Streunern (Katze = 1): so stimmen die Verhältnisse zur Spielfigur
+const TGR={katze:1,hund:1,pinguin:1.05,schwein:1.05,robbe:1.1,pferd:1.55,hase:.9,schildi:1.05};
+// Farbe auflösen (Sonderfarben: gold, silber, galaxy, regenbogen wechselt)
+const TF=(v,k)=>v==='galaxy'?'#2a1d5c':FX(v,k);
+// Gemeinsame Teile
+function tSchatten(c,rx,ry){c.fillStyle='rgba(30,40,20,.25)';c.beginPath();c.ellipse(0,0,rx,ry,0,0,TAU);c.fill();}
+function tSterne(c,x,y,rx,ry,n,sd){c.fillStyle='rgba(255,255,255,.9)';for(let i=0;i<n;i++){const a=hash(i,sd)*TAU,r=Math.sqrt(hash(i,sd+1))*.8;c.beginPath();c.arc(x+Math.cos(a)*rx*r,y+Math.sin(a)*ry*r,.09+hash(i,sd+2)*.1,0,TAU);c.fill();}}
+function tFlecken(c,x,y,rx,ry,n,col,sd){c.fillStyle=col;for(let i=0;i<n;i++){const a=hash(i,sd)*TAU,r=Math.sqrt(hash(i,sd+1))*.75;c.beginPath();c.ellipse(x+Math.cos(a)*rx*r,y+Math.sin(a)*ry*r,.28+hash(i,sd+2)*.3,.22+hash(i,sd+3)*.22,hash(i,sd+4)*3,0,TAU);c.fill();}}
+function tAuge(c,x,y,r){c.fillStyle='#2a1b12';c.beginPath();c.arc(x,y,r,0,TAU);c.fill();c.fillStyle='#fff';c.beginPath();c.arc(x+r*.35,y-r*.35,r*.38,0,TAU);c.fill();}
+function tBacke(c,x,y){c.fillStyle='rgba(255,120,140,.45)';c.beginPath();c.ellipse(x,y,.3,.18,0,0,TAU);c.fill();}
+function tAcc(c,acc,x,y,s,front){if(!acc)return;c.save();c.translate(x,y);c.scale(s,s);
+ if(acc==='krone'){c.fillStyle='#ffd23f';c.strokeStyle='#b8860b';c.lineWidth=.12;c.beginPath();c.moveTo(-.7,0);c.lineTo(-.7,-.6);c.lineTo(-.35,-.25);c.lineTo(0,-.75);c.lineTo(.35,-.25);c.lineTo(.7,-.6);c.lineTo(.7,0);c.closePath();c.fill();c.stroke();c.fillStyle='#e8467c';c.beginPath();c.arc(0,-.2,.13,0,TAU);c.fill();}
+ else if(acc==='schleife'){c.fillStyle='#ff5fa2';c.beginPath();c.ellipse(-.38,0,.38,.24,-.3,0,TAU);c.ellipse(.38,0,.38,.24,.3,0,TAU);c.fill();c.fillStyle='#d93b80';c.beginPath();c.arc(0,0,.15,0,TAU);c.fill();}
+ else if(acc==='blumen'){for(let i=0;i<5;i++){const xx=-.8+i*.4;c.fillStyle=['#ff6fa3','#ffd23f','#fff','#9b6bff','#ff8a3c'][i];c.beginPath();c.arc(xx,-Math.abs(i-2)*-.06,.2,0,TAU);c.fill();c.fillStyle='#ffd23f';c.beginPath();c.arc(xx,-Math.abs(i-2)*-.06,.07,0,TAU);c.fill();}}
+ else if(acc==='halstuch'||acc==='schal'){c.fillStyle=acc==='schal'?'#e8433c':'#2f7ad8';c.beginPath();c.ellipse(0,0,.9,.28,0,0,TAU);c.fill();if(front){c.beginPath();c.moveTo(-.3,.1);c.lineTo(.3,.1);c.lineTo(0,.75);c.closePath();c.fill();}c.fillStyle='rgba(255,255,255,.7)';for(let i=-2;i<=2;i++){c.beginPath();c.arc(i*.32,0,.06,0,TAU);c.fill();}}
+ else if(acc==='ball'){const g=c.createLinearGradient(-.6,0,.6,0);g.addColorStop(0,'#e8433c');g.addColorStop(.33,'#fff');g.addColorStop(.66,'#3fa0e8');g.addColorStop(1,'#ffd23f');c.fillStyle=g;c.beginPath();c.arc(0,-.6,.6,0,TAU);c.fill();c.strokeStyle='#2a1b12';c.lineWidth=.08;c.stroke();}
+ c.restore();}
+function tGlow(c,y,r,col,t){const g=c.createRadialGradient(0,y,0,0,y,r);g.addColorStop(0,`rgba(${col},${.3+.15*Math.sin(t*3)})`);g.addColorStop(1,`rgba(${col},0)`);c.fillStyle=g;c.beginPath();c.arc(0,y,r,0,TAU);c.fill();}
+// Haupt-Zeichner: a={x,y,art,st(1–10),view:'side'|'front'|'back',dir(±1),mv(bool),t,sz}
+function tierZ(c,a){const s=(a.sz||1)*TGR[a.art],t=a.t||0;
+ if(a.art==='katze'||a.art==='hund'){const sp=(a.art==='katze'?TCAT:TDOG)[a.st-1];return petDraw(c,{x:a.x,y:a.y,sz:s,sp,cat:a.art==='katze',pause:a.mv?0:1,sit:!a.mv&&a.sitz,ph:t-T,dir:a.dir,i:0,view:a.view==='side'?null:a.view,coll:a.st>=6?COLL[a.st%COLL.length]:null});}
+ const V=TIERV[a.art][a.st-1],B=TF(V.b,0),D=TF(V.d,1),W=TF(V.w,2),ink='#2a1b12',mv=a.mv,w=mv?Math.sin(t*10):0,vw=a.view||'side';
+ c.save();c.translate(a.x,a.y+4.4);c.lineCap='round';c.lineJoin='round';
+ if(V.glow)tGlow(c,-2.5*s,5*s,V.b==='gold'?'255,210,60':V.b==='galaxy'?'160,120,255':'255,255,255',t);
+ c.scale(s,s);if(vw==='side')c.scale(a.dir||1,1);
+ const gal=V.b==='galaxy',fl=(x,y,rx,ry,n,sd)=>{if(V.pat==='flecken')tFlecken(c,x,y,rx,ry,n,D,sd);if(gal)tSterne(c,x,y,rx,ry,n*2,sd);if(V.b==='regenbogen')for(let i=0;i<5;i++)tFlecken(c,x,y,rx,ry,2,BUNT[i],sd+i*7);};
+ const T_=tierTeile[a.art];T_(c,{V,B,D,W,ink,mv,w,t,vw,fl,gal});c.restore();}
+const tierTeile={
+ // 🐧 Pinguin: aufrecht, watschelt (Körper kippt), Flügel, orange Füße
+ pinguin(c,{V,B,D,W,ink,mv,w,t,vw,fl}){const wob=mv?Math.sin(t*9)*.16:Math.sin(t*1.5)*.03;tSchatten(c,1.6,.5);
+  c.fillStyle='#ff9a2e';for(const sx of[-.55,.55]){c.beginPath();c.ellipse(sx+(vw==='side'?.3:0),-.1+(mv&&((sx<0)===(w>0))?-.25:0),.55,.22,0,0,TAU);c.fill();}
+  c.rotate(wob);c.fillStyle=B;c.beginPath();c.ellipse(0,-2.6,1.55,2.45,0,0,TAU);c.fill();fl(0,-2.8,1.3,2.1,7,301);
+  if(V.pat==='flausch'){c.fillStyle=W;for(let i=0;i<9;i++){c.beginPath();c.arc(Math.cos(i)*1.2,-2.6+Math.sin(i*1.7)*1.8,.32,0,TAU);c.fill();}}
+  const fl2=(x,r)=>{c.fillStyle=D;c.save();c.translate(x,-2.9);c.rotate(r+(mv?Math.sin(t*9)*.25:0));c.beginPath();c.ellipse(0,.9,.32,1.05,0,0,TAU);c.fill();c.restore();};
+  if(vw==='side'){c.fillStyle=W;c.beginPath();c.ellipse(.65,-2.4,.85,1.95,0,0,TAU);c.fill();fl2(-.25,.25);c.fillStyle=B;c.beginPath();c.arc(.25,-4.55,1.05,0,TAU);c.fill();c.fillStyle=W;c.beginPath();c.ellipse(.75,-4.45,.45,.55,0,0,TAU);c.fill();tAuge(c,.8,-4.75,.2);c.fillStyle='#ff9a2e';c.beginPath();c.moveTo(1.2,-4.6);c.lineTo(1.85,-4.4);c.lineTo(1.2,-4.25);c.closePath();c.fill();tBacke(c,.95,-4.25);
+   if(V.pat==='kaiser'){c.fillStyle='#ffc23a';c.beginPath();c.ellipse(.85,-3.75,.35,.22,0,0,TAU);c.fill();}if(V.pat==='schopf'){c.strokeStyle='#ffd23f';c.lineWidth=.18;c.beginPath();c.moveTo(.6,-5.1);c.quadraticCurveTo(.2,-5.6,-.4,-5.3);c.stroke();}
+   tAcc(c,V.acc,.2,V.acc==='krone'?-5.45:-3.6,.9);}
+  else if(vw==='front'){c.fillStyle=W;c.beginPath();c.ellipse(0,-2.3,1.05,1.95,0,0,TAU);c.fill();fl2(-1.35,.35);fl2(1.35,-.35);c.fillStyle=B;c.beginPath();c.arc(0,-4.55,1.1,0,TAU);c.fill();c.fillStyle=W;c.beginPath();c.ellipse(-.4,-4.45,.42,.5,0,0,TAU);c.ellipse(.4,-4.45,.42,.5,0,0,TAU);c.fill();tAuge(c,-.4,-4.55,.19);tAuge(c,.4,-4.55,.19);c.fillStyle='#ff9a2e';c.beginPath();c.moveTo(-.25,-4.2);c.lineTo(.25,-4.2);c.lineTo(0,-3.85);c.closePath();c.fill();tBacke(c,-.7,-4.1);tBacke(c,.7,-4.1);
+   if(V.pat==='kaiser'){c.fillStyle='#ffc23a';c.beginPath();c.ellipse(-.75,-3.85,.25,.2,0,0,TAU);c.ellipse(.75,-3.85,.25,.2,0,0,TAU);c.fill();}if(V.pat==='schopf'){c.strokeStyle='#ffd23f';c.lineWidth=.18;for(const sx of[-1,1]){c.beginPath();c.moveTo(sx*.5,-5);c.quadraticCurveTo(sx*.9,-5.5,sx*1.3,-5.3);c.stroke();}}
+   tAcc(c,V.acc,0,V.acc==='krone'?-5.45:-3.6,.9,1);}
+  else{fl2(-1.35,.35);fl2(1.35,-.35);c.fillStyle=B;c.beginPath();c.arc(0,-4.55,1.1,0,TAU);c.fill();c.fillStyle=D;c.beginPath();c.moveTo(-.3,-.3);c.lineTo(.3,-.3);c.lineTo(0,.2);c.closePath();c.fill();tAcc(c,V.acc,0,V.acc==='krone'?-5.45:-3.6,.9);}},
+ // 🐖 Schwein: rund, kurze Beine, Ringelschwanz, Rüssel
+ schwein(c,{V,B,D,W,ink,mv,w,t,vw,fl}){tSchatten(c,2.4,.65);const leg=(x,ph)=>{c.strokeStyle=D;c.lineWidth=.62;c.beginPath();c.moveTo(x,-1.2);c.lineTo(x+(mv?Math.sin(t*12+ph)*.3:0),-.05);c.stroke();};
+  const ohr=(x,y,r)=>{c.fillStyle=D;c.save();c.translate(x,y);c.rotate(r);c.beginPath();c.moveTo(-.35,0);c.lineTo(.35,0);c.lineTo(0,-.8);c.closePath();c.fill();c.restore();};
+  const kringel=(x,y)=>{c.strokeStyle=D;c.lineWidth=.22;c.beginPath();c.arc(x,y,.3,0,TAU*.85);c.stroke();};
+  if(vw==='side'){leg(-1.2,0);leg(.9,Math.PI);c.fillStyle=B;c.beginPath();c.ellipse(0,-1.9,2.1,1.35,0,0,TAU);c.fill();fl(0,-1.9,1.8,1.1,6,311);leg(-.7,Math.PI);leg(1.35,0);kringel(-2.25,-2.3);
+   c.fillStyle=B;c.beginPath();c.arc(1.95,-2.55,1.05,0,TAU);c.fill();ohr(1.6,-3.35,-.4);c.fillStyle=W;c.beginPath();c.ellipse(2.95,-2.4,.32,.42,0,0,TAU);c.fill();c.fillStyle=D;c.beginPath();c.arc(3.0,-2.5,.07,0,TAU);c.arc(3.0,-2.28,.07,0,TAU);c.fill();tAuge(c,2.35,-2.85,.17);tBacke(c,2.35,-2.25);tAcc(c,V.acc,V.acc==='halstuch'?1.3:1.9,V.acc==='halstuch'?-1.75:-3.55,.85);}
+  else if(vw==='front'){leg(-.8,0);leg(.8,Math.PI);c.fillStyle=B;c.beginPath();c.ellipse(0,-1.9,1.55,1.3,0,0,TAU);c.fill();fl(0,-1.9,1.3,1,5,312);leg(-.45,Math.PI);leg(.45,0);c.fillStyle=B;c.beginPath();c.arc(0,-2.7,1.15,0,TAU);c.fill();ohr(-.75,-3.5,-.5);ohr(.75,-3.5,.5);
+   c.fillStyle=W;c.beginPath();c.ellipse(0,-2.35,.55,.4,0,0,TAU);c.fill();c.fillStyle=D;c.beginPath();c.arc(-.18,-2.35,.09,0,TAU);c.arc(.18,-2.35,.09,0,TAU);c.fill();tAuge(c,-.45,-3,.17);tAuge(c,.45,-3,.17);tBacke(c,-.8,-2.4);tBacke(c,.8,-2.4);tAcc(c,V.acc,0,V.acc==='halstuch'?-1.7:-3.75,.85,1);}
+  else{leg(-.8,0);leg(.8,Math.PI);c.fillStyle=B;c.beginPath();c.arc(0,-2.75,1,0,TAU);c.fill();ohr(-.7,-3.5,-.5);ohr(.7,-3.5,.5);c.fillStyle=B;c.beginPath();c.ellipse(0,-1.9,1.6,1.35,0,0,TAU);c.fill();fl(0,-1.9,1.3,1,5,313);kringel(0,-2.1);tAcc(c,V.acc,0,V.acc==='halstuch'?-3:-3.75,.85);}},
+ // 🦭 Robbe: liegt, robbt (Körper hebt/senkt sich), Flossen, Schnurrhaare
+ robbe(c,{V,B,D,W,ink,mv,w,t,vw,fl}){const hb=mv?Math.abs(Math.sin(t*6))*.35:0;tSchatten(c,2.6,.6);c.translate(0,-hb);
+  if(vw==='side'){c.fillStyle=B;c.beginPath();c.moveTo(-2.6,-.4);c.quadraticCurveTo(-1.2,-2.1,.8,-2.2);c.quadraticCurveTo(1.9,-2.4,1.9,-1);c.quadraticCurveTo(1.6,0,0,0);c.lineTo(-2.2,0);c.closePath();c.fill();fl(-.2,-1.1,1.7,.8,6,321);
+   c.fillStyle=D;c.beginPath();c.ellipse(-2.7,-.3,.65,.25,.5,0,TAU);c.ellipse(-2.6,-.05,.6,.22,-.3,0,TAU);c.fill();c.save();c.translate(.6,-.35);c.rotate(mv?Math.sin(t*6)*.4:.2);c.fillStyle=D;c.beginPath();c.ellipse(.3,0,.6,.22,.4,0,TAU);c.fill();c.restore();
+   c.fillStyle=B;c.beginPath();c.arc(1.6,-2.55,1.05,0,TAU);c.fill();c.fillStyle=W;c.beginPath();c.ellipse(2.3,-2.3,.48,.36,0,0,TAU);c.fill();c.fillStyle=ink;c.beginPath();c.arc(2.62,-2.42,.13,0,TAU);c.fill();tAuge(c,1.85,-2.9,.22);tBacke(c,1.9,-2.25);
+   c.strokeStyle='rgba(42,27,18,.5)';c.lineWidth=.06;for(const k of[-1,0,1]){c.beginPath();c.moveTo(2.4,-2.25);c.lineTo(3.2,-2.25+k*.22);c.stroke();}tAcc(c,V.acc,V.acc==='ball'?2:1.55,V.acc==='ball'?-3.4:-3.55,V.acc==='ball'?.8:.85);}
+  else if(vw==='front'){c.fillStyle=B;c.beginPath();c.ellipse(0,-.9,1.5,.95,0,0,TAU);c.fill();fl(0,-.9,1.2,.7,4,322);c.fillStyle=D;for(const sx of[-1,1]){c.beginPath();c.ellipse(sx*1.45,-.35,.55,.22,sx*.5+(mv?Math.sin(t*6)*.3*sx:0),0,TAU);c.fill();}
+   c.fillStyle=B;c.beginPath();c.arc(0,-2.35,1.15,0,TAU);c.fill();c.fillStyle=W;c.beginPath();c.ellipse(0,-2,.62,.42,0,0,TAU);c.fill();c.fillStyle=ink;c.beginPath();c.arc(0,-2.15,.14,0,TAU);c.fill();tAuge(c,-.45,-2.65,.24);tAuge(c,.45,-2.65,.24);tBacke(c,-.8,-2.05);tBacke(c,.8,-2.05);
+   c.strokeStyle='rgba(42,27,18,.5)';c.lineWidth=.06;for(const sx of[-1,1])for(const k of[-1,0,1]){c.beginPath();c.moveTo(sx*.45,-1.95);c.lineTo(sx*1.2,-1.95+k*.2);c.stroke();}tAcc(c,V.acc,0,V.acc==='ball'?-3.4:-3.4,V.acc==='ball'?.8:.85,1);}
+  else{c.fillStyle=B;c.beginPath();c.arc(0,-2.3,1.05,0,TAU);c.fill();c.fillStyle=B;c.beginPath();c.ellipse(0,-.95,1.45,1.05,0,0,TAU);c.fill();fl(0,-.95,1.2,.8,4,323);c.fillStyle=D;c.beginPath();c.ellipse(-.4,.05,.55,.22,.5,0,TAU);c.ellipse(.4,.05,.55,.22,-.5,0,TAU);c.fill();tAcc(c,V.acc,0,-3.4,.8);}},
+ // 🐴 Pony: lange Beine, Mähne + Schweif in Zweitfarbe; Einzigartig = Einhorn mit Horn
+ pferd(c,{V,B,D,W,ink,mv,w,t,vw,fl}){tSchatten(c,2.8,.7);const leg=(x,ph,f)=>{const sw=mv?Math.sin(t*9+ph)*.45:0;c.strokeStyle=f?B:shade(B.startsWith('#')?B:'#d8b040',-.12);c.lineWidth=.6;c.beginPath();c.moveTo(x,-2.6);c.lineTo(x+sw,-.15);c.stroke();c.strokeStyle=ink;c.lineWidth=.62;c.beginPath();c.moveTo(x+sw-.01,-.25);c.lineTo(x+sw,0);c.stroke();};
+  const horn=(x,y,r)=>{if(V.pat!=='horn')return;c.save();c.translate(x,y);c.rotate(r);c.fillStyle='#ffd23f';c.beginPath();c.moveTo(-.18,0);c.lineTo(.18,0);c.lineTo(0,-1.2);c.closePath();c.fill();c.strokeStyle='#e0a020';c.lineWidth=.05;for(let i=1;i<4;i++){c.beginPath();c.moveTo(-.18+i*.03,-i*.28);c.lineTo(.18-i*.03,-i*.28+.1);c.stroke();}c.restore();};
+  const mane=(f)=>{c.fillStyle=D;f();c.fill();};
+  if(vw==='side'){leg(-1.6,0);leg(1.3,Math.PI);c.fillStyle=B;c.beginPath();c.ellipse(-.1,-3.2,2.25,1.15,0,0,TAU);c.fill();fl(-.1,-3.2,1.9,.9,6,331);leg(-1.2,Math.PI,1);leg(1.65,0,1);
+   const sw=mv?Math.sin(t*9)*.25:Math.sin(t*1.3)*.1;mane(()=>{c.beginPath();c.moveTo(-2.25,-3.6);c.quadraticCurveTo(-3.1+sw,-2.6,-2.75+sw,-1.5);c.quadraticCurveTo(-2.4,-2.6,-2.1,-3.2);c.closePath();});
+   c.fillStyle=B;c.beginPath();c.moveTo(1.2,-3.9);c.quadraticCurveTo(1.6,-5.4,2.3,-5.6);c.lineTo(2.9,-4.9);c.quadraticCurveTo(2.4,-4.2,2.1,-3);c.closePath();c.fill();c.beginPath();c.ellipse(2.75,-5.25,1.05,.6,.45,0,TAU);c.fill();c.fillStyle=W;c.beginPath();c.ellipse(3.45,-4.85,.42,.36,.4,0,TAU);c.fill();
+   c.fillStyle=B;c.beginPath();c.moveTo(2.05,-5.85);c.lineTo(2.35,-6.55);c.lineTo(2.55,-5.8);c.closePath();c.fill();mane(()=>{c.beginPath();c.moveTo(2.2,-5.9);c.quadraticCurveTo(1.2,-5.6,.95,-3.9);c.lineTo(1.5,-4);c.quadraticCurveTo(1.9,-5.2,2.6,-5.6);c.closePath();});tAuge(c,2.75,-5.45,.2);c.fillStyle=ink;c.beginPath();c.arc(3.6,-4.9,.07,0,TAU);c.fill();tBacke(c,3,-4.95);horn(2.6,-6,.35);tAcc(c,V.acc,2.15,-5.95,.8);}
+  else if(vw==='front'){leg(-.7,0);leg(.7,Math.PI);c.fillStyle=B;c.beginPath();c.ellipse(0,-3.2,1.35,1.2,0,0,TAU);c.fill();fl(0,-3.2,1.1,.9,4,332);leg(-.45,Math.PI,1);leg(.45,0,1);
+   c.fillStyle=B;c.beginPath();c.ellipse(0,-5.1,.85,1.25,0,0,TAU);c.fill();for(const sx of[-1,1]){c.beginPath();c.moveTo(sx*.35,-6.1);c.lineTo(sx*.6,-6.85);c.lineTo(sx*.75,-6);c.closePath();c.fill();}c.fillStyle=W;c.beginPath();c.ellipse(0,-4.25,.6,.45,0,0,TAU);c.fill();c.fillStyle=ink;c.beginPath();c.arc(-.22,-4.2,.07,0,TAU);c.arc(.22,-4.2,.07,0,TAU);c.fill();
+   mane(()=>{c.beginPath();c.ellipse(0,-6.15,.45,.3,0,0,TAU);});tAuge(c,-.42,-5.35,.19);tAuge(c,.42,-5.35,.19);tBacke(c,-.6,-4.8);tBacke(c,.6,-4.8);horn(0,-6.25,0);tAcc(c,V.acc,0,-6.35,.8,1);}
+  else{leg(-.7,0);leg(.7,Math.PI);c.fillStyle=B;c.beginPath();c.ellipse(0,-5.1,.8,1.15,0,0,TAU);c.fill();for(const sx of[-1,1]){c.beginPath();c.moveTo(sx*.35,-6.05);c.lineTo(sx*.6,-6.8);c.lineTo(sx*.75,-5.95);c.closePath();c.fill();}mane(()=>{c.beginPath();c.ellipse(0,-5.2,.35,1.2,0,0,TAU);});
+   c.fillStyle=B;c.beginPath();c.ellipse(0,-3.15,1.4,1.25,0,0,TAU);c.fill();fl(0,-3.15,1.1,.9,4,333);leg(-.45,Math.PI,1);leg(.45,0,1);const sw=mv?Math.sin(t*9)*.25:0;mane(()=>{c.beginPath();c.moveTo(-.25,-3.7);c.quadraticCurveTo(-.4+sw,-2.2,sw,-1.4);c.quadraticCurveTo(.4+sw,-2.2,.25,-3.7);c.closePath();});horn(0,-6.2,0);tAcc(c,V.acc,0,-6.3,.8);}},
+ // 🐇 Hase: hoppelt (springt), lange Ohren (Widder: Hängeohren), Puschelschwanz
+ hase(c,{V,B,D,W,ink,mv,w,t,vw,fl}){const hop=mv?Math.max(0,Math.sin(t*8))*1:0;tSchatten(c,1.6*(1-hop*.2),.5);c.translate(0,-hop);const wid=V.pat==='widder';
+  const ohr=(x,y,r)=>{c.save();c.translate(x,y);c.rotate(r);c.fillStyle=B;c.beginPath();c.ellipse(0,wid?.75:-.85,.38,.95,0,0,TAU);c.fill();c.fillStyle='#f7b7c4';c.beginPath();c.ellipse(0,wid?.75:-.85,.18,.7,0,0,TAU);c.fill();c.restore();};
+  if(vw==='side'){c.fillStyle=B;c.beginPath();c.ellipse(-.2,-1.25,1.45,1.15,0,0,TAU);c.fill();fl(-.2,-1.25,1.2,.9,5,341);c.fillStyle=D;c.beginPath();c.ellipse(-.4,-.2,.9,.32,0,0,TAU);c.fill();c.fillStyle='#fff';c.beginPath();c.arc(-1.6,-1.4,.42,0,TAU);c.fill();
+   c.fillStyle=B;c.beginPath();c.arc(1,-2.3,.85,0,TAU);c.fill();ohr(.7,wid?-2.5:-2.95,wid?.2:-.25+(mv?.2:Math.sin(t*2)*.08));ohr(.95,wid?-2.5:-3,wid?.4:-.05);c.fillStyle='#f78fa3';c.beginPath();c.arc(1.82,-2.2,.12,0,TAU);c.fill();tAuge(c,1.3,-2.5,.18);tBacke(c,1.45,-2.05);tAcc(c,V.acc,.85,-3.05,.7);}
+  else if(vw==='front'){c.fillStyle=B;c.beginPath();c.ellipse(0,-1.15,1.15,1.1,0,0,TAU);c.fill();fl(0,-1.15,.9,.85,4,342);c.fillStyle=W;c.beginPath();c.ellipse(0,-.9,.6,.7,0,0,TAU);c.fill();c.fillStyle=D;c.beginPath();c.ellipse(-.45,-.1,.35,.2,0,0,TAU);c.ellipse(.45,-.1,.35,.2,0,0,TAU);c.fill();
+   c.fillStyle=B;c.beginPath();c.arc(0,-2.35,.9,0,TAU);c.fill();ohr(-.4,wid?-2.4:-3,wid?.35:-.15);ohr(.4,wid?-2.4:-3,wid?-.35:.15);c.fillStyle='#f78fa3';c.beginPath();c.arc(0,-2.15,.12,0,TAU);c.fill();tAuge(c,-.35,-2.45,.17);tAuge(c,.35,-2.45,.17);tBacke(c,-.6,-2.05);tBacke(c,.6,-2.05);tAcc(c,V.acc,0,-3.15,.7,1);}
+  else{c.fillStyle=B;c.beginPath();c.arc(0,-2.35,.85,0,TAU);c.fill();ohr(-.4,wid?-2.4:-3,wid?.35:-.15);ohr(.4,wid?-2.4:-3,wid?-.35:.15);c.fillStyle=B;c.beginPath();c.ellipse(0,-1.15,1.2,1.1,0,0,TAU);c.fill();fl(0,-1.15,.9,.85,4,343);c.fillStyle='#fff';c.beginPath();c.arc(0,-.8,.45,0,TAU);c.fill();tAcc(c,V.acc,0,-3.15,.7);}},
+ // 🐢 Schildkröte: flach, kriecht langsam, Panzer mit Muster
+ schildi(c,{V,B,D,W,ink,mv,w,t,vw,fl,gal}){tSchatten(c,2,.55);const pz=(x,y,rx,ry)=>{c.fillStyle=B;c.beginPath();c.ellipse(x,y,rx,ry,0,Math.PI,TAU);c.closePath();c.fill();c.fillStyle=D;c.fillRect(x-rx,y-.12,rx*2,.24);
+   if(V.pat==='waben'){c.strokeStyle=D;c.lineWidth=.12;for(const [hx,hy] of[[0,-ry*.55],[-rx*.5,-ry*.35],[rx*.5,-ry*.35]]){c.beginPath();for(let i=0;i<6;i++){const a=i/6*TAU;c.lineTo(x+hx+Math.cos(a)*rx*.22,y+hy+Math.sin(a)*ry*.2);}c.closePath();c.stroke();}}
+   if(gal)tSterne(c,x,y-ry*.45,rx*.8,ry*.4,10,351);c.fillStyle='rgba(255,255,255,.25)';c.beginPath();c.ellipse(x-rx*.3,y-ry*.6,rx*.3,ry*.15,-.3,0,TAU);c.fill();};
+  const bein=(x,ph)=>{c.fillStyle=W;c.beginPath();c.ellipse(x+(mv?Math.sin(t*5+ph)*.2:0),-.25,.32,.3,0,0,TAU);c.fill();};
+  if(vw==='side'){bein(-1,0);bein(.9,Math.PI);c.fillStyle=W;c.beginPath();c.ellipse(1.95,-.75+(mv?Math.sin(t*5)*.06:0),.55,.45,0,0,TAU);c.fill();tAuge(c,2.15,-.85,.14);tBacke(c,2.25,-.6);c.beginPath();c.fillStyle=W;c.ellipse(-1.85,-.45,.3,.12,0,0,TAU);c.fill();pz(0,-.4,1.75,1.45);bein(-.6,Math.PI);bein(1.25,0);tAcc(c,V.acc,.1,-1.9,.75);}
+  else if(vw==='front'){bein(-1.05,0);bein(1.05,Math.PI);pz(0,-.45,1.5,1.4);c.fillStyle=W;c.beginPath();c.ellipse(0,-.55,.55,.48,0,0,TAU);c.fill();tAuge(c,-.22,-.65,.13);tAuge(c,.22,-.65,.13);tBacke(c,-.38,-.4);tBacke(c,.38,-.4);tAcc(c,V.acc,0,-1.95,.75,1);}
+  else{bein(-1.05,0);bein(1.05,Math.PI);c.fillStyle=W;c.beginPath();c.ellipse(0,-.2,.18,.12,0,0,TAU);c.fill();pz(0,-.45,1.5,1.4);tAcc(c,V.acc,0,-1.95,.75);}}};
+const TNAME={katze:['Rote Tigerkatze','Graue Tigerkatze','Schwarze Katze','Smoking-Katze','Glückskatze','Siamkatze','Russisch Blau','Bengalkatze','Maine Coon','Perserkatze'],
+ hund:['Labrador','Dackel','Beagle','Mops','Golden Retriever','Pudel','Dalmatiner','Corgi','Husky','Shiba Inu'],
+ pinguin:['Pinguin','Flauschiges Küken','Felsenpinguin','Kaiserpinguin mit Schal','Blauer Pinguin','Rosa Pinguin mit Krone','Neon-Pinguin','Gold-Pinguin','Galaxie-Pinguin','Regenbogen-Pinguin'],
+ schwein:['Rosa Ferkel','Hängebauchschwein','Geflecktes Ferkel','Ferkel mit Halstuch','Mint-Ferkel','Lavendel-Ferkel mit Blumen','Neon-Ferkel','Gold-Ferkel','Galaxie-Ferkel','Regenbogen-Ferkel'],
+ robbe:['Robbe','Heuler-Baby','Seehund','Seehund mit Ball','Himmelblaue Robbe','Rosa Robbe mit Krone','Neon-Robbe','Gold-Robbe','Galaxie-Robbe','Regenbogen-Robbe'],
+ pferd:['Braunes Pony','Schimmel-Pony','Schecken-Pony','Schecke mit Schleife','Rosa Pony','Himmelblaues Pony','Neon-Pony','Gold-Pony','Galaxie-Pony','Einhorn'],
+ hase:['Weißer Hase','Brauner Hase','Holländer-Hase','Widder mit Schleife','Hellblauer Hase','Rosa Hase mit Blumen','Neon-Hase','Gold-Hase','Galaxie-Hase','Regenbogen-Hase'],
+ schildi:['Grüne Schildkröte','Landschildkröte','Waben-Schildkröte','Schildkröte mit Blumen','Türkis-Schildkröte','Rosa Schildkröte mit Krone','Neon-Schildkröte','Gold-Schildkröte','Galaxie-Schildkröte','Regenbogen-Schildkröte']};
 // Vorder- und Rückansicht (läuft auf die Kamera zu bzw. von ihr weg)
 function petFB(c,a,back){const s=a.sz,sp=a.sp,mv=a.pause<=0,t=T+a.ph,cat=a.cat,sit=!mv&&a.sit,walk=mv?Math.sin(t*(cat?9:12)):0;
  const B=sp.b,D=sp.d,Wh=sp.w,white=Wh||'#fff',ink='#2a1b12',lg=sp.short?.62:1,leg=(cat?1.25:1.3)*lg,big=sp.big?1.08:1,bw=(cat?1.15:1.3)*big*(sp.long?1.05:1),bh=(cat?1.12:1.22)*big,by=sit?-1.75:-leg-.9,lw=cat?.58:.7;
@@ -4518,9 +4629,21 @@ function walkTick(n){if(!WK.on)return;const dt=Math.min(.05,(n-WK.last)/1000);WK
 // die eigene Figur (ohne Schatten/Namen); occ: Hütten/Palmen davor nachzeichnen
 function walkerFig(c,occ){const L=WK.L,x=WK.x,y=WK.y;if(!WK.moving){c.save();c.translate(x,y);if(!WK.front&&WK.dir<0&&!WK.vert)c.scale(-1,1);if(WK.mode==='moped'){c.restore();drawMover(c,{...L,mode:'moped',noOcc:1},x,y,WK.vert?1:WK.dir,WK.vert,'moped');}else{person(c,L,0,WK.vert&&WK.dir<0?'back':true,0);c.restore();}}
  else drawMover(c,{...L,mode:WK.mode,noOcc:1},x,y,WK.dir,WK.vert,WK.mode);if(occ)hutsFront(c,x,y,nightLevel());}
+// Haustier läuft hinter der Spielfigur her – genau auf ihrem Weg (Spur), dadurch gelten alle Laufregeln (nie über Hütten/Hindernisse/Wasser); hält auch beim Fahren mit
+function tierMit(){const q=QP.get('tier');if(q){const [art,st]=q.split('|');if(TIERV[art]||art==='katze'||art==='hund')return{art,st:Math.max(1,Math.min(10,+st||1))};}
+ const id=MK.d&&MK.d.aus&&MK.d.aus.tier,it=id&&SIT[id];if(!it)return null;const [art,st]=String(it.wert).split('|');return{art,st:+st};}
+const TF_={trail:[],x:0,y:0,view:'side',dir:1,mv:false,t:0,lt:0};
+function tierFolge(){const tm=tierMit();if(!tm)return null;const tr=TF_.trail,p=tr[0],dt=Math.min(.1,Math.max(0,T-TF_.lt));TF_.lt=T;
+ if(!p||Math.hypot(WK.x-p[0],WK.y-p[1])>40){TF_.trail=[[WK.x,WK.y]];TF_.x=WK.x-(WK.dir||1)*6;TF_.y=WK.y;return tm;}
+ if(Math.hypot(WK.x-p[0],WK.y-p[1])>.4){tr.unshift([WK.x,WK.y]);if(tr.length>160)tr.length=160;}
+ const D=4.5+2.4*(TGR[tm.art]||1);let rest=D,px=WK.x,py=WK.y,nx=px,ny=py;for(const [qx,qy] of tr){const d=Math.hypot(qx-px,qy-py);if(d>=rest){nx=px+(qx-px)*rest/d;ny=py+(qy-py)*rest/d;rest=0;break;}rest-=d;px=qx;py=qy;nx=qx;ny=qy;}
+ const dx=nx-TF_.x,dy=ny-TF_.y,dd=Math.hypot(dx,dy);TF_.mv=dd>.02;if(TF_.mv){TF_.t+=dt*Math.min(2.2,.6+dd/Math.max(dt,.001)/30);if(Math.abs(dy)>Math.abs(dx)*1.2)TF_.view=dy>0?'front':'back';else{TF_.view='side';TF_.dir=dx>0?1:-1;}}
+ TF_.x=nx;TF_.y=ny;return tm;}
+function tierZeichnen(c){const tm=tierFolge();if(!tm)return;tierZ(c,{x:TF_.x,y:TF_.y,art:tm.art,st:tm.st,view:TF_.view,dir:TF_.dir,mv:TF_.mv,t:TF_.t,sz:1});hutsFront(c,TF_.x,TF_.y,nightLevel());}
 function drawWalker(c,z){if(!WK.on)return;const L=WK.L,x=WK.x,y=WK.y;
  c.save();c.fillStyle='rgba(232,70,124,.28)';c.beginPath();c.ellipse(x,y+4.4,5,1.8,0,0,TAU);c.fill();c.restore();
- walkerFig(c,1);
+ const tierHinten=TF_.y<=y;if(tierHinten)tierZeichnen(c);
+ walkerFig(c,1);if(!tierHinten)tierZeichnen(c);
  signOver(c,x,y,nightLevel());
  // vor einer Theke: eigenes Namensschild unter die Füße, damit es keine Gesichter des Teams dahinter verdeckt
  const vorTheke=TAPS.some(t=>t[2]&&t[2].ort&&t[2]!==WK.me&&Math.abs(t[0]-x)<13&&t[1]<y-1&&t[1]>y-18);

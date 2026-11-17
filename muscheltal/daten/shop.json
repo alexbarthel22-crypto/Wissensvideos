@@ -1618,6 +1618,806 @@
    "wert": "🌌 Kosmische Seele",
    "icon": "🏷️",
    "preis": 4400
+  },
+  {
+   "id": "tier_katze_1",
+   "name": "Rote Tigerkatze",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 1,
+   "wert": "katze|1",
+   "icon": "🐈",
+   "preis": 100
+  },
+  {
+   "id": "tier_katze_2",
+   "name": "Graue Tigerkatze",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 2,
+   "wert": "katze|2",
+   "icon": "🐈",
+   "preis": 150
+  },
+  {
+   "id": "tier_katze_3",
+   "name": "Schwarze Katze",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 3,
+   "wert": "katze|3",
+   "icon": "🐈",
+   "preis": 190
+  },
+  {
+   "id": "tier_katze_4",
+   "name": "Smoking-Katze",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 4,
+   "wert": "katze|4",
+   "icon": "🐈",
+   "preis": 240
+  },
+  {
+   "id": "tier_katze_5",
+   "name": "Glückskatze",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 5,
+   "wert": "katze|5",
+   "icon": "🐈",
+   "preis": 290
+  },
+  {
+   "id": "tier_katze_6",
+   "name": "Siamkatze",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 6,
+   "wert": "katze|6",
+   "icon": "🐈",
+   "preis": 340
+  },
+  {
+   "id": "tier_katze_7",
+   "name": "Russisch Blau",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 7,
+   "wert": "katze|7",
+   "icon": "🐈",
+   "preis": 390
+  },
+  {
+   "id": "tier_katze_8",
+   "name": "Bengalkatze",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 8,
+   "wert": "katze|8",
+   "icon": "🐈",
+   "preis": 430
+  },
+  {
+   "id": "tier_katze_9",
+   "name": "Maine Coon",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 9,
+   "wert": "katze|9",
+   "icon": "🐈",
+   "preis": 480
+  },
+  {
+   "id": "tier_katze_10",
+   "name": "Perserkatze",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 10,
+   "wert": "katze|10",
+   "icon": "🐈",
+   "preis": 520
+  },
+  {
+   "id": "tier_hund_1",
+   "name": "Labrador",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 1,
+   "wert": "hund|1",
+   "icon": "🐕",
+   "preis": 100
+  },
+  {
+   "id": "tier_hund_2",
+   "name": "Dackel",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 2,
+   "wert": "hund|2",
+   "icon": "🐕",
+   "preis": 150
+  },
+  {
+   "id": "tier_hund_3",
+   "name": "Beagle",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 3,
+   "wert": "hund|3",
+   "icon": "🐕",
+   "preis": 190
+  },
+  {
+   "id": "tier_hund_4",
+   "name": "Mops",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 4,
+   "wert": "hund|4",
+   "icon": "🐕",
+   "preis": 240
+  },
+  {
+   "id": "tier_hund_5",
+   "name": "Golden Retriever",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 5,
+   "wert": "hund|5",
+   "icon": "🐕",
+   "preis": 290
+  },
+  {
+   "id": "tier_hund_6",
+   "name": "Pudel",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 6,
+   "wert": "hund|6",
+   "icon": "🐕",
+   "preis": 340
+  },
+  {
+   "id": "tier_hund_7",
+   "name": "Dalmatiner",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 7,
+   "wert": "hund|7",
+   "icon": "🐕",
+   "preis": 390
+  },
+  {
+   "id": "tier_hund_8",
+   "name": "Corgi",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 8,
+   "wert": "hund|8",
+   "icon": "🐕",
+   "preis": 430
+  },
+  {
+   "id": "tier_hund_9",
+   "name": "Husky",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 9,
+   "wert": "hund|9",
+   "icon": "🐕",
+   "preis": 480
+  },
+  {
+   "id": "tier_hund_10",
+   "name": "Shiba Inu",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 10,
+   "wert": "hund|10",
+   "icon": "🐕",
+   "preis": 520
+  },
+  {
+   "id": "tier_pinguin_1",
+   "name": "Pinguin",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 1,
+   "wert": "pinguin|1",
+   "icon": "🐧",
+   "preis": 100
+  },
+  {
+   "id": "tier_pinguin_2",
+   "name": "Flauschiges Küken",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 2,
+   "wert": "pinguin|2",
+   "icon": "🐧",
+   "preis": 150
+  },
+  {
+   "id": "tier_pinguin_3",
+   "name": "Felsenpinguin",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 3,
+   "wert": "pinguin|3",
+   "icon": "🐧",
+   "preis": 190
+  },
+  {
+   "id": "tier_pinguin_4",
+   "name": "Kaiserpinguin mit Schal",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 4,
+   "wert": "pinguin|4",
+   "icon": "🐧",
+   "preis": 240
+  },
+  {
+   "id": "tier_pinguin_5",
+   "name": "Blauer Pinguin",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 5,
+   "wert": "pinguin|5",
+   "icon": "🐧",
+   "preis": 290
+  },
+  {
+   "id": "tier_pinguin_6",
+   "name": "Rosa Pinguin mit Krone",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 6,
+   "wert": "pinguin|6",
+   "icon": "🐧",
+   "preis": 340
+  },
+  {
+   "id": "tier_pinguin_7",
+   "name": "Neon-Pinguin",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 7,
+   "wert": "pinguin|7",
+   "icon": "🐧",
+   "preis": 390
+  },
+  {
+   "id": "tier_pinguin_8",
+   "name": "Gold-Pinguin",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 8,
+   "wert": "pinguin|8",
+   "icon": "🐧",
+   "preis": 430
+  },
+  {
+   "id": "tier_pinguin_9",
+   "name": "Galaxie-Pinguin",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 9,
+   "wert": "pinguin|9",
+   "icon": "🐧",
+   "preis": 480
+  },
+  {
+   "id": "tier_pinguin_10",
+   "name": "Regenbogen-Pinguin",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 10,
+   "wert": "pinguin|10",
+   "icon": "🐧",
+   "preis": 520
+  },
+  {
+   "id": "tier_schwein_1",
+   "name": "Rosa Ferkel",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 1,
+   "wert": "schwein|1",
+   "icon": "🐖",
+   "preis": 100
+  },
+  {
+   "id": "tier_schwein_2",
+   "name": "Hängebauchschwein",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 2,
+   "wert": "schwein|2",
+   "icon": "🐖",
+   "preis": 150
+  },
+  {
+   "id": "tier_schwein_3",
+   "name": "Geflecktes Ferkel",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 3,
+   "wert": "schwein|3",
+   "icon": "🐖",
+   "preis": 190
+  },
+  {
+   "id": "tier_schwein_4",
+   "name": "Ferkel mit Halstuch",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 4,
+   "wert": "schwein|4",
+   "icon": "🐖",
+   "preis": 240
+  },
+  {
+   "id": "tier_schwein_5",
+   "name": "Mint-Ferkel",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 5,
+   "wert": "schwein|5",
+   "icon": "🐖",
+   "preis": 290
+  },
+  {
+   "id": "tier_schwein_6",
+   "name": "Lavendel-Ferkel mit Blumen",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 6,
+   "wert": "schwein|6",
+   "icon": "🐖",
+   "preis": 340
+  },
+  {
+   "id": "tier_schwein_7",
+   "name": "Neon-Ferkel",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 7,
+   "wert": "schwein|7",
+   "icon": "🐖",
+   "preis": 390
+  },
+  {
+   "id": "tier_schwein_8",
+   "name": "Gold-Ferkel",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 8,
+   "wert": "schwein|8",
+   "icon": "🐖",
+   "preis": 430
+  },
+  {
+   "id": "tier_schwein_9",
+   "name": "Galaxie-Ferkel",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 9,
+   "wert": "schwein|9",
+   "icon": "🐖",
+   "preis": 480
+  },
+  {
+   "id": "tier_schwein_10",
+   "name": "Regenbogen-Ferkel",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 10,
+   "wert": "schwein|10",
+   "icon": "🐖",
+   "preis": 520
+  },
+  {
+   "id": "tier_robbe_1",
+   "name": "Robbe",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 1,
+   "wert": "robbe|1",
+   "icon": "🦭",
+   "preis": 100
+  },
+  {
+   "id": "tier_robbe_2",
+   "name": "Heuler-Baby",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 2,
+   "wert": "robbe|2",
+   "icon": "🦭",
+   "preis": 150
+  },
+  {
+   "id": "tier_robbe_3",
+   "name": "Seehund",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 3,
+   "wert": "robbe|3",
+   "icon": "🦭",
+   "preis": 190
+  },
+  {
+   "id": "tier_robbe_4",
+   "name": "Seehund mit Ball",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 4,
+   "wert": "robbe|4",
+   "icon": "🦭",
+   "preis": 240
+  },
+  {
+   "id": "tier_robbe_5",
+   "name": "Himmelblaue Robbe",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 5,
+   "wert": "robbe|5",
+   "icon": "🦭",
+   "preis": 290
+  },
+  {
+   "id": "tier_robbe_6",
+   "name": "Rosa Robbe mit Krone",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 6,
+   "wert": "robbe|6",
+   "icon": "🦭",
+   "preis": 340
+  },
+  {
+   "id": "tier_robbe_7",
+   "name": "Neon-Robbe",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 7,
+   "wert": "robbe|7",
+   "icon": "🦭",
+   "preis": 390
+  },
+  {
+   "id": "tier_robbe_8",
+   "name": "Gold-Robbe",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 8,
+   "wert": "robbe|8",
+   "icon": "🦭",
+   "preis": 430
+  },
+  {
+   "id": "tier_robbe_9",
+   "name": "Galaxie-Robbe",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 9,
+   "wert": "robbe|9",
+   "icon": "🦭",
+   "preis": 480
+  },
+  {
+   "id": "tier_robbe_10",
+   "name": "Regenbogen-Robbe",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 10,
+   "wert": "robbe|10",
+   "icon": "🦭",
+   "preis": 520
+  },
+  {
+   "id": "tier_pferd_1",
+   "name": "Braunes Pony",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 1,
+   "wert": "pferd|1",
+   "icon": "🐴",
+   "preis": 100
+  },
+  {
+   "id": "tier_pferd_2",
+   "name": "Schimmel-Pony",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 2,
+   "wert": "pferd|2",
+   "icon": "🐴",
+   "preis": 150
+  },
+  {
+   "id": "tier_pferd_3",
+   "name": "Schecken-Pony",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 3,
+   "wert": "pferd|3",
+   "icon": "🐴",
+   "preis": 190
+  },
+  {
+   "id": "tier_pferd_4",
+   "name": "Schecke mit Schleife",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 4,
+   "wert": "pferd|4",
+   "icon": "🐴",
+   "preis": 240
+  },
+  {
+   "id": "tier_pferd_5",
+   "name": "Rosa Pony",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 5,
+   "wert": "pferd|5",
+   "icon": "🐴",
+   "preis": 290
+  },
+  {
+   "id": "tier_pferd_6",
+   "name": "Himmelblaues Pony",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 6,
+   "wert": "pferd|6",
+   "icon": "🐴",
+   "preis": 340
+  },
+  {
+   "id": "tier_pferd_7",
+   "name": "Neon-Pony",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 7,
+   "wert": "pferd|7",
+   "icon": "🐴",
+   "preis": 390
+  },
+  {
+   "id": "tier_pferd_8",
+   "name": "Gold-Pony",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 8,
+   "wert": "pferd|8",
+   "icon": "🐴",
+   "preis": 430
+  },
+  {
+   "id": "tier_pferd_9",
+   "name": "Galaxie-Pony",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 9,
+   "wert": "pferd|9",
+   "icon": "🐴",
+   "preis": 480
+  },
+  {
+   "id": "tier_pferd_10",
+   "name": "Einhorn",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 10,
+   "wert": "pferd|10",
+   "icon": "🐴",
+   "preis": 520
+  },
+  {
+   "id": "tier_hase_1",
+   "name": "Weißer Hase",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 1,
+   "wert": "hase|1",
+   "icon": "🐇",
+   "preis": 100
+  },
+  {
+   "id": "tier_hase_2",
+   "name": "Brauner Hase",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 2,
+   "wert": "hase|2",
+   "icon": "🐇",
+   "preis": 150
+  },
+  {
+   "id": "tier_hase_3",
+   "name": "Holländer-Hase",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 3,
+   "wert": "hase|3",
+   "icon": "🐇",
+   "preis": 190
+  },
+  {
+   "id": "tier_hase_4",
+   "name": "Widder mit Schleife",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 4,
+   "wert": "hase|4",
+   "icon": "🐇",
+   "preis": 240
+  },
+  {
+   "id": "tier_hase_5",
+   "name": "Hellblauer Hase",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 5,
+   "wert": "hase|5",
+   "icon": "🐇",
+   "preis": 290
+  },
+  {
+   "id": "tier_hase_6",
+   "name": "Rosa Hase mit Blumen",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 6,
+   "wert": "hase|6",
+   "icon": "🐇",
+   "preis": 340
+  },
+  {
+   "id": "tier_hase_7",
+   "name": "Neon-Hase",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 7,
+   "wert": "hase|7",
+   "icon": "🐇",
+   "preis": 390
+  },
+  {
+   "id": "tier_hase_8",
+   "name": "Gold-Hase",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 8,
+   "wert": "hase|8",
+   "icon": "🐇",
+   "preis": 430
+  },
+  {
+   "id": "tier_hase_9",
+   "name": "Galaxie-Hase",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 9,
+   "wert": "hase|9",
+   "icon": "🐇",
+   "preis": 480
+  },
+  {
+   "id": "tier_hase_10",
+   "name": "Regenbogen-Hase",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 10,
+   "wert": "hase|10",
+   "icon": "🐇",
+   "preis": 520
+  },
+  {
+   "id": "tier_schildi_1",
+   "name": "Grüne Schildkröte",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 1,
+   "wert": "schildi|1",
+   "icon": "🐢",
+   "preis": 100
+  },
+  {
+   "id": "tier_schildi_2",
+   "name": "Landschildkröte",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 2,
+   "wert": "schildi|2",
+   "icon": "🐢",
+   "preis": 150
+  },
+  {
+   "id": "tier_schildi_3",
+   "name": "Waben-Schildkröte",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 3,
+   "wert": "schildi|3",
+   "icon": "🐢",
+   "preis": 190
+  },
+  {
+   "id": "tier_schildi_4",
+   "name": "Schildkröte mit Blumen",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 4,
+   "wert": "schildi|4",
+   "icon": "🐢",
+   "preis": 240
+  },
+  {
+   "id": "tier_schildi_5",
+   "name": "Türkis-Schildkröte",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 5,
+   "wert": "schildi|5",
+   "icon": "🐢",
+   "preis": 290
+  },
+  {
+   "id": "tier_schildi_6",
+   "name": "Rosa Schildkröte mit Krone",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 6,
+   "wert": "schildi|6",
+   "icon": "🐢",
+   "preis": 340
+  },
+  {
+   "id": "tier_schildi_7",
+   "name": "Neon-Schildkröte",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 7,
+   "wert": "schildi|7",
+   "icon": "🐢",
+   "preis": 390
+  },
+  {
+   "id": "tier_schildi_8",
+   "name": "Gold-Schildkröte",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 8,
+   "wert": "schildi|8",
+   "icon": "🐢",
+   "preis": 430
+  },
+  {
+   "id": "tier_schildi_9",
+   "name": "Galaxie-Schildkröte",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 9,
+   "wert": "schildi|9",
+   "icon": "🐢",
+   "preis": 480
+  },
+  {
+   "id": "tier_schildi_10",
+   "name": "Regenbogen-Schildkröte",
+   "kat": "tier",
+   "slot": "tier",
+   "stufe": 10,
+   "wert": "schildi|10",
+   "icon": "🐢",
+   "preis": 520
   }
  ]
 }
