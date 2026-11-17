@@ -21,7 +21,6 @@ const LZ=1080/(2.6667*2.4*G.lv.r);const K=[[0,G.cl.x,G.cl.y+32,4.0],[L.L1.end+.2
  [L.L3.start+.2,G.m.x,G.m.y,G.m.z*1.2],[L.L3a.start-.05,G.dr.x,G.dr.y-8,4.0],[L.L3aw.end+.6,G.dr.x,G.dr.y-8,4.4],
  [L.L3b.start-.05,G.ki.x,G.ki.y-9,4.6],[L.L3bw.end+.6,G.ki.x,G.ki.y-9,5.0],
  [L.L4.start+.1,G.ti.x-20,G.ti.y-30,3.4],[L.L4b.start,G.ti.x,G.ti.y-14,3.2],[L.L4b.end+.3,G.ti.x,G.ti.y-14,3.6],
- [L.L4c.start+.3,G.lv.x,G.lv.y+G.lv.r*.62,LZ*.95],[L.L4c.end+.3,G.lv.x,G.lv.y+G.lv.r*.62,LZ],
  [L.L5.start+.3,G.cl.x,G.cl.y-34,3.0],[dur,G.cl.x,G.cl.y-34,3.2]];
 
 const cam=t=>{let j=0;while(j<K.length-1&&K[j+1][0]<=t)j++;const a=K[j],c=K[Math.min(j+1,K.length-1)];let k=c[0]>a[0]?Math.max(0,Math.min(1,(t-a[0])/(c[0]-a[0]))):1;k=k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2;
