@@ -11,7 +11,7 @@ import { QUIZ } from "../lib/quiz.mjs";
 
 const json = (d, s = 200) => new Response(JSON.stringify(d), { status: s, headers: { "content-type": "application/json", "cache-control": "no-store" } });
 const NAME = /^@[a-z0-9._]{1,40}$/;
-const ERF_CLIENT = new Set(["LUPE", "AUF", "UNTER", "SCOOT", "SCHOEPFER", "WAL", "SCHILD", "MOND", "WELT"]);
+const ERF_CLIENT = new Set(["LUPE", "AUF", "UNTER", "SCOOT", "SCHOEPFER", "WAL", "SCHILD", "MOND", "WELT", "NACHT"]);
 const STICKER = new Set(["palast", "doener", "bar", "villa", "acai", "werkstatt", "baeckerei", "nagel", "markt", "kiosk", "boba", "pizza", "tierheim", "yacht", "cocobay", "kokosbad", "coast", "kokos", "cococare", "gaming", "feuer", "anleger", "ev_wochenmarkt", "ev_flohmarkt", "ev_konzert", "ev_feuerwerk"]);
 const SERIE = [3, 5, 8, 12, 17, 23, 32];
 const TZ = "Europe/Berlin";
@@ -319,6 +319,13 @@ export default async (req) => {
     await store.set(pre + a, String(Date.now()));
     return true;
   };
+  // vom Server vergebener Erfolg (nur einmal; +10 Muscheln; auch in der Erfolgsliste für alle sichtbar)
+  const erfGib = async (k) => {
+    const es = getStore("erfolge"), pre = "e/" + nm + "/" + k + "/";
+    if ((await es.list({ prefix: pre })).blobs.length) return false;
+    await es.set(pre + Date.now(), "1"); await setze("erf", k, 10); return true;
+  };
+  const berlinStunde = () => Number(new Intl.DateTimeFormat("en-GB", { timeZone: TZ, hour: "2-digit", hourCycle: "h23" }).format(new Date()));
   const J = job(nm);
 
   // heutiger Login-Bonus: Serien-Tag aus dem gestrigen Eintrag (sonst Tag 1)
@@ -398,6 +405,7 @@ export default async (req) => {
     const k = String(d.key || "").toUpperCase();
     // nur Erfolge, die im Browser vergeben werden (alle anderen bucht der Server selbst) – sonst ließen sich mit erfundenen Namen Muscheln erzeugen
     if (!ERF_CLIENT.has(k)) return json({ fehler: "Erfolg" }, 400);
+    if (k === "NACHT" && berlinStunde() !== 3) return json({ ok: false, grund: "zeit" });// Nachteule nur zwischen 3 und 4 Uhr
     return json({ ok: await setze("erf", k, k === "WELT" ? 30 : 10) });// Weltenbummler (alle Sticker) = 30
   }
   // Tresor des Schöpfers (Schlossinsel): einmalige Verlosung je Name – 3, 5, 7 oder 10 Muscheln (je 25 %)
@@ -448,8 +456,10 @@ export default async (req) => {
     if (act === "flasche") return json({ ok: true, q: f.q, a: f.a });
     const w = Math.floor(Number(d.wahl)); await store.set(xk, String(w));
     const richtig = w === f.r; if (richtig) await setze("flasche", heute + "-" + fl, 2);
+    const sk = "x/fstreak/" + nm, serie = richtig ? (Number(await store.get(sk)) || 0) + 1 : 0; await store.set(sk, String(serie));
+    const neuF = serie >= 10 && (await erfGib("KLUG")) ? ["KLUG"] : [];
     const B = await buch(store, nm);
-    return json({ ok: true, richtig, loesung: f.a[f.r], stand: B.reduce((s, e) => s + e.a, 0) });
+    return json({ ok: true, richtig, loesung: f.a[f.r], neu: neuF, stand: B.reduce((s, e) => s + e.a, 0) });
   }
   // 🎁 Tagesgeschenk vor der eigenen Hütte: 1–3 Muscheln, 1× pro Tag
   if (act === "geschenk") {
@@ -471,7 +481,24 @@ export default async (req) => {
     const k = "x/klopft/" + nm + "/" + heute;
     if (await store.get(k)) return json({ ok: false, grund: "heute" });
     await store.set(k, an); await store.set("x/klopfan/" + an + "/" + Date.now() + "-" + nm, "1");
-    return json({ ok: true });
+    const verschieden = new Set(); for (const kk of await liste(store, "x/klopft/" + nm + "/")) verschieden.add(await store.get(kk));
+    return json({ ok: true, neu: verschieden.size >= 20 && (await erfGib("KLOPF")) ? ["KLOPF"] : [] });
+  }
+  // 🔍 Detektiv: Muschelpässe von 50 verschiedenen Bewohnern angesehen
+  if (act === "gesehen") {
+    const an = String(d.an || "").toLowerCase().replace(/^@/, "");
+    if (!BEWOHNER.has(an) || an === nm) return json({ ok: false });
+    await store.set("x/gesehen/" + nm + "/" + an, "1");
+    const n = (await liste(store, "x/gesehen/" + nm + "/")).length;
+    return json({ ok: true, n, neu: n >= 50 && (await erfGib("DETEKTIV")) ? ["DETEKTIV"] : [] });
+  }
+  // 🏃 Marathon: Strecke beim Erkunden (Meter); höchstens so viel, wie man seit der letzten Meldung schaffen kann (8 m/s)
+  if (act === "strecke") {
+    const sk = "x/strecke/" + nm, alt = JSON.parse((await store.get(sk)) || '{"m":0,"t":0}'), jetzt = Date.now();
+    const dtS = Math.min(120, (jetzt - (alt.t || 0)) / 1000), m = Math.max(0, Math.min(Number(d.m) || 0, dtS * 8));
+    if (dtS < 15) return json({ ok: false, m: alt.m });
+    const neuM = alt.m + m; await store.set(sk, JSON.stringify({ m: neuM, t: jetzt }));
+    return json({ ok: true, m: Math.round(neuM), neu: neuM >= 42195 && (await erfGib("MARATHON")) ? ["MARATHON"] : [] });
   }
   // 🧩 Sticker-Album: Ort besucht → Sticker (je Ort einmal)
   if (act === "sticker") {
@@ -536,6 +563,7 @@ export default async (req) => {
     const eingeladen = [];
     for (const k of await liste(store, "b/" + nm + "/einladung/")) { const n = k.split("/")[3], mk = "x/einlmeld/" + nm + "/" + n; if (!(await store.get(mk))) { await store.set(mk, "1"); eingeladen.push(n); } }
     const live = await liveErf(store, nm);
+    const likeN = (await liste(store, "x/like/" + nm + "/")).length;
     const klopfer = [];// wer hat seit dem letzten Besuch geklopft? (einmal melden, dann löschen)
     for (const k of await liste(store, "x/klopfan/" + nm + "/")) { const n = k.split("/")[3].split("-").slice(1).join("-"); if (n && !klopfer.includes(n)) klopfer.push(n); await store.delete(k); }
     const nachbar = await nachbarErf(store, nm);// schon beanspruchte Nachbarn bekommen den Erfolg beim nächsten Besuch
@@ -543,7 +571,7 @@ export default async (req) => {
     const posten = B.filter(e => e.a).map(e => ({ art: e.art, id: e.id, a: e.a, t: TEXT[e.art] || e.art }))
       .sort((x, y) => (y.id > x.id ? 1 : -1)).slice(0, 60);
     return json({
-      ok: true, nachbar, live, eingeladen, klopfer, likes: { n: (await liste(store, "x/like/" + nm + "/")).length }, sticker: (await liste(store, "x/sticker/" + nm + "/")).map(k => k.split("/")[3]), geschenk: B.some(e => e.art === "geschenk" && e.id === heute), stand: B.reduce((s, e) => s + e.a, 0), serie: s,
+      ok: true, nachbar, live, eingeladen, klopfer, likes: { n: likeN }, neu: likeN >= 25 && (await erfGib("HERZ")) ? ["HERZ"] : [], sticker: (await liste(store, "x/sticker/" + nm + "/")).map(k => k.split("/")[3]), geschenk: B.some(e => e.art === "geschenk" && e.id === heute), stand: B.reduce((s, e) => s + e.a, 0), serie: s,
       shells: B.filter(e => e.art === "shell" && e.id.startsWith(heute)).map(e => Number(e.id.split("-").pop())),
       questsDone: B.filter(e => e.art === "quest" && e.id.startsWith(heute)).map(e => Number(e.id.split("-").pop())),
       gespendet: -B.filter(e => e.art === "spende").reduce((s, e) => s + e.a, 0), posten, heute, inv: besitz(B), aus: JSON.parse((await store.get("a/" + nm)) || "{}")
