@@ -4,6 +4,7 @@
 // Betreiber: GET mit Passwort (eigenes Passwort, nur als SHA-256-Hash hier) → Auswertung + Übersicht der
 // beanspruchten Spieler aus den Spieldaten (Muscheln, Serie, Aufgaben, Käufe, Erfolge).
 import { getStore } from "@netlify/blobs";
+import { PAKETE } from "./stripe.mjs";
 const PW_HASH = "e227d80e4bfb21510b4165198616f10483652d45a3b6c32872dedeab805994a5";
 const TZ = "Europe/Berlin";
 const tag = (t = Date.now()) => new Intl.DateTimeFormat("sv-SE", { timeZone: TZ }).format(new Date(t));
@@ -25,18 +26,49 @@ function sauber(d) {
 }
 const add = (a, b) => { for (const [k, v] of Object.entries(b || {})) a[k] = (a[k] || 0) + v; return a; };
 function auswerten(S) {
-  const A = { sitzungen: S.length, dauer: [], sicht: 0, geraet: {}, quelle: {}, bereiche: {}, ereignisse: {}, orte: {}, heat: {}, ende: {}, stunden: Array(24).fill(0), laden: [], fps: [], zoom: {}, konto: 0, trichter: {} };
+  const A = { sitzungen: S.length, dauer: [], sicht: 0, geraet: {}, quelle: {}, bereiche: {}, ereignisse: {}, orte: {}, heat: {}, ende: {}, stunden: Array(24).fill(0), laden: [], fps: [], zoom: {}, konto: 0, trichter: {}, premium: {} };
   const T = ["besuch", "suche", "pass_auf", "konto_auf", "erkunden", "aufgabe", "kauf"];
   for (const s of S) {
     A.dauer.push(s.sicht || s.dauer); A.sicht += s.sicht; add(A.geraet, { [s.geraet]: 1 }); add(A.quelle, { [s.quelle]: 1 }); add(A.bereiche, s.bereiche); add(A.ereignisse, s.ereignisse);
     add(A.orte, s.orte); add(A.heat, s.heat); if (s.ende) add(A.ende, { [s.ende]: 1 }); A.stunden[stunde(s.t0 || Date.now())]++; if (s.laden) A.laden.push(s.laden); if (s.fps) A.fps.push(s.fps); add(A.zoom, s.zoom); A.konto += s.konto;
     const e = s.ereignisse || {}, hat = { besuch: 1, suche: e.suche, pass_auf: e.pass_auf, konto_auf: e.konto_auf, erkunden: e.erkunden, aufgabe: e.aufgabe, kauf: e.kauf };
     for (const k of T) if (hat[k]) A.trichter[k] = (A.trichter[k] || 0) + 1;
+    // Premium-Shop (Echtgeld): Weg pro Sitzung – Shop gesehen → entsperrt → Paket angetippt → Haken gesetzt → zur Bezahlung → bezahlt/abgebrochen
+    const pr = { gesehen: e.prem_gesehen || e.prem_gesehen_offen, entsperrt: e.prem_entsperrt, paket: e.pak_auf, haken: e.pak_haken, kasse: e.pak_kasse, bezahlt: e.kauf_ok, abbruch: e.kauf_abbruch, fehler: e.pak_fehler };
+    for (const [k, v] of Object.entries(pr)) if (v) A.premium[k] = (A.premium[k] || 0) + 1;
   }
   const med = a => { if (!a.length) return 0; const b = [...a].sort((x, y) => x - y); return b[b.length >> 1]; };
   A.dauerMedian = med(A.dauer); A.dauerSchnitt = A.dauer.length ? Math.round(A.dauer.reduce((s, x) => s + x, 0) / A.dauer.length) : 0;
   A.kurz = A.dauer.filter(x => x < 10).length; A.lang = A.dauer.filter(x => x >= 300).length; A.ladenMedian = med(A.laden); A.fpsMedian = med(A.fps);
   delete A.dauer; delete A.laden; delete A.fps; return A;
+}
+// Echtgeld-Käufe aus den Buchungen (b/<name>/euro/<Sitzung>/<Muscheln>, Rückbuchungen „euro-zurueck“) und x/euro/<Zahlung>
+async function echtgeld(tageN) {
+  const st = getStore({ name: "muscheln", consistency: "strong" });
+  const proM = {}; for (const [id, p] of Object.entries(PAKETE)) proM[p.muscheln] = { id, cent: p.cent };
+  const K = [], zur = {};
+  for (const k of await liste(st, "b/")) {
+    const [, n, art, id, a] = k.split("/");
+    if (art === "euro") K.push({ k, name: "@" + n, sid: id, muscheln: Number(a) || 0 });
+    else if (art === "euro-zurueck") zur[n] = (zur[n] || 0) + (Number(a) || 0);
+  }
+  for (let j = 0; j < K.length; j += 50) { const v = await Promise.all(K.slice(j, j + 50).map(x => st.get(x.k))); v.forEach((t, i) => { K[j + i].zeit = Number(t) || 0; }); }
+  const ab = Date.now() - tageN * 864e5, E = { kaeufe: 0, umsatzCent: 0, kaeufer: 0, wiederkaeufer: 0, startangebot: 0, pakete: {}, tage: {}, stunden: Array(24).fill(0), erstattetMuscheln: 0, entsperrt: 0, liste: [] };
+  const proKunde = {};
+  for (const x of K) {
+    const p = proM[x.muscheln] || { id: "?", cent: 0 }; x.paket = p.id; x.cent = p.cent; x.tag = x.zeit ? tag(x.zeit) : "";
+    proKunde[x.name] = (proKunde[x.name] || 0) + 1;
+    if (x.zeit && x.zeit < ab) continue;
+    E.kaeufe++; E.umsatzCent += p.cent; if (p.id === "start") E.startangebot++;
+    const P = E.pakete[p.id] = E.pakete[p.id] || { n: 0, cent: 0 }; P.n++; P.cent += p.cent;
+    if (x.tag) E.tage[x.tag] = (E.tage[x.tag] || 0) + p.cent; if (x.zeit) E.stunden[stunde(x.zeit)]++;
+    E.liste.push({ name: x.name, tag: x.tag, zeit: x.zeit, paket: p.id, cent: p.cent, muscheln: x.muscheln });
+  }
+  E.kaeufer = Object.keys(proKunde).length; E.wiederkaeufer = Object.values(proKunde).filter(v => v > 1).length;
+  E.erstattetMuscheln = -Object.values(zur).reduce((s, v) => s + v, 0);
+  E.entsperrt = (await liste(st, "x/premium/")).length;
+  E.liste.sort((a, b) => b.zeit - a.zeit); E.liste = E.liste.slice(0, 100);
+  return E;
 }
 async function spieler() {
   const st = getStore({ name: "muscheln", consistency: "strong" }), es = getStore("erfolge");
@@ -75,11 +107,11 @@ export default async (req) => {
     out.tage.push({ tag: d, ...A }); alle.push(A);
   }
   // Summe über den Zeitraum
-  const G = { sitzungen: 0, sicht: 0, geraet: {}, quelle: {}, bereiche: {}, ereignisse: {}, orte: {}, heat: {}, ende: {}, stunden: Array(24).fill(0), zoom: {}, konto: 0, trichter: {}, kurz: 0, lang: 0 };
-  for (const A of alle) { G.sitzungen += A.sitzungen; G.sicht += A.sicht; G.kurz += A.kurz; G.lang += A.lang; G.konto += A.konto; for (const k of ["geraet", "quelle", "bereiche", "ereignisse", "orte", "heat", "ende", "zoom", "trichter"]) add(G[k], A[k]); A.stunden.forEach((v, i) => G.stunden[i] += v); }
+  const G = { sitzungen: 0, sicht: 0, geraet: {}, quelle: {}, bereiche: {}, ereignisse: {}, orte: {}, heat: {}, ende: {}, stunden: Array(24).fill(0), zoom: {}, konto: 0, trichter: {}, premium: {}, kurz: 0, lang: 0 };
+  for (const A of alle) { G.sitzungen += A.sitzungen; G.sicht += A.sicht; G.kurz += A.kurz; G.lang += A.lang; G.konto += A.konto; for (const k of ["geraet", "quelle", "bereiche", "ereignisse", "orte", "heat", "ende", "zoom", "trichter", "premium"]) add(G[k], A[k]); A.stunden.forEach((v, i) => G.stunden[i] += v); }
   G.dauerSchnitt = G.sitzungen ? Math.round(G.sicht / G.sitzungen) : 0;
   out.gesamt = G;
-  if (u.searchParams.get("spieler")) out.spieler = await spieler();
+  if (u.searchParams.get("spieler")) { out.spieler = await spieler(); out.echtgeld = await echtgeld(tageN); }
   // Aufräumen laut Datenschutzerklärung: Einzelwerte älter als 14 Monate löschen (Tagessummen "agg/" bleiben)
   for (let i = 425; i < 455; i++) for (const k of await liste(store, "s/" + tag(Date.now() - i * 864e5) + "/")) await store.delete(k);
   return json(out);
