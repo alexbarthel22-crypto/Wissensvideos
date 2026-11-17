@@ -200,6 +200,23 @@ async function einladungPruefen(store, nm, kt) {
 // Tagesangebot: je Kategorie 2 Items, Seltenheit nach Gewicht (Stufe zuerst, dann Item), für alle gleich, neu um 0:00 Uhr (Berlin).
 // Einmal am Tag erzeugt und gespeichert (x/shop/<tag>); „Einzigartig“-Items gibt es nur ein einziges Mal (x/einzig/<id>).
 function zufall(seed) { let h = 2166136261; for (const ch of seed) h = Math.imul(h ^ ch.charCodeAt(0), 16777619); return () => { h += 0x6D2B79F5; let t = h; t = Math.imul(t ^ t >>> 15, t | 1); t ^= t + Math.imul(t ^ t >>> 7, t | 61); return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+// 🐾 Tierheim-Shop: erst offen, wenn das Tierheim fertig ist (800 Einwohner); täglich um 0:00 neu, je Tierart 2 Tiere (Stufe nach Gewicht, „Einzigartig“ nie)
+const TIERHEIM_AB = 800;
+const tierheimOffen = () => process.env.TH_TEST === "1" || (BEWOHNER && BEWOHNER.size >= TIERHEIM_AB);
+async function tierAngebot(store, heute) {
+  const k = "x/tierheim/" + heute, alt = await store.get(k); if (alt) return JSON.parse(alt);
+  const r = zufall("tierheim-" + heute), ids = [], arten = [...new Set(Object.keys(SHOP.items).filter(id => SHOP.items[id][0] === "tier").map(id => id.split("_")[1]))];
+  for (const art of arten) {
+    let pool = Object.entries(SHOP.items).filter(([id, v]) => v[0] === "tier" && id.split("_")[1] === art && v[2] < 10);
+    for (let n = 0; n < 2 && pool.length; n++) {
+      const st = [...new Set(pool.map(([, v]) => v[2]))], sum = st.reduce((s, x) => s + SHOP.stufen[x - 1], 0);
+      let z = r() * sum, w = st[st.length - 1]; for (const x of st) { z -= SHOP.stufen[x - 1]; if (z < 0) { w = x; break; } }
+      const kand = pool.filter(([, v]) => v[2] === w), pick = kand[Math.floor(r() * kand.length)][0];
+      ids.push(pick); pool = pool.filter(([id]) => id !== pick);
+    }
+  }
+  await store.set(k, JSON.stringify(ids)); return ids;
+}
 async function angebot(store, heute) {
   const k = "x/shop/" + heute, alt = await store.get(k);
   if (alt) { const L = JSON.parse(alt); if (!L.some(id => SHOP.items[id] && SHOP.items[id][2] === 10)) return L; }// „Einzigartig“ nie im Shop (17.11.)
@@ -239,6 +256,10 @@ export default async (req) => {
     const ids = await angebot(store, tag());
     const weg = []; for (const id of ids) if (SHOP.items[id][2] === 10 && await store.get("x/einzig/" + id)) weg.push(id);
     return json({ tag: tag(), ids, weg, bis: bisMitternacht() });
+  }
+  if (req.method === "GET" && url.searchParams.get("tierheim")) {
+    const offen = tierheimOffen();
+    return json({ tag: tag(), offen, ids: offen ? await tierAngebot(store, tag()) : [], weg: [], bis: bisMitternacht(), ab: TIERHEIM_AB });
   }
   if (req.method === "GET" && url.searchParams.get("aus")) return new Response(JSON.stringify(await ausruestungAlle(store)), { headers: { "content-type": "application/json", "cache-control": "public, max-age=30" } });
   if (req.method === "GET" && url.searchParams.get("einladungen")) {
@@ -457,7 +478,8 @@ export default async (req) => {
   if (act === "kauf") {
     const id = String(d.id || ""), it = SHOP.items[id];
     if (!it) return json({ ok: false, grund: "item" });
-    if (!(await angebot(store, heute)).includes(id)) return json({ ok: false, grund: "angebot" });
+    if (it[0] === "tier") { if (!tierheimOffen() || !(await tierAngebot(store, heute)).includes(id)) return json({ ok: false, grund: "angebot" }); }// Tiere nur im Tierheim
+    else if (!(await angebot(store, heute)).includes(id)) return json({ ok: false, grund: "angebot" });
     const B = await buch(store, nm), stand = B.reduce((s, e) => s + e.a, 0);
     if (besitz(B).includes(id)) return json({ ok: false, grund: "schon", stand });
     if (stand < it[3]) return json({ ok: false, grund: "geld", stand });
