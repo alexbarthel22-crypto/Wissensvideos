@@ -10,7 +10,7 @@ const G=await A.evaluate(()=>{const q=PEOPLE.find(x=>x.name==='@sophia_e065');co
 const B=await b.newPage({viewport:{width:405,height:720},deviceScaleFactor:2.6667});await B.goto('file://'+site+'/einwohner.html');await B.waitForTimeout(1500);
 const H=await B.evaluate(()=>document.body.scrollHeight);
 const e=k=>k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2,lerp=(a,b,k)=>a+(b-a)*k,lz=(a,b,k)=>Math.exp(lerp(Math.log(a),Math.log(b),k));
-const s2=L.L2.start-.2,s3=L.L3.start-.2,s4=L.L4.start-.2,s5=L.L5.start-.2;
+const s2=L.L2.start-.2,s3=L.L3.start-.4,s4=L.L4.start-.2,s5=dur;
 fs.mkdirSync(out,{recursive:true});
 for(let i=0;i<N;i++){const t=i/30,f=`${out}/f${String(i).padStart(5,'0')}.jpg`;
  if(t<s2){const k=t/s2;await B.evaluate(y=>window.scrollTo(0,y),Math.round(300+(H*.55)*(k*k)));await B.screenshot({path:f,type:'jpeg',quality:90});continue;}
