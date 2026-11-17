@@ -2049,6 +2049,15 @@ function walTap(){const p=(WK.on&&WK.me)?WK.me:((typeof mkMe==='function'&&mkMe(
  const neu=gibErf(p,'WAL');popup('<div class="big">🐋</div><h2>'+(neu?'Neuer Erfolg! 🎉':'Wieder ein Wal! 🐋')+'</h2><p>'+(neu?esc(p.name)+', du hast einen springenden Wal entdeckt: <b>„Wal-Watcher“</b>':esc(p.name)+' ist schon Wal-Watcher.')+'</p><button class="btn hib" id="zuerf">🏅 Zu meinen Erfolgen</button>');$('zuerf').onclick=()=>{$('pg').hidden=true;zuMeinenErfolgen(p);};if(sel===p&&$('ppass'))$('ppass').innerHTML=passCard(p);}
 // Hinweis, wenn gerade ein Wal springt (einmal je Sprung)
 setInterval(()=>{if(document.hidden)return;const L=walAktiv().filter(w=>w.t<4);if(!L.length)return;const w=L[0],k=w.v.i+':'+w.start;if(WALGEMELDET===k)return;WALGEMELDET=k;try{mkToast('🐋 Oh? An der '+walRichtung(w)+'-Küste'+(w.v.i?' der Kokos-Insel':'')+' taucht ein Wal auf!',5000);}catch(e){}},1000);
+// Nebel über noch nicht freigeschalteten Inseln: steht fest (keine Bewegung), lässt nur Umrisse erahnen
+function nebel(c,v){const R=v.R;c.save();
+ c.fillStyle='rgba(232,240,246,.6)';shape(c,v,34);c.fill();// geschlossene Nebeldecke etwas über die Küste hinaus
+ for(let k=0;k<46;k++){const a=hash(v.i*31+k,811)*TAU,d=Math.sqrt(hash(v.i*31+k,812))*R*1.05,x=v.x+Math.cos(a)*d,y=v.y+Math.sin(a)*d*.92,r=R*(.28+hash(v.i*31+k,813)*.32);
+  const g=c.createRadialGradient(x,y,r*.1,x,y,r);g.addColorStop(0,'rgba(248,251,253,.55)');g.addColorStop(.6,'rgba(240,246,250,.28)');g.addColorStop(1,'rgba(240,246,250,0)');c.fillStyle=g;c.beginPath();c.arc(x,y,r,0,TAU);c.fill();}
+ // weiche Nebelschwaden am Rand
+ for(let k=0;k<22;k++){const a=k/22*TAU+hash(v.i,k)*.3,d=coastAt(v,a)+BEX+20+hash(v.i,k+50)*30,[x,y]=polar(v,a,d),r=R*(.16+hash(v.i,k+90)*.14);
+  const g=c.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,'rgba(245,249,252,.6)');g.addColorStop(1,'rgba(245,249,252,0)');c.fillStyle=g;c.beginPath();c.ellipse(x,y,r*1.4,r,a+Math.PI/2,0,TAU);c.fill();}
+ c.restore();}
 // ---------- Statische Ebene (nur neu, wenn sich die Kamera bewegt) ----------
 // Kokosnuss-Haus (Kokos-Küste)
 const KOKX_F={perlmutt:'#f3d9e8',gold:'#e8b84a',sterne:'#2a3a7a',diamant:'#bfefff'};
@@ -3822,7 +3831,7 @@ function draw(){NACHTDRAUF=0;panMerk();{const k=kind();REGEN.on=k==="rain"||k===
   c.strokeStyle='rgba(255,255,255,.75)';c.lineWidth=2.6;shape(c,v,11,1.2*WFg,T*1.4);c.stroke();
   if(v.i===0){sprite(c,'rathaus',-220,-190,220,150,o=>rathaus(o));if(PJ)beachbar(c);}else{landmark(c,v,nl);if(v.i===1&&v.open&&z*S>5)kokosLive(c,v,nl);}
   if(z*S>5){for(const t of v.palms)if(vis(t.x,t.y))palm(c,t);}else{c.fillStyle='#3a9e4a';for(const t of v.palms)c.fillRect(t.x-2.5,t.y-2.5,5,5);}
-  if(!v.open&&v.i){c.fillStyle='rgba(255,255,255,.07)';shape(c,v,10);c.fill();}
+  if(!v.open&&v.i)sprite(c,'nebel'+v.i,v.x-v.R*1.7,v.y-v.R*1.6,v.x+v.R*1.7,v.y+v.R*1.6,o=>nebel(o,v));// noch gesperrte Insel: dichter, fest stehender Nebel
   if(GROWK!=null&&GROWV===v&&v.i&&GROWK<.12){c.fillStyle=`rgba(245,248,252,${.85*(1-GROWK/.12)})`;shape(c,v,30);c.fill();}}
  if(GROWK==null)walZeichnen(c);// Wal über den Brandungs-Wellen
  NAMES.length=0;TAPS.length=0;TEAMN.clear();FIGS.length=0;PBT=performance.now()+2.5;for(const b of BAU)if(bauOn(b)&&visR(b.cx,b.cy,b.steg?130:80)){if(b.steg)drawBau(c,b,nl,z);else sprite(c,'bau'+b.name,b.x0-45,b.y0-70,b.x1+45,b.y1+35,o=>drawBau(o,b,nl,z));}const OUTG=new Set();if(WK.on&&WK.me)OUTG.add(WK.me);if(sel&&sel.p&&!sel.gb)OUTG.add(sel);
