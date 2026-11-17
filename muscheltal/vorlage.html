@@ -4864,7 +4864,8 @@ else if(!REDUCED)setTimeout(()=>flyTo(fitMain(freeY()),2600),700);}
 
 // ---------- Anonyme Statistik (ohne Cookies, ohne Speicher auf dem Gerät, ohne Namen) ----------
 // Sammelt nur Summen einer Sitzung (zufällige Nummer im Arbeitsspeicher) und schickt sie gebündelt an /api/stat.
-(()=>{if(navigator.webdriver)return;const ST={sid:(crypto.randomUUID?crypto.randomUUID():String(Math.random())).replace(/[^a-z0-9]/gi,'').slice(0,32).toLowerCase(),t0:Date.now(),dauer:0,sicht:0,bereiche:{},ereignisse:{besuch:1},orte:{},heat:{},zoom:{},ende:'',laden:Math.round(performance.now()),fps:0,konto:0,seite:'start'};
+(()=>{if(navigator.webdriver)return;try{if(localStorage.getItem('mt-nostat'))return;}catch(e){}// Geräte des Betreibers zählen nicht mit
+const ST={sid:(crypto.randomUUID?crypto.randomUUID():String(Math.random())).replace(/[^a-z0-9]/gi,'').slice(0,32).toLowerCase(),t0:Date.now(),dauer:0,sicht:0,bereiche:{},ereignisse:{besuch:1},orte:{},heat:{},zoom:{},ende:'',laden:Math.round(performance.now()),fps:0,konto:0,seite:'start'};
  const ua=navigator.userAgent;ST.geraet=/iPad|Tablet/i.test(ua)||(/Macintosh/.test(ua)&&navigator.maxTouchPoints>1)?'tablet':/Mobi|Android|iPhone/i.test(ua)?'handy':'computer';
  {const q=new URLSearchParams(location.search),r=(document.referrer||'').toLowerCase();ST.quelle=q.get('von')?'einladung':q.get('n')?'personen_link':q.get('ort')?'orts_link':/tiktok/.test(r)?'tiktok':/instagram/.test(r)?'instagram':/whatsapp|wa\.me/.test(r)?'whatsapp':/snapchat/.test(r)?'snapchat':/google|bing|duckduckgo|ecosia/.test(r)?'suchmaschine':r&&!r.includes(location.host)?'andere_seite':'direkt';}
  const ev=k=>{ST.ereignisse[k]=(ST.ereignisse[k]||0)+1;};window.statEv=ev;

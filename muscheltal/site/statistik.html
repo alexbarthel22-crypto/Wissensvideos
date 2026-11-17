@@ -34,6 +34,7 @@ canvas{width:100%;max-width:520px;border-radius:10px;background:var(--grid);disp
 <div id="login" class="card"><h1>🐚 Statistik</h1><p class="sub">Nur für den Betreiber</p><form id="lf"><input type="password" id="pw" placeholder="Passwort" autocomplete="current-password"><button class="on" type="submit">Anzeigen</button></form><p id="lerr" class="mut"></p></div>
 <main id="app" hidden>
 <h1>🐚 Muschel-Tal – Statistik</h1><p class="sub">Anonyme Nutzungsdaten (ohne Namen) und Spiel-Übersicht der beanspruchten Konten</p>
+<div class="row"><span id="geraet1" class="mut"></span><button id="geraetbtn" type="button"></button></div>
 <div class="row" id="zr"><button data-t="1">Heute</button><button data-t="7" class="on">7 Tage</button><button data-t="30">30 Tage</button><button data-t="60">60 Tage</button><span class="mut" id="stand"></span></div>
 <div class="tiles" id="tiles"></div>
 <div class="grid">
@@ -60,7 +61,7 @@ function hb(id,obj,{teiler=1,max=14,fmtv=v=>fmt(v),sum}={}){const E=Object.entri
 function vb(id,ax,vals,labels,tips){const m=Math.max(1,...vals);$(id).innerHTML=vals.map((v,i)=>'<div style="height:'+(v/m*100)+'%" data-tip="'+tips[i]+'"></div>').join('');$(ax).innerHTML=labels.map(l=>'<span>'+l+'</span>').join('');}
 async function laden(){$('stand').textContent='⏳ lade …';let r;try{r=await fetch('/api/stat?tage='+TAGE+'&spieler=1',{headers:{'x-pw':PW}});}catch(e){$('stand').textContent='Keine Verbindung';return;}
  if(r.status===403){sessionStorage.removeItem('mtpw');$('app').hidden=true;$('login').hidden=false;$('lerr').textContent='Passwort falsch';return;}
- DATA=await r.json();$('login').hidden=true;$('app').hidden=false;zeig();$('stand').textContent='Stand: '+new Date().toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'});}
+ DATA=await r.json();$('login').hidden=true;$('app').hidden=false;geraetZeig();zeig();$('stand').textContent='Stand: '+new Date().toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'});}
 function zeig(){const G=DATA.gesamt,T=DATA.tage,n=Math.max(1,G.sitzungen),lm=T.filter(t=>t.ladenMedian).map(t=>t.ladenMedian),fm=T.filter(t=>t.fpsMedian).map(t=>t.fpsMedian);
  const tiles=[['Besuche',fmt(G.sitzungen)],['Ø Verweildauer',dur(G.dauerSchnitt)],['Sofort wieder weg (< 10 s)',Math.round(G.kurz/n*100)+' %'],['Länger als 5 Minuten',Math.round(G.lang/n*100)+' %'],['Mit Muschel-Konto',Math.round(G.konto/n*100)+' %'],['Ladezeit (Median)',lm.length?(lm.reduce((a,b)=>a+b,0)/lm.length/1000).toFixed(1).replace('.',',')+' s':'–'],['Bildrate (Median)',fm.length?Math.round(fm.reduce((a,b)=>a+b,0)/fm.length)+' fps':'–'],['Gesamtzeit aller Besucher',fmt(G.sicht/3600)+' h']];
  $('tiles').innerHTML=tiles.map(([l,v])=>'<div class="card tile"><div class="v">'+v+'</div><div class="l">'+l+'</div></div>').join('');
@@ -79,7 +80,10 @@ function spieler(){const L=(DATA.spieler||[]).filter(p=>p.name.includes(($('such
  $('sanz').textContent=L.length+' Spieler';$('sp').innerHTML='<thead><tr>'+C.map(([c,t,r])=>'<th class="'+(r||'')+'" data-k="'+c+'">'+t+(c===k?(d>0?' ▲':' ▼'):'')+'</th>').join('')+'</tr></thead><tbody>'+L.map(p=>'<tr>'+C.map(([c,t,r])=>'<td class="'+(r||'')+'">'+(c==='tresor'?(p.tresor?'✓':''):c==='letzter'?(p.letzter?p.letzter.slice(8)+'.'+p.letzter.slice(5,7)+'.':'–'):typeof p[c]==='number'?fmt(p[c]):p[c])+'</td>').join('')+'</tr>').join('')+'</tbody>';}
 $('sp').addEventListener('click',e=>{const th=e.target.closest('th');if(!th)return;const k=th.dataset.k;SORT=[k,SORT[0]===k?-SORT[1]:(k==='name'?1:-1)];spieler();});$('such').oninput=spieler;
 $('zr').onclick=e=>{const b=e.target.closest('button');if(!b)return;TAGE=+b.dataset.t;document.querySelectorAll('#zr button').forEach(x=>x.classList.toggle('on',x===b));laden();};
-$('lf').onsubmit=e=>{e.preventDefault();PW=$('pw').value;sessionStorage.setItem('mtpw',PW);laden();};if(PW)laden();
+$('lf').onsubmit=e=>{e.preventDefault();PW=$('pw').value;sessionStorage.setItem('mtpw',PW);try{localStorage.setItem('mt-nostat','1');}catch(x){}laden();};
+// Dieses Gerät (dieser Browser) zählt nicht in der Statistik mit – wird beim Einloggen automatisch gesetzt
+function geraetZeig(){let aus=false;try{aus=!!localStorage.getItem('mt-nostat');}catch(e){}$('geraet1').textContent=aus?'✓ Dieses Gerät wird in der Statistik nicht mitgezählt':'⚠️ Dieses Gerät wird mitgezählt';$('geraetbtn').textContent=aus?'Doch mitzählen':'Nicht mitzählen';}
+$('geraetbtn').onclick=()=>{try{if(localStorage.getItem('mt-nostat'))localStorage.removeItem('mt-nostat');else localStorage.setItem('mt-nostat','1');}catch(e){}geraetZeig();};if(PW)laden();
 </script>
 </body>
 </html>
