@@ -1044,6 +1044,7 @@ function modeSchild(c){const TC='#c8745a',INK='#2a1b12';c.fillStyle='#fff8f0';c.
   c.save();c.translate(0,-40);ksPlak(c,KMODE,0,TC);c.restore();}
 function ksSignFront(c,x,y,tn){if(!KOKV.open||S*cam.z<=6)return;const f=y+4.4;
  for(const [sh,fn] of[[KBAD,badSchild],[KMODE,modeSchild],[KCLUB,clubSchild],[KDROG,drogSchild],[KGAME,gameSchild]]){if(!exDa(sh))continue;const lx=x-sh.cx,ff=f-sh.cy;if(Math.abs(lx)<21&&ff<-29.2&&ff>-46)tintDraw(c,tn,sh.cx-18,sh.cy-41,sh.cx+18,sh.cy-28.8,o=>{o.save();o.translate(sh.cx,sh.cy);fn(o);o.restore();});}
+ if(exDa(KGAME)){const lx=x-KGAME.cx,ff=f-KGAME.cy;for(const bx of[-30,30])if(Math.abs(lx-bx)<13&&ff<-24&&ff>-50){glFarben();tintDraw(c,tn,KGAME.cx+bx-11,KGAME.cy-40,KGAME.cx+bx+11,KGAME.cy-22.6,o=>{o.save();o.translate(KGAME.cx,KGAME.cy);glBoards(o,nightLevel()>.45,GLGTA());o.restore();});}}
  if(exDa(KBAR)){const lx=x-KBAR.cx,ff=f-KBAR.cy;if(Math.abs(lx)<18&&ff<6&&ff>-18)tintDraw(c,tn,KBAR.cx-15,KBAR.cy-11.6,KBAR.cx+15,KBAR.cy+6.4,o=>{o.save();o.translate(KBAR.cx,KBAR.cy+10);barSchild(o);o.restore();});}}
 // 🍹 Coco Bay – Beach Bar direkt am Sandstrand
 function drawCocoBay(c,nl){const t=REDUCED?0:T,X=KBAR.cx,Y=KBAR.cy,D=KBAR.dep,INK='#2a1b12';c.save();c.translate(X,Y);
@@ -1360,6 +1361,12 @@ function glBanner(c,t){const by=22.6,sw=REDUCED?0:Math.sin(t*1.2)*.2;c.strokeSty
    c.fillStyle=GL.P;c.beginPath();c.moveTo(-12.8,by-1.6);c.lineTo(12.8,by-1.6);c.lineTo(12.8,by+1.4+sw);c.quadraticCurveTo(0,by+2.2,-12.8,by+1.4-sw);c.closePath();c.fill();c.strokeStyle='#fff';c.lineWidth=.18;c.stroke();
    c.fillStyle='#fff';c.font='italic 900 1.5px '+FONT;c.textAlign='center';glFit(c,'RELEASE-PARTY · GTA VI',24);c.fillText('RELEASE-PARTY · GTA VI',0,by+.6);
    for(let k=0;k<9;k++){c.fillStyle=[GL.T,GL.Y,'#fff'][k%3];c.beginPath();c.moveTo(-12+k*3,by-1.6);c.lineTo(-11+k*3,by-1.6);c.lineTo(-11.5+k*3,by-.6);c.closePath();c.fill();}}
+// Billboards auf dem Dach (auch über Figuren und Tieren, die auf dem Weg dahinter laufen)
+function glBoards(c,nacht,G){for(const [bx,txt] of[[-30,0],[30,1]]){c.fillStyle='#444';c.fillRect(bx-7,-27,.6,4);c.fillRect(bx+6.4,-27,.6,4);c.fillStyle='#160d2c';c.fillRect(bx-10,-38.4,20,11.6);glSunset(c,bx-9.4,-37.8,18.8,10.4);
+  if(!G){c.fillStyle='#fff';c.font='italic 900 1.7px '+FONT;c.textAlign='center';c.lineWidth=.35;c.strokeStyle=GL.P;const a=txt?'TURNIER':'NEUE GAMES',b=txt?'Jeden Samstag 18 Uhr':'jede Woche bei uns';glFit(c,a,16.6);c.strokeText(a,bx,-33.4);c.fillText(a,bx,-33.4);c.font='800 .95px '+FONT;glFit(c,b,16.6);c.strokeText(b,bx,-31.6);c.fillText(b,bx,-31.6);}
+  else if(!txt){glLogo(c,bx-3.4,-33.2,1);c.fillStyle='#fff';c.font='900 1.15px '+FONT;c.textAlign='center';glFit(c,'BALD DA!',7.2);c.fillText('BALD DA!',bx+4.4,-30.2);}
+  else{c.fillStyle='#fff';c.font='italic 900 1.7px '+FONT;c.textAlign='center';c.lineWidth=.35;c.strokeStyle=GL.P;glFit(c,'VORBESTELLEN',13.4);c.strokeText('VORBESTELLEN',bx-1.4,-33.4);c.fillText('VORBESTELLEN',bx-1.4,-33.4);c.font='800 .85px '+FONT;glFit(c,'GTA VI · bei Game Lagoon',13.4);c.strokeText('GTA VI · bei Game Lagoon',bx-1.4,-31.8);glFit(c,'GTA VI · bei Game Lagoon',13.4);c.fillText('GTA VI · bei Game Lagoon',bx-1.4,-31.8);c.fillStyle=GL.Y;c.beginPath();for(let j=0;j<14;j++){const r=j%2?1.1:1.9,a=j/14*TAU;c.lineTo(bx+7.4+Math.cos(a)*r,-36.4+Math.sin(a)*r);}c.closePath();c.fill();c.fillStyle=GL.P;c.font='900 .7px '+FONT;glFit(c,'NEU',2);c.fillText('NEU',bx+7.4,-36.2);}
+  for(let k=0;k<5;k++){c.fillStyle=nacht?'#fff6c0':'#cfc6b0';c.beginPath();c.arc(bx-8+k*4,-38.8,.35,0,TAU);c.fill();}}}
 function drawGame(c,nl){glFarben();const t=REDUCED?0:T,X=KGAME.cx,Y=KGAME.cy,nacht=nl>.45,G=GLGTA();c.save();c.translate(X,Y);
  // Boden: pastellige Miami-Fliesen in Rosa und Mint, gemaltes Sonnenuntergangs-Logo in der Mitte
  c.fillStyle=GL.F1;c.beginPath();c.roundRect(-46,-32,92,64,4);c.fill();c.save();c.clip();
@@ -1368,11 +1375,7 @@ function drawGame(c,nl){glFarben();const t=REDUCED?0:T,X=KGAME.cx,Y=KGAME.cy,nac
  c.fillStyle='rgba(0,0,0,.12)';c.fillRect(-43,1.6,86,1.6);
  // Dach (dunkles Violett) mit zwei Billboards
  c.fillStyle=GL.V;c.beginPath();c.roundRect(-43,-31,86,8,1.4);c.fill();c.fillStyle='rgba(255,255,255,.12)';for(let k=0;k<8;k++)c.fillRect(-40+k*10.4,-29.6,6,1);
- for(const [bx,txt] of[[-30,0],[30,1]]){c.fillStyle='#444';c.fillRect(bx-7,-27,.6,4);c.fillRect(bx+6.4,-27,.6,4);c.fillStyle='#160d2c';c.fillRect(bx-10,-38.4,20,11.6);glSunset(c,bx-9.4,-37.8,18.8,10.4);
-  if(!G){c.fillStyle='#fff';c.font='italic 900 1.7px '+FONT;c.textAlign='center';c.lineWidth=.35;c.strokeStyle=GL.P;const a=txt?'TURNIER':'NEUE GAMES',b=txt?'Jeden Samstag 18 Uhr':'jede Woche bei uns';glFit(c,a,16.6);c.strokeText(a,bx,-33.4);c.fillText(a,bx,-33.4);c.font='800 .95px '+FONT;glFit(c,b,16.6);c.strokeText(b,bx,-31.6);c.fillText(b,bx,-31.6);}
-  else if(!txt){glLogo(c,bx-3.4,-33.2,1);c.fillStyle='#fff';c.font='900 1.15px '+FONT;c.textAlign='center';glFit(c,'BALD DA!',7.2);c.fillText('BALD DA!',bx+4.4,-30.2);}
-  else{c.fillStyle='#fff';c.font='italic 900 1.7px '+FONT;c.textAlign='center';c.lineWidth=.35;c.strokeStyle=GL.P;glFit(c,'VORBESTELLEN',13.4);c.strokeText('VORBESTELLEN',bx-1.4,-33.4);c.fillText('VORBESTELLEN',bx-1.4,-33.4);c.font='800 .85px '+FONT;glFit(c,'GTA VI · bei Game Lagoon',13.4);c.strokeText('GTA VI · bei Game Lagoon',bx-1.4,-31.8);glFit(c,'GTA VI · bei Game Lagoon',13.4);c.fillText('GTA VI · bei Game Lagoon',bx-1.4,-31.8);c.fillStyle=GL.Y;c.beginPath();for(let j=0;j<14;j++){const r=j%2?1.1:1.9,a=j/14*TAU;c.lineTo(bx+7.4+Math.cos(a)*r,-36.4+Math.sin(a)*r);}c.closePath();c.fill();c.fillStyle=GL.P;c.font='900 .7px '+FONT;glFit(c,'NEU',2);c.fillText('NEU',bx+7.4,-36.2);}
-  for(let k=0;k<5;k++){c.fillStyle=nacht?'#fff6c0':'#cfc6b0';c.beginPath();c.arc(bx-8+k*4,-38.8,.35,0,TAU);c.fill();}}
+ glBoards(c,nacht,G);
  // Neon-Streifen
  c.fillStyle=GL.P;c.fillRect(-43,-24.6,86,1);c.fillStyle=GL.T;c.fillRect(-43,-23.6,86,.6);
  // Fassade: Art-déco in Weiß mit rosa Ecksäulen und Türkis-Bändern
