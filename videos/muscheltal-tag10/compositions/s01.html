@@ -1,0 +1,153 @@
+<template>
+  <style>
+        #root { position: absolute; inset: 0; }
+    .stage { position: absolute; inset: 0; overflow: hidden; }
+    .abs { position: absolute; }
+    svg { overflow: visible; }
+    /* Zähler-Box wie in der Referenz: Rahmen in Akzentfarbe, Label in Mono-Versalien, große Zahl */
+    .cbox { position: absolute; left: 290px; width: 500px; top: 268px; height: 126px; border: 3px solid #ff4fb0;
+      border-radius: 32px; background: rgba(13,16,38,.88); text-align: center; box-shadow: 0 0 28px rgba(255,79,176,.35); }
+    .cbox .lab { margin-top: 16px; font-family: "Space Mono", monospace; font-weight: 700; font-size: 28px;
+      letter-spacing: .16em; color: #dfe2f5; }
+    .cbox .num { margin-top: 2px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 56px; color: #fff;
+      letter-spacing: .01em; }
+    .cbox.y { border-color: #ffd43b; box-shadow: 0 0 28px rgba(255,212,59,.3); }
+    .cbox.r { border-color: #ff3b55; box-shadow: 0 0 28px rgba(255,59,85,.35); }
+    .cbox.b { border-color: #4da3ff; box-shadow: 0 0 28px rgba(77,163,255,.3); }
+    .cbox.g { border-color: #39e27a; box-shadow: 0 0 28px rgba(57,226,122,.3); }
+    .mono { font-family: "Space Mono", monospace; font-weight: 700; letter-spacing: .12em; }
+    .heavy { font-family: "Inter", sans-serif; font-weight: 900; }
+    /* Muschel-Tal: Sticker-Look wie auf muscheltal.de. Sicherheitsbereich TikTok: x 40–930, y 200–1120 (Untertitel ab 1150). */
+    .ink { stroke: #2a1b12; }
+    .stk { background: #fff; border: 6px solid #2a1b12; border-radius: 28px; box-shadow: 10px 10px 0 #2a1b12; }
+    .ttl { font-family: "Inter", sans-serif; font-weight: 900; color: #fff; text-align: center; line-height: 1;
+      -webkit-text-stroke: 10px #2a1b12; paint-order: stroke fill; letter-spacing: -.01em; }
+    .kick { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 24px; border-radius: 14px;
+      background: #2a1b12; color: #ffd23f; font-family: "Space Mono", monospace; font-weight: 700; font-size: 34px; letter-spacing: .14em; }
+    /* Text auf farbigem Balken (auffälliger, wie TikTok-Textboxen) */
+    .bt { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; max-width: 740px; text-align: center;
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 66px; line-height: 1.3; color: #fff; }
+    .bt .bx { padding: .06em .4em .14em; border-radius: .6em; -webkit-box-decoration-break: clone; box-decoration-break: clone; box-shadow: 0 10px 0 rgba(0,0,0,.28), 0 16px 30px rgba(0,0,0,.25); }
+    .bt .bx { background: #23285a; } .bt.or .bx { background: #ff5a3c; } .bt.pk .bx { background: #fe2c55; } .bt.tq .bx { background: #18b8c0; } .bt.vi .bx { background: #23285a; } .bt.bl .bx { background: #23285a; }
+    .bt.ye .bx { background: #ffc93c; } .bt.ye { color: #1a0f08; } .bt.gr .bx { background: #00b86b; } .bt.dk .bx { background: #23285a; } .bt.dk { color: #ffc93c; }
+    .bt.sm { font-size: 44px; }
+    .stamp { position: absolute; padding: 6px 30px; border: 10px solid; border-radius: 40px; background: rgba(255,255,255,.94);
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 84px; }
+    /* TikTok-Kommentare (echte Optik) */
+    .tk { position: absolute; left: 60px; width: 800px; background: #fff; border-radius: 30px; padding: 20px 26px 6px; box-shadow: 0 14px 0 rgba(0,0,0,.22); font-family: "Inter", sans-serif; }
+    .tk-h { position: relative; text-align: center; font-weight: 800; font-size: 30px; color: #161823; margin-bottom: 10px; }
+    .tk-h b { position: absolute; right: 4px; top: -4px; font-size: 38px; font-weight: 400; color: #161823; }
+    .tk-c { position: relative; display: flex; gap: 20px; padding: 12px 96px 16px 0; }
+    .tk-a { width: 84px; height: 84px; border-radius: 50%; flex: none; display: grid; place-items: center; color: #fff; font-weight: 900; font-size: 38px; }
+    .tk-u { font-size: 28px; color: #8a8b91; font-weight: 600; }
+    .tk-t { font-size: 34px; color: #161823; font-weight: 500; line-height: 1.22; margin-top: 2px; }
+    .tk-m { font-size: 28px; color: #8a8b91; font-weight: 600; margin-top: 8px; } .tk-m span { margin-left: 30px; }
+    .tk-l { position: absolute; right: 4px; top: 16px; width: 86px; text-align: center; font-size: 28px; color: #8a8b91; font-weight: 600; }
+    .tk-l .hz { position: relative; width: 48px; height: 48px; margin: 0 auto 2px; }
+    .tk-l .hz svg { position: absolute; inset: 0; width: 48px; height: 48px; }
+    .tk-fh { position: absolute; left: 19px; top: 0; width: 50px; height: 50px; opacity: 0; }
+    .tk-pin { display: inline-block; font-size: 28px; font-weight: 800; color: #fe2c55; background: #ffe3ea; border-radius: 6px; padding: 2px 8px; margin-left: 10px; vertical-align: 3px; }
+
+@font-face { font-family: "Lilita One"; src: url("assets/fonts/LilitaOne-Regular.woff2") format("woff2"); font-weight: 400; }
+    #s01-hk { position: absolute; left: 20px; right: 20px; top: 960px; text-align: center; font-family: "Lilita One", sans-serif; }
+    #s01-hk .ln { display: block; width: fit-content; margin: 0 auto 16px; padding: 4px 34px 14px; border-radius: 30px; line-height: 1.05; white-space: nowrap; transform-origin: 50% 60%; opacity: 0; }
+    #s01-hk #s01-l0 { background: #111; font-size: 140px; box-shadow: 0 0 0 8px #00e5ff, 0 14px 0 rgba(0,0,0,.4), 0 0 60px 16px rgba(0,229,255,.75); }
+    #s01-hk #s01-l1 { background: #00b8f0; font-size: 120px; box-shadow: 0 0 0 7px #1a0f08, 0 12px 0 rgba(0,0,0,.4), 0 0 50px 12px rgba(0,200,255,.6); }
+    #s01-hk #s01-l2 { background: #ffe500; font-size: 150px; box-shadow: 0 0 0 8px #1a0f08, 0 14px 0 rgba(0,0,0,.4), 0 0 60px 18px rgba(255,229,0,.75); }
+    #s01-hk #s01-l2 span { color: #1a0f08; -webkit-text-stroke: 0; }
+    #s01-hk #s01-l0 span { color: #ffe500; }
+    #s01-hk span { position: relative; display: inline-block; margin: 0 .08em; color: #fff; -webkit-text-stroke: 8px #1a0f08; paint-order: stroke fill; transform-origin: 50% 65%; }
+    .cd { position: absolute; left: 0; right: 0; top: 760px; height: 760px; text-align: center; font-family: "Lilita One", sans-serif; font-size: 720px; line-height: 760px; color: #fff; -webkit-text-stroke: 26px #1a0f08; paint-order: stroke fill; opacity: 0; }
+    #s01-rv { position: absolute; inset: 0; box-shadow: inset 0 0 140px 50px rgba(255,10,20,.9); opacity: 0; }
+    #s01-bu { position: absolute; left: -310px; top: 560px; width: 1700px; height: 1700px; border-radius: 50%; background: repeating-conic-gradient(rgba(255,240,120,.55) 0 7deg, rgba(255,255,255,0) 7deg 18deg); -webkit-mask: radial-gradient(circle, #000 18%, transparent 52%); opacity: 0; }
+    #s01-gl { position: absolute; left: 40px; right: 40px; top: 940px; height: 640px; border-radius: 50%; background: radial-gradient(closest-side, rgba(255,230,60,.55), rgba(255,60,160,.25) 60%, rgba(255,60,160,0)); opacity: 0; }
+    .s01-sp { position: absolute; color: #fff; text-shadow: 0 0 18px #fff, 0 0 34px #ffe14a; opacity: 0; line-height: 1; }
+    #s01-fl { position: absolute; inset: 0; background: radial-gradient(circle at 50% 70%, rgba(255,255,255,.9), rgba(255,255,255,0) 55%); opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="s01" data-start="0" data-duration="3.910" data-width="1080" data-height="1920">
+    <div id="s01-stage" class="clip stage" data-start="0" data-duration="3.910" data-track-index="0">
+      <div id="s01-bu" data-layout-ignore></div>
+      <div id="s01-gl" data-layout-ignore></div>
+      <div class="s01-sp" id="s01-sp0" data-layout-ignore style="left:30px;top:930px;font-size:70px">✦</div><div class="s01-sp" id="s01-sp1" data-layout-ignore style="left:985px;top:960px;font-size:60px">✦</div><div class="s01-sp" id="s01-sp2" data-layout-ignore style="left:20px;top:1230px;font-size:52px">✦</div><div class="s01-sp" id="s01-sp3" data-layout-ignore style="left:1000px;top:1260px;font-size:66px">✦</div><div class="s01-sp" id="s01-sp4" data-layout-ignore style="left:50px;top:1520px;font-size:48px">✦</div><div class="s01-sp" id="s01-sp5" data-layout-ignore style="left:975px;top:1540px;font-size:56px">✦</div><div class="s01-sp" id="s01-sp6" data-layout-ignore style="left:470px;top:880px;font-size:44px">✦</div>
+      <div class="cd" id="s01-cd0" data-layout-ignore style="text-shadow: 0 0 60px #ff2e7e, 0 0 120px #ff2e7e">3</div><div class="cd" id="s01-cd1" data-layout-ignore style="text-shadow: 0 0 60px #00e5ff, 0 0 120px #00e5ff">2</div><div class="cd" id="s01-cd2" data-layout-ignore style="text-shadow: 0 0 60px #ffe500, 0 0 120px #ffe500">1</div>
+      <div id="s01-fl" data-layout-ignore></div>
+      <div id="s01-rv" data-layout-ignore></div>
+      <div id="s01-hk"><div class="ln" id="s01-l0"><span id="s01-w0">WER</span><span id="s01-w1">WIRD</span></div><div class="ln" id="s01-l1"><span id="s01-w2">UNSER</span></div><div class="ln" id="s01-l2"><span id="s01-w3">TÜRSTEHER?</span></div></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      
+      const C = {"__dur": 3.91, "L1": [0.0, 3.58], "L1.words": [["drei", 0.0, 0.702], ["zwei", 0.702, 1.405], ["eins", 1.405, 1.657], ["", 1.657, 1.875], ["wer", 1.875, 2.118], ["wird", 2.118, 2.371], ["unser", 2.371, 2.849], ["türsteher", 2.849, 3.58]]};
+      const line = (id) => C[id];
+      const at = (id, word, which = 0) => {
+        const ws = C[id + ".words"];
+        if (typeof word === "number") return ws[word][1 + which];
+        const key = String(word).toLowerCase().replace(/[^\p{L}\p{N}_]/gu, "");
+        const hit = ws.find((w) => w[0].startsWith(key));
+        if (!hit) throw new Error("cue not found: " + id + " " + word);
+        return hit[1 + which];
+      };
+      // Zähler: schreibt Zahlen im deutschen Format (4.100.000.000) als Funktion der Timeline-Zeit
+      const fmt = (n) => Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      const count = (tl, sel, from, to, t, d, pre = "", post = "", ease = "power2.out") => {
+        const el = document.querySelector(sel);
+        const o = { v: from };
+        el.textContent = pre + fmt(from) + post;
+        tl.to(o, { v: to, duration: d, ease, onUpdate: () => { el.textContent = pre + fmt(o.v) + post; } }, t);
+      };
+      // deterministischer Zufall
+      const rng = (seed) => () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let x = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+        x = (x + Math.imul(x ^ (x >>> 7), 61 | x)) ^ x; return ((x ^ (x >>> 14)) >>> 0) / 4294967296; };
+
+            // TikTok-Kommentar: Herz füllt sich rot, Zahl zählt hoch, Herzen schnellen nach oben
+      const HEART = '<svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-10-9.3C.4 8.4 2 4.5 5.6 4c2-.3 3.6.6 4.4 2 .8-1.4 2.4-2.3 4.4-2 3.6.5 5.2 4.4 3.6 7.7C19.5 16.4 12 21 12 21z" fill="none" stroke="#8a8b91" stroke-width="2"/></svg>';
+      const HEART_R = '<svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-10-9.3C.4 8.4 2 4.5 5.6 4c2-.3 3.6.6 4.4 2 .8-1.4 2.4-2.3 4.4-2 3.6.5 5.2 4.4 3.6 7.7C19.5 16.4 12 21 12 21z" fill="#fe2c55"/></svg>';
+      const fmtK = (n) => n >= 10000 ? (n / 1000).toFixed(1).replace(".", ",") + " Tsd." : Math.round(n).toLocaleString("de-DE");
+      function tkLike(tl, id, t, from, to, dur = 1.4, seed = 1) {
+        const box = document.querySelector(id + " .tk-l"), num = box.querySelector("i"), hz = box.querySelector(".hz");
+        hz.innerHTML = HEART + '<span class="red" style="position:absolute;inset:0;opacity:0">' + HEART_R + "</span>";
+        const R = rng(seed);
+        for (let k = 0; k < 7; k++) { const f = document.createElement("div"); f.className = "tk-fh"; f.innerHTML = HEART_R; box.appendChild(f);
+          const dx = (R() - .5) * 160, up = 200 + R() * 220, t0 = t + k * .11;
+          tl.fromTo(f, { opacity: 0, x: 0, y: 0, scale: .5, rotation: 0 }, { opacity: 1, x: dx * .4, y: -60, scale: 1.1, rotation: (R() - .5) * 40, duration: .15, ease: "power2.out" }, t0);
+          tl.to(f, { x: dx, y: -up, scale: .7, opacity: 0, duration: .7, ease: "power1.in" }, t0 + .15); }
+        tl.fromTo(hz.querySelector(".red"), { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .25, ease: "back.out(3)" }, t);
+        tl.fromTo(hz, { scale: 1 }, { scale: 1.3, duration: .12, yoyo: true, repeat: 1, ease: "power2.out" }, t);
+        const o = { v: from }; num.textContent = fmtK(from);
+        tl.to(o, { v: to, duration: dur, ease: "power2.out", onUpdate: () => { num.textContent = fmtK(o.v); } }, t);
+      }
+      // Textbox füllt immer genau den Text: jede Zeile bekommt ihren eigenen Balken
+      function wrapBt(scope) { document.querySelectorAll(scope + " .bt").forEach((el) => { if (!el.querySelector(":scope > .bx")) el.innerHTML = '<span class="bx">' + el.innerHTML + "</span>"; }); }
+
+      wrapBt("#s01-stage");
+      const tl = gsap.timeline({ paused: true });
+      const ts = at("L1", "Türsteher"), wr = at("L1", "wer");
+      tl.fromTo("#s01-bu", { opacity: .9, scale: .6, rotation: 0 }, { opacity: .9, scale: 1, rotation: 70, duration: 3.2, ease: "none", immediateRender: true }, 0);
+      tl.fromTo("#s01-gl", { opacity: .6 }, { opacity: 1, duration: .25, yoyo: true, repeat: 11, ease: "sine.inOut", immediateRender: true }, 0);
+      tl.fromTo("#s01-rv", { opacity: .45 }, { opacity: 1, duration: .14, yoyo: true, repeat: 17, ease: "sine.inOut", immediateRender: false }, 0);
+      tl.fromTo("#s01-sp0", { opacity: 0, scale: .2, rotation: 0 }, { opacity: 1, scale: 1.2, rotation: 90, duration: .22, yoyo: true, repeat: 5, ease: "sine.inOut", immediateRender: false }, 0.00);
+      tl.fromTo("#s01-sp1", { opacity: 0, scale: .2, rotation: 0 }, { opacity: 1, scale: 1.2, rotation: 90, duration: .22, yoyo: true, repeat: 5, ease: "sine.inOut", immediateRender: false }, 0.13);
+      tl.fromTo("#s01-sp2", { opacity: 0, scale: .2, rotation: 0 }, { opacity: 1, scale: 1.2, rotation: 90, duration: .22, yoyo: true, repeat: 5, ease: "sine.inOut", immediateRender: false }, 0.26);
+      tl.fromTo("#s01-sp3", { opacity: 0, scale: .2, rotation: 0 }, { opacity: 1, scale: 1.2, rotation: 90, duration: .22, yoyo: true, repeat: 5, ease: "sine.inOut", immediateRender: false }, 0.39);
+      tl.fromTo("#s01-sp4", { opacity: 0, scale: .2, rotation: 0 }, { opacity: 1, scale: 1.2, rotation: 90, duration: .22, yoyo: true, repeat: 5, ease: "sine.inOut", immediateRender: false }, 0.52);
+      tl.fromTo("#s01-sp5", { opacity: 0, scale: .2, rotation: 0 }, { opacity: 1, scale: 1.2, rotation: 90, duration: .22, yoyo: true, repeat: 5, ease: "sine.inOut", immediateRender: false }, 0.65);
+      tl.fromTo("#s01-sp6", { opacity: 0, scale: .2, rotation: 0 }, { opacity: 1, scale: 1.2, rotation: 90, duration: .22, yoyo: true, repeat: 5, ease: "sine.inOut", immediateRender: false }, 0.78);
+      { const t0 = 0, t1 = at("L1", "zwei") - .1; tl.fromTo("#s01-cd0", { opacity: 1, scale: 1.25, rotation: -6 }, { opacity: 1, scale: 1, rotation: 0, duration: .22, ease: "expo.out", immediateRender: true }, t0); tl.fromTo("#s01-fl", { opacity: .85 }, { opacity: 0, duration: .3, immediateRender: false }, t0); tl.to("#s01-cd0", { x: 14, duration: .04, yoyo: true, repeat: 5, ease: "none" }, t0 + .08); tl.to("#s01-cd0", { opacity: 0, scale: .6, duration: .1, ease: "power2.in" }, t1); }
+      { const t0 = at("L1", "zwei") - .08, t1 = at("L1", "eins") - .1; tl.fromTo("#s01-cd1", { opacity: 1, scale: 1.6, rotation: 5 }, { opacity: 1, scale: 1, rotation: 0, duration: .22, ease: "expo.out", immediateRender: false }, t0); tl.fromTo("#s01-fl", { opacity: .85 }, { opacity: 0, duration: .3, immediateRender: false }, t0); tl.to("#s01-cd1", { x: 14, duration: .04, yoyo: true, repeat: 5, ease: "none" }, t0 + .08); tl.to("#s01-cd1", { opacity: 0, scale: .6, duration: .1, ease: "power2.in" }, t1); }
+      { const t0 = at("L1", "eins") - .08, t1 = wr - .1; tl.fromTo("#s01-cd2", { opacity: 1, scale: 1.6, rotation: -3 }, { opacity: 1, scale: 1, rotation: 0, duration: .22, ease: "expo.out", immediateRender: false }, t0); tl.fromTo("#s01-fl", { opacity: .85 }, { opacity: 0, duration: .3, immediateRender: false }, t0); tl.to("#s01-cd2", { x: 14, duration: .04, yoyo: true, repeat: 5, ease: "none" }, t0 + .08); tl.to("#s01-cd2", { opacity: 0, scale: .6, duration: .1, ease: "power2.in" }, t1); }
+      tl.fromTo("#s01-l0", { opacity: 0, scaleX: .1 }, { opacity: 1, scaleX: 1, duration: .14, ease: "back.out(2.4)" }, at("L1", "wer") - .16); tl.fromTo("#s01-l0", { filter: "brightness(2.3) saturate(1.4)" }, { filter: "brightness(1) saturate(1)", duration: .4, ease: "power2.out", immediateRender: false }, at("L1", "wer")); tl.to("#s01-l0", { filter: "brightness(1.35)", duration: .16, yoyo: true, repeat: 7, ease: "sine.inOut" }, at("L1", "wer") + .45);
+      tl.fromTo("#s01-l1", { opacity: 0, scaleX: .1 }, { opacity: 1, scaleX: 1, duration: .14, ease: "back.out(2.4)" }, at("L1", "unser") - .16); tl.fromTo("#s01-l1", { filter: "brightness(2.3) saturate(1.4)" }, { filter: "brightness(1) saturate(1)", duration: .4, ease: "power2.out", immediateRender: false }, at("L1", "unser")); tl.to("#s01-l1", { filter: "brightness(1.35)", duration: .16, yoyo: true, repeat: 7, ease: "sine.inOut" }, at("L1", "unser") + .45);
+      tl.fromTo("#s01-l2", { opacity: 0, scaleX: .1 }, { opacity: 1, scaleX: 1, duration: .14, ease: "back.out(2.4)" }, at("L1", "Türsteher") - .16); tl.fromTo("#s01-l2", { filter: "brightness(2.3) saturate(1.4)" }, { filter: "brightness(1) saturate(1)", duration: .4, ease: "power2.out", immediateRender: false }, at("L1", "Türsteher")); tl.to("#s01-l2", { filter: "brightness(1.35)", duration: .16, yoyo: true, repeat: 7, ease: "sine.inOut" }, at("L1", "Türsteher") + .45);
+      tl.fromTo("#s01-w0", { opacity: 0, x: -1300, scale: 2.4, rotation: -30, filter: "blur(12px)" }, { opacity: 1, x: 0, scale: 1, rotation: 0, filter: "blur(0px)", duration: .17, ease: "expo.out" }, at("L1", "wer") - .14); tl.to("#s01-hk", { y: 14, duration: .05, yoyo: true, repeat: 1, ease: "none" }, at("L1", "wer") + .03);
+      tl.fromTo("#s01-w1", { opacity: 0, x: 1300, scale: 2.4, rotation: 30, filter: "blur(12px)" }, { opacity: 1, x: 0, scale: 1, rotation: 0, filter: "blur(0px)", duration: .17, ease: "expo.out" }, at("L1", "wird") - .14); tl.to("#s01-hk", { y: 14, duration: .05, yoyo: true, repeat: 1, ease: "none" }, at("L1", "wird") + .03);
+      tl.fromTo("#s01-w2", { opacity: 0, x: -1300, scale: 2.4, rotation: -30, filter: "blur(12px)" }, { opacity: 1, x: 0, scale: 1, rotation: 0, filter: "blur(0px)", duration: .17, ease: "expo.out" }, at("L1", "unser") - .14); tl.to("#s01-hk", { y: 14, duration: .05, yoyo: true, repeat: 1, ease: "none" }, at("L1", "unser") + .03);
+      tl.fromTo("#s01-w3", { opacity: 0, scale: 5, filter: "blur(16px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .2, ease: "expo.out" }, at("L1", "Türsteher") - .16); tl.to("#s01-hk", { y: 14, duration: .05, yoyo: true, repeat: 1, ease: "none" }, at("L1", "Türsteher") + .03);
+      tl.fromTo("#s01-fl", { opacity: .9 }, { opacity: 0, duration: .4, immediateRender: false }, ts);
+      tl.to("#s01-l2", { scale: 1.05, duration: .18, yoyo: true, repeat: 5, ease: "sine.inOut" }, ts + .3);
+      tl.to("#s01-hk", { x: 16, duration: .04, yoyo: true, repeat: 7, ease: "none" }, ts + .05);
+      tl.to("#s01-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
+      window.__timelines["s01"] = tl;
+    })();
+  </script>
+</template>
