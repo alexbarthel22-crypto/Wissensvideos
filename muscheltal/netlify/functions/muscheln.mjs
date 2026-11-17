@@ -12,7 +12,7 @@ import { QUIZ } from "../lib/quiz.mjs";
 const json = (d, s = 200) => new Response(JSON.stringify(d), { status: s, headers: { "content-type": "application/json", "cache-control": "no-store" } });
 const NAME = /^@[a-z0-9._]{1,40}$/;
 const ERF_CLIENT = new Set(["LUPE", "AUF", "UNTER", "SCOOT", "SCHOEPFER", "WAL", "SCHILD", "MOND", "WELT"]);
-const STICKER = new Set(["palast", "doener", "bar", "villa", "acai", "werkstatt", "baeckerei", "nagel", "markt", "kiosk", "boba", "pizza", "tierheim", "yacht", "cocobay", "kokosbad", "coast", "kokos", "cococare", "gaming", "feuer", "anleger"]);
+const STICKER = new Set(["palast", "doener", "bar", "villa", "acai", "werkstatt", "baeckerei", "nagel", "markt", "kiosk", "boba", "pizza", "tierheim", "yacht", "cocobay", "kokosbad", "coast", "kokos", "cococare", "gaming", "feuer", "anleger", "ev_wochenmarkt", "ev_flohmarkt", "ev_konzert", "ev_feuerwerk"]);
 const SERIE = [3, 5, 8, 12, 17, 23, 32];
 const TZ = "Europe/Berlin";
 const tag = (t = Date.now()) => new Intl.DateTimeFormat("sv-SE", { timeZone: TZ, year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date(t));
@@ -462,6 +462,12 @@ export default async (req) => {
   // 🧩 Sticker-Album: Ort besucht → Sticker (je Ort einmal)
   if (act === "sticker") {
     const id = String(d.id || ""); if (!STICKER.has(id)) return json({ ok: false });
+    if (id.startsWith("ev_")) {// Event-Sticker nur während des Events (Berliner Zeit)
+      const p = Object.fromEntries(new Intl.DateTimeFormat("en-US", { timeZone: TZ, weekday: "short", hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).formatToParts(new Date()).map(x => [x.type, x.value]));
+      const h = +p.hour + p.minute / 60, wd = p.weekday;
+      const jetzt = wd === "Wed" && h >= 6 && h < 12 ? "wochenmarkt" : wd === "Sat" && h >= 10 && h < 18 ? "flohmarkt" : wd === "Sun" && h >= 16 && h < 19 ? "konzert" : wd === "Fri" && h >= 20 && h < 20.25 ? "feuerwerk" : "";
+      if (process.env.EV_TEST !== "1" && id !== "ev_" + jetzt) return json({ ok: false, grund: "zeit" });
+    }
     await store.set("x/sticker/" + nm + "/" + id, String(Date.now()));
     return json({ ok: true, sticker: (await liste(store, "x/sticker/" + nm + "/")).map(k => k.split("/")[3]) });
   }
