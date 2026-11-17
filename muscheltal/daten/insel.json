@@ -76,6 +76,12 @@
   "tag_aktuell": 9,
   "ereignisse": [
     [
+      "17.11.2026",
+      "🐾",
+      "Neu: Tierheim Pfotenkuss",
+      "Das Tierheim ist fertig! Hier wohnen Hunde, Katzen und Hasen – und ab heute kann man im Tierheim-Shop jeden Tag neue Tiere adoptieren."
+    ],
+    [
       "16.11.2026",
       "🎮",
       "Neu: Gaming-Laden Game Lagoon",
@@ -292,6 +298,12 @@
       "typ": "nagel",
       "name": "Ocean Nails",
       "emoji": "💅"
+    },
+    {
+      "key": "0:-1,2",
+      "typ": "tierheim",
+      "name": "Tierheim Pfotenkuss",
+      "emoji": "🐾"
     }
   ],
   "jobs": {
@@ -596,13 +608,6 @@
       "name": "Boots-Anlegestelle",
       "emoji": "⚓",
       "ziel": 900
-    },
-    {
-      "key": "0:-1,2",
-      "name": "Tierheim Pfotenkuss",
-      "emoji": "🐾",
-      "ziel": 800,
-      "etagen": 2
     }
   ],
   "erfolg_entzug_alle": {

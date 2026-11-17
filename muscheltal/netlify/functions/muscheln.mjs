@@ -200,9 +200,9 @@ async function einladungPruefen(store, nm, kt) {
 // Tagesangebot: je Kategorie 2 Items, Seltenheit nach Gewicht (Stufe zuerst, dann Item), für alle gleich, neu um 0:00 Uhr (Berlin).
 // Einmal am Tag erzeugt und gespeichert (x/shop/<tag>); „Einzigartig“-Items gibt es nur ein einziges Mal (x/einzig/<id>).
 function zufall(seed) { let h = 2166136261; for (const ch of seed) h = Math.imul(h ^ ch.charCodeAt(0), 16777619); return () => { h += 0x6D2B79F5; let t = h; t = Math.imul(t ^ t >>> 15, t | 1); t ^= t + Math.imul(t ^ t >>> 7, t | 61); return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
-// 🐾 Tierheim-Shop: erst offen, wenn das Tierheim fertig ist (800 Einwohner); täglich um 0:00 neu, je Tierart 2 Tiere (Stufe nach Gewicht, „Einzigartig“ nie)
+// 🐾 Tierheim-Shop (Tierheim eröffnet 17.11.); täglich um 0:00 neu, je Tierart 2 Tiere (Stufe nach Gewicht, „Einzigartig“ nie)
 const TIERHEIM_AB = 800;
-const tierheimOffen = () => process.env.TH_TEST === "1" || (BEWOHNER && BEWOHNER.size >= TIERHEIM_AB);
+const tierheimOffen = () => true;// eröffnet am 17.11.2026
 async function tierAngebot(store, heute) {
   const k = "x/tierheim/" + heute, alt = await store.get(k); if (alt) return JSON.parse(alt);
   const r = zufall("tierheim-" + heute), ids = [], arten = [...new Set(Object.keys(SHOP.items).filter(id => SHOP.items[id][0] === "tier").map(id => id.split("_")[1]))];
