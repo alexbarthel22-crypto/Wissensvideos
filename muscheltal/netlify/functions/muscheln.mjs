@@ -392,7 +392,7 @@ export default async (req) => {
     const k = String(d.key || "").toUpperCase();
     // nur Erfolge, die im Browser vergeben werden (alle anderen bucht der Server selbst) – sonst ließen sich mit erfundenen Namen Muscheln erzeugen
     if (!ERF_CLIENT.has(k)) return json({ fehler: "Erfolg" }, 400);
-    return json({ ok: await setze("erf", k, 10) });
+    return json({ ok: await setze("erf", k, k === "WELT" ? 30 : 10) });// Weltenbummler (alle Sticker) = 30
   }
   // Tresor des Schöpfers (Schlossinsel): einmalige Verlosung je Name – 3, 5, 7 oder 10 Muscheln (je 25 %)
   // Geheimcode aus einem TikTok-Video: gilt nur an den angegebenen Tagen, je Name einmal; höchstens 10 Versuche pro Tag
