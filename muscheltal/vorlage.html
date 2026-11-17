@@ -2205,9 +2205,18 @@ let STKL=0;setInterval(async()=>{if(!WK.on||!mkClaim()||!MK.d||STKL)return;const
  else{const t=$('stktoast')||Object.assign(document.createElement('div'),{id:'stktoast'});t.className='stktoast';t.innerHTML=stkKarte(s,true,STK.indexOf(s))+'<span><small>Neuer Sticker!</small><b>'+esc(s[2])+'</b><small>'+n+'/'+STK.length+' im Album</small></span>';document.body.appendChild(t);t.classList.remove('an');void t.offsetWidth;t.classList.add('an');setTimeout(()=>t.classList.remove('an'),3600);}
  return;}},700);
 
+// Ankündigung der Zufalls-Events (einmal je Event, wie beim Wal)
+const EVGEM=new Set();
+setInterval(()=>{if(document.hidden)return;const say=(k,txt,ms)=>{if(EVGEM.has(k))return false;EVGEM.add(k);try{mkToast(txt,ms||5000);}catch(e){}return true;};
+ try{for(const w of skAktiv())if(w.t<6&&say('sk'+w.start+w.v.i,'🐢 Oh? Am '+walRichtung(w)+'-Strand'+(w.v.i?' der Kokos-Insel':'')+' krabbelt eine Babyschildkröte!'))return;}catch(e){}
+ try{for(const w of flAktiv())if(w.t<10&&say('fl'+w.fl,'🍾 Oh? Am '+walRichtung(w)+'-Strand'+(w.v.i?' der Kokos-Insel':'')+' ist eine Flaschenpost angespült worden!'))return;}catch(e){}
+ try{const st=sternAktiv();if(st&&say('st'+st.id,'🌠 Schnell, schau in den Himmel – eine Sternschnuppe!',3500))return;}catch(e){}
+ try{if(regenbogenDa()&&say('rb'+rbId(),'🌈 Der Regen ist vorbei – über dem Muschelplatz steht ein Regenbogen!',6000))return;}catch(e){}
+ try{if(mondDa()&&say('mo'+mondNacht(),'🌕 Vollmond! Heute Nacht leuchten Mondmuscheln am Strand der Haupt-Insel.',6000))return;}catch(e){}
+},1000);
 // ---------- 📅 Feste Termine auf dem Muschelplatz: Fr 20:00 Feuerwerk (10 Min.) · Sa 10–18 Uhr Flohmarkt · So 16–19 Uhr Konzert der Muschelband ----------
-function termin(){const q=QP.get('termin');if(q)return q;const d=berlin(),wd=d.getDay(),h=d.getHours()+d.getMinutes()/60;if(wd===5&&h>=20&&h<20+10/60)return'feuerwerk';if(wd===6&&h>=10&&h<18)return'flohmarkt';if(wd===0&&h>=16&&h<19)return'konzert';return null;}
-const TERMTXT={feuerwerk:'🎆 Jetzt: Feuerwerk über dem Muschelplatz!',flohmarkt:'🧺 Heute Flohmarkt auf dem Muschelplatz!',konzert:'🎵 Die Muschelband spielt live auf dem Muschelplatz!'};
+function termin(){const q=QP.get('termin');if(q)return q;const d=berlin(),wd=d.getDay(),h=d.getHours()+d.getMinutes()/60;if(wd===3&&h>=6&&h<12)return'wochenmarkt';if(wd===5&&h>=20&&h<20+10/60)return'feuerwerk';if(wd===6&&h>=10&&h<18)return'flohmarkt';if(wd===0&&h>=16&&h<19)return'konzert';return null;}
+const TERMTXT={wochenmarkt:'🍎 Heute Wochenmarkt auf dem Muschelplatz!',feuerwerk:'🎆 Jetzt: Feuerwerk über dem Muschelplatz!',flohmarkt:'🧺 Heute Flohmarkt auf dem Muschelplatz!',konzert:'🎵 Die Muschelband spielt live auf dem Muschelplatz!'};
 // freie Flächen auf dem Muschelplatz (einmal berechnet, ohne die Termin-Sperren)
 let TPL=null,TPLC=false;
 function terminPlaetze(){if(TPL)return TPL;TPLC=true;const v=MAIN,R=v.plaza-8,free=(cx,cy,w,h)=>{for(let x=cx-w/2;x<=cx+w/2+.1;x+=2)for(let y=cy-h/2;y<=cy+h/2+.1;y+=2){if(Math.hypot(x-v.x,(y-v.y)/.92)>R||!canWalk(x,y))return false;}return true;};
@@ -2215,8 +2224,21 @@ function terminPlaetze(){if(TPL)return TPL;TPLC=true;const v=MAIN,R=v.plaza-8,fr
  const buehne=such(v.x,v.y+v.plaza*.5,30,12,[]),st=[],W=[buehne].filter(Boolean);
  for(const a of[.35,.75,1.15,1.95,2.35,2.75]){const s=such(v.x+Math.cos(a)*v.plaza*.62,v.y+Math.sin(a)*v.plaza*.62,11,6,W.concat(st));if(s)st.push(s);}
  TPLC=false;TPL={buehne,st};return TPL;}
-function terminSperre(x,y){if(TPLC)return false;const tm=termin();if(tm!=='flohmarkt'&&tm!=='konzert')return false;const P=terminPlaetze(),L=tm==='konzert'?[P.buehne]:P.st;for(const o of L)if(o&&Math.abs(x-o.x)<o.w/2+1&&y>o.y-o.h/2-1&&y<o.y+o.h/2+2.5)return true;return false;}
+function terminSperre(x,y){if(TPLC)return false;const tm=termin();if(tm!=='flohmarkt'&&tm!=='konzert'&&tm!=='wochenmarkt')return false;const P=terminPlaetze(),L=tm==='konzert'?[P.buehne]:P.st;for(const o of L)if(o&&Math.abs(x-o.x)<o.w/2+1&&y>o.y-o.h/2-1&&y<o.y+o.h/2+2.5)return true;return false;}
 const FLOH=[['📚','BÜCHER','#3f8fe0',['📕','📗','📘','📙']],['🧸','SPIELZEUG','#ff6fa3',['🧸','🪀','🎲','🪁']],['🎸','PLATTEN','#2a2a32',['💿','📀','🎸','📻']],['🪴','PFLANZEN','#3f9b45',['🪴','🌵','🌷','🌿']],['👒','HÜTE','#f4a51c',['👒','🧢','🎩','🕶️']],['🐚','SCHMUCK','#9b5de5',['🐚','💍','📿','🦪']]];
+const WMARKT=[['🍎','Obststand','#3f9b45',['🍎','🍐','🍊','🍌'],'Frisch von der Insel: knackige Äpfel, saftige Birnen und Orangen.'],['🧀','Käsestand','#e8b020',['🧀','🧀','🥛','🫙'],'Würziger Bergkäse, milder Gouda und frische Milch.'],['🥩','Fleischerei','#c0392b',['🥩','🍗','🌭','🥓'],'Steaks, Hähnchen, Würstchen und Speck vom Inselmetzger.'],
+ ['🍓','Beeren & Früchte','#e8467c',['🍓','🍇','🍒','🍉'],'Erdbeeren, Trauben, Kirschen – und ganze Wassermelonen.'],['🧀','Käse-Theke','#d99a1c',['🧀','🧈','🥚','🫙'],'Ziegenkäse, Butter und frische Eier vom Hof.'],['🍖','Grill & Wurst','#8a3a1c',['🍖','🌭','🍗','🥩'],'Rostbratwurst und Grillspieße – frisch vom Grill.']];
+// Wochenmarkt-Stand: Holztheke mit Kisten, Markise in Standfarbe, Preisschild-Tafel
+function marktStand(c,o,k,t){const [em,name,col,items]=WMARKT[k%WMARKT.length],x=o.x,y=o.y;c.save();c.translate(x,y);
+ c.fillStyle='rgba(40,30,10,.2)';c.beginPath();c.ellipse(.6,3.4,6.2,1.3,0,0,TAU);c.fill();c.fillStyle='#c99a5a';c.fillRect(-5,-1,10,3.6);c.strokeStyle='#8a5a2b';c.lineWidth=.2;for(let i=-4;i<=4;i+=2){c.beginPath();c.moveTo(i,-1);c.lineTo(i,2.6);c.stroke();}
+ for(let i=0;i<4;i++){c.fillStyle='#e9d29a';c.fillRect(-4.8+i*2.4,-2.2,2.2,1.2);c.font='1.5px '+FONT;c.textAlign='center';c.fillText(items[i],-3.7+i*2.4,-1.2);}
+ c.strokeStyle='#6b4423';c.lineWidth=.35;for(const s of[-1,1]){c.beginPath();c.moveTo(s*4.8,-1);c.lineTo(s*4.8,-8.4);c.stroke();}
+ c.fillStyle=col;c.beginPath();c.moveTo(-5.6,-8.4);c.lineTo(5.6,-8.4);c.lineTo(6.2,-6.6);c.lineTo(-6.2,-6.6);c.closePath();c.fill();c.fillStyle='rgba(255,255,255,.85)';for(let i=0;i<6;i++)c.fillRect(-5.4+i*1.9,-8.4,.95,1.8);
+ for(let i=0;i<7;i++){c.fillStyle=i%2?'#fff':col;c.beginPath();c.arc(-5.7+i*1.9,-6.6,.95,0,Math.PI);c.fill();}
+ c.fillStyle='#2f3a2f';c.beginPath();c.roundRect(-4.2,-11.2,8.4,2.6,.6);c.fill();c.strokeStyle='#8a5a2b';c.lineWidth=.25;c.stroke();c.fillStyle='#fff';c.font='900 1.15px '+FONT;c.textAlign='center';{const tx=em+' '+name.toUpperCase(),w=c.measureText(tx).width;if(w>7.6)c.font='900 '+(1.15*7.6/w).toFixed(3)+'px '+FONT;c.fillText(tx,0,-9.5);}
+ // Kisten vorne
+ for(const s of[-1,1]){c.fillStyle='#b07a45';c.fillRect(s*3.2-1.3,2.6,2.6,1.4);c.font='1.2px '+FONT;c.fillText(items[s<0?0:2],s*3.2,3.1);}
+ c.restore();}
 function flohStand(c,o,k,t){const [em,name,col,items]=FLOH[k%FLOH.length],x=o.x,y=o.y;c.save();c.translate(x,y);
  c.fillStyle='rgba(40,30,10,.2)';c.beginPath();c.ellipse(.6,3.4,6.2,1.3,0,0,TAU);c.fill();c.fillStyle='#b07a45';c.fillRect(-5,-1,10,3.6);c.fillStyle='#8a5a2b';c.fillRect(-5,2.2,10,.6);
  c.fillStyle='#fffaf0';c.fillRect(-5,-1.6,10,.8);c.font='2px '+FONT;c.textAlign='center';items.forEach((e,i)=>c.fillText(e,-3.6+i*2.4,-.6+(i%2)*.3));
@@ -2229,7 +2251,7 @@ function konzertBuehne(c,o,t){const x=o.x,y=o.y,W=o.w/2;c.save();c.translate(x,y
  c.fillStyle='rgba(40,30,10,.22)';c.beginPath();c.ellipse(1,5,W+2,2,0,0,TAU);c.fill();c.fillStyle='#5a3a24';c.fillRect(-W,-1,2*W,5);c.fillStyle='#7a5234';c.fillRect(-W,-2,2*W,1.4);
  c.strokeStyle='#3a3a44';c.lineWidth=.6;for(const s of[-1,1]){c.beginPath();c.moveTo(s*(W-1),-2);c.lineTo(s*(W-1),-17);c.stroke();}c.beginPath();c.moveTo(-W+1,-17);c.lineTo(W-1,-17);c.stroke();
  for(let k=0;k<5;k++){const lx=-W+4+k*(2*W-8)/4,on=.5+.5*Math.sin(t*3+k);c.fillStyle='#2a2a32';c.beginPath();c.arc(lx,-16.2,.8,0,TAU);c.fill();c.fillStyle=`rgba(${[255,120,255,255,120][k]},${[200,220,120,240,200][k]},${[80,255,200,120,255][k]},${.18+.18*on})`;c.beginPath();c.moveTo(lx-.6,-15.6);c.lineTo(lx+.6,-15.6);c.lineTo(lx+3.4+Math.sin(t+k)*1.5,-2);c.lineTo(lx-3.4+Math.sin(t+k)*1.5,-2);c.closePath();c.fill();}
- c.fillStyle='#e8467c';c.beginPath();c.roundRect(-11,-21.4,22,3.6,1.6);c.fill();c.strokeStyle='#2a1b12';c.lineWidth=.3;c.stroke();c.fillStyle='#fff';c.font='900 1.6px '+FONT;c.textAlign='center';c.fillText('🎵 DIE MUSCHELBAND · LIVE 🎵',0,-19);
+ c.fillStyle='#e8467c';c.beginPath();c.roundRect(-11,-21.4,22,3.6,1.6);c.fill();c.strokeStyle='#2a1b12';c.lineWidth=.3;c.stroke();c.fillStyle='#fff';c.font='900 1.6px '+FONT;c.textAlign='center';{const tx='🎵 DIE MUSCHELBAND · LIVE 🎵',w=c.measureText(tx).width;if(w>19.6)c.font='900 '+(1.6*19.6/w).toFixed(3)+'px '+FONT;c.fillText(tx,0,-19);}
  for(const s of[-1,1]){c.fillStyle='#2a2a32';c.beginPath();c.roundRect(s*(W+1.6)-1.8,-4,3.6,7.6,.5);c.fill();c.fillStyle='#555';for(const yy of[-2.2,1.2]){c.beginPath();c.arc(s*(W+1.6),yy,1.1+Math.abs(Math.sin(t*8))*.15,0,TAU);c.fill();}}
  // Band: Robbe am Schlagzeug, Pinguin mit Gitarre, Hund am Mikrofon
  {c.fillStyle='#e8433c';c.beginPath();c.ellipse(-8,-3.6,2,1.4,0,0,TAU);c.fill();c.fillStyle='#ddd';c.beginPath();c.ellipse(-8,-4.6,2,.6,0,0,TAU);c.fill();c.fillStyle='#d9b84a';c.beginPath();c.ellipse(-10.6,-6.6,1.2,.3,0,0,TAU);c.fill();}
@@ -2239,7 +2261,7 @@ function konzertBuehne(c,o,t){const x=o.x,y=o.y,W=o.w/2;c.save();c.translate(x,y
  tierZ(c,{x:8,y:-6.6,art:'hund',st:5,view:'front',dir:1,mv:false,t,sz:.8});c.strokeStyle='#3a3a44';c.lineWidth=.2;c.beginPath();c.moveTo(9.6,-1.6);c.lineTo(9.6,-5.6);c.lineTo(8.8,-6.2);c.stroke();c.fillStyle='#3a3a44';c.beginPath();c.arc(8.7,-6.3,.35,0,TAU);c.fill();
  // Noten steigen auf
  if(!REDUCED)for(let k=0;k<8;k++){const ph=(t*.35+k/8)%1;c.globalAlpha=Math.sin(ph*Math.PI);c.fillStyle=['#e8467c','#3fa0e8','#ffd23f','#9b5de5'][k%4];c.font='900 '+(1.6+ph)+'px '+FONT;c.fillText(k%2?'♪':'♫',-12+k*3.4+Math.sin(t*2+k)*1.5,-8-ph*14);}c.globalAlpha=1;c.restore();}
-function terminZeichnen(c){const tm=termin();if(tm!=='flohmarkt'&&tm!=='konzert')return;const P=terminPlaetze(),t=REDUCED?0:T;if(tm==='konzert'&&P.buehne)konzertBuehne(c,P.buehne,t);if(tm==='flohmarkt'){P.st.forEach((o,k)=>flohStand(c,o,k,t));
+function terminZeichnen(c){const tm=termin();if(tm!=='flohmarkt'&&tm!=='konzert'&&tm!=='wochenmarkt')return;const P=terminPlaetze(),t=REDUCED?0:T;if(tm==='konzert'&&P.buehne)konzertBuehne(c,P.buehne,t);if(tm==='wochenmarkt')P.st.forEach((o,k)=>marktStand(c,o,k,t));if(tm==='flohmarkt'){P.st.forEach((o,k)=>flohStand(c,o,k,t));
  const o=P.st[0];if(o){}}if(!REDUCED)kick();}
 // Feuerwerk: Raketen steigen über dem Muschelplatz auf und zerplatzen (über allem gezeichnet)
 function feuerwerkZeichnen(){if(termin()!=='feuerwerk')return;const c=ctx,v=MAIN,t=REDUCED?3:T;c.save();c.setTransform(DPR,0,0,DPR,0,0);const sx=wx=>(wx-cam.x)*cam.z+W/2,sy=wy=>(wy-cam.y)*cam.z+H/2,z=cam.z;
@@ -2251,8 +2273,8 @@ function feuerwerkZeichnen(){if(termin()!=='feuerwerk')return;const c=ctx,v=MAIN
  c.restore();kick();}
 // Hinweis beim Start eines Termins (einmal je Termin und Besuch)
 setInterval(()=>{const tm=termin();if(!tm||QP.get('termin'))return;const k='mt-termin-'+tm+'-'+berlinTagStr();try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1');}catch(e){}mkToast(TERMTXT[tm],6000);},5000);
-function terminAt(wx,wy){const tm=termin();if(tm!=='flohmarkt'&&tm!=='konzert')return null;const P=terminPlaetze();if(tm==='konzert'){const o=P.buehne;if(o&&Math.abs(wx-o.x)<o.w/2+2&&wy>o.y-22&&wy<o.y+5)return{tm};return null;}for(let k=0;k<P.st.length;k++){const o=P.st[k];if(Math.abs(wx-o.x)<6&&wy>o.y-11&&wy<o.y+4)return{tm,k};}return null;}
-function terminTap(r){if(r.tm==='konzert'){popup('<div class="big">🎵</div><h2>Die Muschelband</h2><p>Jeden Sonntag von 16 bis 19 Uhr spielen Robbe, Pinguin und Hund live auf dem Muschelplatz. 🦭🐧🐶</p>');return;}
+function terminAt(wx,wy){const tm=termin();if(tm!=='flohmarkt'&&tm!=='konzert'&&tm!=='wochenmarkt')return null;const P=terminPlaetze();if(tm==='konzert'){const o=P.buehne;if(o&&Math.abs(wx-o.x)<o.w/2+2&&wy>o.y-22&&wy<o.y+5)return{tm};return null;}for(let k=0;k<P.st.length;k++){const o=P.st[k];if(Math.abs(wx-o.x)<6&&wy>o.y-11&&wy<o.y+4)return{tm,k};}return null;}
+function terminTap(r){if(r.tm==='wochenmarkt'){const [em,name,,items,txt]=WMARKT[r.k%WMARKT.length];popup('<div class="big">'+em+'</div><h2>'+name+'</h2><p>'+txt+'<br>'+items.join(' ')+'<br><br>Jeden Mittwoch von 6 bis 12 Uhr auf dem Muschelplatz.</p>');return;}if(r.tm==='konzert'){popup('<div class="big">🎵</div><h2>Die Muschelband</h2><p>Jeden Sonntag von 16 bis 19 Uhr spielen Robbe, Pinguin und Hund live auf dem Muschelplatz. 🦭🐧🐶</p>');return;}
  const [em,name,,items]=FLOH[r.k%FLOH.length];popup('<div class="big">'+em+'</div><h2>Flohmarkt: '+name.charAt(0)+name.slice(1).toLowerCase()+'</h2><p>Heute im Angebot: '+items.join(' ')+'<br>Jeden Samstag von 10 bis 18 Uhr auf dem Muschelplatz – einfach vorbeischauen und stöbern!</p>');}
 
 // ---------- Statische Ebene (nur neu, wenn sich die Kamera bewegt) ----------
