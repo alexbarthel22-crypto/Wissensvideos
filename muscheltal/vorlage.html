@@ -792,7 +792,11 @@ const GEB=(I.gebaeude||[]).map(g=>{const [i,km]=g.key.split(':'),[k,m]=km.split(
  const coast=g.typ==='strandbar'||g.typ==='villa';let sea=0;if(coast){if(k>0){let x=x1;while(inside(v,x,cy,-8-BEX))x+=3;sea=x;x1=Math.max(x1,x+(g.typ==='strandbar'?80:30));}else{let x=x0;while(inside(v,x,cy,-8-BEX))x-=3;sea=x;x0=Math.min(x0,x-(g.typ==='strandbar'?80:30));}}
  return{...g,v,k,m,x0,x1,y0,y1,cx:(x0+x1)/2,cy,sea,dir:k>0?1:-1};});
 // Baustellen (nicht begehbar): auf einem Bauplatz oder am Steg; fertig bei Ziel-Einwohnerzahl
-const BAU=(I.baustellen||[]).filter(b=>N<b.ziel).map(b=>{if(b.ort==='steg'){const a=PIER_A,ca=Math.cos(a),sa=Math.sin(a),[ox,oy]=PIER0,len=170,w=18,ex=ox+ca*len,ey=oy+sa*len,xs=[ox-w,ox+w,ex-w,ex+w],ys=[oy-w,oy+w,ey-w,ey+w];
+var KASSE=0;/* Inselkasse-Bonus vom Server (Story-Boni + Spenden) */
+// Bauprojekte mit Muschel-Preis: werden der Reihe nach aus der Inselkasse bezahlt (Kasse = 5 pro Einwohner + Boni/Spenden + Korrektur)
+const kasseStand=()=>Math.max(0,N*I.muscheln_pro_einwohner+KASSE+(I.kasse_korrektur||0));
+function bauIst(b){const L=I.baustellen||[];let k=kasseStand();for(const q of L){if(q.name===b.name)return Math.max(0,Math.min(q.preis,k));k-=q.preis;}return 0;}
+const BAU=(I.baustellen||[]).map(b=>{if(b.ort==='steg'){const a=PIER_A,ca=Math.cos(a),sa=Math.sin(a),[ox,oy]=PIER0,len=170,w=18,ex=ox+ca*len,ey=oy+sa*len,xs=[ox-w,ox+w,ex-w,ex+w],ys=[oy-w,oy+w,ey-w,ey+w];
   return{...b,v:MAIN,steg:true,ox,oy,ang:a,len,w,inr:(x,y)=>{const dx=x-ox,dy=y-oy,u=dx*ca+dy*sa,v=-dx*sa+dy*ca;return u>-4&&u<len+2&&Math.abs(v)<w+2;},x0:Math.min(...xs),x1:Math.max(...xs),y0:Math.min(...ys),y1:Math.max(...ys),cx:(ox+ex)/2,cy:(oy+ey)/2,sx:ox+ca*(len+20),sy:oy+sa*(len+20)};}
  const [i,km]=b.key.split(':'),[k,m]=km.split(',').map(Number),v=ISL[+i],x0=v.x+(5*k+1)*S-9,x1=v.x+(5*k+4)*S+9,y0=v.y+(4*m+1)*S*.9-8,y1=v.y+(4*m+3)*S*.9+8;return{...b,v,k,m,x0,x1,y0,y1,cx:(x0+x1)/2,cy:(y0+y1)/2};});
 const BAUK=new Set(BAU.filter(b=>b.key).map(b=>b.key));
@@ -802,7 +806,7 @@ const inBau=(x,y)=>BAU.some(b=>b.inr?b.inr(x,y):x>b.x0-2&&x<b.x1+2&&y>b.y0-2&&y<
 //  1 (40 %): Etagen halb hoch · 2 (50 %): Etagen 3/4, Vorplatz gepflastert · 3 (60 %): alle Etagen, Fenster verglast, Rohre weg
 //  4 (70 %): Fassade gestrichen, Material weniger · 5 (80 %): Dach, Schutznetz weg, Gerüst unten abgebaut, Beete
 //  6 (90 %): Gerüst + Kran weg, Eingangstür, Blumen, Material weg
-const bauPhase=b=>{const r=N/b.ziel;return r<.4?0:Math.min(6,1+Math.floor((r-.4)*10+1e-9));};
+const bauPhase=b=>{const r=bauIst(b)/b.preis;return r<.4?0:Math.min(6,1+Math.floor((r-.4)*10+1e-9));};
 // Turmdrehkran (gleich auf allen Baustellen): Fundament, Gittermast, Kabine, Ausleger mit Laufkatze, Gegengewicht, Ziegel-Last am Haken
 function towerCrane(c,kx,ky,kh,t,day){c.fillStyle='#9a948a';c.fillRect(kx-3,ky-.6,6,2.2);
  c.strokeStyle='#f0a500';c.lineWidth=.55;c.beginPath();c.moveTo(kx-1,ky);c.lineTo(kx-1,ky-kh);c.moveTo(kx+1,ky);c.lineTo(kx+1,ky-kh);for(let i=0;i<10;i++){c.moveTo(kx-1,ky-i*3.8);c.lineTo(kx+1,ky-i*3.8-3.8);c.moveTo(kx-1,ky-i*3.8);c.lineTo(kx+1,ky-i*3.8);}c.stroke();
@@ -873,10 +877,10 @@ function drawBau(c,b,nl,z){const ruhe=bauRuhe(),ink='#2a1b12',t=REDUCED||ruhe?0:
  for(const px of[W2-17,W2-11].slice(0,ph<4?2:ph<6?1:0)){const py=H2-5;c.fillStyle='#b07a45';c.fillRect(px-2.6,py,5.2,.8);c.fillStyle='#b5523a';for(let r=0;r<3;r++)for(let k=0;k<3;k++){c.fillRect(px-2.5+k*1.7,py-.9-r*1,1.55,.85);}c.fillStyle='rgba(255,255,255,.18)';c.fillRect(px-2.5,py-3.4,5,.3);}
  if(ph<3){const px=4,py=H2-4;c.fillStyle='#8f969e';for(let r=0;r<2;r++)for(let k=0;k<3-r;k++){c.beginPath();c.arc(px+k*1.6+r*.8,py-r*1.4,.75,0,TAU);c.fill();}c.fillStyle='#5b636b';for(let r=0;r<2;r++)for(let k=0;k<3-r;k++){c.beginPath();c.arc(px+k*1.6+r*.8,py-r*1.4,.35,0,TAU);c.fill();}}
  // Bauarbeiter mit Helm und Warnweste (nur tagsüber)
- if(day&&!ruhe&&z*S>12){const wk=(i,x,y,dir,act)=>{const L=b['W'+i]||(b['W'+i]={...look(900+i*7+(b.ziel|0)),shirt:'#ff7a1a',pants:'#2a3a5a'});c.save();c.translate(x,y);c.scale(dir,1);
+ if(day&&!ruhe&&z*S>12){const wk=(i,x,y,dir,act)=>{const L=b['W'+i]||(b['W'+i]={...look(900+i*7+(b.preis|0)),shirt:'#ff7a1a',pants:'#2a3a5a'});c.save();c.translate(x,y);c.scale(dir,1);
    person(c,L,act==='walk'?Math.sin(t*7+i)*1:0,false,act==='work'?.4+Math.abs(Math.sin(t*5+i))*1.2:0);c.scale(L.h,L.h);c.fillStyle='#fff';c.fillRect(-1.6,-1.3,3.2,.35);c.fillStyle='#ffd23f';c.beginPath();c.arc(0,-4.75,1.62,Math.PI,0);c.fill();c.fillRect(-1.2,-4.85,3.4,.45);c.restore();};
   const fy=gy-(fl-1)*5-.4;wk(1,bx0+6,fy-4.4,1,'work');
-  const u=(t*.12+(b.ziel%7)/7)%1,wx=-14+(u<.5?u*2:2-u*2)*26,dr=u<.5?1:-1;c.save();c.translate(wx+dr*3.4,H2-9.6);c.scale(dr,1);c.fillStyle='#4a6a8a';c.beginPath();c.moveTo(-1.6,-.6);c.lineTo(1.8,-.6);c.lineTo(1.2,1.2);c.lineTo(-1.2,1.2);c.closePath();c.fill();c.fillStyle='#c9a868';c.beginPath();c.ellipse(0,-.7,1.6,.5,0,0,TAU);c.fill();c.fillStyle='#2a2a2a';c.beginPath();c.arc(1.9,1.6,.6,0,TAU);c.fill();c.strokeStyle='#555';c.lineWidth=.3;c.beginPath();c.moveTo(-1.4,.2);c.lineTo(-3.4,-.6);c.stroke();c.restore();
+  const u=(t*.12+(b.preis%7)/7)%1,wx=-14+(u<.5?u*2:2-u*2)*26,dr=u<.5?1:-1;c.save();c.translate(wx+dr*3.4,H2-9.6);c.scale(dr,1);c.fillStyle='#4a6a8a';c.beginPath();c.moveTo(-1.6,-.6);c.lineTo(1.8,-.6);c.lineTo(1.2,1.2);c.lineTo(-1.2,1.2);c.closePath();c.fill();c.fillStyle='#c9a868';c.beginPath();c.ellipse(0,-.7,1.6,.5,0,0,TAU);c.fill();c.fillStyle='#2a2a2a';c.beginPath();c.arc(1.9,1.6,.6,0,TAU);c.fill();c.strokeStyle='#555';c.lineWidth=.3;c.beginPath();c.moveTo(-1.4,.2);c.lineTo(-3.4,-.6);c.stroke();c.restore();
   wk(2,wx,H2-13.8,dr,'walk');wk(3,-W2+16.5,H2-12.4,-1,'work');}
  if(ph>=5){for(let k=0;k<6;k++){const x=bx0+3+k*(bw-6)/5,y=gy+H2*.75+1.6;c.fillStyle='#3f9b45';c.beginPath();c.arc(x,y,1.5,0,TAU);c.fill();c.fillStyle='#57b85a';c.beginPath();c.arc(x-.4,y-.5,.8,0,TAU);c.fill();if(ph>=6){c.fillStyle=['#ff6fa3','#ffd23f','#fff'][k%3];c.beginPath();c.arc(x+.5,y-.6,.4,0,TAU);c.fill();}}}
  for(const [x,y] of[[-W2+5,H2-4],[W2-5,H2-4],[-W2+6,-H2+15]]){c.fillStyle='#ff7a1a';c.beginPath();c.moveTo(x-1.4,y+1);c.lineTo(x,y-2.6);c.lineTo(x+1.4,y+1);c.closePath();c.fill();c.fillStyle='#fff';c.fillRect(x-.8,y-1,1.6,.5);}
@@ -888,9 +892,9 @@ function drawBau(c,b,nl,z){const ruhe=bauRuhe(),ink='#2a1b12',t=REDUCED||ruhe?0:
 // Bauschild antippen (auch beim Erkunden) → Seite mit allen Bauprojekten
 function bauSignAt(wx,wy){if(cam.z*S<=4)return null;for(const b of BAU){if(!bauOn(b))continue;const x=b.steg?b.sx:b.cx,sy=b.steg?b.sy:b.y0-10;if(wx>x-25&&wx<x+25&&wy>sy-6&&wy<sy+9)return b;}return null;}
 function zuBauprojekten(){location.href='bau.html';}
-function drawBauSign(c,b){const pr=Math.min(1,N/b.ziel),x=b.steg?b.sx:b.cx,sy=b.steg?b.sy:b.y0-10;c.save();c.translate(x,sy);
+function drawBauSign(c,b){const ist=bauIst(b),pr=Math.min(1,ist/b.preis),x=b.steg?b.sx:b.cx,sy=b.steg?b.sy:b.y0-10;c.save();c.translate(x,sy);
  c.fillStyle='#ffd23f';c.strokeStyle='#2a1b12';c.lineWidth=.5;c.beginPath();c.roundRect(-24,-5,48,13,3);c.fill();c.stroke();
- gTxt(c,{},b.emoji+' '+b.name.toUpperCase(),0,.4,4,'#2a1b12',null,44);gTxt(c,{},'IM BAU · FERTIG BEI '+fmt(b.ziel)+' BEWOHNERN',0,4.4,2.4,'#7a5a2b',null,44);
+ gTxt(c,{},b.emoji+' '+b.name.toUpperCase(),0,.4,4,'#2a1b12',null,44);gTxt(c,{},'IM BAU · '+fmt(ist)+' VON '+fmt(b.preis)+' MUSCHELN',0,4.4,2.4,'#7a5a2b',null,44);
  c.fillStyle='rgba(42,27,18,.2)';c.fillRect(-20,5.4,40,1.6);c.fillStyle='#2e9e5b';c.fillRect(-20,5.4,40*pr,1.6);c.restore();}
 // Bereiche der Ortsnamen (unter den Gebäuden): dort keine Bänke, Laternen, Blumen oder Strand-Deko
 const LABR=GEB.map(g=>{const W=(g.x1-g.x0)/2,H=(g.y1-g.y0)/2,d=g.dir||1,sx=(g.sea-g.cx)*d,lx=g.typ==='strandbar'?(sx-44-W)/2*d:g.typ==='villa'?(sx-W)/2*d:0;return[g.cx+lx-34,g.cy+H-1,g.cx+lx+34,g.cy+H+12];});
@@ -4606,7 +4610,7 @@ $('growbtn').onclick=()=>{if(growing||!N)return;const v=islInView();growing=true
  if(v===MAIN&&PEOPLE.some(p=>p.beruf&&p.beruf.startsWith('Bürgermeister'))){MAYOR_AT=.73;EV.push([MAYOR_AT,'🎖️ Muschel-Tal bekommt eine Bürgermeisterin']);ei++;}
  geb.forEach((g,i)=>{g.at=.73+step*(ei++);EV.push([g.at,g.emoji+' '+g.name+(g.typ==='villa'?' wird gebaut':' eröffnet')]);});
  exg.forEach(e=>{e.at=.73+step*(ei++);EV.push([e.at,e.t]);});
- bau.forEach(b=>{b.at=.73+step*(ei++);EV.push([b.at,'🏗️ Baustelle: '+b.name+' (fertig bei '+fmt(b.ziel)+' Einwohnern)']);});
+ bau.forEach(b=>{b.at=.73+step*(ei++);EV.push([b.at,'🏗️ Baustelle: '+b.name+' (Ziel: '+fmt(b.preis)+' Muscheln)']);});
  for(const x of (I.entfernt||[]))if(x.insel==null||ISL[x.insel]===v){x.at=x.at||.9;EV.push([x.at,'🧹 '+x.text]);}
  EV.sort((a,b)=>a[0]-b[0]);
  const t0=performance.now()+600,ms=Math.min(6000,2500+(hi-lo)*3.5)+(geb.length+bau.length+exg.length)*600;
@@ -4733,8 +4737,8 @@ function passBild(p){const W2=1080,H2=1920,cv=document.createElement('canvas');c
  c.fillStyle='#2a1b12';c.font='900 40px '+F;c.fillText('muscheltal.de',W2/2,1818);
  return cv;}
 // Inselkasse: Grundbetrag (5 pro Einwohner) + Bonus aus geteilten Storys (Server, Netlify-Funktion)
-const WOCHE=7*864e5;let KASSE=0;
-const kasseZeigen=()=>{$('nMu').textContent=fmt(Math.max(0,N*I.muscheln_pro_einwohner+KASSE+(I.kasse_korrektur||0)));};
+const WOCHE=7*864e5;
+const kasseZeigen=()=>{$('nMu').textContent=fmt(kasseStand());};
 fetch('/api/kasse',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(d=>{if(d&&d.bonus>=0){KASSE=d.bonus;kasseZeigen();}}).catch(()=>{});
 const shareKey=p=>'mt-story-'+p.name.toLowerCase();
 const naechster=p=>{try{return(+localStorage.getItem(shareKey(p))||0)+WOCHE;}catch(e){return 0;}};
@@ -5188,7 +5192,7 @@ function mkLoginPop(){const me=mkMe(),d=MK.d;if(!me||!d)return;const s=d.serie,J
 
 // ---------- Spenden an die Inselkasse ----------
 let KSP=0;
-const mkProjekt=()=>{const L=(I.baustellen||[]).filter(b=>N<b.ziel).sort((a,b)=>a.ziel-b.ziel);return L[0]||null;};
+const mkProjekt=()=>(I.baustellen||[]).find(b=>bauIst(b)<b.preis)||(I.baustellen||[])[0]||null;
 function mkSpende(){const me=mkMe(),d=MK.d;if(!me||!d){return;}const b=mkProjekt(),st=d.stand;
  const opt=(v,l)=>'<button type="button" class="sopt" data-v="'+v+'"'+(st<(v==='alle'?1:+v)?' disabled':'')+'>'+l+'</button>';
  popup('<div class="big">💛</div><h2>An die Inselkasse spenden</h2><p style="margin:0">Mit deinen Muscheln wachsen die Bauprojekte von Muschel-Tal.</p>'+(b?mkZiel(b,0):'')
@@ -5201,9 +5205,8 @@ function mkSpende(){const me=mkMe(),d=MK.d;if(!me||!d){return;}const b=mkProjekt
   KSP+=wert;KASSE+=wert;kasseZeigen();if(typeof r.stand==='number')MK.d.stand=r.stand;else MK.d.stand-=wert;mkAktuell();setTimeout(()=>mkStand().then(mkAktuell),1500);if(r.freund){const n=me.name.toLowerCase();(ERFS[n]=ERFS[n]||{}).FREUND=Date.now();}
   popup('<div class="big">💛🏝️</div><h2>Danke, '+esc(me.name)+'!</h2><p style="margin:0 0 4px">Du hast <b>'+fmt(wert)+'&nbsp;🐚</b>'+(b?' für '+esc(b.emoji+' '+b.name):' für die Inselkasse')+' gespendet.</p>'+(b?mkZiel(b,0):'')+(r.freund?'<div class="lverm" style="background:#fff3b0"><span>🏅 Neuer Erfolg: Inselfreund</span><b>+10&nbsp;🐚</b></div>':'')+'<div class="lverm"><span>Dein Vermögen</span><b>'+fmt(MK.d.stand)+'&nbsp;🐚</b></div><button class="lbtn" type="button" id="mksshare">📲 Spende in der Story teilen</button>');
   $('mksshare').onclick=()=>mkTeilen(me,wert,b);};}
-function mkZiel(b,extra){const soll=b.ziel*I.muscheln_pro_einwohner,ist=Math.min(soll,N*I.muscheln_pro_einwohner+KSPG+extra),pr=Math.floor(ist*1000/soll)/10;
+function mkZiel(b,extra){const soll=b.preis,ist=Math.min(soll,bauIst(b)+extra),pr=Math.floor(ist*1000/soll)/10;
  return'<div class="ziel">'+esc(b.emoji+' '+b.name)+'<div class="bar"><i style="width:'+pr+'%"></i></div><div class="zt"><span>'+fmt(ist)+'&nbsp;🐚</span><span>noch '+fmt(soll-ist)+'&nbsp;🐚</span></div><a href="bau.html" style="display:block;margin-top:5px;font-size:13px;color:#0a8fd0;font-weight:900">🏗️ Alle Bauprojekte ansehen →</a></div>';}
-let KSPG=0;fetch('/api/kasse?spenden=1',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(d=>{if(d&&d.spenden>=0)KSPG=d.spenden;}).catch(()=>{});
 async function mkTeilen(me,wert,b){const g=$('mksshare'),lab=g.innerHTML;g.textContent='⏳ Bild wird erstellt …';
  try{const W2=1080,H2=1920,cv=document.createElement('canvas');cv.width=W2;cv.height=H2;const c=cv.getContext('2d'),F=FONT,pb=passBild(me);c.drawImage(pb,0,0);
   // Pass-Bild unverändert, nur das Palast-Motiv oben wird durch das Spenden-Band ersetzt

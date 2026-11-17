@@ -205,7 +205,7 @@ async function ladeHomepage() {
   try {
     const d = JSON.parse(j);
     if (Array.isArray(d.baustellen) && d.baustellen.length)
-      BAUPROJEKTE = d.baustellen.map(b => ({ name: b.name, icon: b.emoji || '🏗️', ziel: b.ziel, ort: 'Haupt-Insel' }));
+      BAUPROJEKTE = d.baustellen.map(b => ({ name: b.name, icon: b.emoji || '🏗️', ziel: b.ziel || b.bewohner, ort: 'Haupt-Insel' }));
   } catch {}
   const csv = await holeDatei('einwohner.csv');
   const n = csv ? csv.trim().split('\n').length - 1 : 0;
