@@ -4496,7 +4496,7 @@ function walkStart(){const me=sel;if(!me||!darfErkunden(me))return;let erst=true
  if(me&&me.gb===YACHT){let best=null;for(let da=-.25;da<=.25;da+=.01){const an=Math.atan2(YACHT.cy-MAIN.y,YACHT.cx-MAIN.x)+da;for(let r=coastAt(MAIN,an)+BEX+12;r>0;r-=1.5){const [px,py]=polar(MAIN,an,r);if(canWalk(px,py)){const d=Math.hypot(px-YACHT.cx,py-YACHT.cy);if(!best||d<best[2])best=[px,py,d];break;}}}if(best){x=best[0];y=best[1];}}
  if(!canWalk(x,y)){let f=null;for(let r=4;r<120&&!f;r+=4)for(let a=0;a<TAU&&!f;a+=.3){const nx=x+Math.cos(a)*r,ny=y+Math.sin(a)*r;if(canWalk(nx,ny))f=[nx,ny];}if(f){x=f[0];y=f[1];}}
  Object.assign(WK,{on:true,x,y,zf:1,mode:'walk',autoFuss:false,moving:false,pt:null,sc:0});unsel();setTimeout(()=>{if(typeof sonneCheck==='function')sonneCheck();},1500);window.scrollTo({top:0,behavior:'smooth'});
- $('hero').classList.add('walking');$('walkui').hidden=false;$('walkhint').hidden=!erst;$('walkhint').style.opacity=erst?1:0;if(erst)setTimeout(()=>{$('walkhint').style.opacity=0;},4500);$('walkmode').textContent='🛵 Moped';
+ $('hero').classList.add('walking');$('walkui').hidden=false;$('walkhint').hidden=!erst;$('walkhint').style.opacity=erst?1:0;if(erst)setTimeout(()=>{$('walkhint').style.opacity=0;},4500);$('walkmode').textContent=fzLabel();
  cancelAnimationFrame(fly);flyTo({x,y,z:5},700);setTimeout(()=>{WK.last=performance.now();requestAnimationFrame(walkTick);},720);}
 // wen hat man beim Erkunden angetippt? (Figur auf der Karte oder Hütte; nie sich selbst)
 function walkTapWho(sx,sy){const r=cv.getBoundingClientRect(),wx=(sx-W/2)/cam.z+cam.x,wy=(sy-H/2)/cam.z+cam.y;let tb=null,td=9;for(const [tx,ty,tq] of TAPS){if(tq===WK.me)continue;const d=Math.hypot(tx-wx,(ty-3)-wy);if(d<td){td=d;tb=tq;}}if(tb)return[tb,'person'];
@@ -4542,8 +4542,11 @@ walkLabel();setInterval(walkLabel,800);
 $('walkbtn').onclick=walkStart;$('walkend').onclick=walkEnd;
 // Auf Laden-/Gebäude-Geländen (außer Werkstatt) automatisch zu Fuß; beim Verlassen wieder aufs Moped, wenn man mit dem Moped kam
 const aufGelaende=(x,y)=>GEB.some(g=>g.typ!=='werkstatt'&&x>g.x0&&x<g.x1&&y>g.y0&&y<g.y1);
-function walkGelaende(){const inG=aufGelaende(WK.x,WK.y+4);if(inG&&WK.mode==='moped'){WK.mode='walk';WK.autoFuss=true;mkToast('🚶 Auf dem Gelände geht’s zu Fuß weiter');}else if(!inG&&WK.autoFuss){WK.mode='moped';WK.autoFuss=false;}else return;$('walkmode').textContent=WK.mode==='walk'?'🛵 Moped':'🚶 Zu Fuß';}
-$('walkmode').onclick=()=>{WK.autoFuss=false;WK.mode=WK.mode==='walk'?'moped':'walk';$('walkmode').textContent=WK.mode==='walk'?'🛵 Moped':'🚶 Zu Fuß';};
+function walkGelaende(){const inG=aufGelaende(WK.x,WK.y+4);if(inG&&WK.mode==='moped'){WK.mode='walk';WK.autoFuss=true;mkToast('🚶 Auf dem Gelände geht’s zu Fuß weiter');}else if(!inG&&WK.autoFuss){WK.mode='moped';WK.autoFuss=false;}else return;wmText();}
+// Fortbewegung: Knopf zeigt das im Inventar gewählte Fahrzeug (ohne Auswahl: Moped)
+function fzLabel(){const id=MK.d&&MK.d.aus&&MK.d.aus.fahrzeug,it=id&&SIT[id];const f=it?teil(it.wert)[0]:'';return f==='scooter'?'🛴 E-Scooter':f==='skate'?'🛹 Skateboard':'🛵 Moped';}
+function wmText(){const b=$('walkmode');if(b)b.textContent=WK.mode==='walk'?fzLabel():'🚶 Zu Fuß';}
+$('walkmode').onclick=()=>{WK.autoFuss=false;WK.mode=WK.mode==='walk'?'moped':'walk';wmText();};
 addEventListener('keydown',e=>{if(!WK.on)return;const k=e.key.length===1?e.key.toLowerCase():e.key;if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','w','a','s','d'].includes(k)){WK.keys.add(k);e.preventDefault();}if(k==='Escape')walkEnd();});
 addEventListener('keyup',e=>{const k=e.key.length===1?e.key.toLowerCase():e.key;WK.keys.delete(k);});
 {const hero=$('hero'),pos=e=>{const r=cv.getBoundingClientRect();return[e.clientX-r.left,e.clientY-r.top];},onMap=e=>e.target===cv;
@@ -4698,9 +4701,9 @@ function itemInfo(it){const [ty]=teil(it.wert),w=it.wert;
   case'schild':return'Dein Name im Muschelpass steht in diesem Namensschild.';
   case'titel':return'Unter deinem Namen im Muschelpass steht dieser Titel: „'+w+'“.';}
  return'';}
-function shopInfo(id){const it=SIT[id],d=MK.d||{};if(!it)return;const hab=(d.inv||[]).includes(id),an=d.aus&&d.aus[it.slot]===id,imShop=SHD&&SHD.ids.includes(id),weg=SHD&&(SHD.weg||[]).includes(id);
+function shopInfo(id,ausInv){const it=SIT[id],d=MK.d||{};if(!it)return;const hab=(d.inv||[]).includes(id),an=d.aus&&d.aus[it.slot]===id,imShop=SHD&&SHD.ids.includes(id),weg=SHD&&(SHD.weg||[]).includes(id);
  popup('<div class="kpop">'+shopVorschau(id)+'<div class="krar'+(it.st===10?' silb':'')+'" style="background:'+stFarbe(it.st)+(it.st===1||it.st===8||it.st===10?';color:#2a1b12;border:1.5px solid #2a1b12':'')+'">'+stName(it.st)+'</div><h2>'+esc(it.name)+'</h2><p class="kinfo">'+esc(itemInfo(it))+'</p><p class="cft">'+SHOPK[it.kat]+' · '+fmt(it.preis)+'&nbsp;🐚 · kein Umtausch</p>'
-  +(hab?'<button class="cbtn'+(an?'':' hot')+'" type="button" id="shinfan">'+(an?'✓ Angelegt – ablegen':'✨ Anlegen')+'</button>':imShop&&!weg?'<button class="cbtn hot" type="button" id="shinfkauf">🛍️ Kaufen</button>':'')+'</div>');
+  +(hab&&it.slot==='fahrzeug'&&!ausInv?'<p class="cft">✓ Schon in deinem Inventar – dort kannst du es auswählen.</p>':hab?'<button class="cbtn'+(an?'':' hot')+'" type="button" id="shinfan">'+(an?'✓ Angelegt – ablegen':'✨ Anlegen')+'</button>':imShop&&!weg?'<button class="cbtn hot" type="button" id="shinfkauf">🛍️ Kaufen</button>':'')+'</div>');
  const a=$('shinfan');if(a)a.onclick=async()=>{$('pg').hidden=true;await shopAnlegen(id);};const k=$('shinfkauf');if(k)k.onclick=()=>shopKaufFrag(id);}
 function shopKaufFrag(id){const it=SIT[id],d=MK.d||{};if(!it)return;const fehlt=it.preis-(d.stand||0);
  popup('<div class="kpop">'+shopVorschau(id)+'<div class="krar'+(it.st===10?' silb':'')+'" style="background:'+stFarbe(it.st)+(it.st===1||it.st===8||it.st===10?';color:#2a1b12;border:1.5px solid #2a1b12':'')+'">'+stName(it.st)+'</div><h2>'+esc(it.name)+'</h2><p class="kinfo">'+esc(itemInfo(it))+'</p><p>'+SHOPK[it.kat]+(it.st===10?'<br><b>🌟 Einzigartig: Nur eine einzige Person bekommt dieses Item.</b>':'')+'</p>'
@@ -4710,12 +4713,12 @@ function shopKaufFrag(id){const it=SIT[id],d=MK.d||{};if(!it)return;const fehlt=
   if(!r||!r.ok){const g=r&&r.grund;popup('<div class="big">'+(g==='weg'?'💨':'😕')+'</div><h2>'+(g==='weg'?'Zu spät!':g==='geld'?'Nicht genug Muscheln':g==='angebot'?'Nicht mehr im Shop':g==='schon'?'Hast du schon':'Hat nicht geklappt')+'</h2><p>'+(g==='weg'?'Jemand anderes war schneller – dieses einzigartige Item ist vergeben.':g==='angebot'?'Der Shop hat sich gerade erneuert.':g==='schon'?'Das Item ist schon in deinem Inventar.':g==='geld'?'Sammle noch ein paar Muscheln.':'Bitte gleich nochmal versuchen.')+'</p>');if(r&&r.stand!=null&&MK.d)MK.d.stand=r.stand;if(g==='weg'&&SHD)SHD.weg=[...(SHD.weg||[]),id];if(g==='angebot')SHD=null;shopLaden();mkHeroStand();return;}
   MK.d.stand=r.stand;MK.d.inv=r.inv;mkHeroStand();shopZeig();mkCard();
   popup('<div class="kpop">'+shopVorschau(id)+'<h2>Gekauft! 🎉</h2><p><b>'+esc(it.name)+'</b> ist jetzt in deinem Inventar.</p><button class="cbtn hot" type="button" id="shan2">Gleich anlegen ✨</button><p class="cft"><a href="#" data-mk="weiter">Später</a></p></div>');
-  $('shan2').onclick=async()=>{$('pg').hidden=true;await shopAnlegen(id,true);};};}
+  $('shan2').onclick=async()=>{$('pg').hidden=true;if(it.slot==='fahrzeug'){const iv=$('mkinv');if(iv)iv.scrollIntoView({behavior:'smooth',block:'start'});return;}await shopAnlegen(id,true);};};}
 async function shopAnlegen(id,an){const it=SIT[id];if(!it)return;const cur=MK.d&&MK.d.aus&&MK.d.aus[it.slot]===id;const neu=an===true?id:cur?null:id;
  const r=await mk('anlegen',{slot:it.slot,id:neu});if(!r||!r.ok){mkToast('😕 Hat nicht geklappt – bitte nochmal');return;}
  MK.d.aus=r.aus;const c=mkClaim();if(c)ausSetz(c.n,r.aus);SVW.clear();shopZeig();mkToast(neu?'✨ '+it.name+' angelegt':'Abgelegt');if(WK.on&&WK.me&&WK.L)WK.L={...WK.L};}
 function mkHeroStand(){const b=document.querySelector('#mkpage .mkhero .bal');if(b&&MK.d)b.innerHTML=fmt(MK.d.stand)+'&nbsp;🐚';}
-document.addEventListener('click',ev=>{const k=ev.target.closest('[data-shkauf]');if(k){shopKaufFrag(k.dataset.shkauf);return;}const a=ev.target.closest('[data-shan]');if(a){a.disabled=true;shopAnlegen(a.dataset.shan);return;}if(ev.target.closest('.sbt'))return;const inf=ev.target.closest('[data-shinfo]');if(inf){shopInfo(inf.dataset.shinfo);return;}const f=ev.target.closest('[data-invf]');if(f){INVF=f.dataset.invf;shopZeig();}});
+document.addEventListener('click',ev=>{const k=ev.target.closest('[data-shkauf]');if(k){shopKaufFrag(k.dataset.shkauf);return;}const a=ev.target.closest('[data-shan]');if(a){a.disabled=true;shopAnlegen(a.dataset.shan);return;}if(ev.target.closest('.sbt'))return;const inf=ev.target.closest('[data-shinfo]');if(inf){shopInfo(inf.dataset.shinfo,!!inf.closest('#mkinv'));return;}const f=ev.target.closest('[data-invf]');if(f){INVF=f.dataset.invf;shopZeig();}});
 function mkZu(){const e=$('mkpage');if(e)e.hidden=true;document.body.style.overflow='';}
 document.addEventListener('click',async ev=>{const a=ev.target.closest('[data-mk]');if(!a)return;ev.preventDefault();const k=a.dataset.mk;
  if(k==='claim'&&mpP){mkClaimFrag(mpP);return;}
