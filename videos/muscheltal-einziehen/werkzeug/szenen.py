@@ -146,6 +146,8 @@ scene("s02", LILITA + "\n    " + PILL + "\n    " + BIG + """
     #i2-k { top: 170px; font-size: 64px; background: #e8101e; transform: rotate(-2deg); box-shadow: 0 0 0 8px #1a0f08, 0 16px 0 rgba(0,0,0,.3), 0 0 50px 14px rgba(255,20,30,.6); }
     #i2-u { top: 170px; font-size: 76px; background: linear-gradient(135deg, #2e9e5b, #8be06a); transform: rotate(-2deg); box-shadow: 0 0 0 8px #1a0f08, 0 16px 0 rgba(0,0,0,.3), 0 0 60px 16px rgba(120,255,140,.6); }
     #i2-fl { position: absolute; inset: 0; background: #fff; opacity: 0; }
+    #i2-rv { position: absolute; inset: 0; box-shadow: inset 0 0 150px 60px rgba(255,10,20,.95); opacity: 0; z-index: 5; }
+    #i2-n { top: 170px; font-size: 80px; background: #ffe14a; color: #1a0f08; transform: rotate(-2deg); box-shadow: 0 0 0 8px #1a0f08, 0 16px 0 rgba(0,0,0,.3), 0 0 60px 16px rgba(255,225,74,.7); }
     #i2-q { top: 150px; font-size: 76px; background: linear-gradient(135deg, #ffb21a, #ff2e7e); transform: rotate(-2deg); box-shadow: 0 0 0 8px #1a0f08, 0 16px 0 rgba(0,0,0,.3), 0 0 60px 16px rgba(255,120,60,.6); }
     #i2-w { top: 1260px; font-size: 44px; background: #fff; color: #2a1b12; z-index: 4; }""",
 """      <div id="i2-sea" data-layout-ignore></div>
@@ -155,14 +157,20 @@ scene("s02", LILITA + "\n    " + PILL + "\n    " + BIG + """
       """ + "".join(f'<div class="bd" id="i2-b{k}" data-layout-ignore style="left:{x}px;top:{y}px;font-size:{int(s * 1.45)}px">{e}</div>' for k, (e, x, y, s) in enumerate(BLD)) + """
       <div id="i2-names" data-layout-ignore>""" + "".join(f'<div class="nm" id="nm{k}" style="left:{x:.0f}px;top:{y:.0f}px"><b>{FIG[k % len(FIG)]}</b>@{n}</div>' for k, (n, (x, y)) in enumerate(zip(EW, SMALL))) + """</div>
       <div id="i2-fl" data-layout-ignore></div>
+      <div id="i2-rv" data-layout-ignore></div>
+      <div id="i2-n" class="big">👥 785 MENSCHEN</div>
       <div id="i2-k" class="big">😱 VIEL ZU KLEIN!</div>
       <div id="i2-u" class="big">⚡ UPGRADE!</div>
       <div id="i2-q" class="big">👀 SIEHST DU DICH?</div>
       <div id="i2-w" class="pl">💬 Nicht? Kommentiere: „Wo bin ich?“</div>""",
-"""      const t2 = line("L2")[0], kl = at("L2", "klein"), up = at("L2b", "Upgrade");
+"""      const t2 = 0, kl = at("L1k", "klein"), up = at("L2b", "Upgrade");
       const BX = """ + json.dumps([[round(x - sx), round(y - sy)] for (x, y), (sx, sy) in zip(BIG2, SMALL)]) + """;
-      tl.fromTo("#i2-names", { scale: .2, opacity: 0 }, { scale: 1, opacity: 1, duration: .45, ease: "back.out(2)", immediateRender: true }, 0);
+      tl.set("#i2-names", { opacity: 1 }, 0);
       tl.to("#i2-names", { x: 4, duration: .05, yoyo: true, repeat: 30, ease: "none" }, .5);
+      tl.fromTo("#i2-rv", { opacity: .35 }, { opacity: 1, duration: .16, yoyo: true, repeat: Math.max(1, Math.round((kl + .9) / .16)), ease: "sine.inOut", immediateRender: true }, 0);
+      tl.fromTo("#i2-n", { opacity: 1, scale: 1.3 }, { opacity: 1, scale: 1, duration: .25, ease: "expo.out", immediateRender: true }, 0);
+      tl.to("#i2-n", { x: 10, duration: .05, yoyo: true, repeat: 9, ease: "none" }, .3);
+      tl.to("#i2-n", { opacity: 0, scale: .5, duration: .18 }, kl - .3);
       tl.fromTo("#i2-k", { opacity: 0, scale: 3 }, { opacity: 1, scale: 1, duration: .26, ease: "back.out(1.8)" }, kl - .15);
       tl.to("#i2-k", { x: 12, duration: .04, yoyo: true, repeat: 9, ease: "none" }, kl + .15);
       tl.to("#i2-k", { opacity: 0, scale: .4, duration: .2 }, up - .25);
