@@ -1,0 +1,31 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+@font-face { font-family: "Lilita One"; src: url("assets/fonts/LilitaOne-Regular.woff2") format("woff2"); font-weight: 400; }
+    .pl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 28px 12px; border-radius: 999px; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); white-space: nowrap; }
+    #e3-c { position: absolute; left: 120px; right: 120px; top: 230px; padding: 18px 26px 22px; border-radius: 32px; background: #fff; box-shadow: 0 0 0 6px #1a0f08, 0 14px 0 rgba(0,0,0,.3), 0 0 50px 12px rgba(46,158,91,.5); font-family: "Inter", sans-serif; }
+    #e3-c .h { font-family: "Lilita One", sans-serif; font-size: 56px; color: #2e9e5b; text-align: center; margin-bottom: 6px; }
+    #e3-c .r { display: flex; align-items: center; gap: 16px; font-weight: 900; font-size: 42px; color: #2a1b12; padding: 8px 4px; border-top: 3px solid #eef3e8; }
+    #e3-c .r b { font-size: 40px; }
+    #e3-c .r i { margin-left: auto; font-style: normal; font-size: 26px; color: #fff; background: #ff2e7e; padding: 2px 12px 4px; border-radius: 10px; }
+  </style>
+  <div id="root" data-composition-id="s03" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s03-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="e3-c"><div class="h">🆕 Neu eingezogen</div><div class="r" id="e3-r0"><b>🛖</b>@johanna_prx<i>NEU</i></div><div class="r" id="e3-r1"><b>🛖</b>@miskicelma2701<i>NEU</i></div><div class="r" id="e3-r2"><b>🛖</b>@najlahasa307<i>NEU</i></div><div class="r" id="e3-r3"><b>🛖</b>@jonas_mtb156<i>NEU</i></div><div class="r" id="e3-r4"><b>🛖</b>@d9750075<i>NEU</i></div></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      /*__COMMON_JS__*/
+      wrapBt("#s03-stage");
+      const tl = gsap.timeline({ paused: true });
+      const t3 = line("L3")[0];
+      tl.fromTo("#e3-c", { opacity: 0, y: -60 }, { opacity: 1, y: 0, duration: .3, ease: "back.out(2)" }, t3 - .1);
+      tl.fromTo("#e3-c .r", { opacity: 0, x: -80 }, { opacity: 1, x: 0, duration: .22, stagger: .3, ease: "back.out(2.4)" }, t3 + .25);
+      tl.to("#s03-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
+      window.__timelines["s03"] = tl;
+    })();
+  </script>
+</template>
