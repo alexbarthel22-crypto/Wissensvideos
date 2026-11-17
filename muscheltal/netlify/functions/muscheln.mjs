@@ -258,6 +258,12 @@ export default async (req) => {
     const weg = []; for (const id of ids) if (SHOP.items[id][2] === 10 && await store.get("x/einzig/" + id)) weg.push(id);
     return json({ tag: tag(), ids, weg, bis: bisMitternacht() });
   }
+  // öffentlich: nur die Anzahl der Likes eines Passes (für Besucher ohne beanspruchten Namen)
+  if (req.method === "GET" && url.searchParams.get("likes")) {
+    const an = String(url.searchParams.get("likes")).toLowerCase().replace(/^@/, "");
+    if (!BEWOHNER.has(an)) return json({ n: 0 });
+    return json({ n: (await liste(store, "x/like/" + an + "/")).length });
+  }
   if (req.method === "GET" && url.searchParams.get("tierheim")) {
     const offen = tierheimOffen();
     return json({ tag: tag(), offen, ids: offen ? await tierAngebot(store, tag()) : [], weg: [], bis: bisMitternacht(), ab: TIERHEIM_AB });
@@ -451,6 +457,14 @@ export default async (req) => {
     return json({ ok, grund: ok ? null : "schon", betrag: ok ? betrag : 0, stand: B.reduce((s, e) => s + e.a, 0) });
   }
   // 👋 Anklopfen: 1× pro Tag bei einer fremden Hütte; der Bewohner sieht es beim nächsten Besuch
+  // ❤️ Muschelpass liken: einmal je Pass (nochmal tippen = Like zurücknehmen); nie den eigenen
+  if (act === "like" || act === "likeinfo") {
+    const an = String(d.an || "").toLowerCase().replace(/^@/, "");
+    if (!BEWOHNER.has(an) || an === nm) return json({ ok: false, grund: "wer" });
+    const k = "x/like/" + an + "/" + nm; let hab = !!(await store.get(k));
+    if (act === "like") { if (hab) await store.delete(k); else await store.set(k, String(Date.now())); hab = !hab; }
+    return json({ ok: true, hab, n: (await liste(store, "x/like/" + an + "/")).length });
+  }
   if (act === "klopf") {
     const an = String(d.an || "").toLowerCase().replace(/^@/, "");
     if (!BEWOHNER.has(an) || an === nm) return json({ ok: false, grund: "wer" });
@@ -529,7 +543,7 @@ export default async (req) => {
     const posten = B.filter(e => e.a).map(e => ({ art: e.art, id: e.id, a: e.a, t: TEXT[e.art] || e.art }))
       .sort((x, y) => (y.id > x.id ? 1 : -1)).slice(0, 60);
     return json({
-      ok: true, nachbar, live, eingeladen, klopfer, sticker: (await liste(store, "x/sticker/" + nm + "/")).map(k => k.split("/")[3]), geschenk: B.some(e => e.art === "geschenk" && e.id === heute), stand: B.reduce((s, e) => s + e.a, 0), serie: s,
+      ok: true, nachbar, live, eingeladen, klopfer, likes: { n: (await liste(store, "x/like/" + nm + "/")).length }, sticker: (await liste(store, "x/sticker/" + nm + "/")).map(k => k.split("/")[3]), geschenk: B.some(e => e.art === "geschenk" && e.id === heute), stand: B.reduce((s, e) => s + e.a, 0), serie: s,
       shells: B.filter(e => e.art === "shell" && e.id.startsWith(heute)).map(e => Number(e.id.split("-").pop())),
       questsDone: B.filter(e => e.art === "quest" && e.id.startsWith(heute)).map(e => Number(e.id.split("-").pop())),
       gespendet: -B.filter(e => e.art === "spende").reduce((s, e) => s + e.a, 0), posten, heute, inv: besitz(B), aus: JSON.parse((await store.get("a/" + nm)) || "{}")
