@@ -49,29 +49,16 @@
     .tk-pin { display: inline-block; font-size: 28px; font-weight: 800; color: #fe2c55; background: #ffe3ea; border-radius: 6px; padding: 2px 8px; margin-left: 10px; vertical-align: 3px; }
 
 @font-face { font-family: "Lilita One"; src: url("assets/fonts/LilitaOne-Regular.woff2") format("woff2"); font-weight: 400; }
-    .pl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 28px 12px; border-radius: 999px; color: #fff;
-      font-family: "Inter", sans-serif; font-weight: 900; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); white-space: nowrap; }
-    .big { position: absolute; left: 0; right: 0; width: fit-content; max-width: 980px; white-space: nowrap; margin: 0 auto; text-align: center; padding: 10px 26px 20px; border-radius: 36px; color: #fff; font-family: "Lilita One", sans-serif; line-height: 1; box-shadow: 0 0 0 8px #2a1b12, 0 16px 0 rgba(0,0,0,.3); }
-    #sg-b { top: 230px; font-size: 96px; background: linear-gradient(135deg, #ff2e9a, #7b3fe0 55%, #00d9ff); transform: rotate(-2deg); box-shadow: 0 0 0 8px #1a0f08, 0 16px 0 rgba(0,0,0,.3), 0 0 70px 20px rgba(255,46,154,.7); }
-    #sg-n { top: 390px; font-size: 44px; background: #2fb3a0; }
-    #sg-g { top: 390px; font-size: 48px; background: #ffe14a; color: #1a0f08; }
-    .sg-p { font-size: 40px; background: #fff; color: #2a1b12; }
-    #sg-1 { top: 395px; } #sg-2 { top: 480px; } #sg-3 { top: 565px; } #sg-g { top: 650px !important; }
   </style>
-  <div id="root" data-composition-id="s03g" data-start="0" data-duration="9.030" data-width="1080" data-height="1920">
-    <div id="s03g-stage" class="clip stage" data-start="0" data-duration="9.030" data-track-index="0">
-      <div id="sg-b" class="big">🎮 GAME LAGOON</div>
-      <div id="sg-n" class="pl">🌴 NEU · Kokos-Küste</div>
-      <div id="sg-g" class="pl">⭐ GTA VI vorbestellen!</div>
-      <div id="sg-1" class="pl sg-p">🕹️ Arcade-Automaten</div>
-      <div id="sg-2" class="pl sg-p">🛋️ Gaming-Lounge</div>
-      <div id="sg-3" class="pl sg-p">🚗 Pinkes Cabrio</div>
+  <div id="root" data-composition-id="s03g" data-start="0" data-duration="8.950" data-width="1080" data-height="1920">
+    <div id="s03g-stage" class="clip stage" data-start="0" data-duration="8.950" data-track-index="0">
+      <div></div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 9.03, "L7a": [0.2, 2.89], "L7a.words": [["denn", 0.2, 0.376], ["auf", 0.376, 0.545], ["der", 0.545, 0.715], ["kokosküste", 0.715, 1.381], ["hat", 1.381, 1.551], ["die", 1.551, 1.721], ["game", 1.721, 2.048], ["lagoon", 2.048, 2.387], ["eröffnet", 2.387, 2.89]], "L7b": [3.41, 8.25], "L7b.words": [["mit", 3.41, 3.591], ["arcadeautomaten", 3.591, 4.655], ["gaminglounge", 4.655, 5.378], ["einem", 5.378, 5.733], ["pinken", 5.733, 6.095], ["cabrio", 6.095, 6.456], ["", 6.456, 6.617], ["und", 6.617, 6.798], ["gta6", 6.798, 7.347], ["zum", 7.347, 7.527], ["vorbestellen", 7.527, 8.25]]};
+      const C = {"__dur": 8.95, "L7a": [0.2, 2.52], "L7a.words": [["denn", 0.2, 0.352], ["auf", 0.352, 0.498], ["der", 0.498, 0.644], ["kokosküste", 0.644, 1.219], ["hat", 1.219, 1.365], ["die", 1.365, 1.512], ["game", 1.512, 1.794], ["lagoon", 1.794, 2.086], ["eröffnet", 2.086, 2.52]], "L7b": [3.04, 8.17], "L7b.words": [["mit", 3.04, 3.218], ["arcadeautomaten", 3.218, 4.27], ["gaminglounge", 4.49, 5.11], ["einem", 5.33, 5.645], ["pinken", 5.645, 5.966], ["cabrio", 5.966, 6.287], ["", 6.287, 6.43], ["und", 6.56, 6.738], ["gta6", 6.738, 7.279], ["zum", 7.279, 7.457], ["vorbestellen", 7.457, 8.17]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -115,16 +102,7 @@
 
       wrapBt("#s03g-stage");
       const tl = gsap.timeline({ paused: true });
-      const ta = line("L7a")[0], tb = line("L7b")[0], gt = at("L7b", "GTA");
-      tl.fromTo("#sg-n", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, ta);
-      tl.fromTo("#sg-b", { opacity: 0, scale: 3.4, rotation: -12, filter: "blur(10px)" }, { opacity: 1, scale: 1, rotation: -2, filter: "blur(0px)", duration: .3, ease: "back.out(1.8)" }, at("L7a", "Game") - .12);
-      tl.to("#sg-b", { scale: 1.06, duration: .2, yoyo: true, repeat: 9, ease: "sine.inOut" }, at("L7a", "Game") + .35);
-      tl.to("#sg-n", { opacity: 0, y: -20, duration: .2 }, tb - .2);
-      tl.fromTo("#sg-g", { opacity: 0, scale: 2.6 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, gt - .1);
-      tl.to("#sg-g", { x: 10, duration: .05, yoyo: true, repeat: 7, ease: "none" }, gt + .25);
-      tl.fromTo("#sg-1", { opacity: 0, x: -300 }, { opacity: 1, x: 0, duration: .28, ease: "back.out(2)" }, at("L7b", "Arcade-Automaten") - .1);
-      tl.fromTo("#sg-2", { opacity: 0, x: 300 }, { opacity: 1, x: 0, duration: .28, ease: "back.out(2)" }, at("L7b", "Gaming-Lounge") - .1);
-      tl.fromTo("#sg-3", { opacity: 0, x: -300 }, { opacity: 1, x: 0, duration: .28, ease: "back.out(2)" }, at("L7b", "Cabrio") - .3);
+      
       tl.to("#s03g-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
       window.__timelines["s03g"] = tl;
     })();
