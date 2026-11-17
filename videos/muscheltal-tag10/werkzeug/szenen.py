@@ -93,10 +93,12 @@ QL = [[("WER", "wer"), ("WIRD", "wird")], [("UNSER", "unser")], [("TÜRSTEHER?",
 QW = [w for ln in QL for w in ln]
 YW = ()
 CT0 = ["0", 'at("L1", "zwei") - .08', 'at("L1", "eins") - .08']
-CT1 = ['at("L1", "zwei") - .1', 'at("L1", "eins") - .1', "wr - .1"]
+CT1 = ['at("L1", "zwei") - .1', 'at("L1", "eins") - .1', "wr - .26"]
 CD = [("3", "Drei", "#ff2e7e"), ("2", "zwei", "#00e5ff"), ("1", "eins", "#ffe500")]
+FW = [(0, [(230, 330), (850, 260), (560, 520)]), (1, [(820, 380), (200, 230), (540, 160)]), (2, [(300, 420), (780, 300), (180, 650), (900, 620)]), (3, [(540, 260), (220, 480), (860, 470), (380, 140), (700, 130)])]
+FWC = ["#ff2e9a", "#00e5ff", "#ffe500", "#7cff6a", "#b46bff", "#ff8a1a", "#ffffff"]
 SP = [(30, 930, 70), (985, 960, 60), (20, 1230, 52), (1000, 1260, 66), (50, 1520, 48), (975, 1540, 56), (470, 880, 44)]
-scene("s01", LILITA + """
+scene("s01", LILITA + "\n    " + CF_CSS.replace("top: 700px", "top: 1120px") + """
     #s01-hk { position: absolute; left: 20px; right: 20px; top: 960px; text-align: center; font-family: "Lilita One", sans-serif; }
     #s01-hk .ln { display: block; width: fit-content; margin: 0 auto 16px; padding: 4px 34px 14px; border-radius: 30px; line-height: 1.05; white-space: nowrap; transform-origin: 50% 60%; opacity: 0; }
     #s01-hk #s01-l0 { background: #111; font-size: 140px; box-shadow: 0 0 0 8px #00e5ff, 0 14px 0 rgba(0,0,0,.4), 0 0 60px 16px rgba(0,229,255,.75); }
@@ -110,11 +112,16 @@ scene("s01", LILITA + """
     #s01-bu { position: absolute; left: -310px; top: 560px; width: 1700px; height: 1700px; border-radius: 50%; background: repeating-conic-gradient(rgba(255,240,120,.55) 0 7deg, rgba(255,255,255,0) 7deg 18deg); -webkit-mask: radial-gradient(circle, #000 18%, transparent 52%); opacity: 0; }
     #s01-gl { position: absolute; left: 40px; right: 40px; top: 940px; height: 640px; border-radius: 50%; background: radial-gradient(closest-side, rgba(255,230,60,.55), rgba(255,60,160,.25) 60%, rgba(255,60,160,0)); opacity: 0; }
     .s01-sp { position: absolute; color: #fff; text-shadow: 0 0 18px #fff, 0 0 34px #ffe14a; opacity: 0; line-height: 1; }
+    .fw { position: absolute; width: 14px; height: 14px; margin: -7px 0 0 -7px; border-radius: 50%; opacity: 0; }
+    .fwr { position: absolute; width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 50%; background: #fff; box-shadow: 0 0 14px 6px #fff; opacity: 0; }
+    .shk { position: absolute; left: 290px; top: 890px; width: 500px; height: 500px; border-radius: 50%; border: 18px solid #fff; opacity: 0; }
     #s01-fl { position: absolute; inset: 0; background: radial-gradient(circle at 50% 70%, rgba(255,255,255,.9), rgba(255,255,255,0) 55%); opacity: 0; }""",
 """      <div id="s01-bu" data-layout-ignore></div>
       <div id="s01-gl" data-layout-ignore></div>
       """ + "".join(f'<div class="s01-sp" id="s01-sp{k}" data-layout-ignore style="left:{x}px;top:{y}px;font-size:{f}px">✦</div>' for k, (x, y, f) in enumerate(SP)) + """
       """ + "".join(f'<div class="cd" id="s01-cd{k}" data-layout-ignore style="text-shadow: 0 0 60px {c}, 0 0 120px {c}">{n}</div>' for k, (n, w, c) in enumerate(CD)) + """
+      """ + "".join(f'<div class="fwr" id="s01-r{b}-{j}" data-layout-ignore style="left:{x}px;top:{y}px"></div>' + "".join(f'<div class="fw" id="s01-f{b}-{j}-{q}" data-layout-ignore style="left:{x}px;top:{y}px;background:{FWC[(j * 3 + q) % 7]};box-shadow:0 0 12px 4px {FWC[(j * 3 + q) % 7]}"></div>' for q in range(22)) for b, pts in FW for j, (x, y) in enumerate(pts)) + "".join(f'<div class="shk" id="s01-sh{k}" data-layout-ignore style="border-color:{c};box-shadow:0 0 40px 10px {c}"></div>' for k, (n, w, c) in enumerate(CD)) + """
+      <div id="s01-cfx"></div>
       <div id="s01-fl" data-layout-ignore></div>
       <div id="s01-rv" data-layout-ignore></div>
       <div id="s01-hk">""" + "".join('<div class="ln" id="s01-l' + str(j) + '">' + "".join(f'<span id="s01-w{QW.index(w)}">{w[0]}</span>' for w in ln) + '</div>' for j, ln in enumerate(QL)) + """</div>""",
@@ -125,7 +132,10 @@ scene("s01", LILITA + """
       """ + "\n      ".join(f'tl.fromTo("#s01-sp{k}", {{ opacity: 0, scale: .2, rotation: 0 }}, {{ opacity: 1, scale: 1.2, rotation: 90, duration: .22, yoyo: true, repeat: 5, ease: "sine.inOut", immediateRender: false }}, {k * .13:.2f});' for k in range(len(SP))) + """
       """ + "\n      ".join(
         (f'{{ const t0 = {CT0[k]}, t1 = {CT1[k]};'
-         f' tl.fromTo("#s01-cd{k}", {{ opacity: 1, scale: {"1.6" if k else "1.25"}, rotation: {(-6, 5, -3)[k]} }}, {{ opacity: 1, scale: 1, rotation: 0, duration: .22, ease: "expo.out", immediateRender: {"true" if k == 0 else "false"} }}, t0);'
+         f' tl.fromTo("#s01-cd{k}", {{ opacity: {"1" if k == 0 else "0"}, scale: {"1.5" if k == 0 else "3.6"}, rotation: {(-14, 18, -22)[k]}, filter: "blur({"0" if k == 0 else "18"}px) brightness(2)" }}, {{ opacity: 1, scale: 1, rotation: 0, filter: "blur(0px) brightness(1)", duration: .2, ease: "expo.out", immediateRender: {"true" if k == 0 else "false"} }}, t0);'
+         f' tl.to("#s01-cd{k}", {{ scale: 1.12, duration: .12, yoyo: true, repeat: 3, ease: "sine.inOut" }}, t0 + .22);'
+         f' tl.fromTo("#s01-sh{k}", {{ opacity: 1, scale: .2 }}, {{ opacity: 0, scale: 2.6, duration: .55, ease: "power2.out", immediateRender: false }}, t0 + .02);'
+         f' tl.fromTo("#s01-bu", {{ scale: 1.25 }}, {{ scale: 1, duration: .4, ease: "power2.out", immediateRender: false }}, t0);'
          f' tl.fromTo("#s01-fl", {{ opacity: .85 }}, {{ opacity: 0, duration: .3, immediateRender: false }}, t0);'
          f' tl.to("#s01-cd{k}", {{ x: 14, duration: .04, yoyo: true, repeat: 5, ease: "none" }}, t0 + .08);'
          f' tl.to("#s01-cd{k}", {{ opacity: 0, scale: .6, duration: .1, ease: "power2.in" }}, t1); }}')
@@ -142,6 +152,10 @@ scene("s01", LILITA + """
         + f' tl.to("#s01-hk", {{ y: 14, duration: .05, yoyo: true, repeat: 1, ease: "none" }}, at("L1", "{k}") + .03);'
         for i, (w, k) in enumerate(QW)) + """
       tl.fromTo("#s01-fl", { opacity: .9 }, { opacity: 0, duration: .4, immediateRender: false }, ts);
+      { const R = rng(31); const TB = [0, at("L1", "zwei") - .08, at("L1", "eins") - .08, wr - .05];
+      """ + "\n      ".join(f'{{ const T = TB[{b}] + {j * .07:.2f}; tl.fromTo("#s01-r{b}-{j}", {{ opacity: 1, y: {380 + j * 40}, scale: .6 }}, {{ y: 0, scale: 1, duration: .2, ease: "power2.out", immediateRender: false }}, Math.max(0, T - .2)); tl.to("#s01-r{b}-{j}", {{ opacity: 0, scale: 3, duration: .12 }}, T);'
+        + "".join(f' {{ const a = {q} / 22 * Math.PI * 2 + R() * .3, v = 170 + R() * 150; tl.fromTo("#s01-f{b}-{j}-{q}", {{ opacity: 1, x: 0, y: 0, scale: 1.2 }}, {{ x: Math.cos(a) * v, y: Math.sin(a) * v, scale: .9, duration: .45, ease: "power3.out", immediateRender: false }}, T); tl.to("#s01-f{b}-{j}-{q}", {{ y: "+=120", opacity: 0, scale: .3, duration: .55, ease: "power1.in" }}, T + .45); }}' for q in range(22)) + ' }' for b, pts in FW for j, (x, y) in enumerate(pts)) + """ }
+      { """ + CONF_JS.replace("SEED", "77").replace("BOX", "s01-cfx").replace("T0", "(wr - .05)") + """ }
       tl.to("#s01-l2", { scale: 1.05, duration: .18, yoyo: true, repeat: 5, ease: "sine.inOut" }, ts + .3);
       tl.to("#s01-hk", { x: 16, duration: .04, yoyo: true, repeat: 7, ease: "none" }, ts + .05);""")
 
