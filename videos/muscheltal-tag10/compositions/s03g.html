@@ -56,13 +56,13 @@
     #sg-n { top: 390px; font-size: 44px; background: #2fb3a0; }
     #sg-g { top: 390px; font-size: 48px; background: #ffe14a; color: #1a0f08; }
     .sg-p { font-size: 40px; background: #fff; color: #2a1b12; }
-    #sg-1 { top: 485px; } #sg-2 { top: 570px; } #sg-3 { top: 655px; }
+    #sg-1 { top: 395px; } #sg-2 { top: 480px; } #sg-3 { top: 565px; } #sg-g { top: 650px !important; }
   </style>
-  <div id="root" data-composition-id="s03g" data-start="0" data-duration="7.740" data-width="1080" data-height="1920">
-    <div id="s03g-stage" class="clip stage" data-start="0" data-duration="7.740" data-track-index="0">
+  <div id="root" data-composition-id="s03g" data-start="0" data-duration="8.090" data-width="1080" data-height="1920">
+    <div id="s03g-stage" class="clip stage" data-start="0" data-duration="8.090" data-track-index="0">
       <div id="sg-b" class="big">🎮 GAME LAGOON</div>
       <div id="sg-n" class="pl">🌴 NEU · Kokos-Küste</div>
-      <div id="sg-g" class="pl">⭐ GTA-VI-Fieber!</div>
+      <div id="sg-g" class="pl">⭐ GTA VI vorbestellen!</div>
       <div id="sg-1" class="pl sg-p">🕹️ Arcade-Automaten</div>
       <div id="sg-2" class="pl sg-p">🛋️ Gaming-Lounge</div>
       <div id="sg-3" class="pl sg-p">🚗 Pinkes Cabrio</div>
@@ -71,7 +71,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 7.74, "L7a": [0.2, 2.23], "L7a.words": [["neu", 0.2, 0.371], ["auf", 0.371, 0.542], ["der", 0.542, 0.714], ["kokosküste", 0.714, 1.386], ["die", 1.386, 1.557], ["game", 1.557, 1.888], ["lagoon", 1.888, 2.23]], "L7b": [2.75, 6.96], "L7b.words": [["hier", 2.75, 2.924], ["herrscht", 2.924, 3.122], ["gta6fieber", 3.122, 3.807], ["", 3.807, 3.957], ["mit", 3.957, 4.125], ["arcadeautomaten", 4.125, 5.116], ["gaminglounge", 5.116, 5.789], ["und", 5.789, 5.957], ["einem", 5.957, 6.287], ["pinken", 6.287, 6.624], ["cabrio", 6.624, 6.96]]};
+      const C = {"__dur": 8.09, "L7a": [0.2, 2.07], "L7a.words": [["denn", 0.2, 0.322], ["auf", 0.322, 0.44], ["der", 0.44, 0.558], ["kokosküste", 0.558, 1.021], ["hat", 1.021, 1.139], ["die", 1.139, 1.257], ["game", 1.257, 1.485], ["lagoon", 1.485, 1.72], ["eröffnet", 1.72, 2.07]], "L7b": [2.59, 7.31], "L7b.words": [["mit", 2.59, 2.773], ["arcadeautomaten", 2.773, 3.85], ["gaminglounge", 3.85, 4.581], ["einem", 4.581, 4.94], ["pinken", 4.94, 5.306], ["cabrio", 5.306, 5.671], ["", 5.671, 5.835], ["und", 5.835, 6.017], ["gta6", 6.017, 6.396], ["zum", 6.396, 6.579], ["vorbestellen", 6.579, 7.31]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -115,13 +115,13 @@
 
       wrapBt("#s03g-stage");
       const tl = gsap.timeline({ paused: true });
-      const ta = line("L7a")[0], tb = line("L7b")[0];
+      const ta = line("L7a")[0], tb = line("L7b")[0], gt = at("L7b", "GTA");
       tl.fromTo("#sg-n", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, ta);
       tl.fromTo("#sg-b", { opacity: 0, scale: 3.4, rotation: -12, filter: "blur(10px)" }, { opacity: 1, scale: 1, rotation: -2, filter: "blur(0px)", duration: .3, ease: "back.out(1.8)" }, at("L7a", "Game") - .12);
       tl.to("#sg-b", { scale: 1.06, duration: .2, yoyo: true, repeat: 9, ease: "sine.inOut" }, at("L7a", "Game") + .35);
       tl.to("#sg-n", { opacity: 0, y: -20, duration: .2 }, tb - .2);
-      tl.fromTo("#sg-g", { opacity: 0, scale: 2.6 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, tb);
-      tl.to("#sg-g", { x: 10, duration: .05, yoyo: true, repeat: 7, ease: "none" }, tb + .3);
+      tl.fromTo("#sg-g", { opacity: 0, scale: 2.6 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, gt - .1);
+      tl.to("#sg-g", { x: 10, duration: .05, yoyo: true, repeat: 7, ease: "none" }, gt + .25);
       tl.fromTo("#sg-1", { opacity: 0, x: -300 }, { opacity: 1, x: 0, duration: .28, ease: "back.out(2)" }, at("L7b", "Arcade-Automaten") - .1);
       tl.fromTo("#sg-2", { opacity: 0, x: 300 }, { opacity: 1, x: 0, duration: .28, ease: "back.out(2)" }, at("L7b", "Gaming-Lounge") - .1);
       tl.fromTo("#sg-3", { opacity: 0, x: -300 }, { opacity: 1, x: 0, duration: .28, ease: "back.out(2)" }, at("L7b", "Cabrio") - .3);

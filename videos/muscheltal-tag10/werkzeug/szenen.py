@@ -89,7 +89,7 @@ CMT = """.cmt { position: absolute; left: 140px; width: 800px; border-radius: 30
 
 
 # s01 – Countdown 3 – 2 – 1 (riesig), dann „WER WIRD UNSER TÜRSTEHER?“ – Club oben frei
-QL = [[("WER", "wer"), ("WIRD", "wird")], [("UNSER", "unser")], [("TÜRSTEHER?", "Türsteher")]]
+QL = [[("GTA-6-FIEBER", "GTA")], [("AUF", "auf")], [("MUSCHEL-TAL!", "Muschel")]]
 QW = [w for ln in QL for w in ln]
 YW = ()
 CT0 = ["0", 'at("L1", "zwei") - .08', 'at("L1", "eins") - .08']
@@ -101,11 +101,11 @@ SP = [(30, 930, 70), (985, 960, 60), (20, 1230, 52), (1000, 1260, 66), (50, 1520
 scene("s01", LILITA + "\n    " + CF_CSS.replace("top: 700px", "top: 1120px") + """
     #s01-hk { position: absolute; left: 20px; right: 20px; top: 960px; text-align: center; font-family: "Lilita One", sans-serif; }
     #s01-hk .ln { display: block; width: fit-content; margin: 0 auto 16px; padding: 4px 34px 14px; border-radius: 30px; line-height: 1.05; white-space: nowrap; transform-origin: 50% 60%; opacity: 0; }
-    #s01-hk #s01-l0 { background: #111; font-size: 140px; box-shadow: 0 0 0 8px #00e5ff, 0 14px 0 rgba(0,0,0,.4), 0 0 60px 16px rgba(0,229,255,.75); }
+    #s01-hk #s01-l2 { background: #111; font-size: 140px; box-shadow: 0 0 0 8px #00e5ff, 0 14px 0 rgba(0,0,0,.4), 0 0 60px 16px rgba(0,229,255,.75); }
     #s01-hk #s01-l1 { background: #00b8f0; font-size: 120px; box-shadow: 0 0 0 7px #1a0f08, 0 12px 0 rgba(0,0,0,.4), 0 0 50px 12px rgba(0,200,255,.6); }
-    #s01-hk #s01-l2 { background: #ffe500; font-size: 150px; box-shadow: 0 0 0 8px #1a0f08, 0 14px 0 rgba(0,0,0,.4), 0 0 60px 18px rgba(255,229,0,.75); }
-    #s01-hk #s01-l2 span { color: #1a0f08; -webkit-text-stroke: 0; }
-    #s01-hk #s01-l0 span { color: #ffe500; }
+    #s01-hk #s01-l0 { background: #ffe500; font-size: 118px; box-shadow: 0 0 0 8px #1a0f08, 0 14px 0 rgba(0,0,0,.4), 0 0 60px 18px rgba(255,229,0,.75); }
+    #s01-hk #s01-l0 span { color: #1a0f08; -webkit-text-stroke: 0; }
+    #s01-hk #s01-l2 span { color: #ffe500; }
     #s01-hk span { position: relative; display: inline-block; margin: 0 .08em; color: #fff; -webkit-text-stroke: 8px #1a0f08; paint-order: stroke fill; transform-origin: 50% 65%; }
     .cd { position: absolute; left: 0; right: 0; top: 760px; height: 760px; text-align: center; font-family: "Lilita One", sans-serif; font-size: 720px; line-height: 760px; color: #fff; -webkit-text-stroke: 26px #1a0f08; paint-order: stroke fill; opacity: 0; }
     #s01-rv { position: absolute; inset: 0; box-shadow: inset 0 0 140px 50px rgba(255,10,20,.9); opacity: 0; }
@@ -130,7 +130,7 @@ scene("s01", LILITA + "\n    " + CF_CSS.replace("top: 700px", "top: 1120px") + "
       <div id="s01-fl" data-layout-ignore></div>
       <div id="s01-rv" data-layout-ignore></div>
       <div id="s01-hk">""" + "".join('<div class="ln" id="s01-l' + str(j) + '">' + "".join(f'<span id="s01-w{QW.index(w)}">{w[0]}</span>' for w in ln) + '</div>' for j, ln in enumerate(QL)) + """</div>""",
-"""      const ts = at("L1", "Türsteher"), wr = at("L1", "wer");
+"""      const ts = at("L1", "Muschel"), wr = at("L1", "GTA");
       tl.fromTo("#s01-bu", { opacity: .9, scale: .6, rotation: 0 }, { opacity: .9, scale: 1, rotation: 70, duration: 3.2, ease: "none", immediateRender: true }, 0);
       tl.fromTo("#s01-gl", { opacity: .6 }, { opacity: 1, duration: .25, yoyo: true, repeat: 11, ease: "sine.inOut", immediateRender: true }, 0);
       tl.fromTo("#s01-rv", { opacity: .45 }, { opacity: 1, duration: .14, yoyo: true, repeat: 17, ease: "sine.inOut", immediateRender: false }, 0);
@@ -157,7 +157,7 @@ scene("s01", LILITA + "\n    " + CF_CSS.replace("top: 700px", "top: 1120px") + "
         for j, ln in enumerate(QL)) + """
       """ + "\n      ".join(
         (f'tl.fromTo("#s01-w{i}", {{ opacity: 0, x: {(-1 if i % 2 == 0 else 1) * 1300}, scale: 2.4, rotation: {(-1 if i % 2 == 0 else 1) * 30}, filter: "blur(12px)" }}, {{ opacity: 1, x: 0, scale: 1, rotation: 0, filter: "blur(0px)", duration: .17, ease: "expo.out" }}, at("L1", "{k}") - .14);'
-         if w != "TÜRSTEHER?" else
+         if w != "MUSCHEL-TAL!" else
          f'tl.fromTo("#s01-w{i}", {{ opacity: 0, scale: 5, filter: "blur(16px)" }}, {{ opacity: 1, scale: 1, filter: "blur(0px)", duration: .2, ease: "expo.out" }}, at("L1", "{k}") - .16);')
         + f' tl.to("#s01-hk", {{ y: 14, duration: .05, yoyo: true, repeat: 1, ease: "none" }}, at("L1", "{k}") + .03);'
         for i, (w, k) in enumerate(QW)) + """
@@ -169,7 +169,7 @@ scene("s01", LILITA + "\n    " + CF_CSS.replace("top: 700px", "top: 1120px") + "
       """ + "\n      ".join(f'{{ const T = TB[{b}] + {j * .07:.2f}; tl.fromTo("#s01-r{b}-{j}", {{ opacity: 1, y: {380 + j * 40}, scale: .6 }}, {{ y: 0, scale: 1, duration: .2, ease: "power2.out", immediateRender: false }}, Math.max(0, T - .2)); tl.to("#s01-r{b}-{j}", {{ opacity: 0, scale: 3, duration: .12 }}, T);'
         + "".join(f' {{ const a = {q} / 22 * Math.PI * 2 + R() * .3, v = 170 + R() * 150; tl.fromTo("#s01-f{b}-{j}-{q}", {{ opacity: 1, x: 0, y: 0, scale: 1.2 }}, {{ x: Math.cos(a) * v, y: Math.sin(a) * v, scale: .9, duration: .45, ease: "power3.out", immediateRender: false }}, T); tl.to("#s01-f{b}-{j}-{q}", {{ y: "+=120", opacity: 0, scale: .3, duration: .55, ease: "power1.in" }}, T + .45); }}' for q in range(22)) + ' }' for b, pts in FW for j, (x, y) in enumerate(pts)) + """ }
       { """ + CONF_JS.replace("SEED", "77").replace("BOX", "s01-cfx").replace("T0", "(wr - .05)") + """ }
-      tl.to("#s01-l2", { scale: 1.05, duration: .18, yoyo: true, repeat: 5, ease: "sine.inOut" }, ts + .3);
+      tl.to("#s01-l0", { scale: 1.05, duration: .18, yoyo: true, repeat: 5, ease: "sine.inOut" }, wr + .3); tl.to("#s01-l2", { scale: 1.05, duration: .18, yoyo: true, repeat: 5, ease: "sine.inOut" }, ts + .3);
       tl.to("#s01-hk", { x: 16, duration: .04, yoyo: true, repeat: 7, ease: "none" }, ts + .05);""")
 
 # s01b – Das ist Muschel-Tal: die Welt, in der ihr alles entscheidet
@@ -264,20 +264,20 @@ scene("s03g", LILITA + "\n    " + PILL + "\n    " + BIG + """
     #sg-n { top: 390px; font-size: 44px; background: #2fb3a0; }
     #sg-g { top: 390px; font-size: 48px; background: #ffe14a; color: #1a0f08; }
     .sg-p { font-size: 40px; background: #fff; color: #2a1b12; }
-    #sg-1 { top: 485px; } #sg-2 { top: 570px; } #sg-3 { top: 655px; }""",
+    #sg-1 { top: 395px; } #sg-2 { top: 480px; } #sg-3 { top: 565px; } #sg-g { top: 650px !important; }""",
 """      <div id="sg-b" class="big">🎮 GAME LAGOON</div>
       <div id="sg-n" class="pl">🌴 NEU · Kokos-Küste</div>
-      <div id="sg-g" class="pl">⭐ GTA-VI-Fieber!</div>
+      <div id="sg-g" class="pl">⭐ GTA VI vorbestellen!</div>
       <div id="sg-1" class="pl sg-p">🕹️ Arcade-Automaten</div>
       <div id="sg-2" class="pl sg-p">🛋️ Gaming-Lounge</div>
       <div id="sg-3" class="pl sg-p">🚗 Pinkes Cabrio</div>""",
-"""      const ta = line("L7a")[0], tb = line("L7b")[0];
+"""      const ta = line("L7a")[0], tb = line("L7b")[0], gt = at("L7b", "GTA");
       tl.fromTo("#sg-n", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, ta);
       tl.fromTo("#sg-b", { opacity: 0, scale: 3.4, rotation: -12, filter: "blur(10px)" }, { opacity: 1, scale: 1, rotation: -2, filter: "blur(0px)", duration: .3, ease: "back.out(1.8)" }, at("L7a", "Game") - .12);
       tl.to("#sg-b", { scale: 1.06, duration: .2, yoyo: true, repeat: 9, ease: "sine.inOut" }, at("L7a", "Game") + .35);
       tl.to("#sg-n", { opacity: 0, y: -20, duration: .2 }, tb - .2);
-      tl.fromTo("#sg-g", { opacity: 0, scale: 2.6 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, tb);
-      tl.to("#sg-g", { x: 10, duration: .05, yoyo: true, repeat: 7, ease: "none" }, tb + .3);
+      tl.fromTo("#sg-g", { opacity: 0, scale: 2.6 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, gt - .1);
+      tl.to("#sg-g", { x: 10, duration: .05, yoyo: true, repeat: 7, ease: "none" }, gt + .25);
       tl.fromTo("#sg-1", { opacity: 0, x: -300 }, { opacity: 1, x: 0, duration: .28, ease: "back.out(2)" }, at("L7b", "Arcade-Automaten") - .1);
       tl.fromTo("#sg-2", { opacity: 0, x: 300 }, { opacity: 1, x: 0, duration: .28, ease: "back.out(2)" }, at("L7b", "Gaming-Lounge") - .1);
       tl.fromTo("#sg-3", { opacity: 0, x: -300 }, { opacity: 1, x: 0, duration: .28, ease: "back.out(2)" }, at("L7b", "Cabrio") - .3);""")
@@ -375,6 +375,34 @@ scene("s04b", LILITA + "\n    " + PILL + "\n    " + BIG + """
       tl.fromTo("#s4l-e", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, ko - .15);
       tl.to("#s4l-e", { scale: 1.08, duration: .18, yoyo: true, repeat: 5, ease: "sine.inOut" }, ko + .3);""")
 
+# s06 – Ankündigung: Bei 1.000 Bewohnern wird Muschel-Tal zum Spiel
+F6 = [("🗺️", "Welt erkunden", "#2e9e5b", "Welt"), ("🐚", "Muscheln sammeln", "#ffb21a", "Muscheln"), ("🛍️", "Sachen kaufen", "#e8467c", "Sachen"), ("👯", "Freunde finden", "#7b3fe0", "Freunde")]
+scene("s06", LILITA + "\n    " + PILL + "\n    " + BIG + """
+    #s6-dim { position: absolute; left: 0; right: 0; top: 0; height: 1100px; background: linear-gradient(180deg, rgba(10,12,40,.6), rgba(10,12,40,.35) 80%, rgba(10,12,40,0)); opacity: 0; }
+    #s6-fl { position: absolute; inset: 0; background: #fff; opacity: 0; }
+    #s6-n { position: absolute; left: 0; right: 0; top: 200px; text-align: center; font-family: "Lilita One", sans-serif; font-size: 250px; line-height: 1; color: #ffe14a; -webkit-text-stroke: 16px #1a0f08; paint-order: stroke fill; text-shadow: 0 0 60px #ffb21a; opacity: 0; }
+    #s6-l { top: 470px; font-size: 52px; background: #fff; color: #2a1b12; }
+    #s6-s { top: 590px; font-size: 84px; background: linear-gradient(135deg, #ff2e9a, #7b3fe0); transform: rotate(-2deg); box-shadow: 0 0 0 8px #1a0f08, 0 16px 0 rgba(0,0,0,.3), 0 0 60px 16px rgba(255,46,154,.65); }
+    .fc { position: absolute; width: 470px; height: 230px; border-radius: 30px; background: #fff; box-shadow: 0 0 0 6px #1a0f08, 0 12px 0 rgba(0,0,0,.3); overflow: hidden; opacity: 0; }
+    .fc .fe { height: 150px; display: grid; place-items: center; font-size: 100px; background: linear-gradient(180deg, #bfefff, #fff); }
+    .fc .fl { height: 80px; display: grid; place-items: center; font-family: "Inter", sans-serif; font-weight: 900; font-size: 40px; color: #fff; }""",
+"""      <div id="s6-dim" data-layout-ignore></div>
+      <div id="s6-fl" data-layout-ignore></div>
+      <div id="s6-n" data-layout-ignore>1.000</div>
+      <div id="s6-l" class="pl">🏝️ Bewohner – dann geht's los!</div>
+      <div id="s6-s" class="big">🎮 DAS SPIEL!</div>
+      """ + "".join(f'<div class="fc" id="s6-c{i}" style="left:{50 + (i % 2) * 510}px;top:{260 + (i // 2) * 270}px"><div class="fe">{e}</div><div class="fl" style="background:{c}">{n}</div></div>' for i, (e, n, c, k) in enumerate(F6)),
+"""      const t9 = line("L9")[0], n1 = at("L9", "1.000"), sp = at("L9", "Spiel"), tb = line("L9b")[0];
+      tl.fromTo("#s6-dim", { opacity: 0 }, { opacity: 1, duration: .3 }, t9);
+      tl.fromTo("#s6-n", { opacity: 0, scale: 4, rotation: -8, filter: "blur(14px)" }, { opacity: 1, scale: 1, rotation: 0, filter: "blur(0px)", duration: .25, ease: "expo.out" }, n1 - .1);
+      tl.to("#s6-n", { scale: 1.07, duration: .16, yoyo: true, repeat: 7, ease: "sine.inOut" }, n1 + .3);
+      tl.fromTo("#s6-l", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .28, ease: "back.out(2)" }, n1 + .25);
+      tl.fromTo("#s6-fl", { opacity: .9 }, { opacity: 0, duration: .35, immediateRender: false }, sp);
+      tl.fromTo("#s6-s", { opacity: 0, scale: 3.4 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(1.8)" }, sp - .1);
+      tl.to("#s6-s", { x: 12, duration: .04, yoyo: true, repeat: 9, ease: "none" }, sp + .2);
+      tl.to(["#s6-n", "#s6-l", "#s6-s"], { opacity: 0, scale: .6, duration: .22, ease: "power2.in" }, tb - .25);
+      """ + "\n      ".join(f'tl.fromTo("#s6-c{i}", {{ opacity: 0, scale: .3, rotation: {(-8, 8, -8, 8)[i]} }}, {{ opacity: 1, scale: 1, rotation: 0, duration: .3, ease: "back.out(2.4)" }}, at("L9b", "{k}") - .15); tl.to("#s6-c{i}", {{ scale: 1.06, duration: .16, yoyo: true, repeat: 3, ease: "sine.inOut" }}, at("L9b", "{k}") + .2);' for i, (e, n, c, k) in enumerate(F6)))
+
 # s05 – Folg mir + Kommentar: Wer wird Türsteher?
 scene("s05", LILITA + "\n    " + PILL + "\n" + FOLLOW + """
     #s5-btn { top: 280px; } #s5-hand { left: 690px; top: 330px; }
@@ -382,9 +410,9 @@ scene("s05", LILITA + "\n    " + PILL + "\n" + FOLLOW + """
     #s5-h { top: 590px; font-size: 44px; background: #fff; color: #2e9e5b; }""",
 """      <div id="s5-btn" class="fbtn">+ Folgen<div id="s5-btn2" class="fbtn2">✓ Gefolgt</div></div>
       <div id="s5-hand" class="fhand" data-layout-ignore>👆</div>
-      <div id="s5-t" class="pl">🍀 Du könntest der Nächste sein!</div>
-      <div id="s5-h" class="pl">🎰 Neue Verlosung in jedem Video!</div>""",
-"""      const t5 = line("L5")[0], fo = at("L5", "Folg"), du = at("L5", "gewinnst"), ti = at("L5", "Mal");
+      <div id="s5-t" class="pl">🎮 Sei dabei, wenn's losgeht!</div>
+      <div id="s5-h" class="pl">🐚 Bei 1.000 startet das Spiel!</div>""",
+"""      const t5 = line("L5")[0], fo = at("L5", "Folg"), du = at("L5", "dabei"), ti = at("L5", "losgeht");
       tl.fromTo("#s5-btn", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, fo - .2);
       tl.fromTo("#s5-hand", { opacity: 0, x: 160, y: 160 }, { opacity: 1, x: 0, y: 0, duration: .25, ease: "power3.out" }, fo - .1);
       tl.to("#s5-hand", { y: -26, scale: .9, duration: .1, yoyo: true, repeat: 1 }, fo + .2);

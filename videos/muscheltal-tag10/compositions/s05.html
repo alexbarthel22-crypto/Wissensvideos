@@ -59,18 +59,18 @@
     #s5-t { top: 445px; font-size: 64px; background: linear-gradient(135deg, #2e9e5b, #8be06a); font-family: "Lilita One", sans-serif; font-weight: 400; transform: rotate(-2deg); }
     #s5-h { top: 590px; font-size: 44px; background: #fff; color: #2e9e5b; }
   </style>
-  <div id="root" data-composition-id="s05" data-start="0" data-duration="4.050" data-width="1080" data-height="1920">
-    <div id="s05-stage" class="clip stage" data-start="0" data-duration="4.050" data-track-index="0">
+  <div id="root" data-composition-id="s05" data-start="0" data-duration="4.299" data-width="1080" data-height="1920">
+    <div id="s05-stage" class="clip stage" data-start="0" data-duration="4.299" data-track-index="0">
       <div id="s5-btn" class="fbtn">+ Folgen<div id="s5-btn2" class="fbtn2">✓ Gefolgt</div></div>
       <div id="s5-hand" class="fhand" data-layout-ignore>👆</div>
-      <div id="s5-t" class="pl">🍀 Du könntest der Nächste sein!</div>
-      <div id="s5-h" class="pl">🎰 Neue Verlosung in jedem Video!</div>
+      <div id="s5-t" class="pl">🎮 Sei dabei, wenn's losgeht!</div>
+      <div id="s5-h" class="pl">🐚 Bei 1.000 startet das Spiel!</div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 4.05, "L5": [0.2, 2.05], "L5.words": [["folg", 0.2, 0.366], ["mir", 0.366, 0.527], ["", 0.527, 0.67], ["vielleicht", 0.8, 1.088], ["gewinnst", 1.088, 1.367], ["du", 1.367, 1.497], ["beim", 1.497, 1.637], ["nächsten", 1.637, 1.915], ["mal", 1.915, 2.05]]};
+      const C = {"__dur": 4.299, "L5": [0.2, 2.299], "L5.words": [["folg", 0.2, 0.399], ["mir", 0.399, 0.591], ["", 0.591, 0.762], ["und", 0.762, 0.954], ["sei", 0.954, 1.146], ["dabei", 1.146, 1.524], ["wenn", 1.524, 1.722], ["es", 1.722, 1.908], ["losgeht", 1.908, 2.299]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -114,7 +114,7 @@
 
       wrapBt("#s05-stage");
       const tl = gsap.timeline({ paused: true });
-      const t5 = line("L5")[0], fo = at("L5", "Folg"), du = at("L5", "gewinnst"), ti = at("L5", "Mal");
+      const t5 = line("L5")[0], fo = at("L5", "Folg"), du = at("L5", "dabei"), ti = at("L5", "losgeht");
       tl.fromTo("#s5-btn", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.6)" }, fo - .2);
       tl.fromTo("#s5-hand", { opacity: 0, x: 160, y: 160 }, { opacity: 1, x: 0, y: 0, duration: .25, ease: "power3.out" }, fo - .1);
       tl.to("#s5-hand", { y: -26, scale: .9, duration: .1, yoyo: true, repeat: 1 }, fo + .2);

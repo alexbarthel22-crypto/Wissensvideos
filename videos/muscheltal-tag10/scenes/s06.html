@@ -1,0 +1,50 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+@font-face { font-family: "Lilita One"; src: url("assets/fonts/LilitaOne-Regular.woff2") format("woff2"); font-weight: 400; }
+    .pl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 28px 12px; border-radius: 999px; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; box-shadow: 0 0 0 5px #2a1b12, 0 10px 0 rgba(0,0,0,.25); white-space: nowrap; }
+    .big { position: absolute; left: 0; right: 0; width: fit-content; max-width: 980px; white-space: nowrap; margin: 0 auto; text-align: center; padding: 10px 26px 20px; border-radius: 36px; color: #fff; font-family: "Lilita One", sans-serif; line-height: 1; box-shadow: 0 0 0 8px #2a1b12, 0 16px 0 rgba(0,0,0,.3); }
+    #s6-dim { position: absolute; left: 0; right: 0; top: 0; height: 1100px; background: linear-gradient(180deg, rgba(10,12,40,.6), rgba(10,12,40,.35) 80%, rgba(10,12,40,0)); opacity: 0; }
+    #s6-fl { position: absolute; inset: 0; background: #fff; opacity: 0; }
+    #s6-n { position: absolute; left: 0; right: 0; top: 200px; text-align: center; font-family: "Lilita One", sans-serif; font-size: 250px; line-height: 1; color: #ffe14a; -webkit-text-stroke: 16px #1a0f08; paint-order: stroke fill; text-shadow: 0 0 60px #ffb21a; opacity: 0; }
+    #s6-l { top: 470px; font-size: 52px; background: #fff; color: #2a1b12; }
+    #s6-s { top: 590px; font-size: 84px; background: linear-gradient(135deg, #ff2e9a, #7b3fe0); transform: rotate(-2deg); box-shadow: 0 0 0 8px #1a0f08, 0 16px 0 rgba(0,0,0,.3), 0 0 60px 16px rgba(255,46,154,.65); }
+    .fc { position: absolute; width: 470px; height: 230px; border-radius: 30px; background: #fff; box-shadow: 0 0 0 6px #1a0f08, 0 12px 0 rgba(0,0,0,.3); overflow: hidden; opacity: 0; }
+    .fc .fe { height: 150px; display: grid; place-items: center; font-size: 100px; background: linear-gradient(180deg, #bfefff, #fff); }
+    .fc .fl { height: 80px; display: grid; place-items: center; font-family: "Inter", sans-serif; font-weight: 900; font-size: 40px; color: #fff; }
+  </style>
+  <div id="root" data-composition-id="s06" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s06-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s6-dim" data-layout-ignore></div>
+      <div id="s6-fl" data-layout-ignore></div>
+      <div id="s6-n" data-layout-ignore>1.000</div>
+      <div id="s6-l" class="pl">🏝️ Bewohner – dann geht's los!</div>
+      <div id="s6-s" class="big">🎮 DAS SPIEL!</div>
+      <div class="fc" id="s6-c0" style="left:50px;top:260px"><div class="fe">🗺️</div><div class="fl" style="background:#2e9e5b">Welt erkunden</div></div><div class="fc" id="s6-c1" style="left:560px;top:260px"><div class="fe">🐚</div><div class="fl" style="background:#ffb21a">Muscheln sammeln</div></div><div class="fc" id="s6-c2" style="left:50px;top:530px"><div class="fe">🛍️</div><div class="fl" style="background:#e8467c">Sachen kaufen</div></div><div class="fc" id="s6-c3" style="left:560px;top:530px"><div class="fe">👯</div><div class="fl" style="background:#7b3fe0">Freunde finden</div></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      /*__COMMON_JS__*/
+      wrapBt("#s06-stage");
+      const tl = gsap.timeline({ paused: true });
+      const t9 = line("L9")[0], n1 = at("L9", "1.000"), sp = at("L9", "Spiel"), tb = line("L9b")[0];
+      tl.fromTo("#s6-dim", { opacity: 0 }, { opacity: 1, duration: .3 }, t9);
+      tl.fromTo("#s6-n", { opacity: 0, scale: 4, rotation: -8, filter: "blur(14px)" }, { opacity: 1, scale: 1, rotation: 0, filter: "blur(0px)", duration: .25, ease: "expo.out" }, n1 - .1);
+      tl.to("#s6-n", { scale: 1.07, duration: .16, yoyo: true, repeat: 7, ease: "sine.inOut" }, n1 + .3);
+      tl.fromTo("#s6-l", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .28, ease: "back.out(2)" }, n1 + .25);
+      tl.fromTo("#s6-fl", { opacity: .9 }, { opacity: 0, duration: .35, immediateRender: false }, sp);
+      tl.fromTo("#s6-s", { opacity: 0, scale: 3.4 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(1.8)" }, sp - .1);
+      tl.to("#s6-s", { x: 12, duration: .04, yoyo: true, repeat: 9, ease: "none" }, sp + .2);
+      tl.to(["#s6-n", "#s6-l", "#s6-s"], { opacity: 0, scale: .6, duration: .22, ease: "power2.in" }, tb - .25);
+      tl.fromTo("#s6-c0", { opacity: 0, scale: .3, rotation: -8 }, { opacity: 1, scale: 1, rotation: 0, duration: .3, ease: "back.out(2.4)" }, at("L9b", "Welt") - .15); tl.to("#s6-c0", { scale: 1.06, duration: .16, yoyo: true, repeat: 3, ease: "sine.inOut" }, at("L9b", "Welt") + .2);
+      tl.fromTo("#s6-c1", { opacity: 0, scale: .3, rotation: 8 }, { opacity: 1, scale: 1, rotation: 0, duration: .3, ease: "back.out(2.4)" }, at("L9b", "Muscheln") - .15); tl.to("#s6-c1", { scale: 1.06, duration: .16, yoyo: true, repeat: 3, ease: "sine.inOut" }, at("L9b", "Muscheln") + .2);
+      tl.fromTo("#s6-c2", { opacity: 0, scale: .3, rotation: -8 }, { opacity: 1, scale: 1, rotation: 0, duration: .3, ease: "back.out(2.4)" }, at("L9b", "Sachen") - .15); tl.to("#s6-c2", { scale: 1.06, duration: .16, yoyo: true, repeat: 3, ease: "sine.inOut" }, at("L9b", "Sachen") + .2);
+      tl.fromTo("#s6-c3", { opacity: 0, scale: .3, rotation: 8 }, { opacity: 1, scale: 1, rotation: 0, duration: .3, ease: "back.out(2.4)" }, at("L9b", "Freunde") - .15); tl.to("#s6-c3", { scale: 1.06, duration: .16, yoyo: true, repeat: 3, ease: "sine.inOut" }, at("L9b", "Freunde") + .2);
+      tl.to("#s06-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
+      window.__timelines["s06"] = tl;
+    })();
+  </script>
+</template>

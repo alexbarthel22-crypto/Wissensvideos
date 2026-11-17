@@ -15,6 +15,20 @@ for sg in segs:
     if m and sg[0] - m[-1][1] <= 3: m[-1][1] = sg[1]
     else: m.append(sg)
 w = [(x * .01, y * .01) for x, y in m]
+# Zahlwörter ohne Pause dazwischen (z. B. „zwei-eins“): zu langen Abschnitt an der leisesten Stelle teilen
+k = 0
+while k < min(3, len(w)):
+    x0, x1 = w[k]
+    if x1 - x0 > .55 and k < 3:
+        i0, i1 = int(x0 * 100 + (x1 - x0) * 30), int(x0 * 100 + (x1 - x0) * 75)
+        sm = np.convolve(e, np.ones(3) / 3, mode="same")
+        cut_i = i0 + int(np.argmin(sm[i0:i1]))
+        w[k:k + 1] = [(x0, cut_i * .01), (cut_i * .01 + .01, x1)]
+    else:
+        k += 1
+# Rest der Zeile beginnt beim ersten LAUTEN Abschnitt nach „eins“ (leise Atmer davor ignorieren)
+pk = lambda x0, x1: e[int(x0 * 100):int(x1 * 100) + 1].max()
+w = w[:3] + [x for x in w[3:] if pk(*x) > 0.1][:1] + [x for x in w[3:] if pk(*x) <= 0.1][:0]
 assert len(w) >= 4, w
 cut = [0.0, (w[0][1] + w[1][0]) / 2, (w[1][1] + w[2][0]) / 2, (w[2][1] + w[3][0]) / 2]   # Grenzen Drei|zwei|eins|Rest
 clip = lambda p, q: a[int(p * sr):int(q * sr)]

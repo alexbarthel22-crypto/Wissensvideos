@@ -14,17 +14,14 @@ const G=await p.evaluate(()=>{const a=fitAll(),m=fitMain();
  const ti=BAU.find(b=>/tierheim/i.test(JSON.stringify(b.name||b.n||b.titel||'')))||BAU.find(b=>b.ziel===800);
  return{N,a,m,ti:{x:ti.cx,y:ti.cy},po:{x:KI.x+KI.po,y:KI.cy},cl:{x:KCLUB.cx,y:KCLUB.cy},dr:{x:KDROG.cx,y:KDROG.cy},bd:{x:KBAD.cx,y:KBAD.cy},lv:{x:LV.x,y:LV.y,r:LV.r},dn:(()=>{const g=GEB.find(q=>q.typ==='doener');return {x:g.cx,y:g.cy}})(),ki:{x:KI.x+KI.ko,y:KI.cy},bo:{x:KI.x+KI.bo,y:KI.cy},gl:{x:KGAME.cx,y:KGAME.cy},km:{x:KMODE.cx,y:KMODE.cy},mk:{x:MKT.cx,y:MKT.cy},sb:(()=>{const g=GEB.find(q=>q.typ==='strandbar');return {x:g.cx,y:g.cy}})()};});
 console.error(JSON.stringify(G));
-const LZ=1080/(2.6667*2.4*G.lv.r);const K=[[0,G.cl.x,G.cl.y+32,4.0],[L.L1.end+.2,G.cl.x,G.cl.y+32,3.7],
- [L.L1b.start+.1,G.m.x,G.m.y-10,G.m.z*1.5],[L.L1b.end,G.m.x,G.m.y,G.m.z*1.15],
- [L.L2.start,G.cl.x,G.cl.y-30,3.4],[L.L2aw.end+.6,G.cl.x,G.cl.y-30,3.6],
- [L.L2d.start-.15,G.dn.x,G.dn.y-40,4.0],[L.L2e.end+.3,G.dn.x,G.dn.y-40,4.3],
- [L.L7a.start-.1,G.gl.x,G.gl.y-34,3.3],[L.L7b.end+.2,G.gl.x,G.gl.y-34,3.8],
+const LZ=1080/(2.6667*2.4*G.lv.r);const K=[[0,G.gl.x,G.gl.y+32,4.0],[L.L1.end+.2,G.gl.x,G.gl.y+32,3.7],
+ [L.L7a.start,G.gl.x,G.gl.y-34,3.3],[L.L7b.end+.2,G.gl.x,G.gl.y-34,3.8],
  [L.L8.start,G.m.x,G.m.y,G.m.z*1.2],[L.L8.end+.3,G.m.x,G.m.y,G.m.z*1.3]];
 {const T0=L.L8.end+.45,SP=(L.L8w.start-.5)-T0,B=[G.ki,G.dr,G.bo,G.km,G.sb,G.po,G.mk,G.gl];
  for(let i=0;i<8;i++){const t=T0+i*SP/8;K.push([t,B[i].x,B[i].y-40,3.6],[t+SP/8-.002,B[i].x,B[i].y-40,3.8]);}
- K.push([L.L8w.end+1.2,G.gl.x,G.gl.y-40,3.9]);}
-K.push([L.L4.start+.1,G.ti.x-20,G.ti.y-30,3.4],[L.L4b.start,G.ti.x,G.ti.y-14,3.2],[L.L4b.end+.3,G.ti.x,G.ti.y-14,3.6],
- [L.L5.start+.3,G.cl.x,G.cl.y-34,3.0],[dur,G.cl.x,G.cl.y-34,3.2]);
+ K.push([L.L8w.end+.2,G.gl.x,G.gl.y-40,3.9]);}
+K.push([L.L9.start+.2,G.m.x,G.m.y,G.m.z*1.15],[L.L9b.end+.2,G.m.x,G.m.y-30,G.m.z*2.0],
+ [L.L5.start+.3,G.gl.x,G.gl.y-34,3.0],[dur,G.gl.x,G.gl.y-34,3.2]);
 
 const cam=t=>{let j=0;while(j<K.length-1&&K[j+1][0]<=t)j++;const a=K[j],c=K[Math.min(j+1,K.length-1)];let k=c[0]>a[0]?Math.max(0,Math.min(1,(t-a[0])/(c[0]-a[0]))):1;k=k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2;
  return [a[1]+(c[1]-a[1])*k,a[2]+(c[2]-a[2])*k,Math.exp(Math.log(a[3])+(Math.log(c[3])-Math.log(a[3]))*k)*(1+.012*Math.sin(t*.8))];};
