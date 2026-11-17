@@ -335,7 +335,7 @@ footer a{color:var(--soft)}
 .svp .nmS{font-size:11px;padding:3px 6px;max-width:70px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .shleg{display:flex;flex-wrap:wrap;gap:4px;margin-top:10px}.shleg span{font-size:10px;font-weight:900;color:#fff;border-radius:999px;padding:2px 7px;text-shadow:0 1px 0 rgba(0,0,0,.25)}
 .invf{display:flex;gap:6px;overflow-x:auto;margin:0 0 8px;padding-bottom:2px}.invf button{flex:none;border:2px solid #2a1b12;border-radius:999px;background:#f4ece0;font-weight:800;font-size:13px;padding:4px 10px}.invf button.on{background:#2a1b12;color:#fff}
-.kpop .svw,.kpop .svp{width:120px;height:120px;margin:0 auto 6px;display:block}.kpop .svp{font-size:46px}.rubk{position:relative;width:100%;max-width:280px;aspect-ratio:2/1;margin:8px auto;border-radius:16px;overflow:hidden;border:3px solid #2a1b12;background:linear-gradient(135deg,#fff3b0,#ffd23f)}.rubin{position:absolute;inset:0;display:grid;place-items:center;align-content:center}.rubin b{font-size:52px;line-height:1;color:#2a1b12}.rubin span{font-weight:900;color:#6a4a1b}#rubc{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:grab}
+.kpop .svw,.kpop .svp{width:120px;height:120px;margin:0 auto 6px;display:block}.kpop .svp{font-size:46px}.rbpop{display:flex;justify-content:center}.rbtr .rbdk{transform-origin:60px 52px;animation:rbdk .6s cubic-bezier(.3,1.6,.5,1) both}.rbtr .rbsh{animation:rbsh .9s .25s ease-out both}@keyframes rbdk{from{transform:rotate(0)}to{transform:translate(-4px,-8px) rotate(-18deg)}}@keyframes rbsh{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}.rubk{position:relative;width:100%;max-width:280px;aspect-ratio:2/1;margin:8px auto;border-radius:16px;overflow:hidden;border:3px solid #2a1b12;background:linear-gradient(135deg,#fff3b0,#ffd23f)}.rubin{position:absolute;inset:0;display:grid;place-items:center;align-content:center}.rubin b{font-size:52px;line-height:1;color:#2a1b12}.rubin span{font-weight:900;color:#6a4a1b}#rubc{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:grab}
 .kpop{clear:both}.kpop .krar{display:table;margin:0 auto 4px;border-radius:999px;padding:3px 12px;font-weight:900;font-size:12px;color:#fff;letter-spacing:.5px;text-transform:uppercase}
 /* Muschelpass-Designs aus dem Shop */
 .mpcard.th-sand .hd{background:linear-gradient(135deg,#e8b46a,#c98a4a 60%,#f6d79b)}
@@ -1994,7 +1994,7 @@ let BERF=null,BERT=-1,BERD=null;// Berlin-Zeit: Formatter nur einmal anlegen, Er
 function berlin(){const n=Date.now(),sk=Math.floor(n/1000);if(sk===BERT&&BERD)return new Date(BERD);try{if(!BERF)BERF=new Intl.DateTimeFormat('en-US',{timeZone:'Europe/Berlin',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'});const p=Object.fromEntries(BERF.formatToParts(new Date(n)).map(x=>[x.type,x.value]));BERD=+new Date(+p.year,+p.month-1,+p.day,+p.hour,+p.minute,+p.second);BERT=sk;return new Date(BERD);}catch(e){return new Date();}}
 async function loadWx(){const o=I.wetter||{lat:51.16,lon:10.45};
  try{/* über den eigenen Server (Datenschutz: keine Besucher-IP beim Wetterdienst) */const r=await fetch('/api/wetter?lat='+o.lat+'&lon='+o.lon);const j=await r.json();
-  if(!WX.fixed)WX.code=j.current.weather_code;WX.wind=j.current.wind_speed_10m;try{const P=(j.hourly&&j.hourly.precipitation)||[];WX.regenVorher=P.slice(0,-1).some(x=>x>.1);}catch(e){}WX.sunrise=Date.parse(j.daily.sunrise[0]+'Z');WX.sunset=Date.parse(j.daily.sunset[0]+'Z');}catch(e){}
+  if(!WX.fixed)WX.code=j.current.weather_code;WX.wind=j.current.wind_speed_10m;try{const P=(j.hourly&&j.hourly.precipitation)||[];const Z=(j.hourly&&j.hourly.time)||[];let i=P.length-2;while(i>=0&&!(P[i]>.1))i--;WX.regenEnde=(i>=0&&i>=P.length-3&&!(P[P.length-1]>.1))?Z[i]:null;}catch(e){}WX.sunrise=Date.parse(j.daily.sunrise[0]+'Z');WX.sunset=Date.parse(j.daily.sunset[0]+'Z');}catch(e){}
  liveText();kick();sonneCheck();}
 let WFg=1,flash=0,nextFlash=3;
 
@@ -2096,7 +2096,7 @@ async function sternTap(s){if(STERNWEG.has(s.id))return;STERNWEG.add(s.id);
  if(!r||!r.ok){popup('<div class="big">🌠</div><h2>Wünsch dir was! ✨</h2><p>'+(r&&r.grund==='genug'?'Du hast heute Nacht schon 2 Sternschnuppen gefangen. Morgen Nacht gibt es neue!':r&&r.grund==='tag'?'Sternschnuppen gibt es nur nachts.':'Hat gerade nicht geklappt – bitte beim nächsten Mal nochmal.')+'</p>');return;}
  rubbelLos(r.betrag,r.rest);}
 // Rubbellos: silberne Schicht mit dem Finger wegrubbeln, darunter die Muscheln
-function rubbelLos(betrag,rest){popup('<div class="rub"><div class="big">🌠</div><h2>Wünsch dir was! ✨</h2><p>Rubbel das Los frei:</p><div class="rubk"><div class="rubin"><b>+'+betrag+'</b><span>🐚 Muschel'+(betrag>1?'n':'')+'</span></div><canvas id="rubc" width="560" height="280"></canvas></div><p class="cft" id="rubt">'+(rest>0?'Heute Nacht kannst du noch '+rest+' Sternschnuppe fangen.':'Das war deine 2. Sternschnuppe heute Nacht.')+'</p></div>');
+function rubbelLos(betrag,rest){popup('<div class="rub"><div class="big">🌠</div><h2>Wünsch dir was! ✨</h2><p>Rubbel das Los frei:</p><div class="rubk"><div class="rubin"><b>+'+betrag+'</b><span>🐚 Muschel'+(betrag>1?'n':'')+'</span></div><canvas id="rubc" width="560" height="280"></canvas></div></div>');
  const cv=$('rubc'),c=cv.getContext('2d');const g=c.createLinearGradient(0,0,560,280);g.addColorStop(0,'#cfd6dd');g.addColorStop(.5,'#f2f5f8');g.addColorStop(1,'#aeb8c2');c.fillStyle=g;c.fillRect(0,0,560,280);
  c.fillStyle='rgba(90,100,115,.55)';c.font='900 34px system-ui,sans-serif';c.textAlign='center';c.fillText('✨ HIER RUBBELN ✨',280,150);for(let k=0;k<40;k++){c.fillStyle='rgba(255,255,255,.5)';c.beginPath();c.arc(hash(k,1)*560,hash(k,2)*280,2+hash(k,3)*3,0,TAU);c.fill();}
  let fertig=false,last=null;const weg=e=>{const b=cv.getBoundingClientRect(),x=(e.clientX-b.left)*560/b.width,y=(e.clientY-b.top)*280/b.height;c.globalCompositeOperation='destination-out';c.lineCap='round';c.lineWidth=46;c.beginPath();if(last){c.moveTo(last[0],last[1]);}else c.moveTo(x,y);c.lineTo(x+.1,y);c.stroke();last=[x,y];};
@@ -2104,24 +2104,31 @@ function rubbelLos(betrag,rest){popup('<div class="rub"><div class="big">🌠</d
  cv.addEventListener('pointerdown',e=>{cv.setPointerCapture(e.pointerId);last=null;weg(e);});cv.addEventListener('pointermove',e=>{if(e.buttons||e.pointerType==='touch'){weg(e);}});cv.addEventListener('pointerup',()=>{last=null;pruef();});cv.addEventListener('pointercancel',()=>{last=null;pruef();});}
 
 // ---------- 🌈 Regenbogen nach dem Regen (echtes Wetter): Bogen über der Haupt-Insel, am Ende eine Schatztruhe mit 5 Muscheln (1× pro Tag) ----------
-function regenbogenDa(){if(QP.get('wetter')==='regenbogen')return true;return !!(WX.regenVorher&&kind()!=='rain'&&kind()!=='storm'&&nightLevel()<.4);}
-let RBT=null;function rbTruhe(){if(RBT)return RBT;const v=MAIN;for(let k=0;k<80;k++){const a=.35+k*.02,r=coastAt(v,a)-3;const [x,y]=polar(v,a,r);if(canWalk(x,y)&&walHindernisse().every(([hx,hy])=>Math.hypot(x-hx,y-hy)>45)){RBT={x,y,a};break;}}if(!RBT){const [x,y]=polar(v,.6,coastAt(v,.6)-3);RBT={x,y,a:.6};}return RBT;}
-const rbOffen=()=>{try{return localStorage.getItem('mt-regenbogen')===berlinTagStr();}catch(e){return false;}};
-function regenbogenZeichnen(c){if(!regenbogenDa())return;const v=MAIN,tr=rbTruhe(),t=REDUCED?0:T,[ox,oy]=polar(v,tr.a,coastAt(v,tr.a)+BEX+70),R=Math.hypot(ox-tr.x,oy-tr.y)/2,cx=(ox+tr.x)/2,cy=(oy+tr.y)/2+2,r0=Math.atan2(tr.y-oy,tr.x-ox),rot=Math.cos(r0)<0?r0+Math.PI:r0;// Bogen immer nach oben gewölbt
- c.save();c.translate(cx,cy);c.rotate(rot);const F=['#ff4f4f','#ff9f3a','#ffd23f','#5fd36a','#3fa0ff','#5a5fd8','#a35fe0'];c.lineWidth=2.2;F.forEach((f,i)=>{c.strokeStyle=f;c.globalAlpha=.6;c.beginPath();c.ellipse(0,0,R-i*2.1,(R-i*2.1)*.9,0,Math.PI,TAU);c.stroke();});c.restore();// Bogen vom Meer bis zur Truhe am Strand
- // Schatztruhe am Ende des Regenbogens
- const {x,y}=tr,auf=rbOffen();c.save();c.translate(x,y);const gl=(Math.sin(t*3)+1)/2;if(!auf){const g=c.createRadialGradient(0,-2,0,0,-2,12);g.addColorStop(0,`rgba(255,230,120,${.5+gl*.3})`);g.addColorStop(1,'rgba(255,230,120,0)');c.fillStyle=g;c.beginPath();c.arc(0,-2,12,0,TAU);c.fill();}
+// Erscheint einmalig, wenn der Regen aufgehört hat (Kennung = letzte Regenstunde); nach dem Öffnen verschwinden Bogen und Truhe
+const rbId=()=>QP.get('wetter')==='regenbogen'?'test':WX.regenEnde;
+const rbOffen=()=>{try{return localStorage.getItem('mt-regenbogen')===rbId();}catch(e){return false;}};
+let RBOPEN=0;// Zeitpunkt des Öffnens (für kurzes Ausblenden)
+function regenbogenDa(){const id=rbId();if(!id)return false;if(id!=='test'&&(kind()==='rain'||kind()==='storm'||nightLevel()>=.4))return false;return !rbOffen()||(RBOPEN&&Date.now()-RBOPEN<1500);}
+// Gerader Bogen (Füße unten, Scheitel oben), komplett über Land; Truhe am rechten Fuß
+let RBT=null;function rbTruhe(){if(RBT)return RBT;const v=MAIN,R=34,ry=R*.9;let best=null;
+ for(let gx=-v.R;gx<=v.R;gx+=6)for(let gy=-v.R;gy<=v.R;gy+=6){const cx=v.x+gx,cy=v.y+gy;let ok=canWalk(cx+R,cy)&&canWalk(cx-R,cy);
+  for(let k=0;k<=24&&ok;k++){const t=Math.PI+k/24*Math.PI;if(!inside(v,cx+Math.cos(t)*(R+2),cy+Math.sin(t)*(ry+2),8))ok=false;}
+  if(ok){let sc=0;for(let qx=-R;qx<=R;qx+=4)for(let qy=-ry-14;qy<=6;qy+=4)if(!canWalk(cx+qx,cy+qy))sc++;sc+=Math.hypot(cx-v.x,cy-v.y)/v.R;if(!best||sc<best.sc)best={sc,cx,cy};}}// möglichst freie Fläche (wenig Hütten unter dem Bogen)
+ if(!best)best={cx:v.x,cy:v.y};RBT={x:best.cx+R,y:best.cy,cx:best.cx,cy:best.cy,R,ry};return RBT;}
+function regenbogenZeichnen(c){if(!regenbogenDa())return;const tr=rbTruhe(),t=REDUCED?0:T,fade=RBOPEN?Math.max(0,1-(Date.now()-RBOPEN)/1500):1;
+ c.save();c.globalAlpha=fade;const F=['#ff4f4f','#ff9f3a','#ffd23f','#5fd36a','#3fa0ff','#5a5fd8','#a35fe0'];c.lineWidth=2.2;F.forEach((f,i)=>{c.strokeStyle=f;c.globalAlpha=.6*fade;c.beginPath();c.ellipse(tr.cx,tr.cy,tr.R-i*2.1,tr.ry-i*2.1,0,Math.PI,TAU);c.stroke();});c.restore();
+ // Schatztruhe am rechten Fuß des Regenbogens
+ const {x,y}=tr;c.save();c.globalAlpha=fade;c.translate(x-6,y);const gl=(Math.sin(t*3)+1)/2;{const g=c.createRadialGradient(0,-2,0,0,-2,12);g.addColorStop(0,`rgba(255,230,120,${.5+gl*.3})`);g.addColorStop(1,'rgba(255,230,120,0)');c.fillStyle=g;c.beginPath();c.arc(0,-2,12,0,TAU);c.fill();}
  c.fillStyle='rgba(0,0,0,.2)';c.beginPath();c.ellipse(0,3.2,5.4,1.2,0,0,TAU);c.fill();c.fillStyle='#8a5228';c.fillRect(-4.6,-2.4,9.2,5.4);c.fillStyle='#e8b84a';c.fillRect(-4.6,-.6,9.2,.8);c.fillRect(-.7,-2.4,1.4,5.4);
- if(auf){c.fillStyle='#6b3e1c';c.beginPath();c.moveTo(-4.6,-2.4);c.lineTo(4.6,-2.4);c.lineTo(4.2,-6.8);c.lineTo(-4.2,-6.8);c.closePath();c.fill();c.fillStyle='#3a220f';c.fillRect(-4.2,-2.6,8.4,.8);}
- else{c.fillStyle='#9a5e2e';c.beginPath();c.moveTo(-4.8,-2.4);c.quadraticCurveTo(0,-6.4,4.8,-2.4);c.closePath();c.fill();c.fillStyle='#e8b84a';c.fillRect(-.7,-5.2,1.4,2.8);c.fillStyle='#ffd23f';c.beginPath();c.arc(0,-1.6,.7,0,TAU);c.fill();
-  for(let k=0;k<3;k++){const ph=(t*.7+k/3)%1;c.fillStyle=`rgba(255,255,255,${Math.sin(ph*Math.PI)})`;c.beginPath();c.arc(-3+k*3,-5-ph*5,.5,0,TAU);c.fill();}}
- c.restore();}
-function rbAt(wx,wy){if(!regenbogenDa())return false;const t=rbTruhe();return Math.hypot(wx-t.x,wy-t.y+1)<Math.max(8,16/cam.z);}
-async function rbTap(){if(rbOffen()){popup('<div class="big">🌈</div><h2>Schon geöffnet</h2><p>Die Truhe am Ende des Regenbogens hast du heute schon geleert. Beim nächsten Regenbogen gibt es neue Muscheln!</p>');return;}
- if(!mkClaim()){popup('<div class="big">🌈</div><h2>Eine Schatztruhe!</h2><p>Am Ende des Regenbogens liegt eine Truhe mit <b>5 Muscheln</b>. Beanspruche deinen Usernamen, um sie zu öffnen.</p><button class="cbtn hot" type="button" data-mk="suche">🔐 Usernamen beanspruchen</button>');return;}
- const r=await mk('regenbogen');if(r&&(r.ok||r.grund==='schon')){try{localStorage.setItem('mt-regenbogen',berlinTagStr());}catch(e){}}
- if(!r||!r.ok){popup('<div class="big">🌈</div><h2>'+(r&&r.grund==='schon'?'Schon geöffnet':'Hat nicht geklappt')+'</h2><p>'+(r&&r.grund==='schon'?'Die Truhe hast du heute schon geleert.':'Bitte gleich nochmal versuchen.')+'</p>');return;}
- if(MK.d)MK.d.stand=r.stand;try{mkCard();}catch(e){}popup('<div class="big">🌈💰</div><h2>Schatz gefunden!</h2><p>Am Ende des Regenbogens lag eine Truhe – <b>+5 🐚</b> für dich!</p>');}
+ c.fillStyle='#9a5e2e';c.beginPath();c.moveTo(-4.8,-2.4);c.quadraticCurveTo(0,-6.4,4.8,-2.4);c.closePath();c.fill();c.fillStyle='#e8b84a';c.fillRect(-.7,-5.2,1.4,2.8);c.fillStyle='#ffd23f';c.beginPath();c.arc(0,-1.6,.7,0,TAU);c.fill();
+ for(let k=0;k<3;k++){const ph=(t*.7+k/3)%1;c.fillStyle=`rgba(255,255,255,${Math.sin(ph*Math.PI)})`;c.beginPath();c.arc(-3+k*3,-5-ph*5,.5,0,TAU);c.fill();}
+ c.restore();if(RBOPEN&&fade>0)kick();}
+function rbAt(wx,wy){if(!regenbogenDa()||RBOPEN)return false;const t=rbTruhe();return Math.hypot(wx-t.x+6,wy-t.y+1)<Math.max(8,16/cam.z);}
+const RBSVG='<svg class="rbtr" viewBox="0 0 120 100" width="150" height="125"><g class="rbsh"><text x="22" y="40" font-size="20">🐚</text><text x="50" y="26" font-size="20">🐚</text><text x="78" y="40" font-size="20">🐚</text><text x="36" y="18" font-size="16">✨</text><text x="70" y="16" font-size="16">✨</text></g><g class="rbdk"><path d="M18 52 L102 52 L96 30 L24 30 Z" fill="#6b3e1c"/><rect x="24" y="30" width="72" height="4" fill="#e8b84a"/></g><rect x="14" y="52" width="92" height="40" rx="4" fill="#8a5228"/><rect x="14" y="64" width="92" height="6" fill="#e8b84a"/><rect x="54" y="52" width="12" height="40" fill="#e8b84a"/><circle cx="60" cy="67" r="4" fill="#ffd23f"/><rect x="18" y="50" width="84" height="5" fill="#3a220f"/></svg>';
+async function rbTap(){if(!mkClaim()){popup('<div class="big">🌈</div><h2>Eine Schatztruhe!</h2><p>Am Ende des Regenbogens liegt eine Truhe mit <b>5 Muscheln</b>. Beanspruche deinen Usernamen, um sie zu öffnen.</p><button class="cbtn hot" type="button" data-mk="suche">🔐 Usernamen beanspruchen</button>');return;}
+ const id=rbId(),r=await mk('regenbogen',{id});if(r&&(r.ok||r.grund==='schon')){try{localStorage.setItem('mt-regenbogen',id);}catch(e){}RBOPEN=Date.now();kick();}
+ if(!r||!r.ok){popup('<div class="big">🌈</div><h2>'+(r&&r.grund==='schon'?'Schon geöffnet':r&&r.grund==='kein'?'Schon verblasst':'Hat nicht geklappt')+'</h2><p>'+(r&&r.grund==='schon'?'Diese Truhe hast du schon geleert. Beim nächsten Regenbogen gibt es neue Muscheln!':r&&r.grund==='kein'?'Der Regenbogen ist leider schon verschwunden. Nach dem nächsten Regen vielleicht!':'Bitte gleich nochmal versuchen.')+'</p>');return;}
+ if(MK.d)MK.d.stand=r.stand;try{mkCard();}catch(e){}popup('<div class="rbpop">'+RBSVG+'</div><h2>Schatz gefunden! 🌈</h2><p>Am Ende des Regenbogens lag eine Truhe – <b>+5 🐚</b> für dich!</p>');mkToast('🌈 +5 🐚 gutgeschrieben');}
 // ---------- Statische Ebene (nur neu, wenn sich die Kamera bewegt) ----------
 // Kokosnuss-Haus (Kokos-Küste)
 const KOKX_F={perlmutt:'#f3d9e8',gold:'#e8b84a',sterne:'#2a3a7a',diamant:'#bfefff'};

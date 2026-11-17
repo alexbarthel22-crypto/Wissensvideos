@@ -6,7 +6,7 @@ export default async (req) => {
   const k = lat.toFixed(2) + "," + lon.toFixed(2);
   if (!(CACHE.d && CACHE.k === k && Date.now() - CACHE.t < 9e5)) {
     try {
-      const r = await fetch("https://api.open-meteo.com/v1/forecast?latitude=" + lat + "&longitude=" + lon + "&current=weather_code,wind_speed_10m&daily=sunrise,sunset&hourly=precipitation&past_hours=2&forecast_hours=1&timezone=GMT&forecast_days=1");
+      const r = await fetch("https://api.open-meteo.com/v1/forecast?latitude=" + lat + "&longitude=" + lon + "&current=weather_code,wind_speed_10m&daily=sunrise,sunset&hourly=precipitation&past_hours=3&forecast_hours=1&timezone=GMT&forecast_days=1");
       if (r.ok) CACHE = { t: Date.now(), k, d: await r.text() };
     } catch (e) {}
   }

@@ -16,6 +16,18 @@ const tag = (t = Date.now()) => new Intl.DateTimeFormat("sv-SE", { timeZone: TZ,
 const gestern = (d) => { const t = new Date(d + "T12:00:00Z"); t.setUTCDate(t.getUTCDate() - 1); return t.toISOString().slice(0, 10); };
 const woche = (d) => { const t = new Date(d + "T12:00:00Z"), w = (t.getUTCDay() + 6) % 7; t.setUTCDate(t.getUTCDate() - w); return t.toISOString().slice(0, 10); };
 async function sha(s) { const b = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(s)); return [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, "0")).join(""); }
+// Regenbogen: stimmt die Kennung mit der letzten Regenstunde (Hamburg, letzte 3 Std.) überein und ist es jetzt trocken?
+const WLAT = 53.592, WLON = 9.949;
+async function regenEnde(id) {
+  if (process.env.RB_TEST === "1" && id === "test") return true; // nur lokal zum Testen
+  if (!/^\d{4}-\d\d-\d\dT\d\d:00$/.test(id)) return false;
+  try {
+    const r = await fetch("https://api.open-meteo.com/v1/forecast?latitude=" + WLAT + "&longitude=" + WLON + "&hourly=precipitation&past_hours=3&forecast_hours=1&timezone=GMT&forecast_days=1");
+    const j = await r.json(), P = j.hourly.precipitation, Z = j.hourly.time;
+    let i = P.length - 2; while (i >= 0 && !(P[i] > .1)) i--;
+    return i >= 0 && !(P[P.length - 1] > .1) && Z[i] === id;
+  } catch (e) { return false; }
+}
 async function liste(store, prefix) { const out = []; let cursor; do { const r = await store.list({ prefix, cursor }); out.push(...r.blobs.map(b => b.key)); cursor = r.cursor; } while (cursor); return out; }
 
 // Job-Zuschlag pro Login-Tag: Team +2, Leitung +3, Ämter (Bürgermeister/in, Palast-Leitung …) +4
@@ -381,9 +393,11 @@ export default async (req) => {
     if (!(await setze("stern", nacht + "-" + id, betrag))) return json({ ok: false, grund: "genug" });
     return json({ ok: true, betrag, rest: 1 - schon });
   }
-  // Regenbogen: Schatztruhe mit 5 Muscheln, höchstens 1× pro Tag
+  // Regenbogen: Schatztruhe mit 5 Muscheln, einmalig pro Regen-Ende. Kennung = letzte Regenstunde; der Server prüft sie selbst beim Wetterdienst.
   if (act === "regenbogen") {
-    const ok = await setze("regenbogen", heute, 5), B = await buch(store, nm);
+    const id = String(d.id || "");
+    if (!(await regenEnde(id))) return json({ ok: false, grund: "kein" });
+    const ok = await setze("regenbogen", id.replace(/[^0-9T]/g, ""), 5), B = await buch(store, nm);
     return json({ ok, grund: ok ? null : "schon", stand: B.reduce((s, e) => s + e.a, 0) });
   }
   if (act === "story") return json({ ok: await setze("story", woche(heute), 25) });
