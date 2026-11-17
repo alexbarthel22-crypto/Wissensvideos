@@ -4004,7 +4004,7 @@ function clamp(){cam.z=Math.max(fitAll().z*.12,Math.min(10,cam.z));const mx=(BOX
 let fly=0;function flyTo(t,ms=750){cancelAnimationFrame(fly);const f={...cam},t0=performance.now();const step=n=>{const k=Math.min(1,(n-t0)/ms),e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;cam.x=f.x+(t.x-f.x)*e;cam.y=f.y+(t.y-f.y)*e;cam.z=Math.exp(Math.log(f.z)+(Math.log(t.z)-Math.log(f.z))*e);if(REDUCED)draw();if(k<1)fly=requestAnimationFrame(step);};fly=requestAnimationFrame(step);}
 function zoomAt(f,sx=W/2,sy=H/2){const [wx,wy]=s2w(sx,sy);cam.z*=f;clamp();const [nx,ny]=s2w(sx,sy);cam.x+=wx-nx;cam.y+=wy-ny;clamp();kick();}
 const pts=new Map();let moved=0,pinch=0;
-cv.addEventListener('pointerdown',e=>{cv.setPointerCapture(e.pointerId);pts.set(e.pointerId,[e.offsetX,e.offsetY]);moved=0;cancelAnimationFrame(fly);if(pts.size===2){const [a,b]=[...pts.values()];pinch=Math.hypot(a[0]-b[0],a[1]-b[1]);}cv.classList.add('drag');$('sugg').hidden=true;});
+cv.addEventListener('pointerdown',e=>{if(document.activeElement===q)q.blur();cv.setPointerCapture(e.pointerId);pts.set(e.pointerId,[e.offsetX,e.offsetY]);moved=0;cancelAnimationFrame(fly);if(pts.size===2){const [a,b]=[...pts.values()];pinch=Math.hypot(a[0]-b[0],a[1]-b[1]);}cv.classList.add('drag');$('sugg').hidden=true;});
 cv.addEventListener('pointermove',e=>{if(!pts.has(e.pointerId))return;const o=pts.get(e.pointerId),n=[e.offsetX,e.offsetY];pts.set(e.pointerId,n);
  if(pts.size===1){cam.x-=(n[0]-o[0])/cam.z;cam.y-=(n[1]-o[1])/cam.z;moved+=Math.abs(n[0]-o[0])+Math.abs(n[1]-o[1]);clamp();kick();}
  else if(pts.size===2){const [a,b]=[...pts.values()];const d=Math.hypot(a[0]-b[0],a[1]-b[1]);if(pinch)zoomAt(d/pinch,(a[0]+b[0])/2,(a[1]+b[1])/2);pinch=d;moved+=99;}});
@@ -4021,7 +4021,7 @@ function setDock(on){const a=on?['mine','passbtn']:['allbtn','rnd'],b=on?['allbt
 function dotsUpd(){const k=$('swipe').scrollLeft>$('swipe').clientWidth/2?1:0;[...$('dots').children].forEach((d,i)=>d.classList.toggle('on',i===k));}
 $('swipe').addEventListener('scroll',dotsUpd,{passive:true});setDock(false);
 const unsel=()=>{sel=null;ROAM.sel=null;$('join').hidden=false;$('pop').hidden=true;$('s-pass').hidden=true;setDock(false);};$('allbtn').onclick=()=>{unsel();flyTo(fitAll(freeY()),1100);};
-$('popx').onclick=()=>{q.value='';$('qx').hidden=true;unsel();};
+$('popx').onclick=()=>{q.value='';$('qx').hidden=true;unsel();setTimeout(meinNameZurueck,50);};
 // beim Erkunden zoomen die Knöpfe die mitlaufende Kamera (Faktor bleibt bis zum Beenden)
 const zoomWK=f=>{WK.zf=Math.max(.45,Math.min(2.4,(WK.zf||1)*f));};
 // 🎵 Musik aus den Videos (Tag 4 + Tag 5 im Wechsel) mit Meeresrauschen – startet immer aus, Knopf unter Zoom
@@ -4198,7 +4198,12 @@ function pick(p){q.value=p.name;$('qx').hidden=false;sg.hidden=true;$('miss').hi
 $('rnd').onclick=()=>{if(N)pick(PEOPLE[Math.random()*N|0]);};
 $('mine').onclick=()=>{let p=sel;try{p=byName.get((localStorage.getItem('mt-me')||'').toLowerCase())||sel;}catch(e){}if(p)pick(p);};
 const qxUpd=()=>{$('qx').hidden=!q.value;qFit();};q.addEventListener('input',()=>{qxUpd();if(!q.value.trim()&&sel)unsel();});
-$('qx').onclick=()=>{q.value='';qxUpd();sg.hidden=true;$('miss').hidden=true;unsel();q.blur();};
+$('qx').onclick=()=>{q.value='';qxUpd();sg.hidden=true;$('miss').hidden=true;unsel();if(meinName())q.focus();else q.blur();};
+// Beanspruchter Username steht immer in der Suchleiste und ist ausgewählt: wer ihn löscht, kann einen anderen suchen –
+// bleibt das Feld leer (Feld verlassen, Pop-up geschlossen), kommt der eigene Name zurück
+function meinName(){try{const c=typeof mkClaim==='function'&&mkClaim();return c&&c.n?byName.get(c.n.toLowerCase())||null:null;}catch(e){return null;}}
+function meinNameZurueck(){const me=meinName();if(!me||q.value.trim()||(typeof WK!=='undefined'&&WK.on))return;q.value=me.name;qxUpd();select(me,false);}
+q.addEventListener('blur',()=>setTimeout(()=>{if(document.activeElement!==q&&!q.value.trim())meinNameZurueck();},250));
 document.addEventListener('click',e=>{const b=e.target.closest('[data-n]');if(b){const p=byName.get(b.dataset.n.toLowerCase());if(p)pick(p);}if(!e.target.closest('.findbar'))sg.hidden=true;});
 
 // ---------- Texte ----------
@@ -4827,7 +4832,7 @@ addEventListener('resize',()=>{resize();});resize();
 // Kartenfläche ändert ihre Größe auch ohne Fenster-Resize (Schriften, Leisten, Safari/macOS) → sonst wird das Bild verzerrt/gestreckt
 if(window.ResizeObserver)new ResizeObserver(()=>{const b=cv.getBoundingClientRect();if(Math.abs(b.width-W)>.5||Math.abs(b.height-H)>.5)resize();}).observe(cv);
 setInterval(()=>{const b=cv.getBoundingClientRect();if(b.width&&(Math.abs(b.width-W)>.5||Math.abs(b.height-H)>.5))resize();},1000);
-let me=null;try{me=byName.get((localStorage.getItem('mt-me')||'').toLowerCase());}catch(e){}
+let me=null;try{me=meinName()||byName.get((localStorage.getItem('mt-me')||'').toLowerCase());}catch(e){}// beanspruchter Name hat Vorrang
 Object.assign(cam,REDUCED?fitMain(freeY()):fitAll(freeY()));draw();
 {const n=new URLSearchParams(location.search).get('n'),t=n&&byName.get(n.toLowerCase().replace(/^(?!@)/,'@'));if(t)me=t;}
 {const o=new URLSearchParams(location.search).get('ort'),t=o&&ortPos(o);// Link auf einen Ort (Berufe, Bauprojekte) hat Vorrang
