@@ -320,7 +320,8 @@ footer a{color:var(--soft)}
 .sit.st1 .srar,.sit.st8 .srar,.sit.st10 .srar{color:#2a1b12;text-shadow:none}
 .sit.st8,.sit.st9{box-shadow:0 0 12px color-mix(in srgb,var(--rc) 70%,transparent)}
 .sit.st8::after,.sit.st9::after,.sit.st10::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.6) 48%,transparent 60%);background-size:260% 100%;animation:mpshine 3.2s ease-in-out infinite}
-.sit.st10{border-image:linear-gradient(135deg,#ff4f4f,#ffd23f,#5fe07a,#3fc8ff,#b45fff,#ff4fd8) 1;border-radius:0;box-shadow:0 0 14px rgba(255,120,220,.6)}
+.sit.st10{box-shadow:0 0 14px rgba(170,185,200,.8)}.sit.st10 .srar,.silb{background:linear-gradient(110deg,#8f9aa6 0%,#e9eef3 25%,#aab4be 45%,#ffffff 55%,#9aa5b0 75%,#dfe5eb 100%)!important;background-size:250% 100%!important;animation:silber 2.6s linear infinite;color:#2a1b12!important;text-shadow:0 1px 0 rgba(255,255,255,.6)!important}
+@keyframes silber{from{background-position:100% 0}to{background-position:-150% 0}}
 .sit .svw{width:76px;height:76px;object-fit:contain;margin:2px 0}
 .sit .snm{font-size:13px;line-height:1.15;min-height:30px;display:flex;align-items:center;justify-content:center;overflow-wrap:anywhere;hyphens:auto}
 .sit .sbt{margin-top:6px;width:100%;border:2px solid #2a1b12;border-radius:999px;background:#ffd23f;font-weight:900;font-size:14px;padding:6px 4px;color:#2a1b12;white-space:nowrap}
@@ -4463,7 +4464,7 @@ function shopZeig(){const box=$('mkshop'),ib=$('mkinv');if(!box)return;const si=
  if(!SHD){si.innerHTML='Gerade keine Verbindung – bitte gleich nochmal versuchen.';}
  else si.innerHTML='<div class="shtm"><span>Jeden Tag um 0:00&nbsp;Uhr neue Items</span><b id="shuhr">🔄 '+shopUhr()+'</b></div>'
   +Object.keys(SHOPK).map(k=>{const ids=SHD.ids.filter(id=>SIT[id]&&SIT[id].kat===k);return ids.length?'<div class="shk">'+SHOPK[k]+'</div><div class="shg">'+ids.map(id=>shopKarte(id)).join('')+'</div>':'';}).join('')
-  +'<div class="shleg">'+SHPD.st.map(([n,f],i)=>'<span style="background:'+f+(i===0||i===7||i===9?';color:#2a1b12;text-shadow:none'+(i===9?';border:1.5px solid #2a1b12':''):'')+'">'+n+'</span>').join('')+'</div>';
+  +'<div class="shleg">'+SHPD.st.map(([n,f],i)=>'<span'+(i===9?' class="silb"':'')+' style="background:'+f+(i===0||i===7||i===9?';color:#2a1b12;text-shadow:none':'')+'">'+n+'</span>').join('')+'</div>';
  if(!ib)return;const inv=((MK.d&&MK.d.inv)||[]).filter(id=>SIT[id]),ii=ib.querySelector('.inin');
  if(!inv.length){ii.innerHTML='<div class="empty"><div class="bx">🎒</div><b>Noch leer</b><span class="inv1">Kauf dir oben dein erstes Item!</span></div>';return;}
  const ks=Object.keys(SHOPK).filter(k=>inv.some(id=>SIT[id].kat===k));if(INVF!=='alle'&&!ks.includes(INVF))INVF='alle';
@@ -4471,7 +4472,7 @@ function shopZeig(){const box=$('mkshop'),ib=$('mkinv');if(!box)return;const si=
   +'<div class="shg">'+inv.filter(id=>INVF==='alle'||SIT[id].kat===INVF).sort((a,b)=>SIT[b].st-SIT[a].st).map(id=>shopKarte(id,true)).join('')+'</div>';}
 setInterval(()=>{const u=$('shuhr');if(u&&!$('mkpage').hidden){if(SHD&&Date.now()-SHD.t>SHD.bis)shopLaden();else u.innerHTML='🔄 '+shopUhr();}},20000);
 function shopKaufFrag(id){const it=SIT[id],d=MK.d||{};if(!it)return;const fehlt=it.preis-(d.stand||0);
- popup('<div class="kpop">'+shopVorschau(id)+'<div class="krar" style="background:'+stFarbe(it.st)+(it.st===1||it.st===8||it.st===10?';color:#2a1b12;border:1.5px solid #2a1b12':'')+'">'+stName(it.st)+'</div><h2>'+esc(it.name)+'</h2><p>'+SHOPK[it.kat]+(it.st===10?'<br><b>🌟 Einzigartig: Nur eine einzige Person bekommt dieses Item.</b>':'')+'</p>'
+ popup('<div class="kpop">'+shopVorschau(id)+'<div class="krar'+(it.st===10?' silb':'')+'" style="background:'+stFarbe(it.st)+(it.st===1||it.st===8||it.st===10?';color:#2a1b12;border:1.5px solid #2a1b12':'')+'">'+stName(it.st)+'</div><h2>'+esc(it.name)+'</h2><p>'+SHOPK[it.kat]+(it.st===10?'<br><b>🌟 Einzigartig: Nur eine einzige Person bekommt dieses Item.</b>':'')+'</p>'
   +(fehlt>0?'<p><b>Dir fehlen noch '+fmt(fehlt)+'&nbsp;🐚</b><br>Sammle weiter – vielleicht ist es morgen schon weg!</p><button class="cbtn" type="button" data-mk="weiter">Okay</button>'
   :'<button class="cbtn hot" type="button" id="shgo">Für '+fmt(it.preis)+'&nbsp;🐚 kaufen</button><p class="cft">Kein Umtausch – Gekauftes bleibt für immer in deinem Inventar.</p>')+'</div>');
  const b=$('shgo');if(b)b.onclick=async()=>{b.disabled=true;b.textContent='⏳ Einen Moment …';const r=await mk('kauf',{id});

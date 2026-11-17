@@ -181,10 +181,10 @@ async function einladungPruefen(store, nm, kt) {
 function zufall(seed) { let h = 2166136261; for (const ch of seed) h = Math.imul(h ^ ch.charCodeAt(0), 16777619); return () => { h += 0x6D2B79F5; let t = h; t = Math.imul(t ^ t >>> 15, t | 1); t ^= t + Math.imul(t ^ t >>> 7, t | 61); return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
 async function angebot(store, heute) {
   const k = "x/shop/" + heute, alt = await store.get(k);
-  if (alt) return JSON.parse(alt);
+  if (alt) { const L = JSON.parse(alt); if (!L.some(id => SHOP.items[id] && SHOP.items[id][2] === 10)) return L; }// „Einzigartig“ nie im Shop (17.11.)
   const weg = new Set((await liste(store, "x/einzig/")).map(x => x.slice(9))), r = zufall("muschelshop-" + heute), ids = [];
   for (const kat of SHOP.kat) {
-    let pool = Object.entries(SHOP.items).filter(([id, v]) => v[0] === kat && !weg.has(id));
+    let pool = Object.entries(SHOP.items).filter(([id, v]) => v[0] === kat && v[2] < 10 && !weg.has(id));
     for (let n = 0; n < 2 && pool.length; n++) {
       const st = [...new Set(pool.map(([, v]) => v[2]))], sum = st.reduce((s, x) => s + SHOP.stufen[x - 1], 0);
       let z = r() * sum, w = st[st.length - 1]; for (const x of st) { z -= SHOP.stufen[x - 1]; if (z < 0) { w = x; break; } }
