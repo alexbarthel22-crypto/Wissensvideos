@@ -20,6 +20,8 @@ const LZ=1080/(2.6667*2.4*G.lv.r);const K=[[0,G.gl.x,G.gl.y+32,4.0],[L.L1.end+.2
 {const T0=L.L8.end+.45,SP=(L.L8w.start-.5)-T0,B=[G.ki,G.dr,G.bo,G.km,G.sb,G.po,G.mk,G.gl];
  for(let i=0;i<8;i++){const t=T0+i*SP/8;K.push([t,B[i].x,B[i].y-40,3.6],[t+SP/8-.002,B[i].x,B[i].y-40,3.8]);}
  K.push([L.L8w.end+.2,G.gl.x,G.gl.y-40,3.9]);}
+K.push([L.L2.start,G.cl.x,G.cl.y-30,3.4],[L.L2aw.end+.6,G.cl.x,G.cl.y-30,3.6],
+ [L.L2d.start-.15,G.dn.x,G.dn.y-40,4.0],[L.L2e.end+.3,G.dn.x,G.dn.y-40,4.3]);
 K.push([L.L9.start+.2,G.m.x,G.m.y,G.m.z*1.15],[L.L9b.end+.2,G.m.x,G.m.y-30,G.m.z*2.0],
  [L.L5.start+.3,G.gl.x,G.gl.y-34,3.0],[dur,G.gl.x,G.gl.y-34,3.2]);
 

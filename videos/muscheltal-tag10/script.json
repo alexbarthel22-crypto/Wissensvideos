@@ -1,6 +1,6 @@
 {
   "title": "Muschel-Tal – GTA-6-Fieber: Game Lagoon, 8 Jobs gleichzeitig, das Spiel bei 1.000",
-  "voice": "Gemini TTS (gemini-3.8-flash-tts, Stimme Puck)",
+  "voice": "Gemini TTS (gemini-2.5-pro-preview-tts, Stimme Puck)",
   "notes": "Tag 8 (15.11.): Hook Tierheim (nur noch 50, 750 Bewohner); Muschel-Tal kurz; Streuner; 3 Live-Job-Verlosungen (Boba Beach @hanna.013, Coast & Cotton @pxlinx.022, Coco Bay @haylie.aeriana); LIVE-Insel als eigene Insel getrennt von Muschel-Tal (Spielstand + Rangliste folgen); Schluss: der 800. sein.",
   "lead_in": 0.0,
   "bg": "#0a5a92",
@@ -75,7 +75,7 @@
           "id": "L1",
           "text": "*r:Drei, *r:zwei, *r:eins – / *y:GTA-6-Fieber|G-T-A-sechs-Fieber / auf *p:Muschel-Tal!",
           "speed": 1.0,
-          "style": "Style: a young German guy, around 20, a hyped gaming streamer who just got the best news ever – thrilled, emotional, full of joy and suspense, big dynamic intonation, smiling while talking, clear warm voice, not shouting, no rasp, natural German, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+          "style": "Style: a young German guy, around 20, counting down like the last seconds before New Year's Eve fireworks – bursting with excitement, every number louder and more thrilled than the one before, then cheering out the announcement, huge energy and joy, clear voice, natural German, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
           "pause": 0.0
         }
       ]
@@ -182,10 +182,96 @@
         },
         {
           "id": "L8w",
-          "text": "*g:Glückwunsch an *y:alle *y:acht!",
+          "text": "*g:Glückwunsch an *y:alle acht!",
           "speed": 1.1,
           "style": "Style: a young German guy, around 20, a hyped gaming streamer who just got the best news ever – thrilled, emotional, full of joy and suspense, big dynamic intonation, smiling while talking, natural German, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
           "pause": 5.4
+        }
+      ]
+    },
+    {
+      "id": "s02",
+      "tag": "",
+      "sfx": [
+        {
+          "name": "impact-bass-1",
+          "at": "L2:Job",
+          "volume": 0.5
+        },
+        {
+          "name": "slot-ticks",
+          "at": "L2a:KOK(O)S+0.4",
+          "volume": 0.45
+        },
+        {
+          "name": "ka-ching",
+          "at": "L2aw:Glückwunsch-0.15",
+          "volume": 0.45
+        },
+        {
+          "name": "yippee",
+          "at": "L2aw:Glückwunsch",
+          "volume": 0.7
+        }
+      ],
+      "lines": [
+        {
+          "id": "L2",
+          "text": "Und *r:noch ein Job: / ihr habt euch als *y:Türsteher *g:beworben!",
+          "speed": 1.1,
+          "style": "Style: a young German guy, around 20, a hyped gaming streamer who just got the best news ever – thrilled, emotional, full of joy and suspense, big dynamic intonation, smiling while talking, natural German, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+          "pause": 0.6
+        },
+        {
+          "id": "L2a",
+          "text": "Wer kommt in den *p:KOK(O)S|Kokos?",
+          "speed": 1.1,
+          "style": "Style: a young German guy, around 20, a hyped gaming streamer who just got the best news ever – thrilled, emotional, full of joy and suspense, big dynamic intonation, smiling while talking, natural German, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+          "pause": 0.4
+        },
+        {
+          "id": "L2aw",
+          "text": "*g:Glückwunsch, *y:@in.yor_dreams|In-Your-Dreams!",
+          "speed": 1.1,
+          "style": "Style: a young German guy, around 20, a hyped gaming streamer who just got the best news ever – thrilled, emotional, full of joy and suspense, big dynamic intonation, smiling while talking, natural German, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+          "pause": 2.6
+        }
+      ]
+    },
+    {
+      "id": "s02d",
+      "tag": "",
+      "sfx": [
+        {
+          "name": "whoosh",
+          "at": "L2d:Bürgermeisterin",
+          "volume": 0.4
+        },
+        {
+          "name": "ka-ching",
+          "at": "L2d:Döner",
+          "volume": 0.45
+        },
+        {
+          "name": "yippee",
+          "at": "L2e:leckeren",
+          "volume": 0.5
+        }
+      ],
+      "lines": [
+        {
+          "id": "L2d",
+          "text": "Und unsere neue Bürgermeisterin *p:Sophia hat entschieden: / *y:Döner kostet nur noch *g:2|zwei Euro!",
+          "speed": 1.1,
+          "style": "Style: a young German guy, around 20, a hyped gaming streamer who just got the best news ever – thrilled, emotional, full of joy and suspense, big dynamic intonation, smiling while talking, natural German, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+          "pause": 0.8
+        },
+        {
+          "id": "L2e",
+          "text": "Denn *g:jeder soll einen / *y:leckeren Döner bekommen!",
+          "speed": 1.1,
+          "style": "Style: a young German guy, around 20, a hyped gaming streamer who just got the best news ever – thrilled, emotional, full of joy and suspense, big dynamic intonation, smiling while talking, natural German, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+          "pause": 0.3
         }
       ]
     },

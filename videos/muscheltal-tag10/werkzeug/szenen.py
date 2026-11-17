@@ -223,7 +223,7 @@ scene("s02", LILITA + "\n    " + PILL + "\n    " + CF_CSS.replace("top: 700px", 
       """ + "".join(f'<div id="st-cf{i}"></div>' for i in range(1)) + "\n      " + "\n      ".join(f'<div id="st-w{i}" class="pl st-w">🎉 @{n} ist unser Türsteher!</div>' for i, (a, w, o, t, n, c) in enumerate(JT)),
 """      const t3 = line("L2")[0], dk = at("L2", "beworben");
       tl.fromTo("#st-lv", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, dk - .15);
-      tl.fromTo("#st-lv2", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .28, ease: "back.out(2)" }, at("L2", "live") - .1);
+      tl.fromTo("#st-lv2", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .28, ease: "back.out(2)" }, dk + .35);
       tl.to(["#st-lv", "#st-lv2"], { opacity: 0, duration: .2 }, line("L2a")[0] - .3);
             tl.set(["#st-box", "#st-dim"], { opacity: 0 }, 0);
 """ + "".join(f"""      tl.fromTo("#st-o{i}", {{ opacity: 0, scale: 2.2 }}, {{ opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }}, line("{a}")[0] - .1);
