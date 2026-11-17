@@ -1956,7 +1956,7 @@ function resize(ohneBild){const b=cv.getBoundingClientRect();W=b.width;H=b.heigh
 function baseBuild(){const w0=W,h0=H;W+=2*BM;H+=2*BM;try{drawBase();}finally{W=w0;H=h0;}BASE={x:cam.x,y:cam.y,z:cam.z};}
 // Grundkarte (oder Küstenhütten-Ebene) passend zur aktuellen Kamera auf den Bildschirm legen
 function baseBlit(c,img){const s=cam.z/BASE.z,ax=DPR*(W/2+(BASE.x-cam.x)*cam.z)-(W/2+BM)*DPR*s,ay=DPR*(H/2+(BASE.y-cam.y)*cam.z)-(H/2+BM)*DPR*s;c.setTransform(1,0,0,1,0,0);if(s===1)c.drawImage(img,Math.round(ax),Math.round(ay));else c.drawImage(img,ax,ay,img.width*s,img.height*s);}
-function baseOk(){const s=cam.z/BASE.z;if(s<.86||s>1.17)return false;if(s!==1&&performance.now()-ZCH>160)return false;const ax=DPR*(W/2+(BASE.x-cam.x)*cam.z)-(W/2+BM)*DPR*s,ay=DPR*(H/2+(BASE.y-cam.y)*cam.z)-(H/2+BM)*DPR*s;return ax<=0&&ay<=0&&ax+base.width*s>=cv.width-1&&ay+base.height*s>=cv.height-1;}
+function baseOk(){const s=cam.z/BASE.z,zoomt=performance.now()-ZCH<160;if(zoomt?(s<.72||s>1.45):(s<.86||s>1.17))return false;/* während Zoom-Bewegung mehr Spielraum (skaliert), scharf neu sobald die Kamera steht */if(s!==1&&performance.now()-ZCH>160)return false;const ax=DPR*(W/2+(BASE.x-cam.x)*cam.z)-(W/2+BM)*DPR*s,ay=DPR*(H/2+(BASE.y-cam.y)*cam.z)-(H/2+BM)*DPR*s;return ax<=0&&ay<=0&&ax+base.width*s>=cv.width-1&&ay+base.height*s>=cv.height-1;}
 let ZL=1;
 const s2w=(x,y)=>[(x-W/2)/cam.z+cam.x,(y-H/2)/cam.z+cam.y];
 const world=c=>c.setTransform(DPR*cam.z,0,0,DPR*cam.z,DPR*(W/2-cam.x*cam.z),DPR*(H/2-cam.y*cam.z));
