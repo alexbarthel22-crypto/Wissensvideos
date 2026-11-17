@@ -7,6 +7,7 @@ import { BEWOHNER, NACHBARN, SEIT } from "../lib/bewohner.mjs";
 import { liveVergeben } from "./live.mjs";
 import { CODES } from "../lib/codes.mjs";
 import { SHOP } from "../lib/shop.mjs";
+import { QUIZ } from "../lib/quiz.mjs";
 
 const json = (d, s = 200) => new Response(JSON.stringify(d), { status: s, headers: { "content-type": "application/json", "cache-control": "no-store" } });
 const NAME = /^@[a-z0-9._]{1,40}$/;
@@ -27,6 +28,13 @@ async function regenEnde(id) {
     let i = P.length - 2; while (i >= 0 && !(P[i] > .1)) i--;
     return i >= 0 && !(P[P.length - 1] > .1) && Z[i] === id;
   } catch (e) { return false; }
+}
+// Flaschenpost: Frage und Antwort-Reihenfolge hängen von Name und Flasche ab (jeder bekommt eine andere Frage)
+function quizH(s) { let h = 2166136261; for (const c of s) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); } return h >>> 0; }
+function quizFrage(nm, fl) {
+  const Q = QUIZ[quizH(nm + "|" + fl) % QUIZ.length], o = Q.a.map((t, i) => [t, i]);
+  if (o.length > 2) for (let i = o.length - 1; i > 0; i--) { const j = quizH(nm + fl + "#" + i) % (i + 1); [o[i], o[j]] = [o[j], o[i]]; }
+  return { q: Q.q, a: o.map(x => x[0]), r: o.findIndex(x => x[1] === Q.r) };
 }
 async function liste(store, prefix) { const out = []; let cursor; do { const r = await store.list({ prefix, cursor }); out.push(...r.blobs.map(b => b.key)); cursor = r.cursor; } while (cursor); return out; }
 
@@ -114,7 +122,7 @@ async function aufraeumen(store) {
     t[1] = id; await kasse.set(t.join("/"), (await kasse.get(k)) || "1"); await kasse.delete(k);
   }
 }
-const TEXT = { login: "Login-Serie", quest: "Aufgabe", qbonus: "Alle 3 Aufgaben", shell: "Schwebende Muschel", erf: "Neuer Erfolg", story: "Story geteilt", spende: "Spende Inselkasse", tresor: "Tresor des Schöpfers", code: "Geheimcode aus dem Video", einladung: "Freund eingeladen", kauf: "Muschel-Shop", null: "Neustart: alle Konten auf 0", stern: "Sternschnuppe 🌠", regenbogen: "Schatz am Regenbogen 🌈" };
+const TEXT = { login: "Login-Serie", quest: "Aufgabe", qbonus: "Alle 3 Aufgaben", shell: "Schwebende Muschel", erf: "Neuer Erfolg", story: "Story geteilt", spende: "Spende Inselkasse", tresor: "Tresor des Schöpfers", code: "Geheimcode aus dem Video", einladung: "Freund eingeladen", kauf: "Muschel-Shop", null: "Neustart: alle Konten auf 0", stern: "Sternschnuppe 🌠", regenbogen: "Schatz am Regenbogen 🌈", flasche: "Flaschenpost-Quiz 🍾", geschenk: "Tagesgeschenk 🎁" };
 
 // Einmal-Aufgaben (Zurücksetzen, Aufräumen) nur einmal pro Tag und Server-Instanz prüfen – spart bei jeder Muschel-Aktion
 // rund 10 Speicherabfragen (schnellere Gutschriften)
@@ -400,6 +408,33 @@ export default async (req) => {
     const ok = await setze("regenbogen", id.replace(/[^0-9T]/g, ""), 5), B = await buch(store, nm);
     return json({ ok, grund: ok ? null : "schon", stand: B.reduce((s, e) => s + e.a, 0) });
   }
+  // 🍾 Flaschenpost: Quizfrage zu Muschel-Tal. Flasche = Stunde*10+Nr (nur aktuelle/letzte Stunde), höchstens 3 pro Tag, je Flasche 1 Versuch, richtig = +2
+  if (act === "flasche" || act === "flascheAntwort") {
+    const fl = Math.floor(Number(d.fl)), hJetzt = Math.floor((Date.now() - Date.UTC(2026, 0, 1)) / 3.6e6);
+    if (!(fl >= 0) || !(fl % 10 < 2) || Math.floor(fl / 10) < hJetzt - 1 || Math.floor(fl / 10) > hJetzt) return json({ ok: false, grund: "weg" });
+    const f = quizFrage(nm, fl), xk = "x/flasche/" + nm + "/" + heute + "/" + fl;
+    if (await store.get(xk)) return json({ ok: false, grund: "schon" });
+    if ((await liste(store, "x/flasche/" + nm + "/" + heute + "/")).length >= 3) return json({ ok: false, grund: "genug" });
+    if (act === "flasche") return json({ ok: true, q: f.q, a: f.a });
+    const w = Math.floor(Number(d.wahl)); await store.set(xk, String(w));
+    const richtig = w === f.r; if (richtig) await setze("flasche", heute + "-" + fl, 2);
+    const B = await buch(store, nm);
+    return json({ ok: true, richtig, loesung: f.a[f.r], stand: B.reduce((s, e) => s + e.a, 0) });
+  }
+  // 🎁 Tagesgeschenk vor der eigenen Hütte: 1–3 Muscheln, 1× pro Tag
+  if (act === "geschenk") {
+    const betrag = 1 + (crypto.getRandomValues(new Uint32Array(1))[0] % 3), ok = await setze("geschenk", heute, betrag), B = await buch(store, nm);
+    return json({ ok, grund: ok ? null : "schon", betrag: ok ? betrag : 0, stand: B.reduce((s, e) => s + e.a, 0) });
+  }
+  // 👋 Anklopfen: 1× pro Tag bei einer fremden Hütte; der Bewohner sieht es beim nächsten Besuch
+  if (act === "klopf") {
+    const an = String(d.an || "").toLowerCase().replace(/^@/, "");
+    if (!BEWOHNER.has(an) || an === nm) return json({ ok: false, grund: "wer" });
+    const k = "x/klopft/" + nm + "/" + heute;
+    if (await store.get(k)) return json({ ok: false, grund: "heute" });
+    await store.set(k, an); await store.set("x/klopfan/" + an + "/" + Date.now() + "-" + nm, "1");
+    return json({ ok: true });
+  }
   if (act === "story") return json({ ok: await setze("story", woche(heute), 25) });
   if (act === "spende") {
     const a = Math.floor(Number(d.betrag));
@@ -450,12 +485,14 @@ export default async (req) => {
     const eingeladen = [];
     for (const k of await liste(store, "b/" + nm + "/einladung/")) { const n = k.split("/")[3], mk = "x/einlmeld/" + nm + "/" + n; if (!(await store.get(mk))) { await store.set(mk, "1"); eingeladen.push(n); } }
     const live = await liveErf(store, nm);
+    const klopfer = [];// wer hat seit dem letzten Besuch geklopft? (einmal melden, dann löschen)
+    for (const k of await liste(store, "x/klopfan/" + nm + "/")) { const n = k.split("/")[3].split("-").slice(1).join("-"); if (n && !klopfer.includes(n)) klopfer.push(n); await store.delete(k); }
     const nachbar = await nachbarErf(store, nm);// schon beanspruchte Nachbarn bekommen den Erfolg beim nächsten Besuch
     const B = await buch(store, nm), s = await serie(B);
     const posten = B.filter(e => e.a).map(e => ({ art: e.art, id: e.id, a: e.a, t: TEXT[e.art] || e.art }))
       .sort((x, y) => (y.id > x.id ? 1 : -1)).slice(0, 60);
     return json({
-      ok: true, nachbar, live, eingeladen, stand: B.reduce((s, e) => s + e.a, 0), serie: s,
+      ok: true, nachbar, live, eingeladen, klopfer, geschenk: B.some(e => e.art === "geschenk" && e.id === heute), stand: B.reduce((s, e) => s + e.a, 0), serie: s,
       shells: B.filter(e => e.art === "shell" && e.id.startsWith(heute)).map(e => Number(e.id.split("-").pop())),
       questsDone: B.filter(e => e.art === "quest" && e.id.startsWith(heute)).map(e => Number(e.id.split("-").pop())),
       gespendet: -B.filter(e => e.art === "spende").reduce((s, e) => s + e.a, 0), posten, heute, inv: besitz(B), aus: JSON.parse((await store.get("a/" + nm)) || "{}")
