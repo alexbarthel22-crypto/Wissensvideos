@@ -91,11 +91,13 @@ export default async (req) => {
   if (d.act !== "checkout") return json({ fehler: "Aktion" }, 400);
   const name = String(d.name || "").trim().toLowerCase(), nm = name.replace(/^@/, "");
   if (!/^@[a-z0-9._]{1,40}$/.test(name) || !BEWOHNER.has(nm)) return json({ fehler: "Name" }, 400);
-  const c = JSON.parse((await store.get("c/" + nm)) || "null");
-  if (!c || c.h !== (await sha(String(d.token || "")))) return json({ fehler: "Nicht beansprucht" }, 403);
   const p = PAKETE[d.paket];
   if (!p) return json({ fehler: "Paket" }, 400);
-  if (p.einmal && (await store.get("x/start/" + nm))) return json({ fehler: "Startangebot schon genutzt" }, 409);
+  // Beanspruchung, Startangebot und Steuersatz gleichzeitig prüfen/laden (schneller zur Bezahlseite)
+  const [cRoh, schonStart, hash, ustVorab] = await Promise.all([store.get("c/" + nm), p.einmal ? store.get("x/start/" + nm) : null, sha(String(d.token || "")), process.env.STRIPE_SECRET_KEY ? ustSatz(store) : null]);
+  const c = JSON.parse(cRoh || "null");
+  if (!c || c.h !== hash) return json({ fehler: "Nicht beansprucht" }, 403);
+  if (p.einmal && schonStart) return json({ fehler: "Startangebot schon genutzt" }, 409);
   // Zustimmung zur sofortigen Ausführung + Kenntnis vom Verlust des Widerrufsrechts (§ 356 Abs. 5 BGB) ist Pflicht
   if (d.zustimmung !== true) return json({ fehler: "Zustimmung fehlt" }, 400);
   const zeit = new Date().toISOString();
@@ -123,7 +125,7 @@ export default async (req) => {
     success_url: SEITE + "/?kauf=ok&sid={CHECKOUT_SESSION_ID}",// Stripe setzt die Kauf-Nummer ein (für die Feier nach der Gutschrift)
     cancel_url: SEITE + "/?kauf=abbruch",
   });
-  const ust = await ustSatz(store);
+  const ust = ustVorab;
   if (ust) f.set("line_items[0][tax_rates][0]", ust);
   const r = await fetch(API() + "/v1/checkout/sessions", { method: "POST", headers: { authorization: "Bearer " + process.env.STRIPE_SECRET_KEY, "content-type": "application/x-www-form-urlencoded" }, body: f });
   const s = await r.json().catch(() => ({}));

@@ -607,9 +607,10 @@ export default async (req) => {
   if (act === "kauf") {
     const id = String(d.id || ""), it = SHOP.items[id];
     if (!it) return json({ ok: false, grund: "item" });
-    if (it[0] === "tier") { if (!tierheimOffen() || !(await tierAngebot(store, heute)).includes(id)) return json({ ok: false, grund: "angebot" }); }// Tiere nur im Tierheim
-    else if (!(await angebot(store, heute)).includes(id)) return json({ ok: false, grund: "angebot" });
-    const B = await buch(store, nm), stand = B.reduce((s, e) => s + e.a, 0);
+    if (it[0] === "tier" && !tierheimOffen()) return json({ ok: false, grund: "angebot" });// Tiere nur im Tierheim
+    const [L, B] = await Promise.all([it[0] === "tier" ? tierAngebot(store, heute) : angebot(store, heute), buch(store, nm)]);// gleichzeitig laden (schneller)
+    if (!L.includes(id)) return json({ ok: false, grund: "angebot" });
+    const stand = B.reduce((s, e) => s + e.a, 0);
     if (besitz(B).includes(id)) return json({ ok: false, grund: "schon", stand });
     if (stand < it[3]) return json({ ok: false, grund: "geld", stand });
     if (it[2] === 10) {// Einzigartig: nur der erste Käufer bekommt es
