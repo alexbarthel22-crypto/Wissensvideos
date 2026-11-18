@@ -308,7 +308,7 @@ export default async (req) => {
   // öffentlich: nur die Anzahl der Likes eines Passes (für Besucher ohne beanspruchten Namen)
   if (req.method === "GET" && url.searchParams.get("likes")) {
     const an = String(url.searchParams.get("likes")).toLowerCase().replace(/^@/, "");
-    if (!BEWOHNER.has(an)) return json({ n: 0 });
+    if (!BEWOHNER.has(an) && an !== "echter.alex") return json({ n: 0 });
     return json({ n: (await liste(store, "x/like/" + an + "/")).length });
   }
   if (req.method === "GET" && url.searchParams.get("sand")) {
@@ -543,7 +543,7 @@ export default async (req) => {
   // ❤️ Muschelpass liken: einmal je Pass (nochmal tippen = Like zurücknehmen); nie den eigenen
   if (act === "like" || act === "likeinfo") {
     const an = String(d.an || "").toLowerCase().replace(/^@/, "");
-    if (!BEWOHNER.has(an) || an === nm) return json({ ok: false, grund: "wer" });
+    if ((!BEWOHNER.has(an) && an !== "echter.alex") || an === nm) return json({ ok: false, grund: "wer" });// auch der Pass des Schöpfers kann geliked werden
     const k = "x/like/" + an + "/" + nm; let hab = !!(await store.get(k));
     if (act === "like") { if (hab) await store.delete(k); else await store.set(k, String(Date.now())); hab = !hab; }
     return json({ ok: true, hab, n: (await liste(store, "x/like/" + an + "/")).length });

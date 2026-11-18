@@ -2233,7 +2233,7 @@ const GESEHEN=new Set();function passGesehen(p){const me=mkClaim()&&mkMe();if(!m
 const WEG={x:null,y:null,m:0,t:0};setInterval(()=>{if(!WK.on||!WK.me){WEG.x=null;return;}if(WEG.x!=null){const d=Math.hypot(WK.x-WEG.x,WK.y-WEG.y);if(d<40)WEG.m+=d*.14;}WEG.x=WK.x;WEG.y=WK.y;
  const n=Date.now();if(mkClaim()&&mkMe()===WK.me&&WEG.m>1&&n-WEG.t>20000){WEG.t=n;const m=WEG.m;WEG.m=0;mk('strecke',{m:Math.round(m)}).then(r=>{if(r&&r.neu)r.neu.forEach(mkNeuErf);if(r&&!r.ok)WEG.m+=m;});}
  if(berlin().getHours()===3&&mkClaim()&&mkMe()===WK.me&&gibErf(WK.me,'NACHT'))popup('<div class="big">🦉</div><h2>Neuer Erfolg! 🎉</h2><p>'+esc(WK.me.name)+', du bist mitten in der Nacht unterwegs: <b>„Nachteule“</b> (+10&nbsp;🐚)!</p>');},500);
-function likeKnopf(p){const box=$('mpcardbox'),card=box&&box.querySelector('.mpcard .hd b');if(!card||!p||p.gb===SCH)return;const me=mkClaim()&&mkMe(),eigen=!!(me&&me===p),k=p.name.toLowerCase();
+function likeKnopf(p){const box=$('mpcardbox'),card=box&&box.querySelector('.mpcard .hd b');if(!card||!p)return;const me=mkClaim()&&mkMe(),eigen=!!(me&&me===p),k=p.name.toLowerCase();
  let el=card.querySelector('.likebd');if(!el){el=document.createElement(eigen?'div':'button');el.className='likebd'+(eigen?' eigen':'');if(!eigen){el.type='button';el.setAttribute('aria-label','Pass liken');}card.appendChild(el);}// oben im Kopf neben „Muschelpass“
  const zeig=(hab,n)=>{el.innerHTML=MSHERZ(eigen||!!hab,14)+'<i>'+fmt(n||0)+'</i>';el.classList.toggle('an',!!hab);};
  if(eigen){zeig(1,(MK.d&&MK.d.likes&&MK.d.likes.n)||0);mkStand().then(()=>{if(mpP===p&&el.isConnected)zeig(1,(MK.d&&MK.d.likes&&MK.d.likes.n)||0);});return;}
