@@ -12,8 +12,13 @@ import { QUIZ } from "../lib/quiz.mjs";
 const json = (d, s = 200) => new Response(JSON.stringify(d), { status: s, headers: { "content-type": "application/json", "cache-control": "no-store" } });
 const NAME = /^@[a-z0-9._]{1,40}$/;
 const ERF_CLIENT = new Set(["LUPE", "AUF", "UNTER", "SCOOT", "SCHOEPFER", "WAL", "SCHILD", "MOND", "WELT", "NACHT"]);
-const STICKER = new Set(["palast", "doener", "bar", "villa", "acai", "werkstatt", "baeckerei", "nagel", "markt", "kiosk", "boba", "pizza", "tierheim", "yacht", "cocobay", "kokosbad", "coast", "kokos", "cococare", "gaming", "feuer", "anleger", "ev_wochenmarkt", "ev_flohmarkt", "ev_konzert", "ev_feuerwerk"]);
+const STICKER = new Set(["palast", "doener", "bar", "villa", "acai", "werkstatt", "baeckerei", "nagel", "markt", "kiosk", "boba", "pizza", "tierheim", "yacht", "cocobay", "kokosbad", "coast", "kokos", "cococare", "gaming", "feuer", "anleger", "ev_wochenmarkt", "ev_flohmarkt", "ev_konzert", "ev_feuerwerk", "sandburg", "angeln", "ev_kino"]);
 const SERIE = [3, 5, 8, 12, 17, 23, 32];
+// 🎣 Angelsteg: Fänge (Seltenheit → Muscheln, Gewicht = Wahrscheinlichkeit in %)
+export const FISCHE = { stiefel: [1, 14], sardine: [2, 14], krabbe: [2, 14], garnele: [3, 12], clown: [3, 12], tinte: [5, 7.5], kugel: [5, 7.5], hummer: [8, 5], okto: [8, 5], hai: [12, 6], auster: [20, 1.5], goldmuschel: [20, 1.5] };
+function fischZiehen() { const r = (crypto.getRandomValues(new Uint32Array(1))[0] / 2 ** 32) * 100; let s = 0; for (const [id, [, w]] of Object.entries(FISCHE)) { s += w; if (r < s) return id; } return "sardine"; }
+// 🏰 Sandburg: Woche Mo–So; Sonntag ab 18 Uhr holt die Flut die Burg (dann kein Bauen)
+function flutJetzt() { const p = Object.fromEntries(new Intl.DateTimeFormat("en-US", { timeZone: "Europe/Berlin", weekday: "short", hour: "2-digit", hourCycle: "h23" }).formatToParts(new Date()).map(x => [x.type, x.value])); return p.weekday === "Sun" && +p.hour >= 18; }
 const TZ = "Europe/Berlin";
 const tag = (t = Date.now()) => new Intl.DateTimeFormat("sv-SE", { timeZone: TZ, year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date(t));
 const gestern = (d) => { const t = new Date(d + "T12:00:00Z"); t.setUTCDate(t.getUTCDate() - 1); return t.toISOString().slice(0, 10); };
@@ -124,7 +129,7 @@ async function aufraeumen(store) {
     t[1] = id; await kasse.set(t.join("/"), (await kasse.get(k)) || "1"); await kasse.delete(k);
   }
 }
-const TEXT = { login: "Login-Serie", quest: "Aufgabe", qbonus: "Alle 3 Aufgaben", shell: "Schwebende Muschel", erf: "Neuer Erfolg", story: "Story geteilt", spende: "Spende Inselkasse", tresor: "Tresor des Schöpfers", code: "Geheimcode aus dem Video", einladung: "Freund eingeladen", kauf: "Muschel-Shop", null: "Neustart: alle Konten auf 0", stern: "Sternschnuppe 🌠", euro: "Muschel-Paket gekauft 💎", "euro-zurueck": "Muschel-Paket erstattet", regenbogen: "Schatz am Regenbogen 🌈", flasche: "Flaschenpost-Quiz 🍾", geschenk: "Tagesgeschenk 🎁" };
+const TEXT = { login: "Login-Serie", quest: "Aufgabe", qbonus: "Alle 3 Aufgaben", shell: "Schwebende Muschel", erf: "Neuer Erfolg", story: "Story geteilt", spende: "Spende Inselkasse", tresor: "Tresor des Schöpfers", code: "Geheimcode aus dem Video", einladung: "Freund eingeladen", kauf: "Muschel-Shop", null: "Neustart: alle Konten auf 0", stern: "Sternschnuppe 🌠", sandburg: "Sandburg mitgebaut 🏰", angeln: "Fang am Angelsteg 🎣", euro: "Muschel-Paket gekauft 💎", "euro-zurueck": "Muschel-Paket erstattet", regenbogen: "Schatz am Regenbogen 🌈", flasche: "Flaschenpost-Quiz 🍾", geschenk: "Tagesgeschenk 🎁" };
 
 // Einmal-Aufgaben (Zurücksetzen, Aufräumen) nur einmal pro Tag und Server-Instanz prüfen – spart bei jeder Muschel-Aktion
 // rund 10 Speicherabfragen (schnellere Gutschriften)
@@ -268,6 +273,10 @@ export default async (req) => {
     const an = String(url.searchParams.get("likes")).toLowerCase().replace(/^@/, "");
     if (!BEWOHNER.has(an)) return json({ n: 0 });
     return json({ n: (await liste(store, "x/like/" + an + "/")).length });
+  }
+  if (req.method === "GET" && url.searchParams.get("sand")) {
+    const wo = woche(tag());
+    return json({ woche: wo, n: (await liste(store, "x/sand/" + wo + "/")).length, flut: flutJetzt() });
   }
   if (req.method === "GET" && url.searchParams.get("tierheim")) {
     const offen = tierheimOffen();
@@ -471,6 +480,25 @@ export default async (req) => {
     return json({ ok: true, richtig, loesung: f.a[f.r], neu: neuF, stand: B.reduce((s, e) => s + e.a, 0) });
   }
   // 🎁 Tagesgeschenk vor der eigenen Hütte: 1–3 Muscheln, 1× pro Tag
+  // 🏰 Sandburg: 1× pro Tag mitbauen (gemeinsamer Fortschritt der Woche)
+  if (act === "sandburg") {
+    if (flutJetzt()) return json({ ok: false, grund: "flut" });
+    const wo = woche(heute), k = "x/sand/" + wo + "/" + nm + "/" + heute;
+    if (await store.get(k)) return json({ ok: false, grund: "schon", n: (await liste(store, "x/sand/" + wo + "/")).length });
+    const betrag = 1 + (crypto.getRandomValues(new Uint32Array(1))[0] % 3), ok = await setze("sandburg", heute, betrag);
+    if (ok) await store.set(k, String(Date.now()));
+    const B = await buch(store, nm);
+    return json({ ok, grund: ok ? null : "schon", betrag: ok ? betrag : 0, n: (await liste(store, "x/sand/" + wo + "/")).length, stand: B.reduce((s, e) => s + e.a, 0) });
+  }
+  // 🎣 Angeln: 1 Fang pro Tag (der Server bestimmt den Fisch); jeder Fisch kommt ins Fisch-Album
+  if (act === "angeln") {
+    const B0 = await buch(store, nm);
+    if (B0.some(e => e.art === "angeln" && e.id.startsWith(heute))) return json({ ok: false, grund: "schon" });
+    const f = fischZiehen(), betrag = FISCHE[f][0], ok = await setze("angeln", heute + "_" + f, betrag);
+    if (ok) await store.set("x/fisch/" + nm + "/" + f, String(Date.now()));
+    const B = await buch(store, nm);
+    return json({ ok, grund: ok ? null : "schon", fisch: ok ? f : null, betrag: ok ? betrag : 0, stand: B.reduce((s, e) => s + e.a, 0), fische: (await liste(store, "x/fisch/" + nm + "/")).map(k => k.split("/")[3]) });
+  }
   if (act === "geschenk") {
     const betrag = 1 + (crypto.getRandomValues(new Uint32Array(1))[0] % 3), ok = await setze("geschenk", heute, betrag), B = await buch(store, nm);
     return json({ ok, grund: ok ? null : "schon", betrag: ok ? betrag : 0, stand: B.reduce((s, e) => s + e.a, 0) });
@@ -517,8 +545,8 @@ export default async (req) => {
     if (id.startsWith("ev_")) {// Event-Sticker nur während des Events (Berliner Zeit)
       const p = Object.fromEntries(new Intl.DateTimeFormat("en-US", { timeZone: TZ, weekday: "short", hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).formatToParts(new Date()).map(x => [x.type, x.value]));
       const h = +p.hour + p.minute / 60, wd = p.weekday;
-      const jetzt = wd === "Wed" && h >= 6 && h < 12 ? "wochenmarkt" : wd === "Sat" && h >= 10 && h < 18 ? "flohmarkt" : wd === "Sun" && h >= 16 && h < 19 ? "konzert" : wd === "Fri" && h >= 20 && h < 20.25 ? "feuerwerk" : "";
-      if (process.env.EV_TEST !== "1" && id !== "ev_" + jetzt) return json({ ok: false, grund: "zeit" });
+      const aktiv = { wochenmarkt: wd === "Wed" && h >= 6 && h < 12, flohmarkt: wd === "Sat" && h >= 10 && h < 18, konzert: wd === "Sun" && h >= 16 && h < 19, feuerwerk: wd === "Fri" && h >= 20 && h < 20.25, kino: (wd === "Fri" || wd === "Sat") && h >= 20 && h < 22 };
+      if (process.env.EV_TEST !== "1" && !aktiv[id.slice(3)]) return json({ ok: false, grund: "zeit" });
     }
     await store.set("x/sticker/" + nm + "/" + id, String(Date.now()));
     return json({ ok: true, sticker: (await liste(store, "x/sticker/" + nm + "/")).map(k => k.split("/")[3]) });
@@ -582,7 +610,7 @@ export default async (req) => {
     const posten = B.filter(e => e.a).map(e => ({ art: e.art, id: e.id, a: e.a, t: TEXT[e.art] || e.art }))
       .sort((x, y) => (y.id > x.id ? 1 : -1)).slice(0, 60);
     return json({
-      ok: true, nachbar, live, eingeladen, klopfer, premium: !!(await store.get("x/premium/" + nm)), startDa: !(await store.get("x/start/" + nm)), likes: { n: likeN }, neu: likeN >= 25 && (await erfGib("HERZ")) ? ["HERZ"] : [], sticker: (await liste(store, "x/sticker/" + nm + "/")).map(k => k.split("/")[3]), geschenk: B.some(e => e.art === "geschenk" && e.id === heute), stand: B.reduce((s, e) => s + e.a, 0), serie: s,
+      ok: true, nachbar, live, eingeladen, klopfer, premium: !!(await store.get("x/premium/" + nm)), startDa: !(await store.get("x/start/" + nm)), likes: { n: likeN }, neu: likeN >= 25 && (await erfGib("HERZ")) ? ["HERZ"] : [], sticker: (await liste(store, "x/sticker/" + nm + "/")).map(k => k.split("/")[3]), fische: (await liste(store, "x/fisch/" + nm + "/")).map(k => k.split("/")[3]), angelnHeute: (B.find(e => e.art === "angeln" && e.id.startsWith(heute)) || {}).id?.split("_")[1] || null, sandHeute: !!(await store.get("x/sand/" + woche(heute) + "/" + nm + "/" + heute)), geschenk: B.some(e => e.art === "geschenk" && e.id === heute), stand: B.reduce((s, e) => s + e.a, 0), serie: s,
       shells: B.filter(e => e.art === "shell" && e.id.startsWith(heute)).map(e => Number(e.id.split("-").pop())),
       questsDone: B.filter(e => e.art === "quest" && e.id.startsWith(heute)).map(e => Number(e.id.split("-").pop())),
       gespendet: -B.filter(e => e.art === "spende").reduce((s, e) => s + e.a, 0), posten, heute, inv: besitz(B), aus: JSON.parse((await store.get("a/" + nm)) || "{}")
