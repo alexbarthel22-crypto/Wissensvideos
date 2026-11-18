@@ -482,6 +482,38 @@ document.querySelectorAll('.bp[data-preis]').forEach(a=>{const p=+a.dataset.prei
     open(os.path.join(out, "bau.html"), "w", encoding="utf-8").write(seite)
 
 
+def auslagern(out):
+    """Schnelleres Laden: Programmcode der Karte als eigene Datei app.<hash>.js (verkleinert, falls terser da ist).
+    Der Browser speichert sie dauerhaft (Netlify-Header: immutable) – beim nächsten Besuch wird sie nicht neu geladen
+    und kann vorkompiliert ausgeführt werden. Die täglich wechselnden Daten bleiben klein in der Seite (JSON.parse)."""
+    import hashlib, subprocess, glob
+    f = os.path.join(out, "index.html")
+    t = open(f, encoding="utf-8").read()
+    a = t.find("<script>\nconst DATA=")
+    if a < 0:
+        return
+    e = t.find("</script>", a)
+    body = t[a + len("<script>\n"):e]
+    z = body.find("\n")
+    datalinie, code = body[:z], body[z + 1:]
+    roh = datalinie[len("const DATA="):].rstrip(";")
+    daten = "<script>const DATA=JSON.parse(" + json.dumps(roh, ensure_ascii=False).replace("</", "<\\/") + ");</script>"
+    try:  # verkleinern (auf Netlify per npm installiert; lokal optional)
+        js = subprocess.run(["node", "-e", "const {minify}=require('terser');let s='';process.stdin.on('data',d=>s+=d).on('end',()=>minify(s,{compress:{keep_fargs:true,keep_fnames:true},mangle:{keep_fnames:true},format:{comments:false}}).then(r=>process.stdout.write(r.code)).catch(e=>{console.error(e.message);process.exit(1);}))"],
+                            input=code, capture_output=True, text=True, timeout=180, cwd=os.path.dirname(HIER)).stdout
+        if len(js) < len(code) * .5:
+            js = code
+    except Exception:
+        js = code
+    h = hashlib.sha1(js.encode("utf-8")).hexdigest()[:10]
+    for alt in glob.glob(os.path.join(out, "app.*.js")):
+        os.remove(alt)
+    open(os.path.join(out, "app." + h + ".js"), "w", encoding="utf-8").write(js)
+    t = t[:a] + daten + '\n<script src="app.' + h + '.js" defer></script>' + t[e + len("</script>"):]
+    open(f, "w", encoding="utf-8").write(t)
+    print(f"Programmcode ausgelagert: app.{h}.js ({len(js) // 1024} KB, vorher {len(code) // 1024} KB)")
+
+
 def schnell(out):
     """Seitenwechsel ohne spürbare Ladezeit: weiche Übergänge (View Transitions), Unterseiten werden beim
     Antippen/Überfahren vorgeladen (bzw. in Chrome vorgerendert), „← Zur Karte“ springt per Zurück sofort
@@ -698,6 +730,7 @@ def baue(rows, out):
     berufe(sauber, insel, out)
     bauprojekte(sauber, insel, out)
     schnell(out)
+    auslagern(out)
     # Hinweis: Nachbarn-Wünsche, sobald beide eingezogen sind (Karte setzt sie automatisch nebeneinander)
     namen = {r[0].lower().lstrip("@") for r in sauber}
     for paar in insel.get("nachbarn") or []:
