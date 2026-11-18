@@ -97,14 +97,15 @@ GL = """.gl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-
     .gl small { display: block; font-weight: 700; font-size: 26px; letter-spacing: .32em; text-transform: uppercase; opacity: .85; }
     .gl b { display: block; font-weight: 900; font-size: 92px; letter-spacing: -.02em; line-height: 1; }"""
 
-# s01 – Titel: MUSCHEL-TAL · 3D
+# s01 – Auf dieser Insel wohnen alle meine Follower (ab Sekunde 0, ohne Musik)
 scene("s01", GL + """
-    #t1 { top: 250px; }
-    #t1 b span { color: #ffe08a; text-shadow: 0 4px 20px rgba(120,20,60,.5); }
-    #t1 i { display: inline-block; margin-left: 14px; padding: 4px 16px 6px; border-radius: 14px; background: #fff; color: #e8467c; font-style: normal; font-size: 56px; font-weight: 900; vertical-align: 14px; }""",
-"""      <div id="t1" class="gl"><small>Willkommen in</small><b><span>Muschel-Tal</span><i>3D</i></b></div>""",
-"""      const t = line("L1")[0];
-      tl.fromTo("#t1", { opacity: 0, y: 40, filter: "blur(12px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: .7, ease: "power3.out" }, Math.max(0, t - .3));""")
+    #t1 { top: 230px; padding: 26px 44px 32px; }
+    #t1 small { font-size: 40px; letter-spacing: .02em; text-transform: none; opacity: 1; font-weight: 800; }
+    #t1 b { font-size: 96px; line-height: 1.02; }
+    #t1 b span { color: #ffe08a; text-shadow: 0 4px 20px rgba(120,20,60,.5); }""",
+"""      <div id="t1" class="gl"><small>Auf dieser Insel wohnen</small><b>alle meine<br><span>Follower</span></b></div>""",
+"""      tl.fromTo("#t1", { opacity: 0, scale: .85, filter: "blur(12px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .45, ease: "back.out(1.7)" }, 0);
+      tl.fromTo("#t1 b span", { scale: 1 }, { scale: 1.12, duration: .25, yoyo: true, repeat: 1, ease: "power2.out", transformOrigin: "50% 60%" }, at("L1", "Follower") - .05);""")
 
 # s02 – Jede Hütte = echter Follower
 scene("s02", GL + """
