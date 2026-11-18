@@ -97,6 +97,11 @@ export default async (req) => {
   if ((await sha(req.headers.get("x-pw") || "")) !== PW_HASH) return json({ fehler: "Passwort" }, 403);
   // Einmalig (18.11.): Testkäufe aus der Statistik entfernen – Kauf-Schritte (Haken, zur Bezahlung, bezahlt/abgebrochen, Fehler)
   // der Testtage 17./18.11. löschen und die Tagessummen neu berechnen lassen, als hätte es die Testkäufe nie gegeben
+  // Einmalig (18.11.): Statistik komplett zurücksetzen – Start mit echten Besuchern (Testphase hinter der Zugangssperre zählt nicht)
+  if (!(await store.get("x/bereinigt/voll-1"))) {
+    for (const k of [...await liste(store, "s/"), ...await liste(store, "agg/")]) await store.delete(k);
+    await store.set("x/bereinigt/voll-1", String(Date.now())); await store.set("x/bereinigt/testkauf-1", String(Date.now()));
+  }
   if (!(await store.get("x/bereinigt/testkauf-1"))) {
     const TEST = /^(pak_haken|pak_kasse.*|pak_fehler|kauf_ok|kauf_abbruch)$/;
     for (const d of ["2026-11-17", "2026-11-18"]) {
