@@ -65,6 +65,20 @@ async function buch(store, nm) {
 // [Name, Lauf-Nr., optional: ab Zeitpunkt (ms) – dann werden auch Erfolge und Story-Buchungen ab diesem Zeitpunkt gelöscht]
 const TEST_12_11 = 1794438000000; // 12.11.2026 0:00 Uhr (Berlin): Testlauf mit mehreren Testern
 const RESET = [...["marina.cgnn", "ju1e_smt", "mimposible", "maja.gnw", "eeli_mxo", "luna.gsn02", "toca_lexi00"].map(n => [n, 1, TEST_12_11]), ["haltsmaulimmeroderso", 1, 0, { kasse: false }]];// 17.11.: Beanspruchung entfernt, Konto auf 0 (Spenden in der Inselkasse bleiben)
+// Vollständiges Zurücksetzen eines Test-Kontos: alles, was der Name getan hat, wird gelöscht (Konto, Aufgaben, Ausrüstung,
+// Sticker, Fische, Sandburg-Beiträge, Likes, Anklopfen, Flaschenpost, Premium/Startangebot, Echtgeld-Testkäufe, Einladungs-Bonus
+// des Einladenden, einzigartige Items, alle Erfolge, Spenden). Danach startet der Name wieder bei 0 und kann neu beansprucht werden.
+async function vollReset(store, n) {
+  for (const k of await liste(store, "")) {
+    const t = k.split("/");
+    if (k.startsWith("x/reset/") || k.startsWith("x/zurueck/") || k.startsWith("x/nullung/")) continue;
+    let weg = (["c", "a", "s", "b", "q"].includes(t[0]) && t[1] === n) || (t[0] === "x" && t.slice(2).includes(n)) || (t[0] === "b" && t[2] === "einladung" && t[3] === n);
+    if (!weg && t[0] === "x" && (t[1] === "einzig" || t[1] === "euro")) { const v = String((await store.get(k)) || ""); weg = v === n || v.includes('"nm":"' + n + '"'); }
+    if (weg) await store.delete(k);
+  }
+  const es = getStore("erfolge");
+  for (const k of await liste(es, "e/" + n + "/")) await es.delete(k);
+}
 async function zuruecksetzen(store) {
   for (const [n, nr, ab, opt] of RESET) {
     const mk = "x/reset/" + n + "/" + nr;
@@ -78,6 +92,7 @@ async function zuruecksetzen(store) {
     }
     const kasse = getStore({ name: "inselkasse", consistency: "strong" });
     if (!(opt && opt.kasse === false)) for (const k of await liste(kasse, "s/" + n + "/")) await kasse.delete(k);
+    if (opt && opt.voll) await vollReset(store, n);
     if (ab) {
       // im Test verdiente Erfolge und Story-Buchungen (Zeitstempel im Schlüssel) ebenfalls entfernen
       const es = getStore("erfolge");
