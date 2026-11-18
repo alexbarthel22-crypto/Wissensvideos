@@ -97,15 +97,19 @@ GL = """.gl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-
     .gl small { display: block; font-weight: 700; font-size: 26px; letter-spacing: .32em; text-transform: uppercase; opacity: .85; }
     .gl b { display: block; font-weight: 900; font-size: 92px; letter-spacing: -.02em; line-height: 1; }"""
 
-# s01 – Auf dieser Insel wohnen alle meine Follower (ab Sekunde 0, ohne Musik)
+# s01 – AUF DIESER INSEL WOHNEN ALLE MEINE FOLLOWER – groß, ab Sekunde 0, mit Blitz
 scene("s01", GL + """
-    #t1 { top: 230px; padding: 26px 44px 32px; }
-    #t1 small { font-size: 40px; letter-spacing: .02em; text-transform: none; opacity: 1; font-weight: 800; }
-    #t1 b { font-size: 96px; line-height: 1.02; }
-    #t1 b span { color: #ffe08a; text-shadow: 0 4px 20px rgba(120,20,60,.5); }""",
-"""      <div id="t1" class="gl"><small>Auf dieser Insel wohnen</small><b>alle meine<br><span>Follower</span></b></div>""",
-"""      tl.fromTo("#t1", { opacity: 0, scale: .85, filter: "blur(12px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .45, ease: "back.out(1.7)" }, 0);
-      tl.fromTo("#t1 b span", { scale: 1 }, { scale: 1.12, duration: .25, yoyo: true, repeat: 1, ease: "power2.out", transformOrigin: "50% 60%" }, at("L1", "Follower") - .05);""")
+    #fl1 { position: absolute; inset: 0; background: #fff; }
+    #t1 { top: 220px; padding: 28px 46px 36px; }
+    #t1 small { font-size: 50px; letter-spacing: 0; text-transform: none; opacity: 1; font-weight: 900; color: #fff; }
+    #t1 b { font-size: 132px; line-height: .98; letter-spacing: -.02em; }
+    #t1 b span { color: #ffe08a; text-shadow: 0 6px 30px rgba(255,120,60,.6); }""",
+"""      <div id="t1" class="gl"><small>Auf dieser Insel wohnen</small><b>ALLE meine<br><span>Follower</span></b></div>
+      <div id="fl1"></div>""",
+"""      tl.fromTo("#fl1", { opacity: .9 }, { opacity: 0, duration: .35, ease: "power2.out" }, 0);
+      tl.fromTo("#t1", { scale: 1.45, rotation: -4 }, { scale: 1, rotation: 0, duration: .4, ease: "back.out(2.2)" }, 0);
+      tl.fromTo("#t1 b", { scale: 1 }, { scale: 1.1, duration: .18, yoyo: true, repeat: 1, ease: "power2.out", transformOrigin: "50% 50%" }, at("L1", "ALLE") - .03);
+      tl.fromTo("#t1 b span", { scale: 1 }, { scale: 1.16, duration: .2, yoyo: true, repeat: 1, ease: "power2.out", transformOrigin: "50% 60%" }, at("L1", "Follower") - .03);""", blur=False)
 
 # s02 – Jede Hütte = echter Follower
 scene("s02", GL + """
@@ -114,12 +118,25 @@ scene("s02", GL + """
 """      const t = line("L2b")[0];
       tl.fromTo("#t2", { opacity: 0, y: 40, filter: "blur(12px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: .6, ease: "power3.out" }, t - .2);""")
 
-# s03 – Gebäude-Namen erscheinen passend zum Kameraflug
-BN = [("L3", "Dönerbude", "🥙 Dönerbude"), ("L3", "Bäckerei", "🥐 Bäckerei"), ("L3", "Strandbar", "🍹 Strandbar"), ("L3", "Tierheim", "🐾 Tierheim · im Bau"), ("L3k", "Kokos-Club", "🪩 Kokos-Club"), ("L3k", "Game", "🎮 Game Lagoon")]
+# s02n – Siehst du dich? → Kommentar „Wo bin ich?“
+scene("s02n", GL + """
+    #t2n { top: 230px; } #t2n b { font-size: 104px; color: #ffe08a; }
+    #c2n { position: absolute; left: 90px; top: 520px; display: flex; gap: 18px; align-items: center; padding: 18px 30px 20px 18px; border-radius: 40px; background: rgba(255,255,255,.96); box-shadow: 0 16px 40px rgba(0,0,0,.3); font-family: "Inter", sans-serif; }
+    #c2n i { width: 72px; height: 72px; border-radius: 50%; background: linear-gradient(135deg,#ff6fa3,#ffd23f); display: grid; place-items: center; font-style: normal; font-size: 40px; }
+    #c2n div small { display: block; font-size: 26px; color: #888; font-weight: 700; } #c2n div b { font-size: 50px; color: #161823; font-weight: 900; }""",
+"""      <div id="t2n" class="gl"><b>Siehst du dich? 👀</b></div>
+      <div id="c2n"><i>💬</i><div><small>Dein Kommentar</small><b>Wo bin ich?</b></div></div>""",
+"""      const t = line("L2c")[0];
+      tl.fromTo("#t2n", { opacity: 0, scale: 1.3 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2)" }, t - .1);
+      tl.fromTo("#c2n", { opacity: 0, x: -60, scale: .8 }, { opacity: 1, x: 0, scale: 1, duration: .4, ease: "back.out(2)" }, at("L2c", "Wenn"));
+      tl.to("#c2n", { scale: 1.06, duration: .25, yoyo: true, repeat: 3, ease: "sine.inOut" }, at("L2c", "Wenn") + .8);""")
+
+# s03 – Gebäude-Namen erscheinen passend zu den Schnitten
+BN = [("L3", "Dönerbude", "🥙 Dönerbude"), ("L3", "Bäckerei", "🥐 Bäckerei"), ("L3s", "Strandbar", "🍹 Strandbar"), ("L3s", "Tierheim", "🐾 Tierheim · im Bau"), ("L3k", "Kokos-Club", "🪩 Kokos-Club"), ("L3g", "Game", "🎮 Game Lagoon"), ("L3c", "Freiluftkino", "🎬 Freiluftkino")]
 scene("s03", GL + """
-    .bn { top: 250px; } .bn b { font-size: 70px; }""",
-"""""" + "".join(f'<div id="bn{i}" class="gl bn"><small>{"Hauptinsel" if l == "L3" else "Kokos-Küste"}</small><b>{t}</b></div>' for i, (l, w, t) in enumerate(BN)) + """""",
-"""""" + "\n".join(f'      tl.fromTo("#bn{i}", {{ opacity: 0, y: 30, filter: "blur(10px)" }}, {{ opacity: 1, y: 0, filter: "blur(0px)", duration: .3, ease: "power3.out" }}, at("{l}", "{w}") - .05);' + (f' tl.to("#bn{i}", {{ opacity: 0, y: -20, duration: .2 }}, at("{BN[i+1][0]}", "{BN[i+1][1]}") - .25);' if i < len(BN) - 1 else ' tl.to("#bn5", { opacity: 0, duration: .25 }, line("L3k")[1] + .2);') for i, (l, w, t) in enumerate(BN)))
+    .bn { top: 240px; } .bn b { font-size: 70px; }""",
+"""""" + "".join(f'<div id="bn{i}" class="gl bn"><small>{"Hauptinsel" if l in ("L3", "L3s") else "Kokos-Küste"}</small><b>{t}</b></div>' for i, (l, w, t) in enumerate(BN)) + """""",
+"""""" + "\n".join(f'      tl.fromTo("#bn{i}", {{ opacity: 0, scale: 1.25 }}, {{ opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }}, at("{l}", "{w}") - .25);' + (f' tl.to("#bn{i}", {{ opacity: 0, duration: .15 }}, at("{BN[i+1][0]}", "{BN[i+1][1]}") - .4);' if i < len(BN) - 1 else ' tl.to("#bn6", { opacity: 0, duration: .25 }, line("L3c")[1] + .5);') for i, (l, w, t) in enumerate(BN)))
 
 # s04 – 790 Bewohner
 scene("s04", GL + """
@@ -129,13 +146,36 @@ scene("s04", GL + """
       tl.fromTo("#t4", { opacity: 0, y: 40, filter: "blur(12px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: .6, ease: "power3.out" }, t - .2);
       count(tl, "#n4", 0, 790, t, 1.0, "", "", "power2.out");""")
 
-# s05 – Folg mir
+# s05 – Freunde markieren = Nachbarn werden
 scene("s05", GL + """
-    #t5 { top: 250px; } #t5 b { font-size: 76px; }
-    #f5 { position: absolute; left: 0; right: 0; margin: 0 auto; top: 520px; width: 440px; height: 112px; border-radius: 56px; background: #fe2c55; color: #fff; font-family: "Inter", sans-serif; font-weight: 900; font-size: 50px; display: grid; place-items: center; box-shadow: 0 18px 40px rgba(254,44,85,.45); }""",
-"""      <div id="t5" class="gl"><small>Deine Hütte wartet</small><b>@muscheltal</b></div>
-      <div id="f5">+ Folgen</div>""",
+    #t5 { top: 230px; } #t5 b { font-size: 84px; } #t5 b span { color: #7dffb0; }
+    #c5 { position: absolute; left: 90px; top: 540px; display: flex; gap: 18px; align-items: center; padding: 18px 30px 20px 18px; border-radius: 40px; background: rgba(255,255,255,.96); box-shadow: 0 16px 40px rgba(0,0,0,.3); font-family: "Inter", sans-serif; }
+    #c5 i { width: 72px; height: 72px; border-radius: 50%; background: linear-gradient(135deg,#2fb3a0,#7dffb0); display: grid; place-items: center; font-style: normal; font-size: 40px; }
+    #c5 div small { display: block; font-size: 26px; color: #888; font-weight: 700; } #c5 div b { font-size: 46px; color: #161823; font-weight: 900; } #c5 div b em { color: #fe2c55; font-style: normal; }""",
+"""      <div id="t5" class="gl"><small>Neben Freunden wohnen?</small><b>👯 <span>Markier sie!</span></b></div>
+      <div id="c5"><i>🏝️</i><div><small>Dein Kommentar</small><b><em>@deinbestie</em> wir ziehen ein!</b></div></div>""",
+"""      const t = line("L5f")[0];
+      tl.fromTo("#t5", { opacity: 0, scale: 1.3 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2)" }, t - .1);
+      tl.fromTo("#c5", { opacity: 0, x: -60, scale: .8 }, { opacity: 1, x: 0, scale: 1, duration: .4, ease: "back.out(2)" }, at("L5f", "Markier") - .1);""")
+
+# s06 – Was fehlt euch noch? Kommentiert es!
+scene("s06", GL + """
+    #t6 { top: 230px; } #t6 b { font-size: 92px; color: #ffe08a; }
+    #c6 { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 520px; padding: 20px 40px 24px; border-radius: 44px; background: #fe2c55; color: #fff; font-family: "Inter", sans-serif; font-weight: 900; font-size: 56px; box-shadow: 0 18px 40px rgba(254,44,85,.45); }""",
+"""      <div id="t6" class="gl"><small>Eure Inselwelt</small><b>Was fehlt noch? 🤔</b></div>
+      <div id="c6">💬 Kommentiert es!</div>""",
+"""      const t = line("L5k")[0];
+      tl.fromTo("#t6", { opacity: 0, scale: 1.3 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2)" }, t - .1);
+      tl.fromTo("#c6", { opacity: 0, scale: .6 }, { opacity: 1, scale: 1, duration: .4, ease: "back.out(2.2)" }, at("L5k", "Kommentiert") - .1);
+      tl.to("#c6", { scale: 1.07, duration: .25, yoyo: true, repeat: 3, ease: "sine.inOut" }, at("L5k", "Kommentiert") + .5);""")
+
+# s07 – Folg mir
+scene("s07", GL + """
+    #t7 { top: 250px; } #t7 b { font-size: 76px; }
+    #f7 { position: absolute; left: 0; right: 0; margin: 0 auto; top: 520px; width: 440px; height: 112px; border-radius: 56px; background: #fe2c55; color: #fff; font-family: "Inter", sans-serif; font-weight: 900; font-size: 50px; display: grid; place-items: center; box-shadow: 0 18px 40px rgba(254,44,85,.45); }""",
+"""      <div id="t7" class="gl"><small>Deine Hütte wartet</small><b>@muscheltal</b></div>
+      <div id="f7">+ Folgen</div>""",
 """      const t = line("L5")[0], fo = at("L5", "Folg");
-      tl.fromTo("#t5", { opacity: 0, y: 40, filter: "blur(12px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: .6, ease: "power3.out" }, t - .2);
-      tl.fromTo("#f5", { opacity: 0, scale: .6 }, { opacity: 1, scale: 1, duration: .45, ease: "back.out(2)" }, fo);
-      tl.to("#f5", { scale: 1.06, duration: .3, yoyo: true, repeat: 5, ease: "sine.inOut" }, fo + .5);""", blur=False)
+      tl.fromTo("#t7", { opacity: 0, y: 40, filter: "blur(12px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: .6, ease: "power3.out" }, t - .2);
+      tl.fromTo("#f7", { opacity: 0, scale: .6 }, { opacity: 1, scale: 1, duration: .45, ease: "back.out(2)" }, fo);
+      tl.to("#f7", { scale: 1.06, duration: .3, yoyo: true, repeat: 5, ease: "sine.inOut" }, fo + .5);""", blur=False)
