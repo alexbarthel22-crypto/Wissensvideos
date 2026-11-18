@@ -13,7 +13,7 @@
     "bars": false,
     "color": "#ffffff",
     "top": 1180,
-    "css": ".inner { font-family: 'Inter', sans-serif; font-weight: 800; letter-spacing: -.01em; line-height: 1.12; } .inner .w { color: #fff; text-shadow: 0 3px 16px rgba(30,10,40,.7), 0 1px 2px rgba(0,0,0,.5); } .inner .w.k-y, .inner .w.k-g, .inner .w.k-p { color: #ffd36a; } .inner { background: rgba(25,10,35,.5); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 30px; padding: 14px 20px 18px; box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.25); }"
+    "css": ".inner { font-family: 'Inter', sans-serif; font-weight: 800; letter-spacing: -.01em; line-height: 1.12; } .inner .w { color: #fff; text-shadow: 0 3px 16px rgba(30,10,40,.7), 0 1px 2px rgba(0,0,0,.5); } .inner .w.k-y, .inner .w.k-g, .inner .w.k-p { color: #ffd36a; } .inner { background: rgba(25,10,35,.5); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 30px; padding: 14px 20px 18px; box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.25); } #cg0, #cg1 { display:none !important; }"
   },
   "scenes": [
     {
@@ -29,7 +29,7 @@
       "lines": [
         {
           "id": "L1",
-          "text": "Das ist *p:Muschel-Tal – / zum ersten Mal in *y:3D|Drei-De!",
+          "text": "Auf dieser Insel wohnen / *y:alle meine Follower!",
           "speed": 1.05,
           "style": "Style: a young German guy, around 20, amazed and excited, showing his followers something spectacular for the first time, warm and enthusiastic, natural German, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
           "pause": 0.4
@@ -120,7 +120,7 @@
     "src": "assets/bg.mp4"
   },
   "music": {
-    "src": "assets/music/suedsee.wav",
+    "src": "assets/music/suedsee_spaet.wav",
     "volume": 1.0
   },
   "ambience": {
