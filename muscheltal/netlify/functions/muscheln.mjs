@@ -14,12 +14,31 @@ const NAME = /^@[a-z0-9._]{1,40}$/;
 const ERF_CLIENT = new Set(["LUPE", "AUF", "UNTER", "SCOOT", "SCHOEPFER", "WAL", "SCHILD", "MOND", "WELT", "NACHT"]);
 const STICKER = new Set(["palast", "doener", "bar", "villa", "acai", "werkstatt", "baeckerei", "nagel", "markt", "kiosk", "boba", "pizza", "tierheim", "yacht", "cocobay", "kokosbad", "coast", "kokos", "cococare", "gaming", "feuer", "anleger", "ev_wochenmarkt", "ev_flohmarkt", "ev_konzert", "ev_feuerwerk", "sandburg", "angeln", "ev_kino"]);
 const SERIE = [3, 5, 8, 12, 17, 23, 32];
-// 🎣 Angelsteg: 30 Fänge in den bekannten Güteklassen (0 Gewöhnlich … 8 Kosmisch – Einzigartig gibt es beim Angeln nicht; Gewichte wie im Shop); nur selten gibt es zusätzlich 1–3 Muscheln
+// 🎣 Angelstellen: je Insel 15 eigene Fänge in den Güteklassen 0 Gewöhnlich … 8 Kosmisch (kein Einzigartig). Manche beißen nur zu
+// bestimmter Tageszeit (Berlin) oder bei bestimmtem Wetter (Hamburg, vom Server geprüft). Nur selten gibt es zusätzlich 1–3 Muscheln.
 const GUETE = [30, 22, 15, 11, 8, 6, 4, 2.4, 1.2, 0.4];
-export const FISCHE = {stiefel: 0, treibholz: 0, sardine: 0, krabbe: 0, garnele: 1, schwamm: 1, seestern: 1, schnecke: 1, clown: 2, kugel: 2, tinte: 2, hummer: 3, okto: 3, kompass: 3, hai: 4, anker: 4, koralle: 4, schluessel: 4, auster: 5, amphore: 5, ring: 5, drache: 6, dreizack: 6, geist: 6, krone: 7, diamant: 7, muenze: 7, sternfisch: 8, meteorit: 8, mondfisch: 8};
+export const FISCHE = {stiefel: [0, 0, ""], sardine: [0, 0, ""], krabbe: [1, 0, ""], seestern: [1, 0, ""], kugel: [2, 0, ""], tinte: [2, 0, "nacht"], hummer: [3, 0, ""], kompass: [3, 0, "regen"], hai: [4, 0, ""], schluessel: [4, 0, "morgen"], ring: [5, 0, ""], amphore: [5, 0, "sturm"], geist: [6, 0, "nacht"], krone: [7, 0, "morgen"], mondfisch: [8, 0, "klarnacht"], treibholz: [0, 1, ""], garnele: [0, 1, ""], schnecke: [1, 1, ""], schwamm: [1, 1, ""], clown: [2, 1, ""], kokosnuss: [2, 1, "sonne"], okto: [3, 1, ""], koralle: [3, 1, "sonne"], anker: [4, 1, ""], auster: [4, 1, "regen"], dreizack: [5, 1, ""], muenze: [5, 1, "abend"], drache: [6, 1, "sturm"], diamant: [7, 1, "nacht"], sternfisch: [8, 1, "klarnacht"]};
 const zz = () => crypto.getRandomValues(new Uint32Array(1))[0] / 2 ** 32;
-const PRO = {}; for (const t of Object.values(FISCHE)) PRO[t] = (PRO[t] || 0) + 1;// Fänge je Güteklasse
-function fischZiehen() { const sum = Object.values(FISCHE).reduce((a, t) => a + GUETE[t] / PRO[t], 0), r = zz() * sum; let s = 0; for (const [id, t] of Object.entries(FISCHE)) { s += GUETE[t] / PRO[t]; if (r < s) return id; } return "sardine"; }
+const PRO = {}; for (const [t, i] of Object.values(FISCHE)) PRO[i + "/" + t] = (PRO[i + "/" + t] || 0) + 1;// Fänge je Insel und Güteklasse
+let WJ = { t: 0, code: 0, wind: 0 };
+async function wetterJetzt() {
+  if (Date.now() - WJ.t < 6e5) return WJ;
+  try { const r = await fetch("https://api.open-meteo.com/v1/forecast?latitude=" + WLAT + "&longitude=" + WLON + "&current=weather_code,wind_speed_10m&timezone=GMT&forecast_days=1"); const j = await r.json(); WJ = { t: Date.now(), code: j.current.weather_code, wind: j.current.wind_speed_10m }; } catch (e) {}
+  return WJ;
+}
+function bedingungOk(b, w, h) {
+  const c = w.code, regen = (c >= 51 && c <= 67) || (c >= 80 && c <= 82) || c >= 95, klar = c <= 2, nacht = h >= 22 || h < 5;
+  if (!b) return true;
+  if (b === "nacht") return nacht; if (b === "morgen") return h >= 5 && h < 9; if (b === "abend") return h >= 18 && h < 22;
+  if (b === "regen") return regen; if (b === "sturm") return c >= 95 || w.wind >= 35; if (b === "sonne") return klar && h >= 8 && h < 18; if (b === "klarnacht") return klar && nacht;
+  return false;
+}
+async function fischZiehen(insel) {
+  const w = await wetterJetzt(), h = Number(new Intl.DateTimeFormat("en-GB", { timeZone: TZ, hour: "2-digit", hourCycle: "h23" }).format(new Date()));
+  const L = Object.entries(FISCHE).filter(([, [t, i, b]]) => i === insel && bedingungOk(b, w, h));
+  const sum = L.reduce((a, [, [t, i]]) => a + GUETE[t] / PRO[i + "/" + t], 0), r = zz() * sum; let s = 0;
+  for (const [id, [t, i]] of L) { s += GUETE[t] / PRO[i + "/" + t]; if (r < s) return id; } return L[0][0];
+}
 // 🏰 Sandburg: Woche Mo–So; Sonntag ab 18 Uhr holt die Flut die Burg (dann kein Bauen)
 function flutJetzt() { const p = Object.fromEntries(new Intl.DateTimeFormat("en-US", { timeZone: "Europe/Berlin", weekday: "short", hour: "2-digit", hourCycle: "h23" }).formatToParts(new Date()).map(x => [x.type, x.value])); return p.weekday === "Sun" && +p.hour >= 18; }
 const TZ = "Europe/Berlin";
@@ -64,7 +83,21 @@ async function buch(store, nm) {
 // Läuft je Eintrag genau einmal (Merker x/reset/<name>/<nr>); danach kann der Name neu beansprucht werden.
 // [Name, Lauf-Nr., optional: ab Zeitpunkt (ms) – dann werden auch Erfolge und Story-Buchungen ab diesem Zeitpunkt gelöscht]
 const TEST_12_11 = 1794438000000; // 12.11.2026 0:00 Uhr (Berlin): Testlauf mit mehreren Testern
-const RESET = [...["marina.cgnn", "ju1e_smt", "mimposible", "maja.gnw", "eeli_mxo", "luna.gsn02", "toca_lexi00"].map(n => [n, 1, TEST_12_11]), ["haltsmaulimmeroderso", 1, 0, { kasse: false }]];// 17.11.: Beanspruchung entfernt, Konto auf 0 (Spenden in der Inselkasse bleiben)
+const RESET = [...["marina.cgnn", "ju1e_smt", "mimposible", "maja.gnw", "eeli_mxo", "luna.gsn02", "toca_lexi00"].map(n => [n, 1, TEST_12_11]), ["haltsmaulimmeroderso", 1, 0, { kasse: false }], ["marie_nwd0", 1, 0, { voll: true }]];// 18.11.: Test-Konto (Zahlung + Events) komplett zurück auf 0// 17.11.: Beanspruchung entfernt, Konto auf 0 (Spenden in der Inselkasse bleiben)
+// Vollständiges Zurücksetzen eines Test-Kontos: alles, was der Name getan hat, wird gelöscht (Konto, Aufgaben, Ausrüstung,
+// Sticker, Fische, Sandburg-Beiträge, Likes, Anklopfen, Flaschenpost, Premium/Startangebot, Echtgeld-Testkäufe, Einladungs-Bonus
+// des Einladenden, einzigartige Items, alle Erfolge, Spenden). Danach startet der Name wieder bei 0 und kann neu beansprucht werden.
+async function vollReset(store, n) {
+  for (const k of await liste(store, "")) {
+    const t = k.split("/");
+    if (k.startsWith("x/reset/") || k.startsWith("x/zurueck/") || k.startsWith("x/nullung/")) continue;
+    let weg = (["c", "a", "s", "b", "q"].includes(t[0]) && t[1] === n) || (t[0] === "x" && t.slice(2).includes(n)) || (t[0] === "b" && t[2] === "einladung" && t[3] === n);
+    if (!weg && t[0] === "x" && (t[1] === "einzig" || t[1] === "euro")) { const v = String((await store.get(k)) || ""); weg = v === n || v.includes('"nm":"' + n + '"'); }
+    if (weg) await store.delete(k);
+  }
+  const es = getStore("erfolge");
+  for (const k of await liste(es, "e/" + n + "/")) await es.delete(k);
+}
 async function zuruecksetzen(store) {
   for (const [n, nr, ab, opt] of RESET) {
     const mk = "x/reset/" + n + "/" + nr;
@@ -78,6 +111,7 @@ async function zuruecksetzen(store) {
     }
     const kasse = getStore({ name: "inselkasse", consistency: "strong" });
     if (!(opt && opt.kasse === false)) for (const k of await liste(kasse, "s/" + n + "/")) await kasse.delete(k);
+    if (opt && opt.voll) await vollReset(store, n);
     if (ab) {
       // im Test verdiente Erfolge und Story-Buchungen (Zeitstempel im Schlüssel) ebenfalls entfernen
       const es = getStore("erfolge");
@@ -132,7 +166,7 @@ async function aufraeumen(store) {
     t[1] = id; await kasse.set(t.join("/"), (await kasse.get(k)) || "1"); await kasse.delete(k);
   }
 }
-const TEXT = { login: "Login-Serie", quest: "Aufgabe", qbonus: "Alle 3 Aufgaben", shell: "Schwebende Muschel", erf: "Neuer Erfolg", story: "Story geteilt", spende: "Spende Inselkasse", tresor: "Tresor des Schöpfers", code: "Geheimcode aus dem Video", einladung: "Freund eingeladen", kauf: "Muschel-Shop", null: "Neustart: alle Konten auf 0", stern: "Sternschnuppe 🌠", angeln: "Fang am Angelsteg 🎣", euro: "Muschel-Paket gekauft 💎", "euro-zurueck": "Muschel-Paket erstattet", regenbogen: "Schatz am Regenbogen 🌈", flasche: "Flaschenpost-Quiz 🍾", geschenk: "Tagesgeschenk 🎁" };
+const TEXT = { login: "Login-Serie", quest: "Aufgabe", qbonus: "Alle 3 Aufgaben", shell: "Schwebende Muschel", erf: "Neuer Erfolg", story: "Story geteilt", spende: "Spende Inselkasse", tresor: "Tresor des Schöpfers", code: "Geheimcode aus dem Video", einladung: "Freund eingeladen", kauf: "Muschel-Shop", null: "Neustart: alle Konten auf 0", stern: "Sternschnuppe 🌠", angeln: "Fang am Angelsteg 🎣", euro: "Muschel-Paket gekauft/geschenkt 💎", "euro-zurueck": "Muschel-Paket erstattet", regenbogen: "Schatz am Regenbogen 🌈", flasche: "Flaschenpost-Quiz 🍾", geschenk: "Tagesgeschenk 🎁" };
 
 // Einmal-Aufgaben (Zurücksetzen, Aufräumen) nur einmal pro Tag und Server-Instanz prüfen – spart bei jeder Muschel-Aktion
 // rund 10 Speicherabfragen (schnellere Gutschriften)
@@ -274,7 +308,7 @@ export default async (req) => {
   // öffentlich: nur die Anzahl der Likes eines Passes (für Besucher ohne beanspruchten Namen)
   if (req.method === "GET" && url.searchParams.get("likes")) {
     const an = String(url.searchParams.get("likes")).toLowerCase().replace(/^@/, "");
-    if (!BEWOHNER.has(an)) return json({ n: 0 });
+    if (!BEWOHNER.has(an) && an !== "echter.alex") return json({ n: 0 });
     return json({ n: (await liste(store, "x/like/" + an + "/")).length });
   }
   if (req.method === "GET" && url.searchParams.get("sand")) {
@@ -493,9 +527,10 @@ export default async (req) => {
   }
   // 🎣 Angeln: 1 Fang pro Tag (der Server bestimmt den Fisch); jeder Fisch kommt ins Fisch-Album
   if (act === "angeln") {
+    const insel = Number(d.insel) === 1 ? 1 : 0, tagId = heute + "-" + insel + "_";
     const B0 = await buch(store, nm);
-    if (B0.some(e => e.art === "angeln" && e.id.startsWith(heute))) return json({ ok: false, grund: "schon" });
-    const f = fischZiehen(), betrag = zz() < 0.15 ? 1 + Math.floor(zz() * 3) : 0, ok = await setze("angeln", heute + "_" + f, betrag);
+    if (B0.some(e => e.art === "angeln" && e.id.startsWith(tagId))) return json({ ok: false, grund: "schon" });
+    const f = await fischZiehen(insel), betrag = zz() < 0.15 ? 1 + Math.floor(zz() * 3) : 0, ok = await setze("angeln", tagId + f, betrag);
     if (ok) await store.set("x/fisch/" + nm + "/" + f, String(Date.now()));
     const B = await buch(store, nm);
     return json({ ok, grund: ok ? null : "schon", fisch: ok ? f : null, betrag: ok ? betrag : 0, stand: B.reduce((s, e) => s + e.a, 0), fische: (await liste(store, "x/fisch/" + nm + "/")).map(k => k.split("/")[3]) });
@@ -508,7 +543,7 @@ export default async (req) => {
   // ❤️ Muschelpass liken: einmal je Pass (nochmal tippen = Like zurücknehmen); nie den eigenen
   if (act === "like" || act === "likeinfo") {
     const an = String(d.an || "").toLowerCase().replace(/^@/, "");
-    if (!BEWOHNER.has(an) || an === nm) return json({ ok: false, grund: "wer" });
+    if ((!BEWOHNER.has(an) && an !== "echter.alex") || an === nm) return json({ ok: false, grund: "wer" });// auch der Pass des Schöpfers kann geliked werden
     const k = "x/like/" + an + "/" + nm; let hab = !!(await store.get(k));
     if (act === "like") { if (hab) await store.delete(k); else await store.set(k, String(Date.now())); hab = !hab; }
     return json({ ok: true, hab, n: (await liste(store, "x/like/" + an + "/")).length });
@@ -572,9 +607,10 @@ export default async (req) => {
   if (act === "kauf") {
     const id = String(d.id || ""), it = SHOP.items[id];
     if (!it) return json({ ok: false, grund: "item" });
-    if (it[0] === "tier") { if (!tierheimOffen() || !(await tierAngebot(store, heute)).includes(id)) return json({ ok: false, grund: "angebot" }); }// Tiere nur im Tierheim
-    else if (!(await angebot(store, heute)).includes(id)) return json({ ok: false, grund: "angebot" });
-    const B = await buch(store, nm), stand = B.reduce((s, e) => s + e.a, 0);
+    if (it[0] === "tier" && !tierheimOffen()) return json({ ok: false, grund: "angebot" });// Tiere nur im Tierheim
+    const [L, B] = await Promise.all([it[0] === "tier" ? tierAngebot(store, heute) : angebot(store, heute), buch(store, nm)]);// gleichzeitig laden (schneller)
+    if (!L.includes(id)) return json({ ok: false, grund: "angebot" });
+    const stand = B.reduce((s, e) => s + e.a, 0);
     if (besitz(B).includes(id)) return json({ ok: false, grund: "schon", stand });
     if (stand < it[3]) return json({ ok: false, grund: "geld", stand });
     if (it[2] === 10) {// Einzigartig: nur der erste Käufer bekommt es
@@ -606,12 +642,14 @@ export default async (req) => {
     const likeN = (await liste(store, "x/like/" + nm + "/")).length;
     const klopfer = [];// wer hat seit dem letzten Besuch geklopft? (einmal melden, dann löschen)
     for (const k of await liste(store, "x/klopfan/" + nm + "/")) { const n = k.split("/")[3].split("-").slice(1).join("-"); if (n && !klopfer.includes(n)) klopfer.push(n); await store.delete(k); }
+    const geschenke = [];// 🎁 Muschel-Geschenke (Echtgeld) seit dem letzten Besuch: einmal melden, dann löschen
+    for (const k of await liste(store, "x/geschenkt/" + nm + "/")) { try { const g = JSON.parse((await store.get(k)) || "{}"); if (g.von) geschenke.push({ von: "@" + g.von, m: g.m }); } catch (e) {} await store.delete(k); }
     const nachbar = await nachbarErf(store, nm);// schon beanspruchte Nachbarn bekommen den Erfolg beim nächsten Besuch
     const B = await buch(store, nm), s = await serie(B);
     const posten = B.filter(e => e.a).map(e => ({ art: e.art, id: e.id, a: e.a, t: TEXT[e.art] || e.art }))
       .sort((x, y) => (y.id > x.id ? 1 : -1)).slice(0, 60);
     return json({
-      ok: true, nachbar, live, eingeladen, klopfer, premium: !!(await store.get("x/premium/" + nm)), startDa: !(await store.get("x/start/" + nm)), likes: { n: likeN }, neu: likeN >= 25 && (await erfGib("HERZ")) ? ["HERZ"] : [], sticker: (await liste(store, "x/sticker/" + nm + "/")).map(k => k.split("/")[3]), fische: (await liste(store, "x/fisch/" + nm + "/")).map(k => k.split("/")[3]), angelnHeute: (B.find(e => e.art === "angeln" && e.id.startsWith(heute)) || {}).id?.split("_")[1] || null, sandHeute: !!(await store.get("x/sand/" + woche(heute) + "/" + nm + "/" + heute)), geschenk: B.some(e => e.art === "geschenk" && e.id === heute), stand: B.reduce((s, e) => s + e.a, 0), serie: s,
+      ok: true, nachbar, live, eingeladen, klopfer, geschenke, premium: !!(await store.get("x/premium/" + nm)), startDa: !(await store.get("x/start/" + nm)), likes: { n: likeN }, neu: likeN >= 25 && (await erfGib("HERZ")) ? ["HERZ"] : [], sticker: (await liste(store, "x/sticker/" + nm + "/")).map(k => k.split("/")[3]), fische: (await liste(store, "x/fisch/" + nm + "/")).map(k => k.split("/")[3]), angelnHeute: Object.fromEntries([0, 1].map(i => [i, (B.find(e => e.art === "angeln" && e.id.startsWith(heute + "-" + i + "_")) || {}).id?.split("_")[1] || null])), sandHeute: !!(await store.get("x/sand/" + woche(heute) + "/" + nm + "/" + heute)), geschenk: B.some(e => e.art === "geschenk" && e.id === heute), stand: B.reduce((s, e) => s + e.a, 0), serie: s,
       shells: B.filter(e => e.art === "shell" && e.id.startsWith(heute)).map(e => Number(e.id.split("-").pop())),
       questsDone: B.filter(e => e.art === "quest" && e.id.startsWith(heute)).map(e => Number(e.id.split("-").pop())),
       gespendet: -B.filter(e => e.art === "spende").reduce((s, e) => s + e.a, 0), posten, heute, inv: besitz(B), aus: JSON.parse((await store.get("a/" + nm)) || "{}")

@@ -1,8 +1,9 @@
 {
   "name": "muscheltal",
   "private": true,
-  "description": "Nur für die Netlify-Funktion der Inselkasse (muscheltal/netlify/functions).",
+  "description": "Netlify: Funktionen der Muschel-Tal-Seite (@netlify/blobs) und Verkleinern des Programmcodes beim Bauen (terser).",
   "dependencies": {
-    "@netlify/blobs": "^8.1.0"
+    "@netlify/blobs": "^8.1.0",
+    "terser": "5.36.0"
   }
 }

@@ -40,6 +40,21 @@ async function buchen(store, nm, art, id, betrag) {
   return true;
 }
 
+// Umsatzsteuer: Preise sind Endpreise inkl. 19 % USt. Damit Beleg und Rechnung den Steuersatz und -betrag ausweisen
+// (Kleinbetragsrechnung, § 33 UStDV), wird einmalig ein inklusiver Steuersatz bei Stripe angelegt und gemerkt (je Live/Test).
+async function ustSatz(store) {
+  const modus = String(process.env.STRIPE_SECRET_KEY || "").includes("_live_") ? "live" : "test", k = "x/stripe/ust/" + modus;
+  const da = await store.get(k); if (da) return da;
+  const auth = { authorization: "Bearer " + process.env.STRIPE_SECRET_KEY };
+  try {
+    const l = await (await fetch(API() + "/v1/tax_rates?active=true&inclusive=true&limit=100", { headers: auth })).json();
+    let t = (l.data || []).find(x => x.percentage === 19 && x.inclusive && x.country === "DE");
+    if (!t) t = await (await fetch(API() + "/v1/tax_rates", { method: "POST", headers: { ...auth, "content-type": "application/x-www-form-urlencoded" }, body: new URLSearchParams({ display_name: "USt", description: "Umsatzsteuer Deutschland 19 % (im Preis enthalten)", percentage: "19", inclusive: "true", country: "DE", jurisdiction: "DE", tax_type: "vat" }) })).json();
+    if (t && t.id) { await store.set(k, t.id); return t.id; }
+  } catch (e) {}
+  return null;// im Fehlerfall trotzdem verkaufen (dann ohne Steuerausweis)
+}
+
 export default async (req) => {
   if (req.method !== "POST") return json({ fehler: "Nur POST" }, 405);
   const store = getStore({ name: "muscheln", consistency: "strong" });
@@ -53,9 +68,11 @@ export default async (req) => {
     if ((ev.type === "checkout.session.completed" || ev.type === "checkout.session.async_payment_succeeded") && o.payment_status === "paid") {
       const nm = String((o.metadata && o.metadata.name) || "").toLowerCase(), p = PAKETE[o.metadata && o.metadata.paket];
       if (!nm || !p || o.amount_total !== p.cent) return json({ ok: false, grund: "daten" });
-      await buchen(store, nm, "euro", o.id, p.muscheln);
+      const neu = await buchen(store, nm, "euro", o.id, p.muscheln);
+      const von = String((o.metadata && o.metadata.kaeufer) || "").toLowerCase();
+      if (neu && von && von !== nm) await store.set("x/geschenkt/" + nm + "/" + o.id, JSON.stringify({ von, m: p.muscheln, t: Date.now() }));// Empfänger sieht es beim nächsten Besuch
       if (p.einmal) await store.set("x/start/" + nm, o.id);
-      if (o.payment_intent) await store.set("x/euro/" + o.payment_intent, JSON.stringify({ nm, m: p.muscheln, cent: p.cent, sid: o.id }));
+      if (o.payment_intent) await store.set("x/euro/" + o.payment_intent, JSON.stringify({ nm, m: p.muscheln, cent: p.cent, sid: o.id, von: von || nm }));
       return json({ ok: true });
     }
     // Erstattung oder Rückbuchung: Muscheln (anteilig) wieder abziehen – auch ins Minus
@@ -76,11 +93,17 @@ export default async (req) => {
   if (d.act !== "checkout") return json({ fehler: "Aktion" }, 400);
   const name = String(d.name || "").trim().toLowerCase(), nm = name.replace(/^@/, "");
   if (!/^@[a-z0-9._]{1,40}$/.test(name) || !BEWOHNER.has(nm)) return json({ fehler: "Name" }, 400);
-  const c = JSON.parse((await store.get("c/" + nm)) || "null");
-  if (!c || c.h !== (await sha(String(d.token || "")))) return json({ fehler: "Nicht beansprucht" }, 403);
   const p = PAKETE[d.paket];
   if (!p) return json({ fehler: "Paket" }, 400);
-  if (p.einmal && (await store.get("x/start/" + nm))) return json({ fehler: "Startangebot schon genutzt" }, 409);
+  // Beanspruchung, Startangebot und Steuersatz gleichzeitig prüfen/laden (schneller zur Bezahlseite)
+  const [cRoh, schonStart, hash, ustVorab] = await Promise.all([store.get("c/" + nm), p.einmal ? store.get("x/start/" + nm) : null, sha(String(d.token || "")), process.env.STRIPE_SECRET_KEY ? ustSatz(store) : null]);
+  const c = JSON.parse(cRoh || "null");
+  if (!c || c.h !== hash) return json({ fehler: "Nicht beansprucht" }, 403);
+  if (p.einmal && schonStart) return json({ fehler: "Startangebot schon genutzt" }, 409);
+  // 🎁 Geschenk: Käufer zahlt, ein anderer Bewohner bekommt die Muscheln (nicht beim Startangebot)
+  const an = String(d.an || "").trim().toLowerCase().replace(/^@/, "");
+  if (an) { if (p.einmal) return json({ fehler: "Startangebot nur für dich selbst" }, 400); if (an === nm || !/^[a-z0-9._]{1,40}$/.test(an) || !BEWOHNER.has(an)) return json({ fehler: "Empfänger" }, 400); }
+  const ziel = an || nm, zielName = "@" + ziel;
   // Zustimmung zur sofortigen Ausführung + Kenntnis vom Verlust des Widerrufsrechts (§ 356 Abs. 5 BGB) ist Pflicht
   if (d.zustimmung !== true) return json({ fehler: "Zustimmung fehlt" }, 400);
   const zeit = new Date().toISOString();
@@ -91,21 +114,25 @@ export default async (req) => {
     "line_items[0][price_data][currency]": "eur",
     "line_items[0][price_data][unit_amount]": String(p.cent),
     "line_items[0][price_data][product_data][name]": p.muscheln.toLocaleString("de-DE") + " Muscheln – Muschel-Tal",
-    "line_items[0][price_data][product_data][description]": "Virtuelle Muscheln für " + name + " (sofort gutgeschrieben, ohne Geldwert, nicht übertragbar)",
-    client_reference_id: nm,
-    "metadata[name]": nm, "metadata[paket]": d.paket,
-    "payment_intent_data[metadata][name]": nm, "payment_intent_data[metadata][paket]": d.paket,
+    "line_items[0][price_data][product_data][description]": an ? "🎁 Geschenk: virtuelle Muscheln für " + zielName + " von " + name + " (sofort gutgeschrieben, ohne Geldwert, nicht übertragbar)" : "Virtuelle Muscheln für " + name + " (sofort gutgeschrieben, ohne Geldwert, nicht übertragbar)",
+    client_reference_id: ziel,
+    "metadata[name]": ziel, "metadata[paket]": d.paket, "metadata[kaeufer]": nm,
+    "payment_intent_data[metadata][name]": ziel, "payment_intent_data[metadata][paket]": d.paket, "payment_intent_data[metadata][kaeufer]": nm,
     "metadata[zustimmung]": zeit, "payment_intent_data[metadata][zustimmung]": zeit,
     "custom_text[submit][message]": "Du hast ausdrücklich verlangt, dass wir vor Ablauf der Widerrufsfrist mit der Ausführung beginnen (sofortige Gutschrift), und bestätigt, dass du dadurch dein Widerrufsrecht verlierst. Es gelten unsere AGB: muscheltal.de/agb.html",
     // Bestätigung auf dauerhaftem Datenträger: Rechnung per E-Mail mit Vertragsinhalt und Zustimmung (§ 312f Abs. 3 BGB)
     "invoice_creation[enabled]": "true",
-    "invoice_creation[invoice_data][description]": p.muscheln.toLocaleString("de-DE") + " Muscheln (virtuelle Spielwährung) für das Muschel-Konto " + name + " auf muscheltal.de – sofort gutgeschrieben.",
+    "invoice_creation[invoice_data][description]": p.muscheln.toLocaleString("de-DE") + " Muscheln (virtuelle Spielwährung) für das Muschel-Konto " + zielName + (an ? " (Geschenk von " + name + ")" : "") + " auf muscheltal.de – sofort gutgeschrieben.",
     "invoice_creation[invoice_data][custom_fields][0][name]": "Muschel-Konto",
-    "invoice_creation[invoice_data][custom_fields][0][value]": name,
+    "invoice_creation[invoice_data][custom_fields][0][value]": an ? zielName + " (Geschenk)" : name,
+    "invoice_creation[invoice_data][custom_fields][1][name]": "Umsatzsteuer",
+    "invoice_creation[invoice_data][custom_fields][1][value]": "Preis inkl. 19 % USt",
     "invoice_creation[invoice_data][footer]": "Bestätigung: Du hast am " + zeit.slice(0, 10) + " ausdrücklich verlangt, dass wir vor Ablauf der Widerrufsfrist mit der Ausführung des Vertrags beginnen (sofortige Gutschrift der Muscheln), und bestätigt, dass du dadurch mit Beginn der Ausführung dein Widerrufsrecht verlierst. Das Widerrufsrecht ist mit der Gutschrift erloschen (§ 356 Abs. 5 BGB). Muscheln haben keinen Geldwert und sind nicht übertragbar. Es gelten die AGB mit Widerrufsbelehrung: https://muscheltal.de/agb.html – Alcaba UG (haftungsbeschränkt), Grelckstr. 23a, 22529 Hamburg, HRB 180374, USt-IdNr. DE351239794.",
-    success_url: SEITE + "/?kauf=ok",
+    success_url: SEITE + "/?kauf=ok&sid={CHECKOUT_SESSION_ID}",// Stripe setzt die Kauf-Nummer ein (für die Feier nach der Gutschrift)
     cancel_url: SEITE + "/?kauf=abbruch",
   });
+  const ust = ustVorab;
+  if (ust) f.set("line_items[0][tax_rates][0]", ust);
   const r = await fetch(API() + "/v1/checkout/sessions", { method: "POST", headers: { authorization: "Bearer " + process.env.STRIPE_SECRET_KEY, "content-type": "application/x-www-form-urlencoded" }, body: f });
   const s = await r.json().catch(() => ({}));
   if (!r.ok || !s.url) return json({ fehler: "Stripe", info: s.error && s.error.message }, 502);
