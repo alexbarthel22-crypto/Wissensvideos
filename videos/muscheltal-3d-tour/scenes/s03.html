@@ -10,7 +10,7 @@
   </style>
   <div id="root" data-composition-id="s03" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
     <div id="s03-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
-<div id="bn0" class="gl bn"><small>Hauptinsel</small><b>🥙 Dönerbude</b></div><div id="bn1" class="gl bn"><small>Hauptinsel</small><b>🥐 Bäckerei</b></div><div id="bn2" class="gl bn"><small>Hauptinsel</small><b>🍹 Strandbar</b></div><div id="bn3" class="gl bn"><small>Hauptinsel</small><b>🐋 Ein Wal!</b></div><div id="bn4" class="gl bn"><small>Hauptinsel</small><b>🐾 Tierheim · bei 800</b></div><div id="bn5" class="gl bn"><small>Kokos-Küste</small><b>🔥 Lagerfeuer</b></div><div id="bn6" class="gl bn"><small>Kokos-Küste</small><b>🪩 Kokos-Club</b></div><div id="bn7" class="gl bn"><small>Kokos-Küste</small><b>🎮 Game Lagoon</b></div><div id="bn8" class="gl bn"><small>Kokos-Küste</small><b>🎬 Freiluftkino</b></div>
+<div id="bn0" class="gl bn"><small>Hauptinsel</small><b>🥙 Dönerbude</b></div><div id="bn1" class="gl bn"><small>Hauptinsel</small><b>🥐 Bäckerei</b></div><div id="bn2" class="gl bn"><small>Hauptinsel</small><b>🍹 Strandbar</b></div><div id="bn3" class="gl bn"><small>Hauptinsel</small><b>🐾 Tierheim · bei 800</b></div><div id="bn4" class="gl bn"><small>Kokos-Küste</small><b>🔥 Lagerfeuer</b></div><div id="bn5" class="gl bn"><small>Kokos-Küste</small><b>🪩 Kokos-Club</b></div><div id="bn6" class="gl bn"><small>Kokos-Küste</small><b>🎮 Game Lagoon</b></div><div id="bn7" class="gl bn"><small>Kokos-Küste</small><b>🎬 Freiluftkino</b></div>
     </div>
   </div>
   <script>
@@ -21,13 +21,12 @@
       const tl = gsap.timeline({ paused: true });
       tl.fromTo("#bn0", { opacity: 0, scale: 1.25 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, at("L3", "Dönerbude") - .25); tl.to("#bn0", { opacity: 0, duration: .15 }, at("L3", "Bäckerei") - .4);
       tl.fromTo("#bn1", { opacity: 0, scale: 1.25 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, at("L3", "Bäckerei") - .25); tl.to("#bn1", { opacity: 0, duration: .15 }, at("L3s", "Strandbar") - .4);
-      tl.fromTo("#bn2", { opacity: 0, scale: 1.25 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, at("L3s", "Strandbar") - .25); tl.to("#bn2", { opacity: 0, duration: .15 }, at("L3s", "Wal") - .4);
-      tl.fromTo("#bn3", { opacity: 0, scale: 1.25 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, at("L3s", "Wal") - .25); tl.to("#bn3", { opacity: 0, duration: .15 }, at("L3t", "Tierheim") - .4);
-      tl.fromTo("#bn4", { opacity: 0, scale: 1.25 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, at("L3t", "Tierheim") - .25); tl.to("#bn4", { opacity: 0, duration: .15 }, at("L3k", "Lagerfeuer") - .4);
-      tl.fromTo("#bn5", { opacity: 0, scale: 1.25 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, at("L3k", "Lagerfeuer") - .25); tl.to("#bn5", { opacity: 0, duration: .15 }, at("L3g", "Kokos-Club") - .4);
-      tl.fromTo("#bn6", { opacity: 0, scale: 1.25 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, at("L3g", "Kokos-Club") - .25); tl.to("#bn6", { opacity: 0, duration: .15 }, at("L3g", "Game") - .4);
-      tl.fromTo("#bn7", { opacity: 0, scale: 1.25 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, at("L3g", "Game") - .25); tl.to("#bn7", { opacity: 0, duration: .15 }, at("L3c", "Freiluftkino") - .4);
-      tl.fromTo("#bn8", { opacity: 0, scale: 1.25 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, at("L3c", "Freiluftkino") - .25); tl.to("#bn8", { opacity: 0, duration: .25 }, line("L3c")[1] + .5);
+      tl.fromTo("#bn2", { opacity: 0, scale: 1.25 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, at("L3s", "Strandbar") - .25); tl.to("#bn2", { opacity: 0, duration: .15 }, at("L3t", "Tierheim") - .4);
+      tl.fromTo("#bn3", { opacity: 0, scale: 1.25 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, at("L3t", "Tierheim") - .25); tl.to("#bn3", { opacity: 0, duration: .15 }, at("L3k", "Lagerfeuer") - .4);
+      tl.fromTo("#bn4", { opacity: 0, scale: 1.25 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, at("L3k", "Lagerfeuer") - .25); tl.to("#bn4", { opacity: 0, duration: .15 }, at("L3g", "Kokos-Club") - .4);
+      tl.fromTo("#bn5", { opacity: 0, scale: 1.25 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, at("L3g", "Kokos-Club") - .25); tl.to("#bn5", { opacity: 0, duration: .15 }, at("L3g", "Game") - .4);
+      tl.fromTo("#bn6", { opacity: 0, scale: 1.25 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, at("L3g", "Game") - .25); tl.to("#bn6", { opacity: 0, duration: .15 }, at("L3c", "Freiluftkino") - .4);
+      tl.fromTo("#bn7", { opacity: 0, scale: 1.25 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, at("L3c", "Freiluftkino") - .25); tl.to("#bn7", { opacity: 0, duration: .25 }, line("L3c")[1] + .5);
       tl.to("#s03-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
       window.__timelines["s03"] = tl;
     })();
