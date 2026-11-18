@@ -55,15 +55,15 @@
     .gl b { display: block; font-weight: 900; font-size: 92px; letter-spacing: -.02em; line-height: 1; }
     #t2 { top: 250px; } #t2 b { font-size: 64px; }
   </style>
-  <div id="root" data-composition-id="s02" data-start="0" data-duration="7.930" data-width="1080" data-height="1920">
-    <div id="s02-stage" class="clip stage" data-start="0" data-duration="7.930" data-track-index="0">
+  <div id="root" data-composition-id="s02" data-start="0" data-duration="7.920" data-width="1080" data-height="1920">
+    <div id="s02-stage" class="clip stage" data-start="0" data-duration="7.920" data-track-index="0">
       <div id="t2" class="gl"><small>Jede Hütte</small><b>= 1 echter Follower</b></div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 7.93, "L2": [0.2, 3.43], "L2.words": [["in", 0.2, 0.366], ["der", 0.366, 0.538], ["mitte", 0.538, 0.877], ["der", 0.877, 1.049], ["muschelpalast", 1.049, 1.744], ["", 1.744, 1.898], ["mit", 1.898, 2.07], ["garde", 2.07, 2.409], ["und", 2.409, 2.581], ["goldener", 2.581, 3.092], ["krone", 3.092, 3.43]], "L2b": [4.05, 6.75], "L2b.words": [["drumherum", 4.05, 4.46], ["790", 4.61, 4.827], ["hütten", 4.827, 5.313], ["", 5.313, 5.53], ["jede", 5.66, 5.897], ["mit", 5.897, 6.02], ["einem", 6.02, 6.262], ["echten", 6.262, 6.508], ["namen", 6.508, 6.75]]};
+      const C = {"__dur": 7.92, "L2": [0.2, 3.49], "L2.words": [["in", 0.2, 0.558], ["der", 0.558, 0.93], ["mitte", 0.93, 1.66], ["der", 1.81, 1.926], ["muschelpalast", 1.926, 2.396], ["", 2.396, 2.5], ["mit", 2.65, 2.744], ["garde", 2.744, 2.93], ["und", 2.93, 3.024], ["goldener", 3.024, 3.304], ["krone", 3.304, 3.49]], "L2b": [4.31, 7.14], "L2b.words": [["drumherum", 4.31, 4.853], ["790", 4.853, 5.014], ["hütten", 5.014, 5.376], ["", 5.376, 5.538], ["jede", 5.538, 5.887], ["mit", 5.887, 6.067], ["einem", 6.067, 6.423], ["echten", 6.423, 6.785], ["namen", 6.785, 7.14]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
