@@ -14,11 +14,11 @@ const NAME = /^@[a-z0-9._]{1,40}$/;
 const ERF_CLIENT = new Set(["LUPE", "AUF", "UNTER", "SCOOT", "SCHOEPFER", "WAL", "SCHILD", "MOND", "WELT", "NACHT"]);
 const STICKER = new Set(["palast", "doener", "bar", "villa", "acai", "werkstatt", "baeckerei", "nagel", "markt", "kiosk", "boba", "pizza", "tierheim", "yacht", "cocobay", "kokosbad", "coast", "kokos", "cococare", "gaming", "feuer", "anleger", "ev_wochenmarkt", "ev_flohmarkt", "ev_konzert", "ev_feuerwerk", "sandburg", "angeln", "ev_kino"]);
 const SERIE = [3, 5, 8, 12, 17, 23, 32];
-// 🎣 Angelsteg: 30 Fänge in den bekannten Güteklassen (0 Gewöhnlich … 9 Einzigartig, Gewichte wie im Shop); nur selten gibt es zusätzlich 1–3 Muscheln
+// 🎣 Angelsteg: 27 Fänge in den bekannten Güteklassen (0 Gewöhnlich … 8 Kosmisch – Einzigartig gibt es beim Angeln nicht; Gewichte wie im Shop); nur selten gibt es zusätzlich 1–3 Muscheln
 const GUETE = [30, 22, 15, 11, 8, 6, 4, 2.4, 1.2, 0.4];
-export const FISCHE = {stiefel: 0, sardine: 0, krabbe: 0, garnele: 1, seestern: 1, schnecke: 1, clown: 2, kugel: 2, tinte: 2, hummer: 3, okto: 3, kompass: 3, hai: 4, koralle: 4, schluessel: 4, auster: 5, amphore: 5, ring: 5, drache: 6, dreizack: 6, geist: 6, krone: 7, diamant: 7, muenze: 7, sternfisch: 8, meteorit: 8, mondfisch: 8, goldmuschel: 9, regenbogen: 9, karte: 9};
+export const FISCHE = {stiefel: 0, sardine: 0, krabbe: 0, garnele: 1, seestern: 1, schnecke: 1, clown: 2, kugel: 2, tinte: 2, hummer: 3, okto: 3, kompass: 3, hai: 4, koralle: 4, schluessel: 4, auster: 5, amphore: 5, ring: 5, drache: 6, dreizack: 6, geist: 6, krone: 7, diamant: 7, muenze: 7, sternfisch: 8, meteorit: 8, mondfisch: 8};
 const zz = () => crypto.getRandomValues(new Uint32Array(1))[0] / 2 ** 32;
-function fischZiehen() { const r = zz() * 100; let s = 0; for (const [id, t] of Object.entries(FISCHE)) { s += GUETE[t] / 3; if (r < s) return id; } return "sardine"; }
+function fischZiehen() { const sum = Object.values(FISCHE).reduce((a, t) => a + GUETE[t] / 3, 0), r = zz() * sum; let s = 0; for (const [id, t] of Object.entries(FISCHE)) { s += GUETE[t] / 3; if (r < s) return id; } return "sardine"; }
 // 🏰 Sandburg: Woche Mo–So; Sonntag ab 18 Uhr holt die Flut die Burg (dann kein Bauen)
 function flutJetzt() { const p = Object.fromEntries(new Intl.DateTimeFormat("en-US", { timeZone: "Europe/Berlin", weekday: "short", hour: "2-digit", hourCycle: "h23" }).formatToParts(new Date()).map(x => [x.type, x.value])); return p.weekday === "Sun" && +p.hour >= 18; }
 const TZ = "Europe/Berlin";
