@@ -1,6 +1,6 @@
 # Muschel-Tal – „Hier wohnen meine Follower“ (3D-Welt) · Beschreibung
 
-**Cover:** `renders/cover.jpg` (`cover/thumb.html`) – Kicker „🏝️ 790 FOLLOWER · 1 INSEL“, riesig „HIER WOHNEN MEINE FOLLOWER“, pinke Sprechblase „@du?“ über dem Platz voller Namen, unten gelb „Findest du dein Haus? 👀“. Hintergrund: der Muschel-Palast in 3D mit Figuren und Namen. Bewusst **ohne** roten Alarm-Rand, ohne „Tag X“ und ohne Job-Karten – anders als die letzten 8 Cover.
+**Cover:** `renders/cover.jpg` (`cover/thumb.html`) – gelbes Schild „TAG 9 · 790 Follower 🏝️“, riesig „HIER WOHNEN MEINE FOLLOWER“, pinke Sprechblase „@du?“ über dem Platz voller Namen, unten gelb „Findest du dein Haus? 👀“. Hintergrund: der Muschel-Palast in 3D mit Figuren und Namen. Bewusst **ohne** roten Alarm-Rand, ohne Job-Karten – anders als die letzten 8 Cover.
 
 ## Hauptversion (zum Posten)
 Ich habe für meine Follower eine eigene Insel gebaut 🏝️ Jede Hütte = ein Follower. Findest du deine? 👀
