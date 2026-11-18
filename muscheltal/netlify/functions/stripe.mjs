@@ -40,6 +40,21 @@ async function buchen(store, nm, art, id, betrag) {
   return true;
 }
 
+// Umsatzsteuer: Preise sind Endpreise inkl. 19 % USt. Damit Beleg und Rechnung den Steuersatz und -betrag ausweisen
+// (Kleinbetragsrechnung, § 33 UStDV), wird einmalig ein inklusiver Steuersatz bei Stripe angelegt und gemerkt (je Live/Test).
+async function ustSatz(store) {
+  const modus = String(process.env.STRIPE_SECRET_KEY || "").includes("_live_") ? "live" : "test", k = "x/stripe/ust/" + modus;
+  const da = await store.get(k); if (da) return da;
+  const auth = { authorization: "Bearer " + process.env.STRIPE_SECRET_KEY };
+  try {
+    const l = await (await fetch(API() + "/v1/tax_rates?active=true&inclusive=true&limit=100", { headers: auth })).json();
+    let t = (l.data || []).find(x => x.percentage === 19 && x.inclusive && x.country === "DE");
+    if (!t) t = await (await fetch(API() + "/v1/tax_rates", { method: "POST", headers: { ...auth, "content-type": "application/x-www-form-urlencoded" }, body: new URLSearchParams({ display_name: "USt", description: "Umsatzsteuer Deutschland 19 % (im Preis enthalten)", percentage: "19", inclusive: "true", country: "DE", jurisdiction: "DE", tax_type: "vat" }) })).json();
+    if (t && t.id) { await store.set(k, t.id); return t.id; }
+  } catch (e) {}
+  return null;// im Fehlerfall trotzdem verkaufen (dann ohne Steuerausweis)
+}
+
 export default async (req) => {
   if (req.method !== "POST") return json({ fehler: "Nur POST" }, 405);
   const store = getStore({ name: "muscheln", consistency: "strong" });
@@ -102,10 +117,14 @@ export default async (req) => {
     "invoice_creation[invoice_data][description]": p.muscheln.toLocaleString("de-DE") + " Muscheln (virtuelle Spielwährung) für das Muschel-Konto " + name + " auf muscheltal.de – sofort gutgeschrieben.",
     "invoice_creation[invoice_data][custom_fields][0][name]": "Muschel-Konto",
     "invoice_creation[invoice_data][custom_fields][0][value]": name,
+    "invoice_creation[invoice_data][custom_fields][1][name]": "Umsatzsteuer",
+    "invoice_creation[invoice_data][custom_fields][1][value]": "Preis inkl. 19 % USt",
     "invoice_creation[invoice_data][footer]": "Bestätigung: Du hast am " + zeit.slice(0, 10) + " ausdrücklich verlangt, dass wir vor Ablauf der Widerrufsfrist mit der Ausführung des Vertrags beginnen (sofortige Gutschrift der Muscheln), und bestätigt, dass du dadurch mit Beginn der Ausführung dein Widerrufsrecht verlierst. Das Widerrufsrecht ist mit der Gutschrift erloschen (§ 356 Abs. 5 BGB). Muscheln haben keinen Geldwert und sind nicht übertragbar. Es gelten die AGB mit Widerrufsbelehrung: https://muscheltal.de/agb.html – Alcaba UG (haftungsbeschränkt), Grelckstr. 23a, 22529 Hamburg, HRB 180374, USt-IdNr. DE351239794.",
     success_url: SEITE + "/?kauf=ok&sid={CHECKOUT_SESSION_ID}",// Stripe setzt die Kauf-Nummer ein (für die Feier nach der Gutschrift)
     cancel_url: SEITE + "/?kauf=abbruch",
   });
+  const ust = await ustSatz(store);
+  if (ust) f.set("line_items[0][tax_rates][0]", ust);
   const r = await fetch(API() + "/v1/checkout/sessions", { method: "POST", headers: { authorization: "Bearer " + process.env.STRIPE_SECRET_KEY, "content-type": "application/x-www-form-urlencoded" }, body: f });
   const s = await r.json().catch(() => ({}));
   if (!r.ok || !s.url) return json({ fehler: "Stripe", info: s.error && s.error.message }, 502);
