@@ -19,7 +19,7 @@
       /*__COMMON_JS__*/
       wrapBt("#s02-stage");
       const tl = gsap.timeline({ paused: true });
-      const t = line("L2")[0];
+      const t = line("L2b")[0];
       tl.fromTo("#t2", { opacity: 0, y: 40, filter: "blur(12px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: .6, ease: "power3.out" }, t - .2);
       tl.to("#s02-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
       window.__timelines["s02"] = tl;

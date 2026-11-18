@@ -53,19 +53,17 @@
       color: #fff; font-family: "Inter", sans-serif; text-align: center; }
     .gl small { display: block; font-weight: 700; font-size: 26px; letter-spacing: .32em; text-transform: uppercase; opacity: .85; }
     .gl b { display: block; font-weight: 900; font-size: 92px; letter-spacing: -.02em; line-height: 1; }
-    #c1 { top: 230px; left: 70px; right: auto; margin: 0; } #c2 { top: 230px; right: 70px; left: auto; margin: 0; }
-    #c1 b, #c2 b { font-size: 110px; }
+    .bn { top: 250px; } .bn b { font-size: 70px; }
   </style>
-  <div id="root" data-composition-id="s03" data-start="0" data-duration="5.060" data-width="1080" data-height="1920">
-    <div id="s03-stage" class="clip stage" data-start="0" data-duration="5.060" data-track-index="0">
-      <div id="c1" class="gl"><b id="n1">0</b><small>Haupt-Insel</small></div>
-      <div id="c2" class="gl"><b id="n2">0</b><small>Kokos-Küste</small></div>
+  <div id="root" data-composition-id="s03" data-start="0" data-duration="9.460" data-width="1080" data-height="1920">
+    <div id="s03-stage" class="clip stage" data-start="0" data-duration="9.460" data-track-index="0">
+<div id="bn0" class="gl bn"><small>Hauptinsel</small><b>🥙 Dönerbude</b></div><div id="bn1" class="gl bn"><small>Hauptinsel</small><b>🥐 Bäckerei</b></div><div id="bn2" class="gl bn"><small>Hauptinsel</small><b>🍹 Strandbar</b></div><div id="bn3" class="gl bn"><small>Hauptinsel</small><b>🐾 Tierheim · im Bau</b></div><div id="bn4" class="gl bn"><small>Kokos-Küste</small><b>🪩 Kokos-Club</b></div><div id="bn5" class="gl bn"><small>Kokos-Küste</small><b>🎮 Game Lagoon</b></div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 5.06, "L3": [0.2, 4.28], "L3.words": [["506", 0.2, 0.821], ["auf", 0.821, 0.971], ["der", 0.971, 1.121], ["hauptinsel", 1.121, 1.576], ["", 1.576, 1.71], ["und", 1.95, 2.116], ["284", 2.116, 3.298], ["auf", 3.298, 3.464], ["der", 3.464, 3.629], ["kokosküste", 3.629, 4.28]]};
+      const C = {"__dur": 9.46, "L3": [0.2, 4.31], "L3.words": [["dönerbude", 0.2, 0.88], ["bäckerei", 0.99, 1.62], ["strandbar", 1.74, 2.218], ["", 2.218, 2.42], ["und", 2.59, 2.802], ["das", 2.802, 3.014], ["tierheim", 3.014, 3.454], ["ist", 3.454, 3.666], ["schon", 3.666, 3.893], ["im", 3.893, 4.098], ["bau", 4.098, 4.31]], "L3k": [5.13, 8.68], "L3k.words": [["und", 5.13, 5.383], ["auf", 5.383, 5.635], ["der", 5.635, 5.888], ["kokosküste", 5.888, 6.88], ["der", 7.1, 7.255], ["kokosclub", 7.255, 7.72], ["die", 7.84, 7.934], ["game", 7.934, 8.114], ["lagoon", 8.114, 8.302], ["und", 8.302, 8.396], ["vieles", 8.396, 8.583], ["mehr", 8.583, 8.68]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -109,11 +107,12 @@
 
       wrapBt("#s03-stage");
       const tl = gsap.timeline({ paused: true });
-      const a = at("L3", "506"), k = at("L3", "284");
-      tl.fromTo("#c1", { opacity: 0, y: 40, filter: "blur(12px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: .5, ease: "power3.out" }, a - .3);
-      count(tl, "#n1", 0, 506, a - .2, .9, "", "", "power2.out");
-      tl.fromTo("#c2", { opacity: 0, y: 40, filter: "blur(12px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: .5, ease: "power3.out" }, k - .3);
-      count(tl, "#n2", 0, 284, k - .2, .9, "", "", "power2.out");
+      tl.fromTo("#bn0", { opacity: 0, y: 30, filter: "blur(10px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: .3, ease: "power3.out" }, at("L3", "Dönerbude") - .05); tl.to("#bn0", { opacity: 0, y: -20, duration: .2 }, at("L3", "Bäckerei") - .25);
+      tl.fromTo("#bn1", { opacity: 0, y: 30, filter: "blur(10px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: .3, ease: "power3.out" }, at("L3", "Bäckerei") - .05); tl.to("#bn1", { opacity: 0, y: -20, duration: .2 }, at("L3", "Strandbar") - .25);
+      tl.fromTo("#bn2", { opacity: 0, y: 30, filter: "blur(10px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: .3, ease: "power3.out" }, at("L3", "Strandbar") - .05); tl.to("#bn2", { opacity: 0, y: -20, duration: .2 }, at("L3", "Tierheim") - .25);
+      tl.fromTo("#bn3", { opacity: 0, y: 30, filter: "blur(10px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: .3, ease: "power3.out" }, at("L3", "Tierheim") - .05); tl.to("#bn3", { opacity: 0, y: -20, duration: .2 }, at("L3k", "Kokos-Club") - .25);
+      tl.fromTo("#bn4", { opacity: 0, y: 30, filter: "blur(10px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: .3, ease: "power3.out" }, at("L3k", "Kokos-Club") - .05); tl.to("#bn4", { opacity: 0, y: -20, duration: .2 }, at("L3k", "Game") - .25);
+      tl.fromTo("#bn5", { opacity: 0, y: 30, filter: "blur(10px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: .3, ease: "power3.out" }, at("L3k", "Game") - .05); tl.to("#bn5", { opacity: 0, duration: .25 }, line("L3k")[1] + .2);
       tl.to("#s03-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
       window.__timelines["s03"] = tl;
     })();

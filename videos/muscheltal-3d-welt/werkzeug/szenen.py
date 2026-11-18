@@ -110,27 +110,23 @@ scene("s01", GL + """
 scene("s02", GL + """
     #t2 { top: 250px; } #t2 b { font-size: 64px; }""",
 """      <div id="t2" class="gl"><small>Jede Hütte</small><b>= 1 echter Follower</b></div>""",
-"""      const t = line("L2")[0];
+"""      const t = line("L2b")[0];
       tl.fromTo("#t2", { opacity: 0, y: 40, filter: "blur(12px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: .6, ease: "power3.out" }, t - .2);""")
 
-# s03 – Zahlen: Haupt-Insel / Kokos-Küste
+# s03 – Gebäude-Namen erscheinen passend zum Kameraflug
+BN = [("L3", "Dönerbude", "🥙 Dönerbude"), ("L3", "Bäckerei", "🥐 Bäckerei"), ("L3", "Strandbar", "🍹 Strandbar"), ("L3", "Tierheim", "🐾 Tierheim · im Bau"), ("L3k", "Kokos-Club", "🪩 Kokos-Club"), ("L3k", "Game", "🎮 Game Lagoon")]
 scene("s03", GL + """
-    #c1 { top: 230px; left: 70px; right: auto; margin: 0; } #c2 { top: 230px; right: 70px; left: auto; margin: 0; }
-    #c1 b, #c2 b { font-size: 110px; }""",
-"""      <div id="c1" class="gl"><b id="n1">0</b><small>Haupt-Insel</small></div>
-      <div id="c2" class="gl"><b id="n2">0</b><small>Kokos-Küste</small></div>""",
-"""      const a = at("L3", "506"), k = at("L3", "284");
-      tl.fromTo("#c1", { opacity: 0, y: 40, filter: "blur(12px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: .5, ease: "power3.out" }, a - .3);
-      count(tl, "#n1", 0, 506, a - .2, .9, "", "", "power2.out");
-      tl.fromTo("#c2", { opacity: 0, y: 40, filter: "blur(12px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: .5, ease: "power3.out" }, k - .3);
-      count(tl, "#n2", 0, 284, k - .2, .9, "", "", "power2.out");""")
+    .bn { top: 250px; } .bn b { font-size: 70px; }""",
+"""""" + "".join(f'<div id="bn{i}" class="gl bn"><small>{"Hauptinsel" if l == "L3" else "Kokos-Küste"}</small><b>{t}</b></div>' for i, (l, w, t) in enumerate(BN)) + """""",
+"""""" + "\n".join(f'      tl.fromTo("#bn{i}", {{ opacity: 0, y: 30, filter: "blur(10px)" }}, {{ opacity: 1, y: 0, filter: "blur(0px)", duration: .3, ease: "power3.out" }}, at("{l}", "{w}") - .05);' + (f' tl.to("#bn{i}", {{ opacity: 0, y: -20, duration: .2 }}, at("{BN[i+1][0]}", "{BN[i+1][1]}") - .25);' if i < len(BN) - 1 else ' tl.to("#bn5", { opacity: 0, duration: .25 }, line("L3k")[1] + .2);') for i, (l, w, t) in enumerate(BN)))
 
-# s04 – jeden Tag neue Leute
+# s04 – 790 Bewohner
 scene("s04", GL + """
-    #t4 { top: 250px; } #t4 b { font-size: 70px; }""",
-"""      <div id="t4" class="gl"><small>Jeden Tag</small><b>+ neue Nachbarn</b></div>""",
+    #t4 { top: 250px; } #t4 b { font-size: 120px; }""",
+"""      <div id="t4" class="gl"><b id="n4">0</b><small>Bewohner · täglich mehr</small></div>""",
 """      const t = line("L4")[0];
-      tl.fromTo("#t4", { opacity: 0, y: 40, filter: "blur(12px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: .6, ease: "power3.out" }, t - .2);""")
+      tl.fromTo("#t4", { opacity: 0, y: 40, filter: "blur(12px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: .6, ease: "power3.out" }, t - .2);
+      count(tl, "#n4", 0, 790, t, 1.0, "", "", "power2.out");""")
 
 # s05 – Folg mir
 scene("s05", GL + """

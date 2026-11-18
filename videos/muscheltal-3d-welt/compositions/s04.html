@@ -53,17 +53,17 @@
       color: #fff; font-family: "Inter", sans-serif; text-align: center; }
     .gl small { display: block; font-weight: 700; font-size: 26px; letter-spacing: .32em; text-transform: uppercase; opacity: .85; }
     .gl b { display: block; font-weight: 900; font-size: 92px; letter-spacing: -.02em; line-height: 1; }
-    #t4 { top: 250px; } #t4 b { font-size: 70px; }
+    #t4 { top: 250px; } #t4 b { font-size: 120px; }
   </style>
-  <div id="root" data-composition-id="s04" data-start="0" data-duration="3.037" data-width="1080" data-height="1920">
-    <div id="s04-stage" class="clip stage" data-start="0" data-duration="3.037" data-track-index="0">
-      <div id="t4" class="gl"><small>Jeden Tag</small><b>+ neue Nachbarn</b></div>
+  <div id="root" data-composition-id="s04" data-start="0" data-duration="5.000" data-width="1080" data-height="1920">
+    <div id="s04-stage" class="clip stage" data-start="0" data-duration="5.000" data-track-index="0">
+      <div id="t4" class="gl"><b id="n4">0</b><small>Bewohner · täglich mehr</small></div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 3.037, "L4": [0.2, 1.857], "L4.words": [["und", 0.2, 0.366], ["jeden", 0.366, 0.693], ["tag", 0.693, 0.859], ["ziehen", 0.859, 1.191], ["neue", 1.191, 1.363], ["leute", 1.363, 1.69], ["ein", 1.69, 1.856]]};
+      const C = {"__dur": 5.0, "L4": [0.2, 3.82], "L4.words": [["790", 0.2, 1.221], ["bewohner", 1.221, 1.72], ["", 1.72, 1.87], ["und", 2.06, 2.28], ["jeden", 2.28, 2.712], ["tag", 2.712, 2.932], ["ziehen", 2.932, 3.372], ["neue", 3.372, 3.6], ["ein", 3.6, 3.82]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -109,6 +109,7 @@
       const tl = gsap.timeline({ paused: true });
       const t = line("L4")[0];
       tl.fromTo("#t4", { opacity: 0, y: 40, filter: "blur(12px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: .6, ease: "power3.out" }, t - .2);
+      count(tl, "#n4", 0, 790, t, 1.0, "", "", "power2.out");
       tl.to("#s04-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
       window.__timelines["s04"] = tl;
     })();

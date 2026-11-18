@@ -55,15 +55,15 @@
     .gl b { display: block; font-weight: 900; font-size: 92px; letter-spacing: -.02em; line-height: 1; }
     #t2 { top: 250px; } #t2 b { font-size: 64px; }
   </style>
-  <div id="root" data-composition-id="s02" data-start="0" data-duration="4.240" data-width="1080" data-height="1920">
-    <div id="s02-stage" class="clip stage" data-start="0" data-duration="4.240" data-track-index="0">
+  <div id="root" data-composition-id="s02" data-start="0" data-duration="8.410" data-width="1080" data-height="1920">
+    <div id="s02-stage" class="clip stage" data-start="0" data-duration="8.410" data-track-index="0">
       <div id="t2" class="gl"><small>Jede Hütte</small><b>= 1 echter Follower</b></div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 4.24, "L2": [0.2, 3.46], "L2.words": [["jede", 0.2, 0.493], ["hütte", 0.493, 0.79], ["gehört", 0.79, 1.094], ["einem", 1.094, 1.392], ["echten", 1.392, 1.695], ["follower", 1.695, 2.145], ["", 2.145, 2.28], ["mit", 2.53, 2.717], ["seinem", 2.717, 3.092], ["namen", 3.092, 3.46]]};
+      const C = {"__dur": 8.41, "L2": [0.2, 3.55], "L2.words": [["in", 0.2, 0.374], ["der", 0.374, 0.555], ["mitte", 0.555, 0.91], ["der", 1.03, 1.165], ["muschelpalast", 1.165, 1.71], ["", 1.71, 1.83], ["umgeben", 2.08, 2.562], ["von", 2.562, 2.727], ["hunderten", 2.727, 3.221], ["hütten", 3.221, 3.55]], "L2b": [4.37, 7.63], "L2b.words": [["jede", 4.37, 4.663], ["hütte", 4.663, 4.96], ["gehört", 4.96, 5.264], ["einem", 5.264, 5.562], ["echten", 5.562, 5.865], ["follower", 5.865, 6.315], ["", 6.315, 6.45], ["mit", 6.7, 6.887], ["seinem", 6.887, 7.262], ["namen", 7.262, 7.63]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -107,7 +107,7 @@
 
       wrapBt("#s02-stage");
       const tl = gsap.timeline({ paused: true });
-      const t = line("L2")[0];
+      const t = line("L2b")[0];
       tl.fromTo("#t2", { opacity: 0, y: 40, filter: "blur(12px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: .6, ease: "power3.out" }, t - .2);
       tl.to("#s02-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
       window.__timelines["s02"] = tl;
