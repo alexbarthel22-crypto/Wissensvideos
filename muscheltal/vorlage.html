@@ -3331,7 +3331,7 @@ let LAMPG=null;function lampsFront(c,x,y,tn){if(S*cam.z<=6)return;if(!LAMPG){LAM
 function villaFront(c,x,y,tn){for(const g of GEB){if(g.typ!=='villa'||(GROWK!=null&&GROWV===g.v&&GROWK<g.at))continue;const W=(g.x1-g.x0)/2,d=g.dir||1,vx=-W+24,lx=(x-g.cx)*d,ly=y-g.cy;if(Math.abs(lx-vx)>27||ly<-46||ly>-26)continue;
  const n1=NAMES.length,n2=TAPS.length,n3=FIGS.length,x0=x-3.4,y0=y-13,x1=x+3.4,y1=y+5.4;tintDraw(c,tn,x0,y0,x1,y1,o=>{o.save();o.beginPath();o.rect(x0,y0,x1-x0,y1-y0);o.clip();drawGeb(o,g,tn,cam.z);o.restore();});NAMES.length=n1;TAPS.length=n2;FIGS.length=n3;}}
 function hutsFront(c,x,y,tn){if(tn===undefined)tn=NACHTDRAUF?nightLevel():0;// abdunkeln nur, wenn die Nacht schon über das Bild gelegt wurde (sonst doppelt dunkel/grau)
- lampsFront(c,x,y,tn);ksSignFront(c,x,y,tn);villaFront(c,x,y,tn);palmsFront(c,x,y,tn);doenerFront(c,x,y,tn);if(Math.abs(x)<130*PAL_S&&Math.abs(y)<80*PAL_S)palFront(c,x,y,tn);acaiFront(c,x,y,tn);thFront(c,x,y,tn);glFront(c,x,y,tn);aufFront(c,x,y,tn);plotSignFront(c,x,y,tn);const px=S*cam.z;if(px<7)return;const K=kind(),wet=K==='rain'||K==='storm',snow=K==='snow';
+ lampsFront(c,x,y,tn);ksSignFront(c,x,y,tn);villaFront(c,x,y,tn);palmsFront(c,x,y,tn);doenerFront(c,x,y,tn);if(Math.abs(x)<130*PAL_S&&Math.abs(y)<80*PAL_S)palFront(c,x,y,tn);acaiFront(c,x,y,tn);thFront(c,x,y,tn);glFront(c,x,y,tn);aufFront(c,x,y,tn);feuerFront(c,x,y,tn);plotSignFront(c,x,y,tn);const px=S*cam.z;if(px<7)return;const K=kind(),wet=K==='rain'||K==='storm',snow=K==='snow';
  for(const v of ISL){if(!v.open||!v.cell||Math.hypot(x-v.x,y-v.y)>v.R+40)continue;const gx=Math.round((x-v.x)/S),gy=Math.round((y-v.y)/(S*.9));
   for(let dy=0;dy<=2;dy++)for(let dx=-1;dx<=1;dx++){const q=v.cell.get((gx+dx)+','+(gy+dy));if(!q||q.nr>limit||!q.p||q.p.y<=y-.5||q.p.y-y>24||Math.abs(q.p.x-x)>12)continue;tintDraw(c,tn,q.p.x-12,q.p.y-16,q.p.x+12,q.p.y+11,o=>hutBody(o,v,q,px,wet,snow));}}}
 // Figuren dieses Bildes merken (für „Passant vor Namensschild“)
@@ -4297,12 +4297,17 @@ function beachbar(c){const [x,y]=BB;
   c.fillStyle='#c79a63';for(let k=0;k<4;k++)c.fillRect(x+12,y+2-k*2.2,12,1.8);
   c.fillStyle='#ffd23f';c.strokeStyle='#2a1b12';c.lineWidth=.6;c.fillRect(x-25,y-9,15,7);c.strokeRect(x-25,y-9,15,7);c.fillStyle='#2a1b12';c.font='900 2.5px '+FONT;c.textAlign='center';c.fillText('BEACH-BAR',x-17.5,y-6.2);c.fillText('IM BAU',x-17.5,y-3.4);
   c.strokeStyle='#6b3f1d';c.beginPath();c.moveTo(x-17.5,y-2);c.lineTo(x-17.5,y+6);c.stroke();}}
+// Lagerfeuer der Kokos-Küste (Holzscheite + Flammen, ungeskaliert; landmark skaliert um den Inselmittelpunkt)
+function lagerFeuer(c,x,y){c.strokeStyle='#6b3f1d';c.lineWidth=1.6;c.beginPath();c.moveTo(x-4,y+3);c.lineTo(x+4,y-2);c.moveTo(x+4,y+3);c.lineTo(x-4,y-2);c.stroke();
+  const f=REDUCED?1:.85+.25*Math.sin(T*14);c.fillStyle='#ff7a2e';c.beginPath();c.ellipse(x,y-3,3.5,6*f,0,0,TAU);c.fill();c.fillStyle='#ffd23f';c.beginPath();c.ellipse(x,y-2,1.8,3.4*f,0,0,TAU);c.fill();}
+// Figur hinter dem Lagerfeuer (Füße oberhalb der vorderen Holzscheite): Feuer wird über ihr nachgezeichnet
+function feuerFront(c,x,y,tn){const v=ISL[1];if(!v||!v.open||v.tier!==1||S*cam.z<=5)return;const L=2.3,f=y+4.4;if(Math.abs(x-v.x)>4.6*L+3||f<v.y-9*L||f>v.y+3*L)return;
+ tintDraw(c,tn,v.x-5*L,v.y-10*L,v.x+5*L,v.y+4*L,o=>{o.save();o.translate(v.x,v.y);o.scale(L,L);o.translate(-v.x,-v.y);lagerFeuer(o,v.x,v.y);o.restore();});}
 function landmark(c,v,nl){const L=v.open?(v.tier===1?2.3:1):v.i===2?2.6:1+v.tier*.4;c.save();c.translate(v.x,v.y);c.scale(L,L);c.translate(-v.x,-v.y);landmark0(c,v,nl);c.restore();
  if(v.tier===4){const cols=['#ff5a5a','#ffa53a','#ffe14a','#5fd35f','#4aa8ff','#a46bff'],lw=Math.min(Math.max(7,3.5/cam.z),v.R*.12);c.lineWidth=lw;for(let k=0;k<6;k++){c.strokeStyle=cols[k];c.globalAlpha=.32*(1-nl*.8);c.beginPath();c.ellipse(v.x,v.y+v.R*.25,v.R*.95-k*lw,v.R*.75-k*lw,0,Math.PI,TAU);c.stroke();}c.globalAlpha=1;
   c.strokeStyle=`rgba(255,215,90,${.35+.15*Math.sin(T*2)})`;c.lineWidth=Math.max(4,3/cam.z);shape(c,v,46);c.stroke();}}
 function landmark0(c,v,nl){
- if(v.tier===1){const x=v.x,y=v.y;c.fillStyle='#8a8078';for(let k=0;k<8;k++){const a=k/8*TAU;c.beginPath();c.arc(x+Math.cos(a)*7,y+Math.sin(a)*6,1.8,0,TAU);c.fill();}c.strokeStyle='#6b3f1d';c.lineWidth=1.6;c.beginPath();c.moveTo(x-4,y+3);c.lineTo(x+4,y-2);c.moveTo(x+4,y+3);c.lineTo(x-4,y-2);c.stroke();
-  const f=REDUCED?1:.85+.25*Math.sin(T*14);c.fillStyle='#ff7a2e';c.beginPath();c.ellipse(x,y-3,3.5,6*f,0,0,TAU);c.fill();c.fillStyle='#ffd23f';c.beginPath();c.ellipse(x,y-2,1.8,3.4*f,0,0,TAU);c.fill();}
+ if(v.tier===1){const x=v.x,y=v.y;c.fillStyle='#8a8078';for(let k=0;k<8;k++){const a=k/8*TAU;c.beginPath();c.arc(x+Math.cos(a)*7,y+Math.sin(a)*6,1.8,0,TAU);c.fill();}lagerFeuer(c,x,y);}
  if(v.tier===2)for(let k=0;k<2;k++){const a=(REDUCED?0:T*.25)+k*Math.PI,x=v.x+Math.cos(a)*34,y=v.y+Math.sin(a)*28,d=a+Math.PI/2;c.save();c.translate(x,y);c.rotate(d);
   c.fillStyle='#3f8f4a';for(const s of[-1,1]){c.beginPath();c.ellipse(3,s*5,3,1.4,s*.6,0,TAU);c.fill();c.beginPath();c.ellipse(-4,s*4,2.4,1.2,-s*.6,0,TAU);c.fill();}c.beginPath();c.arc(7,0,2.2,0,TAU);c.fill();
   c.fillStyle='#7a5a2b';c.beginPath();c.ellipse(0,0,6,4.6,0,0,TAU);c.fill();c.strokeStyle='#c9a35a';c.lineWidth=.6;c.beginPath();c.ellipse(0,0,3,2.2,0,0,TAU);c.moveTo(-6,0);c.lineTo(6,0);c.stroke();c.restore();}
