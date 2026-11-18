@@ -103,7 +103,7 @@ export default async (req) => {
     "invoice_creation[invoice_data][custom_fields][0][name]": "Muschel-Konto",
     "invoice_creation[invoice_data][custom_fields][0][value]": name,
     "invoice_creation[invoice_data][footer]": "Bestätigung: Du hast am " + zeit.slice(0, 10) + " ausdrücklich verlangt, dass wir vor Ablauf der Widerrufsfrist mit der Ausführung des Vertrags beginnen (sofortige Gutschrift der Muscheln), und bestätigt, dass du dadurch mit Beginn der Ausführung dein Widerrufsrecht verlierst. Das Widerrufsrecht ist mit der Gutschrift erloschen (§ 356 Abs. 5 BGB). Muscheln haben keinen Geldwert und sind nicht übertragbar. Es gelten die AGB mit Widerrufsbelehrung: https://muscheltal.de/agb.html – Alcaba UG (haftungsbeschränkt), Grelckstr. 23a, 22529 Hamburg, HRB 180374, USt-IdNr. DE351239794.",
-    success_url: SEITE + "/?kauf=ok",
+    success_url: SEITE + "/?kauf=ok&sid={CHECKOUT_SESSION_ID}",// Stripe setzt die Kauf-Nummer ein (für die Feier nach der Gutschrift)
     cancel_url: SEITE + "/?kauf=abbruch",
   });
   const r = await fetch(API() + "/v1/checkout/sessions", { method: "POST", headers: { authorization: "Bearer " + process.env.STRIPE_SECRET_KEY, "content-type": "application/x-www-form-urlencoded" }, body: f });

@@ -95,6 +95,16 @@ export default async (req) => {
   }
   // Auswertung nur mit Passwort
   if ((await sha(req.headers.get("x-pw") || "")) !== PW_HASH) return json({ fehler: "Passwort" }, 403);
+  // Einmalig (18.11.): Testkäufe aus der Statistik entfernen – Kauf-Schritte (Haken, zur Bezahlung, bezahlt/abgebrochen, Fehler)
+  // der Testtage 17./18.11. löschen und die Tagessummen neu berechnen lassen, als hätte es die Testkäufe nie gegeben
+  if (!(await store.get("x/bereinigt/testkauf-1"))) {
+    const TEST = /^(pak_haken|pak_kasse.*|pak_fehler|kauf_ok|kauf_abbruch)$/;
+    for (const d of ["2026-11-17", "2026-11-18"]) {
+      for (const k of await liste(store, "s/" + d + "/")) { const v = JSON.parse((await store.get(k)) || "null"); if (!v || !v.ereignisse) continue; let geaendert = false; for (const e of Object.keys(v.ereignisse)) if (TEST.test(e)) { delete v.ereignisse[e]; geaendert = true; } if (geaendert) await store.set(k, JSON.stringify(v)); }
+      await store.delete("agg/" + d);
+    }
+    await store.set("x/bereinigt/testkauf-1", String(Date.now()));
+  }
   const u = new URL(req.url), tageN = Math.max(1, Math.min(60, Number(u.searchParams.get("tage")) || 7)), heute = tag();
   const out = { tage: [], gesamt: null };
   const alle = [];
