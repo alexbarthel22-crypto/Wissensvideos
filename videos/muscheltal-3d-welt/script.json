@@ -1,0 +1,116 @@
+{
+  "title": "Muschel-Tal in 3D",
+  "voice": "Gemini TTS (gemini-2.5-pro-preview-tts, Stimme Puck)",
+  "notes": "Tag 8 (15.11.): Hook Tierheim (nur noch 50, 750 Bewohner); Muschel-Tal kurz; Streuner; 3 Live-Job-Verlosungen (Boba Beach @hanna.013, Coast & Cotton @pxlinx.022, Coco Bay @haylie.aeriana); LIVE-Insel als eigene Insel getrennt von Muschel-Tal (Spielstand + Rangliste folgen); Schluss: der 800. sein.",
+  "lead_in": 0.0,
+  "bg": "#0a5a92",
+  "captions": {
+    "pop": false,
+    "first_at_zero": true,
+    "left": 80,
+    "right": 180,
+    "size": 64,
+    "bars": false,
+    "color": "#ffffff",
+    "top": 1180,
+    "css": ".inner { font-family: 'Inter', sans-serif; font-weight: 800; letter-spacing: -.01em; line-height: 1.12; } .inner .w { color: #fff; text-shadow: 0 3px 16px rgba(30,10,40,.7), 0 1px 2px rgba(0,0,0,.5); } .inner .w.k-y, .inner .w.k-g, .inner .w.k-p { color: #ffd36a; } .inner { background: rgba(25,10,35,.5); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 30px; padding: 14px 20px 18px; box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.25); }"
+  },
+  "scenes": [
+    {
+      "id": "s01",
+      "tag": "",
+      "sfx": [
+        {
+          "name": "whoosh",
+          "at": "s01+0.0",
+          "volume": 0.45
+        }
+      ],
+      "lines": [
+        {
+          "id": "L1",
+          "text": "Das ist *p:Muschel-Tal – / zum ersten Mal in *y:3D|Drei-De!",
+          "speed": 1.05,
+          "style": "Style: a young German guy, around 20, amazed and excited, showing his followers something spectacular for the first time, warm and enthusiastic, natural German, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+          "pause": 0.4
+        }
+      ]
+    },
+    {
+      "id": "s02",
+      "tag": "",
+      "sfx": [],
+      "lines": [
+        {
+          "id": "L2",
+          "text": "Jede Hütte gehört einem *g:echten Follower – / mit seinem *y:Namen!",
+          "speed": 1.05,
+          "style": "Style: a young German guy, around 20, amazed and excited, showing his followers something spectacular for the first time, warm and enthusiastic, natural German, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+          "pause": 0.6
+        }
+      ]
+    },
+    {
+      "id": "s03",
+      "tag": "",
+      "sfx": [],
+      "lines": [
+        {
+          "id": "L3",
+          "text": "*y:506|Fünfhundertsechs auf der *p:Haupt-Insel – / und *y:284|zweihundertvierundachtzig auf der *g:Kokos-Küste!",
+          "speed": 1.05,
+          "style": "Style: a young German guy, around 20, amazed and excited, showing his followers something spectacular for the first time, warm and enthusiastic, natural German, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+          "pause": 0.6
+        }
+      ]
+    },
+    {
+      "id": "s04",
+      "tag": "",
+      "sfx": [],
+      "lines": [
+        {
+          "id": "L4",
+          "text": "Und *g:jeden Tag ziehen *y:neue Leute ein.",
+          "speed": 1.05,
+          "style": "Style: a young German guy, around 20, amazed and excited, showing his followers something spectacular for the first time, warm and enthusiastic, natural German, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+          "pause": 0.6
+        }
+      ]
+    },
+    {
+      "id": "s05",
+      "tag": "",
+      "sfx": [
+        {
+          "name": "click",
+          "at": "L5:Folg",
+          "volume": 0.5
+        }
+      ],
+      "lines": [
+        {
+          "id": "L5",
+          "text": "*g:Folg mir – / und morgen steht hier *y:deine Hütte!",
+          "speed": 1.05,
+          "style": "Style: a young German guy, around 20, amazed and excited, showing his followers something spectacular for the first time, warm and enthusiastic, natural German, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+          "pause": 1.0
+        }
+      ]
+    }
+  ],
+  "style": "Style: a real, natural-sounding young man telling his friends something he is genuinely excited about. Conversational, warm, honest emotion in the voice, not like an announcer or an advertisement. Emphasize the important words naturally.\nPace: brisk but natural.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+  "loudness": -5,
+  "pitch": 0,
+  "bgvideo": {
+    "src": "assets/bg.mp4"
+  },
+  "music": {
+    "src": "assets/music/suedsee.wav",
+    "volume": 1.0
+  },
+  "ambience": {
+    "src": "assets/music/atmo.wav",
+    "volume": 0.6
+  }
+}
