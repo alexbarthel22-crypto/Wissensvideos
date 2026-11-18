@@ -103,16 +103,19 @@ scene("s01", GL + """
     #rg1, #rg2 { position: absolute; left: 540px; top: 760px; width: 200px; height: 200px; margin: -100px; border-radius: 50%; border: 26px solid #ffd23f; box-shadow: 0 0 60px #ff6a1a; }
     #rg2 { border-color: #ff3d7f; }
     .pt { position: absolute; left: 500px; top: 720px; font-size: 84px; line-height: 1; }
-    #t1a { top: 250px; padding: 26px 50px 34px; background: rgba(200,20,30,.82); box-shadow: 0 0 0 6px #ffd23f, 0 20px 60px rgba(255,60,20,.6); }
+    #t1a { top: 270px; padding: 26px 50px 34px; background: rgba(200,20,30,.82); box-shadow: 0 0 0 6px #ffd23f, 0 20px 60px rgba(255,60,20,.6); }
     #t1a small { font-size: 46px; color: #fff; text-transform: none; opacity: 1; font-weight: 900; letter-spacing: .02em; }
     #t1a b { font-size: 150px; line-height: .95; letter-spacing: -.02em; color: #ffe14a; text-shadow: 0 8px 0 rgba(90,0,0,.55); }
-    #t1 { top: 250px; padding: 28px 46px 36px; opacity: 0; }
+    #t1 { top: 270px; padding: 28px 46px 36px; opacity: 0; background: rgba(200,20,30,.82); box-shadow: 0 0 0 6px #ffd23f, 0 20px 60px rgba(255,60,20,.6); }
+    #tk1 { position: absolute; left: 0; right: 0; top: 160px; height: 64px; background: #ffd23f; overflow: hidden; box-shadow: 0 6px 20px rgba(0,0,0,.3); }
+    #tk1i { position: absolute; left: 0; top: 8px; white-space: nowrap; font: 900 44px "Inter", sans-serif; color: #b0101c; }
     #t1 small { font-size: 50px; letter-spacing: 0; text-transform: none; opacity: 1; font-weight: 900; color: #fff; }
     #t1 b { font-size: 132px; line-height: .98; letter-spacing: -.02em; }
     #t1 b span { color: #ffe08a; text-shadow: 0 6px 30px rgba(255,120,60,.6); }""",
 """      <div id="rg1"></div><div id="rg2"></div><div class="pt" id="pt0">💥</div><div class="pt" id="pt1">🏝️</div><div class="pt" id="pt2">🏠</div><div class="pt" id="pt3">👥</div><div class="pt" id="pt4">🔥</div><div class="pt" id="pt5">💥</div><div class="pt" id="pt6">🏠</div><div class="pt" id="pt7">⭐</div><div class="pt" id="pt8">👥</div><div class="pt" id="pt9">🏝️</div><div class="pt" id="pt10">💥</div><div class="pt" id="pt11">🏠</div><div class="pt" id="pt12">✨</div><div class="pt" id="pt13">👥</div><div class="pt" id="pt14">💥</div><div class="pt" id="pt15">🏠</div><div class="pt" id="pt16">🎉</div><div class="pt" id="pt17">💥</div>
       <div id="t1a" class="gl"><small>💥 EILMELDUNG</small><b>DIE INSEL<br>PLATZT!</b></div>
-      <div id="t1" class="gl"><small>Hier wohnen</small><b>ALLE meine<br><span>Follower</span></b></div>
+      <div id="t1" class="gl"><small>Denn hier wohnen 790 Leute –</small><b>ALLE meine<br><span>Follower!</span></b></div>
+      <div id="tk1"><div id="tk1i">+++ EILMELDUNG +++ DIE INSEL PLATZT +++ 790 BEWOHNER +++ EILMELDUNG +++ DIE INSEL PLATZT +++ 790 BEWOHNER +++</div></div>
       <div id="fl1"></div>""",
 """      tl.fromTo("#fl1", { opacity: 1 }, { opacity: 0, duration: .4, ease: "power2.out" }, 0);
       tl.fromTo("#fl1", { opacity: .85 }, { opacity: 0, duration: .3, ease: "power2.out" }, at("L1", "PLATZT") - .02);
@@ -136,6 +139,8 @@ scene("s01", GL + """
       tl.fromTo("#pt15", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 367, y: -541, scale: 2.25, rotation: 105, opacity: 0, duration: 0.90, ease: "power3.out" }, 0.14);
       tl.fromTo("#pt16", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 534, y: -378, scale: 1.20, rotation: 172, opacity: 0, duration: 1.15, ease: "power3.out" }, 0.02);
       tl.fromTo("#pt17", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 436, y: -85, scale: 1.55, rotation: -121, opacity: 0, duration: 1.40, ease: "power3.out" }, 0.06);
+      tl.fromTo("#tk1", { scaleY: 0 }, { scaleY: 1, duration: .2, ease: "power2.out" }, 0);
+      tl.fromTo("#tk1i", { x: 0 }, { x: -1900, duration: 4.5, ease: "none" }, 0);
       tl.fromTo("#t1a", { scale: 2.2, opacity: 0 }, { scale: 1, opacity: 1, duration: .28, ease: "back.out(3)" }, 0);
       tl.to("#t1a", { x: 18, y: -12, rotation: 3, duration: .05, ease: "none" }, 0.30);
       tl.to("#t1a", { x: 18, y: -12, rotation: 3, duration: .05, ease: "none" }, at("L1", "PLATZT") + 0.00);
@@ -154,8 +159,8 @@ scene("s01", GL + """
       tl.to("#t1a", { x: 0, y: 0, rotation: 0, duration: .05, ease: "none" }, 0.65);
       tl.to("#t1a", { x: 0, y: 0, rotation: 0, duration: .05, ease: "none" }, at("L1", "PLATZT") + 0.35);
       tl.fromTo("#t1a b", { scale: 1 }, { scale: 1.18, duration: .14, yoyo: true, repeat: 1, ease: "power2.out", transformOrigin: "50% 50%" }, at("L1", "PLATZT") - .03);
-      tl.to("#t1a", { scale: .6, opacity: 0, duration: .2, ease: "power2.in" }, at("L1", "Hier") - .15);
-      tl.fromTo("#t1", { opacity: 0, scale: 1.5 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.4)" }, at("L1", "Hier") - .05);
+      tl.to("#t1a", { scale: .6, opacity: 0, duration: .2, ease: "power2.in" }, at("L1", "Denn") - .15);
+      tl.fromTo("#t1", { opacity: 0, scale: 1.5 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.4)" }, at("L1", "Denn") - .05);
       tl.fromTo("#t1 b", { scale: 1 }, { scale: 1.12, duration: .16, yoyo: true, repeat: 1, ease: "power2.out", transformOrigin: "50% 50%" }, at("L1", "ALLE") - .03);
       tl.fromTo("#t1 b span", { scale: 1 }, { scale: 1.18, duration: .18, yoyo: true, repeat: 1, ease: "power2.out", transformOrigin: "50% 60%" }, at("L1", "Follower") - .03);""", blur=False)
 
@@ -180,7 +185,7 @@ scene("s02n", GL + """
       tl.to("#c2n", { scale: 1.06, duration: .25, yoyo: true, repeat: 3, ease: "sine.inOut" }, at("L2c", "Wenn") + .8);""")
 
 # s03 – Gebäude-Namen erscheinen passend zu den Schnitten
-BN = [("L3", "Dönerbude", "🥙 Dönerbude"), ("L3", "Bäckerei", "🥐 Bäckerei"), ("L3s", "Strandbar", "🍹 Strandbar"), ("L3s", "Wal", "🐋 Ein Wal!"), ("L3t", "Tierheim", "🐾 Tierheim · bei 800"), ("L3k", "Lagerfeuer", "🔥 Lagerfeuer"), ("L3g", "Kokos-Club", "🪩 Kokos-Club"), ("L3g", "Game", "🎮 Game Lagoon"), ("L3c", "Freiluftkino", "🎬 Freiluftkino")]
+BN = [("L3", "Dönerbude", "🥙 Dönerbude"), ("L3", "Bäckerei", "🥐 Bäckerei"), ("L3s", "Strandbar", "🍹 Strandbar"), ("L3t", "Tierheim", "🐾 Tierheim · bei 800"), ("L3k", "Lagerfeuer", "🔥 Lagerfeuer"), ("L3g", "Kokos-Club", "🪩 Kokos-Club"), ("L3g", "Game", "🎮 Game Lagoon"), ("L3c", "Freiluftkino", "🎬 Freiluftkino")]
 scene("s03", GL + """
     .bn { top: 240px; } .bn b { font-size: 70px; }""",
 """""" + "".join(f'<div id="bn{i}" class="gl bn"><small>{"Hauptinsel" if l in ("L3", "L3s", "L3t") else "Kokos-Küste"}</small><b>{t}</b></div>' for i, (l, w, t) in enumerate(BN)) + """""",

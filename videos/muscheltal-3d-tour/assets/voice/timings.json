@@ -1,78 +1,118 @@
 {
- "duration": 46.116,
+ "duration": 52.779,
  "lines": [
   {
    "scene": "s01",
    "id": "L1",
    "words": [
     {
+     "display": "EILMELDUNG:",
+     "spoken": "EILMELDUNG:",
+     "color": "y",
+     "group": 0,
+     "start": 0.3,
+     "end": 0.779
+    },
+    {
      "display": "Die",
      "spoken": "Die",
      "color": null,
-     "group": 0,
-     "start": 0.3,
-     "end": 0.461
+     "group": 1,
+     "start": 0.779,
+     "end": 0.937
     },
     {
      "display": "Insel",
      "spoken": "Insel",
      "color": null,
-     "group": 0,
-     "start": 0.461,
-     "end": 0.778
+     "group": 1,
+     "start": 0.937,
+     "end": 1.247
     },
     {
      "display": "PLATZT!",
      "spoken": "PLATZT!",
      "color": "y",
-     "group": 0,
-     "start": 0.778,
-     "end": 0.956
+     "group": 1,
+     "start": 1.247,
+     "end": 1.422
     },
     {
-     "display": "Hier",
-     "spoken": "Hier",
+     "display": "Denn",
+     "spoken": "Denn",
      "color": null,
-     "group": 1,
-     "start": 0.956,
-     "end": 1.123
+     "group": 2,
+     "start": 1.422,
+     "end": 1.586
+    },
+    {
+     "display": "hier",
+     "spoken": "hier",
+     "color": null,
+     "group": 2,
+     "start": 1.586,
+     "end": 1.749
     },
     {
      "display": "wohnen",
      "spoken": "wohnen",
      "color": null,
-     "group": 1,
-     "start": 1.123,
-     "end": 1.445
+     "group": 2,
+     "start": 1.749,
+     "end": 2.065
+    },
+    {
+     "display": "790",
+     "spoken": "790",
+     "color": "y",
+     "group": 2,
+     "start": 2.065,
+     "end": 2.206
+    },
+    {
+     "display": "Leute",
+     "spoken": "Leute",
+     "color": null,
+     "group": 2,
+     "start": 2.206,
+     "end": 2.516
+    },
+    {
+     "display": "–",
+     "spoken": "–",
+     "color": null,
+     "group": 2,
+     "start": 2.516,
+     "end": 2.657
     },
     {
      "display": "ALLE",
      "spoken": "ALLE",
      "color": "y",
-     "group": 1,
-     "start": 1.445,
-     "end": 1.756
+     "group": 3,
+     "start": 2.657,
+     "end": 2.962
     },
     {
      "display": "meine",
      "spoken": "meine",
      "color": null,
-     "group": 1,
-     "start": 1.756,
-     "end": 2.072
+     "group": 3,
+     "start": 2.962,
+     "end": 3.272
     },
     {
      "display": "Follower!",
      "spoken": "Follower!",
      "color": null,
-     "group": 1,
-     "start": 2.072,
-     "end": 2.55
+     "group": 3,
+     "start": 3.272,
+     "end": 3.74
     }
    ],
-   "spoken": "Die Insel PLATZT! Hier wohnen ALLE meine Follower!",
+   "spoken": "EILMELDUNG: Die Insel PLATZT! Denn hier wohnen 790 Leute – ALLE meine Follower!",
    "start": 0.3,
-   "end": 2.55
+   "end": 3.74
   },
   {
    "scene": "s02",
@@ -83,93 +123,93 @@
      "spoken": "In",
      "color": null,
      "group": 0,
-     "start": 3.53,
-     "end": 3.888
+     "start": 4.72,
+     "end": 5.125
     },
     {
      "display": "der",
      "spoken": "der",
      "color": null,
      "group": 0,
-     "start": 3.888,
-     "end": 4.26
+     "start": 5.125,
+     "end": 5.545
     },
     {
      "display": "Mitte:",
      "spoken": "Mitte:",
      "color": null,
      "group": 0,
-     "start": 4.26,
-     "end": 4.99
+     "start": 5.545,
+     "end": 6.37
     },
     {
      "display": "der",
      "spoken": "der",
      "color": null,
      "group": 0,
-     "start": 5.14,
-     "end": 5.256
+     "start": 6.62,
+     "end": 6.714
     },
     {
      "display": "Muschelpalast",
      "spoken": "Muschelpalast",
      "color": "p",
      "group": 0,
-     "start": 5.256,
-     "end": 5.726
+     "start": 6.714,
+     "end": 7.096
     },
     {
      "display": "–",
      "spoken": "–",
      "color": null,
      "group": 0,
-     "start": 5.726,
-     "end": 5.83
+     "start": 7.096,
+     "end": 7.18
     },
     {
      "display": "mit",
      "spoken": "mit",
      "color": null,
      "group": 1,
-     "start": 5.98,
-     "end": 6.074
+     "start": 7.35,
+     "end": 7.462
     },
     {
      "display": "Garde",
      "spoken": "Garde",
      "color": null,
      "group": 1,
-     "start": 6.074,
-     "end": 6.26
+     "start": 7.462,
+     "end": 7.683
     },
     {
      "display": "und",
      "spoken": "und",
      "color": null,
      "group": 1,
-     "start": 6.26,
-     "end": 6.354
+     "start": 7.683,
+     "end": 7.795
     },
     {
      "display": "goldener",
      "spoken": "goldener",
      "color": "y",
      "group": 1,
-     "start": 6.354,
-     "end": 6.634
+     "start": 7.795,
+     "end": 8.128
     },
     {
      "display": "Krone!",
      "spoken": "Krone!",
      "color": null,
      "group": 1,
-     "start": 6.634,
-     "end": 6.82
+     "start": 8.128,
+     "end": 8.349
     }
    ],
    "spoken": "In der Mitte: der Muschelpalast – mit Garde und goldener Krone!",
-   "start": 3.53,
-   "end": 6.82
+   "start": 4.72,
+   "end": 8.349
   },
   {
    "scene": "s02",
@@ -180,77 +220,85 @@
      "spoken": "Drumherum:",
      "color": null,
      "group": 0,
-     "start": 7.64,
-     "end": 8.183
+     "start": 9.169,
+     "end": 9.799
     },
     {
-     "display": "790",
-     "spoken": "790",
-     "color": "y",
-     "group": 0,
-     "start": 8.183,
-     "end": 8.344
-    },
-    {
-     "display": "Hütten",
-     "spoken": "Hütten",
+     "display": "Hütte",
+     "spoken": "Hütte",
      "color": null,
      "group": 0,
-     "start": 8.344,
-     "end": 8.706
+     "start": 9.929,
+     "end": 10.269
+    },
+    {
+     "display": "an",
+     "spoken": "an",
+     "color": null,
+     "group": 0,
+     "start": 10.269,
+     "end": 10.435
+    },
+    {
+     "display": "Hütte",
+     "spoken": "Hütte",
+     "color": null,
+     "group": 0,
+     "start": 10.435,
+     "end": 10.775
     },
     {
      "display": "–",
      "spoken": "–",
      "color": null,
      "group": 0,
-     "start": 8.706,
-     "end": 8.868
+     "start": 10.775,
+     "end": 10.929
     },
     {
      "display": "jede",
      "spoken": "jede",
      "color": null,
      "group": 1,
-     "start": 8.868,
-     "end": 9.217
+     "start": 11.179,
+     "end": 11.482
     },
     {
      "display": "mit",
      "spoken": "mit",
      "color": null,
      "group": 1,
-     "start": 9.217,
-     "end": 9.397
+     "start": 11.482,
+     "end": 11.639
     },
     {
      "display": "einem",
      "spoken": "einem",
      "color": null,
      "group": 1,
-     "start": 9.397,
-     "end": 9.753
+     "start": 11.639,
+     "end": 11.947
     },
     {
      "display": "echten",
      "spoken": "echten",
      "color": "g",
      "group": 1,
-     "start": 9.753,
-     "end": 10.115
+     "start": 11.947,
+     "end": 12.261
     },
     {
      "display": "Namen!",
      "spoken": "Namen!",
      "color": null,
      "group": 1,
-     "start": 10.115,
-     "end": 10.47
+     "start": 12.261,
+     "end": 12.569
     }
    ],
-   "spoken": "Drumherum: 790 Hütten – jede mit einem echten Namen!",
-   "start": 7.64,
-   "end": 10.47
+   "spoken": "Drumherum: Hütte an Hütte – jede mit einem echten Namen!",
+   "start": 9.169,
+   "end": 12.569
   },
   {
    "scene": "s02n",
@@ -261,77 +309,77 @@
      "spoken": "Siehst",
      "color": "y",
      "group": 0,
-     "start": 11.45,
-     "end": 11.649
+     "start": 13.549,
+     "end": 13.768
     },
     {
      "display": "du",
      "spoken": "du",
      "color": null,
      "group": 0,
-     "start": 11.649,
-     "end": 11.823
+     "start": 13.768,
+     "end": 13.959
     },
     {
      "display": "dich?",
      "spoken": "dich?",
      "color": null,
      "group": 0,
-     "start": 11.823,
-     "end": 12.01
+     "start": 13.959,
+     "end": 14.164
     },
     {
      "display": "Wenn",
      "spoken": "Wenn",
      "color": null,
      "group": 1,
-     "start": 12.01,
-     "end": 12.196
+     "start": 14.164,
+     "end": 14.369
     },
     {
      "display": "nicht,",
      "spoken": "nicht,",
      "color": null,
      "group": 1,
-     "start": 12.196,
-     "end": 12.389
+     "start": 14.369,
+     "end": 14.581
     },
     {
      "display": "kommentier:",
      "spoken": "kommentier:",
      "color": null,
      "group": 1,
-     "start": 12.389,
-     "end": 12.936
+     "start": 14.581,
+     "end": 15.182
     },
     {
      "display": "„Wo",
      "spoken": "„Wo",
      "color": "p",
      "group": 2,
-     "start": 12.936,
-     "end": 13.11
+     "start": 15.182,
+     "end": 15.373
     },
     {
      "display": "bin",
      "spoken": "bin",
      "color": null,
      "group": 2,
-     "start": 13.11,
-     "end": 13.29
+     "start": 15.373,
+     "end": 15.571
     },
     {
      "display": "ich?“",
      "spoken": "ich?“",
      "color": null,
      "group": 2,
-     "start": 13.29,
-     "end": 13.47
+     "start": 15.571,
+     "end": 15.769
     }
    ],
    "spoken": "Siehst du dich? Wenn nicht, kommentier: „Wo bin ich?“",
-   "start": 11.45,
-   "end": 13.47
+   "start": 13.549,
+   "end": 15.769
   },
   {
    "scene": "s03",
@@ -342,93 +390,93 @@
      "spoken": "Hier:",
      "color": null,
      "group": 0,
-     "start": 14.45,
-     "end": 14.629
+     "start": 16.749,
+     "end": 16.95
     },
     {
      "display": "die",
      "spoken": "die",
      "color": null,
      "group": 0,
-     "start": 14.629,
-     "end": 14.801
+     "start": 16.95,
+     "end": 17.144
     },
     {
      "display": "Dönerbude",
      "spoken": "Dönerbude",
      "color": "y",
      "group": 0,
-     "start": 14.801,
-     "end": 15.473
+     "start": 17.144,
+     "end": 17.898
     },
     {
      "display": "–",
      "spoken": "–",
      "color": null,
      "group": 0,
-     "start": 15.473,
-     "end": 15.627
+     "start": 17.898,
+     "end": 18.071
     },
     {
      "display": "und",
      "spoken": "und",
      "color": null,
      "group": 1,
-     "start": 15.627,
-     "end": 15.8
+     "start": 18.071,
+     "end": 18.265
     },
     {
      "display": "die",
      "spoken": "die",
      "color": null,
      "group": 1,
-     "start": 15.8,
-     "end": 15.972
+     "start": 18.265,
+     "end": 18.459
     },
     {
      "display": "Bäckerei,",
      "spoken": "Bäckerei,",
      "color": "y",
      "group": 1,
-     "start": 15.972,
-     "end": 16.484
+     "start": 18.459,
+     "end": 19.033
     },
     {
      "display": "frisch",
      "spoken": "frisch",
      "color": null,
      "group": 2,
-     "start": 16.484,
-     "end": 16.675
+     "start": 19.033,
+     "end": 19.248
     },
     {
      "display": "aus",
      "spoken": "aus",
      "color": null,
      "group": 2,
-     "start": 16.675,
-     "end": 16.848
+     "start": 19.248,
+     "end": 19.441
     },
     {
      "display": "dem",
      "spoken": "dem",
      "color": null,
      "group": 2,
-     "start": 16.848,
-     "end": 17.02
+     "start": 19.441,
+     "end": 19.635
     },
     {
      "display": "Ofen!",
      "spoken": "Ofen!",
      "color": null,
      "group": 2,
-     "start": 17.02,
-     "end": 17.353
+     "start": 19.635,
+     "end": 20.009
     }
    ],
    "spoken": "Hier: die Dönerbude – und die Bäckerei, frisch aus dem Ofen!",
-   "start": 14.45,
-   "end": 17.353
+   "start": 16.749,
+   "end": 20.009
   },
   {
    "scene": "s03",
@@ -439,101 +487,45 @@
      "spoken": "Unten",
      "color": null,
      "group": 0,
-     "start": 18.173,
-     "end": 18.516
+     "start": 20.829,
+     "end": 21.16
     },
     {
      "display": "am",
      "spoken": "am",
      "color": null,
      "group": 0,
-     "start": 18.516,
-     "end": 18.685
+     "start": 21.16,
+     "end": 21.322
     },
     {
      "display": "Strand:",
      "spoken": "Strand:",
      "color": null,
      "group": 0,
-     "start": 18.685,
-     "end": 18.879
+     "start": 21.322,
+     "end": 21.509
     },
     {
      "display": "die",
      "spoken": "die",
      "color": null,
      "group": 0,
-     "start": 18.879,
-     "end": 19.053
+     "start": 21.659,
+     "end": 21.875
     },
     {
-     "display": "Strandbar",
-     "spoken": "Strandbar",
+     "display": "Strandbar!",
+     "spoken": "Strandbar!",
      "color": "p",
      "group": 0,
-     "start": 19.053,
-     "end": 19.422
-    },
-    {
-     "display": "…",
-     "spoken": "…",
-     "color": null,
-     "group": 0,
-     "start": 19.422,
-     "end": 19.578
-    },
-    {
-     "display": "und",
-     "spoken": "und",
-     "color": null,
-     "group": 1,
-     "start": 19.578,
-     "end": 19.753
-    },
-    {
-     "display": "da",
-     "spoken": "da",
-     "color": null,
-     "group": 1,
-     "start": 19.753,
-     "end": 19.921
-    },
-    {
-     "display": "draußen",
-     "spoken": "draußen",
-     "color": null,
-     "group": 1,
-     "start": 19.921,
-     "end": 20.277
-    },
-    {
-     "display": "–",
-     "spoken": "–",
-     "color": null,
-     "group": 1,
-     "start": 20.277,
-     "end": 20.433
-    },
-    {
-     "display": "ein",
-     "spoken": "ein",
-     "color": null,
-     "group": 2,
-     "start": 20.433,
-     "end": 20.608
-    },
-    {
-     "display": "Wal!",
-     "spoken": "Wal!",
-     "color": "y",
-     "group": 2,
-     "start": 20.608,
-     "end": 20.783
+     "start": 21.875,
+     "end": 22.329
     }
    ],
-   "spoken": "Unten am Strand: die Strandbar … und da draußen – ein Wal!",
-   "start": 18.173,
-   "end": 20.783
+   "spoken": "Unten am Strand: die Strandbar!",
+   "start": 20.829,
+   "end": 22.329
   },
   {
    "scene": "s03",
@@ -544,93 +536,93 @@
      "spoken": "Und",
      "color": null,
      "group": 0,
-     "start": 21.603,
-     "end": 21.782
+     "start": 25.349,
+     "end": 25.546
     },
     {
      "display": "das",
      "spoken": "das",
      "color": null,
      "group": 0,
-     "start": 21.782,
-     "end": 21.961
+     "start": 25.546,
+     "end": 25.744
     },
     {
      "display": "Tierheim?",
      "spoken": "Tierheim?",
      "color": "g",
      "group": 0,
-     "start": 21.961,
-     "end": 22.332
+     "start": 25.744,
+     "end": 26.152
     },
     {
      "display": "Öffnet",
      "spoken": "Öffnet",
      "color": null,
      "group": 1,
-     "start": 22.332,
-     "end": 22.69
+     "start": 26.152,
+     "end": 26.547
     },
     {
      "display": "bei",
      "spoken": "bei",
      "color": null,
      "group": 1,
-     "start": 22.69,
-     "end": 22.869
+     "start": 26.547,
+     "end": 26.744
     },
     {
      "display": "800",
      "spoken": "800",
      "color": "y",
      "group": 1,
-     "start": 22.869,
-     "end": 23.028
+     "start": 26.744,
+     "end": 26.92
     },
     {
      "display": "–",
      "spoken": "–",
      "color": null,
      "group": 1,
-     "start": 23.028,
-     "end": 23.188
+     "start": 26.92,
+     "end": 27.096
     },
     {
      "display": "nur",
      "spoken": "nur",
      "color": null,
      "group": 2,
-     "start": 23.188,
-     "end": 23.367
+     "start": 27.096,
+     "end": 27.294
     },
     {
      "display": "noch",
      "spoken": "noch",
      "color": null,
      "group": 2,
-     "start": 23.367,
-     "end": 23.553
+     "start": 27.294,
+     "end": 27.498
     },
     {
      "display": "10",
      "spoken": "10",
      "color": null,
      "group": 2,
-     "start": 23.553,
-     "end": 23.712
+     "start": 27.498,
+     "end": 27.674
     },
     {
      "display": "Follower!",
      "spoken": "Follower!",
      "color": null,
      "group": 2,
-     "start": 23.712,
-     "end": 24.243
+     "start": 27.674,
+     "end": 28.259
     }
    ],
    "spoken": "Und das Tierheim? Öffnet bei 800 – nur noch 10 Follower!",
-   "start": 21.603,
-   "end": 24.243
+   "start": 25.349,
+   "end": 28.259
   },
   {
    "scene": "s03",
@@ -641,61 +633,61 @@
      "spoken": "Rüber",
      "color": null,
      "group": 0,
-     "start": 25.063,
-     "end": 25.398
+     "start": 29.079,
+     "end": 29.399
     },
     {
      "display": "zur",
      "spoken": "zur",
      "color": null,
      "group": 0,
-     "start": 25.398,
-     "end": 25.569
+     "start": 29.399,
+     "end": 29.563
     },
     {
      "display": "Kokos-Küste",
      "spoken": "Kokos-Küste",
      "color": "y",
      "group": 0,
-     "start": 25.569,
-     "end": 26.24
+     "start": 29.563,
+     "end": 30.203
     },
     {
      "display": "–",
      "spoken": "–",
      "color": null,
      "group": 0,
-     "start": 26.24,
-     "end": 26.392
+     "start": 30.203,
+     "end": 30.349
     },
     {
      "display": "zum",
      "spoken": "zum",
      "color": null,
      "group": 1,
-     "start": 26.392,
-     "end": 26.563
+     "start": 30.529,
+     "end": 30.726
     },
     {
      "display": "großen",
      "spoken": "großen",
      "color": null,
      "group": 1,
-     "start": 26.563,
-     "end": 26.905
+     "start": 30.726,
+     "end": 31.12
     },
     {
      "display": "Lagerfeuer!",
      "spoken": "Lagerfeuer!",
      "color": "p",
      "group": 1,
-     "start": 26.905,
-     "end": 27.423
+     "start": 31.12,
+     "end": 31.719
     }
    ],
    "spoken": "Rüber zur Kokos-Küste – zum großen Lagerfeuer!",
-   "start": 25.063,
-   "end": 27.423
+   "start": 29.079,
+   "end": 31.719
   },
   {
    "scene": "s03",
@@ -706,53 +698,53 @@
      "spoken": "Der",
      "color": null,
      "group": 0,
-     "start": 28.243,
-     "end": 28.39
+     "start": 32.539,
+     "end": 32.716
     },
     {
      "display": "Kokos-Club,",
      "spoken": "Kokos-Club,",
      "color": "p",
      "group": 0,
-     "start": 28.39,
-     "end": 28.83
+     "start": 32.716,
+     "end": 33.249
     },
     {
      "display": "die",
      "spoken": "die",
      "color": null,
      "group": 1,
-     "start": 28.83,
-     "end": 28.976
+     "start": 33.489,
+     "end": 33.66
     },
     {
      "display": "Game",
-     "spoken": "Game",
+     "spoken": "Gäim",
      "color": "y",
      "group": 1,
-     "start": 28.976,
-     "end": 29.259
+     "start": 33.66,
+     "end": 33.838
     },
     {
      "display": "Lagoon",
-     "spoken": "Lagoon",
-     "color": null,
+     "spoken": "Lahguhn",
+     "color": "y",
      "group": 1,
-     "start": 29.259,
-     "end": 29.552
+     "start": 33.838,
+     "end": 34.186
     },
     {
      "display": "…",
      "spoken": "…",
      "color": null,
      "group": 1,
-     "start": 29.552,
-     "end": 29.683
+     "start": 34.186,
+     "end": 34.339
     }
    ],
-   "spoken": "Der Kokos-Club, die Game Lagoon …",
-   "start": 28.243,
-   "end": 29.683
+   "spoken": "Der Kokos-Club, die Gäim Lahguhn …",
+   "start": 32.539,
+   "end": 34.339
   },
   {
    "scene": "s03",
@@ -763,61 +755,61 @@
      "spoken": "und",
      "color": null,
      "group": 0,
-     "start": 30.503,
-     "end": 30.665
+     "start": 35.159,
+     "end": 35.357
     },
     {
      "display": "im",
      "spoken": "im",
      "color": null,
      "group": 0,
-     "start": 30.665,
-     "end": 30.822
+     "start": 35.357,
+     "end": 35.548
     },
     {
      "display": "Freiluftkino",
      "spoken": "Freiluftkino",
      "color": "g",
      "group": 0,
-     "start": 30.822,
-     "end": 31.471
+     "start": 35.548,
+     "end": 36.34
     },
     {
      "display": "läuft",
      "spoken": "läuft",
      "color": null,
      "group": 1,
-     "start": 31.471,
-     "end": 31.645
+     "start": 36.34,
+     "end": 36.553
     },
     {
      "display": "gerade",
      "spoken": "gerade",
      "color": null,
      "group": 1,
-     "start": 31.645,
-     "end": 32.115
+     "start": 36.553,
+     "end": 37.126
     },
     {
      "display": "ein",
      "spoken": "ein",
      "color": null,
      "group": 1,
-     "start": 32.115,
-     "end": 32.277
+     "start": 37.126,
+     "end": 37.324
     },
     {
      "display": "Film!",
      "spoken": "Film!",
      "color": null,
      "group": 1,
-     "start": 32.277,
-     "end": 32.445
+     "start": 37.324,
+     "end": 37.529
     }
    ],
    "spoken": "und im Freiluftkino läuft gerade ein Film!",
-   "start": 30.503,
-   "end": 32.446
+   "start": 35.159,
+   "end": 37.529
   },
   {
    "scene": "s04",
@@ -828,61 +820,61 @@
      "spoken": "Und",
      "color": null,
      "group": 0,
-     "start": 33.426,
-     "end": 33.598
+     "start": 38.509,
+     "end": 38.724
     },
     {
      "display": "jeden",
      "spoken": "jeden",
      "color": null,
      "group": 0,
-     "start": 33.598,
-     "end": 33.937
+     "start": 38.724,
+     "end": 39.147
     },
     {
      "display": "Tag",
      "spoken": "Tag",
      "color": null,
      "group": 0,
-     "start": 33.937,
-     "end": 34.109
+     "start": 39.147,
+     "end": 39.362
     },
     {
      "display": "ziehen",
      "spoken": "ziehen",
      "color": null,
      "group": 1,
-     "start": 34.109,
-     "end": 34.454
+     "start": 39.362,
+     "end": 39.793
     },
     {
      "display": "neue",
      "spoken": "neue",
      "color": "y",
      "group": 1,
-     "start": 34.454,
-     "end": 34.633
+     "start": 39.793,
+     "end": 40.016
     },
     {
      "display": "Follower",
      "spoken": "Follower",
      "color": null,
      "group": 1,
-     "start": 34.633,
-     "end": 35.144
+     "start": 40.016,
+     "end": 40.654
     },
     {
      "display": "ein!",
      "spoken": "ein!",
      "color": null,
      "group": 1,
-     "start": 35.144,
-     "end": 35.316
+     "start": 40.654,
+     "end": 40.869
     }
    ],
    "spoken": "Und jeden Tag ziehen neue Follower ein!",
-   "start": 33.426,
-   "end": 35.316
+   "start": 38.509,
+   "end": 40.869
   },
   {
    "scene": "s05",
@@ -893,93 +885,93 @@
      "spoken": "Du",
      "color": null,
      "group": 0,
-     "start": 36.296,
-     "end": 36.45
+     "start": 41.849,
+     "end": 42.025
     },
     {
      "display": "willst",
      "spoken": "willst",
      "color": null,
      "group": 0,
-     "start": 36.45,
-     "end": 36.626
+     "start": 42.025,
+     "end": 42.226
     },
     {
      "display": "neben",
      "spoken": "neben",
      "color": null,
      "group": 0,
-     "start": 36.626,
-     "end": 36.939
+     "start": 42.226,
+     "end": 42.584
     },
     {
      "display": "deinen",
      "spoken": "deinen",
      "color": null,
      "group": 0,
-     "start": 36.939,
-     "end": 37.257
+     "start": 42.584,
+     "end": 42.948
     },
     {
      "display": "Freunden",
      "spoken": "Freunden",
      "color": "g",
      "group": 0,
-     "start": 37.257,
-     "end": 37.587
+     "start": 42.948,
+     "end": 43.325
     },
     {
      "display": "wohnen?",
      "spoken": "wohnen?",
      "color": null,
      "group": 0,
-     "start": 37.587,
-     "end": 37.906
+     "start": 43.325,
+     "end": 43.689
     },
     {
      "display": "Markier",
      "spoken": "Markier",
      "color": "y",
      "group": 1,
-     "start": 38.116,
-     "end": 38.361
+     "start": 43.939,
+     "end": 44.289
     },
     {
      "display": "sie",
      "spoken": "sie",
      "color": null,
      "group": 1,
-     "start": 38.361,
-     "end": 38.482
+     "start": 44.289,
+     "end": 44.461
     },
     {
      "display": "in",
      "spoken": "in",
      "color": null,
      "group": 1,
-     "start": 38.482,
-     "end": 38.598
+     "start": 44.461,
+     "end": 44.626
     },
     {
      "display": "den",
      "spoken": "den",
      "color": null,
      "group": 1,
-     "start": 38.598,
-     "end": 38.718
+     "start": 44.626,
+     "end": 44.798
     },
     {
      "display": "Kommentaren!",
      "spoken": "Kommentaren!",
      "color": null,
      "group": 1,
-     "start": 38.718,
-     "end": 39.196
+     "start": 44.798,
+     "end": 45.479
     }
    ],
    "spoken": "Du willst neben deinen Freunden wohnen? Markier sie in den Kommentaren!",
-   "start": 36.296,
-   "end": 39.196
+   "start": 41.849,
+   "end": 45.479
   },
   {
    "scene": "s06",
@@ -990,69 +982,69 @@
      "spoken": "Was",
      "color": null,
      "group": 0,
-     "start": 40.176,
-     "end": 40.333
+     "start": 46.459,
+     "end": 46.635
     },
     {
      "display": "soll",
      "spoken": "soll",
      "color": null,
      "group": 0,
-     "start": 40.333,
-     "end": 40.496
+     "start": 46.635,
+     "end": 46.816
     },
     {
      "display": "ich",
      "spoken": "ich",
      "color": null,
      "group": 0,
-     "start": 40.496,
-     "end": 40.654
+     "start": 46.816,
+     "end": 46.992
     },
     {
      "display": "als",
      "spoken": "als",
      "color": null,
      "group": 0,
-     "start": 40.654,
-     "end": 40.811
+     "start": 46.992,
+     "end": 47.167
     },
     {
      "display": "Nächstes",
      "spoken": "Nächstes",
      "color": null,
      "group": 0,
-     "start": 40.811,
-     "end": 41.137
+     "start": 47.167,
+     "end": 47.531
     },
     {
      "display": "bauen?",
      "spoken": "bauen?",
      "color": null,
      "group": 0,
-     "start": 41.137,
-     "end": 41.306
+     "start": 47.531,
+     "end": 47.719
     },
     {
      "display": "Kommentiert",
      "spoken": "Kommentiert",
      "color": "p",
      "group": 1,
-     "start": 41.436,
-     "end": 41.984
+     "start": 47.889,
+     "end": 48.49
     },
     {
      "display": "es!",
      "spoken": "es!",
      "color": null,
      "group": 1,
-     "start": 41.984,
-     "end": 42.156
+     "start": 48.49,
+     "end": 48.679
     }
    ],
    "spoken": "Was soll ich als Nächstes bauen? Kommentiert es!",
-   "start": 40.176,
-   "end": 42.156
+   "start": 46.459,
+   "end": 48.679
   },
   {
    "scene": "s07",
@@ -1063,77 +1055,77 @@
      "spoken": "Folg",
      "color": "g",
      "group": 0,
-     "start": 43.536,
-     "end": 43.716
+     "start": 50.059,
+     "end": 50.215
     },
     {
      "display": "mir",
      "spoken": "mir",
      "color": null,
      "group": 0,
-     "start": 43.716,
-     "end": 43.89
+     "start": 50.215,
+     "end": 50.365
     },
     {
      "display": "–",
      "spoken": "–",
      "color": null,
      "group": 0,
-     "start": 43.89,
-     "end": 44.045
+     "start": 50.365,
+     "end": 50.499
     },
     {
      "display": "und",
      "spoken": "und",
      "color": null,
      "group": 1,
-     "start": 44.045,
-     "end": 44.219
+     "start": 50.709,
+     "end": 50.883
     },
     {
      "display": "morgen",
      "spoken": "morgen",
      "color": null,
      "group": 1,
-     "start": 44.219,
-     "end": 44.567
+     "start": 50.883,
+     "end": 51.23
     },
     {
      "display": "steht",
      "spoken": "steht",
      "color": null,
      "group": 1,
-     "start": 44.567,
-     "end": 44.753
+     "start": 51.23,
+     "end": 51.416
     },
     {
      "display": "hier",
      "spoken": "hier",
      "color": null,
      "group": 1,
-     "start": 44.753,
-     "end": 44.933
+     "start": 51.416,
+     "end": 51.596
     },
     {
      "display": "deine",
      "spoken": "deine",
      "color": "y",
      "group": 1,
-     "start": 44.933,
-     "end": 45.275
+     "start": 51.596,
+     "end": 51.938
     },
     {
      "display": "Hütte!",
      "spoken": "Hütte!",
      "color": null,
      "group": 1,
-     "start": 45.275,
-     "end": 45.616
+     "start": 51.938,
+     "end": 52.279
     }
    ],
    "spoken": "Folg mir – und morgen steht hier deine Hütte!",
-   "start": 43.536,
-   "end": 45.616
+   "start": 50.059,
+   "end": 52.279
   }
  ]
 }

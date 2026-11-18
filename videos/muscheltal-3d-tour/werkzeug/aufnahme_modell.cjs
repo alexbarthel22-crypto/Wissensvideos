@@ -13,8 +13,7 @@ sh(L.L2c.start-.15,0,[[[-200,32,45],[-200,6,-130]],[[-200,30,-10],[-200,6,-170]]
 sh(L.L3.start-.1,0,[[[-230,175,40],[-230,0,-50]],[[-150,165,20],[-150,0,-70]]]);
 sh(w('L3','Bäckerei')-.2,0,[[[-78,42,195],[-150,6,100]],[[-95,34,175],[-150,6,100]]]);
 sh(L.L3s.start-.2,0,[[[190,42,262],[250,6,170]],[[205,32,238],[250,6,170]]]);
-sh(w('L3s','Wal')-.35,0,[[[408,66,171],[408,6,36]],[[420,55,140],[408,6,36]]]);
-sh(L.L3t.start-.2,0,[[[485,24,70],[600,4,40]],[[495,22,62],[600,4,40]]],45);
+sh(L.L3t.start-.2,0,[[[408,66,171],[408,6,36]],[[412,58,150],[420,6,40]],[[440,40,118],[520,4,50]],[[472,26,88],[600,4,42]],[[478,24,80],[600,4,42]]]);
 sh(L.L3k.start-.35,0,[[[8,42,258],[-50,6,170]],[[-8,36,245],[-50,6,170]],[[-25,32,236],[-50,6,170]]]);
 sh(w('L3g','Kokos-Club')-.25,1,[[[1153,560,1580],[1153,0,930]],[[1175,200,1150],[1153,0,930]],[[1095,80,1000],[1153,6,930]],[[1105,46,972],[1153,6,930]]]);
 sh(w('L3g','Game')-.2,1,[[[1555,46,700],[1503,8,600]],[[1545,40,685],[1503,8,600]]]);
@@ -34,11 +33,11 @@ const ix=k=>S.findIndex(s=>s.t1>k);const at=(i,d=0)=>S[i].t0+d;
 const E0=[{typ:'ballon',x:-170,z:420,h:330,t0:0,dur:3,s:3},{typ:'flieger',x:0,z:-230,h:105,dir:Math.PI/2,t0:at(1,-.3),dur:5,len:360},
  {typ:'delfine',x:-200,z:-470,dir:Math.PI/2,t0:at(2),dur:5},{typ:'jetski',x:-270,z:-470,r:30,t0:at(3),dur:4},
  {typ:'ballon',x:-60,z:-120,h:110,t0:at(4),dur:4},{typ:'ballon',x:330,z:60,h:95,t0:at(5),dur:4},
- {typ:'jetski',x:470,z:20,r:26,t0:at(6),dur:4},{typ:'wal',x:580,z:40,dir:Math.PI,t0:at(7,-.6),dur:6},{typ:'delfine',x:560,z:110,dir:Math.PI,t0:at(7),dur:4},
- {typ:'ballon',x:-40,z:40,h:85,t0:at(8),dur:5},
- {typ:'flieger',x:150,z:500,h:420,dir:Math.PI/2,t0:at(13),dur:5,len:700,s:4},{typ:'ballon',x:-300,z:-200,h:70,t0:at(14),dur:4},
- {typ:'wal',x:-460,z:330,dir:Math.PI*.75,t0:at(15,-.4),dur:4},{typ:'flieger',x:-30,z:520,h:400,dir:Math.PI/2,t0:at(16),dur:4.5,len:650,s:4}];
-const E1=[{typ:'delfine',x:1153,z:1700,dir:Math.PI/2,t0:at(9),dur:4},{typ:'ballon',x:1450,z:520,h:70,t0:at(10),dur:2},{typ:'jetski',x:1640,z:560,r:30,t0:at(11),dur:3},{typ:'ballon',x:880,z:880,h:80,t0:at(12),dur:3},{typ:'ballon',x:kx+60,z:kz-90,h:75,t0:at(13),dur:3}];
+ {typ:'walsprung',x:588,z:58,dir:Math.PI,t0:L.L3s.end+.85,dur:3.2},
+ {typ:'ballon',x:-40,z:40,h:85,t0:at(7),dur:5},
+ {typ:'flieger',x:150,z:500,h:420,dir:Math.PI/2,t0:at(12),dur:5,len:700,s:4},{typ:'ballon',x:-300,z:-200,h:70,t0:at(13),dur:4},
+ {typ:'wal',x:-460,z:330,dir:Math.PI*.75,t0:at(14,-.4),dur:4},{typ:'flieger',x:-30,z:520,h:400,dir:Math.PI/2,t0:at(15),dur:4.5,len:650,s:4}];
+const E1=[{typ:'delfine',x:1153,z:1700,dir:Math.PI/2,t0:at(8),dur:4},{typ:'ballon',x:1450,z:520,h:70,t0:at(9),dur:2},{typ:'jetski',x:1640,z:560,r:30,t0:at(10),dur:3},{typ:'ballon',x:kx+60,z:kz-90,h:75,t0:at(11),dur:3}];
 await pg[0].evaluate(e=>{window.EVT=e;},E0);await pg[1].evaluate(e=>{window.EVT=e;},E1);
 // ---- Kamera: Catmull-Rom über die Schlüssel, leicht geglättete Geschwindigkeit ----
 const cr=(P,u)=>{const n=P.length-1;if(n<1)return P[0];const x=u*n,i=Math.min(n-1,Math.floor(x)),f=x-i,p0=P[Math.max(0,i-1)],p1=P[i],p2=P[i+1],p3=P[Math.min(n,i+2)];
