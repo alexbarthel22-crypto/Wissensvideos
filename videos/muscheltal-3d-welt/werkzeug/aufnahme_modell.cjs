@@ -16,7 +16,7 @@ const cam=(K,t)=>{let j=0;while(j<K.length-1&&K[j+1][0]<=t)j++;const a=K[j],b=K[
  const ln=(p,q)=>p.map((v,i)=>v+(q[i]-v)*k);return {p:ln(a[1],b[1]),l:ln(a[2],b[2])};};
 const br=await chromium.launch({args:['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
 const pg=[];for(const ins of [0,1]){const p=await br.newPage({viewport:{width:1080,height:1920}});p.on('pageerror',e=>console.log('ERR',e.message));
- await p.goto(`http://localhost:8077/videos/muscheltal-3d/insel3d.html?insel=${ins}&w=1080&h=1920&still=1&t=0`);await p.waitForFunction(()=>window.BEREIT===true,null,{timeout:300000});pg.push(p);}
+ await p.goto(`http://localhost:8077/videos/muscheltal-3d/insel3d.html?insel=${ins}&w=1080&h=1920&still=1&t=0`,{timeout:600000});await p.waitForFunction(()=>window.BEREIT===true,null,{timeout:300000});pg.push(p);}
 fs.mkdirSync(out,{recursive:true});
 const ts=test?test.split(',').map(Number):[...Array(Math.round(dur*30)).keys()].map(i=>i/30);
 for(const [i,t] of ts.entries()){const ko=kokos(t),p=pg[ko?1:0],c=cam(ko?K1:KM,t);
