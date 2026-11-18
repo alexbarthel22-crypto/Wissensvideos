@@ -1944,7 +1944,7 @@ const cv=$('map'),ctx=cv.getContext('2d'),base=document.createElement('canvas'),
 const TEPOCH=Date.UTC(2026,0,1),TNOW=()=>(Date.now()-TEPOCH)/1000;
 let PXMAX=5e6,W=0,H=0,DPR=1,T=TNOW(),baseKey='',selT=0,selN=0,selStop=null,selStopN=-1;
 // Nachbarpaare (beide eingezogen)
-let NBP_=null;const NBW_Y=3.2;var NBW_COL='#e8433c';const NBPget=()=>NBP_||(NBP_=(I.nachbarn||[]).flatMap(pr=>{const G=pr.map(n=>byName.get('@'+String(n).toLowerCase().replace(/^@/,'')));if(G.length<3)return[G];if(G.some(q=>!q||!q.p))return[];G.sort((a,b)=>a.p.gx-b.p.gx);return G.slice(1).map((q,i)=>[G[i],q]);}).filter(([a,b])=>a&&b&&a.p&&b.p&&!a.gb&&!b.gb));
+let NBP_=null;const NBW_Y=3.2;var NBW_COL='#e8433c';const NBPget=()=>NBP_||(NBP_=(I.nachbarn||[]).flatMap(pr=>{const G=pr.map(n=>byName.get('@'+String(n).toLowerCase().replace(/^@/,''))).filter(q=>q&&q.p);if(G.length<2)return[];if(G.length===2)return[G];/* Gruppe: schon ab 2 Anwesenden verbunden */G.sort((a,b)=>a.p.gx-b.p.gx);return G.slice(1).map((q,i)=>[G[i],q]);}).filter(([a,b])=>a&&b&&a.p&&b.p&&!a.gb&&!b.gb));
 // Textbreite in großer Schrift messen und herunterrechnen: winzige Schriftgrößen (v. a. mit Emoji) misst Safari/macOS zu schmal → Schilder zu kurz
 {const MT=CanvasRenderingContext2D.prototype.measureText;const MC=new Map();CanvasRenderingContext2D.prototype.measureText=function(t){const f=this.font,m=/(\d*\.?\d+)px/.exec(f),px=m?+m[1]:60;if(px>=20)return MT.call(this,t);const k=f.replace(m[0],'60px'),key=k+'\u0001'+t;let w=MC.get(key);if(w===undefined){this.font=k;w=MT.call(this,t).width;this.font=f;if(MC.size>4000)MC.clear();MC.set(key,w);}return{width:w*px/60};};}
 const txtW=(c,t,w,f)=>c.measureText(t).width;
