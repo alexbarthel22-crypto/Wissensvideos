@@ -21,16 +21,22 @@ function sauber(d) {
     t0: zahl(d.t0, 4e12), dauer: zahl(d.dauer, 86400), sicht: zahl(d.sicht, 86400), geraet: ["handy", "tablet", "computer"].includes(d.geraet) ? d.geraet : "?",
     quelle: W.test(String(d.quelle || "")) ? String(d.quelle) : "?", seite: W.test(String(d.seite || "")) ? String(d.seite) : "?",
     bereiche: map(d.bereiche, 86400, 20), ereignisse: map(d.ereignisse, 1e4, 60), orte: map(d.orte, 86400, 60), heat: map(d.heat, 86400, 400),
-    ende: W.test(String(d.ende || "")) ? String(d.ende) : "", laden: zahl(d.laden, 6e4), fps: zahl(d.fps, 240), zoom: map(d.zoom, 86400, 10), konto: d.konto ? 1 : 0
+    ende: W.test(String(d.ende || "")) ? String(d.ende) : "", laden: zahl(d.laden, 6e4), fps: zahl(d.fps, 240), zoom: map(d.zoom, 86400, 10), konto: d.konto ? 1 : 0, neu: d.neu === 0 ? 0 : 1
   };
 }
 const add = (a, b) => { for (const [k, v] of Object.entries(b || {})) a[k] = (a[k] || 0) + v; return a; };
 function auswerten(S) {
-  const A = { sitzungen: S.length, dauer: [], sicht: 0, geraet: {}, quelle: {}, bereiche: {}, ereignisse: {}, orte: {}, heat: {}, ende: {}, stunden: Array(24).fill(0), laden: [], fps: [], zoom: {}, konto: 0, trichter: {}, premium: {} };
+  const A = { sitzungen: 0, seiten: {}, dauer: [], sicht: 0, geraet: {}, quelle: {}, bereiche: {}, ereignisse: {}, orte: {}, heat: {}, ende: {}, stunden: Array(24).fill(0), laden: [], fps: [], zoom: {}, konto: 0, trichter: {}, premium: {} };
   const T = ["besuch", "suche", "pass_auf", "konto_auf", "erkunden", "aufgabe", "kauf"];
   for (const s of S) {
-    A.dauer.push(s.sicht || s.dauer); A.sicht += s.sicht; add(A.geraet, { [s.geraet]: 1 }); add(A.quelle, { [s.quelle]: 1 }); add(A.bereiche, s.bereiche); add(A.ereignisse, s.ereignisse);
-    add(A.orte, s.orte); add(A.heat, s.heat); if (s.ende) add(A.ende, { [s.ende]: 1 }); A.stunden[stunde(s.t0 || Date.now())]++; if (s.laden) A.laden.push(s.laden); if (s.fps) A.fps.push(s.fps); add(A.zoom, s.zoom); A.konto += s.konto;
+    // Neu geladen (gleicher Tab, F5/Neuladen) zählt nicht als neuer Besuch: Zeit, Bereiche, Orte usw. zählen mit, Besuch/Gerät/Quelle nicht
+    const neu = s.neu !== 0, e0 = { ...(s.ereignisse || {}) }; if (!neu) delete e0.besuch;
+    A.sicht += s.sicht; add(A.bereiche, s.bereiche); add(A.ereignisse, e0); add(A.orte, s.orte); add(A.heat, s.heat); add(A.zoom, s.zoom); if (s.fps) A.fps.push(s.fps);
+    if (!neu) continue;
+    A.sitzungen++; add(A.seiten, { [s.seite || "start"]: 1 });
+    A.dauer.push(s.sicht || s.dauer); add(A.geraet, { [s.geraet]: 1 }); add(A.quelle, { [s.quelle]: 1 });
+    if (s.ende) add(A.ende, { [s.ende]: 1 }); A.stunden[stunde(s.t0 || Date.now())]++; if (s.laden) A.laden.push(s.laden); A.konto += s.konto;
+    if ((s.seite || "start") !== "start") continue;// Weg der Besucher und Premium-Weg nur für die Startseite
     const e = s.ereignisse || {}, hat = { besuch: 1, suche: e.suche, pass_auf: e.pass_auf, konto_auf: e.konto_auf, erkunden: e.erkunden, aufgabe: e.aufgabe, kauf: e.kauf };
     for (const k of T) if (hat[k]) A.trichter[k] = (A.trichter[k] || 0) + 1;
     // Premium-Shop (Echtgeld): Weg pro Sitzung – Shop gesehen → entsperrt → Paket angetippt → Haken gesetzt → zur Bezahlung → bezahlt/abgebrochen
@@ -132,8 +138,8 @@ export default async (req) => {
     out.tage.push({ tag: d, ...A }); alle.push(A);
   }
   // Summe über den Zeitraum
-  const G = { sitzungen: 0, sicht: 0, geraet: {}, quelle: {}, bereiche: {}, ereignisse: {}, orte: {}, heat: {}, ende: {}, stunden: Array(24).fill(0), zoom: {}, konto: 0, trichter: {}, premium: {}, kurz: 0, lang: 0 };
-  for (const A of alle) { G.sitzungen += A.sitzungen; G.sicht += A.sicht; G.kurz += A.kurz; G.lang += A.lang; G.konto += A.konto; for (const k of ["geraet", "quelle", "bereiche", "ereignisse", "orte", "heat", "ende", "zoom", "trichter", "premium"]) add(G[k], A[k]); A.stunden.forEach((v, i) => G.stunden[i] += v); }
+  const G = { sitzungen: 0, seiten: {}, sicht: 0, geraet: {}, quelle: {}, bereiche: {}, ereignisse: {}, orte: {}, heat: {}, ende: {}, stunden: Array(24).fill(0), zoom: {}, konto: 0, trichter: {}, premium: {}, kurz: 0, lang: 0 };
+  for (const A of alle) { G.sitzungen += A.sitzungen; G.sicht += A.sicht; G.kurz += A.kurz; G.lang += A.lang; G.konto += A.konto; for (const k of ["geraet", "quelle", "bereiche", "ereignisse", "orte", "heat", "ende", "zoom", "trichter", "premium", "seiten"]) add(G[k], A[k] || {}); A.stunden.forEach((v, i) => G.stunden[i] += v); }
   G.dauerSchnitt = G.sitzungen ? Math.round(G.sicht / G.sitzungen) : 0;
   out.gesamt = G;
   if (u.searchParams.get("spieler")) { out.spieler = await spieler(); out.echtgeld = await echtgeld(tageN); }
