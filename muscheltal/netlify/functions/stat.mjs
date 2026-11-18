@@ -37,7 +37,7 @@ function auswerten(S) {
     A.dauer.push(s.sicht || s.dauer); add(A.geraet, { [s.geraet]: 1 }); add(A.quelle, { [s.quelle]: 1 });
     if (s.ende) add(A.ende, { [s.ende]: 1 }); A.stunden[stunde(s.t0 || Date.now())]++; if (s.laden) A.laden.push(s.laden); A.konto += s.konto;
     if ((s.seite || "start") !== "start") continue;// Weg der Besucher und Premium-Weg nur für die Startseite
-    const e = s.ereignisse || {}, hat = { besuch: 1, suche: e.suche, pass_auf: e.pass_auf, konto_auf: e.konto_auf, erkunden: e.erkunden, aufgabe: e.aufgabe, kauf: e.kauf };
+    const e = s.ereignisse || {}, hat = { besuch: 1, suche: e.suche, pass_auf: e.pass_auf, konto_auf: e.konto_auf, erkunden: e.erkunden_start || e.erkunden, aufgabe: e.aufgabe, kauf: e.kauf };
     for (const k of T) if (hat[k]) A.trichter[k] = (A.trichter[k] || 0) + 1;
     // Premium-Shop (Echtgeld): Weg pro Sitzung – Shop gesehen → entsperrt → Paket angetippt → Haken gesetzt → zur Bezahlung → bezahlt/abgebrochen
     const pr = { gesehen: e.prem_gesehen || e.prem_gesehen_offen, entsperrt: e.prem_entsperrt, paket: e.pak_auf, haken: e.pak_haken, kasse: e.pak_kasse, bezahlt: e.kauf_ok, abbruch: e.kauf_abbruch, fehler: e.pak_fehler };
