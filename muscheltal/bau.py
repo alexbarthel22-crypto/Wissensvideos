@@ -546,7 +546,6 @@ const n='@SEITE@',ua=navigator.userAgent||'',r=(document.referrer||'').toLowerCa
 const ST={sid:(crypto.randomUUID?crypto.randomUUID():String(Math.random())).replace(/[^a-z0-9]/gi,'').slice(0,32).toLowerCase(),t0:Date.now(),dauer:0,sicht:0,bereiche:{},ereignisse:{besuch:1},ende:'unterseite_'+n,seite:n,neu:nv&&nv.type==='reload'?0:1,konto:0,
 geraet:/iPad|Tablet/i.test(ua)||(/Macintosh/.test(ua)&&navigator.maxTouchPoints>1)?'tablet':/Mobi|Android|iPhone/i.test(ua)?'handy':'computer',
 quelle:q.get('von')?'einladung':/musical_ly|bytedancewebview|tiktok|trill_/i.test(ua)?'tiktok_app':/tiktok/.test(r)?'tiktok':/instagram/i.test(ua)||/instagram/.test(r)?'instagram':/whatsapp|wa\\.me/.test(r)?'whatsapp':/snapchat/.test(r)?'snapchat':/google|bing|duckduckgo|ecosia/.test(r)?'suchmaschine':r&&r.includes(location.host)?'intern':r?'andere_seite':'direkt'};
-try{ST.konto=localStorage.getItem('mt-claim')?1:0;}catch(e){}
 setInterval(()=>{if(document.hidden)return;ST.sicht++;ST.bereiche['unterseite_'+n]=ST.sicht;},1000);
 let g='';const s=()=>{if(ST.sicht<3)return;ST.dauer=Math.round((Date.now()-ST.t0)/1000);const b=JSON.stringify(ST);if(b===g)return;g=b;try{if(navigator.sendBeacon)navigator.sendBeacon('/api/stat',new Blob([b],{type:'application/json'}));else fetch('/api/stat',{method:'POST',body:b,keepalive:true});}catch(e){}};
 setInterval(s,60000);addEventListener('visibilitychange',()=>{if(document.hidden)s();});addEventListener('pagehide',s);})();</script>"""

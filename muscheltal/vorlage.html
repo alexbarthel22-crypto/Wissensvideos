@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,viewport-fit=cover">
 <title>Muschel-Tal – die Insel aus Followern</title>
 <meta name="description" content="Jeder, der @muscheltal auf TikTok folgt, bekommt auf dieser Insel eine Hütte mit seinem Namen. Finde dich und deine Hütte!">
 <meta name="theme-color" content="#08605f">
@@ -16,7 +16,7 @@
  color-scheme:light;
 }
 *{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;overflow-x:clip}
 body{margin:0;background:var(--sand);color:var(--ink);font:600 17px/1.5 var(--f);padding-bottom:0}
 h1,h2,h3{margin:0;font-weight:900;line-height:1.08;text-wrap:balance}
 button,input{font:inherit;color:inherit}
@@ -2242,7 +2242,7 @@ function likeKnopf(p){const box=$('mpcardbox'),card=box&&box.querySelector('.mpc
  el.onclick=async ev=>{ev.stopPropagation();if(!mitmachen(MSHERZ(1,56),'Pass liken'))return;const a=LIKEH.get(k)||{hab:false,n:0},neu={hab:!a.hab,n:Math.max(0,a.n+(a.hab?-1:1))};LIKEH.set(k,neu);zeig(neu.hab,neu.n);if(neu.hab){el.classList.remove('lkpop');void el.offsetWidth;el.classList.add('lkpop');}
   const r=await mk('like',{an:p.name});if(r&&r.ok){LIKEH.set(k,r);zeig(r.hab,r.n);}else{LIKEH.set(k,a);zeig(a.hab,a.n);}};}
 function klopfKnopf(p){const b=$('mpklopf');if(!b)return;const me=mkClaim()&&mkMe();let heute=false;try{heute=localStorage.getItem('mt-klopf')===berlinTagStr();}catch(e){}
- b.hidden=!p||p.gb===SCH||!!(me&&me===p)||!(mpThird||mpWalk);b.disabled=heute;b.textContent=heute?'👋 Heute schon angeklopft':'👋 Bei '+p.name+' anklopfen';b.onclick=()=>klopfen(p);}
+ b.hidden=!p||p.gb===SCH||!!(me&&me===p);/* bei jedem fremden Pass (Karte, Suche, Erkunden) */b.disabled=heute;b.textContent=heute?'👋 Heute schon angeklopft':'👋 Bei '+p.name+' anklopfen';b.onclick=()=>klopfen(p);}
 function klopfMeldung(L,n=0){const frei=$('pg').hidden&&(!MK.d||!MK.d.serie||MK.d.serie.abgeholt||(()=>{try{return !!sessionStorage.getItem('mt-login-pop-'+mkTag());}catch(e){return true;}})());/* erst nach dem Login-Pop-up */if(!frei&&n<300){setTimeout(()=>klopfMeldung(L,n+1),1000);return;}popup('<div class="big klopfan">✊</div><h2>Es hat geklopft! 👋</h2><p>'+L.slice(0,5).map(n=>'<b>@'+esc(n)+'</b>').join(', ')+(L.length>5?' und '+(L.length-5)+' weitere':'')+(L.length>1?' haben':' hat')+' bei deiner Hütte angeklopft.</p>');}
 
 
@@ -5699,7 +5699,11 @@ liveText();loadWx();setInterval(liveText,15000);setInterval(loadWx,15*60e3);
 addEventListener('resize',()=>{resize();});resize(1);// erstes Bild erst, wenn die Kamera steht (unten) – spart beim Start eine komplette Karte
 // Kartenfläche ändert ihre Größe auch ohne Fenster-Resize (Schriften, Leisten, Safari/macOS) → sonst wird das Bild verzerrt/gestreckt
 if(window.ResizeObserver)new ResizeObserver(()=>{const b=cv.getBoundingClientRect();if(Math.abs(b.width-W)>.5||Math.abs(b.height-H)>.5)resize();}).observe(cv);
-setInterval(()=>{const b=cv.getBoundingClientRect();if(b.width&&(Math.abs(b.width-W)>.5||Math.abs(b.height-H)>.5))resize();},1000);
+setInterval(()=>{const b=cv.getBoundingClientRect();if(!b.width)return;const d=Math.min(2,window.devicePixelRatio||1,Math.max(1,Math.sqrt(PXMAX/Math.max(1,b.width*b.height))));if(Math.abs(b.width-W)>.5||Math.abs(b.height-H)>.5||Math.abs(d-DPR)>.01||cv.width!==(b.width*d|0))resize();},1000);
+// Zurück-Wischen (z. B. im TikTok-Browser), Tab-Wechsel, Rückkehr aus dem Verlauf: Ansicht neu messen, Seiten-Zoom zurücksetzen, scharf neu zeichnen
+function ansichtFix(){try{const m=document.querySelector('meta[name=viewport]');if(m){const c=m.content;m.content=c;}}catch(e){}requestAnimationFrame(()=>{try{baseKey='';SPR.clear();}catch(e){}resize();});}
+addEventListener('pageshow',ansichtFix);document.addEventListener('visibilitychange',()=>{if(!document.hidden)setTimeout(ansichtFix,60);});addEventListener('orientationchange',()=>setTimeout(ansichtFix,300));
+if(window.visualViewport)visualViewport.addEventListener('resize',()=>{const v=visualViewport;if(Math.abs(v.scale-1)>.02){try{const m=document.querySelector('meta[name=viewport]');m.content=m.content;}catch(e){}}setTimeout(ansichtFix,60);});
 let me=null;try{me=meinName()||byName.get((localStorage.getItem('mt-me')||'').toLowerCase());}catch(e){}// beanspruchter Name hat Vorrang
 Object.assign(cam,REDUCED?fitMain(freeY()):fitAll(freeY()));draw();
 {const n=new URLSearchParams(location.search).get('n'),t=n&&byName.get(n.toLowerCase().replace(/^(?!@)/,'@'));if(t)me=t;}
