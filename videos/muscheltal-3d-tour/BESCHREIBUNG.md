@@ -1,6 +1,6 @@
 # Muschel-Tal – 3D-Inseltour 2 · Beschreibung
 
-**Cover:** `renders/cover.jpg` (`cover/thumb.html`) – Tages-Schild, riesig „ICH HAB MEINEN FOLLOWERN EINE INSEL GEBAUT“, Hintergrund: Hütten mit Hunderten @Namen von oben, unten gelb „Siehst du dich? 👀“.
+**Cover:** `renders/cover.jpg` (`cover/thumb.html`) – Schild „TAG 10 · 790 Follower“ (Tageszahl ggf. anpassen), riesig „JEDE HÜTTE = 1 FOLLOWER“, pinke Blase „@du?“, Hintergrund: Hütten mit Hunderten @Namen von oben, unten gelb „Siehst du dich? 👀“.
 
 ## Hauptversion (zum Posten)
 Jede Hütte auf dieser Insel gehört einem echten Follower 🏝️ Siehst du dich? 👀
