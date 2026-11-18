@@ -55,15 +55,15 @@
     .gl b { display: block; font-weight: 900; font-size: 92px; letter-spacing: -.02em; line-height: 1; }
     #t2 { top: 250px; } #t2 b { font-size: 64px; }
   </style>
-  <div id="root" data-composition-id="s02" data-start="0" data-duration="8.410" data-width="1080" data-height="1920">
-    <div id="s02-stage" class="clip stage" data-start="0" data-duration="8.410" data-track-index="0">
+  <div id="root" data-composition-id="s02" data-start="0" data-duration="7.826" data-width="1080" data-height="1920">
+    <div id="s02-stage" class="clip stage" data-start="0" data-duration="7.826" data-track-index="0">
       <div id="t2" class="gl"><small>Jede Hütte</small><b>= 1 echter Follower</b></div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 8.41, "L2": [0.2, 3.55], "L2.words": [["in", 0.2, 0.374], ["der", 0.374, 0.555], ["mitte", 0.555, 0.91], ["der", 1.03, 1.165], ["muschelpalast", 1.165, 1.71], ["", 1.71, 1.83], ["umgeben", 2.08, 2.562], ["von", 2.562, 2.727], ["hunderten", 2.727, 3.221], ["hütten", 3.221, 3.55]], "L2b": [4.37, 7.63], "L2b.words": [["jede", 4.37, 4.663], ["hütte", 4.663, 4.96], ["gehört", 4.96, 5.264], ["einem", 5.264, 5.562], ["echten", 5.562, 5.865], ["follower", 5.865, 6.315], ["", 6.315, 6.45], ["mit", 6.7, 6.887], ["seinem", 6.887, 7.262], ["namen", 7.262, 7.63]]};
+      const C = {"__dur": 7.826, "L2": [0.2, 3.114], "L2.words": [["in", 0.2, 0.35], ["der", 0.35, 0.505], ["mitte", 0.505, 0.809], ["der", 0.809, 0.965], ["muschelpalast", 0.965, 1.591], ["", 1.591, 1.729], ["umgeben", 1.729, 2.183], ["von", 2.183, 2.338], ["hunderten", 2.338, 2.804], ["hütten", 2.804, 3.114]], "L2b": [3.734, 6.646], "L2b.words": [["und", 3.734, 3.882], ["jede", 3.882, 4.167], ["hütte", 4.167, 4.458], ["gehört", 4.458, 4.754], ["einem", 4.754, 5.045], ["echten", 5.045, 5.341], ["follower", 5.341, 5.78], ["", 5.78, 5.912], ["mit", 5.912, 6.06], ["seinem", 6.06, 6.356], ["namen", 6.356, 6.646]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];

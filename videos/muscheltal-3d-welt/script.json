@@ -13,7 +13,7 @@
     "bars": false,
     "color": "#ffffff",
     "top": 1180,
-    "css": ".inner { font-family: 'Inter', sans-serif; font-weight: 800; letter-spacing: -.01em; line-height: 1.12; } .inner .w { color: #fff; text-shadow: 0 3px 16px rgba(30,10,40,.7), 0 1px 2px rgba(0,0,0,.5); } .inner .w.k-y, .inner .w.k-g, .inner .w.k-p { color: #ffd36a; } .inner { background: rgba(25,10,35,.5); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 30px; padding: 14px 20px 18px; box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.25); } #cg0, #cg1 { display:none !important; }"
+    "css": ".inner { font-family: 'Inter', sans-serif; font-weight: 800; letter-spacing: -.01em; line-height: 1.12; } .inner .w { color: #fff; text-shadow: 0 3px 16px rgba(30,10,40,.7), 0 1px 2px rgba(0,0,0,.5); } .inner .w.k-y, .inner .w.k-g, .inner .w.k-p { color: #ffd36a; } .inner { background: rgba(25,10,35,.5); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 30px; padding: 14px 20px 18px; box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.25); }"
   },
   "scenes": [
     {
@@ -29,10 +29,10 @@
       "lines": [
         {
           "id": "L1",
-          "text": "Auf dieser Insel wohnen / *y:alle meine Follower!",
-          "speed": 1.05,
-          "style": "Style: a young German guy, around 20, amazed and excited, showing his followers something spectacular for the first time, warm and enthusiastic, natural German, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-          "pause": 0.4
+          "text": "Auf dieser Insel wohnen / *y:ALLE meine Follower!",
+          "speed": 1.1,
+          "style": "Style: a young German guy, around 20, shouting with excitement, absolutely hyped, revealing something huge, energetic TikTok creator, big smile in the voice, fast and lively, natural German, normal pitch.\nPace: fast. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+          "pause": 0.3
         }
       ]
     },
@@ -43,17 +43,31 @@
       "lines": [
         {
           "id": "L2",
-          "text": "In der Mitte: der *p:Muschelpalast – / umgeben von *y:Hunderten Hütten.",
-          "speed": 1.05,
-          "style": "Style: a young German guy, around 20, amazed and excited, showing his followers something spectacular for the first time, warm and enthusiastic, natural German, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-          "pause": 0.5
+          "text": "In der Mitte: der *p:Muschelpalast – / umgeben von *y:Hunderten Hütten!",
+          "speed": 1.1,
+          "style": "Style: a young German guy, around 20, super excited and hyped, energetic TikTok creator, big smile in the voice, fast and lively, natural German, normal pitch.\nPace: fast. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+          "pause": 0.4
         },
         {
           "id": "L2b",
-          "text": "Jede Hütte gehört einem *g:echten Follower – / mit seinem *y:Namen!",
+          "text": "Und jede Hütte gehört einem *g:echten Follower – / mit seinem *y:Namen!",
+          "speed": 1.1,
+          "style": "Style: a young German guy, around 20, super excited and hyped, energetic TikTok creator, big smile in the voice, fast and lively, natural German, normal pitch.\nPace: fast. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+          "pause": 0.4
+        }
+      ]
+    },
+    {
+      "id": "s02n",
+      "tag": "",
+      "sfx": [],
+      "lines": [
+        {
+          "id": "L2c",
+          "text": "*y:Siehst du dich? / Wenn nicht, kommentier: / *p:„Wo bin ich?“",
           "speed": 1.05,
-          "style": "Style: a young German guy, around 20, amazed and excited, showing his followers something spectacular for the first time, warm and enthusiastic, natural German, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-          "pause": 0.6
+          "style": "Style: a young German guy, around 20, super excited and hyped, energetic TikTok creator, big smile in the voice, fast and lively, natural German, normal pitch.\nPace: fast. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+          "pause": 1.0
         }
       ]
     },
@@ -64,17 +78,38 @@
       "lines": [
         {
           "id": "L3",
-          "text": "*p:Dönerbude, *p:Bäckerei, *p:Strandbar – / und das *g:Tierheim ist schon im Bau!",
-          "speed": 0.92,
-          "style": "Style: a young German guy, around 20, amazed and excited, showing his followers something spectacular for the first time, warm and enthusiastic, natural German, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-          "pause": 0.6
+          "text": "Hier gibt's die *p:Dönerbude – / und da drüben die *p:Bäckerei!",
+          "speed": 1.05,
+          "style": "Style: a young German guy, around 20, super excited and hyped, energetic TikTok creator, big smile in the voice, fast and lively, natural German, normal pitch.\nPace: fast. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+          "pause": 1.0
+        },
+        {
+          "id": "L3s",
+          "text": "Unten am Strand: die *p:Strandbar. / Und das *g:Tierheim ist schon im Bau!",
+          "speed": 1.05,
+          "style": "Style: a young German guy, around 20, super excited and hyped, energetic TikTok creator, big smile in the voice, fast and lively, natural German, normal pitch.\nPace: fast. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+          "pause": 1.0
         },
         {
           "id": "L3k",
-          "text": "Und auf der *g:Kokos-Küste: / der *p:Kokos-Club, die *y:Game Lagoon / und *g:vieles mehr!",
+          "text": "Rüber zur *g:Kokos-Küste – / hier steht der *p:Kokos-Club!",
           "speed": 1.05,
-          "style": "Style: a young German guy, around 20, amazed and excited, showing his followers something spectacular for the first time, warm and enthusiastic, natural German, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-          "pause": 0.6
+          "style": "Style: a young German guy, around 20, super excited and hyped, energetic TikTok creator, big smile in the voice, fast and lively, natural German, normal pitch.\nPace: fast. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+          "pause": 1.0
+        },
+        {
+          "id": "L3g",
+          "text": "Daneben: die *y:Game Lagoon!",
+          "speed": 1.05,
+          "style": "Style: a young German guy, around 20, super excited and hyped, energetic TikTok creator, big smile in the voice, fast and lively, natural German, normal pitch.\nPace: fast. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+          "pause": 1.0
+        },
+        {
+          "id": "L3c",
+          "text": "Und am Wochenende: / *g:Freiluftkino!",
+          "speed": 1.05,
+          "style": "Style: a young German guy, around 20, super excited and hyped, energetic TikTok creator, big smile in the voice, fast and lively, natural German, normal pitch.\nPace: fast. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+          "pause": 1.0
         }
       ]
     },
@@ -85,10 +120,10 @@
       "lines": [
         {
           "id": "L4",
-          "text": "*y:790|Siebenhundertneunzig Bewohner – / und *g:jeden Tag ziehen *y:neue ein.",
-          "speed": 1.05,
-          "style": "Style: a young German guy, around 20, amazed and excited, showing his followers something spectacular for the first time, warm and enthusiastic, natural German, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-          "pause": 0.6
+          "text": "*y:790|Siebenhundertneunzig Bewohner – / und *g:jeden Tag ziehen *y:neue ein!",
+          "speed": 1.1,
+          "style": "Style: a young German guy, around 20, super excited and hyped, energetic TikTok creator, big smile in the voice, fast and lively, natural German, normal pitch.\nPace: fast. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+          "pause": 0.5
         }
       ]
     },
@@ -104,10 +139,38 @@
       ],
       "lines": [
         {
+          "id": "L5f",
+          "text": "Du willst neben deinen *g:Freunden wohnen? / *y:Markier sie in den Kommentaren!",
+          "speed": 1.1,
+          "style": "Style: a young German guy, around 20, super excited and hyped, energetic TikTok creator, big smile in the voice, fast and lively, natural German, normal pitch.\nPace: fast. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+          "pause": 0.5
+        }
+      ]
+    },
+    {
+      "id": "s06",
+      "tag": "",
+      "sfx": [],
+      "lines": [
+        {
+          "id": "L5k",
+          "text": "Und was *p:fehlt euch noch / in eurer *y:Inselwelt? / *g:Kommentiert es!",
+          "speed": 1.1,
+          "style": "Style: a young German guy, around 20, super excited and hyped, energetic TikTok creator, big smile in the voice, fast and lively, natural German, normal pitch.\nPace: fast. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+          "pause": 0.5
+        }
+      ]
+    },
+    {
+      "id": "s07",
+      "tag": "",
+      "sfx": [],
+      "lines": [
+        {
           "id": "L5",
           "text": "*g:Folg mir – / und morgen steht hier *y:deine Hütte!",
-          "speed": 1.05,
-          "style": "Style: a young German guy, around 20, amazed and excited, showing his followers something spectacular for the first time, warm and enthusiastic, natural German, normal pitch.\nPace: brisk. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+          "speed": 1.1,
+          "style": "Style: a young German guy, around 20, super excited and hyped, energetic TikTok creator, big smile in the voice, fast and lively, natural German, normal pitch.\nPace: fast. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
           "pause": 1.0
         }
       ]
@@ -120,7 +183,7 @@
     "src": "assets/bg.mp4"
   },
   "music": {
-    "src": "assets/music/suedsee_spaet.wav",
+    "src": "assets/music/suedsee_laut.wav",
     "volume": 1.0
   },
   "ambience": {
