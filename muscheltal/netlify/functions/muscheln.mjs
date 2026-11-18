@@ -14,9 +14,11 @@ const NAME = /^@[a-z0-9._]{1,40}$/;
 const ERF_CLIENT = new Set(["LUPE", "AUF", "UNTER", "SCOOT", "SCHOEPFER", "WAL", "SCHILD", "MOND", "WELT", "NACHT"]);
 const STICKER = new Set(["palast", "doener", "bar", "villa", "acai", "werkstatt", "baeckerei", "nagel", "markt", "kiosk", "boba", "pizza", "tierheim", "yacht", "cocobay", "kokosbad", "coast", "kokos", "cococare", "gaming", "feuer", "anleger", "ev_wochenmarkt", "ev_flohmarkt", "ev_konzert", "ev_feuerwerk", "sandburg", "angeln", "ev_kino"]);
 const SERIE = [3, 5, 8, 12, 17, 23, 32];
-// 🎣 Angelsteg: Fänge (Seltenheit → Muscheln, Gewicht = Wahrscheinlichkeit in %)
-export const FISCHE = { stiefel: [1, 14], sardine: [2, 14], krabbe: [2, 14], garnele: [3, 12], clown: [3, 12], tinte: [5, 7.5], kugel: [5, 7.5], hummer: [8, 5], okto: [8, 5], hai: [12, 6], auster: [20, 1.5], goldmuschel: [20, 1.5] };
-function fischZiehen() { const r = (crypto.getRandomValues(new Uint32Array(1))[0] / 2 ** 32) * 100; let s = 0; for (const [id, [, w]] of Object.entries(FISCHE)) { s += w; if (r < s) return id; } return "sardine"; }
+// 🎣 Angelsteg: 30 Fänge in den bekannten Güteklassen (0 Gewöhnlich … 9 Einzigartig, Gewichte wie im Shop); nur selten gibt es zusätzlich 1–3 Muscheln
+const GUETE = [30, 22, 15, 11, 8, 6, 4, 2.4, 1.2, 0.4];
+export const FISCHE = {stiefel: 0, sardine: 0, krabbe: 0, garnele: 1, seestern: 1, schnecke: 1, clown: 2, kugel: 2, tinte: 2, hummer: 3, okto: 3, kompass: 3, hai: 4, koralle: 4, schluessel: 4, auster: 5, amphore: 5, ring: 5, drache: 6, dreizack: 6, geist: 6, krone: 7, diamant: 7, muenze: 7, sternfisch: 8, meteorit: 8, mondfisch: 8, goldmuschel: 9, regenbogen: 9, karte: 9};
+const zz = () => crypto.getRandomValues(new Uint32Array(1))[0] / 2 ** 32;
+function fischZiehen() { const r = zz() * 100; let s = 0; for (const [id, t] of Object.entries(FISCHE)) { s += GUETE[t] / 3; if (r < s) return id; } return "sardine"; }
 // 🏰 Sandburg: Woche Mo–So; Sonntag ab 18 Uhr holt die Flut die Burg (dann kein Bauen)
 function flutJetzt() { const p = Object.fromEntries(new Intl.DateTimeFormat("en-US", { timeZone: "Europe/Berlin", weekday: "short", hour: "2-digit", hourCycle: "h23" }).formatToParts(new Date()).map(x => [x.type, x.value])); return p.weekday === "Sun" && +p.hour >= 18; }
 const TZ = "Europe/Berlin";
@@ -129,7 +131,7 @@ async function aufraeumen(store) {
     t[1] = id; await kasse.set(t.join("/"), (await kasse.get(k)) || "1"); await kasse.delete(k);
   }
 }
-const TEXT = { login: "Login-Serie", quest: "Aufgabe", qbonus: "Alle 3 Aufgaben", shell: "Schwebende Muschel", erf: "Neuer Erfolg", story: "Story geteilt", spende: "Spende Inselkasse", tresor: "Tresor des Schöpfers", code: "Geheimcode aus dem Video", einladung: "Freund eingeladen", kauf: "Muschel-Shop", null: "Neustart: alle Konten auf 0", stern: "Sternschnuppe 🌠", sandburg: "Sandburg mitgebaut 🏰", angeln: "Fang am Angelsteg 🎣", euro: "Muschel-Paket gekauft 💎", "euro-zurueck": "Muschel-Paket erstattet", regenbogen: "Schatz am Regenbogen 🌈", flasche: "Flaschenpost-Quiz 🍾", geschenk: "Tagesgeschenk 🎁" };
+const TEXT = { login: "Login-Serie", quest: "Aufgabe", qbonus: "Alle 3 Aufgaben", shell: "Schwebende Muschel", erf: "Neuer Erfolg", story: "Story geteilt", spende: "Spende Inselkasse", tresor: "Tresor des Schöpfers", code: "Geheimcode aus dem Video", einladung: "Freund eingeladen", kauf: "Muschel-Shop", null: "Neustart: alle Konten auf 0", stern: "Sternschnuppe 🌠", angeln: "Fang am Angelsteg 🎣", euro: "Muschel-Paket gekauft 💎", "euro-zurueck": "Muschel-Paket erstattet", regenbogen: "Schatz am Regenbogen 🌈", flasche: "Flaschenpost-Quiz 🍾", geschenk: "Tagesgeschenk 🎁" };
 
 // Einmal-Aufgaben (Zurücksetzen, Aufräumen) nur einmal pro Tag und Server-Instanz prüfen – spart bei jeder Muschel-Aktion
 // rund 10 Speicherabfragen (schnellere Gutschriften)
@@ -485,16 +487,14 @@ export default async (req) => {
     if (flutJetzt()) return json({ ok: false, grund: "flut" });
     const wo = woche(heute), k = "x/sand/" + wo + "/" + nm + "/" + heute;
     if (await store.get(k)) return json({ ok: false, grund: "schon", n: (await liste(store, "x/sand/" + wo + "/")).length });
-    const betrag = 1 + (crypto.getRandomValues(new Uint32Array(1))[0] % 3), ok = await setze("sandburg", heute, betrag);
-    if (ok) await store.set(k, String(Date.now()));
-    const B = await buch(store, nm);
-    return json({ ok, grund: ok ? null : "schon", betrag: ok ? betrag : 0, n: (await liste(store, "x/sand/" + wo + "/")).length, stand: B.reduce((s, e) => s + e.a, 0) });
+    await store.set(k, String(Date.now()));// keine Muscheln – nur gemeinsamer Fortschritt
+    return json({ ok: true, n: (await liste(store, "x/sand/" + wo + "/")).length });
   }
   // 🎣 Angeln: 1 Fang pro Tag (der Server bestimmt den Fisch); jeder Fisch kommt ins Fisch-Album
   if (act === "angeln") {
     const B0 = await buch(store, nm);
     if (B0.some(e => e.art === "angeln" && e.id.startsWith(heute))) return json({ ok: false, grund: "schon" });
-    const f = fischZiehen(), betrag = FISCHE[f][0], ok = await setze("angeln", heute + "_" + f, betrag);
+    const f = fischZiehen(), betrag = zz() < 0.15 ? 1 + Math.floor(zz() * 3) : 0, ok = await setze("angeln", heute + "_" + f, betrag);
     if (ok) await store.set("x/fisch/" + nm + "/" + f, String(Date.now()));
     const B = await buch(store, nm);
     return json({ ok, grund: ok ? null : "schon", fisch: ok ? f : null, betrag: ok ? betrag : 0, stand: B.reduce((s, e) => s + e.a, 0), fische: (await liste(store, "x/fisch/" + nm + "/")).map(k => k.split("/")[3]) });
