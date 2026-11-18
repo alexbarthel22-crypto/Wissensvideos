@@ -5485,7 +5485,7 @@ function mkZiel2(id){const geb=t=>GEB.find(g=>g.typ===t);
  if(id==='nagelL'||id==='nagelR'){const g=geb('nagel'),m=id==='nagel'?null:nagelWer(id),tp=m&&teamPos(g,m),x=tp?tp.x:g.cx+(id==='nagelR'?16:-16);return g&&{x,y:g.cy+9.6,r:5,g};}
  if(id==='doener'){const g=geb('doener');return g&&{x:g.cx-8,y:g.cy+9.5,r:6,g};}
  if(id==='werkstatt'){const g=geb('werkstatt');return g&&mkNah(g.cx-8*(g.dir||1),g.cy+1,{r:6,g});}
- if(id==='bar'||id==='steg'){const g=geb('strandbar');if(!g)return null;const d=g.dir||1,sx=(g.sea-g.cx)*d;if(id==='steg')return mkNah(g.cx+(sx+6)*d,g.cy,{r:9,g});const L=TAPS.find(t=>t[2]&&t[2].ort===g.name&&t[2].beruf==='Leitung');return L?{x:L[0]+3,y:L[1]+9,r:6,g}:mkNah(g.cx+(sx-30)*d,g.cy+4,{r:7,g});}
+ if(id==='bar'||id==='steg'){const g=geb('strandbar');if(!g)return null;const d=g.dir||1,sx=(g.sea-g.cx)*d;if(id==='steg')return mkNah(g.cx+(sx+6)*d,g.cy,{r:9,g});return mkNah(g.cx+(sx-30)*d,g.cy+4,{r:8,g});}/* fest vor der Theke (das Team steht dahinter – dort kann man nicht hin) */
  if(id==='palast')return mkNah(0,36*PAL_S+6,{r:8});
  if(id==='kiosk')return{x:KI.x+KI.ko,y:KI.cy+4.5,r:6};
  if(id==='boba')return{x:KI.x+KI.bo,y:KI.cy+4.5,r:6};
@@ -5502,7 +5502,7 @@ function mkZiel2(id){const geb=t=>GEB.find(g=>g.typ===t);
  if(id==='feuer')return mkNah(KOKV.x,KOKV.y+20,{r:7});
  if(id==='yacht'){if(!mkZiel2.yt){const Y=YACHT,a=Math.atan2(Y.cy-MAIN.y,Y.cx-MAIN.x);let d=Math.hypot(Y.cx-MAIN.x,Y.cy-MAIN.y),x=Y.cx,y=Y.cy;while(d>0&&!canWalk(x,y)){d-=2;x=MAIN.x+Math.cos(a)*d;y=MAIN.y+Math.sin(a)*d;}mkZiel2.yt={x,y,r:9};}return mkZiel2.yt;}
  if(id==='villa'){const g=geb('villa');return g&&mkNah(g.cx,g.y1+3,{r:8,g});}
- if(id==='bau'){const b=mkProjekt(),B=b&&BAU.find(x=>x.name===b.name);return B&&mkNah(B.cx,B.y1+4,{r:9});}
+ if(id==='bau'){const b=mkProjekt(),B=b&&BAU.find(x=>x.name===b.name);if(!B)return null;/* nächster begehbarer Punkt am Bauzaun (Anlegestelle ragt ins Wasser → Landseite) */const cy=(B.y0+B.y1)/2;let best=null,bd=1e9;for(const [x,y] of [[B.cx,B.y1+4],[B.cx,B.y0-4],[B.x0-4,cy],[B.x1+4,cy]]){const z=mkNah(x,y,{r:9});if(!canWalk(z.x,z.y))continue;const d=Math.hypot(z.x-x,z.y-y);if(d<bd){bd=d;best=z;}}return best;}
  if(id.startsWith('hut:')){const p=byName.get(id.slice(4));return p&&p.p?mkNah(p.p.x,p.p.y+8,{r:0}):null;}
  if(id==='bm'){const m=PEOPLE.find(p=>/bürgermeister/i.test(p.beruf||''));const t=m&&TAPS.find(t=>t[2]===m);return t?{x:t[0],y:t[1]+4,r:0}:mkNah(0,36*PAL_S+30,{r:0});}return null;}
 function mkNah(x,y,o){if(canWalk(x,y))return{x,y,...o};for(let r=2;r<40;r+=2)for(let a=0;a<TAU;a+=.4){const nx=x+Math.cos(a)*r,ny=y+Math.sin(a)*r;if(canWalk(nx,ny))return{x:nx,y:ny,...o};}return{x,y,...o};}
