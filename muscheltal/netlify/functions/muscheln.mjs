@@ -526,9 +526,10 @@ export default async (req) => {
     return json({ ok, bonus, neu, anz });
   }
   if (act === "shell") {
-    const i = Number(d.i);
-    if (!(i >= 0 && i < 4)) return json({ fehler: "Muschel" }, 400);
-    return json({ ok: await setze("shell", heute + "-" + i, 1) });
+    // 6 schwebende Muscheln pro Stunde und Insel (je 1 🐚); Kennung „Stunde-Insel-Nr.“, gilt nur in der aktuellen (oder gerade vergangenen) Stunde
+    const m = /^(\d{1,2})-(\d)-([0-5])$/.exec(String(d.i || "")), h = berlinStunde();
+    if (!m || !(Number(m[1]) === h || Number(m[1]) === h - 1)) return json({ fehler: "Muschel" }, 400);
+    return json({ ok: await setze("shell", heute + "-" + String(m[1]).padStart(2, "0") + "-" + m[2] + "-" + m[3], 1) });
   }
   if (act === "erf") {
     const k = String(d.key || "").toUpperCase();
@@ -724,7 +725,7 @@ export default async (req) => {
       .sort((x, y) => (y.id > x.id ? 1 : -1)).slice(0, 60);
     return mitCookie(json({
       ok: true, nachbar, live, eingeladen, klopfer, geschenke, premium: !!(await store.get("x/premium/" + nm)), startDa: !(await store.get("x/start/" + nm)), likes: { n: likeN }, neu: likeN >= 25 && (await erfGib("HERZ")) ? ["HERZ"] : [], sticker: (await liste(store, "x/sticker/" + nm + "/")).map(k => k.split("/")[3]), fische: (await liste(store, "x/fisch/" + nm + "/")).map(k => k.split("/")[3]), angelnHeute: Object.fromEntries([0, 1].map(i => [i, (B.find(e => e.art === "angeln" && e.id.startsWith(heute + "-" + i + "_")) || {}).id?.split("_")[1] || null])), sandHeute: !!(await store.get("x/sand/" + woche(heute) + "/" + nm + "/" + heute)), geschenk: B.some(e => e.art === "geschenk" && e.id === heute), stand: B.reduce((s, e) => s + e.a, 0), serie: s,
-      shells: B.filter(e => e.art === "shell" && e.id.startsWith(heute)).map(e => Number(e.id.split("-").pop())),
+      shells: B.filter(e => e.art === "shell" && e.id.startsWith(heute) && e.id.split("-").length === 6).map(e => e.id.split("-").slice(3).map(Number).join("-")),
       questsDone: B.filter(e => e.art === "quest" && e.id.startsWith(heute)).map(e => Number(e.id.split("-").pop())),
       gespendet: -B.filter(e => e.art === "spende").reduce((s, e) => s + e.a, 0), posten, heute, inv: besitz(B), aus: JSON.parse((await store.get("a/" + nm)) || "{}")
     }), nm, String(d.token || ""));
