@@ -141,6 +141,69 @@ async function zurueckAuf(store) {
     for (const k of await liste(es, "e/" + n + "/")) if (Number(k.split("/").pop()) >= ab) await es.delete(k);
   }
 }
+// Einmalig (18./19.11.): ALLE Bewohner zurück auf den Stand 18.11.2026 18:00 Uhr (Berlin) – alles, was danach passiert ist
+// (Beanspruchungen, Buchungen, Aufgaben, Erfolge, Sticker, Fische, Sandburg, Likes, Anklopfen, Flaschenpost, Einladungen,
+// Shop-Käufe samt Ausrüstung, Spenden, Story) wird gelöscht. Echtgeld-Käufe (Stripe) bleiben erhalten.
+const ALLE_AB = 1795021200000, ALLE_NR = 1;
+let ALLE_OK = false;
+// parallel (schneller), höchstens 40 gleichzeitig
+async function jeParallel(L, f) { for (let i = 0; i < L.length; i += 40) await Promise.all(L.slice(i, i + 40).map(f)); }
+async function allesZurueck(store) {
+  if (ALLE_OK) return;
+  const mk = "x/zurueck-alle/" + ALLE_NR;
+  if (await store.get(mk)) { ALLE_OK = true; return; }
+  // Sperre gegen gleichzeitige Läufe; bricht ein Lauf ab (Zeitlimit), macht der nächste Aufruf nach 60 s weiter
+  const lk = mk + "-lauf", lv = Number(await store.get(lk)) || 0;
+  if (Date.now() - lv < 60000) return;
+  await store.set(lk, String(Date.now()));
+  // Obergrenze = Zeitpunkt des ersten Laufs (Deploy): was danach passiert, bleibt immer erhalten
+  const bk = mk + "-bis"; let BIS = Number(await store.get(bk)) || 0;
+  if (!BIS) { BIS = Date.now(); await store.set(bk, String(BIS)); }
+  const AB = ALLE_AB, T = tag(AB), TB = tag(BIS), num = v => Number(v) || 0, js = v => { try { return JSON.parse(v); } catch (e) { return null; } };
+  const drin = ts => ts >= AB && ts < BIS, datum = k => (k.match(/\d{4}-\d{2}-\d{2}/g) || []).pop() || "";// letztes Datum im Schlüssel (Sandburg: Woche/Name/Tag)
+  const klopfWeg = new Set(), weg = [];
+  const L = (await liste(store, "")).filter(k => !k.startsWith("x/zurueck-alle/"));
+  await jeParallel(L, async k => {
+    const t = k.split("/"), d = datum(k);
+    if (t[0] === "x" && ["reset", "zurueck", "nullung", "aufraeumen", "start", "euro", "shop", "tierheim", "bereinigt", "einzig", "ausruestung", "gesehen", "strecke", "fstreak", "einlmeld"].includes(t[1])) return;
+    if (d && d < T) return;// alles vor dem 18.11. bleibt sicher
+    let w = false;
+    if (t[0] === "c") { const c = js(await store.get(k)); w = !!c && drin(num(c.ts)); }
+    else if (t[0] === "b") w = !["euro", "euro-zurueck", "null"].includes(t[2]) && drin(num(await store.get(k)));
+    else if (t[0] === "q" || t[0] === "r") w = d > T && d <= TB;
+    else if (t[0] === "live") w = drin(num(await store.get(k)));
+    else if (t[0] === "x") {
+      const a = t[1];
+      if (["klick", "eingeladen", "geschenkt"].includes(a)) { const v = js(await store.get(k)); w = !!v && drin(num(v.ts || v.t)); }
+      else if (["fisch", "like", "premium", "sticker", "sand"].includes(a)) w = drin(num(await store.get(k)));
+      else if (a === "klopfan") { w = drin(num(t[3].split("-")[0])); if (w) klopfWeg.add(t[3].split("-").slice(1).join("-") + "|" + t[2]); }
+      else if (a === "flasche") { const h0 = Date.UTC(2026, 0, 1) + Math.floor(num(t[4]) / 10) * 3.6e6; w = h0 + 3.6e6 > AB && h0 < BIS; }
+      else if (a === "codeversuch" || a === "klopft") w = d > T && d <= TB;
+      else if (a === "rangcache") w = true;
+    }
+    if (w) weg.push(k);
+  });
+  await jeParallel(weg, k => store.delete(k));
+  // Anklopfen am 18.11. nach 18 Uhr: Tagesmerker des Klopfenden löschen
+  await jeParallel(await liste(store, "x/klopft/"), async k => { const t = k.split("/"); if (t[3] === T && klopfWeg.has(t[2] + "|" + (await store.get(k)))) await store.delete(k); });
+  // Einzigartige Items und Ausrüstung: nur was nach dem Zurücksetzen noch im Besitz ist
+  const B = {}; for (const k of await liste(store, "b/")) { const [, n, art, id] = k.split("/"); if (art === "kauf") (B[n] = B[n] || new Set()).add(id.slice(11)); }
+  await jeParallel(await liste(store, "x/einzig/"), async k => { const n = await store.get(k); if (!(B[n] && B[n].has(k.slice(9)))) await store.delete(k); });
+  const alle = {};
+  await jeParallel(await liste(store, "a/"), async k => {
+    const n = k.slice(2), a = js(await store.get(k)) || {}, neu = {};
+    for (const [slot, id] of Object.entries(a)) if (B[n] && B[n].has(id)) neu[slot] = id;
+    if (Object.keys(neu).length) { alle[n] = neu; if (Object.keys(neu).length !== Object.keys(a).length) await store.set(k, JSON.stringify(neu)); } else await store.delete(k);
+  });
+  await store.set("x/ausruestung", JSON.stringify(alle));
+  const kasse = getStore({ name: "inselkasse", consistency: "strong" });
+  await jeParallel(await liste(kasse, "s/"), async k => { if (drin(num(String(k.split("/")[2]).split("-")[0]))) await kasse.delete(k); });
+  await jeParallel(await liste(kasse, "b/"), async k => { if (drin(num(String(k.split("/").pop()).split("-")[0]))) await kasse.delete(k); });
+  const es = getStore("erfolge");
+  await jeParallel(await liste(es, "e/"), async k => { if (drin(num(k.split("/").pop()))) await es.delete(k); });
+  RANGC = { t: 0, d: null };
+  await store.set(mk, String(Date.now())); ALLE_OK = true;
+}
 // Ausgezogene (nicht mehr in der Bewohnerliste): einmal täglich wird ihr Name überall entfernt.
 // Persönliches (Beanspruchung, Kontobuch, Aufgaben, Erfolge) wird gelöscht; Spenden und Story-Boni der
 // Inselkasse bleiben mit gleichem Betrag erhalten, laufen aber unter einer zufälligen Kennung statt dem Namen.
@@ -187,7 +250,7 @@ async function nullen(store) {
 function vorarbeit(store) {
   const t = tag();
   if (VOR.tag !== t) VOR = { tag: t, p: (async () => { await nullen(store); await zuruecksetzen(store); await zurueckAuf(store); await aufraeumen(store); })().catch(() => { VOR.tag = ""; }) };
-  return VOR.p;
+  return VOR.p.then(() => ALLE_OK || allesZurueck(store)).catch(() => {});
 }
 // Erfolg „Nachbarn“: nur für beanspruchte Namen, die in der Nachbarn-Liste stehen (+10 Muscheln, einmalig)
 async function nachbarErf(store, nm) {

@@ -85,8 +85,17 @@ async function spieler() {
   for (const [n, s] of Object.entries(tage)) { let d = [...s].sort().pop(), z = 0; while (s.has(d)) { z++; const t = new Date(d + "T12:00:00Z"); t.setUTCDate(t.getUTCDate() - 1); d = t.toISOString().slice(0, 10); } P[n].serie = z; }
   return Object.values(P).sort((a, b) => (b.letzter > a.letzter ? 1 : b.letzter < a.letzter ? -1 : b.stand - a.stand));
 }
+// Einmalig (Veröffentlichung nach 18.11.): Statistik nochmal komplett zurücksetzen – läuft beim ersten Aufruf nach dem Deploy
+let LEER2 = null;
+async function leeren2(store) {
+  if (await store.get("x/bereinigt/voll-2")) return;
+  await store.set("x/bereinigt/voll-2", String(Date.now()));
+  for (const k of [...await liste(store, "s/"), ...await liste(store, "agg/")]) await store.delete(k);
+}
 export default async (req) => {
   const store = getStore({ name: "statistik", consistency: "strong" });
+  if (!LEER2) LEER2 = leeren2(store).catch(() => { LEER2 = null; });
+  await LEER2;
   if (req.method === "POST") {
     let d = {}; try { const t = await req.text(); if (t.length > 30000) return json({ ok: false }, 413); d = JSON.parse(t); } catch (e) { return json({ ok: false }, 400); }
     const sid = String(d.sid || ""); if (!/^[a-z0-9]{8,40}$/.test(sid)) return json({ ok: false }, 400);
