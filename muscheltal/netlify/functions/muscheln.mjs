@@ -11,6 +11,8 @@ import { QUIZ } from "../lib/quiz.mjs";
 
 // Beanspruchung zusätzlich als HttpOnly-Cookie vom Server (bleibt auch, wenn der Browser den Seitenspeicher nach Tagen leert)
 const mitCookie = (res, nm, token) => { res.headers.append("set-cookie", "mt-k=" + encodeURIComponent(nm + "|" + token) + "; Max-Age=157680000; Path=/api/muscheln; HttpOnly; Secure; SameSite=Lax"); return res; };
+// Schlüssel gilt: der vom Beanspruchen (h) oder einer aus „In anderem Browser weiterspielen“ (hs, höchstens 5)
+const tokOk = (c, h) => !!c && (c.h === h || (Array.isArray(c.hs) && c.hs.includes(h)));
 const json = (d, s = 200) => new Response(JSON.stringify(d), { status: s, headers: { "content-type": "application/json", "cache-control": "no-store" } });
 const NAME = /^@[a-z0-9._]{1,40}$/;
 const ERF_CLIENT = new Set(["LUPE", "AUF", "UNTER", "SCOOT", "SCHOEPFER", "WAL", "SCHILD", "MOND", "WELT", "NACHT"]);
@@ -409,13 +411,27 @@ export default async (req) => {
     await store.set("x/klick/" + kt, JSON.stringify({ von, ts: Date.now() }));
     return json({ ok: true, kt });
   }
+  if (act === "linkEin") {
+    const code = String(d.code || "");
+    if (!/^[a-f0-9]{32}$/.test(code)) return json({ ok: false, grund: "code" });
+    const k = "x/login/" + code, L = JSON.parse((await store.get(k)) || "null");
+    if (!L) return json({ ok: false, grund: "code" });
+    await store.delete(k);// nur einmal benutzbar
+    if (Date.now() - L.ts > 10 * 60000) return json({ ok: false, grund: "alt" });
+    const c = JSON.parse((await store.get("c/" + L.nm)) || "null");
+    if (!c) return json({ ok: false, grund: "code" });
+    const t = crypto.randomUUID() + "-" + crypto.randomUUID();
+    c.hs = [...(Array.isArray(c.hs) ? c.hs : []), await sha(t)].slice(-5);
+    await store.set("c/" + L.nm, JSON.stringify(c));
+    return mitCookie(json({ ok: true, n: "@" + L.nm, t }), L.nm, t);
+  }
   if (act === "wer") {
     // Gerät kennt seinen beanspruchten Namen nicht mehr (Speicher geleert) → aus dem Server-Cookie wiederherstellen
     const m = (req.headers.get("cookie") || "").match(/(?:^|;\s*)mt-k=([^;]+)/);
     const [n, t] = m ? decodeURIComponent(m[1]).split("|") : [];
     if (!n || !t) return json({ ok: false });
     const c = JSON.parse((await store.get("c/" + n)) || "null");
-    if (!c || c.h !== (await sha(t))) return json({ ok: false });
+    if (!tokOk(c, await sha(t))) return json({ ok: false });
     return mitCookie(json({ ok: true, n: "@" + n, t }), n, t);
   }
   if (!NAME.test(name)) return json({ fehler: "Name" }, 400);
@@ -436,7 +452,13 @@ export default async (req) => {
   }
   // alle weiteren Aktionen nur mit dem Schlüssel des Besitzers
   const c = JSON.parse((await store.get("c/" + nm)) || "null");
-  if (!c || c.h !== (await sha(String(d.token || "")))) return json({ fehler: "Nicht beansprucht" }, 403);
+  if (!tokOk(c, await sha(String(d.token || "")))) return json({ fehler: "Nicht beansprucht" }, 403);
+  if (act === "linkNeu") {
+    // 📲 In anderem Browser weiterspielen: einmaliger Anmelde-Link, 10 Minuten gültig
+    const code = (crypto.randomUUID() + crypto.randomUUID()).replace(/-/g, "").slice(0, 32);
+    await store.set("x/login/" + code, JSON.stringify({ nm, ts: Date.now() }));
+    return json({ ok: true, code });
+  }
 
   const setze = async (art, id, a) => {
     const pre = "b/" + nm + "/" + art + "/" + id + "/";

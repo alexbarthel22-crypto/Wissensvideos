@@ -98,7 +98,7 @@ export default async (req) => {
   // Beanspruchung, Startangebot und Steuersatz gleichzeitig prüfen/laden (schneller zur Bezahlseite)
   const [cRoh, schonStart, hash, ustVorab] = await Promise.all([store.get("c/" + nm), p.einmal ? store.get("x/start/" + nm) : null, sha(String(d.token || "")), process.env.STRIPE_SECRET_KEY ? ustSatz(store) : null]);
   const c = JSON.parse(cRoh || "null");
-  if (!c || c.h !== hash) return json({ fehler: "Nicht beansprucht" }, 403);
+  if (!c || (c.h !== hash && !(c.hs || []).includes(hash))) return json({ fehler: "Nicht beansprucht" }, 403);
   if (p.einmal && schonStart) return json({ fehler: "Startangebot schon genutzt" }, 409);
   // 🎁 Geschenk: Käufer zahlt, ein anderer Bewohner bekommt die Muscheln (nicht beim Startangebot)
   const an = String(d.an || "").trim().toLowerCase().replace(/^@/, "");
