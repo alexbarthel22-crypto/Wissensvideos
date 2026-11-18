@@ -68,9 +68,11 @@ export default async (req) => {
     if ((ev.type === "checkout.session.completed" || ev.type === "checkout.session.async_payment_succeeded") && o.payment_status === "paid") {
       const nm = String((o.metadata && o.metadata.name) || "").toLowerCase(), p = PAKETE[o.metadata && o.metadata.paket];
       if (!nm || !p || o.amount_total !== p.cent) return json({ ok: false, grund: "daten" });
-      await buchen(store, nm, "euro", o.id, p.muscheln);
+      const neu = await buchen(store, nm, "euro", o.id, p.muscheln);
+      const von = String((o.metadata && o.metadata.kaeufer) || "").toLowerCase();
+      if (neu && von && von !== nm) await store.set("x/geschenkt/" + nm + "/" + o.id, JSON.stringify({ von, m: p.muscheln, t: Date.now() }));// Empfänger sieht es beim nächsten Besuch
       if (p.einmal) await store.set("x/start/" + nm, o.id);
-      if (o.payment_intent) await store.set("x/euro/" + o.payment_intent, JSON.stringify({ nm, m: p.muscheln, cent: p.cent, sid: o.id }));
+      if (o.payment_intent) await store.set("x/euro/" + o.payment_intent, JSON.stringify({ nm, m: p.muscheln, cent: p.cent, sid: o.id, von: von || nm }));
       return json({ ok: true });
     }
     // Erstattung oder Rückbuchung: Muscheln (anteilig) wieder abziehen – auch ins Minus
@@ -98,6 +100,10 @@ export default async (req) => {
   const c = JSON.parse(cRoh || "null");
   if (!c || c.h !== hash) return json({ fehler: "Nicht beansprucht" }, 403);
   if (p.einmal && schonStart) return json({ fehler: "Startangebot schon genutzt" }, 409);
+  // 🎁 Geschenk: Käufer zahlt, ein anderer Bewohner bekommt die Muscheln (nicht beim Startangebot)
+  const an = String(d.an || "").trim().toLowerCase().replace(/^@/, "");
+  if (an) { if (p.einmal) return json({ fehler: "Startangebot nur für dich selbst" }, 400); if (an === nm || !/^[a-z0-9._]{1,40}$/.test(an) || !BEWOHNER.has(an)) return json({ fehler: "Empfänger" }, 400); }
+  const ziel = an || nm, zielName = "@" + ziel;
   // Zustimmung zur sofortigen Ausführung + Kenntnis vom Verlust des Widerrufsrechts (§ 356 Abs. 5 BGB) ist Pflicht
   if (d.zustimmung !== true) return json({ fehler: "Zustimmung fehlt" }, 400);
   const zeit = new Date().toISOString();
@@ -108,17 +114,17 @@ export default async (req) => {
     "line_items[0][price_data][currency]": "eur",
     "line_items[0][price_data][unit_amount]": String(p.cent),
     "line_items[0][price_data][product_data][name]": p.muscheln.toLocaleString("de-DE") + " Muscheln – Muschel-Tal",
-    "line_items[0][price_data][product_data][description]": "Virtuelle Muscheln für " + name + " (sofort gutgeschrieben, ohne Geldwert, nicht übertragbar)",
-    client_reference_id: nm,
-    "metadata[name]": nm, "metadata[paket]": d.paket,
-    "payment_intent_data[metadata][name]": nm, "payment_intent_data[metadata][paket]": d.paket,
+    "line_items[0][price_data][product_data][description]": an ? "🎁 Geschenk: virtuelle Muscheln für " + zielName + " von " + name + " (sofort gutgeschrieben, ohne Geldwert, nicht übertragbar)" : "Virtuelle Muscheln für " + name + " (sofort gutgeschrieben, ohne Geldwert, nicht übertragbar)",
+    client_reference_id: ziel,
+    "metadata[name]": ziel, "metadata[paket]": d.paket, "metadata[kaeufer]": nm,
+    "payment_intent_data[metadata][name]": ziel, "payment_intent_data[metadata][paket]": d.paket, "payment_intent_data[metadata][kaeufer]": nm,
     "metadata[zustimmung]": zeit, "payment_intent_data[metadata][zustimmung]": zeit,
     "custom_text[submit][message]": "Du hast ausdrücklich verlangt, dass wir vor Ablauf der Widerrufsfrist mit der Ausführung beginnen (sofortige Gutschrift), und bestätigt, dass du dadurch dein Widerrufsrecht verlierst. Es gelten unsere AGB: muscheltal.de/agb.html",
     // Bestätigung auf dauerhaftem Datenträger: Rechnung per E-Mail mit Vertragsinhalt und Zustimmung (§ 312f Abs. 3 BGB)
     "invoice_creation[enabled]": "true",
-    "invoice_creation[invoice_data][description]": p.muscheln.toLocaleString("de-DE") + " Muscheln (virtuelle Spielwährung) für das Muschel-Konto " + name + " auf muscheltal.de – sofort gutgeschrieben.",
+    "invoice_creation[invoice_data][description]": p.muscheln.toLocaleString("de-DE") + " Muscheln (virtuelle Spielwährung) für das Muschel-Konto " + zielName + (an ? " (Geschenk von " + name + ")" : "") + " auf muscheltal.de – sofort gutgeschrieben.",
     "invoice_creation[invoice_data][custom_fields][0][name]": "Muschel-Konto",
-    "invoice_creation[invoice_data][custom_fields][0][value]": name,
+    "invoice_creation[invoice_data][custom_fields][0][value]": an ? zielName + " (Geschenk)" : name,
     "invoice_creation[invoice_data][custom_fields][1][name]": "Umsatzsteuer",
     "invoice_creation[invoice_data][custom_fields][1][value]": "Preis inkl. 19 % USt",
     "invoice_creation[invoice_data][footer]": "Bestätigung: Du hast am " + zeit.slice(0, 10) + " ausdrücklich verlangt, dass wir vor Ablauf der Widerrufsfrist mit der Ausführung des Vertrags beginnen (sofortige Gutschrift der Muscheln), und bestätigt, dass du dadurch mit Beginn der Ausführung dein Widerrufsrecht verlierst. Das Widerrufsrecht ist mit der Gutschrift erloschen (§ 356 Abs. 5 BGB). Muscheln haben keinen Geldwert und sind nicht übertragbar. Es gelten die AGB mit Widerrufsbelehrung: https://muscheltal.de/agb.html – Alcaba UG (haftungsbeschränkt), Grelckstr. 23a, 22529 Hamburg, HRB 180374, USt-IdNr. DE351239794.",
