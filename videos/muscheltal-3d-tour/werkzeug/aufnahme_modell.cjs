@@ -10,8 +10,9 @@ const S=[];const sh=(t1,ins,keys,fov=50)=>{const t0=S.length?S[S.length-1].t1:0;
 const mid=id=>(L[id].start+L[id].end)/2;
 // ---- Cold Open: Wal-Blas → Wal-Sprung (Zeitlupe) → Schildkröten-Wanderung (Südküste, Winkel KA) ----
 const KA=1.18,KC=398,KP=(r,y,lat=0)=>[+(Math.cos(KA)*r-Math.sin(KA)*lat).toFixed(1),y,+(Math.sin(KA)*r+Math.cos(KA)*lat).toFixed(1)];
-sh(2.0,0,[[KP(KC+20,6),KP(KC+150,9)],[KP(KC+28,5.5,-2),KP(KC+150,9,-6)]]);
-sh(L.L0d.start-.12,0,[[KP(KC+22,6,4),KP(KC+100,13,0)],[KP(KC+34,5,3),KP(KC+100,12,-4)],[KP(KC+42,4.5,1),KP(KC+100,8,-8)]]);
+const WT0=-.3,WD=5.5,WL=WT0+.62*WD;// Wal-Sprung direkt ab Bild 1, Aufprall bei WL
+sh(WL-.15,0,[[KP(KC+12,5,-3),KP(KC+100,10,-3)],[KP(KC+16,4.5,1),KP(KC+100,9,3)],[KP(KC+20,4,5),KP(KC+100,6,9)]]);
+sh(L.L0d.start-.12,0,[[KP(KC+20,4,5),KP(KC+100,4,11)],[KP(KC+26,4.5,8),KP(KC+100,3,14)],[KP(KC+34,5.5,8),KP(KC+100,4,14)]]);
 sh(L.L1.start-.2,0,[[KP(KC+30,12,-6),KP(KC+5,0,0)],[KP(KC+25,10,-2),KP(KC+6,0,2)]]);
 sh(L.L1.end+.25,0,[[[0,1150,1250],[0,0,40]],[[0,620,860],[0,5,40]],[[0,330,520],[0,10,40]]]);
 sh(mid('L2'),0,[[[-95,34,150],[0,22,10]],[[-20,28,132],[0,22,10]],[[45,30,140],[0,22,10]]]);
@@ -42,7 +43,7 @@ const [kx,kz]=NO.kino||[1403,1038];for(const s of S){if(s.keys==='kino')s.keys=[
 const ix=k=>S.findIndex(s=>s.t1>k);const at=(i,d=0)=>S[i].t0+d;
 // ---- Neben-Events (absolute Zeiten je Insel-Seite) ----
 const WP=KP(KC+100,0,-12);
-const E0=[{typ:'wal',x:WP[0],z:WP[2],dir:-KA,t0:-.6,dur:2.2},{typ:'walsprung',x:WP[0],z:WP[2],dir:-KA,t0:1.7,dur:5},{typ:'schildkroeten',a:KA,t0:5.3,dur:5,vor:6,sp:3,s:1.4},{typ:'ballon',x:-170,z:420,h:330,t0:L.L1.start-.2,dur:3,s:3},{typ:'flieger',x:0,z:-230,h:105,dir:Math.PI/2,t0:at(4,-.3),dur:5,len:360},
+const E0=[{typ:'walsprung',x:WP[0],z:WP[2],dir:-KA,t0:WT0,dur:WD},{typ:'schildkroeten',a:KA,t0:L.L0d.start-.6,dur:L.L1.start-L.L0d.start+1,vor:6,sp:3,s:1.4},{typ:'ballon',x:-170,z:420,h:330,t0:L.L1.start-.2,dur:3,s:3},{typ:'flieger',x:0,z:-230,h:105,dir:Math.PI/2,t0:at(4,-.3),dur:5,len:360},
  {typ:'delfine',x:-200,z:-470,dir:Math.PI/2,t0:at(6),dur:5},{typ:'jetski',x:-270,z:-470,r:30,t0:at(7),dur:4},
  {typ:'ballon',x:-60,z:-120,h:110,t0:at(8),dur:4},{typ:'ballon',x:330,z:60,h:95,t0:at(9),dur:4},
  {typ:'ballon',x:-40,z:40,h:85,t0:at(12),dur:5},
@@ -53,7 +54,8 @@ await pg[0].evaluate(e=>{window.EVT=e;},E0);await pg[1].evaluate(e=>{window.EVT=
 // ---- Kamera: Catmull-Rom über die Schlüssel, leicht geglättete Geschwindigkeit ----
 const cr=(P,u)=>{const n=P.length-1;if(n<1)return P[0];const x=u*n,i=Math.min(n-1,Math.floor(x)),f=x-i,p0=P[Math.max(0,i-1)],p1=P[i],p2=P[i+1],p3=P[Math.min(n,i+2)];
  return p1.map((_,j)=>{const a=p0[j],b=p1[j],c=p2[j],d=p3[j];return .5*((2*b)+(-a+c)*f+(2*a-5*b+4*c-d)*f*f+(-a+3*b-3*c+d)*f*f*f);});};
-const cam=t=>{const s=S[Math.max(0,ix(t))]||S[S.length-1];let u=Math.max(0,Math.min(1,(t-s.t0)/(s.t1-s.t0)));u=.6*u+.4*u*u*(3-2*u);return {si:S.indexOf(s),ins:s.ins,fov:s.fov,p:cr(s.keys.map(k=>k[0]),u),l:cr(s.keys.map(k=>k[1]),u)};};
+const cam=t=>{const s=S[Math.max(0,ix(t))]||S[S.length-1];let u=Math.max(0,Math.min(1,(t-s.t0)/(s.t1-s.t0)));u=.6*u+.4*u*u*(3-2*u);const P=cr(s.keys.map(k=>k[0]),u),Lk=cr(s.keys.map(k=>k[1]),u),q=t-WL;if(q>0&&q<.7){const a=Math.exp(-q*5)*1.1;P[0]+=Math.sin(q*61)*a;P[1]+=Math.sin(q*47+1)*a*.8;Lk[1]+=Math.sin(q*53+2)*a*1.4;}// Kamera-Wackler beim Aufprall
+ return {si:S.indexOf(s),ins:s.ins,fov:s.fov,p:P,l:Lk};};
 fs.mkdirSync(out,{recursive:true});fs.writeFileSync(out+'/../cuts.json',JSON.stringify(S.map(s=>s.t0).slice(1)));
 let ts=[...Array(Math.round(dur*30)).keys()].map(i=>i/30);
 if(sel&&sel[0]==='@'){const [st,of]=sel.slice(1).split(':').map(Number);ts=ts.filter((_,i)=>i%st===of);}else if(sel)ts=sel.split(',').map(Number);

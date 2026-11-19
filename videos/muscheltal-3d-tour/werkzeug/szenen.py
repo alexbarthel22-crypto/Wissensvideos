@@ -105,26 +105,22 @@ scene("s00", GL + """
     .stk { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 240px; padding: 14px 44px 26px; border-radius: 40px; font-family: "Lilita One", sans-serif; text-align: center; line-height: .95; color: #ffe14a;
       background: linear-gradient(160deg, #ff3d7f, #ff7a2a); box-shadow: 0 0 0 9px #fff, 0 0 0 16px #2a1b12, 0 24px 0 rgba(0,0,0,.28), 0 0 80px rgba(255,90,60,.6); text-shadow: 0 7px 0 #8a1035; }
     #w0 { font-size: 150px; transform: rotate(-4deg); }
-    #w1 { font-size: 160px; background: linear-gradient(160deg, #1f8ff0, #36d1dc); text-shadow: 0 7px 0 #0b3d7a; color: #fff; box-shadow: 0 0 0 9px #fff, 0 0 0 16px #0b2340, 0 24px 0 rgba(0,0,0,.28), 0 0 80px rgba(60,180,255,.7); }
+    #w1 { font-size: 128px; background: linear-gradient(160deg, #1f8ff0, #36d1dc); text-shadow: 0 7px 0 #0b3d7a; color: #fff; box-shadow: 0 0 0 9px #fff, 0 0 0 16px #0b2340, 0 24px 0 rgba(0,0,0,.28), 0 0 80px rgba(60,180,255,.7); }
     #w1 small, #w0 small { display: block; font-size: 56px; color: #fff; text-shadow: 0 4px 0 rgba(0,0,0,.3); }
     #rr0, #rr1 { position: absolute; left: 540px; top: 520px; width: 220px; height: 220px; margin: -110px; border-radius: 50%; border: 22px solid #fff; opacity: 0; }
     #rr1 { border-color: #36d1dc; }
     #s0t { top: 250px; } #s0t b { font-size: 76px; } #s0t b span { color: #9dffb0; }
     .pt { position: absolute; font-size: 84px; line-height: 1; width: 84px; height: 84px; opacity: 0; }""",
 """      <div id="vg0"></div>
-      <div id="q0" class="gl"><small>Psst …</small><b>👀 da draußen …</b></div>
       <div id="rr0"></div><div id="rr1"></div>
       """ + """<div class="pt" id="pa0" style="left:498px;top:478px">💥</div><div class="pt" id="pa1" style="left:498px;top:478px">💦</div><div class="pt" id="pa2" style="left:498px;top:478px">🌊</div><div class="pt" id="pa3" style="left:498px;top:478px">✨</div><div class="pt" id="pa4" style="left:498px;top:478px">💥</div><div class="pt" id="pa5" style="left:498px;top:478px">💦</div><div class="pt" id="pa6" style="left:498px;top:478px">🌊</div><div class="pt" id="pa7" style="left:498px;top:478px">✨</div><div class="pt" id="pa8" style="left:498px;top:478px">💥</div><div class="pt" id="pa9" style="left:498px;top:478px">💦</div><div class="pt" id="pa10" style="left:498px;top:478px">🌊</div><div class="pt" id="pa11" style="left:498px;top:478px">✨</div><div class="pt" id="pa12" style="left:498px;top:478px">💥</div><div class="pt" id="pa13" style="left:498px;top:478px">💦</div>""" + """
       <div id="w0" class="stk">WAS WAR<br>DAS?! 😱</div>
       <div id="w1" class="stk"><small>direkt vor meiner Insel</small>🐋 EIN WAL!</div>
       <div id="s0t" class="gl"><small>Und am Strand</small><b>🐢 <span>Schildkröten-</span><br>Wanderung!</b></div>
       <div id="fl0"></div>""",
-"""      const W = at("L0b", "WAS"), A = at("L0c", "WAL"), K = line("L0d")[0];
-      tl.fromTo("#vg0", { opacity: 1 }, { opacity: 0, duration: .4 }, W - .1);
-      tl.fromTo("#q0", { opacity: 0, y: 30, filter: "blur(10px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: .6, ease: "power3.out" }, .15);
-      tl.to("#q0", { scale: 1.04, duration: .5, yoyo: true, repeat: 3, ease: "sine.inOut" }, .8);
-      tl.to("#q0", { opacity: 0, scale: .8, duration: .2 }, W - .15);
-      tl.fromTo("#fl0", { opacity: .9 }, { opacity: 0, duration: .35, ease: "power2.out", immediateRender: false }, W - .03);
+"""      const W = Math.max(.12, at("L0b", "WAS")), A = at("L0c", "WAL"), K = line("L0d")[0];
+      tl.fromTo("#vg0", { opacity: 1 }, { opacity: 0, duration: .5 }, W);
+      tl.fromTo("#fl0", { opacity: .9 }, { opacity: 0, duration: .35, ease: "power2.out", immediateRender: false }, W);
       tl.fromTo("#rr0", { scale: .2, opacity: 1 }, { scale: 6, opacity: 0, duration: .8, ease: "power3.out", immediateRender: false }, W);
       tl.fromTo("#rr1", { scale: .2, opacity: 1 }, { scale: 8, opacity: 0, duration: 1, ease: "power3.out", immediateRender: false }, W + .1);
       tl.fromTo("#pa0", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 287, y: 98, scale: 1.10, rotation: 60, opacity: 0, duration: 0.90, ease: "power3.out", immediateRender: false }, at("L0b", "WAS") + 0.00);
@@ -169,7 +165,7 @@ scene("s01", """
     .sp1 { position: absolute; font-size: 60px; opacity: 0; }
     .pt { position: absolute; font-size: 84px; line-height: 1; width: 84px; height: 84px; opacity: 0; }""",
 """      <div id="ray1"></div>
-      <div id="wk1"><small>Willkommen in</small><b>MUSCHEL-TAL</b></div>
+      <div id="wk1"><small>📅 TAG 10 in</small><b>MUSCHEL-TAL</b></div>
       <div id="nm1"><b id="n1">0</b><small>BEWOHNER 🏠</small></div>
       <div class="sp1" id="sp0" style="left:170px;top:360px">✨</div><div class="sp1" id="sp1" style="left:840px;top:330px">✨</div><div class="sp1" id="sp2" style="left:220px;top:600px">⭐</div><div class="sp1" id="sp3" style="left:800px;top:620px">✨</div>
       """ + """<div class="pt" id="pb0" style="left:498px;top:658px">🎉</div><div class="pt" id="pb1" style="left:498px;top:658px">💖</div><div class="pt" id="pb2" style="left:498px;top:658px">🏝️</div><div class="pt" id="pb3" style="left:498px;top:658px">✨</div><div class="pt" id="pb4" style="left:498px;top:658px">🐚</div><div class="pt" id="pb5" style="left:498px;top:658px">🥳</div><div class="pt" id="pb6" style="left:498px;top:658px">🎉</div><div class="pt" id="pb7" style="left:498px;top:658px">💖</div><div class="pt" id="pb8" style="left:498px;top:658px">🏝️</div><div class="pt" id="pb9" style="left:498px;top:658px">✨</div><div class="pt" id="pb10" style="left:498px;top:658px">🐚</div><div class="pt" id="pb11" style="left:498px;top:658px">🥳</div><div class="pt" id="pb12" style="left:498px;top:658px">🎉</div><div class="pt" id="pb13" style="left:498px;top:658px">💖</div><div class="pt" id="pb14" style="left:498px;top:658px">🏝️</div><div class="pt" id="pb15" style="left:498px;top:658px">✨</div>""" + """

@@ -147,7 +147,9 @@ def synth_eleven(texts, voice, scales, model, cache_dir=None, force=()):
         else:
             body = {"text": t, "model_id": model, "language_code": "de",
                     "voice_settings": {"stability": 0.45, "similarity_boost": 0.8, "style": 0.35, "use_speaker_boost": True}}
-            if model.startswith("eleven_v3") or model.startswith("eleven_multilingual_v1"):
+            if model.startswith("eleven_v3"):  # v3: Regie-Tags wie [shocked]; stability nur 0/0.5/1 (0 = emotional)
+                body["voice_settings"] = {"stability": 0.0, "similarity_boost": 0.8}
+            elif model.startswith("eleven_multilingual_v1"):
                 body.pop("language_code")
             url = f"https://api.elevenlabs.io/v1/text-to-speech/{voice}?output_format=pcm_24000"
             for att in range(5):
@@ -414,6 +416,8 @@ def main():
         for li, line in enumerate(scene["lines"]):
             words = parse_tokens(line["text"])
             spoken = " ".join(w["spoken"] for w in words if w["spoken"])
+            if line.get("tag"):  # nur gesprochen, z. B. "[shocked]" (eleven_v3-Regie)
+                spoken = line["tag"] + " " + spoken
             lines.append({"scene": scene["id"], "id": line["id"], "words": words, "spoken": spoken,
                           "new_scene": li == 0 and si > 0, "pause": line.get("pause", 0.0),
                           "scale": round(1.0 / (args.speed * line.get("speed", 1.0)), 3),

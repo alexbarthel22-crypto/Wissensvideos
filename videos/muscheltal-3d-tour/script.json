@@ -1,7 +1,7 @@
 {
  "title": "Muschel-Tal 3D-Inseltour",
- "voice": "ElevenLabs (eleven_multilingual_v2, Stimme Liam)",
- "notes": "Inseltour 3 (19.11.): Cold Open mit Wal-Sprung + Schildkröten-Wanderung. 790 Bewohner, Tierheim Pfotenkuss offen seit 17.11.",
+ "voice": "ElevenLabs (eleven_v3, Stimme Liam, Tempo 1.0)",
+ "notes": "Inseltour 3 (19.11.): Cold Open mit Wal-Sprung + Schildkröten-Wanderung. 790 Bewohner, Tierheim Pfotenkuss offen seit 17.11. Neu: Start direkt mit Wal, Tag 10 erwähnt.",
  "lead_in": 0.0,
  "bg": "#0a5a92",
  "captions": {
@@ -27,24 +27,22 @@
    "sfx": [],
    "lines": [
     {
-     "id": "L0a",
-     "text": "Psst … da draußen / *y:bewegt sich was …",
-     "pause": 0.0
-    },
-    {
      "id": "L0b",
-     "text": "*y:WAS war *y:DAS?!",
-     "pause": 0.9
+     "text": "*y:WAS war|=waar *y:DAS?!",
+     "pause": 0.0,
+     "tag": "[gasps] [shocked]"
     },
     {
      "id": "L0c",
-     "text": "Ein *y:WAL – / direkt vor meiner Insel!",
-     "pause": 0.3
+     "text": "Ein *y:WAL! / Direkt vor meiner Insel!",
+     "pause": 0.4,
+     "tag": "[excited]"
     },
     {
      "id": "L0d",
      "text": "Und am Strand: / eine *g:Schildkröten-|=Schildkröten-Wanderung! *g:Wanderung!|~",
-     "pause": 0.3
+     "pause": 0.5,
+     "tag": "[amazed]"
     }
    ]
   },
@@ -55,8 +53,9 @@
    "lines": [
     {
      "id": "L1",
-     "text": "Willkommen in *p:Muschel-Tal! / Hier wohnen *y:790 Leute – / *y:ALLE meine Follower!",
-     "pause": 0.4
+     "text": "*y:TAG *y:10|=zehn in *p:Muschel-Tal! / Hier wohnen *y:790 Leute – / *y:ALLE meine Follower!",
+     "pause": 0.6,
+     "tag": "[excited]"
     }
    ]
   },
@@ -85,7 +84,8 @@
     {
      "id": "L2c",
      "text": "*y:Siehst du dich? / Wenn nicht, kommentier: / *p:„Wo bin ich?“",
-     "pause": 0.6
+     "pause": 0.6,
+     "tag": "[curious]"
     }
    ]
   },
@@ -107,7 +107,8 @@
     {
      "id": "L3t",
      "text": "Und das *g:Tierheim Pfotenkuss / hat endlich *y:geöffnet!",
-     "pause": 0.6
+     "pause": 0.6,
+     "tag": "[happy]"
     },
     {
      "id": "L3k",
@@ -116,7 +117,7 @@
     },
     {
      "id": "L3g",
-     "text": "Der *p:Kokos-Club, / die *y:Game|Gäim *y:Lagoon|Lahguhn …",
+     "text": "Der *p:Kokos-Club,|=Kokos-Klabb, / die *y:Game|=Gehm *y:Lagoon|=Laguhn …",
      "pause": 0.6
     },
     {
@@ -134,7 +135,8 @@
     {
      "id": "L4",
      "text": "Und jeden Tag / ziehen *y:neue Follower ein!",
-     "pause": 0.6
+     "pause": 0.6,
+     "tag": "[excited]"
     }
    ]
   },
@@ -164,7 +166,8 @@
     {
      "id": "L5k",
      "text": "Was soll ich als Nächstes bauen? / *p:Kommentiert es!",
-     "pause": 0.6
+     "pause": 0.6,
+     "tag": "[curious]"
     }
    ]
   },
@@ -176,7 +179,8 @@
     {
      "id": "L5",
      "text": "*g:Folg mir – / und morgen steht hier *y:deine Hütte!",
-     "pause": 1.0
+     "pause": 1.0,
+     "tag": "[excited]"
     }
    ]
   }
