@@ -731,6 +731,12 @@ def baue(rows, out):
         quelle = os.path.join(HIER, datei)
         if os.path.exists(quelle):
             txt = open(quelle, encoding="utf-8").read()
+            if datei == "statistik.html":  # Namen der Erfolge (aus der Vorlage) für die Erfolgs-Rangliste
+                vt = open(VORLAGE, encoding="utf-8").read()
+                md, me = re.search(r"const ERFD=\{(.*?)\};", vt), re.search(r"const ERFEMO=\{(.*?)\};", vt)
+                emo = dict(re.findall(r"(\w+):'([^']{1,4})'", me[1])) if me else {}
+                namen = {k: (emo[k] + " " if k in emo else "") + n for k, n in re.findall(r"(\w+):\['([^']+)'", md[1])} if md else {}
+                txt = txt.replace("/*ERFN*/{}", json.dumps(namen, ensure_ascii=False))
             if datei == "erfolge.html":  # Bewohner, Gründer und Erfolgs-Entzug für die %-Angaben
                 txt = (txt.replace("/*BEW*/[]", json.dumps([r[0].lower().lstrip("@") for r in sauber], ensure_ascii=False))
                        .replace("/*GRUEND*/0", str(sum(1 for r in sauber if r[4])))
