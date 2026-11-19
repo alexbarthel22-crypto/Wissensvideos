@@ -2405,7 +2405,10 @@ function stkPop(id){const i=STK.findIndex(s=>s[0]===id);if(i<0)return;const s=ST
 document.addEventListener('click',e=>{const k=e.target.closest('[data-stk]');if(k)stkPop(k.dataset.stk);});
 async function stickerSeite(){if(!mitmachen('🧩','Sticker-Album'))return;let e=$('mkpage');if(!e){e=document.createElement('div');e.id='mkpage';e.className='mkpage';document.body.appendChild(e);}
  e.hidden=false;document.body.style.overflow='hidden';e.scrollTop=0;const kopf='<a class="mkback" href="#" id="mkback">← Zur Karte</a><h1>🧩 Sticker-Album</h1><div class="mktag">Sammle an jedem Ort von Muschel-Tal einen Sticker</div>';
- e.innerHTML=kopf+'<div class="mkbox">⏳ Lade …</div>';$('mkback').onclick=ev=>{ev.preventDefault();mkZu();};await mkStand();e.innerHTML=kopf+stkAlbum()+fischAlbum();$('mkback').onclick=ev=>{ev.preventDefault();mkZu();};}
+ const zeig=()=>{e.innerHTML=kopf+stkAlbum()+fischAlbum();$('mkback').onclick=ev=>{ev.preventDefault();mkZu();};};
+ /* sofort aus den schon geladenen Daten zeigen, im Hintergrund auffrischen (nur neu zeichnen, wenn sich etwas geändert hat) */
+ if(MK.d){zeig();const alt=JSON.stringify([stkHab(),MK.d.fische||[]]);mkStand().then(()=>{if(!e.hidden&&MK.d&&JSON.stringify([stkHab(),MK.d.fische||[]])!==alt){const y=e.scrollTop;zeig();e.scrollTop=y;}});return;}
+ e.innerHTML=kopf+'<div class="mkbox">⏳ Lade …</div>';$('mkback').onclick=ev=>{ev.preventDefault();mkZu();};await mkStand();zeig();}
 $('stkbtn').onclick=()=>stickerSeite();setTimeout(()=>{try{shopKnopf();}catch(e){}},0);
 function stkAlbum(){const H=stkHab();return'<div class="mkbox" id="mkstk"><h3>🧩 Sticker-Album <span class="stkn">'+H.length+'/'+STK.length+'</span></h3><div class="stkg">'+STK.map((s,i)=>stkKarte(s,H.includes(s[0]),i)).join('')+'</div><p class="cft">Entdecke beim Erkunden alle Orte von Muschel-Tal – jeder Ort hat einen Sticker. Event-Sticker gibt es nur, wenn du während des Events dabei bist – auf dem Muschelplatz oder im Freiluftkino.</p></div>';}
 document.addEventListener('visibilitychange',()=>{const t=$('stktoast');if(t&&!document.hidden)setTimeout(()=>t.classList.remove('an'),1200);});
