@@ -93,11 +93,11 @@ async function spieler() {
   for (const [n, s] of Object.entries(tage)) { let d = [...s].sort().pop(), z = 0; while (s.has(d)) { z++; const t = new Date(d + "T12:00:00Z"); t.setUTCDate(t.getUTCDate() - 1); d = t.toISOString().slice(0, 10); } P[n].serie = z; }
   return Object.values(P).sort((a, b) => (b.letzter > a.letzter ? 1 : b.letzter < a.letzter ? -1 : b.stand - a.stand));
 }
-// Einmalig (Veröffentlichung nach 18.11.): Statistik nochmal komplett zurücksetzen – läuft beim ersten Aufruf nach dem Deploy
+// Einmalig (Veröffentlichung nach 18.11., erneut nach 20.11. = voll-3): Statistik nochmal komplett zurücksetzen – läuft beim ersten Aufruf nach dem Deploy
 let LEER2 = null;
 async function leeren2(store) {
-  if (await store.get("x/bereinigt/voll-2")) return;
-  await store.set("x/bereinigt/voll-2", String(Date.now()));
+  if (await store.get("x/bereinigt/voll-3")) return;
+  await store.set("x/bereinigt/voll-2", String(Date.now())); await store.set("x/bereinigt/voll-3", String(Date.now()));
   for (const k of [...await liste(store, "s/"), ...await liste(store, "agg/")]) await store.delete(k);
 }
 export default async (req) => {

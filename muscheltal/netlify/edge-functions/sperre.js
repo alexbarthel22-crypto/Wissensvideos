@@ -52,7 +52,10 @@ export default async (req, context) => {
   if (m && gleich(m[1], token)) {
     const r = await context.next();
     const h = new Headers(r.headers);
-    h.set("cache-control", "private, no-store");
+    // Programmcode (app.<hash>.js, Name ändert sich bei jeder Änderung) und Musik dürfen im Browser bleiben – sonst lädt jeder Besuch alles neu
+    if (/^\/app\.[0-9a-f]+\.js$/.test(url.pathname)) h.set("cache-control", "private, max-age=31536000, immutable");
+    else if (url.pathname.startsWith("/musik/")) h.set("cache-control", "private, max-age=604800");
+    else h.set("cache-control", "private, no-store");
     return new Response(r.body, { status: r.status, statusText: r.statusText, headers: h });
   }
   if (url.pathname === "/api/live") return context.next();
