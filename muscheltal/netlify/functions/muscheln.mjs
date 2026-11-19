@@ -9,9 +9,7 @@ import { CODES } from "../lib/codes.mjs";
 import { SHOP } from "../lib/shop.mjs";
 import { QUIZ } from "../lib/quiz.mjs";
 
-// Beanspruchung zusätzlich als HttpOnly-Cookie vom Server (bleibt auch, wenn der Browser den Seitenspeicher nach Tagen leert)
-const mitCookie = (res, nm, token) => { res.headers.append("set-cookie", "mt-k=" + encodeURIComponent(nm + "|" + token) + "; Max-Age=157680000; Path=/api/muscheln; HttpOnly; Secure; SameSite=Lax"); return res; };
-// Schlüssel gilt: der vom Beanspruchen (h) oder einer aus „In anderem Browser weiterspielen“ (hs, höchstens 5)
+// Schlüssel gilt: der vom Beanspruchen (h) oder einer aus einer Anmeldung mit Name + PIN (hs, höchstens 5 Geräte)
 const tokOk = (c, h) => !!c && (c.h === h || (Array.isArray(c.hs) && c.hs.includes(h)));
 const json = (d, s = 200) => new Response(JSON.stringify(d), { status: s, headers: { "content-type": "application/json", "cache-control": "no-store" } });
 const NAME = /^@[a-z0-9._]{1,40}$/;
@@ -101,6 +99,17 @@ async function vollReset(store, n) {
   }
   const es = getStore("erfolge");
   for (const k of await liste(es, "e/" + n + "/")) await es.delete(k);
+}
+// PIN vergessen: Name wieder freigeben (nur die Beanspruchung wird gelöscht – Muscheln, Erfolge, Käufe bleiben).
+// Danach kann der Spieler seinen Namen neu beanspruchen und eine neue PIN wählen. [Name, Lauf-Nr.] – läuft je Eintrag einmal.
+const FREIGEBEN = [];
+async function freigeben(store) {
+  for (const [n, nr] of FREIGEBEN) {
+    const mk = "x/frei/" + n + "/" + nr;
+    if (await store.get(mk)) continue;
+    await store.set(mk, String(Date.now()));
+    await store.delete("c/" + n); await store.delete("x/pinfail/" + n);
+  }
 }
 async function zuruecksetzen(store) {
   for (const [n, nr, ab, opt] of RESET) {
@@ -253,7 +262,7 @@ async function nullen(store) {
 }
 function vorarbeit(store) {
   const t = tag();
-  if (VOR.tag !== t) VOR = { tag: t, p: (async () => { await nullen(store); await zuruecksetzen(store); await zurueckAuf(store); await aufraeumen(store); })().catch(() => { VOR.tag = ""; }) };
+  if (VOR.tag !== t) VOR = { tag: t, p: (async () => { await nullen(store); await zuruecksetzen(store); await zurueckAuf(store); await freigeben(store); await aufraeumen(store); })().catch(() => { VOR.tag = ""; }) };
   return VOR.p.then(() => ALLE_OK || allesZurueck(store)).catch(() => {});
 }
 // Erfolg „Nachbarn“: nur für beanspruchte Namen, die in der Nachbarn-Liste stehen (+10 Muscheln, einmalig)
@@ -427,28 +436,21 @@ export default async (req) => {
     await store.set("x/klick/" + kt, JSON.stringify({ von, ts: Date.now() }));
     return json({ ok: true, kt });
   }
-  if (act === "linkEin") {
-    const code = String(d.code || "");
-    if (!/^[a-f0-9]{32}$/.test(code)) return json({ ok: false, grund: "code" });
-    const k = "x/login/" + code, L = JSON.parse((await store.get(k)) || "null");
-    if (!L) return json({ ok: false, grund: "code" });
-    await store.delete(k);// nur einmal benutzbar
-    if (Date.now() - L.ts > 10 * 60000) return json({ ok: false, grund: "alt" });
-    const c = JSON.parse((await store.get("c/" + L.nm)) || "null");
-    if (!c) return json({ ok: false, grund: "code" });
+  if (act === "pinLogin") {
+    // 🔑 Anmelden mit Name + Muschel-PIN (in jedem Browser); nach 5 falschen Versuchen 1 Stunde gesperrt
+    const n = String(d.name || "").trim().toLowerCase().replace(/^@/, ""), pin = String(d.pin || "");
+    if (!/^[a-z0-9._]{1,40}$/.test(n) || !/^\d{4}$/.test(pin)) return json({ ok: false, grund: "eingabe" });
+    const c = JSON.parse((await store.get("c/" + n)) || "null");
+    if (!c) return json({ ok: false, grund: "frei" });
+    if (!c.pin) return json({ ok: false, grund: "keinepin" });
+    const fk = "x/pinfail/" + n, F = JSON.parse((await store.get(fk)) || '{"n":0,"t":0}'), jetzt = Date.now();
+    if (F.n >= 5 && jetzt - F.t < 3600e3) return json({ ok: false, grund: "gesperrt", min: Math.ceil((3600e3 - (jetzt - F.t)) / 60000) });
+    if (c.pin !== (await sha(n + "|" + pin))) { const nn = (jetzt - F.t < 3600e3 ? F.n : 0) + 1; await store.set(fk, JSON.stringify({ n: nn, t: jetzt })); return json({ ok: false, grund: nn >= 5 ? "gesperrt" : "falsch", rest: Math.max(0, 5 - nn), min: 60 }); }
+    if (F.n) await store.delete(fk);
     const t = crypto.randomUUID() + "-" + crypto.randomUUID();
     c.hs = [...(Array.isArray(c.hs) ? c.hs : []), await sha(t)].slice(-5);
-    await store.set("c/" + L.nm, JSON.stringify(c));
-    return mitCookie(json({ ok: true, n: "@" + L.nm, t }), L.nm, t);
-  }
-  if (act === "wer") {
-    // Gerät kennt seinen beanspruchten Namen nicht mehr (Speicher geleert) → aus dem Server-Cookie wiederherstellen
-    const m = (req.headers.get("cookie") || "").match(/(?:^|;\s*)mt-k=([^;]+)/);
-    const [n, t] = m ? decodeURIComponent(m[1]).split("|") : [];
-    if (!n || !t) return json({ ok: false });
-    const c = JSON.parse((await store.get("c/" + n)) || "null");
-    if (!tokOk(c, await sha(t))) return json({ ok: false });
-    return mitCookie(json({ ok: true, n: "@" + n, t }), n, t);
+    await store.set("c/" + n, JSON.stringify(c));
+    return json({ ok: true, n: "@" + n, t });
   }
   if (!NAME.test(name)) return json({ fehler: "Name" }, 400);
   const nm = name.slice(1), heute = tag();
@@ -456,24 +458,25 @@ export default async (req) => {
   if (act === "claim") {
     if (nm === "echter.alex") return json({ ok: false, beansprucht: true });// Schöpfer: nicht beanspruchbar
     if (await store.get("c/" + nm)) return json({ ok: false, beansprucht: true });
+    const pin = String(d.pin || "");
+    if (!/^\d{4}$/.test(pin)) return json({ ok: false, grund: "pin" });// Muschel-PIN (4 Ziffern) ist Pflicht
     const token = crypto.randomUUID() + "-" + crypto.randomUUID();
-    await store.set("c/" + nm, JSON.stringify({ h: await sha(token), ts: Date.now() }));
+    await store.set("c/" + nm, JSON.stringify({ h: await sha(token), ts: Date.now(), pin: await sha(nm + "|" + pin) }));
     // bei gleichzeitigem Beanspruchen gewinnt, wessen Eintrag gespeichert blieb
     await new Promise(r => setTimeout(r, 300));
     const c = JSON.parse((await store.get("c/" + nm)) || "{}");
     if (c.h !== (await sha(token))) return json({ ok: false, beansprucht: true });
     const nachbar = await nachbarErf(store, nm), live = await liveErf(store, nm);
     const von = await einladungPruefen(store, nm, String(d.kt || ""));
-    return mitCookie(json({ ok: true, token, von, neu: [...(nachbar ? ["NACHBAR"] : []), ...(live ? ["LIVE"] : [])] }), nm, token);
+    return json({ ok: true, token, von, neu: [...(nachbar ? ["NACHBAR"] : []), ...(live ? ["LIVE"] : [])] });
   }
   // alle weiteren Aktionen nur mit dem Schlüssel des Besitzers
   const c = JSON.parse((await store.get("c/" + nm)) || "null");
   if (!tokOk(c, await sha(String(d.token || "")))) return json({ fehler: "Nicht beansprucht" }, 403);
-  if (act === "linkNeu") {
-    // 📲 In anderem Browser weiterspielen: einmaliger Anmelde-Link, 10 Minuten gültig
-    const code = (crypto.randomUUID() + crypto.randomUUID()).replace(/-/g, "").slice(0, 32);
-    await store.set("x/login/" + code, JSON.stringify({ nm, ts: Date.now() }));
-    return json({ ok: true, code });
+  if (act === "pinSetzen") {
+    // Muschel-PIN nachträglich festlegen (für alle, die vor der PIN beansprucht haben) oder ändern
+    const pin = String(d.pin || ""); if (!/^\d{4}$/.test(pin)) return json({ ok: false, grund: "pin" });
+    c.pin = await sha(nm + "|" + pin); await store.set("c/" + nm, JSON.stringify(c)); return json({ ok: true });
   }
 
   const setze = async (art, id, a) => {
@@ -761,12 +764,12 @@ export default async (req) => {
     const B = await buch(store, nm), s = await serie(B);
     const posten = B.filter(e => e.a).map(e => ({ art: e.art, id: e.id, a: e.a, t: TEXT[e.art] || e.art }))
       .sort((x, y) => (y.id > x.id ? 1 : -1)).slice(0, 60);
-    return mitCookie(json({
-      ok: true, nachbar, live, eingeladen, klopfer, geschenke, premium: !!(await store.get("x/premium/" + nm)), startDa: !(await store.get("x/start/" + nm)), likes: { n: likeN }, neu: likeN >= 25 && (await erfGib("HERZ")) ? ["HERZ"] : [], sticker: (await liste(store, "x/sticker/" + nm + "/")).map(k => k.split("/")[3]), fische: (await liste(store, "x/fisch/" + nm + "/")).map(k => k.split("/")[3]), angelnHeute: Object.fromEntries([0, 1].map(i => [i, (B.find(e => e.art === "angeln" && e.id.startsWith(heute + "-" + i + "_")) || {}).id?.split("_")[1] || null])), sandHeute: !!(await store.get("x/sand/" + woche(heute) + "/" + nm + "/" + heute)), geschenk: B.some(e => e.art === "geschenk" && e.id === heute), stand: B.reduce((s, e) => s + e.a, 0), serie: s,
+    return json({
+      ok: true, pinFehlt: !c.pin, nachbar, live, eingeladen, klopfer, geschenke, premium: !!(await store.get("x/premium/" + nm)), startDa: !(await store.get("x/start/" + nm)), likes: { n: likeN }, neu: likeN >= 25 && (await erfGib("HERZ")) ? ["HERZ"] : [], sticker: (await liste(store, "x/sticker/" + nm + "/")).map(k => k.split("/")[3]), fische: (await liste(store, "x/fisch/" + nm + "/")).map(k => k.split("/")[3]), angelnHeute: Object.fromEntries([0, 1].map(i => [i, (B.find(e => e.art === "angeln" && e.id.startsWith(heute + "-" + i + "_")) || {}).id?.split("_")[1] || null])), sandHeute: !!(await store.get("x/sand/" + woche(heute) + "/" + nm + "/" + heute)), geschenk: B.some(e => e.art === "geschenk" && e.id === heute), stand: B.reduce((s, e) => s + e.a, 0), serie: s,
       shells: B.filter(e => e.art === "shell" && e.id.startsWith(heute) && e.id.split("-").length === 6).map(e => e.id.split("-").slice(3).map(Number).join("-")),
       questsDone: B.filter(e => e.art === "quest" && e.id.startsWith(heute)).map(e => Number(e.id.split("-").pop())),
       gespendet: -B.filter(e => e.art === "spende").reduce((s, e) => s + e.a, 0), posten, heute, inv: besitz(B), aus: JSON.parse((await store.get("a/" + nm)) || "{}")
-    }), nm, String(d.token || ""));
+    });
   }
   return json({ fehler: "Aktion" }, 400);
 };
