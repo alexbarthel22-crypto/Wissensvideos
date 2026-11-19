@@ -9,6 +9,10 @@ import { CODES } from "../lib/codes.mjs";
 import { SHOP } from "../lib/shop.mjs";
 import { QUIZ } from "../lib/quiz.mjs";
 
+// Beanspruchung zusätzlich als HttpOnly-Cookie vom Server (bleibt auch, wenn der Browser den Seitenspeicher nach Tagen leert)
+const mitCookie = (res, nm, token) => { res.headers.append("set-cookie", "mt-k=" + encodeURIComponent(nm + "|" + token) + "; Max-Age=157680000; Path=/api/muscheln; HttpOnly; Secure; SameSite=Lax"); return res; };
+// Schlüssel gilt: der vom Beanspruchen (h) oder einer aus „In anderem Browser weiterspielen“ (hs, höchstens 5)
+const tokOk = (c, h) => !!c && (c.h === h || (Array.isArray(c.hs) && c.hs.includes(h)));
 const json = (d, s = 200) => new Response(JSON.stringify(d), { status: s, headers: { "content-type": "application/json", "cache-control": "no-store" } });
 const NAME = /^@[a-z0-9._]{1,40}$/;
 const ERF_CLIENT = new Set(["LUPE", "AUF", "UNTER", "SCOOT", "SCHOEPFER", "WAL", "SCHILD", "MOND", "WELT", "NACHT"]);
@@ -141,6 +145,69 @@ async function zurueckAuf(store) {
     for (const k of await liste(es, "e/" + n + "/")) if (Number(k.split("/").pop()) >= ab) await es.delete(k);
   }
 }
+// Einmalig (18./19.11.): ALLE Bewohner zurück auf den Stand 18.11.2026 18:00 Uhr (Berlin) – alles, was danach passiert ist
+// (Beanspruchungen, Buchungen, Aufgaben, Erfolge, Sticker, Fische, Sandburg, Likes, Anklopfen, Flaschenpost, Einladungen,
+// Shop-Käufe samt Ausrüstung, Spenden, Story) wird gelöscht. Echtgeld-Käufe (Stripe) bleiben erhalten.
+const ALLE_AB = 1795021200000, ALLE_NR = 1;
+let ALLE_OK = false;
+// parallel (schneller), höchstens 40 gleichzeitig
+async function jeParallel(L, f) { for (let i = 0; i < L.length; i += 40) await Promise.all(L.slice(i, i + 40).map(f)); }
+async function allesZurueck(store) {
+  if (ALLE_OK) return;
+  const mk = "x/zurueck-alle/" + ALLE_NR;
+  if (await store.get(mk)) { ALLE_OK = true; return; }
+  // Sperre gegen gleichzeitige Läufe; bricht ein Lauf ab (Zeitlimit), macht der nächste Aufruf nach 60 s weiter
+  const lk = mk + "-lauf", lv = Number(await store.get(lk)) || 0;
+  if (Date.now() - lv < 60000) return;
+  await store.set(lk, String(Date.now()));
+  // Obergrenze = Zeitpunkt des ersten Laufs (Deploy): was danach passiert, bleibt immer erhalten
+  const bk = mk + "-bis"; let BIS = Number(await store.get(bk)) || 0;
+  if (!BIS) { BIS = Date.now(); await store.set(bk, String(BIS)); }
+  const AB = ALLE_AB, T = tag(AB), TB = tag(BIS), num = v => Number(v) || 0, js = v => { try { return JSON.parse(v); } catch (e) { return null; } };
+  const drin = ts => ts >= AB && ts < BIS, datum = k => (k.match(/\d{4}-\d{2}-\d{2}/g) || []).pop() || "";// letztes Datum im Schlüssel (Sandburg: Woche/Name/Tag)
+  const klopfWeg = new Set(), weg = [];
+  const L = (await liste(store, "")).filter(k => !k.startsWith("x/zurueck-alle/"));
+  await jeParallel(L, async k => {
+    const t = k.split("/"), d = datum(k);
+    if (t[0] === "x" && ["reset", "zurueck", "nullung", "aufraeumen", "start", "euro", "shop", "tierheim", "bereinigt", "einzig", "ausruestung", "gesehen", "strecke", "fstreak", "einlmeld"].includes(t[1])) return;
+    if (d && d < T) return;// alles vor dem 18.11. bleibt sicher
+    let w = false;
+    if (t[0] === "c") { const c = js(await store.get(k)); w = !!c && drin(num(c.ts)); }
+    else if (t[0] === "b") w = !["euro", "euro-zurueck", "null"].includes(t[2]) && drin(num(await store.get(k)));
+    else if (t[0] === "q" || t[0] === "r") w = d > T && d <= TB;
+    else if (t[0] === "live") w = drin(num(await store.get(k)));
+    else if (t[0] === "x") {
+      const a = t[1];
+      if (["klick", "eingeladen", "geschenkt"].includes(a)) { const v = js(await store.get(k)); w = !!v && drin(num(v.ts || v.t)); }
+      else if (["fisch", "like", "premium", "sticker", "sand"].includes(a)) w = drin(num(await store.get(k)));
+      else if (a === "klopfan") { w = drin(num(t[3].split("-")[0])); if (w) klopfWeg.add(t[3].split("-").slice(1).join("-") + "|" + t[2]); }
+      else if (a === "flasche") { const h0 = Date.UTC(2026, 0, 1) + Math.floor(num(t[4]) / 10) * 3.6e6; w = h0 + 3.6e6 > AB && h0 < BIS; }
+      else if (a === "codeversuch" || a === "klopft") w = d > T && d <= TB;
+      else if (a === "rangcache") w = true;
+    }
+    if (w) weg.push(k);
+  });
+  await jeParallel(weg, k => store.delete(k));
+  // Anklopfen am 18.11. nach 18 Uhr: Tagesmerker des Klopfenden löschen
+  await jeParallel(await liste(store, "x/klopft/"), async k => { const t = k.split("/"); if (t[3] === T && klopfWeg.has(t[2] + "|" + (await store.get(k)))) await store.delete(k); });
+  // Einzigartige Items und Ausrüstung: nur was nach dem Zurücksetzen noch im Besitz ist
+  const B = {}; for (const k of await liste(store, "b/")) { const [, n, art, id] = k.split("/"); if (art === "kauf") (B[n] = B[n] || new Set()).add(id.slice(11)); }
+  await jeParallel(await liste(store, "x/einzig/"), async k => { const n = await store.get(k); if (!(B[n] && B[n].has(k.slice(9)))) await store.delete(k); });
+  const alle = {};
+  await jeParallel(await liste(store, "a/"), async k => {
+    const n = k.slice(2), a = js(await store.get(k)) || {}, neu = {};
+    for (const [slot, id] of Object.entries(a)) if (B[n] && B[n].has(id)) neu[slot] = id;
+    if (Object.keys(neu).length) { alle[n] = neu; if (Object.keys(neu).length !== Object.keys(a).length) await store.set(k, JSON.stringify(neu)); } else await store.delete(k);
+  });
+  await store.set("x/ausruestung", JSON.stringify(alle));
+  const kasse = getStore({ name: "inselkasse", consistency: "strong" });
+  await jeParallel(await liste(kasse, "s/"), async k => { if (drin(num(String(k.split("/")[2]).split("-")[0]))) await kasse.delete(k); });
+  await jeParallel(await liste(kasse, "b/"), async k => { if (drin(num(String(k.split("/").pop()).split("-")[0]))) await kasse.delete(k); });
+  const es = getStore("erfolge");
+  await jeParallel(await liste(es, "e/"), async k => { if (drin(num(k.split("/").pop()))) await es.delete(k); });
+  RANGC = { t: 0, d: null };
+  await store.set(mk, String(Date.now())); ALLE_OK = true;
+}
 // Ausgezogene (nicht mehr in der Bewohnerliste): einmal täglich wird ihr Name überall entfernt.
 // Persönliches (Beanspruchung, Kontobuch, Aufgaben, Erfolge) wird gelöscht; Spenden und Story-Boni der
 // Inselkasse bleiben mit gleichem Betrag erhalten, laufen aber unter einer zufälligen Kennung statt dem Namen.
@@ -187,7 +254,7 @@ async function nullen(store) {
 function vorarbeit(store) {
   const t = tag();
   if (VOR.tag !== t) VOR = { tag: t, p: (async () => { await nullen(store); await zuruecksetzen(store); await zurueckAuf(store); await aufraeumen(store); })().catch(() => { VOR.tag = ""; }) };
-  return VOR.p;
+  return VOR.p.then(() => ALLE_OK || allesZurueck(store)).catch(() => {});
 }
 // Erfolg „Nachbarn“: nur für beanspruchte Namen, die in der Nachbarn-Liste stehen (+10 Muscheln, einmalig)
 async function nachbarErf(store, nm) {
@@ -204,6 +271,16 @@ async function liveErf(store, nm) { return (await store.get("live/" + nm)) ? awa
 // Muschel-Rangliste zwischenspeichern (Server-Speicher + Blob, 45 s): das Durchzählen aller Buchungen dauert,
 // die Rangliste soll aber sofort da sein
 let RANGC = { t: 0, d: null };
+// 🏅 Erfolge-Rangliste: verschiedene Erfolge je beanspruchtem Namen (Server- und Browser-Erfolge, jeder einmal), 60 s zwischengespeichert
+let ERFC = { t: 0, d: null };
+async function erfDaten(store) {
+  if (ERFC.d && Date.now() - ERFC.t < 60000) return ERFC.d;
+  const claimed = new Set((await liste(store, "c/")).map(k => k.slice(2))), E = {};
+  for (const k of await liste(store, "b/")) { const [, n, art, id] = k.split("/"); if (art === "erf" && claimed.has(n)) (E[n] = E[n] || new Set()).add(id); }
+  for (const k of await liste(getStore("erfolge"), "e/")) { const [, n, K] = k.split("/"); if (claimed.has(n)) (E[n] = E[n] || new Set()).add(K); }
+  const order = Object.entries(E).map(([n, s]) => [n, s.size]).filter(x => x[1] > 0).sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : 1));
+  ERFC = { t: Date.now(), d: order }; return order;
+}
 async function rangDaten(store) {
   const jetzt = Date.now();
   if (RANGC.d && jetzt - RANGC.t < 45000) return RANGC.d;
@@ -290,6 +367,12 @@ export default async (req) => {
   const store = getStore({ name: "muscheln", consistency: "strong" });
   await vorarbeit(store);
   const url = new URL(req.url);
+  if (req.method === "GET" && url.searchParams.get("erftop")) {
+    const order = await erfDaten(store), me = (url.searchParams.get("name") || "").trim().toLowerCase().replace(/^@/, "");
+    const top = order.slice(0, 10).map(([n, v]) => ({ n: "@" + n, stand: v }));
+    let platz = null, stand = null; if (me) { const i = order.findIndex(x => x[0] === me); if (i >= 0) { platz = i + 1; stand = order[i][1]; } }
+    return json({ top, platz, stand, bis10: platz && platz > 10 && top[9] ? top[9].stand - stand + 1 : null, anzahl: order.length });
+  }
   if (req.method === "GET" && url.searchParams.get("top")) {
     // Muschel-Rangliste: Top 10 der beanspruchten Namen nach Kontostand, Pfeile im Vergleich zu gestern, optional eigener Platz
     const { order, vor, beansprucht } = await rangDaten(store);
@@ -344,6 +427,29 @@ export default async (req) => {
     await store.set("x/klick/" + kt, JSON.stringify({ von, ts: Date.now() }));
     return json({ ok: true, kt });
   }
+  if (act === "linkEin") {
+    const code = String(d.code || "");
+    if (!/^[a-f0-9]{32}$/.test(code)) return json({ ok: false, grund: "code" });
+    const k = "x/login/" + code, L = JSON.parse((await store.get(k)) || "null");
+    if (!L) return json({ ok: false, grund: "code" });
+    await store.delete(k);// nur einmal benutzbar
+    if (Date.now() - L.ts > 10 * 60000) return json({ ok: false, grund: "alt" });
+    const c = JSON.parse((await store.get("c/" + L.nm)) || "null");
+    if (!c) return json({ ok: false, grund: "code" });
+    const t = crypto.randomUUID() + "-" + crypto.randomUUID();
+    c.hs = [...(Array.isArray(c.hs) ? c.hs : []), await sha(t)].slice(-5);
+    await store.set("c/" + L.nm, JSON.stringify(c));
+    return mitCookie(json({ ok: true, n: "@" + L.nm, t }), L.nm, t);
+  }
+  if (act === "wer") {
+    // Gerät kennt seinen beanspruchten Namen nicht mehr (Speicher geleert) → aus dem Server-Cookie wiederherstellen
+    const m = (req.headers.get("cookie") || "").match(/(?:^|;\s*)mt-k=([^;]+)/);
+    const [n, t] = m ? decodeURIComponent(m[1]).split("|") : [];
+    if (!n || !t) return json({ ok: false });
+    const c = JSON.parse((await store.get("c/" + n)) || "null");
+    if (!tokOk(c, await sha(t))) return json({ ok: false });
+    return mitCookie(json({ ok: true, n: "@" + n, t }), n, t);
+  }
   if (!NAME.test(name)) return json({ fehler: "Name" }, 400);
   const nm = name.slice(1), heute = tag();
 
@@ -358,11 +464,17 @@ export default async (req) => {
     if (c.h !== (await sha(token))) return json({ ok: false, beansprucht: true });
     const nachbar = await nachbarErf(store, nm), live = await liveErf(store, nm);
     const von = await einladungPruefen(store, nm, String(d.kt || ""));
-    return json({ ok: true, token, von, neu: [...(nachbar ? ["NACHBAR"] : []), ...(live ? ["LIVE"] : [])] });
+    return mitCookie(json({ ok: true, token, von, neu: [...(nachbar ? ["NACHBAR"] : []), ...(live ? ["LIVE"] : [])] }), nm, token);
   }
   // alle weiteren Aktionen nur mit dem Schlüssel des Besitzers
   const c = JSON.parse((await store.get("c/" + nm)) || "null");
-  if (!c || c.h !== (await sha(String(d.token || "")))) return json({ fehler: "Nicht beansprucht" }, 403);
+  if (!tokOk(c, await sha(String(d.token || "")))) return json({ fehler: "Nicht beansprucht" }, 403);
+  if (act === "linkNeu") {
+    // 📲 In anderem Browser weiterspielen: einmaliger Anmelde-Link, 10 Minuten gültig
+    const code = (crypto.randomUUID() + crypto.randomUUID()).replace(/-/g, "").slice(0, 32);
+    await store.set("x/login/" + code, JSON.stringify({ nm, ts: Date.now() }));
+    return json({ ok: true, code });
+  }
 
   const setze = async (art, id, a) => {
     const pre = "b/" + nm + "/" + art + "/" + id + "/";
@@ -452,9 +564,10 @@ export default async (req) => {
     return json({ ok, bonus, neu, anz });
   }
   if (act === "shell") {
-    const i = Number(d.i);
-    if (!(i >= 0 && i < 4)) return json({ fehler: "Muschel" }, 400);
-    return json({ ok: await setze("shell", heute + "-" + i, 1) });
+    // 6 schwebende Muscheln pro Stunde und Insel (je 1 🐚); Kennung „Stunde-Insel-Nr.“, gilt nur in der aktuellen (oder gerade vergangenen) Stunde
+    const m = /^(\d{1,2})-(\d)-([0-5])$/.exec(String(d.i || "")), h = berlinStunde();
+    if (!m || !(Number(m[1]) === h || Number(m[1]) === h - 1)) return json({ fehler: "Muschel" }, 400);
+    return json({ ok: await setze("shell", heute + "-" + String(m[1]).padStart(2, "0") + "-" + m[2] + "-" + m[3], 1) });
   }
   if (act === "erf") {
     const k = String(d.key || "").toUpperCase();
@@ -648,12 +761,12 @@ export default async (req) => {
     const B = await buch(store, nm), s = await serie(B);
     const posten = B.filter(e => e.a).map(e => ({ art: e.art, id: e.id, a: e.a, t: TEXT[e.art] || e.art }))
       .sort((x, y) => (y.id > x.id ? 1 : -1)).slice(0, 60);
-    return json({
+    return mitCookie(json({
       ok: true, nachbar, live, eingeladen, klopfer, geschenke, premium: !!(await store.get("x/premium/" + nm)), startDa: !(await store.get("x/start/" + nm)), likes: { n: likeN }, neu: likeN >= 25 && (await erfGib("HERZ")) ? ["HERZ"] : [], sticker: (await liste(store, "x/sticker/" + nm + "/")).map(k => k.split("/")[3]), fische: (await liste(store, "x/fisch/" + nm + "/")).map(k => k.split("/")[3]), angelnHeute: Object.fromEntries([0, 1].map(i => [i, (B.find(e => e.art === "angeln" && e.id.startsWith(heute + "-" + i + "_")) || {}).id?.split("_")[1] || null])), sandHeute: !!(await store.get("x/sand/" + woche(heute) + "/" + nm + "/" + heute)), geschenk: B.some(e => e.art === "geschenk" && e.id === heute), stand: B.reduce((s, e) => s + e.a, 0), serie: s,
-      shells: B.filter(e => e.art === "shell" && e.id.startsWith(heute)).map(e => Number(e.id.split("-").pop())),
+      shells: B.filter(e => e.art === "shell" && e.id.startsWith(heute) && e.id.split("-").length === 6).map(e => e.id.split("-").slice(3).map(Number).join("-")),
       questsDone: B.filter(e => e.art === "quest" && e.id.startsWith(heute)).map(e => Number(e.id.split("-").pop())),
       gespendet: -B.filter(e => e.art === "spende").reduce((s, e) => s + e.a, 0), posten, heute, inv: besitz(B), aus: JSON.parse((await store.get("a/" + nm)) || "{}")
-    });
+    }), nm, String(d.token || ""));
   }
   return json({ fehler: "Aktion" }, 400);
 };
