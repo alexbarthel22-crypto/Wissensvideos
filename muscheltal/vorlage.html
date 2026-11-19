@@ -4867,7 +4867,7 @@ if(!REDUCED)requestAnimationFrame(loop);
 let raf=0;function kick(){if(!REDUCED)return;if(!raf)raf=requestAnimationFrame(()=>{raf=0;draw();});}
 
 // ---------- Bedienung ----------
-function clamp(){cam.z=Math.max(fitAll().z*.12,Math.min(10,cam.z));const mx=(BOX.x1-BOX.x0)*3,my=(BOX.y1-BOX.y0)*3,cx=(BOX.x0+BOX.x1)/2,cy=(BOX.y0+BOX.y1)/2;cam.x=Math.max(Math.min(cx-mx,SCH.x-400),Math.min(cx+mx,cam.x));cam.y=Math.max(cy-my,Math.min(Math.max(cy+my,SCH.y+400),cam.y));}
+function clamp(){/* 20.11.: nicht weiter rauszoomen als „Alle Inseln“ (etwas Luft), Bildmitte bleibt über der Welt – sonst verschwinden die Inseln beim Pinch-Zoom */cam.z=Math.max(fitAll().z*.8,Math.min(10,cam.z));const sch=Math.hypot(cam.x-SCH.x,cam.y-SCH.y)<3000,/* beim Schöpfer weit draußen: dort festhalten */x0=sch?SCH.x-400:BOX.x0,x1=sch?SCH.x+400:BOX.x1,y0=sch?SCH.y-400:BOX.y0,y1=sch?SCH.y+400:BOX.y1;cam.x=Math.max(x0,Math.min(x1,cam.x));cam.y=Math.max(y0,Math.min(y1,cam.y));}
 let fly=0;function flyTo(t,ms=750){cancelAnimationFrame(fly);const f={...cam},t0=performance.now();const step=n=>{const k=Math.min(1,(n-t0)/ms),e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;cam.x=f.x+(t.x-f.x)*e;cam.y=f.y+(t.y-f.y)*e;cam.z=Math.exp(Math.log(f.z)+(Math.log(t.z)-Math.log(f.z))*e);if(REDUCED)draw();if(k<1)fly=requestAnimationFrame(step);};fly=requestAnimationFrame(step);}
 function zoomAt(f,sx=W/2,sy=H/2){const [wx,wy]=s2w(sx,sy);cam.z*=f;clamp();const [nx,ny]=s2w(sx,sy);cam.x+=wx-nx;cam.y+=wy-ny;clamp();kick();}
 const pts=new Map();let moved=0,pinch=0;
