@@ -17,7 +17,7 @@ const SK=await B.evaluate(()=>{const v=ISL[0],n=TNOW(),h=Math.floor(n/3600);cons
 await B.clock.pauseAt(new Date(SK.ep+(SK.start+.3*60-L.L4.start+.3)*1000));await fin(B);
 // C: Freitagabend, Kino läuft
 const C=await mk('2026-11-20T20:35:00+01:00','?zeit=nacht&wetter=sonne&termin=kino');await C.clock.pauseAt(new Date('2026-11-20T20:36:00+01:00'));await fin(C);
-const G=await A.evaluate(()=>{const a=fitAll(),m=fitMain(),k=ISL[1];return{a,m,cl:{x:KCLUB.cx,y:KCLUB.cy},ki:{x:KKINO.cx,y:KKINO.cy},ko:{x:k.x,y:k.y,R:k.R}};});
+const G=await A.evaluate(()=>{const a=fitAll(),m=fitMain(),k=ISL[1];return{a,m,gp:{x:GP.X,y:GP.Y},cl:{x:KCLUB.cx,y:KCLUB.cy},ki:{x:KKINO.cx,y:KKINO.cy},ko:{x:k.x,y:k.y,R:k.R}};});
 const m=G.m,Z=m.z,w=WS.w,[s0,s1]=SK.P,kz=1.25*540/(G.ko.R*2.6667);
 // [t, seite, x, y, z]  (gleiche Zeit zweimal = harter Schnitt)
 const K=[[0,'A',m.x,m.y,Z*.95],[L.L1b.end+.3,'A',m.x,m.y,Z*1.25],
@@ -25,7 +25,7 @@ const K=[[0,'A',m.x,m.y,Z*.95],[L.L1b.end+.3,'A',m.x,m.y,Z*1.25],
  [L.L3.start-.05,'A',w.x+14,w.y+12,4.4],[L.L3b.end+.3,'A',w.x+14,w.y+12,5.4],
  [L.L4.start-.05,'B',s0[0],s0[1]+4,7.5],[L.L4.end+.4,'B',s1[0],s1[1]+4,8.2],
  [L.L5.start-.05,'C',G.ki.x,G.ki.y-6,3.3],[L.L5.end+.3,'C',G.ki.x,G.ki.y-6,3.8],
- [L.L6.start-.05,'C',G.ko.x,G.ko.y,kz],[L.L6b.end+.3,'C',G.ko.x,G.ko.y+30,kz*1.5],
+ [L.L6.start-.05,'C',G.gp.x,G.gp.y-10,1.1],[L.L6b.end+.3,'C',G.gp.x,G.gp.y-10,1.6],
  [L.L7.start-.05,'C',G.cl.x,G.cl.y+30,3.2],[L.L7d.end+.3,'C',G.cl.x,G.cl.y+30,3.8],
  [L.L8.start-.05,'A',G.a.x,G.a.y,G.a.z*.95],[L.L8c.end+.3,'A',G.a.x,G.a.y,G.a.z*1.15],
  [L.L9.start-.05,'A',m.x,m.y,Z*1.3],[dur,'A',m.x,m.y,Z*.95]];

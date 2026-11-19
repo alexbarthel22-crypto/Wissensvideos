@@ -198,18 +198,11 @@ scene("s06", GL + """
     #nw6 { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 250px; padding: 8px 40px 14px; border-radius: 30px; background: #ffd23f; color: #2a1b12; font: 400 80px "Lilita One", sans-serif; transform: rotate(-3deg); box-shadow: 0 0 0 8px #2a1b12, 0 12px 0 rgba(0,0,0,.3); opacity: 0; }
     .ch6 { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 12px 40px 18px; border-radius: 40px; font: 400 70px "Lilita One", sans-serif; color: #fff; opacity: 0; box-shadow: 0 0 0 7px #fff, 0 14px 0 rgba(0,0,0,.3); }
     #c60 { top: 240px; background: linear-gradient(160deg,#22b36a,#8be04e); } #c61 { top: 365px; background: linear-gradient(160deg,#7b3dff,#ff3d7f); }""",
-"""      <div id="dk6"></div>
-      <div id="nw6">✨ NEU AUF DER INSEL</div>
-      <div id="gp"><div class="fa"></div><div class="w" style="left:120px"></div><div class="w" style="right:120px"></div><div class="dr"></div><div class="ro"></div><div class="sh"></div><div class="pe"></div><div class="sg">GOLDEN PEARL</div>
-        <div class="st" id="st0" style="left:20px;top:40px">✨</div><div class="st" id="st1" style="right:10px;top:90px">✨</div><div class="st" id="st2" style="left:60px;top:300px">⭐</div><div class="st" id="st3" style="right:40px;top:330px">✨</div></div>
+"""      <div id="nw6">✨ NEU AUF DER INSEL</div>
       <div id="c60" class="ch6">🎯 jede Menge Minispiele</div>
       <div id="c61" class="ch6">🎉 nachts: Party!</div>""",
 """      const t = line("L6")[0], G = at("L6", "Golden"), M = at("L6b", "jede"), N = at("L6b", "nachts");
-      tl.fromTo("#dk6", { opacity: 0 }, { opacity: 1, duration: .4 }, t - .1);
       tl.fromTo("#nw6", { opacity: 0, y: -40 }, { opacity: 1, y: 0, duration: .35, ease: "back.out(2)" }, t);
-      tl.fromTo("#gp", { opacity: 0, scale: .2, y: 200 }, { opacity: 1, scale: 1, y: 0, duration: .6, ease: "back.out(1.8)" }, G - .15);
-      tl.fromTo("#gp .pe", { scale: .6 }, { scale: 1.08, duration: .5, yoyo: true, repeat: 5, ease: "sine.inOut" }, G + .4);
-      ["#st0", "#st1", "#st2", "#st3"].forEach((q, i) => tl.fromTo(q, { opacity: 0, scale: .2, rotation: 0 }, { opacity: 1, scale: 1.3, rotation: 90, duration: .3, yoyo: true, repeat: 5, ease: "sine.inOut", immediateRender: false }, G + .2 + i * .15));
       tl.to("#nw6", { opacity: 0, duration: .2 }, M - .3);
       tl.fromTo("#c60", { opacity: 0, x: -200 }, { opacity: 1, x: 0, duration: .4, ease: "back.out(2)" }, M - .1);
       tl.fromTo("#c61", { opacity: 0, x: 200 }, { opacity: 1, x: 0, duration: .4, ease: "back.out(2)" }, N - .1);""")
