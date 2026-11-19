@@ -1,0 +1,161 @@
+<template>
+  <style>
+        #root { position: absolute; inset: 0; }
+    .stage { position: absolute; inset: 0; overflow: hidden; }
+    .abs { position: absolute; }
+    svg { overflow: visible; }
+    /* Zähler-Box wie in der Referenz: Rahmen in Akzentfarbe, Label in Mono-Versalien, große Zahl */
+    .cbox { position: absolute; left: 290px; width: 500px; top: 268px; height: 126px; border: 3px solid #ff4fb0;
+      border-radius: 32px; background: rgba(13,16,38,.88); text-align: center; box-shadow: 0 0 28px rgba(255,79,176,.35); }
+    .cbox .lab { margin-top: 16px; font-family: "Space Mono", monospace; font-weight: 700; font-size: 28px;
+      letter-spacing: .16em; color: #dfe2f5; }
+    .cbox .num { margin-top: 2px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 56px; color: #fff;
+      letter-spacing: .01em; }
+    .cbox.y { border-color: #ffd43b; box-shadow: 0 0 28px rgba(255,212,59,.3); }
+    .cbox.r { border-color: #ff3b55; box-shadow: 0 0 28px rgba(255,59,85,.35); }
+    .cbox.b { border-color: #4da3ff; box-shadow: 0 0 28px rgba(77,163,255,.3); }
+    .cbox.g { border-color: #39e27a; box-shadow: 0 0 28px rgba(57,226,122,.3); }
+    .mono { font-family: "Space Mono", monospace; font-weight: 700; letter-spacing: .12em; }
+    .heavy { font-family: "Inter", sans-serif; font-weight: 900; }
+    /* Muschel-Tal: Sticker-Look wie auf muscheltal.de. Sicherheitsbereich TikTok: x 40–930, y 200–1120 (Untertitel ab 1150). */
+    .ink { stroke: #2a1b12; }
+    .stk { background: #fff; border: 6px solid #2a1b12; border-radius: 28px; box-shadow: 10px 10px 0 #2a1b12; }
+    .ttl { font-family: "Inter", sans-serif; font-weight: 900; color: #fff; text-align: center; line-height: 1;
+      -webkit-text-stroke: 10px #2a1b12; paint-order: stroke fill; letter-spacing: -.01em; }
+    .kick { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 24px; border-radius: 14px;
+      background: #2a1b12; color: #ffd23f; font-family: "Space Mono", monospace; font-weight: 700; font-size: 34px; letter-spacing: .14em; }
+    /* Text auf farbigem Balken (auffälliger, wie TikTok-Textboxen) */
+    .bt { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; max-width: 740px; text-align: center;
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 66px; line-height: 1.3; color: #fff; }
+    .bt .bx { padding: .06em .4em .14em; border-radius: .6em; -webkit-box-decoration-break: clone; box-decoration-break: clone; box-shadow: 0 10px 0 rgba(0,0,0,.28), 0 16px 30px rgba(0,0,0,.25); }
+    .bt .bx { background: #23285a; } .bt.or .bx { background: #ff5a3c; } .bt.pk .bx { background: #fe2c55; } .bt.tq .bx { background: #18b8c0; } .bt.vi .bx { background: #23285a; } .bt.bl .bx { background: #23285a; }
+    .bt.ye .bx { background: #ffc93c; } .bt.ye { color: #1a0f08; } .bt.gr .bx { background: #00b86b; } .bt.dk .bx { background: #23285a; } .bt.dk { color: #ffc93c; }
+    .bt.sm { font-size: 44px; }
+    .stamp { position: absolute; padding: 6px 30px; border: 10px solid; border-radius: 40px; background: rgba(255,255,255,.94);
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 84px; }
+    /* TikTok-Kommentare (echte Optik) */
+    .tk { position: absolute; left: 60px; width: 800px; background: #fff; border-radius: 30px; padding: 20px 26px 6px; box-shadow: 0 14px 0 rgba(0,0,0,.22); font-family: "Inter", sans-serif; }
+    .tk-h { position: relative; text-align: center; font-weight: 800; font-size: 30px; color: #161823; margin-bottom: 10px; }
+    .tk-h b { position: absolute; right: 4px; top: -4px; font-size: 38px; font-weight: 400; color: #161823; }
+    .tk-c { position: relative; display: flex; gap: 20px; padding: 12px 96px 16px 0; }
+    .tk-a { width: 84px; height: 84px; border-radius: 50%; flex: none; display: grid; place-items: center; color: #fff; font-weight: 900; font-size: 38px; }
+    .tk-u { font-size: 28px; color: #8a8b91; font-weight: 600; }
+    .tk-t { font-size: 34px; color: #161823; font-weight: 500; line-height: 1.22; margin-top: 2px; }
+    .tk-m { font-size: 28px; color: #8a8b91; font-weight: 600; margin-top: 8px; } .tk-m span { margin-left: 30px; }
+    .tk-l { position: absolute; right: 4px; top: 16px; width: 86px; text-align: center; font-size: 28px; color: #8a8b91; font-weight: 600; }
+    .tk-l .hz { position: relative; width: 48px; height: 48px; margin: 0 auto 2px; }
+    .tk-l .hz svg { position: absolute; inset: 0; width: 48px; height: 48px; }
+    .tk-fh { position: absolute; left: 19px; top: 0; width: 50px; height: 50px; opacity: 0; }
+    .tk-pin { display: inline-block; font-size: 28px; font-weight: 800; color: #fe2c55; background: #ffe3ea; border-radius: 6px; padding: 2px 8px; margin-left: 10px; vertical-align: 3px; }
+
+.gl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 18px 34px 20px; border-radius: 28px;
+      background: rgba(255,255,255,.16); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.55), 0 20px 50px rgba(30,10,40,.35);
+      color: #fff; font-family: "Inter", sans-serif; text-align: center; }
+    .gl small { display: block; font-weight: 700; font-size: 26px; letter-spacing: .32em; text-transform: uppercase; opacity: .85; }
+    .gl b { display: block; font-weight: 900; font-size: 92px; letter-spacing: -.02em; line-height: 1; }
+    #vg0 { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 45%, rgba(0,0,0,0) 35%, rgba(0,10,30,.75) 100%); }
+    #fl0 { position: absolute; inset: 0; background: #fff; opacity: 0; }
+    #q0 { top: 250px; } #q0 b { font-size: 70px; }
+    .stk { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 240px; padding: 14px 44px 26px; border-radius: 40px; font-family: "Lilita One", sans-serif; text-align: center; line-height: .95; color: #ffe14a;
+      background: linear-gradient(160deg, #ff3d7f, #ff7a2a); box-shadow: 0 0 0 9px #fff, 0 0 0 16px #2a1b12, 0 24px 0 rgba(0,0,0,.28), 0 0 80px rgba(255,90,60,.6); text-shadow: 0 7px 0 #8a1035; }
+    #w0 { font-size: 150px; transform: rotate(-4deg); }
+    #w1 { font-size: 160px; background: linear-gradient(160deg, #1f8ff0, #36d1dc); text-shadow: 0 7px 0 #0b3d7a; color: #fff; box-shadow: 0 0 0 9px #fff, 0 0 0 16px #0b2340, 0 24px 0 rgba(0,0,0,.28), 0 0 80px rgba(60,180,255,.7); }
+    #w1 small, #w0 small { display: block; font-size: 56px; color: #fff; text-shadow: 0 4px 0 rgba(0,0,0,.3); }
+    #rr0, #rr1 { position: absolute; left: 540px; top: 520px; width: 220px; height: 220px; margin: -110px; border-radius: 50%; border: 22px solid #fff; opacity: 0; }
+    #rr1 { border-color: #36d1dc; }
+    #s0t { top: 250px; } #s0t b { font-size: 76px; } #s0t b span { color: #9dffb0; }
+    .pt { position: absolute; font-size: 84px; line-height: 1; width: 84px; height: 84px; opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="s00" data-start="0" data-duration="9.720" data-width="1080" data-height="1920">
+    <div id="s00-stage" class="clip stage" data-start="0" data-duration="9.720" data-track-index="0">
+      <div id="vg0"></div>
+      <div id="q0" class="gl"><small>Psst …</small><b>👀 da draußen …</b></div>
+      <div id="rr0"></div><div id="rr1"></div>
+      <div class="pt" id="pa0" style="left:498px;top:478px">💥</div><div class="pt" id="pa1" style="left:498px;top:478px">💦</div><div class="pt" id="pa2" style="left:498px;top:478px">🌊</div><div class="pt" id="pa3" style="left:498px;top:478px">✨</div><div class="pt" id="pa4" style="left:498px;top:478px">💥</div><div class="pt" id="pa5" style="left:498px;top:478px">💦</div><div class="pt" id="pa6" style="left:498px;top:478px">🌊</div><div class="pt" id="pa7" style="left:498px;top:478px">✨</div><div class="pt" id="pa8" style="left:498px;top:478px">💥</div><div class="pt" id="pa9" style="left:498px;top:478px">💦</div><div class="pt" id="pa10" style="left:498px;top:478px">🌊</div><div class="pt" id="pa11" style="left:498px;top:478px">✨</div><div class="pt" id="pa12" style="left:498px;top:478px">💥</div><div class="pt" id="pa13" style="left:498px;top:478px">💦</div>
+      <div id="w0" class="stk">WAS WAR<br>DAS?! 😱</div>
+      <div id="w1" class="stk"><small>direkt vor meiner Insel</small>🐋 EIN WAL!</div>
+      <div id="s0t" class="gl"><small>Und am Strand</small><b>🐢 <span>Schildkröten-</span><br>Wanderung!</b></div>
+      <div id="fl0"></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      
+      const C = {"__dur": 9.72, "L0a": [0.0, 1.89], "L0a.words": [["psst", 0.0, 0.145], ["", 0.145, 0.27], ["da", 0.52, 0.687], ["draußen", 0.687, 1.038], ["bewegt", 1.038, 1.384], ["sich", 1.384, 1.563], ["was", 1.563, 1.736], ["", 1.736, 1.89]], "L0b": [3.01, 3.87], "L0b.words": [["was", 3.01, 3.297], ["war", 3.297, 3.583], ["das", 3.583, 3.87]], "L0c": [4.39, 6.45], "L0c.words": [["ein", 4.39, 4.58], ["wal", 4.58, 4.77], ["", 4.77, 4.94], ["direkt", 5.19, 5.552], ["vor", 5.552, 5.733], ["meiner", 5.733, 6.095], ["insel", 6.095, 6.45]], "L0d": [6.97, 9.14], "L0d.words": [["und", 6.97, 7.178], ["am", 7.178, 7.379], ["strand", 7.379, 7.61], ["eine", 7.86, 8.167], ["schildkrötenwanderung", 8.167, 9.14]]};
+      const line = (id) => C[id];
+      const at = (id, word, which = 0) => {
+        const ws = C[id + ".words"];
+        if (typeof word === "number") return ws[word][1 + which];
+        const key = String(word).toLowerCase().replace(/[^\p{L}\p{N}_]/gu, "");
+        const hit = ws.find((w) => w[0].startsWith(key));
+        if (!hit) throw new Error("cue not found: " + id + " " + word);
+        return hit[1 + which];
+      };
+      // Zähler: schreibt Zahlen im deutschen Format (4.100.000.000) als Funktion der Timeline-Zeit
+      const fmt = (n) => Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      const count = (tl, sel, from, to, t, d, pre = "", post = "", ease = "power2.out") => {
+        const el = document.querySelector(sel);
+        const o = { v: from };
+        el.textContent = pre + fmt(from) + post;
+        tl.to(o, { v: to, duration: d, ease, onUpdate: () => { el.textContent = pre + fmt(o.v) + post; } }, t);
+      };
+      // deterministischer Zufall
+      const rng = (seed) => () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let x = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+        x = (x + Math.imul(x ^ (x >>> 7), 61 | x)) ^ x; return ((x ^ (x >>> 14)) >>> 0) / 4294967296; };
+
+            // TikTok-Kommentar: Herz füllt sich rot, Zahl zählt hoch, Herzen schnellen nach oben
+      const HEART = '<svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-10-9.3C.4 8.4 2 4.5 5.6 4c2-.3 3.6.6 4.4 2 .8-1.4 2.4-2.3 4.4-2 3.6.5 5.2 4.4 3.6 7.7C19.5 16.4 12 21 12 21z" fill="none" stroke="#8a8b91" stroke-width="2"/></svg>';
+      const HEART_R = '<svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-10-9.3C.4 8.4 2 4.5 5.6 4c2-.3 3.6.6 4.4 2 .8-1.4 2.4-2.3 4.4-2 3.6.5 5.2 4.4 3.6 7.7C19.5 16.4 12 21 12 21z" fill="#fe2c55"/></svg>';
+      const fmtK = (n) => n >= 10000 ? (n / 1000).toFixed(1).replace(".", ",") + " Tsd." : Math.round(n).toLocaleString("de-DE");
+      function tkLike(tl, id, t, from, to, dur = 1.4, seed = 1) {
+        const box = document.querySelector(id + " .tk-l"), num = box.querySelector("i"), hz = box.querySelector(".hz");
+        hz.innerHTML = HEART + '<span class="red" style="position:absolute;inset:0;opacity:0">' + HEART_R + "</span>";
+        const R = rng(seed);
+        for (let k = 0; k < 7; k++) { const f = document.createElement("div"); f.className = "tk-fh"; f.innerHTML = HEART_R; box.appendChild(f);
+          const dx = (R() - .5) * 160, up = 200 + R() * 220, t0 = t + k * .11;
+          tl.fromTo(f, { opacity: 0, x: 0, y: 0, scale: .5, rotation: 0 }, { opacity: 1, x: dx * .4, y: -60, scale: 1.1, rotation: (R() - .5) * 40, duration: .15, ease: "power2.out" }, t0);
+          tl.to(f, { x: dx, y: -up, scale: .7, opacity: 0, duration: .7, ease: "power1.in" }, t0 + .15); }
+        tl.fromTo(hz.querySelector(".red"), { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .25, ease: "back.out(3)" }, t);
+        tl.fromTo(hz, { scale: 1 }, { scale: 1.3, duration: .12, yoyo: true, repeat: 1, ease: "power2.out" }, t);
+        const o = { v: from }; num.textContent = fmtK(from);
+        tl.to(o, { v: to, duration: dur, ease: "power2.out", onUpdate: () => { num.textContent = fmtK(o.v); } }, t);
+      }
+      // Textbox füllt immer genau den Text: jede Zeile bekommt ihren eigenen Balken
+      function wrapBt(scope) { document.querySelectorAll(scope + " .bt").forEach((el) => { if (!el.querySelector(":scope > .bx")) el.innerHTML = '<span class="bx">' + el.innerHTML + "</span>"; }); }
+
+      wrapBt("#s00-stage");
+      const tl = gsap.timeline({ paused: true });
+      const W = at("L0b", "WAS"), A = at("L0c", "WAL"), K = line("L0d")[0];
+      tl.fromTo("#vg0", { opacity: 1 }, { opacity: 0, duration: .4 }, W - .1);
+      tl.fromTo("#q0", { opacity: 0, y: 30, filter: "blur(10px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: .6, ease: "power3.out" }, .15);
+      tl.to("#q0", { scale: 1.04, duration: .5, yoyo: true, repeat: 3, ease: "sine.inOut" }, .8);
+      tl.to("#q0", { opacity: 0, scale: .8, duration: .2 }, W - .15);
+      tl.fromTo("#fl0", { opacity: .9 }, { opacity: 0, duration: .35, ease: "power2.out" }, W - .03);
+      tl.fromTo("#rr0", { scale: .2, opacity: 1 }, { scale: 6, opacity: 0, duration: .8, ease: "power3.out" }, W);
+      tl.fromTo("#rr1", { scale: .2, opacity: 1 }, { scale: 8, opacity: 0, duration: 1, ease: "power3.out" }, W + .1);
+      tl.fromTo("#pa0", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 287, y: 98, scale: 1.10, rotation: 60, opacity: 0, duration: 0.90, ease: "power3.out" }, at("L0b", "WAS") + 0.00);
+      tl.fromTo("#pa1", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 308, y: 315, scale: 1.45, rotation: -77, opacity: 0, duration: 1.15, ease: "power3.out" }, at("L0b", "WAS") + 0.03);
+      tl.fromTo("#pa2", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 197, y: 553, scale: 1.80, rotation: 94, opacity: 0, duration: 1.40, ease: "power3.out" }, at("L0b", "WAS") + 0.06);
+      tl.fromTo("#pa3", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: -23, y: 329, scale: 1.10, rotation: -111, opacity: 0, duration: 0.90, ease: "power3.out" }, at("L0b", "WAS") + 0.09);
+      tl.fromTo("#pa4", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: -210, y: 400, scale: 1.45, rotation: 128, opacity: 0, duration: 1.15, ease: "power3.out" }, at("L0b", "WAS") + 0.00);
+      tl.fromTo("#pa5", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: -446, y: 334, scale: 1.80, rotation: -145, opacity: 0, duration: 1.40, ease: "power3.out" }, at("L0b", "WAS") + 0.03);
+      tl.fromTo("#pa6", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: -297, y: 49, scale: 1.10, rotation: 162, opacity: 0, duration: 0.90, ease: "power3.out" }, at("L0b", "WAS") + 0.06);
+      tl.fromTo("#pa7", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: -401, y: -137, scale: 1.45, rotation: -179, opacity: 0, duration: 1.15, ease: "power3.out" }, at("L0b", "WAS") + 0.09);
+      tl.fromTo("#pa8", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: -396, y: -404, scale: 1.80, rotation: 196, opacity: 0, duration: 1.40, ease: "power3.out" }, at("L0b", "WAS") + 0.00);
+      tl.fromTo("#pa9", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: -109, y: -307, scale: 1.10, rotation: -213, opacity: 0, duration: 0.90, ease: "power3.out" }, at("L0b", "WAS") + 0.03);
+      tl.fromTo("#pa10", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 32, y: -461, scale: 1.45, rotation: 230, opacity: 0, duration: 1.15, ease: "power3.out" }, at("L0b", "WAS") + 0.06);
+      tl.fromTo("#pa11", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 270, y: -514, scale: 1.80, rotation: -247, opacity: 0, duration: 1.40, ease: "power3.out" }, at("L0b", "WAS") + 0.09);
+      tl.fromTo("#pa12", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 248, y: -186, scale: 1.10, rotation: 264, opacity: 0, duration: 0.90, ease: "power3.out" }, at("L0b", "WAS") + 0.00);
+      tl.fromTo("#pa13", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 415, y: -68, scale: 1.45, rotation: -281, opacity: 0, duration: 1.15, ease: "power3.out" }, at("L0b", "WAS") + 0.03);
+      tl.fromTo("#w0", { opacity: 0, scale: 2.4, rotation: -14 }, { opacity: 1, scale: 1, rotation: -4, duration: .3, ease: "back.out(3)" }, W - .02);
+      [[16,-10,-1],[-18,8,-7],[12,12,-2],[-10,-8,-6],[6,4,-3],[0,0,-4]].forEach(([x, y, r], i) => tl.to("#w0", { x, y, rotation: r, duration: .05, ease: "none" }, W + .3 + i * .05));
+      tl.to("#w0", { opacity: 0, scale: .6, duration: .18, ease: "power2.in" }, A - .25);
+      tl.fromTo("#w1", { opacity: 0, scale: .3, y: 80 }, { opacity: 1, scale: 1, y: 0, duration: .45, ease: "back.out(2.6)" }, A - .1);
+      tl.to("#w1", { y: -10, duration: .5, yoyo: true, repeat: 3, ease: "sine.inOut" }, A + .4);
+      tl.to("#w1", { opacity: 0, scale: .7, duration: .2 }, K - .2);
+      tl.fromTo("#s0t", { opacity: 0, scale: 1.3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .4, ease: "back.out(2)" }, K - .05);
+      tl.to("#s00-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
+      window.__timelines["s00"] = tl;
+    })();
+  </script>
+</template>
