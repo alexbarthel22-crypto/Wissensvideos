@@ -256,7 +256,7 @@ a.step span{color:var(--hib);font-weight:900}
 .news{margin:16px 0 0;padding:12px 14px;background:#fffdf6;border:2px dashed var(--ink);border-radius:12px;font-weight:700}
 .news b{color:var(--hib)}
 /* ---------- Fragen ---------- */
-.chat details{margin:0 0 12px}
+.chat details{margin:0 0 12px}.chat .faqlink{display:inline-block;margin:8px 0 0;background:var(--sun,#ffd23f);color:#2a1b12;border:3px solid var(--ink);border-radius:999px;padding:8px 14px;font-weight:900;text-decoration:none;box-shadow:3px 3px 0 var(--ink)}
 .chat summary{list-style:none;cursor:pointer;margin-left:auto;max-width:88%;width:fit-content;background:var(--deep);color:#fff;border:3px solid var(--ink);border-radius:18px 18px 4px 18px;padding:10px 14px;font-weight:800}
 .chat summary::-webkit-details-marker{display:none}
 .chat p{max-width:88%;width:fit-content;background:#fff;border:3px solid var(--ink);border-radius:18px 18px 18px 4px;padding:10px 14px;margin:8px 0 0;font-weight:600}
@@ -4968,9 +4968,11 @@ $('faq').innerHTML=[
  ['Was sind die Inseln mit ???','Auf der Haupt-Insel ist Platz für '+fmt(MAIN.plaetze)+' Einwohner. Danach öffnen neue Inseln – bei '+ISL.slice(1).map(v=>fmt(v.ab+1)).join(', ').replace(/, ([^,]*)$/,' und $1')+' Followern. Je später, desto schöner.'],
  ['Ist das hier alles umsonst?','Ja, komplett. Folgen reicht.'],
  ['Ich habe im LIVE-Stream eine Hütte bekommen. Wo ist die hier?','Die LIVE-Insel kann nur im LIVE-Stream weiter erkundet werden. Sie läuft separat und kann hier nicht besucht werden.'],
+ ['Im anderen Browser kann ich nicht als mein User spielen. Warum?','Jeder Browser merkt sich deinen Namen getrennt – die TikTok-App und Safari/Chrome wissen nichts voneinander. Öffne Muschel-Tal dort, wo du deinen Namen beansprucht hast (meist in der TikTok-App), tippe auf den Knopf unten und öffne den Anmelde-Link im anderen Browser. Er gilt 10 Minuten und nur einmal.','<a href="#" class="faqlink" data-faq="browser">🌐 Anmelde-Link erstellen</a>'],
  ['Ich habe einen Fehler auf der Seite entdeckt. Was mache ich?','Schreib '+ACC+' auf TikTok eine Nachricht oder einen Kommentar und beschreib kurz, was nicht stimmt – am besten mit Screenshot. Danke fürs Helfen!'],
  ['Ich will nicht auf der Karte stehen.','Kein Problem. Schreib '+ACC+' auf TikTok eine Nachricht, dann nehmen wir deinen Namen raus.']
-].map(f=>'<details><summary>'+esc(f[0])+'</summary><p>🏝️ '+esc(f[1])+'</p></details>').join('');
+].map(f=>'<details><summary>'+esc(f[0])+'</summary><p>🏝️ '+esc(f[1])+'</p>'+(f[2]||'')+'</details>').join('');
+$('faq').addEventListener('click',e=>{const a=e.target.closest('[data-faq="browser"]');if(!a)return;e.preventDefault();if(mkClaim()&&mkMe())linkAndererBrowser();else popup('<div class="big">🌐</div><h2>Hier bist du noch nicht angemeldet</h2><p>Den Anmelde-Link erstellst du in dem Browser, in dem du deinen Namen <b>beansprucht</b> hast – meistens in der <b>TikTok-App</b>. Öffne Muschel-Tal dort, tippe hier auf den Link und öffne ihn dann in diesem Browser.</p><p class="cft">Noch gar keinen Namen beansprucht? Dann kannst du das direkt hier machen.</p><button class="cbtn hot" type="button" data-mk="suche">🔐 Usernamen beanspruchen</button>');});
 $('foot').innerHTML='<a href="'+ACCURL+'" target="_blank" rel="noopener">'+esc(ACC)+'</a> auf TikTok<button class="lupebtn" id="lupe" aria-label="Lupe">'+LUPE_SVG+'</button><div class="legal-fuss"><a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a> · <a href="agb.html">AGB</a></div>';
 let PGCB=null,WKLOCK=false,WKWEG=null;function popup(html,zu){if(WKLOCK&&!$('pg').hidden)return;/* Willkommen-Fenster bleibt, bis man es schließt oder den Namen beansprucht */$('pgb').innerHTML=html;$('pg').hidden=false;PGCB=zu||null;}
 // Willkommen (erster Besuch): Namen direkt im Fenster eingeben und beanspruchen
