@@ -1942,7 +1942,7 @@ function palLion(c,x,y,s,gold,ink){const TW=Math.PI*2;c.fillStyle='rgba(40,30,10
 const cv=$('map'),ctx=cv.getContext('2d'),base=document.createElement('canvas'),bx=base.getContext('2d'),fgc=document.createElement('canvas'),fx=fgc.getContext('2d');let fgOn=false;
 // gemeinsame Uhr: alle Geräte zeigen Passanten, Gäste, Jogger usw. zur selben Zeit am selben Ort (Sekunden seit 1.1.2026, echte Uhrzeit)
 const TEPOCH=Date.UTC(2026,0,1),TNOW=()=>(Date.now()-TEPOCH)/1000;
-let PXMAX=5e6,W=0,H=0,DPR=1,T=TNOW(),baseKey='',selT=0,selN=0,selStop=null,selStopN=-1;
+let PXMAX=5e6,DPRMAX=2,W=0,H=0,DPR=1,T=TNOW(),baseKey='',selT=0,selN=0,selStop=null,selStopN=-1;
 // Nachbarpaare (beide eingezogen)
 let NBP_=null;const NBW_Y=3.2;var NBW_COL='#e8433c';const NBPget=()=>NBP_||(NBP_=(I.nachbarn||[]).flatMap(pr=>{const G=pr.map(n=>byName.get('@'+String(n).toLowerCase().replace(/^@/,''))).filter(q=>q&&q.p);if(G.length<2)return[];if(G.length===2)return[G];/* Gruppe: schon ab 2 Anwesenden verbunden */G.sort((a,b)=>a.p.gx-b.p.gx);return G.slice(1).map((q,i)=>[G[i],q]);}).filter(([a,b])=>a&&b&&a.p&&b.p&&!a.gb&&!b.gb));
 // Textbreite in großer Schrift messen und herunterrechnen: winzige Schriftgrößen (v. a. mit Emoji) misst Safari/macOS zu schmal → Schilder zu kurz
@@ -1965,7 +1965,7 @@ function fitAll(fr){const w=BOX.x1-BOX.x0,h=BOX.y1-BOX.y0;if(!fr){const z=Math.m
 // neu gezeichnet wird sie erst, wenn der Rand aufgebraucht ist oder der Zoom sich deutlich geändert hat (flüssiges Ziehen auch am Desktop).
 // Große Bildschirme: Pixeldichte so begrenzt, dass höchstens ~5 Mio. Bildpunkte gezeichnet werden (scharf, aber nicht überteuer).
 let BM=0,BASE={x:0,y:0,z:1},ZCH=0;
-function resize(ohneBild){const b=cv.getBoundingClientRect();W=b.width;H=b.height;DPR=Math.min(2,window.devicePixelRatio||1,Math.max(1,Math.sqrt(PXMAX/Math.max(1,W*H))));BM=Math.round(Math.min(260,Math.max(W,H)*.3));
+function resize(ohneBild){const b=cv.getBoundingClientRect();W=b.width;H=b.height;DPR=Math.min(DPRMAX,window.devicePixelRatio||1,Math.max(1,Math.sqrt(PXMAX/Math.max(1,W*H))));BM=Math.round(Math.min(260,Math.max(W,H)*.3));
  cv.width=W*DPR|0;cv.height=H*DPR|0;base.width=fgc.width=(W+2*BM)*DPR|0;base.height=fgc.height=(H+2*BM)*DPR|0;baseKey='';if(!ohneBild)draw();}
 function baseBuild(){const w0=W,h0=H;W+=2*BM;H+=2*BM;try{drawBase();}finally{W=w0;H=h0;}BASE={x:cam.x,y:cam.y,z:cam.z};}
 // Grundkarte (oder Küstenhütten-Ebene) passend zur aktuellen Kamera auf den Bildschirm legen
@@ -4147,7 +4147,7 @@ function gebDeko(c,g){if(S*cam.z<9)return;const D=DEKO[g.typ];if(!D)return;const
  if(g.typ==='werkstatt'&&!REDUCED&&Math.sin(t*1.7)>.85){for(let k=0;k<5;k++){const a=k/5*TAU+t;c.fillStyle='#ffd23f';c.fillRect(bx+6+Math.cos(a)*1.2,by+bw*0-1.6+Math.sin(a)*1.2,.25,.25);}}}
 function gebSign1(c,g){c.save();c.translate(g.cx,g.cy);if(g.typ!=='doener'&&!KIO(g))c.scale(g.dir||1,1);if(g.typ==='werkstatt'||g.typ==='tierheim')c.scale(g.dir||1,1);gebSign(c,g);gebDeko(c,g);c.restore();teamBand(c,g);}
 // im Überblick (kleine Zoomstufe) Schilder + Team-Plaketten aus dem Zwischenspeicher, nah dran live
-function gebSigns(c,z){if(z*S<=4)return;for(const g of GEB){if(GROWK!=null&&GROWV===g.v&&GROWK<g.at)continue;if(z*S<10){{const [a,b]=s2w(-40,-40),[e,f]=s2w(W+40,H+40);if(g.x1<a-40||g.x0>e+40||g.cy<b||g.cy-70>f)continue;}sprite(c,'sign'+g.key,g.x0-30,g.cy-62,g.x1+30,g.cy-8,o=>gebSign1(o,g));}else gebSign1(c,g);}}
+function gebSigns(c,z){if(z*S<=4)return;for(const g of GEB){if(GROWK!=null&&GROWV===g.v&&GROWK<g.at)continue;if(z*S<10){{const [a,b]=s2w(-40,-40),[e,f]=s2w(W+40,H+40);if(g.x1<a-40||g.x0>e+40||g.cy<b||g.cy-70>f)continue;}sprite(c,'sign'+g.key,g.x0-30,g.cy-62,g.x1+30,g.cy-8,o=>gebSign1(o,g));}else{/* nah (Erkunden): nur sichtbare Schilder zeichnen */if(!SBX)SBX=[s2w(-60,-60),s2w(W+60,H+60)];const [[a,b],[e,f]]=SBX;if(g.x1+30<a||g.x0-30>e||g.cy-8<b||g.cy-70>f)continue;gebSign1(c,g);}}SBX=null;}let SBX=null;
 // Herausgezoomt (Details nur wenige Pixel groß): Gebäude als Bild zwischenspeichern und regelmäßig auffrischen – spart viel Rechenzeit
 const SPR=new Map();
 // Zwischengespeichertes Bild eines Gebäudes/Ortes. Beim Verschieben der Karte wird das fertige Bild nur versetzt (statt jedes Bild neu
@@ -4161,9 +4161,9 @@ let FRT0=0,SPRN=0;const sprVoll=()=>SPRN>=2&&performance.now()-FRT0>10;
 function sprAlt(c,e,x0,y0){if(!e||!e.cv||!e.scl)return false;if(e.taps)TAPS.push(...e.taps);if(e.names)NAMES.push(...e.names);if(e.figs)FIGS.push(...e.figs);c.drawImage(e.cv,x0-e.ox/e.scl,y0-e.oy/e.scl,e.cv.width/e.scl,e.cv.height/e.scl);return true;}
 function sprite(c,key,x0,y0,x1,y1,fn){const zs=cam.z*S,m=c.getTransform(),sc=m.a,w=Math.ceil((x1-x0)*sc)+3,h=Math.ceil((y1-y0)*sc)+3;if(w*h>3e6||w<2||h<2){fn(c);return;}
  if(zs>=SPR_LIVE){// nah dran: im Stillstand live zeichnen (alle Animationen); nur beim Verschieben das beim Start der Bewegung gemachte Bild versetzen
-  const now=performance.now();if(!PANNT(now)){fn(c);return;}const fx=m.a*x0+m.e,fy=m.d*y0+m.f,dx=Math.floor(fx)-1,dy=Math.floor(fy)-1,base='n'+sc+'|'+Math.round(nightLevel()*24)+'|'+kind();let e=SPR.get(key);if(!e){e={cv:null,base:'',frac:'',want:'',t:0,ox:0,oy:0};SPR.set(key,e);}
-  if(e.base!==base&&e.cv&&e.ps===PANS&&sprAlt(c,e,x0,y0))return;
-  if(e.base!==base||e.ps!==PANS||!e.cv){if(e.cv&&sprVoll()&&sprAlt(c,e,x0,y0)){kick();return;}SPRN++;if(!e.cv)e.cv=document.createElement('canvas');if(e.cv.width!==w||e.cv.height!==h){e.cv.width=w;e.cv.height=h;}const o=e.cv.getContext('2d');o.setTransform(1,0,0,1,0,0);o.clearRect(0,0,w,h);o.setTransform(sc,0,0,sc,(fx-dx)-sc*x0,(fy-dy)-sc*y0);const a1=TAPS.length,a2=NAMES.length,a3=FIGS.length;fn(o);e.taps=TAPS.slice(a1);e.names=NAMES.slice(a2);e.figs=FIGS.slice(a3);e.base=base;e.ps=PANS;e.ox=fx-dx;e.oy=fy-dy;e.scl=sc;e.frac='';e.t=0;}
+  const now=performance.now();if(!PANNT(now)){fn(c);return;}const PS=PANS;const fx=m.a*x0+m.e,fy=m.d*y0+m.f,dx=Math.floor(fx)-1,dy=Math.floor(fy)-1,base='n'+sc+'|'+Math.round(nightLevel()*24)+'|'+kind();let e=SPR.get(key);if(!e){e={cv:null,base:'',frac:'',want:'',t:0,ox:0,oy:0};SPR.set(key,e);}
+  if(e.base!==base&&e.cv&&e.ps===PS&&sprAlt(c,e,x0,y0))return;
+  if(e.base!==base||e.ps!==PS||!e.cv){if(e.cv&&sprVoll()&&sprAlt(c,e,x0,y0)){kick();return;}SPRN++;if(!e.cv)e.cv=document.createElement('canvas');if(e.cv.width!==w||e.cv.height!==h){e.cv.width=w;e.cv.height=h;}const o=e.cv.getContext('2d');o.setTransform(1,0,0,1,0,0);o.clearRect(0,0,w,h);o.setTransform(sc,0,0,sc,(fx-dx)-sc*x0,(fy-dy)-sc*y0);const a1=TAPS.length,a2=NAMES.length,a3=FIGS.length;fn(o);e.taps=TAPS.slice(a1);e.names=NAMES.slice(a2);e.figs=FIGS.slice(a3);e.base=base;e.ps=PS;e.ox=fx-dx;e.oy=fy-dy;e.scl=sc;e.frac='';e.t=0;}
   else{TAPS.push(...e.taps);NAMES.push(...e.names);FIGS.push(...e.figs);}
   c.save();c.setTransform(1,0,0,1,0,0);c.drawImage(e.cv,fx-e.ox,fy-e.oy);c.restore();return;}
  const fx=m.a*x0+m.e,fy=m.d*y0+m.f,dx=Math.floor(fx)-1,dy=Math.floor(fy)-1,base=sc+'|'+Math.round(nightLevel()*24)+'|'+kind()+'|'+(WK.on&&WK.me?WK.me.name:''),frac=(fx-dx).toFixed(2)+'|'+(fy-dy).toFixed(2),now=performance.now();let e=SPR.get(key);
@@ -4314,9 +4314,13 @@ function mkPath(P){const L=[0];for(let i=1;i<P.length;i++)L.push(L[i-1]+Math.hyp
 function pathOK(pt,who,g){const v=who.isl;for(let d=4;d<pt.len;d+=1.5){const [x,y]=along(pt,d);if(g&&x>g.x0-4&&x<g.x1+4&&y>g.y0-4&&y<g.y1+4)continue;if(!canWalk(x,y)&&!(Math.abs(x-who.p.x)<12&&Math.abs(y-who.p.y)<10))return false;
  const gx=Math.round((x-v.x)/S),gy=Math.round((y-v.y)/(S*.9));for(let a=-1;a<=1;a++)for(let b=-1;b<=1;b++){const q=v.cell.get((gx+a)+','+(gy+b));if(q&&q!==who&&q.p&&q.nr<=limit&&Math.abs(x-q.p.x)<7.5&&y>q.p.y-9&&y<q.p.y+7.5)return false;}}return true;}
 // Notfall-Route über ein Raster (nur Land, nie Wasser, nie über Hütten), wenn keine der einfachen Varianten passt
+// Zwischenspeicher für Wegberechnungen der Bewohner (Raster fest ausgerichtet, gilt 60 s): spart Ruckler beim Erkunden
+let PTC=new Map(),PTCT=0;function ptOKc(x,y,who){const n=performance.now();if(n-PTCT>60000){PTC=new Map();PTCT=n;}const k=Math.round(x)*100003+Math.round(y);let e=PTC.get(k);
+ if(e===undefined){if(!canWalk(x,y))e=1;else{e=0;const v=who.isl,gx=Math.round((x-v.x)/S),gy=Math.round((y-v.y)/(S*.9));for(let a=-1;a<=1&&!e;a++)for(let b=-1;b<=1;b++){const q=v.cell.get((gx+a)+','+(gy+b));if(q&&q.p&&q.nr<=limit&&Math.abs(x-q.p.x)<7.5&&y>q.p.y-9&&y<q.p.y+7.5){e=q;break;}}}PTC.set(k,e);}
+ if(e===0)return true;if(e===1)return Math.abs(x-who.p.x)<12&&Math.abs(y-who.p.y)<10;return e===who?ptOK(x,y,who):false;}
 function ptOK(x,y,who){if(!canWalk(x,y)&&!(Math.abs(x-who.p.x)<12&&Math.abs(y-who.p.y)<10))return false;const v=who.isl,gx=Math.round((x-v.x)/S),gy=Math.round((y-v.y)/(S*.9));for(let a=-1;a<=1;a++)for(let b=-1;b<=1;b++){const q=v.cell.get((gx+a)+','+(gy+b));if(q&&q!==who&&q.p&&q.nr<=limit&&Math.abs(x-q.p.x)<7.5&&y>q.p.y-9&&y<q.p.y+7.5)return false;}return true;}
-function gridRoute(who,x0,y0,x1,y1){const st=3,X0=Math.min(x0,x1)-90,Y0=Math.min(y0,y1)-90,nx=Math.ceil((Math.abs(x1-x0)+180)/st),ny=Math.ceil((Math.abs(y1-y0)+180)/st);if(nx*ny>90000)return null;
- const id=(i,j)=>j*nx+i,ok=new Int8Array(nx*ny),prev=new Int32Array(nx*ny).fill(-1),okAt=(i,j)=>{const k=id(i,j);if(!ok[k])ok[k]=ptOK(X0+i*st,Y0+j*st,who)?1:2;return ok[k]===1;};
+function gridRoute(who,x0,y0,x1,y1){const st=3,X0=Math.floor((Math.min(x0,x1)-90)/st)*st,Y0=Math.floor((Math.min(y0,y1)-90)/st)*st,nx=Math.ceil((Math.abs(x1-x0)+180)/st),ny=Math.ceil((Math.abs(y1-y0)+180)/st);if(nx*ny>90000)return null;
+ const id=(i,j)=>j*nx+i,ok=new Int8Array(nx*ny),prev=new Int32Array(nx*ny).fill(-1),okAt=(i,j)=>{const k=id(i,j);if(!ok[k])ok[k]=ptOKc(X0+i*st,Y0+j*st,who)?1:2;return ok[k]===1;};
  const si=Math.round((x0-X0)/st),sj=Math.round((y0-Y0)/st),ei=Math.round((x1-X0)/st),ej=Math.round((y1-Y0)/st),Q=[id(si,sj)];prev[Q[0]]=Q[0];
  for(let h=0;h<Q.length;h++){const k=Q[h],i=k%nx,j=(k/nx)|0;if(Math.hypot(i-ei,j-ej)*st<6.5){const pts=[];let c=k;while(c!==prev[c]){pts.unshift([X0+(c%nx)*st,Y0+((c/nx)|0)*st]);c=prev[c];}pts.unshift([x0,y0]);pts.push([x1,y1]);
    const out=[pts[0]];for(let a=1;a<pts.length-1;a++){const p0=out[out.length-1],p1=pts[a],p2=pts[a+1];if((p1[0]-p0[0])*(p2[1]-p1[1])!==(p1[1]-p0[1])*(p2[0]-p1[0]))out.push(p1);}out.push(pts[pts.length-1]);return out;}
@@ -4695,7 +4699,7 @@ if('IntersectionObserver' in window)new IntersectionObserver(e=>{onScreen=e[0].i
 // Bildrate passt sich dem Gerät an: bis 60 Bilder/s (auch auf 120-Hz-Displays max. 60), bei schwachen Geräten 30
 const FR={hi:true,ema:6,gap:16.7,lang:0};
 // Langsames Gerät (z. B. älteres MacBook): bleibt die Karte trotz 30-Bilder-Modus zäh, wird die Pixelzahl schrittweise etwas gesenkt
-function frAnpassen(n){if(n>8000&&FR.gap>45&&!FR.hi){if(!FR.lang)FR.lang=n;else if(n-FR.lang>2500&&PXMAX>1.4e6&&DPR>1){PXMAX=PXMAX>4e6?3e6:PXMAX>2.5e6?2e6:1.4e6;FR.lang=0;FR.gap=33;resize();}}else FR.lang=0;}
+function frAnpassen(n){if(n>8000&&FR.gap>40&&!FR.hi){if(!FR.lang)FR.lang=n;else if(n-FR.lang>2500&&DPR>1){if(PXMAX>1.4e6&&W*H*DPR*DPR>=PXMAX*.95)PXMAX=PXMAX>4e6?3e6:PXMAX>2.5e6?2e6:1.4e6;else if(DPRMAX>1.25)DPRMAX=DPRMAX>1.5?1.5:1.25;/* Handy dauerhaft langsam: etwas geringere Auflösung, dafür flüssig */else{FR.lang=0;return;}FR.lang=0;FR.gap=33;resize();}}else FR.lang=0;}
 function loop(n){requestAnimationFrame(loop);if(!onScreen||document.hidden)return;const dt=n-last;if(dt<(FR.hi?13:30))return;if(dt<120)FR.gap=FR.gap*.9+dt*.1;last=n;T=TNOW();const a=performance.now();draw();feuerwerkZeichnen();sternZeichnen();FR.ema=FR.ema*.9+(performance.now()-a)*.1;
  if(FR.hi&&(FR.ema>12||FR.gap>26))FR.hi=false;else if(!FR.hi&&FR.ema<8&&FR.gap<40)FR.hi=true;frAnpassen(n);}
 if(!REDUCED)requestAnimationFrame(loop);
@@ -5143,10 +5147,10 @@ const claimCk=v=>{try{document.cookie='mt-claim='+(v?encodeURIComponent(v)+';max
  // auch ohne beide: der Server kennt das Gerät über sein Cookie (bleibt auch nach Tagen) → Namen wiederherstellen
  if(!localStorage.getItem('mt-claim'))fetch('/api/muscheln',{method:'POST',headers:{'content-type':'application/json'},body:'{"act":"wer"}',credentials:'same-origin'}).then(r=>r.ok?r.json():null).then(d=>{if(!d||!d.ok||!d.n||localStorage.getItem('mt-claim'))return;const v=JSON.stringify({n:d.n.toLowerCase(),t:d.t});localStorage.setItem('mt-claim',v);localStorage.setItem('mt-me',d.n);claimCk(v);
   const neu=()=>{try{MK.bea.set(d.n.toLowerCase(),true);MK.d=null;meinNameZurueck();walkLabel();mkStand();}catch(e){setTimeout(neu,300);}};setTimeout(neu,0);}).catch(()=>{});}catch(e){}}
-const mkClaim=()=>{try{return JSON.parse(localStorage.getItem('mt-claim')||'null');}catch(e){return null;}};
+let MKCR=null,MKCV=null;const mkClaim=()=>{try{const raw=localStorage.getItem('mt-claim');if(raw!==MKCR){MKCR=raw;MKCV=JSON.parse(raw||'null');}return MKCV;}catch(e){return null;}};/* nur neu lesen, wenn sich etwas geändert hat */
 const mkOwn=p=>{const c=mkClaim();return !!(c&&p&&c.n===p.name.toLowerCase());};
 const mkMe=()=>{const c=mkClaim();return c?byName.get(c.n):null;};
-const mkTag=()=>new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Berlin',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+const MKTF=new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Berlin',year:'numeric',month:'2-digit',day:'2-digit'});let MKTS='',MKTT=0;const mkTag=()=>{const n=Date.now();if(n-MKTT>1000){MKTT=n;MKTS=MKTF.format(new Date(n));}return MKTS;};
 async function mk(act,x){const c=mkClaim();if(!c)return null;for(let v=0;v<3;v++){try{const r=await fetch('/api/muscheln',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({act,name:c.n,token:c.t,...(x||{})})});if(r.status===403){if(v<1){await new Promise(r=>setTimeout(r,1200));continue;}try{localStorage.removeItem('mt-claim');}catch(e){}claimCk(null);MK.d=null;return{fehler:'403'};}/* erst nach zweitem 403 wirklich abmelden */if(!r.ok)throw 0;return await r.json();}catch(e){await new Promise(r=>setTimeout(r,(v+1)*900));}}return null;}
 // neu vom Server vergebenen Erfolg sofort lokal eintragen und kurz zeigen
 function mkNeuErf(k){const me=mkMe();if(!me||!ERFD[k])return;const n=me.name.toLowerCase();if((ERFS[n]||{})[k])return;(ERFS[n]=ERFS[n]||{})[k]=Date.now();try{localStorage.setItem('mt-erf',JSON.stringify(ERFS));}catch(e){}if(typeof mkToast==='function')mkToast(ERFEMO[k]+' Neuer Erfolg: '+ERFD[k][0]+' · +10 🐚');}
@@ -5286,7 +5290,7 @@ async function shopVorab(){if(!SHD||SHD.tag!==berlinTagStr()||Date.now()-SHD.t>S
 async function shopLaden(){const box=$('mkshop');if(!box)return;
  if(!SHD||SHD.tag!==berlinTagStr()||Date.now()-SHD.t>SHD.bis){try{const r=await fetch('/api/muscheln?shop=1');SHD=r.ok?{...(await r.json()),t:Date.now()}:null;}catch(e){SHD=null;}}
  shopZeig();}
-function berlinTagStr(){return new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Berlin'}).format(new Date());}
+const BTF=new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Berlin'});let BTS='',BTT=0;function berlinTagStr(){const n=Date.now();if(n-BTT>1000){BTT=n;BTS=BTF.format(new Date(n));}return BTS;}/* zwischengespeichert: wird pro Bild mehrfach gebraucht */
 let INVF='alle';
 function shopZeig(){const box=$('mkshop'),ib=$('mkinv');if(!box)return;const si=box.querySelector('.shin');
  if(!SHD){si.innerHTML='Gerade keine Verbindung – bitte gleich nochmal versuchen.';}
@@ -5713,7 +5717,7 @@ liveText();loadWx();setInterval(liveText,15000);setInterval(loadWx,15*60e3);
 addEventListener('resize',()=>{resize();});resize(1);// erstes Bild erst, wenn die Kamera steht (unten) – spart beim Start eine komplette Karte
 // Kartenfläche ändert ihre Größe auch ohne Fenster-Resize (Schriften, Leisten, Safari/macOS) → sonst wird das Bild verzerrt/gestreckt
 if(window.ResizeObserver)new ResizeObserver(()=>{const b=cv.getBoundingClientRect();if(Math.abs(b.width-W)>.5||Math.abs(b.height-H)>.5)resize();}).observe(cv);
-setInterval(()=>{const b=cv.getBoundingClientRect();if(!b.width)return;const d=Math.min(2,window.devicePixelRatio||1,Math.max(1,Math.sqrt(PXMAX/Math.max(1,b.width*b.height))));if(Math.abs(b.width-W)>.5||Math.abs(b.height-H)>.5||Math.abs(d-DPR)>.01||cv.width!==(b.width*d|0))resize();},1000);
+setInterval(()=>{const b=cv.getBoundingClientRect();if(!b.width)return;const d=Math.min(DPRMAX,window.devicePixelRatio||1,Math.max(1,Math.sqrt(PXMAX/Math.max(1,b.width*b.height))));if(Math.abs(b.width-W)>.5||Math.abs(b.height-H)>.5||Math.abs(d-DPR)>.01||cv.width!==(b.width*d|0))resize();},1000);
 // Zurück-Wischen (z. B. im TikTok-Browser), Tab-Wechsel, Rückkehr aus dem Verlauf: Ansicht neu messen, Seiten-Zoom zurücksetzen, scharf neu zeichnen
 function ansichtFix(){try{const m=document.querySelector('meta[name=viewport]');if(m){const c=m.content;m.content=c;}}catch(e){}requestAnimationFrame(()=>{try{baseKey='';SPR.clear();}catch(e){}resize();});}
 addEventListener('pageshow',ansichtFix);document.addEventListener('visibilitychange',()=>{if(!document.hidden)setTimeout(ansichtFix,60);});addEventListener('orientationchange',()=>setTimeout(ansichtFix,300));
