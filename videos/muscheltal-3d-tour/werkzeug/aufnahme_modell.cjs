@@ -10,11 +10,12 @@ const S=[];const sh=(t1,ins,keys,fov=50)=>{const t0=S.length?S[S.length-1].t1:0;
 const mid=id=>(L[id].start+L[id].end)/2;
 // ---- Cold Open: Wal-Blas → Wal-Sprung (Zeitlupe) → Schildkröten-Wanderung (Südküste, Winkel KA) ----
 const KA=1.18,KC=398,KP=(r,y,lat=0)=>[+(Math.cos(KA)*r-Math.sin(KA)*lat).toFixed(1),y,+(Math.sin(KA)*r+Math.cos(KA)*lat).toFixed(1)];
-const WT0=-.3,WD=5.5,WL=WT0+.62*WD;// Wal-Sprung direkt ab Bild 1, Aufprall bei WL
+const WT0=L.L0b.start-.3,WD=5.5,WL=WT0+.62*WD;// Wal-Sprung direkt ab Bild 1, Aufprall bei WL
+sh(L.L0b.start-.04,0,[[[0,760,880],[0,0,40]],[[-260,820,980],[0,0,40]],[[-420,520,760],[40,0,120]]]);
 sh(WL-.15,0,[[KP(KC+12,5,-3),KP(KC+100,10,-3)],[KP(KC+16,4.5,1),KP(KC+100,9,3)],[KP(KC+20,4,5),KP(KC+100,6,9)]]);
 sh(L.L0d.start-.12,0,[[KP(KC+20,4,5),KP(KC+100,4,11)],[KP(KC+26,4.5,8),KP(KC+100,3,14)],[KP(KC+34,5.5,8),KP(KC+100,4,14)]]);
-sh(L.L1.start-.2,0,[[KP(KC+30,12,-6),KP(KC+5,0,0)],[KP(KC+25,10,-2),KP(KC+6,0,2)]]);
-sh(L.L1.end+.25,0,[[[0,1150,1250],[0,0,40]],[[0,620,860],[0,5,40]],[[0,330,520],[0,10,40]]]);
+sh(L.L1t.start-.2,0,[[KP(KC+30,12,-6),KP(KC+5,0,0)],[KP(KC+25,10,-2),KP(KC+6,0,2)]]);
+sh(L.L1t.end+.25,0,[[KP(KC+30,30,-2),KP(KC-40,0,0)],[[0,560,800],[0,5,40]],[[0,330,520],[0,10,40]]]);
 sh(mid('L2'),0,[[[-95,34,150],[0,22,10]],[[-20,28,132],[0,22,10]],[[45,30,140],[0,22,10]]]);
 sh(L.L2b.start-.15,0,[[[110,48,118],[0,28,0]],[[95,40,92],[0,30,-5]],[[70,58,60],[0,32,-10]]]);
 sh(L.L2c.start-.15,0,[[[-200,32,45],[-200,6,-130]],[[-200,30,-10],[-200,6,-170]],[[-200,30,-60],[-200,6,-220]]]);
@@ -43,13 +44,13 @@ const [kx,kz]=NO.kino||[1403,1038];for(const s of S){if(s.keys==='kino')s.keys=[
 const ix=k=>S.findIndex(s=>s.t1>k);const at=(i,d=0)=>S[i].t0+d;
 // ---- Neben-Events (absolute Zeiten je Insel-Seite) ----
 const WP=KP(KC+100,0,-12);
-const E0=[{typ:'walsprung',x:WP[0],z:WP[2],dir:-KA,t0:WT0,dur:WD},{typ:'schildkroeten',a:KA,t0:L.L0d.start-.6,dur:L.L1.start-L.L0d.start+1,vor:6,sp:3,s:1.4},{typ:'ballon',x:-170,z:420,h:330,t0:L.L1.start-.2,dur:3,s:3},{typ:'flieger',x:0,z:-230,h:105,dir:Math.PI/2,t0:at(4,-.3),dur:5,len:360},
- {typ:'delfine',x:-200,z:-470,dir:Math.PI/2,t0:at(6),dur:5},{typ:'jetski',x:-270,z:-470,r:30,t0:at(7),dur:4},
- {typ:'ballon',x:-60,z:-120,h:110,t0:at(8),dur:4},{typ:'ballon',x:330,z:60,h:95,t0:at(9),dur:4},
- {typ:'ballon',x:-40,z:40,h:85,t0:at(12),dur:5},
- {typ:'flieger',x:150,z:500,h:420,dir:Math.PI/2,t0:at(20),dur:5,len:700,s:4},{typ:'ballon',x:-300,z:-200,h:70,t0:at(21),dur:4},
- {typ:'wal',x:-460,z:330,dir:Math.PI*.75,t0:at(22,-.4),dur:4},{typ:'flieger',x:-30,z:520,h:400,dir:Math.PI/2,t0:at(23),dur:4.5,len:650,s:4}];
-const E1=[{typ:'delfine',x:1153,z:1700,dir:Math.PI/2,t0:at(14),dur:4},{typ:'ballon',x:1450,z:520,h:70,t0:at(15),dur:2},{typ:'jetski',x:1640,z:560,r:30,t0:at(16),dur:3},{typ:'ballon',x:kx+60,z:kz-90,h:75,t0:at(18),dur:3}];
+const E0=[{typ:'walsprung',x:WP[0],z:WP[2],dir:-KA,t0:WT0,dur:WD},{typ:'schildkroeten',a:KA,t0:L.L0d.start-.6,dur:L.L1t.end-L.L0d.start+1,vor:6,sp:3,s:1.4},{typ:'ballon',x:-170,z:420,h:330,t0:L.L1.start-.2,dur:3,s:3},{typ:'flieger',x:0,z:-230,h:105,dir:Math.PI/2,t0:at(5,-.3),dur:5,len:360},
+ {typ:'delfine',x:-200,z:-470,dir:Math.PI/2,t0:at(7),dur:5},{typ:'jetski',x:-270,z:-470,r:30,t0:at(8),dur:4},
+ {typ:'ballon',x:-60,z:-120,h:110,t0:at(9),dur:4},{typ:'ballon',x:330,z:60,h:95,t0:at(10),dur:4},
+ {typ:'ballon',x:-40,z:40,h:85,t0:at(13),dur:5},
+ {typ:'flieger',x:150,z:500,h:420,dir:Math.PI/2,t0:at(21),dur:5,len:700,s:4},{typ:'ballon',x:-300,z:-200,h:70,t0:at(22),dur:4},
+ {typ:'wal',x:-460,z:330,dir:Math.PI*.75,t0:at(23,-.4),dur:4},{typ:'flieger',x:-30,z:520,h:400,dir:Math.PI/2,t0:at(24),dur:4.5,len:650,s:4}];
+const E1=[{typ:'delfine',x:1153,z:1700,dir:Math.PI/2,t0:at(15),dur:4},{typ:'ballon',x:1450,z:520,h:70,t0:at(16),dur:2},{typ:'jetski',x:1640,z:560,r:30,t0:at(17),dur:3},{typ:'ballon',x:kx+60,z:kz-90,h:75,t0:at(19),dur:3}];
 await pg[0].evaluate(e=>{window.EVT=e;},E0);await pg[1].evaluate(e=>{window.EVT=e;},E1);
 // ---- Kamera: Catmull-Rom über die Schlüssel, leicht geglättete Geschwindigkeit ----
 const cr=(P,u)=>{const n=P.length-1;if(n<1)return P[0];const x=u*n,i=Math.min(n-1,Math.floor(x)),f=x-i,p0=P[Math.max(0,i-1)],p1=P[i],p2=P[i+1],p3=P[Math.min(n,i+2)];

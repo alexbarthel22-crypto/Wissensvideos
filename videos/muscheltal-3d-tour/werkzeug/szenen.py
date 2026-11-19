@@ -146,13 +146,13 @@ scene("s00", GL + """
       tl.fromTo("#s0t", { opacity: 0, scale: 1.3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .4, ease: "back.out(2)" }, K - .05);""")
 
 # s01 – Willkommen in Muschel-Tal: 790 zählt hoch, Sonnenstrahlen, Konfetti
-scene("s01", """
+scene("s01", GL + """
+    #hk1 { top: 250px; } #hk1 b { font-size: 72px; }
+    #kk1 { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 420px; padding: 14px 40px 24px; border-radius: 40px; font-family: "Lilita One", sans-serif; text-align: center; line-height: .95; color: #ffe14a; font-size: 110px; opacity: 0;
+      background: linear-gradient(160deg, #7b3dff, #ff3d7f); box-shadow: 0 0 0 9px #fff, 0 0 0 16px #2a1b12, 0 24px 0 rgba(0,0,0,.28), 0 0 80px rgba(160,80,255,.6); text-shadow: 0 7px 0 #3a1070; transform: rotate(-3deg); }
+    #kk1 small { display: block; font-size: 54px; color: #fff; text-shadow: 0 4px 0 rgba(0,0,0,.3); }
     #ray1 { position: absolute; left: 540px; top: 560px; width: 1100px; height: 1100px; margin: -550px; border-radius: 50%; opacity: 0;
       background: repeating-conic-gradient(rgba(255,225,74,.55) 0deg 9deg, rgba(255,225,74,0) 9deg 22deg); -webkit-mask: radial-gradient(circle, #000 20%, transparent 68%); mask: radial-gradient(circle, #000 20%, transparent 68%); }
-    #wk1 { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 230px; text-align: center; font-family: "Lilita One", sans-serif; }
-    #wk1 small { display: inline-block; font-size: 46px; color: #e8467c; background: #fff; padding: 6px 30px 10px; border-radius: 40px; box-shadow: 0 8px 0 rgba(0,0,0,.2); transform: rotate(-2deg); }
-    #wk1 b { display: block; margin-top: 6px; font-weight: 400; font-size: 150px; line-height: 1; color: #fff; letter-spacing: .01em;
-      text-shadow: 0 4px 0 #e8467c, 0 8px 0 #e8467c, 0 12px 0 #b8245a, 0 16px 0 #8a1035, 0 22px 30px rgba(0,0,0,.45); }
     #nm1 { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 330px; text-align: center; font-family: "Lilita One", sans-serif; opacity: 0; }
     #nm1 b { display: block; font-weight: 400; font-size: 250px; line-height: .9; color: #ffe14a;
       text-shadow: 0 6px 0 #ff9a1a, 0 12px 0 #e8601a, 0 18px 0 #8a3510, 0 26px 40px rgba(0,0,0,.5), 0 0 60px rgba(255,200,60,.6); }
@@ -165,16 +165,13 @@ scene("s01", """
     .sp1 { position: absolute; font-size: 60px; opacity: 0; }
     .pt { position: absolute; font-size: 84px; line-height: 1; width: 84px; height: 84px; opacity: 0; }""",
 """      <div id="ray1"></div>
-      <div id="wk1"><small>📅 TAG 10 in</small><b>MUSCHEL-TAL</b></div>
-      <div id="nm1"><b id="n1">0</b><small>BEWOHNER 🏠</small></div>
+      <div id="nm1"><b id="n1">0</b><small>wohnen auf DIESER Insel 🏝️</small></div>
       <div class="sp1" id="sp0" style="left:170px;top:360px">✨</div><div class="sp1" id="sp1" style="left:840px;top:330px">✨</div><div class="sp1" id="sp2" style="left:220px;top:600px">⭐</div><div class="sp1" id="sp3" style="left:800px;top:620px">✨</div>
       """ + """<div class="pt" id="pb0" style="left:498px;top:658px">🎉</div><div class="pt" id="pb1" style="left:498px;top:658px">💖</div><div class="pt" id="pb2" style="left:498px;top:658px">🏝️</div><div class="pt" id="pb3" style="left:498px;top:658px">✨</div><div class="pt" id="pb4" style="left:498px;top:658px">🐚</div><div class="pt" id="pb5" style="left:498px;top:658px">🥳</div><div class="pt" id="pb6" style="left:498px;top:658px">🎉</div><div class="pt" id="pb7" style="left:498px;top:658px">💖</div><div class="pt" id="pb8" style="left:498px;top:658px">🏝️</div><div class="pt" id="pb9" style="left:498px;top:658px">✨</div><div class="pt" id="pb10" style="left:498px;top:658px">🐚</div><div class="pt" id="pb11" style="left:498px;top:658px">🥳</div><div class="pt" id="pb12" style="left:498px;top:658px">🎉</div><div class="pt" id="pb13" style="left:498px;top:658px">💖</div><div class="pt" id="pb14" style="left:498px;top:658px">🏝️</div><div class="pt" id="pb15" style="left:498px;top:658px">✨</div>""" + """
+      <div id="hk1" class="gl"><small>Und heute …</small><b>👀 passiert hier was</b></div>
+      <div id="kk1"><small>das hat</small>KEINER erwartet! 😳</div>
       <div id="al1"><span>ALLE</span> meine Follower! 💖<div id="sh1"></div></div>""",
-"""      const t0 = line("L1")[0], H = at("L1", "Hier"), A = at("L1", "ALLE");
-      tl.fromTo("#wk1 small", { opacity: 0, y: -40 }, { opacity: 1, y: 0, duration: .35, ease: "back.out(2)" }, t0 - .15);
-      tl.fromTo("#wk1 b", { opacity: 0, scale: .3, rotation: -8 }, { opacity: 1, scale: 1, rotation: 0, duration: .5, ease: "elastic.out(1, .55)" }, t0 + .1);
-      tl.to("#wk1 b", { scale: 1.05, duration: .35, yoyo: true, repeat: 1, ease: "sine.inOut" }, t0 + .7);
-      tl.to("#wk1", { opacity: 0, y: -60, scale: .8, duration: .25, ease: "power2.in" }, H - .3);
+"""      const t0 = line("L1")[0], H = Math.max(.04, t0), A = at("L1", "ALLE"), B = line("L1b")[0], K = at("L1b", "KEINER");
       tl.fromTo("#ray1", { opacity: 0, rotation: 0, scale: .5 }, { opacity: 1, scale: 1, duration: .4, ease: "power2.out" }, H - .1);
       tl.to("#ray1", { rotation: 90, duration: 6, ease: "none" }, H - .1);
       tl.fromTo("#nm1", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .45, ease: "back.out(2.4)" }, H - .1);
@@ -200,13 +197,26 @@ scene("s01", """
       tl.fromTo("#pb12", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 89, y: -315, scale: 1.10, rotation: 264, opacity: 0, duration: 0.90, ease: "power3.out", immediateRender: false }, at("L1", "ALLE") + 0.00);
       tl.fromTo("#pb13", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 268, y: -356, scale: 1.45, rotation: -281, opacity: 0, duration: 1.15, ease: "power3.out", immediateRender: false }, at("L1", "ALLE") + 0.03);
       tl.fromTo("#pb14", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 478, y: -277, scale: 1.80, rotation: 298, opacity: 0, duration: 1.40, ease: "power3.out", immediateRender: false }, at("L1", "ALLE") + 0.06);
-      tl.fromTo("#pb15", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 299, y: -31, scale: 1.10, rotation: -315, opacity: 0, duration: 0.90, ease: "power3.out", immediateRender: false }, at("L1", "ALLE") + 0.09);""", blur=False)
+      tl.fromTo("#pb15", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 299, y: -31, scale: 1.10, rotation: -315, opacity: 0, duration: 0.90, ease: "power3.out", immediateRender: false }, at("L1", "ALLE") + 0.09);
+      tl.to(["#nm1", "#al1", "#ray1"], { opacity: 0, scale: .85, duration: .25, ease: "power2.in" }, B - .15);
+      tl.fromTo("#hk1", { opacity: 0, y: 30, filter: "blur(10px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: .5, ease: "power3.out" }, B);
+      tl.to("#hk1", { scale: 1.04, duration: .4, yoyo: true, repeat: 2, ease: "sine.inOut" }, B + .6);
+      tl.fromTo("#kk1", { opacity: 0, scale: 2.4, rotation: -12 }, { opacity: 1, scale: 1, rotation: -3, duration: .3, ease: "back.out(3)" }, K - .05);
+      [[12,-8,-1],[-14,6,-6],[10,8,-2],[-8,-6,-5],[0,0,-3]].forEach(([x, y, r], i) => tl.to("#kk1", { x, y, rotation: r, duration: .05, ease: "none" }, K + .3 + i * .05));""", blur=False)
 
 # s02 – Jede Hütte = echter Follower
 scene("s02", GL + """
-    #t2 { top: 250px; } #t2 b { font-size: 64px; }""",
-"""      <div id="t2" class="gl"><small>Jede Hütte</small><b>= 1 echter Follower</b></div>""",
-"""      const t = line("L2b")[0];
+    #t2 { top: 250px; } #t2 b { font-size: 64px; }
+    #wk1 { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 230px; text-align: center; font-family: "Lilita One", sans-serif; }
+    #wk1 small { display: inline-block; font-size: 46px; color: #e8467c; background: #fff; padding: 6px 30px 10px; border-radius: 40px; box-shadow: 0 8px 0 rgba(0,0,0,.2); transform: rotate(-2deg); }
+    #wk1 b { display: block; margin-top: 6px; font-weight: 400; font-size: 150px; line-height: 1; color: #fff; letter-spacing: .01em;
+      text-shadow: 0 4px 0 #e8467c, 0 8px 0 #e8467c, 0 12px 0 #b8245a, 0 16px 0 #8a1035, 0 22px 30px rgba(0,0,0,.45); }""",
+"""      <div id="wk1"><small>📅 TAG 10 in</small><b>MUSCHEL-TAL</b></div>
+      <div id="t2" class="gl"><small>Jede Hütte</small><b>= 1 echter Follower</b></div>""",
+"""      const t = line("L2b")[0], t1 = line("L1t")[0], t2 = line("L2")[0];
+      tl.fromTo("#wk1 small", { opacity: 0, y: -40 }, { opacity: 1, y: 0, duration: .35, ease: "back.out(2)" }, Math.max(0, t1 - .1));
+      tl.fromTo("#wk1 b", { opacity: 0, scale: .3, rotation: -8 }, { opacity: 1, scale: 1, rotation: 0, duration: .5, ease: "elastic.out(1, .55)" }, t1 + .15);
+      tl.to("#wk1", { opacity: 0, y: -60, scale: .8, duration: .25, ease: "power2.in" }, t2 - .2);
       tl.fromTo("#t2", { opacity: 0, y: 40, filter: "blur(12px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: .6, ease: "power3.out" }, t - .2);""")
 
 # s02n – Siehst du dich? → Kommentar „Wo bin ich?“

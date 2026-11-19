@@ -59,15 +59,15 @@
     .stk { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 240px; padding: 14px 44px 26px; border-radius: 40px; font-family: "Lilita One", sans-serif; text-align: center; line-height: .95; color: #ffe14a;
       background: linear-gradient(160deg, #ff3d7f, #ff7a2a); box-shadow: 0 0 0 9px #fff, 0 0 0 16px #2a1b12, 0 24px 0 rgba(0,0,0,.28), 0 0 80px rgba(255,90,60,.6); text-shadow: 0 7px 0 #8a1035; }
     #w0 { font-size: 150px; transform: rotate(-4deg); }
-    #w1 { font-size: 160px; background: linear-gradient(160deg, #1f8ff0, #36d1dc); text-shadow: 0 7px 0 #0b3d7a; color: #fff; box-shadow: 0 0 0 9px #fff, 0 0 0 16px #0b2340, 0 24px 0 rgba(0,0,0,.28), 0 0 80px rgba(60,180,255,.7); }
+    #w1 { font-size: 128px; background: linear-gradient(160deg, #1f8ff0, #36d1dc); text-shadow: 0 7px 0 #0b3d7a; color: #fff; box-shadow: 0 0 0 9px #fff, 0 0 0 16px #0b2340, 0 24px 0 rgba(0,0,0,.28), 0 0 80px rgba(60,180,255,.7); }
     #w1 small, #w0 small { display: block; font-size: 56px; color: #fff; text-shadow: 0 4px 0 rgba(0,0,0,.3); }
     #rr0, #rr1 { position: absolute; left: 540px; top: 520px; width: 220px; height: 220px; margin: -110px; border-radius: 50%; border: 22px solid #fff; opacity: 0; }
     #rr1 { border-color: #36d1dc; }
     #s0t { top: 250px; } #s0t b { font-size: 76px; } #s0t b span { color: #9dffb0; }
     .pt { position: absolute; font-size: 84px; line-height: 1; width: 84px; height: 84px; opacity: 0; }
   </style>
-  <div id="root" data-composition-id="s00" data-start="0" data-duration="9.560" data-width="1080" data-height="1920">
-    <div id="s00-stage" class="clip stage" data-start="0" data-duration="9.560" data-track-index="0">
+  <div id="root" data-composition-id="s00" data-start="0" data-duration="9.160" data-width="1080" data-height="1920">
+    <div id="s00-stage" class="clip stage" data-start="0" data-duration="9.160" data-track-index="0">
       <div id="vg0"></div>
       <div id="rr0"></div><div id="rr1"></div>
       <div class="pt" id="pa0" style="left:498px;top:478px">💥</div><div class="pt" id="pa1" style="left:498px;top:478px">💦</div><div class="pt" id="pa2" style="left:498px;top:478px">🌊</div><div class="pt" id="pa3" style="left:498px;top:478px">✨</div><div class="pt" id="pa4" style="left:498px;top:478px">💥</div><div class="pt" id="pa5" style="left:498px;top:478px">💦</div><div class="pt" id="pa6" style="left:498px;top:478px">🌊</div><div class="pt" id="pa7" style="left:498px;top:478px">✨</div><div class="pt" id="pa8" style="left:498px;top:478px">💥</div><div class="pt" id="pa9" style="left:498px;top:478px">💦</div><div class="pt" id="pa10" style="left:498px;top:478px">🌊</div><div class="pt" id="pa11" style="left:498px;top:478px">✨</div><div class="pt" id="pa12" style="left:498px;top:478px">💥</div><div class="pt" id="pa13" style="left:498px;top:478px">💦</div>
@@ -80,7 +80,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 9.56, "L0b": [0.0, 1.67], "L0b.words": [["was", 0.0, 0.55], ["war", 0.55, 1.12], ["das", 1.12, 1.67]], "L0c": [2.29, 5.03], "L0c.words": [["ein", 2.29, 2.795], ["wal", 2.795, 3.3], ["direkt", 3.48, 3.925], ["vor", 3.925, 4.148], ["meiner", 4.148, 4.593], ["insel", 4.593, 5.03]], "L0d": [5.75, 8.78], "L0d.words": [["und", 5.75, 6.092], ["am", 6.092, 6.422], ["strand", 6.422, 6.8], ["eine", 7.11, 7.471], ["schildkröten", 7.471, 8.613], ["wanderung", 8.613, 8.78]]};
+      const C = {"__dur": 9.16, "L0b": [0.2, 1.87], "L0b.words": [["was", 0.2, 0.75], ["war", 0.75, 1.32], ["das", 1.32, 1.87]], "L0c": [2.49, 5.23], "L0c.words": [["ein", 2.49, 2.995], ["wal", 2.995, 3.5], ["direkt", 3.68, 4.125], ["vor", 4.125, 4.348], ["meiner", 4.348, 4.793], ["insel", 4.793, 5.23]], "L0d": [5.95, 8.98], "L0d.words": [["und", 5.95, 6.292], ["am", 6.292, 6.622], ["strand", 6.622, 7.0], ["eine", 7.31, 7.671], ["schildkröten", 7.671, 8.813], ["wanderung", 8.813, 8.98]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];

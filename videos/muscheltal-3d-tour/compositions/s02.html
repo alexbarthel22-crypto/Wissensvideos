@@ -54,16 +54,21 @@
     .gl small { display: block; font-weight: 700; font-size: 26px; letter-spacing: .32em; text-transform: uppercase; opacity: .85; }
     .gl b { display: block; font-weight: 900; font-size: 92px; letter-spacing: -.02em; line-height: 1; }
     #t2 { top: 250px; } #t2 b { font-size: 64px; }
+    #wk1 { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 230px; text-align: center; font-family: "Lilita One", sans-serif; }
+    #wk1 small { display: inline-block; font-size: 46px; color: #e8467c; background: #fff; padding: 6px 30px 10px; border-radius: 40px; box-shadow: 0 8px 0 rgba(0,0,0,.2); transform: rotate(-2deg); }
+    #wk1 b { display: block; margin-top: 6px; font-weight: 400; font-size: 150px; line-height: 1; color: #fff; letter-spacing: .01em;
+      text-shadow: 0 4px 0 #e8467c, 0 8px 0 #e8467c, 0 12px 0 #b8245a, 0 16px 0 #8a1035, 0 22px 30px rgba(0,0,0,.45); }
   </style>
-  <div id="root" data-composition-id="s02" data-start="0" data-duration="10.290" data-width="1080" data-height="1920">
-    <div id="s02-stage" class="clip stage" data-start="0" data-duration="10.290" data-track-index="0">
+  <div id="root" data-composition-id="s02" data-start="0" data-duration="12.890" data-width="1080" data-height="1920">
+    <div id="s02-stage" class="clip stage" data-start="0" data-duration="12.890" data-track-index="0">
+      <div id="wk1"><small>📅 TAG 10 in</small><b>MUSCHEL-TAL</b></div>
       <div id="t2" class="gl"><small>Jede Hütte</small><b>= 1 echter Follower</b></div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 10.29, "L2": [0.2, 4.61], "L2.words": [["in", 0.2, 0.369], ["der", 0.369, 0.545], ["mitte", 0.545, 0.89], ["der", 1.17, 1.415], ["muschelpalast", 1.415, 2.402], ["", 2.402, 2.62], ["mit", 2.74, 2.95], ["garde", 2.95, 3.363], ["und", 3.363, 3.574], ["goldener", 3.574, 4.197], ["krone", 4.197, 4.61]], "L2b": [5.43, 9.51], "L2b.words": [["drumherum", 5.43, 6.09], ["hütte", 6.44, 6.742], ["an", 6.742, 6.89], ["hütte", 6.89, 7.193], ["", 7.193, 7.33], ["jede", 7.68, 8.078], ["mit", 8.078, 8.285], ["einem", 8.285, 8.691], ["echten", 8.691, 9.104], ["namen", 9.104, 9.51]]};
+      const C = {"__dur": 12.89, "L1t": [0.2, 1.98], "L1t.words": [["tag", 0.2, 0.495], ["10", 0.495, 0.8], ["in", 0.8, 1.085], ["muscheltal", 1.085, 1.98]], "L2": [2.8, 7.21], "L2.words": [["in", 2.8, 2.969], ["der", 2.969, 3.145], ["mitte", 3.145, 3.49], ["der", 3.77, 4.015], ["muschelpalast", 4.015, 5.002], ["", 5.002, 5.22], ["mit", 5.34, 5.55], ["garde", 5.55, 5.963], ["und", 5.963, 6.174], ["goldener", 6.174, 6.797], ["krone", 6.797, 7.21]], "L2b": [8.03, 12.11], "L2b.words": [["drumherum", 8.03, 8.69], ["hütte", 9.04, 9.342], ["an", 9.342, 9.49], ["hütte", 9.49, 9.793], ["", 9.793, 9.93], ["jede", 10.28, 10.678], ["mit", 10.678, 10.885], ["einem", 10.885, 11.291], ["echten", 11.291, 11.704], ["namen", 11.704, 12.11]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -107,7 +112,10 @@
 
       wrapBt("#s02-stage");
       const tl = gsap.timeline({ paused: true });
-      const t = line("L2b")[0];
+      const t = line("L2b")[0], t1 = line("L1t")[0], t2 = line("L2")[0];
+      tl.fromTo("#wk1 small", { opacity: 0, y: -40 }, { opacity: 1, y: 0, duration: .35, ease: "back.out(2)" }, Math.max(0, t1 - .1));
+      tl.fromTo("#wk1 b", { opacity: 0, scale: .3, rotation: -8 }, { opacity: 1, scale: 1, rotation: 0, duration: .5, ease: "elastic.out(1, .55)" }, t1 + .15);
+      tl.to("#wk1", { opacity: 0, y: -60, scale: .8, duration: .25, ease: "power2.in" }, t2 - .2);
       tl.fromTo("#t2", { opacity: 0, y: 40, filter: "blur(12px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: .6, ease: "power3.out" }, t - .2);
       tl.to("#s02-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
       window.__timelines["s02"] = tl;

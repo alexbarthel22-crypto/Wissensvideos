@@ -1,7 +1,7 @@
 {
  "title": "Muschel-Tal 3D-Inseltour",
  "voice": "ElevenLabs (eleven_v3, Stimme Liam, Tempo 1.0)",
- "notes": "Inseltour 3 (19.11.): Cold Open mit Wal-Sprung + Schildkröten-Wanderung. 790 Bewohner, Tierheim Pfotenkuss offen seit 17.11. Neu: Start direkt mit Wal, Tag 10 erwähnt.",
+ "notes": "Inseltour 3 (19.11.): Hook 790 Bewohner, dann Wal-Sprung + Schildkröten, Tag 10. Tierheim Pfotenkuss offen seit 17.11.",
  "lead_in": 0.0,
  "bg": "#0a5a92",
  "captions": {
@@ -21,6 +21,25 @@
   "css": "@font-face { font-family: 'Lilita One'; src: url('assets/fonts/LilitaOne-Regular.woff2') format('woff2'); font-weight: 400; }\n    .inner { font-family: 'Lilita One', sans-serif; font-weight: 400; line-height: 1.12; letter-spacing: .01em; }\n    .inner .bar .w { margin: 0 .07em; }\n    .inner .bar { border-radius: .55em; padding: .04em .36em .1em; box-shadow: 0 8px 0 rgba(0,0,0,.25); }\n    .inner .w { white-space: nowrap; color: #fff; }\n    .inner .w.k-y, .inner .w.k-g, .inner .w.k-p { color: #ffe14a; }"
  },
  "scenes": [
+  {
+   "id": "s01",
+   "tag": "",
+   "sfx": [],
+   "lines": [
+    {
+     "id": "L1",
+     "text": "*y:790 Leute / wohnen auf *y:DIESER Insel – / *y:ALLE meine Follower!",
+     "pause": 0.0,
+     "tag": "[excited]"
+    },
+    {
+     "id": "L1b",
+     "text": "Und heute … / passiert hier was, / das *y:KEINER erwartet hat!",
+     "pause": 0.3,
+     "tag": "[mysterious]"
+    }
+   ]
+  },
   {
    "id": "s00",
    "tag": "",
@@ -47,23 +66,16 @@
    ]
   },
   {
-   "id": "s01",
-   "tag": "",
-   "sfx": [],
-   "lines": [
-    {
-     "id": "L1",
-     "text": "*y:TAG *y:10|=zehn in *p:Muschel-Tal! / Hier wohnen *y:790 Leute – / *y:ALLE meine Follower!",
-     "pause": 0.6,
-     "tag": "[excited]"
-    }
-   ]
-  },
-  {
    "id": "s02",
    "tag": "",
    "sfx": [],
    "lines": [
+    {
+     "id": "L1t",
+     "text": "*y:TAG *y:10|=zehn in *p:Muschel-Tal!",
+     "pause": 0.0,
+     "tag": "[excited]"
+    },
     {
      "id": "L2",
      "text": "In der Mitte: der *p:Muschelpalast – / mit Garde und *y:goldener Krone!",
