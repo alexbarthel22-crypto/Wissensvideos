@@ -1,0 +1,34 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+.gl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 18px 34px 20px; border-radius: 28px;
+      background: rgba(255,255,255,.16); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.55), 0 20px 50px rgba(30,10,40,.35);
+      color: #fff; font-family: "Inter", sans-serif; text-align: center; }
+    .gl small { display: block; font-weight: 700; font-size: 26px; letter-spacing: .32em; text-transform: uppercase; opacity: .85; }
+    .gl b { display: block; font-weight: 900; font-size: 92px; letter-spacing: -.02em; line-height: 1; }
+    #t2n { top: 230px; } #t2n b { font-size: 104px; color: #ffe08a; }
+    #c2n { position: absolute; left: 90px; top: 520px; display: flex; gap: 18px; align-items: center; padding: 18px 30px 20px 18px; border-radius: 40px; background: rgba(255,255,255,.96); box-shadow: 0 16px 40px rgba(0,0,0,.3); font-family: "Inter", sans-serif; }
+    #c2n i { width: 72px; height: 72px; border-radius: 50%; background: linear-gradient(135deg,#ff6fa3,#ffd23f); display: grid; place-items: center; font-style: normal; font-size: 40px; }
+    #c2n div small { display: block; font-size: 26px; color: #888; font-weight: 700; } #c2n div b { font-size: 50px; color: #161823; font-weight: 900; }
+  </style>
+  <div id="root" data-composition-id="s02n" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s02n-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="t2n" class="gl"><b>Siehst du dich? 👀</b></div>
+      <div id="c2n"><i>💬</i><div><small>Dein Kommentar</small><b>Wo bin ich?</b></div></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      /*__COMMON_JS__*/
+      wrapBt("#s02n-stage");
+      const tl = gsap.timeline({ paused: true });
+      const t = line("L2c")[0];
+      tl.fromTo("#t2n", { opacity: 0, scale: 1.3 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2)" }, t - .1);
+      tl.fromTo("#c2n", { opacity: 0, x: -60, scale: .8 }, { opacity: 1, x: 0, scale: 1, duration: .4, ease: "back.out(2)" }, at("L2c", "Wenn"));
+      tl.to("#c2n", { scale: 1.06, duration: .25, yoyo: true, repeat: 3, ease: "sine.inOut" }, at("L2c", "Wenn") + .8);
+      tl.to("#s02n-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
+      window.__timelines["s02n"] = tl;
+    })();
+  </script>
+</template>

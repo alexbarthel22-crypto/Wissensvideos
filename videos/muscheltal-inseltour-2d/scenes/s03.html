@@ -1,0 +1,34 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+.gl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 18px 34px 20px; border-radius: 28px;
+      background: rgba(255,255,255,.16); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.55), 0 20px 50px rgba(30,10,40,.35);
+      color: #fff; font-family: "Inter", sans-serif; text-align: center; }
+    .gl small { display: block; font-weight: 700; font-size: 26px; letter-spacing: .32em; text-transform: uppercase; opacity: .85; }
+    .gl b { display: block; font-weight: 900; font-size: 92px; letter-spacing: -.02em; line-height: 1; }
+    .bn { top: 240px; } .bn b { font-size: 70px; }
+  </style>
+  <div id="root" data-composition-id="s03" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s03-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+<div id="bn0" class="gl bn"><small>Hauptinsel</small><b>🥙 Dönerbude</b></div><div id="bn1" class="gl bn"><small>Hauptinsel</small><b>🥐 Bäckerei</b></div><div id="bn2" class="gl bn"><small>Hauptinsel</small><b>🍹 Strandbar</b></div><div id="bn3" class="gl bn"><small>Hauptinsel</small><b>🐾 Tierheim Pfotenkuss · offen!</b></div><div id="bn4" class="gl bn"><small>Kokos-Küste</small><b>🔥 Lagerfeuer</b></div><div id="bn5" class="gl bn"><small>Kokos-Küste</small><b>🪩 Kokos-Club</b></div><div id="bn6" class="gl bn"><small>Kokos-Küste</small><b>🎮 Game Lagoon</b></div><div id="bn7" class="gl bn"><small>Kokos-Küste</small><b>🎬 Freiluftkino</b></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      /*__COMMON_JS__*/
+      wrapBt("#s03-stage");
+      const tl = gsap.timeline({ paused: true });
+      tl.fromTo("#bn0", { opacity: 0, scale: 1.25 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, at("L3", "Dönerbude") - .25); tl.to("#bn0", { opacity: 0, duration: .15 }, at("L3", "Bäckerei") - .4);
+      tl.fromTo("#bn1", { opacity: 0, scale: 1.25 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, at("L3", "Bäckerei") - .25); tl.to("#bn1", { opacity: 0, duration: .15 }, at("L3s", "Strandbar") - .4);
+      tl.fromTo("#bn2", { opacity: 0, scale: 1.25 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, at("L3s", "Strandbar") - .25); tl.to("#bn2", { opacity: 0, duration: .15 }, at("L3t", "Tierheim") - .4);
+      tl.fromTo("#bn3", { opacity: 0, scale: 1.25 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, at("L3t", "Tierheim") - .25); tl.to("#bn3", { opacity: 0, duration: .15 }, at("L3k", "Lagerfeuer") - .4);
+      tl.fromTo("#bn4", { opacity: 0, scale: 1.25 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, at("L3k", "Lagerfeuer") - .25); tl.to("#bn4", { opacity: 0, duration: .15 }, at("L3g", "Kokos-Club") - .4);
+      tl.fromTo("#bn5", { opacity: 0, scale: 1.25 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, at("L3g", "Kokos-Club") - .25); tl.to("#bn5", { opacity: 0, duration: .15 }, at("L3g", "Game") - .4);
+      tl.fromTo("#bn6", { opacity: 0, scale: 1.25 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, at("L3g", "Game") - .25); tl.to("#bn6", { opacity: 0, duration: .15 }, at("L3c", "Freiluftkino") - .4);
+      tl.fromTo("#bn7", { opacity: 0, scale: 1.25 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2)" }, at("L3c", "Freiluftkino") - .25); tl.to("#bn7", { opacity: 0, duration: .25 }, line("L3c")[1] + .5);
+      tl.to("#s03-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
+      window.__timelines["s03"] = tl;
+    })();
+  </script>
+</template>
