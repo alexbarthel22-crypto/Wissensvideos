@@ -35,6 +35,7 @@ canvas{width:100%;max-width:520px;border-radius:10px;background:var(--grid);disp
 <main id="app" hidden>
 <h1>🐚 Muschel-Tal – Statistik</h1><p class="sub">Anonyme Nutzungsdaten (ohne Namen) und Spiel-Übersicht der beanspruchten Konten</p>
 <div class="row"><span id="geraet1" class="mut"></span><button id="geraetbtn" type="button"></button></div>
+<div class="row"><button id="export" type="button">📋 Daten für Auswertung kopieren</button><span class="mut" id="exportinfo">Kopiert alle Zahlen des gewählten Zeitraums – ohne TikTok-Namen – zum Einfügen im Chat mit Claude.</span></div><textarea id="exporttx" readonly hidden style="width:100%;height:120px;font:12px monospace"></textarea>
 <div class="row" id="zr"><button data-t="1">Heute</button><button data-t="7" class="on">7 Tage</button><button data-t="30">30 Tage</button><button data-t="60">60 Tage</button><span class="mut" id="stand"></span></div>
 <div class="tiles" id="tiles"></div>
 <div class="grid">
@@ -98,6 +99,11 @@ function premium(){const E=DATA.echtgeld||{kaeufe:0,umsatzCent:0,kaeufer:0,wiede
 function heat(H){const cv=$('heat'),c=cv.getContext('2d'),E=Object.entries(H||{}).map(([k,v])=>{const [x,y]=k.split(':').map(Number);return[x,y,v];});c.clearRect(0,0,cv.width,cv.height);if(!E.length){c.fillStyle='#999';c.font='14px system-ui';c.fillText('Noch keine Daten',20,30);return;}
  const xs=E.map(e=>e[0]),ys=E.map(e=>e[1]),x0=Math.min(...xs)-1,x1=Math.max(...xs)+1,y0=Math.min(...ys)-1,y1=Math.max(...ys)+1,sc=Math.min(cv.width/(x1-x0+1),cv.height/(y1-y0+1)),m=Math.max(...E.map(e=>e[2]));
  for(const [x,y,v] of E){const a=Math.pow(v/m,.45);c.fillStyle=`rgba(47,127,208,${.12+.88*a})`;c.fillRect((x-x0)*sc,(y-y0)*sc,sc-1,sc-1);}}
+// Export für die Auswertung: alle Zahlen des Zeitraums, Namen ersetzt durch „Spieler 1, 2 …“
+$('export').onclick=async()=>{if(!DATA)return;const map=new Map(),an=n=>{if(!map.has(n))map.set(n,'Spieler '+(map.size+1));return map.get(n);};
+ const D=JSON.parse(JSON.stringify(DATA));(D.spieler||[]).forEach(p=>{p.name=an(p.name);});if(D.echtgeld&&D.echtgeld.liste)D.echtgeld.liste.forEach(x=>{x.name=an(x.name);delete x.sid;});
+ const t='Muschel-Tal Statistik · Zeitraum '+TAGE+' Tag(e) · exportiert '+new Date().toLocaleString('de-DE')+'\n'+JSON.stringify(D);
+ const b=$('export');try{await navigator.clipboard.writeText(t);b.textContent='✅ Kopiert – jetzt im Chat einfügen';setTimeout(()=>b.textContent='📋 Daten für Auswertung kopieren',3000);}catch(e){const x=$('exporttx');x.hidden=false;x.value=t;x.select();b.textContent='Text unten markiert → kopieren';}};
 function spieler(){const L=(DATA.spieler||[]).filter(p=>p.name.includes(($('such').value||'').trim().toLowerCase().replace(/^@?/,'')));const [k,d]=SORT;L.sort((a,b)=>(a[k]>b[k]?1:a[k]<b[k]?-1:0)*d);
  const C=[['name','Name'],['letzter','Zuletzt eingeloggt'],['serie','Serie (Tage)','r'],['logins','Login-Tage','r'],['aufgaben','Aufgaben','r'],['stand','Muscheln','r'],['kaeufe','Käufe','r'],['ausgegeben','Ausgegeben 🐚','r'],['euro','Echtgeld €','r'],['erfolge','Erfolge','r'],['einladungen','Einladungen','r'],['tresor','Tresor']];
  $('sanz').textContent=L.length+' Spieler';$('sp').innerHTML='<thead><tr>'+C.map(([c,t,r])=>'<th class="'+(r||'')+'" data-k="'+c+'">'+t+(c===k?(d>0?' ▲':' ▼'):'')+'</th>').join('')+'</tr></thead><tbody>'+L.map(p=>'<tr>'+C.map(([c,t,r])=>'<td class="'+(r||'')+'">'+(c==='tresor'?(p.tresor?'✓':''):c==='letzter'?(p.letzter?p.letzter.slice(8)+'.'+p.letzter.slice(5,7)+'.':'–'):c==='euro'?(p.euro?(p.euro/100).toLocaleString('de-DE',{minimumFractionDigits:2})+' €':''):typeof p[c]==='number'?fmt(p[c]):p[c])+'</td>').join('')+'</tr>').join('')+'</tbody>';}
