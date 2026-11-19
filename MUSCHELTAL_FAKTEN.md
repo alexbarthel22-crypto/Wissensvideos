@@ -508,3 +508,8 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - **Video 3D-Inseltour 3 (19.11.):** Stimme jetzt ElevenLabs „Liam“. Start mit Wal-Sprung vor der Südküste und Baby-Schildkröten, die mit Spuren ins Meer krabbeln (wie Homepage-Events 🐋/🐢). 790 Einwohner, Tierheim Pfotenkuss „hat endlich geöffnet“. Im 3D-Modell an Hütten nur Blumentöpfe (keine Briefkästen/Katzen, wie Homepage); Strand mit Handtüchern, Sandburgen, Schwimmringen, Krabben, Seesternen, Muscheln.
 
 - **Ab 19.11. (Nutzerwunsch):** Stimme wieder Gemini (Puck, gemini-2.5-flash-preview-tts, Stil wie Tag 10), Videos wieder 2D mit Homepage-Karte als Hintergrund. ElevenLabs/3D nur auf ausdrücklichen Wunsch.
+
+## Video Tag 10 „Golden Pearl“ (19.11., `videos/muscheltal-tag10-pearl/`)
+- Hook „Es ist was passiert auf unserer Insel …“ → Hütten/Passanten („Hier könntest DU wohnen – folg mir“) → Wal-Event (Erfolg Wal-Watcher) → Schildkröten-Wanderung (Babyschildkröte am Strand) → Freiluftkino (Fr & Sa 20–22 Uhr) → **neu: Golden Pearl** (jede Menge Minispiele, nachts Party; im Video bewusst ohne Glücksspiel-Wörter) → Live-Verlosung → Spiel-Tests, Start bei 1.000 (Welt erkunden, Muscheln sammeln, Sachen kaufen, Freunde finden) → „Erzählt euren Freunden …“ → Folgen. Stimme Gemini Puck.
+- **Live-Verlosung 19.11. (Python `secrets`): Besitzer Kokos-Club (KOK(O)S) = @kerem90025** (Kokos-Küste, Hütte 1:75; Nr. 71 von 268 Kokos-Bewohnern ohne Job/Amt/Sonder-Wohnort). ⚠️ Homepage: als Besitzer/Leitung KOK(O)S eintragen (Nutzer entscheidet).
+- **Nächste Verlosung angekündigt: Inhaber vom Golden Pearl.** ⚠️ Golden Pearl gibt es auf der Homepage noch nicht (im Video als Illustration) – Homepage-Chat soll es bauen (Minispiele, nachts Party; nicht „Casino/Spielbank“ nennen).

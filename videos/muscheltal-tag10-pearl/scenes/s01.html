@@ -1,0 +1,41 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+.gl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 18px 34px 20px; border-radius: 28px;
+      background: rgba(255,255,255,.16); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.55), 0 20px 50px rgba(30,10,40,.35);
+      color: #fff; font-family: "Inter", sans-serif; text-align: center; }
+    .gl small { display: block; font-weight: 700; font-size: 26px; letter-spacing: .32em; text-transform: uppercase; opacity: .85; }
+    .gl b { display: block; font-weight: 900; font-size: 92px; letter-spacing: -.02em; line-height: 1; }
+    #vg1 { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 45%, rgba(0,0,0,0) 30%, rgba(0,10,30,.8) 100%); }
+    .stk { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; max-width: 1000px; top: 250px; padding: 14px 44px 26px; border-radius: 40px; font-family: "Lilita One", sans-serif; text-align: center; line-height: .95; color: #ffe14a; opacity: 0;
+      background: linear-gradient(160deg, #ff3d7f, #ff7a2a); box-shadow: 0 0 0 9px #fff, 0 0 0 16px #2a1b12, 0 24px 0 rgba(0,0,0,.28), 0 0 80px rgba(255,90,60,.6); text-shadow: 0 7px 0 #8a1035; font-size: 120px; }
+    .stk small { display: block; font-size: 52px; color: #fff; text-shadow: 0 4px 0 rgba(0,0,0,.3); }
+    .stk.bl { background: linear-gradient(160deg, #1f8ff0, #36d1dc); text-shadow: 0 7px 0 #0b3d7a; color: #fff; box-shadow: 0 0 0 9px #fff, 0 0 0 16px #0b2340, 0 24px 0 rgba(0,0,0,.28), 0 0 80px rgba(60,180,255,.7); }
+    .stk.gr { background: linear-gradient(160deg, #22b36a, #8be04e); text-shadow: 0 7px 0 #0d5a2e; color: #fff; box-shadow: 0 0 0 9px #fff, 0 0 0 16px #0d3a20, 0 24px 0 rgba(0,0,0,.28); }
+    .stk.go { background: linear-gradient(160deg, #ffd23f, #ff9a1a); color: #fff; text-shadow: 0 7px 0 #8a4a00; box-shadow: 0 0 0 9px #fff, 0 0 0 16px #4a2a00, 0 24px 0 rgba(0,0,0,.28), 0 0 90px rgba(255,200,60,.8); }
+    #q1 { top: 620px; } #q1 b { font-size: 64px; }
+  </style>
+  <div id="root" data-composition-id="s01" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s01-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="vg1"></div>
+      <div id="k1" class="stk"><small>auf unserer Insel</small>ES IST WAS<br>PASSIERT 😳</div>
+      <div id="q1" class="gl"><small>und</small><b>keiner hat's kommen sehen …</b></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      /*__COMMON_JS__*/
+      wrapBt("#s01-stage");
+      const tl = gsap.timeline({ paused: true });
+      const P = at("L1", "passiert"), B = line("L1b")[0];
+      tl.fromTo("#vg1", { opacity: .4 }, { opacity: 1, duration: 2.5, ease: "none" }, 0);
+      tl.fromTo("#k1", { opacity: 0, scale: 2.2, rotation: -10 }, { opacity: 1, scale: 1, rotation: -3, duration: .3, ease: "back.out(3)" }, P - .05);
+      [[12,-8,-1],[-14,6,-6],[10,8,-2],[-8,-6,-5],[0,0,-3]].forEach(([x, y, r], i) => tl.to("#k1", { x, y, rotation: r, duration: .05, ease: "none" }, P + .3 + i * .05));
+      tl.fromTo("#q1", { opacity: 0, y: 30, filter: "blur(10px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: .45, ease: "power3.out" }, B);
+      tl.to("#q1", { scale: 1.04, duration: .4, yoyo: true, repeat: 1, ease: "sine.inOut" }, B + .6);
+      tl.to("#s01-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
+      window.__timelines["s01"] = tl;
+    })();
+  </script>
+</template>

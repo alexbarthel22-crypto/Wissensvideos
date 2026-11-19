@@ -1,0 +1,188 @@
+{
+ "lead_in": 0.0,
+ "bg": "#0a5a92",
+ "captions": {
+  "pop": true,
+  "first_at_zero": true,
+  "left": 60,
+  "right": 190,
+  "size": 88,
+  "bars": true,
+  "color": "#ffffff",
+  "vary": true,
+  "pop_scale": 1.2,
+  "bar_colors": [
+   "#e8467c"
+  ],
+  "top": 1150,
+  "css": "@font-face { font-family: 'Lilita One'; src: url('assets/fonts/LilitaOne-Regular.woff2') format('woff2'); font-weight: 400; }\n    .inner { font-family: 'Lilita One', sans-serif; font-weight: 400; line-height: 1.12; letter-spacing: .01em; }\n    .inner .bar .w { margin: 0 .07em; }\n    .inner .bar { border-radius: .55em; padding: .04em .36em .1em; box-shadow: 0 8px 0 rgba(0,0,0,.25); }\n    .inner .w { white-space: nowrap; color: #fff; }\n    .inner .w.k-y, .inner .w.k-g, .inner .w.k-p { color: #ffe14a; }"
+ },
+ "loudness": -5,
+ "pitch": 0,
+ "bgvideo": {
+  "src": "assets/bg.mp4"
+ },
+ "ambience": {
+  "src": "assets/music/atmo_insel.wav",
+  "volume": 1.0
+ },
+ "title": "Muschel-Tal Tag 10 – Golden Pearl",
+ "voice": "Gemini TTS (gemini-2.5-flash-preview-tts, Stimme Puck)",
+ "style": "Style: a real, natural-sounding young man telling his friends something he is genuinely excited about. Conversational, warm, honest emotion in the voice, not like an announcer or an advertisement. Emphasize the important words naturally.\nPace: brisk but natural.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
+ "notes": "19.11.: Hook, Hütten, Wal, Schildkröten, Freiluftkino, Golden Pearl (Minispiele, nachts Party), Live-Verlosung Besitzer Kokos-Club (@kerem90025), nächste: Inhaber Golden Pearl, Spiel-Tests ab 1.000.",
+ "scenes": [
+  {
+   "id": "s01",
+   "tag": "",
+   "sfx": [],
+   "lines": [
+    {
+     "id": "L1",
+     "text": "Leute … auf unserer Insel / ist was *y:passiert.",
+     "pause": 0
+    },
+    {
+     "id": "L1b",
+     "text": "Und das hat *y:keiner / kommen sehen …",
+     "pause": 0.4
+    }
+   ]
+  },
+  {
+   "id": "s02",
+   "tag": "",
+   "sfx": [],
+   "lines": [
+    {
+     "id": "L2",
+     "text": "Aber erst mal: *y:790 Leute / wohnen schon hier – / jede Hütte: *g:ein echter Follower!",
+     "pause": 0.5
+    },
+    {
+     "id": "L2b",
+     "text": "*y:Hier könntest *y:DU wohnen! / *p:Folg mir – / und du kriegst *y:deine eigene Hütte!",
+     "pause": 0.4
+    }
+   ]
+  },
+  {
+   "id": "s03",
+   "tag": "",
+   "sfx": [],
+   "lines": [
+    {
+     "id": "L3",
+     "text": "Und dann: / vor der Küste springt / ein *y:WAL aus dem Wasser!",
+     "pause": 0.5
+    },
+    {
+     "id": "L3b",
+     "text": "Wer ihn schnell antippt, / kriegt den Erfolg *g:Wal-Watcher!",
+     "pause": 0.4
+    }
+   ]
+  },
+  {
+   "id": "s04",
+   "tag": "",
+   "sfx": [],
+   "lines": [
+    {
+     "id": "L4",
+     "text": "Am Strand: eine *g:Schildkröten-|=Schildkröten-Wanderung! *g:Wanderung!|~ / Die Babys krabbeln / ins Meer!",
+     "pause": 0.5
+    }
+   ]
+  },
+  {
+   "id": "s05",
+   "tag": "",
+   "sfx": [],
+   "lines": [
+    {
+     "id": "L5",
+     "text": "Und freitags und samstags / läuft im *p:Freiluftkino / ein Film – / mit Popcorn und Liegestühlen!",
+     "pause": 0.5
+    }
+   ]
+  },
+  {
+   "id": "s06",
+   "tag": "",
+   "sfx": [],
+   "lines": [
+    {
+     "id": "L6",
+     "text": "Und jetzt das *y:Neue: / das *y:Golden *y:Pearl!",
+     "pause": 0.4
+    },
+    {
+     "id": "L6b",
+     "text": "Hier gibt's *g:jede Menge Minispiele – / und nachts wird *p:gefeiert!",
+     "pause": 0.5
+    }
+   ]
+  },
+  {
+   "id": "s07",
+   "tag": "",
+   "sfx": [],
+   "lines": [
+    {
+     "id": "L7",
+     "text": "*y:Überraschung! / Live-Verlosung: / Wer wird *p:Besitzer vom Kokos-Club?",
+     "pause": 0.4
+    },
+    {
+     "id": "L7b",
+     "text": "Der neue Besitzer ist …",
+     "pause": 0.3
+    },
+    {
+     "id": "L7c",
+     "text": "*y:@kerem90025|Kerem!",
+     "pause": 0.1
+    },
+    {
+     "id": "L7d",
+     "text": "*g:Glückwunsch! / Und als Nächstes verlose ich: / den *y:Inhaber vom Golden Pearl!",
+     "pause": 0.4
+    }
+   ]
+  },
+  {
+   "id": "s08",
+   "tag": "",
+   "sfx": [],
+   "lines": [
+    {
+     "id": "L8",
+     "text": "Und das Größte: / Gerade laufen die *y:Tests / für das Spiel *p:Muschel-Tal!",
+     "pause": 0.5
+    },
+    {
+     "id": "L8b",
+     "text": "Bei *y:1.000|=tausend Bewohnern geht's los: / Welt erkunden, *g:Muscheln sammeln, / Sachen kaufen, *g:Freunde finden!",
+     "pause": 0.5
+    },
+    {
+     "id": "L8c",
+     "text": "Erzählt euren *y:Freunden von Muschel-Tal – / damit sie unter den *y:ersten *y:1.000|=tausend sind!",
+     "pause": 0.5
+    }
+   ]
+  },
+  {
+   "id": "s09",
+   "tag": "",
+   "sfx": [],
+   "lines": [
+    {
+     "id": "L9",
+     "text": "*p:Folg mir – / und zieh noch *y:heute ein!",
+     "pause": 0.4
+    }
+   ]
+  }
+ ]
+}
