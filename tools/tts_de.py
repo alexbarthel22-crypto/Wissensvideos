@@ -45,10 +45,10 @@ def parse_tokens(text):
         if m:
             color, raw = m.group(1), raw[m.end():]
         display, _, spoken = raw.partition("|")
-        spoken = spoken or display
+        spoken = "" if spoken == "~" else (spoken or display)  # "|~" = nur Anzeige (z. B. zweite Hälfte eines umbrochenen Worts)
         words.append({
             "display": display if "|" in raw else display.replace("_", " "),  # bei display|gesprochen bleibt _ sichtbar (z. B. @lp_art18)
-            "spoken": spoken.replace("_", " ").replace("-", " ") if "|" in raw else spoken.replace("_", " "),
+            "spoken": spoken[1:] if spoken.startswith("=") else spoken if raw.endswith("|~") else (spoken.replace("_", " ").replace("-", " ") if "|" in raw else spoken.replace("_", " ")),
             "color": color,
             "group": group,
         })
@@ -413,7 +413,7 @@ def main():
     for si, scene in enumerate(script["scenes"]):
         for li, line in enumerate(scene["lines"]):
             words = parse_tokens(line["text"])
-            spoken = " ".join(w["spoken"] for w in words)
+            spoken = " ".join(w["spoken"] for w in words if w["spoken"])
             lines.append({"scene": scene["id"], "id": line["id"], "words": words, "spoken": spoken,
                           "new_scene": li == 0 and si > 0, "pause": line.get("pause", 0.0),
                           "scale": round(1.0 / (args.speed * line.get("speed", 1.0)), 3),

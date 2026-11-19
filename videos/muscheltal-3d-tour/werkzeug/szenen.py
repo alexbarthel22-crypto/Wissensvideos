@@ -97,72 +97,114 @@ GL = """.gl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-
     .gl small { display: block; font-weight: 700; font-size: 26px; letter-spacing: .32em; text-transform: uppercase; opacity: .85; }
     .gl b { display: block; font-weight: 900; font-size: 92px; letter-spacing: -.02em; line-height: 1; }"""
 
-# s01 – DIE INSEL PLATZT! – ab Sekunde 0 extrem explosiv: Blitz, Explosion, Wackeln, Emoji-Splitter
-scene("s01", GL + """
-    #fl1 { position: absolute; inset: 0; background: #fff; }
-    #rg1, #rg2 { position: absolute; left: 540px; top: 760px; width: 200px; height: 200px; margin: -100px; border-radius: 50%; border: 26px solid #ffd23f; box-shadow: 0 0 60px #ff6a1a; }
-    #rg2 { border-color: #ff3d7f; }
-    .pt { position: absolute; left: 500px; top: 720px; font-size: 84px; line-height: 1; }
-    #t1a { top: 270px; padding: 26px 50px 34px; background: rgba(200,20,30,.82); box-shadow: 0 0 0 6px #ffd23f, 0 20px 60px rgba(255,60,20,.6); }
-    #t1a small { font-size: 46px; color: #fff; text-transform: none; opacity: 1; font-weight: 900; letter-spacing: .02em; }
-    #t1a b { font-size: 150px; line-height: .95; letter-spacing: -.02em; color: #ffe14a; text-shadow: 0 8px 0 rgba(90,0,0,.55); }
-    #t1 { top: 270px; padding: 28px 46px 36px; opacity: 0; background: rgba(200,20,30,.82); box-shadow: 0 0 0 6px #ffd23f, 0 20px 60px rgba(255,60,20,.6); }
-    #tk1 { position: absolute; left: 0; right: 0; top: 160px; height: 64px; background: #ffd23f; overflow: hidden; box-shadow: 0 6px 20px rgba(0,0,0,.3); }
-    #tk1i { position: absolute; left: 0; top: 8px; white-space: nowrap; font: 900 44px "Inter", sans-serif; color: #b0101c; }
-    #t1 small { font-size: 50px; letter-spacing: 0; text-transform: none; opacity: 1; font-weight: 900; color: #fff; }
-    #t1 b { font-size: 132px; line-height: .98; letter-spacing: -.02em; }
-    #t1 b span { color: #ffe08a; text-shadow: 0 6px 30px rgba(255,120,60,.6); }""",
-"""      <div id="rg1"></div><div id="rg2"></div><div class="pt" id="pt0">💥</div><div class="pt" id="pt1">🏝️</div><div class="pt" id="pt2">🏠</div><div class="pt" id="pt3">👥</div><div class="pt" id="pt4">🔥</div><div class="pt" id="pt5">💥</div><div class="pt" id="pt6">🏠</div><div class="pt" id="pt7">⭐</div><div class="pt" id="pt8">👥</div><div class="pt" id="pt9">🏝️</div><div class="pt" id="pt10">💥</div><div class="pt" id="pt11">🏠</div><div class="pt" id="pt12">✨</div><div class="pt" id="pt13">👥</div><div class="pt" id="pt14">💥</div><div class="pt" id="pt15">🏠</div><div class="pt" id="pt16">🎉</div><div class="pt" id="pt17">💥</div>
-      <div id="t1a" class="gl"><small>💥 EILMELDUNG</small><b>DIE INSEL<br>PLATZT!</b></div>
-      <div id="t1" class="gl"><small>Denn hier wohnen 790 Leute –</small><b>ALLE meine<br><span>Follower!</span></b></div>
-      <div id="tk1"><div id="tk1i">+++ EILMELDUNG +++ DIE INSEL PLATZT +++ 790 BEWOHNER +++ EILMELDUNG +++ DIE INSEL PLATZT +++ 790 BEWOHNER +++</div></div>
-      <div id="fl1"></div>""",
-"""      tl.fromTo("#fl1", { opacity: 1 }, { opacity: 0, duration: .4, ease: "power2.out" }, 0);
-      tl.fromTo("#fl1", { opacity: .85 }, { opacity: 0, duration: .3, ease: "power2.out" }, at("L1", "PLATZT") - .02);
-      tl.fromTo("#rg1", { scale: .2, opacity: 1 }, { scale: 7, opacity: 0, duration: .8, ease: "power3.out" }, 0);
-      tl.fromTo("#rg2", { scale: .2, opacity: 1 }, { scale: 9, opacity: 0, duration: 1, ease: "power3.out" }, .12);
-      tl.fromTo("#pt0", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 412, y: 108, scale: 1.20, rotation: -180, opacity: 0, duration: 0.90, ease: "power3.out" }, 0.02);
-      tl.fromTo("#pt1", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 403, y: 321, scale: 1.55, rotation: -113, opacity: 0, duration: 1.15, ease: "power3.out" }, 0.06);
-      tl.fromTo("#pt2", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 328, y: 535, scale: 1.90, rotation: -46, opacity: 0, duration: 1.40, ease: "power3.out" }, 0.10);
-      tl.fromTo("#pt3", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 184, y: 714, scale: 2.25, rotation: 21, opacity: 0, duration: 0.90, ease: "power3.out" }, 0.14);
-      tl.fromTo("#pt4", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: -16, y: 821, scale: 1.20, rotation: 88, opacity: 0, duration: 1.15, ease: "power3.out" }, 0.02);
-      tl.fromTo("#pt5", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: -170, y: 563, scale: 1.55, rotation: 155, opacity: 0, duration: 1.40, ease: "power3.out" }, 0.06);
-      tl.fromTo("#pt6", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: -343, y: 505, scale: 1.90, rotation: -138, opacity: 0, duration: 0.90, ease: "power3.out" }, 0.10);
-      tl.fromTo("#pt7", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: -502, y: 355, scale: 2.25, rotation: -71, opacity: 0, duration: 1.15, ease: "power3.out" }, 0.14);
-      tl.fromTo("#pt8", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: -617, y: 120, scale: 1.20, rotation: -4, opacity: 0, duration: 1.40, ease: "power3.out" }, 0.02);
-      tl.fromTo("#pt9", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: -448, y: -118, scale: 1.55, rotation: 63, opacity: 0, duration: 0.90, ease: "power3.out" }, 0.06);
-      tl.fromTo("#pt10", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: -435, y: -346, scale: 1.90, rotation: 130, opacity: 0, duration: 1.15, ease: "power3.out" }, 0.10);
-      tl.fromTo("#pt11", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: -351, y: -572, scale: 2.25, rotation: -163, opacity: 0, duration: 1.40, ease: "power3.out" }, 0.14);
-      tl.fromTo("#pt12", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: -196, y: -759, scale: 1.20, rotation: -96, opacity: 0, duration: 0.90, ease: "power3.out" }, 0.02);
-      tl.fromTo("#pt13", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 11, y: -584, scale: 1.55, rotation: -29, opacity: 0, duration: 1.15, ease: "power3.out" }, 0.06);
-      tl.fromTo("#pt14", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 184, y: -607, scale: 1.90, rotation: 38, opacity: 0, duration: 1.40, ease: "power3.out" }, 0.10);
-      tl.fromTo("#pt15", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 367, y: -541, scale: 2.25, rotation: 105, opacity: 0, duration: 0.90, ease: "power3.out" }, 0.14);
-      tl.fromTo("#pt16", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 534, y: -378, scale: 1.20, rotation: 172, opacity: 0, duration: 1.15, ease: "power3.out" }, 0.02);
-      tl.fromTo("#pt17", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 436, y: -85, scale: 1.55, rotation: -121, opacity: 0, duration: 1.40, ease: "power3.out" }, 0.06);
-      tl.fromTo("#tk1", { scaleY: 0 }, { scaleY: 1, duration: .2, ease: "power2.out" }, 0);
-      tl.fromTo("#tk1i", { x: 0 }, { x: -1900, duration: 4.5, ease: "none" }, 0);
-      tl.fromTo("#t1a", { scale: 2.2, opacity: 0 }, { scale: 1, opacity: 1, duration: .28, ease: "back.out(3)" }, 0);
-      tl.to("#t1a", { x: 18, y: -12, rotation: 3, duration: .05, ease: "none" }, 0.30);
-      tl.to("#t1a", { x: 18, y: -12, rotation: 3, duration: .05, ease: "none" }, at("L1", "PLATZT") + 0.00);
-      tl.to("#t1a", { x: -22, y: 10, rotation: -4, duration: .05, ease: "none" }, 0.35);
-      tl.to("#t1a", { x: -22, y: 10, rotation: -4, duration: .05, ease: "none" }, at("L1", "PLATZT") + 0.05);
-      tl.to("#t1a", { x: 14, y: 16, rotation: 2, duration: .05, ease: "none" }, 0.40);
-      tl.to("#t1a", { x: 14, y: 16, rotation: 2, duration: .05, ease: "none" }, at("L1", "PLATZT") + 0.10);
-      tl.to("#t1a", { x: -12, y: -14, rotation: -3, duration: .05, ease: "none" }, 0.45);
-      tl.to("#t1a", { x: -12, y: -14, rotation: -3, duration: .05, ease: "none" }, at("L1", "PLATZT") + 0.15);
-      tl.to("#t1a", { x: 10, y: 8, rotation: 2, duration: .05, ease: "none" }, 0.50);
-      tl.to("#t1a", { x: 10, y: 8, rotation: 2, duration: .05, ease: "none" }, at("L1", "PLATZT") + 0.20);
-      tl.to("#t1a", { x: -8, y: -6, rotation: -1, duration: .05, ease: "none" }, 0.55);
-      tl.to("#t1a", { x: -8, y: -6, rotation: -1, duration: .05, ease: "none" }, at("L1", "PLATZT") + 0.25);
-      tl.to("#t1a", { x: 5, y: 4, rotation: 1, duration: .05, ease: "none" }, 0.60);
-      tl.to("#t1a", { x: 5, y: 4, rotation: 1, duration: .05, ease: "none" }, at("L1", "PLATZT") + 0.30);
-      tl.to("#t1a", { x: 0, y: 0, rotation: 0, duration: .05, ease: "none" }, 0.65);
-      tl.to("#t1a", { x: 0, y: 0, rotation: 0, duration: .05, ease: "none" }, at("L1", "PLATZT") + 0.35);
-      tl.fromTo("#t1a b", { scale: 1 }, { scale: 1.18, duration: .14, yoyo: true, repeat: 1, ease: "power2.out", transformOrigin: "50% 50%" }, at("L1", "PLATZT") - .03);
-      tl.to("#t1a", { scale: .6, opacity: 0, duration: .2, ease: "power2.in" }, at("L1", "Denn") - .15);
-      tl.fromTo("#t1", { opacity: 0, scale: 1.5 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.4)" }, at("L1", "Denn") - .05);
-      tl.fromTo("#t1 b", { scale: 1 }, { scale: 1.12, duration: .16, yoyo: true, repeat: 1, ease: "power2.out", transformOrigin: "50% 50%" }, at("L1", "ALLE") - .03);
-      tl.fromTo("#t1 b span", { scale: 1 }, { scale: 1.18, duration: .18, yoyo: true, repeat: 1, ease: "power2.out", transformOrigin: "50% 60%" }, at("L1", "Follower") - .03);""", blur=False)
+# s00 – Cold Open: Spannung → WAS WAR DAS?! → Wal → Schildkröten-Wanderung
+scene("s00", GL + """
+    #vg0 { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 45%, rgba(0,0,0,0) 35%, rgba(0,10,30,.75) 100%); }
+    #fl0 { position: absolute; inset: 0; background: #fff; opacity: 0; }
+    #q0 { top: 250px; } #q0 b { font-size: 70px; }
+    .stk { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 240px; padding: 14px 44px 26px; border-radius: 40px; font-family: "Lilita One", sans-serif; text-align: center; line-height: .95; color: #ffe14a;
+      background: linear-gradient(160deg, #ff3d7f, #ff7a2a); box-shadow: 0 0 0 9px #fff, 0 0 0 16px #2a1b12, 0 24px 0 rgba(0,0,0,.28), 0 0 80px rgba(255,90,60,.6); text-shadow: 0 7px 0 #8a1035; }
+    #w0 { font-size: 150px; transform: rotate(-4deg); }
+    #w1 { font-size: 160px; background: linear-gradient(160deg, #1f8ff0, #36d1dc); text-shadow: 0 7px 0 #0b3d7a; color: #fff; box-shadow: 0 0 0 9px #fff, 0 0 0 16px #0b2340, 0 24px 0 rgba(0,0,0,.28), 0 0 80px rgba(60,180,255,.7); }
+    #w1 small, #w0 small { display: block; font-size: 56px; color: #fff; text-shadow: 0 4px 0 rgba(0,0,0,.3); }
+    #rr0, #rr1 { position: absolute; left: 540px; top: 520px; width: 220px; height: 220px; margin: -110px; border-radius: 50%; border: 22px solid #fff; opacity: 0; }
+    #rr1 { border-color: #36d1dc; }
+    #s0t { top: 250px; } #s0t b { font-size: 76px; } #s0t b span { color: #9dffb0; }
+    .pt { position: absolute; font-size: 84px; line-height: 1; width: 84px; height: 84px; opacity: 0; }""",
+"""      <div id="vg0"></div>
+      <div id="q0" class="gl"><small>Psst …</small><b>👀 da draußen …</b></div>
+      <div id="rr0"></div><div id="rr1"></div>
+      """ + """<div class="pt" id="pa0" style="left:498px;top:478px">💥</div><div class="pt" id="pa1" style="left:498px;top:478px">💦</div><div class="pt" id="pa2" style="left:498px;top:478px">🌊</div><div class="pt" id="pa3" style="left:498px;top:478px">✨</div><div class="pt" id="pa4" style="left:498px;top:478px">💥</div><div class="pt" id="pa5" style="left:498px;top:478px">💦</div><div class="pt" id="pa6" style="left:498px;top:478px">🌊</div><div class="pt" id="pa7" style="left:498px;top:478px">✨</div><div class="pt" id="pa8" style="left:498px;top:478px">💥</div><div class="pt" id="pa9" style="left:498px;top:478px">💦</div><div class="pt" id="pa10" style="left:498px;top:478px">🌊</div><div class="pt" id="pa11" style="left:498px;top:478px">✨</div><div class="pt" id="pa12" style="left:498px;top:478px">💥</div><div class="pt" id="pa13" style="left:498px;top:478px">💦</div>""" + """
+      <div id="w0" class="stk">WAS WAR<br>DAS?! 😱</div>
+      <div id="w1" class="stk"><small>direkt vor meiner Insel</small>🐋 EIN WAL!</div>
+      <div id="s0t" class="gl"><small>Und am Strand</small><b>🐢 <span>Schildkröten-</span><br>Wanderung!</b></div>
+      <div id="fl0"></div>""",
+"""      const W = at("L0b", "WAS"), A = at("L0c", "WAL"), K = line("L0d")[0];
+      tl.fromTo("#vg0", { opacity: 1 }, { opacity: 0, duration: .4 }, W - .1);
+      tl.fromTo("#q0", { opacity: 0, y: 30, filter: "blur(10px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: .6, ease: "power3.out" }, .15);
+      tl.to("#q0", { scale: 1.04, duration: .5, yoyo: true, repeat: 3, ease: "sine.inOut" }, .8);
+      tl.to("#q0", { opacity: 0, scale: .8, duration: .2 }, W - .15);
+      tl.fromTo("#fl0", { opacity: .9 }, { opacity: 0, duration: .35, ease: "power2.out", immediateRender: false }, W - .03);
+      tl.fromTo("#rr0", { scale: .2, opacity: 1 }, { scale: 6, opacity: 0, duration: .8, ease: "power3.out", immediateRender: false }, W);
+      tl.fromTo("#rr1", { scale: .2, opacity: 1 }, { scale: 8, opacity: 0, duration: 1, ease: "power3.out", immediateRender: false }, W + .1);
+      tl.fromTo("#pa0", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 287, y: 98, scale: 1.10, rotation: 60, opacity: 0, duration: 0.90, ease: "power3.out", immediateRender: false }, at("L0b", "WAS") + 0.00);
+      tl.fromTo("#pa1", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 308, y: 315, scale: 1.45, rotation: -77, opacity: 0, duration: 1.15, ease: "power3.out", immediateRender: false }, at("L0b", "WAS") + 0.03);
+      tl.fromTo("#pa2", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 197, y: 553, scale: 1.80, rotation: 94, opacity: 0, duration: 1.40, ease: "power3.out", immediateRender: false }, at("L0b", "WAS") + 0.06);
+      tl.fromTo("#pa3", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: -23, y: 329, scale: 1.10, rotation: -111, opacity: 0, duration: 0.90, ease: "power3.out", immediateRender: false }, at("L0b", "WAS") + 0.09);
+      tl.fromTo("#pa4", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: -210, y: 400, scale: 1.45, rotation: 128, opacity: 0, duration: 1.15, ease: "power3.out", immediateRender: false }, at("L0b", "WAS") + 0.00);
+      tl.fromTo("#pa5", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: -446, y: 334, scale: 1.80, rotation: -145, opacity: 0, duration: 1.40, ease: "power3.out", immediateRender: false }, at("L0b", "WAS") + 0.03);
+      tl.fromTo("#pa6", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: -297, y: 49, scale: 1.10, rotation: 162, opacity: 0, duration: 0.90, ease: "power3.out", immediateRender: false }, at("L0b", "WAS") + 0.06);
+      tl.fromTo("#pa7", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: -401, y: -137, scale: 1.45, rotation: -179, opacity: 0, duration: 1.15, ease: "power3.out", immediateRender: false }, at("L0b", "WAS") + 0.09);
+      tl.fromTo("#pa8", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: -396, y: -404, scale: 1.80, rotation: 196, opacity: 0, duration: 1.40, ease: "power3.out", immediateRender: false }, at("L0b", "WAS") + 0.00);
+      tl.fromTo("#pa9", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: -109, y: -307, scale: 1.10, rotation: -213, opacity: 0, duration: 0.90, ease: "power3.out", immediateRender: false }, at("L0b", "WAS") + 0.03);
+      tl.fromTo("#pa10", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 32, y: -461, scale: 1.45, rotation: 230, opacity: 0, duration: 1.15, ease: "power3.out", immediateRender: false }, at("L0b", "WAS") + 0.06);
+      tl.fromTo("#pa11", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 270, y: -514, scale: 1.80, rotation: -247, opacity: 0, duration: 1.40, ease: "power3.out", immediateRender: false }, at("L0b", "WAS") + 0.09);
+      tl.fromTo("#pa12", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 248, y: -186, scale: 1.10, rotation: 264, opacity: 0, duration: 0.90, ease: "power3.out", immediateRender: false }, at("L0b", "WAS") + 0.00);
+      tl.fromTo("#pa13", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 415, y: -68, scale: 1.45, rotation: -281, opacity: 0, duration: 1.15, ease: "power3.out", immediateRender: false }, at("L0b", "WAS") + 0.03);
+      tl.fromTo("#w0", { opacity: 0, scale: 2.4, rotation: -14 }, { opacity: 1, scale: 1, rotation: -4, duration: .3, ease: "back.out(3)" }, W - .02);
+      [[16,-10,-1],[-18,8,-7],[12,12,-2],[-10,-8,-6],[6,4,-3],[0,0,-4]].forEach(([x, y, r], i) => tl.to("#w0", { x, y, rotation: r, duration: .05, ease: "none" }, W + .3 + i * .05));
+      tl.to("#w0", { opacity: 0, scale: .6, duration: .18, ease: "power2.in" }, A - .25);
+      tl.fromTo("#w1", { opacity: 0, scale: .3, y: 80 }, { opacity: 1, scale: 1, y: 0, duration: .45, ease: "back.out(2.6)" }, A - .1);
+      tl.to("#w1", { y: -10, duration: .5, yoyo: true, repeat: 3, ease: "sine.inOut" }, A + .4);
+      tl.to("#w1", { opacity: 0, scale: .7, duration: .2 }, K - .2);
+      tl.fromTo("#s0t", { opacity: 0, scale: 1.3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .4, ease: "back.out(2)" }, K - .05);""")
+
+# s01 – Willkommen in Muschel-Tal: 790 zählt hoch, Sonnenstrahlen, Konfetti
+scene("s01", """
+    #ray1 { position: absolute; left: 540px; top: 560px; width: 1100px; height: 1100px; margin: -550px; border-radius: 50%; opacity: 0;
+      background: repeating-conic-gradient(rgba(255,225,74,.55) 0deg 9deg, rgba(255,225,74,0) 9deg 22deg); -webkit-mask: radial-gradient(circle, #000 20%, transparent 68%); mask: radial-gradient(circle, #000 20%, transparent 68%); }
+    #wk1 { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 230px; text-align: center; font-family: "Lilita One", sans-serif; }
+    #wk1 small { display: inline-block; font-size: 46px; color: #e8467c; background: #fff; padding: 6px 30px 10px; border-radius: 40px; box-shadow: 0 8px 0 rgba(0,0,0,.2); transform: rotate(-2deg); }
+    #wk1 b { display: block; margin-top: 6px; font-weight: 400; font-size: 150px; line-height: 1; color: #fff; letter-spacing: .01em;
+      text-shadow: 0 4px 0 #e8467c, 0 8px 0 #e8467c, 0 12px 0 #b8245a, 0 16px 0 #8a1035, 0 22px 30px rgba(0,0,0,.45); }
+    #nm1 { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 330px; text-align: center; font-family: "Lilita One", sans-serif; opacity: 0; }
+    #nm1 b { display: block; font-weight: 400; font-size: 250px; line-height: .9; color: #ffe14a;
+      text-shadow: 0 6px 0 #ff9a1a, 0 12px 0 #e8601a, 0 18px 0 #8a3510, 0 26px 40px rgba(0,0,0,.5), 0 0 60px rgba(255,200,60,.6); }
+    #nm1 small { display: inline-block; margin-top: 10px; font-size: 58px; color: #fff; background: #2a1b12; padding: 4px 30px 10px; border-radius: 30px; letter-spacing: .04em; }
+    #al1 { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 700px; padding: 10px 46px 22px; border-radius: 44px; overflow: hidden; opacity: 0;
+      background: linear-gradient(160deg, #ff3d7f, #ff7ac0); box-shadow: 0 0 0 8px #fff, 0 0 0 14px #2a1b12, 0 20px 0 rgba(0,0,0,.25), 0 0 70px rgba(255,61,127,.6);
+      font-family: "Lilita One", sans-serif; font-size: 80px; line-height: 1; color: #fff; text-shadow: 0 6px 0 #8a1035; white-space: nowrap; }
+    #al1 span { color: #ffe14a; }
+    #sh1 { position: absolute; top: -20%; left: -40%; width: 30%; height: 140%; background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.75), rgba(255,255,255,0)); transform: rotate(18deg); }
+    .sp1 { position: absolute; font-size: 60px; opacity: 0; }
+    .pt { position: absolute; font-size: 84px; line-height: 1; width: 84px; height: 84px; opacity: 0; }""",
+"""      <div id="ray1"></div>
+      <div id="wk1"><small>Willkommen in</small><b>MUSCHEL-TAL</b></div>
+      <div id="nm1"><b id="n1">0</b><small>BEWOHNER 🏠</small></div>
+      <div class="sp1" id="sp0" style="left:170px;top:360px">✨</div><div class="sp1" id="sp1" style="left:840px;top:330px">✨</div><div class="sp1" id="sp2" style="left:220px;top:600px">⭐</div><div class="sp1" id="sp3" style="left:800px;top:620px">✨</div>
+      """ + """<div class="pt" id="pb0" style="left:498px;top:658px">🎉</div><div class="pt" id="pb1" style="left:498px;top:658px">💖</div><div class="pt" id="pb2" style="left:498px;top:658px">🏝️</div><div class="pt" id="pb3" style="left:498px;top:658px">✨</div><div class="pt" id="pb4" style="left:498px;top:658px">🐚</div><div class="pt" id="pb5" style="left:498px;top:658px">🥳</div><div class="pt" id="pb6" style="left:498px;top:658px">🎉</div><div class="pt" id="pb7" style="left:498px;top:658px">💖</div><div class="pt" id="pb8" style="left:498px;top:658px">🏝️</div><div class="pt" id="pb9" style="left:498px;top:658px">✨</div><div class="pt" id="pb10" style="left:498px;top:658px">🐚</div><div class="pt" id="pb11" style="left:498px;top:658px">🥳</div><div class="pt" id="pb12" style="left:498px;top:658px">🎉</div><div class="pt" id="pb13" style="left:498px;top:658px">💖</div><div class="pt" id="pb14" style="left:498px;top:658px">🏝️</div><div class="pt" id="pb15" style="left:498px;top:658px">✨</div>""" + """
+      <div id="al1"><span>ALLE</span> meine Follower! 💖<div id="sh1"></div></div>""",
+"""      const t0 = line("L1")[0], H = at("L1", "Hier"), A = at("L1", "ALLE");
+      tl.fromTo("#wk1 small", { opacity: 0, y: -40 }, { opacity: 1, y: 0, duration: .35, ease: "back.out(2)" }, t0 - .15);
+      tl.fromTo("#wk1 b", { opacity: 0, scale: .3, rotation: -8 }, { opacity: 1, scale: 1, rotation: 0, duration: .5, ease: "elastic.out(1, .55)" }, t0 + .1);
+      tl.to("#wk1 b", { scale: 1.05, duration: .35, yoyo: true, repeat: 1, ease: "sine.inOut" }, t0 + .7);
+      tl.to("#wk1", { opacity: 0, y: -60, scale: .8, duration: .25, ease: "power2.in" }, H - .3);
+      tl.fromTo("#ray1", { opacity: 0, rotation: 0, scale: .5 }, { opacity: 1, scale: 1, duration: .4, ease: "power2.out" }, H - .1);
+      tl.to("#ray1", { rotation: 90, duration: 6, ease: "none" }, H - .1);
+      tl.fromTo("#nm1", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .45, ease: "back.out(2.4)" }, H - .1);
+      count(tl, "#n1", 0, 790, H, 1.1, "", "", "power2.out");
+      tl.fromTo("#nm1 b", { scale: 1 }, { scale: 1.12, duration: .15, yoyo: true, repeat: 1, ease: "power2.out", transformOrigin: "50% 60%" }, H + 1.1);
+      ["#sp0", "#sp1", "#sp2", "#sp3"].forEach((q, i) => tl.fromTo(q, { opacity: 0, scale: .2, rotation: 0 }, { opacity: 1, scale: 1.2, rotation: 90, duration: .3, yoyo: true, repeat: 3, ease: "sine.inOut", immediateRender: false }, H + .2 + i * .18));
+      tl.fromTo("#al1", { opacity: 0, scale: 2.2, y: 60 }, { opacity: 1, scale: 1, y: 0, duration: .32, ease: "back.out(3)" }, A - .08);
+      [[14,-8,2],[-14,6,-2],[8,6,1],[0,0,0]].forEach(([x, y, r], i) => tl.to("#al1", { x, y, rotation: r, duration: .05, ease: "none" }, A + .25 + i * .05));
+      tl.fromTo("#sh1", { left: "-40%" }, { left: "130%", duration: .7, ease: "power2.inOut", immediateRender: false }, A + .35);
+      tl.fromTo("#sh1", { left: "-40%" }, { left: "130%", duration: .7, ease: "power2.inOut", immediateRender: false }, A + 1.3);
+      tl.fromTo("#pb0", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 287, y: 98, scale: 1.10, rotation: 60, opacity: 0, duration: 0.90, ease: "power3.out", immediateRender: false }, at("L1", "ALLE") + 0.00);
+      tl.fromTo("#pb1", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 323, y: 295, scale: 1.45, rotation: -77, opacity: 0, duration: 1.15, ease: "power3.out", immediateRender: false }, at("L1", "ALLE") + 0.03);
+      tl.fromTo("#pb2", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 252, y: 525, scale: 1.80, rotation: 94, opacity: 0, duration: 1.40, ease: "power3.out", immediateRender: false }, at("L1", "ALLE") + 0.06);
+      tl.fromTo("#pb3", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 28, y: 329, scale: 1.10, rotation: -111, opacity: 0, duration: 0.90, ease: "power3.out", immediateRender: false }, at("L1", "ALLE") + 0.09);
+      tl.fromTo("#pb4", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: -124, y: 441, scale: 1.45, rotation: 128, opacity: 0, duration: 1.15, ease: "power3.out", immediateRender: false }, at("L1", "ALLE") + 0.00);
+      tl.fromTo("#pb5", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: -345, y: 457, scale: 1.80, rotation: -145, opacity: 0, duration: 1.40, ease: "power3.out", immediateRender: false }, at("L1", "ALLE") + 0.03);
+      tl.fromTo("#pb6", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: -265, y: 154, scale: 1.10, rotation: 162, opacity: 0, duration: 0.90, ease: "power3.out", immediateRender: false }, at("L1", "ALLE") + 0.06);
+      tl.fromTo("#pb7", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: -418, y: 43, scale: 1.45, rotation: -179, opacity: 0, duration: 1.15, ease: "power3.out", immediateRender: false }, at("L1", "ALLE") + 0.09);
+      tl.fromTo("#pb8", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: -516, y: -176, scale: 1.80, rotation: 196, opacity: 0, duration: 1.40, ease: "power3.out", immediateRender: false }, at("L1", "ALLE") + 0.00);
+      tl.fromTo("#pb9", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: -231, y: -211, scale: 1.10, rotation: -213, opacity: 0, duration: 0.90, ease: "power3.out", immediateRender: false }, at("L1", "ALLE") + 0.03);
+      tl.fromTo("#pb10", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: -196, y: -409, scale: 1.45, rotation: 230, opacity: 0, duration: 1.15, ease: "power3.out", immediateRender: false }, at("L1", "ALLE") + 0.06);
+      tl.fromTo("#pb11", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: -50, y: -591, scale: 1.80, rotation: -247, opacity: 0, duration: 1.40, ease: "power3.out", immediateRender: false }, at("L1", "ALLE") + 0.09);
+      tl.fromTo("#pb12", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 89, y: -315, scale: 1.10, rotation: 264, opacity: 0, duration: 0.90, ease: "power3.out", immediateRender: false }, at("L1", "ALLE") + 0.00);
+      tl.fromTo("#pb13", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 268, y: -356, scale: 1.45, rotation: -281, opacity: 0, duration: 1.15, ease: "power3.out", immediateRender: false }, at("L1", "ALLE") + 0.03);
+      tl.fromTo("#pb14", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 478, y: -277, scale: 1.80, rotation: 298, opacity: 0, duration: 1.40, ease: "power3.out", immediateRender: false }, at("L1", "ALLE") + 0.06);
+      tl.fromTo("#pb15", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 299, y: -31, scale: 1.10, rotation: -315, opacity: 0, duration: 0.90, ease: "power3.out", immediateRender: false }, at("L1", "ALLE") + 0.09);""", blur=False)
 
 # s02 – Jede Hütte = echter Follower
 scene("s02", GL + """
@@ -185,7 +227,7 @@ scene("s02n", GL + """
       tl.to("#c2n", { scale: 1.06, duration: .25, yoyo: true, repeat: 3, ease: "sine.inOut" }, at("L2c", "Wenn") + .8);""")
 
 # s03 – Gebäude-Namen erscheinen passend zu den Schnitten
-BN = [("L3", "Dönerbude", "🥙 Dönerbude"), ("L3", "Bäckerei", "🥐 Bäckerei"), ("L3s", "Strandbar", "🍹 Strandbar"), ("L3t", "Tierheim", "🐾 Tierheim · bei 800"), ("L3k", "Lagerfeuer", "🔥 Lagerfeuer"), ("L3g", "Kokos-Club", "🪩 Kokos-Club"), ("L3g", "Game", "🎮 Game Lagoon"), ("L3c", "Freiluftkino", "🎬 Freiluftkino")]
+BN = [("L3", "Dönerbude", "🥙 Dönerbude"), ("L3", "Bäckerei", "🥐 Bäckerei"), ("L3s", "Strandbar", "🍹 Strandbar"), ("L3t", "Tierheim", "🐾 Tierheim Pfotenkuss · offen!"), ("L3k", "Lagerfeuer", "🔥 Lagerfeuer"), ("L3g", "Kokos-Club", "🪩 Kokos-Club"), ("L3g", "Game", "🎮 Game Lagoon"), ("L3c", "Freiluftkino", "🎬 Freiluftkino")]
 scene("s03", GL + """
     .bn { top: 240px; } .bn b { font-size: 70px; }""",
 """""" + "".join(f'<div id="bn{i}" class="gl bn"><small>{"Hauptinsel" if l in ("L3", "L3s", "L3t") else "Kokos-Küste"}</small><b>{t}</b></div>' for i, (l, w, t) in enumerate(BN)) + """""",

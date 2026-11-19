@@ -1,201 +1,193 @@
 {
-  "title": "Muschel-Tal 3D-Inseltour",
-  "voice": "Gemini TTS (gemini-2.5-pro-preview-tts, Stimme Puck)",
-  "notes": "Inseltour 2 (18.11.): neue 3D-Welt (Luxus-Palast, Lagerfeuer, Kinofilm, Wal). 790 Bewohner, Tierheim öffnet bei 800.",
-  "lead_in": 0.0,
-  "bg": "#0a5a92",
-  "captions": {
-    "pop": true,
-    "first_at_zero": true,
-    "left": 60,
-    "right": 190,
-    "size": 88,
-    "bars": true,
-    "color": "#ffffff",
-    "vary": true,
-    "pop_scale": 1.2,
-    "bar_colors": [
-      "#e8467c"
-    ],
-    "top": 1150,
-    "css": "@font-face { font-family: 'Lilita One'; src: url('assets/fonts/LilitaOne-Regular.woff2') format('woff2'); font-weight: 400; }\n    .inner { font-family: 'Lilita One', sans-serif; font-weight: 400; line-height: 1.12; letter-spacing: .01em; }\n    .inner .bar .w { margin: 0 .07em; }\n    .inner .bar { border-radius: .55em; padding: .04em .36em .1em; box-shadow: 0 8px 0 rgba(0,0,0,.25); }\n    .inner .w { white-space: nowrap; color: #fff; }\n    .inner .w.k-y, .inner .w.k-g, .inner .w.k-p { color: #ffe14a; }"
-  },
-  "scenes": [
-    {
-      "id": "s01",
-      "tag": "",
-      "sfx": [
-        {
-          "name": "whoosh",
-          "at": "s01+0.0",
-          "volume": 0.45
-        }
-      ],
-      "lines": [
-        {
-          "id": "L1",
-          "text": "*y:EILMELDUNG: / Die Insel *y:PLATZT! / Denn hier wohnen *y:790 Leute – / *y:ALLE meine Follower!",
-          "speed": 1.12,
-          "style": "Style: a young German guy, around 20, screaming with excitement like breaking news, EXPLOSIVE, absolutely losing it, overwhelmed with joy, huge energy, natural German, normal pitch.\nPace: very fast and punchy. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-          "pause": 0.3
-        }
-      ]
-    },
-    {
-      "id": "s02",
-      "tag": "",
-      "sfx": [],
-      "lines": [
-        {
-          "id": "L2",
-          "text": "In der Mitte: der *p:Muschelpalast – / mit Garde und *y:goldener Krone!",
-          "speed": 1.034,
-          "style": "Style: a young German guy, around 20, telling his followers about his island with real emotion: amazed, proud, excited and warm, lots of expressive intonation and energy, smiling while talking, like he can't believe how cool it is, natural German, normal pitch.\nPace: lively but steady. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-          "pause": 0.6
-        },
-        {
-          "id": "L2b",
-          "text": "Drumherum: Hütte an Hütte – / jede mit einem *g:echten Namen!",
-          "speed": 1.032,
-          "style": "Style: a young German guy, around 20, telling his followers about his island with real emotion: amazed, proud, excited and warm, lots of expressive intonation and energy, smiling while talking, like he can't believe how cool it is, natural German, normal pitch.\nPace: lively but steady. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-          "pause": 0.6
-        }
-      ]
-    },
-    {
-      "id": "s02n",
-      "tag": "",
-      "sfx": [],
-      "lines": [
-        {
-          "id": "L2c",
-          "text": "*y:Siehst du dich? / Wenn nicht, kommentier: / *p:„Wo bin ich?“",
-          "speed": 1.14,
-          "style": "Style: a young German guy, around 20, telling his followers about his island with real emotion: amazed, proud, excited and warm, lots of expressive intonation and energy, smiling while talking, like he can't believe how cool it is, natural German, normal pitch.\nPace: lively but steady. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-          "pause": 0.6
-        }
-      ]
-    },
-    {
-      "id": "s03",
-      "tag": "",
-      "sfx": [],
-      "lines": [
-        {
-          "id": "L3",
-          "text": "Hier: die *y:Dönerbude – / und die *y:Bäckerei, / frisch aus dem Ofen!",
-          "speed": 1.134,
-          "style": "Style: a young German guy, around 20, telling his followers about his island with real emotion: amazed, proud, excited and warm, lots of expressive intonation and energy, smiling while talking, like he can't believe how cool it is, natural German, normal pitch.\nPace: lively but steady. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-          "pause": 0.6
-        },
-        {
-          "id": "L3s",
-          "text": "Unten am Strand: die *p:Strandbar!",
-          "speed": 1.25,
-          "style": "Style: a young German guy, around 20, telling his followers about his island with real emotion: amazed, proud, excited and warm, lots of expressive intonation and energy, smiling while talking, like he can't believe how cool it is, natural German, normal pitch.\nPace: lively but steady. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-          "pause": 0.6
-        },
-        {
-          "id": "L3t",
-          "text": "Und das *g:Tierheim? / Öffnet bei *y:800 – / nur noch 10 Follower!",
-          "speed": 1.25,
-          "style": "Style: a young German guy, around 20, telling his followers about his island with real emotion: amazed, proud, excited and warm, lots of expressive intonation and energy, smiling while talking, like he can't believe how cool it is, natural German, normal pitch.\nPace: lively but steady. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-          "pause": 2.8
-        },
-        {
-          "id": "L3k",
-          "text": "Rüber zur *y:Kokos-Küste – / zum großen *p:Lagerfeuer!",
-          "speed": 1.153,
-          "style": "Style: a young German guy, around 20, telling his followers about his island with real emotion: amazed, proud, excited and warm, lots of expressive intonation and energy, smiling while talking, like he can't believe how cool it is, natural German, normal pitch.\nPace: lively but steady. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-          "pause": 0.6
-        },
-        {
-          "id": "L3g",
-          "text": "Der *p:Kokos-Club, / die *y:Game|Gäim *y:Lagoon|Lahguhn …",
-          "speed": 1.25,
-          "style": "Style: a young German guy, around 20, telling his followers about his island with real emotion: amazed, proud, excited and warm, lots of expressive intonation and energy, smiling while talking, like he can't believe how cool it is, natural German, normal pitch.\nPace: lively but steady. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-          "pause": 0.6
-        },
-        {
-          "id": "L3c",
-          "text": "und im *g:Freiluftkino / läuft gerade ein Film!",
-          "speed": 1.008,
-          "style": "Style: a young German guy, around 20, telling his followers about his island with real emotion: amazed, proud, excited and warm, lots of expressive intonation and energy, smiling while talking, like he can't believe how cool it is, natural German, normal pitch.\nPace: lively but steady. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-          "pause": 0.6
-        }
-      ]
-    },
-    {
-      "id": "s04",
-      "tag": "",
-      "sfx": [],
-      "lines": [
-        {
-          "id": "L4",
-          "text": "Und jeden Tag / ziehen *y:neue Follower ein!",
-          "speed": 1.031,
-          "style": "Style: a young German guy, around 20, telling his followers about his island with real emotion: amazed, proud, excited and warm, lots of expressive intonation and energy, smiling while talking, like he can't believe how cool it is, natural German, normal pitch.\nPace: lively but steady. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-          "pause": 0.6
-        }
-      ]
-    },
-    {
-      "id": "s05",
-      "tag": "",
-      "sfx": [
-        {
-          "name": "click",
-          "at": "L5:Folg",
-          "volume": 0.5
-        }
-      ],
-      "lines": [
-        {
-          "id": "L5f",
-          "text": "Du willst neben deinen *g:Freunden wohnen? / *y:Markier sie in den Kommentaren!",
-          "speed": 0.9,
-          "style": "Style: a young German guy, around 20, telling his followers about his island with real emotion: amazed, proud, excited and warm, lots of expressive intonation and energy, smiling while talking, like he can't believe how cool it is, natural German, normal pitch.\nPace: lively but steady. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-          "pause": 0.6
-        }
-      ]
-    },
-    {
-      "id": "s06",
-      "tag": "",
-      "sfx": [],
-      "lines": [
-        {
-          "id": "L5k",
-          "text": "Was soll ich als Nächstes bauen? / *p:Kommentiert es!",
-          "speed": 1.09,
-          "style": "Style: a young German guy, around 20, telling his followers about his island with real emotion: amazed, proud, excited and warm, lots of expressive intonation and energy, smiling while talking, like he can't believe how cool it is, natural German, normal pitch.\nPace: lively but steady. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-          "pause": 0.6
-        }
-      ]
-    },
-    {
-      "id": "s07",
-      "tag": "",
-      "sfx": [],
-      "lines": [
-        {
-          "id": "L5",
-          "text": "*g:Folg mir – / und morgen steht hier *y:deine Hütte!",
-          "speed": 1.1,
-          "style": "Style: a young German guy, around 20, telling his followers about his island with real emotion: amazed, proud, excited and warm, lots of expressive intonation and energy, smiling while talking, like he can't believe how cool it is, natural German, normal pitch.\nPace: lively but steady. Say the sentence only once.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-          "pause": 1.0
-        }
-      ]
-    }
+ "title": "Muschel-Tal 3D-Inseltour",
+ "voice": "ElevenLabs (eleven_multilingual_v2, Stimme Liam)",
+ "notes": "Inseltour 3 (19.11.): Cold Open mit Wal-Sprung + Schildkröten-Wanderung. 790 Bewohner, Tierheim Pfotenkuss offen seit 17.11.",
+ "lead_in": 0.0,
+ "bg": "#0a5a92",
+ "captions": {
+  "pop": true,
+  "first_at_zero": true,
+  "left": 60,
+  "right": 190,
+  "size": 88,
+  "bars": true,
+  "color": "#ffffff",
+  "vary": true,
+  "pop_scale": 1.2,
+  "bar_colors": [
+   "#e8467c"
   ],
-  "style": "Style: a real, natural-sounding young man telling his friends something he is genuinely excited about. Conversational, warm, honest emotion in the voice, not like an announcer or an advertisement. Emphasize the important words naturally.\nPace: brisk but natural.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations.",
-  "loudness": -5,
-  "pitch": 0,
-  "bgvideo": {
-    "src": "assets/bg.mp4"
+  "top": 1150,
+  "css": "@font-face { font-family: 'Lilita One'; src: url('assets/fonts/LilitaOne-Regular.woff2') format('woff2'); font-weight: 400; }\n    .inner { font-family: 'Lilita One', sans-serif; font-weight: 400; line-height: 1.12; letter-spacing: .01em; }\n    .inner .bar .w { margin: 0 .07em; }\n    .inner .bar { border-radius: .55em; padding: .04em .36em .1em; box-shadow: 0 8px 0 rgba(0,0,0,.25); }\n    .inner .w { white-space: nowrap; color: #fff; }\n    .inner .w.k-y, .inner .w.k-g, .inner .w.k-p { color: #ffe14a; }"
+ },
+ "scenes": [
+  {
+   "id": "s00",
+   "tag": "",
+   "sfx": [],
+   "lines": [
+    {
+     "id": "L0a",
+     "text": "Psst … da draußen / *y:bewegt sich was …",
+     "pause": 0.0
+    },
+    {
+     "id": "L0b",
+     "text": "*y:WAS war *y:DAS?!",
+     "pause": 0.9
+    },
+    {
+     "id": "L0c",
+     "text": "Ein *y:WAL – / direkt vor meiner Insel!",
+     "pause": 0.3
+    },
+    {
+     "id": "L0d",
+     "text": "Und am Strand: / eine *g:Schildkröten-|=Schildkröten-Wanderung! *g:Wanderung!|~",
+     "pause": 0.3
+    }
+   ]
   },
-  "ambience": {
-    "src": "assets/music/atmo_insel.wav",
-    "volume": 1.0
+  {
+   "id": "s01",
+   "tag": "",
+   "sfx": [],
+   "lines": [
+    {
+     "id": "L1",
+     "text": "Willkommen in *p:Muschel-Tal! / Hier wohnen *y:790 Leute – / *y:ALLE meine Follower!",
+     "pause": 0.4
+    }
+   ]
+  },
+  {
+   "id": "s02",
+   "tag": "",
+   "sfx": [],
+   "lines": [
+    {
+     "id": "L2",
+     "text": "In der Mitte: der *p:Muschelpalast – / mit Garde und *y:goldener Krone!",
+     "pause": 0.6
+    },
+    {
+     "id": "L2b",
+     "text": "Drumherum: Hütte an Hütte – / jede mit einem *g:echten Namen!",
+     "pause": 0.6
+    }
+   ]
+  },
+  {
+   "id": "s02n",
+   "tag": "",
+   "sfx": [],
+   "lines": [
+    {
+     "id": "L2c",
+     "text": "*y:Siehst du dich? / Wenn nicht, kommentier: / *p:„Wo bin ich?“",
+     "pause": 0.6
+    }
+   ]
+  },
+  {
+   "id": "s03",
+   "tag": "",
+   "sfx": [],
+   "lines": [
+    {
+     "id": "L3",
+     "text": "Hier: die *y:Dönerbude – / und die *y:Bäckerei, / frisch aus dem Ofen!",
+     "pause": 0.6
+    },
+    {
+     "id": "L3s",
+     "text": "Unten am Strand: die *p:Strandbar!",
+     "pause": 0.6
+    },
+    {
+     "id": "L3t",
+     "text": "Und das *g:Tierheim Pfotenkuss / hat endlich *y:geöffnet!",
+     "pause": 0.6
+    },
+    {
+     "id": "L3k",
+     "text": "Rüber zur *y:Kokos-Küste – / zum großen *p:Lagerfeuer!",
+     "pause": 0.6
+    },
+    {
+     "id": "L3g",
+     "text": "Der *p:Kokos-Club, / die *y:Game|Gäim *y:Lagoon|Lahguhn …",
+     "pause": 0.6
+    },
+    {
+     "id": "L3c",
+     "text": "und im *g:Freiluftkino / läuft gerade ein Film!",
+     "pause": 0.6
+    }
+   ]
+  },
+  {
+   "id": "s04",
+   "tag": "",
+   "sfx": [],
+   "lines": [
+    {
+     "id": "L4",
+     "text": "Und jeden Tag / ziehen *y:neue Follower ein!",
+     "pause": 0.6
+    }
+   ]
+  },
+  {
+   "id": "s05",
+   "tag": "",
+   "sfx": [
+    {
+     "name": "click",
+     "at": "L5:Folg",
+     "volume": 0.5
+    }
+   ],
+   "lines": [
+    {
+     "id": "L5f",
+     "text": "Du willst neben deinen *g:Freunden wohnen? / *y:Markier sie in den Kommentaren!",
+     "pause": 0.6
+    }
+   ]
+  },
+  {
+   "id": "s06",
+   "tag": "",
+   "sfx": [],
+   "lines": [
+    {
+     "id": "L5k",
+     "text": "Was soll ich als Nächstes bauen? / *p:Kommentiert es!",
+     "pause": 0.6
+    }
+   ]
+  },
+  {
+   "id": "s07",
+   "tag": "",
+   "sfx": [],
+   "lines": [
+    {
+     "id": "L5",
+     "text": "*g:Folg mir – / und morgen steht hier *y:deine Hütte!",
+     "pause": 1.0
+    }
+   ]
   }
+ ],
+ "loudness": -5,
+ "pitch": 0,
+ "bgvideo": {
+  "src": "assets/bg.mp4"
+ },
+ "ambience": {
+  "src": "assets/music/atmo_insel.wav",
+  "volume": 1.0
+ }
 }
