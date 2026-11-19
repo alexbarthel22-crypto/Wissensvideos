@@ -11,6 +11,10 @@ import { QUIZ } from "../lib/quiz.mjs";
 
 // Schlüssel gilt: der vom Beanspruchen (h) oder einer aus einer Anmeldung mit Name + PIN (hs, höchstens 5 Geräte)
 const tokOk = (c, h) => !!c && (c.h === h || (Array.isArray(c.hs) && c.hs.includes(h)));
+// Angemeldet bleiben: Name + Schlüssel zusätzlich als HttpOnly-Cookie (nur der Server liest es). Leert der Browser seinen
+// Seitenspeicher (z. B. Safari nach 7 Tagen ohne Besuch), stellt die Seite die Anmeldung damit still wieder her – die PIN
+// braucht man so nur beim Wechsel in einen anderen Browser oder auf ein anderes Handy.
+const mitCookie = (res, nm, token) => { res.headers.append("set-cookie", "mt-k=" + encodeURIComponent(nm + "|" + token) + "; Max-Age=157680000; Path=/api/muscheln; HttpOnly; Secure; SameSite=Lax"); return res; };
 const json = (d, s = 200) => new Response(JSON.stringify(d), { status: s, headers: { "content-type": "application/json", "cache-control": "no-store" } });
 const NAME = /^@[a-z0-9._]{1,40}$/;
 const ERF_CLIENT = new Set(["LUPE", "AUF", "UNTER", "SCOOT", "SCHOEPFER", "WAL", "SCHILD", "MOND", "WELT", "NACHT"]);
@@ -436,6 +440,14 @@ export default async (req) => {
     await store.set("x/klick/" + kt, JSON.stringify({ von, ts: Date.now() }));
     return json({ ok: true, kt });
   }
+  if (act === "wer") {
+    const m = (req.headers.get("cookie") || "").match(/(?:^|;\s*)mt-k=([^;]+)/);
+    const [n, t] = m ? decodeURIComponent(m[1]).split("|") : [];
+    if (!n || !t) return json({ ok: false });
+    const c = JSON.parse((await store.get("c/" + n)) || "null");
+    if (!tokOk(c, await sha(t))) return json({ ok: false });
+    return mitCookie(json({ ok: true, n: "@" + n, t }), n, t);
+  }
   if (act === "pinLogin") {
     // 🔑 Anmelden mit Name + Muschel-PIN (in jedem Browser); nach 5 falschen Versuchen 1 Stunde gesperrt
     const n = String(d.name || "").trim().toLowerCase().replace(/^@/, ""), pin = String(d.pin || "");
@@ -450,7 +462,7 @@ export default async (req) => {
     const t = crypto.randomUUID() + "-" + crypto.randomUUID();
     c.hs = [...(Array.isArray(c.hs) ? c.hs : []), await sha(t)].slice(-5);
     await store.set("c/" + n, JSON.stringify(c));
-    return json({ ok: true, n: "@" + n, t });
+    return mitCookie(json({ ok: true, n: "@" + n, t }), n, t);
   }
   if (!NAME.test(name)) return json({ fehler: "Name" }, 400);
   const nm = name.slice(1), heute = tag();
@@ -468,7 +480,7 @@ export default async (req) => {
     if (c.h !== (await sha(token))) return json({ ok: false, beansprucht: true });
     const nachbar = await nachbarErf(store, nm), live = await liveErf(store, nm);
     const von = await einladungPruefen(store, nm, String(d.kt || ""));
-    return json({ ok: true, token, von, neu: [...(nachbar ? ["NACHBAR"] : []), ...(live ? ["LIVE"] : [])] });
+    return mitCookie(json({ ok: true, token, von, neu: [...(nachbar ? ["NACHBAR"] : []), ...(live ? ["LIVE"] : [])] }), nm, token);
   }
   // alle weiteren Aktionen nur mit dem Schlüssel des Besitzers
   const c = JSON.parse((await store.get("c/" + nm)) || "null");
@@ -764,12 +776,12 @@ export default async (req) => {
     const B = await buch(store, nm), s = await serie(B);
     const posten = B.filter(e => e.a).map(e => ({ art: e.art, id: e.id, a: e.a, t: TEXT[e.art] || e.art }))
       .sort((x, y) => (y.id > x.id ? 1 : -1)).slice(0, 60);
-    return json({
+    return mitCookie(json({
       ok: true, pinFehlt: !c.pin, nachbar, live, eingeladen, klopfer, geschenke, premium: !!(await store.get("x/premium/" + nm)), startDa: !(await store.get("x/start/" + nm)), likes: { n: likeN }, neu: likeN >= 25 && (await erfGib("HERZ")) ? ["HERZ"] : [], sticker: (await liste(store, "x/sticker/" + nm + "/")).map(k => k.split("/")[3]), fische: (await liste(store, "x/fisch/" + nm + "/")).map(k => k.split("/")[3]), angelnHeute: Object.fromEntries([0, 1].map(i => [i, (B.find(e => e.art === "angeln" && e.id.startsWith(heute + "-" + i + "_")) || {}).id?.split("_")[1] || null])), sandHeute: !!(await store.get("x/sand/" + woche(heute) + "/" + nm + "/" + heute)), geschenk: B.some(e => e.art === "geschenk" && e.id === heute), stand: B.reduce((s, e) => s + e.a, 0), serie: s,
       shells: B.filter(e => e.art === "shell" && e.id.startsWith(heute) && e.id.split("-").length === 6).map(e => e.id.split("-").slice(3).map(Number).join("-")),
       questsDone: B.filter(e => e.art === "quest" && e.id.startsWith(heute)).map(e => Number(e.id.split("-").pop())),
       gespendet: -B.filter(e => e.art === "spende").reduce((s, e) => s + e.a, 0), posten, heute, inv: besitz(B), aus: JSON.parse((await store.get("a/" + nm)) || "{}")
-    });
+    }), nm, String(d.token || ""));
   }
   return json({ fehler: "Aktion" }, 400);
 };
