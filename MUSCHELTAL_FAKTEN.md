@@ -513,6 +513,11 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 
 - **Ab 19.11. (Nutzerwunsch):** Stimme wieder Gemini (Puck, gemini-2.5-flash-preview-tts, Stil wie Tag 10), Videos wieder 2D mit Homepage-Karte als Hintergrund. ElevenLabs/3D nur auf ausdrücklichen Wunsch.
 
+## Video Tag 10 „Golden Pearl“ (19.11., `videos/muscheltal-tag10-pearl/`)
+- Hook „Es ist was passiert auf unserer Insel …“ → Hütten/Passanten („Hier könntest DU wohnen – folg mir“) → Wal-Event (Erfolg Wal-Watcher) → Schildkröten-Wanderung (Babyschildkröte am Strand) → Freiluftkino (Fr & Sa 20–22 Uhr) → **neu: Golden Pearl** (jede Menge Minispiele, nachts Party; im Video bewusst ohne Glücksspiel-Wörter) → Live-Verlosung → Spiel-Tests, Start bei 1.000 (Welt erkunden, Muscheln sammeln, Sachen kaufen, Freunde finden) → „Erzählt euren Freunden …“ → Folgen. Stimme Gemini Puck.
+- **Live-Verlosung 19.11. (Python `secrets`): Besitzer Kokos-Club (KOK(O)S) = @kerem90025** (Kokos-Küste, Hütte 1:75; Nr. 71 von 268 Kokos-Bewohnern ohne Job/Amt/Sonder-Wohnort). ⚠️ Homepage: als Besitzer/Leitung KOK(O)S eintragen (Nutzer entscheidet).
+- **Nächste Verlosung angekündigt: Inhaber vom Golden Pearl.** ⚠️ Golden Pearl gibt es auf der Homepage noch nicht (im Video als Illustration) – Homepage-Chat soll es bauen (Minispiele, nachts Party; nicht „Casino/Spielbank“ nennen).
+
 ### Änderungen 20.11. (Shop & Zurücksetzen)
 - **Zurücksetzen (2. Lauf):** Bei der nächsten Veröffentlichung werden alle Konten erneut auf den Stand 18.11.2026 18:00 zurückgesetzt (Verknüpfungen samt PIN, Buchungen, Aufgaben, Erfolge, Sticker, Fische, Sandburg, Likes, Anklopfen, Shop-Käufe, Spenden, Story). Echtgeld-Käufe bleiben. Die Statistik wird komplett geleert.
 - **Muschel-Shop auf der Startseite:** großer, auffälliger Knopf „🛍️ Muschel-Shop – Tiere · Fahrzeuge · Outfits & mehr“ als erster Knopf unter den drei Schritten (für alle sichtbar; ohne verknüpften Namen kommt der Verknüpfen-Hinweis). Der kleine Shop-Knopf neben dem Sticker-Album entfällt.
