@@ -715,7 +715,11 @@ export default async (req) => {
     await store.set("x/sticker/" + nm + "/" + id, String(Date.now()));
     return json({ ok: true, sticker: (await liste(store, "x/sticker/" + nm + "/")).map(k => k.split("/")[3]) });
   }
-  if (act === "story") return json({ ok: await setze("story", woche(heute), 25) });
+  if (act === "story") { // 20.11.: Muschelpass teilen = 1× pro Woche +10 🐚 aufs Konto und +10 🐚 in die Inselkasse
+    const w = woche(heute), ok = await setze("story", w, 10);
+    if (ok) await getStore({ name: "inselkasse", consistency: "strong" }).set("s/" + nm + "/" + Date.now() + "-story/10", "1");
+    return json({ ok, kasse: ok ? 10 : 0 });
+  }
   if (act === "spende") {
     const a = Math.floor(Number(d.betrag));
     const B = await buch(store, nm), stand = B.reduce((s, e) => s + e.a, 0);
