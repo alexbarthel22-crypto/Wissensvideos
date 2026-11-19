@@ -66,10 +66,9 @@
     #s0t { top: 250px; } #s0t b { font-size: 76px; } #s0t b span { color: #9dffb0; }
     .pt { position: absolute; font-size: 84px; line-height: 1; width: 84px; height: 84px; opacity: 0; }
   </style>
-  <div id="root" data-composition-id="s00" data-start="0" data-duration="9.610" data-width="1080" data-height="1920">
-    <div id="s00-stage" class="clip stage" data-start="0" data-duration="9.610" data-track-index="0">
+  <div id="root" data-composition-id="s00" data-start="0" data-duration="9.560" data-width="1080" data-height="1920">
+    <div id="s00-stage" class="clip stage" data-start="0" data-duration="9.560" data-track-index="0">
       <div id="vg0"></div>
-      <div id="q0" class="gl"><small>Psst …</small><b>👀 da draußen …</b></div>
       <div id="rr0"></div><div id="rr1"></div>
       <div class="pt" id="pa0" style="left:498px;top:478px">💥</div><div class="pt" id="pa1" style="left:498px;top:478px">💦</div><div class="pt" id="pa2" style="left:498px;top:478px">🌊</div><div class="pt" id="pa3" style="left:498px;top:478px">✨</div><div class="pt" id="pa4" style="left:498px;top:478px">💥</div><div class="pt" id="pa5" style="left:498px;top:478px">💦</div><div class="pt" id="pa6" style="left:498px;top:478px">🌊</div><div class="pt" id="pa7" style="left:498px;top:478px">✨</div><div class="pt" id="pa8" style="left:498px;top:478px">💥</div><div class="pt" id="pa9" style="left:498px;top:478px">💦</div><div class="pt" id="pa10" style="left:498px;top:478px">🌊</div><div class="pt" id="pa11" style="left:498px;top:478px">✨</div><div class="pt" id="pa12" style="left:498px;top:478px">💥</div><div class="pt" id="pa13" style="left:498px;top:478px">💦</div>
       <div id="w0" class="stk">WAS WAR<br>DAS?! 😱</div>
@@ -81,7 +80,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 9.61, "L0a": [0.0, 1.85], "L0a.words": [["psst", 0.0, 0.145], ["", 0.145, 0.27], ["da", 0.52, 0.682], ["draußen", 0.682, 1.023], ["bewegt", 1.023, 1.359], ["sich", 1.359, 1.532], ["was", 1.532, 1.7], ["", 1.7, 1.85]], "L0b": [2.97, 3.8], "L0b.words": [["was", 2.97, 3.247], ["war", 3.247, 3.523], ["das", 3.523, 3.8]], "L0c": [4.32, 6.42], "L0c.words": [["ein", 4.32, 4.507], ["wal", 4.507, 4.693], ["", 4.693, 4.86], ["direkt", 5.11, 5.486], ["vor", 5.486, 5.674], ["meiner", 5.674, 6.051], ["insel", 6.051, 6.42]], "L0d": [6.94, 9.03], "L0d.words": [["und", 6.94, 7.135], ["am", 7.135, 7.324], ["strand", 7.324, 7.54], ["eine", 7.79, 8.058], ["schildkröten", 8.058, 8.906], ["wanderung", 8.906, 9.03]]};
+      const C = {"__dur": 9.56, "L0b": [0.0, 1.67], "L0b.words": [["was", 0.0, 0.55], ["war", 0.55, 1.12], ["das", 1.12, 1.67]], "L0c": [2.29, 5.03], "L0c.words": [["ein", 2.29, 2.795], ["wal", 2.795, 3.3], ["direkt", 3.48, 3.925], ["vor", 3.925, 4.148], ["meiner", 4.148, 4.593], ["insel", 4.593, 5.03]], "L0d": [5.75, 8.78], "L0d.words": [["und", 5.75, 6.092], ["am", 6.092, 6.422], ["strand", 6.422, 6.8], ["eine", 7.11, 7.471], ["schildkröten", 7.471, 8.613], ["wanderung", 8.613, 8.78]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -125,12 +124,9 @@
 
       wrapBt("#s00-stage");
       const tl = gsap.timeline({ paused: true });
-      const W = at("L0b", "WAS"), A = at("L0c", "WAL"), K = line("L0d")[0];
-      tl.fromTo("#vg0", { opacity: 1 }, { opacity: 0, duration: .4 }, W - .1);
-      tl.fromTo("#q0", { opacity: 0, y: 30, filter: "blur(10px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: .6, ease: "power3.out" }, .15);
-      tl.to("#q0", { scale: 1.04, duration: .5, yoyo: true, repeat: 3, ease: "sine.inOut" }, .8);
-      tl.to("#q0", { opacity: 0, scale: .8, duration: .2 }, W - .15);
-      tl.fromTo("#fl0", { opacity: .9 }, { opacity: 0, duration: .35, ease: "power2.out", immediateRender: false }, W - .03);
+      const W = Math.max(.12, at("L0b", "WAS")), A = at("L0c", "WAL"), K = line("L0d")[0];
+      tl.fromTo("#vg0", { opacity: 1 }, { opacity: 0, duration: .5 }, W);
+      tl.fromTo("#fl0", { opacity: .9 }, { opacity: 0, duration: .35, ease: "power2.out", immediateRender: false }, W);
       tl.fromTo("#rr0", { scale: .2, opacity: 1 }, { scale: 6, opacity: 0, duration: .8, ease: "power3.out", immediateRender: false }, W);
       tl.fromTo("#rr1", { scale: .2, opacity: 1 }, { scale: 8, opacity: 0, duration: 1, ease: "power3.out", immediateRender: false }, W + .1);
       tl.fromTo("#pa0", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 287, y: 98, scale: 1.10, rotation: 60, opacity: 0, duration: 0.90, ease: "power3.out", immediateRender: false }, at("L0b", "WAS") + 0.00);

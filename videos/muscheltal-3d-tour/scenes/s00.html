@@ -22,7 +22,6 @@
   <div id="root" data-composition-id="s00" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
     <div id="s00-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
       <div id="vg0"></div>
-      <div id="q0" class="gl"><small>Psst …</small><b>👀 da draußen …</b></div>
       <div id="rr0"></div><div id="rr1"></div>
       <div class="pt" id="pa0" style="left:498px;top:478px">💥</div><div class="pt" id="pa1" style="left:498px;top:478px">💦</div><div class="pt" id="pa2" style="left:498px;top:478px">🌊</div><div class="pt" id="pa3" style="left:498px;top:478px">✨</div><div class="pt" id="pa4" style="left:498px;top:478px">💥</div><div class="pt" id="pa5" style="left:498px;top:478px">💦</div><div class="pt" id="pa6" style="left:498px;top:478px">🌊</div><div class="pt" id="pa7" style="left:498px;top:478px">✨</div><div class="pt" id="pa8" style="left:498px;top:478px">💥</div><div class="pt" id="pa9" style="left:498px;top:478px">💦</div><div class="pt" id="pa10" style="left:498px;top:478px">🌊</div><div class="pt" id="pa11" style="left:498px;top:478px">✨</div><div class="pt" id="pa12" style="left:498px;top:478px">💥</div><div class="pt" id="pa13" style="left:498px;top:478px">💦</div>
       <div id="w0" class="stk">WAS WAR<br>DAS?! 😱</div>
@@ -37,12 +36,9 @@
       /*__COMMON_JS__*/
       wrapBt("#s00-stage");
       const tl = gsap.timeline({ paused: true });
-      const W = at("L0b", "WAS"), A = at("L0c", "WAL"), K = line("L0d")[0];
-      tl.fromTo("#vg0", { opacity: 1 }, { opacity: 0, duration: .4 }, W - .1);
-      tl.fromTo("#q0", { opacity: 0, y: 30, filter: "blur(10px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: .6, ease: "power3.out" }, .15);
-      tl.to("#q0", { scale: 1.04, duration: .5, yoyo: true, repeat: 3, ease: "sine.inOut" }, .8);
-      tl.to("#q0", { opacity: 0, scale: .8, duration: .2 }, W - .15);
-      tl.fromTo("#fl0", { opacity: .9 }, { opacity: 0, duration: .35, ease: "power2.out", immediateRender: false }, W - .03);
+      const W = Math.max(.12, at("L0b", "WAS")), A = at("L0c", "WAL"), K = line("L0d")[0];
+      tl.fromTo("#vg0", { opacity: 1 }, { opacity: 0, duration: .5 }, W);
+      tl.fromTo("#fl0", { opacity: .9 }, { opacity: 0, duration: .35, ease: "power2.out", immediateRender: false }, W);
       tl.fromTo("#rr0", { scale: .2, opacity: 1 }, { scale: 6, opacity: 0, duration: .8, ease: "power3.out", immediateRender: false }, W);
       tl.fromTo("#rr1", { scale: .2, opacity: 1 }, { scale: 8, opacity: 0, duration: 1, ease: "power3.out", immediateRender: false }, W + .1);
       tl.fromTo("#pa0", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 287, y: 98, scale: 1.10, rotation: 60, opacity: 0, duration: 0.90, ease: "power3.out", immediateRender: false }, at("L0b", "WAS") + 0.00);
