@@ -4734,7 +4734,7 @@ const zoomWK=f=>{WK.zf=Math.max(.45,Math.min(2.4,(WK.zf||1)*f));};
 // 🎵 Musik aus den Videos (Tag 4 + Tag 5 im Wechsel) mit Meeresrauschen – startet immer aus, Knopf unter Zoom
 const SND={an:false,i:0,mus:null,meer:null};
 function sndSpiel(){const L=['musik/suedsee_tag4.mp3','musik/suedsee_tag5.mp3'];if(!SND.mus){SND.mus=new Audio();SND.mus.volume=.5;SND.mus.preload='auto';SND.mus.onended=()=>{SND.i=(SND.i+1)%L.length;SND.mus.src=L[SND.i];if(SND.an)SND.mus.play().catch(()=>{});};SND.mus.src=L[0];
- SND.meer=new Audio('musik/meer.mp3');SND.meer.loop=true;SND.meer.volume=.22;}SND.mus.play().catch(()=>{});SND.meer.play().catch(()=>{});}
+ SND.meer=new Audio('musik/meer_gleich.mp3');SND.meer.loop=true;SND.meer.volume=.22;}SND.mus.play().catch(()=>{});SND.meer.play().catch(()=>{});}
 function sndSetz(an){SND.an=an;const b=$('snd');b.textContent=an?'🔊':'🔇';b.classList.toggle('an',an);b.setAttribute('aria-pressed',an);b.setAttribute('aria-label',an?'Musik ausschalten':'Musik einschalten');if(an)sndSpiel();else if(SND.mus){SND.mus.pause();SND.meer.pause();}}
 $('snd').onclick=()=>sndSetz(!SND.an);
 document.addEventListener('visibilitychange',()=>{if(!SND.mus||!SND.an)return;if(document.hidden){SND.mus.pause();SND.meer.pause();}else sndSpiel();});
@@ -5758,6 +5758,8 @@ const ST={sid:(crypto.randomUUID?crypto.randomUUID():String(Math.random())).repl
  const ua=navigator.userAgent;ST.geraet=/iPad|Tablet/i.test(ua)||(/Macintosh/.test(ua)&&navigator.maxTouchPoints>1)?'tablet':/Mobi|Android|iPhone/i.test(ua)?'handy':'computer';
  {const q=new URLSearchParams(location.search),r=(document.referrer||'').toLowerCase();const ua=navigator.userAgent||'';ST.quelle=q.get('von')?'einladung':q.get('n')?'personen_link':q.get('ort')?'orts_link':/musical_ly|bytedancewebview|tiktok|trill_/i.test(ua)?'tiktok_app':/tiktok/.test(r)?'tiktok':/instagram/i.test(ua)?'instagram':/instagram/.test(r)?'instagram':/whatsapp|wa\.me/.test(r)?'whatsapp':/snapchat/.test(r)?'snapchat':/google|bing|duckduckgo|ecosia/.test(r)?'suchmaschine':r&&!r.includes(location.host)?'andere_seite':'direkt';}
  const ev=k=>{ST.ereignisse[k]=(ST.ereignisse[k]||0)+1;};window.statEv=ev;
+ // Programmfehler im Browser der Spieler mitzählen (nur kurze Fehlermeldung, anonym) – hilft, Fehler wie „Erkunden startet nicht“ zu finden
+ {const fx=m=>{try{ev('fehler: '+String(m||'?').replace(/[^\p{L}\p{N}_:.\- &()]/gu,' ').replace(/\s+/g,' ').trim().slice(0,32));}catch(e){}};addEventListener('error',e=>fx(e.message));addEventListener('unhandledrejection',e=>fx(e.reason&&(e.reason.message||e.reason)));}
  // Ereignisse: bekannte Funktionen umhüllen (zählt nur, dass etwas passiert ist)
  for(const [fn,k] of [['pick','suche'],['zeigePass','pass_auf'],['mkSeite','konto_auf'],['walkStart','erkunden_start'],['shopInfo','shop_item_info'],['shopKaufFrag','shop_kauf_frage'],['mkClaimFrag','beanspruchen_frage'],['mkEinladen','einladen_auf'],['mkSpende','spenden_auf'],['rangSeite','rangliste_auf'],['lrSeite','live_rangliste_auf'],['tresorTap','tresor'],['suchePass','pass_suchen'],['zuBauprojekten','bauprojekte'],['lvInfo','live_insel']]){const f=window[fn];if(typeof f!=='function')continue;window[fn]=function(...a){try{ev(k);}catch(e){}return f.apply(this,a);};}
  {const f=window.mk;if(typeof f==='function')window.mk=async function(act,x){const r=await f(act,x);try{if(r&&r.ok&&!['stand','quests','strecke','likeinfo'].includes(act))ev({quest:'aufgabe',login:'login_abgeholt',kauf:'kauf',anlegen:'anlegen',spende:'spende',code:'code',tresor:'tresor_gewonnen'}[act]||act);}catch(e){}return r;};}
