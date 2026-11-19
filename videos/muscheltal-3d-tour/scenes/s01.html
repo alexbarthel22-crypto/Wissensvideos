@@ -14,7 +14,7 @@
     #nm1 small { display: inline-block; margin-top: 10px; font-size: 58px; color: #fff; background: #2a1b12; padding: 4px 30px 10px; border-radius: 30px; letter-spacing: .04em; }
     #al1 { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 700px; padding: 10px 46px 22px; border-radius: 44px; overflow: hidden; opacity: 0;
       background: linear-gradient(160deg, #ff3d7f, #ff7ac0); box-shadow: 0 0 0 8px #fff, 0 0 0 14px #2a1b12, 0 20px 0 rgba(0,0,0,.25), 0 0 70px rgba(255,61,127,.6);
-      font-family: "Lilita One", sans-serif; font-size: 96px; line-height: 1; color: #fff; text-shadow: 0 6px 0 #8a1035; white-space: nowrap; }
+      font-family: "Lilita One", sans-serif; font-size: 80px; line-height: 1; color: #fff; text-shadow: 0 6px 0 #8a1035; white-space: nowrap; }
     #al1 span { color: #ffe14a; }
     #sh1 { position: absolute; top: -20%; left: -40%; width: 30%; height: 140%; background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.75), rgba(255,255,255,0)); transform: rotate(18deg); }
     .sp1 { position: absolute; font-size: 60px; opacity: 0; }
@@ -46,27 +46,27 @@
       tl.fromTo("#nm1", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .45, ease: "back.out(2.4)" }, H - .1);
       count(tl, "#n1", 0, 790, H, 1.1, "", "", "power2.out");
       tl.fromTo("#nm1 b", { scale: 1 }, { scale: 1.12, duration: .15, yoyo: true, repeat: 1, ease: "power2.out", transformOrigin: "50% 60%" }, H + 1.1);
-      ["#sp0", "#sp1", "#sp2", "#sp3"].forEach((q, i) => tl.fromTo(q, { opacity: 0, scale: .2, rotation: 0 }, { opacity: 1, scale: 1.2, rotation: 90, duration: .3, yoyo: true, repeat: 3, ease: "sine.inOut" }, H + .2 + i * .18));
+      ["#sp0", "#sp1", "#sp2", "#sp3"].forEach((q, i) => tl.fromTo(q, { opacity: 0, scale: .2, rotation: 0 }, { opacity: 1, scale: 1.2, rotation: 90, duration: .3, yoyo: true, repeat: 3, ease: "sine.inOut", immediateRender: false }, H + .2 + i * .18));
       tl.fromTo("#al1", { opacity: 0, scale: 2.2, y: 60 }, { opacity: 1, scale: 1, y: 0, duration: .32, ease: "back.out(3)" }, A - .08);
       [[14,-8,2],[-14,6,-2],[8,6,1],[0,0,0]].forEach(([x, y, r], i) => tl.to("#al1", { x, y, rotation: r, duration: .05, ease: "none" }, A + .25 + i * .05));
-      tl.fromTo("#sh1", { left: "-40%" }, { left: "130%", duration: .7, ease: "power2.inOut" }, A + .35);
-      tl.fromTo("#sh1", { left: "-40%" }, { left: "130%", duration: .7, ease: "power2.inOut" }, A + 1.3);
-      tl.fromTo("#pb0", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 287, y: 98, scale: 1.10, rotation: 60, opacity: 0, duration: 0.90, ease: "power3.out" }, at("L1", "ALLE") + 0.00);
-      tl.fromTo("#pb1", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 323, y: 295, scale: 1.45, rotation: -77, opacity: 0, duration: 1.15, ease: "power3.out" }, at("L1", "ALLE") + 0.03);
-      tl.fromTo("#pb2", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 252, y: 525, scale: 1.80, rotation: 94, opacity: 0, duration: 1.40, ease: "power3.out" }, at("L1", "ALLE") + 0.06);
-      tl.fromTo("#pb3", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 28, y: 329, scale: 1.10, rotation: -111, opacity: 0, duration: 0.90, ease: "power3.out" }, at("L1", "ALLE") + 0.09);
-      tl.fromTo("#pb4", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: -124, y: 441, scale: 1.45, rotation: 128, opacity: 0, duration: 1.15, ease: "power3.out" }, at("L1", "ALLE") + 0.00);
-      tl.fromTo("#pb5", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: -345, y: 457, scale: 1.80, rotation: -145, opacity: 0, duration: 1.40, ease: "power3.out" }, at("L1", "ALLE") + 0.03);
-      tl.fromTo("#pb6", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: -265, y: 154, scale: 1.10, rotation: 162, opacity: 0, duration: 0.90, ease: "power3.out" }, at("L1", "ALLE") + 0.06);
-      tl.fromTo("#pb7", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: -418, y: 43, scale: 1.45, rotation: -179, opacity: 0, duration: 1.15, ease: "power3.out" }, at("L1", "ALLE") + 0.09);
-      tl.fromTo("#pb8", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: -516, y: -176, scale: 1.80, rotation: 196, opacity: 0, duration: 1.40, ease: "power3.out" }, at("L1", "ALLE") + 0.00);
-      tl.fromTo("#pb9", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: -231, y: -211, scale: 1.10, rotation: -213, opacity: 0, duration: 0.90, ease: "power3.out" }, at("L1", "ALLE") + 0.03);
-      tl.fromTo("#pb10", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: -196, y: -409, scale: 1.45, rotation: 230, opacity: 0, duration: 1.15, ease: "power3.out" }, at("L1", "ALLE") + 0.06);
-      tl.fromTo("#pb11", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: -50, y: -591, scale: 1.80, rotation: -247, opacity: 0, duration: 1.40, ease: "power3.out" }, at("L1", "ALLE") + 0.09);
-      tl.fromTo("#pb12", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 89, y: -315, scale: 1.10, rotation: 264, opacity: 0, duration: 0.90, ease: "power3.out" }, at("L1", "ALLE") + 0.00);
-      tl.fromTo("#pb13", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 268, y: -356, scale: 1.45, rotation: -281, opacity: 0, duration: 1.15, ease: "power3.out" }, at("L1", "ALLE") + 0.03);
-      tl.fromTo("#pb14", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 478, y: -277, scale: 1.80, rotation: 298, opacity: 0, duration: 1.40, ease: "power3.out" }, at("L1", "ALLE") + 0.06);
-      tl.fromTo("#pb15", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 299, y: -31, scale: 1.10, rotation: -315, opacity: 0, duration: 0.90, ease: "power3.out" }, at("L1", "ALLE") + 0.09);
+      tl.fromTo("#sh1", { left: "-40%" }, { left: "130%", duration: .7, ease: "power2.inOut", immediateRender: false }, A + .35);
+      tl.fromTo("#sh1", { left: "-40%" }, { left: "130%", duration: .7, ease: "power2.inOut", immediateRender: false }, A + 1.3);
+      tl.fromTo("#pb0", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 287, y: 98, scale: 1.10, rotation: 60, opacity: 0, duration: 0.90, ease: "power3.out", immediateRender: false }, at("L1", "ALLE") + 0.00);
+      tl.fromTo("#pb1", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 323, y: 295, scale: 1.45, rotation: -77, opacity: 0, duration: 1.15, ease: "power3.out", immediateRender: false }, at("L1", "ALLE") + 0.03);
+      tl.fromTo("#pb2", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 252, y: 525, scale: 1.80, rotation: 94, opacity: 0, duration: 1.40, ease: "power3.out", immediateRender: false }, at("L1", "ALLE") + 0.06);
+      tl.fromTo("#pb3", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 28, y: 329, scale: 1.10, rotation: -111, opacity: 0, duration: 0.90, ease: "power3.out", immediateRender: false }, at("L1", "ALLE") + 0.09);
+      tl.fromTo("#pb4", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: -124, y: 441, scale: 1.45, rotation: 128, opacity: 0, duration: 1.15, ease: "power3.out", immediateRender: false }, at("L1", "ALLE") + 0.00);
+      tl.fromTo("#pb5", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: -345, y: 457, scale: 1.80, rotation: -145, opacity: 0, duration: 1.40, ease: "power3.out", immediateRender: false }, at("L1", "ALLE") + 0.03);
+      tl.fromTo("#pb6", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: -265, y: 154, scale: 1.10, rotation: 162, opacity: 0, duration: 0.90, ease: "power3.out", immediateRender: false }, at("L1", "ALLE") + 0.06);
+      tl.fromTo("#pb7", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: -418, y: 43, scale: 1.45, rotation: -179, opacity: 0, duration: 1.15, ease: "power3.out", immediateRender: false }, at("L1", "ALLE") + 0.09);
+      tl.fromTo("#pb8", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: -516, y: -176, scale: 1.80, rotation: 196, opacity: 0, duration: 1.40, ease: "power3.out", immediateRender: false }, at("L1", "ALLE") + 0.00);
+      tl.fromTo("#pb9", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: -231, y: -211, scale: 1.10, rotation: -213, opacity: 0, duration: 0.90, ease: "power3.out", immediateRender: false }, at("L1", "ALLE") + 0.03);
+      tl.fromTo("#pb10", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: -196, y: -409, scale: 1.45, rotation: 230, opacity: 0, duration: 1.15, ease: "power3.out", immediateRender: false }, at("L1", "ALLE") + 0.06);
+      tl.fromTo("#pb11", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: -50, y: -591, scale: 1.80, rotation: -247, opacity: 0, duration: 1.40, ease: "power3.out", immediateRender: false }, at("L1", "ALLE") + 0.09);
+      tl.fromTo("#pb12", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 89, y: -315, scale: 1.10, rotation: 264, opacity: 0, duration: 0.90, ease: "power3.out", immediateRender: false }, at("L1", "ALLE") + 0.00);
+      tl.fromTo("#pb13", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 268, y: -356, scale: 1.45, rotation: -281, opacity: 0, duration: 1.15, ease: "power3.out", immediateRender: false }, at("L1", "ALLE") + 0.03);
+      tl.fromTo("#pb14", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 478, y: -277, scale: 1.80, rotation: 298, opacity: 0, duration: 1.40, ease: "power3.out", immediateRender: false }, at("L1", "ALLE") + 0.06);
+      tl.fromTo("#pb15", { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: 299, y: -31, scale: 1.10, rotation: -315, opacity: 0, duration: 0.90, ease: "power3.out", immediateRender: false }, at("L1", "ALLE") + 0.09);
       
       window.__timelines["s01"] = tl;
     })();
