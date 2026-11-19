@@ -4150,6 +4150,14 @@ function gebSign1(c,g){c.save();c.translate(g.cx,g.cy);if(g.typ!=='doener'&&!KIO
 function gebSigns(c,z){if(z*S<=4)return;for(const g of GEB){if(GROWK!=null&&GROWV===g.v&&GROWK<g.at)continue;if(z*S<10){{const [a,b]=s2w(-40,-40),[e,f]=s2w(W+40,H+40);if(g.x1<a-40||g.x0>e+40||g.cy<b||g.cy-70>f)continue;}sprite(c,'sign'+g.key,g.x0-30,g.cy-62,g.x1+30,g.cy-8,o=>gebSign1(o,g));}else{/* nah (Erkunden): nur sichtbare Schilder zeichnen */if(!SBX)SBX=[s2w(-60,-60),s2w(W+60,H+60)];const [[a,b],[e,f]]=SBX;if(g.x1+30<a||g.x0-30>e||g.cy-8<b||g.cy-70>f)continue;gebSign1(c,g);}}SBX=null;}let SBX=null;
 // Herausgezoomt (Details nur wenige Pixel groß): Gebäude als Bild zwischenspeichern und regelmäßig auffrischen – spart viel Rechenzeit
 const SPR=new Map();
+// Speicher-Limit für Zwischenbilder: Safari auf dem iPhone hat ein festes Limit für alle Zeichenflächen zusammen (ca. 200–380 MB).
+// Wird es überschritten, liefert Safari leere Flächen und das Zeichnen bricht ab (Karte friert ein). Darum: höchstens SPRMAX Pixel,
+// die am längsten nicht benutzten Bilder werden zuerst freigegeben.
+const SPRMAX=/iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent)&&navigator.maxTouchPoints>0?18e6:40e6;
+function sprFrei(e){try{if(e&&e.cv){e.cv.width=0;e.cv.height=0;}}catch(_){}}
+function sprPlatz(keep){let tot=0;for(const e of SPR.values())if(e.cv)tot+=e.cv.width*e.cv.height;if(tot<=SPRMAX)return;
+ const L=[...SPR.entries()].filter(([,e])=>e.cv&&e!==keep).sort((a,b)=>(a[1].lu||0)-(b[1].lu||0));for(const [k,e] of L){if(tot<=SPRMAX*.8)break;tot-=e.cv.width*e.cv.height;sprFrei(e);SPR.delete(k);}}
+function sprAllesFrei(){for(const e of SPR.values())sprFrei(e);SPR.clear();try{NEBC.length=0;}catch(_){}try{for(const k in NEBC)delete NEBC[k];}catch(_){}baseKey='';}
 // Zwischengespeichertes Bild eines Gebäudes/Ortes. Beim Verschieben der Karte wird das fertige Bild nur versetzt (statt jedes Bild neu
 // zu zeichnen); erst wenn die Ansicht kurz ruht, wird es pixelgenau neu gezeichnet. Neu gezeichnet wird außerdem bei anderem Zoom,
 // Tageszeit/Wetter und regelmäßig für Animationen.
@@ -4161,21 +4169,21 @@ let FRT0=0,SPRN=0;const sprVoll=()=>SPRN>=2&&performance.now()-FRT0>10;
 function sprAlt(c,e,x0,y0){if(!e||!e.cv||!e.scl)return false;if(e.taps)TAPS.push(...e.taps);if(e.names)NAMES.push(...e.names);if(e.figs)FIGS.push(...e.figs);c.drawImage(e.cv,x0-e.ox/e.scl,y0-e.oy/e.scl,e.cv.width/e.scl,e.cv.height/e.scl);return true;}
 function sprite(c,key,x0,y0,x1,y1,fn){const zs=cam.z*S,m=c.getTransform(),sc=m.a,w=Math.ceil((x1-x0)*sc)+3,h=Math.ceil((y1-y0)*sc)+3;if(w*h>3e6||w<2||h<2){fn(c);return;}
  if(zs>=SPR_LIVE){// nah dran: im Stillstand live zeichnen (alle Animationen); nur beim Verschieben das beim Start der Bewegung gemachte Bild versetzen
-  const now=performance.now();if(!PANNT(now)){fn(c);return;}const PS=PANS;const fx=m.a*x0+m.e,fy=m.d*y0+m.f,dx=Math.floor(fx)-1,dy=Math.floor(fy)-1,base='n'+sc+'|'+Math.round(nightLevel()*24)+'|'+kind();let e=SPR.get(key);if(!e){e={cv:null,base:'',frac:'',want:'',t:0,ox:0,oy:0};SPR.set(key,e);}
+  const now=performance.now();if(!PANNT(now)){fn(c);return;}const PS=PANS;const fx=m.a*x0+m.e,fy=m.d*y0+m.f,dx=Math.floor(fx)-1,dy=Math.floor(fy)-1,base='n'+sc+'|'+Math.round(nightLevel()*24)+'|'+kind();let e=SPR.get(key);if(!e){e={cv:null,base:'',frac:'',want:'',t:0,ox:0,oy:0};SPR.set(key,e);}e.lu=now;
   if(e.base!==base&&e.cv&&e.ps===PS&&sprAlt(c,e,x0,y0))return;
-  if(e.base!==base||e.ps!==PS||!e.cv){if(e.cv&&sprVoll()&&sprAlt(c,e,x0,y0)){kick();return;}SPRN++;if(!e.cv)e.cv=document.createElement('canvas');if(e.cv.width!==w||e.cv.height!==h){e.cv.width=w;e.cv.height=h;}const o=e.cv.getContext('2d');o.setTransform(1,0,0,1,0,0);o.clearRect(0,0,w,h);o.setTransform(sc,0,0,sc,(fx-dx)-sc*x0,(fy-dy)-sc*y0);const a1=TAPS.length,a2=NAMES.length,a3=FIGS.length;fn(o);e.taps=TAPS.slice(a1);e.names=NAMES.slice(a2);e.figs=FIGS.slice(a3);e.base=base;e.ps=PS;e.ox=fx-dx;e.oy=fy-dy;e.scl=sc;e.frac='';e.t=0;}
+  if(e.base!==base||e.ps!==PS||!e.cv){if(e.cv&&sprVoll()&&sprAlt(c,e,x0,y0)){kick();return;}SPRN++;if(!e.cv)e.cv=document.createElement('canvas');if(e.cv.width!==w||e.cv.height!==h){e.cv.width=w;e.cv.height=h;sprPlatz(e);}const o=e.cv.getContext('2d');if(!o||!e.cv.width){sprFrei(e);SPR.delete(key);fn(c);return;}o.setTransform(1,0,0,1,0,0);o.clearRect(0,0,w,h);o.setTransform(sc,0,0,sc,(fx-dx)-sc*x0,(fy-dy)-sc*y0);const a1=TAPS.length,a2=NAMES.length,a3=FIGS.length;fn(o);e.taps=TAPS.slice(a1);e.names=NAMES.slice(a2);e.figs=FIGS.slice(a3);e.base=base;e.ps=PS;e.ox=fx-dx;e.oy=fy-dy;e.scl=sc;e.frac='';e.t=0;}
   else{TAPS.push(...e.taps);NAMES.push(...e.names);FIGS.push(...e.figs);}
   c.save();c.setTransform(1,0,0,1,0,0);c.drawImage(e.cv,fx-e.ox,fy-e.oy);c.restore();return;}
  const fx=m.a*x0+m.e,fy=m.d*y0+m.f,dx=Math.floor(fx)-1,dy=Math.floor(fy)-1,base=sc+'|'+Math.round(nightLevel()*24)+'|'+kind()+'|'+(WK.on&&WK.me?WK.me.name:''),frac=(fx-dx).toFixed(2)+'|'+(fy-dy).toFixed(2),now=performance.now();let e=SPR.get(key);
- if(!e){let h=0;for(const ch of key)h=(h*31+ch.charCodeAt(0))|0;e={cv:null,base:'',frac:'',want:'',t:0,ft:0,ox:0,oy:0,off:Math.abs(h)%240};SPR.set(key,e);}
+ if(!e){let h=0;for(const ch of key)h=(h*31+ch.charCodeAt(0))|0;e={cv:null,base:'',frac:'',want:'',t:0,ft:0,ox:0,oy:0,off:Math.abs(h)%240};SPR.set(key,e);}e.lu=now;
  const alt=now-e.t>(zs<4?900:zs<10?600+e.off*2:250+e.off);// Auffrischen versetzt je Gebäude – nie alle im selben Bild
  if(e.base===base&&e.cv&&!(alt&&!PANNT(now))&&(e.frac===frac||PANNT(now))){// gleiches Bild, nur verschoben (oder Animation läuft gleich weiter)
   TAPS.push(...e.taps);NAMES.push(...e.names);FIGS.push(...e.figs);c.save();c.setTransform(1,0,0,1,0,0);if(e.frac===frac)c.drawImage(e.cv,dx,dy);else c.drawImage(e.cv,fx-e.ox,fy-e.oy);c.restore();return;}
  if(e.base!==base&&PANNT(now)&&sprAlt(c,e,x0,y0)){e.want=base;return;}// Zoom/Verschieben: altes Bild skaliert, neu erst bei ruhiger Kamera
  if(e.base!==base&&e.want!==base){e.want=base;if(sprAlt(c,e,x0,y0)){kick();return;}if(!e.cv&&sprVoll()){e.want='';kick();return;}SPRN++;fn(c);return;}// Zoom ändert sich gerade: direkt zeichnen, Bild erst bei ruhigem Zoom
  if(sprVoll()){if(sprAlt(c,e,x0,y0)||!e.cv){kick();return;}}SPRN++;// Budget voll: altes Bild (oder beim allerersten Bild kurz noch nicht) – nächstes Bild holt es nach
- if(!e.cv)e.cv=document.createElement('canvas');if(e.cv.width!==w||e.cv.height!==h){e.cv.width=w;e.cv.height=h;}
- const o=e.cv.getContext('2d');o.setTransform(1,0,0,1,0,0);o.clearRect(0,0,w,h);o.setTransform(sc,0,0,sc,(fx-dx)-sc*x0,(fy-dy)-sc*y0);const a1=TAPS.length,a2=NAMES.length,a3=FIGS.length;fn(o);e.taps=TAPS.slice(a1);e.names=NAMES.slice(a2);e.figs=FIGS.slice(a3);e.base=base;e.frac=frac;e.ox=fx-dx;e.oy=fy-dy;e.scl=sc;e.t=now;
+ if(!e.cv)e.cv=document.createElement('canvas');if(e.cv.width!==w||e.cv.height!==h){e.cv.width=w;e.cv.height=h;sprPlatz(e);}
+ const o=e.cv.getContext('2d');if(!o||!e.cv.width){sprFrei(e);SPR.delete(key);fn(c);return;}o.setTransform(1,0,0,1,0,0);o.clearRect(0,0,w,h);o.setTransform(sc,0,0,sc,(fx-dx)-sc*x0,(fy-dy)-sc*y0);const a1=TAPS.length,a2=NAMES.length,a3=FIGS.length;fn(o);e.taps=TAPS.slice(a1);e.names=NAMES.slice(a2);e.figs=FIGS.slice(a3);e.base=base;e.frac=frac;e.ox=fx-dx;e.oy=fy-dy;e.scl=sc;e.t=now;
  c.save();c.setTransform(1,0,0,1,0,0);c.drawImage(e.cv,dx,dy);c.restore();}
 // Karte wird gerade verschoben? (Kamera bewegte sich in den letzten 250 ms)
 let PANX=0,PANY=0,PANZ=0,PANT=0,PANS=0;function PANNT(now){return now-PANT<250;}
@@ -4700,7 +4708,9 @@ if('IntersectionObserver' in window)new IntersectionObserver(e=>{onScreen=e[0].i
 const FR={hi:true,ema:6,gap:16.7,lang:0};
 // Langsames Gerät (z. B. älteres MacBook): bleibt die Karte trotz 30-Bilder-Modus zäh, wird die Pixelzahl schrittweise etwas gesenkt
 function frAnpassen(n){if(n>8000&&FR.gap>40&&!FR.hi){if(!FR.lang)FR.lang=n;else if(n-FR.lang>2500&&DPR>1){if(PXMAX>1.4e6&&W*H*DPR*DPR>=PXMAX*.95)PXMAX=PXMAX>4e6?3e6:PXMAX>2.5e6?2e6:1.4e6;else if(DPRMAX>1.25)DPRMAX=DPRMAX>1.5?1.5:1.25;/* Handy dauerhaft langsam: etwas geringere Auflösung, dafür flüssig */else{FR.lang=0;return;}FR.lang=0;FR.gap=33;resize();}}else FR.lang=0;}
-function loop(n){requestAnimationFrame(loop);if(!onScreen||document.hidden)return;const dt=n-last;if(dt<(FR.hi?13:30))return;if(dt<120)FR.gap=FR.gap*.9+dt*.1;last=n;T=TNOW();const a=performance.now();draw();feuerwerkZeichnen();sternZeichnen();FR.ema=FR.ema*.9+(performance.now()-a)*.1;
+// Fehler beim Zeichnen (z. B. Safari-Speicherlimit): Zwischenbilder freigeben und weiterzeichnen statt einzufrieren; einmal in der Statistik melden
+let ZFT=0,ZFN=0;function zeichenFehler(err){const n=performance.now();if(n-ZFT<1500)return;ZFT=n;ZFN++;try{sprAllesFrei();}catch(_){}try{if(ZFN<=3&&window.statEv)statEv('fehler: Zeichnen '+String(err&&err.message||err).replace(/[^\p{L}\p{N}_:.\- &()]/gu,' ').slice(0,22));}catch(_){}}
+function loop(n){requestAnimationFrame(loop);if(!onScreen||document.hidden)return;const dt=n-last;if(dt<(FR.hi?13:30))return;if(dt<120)FR.gap=FR.gap*.9+dt*.1;last=n;T=TNOW();const a=performance.now();try{draw();feuerwerkZeichnen();sternZeichnen();}catch(err){zeichenFehler(err);}FR.ema=FR.ema*.9+(performance.now()-a)*.1;
  if(FR.hi&&(FR.ema>12||FR.gap>26))FR.hi=false;else if(!FR.hi&&FR.ema<8&&FR.gap<40)FR.hi=true;frAnpassen(n);}
 if(!REDUCED)requestAnimationFrame(loop);
 // Neu zeichnen nach Verschieben/Zoomen: läuft die Animationsschleife, zeichnet sie das nächste Bild ohnehin (sonst doppelt gezeichnet → Ruckeln)
