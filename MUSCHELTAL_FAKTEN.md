@@ -515,7 +515,7 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 
 ## Video Tag 10 „Golden Pearl“ (19.11., `videos/muscheltal-tag10-pearl/`)
 - Hook „Es ist was passiert auf unserer Insel …“ → Hütten/Passanten („Hier könntest DU wohnen – folg mir“) → Wal-Event (Erfolg Wal-Watcher) → Schildkröten-Wanderung (Babyschildkröte am Strand) → Freiluftkino (Fr & Sa 20–22 Uhr) → **neu: Golden Pearl** (jede Menge Minispiele, nachts Party; im Video bewusst ohne Glücksspiel-Wörter) → Live-Verlosung → Spiel-Tests, Start bei 1.000 (Welt erkunden, Muscheln sammeln, Sachen kaufen, Freunde finden) → „Erzählt euren Freunden …“ → Folgen. Stimme Gemini Puck.
-- **Live-Verlosung 19.11. (Python `secrets`): Besitzer Kokos-Club (KOK(O)S) = @kerem90025** (Kokos-Küste, Hütte 1:75; Nr. 71 von 268 Kokos-Bewohnern ohne Job/Amt/Sonder-Wohnort). ⚠️ Homepage: als Besitzer/Leitung KOK(O)S eintragen (Nutzer entscheidet).
+- **Live-Verlosung 19.11. (Python `secrets`): Besitzer Kokos-Club (KOK(O)S) = @kerem90025** (Kokos-Küste, Hütte 1:75; Nr. 71 von 268 Kokos-Bewohnern ohne Job/Amt/Sonder-Wohnort). ✅ Homepage (20.11.): als Leitung KOK(O)S eingetragen (⭐ beim Club), Ereignis „Neuer Besitzer: KOK(O)S“ in den Neuigkeiten.
 - **Nächste Verlosung angekündigt: Inhaber vom Golden Pearl.** ⚠️ Golden Pearl gibt es auf der Homepage noch nicht (im Video als Illustration) – Homepage-Chat soll es bauen (Minispiele, nachts Party; nicht „Casino/Spielbank“ nennen).
 
 ### Änderungen 20.11. (Shop & Zurücksetzen)
@@ -523,3 +523,5 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - **Muschel-Shop auf der Startseite:** großer, auffälliger Knopf „🛍️ Muschel-Shop – Tiere · Fahrzeuge · Outfits & mehr“ als erster Knopf unter den drei Schritten (für alle sichtbar; ohne verknüpften Namen kommt der Verknüpfen-Hinweis). Der kleine Shop-Knopf neben dem Sticker-Album entfällt.
 - **Premium-Shop:** Der Knopf „Premium-Shop entsperren“ wackelt und leuchtet beim Betreten des Shops dreimal auf. Darunter steht „✨ Dein Traum-Gegenstand ohne langes Sparen – hier gibt es Muscheln auch direkt.“
 - **Zu wenig Muscheln beim Kauf:** „Sammle weiter – jeden Tag gibt es neue Muscheln.“ und darunter ein Kasten mit Link: „💎 Keine Lust, lange zu sparen? Im Premium-Shop gibt es Muscheln auch direkt – dann gehört dein Traum-Gegenstand gleich dir.“ Der Satz „vielleicht ist es morgen schon weg“ wurde entfernt (künstliche Verknappung).
+
+- **Golden Pearl weit rausgezoomt (20.11.):** Gebäude samt Steg wird jetzt in jeder Zoomstufe gezeichnet (vorher nur die Neon-Lichter → Plattform wirkte losgelöst).
