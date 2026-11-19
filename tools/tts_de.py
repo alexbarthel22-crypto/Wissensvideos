@@ -4,6 +4,7 @@
 Erzeugt <projekt>/assets/voice/narration.wav und <projekt>/assets/voice/timings.json.
 
 Backends:
+  elevenlabs – ElevenLabs (Priorität 1), Voice-ID per --voice
   coqui  – Thorsten VITS (22 kHz, natürlicher), braucht das coqui-venv
   piper  – Piper-Stimmen (16 kHz), schneller Fallback
 
@@ -126,6 +127,57 @@ def synth_google(texts, voice, scales, prons=None):
             wav = base64.b64decode(json.loads(r.read())["audioContent"])
         a, sr = sf.read(io.BytesIO(wav), dtype="float32")
         out.append((a, sr))
+    return out
+
+
+def synth_eleven(texts, voice, scales, model, cache_dir=None, force=()):
+    """ElevenLabs (Priorität 1). Schlüssel injiziert der Netzwerk-Proxy für api.elevenlabs.io (Header xi-api-key);
+    $ELEVENLABS_API_KEY nur nötig, falls kein Proxy-Secret hinterlegt ist. voice = Voice-ID. Tempo über atempo."""
+    import hashlib
+    import time
+    import urllib.error
+    import urllib.request
+    key = os.environ.get("ELEVENLABS_API_KEY", "proxy-injected")
+    out = []
+    for idx, (t, ls) in enumerate(zip(texts, scales)):
+        h = hashlib.sha1(json.dumps([t, voice, model]).encode()).hexdigest()[:16]
+        cpath = Path(cache_dir) / f"{h}.wav" if cache_dir else None
+        if cpath and cpath.exists() and idx not in force:
+            pcm, sr = sf.read(cpath, dtype="float32")
+        else:
+            body = {"text": t, "model_id": model, "language_code": "de",
+                    "voice_settings": {"stability": 0.45, "similarity_boost": 0.8, "style": 0.35, "use_speaker_boost": True}}
+            if model.startswith("eleven_v3") or model.startswith("eleven_multilingual_v1"):
+                body.pop("language_code")
+            url = f"https://api.elevenlabs.io/v1/text-to-speech/{voice}?output_format=pcm_24000"
+            for att in range(5):
+                try:
+                    req = urllib.request.Request(url, data=json.dumps(body).encode(),
+                                                 headers={"Content-Type": "application/json", "xi-api-key": key})
+                    with urllib.request.urlopen(req, timeout=120) as r:
+                        raw = r.read()
+                    break
+                except urllib.error.HTTPError as e:
+                    msg = e.read().decode(errors="replace")[:300]
+                    if e.code in (400, 401, 403, 404) or att == 4:
+                        raise SystemExit(f"ElevenLabs-Fehler {e.code}: {msg}")
+                    time.sleep(10 * (att + 1))
+                except urllib.error.URLError:
+                    if att == 4:
+                        raise
+                    time.sleep(10 * (att + 1))
+            pcm, sr = np.frombuffer(raw, dtype="<i2").astype("float32") / 32768, 24000
+            print(f"    elevenlabs: {t[:40]!r} {len(pcm) / sr:.2f} s")
+            if cpath:
+                cpath.parent.mkdir(parents=True, exist_ok=True)
+                sf.write(cpath, pcm, sr)
+        if abs(ls - 1) > 0.01:
+            with tempfile.TemporaryDirectory() as d:
+                src, dst = Path(d) / "a.wav", Path(d) / "b.wav"
+                sf.write(src, pcm, sr)
+                subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", src, "-af", f"atempo={1 / ls:.3f}", dst], check=True)
+                pcm, sr = sf.read(dst, dtype="float32")
+        out.append((pcm, sr))
     return out
 
 
@@ -338,8 +390,8 @@ def word_times(words, duration, audio):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("project")
-    ap.add_argument("--backend", choices=["gemini", "google", "coqui", "piper"], default="coqui")
-    ap.add_argument("--model", default="gemini-3.8-flash-tts", help="Gemini-TTS-Modell")
+    ap.add_argument("--backend", choices=["elevenlabs", "gemini", "google", "coqui", "piper"], default="coqui")
+    ap.add_argument("--model", default=None, help="TTS-Modell (Gemini: gemini-3.8-flash-tts, ElevenLabs: eleven_multilingual_v2)")
     ap.add_argument("--redo", help="Zeilen-IDs (L2,L8) neu erzeugen statt aus dem Cache")
     ap.add_argument("--voice-dir", help="Piper-Stimmenordner oder Coqui-Modellordner (Standard: aus tools/setup.sh)")
     ap.add_argument("--coqui-python", default=str(CACHE / "coqui" / "bin" / "python"))
@@ -350,9 +402,11 @@ def main():
     ap.add_argument("--max-gap", type=float, default=0.55, help="längste Pause innerhalb einer Zeile in Sekunden")
     ap.add_argument("--noise", type=float, default=0.667, help="Ausdruck/Variation der Stimme (0.33 monoton … 0.9 lebhaft)")
     args = ap.parse_args()
+    if args.model is None:
+        args.model = "eleven_multilingual_v2" if args.backend == "elevenlabs" else "gemini-3.8-flash-tts"
 
     if not args.voice_dir:
-        args.voice_dir = "" if args.backend in ("google", "gemini") else str(CACHE / (args.voice if args.voice != "css10" else "css10-vits"))
+        args.voice_dir = "" if args.backend in ("google", "gemini", "elevenlabs") else str(CACHE / (args.voice if args.voice != "css10" else "css10-vits"))
     project = Path(args.project)
     script = json.loads((project / "script.json").read_text())
     lines = []
@@ -367,7 +421,10 @@ def main():
 
     texts = [l["spoken"] for l in lines]
     scales = [l["scale"] for l in lines]
-    if args.backend == "gemini":
+    if args.backend == "elevenlabs":
+        force = {i for i, l in enumerate(lines) if l["id"] in (args.redo or "").split(",")}
+        raw = synth_eleven(texts, args.voice, scales, args.model, project / "assets" / "voice" / "eleven_cache", force)
+    elif args.backend == "gemini":
         force = {i for i, l in enumerate(lines) if l["id"] in (args.redo or "").split(",")}
         raw = synth_gemini(texts, args.voice, scales, [l["style"] for l in lines], args.model,
                            project / "assets" / "voice" / "gemini_cache", force)
@@ -385,7 +442,7 @@ def main():
     pieces, t = [np.zeros(int(lead * SR), dtype="float32")], lead
     for line, (audio, sr) in zip(lines, raw):
         audio = resample(audio.astype("float32"), sr)
-        if args.backend not in ("google", "gemini"):  # echte Stimme braucht keine Klang-Reparatur
+        if args.backend not in ("google", "gemini", "elevenlabs"):  # echte Stimme braucht keine Klang-Reparatur
             audio = clarity(audio)
         audio = compress_pauses(trim(audio), args.max_gap)
         if line["new_scene"]:
