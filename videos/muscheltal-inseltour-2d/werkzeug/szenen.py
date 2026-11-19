@@ -141,7 +141,7 @@ scene("s00", GL + """
       tl.to("#w0", { opacity: 0, scale: .6, duration: .18, ease: "power2.in" }, A - .25);
       tl.fromTo("#w1", { opacity: 0, scale: .3, y: 80 }, { opacity: 1, scale: 1, y: 0, duration: .45, ease: "back.out(2.6)" }, A - .1);
       tl.to("#w1", { y: -10, duration: .5, yoyo: true, repeat: 3, ease: "sine.inOut" }, A + .4);
-      tl.to("#w1", { opacity: 0, scale: .7, duration: .2 }, K - .2);
+      tl.to("#w1", { opacity: 0, scale: .7, duration: .2 }, K - .2);""")
 
 # s01 – Willkommen in Muschel-Tal: 790 zählt hoch, Sonnenstrahlen, Konfetti
 scene("s01", GL + """
