@@ -763,24 +763,27 @@ export default async (req) => {
     return json({ ok: true, aus: a });
   }
   if (act === "stand") {
+    // Alles Unabhängige gleichzeitig laden (deutlich schneller als nacheinander)
+    const [einlL, live, likeL, klopfL, geschL, nachbar, premRoh, startRoh, stkL, fisL, sandRoh, ausRoh] = await Promise.all([
+      liste(store, "b/" + nm + "/einladung/"), liveErf(store, nm), liste(store, "x/like/" + nm + "/"), liste(store, "x/klopfan/" + nm + "/"),
+      liste(store, "x/geschenkt/" + nm + "/"), nachbarErf(store, nm), store.get("x/premium/" + nm), store.get("x/start/" + nm),
+      liste(store, "x/sticker/" + nm + "/"), liste(store, "x/fisch/" + nm + "/"), store.get("x/sand/" + woche(heute) + "/" + nm + "/" + heute), store.get("a/" + nm)]);
     // neue angerechnete Einladungen einmal melden
     const eingeladen = [];
-    for (const k of await liste(store, "b/" + nm + "/einladung/")) { const n = k.split("/")[3], mk = "x/einlmeld/" + nm + "/" + n; if (!(await store.get(mk))) { await store.set(mk, "1"); eingeladen.push(n); } }
-    const live = await liveErf(store, nm);
-    const likeN = (await liste(store, "x/like/" + nm + "/")).length;
+    await Promise.all(einlL.map(async k => { const n = k.split("/")[3], mk = "x/einlmeld/" + nm + "/" + n; if (!(await store.get(mk))) { await store.set(mk, "1"); eingeladen.push(n); } }));
+    const likeN = likeL.length;
     const klopfer = [];// wer hat seit dem letzten Besuch geklopft? (einmal melden, dann löschen)
-    for (const k of await liste(store, "x/klopfan/" + nm + "/")) { const n = k.split("/")[3].split("-").slice(1).join("-"); if (n && !klopfer.includes(n)) klopfer.push(n); await store.delete(k); }
+    for (const k of klopfL) { const n = k.split("/")[3].split("-").slice(1).join("-"); if (n && !klopfer.includes(n)) klopfer.push(n); }
     const geschenke = [];// 🎁 Muschel-Geschenke (Echtgeld) seit dem letzten Besuch: einmal melden, dann löschen
-    for (const k of await liste(store, "x/geschenkt/" + nm + "/")) { try { const g = JSON.parse((await store.get(k)) || "{}"); if (g.von) geschenke.push({ von: "@" + g.von, m: g.m }); } catch (e) {} await store.delete(k); }
-    const nachbar = await nachbarErf(store, nm);// schon beanspruchte Nachbarn bekommen den Erfolg beim nächsten Besuch
-    const B = await buch(store, nm), s = await serie(B);
+    await Promise.all([...klopfL.map(k => store.delete(k)), ...geschL.map(async k => { try { const g = JSON.parse((await store.get(k)) || "{}"); if (g.von) geschenke.push({ von: "@" + g.von, m: g.m }); } catch (e) {} await store.delete(k); })]);
+    const B = await buch(store, nm), s = await serie(B);// nach Nachbar-/LIVE-Erfolg, damit deren Buchungen schon drin sind
     const posten = B.filter(e => e.a).map(e => ({ art: e.art, id: e.id, a: e.a, t: TEXT[e.art] || e.art }))
       .sort((x, y) => (y.id > x.id ? 1 : -1)).slice(0, 60);
     return mitCookie(json({
-      ok: true, pinFehlt: !c.pin, nachbar, live, eingeladen, klopfer, geschenke, premium: !!(await store.get("x/premium/" + nm)), startDa: !(await store.get("x/start/" + nm)), likes: { n: likeN }, neu: likeN >= 25 && (await erfGib("HERZ")) ? ["HERZ"] : [], sticker: (await liste(store, "x/sticker/" + nm + "/")).map(k => k.split("/")[3]), fische: (await liste(store, "x/fisch/" + nm + "/")).map(k => k.split("/")[3]), angelnHeute: Object.fromEntries([0, 1].map(i => [i, (B.find(e => e.art === "angeln" && e.id.startsWith(heute + "-" + i + "_")) || {}).id?.split("_")[1] || null])), sandHeute: !!(await store.get("x/sand/" + woche(heute) + "/" + nm + "/" + heute)), geschenk: B.some(e => e.art === "geschenk" && e.id === heute), stand: B.reduce((s, e) => s + e.a, 0), serie: s,
+      ok: true, pinFehlt: !c.pin, nachbar, live, eingeladen, klopfer, geschenke, premium: !!premRoh, startDa: !startRoh, likes: { n: likeN }, neu: likeN >= 25 && (await erfGib("HERZ")) ? ["HERZ"] : [], sticker: stkL.map(k => k.split("/")[3]), fische: fisL.map(k => k.split("/")[3]), angelnHeute: Object.fromEntries([0, 1].map(i => [i, (B.find(e => e.art === "angeln" && e.id.startsWith(heute + "-" + i + "_")) || {}).id?.split("_")[1] || null])), sandHeute: !!sandRoh, geschenk: B.some(e => e.art === "geschenk" && e.id === heute), stand: B.reduce((s, e) => s + e.a, 0), serie: s,
       shells: B.filter(e => e.art === "shell" && e.id.startsWith(heute) && e.id.split("-").length === 6).map(e => e.id.split("-").slice(3).map(Number).join("-")),
       questsDone: B.filter(e => e.art === "quest" && e.id.startsWith(heute)).map(e => Number(e.id.split("-").pop())),
-      gespendet: -B.filter(e => e.art === "spende").reduce((s, e) => s + e.a, 0), posten, heute, inv: besitz(B), aus: JSON.parse((await store.get("a/" + nm)) || "{}")
+      gespendet: -B.filter(e => e.art === "spende").reduce((s, e) => s + e.a, 0), posten, heute, inv: besitz(B), aus: JSON.parse(ausRoh || "{}")
     }), nm, String(d.token || ""));
   }
   return json({ fehler: "Aktion" }, 400);
