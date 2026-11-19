@@ -1,23 +1,18 @@
-# Muschel-Tal – Inseltour 2D (Tag 10) · Beschreibung
+# Muschel-Tal Tag 10 – Golden Pearl · Beschreibung
 
-**Cover:** `renders/cover.jpg` (`cover/thumb.html`, Hintergrund = Wal-Sprung) – Schild „TAG 10 · 790 Follower“, riesig „WAS WAR DAS?! 😱“, unten „🐋 direkt vor meiner Insel“. 2D-Version: `../muscheltal-inseltour-2d/renders/cover.jpg` (gleiches Layout, Homepage-Wal).
+**Cover:** `renders/cover.jpg` (`cover/thumb.html`) – Golden Pearl bei Nacht, Schild „TAG 10 · 790 Follower“, groß „ES IST WAS PASSIERT 😳“, unten „🎁 Live-Verlosung!“.
 
 ## Hauptversion (zum Posten)
-790 Follower wohnen auf meiner Insel 🏝️ … und dann taucht DAS auf 🐋😱
+Auf meiner Insel ist was passiert 😳 Wal, Schildkröten, Golden Pearl – und @kerem90025 gehört jetzt der Kokos-Club 🎉
 
-Findest du deine Hütte? Kommentiere „Wo bin ich?“ 👇
+Bei 1.000 Bewohnern startet das Spiel 🎮 Markier deine Freunde, damit sie dabei sind 👇
 
 #muscheltal #fyp #fürdich #foryou #viral
 
 ## Alternative A (Neugier)
-Bis zum Ende schauen – so was hat KEINER erwartet 😳🐋
-
-#muscheltal #fyp #fürdich #foryou #viral
-
-## Alternative B (Mitmachen)
-Tag 10: Jede Hütte = 1 echter Follower 🏠 Markier deine Freunde, damit ihr Nachbarn werdet 👯
+Bis zum Ende schauen – da verrate ich, wann das Spiel startet 🎮👀
 
 #muscheltal #fyp #fürdich #foryou #viral
 
 ## Angepinnter Kommentar (vom Account selbst)
-Was soll ich als Nächstes bauen? Das meistgelikte Gebäude kommt als Nächstes 🏗️👇
+Nächste Verlosung: Wer wird Inhaber vom Golden Pearl? 💎 Folgen und dabei sein 👇
