@@ -271,6 +271,16 @@ async function liveErf(store, nm) { return (await store.get("live/" + nm)) ? awa
 // Muschel-Rangliste zwischenspeichern (Server-Speicher + Blob, 45 s): das Durchzählen aller Buchungen dauert,
 // die Rangliste soll aber sofort da sein
 let RANGC = { t: 0, d: null };
+// 🏅 Erfolge-Rangliste: verschiedene Erfolge je beanspruchtem Namen (Server- und Browser-Erfolge, jeder einmal), 60 s zwischengespeichert
+let ERFC = { t: 0, d: null };
+async function erfDaten(store) {
+  if (ERFC.d && Date.now() - ERFC.t < 60000) return ERFC.d;
+  const claimed = new Set((await liste(store, "c/")).map(k => k.slice(2))), E = {};
+  for (const k of await liste(store, "b/")) { const [, n, art, id] = k.split("/"); if (art === "erf" && claimed.has(n)) (E[n] = E[n] || new Set()).add(id); }
+  for (const k of await liste(getStore("erfolge"), "e/")) { const [, n, K] = k.split("/"); if (claimed.has(n)) (E[n] = E[n] || new Set()).add(K); }
+  const order = Object.entries(E).map(([n, s]) => [n, s.size]).filter(x => x[1] > 0).sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : 1));
+  ERFC = { t: Date.now(), d: order }; return order;
+}
 async function rangDaten(store) {
   const jetzt = Date.now();
   if (RANGC.d && jetzt - RANGC.t < 45000) return RANGC.d;
@@ -357,6 +367,12 @@ export default async (req) => {
   const store = getStore({ name: "muscheln", consistency: "strong" });
   await vorarbeit(store);
   const url = new URL(req.url);
+  if (req.method === "GET" && url.searchParams.get("erftop")) {
+    const order = await erfDaten(store), me = (url.searchParams.get("name") || "").trim().toLowerCase().replace(/^@/, "");
+    const top = order.slice(0, 10).map(([n, v]) => ({ n: "@" + n, stand: v }));
+    let platz = null, stand = null; if (me) { const i = order.findIndex(x => x[0] === me); if (i >= 0) { platz = i + 1; stand = order[i][1]; } }
+    return json({ top, platz, stand, bis10: platz && platz > 10 && top[9] ? top[9].stand - stand + 1 : null, anzahl: order.length });
+  }
   if (req.method === "GET" && url.searchParams.get("top")) {
     // Muschel-Rangliste: Top 10 der beanspruchten Namen nach Kontostand, Pfeile im Vergleich zu gestern, optional eigener Platz
     const { order, vor, beansprucht } = await rangDaten(store);
