@@ -512,3 +512,9 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - **Video 3D-Inseltour 3 (19.11.):** Stimme jetzt ElevenLabs „Liam“. Start mit Wal-Sprung vor der Südküste und Baby-Schildkröten, die mit Spuren ins Meer krabbeln (wie Homepage-Events 🐋/🐢). 790 Einwohner, Tierheim Pfotenkuss „hat endlich geöffnet“. Im 3D-Modell an Hütten nur Blumentöpfe (keine Briefkästen/Katzen, wie Homepage); Strand mit Handtüchern, Sandburgen, Schwimmringen, Krabben, Seesternen, Muscheln.
 
 - **Ab 19.11. (Nutzerwunsch):** Stimme wieder Gemini (Puck, gemini-2.5-flash-preview-tts, Stil wie Tag 10), Videos wieder 2D mit Homepage-Karte als Hintergrund. ElevenLabs/3D nur auf ausdrücklichen Wunsch.
+
+### Änderungen 20.11. (Shop & Zurücksetzen)
+- **Zurücksetzen (2. Lauf):** Bei der nächsten Veröffentlichung werden alle Konten erneut auf den Stand 18.11.2026 18:00 zurückgesetzt (Verknüpfungen samt PIN, Buchungen, Aufgaben, Erfolge, Sticker, Fische, Sandburg, Likes, Anklopfen, Shop-Käufe, Spenden, Story). Echtgeld-Käufe bleiben. Die Statistik wird komplett geleert.
+- **Muschel-Shop auf der Startseite:** großer, auffälliger Knopf „🛍️ Muschel-Shop – Tiere · Fahrzeuge · Outfits & mehr“ als erster Knopf unter den drei Schritten (für alle sichtbar; ohne verknüpften Namen kommt der Verknüpfen-Hinweis). Der kleine Shop-Knopf neben dem Sticker-Album entfällt.
+- **Premium-Shop:** Der Knopf „Premium-Shop entsperren“ wackelt und leuchtet beim Betreten des Shops dreimal auf. Darunter steht „✨ Dein Traum-Gegenstand ohne langes Sparen – hier gibt es Muscheln auch direkt.“
+- **Zu wenig Muscheln beim Kauf:** „Sammle weiter – jeden Tag gibt es neue Muscheln.“ und darunter ein Kasten mit Link: „💎 Keine Lust, lange zu sparen? Im Premium-Shop gibt es Muscheln auch direkt – dann gehört dein Traum-Gegenstand gleich dir.“ Der Satz „vielleicht ist es morgen schon weg“ wurde entfernt (künstliche Verknappung).

@@ -161,7 +161,8 @@ async function zurueckAuf(store) {
 // Einmalig (18./19.11.): ALLE Bewohner zurück auf den Stand 18.11.2026 18:00 Uhr (Berlin) – alles, was danach passiert ist
 // (Beanspruchungen, Buchungen, Aufgaben, Erfolge, Sticker, Fische, Sandburg, Likes, Anklopfen, Flaschenpost, Einladungen,
 // Shop-Käufe samt Ausrüstung, Spenden, Story) wird gelöscht. Echtgeld-Käufe (Stripe) bleiben erhalten.
-const ALLE_AB = 1795021200000, ALLE_NR = 1;
+// 20.11.: nochmal (Lauf 2) – wieder alles nach 18.11. 18:00 bis zur nächsten Veröffentlichung
+const ALLE_AB = 1795021200000, ALLE_NR = 2;
 let ALLE_OK = false;
 // parallel (schneller), höchstens 40 gleichzeitig
 async function jeParallel(L, f) { for (let i = 0; i < L.length; i += 40) await Promise.all(L.slice(i, i + 40).map(f)); }
