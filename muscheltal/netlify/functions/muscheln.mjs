@@ -129,6 +129,10 @@ async function spPreise(store) {
     if (await store.get(mk)) continue; await store.set(mk, String(Date.now()));
     for (const sp of Object.keys(SPIELE)) { const L = await spTop(store, w, sp); for (let i = 0; i < 3 && i < L.length; i++) { const nm = L[i].n.slice(1), pre = "b/" + nm + "/spielpreis/" + w + "-" + sp + "-" + (i + 1) + "/"; if (!(await liste(store, pre)).length) await store.set(pre + SP_PREIS[i], String(Date.now())); } } }
 }
+// ⚔️ Duelle: Herausforderung mit derselben Strecke (gleicher Startwert); Gegner spielen am Golden Pearl, beide sehen das Ergebnis
+async function duellInfo(store, id) { let D = null; try { D = JSON.parse((await store.get("x/duell/" + id)) || "null"); } catch (e) {} if (!D) return { ok: false, grund: "weg" };
+  const A = []; for (const k of await liste(store, "x/duellerg/" + id + "/")) { const v = Number(await store.get(k)); if (v >= 0) A.push({ n: "@" + k.split("/").pop(), s: v }); }
+  A.sort((a, b) => D.k === "memory" ? a.s - b.s : b.s - a.s); return { ok: true, id, k: D.k, von: "@" + D.von, s: D.s, antworten: A.slice(0, 20) }; }
 async function spRang(store, nm) { const w = spWoche(), out = {}; for (const k of Object.keys(SPIELE)) { const L = await spTop(store, w, k), i = nm ? L.findIndex(x => x.n === "@" + nm) : -1; out[k] = { top: L.slice(0, 3).map(({ n, s }) => ({ n, s })), ich: i >= 0 ? { s: L[i].s, platz: i + 1 } : null }; } return { ok: true, woche: w, spiele: out }; }
 async function zuruecksetzen(store) {
   for (const [n, nr, ab, opt] of RESET) {
@@ -396,6 +400,7 @@ export default async (req) => {
   const store = getStore({ name: "muscheln", consistency: "strong" });
   await vorarbeit(store);
   const url = new URL(req.url);
+  if (req.method === "GET" && url.searchParams.get("duell")) { const id = String(url.searchParams.get("duell")).replace(/[^a-z0-9]/g, "").slice(0, 12); return json(await duellInfo(store, id)); }
   if (req.method === "GET" && url.searchParams.get("spielrang")) { try { await spPreise(store); } catch (e) {} return json(await spRang(store, null)); }
   if (req.method === "GET" && url.searchParams.get("erftop")) {
     const order = await erfDaten(store), me = (url.searchParams.get("name") || "").trim().toLowerCase().replace(/^@/, "");
@@ -705,12 +710,26 @@ export default async (req) => {
     return json({ ok: true, art, betrag, fund, neu, stand: B.reduce((s, e) => s + e.a, 0), fische: fund ? (await liste(store, "x/fisch/" + nm + "/")).map(q => q.split("/")[3]) : undefined });
   }
   if (act === "spielRang") { try { await spPreise(store); } catch (e) {} return json(await spRang(store, nm)); }
+  if (act === "duellNeu") {
+    let L = null; try { L = JSON.parse((await store.get("x/spielletzt/" + nm)) || "null"); } catch (e) {}
+    if (!L || Date.now() - L.t > 30 * 60000) return json({ ok: false, grund: "lauf" });
+    if ((await liste(store, "x/duellvon/" + nm + "/" + heute + "-")).length >= 20) return json({ ok: false, grund: "genug" });
+    const id = Math.random().toString(36).slice(2, 10);
+    await store.set("x/duell/" + id, JSON.stringify({ k: L.k, seed: L.seed, s: L.s, von: nm, t: Date.now() })); await store.set("x/duellvon/" + nm + "/" + heute + "-" + id, id);
+    return json({ ok: true, id, k: L.k, s: L.s });
+  }
+  if (act === "meineDuelle") {
+    const out = []; for (const k of (await liste(store, "x/duellvon/" + nm + "/")).slice(-8).reverse()) { const I = await duellInfo(store, String(await store.get(k))); if (I.ok) out.push(I); }
+    return json({ ok: true, duelle: out });
+  }
   if (act === "spielStart") {
     const k = String(d.spiel || ""); if (!SPIELE[k]) return json({ ok: false, grund: "spiel" });
     const lk = "x/spiellast/" + nm, last = Number(await store.get(lk)) || 0; if (Date.now() - last < 1500) return json({ ok: false, grund: "schnell" });
     await store.set(lk, String(Date.now()));
-    const id = Date.now().toString(36) + Math.random().toString(36).slice(2, 8), seed = Math.floor(zz() * 1e9);
-    await store.set("x/spiellauf/" + nm + "/" + id, JSON.stringify({ k, seed, t: Date.now() }));
+    let seed = Math.floor(zz() * 1e9), duell = null;
+    if (d.duell) { duell = String(d.duell).replace(/[^a-z0-9]/g, "").slice(0, 12); let D = null; try { D = JSON.parse((await store.get("x/duell/" + duell)) || "null"); } catch (e) {} if (!D || D.k !== k) return json({ ok: false, grund: "duell" }); if (D.von === nm) return json({ ok: false, grund: "selbst" }); seed = D.seed; }
+    const id = Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+    await store.set("x/spiellauf/" + nm + "/" + id, JSON.stringify({ k, seed, t: Date.now(), duell }));
     return json({ ok: true, id, seed });
   }
   if (act === "spielEnde") {
@@ -724,7 +743,10 @@ export default async (req) => {
     const besser = !alt || (k === "memory" ? s < alt.s : s > alt.s);
     if (besser) await store.set(bk, JSON.stringify({ s, t: Date.now() }));
     const T = await spTop(store, w, k), platz = T.findIndex(x => x.n === "@" + nm) + 1;
-    return json({ ok: true, neu: besser, best: besser ? s : alt.s, platz: platz || null });
+    await store.set("x/spielletzt/" + nm, JSON.stringify({ k, seed: L.seed, s, t: Date.now() }));
+    let duell = null;
+    if (L.duell) { const dk = "x/duellerg/" + L.duell + "/" + nm, a = await store.get(dk); if (a === null || (k === "memory" ? s < Number(a) : s > Number(a))) await store.set(dk, String(s)); const I = await duellInfo(store, L.duell); if (I.ok) duell = { von: I.von, s: I.s, mein: s, gewonnen: k === "memory" ? s < I.s : s > I.s }; }
+    return json({ ok: true, neu: besser, best: besser ? s : alt.s, platz: platz || null, duell });
   }
   if (act === "geschenk") {
     const betrag = 1 + (crypto.getRandomValues(new Uint32Array(1))[0] % 3), ok = await setze("geschenk", heute, betrag), B = await buch(store, nm);
