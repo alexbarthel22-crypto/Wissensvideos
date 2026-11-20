@@ -60,8 +60,8 @@
     .stk.gr { background: linear-gradient(160deg, #22b36a, #8be04e); text-shadow: 0 7px 0 #0d5a2e; color: #fff; box-shadow: 0 0 0 9px #fff, 0 0 0 16px #0d3a20, 0 24px 0 rgba(0,0,0,.28); }
     .stk.go { background: linear-gradient(160deg, #ffd23f, #ff9a1a); color: #fff; text-shadow: 0 7px 0 #8a4a00; box-shadow: 0 0 0 9px #fff, 0 0 0 16px #4a2a00, 0 24px 0 rgba(0,0,0,.28), 0 0 90px rgba(255,200,60,.8); }
   </style>
-  <div id="root" data-composition-id="s04" data-start="0" data-duration="10.960" data-width="1080" data-height="1920">
-    <div id="s04-stage" class="clip stage" data-start="0" data-duration="10.960" data-track-index="0">
+  <div id="root" data-composition-id="s04" data-start="0" data-duration="10.340" data-width="1080" data-height="1920">
+    <div id="s04-stage" class="clip stage" data-start="0" data-duration="10.340" data-track-index="0">
       <div id="t4" class="stk gr"><small>am Strand</small>🐢 Schildkröten-<br>Wanderung!</div>
       <div id="h4" class="stk" style="background:linear-gradient(160deg,#7b3dff,#ff3d7f);text-shadow:0 7px 0 #3a1070;font-size:96px"><small>🐋 + 🐢 merkt euch das …</small>WICHTIG<br>FÜRS SPIEL? 🤫</div>
     </div>
@@ -69,7 +69,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 10.96, "L4": [0.2, 4.98], "L4.words": [["am", 0.2, 0.549], ["strand", 0.549, 0.95], ["eine", 1.27, 1.648], ["schildkröten", 1.648, 2.845], ["wanderung", 2.845, 3.02], ["die", 3.37, 3.598], ["babys", 3.598, 4.045], ["krabbeln", 4.045, 4.517], ["ins", 4.517, 4.744], ["meer", 4.744, 4.98]], "L4b": [5.6, 10.28], "L4b.words": [["wal", 5.6, 5.768], ["und", 5.768, 5.937], ["schildkröten", 5.937, 6.46], ["", 6.46, 6.61], ["merkt", 6.82, 7.048], ["sie", 7.048, 7.26], ["euch", 7.26, 7.48], ["die", 7.6, 7.774], ["könnten", 7.774, 8.127], ["später", 8.127, 8.474], ["wichtig", 8.474, 8.828], ["werden", 8.828, 9.175], ["", 9.175, 9.33], ["fürs", 9.68, 9.975], ["spiel", 9.975, 10.28]]};
+      const C = {"__dur": 10.34, "L4": [0.2, 4.71], "L4.words": [["am", 0.2, 0.628], ["strand", 0.628, 1.12], ["eine", 1.26, 1.623], ["schildkröten", 1.623, 2.772], ["wanderung", 2.772, 2.94], ["die", 3.19, 3.405], ["babys", 3.405, 3.827], ["krabbeln", 3.827, 4.272], ["ins", 4.272, 4.487], ["meer", 4.487, 4.71]], "L4b": [5.18, 9.91], "L4b.words": [["wal", 5.18, 5.375], ["und", 5.375, 5.57], ["schildkröten", 5.57, 6.176], ["", 6.176, 6.35], ["merkt", 6.6, 6.824], ["sie", 6.824, 7.033], ["euch", 7.033, 7.25], ["die", 7.5, 7.653], ["könnten", 7.653, 7.963], ["später", 7.963, 8.268], ["wichtig", 8.268, 8.579], ["werden", 8.579, 8.884], ["", 8.884, 9.02], ["fürs", 9.27, 9.585], ["spiel", 9.585, 9.91]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
