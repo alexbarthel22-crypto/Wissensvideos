@@ -103,7 +103,7 @@ scene("s01", """
     #ry1 { position: absolute; left: 540px; top: 640px; width: 2000px; height: 2000px; margin: -1000px; border-radius: 50%; opacity: 0;
       background: repeating-conic-gradient(rgba(255,40,60,.38) 0deg 7deg, rgba(255,40,60,0) 7deg 20deg); -webkit-mask: radial-gradient(circle, #000 15%, transparent 60%); mask: radial-gradient(circle, #000 15%, transparent 60%); }
     #fl1 { position: absolute; inset: 0; background: #fff; opacity: 0; }
-    #rd1 { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 50%, rgba(255,0,30,.05) 30%, rgba(200,0,20,.75) 100%); opacity: 0; }
+    #rd1 { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 50%, rgba(255,0,30,0) 62%, rgba(220,0,25,.85) 100%); opacity: 0; }
     .sb { position: absolute; top: -300px; width: 900px; height: 1400px; opacity: .0; background: conic-gradient(from 160deg at 50% 0%, rgba(255,30,50,0) 0deg, rgba(255,30,50,.55) 20deg, rgba(255,30,50,0) 40deg); transform-origin: 50% 0%; }
     #sbL { left: -450px; } #sbR { right: -450px; }
     #bn1 { position: absolute; left: 0; right: 0; top: 215px; height: 150px; display: flex; align-items: center; justify-content: center; gap: 26px; background: linear-gradient(180deg,#ff2a3d,#b8001a); box-shadow: 0 10px 0 rgba(0,0,0,.3), 0 0 60px rgba(255,0,30,.7); opacity: 0; }
@@ -119,7 +119,7 @@ scene("s01", """
     #k1 { top: 440px; font-size: 250px; color: #ff2a3d; -webkit-text-stroke: 16px #fff; } #k2 { top: 720px; font-size: 92px; }
     #qq { position: absolute; left: 0; right: 0; top: 880px; text-align: center; font: 400 150px "Lilita One", sans-serif; color: #ffe14a; opacity: 0; -webkit-text-stroke: 12px #1a0b2e; paint-order: stroke fill; }
     .pt { position: absolute; font-size: 90px; line-height: 1; width: 90px; height: 90px; opacity: 0; }""",
-"""      <div id="ry1"></div><div id="vg1"></div><div id="rd1"></div><div id="sbL" class="sb"></div><div id="sbR" class="sb"></div>
+"""      <div id="vg1"></div><div id="rd1"></div>
       <div id="bn1"><span style="font-size:96px">🚨</span><b>EILMELDUNG</b><i>LIVE</i></div>
       <div id="tk1"><div>+++ EILMELDUNG +++ MUSCHEL-TAL +++ ES IST WAS PASSIERT +++ EILMELDUNG +++ MUSCHEL-TAL +++ ES IST WAS PASSIERT +++</div></div>
       <div id="a1" class="hw">LEUTE …</div><div id="a2" class="hw">auf unserer Insel</div>
@@ -134,14 +134,12 @@ scene("s01", """
       tl.fromTo("#bn1", { opacity: 0, scaleY: 0 }, { opacity: 1, scaleY: 1, duration: .2, ease: "back.out(2)" }, 0);
       [...Array(11).keys()].forEach(i => tl.fromTo("#bn1 b", { opacity: .3 }, { opacity: 1, duration: .14, ease: "none", immediateRender: false }, .45 * i + .3));
       [...Array(11).keys()].forEach(i => tl.fromTo("#rd1", { opacity: 1 }, { opacity: .15, duration: .4, ease: "power1.out", immediateRender: false }, i * .45));
-      tl.fromTo(["#sbL", "#sbR"], { opacity: .9, rotation: -35 }, { rotation: 35, duration: .9, yoyo: true, repeat: 5, ease: "sine.inOut" }, 0);
       tl.fromTo("#tk1", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .25 }, .1);
       tl.fromTo("#tk1 div", { x: 0 }, { x: -1900, duration: 5.2, ease: "none" }, .1);
       tl.fromTo("#a1", { opacity: 0, scale: 2.6, filter: "blur(14px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .35, ease: "back.out(2.5)" }, .02);
       tl.fromTo("#a2", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: .35, ease: "back.out(2)" }, at("L1", "auf") - .05);
       tl.to(["#a1", "#a2"], { y: -40, opacity: 0, duration: .2, ease: "power2.in" }, P - .22);
       tl.fromTo("#fl1", { opacity: .85 }, { opacity: 0, duration: .35, ease: "power2.out", immediateRender: false }, P - .02);
-      tl.fromTo("#ry1", { opacity: 0, scale: .4, rotation: 0 }, { opacity: 1, scale: 1, rotation: 40, duration: 2.6, ease: "power1.out" }, P - .05);
       tl.fromTo("#b1", { opacity: 0, scale: 3, rotation: -8 }, { opacity: 1, scale: 1, rotation: -3, duration: .3, ease: "back.out(3)" }, P - .15);
       tl.fromTo("#b2", { opacity: 0, scale: 3.4, rotation: 6 }, { opacity: 1, scale: 1, rotation: 2, duration: .32, ease: "back.out(3)" }, P + .02);
       tl.fromTo("#b2", { textShadow: "0 0 0px rgba(255,225,74,0)" }, { textShadow: "0 0 60px rgba(255,225,74,1)", duration: .25, yoyo: true, repeat: 5, ease: "sine.inOut", immediateRender: false }, P + .35);
@@ -149,7 +147,7 @@ scene("s01", """
       tl.to("#em1", { y: -24, duration: .25, yoyo: true, repeat: 5, ease: "sine.inOut" }, P + .65);
       [[18,-10],[-20,8],[14,12],[-12,-8],[8,6],[0,0]].forEach(([x, y], i) => tl.to("#s01-stage", { x, y, duration: .045, ease: "none" }, P + .05 + i * .045));
       [...Array(12).keys()].forEach(i => { const a = i / 12 * 6.283, r = 330 + (i % 3) * 130; tl.fromTo("#pa" + i, { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: Math.cos(a) * r, y: Math.sin(a) * r * 1.1, scale: 1.4, rotation: (i % 2 ? 1 : -1) * 160, opacity: 0, duration: 1.1, ease: "power3.out", immediateRender: false }, P + .03 + (i % 3) * .05); });
-      tl.to(["#b1", "#b2", "#em1", "#ry1"], { opacity: 0, scale: 1.4, filter: "blur(10px)", duration: .25, ease: "power2.in" }, B - .2);
+      tl.to(["#b1", "#b2", "#em1"], { opacity: 0, scale: 1.4, filter: "blur(10px)", duration: .25, ease: "power2.in" }, B - .2);
       tl.fromTo("#k2", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .35, ease: "power3.out" }, B + .05);
       tl.fromTo("#k1", { opacity: 0, scale: .2 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(3)" }, K - .1);
       [0, .08, .16, .3, .38].forEach((d, i) => tl.to("#k1", { opacity: i % 2 ? .25 : 1, duration: .04, ease: "none" }, K + .25 + d));
@@ -267,7 +265,7 @@ scene("s07", GL + """
 """      <div id="l7" class="gl"><small>🔴 Live-Verlosung</small><b>Besitzer vom Kokos-Club</b></div>
       <div id="rl"><div class="r">""" + "".join(f"<div>@{n}</div>" for n in NAMES) + """<div>@kerem90025</div></div></div>
       <div id="wn" class="stk go"><small>🎁 Du gewinnst den Kokos-Club!</small>@kerem90025</div>
-      <div id="nx" class="gl"><small>Nächste Verlosung</small><b>👑 Inhaber vom Golden Pearl</b></div>
+      <div id="nx" class="gl"><small>Nächste Folge · unter allen Followern</small><b>👑 Inhaber vom Golden Pearl</b></div>
       """ + "".join(f'<div class="pt" id="pc{i}" style="left:498px;top:620px">{e}</div>' for i, e in enumerate("🎉💖✨🥳🎊⭐🎉💖✨🥳🎊⭐")) + """""",
 """      const t = line("L7")[0], S = line("L7b")[0], W = line("L7c")[0], X = at("L7d", "Und");
       tl.fromTo("#l7", { opacity: 0, y: 30, filter: "blur(10px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: .45, ease: "power3.out" }, t - .1);

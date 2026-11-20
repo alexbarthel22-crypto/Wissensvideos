@@ -13,6 +13,7 @@ const WS=await A.evaluate(()=>{const v=ISL[0],n=TNOW(),h=Math.floor(n/3600);cons
 await A.clock.pauseAt(new Date(WS.ep+(WS.w.start+9.5-at('L3','WAL'))*1000));await fin(A);
 // B: Babyschildkröten – bei L4-Start schon 30 % unterwegs
 const B=await mk('2026-11-19T15:10:00+01:00','?zeit=tag&wetter=sonne');
+await B.evaluate(()=>{const o=skPlan,C=new Map();window.skPlan=(v,h)=>{const k=v.i+':'+h;if(C.has(k))return C.get(k);const L=o(v,h).flatMap(w=>[w,...[1,2,3,4,5,6,7,8].map(j=>({...w,a:w.a+(j%2?1:-1)*Math.ceil(j/2)*.006,r0:w.r0-(j%3)*1.5,start:w.start+j*.45}))]);C.set(k,L);return L;};});// mehrere Babyschildkröten statt einer
 const SK=await B.evaluate(()=>{const v=ISL[0],n=TNOW(),h=Math.floor(n/3600);const L=[...skPlan(v,h),...skPlan(v,h+1)].filter(w=>w.start>n+60).sort((a,b)=>a.start-b.start);const w=L[0],P=[];for(const u of[.3,.75]){const d=w.r0+u*(BEX+16);P.push(polar(w.v,w.a,d));}return {start:w.start,P,ep:TEPOCH};});
 await B.clock.pauseAt(new Date(SK.ep+(SK.start+.3*60-L.L4.start+.3)*1000));await fin(B);
 // C: Freitagabend, Kino läuft
