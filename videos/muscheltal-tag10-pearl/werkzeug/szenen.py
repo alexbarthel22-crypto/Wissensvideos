@@ -169,7 +169,7 @@ scene("s02", GL + """
     #h2 { top: 250px; } #h2 small { font-size: 56px; }
     #f2 { position: absolute; left: 0; right: 0; margin: 0 auto; top: 620px; width: 440px; height: 112px; border-radius: 56px; background: #fe2c55; color: #fff; font: 800 54px/112px Inter, sans-serif; text-align: center; opacity: 0; box-shadow: 0 14px 30px rgba(0,0,0,.35); }""",
 """      <div id="n2"><b id="n2n">0</b><small>Bewohner · 1 Hütte = 1 Follower</small></div>
-      <div id="h2" class="stk"><small>Hier könntest</small>DU wohnen! 🏡</div>
+      <div id="h2" class="stk"><small>Hier könntest auch</small>DU wohnen! 🏡</div>
       <div id="f2">+ Folgen</div>""",
 """      const t = line("L2")[0], H = line("L2b")[0], F = at("L2b", "Folg");
       tl.fromTo("#n2", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .45, ease: "back.out(2.4)" }, at("L2", "790") - .1);
