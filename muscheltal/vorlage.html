@@ -5710,7 +5710,7 @@ setInterval(()=>{const u=$('shuhr');if(u&&!$('mkpage').hidden){if(SHD&&Date.now(
 let THD=null;const TPLUR={katze:'Katzen',hund:'Hunde',pinguin:'Pinguine',schwein:'Schweine',robbe:'Robben',pferd:'Ponys',hase:'Hasen',schildi:'Schildkröten'};
 async function thLaden(){try{const r=await fetch('/api/muscheln?tierheim=1');THD=r.ok?{...(await r.json()),t:Date.now()}:null;}catch(e){THD=null;}}
 const thUhr=()=>{if(!THD)return'';const ms=Math.max(0,THD.bis-(Date.now()-THD.t)),h=Math.floor(ms/36e5),m=Math.floor(ms%36e5/6e4);return h+'&nbsp;Std. '+m+'&nbsp;Min.';};
-async function tierheimSeite(){let e=$('thpage');if(!e){e=document.createElement('div');e.id='thpage';e.className='mkpage thpage';document.body.appendChild(e);}
+async function tierheimSeite(){if(!thVorOrt()){/* 20.11.: Tiere anschauen und adoptieren nur vor Ort */popup('<div class="big">🐾</div><h2>Tierheim Pfotenkuss</h2><p>Die Tiere kannst du dir nur <b>vor Ort</b> anschauen und adoptieren. Geh beim Erkunden in den Hof vom Tierheim und tippe dort auf „🐾 Tiere adoptieren“.</p>');return;}let e=$('thpage');if(!e){e=document.createElement('div');e.id='thpage';e.className='mkpage thpage';document.body.appendChild(e);}
  e.hidden=false;document.body.style.overflow='hidden';e.scrollTop=0;e.innerHTML='<a class="mkback" href="#" id="thback">← Zur Karte</a><h1>🐾 Tierheim Pfotenkuss</h1><div class="mkbox">⏳ Lade …</div>';$('thback').onclick=ev=>{ev.preventDefault();thZu();};
  await Promise.all([mkClaim()?mkStand():null,thLaden()]);thZeig();}
 function thZu(){const e=$('thpage');if(e)e.hidden=true;document.body.style.overflow='';}
