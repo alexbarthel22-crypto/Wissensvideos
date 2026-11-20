@@ -69,10 +69,7 @@
   </style>
   <div id="root" data-composition-id="s06" data-start="0" data-duration="7.140" data-width="1080" data-height="1920">
     <div id="s06-stage" class="clip stage" data-start="0" data-duration="7.140" data-track-index="0">
-      <div id="dk6"></div>
       <div id="nw6">✨ NEU AUF DER INSEL</div>
-      <div id="gp"><div class="fa"></div><div class="w" style="left:120px"></div><div class="w" style="right:120px"></div><div class="dr"></div><div class="ro"></div><div class="sh"></div><div class="pe"></div><div class="sg">GOLDEN PEARL</div>
-        <div class="st" id="st0" style="left:20px;top:40px">✨</div><div class="st" id="st1" style="right:10px;top:90px">✨</div><div class="st" id="st2" style="left:60px;top:300px">⭐</div><div class="st" id="st3" style="right:40px;top:330px">✨</div></div>
       <div id="c60" class="ch6">🎯 jede Menge Minispiele</div>
       <div id="c61" class="ch6">🎉 nachts: Party!</div>
     </div>
@@ -125,11 +122,7 @@
       wrapBt("#s06-stage");
       const tl = gsap.timeline({ paused: true });
       const t = line("L6")[0], G = at("L6", "Golden"), M = at("L6b", "jede"), N = at("L6b", "nachts");
-      tl.fromTo("#dk6", { opacity: 0 }, { opacity: 1, duration: .4 }, t - .1);
       tl.fromTo("#nw6", { opacity: 0, y: -40 }, { opacity: 1, y: 0, duration: .35, ease: "back.out(2)" }, t);
-      tl.fromTo("#gp", { opacity: 0, scale: .2, y: 200 }, { opacity: 1, scale: 1, y: 0, duration: .6, ease: "back.out(1.8)" }, G - .15);
-      tl.fromTo("#gp .pe", { scale: .6 }, { scale: 1.08, duration: .5, yoyo: true, repeat: 5, ease: "sine.inOut" }, G + .4);
-      ["#st0", "#st1", "#st2", "#st3"].forEach((q, i) => tl.fromTo(q, { opacity: 0, scale: .2, rotation: 0 }, { opacity: 1, scale: 1.3, rotation: 90, duration: .3, yoyo: true, repeat: 5, ease: "sine.inOut", immediateRender: false }, G + .2 + i * .15));
       tl.to("#nw6", { opacity: 0, duration: .2 }, M - .3);
       tl.fromTo("#c60", { opacity: 0, x: -200 }, { opacity: 1, x: 0, duration: .4, ease: "back.out(2)" }, M - .1);
       tl.fromTo("#c61", { opacity: 0, x: 200 }, { opacity: 1, x: 0, duration: .4, ease: "back.out(2)" }, N - .1);
