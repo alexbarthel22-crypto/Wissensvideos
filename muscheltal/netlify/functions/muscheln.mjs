@@ -247,7 +247,7 @@ async function aufraeumen(store) {
     t[1] = id; await kasse.set(t.join("/"), (await kasse.get(k)) || "1"); await kasse.delete(k);
   }
 }
-const TEXT = { login: "Login-Serie", quest: "Aufgabe", qbonus: "Alle 3 Aufgaben", shell: "Schwebende Muschel", erf: "Neuer Erfolg", story: "Story geteilt", spende: "Spende Inselkasse", tresor: "Tresor des Schöpfers", code: "Geheimcode aus dem Video", einladung: "Freund eingeladen", kauf: "Muschel-Shop", null: "Neustart: alle Konten auf 0", stern: "Sternschnuppe 🌠", angeln: "Fang am Angelsteg 🎣", euro: "Muschel-Paket gekauft/geschenkt 💎", "euro-zurueck": "Muschel-Paket erstattet", regenbogen: "Schatz am Regenbogen 🌈", flasche: "Flaschenpost-Quiz 🍾", geschenk: "Tagesgeschenk 🎁" };
+const TEXT = { treibgut: "Sturm-Treibgut", login: "Login-Serie", quest: "Aufgabe", qbonus: "Alle 3 Aufgaben", shell: "Schwebende Muschel", erf: "Neuer Erfolg", story: "Story geteilt", spende: "Spende Inselkasse", tresor: "Tresor des Schöpfers", code: "Geheimcode aus dem Video", einladung: "Freund eingeladen", kauf: "Muschel-Shop", null: "Neustart: alle Konten auf 0", stern: "Sternschnuppe 🌠", angeln: "Fang am Angelsteg 🎣", euro: "Muschel-Paket gekauft/geschenkt 💎", "euro-zurueck": "Muschel-Paket erstattet", regenbogen: "Schatz am Regenbogen 🌈", flasche: "Flaschenpost-Quiz 🍾", geschenk: "Tagesgeschenk 🎁" };
 
 // Einmal-Aufgaben (Zurücksetzen, Aufräumen) nur einmal pro Tag und Server-Instanz prüfen – spart bei jeder Muschel-Aktion
 // rund 10 Speicherabfragen (schnellere Gutschriften)
@@ -666,6 +666,27 @@ export default async (req) => {
     if (ok) await store.set("x/fisch/" + nm + "/" + f, String(Date.now()));
     const B = await buch(store, nm);
     return json({ ok, grund: ok ? null : "schon", fisch: ok ? f : null, betrag: ok ? betrag : 0, stand: B.reduce((s, e) => s + e.a, 0), fische: (await liste(store, "x/fisch/" + nm + "/")).map(k => k.split("/")[3]) });
+  }
+  // 🌪️ Sturm-Treibgut: nur bei echtem Sturm (Gewitter oder Wind ab 35 km/h); Kiste = Stunde*100 + Insel*10 + Nr (aktuelle/letzte Stunde), je Kiste einmal, höchstens 6 pro Tag.
+  // Inhalt wird hier gezogen: 50 % leer, 40 % 1–3 🐚, 10 % Fundstück fürs Fisch-Album (falls alle schon da: 3 🐚). 5 an einem Tag = Erfolg „Sturmjäger“.
+  if (act === "treibgut") {
+    const id = Math.floor(Number(d.id)), hJetzt = Math.floor((Date.now() - Date.UTC(2026, 0, 1)) / 3.6e6), hh = Math.floor(id / 100), ins = Math.floor(id / 10) % 10, k = id % 10;
+    if (!(id >= 0) || hh < hJetzt - 1 || hh > hJetzt || ins > 1 || k > 2) return json({ ok: false, grund: "weg" });
+    if (!(process.env.RB_TEST === "1" && d.test) && !bedingungOk("sturm", await wetterJetzt(), 0)) return json({ ok: false, grund: "kein" });
+    const pre = "x/treibgut/" + nm + "/" + heute + "/", xk = pre + id;
+    if (await store.get(xk)) return json({ ok: false, grund: "schon" });
+    const n = (await liste(store, pre)).length;
+    if (n >= 6) return json({ ok: false, grund: "genug" });
+    const z = zz(); let art = "leer", betrag = 0, fund = null;
+    if (z < 0.1) {
+      const F = ins === 1 ? ["treibholz", "anker", "muenze", "kokosnuss"] : ["stiefel", "kompass", "schluessel", "amphore"];
+      const hab = new Set((await liste(store, "x/fisch/" + nm + "/")).map(q => q.split("/")[3])), frei = F.filter(f => !hab.has(f));
+      if (frei.length) { fund = frei[Math.floor(zz() * frei.length)]; art = "fund"; await store.set("x/fisch/" + nm + "/" + fund, String(Date.now())); } else { art = "muscheln"; betrag = 3; }
+    } else if (z < 0.5) { art = "muscheln"; betrag = 1 + Math.floor(zz() * 3); }
+    await store.set(xk, art + (fund ? ":" + fund : "") + (betrag ? ":" + betrag : ""));
+    if (betrag) await setze("treibgut", heute + "-" + id, betrag);
+    const neu = n + 1 >= 5 && (await erfGib("STURM")) ? ["STURM"] : [], B = await buch(store, nm);
+    return json({ ok: true, art, betrag, fund, neu, stand: B.reduce((s, e) => s + e.a, 0), fische: fund ? (await liste(store, "x/fisch/" + nm + "/")).map(q => q.split("/")[3]) : undefined });
   }
   if (act === "geschenk") {
     const betrag = 1 + (crypto.getRandomValues(new Uint32Array(1))[0] % 3), ok = await setze("geschenk", heute, betrag), B = await buch(store, nm);
