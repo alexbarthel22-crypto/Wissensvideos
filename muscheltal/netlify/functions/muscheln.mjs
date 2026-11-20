@@ -115,6 +115,21 @@ async function freigeben(store) {
     await store.delete("c/" + n); await store.delete("x/pinfail/" + n);
   }
 }
+
+// ================= 🎮 Spielhalle (Golden Pearl): Wochen-Rangliste je Spiel, Top 3 gewinnen Muscheln (Wertung Mo 0 Uhr – So 20 Uhr) =================
+// Plausibilitätsprüfung: Lauf nur mit Start-Kennung vom Server, Dauer vom Server gemessen, je Spiel höchstens so viele Punkte wie in der Zeit möglich.
+const SPIELE = { taucher: { max: 70, min: 2000 }, turm: { max: 2.2, min: 1500 }, memory: { min: 8000 }, krebs: { max: 70, min: 2000 } };// max = Punkte (bzw. Höhe) pro Sekunde
+const SP_PREIS = [50, 30, 20];// Platz 1–3 je Spiel (wird im Spiel nicht verraten)
+function spWoche(t = Date.now()) { const p = Object.fromEntries(new Intl.DateTimeFormat("en-US", { timeZone: TZ, weekday: "short", hour: "2-digit", hourCycle: "h23" }).formatToParts(new Date(t)).map(x => [x.type, x.value])), d = tag(t); return p.weekday === "Sun" && +p.hour >= 20 ? woche(new Date(new Date(d + "T12:00:00Z").getTime() + 864e5).toISOString().slice(0, 10)) : woche(d); }// ab So 20 Uhr zählt schon die neue Woche
+async function spTop(store, w, k) { const L = []; for (const key of await liste(store, "x/spiel/" + w + "/" + k + "/")) { try { const v = JSON.parse((await store.get(key)) || "null"); if (v) L.push({ n: "@" + key.split("/").pop(), s: v.s, t: v.t }); } catch (e) {} } const zeit = k === "memory"; L.sort((a, b) => (zeit ? a.s - b.s : b.s - a.s) || a.t - b.t); return L; }
+async function spPreise(store) {
+  // abgeschlossene Wochen (bis 4 Wochen zurück) einmalig auszahlen
+  const jetzt = spWoche();
+  for (let k = 1; k <= 4; k++) { const w = woche(new Date(new Date(jetzt + "T12:00:00Z").getTime() - k * 7 * 864e5).toISOString().slice(0, 10)), mk = "x/spielpreis/" + w;
+    if (await store.get(mk)) continue; await store.set(mk, String(Date.now()));
+    for (const sp of Object.keys(SPIELE)) { const L = await spTop(store, w, sp); for (let i = 0; i < 3 && i < L.length; i++) { const nm = L[i].n.slice(1), pre = "b/" + nm + "/spielpreis/" + w + "-" + sp + "-" + (i + 1) + "/"; if (!(await liste(store, pre)).length) await store.set(pre + SP_PREIS[i], String(Date.now())); } } }
+}
+async function spRang(store, nm) { const w = spWoche(), out = {}; for (const k of Object.keys(SPIELE)) { const L = await spTop(store, w, k), i = nm ? L.findIndex(x => x.n === "@" + nm) : -1; out[k] = { top: L.slice(0, 3).map(({ n, s }) => ({ n, s })), ich: i >= 0 ? { s: L[i].s, platz: i + 1 } : null }; } return { ok: true, woche: w, spiele: out }; }
 async function zuruecksetzen(store) {
   for (const [n, nr, ab, opt] of RESET) {
     const mk = "x/reset/" + n + "/" + nr;
@@ -247,7 +262,7 @@ async function aufraeumen(store) {
     t[1] = id; await kasse.set(t.join("/"), (await kasse.get(k)) || "1"); await kasse.delete(k);
   }
 }
-const TEXT = { treibgut: "Sturm-Treibgut", login: "Login-Serie", quest: "Aufgabe", qbonus: "Alle 3 Aufgaben", shell: "Schwebende Muschel", erf: "Neuer Erfolg", story: "Story geteilt", spende: "Spende Inselkasse", tresor: "Tresor des Schöpfers", code: "Geheimcode aus dem Video", einladung: "Freund eingeladen", kauf: "Muschel-Shop", null: "Neustart: alle Konten auf 0", stern: "Sternschnuppe 🌠", angeln: "Fang am Angelsteg 🎣", euro: "Muschel-Paket gekauft/geschenkt 💎", "euro-zurueck": "Muschel-Paket erstattet", regenbogen: "Schatz am Regenbogen 🌈", flasche: "Flaschenpost-Quiz 🍾", geschenk: "Tagesgeschenk 🎁" };
+const TEXT = { spielpreis: "Spielhalle: Wochen-Preis", treibgut: "Sturm-Treibgut", login: "Login-Serie", quest: "Aufgabe", qbonus: "Alle 3 Aufgaben", shell: "Schwebende Muschel", erf: "Neuer Erfolg", story: "Story geteilt", spende: "Spende Inselkasse", tresor: "Tresor des Schöpfers", code: "Geheimcode aus dem Video", einladung: "Freund eingeladen", kauf: "Muschel-Shop", null: "Neustart: alle Konten auf 0", stern: "Sternschnuppe 🌠", angeln: "Fang am Angelsteg 🎣", euro: "Muschel-Paket gekauft/geschenkt 💎", "euro-zurueck": "Muschel-Paket erstattet", regenbogen: "Schatz am Regenbogen 🌈", flasche: "Flaschenpost-Quiz 🍾", geschenk: "Tagesgeschenk 🎁" };
 
 // Einmal-Aufgaben (Zurücksetzen, Aufräumen) nur einmal pro Tag und Server-Instanz prüfen – spart bei jeder Muschel-Aktion
 // rund 10 Speicherabfragen (schnellere Gutschriften)
@@ -381,6 +396,7 @@ export default async (req) => {
   const store = getStore({ name: "muscheln", consistency: "strong" });
   await vorarbeit(store);
   const url = new URL(req.url);
+  if (req.method === "GET" && url.searchParams.get("spielrang")) { try { await spPreise(store); } catch (e) {} return json(await spRang(store, null)); }
   if (req.method === "GET" && url.searchParams.get("erftop")) {
     const order = await erfDaten(store), me = (url.searchParams.get("name") || "").trim().toLowerCase().replace(/^@/, "");
     const top = order.slice(0, 10).map(([n, v]) => ({ n: "@" + n, stand: v }));
@@ -687,6 +703,28 @@ export default async (req) => {
     if (betrag) await setze("treibgut", heute + "-" + id, betrag);
     const neu = n + 1 >= 5 && (await erfGib("STURM")) ? ["STURM"] : [], B = await buch(store, nm);
     return json({ ok: true, art, betrag, fund, neu, stand: B.reduce((s, e) => s + e.a, 0), fische: fund ? (await liste(store, "x/fisch/" + nm + "/")).map(q => q.split("/")[3]) : undefined });
+  }
+  if (act === "spielRang") { try { await spPreise(store); } catch (e) {} return json(await spRang(store, nm)); }
+  if (act === "spielStart") {
+    const k = String(d.spiel || ""); if (!SPIELE[k]) return json({ ok: false, grund: "spiel" });
+    const lk = "x/spiellast/" + nm, last = Number(await store.get(lk)) || 0; if (Date.now() - last < 1500) return json({ ok: false, grund: "schnell" });
+    await store.set(lk, String(Date.now()));
+    const id = Date.now().toString(36) + Math.random().toString(36).slice(2, 8), seed = Math.floor(zz() * 1e9);
+    await store.set("x/spiellauf/" + nm + "/" + id, JSON.stringify({ k, seed, t: Date.now() }));
+    return json({ ok: true, id, seed });
+  }
+  if (act === "spielEnde") {
+    const id = String(d.id || "").replace(/[^a-z0-9]/g, "").slice(0, 20), lk = "x/spiellauf/" + nm + "/" + id;
+    let L = null; try { L = JSON.parse((await store.get(lk)) || "null"); } catch (e) {}
+    if (!L) return json({ ok: false, grund: "lauf" }); await store.delete(lk);
+    const k = L.k, R0 = SPIELE[k], dauerServer = Date.now() - L.t, dauer = Math.min(Number(d.dauer) || 0, dauerServer + 3000), s = Math.max(0, Math.floor(Number(d.score) || 0));
+    if (!(dauer >= R0.min) || dauerServer + 3000 < dauer) return json({ ok: false, grund: "unplausibel" });
+    if (k === "memory" ? s < 8000 || s > dauerServer + 3000 + 60 * 2000 : s > (R0.max * dauer) / 1000 + 5) return json({ ok: false, grund: "unplausibel" });
+    const w = spWoche(), bk = "x/spiel/" + w + "/" + k + "/" + nm; let alt = null; try { alt = JSON.parse((await store.get(bk)) || "null"); } catch (e) {}
+    const besser = !alt || (k === "memory" ? s < alt.s : s > alt.s);
+    if (besser) await store.set(bk, JSON.stringify({ s, t: Date.now() }));
+    const T = await spTop(store, w, k), platz = T.findIndex(x => x.n === "@" + nm) + 1;
+    return json({ ok: true, neu: besser, best: besser ? s : alt.s, platz: platz || null });
   }
   if (act === "geschenk") {
     const betrag = 1 + (crypto.getRandomValues(new Uint32Array(1))[0] % 3), ok = await setze("geschenk", heute, betrag), B = await buch(store, nm);
