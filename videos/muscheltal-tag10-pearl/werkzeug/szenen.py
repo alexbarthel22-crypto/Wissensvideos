@@ -101,17 +101,27 @@ GL = """.gl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-
 scene("s01", """
     #vg1 { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 40%, rgba(0,0,0,0) 25%, rgba(0,8,30,.88) 100%); }
     #ry1 { position: absolute; left: 540px; top: 640px; width: 2000px; height: 2000px; margin: -1000px; border-radius: 50%; opacity: 0;
-      background: repeating-conic-gradient(rgba(255,225,74,.32) 0deg 7deg, rgba(255,225,74,0) 7deg 20deg); -webkit-mask: radial-gradient(circle, #000 15%, transparent 60%); mask: radial-gradient(circle, #000 15%, transparent 60%); }
+      background: repeating-conic-gradient(rgba(255,40,60,.38) 0deg 7deg, rgba(255,40,60,0) 7deg 20deg); -webkit-mask: radial-gradient(circle, #000 15%, transparent 60%); mask: radial-gradient(circle, #000 15%, transparent 60%); }
     #fl1 { position: absolute; inset: 0; background: #fff; opacity: 0; }
+    #rd1 { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 50%, rgba(255,0,30,.05) 30%, rgba(200,0,20,.75) 100%); opacity: 0; }
+    .sb { position: absolute; top: -300px; width: 900px; height: 1400px; opacity: .0; background: conic-gradient(from 160deg at 50% 0%, rgba(255,30,50,0) 0deg, rgba(255,30,50,.55) 20deg, rgba(255,30,50,0) 40deg); transform-origin: 50% 0%; }
+    #sbL { left: -450px; } #sbR { right: -450px; }
+    #bn1 { position: absolute; left: 0; right: 0; top: 215px; height: 150px; display: flex; align-items: center; justify-content: center; gap: 26px; background: linear-gradient(180deg,#ff2a3d,#b8001a); box-shadow: 0 10px 0 rgba(0,0,0,.3), 0 0 60px rgba(255,0,30,.7); opacity: 0; }
+    #bn1 b { font: 400 104px/1 "Lilita One", sans-serif; color: #fff; letter-spacing: .04em; text-shadow: 0 6px 0 #6a0010; }
+    #bn1 i { font-style: normal; font: 900 40px Inter, sans-serif; color: #ff2a3d; background: #fff; padding: 6px 18px; border-radius: 10px; }
+    #tk1 { position: absolute; left: 0; right: 0; top: 1480px; height: 110px; overflow: hidden; background: #fff; border-top: 12px solid #ff2a3d; border-bottom: 12px solid #ff2a3d; opacity: 0; }
+    #tk1 div { position: absolute; left: 0; top: 0; white-space: nowrap; font: 400 70px/86px "Lilita One", sans-serif; color: #c4001c; }
     .hw { position: absolute; left: 0; right: 0; text-align: center; font-family: "Lilita One", sans-serif; color: #fff; opacity: 0; line-height: .95; white-space: nowrap;
       -webkit-text-stroke: 14px #1a0b2e; paint-order: stroke fill; }
-    #a1 { top: 230px; font-size: 96px; } #a2 { top: 345px; font-size: 76px; color: #9fe8ff; }
-    #b1 { top: 470px; font-size: 150px; } #b2 { top: 620px; font-size: 200px; color: #ffe14a; }
-    #em1 { position: absolute; left: 0; right: 0; top: 830px; text-align: center; font-size: 200px; opacity: 0; }
-    #k1 { top: 360px; font-size: 250px; color: #ff4060; } #k2 { top: 640px; font-size: 92px; }
-    #qq { position: absolute; left: 0; right: 0; top: 820px; text-align: center; font: 400 150px "Lilita One", sans-serif; color: #ffe14a; opacity: 0; -webkit-text-stroke: 12px #1a0b2e; paint-order: stroke fill; }
+    #a1 { top: 430px; font-size: 100px; } #a2 { top: 545px; font-size: 76px; color: #ffd0d4; }
+    #b1 { top: 470px; font-size: 150px; } #b2 { top: 620px; font-size: 200px; color: #ff2a3d; -webkit-text-stroke: 16px #fff; }
+    #em1 { position: absolute; left: 0; right: 0; top: 880px; text-align: center; font-size: 200px; opacity: 0; }
+    #k1 { top: 440px; font-size: 250px; color: #ff2a3d; -webkit-text-stroke: 16px #fff; } #k2 { top: 720px; font-size: 92px; }
+    #qq { position: absolute; left: 0; right: 0; top: 880px; text-align: center; font: 400 150px "Lilita One", sans-serif; color: #ffe14a; opacity: 0; -webkit-text-stroke: 12px #1a0b2e; paint-order: stroke fill; }
     .pt { position: absolute; font-size: 90px; line-height: 1; width: 90px; height: 90px; opacity: 0; }""",
-"""      <div id="ry1"></div><div id="vg1"></div>
+"""      <div id="ry1"></div><div id="vg1"></div><div id="rd1"></div><div id="sbL" class="sb"></div><div id="sbR" class="sb"></div>
+      <div id="bn1"><span style="font-size:96px">🚨</span><b>EILMELDUNG</b><i>LIVE</i></div>
+      <div id="tk1"><div>+++ EILMELDUNG +++ MUSCHEL-TAL +++ ES IST WAS PASSIERT +++ EILMELDUNG +++ MUSCHEL-TAL +++ ES IST WAS PASSIERT +++</div></div>
       <div id="a1" class="hw">LEUTE …</div><div id="a2" class="hw">auf unserer Insel</div>
       <div id="b1" class="hw">ES IST WAS</div><div id="b2" class="hw">PASSIERT!</div>
       <div id="em1">😳</div>
@@ -121,6 +131,12 @@ scene("s01", """
       <div id="fl1"></div>""",
 """      const P = at("L1", "passiert"), B = line("L1b")[0], K = at("L1b", "keiner");
       tl.fromTo("#vg1", { opacity: .5 }, { opacity: 1, duration: 1.5, ease: "none" }, 0);
+      tl.fromTo("#bn1", { opacity: 0, scaleY: 0 }, { opacity: 1, scaleY: 1, duration: .2, ease: "back.out(2)" }, 0);
+      [...Array(11).keys()].forEach(i => tl.fromTo("#bn1 b", { opacity: .3 }, { opacity: 1, duration: .14, ease: "none", immediateRender: false }, .45 * i + .3));
+      [...Array(11).keys()].forEach(i => tl.fromTo("#rd1", { opacity: 1 }, { opacity: .15, duration: .4, ease: "power1.out", immediateRender: false }, i * .45));
+      tl.fromTo(["#sbL", "#sbR"], { opacity: .9, rotation: -35 }, { rotation: 35, duration: .9, yoyo: true, repeat: 5, ease: "sine.inOut" }, 0);
+      tl.fromTo("#tk1", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .25 }, .1);
+      tl.fromTo("#tk1 div", { x: 0 }, { x: -1900, duration: 5.2, ease: "none" }, .1);
       tl.fromTo("#a1", { opacity: 0, scale: 2.6, filter: "blur(14px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .35, ease: "back.out(2.5)" }, .02);
       tl.fromTo("#a2", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: .35, ease: "back.out(2)" }, at("L1", "auf") - .05);
       tl.to(["#a1", "#a2"], { y: -40, opacity: 0, duration: .2, ease: "power2.in" }, P - .22);
