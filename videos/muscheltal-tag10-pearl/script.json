@@ -3,23 +3,17 @@
  "bg": "#0a5a92",
  "captions": {
   "pop": true,
-  "first_at_zero": false,
+  "first_at_zero": true,
   "left": 60,
   "right": 190,
-  "size": 88,
+  "size": 92,
   "bars": true,
-  "color": "#ffffff",
+  "color": "rgba(255,255,255,.62)",
+  "first_class": "hook",
+  "css": "@font-face { font-family: 'Lilita One'; src: url('assets/fonts/LilitaOne-Regular.woff2') format('woff2'); font-weight: 400; }\n    .inner.hook { font-family: 'Lilita One', sans-serif; font-weight: 400; font-size: 140px; line-height: 1.04; letter-spacing: .01em; top: -540px; }\n    .inner.hook .bar { background: #ff3d7f !important; padding: .02em .3em .08em; border-radius: .5em; }\n    .inner.hook .w { color: #fff; }\n    .inner .bar .w { margin: 0 .07em; }\n    .inner .bar { border-radius: .55em; padding: .04em .36em .1em; }\n    .inner .w { white-space: nowrap; }",
   "vary": true,
   "pop_scale": 1.2,
-  "bar_colors": [
-   "#e8467c"
-  ],
-  "top": 1150,
-  "css": "@font-face { font-family: 'Lilita One'; src: url('assets/fonts/LilitaOne-Regular.woff2') format('woff2'); font-weight: 400; }\n    .inner { font-family: 'Lilita One', sans-serif; font-weight: 400; line-height: 1.12; letter-spacing: .01em; }\n    .inner .bar .w { margin: 0 .07em; }\n    .inner .bar { border-radius: .55em; padding: .04em .36em .1em; box-shadow: 0 8px 0 rgba(0,0,0,.25); }\n    .inner .w { white-space: nowrap; color: #fff; }\n    .inner .w.k-y, .inner .w.k-g, .inner .w.k-p { color: #ffe14a; }",
-  "off_scenes": [
-   "s01",
-   "s02"
-  ]
+  "hook_punch": true
  },
  "loudness": -11,
  "pitch": 0,
@@ -34,21 +28,6 @@
    "id": "s01",
    "tag": "",
    "sfx": [
-    {
-     "name": "eilalarm",
-     "at": "s01+0.0",
-     "volume": 0.55
-    },
-    {
-     "name": "glitch-1",
-     "at": "s01+0.0",
-     "volume": 0.5
-    },
-    {
-     "name": "typing",
-     "at": "L1:auf",
-     "volume": 0.3
-    },
     {
      "name": "riser",
      "at": "L1:ist-0.6",
@@ -73,6 +52,11 @@
      "name": "whoosh-cinematic",
      "at": "L1b:sehen",
      "volume": 0.4
+    },
+    {
+     "name": "sparkle",
+     "at": "s01+0.0",
+     "volume": 0.45
     }
    ],
    "lines": [
