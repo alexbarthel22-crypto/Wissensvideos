@@ -63,16 +63,15 @@
     #e3 i { width: 96px; height: 96px; border-radius: 50%; background: linear-gradient(135deg,#36d1dc,#1f8ff0); display: grid; place-items: center; font-style: normal; font-size: 58px; }
     #e3 small { display: block; font: 800 28px Inter, sans-serif; color: #c08a00; letter-spacing: .2em; } #e3 b { font: 400 66px "Lilita One", sans-serif; color: #2a1b12; }
   </style>
-  <div id="root" data-composition-id="s03" data-start="0" data-duration="7.680" data-width="1080" data-height="1920">
-    <div id="s03-stage" class="clip stage" data-start="0" data-duration="7.680" data-track-index="0">
+  <div id="root" data-composition-id="s03" data-start="0" data-duration="4.070" data-width="1080" data-height="1920">
+    <div id="s03-stage" class="clip stage" data-start="0" data-duration="4.070" data-track-index="0">
       <div id="w3" class="stk bl"><small>vor der Küste</small>🐋 WAL-ALARM!</div>
-      <div id="e3"><i>🐋</i><div><small>ERFOLG FREIGESCHALTET</small><b>Wal-Watcher</b></div></div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 7.68, "L3": [0.2, 3.63], "L3.words": [["und", 0.2, 0.475], ["dann", 0.475, 0.76], ["vor", 0.98, 1.219], ["der", 1.219, 1.457], ["küste", 1.457, 1.926], ["springt", 1.926, 2.198], ["ein", 2.198, 2.437], ["wal", 2.437, 2.676], ["aus", 2.676, 2.914], ["dem", 2.914, 3.153], ["wasser", 3.153, 3.63]], "L3b": [4.25, 7.0], "L3b.words": [["wer", 4.25, 4.445], ["ihn", 4.445, 4.64], ["schnell", 4.64, 4.863], ["antippt", 4.863, 5.26], ["kriegt", 5.41, 5.656], ["den", 5.656, 5.879], ["erfolg", 5.879, 6.324], ["walwatcher", 6.324, 7.0]]};
+      const C = {"__dur": 4.07, "L3": [0.2, 3.64], "L3.words": [["und", 0.2, 0.455], ["dann", 0.455, 0.72], ["vor", 0.97, 1.21], ["der", 1.21, 1.451], ["küste", 1.451, 1.923], ["springt", 1.923, 2.198], ["ein", 2.198, 2.438], ["wal", 2.438, 2.678], ["aus", 2.678, 2.919], ["dem", 2.919, 3.159], ["wasser", 3.159, 3.64]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -116,11 +115,9 @@
 
       wrapBt("#s03-stage");
       const tl = gsap.timeline({ paused: true });
-      const W = at("L3", "WAL"), E = at("L3b", "Wal-Watcher");
+      const W = at("L3", "WAL");
       tl.fromTo("#w3", { opacity: 0, scale: 2.2, rotation: -10 }, { opacity: 1, scale: 1, rotation: -3, duration: .3, ease: "back.out(3)" }, W - .05);
       [[12,-8,-1],[-14,6,-6],[10,8,-2],[-8,-6,-5],[0,0,-3]].forEach(([x, y, r], i) => tl.to("#w3", { x, y, rotation: r, duration: .05, ease: "none" }, W + .3 + i * .05));
-      tl.fromTo("#e3", { opacity: 0, y: 80, scale: .7 }, { opacity: 1, y: 0, scale: 1, duration: .45, ease: "back.out(2.2)" }, E - .15);
-      tl.to("#e3", { scale: 1.05, duration: .3, yoyo: true, repeat: 3, ease: "sine.inOut" }, E + .4);
       tl.to("#s03-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
       window.__timelines["s03"] = tl;
     })();

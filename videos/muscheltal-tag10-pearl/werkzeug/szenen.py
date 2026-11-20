@@ -97,25 +97,63 @@ GL = """.gl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-
     .gl small { display: block; font-weight: 700; font-size: 26px; letter-spacing: .32em; text-transform: uppercase; opacity: .85; }
     .gl b { display: block; font-weight: 900; font-size: 92px; letter-spacing: -.02em; line-height: 1; }"""
 
-# s01 – Hook: Es ist was passiert …
-scene("s01", GL + """
-    #vg1 { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 45%, rgba(0,0,0,0) 30%, rgba(0,10,30,.8) 100%); }
-    .stk { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; max-width: 1000px; top: 250px; padding: 14px 44px 26px; border-radius: 40px; font-family: "Lilita One", sans-serif; text-align: center; line-height: .95; color: #ffe14a; opacity: 0;
-      background: linear-gradient(160deg, #ff3d7f, #ff7a2a); box-shadow: 0 0 0 9px #fff, 0 0 0 16px #2a1b12, 0 24px 0 rgba(0,0,0,.28), 0 0 80px rgba(255,90,60,.6); text-shadow: 0 7px 0 #8a1035; font-size: 120px; }
-    .stk small { display: block; font-size: 52px; color: #fff; text-shadow: 0 4px 0 rgba(0,0,0,.3); }
-    .stk.bl { background: linear-gradient(160deg, #1f8ff0, #36d1dc); text-shadow: 0 7px 0 #0b3d7a; color: #fff; box-shadow: 0 0 0 9px #fff, 0 0 0 16px #0b2340, 0 24px 0 rgba(0,0,0,.28), 0 0 80px rgba(60,180,255,.7); }
-    .stk.gr { background: linear-gradient(160deg, #22b36a, #8be04e); text-shadow: 0 7px 0 #0d5a2e; color: #fff; box-shadow: 0 0 0 9px #fff, 0 0 0 16px #0d3a20, 0 24px 0 rgba(0,0,0,.28); }
-    .stk.go { background: linear-gradient(160deg, #ffd23f, #ff9a1a); color: #fff; text-shadow: 0 7px 0 #8a4a00; box-shadow: 0 0 0 9px #fff, 0 0 0 16px #4a2a00, 0 24px 0 rgba(0,0,0,.28), 0 0 90px rgba(255,200,60,.8); }
-    #q1 { top: 620px; } #q1 b { font-size: 64px; }""",
-"""      <div id="vg1"></div>
-      <div id="k1" class="stk"><small>auf unserer Insel</small>ES IST WAS<br>PASSIERT 😳</div>
-      <div id="q1" class="gl"><small>und</small><b>keiner hat's kommen sehen …</b></div>""",
-"""      const P = at("L1", "passiert"), B = line("L1b")[0];
-      tl.fromTo("#vg1", { opacity: .4 }, { opacity: 1, duration: 2.5, ease: "none" }, 0);
-      tl.fromTo("#k1", { opacity: 0, scale: 2.2, rotation: -10 }, { opacity: 1, scale: 1, rotation: -3, duration: .3, ease: "back.out(3)" }, P - .05);
-      [[12,-8,-1],[-14,6,-6],[10,8,-2],[-8,-6,-5],[0,0,-3]].forEach(([x, y, r], i) => tl.to("#k1", { x, y, rotation: r, duration: .05, ease: "none" }, P + .3 + i * .05));
-      tl.fromTo("#q1", { opacity: 0, y: 30, filter: "blur(10px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: .45, ease: "power3.out" }, B);
-      tl.to("#q1", { scale: 1.04, duration: .4, yoyo: true, repeat: 1, ease: "sine.inOut" }, B + .6);""")
+# s01 – Hook: Es ist was passiert … (voller Bildschirm, Wörter ploppen und leuchten)
+scene("s01", """
+    #vg1 { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 40%, rgba(0,0,0,0) 25%, rgba(0,8,30,.88) 100%); }
+    #ry1 { position: absolute; left: 540px; top: 640px; width: 2000px; height: 2000px; margin: -1000px; border-radius: 50%; opacity: 0;
+      background: repeating-conic-gradient(rgba(255,40,60,.38) 0deg 7deg, rgba(255,40,60,0) 7deg 20deg); -webkit-mask: radial-gradient(circle, #000 15%, transparent 60%); mask: radial-gradient(circle, #000 15%, transparent 60%); }
+    #fl1 { position: absolute; inset: 0; background: #fff; opacity: 0; }
+    #rd1 { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 50%, rgba(255,0,30,0) 62%, rgba(220,0,25,.85) 100%); opacity: 0; }
+    .sb { position: absolute; top: -300px; width: 900px; height: 1400px; opacity: .0; background: conic-gradient(from 160deg at 50% 0%, rgba(255,30,50,0) 0deg, rgba(255,30,50,.55) 20deg, rgba(255,30,50,0) 40deg); transform-origin: 50% 0%; }
+    #sbL { left: -450px; } #sbR { right: -450px; }
+    #bn1 { position: absolute; left: 0; right: 0; top: 215px; height: 150px; display: flex; align-items: center; justify-content: center; gap: 26px; background: linear-gradient(180deg,#ff2a3d,#b8001a); box-shadow: 0 10px 0 rgba(0,0,0,.3), 0 0 60px rgba(255,0,30,.7); opacity: 0; }
+    #bn1 b { font: 400 104px/1 "Lilita One", sans-serif; color: #fff; letter-spacing: .04em; text-shadow: 0 6px 0 #6a0010; }
+    #bn1 i { font-style: normal; font: 900 40px Inter, sans-serif; color: #ff2a3d; background: #fff; padding: 6px 18px; border-radius: 10px; }
+    #tk1 { position: absolute; left: 0; right: 0; top: 1480px; height: 110px; overflow: hidden; background: #fff; border-top: 12px solid #ff2a3d; border-bottom: 12px solid #ff2a3d; opacity: 0; }
+    #tk1 div { position: absolute; left: 0; top: 0; white-space: nowrap; font: 400 70px/86px "Lilita One", sans-serif; color: #c4001c; }
+    .hw { position: absolute; left: 0; right: 0; text-align: center; font-family: "Lilita One", sans-serif; color: #fff; opacity: 0; line-height: .95; white-space: nowrap;
+      -webkit-text-stroke: 14px #1a0b2e; paint-order: stroke fill; }
+    #a1 { top: 430px; font-size: 100px; } #a2 { top: 545px; font-size: 76px; color: #ffd0d4; }
+    #b1 { top: 470px; font-size: 150px; } #b2 { top: 620px; font-size: 200px; color: #ff2a3d; -webkit-text-stroke: 16px #fff; }
+    #em1 { position: absolute; left: 0; right: 0; top: 880px; text-align: center; font-size: 200px; opacity: 0; }
+    #k1 { top: 440px; font-size: 250px; color: #ff2a3d; -webkit-text-stroke: 16px #fff; } #k2 { top: 720px; font-size: 92px; }
+    #qq { position: absolute; left: 0; right: 0; top: 880px; text-align: center; font: 400 150px "Lilita One", sans-serif; color: #ffe14a; opacity: 0; -webkit-text-stroke: 12px #1a0b2e; paint-order: stroke fill; }
+    .pt { position: absolute; font-size: 90px; line-height: 1; width: 90px; height: 90px; opacity: 0; }""",
+"""      <div id="vg1"></div><div id="rd1"></div>
+      <div id="bn1"><span style="font-size:96px">🚨</span><b>EILMELDUNG</b><i>LIVE</i></div>
+      <div id="tk1"><div>+++ EILMELDUNG +++ MUSCHEL-TAL +++ ES IST WAS PASSIERT +++ EILMELDUNG +++ MUSCHEL-TAL +++ ES IST WAS PASSIERT +++</div></div>
+      <div id="a1" class="hw">LEUTE …</div><div id="a2" class="hw">auf unserer Insel</div>
+      <div id="b1" class="hw">ES IST WAS</div><div id="b2" class="hw">PASSIERT!</div>
+      <div id="em1">😳</div>
+      <div id="k1" class="hw">KEINER</div><div id="k2" class="hw">hat's kommen sehen …</div>
+      <div id="qq">? ? ?</div>
+      """ + "".join(f'<div class="pt" id="pa{i}" style="left:495px;top:700px">{e}</div>' for i, e in enumerate("❗⚠️💥❓❗⚠️💥❓❗⚠️💥❓")) + """
+      <div id="fl1"></div>""",
+"""      const P = at("L1", "passiert"), B = line("L1b")[0], K = at("L1b", "keiner");
+      tl.fromTo("#vg1", { opacity: .5 }, { opacity: 1, duration: 1.5, ease: "none" }, 0);
+      tl.fromTo("#bn1", { opacity: 0, scaleY: 0 }, { opacity: 1, scaleY: 1, duration: .2, ease: "back.out(2)" }, 0);
+      [...Array(11).keys()].forEach(i => tl.fromTo("#bn1 b", { opacity: .3 }, { opacity: 1, duration: .14, ease: "none", immediateRender: false }, .45 * i + .3));
+      [...Array(11).keys()].forEach(i => tl.fromTo("#rd1", { opacity: 1 }, { opacity: .15, duration: .4, ease: "power1.out", immediateRender: false }, i * .45));
+      tl.fromTo("#tk1", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .25 }, .1);
+      tl.fromTo("#tk1 div", { x: 0 }, { x: -1900, duration: 5.2, ease: "none" }, .1);
+      tl.fromTo("#a1", { opacity: 0, scale: 2.6, filter: "blur(14px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .35, ease: "back.out(2.5)" }, .02);
+      tl.fromTo("#a2", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: .35, ease: "back.out(2)" }, at("L1", "auf") - .05);
+      tl.to(["#a1", "#a2"], { y: -40, opacity: 0, duration: .2, ease: "power2.in" }, P - .22);
+      tl.fromTo("#fl1", { opacity: .85 }, { opacity: 0, duration: .35, ease: "power2.out", immediateRender: false }, P - .02);
+      tl.fromTo("#b1", { opacity: 0, scale: 3, rotation: -8 }, { opacity: 1, scale: 1, rotation: -3, duration: .3, ease: "back.out(3)" }, P - .15);
+      tl.fromTo("#b2", { opacity: 0, scale: 3.4, rotation: 6 }, { opacity: 1, scale: 1, rotation: 2, duration: .32, ease: "back.out(3)" }, P + .02);
+      tl.fromTo("#b2", { textShadow: "0 0 0px rgba(255,225,74,0)" }, { textShadow: "0 0 60px rgba(255,225,74,1)", duration: .25, yoyo: true, repeat: 5, ease: "sine.inOut", immediateRender: false }, P + .35);
+      tl.fromTo("#em1", { opacity: 0, scale: .2, y: 80 }, { opacity: 1, scale: 1, y: 0, duration: .4, ease: "back.out(3)" }, P + .2);
+      tl.to("#em1", { y: -24, duration: .25, yoyo: true, repeat: 5, ease: "sine.inOut" }, P + .65);
+      [[18,-10],[-20,8],[14,12],[-12,-8],[8,6],[0,0]].forEach(([x, y], i) => tl.to("#s01-stage", { x, y, duration: .045, ease: "none" }, P + .05 + i * .045));
+      [...Array(12).keys()].forEach(i => { const a = i / 12 * 6.283, r = 330 + (i % 3) * 130; tl.fromTo("#pa" + i, { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: Math.cos(a) * r, y: Math.sin(a) * r * 1.1, scale: 1.4, rotation: (i % 2 ? 1 : -1) * 160, opacity: 0, duration: 1.1, ease: "power3.out", immediateRender: false }, P + .03 + (i % 3) * .05); });
+      tl.to(["#b1", "#b2", "#em1"], { opacity: 0, scale: 1.4, filter: "blur(10px)", duration: .25, ease: "power2.in" }, B - .2);
+      tl.fromTo("#k2", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .35, ease: "power3.out" }, B + .05);
+      tl.fromTo("#k1", { opacity: 0, scale: .2 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(3)" }, K - .1);
+      [0, .08, .16, .3, .38].forEach((d, i) => tl.to("#k1", { opacity: i % 2 ? .25 : 1, duration: .04, ease: "none" }, K + .25 + d));
+      tl.fromTo("#k1", { textShadow: "0 0 0px rgba(255,64,96,0)" }, { textShadow: "0 0 70px rgba(255,64,96,1)", duration: .3, yoyo: true, repeat: 3, ease: "sine.inOut", immediateRender: false }, K + .7);
+      tl.fromTo("#qq", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.5)" }, at("L1b", "kommen"));
+      tl.to("#qq", { rotation: 6, duration: .2, yoyo: true, repeat: 5, ease: "sine.inOut" }, at("L1b", "kommen") + .4);""", blur=True)
 
 # s02 – Hütten + Passanten: 790, Hier könntest DU wohnen, Folgen
 scene("s02", GL + """
@@ -126,16 +164,41 @@ scene("s02", GL + """
     .stk.gr { background: linear-gradient(160deg, #22b36a, #8be04e); text-shadow: 0 7px 0 #0d5a2e; color: #fff; box-shadow: 0 0 0 9px #fff, 0 0 0 16px #0d3a20, 0 24px 0 rgba(0,0,0,.28); }
     .stk.go { background: linear-gradient(160deg, #ffd23f, #ff9a1a); color: #fff; text-shadow: 0 7px 0 #8a4a00; box-shadow: 0 0 0 9px #fff, 0 0 0 16px #4a2a00, 0 24px 0 rgba(0,0,0,.28), 0 0 90px rgba(255,200,60,.8); }
     #n2 { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 240px; text-align: center; font-family: "Lilita One", sans-serif; opacity: 0; }
-    #n2 b { display: block; font-weight: 400; font-size: 210px; line-height: .9; color: #ffe14a; text-shadow: 0 6px 0 #ff9a1a, 0 12px 0 #e8601a, 0 18px 0 #8a3510, 0 26px 40px rgba(0,0,0,.5); }
+    #n2 b { display: block; font-weight: 400; font-size: 270px; line-height: .9; color: #ffe14a; text-shadow: 0 6px 0 #ff9a1a, 0 12px 0 #e8601a, 0 18px 0 #8a3510, 0 26px 40px rgba(0,0,0,.5); }
     #n2 small { display: inline-block; margin-top: 8px; font-size: 54px; color: #fff; background: #2a1b12; padding: 4px 30px 10px; border-radius: 30px; }
+    #dk2 { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 30%, rgba(20,10,40,.55) 0%, rgba(10,5,30,.8) 70%); opacity: 0; }
+    #ry2 { position: absolute; left: 540px; top: 360px; width: 1500px; height: 1500px; margin: -750px; border-radius: 50%; opacity: 0;
+      background: repeating-conic-gradient(rgba(255,225,74,.7) 0deg 8deg, rgba(255,225,74,0) 8deg 20deg); -webkit-mask: radial-gradient(circle, #000 12%, transparent 62%); mask: radial-gradient(circle, #000 12%, transparent 62%); }
+    #gl2 { position: absolute; left: 540px; top: 340px; width: 700px; height: 700px; margin: -350px; border-radius: 50%; background: radial-gradient(circle, rgba(255,230,120,.75), rgba(255,200,60,0) 65%); opacity: 0; }
+    .rg2 { position: absolute; left: 540px; top: 340px; width: 300px; height: 300px; margin: -150px; border-radius: 50%; border: 18px solid #ffe14a; opacity: 0; }
+    .sp2 { position: absolute; font-size: 72px; opacity: 0; }
+    .pt2 { position: absolute; font-size: 80px; line-height: 1; width: 80px; height: 80px; opacity: 0; }
+    #tg2 { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 680px; padding: 10px 34px 16px; border-radius: 34px; background: linear-gradient(160deg,#ff3d7f,#ff7ac0); color: #fff; font: 400 64px "Lilita One", sans-serif; box-shadow: 0 0 0 7px #fff, 0 12px 0 rgba(0,0,0,.3); opacity: 0; }
     #h2 { top: 250px; } #h2 small { font-size: 56px; }
     #f2 { position: absolute; left: 0; right: 0; margin: 0 auto; top: 620px; width: 440px; height: 112px; border-radius: 56px; background: #fe2c55; color: #fff; font: 800 54px/112px Inter, sans-serif; text-align: center; opacity: 0; box-shadow: 0 14px 30px rgba(0,0,0,.35); }""",
-"""      <div id="n2"><b id="n2n">0</b><small>Bewohner · 1 Hütte = 1 Follower</small></div>
-      <div id="h2" class="stk"><small>Hier könntest</small>DU wohnen! 🏡</div>
+"""      <div id="dk2"></div><div id="ry2"></div><div id="gl2"></div><div class="rg2" id="rg0"></div><div class="rg2" id="rg1"></div><div class="rg2" id="rg2"></div>
+      <div id="n2"><b id="n2n">0</b><small>BEWOHNER 🏠</small></div>
+      <div id="tg2">1 Hütte = 1 echter Follower 💖</div>
+      <div class="sp2" id="sq0" style="left:150px;top:230px">✨</div><div class="sp2" id="sq1" style="left:860px;top:250px">⭐</div><div class="sp2" id="sq2" style="left:110px;top:470px">⭐</div><div class="sp2" id="sq3" style="left:880px;top:480px">✨</div>
+      """ + "".join(f'<div class="pt2" id="pq{i}" style="left:500px;top:300px">{e}</div>' for i, e in enumerate("🏠👥🎉🏠💖✨🏠👥🎉🏠💖✨🏠👥")) + """
+      <div id="h2" class="stk"><small>Hier könntest auch</small>DU wohnen! 🏡</div>
       <div id="f2">+ Folgen</div>""",
 """      const t = line("L2")[0], H = line("L2b")[0], F = at("L2b", "Folg");
       tl.fromTo("#n2", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .45, ease: "back.out(2.4)" }, at("L2", "790") - .1);
       count(tl, "#n2n", 0, 790, at("L2", "790"), 1.1, "", "", "power2.out");
+      const N = at("L2", "790"), E = N + 1.1, J = at("L2", "jede");
+      tl.fromTo("#dk2", { opacity: 0 }, { opacity: 1, duration: .35 }, N - .15);
+      tl.fromTo("#ry2", { opacity: 0, scale: .4, rotation: 0 }, { opacity: 1, scale: 1, rotation: 70, duration: 5, ease: "power1.out" }, N - .1);
+      tl.fromTo("#gl2", { opacity: 0, scale: .5 }, { opacity: 1, scale: 1.2, duration: .5, ease: "power2.out" }, N);
+      tl.to("#gl2", { opacity: .55, scale: 1, duration: .35, yoyo: true, repeat: 7, ease: "sine.inOut" }, N + .5);
+      ["#rg0", "#rg1", "#rg2"].forEach((q, i) => tl.fromTo(q, { opacity: 1, scale: .3 }, { opacity: 0, scale: 4.5, duration: .9, ease: "power3.out", immediateRender: false }, E + i * .15));
+      tl.fromTo("#n2 b", { scale: 1 }, { scale: 1.25, duration: .14, yoyo: true, repeat: 1, ease: "power2.out", transformOrigin: "50% 60%" }, E);
+      tl.fromTo("#n2 b", { textShadow: "0 6px 0 #ff9a1a, 0 12px 0 #e8601a, 0 18px 0 #8a3510, 0 0 0 rgba(255,230,120,0)" }, { textShadow: "0 6px 0 #ff9a1a, 0 12px 0 #e8601a, 0 18px 0 #8a3510, 0 0 80px rgba(255,230,120,1)", duration: .3, yoyo: true, repeat: 7, ease: "sine.inOut", immediateRender: false }, E + .1);
+      [...Array(14).keys()].forEach(i => { const a = i / 14 * 6.283, r = 300 + (i % 3) * 120; tl.fromTo("#pq" + i, { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: Math.cos(a) * r, y: Math.sin(a) * r * .8, scale: 1.3, rotation: (i % 2 ? 1 : -1) * 180, opacity: 0, duration: 1.3, ease: "power3.out", immediateRender: false }, E + (i % 3) * .04); });
+      ["#sq0", "#sq1", "#sq2", "#sq3"].forEach((q, i) => tl.fromTo(q, { opacity: 0, scale: .2, rotation: 0 }, { opacity: 1, scale: 1.3, rotation: 120, duration: .3, yoyo: true, repeat: 5, ease: "sine.inOut", immediateRender: false }, E + .1 + i * .12));
+      tl.fromTo("#tg2", { opacity: 0, scale: .4, y: 40 }, { opacity: 1, scale: 1, y: 0, duration: .4, ease: "back.out(2.5)" }, J - .1);
+      [[10,-6,-2],[-10,4,2],[6,4,-1],[0,0,0]].forEach(([x, y, r], i) => tl.to("#tg2", { x, y, rotation: r, duration: .05, ease: "none" }, J + .35 + i * .05));
+      tl.to(["#dk2", "#ry2", "#gl2", "#tg2"], { opacity: 0, duration: .25 }, H - .25);
       tl.to("#n2", { opacity: 0, scale: .8, duration: .2, ease: "power2.in" }, H - .2);
       tl.fromTo("#h2", { opacity: 0, scale: 2.2, rotation: -10 }, { opacity: 1, scale: 1, rotation: -3, duration: .3, ease: "back.out(3)" }, H);
       [[12,-8,-1],[-14,6,-6],[10,8,-2],[-8,-6,-5],[0,0,-3]].forEach(([x, y, r], i) => tl.to("#h2", { x, y, rotation: r, duration: .05, ease: "none" }, H + .3 + i * .05));
@@ -153,13 +216,10 @@ scene("s03", GL + """
     #e3 { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 600px; display: flex; gap: 22px; align-items: center; padding: 18px 34px 20px 20px; border-radius: 36px; background: #fff; box-shadow: 0 0 0 7px #ffd23f, 0 18px 40px rgba(0,0,0,.35); opacity: 0; }
     #e3 i { width: 96px; height: 96px; border-radius: 50%; background: linear-gradient(135deg,#36d1dc,#1f8ff0); display: grid; place-items: center; font-style: normal; font-size: 58px; }
     #e3 small { display: block; font: 800 28px Inter, sans-serif; color: #c08a00; letter-spacing: .2em; } #e3 b { font: 400 66px "Lilita One", sans-serif; color: #2a1b12; }""",
-"""      <div id="w3" class="stk bl"><small>vor der Küste</small>🐋 WAL-ALARM!</div>
-      <div id="e3"><i>🐋</i><div><small>ERFOLG FREIGESCHALTET</small><b>Wal-Watcher</b></div></div>""",
-"""      const W = at("L3", "WAL"), E = at("L3b", "Wal-Watcher");
+"""      <div id="w3" class="stk bl"><small>vor der Küste</small>🐋 WAL-ALARM!</div>""",
+"""      const W = at("L3", "WAL");
       tl.fromTo("#w3", { opacity: 0, scale: 2.2, rotation: -10 }, { opacity: 1, scale: 1, rotation: -3, duration: .3, ease: "back.out(3)" }, W - .05);
-      [[12,-8,-1],[-14,6,-6],[10,8,-2],[-8,-6,-5],[0,0,-3]].forEach(([x, y, r], i) => tl.to("#w3", { x, y, rotation: r, duration: .05, ease: "none" }, W + .3 + i * .05));
-      tl.fromTo("#e3", { opacity: 0, y: 80, scale: .7 }, { opacity: 1, y: 0, scale: 1, duration: .45, ease: "back.out(2.2)" }, E - .15);
-      tl.to("#e3", { scale: 1.05, duration: .3, yoyo: true, repeat: 3, ease: "sine.inOut" }, E + .4);""")
+      [[12,-8,-1],[-14,6,-6],[10,8,-2],[-8,-6,-5],[0,0,-3]].forEach(([x, y, r], i) => tl.to("#w3", { x, y, rotation: r, duration: .05, ease: "none" }, W + .3 + i * .05));""")
 
 # s04 – Schildkröten-Wanderung
 scene("s04", GL + """
@@ -169,9 +229,13 @@ scene("s04", GL + """
     .stk.bl { background: linear-gradient(160deg, #1f8ff0, #36d1dc); text-shadow: 0 7px 0 #0b3d7a; color: #fff; box-shadow: 0 0 0 9px #fff, 0 0 0 16px #0b2340, 0 24px 0 rgba(0,0,0,.28), 0 0 80px rgba(60,180,255,.7); }
     .stk.gr { background: linear-gradient(160deg, #22b36a, #8be04e); text-shadow: 0 7px 0 #0d5a2e; color: #fff; box-shadow: 0 0 0 9px #fff, 0 0 0 16px #0d3a20, 0 24px 0 rgba(0,0,0,.28); }
     .stk.go { background: linear-gradient(160deg, #ffd23f, #ff9a1a); color: #fff; text-shadow: 0 7px 0 #8a4a00; box-shadow: 0 0 0 9px #fff, 0 0 0 16px #4a2a00, 0 24px 0 rgba(0,0,0,.28), 0 0 90px rgba(255,200,60,.8); }""",
-"""      <div id="t4" class="stk gr"><small>am Strand</small>🐢 Schildkröten-<br>Wanderung!</div>""",
+"""      <div id="t4" class="stk gr"><small>am Strand</small>🐢 Schildkröten-<br>Wanderung!</div>
+      <div id="h4" class="stk" style="background:linear-gradient(160deg,#7b3dff,#ff3d7f);text-shadow:0 7px 0 #3a1070;font-size:96px"><small>🐋 + 🐢 merkt euch das …</small>WICHTIG<br>FÜRS SPIEL? 🤫</div>""",
 """      tl.fromTo("#t4", { opacity: 0, scale: 2.2, rotation: -10 }, { opacity: 1, scale: 1, rotation: -3, duration: .3, ease: "back.out(3)" }, at("L4", "Schildkröten") - .1);
-      tl.to("#t4", { y: -10, duration: .5, yoyo: true, repeat: 5, ease: "sine.inOut" }, at("L4", "Schildkröten") + .4);""")
+      tl.to("#t4", { y: -10, duration: .5, yoyo: true, repeat: 5, ease: "sine.inOut" }, at("L4", "Schildkröten") + .4);
+      tl.to("#t4", { opacity: 0, scale: .8, duration: .2 }, line("L4b")[0] - .2);
+      tl.fromTo("#h4", { opacity: 0, scale: 2.2, rotation: -10 }, { opacity: 1, scale: 1, rotation: -3, duration: .3, ease: "back.out(3)" }, line("L4b")[0]);
+      tl.to("#h4", { scale: 1.06, duration: .3, yoyo: true, repeat: 5, ease: "sine.inOut" }, at("L4b", "wichtig"));""")
 
 # s05 – Freiluftkino
 scene("s05", GL + """
@@ -226,7 +290,7 @@ scene("s07", GL + """
 """      <div id="l7" class="gl"><small>🔴 Live-Verlosung</small><b>Besitzer vom Kokos-Club</b></div>
       <div id="rl"><div class="r">""" + "".join(f"<div>@{n}</div>" for n in NAMES) + """<div>@kerem90025</div></div></div>
       <div id="wn" class="stk go"><small>🎁 Du gewinnst den Kokos-Club!</small>@kerem90025</div>
-      <div id="nx" class="gl"><small>Nächste Verlosung</small><b>👑 Inhaber vom Golden Pearl</b></div>
+      <div id="nx" class="gl"><small>Nächste Folge · unter allen Followern</small><b>👑 Inhaber vom Golden Pearl</b></div>
       """ + "".join(f'<div class="pt" id="pc{i}" style="left:498px;top:620px">{e}</div>' for i, e in enumerate("🎉💖✨🥳🎊⭐🎉💖✨🥳🎊⭐")) + """""",
 """      const t = line("L7")[0], S = line("L7b")[0], W = line("L7c")[0], X = at("L7d", "Und");
       tl.fromTo("#l7", { opacity: 0, y: 30, filter: "blur(10px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: .45, ease: "power3.out" }, t - .1);

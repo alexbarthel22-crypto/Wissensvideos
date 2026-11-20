@@ -151,6 +151,9 @@ def build_captions(project, timings, windows, total, big=False, opt=None):
     if opt.get("merge_first") and not opt.get("single"):  # erste k Untertitel-Gruppen als ein Satz ab Frame 0 (z. B. Ausruf + Satz)
         k = opt["merge_first"]
         groups = [{"words": [w for g in groups[:k] for w in g["words"]], "start": groups[0]["start"], "end": groups[k - 1]["end"]}] + groups[k:]
+    if opt.get("off_scenes"):  # keine Untertitel in diesen Szenen (z. B. Hook mit eigener großer Schrift)
+        t_off = max(e for sc, st, e in windows if sc["id"] in opt["off_scenes"])
+        groups = [g for g in groups if g["start"] >= t_off - 0.01]
     if opt.get("first_at_zero"):
         groups[0]["start"] = 0.0
     if opt.get("merge_last"):  # letzte k Gruppen als ganzer Schluss-Satz (z. B. Frage an die Zuschauer)

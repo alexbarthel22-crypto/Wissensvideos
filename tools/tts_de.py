@@ -140,7 +140,7 @@ def synth_eleven(texts, voice, scales, model, cache_dir=None, force=()):
     key = os.environ.get("ELEVENLABS_API_KEY", "proxy-injected")
     out = []
     for idx, (t, ls) in enumerate(zip(texts, scales)):
-        h = hashlib.sha1(json.dumps([t, voice, model]).encode()).hexdigest()[:16]
+        h = hashlib.sha1(json.dumps([t, voice, model] + ([round(ls, 3)] if model.startswith("eleven_v3") and abs(ls - 1) > 0.01 else [])).encode()).hexdigest()[:16]
         cpath = Path(cache_dir) / f"{h}.wav" if cache_dir else None
         if cpath and cpath.exists() and idx not in force:
             pcm, sr = sf.read(cpath, dtype="float32")
@@ -149,6 +149,8 @@ def synth_eleven(texts, voice, scales, model, cache_dir=None, force=()):
                     "voice_settings": {"stability": 0.45, "similarity_boost": 0.8, "style": 0.35, "use_speaker_boost": True}}
             if model.startswith("eleven_v3"):  # v3: Regie-Tags wie [shocked]; stability nur 0/0.5/1 (0 = emotional)
                 body["voice_settings"] = {"stability": 0.0, "similarity_boost": 0.8}
+                if abs(ls - 1) > 0.01:  # Tempo direkt bei ElevenLabs (klingt natürlicher als atempo)
+                    body["voice_settings"]["speed"] = round(min(1.2, max(0.7, 1 / ls)), 2)
             elif model.startswith("eleven_multilingual_v1"):
                 body.pop("language_code")
             url = f"https://api.elevenlabs.io/v1/text-to-speech/{voice}?output_format=pcm_24000"
@@ -173,7 +175,7 @@ def synth_eleven(texts, voice, scales, model, cache_dir=None, force=()):
             if cpath:
                 cpath.parent.mkdir(parents=True, exist_ok=True)
                 sf.write(cpath, pcm, sr)
-        if abs(ls - 1) > 0.01:
+        if abs(ls - 1) > 0.01 and not model.startswith("eleven_v3"):
             with tempfile.TemporaryDirectory() as d:
                 src, dst = Path(d) / "a.wav", Path(d) / "b.wav"
                 sf.write(src, pcm, sr)
