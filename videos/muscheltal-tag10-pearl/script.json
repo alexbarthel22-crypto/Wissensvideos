@@ -21,17 +21,13 @@
    "s02"
   ]
  },
- "loudness": -13,
+ "loudness": -11,
  "pitch": 0,
  "bgvideo": {
   "src": "assets/bg.mp4"
  },
- "ambience": {
-  "src": "assets/music/atmo.wav",
-  "volume": 0.6
- },
  "title": "Muschel-Tal Tag 10 – Golden Pearl",
- "voice": "ElevenLabs (eleven_v3, Stimme Ben, Tempo 1.15)",
+ "voice": "Gemini TTS (gemini-3.1-flash-tts-preview, Stimme Achird, --speed 1.12) – wie Video 1",
  "notes": "19.11.: Hook, Hütten, Wal, Schildkröten, Freiluftkino, Golden Pearl (Minispiele, nachts Party), Live-Verlosung Besitzer Kokos-Club (@kerem90025), nächste: Inhaber Golden Pearl, Spiel-Tests ab 1.000.",
  "scenes": [
   {
@@ -83,14 +79,12 @@
     {
      "id": "L1",
      "text": "Leute … auf unserer Insel / ist was *y:passiert.",
-     "pause": 0,
-     "tag": "[excited]"
+     "pause": 0.3
     },
     {
      "id": "L1b",
      "text": "Und das hat *y:keiner / kommen sehen …",
-     "pause": 0.25,
-     "tag": "[excited]"
+     "pause": 0.3
     }
    ]
   },
@@ -143,14 +137,12 @@
     {
      "id": "L2",
      "text": "Aber erst mal: *y:790|=siebenhundertneunzig Leute / wohnen schon hier – / jede Hütte: *g:ein echter Follower!",
-     "pause": 0.25,
-     "tag": "[excited]"
+     "pause": 0.3
     },
     {
      "id": "L2b",
      "text": "*y:Hier könntest *y:auch *y:DU wohnen! / *p:Folg mir – / und du kriegst *y:deine eigene Hütte!",
-     "pause": 0.25,
-     "tag": "[shouting]"
+     "pause": 0.3
     }
    ]
   },
@@ -188,8 +180,7 @@
     {
      "id": "L3",
      "text": "Und dann: / vor der Küste springt / ein *y:WAL aus dem Wasser!",
-     "pause": 0.25,
-     "tag": "[shocked]"
+     "pause": 0.3
     }
    ]
   },
@@ -237,14 +228,12 @@
     {
      "id": "L4",
      "text": "Am Strand: eine *g:Schildkröten-|=Schildkröten-Wanderung! *g:Wanderung!|~ / Die Babys krabbeln / ins Meer!",
-     "pause": 0.25,
-     "tag": "[excited]"
+     "pause": 0.3
     },
     {
      "id": "L4b",
      "text": "Wal und Schildkröten – / merkt sie euch: / die könnten später *y:wichtig werden … / *p:fürs Spiel!",
-     "pause": 0.25,
-     "tag": "[excited]"
+     "pause": 0.3
     }
    ]
   },
@@ -282,8 +271,7 @@
     {
      "id": "L5",
      "text": "Und freitags und samstags / läuft im *p:Freiluftkino / ein Film – / mit Popcorn und Liegestühlen!",
-     "pause": 0.25,
-     "tag": "[excited]"
+     "pause": 0.3
     }
    ]
   },
@@ -341,14 +329,12 @@
     {
      "id": "L6",
      "text": "Und jetzt das *y:Neue: / das *y:Golden *y:Pearl!",
-     "pause": 0.25,
-     "tag": "[shouting]"
+     "pause": 0.3
     },
     {
      "id": "L6b",
      "text": "Hier gibt's *g:jede Menge Minispiele – / und nachts wird *p:gefeiert!",
-     "pause": 0.25,
-     "tag": "[excited]"
+     "pause": 0.3
     }
    ]
   },
@@ -411,26 +397,22 @@
     {
      "id": "L7",
      "text": "*y:Überraschung! / Live-Verlosung: / Wer wird *p:Besitzer vom Kokos-Club?",
-     "pause": 0.25,
-     "tag": "[shouting]"
+     "pause": 0.3
     },
     {
      "id": "L7b",
      "text": "Der neue Besitzer ist …",
-     "pause": 0.25,
-     "tag": "[excited]"
+     "pause": 0.3
     },
     {
      "id": "L7c",
      "text": "*y:@kerem90025|Kerem!",
-     "pause": 0.1,
-     "tag": "[shouting]"
+     "pause": 0.3
     },
     {
      "id": "L7d",
      "text": "*g:Glückwunsch! / Und in der nächsten Folge verlose ich – / unter *y:allen Followern: / den *y:Inhaber vom Golden Pearl!",
-     "pause": 0.25,
-     "tag": "[excited]"
+     "pause": 0.3
     }
    ]
   },
@@ -493,20 +475,17 @@
     {
      "id": "L8",
      "text": "Und das Größte: / Gerade laufen die *y:Tests / für das Spiel *p:Muschel-Tal!",
-     "pause": 0.25,
-     "tag": "[excited]"
+     "pause": 0.3
     },
     {
      "id": "L8b",
      "text": "Bei *y:1.000|=tausend Bewohnern geht's los: / Welt erkunden, *g:Muscheln sammeln, / Sachen kaufen, *g:Freunde finden!",
-     "pause": 0.25,
-     "tag": "[excited]"
+     "pause": 0.3
     },
     {
      "id": "L8c",
      "text": "Erzählt euren *y:Freunden von Muschel-Tal – / damit sie unter den *y:ersten *y:1.000|=tausend sind!",
-     "pause": 0.25,
-     "tag": "[excited]"
+     "pause": 0.3
     }
    ]
   },
@@ -539,15 +518,14 @@
     {
      "id": "L9",
      "text": "*p:Folg mir – / und zieh noch *y:heute ein!",
-     "pause": 0.25,
-     "tag": "[shouting]"
+     "pause": 0.3
     }
    ]
   }
  ],
  "music": {
   "src": "assets/music/suedsee.wav",
-  "volume": 1.0,
-  "note": "tools/make_music_tropical.py, lizenzfrei, unter der Stimme automatisch leiser"
- }
+  "volume": 1
+ },
+ "style": "Style: a real, natural-sounding young man telling his friends something he is genuinely excited about. Conversational, warm, honest emotion in the voice, not like an announcer or an advertisement. Emphasize the important words naturally.\nPace: brisk but natural.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
 }
