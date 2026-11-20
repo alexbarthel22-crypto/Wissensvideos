@@ -106,7 +106,7 @@ async function vollReset(store, n) {
 }
 // PIN vergessen: Name wieder freigeben (nur die Beanspruchung wird gelöscht – Muscheln, Erfolge, Käufe bleiben).
 // Danach kann der Spieler seinen Namen neu beanspruchen und eine neue PIN wählen. [Name, Lauf-Nr.] – läuft je Eintrag einmal.
-const FREIGEBEN = [];
+const FREIGEBEN = [["l_i09", 1]];// 20.11.: Verknüpfung von @l_i09 entfernt (Nutzerwunsch)
 async function freigeben(store) {
   for (const [n, nr] of FREIGEBEN) {
     const mk = "x/frei/" + n + "/" + nr;
@@ -580,10 +580,13 @@ export default async (req) => {
     return json({ ok, bonus, neu, anz });
   }
   if (act === "shell") {
-    // 6 schwebende Muscheln pro Stunde und Insel (je 1 🐚); Kennung „Stunde-Insel-Nr.“, gilt nur in der aktuellen (oder gerade vergangenen) Stunde
-    const m = /^(\d{1,2})-(\d)-([0-5])$/.exec(String(d.i || "")), h = berlinStunde();
+    // 20.11.: 10 schwebende Muscheln pro Stunde und Insel (je 1 🐚), pro Spieler höchstens 10 pro Stunde über alle Inseln.
+    // Kennung „Stunde-Insel-Nr.“, gilt nur in der aktuellen (oder gerade vergangenen) Stunde
+    const m = /^(\d{1,2})-(\d)-(\d)$/.exec(String(d.i || "")), h = berlinStunde();
     if (!m || !(Number(m[1]) === h || Number(m[1]) === h - 1)) return json({ fehler: "Muschel" }, 400);
-    return json({ ok: await setze("shell", heute + "-" + String(m[1]).padStart(2, "0") + "-" + m[2] + "-" + m[3], 1) });
+    const hh = String(m[1]).padStart(2, "0");
+    if ((await liste(store, "b/" + nm + "/shell/" + heute + "-" + hh + "-")).length >= 10) return json({ ok: false, grund: "limit" });
+    return json({ ok: await setze("shell", heute + "-" + hh + "-" + m[2] + "-" + m[3], 1) });
   }
   if (act === "erf") {
     const k = String(d.key || "").toUpperCase();
