@@ -577,8 +577,8 @@ const PLACED=PEOPLE.filter(p=>p.p), WAIT=PEOPLE.filter(p=>p.wait);
 const isMayor=p=>!!p&&(p.beruf||'').startsWith('Bürgermeister');
 // arbeitet im Muschelpalast (Bürgermeisterin, Palast-Leitung): tagsüber an der Palasttreppe
 const atPal=p=>!!p&&(isMayor(p)||p.ort==='Muschelpalast');
-// tagsüber im Palast, nachts zu Hause in der eigenen Hütte
-const palNow=p=>atPal(p)&&!!p.p&&nightLevel()<=.5;
+// immer am Palast (auch nachts) – Aufgaben „Bürgermeisterin Hallo sagen“ und „Beete gießen“ müssen jederzeit gehen
+const palNow=p=>atPal(p)&&!!p.p;
 // Bürgermeisterin + Palast-Leitung spazieren tagsüber über den Muschelplatz (Wegpunkte auf freien Platzflächen)
 const PALW={};let PALPTS=null;
 function palPts(){if(PALPTS)return PALPTS;PALPTS=[];for(let r=48;r<MAIN.plaza-14;r+=10)for(let a=0;a<TAU;a+=.22){const x=Math.cos(a)*r,y=Math.sin(a)*r*.92;if(y<20*PAL_S)continue;if(canWalk(x,y)&&canWalk(x,y+3))PALPTS.push([x,y]);}return PALPTS;}
@@ -5236,10 +5236,15 @@ function walkEnd(){const me=WK.me;WK.on=false;WK.keys.clear();WK.pt=null;$('hero
  if(me&&me.p)select(me);else flyTo(fitMain(freeY()),800);if(typeof walkLabel==='function')walkLabel();}
 function walkTick(n){if(!WK.on)return;const dt=Math.min(.05,(n-WK.last)/1000);WK.last=n;let vx=0,vy=0;
  const K=WK.keys;if(K.has('ArrowLeft')||K.has('a'))vx-=1;if(K.has('ArrowRight')||K.has('d'))vx+=1;if(K.has('ArrowUp')||K.has('w'))vy-=1;if(K.has('ArrowDown')||K.has('s'))vy+=1;
- if(WK.pt){const sx=(WK.x-cam.x)*cam.z+W/2,sy=(WK.y-cam.y)*cam.z+H/2,dx=WK.pt[0]-sx,dy=WK.pt[1]-sy;if(Math.hypot(dx,dy)>14){vx=dx;vy=dy;}}
+ if(!WK.pt)WK.au=null;let wt=null;
+ if(WK.pt){const sx=(WK.x-cam.x)*cam.z+W/2,sy=(WK.y-cam.y)*cam.z+H/2,dx=WK.pt[0]-sx,dy=WK.pt[1]-sy;wt=[WK.x+dx/cam.z,WK.y+dy/cam.z];if(Math.hypot(dx,dy)>14){vx=dx;vy=dy;}
+  /* festgefahren (Tisch, Geländer, Wasser): automatisch um das Hindernis herum laufen */
+  if(WK.au&&Math.hypot(WK.au.t[0]-wt[0],WK.au.t[1]-wt[1])>30)WK.au=null;
+  if(WK.au){const P=WK.au.p;while(P.length&&Math.hypot(P[0][0]-WK.x,P[0][1]-4.4-WK.y)<2.2)P.shift();if(!P.length){WK.au=null;vx=vy=0;}else{vx=P[0][0]-WK.x;vy=P[0][1]-4.4-WK.y;}}}
  const l=Math.hypot(vx,vy);WK.moving=l>0;
  if(l>0){const sp=(WK.mode==='moped'?47.25:30)*dt;vx=vx/l*sp;vy=vy/l*sp;
-  const steps=Math.ceil(Math.max(Math.abs(vx),Math.abs(vy))/2);for(let i=0;i<steps;i++){const sx=vx/steps,sy=vy/steps;if(canWalk(WK.x+sx,WK.y))WK.x+=sx;if(canWalk(WK.x,WK.y+sy))WK.y+=sy;}
+  const ox=WK.x,oy=WK.y,steps=Math.ceil(Math.max(Math.abs(vx),Math.abs(vy))/2);for(let i=0;i<steps;i++){const sx=vx/steps,sy=vy/steps;if(canWalk(WK.x+sx,WK.y))WK.x+=sx;if(canWalk(WK.x,WK.y+sy))WK.y+=sy;}
+  if(wt&&!WK.au){if(Math.hypot(WK.x-ox,WK.y-oy)<sp*.35){WK.st=(WK.st||0)+dt;if(WK.st>.18){WK.st=-.6;const r=mkRoute(WK.x,WK.y+4.4,wt[0],wt[1]+4.4);if(r.length>2||(r.length===2&&Math.hypot(r[1][0]-WK.x,r[1][1]-4.4-WK.y)>3))WK.au={t:wt,p:r.slice(1)};}}else if(WK.st>0)WK.st=0;else WK.st=Math.min(0,(WK.st||0)+dt);}
   if(Math.abs(vx)>Math.abs(vy)*.15)WK.hdir=vx>=0?1:-1;WK.vert=Math.abs(vy)>Math.abs(vx)*1.2;WK.dir=WK.vert?(vy>0?1:-1):(vx>=0?1:-1);WK.front=WK.vert&&vy>0;}
  walkGelaende();const tz=(WK.mode==='moped'?3.6:5)*(WK.zf||1);cam.x+=(WK.x-cam.x)*Math.min(1,dt*6);cam.y+=(WK.y-cam.y)*Math.min(1,dt*6);cam.z+=(tz-cam.z)*Math.min(1,dt*3);
  if(WK.me&&WK.mode==='moped'&&WK.moving){WK.sc=(WK.sc||0)+dt;if(WK.sc>2&&gibErf(WK.me,'SCOOT')){const p=WK.me;popup('<div class="lupebig" style="border-radius:50%;overflow:hidden">'+SCOOT_SVG+'</div><h2>Neuer Erfolg! 🎉</h2><p><b>🛵 Inselflitzer</b><br>Du bist mit dem Moped über die Insel geflitzt.</p><button class="btn hib" id="zuerf3">🏅 Zu meinen Erfolgen</button>');$('zuerf3').onclick=()=>{walkEnd();zuMeinenErfolgen(p);};WK.keys.clear();WK.pt=null;}}
@@ -5729,17 +5734,17 @@ function mkSheet(){const Q=MK.quests||[],qd=MK.d&&MK.d.questsDone||[],done=qd.le
 function wegAbst(x,y){const v=ISL.find(v=>v.open&&inside(v,x,y,0));if(!v)return null;const gx=(x-v.x)/S,gy=(y-v.y)/(S*.9),kx=Math.round(gx/5)*5,ky=Math.round(gy/4)*4;return{v,dx:Math.abs(gx-kx)*S,dy:Math.abs(gy-ky)*S*.9,cx:v.x+kx*S,cy:v.y+ky*S*.9};}
 function mkKost(x,y){const w=wegAbst(x,y);if(!w)return 5;const d=Math.min(w.dx,w.dy);if(d<1.6)return 1;if(d<3.8)return 2;if(aufGelaende(x,y))return 3;
  const v=w.v,gx=Math.round((x-v.x)/S),gy=Math.round((y-v.y)/(S*.9));for(let a=-1;a<=1;a++)for(let b=-1;b<=1;b++){const q=v.cell.get((gx+a)+','+(gy+b));if(q&&q.p&&q.nr<=limit&&Math.abs(x-q.p.x)<14&&Math.abs(y-q.p.y)<13)return 60;}return 6;}
-function mkRoute(x0,y0,x1,y1){const st=3,X0=Math.min(x0,x1)-60,Y0=Math.min(y0,y1)-60,nx=Math.ceil((Math.abs(x1-x0)+120)/st),ny=Math.ceil((Math.abs(y1-y0)+120)/st);if(nx*ny>260000)return[[x0,y0],[x1,y1]];
+function mkRoute(x0,y0,x1,y1){const A=(Math.abs(x1-x0)+120)*(Math.abs(y1-y0)+120),st=Math.max(3,Math.ceil(Math.sqrt(A/250000)*10)/10),X0=Math.min(x0,x1)-60,Y0=Math.min(y0,y1)-60,nx=Math.ceil((Math.abs(x1-x0)+120)/st),ny=Math.ceil((Math.abs(y1-y0)+120)/st);/* weite Wege: gröberes Raster statt gerader Linie übers Wasser */
  const N=nx*ny,ok=new Int8Array(N),cost=new Float32Array(N),dist=new Float32Array(N).fill(1e9),prev=new Int32Array(N).fill(-1),done=new Uint8Array(N);
  const okAt=k=>{if(!ok[k]){const x=X0+(k%nx)*st,y=Y0+((k/nx)|0)*st;ok[k]=canWalk(x,y-4.4)?1:2;/* Linie läuft in Fuß-Höhe, begehbar wird am Körper geprüft (wie beim Laufen) */if(ok[k]===1)cost[k]=mkKost(x,y);}return ok[k]===1;};
  const H=[],push=(k,d)=>{H.push([d,k]);let i=H.length-1;while(i>0){const p=(i-1)>>1;if(H[p][0]<=H[i][0])break;[H[p],H[i]]=[H[i],H[p]];i=p;}},pop=()=>{const t=H[0],l=H.pop();if(H.length){H[0]=l;let i=0;for(;;){const a=2*i+1,b=a+1;let m=i;if(a<H.length&&H[a][0]<H[m][0])m=a;if(b<H.length&&H[b][0]<H[m][0])m=b;if(m===i)break;[H[m],H[i]]=[H[i],H[m]];i=m;}}return t;};
  const si=Math.round((x0-X0)/st),sj=Math.round((y0-Y0)/st),ei=Math.round((x1-X0)/st),ej=Math.round((y1-Y0)/st),s0=sj*nx+si;dist[s0]=0;prev[s0]=s0;push(s0,0);let end=-1;
- while(H.length){const [d,k]=pop();if(done[k])continue;done[k]=1;const i=k%nx,j=(k/nx)|0;if(Math.hypot(i-ei,j-ej)<1.5){end=k;break;}
+ let bk=s0,bd=1e9;while(H.length){const [d,k]=pop();if(done[k])continue;done[k]=1;const i=k%nx,j=(k/nx)|0,dz=Math.hypot(i-ei,j-ej);if(dz<bd){bd=dz;bk=k;}if(dz<1.5){end=k;break;}
   for(const [a,b] of[[1,0],[-1,0],[0,1],[0,-1]]){const ii=i+a,jj=j+b;if(ii<0||jj<0||ii>=nx||jj>=ny)continue;const kk=jj*nx+ii;if(done[kk]||!okAt(kk))continue;const nd=d+cost[kk];if(nd<dist[kk]){dist[kk]=nd;prev[kk]=k;push(kk,nd);}}}
- if(end<0)return[[x0,y0],[x1,y1]];
+ let zw=false;if(end<0){if(bk===s0)return[[x0,y0]];end=bk;zw=true;}/* Ziel nicht erreichbar: nur bis zum nächsten erreichbaren Punkt, nie übers Wasser */
  const pts=[];let c=end;while(c!==prev[c]){let x=X0+(c%nx)*st,y=Y0+((c/nx)|0)*st;const w=wegAbst(x,y);if(w){if(w.dx<4)x=w.cx;if(w.dy<4)y=w.cy;}pts.unshift([x,y]);c=prev[c];}
- pts.unshift([x0,y0]);pts.push([x1,y1]);const out=[pts[0]];for(let a=1;a<pts.length-1;a++){const p0=out[out.length-1],p1=pts[a],p2=pts[a+1];if(Math.abs((p1[0]-p0[0])*(p2[1]-p1[1])-(p1[1]-p0[1])*(p2[0]-p1[0]))>.01)out.push(p1);}out.push(pts[pts.length-1]);return out;}
-function mkHin(i){const id=(MK.quests||[])[i];const z=id&&mkZiel2(id);if(!z)return;MK.hin={i,z,t:0};mkHinUpd(true);const q=mkQDef(id);mkToast(q.ic+' Folge der Linie'+(z.r?' bis '+(id==='steg'?'auf den Steg':id==='bm'?'zur Bürgermeisterin':id==='beet'?'zum Beet':id==='werkstatt'?'zum Rolltor – mit dem 🛵 Moped':id==='bau'?'zum Bauzaun':id==='villa'?'zum Tor':id==='palast'?'zum Eingang':id==='yacht'?'ans Ufer gegenüber der Yacht':id.startsWith('nagel')?'an den Maniküre-Tisch':({kokos:'zum Gästeliste-Pult am Eingang',pearl:'zum roten Teppich vor dem Golden Pearl',gpearl:'zum Golden Pearl',kokosbad:'an den Beckenrand',coast:'zum Spiegel',cococare:'zum Duft-Tisch',gaming:'zu den Arcade-Automaten',tierheim:'in den Hof zu den Hunden',markt:'zur Eingangstür',anleger:'bis an die Spitze des Anlegers',feuer:'zum Lagerfeuer',sandburg:'zur Sandburg',angeln:'auf den Angelsteg'})[id]||'an die Theke'):' bis zur Hütte'));}
+ pts.unshift([x0,y0]);if(!zw)pts.push([x1,y1]);const out=[pts[0]];for(let a=1;a<pts.length-1;a++){const p0=out[out.length-1],p1=pts[a],p2=pts[a+1];if(Math.abs((p1[0]-p0[0])*(p2[1]-p1[1])-(p1[1]-p0[1])*(p2[0]-p1[0]))>.01)out.push(p1);}out.push(pts[pts.length-1]);return out;}
+function mkHin(i){const id=(MK.quests||[])[i];const z=id&&mkZiel2(id);if(!z)return;MK.hin={i,z,t:0};mkHinUpd(true);const q=mkQDef(id);mkToast(q.ic+' Folge der Linie'+(z.r||id==='bm'?' bis '+(id==='steg'?'auf den Steg':id==='bm'?'zur Bürgermeisterin':id==='beet'?'zum Beet':id==='werkstatt'?'zum Rolltor – mit dem 🛵 Moped':id==='bau'?'zum Bauzaun':id==='villa'?'zum Tor':id==='palast'?'zum Eingang':id==='yacht'?'ans Ufer gegenüber der Yacht':id.startsWith('nagel')?'an den Maniküre-Tisch':({kokos:'zum Gästeliste-Pult am Eingang',pearl:'zum roten Teppich vor dem Golden Pearl',gpearl:'zum Golden Pearl',kokosbad:'an den Beckenrand',coast:'zum Spiegel',cococare:'zum Duft-Tisch',gaming:'zu den Arcade-Automaten',tierheim:'in den Hof zu den Hunden',markt:'zur Eingangstür',anleger:'bis an die Spitze des Anlegers',feuer:'zum Lagerfeuer',sandburg:'zur Sandburg',angeln:'auf den Angelsteg'})[id]||'an die Theke'):' bis zur Hütte'));}
 // Weg zur Aufgabe: einmal den kürzesten Weg berechnen und dann nur noch abfahren (kein Hin- und Herspringen an Kreuzungen).
 // Neu berechnet wird nur, wenn das Ziel sich bewegt oder man deutlich vom Weg abweicht.
 function mkHinUpd(force){const h=MK.hin;if(!h||!WK.on)return;const t=performance.now(),L=WK.L||{h:1},fx=WK.x,fy=WK.y+4.4*(L.h||1);
