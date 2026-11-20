@@ -510,6 +510,8 @@ def auslagern(out):
         os.remove(alt)
     open(os.path.join(out, "app." + h + ".js"), "w", encoding="utf-8").write(js)
     t = t[:a] + daten + '\n<script src="app.' + h + '.js" defer></script>' + t[e + len("</script>"):]
+    # schneller Start: Programmcode schon im Kopf anfordern (parallel zum Rest der Seite)
+    t = t.replace("</head>", '<link rel="preload" href="app.' + h + '.js" as="script">\n</head>', 1)
     open(f, "w", encoding="utf-8").write(t)
     print(f"Programmcode ausgelagert: app.{h}.js ({len(js) // 1024} KB, vorher {len(code) // 1024} KB)")
 

@@ -500,6 +500,7 @@ const DATA=/*__DATEN__*/null;
  P.createPattern=function(img,rep){try{if(img&&(img.width===0||img.height===0))return null;return Pt.call(this,img,rep);}catch(e){return null;}};
  /* addColorStop mit kaputter Farbe/Position nicht abstürzen lassen */const G=window.CanvasGradient&&CanvasGradient.prototype,A=G&&G.addColorStop;if(A)G.addColorStop=function(o,c){try{A.call(this,Math.min(1,Math.max(0,f(o))),c);}catch(e){}};})();
 var GFEHL=0;
+/* schneller Start: Nebensachen erst laden, wenn die Karte steht (nach dem ersten Bild, im Leerlauf) */function nachStart(f){const go=()=>{try{f();}catch(e){}};if(document.readyState==='complete')(window.requestIdleCallback||setTimeout)(go,{timeout:1500});else addEventListener('load',()=>setTimeout(()=>(window.requestIdleCallback||setTimeout)(go,{timeout:1500}),300),{once:true});}
 
 const I=DATA.insel, R=DATA.r, N=R.length, $=id=>document.getElementById(id);
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -724,8 +725,8 @@ const ERFS=(()=>{let o={};try{o=JSON.parse(localStorage.getItem('mt-erf')||'{}')
 // Erfolge dauerhaft auf dem Server (für alle Geräte): eigene hochladen, alle laden und einmischen
 const erfPost=(n,k,ts)=>{try{fetch('/api/erfolge',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({name:n,key:k,ts})}).catch(()=>{});}catch(e){}};
 (()=>{let done={};try{done=JSON.parse(localStorage.getItem('mt-erf-sync')||'{}')||{};}catch(e){}for(const [n,m] of Object.entries(ERFS))for(const [k,ts] of Object.entries(m)){if(k==='GRUENDER'||done[n+'|'+k])continue;erfPost(n,k,ts);done[n+'|'+k]=1;}try{localStorage.setItem('mt-erf-sync',JSON.stringify(done));}catch(e){}
- fetch('/api/erfolge',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(d=>{if(!d||!d.erfolge)return;const o=d.erfolge;entzug(o);for(const [n,m] of Object.entries(o))for(const [k,ts] of Object.entries(m)){const e=(ERFS[n]=ERFS[n]||{});if(!e[k])e[k]=ts;}
-  try{if(sel)$('ppass').innerHTML=passCard(sel);if(!$('mp').hidden&&mpP){$('mpcardbox').innerHTML=passCard(mpP);}}catch(e){}}).catch(()=>{});})();
+ nachStart(()=>fetch('/api/erfolge',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(d=>{if(!d||!d.erfolge)return;const o=d.erfolge;entzug(o);for(const [n,m] of Object.entries(o))for(const [k,ts] of Object.entries(m)){const e=(ERFS[n]=ERFS[n]||{});if(!e[k])e[k]=ts;}
+  try{if(sel)$('ppass').innerHTML=passCard(sel);if(!$('mp').hidden&&mpP){$('mpcardbox').innerHTML=passCard(mpP);}}catch(e){}}).catch(()=>{}));})();
 const hatErf=(p,k)=>!!(ERFS[p.name.toLowerCase()]||{})[k];
 // Gast (Erkunden ohne eigenen verknüpften Namen): keine Erfolge, Sticker, Muscheln – stattdessen einmal der Hinweis zum Verknüpfen
 const istGast=p=>{try{return !(mkClaim()&&p&&mkOwn(p));}catch(e){return true;}};
@@ -5269,7 +5270,7 @@ function passBild(p){const W2=1080,H2=1920,cv=document.createElement('canvas');c
 // Inselkasse: Grundbetrag (5 pro Einwohner) + Bonus aus geteilten Storys (Server, Netlify-Funktion)
 const WOCHE=7*864e5;
 const kasseZeigen=()=>{$('nMu').textContent=fmt(kasseStand());};
-fetch('/api/kasse',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(d=>{if(d&&d.bonus>=0){KASSE=d.bonus;kasseZeigen();}}).catch(()=>{});
+nachStart(()=>fetch('/api/kasse',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(d=>{if(d&&d.bonus>=0){KASSE=d.bonus;kasseZeigen();}}).catch(()=>{}));
 const shareKey=p=>'mt-story-'+p.name.toLowerCase();
 const naechster=p=>{try{return(+localStorage.getItem(shareKey(p))||0)+WOCHE;}catch(e){return 0;}};
 const datum=t=>new Date(t).toLocaleDateString('de-DE',{day:'numeric',month:'numeric'});
@@ -6118,8 +6119,9 @@ heroPass();addEventListener('resize',heroPass);setInterval(heroPass,800);
  setTimeout(()=>{if(!$('pg').hidden||mkClaim())return;/* schon angemeldet (z. B. still wiederhergestellt) */willkommenPop();
   // Musik startet mit dem ersten Tippen im Pop-up (Browser erlauben Ton erst nach einer Berührung)
   const pg=$('pg'),an=()=>{try{if(!SND.an)sndSetz(true);}catch(e){}pg.removeEventListener('pointerdown',an,true);};pg.addEventListener('pointerdown',an,true);},300);})();
-lrKasten();setInterval(()=>{if(!document.hidden)lrKasten();},120000);
-rangKasten();setInterval(()=>{if(!document.hidden)rangKasten();},120000);
+/* schneller Start: Ranglisten-Kästen erst laden, wenn man in ihre Nähe scrollt */function beiSicht(id,f){const el=$(id);if(!el||!window.IntersectionObserver){f();return;}let an=false;const io=new IntersectionObserver(es=>{if(es.some(e=>e.isIntersecting)&&!an){an=true;io.disconnect();f();}},{rootMargin:'800px 0px'});io.observe(el.closest('section')||el.parentElement||el);}
+beiSicht('lrbox',()=>{lrKasten();setInterval(()=>{if(!document.hidden)lrKasten();},120000);});
+beiSicht('rangbox',()=>{rangKasten();setInterval(()=>{if(!document.hidden)rangKasten();},120000);});
 
 liveText();loadWx();setInterval(liveText,15000);setInterval(loadWx,15*60e3);
 addEventListener('resize',()=>{resize();});resize(1);// erstes Bild erst, wenn die Kamera steht (unten) – spart beim Start eine komplette Karte
