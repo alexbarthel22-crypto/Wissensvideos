@@ -97,25 +97,49 @@ GL = """.gl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-
     .gl small { display: block; font-weight: 700; font-size: 26px; letter-spacing: .32em; text-transform: uppercase; opacity: .85; }
     .gl b { display: block; font-weight: 900; font-size: 92px; letter-spacing: -.02em; line-height: 1; }"""
 
-# s01 – Hook: Es ist was passiert …
-scene("s01", GL + """
-    #vg1 { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 45%, rgba(0,0,0,0) 30%, rgba(0,10,30,.8) 100%); }
-    .stk { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; max-width: 1000px; top: 250px; padding: 14px 44px 26px; border-radius: 40px; font-family: "Lilita One", sans-serif; text-align: center; line-height: .95; color: #ffe14a; opacity: 0;
-      background: linear-gradient(160deg, #ff3d7f, #ff7a2a); box-shadow: 0 0 0 9px #fff, 0 0 0 16px #2a1b12, 0 24px 0 rgba(0,0,0,.28), 0 0 80px rgba(255,90,60,.6); text-shadow: 0 7px 0 #8a1035; font-size: 120px; }
-    .stk small { display: block; font-size: 52px; color: #fff; text-shadow: 0 4px 0 rgba(0,0,0,.3); }
-    .stk.bl { background: linear-gradient(160deg, #1f8ff0, #36d1dc); text-shadow: 0 7px 0 #0b3d7a; color: #fff; box-shadow: 0 0 0 9px #fff, 0 0 0 16px #0b2340, 0 24px 0 rgba(0,0,0,.28), 0 0 80px rgba(60,180,255,.7); }
-    .stk.gr { background: linear-gradient(160deg, #22b36a, #8be04e); text-shadow: 0 7px 0 #0d5a2e; color: #fff; box-shadow: 0 0 0 9px #fff, 0 0 0 16px #0d3a20, 0 24px 0 rgba(0,0,0,.28); }
-    .stk.go { background: linear-gradient(160deg, #ffd23f, #ff9a1a); color: #fff; text-shadow: 0 7px 0 #8a4a00; box-shadow: 0 0 0 9px #fff, 0 0 0 16px #4a2a00, 0 24px 0 rgba(0,0,0,.28), 0 0 90px rgba(255,200,60,.8); }
-    #q1 { top: 620px; } #q1 b { font-size: 64px; }""",
-"""      <div id="vg1"></div>
-      <div id="k1" class="stk"><small>auf unserer Insel</small>ES IST WAS<br>PASSIERT 😳</div>
-      <div id="q1" class="gl"><small>und</small><b>keiner hat's kommen sehen …</b></div>""",
-"""      const P = at("L1", "passiert"), B = line("L1b")[0];
-      tl.fromTo("#vg1", { opacity: .4 }, { opacity: 1, duration: 2.5, ease: "none" }, 0);
-      tl.fromTo("#k1", { opacity: 0, scale: 2.2, rotation: -10 }, { opacity: 1, scale: 1, rotation: -3, duration: .3, ease: "back.out(3)" }, P - .05);
-      [[12,-8,-1],[-14,6,-6],[10,8,-2],[-8,-6,-5],[0,0,-3]].forEach(([x, y, r], i) => tl.to("#k1", { x, y, rotation: r, duration: .05, ease: "none" }, P + .3 + i * .05));
-      tl.fromTo("#q1", { opacity: 0, y: 30, filter: "blur(10px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: .45, ease: "power3.out" }, B);
-      tl.to("#q1", { scale: 1.04, duration: .4, yoyo: true, repeat: 1, ease: "sine.inOut" }, B + .6);""")
+# s01 – Hook: Es ist was passiert … (voller Bildschirm, Wörter ploppen und leuchten)
+scene("s01", """
+    #vg1 { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 40%, rgba(0,0,0,0) 25%, rgba(0,8,30,.88) 100%); }
+    #ry1 { position: absolute; left: 540px; top: 640px; width: 2000px; height: 2000px; margin: -1000px; border-radius: 50%; opacity: 0;
+      background: repeating-conic-gradient(rgba(255,225,74,.32) 0deg 7deg, rgba(255,225,74,0) 7deg 20deg); -webkit-mask: radial-gradient(circle, #000 15%, transparent 60%); mask: radial-gradient(circle, #000 15%, transparent 60%); }
+    #fl1 { position: absolute; inset: 0; background: #fff; opacity: 0; }
+    .hw { position: absolute; left: 0; right: 0; text-align: center; font-family: "Lilita One", sans-serif; color: #fff; opacity: 0; line-height: .95; white-space: nowrap;
+      -webkit-text-stroke: 14px #1a0b2e; paint-order: stroke fill; }
+    #a1 { top: 230px; font-size: 96px; } #a2 { top: 345px; font-size: 76px; color: #9fe8ff; }
+    #b1 { top: 470px; font-size: 150px; } #b2 { top: 620px; font-size: 200px; color: #ffe14a; }
+    #em1 { position: absolute; left: 0; right: 0; top: 830px; text-align: center; font-size: 200px; opacity: 0; }
+    #k1 { top: 360px; font-size: 250px; color: #ff4060; } #k2 { top: 640px; font-size: 92px; }
+    #qq { position: absolute; left: 0; right: 0; top: 820px; text-align: center; font: 400 150px "Lilita One", sans-serif; color: #ffe14a; opacity: 0; -webkit-text-stroke: 12px #1a0b2e; paint-order: stroke fill; }
+    .pt { position: absolute; font-size: 90px; line-height: 1; width: 90px; height: 90px; opacity: 0; }""",
+"""      <div id="ry1"></div><div id="vg1"></div>
+      <div id="a1" class="hw">LEUTE …</div><div id="a2" class="hw">auf unserer Insel</div>
+      <div id="b1" class="hw">ES IST WAS</div><div id="b2" class="hw">PASSIERT!</div>
+      <div id="em1">😳</div>
+      <div id="k1" class="hw">KEINER</div><div id="k2" class="hw">hat's kommen sehen …</div>
+      <div id="qq">? ? ?</div>
+      """ + "".join(f'<div class="pt" id="pa{i}" style="left:495px;top:700px">{e}</div>' for i, e in enumerate("❗⚠️💥❓❗⚠️💥❓❗⚠️💥❓")) + """
+      <div id="fl1"></div>""",
+"""      const P = at("L1", "passiert"), B = line("L1b")[0], K = at("L1b", "keiner");
+      tl.fromTo("#vg1", { opacity: .5 }, { opacity: 1, duration: 1.5, ease: "none" }, 0);
+      tl.fromTo("#a1", { opacity: 0, scale: 2.6, filter: "blur(14px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .35, ease: "back.out(2.5)" }, .02);
+      tl.fromTo("#a2", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: .35, ease: "back.out(2)" }, at("L1", "auf") - .05);
+      tl.to(["#a1", "#a2"], { y: -40, opacity: 0, duration: .2, ease: "power2.in" }, P - .22);
+      tl.fromTo("#fl1", { opacity: .85 }, { opacity: 0, duration: .35, ease: "power2.out", immediateRender: false }, P - .02);
+      tl.fromTo("#ry1", { opacity: 0, scale: .4, rotation: 0 }, { opacity: 1, scale: 1, rotation: 40, duration: 2.6, ease: "power1.out" }, P - .05);
+      tl.fromTo("#b1", { opacity: 0, scale: 3, rotation: -8 }, { opacity: 1, scale: 1, rotation: -3, duration: .3, ease: "back.out(3)" }, P - .15);
+      tl.fromTo("#b2", { opacity: 0, scale: 3.4, rotation: 6 }, { opacity: 1, scale: 1, rotation: 2, duration: .32, ease: "back.out(3)" }, P + .02);
+      tl.fromTo("#b2", { textShadow: "0 0 0px rgba(255,225,74,0)" }, { textShadow: "0 0 60px rgba(255,225,74,1)", duration: .25, yoyo: true, repeat: 5, ease: "sine.inOut", immediateRender: false }, P + .35);
+      tl.fromTo("#em1", { opacity: 0, scale: .2, y: 80 }, { opacity: 1, scale: 1, y: 0, duration: .4, ease: "back.out(3)" }, P + .2);
+      tl.to("#em1", { y: -24, duration: .25, yoyo: true, repeat: 5, ease: "sine.inOut" }, P + .65);
+      [[18,-10],[-20,8],[14,12],[-12,-8],[8,6],[0,0]].forEach(([x, y], i) => tl.to("#s01-stage", { x, y, duration: .045, ease: "none" }, P + .05 + i * .045));
+      [...Array(12).keys()].forEach(i => { const a = i / 12 * 6.283, r = 330 + (i % 3) * 130; tl.fromTo("#pa" + i, { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: Math.cos(a) * r, y: Math.sin(a) * r * 1.1, scale: 1.4, rotation: (i % 2 ? 1 : -1) * 160, opacity: 0, duration: 1.1, ease: "power3.out", immediateRender: false }, P + .03 + (i % 3) * .05); });
+      tl.to(["#b1", "#b2", "#em1", "#ry1"], { opacity: 0, scale: 1.4, filter: "blur(10px)", duration: .25, ease: "power2.in" }, B - .2);
+      tl.fromTo("#k2", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .35, ease: "power3.out" }, B + .05);
+      tl.fromTo("#k1", { opacity: 0, scale: .2 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(3)" }, K - .1);
+      [0, .08, .16, .3, .38].forEach((d, i) => tl.to("#k1", { opacity: i % 2 ? .25 : 1, duration: .04, ease: "none" }, K + .25 + d));
+      tl.fromTo("#k1", { textShadow: "0 0 0px rgba(255,64,96,0)" }, { textShadow: "0 0 70px rgba(255,64,96,1)", duration: .3, yoyo: true, repeat: 3, ease: "sine.inOut", immediateRender: false }, K + .7);
+      tl.fromTo("#qq", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.5)" }, at("L1b", "kommen"));
+      tl.to("#qq", { rotation: 6, duration: .2, yoyo: true, repeat: 5, ease: "sine.inOut" }, at("L1b", "kommen") + .4);""", blur=True)
 
 # s02 – Hütten + Passanten: 790, Hier könntest DU wohnen, Folgen
 scene("s02", GL + """
@@ -153,13 +177,10 @@ scene("s03", GL + """
     #e3 { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 600px; display: flex; gap: 22px; align-items: center; padding: 18px 34px 20px 20px; border-radius: 36px; background: #fff; box-shadow: 0 0 0 7px #ffd23f, 0 18px 40px rgba(0,0,0,.35); opacity: 0; }
     #e3 i { width: 96px; height: 96px; border-radius: 50%; background: linear-gradient(135deg,#36d1dc,#1f8ff0); display: grid; place-items: center; font-style: normal; font-size: 58px; }
     #e3 small { display: block; font: 800 28px Inter, sans-serif; color: #c08a00; letter-spacing: .2em; } #e3 b { font: 400 66px "Lilita One", sans-serif; color: #2a1b12; }""",
-"""      <div id="w3" class="stk bl"><small>vor der Küste</small>🐋 WAL-ALARM!</div>
-      <div id="e3"><i>🐋</i><div><small>ERFOLG FREIGESCHALTET</small><b>Wal-Watcher</b></div></div>""",
-"""      const W = at("L3", "WAL"), E = at("L3b", "Wal-Watcher");
+"""      <div id="w3" class="stk bl"><small>vor der Küste</small>🐋 WAL-ALARM!</div>""",
+"""      const W = at("L3", "WAL");
       tl.fromTo("#w3", { opacity: 0, scale: 2.2, rotation: -10 }, { opacity: 1, scale: 1, rotation: -3, duration: .3, ease: "back.out(3)" }, W - .05);
-      [[12,-8,-1],[-14,6,-6],[10,8,-2],[-8,-6,-5],[0,0,-3]].forEach(([x, y, r], i) => tl.to("#w3", { x, y, rotation: r, duration: .05, ease: "none" }, W + .3 + i * .05));
-      tl.fromTo("#e3", { opacity: 0, y: 80, scale: .7 }, { opacity: 1, y: 0, scale: 1, duration: .45, ease: "back.out(2.2)" }, E - .15);
-      tl.to("#e3", { scale: 1.05, duration: .3, yoyo: true, repeat: 3, ease: "sine.inOut" }, E + .4);""")
+      [[12,-8,-1],[-14,6,-6],[10,8,-2],[-8,-6,-5],[0,0,-3]].forEach(([x, y, r], i) => tl.to("#w3", { x, y, rotation: r, duration: .05, ease: "none" }, W + .3 + i * .05));""")
 
 # s04 – Schildkröten-Wanderung
 scene("s04", GL + """
@@ -169,9 +190,13 @@ scene("s04", GL + """
     .stk.bl { background: linear-gradient(160deg, #1f8ff0, #36d1dc); text-shadow: 0 7px 0 #0b3d7a; color: #fff; box-shadow: 0 0 0 9px #fff, 0 0 0 16px #0b2340, 0 24px 0 rgba(0,0,0,.28), 0 0 80px rgba(60,180,255,.7); }
     .stk.gr { background: linear-gradient(160deg, #22b36a, #8be04e); text-shadow: 0 7px 0 #0d5a2e; color: #fff; box-shadow: 0 0 0 9px #fff, 0 0 0 16px #0d3a20, 0 24px 0 rgba(0,0,0,.28); }
     .stk.go { background: linear-gradient(160deg, #ffd23f, #ff9a1a); color: #fff; text-shadow: 0 7px 0 #8a4a00; box-shadow: 0 0 0 9px #fff, 0 0 0 16px #4a2a00, 0 24px 0 rgba(0,0,0,.28), 0 0 90px rgba(255,200,60,.8); }""",
-"""      <div id="t4" class="stk gr"><small>am Strand</small>🐢 Schildkröten-<br>Wanderung!</div>""",
+"""      <div id="t4" class="stk gr"><small>am Strand</small>🐢 Schildkröten-<br>Wanderung!</div>
+      <div id="h4" class="stk" style="background:linear-gradient(160deg,#7b3dff,#ff3d7f);text-shadow:0 7px 0 #3a1070;font-size:96px"><small>🐋 + 🐢 merkt euch das …</small>WICHTIG<br>FÜRS SPIEL? 🤫</div>""",
 """      tl.fromTo("#t4", { opacity: 0, scale: 2.2, rotation: -10 }, { opacity: 1, scale: 1, rotation: -3, duration: .3, ease: "back.out(3)" }, at("L4", "Schildkröten") - .1);
-      tl.to("#t4", { y: -10, duration: .5, yoyo: true, repeat: 5, ease: "sine.inOut" }, at("L4", "Schildkröten") + .4);""")
+      tl.to("#t4", { y: -10, duration: .5, yoyo: true, repeat: 5, ease: "sine.inOut" }, at("L4", "Schildkröten") + .4);
+      tl.to("#t4", { opacity: 0, scale: .8, duration: .2 }, line("L4b")[0] - .2);
+      tl.fromTo("#h4", { opacity: 0, scale: 2.2, rotation: -10 }, { opacity: 1, scale: 1, rotation: -3, duration: .3, ease: "back.out(3)" }, line("L4b")[0]);
+      tl.to("#h4", { scale: 1.06, duration: .3, yoyo: true, repeat: 5, ease: "sine.inOut" }, at("L4b", "wichtig"));""")
 
 # s05 – Freiluftkino
 scene("s05", GL + """

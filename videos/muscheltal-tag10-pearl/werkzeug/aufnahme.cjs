@@ -22,8 +22,8 @@ const m=G.m,Z=m.z,w=WS.w,[s0,s1]=SK.P,kz=1.25*540/(G.ko.R*2.6667);
 // [t, seite, x, y, z]  (gleiche Zeit zweimal = harter Schnitt)
 const K=[[0,'A',m.x,m.y,Z*.95],[L.L1b.end+.3,'A',m.x,m.y,Z*1.25],
  [L.L2.start-.05,'A',-90,100,2.9],[L.L2b.end+.3,'A',90,110,3.3],
- [L.L3.start-.05,'A',w.x+14,w.y+12,4.4],[L.L3b.end+.3,'A',w.x+14,w.y+12,5.4],
- [L.L4.start-.05,'B',s0[0],s0[1]+4,7.5],[L.L4.end+.4,'B',s1[0],s1[1]+4,8.2],
+ [L.L3.start-.05,'A',w.x+14,w.y+12,4.4],[L.L3.end+.3,'A',w.x+14,w.y+12,5.4],
+ [L.L4.start-.05,'B',s0[0],s0[1]+4,7.5],[L.L4b.end+.4,'B',s1[0],s1[1]+4,8.2],
  [L.L5.start-.05,'C',G.ki.x,G.ki.y-6,3.3],[L.L5.end+.3,'C',G.ki.x,G.ki.y-6,3.8],
  [L.L6.start-.05,'C',G.gp.x,G.gp.y-10,1.1],[L.L6b.end+.3,'C',G.gp.x,G.gp.y-10,1.6],
  [L.L7.start-.05,'C',G.cl.x,G.cl.y+30,3.2],[L.L7d.end+.3,'C',G.cl.x,G.cl.y+30,3.8],
