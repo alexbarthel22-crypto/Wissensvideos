@@ -119,7 +119,7 @@ async function freigeben(store) {
 // ================= 🎮 Spiele im Golden Pearl: Wochen-Rangliste je Spiel, Top 3 gewinnen Muscheln (Wertung Mo 0 Uhr – So 20 Uhr) =================
 // Plausibilitätsprüfung: Lauf nur mit Start-Kennung vom Server, Dauer vom Server gemessen, je Spiel höchstens so viele Punkte wie in der Zeit möglich.
 const SPIELE = { taucher: { max: 70, min: 2000 }, turm: { max: 2.2, min: 1500 }, memory: { min: 8000 }, krebs: { max: 70, min: 2000 } };// max = Punkte (bzw. Höhe) pro Sekunde
-const SP_PREIS = [50, 30, 20];// Platz 1–3 je Spiel (wird im Spiel nicht verraten)
+const SP_PREIS = [30, 20, 10];// Platz 1–3 je Spiel (wird im Spiel nicht verraten)
 function spWoche(t = Date.now()) { const p = Object.fromEntries(new Intl.DateTimeFormat("en-US", { timeZone: TZ, weekday: "short", hour: "2-digit", hourCycle: "h23" }).formatToParts(new Date(t)).map(x => [x.type, x.value])), d = tag(t); return p.weekday === "Sun" && +p.hour >= 20 ? woche(new Date(new Date(d + "T12:00:00Z").getTime() + 864e5).toISOString().slice(0, 10)) : woche(d); }// ab So 20 Uhr zählt schon die neue Woche
 async function spTop(store, w, k) { const L = []; for (const key of await liste(store, "x/spiel/" + w + "/" + k + "/")) { try { const v = JSON.parse((await store.get(key)) || "null"); if (v) L.push({ n: "@" + key.split("/").pop(), s: v.s, t: v.t }); } catch (e) {} } const zeit = k === "memory"; L.sort((a, b) => (zeit ? a.s - b.s : b.s - a.s) || a.t - b.t); return L; }
 async function spPreise(store) {
