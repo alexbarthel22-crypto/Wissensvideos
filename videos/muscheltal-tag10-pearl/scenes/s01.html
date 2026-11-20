@@ -50,7 +50,7 @@
       tl.to(["#b1", "#b2", "#em1", "#ry1"], { opacity: 0, scale: 1.4, filter: "blur(10px)", duration: .25, ease: "power2.in" }, B - .2);
       tl.fromTo("#k2", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .35, ease: "power3.out" }, B + .05);
       tl.fromTo("#k1", { opacity: 0, scale: .2 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(3)" }, K - .1);
-      [0, .08, .16, .3, .38].forEach((d, i) => tl.to("#k1", { opacity: i % 2 ? 1 : .25, duration: .04, ease: "none" }, K + .25 + d));
+      [0, .08, .16, .3, .38].forEach((d, i) => tl.to("#k1", { opacity: i % 2 ? .25 : 1, duration: .04, ease: "none" }, K + .25 + d));
       tl.fromTo("#k1", { textShadow: "0 0 0px rgba(255,64,96,0)" }, { textShadow: "0 0 70px rgba(255,64,96,1)", duration: .3, yoyo: true, repeat: 3, ease: "sine.inOut", immediateRender: false }, K + .7);
       tl.fromTo("#qq", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.5)" }, at("L1b", "kommen"));
       tl.to("#qq", { rotation: 6, duration: .2, yoyo: true, repeat: 5, ease: "sine.inOut" }, at("L1b", "kommen") + .4);
