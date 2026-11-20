@@ -37,13 +37,13 @@ main{max-width:720px}
 <svg viewBox="0 0 400 24" preserveAspectRatio="none"><path d="M0 14 Q25 2 50 14 T100 14 T150 14 T200 14 T250 14 T300 14 T350 14 T400 14 V24 H0Z" fill="#fff4e0"/></svg></header>
 <main>
 <a class="bp" data-preis="1725" href="./?ort=Boots-Anlegestelle"><div class="kopf"><span class="em">⚓</span><div><b>Boots-Anlegestelle</b><small>am Steg der Haupt-Insel</small></div></div>
-<div class="bar"><i style="width:59%"></i></div><div class="zl"><span class="ist">1.025 von 1.725 🐚</span><span class="noch">noch 700 🐚</span></div><u>📍 Auf der Karte ansehen →</u></a>
+<div class="bar"><i style="width:60%"></i></div><div class="zl"><span class="ist">1.040 von 1.725 🐚</span><span class="noch">noch 685 🐚</span></div><u>📍 Auf der Karte ansehen →</u></a>
 <a class="bp" data-preis="500" href="./?ort=Hotel%20Sandkorn"><div class="kopf"><span class="em">🏨</span><div><b>Hotel Sandkorn</b><small>auf der Haupt-Insel</small></div></div>
 <div class="bar"><i style="width:0%"></i></div><div class="zl"><span class="ist">0 von 500 🐚</span><span class="noch">noch 500 🐚</span></div><u>📍 Auf der Karte ansehen →</u></a>
  <a class="cta" href="https://www.tiktok.com/@muscheltal" target="_blank" rel="noopener">🐚 Folgen &amp; mitbauen</a>
 </main>
 <script>/* Inselkasse live: Story-Boni + Spenden dazu, Projekte der Reihe nach füllen */
-fetch('/api/kasse',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(d=>{if(!d||!(d.bonus>=0))return;let k=Math.max(0,1025+d.bonus);const f=x=>x.toLocaleString('de-DE');
+fetch('/api/kasse',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(d=>{if(!d||!(d.bonus>=0))return;let k=Math.max(0,1040+d.bonus);const f=x=>x.toLocaleString('de-DE');
 document.querySelectorAll('.bp[data-preis]').forEach(a=>{const p=+a.dataset.preis,i=Math.max(0,Math.min(p,k));k-=p;a.querySelector('.bar i').style.width=Math.min(100,Math.round(i*100/p))+'%';a.querySelector('.ist').textContent=f(i)+' von '+f(p)+' 🐚';a.querySelector('.noch').textContent='noch '+f(p-i)+' 🐚';});}).catch(()=>{});</script>
 <script>(()=>{const done=new Set(),pre=u=>{if(done.has(u))return;done.add(u);try{const l=document.createElement('link');l.rel='prefetch';l.href=u;document.head.appendChild(l);fetch(u,{credentials:'same-origin'}).catch(()=>{});}catch(e){}};
 const h=e=>{const a=e.target.closest&&e.target.closest('a[href]');if(!a)return;const u=new URL(a.href,location.href);if(u.origin===location.origin&&u.pathname!==location.pathname)pre(u.pathname);};
