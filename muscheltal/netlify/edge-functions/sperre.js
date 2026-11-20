@@ -2,7 +2,7 @@
 // Mit dem Passwort (unten nur als SHA-256-Hash gespeichert) bekommt man ein Cookie und sieht die Seite normal.
 // Zum Aufheben der Sperre: SPERRE = false setzen (oder den [[edge_functions]]-Eintrag in netlify.toml entfernen).
 const SPERRE = true;
-const PW_HASH = "e9a96d7241365aba4d836268a2097a9cf904137ee880c889571dbf0c1a4b7956";
+const PW_HASH = "a9159e76468043f30aecb1b81d4ab488679b7c4fa3d0a7377b0e68929a92e5d1";
 const COOKIE = "mt_zugang";
 const ACC = "muscheltal";
 
