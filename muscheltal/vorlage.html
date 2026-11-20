@@ -491,6 +491,7 @@ footer a{color:var(--soft)}
 <div class="toast" id="toast" hidden role="status"></div>
 <div class="mp" id="pg" hidden role="dialog" aria-modal="true"><div class="mpc pgx"><button class="mpx" id="pgx" aria-label="Schließen">×</button><div id="pgb"></div></div></div>
 <script>
+const DATA=/*__DATEN__*/null;
 /* Schutz (20.11.): Farbverläufe/Muster mit ungültigen Zahlen (NaN/∞) oder leeren Bildern werfen sonst einen Fehler und das Bild friert ein */
 (()=>{const P=window.CanvasRenderingContext2D&&CanvasRenderingContext2D.prototype;if(!P)return;const f=v=>Number.isFinite(v)?v:0,ZG=document.createElement('canvas').getContext('2d');
  const gMerk=()=>{GFEHL++;if(GFEHL===1)try{const st=String(new Error().stack||'').split('\n').map(z=>(z.match(/^\s*(?:at\s+)?([A-Za-z_$][\w$]*)/)||[])[1]).filter(z=>z&&!/^(Error|gMerk|createLinearGradient|createRadialGradient)$/.test(z));setTimeout(()=>{try{window.statEv&&statEv('fehler: NaN-Verlauf '+(st.slice(0,2).join(' ')).slice(0,20));}catch(_){}},3000);}catch(_){}};const L=P.createLinearGradient,Rg=P.createRadialGradient,Pt=P.createPattern;let tot=null;const ersatz=()=>tot||(tot=L.call(ZG,0,0,1,0));
@@ -499,7 +500,7 @@ footer a{color:var(--soft)}
  P.createPattern=function(img,rep){try{if(img&&(img.width===0||img.height===0))return null;return Pt.call(this,img,rep);}catch(e){return null;}};
  /* addColorStop mit kaputter Farbe/Position nicht abstürzen lassen */const G=window.CanvasGradient&&CanvasGradient.prototype,A=G&&G.addColorStop;if(A)G.addColorStop=function(o,c){try{A.call(this,Math.min(1,Math.max(0,f(o))),c);}catch(e){}};})();
 var GFEHL=0;
-const DATA=/*__DATEN__*/null;
+
 const I=DATA.insel, R=DATA.r, N=R.length, $=id=>document.getElementById(id);
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const fmt=n=>n.toLocaleString('de-DE');
@@ -1476,14 +1477,14 @@ const STH={kokos:{pl:'#c08a52',pl2:'#a8743f',rail:'#d9b26a',post:'#8a5a2b',boat:
  schild:{pl:'#5fae8f',pl2:'#4c977a',rail:'#e8d9a8',post:'#2e7d6a',boat:'#3fb3a6',sail:'#e8fff8'},
  vulkan:{pl:'#55494c',pl2:'#433a3d',rail:'#2a2224',post:'#2a2224',boat:'#3a2e30',sail:'#e8433c'},
  perle:{pl:'#f3eef6',pl2:'#e2d8ea',rail:'#fff',post:'#d8c8e8',boat:'#fff',sail:'#ffd6ec'}};
-// ---------- 💎 Golden Pearl: imposantes Luxus-Casino auf einer großen Steg-Plattform an der Ostküste der Kokos-Küste ----------
-// Steg vom Strand nach Osten, Plattform 260 × 190: hinten das Casino (nicht begehbar), vorne ein großer, fast freier Marmorplatz
+// ---------- 💎 Golden Pearl: imposantes Luxus-Haus auf einer großen Steg-Plattform an der Ostküste der Kokos-Küste ----------
+// Steg vom Strand nach Osten, Plattform 260 × 190: hinten das Gebäude (nicht begehbar), vorne ein großer, fast freier Marmorplatz
 // mit rotem Teppich, Freitreppe, Perlen-Brunnen, goldenen Palmenkübeln und Laternen – möglichst viel Platz zum Herumlaufen.
 const GPK=1.35;// Gebäude-Maßstab
 const GP=(()=>{const v=KOKV,a=.1,c=coastAt(v,a),[sx,sy]=polar(v,a,c-6),L=46,W=260,H=190,x0=sx+L;return{v,name:'Golden Pearl',sx,sy,L,pw:9,x0,x1:x0+W,X:x0+W/2,Y:sy,W,H,y0:sy-H/2,y1:sy+H/2};})();
 const GPF=-12;// Fassadenlinie (Füße, relativ zur Plattformmitte)
 const GPPALM=[[-100,18],[100,18],[-100,82],[100,82]],GPLAMP=[[-126,-80],[-126,-40],[-126,40],[-126,80],[126,-80],[126,-40],[126,0],[126,40],[126,80],[-44,92],[44,92]];
-// Hindernisse (lokal, Füße): Casino, Vordach-Säulen, Muschel-Statuen, Brunnen, Palmen, Laternen
+// Hindernisse (lokal, Füße): Gebäude, Vordach-Säulen, Muschel-Statuen, Brunnen, Palmen, Laternen
 const GPOBS=[[-126,126,-96,GPF+1],[-17.5,-14.5,GPF,GPF+11],[14.5,17.5,GPF,GPF+11],[-41,-29,GPF+1,GPF+8],[29,41,GPF+1,GPF+8],[-19,19,62,77]];
 for(const [dx,dy] of GPPALM)GPOBS.push([dx-4.5,dx+4.5,dy-7,dy+1]);for(const [dx,dy] of GPLAMP)GPOBS.push([dx-1.6,dx+1.6,dy-1.4,dy+1]);
 function gpWalk(x,y){if(!KOKV.open)return null;const f=y+4.4;
@@ -1492,7 +1493,7 @@ function gpWalk(x,y){if(!KOKV.open)return null;const f=y+4.4;
  if(lx<-127&&Math.abs(ly)<GP.pw-1.2)return true;/* Durchgang vom Steg */if(lx<-127||lx>127||ly<-94||ly>93)return false;
  for(const [a,b,c,d] of GPOBS)if(lx>a&&lx<b&&ly>c&&ly<d)return false;return true;}
 const gpAt=(wx,wy)=>KOKV.open&&cam.z*S>3&&wx>GP.X-126&&wx<GP.X+126&&wy>GP.Y-185&&wy<GP.Y+GPF;
-function gpTap(){popup('<div class="big">💎</div><h2>Golden Pearl</h2><p>Das edelste Haus der Kokos-Küste: goldene Säulen und Türme, funkelnde Kronleuchter, eine Freitreppe mit rotem Teppich und ein Brunnen mit einer echten Riesenperle. Hier trifft sich, wer Stil hat ✨</p><p>🎮 Drinnen wartet die <b>Spielhalle</b> mit vier Geschicklichkeitsspielen und einer Wochen-Rangliste – die Top 3 gewinnen Muscheln.</p><p class="cft">Geh beim Erkunden über den Steg an der Ostküste der Kokos-Küste bis zum Eingang – nur dort öffnet sich die Spielhalle.</p>');}
+function gpTap(){popup('<div class="big">💎</div><h2>Golden Pearl</h2><p>Das edelste Haus der Kokos-Küste: goldene Säulen und Türme, funkelnde Kronleuchter, eine Freitreppe mit rotem Teppich und ein Brunnen mit einer echten Riesenperle. Hier trifft sich, wer Stil hat ✨</p><p>🎮 Drinnen warten vier Geschicklichkeitsspiele und eine Wochen-Rangliste – die Top 3 gewinnen Muscheln.</p><p class="cft">Geh beim Erkunden über den Steg an der Ostküste der Kokos-Küste bis zum Eingang – nur dort kannst du ins Golden Pearl.</p>');}
 function gpBulbs(c,x0,x1,y,t,n,col){const bunt=nightLevel()>.3;for(let k=0;k<n;k++){const x=x0+(x1-x0)*k/(n-1),on=((k+Math.floor(t*6))%3)!==0;c.fillStyle=on?(bunt?`hsl(${(k*30+t*120)%360},100%,70%)`:col):'#8a6a2a';c.beginPath();c.arc(x,y,.55,0,TAU);c.fill();}}
 function gpGold(c,x0,x1){const g=c.createLinearGradient(x0,0,x1,0);g.addColorStop(0,'#a8781f');g.addColorStop(.45,'#ffe9a0');g.addColorStop(.6,'#ffd45a');g.addColorStop(1,'#8a6012');return g;}
 function gpPalm(c,x,y,t,k){k=k||1.3;c.save();c.translate(x,y);c.scale(k,k);c.fillStyle='rgba(0,0,0,.18)';c.beginPath();c.ellipse(0,1,4.6,1.4,0,0,TAU);c.fill();
@@ -1545,7 +1546,7 @@ function drawGoldenPearl(c,nl){const t=REDUCED?0:T,X=GP.X,Y=GP.Y,day=nl<.45,F=Y+
  c.fillStyle='#b11d3a';c.fillRect(X-8,F,16,Y+56-F);c.fillStyle='#8a0f28';c.fillRect(X-8,Y+54,16,2);c.fillStyle='#d4a017';c.fillRect(X-8.4,F,.4,Y+56-F);c.fillRect(X+8,F,.4,Y+56-F);
  for(let k=0;k<7;k++){const yy=Y+2+k*8;c.fillStyle='rgba(255,215,90,.55)';c.beginPath();c.moveTo(X,yy-1.6);c.lineTo(X+1.6,yy);c.lineTo(X,yy+1.6);c.lineTo(X-1.6,yy);c.fill();}
  for(const s of[-1,1]){c.strokeStyle='#8a0f28';c.lineWidth=.55;c.beginPath();for(let k=0;k<7;k++){const yy=Y+k*8;c.moveTo(X+s*11,yy-3.4);c.quadraticCurveTo(X+s*11,yy+1,X+s*11,yy+4.6);}c.stroke();for(let k=0;k<8;k++){const yy=Y+k*8;c.fillStyle='#d4a017';c.fillRect(X+s*11-.35,yy-4,.7,4);c.beginPath();c.arc(X+s*11,yy-4.2,.7,0,TAU);c.fill();}}
- // ---------- Casino-Gebäude (vergrößert um GPK, Fassadenlinie bleibt) ----------
+ // ---------- Gebäude (vergrößert um GPK, Fassadenlinie bleibt) ----------
  c.save();c.translate(X,F);c.scale(GPK,GPK);c.translate(-X,-F);
  c.fillStyle='rgba(0,0,0,.18)';c.fillRect(X-93,F-2,186,3);
  gpTurm(c,X-84,F,t,day);gpTurm(c,X+84,F,t,day);
@@ -1587,7 +1588,7 @@ function drawGoldenPearl(c,nl){const t=REDUCED?0:T,X=GP.X,Y=GP.Y,day=nl<.45,F=Y+
  {const sw=64,sh=12,sx=X-sw/2,sy=F-54;c.fillStyle='#2a1b12';c.beginPath();c.roundRect(sx-1.4,sy-1.4,sw+2.8,sh+2.8,2.6);c.fill();const g=c.createLinearGradient(0,sy,0,sy+sh);g.addColorStop(0,'#3b1630');g.addColorStop(1,'#1d0b18');c.fillStyle=g;c.beginPath();c.roundRect(sx,sy,sw,sh,2);c.fill();
   gpBulbs(c,sx+1.4,sx+sw-1.4,sy+.9,t,24,'#fff3b0');gpBulbs(c,sx+1.4,sx+sw-1.4,sy+sh-.9,t+.5,24,'#fff3b0');
   c.textAlign='center';c.font='900 6px '+FONT;const tg=c.createLinearGradient(0,sy+2,0,sy+10);tg.addColorStop(0,'#fff6c8');tg.addColorStop(.5,'#ffd23f');tg.addColorStop(1,'#c88a12');c.fillStyle=tg;c.fillText('GOLDEN PEARL',X,sy+8.6);
-  c.font='800 1.6px '+FONT;c.fillStyle='#ffe9a0';c.fillText('✦ CASINO · LOUNGE ✦',X,sy+sh+3);}
+  c.font='800 1.6px '+FONT;c.fillStyle='#ffe9a0';c.fillText('✦ PEARL · LOUNGE ✦',X,sy+sh+3);}
  gpStatue(c,X-26,F+3.8,t);gpStatue(c,X+26,F+3.8,t);
  c.restore();// Ende Gebäude-Maßstab
  for(const [dx,dy] of GPPALM)gpPalm(c,X+dx,Y+dy,t);
@@ -1603,7 +1604,7 @@ function gpGlow(glow,nl){if(nl<.05)return;const X=GP.X,F=GP.Y+GPF,K=GPK;glow(X,F
  const hs=(h)=>{const f=n=>{const k=(n+h/30)%12;return Math.round(255*(.5-.5*Math.max(-1,Math.min(k-3,9-k,1))));};return f(0)+','+f(8)+','+f(4);};
  for(let k=0;k<6;k++)glow(X+(-39+k*15.6)*K,F-30*K,18,hs((T*55+k*94)%360),.45*nl);for(const s of[-1,1])glow(X+s*84*K,F-40*K,24,hs((T*55+(s+5)*47)%360),.4*nl);glow(X,F-125*K,40,hs((T*40)%360),.35*nl);
  if(!REDUCED){for(const s of[-1,1]){const a=Math.sin(T*.6+s)*.5-Math.PI/2;glow(X+s*40+Math.cos(a)*55,F-80+Math.sin(a)*55,30,hs((T*30+(s>0?180:0))%360),.28*nl);}}}
-// Casino-Neon (nachts, bunt, Farben wandern): Leisten an Gesims, Giebel, Flügeln, Türmen und Kuppel, farbige Fassadenstrahler
+// Neon (nachts, bunt, Farben wandern): Leisten an Gesims, Giebel, Flügeln, Türmen und Kuppel, farbige Fassadenstrahler
 function gpNeon(c,nl){const t=REDUCED?0:T,X=GP.X,F=GP.Y+GPF;c.save();c.translate(X,F);c.scale(GPK,GPK);c.translate(-X,-F);
  if(nl>.25){const a=Math.min(1,(nl-.25)/.5),H=k=>((t*55+k*47)%360),neon=(pts,k,w)=>{c.lineCap='round';c.lineJoin='round';c.beginPath();pts.forEach(([x,y],i)=>i?c.lineTo(x,y):c.moveTo(x,y));c.strokeStyle=`hsla(${H(k)},100%,60%,${.35*a})`;c.lineWidth=w*2.6;c.stroke();c.strokeStyle=`hsla(${H(k)},100%,82%,${.95*a})`;c.lineWidth=w;c.stroke();};
   neon([[X-45,F-72],[X+45,F-72]],0,.7);neon([[X-40,F-72],[X,F-86],[X+40,F-72]],1,.6);neon([[X-75,F-52],[X-43,F-52]],2,.6);neon([[X+43,F-52],[X+75,F-52]],3,.6);
@@ -5103,7 +5104,7 @@ $('mpin').onclick=()=>{const p=mpP;if(!p)return;$('mp').hidden=true;huetteRein(p
 /* Alben (Sticker, Fische …): Namen, Seltenheit und „nur bei …“ immer einzeilig – zu lange Zeilen werden kleiner geschrieben, nie umgebrochen oder abgeschnitten */
 function einzeilig(root){const L=(root||document).querySelectorAll('.stk>b,.stk>small');L.forEach(e=>{if(!e.offsetParent)return;e.style.fontSize='';const w=e.clientWidth;if(!w)return;let fs=parseFloat(getComputedStyle(e).fontSize)||10,k=0;while(e.scrollWidth>w+.5&&fs>6&&k++<30){fs-=.5;e.style.fontSize=fs+'px';}});}
 {let EZT=0;const plan=()=>{clearTimeout(EZT);EZT=setTimeout(()=>requestAnimationFrame(()=>einzeilig()),30);};new MutationObserver(m=>{for(const x of m)for(const n of x.addedNodes)if(n.nodeType===1&&(n.matches&&n.matches('.stk')||n.querySelector&&n.querySelector('.stk'))){plan();return;}}).observe(document.body,{childList:true,subtree:true});addEventListener('resize',plan);}
-// ================= 🎮 Spielhalle im Golden Pearl (20.11.): 4 Geschicklichkeitsspiele, Wochen-Rangliste (Top 3 gewinnen Muscheln) =================
+// ================= 🎮 Spiele im Golden Pearl (20.11.): 4 Geschicklichkeitsspiele, Wochen-Rangliste (Top 3 gewinnen Muscheln) =================
 // Nur beim Erkunden direkt am Eingang des Golden Pearl startbar. Während gespielt wird, pausiert die Insel-Karte (maximal flüssig):
 // feste Spiel-Logik mit 60 Takten/s, Hintergründe einmal vorgezeichnet, Bildschärfe höchstens 2×. Kein Einsatz, kein Glück – reines Geschick.
 var SPIELT=false;
@@ -5112,18 +5113,18 @@ const spWert=(s,v)=>SPIELE[s].art==='zeit'?(v/1000).toFixed(1).replace('.',',')+
 let GPEIN=null;function gpEingang(){if(GPEIN)return GPEIN;let y=GP.Y+60,last=null;for(;y>GP.y0;y-=1){if(canWalk(GP.X,y-4.4))last=y;else if(last)break;}GPEIN={x:GP.X,y:(last||GP.Y+30)};return GPEIN;}
 const amGP=()=>{if(!WK.on||!KOKV.open)return false;const e=gpEingang(),L=WK.L||{h:1};return Math.hypot(WK.x-e.x,WK.y+4.4*(L.h||1)-e.y)<16;};
 let THG0=null;const thVorOrt=()=>{if(!WK.on)return false;const g=THG0||(THG0=GEB.find(q=>q.typ==='tierheim'));if(!g)return false;return Math.abs(WK.x-g.cx)<(g.x1-g.x0)/2+22&&Math.abs(WK.y-g.cy)<(g.y1-g.y0)/2+26;};
-// Knöpfe am Ort (ersetzen die Aufgabe am Gebäude): Spielhalle am Golden Pearl, Adoptieren im Tierheim
+// Knöpfe am Ort (ersetzen die Aufgabe am Gebäude): Golden Pearl am Eingang, Adoptieren im Tierheim
 function ortKnoepfe(){let b=$('ortact');const w=WK.on&&!SPIELT?(amGP()?'gp':thVorOrt()?'th':null):null;if(!w){if(b)b.remove();return;}if(b&&b.dataset.w===w)return;if(b)b.remove();
- b=document.createElement('button');b.id='ortact';b.type='button';b.className='qact';b.dataset.w=w;b.innerHTML=w==='gp'?'<b>🎮 Spielhalle betreten</b><span>Golden Pearl · Wochen-Rangliste</span>':'<b>🐾 Tiere adoptieren</b><span>Tierheim Pfotenkuss</span>';$('walkui').prepend(b);b.onclick=()=>w==='gp'?spielhalle():tierheimSeite();}
+ b=document.createElement('button');b.id='ortact';b.type='button';b.className='qact';b.dataset.w=w;b.innerHTML=w==='gp'?'<b>💎 Golden Pearl betreten</b><span>Spiele · Wochen-Rangliste</span>':'<b>🐾 Tiere adoptieren</b><span>Tierheim Pfotenkuss</span>';$('walkui').prepend(b);b.onclick=()=>w==='gp'?gpBetreten():tierheimSeite();}
 setInterval(()=>{try{ortKnoepfe();}catch(e){}},300);
-// ---------- Spielhalle (Menü + Rangliste) ----------
+// ---------- Golden Pearl: Spiele-Menü + Rangliste ----------
 let SPRANG={};
 async function spRangLaden(){try{const c=mkClaim();if(c){const r=await mk('spielRang',{});if(r&&r.ok){SPRANG=r;return r;}}const r=await fetch('/api/muscheln?spielrang=1',{cache:'no-store'});if(r.ok){SPRANG=await r.json();return SPRANG;}}catch(e){}return null;}
-async function spielhalle(){if(!amGP()){mkToast('🎮 Die Spielhalle öffnet nur direkt am Eingang des Golden Pearl');return;}let e=$('sphalle');if(!e){e=document.createElement('div');e.id='sphalle';e.className='mkpage sphalle';document.body.appendChild(e);}
+async function gpBetreten(){if(!amGP()){mkToast('💎 Ins Golden Pearl kommst du nur direkt am Eingang');return;}let e=$('sphalle');if(!e){e=document.createElement('div');e.id='sphalle';e.className='mkpage sphalle';document.body.appendChild(e);}
  e.hidden=false;document.body.style.overflow='hidden';spHalleZeig();await spRangLaden();spHalleZeig();}
 function spHalleZu(){const e=$('sphalle');if(e)e.hidden=true;document.body.style.overflow='';}
 function spHalleZeig(){const e=$('sphalle');if(!e||e.hidden)return;const R=SPRANG||{},gast=!mkClaim();
- e.innerHTML='<a class="mkback" href="#" id="spzu">← Zurück auf den Platz</a><div class="spkopf"><div class="splogo">💎</div><div><h1>Spielhalle</h1><div class="mktag">Golden Pearl · Geschick zählt, nicht Glück</div></div></div>'
+ e.innerHTML='<a class="mkback" href="#" id="spzu">← Zurück auf den Platz</a><div class="spkopf"><div class="splogo">💎</div><div><h1>Golden Pearl</h1><div class="mktag">Spiele · Geschick zählt, nicht Glück</div></div></div>'
  +(gast?'<div class="mkbox spgast">🔐 Du kannst hier üben. Für die Rangliste <b>verknüpfe deinen TikTok-Namen</b>.</div>':'')
  +'<div class="spgrid">'+Object.entries(SPIELE).map(([k,s])=>{const r=(R.spiele||{})[k]||{},ich=r.ich;return'<button class="spkarte" type="button" data-sp="'+k+'"><span class="spic">'+s.ic+'</span><b>'+s.n+'</b><small>'+(ich?'Dein Bestwert: '+spWert(k,ich.s)+(ich.platz?' · Platz '+ich.platz:''):'Noch nicht gespielt')+'</small><i>▶ Spielen</i></button>';}).join('')+'</div>'
  +Object.entries(SPIELE).map(([k,s])=>{const r=(R.spiele||{})[k]||{},L=r.top||[];return'<div class="mkbox sprang"><h3>🏆 '+s.ic+' '+s.n+'</h3>'+(L.length?L.slice(0,3).map((x,i)=>'<div><span>'+['🥇','🥈','🥉'][i]+' '+esc(x.n)+'</span><b>'+spWert(k,x.s)+'</b></div>').join(''):'<p class="cft">Diese Woche noch keine Ergebnisse – sei die/der Erste!</p>')+(r.ich&&r.ich.platz>3?'<div class="spich"><span>'+r.ich.platz+'. du</span><b>'+spWert(k,r.ich.s)+'</b></div>':'')+'</div>';}).join('')
@@ -5144,7 +5145,7 @@ async function spielStart(k){if(!amGP()&&!QP.get('spiel')){mkToast('🎮 Nur dir
 function spHud(){const h=SPLOGIK[SP.k].hud(SP);$('sph1').textContent=h[0];$('sph2').textContent=h[1];}
 async function spielVorbei(){if(!SP||SP.aus)return;SP.aus=true;const k=SP.k,s=Math.round(SP.score),dauer=Math.round(performance.now()-SP.t0),run=SP.run,o=$('spende');
  let r=null;if(run)r=await mk('spielEnde',{id:run.id,score:s,dauer});const neu=r&&r.neu,platz=r&&r.platz;try{statEv('spiel_'+k);}catch(e){}
- o.hidden=false;o.innerHTML='<div class="spbox"><div class="spico">'+SPIELE[k].ic+'</div><h2>'+(k==='memory'?'Geschafft!':'Vorbei!')+'</h2><p class="spgross">'+spWert(k,s)+'</p>'+(neu?'<p class="spneu">⭐ Neuer Wochen-Bestwert'+(platz?' · Platz '+platz:'')+'</p>':r&&r.best!=null?'<p class="cft">Dein Bestwert diese Woche: '+spWert(k,r.best)+(platz?' · Platz '+platz:'')+'</p>':!mkClaim()?'<p class="cft">🔐 Verknüpfe deinen TikTok-Namen, um in die Rangliste zu kommen.</p>':'')+'<button class="cbtn hot" type="button" id="spnochmal">🔁 Nochmal</button><button class="cbtn" type="button" id="spzurueck">🏆 Zur Spielhalle</button></div>';
+ o.hidden=false;o.innerHTML='<div class="spbox"><div class="spico">'+SPIELE[k].ic+'</div><h2>'+(k==='memory'?'Geschafft!':'Vorbei!')+'</h2><p class="spgross">'+spWert(k,s)+'</p>'+(neu?'<p class="spneu">⭐ Neuer Wochen-Bestwert'+(platz?' · Platz '+platz:'')+'</p>':r&&r.best!=null?'<p class="cft">Dein Bestwert diese Woche: '+spWert(k,r.best)+(platz?' · Platz '+platz:'')+'</p>':!mkClaim()?'<p class="cft">🔐 Verknüpfe deinen TikTok-Namen, um in die Rangliste zu kommen.</p>':'')+'<button class="cbtn hot" type="button" id="spnochmal">🔁 Nochmal</button><button class="cbtn" type="button" id="spzurueck">💎 Zurück ins Golden Pearl</button></div>';
  $('spnochmal').onclick=()=>{spielEnde(false);spielStart(k);};$('spzurueck').onclick=()=>{spielEnde(true);spRangLaden().then(spHalleZeig);};}
 function spielEnde(zuHalle){if(SP){SP.aus=true;cancelAnimationFrame(SP.raf);}SP=null;const o=$('spiel');if(o)o.hidden=true;SPIELT=false;if(!zuHalle||!$('sphalle')||$('sphalle').hidden)document.body.style.overflow='';}
 document.addEventListener('visibilitychange',()=>{if(SP)SP.last=performance.now();});

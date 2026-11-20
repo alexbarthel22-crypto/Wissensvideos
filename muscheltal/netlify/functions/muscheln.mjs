@@ -116,7 +116,7 @@ async function freigeben(store) {
   }
 }
 
-// ================= 🎮 Spielhalle (Golden Pearl): Wochen-Rangliste je Spiel, Top 3 gewinnen Muscheln (Wertung Mo 0 Uhr – So 20 Uhr) =================
+// ================= 🎮 Spiele im Golden Pearl: Wochen-Rangliste je Spiel, Top 3 gewinnen Muscheln (Wertung Mo 0 Uhr – So 20 Uhr) =================
 // Plausibilitätsprüfung: Lauf nur mit Start-Kennung vom Server, Dauer vom Server gemessen, je Spiel höchstens so viele Punkte wie in der Zeit möglich.
 const SPIELE = { taucher: { max: 70, min: 2000 }, turm: { max: 2.2, min: 1500 }, memory: { min: 8000 }, krebs: { max: 70, min: 2000 } };// max = Punkte (bzw. Höhe) pro Sekunde
 const SP_PREIS = [50, 30, 20];// Platz 1–3 je Spiel (wird im Spiel nicht verraten)
@@ -262,7 +262,7 @@ async function aufraeumen(store) {
     t[1] = id; await kasse.set(t.join("/"), (await kasse.get(k)) || "1"); await kasse.delete(k);
   }
 }
-const TEXT = { spielpreis: "Spielhalle: Wochen-Preis", treibgut: "Sturm-Treibgut", login: "Login-Serie", quest: "Aufgabe", qbonus: "Alle 3 Aufgaben", shell: "Schwebende Muschel", erf: "Neuer Erfolg", story: "Story geteilt", spende: "Spende Inselkasse", tresor: "Tresor des Schöpfers", code: "Geheimcode aus dem Video", einladung: "Freund eingeladen", kauf: "Muschel-Shop", null: "Neustart: alle Konten auf 0", stern: "Sternschnuppe 🌠", angeln: "Fang am Angelsteg 🎣", euro: "Muschel-Paket gekauft/geschenkt 💎", "euro-zurueck": "Muschel-Paket erstattet", regenbogen: "Schatz am Regenbogen 🌈", flasche: "Flaschenpost-Quiz 🍾", geschenk: "Tagesgeschenk 🎁" };
+const TEXT = { spielpreis: "Golden Pearl: Wochen-Preis", treibgut: "Sturm-Treibgut", login: "Login-Serie", quest: "Aufgabe", qbonus: "Alle 3 Aufgaben", shell: "Schwebende Muschel", erf: "Neuer Erfolg", story: "Story geteilt", spende: "Spende Inselkasse", tresor: "Tresor des Schöpfers", code: "Geheimcode aus dem Video", einladung: "Freund eingeladen", kauf: "Muschel-Shop", null: "Neustart: alle Konten auf 0", stern: "Sternschnuppe 🌠", angeln: "Fang am Angelsteg 🎣", euro: "Muschel-Paket gekauft/geschenkt 💎", "euro-zurueck": "Muschel-Paket erstattet", regenbogen: "Schatz am Regenbogen 🌈", flasche: "Flaschenpost-Quiz 🍾", geschenk: "Tagesgeschenk 🎁" };
 
 // Einmal-Aufgaben (Zurücksetzen, Aufräumen) nur einmal pro Tag und Server-Instanz prüfen – spart bei jeder Muschel-Aktion
 // rund 10 Speicherabfragen (schnellere Gutschriften)
