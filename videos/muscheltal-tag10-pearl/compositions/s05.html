@@ -55,9 +55,19 @@
     .gl b { display: block; font-weight: 900; font-size: 92px; letter-spacing: -.02em; line-height: 1; }
     #k5 { top: 250px; } #k5 b { font-size: 84px; }
     .pc { position: absolute; font-size: 80px; opacity: 0; }
+    .stk { background: rgba(255,255,255,.94) !important; border: 10px solid #e8467c; color: #e8467c !important; text-shadow: none !important; box-shadow: 0 9px 0 rgba(0,0,0,.25) !important;
+      font-family: "Inter", sans-serif !important; font-weight: 900; font-size: 76px !important; padding: 6px 30px 12px !important; border-radius: 40px !important; line-height: 1.05 !important; max-width: 900px; }
+    .stk small { color: #2a1b12 !important; font-size: 36px !important; text-shadow: none !important; font-weight: 800; }
+    .stk.bl { border-color: #2f7fe0; color: #2f7fe0 !important; } .stk.gr { border-color: #2fbf6a; color: #1f9a52 !important; } .stk.go { border-color: #ffd23f; color: #2a1b12 !important; background: #ffd23f !important; }
+    #h4 { border-color: #7b4fe0; color: #7b4fe0 !important; background: rgba(255,255,255,.94) !important; }
+    .gl { background: #7b4fe0 !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; border-radius: 22px !important; box-shadow: 0 9px 0 rgba(0,0,0,.28) !important; padding: 8px 28px 12px !important; }
+    .gl small { font: 900 24px Inter, sans-serif !important; letter-spacing: .15em !important; opacity: .9; }
+    .gl b { font-size: 54px !important; }
+    .ch6, #tg2, #fr8 { font-family: "Inter", sans-serif !important; font-weight: 900 !important; font-size: 50px !important; box-shadow: 0 9px 0 rgba(0,0,0,.28) !important; }
+    #f2 { font-size: 48px !important; }
   </style>
-  <div id="root" data-composition-id="s05" data-start="0" data-duration="5.630" data-width="1080" data-height="1920">
-    <div id="s05-stage" class="clip stage" data-start="0" data-duration="5.630" data-track-index="0">
+  <div id="root" data-composition-id="s05" data-start="0" data-duration="5.840" data-width="1080" data-height="1920">
+    <div id="s05-stage" class="clip stage" data-start="0" data-duration="5.840" data-track-index="0">
       <div id="k5" class="gl"><small>Fr &amp; Sa · 20–22 Uhr</small><b>🎬 Freiluftkino</b></div>
       <div class="pc" id="pc0" style="left:120px;top:560px">🍿</div><div class="pc" id="pc1" style="left:860px;top:600px">🍿</div><div class="pc" id="pc2" style="left:200px;top:1450px">🎞️</div><div class="pc" id="pc3" style="left:820px;top:1480px">🥤</div>
     </div>
@@ -65,7 +75,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 5.63, "L5": [0.2, 5.2], "L5.words": [["und", 0.2, 0.393], ["freitags", 0.393, 0.794], ["und", 0.794, 0.987], ["samstags", 0.987, 1.387], ["läuft", 1.387, 1.594], ["im", 1.594, 1.781], ["freiluftkino", 1.781, 2.554], ["ein", 2.554, 2.747], ["film", 2.747, 2.947], ["", 2.947, 3.12], ["mit", 3.37, 3.598], ["popcorn", 3.598, 4.061], ["und", 4.061, 4.289], ["liegestühlen", 4.289, 5.2]]};
+      const C = {"__dur": 5.84, "L5": [0.2, 5.36], "L5.words": [["und", 0.2, 0.415], ["freitags", 0.415, 0.861], ["und", 0.861, 1.076], ["samstags", 1.076, 1.522], ["läuft", 1.522, 1.752], ["im", 1.752, 1.959], ["freiluftkino", 1.959, 2.82], ["ein", 2.82, 3.035], ["film", 3.035, 3.258], ["", 3.258, 3.45], ["mit", 3.7, 3.907], ["popcorn", 3.907, 4.327], ["und", 4.327, 4.534], ["liegestühlen", 4.534, 5.36]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];

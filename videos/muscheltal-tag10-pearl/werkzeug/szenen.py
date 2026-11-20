@@ -5,7 +5,20 @@ D = Path(sys.argv[1]); LOGO = Path(sys.argv[2]).read_text().strip()
 SHELL = '<svg viewBox="0 0 64 64"><path d="M32 47 L8.8 40.8 Q5.0 34.0 12.7 32.7 Q11.6 25.0 19.2 26.7 Q21.0 19.1 27.5 23.4 Q32.0 17.0 36.5 23.4 Q43.0 19.1 44.8 26.7 Q52.4 25.0 51.3 32.7 Q59.0 34.0 55.2 40.8 Z" fill="#ffc7b2" stroke="#2a1b12" stroke-width="3" stroke-linejoin="round"/><path d="M32 45L13.9 33.6M32 45L20.0 27.9M32 45L27.8 24.9M32 45L36.2 24.9M32 45L44.0 27.9M32 45L50.1 33.6" stroke="#c43d6b" stroke-width="2" stroke-linecap="round"/></svg>'
 LILITA = '@font-face { font-family: "Lilita One"; src: url("assets/fonts/LilitaOne-Regular.woff2") format("woff2"); font-weight: 400; }'
 
+V1 = """
+    .stk { background: rgba(255,255,255,.94) !important; border: 10px solid #e8467c; color: #e8467c !important; text-shadow: none !important; box-shadow: 0 9px 0 rgba(0,0,0,.25) !important;
+      font-family: "Inter", sans-serif !important; font-weight: 900; font-size: 76px !important; padding: 6px 30px 12px !important; border-radius: 40px !important; line-height: 1.05 !important; max-width: 900px; }
+    .stk small { color: #2a1b12 !important; font-size: 36px !important; text-shadow: none !important; font-weight: 800; }
+    .stk.bl { border-color: #2f7fe0; color: #2f7fe0 !important; } .stk.gr { border-color: #2fbf6a; color: #1f9a52 !important; } .stk.go { border-color: #ffd23f; color: #2a1b12 !important; background: #ffd23f !important; }
+    #h4 { border-color: #7b4fe0; color: #7b4fe0 !important; background: rgba(255,255,255,.94) !important; }
+    .gl { background: #7b4fe0 !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; border-radius: 22px !important; box-shadow: 0 9px 0 rgba(0,0,0,.28) !important; padding: 8px 28px 12px !important; }
+    .gl small { font: 900 24px Inter, sans-serif !important; letter-spacing: .15em !important; opacity: .9; }
+    .gl b { font-size: 54px !important; }
+    .ch6, #tg2, #fr8 { font-family: "Inter", sans-serif !important; font-weight: 900 !important; font-size: 50px !important; box-shadow: 0 9px 0 rgba(0,0,0,.28) !important; }
+    #f2 { font-size: 48px !important; }"""
+
 def scene(sid, css, html, js, blur=True):
+    css = css + V1
     end = f'tl.to("#{sid}-stage > *", {{ opacity: 0, filter: "blur(8px)", duration: 0.18 }}, C.__dur - 0.18);' if blur else ""
     (D / f"{sid}.html").write_text(f"""<template>
   <style>
@@ -97,63 +110,41 @@ GL = """.gl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-
     .gl small { display: block; font-weight: 700; font-size: 26px; letter-spacing: .32em; text-transform: uppercase; opacity: .85; }
     .gl b { display: block; font-weight: 900; font-size: 92px; letter-spacing: -.02em; line-height: 1; }"""
 
-# s01 – Hook: Es ist was passiert … (voller Bildschirm, Wörter ploppen und leuchten)
+# s01 – Hook im Stil von Video 1: Strahlen, Glühen, Funkeln, Stempel „PASSIERT!“ und „KEINER?!“, Blitz + Konfetti
 scene("s01", """
-    #vg1 { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 40%, rgba(0,0,0,0) 25%, rgba(0,8,30,.88) 100%); }
-    #ry1 { position: absolute; left: 540px; top: 640px; width: 2000px; height: 2000px; margin: -1000px; border-radius: 50%; opacity: 0;
-      background: repeating-conic-gradient(rgba(255,40,60,.38) 0deg 7deg, rgba(255,40,60,0) 7deg 20deg); -webkit-mask: radial-gradient(circle, #000 15%, transparent 60%); mask: radial-gradient(circle, #000 15%, transparent 60%); }
-    #fl1 { position: absolute; inset: 0; background: #fff; opacity: 0; }
-    #rd1 { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 50%, rgba(255,0,30,0) 62%, rgba(220,0,25,.85) 100%); opacity: 0; }
-    .sb { position: absolute; top: -300px; width: 900px; height: 1400px; opacity: .0; background: conic-gradient(from 160deg at 50% 0%, rgba(255,30,50,0) 0deg, rgba(255,30,50,.55) 20deg, rgba(255,30,50,0) 40deg); transform-origin: 50% 0%; }
-    #sbL { left: -450px; } #sbR { right: -450px; }
-    #bn1 { position: absolute; left: 0; right: 0; top: 215px; height: 150px; display: flex; align-items: center; justify-content: center; gap: 26px; background: linear-gradient(180deg,#ff2a3d,#b8001a); box-shadow: 0 10px 0 rgba(0,0,0,.3), 0 0 60px rgba(255,0,30,.7); opacity: 0; }
-    #bn1 b { font: 400 104px/1 "Lilita One", sans-serif; color: #fff; letter-spacing: .04em; text-shadow: 0 6px 0 #6a0010; }
-    #bn1 i { font-style: normal; font: 900 40px Inter, sans-serif; color: #ff2a3d; background: #fff; padding: 6px 18px; border-radius: 10px; }
-    #tk1 { position: absolute; left: 0; right: 0; top: 1480px; height: 110px; overflow: hidden; background: #fff; border-top: 12px solid #ff2a3d; border-bottom: 12px solid #ff2a3d; opacity: 0; }
-    #tk1 div { position: absolute; left: 0; top: 0; white-space: nowrap; font: 400 70px/86px "Lilita One", sans-serif; color: #c4001c; }
-    .hw { position: absolute; left: 0; right: 0; text-align: center; font-family: "Lilita One", sans-serif; color: #fff; opacity: 0; line-height: .95; white-space: nowrap;
-      -webkit-text-stroke: 14px #1a0b2e; paint-order: stroke fill; }
-    #a1 { top: 430px; font-size: 100px; } #a2 { top: 545px; font-size: 76px; color: #ffd0d4; }
-    #b1 { top: 470px; font-size: 150px; } #b2 { top: 620px; font-size: 200px; color: #ff2a3d; -webkit-text-stroke: 16px #fff; }
-    #em1 { position: absolute; left: 0; right: 0; top: 880px; text-align: center; font-size: 200px; opacity: 0; }
-    #k1 { top: 440px; font-size: 250px; color: #ff2a3d; -webkit-text-stroke: 16px #fff; } #k2 { top: 720px; font-size: 92px; }
-    #qq { position: absolute; left: 0; right: 0; top: 880px; text-align: center; font: 400 150px "Lilita One", sans-serif; color: #ffe14a; opacity: 0; -webkit-text-stroke: 12px #1a0b2e; paint-order: stroke fill; }
-    .pt { position: absolute; font-size: 90px; line-height: 1; width: 90px; height: 90px; opacity: 0; }""",
-"""      <div id="vg1"></div><div id="rd1"></div>
-      <div id="bn1"><span style="font-size:96px">🚨</span><b>EILMELDUNG</b><i>LIVE</i></div>
-      <div id="tk1"><div>+++ EILMELDUNG +++ MUSCHEL-TAL +++ ES IST WAS PASSIERT +++ EILMELDUNG +++ MUSCHEL-TAL +++ ES IST WAS PASSIERT +++</div></div>
-      <div id="a1" class="hw">LEUTE …</div><div id="a2" class="hw">auf unserer Insel</div>
-      <div id="b1" class="hw">ES IST WAS</div><div id="b2" class="hw">PASSIERT!</div>
-      <div id="em1">😳</div>
-      <div id="k1" class="hw">KEINER</div><div id="k2" class="hw">hat's kommen sehen …</div>
-      <div id="qq">? ? ?</div>
-      """ + "".join(f'<div class="pt" id="pa{i}" style="left:495px;top:700px">{e}</div>' for i, e in enumerate("❗⚠️💥❓❗⚠️💥❓❗⚠️💥❓")) + """
-      <div id="fl1"></div>""",
-"""      const P = at("L1", "passiert"), B = line("L1b")[0], K = at("L1b", "keiner");
-      tl.fromTo("#vg1", { opacity: .5 }, { opacity: 1, duration: 1.5, ease: "none" }, 0);
-      tl.fromTo("#bn1", { opacity: 0, scaleY: 0 }, { opacity: 1, scaleY: 1, duration: .2, ease: "back.out(2)" }, 0);
-      [...Array(11).keys()].forEach(i => tl.fromTo("#bn1 b", { opacity: .3 }, { opacity: 1, duration: .14, ease: "none", immediateRender: false }, .45 * i + .3));
-      [...Array(11).keys()].forEach(i => tl.fromTo("#rd1", { opacity: 1 }, { opacity: .15, duration: .4, ease: "power1.out", immediateRender: false }, i * .45));
-      tl.fromTo("#tk1", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .25 }, .1);
-      tl.fromTo("#tk1 div", { x: 0 }, { x: -1900, duration: 5.2, ease: "none" }, .1);
-      tl.fromTo("#a1", { opacity: 0, scale: 2.6, filter: "blur(14px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .35, ease: "back.out(2.5)" }, .02);
-      tl.fromTo("#a2", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: .35, ease: "back.out(2)" }, at("L1", "auf") - .05);
-      tl.to(["#a1", "#a2"], { y: -40, opacity: 0, duration: .2, ease: "power2.in" }, P - .22);
-      tl.fromTo("#fl1", { opacity: .85 }, { opacity: 0, duration: .35, ease: "power2.out", immediateRender: false }, P - .02);
-      tl.fromTo("#b1", { opacity: 0, scale: 3, rotation: -8 }, { opacity: 1, scale: 1, rotation: -3, duration: .3, ease: "back.out(3)" }, P - .15);
-      tl.fromTo("#b2", { opacity: 0, scale: 3.4, rotation: 6 }, { opacity: 1, scale: 1, rotation: 2, duration: .32, ease: "back.out(3)" }, P + .02);
-      tl.fromTo("#b2", { textShadow: "0 0 0px rgba(255,225,74,0)" }, { textShadow: "0 0 60px rgba(255,225,74,1)", duration: .25, yoyo: true, repeat: 5, ease: "sine.inOut", immediateRender: false }, P + .35);
-      tl.fromTo("#em1", { opacity: 0, scale: .2, y: 80 }, { opacity: 1, scale: 1, y: 0, duration: .4, ease: "back.out(3)" }, P + .2);
-      tl.to("#em1", { y: -24, duration: .25, yoyo: true, repeat: 5, ease: "sine.inOut" }, P + .65);
-      [[18,-10],[-20,8],[14,12],[-12,-8],[8,6],[0,0]].forEach(([x, y], i) => tl.to("#s01-stage", { x, y, duration: .045, ease: "none" }, P + .05 + i * .045));
-      [...Array(12).keys()].forEach(i => { const a = i / 12 * 6.283, r = 330 + (i % 3) * 130; tl.fromTo("#pa" + i, { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: Math.cos(a) * r, y: Math.sin(a) * r * 1.1, scale: 1.4, rotation: (i % 2 ? 1 : -1) * 160, opacity: 0, duration: 1.1, ease: "power3.out", immediateRender: false }, P + .03 + (i % 3) * .05); });
-      tl.to(["#b1", "#b2", "#em1"], { opacity: 0, scale: 1.4, filter: "blur(10px)", duration: .25, ease: "power2.in" }, B - .2);
-      tl.fromTo("#k2", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .35, ease: "power3.out" }, B + .05);
-      tl.fromTo("#k1", { opacity: 0, scale: .2 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(3)" }, K - .1);
-      [0, .08, .16, .3, .38].forEach((d, i) => tl.to("#k1", { opacity: i % 2 ? .25 : 1, duration: .04, ease: "none" }, K + .25 + d));
-      tl.fromTo("#k1", { textShadow: "0 0 0px rgba(255,64,96,0)" }, { textShadow: "0 0 70px rgba(255,64,96,1)", duration: .3, yoyo: true, repeat: 3, ease: "sine.inOut", immediateRender: false }, K + .7);
-      tl.fromTo("#qq", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.5)" }, at("L1b", "kommen"));
-      tl.to("#qq", { rotation: 6, duration: .2, yoyo: true, repeat: 5, ease: "sine.inOut" }, at("L1b", "kommen") + .4);""", blur=True)
+    #s01-rays { position: absolute; left: -260px; top: 160px; width: 1600px; height: 1600px; border-radius: 50%;
+      background: repeating-conic-gradient(from 0deg, rgba(255,255,255,.20) 0deg 9deg, rgba(255,255,255,0) 9deg 22deg);
+      -webkit-mask: radial-gradient(circle, #000 0%, #000 35%, transparent 70%); mask: radial-gradient(circle, #000 0%, #000 35%, transparent 70%); }
+    #s01-glow { position: absolute; left: 140px; top: 560px; width: 800px; height: 520px; border-radius: 50%; background: radial-gradient(closest-side, rgba(255,214,90,.55), rgba(255,214,90,0)); }
+    #s01-flash { position: absolute; inset: 0; background: #fff; opacity: 0; }
+    .stamp { position: absolute; padding: 6px 30px; border: 10px solid; border-radius: 40px; background: rgba(255,255,255,.94); font-family: "Inter", sans-serif; font-weight: 900; font-size: 84px; opacity: 0; }
+    #st1 { left: 290px; top: 300px; color: #e8467c; border-color: #e8467c; transform: rotate(-9deg); font-size: 96px; }
+    #st2 { left: 330px; top: 300px; color: #7b4fe0; border-color: #7b4fe0; transform: rotate(7deg); font-size: 92px; }
+    .s01-cf { position: absolute; left: 530px; top: 820px; width: 18px; height: 28px; border-radius: 4px; }
+    .s01-sp { position: absolute; width: 70px; height: 70px; }""",
+"""      <div id="s01-glow"></div><div id="s01-rays"></div><div id="s01-cfw"></div>
+      <svg class="s01-sp" style="left:120px;top:520px" viewBox="-10 -10 20 20"><path d="M0 -10 L2 -2 L10 0 L2 2 L0 10 L-2 2 L-10 0 L-2 -2Z" fill="#fff"/></svg>
+      <svg class="s01-sp" style="left:860px;top:600px" viewBox="-10 -10 20 20"><path d="M0 -10 L2 -2 L10 0 L2 2 L0 10 L-2 2 L-10 0 L-2 -2Z" fill="#ffd23f"/></svg>
+      <svg class="s01-sp" style="left:170px;top:1060px" viewBox="-10 -10 20 20"><path d="M0 -10 L2 -2 L10 0 L2 2 L0 10 L-2 2 L-10 0 L-2 -2Z" fill="#ffd23f"/></svg>
+      <svg class="s01-sp" style="left:820px;top:1000px" viewBox="-10 -10 20 20"><path d="M0 -10 L2 -2 L10 0 L2 2 L0 10 L-2 2 L-10 0 L-2 -2Z" fill="#fff"/></svg>
+      <div id="st1" class="stamp">PASSIERT!</div>
+      <div id="st2" class="stamp">KEINER?! 😳</div>
+      <div id="s01-flash"></div>""",
+"""      const P = at("L1", "passiert"), K = at("L1b", "keiner"), cols = ["#ffd23f", "#e8467c", "#2fb3a0", "#fff", "#7b4fe0", "#ff7a59"], box = document.getElementById("s01-cfw");
+      let sd = 21; const R = () => (sd = (sd * 16807) % 2147483647) / 2147483647;
+      tl.fromTo("#s01-rays", { rotation: 0, opacity: .75 }, { rotation: 75, opacity: .35, duration: C.__dur, ease: "none" }, 0);
+      tl.fromTo("#s01-glow", { scale: .9, opacity: .8 }, { scale: 1.15, opacity: .4, duration: .45, yoyo: true, repeat: 5, ease: "sine.inOut" }, 0);
+      tl.fromTo(".s01-sp", { scale: .2, opacity: 0, rotation: 0 }, { scale: 1.4, opacity: 1, rotation: 90, duration: .35, ease: "back.out(3)", stagger: .12, yoyo: true, repeat: 5 }, 0);
+      tl.fromTo("#s01-flash", { opacity: .75 }, { opacity: 0, duration: .35, ease: "power2.out", immediateRender: false }, P);
+      tl.fromTo("#st1", { opacity: 0, scale: 1.7 }, { opacity: 1, scale: 1, duration: .32, ease: "elastic.out(1.2, .4)" }, P - .03);
+      tl.fromTo("#st1", { x: 0 }, { x: 12, duration: .04, yoyo: true, repeat: 7, ease: "none" }, P + .2);
+      tl.to("#st1", { opacity: 0, scale: .6, rotation: 10, duration: .25, ease: "back.in(2)" }, K - .3);
+      tl.fromTo("#st2", { opacity: 0, scale: 1.7 }, { opacity: 1, scale: 1, duration: .32, ease: "elastic.out(1.2, .4)" }, K - .03);
+      tl.fromTo("#st2", { x: 0 }, { x: 12, duration: .04, yoyo: true, repeat: 7, ease: "none" }, K + .2);
+      for (let k = 0; k < 46; k++) { const d = document.createElement("div"); d.className = "s01-cf"; d.style.background = cols[k % cols.length]; box.appendChild(d);
+        const a = R() * Math.PI * 2, v = 380 + R() * 520, dx = Math.cos(a) * v, dy = Math.sin(a) * v * .8 - 260;
+        tl.fromTo(d, { opacity: 0, x: 0, y: 0, rotation: 0, scale: .6 }, { opacity: 1, x: dx * .7, y: dy * .7, rotation: (R() - .5) * 720, scale: 1, duration: .45, ease: "power3.out" }, P + .02);
+        tl.to(d, { x: dx, y: dy + 520, rotation: "+=" + Math.round((R() - .5) * 540), opacity: 0, duration: 1.1, ease: "power1.in" }, P + .47); }""")
 
 # s02 – Hütten + Passanten: 790, Hier könntest DU wohnen, Folgen
 scene("s02", GL + """
