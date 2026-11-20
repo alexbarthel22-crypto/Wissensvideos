@@ -489,6 +489,14 @@ footer a{color:var(--soft)}
 <div class="toast" id="toast" hidden role="status"></div>
 <div class="mp" id="pg" hidden role="dialog" aria-modal="true"><div class="mpc pgx"><button class="mpx" id="pgx" aria-label="Schließen">×</button><div id="pgb"></div></div></div>
 <script>
+/* Schutz (20.11.): Farbverläufe/Muster mit ungültigen Zahlen (NaN/∞) oder leeren Bildern werfen sonst einen Fehler und das Bild friert ein */
+(()=>{const P=window.CanvasRenderingContext2D&&CanvasRenderingContext2D.prototype;if(!P)return;const f=v=>Number.isFinite(v)?v:0,ZG=document.createElement('canvas').getContext('2d');
+ const gMerk=()=>{GFEHL++;if(GFEHL===1)try{const st=String(new Error().stack||'').split('\n').map(z=>(z.match(/^\s*(?:at\s+)?([A-Za-z_$][\w$]*)/)||[])[1]).filter(z=>z&&!/^(Error|gMerk|createLinearGradient|createRadialGradient)$/.test(z));setTimeout(()=>{try{window.statEv&&statEv('fehler: NaN-Verlauf '+(st.slice(0,2).join(' ')).slice(0,20));}catch(_){}},3000);}catch(_){}};const L=P.createLinearGradient,Rg=P.createRadialGradient,Pt=P.createPattern;let tot=null;const ersatz=()=>tot||(tot=L.call(ZG,0,0,1,0));
+ P.createLinearGradient=function(a,b,c,d){if(Number.isFinite(a)&&Number.isFinite(b)&&Number.isFinite(c)&&Number.isFinite(d))return L.call(this,a,b,c,d);gMerk();return L.call(this,f(a),f(b),f(c),f(d));};
+ P.createRadialGradient=function(a,b,r0,c,d,r1){if(Number.isFinite(a)&&Number.isFinite(b)&&Number.isFinite(c)&&Number.isFinite(d)&&r0>=0&&r1>=0&&Number.isFinite(r0)&&Number.isFinite(r1))return Rg.call(this,a,b,r0,c,d,r1);gMerk();return Rg.call(this,f(a),f(b),Math.max(0,f(r0)),f(c),f(d),Math.max(0,f(r1)));};
+ P.createPattern=function(img,rep){try{if(img&&(img.width===0||img.height===0))return null;return Pt.call(this,img,rep);}catch(e){return null;}};
+ /* addColorStop mit kaputter Farbe/Position nicht abstürzen lassen */const G=window.CanvasGradient&&CanvasGradient.prototype,A=G&&G.addColorStop;if(A)G.addColorStop=function(o,c){try{A.call(this,Math.min(1,Math.max(0,f(o))),c);}catch(e){}};})();
+var GFEHL=0;
 const DATA=/*__DATEN__*/null;
 const I=DATA.insel, R=DATA.r, N=R.length, $=id=>document.getElementById(id);
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -4617,7 +4625,7 @@ function xmFog(c){const n=16;for(let k=0;k<n;k++){const a=k/n*TAU+(REDUCED?0:T*.
  if(!REDUCED){const s=Math.pow(Math.max(0,Math.sin(T*.9)),10);if(s>.05){c.fillStyle=`rgba(255,210,80,${s})`;const x=XM.x+18,y=XM.y-14;c.beginPath();for(let k=0;k<10;k++){const r=k%2?2.5:7,a=k/10*TAU-Math.PI/2;c.lineTo(x+Math.cos(a)*r,y+Math.sin(a)*r);}c.closePath();c.fill();}}}
 
 let NACHTDRAUF=0;
-function draw(){NACHTDRAUF=0;FRT0=performance.now();SPRN=0;panMerk();{const k=kind();REGEN.on=k==="rain"||k==="storm";}
+function draw(){/* Selbstheilung: ungültige Kamera-/Spielerwerte (NaN) zurücksetzen statt Fehler bei jedem Bild */if(!(Number.isFinite(cam.x)&&Number.isFinite(cam.y)&&Number.isFinite(cam.z)&&cam.z>0)){const f=fitAll();cam.x=Number.isFinite(f.x)?f.x:0;cam.y=Number.isFinite(f.y)?f.y:0;cam.z=f.z>0?f.z:.1;try{statEv('fehler: Kamera NaN');}catch(_){}}if(WK.on&&!(Number.isFinite(WK.x)&&Number.isFinite(WK.y))){WK.x=cam.x;WK.y=cam.y;try{const me=WK.me;if(me&&me.p){WK.x=me.p.x;WK.y=me.p.y+8;}}catch(_){}try{statEv('fehler: Spieler NaN');}catch(_){}}NACHTDRAUF=0;FRT0=performance.now();SPRN=0;panMerk();{const k=kind();REGEN.on=k==="rain"||k==="storm";}
  if(!W)return;sunUpdate();if(cam.z!==ZL){ZL=cam.z;ZCH=performance.now();}const key=[W,H,limit,SUN.key,kind(),nightLevel()>.5,GROWV?GROWV.i:'',GROWK==null?'':GEB.map(g=>GROWV===g.v&&GROWK<g.at?0:1).join('')+BAU.map(b=>bauOn(b)?1:0).join('')+EXG.map(e=>exDa(e.o)?1:0).join('')].join(',');
  if(key!==baseKey||!baseOk()){baseBuild();baseKey=key;}
  const c=ctx,z=cam.z,zr=z/fitMain().z;baseBlit(c,base);world(c);
@@ -4860,7 +4868,9 @@ const FR={hi:true,ema:6,gap:16.7,lang:0};
 // Langsames Gerät (z. B. älteres MacBook): bleibt die Karte trotz 30-Bilder-Modus zäh, wird die Pixelzahl schrittweise etwas gesenkt
 function frAnpassen(n){if(n>8000&&FR.gap>40&&!FR.hi){if(!FR.lang)FR.lang=n;else if(n-FR.lang>2500&&DPR>1){if(PXMAX>1.4e6&&W*H*DPR*DPR>=PXMAX*.95)PXMAX=PXMAX>4e6?3e6:PXMAX>2.5e6?2e6:1.4e6;else if(DPRMAX>1.25)DPRMAX=DPRMAX>1.5?1.5:1.25;/* Handy dauerhaft langsam: etwas geringere Auflösung, dafür flüssig */else{FR.lang=0;return;}FR.lang=0;FR.gap=33;resize();}}else FR.lang=0;}
 // Fehler beim Zeichnen (z. B. Safari-Speicherlimit): Zwischenbilder freigeben und weiterzeichnen statt einzufrieren; einmal in der Statistik melden
-let ZFT=0,ZFN=0;function zeichenFehler(err){const n=performance.now();if(n-ZFT<1500)return;ZFT=n;ZFN++;try{sprAllesFrei();}catch(_){}try{if(ZFN<=3&&window.statEv)statEv('fehler: Zeichnen '+String(err&&err.message||err).replace(/[^\p{L}\p{N}_:.\- &()]/gu,' ').slice(0,22));}catch(_){}}
+let ZFT=0,ZFN=0;/* kurze, lesbare Fehlerbeschreibung für die Statistik: Funktion + Grund */
+function fehlerKurz(err){const m=String(err&&err.message||err||'?'),fn=((String(err&&err.stack||'').match(/^\s*(?:at\s+)?([A-Za-z_$][\w$]*)/m)||String(err&&err.stack||'').match(/at ([A-Za-z_$][\w$]*)/)||[])[1]||'').slice(0,12);const g=/non-finite/i.test(m)?'NaN':/createPattern/i.test(m)?'Muster':/memory|allocation|too large/i.test(m)?'Speicher':m.replace(/Failed to execute|on .CanvasRenderingContext2D.|The provided|value is/gi,'').replace(/[^\p{L}\p{N}_:.\- &()]/gu,' ').replace(/\s+/g,' ').trim().slice(0,16);return (fn?fn+' ':'')+g;}
+function zeichenFehler(err){const n=performance.now();if(n-ZFT<1500)return;ZFT=n;ZFN++;try{sprAllesFrei();}catch(_){}try{if(ZFN<=3&&window.statEv)statEv('fehler: Z '+fehlerKurz(err).slice(0,30));}catch(_){}}
 function loop(n){requestAnimationFrame(loop);if(!onScreen||document.hidden)return;const dt=n-last;if(dt<(FR.hi?13:30))return;if(dt<120)FR.gap=FR.gap*.9+dt*.1;last=n;T=TNOW();const a=performance.now();try{draw();feuerwerkZeichnen();sternZeichnen();}catch(err){zeichenFehler(err);}FR.ema=FR.ema*.9+(performance.now()-a)*.1;
  if(FR.hi&&(FR.ema>12||FR.gap>26))FR.hi=false;else if(!FR.hi&&FR.ema<8&&FR.gap<40)FR.hi=true;frAnpassen(n);}
 if(!REDUCED)requestAnimationFrame(loop);
@@ -4868,7 +4878,7 @@ if(!REDUCED)requestAnimationFrame(loop);
 let raf=0;function kick(){if(!REDUCED)return;if(!raf)raf=requestAnimationFrame(()=>{raf=0;draw();});}
 
 // ---------- Bedienung ----------
-function clamp(){/* 20.11.: nicht weiter rauszoomen als „Alle Inseln“ (etwas Luft), Bildmitte bleibt über der Welt – sonst verschwinden die Inseln beim Pinch-Zoom */cam.z=Math.max(fitAll().z*.8,Math.min(10,cam.z));const sch=Math.hypot(cam.x-SCH.x,cam.y-SCH.y)<3000,/* beim Schöpfer weit draußen: dort festhalten */x0=sch?SCH.x-400:BOX.x0,x1=sch?SCH.x+400:BOX.x1,y0=sch?SCH.y-400:BOX.y0,y1=sch?SCH.y+400:BOX.y1;cam.x=Math.max(x0,Math.min(x1,cam.x));cam.y=Math.max(y0,Math.min(y1,cam.y));}
+function clamp(){/* 20.11.: nicht weiter rauszoomen als „Alle Inseln“ (etwas Luft), Bildmitte bleibt über der Welt – sonst verschwinden die Inseln beim Pinch-Zoom */cam.z=Math.max(fitAll().z*.8,.004,Math.min(10,Number.isFinite(cam.z)?cam.z:1));const sch=Math.hypot(cam.x-SCH.x,cam.y-SCH.y)<3000,/* beim Schöpfer weit draußen: dort festhalten */x0=sch?SCH.x-400:BOX.x0,x1=sch?SCH.x+400:BOX.x1,y0=sch?SCH.y-400:BOX.y0,y1=sch?SCH.y+400:BOX.y1;cam.x=Math.max(x0,Math.min(x1,cam.x));cam.y=Math.max(y0,Math.min(y1,cam.y));}
 let fly=0;function flyTo(t,ms=750){cancelAnimationFrame(fly);const f={...cam},t0=performance.now();const step=n=>{const k=Math.min(1,(n-t0)/ms),e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;cam.x=f.x+(t.x-f.x)*e;cam.y=f.y+(t.y-f.y)*e;cam.z=Math.exp(Math.log(f.z)+(Math.log(t.z)-Math.log(f.z))*e);if(REDUCED)draw();if(k<1)fly=requestAnimationFrame(step);};fly=requestAnimationFrame(step);}
 function zoomAt(f,sx=W/2,sy=H/2){const [wx,wy]=s2w(sx,sy);cam.z*=f;clamp();const [nx,ny]=s2w(sx,sy);cam.x+=wx-nx;cam.y+=wy-ny;clamp();kick();}
 const pts=new Map();let moved=0,pinch=0;
@@ -5234,7 +5244,7 @@ function walkTapWho(sx,sy){const r=cv.getBoundingClientRect(),wx=(sx-W/2)/cam.z+
 function walkEnd(){const me=WK.me;WK.on=false;WK.keys.clear();WK.pt=null;$('hero').classList.remove('walking');$('walkui').hidden=true;
  // nach dem Beenden wieder die Person auswählen, damit der Erkunden-Knopf wieder da ist
  if(me&&me.p)select(me);else flyTo(fitMain(freeY()),800);if(typeof walkLabel==='function')walkLabel();}
-function walkTick(n){if(!WK.on)return;const dt=Math.min(.05,(n-WK.last)/1000);WK.last=n;let vx=0,vy=0;
+function walkTick(n){if(!WK.on)return;let dt=(n-WK.last)/1000;dt=Number.isFinite(dt)?Math.max(0,Math.min(.05,dt)):0;WK.last=n;let vx=0,vy=0;
  const K=WK.keys;if(K.has('ArrowLeft')||K.has('a'))vx-=1;if(K.has('ArrowRight')||K.has('d'))vx+=1;if(K.has('ArrowUp')||K.has('w'))vy-=1;if(K.has('ArrowDown')||K.has('s'))vy+=1;
  if(!WK.pt)WK.au=null;let wt=null;
  if(WK.pt){const sx=(WK.x-cam.x)*cam.z+W/2,sy=(WK.y-cam.y)*cam.z+H/2,dx=WK.pt[0]-sx,dy=WK.pt[1]-sy;wt=[WK.x+dx/cam.z,WK.y+dy/cam.z];if(Math.hypot(dx,dy)>14){vx=dx;vy=dy;}
@@ -5945,7 +5955,7 @@ const ST={sid:(crypto.randomUUID?crypto.randomUUID():String(Math.random())).repl
  {const q=new URLSearchParams(location.search),r=(document.referrer||'').toLowerCase();const ua=navigator.userAgent||'';ST.quelle=q.get('von')?'einladung':q.get('n')?'personen_link':q.get('ort')?'orts_link':/musical_ly|bytedancewebview|tiktok|trill_/i.test(ua)?'tiktok_app':/tiktok/.test(r)?'tiktok':/instagram/i.test(ua)?'instagram':/instagram/.test(r)?'instagram':/whatsapp|wa\.me/.test(r)?'whatsapp':/snapchat/.test(r)?'snapchat':/google|bing|duckduckgo|ecosia/.test(r)?'suchmaschine':r&&!r.includes(location.host)?'andere_seite':'direkt';}
  const ev=k=>{ST.ereignisse[k]=(ST.ereignisse[k]||0)+1;};window.statEv=ev;
  // Programmfehler im Browser der Spieler mitzählen (nur kurze Fehlermeldung, anonym) – hilft, Fehler wie „Erkunden startet nicht“ zu finden
- {const fx=m=>{try{ev('fehler: '+String(m||'?').replace(/[^\p{L}\p{N}_:.\- &()]/gu,' ').replace(/\s+/g,' ').trim().slice(0,32));}catch(e){}};addEventListener('error',e=>fx(e.message));addEventListener('unhandledrejection',e=>fx(e.reason&&(e.reason.message||e.reason)));}
+ {const fx=m=>{try{ev('fehler: '+String(m||'?').replace(/[^\p{L}\p{N}_:.\- &()]/gu,' ').replace(/\s+/g,' ').trim().slice(0,32));}catch(e){}};addEventListener('error',e=>fx(e.error?fehlerKurz(e.error):e.message));addEventListener('unhandledrejection',e=>fx(e.reason&&(e.reason.message||e.reason)));}
  // Ereignisse: bekannte Funktionen umhüllen (zählt nur, dass etwas passiert ist)
  for(const [fn,k] of [['pick','suche'],['zeigePass','pass_auf'],['mkSeite','konto_auf'],['walkStart','erkunden_start'],['shopInfo','shop_item_info'],['shopKaufFrag','shop_kauf_frage'],['mkClaimFrag','beanspruchen_frage'],['mkEinladen','einladen_auf'],['mkSpende','spenden_auf'],['rangSeite','rangliste_auf'],['lrSeite','live_rangliste_auf'],['tresorTap','tresor'],['suchePass','pass_suchen'],['zuBauprojekten','bauprojekte'],['lvInfo','live_insel']]){const f=window[fn];if(typeof f!=='function')continue;window[fn]=function(...a){try{ev(k);}catch(e){}return f.apply(this,a);};}
  {const f=window.mk;if(typeof f==='function')window.mk=async function(act,x){const r=await f(act,x);try{if(r&&r.ok&&!['stand','quests','strecke','likeinfo'].includes(act))ev({quest:'aufgabe',login:'login_abgeholt',kauf:'kauf',anlegen:'anlegen',spende:'spende',code:'code',tresor:'tresor_gewonnen'}[act]||act);}catch(e){}return r;};}
