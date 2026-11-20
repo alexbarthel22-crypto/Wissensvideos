@@ -1001,7 +1001,7 @@ const KMODE={name:'Coast & Cotton',hw:46,hh:32,...kBlk(4,-1)};
 const KCLUB={name:'KOK(O)S',hw:46,hh:32,...kBlk(3,-5)};// Nachtclub, Nordostseite (grenzt an kein Gebäude, auch nicht über Eck)
 const KDROG={name:'CocoCare',hw:46,hh:32,...kBlk(0,-4)};// Drogerie, Nordseite
 const KGAME={name:'Game Lagoon',hw:46,hh:32,...kBlk(-3,0)};
-const KKINO={name:'Freiluftkino',hw:46,hh:32,...kBlk(2,1)};// Freiluftkino (Fr & Sa 20–22 Uhr), freier Bauplatz südöstlich vom Lagerfeuer// Gaming-Laden, Westseite (grenzt an kein Gebäude, auch nicht über Eck)
+const KKINO={name:'Freiluftkino',hw:46,hh:32,...kBlk(2,1)};// Freiluftkino (Fr & Sa 20:15–22:15 Uhr), freier Bauplatz südöstlich vom Lagerfeuer// Gaming-Laden, Westseite (grenzt an kein Gebäude, auch nicht über Eck)
 // Coco Bay: Küstenstreifen ganz im Süden – vom Weg bis ans Wasser (Ursprung = Oberkante am Weg)
 const KBAR=(()=>{const b=kBlk(0,7);let yc=b.y0;while(inside(KOKV,b.cx,yc,0)&&yc<b.y0+80)yc+=1;return{name:'Coco Bay',key:b.key,cx:b.cx,cy:b.y0+2,hw:46,dep:yc-b.y0+BEX-3};})();
 // Feste Bauten ohne GEB-Eintrag: erscheinen beim „Wachsen sehen“ erst als Ereignis (nicht von Anfang an)
@@ -2190,6 +2190,9 @@ let WALH=null;function walHindernisse(){if(WALH)return WALH;const P=[];const seg
  return WALH=P;}
 function walFrei(x,y){for(const [hx,hy] of walHindernisse())if(Math.hypot(x-hx,y-hy)<55)return false;if(Math.hypot(x-MAIN.x,(y-MAIN.y)/.92)>MAIN.R+48&&Math.hypot(x-MAIN.x,y-MAIN.y)<MAIN.R+300)return false;// nicht in die Bahn der Segelboote
 for(let k=0;k<10;k++){const an=k/10*TAU;for(const r of[0,9,16])if(canWalk(x+Math.cos(an)*r,y+Math.sin(an)*r))return false;}try{if(typeof YACHT!=='undefined'&&Math.hypot(x-YACHT.cx,y-YACHT.cy)<90)return false;}catch(e){}for(const v of ISL)if(inside(v,x,y,6))return false;return true;}
+// 🎬 Ereignis-Regie (20.11.): Es läuft immer höchstens EIN großes Ereignis – Rangfolge Feuerwerk > Sturm-Treibgut > Regenbogen > Vollmond-Muscheln.
+// Solange eines läuft, pausieren die kurzen Ereignisse (Wal, Schildkröte, Flaschenpost, Sternschnuppe). Die kurzen liegen untereinander per Zeitplan nie gleichzeitig.
+function eventSperre(){try{if(termin()==='feuerwerk')return'feuerwerk';if(sturmJetzt())return'sturm';if(regenbogenDa())return'regenbogen';if(mondDa())return'vollmond';}catch(e){}return null;}
 // ⏱️ Gemeinsamer Zeitplan je Stunde: zeitlich begrenzte Muschel-Events (Wal, Schildkröte, Flaschenpost, Sternschnuppe)
 // liegen nie gleichzeitig – jedes bekommt ein eigenes Zeitfenster mit mindestens 20 s Abstand zum nächsten (für alle Besucher gleich)
 const ZPC=new Map();function zeitplan(h){if(ZPC.has(h))return ZPC.get(h);const I=[],P={},belegt=[],ABST=20;
@@ -2204,7 +2207,7 @@ const ZPC=new Map();function zeitplan(h){if(ZPC.has(h))return ZPC.get(h);const I
 function walPlan(v,h){const key=v.i+':'+h;if(WALC.has(key))return WALC.get(key);const L=[];for(let k=0;k<3;k++){const r=i=>hash(h*13+v.i*977+k*31,700+i);const start=zeitplan(h)['w'+v.i+'-'+k];// je Drittelstunde einmal, Zeit aus dem gemeinsamen Zeitplan
  let x=0,y=0,ok=false;for(let tr=0;tr<40&&!ok;tr++){const q=i=>hash(h*13+v.i*977+k*31+tr*7919,720+i),a=q(2)*TAU,d=coastAt(v,a)+BEX+18+q(3)*16;[x,y]=polar(v,a,d);ok=walFrei(x,y);}
  if(ok)L.push({v,start,x,y,dir:r(4)<.5?-1:1});}WALC.set(key,L);if(WALC.size>12)WALC.delete(WALC.keys().next().value);return L;}
-function walAktiv(){const n=TNOW(),h=Math.floor(n/3600),out=[];for(const v of ISL){if(v.i>1||(v.i===1&&!v.open))continue;for(const hh of[h-1,h])for(const w of walPlan(v,hh)){const t=n-w.start;if(t>=0&&t<WALDAUER)out.push({...w,t});}}return out;}
+function walAktiv(){if(eventSperre())return[];const n=TNOW(),h=Math.floor(n/3600),out=[];for(const v of ISL){if(v.i>1||(v.i===1&&!v.open))continue;for(const hh of[h-1,h])for(const w of walPlan(v,hh)){const t=n-w.start;if(t>=0&&t<WALDAUER)out.push({...w,t});}}return out;}
 function walZeichnen(c){const L=walAktiv();if(!L.length)return;for(const w of L){const {x,y,t,dir}=w;c.save();c.translate(x,y);c.scale(dir,1);
  const ring=(r,a)=>{c.strokeStyle=`rgba(255,255,255,${a})`;c.lineWidth=.8;c.beginPath();c.ellipse(0,0,r,r*.35,0,0,TAU);c.stroke();};
  const koerper=()=>{c.fillStyle='#3d5a80';c.beginPath();c.moveTo(-13,0);c.bezierCurveTo(-12,-6,4,-7.5,11,-3);c.quadraticCurveTo(14,-1,13,1.5);c.bezierCurveTo(6,4.5,-8,4,-13,0);c.fill();
@@ -2257,7 +2260,7 @@ const SKDAUER=60,SKC=new Map();
 function skPlan(v,h){const key=v.i+':'+h;if(SKC.has(key))return SKC.get(key);const L=[];for(let k=0;k<3;k++){const r=i=>hash(h*17+v.i*613+k*29,940+i),start=zeitplan(h)['s'+v.i+'-'+k];
  let ok=false,a=0,r0=0;for(let tr=0;tr<40&&!ok;tr++){a=hash(h*17+v.i*613+k*29+tr*389,950)*TAU;r0=coastAt(v,a)+4;const [x,y]=polar(v,a,r0);ok=canWalk(x,y)&&walHindernisse().every(([hx,hy])=>Math.hypot(x-hx,y-hy)>30);}
  if(ok)L.push({v,start,a,r0});}SKC.set(key,L);if(SKC.size>12)SKC.delete(SKC.keys().next().value);return L;}
-function skAktiv(){const n=TNOW(),h=Math.floor(n/3600),out=[];for(const v of ISL){if(v.i>1||(v.i===1&&!v.open))continue;for(const hh of[h-1,h])for(const w of skPlan(v,hh)){const t=n-w.start;if(t>=0&&t<SKDAUER){const u=t/SKDAUER,d=w.r0+u*(BEX+16),[x,y]=polar(w.v,w.a,d);out.push({...w,t,u,x,y,d});}}}return out;}
+function skAktiv(){if(eventSperre())return[];const n=TNOW(),h=Math.floor(n/3600),out=[];for(const v of ISL){if(v.i>1||(v.i===1&&!v.open))continue;for(const hh of[h-1,h])for(const w of skPlan(v,hh)){const t=n-w.start;if(t>=0&&t<SKDAUER){const u=t/SKDAUER,d=w.r0+u*(BEX+16),[x,y]=polar(w.v,w.a,d);out.push({...w,t,u,x,y,d});}}}return out;}
 function skZeichnen(c){for(const w of skAktiv()){const ang=Math.atan2(Math.sin(w.a)*.92,Math.cos(w.a)),imW=w.d>coastAt(w.v,w.a)+BEX+11,t=REDUCED?0:T;
  // Spuren im Sand
  for(let k=1;k<9;k++){const dd=w.d-k*1.6;if(dd<w.r0)break;if(dd>coastAt(w.v,w.a)+BEX+10)continue;const [sx,sy]=polar(w.v,w.a,dd);c.fillStyle='rgba(150,110,60,.35)';for(const o of[-.9,.9]){c.beginPath();c.arc(sx-Math.sin(ang)*o,sy+Math.cos(ang)*o,.32,0,TAU);c.fill();}}
@@ -2272,7 +2275,7 @@ function skTap(){const p=mitmachen('🐢','Eine Babyschildkröte!');if(!p)return
 
 // ---------- 🌠 Sternschnuppe (nur nachts): 4× pro Stunde zieht eine über den Himmel; antippen → Rubbellos mit 1–3 Muscheln (höchstens 2× pro Nacht) ----------
 const STDAUER=7;
-function sternAktiv(){if(nightLevel()<.6)return null;const n=TNOW(),h=Math.floor(n/3600);for(const hh of[h-1,h])for(let k=0;k<4;k++){const r=i=>hash(hh*23+k*41,970+i),start=zeitplan(hh)['t'+k],t=n-start;
+function sternAktiv(){if(nightLevel()<.6||eventSperre())return null;const n=TNOW(),h=Math.floor(n/3600);for(const hh of[h-1,h])for(let k=0;k<4;k++){const r=i=>hash(hh*23+k*41,970+i),start=zeitplan(hh)['t'+k],t=n-start;
  if(t>=0&&t<STDAUER)return{t,id:hh*10+k,x0:.15+r(2)*.55,y0:.06+r(3)*.2,dx:(r(4)<.5?-1:1)*(.35+r(5)*.2),dy:.18+r(6)*.12};}return null;}
 function sternPos(s){const u=Math.min(1,s.t/(STDAUER-1.5));return[(s.x0+s.dx*u)*W,(s.y0+s.dy*u)*H];}
 function sternZeichnen(){const s=sternAktiv();if(!s)return;const c=ctx,[x,y]=sternPos(s),a=s.t>STDAUER-1.5?(STDAUER-s.t)/1.5:Math.min(1,s.t/.4);c.save();c.setTransform(DPR,0,0,DPR,0,0);
@@ -2299,7 +2302,7 @@ function rubbelLos(betrag,rest){popup('<div class="rub"><div class="big">🌠</d
 const rbId=()=>QP.get('wetter')==='regenbogen'?'test':WX.regenEnde;
 const rbOffen=()=>{try{return localStorage.getItem('mt-regenbogen')===rbId();}catch(e){return false;}};
 let RBOPEN=0;// Zeitpunkt des Öffnens (für kurzes Ausblenden)
-function regenbogenDa(){const id=rbId();if(!id)return false;if(id!=='test'&&(kind()==='rain'||kind()==='storm'||nightLevel()>=.4))return false;return !rbOffen()||(RBOPEN&&Date.now()-RBOPEN<1500);}
+function regenbogenDa(){const id=rbId();if(!id)return false;if(id!=='test'&&(termin()==='feuerwerk'||sturmJetzt()))return false;if(id!=='test'&&(kind()==='rain'||kind()==='storm'||nightLevel()>=.4))return false;return !rbOffen()||(RBOPEN&&Date.now()-RBOPEN<1500);}
 // Gerader Bogen (Füße unten, Scheitel oben), komplett über Land; Truhe am rechten Fuß
 let RBT=null;function rbTruhe(){if(RBT)return RBT;const v=MAIN,R=34,ry=R*.9;let best=null;
  for(let gx=-v.R;gx<=v.R;gx+=6)for(let gy=-v.R;gy<=v.R;gy+=6){const cx=v.x+gx,cy=v.y+gy;let ok=canWalk(cx+R,cy)&&canWalk(cx-R,cy);
@@ -2326,7 +2329,7 @@ function flPlan(h){if(FLC.has(h))return FLC.get(h);const out=[];for(let k=0;k<2;
  let x=0,y=0,a=0,ok=false;for(let tr=0;tr<40&&!ok;tr++){a=hash(h*13+k*7+tr*31,890)*TAU;[x,y]=polar(v,a,coastAt(v,a)+BEX+11);ok=walHindernisse().every(([hx,hy])=>Math.hypot(x-hx,y-hy)>40);}
  if(ok)out.push({fl:h*10+k,v,a,x,y,start});}if(FLC.size>40)FLC.clear();FLC.set(h,out);return out;}
 let FLW=null;const flWeg=()=>{if(FLW)return FLW;try{FLW=JSON.parse(localStorage.getItem('mt-flasche')||'[]');}catch(e){FLW=[];}return FLW;};
-function flAktiv(){if(QP.get('flasche')){const w=flPlan(Math.floor(TNOW()/3600))[0];return w&&!flWeg().includes(w.fl)?[{...w,t:20}]:[];}const n=TNOW(),h=Math.floor(n/3600),weg=flWeg(),out=[];for(const hh of[h-1,h])for(const w of flPlan(hh)){const t=n-w.start;if(t>=0&&t<FLDAUER&&!weg.includes(w.fl))out.push({...w,t});}return out;}
+function flAktiv(){if(!QP.get('flasche')&&eventSperre())return[];if(QP.get('flasche')){const w=flPlan(Math.floor(TNOW()/3600))[0];return w&&!flWeg().includes(w.fl)?[{...w,t:20}]:[];}const n=TNOW(),h=Math.floor(n/3600),weg=flWeg(),out=[];for(const hh of[h-1,h])for(const w of flPlan(hh)){const t=n-w.start;if(t>=0&&t<FLDAUER&&!weg.includes(w.fl))out.push({...w,t});}return out;}
 function flZeichnen(c){const t=REDUCED?0:T;for(const w of flAktiv()){const ang=Math.atan2(Math.sin(w.a)*.92,Math.cos(w.a)),bob=Math.sin(t*2.2+w.fl)*.5;c.save();c.translate(w.x+Math.cos(ang)*bob,w.y+Math.sin(ang)*bob);
  c.strokeStyle=`rgba(255,255,255,${.35+.25*Math.sin(t*3)})`;c.lineWidth=.35;c.beginPath();c.ellipse(0,.6,4.2,1.6,0,0,TAU);c.stroke();c.rotate(ang+.6+Math.sin(t*1.6)*.12);
  c.fillStyle='rgba(0,0,0,.18)';c.beginPath();c.ellipse(.3,.8,3.3,1,0,0,TAU);c.fill();c.fillStyle='rgba(70,160,110,.85)';c.beginPath();c.ellipse(0,0,2.5,1.15,0,0,TAU);c.fill();c.fillRect(2,-.5,1.6,1);
@@ -2342,11 +2345,12 @@ async function flTap(w){if(!mitmachen('🍾','Flaschenpost!'))return;
   popup(a.richtig?'<div class="big">🎉</div><h2>Richtig!</h2><p>Du kennst dich aus in Muschel-Tal – <b>+2 🐚</b> für dich!</p>':'<div class="big">🙈</div><h2>Leider falsch</h2><p>Richtig wäre gewesen: <b>'+esc(a.loesung)+'</b>. Bei der nächsten Flasche klappt’s!</p>');if(a.richtig)mkToast('🍾 +2 🐚 gutgeschrieben');});}
 
 // ---------- 🌪️ Sturm-Treibgut (20.11., echtes Wetter: Gewitter oder Wind ab 35 km/h): pro Insel 3 Kisten/Fässer am Strand, jede Stunde neue; antippen = öffnen (meist Seetang, oft 1–3 🐚, selten ein Fundstück fürs Fisch-Album), höchstens 6 pro Tag ----------
-const sturmJetzt=()=>QP.get('wetter')==='sturm'||kind()==='storm'||(WX.wind||0)>=35,TGC=new Map();
-function tgPlan(h){if(TGC.has(h))return TGC.get(h);const out=[];for(const v of ISL.filter(v=>v.open&&v.i<=1))for(let k=0;k<3;k++){let x=0,y=0,ok=false;for(let tr=0;tr<80&&!ok;tr++){const a=hash(h*29+v.i*7+k*13+tr*31,960)*TAU;[x,y]=polar(v,a,coastAt(v,a)+BEX-3);ok=canWalk(x,y)&&!GEB.some(g=>x>g.x0-8&&x<g.x1+8&&y>g.y0-8&&y<g.y1+8)&&!out.some(o=>Math.hypot(o.x-x,o.y-y)<45);}if(ok)out.push({id:h*100+v.i*10+k,x,y,v,fass:hash(h*3+k+v.i,961)<.4});}if(TGC.size>20)TGC.clear();TGC.set(h,out);return out;}
-let TGW=null,TGHINW=0;const tgWeg=()=>{if(TGW)return TGW;try{TGW=JSON.parse(localStorage.getItem('mt-treibgut')||'[]');}catch(e){TGW=[];}return TGW;};
+/* Treibgut nie an Sandburg, Stegen, Angelstegen, Fähr-Anleger */function tgOrtFrei(x,y){try{if(Math.hypot(x-SANDB.x,y-SANDB.y)<45)return false;if(Math.hypot(x-PIER0[0],y-PIER0[1])<30)return false;for(const g of[...STEGE,...ANGELN]){const [a,b]=g.pt(0,0);if(Math.hypot(x-a,y-b)<30)return false;}}catch(e){}return true;}
+function sturmJetzt(){return QP.get('wetter')==='sturm'||kind()==='storm'||(WX.wind||0)>=35;}var TGC=new Map();
+function tgPlan(h){if(TGC.has(h))return TGC.get(h);const out=[];for(const v of ISL.filter(v=>v.open&&v.i<=1))for(let k=0;k<3;k++){let x=0,y=0,ok=false;for(let tr=0;tr<80&&!ok;tr++){const a=hash(h*29+v.i*7+k*13+tr*31,960)*TAU;[x,y]=polar(v,a,coastAt(v,a)+BEX-3);ok=canWalk(x,y)&&!GEB.some(g=>x>g.x0-8&&x<g.x1+8&&y>g.y0-8&&y<g.y1+8)&&!out.some(o=>Math.hypot(o.x-x,o.y-y)<45)&&tgOrtFrei(x,y);}if(ok)out.push({id:h*100+v.i*10+k,x,y,v,fass:hash(h*3+k+v.i,961)<.4});}if(TGC.size>20)TGC.clear();TGC.set(h,out);return out;}
+var TGW=null,TGHINW=0;function tgWeg(){if(TGW)return TGW;try{TGW=JSON.parse(localStorage.getItem('mt-treibgut')||'[]');}catch(e){TGW=[];}return TGW;}
 const tgMerk=id=>{const a=tgWeg().filter(x=>x>id-500);a.push(id);TGW=a;try{localStorage.setItem('mt-treibgut',JSON.stringify(a));}catch(e){}};
-function tgAktiv(){if(!sturmJetzt())return[];const h=Math.floor(TNOW()/3600),weg=tgWeg();return tgPlan(h).filter(w=>!weg.includes(w.id));}
+function tgAktiv(){if(!sturmJetzt()||termin()==='feuerwerk')return[];const h=Math.floor(TNOW()/3600),weg=tgWeg();return tgPlan(h).filter(w=>!weg.includes(w.id));}
 function tgZeichnen(c){const L=tgAktiv();if(!L.length)return;const t=REDUCED?0:T;
  if(!TGHINW&&onScreen){TGHINW=1;setTimeout(()=>{try{mkToast('🌪️ Sturm! An den Stränden wurde Treibgut angespült');}catch(e){}},1500);}
  for(const w of L){if(!visR0(w.x,w.y))continue;const wob=Math.sin(t*1.8+w.id)*.15;c.save();c.translate(w.x,w.y);
@@ -2368,7 +2372,7 @@ async function tgTap(w){if(!mitmachen('📦','Treibgut!'))return;const r=await m
 function mondAlter(ms){const S=29.530588853,a=((ms-Date.UTC(2000,0,6,18,14))/864e5)%S;return a<0?a+S:a;}
 function vollmond(){if(QP.get('mond')==='voll')return true;return Math.abs(mondAlter(Date.now())-14.765)<.75;}
 function mondNacht(){const d=berlin();if(d.getHours()<12)d.setDate(d.getDate()-1);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
-const mondDa=()=>vollmond()&&nightLevel()>=.6;
+const mondDa=()=>vollmond()&&nightLevel()>=.6&&termin()!=='feuerwerk'&&!sturmJetzt()&&!regenbogenDa();
 let MMC=null;function mondMuscheln(){const n=mondNacht();if(MMC&&MMC.n===n)return MMC.m;const v=MAIN,m=[],hn=[...n].reduce((s,ch)=>s*31+ch.charCodeAt(0)|0,7);
  for(let k=0;k<5;k++)for(let tr=0;tr<60;tr++){const a=(k/5+hash(hn+tr,k+930)*.17)*TAU,[x,y]=polar(v,a,coastAt(v,a)+BEX*.55+hash(hn,k+940)*4);if(canWalk(x,y)&&walHindernisse().every(([hx,hy])=>Math.hypot(x-hx,y-hy)>30)){m.push({k,x,y});break;}}
  MMC={n,m};return m;}
@@ -2430,7 +2434,7 @@ const STK=[['palast','🏰','Muschelpalast','#e8467c',0],['doener','🥙','Döne
  ['sandburg','🏰','Sandburg','#d9a84a',0],['angeln','🎣','Angelsteg','#3a7ab8',0],
  ['cocobay','🍹','Coco Bay','#ff8a3c',1],['kokosbad','🏊','Kokos-Bad','#3fa0e8',1],['coast','👗','Coast & Cotton','#c86a4a',1],['kokos','🪩','KOK(O)S','#9b5de5',1],['cococare','🌸','CocoCare','#5fc8a8',1],['gaming','🕹️','Game Lagoon','#ff3dbe',1],['feuer','🔥','Lagerfeuer','#ff7a1c',1],['gpearl','💎','Golden Pearl','#d4a017',1],['anleger','⚓','Kokos-Anleger','#8a5a2b',1],
  ['ev_wochenmarkt','🍎','Wochenmarkt','#3f9b45',2],['ev_flohmarkt','🧺','Flohmarkt','#f4a51c',2],['ev_konzert','🎵','Konzert der Muschelband','#e8467c',2],['ev_feuerwerk','🎆','Feuerwerk','#5a3fd0',2],['ev_kino','🎬','Freiluftkino','#3a2a6a',3]];
-const STKEV={ev_wochenmarkt:'Mi 6–12 Uhr',ev_flohmarkt:'Sa 10–18 Uhr',ev_konzert:'So 16–19 Uhr',ev_feuerwerk:'Fr 20 Uhr',ev_kino:'Fr & Sa 20–22 Uhr'};
+const STKEV={ev_wochenmarkt:'Mi 6–12 Uhr',ev_flohmarkt:'Sa 10–18 Uhr',ev_konzert:'So 16–19 Uhr',ev_feuerwerk:'Fr 20 Uhr',ev_kino:'Fr & Sa 20:15–22:15 Uhr'};
 const stkHab=()=>(MK.d&&MK.d.sticker)||[];
 function stkKarte([id,em,name,col,isl],hab,i){const r=((hash(i,77)-.5)*16).toFixed(1);return hab?'<div class="stk" data-stk="'+id+'" role="button" tabindex="0" title="'+esc(name)+'"><i style="--c:'+col+';--r:'+r+'deg">'+em+'</i><b>'+esc(name)+'</b></div>':'<div class="stk leer" data-stk="'+id+'" role="button" tabindex="0"><i style="--r:'+r+'deg">?</i><b>'+(isl===2?'Muschelplatz · '+STKEV[id]:isl===3?'Kokos-Küste · '+STKEV[id]:isl?'Kokos-Küste':'Haupt-Insel')+'</b></div>';}
 // Sticker antippen: groß ansehen (gesammelt) bzw. Hinweis, wo es ihn gibt
@@ -2527,8 +2531,8 @@ function angelTap(ai){ai=ai|0;if(!mitmachen('🎣','Angeln'))return;const AH=MK.
   if(st==='biss'){clearTimeout(tm);st='zieh';go.disabled=true;go.textContent='⏳ Einholen …';const r=await mk('angeln',{insel:ai});
    if(!r||!r.ok){if(r&&r.grund==='schon'){await mkStand();angelTap(ai);return;}st='weg';go.disabled=false;go.textContent='Bitte nochmal versuchen';return;}
    if(MK.d){MK.d.fische=r.fische;MK.d.angelnHeute=Object.assign({},MK.d.angelnHeute||{},{[ai]:r.fisch});MK.d.stand=r.stand;}try{mkCard();}catch(e){}popup(fischFang(r.fisch,r.betrag));fischAlbOeffnen();}};}
-// 🎬 Freiluftkino (Kokos-Küste, Fr & Sa 20–22 Uhr)
-const kinoAktiv=()=>{const q=QP.get('termin');if(q)return q==='kino';const d=berlin(),wd=d.getDay(),h=d.getHours();return(wd===5||wd===6)&&h>=20&&h<22;};
+// 🎬 Freiluftkino (Kokos-Küste, Fr & Sa 20:15–22:15 Uhr)
+const kinoAktiv=()=>{const q=QP.get('termin');if(q)return q==='kino';const d=berlin(),wd=d.getDay(),h=d.getHours()+d.getMinutes()/60;return(wd===5||wd===6)&&h>=20.25&&h<22.25;};/* 20.11.: Start 20:15, damit es freitags nicht mit dem Feuerwerk (20:00–20:10) zusammenfällt */
 const FILME=['Die Muschel-Piraten','Das Geheimnis der Kokosinsel','Wal-Alarm!','Ein Sommer in Muschel-Tal','Die große Schildkröten-Rallye','Flaschenpost aus dem Nichts'];
 const kinoFilm=()=>{const d=berlin();return FILME[(Math.floor(d.getTime()/864e5))%FILME.length];};
 const KINOS=[];for(let r=0;r<3;r++)for(let k=0;k<5;k++)KINOS.push([-24+k*12,-1+r*9]);
@@ -2537,7 +2541,7 @@ function kinoLeinwand(c,an,t){c.fillStyle='#5a3418';c.fillRect(-25.6,-31,1.2,22)
  if(an){const g=c.createLinearGradient(0,-30,0,-12);g.addColorStop(0,'#1d2a5a');g.addColorStop(.6,'#3a6ab0');g.addColorStop(1,'#2a8ab8');c.fillStyle=g;c.fillRect(-24,-30.4,48,18.4);c.fillStyle='#fff6c0';c.beginPath();c.arc(14,-25.4,2.2,0,TAU);c.fill();
   c.save();c.beginPath();c.rect(-24,-30.4,48,18.4);c.clip();const bx=-28+((t*5)%56);c.fillStyle='#fff';c.beginPath();c.moveTo(bx,-17.6);c.lineTo(bx,-24);c.lineTo(bx+4.2,-17.6);c.fill();c.fillStyle='#8a5a2b';c.fillRect(bx-3,-17.6,8,1.4);
   c.strokeStyle='rgba(255,255,255,.55)';c.lineWidth=.3;for(let k=0;k<3;k++){c.beginPath();for(let xx=-24;xx<=24;xx+=2)c.lineTo(xx,-15.2+k*1.2+Math.sin(xx*.5+t*2+k)*.3);c.stroke();}c.restore();}
- else{c.fillStyle='#f4f1ea';c.fillRect(-24,-30.4,48,18.4);c.fillStyle='#2a1b12';c.textAlign='center';c.font='900 3.1px '+FONT;c.fillText('FREILUFTKINO',0,-23.4);c.fillStyle='#e8467c';c.font='800 1.8px '+FONT;c.fillText('Fr & Sa · 20–22 Uhr',0,-19.2);c.fillStyle='#7a5a2b';c.font='700 1.4px '+FONT;c.fillText('Eintritt frei 🍿',0,-16);}}
+ else{c.fillStyle='#f4f1ea';c.fillRect(-24,-30.4,48,18.4);c.fillStyle='#2a1b12';c.textAlign='center';c.font='900 3.1px '+FONT;c.fillText('FREILUFTKINO',0,-23.4);c.fillStyle='#e8467c';c.font='800 1.8px '+FONT;c.fillText('Fr & Sa · 20:15–22:15',0,-19.2);c.fillStyle='#7a5a2b';c.font='700 1.4px '+FONT;c.fillText('Eintritt frei 🍿',0,-16);}}
 function drawKino(c,nl){const t=REDUCED?0:T,X=KKINO.cx,Y=KKINO.cy,an=kinoAktiv();c.save();c.translate(X,Y);
  c.fillStyle='#ecd9a8';c.beginPath();c.roundRect(-44,-30,88,60,6);c.fill();c.strokeStyle='rgba(160,120,60,.35)';c.lineWidth=.3;c.stroke();
  c.strokeStyle='#6b4423';c.lineWidth=.3;c.beginPath();c.moveTo(-42,-28);c.quadraticCurveTo(-34,-22,-26,-28);c.moveTo(26,-28);c.quadraticCurveTo(34,-22,42,-28);c.stroke();for(let k=0;k<8;k++){const s=k<4?-1:1,u=(k%4+.5)/4,xx=s*(26+u*16),yy=-28+Math.sin(u*Math.PI)*5.3;c.fillStyle=['#ffd23f','#ff7ad9','#7fe0ff','#9bff9b'][k%4];c.beginPath();c.arc(xx,yy,.45,0,TAU);c.fill();}
@@ -2551,7 +2555,7 @@ function drawKino(c,nl){const t=REDUCED?0:T,X=KKINO.cx,Y=KKINO.cy,an=kinoAktiv()
 function kinoWalk(x,y){const lx=x-KKINO.cx,ly=y-KKINO.cy,f=ly+4.4;if(Math.abs(lx)>46||ly>32||ly<-37.5)return null;if(f<-10&&Math.abs(lx)<26.5)return false;
  for(const [cx,cy] of KINOS)if(Math.abs(lx-cx)<3&&f>cy-2.6&&f<cy+3.4)return false;if(inRect(lx,f,32,40,17,24))return false;if(Math.abs(lx)<2.4&&f>22&&f<28.6)return false;return true;}
 const kinoAt=(wx,wy)=>cam.z*S>4&&Math.abs(wx-KKINO.cx)<27&&wy>KKINO.cy-34&&wy<KKINO.cy-9;
-async function kinoTap(){const an=kinoAktiv();if(!an){popup('<div class="big">🎬</div><h2>Freiluftkino</h2><p>Jeden <b>Freitag und Samstag von 20 bis 22 Uhr</b> läuft hier auf der Kokos-Küste ein Film unter freiem Himmel – mit Liegestühlen und Popcorn. Komm vorbei!</p>');return;}
+async function kinoTap(){const an=kinoAktiv();if(!an){popup('<div class="big">🎬</div><h2>Freiluftkino</h2><p>Jeden <b>Freitag und Samstag von 20:15 bis 22:15 Uhr</b> läuft hier auf der Kokos-Küste ein Film unter freiem Himmel – mit Liegestühlen und Popcorn. Komm vorbei!</p>');return;}
  popup('<div class="big">🎬🍿</div><h2>Heute im Freiluftkino</h2><p>„<b>'+esc(kinoFilm())+'</b>“<br>Schnapp dir einen Liegestuhl – der Film läuft bis 22 Uhr.</p><button class="cbtn hot" type="button" id="kigo">🍿 Film schauen</button>');
  $('kigo').onclick=async()=>{if(!mitmachen('🎬','Film schauen'))return;if(!fussNah(KKINO.cx,KKINO.cy,48)){hinGehen('🎬','Freiluftkino','zum Freiluftkino auf der Kokos-Küste');return;}const hab=stkHab().includes('ev_kino');if(hab){popup('<div class="big">🍿</div><h2>Viel Spaß beim Film!</h2><p>„'+esc(kinoFilm())+'“ läuft. Lehn dich zurück! 🌙</p>');return;}
   const r=await mk('sticker',{id:'ev_kino'});if(r&&r.ok){MK.d.sticker=r.sticker;const i=STK.findIndex(s=>s[0]==='ev_kino');popup('<div class="stkpop">'+stkKarte(STK[i],true,i)+'</div><h2>Neuer Sticker!</h2><p>Du warst im Freiluftkino – viel Spaß beim Film „'+esc(kinoFilm())+'“! 🍿</p><p class="cft">'+r.sticker.length+'/'+STK.length+' im Sticker-Album</p><button class="cbtn" type="button" id="zualb">🧩 Zum Sticker-Album</button>');$('zualb').onclick=zumAlbum;}else popup('<div class="big">🍿</div><h2>Viel Spaß beim Film!</h2><p>Lehn dich zurück! 🌙</p>');};}
@@ -5885,8 +5889,8 @@ async function mkTipp(p,walk){if(!WK.on||!mkOwn(WK.me)||!MK.quests)return;const 
 
 // ---------- schwebende Muscheln (20.11.): je Insel 10 pro Stunde, jede taucht zu einer zufälligen Minute an einem zufälligen Ort auf; pro Spieler höchstens 10 pro Stunde (alle Inseln zusammen) ----------
 const SHN=10,SHMAX=10,shStd=()=>berlin().getHours(),shMin=()=>berlin().getMinutes(),shHabe=got=>got.filter(k=>k.startsWith(shStd()+'-')).length;
-function mkShells(){const me=WK.me;if(!me)return[];const hh=shStd(),h=mkTag()+'-'+hh;if(MK.sh&&MK.sh.k===me.name+h)return MK.sh.L;const r=mkR(mkH('shell'+me.name+h)),L=[];
- for(const v of ISL.filter(v=>v.open))for(let i=0;i<SHN;i++){for(let t=0;t<200;t++){const a=r()*TAU,d=Math.sqrt(r())*v.R*.85,x=v.x+Math.cos(a)*d,y=v.y+Math.sin(a)*d*.9;if(canWalk(x,y)&&!GEB.some(g=>x>g.x0-4&&x<g.x1+4&&y>g.y0-4&&y<g.y1+4)){L.push({x,y,i:hh+'-'+v.i+'-'+i,v:v.i,ab:Math.floor(r()*56)});break;}}}
+function mkShells(){const me=WK.me;if(!me)return[];const hh=shStd(),h=mkTag()+'-'+hh;if(MK.sh&&MK.sh.k===me.name+h)return MK.sh.L;const r=mkR(mkH('shell'+me.name+h)),L=[];let TGN=[];try{TGN=tgPlan(Math.floor(TNOW()/3600));}catch(e){}
+ for(const v of ISL.filter(v=>v.open))for(let i=0;i<SHN;i++){for(let t=0;t<200;t++){const a=r()*TAU,d=Math.sqrt(r())*v.R*.85,x=v.x+Math.cos(a)*d,y=v.y+Math.sin(a)*d*.9;if(canWalk(x,y)&&!GEB.some(g=>x>g.x0-4&&x<g.x1+4&&y>g.y0-4&&y<g.y1+4)&&!TGN.some(q=>Math.hypot(q.x-x,q.y-y)<14)){L.push({x,y,i:hh+'-'+v.i+'-'+i,v:v.i,ab:Math.floor(r()*56)});break;}}}
  MK.sh={k:me.name+h,L};return L;}
 async function mkShellCheck(){if(!WK.on||!mkOwn(WK.me)||!MK.d)return;const got=MK.d.shells||[];if(shHabe(got)>=SHMAX)return;const mi=shMin();for(const s of mkShells()){if(got.includes(s.i)||s.busy||mi<s.ab)continue;if(Math.hypot(WK.x-s.x,WK.y+4-s.y)<4.5){s.busy=1;const r=await mk('shell',{i:s.i});s.busy=0;if(r&&r.ok!==undefined){got.push(s.i);MK.d.shells=got;if(r.ok)MK.d.stand++;mkChip();const n=shHabe(got);mkToast(n>=SHMAX?'+1 🐚 · 10/10 – Stundenlimit erreicht, ab '+((shStd()+1)%24)+' Uhr gibt es neue':'+1 🐚 · '+n+'/'+SHMAX+' diese Stunde');}}}}
 function mkShellDraw(c){if(!WK.on||!mkOwn(WK.me)||!MK.d)return;const got=MK.d.shells||[],nl=nightLevel();if(shHabe(got)>=SHMAX)return;const mi=shMin();c.save();world(c);

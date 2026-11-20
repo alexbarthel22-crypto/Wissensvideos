@@ -734,7 +734,7 @@ export default async (req) => {
     if (id.startsWith("ev_")) {// Event-Sticker nur während des Events (Berliner Zeit)
       const p = Object.fromEntries(new Intl.DateTimeFormat("en-US", { timeZone: TZ, weekday: "short", hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).formatToParts(new Date()).map(x => [x.type, x.value]));
       const h = +p.hour + p.minute / 60, wd = p.weekday;
-      const aktiv = { wochenmarkt: wd === "Wed" && h >= 6 && h < 12, flohmarkt: wd === "Sat" && h >= 10 && h < 18, konzert: wd === "Sun" && h >= 16 && h < 19, feuerwerk: wd === "Fri" && h >= 20 && h < 20.25, kino: (wd === "Fri" || wd === "Sat") && h >= 20 && h < 22 };
+      const aktiv = { wochenmarkt: wd === "Wed" && h >= 6 && h < 12, flohmarkt: wd === "Sat" && h >= 10 && h < 18, konzert: wd === "Sun" && h >= 16 && h < 19, feuerwerk: wd === "Fri" && h >= 20 && h < 20.25, kino: (wd === "Fri" || wd === "Sat") && h >= 20.25 && h < 22.25 };// 20.11.: Kino ab 20:15 (nach dem Feuerwerk)
       if (process.env.EV_TEST !== "1" && !aktiv[id.slice(3)]) return json({ ok: false, grund: "zeit" });
     }
     await store.set("x/sticker/" + nm + "/" + id, String(Date.now()));
