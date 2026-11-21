@@ -2,6 +2,8 @@
 S = [
  dict(first=True),
  dict(what=True, eyebrow="KURZ ERKLÄRT", big="WAS IST<br>MUSCHEL-TAL?"),
+ dict(duo=[("erkunden1c","🚶 zu Fuß"),("erkunden2c","🛵 mit dem Moped")], eyebrow="SO MACHT'S SPASS 🤩", head="DU STEUERST DEINE FIGUR:", big="LAUF ÜBER<br>DIE INSEL", stamp2="🎮 DEIN EIGENES ABENTEUER"),
+ dict(grid=[("sand","🏰 Sandburg bauen"),("angel","🎣 Angeln"),("kino","🎬 Kino"),("pearl","💎 Golden Pearl")], eyebrow="LANGWEILIG WIRD'S NIE", head="SO VIEL ZU TUN:", big="DEINE INSEL"),
  dict(liste=[("ye","💼 JOBS"),("pk","🏗️ GEBÄUDE"),("tq","🏝️ NEUE INSELN"),("vi","🎉 EVENTS"),("gr","🐾 TIERE")], eyebrow="SO FUNKTIONIERT'S", head="IN DIESEM SPIEL GILT:", big="IHR<br>ENTSCHEIDET"),
  dict(pair=("kommentare/marie_comment.jpg","w_yacht"), eyebrow="DEIN WUNSCH WIRD WAHR", big="DU WILLST<br>EINE YACHT?", stamp="✅ MARIE HAT JETZT IHRE YACHT"),
  dict(pair=("kommentare/cmt_club.jpg","w_clubnacht"), eyebrow="DEIN WUNSCH WIRD WAHR", big="DU WILLST<br>EINEN CLUB?", stamp="✅ GEBAUT – BESITZER VERLOST"),
@@ -10,7 +12,6 @@ S = [
  dict(grid3=["hund","katze","hase","schildi","schwein","robbe"], eyebrow="🗳️ EURE ABSTIMMUNG", head="TIERHEIM STATT HOTEL –", big="ADOPTIER<br>DEIN TIER 🐾", stamp2="✅ EURE ENTSCHEIDUNG"),
  dict(grid=[("spiele/taucher","🫧 Perlentaucher"),("spiele/turm","🥥 Kokos-Turm"),("spiele/memory","🐚 Memory"),("spiele/krebs","🦀 Krebs-Sprint")], eyebrow="GOLDEN PEARL 💎", head="FORDER FREUNDE HERAUS:", big="MINISPIELE"),
  dict(duo=[("wal","🐋 Wal-Sprung"),("schild","🐢 Schildkröten")], eyebrow="SELTENE EVENTS", head="IHR BESTIMMT AUCH,", big="WAS<br>PASSIERT", stamp2="💬 WÜNSCH DIR DAS NÄCHSTE EVENT"),
- dict(grid=[("sand","🏰 Sandburg"),("angel","🎣 Angeln"),("kino","🎬 Kino"),("pearl","💎 Golden Pearl")], eyebrow="ERKUNDEN · ERLEBEN · SAMMELN", head="LAUF SELBST HIN:", big="DEINE INSEL"),
  dict(pod=True, eyebrow="DAS ZIEL", head="MEISTE MUSCHELN & ERFOLGE:", big="WER WIRD<br>NR. 1? 🐚"),
  dict(img="insel", eyebrow="NUR FÜR DIE ERSTEN", head="DIE ERSTEN 1.000", big="BEKOMMEN<br>VORTEILE", bar=True),
  dict(img="huetten", eyebrow="DEIN WUNSCH IST DER NÄCHSTE", head="KOMMENTIER ES –", big="FOLG<br>@MUSCHELTAL", last=True),
