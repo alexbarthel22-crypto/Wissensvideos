@@ -267,7 +267,7 @@ async function aufraeumen(store) {
     t[1] = id; await kasse.set(t.join("/"), (await kasse.get(k)) || "1"); await kasse.delete(k);
   }
 }
-const TEXT = { spielpreis: "Golden Pearl: Wochen-Preis", treibgut: "Sturm-Treibgut", login: "Login-Serie", quest: "Aufgabe", qbonus: "Alle 3 Aufgaben", shell: "Schwebende Muschel", erf: "Neuer Erfolg", story: "Story geteilt", spende: "Spende Inselkasse", tresor: "Tresor des Schöpfers", code: "Geheimcode aus dem Video", einladung: "Freund eingeladen", kauf: "Muschel-Shop", null: "Neustart: alle Konten auf 0", stern: "Sternschnuppe 🌠", angeln: "Fang am Angelsteg 🎣", euro: "Muschel-Paket gekauft/geschenkt 💎", "euro-zurueck": "Muschel-Paket erstattet", regenbogen: "Schatz am Regenbogen 🌈", flasche: "Flaschenpost-Quiz 🍾", geschenk: "Tagesgeschenk 🎁" };
+const TEXT = { eingeladen: "Von einem Freund eingeladen", spielpreis: "Golden Pearl: Wochen-Preis", treibgut: "Sturm-Treibgut", login: "Login-Serie", quest: "Aufgabe", qbonus: "Alle 3 Aufgaben", shell: "Schwebende Muschel", erf: "Neuer Erfolg", story: "Story geteilt", spende: "Spende Inselkasse", tresor: "Tresor des Schöpfers", code: "Geheimcode aus dem Video", einladung: "Freund eingeladen", kauf: "Muschel-Shop", null: "Neustart: alle Konten auf 0", stern: "Sternschnuppe 🌠", angeln: "Fang am Angelsteg 🎣", euro: "Muschel-Paket gekauft/geschenkt 💎", "euro-zurueck": "Muschel-Paket erstattet", regenbogen: "Schatz am Regenbogen 🌈", flasche: "Flaschenpost-Quiz 🍾", geschenk: "Tagesgeschenk 🎁" };
 
 // Einmal-Aufgaben (Zurücksetzen, Aufräumen) nur einmal pro Tag und Server-Instanz prüfen – spart bei jeder Muschel-Aktion
 // rund 10 Speicherabfragen (schnellere Gutschriften)
@@ -338,7 +338,7 @@ async function rangDaten(store) {
 }
 // Freunde einladen: Klick auf den Einladungslink wird mit Zeitpunkt beim Server vermerkt (Token). Beim Beanspruchen zählt
 // die Einladung nur, wenn der Neue erst NACH dem Klick eingezogen ist, nicht sich selbst einlädt und noch nie gezählt wurde.
-// Belohnung: +10 Muscheln für den Einladenden, ab 3 Einladungen Erfolg „Inselbotschafter“ (+10).
+// Belohnung: je +10 Muscheln für den Einladenden und den Eingeladenen, ab 3 Einladungen Erfolg „Inselbotschafter“ (+10).
 const berlinTag = ms => new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Berlin" }).format(new Date(ms));
 async function einladungPruefen(store, nm, kt) {
   if (!kt || !/^[0-9a-f-]{36}$/.test(kt)) return null;
@@ -348,6 +348,7 @@ async function einladungPruefen(store, nm, kt) {
   if (await store.get("x/eingeladen/" + nm)) return null;
   await store.set("x/eingeladen/" + nm, JSON.stringify({ von: k.von, ts: Date.now() }));
   await store.set("b/" + k.von + "/einladung/" + nm + "/10", String(Date.now()));
+  await store.set("b/" + nm + "/eingeladen/" + k.von + "/10", String(Date.now()));// 21.11.: auch der eingeladene Freund bekommt +10
   const anzahl = (await store.list({ prefix: "b/" + k.von + "/einladung/" })).blobs.length;
   if (anzahl >= 3) {
     const es = getStore("erfolge"), pre = "e/" + k.von + "/BOTSCHAFTER/";
