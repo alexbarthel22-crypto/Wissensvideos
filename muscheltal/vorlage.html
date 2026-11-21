@@ -5498,6 +5498,8 @@ function drawWalker(c,z){if(!WK.on)return;const L=WK.L,x=WK.x,y=WK.y;
  const tierHinten=TF_.y<=y;if(tierHinten)tierZeichnen(c);
  walkerFig(c,1);if(!tierHinten)tierZeichnen(c);
  signOver(c,x,y,nightLevel());
+ /* Perspektive: Passanten, die weiter vorne stehen (Füße tiefer) und die eigene Figur überlappen, wieder davor zeichnen */
+ if(FIGS.length){const tn=nightLevel();drawMover.re=1;try{for(const [w,fx,fy,dir,vert,mode] of FIGS){if(fy<=y+.3||fy-y>16||Math.abs(fx-x)>12)continue;tintDraw(c,tn,fx-7,fy-15,fx+7,fy+6.5,o=>drawMover(o,{...w,noOcc:1},fx,fy,dir,vert,mode));}}finally{drawMover.re=0;}}
  // vor einer Theke: eigenes Namensschild unter die Füße, damit es keine Gesichter des Teams dahinter verdeckt
  const vorTheke=TAPS.some(t=>t[2]&&t[2].ort&&t[2]!==WK.me&&Math.abs(t[0]-x)<13&&t[1]<y-1&&t[1]>y-18);
  NAMES.push([(WK.me?WK.me.name:'Du')+' (du)',x,vorTheke?y+8.5:y-(WK.mode==='moped'?13:12)*L.h,'#e8467c']);}
