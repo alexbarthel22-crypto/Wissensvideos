@@ -54,14 +54,11 @@ for i, s in enumerate(S, 1):
     body = f'<div id="spot"></div><div id="rays"></div><div id="nr">{i}/{len(S)}</div>'
     if not s.get("last") and not s.get("first"): body += '<div id="swipe">wisch ➜</div>'
     if s.get("first"):
-        body += '<div id="ep" class="pill" style="top:140px;font-size:34px;padding:8px 26px 11px;background:#ff2e7e;box-shadow:0 0 0 5px #fff">🔴 EINZIGARTIG AUF TIKTOK</div>'
-        body += '<div id="mega" style="top:240px;font-size:60px">ICH HABE EIN SPIEL ENTWICKELT –</div>'
-        body += '<div id="mega2" style="top:330px;font-size:168px;line-height:.95">WILLST DU<br>DABEI SEIN?</div>'
-        body += '<div id="ring"></div><div id="cardb" style="background-image:url(bilder/insel.jpg)"></div>'
-        body += '<div class="stampx" style="left:450px;top:800px;transform:rotate(8deg)">800 FOLLOWER 🏝️</div>'
-        body += '<div class="stampx" style="left:110px;top:1190px;transform:rotate(-7deg);border-color:#0098ff;color:#0098ff">WOHNEN SCHON HIER</div>'
-        body += '<div id="sub" style="top:1350px">Eine eigene <b>Welt</b> nur für meine Follower – <b>jede Hütte</b> trägt einen echten Namen. Bei <b>1.000</b> geht das Spiel los 🎮</div>'
-        body += '<div id="chips" style="top:1580px"><div class="c ye" style="font-size:50px">JA! ➜ WISCH WEITER</div></div>'
+        body += '<div id="ep" class="pill" style="top:180px;font-size:40px;padding:10px 30px 13px;background:#ff2e7e;box-shadow:0 0 0 5px #fff">🔴 EINZIGARTIG AUF TIKTOK</div>'
+        body += '<div id="mega2" style="top:330px;font-size:176px;line-height:.95">WILLST DU<br>DABEI SEIN?</div>'
+        body += '<div id="ring" style="top:800px"></div><div id="cardb" style="top:820px;background-image:url(bilder/insel.jpg)"></div>'
+        body += '<div class="stampx" style="left:0;right:0;margin:0 auto;width:fit-content;top:1300px;transform:rotate(-4deg);font-size:62px">800 FOLLOWER WOHNEN HIER</div>'
+        body += '<div id="chips" style="top:1520px"><div class="c ye" style="font-size:54px">WISCH ➜</div></div>'
     else:
         two = "<br>" in s["big"]
         body += f'<div id="ep" class="pill">{s["eyebrow"]}</div><div id="hd" class="pill">{s["head"]}</div><div id="big"' + (' style="font-size:100px"' if two else '') + f'>{s["big"]}</div>'
