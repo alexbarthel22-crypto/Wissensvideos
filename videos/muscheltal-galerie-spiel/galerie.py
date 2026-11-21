@@ -102,7 +102,7 @@ for i, s in enumerate(S, 1):
         else:
             body += f'<div id="card" style="top:{y0+40}px;height:{620 if s.get("last") else 740}px;background-image:url(bilder/{s["img"]}.jpg)"></div>'
         if s.get("stamp2"): body += f'<div class="ok" style="top:1470px;font-size:54px">{s["stamp2"]}</div>'
-        if s.get("chips2"): body += '<div id="chips" style="top:1590px">' + "".join(f'<div class="c {c}" style="font-size:42px">{t}</div>' for c, t in s["chips2"]) + '</div>'
+        if s.get("chips2"): body += '<div id="chips" style="top:1570px;flex-wrap:nowrap;gap:12px">' + "".join(f'<div class="c {c}" style="font-size:34px;white-space:nowrap">{t}</div>' for c, t in s["chips2"]) + '</div>'
         if s.get("last"): body += '<div class="ok" style="top:1420px;background:#ff2e7e;font-size:52px">⭐ SEI UNTER DEN ERSTEN 1.000 SPIELERN</div><div class="ok" style="top:1540px;background:#ffe500;color:#1a0f08;font-size:50px;transform:rotate(2deg)">👑 EXKLUSIVE VORTEILE</div>'
     body += STAR.format(120, 560, 64, "#ffe500") + STAR.format(880, 540, 50, "#fff") + STAR.format(70, 1250, 44, "#fff") + STAR.format(930, 1240, 56, "#ffe500")
     open(f"seite_{i:02d}.html", "w").write(f'<!doctype html><html lang="de"><head><meta charset="utf-8"><style>{CSS}</style></head><body>{body}</body></html>')
