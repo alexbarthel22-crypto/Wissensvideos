@@ -2,9 +2,9 @@
 S = [
  dict(first=True),
  dict(pair=("kommentare/cmt_club.jpg","w_clubnacht"), eyebrow="IHR HABT ES GEWÜNSCHT", big="EIN CLUB?", stamp="✅ GEBAUT: KOK(O)S"),
- dict(pair=("kommentare/fab_comment.jpg","w_baeckerei"), eyebrow="IHR HABT ES GEWÜNSCHT", big="EINE BÄCKEREI?", stamp="✅ GEBAUT – SIE LEITET SIE"),
  dict(pair=("kommentare/marie_comment.jpg","w_yacht"), eyebrow="IHR HABT ES GEWÜNSCHT", big="EINE YACHT?", stamp="✅ IHR HABT JA GESAGT"),
  dict(pair2=[("kommentare/cmt_drog.jpg","w_drog","✅ CocoCare"),("kommentare/sophia_amtshandlung.jpg","w_doener","✅ Döner 2 €")], eyebrow="UND NOCH MEHR", big="IHR WÜNSCHT –<br>ES PASSIERT"),
+ dict(what=True, eyebrow="KURZ ERKLÄRT", big="WAS IST<br>MUSCHEL-TAL?"),
  dict(grid3=["hund","katze","hase","schildi","schwein","robbe"], eyebrow="🗳️ EURE ABSTIMMUNG", head="TIERHEIM STATT HOTEL –", big="ADOPTIER<br>DEIN TIER 🐾", stamp2="✅ EURE ENTSCHEIDUNG"),
  dict(grid=[("spiele/taucher","🫧 Perlentaucher"),("spiele/turm","🥥 Kokos-Turm"),("spiele/memory","🐚 Memory"),("spiele/krebs","🦀 Krebs-Sprint")], eyebrow="GOLDEN PEARL 💎", head="FORDER FREUNDE HERAUS:", big="MINISPIELE"),
  dict(duo=[("wal","🐋 Wal-Sprung"),("schild","🐢 Schildkröten")], eyebrow="SELTENE EVENTS", head="IHR BESTIMMT AUCH,", big="WAS<br>PASSIERT", stamp2="💬 WÜNSCH DIR DAS NÄCHSTE EVENT"),
@@ -76,6 +76,9 @@ for i, s in enumerate(S, 1):
             body += f'<div class="cm" style="top:{y0}px"><img src="bilder/{c}"></div>'
             body += f'<div class="bld" style="top:{y0+300 if "fab" in c else y0+220}px;height:{620 if "fab" in c else 720}px;background-image:url(bilder/{im}.jpg)"></div>'
             body += f'<div class="ok" style="top:{1430}px">{s["stamp"]}</div>'
+        elif s.get("what"):
+            body += f'<div id="ring" style="top:{y0+10}px;height:560px"></div><div id="cardb" style="top:{y0+30}px;height:520px;background-image:url(bilder/insel.jpg)"></div>'
+            body += f'<div id="chips" style="top:{y0+590}px;flex-direction:column;align-items:center;gap:20px">' + "".join(f'<div class="c {c}" style="font-size:39px;white-space:nowrap">{t}</div>' for c, t in [("tq","🏝️ Eine Insel nur für meine Follower"),("ye","🏠 Jede Hütte = ein echter Follower"),("pk","💬 Ihr wünscht & stimmt ab – ich baue es"),("vi","🎮 Bei 1.000 wird daraus ein Spiel")]) + '</div>'
         elif s.get("pair2"):
             for k, (c, im, t) in enumerate(s["pair2"]):
                 body += f'<div class="col" style="left:{70+k*480}px;top:{y0+20}px;transform:rotate({(-1.5,1.5)[k]}deg)"><div class="cm"><img src="bilder/{c}"></div><div class="bld" style="background-image:url(bilder/{im}.jpg)"></div><div class="ok">{t}</div></div>'
