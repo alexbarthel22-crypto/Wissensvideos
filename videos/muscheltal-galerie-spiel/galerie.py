@@ -1,8 +1,8 @@
 # TikTok-Foto-Galerie „Spiel ab 1.000“ – Look wie Cover Tag 1 (dunkelblau, Strahlen, gelbe Schrift, Karten)
 S = [
  dict(first=True),
- dict(pair=("kommentare/cmt_club.jpg","w_clubnacht"), eyebrow="IHR HABT ES GEWÜNSCHT", big="EIN CLUB?", stamp="✅ GEBAUT: KOK(O)S"),
- dict(pair=("kommentare/marie_comment.jpg","w_yacht"), eyebrow="IHR HABT ES GEWÜNSCHT", big="EINE YACHT?", stamp="✅ IHR HABT JA GESAGT"),
+ dict(pair=("kommentare/marie_comment.jpg","w_yacht"), eyebrow="DEIN WUNSCH WIRD WAHR", big="DU WILLST<br>EINE YACHT?", stamp="✅ MARIE HAT JETZT IHRE YACHT"),
+ dict(pair=("kommentare/cmt_club.jpg","w_clubnacht"), eyebrow="DEIN WUNSCH WIRD WAHR", big="DU WILLST<br>EINEN CLUB?", stamp="✅ GEBAUT – BESITZER VERLOST"),
  dict(pair2=[("kommentare/cmt_drog.jpg","w_drog","✅ CocoCare"),("kommentare/sophia_amtshandlung.jpg","w_doener","✅ Döner 2 €")], eyebrow="UND NOCH MEHR", big="IHR WÜNSCHT –<br>ES PASSIERT"),
  dict(what=True, eyebrow="KURZ ERKLÄRT", big="WAS IST<br>MUSCHEL-TAL?"),
  dict(grid3=["hund","katze","hase","schildi","schwein","robbe"], eyebrow="🗳️ EURE ABSTIMMUNG", head="TIERHEIM STATT HOTEL –", big="ADOPTIER<br>DEIN TIER 🐾", stamp2="✅ EURE ENTSCHEIDUNG"),
@@ -66,16 +66,16 @@ for i, s in enumerate(S, 1):
         body += '<div id="chips" style="top:1530px"><div class="c ye" style="font-size:48px">NEUGIERIG GEWORDEN? SWIPE ➜</div></div>'
     else:
         two = "<br>" in s["big"]
-        body += f'<div id="ep" class="pill">{s["eyebrow"]}</div>'
-        if s.get("head"): body += f'<div id="hd" class="pill">{s["head"]}</div>'
-        top = 330 if s.get("head") else 250
+        body += f'<div id="ep" class="pill" style="top:250px">{s["eyebrow"]}</div>'
+        if s.get("head"): body += f'<div id="hd" class="pill" style="top:335px">{s["head"]}</div>'
+        top = 425 if s.get("head") else 345
         body += f'<div id="big" style="top:{top}px' + (';font-size:104px' if two else ';font-size:128px') + f'">{s["big"]}</div>'
         y0 = top + (230 if two else 150)
         if s.get("pair"):
             c, im = s["pair"]
             body += f'<div class="cm" style="top:{y0}px"><img src="bilder/{c}"></div>'
-            body += f'<div class="bld" style="top:{y0+300 if "fab" in c else y0+220}px;height:{620 if "fab" in c else 720}px;background-image:url(bilder/{im}.jpg)"></div>'
-            body += f'<div class="ok" style="top:{1430}px">{s["stamp"]}</div>'
+            body += f'<div class="bld" style="top:{y0+230}px;left:120px;width:840px;height:{1500-y0-230}px;background-image:url(bilder/{im}.jpg)"></div>'
+            body += f'<div class="ok" style="top:1460px">{s["stamp"]}</div>'
         elif s.get("what"):
             body += f'<div id="ring" style="top:{y0+10}px;height:560px"></div><div id="cardb" style="top:{y0+30}px;height:520px;background-image:url(bilder/insel.jpg)"></div>'
             body += f'<div id="chips" style="top:{y0+590}px;flex-direction:column;align-items:center;gap:20px">' + "".join(f'<div class="c {c}" style="font-size:39px;white-space:nowrap">{t}</div>' for c, t in [("tq","🏝️ Eine Insel nur für meine Follower"),("ye","🏠 Jede Hütte = ein echter Follower"),("pk","💬 Ihr wünscht & stimmt ab – ich baue es"),("vi","🎮 Bei 1.000 wird daraus ein Spiel")]) + '</div>'
@@ -89,13 +89,13 @@ for i, s in enumerate(S, 1):
         elif s.get("grid"):
             body += f'<div id="gridc" style="top:{y0+30}px;height:820px">' + "".join(f'<div class="gi" style="background-image:url(bilder/{f}.jpg)"><span>{n}</span></div>' for f, n in s["grid"]) + '</div>'
         elif s.get("duo"):
-            body += f'<div id="gridc" style="top:{y0+40}px;height:860px;grid-template-columns:1fr 1fr">' + "".join(f'<div class="gi" style="background-image:url(bilder/{f}.jpg)"><span>{n}</span></div>' for f, n in s["duo"]) + '</div>'
+            body += f'<div id="gridc" style="top:{y0+40}px;height:740px;grid-template-columns:1fr 1fr">' + "".join(f'<div class="gi" style="background-image:url(bilder/{f}.jpg)"><span>{n}</span></div>' for f, n in s["duo"]) + '</div>'
         elif s.get("pod"):
             body += f'<div class="pod" style="top:{y0+80}px;height:600px"><div class="pd p2"><i>🥈</i><b>2.</b></div><div class="pd p1"><i>🥇</i><b>1.</b></div><div class="pd p3"><i>🥉</i><b>3.</b></div></div>'
         else:
             body += f'<div id="card" style="top:{y0+40}px;height:740px;background-image:url(bilder/{s["img"]}.jpg)"></div>'
-        if s.get("stamp2"): body += f'<div class="ok" style="top:1420px;font-size:54px">{s["stamp2"]}</div>'
-        if s.get("last"): body += '<div class="ok" style="top:1480px;background:#ff2e7e">💬 WAS SOLL ICH BAUEN?</div>'
+        if s.get("stamp2"): body += f'<div class="ok" style="top:1470px;font-size:54px">{s["stamp2"]}</div>'
+        if s.get("last"): body += '<div class="ok" style="top:1500px;background:#ff2e7e">💬 WAS SOLL ICH BAUEN?</div>'
     body += STAR.format(120, 560, 64, "#ffe500") + STAR.format(880, 540, 50, "#fff") + STAR.format(70, 1250, 44, "#fff") + STAR.format(930, 1240, 56, "#ffe500")
     open(f"seite_{i:02d}.html", "w").write(f'<!doctype html><html lang="de"><head><meta charset="utf-8"><style>{CSS}</style></head><body>{body}</body></html>')
 print(len(S))
