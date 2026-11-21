@@ -1,6 +1,6 @@
 # Muschel-Tal – Foto-Galerie „Was dich im Spiel ab 1.000 erwartet“ (21.11.)
 
-Bilder: `fertig/seite_01.jpg` … `seite_12.jpg` (1080×1920, in dieser Reihenfolge hochladen). Look wie Video Tag 1 (Lilita-Untertitel-Balken in Pink/Türkis/Lila/Blau mit gelben Schlüsselwörtern, Inter-Boxen, weiße Stempel). Quelle: `galerie.py`; Hintergründe/Gebäude/Minispiele direkt von der Homepage (`bilder/`).
+Bilder: `fertig/seite_01.jpg` … `seite_12.jpg` (1080×1920, in dieser Reihenfolge hochladen). Look wie Cover Tag 1 (dunkelblau, Strahlen, gelbe Lilita-Schrift, Karten mit weißem Rand); Folie 1 „DAS GAB’S AUF TIKTOK NOCH NIE“. Quelle: `galerie.py`; Hintergründe/Gebäude/Minispiele direkt von der Homepage (`bilder/`).
 
 1 Hier passiert gerade etwas, das es auf TikTok noch nie gab · 2 Du spielst dich selbst · 3 Ihr habt sie gewünscht – jetzt könnt ihr sie erkunden (Dönerbude, Bäckerei, Strandbar, Tierheim) · 4 Eure Gebäude spielen eine große Rolle · 5 Ihr entscheidet, was in Muschel-Tal passiert · 6 Ziel: die meisten Muscheln · 7 die meisten Erfolge · 8 Minispiele im Golden Pearl (echte Screenshots) · 9 Duelle mit Freunden · 10 Seltene Events · 11 Die ersten 1.000 bekommen Vorteile · 12 Folg @muscheltal
 
