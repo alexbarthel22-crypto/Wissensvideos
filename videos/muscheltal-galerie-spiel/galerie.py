@@ -1,17 +1,20 @@
 # TikTok-Foto-Galerie „Spiel ab 1.000“ – Look wie Cover Tag 1 (dunkelblau, Strahlen, gelbe Schrift, Karten)
 S = [
  dict(first=True),
- dict(img="huetten", eyebrow="BEI 1.000 FOLLOWERN", head="DU SPIELST", big="DICH SELBST", sub="Deine eigene Figur, deine Hütte mit <b>deinem TikTok-Namen</b> – mitten zwischen allen anderen Followern.", chips=[("ye","🏠 Hütte mit deinem Namen"),("bl","🚶 eigene Spielfigur")]),
- dict(grid=[("w_doener","🥙 Dönerbude"),("w_baeckerei","🥐 Bäckerei"),("w_strandbar","🍹 Strandbar"),("w_tierheim","🐾 Tierheim")], eyebrow="IHR HABT ABGESTIMMT", head="IHR HABT SIE GEWÜNSCHT –", big="JETZT ERKUNDET<br>IHR SIE", sub="Diese Gebäude gibt es, <b>weil ihr abgestimmt habt</b> – im Spiel könnt ihr reingehen und alles erleben.", chips=[("pk","🗳️ eure Abstimmungen")]),
- dict(img="huetten3", eyebrow="EURE GEBÄUDE", head="SIE SPIELEN EINE", big="GROSSE ROLLE", sub="<b>Tiere adoptieren</b> im Tierheim, <b>Döner für 2 €</b>, <b>Dirty Muschel</b> an der Strandbar – und <b>Jobs</b> in euren Läden.", chips=[("pk","🐾 adoptieren"),("ye","🥙 2 €-Döner"),("tq","💼 Jobs")]),
- dict(img="karte", eyebrow="NUR VON EUCH GESTALTET", head="IHR ENTSCHEIDET,", big="WAS HIER<br>PASSIERT", sub="Muschel-Tal wird <b>weiter nur von euch</b> gestaltet: Wünsche in die Kommentare, ihr <b>stimmt ab</b>, was gebaut wird.", chips=[("vi","💬 eure Wünsche"),("gr","🗳️ eure Abstimmung")]),
- dict(pod=True, eyebrow="DAS ZIEL", head="WER HAT DIE", big="MEISTEN<br>MUSCHELN? 🐚", sub="Sammle jeden Tag: <b>Login-Serie</b>, <b>Aufgaben</b>, <b>Geheimcodes</b> aus meinen Videos – und kletter in der <b>Rangliste</b> nach oben.", chips=[("ye","🏆 Rangliste")]),
- dict(img="wal", eyebrow="UND", head="WER HAT DIE", big="MEISTEN<br>ERFOLGE? 🏅", sub="<b>Wal-Watcher</b>, <b>Aufgaben-Legende</b>, <b>Wochensieger</b> … dazu Sticker- und Fisch-Album zum Vollmachen.", chips=[("bl","🐋 Wal-Watcher"),("pk","🥇 Wochensieger")]),
- dict(grid=[("spiele/taucher","🫧 Perlentaucher"),("spiele/turm","🥥 Kokos-Turm"),("spiele/memory","🐚 Memory"),("spiele/krebs","🦀 Krebs-Sprint")], eyebrow="GOLDEN PEARL 💎", head="SCHAU REIN:", big="MINISPIELE", sub="Vier Spiele, <b>kostenlos</b> – nur Geschick zählt. Wer ist diese Woche <b>der Beste</b>?", chips=[("vi","🎮 4 Minispiele")]),
- dict(img="pearl", eyebrow="⚔️ DUELLE", head="FORDERE DEINE", big="FREUNDE<br>HERAUS", sub="Link schicken – wer schafft mehr? <b>Wochen-Rangliste</b> je Spiel, die <b>Top 3</b> gewinnen Muscheln.", chips=[("pk","⚔️ Duell"),("ye","🥇 Top 3")]),
- dict(img="schild", eyebrow="SELTENE EVENTS", head="SEI ZUR", big="RICHTIGEN<br>ZEIT DA", sub="Ein <b>Wal</b> springt aus dem Meer, <b>Babyschildkröten</b> wandern, <b>Flaschenpost</b> mit Quiz treibt an …", chips=[("bl","🐋 Wal"),("gr","🐢 Schildkröten"),("tq","🍾 Flaschenpost")]),
- dict(img="insel", eyebrow="NUR FÜR DIE ERSTEN", head="DIE ERSTEN 1.000", big="BEKOMMEN<br>VORTEILE", sub="Wer jetzt einzieht, ist <b>von Anfang an</b> dabei.", chips=[], bar=True),
- dict(img="huetten", eyebrow="SO BIST DU DABEI", head="FOLG", big="@MUSCHELTAL", sub="Dann bekommst du <b>deine eigene Hütte</b>. <b>Markier deine Freunde</b>, damit sie unter den ersten 1.000 sind!", chips=[("pk","1️⃣ Folgen"),("ye","2️⃣ Freunde markieren"),("gr","3️⃣ mitbestimmen")], last=True),
+ dict(what=True, eyebrow="KURZ ERKLÄRT", big="WAS IST<br>MUSCHEL-TAL?"),
+ dict(duo=[("erkunden1c","🚶 zu Fuß"),("erkunden2c","🛵 mit dem Moped")], eyebrow="SO MACHT'S SPASS 🤩", head="DU STEUERST DEINE FIGUR:", big="LAUF ÜBER<br>DIE INSEL", stamp2="🎮 DEIN EIGENES ABENTEUER"),
+ dict(grid=[("sand","🏰 Sandburg bauen"),("angel","🎣 Angeln"),("kino","🎬 Kino"),("pearl","💎 Golden Pearl")], eyebrow="LANGWEILIG WIRD'S NIE", head="SO VIEL ZU TUN:", big="DEINE INSEL"),
+ dict(liste=[("ye","💼 JOBS"),("pk","🏗️ GEBÄUDE"),("tq","🏝️ NEUE INSELN"),("vi","🎉 EVENTS"),("gr","🐾 TIERE")], eyebrow="SO FUNKTIONIERT'S", head="IN DIESEM SPIEL GILT:", big="IHR<br>ENTSCHEIDET"),
+ dict(pair=("kommentare/marie_comment.jpg","w_yacht"), eyebrow="DEIN WUNSCH WIRD WAHR", big="DU WILLST<br>EINE YACHT?", stamp="✅ MARIE HAT JETZT IHRE YACHT"),
+ dict(pair=("kommentare/cmt_club.jpg","w_clubnacht"), eyebrow="DEIN WUNSCH WIRD WAHR", big="DU WILLST<br>EINEN CLUB?", stamp="✅ GEBAUT – BESITZER VERLOST"),
+ dict(pair2=[("kommentare/cmt_drog.jpg","w_drog","✅ CocoCare"),("kommentare/sophia_amtshandlung.jpg","w_doener","✅ Döner 2 €")], eyebrow="UND NOCH MEHR", big="IHR WÜNSCHT –<br>ES PASSIERT"),
+ dict(grid=[("w_doener","🥙 Dönerbude"),("w_strandbar","🍹 Strandbar"),("w_drog","🧴 CocoCare"),("w_clubnacht","🕶️ Kokos-Club")], gh=700, eyebrow="WIE IM ECHTEN LEBEN", head="JEDER FOLLOWER KANN", big="EINEN JOB<br>BEKOMMEN 💼", stamp2="🗳️ IHR VERGEBT DIE JOBS", chips2=[("ye","🐚 Muscheln verdienen"),("pk","📝 bewerben"),("vi","🗳️ abstimmen")]),
+ dict(grid3=["hund","katze","hase","schildi","schwein","robbe"], eyebrow="🐾 TIERHEIM PFOTENKUSS", head="DEIN EIGENES HAUSTIER:", big="ES LÄUFT DIR<br>ÜBERALL NACH 💗", stamp2="🐶 HUND · 🐱 KATZE · 🐰 HASE & MEHR"),
+ dict(grid=[("spiele/taucher","🫧 Perlentaucher"),("spiele/turm","🥥 Kokos-Turm"),("spiele/memory","🐚 Memory"),("spiele/krebs","🦀 Krebs-Sprint")], eyebrow="GOLDEN PEARL 💎", head="FORDER FREUNDE HERAUS:", big="MINISPIELE"),
+ dict(duo=[("wal","🐋 Wal-Sprung"),("schild","🐢 Schildkröten")], eyebrow="SELTENE EVENTS", head="IHR BESTIMMT AUCH,", big="WAS<br>PASSIERT", stamp2="💬 WÜNSCH DIR DAS NÄCHSTE EVENT"),
+ dict(pod=True, eyebrow="DAS ZIEL", head="MEISTE MUSCHELN & ERFOLGE:", big="WER WIRD<br>NR. 1? 🐚"),
+ dict(img="insel", eyebrow="NUR FÜR DIE ERSTEN", head="DIE ERSTEN 1.000", big="BEKOMMEN<br>VORTEILE", bar=True),
+ dict(img="huetten", eyebrow="DU WILLST DABEI SEIN & MITWIRKEN?", head="DANN:", big="FOLG JETZT<br>& ZIEH EIN 🏝️", last=True),
 ]
 CSS = """@font-face{font-family:L;src:url(LilitaOne-Regular.woff2)}*{box-sizing:border-box;margin:0}
 body{width:1080px;height:1920px;overflow:hidden;position:relative;background:#04203a;font-family:Inter,system-ui,sans-serif;color:#fff}
@@ -32,7 +35,7 @@ body{width:1080px;height:1920px;overflow:hidden;position:relative;background:#04
 .sp{position:absolute}
 #bar{position:absolute;left:150px;right:150px;top:900px;}
 #bar .tr{height:90px;border-radius:45px;background:rgba(0,0,0,.55);box-shadow:0 0 0 7px #fff,0 0 0 13px #1a0f08;overflow:hidden}
-#bar .fi{height:100%;width:79%;border-radius:45px;background:linear-gradient(90deg,#ffe500,#ff2e7e)}
+#bar .fi{height:100%;width:80%;border-radius:45px;background:linear-gradient(90deg,#ffe500,#ff2e7e)}
 #bar .lb{display:flex;justify-content:space-between;margin-top:18px;font-family:L;font-size:60px;-webkit-text-stroke:8px #1a0f08;paint-order:stroke fill}
 #bar .lb span:last-child{color:#ffe500}
 #free{position:absolute;left:0;right:0;margin:0 auto;width:fit-content;top:1130px;padding:12px 36px 16px;border-radius:40px;background:#00b86b;font-weight:900;font-size:54px;box-shadow:0 0 0 6px #1a0f08;transform:rotate(-2deg)}
@@ -44,36 +47,62 @@ body{width:1080px;height:1920px;overflow:hidden;position:relative;background:#04
 .p1{height:520px;background:#ffe500}.p2{height:400px;background:#b9c9d9}.p3{height:320px;background:#e09a5a}
 .stampx{position:absolute;padding:6px 26px 10px;border:9px solid #ff2e7e;border-radius:36px;background:rgba(255,255,255,.96);color:#ff2e7e;font-family:L;font-size:64px;white-space:nowrap;box-shadow:0 10px 0 rgba(0,0,0,.35)}
 #mega{position:absolute;left:0;right:0;top:300px;text-align:center;font-family:L;font-size:96px;line-height:1;color:#fff;-webkit-text-stroke:12px #1a0f08;paint-order:stroke fill;transform:rotate(-3deg)}
-#mega2{position:absolute;left:0;right:0;top:400px;text-align:center;font-family:L;font-size:230px;line-height:.9;color:#ffe500;-webkit-text-stroke:16px #1a0f08;paint-order:stroke fill;text-shadow:0 14px 0 #ff2e7e;transform:rotate(-3deg)}
-#cardb{position:absolute;left:130px;width:820px;top:700px;height:600px;border-radius:50%;background:center/cover;-webkit-mask:radial-gradient(ellipse 50% 50% at 50% 50%,#000 72%,transparent 100%);filter:drop-shadow(0 0 60px rgba(40,220,255,.8))}
-#ring{position:absolute;left:110px;width:860px;top:680px;height:640px;border-radius:50%;box-shadow:0 0 90px 30px rgba(255,229,0,.35)}
+#mega2{position:absolute;left:0;right:0;top:395px;text-align:center;font-family:L;font-size:250px;line-height:.9;color:#ffe500;-webkit-text-stroke:16px #1a0f08;paint-order:stroke fill;text-shadow:0 14px 0 #ff2e7e;transform:rotate(-3deg)}
+#cardb{position:absolute;left:130px;width:820px;top:740px;height:580px;border-radius:50%;background:center/cover;-webkit-mask:radial-gradient(ellipse 50% 50% at 50% 50%,#000 72%,transparent 100%);filter:drop-shadow(0 0 60px rgba(40,220,255,.8))}
+
+.cm{position:absolute;left:80px;right:80px;border-radius:26px;overflow:hidden;border:6px solid #fff;box-shadow:0 0 0 5px #1a0f08,0 12px 0 rgba(0,0,0,.4);transform:rotate(-2deg)}.cm img{display:block;width:100%}
+.bld{position:absolute;left:150px;width:780px;height:780px;border-radius:40px;background:center/cover;border:10px solid #fff;box-shadow:0 0 0 6px #1a0f08,0 18px 0 rgba(0,0,0,.4),0 0 100px rgba(40,200,230,.45);transform:rotate(1.5deg)}
+.ok{position:absolute;left:0;right:0;margin:0 auto;width:fit-content;padding:8px 30px 12px;border-radius:36px;background:#00b86b;color:#fff;font-family:L;font-size:62px;box-shadow:0 0 0 6px #1a0f08,0 10px 0 rgba(0,0,0,.35);transform:rotate(-3deg);white-space:nowrap}
+.col{position:absolute;width:440px}.col .cm{position:relative;left:0;right:0;margin-bottom:20px}.col .bld{position:relative;left:0;width:440px;height:520px}.col .ok{position:relative;font-size:44px;margin-top:-30px}
+#ring{position:absolute;left:110px;width:860px;top:720px;height:620px;border-radius:50%;box-shadow:0 0 90px 30px rgba(255,229,0,.35)}
 """
 STAR = '<svg class="sp" style="left:{}px;top:{}px;width:{}px" viewBox="-10 -10 20 20"><path d="M0 -10 L2 -2 L10 0 L2 2 L0 10 L-2 2 L-10 0 L-2 -2Z" fill="{}"/></svg>'
 import html
 for i, s in enumerate(S, 1):
     body = f'<div id="spot"></div><div id="rays"></div><div id="nr">{i}/{len(S)}</div>'
-    if not s.get("last"): body += '<div id="swipe">wisch ➜</div>'
+    if not s.get("last") and not s.get("first"): body += '<div id="swipe">wisch ➜</div>'
     if s.get("first"):
-        body += '<div id="ep" class="pill" style="background:#ff2e7e;box-shadow:0 0 0 4px #fff">🔴 ERSTER EINBLICK</div>'
-        body += '<div id="mega">DAS GAB\'S AUF TIKTOK</div><div id="mega2">NOCH NIE</div>'
-        body += '<div id="ring"></div><div id="cardb" style="background-image:url(bilder/insel.jpg)"></div>'
-        body += '<div class="stampx" style="left:520px;top:720px;transform:rotate(10deg)">790 FOLLOWER 🏝️</div>'
-        body += '<div class="stampx" style="left:110px;top:1180px;transform:rotate(-7deg);border-color:#0098ff;color:#0098ff">WOHNEN HIER</div>'
-        body += '<div id="sub" style="top:1350px">Bei <b>1.000</b> wird meine Insel zum <b>SPIEL</b> – und du kannst dabei sein 👀</div>'
-        body += '<div id="chips" style="top:1560px"><div class="c pk" style="font-size:46px">WISCH ➜ UND SIEH SELBST</div></div>'
+        body += '<div id="ep" class="pill" style="top:180px;font-size:40px;padding:10px 30px 13px;background:#ff2e7e;box-shadow:0 0 0 5px #fff">🔴 SENSATION</div><div class="pill" style="top:660px;padding:10px 32px 14px;font-size:44px;background:#7b4fe0;box-shadow:0 0 0 5px #1a0f08;transform:rotate(2deg)">🎮 EIN SPIEL – UND JEDER KANN MITSPIELEN</div>'
+        body += '<div id="mega2" style="top:310px;font-size:156px;line-height:.95">EINZIGARTIG<br>AUF TIKTOK</div>'
+        body += '<div id="ring" style="top:790px"></div><div id="cardb" style="top:810px;background-image:url(bilder/insel.jpg)"></div>'
+        body += '<div class="stampx" style="left:0;right:0;margin:0 auto;width:fit-content;top:1250px;transform:rotate(-3deg);font-size:64px;text-align:center;line-height:1.05;white-space:normal">WILLST DU TEIL VON<br>ETWAS GROSSEM SEIN?</div>'
+        body += '<div id="chips" style="top:1530px"><div class="c ye" style="font-size:48px">NEUGIERIG GEWORDEN? SWIPE ➜</div></div>'
     else:
         two = "<br>" in s["big"]
-        body += f'<div id="ep" class="pill">{s["eyebrow"]}</div><div id="hd" class="pill">{s["head"]}</div><div id="big"' + (' style="font-size:100px"' if two else '') + f'>{s["big"]}</div>'
-        if two: body += '<style>#card,#gridc{top:680px!important;height:620px!important}.pod{top:740px!important;height:520px!important}</style>'
-        if s.get("bar"):
-            body += '<div id="bar"><div class="tr"><div class="fi"></div></div><div class="lb"><span>790</span><span>1.000 🎮</span></div></div><div id="free">NOCH 210 PLÄTZE FREI</div>'
+        body += f'<div id="ep" class="pill" style="top:250px">{s["eyebrow"]}</div>'
+        if s.get("head"): body += f'<div id="hd" class="pill" style="top:335px">{s["head"]}</div>'
+        top = 425 if s.get("head") else 345
+        body += f'<div id="big" style="top:{top}px' + (';font-size:104px' if two else ';font-size:128px') + f'">{s["big"]}</div>'
+        y0 = top + (230 if two else 150)
+        if s.get("pair"):
+            c, im = s["pair"]
+            body += f'<div class="cm" style="top:{y0}px"><img src="bilder/{c}"></div>'
+            body += f'<div class="bld" style="top:{y0+230}px;left:120px;width:840px;height:{1500-y0-230}px;background-image:url(bilder/{im}.jpg)"></div>'
+            body += f'<div class="ok" style="top:1460px">{s["stamp"]}</div>'
+        elif s.get("liste"):
+            body += f'<div id="ring" style="top:{y0+10}px;height:480px"></div><div id="cardb" style="top:{y0+30}px;height:440px;background-image:url(bilder/karte.jpg)"></div>'
+            body += f'<div id="chips" style="top:{y0+520}px;gap:22px">' + "".join(f'<div class="c {c}" style="font-family:L;font-weight:400;font-size:60px;transform:rotate({(-3,2,-2,3,-1)[k]}deg)">{t}</div>' for k, (c, t) in enumerate(s["liste"])) + '</div>'
+        elif s.get("what"):
+            body += f'<div id="gridc" style="top:{y0+20}px;height:400px;grid-template-columns:1fr 1fr 1fr;left:70px;width:940px">' + "".join(f'<div class="gi" style="background-image:url(bilder/{f}.jpg)"><span>{n}</span></div>' for f, n in [("haupt","🏰 Haupt-Insel"),("kokos","🥥 Kokos-Küste"),("karte","🔒 neue Inseln")]) + '</div>'
+            body += f'<div id="chips" style="top:{y0+470}px;flex-direction:column;align-items:center;gap:18px">' + "".join(f'<div class="c {c}" style="font-size:40px;white-space:nowrap">{t}</div>' for c, t in [("tq","🏝️ Eine Insel-Region in der Südsee"),("ye","🌴 Jede Insel mit eigenem Thema"),("bl","🗺️ Strände, Läden, Club, Kino …"),("pk","🏠 Jede Hütte = ein echter Follower"),("vi","🎮 Ein Spiel, in dem jeder mitspielt")]) + '</div>'
+        elif s.get("pair2"):
+            for k, (c, im, t) in enumerate(s["pair2"]):
+                body += f'<div class="col" style="left:{70+k*480}px;top:{y0+20}px;transform:rotate({(-1.5,1.5)[k]}deg)"><div class="cm"><img src="bilder/{c}"></div><div class="bld" style="background-image:url(bilder/{im}.jpg)"></div><div class="ok">{t}</div></div>'
+        elif s.get("bar"):
+            body += '<div id="bar"><div class="tr"><div class="fi"></div></div><div class="lb"><span>800</span><span>1.000 🎮</span></div></div><div id="free">NOCH 200 PLÄTZE FREI</div>'
+        elif s.get("grid3"):
+            body += f'<div id="gridc" style="grid-template-columns:1fr 1fr 1fr;top:{y0+40}px;height:620px">' + "".join(f'<div class="gi" style="background-image:url(bilder/tiere/{f}.jpg)"></div>' for f in s["grid3"]) + '</div>'
         elif s.get("grid"):
-            body += '<div id="gridc">' + "".join(f'<div class="gi" style="background-image:url(bilder/{f}.jpg)"><span>{n}</span></div>' for f, n in s["grid"]) + '</div>'
+            body += f'<div id="gridc" style="top:{y0+30}px;height:{s.get("gh",820)}px">' + "".join(f'<div class="gi" style="background-image:url(bilder/{f}.jpg)"><span>{n}</span></div>' for f, n in s["grid"]) + '</div>'
+        elif s.get("duo"):
+            body += f'<div id="gridc" style="top:{y0+40}px;height:740px;grid-template-columns:1fr 1fr">' + "".join(f'<div class="gi" style="background-image:url(bilder/{f}.jpg)"><span>{n}</span></div>' for f, n in s["duo"]) + '</div>'
         elif s.get("pod"):
-            body += '<div class="pod"><div class="pd p2"><i>🥈</i><b>2.</b></div><div class="pd p1"><i>🥇</i><b>1.</b></div><div class="pd p3"><i>🥉</i><b>3.</b></div></div>'
+            body += f'<div class="pod" style="top:{y0+80}px;height:600px"><div class="pd p2"><i>🥈</i><b>2.</b></div><div class="pd p1"><i>🥇</i><b>1.</b></div><div class="pd p3"><i>🥉</i><b>3.</b></div></div>'
         else:
-            body += f'<div id="card" style="background-image:url(bilder/{s["img"]}.jpg)"></div>'
-        body += f'<div id="sub">{s["sub"]}</div><div id="chips">' + "".join(f'<div class="c {c}">{html.escape(t)}</div>' for c, t in s["chips"]) + '</div>'
+            body += f'<div id="card" style="top:{y0+40}px;height:{620 if s.get("last") else 740}px;background-image:url(bilder/{s["img"]}.jpg)"></div>'
+        if s.get("stamp2"): body += f'<div class="ok" style="top:1470px;font-size:54px">{s["stamp2"]}</div>'
+        if s.get("chips2"): body += '<div id="chips" style="top:1570px;flex-wrap:nowrap;gap:12px">' + "".join(f'<div class="c {c}" style="font-size:34px;white-space:nowrap">{t}</div>' for c, t in s["chips2"]) + '</div>'
+        if s.get("last"): body += '<div class="ok" style="top:1420px;background:#ff2e7e;font-size:52px">⭐ SEI UNTER DEN ERSTEN 1.000 SPIELERN</div><div class="ok" style="top:1540px;background:#ffe500;color:#1a0f08;font-size:50px;transform:rotate(2deg)">👑 EXKLUSIVE VORTEILE</div>'
     body += STAR.format(120, 560, 64, "#ffe500") + STAR.format(880, 540, 50, "#fff") + STAR.format(70, 1250, 44, "#fff") + STAR.format(930, 1240, 56, "#ffe500")
     open(f"seite_{i:02d}.html", "w").write(f'<!doctype html><html lang="de"><head><meta charset="utf-8"><style>{CSS}</style></head><body>{body}</body></html>')
 print(len(S))
