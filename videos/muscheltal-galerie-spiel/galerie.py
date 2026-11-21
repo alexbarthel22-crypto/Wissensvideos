@@ -5,6 +5,7 @@ S = [
  dict(pair=("kommentare/cmt_club.jpg","w_clubnacht"), eyebrow="DEIN WUNSCH WIRD WAHR", big="DU WILLST<br>EINEN CLUB?", stamp="✅ GEBAUT – BESITZER VERLOST"),
  dict(pair2=[("kommentare/cmt_drog.jpg","w_drog","✅ CocoCare"),("kommentare/sophia_amtshandlung.jpg","w_doener","✅ Döner 2 €")], eyebrow="UND NOCH MEHR", big="IHR WÜNSCHT –<br>ES PASSIERT"),
  dict(what=True, eyebrow="KURZ ERKLÄRT", big="WAS IST<br>MUSCHEL-TAL?"),
+ dict(grid=[("w_doener","🥙 Dönerbude"),("w_strandbar","🍹 Strandbar"),("w_drog","🧴 CocoCare"),("w_clubnacht","🕶️ Kokos-Club")], gh=700, eyebrow="WIE IM ECHTEN LEBEN", head="JEDER FOLLOWER KANN", big="EINEN JOB<br>BEKOMMEN 💼", stamp2="🗳️ IHR VERGEBT DIE JOBS", chips2=[("ye","🐚 Muscheln verdienen"),("pk","📝 bewerben"),("vi","🗳️ abstimmen")]),
  dict(grid3=["hund","katze","hase","schildi","schwein","robbe"], eyebrow="🗳️ EURE ABSTIMMUNG", head="TIERHEIM STATT HOTEL –", big="ADOPTIER<br>DEIN TIER 🐾", stamp2="✅ EURE ENTSCHEIDUNG"),
  dict(grid=[("spiele/taucher","🫧 Perlentaucher"),("spiele/turm","🥥 Kokos-Turm"),("spiele/memory","🐚 Memory"),("spiele/krebs","🦀 Krebs-Sprint")], eyebrow="GOLDEN PEARL 💎", head="FORDER FREUNDE HERAUS:", big="MINISPIELE"),
  dict(duo=[("wal","🐋 Wal-Sprung"),("schild","🐢 Schildkröten")], eyebrow="SELTENE EVENTS", head="IHR BESTIMMT AUCH,", big="WAS<br>PASSIERT", stamp2="💬 WÜNSCH DIR DAS NÄCHSTE EVENT"),
@@ -87,7 +88,7 @@ for i, s in enumerate(S, 1):
         elif s.get("grid3"):
             body += f'<div id="gridc" style="grid-template-columns:1fr 1fr 1fr;top:{y0+40}px;height:620px">' + "".join(f'<div class="gi" style="background-image:url(bilder/tiere/{f}.jpg)"></div>' for f in s["grid3"]) + '</div>'
         elif s.get("grid"):
-            body += f'<div id="gridc" style="top:{y0+30}px;height:820px">' + "".join(f'<div class="gi" style="background-image:url(bilder/{f}.jpg)"><span>{n}</span></div>' for f, n in s["grid"]) + '</div>'
+            body += f'<div id="gridc" style="top:{y0+30}px;height:{s.get("gh",820)}px">' + "".join(f'<div class="gi" style="background-image:url(bilder/{f}.jpg)"><span>{n}</span></div>' for f, n in s["grid"]) + '</div>'
         elif s.get("duo"):
             body += f'<div id="gridc" style="top:{y0+40}px;height:740px;grid-template-columns:1fr 1fr">' + "".join(f'<div class="gi" style="background-image:url(bilder/{f}.jpg)"><span>{n}</span></div>' for f, n in s["duo"]) + '</div>'
         elif s.get("pod"):
@@ -95,6 +96,7 @@ for i, s in enumerate(S, 1):
         else:
             body += f'<div id="card" style="top:{y0+40}px;height:740px;background-image:url(bilder/{s["img"]}.jpg)"></div>'
         if s.get("stamp2"): body += f'<div class="ok" style="top:1470px;font-size:54px">{s["stamp2"]}</div>'
+        if s.get("chips2"): body += '<div id="chips" style="top:1590px">' + "".join(f'<div class="c {c}" style="font-size:42px">{t}</div>' for c, t in s["chips2"]) + '</div>'
         if s.get("last"): body += '<div class="ok" style="top:1500px;background:#ff2e7e">💬 WAS SOLL ICH BAUEN?</div>'
     body += STAR.format(120, 560, 64, "#ffe500") + STAR.format(880, 540, 50, "#fff") + STAR.format(70, 1250, 44, "#fff") + STAR.format(930, 1240, 56, "#ffe500")
     open(f"seite_{i:02d}.html", "w").write(f'<!doctype html><html lang="de"><head><meta charset="utf-8"><style>{CSS}</style></head><body>{body}</body></html>')
