@@ -4,13 +4,17 @@ Bilder: `fertig/seite_01.jpg` … `seite_12.jpg` (1080×1920, in dieser Reihenfo
 
 1 EINZIGARTIG AUF TIKTOK – Willst du Teil von etwas Großem sein? · 2 Club gewünscht → KOK(O)S · 3 Yacht gewünscht → White Pearl · 4 Drogerie + Döner 2 € · 5 Was ist Muschel-Tal? · 6 Tierheim statt Hotel: adoptier dein Tier · 7 Minispiele · 8 Events · 9 Deine Insel · 10 Wer wird Nr. 1? · 11 Die ersten 1.000 · 12 Kommentier – folg @muscheltal (Kommentar-Screenshots aus Tag 5 und Tag 10; Fabienne entfernt, da ausgezogen)
 
+## Titel (Foto-Post)
+Ein Spiel, das es auf TikTok noch nie gab 🏝️🎮
+
 ## Beschreibung (zum Posten)
-Ihr wünscht es – ich baue es 🏝️ Auf dieser Insel entscheidet ihr ALLES. Bei 1.000 Followern wird sie zum Spiel 🎮
+Hier entscheidet ihr, was passiert 👀 Ihr wünscht euch eine Yacht, einen Club, ein Tierheim – ich baue es. Lauf mit deiner eigenen Figur über die Insel, hol dir einen Job, sammle Muscheln und werde Nr. 1 🐚
+Bei 1.000 Spielern geht's richtig los – die ersten bekommen exklusive Vorteile 👑
 Was soll ich als Nächstes bauen? 👇
 #muscheltal #fyp #fürdich #foryou #viral
 
 ## Angepinnter Kommentar
-Schreib, welches Gebäude du dir wünschst – das meistgelikte bauen wir 🏗️👇
+Was wünschst du dir auf der Insel? Das meistgelikte baue ich als Nächstes 🏗️👇
 
 ## Hinweise
 - Gebäude-Beispiele = echte Abstimmungen (Strandbar + Dönerbude, Bäckerei, Tierheim vor Hotel).
