@@ -54,11 +54,11 @@ for i, s in enumerate(S, 1):
     body = f'<div id="spot"></div><div id="rays"></div><div id="nr">{i}/{len(S)}</div>'
     if not s.get("last") and not s.get("first"): body += '<div id="swipe">wisch ➜</div>'
     if s.get("first"):
-        body += '<div id="ep" class="pill" style="top:180px;font-size:40px;padding:10px 30px 13px;background:#ff2e7e;box-shadow:0 0 0 5px #fff">🔴 EINZIGARTIG AUF TIKTOK</div>'
-        body += '<div id="mega2" style="top:330px;font-size:176px;line-height:.95">WILLST DU<br>DABEI SEIN?</div>'
-        body += '<div id="ring" style="top:800px"></div><div id="cardb" style="top:820px;background-image:url(bilder/insel.jpg)"></div>'
-        body += '<div class="stampx" style="left:0;right:0;margin:0 auto;width:fit-content;top:1300px;transform:rotate(-4deg);font-size:62px">800 FOLLOWER WOHNEN HIER</div>'
-        body += '<div id="chips" style="top:1520px"><div class="c ye" style="font-size:54px">WISCH ➜</div></div>'
+        body += '<div id="ep" class="pill" style="top:180px;font-size:40px;padding:10px 30px 13px;background:#ff2e7e;box-shadow:0 0 0 5px #fff">🔴 SENSATION</div>'
+        body += '<div id="mega2" style="top:310px;font-size:156px;line-height:.95">EINZIGARTIG<br>AUF TIKTOK</div>'
+        body += '<div id="ring" style="top:760px"></div><div id="cardb" style="top:780px;background-image:url(bilder/insel.jpg)"></div>'
+        body += '<div class="stampx" style="left:0;right:0;margin:0 auto;width:fit-content;top:1250px;transform:rotate(-3deg);font-size:64px;text-align:center;line-height:1.05;white-space:normal">WILLST DU TEIL VON<br>ETWAS GROSSEM SEIN?</div>'
+        body += '<div id="chips" style="top:1530px"><div class="c ye" style="font-size:48px">NEUGIERIG GEWORDEN? SWIPE ➜</div></div>'
     else:
         two = "<br>" in s["big"]
         body += f'<div id="ep" class="pill">{s["eyebrow"]}</div><div id="hd" class="pill">{s["head"]}</div><div id="big"' + (' style="font-size:100px"' if two else '') + f'>{s["big"]}</div>'
