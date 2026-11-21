@@ -1,7 +1,7 @@
 # TikTok-Foto-Galerie „Spiel ab 1.000“ – Look wie Cover Tag 1 (dunkelblau, Strahlen, gelbe Schrift, Karten)
 S = [
  dict(first=True),
- dict(liste=[("ye","💼 JOBS"),("pk","🏗️ GEBÄUDE"),("tq","🏝️ NEUE INSELN"),("vi","🎉 EVENTS"),("gr","🐾 TIERE")], eyebrow="SO FUNKTIONIERT'S", head="IHR GESTALTET DAS LEBEN:", big="IHR<br>ENTSCHEIDET"),
+ dict(liste=[("ye","💼 JOBS"),("pk","🏗️ GEBÄUDE"),("tq","🏝️ NEUE INSELN"),("vi","🎉 EVENTS"),("gr","🐾 TIERE")], eyebrow="SO FUNKTIONIERT'S", head="IN DIESEM SPIEL GILT:", big="IHR<br>ENTSCHEIDET"),
  dict(pair=("kommentare/marie_comment.jpg","w_yacht"), eyebrow="DEIN WUNSCH WIRD WAHR", big="DU WILLST<br>EINE YACHT?", stamp="✅ MARIE HAT JETZT IHRE YACHT"),
  dict(pair=("kommentare/cmt_club.jpg","w_clubnacht"), eyebrow="DEIN WUNSCH WIRD WAHR", big="DU WILLST<br>EINEN CLUB?", stamp="✅ GEBAUT – BESITZER VERLOST"),
  dict(pair2=[("kommentare/cmt_drog.jpg","w_drog","✅ CocoCare"),("kommentare/sophia_amtshandlung.jpg","w_doener","✅ Döner 2 €")], eyebrow="UND NOCH MEHR", big="IHR WÜNSCHT –<br>ES PASSIERT"),
@@ -61,9 +61,9 @@ for i, s in enumerate(S, 1):
     body = f'<div id="spot"></div><div id="rays"></div><div id="nr">{i}/{len(S)}</div>'
     if not s.get("last") and not s.get("first"): body += '<div id="swipe">wisch ➜</div>'
     if s.get("first"):
-        body += '<div id="ep" class="pill" style="top:180px;font-size:40px;padding:10px 30px 13px;background:#ff2e7e;box-shadow:0 0 0 5px #fff">🔴 SENSATION</div>'
+        body += '<div id="ep" class="pill" style="top:180px;font-size:40px;padding:10px 30px 13px;background:#ff2e7e;box-shadow:0 0 0 5px #fff">🔴 SENSATION</div><div class="pill" style="top:660px;padding:10px 32px 14px;font-size:44px;background:#7b4fe0;box-shadow:0 0 0 5px #1a0f08;transform:rotate(2deg)">🎮 EIN SPIEL – UND JEDER KANN MITSPIELEN</div>'
         body += '<div id="mega2" style="top:310px;font-size:156px;line-height:.95">EINZIGARTIG<br>AUF TIKTOK</div>'
-        body += '<div id="ring" style="top:760px"></div><div id="cardb" style="top:780px;background-image:url(bilder/insel.jpg)"></div>'
+        body += '<div id="ring" style="top:790px"></div><div id="cardb" style="top:810px;background-image:url(bilder/insel.jpg)"></div>'
         body += '<div class="stampx" style="left:0;right:0;margin:0 auto;width:fit-content;top:1250px;transform:rotate(-3deg);font-size:64px;text-align:center;line-height:1.05;white-space:normal">WILLST DU TEIL VON<br>ETWAS GROSSEM SEIN?</div>'
         body += '<div id="chips" style="top:1530px"><div class="c ye" style="font-size:48px">NEUGIERIG GEWORDEN? SWIPE ➜</div></div>'
     else:
@@ -84,7 +84,7 @@ for i, s in enumerate(S, 1):
             body += '<div class="ok" style="top:1560px;font-size:50px">👇 SO SIEHT DAS AUS</div>'
         elif s.get("what"):
             body += f'<div id="ring" style="top:{y0+10}px;height:560px"></div><div id="cardb" style="top:{y0+30}px;height:520px;background-image:url(bilder/insel.jpg)"></div>'
-            body += f'<div id="chips" style="top:{y0+590}px;flex-direction:column;align-items:center;gap:20px">' + "".join(f'<div class="c {c}" style="font-size:39px;white-space:nowrap">{t}</div>' for c, t in [("tq","🏝️ Eine Insel nur für meine Follower"),("ye","🏠 Jede Hütte = ein echter Follower"),("pk","💬 Ihr wünscht & stimmt ab – ich baue es"),("vi","🎮 Bei 1.000 wird daraus ein Spiel")]) + '</div>'
+            body += f'<div id="chips" style="top:{y0+590}px;flex-direction:column;align-items:center;gap:20px">' + "".join(f'<div class="c {c}" style="font-size:39px;white-space:nowrap">{t}</div>' for c, t in [("tq","🎮 Ein Spiel, in dem jeder mitspielt"),("ye","🏠 Jede Hütte = ein echter Follower"),("pk","💬 Ihr wünscht & stimmt ab – ich baue es"),("vi","🚀 Bei 1.000 geht\'s richtig los")]) + '</div>'
         elif s.get("pair2"):
             for k, (c, im, t) in enumerate(s["pair2"]):
                 body += f'<div class="col" style="left:{70+k*480}px;top:{y0+20}px;transform:rotate({(-1.5,1.5)[k]}deg)"><div class="cm"><img src="bilder/{c}"></div><div class="bld" style="background-image:url(bilder/{im}.jpg)"></div><div class="ok">{t}</div></div>'
