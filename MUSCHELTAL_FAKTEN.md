@@ -125,7 +125,7 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - **News** (muscheltal.de/news.html): **nur neue Gebäude, neue Berufe/Leitungen und Start + Fertigstellung von Bauprojekten** (Regel seit 14.11.) – neueste zuerst, nach Datum. Keine Umzüge, Inseleröffnungen, Regeln o. Ä. Neue Einträge in `insel.json` → `ereignisse` bei jeder solchen Änderung mit ergänzen.
 - Abschnitt „Gerade auf den Inseln“: Tag, Einwohner, Muscheln, Inseln.
 - **Einwohner-Übersicht** (muscheltal.de/einwohner.html): alle Einwohner nach Insel mit Nr., Gründer mit kleiner Münze, Suche; Name antippen = zur Hütte fliegen.
-- Suchfeld hat ein × zum Löschen; Zoom-Knöpfe + / − rechts am Rand.
+- Suchfeld hat ein × zum Löschen; Zoom-Knöpfe + / − rechts am Rand. Beim Erkunden (21.11.) auch mit zwei Fingern zoombar und gut doppelt so weit raus wie vorher (Figur bleibt beim Zoomen stehen).
 - Karten-Knöpfe: ohne Auswahl „Alle Inseln“ + „Zufall“ (wischen: „Wachsen sehen“), mit Auswahl „Meine Hütte“ + „Muschelpass“ (wischen: „Alle Inseln“).
 - Fahrräder/E-Roller, die hoch/runter fahren, sind von hinten/vorn zu sehen. Spaziergänger und Fahrer bewegen sich gemächlich auf den Wegen, bleiben immer an Land (nie ins Wasser, nie durch Gebäude), bleiben am Wegende bzw. Ufer ein paar Sekunden stehen und drehen dann um. Die ausgewählte „Ich bin du“-Person fährt nach 2 s los und bleibt am Wegende/Ufer stehen.
 - Namen auf der Karte stehen immer ganz vorne (nichts verdeckt sie).
