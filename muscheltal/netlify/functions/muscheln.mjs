@@ -714,9 +714,11 @@ export default async (req) => {
   if (act === "duellNeu") {
     let L = null; try { L = JSON.parse((await store.get("x/spielletzt/" + nm)) || "null"); } catch (e) {}
     if (!L || Date.now() - L.t > 30 * 60000) return json({ ok: false, grund: "lauf" });
+    if (L.duell) return json({ ok: true, id: L.duell, k: L.k, s: L.s });// derselbe Lauf = dasselbe Duell (mehrfach tippen erzeugt keine neuen)
     if ((await liste(store, "x/duellvon/" + nm + "/" + heute + "-")).length >= 20) return json({ ok: false, grund: "genug" });
     const id = Math.random().toString(36).slice(2, 10);
     await store.set("x/duell/" + id, JSON.stringify({ k: L.k, seed: L.seed, s: L.s, von: nm, t: Date.now() })); await store.set("x/duellvon/" + nm + "/" + heute + "-" + id, id);
+    await store.set("x/spielletzt/" + nm, JSON.stringify({ ...L, duell: id }));
     return json({ ok: true, id, k: L.k, s: L.s });
   }
   if (act === "duellAblehnen") {
