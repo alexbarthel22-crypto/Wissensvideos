@@ -1,0 +1,135 @@
+{
+ "lead_in": 0.0,
+ "bg": "#0a5a92",
+ "captions": {
+  "pop": true,
+  "first_at_zero": true,
+  "left": 60,
+  "right": 190,
+  "size": 92,
+  "bars": true,
+  "color": "rgba(255,255,255,.62)",
+  "first_class": "hook",
+  "css": "@font-face { font-family: 'Lilita One'; src: url('assets/fonts/LilitaOne-Regular.woff2') format('woff2'); font-weight: 400; }\n    .inner.hook { font-family: 'Lilita One', sans-serif; font-weight: 400; font-size: 140px; line-height: 1.04; letter-spacing: .01em; top: -540px; }\n    .inner.hook .bar { background: #ff3d7f !important; padding: .02em .3em .08em; border-radius: .5em; }\n    .inner.hook .w { color: #fff; }\n    .inner .bar .w { margin: 0 .07em; }\n    .inner .bar { border-radius: .55em; padding: .04em .36em .1em; }\n    .inner .w { white-space: nowrap; }",
+  "vary": true,
+  "pop_scale": 1.2,
+  "hook_punch": true
+ },
+ "loudness": -11,
+ "pitch": 0,
+ "bgvideo": {
+  "src": "assets/bg.mp4"
+ },
+ "title": "Muschel-Tal – Golden Pearl bei Nacht: Spiel startet bald",
+ "voice": "Gemini TTS (gemini-3.1-flash-tts-preview, Stimme Achird, --speed 1.12) – wie Video 1",
+ "notes": "21.11.: Golden Pearl nachts, Spiel in den letzten Zügen, Freunde einladen, erste 1.000 bekommen Vorteile. Stimme/Ton wie Video 1.",
+ "scenes": [
+  {
+   "id": "s01",
+   "tag": "",
+   "sfx": [
+    {
+     "name": "sparkle",
+     "at": "s01+0.0",
+     "volume": 0.5
+    },
+    {
+     "name": "impact-bass-2",
+     "at": "L1:Golden",
+     "volume": 0.55
+    },
+    {
+     "name": "openbell",
+     "at": "L1:Golden+0.1",
+     "volume": 0.45
+    }
+   ],
+   "lines": [
+    {
+     "id": "L1",
+     "text": "Seht ihr das? / Das *y:Golden *y:Pearl – / bei Nacht! ",
+     "pause": 0
+    }
+   ]
+  },
+  {
+   "id": "s02",
+   "tag": "",
+   "sfx": [
+    {
+     "name": "riser",
+     "at": "L2:letzten-0.5",
+     "volume": 0.4
+    },
+    {
+     "name": "impact-bass-1",
+     "at": "L2:starten",
+     "volume": 0.5
+    }
+   ],
+   "lines": [
+    {
+     "id": "L2",
+     "text": "Das Spiel ist in den *y:letzten *y:Zügen – / *p:nicht mehr lang, / dann *g:starten wir!",
+     "pause": 0.3
+    }
+   ]
+  },
+  {
+   "id": "s03",
+   "tag": "",
+   "sfx": [
+    {
+     "name": "notification",
+     "at": "L3:Freunde",
+     "volume": 0.45
+    },
+    {
+     "name": "pop",
+     "at": "L3:ersten",
+     "volume": 0.45
+    }
+   ],
+   "lines": [
+    {
+     "id": "L3",
+     "text": "Ladet eure *g:Freunde ein – / sichert euch Plätze / unter den *y:ersten *y:1.000|=tausend!",
+     "pause": 0.3
+    }
+   ]
+  },
+  {
+   "id": "s04",
+   "tag": "",
+   "sfx": [
+    {
+     "name": "chime",
+     "at": "L4:Vorteile",
+     "volume": 0.45
+    },
+    {
+     "name": "click",
+     "at": "L4:Folg",
+     "volume": 0.55
+    },
+    {
+     "name": "yippee",
+     "at": "L4:Folg+0.4",
+     "volume": 0.35
+    }
+   ],
+   "lines": [
+    {
+     "id": "L4",
+     "text": "Und genießt *y:Vorteile im Spiel! / *p:Folg mir!",
+     "pause": 0.3
+    }
+   ]
+  }
+ ],
+ "music": {
+  "src": "assets/music/suedsee.wav",
+  "volume": 1
+ },
+ "style": "Style: a real, natural-sounding young man telling his friends something he is genuinely excited about. Conversational, warm, honest emotion in the voice, not like an announcer or an advertisement. Emphasize the important words naturally.\nPace: brisk but natural.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
+}
