@@ -14,7 +14,7 @@ S = [
  dict(duo=[("wal","🐋 Wal-Sprung"),("schild","🐢 Schildkröten")], eyebrow="SELTENE EVENTS", head="IHR BESTIMMT AUCH,", big="WAS<br>PASSIERT", stamp2="💬 WÜNSCH DIR DAS NÄCHSTE EVENT"),
  dict(pod=True, eyebrow="DAS ZIEL", head="MEISTE MUSCHELN & ERFOLGE:", big="WER WIRD<br>NR. 1? 🐚"),
  dict(img="insel", eyebrow="NUR FÜR DIE ERSTEN", head="DIE ERSTEN 1.000", big="BEKOMMEN<br>VORTEILE", bar=True),
- dict(img="huetten", eyebrow="DEIN WUNSCH IST DER NÄCHSTE", head="KOMMENTIER ES –", big="FOLG<br>@MUSCHELTAL", last=True),
+ dict(img="huetten", eyebrow="DU WILLST DABEI SEIN & MITWIRKEN?", head="DANN:", big="FOLG JETZT<br>& ZIEH EIN 🏝️", last=True),
 ]
 CSS = """@font-face{font-family:L;src:url(LilitaOne-Regular.woff2)}*{box-sizing:border-box;margin:0}
 body{width:1080px;height:1920px;overflow:hidden;position:relative;background:#04203a;font-family:Inter,system-ui,sans-serif;color:#fff}
@@ -100,10 +100,10 @@ for i, s in enumerate(S, 1):
         elif s.get("pod"):
             body += f'<div class="pod" style="top:{y0+80}px;height:600px"><div class="pd p2"><i>🥈</i><b>2.</b></div><div class="pd p1"><i>🥇</i><b>1.</b></div><div class="pd p3"><i>🥉</i><b>3.</b></div></div>'
         else:
-            body += f'<div id="card" style="top:{y0+40}px;height:740px;background-image:url(bilder/{s["img"]}.jpg)"></div>'
+            body += f'<div id="card" style="top:{y0+40}px;height:{620 if s.get("last") else 740}px;background-image:url(bilder/{s["img"]}.jpg)"></div>'
         if s.get("stamp2"): body += f'<div class="ok" style="top:1470px;font-size:54px">{s["stamp2"]}</div>'
         if s.get("chips2"): body += '<div id="chips" style="top:1590px">' + "".join(f'<div class="c {c}" style="font-size:42px">{t}</div>' for c, t in s["chips2"]) + '</div>'
-        if s.get("last"): body += '<div class="ok" style="top:1500px;background:#ff2e7e">💬 WAS SOLL ICH BAUEN?</div>'
+        if s.get("last"): body += '<div class="ok" style="top:1420px;background:#ff2e7e;font-size:52px">⭐ SEI UNTER DEN ERSTEN 1.000 SPIELERN</div><div class="ok" style="top:1540px;background:#ffe500;color:#1a0f08;font-size:50px;transform:rotate(2deg)">👑 EXKLUSIVE VORTEILE</div>'
     body += STAR.format(120, 560, 64, "#ffe500") + STAR.format(880, 540, 50, "#fff") + STAR.format(70, 1250, 44, "#fff") + STAR.format(930, 1240, 56, "#ffe500")
     open(f"seite_{i:02d}.html", "w").write(f'<!doctype html><html lang="de"><head><meta charset="utf-8"><style>{CSS}</style></head><body>{body}</body></html>')
 print(len(S))
