@@ -1,11 +1,11 @@
 # TikTok-Foto-Galerie „Spiel ab 1.000“ – Look wie Cover Tag 1 (dunkelblau, Strahlen, gelbe Schrift, Karten)
 S = [
  dict(first=True),
+ dict(what=True, eyebrow="KURZ ERKLÄRT", big="WAS IST<br>MUSCHEL-TAL?"),
  dict(liste=[("ye","💼 JOBS"),("pk","🏗️ GEBÄUDE"),("tq","🏝️ NEUE INSELN"),("vi","🎉 EVENTS"),("gr","🐾 TIERE")], eyebrow="SO FUNKTIONIERT'S", head="IN DIESEM SPIEL GILT:", big="IHR<br>ENTSCHEIDET"),
  dict(pair=("kommentare/marie_comment.jpg","w_yacht"), eyebrow="DEIN WUNSCH WIRD WAHR", big="DU WILLST<br>EINE YACHT?", stamp="✅ MARIE HAT JETZT IHRE YACHT"),
  dict(pair=("kommentare/cmt_club.jpg","w_clubnacht"), eyebrow="DEIN WUNSCH WIRD WAHR", big="DU WILLST<br>EINEN CLUB?", stamp="✅ GEBAUT – BESITZER VERLOST"),
  dict(pair2=[("kommentare/cmt_drog.jpg","w_drog","✅ CocoCare"),("kommentare/sophia_amtshandlung.jpg","w_doener","✅ Döner 2 €")], eyebrow="UND NOCH MEHR", big="IHR WÜNSCHT –<br>ES PASSIERT"),
- dict(what=True, eyebrow="KURZ ERKLÄRT", big="WAS IST<br>MUSCHEL-TAL?"),
  dict(grid=[("w_doener","🥙 Dönerbude"),("w_strandbar","🍹 Strandbar"),("w_drog","🧴 CocoCare"),("w_clubnacht","🕶️ Kokos-Club")], gh=700, eyebrow="WIE IM ECHTEN LEBEN", head="JEDER FOLLOWER KANN", big="EINEN JOB<br>BEKOMMEN 💼", stamp2="🗳️ IHR VERGEBT DIE JOBS", chips2=[("ye","🐚 Muscheln verdienen"),("pk","📝 bewerben"),("vi","🗳️ abstimmen")]),
  dict(grid3=["hund","katze","hase","schildi","schwein","robbe"], eyebrow="🗳️ EURE ABSTIMMUNG", head="TIERHEIM STATT HOTEL –", big="ADOPTIER<br>DEIN TIER 🐾", stamp2="✅ EURE ENTSCHEIDUNG"),
  dict(grid=[("spiele/taucher","🫧 Perlentaucher"),("spiele/turm","🥥 Kokos-Turm"),("spiele/memory","🐚 Memory"),("spiele/krebs","🦀 Krebs-Sprint")], eyebrow="GOLDEN PEARL 💎", head="FORDER FREUNDE HERAUS:", big="MINISPIELE"),
@@ -83,8 +83,8 @@ for i, s in enumerate(S, 1):
             body += f'<div id="chips" style="top:{y0+520}px;gap:22px">' + "".join(f'<div class="c {c}" style="font-family:L;font-weight:400;font-size:60px;transform:rotate({(-3,2,-2,3,-1)[k]}deg)">{t}</div>' for k, (c, t) in enumerate(s["liste"])) + '</div>'
             body += '<div class="ok" style="top:1560px;font-size:50px">👇 SO SIEHT DAS AUS</div>'
         elif s.get("what"):
-            body += f'<div id="ring" style="top:{y0+10}px;height:560px"></div><div id="cardb" style="top:{y0+30}px;height:520px;background-image:url(bilder/insel.jpg)"></div>'
-            body += f'<div id="chips" style="top:{y0+590}px;flex-direction:column;align-items:center;gap:20px">' + "".join(f'<div class="c {c}" style="font-size:39px;white-space:nowrap">{t}</div>' for c, t in [("tq","🎮 Ein Spiel, in dem jeder mitspielt"),("ye","🏠 Jede Hütte = ein echter Follower"),("pk","💬 Ihr wünscht & stimmt ab – ich baue es"),("vi","🚀 Bei 1.000 geht\'s richtig los")]) + '</div>'
+            body += f'<div id="gridc" style="top:{y0+20}px;height:400px;grid-template-columns:1fr 1fr 1fr;left:70px;width:940px">' + "".join(f'<div class="gi" style="background-image:url(bilder/{f}.jpg)"><span>{n}</span></div>' for f, n in [("haupt","🏰 Haupt-Insel"),("kokos","🥥 Kokos-Küste"),("karte","🔒 neue Inseln")]) + '</div>'
+            body += f'<div id="chips" style="top:{y0+470}px;flex-direction:column;align-items:center;gap:18px">' + "".join(f'<div class="c {c}" style="font-size:40px;white-space:nowrap">{t}</div>' for c, t in [("tq","🏝️ Eine Insel-Region in der Südsee"),("ye","🌴 Jede Insel mit eigenem Thema"),("bl","🗺️ Strände, Läden, Club, Kino …"),("pk","🏠 Jede Hütte = ein echter Follower"),("vi","🎮 Ein Spiel, in dem jeder mitspielt")]) + '</div>'
         elif s.get("pair2"):
             for k, (c, im, t) in enumerate(s["pair2"]):
                 body += f'<div class="col" style="left:{70+k*480}px;top:{y0+20}px;transform:rotate({(-1.5,1.5)[k]}deg)"><div class="cm"><img src="bilder/{c}"></div><div class="bld" style="background-image:url(bilder/{im}.jpg)"></div><div class="ok">{t}</div></div>'
