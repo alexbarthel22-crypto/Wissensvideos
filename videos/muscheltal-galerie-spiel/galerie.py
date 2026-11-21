@@ -1,6 +1,7 @@
 # TikTok-Foto-Galerie „Spiel ab 1.000“ – Look wie Cover Tag 1 (dunkelblau, Strahlen, gelbe Schrift, Karten)
 S = [
  dict(first=True),
+ dict(liste=[("ye","💼 JOBS"),("pk","🏗️ GEBÄUDE"),("tq","🏝️ NEUE INSELN"),("vi","🎉 EVENTS"),("gr","🐾 TIERE")], eyebrow="SO FUNKTIONIERT'S", head="IHR GESTALTET DAS LEBEN:", big="IHR<br>ENTSCHEIDET"),
  dict(pair=("kommentare/marie_comment.jpg","w_yacht"), eyebrow="DEIN WUNSCH WIRD WAHR", big="DU WILLST<br>EINE YACHT?", stamp="✅ MARIE HAT JETZT IHRE YACHT"),
  dict(pair=("kommentare/cmt_club.jpg","w_clubnacht"), eyebrow="DEIN WUNSCH WIRD WAHR", big="DU WILLST<br>EINEN CLUB?", stamp="✅ GEBAUT – BESITZER VERLOST"),
  dict(pair2=[("kommentare/cmt_drog.jpg","w_drog","✅ CocoCare"),("kommentare/sophia_amtshandlung.jpg","w_doener","✅ Döner 2 €")], eyebrow="UND NOCH MEHR", big="IHR WÜNSCHT –<br>ES PASSIERT"),
@@ -77,6 +78,10 @@ for i, s in enumerate(S, 1):
             body += f'<div class="cm" style="top:{y0}px"><img src="bilder/{c}"></div>'
             body += f'<div class="bld" style="top:{y0+230}px;left:120px;width:840px;height:{1500-y0-230}px;background-image:url(bilder/{im}.jpg)"></div>'
             body += f'<div class="ok" style="top:1460px">{s["stamp"]}</div>'
+        elif s.get("liste"):
+            body += f'<div id="ring" style="top:{y0+10}px;height:480px"></div><div id="cardb" style="top:{y0+30}px;height:440px;background-image:url(bilder/karte.jpg)"></div>'
+            body += f'<div id="chips" style="top:{y0+520}px;gap:22px">' + "".join(f'<div class="c {c}" style="font-family:L;font-weight:400;font-size:60px;transform:rotate({(-3,2,-2,3,-1)[k]}deg)">{t}</div>' for k, (c, t) in enumerate(s["liste"])) + '</div>'
+            body += '<div class="ok" style="top:1560px;font-size:50px">👇 SO SIEHT DAS AUS</div>'
         elif s.get("what"):
             body += f'<div id="ring" style="top:{y0+10}px;height:560px"></div><div id="cardb" style="top:{y0+30}px;height:520px;background-image:url(bilder/insel.jpg)"></div>'
             body += f'<div id="chips" style="top:{y0+590}px;flex-direction:column;align-items:center;gap:20px">' + "".join(f'<div class="c {c}" style="font-size:39px;white-space:nowrap">{t}</div>' for c, t in [("tq","🏝️ Eine Insel nur für meine Follower"),("ye","🏠 Jede Hütte = ein echter Follower"),("pk","💬 Ihr wünscht & stimmt ab – ich baue es"),("vi","🎮 Bei 1.000 wird daraus ein Spiel")]) + '</div>'
