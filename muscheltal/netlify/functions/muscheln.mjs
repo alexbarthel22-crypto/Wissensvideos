@@ -182,7 +182,8 @@ async function zurueckAuf(store) {
 // (Beanspruchungen, Buchungen, Aufgaben, Erfolge, Sticker, Fische, Sandburg, Likes, Anklopfen, Flaschenpost, Einladungen,
 // Shop-Käufe samt Ausrüstung, Spenden, Story) wird gelöscht. Echtgeld-Käufe (Stripe) bleiben erhalten.
 // 20.11.: nochmal (Lauf 2) – wieder alles nach 18.11. 18:00 bis zur nächsten Veröffentlichung
-const ALLE_AB = 1795021200000, ALLE_NR = 2;
+// 21.11.: nochmal (Lauf 3) – inkl. Golden Pearl (Spielstände, Duelle, Preise) und Sturm-Treibgut
+const ALLE_AB = 1795021200000, ALLE_NR = 3;
 let ALLE_OK = false;
 // parallel (schneller), höchstens 40 gleichzeitig
 async function jeParallel(L, f) { for (let i = 0; i < L.length; i += 40) await Promise.all(L.slice(i, i + 40).map(f)); }
@@ -218,6 +219,7 @@ async function allesZurueck(store) {
       else if (a === "flasche") { const h0 = Date.UTC(2026, 0, 1) + Math.floor(num(t[4]) / 10) * 3.6e6; w = h0 + 3.6e6 > AB && h0 < BIS; }
       else if (a === "codeversuch" || a === "klopft") w = d > T && d <= TB;
       else if (a === "rangcache") w = true;
+      else if (["spiel", "spiellauf", "spielletzt", "spiellast", "spielpreis", "duell", "duellvon", "duellmeld", "duellerg", "preismeld", "treibgut", "erfmeld"].includes(a)) w = true;// alles erst nach dem 18.11. entstanden
     }
     if (w) weg.push(k);
   });
