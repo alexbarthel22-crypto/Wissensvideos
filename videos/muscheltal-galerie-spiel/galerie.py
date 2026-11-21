@@ -1,53 +1,73 @@
-# TikTok-Foto-Galerie „Was dich im Spiel ab 1.000 Bewohnern erwartet“ (21.11.) – Stil wie Video 1 / Cover Tag 1
-import json, html
+# TikTok-Foto-Galerie „Was dich im Spiel ab 1.000 erwartet“ – Look wie Video Tag 1 (Untertitel-Balken, .bt-Boxen, Stempel)
+import re, html
+BAR = ["#e8467c", "#0a9fa6", "#7b4fe0", "#2f7fe0"]
+def bars(lines, size=116, top=470):
+    out = []
+    for i, l in enumerate(lines):
+        t = re.sub(r"\*(.+?)\*", r'<span class="k">\1</span>', html.escape(l).replace("&lt;br&gt;", "<br>"))
+        out.append(f'<div class="bar" style="background:{BAR[i % 4]};transform:rotate({(-2, 1.5, -1, 2)[i % 4]}deg)">{t}</div>')
+    return f'<div class="bars" style="top:{top}px;font-size:{size}px">' + "".join(out) + "</div>"
+def bt(items, top):  # Video-1-Boxen
+    return f'<div class="bts" style="top:{top}px">' + "".join(f'<div class="bt {c}"><span class="bx">{t}</span></div>' for c, t in items) + "</div>"
+def grid(imgs, top, lab=True):
+    return f'<div class="grid" style="top:{top}px">' + "".join(f'<div class="gi"><div class="im" style="background-image:url({src})"></div>' + (f'<div class="gl">{n}</div>' if lab else "") + "</div>" for src, n in imgs) + "</div>"
 S = [
- dict(img="insel", eyebrow="MUSCHEL-TAL · 790 FOLLOWER", head="HIER PASSIERT GERADE ETWAS,", big="DAS ES AUF TIKTOK<br>NOCH NIE GAB", sub="790 Follower wohnen auf <b>einer Insel</b> – jede Hütte trägt einen echten Namen. Bei <b>1.000</b> wird daraus ein <b>Spiel</b>.", chips=[("pk","Und du kannst dabei sein 👀")], first=True),
- dict(img="huetten", eyebrow="ALLES, WAS DICH ERWARTET", head="DU SPIELST", big="DICH SELBST", sub="Deine eigene Figur, deine Hütte mit <b>deinem TikTok-Namen</b> – mitten zwischen allen anderen Followern.", chips=[("ye","🏠 Hütte mit deinem Namen"),("bl","🚶 eigene Spielfigur")]),
- dict(img="karte", eyebrow="ERKUNDEN", head="LAUF ÜBER", big="DIE INSELN", sub="Haupt-Insel, Kokos-Küste – und <b>geheime Inseln</b>, die erst später aufgehen. ???", chips=[("tq","🗺️ ganze Welt erkunden"),("vi","🔒 geheime Inseln")]),
- dict(img="huetten2", eyebrow="MUSCHELN", head="SAMMLE", big="MUSCHELN 🐚", sub="Jeden Tag reinschauen, <b>Aufgaben</b> erledigen, <b>Geheimcodes</b> aus meinen Videos einlösen – deine Muscheln wachsen.", chips=[("ye","📅 tägliche Login-Serie"),("gr","✅ 3 Aufgaben pro Tag")]),
- dict(img="huetten3", eyebrow="SHOP & STYLE", head="STYLE DICH", big="& DEINE HÜTTE", sub="Namensschilder, Titel, Profilrahmen, Hintergründe – und bald kannst du <b>deine Hütte einrichten</b>.", chips=[("pk","👑 seltene Items"),("bl","🛋️ Hütte einrichten (bald)")]),
- dict(img="pearl", eyebrow="GOLDEN PEARL", head="MINISPIELE", big="& DUELLE 💎", sub="Fordere deine <b>Freunde</b> heraus, kämpf um den <b>Wochensieg</b> – und nachts wird gefeiert.", chips=[("vi","⚔️ Freunde herausfordern"),("ye","🥇 Wochensieger")]),
- dict(img="wal", eyebrow="SELTENE EVENTS", head="SEI ZUR", big="RICHTIGEN ZEIT DA", sub="Ein <b>Wal</b> springt aus dem Meer, <b>Babyschildkröten</b> wandern ins Wasser, <b>Flaschenpost</b> treibt an den Strand …", chips=[("bl","🐋 Wal"),("gr","🐢 Schildkröten"),("tq","🍾 Flaschenpost")]),
- dict(img="schild", eyebrow="SAMMELN", head="FÜLL DEINE", big="ALBEN", sub="<b>Erfolge</b> freischalten, <b>Sticker</b> sammeln, am Steg <b>angeln</b> und jeden Fisch ins Album packen.", chips=[("ye","🏅 Erfolge"),("pk","🧩 Sticker-Album"),("tq","🎣 Fisch-Album")]),
- dict(img="club", eyebrow="JOBS & VERLOSUNGEN", head="BEKOMM", big="EINEN JOB", sub="Club-Besitzer, Leitung, Team … ich verlose regelmäßig. <b>Wer einen Job hat, startet mit Vorteil.</b>", chips=[("go","🎁 Live-Verlosungen"),("vi","⭐ Vorteil im Spiel")]),
- dict(img="kino", eyebrow="ZUSAMMEN", head="SPIEL MIT", big="DEINEN FREUNDEN", sub="Werdet <b>Nachbarn</b>, trefft euch im <b>Freiluftkino</b>, auf dem Markt oder am Lagerfeuer.", chips=[("pk","👯 Nachbarn werden"),("tq","🎬 Kino Fr & Sa")]),
- dict(img="insel", eyebrow="NUR FÜR DIE ERSTEN", head="DIE ERSTEN 1.000", big="BEKOMMEN VORTEILE", sub="Wer jetzt einzieht, ist von Anfang an dabei. Später kommt man nicht mehr so leicht rein.", chips=[], bar=True),
- dict(img="huetten", eyebrow="SO BIST DU DABEI", head="FOLG", big="@MUSCHELTAL", sub="Dann bekommst du <b>deine eigene Hütte</b> mit deinem Namen. <b>Markier deine Freunde</b>, damit sie unter den ersten 1.000 sind!", chips=[("pk","1️⃣ Folgen"),("ye","2️⃣ Freunde markieren"),("gr","3️⃣ Hütte finden")], last=True),
+ dict(bg="insel", label=("dk", "MUSCHEL-TAL · DAS SPIEL"), body=bars(["Hier passiert", "gerade etwas,", "das es auf *TikTok*", "*noch nie* gab"], 96, 400)
+   + '<div class="stamp" style="left:500px;top:1120px;font-size:56px;white-space:nowrap;color:#e8467c;border-color:#e8467c;transform:rotate(-8deg)">790 FOLLOWER 🏝️</div>'
+   + bt([("pk", "Eine Insel. Jede Hütte = ein echter Follower."), ("vi", "Bei 1.000 wird daraus ein Spiel 🎮")], 1300)),
+ dict(bg="huetten", label=("ye", "BEI 1.000 FOLLOWERN"), body=bars(["Du spielst", "*dich selbst*"], 130, 430)
+   + bt([("tq", "🚶 deine eigene Figur"), ("pk", "🏠 deine Hütte mit deinem Namen"), ("bl", "🗺️ lauf über alle Inseln")], 900)),
+ dict(bg="insel", dim=.55, label=("pk", "IHR HABT ABGESTIMMT"), body=bars(["Ihr habt sie *gewünscht* –", "jetzt könnt ihr sie *erkunden*"], 66, 290)
+   + grid([("bilder/w_doener.jpg", "🥙 Dönerbude"), ("bilder/w_baeckerei.jpg", "🥐 Bäckerei"), ("bilder/w_strandbar.jpg", "🍹 Strandbar"), ("bilder/w_tierheim.jpg", "🐾 Tierheim")], 640)),
+ dict(bg="huetten3", label=("vi", "EURE GEBÄUDE"), body=bars(["Sie spielen eine", "*große Rolle*"], 116, 400)
+   + bt([("pk", "🐾 Tiere adoptieren im Tierheim"), ("ye", "🥙 Döner für 2 € holen"), ("tq", "🍹 Dirty Muschel an der Strandbar"), ("bl", "💼 Jobs in euren Läden")], 930)),
+ dict(bg="karte", label=("dk", "NUR VON EUCH GESTALTET"), body=bars(["*Ihr* entscheidet,", "was in Muschel-Tal", "*passiert*"], 112, 420)
+   + bt([("pk", "💬 Wünsche in die Kommentare"), ("vi", "🗳️ ihr stimmt ab, was gebaut wird"), ("tq", "🌍 die Welt wächst mit euch weiter")], 1140)),
+ dict(bg="huetten2", label=("ye", "DAS ZIEL"), body=bars(["Wer hat die", "*meisten Muscheln* 🐚?"], 90, 380)
+   + '<div class="pod"><div class="pd p2"><i>🥈</i><b>2.</b></div><div class="pd p1"><i>🥇</i><b>1.</b></div><div class="pd p3"><i>🥉</i><b>3.</b></div></div>'
+   + bt([("tq", "📅 tägliche Login-Serie · ✅ Aufgaben · 🔑 Geheimcodes")], 1330)),
+ dict(bg="wal", label=("bl", "UND"), body=bars(["Wer hat die", "*meisten Erfolge* 🏅?"], 104, 400)
+   + bt([("bl", "🐋 Wal-Watcher"), ("ye", "🏆 Aufgaben-Legende"), ("pk", "🥇 Wochensieger"), ("tq", "🧩 Sticker- & 🎣 Fisch-Album")], 860)),
+ dict(bg="pearl", dim=.5, label=("ye", "GOLDEN PEARL 💎"), body=bars(["*Minispiele*", "warten auf dich"], 88, 290)
+   + grid([("bilder/spiele/taucher.jpg", "🫧 Perlentaucher"), ("bilder/spiele/turm.jpg", "🥥 Kokos-Turm"), ("bilder/spiele/memory.jpg", "🐚 Muschel-Memory"), ("bilder/spiele/krebs.jpg", "🦀 Krebs-Sprint")], 650)),
+ dict(bg="pearl", dim=.35, label=("vi", "⚔️ DUELLE"), body=bars(["Fordere deine", "*Freunde* heraus"], 116, 420)
+   + bt([("pk", "Link schicken – wer schafft mehr?"), ("ye", "🏆 Wochen-Rangliste je Spiel"), ("tq", "Top 3 gewinnen Muscheln 🐚")], 900)),
+ dict(bg="schild", label=("gr", "SELTENE EVENTS"), body=bars(["Sei zur", "*richtigen Zeit* da"], 116, 420)
+   + bt([("bl", "🐋 ein Wal springt aus dem Meer"), ("gr", "🐢 Babyschildkröten wandern"), ("tq", "🍾 Flaschenpost mit Quiz")], 900)),
+ dict(bg="insel", label=("pk", "NUR FÜR DIE ERSTEN"), body=bars(["Die ersten *1.000*", "bekommen *Vorteile*"], 104, 420)
+   + '<div id="bar"><div class="tr"><div class="fi"></div></div><div class="lb"><span>790</span><span>1.000 🎮</span></div></div>'
+   + '<div class="stamp" style="left:0;right:0;margin:0 auto;width:fit-content;top:1190px;color:#2fbf6a;border-color:#2fbf6a;transform:rotate(-3deg)">NOCH 210 PLÄTZE</div>'),
+ dict(bg="huetten", label=("dk", "SO BIST DU DABEI"), body=bars(["Folg", "*@muscheltal*"], 130, 420), last=True,
+   extra=bt([("pk", "1️⃣ Folgen = eigene Hütte mit deinem Namen"), ("ye", "2️⃣ Freunde markieren"), ("tq", "3️⃣ ihr entscheidet, was als Nächstes kommt")], 900)),
 ]
 CSS = """@font-face{font-family:L;src:url(LilitaOne-Regular.woff2)}*{box-sizing:border-box;margin:0}
-body{width:1080px;height:1920px;overflow:hidden;position:relative;background:#04203a;font-family:Inter,system-ui,sans-serif;color:#fff}
-#rays{position:absolute;left:-260px;top:260px;width:1600px;height:1600px;border-radius:50%;background:repeating-conic-gradient(from 4deg,rgba(255,229,0,.13) 0deg 7deg,rgba(255,229,0,0) 7deg 18deg);-webkit-mask:radial-gradient(circle,#000 0%,#000 25%,transparent 62%)}
-#spot{position:absolute;inset:0;background:radial-gradient(ellipse 60% 32% at 50% 56%,rgba(20,170,200,.45),rgba(4,32,58,0) 70%)}
-.pill{position:absolute;left:0;right:0;margin:0 auto;width:fit-content;border-radius:40px;font-weight:900}
-#ep{top:150px;padding:6px 22px 9px;font-size:28px;letter-spacing:.14em;background:#1a0f08;box-shadow:0 0 0 4px #ffe500}
-#nr{position:absolute;right:70px;top:150px;font-weight:900;font-size:28px;color:#ffe500}
-#hd{top:235px;padding:8px 30px 12px;font-size:46px;letter-spacing:.06em;background:#ffe500;color:#1a0f08;box-shadow:0 0 0 5px #1a0f08;transform:rotate(-2deg);text-align:center;line-height:1.1}
-#big{position:absolute;left:40px;right:40px;top:330px;text-align:center;font-family:L;font-size:112px;line-height:1;color:#ffe500;-webkit-text-stroke:13px #1a0f08;paint-order:stroke fill;text-shadow:0 11px 0 #ff2e7e;transform:rotate(-3deg)}
-#card{position:absolute;left:110px;width:860px;top:620px;height:660px;border-radius:44px;overflow:hidden;border:10px solid #fff;box-shadow:0 0 0 6px #1a0f08,0 20px 0 rgba(0,0,0,.4),0 0 120px rgba(40,200,230,.45);transform:rotate(1.5deg);background:#0b7fae center/cover}
-#sub{position:absolute;left:90px;right:150px;top:1325px;padding:18px 28px 22px;border-radius:30px;background:#1a0f08;box-shadow:0 0 0 5px #ffe500;font-size:40px;line-height:1.25;font-weight:700;text-align:center}
-#sub b{color:#ffe500}
-#chips{position:absolute;left:80px;right:140px;top:1555px;display:flex;flex-wrap:wrap;gap:16px;justify-content:center}
-.c{padding:10px 26px 14px;border-radius:30px;font-weight:900;font-size:38px;box-shadow:0 0 0 5px #1a0f08,0 9px 0 rgba(0,0,0,.35)}
-.pk{background:#ff2e7e}.ye{background:#ffe500;color:#1a0f08}.bl{background:#0098ff}.tq{background:#0a9fa6}.vi{background:#7b4fe0}.gr{background:#00b86b}.go{background:#ffb800;color:#1a0f08}
-#swipe{position:absolute;right:70px;top:196px;font-family:L;font-size:38px;color:#fff;opacity:.9}
-.sp{position:absolute}
-#bar{position:absolute;left:150px;right:150px;top:900px;}
-#bar .tr{height:90px;border-radius:45px;background:rgba(0,0,0,.55);box-shadow:0 0 0 7px #fff,0 0 0 13px #1a0f08;overflow:hidden}
-#bar .fi{height:100%;width:79%;border-radius:45px;background:linear-gradient(90deg,#ffe500,#ff2e7e)}
-#bar .lb{display:flex;justify-content:space-between;margin-top:18px;font-family:L;font-size:60px;-webkit-text-stroke:8px #1a0f08;paint-order:stroke fill}
-#bar .lb span:last-child{color:#ffe500}
-#free{position:absolute;left:0;right:0;margin:0 auto;width:fit-content;top:1130px;padding:12px 36px 16px;border-radius:40px;background:#00b86b;font-weight:900;font-size:54px;box-shadow:0 0 0 6px #1a0f08;transform:rotate(-2deg)}
-"""
-STAR = '<svg class="sp" style="left:{}px;top:{}px;width:{}px" viewBox="-10 -10 20 20"><path d="M0 -10 L2 -2 L10 0 L2 2 L0 10 L-2 2 L-10 0 L-2 -2Z" fill="{}"/></svg>'
+body{width:1080px;height:1920px;overflow:hidden;position:relative;background:#0b7fae;font-family:Inter,system-ui,sans-serif;color:#fff}
+#bg{position:absolute;inset:0;background:center/cover}#dim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,20,40,.55),rgba(0,20,40,.15) 35%,rgba(0,20,40,.15) 65%,rgba(0,20,40,.55))}
+.bars{position:absolute;left:50px;right:150px;display:flex;flex-direction:column;align-items:center;gap:14px;font-family:L;line-height:1.05;text-align:center}
+.bar{padding:.04em .36em .1em;border-radius:.55em;box-shadow:0 8px 0 rgba(0,0,0,.25);text-transform:uppercase}
+.k{color:#ffe45c}
+.bts{position:absolute;left:60px;right:150px;display:flex;flex-direction:column;align-items:center;gap:22px}
+.bt{text-align:center;font-weight:900;font-size:46px;line-height:1.25;color:#fff;max-width:860px}
+.bt .bx{padding:.06em .4em .14em;border-radius:.6em;-webkit-box-decoration-break:clone;box-decoration-break:clone;box-shadow:0 9px 0 rgba(0,0,0,.28)}
+.bt.pk .bx{background:#e8467c}.bt.tq .bx{background:#0a9fa6}.bt.vi .bx{background:#7b4fe0}.bt.bl .bx{background:#2f7fe0}
+.bt.ye .bx{background:#ffd23f}.bt.ye{color:#2a1b12}.bt.gr .bx{background:#2fbf6a}.bt.dk .bx{background:#2a1b12}.bt.dk{color:#ffd23f}
+#lab{position:absolute;top:200px;left:0;right:90px}#lab .bt{margin:0 auto;font-size:40px}
+#nr{position:absolute;right:70px;top:120px;font-weight:900;font-size:30px;color:#fff;text-shadow:0 3px 0 rgba(0,0,0,.5)}
+.stamp{position:absolute;padding:6px 30px 10px;border:10px solid;border-radius:40px;background:rgba(255,255,255,.95);font-weight:900;font-size:66px;box-shadow:0 10px 0 rgba(0,0,0,.3)}
+.grid{position:absolute;left:130px;right:210px;display:grid;grid-template-columns:1fr 1fr;gap:26px}
+.gi{position:relative}.im{width:100%;aspect-ratio:1/1.1;border-radius:30px;border:8px solid #fff;background:center/cover;box-shadow:0 10px 0 rgba(0,0,0,.3)}
+.gl{position:absolute;left:50%;bottom:-18px;transform:translateX(-50%);white-space:nowrap;padding:4px 18px 8px;border-radius:20px;background:#2a1b12;color:#ffd23f;font-weight:900;font-size:32px}
+.pod{position:absolute;left:150px;right:230px;top:860px;height:420px;display:flex;align-items:flex-end;gap:20px}
+.pd{flex:1;border-radius:24px 24px 0 0;text-align:center;box-shadow:0 0 0 7px #fff;padding-top:14px}.pd i{font-style:normal;font-size:90px;display:block}.pd b{font-family:L;font-size:80px;font-weight:400}
+.p1{height:440px;background:#ffd23f;color:#2a1b12}.p2{height:340px;background:#9fb3c8}.p3{height:270px;background:#d98a4a}
+#bar{position:absolute;left:130px;right:190px;top:960px}#bar .tr{height:90px;border-radius:45px;background:rgba(0,0,0,.55);box-shadow:0 0 0 7px #fff;overflow:hidden}
+#bar .fi{height:100%;width:79%;border-radius:45px;background:linear-gradient(90deg,#ffd23f,#e8467c)}
+#bar .lb{display:flex;justify-content:space-between;margin-top:16px;font-family:L;font-size:62px;text-shadow:0 5px 0 rgba(0,0,0,.45)}
+#sw{position:absolute;right:70px;top:162px;font-family:L;font-size:36px;text-shadow:0 3px 0 rgba(0,0,0,.5)}"""
 for i, s in enumerate(S, 1):
-    body = f'<div id="spot"></div><div id="rays"></div><div id="ep" class="pill">{s["eyebrow"]}</div><div id="nr">{i}/{len(S)}</div>'
-    body += f'<div id="hd" class="pill">{s["head"]}</div><div id="big">{s["big"]}</div>'
-    if s.get("bar"):
-        body += '<div id="bar"><div class="tr"><div class="fi"></div></div><div class="lb"><span>790</span><span>1.000 🎮</span></div></div><div id="free">NOCH 210 PLÄTZE FREI</div>'
-    else:
-        body += f'<div id="card" style="background-image:url(bilder/{s["img"]}.jpg)"></div>'
-    body += f'<div id="sub">{s["sub"]}</div><div id="chips">' + "".join(f'<div class="c {c}">{html.escape(t)}</div>' for c, t in s["chips"]) + '</div>'
-    if not s.get("last"): body += '<div id="swipe">wisch ➜</div>'
-    body += STAR.format(120, 560, 64, "#ffe500") + STAR.format(880, 540, 50, "#fff") + STAR.format(70, 1250, 44, "#fff") + STAR.format(930, 1240, 56, "#ffe500")
-    open(f"seite_{i:02d}.html", "w").write(f'<!doctype html><html lang="de"><head><meta charset="utf-8"><style>{CSS}</style></head><body>{body}</body></html>')
+    b = f'<div id="bg" style="background-image:url(bilder/{s["bg"]}.jpg)"></div><div id="dim" style="opacity:{1 if not s.get("dim") else 1}"></div>'
+    if s.get("dim"): b += f'<div style="position:absolute;inset:0;background:rgba(0,20,40,{s["dim"]})"></div>'
+    b += f'<div id="nr">{i}/{len(S)}</div>' + ('' if s.get("last") else '<div id="sw">wisch ➜</div>')
+    c, t = s["label"]; b += f'<div id="lab"><div class="bt {c}"><span class="bx">{t}</span></div></div>' + s["body"] + s.get("extra", "")
+    open(f"seite_{i:02d}.html", "w").write(f'<!doctype html><html lang="de"><head><meta charset="utf-8"><style>{CSS}</style></head><body>{b}</body></html>')
 print(len(S))
