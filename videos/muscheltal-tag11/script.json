@@ -30,18 +30,43 @@
    "sfx": [
     {
      "name": "riser",
-     "at": "L1:gezogen-0.5",
-     "volume": 0.4
+     "at": "s01+0.0",
+     "volume": 0.45
     },
     {
      "name": "impact-bass-2",
+     "at": "L1:gezogen",
+     "volume": 0.7
+    },
+    {
+     "name": "whoosh-short",
+     "at": "L1:gezogen+0.15",
+     "volume": 0.4
+    },
+    {
+     "name": "impact-bass-1",
      "at": "L1:Golden",
      "volume": 0.6
     },
     {
-     "name": "whoosh-short",
+     "name": "sparkle",
+     "at": "L1:Pearl",
+     "volume": 0.5
+    },
+    {
+     "name": "pop",
      "at": "L1b:drei",
-     "volume": 0.4
+     "volume": 0.5
+    },
+    {
+     "name": "pop",
+     "at": "L1b:drei+0.18",
+     "volume": 0.5
+    },
+    {
+     "name": "pop",
+     "at": "L1b:drei+0.36",
+     "volume": 0.5
     }
    ],
    "lines": [
@@ -237,12 +262,17 @@
      "name": "chime",
      "at": "L6:spiel",
      "volume": 0.4
+    },
+    {
+     "name": "pop",
+     "at": "L6:zieh",
+     "volume": 0.5
     }
    ],
    "lines": [
     {
      "id": "L6",
-     "text": "Das *y:Spiel startet bald – / *p:Folg mir / und spiel mit!",
+     "text": "Das *y:Spiel startet bald – / *p:Folg mir, / *g:zieh ein und spiel mit!",
      "pause": 0.4
     }
    ]

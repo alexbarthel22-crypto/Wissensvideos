@@ -110,39 +110,51 @@ GL = """.gl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-
     .gl small { display: block; font-weight: 700; font-size: 26px; letter-spacing: .32em; text-transform: uppercase; opacity: .85; }
     .gl b { display: block; font-weight: 900; font-size: 92px; letter-spacing: -.02em; line-height: 1; }"""
 
-# s01 – Hook: Wem gehört das Golden Pearl? + drei Neuheiten
+# s01 – Hook explosiv: Blitz, Strahlen, Wackeln, riesiges „?“, Stempel, 1-2-3
 scene("s01", GL + """
-    .stamp { position: absolute; padding: 6px 30px 10px; border: 10px solid; border-radius: 40px; background: rgba(255,255,255,.95); font-family: "Inter", sans-serif; font-weight: 900; font-size: 76px; opacity: 0; white-space: nowrap; }
-    .nr { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 250px; padding: 4px 34px 12px; border-radius: 30px; background: #ffd23f; color: #2a1b12; font-family: "Lilita One", sans-serif; font-size: 96px; box-shadow: 0 0 0 8px #2a1b12, 0 12px 0 rgba(0,0,0,.3); transform: rotate(-4deg); opacity: 0; }
-    .card { position: absolute; border-radius: 28px; border: 9px solid #fff; overflow: hidden; box-shadow: 0 0 0 5px #2a1b12, 0 16px 0 rgba(0,0,0,.35); opacity: 0; background: #fff; }
-    .card img { display: block; width: 100%; }
-    .lab { position: absolute; left: 50%; bottom: 10px; transform: translateX(-50%); white-space: nowrap; padding: 4px 18px 8px; border-radius: 18px; background: #2a1b12; color: #ffd23f; font: 900 32px Inter, sans-serif; }
-    #q1 { position: absolute; left: 0; right: 0; top: 300px; text-align: center; font-family: "Lilita One", sans-serif; font-size: 300px; color: #ffe14a; opacity: 0; -webkit-text-stroke: 14px #2a1b12; paint-order: stroke fill; }
-    #st1 { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 280px; color: #c99a00; border-color: #ffd23f; transform: rotate(-5deg); }
-    #n1 { position: absolute; left: 0; right: 0; top: 300px; display: flex; justify-content: center; gap: 30px; }
+    .stamp { position: absolute; padding: 6px 30px 10px; border: 10px solid; border-radius: 40px; background: rgba(255,255,255,.95); font-family: "Inter", sans-serif; font-weight: 900; font-size: 70px; opacity: 0; white-space: nowrap; }
+    #fl1 { position: absolute; inset: 0; background: #fff; opacity: 0; }
+    #ry1 { position: absolute; left: 475px; top: 560px; width: 1800px; height: 1800px; margin: -900px; border-radius: 50%; opacity: 0;
+      background: repeating-conic-gradient(rgba(255,225,74,.45) 0deg 8deg, rgba(255,225,74,0) 8deg 20deg); -webkit-mask: radial-gradient(circle, #000 12%, transparent 60%); mask: radial-gradient(circle, #000 12%, transparent 60%); }
+    #q1 { position: absolute; left: 60px; right: 190px; top: 200px; text-align: center; font-family: "Lilita One", sans-serif; font-size: 300px; line-height: 1; color: #ffe14a; opacity: 0; -webkit-text-stroke: 16px #2a1b12; paint-order: stroke fill; text-shadow: 0 0 60px rgba(255,225,74,.9); }
+    #st1 { left: 60px; right: 190px; margin: 0 auto; width: fit-content; top: 300px; color: #c99a00; border-color: #ffd23f; transform: rotate(-5deg); }
+    #st1b { left: 60px; right: 190px; margin: 0 auto; width: fit-content; top: 440px; color: #e8467c; border-color: #e8467c; transform: rotate(4deg); font-size: 60px; }
+    #n1 { position: absolute; left: 60px; right: 190px; top: 330px; display: flex; justify-content: center; gap: 26px; }
     #n1 div { width: 190px; height: 190px; border-radius: 50%; background: #e8467c; color: #fff; font: 400 130px/190px "Lilita One", sans-serif; text-align: center; box-shadow: 0 0 0 9px #fff, 0 14px 0 rgba(0,0,0,.3); opacity: 0; }
-    #n1 div:nth-child(2) { background: #0a9fa6; } #n1 div:nth-child(3) { background: #7b4fe0; }""",
-"""      <div id="q1">?</div>
-      <div id="st1" class="stamp">💎 WER GEWINNT?</div>
-      <div id="n1"><div>1</div><div>2</div><div>3</div></div>""",
-"""      const G = at("L1", "Golden"), D = at("L1b", "drei");
-      tl.fromTo("#q1", { opacity: 0, scale: .3, rotation: -30 }, { opacity: 1, scale: 1, rotation: 0, duration: .45, ease: "back.out(3)" }, at("L1", "gezogen"));
-      tl.to("#q1", { rotation: 12, duration: .18, yoyo: true, repeat: 5, ease: "sine.inOut" }, at("L1", "gezogen") + .5);
-      tl.to("#q1", { opacity: 0, scale: 2, duration: .2 }, G - .2);
-      tl.fromTo("#st1", { opacity: 0, scale: 1.8 }, { opacity: 1, scale: 1, duration: .35, ease: "elastic.out(1.2, .4)" }, G - .05);
-      tl.to("#st1", { opacity: 0, duration: .2 }, D - .3);
+    #n1 div:nth-child(2) { background: #0a9fa6; } #n1 div:nth-child(3) { background: #7b4fe0; }
+    .pt { position: absolute; font-size: 84px; line-height: 1; width: 84px; height: 84px; opacity: 0; }""",
+"""      <div id="ry1"></div>
+      <div id="q1">?</div>
+      <div id="st1" class="stamp">💎 GOLDEN PEARL</div>
+      <div id="st1b" class="stamp">WER GEWINNT? 😱</div>
+      <div id="n1"><div>1</div><div>2</div><div>3</div></div>
+      """ + "".join(f'<div class="pt" id="pa{i}" style="left:433px;top:520px">{e}</div>' for i, e in enumerate("💥💎✨🎁💥💎✨🎁💥💎✨🎁")) + """
+      <div id="fl1"></div>""",
+"""      const Z = at("L1", "gezogen"), G = at("L1", "Golden"), D = at("L1b", "drei");
+      tl.fromTo("#q1", { opacity: 0, scale: .2, rotation: -40 }, { opacity: 1, scale: 1, rotation: 0, duration: .4, ease: "back.out(3)" }, .02);
+      tl.to("#q1", { rotation: 10, duration: .12, yoyo: true, repeat: 5, ease: "sine.inOut" }, .45);
+      tl.fromTo("#fl1", { opacity: .9 }, { opacity: 0, duration: .35, ease: "power2.out", immediateRender: false }, Z - .02);
+      tl.fromTo("#ry1", { opacity: 0, scale: .4, rotation: 0 }, { opacity: 1, scale: 1, rotation: 60, duration: 3.5, ease: "power1.out" }, Z - .05);
+      tl.to("#q1", { scale: 1.35, duration: .12, yoyo: true, repeat: 1, ease: "power2.out" }, Z);
+      [[18,-10],[-20,8],[14,12],[-12,-8],[8,6],[0,0]].forEach(([x, y], i) => tl.to("#s01-stage", { x, y, duration: .045, ease: "none" }, Z + .03 + i * .045));
+      [...Array(12).keys()].forEach(i => { const a = i / 12 * 6.283, r = 300 + (i % 3) * 110; tl.fromTo("#pa" + i, { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: Math.cos(a) * r * .8, y: Math.sin(a) * r, scale: 1.3, rotation: (i % 2 ? 1 : -1) * 180, opacity: 0, duration: 1.1, ease: "power3.out", immediateRender: false }, Z + .03 + (i % 3) * .05); });
+      tl.to("#q1", { opacity: 0, scale: 2.2, duration: .2 }, G - .2);
+      tl.fromTo("#st1", { opacity: 0, scale: 2.2, rotation: -15 }, { opacity: 1, scale: 1, rotation: -5, duration: .35, ease: "back.out(3)" }, G - .05);
+      tl.fromTo("#st1b", { opacity: 0, scale: 2.2, rotation: 15 }, { opacity: 1, scale: 1, rotation: 4, duration: .35, ease: "back.out(3)" }, at("L1", "Pearl") + .15);
+      [[10,-6],[-12,5],[8,5],[0,0]].forEach(([x, y], i) => tl.to("#st1b", { x, y, duration: .05, ease: "none" }, at("L1", "Pearl") + .5 + i * .05));
+      tl.to(["#st1", "#st1b", "#ry1"], { opacity: 0, scale: .8, duration: .2 }, D - .3);
       tl.fromTo("#n1 div", { opacity: 0, scale: .2, y: 80 }, { opacity: 1, scale: 1, y: 0, duration: .35, ease: "back.out(3)", stagger: .18 }, D - .05);""")
 
 # s02 – Neu 1: Hütte von innen
 scene("s02", GL + """
     .stamp { position: absolute; padding: 6px 30px 10px; border: 10px solid; border-radius: 40px; background: rgba(255,255,255,.95); font-family: "Inter", sans-serif; font-weight: 900; font-size: 76px; opacity: 0; white-space: nowrap; }
-    .nr { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 250px; padding: 4px 34px 12px; border-radius: 30px; background: #ffd23f; color: #2a1b12; font-family: "Lilita One", sans-serif; font-size: 96px; box-shadow: 0 0 0 8px #2a1b12, 0 12px 0 rgba(0,0,0,.3); transform: rotate(-4deg); opacity: 0; }
+    .nr { position: absolute; left: 60px; right: 190px; margin: 0 auto; width: fit-content; top: 250px; padding: 4px 34px 12px; border-radius: 30px; background: #ffd23f; color: #2a1b12; font-family: "Lilita One", sans-serif; font-size: 96px; box-shadow: 0 0 0 8px #2a1b12, 0 12px 0 rgba(0,0,0,.3); transform: rotate(-4deg); opacity: 0; }
     .card { position: absolute; border-radius: 28px; border: 9px solid #fff; overflow: hidden; box-shadow: 0 0 0 5px #2a1b12, 0 16px 0 rgba(0,0,0,.35); opacity: 0; background: #fff; }
     .card img { display: block; width: 100%; }
     .lab { position: absolute; left: 50%; bottom: 10px; transform: translateX(-50%); white-space: nowrap; padding: 4px 18px 8px; border-radius: 18px; background: #2a1b12; color: #ffd23f; font: 900 32px Inter, sans-serif; }
-    #c2a { left: 70px; top: 420px; width: 560px; transform: rotate(-4deg); }
-    #c2b { left: 450px; top: 760px; width: 560px; transform: rotate(4deg); }
-    #st2 { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 1230px; color: #8a5a2b; border-color: #8a5a2b; transform: rotate(-3deg); font-size: 64px; }""",
+    #c2a { left: 62px; top: 400px; width: 400px; transform: rotate(-3deg); }
+    #c2b { left: 478px; top: 400px; width: 400px; transform: rotate(3deg); }
+    #st2 { left: 60px; right: 190px; margin: 0 auto; width: fit-content; top: 1230px; color: #8a5a2b; border-color: #8a5a2b; transform: rotate(-3deg); font-size: 52px; top: 820px; }""",
 """      <div class="nr" id="nr2">NEU #1</div>
       <div class="card" id="c2a"><img src="bilder/innen_haupt.jpg"><div class="lab">🏖️ Strandhaus</div></div>
       <div class="card" id="c2b"><img src="bilder/innen_kerem.jpg"><div class="lab">🥥 Kokos-Lodge</div></div>
@@ -155,22 +167,23 @@ scene("s02", GL + """
 # s03 – Neu 2: Minispiele + Duelle
 scene("s03", GL + """
     .stamp { position: absolute; padding: 6px 30px 10px; border: 10px solid; border-radius: 40px; background: rgba(255,255,255,.95); font-family: "Inter", sans-serif; font-weight: 900; font-size: 76px; opacity: 0; white-space: nowrap; }
-    .nr { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 250px; padding: 4px 34px 12px; border-radius: 30px; background: #ffd23f; color: #2a1b12; font-family: "Lilita One", sans-serif; font-size: 96px; box-shadow: 0 0 0 8px #2a1b12, 0 12px 0 rgba(0,0,0,.3); transform: rotate(-4deg); opacity: 0; }
+    .nr { position: absolute; left: 60px; right: 190px; margin: 0 auto; width: fit-content; top: 250px; padding: 4px 34px 12px; border-radius: 30px; background: #ffd23f; color: #2a1b12; font-family: "Lilita One", sans-serif; font-size: 96px; box-shadow: 0 0 0 8px #2a1b12, 0 12px 0 rgba(0,0,0,.3); transform: rotate(-4deg); opacity: 0; }
     .card { position: absolute; border-radius: 28px; border: 9px solid #fff; overflow: hidden; box-shadow: 0 0 0 5px #2a1b12, 0 16px 0 rgba(0,0,0,.35); opacity: 0; background: #fff; }
     .card img { display: block; width: 100%; }
     .lab { position: absolute; left: 50%; bottom: 10px; transform: translateX(-50%); white-space: nowrap; padding: 4px 18px 8px; border-radius: 18px; background: #2a1b12; color: #ffd23f; font: 900 32px Inter, sans-serif; }
-    .g3 { width: 300px; } 
-    #g30 { left: 90px; top: 360px; transform: rotate(-6deg); } #g31 { left: 400px; top: 330px; transform: rotate(3deg); } #g32 { left: 710px; top: 370px; transform: rotate(-2deg); }
-    #st3 { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 880px; color: #7b4fe0; border-color: #7b4fe0; transform: rotate(-3deg); }
-    #st3b { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 1000px; color: #c99a00; border-color: #ffd23f; transform: rotate(2deg); font-size: 56px; }""",
+    .g3 { width: 190px; border-width: 6px; border-radius: 20px; } 
+    #g30 { left: 66px; top: 380px; transform: rotate(-5deg); } #g31 { left: 272px; top: 360px; transform: rotate(3deg); } #g32 { left: 478px; top: 380px; transform: rotate(-3deg); } #g33 { left: 684px; top: 360px; transform: rotate(4deg); }
+    #st3 { left: 60px; right: 190px; margin: 0 auto; width: fit-content; top: 790px; color: #7b4fe0; border-color: #7b4fe0; transform: rotate(-3deg); }
+    #st3b { left: 60px; right: 190px; margin: 0 auto; width: fit-content; top: 930px; color: #c99a00; border-color: #ffd23f; transform: rotate(2deg); font-size: 52px; }""",
 """      <div class="nr" id="nr3">NEU #2</div>
-      <div class="card g3" id="g30"><img src="bilder/spiele/turm.jpg"></div>
+      <div class="card g3" id="g30"><img src="bilder/spiele/taucher.jpg"></div>
+      <div class="card g3" id="g33"><img src="bilder/spiele/turm.jpg"></div>
       <div class="card g3" id="g31"><img src="bilder/spiele/memory.jpg"></div>
       <div class="card g3" id="g32"><img src="bilder/spiele/krebs.jpg"></div>
       <div id="st3" class="stamp">⚔️ DUELL!</div>
       <div id="st3b" class="stamp">🏆 TOP 3 = MUSCHELN</div>""",
 """      tl.fromTo("#nr3", { opacity: 0, scale: .3, rotation: -20 }, { opacity: 1, scale: 1, rotation: -4, duration: .4, ease: "back.out(3)" }, line("L3")[0] - .05); tl.to("#nr3", { opacity: 0, y: -40, duration: .2 }, line("L3b")[0] - .2);
-      ["#g30", "#g31", "#g32"].forEach((q, i) => tl.fromTo(q, { opacity: 0, y: 300, scale: .6 }, { opacity: 1, y: 0, scale: 1, duration: .45, ease: "back.out(2)" }, at("L3", "vier") - .1 + i * .15));
+      ["#g30", "#g31", "#g32", "#g33"].forEach((q, i) => tl.fromTo(q, { opacity: 0, y: 300, scale: .6 }, { opacity: 1, y: 0, scale: 1, duration: .45, ease: "back.out(2)" }, at("L3", "vier") - .1 + i * .15));
       tl.fromTo("#st3", { opacity: 0, scale: 1.8 }, { opacity: 1, scale: 1, duration: .35, ease: "elastic.out(1.2, .4)" }, at("L3b", "Duell") - .1);
       [[14,-8],[-14,6],[8,6],[0,0]].forEach(([x, y], i) => tl.to("#st3", { x, y, duration: .05, ease: "none" }, at("L3b", "Duell") + .3 + i * .05));
       tl.fromTo("#st3b", { opacity: 0, scale: 1.8 }, { opacity: 1, scale: 1, duration: .35, ease: "elastic.out(1.2, .4)" }, at("L3b", "Top") - .1);""")
@@ -178,13 +191,13 @@ scene("s03", GL + """
 # s04 – Neu 3: Angeln
 scene("s04", GL + """
     .stamp { position: absolute; padding: 6px 30px 10px; border: 10px solid; border-radius: 40px; background: rgba(255,255,255,.95); font-family: "Inter", sans-serif; font-weight: 900; font-size: 76px; opacity: 0; white-space: nowrap; }
-    .nr { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 250px; padding: 4px 34px 12px; border-radius: 30px; background: #ffd23f; color: #2a1b12; font-family: "Lilita One", sans-serif; font-size: 96px; box-shadow: 0 0 0 8px #2a1b12, 0 12px 0 rgba(0,0,0,.3); transform: rotate(-4deg); opacity: 0; }
+    .nr { position: absolute; left: 60px; right: 190px; margin: 0 auto; width: fit-content; top: 250px; padding: 4px 34px 12px; border-radius: 30px; background: #ffd23f; color: #2a1b12; font-family: "Lilita One", sans-serif; font-size: 96px; box-shadow: 0 0 0 8px #2a1b12, 0 12px 0 rgba(0,0,0,.3); transform: rotate(-4deg); opacity: 0; }
     .card { position: absolute; border-radius: 28px; border: 9px solid #fff; overflow: hidden; box-shadow: 0 0 0 5px #2a1b12, 0 16px 0 rgba(0,0,0,.35); opacity: 0; background: #fff; }
     .card img { display: block; width: 100%; }
     .lab { position: absolute; left: 50%; bottom: 10px; transform: translateX(-50%); white-space: nowrap; padding: 4px 18px 8px; border-radius: 18px; background: #2a1b12; color: #ffd23f; font: 900 32px Inter, sans-serif; }
-    .fi { position: absolute; width: 330px; height: 330px; border-radius: 50%; background: radial-gradient(circle, #e7f6ff, #8fd3f4); box-shadow: 0 0 0 9px #fff, 0 0 0 15px #2a1b12; display: grid; place-items: center; font-size: 190px; opacity: 0; }
-    #f40 { left: 140px; top: 520px; } #f41 { left: 610px; top: 560px; }
-    #st4 { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 980px; color: #0a9fa6; border-color: #0a9fa6; transform: rotate(-3deg); }""",
+    .fi { position: absolute; width: 280px; height: 280px; border-radius: 50%; background: radial-gradient(circle, #e7f6ff, #8fd3f4); box-shadow: 0 0 0 9px #fff, 0 0 0 15px #2a1b12; display: grid; place-items: center; font-size: 160px; opacity: 0; }
+    #f40 { left: 110px; top: 470px; } #f41 { left: 520px; top: 510px; }
+    #st4 { left: 60px; right: 190px; margin: 0 auto; width: fit-content; top: 880px; color: #0a9fa6; border-color: #0a9fa6; transform: rotate(-3deg); font-size: 56px; }""",
 """      <div class="nr" id="nr4">NEU #3</div>
       <div class="fi" id="f40">🪼</div><div class="fi" id="f41">🌿</div>
       <div id="st4" class="stamp">🎣 NEU IM FISCH-ALBUM</div>""",
@@ -198,22 +211,22 @@ scene("s04", GL + """
 NAMES = ["prvt.lott1", "_bruno_017", "malin3270", "martha_smile", "d9750075", "linchen.fks", "lena.bhg", "marijadukic11", "in.yor_dreams", "vico_drks", "julia.m.m.17", "julia.cbl", "maestronewyork", "k1905_0", "the_girl_indahood77", "lilli.ber7in"]
 scene("s05", GL + """
     .stamp { position: absolute; padding: 6px 30px 10px; border: 10px solid; border-radius: 40px; background: rgba(255,255,255,.95); font-family: "Inter", sans-serif; font-weight: 900; font-size: 76px; opacity: 0; white-space: nowrap; }
-    .nr { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; top: 250px; padding: 4px 34px 12px; border-radius: 30px; background: #ffd23f; color: #2a1b12; font-family: "Lilita One", sans-serif; font-size: 96px; box-shadow: 0 0 0 8px #2a1b12, 0 12px 0 rgba(0,0,0,.3); transform: rotate(-4deg); opacity: 0; }
+    .nr { position: absolute; left: 60px; right: 190px; margin: 0 auto; width: fit-content; top: 250px; padding: 4px 34px 12px; border-radius: 30px; background: #ffd23f; color: #2a1b12; font-family: "Lilita One", sans-serif; font-size: 96px; box-shadow: 0 0 0 8px #2a1b12, 0 12px 0 rgba(0,0,0,.3); transform: rotate(-4deg); opacity: 0; }
     .card { position: absolute; border-radius: 28px; border: 9px solid #fff; overflow: hidden; box-shadow: 0 0 0 5px #2a1b12, 0 16px 0 rgba(0,0,0,.35); opacity: 0; background: #fff; }
     .card img { display: block; width: 100%; }
     .lab { position: absolute; left: 50%; bottom: 10px; transform: translateX(-50%); white-space: nowrap; padding: 4px 18px 8px; border-radius: 18px; background: #2a1b12; color: #ffd23f; font: 900 32px Inter, sans-serif; }
     #l5 { top: 260px; } #l5 b { font-size: 60px; }
-    #rl { position: absolute; left: 90px; right: 90px; top: 560px; height: 170px; border-radius: 40px; overflow: hidden; background: #fff; box-shadow: 0 0 0 9px #ffd23f, 0 0 0 16px #2a1b12, 0 20px 40px rgba(0,0,0,.4); opacity: 0; }
+    #rl { position: absolute; left: 80px; right: 200px; top: 560px; height: 170px; border-radius: 40px; overflow: hidden; background: #fff; box-shadow: 0 0 0 9px #ffd23f, 0 0 0 16px #2a1b12, 0 20px 40px rgba(0,0,0,.4); opacity: 0; }
     #rl .r { position: absolute; left: 0; right: 0; top: 0; }
-    #rl .r div { height: 170px; font: 400 74px/170px "Lilita One", sans-serif; color: #2a1b12; text-align: center; white-space: nowrap; }
-    #wn { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 520px; color: #2a1b12; background: #ffd23f; border-color: #fff; font-size: 96px; transform: rotate(-3deg); box-shadow: 0 0 0 7px #2a1b12, 0 0 90px rgba(255,210,60,.9); }
+    #rl .r div { height: 170px; font: 400 64px/170px "Lilita One", sans-serif; color: #2a1b12; text-align: center; white-space: nowrap; }
+    #wn { left: 60px; right: 190px; margin: 0 auto; width: fit-content; top: 520px; color: #2a1b12; background: #ffd23f; border-color: #fff; font-size: 84px; transform: rotate(-3deg); box-shadow: 0 0 0 7px #2a1b12, 0 0 90px rgba(255,210,60,.9); }
     #wn small { display: block; font-size: 40px; text-align: center; }
-    #gp5 { left: 0; right: 0; margin: 0 auto; width: fit-content; top: 820px; color: #c99a00; border-color: #ffd23f; transform: rotate(2deg); font-size: 60px; }
+    #gp5 { left: 60px; right: 190px; margin: 0 auto; width: fit-content; top: 820px; color: #c99a00; border-color: #ffd23f; transform: rotate(2deg); font-size: 60px; }
     .pt { position: absolute; font-size: 84px; line-height: 1; width: 84px; height: 84px; opacity: 0; }""",
 """      <div id="l5" class="gl"><small>🎁 Verlosung unter allen Followern</small><b>👑 Inhaber Golden Pearl</b></div>
       <div id="rl"><div class="r">""" + "".join(f"<div>@{n}</div>" for n in NAMES) + """<div>@taliasonnen</div></div></div>
       <div id="wn" class="stamp"><small>🎉 GEWONNEN!</small>@taliasonnen</div>
-      <div id="gp5" class="stamp">💎 DAS GOLDEN PEARL GEHÖRT DIR</div>
+      <div id="gp5" class="stamp">💎 GEHÖRT JETZT DIR!</div>
       """ + "".join(f'<div class="pt" id="pc{i}" style="left:498px;top:600px">{e}</div>' for i, e in enumerate("🎉💎✨🥳🎊⭐🎉💎✨🥳🎊⭐")) + """""",
 """      const t = line("L5")[0], S = line("L5b")[0], W = line("L5c")[0];
       tl.fromTo("#l5", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .4, ease: "back.out(2)" }, t - .1);
@@ -229,10 +242,12 @@ scene("s05", GL + """
 # s07 – Folg mir
 scene("s06", GL + """
     #t7 { top: 250px; } #t7 b { font-size: 76px; }
-    #f7 { position: absolute; left: 0; right: 0; margin: 0 auto; top: 520px; width: 440px; height: 112px; border-radius: 56px; background: #fe2c55; color: #fff; font-family: "Inter", sans-serif; font-weight: 900; font-size: 50px; display: grid; place-items: center; box-shadow: 0 18px 40px rgba(254,44,85,.45); }""",
+    #f7 { position: absolute; left: 60px; right: 190px; margin: 0 auto; top: 520px; width: 440px; height: 112px; border-radius: 56px; background: #fe2c55; color: #fff; font-family: "Inter", sans-serif; font-weight: 900; font-size: 50px; display: grid; place-items: center; box-shadow: 0 18px 40px rgba(254,44,85,.45); }""",
 """      <div id="t7" class="gl"><small>Deine Hütte wartet</small><b>@muscheltal</b></div>
-      <div id="f7">+ Folgen</div>""",
+      <div id="f7">+ Folgen</div>
+      <div id="ez" style="position:absolute;left:60px;right:190px;margin:0 auto;width:fit-content;top:680px;padding:6px 30px 10px;border:10px solid #2fbf6a;border-radius:40px;background:rgba(255,255,255,.95);color:#1f9a52;font:900 60px Inter,sans-serif;transform:rotate(-3deg);opacity:0;white-space:nowrap">🏠 & ZIEH EIN!</div>""",
 """      const t = line("L6")[0], fo = at("L6", "Folg");
       tl.fromTo("#t7", { opacity: 0, y: 40, filter: "blur(12px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: .6, ease: "power3.out" }, t - .2);
       tl.fromTo("#f7", { opacity: 0, scale: .6 }, { opacity: 1, scale: 1, duration: .45, ease: "back.out(2)" }, fo);
-      tl.to("#f7", { scale: 1.06, duration: .3, yoyo: true, repeat: 5, ease: "sine.inOut" }, fo + .5);""", blur=False)
+      tl.to("#f7", { scale: 1.06, duration: .3, yoyo: true, repeat: 5, ease: "sine.inOut" }, fo + .5);
+      tl.fromTo("#ez", { opacity: 0, scale: 1.8 }, { opacity: 1, scale: 1, duration: .35, ease: "elastic.out(1.2, .4)" }, at("L6", "zieh") - .05);""", blur=False)

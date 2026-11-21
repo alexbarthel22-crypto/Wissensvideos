@@ -54,7 +54,7 @@
     .gl small { display: block; font-weight: 700; font-size: 26px; letter-spacing: .32em; text-transform: uppercase; opacity: .85; }
     .gl b { display: block; font-weight: 900; font-size: 92px; letter-spacing: -.02em; line-height: 1; }
     #t7 { top: 250px; } #t7 b { font-size: 76px; }
-    #f7 { position: absolute; left: 0; right: 0; margin: 0 auto; top: 520px; width: 440px; height: 112px; border-radius: 56px; background: #fe2c55; color: #fff; font-family: "Inter", sans-serif; font-weight: 900; font-size: 50px; display: grid; place-items: center; box-shadow: 0 18px 40px rgba(254,44,85,.45); }
+    #f7 { position: absolute; left: 60px; right: 190px; margin: 0 auto; top: 520px; width: 440px; height: 112px; border-radius: 56px; background: #fe2c55; color: #fff; font-family: "Inter", sans-serif; font-weight: 900; font-size: 50px; display: grid; place-items: center; box-shadow: 0 18px 40px rgba(254,44,85,.45); }
     .stk { background: rgba(255,255,255,.94) !important; border: 10px solid #e8467c; color: #e8467c !important; text-shadow: none !important; box-shadow: 0 9px 0 rgba(0,0,0,.25) !important;
       font-family: "Inter", sans-serif !important; font-weight: 900; font-size: 76px !important; padding: 6px 30px 12px !important; border-radius: 40px !important; line-height: 1.05 !important; max-width: 900px; }
     .stk small { color: #2a1b12 !important; font-size: 36px !important; text-shadow: none !important; font-weight: 800; }
@@ -66,16 +66,17 @@
     .ch6, #tg2, #fr8 { font-family: "Inter", sans-serif !important; font-weight: 900 !important; font-size: 50px !important; box-shadow: 0 9px 0 rgba(0,0,0,.28) !important; }
     #f2 { font-size: 48px !important; }
   </style>
-  <div id="root" data-composition-id="s06" data-start="0" data-duration="4.420" data-width="1080" data-height="1920">
-    <div id="s06-stage" class="clip stage" data-start="0" data-duration="4.420" data-track-index="0">
+  <div id="root" data-composition-id="s06" data-start="0" data-duration="5.550" data-width="1080" data-height="1920">
+    <div id="s06-stage" class="clip stage" data-start="0" data-duration="5.550" data-track-index="0">
       <div id="t7" class="gl"><small>Deine Hütte wartet</small><b>@muscheltal</b></div>
       <div id="f7">+ Folgen</div>
+      <div id="ez" style="position:absolute;left:60px;right:190px;margin:0 auto;width:fit-content;top:680px;padding:6px 30px 10px;border:10px solid #2fbf6a;border-radius:40px;background:rgba(255,255,255,.95);color:#1f9a52;font:900 60px Inter,sans-serif;transform:rotate(-3deg);opacity:0;white-space:nowrap">🏠 & ZIEH EIN!</div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 4.42, "L6": [0.2, 2.42], "L6.words": [["das", 0.2, 0.346], ["spiel", 0.346, 0.502], ["startet", 0.502, 0.799], ["bald", 0.799, 0.95], ["", 0.95, 1.08], ["folg", 1.33, 1.551], ["mir", 1.551, 1.764], ["und", 1.764, 1.978], ["spiel", 1.978, 2.207], ["mit", 2.207, 2.42]]};
+      const C = {"__dur": 5.55, "L6": [0.2, 3.55], "L6.words": [["das", 0.2, 0.381], ["spiel", 0.381, 0.574], ["startet", 0.574, 0.942], ["bald", 0.942, 1.129], ["", 1.129, 1.29], ["folg", 1.5, 1.765], ["mir", 1.765, 2.02], ["zieh", 2.15, 2.434], ["ein", 2.434, 2.708], ["und", 2.708, 2.982], ["spiel", 2.982, 3.276], ["mit", 3.276, 3.55]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -123,6 +124,7 @@
       tl.fromTo("#t7", { opacity: 0, y: 40, filter: "blur(12px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: .6, ease: "power3.out" }, t - .2);
       tl.fromTo("#f7", { opacity: 0, scale: .6 }, { opacity: 1, scale: 1, duration: .45, ease: "back.out(2)" }, fo);
       tl.to("#f7", { scale: 1.06, duration: .3, yoyo: true, repeat: 5, ease: "sine.inOut" }, fo + .5);
+      tl.fromTo("#ez", { opacity: 0, scale: 1.8 }, { opacity: 1, scale: 1, duration: .35, ease: "elastic.out(1.2, .4)" }, at("L6", "zieh") - .05);
       
       window.__timelines["s06"] = tl;
     })();
