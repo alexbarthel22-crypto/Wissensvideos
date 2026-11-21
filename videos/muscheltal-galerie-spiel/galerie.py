@@ -1,17 +1,17 @@
 # TikTok-Foto-Galerie „Spiel ab 1.000“ – Look wie Cover Tag 1 (dunkelblau, Strahlen, gelbe Schrift, Karten)
 S = [
  dict(first=True),
- dict(img="huetten", eyebrow="DAS IST MEIN SPIEL", head="DU SPIELST", big="DICH SELBST", sub="Deine eigene Figur, deine Hütte mit <b>deinem TikTok-Namen</b> – mitten zwischen allen anderen Followern.", chips=[("ye","🏠 deine Hütte"),("bl","🛴 E-Scooter & Skateboard")]),
- dict(grid=[("w_doener","🥙 Dönerbude"),("w_baeckerei","🥐 Bäckerei"),("w_strandbar","🍹 Strandbar"),("w_tierheim","🐾 Tierheim")], eyebrow="IHR HABT ABGESTIMMT", head="IHR HABT SIE GEWÜNSCHT –", big="SIE SPIELEN EINE<br>GROSSE ROLLE", sub="Diese Gebäude gibt es, <b>weil ihr abgestimmt habt</b>. Im Spiel lauft ihr hin: <b>Aufgaben</b>, <b>Jobs</b>, <b>Döner für 2 €</b> …", chips=[("pk","🗳️ eure Abstimmungen")]),
- dict(grid3=["hund","katze","hase","schildi","schwein","robbe"], eyebrow="🐾 TIERHEIM PFOTENKUSS", head="ADOPTIER DEIN", big="EIGENES<br>HAUSTIER", sub="Hund, Katze, Hase, Schildkröte … dein Tier <b>läuft dir beim Erkunden überall hinterher</b> 💗", chips=[("pk","🐶 süß"),("ye","🐱 süßer"),("tq","🐰 am süßesten")]),
- dict(img="karte", eyebrow="ENTDECKEN", head="DAS KANNST DU", big="ERKUNDEN", sub="Haupt-Insel, Kokos-Küste, Strand, Angelsteg, Lagerfeuer, Freiluftkino, Golden Pearl – und <b>geheime Inseln</b> ???", chips=[("tq","🏝️ 2 Inseln"),("vi","🔒 geheime Inseln")]),
- dict(img="sand", eyebrow="ACTION", head="DAS KANNST DU", big="ERLEBEN", sub="<b>Sandburg</b> mitbauen, <b>angeln</b>, Film im <b>Freiluftkino</b>, <b>Wal</b> & <b>Babyschildkröten</b> sehen, <b>Flaschenpost</b>-Quiz lösen …", chips=[("ye","🏰 Sandburg"),("bl","🎣 Angeln"),("gr","🐢 Events")]),
- dict(img="angel", eyebrow="SAMMELN", head="DAS KANNST DU", big="SAMMELN", sub="<b>Muscheln</b>, <b>Sticker</b>, <b>Fische</b>, <b>Erfolge</b>, Titel, Profilrahmen, Namensschilder, Haustiere, Fahrzeuge …", chips=[("ye","🐚 Muscheln"),("pk","🧩 Sticker"),("tq","🐟 Fische")]),
- dict(img="insel", eyebrow="NUR VON EUCH GESTALTET", head="IHR ENTSCHEIDET,", big="WAS HIER<br>PASSIERT", sub="Muschel-Tal wird <b>weiter nur von euch</b> gestaltet: Wünsche in die Kommentare, ihr <b>stimmt ab</b>, was gebaut wird.", chips=[("vi","💬 eure Wünsche"),("gr","🗳️ eure Abstimmung")]),
- dict(pod=True, eyebrow="DAS ZIEL", head="WER HAT DIE", big="MEISTEN<br>MUSCHELN? 🐚", sub="… und die <b>meisten Erfolge</b>? Login-Serie, Aufgaben, Geheimcodes – kletter in der <b>Rangliste</b> nach oben.", chips=[("ye","🏆 Rangliste"),("bl","🏅 Erfolge")]),
- dict(grid=[("spiele/taucher","🫧 Perlentaucher"),("spiele/turm","🥥 Kokos-Turm"),("spiele/memory","🐚 Memory"),("spiele/krebs","🦀 Krebs-Sprint")], eyebrow="GOLDEN PEARL 💎", head="SCHAU REIN:", big="MINISPIELE", sub="Vier Spiele, <b>kostenlos</b>, nur Geschick zählt. <b>Fordere Freunde heraus</b> – die Top 3 der Woche gewinnen Muscheln.", chips=[("vi","🎮 4 Minispiele"),("pk","⚔️ Duelle")]),
- dict(img="insel", eyebrow="NUR FÜR DIE ERSTEN", head="DIE ERSTEN 1.000", big="BEKOMMEN<br>VORTEILE", sub="Wer jetzt einzieht, ist <b>von Anfang an</b> dabei.", chips=[], bar=True),
- dict(img="huetten", eyebrow="SO BIST DU DABEI", head="FOLG", big="@MUSCHELTAL", sub="Dann bekommst du <b>deine eigene Hütte</b>. <b>Markier deine Freunde</b>, damit sie unter den ersten 1.000 sind!", chips=[("pk","1️⃣ Folgen"),("ye","2️⃣ Freunde markieren"),("gr","3️⃣ mitbestimmen")], last=True),
+ dict(pair=("kommentare/cmt_club.jpg","w_clubnacht"), eyebrow="IHR HABT ES GEWÜNSCHT", big="EIN CLUB?", stamp="✅ GEBAUT: KOK(O)S"),
+ dict(pair=("kommentare/fab_comment.jpg","w_baeckerei"), eyebrow="IHR HABT ES GEWÜNSCHT", big="EINE BÄCKEREI?", stamp="✅ GEBAUT – SIE LEITET SIE"),
+ dict(pair=("kommentare/marie_comment.jpg","w_yacht"), eyebrow="IHR HABT ES GEWÜNSCHT", big="EINE YACHT?", stamp="✅ IHR HABT JA GESAGT"),
+ dict(pair2=[("kommentare/cmt_drog.jpg","w_drog","✅ CocoCare"),("kommentare/sophia_amtshandlung.jpg","w_doener","✅ Döner 2 €")], eyebrow="UND NOCH MEHR", big="IHR WÜNSCHT –<br>ES PASSIERT"),
+ dict(grid3=["hund","katze","hase","schildi","schwein","robbe"], eyebrow="🗳️ EURE ABSTIMMUNG", head="TIERHEIM STATT HOTEL –", big="ADOPTIER<br>DEIN TIER 🐾", stamp2="✅ EURE ENTSCHEIDUNG"),
+ dict(grid=[("spiele/taucher","🫧 Perlentaucher"),("spiele/turm","🥥 Kokos-Turm"),("spiele/memory","🐚 Memory"),("spiele/krebs","🦀 Krebs-Sprint")], eyebrow="GOLDEN PEARL 💎", head="FORDER FREUNDE HERAUS:", big="MINISPIELE"),
+ dict(duo=[("wal","🐋 Wal-Sprung"),("schild","🐢 Schildkröten")], eyebrow="SELTENE EVENTS", head="IHR BESTIMMT AUCH,", big="WAS<br>PASSIERT", stamp2="💬 WÜNSCH DIR DAS NÄCHSTE EVENT"),
+ dict(grid=[("sand","🏰 Sandburg"),("angel","🎣 Angeln"),("kino","🎬 Kino"),("pearl","💎 Golden Pearl")], eyebrow="ERKUNDEN · ERLEBEN · SAMMELN", head="LAUF SELBST HIN:", big="DEINE INSEL"),
+ dict(pod=True, eyebrow="DAS ZIEL", head="MEISTE MUSCHELN & ERFOLGE:", big="WER WIRD<br>NR. 1? 🐚"),
+ dict(img="insel", eyebrow="NUR FÜR DIE ERSTEN", head="DIE ERSTEN 1.000", big="BEKOMMEN<br>VORTEILE", bar=True),
+ dict(img="huetten", eyebrow="DEIN WUNSCH IST DER NÄCHSTE", head="KOMMENTIER ES –", big="FOLG<br>@MUSCHELTAL", last=True),
 ]
 CSS = """@font-face{font-family:L;src:url(LilitaOne-Regular.woff2)}*{box-sizing:border-box;margin:0}
 body{width:1080px;height:1920px;overflow:hidden;position:relative;background:#04203a;font-family:Inter,system-ui,sans-serif;color:#fff}
@@ -46,6 +46,11 @@ body{width:1080px;height:1920px;overflow:hidden;position:relative;background:#04
 #mega{position:absolute;left:0;right:0;top:300px;text-align:center;font-family:L;font-size:96px;line-height:1;color:#fff;-webkit-text-stroke:12px #1a0f08;paint-order:stroke fill;transform:rotate(-3deg)}
 #mega2{position:absolute;left:0;right:0;top:395px;text-align:center;font-family:L;font-size:250px;line-height:.9;color:#ffe500;-webkit-text-stroke:16px #1a0f08;paint-order:stroke fill;text-shadow:0 14px 0 #ff2e7e;transform:rotate(-3deg)}
 #cardb{position:absolute;left:130px;width:820px;top:740px;height:580px;border-radius:50%;background:center/cover;-webkit-mask:radial-gradient(ellipse 50% 50% at 50% 50%,#000 72%,transparent 100%);filter:drop-shadow(0 0 60px rgba(40,220,255,.8))}
+
+.cm{position:absolute;left:80px;right:80px;border-radius:26px;overflow:hidden;border:6px solid #fff;box-shadow:0 0 0 5px #1a0f08,0 12px 0 rgba(0,0,0,.4);transform:rotate(-2deg)}.cm img{display:block;width:100%}
+.bld{position:absolute;left:150px;width:780px;height:780px;border-radius:40px;background:center/cover;border:10px solid #fff;box-shadow:0 0 0 6px #1a0f08,0 18px 0 rgba(0,0,0,.4),0 0 100px rgba(40,200,230,.45);transform:rotate(1.5deg)}
+.ok{position:absolute;left:0;right:0;margin:0 auto;width:fit-content;padding:8px 30px 12px;border-radius:36px;background:#00b86b;color:#fff;font-family:L;font-size:62px;box-shadow:0 0 0 6px #1a0f08,0 10px 0 rgba(0,0,0,.35);transform:rotate(-3deg);white-space:nowrap}
+.col{position:absolute;width:440px}.col .cm{position:relative;left:0;right:0;margin-bottom:20px}.col .bld{position:relative;left:0;width:440px;height:520px}.col .ok{position:relative;font-size:44px;margin-top:-30px}
 #ring{position:absolute;left:110px;width:860px;top:720px;height:620px;border-radius:50%;box-shadow:0 0 90px 30px rgba(255,229,0,.35)}
 """
 STAR = '<svg class="sp" style="left:{}px;top:{}px;width:{}px" viewBox="-10 -10 20 20"><path d="M0 -10 L2 -2 L10 0 L2 2 L0 10 L-2 2 L-10 0 L-2 -2Z" fill="{}"/></svg>'
@@ -61,19 +66,33 @@ for i, s in enumerate(S, 1):
         body += '<div id="chips" style="top:1530px"><div class="c ye" style="font-size:48px">NEUGIERIG GEWORDEN? SWIPE ➜</div></div>'
     else:
         two = "<br>" in s["big"]
-        body += f'<div id="ep" class="pill">{s["eyebrow"]}</div><div id="hd" class="pill">{s["head"]}</div><div id="big"' + (' style="font-size:100px"' if two else '') + f'>{s["big"]}</div>'
-        if two: body += '<style>#card,#gridc{top:680px!important;height:620px!important}.pod{top:740px!important;height:520px!important}</style>'
-        if s.get("bar"):
+        body += f'<div id="ep" class="pill">{s["eyebrow"]}</div>'
+        if s.get("head"): body += f'<div id="hd" class="pill">{s["head"]}</div>'
+        top = 330 if s.get("head") else 250
+        body += f'<div id="big" style="top:{top}px' + (';font-size:104px' if two else ';font-size:128px') + f'">{s["big"]}</div>'
+        y0 = top + (230 if two else 150)
+        if s.get("pair"):
+            c, im = s["pair"]
+            body += f'<div class="cm" style="top:{y0}px"><img src="bilder/{c}"></div>'
+            body += f'<div class="bld" style="top:{y0+300 if "fab" in c else y0+220}px;height:{620 if "fab" in c else 720}px;background-image:url(bilder/{im}.jpg)"></div>'
+            body += f'<div class="ok" style="top:{1430}px">{s["stamp"]}</div>'
+        elif s.get("pair2"):
+            for k, (c, im, t) in enumerate(s["pair2"]):
+                body += f'<div class="col" style="left:{70+k*480}px;top:{y0+20}px;transform:rotate({(-1.5,1.5)[k]}deg)"><div class="cm"><img src="bilder/{c}"></div><div class="bld" style="background-image:url(bilder/{im}.jpg)"></div><div class="ok">{t}</div></div>'
+        elif s.get("bar"):
             body += '<div id="bar"><div class="tr"><div class="fi"></div></div><div class="lb"><span>800</span><span>1.000 🎮</span></div></div><div id="free">NOCH 200 PLÄTZE FREI</div>'
-        elif s.get("grid"):
-            body += '<div id="gridc">' + "".join(f'<div class="gi" style="background-image:url(bilder/{f}.jpg)"><span>{n}</span></div>' for f, n in s["grid"]) + '</div>'
         elif s.get("grid3"):
-            body += '<div id="gridc" style="grid-template-columns:1fr 1fr 1fr">' + "".join(f'<div class="gi" style="background-image:url(bilder/tiere/{f}.jpg)"></div>' for f in s["grid3"]) + '</div>'
+            body += f'<div id="gridc" style="grid-template-columns:1fr 1fr 1fr;top:{y0+40}px;height:620px">' + "".join(f'<div class="gi" style="background-image:url(bilder/tiere/{f}.jpg)"></div>' for f in s["grid3"]) + '</div>'
+        elif s.get("grid"):
+            body += f'<div id="gridc" style="top:{y0+30}px;height:820px">' + "".join(f'<div class="gi" style="background-image:url(bilder/{f}.jpg)"><span>{n}</span></div>' for f, n in s["grid"]) + '</div>'
+        elif s.get("duo"):
+            body += f'<div id="gridc" style="top:{y0+40}px;height:860px;grid-template-columns:1fr 1fr">' + "".join(f'<div class="gi" style="background-image:url(bilder/{f}.jpg)"><span>{n}</span></div>' for f, n in s["duo"]) + '</div>'
         elif s.get("pod"):
-            body += '<div class="pod"><div class="pd p2"><i>🥈</i><b>2.</b></div><div class="pd p1"><i>🥇</i><b>1.</b></div><div class="pd p3"><i>🥉</i><b>3.</b></div></div>'
+            body += f'<div class="pod" style="top:{y0+80}px;height:600px"><div class="pd p2"><i>🥈</i><b>2.</b></div><div class="pd p1"><i>🥇</i><b>1.</b></div><div class="pd p3"><i>🥉</i><b>3.</b></div></div>'
         else:
-            body += f'<div id="card" style="background-image:url(bilder/{s["img"]}.jpg)"></div>'
-        body += f'<div id="sub">{s["sub"]}</div><div id="chips">' + "".join(f'<div class="c {c}">{html.escape(t)}</div>' for c, t in s["chips"]) + '</div>'
+            body += f'<div id="card" style="top:{y0+40}px;height:740px;background-image:url(bilder/{s["img"]}.jpg)"></div>'
+        if s.get("stamp2"): body += f'<div class="ok" style="top:1420px;font-size:54px">{s["stamp2"]}</div>'
+        if s.get("last"): body += '<div class="ok" style="top:1480px;background:#ff2e7e">💬 WAS SOLL ICH BAUEN?</div>'
     body += STAR.format(120, 560, 64, "#ffe500") + STAR.format(880, 540, 50, "#fff") + STAR.format(70, 1250, 44, "#fff") + STAR.format(930, 1240, 56, "#ffe500")
     open(f"seite_{i:02d}.html", "w").write(f'<!doctype html><html lang="de"><head><meta charset="utf-8"><style>{CSS}</style></head><body>{body}</body></html>')
 print(len(S))

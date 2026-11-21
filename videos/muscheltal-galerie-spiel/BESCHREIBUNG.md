@@ -2,11 +2,11 @@
 
 Bilder: `fertig/seite_01.jpg` … `seite_12.jpg` (1080×1920, in dieser Reihenfolge hochladen). Look wie Cover Tag 1 (dunkelblau, Strahlen, gelbe Lilita-Schrift, Karten mit weißem Rand); Folie 1 „DAS GAB’S AUF TIKTOK NOCH NIE“. Quelle: `galerie.py`; Hintergründe/Gebäude/Minispiele direkt von der Homepage (`bilder/`).
 
-1 Ich habe ein Spiel entwickelt (800 Follower wohnen hier) · 2 Du spielst dich selbst · 3 Wunsch-Gebäude spielen eine große Rolle · 4 Tierheim: adoptier dein eigenes Haustier · 5 Erkunden · 6 Erleben · 7 Sammeln · 8 Ihr entscheidet · 9 Ziel: meiste Muscheln & Erfolge · 10 Minispiele & Duelle · 11 Die ersten 1.000 bekommen Vorteile (noch 200) · 12 Folg @muscheltal
+1 EINZIGARTIG AUF TIKTOK – Willst du Teil von etwas Großem sein? · 2 Club gewünscht → KOK(O)S · 3 Bäckerei gewünscht → Bäckerei · 4 Yacht gewünscht → White Pearl · 5 Drogerie + Döner 2 € · 6 Tierheim statt Hotel: adoptier dein Tier · 7 Minispiele · 8 Events · 9 Deine Insel (Sandburg, Angeln, Kino, Golden Pearl) · 10 Wer wird Nr. 1? · 11 Die ersten 1.000 · 12 Kommentier – folg @muscheltal (echte Kommentar-Screenshots aus Tag 5 und Tag 10)
 
 ## Beschreibung (zum Posten)
-Ich habe für meine Follower ein eigenes Spiel entwickelt 🏝️🎮 800 wohnen schon hier – bei 1.000 geht's los 👀
-Was soll als Nächstes auf die Insel? 👇
+Ihr wünscht es – ich baue es 🏝️ Auf dieser Insel entscheidet ihr ALLES. Bei 1.000 Followern wird sie zum Spiel 🎮
+Was soll ich als Nächstes bauen? 👇
 #muscheltal #fyp #fürdich #foryou #viral
 
 ## Angepinnter Kommentar
