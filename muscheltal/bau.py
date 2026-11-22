@@ -618,7 +618,7 @@ section{background:#fff;border:3px solid var(--ink);border-radius:20px;padding:1
  <div class="such"><input id="bs" type="search" placeholder="Beruf, Ort oder Name suchen …" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search"><button type="button" id="bx" hidden aria-label="Suche leeren">✕</button></div>
  <p class="leer" id="bl" hidden>Nichts gefunden 🐚</p>
  <p class="hint">💬 Du willst auch einen Job auf Muschel-Tal? Schreib es in die Kommentare unter dem neuesten Video von <a href="https://www.tiktok.com/@muscheltal" target="_blank" rel="noopener">@muscheltal</a> auf TikTok!</p>
-""" + "\n".join(teile[:3]) + (f'''<details class="alt"><summary>📂 Ältere News</summary>{"".join(teile[3:])}</details>''' if len(teile) > 3 else "") + """
+""" + "\n".join(teile) + """
  <a class="cta" href="https://www.tiktok.com/@muscheltal" target="_blank" rel="noopener">💬 Auf TikTok kommentieren</a>
 </main>
 <script>/* Jobs mit Ablaufdatum: nach dem letzten Tag automatisch ausblenden */
