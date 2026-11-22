@@ -30,7 +30,7 @@
  },
  "title": "Muschel-Tal Tag 12 – Tag 1 vs. Tag 12, Tierheim, 3 Jobs",
  "voice": "Gemini TTS (gemini-3.1-flash-tts-preview, Stimme Achird, --speed 1.12) – wie Video 1",
- "notes": "22.11.: Vorher/Nachher, Tierheim fertig (keine Streuner mehr, Haustiere kaufbar bei Spielstart), 3 Jobs im Tierheim gesucht (Bewerbung in Kommentaren), Türsteher @in.yor_dreams, Golden Pearl @taliasonnen.",
+ "notes": "22.11.: Tag 1 vs. 12, Tierheim fertig, 3 Jobs, Neuheiten (Golden-Pearl-Spielehalle, Hüttentür+Licht, Fahrzeuge 2x, Freunde +10/+10), 823/1000 – noch 177.",
  "scenes": [
   {
    "id": "s01",
@@ -154,11 +154,6 @@
      "name": "pop",
      "at": "L4b:Wer",
      "volume": 0.5
-    },
-    {
-     "name": "impact-bass-1",
-     "at": "L4c:Türsteher",
-     "volume": 0.45
     }
    ],
    "lines": [
@@ -171,16 +166,125 @@
      "id": "L4b",
      "text": "*p:Wer will? / Schreib's in die *g:Kommentare!",
      "pause": 0.35
-    },
-    {
-     "id": "L4c",
-     "text": "Und der *y:Türsteher vom *p:Kokos-Club: / *g:@in.yor_dreams|In_your_dreams!",
-     "pause": 0.3
     }
    ]
   },
   {
    "id": "s05",
+   "tag": "",
+   "sfx": [
+    {
+     "name": "whoosh-short",
+     "at": "L6:Neu",
+     "volume": 0.45
+    },
+    {
+     "name": "pop",
+     "at": "L6:Golden",
+     "volume": 0.5
+    },
+    {
+     "name": "openbell",
+     "at": "L6:Spiele",
+     "volume": 0.4
+    },
+    {
+     "name": "pop",
+     "at": "L6b:Hütte",
+     "volume": 0.5
+    },
+    {
+     "name": "sparkle",
+     "at": "L6b:Tür",
+     "volume": 0.4
+    }
+   ],
+   "lines": [
+    {
+     "id": "L6",
+     "text": "*y:Neu: / Das *p:Golden *p:Pearl / hat jetzt seine *y:Spiele-Halle!",
+     "pause": 0.25
+    },
+    {
+     "id": "L6b",
+     "text": "Eure *g:Hütten haben jetzt / eine echte *y:Tür – / und *y:Licht am Abend!",
+     "pause": 0.25
+    }
+   ]
+  },
+  {
+   "id": "s06",
+   "tag": "",
+   "sfx": [
+    {
+     "name": "whoosh-cinematic",
+     "at": "L7:Moped",
+     "volume": 0.4
+    },
+    {
+     "name": "impact-bass-1",
+     "at": "L7:doppelt",
+     "volume": 0.5
+    },
+    {
+     "name": "ka-ching",
+     "at": "L7b:zehn",
+     "volume": 0.35
+    },
+    {
+     "name": "ka-ching",
+     "at": "L7b:beide",
+     "volume": 0.35
+    }
+   ],
+   "lines": [
+    {
+     "id": "L7",
+     "text": "Mit *p:Moped und *p:E-Scooter / bist du jetzt *y:doppelt so schnell!",
+     "pause": 0.25
+    },
+    {
+     "id": "L7b",
+     "text": "Und lädst du *g:Freunde ein, / kriegt ihr *y:beide *y:zehn *y:Muscheln!",
+     "pause": 0.25
+    }
+   ]
+  },
+  {
+   "id": "s07",
+   "tag": "",
+   "sfx": [
+    {
+     "name": "riser",
+     "at": "L8:fast-0.4",
+     "volume": 0.4
+    },
+    {
+     "name": "impact-bass-2",
+     "at": "L8b:177",
+     "volume": 0.55
+    },
+    {
+     "name": "notification",
+     "at": "L8b:fehlen",
+     "volume": 0.45
+    }
+   ],
+   "lines": [
+    {
+     "id": "L8",
+     "text": "Die Insel ist *y:fast *y:bereit / fürs *p:Spiel!",
+     "pause": 0.25
+    },
+    {
+     "id": "L8b",
+     "text": "*y:823|=achthundertdreiundzwanzig wohnen schon hier – / es fehlen nur noch *y:177|=hundertsiebenundsiebzig!",
+     "pause": 0.25
+    }
+   ]
+  },
+  {
+   "id": "s08",
    "tag": "",
    "sfx": [
     {

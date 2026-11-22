@@ -199,13 +199,11 @@ scene("s04", """
     #n4 { position: absolute; left: 60px; right: 190px; top: 420px; display: flex; justify-content: center; gap: 24px; }
     #n4 div { width: 200px; height: 200px; border-radius: 40px; background: rgba(10,4,24,.9); border: 5px solid #b6ff3b; box-shadow: 0 0 24px rgba(182,255,59,.7); display: grid; place-items: center; font-size: 120px; opacity: 0; }
     #q4 { top: 300px; font-size: 170px; }
-    #c4 { top: 650px; font-size: 46px; }
-    #d4 { top: 260px; font-size: 54px; }""",
+    #c4 { top: 650px; font-size: 46px; }""",
 """      <div id="j4" class="neo li"><small>🐾 TIERHEIM SUCHT</small>3 LEUTE FÜRS TEAM</div>
       <div id="n4"><div>💼</div><div>💼</div><div>💼</div></div>
       <div id="q4" class="big">WER <span class="p">WILL?</span></div>
       <div id="c4" class="neo pk">💬 SCHREIB'S IN DIE KOMMENTARE</div>
-      <div id="d4" class="neo"><small>🕶️ TÜRSTEHER KOKOS-CLUB</small>@in.yor_dreams</div>
       <div class="gl1"></div>""",
 """      tl.fromTo("#j4", { opacity: 0, scale: 2.6, filter: "blur(8px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .22, ease: "power4.out" }, line("L4")[0] - .05);
       tl.fromTo("#n4 div", { opacity: 0, scale: .2, y: 60 }, { opacity: 1, scale: 1, y: 0, duration: .3, ease: "back.out(3)", stagger: .15 }, at("L4", "drei") - .05);
@@ -213,12 +211,111 @@ scene("s04", """
       tl.fromTo("#q4", { opacity: 0, scale: 2.6, filter: "blur(8px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .22, ease: "power4.out" }, line("L4b")[0]);
       tl.to("#q4", { rotation: -4, duration: .12, yoyo: true, repeat: 5, ease: "sine.inOut" }, line("L4b")[0] + .3);
       tl.to(["#j4", "#n4"], { opacity: 0, duration: .15 }, line("L4b")[0] - .1);
-      tl.to(["#q4", "#c4"], { opacity: 0, duration: .15 }, line("L4c")[0] - .1);
-      tl.fromTo("#d4", { opacity: 0, scale: 2.6, filter: "blur(8px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .22, ease: "power4.out" }, at("L4c", "Türsteher") - .05);
       tl.fromTo("#c4", { opacity: 0, scale: 2.6, filter: "blur(8px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .22, ease: "power4.out" }, at("L4b", "Kommentare") - .2);""")
 
-# s05 – Outro
+# s05 – Neuheiten: Golden-Pearl-Spielehalle, Hütte mit Tür + Licht
 scene("s05", """
+    .neo { position: absolute; left: 60px; right: 190px; margin: 0 auto; width: fit-content; max-width: 830px; padding: 14px 34px 18px; border-radius: 30px; opacity: 0;
+      background: linear-gradient(160deg, rgba(24,10,48,.88), rgba(8,4,24,.9)); border: 5px solid #3ff0ff; box-shadow: 0 0 30px rgba(63,240,255,.7), inset 0 0 24px rgba(63,240,255,.25);
+      font-family: "Lilita One", sans-serif; color: #fff; text-align: center; line-height: 1.02; white-space: nowrap; }
+    .neo.pk { border-color: #ff3dbd; box-shadow: 0 0 30px rgba(255,61,189,.75), inset 0 0 24px rgba(255,61,189,.25); }
+    .neo.li { border-color: #b6ff3b; box-shadow: 0 0 30px rgba(182,255,59,.7), inset 0 0 24px rgba(182,255,59,.25); }
+    .neo small { display: block; font: 900 30px Inter, sans-serif; letter-spacing: .14em; color: #3ff0ff; margin-bottom: 6px; }
+    .neo.pk small { color: #ff3dbd; } .neo.li small { color: #b6ff3b; }
+    .big { position: absolute; left: 60px; right: 190px; text-align: center; font-family: "Lilita One", sans-serif; color: #fff; line-height: .92; opacity: 0;
+      -webkit-text-stroke: 16px #0a0418; paint-order: stroke fill; }
+    .big .c { color: #3ff0ff; } .big .p { color: #ff3dbd; } .big .l { color: #b6ff3b; }
+    .gl1 { position: absolute; inset: 0; opacity: 0; background: repeating-linear-gradient(0deg, rgba(63,240,255,.18) 0 3px, rgba(255,61,189,0) 3px 9px); mix-blend-mode: screen; }
+    .ph { position: absolute; border-radius: 34px; overflow: hidden; border: 6px solid #fff; box-shadow: 0 0 0 4px #3ff0ff, 0 0 40px rgba(63,240,255,.6); opacity: 0; }
+    .ph img { display: block; width: 100%; }
+    #p5a { left: 150px; top: 380px; width: 640px; height: 860px; } #p5a img { margin-top: -10px; }
+    #p5b { left: 90px; top: 400px; width: 760px; }
+    #n5 { top: 250px; font-size: 64px; } #m5 { top: 250px; font-size: 58px; }""",
+"""      <div id="n5" class="neo pk"><small>NEU 💎</small>SPIELE-HALLE IM GOLDEN PEARL</div>
+      <div class="ph" id="p5a"><img src="bilder/gp_menu_c.jpg"></div>
+      <div id="m5" class="neo li"><small>NEU 🏠</small>HÜTTE MIT TÜR &amp; LICHT</div>
+      <div class="ph" id="p5b"><img src="bilder/huette_neu_c.jpg"></div>
+      <div class="gl1"></div>""",
+"""      const B = line("L6b")[0];
+      tl.fromTo("#n5", { opacity: 0, scale: 2.6, filter: "blur(8px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .22, ease: "power4.out" }, line("L6")[0]);
+      tl.fromTo("#p5a", { opacity: 0, y: 400, rotation: 8 }, { opacity: 1, y: 0, rotation: -2, duration: .45, ease: "back.out(1.8)" }, at("L6", "Golden") - .1);
+      tl.to(["#n5", "#p5a"], { opacity: 0, x: -300, duration: .2, ease: "power2.in" }, B - .2);
+      [0,.05,.1,.15].forEach((d, i) => tl.to("#s05-stage", { x: i % 2 ? -14 : 14, duration: .03, ease: "none" }, B - .05 + d)); tl.to("#s05-stage", { x: 0, duration: .03 }, B - .05 + .2); tl.fromTo(".gl1", { opacity: .9 }, { opacity: 0, duration: .3, immediateRender: false }, B - .05);
+      tl.fromTo("#m5", { opacity: 0, scale: 2.6, filter: "blur(8px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .22, ease: "power4.out" }, B);
+      tl.fromTo("#p5b", { opacity: 0, x: 400, rotation: -8 }, { opacity: 1, x: 0, rotation: 2, duration: .45, ease: "back.out(1.8)" }, at("L6b", "Hütten") - .05);""")
+
+# s06 – Fahrzeuge 2x, Freunde einladen +10/+10
+scene("s06", """
+    .neo { position: absolute; left: 60px; right: 190px; margin: 0 auto; width: fit-content; max-width: 830px; padding: 14px 34px 18px; border-radius: 30px; opacity: 0;
+      background: linear-gradient(160deg, rgba(24,10,48,.88), rgba(8,4,24,.9)); border: 5px solid #3ff0ff; box-shadow: 0 0 30px rgba(63,240,255,.7), inset 0 0 24px rgba(63,240,255,.25);
+      font-family: "Lilita One", sans-serif; color: #fff; text-align: center; line-height: 1.02; white-space: nowrap; }
+    .neo.pk { border-color: #ff3dbd; box-shadow: 0 0 30px rgba(255,61,189,.75), inset 0 0 24px rgba(255,61,189,.25); }
+    .neo.li { border-color: #b6ff3b; box-shadow: 0 0 30px rgba(182,255,59,.7), inset 0 0 24px rgba(182,255,59,.25); }
+    .neo small { display: block; font: 900 30px Inter, sans-serif; letter-spacing: .14em; color: #3ff0ff; margin-bottom: 6px; }
+    .neo.pk small { color: #ff3dbd; } .neo.li small { color: #b6ff3b; }
+    .big { position: absolute; left: 60px; right: 190px; text-align: center; font-family: "Lilita One", sans-serif; color: #fff; line-height: .92; opacity: 0;
+      -webkit-text-stroke: 16px #0a0418; paint-order: stroke fill; }
+    .big .c { color: #3ff0ff; } .big .p { color: #ff3dbd; } .big .l { color: #b6ff3b; }
+    .gl1 { position: absolute; inset: 0; opacity: 0; background: repeating-linear-gradient(0deg, rgba(63,240,255,.18) 0 3px, rgba(255,61,189,0) 3px 9px); mix-blend-mode: screen; }
+    .ph { position: absolute; border-radius: 34px; overflow: hidden; border: 6px solid #fff; box-shadow: 0 0 0 4px #ff3dbd, 0 0 40px rgba(255,61,189,.6); opacity: 0; }
+    .ph img { display: block; width: 100%; }
+    #p6 { left: 150px; top: 400px; width: 640px; height: 760px; } #p6 img { margin-top: -60px; }
+    #x6 { top: 250px; font-size: 64px; }
+    #s6 { top: 1000px; font-size: 200px; }
+    #f6 { top: 250px; font-size: 62px; }
+    #pl { position: absolute; left: 60px; right: 190px; top: 460px; display: flex; justify-content: center; gap: 40px; }
+    #pl div { width: 300px; padding: 30px 0 34px; border-radius: 40px; background: rgba(10,4,24,.9); border: 5px solid #b6ff3b; box-shadow: 0 0 30px rgba(182,255,59,.7); text-align: center; font: 400 110px/1 "Lilita One", sans-serif; color: #b6ff3b; opacity: 0; }
+    #pl div small { display: block; font: 900 36px Inter, sans-serif; color: #fff; margin-top: 10px; }""",
+"""      <div id="x6" class="neo pk"><small>🛵 MOPED &amp; E-SCOOTER</small>DOPPELT SO SCHNELL</div>
+      <div class="ph" id="p6"><img src="bilder/moped.jpg"></div>
+      <div id="s6" class="big"><span class="p">2×</span></div>
+      <div id="f6" class="neo li"><small>👯 FREUNDE EINLADEN</small>IHR BEIDE BEKOMMT</div>
+      <div id="pl"><div>+10🐚<small>DU</small></div><div>+10🐚<small>DEIN FREUND</small></div></div>
+      <div class="gl1"></div>""",
+"""      const B = line("L7b")[0];
+      tl.fromTo("#x6", { opacity: 0, scale: 2.6, filter: "blur(8px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .22, ease: "power4.out" }, line("L7")[0]);
+      tl.fromTo("#p6", { opacity: 0, x: -500 }, { opacity: 1, x: 0, duration: .35, ease: "power3.out" }, line("L7")[0] + .1);
+      tl.to("#p6", { x: 30, duration: 1.6, ease: "none" }, line("L7")[0] + .45);
+      tl.fromTo("#s6", { opacity: 0, scale: 2.6, filter: "blur(8px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .22, ease: "power4.out" }, at("L7", "doppelt"));
+      tl.to(["#x6", "#p6", "#s6"], { opacity: 0, duration: .15 }, B - .15);
+      [0,.05,.1,.15].forEach((d, i) => tl.to("#s06-stage", { x: i % 2 ? -14 : 14, duration: .03, ease: "none" }, B - .05 + d)); tl.to("#s06-stage", { x: 0, duration: .03 }, B - .05 + .2); tl.fromTo(".gl1", { opacity: .9 }, { opacity: 0, duration: .3, immediateRender: false }, B - .05);
+      tl.fromTo("#f6", { opacity: 0, scale: 2.6, filter: "blur(8px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .22, ease: "power4.out" }, B);
+      tl.fromTo("#pl div", { opacity: 0, scale: .2, y: 80 }, { opacity: 1, scale: 1, y: 0, duration: .35, ease: "back.out(3)", stagger: .2 }, at("L7b", "beide") - .1);
+      tl.to("#pl div", { scale: 1.08, duration: .25, yoyo: true, repeat: 5, ease: "sine.inOut" }, at("L7b", "zehn") + .3);""")
+
+# s07 – Fast bereit: 823 / 1.000, noch 177
+scene("s07", """
+    .neo { position: absolute; left: 60px; right: 190px; margin: 0 auto; width: fit-content; max-width: 830px; padding: 14px 34px 18px; border-radius: 30px; opacity: 0;
+      background: linear-gradient(160deg, rgba(24,10,48,.88), rgba(8,4,24,.9)); border: 5px solid #3ff0ff; box-shadow: 0 0 30px rgba(63,240,255,.7), inset 0 0 24px rgba(63,240,255,.25);
+      font-family: "Lilita One", sans-serif; color: #fff; text-align: center; line-height: 1.02; white-space: nowrap; }
+    .neo.pk { border-color: #ff3dbd; box-shadow: 0 0 30px rgba(255,61,189,.75), inset 0 0 24px rgba(255,61,189,.25); }
+    .neo.li { border-color: #b6ff3b; box-shadow: 0 0 30px rgba(182,255,59,.7), inset 0 0 24px rgba(182,255,59,.25); }
+    .neo small { display: block; font: 900 30px Inter, sans-serif; letter-spacing: .14em; color: #3ff0ff; margin-bottom: 6px; }
+    .neo.pk small { color: #ff3dbd; } .neo.li small { color: #b6ff3b; }
+    .big { position: absolute; left: 60px; right: 190px; text-align: center; font-family: "Lilita One", sans-serif; color: #fff; line-height: .92; opacity: 0;
+      -webkit-text-stroke: 16px #0a0418; paint-order: stroke fill; }
+    .big .c { color: #3ff0ff; } .big .p { color: #ff3dbd; } .big .l { color: #b6ff3b; }
+    .gl1 { position: absolute; inset: 0; opacity: 0; background: repeating-linear-gradient(0deg, rgba(63,240,255,.18) 0 3px, rgba(255,61,189,0) 3px 9px); mix-blend-mode: screen; }
+    #r7 { top: 250px; font-size: 64px; }
+    #br { position: absolute; left: 100px; right: 230px; top: 470px; opacity: 0; }
+    #br .tr { height: 90px; border-radius: 45px; background: rgba(10,4,24,.85); border: 5px solid #3ff0ff; box-shadow: 0 0 30px rgba(63,240,255,.6); overflow: hidden; }
+    #br .fi { height: 100%; width: 0; background: linear-gradient(90deg, #3ff0ff, #ff3dbd); }
+    #br .lb { display: flex; justify-content: space-between; margin-top: 16px; font: 400 64px "Lilita One", sans-serif; color: #fff; -webkit-text-stroke: 10px #0a0418; paint-order: stroke fill; }
+    #br .lb span:last-child { color: #b6ff3b; }
+    #k7 { top: 700px; font-size: 76px; }""",
+"""      <div id="r7" class="neo li"><small>🎮 DAS SPIEL</small>FAST BEREIT!</div>
+      <div id="br"><div class="tr"><div class="fi"></div></div><div class="lb"><span>823</span><span>1.000</span></div></div>
+      <div id="k7" class="neo pk"><small>ES FEHLEN NUR NOCH</small>177 SPIELER 👀</div>
+      <div class="gl1"></div>""",
+"""      tl.fromTo("#r7", { opacity: 0, scale: 2.6, filter: "blur(8px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .22, ease: "power4.out" }, line("L8")[0]);
+      tl.fromTo("#br", { opacity: 0 }, { opacity: 1, duration: .25 }, line("L8")[0] + .4);
+      tl.fromTo("#br .fi", { width: "0%" }, { width: "82.3%", duration: 1.6, ease: "power2.out" }, line("L8")[0] + .5);
+      [0,.05,.1,.15].forEach((d, i) => tl.to("#s07-stage", { x: i % 2 ? -14 : 14, duration: .03, ease: "none" }, at("L8b", "177") - .05 + d)); tl.to("#s07-stage", { x: 0, duration: .03 }, at("L8b", "177") - .05 + .2); tl.fromTo(".gl1", { opacity: .9 }, { opacity: 0, duration: .3, immediateRender: false }, at("L8b", "177") - .05);
+      tl.fromTo("#k7", { opacity: 0, scale: 2.6, filter: "blur(8px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .22, ease: "power4.out" }, at("L8b", "177") - .05);
+      tl.to("#k7", { scale: 1.07, duration: .25, yoyo: true, repeat: 5, ease: "sine.inOut" }, at("L8b", "177") + .4);""")
+
+# s05 – Outro
+scene("s08", """
     .neo { position: absolute; left: 60px; right: 190px; margin: 0 auto; width: fit-content; max-width: 830px; padding: 14px 34px 18px; border-radius: 30px; opacity: 0;
       background: linear-gradient(160deg, rgba(24,10,48,.88), rgba(8,4,24,.9)); border: 5px solid #3ff0ff; box-shadow: 0 0 30px rgba(63,240,255,.7), inset 0 0 24px rgba(63,240,255,.25);
       font-family: "Lilita One", sans-serif; color: #fff; text-align: center; line-height: 1.02; white-space: nowrap; }

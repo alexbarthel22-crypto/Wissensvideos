@@ -65,22 +65,20 @@
     #n4 div { width: 200px; height: 200px; border-radius: 40px; background: rgba(10,4,24,.9); border: 5px solid #b6ff3b; box-shadow: 0 0 24px rgba(182,255,59,.7); display: grid; place-items: center; font-size: 120px; opacity: 0; }
     #q4 { top: 300px; font-size: 170px; }
     #c4 { top: 650px; font-size: 46px; }
-    #d4 { top: 260px; font-size: 54px; }
   </style>
-  <div id="root" data-composition-id="s04" data-start="0" data-duration="9.070" data-width="1080" data-height="1920">
-    <div id="s04-stage" class="clip stage" data-start="0" data-duration="9.070" data-track-index="0">
+  <div id="root" data-composition-id="s04" data-start="0" data-duration="5.320" data-width="1080" data-height="1920">
+    <div id="s04-stage" class="clip stage" data-start="0" data-duration="5.320" data-track-index="0">
       <div id="j4" class="neo li"><small>🐾 TIERHEIM SUCHT</small>3 LEUTE FÜRS TEAM</div>
       <div id="n4"><div>💼</div><div>💼</div><div>💼</div></div>
       <div id="q4" class="big">WER <span class="p">WILL?</span></div>
       <div id="c4" class="neo pk">💬 SCHREIB'S IN DIE KOMMENTARE</div>
-      <div id="d4" class="neo"><small>🕶️ TÜRSTEHER KOKOS-CLUB</small>@in.yor_dreams</div>
       <div class="gl1"></div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 9.07, "L4": [0.2, 2.73], "L4.words": [["und", 0.2, 0.448], ["das", 0.448, 0.695], ["tierheim", 0.695, 1.208], ["sucht", 1.208, 1.474], ["drei", 1.474, 1.73], ["leute", 1.73, 2.217], ["fürs", 2.217, 2.473], ["team", 2.473, 2.73]], "L4b": [3.3, 4.89], "L4b.words": [["wer", 3.3, 3.462], ["will", 3.462, 3.63], ["schreibs", 3.88, 4.048], ["in", 4.048, 4.186], ["die", 4.186, 4.329], ["kommentare", 4.329, 4.89]], "L4c": [5.41, 8.59], "L4c.words": [["und", 5.41, 5.66], ["der", 5.66, 5.91], ["türsteher", 5.91, 6.66], ["vom", 6.66, 6.91], ["kokosclub", 6.91, 7.66], ["inyor_dreams", 7.81, 8.59]]};
+      const C = {"__dur": 5.32, "L4": [0.2, 2.73], "L4.words": [["und", 0.2, 0.448], ["das", 0.448, 0.695], ["tierheim", 0.695, 1.208], ["sucht", 1.208, 1.474], ["drei", 1.474, 1.73], ["leute", 1.73, 2.217], ["fürs", 2.217, 2.473], ["team", 2.473, 2.73]], "L4b": [3.3, 4.89], "L4b.words": [["wer", 3.3, 3.462], ["will", 3.462, 3.63], ["schreibs", 3.88, 4.048], ["in", 4.048, 4.186], ["die", 4.186, 4.329], ["kommentare", 4.329, 4.89]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -130,8 +128,6 @@
       tl.fromTo("#q4", { opacity: 0, scale: 2.6, filter: "blur(8px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .22, ease: "power4.out" }, line("L4b")[0]);
       tl.to("#q4", { rotation: -4, duration: .12, yoyo: true, repeat: 5, ease: "sine.inOut" }, line("L4b")[0] + .3);
       tl.to(["#j4", "#n4"], { opacity: 0, duration: .15 }, line("L4b")[0] - .1);
-      tl.to(["#q4", "#c4"], { opacity: 0, duration: .15 }, line("L4c")[0] - .1);
-      tl.fromTo("#d4", { opacity: 0, scale: 2.6, filter: "blur(8px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .22, ease: "power4.out" }, at("L4c", "Türsteher") - .05);
       tl.fromTo("#c4", { opacity: 0, scale: 2.6, filter: "blur(8px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .22, ease: "power4.out" }, at("L4b", "Kommentare") - .2);
       tl.to("#s04-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
       window.__timelines["s04"] = tl;

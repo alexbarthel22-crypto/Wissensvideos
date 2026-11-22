@@ -1,0 +1,48 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+
+    .neo { position: absolute; left: 60px; right: 190px; margin: 0 auto; width: fit-content; max-width: 830px; padding: 14px 34px 18px; border-radius: 30px; opacity: 0;
+      background: linear-gradient(160deg, rgba(24,10,48,.88), rgba(8,4,24,.9)); border: 5px solid #3ff0ff; box-shadow: 0 0 30px rgba(63,240,255,.7), inset 0 0 24px rgba(63,240,255,.25);
+      font-family: "Lilita One", sans-serif; color: #fff; text-align: center; line-height: 1.02; white-space: nowrap; }
+    .neo.pk { border-color: #ff3dbd; box-shadow: 0 0 30px rgba(255,61,189,.75), inset 0 0 24px rgba(255,61,189,.25); }
+    .neo.li { border-color: #b6ff3b; box-shadow: 0 0 30px rgba(182,255,59,.7), inset 0 0 24px rgba(182,255,59,.25); }
+    .neo small { display: block; font: 900 30px Inter, sans-serif; letter-spacing: .14em; color: #3ff0ff; margin-bottom: 6px; }
+    .neo.pk small { color: #ff3dbd; } .neo.li small { color: #b6ff3b; }
+    .big { position: absolute; left: 60px; right: 190px; text-align: center; font-family: "Lilita One", sans-serif; color: #fff; line-height: .92; opacity: 0;
+      -webkit-text-stroke: 16px #0a0418; paint-order: stroke fill; }
+    .big .c { color: #3ff0ff; } .big .p { color: #ff3dbd; } .big .l { color: #b6ff3b; }
+    .gl1 { position: absolute; inset: 0; opacity: 0; background: repeating-linear-gradient(0deg, rgba(63,240,255,.18) 0 3px, rgba(255,61,189,0) 3px 9px); mix-blend-mode: screen; }
+    #r7 { top: 250px; font-size: 64px; }
+    #br { position: absolute; left: 100px; right: 230px; top: 470px; opacity: 0; }
+    #br .tr { height: 90px; border-radius: 45px; background: rgba(10,4,24,.85); border: 5px solid #3ff0ff; box-shadow: 0 0 30px rgba(63,240,255,.6); overflow: hidden; }
+    #br .fi { height: 100%; width: 0; background: linear-gradient(90deg, #3ff0ff, #ff3dbd); }
+    #br .lb { display: flex; justify-content: space-between; margin-top: 16px; font: 400 64px "Lilita One", sans-serif; color: #fff; -webkit-text-stroke: 10px #0a0418; paint-order: stroke fill; }
+    #br .lb span:last-child { color: #b6ff3b; }
+    #k7 { top: 700px; font-size: 76px; }
+  </style>
+  <div id="root" data-composition-id="s07" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s07-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="r7" class="neo li"><small>🎮 DAS SPIEL</small>FAST BEREIT!</div>
+      <div id="br"><div class="tr"><div class="fi"></div></div><div class="lb"><span>823</span><span>1.000</span></div></div>
+      <div id="k7" class="neo pk"><small>ES FEHLEN NUR NOCH</small>177 SPIELER 👀</div>
+      <div class="gl1"></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      /*__COMMON_JS__*/
+      wrapBt("#s07-stage");
+      const tl = gsap.timeline({ paused: true });
+      tl.fromTo("#r7", { opacity: 0, scale: 2.6, filter: "blur(8px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .22, ease: "power4.out" }, line("L8")[0]);
+      tl.fromTo("#br", { opacity: 0 }, { opacity: 1, duration: .25 }, line("L8")[0] + .4);
+      tl.fromTo("#br .fi", { width: "0%" }, { width: "82.3%", duration: 1.6, ease: "power2.out" }, line("L8")[0] + .5);
+      [0,.05,.1,.15].forEach((d, i) => tl.to("#s07-stage", { x: i % 2 ? -14 : 14, duration: .03, ease: "none" }, at("L8b", "177") - .05 + d)); tl.to("#s07-stage", { x: 0, duration: .03 }, at("L8b", "177") - .05 + .2); tl.fromTo(".gl1", { opacity: .9 }, { opacity: 0, duration: .3, immediateRender: false }, at("L8b", "177") - .05);
+      tl.fromTo("#k7", { opacity: 0, scale: 2.6, filter: "blur(8px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .22, ease: "power4.out" }, at("L8b", "177") - .05);
+      tl.to("#k7", { scale: 1.07, duration: .25, yoyo: true, repeat: 5, ease: "sine.inOut" }, at("L8b", "177") + .4);
+      tl.to("#s07-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
+      window.__timelines["s07"] = tl;
+    })();
+  </script>
+</template>

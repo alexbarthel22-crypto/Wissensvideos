@@ -16,7 +16,7 @@ const K=[[0,'A',m.x,m.y,m.z*1.05],[t1b+1.2,'A',m.x,m.y,m.z*1.15],
  [at('L2','Club')-.05,'C',G.cl[0],G.cl[1]-4,3.6],[at('L2','Kino')-.06,'C',G.cl[0],G.cl[1]-4,4.0],
  [at('L2','Kino')-.05,'C',G.ki[0],G.ki[1]-14,3.0],[at('L2','Golden')-.06,'C',G.ki[0],G.ki[1]-14,3.3],
  [at('L2','Golden')-.05,'C',G.gp[0],G.gp[1]-30,1.6],[L.L2b.end+.2,'C',G.gp[0],G.gp[1]-40,1.9],
- [L.L3.start-.05,'A',G.th[0],G.th[1]+8,4.0],[L.L4b.end+.3,'A',G.th[0],G.th[1]+8,5.4],[L.L4c.start-.05,'C',G.cl[0],G.cl[1]-4,3.6],[L.L4c.end+.3,'C',G.cl[0],G.cl[1]-4,4.2],
+ [L.L3.start-.05,'A',G.th[0],G.th[1]+8,4.0],[L.L4b.end+.3,'A',G.th[0],G.th[1]+8,5.4],[L.L6.start-.05,'C',G.gp[0],G.gp[1]-40,1.7],[L.L6.end+.2,'C',G.gp[0],G.gp[1]-50,2.1],[L.L6b.start-.05,'C',m.x,m.y,m.z*2.6],[L.L6b.end+.2,'C',m.x,m.y,m.z*2.9],[L.L7.start-.05,'A',-150,100,3.0],[L.L7b.end+.2,'A',150,100,3.0],[L.L8.start-.05,'A',m.x,m.y,m.z*.9],[L.L8b.end+.2,'A',m.x,m.y,m.z*1.1],
  [L.L5.start-.05,'A',m.x,m.y,m.z*1.3],[dur,'A',m.x,m.y,m.z]];
 const cam=t=>{let j=0;while(j<K.length-1&&K[j+1][0]<=t)j++;const a=K[j],c=K[Math.min(j+1,K.length-1)];if(c[1]!==a[1])return [a[1],a[2],a[3],a[4]];let k=c[0]>a[0]?Math.max(0,Math.min(1,(t-a[0])/(c[0]-a[0]))):1;k=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;
  return [a[1],a[2]+(c[2]-a[2])*k,a[3]+(c[3]-a[3])*k,Math.exp(Math.log(a[4])+(Math.log(c[4])-Math.log(a[4]))*k)];};
