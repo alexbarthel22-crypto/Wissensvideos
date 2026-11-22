@@ -113,6 +113,8 @@ scene("s01", """
       -webkit-text-stroke: 16px #0a0418; paint-order: stroke fill; }
     .big .c { color: #3ff0ff; } .big .p { color: #ff3dbd; } .big .l { color: #b6ff3b; }
     .gl1 { position: absolute; inset: 0; opacity: 0; background: repeating-linear-gradient(0deg, rgba(63,240,255,.18) 0 3px, rgba(255,61,189,0) 3px 9px); mix-blend-mode: screen; }
+    .rg { position: absolute; left: 475px; top: 360px; width: 300px; height: 300px; margin: -150px; border-radius: 50%; border: 20px solid #3ff0ff; opacity: 0; box-shadow: 0 0 40px #3ff0ff; } #rg1 { border-color: #ff3dbd; box-shadow: 0 0 40px #ff3dbd; } #rg2 { border-color: #b6ff3b; box-shadow: 0 0 40px #b6ff3b; }
+    .pt { position: absolute; font-size: 90px; line-height: 1; width: 90px; height: 90px; opacity: 0; }
     #t1 { position: absolute; inset: 0; background: url(bilder/tag1.jpg) center/cover; }
     #d1 { top: 260px; font-size: 200px; } #d2 { top: 260px; font-size: 200px; }
     #lb1 { top: 520px; font-size: 56px; } #lb2 { top: 520px; font-size: 56px; }""",
@@ -121,7 +123,10 @@ scene("s01", """
       <div id="lb1" class="neo"><small>VORHER</small>nur leere Wiese 🌱</div>
       <div id="d2" class="big">TAG <span class="p">12</span></div>
       <div id="lb2" class="neo pk"><small>JETZT</small>DAS HIER 🤯</div>
-      <div class="gl1"></div>""",
+      <div class="gl1"></div>
+      <div id="fl1" style="position:absolute;inset:0;background:#fff;opacity:0"></div>
+      <div class="rg" id="rg0"></div><div class="rg" id="rg1"></div><div class="rg" id="rg2"></div>
+      """ + "".join(f'<div class="pt" id="pa{i}" style="left:433px;top:330px">{e}</div>' for i, e in enumerate("💥⚡🤯✨💥⚡🤯✨💥⚡🤯✨")) + """""",
 """      const B = line("L1b")[0];
       tl.fromTo("#d1", { opacity: 0, scale: 2.6, filter: "blur(8px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .22, ease: "power4.out" }, .02);
       tl.fromTo("#lb1", { opacity: 0, scale: 2.6, filter: "blur(8px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .22, ease: "power4.out" }, at("L1", "nur") - .05);
@@ -130,7 +135,16 @@ scene("s01", """
       [0,.05,.1,.15].forEach((d, i) => tl.to("#s01-stage", { x: i % 2 ? -14 : 14, duration: .03, ease: "none" }, B - .05 + d)); tl.to("#s01-stage", { x: 0, duration: .03 }, B - .05 + .2); tl.fromTo(".gl1", { opacity: .9 }, { opacity: 0, duration: .3, immediateRender: false }, B - .05);
       tl.fromTo("#d2", { opacity: 0, scale: 2.6, filter: "blur(8px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .22, ease: "power4.out" }, B);
       tl.fromTo("#lb2", { opacity: 0, scale: 2.6, filter: "blur(8px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .22, ease: "power4.out" }, at("L1b", "DAS") - .05);
-      tl.to("#d2", { scale: 1.08, duration: .2, yoyo: true, repeat: 3, ease: "sine.inOut" }, B + .4);""")
+      tl.to("#d2", { scale: 1.08, duration: .2, yoyo: true, repeat: 3, ease: "sine.inOut" }, B + .4);
+      const BOOM = t => { tl.fromTo("#fl1", { opacity: .85 }, { opacity: 0, duration: .3, ease: "power2.out", immediateRender: false }, t);
+        ["#rg0", "#rg1", "#rg2"].forEach((q, i) => tl.fromTo(q, { opacity: 1, scale: .2 }, { opacity: 0, scale: 5, duration: .8, ease: "power3.out", immediateRender: false }, t + i * .08));
+        [[22,-12],[-24,10],[18,14],[-14,-10],[10,6],[0,0]].forEach(([x, y], i) => tl.to("#s01-stage", { x, y, duration: .04, ease: "none" }, t + .02 + i * .04)); };
+      BOOM(.02);
+      [...Array(12).keys()].forEach(i => { const a = i / 12 * 6.283, r = 320 + (i % 3) * 120; tl.fromTo("#pa" + i, { x: 0, y: 0, scale: .3, opacity: 1, rotation: 0 }, { x: Math.cos(a) * r * .8, y: Math.sin(a) * r, scale: 1.4, rotation: (i % 2 ? 1 : -1) * 200, opacity: 0, duration: 1.1, ease: "power3.out", immediateRender: false }, B + .02 + (i % 3) * .05); });
+      BOOM(B - .02);
+      tl.fromTo("#d1", { rotation: -12 }, { rotation: 0, duration: .5, ease: "elastic.out(1.2,.4)", immediateRender: false }, .02);
+      tl.fromTo("#d2", { rotation: 14 }, { rotation: 0, duration: .5, ease: "elastic.out(1.2,.4)", immediateRender: false }, B);
+      tl.fromTo("#d2 .p", { textShadow: "0 0 0px #ff3dbd" }, { textShadow: "0 0 70px #ff3dbd", duration: .2, yoyo: true, repeat: 7, ease: "sine.inOut", immediateRender: false }, B + .3);""")
 
 # s02 – Blitzschnitte Gebäude, Namen ploppen
 scene("s02", """
@@ -213,7 +227,7 @@ scene("s04", """
       tl.to(["#j4", "#n4"], { opacity: 0, duration: .15 }, line("L4b")[0] - .1);
       tl.fromTo("#c4", { opacity: 0, scale: 2.6, filter: "blur(8px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .22, ease: "power4.out" }, at("L4b", "Kommentare") - .2);""")
 
-# s05 – Neuheiten: Golden-Pearl-Spielehalle, Hütte mit Tür + Licht
+# s05 – Neuheiten: Golden Pearl Minispiele, Hütte mit Tür + Licht
 scene("s05", """
     .neo { position: absolute; left: 60px; right: 190px; margin: 0 auto; width: fit-content; max-width: 830px; padding: 14px 34px 18px; border-radius: 30px; opacity: 0;
       background: linear-gradient(160deg, rgba(24,10,48,.88), rgba(8,4,24,.9)); border: 5px solid #3ff0ff; box-shadow: 0 0 30px rgba(63,240,255,.7), inset 0 0 24px rgba(63,240,255,.25);
@@ -231,7 +245,7 @@ scene("s05", """
     #p5a { left: 150px; top: 380px; width: 640px; height: 860px; } #p5a img { margin-top: -10px; }
     #p5b { left: 90px; top: 400px; width: 760px; }
     #n5 { top: 250px; font-size: 64px; } #m5 { top: 250px; font-size: 58px; }""",
-"""      <div id="n5" class="neo pk"><small>NEU 💎</small>SPIELE-HALLE IM GOLDEN PEARL</div>
+"""      <div id="n5" class="neo pk"><small>NEU 💎</small>4 MINISPIELE IM GOLDEN PEARL</div>
       <div class="ph" id="p5a"><img src="bilder/gp_menu_c.jpg"></div>
       <div id="m5" class="neo li"><small>NEU 🏠</small>HÜTTE MIT TÜR &amp; LICHT</div>
       <div class="ph" id="p5b"><img src="bilder/huette_neu_c.jpg"></div>

@@ -23,33 +23,53 @@
    "s01"
   ]
  },
- "loudness": -11,
+ "loudness": -9,
  "pitch": 0,
  "bgvideo": {
   "src": "assets/bg.mp4"
  },
  "title": "Muschel-Tal Tag 12 – Tag 1 vs. Tag 12, Tierheim, 3 Jobs",
  "voice": "Gemini TTS (gemini-3.1-flash-tts-preview, Stimme Achird, --speed 1.12) – wie Video 1",
- "notes": "22.11.: Tag 1 vs. 12, Tierheim fertig, 3 Jobs, Neuheiten (Golden-Pearl-Spielehalle, Hüttentür+Licht, Fahrzeuge 2x, Freunde +10/+10), 823/1000 – noch 177.",
+ "notes": "22.11.: Tag 1 vs. 12, Tierheim fertig, 3 Jobs, Neuheiten (Golden Pearl: 4 Minispiele, Hüttentür+Licht, Fahrzeuge 2x, Freunde +10/+10), 823/1000 – noch 177.",
  "scenes": [
   {
    "id": "s01",
    "tag": "",
    "sfx": [
     {
-     "name": "whoosh-short",
+     "name": "impact-bass-2",
      "at": "s01+0.0",
+     "volume": 0.7
+    },
+    {
+     "name": "whoosh-short",
+     "at": "s01+0.05",
+     "volume": 0.5
+    },
+    {
+     "name": "glitch-1",
+     "at": "L1:nur",
+     "volume": 0.35
+    },
+    {
+     "name": "riser",
+     "at": "L1b:Tag-0.7",
      "volume": 0.5
     },
     {
      "name": "impact-bass-2",
      "at": "L1b:Tag",
-     "volume": 0.7
+     "volume": 0.8
     },
     {
-     "name": "riser",
-     "at": "L1b:Tag-0.6",
-     "volume": 0.4
+     "name": "impact-bass-1",
+     "at": "L1b:DAS",
+     "volume": 0.6
+    },
+    {
+     "name": "sparkle",
+     "at": "L1b:hier",
+     "volume": 0.5
     }
    ],
    "lines": [
@@ -185,7 +205,7 @@
     },
     {
      "name": "openbell",
-     "at": "L6:Spiele",
+     "at": "L6:Minispiele",
      "volume": 0.4
     },
     {
@@ -202,7 +222,7 @@
    "lines": [
     {
      "id": "L6",
-     "text": "*y:Neu: / Das *p:Golden *p:Pearl / hat jetzt seine *y:Spiele-Halle!",
+     "text": "*y:Neu: / Im *p:Golden *p:Pearl warten / jetzt *y:vier *y:Minispiele!",
      "pause": 0.25
     },
     {
