@@ -573,3 +573,8 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 ## Video Tag 11 (21.11., `videos/muscheltal-tag11/`)
 - Neuheiten: Hütte von innen (Strandhaus Haupt-Insel / Kokos-Lodge, „bald einrichten“), Golden Pearl mit 4 Minispielen + Duellen (Top 3 der Woche gewinnen Muscheln), Angeln: Qualle & Seegras im Fisch-Album.
 - **Verlosung (angekündigt in Tag 10): Inhaber vom Golden Pearl unter allen 793 Followern (Python `secrets`, Nr. 193): @taliasonnen** (Haupt-Insel, Hütte 0:237, Gründerin). ✅ Homepage (22.11.): als **Besitzerin/Leitung des Golden Pearl** eingetragen – Namensschild „⭐ @taliasonnen“ unter dem Leuchtschild, News-Meldung „Neue Besitzerin: Golden Pearl“, Berufe-Seite. Sie wohnt weiter auf der Haupt-Insel (kein Zwangsumzug zur Kokos-Küste).
+- **Verlosung (angekündigt in Tag 10): Inhaber vom Golden Pearl unter allen 793 Followern (Python `secrets`, Nr. 193): @taliasonnen** (Haupt-Insel, Hütte 0:237, Gründerin). ⚠️ Homepage: als Inhaber/Leitung Golden Pearl eintragen (Nutzer entscheidet).
+- **Fahrzeuge 10 % schneller (21.11.):** Moped (und damit auch E-Scooter/Skateboard, die genauso schnell fahren) beim Erkunden 47,25 → 51,98 (≈ +10 %); zu Fuß unverändert 30.
+
+## Video Tag 12 (22.11., `videos/muscheltal-tag12/`)
+- Tag 1 vs. Tag 12 (Vorher/Nachher). Tierheim Pfotenkuss fertig, **keine streunenden Tiere mehr** (laut Nutzer); **Haustiere kaufen/holen, wenn das Spiel startet**. **Tierheim sucht 3 Leute fürs Team – Bewerbung in den Kommentaren.** Türsteher Kokos-Club laut Nutzer (22.11.): **@in.yor_dreams** (frühere Korrektur @marl33n.fls_1301 damit überholt).

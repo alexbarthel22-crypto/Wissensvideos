@@ -1,0 +1,44 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+
+    .neo { position: absolute; left: 60px; right: 190px; margin: 0 auto; width: fit-content; max-width: 830px; padding: 14px 34px 18px; border-radius: 30px; opacity: 0;
+      background: linear-gradient(160deg, rgba(24,10,48,.88), rgba(8,4,24,.9)); border: 5px solid #3ff0ff; box-shadow: 0 0 30px rgba(63,240,255,.7), inset 0 0 24px rgba(63,240,255,.25);
+      font-family: "Lilita One", sans-serif; color: #fff; text-align: center; line-height: 1.02; white-space: nowrap; }
+    .neo.pk { border-color: #ff3dbd; box-shadow: 0 0 30px rgba(255,61,189,.75), inset 0 0 24px rgba(255,61,189,.25); }
+    .neo.li { border-color: #b6ff3b; box-shadow: 0 0 30px rgba(182,255,59,.7), inset 0 0 24px rgba(182,255,59,.25); }
+    .neo small { display: block; font: 900 30px Inter, sans-serif; letter-spacing: .14em; color: #3ff0ff; margin-bottom: 6px; }
+    .neo.pk small { color: #ff3dbd; } .neo.li small { color: #b6ff3b; }
+    .big { position: absolute; left: 60px; right: 190px; text-align: center; font-family: "Lilita One", sans-serif; color: #fff; line-height: .92; opacity: 0;
+      -webkit-text-stroke: 16px #0a0418; paint-order: stroke fill; }
+    .big .c { color: #3ff0ff; } .big .p { color: #ff3dbd; } .big .l { color: #b6ff3b; }
+    .gl1 { position: absolute; inset: 0; opacity: 0; background: repeating-linear-gradient(0deg, rgba(63,240,255,.18) 0 3px, rgba(255,61,189,0) 3px 9px); mix-blend-mode: screen; }
+    #h3 { top: 250px; font-size: 50px; }
+    .ti { position: absolute; width: 240px; height: 240px; border-radius: 34px; background: center/cover; border: 6px solid #fff; box-shadow: 0 0 0 4px #ff3dbd, 0 0 30px rgba(255,61,189,.6); opacity: 0; }
+    #ti0 { left: 70px; top: 520px; } #ti1 { left: 340px; top: 500px; } #ti2 { left: 610px; top: 520px; }
+    #ti3 { left: 70px; top: 800px; } #ti4 { left: 340px; top: 780px; } #ti5 { left: 610px; top: 800px; }
+    #b3 { top: 250px; font-size: 54px; }
+  </style>
+  <div id="root" data-composition-id="s03" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s03-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="h3" class="neo li"><small>🐾 TIERHEIM PFOTENKUSS</small>FERTIG – KEINE STREUNER MEHR!</div>
+      <div class="ti" id="ti0" style="background-image:url(bilder/hund.jpg)"></div><div class="ti" id="ti1" style="background-image:url(bilder/katze.jpg)"></div><div class="ti" id="ti2" style="background-image:url(bilder/hase.jpg)"></div><div class="ti" id="ti3" style="background-image:url(bilder/schildi.jpg)"></div><div class="ti" id="ti4" style="background-image:url(bilder/schwein.jpg)"></div><div class="ti" id="ti5" style="background-image:url(bilder/robbe.jpg)"></div>
+      <div id="b3" class="neo pk"><small>WENN DAS SPIEL STARTET</small>DEIN EIGENES HAUSTIER 💗</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      /*__COMMON_JS__*/
+      wrapBt("#s03-stage");
+      const tl = gsap.timeline({ paused: true });
+      tl.fromTo("#h3", { opacity: 0, scale: 2.6, filter: "blur(8px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .22, ease: "power4.out" }, line("L3")[0] - .05);
+      [0,1,2,3,4,5].forEach(i => tl.fromTo("#ti" + i, { opacity: 0, scale: .2, rotation: (i % 2 ? 20 : -20) }, { opacity: 1, scale: 1, rotation: 0, duration: .35, ease: "back.out(3)" }, at("L3", "keine") + i * .12));
+      tl.to(".ti", { y: -14, duration: .35, yoyo: true, repeat: 7, ease: "sine.inOut", stagger: .08 }, at("L3", "keine") + .9);
+      tl.to("#h3", { opacity: 0, duration: .15 }, at("L3b", "Haustier") - .4);
+      tl.fromTo("#b3", { opacity: 0, scale: 2.6, filter: "blur(8px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .22, ease: "power4.out" }, at("L3b", "Haustier") - .3);
+      tl.to("#s03-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
+      window.__timelines["s03"] = tl;
+    })();
+  </script>
+</template>

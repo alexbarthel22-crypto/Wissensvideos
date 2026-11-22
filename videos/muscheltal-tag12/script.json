@@ -1,0 +1,216 @@
+{
+ "lead_in": 0.0,
+ "bg": "#0a5a92",
+ "captions": {
+  "pop": true,
+  "first_at_zero": false,
+  "left": 60,
+  "right": 190,
+  "size": 92,
+  "bars": true,
+  "color": "rgba(255,255,255,.62)",
+  "first_class": "hook",
+  "css": "@font-face { font-family: 'Lilita One'; src: url('assets/fonts/LilitaOne-Regular.woff2') format('woff2'); font-weight: 400; }\n    .inner.hook { font-family: 'Lilita One', sans-serif; font-weight: 400; font-size: 140px; line-height: 1.04; letter-spacing: .01em; top: -540px; }\n    .inner.hook .bar { background: #ff3d7f !important; padding: .02em .3em .08em; border-radius: .5em; }\n    .inner.hook .w { color: #fff; }\n    .inner .bar .w { margin: 0 .07em; }\n    .inner .bar { border-radius: .55em; padding: .04em .36em .1em; }\n    .inner .w { white-space: nowrap; }",
+  "vary": true,
+  "pop_scale": 1.2,
+  "hook_punch": true,
+  "bar_colors": [
+   "#ff3dbd",
+   "#13c8d8",
+   "#7a3dff"
+  ],
+  "off_scenes": [
+   "s01"
+  ]
+ },
+ "loudness": -11,
+ "pitch": 0,
+ "bgvideo": {
+  "src": "assets/bg.mp4"
+ },
+ "title": "Muschel-Tal Tag 12 – Tag 1 vs. Tag 12, Tierheim, 3 Jobs",
+ "voice": "Gemini TTS (gemini-3.1-flash-tts-preview, Stimme Achird, --speed 1.12) – wie Video 1",
+ "notes": "22.11.: Vorher/Nachher, Tierheim fertig (keine Streuner mehr, Haustiere kaufbar bei Spielstart), 3 Jobs im Tierheim gesucht (Bewerbung in Kommentaren), Türsteher @in.yor_dreams, Golden Pearl @taliasonnen.",
+ "scenes": [
+  {
+   "id": "s01",
+   "tag": "",
+   "sfx": [
+    {
+     "name": "whoosh-short",
+     "at": "s01+0.0",
+     "volume": 0.5
+    },
+    {
+     "name": "impact-bass-2",
+     "at": "L1b:Tag",
+     "volume": 0.7
+    },
+    {
+     "name": "riser",
+     "at": "L1b:Tag-0.6",
+     "volume": 0.4
+    }
+   ],
+   "lines": [
+    {
+     "id": "L1",
+     "text": "*y:Tag *y:1|=eins: / *p:nur leere Wiese.",
+     "pause": 0
+    },
+    {
+     "id": "L1b",
+     "text": "*y:Tag *y:12|=zwölf: / *g:DAS hier!",
+     "pause": 0.2
+    }
+   ]
+  },
+  {
+   "id": "s02",
+   "tag": "",
+   "sfx": [
+    {
+     "name": "pop",
+     "at": "L2:Palast",
+     "volume": 0.45
+    },
+    {
+     "name": "pop",
+     "at": "L2:Club",
+     "volume": 0.45
+    },
+    {
+     "name": "pop",
+     "at": "L2:Kino",
+     "volume": 0.45
+    },
+    {
+     "name": "pop",
+     "at": "L2:Golden",
+     "volume": 0.45
+    },
+    {
+     "name": "sparkle",
+     "at": "L2b:euch",
+     "volume": 0.45
+    }
+   ],
+   "lines": [
+    {
+     "id": "L2",
+     "text": "Palast, *y:Club, *y:Kino, *p:Golden Pearl …",
+     "pause": 0.1
+    },
+    {
+     "id": "L2b",
+     "text": "alles *g:gebaut von *g:euch!",
+     "pause": 0.25
+    }
+   ]
+  },
+  {
+   "id": "s03",
+   "tag": "",
+   "sfx": [
+    {
+     "name": "openbell",
+     "at": "L3:Tierheim",
+     "volume": 0.45
+    },
+    {
+     "name": "sparkle",
+     "at": "L3b:Haustier",
+     "volume": 0.45
+    },
+    {
+     "name": "ka-ching",
+     "at": "L3b:holen",
+     "volume": 0.3
+    }
+   ],
+   "lines": [
+    {
+     "id": "L3",
+     "text": "Und das *g:Tierheim ist fertig – / *y:keine Streuner mehr!",
+     "pause": 0.25
+    },
+    {
+     "id": "L3b",
+     "text": "Wenn das Spiel startet, / kannst du dir hier / dein *p:eigenes *p:Haustier holen!",
+     "pause": 0.25
+    }
+   ]
+  },
+  {
+   "id": "s04",
+   "tag": "",
+   "sfx": [
+    {
+     "name": "notification",
+     "at": "L4:drei",
+     "volume": 0.5
+    },
+    {
+     "name": "pop",
+     "at": "L4b:Wer",
+     "volume": 0.5
+    },
+    {
+     "name": "impact-bass-1",
+     "at": "L4c:Türsteher",
+     "volume": 0.45
+    }
+   ],
+   "lines": [
+    {
+     "id": "L4",
+     "text": "Und das Tierheim sucht / *y:drei *y:Leute fürs Team!",
+     "pause": 0.25
+    },
+    {
+     "id": "L4b",
+     "text": "*p:Wer will? / Schreib's in die *g:Kommentare!",
+     "pause": 0.35
+    },
+    {
+     "id": "L4c",
+     "text": "Und der *y:Türsteher vom *p:Kokos-Club: / *g:@in.yor_dreams|In_your_dreams!",
+     "pause": 0.3
+    }
+   ]
+  },
+  {
+   "id": "s05",
+   "tag": "",
+   "sfx": [
+    {
+     "name": "whoosh-short",
+     "at": "L5:Folg",
+     "volume": 0.4
+    },
+    {
+     "name": "click",
+     "at": "L5:Folg+0.1",
+     "volume": 0.55
+    },
+    {
+     "name": "chime",
+     "at": "L5:ein",
+     "volume": 0.4
+    }
+   ],
+   "lines": [
+    {
+     "id": "L5",
+     "text": "*p:Folg mir – / und zieh noch *y:heute ein!",
+     "pause": 0.3
+    }
+   ]
+  }
+ ],
+ "music": {
+  "src": "assets/music/suedsee.wav",
+  "volume": 1
+ },
+ "style": "Style: a real, natural-sounding young man telling his friends something he is genuinely excited about. Conversational, warm, honest emotion in the voice, not like an announcer or an advertisement. Emphasize the important words naturally.\nPace: brisk but natural.\nLanguage: German.\nRules: read the transcript exactly, word for word. Do not add any words, sounds, laughs, gasps or exclamations."
+}

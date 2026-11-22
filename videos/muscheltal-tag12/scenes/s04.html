@@ -1,0 +1,52 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+
+    .neo { position: absolute; left: 60px; right: 190px; margin: 0 auto; width: fit-content; max-width: 830px; padding: 14px 34px 18px; border-radius: 30px; opacity: 0;
+      background: linear-gradient(160deg, rgba(24,10,48,.88), rgba(8,4,24,.9)); border: 5px solid #3ff0ff; box-shadow: 0 0 30px rgba(63,240,255,.7), inset 0 0 24px rgba(63,240,255,.25);
+      font-family: "Lilita One", sans-serif; color: #fff; text-align: center; line-height: 1.02; white-space: nowrap; }
+    .neo.pk { border-color: #ff3dbd; box-shadow: 0 0 30px rgba(255,61,189,.75), inset 0 0 24px rgba(255,61,189,.25); }
+    .neo.li { border-color: #b6ff3b; box-shadow: 0 0 30px rgba(182,255,59,.7), inset 0 0 24px rgba(182,255,59,.25); }
+    .neo small { display: block; font: 900 30px Inter, sans-serif; letter-spacing: .14em; color: #3ff0ff; margin-bottom: 6px; }
+    .neo.pk small { color: #ff3dbd; } .neo.li small { color: #b6ff3b; }
+    .big { position: absolute; left: 60px; right: 190px; text-align: center; font-family: "Lilita One", sans-serif; color: #fff; line-height: .92; opacity: 0;
+      -webkit-text-stroke: 16px #0a0418; paint-order: stroke fill; }
+    .big .c { color: #3ff0ff; } .big .p { color: #ff3dbd; } .big .l { color: #b6ff3b; }
+    .gl1 { position: absolute; inset: 0; opacity: 0; background: repeating-linear-gradient(0deg, rgba(63,240,255,.18) 0 3px, rgba(255,61,189,0) 3px 9px); mix-blend-mode: screen; }
+    #j4 { top: 260px; font-size: 64px; }
+    #n4 { position: absolute; left: 60px; right: 190px; top: 420px; display: flex; justify-content: center; gap: 24px; }
+    #n4 div { width: 200px; height: 200px; border-radius: 40px; background: rgba(10,4,24,.9); border: 5px solid #b6ff3b; box-shadow: 0 0 24px rgba(182,255,59,.7); display: grid; place-items: center; font-size: 120px; opacity: 0; }
+    #q4 { top: 300px; font-size: 170px; }
+    #c4 { top: 650px; font-size: 46px; }
+    #d4 { top: 260px; font-size: 54px; }
+  </style>
+  <div id="root" data-composition-id="s04" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s04-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="j4" class="neo li"><small>🐾 TIERHEIM SUCHT</small>3 LEUTE FÜRS TEAM</div>
+      <div id="n4"><div>💼</div><div>💼</div><div>💼</div></div>
+      <div id="q4" class="big">WER <span class="p">WILL?</span></div>
+      <div id="c4" class="neo pk">💬 SCHREIB'S IN DIE KOMMENTARE</div>
+      <div id="d4" class="neo"><small>🕶️ TÜRSTEHER KOKOS-CLUB</small>@in.yor_dreams</div>
+      <div class="gl1"></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      /*__COMMON_JS__*/
+      wrapBt("#s04-stage");
+      const tl = gsap.timeline({ paused: true });
+      tl.fromTo("#j4", { opacity: 0, scale: 2.6, filter: "blur(8px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .22, ease: "power4.out" }, line("L4")[0] - .05);
+      tl.fromTo("#n4 div", { opacity: 0, scale: .2, y: 60 }, { opacity: 1, scale: 1, y: 0, duration: .3, ease: "back.out(3)", stagger: .15 }, at("L4", "drei") - .05);
+      [0,.05,.1,.15].forEach((d, i) => tl.to("#s04-stage", { x: i % 2 ? -14 : 14, duration: .03, ease: "none" }, line("L4b")[0] + d)); tl.to("#s04-stage", { x: 0, duration: .03 }, line("L4b")[0] + .2); tl.fromTo(".gl1", { opacity: .9 }, { opacity: 0, duration: .3, immediateRender: false }, line("L4b")[0]);
+      tl.fromTo("#q4", { opacity: 0, scale: 2.6, filter: "blur(8px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .22, ease: "power4.out" }, line("L4b")[0]);
+      tl.to("#q4", { rotation: -4, duration: .12, yoyo: true, repeat: 5, ease: "sine.inOut" }, line("L4b")[0] + .3);
+      tl.to(["#j4", "#n4"], { opacity: 0, duration: .15 }, line("L4b")[0] - .1);
+      tl.to(["#q4", "#c4"], { opacity: 0, duration: .15 }, line("L4c")[0] - .1);
+      tl.fromTo("#d4", { opacity: 0, scale: 2.6, filter: "blur(8px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .22, ease: "power4.out" }, at("L4c", "Türsteher") - .05);
+      tl.fromTo("#c4", { opacity: 0, scale: 2.6, filter: "blur(8px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .22, ease: "power4.out" }, at("L4b", "Kommentare") - .2);
+      tl.to("#s04-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
+      window.__timelines["s04"] = tl;
+    })();
+  </script>
+</template>

@@ -1,0 +1,49 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+
+    .neo { position: absolute; left: 60px; right: 190px; margin: 0 auto; width: fit-content; max-width: 830px; padding: 14px 34px 18px; border-radius: 30px; opacity: 0;
+      background: linear-gradient(160deg, rgba(24,10,48,.88), rgba(8,4,24,.9)); border: 5px solid #3ff0ff; box-shadow: 0 0 30px rgba(63,240,255,.7), inset 0 0 24px rgba(63,240,255,.25);
+      font-family: "Lilita One", sans-serif; color: #fff; text-align: center; line-height: 1.02; white-space: nowrap; }
+    .neo.pk { border-color: #ff3dbd; box-shadow: 0 0 30px rgba(255,61,189,.75), inset 0 0 24px rgba(255,61,189,.25); }
+    .neo.li { border-color: #b6ff3b; box-shadow: 0 0 30px rgba(182,255,59,.7), inset 0 0 24px rgba(182,255,59,.25); }
+    .neo small { display: block; font: 900 30px Inter, sans-serif; letter-spacing: .14em; color: #3ff0ff; margin-bottom: 6px; }
+    .neo.pk small { color: #ff3dbd; } .neo.li small { color: #b6ff3b; }
+    .big { position: absolute; left: 60px; right: 190px; text-align: center; font-family: "Lilita One", sans-serif; color: #fff; line-height: .92; opacity: 0;
+      -webkit-text-stroke: 16px #0a0418; paint-order: stroke fill; }
+    .big .c { color: #3ff0ff; } .big .p { color: #ff3dbd; } .big .l { color: #b6ff3b; }
+    .gl1 { position: absolute; inset: 0; opacity: 0; background: repeating-linear-gradient(0deg, rgba(63,240,255,.18) 0 3px, rgba(255,61,189,0) 3px 9px); mix-blend-mode: screen; }
+    #t1 { position: absolute; inset: 0; background: url(bilder/tag1.jpg) center/cover; }
+    #d1 { top: 260px; font-size: 200px; } #d2 { top: 260px; font-size: 200px; }
+    #lb1 { top: 520px; font-size: 56px; } #lb2 { top: 520px; font-size: 56px; }
+  </style>
+  <div id="root" data-composition-id="s01" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s01-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="t1"></div>
+      <div id="d1" class="big">TAG <span class="c">1</span></div>
+      <div id="lb1" class="neo"><small>VORHER</small>nur leere Wiese 🌱</div>
+      <div id="d2" class="big">TAG <span class="p">12</span></div>
+      <div id="lb2" class="neo pk"><small>JETZT</small>DAS HIER 🤯</div>
+      <div class="gl1"></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      /*__COMMON_JS__*/
+      wrapBt("#s01-stage");
+      const tl = gsap.timeline({ paused: true });
+      const B = line("L1b")[0];
+      tl.fromTo("#d1", { opacity: 0, scale: 2.6, filter: "blur(8px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .22, ease: "power4.out" }, .02);
+      tl.fromTo("#lb1", { opacity: 0, scale: 2.6, filter: "blur(8px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .22, ease: "power4.out" }, at("L1", "nur") - .05);
+      tl.to(["#d1", "#lb1"], { opacity: 0, scale: .6, duration: .12 }, B - .12);
+      tl.to("#t1", { opacity: 0, scale: 1.25, duration: .25, ease: "power2.in" }, B - .1);
+      [0,.05,.1,.15].forEach((d, i) => tl.to("#s01-stage", { x: i % 2 ? -14 : 14, duration: .03, ease: "none" }, B - .05 + d)); tl.to("#s01-stage", { x: 0, duration: .03 }, B - .05 + .2); tl.fromTo(".gl1", { opacity: .9 }, { opacity: 0, duration: .3, immediateRender: false }, B - .05);
+      tl.fromTo("#d2", { opacity: 0, scale: 2.6, filter: "blur(8px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .22, ease: "power4.out" }, B);
+      tl.fromTo("#lb2", { opacity: 0, scale: 2.6, filter: "blur(8px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .22, ease: "power4.out" }, at("L1b", "DAS") - .05);
+      tl.to("#d2", { scale: 1.08, duration: .2, yoyo: true, repeat: 3, ease: "sine.inOut" }, B + .4);
+      tl.to("#s01-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
+      window.__timelines["s01"] = tl;
+    })();
+  </script>
+</template>
