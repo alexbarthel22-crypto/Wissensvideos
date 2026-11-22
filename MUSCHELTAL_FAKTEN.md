@@ -571,4 +571,4 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 
 ## Video Tag 11 (21.11., `videos/muscheltal-tag11/`)
 - Neuheiten: Hütte von innen (Strandhaus Haupt-Insel / Kokos-Lodge, „bald einrichten“), Golden Pearl mit 4 Minispielen + Duellen (Top 3 der Woche gewinnen Muscheln), Angeln: Qualle & Seegras im Fisch-Album.
-- **Verlosung (angekündigt in Tag 10): Inhaber vom Golden Pearl unter allen 793 Followern (Python `secrets`, Nr. 193): @taliasonnen** (Haupt-Insel, Hütte 0:237, Gründerin). ⚠️ Homepage: als Inhaber/Leitung Golden Pearl eintragen (Nutzer entscheidet).
+- **Verlosung (angekündigt in Tag 10): Inhaber vom Golden Pearl unter allen 793 Followern (Python `secrets`, Nr. 193): @taliasonnen** (Haupt-Insel, Hütte 0:237, Gründerin). ✅ Homepage (22.11.): als **Besitzerin/Leitung des Golden Pearl** eingetragen – Namensschild „⭐ @taliasonnen“ unter dem Leuchtschild, News-Meldung „Neue Besitzerin: Golden Pearl“, Berufe-Seite. Sie wohnt weiter auf der Haupt-Insel (kein Zwangsumzug zur Kokos-Küste).
