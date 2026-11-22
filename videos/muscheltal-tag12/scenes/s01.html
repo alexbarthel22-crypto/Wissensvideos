@@ -16,8 +16,8 @@
     .rg { position: absolute; left: 475px; top: 360px; width: 300px; height: 300px; margin: -150px; border-radius: 50%; border: 20px solid #3ff0ff; opacity: 0; box-shadow: 0 0 40px #3ff0ff; } #rg1 { border-color: #ff3dbd; box-shadow: 0 0 40px #ff3dbd; } #rg2 { border-color: #b6ff3b; box-shadow: 0 0 40px #b6ff3b; }
     .pt { position: absolute; font-size: 90px; line-height: 1; width: 90px; height: 90px; opacity: 0; }
     #t1 { position: absolute; inset: 0; background: url(bilder/tag1.jpg) center/cover; }
-    #d1 { top: 260px; font-size: 200px; } #d2 { top: 260px; font-size: 200px; }
-    #lb1 { top: 520px; font-size: 56px; } #lb2 { top: 520px; font-size: 56px; }
+    #d1 { top: 230px; font-size: 270px; } #d2 { top: 230px; font-size: 270px; }
+    #lb1 { top: 520px; font-size: 108px; white-space: normal; max-width: 860px; } #lb2 { top: 520px; font-size: 130px; }
   </style>
   <div id="root" data-composition-id="s01" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
     <div id="s01-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
@@ -26,7 +26,7 @@
       <div id="lb1" class="neo"><small>VORHER</small>nur leere Wiese 🌱</div>
       <div id="d2" class="big">TAG <span class="p">12</span></div>
       <div id="lb2" class="neo pk"><small>JETZT</small>DAS HIER 🤯</div>
-      <div id="lb3" class="neo li" style="top:690px;font-size:52px"><small>📈 MIT JEDEM FOLLOWER</small>VERÄNDERT SICH DIE INSEL</div>
+      <div id="lb3" class="neo li" style="top:760px;font-size:92px;white-space:normal;width:860px;max-width:860px"><small>📈 MIT JEDEM FOLLOWER</small>VERÄNDERT SICH<br>DIE INSEL</div>
       <div class="gl1"></div>
       <div id="fl1" style="position:absolute;inset:0;background:#fff;opacity:0"></div>
       <div class="rg" id="rg0"></div><div class="rg" id="rg1"></div><div class="rg" id="rg2"></div>
@@ -40,13 +40,13 @@
       wrapBt("#s01-stage");
       const tl = gsap.timeline({ paused: true });
       const B = line("L1b")[0];
-      tl.fromTo("#d1", { opacity: 0, scale: 2.6, filter: "blur(8px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .22, ease: "power4.out" }, .02);
-      tl.fromTo("#lb1", { opacity: 0, scale: 2.6, filter: "blur(8px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .22, ease: "power4.out" }, at("L1", "nur") - .05);
+      tl.fromTo("#d1", { opacity: 0, scale: 3.4, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .26, ease: "back.out(2.2)" }, .02);
+      tl.fromTo("#lb1", { opacity: 0, scale: 3.4, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .26, ease: "back.out(2.2)" }, at("L1", "nur") - .05);
       tl.to(["#d1", "#lb1"], { opacity: 0, scale: .6, duration: .12 }, B - .12);
       tl.to("#t1", { opacity: 0, scale: 1.25, duration: .25, ease: "power2.in" }, B - .1);
       [0,.05,.1,.15].forEach((d, i) => tl.to("#s01-stage", { x: i % 2 ? -14 : 14, duration: .03, ease: "none" }, B - .05 + d)); tl.to("#s01-stage", { x: 0, duration: .03 }, B - .05 + .2); tl.fromTo(".gl1", { opacity: .9 }, { opacity: 0, duration: .3, immediateRender: false }, B - .05);
-      tl.fromTo("#d2", { opacity: 0, scale: 2.6, filter: "blur(8px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .22, ease: "power4.out" }, B);
-      tl.fromTo("#lb2", { opacity: 0, scale: 2.6, filter: "blur(8px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .22, ease: "power4.out" }, at("L1b", "DAS") - .05);
+      tl.fromTo("#d2", { opacity: 0, scale: 3.4, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .26, ease: "back.out(2.2)" }, B);
+      tl.fromTo("#lb2", { opacity: 0, scale: 3.4, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .26, ease: "back.out(2.2)" }, at("L1b", "DAS") - .05);
       tl.to("#d2", { scale: 1.08, duration: .2, yoyo: true, repeat: 3, ease: "sine.inOut" }, B + .4);
       const BOOM = t => { tl.fromTo("#fl1", { opacity: .85 }, { opacity: 0, duration: .3, ease: "power2.out", immediateRender: false }, t);
         ["#rg0", "#rg1", "#rg2"].forEach((q, i) => tl.fromTo(q, { opacity: 1, scale: .2 }, { opacity: 0, scale: 5, duration: .8, ease: "power3.out", immediateRender: false }, t + i * .08));
@@ -57,8 +57,16 @@
       tl.fromTo("#d1", { rotation: -12 }, { rotation: 0, duration: .5, ease: "elastic.out(1.2,.4)", immediateRender: false }, .02);
       tl.fromTo("#d2", { rotation: 14 }, { rotation: 0, duration: .5, ease: "elastic.out(1.2,.4)", immediateRender: false }, B);
       tl.fromTo("#d2 .p", { textShadow: "0 0 0px #ff3dbd" }, { textShadow: "0 0 70px #ff3dbd", duration: .2, yoyo: true, repeat: 7, ease: "sine.inOut", immediateRender: false }, B + .3);
-      tl.fromTo("#lb3", { opacity: 0, scale: 2.6, filter: "blur(8px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .22, ease: "power4.out" }, line("L1c")[0] - .05);
+      tl.fromTo("#lb3", { opacity: 0, scale: 3.4, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .26, ease: "back.out(2.2)" }, line("L1c")[0] - .05);
       tl.to("#lb3", { scale: 1.06, duration: .25, yoyo: true, repeat: 3, ease: "sine.inOut" }, at("L1c", "verändert"));
+      const FL = (q, t, c) => tl.fromTo(q, { textShadow: "0 0 0px " + c, filter: "brightness(1)" }, { textShadow: "0 0 90px " + c, filter: "brightness(1.6)", duration: .12, yoyo: true, repeat: 3, ease: "none", immediateRender: false }, t);
+      tl.to("#lb1", { scale: 1.15, duration: .12, yoyo: true, repeat: 1, ease: "power2.out" }, at("L1", "leere"));
+      FL("#lb1", at("L1", "Wiese"), "#3ff0ff");
+      tl.to("#lb2", { scale: 1.2, duration: .12, yoyo: true, repeat: 1, ease: "power2.out" }, at("L1b", "hier"));
+      FL("#lb2", at("L1b", "DAS"), "#ff3dbd");
+      tl.to(["#d2", "#lb2"], { y: -60, scale: .9, duration: .25, ease: "power2.inOut" }, line("L1c")[0] - .2);
+      tl.to("#lb3", { scale: 1.15, duration: .12, yoyo: true, repeat: 1, ease: "power2.out" }, at("L1c", "Follower"));
+      FL("#lb3", at("L1c", "verändert"), "#b6ff3b");
       tl.to("#s01-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
       window.__timelines["s01"] = tl;
     })();
