@@ -11,7 +11,7 @@ const A=await mk('2026-11-22T14:10:00+01:00','2026-11-22T14:11:00+01:00','?zeit=
 const C=await mk('2026-11-21T22:30:00+01:00','2026-11-21T22:31:00+01:00','?zeit=nacht&wetter=sonne');
 const G=await A.evaluate(()=>{const g=t=>{const q=GEB.find(q=>q.typ===t);return q?[q.cx,q.cy]:[0,0]};return{m:fitMain(),th:g('tierheim'),gp:[GP.X,GP.Y],cl:[KCLUB.cx,KCLUB.cy],ki:[KKINO.cx,KKINO.cy]}});const m=G.m;
 const t1b=L.L1b.start;
-const K=[[0,'A',m.x,m.y,m.z*1.05],[t1b+1.2,'A',m.x,m.y,m.z*1.15],
+const K=[[0,'A',m.x,m.y,m.z*1.05],[L.L1c.end+.2,'A',m.x,m.y,m.z*1.3],
  [at('L2','Palast')-.05,'A',0,10,2.6],[at('L2','Club')-.06,'A',0,10,2.9],
  [at('L2','Club')-.05,'C',G.cl[0],G.cl[1]-4,3.6],[at('L2','Kino')-.06,'C',G.cl[0],G.cl[1]-4,4.0],
  [at('L2','Kino')-.05,'C',G.ki[0],G.ki[1]-14,3.0],[at('L2','Golden')-.06,'C',G.ki[0],G.ki[1]-14,3.3],

@@ -30,7 +30,7 @@
  },
  "title": "Muschel-Tal Tag 12 – Tag 1 vs. Tag 12, Tierheim, 3 Jobs",
  "voice": "Gemini TTS (gemini-3.1-flash-tts-preview, Stimme Achird, --speed 1.12) – wie Video 1",
- "notes": "22.11.: Tag 1 vs. 12, Tierheim fertig, 3 Jobs, Neuheiten (Golden Pearl: 4 Minispiele, Hüttentür+Licht, Fahrzeuge 2x, Freunde +10/+10), 823/1000 – noch 177.",
+ "notes": "22.11.: Tag 1 vs. 12, Tierheim fertig, 3 Jobs, Neuheiten (Golden Pearl: 4 Minispiele, Hüttentür+Licht, Fahrzeuge 2x, Freunde +10/+10), 820/1000 – noch 180.",
  "scenes": [
   {
    "id": "s01",
@@ -70,6 +70,11 @@
      "name": "sparkle",
      "at": "L1b:hier",
      "volume": 0.5
+    },
+    {
+     "name": "sparkle",
+     "at": "L1c:jedem",
+     "volume": 0.5
     }
    ],
    "lines": [
@@ -81,6 +86,11 @@
     {
      "id": "L1b",
      "text": "*y:Tag *y:12|=zwölf: / *g:DAS hier!",
+     "pause": 0.2
+    },
+    {
+     "id": "L1c",
+     "text": "Mit *y:jedem *y:Follower / *p:verändert sich die Insel!",
      "pause": 0.2
     }
    ]
@@ -281,7 +291,7 @@
     },
     {
      "name": "impact-bass-2",
-     "at": "L8b:177",
+     "at": "L8b:180",
      "volume": 0.55
     },
     {
@@ -298,7 +308,7 @@
     },
     {
      "id": "L8b",
-     "text": "*y:823|=achthundertdreiundzwanzig wohnen schon hier – / es fehlen nur noch *y:177|=hundertsiebenundsiebzig!",
+     "text": "*y:820|=achthundertzwanzig wohnen schon hier – / es fehlen nur noch *y:180|=hundertachtzig!",
      "pause": 0.25
     }
    ]

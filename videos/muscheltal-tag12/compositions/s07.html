@@ -68,18 +68,18 @@
     #br .lb span:last-child { color: #b6ff3b; }
     #k7 { top: 700px; font-size: 76px; }
   </style>
-  <div id="root" data-composition-id="s07" data-start="0" data-duration="6.750" data-width="1080" data-height="1920">
-    <div id="s07-stage" class="clip stage" data-start="0" data-duration="6.750" data-track-index="0">
+  <div id="root" data-composition-id="s07" data-start="0" data-duration="6.570" data-width="1080" data-height="1920">
+    <div id="s07-stage" class="clip stage" data-start="0" data-duration="6.570" data-track-index="0">
       <div id="r7" class="neo li"><small>🎮 DAS SPIEL</small>FAST BEREIT!</div>
-      <div id="br"><div class="tr"><div class="fi"></div></div><div class="lb"><span>823</span><span>1.000</span></div></div>
-      <div id="k7" class="neo pk"><small>ES FEHLEN NUR NOCH</small>177 SPIELER 👀</div>
+      <div id="br"><div class="tr"><div class="fi"></div></div><div class="lb"><span>820</span><span>1.000</span></div></div>
+      <div id="k7" class="neo pk"><small>ES FEHLEN NUR NOCH</small>180 SPIELER 👀</div>
       <div class="gl1"></div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 6.75, "L8": [0.2, 2.18], "L8.words": [["die", 0.2, 0.417], ["insel", 0.417, 0.844], ["ist", 0.844, 1.062], ["fast", 1.062, 1.287], ["bereit", 1.287, 1.722], ["fürs", 1.722, 1.947], ["spiel", 1.947, 2.18]], "L8b": [2.65, 6.27], "L8b.words": [["823", 2.65, 3.617], ["wohnen", 3.617, 3.926], ["schon", 3.926, 4.092], ["hier", 4.092, 4.252], ["", 4.252, 4.39], ["es", 4.64, 4.77], ["fehlen", 4.77, 5.04], ["nur", 5.04, 5.175], ["noch", 5.175, 5.315], ["177", 5.315, 6.27]]};
+      const C = {"__dur": 6.57, "L8": [0.2, 2.18], "L8.words": [["die", 0.2, 0.417], ["insel", 0.417, 0.844], ["ist", 0.844, 1.062], ["fast", 1.062, 1.287], ["bereit", 1.287, 1.722], ["fürs", 1.722, 1.947], ["spiel", 1.947, 2.18]], "L8b": [2.65, 6.09], "L8b.words": [["820", 2.65, 3.534], ["wohnen", 3.534, 3.881], ["schon", 3.881, 4.066], ["hier", 4.066, 4.245], ["", 4.245, 4.4], ["es", 4.65, 4.803], ["fehlen", 4.803, 5.121], ["nur", 5.121, 5.279], ["noch", 5.279, 5.444], ["180", 5.444, 6.09]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -125,10 +125,10 @@
       const tl = gsap.timeline({ paused: true });
       tl.fromTo("#r7", { opacity: 0, scale: 2.6, filter: "blur(8px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .22, ease: "power4.out" }, line("L8")[0]);
       tl.fromTo("#br", { opacity: 0 }, { opacity: 1, duration: .25 }, line("L8")[0] + .4);
-      tl.fromTo("#br .fi", { width: "0%" }, { width: "82.3%", duration: 1.6, ease: "power2.out" }, line("L8")[0] + .5);
-      [0,.05,.1,.15].forEach((d, i) => tl.to("#s07-stage", { x: i % 2 ? -14 : 14, duration: .03, ease: "none" }, at("L8b", "177") - .05 + d)); tl.to("#s07-stage", { x: 0, duration: .03 }, at("L8b", "177") - .05 + .2); tl.fromTo(".gl1", { opacity: .9 }, { opacity: 0, duration: .3, immediateRender: false }, at("L8b", "177") - .05);
-      tl.fromTo("#k7", { opacity: 0, scale: 2.6, filter: "blur(8px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .22, ease: "power4.out" }, at("L8b", "177") - .05);
-      tl.to("#k7", { scale: 1.07, duration: .25, yoyo: true, repeat: 5, ease: "sine.inOut" }, at("L8b", "177") + .4);
+      tl.fromTo("#br .fi", { width: "0%" }, { width: "82%", duration: 1.6, ease: "power2.out" }, line("L8")[0] + .5);
+      [0,.05,.1,.15].forEach((d, i) => tl.to("#s07-stage", { x: i % 2 ? -14 : 14, duration: .03, ease: "none" }, at("L8b", "180") - .05 + d)); tl.to("#s07-stage", { x: 0, duration: .03 }, at("L8b", "180") - .05 + .2); tl.fromTo(".gl1", { opacity: .9 }, { opacity: 0, duration: .3, immediateRender: false }, at("L8b", "180") - .05);
+      tl.fromTo("#k7", { opacity: 0, scale: 2.6, filter: "blur(8px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .22, ease: "power4.out" }, at("L8b", "180") - .05);
+      tl.to("#k7", { scale: 1.07, duration: .25, yoyo: true, repeat: 5, ease: "sine.inOut" }, at("L8b", "180") + .4);
       tl.to("#s07-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
       window.__timelines["s07"] = tl;
     })();

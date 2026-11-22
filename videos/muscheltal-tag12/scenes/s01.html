@@ -26,6 +26,7 @@
       <div id="lb1" class="neo"><small>VORHER</small>nur leere Wiese 🌱</div>
       <div id="d2" class="big">TAG <span class="p">12</span></div>
       <div id="lb2" class="neo pk"><small>JETZT</small>DAS HIER 🤯</div>
+      <div id="lb3" class="neo li" style="top:690px;font-size:52px"><small>📈 MIT JEDEM FOLLOWER</small>VERÄNDERT SICH DIE INSEL</div>
       <div class="gl1"></div>
       <div id="fl1" style="position:absolute;inset:0;background:#fff;opacity:0"></div>
       <div class="rg" id="rg0"></div><div class="rg" id="rg1"></div><div class="rg" id="rg2"></div>
@@ -56,6 +57,8 @@
       tl.fromTo("#d1", { rotation: -12 }, { rotation: 0, duration: .5, ease: "elastic.out(1.2,.4)", immediateRender: false }, .02);
       tl.fromTo("#d2", { rotation: 14 }, { rotation: 0, duration: .5, ease: "elastic.out(1.2,.4)", immediateRender: false }, B);
       tl.fromTo("#d2 .p", { textShadow: "0 0 0px #ff3dbd" }, { textShadow: "0 0 70px #ff3dbd", duration: .2, yoyo: true, repeat: 7, ease: "sine.inOut", immediateRender: false }, B + .3);
+      tl.fromTo("#lb3", { opacity: 0, scale: 2.6, filter: "blur(8px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .22, ease: "power4.out" }, line("L1c")[0] - .05);
+      tl.to("#lb3", { scale: 1.06, duration: .25, yoyo: true, repeat: 3, ease: "sine.inOut" }, at("L1c", "verändert"));
       tl.to("#s01-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
       window.__timelines["s01"] = tl;
     })();

@@ -66,13 +66,14 @@
     #d1 { top: 260px; font-size: 200px; } #d2 { top: 260px; font-size: 200px; }
     #lb1 { top: 520px; font-size: 56px; } #lb2 { top: 520px; font-size: 56px; }
   </style>
-  <div id="root" data-composition-id="s01" data-start="0" data-duration="4.110" data-width="1080" data-height="1920">
-    <div id="s01-stage" class="clip stage" data-start="0" data-duration="4.110" data-track-index="0">
+  <div id="root" data-composition-id="s01" data-start="0" data-duration="7.120" data-width="1080" data-height="1920">
+    <div id="s01-stage" class="clip stage" data-start="0" data-duration="7.120" data-track-index="0">
       <div id="t1"></div>
       <div id="d1" class="big">TAG <span class="c">1</span></div>
       <div id="lb1" class="neo"><small>VORHER</small>nur leere Wiese 🌱</div>
       <div id="d2" class="big">TAG <span class="p">12</span></div>
       <div id="lb2" class="neo pk"><small>JETZT</small>DAS HIER 🤯</div>
+      <div id="lb3" class="neo li" style="top:690px;font-size:52px"><small>📈 MIT JEDEM FOLLOWER</small>VERÄNDERT SICH DIE INSEL</div>
       <div class="gl1"></div>
       <div id="fl1" style="position:absolute;inset:0;background:#fff;opacity:0"></div>
       <div class="rg" id="rg0"></div><div class="rg" id="rg1"></div><div class="rg" id="rg2"></div>
@@ -82,7 +83,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 4.11, "L1": [0.0, 1.87], "L1.words": [["tag", 0.0, 0.269], ["1", 0.269, 0.547], ["nur", 0.547, 0.815], ["leere", 0.815, 1.343], ["wiese", 1.343, 1.87]], "L1b": [2.29, 3.83], "L1b.words": [["tag", 2.29, 2.665], ["12", 2.665, 3.067], ["das", 3.067, 3.442], ["hier", 3.442, 3.83]]};
+      const C = {"__dur": 7.12, "L1": [0.0, 1.87], "L1.words": [["tag", 0.0, 0.269], ["1", 0.269, 0.547], ["nur", 0.547, 0.815], ["leere", 0.815, 1.343], ["wiese", 1.343, 1.87]], "L1b": [2.29, 3.83], "L1b.words": [["tag", 2.29, 2.665], ["12", 2.665, 3.067], ["das", 3.067, 3.442], ["hier", 3.442, 3.83]], "L1c": [4.25, 6.84], "L1c.words": [["mit", 4.25, 4.45], ["jedem", 4.45, 4.844], ["follower", 4.844, 5.438], ["verändert", 5.438, 6.039], ["sich", 6.039, 6.246], ["die", 6.246, 6.446], ["insel", 6.446, 6.84]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -144,6 +145,8 @@
       tl.fromTo("#d1", { rotation: -12 }, { rotation: 0, duration: .5, ease: "elastic.out(1.2,.4)", immediateRender: false }, .02);
       tl.fromTo("#d2", { rotation: 14 }, { rotation: 0, duration: .5, ease: "elastic.out(1.2,.4)", immediateRender: false }, B);
       tl.fromTo("#d2 .p", { textShadow: "0 0 0px #ff3dbd" }, { textShadow: "0 0 70px #ff3dbd", duration: .2, yoyo: true, repeat: 7, ease: "sine.inOut", immediateRender: false }, B + .3);
+      tl.fromTo("#lb3", { opacity: 0, scale: 2.6, filter: "blur(8px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .22, ease: "power4.out" }, line("L1c")[0] - .05);
+      tl.to("#lb3", { scale: 1.06, duration: .25, yoyo: true, repeat: 3, ease: "sine.inOut" }, at("L1c", "verändert"));
       tl.to("#s01-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
       window.__timelines["s01"] = tl;
     })();

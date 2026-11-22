@@ -123,6 +123,7 @@ scene("s01", """
       <div id="lb1" class="neo"><small>VORHER</small>nur leere Wiese 🌱</div>
       <div id="d2" class="big">TAG <span class="p">12</span></div>
       <div id="lb2" class="neo pk"><small>JETZT</small>DAS HIER 🤯</div>
+      <div id="lb3" class="neo li" style="top:690px;font-size:52px"><small>📈 MIT JEDEM FOLLOWER</small>VERÄNDERT SICH DIE INSEL</div>
       <div class="gl1"></div>
       <div id="fl1" style="position:absolute;inset:0;background:#fff;opacity:0"></div>
       <div class="rg" id="rg0"></div><div class="rg" id="rg1"></div><div class="rg" id="rg2"></div>
@@ -144,7 +145,9 @@ scene("s01", """
       BOOM(B - .02);
       tl.fromTo("#d1", { rotation: -12 }, { rotation: 0, duration: .5, ease: "elastic.out(1.2,.4)", immediateRender: false }, .02);
       tl.fromTo("#d2", { rotation: 14 }, { rotation: 0, duration: .5, ease: "elastic.out(1.2,.4)", immediateRender: false }, B);
-      tl.fromTo("#d2 .p", { textShadow: "0 0 0px #ff3dbd" }, { textShadow: "0 0 70px #ff3dbd", duration: .2, yoyo: true, repeat: 7, ease: "sine.inOut", immediateRender: false }, B + .3);""")
+      tl.fromTo("#d2 .p", { textShadow: "0 0 0px #ff3dbd" }, { textShadow: "0 0 70px #ff3dbd", duration: .2, yoyo: true, repeat: 7, ease: "sine.inOut", immediateRender: false }, B + .3);
+      tl.fromTo("#lb3", { opacity: 0, scale: 2.6, filter: "blur(8px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .22, ease: "power4.out" }, line("L1c")[0] - .05);
+      tl.to("#lb3", { scale: 1.06, duration: .25, yoyo: true, repeat: 3, ease: "sine.inOut" }, at("L1c", "verändert"));""")
 
 # s02 – Blitzschnitte Gebäude, Namen ploppen
 scene("s02", """
@@ -244,7 +247,7 @@ scene("s05", """
     .ph img { display: block; width: 100%; }
     #p5a { left: 150px; top: 380px; width: 640px; height: 860px; } #p5a img { margin-top: -10px; }
     #p5b { left: 90px; top: 400px; width: 760px; }
-    #n5 { top: 250px; font-size: 64px; } #m5 { top: 250px; font-size: 58px; }""",
+    #n5 { top: 250px; font-size: 48px; } #m5 { top: 250px; font-size: 58px; }""",
 """      <div id="n5" class="neo pk"><small>NEU 💎</small>4 MINISPIELE IM GOLDEN PEARL</div>
       <div class="ph" id="p5a"><img src="bilder/gp_menu_c.jpg"></div>
       <div id="m5" class="neo li"><small>NEU 🏠</small>HÜTTE MIT TÜR &amp; LICHT</div>
@@ -318,15 +321,15 @@ scene("s07", """
     #br .lb span:last-child { color: #b6ff3b; }
     #k7 { top: 700px; font-size: 76px; }""",
 """      <div id="r7" class="neo li"><small>🎮 DAS SPIEL</small>FAST BEREIT!</div>
-      <div id="br"><div class="tr"><div class="fi"></div></div><div class="lb"><span>823</span><span>1.000</span></div></div>
-      <div id="k7" class="neo pk"><small>ES FEHLEN NUR NOCH</small>177 SPIELER 👀</div>
+      <div id="br"><div class="tr"><div class="fi"></div></div><div class="lb"><span>820</span><span>1.000</span></div></div>
+      <div id="k7" class="neo pk"><small>ES FEHLEN NUR NOCH</small>180 SPIELER 👀</div>
       <div class="gl1"></div>""",
 """      tl.fromTo("#r7", { opacity: 0, scale: 2.6, filter: "blur(8px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .22, ease: "power4.out" }, line("L8")[0]);
       tl.fromTo("#br", { opacity: 0 }, { opacity: 1, duration: .25 }, line("L8")[0] + .4);
-      tl.fromTo("#br .fi", { width: "0%" }, { width: "82.3%", duration: 1.6, ease: "power2.out" }, line("L8")[0] + .5);
-      [0,.05,.1,.15].forEach((d, i) => tl.to("#s07-stage", { x: i % 2 ? -14 : 14, duration: .03, ease: "none" }, at("L8b", "177") - .05 + d)); tl.to("#s07-stage", { x: 0, duration: .03 }, at("L8b", "177") - .05 + .2); tl.fromTo(".gl1", { opacity: .9 }, { opacity: 0, duration: .3, immediateRender: false }, at("L8b", "177") - .05);
-      tl.fromTo("#k7", { opacity: 0, scale: 2.6, filter: "blur(8px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .22, ease: "power4.out" }, at("L8b", "177") - .05);
-      tl.to("#k7", { scale: 1.07, duration: .25, yoyo: true, repeat: 5, ease: "sine.inOut" }, at("L8b", "177") + .4);""")
+      tl.fromTo("#br .fi", { width: "0%" }, { width: "82%", duration: 1.6, ease: "power2.out" }, line("L8")[0] + .5);
+      [0,.05,.1,.15].forEach((d, i) => tl.to("#s07-stage", { x: i % 2 ? -14 : 14, duration: .03, ease: "none" }, at("L8b", "180") - .05 + d)); tl.to("#s07-stage", { x: 0, duration: .03 }, at("L8b", "180") - .05 + .2); tl.fromTo(".gl1", { opacity: .9 }, { opacity: 0, duration: .3, immediateRender: false }, at("L8b", "180") - .05);
+      tl.fromTo("#k7", { opacity: 0, scale: 2.6, filter: "blur(8px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .22, ease: "power4.out" }, at("L8b", "180") - .05);
+      tl.to("#k7", { scale: 1.07, duration: .25, yoyo: true, repeat: 5, ease: "sine.inOut" }, at("L8b", "180") + .4);""")
 
 # s05 – Outro
 scene("s08", """
