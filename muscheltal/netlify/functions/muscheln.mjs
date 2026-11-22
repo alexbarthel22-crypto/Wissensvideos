@@ -89,7 +89,8 @@ async function buch(store, nm) {
 // Läuft je Eintrag genau einmal (Merker x/reset/<name>/<nr>); danach kann der Name neu beansprucht werden.
 // [Name, Lauf-Nr., optional: ab Zeitpunkt (ms) – dann werden auch Erfolge und Story-Buchungen ab diesem Zeitpunkt gelöscht]
 const TEST_12_11 = 1794438000000; // 12.11.2026 0:00 Uhr (Berlin): Testlauf mit mehreren Testern
-const RESET = [...["marina.cgnn", "ju1e_smt", "mimposible", "maja.gnw", "eeli_mxo", "luna.gsn02", "toca_lexi00"].map(n => [n, 1, TEST_12_11]), ["haltsmaulimmeroderso", 1, 0, { kasse: false }], ["marie_nwd0", 1, 0, { voll: true }]];// 18.11.: Test-Konto (Zahlung + Events) komplett zurück auf 0// 17.11.: Beanspruchung entfernt, Konto auf 0 (Spenden in der Inselkasse bleiben)
+const RESET = [...["marina.cgnn", "ju1e_smt", "mimposible", "maja.gnw", "eeli_mxo", "luna.gsn02", "toca_lexi00"].map(n => [n, 1, TEST_12_11]), ["haltsmaulimmeroderso", 1, 0, { kasse: false }], ["marie_nwd0", 1, 0, { voll: true }], ["jad.telti", 1, 0, { voll: true }]];// 22.11.: @jad.telti komplett zurück (Verknüpfung, Muscheln, Erfolge, Sticker, Spielstände …)
+// 18.11.: Test-Konto (Zahlung + Events) komplett zurück auf 0// 17.11.: Beanspruchung entfernt, Konto auf 0 (Spenden in der Inselkasse bleiben)
 // Vollständiges Zurücksetzen eines Test-Kontos: alles, was der Name getan hat, wird gelöscht (Konto, Aufgaben, Ausrüstung,
 // Sticker, Fische, Sandburg-Beiträge, Likes, Anklopfen, Flaschenpost, Premium/Startangebot, Echtgeld-Testkäufe, Einladungs-Bonus
 // des Einladenden, einzigartige Items, alle Erfolge, Spenden). Danach startet der Name wieder bei 0 und kann neu beansprucht werden.
