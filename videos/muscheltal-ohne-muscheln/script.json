@@ -28,30 +28,58 @@
  "notes": "23.11.: Comedy-Kurzvideo, eigene Illustrationen, übertriebene Welt ohne Muscheln.",
  "scenes": [
   {
+   "id": "s00",
+   "tag": "",
+   "sfx": [
+    {
+     "name": "sparkle",
+     "at": "s00+0.0",
+     "volume": 0.5
+    },
+    {
+     "name": "ka-ching",
+     "at": "L0b:Geld",
+     "volume": 0.5
+    }
+   ],
+   "lines": [
+    {
+     "id": "L0",
+     "text": "Auf *p:Muschel-Tal / wohnen *y:820|=achthundertzwanzig *y:Follower –",
+     "pause": 0
+    },
+    {
+     "id": "L0b",
+     "text": "und *y:Muscheln sind / hier das *g:Geld!",
+     "pause": 0.15
+    }
+   ]
+  },
+  {
    "id": "s01",
    "tag": "",
    "sfx": [
     {
-     "name": "pop",
-     "at": "L1:OHNE",
-     "volume": 0.6
+     "name": "riser",
+     "at": "L1:KEINE-0.5",
+     "volume": 0.45
     },
     {
-     "name": "whoosh-short",
-     "at": "L1:Muscheln",
-     "volume": 0.5
+     "name": "impact-bass-2",
+     "at": "L1:KEINE",
+     "volume": 0.7
     },
     {
      "name": "sad-trombone",
-     "at": "L1:Muscheln+0.3",
-     "volume": 0.35
+     "at": "L1:gäbe",
+     "volume": 0.4
     }
    ],
    "lines": [
     {
      "id": "L1",
-     "text": "Eine Welt / *y:OHNE *y:Muscheln?!",
-     "pause": 0
+     "text": "Was wäre, wenn es / *y:KEINE *y:Muscheln gäbe?!",
+     "pause": 0.25
     }
    ]
   },
@@ -60,21 +88,21 @@
    "tag": "",
    "sfx": [
     {
-     "name": "impact-bass-2",
-     "at": "L2:eingestürzt",
-     "volume": 0.7
+     "name": "stempel",
+     "at": "L2:unbezahlbar",
+     "volume": 0.6
     },
     {
      "name": "impact-bass-1",
-     "at": "L2:eingestürzt+0.25",
+     "at": "L2:unbezahlbar+0.1",
      "volume": 0.5
     }
    ],
    "lines": [
     {
      "id": "L2",
-     "text": "Der *p:Palast: / *y:eingestürzt!",
-     "pause": 0.1
+     "text": "Der *p:Döner: / *y:unbezahlbar!",
+     "pause": 0.15
     }
    ]
   },
@@ -83,16 +111,21 @@
    "tag": "",
    "sfx": [
     {
-     "name": "whoosh-short",
-     "at": "L3:Strand-0.1",
-     "volume": 0.4
+     "name": "impact-bass-2",
+     "at": "L3:eingestürzt",
+     "volume": 0.7
+    },
+    {
+     "name": "impact-bass-1",
+     "at": "L3:eingestürzt+0.25",
+     "volume": 0.5
     }
    ],
    "lines": [
     {
      "id": "L3",
-     "text": "Der Strand: / *y:grau und *y:leer!",
-     "pause": 0.1
+     "text": "Der *p:Palast: / *y:eingestürzt!",
+     "pause": 0.15
     }
    ]
   },
@@ -110,7 +143,7 @@
     {
      "id": "L4",
      "text": "Die *p:Krabben: / *y:arbeitslos!",
-     "pause": 0.1
+     "pause": 0.15
     }
    ]
   },
@@ -133,7 +166,7 @@
     {
      "id": "L5",
      "text": "Sogar der *g:Wal / zieht *y:aus!",
-     "pause": 0.1
+     "pause": 0.15
     }
    ]
   },
@@ -153,14 +186,19 @@
     },
     {
      "name": "click",
-     "at": "L6:Folg",
+     "at": "L6b:Folg",
      "volume": 0.55
     }
    ],
    "lines": [
     {
      "id": "L6",
-     "text": "Zum *g:Glück gibt's / *p:Muschel-Tal! / *y:Folg mir!",
+     "text": "Zum *g:Glück gibt's / *p:Muschel-Tal!",
+     "pause": 0.15
+    },
+    {
+     "id": "L6b",
+     "text": "*y:Folg mir – / und hol dir *g:deine *g:Hütte!",
      "pause": 0.2
     }
    ]
