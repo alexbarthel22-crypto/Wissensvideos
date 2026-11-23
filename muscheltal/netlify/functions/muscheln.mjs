@@ -293,6 +293,26 @@ async function umbenennen(store) {
     await store.set(mk, String(Date.now()));
   }
 }
+// 24.11.: KOMPLETT-RESET (einmalig bei der nächsten Veröffentlichung): alle Konten, Muschelbewegungen, Erfolge, Sticker,
+// Aufgaben, Käufe/Ausrüstung, Tiere, Spielstände, Duelle, Spenden, Fahrgeld, Verknüpfungen – alles auf 0.
+// Bleibt: mit Echtgeld gekaufte Muscheln (b/<name>/euro…, x/euro/…), System-Merker; „Gründer“ wird aus der Followerliste berechnet.
+const NULL_ALLES = "x/null-alles/2026-11-24";
+async function nullAlles(store) {
+  if (await store.get(NULL_ALLES)) return;
+  const lk = NULL_ALLES + "-lauf", lv = Number(await store.get(lk)) || 0;
+  if (Date.now() - lv < 60000) return;
+  await store.set(lk, String(Date.now()));
+  const SYS = ["x/zurueck-alle/", "x/null-alles/", "x/nullung/", "x/reset/", "x/zurueck/", "x/umbenannt/", "x/frei/", "x/bereinigt/", "x/euro/", "x/aufraeumen/"];
+  const L = await liste(store, "");
+  await jeParallel(L, async k => { const t = k.split("/");
+    if (SYS.some(p => k.startsWith(p))) return;
+    if (t[0] === "b" && (t[2] === "euro" || t[2] === "euro-zurueck")) return;
+    await store.delete(k); });
+  const es = getStore("erfolge"); await jeParallel(await liste(es, ""), k => es.delete(k));
+  const kasse = getStore({ name: "inselkasse", consistency: "strong" }); await jeParallel([...await liste(kasse, "s/"), ...await liste(kasse, "b/")], k => kasse.delete(k));
+  RANGC = { t: 0, d: null };
+  await store.set(NULL_ALLES, String(Date.now()));
+}
 let VOR = { tag: "", p: null };
 // Alle Konten einmalig auf 0 setzen (16.11.): je Name eine Gegenbuchung „Neustart“ über den aktuellen Kontostand.
 // Buchungen bleiben erhalten (Login-Serie, Tresor, Codes, Einladungen, Shop-Inventar zählen weiter nur einmal).
@@ -309,7 +329,7 @@ async function nullen(store) {
 }
 function vorarbeit(store) {
   const t = tag();
-  if (VOR.tag !== t) VOR = { tag: t, p: (async () => { await umbenennen(store); await nullen(store); await zuruecksetzen(store); await zurueckAuf(store); await freigeben(store); await aufraeumen(store); })().catch(() => { VOR.tag = ""; }) };
+  if (VOR.tag !== t) VOR = { tag: t, p: (async () => { await umbenennen(store); await nullAlles(store); await nullen(store); await zuruecksetzen(store); await zurueckAuf(store); await freigeben(store); await aufraeumen(store); })().catch(() => { VOR.tag = ""; }) };
   return VOR.p.then(() => ALLE_OK || allesZurueck(store)).catch(() => {});
 }
 // Erfolg „Nachbarn“: nur für beanspruchte Namen, die in der Nachbarn-Liste stehen (+10 Muscheln, einmalig)
