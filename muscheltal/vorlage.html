@@ -1007,7 +1007,7 @@ const KMODE={name:'Coast & Cotton',hw:46,hh:32,...kBlk(4,-1)};
 const KCLUB={name:'KOK(O)S',hw:46,hh:32,...kBlk(3,-5)};// Nachtclub, Nordostseite (grenzt an kein Gebäude, auch nicht über Eck)
 const KDROG={name:'CocoCare',hw:46,hh:32,...kBlk(0,-4)};// Drogerie, Nordseite
 const KGAME={name:'Game Lagoon',hw:46,hh:32,...kBlk(-3,0)};
-const KKINO={name:'Freiluftkino',hw:46,hh:32,...kBlk(2,1)};// Freiluftkino (Fr & Sa 20:15–22:15 Uhr), freier Bauplatz südöstlich vom Lagerfeuer// Gaming-Laden, Westseite (grenzt an kein Gebäude, auch nicht über Eck)
+const KKINO={name:'Freiluftkino',hw:46,hh:32,...kBlk(2,1)};// Freiluftkino (Fr & Sa 20:30–22:30 Uhr), freier Bauplatz südöstlich vom Lagerfeuer// Gaming-Laden, Westseite (grenzt an kein Gebäude, auch nicht über Eck)
 // Coco Bay: Küstenstreifen ganz im Süden – vom Weg bis ans Wasser (Ursprung = Oberkante am Weg)
 const KBAR=(()=>{const b=kBlk(0,7);let yc=b.y0;while(inside(KOKV,b.cx,yc,0)&&yc<b.y0+80)yc+=1;return{name:'Coco Bay',key:b.key,cx:b.cx,cy:b.y0+2,hw:46,dep:yc-b.y0+BEX-3};})();
 // Feste Bauten ohne GEB-Eintrag: erscheinen beim „Wachsen sehen“ erst als Ereignis (nicht von Anfang an)
@@ -2457,7 +2457,7 @@ const STK=[['palast','🏰','Muschelpalast','#e8467c',0],['doener','🥙','Döne
  ['cocobay','🍹','Coco Bay','#ff8a3c',1],['kokosbad','🏊','Kokos-Bad','#3fa0e8',1],['coast','👗','Coast & Cotton','#c86a4a',1],['kokos','🪩','KOK(O)S','#9b5de5',1],['cococare','🌸','CocoCare','#5fc8a8',1],['gaming','🕹️','Game Lagoon','#ff3dbe',1],['feuer','🔥','Lagerfeuer','#ff7a1c',1],['gpearl','💎','Golden Pearl','#d4a017',1],['anleger','⚓','Kokos-Anleger','#8a5a2b',1],
  ['ev_wochenmarkt','🍎','Wochenmarkt','#3f9b45',2],['ev_flohmarkt','🧺','Flohmarkt','#f4a51c',2],['ev_konzert','🎵','Konzert der Muschelband','#e8467c',2],['ev_feuerwerk','🎆','Feuerwerk','#5a3fd0',2],['ev_kino','🎬','Freiluftkino','#3a2a6a',3],
  ['seestern','⛴️','Fähre „Seestern“','#2f7fc0',4]];/* Typ 4: gibt es bei der ersten Fahrt mit der Fähre */
-const STKEV={ev_wochenmarkt:'Mi 6–12 Uhr',ev_flohmarkt:'Sa 10–18 Uhr',ev_konzert:'So 16–19 Uhr',ev_feuerwerk:'Fr 20:00–20:10 Uhr',ev_kino:'Fr+Sa 20:15–22:15'};
+const STKEV={ev_wochenmarkt:'Mi 6–12 Uhr',ev_flohmarkt:'Sa 10–18 Uhr',ev_konzert:'So 16–19 Uhr',ev_feuerwerk:'Fr 20:00–20:30 Uhr',ev_kino:'Fr+Sa 20:30–22:30'};
 const stkHab=()=>(MK.d&&MK.d.sticker)||[];
 function stkKarte([id,em,name,col,isl],hab,i){const r=((hash(i,77)-.5)*16).toFixed(1);return hab?'<div class="stk" data-stk="'+id+'" role="button" tabindex="0" title="'+esc(name)+'"><i style="--c:'+col+';--r:'+r+'deg">'+em+'</i><b>'+esc(name)+'</b></div>':'<div class="stk leer" data-stk="'+id+'" role="button" tabindex="0"><i style="--r:'+r+'deg">?</i><b>'+(isl===4?'Fähre':isl===2?'Muschelplatz':isl===3?'Kokos-Küste':isl?'Kokos-Küste':'Haupt-Insel')+'</b>'+(isl>=2?'<b class="stkzeit">'+STKEV[id]+'</b>':'')+'</div>';}
 // Sticker antippen: groß ansehen (gesammelt) bzw. Hinweis, wo es ihn gibt
@@ -2554,8 +2554,8 @@ function angelTap(ai){ai=ai|0;if(!mitmachen('🎣','Angeln'))return;const AH=MK.
   if(st==='biss'){clearTimeout(tm);st='zieh';go.disabled=true;go.textContent='⏳ Einholen …';const r=await mk('angeln',{insel:ai});
    if(!r||!r.ok){if(r&&r.grund==='schon'){await mkStand();angelTap(ai);return;}st='weg';go.disabled=false;go.textContent='Bitte nochmal versuchen';return;}
    if(MK.d){MK.d.fische=r.fische;MK.d.angelnHeute=Object.assign({},MK.d.angelnHeute||{},{[ai]:r.fisch});MK.d.stand=r.stand;}try{mkCard();}catch(e){}popup(fischFang(r.fisch,r.betrag));fischAlbOeffnen();}};}
-// 🎬 Freiluftkino (Kokos-Küste, Fr & Sa 20:15–22:15 Uhr)
-const kinoAktiv=()=>{const q=QP.get('termin');if(q)return q==='kino';const d=berlin(),wd=d.getDay(),h=d.getHours()+d.getMinutes()/60;return(wd===5||wd===6)&&h>=20.25&&h<22.25;};/* 20.11.: Start 20:15, damit es freitags nicht mit dem Feuerwerk (20:00–20:10) zusammenfällt */
+// 🎬 Freiluftkino (Kokos-Küste, Fr & Sa 20:30–22:30 Uhr)
+const kinoAktiv=()=>{const q=QP.get('termin');if(q)return q==='kino';const d=berlin(),wd=d.getDay(),h=d.getHours()+d.getMinutes()/60;return(wd===5||wd===6)&&h>=20.5&&h<22.5;};/* 23.11.: Start 20:30, damit es freitags nicht mit dem Feuerwerk (20:00–20:30) zusammenfällt */
 const FILME=['Die Muschel-Piraten','Das Geheimnis der Kokosinsel','Wal-Alarm!','Ein Sommer in Muschel-Tal','Die große Schildkröten-Rallye','Flaschenpost aus dem Nichts'];
 const kinoFilm=()=>{const d=berlin();return FILME[(Math.floor(d.getTime()/864e5))%FILME.length];};
 const KINOS=[];for(let r=0;r<3;r++)for(let k=0;k<5;k++)KINOS.push([-24+k*12,-1+r*9]);
@@ -2564,7 +2564,7 @@ function kinoLeinwand(c,an,t){c.fillStyle='#5a3418';c.fillRect(-25.6,-31,1.2,22)
  if(an){const g=c.createLinearGradient(0,-30,0,-12);g.addColorStop(0,'#1d2a5a');g.addColorStop(.6,'#3a6ab0');g.addColorStop(1,'#2a8ab8');c.fillStyle=g;c.fillRect(-24,-30.4,48,18.4);c.fillStyle='#fff6c0';c.beginPath();c.arc(14,-25.4,2.2,0,TAU);c.fill();
   c.save();c.beginPath();c.rect(-24,-30.4,48,18.4);c.clip();const bx=-28+((t*5)%56);c.fillStyle='#fff';c.beginPath();c.moveTo(bx,-17.6);c.lineTo(bx,-24);c.lineTo(bx+4.2,-17.6);c.fill();c.fillStyle='#8a5a2b';c.fillRect(bx-3,-17.6,8,1.4);
   c.strokeStyle='rgba(255,255,255,.55)';c.lineWidth=.3;for(let k=0;k<3;k++){c.beginPath();for(let xx=-24;xx<=24;xx+=2)c.lineTo(xx,-15.2+k*1.2+Math.sin(xx*.5+t*2+k)*.3);c.stroke();}c.restore();}
- else{c.fillStyle='#f4f1ea';c.fillRect(-24,-30.4,48,18.4);c.fillStyle='#2a1b12';c.textAlign='center';c.font='900 3.1px '+FONT;c.fillText('FREILUFTKINO',0,-23.4);c.fillStyle='#e8467c';c.font='800 1.8px '+FONT;c.fillText('Fr & Sa · 20:15–22:15',0,-19.2);c.fillStyle='#7a5a2b';c.font='700 1.4px '+FONT;c.fillText('Eintritt frei 🍿',0,-16);}}
+ else{c.fillStyle='#f4f1ea';c.fillRect(-24,-30.4,48,18.4);c.fillStyle='#2a1b12';c.textAlign='center';c.font='900 3.1px '+FONT;c.fillText('FREILUFTKINO',0,-23.4);c.fillStyle='#e8467c';c.font='800 1.8px '+FONT;c.fillText('Fr & Sa · 20:30–22:30',0,-19.2);c.fillStyle='#7a5a2b';c.font='700 1.4px '+FONT;c.fillText('Eintritt frei 🍿',0,-16);}}
 function drawKino(c,nl){const t=REDUCED?0:T,X=KKINO.cx,Y=KKINO.cy,an=kinoAktiv();c.save();c.translate(X,Y);
  c.fillStyle='#ecd9a8';c.beginPath();c.roundRect(-44,-30,88,60,6);c.fill();c.strokeStyle='rgba(160,120,60,.35)';c.lineWidth=.3;c.stroke();
  c.strokeStyle='#6b4423';c.lineWidth=.3;c.beginPath();c.moveTo(-42,-28);c.quadraticCurveTo(-34,-22,-26,-28);c.moveTo(26,-28);c.quadraticCurveTo(34,-22,42,-28);c.stroke();for(let k=0;k<8;k++){const s=k<4?-1:1,u=(k%4+.5)/4,xx=s*(26+u*16),yy=-28+Math.sin(u*Math.PI)*5.3;c.fillStyle=['#ffd23f','#ff7ad9','#7fe0ff','#9bff9b'][k%4];c.beginPath();c.arc(xx,yy,.45,0,TAU);c.fill();}
@@ -2578,7 +2578,7 @@ function drawKino(c,nl){const t=REDUCED?0:T,X=KKINO.cx,Y=KKINO.cy,an=kinoAktiv()
 function kinoWalk(x,y){const lx=x-KKINO.cx,ly=y-KKINO.cy,f=ly+4.4;if(Math.abs(lx)>46||ly>32||ly<-37.5)return null;if(f<-10&&Math.abs(lx)<26.5)return false;
  for(const [cx,cy] of KINOS)if(Math.abs(lx-cx)<3&&f>cy-2.6&&f<cy+3.4)return false;if(inRect(lx,f,32,40,17,24))return false;if(Math.abs(lx)<2.4&&f>22&&f<28.6)return false;return true;}
 const kinoAt=(wx,wy)=>cam.z*S>4&&Math.abs(wx-KKINO.cx)<27&&wy>KKINO.cy-34&&wy<KKINO.cy-9;
-async function kinoTap(){const an=kinoAktiv();if(!an){popup('<div class="big">🎬</div><h2>Freiluftkino</h2><p>Jeden <b>Freitag und Samstag von 20:15 bis 22:15 Uhr</b> läuft hier auf der Kokos-Küste ein Film unter freiem Himmel – mit Liegestühlen und Popcorn. Komm vorbei!</p>');return;}
+async function kinoTap(){const an=kinoAktiv();if(!an){popup('<div class="big">🎬</div><h2>Freiluftkino</h2><p>Jeden <b>Freitag und Samstag von 20:30 bis 22:30 Uhr</b> läuft hier auf der Kokos-Küste ein Film unter freiem Himmel – mit Liegestühlen und Popcorn. Komm vorbei!</p>');return;}
  popup('<div class="big">🎬🍿</div><h2>Heute im Freiluftkino</h2><p>„<b>'+esc(kinoFilm())+'</b>“<br>Schnapp dir einen Liegestuhl – der Film läuft bis 22 Uhr.</p><button class="cbtn hot" type="button" id="kigo">🍿 Film schauen</button>');
  $('kigo').onclick=async()=>{if(!mitmachen('🎬','Film schauen'))return;if(!fussNah(KKINO.cx,KKINO.cy,48)){hinGehen('🎬','Freiluftkino','zum Freiluftkino auf der Kokos-Küste');return;}const hab=stkHab().includes('ev_kino');if(hab){popup('<div class="big">🍿</div><h2>Viel Spaß beim Film!</h2><p>„'+esc(kinoFilm())+'“ läuft. Lehn dich zurück! 🌙</p>');return;}
   const r=await mk('sticker',{id:'ev_kino'});if(r&&r.ok){MK.d.sticker=r.sticker;const i=STK.findIndex(s=>s[0]==='ev_kino');popup('<div class="stkpop">'+stkKarte(STK[i],true,i)+'</div><h2>Neuer Sticker!</h2><p>Du warst im Freiluftkino – viel Spaß beim Film „'+esc(kinoFilm())+'“! 🍿</p><p class="cft">'+r.sticker.length+'/'+STK.length+' im Sticker-Album</p><button class="cbtn" type="button" id="zualb">🧩 Zum Sticker-Album</button>');$('zualb').onclick=zumAlbum;}else popup('<div class="big">🍿</div><h2>Viel Spaß beim Film!</h2><p>Lehn dich zurück! 🌙</p>');};}
@@ -2599,9 +2599,9 @@ setInterval(()=>{if(document.hidden)return;const say=(k,txt,ms)=>{if(EVGEM.has(k
  try{if(kinoAktiv()&&KOKV.open&&say('ki'+berlin().toDateString(),'🎬 Jetzt läuft das Freiluftkino auf der Kokos-Küste – Liegestühle sind frei!',6000))return;}catch(e){}
  try{if(mondDa()&&say('mo'+mondNacht(),'🌕 Vollmond! Heute Nacht leuchten Mondmuscheln am Strand der Haupt-Insel.',6000))return;}catch(e){}
 },1000);
-// ---------- 📅 Feste Termine auf dem Muschelplatz: Fr 20:00 Feuerwerk (10 Min.) · Sa 10–18 Uhr Flohmarkt · So 16–19 Uhr Konzert der Muschelband ----------
+// ---------- 📅 Feste Termine auf dem Muschelplatz: Fr 20:00–20:30 Feuerwerk (30 Min.) · Sa 10–18 Uhr Flohmarkt · So 16–19 Uhr Konzert der Muschelband ----------
 let TERMC=-1,TERMV=null;function termin(){const sk=Date.now()/1000|0;if(sk===TERMC)return TERMV;TERMC=sk;TERMV=termin0();return TERMV;}
-function termin0(){const q=QP.get('termin');if(q)return q;const d=berlin(),wd=d.getDay(),h=d.getHours()+d.getMinutes()/60;if(wd===3&&h>=6&&h<12)return'wochenmarkt';if(wd===5&&h>=20&&h<20+10/60)return'feuerwerk';if(wd===6&&h>=10&&h<18)return'flohmarkt';if(wd===0&&h>=16&&h<19)return'konzert';return null;}
+function termin0(){const q=QP.get('termin');if(q)return q;const d=berlin(),wd=d.getDay(),h=d.getHours()+d.getMinutes()/60;if(wd===3&&h>=6&&h<12)return'wochenmarkt';if(wd===5&&h>=20&&h<20.5)return'feuerwerk';if(wd===6&&h>=10&&h<18)return'flohmarkt';if(wd===0&&h>=16&&h<19)return'konzert';return null;}
 const TERMTXT={wochenmarkt:'🍎 Heute Wochenmarkt auf dem Muschelplatz!',feuerwerk:'🎆 Jetzt: Feuerwerk über dem Muschelplatz!',flohmarkt:'🧺 Heute Flohmarkt auf dem Muschelplatz!',konzert:'🎵 Die Muschelband spielt live auf dem Muschelplatz!'};
 // freie Flächen auf dem Muschelplatz (einmal berechnet, ohne die Termin-Sperren)
 let TPL=null,TPLC=false;
