@@ -24,7 +24,7 @@
  "loudness": -9,
  "pitch": 0,
  "title": "Muschel-Tal – 10 Sekunden ohne Muscheln",
- "voice": "Gemini TTS (gemini-3.1-flash-tts-preview, Stimme Achird, --speed 1.12) – wie Video 1",
+ "voice": "Gemini TTS (gemini-3.1-flash-tts-preview, Stimme Achird, --speed 1.0, ruhiger) – Nutzerwunsch 23.11.",
  "notes": "23.11.: komplett neue, frei erfundene Szenen – extrem übertriebene Welt ohne Muscheln.",
  "scenes": [
   {
@@ -225,21 +225,59 @@
    "tag": "",
    "sfx": [
     {
-     "name": "fs_splat",
-     "at": "L7:Spaghetti",
-     "volume": 0.6
+     "name": "fs_pop",
+     "at": "L7:WLAN-Passwort",
+     "volume": 0.4
     },
     {
-     "name": "fs_slurp",
-     "at": "L7:Spaghetti+0.35",
-     "volume": 0.5
+     "name": "fs_scratch",
+     "at": "L7b:Kein",
+     "volume": 0.45
+    },
+    {
+     "name": "fs_boo",
+     "at": "L7b:Internet+0.2",
+     "volume": 0.4
     }
    ],
    "lines": [
     {
      "id": "L7",
-     "text": "*g:Muschelnudeln? / Nur noch *y:Spaghetti!",
-     "pause": 0.12
+     "text": "Dein *g:WLAN-Passwort war / *y:Muschel123|Muschel_eins_zwei_drei?",
+     "pause": 0
+    },
+    {
+     "id": "L7b",
+     "text": "*y:Kein *y:Internet mehr!",
+     "pause": 0.1
+    }
+   ]
+  },
+  {
+   "id": "s10",
+   "tag": "",
+   "sfx": [
+    {
+     "name": "fs_ocean",
+     "at": "L10:Statt",
+     "volume": 0.35
+    },
+    {
+     "name": "fs_pop",
+     "at": "L10:Sprachnachrichten",
+     "volume": 0.5
+    },
+    {
+     "name": "fs_sigh",
+     "at": "L10:Mama+0.2",
+     "volume": 0.6
+    }
+   ],
+   "lines": [
+    {
+     "id": "L10",
+     "text": "Statt *g:Meeresrauschen hörst du / *y:47 *y:Sprachnachrichten von *p:Mama!",
+     "pause": 0.1
     }
    ]
   },
