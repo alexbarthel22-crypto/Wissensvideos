@@ -312,6 +312,15 @@ def insel_je(sauber, insel):
     mit = _arbeiter_huetten(sauber, insel)
     grenzen = inselgrenzen(sauber, insel, mit)
     isl = [next(i for i, g in enumerate(grenzen) if nr <= g) for nr in range(1, len(sauber) + 1)]
+    # 23.11.: Wer schon eine Hütte hat, behält seine Insel – auch wenn durch Auszüge die Nummern nachrücken
+    # (sonst wechseln Einzelne ungewollt die Insel). Nur Neue werden nach Nummer verteilt.
+    anz = len(sauber)
+    for j, r in enumerate(sauber):
+        m = re.fullmatch(r"(\d+):(\d+)", str(r[3] or ""))
+        if m:
+            alt = int(m[1])
+            if alt < len(insel["inseln"]) and anz > insel["inseln"][alt]["ab"]:
+                isl[j] = alt
     for j in mit:
         isl[j] = 0
     wo = _gebaeude_bewohner(insel)
