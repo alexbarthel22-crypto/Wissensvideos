@@ -27,7 +27,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:6px 8px;b
 .tw{max-height:520px;overflow:auto;padding-bottom:18px;scrollbar-gutter:stable;-webkit-overflow-scrolling:touch}.mut{color:var(--mut);font-size:13px}
 canvas{width:100%;max-width:520px;border-radius:10px;background:var(--grid);display:block}
 #login{max-width:360px;margin:60px auto;text-align:center}#login input{width:100%;margin:10px 0}
-</style>
+.heattabs{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px}.heattabs button{font:700 13px system-ui;padding:6px 10px;border-radius:999px;border:2px solid #2a1b12;background:#fff;cursor:pointer}.heattabs button.an{background:#e8467c;color:#fff}.heattabs small{opacity:.7;font-weight:600}</style>
 </head>
 <body>
 <div class="tip" id="tip"></div>
@@ -49,7 +49,7 @@ canvas{width:100%;max-width:520px;border-radius:10px;background:var(--grid);disp
  <div class="card"><h2>Woher kommen die Besucher?</h2><div class="hb" id="quelle"></div></div>
  <div class="card"><h2>Geräte</h2><div class="hb" id="geraet"></div><h2 style="margin-top:16px">Zoomstufe auf der Karte (Minuten)</h2><div class="hb" id="zoom"></div></div>
  <div class="card"><h2>Was wird gemacht? (Anzahl)</h2><div class="hb" id="ereignisse"></div></div>
- <div class="card"><h2>Heatmap: wo auf der Karte geschaut wird</h2><canvas id="heat" width="520" height="420"></canvas><p class="mut">Zeigt die ganze Inselwelt von oben: Je heller ein Fleck, desto länger haben Besucher dort hingeschaut (gemessen wird die Bildmitte der Karte, auch beim Erkunden). So siehst du, welche Orte die meiste Aufmerksamkeit bekommen und welche kaum jemand besucht.</p></div>
+ <div class="card"><h2>Heatmap: wo auf der Karte geschaut wird</h2><div class="heattabs" id="heattabs"></div><canvas id="heat" width="520" height="420"></canvas><p class="mut">Oben eine Insel wählen (oder alle): Je kräftiger pink ein Fleck, desto länger haben Besucher dort hingeschaut (gemessen wird die Bildmitte der Karte, auch beim Erkunden). Die Minuten hinter jeder Insel zeigen, wie viel Zeit insgesamt auf ihr verbracht wurde.</p></div>
 </div>
 <div class="card" style="margin-top:12px"><h2>💎 Premium-Shop (Echtgeld)</h2><div class="tiles" id="ptiles"></div>
 <div class="grid"><div><h2>Weg zum Kauf (Besuche, anonym)</h2><div class="hb" id="ptr"></div><p class="mut">Anteil bezogen auf „Premium-Shop gesehen“.</p></div><div><h2>Verkaufte Pakete</h2><div class="hb" id="ppak"></div><h2 style="margin-top:14px">Pakete angetippt vs. zur Bezahlung</h2><div class="hb" id="pauf"></div></div></div>
@@ -100,9 +100,18 @@ function premium(){const E=DATA.echtgeld||{kaeufe:0,umsatzCent:0,kaeufer:0,wiede
  const T=DATA.tage.map(t=>t.tag);vb('ptag','ptagax',T.map(d=>(E.tage||{})[d]||0),T.map((d,i)=>T.length>14&&i%3?'':d.slice(8)+'.'+d.slice(5,7)+'.'),T.map(d=>d+': '+eur((E.tage||{})[d]||0)));
  const S=E.stunden||Array(24).fill(0);vb('pstd','pstdax',S,S.map((v,i)=>i%3?'':i+''),S.map((v,i)=>i+':00–'+i+':59 Uhr: '+fmt(v)+' Käufe'));
  $('pli').innerHTML='<tr><th>Zeit</th><th>Name</th><th>Paket</th><th class="r">Betrag</th><th class="r">Muscheln</th></tr>'+((E.liste||[]).map(x=>'<tr><td>'+(x.zeit?new Date(x.zeit).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'–')+'</td><td>'+x.name+'</td><td>'+(PAKN[x.paket]||x.paket)+'</td><td class="r">'+eur(x.cent)+'</td><td class="r">'+fmt(x.muscheln)+'</td></tr>').join('')||'<tr><td colspan="5" class="mut">Noch keine Käufe im Zeitraum</td></tr>');}
-function heat(H){const cv=$('heat'),c=cv.getContext('2d'),E=Object.entries(H||{}).map(([k,v])=>{const [x,y]=k.split(':').map(Number);return[x,y,v];});c.clearRect(0,0,cv.width,cv.height);if(!E.length){c.fillStyle='#999';c.font='14px system-ui';c.fillText('Noch keine Daten',20,30);return;}
- const xs=E.map(e=>e[0]),ys=E.map(e=>e[1]),x0=Math.min(...xs)-1,x1=Math.max(...xs)+1,y0=Math.min(...ys)-1,y1=Math.max(...ys)+1,sc=Math.min(cv.width/(x1-x0+1),cv.height/(y1-y0+1)),m=Math.max(...E.map(e=>e[2]));
- for(const [x,y,v] of E){const a=Math.pow(v/m,.45);c.fillStyle=`rgba(47,127,208,${.12+.88*a})`;c.fillRect((x-x0)*sc,(y-y0)*sc,sc-1,sc-1);}}
+const UMRISS=/*UMRISS*/null;let HEATI='alle',HEATH=null;
+/* Heatmap je Insel: Schlüssel „Insel|x:y“ (alte Schlüssel ohne Insel werden der nächsten Insel zugeordnet); Küstenlinie als Hintergrund */
+function heat(H){HEATH=H||HEATH;const cv=$('heat'),c=cv.getContext('2d'),U=UMRISS||[];const mitte=o=>{let x=0,y=0;for(const p of o.pts){x+=p[0];y+=p[1];}return[x/o.pts.length,y/o.pts.length];};
+ const E=Object.entries(HEATH||{}).map(([k,v])=>{let i=null,xy=k;if(k.includes('|')){[i,xy]=k.split('|');i=+i;}const [x,y]=xy.split(':').map(Number);if(i==null&&U.length){let bd=1e9;for(const o of U){const [mx,my]=mitte(o),d=Math.hypot(mx-x,my-y);if(d<bd){bd=d;i=o.i;}}}return[x,y,v,i];});
+ const da=[...new Set(E.map(e=>e[3]))].filter(i=>i!=null).sort((a,b)=>a-b),tabs=$('heattabs');
+ if(tabs){tabs.innerHTML=['alle',...da].map(i=>{const n=i==='alle'?'🗺️ Alle Inseln':((U.find(o=>o.i===i)||{}).name||'Insel '+(i+1));const sum=E.filter(e=>i==='alle'||e[3]===i).reduce((a,e)=>a+e[2],0);return '<button type="button" class="'+(String(HEATI)===String(i)?'an':'')+'" data-hi="'+i+'">'+n+' <small>'+Math.round(sum/60)+' Min.</small></button>';}).join('');tabs.querySelectorAll('[data-hi]').forEach(b=>b.onclick=()=>{HEATI=b.dataset.hi==='alle'?'alle':+b.dataset.hi;heat();});}
+ c.clearRect(0,0,cv.width,cv.height);c.fillStyle='#0e5c86';c.fillRect(0,0,cv.width,cv.height);
+ const F=E.filter(e=>HEATI==='alle'||e[3]===HEATI),Ui=U.filter(o=>HEATI==='alle'?da.includes(o.i):o.i===HEATI);
+ const P=[...Ui.flatMap(o=>o.pts),...F.map(e=>[e[0],e[1]])];if(!P.length){c.fillStyle='#fff';c.font='14px system-ui';c.fillText('Noch keine Daten',20,30);return;}
+ const xs=P.map(p=>p[0]),ys=P.map(p=>p[1]),x0=Math.min(...xs)-1.5,x1=Math.max(...xs)+1.5,y0=Math.min(...ys)-1.5,y1=Math.max(...ys)+1.5,sc=Math.min(cv.width/(x1-x0),cv.height/(y1-y0)),ox=(cv.width-(x1-x0)*sc)/2,oy=(cv.height-(y1-y0)*sc)/2,X=x=>ox+(x-x0)*sc,Y=y=>oy+(y-y0)*sc;
+ for(const o of Ui){c.beginPath();o.pts.forEach((p,k)=>k?c.lineTo(X(p[0]),Y(p[1])):c.moveTo(X(p[0]),Y(p[1])));c.closePath();c.fillStyle='#e9d9a6';c.fill();c.strokeStyle='#fff6d8';c.lineWidth=2;c.stroke();if(HEATI==='alle'){const [mx,my]=mitte(o);c.fillStyle='rgba(60,40,10,.55)';c.font='bold 12px system-ui';c.textAlign='center';c.fillText(o.name,X(mx),Y(my));}}
+ const m=Math.max(1,...F.map(e=>e[2]));for(const [x,y,v] of F){const a=Math.pow(v/m,.45);c.fillStyle=`rgba(232,70,124,${.15+.8*a})`;c.fillRect(X(x-.5),Y(y-.5),Math.max(2,sc-1),Math.max(2,sc-1));}}
 // Export für die Auswertung: alle Zahlen des Zeitraums, Namen ersetzt durch „Spieler 1, 2 …“
 $('export').onclick=async()=>{if(!DATA)return;const map=new Map(),an=n=>{if(!map.has(n))map.set(n,'Spieler '+(map.size+1));return map.get(n);};
  const D=JSON.parse(JSON.stringify(DATA));(D.spieler||[]).forEach(p=>{p.name=an(p.name);});if(D.echtgeld&&D.echtgeld.liste)D.echtgeld.liste.forEach(x=>{x.name=an(x.name);delete x.sid;});

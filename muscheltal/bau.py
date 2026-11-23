@@ -788,6 +788,8 @@ def baue(rows, out):
         quelle = os.path.join(HIER, datei)
         if os.path.exists(quelle):
             txt = open(quelle, encoding="utf-8").read()
+            if datei == "statistik.html" and os.path.exists(os.path.join(HIER, "daten", "inselumriss.json")):  # Insel-Umrisse für die Heatmap
+                txt = txt.replace("/*UMRISS*/null", open(os.path.join(HIER, "daten", "inselumriss.json"), encoding="utf-8").read())
             if datei == "statistik.html":  # Namen der Erfolge (aus der Vorlage) für die Erfolgs-Rangliste
                 vt = open(VORLAGE, encoding="utf-8").read()
                 md, me = re.search(r"const ERFD=\{(.*?)\};", vt), re.search(r"const ERFEMO=\{(.*?)\};", vt)

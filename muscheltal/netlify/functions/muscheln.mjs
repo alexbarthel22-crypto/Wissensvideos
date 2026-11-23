@@ -119,7 +119,11 @@ async function freigeben(store) {
 
 // ================= 🎮 Spiele im Golden Pearl: Wochen-Rangliste je Spiel, Top 3 gewinnen Muscheln (Wertung Mo 0 Uhr – So 20 Uhr) =================
 // Plausibilitätsprüfung: Lauf nur mit Start-Kennung vom Server, Dauer vom Server gemessen, je Spiel höchstens so viele Punkte wie in der Zeit möglich.
-const SPIELE = { taucher: { max: 70, min: 2000 }, turm: { max: 2.2, min: 1500 }, memory: { min: 8000 }, krebs: { max: 70, min: 2000 } };// max = Punkte (bzw. Höhe) pro Sekunde
+// Höchstwerte aus den echten Spielregeln (T = Spieldauer in s, mit Reserve) – nichts Ehrliches darf daran scheitern:
+// Taucher: Tempo 150+Weg/40 → Weg ≤ 6000·(e^(T/40)−1); je 230 px höchstens 4 Perlen à 25 → ≤ 0,54 Punkte pro px
+// Krebs: Tempo 220+Weg/30 → Weg ≤ 6600·(e^(T/30)−1); je 150 px höchstens 1 Muschel à 20 → ≤ 0,24 Punkte pro px
+// Turm: jeder Tipp = 1 Block → höchstens 8 Tipps pro Sekunde; Memory: Zeit in ms (+2 s je Fehler), schneller als 5 s geht nicht
+const SPIELE = { taucher: { min: 300, grenze: T => 1.25 * (0.54 * 6000 * (Math.exp(T / 40) - 1)) + 150 }, turm: { min: 300, grenze: T => 8 * T + 3 }, memory: { min: 5000 }, krebs: { min: 300, grenze: T => 1.25 * (0.24 * 6600 * (Math.exp(T / 30) - 1)) + 60 } };
 const SP_PREIS = [30, 20, 10];// Platz 1–3 je Spiel (wird im Spiel nicht verraten)
 function spWoche(t = Date.now()) { const p = Object.fromEntries(new Intl.DateTimeFormat("en-US", { timeZone: TZ, weekday: "short", hour: "2-digit", hourCycle: "h23" }).formatToParts(new Date(t)).map(x => [x.type, x.value])), d = tag(t); return p.weekday === "Sun" && +p.hour >= 20 ? woche(new Date(new Date(d + "T12:00:00Z").getTime() + 864e5).toISOString().slice(0, 10)) : woche(d); }// ab So 20 Uhr zählt schon die neue Woche
 async function spTop(store, w, k) { const L = []; for (const key of await liste(store, "x/spiel/" + w + "/" + k + "/")) { try { const v = JSON.parse((await store.get(key)) || "null"); if (v) L.push({ n: "@" + key.split("/").pop(), s: v.s, t: v.t }); } catch (e) {} } const zeit = k === "memory"; L.sort((a, b) => (zeit ? a.s - b.s : b.s - a.s) || a.t - b.t); return L; }
@@ -765,7 +769,7 @@ export default async (req) => {
     if (!L) return json({ ok: false, grund: "lauf" }); await store.delete(lk);
     const k = L.k, R0 = SPIELE[k], dauerServer = Date.now() - L.t, dauer = Math.min(Number(d.dauer) || 0, dauerServer + 3000), s = Math.max(0, Math.floor(Number(d.score) || 0));
     if (!(dauer >= R0.min) || dauerServer + 3000 < dauer) return json({ ok: false, grund: "unplausibel" });
-    if (k === "memory" ? s < 8000 || s > dauerServer + 3000 + 60 * 2000 : s > (R0.max * dauer) / 1000 + 5) return json({ ok: false, grund: "unplausibel" });
+    if (k === "memory" ? s < 5000 : s > R0.grenze((dauer + 1000) / 1000)) return json({ ok: false, grund: "unplausibel" });
     const w = spWoche(), bk = "x/spiel/" + w + "/" + k + "/" + nm; let alt = null; try { alt = JSON.parse((await store.get(bk)) || "null"); } catch (e) {}
     const besser = !alt || (k === "memory" ? s < alt.s : s > alt.s);
     if (besser) await store.set(bk, JSON.stringify({ s, t: Date.now() }));
