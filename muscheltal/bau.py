@@ -349,6 +349,12 @@ def verteile(sauber, insel):
     wo = _gebaeude_bewohner(insel)
     mit = _arbeiter_huetten(sauber, insel)
     sonder = [r[0].lower().lstrip("@") in wo and j not in mit for j, r in enumerate(sauber)]  # wohnen in einem Gebäude, kein Hütten-Platz
+    # ✨ Goldene Hütte (insel.json → inseln[i].gold = {block, nr}): eigener Block mit Wegen rundherum, die Karte setzt
+    # Einwohner-Nr. nr dorthin – braucht also keinen normalen Hütten-Platz ("H" wie Gebäude-Bewohner)
+    for j in range(len(sauber)):
+        g = insel["inseln"][isl[j]].get("gold")
+        if g and j + 1 == g["nr"]:
+            sonder[j] = True
     plaetze, belegt = [None] * len(sauber), {}
     for j, r in enumerate(sauber):
         if sonder[j]:

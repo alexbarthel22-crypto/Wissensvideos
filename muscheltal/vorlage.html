@@ -549,12 +549,12 @@ const WOHN={};for(const [k,o] of Object.entries(I.wohnorte||{})){if(Array.isArra
 const PEOPLE=R.map((r,i)=>{const nr=i+1,v=r[5]!=null&&ISL[r[5]]?ISL[r[5]]:islandOf(nr);const wh=WOHN[r[0].toLowerCase()]||null;return{home:wh==='Muschelpalast'?null:wh,palast:wh==='Muschelpalast',name:r[0],seit:r[1],mark:r[2],slot:typeof r[3]==='number'?r[3]:null,gr:r[4]==null?nr<=500:!!r[4],nr,isl:v,wait:!v.open,p:null};});
 // Sonder-Bewohner (z. B. @echter.alex auf der Schlossinsel): wohnen dort, zählen aber nicht als Einwohner (keine Nummer, nicht in der Suche)
 for(const [n,s] of DATA.s||[])PEOPLE.push({home:WOHN[n.toLowerCase()]||'Schloss',name:n,seit:s,mark:'',slot:null,gr:false,nr:0,sonder:true,isl:MAIN,wait:false,p:null});
-for(const v of ISL){const ppl=PEOPLE.filter(p=>p.isl===v&&!p.wait&&!p.home);v.people=ppl;
+for(const v of ISL){const ppl=PEOPLE.filter(p=>p.isl===v&&!p.wait&&!p.home&&!(v.gold&&p.nr===v.gold.nr));v.people=ppl;
  const need=ppl.length?Math.max(ppl.length,1+Math.max(...ppl.map(p=>p.slot??0))):0;
- v.plots=(v.open&&v.plaetze)?plaetze(v.plaetze,v.plaza,v.resvPlots||v.resv,v.i):(need?plaetze(need,v.plaza,v.resvPlots||v.resv,v.i):[]);
+ const inGold=pl=>!!(v.gold&&v.gold.block&&pl.gx>5*v.gold.block[0]&&pl.gx<5*v.gold.block[0]+5&&pl.gy>4*v.gold.block[1]&&pl.gy<4*v.gold.block[1]+4);v.plots=(v.open&&v.plaetze)?plaetze(v.plaetze,v.plaza,v.resvPlots||v.resv,v.i):(need?plaetze(need,v.plaza,v.resvPlots||v.resv,v.i):[]);
  if(v.tausch){const [[a,b],[c,d]]=v.tausch,inB=(pl,k,m)=>pl.gx>5*k&&pl.gx<5*k+5&&pl.gy>4*m&&pl.gy<4*m+4,frei=[];for(let gy=4*b+1;gy<4*b+4;gy++)for(let gx=5*a+1;gx<5*a+5;gx++)frei.push({gx,gy,x:gx*S,y:gy*S*0.9});
   frei.sort((p,q)=>hash(p.gx,p.gy)-hash(q.gx,q.gy));v.plots=v.plots.map(pl=>inB(pl,c,d)&&frei.length?frei.shift():pl);}
- if(v.neuB&&v.plots.length){const inN=pl=>v.neuB.some(([k,m])=>pl.gx>5*k&&pl.gx<5*k+5&&pl.gy>4*m&&pl.gy<4*m+4),have=new Set(v.plots.map(pl=>pl.gx+','+pl.gy)),extra=plaetze(v.plots.length+80,v.plaza,v.resv,v.i).filter(pl=>!have.has(pl.gx+','+pl.gy)&&!inN(pl));v.plots=v.plots.map(pl=>inN(pl)&&extra.length?extra.shift():pl);}v.keys=new Set(v.plots.map(pl=>pl.gx+','+pl.gy));
+ if(v.neuB&&v.plots.length){const inN=pl=>v.neuB.some(([k,m])=>pl.gx>5*k&&pl.gx<5*k+5&&pl.gy>4*m&&pl.gy<4*m+4),have=new Set(v.plots.map(pl=>pl.gx+','+pl.gy)),extra=plaetze(v.plots.length+80,v.plaza,v.resv,v.i).filter(pl=>!inGold(pl)&&!have.has(pl.gx+','+pl.gy)&&!inN(pl));v.plots=v.plots.map(pl=>inN(pl)&&extra.length?extra.shift():pl);}/* ✨ Goldblock bleibt frei (seine Plätze liegen weit hinter allen belegten – niemand rückt dadurch um) */if(v.gold&&v.gold.block)v.plots=v.plots.filter(pl=>!inGold(pl));v.keys=new Set(v.plots.map(pl=>pl.gx+','+pl.gy));
  const used=new Set();ppl.forEach((p,k)=>{let si=p.slot!=null&&p.slot<v.plots.length&&!used.has(p.slot)?p.slot:k;while(used.has(si))si++;used.add(si);p.hut=si+1;const pl=v.plots[si],h=hash(pl.gx+7+v.i*31,pl.gy-3);p.p={x:v.x+pl.x,y:v.y+pl.y,gx:pl.gx,gy:pl.gy};p.round=h<.28;p.wall=WALLS[(h*97|0)%4];p.roof=ROOFS[(h*631|0)%ROOFS.length];p.win=hash(pl.gx,pl.gy+11)<.55;v.cell.set(pl.gx+','+pl.gy,p);});
  // Nachbarn-Wünsche (insel.json → nachbarn): sind beide eingezogen, wohnt der Spätere direkt neben dem Früheren (freie Nachbarhütte)
  const setz=(p,si)=>{if(p.p)v.cell.delete(p.p.gx+','+p.p.gy);used.delete(p.hut-1);used.add(si);p.hut=si+1;const pl=v.plots[si],h=hash(pl.gx+7+v.i*31,pl.gy-3);p.p={x:v.x+pl.x,y:v.y+pl.y,gx:pl.gx,gy:pl.gy};p.round=h<.28;p.wall=WALLS[(h*97|0)%4];p.roof=ROOFS[(h*631|0)%ROOFS.length];p.win=hash(pl.gx,pl.gy+11)<.55;v.cell.set(pl.gx+','+pl.gy,p);};
@@ -916,6 +916,10 @@ function drawBauSign(c,b){const ist=bauIst(b),pr=Math.min(1,ist/b.preis),x=b.ste
 const LABR=GEB.map(g=>{const W=(g.x1-g.x0)/2,H=(g.y1-g.y0)/2,d=g.dir||1,sx=(g.sea-g.cx)*d,lx=g.typ==='strandbar'?(sx-44-W)/2*d:g.typ==='villa'?(sx-W)/2*d:0;return[g.cx+lx-34,g.cy+H-1,g.cx+lx+34,g.cy+H+12];});
 const inLab=(x,y)=>LABR.some(([a,b,c2,d2])=>x>a&&x<c2&&y>b&&y<d2);
 for(const v of ISL){if(v.rflow)v.rflow=v.rflow.filter(f=>!inLab(f.x,f.y));if(v.beach)v.beach=v.beach.filter(f=>!inLab(f.x,f.y));}
+/* ✨ Goldene Hütte (insel.json → inseln[i].gold = {slot, nr}): reserviert für Einwohner-Nr. nr; ist sie eingezogen, wohnt sie dauerhaft darin */
+const GOLD=(()=>{for(const v of ISL){const g=v.gold;if(!g||!g.block||!v.open)continue;const [k,m]=g.block,gx=5*k+2.5,gy=4*m+2,x=v.x+gx*S,y=v.y+gy*S*.9;
+ const wer=PEOPLE.find(p=>p.nr===g.nr&&p.isl===v&&!p.wait)||null;if(wer){wer.gold=true;wer.p={x,y,gx:5*k+2,gy};wer.hut=0;v.people.push(wer);v.cell.set((5*k+2)+','+gy,wer);v.cell.set((5*k+3)+','+gy,wer);return{v,nr:g.nr,wer,x,y,block:g.block};}
+ const q={p:{x,y,gx:5*k+2,gy},nr:0,gold:true,frei:true,name:'',isl:v,round:false,win:true,wall:'#fff6e0'};v.cell.set((5*k+2)+','+gy,q);v.cell.set((5*k+3)+','+gy,q);v.goldQ=q;return{v,nr:g.nr,q,x,y,block:g.block};}return null;})();
 const GEBK=new Map(GEB.map(g=>[g.key,g])),GEBN=new Map(GEB.map(g=>[g.name.toLowerCase(),g]));
 for(const p of PEOPLE)if(p.home){const g=GEBN.get(p.home.toLowerCase());if(g){const mates=PEOPLE.filter(q=>q.home===p.home),k=mates.indexOf(p);p.isl=g.v;p.wait=false;p.p=g.typ==='werkstatt'?{x:g.cx-3,y:g.cy+5}:KIO(g)?kioPos(g,Math.max(0,PEOPLE.filter(q=>q.ort===p.ort).sort((a,b)=>(a.beruf==='Leitung'?-1:0)-(b.beruf==='Leitung'?-1:0)).indexOf(p))):g.typ==='doener'?{x:g.cx+[-21.5,-8.5,-1.5][k%3],y:g.cy-6}:g.typ==='villa'?{x:g.cx+(22+k*8)*(g.dir||1),y:g.cy+13.5}:{x:g.sea-30*g.dir+(k-(mates.length-1)/2)*9*g.dir,y:g.cy-3};p.gb=g;}}
 // Luxus-Yacht „White Pearl“: liegt vor Anker vor der Westküste der Haupt-Insel (Platz für höchstens 4 Personen)
@@ -2659,7 +2663,7 @@ function terminTap(r){if(r.tm==='wochenmarkt'){const [em,name,,items,txt]=WMARKT
 // ---------- Statische Ebene (nur neu, wenn sich die Kamera bewegt) ----------
 // Kokosnuss-Haus (Kokos-Küste)
 const KOKX_F={perlmutt:'#f3d9e8',gold:'#e8b84a',sterne:'#2a3a7a',diamant:'#bfefff'};
-function coco(c,q,x,y,px,wet,snow,A){
+function coco(c,q,x,y,px,wet,snow,A){if(q.gold){cocoGold(c,q,x,y,px,wet,snow);return;}
  c.fillStyle='rgba(30,60,20,.28)';c.beginPath();c.ellipse(x+2,y+7,10,3,0,0,TAU);c.fill();
  const g=c.createRadialGradient(x-3,y-5,1,x,y-1,10);if(A&&A.dach){const f=KOKX_F[A.dach]||A.dach;g.addColorStop(0,shade(f,.18));g.addColorStop(1,shade(f,-.4));}else{g.addColorStop(0,wet?'#7a4c26':'#9a6332');g.addColorStop(1,wet?'#3e2410':'#5a3418');}c.fillStyle=g;
  c.beginPath();c.ellipse(x,y-1,9,8.4,0,0,TAU);c.fill();
@@ -2672,6 +2676,33 @@ function coco(c,q,x,y,px,wet,snow,A){
  if(wet){c.strokeStyle='rgba(235,245,255,.6)';c.lineWidth=.6;c.beginPath();c.arc(x-1,y-2,6.4,Math.PI*1.1,Math.PI*1.45);c.stroke();}
  if(snow){c.fillStyle='#f7fbff';c.beginPath();c.ellipse(x,y-5.6,7.4,3.6,0,Math.PI,TAU);c.quadraticCurveTo(x+4,y-4.2,x+2,y-5);c.quadraticCurveTo(x,y-3.6,x-2.4,y-4.8);c.quadraticCurveTo(x-5,y-3.8,x-7.4,y-5.6);c.fill();}
  }
+/* ✨ Goldene Kokos-Hütte: etwas größer, goldene Schale mit Glanz, goldener Türbogen mit warmem Licht, Palmwedel mit Stern, Funkeln */
+const goldAt=(x,y)=>!!(GOLD&&GOLD.q&&cam.z*S>4&&x>GOLD.x-13&&x<GOLD.x+13&&y>GOLD.y-20&&y<GOLD.y+13);
+/* goldenes Namensschild unter der freien goldenen Hütte (dort, wo sonst der Name steht) */function goldLbl(c,v){const q=v.goldQ;if(!q||!visR0(q.p.x,q.p.y))return;const t='✨ Reserviert · Nr. '+fmt(GOLD.nr),x=q.p.x,y=q.p.y+1.6;c.save();c.font='900 2.35px '+FONT;c.textAlign='center';const w=c.measureText(t).width+3;const g=c.createLinearGradient(0,y+8.6,0,y+12.3);g.addColorStop(0,'#fff3b0');g.addColorStop(1,'#f5c518');c.fillStyle=g;c.strokeStyle='#b8860b';c.lineWidth=.3;c.beginPath();c.roundRect(x-w/2,y+8.6,w,3.7,1.8);c.fill();c.stroke();c.fillStyle='#5a3a06';c.fillText(t,x,y+11.4);c.restore();}
+function goldTap(){if(!GOLD)return;const fehlt=Math.max(0,GOLD.nr-N);popup('<div class="iw" style="background:linear-gradient(170deg,#fff6c8 0%,#ffd84a 55%,#e0a516 100%);color:#5a3a06"><div class="iwdeko"><span>✨</span><span>🥥</span><span>🌴</span><span>✨</span></div><div class="iwem">🏆</div><div class="iwk">Die goldene Hütte</div><h2>Reserviert für Nr. '+fmt(GOLD.nr)+'</h2><p>Hier zieht der '+fmt(GOLD.nr)+'. Bewohner oder die '+fmt(GOLD.nr)+'. Bewohnerin von Muschel-Tal ein.'+(fehlt?'<br>Noch '+fmt(fehlt)+' Follower – vielleicht bist du es! 🍀':'')+'</p><svg class="iwwelle" viewBox="0 0 400 40" preserveAspectRatio="none"><path d="M0 22 Q50 6 100 22 T200 22 T300 22 T400 22 V40 H0Z" fill="#fff3c4" opacity=".6"/><path d="M0 28 Q50 14 100 28 T200 28 T300 28 T400 28 V40 H0Z" fill="#fff3c4"/></svg></div><a class="cbtn hot" href="'+ACCURL+'" target="_blank" rel="noopener" style="margin-top:12px;display:block;text-decoration:none">➕ '+esc(ACC)+' folgen</a>');try{statEv('goldene_huette');}catch(e){}}
+function cocoGold(c,q,x,y,px,wet,snow){const t=REDUCED?0:T,k=1.5;
+ /* Vorgarten: heller Sandplatz, goldene Trittsteine bis zum Weg, zwei kleine Palmen, Blumen */
+ c.fillStyle=wet?'#d8c49a':'#f3e3b8';c.beginPath();c.ellipse(x,y+6,24,13,0,0,TAU);c.fill();c.strokeStyle='rgba(200,160,80,.45)';c.lineWidth=.5;c.stroke();
+ for(let i=0;i<5;i++){const sy=y+19+i*5.2,sx=x+(i%2?1.2:-1.2);c.fillStyle='#f5c518';c.beginPath();c.ellipse(sx,sy,2.4,1.3,0,0,TAU);c.fill();c.strokeStyle='#b8860b';c.lineWidth=.3;c.stroke();}
+ for(const [dx,dy,col] of[[-17,9,'#ff6fa3'],[-14,13,'#ffd23f'],[17,9,'#ff8a3c'],[14,13,'#ff6fa3'],[-20,4,'#fff'],[20,4,'#ffd23f']]){c.fillStyle='#3f9b45';c.beginPath();c.arc(x+dx,y+dy+.8,1.3,0,TAU);c.fill();c.fillStyle=col;c.beginPath();c.arc(x+dx,y+dy,.9,0,TAU);c.fill();}
+ if(px>6){for(const s2 of[-1,1])palm(c,{x:x+s2*21,y:y-2,s:.55,ph:s2});}
+ c.save();c.translate(x,y+6);c.scale(k,k);c.translate(-x,-(y+6));
+ const gl=c.createRadialGradient(x,y+6,1,x,y+6,15);gl.addColorStop(0,'rgba(255,215,90,.45)');gl.addColorStop(1,'rgba(255,215,90,0)');c.fillStyle=gl;c.beginPath();c.ellipse(x,y+6,15,5,0,0,TAU);c.fill();
+ c.fillStyle='rgba(90,60,10,.3)';c.beginPath();c.ellipse(x+2,y+7,10,3,0,0,TAU);c.fill();
+ const g=c.createRadialGradient(x-3.5,y-5.5,.8,x,y-1,10.5);g.addColorStop(0,'#fffbe0');g.addColorStop(.35,'#ffd84a');g.addColorStop(.75,'#e0a516');g.addColorStop(1,'#9a6a0a');c.fillStyle=g;c.beginPath();c.ellipse(x,y-1,9,8.4,0,0,TAU);c.fill();
+ c.strokeStyle='#8a5a08';c.lineWidth=.45;c.stroke();
+ if(px>14){c.strokeStyle='rgba(255,250,210,.55)';c.lineWidth=.3;c.beginPath();for(let k2=0;k2<14;k2++){const a=k2/14*TAU,r0=4+hash(7,k2)*4;c.moveTo(x+Math.cos(a)*r0,y-1+Math.sin(a)*r0*.93);c.lineTo(x+Math.cos(a+.25)*(r0+1.6),y-1+Math.sin(a+.25)*(r0+1.6)*.93);}c.stroke();}
+ c.fillStyle='rgba(255,255,255,.55)';c.beginPath();c.ellipse(x-3.6,y-5,2.6,1.3,-.6,0,TAU);c.fill();
+ c.fillStyle='#8a5a08';for(const [dx,dy] of [[-1.6,-6.2],[1.6,-6.2],[0,-4.4]]){c.beginPath();c.arc(x+dx,y+dy,.7,0,TAU);c.fill();}
+ c.fillStyle='#fff3c4';c.beginPath();c.moveTo(x-2.6,y+6.6);c.lineTo(x-2.6,y+3);c.arc(x,y+3,2.6,Math.PI,0);c.lineTo(x+2.6,y+6.6);c.closePath();c.fill();c.strokeStyle='#b8860b';c.lineWidth=.35;c.stroke();
+ const dg=c.createLinearGradient(0,y+2,0,y+6.6);dg.addColorStop(0,'#fff1a8');dg.addColorStop(1,'#ffb52e');c.fillStyle=dg;c.beginPath();c.moveTo(x-1.5,y+6.6);c.lineTo(x-1.5,y+3.3);c.arc(x,y+3.3,1.5,Math.PI,0);c.lineTo(x+1.5,y+6.6);c.closePath();c.fill();
+ c.fillStyle='#fff3c4';c.beginPath();c.arc(x+4.7,y+.3,1.9,0,TAU);c.fill();c.strokeStyle='#b8860b';c.lineWidth=.3;c.stroke();c.fillStyle='#ffcf4a';c.beginPath();c.arc(x+4.7,y+.3,1.15,0,TAU);c.fill();
+ c.fillStyle='#ffe066';c.beginPath();c.ellipse(x+2.6,y-9.8,3.6,1.15,-.5,0,TAU);c.fill();c.fillStyle='#f5c518';c.beginPath();c.ellipse(x-2,y-10,3.1,1.05,.6,0,TAU);c.fill();c.fillStyle='#ffd23f';c.beginPath();c.ellipse(x+.3,y-10.9,2.6,.9,-.1,0,TAU);c.fill();
+ {const sx=x+.2,sy=y-13.2,r=1.7,r2=.7;c.fillStyle='#fffbe0';c.strokeStyle='#c8900f';c.lineWidth=.25;c.beginPath();for(let k2=0;k2<10;k2++){const a=-Math.PI/2+k2*Math.PI/5,rr=k2%2?r2:r;k2?c.lineTo(sx+Math.cos(a)*rr,sy+Math.sin(a)*rr):c.moveTo(sx+Math.cos(a)*rr,sy+Math.sin(a)*rr);}c.closePath();c.fill();c.stroke();}
+ for(let k2=0;k2<6;k2++){const ph=((t*.7+k2/6)%1),a=k2/6*TAU+1,rr=10.5,sx=x+Math.cos(a)*rr,sy=y-1+Math.sin(a)*rr*.9,s2=Math.sin(ph*Math.PI)*1.2;if(s2<.1)continue;c.fillStyle='rgba(255,255,255,.95)';c.fillRect(sx-.15,sy-s2,.3,s2*2);c.fillRect(sx-s2,sy-.15,s2*2,.3);}
+ if(snow){c.fillStyle='#f7fbff';c.beginPath();c.ellipse(x,y-5.6,7.4,3.6,0,Math.PI,TAU);c.fill();}
+ c.restore();
+}
 // Kokos-Küste, Platz in der Mitte: Muschelrand, Matten mit Kissen, Kokosnüsse, Ananas-Korb, Bongos, Ukulele, Fischernetz, Wegweiser
 function kokosDeko(c,v){const X=(r,a)=>v.x+Math.cos(a)*r*KOKX,Y=(r,a)=>v.y+Math.sin(a)*r*.92,R=v.plaza-9;
  for(let k=0;k<64;k++){const a=k/64*TAU,x=X(R,a),y=Y(R,a);c.fillStyle=['#ffd3e0','#fff3e0','#ffe0b8','#f7c6d9'][k%4];c.beginPath();c.arc(x,y,1.1,Math.PI,0);c.fill();c.strokeStyle='rgba(200,150,120,.6)';c.lineWidth=.15;c.beginPath();c.moveTo(x,y);c.lineTo(x-.6,y-.8);c.moveTo(x,y);c.lineTo(x,y-1.05);c.moveTo(x,y);c.lineTo(x+.6,y-.8);c.stroke();}
@@ -2782,7 +2813,7 @@ function drawIsland(c,v,vis,z){
  // Hütten (Südsee-Stelzenhütten mit Strohdach)
  const STRAW=['#e8c25a','#dcb04a','#f0cd6a'];const LBL=[];
  // von hinten nach vorne zeichnen, damit vordere Dächer die Stelzen der hinteren Reihe verdecken
- const byY=v.byY||(v.byY=v.people.filter(q=>q.p).sort((a,b)=>a.p.y-b.p.y||a.p.x-b.p.x));
+ const byY=v.byY||(v.byY=[...v.people,...(v.goldQ?[v.goldQ]:[])].filter(q=>q.p).sort((a,b)=>a.p.y-b.p.y||a.p.x-b.p.x));
  for(const q of byY){if(q.nr>limit)continue;const x=q.p.x,y=q.p.y;if(!vis(x,y))continue;const col=q.roof,st=STRAW[q.nr%3];
   if(px<7){c.fillStyle=kok?(snow?'#e8eef4':'#7a4a24'):snow?'#f4f8fc':wet?'#b8963f':st;c.fillRect(x-4.5,y-4.5,9,9);c.fillStyle=col;c.fillRect(x+1.5,y+1.5,3,3);continue;}
   hutBody(c,v,q,px,wet,snow);
@@ -3250,7 +3281,7 @@ function petsInit(){PETS.list=[];let i=0;for(const v of ISL){if(!v.open||!v.peop
    PETS.list.push({v,k,m,x,y,tk:null,tm:null,pk:null,pm:null,cat,sp,sz:(sp.small?.8:1)*(.85+hash(i,705)*.3),spd:cat?3.2+hash(i,706)*1.4:5+hash(i,706)*2.5,pause:hash(i,707)*4,sit:0,dir:hash(i,708)<.5?-1:1,vert:0,ph:hash(i,709)*9,coll:hash(i,710)<.6?COLL[(hash(i,711)*COLL.length)|0]:null,i});j++;i++;}}}
 // Streuner-Abstecher: vom Weg in die Gasse zwischen zwei Hüttenspalten, hindurch bis zur nächsten Wegreihe (nie über Hütten oder Hindernisse)
 function petAlleyOK(v,P){for(let i=1;i<P.length;i++){const [x0,y0]=P[i-1],[x1,y1]=P[i],n=Math.ceil(Math.hypot(x1-x0,y1-y0)/1.2);for(let j=1;j<=n;j++){const x=x0+(x1-x0)*j/n,y=y0+(y1-y0)*j/n;if(!canWalk(x,y)||inBau(x,y))return false;
- const gx=Math.round((x-v.x)/S),gy=Math.round((y-v.y)/(S*.9));for(let a=-1;a<=1;a++)for(let b=-1;b<=1;b++){const q=v.cell.get((gx+a)+','+(gy+b));if(q&&q.p&&q.nr<=limit&&Math.abs(x-q.p.x)<7.6&&y>q.p.y-9&&y<q.p.y+7.6)return false;}}}return true;}
+ const gx=Math.round((x-v.x)/S),gy=Math.round((y-v.y)/(S*.9));for(let a=-1;a<=1;a++)for(let b=-1;b<=1;b++){const q=v.cell.get((gx+a)+','+(gy+b));if(q&&q.p&&q.nr<=limit&&Math.abs(x-q.p.x)<(q.gold?12.5:7.6)&&y>q.p.y-(q.gold?14:9)&&y<q.p.y+(q.gold?9.5:7.6))return false;}}}return true;}
 function petAlley(a){const v=a.v,[x0,y0]=rNode(v,a.k,a.m),sx=Math.random()<.5?-1:1,sy=Math.random()<.5?-1:1,j=(Math.random()*4)|0,ax=x0+sx*(j+.5)*S,m2=a.m+sy,[,y1]=rNode(v,a.k,m2),k2=j<2?a.k:a.k+sx,[x2]=rNode(v,k2,m2);
  if(!rValid(v,k2,m2))return false;const P=[[x0,y0],[ax,y0],[ax,y1],[x2,y1]];if(!petAlleyOK(v,P))return false;a.wp=P.slice(1);a.wk=k2;a.wm=m2;return true;}
 function petsStep(){if(!PETS.list)petsInit();let dt=T-PETS.last;PETS.last=T;if(!(dt>0)||dt>.2)dt=.033;
@@ -4822,7 +4853,7 @@ function draw(){/* Selbstheilung: ungültige Kamera-/Spielerwerte (NaN) zurücks
    else if(g.typ==='strandbar'){const W=(g.x1-g.x0)/2,H=(g.y1-g.y0)/2,sx=(g.sea-g.cx)*d,bx=sx-30;glow(X(bx),Y(-2),20,'255,170,90',.55*nl);for(const [lx,ly] of[[sx-42,-24],[W-4,-24],[W-4,24],[sx-42,24],[(sx-44+W)/2,-24],[(sx-44+W)/2,24]])glow(X(lx),Y(ly-7.5),7,'255,160,60',.75*nl*(.85+.15*Math.sin(T*11+lx)));
     for(let k=0;k<4;k++)glow(X(bx-11+k*7.3),Y(-6.6),4,['255,120,180','255,220,100','100,240,220','255,160,90'][k],.8*nl);for(const [lx,ly] of[[sx+11,-14.8],[sx+11,13.2],[sx+31,-2.8]])glow(X(lx),Y(ly),5,'255,200,110',.7*nl);glow(X(W-13),Y(-1),9,`${(T*80|0)%2?'255,60,160':'60,200,255'}`,.55*nl);for(let x=sx+6;x<W-2;x+=8)for(const yy of[-26.6,26.6])glow(X(x),Y(yy),2.2,'255,225,160',.55*nl);}}
   if(visR(YACHT.cx,YACHT.cy,60))yachtGlow(glow,nl);
-  if(exDa(KI)&&visR(KI.x,KI.cy,60))kioskGlow(glow,nl);if(visR(SCH.x,SCH.y,SCH.r+40))schlossGlow(glow,nl);stegGlow(glow,nl,visR);{const rq=RETTER()&&retterPos(REDUCED?0:T);if(rq&&visR(rq.x,rq.y,20))retterGlow(glow,nl);}
+  if(exDa(KI)&&visR(KI.x,KI.cy,60))kioskGlow(glow,nl);if(visR(SCH.x,SCH.y,SCH.r+40))schlossGlow(glow,nl);stegGlow(glow,nl,visR);if(GOLD&&visR(GOLD.x,GOLD.y,40)){glow(GOLD.x,GOLD.y+1,17,'255,200,80',.32*nl);glow(GOLD.x,GOLD.y+9,5,'255,225,140',.55*nl);}{const rq=RETTER()&&retterPos(REDUCED?0:T);if(rq&&visR(rq.x,rq.y,20))retterGlow(glow,nl);}
   if(exDa(MKT)&&visR(MKT.cx,MKT.cy,70))marktGlow(glow,nl);if(KOKV.open){if(exDa(KBAD)&&visR(KBAD.cx,KBAD.cy,70))kokosBadGlow(glow,nl);if(exDa(KMODE)&&visR(KMODE.cx,KMODE.cy,70))costCottonGlow(glow,nl);if(visR(GP.X,GP.Y-40,240)){gpGlow(glow,nl);gpNeon(c,nl);}if(exDa(KCLUB)&&visR(KCLUB.cx,KCLUB.cy,90))clubGlow(glow,nl);if(exDa(KDROG)&&visR(KDROG.cx,KDROG.cy,70))drogGlow(glow,nl);if(exDa(KGAME)&&visR(KGAME.cx,KGAME.cy,70))gameGlow(glow,nl);if(exDa(KBAR)&&visR(KBAR.cx,KBAR.cy+20,70))cocoGlow(glow,nl);}
   // Strandvilla nachts: warme Fenster, türkis leuchtender Pool, Fackeln, Feuerschale, Wegleuchten
   for(const g of GEB)if(g.typ==='villa'&&gDa(g)&&visR(g.cx,g.cy,90)){const W=(g.x1-g.x0)/2,H=(g.y1-g.y0)/2,d=g.dir||1,sx=(g.sea-g.cx)*d,vx=-W+24,X=lx=>g.cx+lx*d,Y=ly=>g.cy+ly;
@@ -4870,7 +4901,7 @@ function draw(){/* Selbstheilung: ungültige Kamera-/Spielerwerte (NaN) zurücks
  // Namen ganz oben: nichts (Bäume, Palast, Wolken, Nacht) darf sie verdecken
  const GSP=sel&&sel.p&&(sel.gb||REDUCED||T-selT<2)?standSpot(sel):null,near=(x,y)=>GSP&&Math.abs(x-GSP.x)<16&&y>GSP.y-26&&y<GSP.y+10;
  const LBL_UP=1.6,LR=[],LD=new Map();if(z*S>44){c.font='800 2.35px '+FONT;c.textAlign='center';for(const v of ISL){if(!visR(v.x,v.y,v.R+40))continue;for(const q of v.people){if(q.nr>limit||!q.p||q===sel||!vis(q.p.x,q.p.y)||near(q.p.x,q.p.y+10)){continue;}if(WK.on&&Math.abs(q.p.x-WK.x)<16&&q.p.y+12.3>WK.y-12&&q.p.y+8.6<WK.y+5)WK.lblHit=1;const x=q.p.x,y=q.p.y-(q.lu??(q.lu=v.cell&&v.cell.has(q.p.gx+','+(q.p.gy+1))?LBL_UP:0)),nm=q.name,tw0=q.tw0||(q.tw0=c.measureText(nm).width),fs=tw0>17?2.35*17/tw0:2.35,w=tw0*fs/2.35+2.4;
-  LR.push([x-w/2,y+8.6,x+w/2,y+12.3]);LD.set(q,w);{const sch=!isMayor(q)&&schildVon(q.name);if(sch){const tc=schildFill(c,sch,x-w/2,y+8.6,w,3.7,1.8);c.fillStyle=tc;}else{c.fillStyle=isMayor(q)?'#ffd23f':'rgba(255,255,255,.94)';c.beginPath();c.roundRect(x-w/2,y+8.6,w,3.7,1.8);c.fill();c.fillStyle='#2a1b12';}}if(fs<2.35){c.font='800 '+fs+'px '+FONT;c.fillText(nm,x,y+10.45+fs*.4);c.font='800 2.35px '+FONT;}else c.fillText(nm,x,y+11.4);}}}
+  LR.push([x-w/2,y+8.6,x+w/2,y+12.3]);LD.set(q,w);{const sch=!isMayor(q)&&schildVon(q.name);if(sch){const tc=schildFill(c,sch,x-w/2,y+8.6,w,3.7,1.8);c.fillStyle=tc;}else{c.fillStyle=isMayor(q)?'#ffd23f':'rgba(255,255,255,.94)';c.beginPath();c.roundRect(x-w/2,y+8.6,w,3.7,1.8);c.fill();c.fillStyle='#2a1b12';}}if(fs<2.35){c.font='800 '+fs+'px '+FONT;c.fillText(nm,x,y+10.45+fs*.4);c.font='800 2.35px '+FONT;}else c.fillText(nm,x,y+11.4);}goldLbl(c,v);}}
   // eigene Figur steht vor Hütten-Namensschildern (Schild bleibt sichtbar, liegt aber dahinter)
   // Nachbarn: die Seitenwände beider Hütten sind mit einem rosa Strich und 🤝 verbunden
   if(z*S>20)for(const pr of NBPget()){const A=pr[0],B=pr[1];if(A.p.gy!==B.p.gy||A.nr>limit||B.nr>limit||!vis((A.p.x+B.p.x)/2,A.p.y))continue;const [L,R]=A.p.x<B.p.x?[A,B]:[B,A],y=L.p.y+NBW_Y,xa=L.p.x+6,xb=R.p.x-6,mx=(xa+xb)/2;
@@ -4933,7 +4964,7 @@ cv.addEventListener('pointermove',e=>{if(!pts.has(e.pointerId))return;const o=pt
  if(pts.size===1){cam.x-=(n[0]-o[0])/cam.z;cam.y-=(n[1]-o[1])/cam.z;moved+=Math.abs(n[0]-o[0])+Math.abs(n[1]-o[1]);clamp();kick();}
  else if(pts.size===2){const [a,b]=[...pts.values()];const d=Math.hypot(a[0]-b[0],a[1]-b[1]);if(pinch){if(WK.on)zoomWK(d/pinch);else zoomAt(d/pinch,(a[0]+b[0])/2,(a[1]+b[1])/2);}pinch=d;moved+=99;}});
 const up=e=>{if(!pts.has(e.pointerId))return;pts.delete(e.pointerId);if(pts.size<2)pinch=0;cv.classList.remove('drag');
- if(pts.size===0&&moved<6){const [wx,wy]=s2w(e.offsetX,e.offsetY);if(bauSignAt(wx,wy)){zuBauprojekten();return;}{const st=sternAt(e.offsetX,e.offsetY);if(st){sternTap(st);return;}}if(tresorAt(wx,wy)){tresorTap();return;}if(walAt(wx,wy)){walTap();return;}if(skAt(wx,wy)){skTap();return;}if(rbAt(wx,wy)){rbTap();return;}{const fw=flAt(wx,wy);if(fw){flTap(fw);return;}}{const tg=tgAt(wx,wy);if(tg){tgTap(tg);return;}}{const ms=mondAt(wx,wy);if(ms){mondTap(ms);return;}}if(gsAt(wx,wy)){gsTap();return;}if(neuOrtTap(wx,wy))return;{const tr=terminAt(wx,wy);if(tr){terminTap(tr);return;}}if(thAt(wx,wy)){tierheimSeite();return;}if(lvAt(wx,wy)){lvInfo();return;}let best=null,bd=14;
+ if(pts.size===0&&moved<6){const [wx,wy]=s2w(e.offsetX,e.offsetY);if(goldAt(wx,wy)){goldTap();return;}if(bauSignAt(wx,wy)){zuBauprojekten();return;}{const st=sternAt(e.offsetX,e.offsetY);if(st){sternTap(st);return;}}if(tresorAt(wx,wy)){tresorTap();return;}if(walAt(wx,wy)){walTap();return;}if(skAt(wx,wy)){skTap();return;}if(rbAt(wx,wy)){rbTap();return;}{const fw=flAt(wx,wy);if(fw){flTap(fw);return;}}{const tg=tgAt(wx,wy);if(tg){tgTap(tg);return;}}{const ms=mondAt(wx,wy);if(ms){mondTap(ms);return;}}if(gsAt(wx,wy)){gsTap();return;}if(neuOrtTap(wx,wy))return;{const tr=terminAt(wx,wy);if(tr){terminTap(tr);return;}}if(thAt(wx,wy)){tierheimSeite();return;}if(lvAt(wx,wy)){lvInfo();return;}let best=null,bd=14;
   for(const v of ISL){if(Math.hypot(wx-v.x,wy-v.y)>v.R+30)continue;const gx=Math.round((wx-v.x)/S),gy=Math.round((wy-v.y)/(S*.9));for(let dx=-1;dx<=1;dx++)for(let dy=-1;dy<=1;dy++){const q=v.cell.get((gx+dx)+','+(gy+dy));if(!q||q.nr>limit)continue;const d=Math.hypot(q.p.x-wx,q.p.y-wy);if(d<bd){bd=d;best=q;}}}
   {let tb=null,td=9;for(const [tx,ty,tq] of TAPS){const d=Math.hypot(tx-wx,(ty-3)-wy);if(d<td){td=d;tb=tq;}}if(tb){zeigePass(tb,true);return;}}
   if(best)select(best);else if(sel){q.value='';$('qx').hidden=true;sg.hidden=true;unsel();}}};
@@ -5531,7 +5562,7 @@ function canWalk(x,y){if(onObs(x,y))return false;if(terminSperre(x,y))return fal
  const v=ISL.find(v=>v.open&&inside(v,x,y,-9-BEX));if(!v)return false;
  if(v===MAIN){const lx=x/PAL_S,ly=y/PAL_S,ax=Math.abs(lx);if(palMask(lx,ly)||((ax-36)/11)**2+((ly+4.4/PAL_S-34)/5.6)**2<1||(Math.abs(ax-46)<12&&ly>41&&ly<55))return false;}
  if(v.i===1&&Math.hypot(x-v.x,(y-v.y)/.86)<18)return false;
- const gx=Math.round((x-v.x)/S),gy=Math.round((y-v.y)/(S*.9));for(let dx=-1;dx<=1;dx++)for(let dy=-1;dy<=1;dy++){const q=v.cell.get((gx+dx)+','+(gy+dy));if(!q||q.nr>limit)continue;if(Math.abs(x-q.p.x)<7&&y>q.p.y+.5&&y<q.p.y+7.5)return false;}
+ const gx=Math.round((x-v.x)/S),gy=Math.round((y-v.y)/(S*.9));for(let dx=-1;dx<=1;dx++)for(let dy=-1;dy<=1;dy++){const q=v.cell.get((gx+dx)+','+(gy+dy));if(!q||q.nr>limit)continue;if(q.gold){if(Math.abs(x-q.p.x)<12.5&&y>q.p.y-2&&y<q.p.y+9.5)return false;continue;}if(Math.abs(x-q.p.x)<7&&y>q.p.y+.5&&y<q.p.y+7.5)return false;}
  return true;}
 // Verknüpfter Name auf diesem Gerät wird immer zum Erkunden angeboten – egal, wer gerade ausgewählt ist
 const ichWer=()=>{try{const m=mkClaim()&&mkMe();if(m)return m;}catch(e){}return sel;};
