@@ -28,7 +28,7 @@
  "pitch": 0,
  "title": "Muschel-Tal Tag 13 – Neuwahl, Tierheim-Team, Anlegestelle, goldene Hütte",
  "voice": "Gemini TTS (gemini-3.1-flash-tts-preview, Stimme Achird, --speed 1.12) – wie Video 1",
- "notes": "23.11.: Neuwahl Bürgermeister + Palast-Leitung (Bürgermeister soll sich melden, nächste Entscheidung), Tierheim-Team (4), Anlegestelle vom Schöpfer + Fähre Seestern, goldene Kokoshütte für Nr. 1000, 819/1000, Freunde markieren. Schluss: Abstimmung Katzencafé vs. Hotel Sandkorn (Schöpfer spendiert, über Nacht gebaut).",
+ "notes": "23.11.: Neuwahl Bürgermeister + Palast-Leitung (Bürgermeister soll sich melden, nächste Entscheidung), Tierheim-Team (4), Anlegestelle vom Schöpfer + Fähre Seestern, goldene Kokoshütte für Nr. 1000, 819/1000, Freunde markieren. Schluss: Abstimmung Katzencafé vs. Hotel Sandkorn (Schöpfer spendiert, über Nacht gebaut). Verlosung Job Game Lagoon (Kokos, ohne Job/Amt, secrets): @d9750075.",
  "scenes": [
   {
    "id": "s01",
@@ -98,32 +98,28 @@
    "lines": [
     {
      "id": "L3",
-     "text": "Das *g:Tierheim hat sein *g:Team!"
-    },
-    {
-     "id": "L3b",
-     "text": "*y:Vier neue *y:Tierpfleger – / *p:willkommen im Team!"
+     "text": "Im *g:Tierheim arbeiten jetzt / *y:vier neue *y:Tierpfleger – / *p:willkommen im Team!"
     }
    ],
    "sfx": [
     {
      "name": "pop",
-     "at": "L3b:Vier",
+     "at": "L3:vier",
      "volume": 0.45
     },
     {
      "name": "pop",
-     "at": "L3b:neue",
+     "at": "L3:neue",
      "volume": 0.45
     },
     {
      "name": "pop",
-     "at": "L3b:Tierpfleger",
+     "at": "L3:Tierpfleger",
      "volume": 0.45
     },
     {
      "name": "yippee",
-     "at": "L3b:willkommen",
+     "at": "L3:willkommen",
      "volume": 0.4
     }
    ]
@@ -200,7 +196,7 @@
     },
     {
      "id": "L6b",
-     "text": "*y:819|=achthundertneunzehn wohnen schon hier – / es fehlen nur noch *y:181|=hunderteinundachtzig!"
+     "text": "Es fehlen nur noch / *y:181|=hunderteinundachtzig!"
     }
    ],
    "sfx": [
@@ -211,8 +207,39 @@
     },
     {
      "name": "slot-ticks",
-     "at": "L6b:819",
+     "at": "L6b:Es",
      "volume": 0.35
+    }
+   ]
+  },
+  {
+   "id": "s10",
+   "tag": "",
+   "lines": [
+    {
+     "id": "L10",
+     "text": "*y:Verlosung! / Ein *p:Job in der *p:Game *p:Lagoon / geht an …"
+    },
+    {
+     "id": "L10b",
+     "text": "*g:Glückwunsch! / Melde dich bei uns!"
+    }
+   ],
+   "sfx": [
+    {
+     "name": "verlosung",
+     "at": "L10:Verlosung",
+     "volume": 0.5
+    },
+    {
+     "name": "slot-ticks",
+     "at": "L10:geht",
+     "volume": 0.4
+    },
+    {
+     "name": "jubel",
+     "at": "L10b:Glückwunsch",
+     "volume": 0.45
     }
    ]
   },
@@ -239,7 +266,7 @@
    "lines": [
     {
      "id": "L8",
-     "text": "Und *y:noch was: / Der *p:geheimnisvolle *p:Schöpfer / von *p:Muschel-Tal will euch / *g:noch ein Gebäude schenken!"
+     "text": "Und: Der *p:geheimnisvolle *p:Schöpfer / von *p:Muschel-Tal schenkt euch / *g:noch ein Gebäude!"
     },
     {
      "id": "L8b",
@@ -294,7 +321,7 @@
      "volume": 0.35
     }
    ],
-   "hold": 2.4
+   "hold": 1.6
   }
  ],
  "music": {

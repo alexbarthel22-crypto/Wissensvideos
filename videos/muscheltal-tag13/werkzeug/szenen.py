@@ -182,10 +182,10 @@ scene("s03", NEO + """
       <div id="n3" class="nm" style="left:480px;top:620px"><b>🐹</b>@theycallmealeaaa</div>
       <div id="c6" class="neo pk">💖 WILLKOMMEN IM TEAM!</div>
       <div class="fl"></div>""",
-"""      const t = line("L3")[0], V = line("L3b")[0];
+"""      const t = line("L3")[0], V = at("L3", "vier");
       """ + Z("#c1", "t - .05") + """
       [0, 1, 2, 3].forEach(i => tl.fromTo("#n" + i, { opacity: 0, scale: .2, rotation: i % 2 ? 12 : -12 }, { opacity: 1, scale: 1, rotation: i % 2 ? 2 : -2, duration: .3, ease: "back.out(2.6)" }, V - .1 + i * .22));
-      """ + Z("#c6", 'at("L3b", "willkommen") - .05') + FLASH('at("L3b", "willkommen")', .5))
+      """ + Z("#c6", 'at("L3", "willkommen") - .05') + FLASH('at("L3", "willkommen")', .5))
 
 # s04 – Geschenk des Schöpfers: Anlegestelle fertig, Fähre Seestern
 scene("s04", NEO + """
@@ -299,3 +299,31 @@ scene("s09", NEO + FOLLOW + """
       tl.to("#f9", { scale: 1.08, duration: .25, yoyo: true, repeat: 3, ease: "sine.inOut" }, F + .6);
       tl.to("#f9 .fbtn2", { opacity: 1, duration: .15 }, at("L9", "heute") + .3);
       tl.to("#f9", { scale: 1.12, duration: .15, yoyo: true, repeat: 1 }, at("L9", "heute") + .3);""", blur=False)
+
+# s10 – Verlosung: Job in der Game Lagoon
+scene("s10", NEO + CF_CSS + """
+    #j1 { top: 220px; font-size: 100px; white-space: nowrap; }
+    #j2 { top: 420px; font-size: 60px; }
+    #sl { position: absolute; left: 110px; width: 720px; top: 600px; height: 150px; border-radius: 34px; background: #fff; overflow: hidden; opacity: 0;
+      box-shadow: 0 0 0 8px #ff3dbd, 0 0 50px rgba(255,61,189,.8); }
+    #sl div { position: absolute; left: 0; right: 0; top: 0; height: 150px; display: grid; place-items: center; text-align: center; font: 900 54px Inter, sans-serif; color: #1a0f08; white-space: nowrap; opacity: 0; }
+    #sl #wn { color: #ff3dbd; font-size: 64px; }
+    #j3 { top: 820px; font-size: 76px; }
+    #j4 { top: 1460px; font-size: 56px; }""",
+"""      <div id="j1" class="big">🎰 <span class="g">VERLOSUNG!</span></div>
+      <div id="j2" class="neo"><small>🎮 1 JOB IN DER</small>GAME LAGOON</div>
+      <div id="sl">""" + "".join(f'<div id="rl{i}">{n}</div>' for i, n in enumerate(["@haylie.aeriana", "@lxna826", "@val3n14tina", "@alekskabhv", "@reba_thx", "@amelie.aburg", "@emiliaxlove1", "@probablyfiona", "@polina_ok150", "@skaly.ksss"])) + """<div id="wn">@d9750075</div></div>
+      <div id="j3" class="neo li">🎉 GLÜCKWUNSCH!</div>
+      <div id="j4" class="neo pk">📩 MELDE DICH BEI UNS!</div>
+      <div id="cfb" style="position:absolute;inset:0"></div>
+      <div class="fl"></div>""",
+"""      const t = line("L10")[0], G = at("L10", "geht"), W = line("L10b")[0];
+      """ + Z("#j1", "t - .05") + FLASH("t", .5) + """
+      """ + Z("#j2", 'at("L10", "Job") - .05') + """
+      tl.fromTo("#sl", { opacity: 0, scale: .5 }, { opacity: 1, scale: 1, duration: .25, ease: "back.out(2.5)" }, G - .3);
+      for (let i = 0; i < 10; i++) { const a = G - .1 + i * ((W - G) / 10); tl.set("#rl" + i, { opacity: 1 }, a); tl.set("#rl" + i, { opacity: 0 }, a + (W - G) / 10); }
+      tl.fromTo("#wn", { opacity: 0, scale: 2 }, { opacity: 1, scale: 1, duration: .25, ease: "back.out(3)" }, W - .05);
+      """ + SHAKE("s10", "W") + FLASH("W", .8) + """
+      """ + Z("#j3", "W") + """
+      """ + CONF_JS.replace("BOX", "cfb").replace("SEED", "77").replace("T0", "W") + """
+      """ + Z("#j4", 'at("L10b", "Melde") - .05'))

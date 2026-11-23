@@ -607,3 +607,5 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - **Goldene Kokoshütte** (Kokos-Küste) für Bewohner Nr. 1.000 gezeigt („Bist das DU?“).
 - **819 Bewohner, noch 181** bis 1.000 – bei 1.000 **Bewohnern** startet das Spiel. Aufruf: Freunde markieren, damit sie neben einem wohnen.
 - **Neue Abstimmung (Schluss):** Der Schöpfer spendiert noch ein Gebäude – **Katzencafé oder Hotel Sandkorn**, Abstimmung in den Kommentaren, wird **über Nacht gebaut**. → Homepage: nach Ergebnis bauen.
+- **Verlosung Job Game Lagoon (im Video, letztes Drittel):** Gewinner **@d9750075** (Kokos-Küste, Hütte 1:280) – Python `secrets` unter 294 Kokos-Bewohnern ohne Job/Amt/Sonder-Wohnort (ohne neues Tierheim-Team). „Glückwunsch! Melde dich bei uns!“ → Homepage: als Team Game Lagoon eintragen (Leitung bleibt @leona644).
+- Reihenfolge Tag 13 (Endfassung): Hook → Neuwahl → Tierheim-Team → Anlegestelle („der geheimnisvolle Schöpfer von Muschel-Tal“) → goldene Hütte → 1.000/noch 181 → Verlosung Game Lagoon → Freunde markieren → Abstimmung Katzencafé/Hotel Sandkorn → **Folgen ganz am Ende**.

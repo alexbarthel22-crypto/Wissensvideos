@@ -9,13 +9,14 @@ const mk=async(t0,t1,q)=>{const p=await b.newPage({viewport:{width:405,height:72
  await p.addStyleTag({content:CSS});await p.evaluate(()=>resize());await p.evaluate(()=>cancelAnimationFrame(fly));return p;};
 const A=await mk('2026-11-22T14:10:00+01:00','2026-11-22T14:11:00+01:00','?zeit=tag&wetter=sonne');
 const C=await mk('2026-11-21T22:30:00+01:00','2026-11-21T22:31:00+01:00','?zeit=nacht&wetter=sonne');
-const G=await A.evaluate(()=>{const g=t=>{const q=GEB.find(q=>q.typ===t);return q?[q.cx,q.cy]:[0,0]};const p=stegKopf(STEGE[0]);return{m:fitMain(),fa:fitAll(),th:g('tierheim'),pk:[p[0],p[1]],go:[GOLD.x,GOLD.y],hs:(()=>{const h=BAU.find(b=>/Sandkorn/i.test(b.name))||BAU[0];return [h.cx??h.x,h.cy??h.y]})()}});const m=G.m,fa=G.fa;
+const G=await A.evaluate(()=>{const g=t=>{const q=GEB.find(q=>q.typ===t);return q?[q.cx,q.cy]:[0,0]};const p=stegKopf(STEGE[0]);return{m:fitMain(),fa:fitAll(),th:g('tierheim'),pk:[p[0],p[1]],go:[GOLD.x,GOLD.y],gl:[KGAME.cx,KGAME.cy],hs:(()=>{const h=BAU.find(b=>/Sandkorn/i.test(b.name))||BAU[0];return [h.cx??h.x,h.cy??h.y]})()}});const m=G.m,fa=G.fa;
 const K=[[0,'A',m.x,m.y,m.z*1.0],[L.L1b.end+.1,'A',m.x,m.y,m.z*1.35],
  [L.L2.start-.05,'A',0,10,2.3],[L.L2b.end+.2,'A',0,10,3.3],
- [L.L3.start-.05,'A',G.th[0],G.th[1]+8,3.6],[L.L3b.end+.2,'A',G.th[0],G.th[1]+8,5.2],
+ [L.L3.start-.05,'A',G.th[0],G.th[1]+8,3.6],[L.L3.end+.2,'A',G.th[0],G.th[1]+8,5.2],
  [L.L4.start-.05,'A',G.pk[0],G.pk[1]-40,1.6],[L.L4b.end+.2,'A',G.pk[0],G.pk[1]-10,3.4],
  [L.L5.start-.05,'A',G.go[0],G.go[1]-6,2.6],[L.L5b.end+.2,'A',G.go[0],G.go[1]-4,6.0],
  [L.L6.start-.05,'A',fa.x,fa.y,fa.z*0.95],[L.L6b.end+.2,'A',fa.x,fa.y,fa.z*1.2],
+ [L.L10.start-.05,'C',G.gl[0],G.gl[1]-12,2.4],[L.L10b.end+.2,'C',G.gl[0],G.gl[1]-12,3.6],
  [L.L7.start-.05,'A',m.x,m.y,m.z*1.4],[L.L7.end+.2,'A',m.x,m.y,m.z*1.1],
  [L.L8.start-.05,'A',0,10,1.6],[L.L8.end+.1,'A',0,10,2.2],[L.L8b.start-.05,'A',G.hs[0],G.hs[1]+6,2.6],[L.L8b.end+.2,'A',G.hs[0],G.hs[1]+6,3.6],[L.L8c.start-.05,'A',G.hs[0],G.hs[1]+6,3.6],[L.L8c.end+.2,'A',m.x,m.y,m.z*1.3],[L.L9.start-.05,'A',m.x,m.y,m.z*1.5],[dur,'A',m.x,m.y,m.z*1.0]];
 const cam=t=>{let j=0;while(j<K.length-1&&K[j+1][0]<=t)j++;const a=K[j],c=K[Math.min(j+1,K.length-1)];if(c[1]!==a[1])return [a[1],a[2],a[3],a[4]];let k=c[0]>a[0]?Math.max(0,Math.min(1,(t-a[0])/(c[0]-a[0]))):1;k=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;
