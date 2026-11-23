@@ -6296,9 +6296,9 @@ if(EINL){try{localStorage.setItem('mt-willkommen','1');}catch(e){}
   +'<div class="wkbox"><b>Wie geht’s weiter?</b><span>1. Folgen · 2. Am nächsten Tag ist deine Hütte da · 3. Komm wieder und <b>verknüpfe deinen TikTok-Namen</b> – auf diesem Handy.</span></div>'
   +'<p class="cft"><a href="#" onclick="document.getElementById(\'pg\').hidden=true;return false">Erst mal umschauen</a></p></div>');},700);},400);}
 setTimeout(()=>{try{const me=mkClaim()&&mkMe();if(!me||sessionStorage.getItem('mt-hallo'))return;sessionStorage.setItem('mt-hallo','1');mkToast('👋 Hallo '+me.name+'! Du bist angemeldet und spielst als du selbst.');}catch(e){}},2600);
-// Karte so hoch wie möglich: Bildschirm minus Erkunden-Knopf und „Deine Muscheln“ – die Seite endet genau mit der Muschel-Karte
-function heroPass(){try{if(WK.on)return;const hero=$('hero'),hb=hero.getBoundingClientRect().bottom;let unten=0;for(const e of [document.querySelector('.walkbar'),$('mkcard')]){if(!e||e.hidden||!e.offsetHeight)continue;const b=e.getBoundingClientRect().bottom-hb;if(b>unten)unten=b;}
- unten=unten?Math.ceil(unten+12):64;const alt=parseFloat(hero.style.getPropertyValue('--unten'))||0;if(Math.abs(alt-unten)>1)hero.style.setProperty('--unten',unten+'px');}catch(e){}}
+// Karte so hoch wie möglich (24.11.): vom Element direkt darunter (Erkunden-Knopf bzw. „Deine Muscheln“) schaut unten nur ein Streifen heraus
+function heroPass(){try{const hero=$('hero'),hb=hero.getBoundingClientRect().bottom;let oben=null;for(const e of [document.querySelector('.walkbar'),$('mkcard')]){if(!e||e.hidden||!e.offsetHeight)continue;const t=e.getBoundingClientRect().top-hb;if(oben==null||t<oben)oben=t;}
+ const unten=Math.ceil((oben==null?0:Math.max(0,oben))+46);const alt=parseFloat(hero.style.getPropertyValue('--unten'))||0;if(Math.abs(alt-unten)>1)hero.style.setProperty('--unten',unten+'px');}catch(e){}}
 heroPass();addEventListener('resize',heroPass);setInterval(heroPass,800);
 // Erster Besuch überhaupt: Willkommen-Pop-up – mitspielen geht nur mit verknüpftem Usernamen
 (()=>{let neu=false;try{neu=!localStorage.getItem('mt-willkommen')&&!localStorage.getItem('mt-claim');/* gemerkt erst beim Wegklicken */}catch(e){}
