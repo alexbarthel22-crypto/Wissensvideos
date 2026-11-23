@@ -62,9 +62,9 @@
     .gl1 { position: absolute; inset: 0; opacity: 0; background: repeating-linear-gradient(0deg, rgba(63,240,255,.18) 0 3px, rgba(255,61,189,0) 3px 9px); mix-blend-mode: screen; }
     .art { position: absolute; inset: 0; width: 1080px; height: 1920px; }
     .H { top: 220px; } .B { top: 1520px; }
-    #hk { position: absolute; left: 60px; right: 190px; top: 150px; text-align: center; font-family: "Lilita One", sans-serif; line-height: 1.02; -webkit-text-stroke: 18px #0a0418; paint-order: stroke fill; }
-    #hk .w { display: inline-block; position: relative; color: #fff; font-size: 150px; margin: 0 .07em; transform-origin: 50% 60%; }
-    #hk #w5 { font-size: 148px; color: #ff3dbd; }
+    #hk { position: absolute; left: 60px; right: 60px; top: 470px; text-align: center; font-family: "Lilita One", sans-serif; line-height: 1.02; -webkit-text-stroke: 18px #0a0418; paint-order: stroke fill; }
+    #hk .w { display: inline-block; position: relative; color: #fff; font-size: 165px; margin: 0 .07em; transform-origin: 50% 60%; }
+    #hk #w5 { font-size: 160px; color: #ff3dbd; }
     #hk #w0, #hk #w2 { transform-origin: 8% 60%; } #hk #w1, #hk #w3 { transform-origin: 92% 60%; }
     #fl1 { position: absolute; inset: 0; background: #fff; opacity: 0; }
     .neo { width: auto !important; max-width: none !important; white-space: normal !important; }
@@ -123,7 +123,7 @@
 
       wrapBt("#s01-stage");
       const tl = gsap.timeline({ paused: true });
-      const ws = C["L1.words"], K = ws[5][1], SC = [1.75, 1.45, 1.5, 1.5, 1.5, 1.1];
+      const ws = C["L1.words"], K = ws[5][1], SC = [2.4, 2.0, 2.1, 2.1, 2.2, 1.16];
       tl.fromTo("#hk", { scale: 1.18 }, { scale: 1, duration: .18, ease: "power3.out" }, 0);
       tl.fromTo("#fl1", { opacity: .9 }, { opacity: 0, duration: .25 }, 0);
       ws.slice(0, 6).forEach((w, i) => {
