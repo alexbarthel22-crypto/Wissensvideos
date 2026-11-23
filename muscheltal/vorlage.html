@@ -1472,6 +1472,7 @@ function drogGlow(glow,nl){const X=KDROG.cx,Y=KDROG.cy;for(const wx of[-25,25])g
 function costCottonGlow(glow,nl){const X=KMODE.cx,Y=KMODE.cy;for(const wx of[-24,24])glow(X+wx,Y-8,18,'255,225,180',.55*nl);glow(X,Y-6,10,'255,220,160',.5*nl);}
 // ---------- ⚓ Anlege-Stege: jede Insel hat einen eigenen Steg im Stil der Insel, jeweils an einer anderen Küste ----------
 var BOOT=null;// ⛵ laufende Bootsfahrt (siehe bootStart)
+/* Jeder Anleger hat zwei Liegeplätze: Abfahrt (eigene Fähre, immer bereit) und Ankunft (zuletzt angekommene Fähre, Bug zum Land) */var ANK={};const ankTh=g=>ANK[g.th]||(g.th==='haupt'?'kokos':'haupt');
 // (später bringen Schiffe vom großen Steg der Haupt-Insel die User hierher)
 const STEGE=[[0,PIER_A,'haupt'],[1,1.95,'kokos'],[2,2.55,'schild'],[3,-2.35,'vulkan'],[4,-.95,'perle']].filter(([i])=>ISL[i]).map(([i,a,th])=>{const v=ISL[i],gr=th==='haupt',r0=coastAt(v,a)-3,L=BEX+(gr?120:58),dx=Math.cos(a),dy=Math.sin(a)*.92,dl=Math.hypot(dx,dy),d=[dx/dl,dy/dl],n=[-d[1],d[0]],[sx,sy]=polar(v,a,r0);
  return{v,a,th,L,pw:gr?6:5,hw:gr?14:12,hl:gr?20:16,s:[sx,sy],d,n,pt:(u,w)=>[sx+d[0]*u+n[0]*w,sy+d[1]*u+n[1]*w]};});
@@ -1674,6 +1675,7 @@ function drawStege(c,nl,z,visR){const t=REDUCED?0:T;for(const g of STEGE){const 
   // Leinen vom Steg zum Schiff (Bug + Heck)
   if(!(BOOT&&BOOT.g===g)){c.strokeStyle='rgba(190,170,130,.9)';c.lineWidth=.3;}for(const u of(BOOT&&BOOT.g===g)?[]:[g.L-6,g.L-SL*2+4]){const [ax,ay]=g.pt(u,g.hw-1),[tx,ty]=g.pt(u,g.hw+3.4);c.beginPath();c.moveTo(ax,ay-1);c.quadraticCurveTo((ax+tx)/2,(ay+ty)/2+1,tx,ty);c.stroke();}
   if(!(BOOT&&BOOT.g===g))stegSchiff(c,g,C,bx,by+bob,ang,t);
+  /* Ankunfts-Liegeplatz auf der anderen Seite: dort liegt die zuletzt angekommene Fähre (frei, solange gerade eine anlegt) */if(!(BOOT&&BOOT.h===g)){const at=ankTh(g),[ax2,ay2]=g.pt(g.L-SL-2,-(g.hw+SB+3)),bob2=REDUCED?0:Math.sin(t*1.1+g.a+1.7)*.35;c.strokeStyle='rgba(190,170,130,.9)';c.lineWidth=.3;for(const u of[g.L-6,g.L-SL*2+4]){const [qx,qy]=g.pt(u,-(g.hw-1)),[tx,ty]=g.pt(u,-(g.hw+3.4));c.beginPath();c.moveTo(qx,qy-1);c.quadraticCurveTo((qx+tx)/2,(qy+ty)/2+1,tx,ty);c.stroke();}stegSchiff(c,{th:at,a:g.a+1.7},STH[at],ax2,ay2+bob2,ang+Math.PI,t);}
   }}}
 function stegSchiff(c,g,C,x,y,ang,t){const SL=21,SB=6.4,INK='rgba(0,0,0,.28)';
   c.save();c.translate(x,y);c.rotate(ang);
@@ -5146,7 +5148,7 @@ function bootFrag(){const g=amSteg();if(!g)return;if(!mkOwn(WK.me)){mitmachen('�
  const heim=WK.me.isl?WK.me.isl.i:0,stand=MK.d?MK.d.stand||0:0,ziele=STEGE.filter(h=>h!==g);
  const zu=ziele.filter(h=>!h.v.open).length,zeile=h=>{const v=h.v;if(!v.open)return '';const frei=v.i===heim,zuWenig=!frei&&stand<2;
   return '<button class="cbtn'+(zuWenig?'':' hot')+'" type="button" data-boot="'+v.i+'"'+(zuWenig?' disabled':'')+'>'+esc(v.emoji||'🏝️')+' '+esc(v.name)+' · '+(frei?'kostenlos 🏠':'2 🐚')+'</button>';};
- popup('<div class="big">⛵</div><h2>Wohin möchtest du fahren?</h2><p>Die Fähre „Seestern“ bringt dich zum Anleger der Insel.</p><div class="bootl">'+ziele.map(zeile).join('')+'</div>'+(zu?'<p class="cft">🔒 '+zu+' weitere Insel'+(zu>1?'n werden':' wird')+' mit mehr Einwohnern freigespielt</p>':'')+'<p class="cft">Du hast '+fmt(stand)+' 🐚'+(stand<2&&ziele.some(h=>h.v.open&&h.v.i!==heim)?' – für eine fremde Insel brauchst du 2 🐚':'')+'</p>');
+ popup('<div class="big">⛵</div><h2>Wohin möchtest du fahren?</h2><p>Die Fähre „Seestern“ bringt dich zum Anleger der Insel.</p><div class="bootl">'+ziele.map(zeile).join('')+'</div>'+(zu?'<p class="cft">🔒 '+zu+' weitere Insel'+(zu>1?'n werden':' wird')+' mit mehr Einwohnern freigespielt</p>':'')+'<p class="cft">Du hast '+fmt(stand)+' 🐚'+(stand<2&&ziele.some(h=>h.v.open&&h.v.i!==heim)?' – für eine fremde Insel brauchst du 2 🐚':'')+'</p>'+(g.v.i===heim?'<p class="cft" style="margin-top:2px;font-size:12px">🏠 Rückfahrt zu deiner Insel immer kostenlos</p>':''));
  document.querySelectorAll('[data-boot]').forEach(b=>b.onclick=async()=>{const i=+b.dataset.boot,h=STEGE.find(q=>q.v.i===i);if(!h)return;b.disabled=true;b.textContent='⏳ Einen Moment …';
   const r=await mk('boot',{nach:i});if(!r||!r.ok){$('pg').hidden=true;mkToast(r&&r.grund==='muscheln'?'🐚 Für diese Fahrt brauchst du 2 Muscheln':'😕 Hat nicht geklappt – bitte nochmal');return;}
   if(MK.d&&typeof r.stand==='number'){MK.d.stand=r.stand;try{mkChip();}catch(e){}}$('pg').hidden=true;try{statEv('bootfahrt');}catch(e){}bootStart(g,h);});}
@@ -5166,7 +5168,7 @@ function bootStart(g,h){const S2=bootStrecke(g,h),dur=Math.min(9,Math.max(4,S2.l
 function bootSchritt(n){const B=BOOT;if(!B)return;
  if(B.phase==='hin'){const u=Math.min(1,(n-B.t0)/B.dur),e=u<.5?2*u*u:1-Math.pow(-2*u+2,2)/2,p=bootAuf(B.S,e*B.S.len);B.x=p.x;B.y=p.y;B.ang=p.ang;
   const r=-10,dx=Math.cos(B.ang)*r,dy=Math.sin(B.ang)*r;WK.x=B.x+dx;WK.y=B.y+dy-4.4;WK.moving=false;WK.dir=Math.cos(B.ang)>=0?1:-1;WK.vert=false;
-  if(u>=1){const [hx,hy]=stegKopf(B.h);const q=mkNah(hx,hy-4.4,{});WK.x=q.x;WK.y=q.y;WK.mode=B.mode||'walk';B.phase='zurueck';B.t1=n;const ov=$('bootov');if(ov)ov.hidden=true;mkToast('⛵ Willkommen auf der '+B.h.v.name+'!');}}
+  if(u>=1){const [hx,hy]=stegKopf(B.h);const q=mkNah(hx,hy-4.4,{});WK.x=q.x;WK.y=q.y;WK.mode=B.mode||'walk';ANK[B.h.th]=B.g.th;BOOT=null;/* Fähre bleibt am Ankunfts-Liegeplatz liegen */const ov=$('bootov');if(ov)ov.hidden=true;mkToast('⛵ Willkommen auf der '+B.h.v.name+'!');}}
  else{const u=Math.min(1,(n-B.t1)/3500),p=bootAuf(B.S,B.S.len*(1-u*.5));B.x=p.x;B.y=p.y;B.ang=p.ang+Math.PI;B.alpha=1-u;if(u>=1)BOOT=null;}}
 function bootZeichnen(c){const B=BOOT;if(!B||B.x==null)return;const t=REDUCED?0:T;c.save();c.globalAlpha=Math.max(0,B.alpha);
  const ca=Math.cos(B.ang),sa=Math.sin(B.ang);c.strokeStyle='rgba(255,255,255,.55)';c.lineWidth=.8;for(let k=1;k<=4;k++){const bx=B.x-ca*(BOOTSL+k*7),by=B.y-sa*(BOOTSL+k*7),w=3+k*2.2;c.beginPath();c.moveTo(bx-sa*w,by+ca*w);c.lineTo(B.x-ca*BOOTSL,B.y-sa*BOOTSL);c.lineTo(bx+sa*w,by-ca*w);c.stroke();}
