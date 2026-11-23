@@ -1,0 +1,50 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+
+    .neo { position: absolute; left: 60px; right: 190px; margin: 0 auto; width: fit-content; max-width: 830px; padding: 14px 34px 18px; border-radius: 30px; opacity: 0;
+      background: linear-gradient(160deg, rgba(24,10,48,.9), rgba(8,4,24,.92)); border: 5px solid #3ff0ff; box-shadow: 0 0 30px rgba(63,240,255,.7), inset 0 0 24px rgba(63,240,255,.25);
+      font-family: "Lilita One", sans-serif; color: #fff; text-align: center; line-height: 1.02; white-space: nowrap; }
+    .neo.pk { border-color: #ff3dbd; box-shadow: 0 0 30px rgba(255,61,189,.75), inset 0 0 24px rgba(255,61,189,.25); }
+    .neo.li { border-color: #b6ff3b; box-shadow: 0 0 30px rgba(182,255,59,.7), inset 0 0 24px rgba(182,255,59,.25); }
+    .neo.go { border-color: #ffd23f; box-shadow: 0 0 34px rgba(255,210,63,.8), inset 0 0 24px rgba(255,210,63,.25); }
+    .neo small { display: block; font: 900 30px Inter, sans-serif; letter-spacing: .14em; color: #3ff0ff; margin-bottom: 6px; }
+    .neo.pk small { color: #ff3dbd; } .neo.li small { color: #b6ff3b; } .neo.go small { color: #ffd23f; }
+    .big { position: absolute; left: 60px; right: 190px; text-align: center; font-family: "Lilita One", sans-serif; color: #fff; line-height: .92; opacity: 0;
+      -webkit-text-stroke: 16px #0a0418; paint-order: stroke fill; }
+    .big .c { color: #3ff0ff; } .big .p { color: #ff3dbd; } .big .l { color: #b6ff3b; } .big .g { color: #ffd23f; }
+    .fl { position: absolute; inset: 0; background: #fff; opacity: 0; }
+
+    #b1 { top: 230px; font-size: 150px; }
+    #b2 { top: 460px; font-size: 76px; } #b3 { top: 620px; font-size: 76px; }
+    #b4 { top: 460px; font-size: 70px; white-space: normal; width: 820px; } #b5 { top: 780px; font-size: 58px; white-space: normal; width: 780px; }
+  </style>
+  <div id="root" data-composition-id="s02" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s02-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="b1" class="big"><span class="p">NEU</span>WAHL! 🗳️</div>
+      <div id="b2" class="neo go">👑 BÜRGERMEISTER</div>
+      <div id="b3" class="neo">🏰 PALAST-LEITUNG</div>
+      <div id="b4" class="neo pk"><small>📩 NEUER BÜRGERMEISTER</small>MELDE DICH BEI UNS!</div>
+      <div id="b5" class="neo li">⚖️ DU TRIFFST DIE NÄCHSTE ENTSCHEIDUNG</div>
+      <div class="fl"></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      /*__COMMON_JS__*/
+      wrapBt("#s02-stage");
+      const tl = gsap.timeline({ paused: true });
+      const t = line("L2")[0], M = line("L2b")[0];
+      tl.fromTo("#b1", { opacity: 0, scale: 3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .24, ease: "back.out(2.2)" }, t - .05);tl.fromTo(".fl", { opacity: 0.5 }, { opacity: 0, duration: .28, immediateRender: false }, t);
+      tl.fromTo("#b2", { opacity: 0, scale: 3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .24, ease: "back.out(2.2)" }, at("L2", "Bürgermeister") - .05);[[22,-12],[-24,10],[16,14],[-12,-10],[0,0]].forEach(([x, y], i) => tl.to("#s02-stage", { x, y, duration: .04, ease: "none" }, at("L2", "Bürgermeister") + i * .04));
+      tl.fromTo("#b3", { opacity: 0, scale: 3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .24, ease: "back.out(2.2)" }, at("L2", "Palast") - .05);[[22,-12],[-24,10],[16,14],[-12,-10],[0,0]].forEach(([x, y], i) => tl.to("#s02-stage", { x, y, duration: .04, ease: "none" }, at("L2", "Palast") + i * .04));
+      tl.to("#b2", { opacity: 0, scale: .6, duration: .14, ease: "power2.in" }, M - .15);tl.to("#b3", { opacity: 0, scale: .6, duration: .14, ease: "power2.in" }, M - .15);
+      tl.fromTo("#b4", { opacity: 0, scale: 3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .24, ease: "back.out(2.2)" }, at("L2b", "Melde") - .05);
+      tl.to("#b4", { scale: 1.06, duration: .2, yoyo: true, repeat: 3, ease: "sine.inOut" }, at("L2b", "Melde") + .4);
+      tl.fromTo("#b5", { opacity: 0, scale: 3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .24, ease: "back.out(2.2)" }, at("L2b", "nächste") - .05);
+      tl.to("#s02-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
+      window.__timelines["s02"] = tl;
+    })();
+  </script>
+</template>
