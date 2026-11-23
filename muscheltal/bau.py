@@ -374,13 +374,14 @@ def verteile(sauber, insel):
         m = re.fullmatch(r"(\d+):(\d+)", r[3] or "")
         if m and int(m[1]) == isl[j]:
             k, cap = int(m[2]), insel["inseln"][isl[j]]["plaetze"] or 10 ** 9
-            if k < cap and k not in belegt.setdefault(isl[j], set()):
+            if k < cap and k not in belegt.setdefault(isl[j], set()) and k not in set(insel["inseln"][isl[j]].get("gesperrt") or []):
                 belegt[isl[j]].add(k)
                 plaetze[j] = k
     for j in range(len(sauber)):  # 2. Durchgang: Neue und Umzügler bekommen das nächste freie Haus (nah an der Mitte)
         if plaetze[j] is None and not sonder[j]:
-            b, k = belegt.setdefault(isl[j], set()), 0
-            while k in b:
+            # gesperrte Plätze (liegen in Blöcken, auf denen später ein Gebäude entstand) nie vergeben – sonst landet die Hütte einsam am Küstenrand
+            b, k, gs = belegt.setdefault(isl[j], set()), 0, set(insel["inseln"][isl[j]].get("gesperrt") or [])
+            while k in b or k in gs:
                 k += 1
             b.add(k)
             plaetze[j] = k
