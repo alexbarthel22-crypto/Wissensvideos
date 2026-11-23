@@ -2457,7 +2457,7 @@ const STK=[['palast','🏰','Muschelpalast','#e8467c',0],['doener','🥙','Döne
  ['cocobay','🍹','Coco Bay','#ff8a3c',1],['kokosbad','🏊','Kokos-Bad','#3fa0e8',1],['coast','👗','Coast & Cotton','#c86a4a',1],['kokos','🪩','KOK(O)S','#9b5de5',1],['cococare','🌸','CocoCare','#5fc8a8',1],['gaming','🕹️','Game Lagoon','#ff3dbe',1],['feuer','🔥','Lagerfeuer','#ff7a1c',1],['gpearl','💎','Golden Pearl','#d4a017',1],['anleger','⚓','Kokos-Anleger','#8a5a2b',1],
  ['ev_wochenmarkt','🍎','Wochenmarkt','#3f9b45',2],['ev_flohmarkt','🧺','Flohmarkt','#f4a51c',2],['ev_konzert','🎵','Konzert der Muschelband','#e8467c',2],['ev_feuerwerk','🎆','Feuerwerk','#5a3fd0',2],['ev_kino','🎬','Freiluftkino','#3a2a6a',3],
  ['seestern','⛴️','Fähre „Seestern“','#2f7fc0',4]];/* Typ 4: gibt es bei der ersten Fahrt mit der Fähre */
-const STKEV={ev_wochenmarkt:'Mi 6–12 Uhr',ev_flohmarkt:'Sa 10–18 Uhr',ev_konzert:'So 16–19 Uhr',ev_feuerwerk:'Fr 20 Uhr',ev_kino:'Fr+Sa 20:15–22:15'};
+const STKEV={ev_wochenmarkt:'Mi 6–12 Uhr',ev_flohmarkt:'Sa 10–18 Uhr',ev_konzert:'So 16–19 Uhr',ev_feuerwerk:'Fr 20:00–20:10 Uhr',ev_kino:'Fr+Sa 20:15–22:15'};
 const stkHab=()=>(MK.d&&MK.d.sticker)||[];
 function stkKarte([id,em,name,col,isl],hab,i){const r=((hash(i,77)-.5)*16).toFixed(1);return hab?'<div class="stk" data-stk="'+id+'" role="button" tabindex="0" title="'+esc(name)+'"><i style="--c:'+col+';--r:'+r+'deg">'+em+'</i><b>'+esc(name)+'</b></div>':'<div class="stk leer" data-stk="'+id+'" role="button" tabindex="0"><i style="--r:'+r+'deg">?</i><b>'+(isl===4?'Fähre':isl===2?'Muschelplatz':isl===3?'Kokos-Küste':isl?'Kokos-Küste':'Haupt-Insel')+'</b>'+(isl>=2?'<b class="stkzeit">'+STKEV[id]+'</b>':'')+'</div>';}
 // Sticker antippen: groß ansehen (gesammelt) bzw. Hinweis, wo es ihn gibt
