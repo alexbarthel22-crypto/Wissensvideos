@@ -3,7 +3,7 @@
 // so ergibt sich der Kontostand aus einer einzigen Liste. Feste Schlüssel (z. B. login/2026-11-10) verhindern Doppelbuchungen.
 import { getStore } from "@netlify/blobs";
 import { JOBS } from "../lib/jobs.mjs";
-import { BEWOHNER, NACHBARN, SEIT, INSEL, INSEL_AB } from "../lib/bewohner.mjs";
+import { BEWOHNER, NACHBARN, SEIT, INSEL, INSEL_AB, UMBENANNT } from "../lib/bewohner.mjs";
 import { liveVergeben } from "./live.mjs";
 import { CODES } from "../lib/codes.mjs";
 import { SHOP } from "../lib/shop.mjs";
@@ -275,6 +275,20 @@ const TEXT = { boot: "Bootsfahrt ⛵", eingeladen: "Von einem Freund eingeladen"
 
 // Einmal-Aufgaben (Zurücksetzen, Aufräumen) nur einmal pro Tag und Server-Instanz prüfen – spart bei jeder Muschel-Aktion
 // rund 10 Speicherabfragen (schnellere Gutschriften)
+// Umbenannte Bewohner (gleiche Folge-Zeit, neuer TikTok-Name): alles vom alten Namen auf den neuen umziehen –
+// Verknüpfung/PIN, Kontobuch, Aufgaben, Ausrüstung, Sticker, Spielstände, Erfolge, Spenden … Läuft je Paar genau einmal.
+async function umbenennen(store) {
+  for (const [a, n] of UMBENANNT || []) {
+    const mk = "x/umbenannt/" + a + "/" + n;
+    if (await store.get(mk)) continue;
+    const neuWert = v => typeof v !== "string" ? v : v === a ? n : v.split('"' + a + '"').join('"' + n + '"').split("@" + a + '"').join("@" + n + '"');
+    const zieh = async (st, k) => { const t = k.split("/"); if (!t.includes(a)) { const v = await st.get(k); const w = neuWert(v); if (w !== v) await st.set(k, w); return; } const v = await st.get(k); await st.set(t.map(x => x === a ? n : x).join("/"), neuWert(v)); await st.delete(k); };
+    for (const k of await liste(store, "")) if (!k.startsWith("x/umbenannt/")) await zieh(store, k);
+    const es = getStore("erfolge"); for (const k of await liste(es, "e/" + a + "/")) await zieh(es, k);
+    const kasse = getStore({ name: "inselkasse", consistency: "strong" }); for (const pre of ["s/" + a + "/", "b/" + a + "/"]) for (const k of await liste(kasse, pre)) await zieh(kasse, k);
+    await store.set(mk, String(Date.now()));
+  }
+}
 let VOR = { tag: "", p: null };
 // Alle Konten einmalig auf 0 setzen (16.11.): je Name eine Gegenbuchung „Neustart“ über den aktuellen Kontostand.
 // Buchungen bleiben erhalten (Login-Serie, Tresor, Codes, Einladungen, Shop-Inventar zählen weiter nur einmal).
@@ -291,7 +305,7 @@ async function nullen(store) {
 }
 function vorarbeit(store) {
   const t = tag();
-  if (VOR.tag !== t) VOR = { tag: t, p: (async () => { await nullen(store); await zuruecksetzen(store); await zurueckAuf(store); await freigeben(store); await aufraeumen(store); })().catch(() => { VOR.tag = ""; }) };
+  if (VOR.tag !== t) VOR = { tag: t, p: (async () => { await umbenennen(store); await nullen(store); await zuruecksetzen(store); await zurueckAuf(store); await freigeben(store); await aufraeumen(store); })().catch(() => { VOR.tag = ""; }) };
   return VOR.p.then(() => ALLE_OK || allesZurueck(store)).catch(() => {});
 }
 // Erfolg „Nachbarn“: nur für beanspruchte Namen, die in der Nachbarn-Liste stehen (+10 Muscheln, einmalig)
