@@ -124,48 +124,78 @@ def FLASH(t, o=.8):
     return f'tl.fromTo(".fl", {{ opacity: {o} }}, {{ opacity: 0, duration: .28, immediateRender: false }}, {t});'
 CMT_ = ""
 
-# s01 – Hook: Satz ab Frame 0 sichtbar, gesprochenes Wort blitzt riesig auf
+SLOT_CSS = """.slot { position: absolute; left: 110px; width: 720px; height: 130px; border-radius: 30px; background: #fff; overflow: hidden; opacity: 0;
+      box-shadow: 0 0 0 7px var(--c), 0 0 40px var(--c); }
+    .slot div { position: absolute; inset: 0; display: grid; place-items: center; font: 900 50px Inter, sans-serif; color: #1a0f08; white-space: nowrap; opacity: 0; }
+    .slot .win { color: #ff3dbd; font-size: 58px; }
+    .slk { position: absolute; left: 110px; width: 720px; text-align: center; font: 900 34px Inter, sans-serif; letter-spacing: .12em; color: #fff; opacity: 0;
+      -webkit-text-stroke: 8px #0a0418; paint-order: stroke fill; }"""
+def slot(sid, names, win, top, col, label):
+    html = (f'<div class="slk" id="{sid}k" style="top:{top-50}px">{label}</div><div class="slot" id="{sid}" style="top:{top}px;--c:{col}">'
+            + "".join(f'<div id="{sid}r{i}">{n}</div>' for i, n in enumerate(names)) + f'<div class="win" id="{sid}w">{win}</div></div>')
+    return html
+def slotjs(sid, n, t0, tw):
+    return (f'tl.fromTo(["#{sid}", "#{sid}k"], {{ opacity: 0, scale: .5 }}, {{ opacity: 1, scale: 1, duration: .25, ease: "back.out(2.5)" }}, {t0} - .25);\n'
+            f'      for (let i = 0; i < {n}; i++) {{ const d = ({tw} - {t0}) / {n}, a = {t0} + i * d; tl.set("#{sid}r" + i, {{ opacity: 1 }}, a); tl.set("#{sid}r" + i, {{ opacity: 0 }}, a + d); }}\n'
+            f'      tl.fromTo("#{sid}w", {{ opacity: 0, scale: 2 }}, {{ opacity: 1, scale: 1, duration: .25, ease: "back.out(3)" }}, {tw} - .05);')
+
+# s01 – Hook: Der geheimnisvolle Schöpfer ist aufgetaucht (Wortzeiten gemessen)
 scene("s01", NEO + """
-    #hk { position: absolute; left: 60px; right: 60px; top: 230px; text-align: center; font-family: "Lilita One", sans-serif; line-height: 1.0; -webkit-text-stroke: 18px #0a0418; paint-order: stroke fill; }
-    #hk .w { display: inline-block; position: relative; color: #fff; font-size: 170px; margin: 0 .06em; transform-origin: 50% 60%; }
-    #hk #w0 { color: #ffd23f; } #hk #w1 { color: #ffd23f; } #hk #w2 { font-size: 130px; color: #3ff0ff; } #hk #w3, #hk #w4 { color: #ff3dbd; }
-    #hk #w0 { transform-origin: 10% 60%; } #hk #w1 { transform-origin: 90% 60%; }
-    #g1 { top: 1000px; font-size: 66px; white-space: normal; width: 820px; }""",
-"""      <div id="hk"><span class="w" id="w0">TAG</span><span class="w" id="w1">13</span><br><span class="w" id="w2">MUSCHEL-TAL</span><br><span class="w" id="w3">WÄHLT</span><br><span class="w" id="w4">NEU!</span></div>
-      <div id="g1" class="neo pk"><small>🎁 UND DANN NOCH …</small>JEMAND GEHEIMNISVOLLES HAT EUCH WAS GESCHENKT</div>
+    #hk { position: absolute; left: 60px; right: 60px; top: 210px; text-align: center; font-family: "Lilita One", sans-serif; line-height: 1.02; -webkit-text-stroke: 18px #0a0418; paint-order: stroke fill; }
+    #hk .w { display: inline-block; position: relative; color: #fff; font-size: 150px; margin: 0 .06em; transform-origin: 50% 60%; }
+    #hk #w1 { font-size: 104px; color: #ff3dbd; } #hk #w2 { color: #ff3dbd; } #hk #w4 { color: #ffd23f; font-size: 130px; }
+    #dk { position: absolute; inset: 0; background: radial-gradient(circle at 50% 62%, rgba(120,40,200,.0) 0, rgba(20,6,40,.72) 70%); }
+    #sf { position: absolute; left: 290px; top: 860px; width: 500px; height: 620px; opacity: 0; }
+    #ry { position: absolute; left: 540px; top: 1100px; width: 1400px; height: 1400px; margin: -700px; opacity: 0;
+      background: repeating-conic-gradient(rgba(255,230,150,.32) 0 7deg, rgba(255,230,150,0) 7deg 18deg); border-radius: 50%; }
+    #g1 { top: 1520px; font-size: 62px; }""",
+"""      <div id="dk"></div>
+      <div id="ry"></div>
+      <svg id="sf" viewBox="0 0 500 620"><defs><radialGradient id="ha" cx="50%" cy="40%" r="60%"><stop offset="0" stop-color="#ffe9a0" stop-opacity=".9"/><stop offset="1" stop-color="#ffe9a0" stop-opacity="0"/></radialGradient></defs>
+        <ellipse cx="250" cy="260" rx="250" ry="260" fill="url(#ha)"/>
+        <path d="M250 60 Q150 70 130 200 Q110 300 150 360 L60 620 L440 620 L350 360 Q390 300 370 200 Q350 70 250 60Z" fill="#160828" stroke="#ffd23f" stroke-width="6"/>
+        <path d="M250 120 Q185 130 180 230 Q182 300 250 310 Q318 300 320 230 Q315 130 250 120Z" fill="#05010c"/>
+        <ellipse cx="220" cy="225" rx="16" ry="9" fill="#ffd23f"/><ellipse cx="280" cy="225" rx="16" ry="9" fill="#ffd23f"/>
+        <text x="250" y="520" font-size="90" text-anchor="middle">🔮</text></svg>
+      <div id="hk"><span class="w" id="w0">DER</span><br><span class="w" id="w1">GEHEIMNISVOLLE</span><br><span class="w" id="w2">SCHÖPFER</span><br><span class="w" id="w3">IST</span><span class="w" id="w4">AUFGETAUCHT!</span></div>
+      <div id="g1" class="neo go">🎁 UND ER HAT WAS MITGEBRACHT …</div>
       <div class="fl"></div>""",
-"""      const ws = [["tag",.04,.19],["13",.22,.77],["muscheltal",.89,1.31],["wählt",1.34,1.89],["neu",1.94,2.23]] /* aus narration.wav gemessen – bei neuer Stimme neu messen */, SC = [1.9, 1.9, 1.18, 1.45, 1.45], COL = ["#ffd23f", "#ffd23f", "#3ff0ff", "#ff3dbd", "#ff3dbd"];
+"""      const ws = [["der",.03,.16],["geheimnisvolle",.20,1.23],["schöpfer",1.28,1.59],["ist",1.66,1.89],["aufgetaucht",1.92,2.38]] /* aus narration.wav gemessen – bei neuer Stimme neu messen */, SC = [1.9, 1.1, 1.4, 1.8, 1.07], COL = ["#ffffff", "#ff3dbd", "#ff3dbd", "#ffffff", "#ffd23f"];
       tl.fromTo("#hk", { scale: 1.2 }, { scale: 1, duration: .18, ease: "power3.out" }, 0);
       """ + FLASH(0, .9) + """
-      ws.slice(0, 5).forEach((w, i) => { const id = "#w" + i, t0 = Math.max(0, w[1] - .03);
+      tl.fromTo("#sf", { opacity: .35, y: 60, scale: .9 }, { opacity: 1, y: 0, scale: 1, duration: 2.2, ease: "power2.out" }, 0);
+      tl.fromTo("#ry", { opacity: 0, rotation: 0 }, { opacity: 1, rotation: 40, duration: 4, ease: "none" }, 1.9);
+      ws.forEach((w, i) => { const id = "#w" + i, t0 = Math.max(0, w[1] - .03);
         tl.set(id, { zIndex: 5 }, t0);
-        tl.fromTo(id, { scale: 1, color: COL[i], textShadow: "0 0 0px #fff" }, { scale: SC[i], color: "#ffffff", textShadow: "0 0 50px " + COL[i] + ", 0 0 120px " + COL[i], duration: .07, ease: "power4.out", immediateRender: false }, t0);
+        tl.fromTo(id, { scale: 1, color: COL[i], textShadow: "0 0 0px #fff" }, { scale: SC[i], color: i === 4 ? "#ffffff" : "#ffd23f", textShadow: "0 0 50px #ffd23f, 0 0 120px #ff3dbd", duration: .07, ease: "power4.out", immediateRender: false }, t0);
         tl.to(id, { scale: 1, color: COL[i], textShadow: "0 0 0px #fff", duration: .2, ease: "back.out(2)" }, Math.max(t0 + .1, w[2] - .08));
         tl.set(id, { zIndex: 1 }, w[2] + .15);
         tl.fromTo(".fl", { opacity: .3 }, { opacity: 0, duration: .12, immediateRender: false }, t0);
         [[10,-6],[-12,6],[0,0]].forEach(([x, y], n) => tl.to("#s01-stage", { x, y, duration: .03, ease: "none" }, t0 + n * .03)); });
-      const B = line("L1b")[0];
-      """ + Z("#g1", "B") + """
-      tl.to("#g1", { scale: 1.06, duration: .22, yoyo: true, repeat: 5, ease: "sine.inOut" }, at("L1b", "geschenkt"));""")
+      """ + SHAKE("s01", "1.92") + FLASH("1.92", .7) + """
+      """ + Z("#g1", 'line("L1b")[0]') + """
+      tl.to("#g1", { scale: 1.06, duration: .22, yoyo: true, repeat: 5, ease: "sine.inOut" }, at("L1b", "mitgebracht"));""")
 
-# s02 – Neuwahl Bürgermeister + Palast-Leitung, Bürgermeister soll sich melden
-scene("s02", NEO + """
-    #b1 { top: 230px; font-size: 150px; }
-    #b2 { top: 460px; font-size: 76px; } #b3 { top: 620px; font-size: 76px; }
-    #b4 { top: 460px; font-size: 70px; white-space: normal; width: 820px; } #b5 { top: 780px; font-size: 58px; white-space: normal; width: 780px; }""",
-"""      <div id="b1" class="big"><span class="p">NEU</span>WAHL! 🗳️</div>
-      <div id="b2" class="neo go">👑 BÜRGERMEISTER</div>
-      <div id="b3" class="neo">🏰 PALAST-LEITUNG</div>
-      <div id="b4" class="neo pk"><small>📩 NEUER BÜRGERMEISTER</small>MELDE DICH BEI UNS!</div>
+# s02 – Live-Wahl: Bürgermeister + Palast-Leitung (Python secrets)
+scene("s02", NEO + SLOT_CSS + CF_CSS + """
+    #b1 { top: 200px; font-size: 104px; white-space: nowrap; }
+    #b4 { top: 1450px; font-size: 54px; } #b5 { top: 1600px; font-size: 44px; }""",
+"""      <div id="b1" class="big">🗳️ <span class="p">LIVE</span>-WAHL!</div>
+      """ + slot("sb", ["@louisw145", "@angelina_03183", "@khmr.496", "@noahconstabel6", "@mxlan084", "@maryyy_0670", "@jxhanna_17166", "@helmut.schmidt97"], "@luana.mus1c", 440, "#ffd23f", "👑 BÜRGERMEISTER") + """
+      """ + slot("sp", ["@ben371650", "@louisa_sel", "@charlie._.pink", "@i_am_amiiiii", "@amelie_m26", "@felixzhlw5i", "@sophied_1302", "@insa.t_sp"], "@marietayheld15", 700, "#3ff0ff", "🏰 PALAST-LEITUNG") + """
+      <div id="b4" class="neo pk">📩 BÜRGERMEISTER: MELDE DICH!</div>
       <div id="b5" class="neo li">⚖️ DU TRIFFST DIE NÄCHSTE ENTSCHEIDUNG</div>
+      <div id="cfa" style="position:absolute;inset:0"></div><div id="cfc" style="position:absolute;inset:0"></div>
       <div class="fl"></div>""",
-"""      const t = line("L2")[0], M = line("L2b")[0];
+"""      const t = line("L2")[0], W1 = line("L2a")[0], P = at("L2a", "Palast"), W2 = line("L2b")[0];
       """ + Z("#b1", "t - .05") + FLASH("t", .5) + """
-      """ + Z("#b2", 'at("L2", "Bürgermeister") - .05') + SHAKE("s02", 'at("L2", "Bürgermeister")') + """
-      """ + Z("#b3", 'at("L2", "Palast") - .05') + SHAKE("s02", 'at("L2", "Palast")') + """
-      """ + OUT("#b2", "M - .15") + OUT("#b3", "M - .15") + """
+      """ + slotjs("sb", 8, 'at("L2", "Bürgermeister")', "W1") + """
+      """ + SHAKE("s02", "W1") + FLASH("W1", .7) + """
+      { """ + CONF_JS.replace("BOX", "cfa").replace("SEED", "21").replace("T0", "W1") + """ }
+      """ + slotjs("sp", 8, "P", "W2") + """
+      """ + SHAKE("s02", "W2") + FLASH("W2", .7) + """
+      { """ + CONF_JS.replace("BOX", "cfc").replace("SEED", "22").replace("T0", "W2") + """ }
       """ + Z("#b4", 'at("L2b", "Melde") - .05') + """
-      tl.to("#b4", { scale: 1.06, duration: .2, yoyo: true, repeat: 3, ease: "sine.inOut" }, at("L2b", "Melde") + .4);
       """ + Z("#b5", 'at("L2b", "nächste") - .05'))
 
 # s03 – Tierheim-Team: 4 Namen
@@ -312,7 +342,7 @@ scene("s10", NEO + CF_CSS + """
     #j4 { top: 1460px; font-size: 56px; }""",
 """      <div id="j1" class="big">🎰 <span class="g">VERLOSUNG!</span></div>
       <div id="j2" class="neo"><small>🎮 1 JOB IN DER</small>GAME LAGOON</div>
-      <div id="sl">""" + "".join(f'<div id="rl{i}">{n}</div>' for i, n in enumerate(["@haylie.aeriana", "@lxna826", "@val3n14tina", "@alekskabhv", "@reba_thx", "@amelie.aburg", "@emiliaxlove1", "@probablyfiona", "@polina_ok150", "@skaly.ksss"])) + """<div id="wn">@d9750075</div></div>
+      <div id="sl">""" + "".join(f'<div id="rl{i}">{n}</div>' for i, n in enumerate(["@haylie.aeriana", "@lxna826", "@val3n14tina", "@alekskabhv", "@reba_thx", "@amelie.aburg", "@emiliaxlove1", "@probablyfiona", "@polina_ok150", "@skaly.ksss"])) + """<div id="wn">@lilou.mgd</div></div>
       <div id="j3" class="neo li">🎉 GLÜCKWUNSCH!</div>
       <div id="j4" class="neo pk">📩 MELDE DICH BEI UNS!</div>
       <div id="cfb" style="position:absolute;inset:0"></div>

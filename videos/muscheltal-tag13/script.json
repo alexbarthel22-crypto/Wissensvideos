@@ -28,7 +28,7 @@
  "pitch": 0,
  "title": "Muschel-Tal Tag 13 – Neuwahl, Tierheim-Team, Anlegestelle, goldene Hütte",
  "voice": "Gemini TTS (gemini-3.1-flash-tts-preview, Stimme Achird, --speed 1.12) – wie Video 1",
- "notes": "23.11.: Neuwahl Bürgermeister + Palast-Leitung (Bürgermeister soll sich melden, nächste Entscheidung), Tierheim-Team (4), Anlegestelle vom Schöpfer + Fähre Seestern, goldene Kokoshütte für Nr. 1000, 819/1000, Freunde markieren. Schluss: Abstimmung Katzencafé vs. Hotel Sandkorn (Schöpfer spendiert, über Nacht gebaut). Verlosung Job Game Lagoon (Kokos, ohne Job/Amt, secrets): @d9750075.",
+ "notes": "23.11.: Hook Schöpfer aufgetaucht; Live-Wahl Bürgermeister @luana.mus1c + Palast-Leitung @marietayheld15 (secrets); Tierheim-Team (4); Anlegestelle vom Schöpfer; goldene Hütte; noch 181; Verlosung Game Lagoon @lilou.mgd; markieren; Abstimmung Katzencafé/Hotel Sandkorn; Folgen.",
  "scenes": [
   {
    "id": "s01",
@@ -36,11 +36,11 @@
    "lines": [
     {
      "id": "L1",
-     "text": "*y:Tag *y:13|=dreizehn: / Muschel-Tal *p:wählt *p:neu!"
+     "text": "Der *p:geheimnisvolle *p:Schöpfer / ist *y:aufgetaucht!"
     },
     {
      "id": "L1b",
-     "text": "Und *y:jemand *y:Geheimnisvolles / hat euch was *g:geschenkt …"
+     "text": "Und er hat euch / etwas *g:mitgebracht …"
     }
    ],
    "sfx": [
@@ -50,13 +50,13 @@
      "volume": 0.75
     },
     {
-     "name": "fs_cheer",
-     "at": "s01+1.34",
-     "volume": 0.35
+     "name": "fs_magic",
+     "at": "L1:aufgetaucht",
+     "volume": 0.5
     },
     {
      "name": "sparkle",
-     "at": "L1b:geschenkt",
+     "at": "L1b:mitgebracht",
      "volume": 0.5
     }
    ]
@@ -67,28 +67,44 @@
    "lines": [
     {
      "id": "L2",
-     "text": "Wir *p:wählen einen / *y:neuen *y:Bürgermeister / und eine *y:neue *y:Palast-Leitung!"
+     "text": "Jetzt *p:live: / Wer wird *y:Bürgermeister?"
+    },
+    {
+     "id": "L2a",
+     "text": "*g:Glückwunsch! / Und die *y:Palast-Leitung …",
+     "pause": 0.9
     },
     {
      "id": "L2b",
-     "text": "Neuer *y:Bürgermeister: / *g:Melde dich bei uns – / du triffst die *p:nächste *p:Entscheidung!"
+     "text": "*g:Glückwunsch! / Bürgermeister: *y:Melde dich bei uns – / du triffst die *p:nächste Entscheidung!",
+     "pause": 0.9
     }
    ],
    "sfx": [
     {
-     "name": "stempel",
+     "name": "slot-ticks",
      "at": "L2:Bürgermeister",
-     "volume": 0.5
+     "volume": 0.4
     },
     {
-     "name": "stempel",
-     "at": "L2:Palast-Leitung",
-     "volume": 0.5
+     "name": "jubel",
+     "at": "L2a:Glückwunsch",
+     "volume": 0.4
+    },
+    {
+     "name": "slot-ticks",
+     "at": "L2a:Palast-Leitung",
+     "volume": 0.4
+    },
+    {
+     "name": "jubel",
+     "at": "L2b:Glückwunsch",
+     "volume": 0.4
     },
     {
      "name": "notification",
      "at": "L2b:Melde",
-     "volume": 0.5
+     "volume": 0.45
     }
    ]
   },
@@ -134,7 +150,7 @@
     },
     {
      "id": "L4b",
-     "text": "Sie ist *y:fertig – / mit der *p:Fähre *p:Seestern / reist du jetzt *g:zwischen den Inseln!"
+     "text": "Mit der *p:Fähre *p:Seestern / reist du jetzt *g:zwischen den Inseln!"
     }
    ],
    "sfx": [
@@ -166,7 +182,7 @@
    "lines": [
     {
      "id": "L5",
-     "text": "Und *y:schaut mal: / die *y:goldene *y:Kokoshütte!"
+     "text": "Die *y:goldene *y:Kokoshütte!"
     },
     {
      "id": "L5b",
@@ -266,7 +282,7 @@
    "lines": [
     {
      "id": "L8",
-     "text": "Und: Der *p:geheimnisvolle *p:Schöpfer / von *p:Muschel-Tal schenkt euch / *g:noch ein Gebäude!"
+     "text": "Und: Der *p:Schöpfer schenkt euch / *g:noch ein Gebäude!"
     },
     {
      "id": "L8b",

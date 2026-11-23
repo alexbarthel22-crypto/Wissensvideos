@@ -15,16 +15,27 @@
     .big .c { color: #3ff0ff; } .big .p { color: #ff3dbd; } .big .l { color: #b6ff3b; } .big .g { color: #ffd23f; }
     .fl { position: absolute; inset: 0; background: #fff; opacity: 0; }
 
-    #hk { position: absolute; left: 60px; right: 60px; top: 230px; text-align: center; font-family: "Lilita One", sans-serif; line-height: 1.0; -webkit-text-stroke: 18px #0a0418; paint-order: stroke fill; }
-    #hk .w { display: inline-block; position: relative; color: #fff; font-size: 170px; margin: 0 .06em; transform-origin: 50% 60%; }
-    #hk #w0 { color: #ffd23f; } #hk #w1 { color: #ffd23f; } #hk #w2 { font-size: 130px; color: #3ff0ff; } #hk #w3, #hk #w4 { color: #ff3dbd; }
-    #hk #w0 { transform-origin: 10% 60%; } #hk #w1 { transform-origin: 90% 60%; }
-    #g1 { top: 1000px; font-size: 66px; white-space: normal; width: 820px; }
+    #hk { position: absolute; left: 60px; right: 60px; top: 210px; text-align: center; font-family: "Lilita One", sans-serif; line-height: 1.02; -webkit-text-stroke: 18px #0a0418; paint-order: stroke fill; }
+    #hk .w { display: inline-block; position: relative; color: #fff; font-size: 150px; margin: 0 .06em; transform-origin: 50% 60%; }
+    #hk #w1 { font-size: 104px; color: #ff3dbd; } #hk #w2 { color: #ff3dbd; } #hk #w4 { color: #ffd23f; font-size: 130px; }
+    #dk { position: absolute; inset: 0; background: radial-gradient(circle at 50% 62%, rgba(120,40,200,.0) 0, rgba(20,6,40,.72) 70%); }
+    #sf { position: absolute; left: 290px; top: 860px; width: 500px; height: 620px; opacity: 0; }
+    #ry { position: absolute; left: 540px; top: 1100px; width: 1400px; height: 1400px; margin: -700px; opacity: 0;
+      background: repeating-conic-gradient(rgba(255,230,150,.32) 0 7deg, rgba(255,230,150,0) 7deg 18deg); border-radius: 50%; }
+    #g1 { top: 1520px; font-size: 62px; }
   </style>
   <div id="root" data-composition-id="s01" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
     <div id="s01-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
-      <div id="hk"><span class="w" id="w0">TAG</span><span class="w" id="w1">13</span><br><span class="w" id="w2">MUSCHEL-TAL</span><br><span class="w" id="w3">WÄHLT</span><br><span class="w" id="w4">NEU!</span></div>
-      <div id="g1" class="neo pk"><small>🎁 UND DANN NOCH …</small>JEMAND GEHEIMNISVOLLES HAT EUCH WAS GESCHENKT</div>
+      <div id="dk"></div>
+      <div id="ry"></div>
+      <svg id="sf" viewBox="0 0 500 620"><defs><radialGradient id="ha" cx="50%" cy="40%" r="60%"><stop offset="0" stop-color="#ffe9a0" stop-opacity=".9"/><stop offset="1" stop-color="#ffe9a0" stop-opacity="0"/></radialGradient></defs>
+        <ellipse cx="250" cy="260" rx="250" ry="260" fill="url(#ha)"/>
+        <path d="M250 60 Q150 70 130 200 Q110 300 150 360 L60 620 L440 620 L350 360 Q390 300 370 200 Q350 70 250 60Z" fill="#160828" stroke="#ffd23f" stroke-width="6"/>
+        <path d="M250 120 Q185 130 180 230 Q182 300 250 310 Q318 300 320 230 Q315 130 250 120Z" fill="#05010c"/>
+        <ellipse cx="220" cy="225" rx="16" ry="9" fill="#ffd23f"/><ellipse cx="280" cy="225" rx="16" ry="9" fill="#ffd23f"/>
+        <text x="250" y="520" font-size="90" text-anchor="middle">🔮</text></svg>
+      <div id="hk"><span class="w" id="w0">DER</span><br><span class="w" id="w1">GEHEIMNISVOLLE</span><br><span class="w" id="w2">SCHÖPFER</span><br><span class="w" id="w3">IST</span><span class="w" id="w4">AUFGETAUCHT!</span></div>
+      <div id="g1" class="neo go">🎁 UND ER HAT WAS MITGEBRACHT …</div>
       <div class="fl"></div>
     </div>
   </div>
@@ -34,19 +45,21 @@
       /*__COMMON_JS__*/
       wrapBt("#s01-stage");
       const tl = gsap.timeline({ paused: true });
-      const ws = [["tag",.04,.19],["13",.22,.77],["muscheltal",.89,1.31],["wählt",1.34,1.89],["neu",1.94,2.23]] /* aus narration.wav gemessen – bei neuer Stimme neu messen */, SC = [1.9, 1.9, 1.18, 1.45, 1.45], COL = ["#ffd23f", "#ffd23f", "#3ff0ff", "#ff3dbd", "#ff3dbd"];
+      const ws = [["der",.03,.16],["geheimnisvolle",.20,1.23],["schöpfer",1.28,1.59],["ist",1.66,1.89],["aufgetaucht",1.92,2.38]] /* aus narration.wav gemessen – bei neuer Stimme neu messen */, SC = [1.9, 1.1, 1.4, 1.8, 1.07], COL = ["#ffffff", "#ff3dbd", "#ff3dbd", "#ffffff", "#ffd23f"];
       tl.fromTo("#hk", { scale: 1.2 }, { scale: 1, duration: .18, ease: "power3.out" }, 0);
       tl.fromTo(".fl", { opacity: 0.9 }, { opacity: 0, duration: .28, immediateRender: false }, 0);
-      ws.slice(0, 5).forEach((w, i) => { const id = "#w" + i, t0 = Math.max(0, w[1] - .03);
+      tl.fromTo("#sf", { opacity: .35, y: 60, scale: .9 }, { opacity: 1, y: 0, scale: 1, duration: 2.2, ease: "power2.out" }, 0);
+      tl.fromTo("#ry", { opacity: 0, rotation: 0 }, { opacity: 1, rotation: 40, duration: 4, ease: "none" }, 1.9);
+      ws.forEach((w, i) => { const id = "#w" + i, t0 = Math.max(0, w[1] - .03);
         tl.set(id, { zIndex: 5 }, t0);
-        tl.fromTo(id, { scale: 1, color: COL[i], textShadow: "0 0 0px #fff" }, { scale: SC[i], color: "#ffffff", textShadow: "0 0 50px " + COL[i] + ", 0 0 120px " + COL[i], duration: .07, ease: "power4.out", immediateRender: false }, t0);
+        tl.fromTo(id, { scale: 1, color: COL[i], textShadow: "0 0 0px #fff" }, { scale: SC[i], color: i === 4 ? "#ffffff" : "#ffd23f", textShadow: "0 0 50px #ffd23f, 0 0 120px #ff3dbd", duration: .07, ease: "power4.out", immediateRender: false }, t0);
         tl.to(id, { scale: 1, color: COL[i], textShadow: "0 0 0px #fff", duration: .2, ease: "back.out(2)" }, Math.max(t0 + .1, w[2] - .08));
         tl.set(id, { zIndex: 1 }, w[2] + .15);
         tl.fromTo(".fl", { opacity: .3 }, { opacity: 0, duration: .12, immediateRender: false }, t0);
         [[10,-6],[-12,6],[0,0]].forEach(([x, y], n) => tl.to("#s01-stage", { x, y, duration: .03, ease: "none" }, t0 + n * .03)); });
-      const B = line("L1b")[0];
-      tl.fromTo("#g1", { opacity: 0, scale: 3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .24, ease: "back.out(2.2)" }, B);
-      tl.to("#g1", { scale: 1.06, duration: .22, yoyo: true, repeat: 5, ease: "sine.inOut" }, at("L1b", "geschenkt"));
+      [[22,-12],[-24,10],[16,14],[-12,-10],[0,0]].forEach(([x, y], i) => tl.to("#s01-stage", { x, y, duration: .04, ease: "none" }, 1.92 + i * .04));tl.fromTo(".fl", { opacity: 0.7 }, { opacity: 0, duration: .28, immediateRender: false }, 1.92);
+      tl.fromTo("#g1", { opacity: 0, scale: 3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .24, ease: "back.out(2.2)" }, line("L1b")[0]);
+      tl.to("#g1", { scale: 1.06, duration: .22, yoyo: true, repeat: 5, ease: "sine.inOut" }, at("L1b", "mitgebracht"));
       tl.to("#s01-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
       window.__timelines["s01"] = tl;
     })();
