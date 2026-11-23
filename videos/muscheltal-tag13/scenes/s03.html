@@ -38,10 +38,10 @@
       /*__COMMON_JS__*/
       wrapBt("#s03-stage");
       const tl = gsap.timeline({ paused: true });
-      const t = line("L3")[0], V = line("L3b")[0];
+      const t = line("L3")[0], V = at("L3", "vier");
       tl.fromTo("#c1", { opacity: 0, scale: 3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .24, ease: "back.out(2.2)" }, t - .05);
       [0, 1, 2, 3].forEach(i => tl.fromTo("#n" + i, { opacity: 0, scale: .2, rotation: i % 2 ? 12 : -12 }, { opacity: 1, scale: 1, rotation: i % 2 ? 2 : -2, duration: .3, ease: "back.out(2.6)" }, V - .1 + i * .22));
-      tl.fromTo("#c6", { opacity: 0, scale: 3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .24, ease: "back.out(2.2)" }, at("L3b", "willkommen") - .05);tl.fromTo(".fl", { opacity: 0.5 }, { opacity: 0, duration: .28, immediateRender: false }, at("L3b", "willkommen"));
+      tl.fromTo("#c6", { opacity: 0, scale: 3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .24, ease: "back.out(2.2)" }, at("L3", "willkommen") - .05);tl.fromTo(".fl", { opacity: 0.5 }, { opacity: 0, duration: .28, immediateRender: false }, at("L3", "willkommen"));
       tl.to("#s03-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
       window.__timelines["s03"] = tl;
     })();
