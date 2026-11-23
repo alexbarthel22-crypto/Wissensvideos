@@ -51,7 +51,7 @@
 
     .neo { position: absolute; left: 60px; right: 190px; margin: 0 auto; width: fit-content; max-width: 830px; padding: 14px 34px 18px; border-radius: 30px; opacity: 0;
       background: linear-gradient(160deg, rgba(24,10,48,.9), rgba(8,4,24,.92)); border: 5px solid #3ff0ff; box-shadow: 0 0 30px rgba(63,240,255,.7), inset 0 0 24px rgba(63,240,255,.25);
-      font-family: "Lilita One", sans-serif; color: #fff; text-align: center; line-height: 1.02; white-space: nowrap; }
+      font-family: "Lilita One", sans-serif; color: #fff; text-align: center; line-height: 1.02; white-space: normal; }
     .neo.pk { border-color: #ff3dbd; box-shadow: 0 0 30px rgba(255,61,189,.75), inset 0 0 24px rgba(255,61,189,.25); }
     .neo.li { border-color: #b6ff3b; box-shadow: 0 0 30px rgba(182,255,59,.7), inset 0 0 24px rgba(182,255,59,.25); }
     .neo.go { border-color: #ffd23f; box-shadow: 0 0 34px rgba(255,210,63,.8), inset 0 0 24px rgba(255,210,63,.25); }
@@ -63,13 +63,13 @@
     .fl { position: absolute; inset: 0; background: #fff; opacity: 0; }
 
     #a1 { top: 230px; font-size: 120px; }
-    #a2 { top: 450px; font-size: 62px; } #a3 { top: 610px; font-size: 62px; }
+    #a2 { top: 440px; font-size: 54px; } #a3 { top: 610px; font-size: 62px; }
     #a4 { top: 450px; font-size: 64px; } #a5 { top: 610px; font-size: 58px; }
   </style>
-  <div id="root" data-composition-id="s04" data-start="0" data-duration="8.550" data-width="1080" data-height="1920">
-    <div id="s04-stage" class="clip stage" data-start="0" data-duration="8.550" data-track-index="0">
+  <div id="root" data-composition-id="s04" data-start="0" data-duration="9.630" data-width="1080" data-height="1920">
+    <div id="s04-stage" class="clip stage" data-start="0" data-duration="9.630" data-track-index="0">
       <div id="a1" class="big">🎁 DAS <span class="g">GESCHENK</span></div>
-      <div id="a2" class="neo pk"><small>🔮 VOM GEHEIMNISVOLLEN</small>SCHÖPFER</div>
+      <div id="a2" class="neo pk"><small>🔮 VOM GEHEIMNISVOLLEN</small>SCHÖPFER VON MUSCHEL-TAL</div>
       <div id="a3" class="neo li">⚓ ANLEGESTELLE FERTIG!</div>
       <div id="a4" class="neo go">⛴️ FÄHRE „SEESTERN“</div>
       <div id="a5" class="neo">🏝️ ⇄ 🥥 ZWISCHEN DEN INSELN!</div>
@@ -79,7 +79,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 8.55, "L4": [0.2, 4.2], "L4.words": [["und", 0.2, 0.379], ["das", 0.379, 0.559], ["geschenk", 0.559, 0.93], ["der", 1.18, 1.357], ["geheimnisvolle", 1.357, 2.237], ["schöpfer", 2.237, 2.605], ["hat", 2.605, 2.782], ["die", 2.782, 2.959], ["anlegestelle", 2.959, 3.826], ["spendiert", 3.826, 4.2]], "L4b": [4.42, 8.37], "L4b.words": [["sie", 4.42, 4.622], ["ist", 4.622, 4.825], ["fertig", 4.825, 5.229], ["", 5.229, 5.41], ["mit", 5.66, 5.851], ["der", 5.851, 6.041], ["fähre", 6.041, 6.416], ["seestern", 6.416, 6.811], ["reist", 6.811, 7.015], ["du", 7.015, 7.199], ["jetzt", 7.199, 7.403], ["zwischen", 7.403, 7.798], ["den", 7.798, 7.989], ["inseln", 7.989, 8.37]]};
+      const C = {"__dur": 9.63, "L4": [0.2, 5.28], "L4.words": [["und", 0.2, 0.436], ["das", 0.436, 0.672], ["geschenk", 0.672, 1.16], ["der", 1.41, 1.594], ["geheimnisvolle", 1.594, 2.505], ["schöpfer", 2.505, 2.886], ["von", 2.886, 3.07], ["muscheltal", 3.07, 3.627], ["hat", 3.627, 3.811], ["die", 3.811, 3.994], ["anlegestelle", 3.994, 4.893], ["spendiert", 4.893, 5.28]], "L4b": [5.5, 9.45], "L4b.words": [["sie", 5.5, 5.702], ["ist", 5.702, 5.905], ["fertig", 5.905, 6.309], ["", 6.309, 6.49], ["mit", 6.74, 6.931], ["der", 6.931, 7.121], ["fähre", 7.121, 7.496], ["seestern", 7.496, 7.891], ["reist", 7.891, 8.095], ["du", 8.095, 8.279], ["jetzt", 8.279, 8.483], ["zwischen", 8.483, 8.878], ["den", 8.878, 9.069], ["inseln", 9.069, 9.45]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];

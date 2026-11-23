@@ -134,7 +134,7 @@
    "lines": [
     {
      "id": "L4",
-     "text": "Und das *y:Geschenk? / Der *p:geheimnisvolle *p:Schöpfer / hat die *g:Anlegestelle spendiert!"
+     "text": "Und das *y:Geschenk? / Der *p:geheimnisvolle *p:Schöpfer / von *p:Muschel-Tal / hat die *g:Anlegestelle spendiert!"
     },
     {
      "id": "L4b",
@@ -223,10 +223,6 @@
     {
      "id": "L7",
      "text": "*g:Markiere deine *g:Freunde, / damit sie *y:neben *y:dir wohnen!"
-    },
-    {
-     "id": "L7b",
-     "text": "*p:Folg mir – / und zieh noch *y:heute ein!"
     }
    ],
    "sfx": [
@@ -234,11 +230,6 @@
      "name": "notification",
      "at": "L7:Markiere",
      "volume": 0.45
-    },
-    {
-     "name": "pop",
-     "at": "L7b:Folg",
-     "volume": 0.5
     }
    ]
   },
@@ -248,7 +239,7 @@
    "lines": [
     {
      "id": "L8",
-     "text": "Und *y:noch was: / Der *p:Schöpfer will euch / *g:noch ein Gebäude schenken!"
+     "text": "Und *y:noch was: / Der *p:geheimnisvolle *p:Schöpfer / von *p:Muschel-Tal will euch / *g:noch ein Gebäude schenken!"
     },
     {
      "id": "L8b",
@@ -279,6 +270,28 @@
      "name": "notification",
      "at": "L8c:Kommentaren",
      "volume": 0.45
+    }
+   ]
+  },
+  {
+   "id": "s09",
+   "tag": "",
+   "lines": [
+    {
+     "id": "L9",
+     "text": "*p:Folg mir – / und zieh noch *y:heute ein!"
+    }
+   ],
+   "sfx": [
+    {
+     "name": "pop",
+     "at": "L9:Folg",
+     "volume": 0.5
+    },
+    {
+     "name": "yippee",
+     "at": "L9:heute",
+     "volume": 0.35
     }
    ],
    "hold": 2.4

@@ -51,7 +51,7 @@
 
     .neo { position: absolute; left: 60px; right: 190px; margin: 0 auto; width: fit-content; max-width: 830px; padding: 14px 34px 18px; border-radius: 30px; opacity: 0;
       background: linear-gradient(160deg, rgba(24,10,48,.9), rgba(8,4,24,.92)); border: 5px solid #3ff0ff; box-shadow: 0 0 30px rgba(63,240,255,.7), inset 0 0 24px rgba(63,240,255,.25);
-      font-family: "Lilita One", sans-serif; color: #fff; text-align: center; line-height: 1.02; white-space: nowrap; }
+      font-family: "Lilita One", sans-serif; color: #fff; text-align: center; line-height: 1.02; white-space: normal; }
     .neo.pk { border-color: #ff3dbd; box-shadow: 0 0 30px rgba(255,61,189,.75), inset 0 0 24px rgba(255,61,189,.25); }
     .neo.li { border-color: #b6ff3b; box-shadow: 0 0 30px rgba(182,255,59,.7), inset 0 0 24px rgba(182,255,59,.25); }
     .neo.go { border-color: #ffd23f; box-shadow: 0 0 34px rgba(255,210,63,.8), inset 0 0 24px rgba(255,210,63,.25); }
@@ -70,17 +70,16 @@
     #m2 b { color: #fe2c55; } #m2 small { display: block; font-size: 28px; color: #888; margin-top: 8px; }
     #fb { top: 800px; opacity: 0; }
   </style>
-  <div id="root" data-composition-id="s07" data-start="0" data-duration="4.660" data-width="1080" data-height="1920">
-    <div id="s07-stage" class="clip stage" data-start="0" data-duration="4.660" data-track-index="0">
+  <div id="root" data-composition-id="s07" data-start="0" data-duration="2.400" data-width="1080" data-height="1920">
+    <div id="s07-stage" class="clip stage" data-start="0" data-duration="2.400" data-track-index="0">
       <div id="m1" class="big">👯 <span class="l">MARKIERE</span><br>DEINE FREUNDE</div>
       <div id="m2"><b>@deine.beste</b> zieh neben mich! 🏡🐚<small>❤️ 24 · Antworten</small></div>
-      <div id="fb" class="fbtn">+ Folgen<div class="fbtn2">✓ Eingezogen</div></div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 4.66, "L7": [0.2, 2.22], "L7.words": [["markiere", 0.2, 0.602], ["deine", 0.602, 0.868], ["freunde", 0.868, 1.145], ["damit", 1.145, 1.411], ["sie", 1.411, 1.547], ["neben", 1.547, 1.813], ["dir", 1.813, 1.949], ["wohnen", 1.949, 2.22]], "L7b": [2.44, 4.48], "L7b.words": [["folg", 2.44, 2.635], ["mir", 2.635, 2.822], ["", 2.822, 2.99], ["und", 3.24, 3.445], ["zieh", 3.445, 3.658], ["noch", 3.658, 3.871], ["heute", 3.871, 4.275], ["ein", 4.275, 4.48]]};
+      const C = {"__dur": 2.4, "L7": [0.2, 2.22], "L7.words": [["markiere", 0.2, 0.602], ["deine", 0.602, 0.868], ["freunde", 0.868, 1.145], ["damit", 1.145, 1.411], ["sie", 1.411, 1.547], ["neben", 1.547, 1.813], ["dir", 1.813, 1.949], ["wohnen", 1.949, 2.22]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -124,12 +123,9 @@
 
       wrapBt("#s07-stage");
       const tl = gsap.timeline({ paused: true });
-      const t = line("L7")[0], F = line("L7b")[0];
+      const t = line("L7")[0];
       tl.fromTo("#m1", { opacity: 0, scale: 3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .24, ease: "back.out(2.2)" }, t - .05);
       tl.fromTo("#m2", { opacity: 0, y: 60, rotation: -3 }, { opacity: 1, y: 0, rotation: -1.5, duration: .3, ease: "back.out(2)" }, at("L7", "neben") - .2);
-      tl.fromTo("#fb", { opacity: 0, scale: 3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .24, ease: "back.out(2.2)" }, at("L7b", "Folg") - .05);
-      tl.to("#fb .fbtn2", { opacity: 1, duration: .15 }, at("L7b", "heute"));
-      tl.to("#fb", { scale: 1.1, duration: .15, yoyo: true, repeat: 1 }, at("L7b", "heute"));
       tl.to("#s07-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
       window.__timelines["s07"] = tl;
     })();

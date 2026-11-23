@@ -103,7 +103,7 @@ GL = """.gl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-
 NEO = """
     .neo { position: absolute; left: 60px; right: 190px; margin: 0 auto; width: fit-content; max-width: 830px; padding: 14px 34px 18px; border-radius: 30px; opacity: 0;
       background: linear-gradient(160deg, rgba(24,10,48,.9), rgba(8,4,24,.92)); border: 5px solid #3ff0ff; box-shadow: 0 0 30px rgba(63,240,255,.7), inset 0 0 24px rgba(63,240,255,.25);
-      font-family: "Lilita One", sans-serif; color: #fff; text-align: center; line-height: 1.02; white-space: nowrap; }
+      font-family: "Lilita One", sans-serif; color: #fff; text-align: center; line-height: 1.02; white-space: normal; }
     .neo.pk { border-color: #ff3dbd; box-shadow: 0 0 30px rgba(255,61,189,.75), inset 0 0 24px rgba(255,61,189,.25); }
     .neo.li { border-color: #b6ff3b; box-shadow: 0 0 30px rgba(182,255,59,.7), inset 0 0 24px rgba(182,255,59,.25); }
     .neo.go { border-color: #ffd23f; box-shadow: 0 0 34px rgba(255,210,63,.8), inset 0 0 24px rgba(255,210,63,.25); }
@@ -190,10 +190,10 @@ scene("s03", NEO + """
 # s04 – Geschenk des Schöpfers: Anlegestelle fertig, Fähre Seestern
 scene("s04", NEO + """
     #a1 { top: 230px; font-size: 120px; }
-    #a2 { top: 450px; font-size: 62px; } #a3 { top: 610px; font-size: 62px; }
+    #a2 { top: 440px; font-size: 54px; } #a3 { top: 610px; font-size: 62px; }
     #a4 { top: 450px; font-size: 64px; } #a5 { top: 610px; font-size: 58px; }""",
 """      <div id="a1" class="big">🎁 DAS <span class="g">GESCHENK</span></div>
-      <div id="a2" class="neo pk"><small>🔮 VOM GEHEIMNISVOLLEN</small>SCHÖPFER</div>
+      <div id="a2" class="neo pk"><small>🔮 VOM GEHEIMNISVOLLEN</small>SCHÖPFER VON MUSCHEL-TAL</div>
       <div id="a3" class="neo li">⚓ ANLEGESTELLE FERTIG!</div>
       <div id="a4" class="neo go">⛴️ FÄHRE „SEESTERN“</div>
       <div id="a5" class="neo">🏝️ ⇄ 🥥 ZWISCHEN DEN INSELN!</div>
@@ -252,27 +252,23 @@ scene("s07", NEO + CMT_ + FOLLOW + """
     #m2 b { color: #fe2c55; } #m2 small { display: block; font-size: 28px; color: #888; margin-top: 8px; }
     #fb { top: 800px; opacity: 0; }""",
 """      <div id="m1" class="big">👯 <span class="l">MARKIERE</span><br>DEINE FREUNDE</div>
-      <div id="m2"><b>@deine.beste</b> zieh neben mich! 🏡🐚<small>❤️ 24 · Antworten</small></div>
-      <div id="fb" class="fbtn">+ Folgen<div class="fbtn2">✓ Eingezogen</div></div>""",
-"""      const t = line("L7")[0], F = line("L7b")[0];
+      <div id="m2"><b>@deine.beste</b> zieh neben mich! 🏡🐚<small>❤️ 24 · Antworten</small></div>""",
+"""      const t = line("L7")[0];
       """ + Z("#m1", "t - .05") + """
-      tl.fromTo("#m2", { opacity: 0, y: 60, rotation: -3 }, { opacity: 1, y: 0, rotation: -1.5, duration: .3, ease: "back.out(2)" }, at("L7", "neben") - .2);
-      """ + Z("#fb", 'at("L7b", "Folg") - .05') + """
-      tl.to("#fb .fbtn2", { opacity: 1, duration: .15 }, at("L7b", "heute"));
-      tl.to("#fb", { scale: 1.1, duration: .15, yoyo: true, repeat: 1 }, at("L7b", "heute"));""")
+      tl.fromTo("#m2", { opacity: 0, y: 60, rotation: -3 }, { opacity: 1, y: 0, rotation: -1.5, duration: .3, ease: "back.out(2)" }, at("L7", "neben") - .2);""")
 
 # s08 – Abstimmung: Katzencafé oder Hotel Sandkorn
 scene("s08", NEO + """
-    #v1 { top: 230px; font-size: 120px; }
-    #v2 { top: 430px; font-size: 52px; white-space: normal; width: 820px; }
-    .vc { position: absolute; top: 620px; width: 370px; height: 380px; border-radius: 34px; background: #fff; overflow: hidden; opacity: 0; box-shadow: 0 0 0 7px var(--c), 0 0 40px var(--c); }
-    .vc .e { height: 250px; display: grid; place-items: center; font-size: 150px; background: linear-gradient(180deg, #fff3d6, #fff); }
+    #v1 { top: 210px; font-size: 96px; white-space: nowrap; }
+    #v2 { top: 360px; font-size: 46px; }
+    .vc { position: absolute; top: 640px; width: 340px; height: 380px; border-radius: 34px; background: #fff; overflow: hidden; opacity: 0; box-shadow: 0 0 0 7px var(--c), 0 0 40px var(--c); }
+    .vc .e { height: 250px; display: grid; place-items: center; font-size: 110px; white-space: nowrap; background: linear-gradient(180deg, #fff3d6, #fff); }
     .vc .l { height: 130px; display: grid; place-items: center; font: 400 50px/1 "Lilita One", sans-serif; color: #fff; background: var(--c); text-align: center; }
-    #vs { position: absolute; left: 400px; top: 740px; width: 140px; text-align: center; font: 400 96px "Lilita One", sans-serif; color: #ffd23f; -webkit-text-stroke: 12px #0a0418; paint-order: stroke fill; opacity: 0; }
+    #vs { position: absolute; left: 405px; top: 785px; width: 110px; text-align: center; font: 400 66px "Lilita One", sans-serif; color: #ffd23f; -webkit-text-stroke: 12px #0a0418; paint-order: stroke fill; opacity: 0; }
     #v5 { top: 1560px; font-size: 50px; }
     #v6 { top: 1580px; font-size: 52px; }""",
 """      <div id="v1" class="big">🗳️ <span class="g">ABSTIMMUNG!</span></div>
-      <div id="v2" class="neo pk"><small>🔮 DER SCHÖPFER SCHENKT EUCH</small>NOCH EIN GEBÄUDE</div>
+      <div id="v2" class="neo pk"><small>🔮 DER SCHÖPFER VON MUSCHEL-TAL</small>SCHENKT EUCH NOCH EIN GEBÄUDE</div>
       <div class="vc" id="v3" style="left:60px;--c:#ff3dbd"><div class="e">🐱☕</div><div class="l">KATZEN-<br>CAFÉ</div></div>
       <div id="vs">VS</div>
       <div class="vc" id="v4" style="left:520px;--c:#13a8d0"><div class="e">🏨</div><div class="l">HOTEL<br>SANDKORN</div></div>
@@ -287,4 +283,19 @@ scene("s08", NEO + """
       """ + SHAKE("s08", 'at("L8b", "Hotel")') + """
       tl.to("#vs", { scale: 1.2, duration: .2, yoyo: true, repeat: 9, ease: "sine.inOut" }, at("L8b", "Hotel") + .4);
       """ + Z("#v5", 'at("L8c", "Kommentaren") - .1') + """
-      tl.to(["#v3", "#v4"], { y: -14, duration: .5, yoyo: true, repeat: 7, ease: "sine.inOut" }, A + .5);""", blur=False)
+      tl.to(["#v3", "#v4"], { y: -14, duration: .5, yoyo: true, repeat: 5, ease: "sine.inOut" }, A + .5);""")
+
+# s09 – Folgen ganz am Ende
+scene("s09", NEO + FOLLOW + """
+    #o9 { top: 300px; font-size: 150px; }
+    #f9 { top: 520px; opacity: 0; }
+    #z9 { top: 720px; font-size: 64px; }""",
+"""      <div id="o9" class="big">FOLG <span class="p">MIR</span></div>
+      <div id="f9" class="fbtn">+ Folgen<div class="fbtn2">✓ Eingezogen</div></div>
+      <div class="fl"></div>""",
+"""      const F = at("L9", "Folg");
+      """ + Z("#o9", "F - .05") + FLASH("F", .5) + """
+      """ + Z("#f9", "F + .25") + """
+      tl.to("#f9", { scale: 1.08, duration: .25, yoyo: true, repeat: 3, ease: "sine.inOut" }, F + .6);
+      tl.to("#f9 .fbtn2", { opacity: 1, duration: .15 }, at("L9", "heute") + .3);
+      tl.to("#f9", { scale: 1.12, duration: .15, yoyo: true, repeat: 1 }, at("L9", "heute") + .3);""", blur=False)

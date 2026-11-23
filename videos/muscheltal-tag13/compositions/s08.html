@@ -51,7 +51,7 @@
 
     .neo { position: absolute; left: 60px; right: 190px; margin: 0 auto; width: fit-content; max-width: 830px; padding: 14px 34px 18px; border-radius: 30px; opacity: 0;
       background: linear-gradient(160deg, rgba(24,10,48,.9), rgba(8,4,24,.92)); border: 5px solid #3ff0ff; box-shadow: 0 0 30px rgba(63,240,255,.7), inset 0 0 24px rgba(63,240,255,.25);
-      font-family: "Lilita One", sans-serif; color: #fff; text-align: center; line-height: 1.02; white-space: nowrap; }
+      font-family: "Lilita One", sans-serif; color: #fff; text-align: center; line-height: 1.02; white-space: normal; }
     .neo.pk { border-color: #ff3dbd; box-shadow: 0 0 30px rgba(255,61,189,.75), inset 0 0 24px rgba(255,61,189,.25); }
     .neo.li { border-color: #b6ff3b; box-shadow: 0 0 30px rgba(182,255,59,.7), inset 0 0 24px rgba(182,255,59,.25); }
     .neo.go { border-color: #ffd23f; box-shadow: 0 0 34px rgba(255,210,63,.8), inset 0 0 24px rgba(255,210,63,.25); }
@@ -62,19 +62,19 @@
     .big .c { color: #3ff0ff; } .big .p { color: #ff3dbd; } .big .l { color: #b6ff3b; } .big .g { color: #ffd23f; }
     .fl { position: absolute; inset: 0; background: #fff; opacity: 0; }
 
-    #v1 { top: 230px; font-size: 120px; }
-    #v2 { top: 430px; font-size: 52px; white-space: normal; width: 820px; }
-    .vc { position: absolute; top: 620px; width: 370px; height: 380px; border-radius: 34px; background: #fff; overflow: hidden; opacity: 0; box-shadow: 0 0 0 7px var(--c), 0 0 40px var(--c); }
-    .vc .e { height: 250px; display: grid; place-items: center; font-size: 150px; background: linear-gradient(180deg, #fff3d6, #fff); }
+    #v1 { top: 210px; font-size: 96px; white-space: nowrap; }
+    #v2 { top: 360px; font-size: 46px; }
+    .vc { position: absolute; top: 640px; width: 340px; height: 380px; border-radius: 34px; background: #fff; overflow: hidden; opacity: 0; box-shadow: 0 0 0 7px var(--c), 0 0 40px var(--c); }
+    .vc .e { height: 250px; display: grid; place-items: center; font-size: 110px; white-space: nowrap; background: linear-gradient(180deg, #fff3d6, #fff); }
     .vc .l { height: 130px; display: grid; place-items: center; font: 400 50px/1 "Lilita One", sans-serif; color: #fff; background: var(--c); text-align: center; }
-    #vs { position: absolute; left: 400px; top: 740px; width: 140px; text-align: center; font: 400 96px "Lilita One", sans-serif; color: #ffd23f; -webkit-text-stroke: 12px #0a0418; paint-order: stroke fill; opacity: 0; }
+    #vs { position: absolute; left: 405px; top: 785px; width: 110px; text-align: center; font: 400 66px "Lilita One", sans-serif; color: #ffd23f; -webkit-text-stroke: 12px #0a0418; paint-order: stroke fill; opacity: 0; }
     #v5 { top: 1560px; font-size: 50px; }
     #v6 { top: 1580px; font-size: 52px; }
   </style>
-  <div id="root" data-composition-id="s08" data-start="0" data-duration="11.070" data-width="1080" data-height="1920">
-    <div id="s08-stage" class="clip stage" data-start="0" data-duration="11.070" data-track-index="0">
+  <div id="root" data-composition-id="s08" data-start="0" data-duration="10.650" data-width="1080" data-height="1920">
+    <div id="s08-stage" class="clip stage" data-start="0" data-duration="10.650" data-track-index="0">
       <div id="v1" class="big">🗳️ <span class="g">ABSTIMMUNG!</span></div>
-      <div id="v2" class="neo pk"><small>🔮 DER SCHÖPFER SCHENKT EUCH</small>NOCH EIN GEBÄUDE</div>
+      <div id="v2" class="neo pk"><small>🔮 DER SCHÖPFER VON MUSCHEL-TAL</small>SCHENKT EUCH NOCH EIN GEBÄUDE</div>
       <div class="vc" id="v3" style="left:60px;--c:#ff3dbd"><div class="e">🐱☕</div><div class="l">KATZEN-<br>CAFÉ</div></div>
       <div id="vs">VS</div>
       <div class="vc" id="v4" style="left:520px;--c:#13a8d0"><div class="e">🏨</div><div class="l">HOTEL<br>SANDKORN</div></div>
@@ -85,7 +85,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 11.07, "L8": [0.2, 3.46], "L8.words": [["und", 0.2, 0.45], ["noch", 0.45, 0.71], ["was", 0.71, 0.96], ["der", 1.21, 1.395], ["schöpfer", 1.395, 1.777], ["will", 1.777, 1.969], ["euch", 1.969, 2.16], ["noch", 2.16, 2.351], ["ein", 2.351, 2.536], ["gebäude", 2.536, 3.077], ["schenken", 3.077, 3.46]], "L8b": [3.68, 5.99], "L8b.words": [["katzencafé", 3.68, 4.453], ["oder", 4.453, 4.95], ["hotel", 4.95, 5.456], ["sandkorn", 5.456, 5.99]], "L8c": [6.21, 8.67], "L8c.words": [["stimmt", 6.21, 6.394], ["in", 6.394, 6.555], ["den", 6.555, 6.721], ["kommentaren", 6.721, 7.381], ["ab", 7.381, 7.541], ["", 7.541, 7.69], ["es", 7.81, 7.928], ["wird", 7.928, 8.056], ["über", 8.056, 8.293], ["nacht", 8.293, 8.424], ["gebaut", 8.424, 8.67]]};
+      const C = {"__dur": 10.65, "L8": [0.2, 5.26], "L8.words": [["und", 0.2, 0.487], ["noch", 0.487, 0.783], ["was", 0.783, 1.07], ["der", 1.32, 1.506], ["geheimnisvolle", 1.506, 2.43], ["schöpfer", 2.43, 2.815], ["von", 2.815, 3.001], ["muscheltal", 3.001, 3.566], ["will", 3.566, 3.758], ["euch", 3.758, 3.951], ["noch", 3.951, 4.144], ["ein", 4.144, 4.33], ["gebäude", 4.33, 4.875], ["schenken", 4.875, 5.26]], "L8b": [5.48, 7.79], "L8b.words": [["katzencafé", 5.48, 6.253], ["oder", 6.253, 6.75], ["hotel", 6.75, 7.256], ["sandkorn", 7.256, 7.79]], "L8c": [8.01, 10.47], "L8c.words": [["stimmt", 8.01, 8.194], ["in", 8.194, 8.355], ["den", 8.355, 8.521], ["kommentaren", 8.521, 9.181], ["ab", 9.181, 9.341], ["", 9.341, 9.49], ["es", 9.61, 9.728], ["wird", 9.728, 9.856], ["über", 9.856, 10.093], ["nacht", 10.093, 10.224], ["gebaut", 10.224, 10.47]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -138,8 +138,8 @@
       [[22,-12],[-24,10],[16,14],[-12,-10],[0,0]].forEach(([x, y], i) => tl.to("#s08-stage", { x, y, duration: .04, ease: "none" }, at("L8b", "Hotel") + i * .04));
       tl.to("#vs", { scale: 1.2, duration: .2, yoyo: true, repeat: 9, ease: "sine.inOut" }, at("L8b", "Hotel") + .4);
       tl.fromTo("#v5", { opacity: 0, scale: 3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .24, ease: "back.out(2.2)" }, at("L8c", "Kommentaren") - .1);
-      tl.to(["#v3", "#v4"], { y: -14, duration: .5, yoyo: true, repeat: 7, ease: "sine.inOut" }, A + .5);
-      
+      tl.to(["#v3", "#v4"], { y: -14, duration: .5, yoyo: true, repeat: 5, ease: "sine.inOut" }, A + .5);
+      tl.to("#s08-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
       window.__timelines["s08"] = tl;
     })();
   </script>
