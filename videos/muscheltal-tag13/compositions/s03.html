@@ -68,8 +68,8 @@
     .nm b { display: block; font-size: 54px; line-height: 1; margin-bottom: 6px; }
     #c6 { top: 860px; font-size: 64px; }
   </style>
-  <div id="root" data-composition-id="s03" data-start="0" data-duration="4.610" data-width="1080" data-height="1920">
-    <div id="s03-stage" class="clip stage" data-start="0" data-duration="4.610" data-track-index="0">
+  <div id="root" data-composition-id="s03" data-start="0" data-duration="4.180" data-width="1080" data-height="1920">
+    <div id="s03-stage" class="clip stage" data-start="0" data-duration="4.180" data-track-index="0">
       <div id="c1" class="big">🐾 <span class="l">TIERHEIM</span>-TEAM</div>
       <div id="n0" class="nm" style="left:70px;top:430px"><b>🐶</b>@swg.seliii</div>
       <div id="n1" class="nm" style="left:480px;top:430px"><b>🐱</b>@j7summ3r</div>
@@ -82,7 +82,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 4.61, "L3": [0.2, 1.98], "L3.words": [["das", 0.2, 0.49], ["tierheim", 0.49, 1.09], ["hat", 1.09, 1.38], ["sein", 1.38, 1.68], ["team", 1.68, 1.98]], "L3b": [2.2, 4.43], "L3b.words": [["vier", 2.2, 2.382], ["neue", 2.382, 2.564], ["tierpfleger", 2.564, 3.103], ["", 3.103, 3.26], ["willkommen", 3.51, 4.065], ["im", 4.065, 4.241], ["team", 4.241, 4.43]]};
+      const C = {"__dur": 4.18, "L3": [0.2, 4.0], "L3.words": [["im", 0.2, 0.39], ["tierheim", 0.39, 0.798], ["arbeiten", 0.798, 1.381], ["jetzt", 1.381, 1.592], ["vier", 1.592, 1.796], ["neue", 1.796, 2.0], ["tierpfleger", 2.0, 2.604], ["", 2.604, 2.78], ["willkommen", 3.03, 3.615], ["im", 3.615, 3.8], ["team", 3.8, 4.0]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -126,10 +126,10 @@
 
       wrapBt("#s03-stage");
       const tl = gsap.timeline({ paused: true });
-      const t = line("L3")[0], V = line("L3b")[0];
+      const t = line("L3")[0], V = at("L3", "vier");
       tl.fromTo("#c1", { opacity: 0, scale: 3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .24, ease: "back.out(2.2)" }, t - .05);
       [0, 1, 2, 3].forEach(i => tl.fromTo("#n" + i, { opacity: 0, scale: .2, rotation: i % 2 ? 12 : -12 }, { opacity: 1, scale: 1, rotation: i % 2 ? 2 : -2, duration: .3, ease: "back.out(2.6)" }, V - .1 + i * .22));
-      tl.fromTo("#c6", { opacity: 0, scale: 3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .24, ease: "back.out(2.2)" }, at("L3b", "willkommen") - .05);tl.fromTo(".fl", { opacity: 0.5 }, { opacity: 0, duration: .28, immediateRender: false }, at("L3b", "willkommen"));
+      tl.fromTo("#c6", { opacity: 0, scale: 3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .24, ease: "back.out(2.2)" }, at("L3", "willkommen") - .05);tl.fromTo(".fl", { opacity: 0.5 }, { opacity: 0, duration: .28, immediateRender: false }, at("L3", "willkommen"));
       tl.to("#s03-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
       window.__timelines["s03"] = tl;
     })();
