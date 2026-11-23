@@ -1073,11 +1073,10 @@ function ksSignFront(c,x,y,tn){if(!KOKV.open||S*cam.z<=6)return;const f=y+4.4;
  if(exDa(KBAR)){const lx=x-KBAR.cx,ff=f-KBAR.cy;if(Math.abs(lx)<18&&ff<6&&ff>-18)tintDraw(c,tn,KBAR.cx-15,KBAR.cy-11.6,KBAR.cx+15,KBAR.cy+6.4,o=>{o.save();o.translate(KBAR.cx,KBAR.cy+10);barSchild(o);o.restore();});}}
 // 🍹 Coco Bay – Beach Bar direkt am Sandstrand
 function drawCocoBay(c,nl){const t=REDUCED?0:T,X=KBAR.cx,Y=KBAR.cy,D=KBAR.dep,INK='#2a1b12';c.save();c.translate(X,Y);
- // Sand bis ans Wasser, mit Muscheln und Seestern
+ // Sand bis ans Wasser, mit Seestern
  {const sg=c.createLinearGradient(0,-1,0,D+2);sg.addColorStop(0,'#f6e3b4');sg.addColorStop(1,'#ffe8bf');c.fillStyle=sg;c.beginPath();c.moveTo(-47,-1);c.lineTo(47,-1);c.lineTo(47,D+1);c.lineTo(-47,D+1);c.closePath();c.fill();}
  c.fillStyle='rgba(255,255,255,.35)';for(let k=0;k<26;k++){c.beginPath();c.arc(-44+hash(k,1)*88,1+hash(k,2)*(D-4),.35,0,TAU);c.fill();}
- for(let k=0;k<5;k++){const sx=-40+hash(k,5)*80,sy=26+hash(k,6)*(D-30);c.fillStyle=['#ffb3c7','#fff3e0','#ffd0a0'][k%3];c.beginPath();c.ellipse(sx,sy,.8,.55,k,0,TAU);c.fill();}
- {const sx=8,sy=D-6;c.fillStyle='#ff8a5a';c.beginPath();for(let k=0;k<10;k++){const r=k%2?.55:1.4,a=k/10*TAU-Math.PI/2;c.lineTo(sx+Math.cos(a)*r,sy+Math.sin(a)*r);}c.closePath();c.fill();}
+  {const sx=8,sy=D-6;c.fillStyle='#ff8a5a';c.beginPath();for(let k=0;k<10;k++){const r=k%2?.55:1.4,a=k/10*TAU-Math.PI/2;c.lineTo(sx+Math.cos(a)*r,sy+Math.sin(a)*r);}c.closePath();c.fill();}
  c.save();c.translate(0,10);// Hütte etwas nach Süden: der Weg dahinter bleibt frei
  // Lichterkette zwischen Palmen und Hütte
  for(const s of[-1,1])lights(c,s*20,s*38,2,1.4,7,nl);
@@ -2783,10 +2782,10 @@ function drawIsland(c,v,vis,z){
   if(v.i===1){const pal=[['#fff8ec','#ffd23f'],['#ffb36b','#fff3a0'],['#fff8ec','#ff8fb8']][f.t];c.fillStyle='#3f9b45';c.fillRect(x-.15,y,.3,1.2);for(let k=0;k<5;k++){const a=k/5*TAU+.3;c.fillStyle=pal[0];c.beginPath();c.ellipse(x+Math.cos(a)*.75,y-.2+Math.sin(a)*.75,.62,.36,a,0,TAU);c.fill();}c.fillStyle=pal[1];c.beginPath();c.arc(x,y-.2,.35,0,TAU);c.fill();}
   else{const pal=[['#ffb6c8','#e8467c'],['#fff','#ffd23f'],['#ffd0b5','#ff7a59']][f.t];c.fillStyle='#3f9b45';c.fillRect(x-.15,y,.3,1.2);c.fillStyle=pal[0];c.beginPath();c.moveTo(x,y+.2);for(let k=0;k<=6;k++){const a=Math.PI*1.08+k/6*Math.PI*.84;c.lineTo(x+Math.cos(a)*1.05,y+.2+Math.sin(a)*1.05);}c.closePath();c.fill();c.strokeStyle=pal[1];c.lineWidth=.12;c.beginPath();for(let k=1;k<6;k++){const a=Math.PI*1.08+k/6*Math.PI*.84;c.moveTo(x,y+.15);c.lineTo(x+Math.cos(a)*.95,y+.15+Math.sin(a)*.95);}c.stroke();}}
  for(const r of v.rocks)if(vis(r.x,r.y)){c.fillStyle='#9b8f86';c.beginPath();c.ellipse(r.x,r.y,r.r,r.r*.7,0,0,TAU);c.fill();c.fillStyle='#bfb4aa';c.beginPath();c.ellipse(r.x-.6,r.y-.6,r.r*.5,r.r*.35,0,0,TAU);c.fill();}
- // Strand: Seesterne, Muscheln, Sandburgen, Handtücher, Schwimmringe
+ // Strand: Seesterne, Sandburgen, Handtücher, Schwimmringe
  if(z*S>8)for(const b of v.beach||[]){if(!vis(b.x,b.y))continue;const {x,y}=b;
   if(b.t===0){c.fillStyle=b.c;c.beginPath();for(let k=0;k<10;k++){const r=k%2?.9:2.4,a=k/10*TAU-Math.PI/2;c.lineTo(x+Math.cos(a)*r,y+Math.sin(a)*r);}c.closePath();c.fill();}
-  else if(b.t===1){c.fillStyle='#fff3e6';c.beginPath();c.moveTo(x,y+1.2);c.arc(x,y,1.6,Math.PI*.9,Math.PI*2.1);c.closePath();c.fill();c.strokeStyle='#e8a58a';c.lineWidth=.25;c.beginPath();for(let k=-1;k<=1;k++){c.moveTo(x,y+1.1);c.lineTo(x+k*1.1,y-1.3);}c.stroke();}
+  else if(b.t===1){/* 23.11.: keine Deko-Muscheln mehr am Strand – nur echte, sammelbare */}
   else if(b.t===2){c.fillStyle='#e6c27a';c.fillRect(x-3,y-1.5,6,3);c.fillRect(x-2.2,y-3.6,1.6,2.2);c.fillRect(x+.6,y-3.6,1.6,2.2);c.fillRect(x-.6,y-4.6,1.2,3);c.fillStyle='#e8433c';c.beginPath();c.moveTo(x,y-4.6);c.lineTo(x+1.8,y-5.2);c.lineTo(x,y-5.8);c.fill();}
   else if(b.t===3){c.save();c.translate(x,y);c.rotate(b.a+Math.PI/2);c.fillStyle=b.c;c.fillRect(-2.2,-3.6,4.4,7.2);c.fillStyle='#fff';c.fillRect(-2.2,-1.2,4.4,.8);c.fillRect(-2.2,1,4.4,.8);c.restore();}
   else if(b.t===4){c.strokeStyle=b.c;c.lineWidth=1.3;c.beginPath();c.arc(x,y,1.8,0,TAU);c.stroke();c.strokeStyle='#fff';c.lineWidth=1.3;c.beginPath();c.arc(x,y,1.8,0,.6);c.arc(x,y,1.8,Math.PI,Math.PI+.6);c.stroke();}
@@ -4532,7 +4531,7 @@ function drawGeb(c,g,nl,z){const ink='#2a1b12';c.save();c.translate(g.cx,g.cy);
    for(const [cx2,cy2] of[[sx+8,-14],[sx+8,14],[sx+28,-2]]){c.fillStyle='#8a5a2b';c.beginPath();c.ellipse(cx2,cy2,1.8,1,0,0,TAU);c.fill();c.fillStyle='#7a4a24';c.beginPath();c.arc(cx2-.6,cy2-.8,.75,0,TAU);c.fill();c.fillStyle='#fff6e0';c.beginPath();c.ellipse(cx2-.6,cy2-1.3,.55,.22,0,0,TAU);c.fill();c.strokeStyle='#ff6fa3';c.lineWidth=.15;c.beginPath();c.moveTo(cx2-.4,cy2-1.3);c.lineTo(cx2,cy2-2.4);c.stroke();c.fillStyle='#ffd23f';c.beginPath();c.moveTo(cx2+.2,cy2-2.4);c.arc(cx2+.6,cy2-2.4,.5,Math.PI,TAU);c.fill();}
    {const sx2=-W+10,sy2=20;c.fillStyle='#e8c88a';c.fillRect(sx2-2,sy2-1.6,4,2.2);c.fillRect(sx2-2.6,sy2-2.4,1.2,1);c.fillRect(sx2+1.4,sy2-2.4,1.2,1);c.fillRect(sx2-.6,sy2-3,1.2,1.6);c.fillStyle='#ff6fa3';c.beginPath();c.moveTo(sx2,sy2-3);c.lineTo(sx2,sy2-4.6);c.lineTo(sx2+1,sy2-4.2);c.lineTo(sx2,sy2-3.8);c.fill();c.fillStyle='#3fa0e8';c.beginPath();c.moveTo(sx2+3.2,sy2-1.2);c.lineTo(sx2+4.8,sy2-1.2);c.lineTo(sx2+4.5,sy2+.6);c.lineTo(sx2+3.5,sy2+.6);c.closePath();c.fill();}
    for(const [hx,hy] of[[bx-13,-23.5],[bx+13,-23.5]]){c.fillStyle='#e8467c';for(let k=0;k<5;k++){const a=k/5*TAU;c.beginPath();c.ellipse(hx+Math.cos(a)*.7,hy+Math.sin(a)*.7,.6,.4,a,0,TAU);c.fill();}c.fillStyle='#ffd23f';c.beginPath();c.arc(hx,hy,.3,0,TAU);c.fill();}
-   // Steg: Seil-Geländer, Sitzsäcke, DJ-Pult, Eiskübel, Palmen im Kübel, Angel; Strand: Handtücher mit Flip-Flops, Wasserball, Kühlbox, Kajak, Muscheln & Seesterne
+   // Steg: Seil-Geländer, Sitzsäcke, DJ-Pult, Eiskübel, Palmen im Kübel, Angel; Strand: Handtücher mit Flip-Flops, Wasserball, Kühlbox, Kajak, Seesterne
    c.strokeStyle='#d9b38a';c.lineWidth=.35;c.beginPath();for(const yy of[-26.6,26.6]){c.moveTo(sx+2,yy);for(let x=sx+2;x<W-2;x+=8)c.quadraticCurveTo(x+4,yy+.9,x+8>W-2?W-2:x+8,yy);}c.stroke();
    for(const [x,y,col] of[[W-11,-19,'#ff6fa3'],[W-11,19,'#2fb3a0'],[W-18,-21,'#ffd23f']]){c.fillStyle='rgba(40,30,10,.2)';c.beginPath();c.ellipse(x+.4,y+1.6,2.6,.8,0,0,TAU);c.fill();c.fillStyle=col;c.beginPath();c.ellipse(x,y,2.4,1.8,0,0,TAU);c.fill();c.fillStyle='rgba(255,255,255,.35)';c.beginPath();c.ellipse(x-.6,y-.7,1,.6,0,0,TAU);c.fill();}
    {const dx=W-13,dy=-1;c.fillStyle='#2a2a35';c.beginPath();c.roundRect(dx-4,dy-1.6,8,3.4,.5);c.fill();c.fillStyle='#4a4a58';for(const o of[-2,2]){c.beginPath();c.arc(dx+o,dy-.2,1.1,0,TAU);c.fill();}c.fillStyle='#ff3d7f';c.fillRect(dx-.4,dy+.6,.8,.5);
@@ -4544,7 +4543,7 @@ function drawGeb(c,g,nl,z){const ink='#2a1b12';c.save();c.translate(g.cx,g.cy);
    {const bx2=-W+36,by2=4;c.fillStyle='#fff';c.beginPath();c.arc(bx2,by2,1.5,0,TAU);c.fill();for(const [a0,col] of[[0,'#e8433c'],[2.1,'#3fa0e8'],[4.2,'#ffd23f']]){c.fillStyle=col;c.beginPath();c.moveTo(bx2,by2);c.arc(bx2,by2,1.5,a0,a0+1);c.closePath();c.fill();}}
    {const kx=-W+46,ky=20;c.fillStyle='#3fa0e8';c.beginPath();c.roundRect(kx-2.4,ky-1.6,4.8,3.2,.6);c.fill();c.fillStyle='#fff';c.fillRect(kx-2.4,ky-1.6,4.8,1);c.fillStyle='#2a6fb0';c.fillRect(kx-.8,ky-2,1.6,.5);}
    {const kx=sx-8,ky=21;c.save();c.translate(kx,ky);c.rotate(-.25);c.fillStyle='#ff8a2a';c.beginPath();c.ellipse(0,0,6,1.4,0,0,TAU);c.fill();c.fillStyle='#2a2a2a';c.beginPath();c.ellipse(.5,0,1.6,.6,0,0,TAU);c.fill();c.strokeStyle='#8a8a94';c.lineWidth=.3;c.beginPath();c.moveTo(-3,-2);c.lineTo(4,2);c.stroke();c.restore();}
-   for(let k=0;k<7;k++){const x=-W+6+hash(k,951)*(sx-6+W-12),y=-H+4+hash(k,952)*(2*H-8);if(k%2){c.fillStyle='#ff8a4c';c.beginPath();for(let i=0;i<10;i++){const a=i/10*TAU-Math.PI/2,r=i%2?.4:1;c.lineTo(x+Math.cos(a)*r,y+Math.sin(a)*r);}c.closePath();c.fill();}else{c.fillStyle='#fff3e8';c.beginPath();c.arc(x,y,.6,Math.PI,0);c.fill();c.strokeStyle='#e8c8a8';c.lineWidth=.12;c.beginPath();c.moveTo(x,y);c.lineTo(x-.4,y-.5);c.moveTo(x,y);c.lineTo(x+.4,y-.5);c.stroke();}}
+   for(let k=0;k<7;k++){const x=-W+6+hash(k,951)*(sx-6+W-12),y=-H+4+hash(k,952)*(2*H-8);if(k%2){c.fillStyle='#ff8a4c';c.beginPath();for(let i=0;i<10;i++){const a=i/10*TAU-Math.PI/2,r=i%2?.4:1;c.lineTo(x+Math.cos(a)*r,y+Math.sin(a)*r);}c.closePath();c.fill();}}
    if(nl>.5)for(const [cx2,cy2] of[[sx+11,-14],[sx+11,14],[sx+31,-2]]){c.fillStyle='#ffd27a';c.beginPath();c.ellipse(cx2,cy2-.8+(REDUCED?0:Math.sin(T*9+cy2)*.05),.22,.4,0,0,TAU);c.fill();}
    }
   else if(g.typ==='acai')drawAcai(c,g,nl,z);
