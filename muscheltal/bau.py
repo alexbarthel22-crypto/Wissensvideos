@@ -706,6 +706,10 @@ def baue(rows, out):
         quelle[j]["platz"] = plaetze[j]
     for j, r in enumerate(sauber):
         r.append(isl_l[j])
+    # Server (Bootsfahrt): Heimat-Insel je Bewohner + ab wie vielen Einwohnern eine Insel offen ist
+    with open(os.path.join(HIER, "netlify", "lib", "bewohner.mjs"), "a", encoding="utf-8") as f:
+        f.write("export const INSEL = " + json.dumps({r[0].lower().lstrip("@"): isl_l[j] for j, r in enumerate(sauber)}, ensure_ascii=False) + ";\n"
+                + "export const INSEL_AB = " + json.dumps([v["ab"] for v in insel["inseln"]]) + ";\n")
     import copy
     pop = len(sauber)
     web = copy.deepcopy(insel)  # öffentliche Fassung: gesperrte/geheime Inseln ohne echten Namen

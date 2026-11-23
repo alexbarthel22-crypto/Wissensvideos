@@ -3,7 +3,7 @@
 // so ergibt sich der Kontostand aus einer einzigen Liste. Feste Schlüssel (z. B. login/2026-11-10) verhindern Doppelbuchungen.
 import { getStore } from "@netlify/blobs";
 import { JOBS } from "../lib/jobs.mjs";
-import { BEWOHNER, NACHBARN, SEIT } from "../lib/bewohner.mjs";
+import { BEWOHNER, NACHBARN, SEIT, INSEL, INSEL_AB } from "../lib/bewohner.mjs";
 import { liveVergeben } from "./live.mjs";
 import { CODES } from "../lib/codes.mjs";
 import { SHOP } from "../lib/shop.mjs";
@@ -270,7 +270,7 @@ async function aufraeumen(store) {
     t[1] = id; await kasse.set(t.join("/"), (await kasse.get(k)) || "1"); await kasse.delete(k);
   }
 }
-const TEXT = { eingeladen: "Von einem Freund eingeladen", spielpreis: "Golden Pearl: Wochen-Preis", treibgut: "Sturm-Treibgut", login: "Login-Serie", quest: "Aufgabe", qbonus: "Alle 3 Aufgaben", shell: "Schwebende Muschel", erf: "Neuer Erfolg", story: "Story geteilt", spende: "Spende Inselkasse", tresor: "Tresor des Schöpfers", code: "Geheimcode aus dem Video", einladung: "Freund eingeladen", kauf: "Muschel-Shop", null: "Neustart: alle Konten auf 0", stern: "Sternschnuppe 🌠", angeln: "Fang am Angelsteg 🎣", euro: "Muschel-Paket gekauft/geschenkt 💎", "euro-zurueck": "Muschel-Paket erstattet", regenbogen: "Schatz am Regenbogen 🌈", flasche: "Flaschenpost-Quiz 🍾", geschenk: "Tagesgeschenk 🎁" };
+const TEXT = { boot: "Bootsfahrt ⛵", eingeladen: "Von einem Freund eingeladen", spielpreis: "Golden Pearl: Wochen-Preis", treibgut: "Sturm-Treibgut", login: "Login-Serie", quest: "Aufgabe", qbonus: "Alle 3 Aufgaben", shell: "Schwebende Muschel", erf: "Neuer Erfolg", story: "Story geteilt", spende: "Spende Inselkasse", tresor: "Tresor des Schöpfers", code: "Geheimcode aus dem Video", einladung: "Freund eingeladen", kauf: "Muschel-Shop", null: "Neustart: alle Konten auf 0", stern: "Sternschnuppe 🌠", angeln: "Fang am Angelsteg 🎣", euro: "Muschel-Paket gekauft/geschenkt 💎", "euro-zurueck": "Muschel-Paket erstattet", regenbogen: "Schatz am Regenbogen 🌈", flasche: "Flaschenpost-Quiz 🍾", geschenk: "Tagesgeschenk 🎁" };
 
 // Einmal-Aufgaben (Zurücksetzen, Aufräumen) nur einmal pro Tag und Server-Instanz prüfen – spart bei jeder Muschel-Aktion
 // rund 10 Speicherabfragen (schnellere Gutschriften)
@@ -817,6 +817,20 @@ export default async (req) => {
     const w = woche(heute), ok = await setze("story", w, 10);
     if (ok) await getStore({ name: "inselkasse", consistency: "strong" }).set("s/" + nm + "/" + Date.now() + "-story/10", "1");
     return json({ ok, kasse: ok ? 10 : 0 });
+  }
+  // ⛵ Bootsfahrt zwischen den Anlegern: zu einer fremden Insel 2 🐚 (gehen in die Inselkasse), nach Hause kostenlos
+  if (act === "boot") {
+    const nach = Math.floor(Number(d.nach)), ab = INSEL_AB || [];
+    if (!(nach >= 0) || nach >= ab.length || !(BEWOHNER.size > ab[nach])) return json({ ok: false, grund: "insel" });
+    const heim = INSEL && INSEL[nm] === nach, preis = heim ? 0 : 2;
+    const B = await buch(store, nm), stand = B.reduce((s, e) => s + e.a, 0);
+    if (preis > stand) return json({ ok: false, grund: "muscheln", stand });
+    if (preis) {
+      const id = Date.now() + "-" + Math.random().toString(36).slice(2, 6);
+      await store.set("b/" + nm + "/boot/" + id + "/" + (-preis), String(Date.now()));
+      await getStore({ name: "inselkasse", consistency: "strong" }).set("s/" + nm + "/" + id + "-boot/" + preis, "1");
+    }
+    return json({ ok: true, preis, stand: stand - preis });
   }
   if (act === "spende") {
     const a = Math.floor(Number(d.betrag));
