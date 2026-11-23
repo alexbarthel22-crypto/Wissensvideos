@@ -108,20 +108,25 @@
    "tag": "",
    "sfx": [
     {
-     "name": "fs_seashell",
-     "at": "L3:Meer",
+     "name": "fs_pop",
+     "at": "L3:Muschel-Emoji",
      "volume": 0.5
     },
     {
-     "name": "fs_crickets",
-     "at": "L3:Stumm+0.3",
-     "volume": 0.4
+     "name": "fs_scratch",
+     "at": "L3:gelöscht",
+     "volume": 0.45
+    },
+    {
+     "name": "fs_boo",
+     "at": "L3:gelöscht+0.3",
+     "volume": 0.3
     }
    ],
    "lines": [
     {
      "id": "L3",
-     "text": "Das *g:Meer im Ohr? / *y:Stumm!",
+     "text": "Das *g:Muschel-Emoji? / *y:Gelöscht!",
      "pause": 0.12
     }
    ]
@@ -170,19 +175,19 @@
    "sfx": [
     {
      "name": "fs_splat",
-     "at": "L5:Spaghetti",
-     "volume": 0.6
+     "at": "L5:Kaugummi",
+     "volume": 0.5
     },
     {
-     "name": "fs_slurp",
-     "at": "L5:Spaghetti+0.35",
-     "volume": 0.5
+     "name": "fs_boing",
+     "at": "L5:Kaugummi+0.2",
+     "volume": 0.45
     }
    ],
    "lines": [
     {
      "id": "L5",
-     "text": "*g:Muschelnudeln? / Nur noch *y:Spaghetti!",
+     "text": "*g:Perlen gibt's nur noch / aus *y:Kaugummi!",
      "pause": 0.12
     }
    ]
@@ -192,31 +197,26 @@
    "tag": "",
    "sfx": [
     {
-     "name": "fs_plank",
-     "at": "L6b:TAL",
-     "volume": 0.65
+     "name": "fs_magic",
+     "at": "L6:TikTok",
+     "volume": 0.4
     },
     {
-     "name": "fs_scratch",
-     "at": "L6b:TAL+0.05",
-     "volume": 0.45
+     "name": "fs_cheer",
+     "at": "L6:Likes",
+     "volume": 0.3
     },
     {
-     "name": "fs_sigh",
-     "at": "L6b:TAL+0.5",
-     "volume": 0.5
+     "name": "fs_crickets",
+     "at": "L6:Likes+0.4",
+     "volume": 0.4
     }
    ],
    "lines": [
     {
      "id": "L6",
-     "text": "Und *p:Muschel-Tal / heißt nur noch …",
-     "pause": 0.15
-    },
-    {
-     "id": "L6b",
-     "text": "*y:TAL.",
-     "pause": 0.25
+     "text": "Die *p:Krabben betteln / auf *y:TikTok um *y:Likes!",
+     "pause": 0.12
     }
    ]
   },
@@ -225,24 +225,80 @@
    "tag": "",
    "sfx": [
     {
-     "name": "fs_magic",
-     "at": "L7:Folg-0.2",
-     "volume": 0.55
+     "name": "fs_splat",
+     "at": "L7:Spaghetti",
+     "volume": 0.6
     },
     {
-     "name": "fs_boing",
-     "at": "L7:mir",
-     "volume": 0.45
-    },
-    {
-     "name": "fs_cheer",
-     "at": "L7:bevor's",
+     "name": "fs_slurp",
+     "at": "L7:Spaghetti+0.35",
      "volume": 0.5
     }
    ],
    "lines": [
     {
      "id": "L7",
+     "text": "*g:Muschelnudeln? / Nur noch *y:Spaghetti!",
+     "pause": 0.12
+    }
+   ]
+  },
+  {
+   "id": "s08",
+   "tag": "",
+   "sfx": [
+    {
+     "name": "fs_plank",
+     "at": "L8b:TAL",
+     "volume": 0.65
+    },
+    {
+     "name": "fs_scratch",
+     "at": "L8b:TAL+0.05",
+     "volume": 0.45
+    },
+    {
+     "name": "fs_sigh",
+     "at": "L8b:TAL+0.5",
+     "volume": 0.5
+    }
+   ],
+   "lines": [
+    {
+     "id": "L8",
+     "text": "Und *p:Muschel-Tal / heißt nur noch …",
+     "pause": 0.15
+    },
+    {
+     "id": "L8b",
+     "text": "*y:TAL.",
+     "pause": 0.25
+    }
+   ]
+  },
+  {
+   "id": "s09",
+   "tag": "",
+   "sfx": [
+    {
+     "name": "fs_magic",
+     "at": "L9:Folg-0.2",
+     "volume": 0.55
+    },
+    {
+     "name": "fs_boing",
+     "at": "L9:mir",
+     "volume": 0.45
+    },
+    {
+     "name": "fs_cheer",
+     "at": "L9:bevor's",
+     "volume": 0.5
+    }
+   ],
+   "lines": [
+    {
+     "id": "L9",
      "text": "*g:Folg mir – / bevor's zu *y:spät ist!",
      "pause": 0.2
     }

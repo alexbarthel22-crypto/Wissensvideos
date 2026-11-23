@@ -1,5 +1,5 @@
 {
- "duration": 16.6,
+ "duration": 22.36,
  "lines": [
   {
    "scene": "s01",
@@ -125,44 +125,28 @@
      "color": null,
      "group": 0,
      "start": 5.38,
-     "end": 5.615
+     "end": 5.58
     },
     {
-     "display": "Meer",
-     "spoken": "Meer",
+     "display": "Muschel-Emoji?",
+     "spoken": "Muschel-Emoji?",
      "color": "g",
      "group": 0,
-     "start": 5.615,
-     "end": 5.858
+     "start": 5.58,
+     "end": 6.56
     },
     {
-     "display": "im",
-     "spoken": "im",
-     "color": null,
-     "group": 0,
-     "start": 5.858,
-     "end": 6.085
-    },
-    {
-     "display": "Ohr?",
-     "spoken": "Ohr?",
-     "color": null,
-     "group": 0,
-     "start": 6.085,
-     "end": 6.32
-    },
-    {
-     "display": "Stumm!",
-     "spoken": "Stumm!",
+     "display": "Gelöscht!",
+     "spoken": "Gelöscht!",
      "color": "y",
      "group": 1,
-     "start": 6.52,
-     "end": 6.9
+     "start": 6.76,
+     "end": 7.33
     }
    ],
-   "spoken": "Das Meer im Ohr? Stumm!",
+   "spoken": "Das Muschel-Emoji? Gelöscht!",
    "start": 5.38,
-   "end": 6.9
+   "end": 7.33
   },
   {
    "scene": "s04",
@@ -173,209 +157,331 @@
      "spoken": "Die",
      "color": null,
      "group": 0,
-     "start": 7.4,
-     "end": 7.61
+     "start": 7.83,
+     "end": 8.04
     },
     {
      "display": "Möwen",
      "spoken": "Möwen",
      "color": "p",
      "group": 0,
-     "start": 7.61,
-     "end": 8.024
+     "start": 8.04,
+     "end": 8.454
     },
     {
      "display": "streiken!",
      "spoken": "streiken!",
      "color": "y",
      "group": 1,
-     "start": 8.024,
-     "end": 8.46
+     "start": 8.454,
+     "end": 8.89
     }
    ],
    "spoken": "Die Möwen streiken!",
-   "start": 7.4,
-   "end": 8.46
+   "start": 7.83,
+   "end": 8.89
   },
   {
    "scene": "s05",
    "id": "L5",
    "words": [
     {
-     "display": "Muschelnudeln?",
-     "spoken": "Muschelnudeln?",
+     "display": "Perlen",
+     "spoken": "Perlen",
      "color": "g",
      "group": 0,
-     "start": 8.96,
-     "end": 9.79
+     "start": 9.39,
+     "end": 9.793
     },
     {
-     "display": "Nur",
-     "spoken": "Nur",
+     "display": "gibt's",
+     "spoken": "gibt's",
      "color": null,
-     "group": 1,
-     "start": 9.99,
-     "end": 10.171
+     "group": 0,
+     "start": 9.793,
+     "end": 10.01
+    },
+    {
+     "display": "nur",
+     "spoken": "nur",
+     "color": null,
+     "group": 0,
+     "start": 10.01,
+     "end": 10.211
     },
     {
      "display": "noch",
      "spoken": "noch",
      "color": null,
-     "group": 1,
-     "start": 10.171,
-     "end": 10.358
+     "group": 0,
+     "start": 10.211,
+     "end": 10.42
     },
     {
-     "display": "Spaghetti!",
-     "spoken": "Spaghetti!",
+     "display": "aus",
+     "spoken": "aus",
+     "color": null,
+     "group": 1,
+     "start": 10.42,
+     "end": 10.622
+    },
+    {
+     "display": "Kaugummi!",
+     "spoken": "Kaugummi!",
      "color": "y",
      "group": 1,
-     "start": 10.358,
-     "end": 10.9
+     "start": 10.622,
+     "end": 11.22
     }
    ],
-   "spoken": "Muschelnudeln? Nur noch Spaghetti!",
-   "start": 8.96,
-   "end": 10.9
+   "spoken": "Perlen gibt's nur noch aus Kaugummi!",
+   "start": 9.39,
+   "end": 11.22
   },
   {
    "scene": "s06",
    "id": "L6",
    "words": [
     {
-     "display": "Und",
-     "spoken": "Und",
+     "display": "Die",
+     "spoken": "Die",
      "color": null,
      "group": 0,
-     "start": 11.43,
-     "end": 11.6
+     "start": 11.72,
+     "end": 11.947
     },
     {
-     "display": "Muschel-Tal",
-     "spoken": "Muschel-Tal",
+     "display": "Krabben",
+     "spoken": "Krabben",
      "color": "p",
      "group": 0,
-     "start": 11.6,
-     "end": 12.118
+     "start": 11.947,
+     "end": 12.41
     },
     {
-     "display": "heißt",
-     "spoken": "heißt",
+     "display": "betteln",
+     "spoken": "betteln",
      "color": null,
-     "group": 1,
-     "start": 12.118,
-     "end": 12.301
-    },
-    {
-     "display": "nur",
-     "spoken": "nur",
-     "color": null,
-     "group": 1,
-     "start": 12.301,
-     "end": 12.471
-    },
-    {
-     "display": "noch",
-     "spoken": "noch",
-     "color": null,
-     "group": 1,
-     "start": 12.471,
-     "end": 12.648
-    },
-    {
-     "display": "…",
-     "spoken": "…",
-     "color": null,
-     "group": 1,
-     "start": 12.648,
-     "end": 12.8
-    }
-   ],
-   "spoken": "Und Muschel-Tal heißt nur noch …",
-   "start": 11.43,
-   "end": 12.8
-  },
-  {
-   "scene": "s06",
-   "id": "L6b",
-   "words": [
-    {
-     "display": "TAL.",
-     "spoken": "TAL.",
-     "color": "y",
      "group": 0,
-     "start": 13.27,
-     "end": 13.79
+     "start": 12.41,
+     "end": 12.873
+    },
+    {
+     "display": "auf",
+     "spoken": "auf",
+     "color": null,
+     "group": 1,
+     "start": 12.873,
+     "end": 13.1
+    },
+    {
+     "display": "TikTok",
+     "spoken": "TikTok",
+     "color": "y",
+     "group": 1,
+     "start": 13.1,
+     "end": 13.554
+    },
+    {
+     "display": "um",
+     "spoken": "um",
+     "color": null,
+     "group": 1,
+     "start": 13.554,
+     "end": 13.774
+    },
+    {
+     "display": "Likes!",
+     "spoken": "Likes!",
+     "color": "y",
+     "group": 1,
+     "start": 13.774,
+     "end": 14.22
     }
    ],
-   "spoken": "TAL.",
-   "start": 13.27,
-   "end": 13.79
+   "spoken": "Die Krabben betteln auf TikTok um Likes!",
+   "start": 11.72,
+   "end": 14.22
   },
   {
    "scene": "s07",
    "id": "L7",
    "words": [
     {
+     "display": "Muschelnudeln?",
+     "spoken": "Muschelnudeln?",
+     "color": "g",
+     "group": 0,
+     "start": 14.72,
+     "end": 15.55
+    },
+    {
+     "display": "Nur",
+     "spoken": "Nur",
+     "color": null,
+     "group": 1,
+     "start": 15.75,
+     "end": 15.931
+    },
+    {
+     "display": "noch",
+     "spoken": "noch",
+     "color": null,
+     "group": 1,
+     "start": 15.931,
+     "end": 16.118
+    },
+    {
+     "display": "Spaghetti!",
+     "spoken": "Spaghetti!",
+     "color": "y",
+     "group": 1,
+     "start": 16.118,
+     "end": 16.66
+    }
+   ],
+   "spoken": "Muschelnudeln? Nur noch Spaghetti!",
+   "start": 14.72,
+   "end": 16.66
+  },
+  {
+   "scene": "s08",
+   "id": "L8",
+   "words": [
+    {
+     "display": "Und",
+     "spoken": "Und",
+     "color": null,
+     "group": 0,
+     "start": 17.19,
+     "end": 17.36
+    },
+    {
+     "display": "Muschel-Tal",
+     "spoken": "Muschel-Tal",
+     "color": "p",
+     "group": 0,
+     "start": 17.36,
+     "end": 17.878
+    },
+    {
+     "display": "heißt",
+     "spoken": "heißt",
+     "color": null,
+     "group": 1,
+     "start": 17.878,
+     "end": 18.061
+    },
+    {
+     "display": "nur",
+     "spoken": "nur",
+     "color": null,
+     "group": 1,
+     "start": 18.061,
+     "end": 18.231
+    },
+    {
+     "display": "noch",
+     "spoken": "noch",
+     "color": null,
+     "group": 1,
+     "start": 18.231,
+     "end": 18.408
+    },
+    {
+     "display": "…",
+     "spoken": "…",
+     "color": null,
+     "group": 1,
+     "start": 18.408,
+     "end": 18.56
+    }
+   ],
+   "spoken": "Und Muschel-Tal heißt nur noch …",
+   "start": 17.19,
+   "end": 18.56
+  },
+  {
+   "scene": "s08",
+   "id": "L8b",
+   "words": [
+    {
+     "display": "TAL.",
+     "spoken": "TAL.",
+     "color": "y",
+     "group": 0,
+     "start": 19.03,
+     "end": 19.55
+    }
+   ],
+   "spoken": "TAL.",
+   "start": 19.03,
+   "end": 19.55
+  },
+  {
+   "scene": "s09",
+   "id": "L9",
+   "words": [
+    {
      "display": "Folg",
      "spoken": "Folg",
      "color": "g",
      "group": 0,
-     "start": 14.37,
-     "end": 14.55
+     "start": 20.13,
+     "end": 20.31
     },
     {
      "display": "mir",
      "spoken": "mir",
      "color": null,
      "group": 0,
-     "start": 14.55,
-     "end": 14.725
+     "start": 20.31,
+     "end": 20.485
     },
     {
      "display": "–",
      "spoken": "–",
      "color": null,
      "group": 0,
-     "start": 14.725,
-     "end": 14.88
+     "start": 20.485,
+     "end": 20.64
     },
     {
      "display": "bevor's",
      "spoken": "bevor's",
      "color": null,
      "group": 1,
-     "start": 15.08,
-     "end": 15.488
+     "start": 20.84,
+     "end": 21.248
     },
     {
      "display": "zu",
      "spoken": "zu",
      "color": null,
      "group": 1,
-     "start": 15.488,
-     "end": 15.685
+     "start": 21.248,
+     "end": 21.445
     },
     {
      "display": "spät",
      "spoken": "spät",
      "color": "y",
      "group": 1,
-     "start": 15.685,
-     "end": 15.896
+     "start": 21.445,
+     "end": 21.656
     },
     {
      "display": "ist!",
      "spoken": "ist!",
      "color": null,
      "group": 1,
-     "start": 15.896,
-     "end": 16.1
+     "start": 21.656,
+     "end": 21.86
     }
    ],
    "spoken": "Folg mir – bevor's zu spät ist!",
-   "start": 14.37,
-   "end": 16.1
+   "start": 20.13,
+   "end": 21.86
   }
  ]
 }
