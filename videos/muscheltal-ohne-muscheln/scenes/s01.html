@@ -35,7 +35,7 @@
       /*__COMMON_JS__*/
       wrapBt("#s01-stage");
       const tl = gsap.timeline({ paused: true });
-      const ws = C["L1.words"], K = ws[5][1], SC = [2.4, 2.0, 2.1, 2.1, 2.2, 1.16];
+      const ws = [["wie",0.02,0.12],["wäre",0.14,0.31],["eine",0.34,0.73],["welt",0.77,0.95],["ohne",0.96,1.38],["muscheln",1.68,2.4]], K = ws[5][1], SC = [2.4, 2.0, 2.1, 2.1, 2.2, 1.16];
       tl.fromTo("#hk", { scale: 1.18 }, { scale: 1, duration: .18, ease: "power3.out" }, 0);
       tl.fromTo("#fl1", { opacity: .9 }, { opacity: 0, duration: .25 }, 0);
       ws.slice(0, 6).forEach((w, i) => {

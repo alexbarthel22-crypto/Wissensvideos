@@ -43,27 +43,27 @@
     },
     {
      "name": "fs_riser",
-     "at": "L1:Welt-0.3",
+     "at": "s01+0.5",
      "volume": 0.4
     },
     {
      "name": "impact-bass-2",
-     "at": "L1:Muscheln",
+     "at": "s01+1.68",
      "volume": 0.6
     },
     {
      "name": "fs_flap",
-     "at": "L1:Muscheln+0.1",
+     "at": "s01+1.78",
      "volume": 0.6
     },
     {
      "name": "fs_swoosh",
-     "at": "L1:Muscheln+0.2",
+     "at": "s01+1.88",
      "volume": 0.5
     },
     {
      "name": "fs_seashells",
-     "at": "L1:Muscheln+0.3",
+     "at": "s01+1.98",
      "volume": 0.45
     }
    ],
@@ -311,6 +311,34 @@
      "id": "L8b",
      "text": "*y:TAL.",
      "pause": 0.5
+    }
+   ]
+  },
+  {
+   "id": "s12",
+   "tag": "",
+   "sfx": [
+    {
+     "name": "alarm",
+     "at": "L12:Kurz",
+     "volume": 0.35
+    },
+    {
+     "name": "impact-bass-2",
+     "at": "L12:Welt",
+     "volume": 0.7
+    },
+    {
+     "name": "whoosh-cinematic",
+     "at": "L12:unter",
+     "volume": 0.5
+    }
+   ],
+   "lines": [
+    {
+     "id": "L12",
+     "text": "Kurz gesagt: / Die *y:Welt *y:geht *y:unter!",
+     "pause": 0.3
     }
    ]
   },
