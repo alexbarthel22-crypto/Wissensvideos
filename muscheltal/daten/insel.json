@@ -15,7 +15,14 @@
       "plaetze": 1500,
       "ab": 500,
       "farbe": "#f4a51c",
-      "emoji": "🥥"
+      "emoji": "🥥",
+      "gold": {
+        "block": [
+          -4,
+          1
+        ],
+        "nr": 1000
+      }
     },
     {
       "name": "Schildkröten-Atoll",
@@ -70,6 +77,12 @@
   "start": "2026-11-08",
   "tag_aktuell": 9,
   "ereignisse": [
+    [
+      "23.11.2026",
+      "⚓",
+      "Der Schöpfer hat die Anlegestelle fertiggestellt!",
+      "Der Schöpfer von Muschel-Tal hat die Boots-Anlegestelle im Süden der Haupt-Insel fertiggestellt – ein Geschenk an alle Bewohner. Ab jetzt verkehrt die Fähre „Seestern“ zwischen allen freigespielten Inseln. Einfach beim Erkunden bis vorne auf einen Anleger gehen: Hinfahrt 2 🐚, Heimfahrt kostenlos."
+    ],
     [
       "22.11.2026",
       "💎",
@@ -218,7 +231,7 @@
       "12.11.2026",
       "🛟",
       "Neuer Beruf: Rettungsschwimmerin",
-      "@soph_221144 passt ab jetzt als Rettungsschwimmerin am Strand der Haupt-Insel auf – Tag und Nacht."
+      "passt ab jetzt als Rettungsschwimmerin am Strand der Haupt-Insel auf – Tag und Nacht."
     ],
     [
       "12.11.2026",
@@ -434,10 +447,6 @@
     "leonie27628": [
       "Team",
       "Meerkauf"
-    ],
-    "soph_221144": [
-      "Rettungsschwimmerin",
-      "Strand"
     ],
     "priv.greto.2": [
       "Leitung",
@@ -677,13 +686,6 @@
   },
   "baustellen": [
     {
-      "ort": "steg",
-      "name": "Boots-Anlegestelle",
-      "emoji": "⚓",
-      "preis": 1725,
-      "bewohner": 900
-    },
-    {
       "key": "0:0,-3",
       "name": "Hotel Sandkorn",
       "emoji": "🏨",
@@ -832,5 +834,17 @@
       "seit": "1.11.2026",
       "wo": "Schloss"
     }
+  ],
+  "umbenannt": [
+    [
+      "leaxprivv",
+      "lea..not.leah",
+      "2026-11-23"
+    ],
+    [
+      "vanill_tocalife",
+      "tocagirlforlife02",
+      "2026-11-23"
+    ]
   ]
 }

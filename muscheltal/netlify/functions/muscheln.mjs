@@ -3,7 +3,7 @@
 // so ergibt sich der Kontostand aus einer einzigen Liste. Feste Schlüssel (z. B. login/2026-11-10) verhindern Doppelbuchungen.
 import { getStore } from "@netlify/blobs";
 import { JOBS } from "../lib/jobs.mjs";
-import { BEWOHNER, NACHBARN, SEIT } from "../lib/bewohner.mjs";
+import { BEWOHNER, NACHBARN, SEIT, INSEL, INSEL_AB, UMBENANNT } from "../lib/bewohner.mjs";
 import { liveVergeben } from "./live.mjs";
 import { CODES } from "../lib/codes.mjs";
 import { SHOP } from "../lib/shop.mjs";
@@ -119,7 +119,11 @@ async function freigeben(store) {
 
 // ================= 🎮 Spiele im Golden Pearl: Wochen-Rangliste je Spiel, Top 3 gewinnen Muscheln (Wertung Mo 0 Uhr – So 20 Uhr) =================
 // Plausibilitätsprüfung: Lauf nur mit Start-Kennung vom Server, Dauer vom Server gemessen, je Spiel höchstens so viele Punkte wie in der Zeit möglich.
-const SPIELE = { taucher: { max: 70, min: 2000 }, turm: { max: 2.2, min: 1500 }, memory: { min: 8000 }, krebs: { max: 70, min: 2000 } };// max = Punkte (bzw. Höhe) pro Sekunde
+// Höchstwerte aus den echten Spielregeln (T = Spieldauer in s, mit Reserve) – nichts Ehrliches darf daran scheitern:
+// Taucher: Tempo 150+Weg/40 → Weg ≤ 6000·(e^(T/40)−1); je 230 px höchstens 4 Perlen à 25 → ≤ 0,54 Punkte pro px
+// Krebs: Tempo 220+Weg/30 → Weg ≤ 6600·(e^(T/30)−1); je 150 px höchstens 1 Muschel à 20 → ≤ 0,24 Punkte pro px
+// Turm: jeder Tipp = 1 Block → höchstens 8 Tipps pro Sekunde; Memory: Zeit in ms (+2 s je Fehler), schneller als 5 s geht nicht
+const SPIELE = { taucher: { min: 300, grenze: T => 1.25 * (0.54 * 6000 * (Math.exp(T / 40) - 1)) + 150 }, turm: { min: 300, grenze: T => 8 * T + 3 }, memory: { min: 5000 }, krebs: { min: 300, grenze: T => 1.25 * (0.24 * 6600 * (Math.exp(T / 30) - 1)) + 60 } };
 const SP_PREIS = [30, 20, 10];// Platz 1–3 je Spiel (wird im Spiel nicht verraten)
 function spWoche(t = Date.now()) { const p = Object.fromEntries(new Intl.DateTimeFormat("en-US", { timeZone: TZ, weekday: "short", hour: "2-digit", hourCycle: "h23" }).formatToParts(new Date(t)).map(x => [x.type, x.value])), d = tag(t); return p.weekday === "Sun" && +p.hour >= 20 ? woche(new Date(new Date(d + "T12:00:00Z").getTime() + 864e5).toISOString().slice(0, 10)) : woche(d); }// ab So 20 Uhr zählt schon die neue Woche
 async function spTop(store, w, k) { const L = []; for (const key of await liste(store, "x/spiel/" + w + "/" + k + "/")) { try { const v = JSON.parse((await store.get(key)) || "null"); if (v) L.push({ n: "@" + key.split("/").pop(), s: v.s, t: v.t }); } catch (e) {} } const zeit = k === "memory"; L.sort((a, b) => (zeit ? a.s - b.s : b.s - a.s) || a.t - b.t); return L; }
@@ -184,7 +188,8 @@ async function zurueckAuf(store) {
 // Shop-Käufe samt Ausrüstung, Spenden, Story) wird gelöscht. Echtgeld-Käufe (Stripe) bleiben erhalten.
 // 20.11.: nochmal (Lauf 2) – wieder alles nach 18.11. 18:00 bis zur nächsten Veröffentlichung
 // 21.11.: nochmal (Lauf 3) – inkl. Golden Pearl (Spielstände, Duelle, Preise) und Sturm-Treibgut
-const ALLE_AB = 1795021200000, ALLE_NR = 3;
+// 23.11.: nochmal (Lauf 4) – Tester haben ausprobiert (Bootsfahrt usw.), wieder alles nach 18.11. 18:00 zurück
+const ALLE_AB = 1795021200000, ALLE_NR = 4;
 let ALLE_OK = false;
 // parallel (schneller), höchstens 40 gleichzeitig
 async function jeParallel(L, f) { for (let i = 0; i < L.length; i += 40) await Promise.all(L.slice(i, i + 40).map(f)); }
@@ -270,10 +275,24 @@ async function aufraeumen(store) {
     t[1] = id; await kasse.set(t.join("/"), (await kasse.get(k)) || "1"); await kasse.delete(k);
   }
 }
-const TEXT = { eingeladen: "Von einem Freund eingeladen", spielpreis: "Golden Pearl: Wochen-Preis", treibgut: "Sturm-Treibgut", login: "Login-Serie", quest: "Aufgabe", qbonus: "Alle 3 Aufgaben", shell: "Schwebende Muschel", erf: "Neuer Erfolg", story: "Story geteilt", spende: "Spende Inselkasse", tresor: "Tresor des Schöpfers", code: "Geheimcode aus dem Video", einladung: "Freund eingeladen", kauf: "Muschel-Shop", null: "Neustart: alle Konten auf 0", stern: "Sternschnuppe 🌠", angeln: "Fang am Angelsteg 🎣", euro: "Muschel-Paket gekauft/geschenkt 💎", "euro-zurueck": "Muschel-Paket erstattet", regenbogen: "Schatz am Regenbogen 🌈", flasche: "Flaschenpost-Quiz 🍾", geschenk: "Tagesgeschenk 🎁" };
+const TEXT = { boot: "Bootsfahrt ⛵", eingeladen: "Von einem Freund eingeladen", spielpreis: "Golden Pearl: Wochen-Preis", treibgut: "Sturm-Treibgut", login: "Login-Serie", quest: "Aufgabe", qbonus: "Alle 3 Aufgaben", shell: "Schwebende Muschel", erf: "Neuer Erfolg", story: "Story geteilt", spende: "Spende Inselkasse", tresor: "Tresor des Schöpfers", code: "Geheimcode aus dem Video", einladung: "Freund eingeladen", kauf: "Muschel-Shop", null: "Neustart: alle Konten auf 0", stern: "Sternschnuppe 🌠", angeln: "Fang am Angelsteg 🎣", euro: "Muschel-Paket gekauft/geschenkt 💎", "euro-zurueck": "Muschel-Paket erstattet", regenbogen: "Schatz am Regenbogen 🌈", flasche: "Flaschenpost-Quiz 🍾", geschenk: "Tagesgeschenk 🎁" };
 
 // Einmal-Aufgaben (Zurücksetzen, Aufräumen) nur einmal pro Tag und Server-Instanz prüfen – spart bei jeder Muschel-Aktion
 // rund 10 Speicherabfragen (schnellere Gutschriften)
+// Umbenannte Bewohner (gleiche Folge-Zeit, neuer TikTok-Name): alles vom alten Namen auf den neuen umziehen –
+// Verknüpfung/PIN, Kontobuch, Aufgaben, Ausrüstung, Sticker, Spielstände, Erfolge, Spenden … Läuft je Paar genau einmal.
+async function umbenennen(store) {
+  for (const [a, n] of UMBENANNT || []) {
+    const mk = "x/umbenannt/" + a + "/" + n;
+    if (await store.get(mk)) continue;
+    const neuWert = v => typeof v !== "string" ? v : v === a ? n : v.split('"' + a + '"').join('"' + n + '"').split("@" + a + '"').join("@" + n + '"');
+    const zieh = async (st, k) => { const t = k.split("/"); if (!t.includes(a)) { const v = await st.get(k); const w = neuWert(v); if (w !== v) await st.set(k, w); return; } const v = await st.get(k); await st.set(t.map(x => x === a ? n : x).join("/"), neuWert(v)); await st.delete(k); };
+    for (const k of await liste(store, "")) if (!k.startsWith("x/umbenannt/")) await zieh(store, k);
+    const es = getStore("erfolge"); for (const k of await liste(es, "e/" + a + "/")) await zieh(es, k);
+    const kasse = getStore({ name: "inselkasse", consistency: "strong" }); for (const pre of ["s/" + a + "/", "b/" + a + "/"]) for (const k of await liste(kasse, pre)) await zieh(kasse, k);
+    await store.set(mk, String(Date.now()));
+  }
+}
 let VOR = { tag: "", p: null };
 // Alle Konten einmalig auf 0 setzen (16.11.): je Name eine Gegenbuchung „Neustart“ über den aktuellen Kontostand.
 // Buchungen bleiben erhalten (Login-Serie, Tresor, Codes, Einladungen, Shop-Inventar zählen weiter nur einmal).
@@ -290,7 +309,7 @@ async function nullen(store) {
 }
 function vorarbeit(store) {
   const t = tag();
-  if (VOR.tag !== t) VOR = { tag: t, p: (async () => { await nullen(store); await zuruecksetzen(store); await zurueckAuf(store); await freigeben(store); await aufraeumen(store); })().catch(() => { VOR.tag = ""; }) };
+  if (VOR.tag !== t) VOR = { tag: t, p: (async () => { await umbenennen(store); await nullen(store); await zuruecksetzen(store); await zurueckAuf(store); await freigeben(store); await aufraeumen(store); })().catch(() => { VOR.tag = ""; }) };
   return VOR.p.then(() => ALLE_OK || allesZurueck(store)).catch(() => {});
 }
 // Erfolg „Nachbarn“: nur für beanspruchte Namen, die in der Nachbarn-Liste stehen (+10 Muscheln, einmalig)
@@ -750,7 +769,7 @@ export default async (req) => {
     if (!L) return json({ ok: false, grund: "lauf" }); await store.delete(lk);
     const k = L.k, R0 = SPIELE[k], dauerServer = Date.now() - L.t, dauer = Math.min(Number(d.dauer) || 0, dauerServer + 3000), s = Math.max(0, Math.floor(Number(d.score) || 0));
     if (!(dauer >= R0.min) || dauerServer + 3000 < dauer) return json({ ok: false, grund: "unplausibel" });
-    if (k === "memory" ? s < 8000 || s > dauerServer + 3000 + 60 * 2000 : s > (R0.max * dauer) / 1000 + 5) return json({ ok: false, grund: "unplausibel" });
+    if (k === "memory" ? s < 5000 : s > R0.grenze((dauer + 1000) / 1000)) return json({ ok: false, grund: "unplausibel" });
     const w = spWoche(), bk = "x/spiel/" + w + "/" + k + "/" + nm; let alt = null; try { alt = JSON.parse((await store.get(bk)) || "null"); } catch (e) {}
     const besser = !alt || (k === "memory" ? s < alt.s : s > alt.s);
     if (besser) await store.set(bk, JSON.stringify({ s, t: Date.now() }));
@@ -817,6 +836,20 @@ export default async (req) => {
     const w = woche(heute), ok = await setze("story", w, 10);
     if (ok) await getStore({ name: "inselkasse", consistency: "strong" }).set("s/" + nm + "/" + Date.now() + "-story/10", "1");
     return json({ ok, kasse: ok ? 10 : 0 });
+  }
+  // ⛵ Bootsfahrt zwischen den Anlegern: zu einer fremden Insel 2 🐚 (gehen in die Inselkasse), nach Hause kostenlos
+  if (act === "boot") {
+    const nach = Math.floor(Number(d.nach)), ab = INSEL_AB || [];
+    if (!(nach >= 0) || nach >= ab.length || !(BEWOHNER.size > ab[nach])) return json({ ok: false, grund: "insel" });
+    const heim = INSEL && INSEL[nm] === nach, preis = heim ? 0 : 2;
+    const B = await buch(store, nm), stand = B.reduce((s, e) => s + e.a, 0);
+    if (preis > stand) return json({ ok: false, grund: "muscheln", stand });
+    if (preis) {
+      const id = Date.now() + "-" + Math.random().toString(36).slice(2, 6);
+      await store.set("b/" + nm + "/boot/" + id + "/" + (-preis), String(Date.now()));
+      await getStore({ name: "inselkasse", consistency: "strong" }).set("s/" + nm + "/" + id + "-boot/" + preis, "1");
+    }
+    return json({ ok: true, preis, stand: stand - preis });
   }
   if (act === "spende") {
     const a = Math.floor(Number(d.betrag));

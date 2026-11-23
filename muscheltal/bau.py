@@ -156,6 +156,29 @@ def importiere_liste(pfad, rows):
     paare.sort(key=lambda p: p[:4])
     drin = {p[4].lower().lstrip("@") for p in paare}
     heute = dt.date.today()
+    # Umbenennungen: wer mit sekundengenau derselben Folge-Zeit wie ein bisheriger Bewohner unter neuem Namen auftaucht,
+    # ist derselbe Mensch → alles bleibt (Hütte, Nummer, Muscheln, Erfolge, Verknüpfung …), nur der Name ändert sich
+    fz_pfad = os.path.join(HIER, "daten", "folgezeit.json")
+    alt_zeit = json.load(open(fz_pfad, encoding="utf-8")) if os.path.exists(fz_pfad) else {}
+    zeit_neu = {}
+    for y, m, d, t, n in paare:
+        zeit_neu.setdefault(f"{y}-{m}-{d} {t}", []).append(n.lower().lstrip("@"))
+    vorhanden = {r["name"].lower().lstrip("@") for r in rows}
+    umbenannt = []
+    for r in rows:
+        a = r["name"].lower().lstrip("@")
+        if a in drin or a not in alt_zeit:
+            continue
+        kand = [n for n in zeit_neu.get(alt_zeit[a], []) if n not in vorhanden]
+        if len(kand) == 1:
+            umbenannt.append((a, kand[0]))
+            r["name"] = kand[0]
+            vorhanden.add(kand[0])
+    if umbenannt:
+        umbenennen_insel(umbenannt)
+        for a, n in umbenannt:
+            print(f"Umbenannt: @{a} → @{n} (alles bleibt, nur der Name ändert sich)")
+    json.dump({p[4].lower().lstrip("@"): f"{p[0]}-{p[1]}-{p[2]} {p[3]}" for p in paare}, open(fz_pfad, "w", encoding="utf-8"), ensure_ascii=False, indent=0)
     weg = 0
     weg_namen = []
     sonder = {s["name"].lower().lstrip("@") for s in (json.load(open(INSEL, encoding="utf-8")).get("sonder_bewohner") or [])}
@@ -181,6 +204,27 @@ def importiere_liste(pfad, rows):
         for n in weg_namen:
             if "@" + n in roh:
                 print(f"⚠️  NAME NOCH IN insel.json (News/Texte): @{n} – bitte entfernen")
+
+
+def umbenennen_insel(paare):
+    """Namen in insel.json (Jobs, Wohnorte, Nachbarn, News …) ersetzen und für den Server merken (Konto-Umzug)."""
+    roh = open(INSEL, encoding="utf-8").read()
+    insel = json.loads(roh)
+    def neu_text(v):
+        for a, n in paare:
+            if v.lower().lstrip("@") == a:
+                return ("@" if v.startswith("@") else "") + n
+            v = re.sub("@" + re.escape(a) + r"(?![\w.])", "@" + n, v, flags=re.I)
+        return v
+    def lauf(o):
+        if isinstance(o, dict):
+            return {neu_text(k): lauf(v) for k, v in o.items()}
+        if isinstance(o, list):
+            return [lauf(v) for v in o]
+        return neu_text(o) if isinstance(o, str) else o
+    insel = lauf(insel)
+    insel.setdefault("umbenannt", []).extend([a, n, dt.date.today().isoformat()] for a, n in paare)
+    open(INSEL, "w", encoding="utf-8").write(json.dumps(insel, ensure_ascii=False, indent=2) + ("\n" if roh.endswith("\n") else ""))
 
 
 def _gebaeude_bewohner(insel):
@@ -305,6 +349,12 @@ def verteile(sauber, insel):
     wo = _gebaeude_bewohner(insel)
     mit = _arbeiter_huetten(sauber, insel)
     sonder = [r[0].lower().lstrip("@") in wo and j not in mit for j, r in enumerate(sauber)]  # wohnen in einem Gebäude, kein Hütten-Platz
+    # ✨ Goldene Hütte (insel.json → inseln[i].gold = {block, nr}): eigener Block mit Wegen rundherum, die Karte setzt
+    # Einwohner-Nr. nr dorthin – braucht also keinen normalen Hütten-Platz ("H" wie Gebäude-Bewohner)
+    for j in range(len(sauber)):
+        g = insel["inseln"][isl[j]].get("gold")
+        if g and j + 1 == g["nr"]:
+            sonder[j] = True
     plaetze, belegt = [None] * len(sauber), {}
     for j, r in enumerate(sauber):
         if sonder[j]:
@@ -706,6 +756,11 @@ def baue(rows, out):
         quelle[j]["platz"] = plaetze[j]
     for j, r in enumerate(sauber):
         r.append(isl_l[j])
+    # Server (Bootsfahrt): Heimat-Insel je Bewohner + ab wie vielen Einwohnern eine Insel offen ist
+    with open(os.path.join(HIER, "netlify", "lib", "bewohner.mjs"), "a", encoding="utf-8") as f:
+        f.write("export const INSEL = " + json.dumps({r[0].lower().lstrip("@"): isl_l[j] for j, r in enumerate(sauber)}, ensure_ascii=False) + ";\n"
+                + "export const INSEL_AB = " + json.dumps([v["ab"] for v in insel["inseln"]]) + ";\n"
+                + "export const UMBENANNT = " + json.dumps([[u[0], u[1]] for u in insel.get("umbenannt") or []], ensure_ascii=False) + ";\n")
     import copy
     pop = len(sauber)
     web = copy.deepcopy(insel)  # öffentliche Fassung: gesperrte/geheime Inseln ohne echten Namen
@@ -733,6 +788,8 @@ def baue(rows, out):
         quelle = os.path.join(HIER, datei)
         if os.path.exists(quelle):
             txt = open(quelle, encoding="utf-8").read()
+            if datei == "statistik.html" and os.path.exists(os.path.join(HIER, "daten", "inselumriss.json")):  # Insel-Umrisse für die Heatmap
+                txt = txt.replace("/*UMRISS*/null", open(os.path.join(HIER, "daten", "inselumriss.json"), encoding="utf-8").read())
             if datei == "statistik.html":  # Namen der Erfolge (aus der Vorlage) für die Erfolgs-Rangliste
                 vt = open(VORLAGE, encoding="utf-8").read()
                 md, me = re.search(r"const ERFD=\{(.*?)\};", vt), re.search(r"const ERFEMO=\{(.*?)\};", vt)
