@@ -2222,6 +2222,7 @@ function walPlan(v,h){const key=v.i+':'+h;if(WALC.has(key))return WALC.get(key);
  let x=0,y=0,ok=false;for(let tr=0;tr<40&&!ok;tr++){const q=i=>hash(h*13+v.i*977+k*31+tr*7919,720+i),a=q(2)*TAU,d=coastAt(v,a)+BEX+18+q(3)*16;[x,y]=polar(v,a,d);ok=walFrei(x,y);}
  if(ok)L.push({v,start,x,y,dir:r(4)<.5?-1:1});}WALC.set(key,L);if(WALC.size>12)WALC.delete(WALC.keys().next().value);return L;}
 function walAktiv(){if(eventSperre())return[];const n=TNOW(),h=Math.floor(n/3600),out=[];for(const v of ISL){if(v.i>1||(v.i===1&&!v.open))continue;for(const hh of[h-1,h])for(const w of walPlan(v,hh)){const t=n-w.start;if(t>=0&&t<WALDAUER)out.push({...w,t});}}return out;}
+const GLS=new Map();function glowSpr(rgb){let s=GLS.get(rgb);if(!s){s=document.createElement('canvas');s.width=s.height=96;const q=s.getContext('2d'),g=q.createRadialGradient(48,48,0,48,48,48);g.addColorStop(0,'rgba('+rgb+',1)');g.addColorStop(1,'rgba('+rgb+',0)');q.fillStyle=g;q.fillRect(0,0,96,96);GLS.set(rgb,s);}return s;}
 function walZeichnen(c){if(cam.z*S<12)return;/* nur aus der Nähe sichtbar – aus der Ferne wirkt er unverhältnismäßig groß */const L=walAktiv();if(!L.length)return;for(const w of L){const {x,y,t,dir}=w;c.save();c.translate(x,y);c.scale(dir,1);
  const ring=(r,a)=>{c.strokeStyle=`rgba(255,255,255,${a})`;c.lineWidth=.8;c.beginPath();c.ellipse(0,0,r,r*.35,0,0,TAU);c.stroke();};
  const koerper=()=>{c.fillStyle='#3d5a80';c.beginPath();c.moveTo(-13,0);c.bezierCurveTo(-12,-6,4,-7.5,11,-3);c.quadraticCurveTo(14,-1,13,1.5);c.bezierCurveTo(6,4.5,-8,4,-13,0);c.fill();
@@ -4414,7 +4415,7 @@ let FRT0=0,SPRN=0;const sprVoll=()=>SPRN>=2&&performance.now()-FRT0>10;
 // altes Bild des Zwischenspeichers in Weltkoordinaten (skaliert) zeichnen – während Zoom/Verschieben oder bis das neue fertig ist
 function sprAlt(c,e,x0,y0){if(!e||!e.cv||!e.scl)return false;if(e.taps)TAPS.push(...e.taps);if(e.names)NAMES.push(...e.names);if(e.figs)FIGS.push(...e.figs);c.drawImage(e.cv,x0-e.ox/e.scl,y0-e.oy/e.scl,e.cv.width/e.scl,e.cv.height/e.scl);return true;}
 function sprite(c,key,x0,y0,x1,y1,fn){const zs=cam.z*S,m=c.getTransform(),sc=m.a,w=Math.ceil((x1-x0)*sc)+3,h=Math.ceil((y1-y0)*sc)+3;if(w*h>3e6||w<2||h<2){fn(c);return;}
- if(zs>=SPR_LIVE){// nah dran: im Stillstand live zeichnen (alle Animationen); nur beim Verschieben das beim Start der Bewegung gemachte Bild versetzen
+ if(zs>=SPR_LIVE&&!LITE){// nah dran (auf schwachen Geräten auch hier aus dem Zwischenspeicher): im Stillstand live zeichnen (alle Animationen); nur beim Verschieben das beim Start der Bewegung gemachte Bild versetzen
   const now=performance.now();if(!PANNT(now)){fn(c);return;}const PS=PANS;const fx=m.a*x0+m.e,fy=m.d*y0+m.f,dx=Math.floor(fx)-1,dy=Math.floor(fy)-1,base='n'+sc+'|'+Math.round(nightLevel()*24)+'|'+kind();let e=SPR.get(key);if(!e){e={cv:null,base:'',frac:'',want:'',t:0,ox:0,oy:0};SPR.set(key,e);}e.lu=now;
   if(e.base!==base&&e.cv&&e.ps===PS&&sprAlt(c,e,x0,y0))return;
   if(e.base!==base||e.ps!==PS||!e.cv){if(e.cv&&sprVoll()&&sprAlt(c,e,x0,y0)){kick();return;}SPRN++;if(!e.cv)e.cv=document.createElement('canvas');if(e.cv.width!==w||e.cv.height!==h){e.cv.width=w;e.cv.height=h;sprPlatz(e);}const o=e.cv.getContext('2d');if(!o||!e.cv.width){sprFrei(e);SPR.delete(key);fn(c);return;}o.setTransform(1,0,0,1,0,0);o.clearRect(0,0,w,h);o.setTransform(sc,0,0,sc,(fx-dx)-sc*x0,(fy-dy)-sc*y0);const a1=TAPS.length,a2=NAMES.length,a3=FIGS.length;fn(o);e.taps=TAPS.slice(a1);e.names=NAMES.slice(a2);e.figs=FIGS.slice(a3);e.base=base;e.ps=PS;e.ox=fx-dx;e.oy=fy-dy;e.scl=sc;e.frac='';e.t=0;}
@@ -4422,7 +4423,7 @@ function sprite(c,key,x0,y0,x1,y1,fn){const zs=cam.z*S,m=c.getTransform(),sc=m.a
   c.save();c.setTransform(1,0,0,1,0,0);c.drawImage(e.cv,fx-e.ox,fy-e.oy);c.restore();return;}
  const fx=m.a*x0+m.e,fy=m.d*y0+m.f,dx=Math.floor(fx)-1,dy=Math.floor(fy)-1,base=sc+'|'+Math.round(nightLevel()*24)+'|'+kind()+'|'+(WK.on&&WK.me?WK.me.name:''),frac=(fx-dx).toFixed(2)+'|'+(fy-dy).toFixed(2),now=performance.now();let e=SPR.get(key);
  if(!e){let h=0;for(const ch of key)h=(h*31+ch.charCodeAt(0))|0;e={cv:null,base:'',frac:'',want:'',t:0,ft:0,ox:0,oy:0,off:Math.abs(h)%240};SPR.set(key,e);}e.lu=now;
- const alt=now-e.t>(zs<4?900:zs<10?600+e.off*2:250+e.off);// Auffrischen versetzt je Gebäude – nie alle im selben Bild
+ const alt=now-e.t>(zs<4?900:zs<10?600+e.off*2:250+e.off)*(LITE?2.5:1);/* schwaches Gerät: Animationen seltener auffrischen */// Auffrischen versetzt je Gebäude – nie alle im selben Bild
  if(e.base===base&&e.cv&&!(alt&&!PANNT(now))&&(e.frac===frac||PANNT(now))){// gleiches Bild, nur verschoben (oder Animation läuft gleich weiter)
   TAPS.push(...e.taps);NAMES.push(...e.names);FIGS.push(...e.figs);c.save();c.setTransform(1,0,0,1,0,0);if(e.frac===frac)c.drawImage(e.cv,dx,dy);else c.drawImage(e.cv,fx-e.ox,fy-e.oy);c.restore();return;}
  if(e.base!==base&&PANNT(now)&&sprAlt(c,e,x0,y0)){e.want=base;return;}// Zoom/Verschieben: altes Bild skaliert, neu erst bei ruhiger Kamera
@@ -4839,10 +4840,10 @@ function draw(){/* Selbstheilung: ungültige Kamera-/Spielerwerte (NaN) zurücks
   const top=ph<.5?mix([255,190,90],[255,120,60],ph*2):mix([255,120,60],[200,70,120],(ph-.5)*2),bot=ph<.5?mix([255,150,110],[230,80,120],ph*2):mix([230,80,120],[110,60,150],(ph-.5)*2);
   const g=c.createLinearGradient(0,0,0,Hc);g.addColorStop(0,`rgba(${top.map(Math.round)},${.55*s})`);g.addColorStop(.55,`rgba(${mix(top,bot,.5).map(Math.round)},${.4*s})`);g.addColorStop(1,`rgba(${bot.map(Math.round)},${.45*s})`);c.fillStyle=g;c.fillRect(0,0,Wc,Hc);
   const sx=up?Wc*.88:Wc*.12,sy=Hc*.04,r=Math.max(Wc,Hc)*.75,gl=c.createRadialGradient(sx,sy,0,sx,sy,r);gl.addColorStop(0,`rgba(255,235,170,${.55*s})`);gl.addColorStop(.25,`rgba(255,180,90,${.25*s})`);gl.addColorStop(1,'rgba(255,160,80,0)');
-  c.globalCompositeOperation='lighter';c.fillStyle=gl;c.fillRect(0,0,Wc,Hc);c.globalCompositeOperation='source-over';}}
+  if(!LITE){c.globalCompositeOperation='lighter';c.fillStyle=gl;c.fillRect(0,0,Wc,Hc);c.globalCompositeOperation='source-over';}}}
  world(c);
  // Yacht: Party-Licht rund um die Uhr (tagsüber zusätzlich zum Nachtlicht)
- if(nl<.6&&visR(YACHT.cx,YACHT.cy,60)){c.save();c.globalCompositeOperation='lighter';const gl2=(x,y,r,rgb,a)=>{const g=c.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,`rgba(${rgb},${a})`);g.addColorStop(1,`rgba(${rgb},0)`);c.fillStyle=g;c.beginPath();c.arc(x,y,r,0,TAU);c.fill();};yachtGlow(gl2,.6-nl);c.restore();}
+ if(!LITE&&nl<.6&&visR(YACHT.cx,YACHT.cy,60)){c.save();c.globalCompositeOperation='lighter';const gl2=(x,y,r,rgb,a)=>{const g=c.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,`rgba(${rgb},${a})`);g.addColorStop(1,`rgba(${rgb},0)`);c.fillStyle=g;c.beginPath();c.arc(x,y,r,0,TAU);c.fill();};yachtGlow(gl2,.6-nl);c.restore();}
  if(nl>0){c.setTransform(1,0,0,1,0,0);c.fillStyle=`rgba(12,22,70,${.55*nl})`;c.fillRect(0,0,cv.width,cv.height);NACHTDRAUF=1;world(c);c.globalCompositeOperation='lighter';
   const pxs=S*z;
   const FIGS=[...TAPS.map(t=>[t[0],t[1],1]),...(PETS.list||[]).filter(a=>a.v.open).map(a=>[a.x,a.y,.6]),...(WK.on?[[WK.x,WK.y,1]]:[])];
@@ -4854,7 +4855,7 @@ function draw(){/* Selbstheilung: ungültige Kamera-/Spielerwerte (NaN) zurücks
    c.fillStyle=`rgba(255,170,60,${.18*nl*fl})`;c.beginPath();c.arc(q.p.x,q.p.y+3,8,0,TAU);c.fill();
    c.fillStyle=`rgba(255,220,120,${.9*nl})`;litC(q,true);}
   const gDa=g=>!(GROWK!=null&&GROWV===g.v&&GROWK<g.at);// Gebäude beim „Wachsen sehen“ schon da?
-  const glow=(x,y,r,rgb,a)=>{const g=c.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,`rgba(${rgb},${a})`);g.addColorStop(1,`rgba(${rgb},0)`);c.fillStyle=g;c.beginPath();c.arc(x,y,r,0,TAU);c.fill();};
+  /* Lichtschein: einmal als Bild vorberechnet und nur noch eingesetzt (gleiches Aussehen, viel schneller als je Bild neu zu rechnen) */const glow=(x,y,r,rgb,a)=>{if(!(a>.004)||!(r>0)||!Number.isFinite(x+y))return;const ga=c.globalAlpha;c.globalAlpha=ga*Math.min(1,a);c.drawImage(glowSpr(rgb),x-r,y-r,2*r,2*r);c.globalAlpha=ga;};
   for(const [lx,ly] of LANT)glow(lx,ly-8,14,'255,210,120',.7*nl);
   // Dönerbude + Strandbar nachts: Laternen, Fenster, Kühlschrank, Teelichter, Lichterketten, Fackeln, Papierlaternen
   for(const g of GEB){if(!gDa(g)&&visR(g.cx,g.cy,80))continue;const d=g.dir||1,X=lx=>g.cx+lx*(g.typ==='doener'?1:d),Y=ly=>g.cy+ly;
@@ -4952,8 +4953,14 @@ let onScreen=true,last=0;
 if('IntersectionObserver' in window)new IntersectionObserver(e=>{onScreen=e[0].isIntersecting;},{threshold:0}).observe($('hero'));
 // Bildrate passt sich dem Gerät an: bis 60 Bilder/s (auch auf 120-Hz-Displays max. 60), bei schwachen Geräten 30
 const FR={hi:true,ema:6,gap:16.7,lang:0};
-// Langsames Gerät (z. B. älteres MacBook): bleibt die Karte trotz 30-Bilder-Modus zäh, wird die Pixelzahl schrittweise etwas gesenkt
-function frAnpassen(n){if(n>8000&&FR.gap>40&&!FR.hi){if(!FR.lang)FR.lang=n;else if(n-FR.lang>2500&&DPR>1){if(PXMAX>1.4e6&&W*H*DPR*DPR>=PXMAX*.95)PXMAX=PXMAX>4e6?3e6:PXMAX>2.5e6?2e6:1.4e6;else if(DPRMAX>1.25)DPRMAX=DPRMAX>1.5?1.5:1.25;/* Handy dauerhaft langsam: etwas geringere Auflösung, dafür flüssig */else{FR.lang=0;return;}FR.lang=0;FR.gap=33;resize();}}else FR.lang=0;}
+// 🎚️ Automatische Qualität (24.11.): jedes Gerät bekommt die beste Qualität, die es flüssig schafft.
+// Stufe 0 = beste (doppelte Auflösung, alle Effekte) … Stufe 4 = einfache Auflösung ohne teure Vollbild-Lichteffekte.
+// Alle 2 s wird gemessen: ruckelt es (< 27 Bilder/s), eine Stufe runter; läuft es mit Reserve flüssig (> 55 Bilder/s), nach 8 s wieder hoch.
+// Das Gerät merkt sich seine Stufe für den nächsten Besuch (startet dann gleich passend).
+var LITE=false;const QSTUF=[2,1.5,1.25,1,1];let QL=0;try{QL=Math.max(0,Math.min(4,+(localStorage.getItem('mt-ql')||0)));}catch(e){}
+const QM={t0:0,n:0,wechsel:0,lt:0};DPRMAX=QSTUF[QL];LITE=QL>=4;try{if(QL)resize();}catch(e){}function qSetz(l){QL=Math.max(0,Math.min(4,l));LITE=QL>=4;DPRMAX=QSTUF[QL];if(QL===0)PXMAX=5e6;try{localStorage.setItem('mt-ql',String(QL));}catch(e){}QM.wechsel=performance.now();resize();}
+function frAnpassen(n){/* Pausen (Karte nicht sichtbar, Tab im Hintergrund, Spiel) nicht als Ruckeln werten */if(!QM.t0||n-QM.lt>500){QM.t0=n;QM.n=0;QM.lt=n;return;}QM.lt=n;QM.n++;const el=n-QM.t0;if(el<2000)return;const f=QM.n*1000/el;QM.t0=n;QM.n=0;if(n<5000)return;/* Startphase nicht werten */
+ if(f<27&&QL<4)qSetz(QL+1);else if(f>55&&FR.ema<8&&QL>0&&n-QM.wechsel>8000)qSetz(QL-1);}
 // Fehler beim Zeichnen (z. B. Safari-Speicherlimit): Zwischenbilder freigeben und weiterzeichnen statt einzufrieren; einmal in der Statistik melden
 let ZFT=0,ZFN=0;/* kurze, lesbare Fehlerbeschreibung für die Statistik: Funktion + Grund */
 function fehlerKurz(err){const m=String(err&&err.message||err||'?'),fn=((String(err&&err.stack||'').match(/^\s*(?:at\s+)?([A-Za-z_$][\w$]*)/m)||String(err&&err.stack||'').match(/at ([A-Za-z_$][\w$]*)/)||[])[1]||'').slice(0,12);const g=/non-finite/i.test(m)?'NaN':/createPattern/i.test(m)?'Muster':/memory|allocation|too large/i.test(m)?'Speicher':m.replace(/Failed to execute|on .CanvasRenderingContext2D.|The provided|value is/gi,'').replace(/[^\p{L}\p{N}_:.\- &()]/gu,' ').replace(/\s+/g,' ').trim().slice(0,16);return (fn?fn+' ':'')+g;}
