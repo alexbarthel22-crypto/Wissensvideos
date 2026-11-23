@@ -1,0 +1,155 @@
+<template>
+  <style>
+        #root { position: absolute; inset: 0; }
+    .stage { position: absolute; inset: 0; overflow: hidden; }
+    .abs { position: absolute; }
+    svg { overflow: visible; }
+    /* Zähler-Box wie in der Referenz: Rahmen in Akzentfarbe, Label in Mono-Versalien, große Zahl */
+    .cbox { position: absolute; left: 290px; width: 500px; top: 268px; height: 126px; border: 3px solid #ff4fb0;
+      border-radius: 32px; background: rgba(13,16,38,.88); text-align: center; box-shadow: 0 0 28px rgba(255,79,176,.35); }
+    .cbox .lab { margin-top: 16px; font-family: "Space Mono", monospace; font-weight: 700; font-size: 28px;
+      letter-spacing: .16em; color: #dfe2f5; }
+    .cbox .num { margin-top: 2px; font-family: "Inter", sans-serif; font-weight: 900; font-size: 56px; color: #fff;
+      letter-spacing: .01em; }
+    .cbox.y { border-color: #ffd43b; box-shadow: 0 0 28px rgba(255,212,59,.3); }
+    .cbox.r { border-color: #ff3b55; box-shadow: 0 0 28px rgba(255,59,85,.35); }
+    .cbox.b { border-color: #4da3ff; box-shadow: 0 0 28px rgba(77,163,255,.3); }
+    .cbox.g { border-color: #39e27a; box-shadow: 0 0 28px rgba(57,226,122,.3); }
+    .mono { font-family: "Space Mono", monospace; font-weight: 700; letter-spacing: .12em; }
+    .heavy { font-family: "Inter", sans-serif; font-weight: 900; }
+    /* Muschel-Tal: Sticker-Look wie auf muscheltal.de. Sicherheitsbereich TikTok: x 40–930, y 200–1120 (Untertitel ab 1150). */
+    .ink { stroke: #2a1b12; }
+    .stk { background: #fff; border: 6px solid #2a1b12; border-radius: 28px; box-shadow: 10px 10px 0 #2a1b12; }
+    .ttl { font-family: "Inter", sans-serif; font-weight: 900; color: #fff; text-align: center; line-height: 1;
+      -webkit-text-stroke: 10px #2a1b12; paint-order: stroke fill; letter-spacing: -.01em; }
+    .kick { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; padding: 8px 24px; border-radius: 14px;
+      background: #2a1b12; color: #ffd23f; font-family: "Space Mono", monospace; font-weight: 700; font-size: 34px; letter-spacing: .14em; }
+    /* Text auf farbigem Balken (auffälliger, wie TikTok-Textboxen) */
+    .bt { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-content; max-width: 740px; text-align: center;
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 66px; line-height: 1.3; color: #fff; }
+    .bt .bx { padding: .06em .4em .14em; border-radius: .6em; -webkit-box-decoration-break: clone; box-decoration-break: clone; box-shadow: 0 10px 0 rgba(0,0,0,.28), 0 16px 30px rgba(0,0,0,.25); }
+    .bt .bx { background: #23285a; } .bt.or .bx { background: #ff5a3c; } .bt.pk .bx { background: #fe2c55; } .bt.tq .bx { background: #18b8c0; } .bt.vi .bx { background: #23285a; } .bt.bl .bx { background: #23285a; }
+    .bt.ye .bx { background: #ffc93c; } .bt.ye { color: #1a0f08; } .bt.gr .bx { background: #00b86b; } .bt.dk .bx { background: #23285a; } .bt.dk { color: #ffc93c; }
+    .bt.sm { font-size: 44px; }
+    .stamp { position: absolute; padding: 6px 30px; border: 10px solid; border-radius: 40px; background: rgba(255,255,255,.94);
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 84px; }
+    /* TikTok-Kommentare (echte Optik) */
+    .tk { position: absolute; left: 60px; width: 800px; background: #fff; border-radius: 30px; padding: 20px 26px 6px; box-shadow: 0 14px 0 rgba(0,0,0,.22); font-family: "Inter", sans-serif; }
+    .tk-h { position: relative; text-align: center; font-weight: 800; font-size: 30px; color: #161823; margin-bottom: 10px; }
+    .tk-h b { position: absolute; right: 4px; top: -4px; font-size: 38px; font-weight: 400; color: #161823; }
+    .tk-c { position: relative; display: flex; gap: 20px; padding: 12px 96px 16px 0; }
+    .tk-a { width: 84px; height: 84px; border-radius: 50%; flex: none; display: grid; place-items: center; color: #fff; font-weight: 900; font-size: 38px; }
+    .tk-u { font-size: 28px; color: #8a8b91; font-weight: 600; }
+    .tk-t { font-size: 34px; color: #161823; font-weight: 500; line-height: 1.22; margin-top: 2px; }
+    .tk-m { font-size: 28px; color: #8a8b91; font-weight: 600; margin-top: 8px; } .tk-m span { margin-left: 30px; }
+    .tk-l { position: absolute; right: 4px; top: 16px; width: 86px; text-align: center; font-size: 28px; color: #8a8b91; font-weight: 600; }
+    .tk-l .hz { position: relative; width: 48px; height: 48px; margin: 0 auto 2px; }
+    .tk-l .hz svg { position: absolute; inset: 0; width: 48px; height: 48px; }
+    .tk-fh { position: absolute; left: 19px; top: 0; width: 50px; height: 50px; opacity: 0; }
+    .tk-pin { display: inline-block; font-size: 28px; font-weight: 800; color: #fe2c55; background: #ffe3ea; border-radius: 6px; padding: 2px 8px; margin-left: 10px; vertical-align: 3px; }
+
+
+    .neo { position: absolute; left: 60px; right: 190px; margin: 0 auto; width: fit-content; max-width: 830px; padding: 14px 34px 18px; border-radius: 30px; opacity: 0;
+      background: linear-gradient(160deg, rgba(24,10,48,.9), rgba(8,4,24,.92)); border: 5px solid #3ff0ff; box-shadow: 0 0 30px rgba(63,240,255,.7), inset 0 0 24px rgba(63,240,255,.25);
+      font-family: "Lilita One", sans-serif; color: #fff; text-align: center; line-height: 1.02; white-space: normal; }
+    .neo.pk { border-color: #ff3dbd; box-shadow: 0 0 30px rgba(255,61,189,.75), inset 0 0 24px rgba(255,61,189,.25); }
+    .neo.li { border-color: #b6ff3b; box-shadow: 0 0 30px rgba(182,255,59,.7), inset 0 0 24px rgba(182,255,59,.25); }
+    .neo.go { border-color: #ffd23f; box-shadow: 0 0 34px rgba(255,210,63,.8), inset 0 0 24px rgba(255,210,63,.25); }
+    .neo small { display: block; font: 900 30px Inter, sans-serif; letter-spacing: .14em; color: #3ff0ff; margin-bottom: 6px; }
+    .neo.pk small { color: #ff3dbd; } .neo.li small { color: #b6ff3b; } .neo.go small { color: #ffd23f; }
+    .big { position: absolute; left: 60px; right: 190px; text-align: center; font-family: "Lilita One", sans-serif; color: #fff; line-height: .92; opacity: 0;
+      -webkit-text-stroke: 16px #0a0418; paint-order: stroke fill; }
+    .big .c { color: #3ff0ff; } .big .p { color: #ff3dbd; } .big .l { color: #b6ff3b; } .big .g { color: #ffd23f; }
+    .fl { position: absolute; inset: 0; background: #fff; opacity: 0; }
+
+    #hk { position: absolute; left: 60px; right: 60px; top: 210px; text-align: center; font-family: "Lilita One", sans-serif; line-height: 1.02; -webkit-text-stroke: 18px #0a0418; paint-order: stroke fill; }
+    #hk .w { display: inline-block; position: relative; color: #fff; font-size: 150px; margin: 0 .06em; transform-origin: 50% 60%; }
+    #hk #w1 { font-size: 104px; color: #ff3dbd; } #hk #w2 { color: #ff3dbd; } #hk #w4 { color: #ffd23f; font-size: 130px; }
+    #dk { position: absolute; inset: 0; background: radial-gradient(circle at 50% 62%, rgba(120,40,200,.0) 0, rgba(20,6,40,.72) 70%); }
+    #sf { position: absolute; left: 290px; top: 860px; width: 500px; height: 620px; opacity: 0; }
+    #ry { position: absolute; left: 540px; top: 1100px; width: 1400px; height: 1400px; margin: -700px; opacity: 0;
+      background: repeating-conic-gradient(rgba(255,230,150,.32) 0 7deg, rgba(255,230,150,0) 7deg 18deg); border-radius: 50%; }
+    #g1 { top: 1520px; font-size: 62px; }
+  </style>
+  <div id="root" data-composition-id="s01" data-start="0" data-duration="4.150" data-width="1080" data-height="1920">
+    <div id="s01-stage" class="clip stage" data-start="0" data-duration="4.150" data-track-index="0">
+      <div id="dk"></div>
+      <div id="ry"></div>
+      <svg id="sf" viewBox="0 0 500 620"><defs><radialGradient id="ha" cx="50%" cy="40%" r="60%"><stop offset="0" stop-color="#ffe9a0" stop-opacity=".9"/><stop offset="1" stop-color="#ffe9a0" stop-opacity="0"/></radialGradient></defs>
+        <ellipse cx="250" cy="260" rx="250" ry="260" fill="url(#ha)"/>
+        <path d="M250 60 Q150 70 130 200 Q110 300 150 360 L60 620 L440 620 L350 360 Q390 300 370 200 Q350 70 250 60Z" fill="#160828" stroke="#ffd23f" stroke-width="6"/>
+        <path d="M250 120 Q185 130 180 230 Q182 300 250 310 Q318 300 320 230 Q315 130 250 120Z" fill="#05010c"/>
+        <ellipse cx="220" cy="225" rx="16" ry="9" fill="#ffd23f"/><ellipse cx="280" cy="225" rx="16" ry="9" fill="#ffd23f"/>
+        <text x="250" y="520" font-size="90" text-anchor="middle">🔮</text></svg>
+      <div id="hk"><span class="w" id="w0">DER</span><br><span class="w" id="w1">GEHEIMNISVOLLE</span><br><span class="w" id="w2">SCHÖPFER</span><br><span class="w" id="w3">IST</span><span class="w" id="w4">AUFGETAUCHT!</span></div>
+      <div id="g1" class="neo go">🎁 UND ER HAT WAS MITGEBRACHT …</div>
+      <div class="fl"></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      
+      const C = {"__dur": 4.15, "L1": [0.0, 2.38], "L1.words": [["der", 0.0, 0.197], ["geheimnisvolle", 0.197, 1.172], ["schöpfer", 1.172, 1.58], ["ist", 1.58, 1.776], ["aufgetaucht", 1.776, 2.38]], "L1b": [2.6, 3.97], "L1b.words": [["und", 2.6, 2.77], ["er", 2.77, 2.933], ["hat", 2.933, 3.103], ["euch", 3.103, 3.279], ["was", 3.279, 3.449], ["mitgebracht", 3.449, 3.97]]};
+      const line = (id) => C[id];
+      const at = (id, word, which = 0) => {
+        const ws = C[id + ".words"];
+        if (typeof word === "number") return ws[word][1 + which];
+        const key = String(word).toLowerCase().replace(/[^\p{L}\p{N}_]/gu, "");
+        const hit = ws.find((w) => w[0].startsWith(key));
+        if (!hit) throw new Error("cue not found: " + id + " " + word);
+        return hit[1 + which];
+      };
+      // Zähler: schreibt Zahlen im deutschen Format (4.100.000.000) als Funktion der Timeline-Zeit
+      const fmt = (n) => Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      const count = (tl, sel, from, to, t, d, pre = "", post = "", ease = "power2.out") => {
+        const el = document.querySelector(sel);
+        const o = { v: from };
+        el.textContent = pre + fmt(from) + post;
+        tl.to(o, { v: to, duration: d, ease, onUpdate: () => { el.textContent = pre + fmt(o.v) + post; } }, t);
+      };
+      // deterministischer Zufall
+      const rng = (seed) => () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let x = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+        x = (x + Math.imul(x ^ (x >>> 7), 61 | x)) ^ x; return ((x ^ (x >>> 14)) >>> 0) / 4294967296; };
+
+            // TikTok-Kommentar: Herz füllt sich rot, Zahl zählt hoch, Herzen schnellen nach oben
+      const HEART = '<svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-10-9.3C.4 8.4 2 4.5 5.6 4c2-.3 3.6.6 4.4 2 .8-1.4 2.4-2.3 4.4-2 3.6.5 5.2 4.4 3.6 7.7C19.5 16.4 12 21 12 21z" fill="none" stroke="#8a8b91" stroke-width="2"/></svg>';
+      const HEART_R = '<svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-10-9.3C.4 8.4 2 4.5 5.6 4c2-.3 3.6.6 4.4 2 .8-1.4 2.4-2.3 4.4-2 3.6.5 5.2 4.4 3.6 7.7C19.5 16.4 12 21 12 21z" fill="#fe2c55"/></svg>';
+      const fmtK = (n) => n >= 10000 ? (n / 1000).toFixed(1).replace(".", ",") + " Tsd." : Math.round(n).toLocaleString("de-DE");
+      function tkLike(tl, id, t, from, to, dur = 1.4, seed = 1) {
+        const box = document.querySelector(id + " .tk-l"), num = box.querySelector("i"), hz = box.querySelector(".hz");
+        hz.innerHTML = HEART + '<span class="red" style="position:absolute;inset:0;opacity:0">' + HEART_R + "</span>";
+        const R = rng(seed);
+        for (let k = 0; k < 7; k++) { const f = document.createElement("div"); f.className = "tk-fh"; f.innerHTML = HEART_R; box.appendChild(f);
+          const dx = (R() - .5) * 160, up = 200 + R() * 220, t0 = t + k * .11;
+          tl.fromTo(f, { opacity: 0, x: 0, y: 0, scale: .5, rotation: 0 }, { opacity: 1, x: dx * .4, y: -60, scale: 1.1, rotation: (R() - .5) * 40, duration: .15, ease: "power2.out" }, t0);
+          tl.to(f, { x: dx, y: -up, scale: .7, opacity: 0, duration: .7, ease: "power1.in" }, t0 + .15); }
+        tl.fromTo(hz.querySelector(".red"), { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .25, ease: "back.out(3)" }, t);
+        tl.fromTo(hz, { scale: 1 }, { scale: 1.3, duration: .12, yoyo: true, repeat: 1, ease: "power2.out" }, t);
+        const o = { v: from }; num.textContent = fmtK(from);
+        tl.to(o, { v: to, duration: dur, ease: "power2.out", onUpdate: () => { num.textContent = fmtK(o.v); } }, t);
+      }
+      // Textbox füllt immer genau den Text: jede Zeile bekommt ihren eigenen Balken
+      function wrapBt(scope) { document.querySelectorAll(scope + " .bt").forEach((el) => { if (!el.querySelector(":scope > .bx")) el.innerHTML = '<span class="bx">' + el.innerHTML + "</span>"; }); }
+
+      wrapBt("#s01-stage");
+      const tl = gsap.timeline({ paused: true });
+      const ws = [["der",.03,.16],["geheimnisvolle",.20,1.23],["schöpfer",1.28,1.59],["ist",1.66,1.89],["aufgetaucht",1.92,2.38]] /* aus narration.wav gemessen – bei neuer Stimme neu messen */, SC = [1.9, 1.1, 1.4, 1.8, 1.07], COL = ["#ffffff", "#ff3dbd", "#ff3dbd", "#ffffff", "#ffd23f"];
+      tl.fromTo("#hk", { scale: 1.2 }, { scale: 1, duration: .18, ease: "power3.out" }, 0);
+      tl.fromTo(".fl", { opacity: 0.9 }, { opacity: 0, duration: .28, immediateRender: false }, 0);
+      tl.fromTo("#sf", { opacity: .35, y: 60, scale: .9 }, { opacity: 1, y: 0, scale: 1, duration: 2.2, ease: "power2.out" }, 0);
+      tl.fromTo("#ry", { opacity: 0, rotation: 0 }, { opacity: 1, rotation: 40, duration: 4, ease: "none" }, 1.9);
+      ws.forEach((w, i) => { const id = "#w" + i, t0 = Math.max(0, w[1] - .03);
+        tl.set(id, { zIndex: 5 }, t0);
+        tl.fromTo(id, { scale: 1, color: COL[i], textShadow: "0 0 0px #fff" }, { scale: SC[i], color: i === 4 ? "#ffffff" : "#ffd23f", textShadow: "0 0 50px #ffd23f, 0 0 120px #ff3dbd", duration: .07, ease: "power4.out", immediateRender: false }, t0);
+        tl.to(id, { scale: 1, color: COL[i], textShadow: "0 0 0px #fff", duration: .2, ease: "back.out(2)" }, Math.max(t0 + .1, w[2] - .08));
+        tl.set(id, { zIndex: 1 }, w[2] + .15);
+        tl.fromTo(".fl", { opacity: .3 }, { opacity: 0, duration: .12, immediateRender: false }, t0);
+        [[10,-6],[-12,6],[0,0]].forEach(([x, y], n) => tl.to("#s01-stage", { x, y, duration: .03, ease: "none" }, t0 + n * .03)); });
+      [[22,-12],[-24,10],[16,14],[-12,-10],[0,0]].forEach(([x, y], i) => tl.to("#s01-stage", { x, y, duration: .04, ease: "none" }, 1.92 + i * .04));tl.fromTo(".fl", { opacity: 0.7 }, { opacity: 0, duration: .28, immediateRender: false }, 1.92);
+      tl.fromTo("#g1", { opacity: 0, scale: 3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .24, ease: "back.out(2.2)" }, line("L1b")[0]);
+      tl.to("#g1", { scale: 1.06, duration: .22, yoyo: true, repeat: 5, ease: "sine.inOut" }, at("L1b", "mitgebracht"));
+      tl.to("#s01-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
+      window.__timelines["s01"] = tl;
+    })();
+  </script>
+</template>

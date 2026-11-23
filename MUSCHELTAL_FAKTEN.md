@@ -604,3 +604,15 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 
 ## Video Tag 12 (22.11., `videos/muscheltal-tag12/`)
 - Tag 1 vs. Tag 12 (Vorher/Nachher). Tierheim Pfotenkuss fertig, **keine streunenden Tiere mehr** (laut Nutzer); **Haustiere kaufen/holen, wenn das Spiel startet**. **Tierheim sucht 3 Leute fürs Team – Bewerbung in den Kommentaren.** Türsteher Kokos-Club laut Nutzer (22.11.): **@in.yor_dreams** (frühere Korrektur @marl33n.fls_1301 überholt; im Video nicht erwähnt). Neuheiten im Video: Golden-Pearl-Spielehalle, Hütte mit Tür & Licht, Fahrzeuge doppelt so schnell, Freunde einladen +10/+10, 820 Bewohner – noch 180 bis 1.000; Einstieg „Mit jedem Follower verändert sich die Insel“.
+
+## Video Tag 13 (23.11., `videos/muscheltal-tag13/`)
+- **Neuwahl live im Video** (siehe unten): Bürgermeister/in und Palast-Leitung per Zufall gezogen; Bürgermeister/in soll sich melden – trifft die nächste Entscheidung.
+- **Tierheim-Team (4, laut Nutzer):** @swg.seliii, @j7summ3r, @el1naa_13, @theycallmealeaaa („Vier neue Tierpfleger – willkommen im Team!“). Tag 12 hatte 3 Plätze ausgeschrieben – jetzt 4. → Homepage: Tierheim-Team eintragen.
+- **Anlegestelle** = Geschenk des geheimnisvollen Schöpfers, fertig; mit der Fähre „Seestern“ zwischen den Inseln reisen (passt zur Homepage 23.11.).
+- **Goldene Kokoshütte** (Kokos-Küste) für Bewohner Nr. 1.000 gezeigt („Bist das DU?“).
+- **819 Bewohner, noch 181** bis 1.000 – bei 1.000 **Bewohnern** startet das Spiel. Aufruf: Freunde markieren, damit sie neben einem wohnen.
+- **Neue Abstimmung (Schluss):** Der Schöpfer spendiert noch ein Gebäude – **Katzencafé oder Hotel Sandkorn**, Abstimmung in den Kommentaren, wird **über Nacht gebaut**. → Homepage: nach Ergebnis bauen.
+- **Live-Wahl im Video (Python `secrets`, unter 762 Bewohnern ohne Job/Amt/Sonder-Wohnort, ohne Tierheim-Team und alte Ämter):** **Bürgermeister/in: @luana.mus1c** (Haupt-Insel 0:429, Gründerin) · **Palast-Leitung: @marietayheld15** (Haupt-Insel 0:414, Gründerin). Bürgermeister/in soll sich melden und trifft die nächste Entscheidung. → Homepage: Ämter eintragen (Amtszeit nach Regel Mo 12:00 – Mo 12:00).
+- **Verlosung Job Game Lagoon (letztes Drittel):** **@lilou.mgd** (Kokos-Küste 1:97), unter 293 Kokos-Bewohnern ohne Job/Amt. (Erste Ziehung @d9750075 auf Wunsch des Nutzers verworfen – gilt NICHT.) → Homepage: Team Game Lagoon (Leitung bleibt @leona644).
+- **Hook Tag 13:** „Der geheimnisvolle Schöpfer ist aufgetaucht! Und er hat euch etwas mitgebracht …“ (Silhouette mit Kapuze, Kristallkugel) → Auflösung: Anlegestelle + Abstimmung über ein weiteres Gebäude.
+- Reihenfolge Tag 13 (Endfassung): Hook Schöpfer → Live-Wahl → Tierheim-Team → Anlegestelle („der geheimnisvolle Schöpfer von Muschel-Tal“) → goldene Hütte → noch 181 → Verlosung Game Lagoon → Abstimmung Katzencafé/Hotel Sandkorn → Freunde markieren + **Folgen ganz am Ende**. Wahl-Szene betont: Amtszeit (1 Woche) vorbei, live gewählt für die neue Woche; goldene Hütte als „NEU!“.
