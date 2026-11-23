@@ -1,0 +1,55 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+
+    .neo { position: absolute; left: 60px; right: 190px; margin: 0 auto; width: fit-content; max-width: 830px; padding: 14px 34px 18px; border-radius: 30px; opacity: 0;
+      background: linear-gradient(160deg, rgba(24,10,48,.88), rgba(8,4,24,.9)); border: 5px solid #3ff0ff; box-shadow: 0 0 30px rgba(63,240,255,.7), inset 0 0 24px rgba(63,240,255,.25);
+      font-family: "Lilita One", sans-serif; color: #fff; text-align: center; line-height: 1.02; white-space: nowrap; }
+    .neo.pk { border-color: #ff3dbd; box-shadow: 0 0 30px rgba(255,61,189,.75), inset 0 0 24px rgba(255,61,189,.25); }
+    .neo.li { border-color: #b6ff3b; box-shadow: 0 0 30px rgba(182,255,59,.7), inset 0 0 24px rgba(182,255,59,.25); }
+    .neo small { display: block; font: 900 30px Inter, sans-serif; letter-spacing: .14em; color: #3ff0ff; margin-bottom: 6px; }
+    .neo.pk small { color: #ff3dbd; } .neo.li small { color: #b6ff3b; }
+    .big { position: absolute; left: 60px; right: 190px; text-align: center; font-family: "Lilita One", sans-serif; color: #fff; line-height: .92; opacity: 0;
+      -webkit-text-stroke: 16px #0a0418; paint-order: stroke fill; }
+    .big .c { color: #3ff0ff; } .big .p { color: #ff3dbd; } .big .l { color: #b6ff3b; }
+    .gl1 { position: absolute; inset: 0; opacity: 0; background: repeating-linear-gradient(0deg, rgba(63,240,255,.18) 0 3px, rgba(255,61,189,0) 3px 9px); mix-blend-mode: screen; }
+    #sky1 { position: absolute; inset: 0; background: linear-gradient(180deg, #4fd2ff 0%, #a8ecff 45%, #ffe3a3 46%, #ffd27a 100%); }
+    #sea1 { position: absolute; left: 0; right: 0; top: 820px; height: 260px; background: linear-gradient(180deg, #1fb6d9, #0f8fb8); }
+    #sun1 { position: absolute; left: 700px; top: 180px; width: 220px; height: 220px; border-radius: 50%; background: #ffe14a; box-shadow: 0 0 90px #ffd23f; }
+    #sh1 { position: absolute; left: 290px; top: 900px; width: 500px; height: 500px; }
+    #poof { position: absolute; left: 240px; top: 860px; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, #fff 0 30%, rgba(220,220,220,.8) 50%, rgba(200,200,200,0) 70%); opacity: 0; }
+    #gr1 { position: absolute; inset: 0; backdrop-filter: grayscale(1) brightness(.75); -webkit-backdrop-filter: grayscale(1) brightness(.75); opacity: 0; }
+    #q1 { top: 240px; font-size: 160px; } #q1b { top: 600px; font-size: 110px; }
+  </style>
+  <div id="root" data-composition-id="s01" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s01-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="sky1"></div><div id="sun1"></div><div id="sea1"></div>
+      <div id="sh1"><svg viewBox="0 0 64 64" style="width:100%;height:100%"><path d="M32 54 L6 44 Q2 34 10 32 Q8 22 17 23 Q19 13 27 18 Q32 9 37 18 Q45 13 47 23 Q56 22 54 32 Q62 34 58 44 Z" fill="#ffc7b2" stroke="#e8467c" stroke-width="2.5"/><path d="M32 54 L18 26 M32 54 L27 18 M32 54 L37 18 M32 54 L46 26" stroke="#e8467c" stroke-width="2" fill="none"/></svg></div>
+      <div id="poof"></div><div id="gr1"></div>
+      <div id="q0" class="big" style="top:300px;font-size:170px">EINE <span class="c">WELT</span></div>
+      <div id="q1" class="big">OHNE <span class="p">MUSCHELN</span>?!</div>
+      <div id="q1b" class="neo pk">🐚 ➜ 💨</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      /*__COMMON_JS__*/
+      wrapBt("#s01-stage");
+      const tl = gsap.timeline({ paused: true });
+      const O = at("L1", "OHNE"), M = at("L1", "Muscheln");
+      tl.fromTo("#q0", { opacity: 0, scale: 3.4, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .26, ease: "back.out(2.2)" }, .02);
+      tl.to("#q0", { opacity: 0, y: -80, duration: .12 }, O - .12);
+      tl.fromTo("#sh1", { scale: 1 }, { scale: 1.1, duration: .25, yoyo: true, repeat: 3, ease: "sine.inOut" }, 0);
+      tl.fromTo("#q1", { opacity: 0, scale: 3.4, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .26, ease: "back.out(2.2)" }, O - .05);
+      tl.to("#sh1", { scale: 0, rotation: 200, opacity: 0, duration: .25, ease: "back.in(2)" }, M + .1);
+      tl.fromTo("#poof", { opacity: 1, scale: .3 }, { opacity: 0, scale: 1.8, duration: .6, ease: "power2.out", immediateRender: false }, M + .3);
+      tl.to("#gr1", { opacity: 1, duration: .3 }, M + .35);
+      tl.to("#sun1", { y: 500, duration: .5, ease: "power2.in" }, M + .35);
+      tl.fromTo("#q1b", { opacity: 0, scale: 3.4, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .26, ease: "back.out(2.2)" }, M + .3);
+      [[24,-14],[-26,12],[20,16],[-16,-12],[10,8],[0,0]].forEach(([x, y], i) => tl.to("#s01-stage", { x, y, duration: .04, ease: "none" }, M + .3 + i * .04));
+      tl.to("#s01-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
+      window.__timelines["s01"] = tl;
+    })();
+  </script>
+</template>
