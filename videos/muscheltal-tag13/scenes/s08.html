@@ -21,7 +21,7 @@
     .vc .e { height: 250px; display: grid; place-items: center; font-size: 150px; background: linear-gradient(180deg, #fff3d6, #fff); }
     .vc .l { height: 130px; display: grid; place-items: center; font: 400 50px/1 "Lilita One", sans-serif; color: #fff; background: var(--c); text-align: center; }
     #vs { position: absolute; left: 400px; top: 740px; width: 140px; text-align: center; font: 400 96px "Lilita One", sans-serif; color: #ffd23f; -webkit-text-stroke: 12px #0a0418; paint-order: stroke fill; opacity: 0; }
-    #v5 { top: 1420px; font-size: 62px; }
+    #v5 { top: 1560px; font-size: 50px; }
     #v6 { top: 1580px; font-size: 52px; }
   </style>
   <div id="root" data-composition-id="s08" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
@@ -31,8 +31,7 @@
       <div class="vc" id="v3" style="left:60px;--c:#ff3dbd"><div class="e">🐱☕</div><div class="l">KATZEN-<br>CAFÉ</div></div>
       <div id="vs">VS</div>
       <div class="vc" id="v4" style="left:520px;--c:#13a8d0"><div class="e">🏨</div><div class="l">HOTEL<br>SANDKORN</div></div>
-      <div id="v5" class="neo li">💬 STIMMT IN DEN KOMMENTAREN AB!</div>
-      <div id="v6" class="neo go">🌙 WIRD ÜBER NACHT GEBAUT</div>
+      <div id="v5" class="neo li">💬 STIMMT IN DEN KOMMIS AB!</div>
       <div class="fl"></div>
     </div>
   </div>
@@ -51,7 +50,6 @@
       [[22,-12],[-24,10],[16,14],[-12,-10],[0,0]].forEach(([x, y], i) => tl.to("#s08-stage", { x, y, duration: .04, ease: "none" }, at("L8b", "Hotel") + i * .04));
       tl.to("#vs", { scale: 1.2, duration: .2, yoyo: true, repeat: 9, ease: "sine.inOut" }, at("L8b", "Hotel") + .4);
       tl.fromTo("#v5", { opacity: 0, scale: 3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .24, ease: "back.out(2.2)" }, at("L8c", "Kommentaren") - .1);
-      tl.fromTo("#v6", { opacity: 0, scale: 3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .24, ease: "back.out(2.2)" }, at("L8c", "Nacht") - .1);
       tl.to(["#v3", "#v4"], { y: -14, duration: .5, yoyo: true, repeat: 7, ease: "sine.inOut" }, A + .5);
       
       window.__timelines["s08"] = tl;

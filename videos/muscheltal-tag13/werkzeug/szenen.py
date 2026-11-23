@@ -170,7 +170,7 @@ scene("s02", NEO + """
 
 # s03 – Tierheim-Team: 4 Namen
 scene("s03", NEO + """
-    #c1 { top: 230px; font-size: 118px; }
+    #c1 { top: 250px; font-size: 80px; white-space: nowrap; }
     .nm { position: absolute; width: 390px; padding: 18px 10px 20px; border-radius: 26px; background: #fff; color: #1a0f08; text-align: center; opacity: 0;
       font: 900 33px Inter, sans-serif; box-shadow: 0 0 0 6px #ff7a59, 0 12px 0 rgba(0,0,0,.3); }
     .nm b { display: block; font-size: 54px; line-height: 1; margin-bottom: 6px; }
@@ -190,8 +190,8 @@ scene("s03", NEO + """
 # s04 – Geschenk des Schöpfers: Anlegestelle fertig, Fähre Seestern
 scene("s04", NEO + """
     #a1 { top: 230px; font-size: 120px; }
-    #a2 { top: 450px; font-size: 62px; } #a3 { top: 610px; font-size: 76px; }
-    #a4 { top: 450px; font-size: 70px; } #a5 { top: 610px; font-size: 66px; }""",
+    #a2 { top: 450px; font-size: 62px; } #a3 { top: 610px; font-size: 62px; }
+    #a4 { top: 450px; font-size: 64px; } #a5 { top: 610px; font-size: 58px; }""",
 """      <div id="a1" class="big">🎁 DAS <span class="g">GESCHENK</span></div>
       <div id="a2" class="neo pk"><small>🔮 VOM GEHEIMNISVOLLEN</small>SCHÖPFER</div>
       <div id="a3" class="neo li">⚓ ANLEGESTELLE FERTIG!</div>
@@ -227,7 +227,7 @@ scene("s05", NEO + """
 # s06 – Bei 1.000 Bewohnern startet das Spiel: 819 / noch 181
 scene("s06", NEO + """
     #r7 { top: 240px; font-size: 64px; white-space: normal; width: 820px; }
-    #br { position: absolute; left: 100px; right: 230px; top: 520px; opacity: 0; }
+    #br { position: absolute; left: 80px; right: 210px; top: 500px; padding: 20px; border-radius: 30px; background: rgba(10,4,24,.96); opacity: 0; }
     #br .tr { height: 90px; border-radius: 45px; background: rgba(10,4,24,.85); border: 5px solid #3ff0ff; box-shadow: 0 0 30px rgba(63,240,255,.6); overflow: hidden; }
     #br .fi { height: 100%; width: 0; background: linear-gradient(90deg, #3ff0ff, #ff3dbd); }
     #br .lb { display: flex; justify-content: space-between; margin-top: 16px; font: 400 64px "Lilita One", sans-serif; color: #fff; -webkit-text-stroke: 10px #0a0418; paint-order: stroke fill; }
@@ -269,15 +269,14 @@ scene("s08", NEO + """
     .vc .e { height: 250px; display: grid; place-items: center; font-size: 150px; background: linear-gradient(180deg, #fff3d6, #fff); }
     .vc .l { height: 130px; display: grid; place-items: center; font: 400 50px/1 "Lilita One", sans-serif; color: #fff; background: var(--c); text-align: center; }
     #vs { position: absolute; left: 400px; top: 740px; width: 140px; text-align: center; font: 400 96px "Lilita One", sans-serif; color: #ffd23f; -webkit-text-stroke: 12px #0a0418; paint-order: stroke fill; opacity: 0; }
-    #v5 { top: 1420px; font-size: 62px; }
+    #v5 { top: 1560px; font-size: 50px; }
     #v6 { top: 1580px; font-size: 52px; }""",
 """      <div id="v1" class="big">🗳️ <span class="g">ABSTIMMUNG!</span></div>
       <div id="v2" class="neo pk"><small>🔮 DER SCHÖPFER SCHENKT EUCH</small>NOCH EIN GEBÄUDE</div>
       <div class="vc" id="v3" style="left:60px;--c:#ff3dbd"><div class="e">🐱☕</div><div class="l">KATZEN-<br>CAFÉ</div></div>
       <div id="vs">VS</div>
       <div class="vc" id="v4" style="left:520px;--c:#13a8d0"><div class="e">🏨</div><div class="l">HOTEL<br>SANDKORN</div></div>
-      <div id="v5" class="neo li">💬 STIMMT IN DEN KOMMENTAREN AB!</div>
-      <div id="v6" class="neo go">🌙 WIRD ÜBER NACHT GEBAUT</div>
+      <div id="v5" class="neo li">💬 STIMMT IN DEN KOMMIS AB!</div>
       <div class="fl"></div>""",
 """      const t = line("L8")[0], K = line("L8b")[0], A = line("L8c")[0];
       """ + Z("#v1", "t - .05") + FLASH("t", .5) + """
@@ -288,5 +287,4 @@ scene("s08", NEO + """
       """ + SHAKE("s08", 'at("L8b", "Hotel")') + """
       tl.to("#vs", { scale: 1.2, duration: .2, yoyo: true, repeat: 9, ease: "sine.inOut" }, at("L8b", "Hotel") + .4);
       """ + Z("#v5", 'at("L8c", "Kommentaren") - .1') + """
-      """ + Z("#v6", 'at("L8c", "Nacht") - .1') + """
       tl.to(["#v3", "#v4"], { y: -14, duration: .5, yoyo: true, repeat: 7, ease: "sine.inOut" }, A + .5);""", blur=False)
