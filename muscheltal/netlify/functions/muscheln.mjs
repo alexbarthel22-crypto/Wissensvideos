@@ -184,7 +184,8 @@ async function zurueckAuf(store) {
 // Shop-Käufe samt Ausrüstung, Spenden, Story) wird gelöscht. Echtgeld-Käufe (Stripe) bleiben erhalten.
 // 20.11.: nochmal (Lauf 2) – wieder alles nach 18.11. 18:00 bis zur nächsten Veröffentlichung
 // 21.11.: nochmal (Lauf 3) – inkl. Golden Pearl (Spielstände, Duelle, Preise) und Sturm-Treibgut
-const ALLE_AB = 1795021200000, ALLE_NR = 3;
+// 23.11.: nochmal (Lauf 4) – Tester haben ausprobiert (Bootsfahrt usw.), wieder alles nach 18.11. 18:00 zurück
+const ALLE_AB = 1795021200000, ALLE_NR = 4;
 let ALLE_OK = false;
 // parallel (schneller), höchstens 40 gleichzeitig
 async function jeParallel(L, f) { for (let i = 0; i < L.length; i += 40) await Promise.all(L.slice(i, i + 40).map(f)); }
