@@ -32,40 +32,45 @@
    "tag": "",
    "sfx": [
     {
-     "name": "fs_ocean",
+     "name": "impact-bass-1",
      "at": "s01+0.0",
-     "volume": 0.45
+     "volume": 0.7
     },
     {
-     "name": "fs_seagull",
-     "at": "s01+0.25",
+     "name": "fs_ocean",
+     "at": "s01+0.0",
      "volume": 0.35
     },
     {
      "name": "fs_riser",
-     "at": "L1:Es-0.3",
-     "volume": 0.45
+     "at": "L1:Welt-0.3",
+     "volume": 0.4
     },
     {
-     "name": "fs_flap",
+     "name": "impact-bass-2",
      "at": "L1:Muscheln",
      "volume": 0.6
     },
     {
-     "name": "fs_swoosh",
+     "name": "fs_flap",
      "at": "L1:Muscheln+0.1",
+     "volume": 0.6
+    },
+    {
+     "name": "fs_swoosh",
+     "at": "L1:Muscheln+0.2",
      "volume": 0.5
     },
     {
      "name": "fs_seashells",
-     "at": "L1:mehr",
+     "at": "L1:Muscheln+0.3",
      "volume": 0.45
     }
    ],
    "lines": [
     {
      "id": "L1",
-     "text": "Stell dir vor: / Es gibt *y:KEINE *y:Muscheln mehr!",
+     "text": "Wie wäre eine Welt / ohne *y:Muscheln?",
      "pause": 0
     }
    ]
@@ -136,36 +141,26 @@
    "tag": "",
    "sfx": [
     {
-     "name": "fs_seagull",
-     "at": "L4:Möwen",
+     "name": "fs_pop",
+     "at": "L4:ohne",
+     "volume": 0.4
+    },
+    {
+     "name": "glitch-1",
+     "at": "L4:Minus",
+     "volume": 0.5
+    },
+    {
+     "name": "sad-trombone",
+     "at": "L4:Aura+0.1",
      "volume": 0.55
-    },
-    {
-     "name": "fs_whistle",
-     "at": "L4:streiken",
-     "volume": 0.55
-    },
-    {
-     "name": "fs_megaphone",
-     "at": "L4:streiken+0.2",
-     "volume": 0.45
-    },
-    {
-     "name": "fs_protest",
-     "at": "L4:streiken+0.25",
-     "volume": 0.45
-    },
-    {
-     "name": "fs_boo",
-     "at": "L4:streiken+0.4",
-     "volume": 0.35
     }
    ],
    "lines": [
     {
      "id": "L4",
-     "text": "Die *p:Möwen / *y:streiken!",
-     "pause": 0.12
+     "text": "Dein *g:Strand-Pic ohne Muschel? / *y:Minus *y:1000|tausend *y:Aura!",
+     "pause": 0.1
     }
    ]
   },
