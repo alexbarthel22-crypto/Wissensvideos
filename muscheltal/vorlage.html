@@ -5146,7 +5146,7 @@ function bootFrag(){const g=amSteg();if(!g)return;if(!mkOwn(WK.me)){mitmachen('�
  const heim=WK.me.isl?WK.me.isl.i:0,stand=MK.d?MK.d.stand||0:0,ziele=STEGE.filter(h=>h!==g);
  const zu=ziele.filter(h=>!h.v.open).length,zeile=h=>{const v=h.v;if(!v.open)return '';const frei=v.i===heim,zuWenig=!frei&&stand<2;
   return '<button class="cbtn'+(zuWenig?'':' hot')+'" type="button" data-boot="'+v.i+'"'+(zuWenig?' disabled':'')+'>'+esc(v.emoji||'🏝️')+' '+esc(v.name)+' · '+(frei?'kostenlos 🏠':'2 🐚')+'</button>';};
- popup('<div class="big">⛵</div><h2>Wohin möchtest du fahren?</h2><p>Das Boot bringt dich zum Anleger der Insel.</p><div class="bootl">'+ziele.map(zeile).join('')+'</div>'+(zu?'<p class="cft">🔒 '+zu+' weitere Insel'+(zu>1?'n werden':' wird')+' mit mehr Einwohnern freigespielt</p>':'')+'<p class="cft">Du hast '+fmt(stand)+' 🐚'+(stand<2&&ziele.some(h=>h.v.open&&h.v.i!==heim)?' – für eine fremde Insel brauchst du 2 🐚':'')+'</p>');
+ popup('<div class="big">⛵</div><h2>Wohin möchtest du fahren?</h2><p>Die Fähre „Seestern“ bringt dich zum Anleger der Insel.</p><div class="bootl">'+ziele.map(zeile).join('')+'</div>'+(zu?'<p class="cft">🔒 '+zu+' weitere Insel'+(zu>1?'n werden':' wird')+' mit mehr Einwohnern freigespielt</p>':'')+'<p class="cft">Du hast '+fmt(stand)+' 🐚'+(stand<2&&ziele.some(h=>h.v.open&&h.v.i!==heim)?' – für eine fremde Insel brauchst du 2 🐚':'')+'</p>');
  document.querySelectorAll('[data-boot]').forEach(b=>b.onclick=async()=>{const i=+b.dataset.boot,h=STEGE.find(q=>q.v.i===i);if(!h)return;b.disabled=true;b.textContent='⏳ Einen Moment …';
   const r=await mk('boot',{nach:i});if(!r||!r.ok){$('pg').hidden=true;mkToast(r&&r.grund==='muscheln'?'🐚 Für diese Fahrt brauchst du 2 Muscheln':'😕 Hat nicht geklappt – bitte nochmal');return;}
   if(MK.d&&typeof r.stand==='number'){MK.d.stand=r.stand;try{mkChip();}catch(e){}}$('pg').hidden=true;try{statEv('bootfahrt');}catch(e){}bootStart(g,h);});}
@@ -5160,7 +5160,7 @@ function bootStrecke(g,h){const o1=g.hw+BOOTSB+3,o2=-(h.hw+BOOTSB+3);let P=[g.pt
 function bootAuf(S2,d){const {Q,D}=S2;d=Math.max(0,Math.min(D[D.length-1],d));let k=1;while(k<D.length-1&&D[k]<d)k++;const u=(d-D[k-1])/((D[k]-D[k-1])||1),x=Q[k-1][0]+(Q[k][0]-Q[k-1][0])*u,y=Q[k-1][1]+(Q[k][1]-Q[k-1][1])*u;return{x,y,ang:Math.atan2(Q[k][1]-Q[k-1][1],Q[k][0]-Q[k-1][0])};}
 function bootStart(g,h){const S2=bootStrecke(g,h),dur=Math.min(9,Math.max(4,S2.len/260))*1000;
  BOOT={g,h,S:S2,dur,t0:performance.now(),phase:'hin',mode:WK.mode,alpha:1};WK.mode='walk';WK.keys.clear();WK.pt=null;WK.au=null;
- let ov=$('bootov');if(!ov){ov=document.createElement('div');ov.id='bootov';document.body.appendChild(ov);}ov.innerHTML='<span>⛵ Überfahrt zur '+esc(h.v.name)+' …</span>';ov.hidden=false;
+ let ov=$('bootov');if(!ov){ov=document.createElement('div');ov.id='bootov';document.body.appendChild(ov);}ov.innerHTML='<span>⛵ Mit der „Seestern“ zur '+esc(h.v.name)+' …</span>';ov.hidden=false;
  const st=bootAuf(S2,0);BOOT.x=st.x;BOOT.y=st.y;BOOT.ang=st.ang;try{const b=$('ortact');if(b)b.remove();}catch(e){}}
 // pro Bild (aus walkTick): Schiff bewegen, Figur steht an Deck; danach am Ziel-Anleger absetzen, Schiff fährt zurück
 function bootSchritt(n){const B=BOOT;if(!B)return;
