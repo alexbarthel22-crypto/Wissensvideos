@@ -1,0 +1,59 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+
+    .neo { position: absolute; left: 60px; right: 190px; margin: 0 auto; width: fit-content; max-width: 830px; padding: 14px 34px 18px; border-radius: 30px; opacity: 0;
+      background: linear-gradient(160deg, rgba(24,10,48,.88), rgba(8,4,24,.9)); border: 5px solid #3ff0ff; box-shadow: 0 0 30px rgba(63,240,255,.7), inset 0 0 24px rgba(63,240,255,.25);
+      font-family: "Lilita One", sans-serif; color: #fff; text-align: center; line-height: 1.02; white-space: nowrap; }
+    .neo.pk { border-color: #ff3dbd; box-shadow: 0 0 30px rgba(255,61,189,.75), inset 0 0 24px rgba(255,61,189,.25); }
+    .neo.li { border-color: #b6ff3b; box-shadow: 0 0 30px rgba(182,255,59,.7), inset 0 0 24px rgba(182,255,59,.25); }
+    .neo small { display: block; font: 900 30px Inter, sans-serif; letter-spacing: .14em; color: #3ff0ff; margin-bottom: 6px; }
+    .neo.pk small { color: #ff3dbd; } .neo.li small { color: #b6ff3b; }
+    .big { position: absolute; left: 60px; right: 190px; text-align: center; font-family: "Lilita One", sans-serif; color: #fff; line-height: .92; opacity: 0;
+      -webkit-text-stroke: 16px #0a0418; paint-order: stroke fill; }
+    .big .c { color: #3ff0ff; } .big .p { color: #ff3dbd; } .big .l { color: #b6ff3b; }
+    .gl1 { position: absolute; inset: 0; opacity: 0; background: repeating-linear-gradient(0deg, rgba(63,240,255,.18) 0 3px, rgba(255,61,189,0) 3px 9px); mix-blend-mode: screen; }
+    .art { position: absolute; inset: 0; width: 1080px; height: 1920px; }
+    .H { top: 220px; } .B { top: 1520px; }
+
+    #bg12 { position: absolute; inset: 0; background: radial-gradient(circle at 50% 50%, #ff5a1f, #5a0a0a 70%, #1a0202); }
+    #rd { position: absolute; inset: 0; background: #ff0000; opacity: 0; mix-blend-mode: screen; }
+    #ea { position: absolute; left: 240px; top: 560px; width: 600px; height: 600px; }
+    #u1 { font-size: 120px; } #u2 { font-size: 80px; }
+    .neo { width: auto !important; max-width: none !important; white-space: normal !important; }
+  </style>
+  <div id="root" data-composition-id="s12" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s12-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="bg12"></div>
+      <svg class="art" viewBox="0 0 1080 1920"><g class="met"><path d="M120 200 L330 470" stroke="#ffd84a" stroke-width="14" stroke-linecap="round" opacity=".7"/><circle cx="335" cy="478" r="30" fill="#8a5a3a" stroke="#ff8a2a" stroke-width="8"/></g><g class="met"><path d="M960 380 L820 640" stroke="#ffd84a" stroke-width="12" stroke-linecap="round" opacity=".7"/><circle cx="815" cy="648" r="24" fill="#8a5a3a" stroke="#ff8a2a" stroke-width="7"/></g><g class="met"><path d="M60 1250 L230 1380" stroke="#ffd84a" stroke-width="12" stroke-linecap="round" opacity=".7"/><circle cx="236" cy="1385" r="22" fill="#8a5a3a" stroke="#ff8a2a" stroke-width="7"/></g></svg>
+      <svg id="ea" viewBox="0 0 600 600"><g id="fire"><path d="M120 470 Q100 380 160 330 Q150 400 200 420 Q190 330 260 280 Q250 370 300 400 Q320 300 380 270 Q360 360 410 410 Q440 350 470 330 Q500 420 470 480Z" fill="#ff8a2a" opacity=".9"/><path d="M170 480 Q170 420 210 390 Q215 440 250 450 Q260 390 300 360 Q300 420 340 440 Q360 380 400 370 Q420 430 400 490Z" fill="#ffd84a"/></g>
+        <circle cx="300" cy="300" r="210" fill="#2f8fe8" stroke="#0a2a5a" stroke-width="10"/><path d="M150 200 Q200 140 270 170 Q300 230 240 260 Q180 280 150 200Z M320 330 Q400 300 440 360 Q430 440 360 450 Q310 420 320 330Z M180 360 Q220 350 230 400 Q200 430 170 410Z" fill="#3fc26a" stroke="#1a6a3a" stroke-width="6"/>
+        <ellipse cx="240" cy="270" rx="34" ry="42" fill="#fff" stroke="#111" stroke-width="6"/><ellipse cx="360" cy="270" rx="34" ry="42" fill="#fff" stroke="#111" stroke-width="6"/><circle cx="244" cy="280" r="12" fill="#111"/><circle cx="356" cy="280" r="12" fill="#111"/><ellipse cx="300" cy="380" rx="44" ry="54" fill="#5a0a0a" stroke="#111" stroke-width="6"/><path d="M420 200 Q440 240 420 260 Q400 240 420 200Z" fill="#7fd8ff" stroke="#2a6a9a" stroke-width="4"/>
+        <path id="crk" d="M300 90 L280 170 L320 220 L290 300 L330 380 L300 510" stroke="#111" stroke-width="10" fill="none" stroke-linecap="round" stroke-dasharray="460" stroke-dashoffset="460"/></svg>
+      <div id="rd"></div>
+      <div id="u1" class="big H"><span class="l">KURZ GESAGT:</span></div>
+      <div id="u2" class="neo pk B">🔥 DIE WELT GEHT UNTER! 🌍</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      /*__COMMON_JS__*/
+      wrapBt("#s12-stage");
+      const tl = gsap.timeline({ paused: true });
+      const t = line("L12")[0], U = at("L12", "Welt");
+      tl.fromTo("#u1", { opacity: 0, scale: 3.4, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .26, ease: "back.out(2.2)" }, t - .05);
+      tl.fromTo("#ea", { scale: .3, rotation: -30 }, { scale: 1, rotation: 0, duration: .45, ease: "back.out(1.8)" }, t - .1);
+      tl.fromTo(".met", { x: -300, y: -400, opacity: 0 }, { x: 0, y: 0, opacity: 1, duration: .35, ease: "power2.in", stagger: .15 }, t + .1);
+      tl.to("#ea", { rotation: 8, duration: .08, yoyo: true, repeat: 15, ease: "none" }, U - .1);
+      tl.to("#crk", { strokeDashoffset: 0, duration: .3, ease: "power2.in" }, U);
+      tl.fromTo("#fire", { scale: .6, transformOrigin: "300px 480px" }, { scale: 1.25, duration: .18, yoyo: true, repeat: 7, ease: "sine.inOut" }, U);
+      tl.to("#ea", { y: 420, duration: 1.1, ease: "power2.in" }, U + .5);
+      tl.fromTo("#rd", { opacity: 0 }, { opacity: .35, duration: .1, yoyo: true, repeat: 7, ease: "none" }, U);
+      tl.fromTo("#u2", { opacity: 0, scale: 3.4, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .26, ease: "back.out(2.2)" }, U - .05);
+      [[24,-14],[-26,12],[20,16],[-16,-12],[10,8],[0,0],[24,-14],[-26,12],[0,0]].forEach(([x, y], i) => tl.to("#s12-stage", { x, y, duration: .04, ease: "none" }, U + i * .04));
+      tl.to("#s12-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
+      window.__timelines["s12"] = tl;
+    })();
+  </script>
+</template>
