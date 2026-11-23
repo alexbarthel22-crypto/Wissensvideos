@@ -32,32 +32,32 @@
    "tag": "",
    "sfx": [
     {
-     "name": "fs/ocean",
+     "name": "fs_ocean",
      "at": "s01+0.0",
      "volume": 0.45
     },
     {
-     "name": "fs/seagull",
+     "name": "fs_seagull",
      "at": "s01+0.25",
      "volume": 0.35
     },
     {
-     "name": "fs/riser",
+     "name": "fs_riser",
      "at": "L1:Es-0.3",
      "volume": 0.45
     },
     {
-     "name": "fs/flap",
+     "name": "fs_flap",
      "at": "L1:Muscheln",
      "volume": 0.6
     },
     {
-     "name": "fs/swoosh",
+     "name": "fs_swoosh",
      "at": "L1:Muscheln+0.1",
      "volume": 0.5
     },
     {
-     "name": "fs/seashells",
+     "name": "fs_seashells",
      "at": "L1:mehr",
      "volume": 0.45
     }
@@ -75,22 +75,22 @@
    "tag": "",
    "sfx": [
     {
-     "name": "fs/crab",
+     "name": "fs_crab",
      "at": "L2:Einsiedlerkrebse",
      "volume": 0.5
     },
     {
-     "name": "fs/canopen",
+     "name": "fs_canopen",
      "at": "L2:Coladosen",
      "volume": 0.7
     },
     {
-     "name": "fs/fizz",
+     "name": "fs_fizz",
      "at": "L2:Coladosen+0.35",
      "volume": 0.6
     },
     {
-     "name": "fs/pop",
+     "name": "fs_pop",
      "at": "L2:wohnen",
      "volume": 0.45
     }
@@ -108,17 +108,12 @@
    "tag": "",
    "sfx": [
     {
-     "name": "fs/seashell",
+     "name": "fs_seashell",
      "at": "L3:Meer",
      "volume": 0.5
     },
     {
-     "name": "fs/tinnitus",
-     "at": "L3:Stumm",
-     "volume": 0.45
-    },
-    {
-     "name": "fs/crickets",
+     "name": "fs_crickets",
      "at": "L3:Stumm+0.3",
      "volume": 0.4
     }
@@ -136,27 +131,27 @@
    "tag": "",
    "sfx": [
     {
-     "name": "fs/seagull",
+     "name": "fs_seagull",
      "at": "L4:Möwen",
      "volume": 0.55
     },
     {
-     "name": "fs/whistle",
+     "name": "fs_whistle",
      "at": "L4:streiken",
      "volume": 0.55
     },
     {
-     "name": "fs/megaphone",
+     "name": "fs_megaphone",
      "at": "L4:streiken+0.2",
      "volume": 0.45
     },
     {
-     "name": "fs/protest",
+     "name": "fs_protest",
      "at": "L4:streiken+0.25",
      "volume": 0.45
     },
     {
-     "name": "fs/boo",
+     "name": "fs_boo",
      "at": "L4:streiken+0.4",
      "volume": 0.35
     }
@@ -174,22 +169,12 @@
    "tag": "",
    "sfx": [
     {
-     "name": "fs/fork",
-     "at": "L5:Muschelnudeln",
-     "volume": 0.5
-    },
-    {
-     "name": "fs/gasp",
-     "at": "L5:Nur",
-     "volume": 0.45
-    },
-    {
-     "name": "fs/splat",
+     "name": "fs_splat",
      "at": "L5:Spaghetti",
      "volume": 0.6
     },
     {
-     "name": "fs/slurp",
+     "name": "fs_slurp",
      "at": "L5:Spaghetti+0.35",
      "volume": 0.5
     }
@@ -207,22 +192,17 @@
    "tag": "",
    "sfx": [
     {
-     "name": "fs/nail",
-     "at": "L6:heißt",
-     "volume": 0.45
-    },
-    {
-     "name": "fs/plank",
+     "name": "fs_plank",
      "at": "L6b:TAL",
      "volume": 0.65
     },
     {
-     "name": "fs/scratch",
+     "name": "fs_scratch",
      "at": "L6b:TAL+0.05",
      "volume": 0.45
     },
     {
-     "name": "fs/sigh",
+     "name": "fs_sigh",
      "at": "L6b:TAL+0.5",
      "volume": 0.5
     }
@@ -245,17 +225,17 @@
    "tag": "",
    "sfx": [
     {
-     "name": "fs/magic",
+     "name": "fs_magic",
      "at": "L7:Folg-0.2",
      "volume": 0.55
     },
     {
-     "name": "fs/boing",
+     "name": "fs_boing",
      "at": "L7:mir",
      "volume": 0.45
     },
     {
-     "name": "fs/cheer",
+     "name": "fs_cheer",
      "at": "L7:bevor's",
      "volume": 0.5
     }
