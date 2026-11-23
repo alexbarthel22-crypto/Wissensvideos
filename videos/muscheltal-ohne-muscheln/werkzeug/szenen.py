@@ -101,6 +101,22 @@ GL = """.gl { position: absolute; left: 0; right: 0; margin: 0 auto; width: fit-
     .gl small { display: block; font-weight: 700; font-size: 26px; letter-spacing: .32em; text-transform: uppercase; opacity: .85; }
     .gl b { display: block; font-weight: 900; font-size: 92px; letter-spacing: -.02em; line-height: 1; }"""
 
+COMMON7 = """
+    .neo { position: absolute; left: 60px; right: 190px; margin: 0 auto; width: fit-content; max-width: 830px; padding: 14px 34px 18px; border-radius: 30px; opacity: 0;
+      background: linear-gradient(160deg, rgba(24,10,48,.88), rgba(8,4,24,.9)); border: 5px solid #3ff0ff; box-shadow: 0 0 30px rgba(63,240,255,.7), inset 0 0 24px rgba(63,240,255,.25);
+      font-family: "Lilita One", sans-serif; color: #fff; text-align: center; line-height: 1.02; white-space: nowrap; }
+    .neo.pk { border-color: #ff3dbd; box-shadow: 0 0 30px rgba(255,61,189,.75), inset 0 0 24px rgba(255,61,189,.25); }
+    .neo.li { border-color: #b6ff3b; box-shadow: 0 0 30px rgba(182,255,59,.7), inset 0 0 24px rgba(182,255,59,.25); }
+    .neo small { display: block; font: 900 30px Inter, sans-serif; letter-spacing: .14em; color: #3ff0ff; margin-bottom: 6px; }
+    .neo.pk small { color: #ff3dbd; } .neo.li small { color: #b6ff3b; }
+    .big { position: absolute; left: 60px; right: 190px; text-align: center; font-family: "Lilita One", sans-serif; color: #fff; line-height: .92; opacity: 0;
+      -webkit-text-stroke: 16px #0a0418; paint-order: stroke fill; }
+    .big .c { color: #3ff0ff; } .big .p { color: #ff3dbd; } .big .l { color: #b6ff3b; }
+    .gl1 { position: absolute; inset: 0; opacity: 0; background: repeating-linear-gradient(0deg, rgba(63,240,255,.18) 0 3px, rgba(255,61,189,0) 3px 9px); mix-blend-mode: screen; }
+    .art { position: absolute; inset: 0; width: 1080px; height: 1920px; }
+    .H { top: 220px; } .B { top: 1520px; }
+"""
+
 # s01 – Volle Muschelstrand-Idylle: alle Muscheln heben ab und fliegen weg → leerer Strand
 scene("s01", """
     .neo { position: absolute; left: 60px; right: 190px; margin: 0 auto; width: fit-content; max-width: 830px; padding: 14px 34px 18px; border-radius: 30px; opacity: 0;
@@ -202,85 +218,44 @@ scene("s03", """
       tl.fromTo("#e3b", { opacity: 0, scale: 3.4, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .26, ease: "back.out(2.2)" },  G - .05);
       [[24,-14],[-26,12],[20,16],[-16,-12],[10,8],[0,0]].forEach(([x, y], i) => tl.to("#s03-stage", { x, y, duration: .04, ease: "none" },  G + i * .04));""")
 
-# s05 – Perlen aus Kaugummi
-scene("s05", """
-    .neo { position: absolute; left: 60px; right: 190px; margin: 0 auto; width: fit-content; max-width: 830px; padding: 14px 34px 18px; border-radius: 30px; opacity: 0;
-      background: linear-gradient(160deg, rgba(24,10,48,.88), rgba(8,4,24,.9)); border: 5px solid #3ff0ff; box-shadow: 0 0 30px rgba(63,240,255,.7), inset 0 0 24px rgba(63,240,255,.25);
-      font-family: "Lilita One", sans-serif; color: #fff; text-align: center; line-height: 1.02; white-space: nowrap; }
-    .neo.pk { border-color: #ff3dbd; box-shadow: 0 0 30px rgba(255,61,189,.75), inset 0 0 24px rgba(255,61,189,.25); }
-    .neo.li { border-color: #b6ff3b; box-shadow: 0 0 30px rgba(182,255,59,.7), inset 0 0 24px rgba(182,255,59,.25); }
-    .neo small { display: block; font: 900 30px Inter, sans-serif; letter-spacing: .14em; color: #3ff0ff; margin-bottom: 6px; }
-    .neo.pk small { color: #ff3dbd; } .neo.li small { color: #b6ff3b; }
-    .big { position: absolute; left: 60px; right: 190px; text-align: center; font-family: "Lilita One", sans-serif; color: #fff; line-height: .92; opacity: 0;
-      -webkit-text-stroke: 16px #0a0418; paint-order: stroke fill; }
-    .big .c { color: #3ff0ff; } .big .p { color: #ff3dbd; } .big .l { color: #b6ff3b; }
-    .gl1 { position: absolute; inset: 0; opacity: 0; background: repeating-linear-gradient(0deg, rgba(63,240,255,.18) 0 3px, rgba(255,61,189,0) 3px 9px); mix-blend-mode: screen; }
-    .art { position: absolute; inset: 0; width: 1080px; height: 1920px; }
-    .H { top: 220px; } .B { top: 1520px; }
-    #bg5 { position: absolute; inset: 0; background: radial-gradient(circle at 50% 55%, #3ad6e8, #0b6f9a 70%); }
-    #oy { position: absolute; left: 190px; top: 760px; width: 700px; height: 600px; }
-    #gum { position: absolute; left: 455px; top: 900px; width: 170px; height: 170px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #ffd6ea, #ff7ac0 55%, #e8467c); box-shadow: inset -10px -14px 0 rgba(0,0,0,.12); }
-    #tag5 { position: absolute; left: 600px; top: 1200px; width: 320px; padding: 16px 10px 20px; border-radius: 16px; background: #fff; border: 6px solid #2a1b12; transform: rotate(8deg); text-align: center; font: 400 44px/1.05 "Lilita One"; color: #2a1b12; white-space: nowrap; }
-    #tag5 span { display: block; font: 900 30px Inter, sans-serif; color: #e8433c; }
-    #p5a { top: 220px; font-size: 150px; } #p5b { top: 1560px; font-size: 62px; }""",
-"""      <div id="bg5"></div>
-      <svg id="oy" viewBox="0 0 350 300"><path d="M20 200 Q175 330 330 200 Q300 250 175 260 Q50 250 20 200Z" fill="#8a7a8a" stroke="#4a3a4a" stroke-width="6"/>
-        <path d="M30 195 Q175 290 320 195 Q175 230 30 195Z" fill="#f3dfe6"/>
-        <path d="M20 190 Q60 40 175 30 Q290 40 330 190 Q175 150 20 190Z" fill="#9a8a9a" stroke="#4a3a4a" stroke-width="6"/>
-        <path d="M60 170 Q110 80 175 70 M120 175 Q150 100 175 70 M230 175 Q200 100 175 70 M290 170 Q240 80 175 70" stroke="#6b5b6b" stroke-width="4" fill="none"/>
-        <circle cx="140" cy="215" r="8" fill="#111"/><circle cx="210" cy="215" r="8" fill="#111"/><path d="M150 240 Q175 228 200 240" stroke="#4a3a4a" stroke-width="5" fill="none"/></svg>
-      <div id="gum"></div>
-      <div id="tag5">ECHTE PERLE<span>nur 0,50 €</span></div>
-      <div id="p5a" class="big"><span class="c">PERLEN</span></div>
-      <div id="p5b" class="neo pk">🫧 NUR NOCH AUS KAUGUMMI!</div>""",
-"""      const t = line("L5")[0], K = at("L5", "Kaugummi");
-      tl.fromTo("#p5a", { opacity: 0, scale: 3.4, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .26, ease: "back.out(2.2)" },  t - .05);
-      tl.fromTo("#gum", { scale: .1 }, { scale: 1.6, duration: .7, ease: "power1.in" }, K - .5);
-      tl.to("#gum", { scale: 0, opacity: 0, duration: .08 }, K + .2);
-      tl.fromTo("#tag5", { y: -400, rotation: -20 }, { y: 0, rotation: 8, duration: .4, ease: "bounce.out" }, t + .2);
-      tl.fromTo("#p5b", { opacity: 0, scale: 3.4, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .26, ease: "back.out(2.2)" },  K - .05);
-      [[24,-14],[-26,12],[20,16],[-16,-12],[10,8],[0,0]].forEach(([x, y], i) => tl.to("#s05-stage", { x, y, duration: .04, ease: "none" },  K + .2 + i * .04));""")
+# s05 – Urlaub: Pfandflaschen statt Muscheln sammeln
+scene("s05", COMMON7 + """
+    #bg5 { position: absolute; inset: 0; }
+    .pf { position: absolute; font: 900 46px Inter, sans-serif; color: #fff; background: #1fa34a; border: 5px solid #fff; border-radius: 22px; padding: 6px 16px; opacity: 0; }
+    #p1 { font-size: 118px; } #p2 { font-size: 70px; }""",
+"""      <svg class="art" id="bg5" viewBox="0 0 1080 1920"><defs><linearGradient id="g5s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7fd8ff"/><stop offset=".55" stop-color="#bfeeff"/><stop offset="1" stop-color="#fff2c8"/></linearGradient></defs><rect width="1080" height="1920" fill="url(#g5s)"/><circle cx="880" cy="560" r="90" fill="#ffd84a"/><rect y="1000" width="1080" height="200" fill="#2fb7e8"/><rect y="1180" width="1080" height="740" fill="#f2d38c"/>
+        <g transform="translate(330,1330)"><circle cx="0" cy="-260" r="70" fill="#f1c09a" stroke="#2a1b12" stroke-width="6"/><path d="M-70 -280 Q0 -360 70 -280" fill="#5a3a1a"/><rect x="-75" y="-60" width="22" height="16" rx="4" fill="#111"/><rect x="-60" y="-200" width="120" height="200" rx="40" fill="#ff7a3d" stroke="#2a1b12" stroke-width="6"/><circle cx="-24" cy="-268" r="7" fill="#111"/><circle cx="24" cy="-268" r="7" fill="#111"/><path d="M-22 -236 Q0 -220 22 -236" stroke="#111" stroke-width="5" fill="none"/><path d="M-40 0 L-50 130 M40 0 L50 130" stroke="#f1c09a" stroke-width="26" stroke-linecap="round"/><path d="M60 -160 L150 -90" stroke="#f1c09a" stroke-width="24" stroke-linecap="round"/>
+          <g transform="translate(160,-80)"><path d="M-80 0 L80 0 L60 170 L-60 170 Z" fill="#ff3dbd" stroke="#2a1b12" stroke-width="6"/><path d="M-70 0 Q0 -90 70 0" stroke="#2a1b12" stroke-width="6" fill="none"/>
+            <g id="btl"><rect x="-55" y="-90" width="30" height="110" rx="10" fill="#9fe39f" stroke="#2a6a2a" stroke-width="4" transform="rotate(-14)"/><rect x="-12" y="-110" width="30" height="130" rx="10" fill="#b8ecff" stroke="#3a7a9a" stroke-width="4"/><rect x="30" y="-95" width="30" height="115" rx="10" fill="#8a5a2b" stroke="#4a2a0a" stroke-width="4" transform="rotate(12)"/></g></g></g>
+        <g transform="translate(720,1520) rotate(-70)"><rect x="-22" y="-80" width="44" height="160" rx="14" fill="#b8ecff" stroke="#3a7a9a" stroke-width="5"/></g><g transform="translate(880,1700) rotate(20)"><rect x="-22" y="-80" width="44" height="160" rx="14" fill="#9fe39f" stroke="#2a6a2a" stroke-width="5"/></g><g transform="translate(170,1720) rotate(80)"><rect x="-22" y="-80" width="44" height="160" rx="14" fill="#8a5a2b" stroke="#4a2a0a" stroke-width="5"/></g></svg>
+      <div class="pf" id="pf1" style="left:600px;top:1040px">+0,25 €</div><div class="pf" id="pf2" style="left:790px;top:1190px">+0,25 €</div><div class="pf" id="pf3" style="left:600px;top:1330px">+0,25 €</div>
+      <div id="p1" class="big H"><span class="c">URLAUB AM</span><br><span class="l">STRAND:</span></div>
+      <div id="p2" class="neo li B">🍾 PFANDFLASCHEN SAMMELN!</div>""",
+"""      const t = line("L5")[0], P = at("L5", "Pfandflaschen");
+      tl.fromTo("#p1", { opacity: 0, scale: 3.4, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .26, ease: "back.out(2.2)" }, t - .05);
+      tl.fromTo("#btl", { y: -260, opacity: 0 }, { y: 0, opacity: 1, duration: .35, ease: "bounce.out" }, P - .3);
+      tl.fromTo(".pf", { opacity: 0, scale: .3, y: 40 }, { opacity: 1, scale: 1, y: 0, duration: .22, ease: "back.out(3)", stagger: .15 }, P);
+      tl.fromTo("#p2", { opacity: 0, scale: 3.4, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .26, ease: "back.out(2.2)" }, P - .05);
+      [[24,-14],[-26,12],[20,16],[-16,-12],[10,8],[0,0]].forEach(([x, y], i) => tl.to("#s05-stage", { x, y, duration: .04, ease: "none" }, P + i * .04));""")
 
-# s06 – Krabbe mit Ringlicht macht TikTok, 0 Likes
-scene("s06", """
-    .neo { position: absolute; left: 60px; right: 190px; margin: 0 auto; width: fit-content; max-width: 830px; padding: 14px 34px 18px; border-radius: 30px; opacity: 0;
-      background: linear-gradient(160deg, rgba(24,10,48,.88), rgba(8,4,24,.9)); border: 5px solid #3ff0ff; box-shadow: 0 0 30px rgba(63,240,255,.7), inset 0 0 24px rgba(63,240,255,.25);
-      font-family: "Lilita One", sans-serif; color: #fff; text-align: center; line-height: 1.02; white-space: nowrap; }
-    .neo.pk { border-color: #ff3dbd; box-shadow: 0 0 30px rgba(255,61,189,.75), inset 0 0 24px rgba(255,61,189,.25); }
-    .neo.li { border-color: #b6ff3b; box-shadow: 0 0 30px rgba(182,255,59,.7), inset 0 0 24px rgba(182,255,59,.25); }
-    .neo small { display: block; font: 900 30px Inter, sans-serif; letter-spacing: .14em; color: #3ff0ff; margin-bottom: 6px; }
-    .neo.pk small { color: #ff3dbd; } .neo.li small { color: #b6ff3b; }
-    .big { position: absolute; left: 60px; right: 190px; text-align: center; font-family: "Lilita One", sans-serif; color: #fff; line-height: .92; opacity: 0;
-      -webkit-text-stroke: 16px #0a0418; paint-order: stroke fill; }
-    .big .c { color: #3ff0ff; } .big .p { color: #ff3dbd; } .big .l { color: #b6ff3b; }
-    .gl1 { position: absolute; inset: 0; opacity: 0; background: repeating-linear-gradient(0deg, rgba(63,240,255,.18) 0 3px, rgba(255,61,189,0) 3px 9px); mix-blend-mode: screen; }
-    .art { position: absolute; inset: 0; width: 1080px; height: 1920px; }
-    .H { top: 220px; } .B { top: 1520px; }
-    #bg6 { position: absolute; inset: 0; background: linear-gradient(180deg, #ffb6d9, #ff7ac0 50%, #e8c27a 51%, #d9a85a); }
-    #rl { position: absolute; left: 430px; top: 480px; width: 420px; height: 420px; border-radius: 50%; border: 34px solid #fff8d8; box-shadow: 0 0 60px #fff, inset 0 0 40px #fff; }
-    #st { position: absolute; left: 625px; top: 890px; width: 30px; height: 520px; background: #333; }
-    #cr6 { position: absolute; left: 150px; top: 1000px; width: 460px; height: 400px; }
-    #ui { position: absolute; left: 790px; top: 760px; width: 120px; display: flex; flex-direction: column; gap: 30px; align-items: center; color: #fff; text-shadow: 0 3px 6px #000; }
-    #ui div { text-align: center; font-size: 76px; line-height: 1; } #ui small { display: block; font: 900 34px Inter, sans-serif; }
-    #c6a { top: 220px; font-size: 150px; } #c6b { top: 1560px; font-size: 84px; }""",
+# s06 – Muschelkette → Kronkorken-Kette
+scene("s06", COMMON7 + """
+    #bg6 { position: absolute; inset: 0; background: radial-gradient(circle at 50% 50%, #ffcf6a, #e0631f 80%); }
+    #k1 { font-size: 130px; } #k2 { font-size: 70px; }
+    #mk { opacity: 1; } #kk { opacity: 0; } #s06-stage .art { transform: translateY(-260px); }""",
 """      <div id="bg6"></div>
-      <div id="rl"></div><div id="st"></div>
-      <svg id="cr6" viewBox="0 0 200 170"><ellipse cx="100" cy="110" rx="70" ry="45" fill="#e2553f" stroke="#8a2a1a" stroke-width="5"/>
-        <path d="M30 110 L5 135 M38 125 L15 155 M162 110 L195 135 M170 125 L185 155" stroke="#8a2a1a" stroke-width="7" stroke-linecap="round"/>
-        <path d="M45 80 L15 40" stroke="#8a2a1a" stroke-width="7"/><path d="M155 80 L185 40" stroke="#8a2a1a" stroke-width="7"/>
-        <path d="M0 40 Q15 15 30 40 Q15 32 0 40Z" fill="#e2553f" stroke="#8a2a1a" stroke-width="4"/><path d="M170 40 Q185 15 200 40 Q185 32 170 40Z" fill="#e2553f" stroke="#8a2a1a" stroke-width="4"/>
-        <circle cx="80" cy="95" r="10" fill="#fff"/><circle cx="120" cy="95" r="10" fill="#fff"/><circle cx="80" cy="97" r="4" fill="#111"/><circle cx="120" cy="97" r="4" fill="#111"/>
-        <path d="M78 122 Q100 142 122 122" stroke="#5a1a10" stroke-width="5" fill="#fff"/>
-        <rect x="70" y="58" width="60" height="10" rx="5" fill="#ff3dbd"/></svg>
-      <div id="ui"><div>❤️<small>0</small></div><div>💬<small>0</small></div><div>↗️<small>0</small></div></div>
-      <div id="c6a" class="big"><span class="p">KRABBEN</span></div>
-      <div id="c6b" class="neo pk">📱 BETTELN UM LIKES!</div>""",
-"""      const t = line("L6")[0], Lk = at("L6", "Likes");
-      tl.fromTo("#c6a", { opacity: 0, scale: 3.4, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .26, ease: "back.out(2.2)" },  t - .05);
-      tl.fromTo("#cr6", { y: 0, rotation: -8 }, { y: -40, rotation: 8, duration: .18, yoyo: true, repeat: 11, ease: "sine.inOut" }, t);
-      tl.fromTo("#rl", { boxShadow: "0 0 20px #fff" }, { boxShadow: "0 0 120px #fff", duration: .3, yoyo: true, repeat: 5 }, t);
-      tl.fromTo("#c6b", { opacity: 0, scale: 3.4, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .26, ease: "back.out(2.2)" }, at("L6", "TikTok") - .05);
-      tl.to("#ui", { scale: 1.15, duration: .15, yoyo: true, repeat: 3 }, Lk);""")
+      <svg class="art" viewBox="0 0 1080 1920"><path d="M240 1920 Q240 1500 420 1440 L420 1240 Q540 1290 660 1240 L660 1440 Q840 1500 840 1920 Z" fill="#f1c09a" stroke="#2a1b12" stroke-width="8"/><circle cx="540" cy="1000" r="230" fill="#f1c09a" stroke="#2a1b12" stroke-width="8"/><path d="M310 960 Q330 720 540 740 Q760 720 770 960 Q700 840 540 850 Q380 840 310 960Z" fill="#2a1b12"/><circle cx="470" cy="1010" r="14" fill="#111"/><circle cx="610" cy="1010" r="14" fill="#111"/><path d="M490 1110 Q540 1140 590 1110" stroke="#111" stroke-width="8" fill="none" stroke-linecap="round"/><rect x="420" y="980" width="100" height="56" rx="20" fill="#111" opacity=".85"/><rect x="560" y="980" width="100" height="56" rx="20" fill="#111" opacity=".85"/><path d="M520 1004 L560 1004" stroke="#111" stroke-width="8"/>
+        <path d="M420 1400 Q540 1560 660 1400" stroke="#c9a46a" stroke-width="6" fill="none"/></svg>
+      <svg class="art" id="mk" viewBox="0 0 1080 1920"><g transform="translate(445,1440)"><path d="M0 18 L-22 10 Q-26 0 -18 -2 Q-18 -12 -8 -10 Q0 -20 8 -10 Q18 -12 18 -2 Q26 0 22 10 Z" fill="#ffc7b2" stroke="#e8467c" stroke-width="3"/></g><g transform="translate(490,1490)"><path d="M0 18 L-22 10 Q-26 0 -18 -2 Q-18 -12 -8 -10 Q0 -20 8 -10 Q18 -12 18 -2 Q26 0 22 10 Z" fill="#ffc7b2" stroke="#e8467c" stroke-width="3"/></g><g transform="translate(540,1505) scale(1.6)"><path d="M0 18 L-22 10 Q-26 0 -18 -2 Q-18 -12 -8 -10 Q0 -20 8 -10 Q18 -12 18 -2 Q26 0 22 10 Z" fill="#ffc7b2" stroke="#e8467c" stroke-width="3"/></g><g transform="translate(590,1490)"><path d="M0 18 L-22 10 Q-26 0 -18 -2 Q-18 -12 -8 -10 Q0 -20 8 -10 Q18 -12 18 -2 Q26 0 22 10 Z" fill="#ffc7b2" stroke="#e8467c" stroke-width="3"/></g><g transform="translate(635,1440)"><path d="M0 18 L-22 10 Q-26 0 -18 -2 Q-18 -12 -8 -10 Q0 -20 8 -10 Q18 -12 18 -2 Q26 0 22 10 Z" fill="#ffc7b2" stroke="#e8467c" stroke-width="3"/></g></svg>
+      <svg class="art" id="kk" viewBox="0 0 1080 1920"><g fill="#d9d9d9" stroke="#777" stroke-width="5"><circle cx="445" cy="1440" r="26"/><circle cx="490" cy="1490" r="26"/><circle cx="590" cy="1490" r="26"/><circle cx="635" cy="1440" r="26"/></g><circle cx="540" cy="1510" r="40" fill="#e8433c" stroke="#8a1a1a" stroke-width="6"/><circle cx="540" cy="1510" r="22" fill="none" stroke="#fff" stroke-width="5"/><g stroke="#fff" stroke-width="6" stroke-linecap="round"><path d="M700 1400 L730 1370"/><path d="M380 1400 L350 1370"/><path d="M720 1470 L760 1470"/></g></svg>
+      <div id="k1" class="big H"><span class="p">MUSCHEL-</span><br><span class="p">KETTE?</span></div>
+      <div id="k2" class="neo pk B">🍺 JETZT AUS KRONKORKEN!</div>""",
+"""      const t = line("L6")[0], K = at("L6", "Kronkorken");
+      tl.fromTo("#k1", { opacity: 0, scale: 3.4, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .26, ease: "back.out(2.2)" }, t - .05);
+      tl.to("#mk", { opacity: 0, scale: 0, transformOrigin: "540px 1480px", duration: .2, ease: "back.in(2)" }, K - .25);
+      tl.fromTo("#kk", { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, transformOrigin: "540px 1480px", duration: .3, ease: "back.out(2.5)" }, K - .05);
+      tl.fromTo("#k2", { opacity: 0, scale: 3.4, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .26, ease: "back.out(2.2)" }, K - .05);
+      [[24,-14],[-26,12],[20,16],[-16,-12],[10,8],[0,0]].forEach(([x, y], i) => tl.to("#s06-stage", { x, y, duration: .04, ease: "none" }, K + i * .04));""")
 
 # s04 – Möwen-Streik
 scene("s04", """
@@ -307,21 +282,7 @@ scene("s04", """
       tl.fromTo("#m2", { opacity: 0, scale: 3.4, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .26, ease: "back.out(2.2)" }, S - .05);
       tl.fromTo("#m2", { textShadow: "0 0 0px #ff3dbd" }, { textShadow: "0 0 80px #ff3dbd", duration: .12, yoyo: true, repeat: 3, ease: "none", immediateRender: false }, S + .2);""")
 
-COMMON7 = """
-    .neo { position: absolute; left: 60px; right: 190px; margin: 0 auto; width: fit-content; max-width: 830px; padding: 14px 34px 18px; border-radius: 30px; opacity: 0;
-      background: linear-gradient(160deg, rgba(24,10,48,.88), rgba(8,4,24,.9)); border: 5px solid #3ff0ff; box-shadow: 0 0 30px rgba(63,240,255,.7), inset 0 0 24px rgba(63,240,255,.25);
-      font-family: "Lilita One", sans-serif; color: #fff; text-align: center; line-height: 1.02; white-space: nowrap; }
-    .neo.pk { border-color: #ff3dbd; box-shadow: 0 0 30px rgba(255,61,189,.75), inset 0 0 24px rgba(255,61,189,.25); }
-    .neo.li { border-color: #b6ff3b; box-shadow: 0 0 30px rgba(182,255,59,.7), inset 0 0 24px rgba(182,255,59,.25); }
-    .neo small { display: block; font: 900 30px Inter, sans-serif; letter-spacing: .14em; color: #3ff0ff; margin-bottom: 6px; }
-    .neo.pk small { color: #ff3dbd; } .neo.li small { color: #b6ff3b; }
-    .big { position: absolute; left: 60px; right: 190px; text-align: center; font-family: "Lilita One", sans-serif; color: #fff; line-height: .92; opacity: 0;
-      -webkit-text-stroke: 16px #0a0418; paint-order: stroke fill; }
-    .big .c { color: #3ff0ff; } .big .p { color: #ff3dbd; } .big .l { color: #b6ff3b; }
-    .gl1 { position: absolute; inset: 0; opacity: 0; background: repeating-linear-gradient(0deg, rgba(63,240,255,.18) 0 3px, rgba(255,61,189,0) 3px 9px); mix-blend-mode: screen; }
-    .art { position: absolute; inset: 0; width: 1080px; height: 1920px; }
-    .H { top: 220px; } .B { top: 1520px; }
-"""
+
 
 # s07 – WLAN-Passwort war Muschel123 → kein Internet
 scene("s07", COMMON7 + """
@@ -397,40 +358,5 @@ scene("s08", """
       tl.fromTo("#t1", { opacity: 0, scale: 3.4, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .26, ease: "back.out(2.2)" }, t - .05);
       tl.fromTo("#tp", { opacity: 0, y: -300, rotation: -30 }, { opacity: 1, y: 0, rotation: -4, duration: .3, ease: "power3.in" }, T - .3);
       tl.fromTo("#t2", { opacity: 0, scale: 3.4, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .26, ease: "back.out(2.2)" }, T - .02);
-      [[24,-14],[-26,12],[20,16],[-16,-12],[10,8],[0,0]].forEach(([x, y], i) => tl.to("#s08-stage", { x, y, duration: .04, ease: "none" }, T + i * .04));""")
+      [[24,-14],[-26,12],[20,16],[-16,-12],[10,8],[0,0]].forEach(([x, y], i) => tl.to("#s08-stage", { x, y, duration: .04, ease: "none" }, T + i * .04));""", blur=False)
 
-# s09 – Muscheln kommen zurück: Riesenmuschel, Strahlen, Folgen
-scene("s09", """
-    .neo { position: absolute; left: 60px; right: 190px; margin: 0 auto; width: fit-content; max-width: 830px; padding: 14px 34px 18px; border-radius: 30px; opacity: 0;
-      background: linear-gradient(160deg, rgba(24,10,48,.88), rgba(8,4,24,.9)); border: 5px solid #3ff0ff; box-shadow: 0 0 30px rgba(63,240,255,.7), inset 0 0 24px rgba(63,240,255,.25);
-      font-family: "Lilita One", sans-serif; color: #fff; text-align: center; line-height: 1.02; white-space: nowrap; }
-    .neo.pk { border-color: #ff3dbd; box-shadow: 0 0 30px rgba(255,61,189,.75), inset 0 0 24px rgba(255,61,189,.25); }
-    .neo.li { border-color: #b6ff3b; box-shadow: 0 0 30px rgba(182,255,59,.7), inset 0 0 24px rgba(182,255,59,.25); }
-    .neo small { display: block; font: 900 30px Inter, sans-serif; letter-spacing: .14em; color: #3ff0ff; margin-bottom: 6px; }
-    .neo.pk small { color: #ff3dbd; } .neo.li small { color: #b6ff3b; }
-    .big { position: absolute; left: 60px; right: 190px; text-align: center; font-family: "Lilita One", sans-serif; color: #fff; line-height: .92; opacity: 0;
-      -webkit-text-stroke: 16px #0a0418; paint-order: stroke fill; }
-    .big .c { color: #3ff0ff; } .big .p { color: #ff3dbd; } .big .l { color: #b6ff3b; }
-    .gl1 { position: absolute; inset: 0; opacity: 0; background: repeating-linear-gradient(0deg, rgba(63,240,255,.18) 0 3px, rgba(255,61,189,0) 3px 9px); mix-blend-mode: screen; }
-    .art { position: absolute; inset: 0; width: 1080px; height: 1920px; }
-    .H { top: 220px; } .B { top: 1520px; }
-    #ray7 { position: absolute; left: 540px; top: 1000px; width: 2200px; height: 2200px; margin: -1100px; border-radius: 50%; background: repeating-conic-gradient(rgba(255,240,180,.5) 0deg 8deg, rgba(255,240,180,0) 8deg 20deg); -webkit-mask: radial-gradient(circle, #000 10%, transparent 60%); mask: radial-gradient(circle, #000 10%, transparent 60%); }
-    #bg7 { position: absolute; inset: 0; }
-    #big7 { position: absolute; left: 240px; top: 700px; width: 600px; height: 600px; }
-    #r1 { font-size: 170px; } #r2 { font-size: 72px; top: 1380px !important; }
-    #fb7 { position: absolute; left: 60px; right: 190px; margin: 0 auto; top: 1680px; width: 460px; height: 116px; border-radius: 58px; background: #ff3dbd; color: #fff; font: 900 56px/116px Inter, sans-serif; text-align: center; opacity: 0; box-shadow: 0 0 40px rgba(255,61,189,.8); }""",
-"""      <svg class="art" id="bg7" viewBox="0 0 1080 1920"><defs><linearGradient id="g7" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3ff0ff"/><stop offset=".5" stop-color="#13a8d0"/><stop offset="1" stop-color="#0a5a92"/></linearGradient></defs><rect width="1080" height="1920" fill="url(#g7)"/></svg>
-      <div id="ray7"></div>
-      <svg class="art" viewBox="0 0 1080 1920"><g transform="translate(60,-160) scale(1.5)" opacity="1" class="rs" id="rs0"><path d="M32 54 L6 44 Q2 34 10 32 Q8 22 17 23 Q19 13 27 18 Q32 9 37 18 Q45 13 47 23 Q56 22 54 32 Q62 34 58 44 Z" fill="#ffc7b2" stroke="#e8467c" stroke-width="2.5"/><path d="M32 54 L18 26 M32 54 L27 18 M32 54 L37 18 M32 54 L46 26" stroke="#e8467c" stroke-width="2" fill="none"/></g><g transform="translate(197,-160) scale(1.5)" opacity="1" class="rs" id="rs1"><path d="M32 54 L6 44 Q2 34 10 32 Q8 22 17 23 Q19 13 27 18 Q32 9 37 18 Q45 13 47 23 Q56 22 54 32 Q62 34 58 44 Z" fill="#ffc7b2" stroke="#e8467c" stroke-width="2.5"/><path d="M32 54 L18 26 M32 54 L27 18 M32 54 L37 18 M32 54 L46 26" stroke="#e8467c" stroke-width="2" fill="none"/></g><g transform="translate(334,-160) scale(1.5)" opacity="1" class="rs" id="rs2"><path d="M32 54 L6 44 Q2 34 10 32 Q8 22 17 23 Q19 13 27 18 Q32 9 37 18 Q45 13 47 23 Q56 22 54 32 Q62 34 58 44 Z" fill="#ffc7b2" stroke="#e8467c" stroke-width="2.5"/><path d="M32 54 L18 26 M32 54 L27 18 M32 54 L37 18 M32 54 L46 26" stroke="#e8467c" stroke-width="2" fill="none"/></g><g transform="translate(471,-160) scale(1.5)" opacity="1" class="rs" id="rs3"><path d="M32 54 L6 44 Q2 34 10 32 Q8 22 17 23 Q19 13 27 18 Q32 9 37 18 Q45 13 47 23 Q56 22 54 32 Q62 34 58 44 Z" fill="#ffc7b2" stroke="#e8467c" stroke-width="2.5"/><path d="M32 54 L18 26 M32 54 L27 18 M32 54 L37 18 M32 54 L46 26" stroke="#e8467c" stroke-width="2" fill="none"/></g><g transform="translate(608,-160) scale(1.5)" opacity="1" class="rs" id="rs4"><path d="M32 54 L6 44 Q2 34 10 32 Q8 22 17 23 Q19 13 27 18 Q32 9 37 18 Q45 13 47 23 Q56 22 54 32 Q62 34 58 44 Z" fill="#ffc7b2" stroke="#e8467c" stroke-width="2.5"/><path d="M32 54 L18 26 M32 54 L27 18 M32 54 L37 18 M32 54 L46 26" stroke="#e8467c" stroke-width="2" fill="none"/></g><g transform="translate(745,-160) scale(1.5)" opacity="1" class="rs" id="rs5"><path d="M32 54 L6 44 Q2 34 10 32 Q8 22 17 23 Q19 13 27 18 Q32 9 37 18 Q45 13 47 23 Q56 22 54 32 Q62 34 58 44 Z" fill="#ffc7b2" stroke="#e8467c" stroke-width="2.5"/><path d="M32 54 L18 26 M32 54 L27 18 M32 54 L37 18 M32 54 L46 26" stroke="#e8467c" stroke-width="2" fill="none"/></g><g transform="translate(882,-160) scale(1.5)" opacity="1" class="rs" id="rs6"><path d="M32 54 L6 44 Q2 34 10 32 Q8 22 17 23 Q19 13 27 18 Q32 9 37 18 Q45 13 47 23 Q56 22 54 32 Q62 34 58 44 Z" fill="#ffc7b2" stroke="#e8467c" stroke-width="2.5"/><path d="M32 54 L18 26 M32 54 L27 18 M32 54 L37 18 M32 54 L46 26" stroke="#e8467c" stroke-width="2" fill="none"/></g><g transform="translate(119,-160) scale(1.5)" opacity="1" class="rs" id="rs7"><path d="M32 54 L6 44 Q2 34 10 32 Q8 22 17 23 Q19 13 27 18 Q32 9 37 18 Q45 13 47 23 Q56 22 54 32 Q62 34 58 44 Z" fill="#ffc7b2" stroke="#e8467c" stroke-width="2.5"/><path d="M32 54 L18 26 M32 54 L27 18 M32 54 L37 18 M32 54 L46 26" stroke="#e8467c" stroke-width="2" fill="none"/></g><g transform="translate(256,-160) scale(1.5)" opacity="1" class="rs" id="rs8"><path d="M32 54 L6 44 Q2 34 10 32 Q8 22 17 23 Q19 13 27 18 Q32 9 37 18 Q45 13 47 23 Q56 22 54 32 Q62 34 58 44 Z" fill="#ffc7b2" stroke="#e8467c" stroke-width="2.5"/><path d="M32 54 L18 26 M32 54 L27 18 M32 54 L37 18 M32 54 L46 26" stroke="#e8467c" stroke-width="2" fill="none"/></g><g transform="translate(393,-160) scale(1.5)" opacity="1" class="rs" id="rs9"><path d="M32 54 L6 44 Q2 34 10 32 Q8 22 17 23 Q19 13 27 18 Q32 9 37 18 Q45 13 47 23 Q56 22 54 32 Q62 34 58 44 Z" fill="#ffc7b2" stroke="#e8467c" stroke-width="2.5"/><path d="M32 54 L18 26 M32 54 L27 18 M32 54 L37 18 M32 54 L46 26" stroke="#e8467c" stroke-width="2" fill="none"/></g><g transform="translate(530,-160) scale(1.5)" opacity="1" class="rs" id="rs10"><path d="M32 54 L6 44 Q2 34 10 32 Q8 22 17 23 Q19 13 27 18 Q32 9 37 18 Q45 13 47 23 Q56 22 54 32 Q62 34 58 44 Z" fill="#ffc7b2" stroke="#e8467c" stroke-width="2.5"/><path d="M32 54 L18 26 M32 54 L27 18 M32 54 L37 18 M32 54 L46 26" stroke="#e8467c" stroke-width="2" fill="none"/></g><g transform="translate(667,-160) scale(1.5)" opacity="1" class="rs" id="rs11"><path d="M32 54 L6 44 Q2 34 10 32 Q8 22 17 23 Q19 13 27 18 Q32 9 37 18 Q45 13 47 23 Q56 22 54 32 Q62 34 58 44 Z" fill="#ffc7b2" stroke="#e8467c" stroke-width="2.5"/><path d="M32 54 L18 26 M32 54 L27 18 M32 54 L37 18 M32 54 L46 26" stroke="#e8467c" stroke-width="2" fill="none"/></g><g transform="translate(804,-160) scale(1.5)" opacity="1" class="rs" id="rs12"><path d="M32 54 L6 44 Q2 34 10 32 Q8 22 17 23 Q19 13 27 18 Q32 9 37 18 Q45 13 47 23 Q56 22 54 32 Q62 34 58 44 Z" fill="#ffc7b2" stroke="#e8467c" stroke-width="2.5"/><path d="M32 54 L18 26 M32 54 L27 18 M32 54 L37 18 M32 54 L46 26" stroke="#e8467c" stroke-width="2" fill="none"/></g><g transform="translate(941,-160) scale(1.5)" opacity="1" class="rs" id="rs13"><path d="M32 54 L6 44 Q2 34 10 32 Q8 22 17 23 Q19 13 27 18 Q32 9 37 18 Q45 13 47 23 Q56 22 54 32 Q62 34 58 44 Z" fill="#ffc7b2" stroke="#e8467c" stroke-width="2.5"/><path d="M32 54 L18 26 M32 54 L27 18 M32 54 L37 18 M32 54 L46 26" stroke="#e8467c" stroke-width="2" fill="none"/></g><g transform="translate(178,-160) scale(1.5)" opacity="1" class="rs" id="rs14"><path d="M32 54 L6 44 Q2 34 10 32 Q8 22 17 23 Q19 13 27 18 Q32 9 37 18 Q45 13 47 23 Q56 22 54 32 Q62 34 58 44 Z" fill="#ffc7b2" stroke="#e8467c" stroke-width="2.5"/><path d="M32 54 L18 26 M32 54 L27 18 M32 54 L37 18 M32 54 L46 26" stroke="#e8467c" stroke-width="2" fill="none"/></g><g transform="translate(315,-160) scale(1.5)" opacity="1" class="rs" id="rs15"><path d="M32 54 L6 44 Q2 34 10 32 Q8 22 17 23 Q19 13 27 18 Q32 9 37 18 Q45 13 47 23 Q56 22 54 32 Q62 34 58 44 Z" fill="#ffc7b2" stroke="#e8467c" stroke-width="2.5"/><path d="M32 54 L18 26 M32 54 L27 18 M32 54 L37 18 M32 54 L46 26" stroke="#e8467c" stroke-width="2" fill="none"/></g></svg>
-      <svg id="big7" viewBox="0 0 64 64"><path d="M32 54 L6 44 Q2 34 10 32 Q8 22 17 23 Q19 13 27 18 Q32 9 37 18 Q45 13 47 23 Q56 22 54 32 Q62 34 58 44 Z" fill="#ffc7b2" stroke="#e8467c" stroke-width="2.5"/><path d="M32 54 L18 26 M32 54 L27 18 M32 54 L37 18 M32 54 L46 26" stroke="#e8467c" stroke-width="2" fill="none"/></svg>
-      <div id="r1" class="big H"><span class="l">FOLG MIR</span></div>
-      <div id="r2" class="neo pk B">🐚 BEVOR'S ZU SPÄT IST!</div>
-      <div id="fb7">+ Folgen</div>""",
-"""      const t = line("L9")[0];
-      tl.fromTo("#ray7", { opacity: 0, rotation: 0, scale: .4 }, { opacity: 1, rotation: 60, scale: 1, duration: 2, ease: "power1.out" }, t - .1);
-      tl.fromTo("#big7", { scale: 0, rotation: -180 }, { scale: 1, rotation: 0, duration: .5, ease: "back.out(2)" }, t);
-      tl.to("#big7", { scale: 1.08, duration: .25, yoyo: true, repeat: 5, ease: "sine.inOut" }, t + .6);
-      [...Array(16).keys()].forEach(i => tl.fromTo("#rs" + i, { y: 0, rotation: 0 }, { y: 2300, rotation: (i % 2 ? 1 : -1) * 300, duration: 1.8 + (i % 4) * .25, ease: "power1.in", immediateRender: false }, t + (i % 6) * .08));
-      tl.fromTo("#r1", { opacity: 0, scale: 3.4, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .26, ease: "back.out(2.2)" }, t - .05);
-      tl.fromTo("#r2", { opacity: 0, scale: 3.4, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .26, ease: "back.out(2.2)" }, at("L9", "spät") - .2);
-      tl.fromTo("#fb7", { opacity: 0, scale: .5 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(3)" }, t + .5);""", blur=False)

@@ -62,35 +62,27 @@
     .gl1 { position: absolute; inset: 0; opacity: 0; background: repeating-linear-gradient(0deg, rgba(63,240,255,.18) 0 3px, rgba(255,61,189,0) 3px 9px); mix-blend-mode: screen; }
     .art { position: absolute; inset: 0; width: 1080px; height: 1920px; }
     .H { top: 220px; } .B { top: 1520px; }
-    #bg6 { position: absolute; inset: 0; background: linear-gradient(180deg, #ffb6d9, #ff7ac0 50%, #e8c27a 51%, #d9a85a); }
-    #rl { position: absolute; left: 430px; top: 480px; width: 420px; height: 420px; border-radius: 50%; border: 34px solid #fff8d8; box-shadow: 0 0 60px #fff, inset 0 0 40px #fff; }
-    #st { position: absolute; left: 625px; top: 890px; width: 30px; height: 520px; background: #333; }
-    #cr6 { position: absolute; left: 150px; top: 1000px; width: 460px; height: 400px; }
-    #ui { position: absolute; left: 790px; top: 760px; width: 120px; display: flex; flex-direction: column; gap: 30px; align-items: center; color: #fff; text-shadow: 0 3px 6px #000; }
-    #ui div { text-align: center; font-size: 76px; line-height: 1; } #ui small { display: block; font: 900 34px Inter, sans-serif; }
-    #c6a { top: 220px; font-size: 150px; } #c6b { top: 1560px; font-size: 84px; }
+
+    #bg6 { position: absolute; inset: 0; background: radial-gradient(circle at 50% 50%, #ffcf6a, #e0631f 80%); }
+    #k1 { font-size: 130px; } #k2 { font-size: 70px; }
+    #mk { opacity: 1; } #kk { opacity: 0; } #s06-stage .art { transform: translateY(-260px); }
     .neo { width: auto !important; max-width: none !important; white-space: normal !important; }
   </style>
-  <div id="root" data-composition-id="s06" data-start="0" data-duration="3.350" data-width="1080" data-height="1920">
-    <div id="s06-stage" class="clip stage" data-start="0" data-duration="3.350" data-track-index="0">
+  <div id="root" data-composition-id="s06" data-start="0" data-duration="2.970" data-width="1080" data-height="1920">
+    <div id="s06-stage" class="clip stage" data-start="0" data-duration="2.970" data-track-index="0">
       <div id="bg6"></div>
-      <div id="rl"></div><div id="st"></div>
-      <svg id="cr6" viewBox="0 0 200 170"><ellipse cx="100" cy="110" rx="70" ry="45" fill="#e2553f" stroke="#8a2a1a" stroke-width="5"/>
-        <path d="M30 110 L5 135 M38 125 L15 155 M162 110 L195 135 M170 125 L185 155" stroke="#8a2a1a" stroke-width="7" stroke-linecap="round"/>
-        <path d="M45 80 L15 40" stroke="#8a2a1a" stroke-width="7"/><path d="M155 80 L185 40" stroke="#8a2a1a" stroke-width="7"/>
-        <path d="M0 40 Q15 15 30 40 Q15 32 0 40Z" fill="#e2553f" stroke="#8a2a1a" stroke-width="4"/><path d="M170 40 Q185 15 200 40 Q185 32 170 40Z" fill="#e2553f" stroke="#8a2a1a" stroke-width="4"/>
-        <circle cx="80" cy="95" r="10" fill="#fff"/><circle cx="120" cy="95" r="10" fill="#fff"/><circle cx="80" cy="97" r="4" fill="#111"/><circle cx="120" cy="97" r="4" fill="#111"/>
-        <path d="M78 122 Q100 142 122 122" stroke="#5a1a10" stroke-width="5" fill="#fff"/>
-        <rect x="70" y="58" width="60" height="10" rx="5" fill="#ff3dbd"/></svg>
-      <div id="ui"><div>❤️<small>0</small></div><div>💬<small>0</small></div><div>↗️<small>0</small></div></div>
-      <div id="c6a" class="big"><span class="p">KRABBEN</span></div>
-      <div id="c6b" class="neo pk">📱 BETTELN UM LIKES!</div>
+      <svg class="art" viewBox="0 0 1080 1920"><path d="M240 1920 Q240 1500 420 1440 L420 1240 Q540 1290 660 1240 L660 1440 Q840 1500 840 1920 Z" fill="#f1c09a" stroke="#2a1b12" stroke-width="8"/><circle cx="540" cy="1000" r="230" fill="#f1c09a" stroke="#2a1b12" stroke-width="8"/><path d="M310 960 Q330 720 540 740 Q760 720 770 960 Q700 840 540 850 Q380 840 310 960Z" fill="#2a1b12"/><circle cx="470" cy="1010" r="14" fill="#111"/><circle cx="610" cy="1010" r="14" fill="#111"/><path d="M490 1110 Q540 1140 590 1110" stroke="#111" stroke-width="8" fill="none" stroke-linecap="round"/><rect x="420" y="980" width="100" height="56" rx="20" fill="#111" opacity=".85"/><rect x="560" y="980" width="100" height="56" rx="20" fill="#111" opacity=".85"/><path d="M520 1004 L560 1004" stroke="#111" stroke-width="8"/>
+        <path d="M420 1400 Q540 1560 660 1400" stroke="#c9a46a" stroke-width="6" fill="none"/></svg>
+      <svg class="art" id="mk" viewBox="0 0 1080 1920"><g transform="translate(445,1440)"><path d="M0 18 L-22 10 Q-26 0 -18 -2 Q-18 -12 -8 -10 Q0 -20 8 -10 Q18 -12 18 -2 Q26 0 22 10 Z" fill="#ffc7b2" stroke="#e8467c" stroke-width="3"/></g><g transform="translate(490,1490)"><path d="M0 18 L-22 10 Q-26 0 -18 -2 Q-18 -12 -8 -10 Q0 -20 8 -10 Q18 -12 18 -2 Q26 0 22 10 Z" fill="#ffc7b2" stroke="#e8467c" stroke-width="3"/></g><g transform="translate(540,1505) scale(1.6)"><path d="M0 18 L-22 10 Q-26 0 -18 -2 Q-18 -12 -8 -10 Q0 -20 8 -10 Q18 -12 18 -2 Q26 0 22 10 Z" fill="#ffc7b2" stroke="#e8467c" stroke-width="3"/></g><g transform="translate(590,1490)"><path d="M0 18 L-22 10 Q-26 0 -18 -2 Q-18 -12 -8 -10 Q0 -20 8 -10 Q18 -12 18 -2 Q26 0 22 10 Z" fill="#ffc7b2" stroke="#e8467c" stroke-width="3"/></g><g transform="translate(635,1440)"><path d="M0 18 L-22 10 Q-26 0 -18 -2 Q-18 -12 -8 -10 Q0 -20 8 -10 Q18 -12 18 -2 Q26 0 22 10 Z" fill="#ffc7b2" stroke="#e8467c" stroke-width="3"/></g></svg>
+      <svg class="art" id="kk" viewBox="0 0 1080 1920"><g fill="#d9d9d9" stroke="#777" stroke-width="5"><circle cx="445" cy="1440" r="26"/><circle cx="490" cy="1490" r="26"/><circle cx="590" cy="1490" r="26"/><circle cx="635" cy="1440" r="26"/></g><circle cx="540" cy="1510" r="40" fill="#e8433c" stroke="#8a1a1a" stroke-width="6"/><circle cx="540" cy="1510" r="22" fill="none" stroke="#fff" stroke-width="5"/><g stroke="#fff" stroke-width="6" stroke-linecap="round"><path d="M700 1400 L730 1370"/><path d="M380 1400 L350 1370"/><path d="M720 1470 L760 1470"/></g></svg>
+      <div id="k1" class="big H"><span class="p">MUSCHEL-</span><br><span class="p">KETTE?</span></div>
+      <div id="k2" class="neo pk B">🍺 JETZT AUS KRONKORKEN!</div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 3.35, "L6": [0.2, 3.17], "L6.words": [["die", 0.2, 0.47], ["krabben", 0.47, 1.02], ["betteln", 1.02, 1.569], ["auf", 1.569, 1.839], ["tiktok", 1.839, 2.379], ["um", 2.379, 2.64], ["likes", 2.64, 3.17]]};
+      const C = {"__dur": 2.97, "L6": [0.2, 2.79], "L6.words": [["deine", 0.2, 0.516], ["muschelkette", 0.516, 1.16], ["jetzt", 1.46, 1.739], ["aus", 1.739, 1.999], ["kronkorken", 1.999, 2.79]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -134,12 +126,12 @@
 
       wrapBt("#s06-stage");
       const tl = gsap.timeline({ paused: true });
-      const t = line("L6")[0], Lk = at("L6", "Likes");
-      tl.fromTo("#c6a", { opacity: 0, scale: 3.4, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .26, ease: "back.out(2.2)" },  t - .05);
-      tl.fromTo("#cr6", { y: 0, rotation: -8 }, { y: -40, rotation: 8, duration: .18, yoyo: true, repeat: 11, ease: "sine.inOut" }, t);
-      tl.fromTo("#rl", { boxShadow: "0 0 20px #fff" }, { boxShadow: "0 0 120px #fff", duration: .3, yoyo: true, repeat: 5 }, t);
-      tl.fromTo("#c6b", { opacity: 0, scale: 3.4, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .26, ease: "back.out(2.2)" }, at("L6", "TikTok") - .05);
-      tl.to("#ui", { scale: 1.15, duration: .15, yoyo: true, repeat: 3 }, Lk);
+      const t = line("L6")[0], K = at("L6", "Kronkorken");
+      tl.fromTo("#k1", { opacity: 0, scale: 3.4, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .26, ease: "back.out(2.2)" }, t - .05);
+      tl.to("#mk", { opacity: 0, scale: 0, transformOrigin: "540px 1480px", duration: .2, ease: "back.in(2)" }, K - .25);
+      tl.fromTo("#kk", { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, transformOrigin: "540px 1480px", duration: .3, ease: "back.out(2.5)" }, K - .05);
+      tl.fromTo("#k2", { opacity: 0, scale: 3.4, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .26, ease: "back.out(2.2)" }, K - .05);
+      [[24,-14],[-26,12],[20,16],[-16,-12],[10,8],[0,0]].forEach(([x, y], i) => tl.to("#s06-stage", { x, y, duration: .04, ease: "none" }, K + i * .04));
       tl.to("#s06-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
       window.__timelines["s06"] = tl;
     })();

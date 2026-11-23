@@ -38,7 +38,7 @@
       tl.fromTo("#tp", { opacity: 0, y: -300, rotation: -30 }, { opacity: 1, y: 0, rotation: -4, duration: .3, ease: "power3.in" }, T - .3);
       tl.fromTo("#t2", { opacity: 0, scale: 3.4, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .26, ease: "back.out(2.2)" }, T - .02);
       [[24,-14],[-26,12],[20,16],[-16,-12],[10,8],[0,0]].forEach(([x, y], i) => tl.to("#s08-stage", { x, y, duration: .04, ease: "none" }, T + i * .04));
-      tl.to("#s08-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
+      
       window.__timelines["s08"] = tl;
     })();
   </script>
