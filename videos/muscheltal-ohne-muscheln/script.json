@@ -236,29 +236,24 @@
    "sfx": [
     {
      "name": "fs_pop",
-     "at": "L7:WLAN-Passwort",
+     "at": "L7:Omas",
      "volume": 0.4
     },
     {
      "name": "fs_scratch",
-     "at": "L7b:Kein",
-     "volume": 0.45
+     "at": "L7:Chicken-0.1",
+     "volume": 0.4
     },
     {
-     "name": "fs_boo",
-     "at": "L7b:Internet+0.2",
-     "volume": 0.4
+     "name": "fs_boing",
+     "at": "L7:Nuggets",
+     "volume": 0.5
     }
    ],
    "lines": [
     {
      "id": "L7",
-     "text": "Dein *g:WLAN-Passwort war / *y:Muschel123|Muschel_eins_zwei_drei?",
-     "pause": 0
-    },
-    {
-     "id": "L7b",
-     "text": "*y:Kein *y:Internet mehr!",
+     "text": "*g:Omas Muschel-Deko im Bad? / Jetzt aus *y:Chicken *y:Nuggets!",
      "pause": 0.1
     }
    ]
@@ -320,9 +315,38 @@
     {
      "id": "L8b",
      "text": "*y:TAL.",
-     "pause": 0.25
+     "pause": 0.5
     }
    ]
+  },
+  {
+   "id": "s11",
+   "tag": "",
+   "sfx": [
+    {
+     "name": "fs_ocean",
+     "at": "s11+0.0",
+     "volume": 0.5
+    },
+    {
+     "name": "fs_seagull",
+     "at": "s11+0.6",
+     "volume": 0.25
+    },
+    {
+     "name": "fs_magic",
+     "at": "L11:Glück",
+     "volume": 0.3
+    }
+   ],
+   "lines": [
+    {
+     "id": "L11",
+     "text": "Puh … / zum *y:Glück gibt's sie noch.",
+     "pause": 0.4
+    }
+   ],
+   "hold": 2.6
   }
  ],
  "music": {

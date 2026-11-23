@@ -284,29 +284,28 @@ scene("s04", """
 
 
 
-# s07 – WLAN-Passwort war Muschel123 → kein Internet
+# s07 – Omas Bad-Deko: Chicken Nuggets statt Muscheln
 scene("s07", COMMON7 + """
-    #bg7w { position: absolute; inset: 0; background: radial-gradient(circle at 50% 45%, #2b3a6b, #0c1030 75%); }
-    #rt { position: absolute; left: 150px; top: 820px; width: 700px; height: 520px; }
-    #wf { position: absolute; left: 380px; top: 560px; width: 240px; height: 240px; }
-    #wx { position: absolute; left: 395px; top: 545px; font-size: 220px; opacity: 0; }
-    #w1 { font-size: 112px; } #w2 { font-size: 80px; }""",
-"""      <div id="bg7w"></div>
-      <svg id="wf" viewBox="0 0 100 100"><path d="M10 40 Q50 5 90 40" stroke="#3ff0ff" stroke-width="9" fill="none" stroke-linecap="round"/><path d="M24 55 Q50 32 76 55" stroke="#3ff0ff" stroke-width="9" fill="none" stroke-linecap="round"/><path d="M37 69 Q50 58 63 69" stroke="#3ff0ff" stroke-width="9" fill="none" stroke-linecap="round"/><circle cx="50" cy="82" r="7" fill="#3ff0ff"/></svg>
-      <div id="wx">❌</div>
-      <svg id="rt" viewBox="0 0 700 520"><rect x="140" y="20" width="16" height="170" rx="8" fill="#222"/><rect x="544" y="20" width="16" height="170" rx="8" fill="#222"/><rect x="60" y="180" width="580" height="200" rx="30" fill="#f4f4f4" stroke="#2a1b12" stroke-width="8"/><circle class="ld" cx="130" cy="330" r="12" fill="#2ee86a"/><circle class="ld" cx="175" cy="330" r="12" fill="#2ee86a"/><circle class="ld" cx="220" cy="330" r="12" fill="#2ee86a"/><g transform="rotate(-4 450 250)"><rect x="300" y="200" width="300" height="100" rx="6" fill="#fff59a" stroke="#c9b400" stroke-width="4"/><text x="450" y="238" font-family="Inter" font-weight="800" font-size="24" fill="#333" text-anchor="middle" textLength="250" lengthAdjust="spacingAndGlyphs">WLAN-PASSWORT:</text><text x="450" y="282" font-family="Lilita One" font-size="38" fill="#e8433c" text-anchor="middle" textLength="250" lengthAdjust="spacingAndGlyphs">Muschel123</text></g><path id="strk" d="M310 270 L590 220" stroke="#e8433c" stroke-width="12" stroke-linecap="round" stroke-dasharray="300" stroke-dashoffset="300"/><rect x="40" y="380" width="620" height="140" fill="#6b4a2b"/></svg>
-      <div id="w1" class="big H"><span class="c">WLAN-PASSWORT:</span><br><span class="p">MUSCHEL123</span></div>
-      <div id="w2" class="neo pk B">📵 KEIN INTERNET!</div>""",
-"""      const t = line("L7")[0], K = line("L7b")[0];
-      tl.fromTo("#rt", { y: 500 }, { y: 0, duration: .4, ease: "back.out(1.6)" }, t - .1);
-      tl.fromTo("#w1", { opacity: 0, scale: 3.4, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .26, ease: "back.out(2.2)" }, t - .05);
-      tl.fromTo("#wf", { opacity: .3 }, { opacity: 1, duration: .2, yoyo: true, repeat: 5 }, t + .2);
-      tl.to("#strk", { strokeDashoffset: 0, duration: .25, ease: "power2.in" }, K - .1);
-      tl.to(".ld", { fill: "#ff2d2d", duration: .05 }, K);
-      tl.to("#wf", { opacity: .25, filter: "grayscale(1)", duration: .1 }, K);
-      tl.fromTo("#wx", { opacity: 0, scale: 3 }, { opacity: 1, scale: 1, duration: .25, ease: "back.out(3)" }, K);
-      tl.fromTo("#w2", { opacity: 0, scale: 3.4, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .26, ease: "back.out(2.2)" }, K - .05);
-      [[24,-14],[-26,12],[20,16],[-16,-12],[10,8],[0,0]].forEach(([x, y], i) => tl.to("#s07-stage", { x, y, duration: .04, ease: "none" }, K + i * .04));""")
+    #g1 { font-size: 104px; } #g2 { font-size: 70px; }
+    #ng { opacity: 0; } #ms7 { opacity: 1; }""",
+"""      <svg class="art" viewBox="0 0 1080 1920"><defs><pattern id="tile" width="120" height="120" patternUnits="userSpaceOnUse"><rect width="120" height="120" fill="#bfe8e4"/><rect width="116" height="116" fill="#d8f4f1"/></pattern></defs><rect width="1080" height="1920" fill="url(#tile)"/><rect y="1500" width="1080" height="420" fill="#9ad0cb"/>
+        <rect x="620" y="560" width="250" height="290" rx="10" fill="#fff6e0" stroke="#c9a46a" stroke-width="14"/>
+        <rect x="200" y="1220" width="680" height="40" rx="10" fill="#fff" stroke="#bbb" stroke-width="6"/>
+        <path d="M330 1220 Q330 1100 540 1100 Q750 1100 750 1220 Z" fill="none"/>
+        <ellipse cx="450" cy="1200" rx="140" ry="40" fill="#fff" stroke="#bbb" stroke-width="6"/>
+        <g transform="translate(720,1150)"><rect x="-26" y="-60" width="52" height="70" rx="10" fill="#ff5a5a" stroke="#8a1a1a" stroke-width="5"/><rect x="-14" y="-80" width="28" height="22" fill="#eee" stroke="#888" stroke-width="4"/><text x="0" y="-16" font-family="Lilita One" font-size="20" fill="#fff" text-anchor="middle" textLength="40" lengthAdjust="spacingAndGlyphs">KETCHUP</text></g>
+        <g transform="translate(260,1400)"><rect x="-70" y="-40" width="140" height="190" rx="20" fill="#fff" stroke="#bbb" stroke-width="6"/><rect x="-90" y="-80" width="180" height="50" rx="16" fill="#fff" stroke="#bbb" stroke-width="6"/></g>
+        <text x="830" y="1080" font-size="90">🧻</text><text x="130" y="700" font-size="100">🪥</text></svg>
+      <svg class="art" id="ms7" viewBox="0 0 1080 1920"><g transform="translate(745,705) scale(2.4)"><path d="M0 18 L-22 10 Q-26 0 -18 -2 Q-18 -12 -8 -10 Q0 -20 8 -10 Q18 -12 18 -2 Q26 0 22 10 Z" fill="#ffc7b2" stroke="#e8467c" stroke-width="3"/></g><g transform="translate(400,1160) scale(2)"><path d="M0 18 L-22 10 Q-26 0 -18 -2 Q-18 -12 -8 -10 Q0 -20 8 -10 Q18 -12 18 -2 Q26 0 22 10 Z" fill="#ffc7b2" stroke="#e8467c" stroke-width="3"/></g><g transform="translate(500,1160) scale(1.8)"><path d="M0 18 L-22 10 Q-26 0 -18 -2 Q-18 -12 -8 -10 Q0 -20 8 -10 Q18 -12 18 -2 Q26 0 22 10 Z" fill="#ffc7b2" stroke="#e8467c" stroke-width="3"/></g></svg>
+      <svg class="art" id="ng" viewBox="0 0 1080 1920"><g transform="translate(380,1170) rotate(-10)"><path d="M-34 -6 Q-30 -30 -4 -28 Q24 -34 34 -10 Q40 14 18 24 Q-10 32 -30 18 Q-42 8 -34 -6Z" fill="#e0a046" stroke="#9a5a1a" stroke-width="5"/><circle cx="-10" cy="-8" r="4" fill="#b8742a"/><circle cx="12" cy="4" r="4" fill="#b8742a"/></g><g transform="translate(450,1150) rotate(15)"><path d="M-34 -6 Q-30 -30 -4 -28 Q24 -34 34 -10 Q40 14 18 24 Q-10 32 -30 18 Q-42 8 -34 -6Z" fill="#e0a046" stroke="#9a5a1a" stroke-width="5"/><circle cx="-10" cy="-8" r="4" fill="#b8742a"/><circle cx="12" cy="4" r="4" fill="#b8742a"/></g><g transform="translate(520,1165) rotate(-5)"><path d="M-34 -6 Q-30 -30 -4 -28 Q24 -34 34 -10 Q40 14 18 24 Q-10 32 -30 18 Q-42 8 -34 -6Z" fill="#e0a046" stroke="#9a5a1a" stroke-width="5"/><circle cx="-10" cy="-8" r="4" fill="#b8742a"/><circle cx="12" cy="4" r="4" fill="#b8742a"/></g><g transform="translate(415,1120) rotate(30)"><path d="M-34 -6 Q-30 -30 -4 -28 Q24 -34 34 -10 Q40 14 18 24 Q-10 32 -30 18 Q-42 8 -34 -6Z" fill="#e0a046" stroke="#9a5a1a" stroke-width="5"/><circle cx="-10" cy="-8" r="4" fill="#b8742a"/><circle cx="12" cy="4" r="4" fill="#b8742a"/></g><g transform="translate(490,1115) rotate(-20)"><path d="M-34 -6 Q-30 -30 -4 -28 Q24 -34 34 -10 Q40 14 18 24 Q-10 32 -30 18 Q-42 8 -34 -6Z" fill="#e0a046" stroke="#9a5a1a" stroke-width="5"/><circle cx="-10" cy="-8" r="4" fill="#b8742a"/><circle cx="12" cy="4" r="4" fill="#b8742a"/></g><g transform="translate(700,700) rotate(0)"><path d="M-34 -6 Q-30 -30 -4 -28 Q24 -34 34 -10 Q40 14 18 24 Q-10 32 -30 18 Q-42 8 -34 -6Z" fill="#e0a046" stroke="#9a5a1a" stroke-width="5"/><circle cx="-10" cy="-8" r="4" fill="#b8742a"/><circle cx="12" cy="4" r="4" fill="#b8742a"/></g><g transform="translate(770,690) rotate(20)"><path d="M-34 -6 Q-30 -30 -4 -28 Q24 -34 34 -10 Q40 14 18 24 Q-10 32 -30 18 Q-42 8 -34 -6Z" fill="#e0a046" stroke="#9a5a1a" stroke-width="5"/><circle cx="-10" cy="-8" r="4" fill="#b8742a"/><circle cx="12" cy="4" r="4" fill="#b8742a"/></g><g transform="translate(735,745) rotate(-15)"><path d="M-34 -6 Q-30 -30 -4 -28 Q24 -34 34 -10 Q40 14 18 24 Q-10 32 -30 18 Q-42 8 -34 -6Z" fill="#e0a046" stroke="#9a5a1a" stroke-width="5"/><circle cx="-10" cy="-8" r="4" fill="#b8742a"/><circle cx="12" cy="4" r="4" fill="#b8742a"/></g></svg>
+      <div id="g1" class="big H"><span class="c">OMAS BAD-DEKO?</span></div>
+      <div id="g2" class="neo li B">🍗 JETZT: CHICKEN NUGGETS!</div>""",
+"""      const t = line("L7")[0], N = at("L7", "Chicken");
+      tl.fromTo("#g1", { opacity: 0, scale: 3.4, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .26, ease: "back.out(2.2)" }, t - .05);
+      tl.to("#ms7", { opacity: 0, scale: .2, transformOrigin: "540px 960px", duration: .2, ease: "back.in(2)" }, N - .25);
+      tl.fromTo("#ng", { opacity: 0, scale: 1.6 }, { opacity: 1, scale: 1, transformOrigin: "540px 960px", duration: .3, ease: "back.out(2.5)" }, N - .05);
+      tl.fromTo("#g2", { opacity: 0, scale: 3.4, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .26, ease: "back.out(2.2)" }, N - .05);
+      [[24,-14],[-26,12],[20,16],[-16,-12],[10,8],[0,0]].forEach(([x, y], i) => tl.to("#s07-stage", { x, y, duration: .04, ease: "none" }, N + i * .04));""")
 
 # s10 – Statt Meeresrauschen: 47 Sprachnachrichten von Mama
 scene("s10", COMMON7 + """
@@ -320,7 +319,7 @@ scene("s10", COMMON7 + """
     #o1 { font-size: 96px; } #o2 { font-size: 66px; }""",
 """      <div id="bg10"></div>
       <div id="ph10"><div class="scr"><div class="bar">👩 Mama</div>
-        <div class="vm"><b>▶</b><i></i>3:47</div><div class="vm"><b>▶</b><i></i>5:12</div><div class="vm"><b>▶</b><i></i>2:58</div><div class="vm"><b>▶</b><i></i>8:03</div><div class="vm"><b>▶</b><i></i>4:31</div><div class="vm"><b>▶</b><i></i>6:66</div></div></div>
+        <div class="vm"><b>▶</b><i></i>3:47</div><div class="vm"><b>▶</b><i></i>5:12</div><div class="vm"><b>▶</b><i></i>2:58</div><div class="vm"><b>▶</b><i></i>8:03</div><div class="vm"><b>▶</b><i></i>4:31</div><div class="vm"><b>▶</b><i></i>9:59</div></div></div>
       <div id="cnt">47</div>
       <div id="o1" class="big H"><span class="c">STATT MEERES-<br>RAUSCHEN:</span></div>
       <div id="o2" class="neo pk B">🎙️ 47 SPRACHNACHRICHTEN VON MAMA!</div>""",
@@ -360,3 +359,22 @@ scene("s08", """
       tl.fromTo("#t2", { opacity: 0, scale: 3.4, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .26, ease: "back.out(2.2)" }, T - .02);
       [[24,-14],[-26,12],[20,16],[-16,-12],[10,8],[0,0]].forEach(([x, y], i) => tl.to("#s08-stage", { x, y, duration: .04, ease: "none" }, T + i * .04));""", blur=False)
 
+
+
+# s11 – Ausklang: Sonnenuntergang, eine Muschel wird angespült
+scene("s11", COMMON7 + """
+    #e1 { font-size: 110px; } #e2 { font-size: 72px; }
+    #sh11 { position: absolute; left: 390px; top: 1150px; width: 300px; height: 300px; filter: drop-shadow(0 0 40px rgba(255,220,160,.9)); }
+    #fade { position: absolute; inset: 0; background: #000; opacity: 0; }""",
+"""      <svg class="art" viewBox="0 0 1080 1920"><defs><linearGradient id="g11" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a1c6b"/><stop offset=".45" stop-color="#ff6a8a"/><stop offset=".62" stop-color="#ffb35a"/></linearGradient></defs><rect width="1080" height="1920" fill="url(#g11)"/><circle id="sun" cx="540" cy="1080" r="200" fill="#ffd86a"/><rect y="1080" width="1080" height="260" fill="#ff8a5a" opacity=".85"/><path d="M0 1120 Q270 1100 540 1120 T1080 1120" stroke="#ffd0a0" stroke-width="6" fill="none" opacity=".7"/><rect y="1320" width="1080" height="600" fill="#e8b878"/><path id="wv" d="M0 1330 Q135 1300 270 1330 T540 1330 T810 1330 T1080 1330 L1080 1360 L0 1360Z" fill="#fff" opacity=".6"/></svg>
+      <svg id="sh11" viewBox="0 0 64 64"><path d="M32 54 L6 44 Q2 34 10 32 Q8 22 17 23 Q19 13 27 18 Q32 9 37 18 Q45 13 47 23 Q56 22 54 32 Q62 34 58 44 Z" fill="#ffc7b2" stroke="#e8467c" stroke-width="2.5"/><path d="M32 54 L18 26 M32 54 L27 18 M32 54 L37 18 M32 54 L46 26" stroke="#e8467c" stroke-width="2"/></svg>
+      <div id="e1" class="big H"><span class="l">PUH …</span></div>
+      <div id="e2" class="neo pk B">🐚 ZUM GLÜCK GIBT'S SIE NOCH!</div>
+      <div id="fade"></div>""",
+"""      const t = line("L11")[0], G = at("L11", "Glück"), E = C.__dur;
+      tl.fromTo("#sun", { attr: { cy: 1000 } }, { attr: { cy: 1160 }, duration: 4, ease: "none" }, t - .3);
+      tl.fromTo("#sh11", { y: 200, opacity: 0, rotation: -20, scale: .6 }, { y: 0, opacity: 1, rotation: 0, scale: 1, duration: 1, ease: "power2.out" }, t - .2);
+      tl.to("#sh11", { y: -14, duration: .8, yoyo: true, repeat: 3, ease: "sine.inOut" }, t + .9);
+      tl.fromTo("#e1", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .5, ease: "power2.out" }, t - .05);
+      tl.fromTo("#e2", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .5, ease: "power2.out" }, G - .2);
+      tl.to("#fade", { opacity: 1, duration: .9, ease: "power1.in" }, E - .9);""", blur=False)
