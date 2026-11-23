@@ -124,20 +124,27 @@ def FLASH(t, o=.8):
     return f'tl.fromTo(".fl", {{ opacity: {o} }}, {{ opacity: 0, duration: .28, immediateRender: false }}, {t});'
 CMT_ = ""
 
-SLOT_CSS = """.slot { position: absolute; left: 110px; width: 720px; height: 130px; border-radius: 30px; background: #fff; overflow: hidden; opacity: 0;
+SLOT_CSS = """.slot { position: absolute; left: 110px; width: 720px; height: 300px; border-radius: 30px; background: #fff; overflow: hidden; opacity: 0;
       box-shadow: 0 0 0 7px var(--c), 0 0 40px var(--c); }
-    .slot div { position: absolute; inset: 0; display: grid; place-items: center; font: 900 50px Inter, sans-serif; color: #1a0f08; white-space: nowrap; opacity: 0; }
-    .slot .win { color: #ff3dbd; font-size: 58px; }
+    .slot .col { position: absolute; left: 0; right: 0; top: 0; }
+    .slot .col div { height: 100px; display: grid; place-items: center; font: 900 46px Inter, sans-serif; color: #1a0f08; white-space: nowrap; }
+    .slot .col .win { color: #ff3dbd; font-size: 54px; }
+    .slot .band { position: absolute; left: 10px; right: 10px; top: 100px; height: 100px; border-radius: 20px; border: 5px solid var(--c); background: rgba(255,255,255,.0); }
+    .slot .fd { position: absolute; left: 0; right: 0; top: 0; bottom: 0; background: linear-gradient(#fff 0%, rgba(255,255,255,0) 32%, rgba(255,255,255,0) 68%, #fff 100%); }
+    .slot .pt2 { position: absolute; top: 128px; font-size: 44px; } 
     .slk { position: absolute; left: 110px; width: 720px; text-align: center; font: 900 34px Inter, sans-serif; letter-spacing: .12em; color: #fff; opacity: 0;
       -webkit-text-stroke: 8px #0a0418; paint-order: stroke fill; }"""
 def slot(sid, names, win, top, col, label):
-    html = (f'<div class="slk" id="{sid}k" style="top:{top-50}px">{label}</div><div class="slot" id="{sid}" style="top:{top}px;--c:{col}">'
-            + "".join(f'<div id="{sid}r{i}">{n}</div>' for i, n in enumerate(names)) + f'<div class="win" id="{sid}w">{win}</div></div>')
-    return html
+    rows = names + [win, names[0]]
+    return (f'<div class="slk" id="{sid}k" style="top:{top-52}px">{label}</div><div class="slot" id="{sid}" style="top:{top}px;--c:{col}">'
+            f'<div class="col" id="{sid}c">' + "".join(f'<div{" class=win" if i == len(names) else ""} id="{sid}r{i}">{n}</div>' for i, n in enumerate(rows))
+            + f'</div><div class="fd"></div><div class="band"></div><div class="pt2" style="left:24px">▶</div><div class="pt2" style="right:24px">◀</div></div>')
 def slotjs(sid, n, t0, tw):
-    return (f'tl.fromTo(["#{sid}", "#{sid}k"], {{ opacity: 0, scale: .5 }}, {{ opacity: 1, scale: 1, duration: .25, ease: "back.out(2.5)" }}, {t0} - .25);\n'
-            f'      for (let i = 0; i < {n}; i++) {{ const d = ({tw} - {t0}) / {n}, a = {t0} + i * d; tl.set("#{sid}r" + i, {{ opacity: 1 }}, a); tl.set("#{sid}r" + i, {{ opacity: 0 }}, a + d); }}\n'
-            f'      tl.fromTo("#{sid}w", {{ opacity: 0, scale: 2 }}, {{ opacity: 1, scale: 1, duration: .25, ease: "back.out(3)" }}, {tw} - .05);')
+    # Rad läuft (erste Zeile in der Mitte) und bremst genau auf dem Gewinner ab (Zeile n in der Mitte)
+    return (f'tl.fromTo(["#{sid}", "#{sid}k"], {{ opacity: 0, scale: .5 }}, {{ opacity: 1, scale: 1, duration: .25, ease: "back.out(2.5)" }}, {t0} - .3);\n'
+            f'      tl.fromTo("#{sid}c", {{ y: 100 }}, {{ y: 100 - {n} * 100, duration: {tw} - ({t0}), ease: "sine.out" }}, {t0});\n'
+            f'      tl.fromTo("#{sid}c", {{ filter: "blur(3px)" }}, {{ filter: "blur(0px)", duration: ({tw} - ({t0})) * .8, ease: "power2.in", immediateRender: false }}, {t0});\n'
+            f'      tl.fromTo("#{sid}r{n}", {{ scale: 1 }}, {{ scale: 1.15, duration: .15, yoyo: true, repeat: 3, ease: "sine.inOut", immediateRender: false }}, {tw});')
 
 # s01 – Hook: Der geheimnisvolle Schöpfer ist aufgetaucht (Wortzeiten gemessen)
 scene("s01", NEO + """
@@ -176,27 +183,34 @@ scene("s01", NEO + """
       """ + Z("#g1", 'line("L1b")[0]') + """
       tl.to("#g1", { scale: 1.06, duration: .22, yoyo: true, repeat: 5, ease: "sine.inOut" }, at("L1b", "mitgebracht"));""")
 
-# s02 – Live-Wahl: Bürgermeister + Palast-Leitung (Python secrets)
+# s02 – Amtszeit vorbei → Live-Wahl für die neue Woche (Python secrets)
 scene("s02", NEO + SLOT_CSS + CF_CSS + """
-    #b1 { top: 200px; font-size: 104px; white-space: nowrap; }
-    #b4 { top: 1450px; font-size: 54px; } #b5 { top: 1600px; font-size: 44px; }""",
-"""      <div id="b1" class="big">🗳️ <span class="p">LIVE</span>-WAHL!</div>
-      """ + slot("sb", ["@louisw145", "@angelina_03183", "@khmr.496", "@noahconstabel6", "@mxlan084", "@maryyy_0670", "@jxhanna_17166", "@helmut.schmidt97"], "@luana.mus1c", 440, "#ffd23f", "👑 BÜRGERMEISTER") + """
-      """ + slot("sp", ["@ben371650", "@louisa_sel", "@charlie._.pink", "@i_am_amiiiii", "@amelie_m26", "@felixzhlw5i", "@sophied_1302", "@insa.t_sp"], "@marietayheld15", 700, "#3ff0ff", "🏰 PALAST-LEITUNG") + """
-      <div id="b4" class="neo pk">📩 BÜRGERMEISTER: MELDE DICH!</div>
+    #b0 { top: 220px; font-size: 92px; white-space: nowrap; } #b0b { top: 420px; font-size: 64px; }
+    #b1 { top: 190px; font-size: 96px; white-space: nowrap; } #b1s { top: 305px; font-size: 40px; padding: 8px 26px 12px; }
+    #b4 { top: 1450px; font-size: 52px; } #b5 { top: 1600px; font-size: 42px; }""",
+"""      <div id="b0" class="big">⏰ AMTSZEIT <span class="p">VORBEI!</span></div>
+      <div id="b0b" class="neo li">📅 1 WOCHE IST UM</div>
+      <div id="b1" class="big">🗳️ <span class="p">LIVE</span>-WAHL!</div>
+      <div id="b1s" class="neo go">FÜR DIE NEUE WOCHE</div>
+      """ + slot("sb", ["@louisw145", "@lena_666_187", "@mimposible", "@lailaniichtleyla", "@ayleen_1807", "@klarawapple", "@schotti67", "@did_33333", "@m1sq48", "@nw_2501", "@orn.prvt.prvt", "@xaq.marinaa", "@meandmylife091", "@lea.2910.12", "@la_davina", "@benedictknese"], "@luana.mus1c", 440, "#ffd23f", "👑 BÜRGERMEISTER/IN") + """
+      """ + slot("sp", ["@moin42059", "@angelina_03183", "@flo_wirtz3", "@mitja966", "@christmas._love23", "@antonia.gabriela964", "@mariella_456", "@julialaner", "@just.elina57", "@milia_119", "@blaubaerchen88", "@t1na_tina", "@_joelin.a", "@natalieberndt8", "@maxim_muc7", "@okyvrse"], "@marietayheld15", 820, "#3ff0ff", "🏰 PALAST-LEITUNG") + """
+      <div id="b4" class="neo pk">📩 BÜRGERMEISTERIN: MELDE DICH!</div>
       <div id="b5" class="neo li">⚖️ DU TRIFFST DIE NÄCHSTE ENTSCHEIDUNG</div>
       <div id="cfa" style="position:absolute;inset:0"></div><div id="cfc" style="position:absolute;inset:0"></div>
       <div class="fl"></div>""",
-"""      const t = line("L2")[0], W1 = line("L2a")[0], P = at("L2a", "Palast"), W2 = line("L2b")[0];
-      """ + Z("#b1", "t - .05") + FLASH("t", .5) + """
-      """ + slotjs("sb", 8, 'at("L2", "Bürgermeister")', "W1") + """
-      """ + SHAKE("s02", "W1") + FLASH("W1", .7) + """
+"""      const t = line("L2")[0], X = line("L2x")[0], LV = at("L2x", "live"), W1 = line("L2a")[0], P = at("L2a", "Palast"), W2 = line("L2b")[0];
+      """ + Z("#b0", "t - .05") + FLASH("t", .5) + """
+      """ + Z("#b0b", 'at("L2", "eine") - .05') + SHAKE("s02", 'at("L2", "vorbei")') + """
+      """ + OUT("#b0", "X - .15") + OUT("#b0b", "X - .15") + """
+      """ + Z("#b1", "X - .05") + Z("#b1s", 'at("L2x", "neue") - .05') + """
+      """ + slotjs("sb", 16, "LV", "W1") + """
+      """ + SHAKE("s02", "W1") + FLASH("W1", .6) + """
       { """ + CONF_JS.replace("BOX", "cfa").replace("SEED", "21").replace("T0", "W1") + """ }
-      """ + slotjs("sp", 8, "P", "W2") + """
-      """ + SHAKE("s02", "W2") + FLASH("W2", .7) + """
+      """ + slotjs("sp", 16, "P", "W2") + """
+      """ + SHAKE("s02", "W2") + FLASH("W2", .6) + """
       { """ + CONF_JS.replace("BOX", "cfc").replace("SEED", "22").replace("T0", "W2") + """ }
-      """ + Z("#b4", 'at("L2b", "Melde") - .05') + """
-      """ + Z("#b5", 'at("L2b", "nächste") - .05'))
+      """ + Z("#b4", 'at("L2d", "Melde") - .05') + """
+      """ + Z("#b5", 'at("L2d", "nächste") - .05'))
 
 # s03 – Tierheim-Team: 4 Namen
 scene("s03", NEO + """
@@ -219,9 +233,9 @@ scene("s03", NEO + """
 
 # s04 – Geschenk des Schöpfers: Anlegestelle fertig, Fähre Seestern
 scene("s04", NEO + """
-    #a1 { top: 230px; font-size: 120px; }
-    #a2 { top: 440px; font-size: 54px; } #a3 { top: 610px; font-size: 62px; }
-    #a4 { top: 450px; font-size: 64px; } #a5 { top: 610px; font-size: 58px; }""",
+    #a1 { top: 230px; font-size: 104px; white-space: nowrap; }
+    #a2 { top: 560px; font-size: 54px; } #a3 { top: 770px; font-size: 62px; }
+    #a4 { top: 560px; font-size: 64px; } #a5 { top: 740px; font-size: 58px; }""",
 """      <div id="a1" class="big">🎁 DAS <span class="g">GESCHENK</span></div>
       <div id="a2" class="neo pk"><small>🔮 VOM GEHEIMNISVOLLEN</small>SCHÖPFER VON MUSCHEL-TAL</div>
       <div id="a3" class="neo li">⚓ ANLEGESTELLE FERTIG!</div>
@@ -238,17 +252,26 @@ scene("s04", NEO + """
 
 # s05 – Goldene Kokoshütte für Bewohner Nr. 1.000
 scene("s05", NEO + """
-    #h1 { top: 210px; font-size: 118px; }
+    #h1 { top: 210px; font-size: 110px; }
+    #nb { position: absolute; left: 330px; top: 520px; width: 420px; height: 420px; opacity: 0; }
+    #nr { position: absolute; left: 540px; top: 730px; width: 1300px; height: 1300px; margin: -650px; border-radius: 50%; opacity: 0; background: repeating-conic-gradient(rgba(255,210,63,.45) 0 8deg, rgba(255,210,63,0) 8deg 20deg); }
     #h1 .g { text-shadow: 0 0 40px rgba(255,210,63,.9); }
     #h2 { top: 1450px; font-size: 64px; }
     #h3 { top: 1600px; font-size: 96px; }
     .sp { position: absolute; font-size: 70px; opacity: 0; }""",
-"""      <div id="h1" class="big">DIE <span class="g">GOLDENE</span><br><span class="g">KOKOSHÜTTE</span> ✨</div>
+"""      <div id="nr"></div><svg id="nb" viewBox="0 0 420 420"><polygon points="410,210 357,239 395,287 335,293 351,351 293,335 287,395 239,357 210,410 181,357 133,395 127,335 69,351 85,293 25,287 63,239 10,210 63,181 25,133 85,127 69,69 127,85 133,25 181,63 210,10 239,63 287,25 293,85 351,69 335,127 395,133 357,181" fill="#ff3dbd" stroke="#fff" stroke-width="10"/><text x="210" y="255" font-family="Lilita One" font-size="140" text-anchor="middle" fill="#ffd23f" stroke="#0a0418" stroke-width="14" paint-order="stroke">NEU!</text></svg>
+      <div id="h1" class="big">DIE <span class="g">GOLDENE</span><br><span class="g">KOKOSHÜTTE</span> ✨</div>
       <div id="h2" class="neo go"><small>RESERVIERT FÜR</small>🏠 BEWOHNER NR. 1.000</div>
       <div id="h3" class="big">BIST DAS <span class="l">DU?</span> 👀</div>
       """ + "".join(f'<div class="sp" id="sp{i}" style="left:{x}px;top:{y}px">✨</div>' for i, (x, y) in enumerate([(260, 760), (700, 720), (330, 1000), (640, 1040), (480, 640)])) + """
       <div class="fl"></div>""",
-"""      const t = line("L5")[0], T = line("L5b")[0];
+"""      const t = line("L5")[0], T = line("L5b")[0], NU = at("L5", "NEU");
+      tl.fromTo("#nb", { opacity: 0, scale: 4, rotation: -40 }, { opacity: 1, scale: 1, rotation: 0, duration: .3, ease: "back.out(2)" }, NU - .05);
+      tl.fromTo("#nr", { opacity: 0, scale: .3, rotation: 0 }, { opacity: 1, scale: 1, rotation: 50, duration: 1.6, ease: "power2.out" }, NU);
+      tl.to("#nb", { scale: 1.15, duration: .12, yoyo: true, repeat: 5, ease: "sine.inOut" }, NU + .35);
+      tl.to("#nr", { opacity: 0, duration: .4 }, NU + 1.6);
+      tl.to("#nb", { scale: .45, x: -280, y: -110, rotation: -12, duration: .45, ease: "power2.inOut" }, at("L5", "goldene") + .4);
+      """ + SHAKE("s05", "NU") + FLASH("NU", .9) + """
       """ + Z("#h1", 'at("L5", "goldene") - .05') + FLASH('at("L5", "goldene")', .7) + """
       [0,1,2,3,4].forEach(i => tl.fromTo("#sp" + i, { opacity: 0, scale: .2 }, { opacity: 1, scale: 1.3, duration: .3, yoyo: true, repeat: 5, ease: "sine.inOut" }, at("L5", "goldene") + i * .15));
       """ + Z("#h2", 'at("L5b", "tausendste") - .05') + """
@@ -315,45 +338,45 @@ scene("s08", NEO + """
       """ + Z("#v5", 'at("L8c", "Kommentaren") - .1') + """
       tl.to(["#v3", "#v4"], { y: -14, duration: .5, yoyo: true, repeat: 5, ease: "sine.inOut" }, A + .5);""")
 
-# s09 – Folgen ganz am Ende
+# s09 – Freunde markieren + Folgen ganz am Ende
 scene("s09", NEO + FOLLOW + """
+    #m1 { top: 260px; font-size: 66px; }
+    #m2 { position: absolute; left: 110px; width: 720px; top: 460px; border-radius: 30px; padding: 22px 26px; background: #fff; opacity: 0; box-shadow: 0 14px 30px rgba(0,0,0,.45); font: 700 40px/1.3 Inter, sans-serif; color: #111; }
+    #m2 b { color: #fe2c55; } #m2 small { display: block; font-size: 28px; color: #888; margin-top: 8px; }
     #o9 { top: 300px; font-size: 150px; }
-    #f9 { top: 520px; opacity: 0; }
-    #z9 { top: 720px; font-size: 64px; }""",
-"""      <div id="o9" class="big">FOLG <span class="p">MIR</span></div>
+    #f9 { top: 520px; opacity: 0; }""",
+"""      <div id="m1" class="neo li">👯 MARKIER DEINE FREUNDE!</div>
+      <div id="m2"><b>@deine.beste</b> zieh neben mich! 🏡🐚<small>❤️ 24 · Antworten</small></div>
+      <div id="o9" class="big">FOLG <span class="p">MIR</span></div>
       <div id="f9" class="fbtn">+ Folgen<div class="fbtn2">✓ Eingezogen</div></div>
       <div class="fl"></div>""",
-"""      const F = at("L9", "Folg");
+"""      const t = line("L9")[0], F = at("L9", "folg");
+      """ + Z("#m1", "t - .05") + """
+      tl.fromTo("#m2", { opacity: 0, y: 60, rotation: -3 }, { opacity: 1, y: 0, rotation: -1.5, duration: .3, ease: "back.out(2)" }, t + .35);
+      """ + OUT("#m1", "F - .15") + OUT("#m2", "F - .15") + """
       """ + Z("#o9", "F - .05") + FLASH("F", .5) + """
-      """ + Z("#f9", "F + .25") + """
-      tl.to("#f9", { scale: 1.08, duration: .25, yoyo: true, repeat: 3, ease: "sine.inOut" }, F + .6);
+      """ + Z("#f9", "F + .2") + """
+      tl.to("#f9", { scale: 1.08, duration: .25, yoyo: true, repeat: 3, ease: "sine.inOut" }, F + .55);
       tl.to("#f9 .fbtn2", { opacity: 1, duration: .15 }, at("L9", "heute") + .3);
       tl.to("#f9", { scale: 1.12, duration: .15, yoyo: true, repeat: 1 }, at("L9", "heute") + .3);""", blur=False)
-
-# s10 – Verlosung: Job in der Game Lagoon
-scene("s10", NEO + CF_CSS + """
+# s10 – Verlosung: Job in der Game Lagoon (Glücksrad)
+scene("s10", NEO + SLOT_CSS + CF_CSS + """
     #j1 { top: 220px; font-size: 100px; white-space: nowrap; }
-    #j2 { top: 420px; font-size: 60px; }
-    #sl { position: absolute; left: 110px; width: 720px; top: 600px; height: 150px; border-radius: 34px; background: #fff; overflow: hidden; opacity: 0;
-      box-shadow: 0 0 0 8px #ff3dbd, 0 0 50px rgba(255,61,189,.8); }
-    #sl div { position: absolute; left: 0; right: 0; top: 0; height: 150px; display: grid; place-items: center; text-align: center; font: 900 54px Inter, sans-serif; color: #1a0f08; white-space: nowrap; opacity: 0; }
-    #sl #wn { color: #ff3dbd; font-size: 64px; }
-    #j3 { top: 820px; font-size: 76px; }
+    #j2 { top: 380px; font-size: 56px; }
+    #j3 { top: 960px; font-size: 76px; }
     #j4 { top: 1460px; font-size: 56px; }""",
 """      <div id="j1" class="big">🎰 <span class="g">VERLOSUNG!</span></div>
       <div id="j2" class="neo"><small>🎮 1 JOB IN DER</small>GAME LAGOON</div>
-      <div id="sl">""" + "".join(f'<div id="rl{i}">{n}</div>' for i, n in enumerate(["@haylie.aeriana", "@lxna826", "@val3n14tina", "@alekskabhv", "@reba_thx", "@amelie.aburg", "@emiliaxlove1", "@probablyfiona", "@polina_ok150", "@skaly.ksss"])) + """<div id="wn">@lilou.mgd</div></div>
+      """ + slot("sg", ["@lionaaa013", "@klabautermann6767", "@ju1e_smt", "@theterst7", "@lp_art18", "@lara.ellxndt", "@edit_duo_loveschiwi_67", "@emma.hl07", "@linus945", "@q_inty", "@annabella8866", "@kim882665", "@skaly.ksss", "@rosenrivalin", "@livelaughlinaax", "@wulf75"], "@lilou.mgd", 620, "#ff3dbd", "") + """
       <div id="j3" class="neo li">🎉 GLÜCKWUNSCH!</div>
       <div id="j4" class="neo pk">📩 MELDE DICH BEI UNS!</div>
       <div id="cfb" style="position:absolute;inset:0"></div>
       <div class="fl"></div>""",
-"""      const t = line("L10")[0], G = at("L10", "geht"), W = line("L10b")[0];
+"""      const t = line("L10")[0], G = at("L10", "Job"), W = line("L10b")[0];
       """ + Z("#j1", "t - .05") + FLASH("t", .5) + """
       """ + Z("#j2", 'at("L10", "Job") - .05') + """
-      tl.fromTo("#sl", { opacity: 0, scale: .5 }, { opacity: 1, scale: 1, duration: .25, ease: "back.out(2.5)" }, G - .3);
-      for (let i = 0; i < 10; i++) { const a = G - .1 + i * ((W - G) / 10); tl.set("#rl" + i, { opacity: 1 }, a); tl.set("#rl" + i, { opacity: 0 }, a + (W - G) / 10); }
-      tl.fromTo("#wn", { opacity: 0, scale: 2 }, { opacity: 1, scale: 1, duration: .25, ease: "back.out(3)" }, W - .05);
+      """ + slotjs("sg", 16, "G + .3", "W") + """
       """ + SHAKE("s10", "W") + FLASH("W", .8) + """
       """ + Z("#j3", "W") + """
-      """ + CONF_JS.replace("BOX", "cfb").replace("SEED", "77").replace("T0", "W") + """
+      { """ + CONF_JS.replace("BOX", "cfb").replace("SEED", "77").replace("T0", "W") + """ }
       """ + Z("#j4", 'at("L10b", "Melde") - .05'))

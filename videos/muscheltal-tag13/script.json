@@ -40,7 +40,7 @@
     },
     {
      "id": "L1b",
-     "text": "Und er hat euch / etwas *g:mitgebracht …"
+     "text": "Und er hat euch / *g:was mitgebracht!"
     }
    ],
    "sfx": [
@@ -67,24 +67,43 @@
    "lines": [
     {
      "id": "L2",
-     "text": "Jetzt *p:live: / Wer wird *y:Bürgermeister?"
+     "text": "Die *y:Amtszeit ist *y:vorbei – / *p:eine Woche ist um!"
+    },
+    {
+     "id": "L2x",
+     "text": "Jetzt wählen wir *p:live / für die *g:neue *g:Woche!"
     },
     {
      "id": "L2a",
      "text": "*g:Glückwunsch! / Und die *y:Palast-Leitung …",
-     "pause": 0.9
+     "pause": 0.75
     },
     {
      "id": "L2b",
-     "text": "*g:Glückwunsch! / Bürgermeister: *y:Melde dich bei uns – / du triffst die *p:nächste Entscheidung!",
-     "pause": 0.9
+     "text": "*g:Glückwunsch!",
+     "pause": 0.75
+    },
+    {
+     "id": "L2c",
+     "text": "*y:Bürgermeisterin …",
+     "pause": 0.2
+    },
+    {
+     "id": "L2d",
+     "text": "*g:Melde dich bei uns – / du triffst die *p:nächste Entscheidung!",
+     "pause": 0.45
     }
    ],
    "sfx": [
     {
+     "name": "stempel",
+     "at": "L2:vorbei",
+     "volume": 0.5
+    },
+    {
      "name": "slot-ticks",
-     "at": "L2:Bürgermeister",
-     "volume": 0.4
+     "at": "L2x:neue",
+     "volume": 0.35
     },
     {
      "name": "jubel",
@@ -94,7 +113,7 @@
     {
      "name": "slot-ticks",
      "at": "L2a:Palast-Leitung",
-     "volume": 0.4
+     "volume": 0.35
     },
     {
      "name": "jubel",
@@ -103,7 +122,7 @@
     },
     {
      "name": "notification",
-     "at": "L2b:Melde",
+     "at": "L2d:Melde",
      "volume": 0.45
     }
    ]
@@ -146,7 +165,7 @@
    "lines": [
     {
      "id": "L4",
-     "text": "Und das *y:Geschenk? / Der *p:geheimnisvolle *p:Schöpfer / von *p:Muschel-Tal / hat die *g:Anlegestelle spendiert!"
+     "text": "Das *y:Geschenk: / Der *p:geheimnisvolle *p:Schöpfer / von *p:Muschel-Tal / hat die *g:Anlegestelle spendiert!"
     },
     {
      "id": "L4b",
@@ -182,7 +201,7 @@
    "lines": [
     {
      "id": "L5",
-     "text": "Die *y:goldene *y:Kokoshütte!"
+     "text": "*y:NEU: / Die *y:goldene *y:Kokoshütte!"
     },
     {
      "id": "L5b",
@@ -190,6 +209,11 @@
     }
    ],
    "sfx": [
+    {
+     "name": "impact-bass-2",
+     "at": "L5:NEU",
+     "volume": 0.6
+    },
     {
      "name": "sparkle",
      "at": "L5:goldene",
@@ -260,23 +284,6 @@
    ]
   },
   {
-   "id": "s07",
-   "tag": "",
-   "lines": [
-    {
-     "id": "L7",
-     "text": "*g:Markiere deine *g:Freunde, / damit sie *y:neben *y:dir wohnen!"
-    }
-   ],
-   "sfx": [
-    {
-     "name": "notification",
-     "at": "L7:Markiere",
-     "volume": 0.45
-    }
-   ]
-  },
-  {
    "id": "s08",
    "tag": "",
    "lines": [
@@ -322,13 +329,18 @@
    "lines": [
     {
      "id": "L9",
-     "text": "*p:Folg mir – / und zieh noch *y:heute ein!"
+     "text": "*g:Markier deine Freunde, / *p:folg mir – / und zieh noch *y:heute ein!"
     }
    ],
    "sfx": [
     {
+     "name": "notification",
+     "at": "L9:Markier",
+     "volume": 0.45
+    },
+    {
      "name": "pop",
-     "at": "L9:Folg",
+     "at": "L9:folg",
      "volume": 0.5
     },
     {
@@ -337,7 +349,7 @@
      "volume": 0.35
     }
    ],
-   "hold": 1.6
+   "hold": 1.2
   }
  ],
  "music": {

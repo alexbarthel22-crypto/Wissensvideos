@@ -14,21 +14,26 @@
       -webkit-text-stroke: 16px #0a0418; paint-order: stroke fill; }
     .big .c { color: #3ff0ff; } .big .p { color: #ff3dbd; } .big .l { color: #b6ff3b; } .big .g { color: #ffd23f; }
     .fl { position: absolute; inset: 0; background: #fff; opacity: 0; }
-.cf { position: absolute; left: 530px; top: 700px; width: 20px; height: 30px; border-radius: 4px; }
+.slot { position: absolute; left: 110px; width: 720px; height: 300px; border-radius: 30px; background: #fff; overflow: hidden; opacity: 0;
+      box-shadow: 0 0 0 7px var(--c), 0 0 40px var(--c); }
+    .slot .col { position: absolute; left: 0; right: 0; top: 0; }
+    .slot .col div { height: 100px; display: grid; place-items: center; font: 900 46px Inter, sans-serif; color: #1a0f08; white-space: nowrap; }
+    .slot .col .win { color: #ff3dbd; font-size: 54px; }
+    .slot .band { position: absolute; left: 10px; right: 10px; top: 100px; height: 100px; border-radius: 20px; border: 5px solid var(--c); background: rgba(255,255,255,.0); }
+    .slot .fd { position: absolute; left: 0; right: 0; top: 0; bottom: 0; background: linear-gradient(#fff 0%, rgba(255,255,255,0) 32%, rgba(255,255,255,0) 68%, #fff 100%); }
+    .slot .pt2 { position: absolute; top: 128px; font-size: 44px; } 
+    .slk { position: absolute; left: 110px; width: 720px; text-align: center; font: 900 34px Inter, sans-serif; letter-spacing: .12em; color: #fff; opacity: 0;
+      -webkit-text-stroke: 8px #0a0418; paint-order: stroke fill; }.cf { position: absolute; left: 530px; top: 700px; width: 20px; height: 30px; border-radius: 4px; }
     #j1 { top: 220px; font-size: 100px; white-space: nowrap; }
-    #j2 { top: 420px; font-size: 60px; }
-    #sl { position: absolute; left: 110px; width: 720px; top: 600px; height: 150px; border-radius: 34px; background: #fff; overflow: hidden; opacity: 0;
-      box-shadow: 0 0 0 8px #ff3dbd, 0 0 50px rgba(255,61,189,.8); }
-    #sl div { position: absolute; left: 0; right: 0; top: 0; height: 150px; display: grid; place-items: center; text-align: center; font: 900 54px Inter, sans-serif; color: #1a0f08; white-space: nowrap; opacity: 0; }
-    #sl #wn { color: #ff3dbd; font-size: 64px; }
-    #j3 { top: 820px; font-size: 76px; }
+    #j2 { top: 380px; font-size: 56px; }
+    #j3 { top: 960px; font-size: 76px; }
     #j4 { top: 1460px; font-size: 56px; }
   </style>
   <div id="root" data-composition-id="s10" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
     <div id="s10-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
       <div id="j1" class="big">🎰 <span class="g">VERLOSUNG!</span></div>
       <div id="j2" class="neo"><small>🎮 1 JOB IN DER</small>GAME LAGOON</div>
-      <div id="sl"><div id="rl0">@haylie.aeriana</div><div id="rl1">@lxna826</div><div id="rl2">@val3n14tina</div><div id="rl3">@alekskabhv</div><div id="rl4">@reba_thx</div><div id="rl5">@amelie.aburg</div><div id="rl6">@emiliaxlove1</div><div id="rl7">@probablyfiona</div><div id="rl8">@polina_ok150</div><div id="rl9">@skaly.ksss</div><div id="wn">@lilou.mgd</div></div>
+      <div class="slk" id="sgk" style="top:568px"></div><div class="slot" id="sg" style="top:620px;--c:#ff3dbd"><div class="col" id="sgc"><div id="sgr0">@lionaaa013</div><div id="sgr1">@klabautermann6767</div><div id="sgr2">@ju1e_smt</div><div id="sgr3">@theterst7</div><div id="sgr4">@lp_art18</div><div id="sgr5">@lara.ellxndt</div><div id="sgr6">@edit_duo_loveschiwi_67</div><div id="sgr7">@emma.hl07</div><div id="sgr8">@linus945</div><div id="sgr9">@q_inty</div><div id="sgr10">@annabella8866</div><div id="sgr11">@kim882665</div><div id="sgr12">@skaly.ksss</div><div id="sgr13">@rosenrivalin</div><div id="sgr14">@livelaughlinaax</div><div id="sgr15">@wulf75</div><div class=win id="sgr16">@lilou.mgd</div><div id="sgr17">@lionaaa013</div></div><div class="fd"></div><div class="band"></div><div class="pt2" style="left:24px">▶</div><div class="pt2" style="right:24px">◀</div></div>
       <div id="j3" class="neo li">🎉 GLÜCKWUNSCH!</div>
       <div id="j4" class="neo pk">📩 MELDE DICH BEI UNS!</div>
       <div id="cfb" style="position:absolute;inset:0"></div>
@@ -41,19 +46,20 @@
       /*__COMMON_JS__*/
       wrapBt("#s10-stage");
       const tl = gsap.timeline({ paused: true });
-      const t = line("L10")[0], G = at("L10", "geht"), W = line("L10b")[0];
+      const t = line("L10")[0], G = at("L10", "Job"), W = line("L10b")[0];
       tl.fromTo("#j1", { opacity: 0, scale: 3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .24, ease: "back.out(2.2)" }, t - .05);tl.fromTo(".fl", { opacity: 0.5 }, { opacity: 0, duration: .28, immediateRender: false }, t);
       tl.fromTo("#j2", { opacity: 0, scale: 3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .24, ease: "back.out(2.2)" }, at("L10", "Job") - .05);
-      tl.fromTo("#sl", { opacity: 0, scale: .5 }, { opacity: 1, scale: 1, duration: .25, ease: "back.out(2.5)" }, G - .3);
-      for (let i = 0; i < 10; i++) { const a = G - .1 + i * ((W - G) / 10); tl.set("#rl" + i, { opacity: 1 }, a); tl.set("#rl" + i, { opacity: 0 }, a + (W - G) / 10); }
-      tl.fromTo("#wn", { opacity: 0, scale: 2 }, { opacity: 1, scale: 1, duration: .25, ease: "back.out(3)" }, W - .05);
+      tl.fromTo(["#sg", "#sgk"], { opacity: 0, scale: .5 }, { opacity: 1, scale: 1, duration: .25, ease: "back.out(2.5)" }, G + .3 - .3);
+      tl.fromTo("#sgc", { y: 100 }, { y: 100 - 16 * 100, duration: W - (G + .3), ease: "sine.out" }, G + .3);
+      tl.fromTo("#sgc", { filter: "blur(3px)" }, { filter: "blur(0px)", duration: (W - (G + .3)) * .8, ease: "power2.in", immediateRender: false }, G + .3);
+      tl.fromTo("#sgr16", { scale: 1 }, { scale: 1.15, duration: .15, yoyo: true, repeat: 3, ease: "sine.inOut", immediateRender: false }, W);
       [[22,-12],[-24,10],[16,14],[-12,-10],[0,0]].forEach(([x, y], i) => tl.to("#s10-stage", { x, y, duration: .04, ease: "none" }, W + i * .04));tl.fromTo(".fl", { opacity: 0.8 }, { opacity: 0, duration: .28, immediateRender: false }, W);
       tl.fromTo("#j3", { opacity: 0, scale: 3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .24, ease: "back.out(2.2)" }, W);
-      const R = rng(77), box = document.getElementById("cfb"), cols = ["#ffd23f", "#e8467c", "#2fb3a0", "#fff", "#7b4fe0", "#ff7a59"];
+      { const R = rng(77), box = document.getElementById("cfb"), cols = ["#ffd23f", "#e8467c", "#2fb3a0", "#fff", "#7b4fe0", "#ff7a59"];
       for (let k = 0; k < 60; k++) { const d = document.createElement("div"); d.className = "cf"; d.style.background = cols[k % cols.length]; box.appendChild(d);
         const a = R() * Math.PI * 2, v = 380 + R() * 560, dx = Math.cos(a) * v, dy = Math.sin(a) * v * .8 - 300;
         tl.fromTo(d, { opacity: 0, x: 0, y: 0, rotation: 0, scale: .6 }, { opacity: 1, x: dx * .7, y: dy * .7, rotation: (R() - .5) * 720, scale: 1, duration: .45, ease: "power3.out" }, W);
-        tl.to(d, { x: dx, y: dy + 700, rotation: "+=" + Math.round((R() - .5) * 540), opacity: 0, duration: 1.4, ease: "power1.in" }, W + .45); }
+        tl.to(d, { x: dx, y: dy + 700, rotation: "+=" + Math.round((R() - .5) * 540), opacity: 0, duration: 1.4, ease: "power1.in" }, W + .45); } }
       tl.fromTo("#j4", { opacity: 0, scale: 3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .24, ease: "back.out(2.2)" }, at("L10b", "Melde") - .05);
       tl.to("#s10-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
       window.__timelines["s10"] = tl;

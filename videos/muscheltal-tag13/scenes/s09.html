@@ -18,12 +18,16 @@
       font-family: "Inter", sans-serif; font-weight: 900; font-size: 56px; display: grid; place-items: center; box-shadow: 0 0 0 5px #2a1b12, 0 12px 0 rgba(0,0,0,.25); }
     .fbtn2 { position: absolute; inset: 0; border-radius: 60px; background: #fff; color: #0a78c2; display: grid; place-items: center; opacity: 0; }
     .fhand { position: absolute; font-size: 120px; }
+    #m1 { top: 260px; font-size: 66px; }
+    #m2 { position: absolute; left: 110px; width: 720px; top: 460px; border-radius: 30px; padding: 22px 26px; background: #fff; opacity: 0; box-shadow: 0 14px 30px rgba(0,0,0,.45); font: 700 40px/1.3 Inter, sans-serif; color: #111; }
+    #m2 b { color: #fe2c55; } #m2 small { display: block; font-size: 28px; color: #888; margin-top: 8px; }
     #o9 { top: 300px; font-size: 150px; }
     #f9 { top: 520px; opacity: 0; }
-    #z9 { top: 720px; font-size: 64px; }
   </style>
   <div id="root" data-composition-id="s09" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
     <div id="s09-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="m1" class="neo li">👯 MARKIER DEINE FREUNDE!</div>
+      <div id="m2"><b>@deine.beste</b> zieh neben mich! 🏡🐚<small>❤️ 24 · Antworten</small></div>
       <div id="o9" class="big">FOLG <span class="p">MIR</span></div>
       <div id="f9" class="fbtn">+ Folgen<div class="fbtn2">✓ Eingezogen</div></div>
       <div class="fl"></div>
@@ -35,10 +39,13 @@
       /*__COMMON_JS__*/
       wrapBt("#s09-stage");
       const tl = gsap.timeline({ paused: true });
-      const F = at("L9", "Folg");
+      const t = line("L9")[0], F = at("L9", "folg");
+      tl.fromTo("#m1", { opacity: 0, scale: 3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .24, ease: "back.out(2.2)" }, t - .05);
+      tl.fromTo("#m2", { opacity: 0, y: 60, rotation: -3 }, { opacity: 1, y: 0, rotation: -1.5, duration: .3, ease: "back.out(2)" }, t + .35);
+      tl.to("#m1", { opacity: 0, scale: .6, duration: .14, ease: "power2.in" }, F - .15);tl.to("#m2", { opacity: 0, scale: .6, duration: .14, ease: "power2.in" }, F - .15);
       tl.fromTo("#o9", { opacity: 0, scale: 3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .24, ease: "back.out(2.2)" }, F - .05);tl.fromTo(".fl", { opacity: 0.5 }, { opacity: 0, duration: .28, immediateRender: false }, F);
-      tl.fromTo("#f9", { opacity: 0, scale: 3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .24, ease: "back.out(2.2)" }, F + .25);
-      tl.to("#f9", { scale: 1.08, duration: .25, yoyo: true, repeat: 3, ease: "sine.inOut" }, F + .6);
+      tl.fromTo("#f9", { opacity: 0, scale: 3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .24, ease: "back.out(2.2)" }, F + .2);
+      tl.to("#f9", { scale: 1.08, duration: .25, yoyo: true, repeat: 3, ease: "sine.inOut" }, F + .55);
       tl.to("#f9 .fbtn2", { opacity: 1, duration: .15 }, at("L9", "heute") + .3);
       tl.to("#f9", { scale: 1.12, duration: .15, yoyo: true, repeat: 1 }, at("L9", "heute") + .3);
       

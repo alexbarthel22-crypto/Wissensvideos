@@ -62,14 +62,17 @@
     .big .c { color: #3ff0ff; } .big .p { color: #ff3dbd; } .big .l { color: #b6ff3b; } .big .g { color: #ffd23f; }
     .fl { position: absolute; inset: 0; background: #fff; opacity: 0; }
 
-    #h1 { top: 210px; font-size: 118px; }
+    #h1 { top: 210px; font-size: 110px; }
+    #nb { position: absolute; left: 330px; top: 520px; width: 420px; height: 420px; opacity: 0; }
+    #nr { position: absolute; left: 540px; top: 730px; width: 1300px; height: 1300px; margin: -650px; border-radius: 50%; opacity: 0; background: repeating-conic-gradient(rgba(255,210,63,.45) 0 8deg, rgba(255,210,63,0) 8deg 20deg); }
     #h1 .g { text-shadow: 0 0 40px rgba(255,210,63,.9); }
     #h2 { top: 1450px; font-size: 64px; }
     #h3 { top: 1600px; font-size: 96px; }
     .sp { position: absolute; font-size: 70px; opacity: 0; }
   </style>
-  <div id="root" data-composition-id="s05" data-start="0" data-duration="5.190" data-width="1080" data-height="1920">
-    <div id="s05-stage" class="clip stage" data-start="0" data-duration="5.190" data-track-index="0">
+  <div id="root" data-composition-id="s05" data-start="0" data-duration="5.750" data-width="1080" data-height="1920">
+    <div id="s05-stage" class="clip stage" data-start="0" data-duration="5.750" data-track-index="0">
+      <div id="nr"></div><svg id="nb" viewBox="0 0 420 420"><polygon points="410,210 357,239 395,287 335,293 351,351 293,335 287,395 239,357 210,410 181,357 133,395 127,335 69,351 85,293 25,287 63,239 10,210 63,181 25,133 85,127 69,69 127,85 133,25 181,63 210,10 239,63 287,25 293,85 351,69 335,127 395,133 357,181" fill="#ff3dbd" stroke="#fff" stroke-width="10"/><text x="210" y="255" font-family="Lilita One" font-size="140" text-anchor="middle" fill="#ffd23f" stroke="#0a0418" stroke-width="14" paint-order="stroke">NEU!</text></svg>
       <div id="h1" class="big">DIE <span class="g">GOLDENE</span><br><span class="g">KOKOSHÜTTE</span> ✨</div>
       <div id="h2" class="neo go"><small>RESERVIERT FÜR</small>🏠 BEWOHNER NR. 1.000</div>
       <div id="h3" class="big">BIST DAS <span class="l">DU?</span> 👀</div>
@@ -80,7 +83,7 @@
   <script>
     (() => {
       
-      const C = {"__dur": 5.19, "L5": [0.2, 1.8], "L5.words": [["die", 0.2, 0.404], ["goldene", 0.404, 1.0], ["kokoshütte", 1.0, 1.8]], "L5b": [2.02, 5.01], "L5b.words": [["hier", 2.02, 2.226], ["zieht", 2.226, 2.439], ["der", 2.439, 2.638], ["tausendste", 2.638, 3.242], ["bewohner", 3.242, 3.831], ["ein", 3.831, 4.03], ["bist", 4.28, 4.532], ["das", 4.532, 4.775], ["du", 4.775, 5.01]]};
+      const C = {"__dur": 5.75, "L5": [0.2, 2.36], "L5.words": [["neu", 0.2, 0.97], ["die", 1.09, 1.252], ["goldene", 1.252, 1.725], ["kokoshütte", 1.725, 2.36]], "L5b": [2.58, 5.57], "L5b.words": [["hier", 2.58, 2.786], ["zieht", 2.786, 2.999], ["der", 2.999, 3.198], ["tausendste", 3.198, 3.802], ["bewohner", 3.802, 4.391], ["ein", 4.391, 4.59], ["bist", 4.84, 5.092], ["das", 5.092, 5.335], ["du", 5.335, 5.57]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -124,7 +127,13 @@
 
       wrapBt("#s05-stage");
       const tl = gsap.timeline({ paused: true });
-      const t = line("L5")[0], T = line("L5b")[0];
+      const t = line("L5")[0], T = line("L5b")[0], NU = at("L5", "NEU");
+      tl.fromTo("#nb", { opacity: 0, scale: 4, rotation: -40 }, { opacity: 1, scale: 1, rotation: 0, duration: .3, ease: "back.out(2)" }, NU - .05);
+      tl.fromTo("#nr", { opacity: 0, scale: .3, rotation: 0 }, { opacity: 1, scale: 1, rotation: 50, duration: 1.6, ease: "power2.out" }, NU);
+      tl.to("#nb", { scale: 1.15, duration: .12, yoyo: true, repeat: 5, ease: "sine.inOut" }, NU + .35);
+      tl.to("#nr", { opacity: 0, duration: .4 }, NU + 1.6);
+      tl.to("#nb", { scale: .45, x: -280, y: -110, rotation: -12, duration: .45, ease: "power2.inOut" }, at("L5", "goldene") + .4);
+      [[22,-12],[-24,10],[16,14],[-12,-10],[0,0]].forEach(([x, y], i) => tl.to("#s05-stage", { x, y, duration: .04, ease: "none" }, NU + i * .04));tl.fromTo(".fl", { opacity: 0.9 }, { opacity: 0, duration: .28, immediateRender: false }, NU);
       tl.fromTo("#h1", { opacity: 0, scale: 3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .24, ease: "back.out(2.2)" }, at("L5", "goldene") - .05);tl.fromTo(".fl", { opacity: 0.7 }, { opacity: 0, duration: .28, immediateRender: false }, at("L5", "goldene"));
       [0,1,2,3,4].forEach(i => tl.fromTo("#sp" + i, { opacity: 0, scale: .2 }, { opacity: 1, scale: 1.3, duration: .3, yoyo: true, repeat: 5, ease: "sine.inOut" }, at("L5", "goldene") + i * .15));
       tl.fromTo("#h2", { opacity: 0, scale: 3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .24, ease: "back.out(2.2)" }, at("L5b", "tausendste") - .05);
