@@ -25,61 +25,33 @@
  "pitch": 0,
  "title": "Muschel-Tal – 10 Sekunden ohne Muscheln",
  "voice": "Gemini TTS (gemini-3.1-flash-tts-preview, Stimme Achird, --speed 1.12) – wie Video 1",
- "notes": "23.11.: Comedy-Kurzvideo, eigene Illustrationen, übertriebene Welt ohne Muscheln.",
+ "notes": "23.11.: komplett neue, frei erfundene Szenen – extrem übertriebene Welt ohne Muscheln.",
  "scenes": [
-  {
-   "id": "s00",
-   "tag": "",
-   "sfx": [
-    {
-     "name": "sparkle",
-     "at": "s00+0.0",
-     "volume": 0.5
-    },
-    {
-     "name": "ka-ching",
-     "at": "L0b:Geld",
-     "volume": 0.5
-    }
-   ],
-   "lines": [
-    {
-     "id": "L0",
-     "text": "Auf *p:Muschel-Tal / wohnen *y:820|=achthundertzwanzig *y:Follower –",
-     "pause": 0
-    },
-    {
-     "id": "L0b",
-     "text": "und *y:Muscheln sind / hier das *g:Geld!",
-     "pause": 0.15
-    }
-   ]
-  },
   {
    "id": "s01",
    "tag": "",
    "sfx": [
     {
      "name": "riser",
-     "at": "L1:KEINE-0.5",
+     "at": "s01+0.0",
      "volume": 0.45
     },
     {
      "name": "impact-bass-2",
      "at": "L1:KEINE",
-     "volume": 0.7
+     "volume": 0.75
     },
     {
-     "name": "sad-trombone",
-     "at": "L1:gäbe",
-     "volume": 0.4
+     "name": "whoosh-short",
+     "at": "L1:mehr",
+     "volume": 0.5
     }
    ],
    "lines": [
     {
      "id": "L1",
-     "text": "Was wäre, wenn es / *y:KEINE *y:Muscheln gäbe?!",
-     "pause": 0.25
+     "text": "Stell dir vor: / Es gibt *y:KEINE *y:Muscheln mehr!",
+     "pause": 0
     }
    ]
   },
@@ -88,21 +60,21 @@
    "tag": "",
    "sfx": [
     {
-     "name": "stempel",
-     "at": "L2:unbezahlbar",
-     "volume": 0.6
+     "name": "boing",
+     "at": "L2:Coladosen",
+     "volume": 0.55
     },
     {
-     "name": "impact-bass-1",
-     "at": "L2:unbezahlbar+0.1",
+     "name": "pop",
+     "at": "L2:Einsiedlerkrebse",
      "volume": 0.5
     }
    ],
    "lines": [
     {
      "id": "L2",
-     "text": "Der *p:Döner: / *y:unbezahlbar!",
-     "pause": 0.15
+     "text": "*p:Einsiedlerkrebse / wohnen in *y:Coladosen!",
+     "pause": 0.12
     }
    ]
   },
@@ -111,21 +83,21 @@
    "tag": "",
    "sfx": [
     {
-     "name": "impact-bass-2",
-     "at": "L3:eingestürzt",
-     "volume": 0.7
+     "name": "click-soft",
+     "at": "L3:Meer",
+     "volume": 0.4
     },
     {
-     "name": "impact-bass-1",
-     "at": "L3:eingestürzt+0.25",
-     "volume": 0.5
+     "name": "sad-trombone",
+     "at": "L3:stumm",
+     "volume": 0.45
     }
    ],
    "lines": [
     {
      "id": "L3",
-     "text": "Der *p:Palast: / *y:eingestürzt!",
-     "pause": 0.15
+     "text": "Das *g:Meer im Ohr? / *y:Stumm!",
+     "pause": 0.12
     }
    ]
   },
@@ -134,16 +106,21 @@
    "tag": "",
    "sfx": [
     {
-     "name": "boing",
-     "at": "L4:arbeitslos",
+     "name": "alarm",
+     "at": "L4:streiken",
+     "volume": 0.3
+    },
+    {
+     "name": "impact-bass-1",
+     "at": "L4:streiken",
      "volume": 0.5
     }
    ],
    "lines": [
     {
      "id": "L4",
-     "text": "Die *p:Krabben: / *y:arbeitslos!",
-     "pause": 0.15
+     "text": "Die *p:Möwen / *y:streiken!",
+     "pause": 0.12
     }
    ]
   },
@@ -152,21 +129,21 @@
    "tag": "",
    "sfx": [
     {
-     "name": "whoosh",
-     "at": "L5:Wal",
-     "volume": 0.45
+     "name": "pop",
+     "at": "L5:Muschelnudeln",
+     "volume": 0.5
     },
     {
-     "name": "platsch",
-     "at": "L5:aus",
-     "volume": 0.45
+     "name": "stempel",
+     "at": "L5:Spaghetti",
+     "volume": 0.55
     }
    ],
    "lines": [
     {
      "id": "L5",
-     "text": "Sogar der *g:Wal / zieht *y:aus!",
-     "pause": 0.15
+     "text": "*g:Muschelnudeln? / Nur noch *y:Spaghetti!",
+     "pause": 0.12
     }
    ]
   },
@@ -175,30 +152,53 @@
    "tag": "",
    "sfx": [
     {
-     "name": "sparkle",
-     "at": "L6:Glück",
+     "name": "scratch",
+     "at": "L6b:TAL",
+     "volume": 0.35
+    },
+    {
+     "name": "impact-bass-2",
+     "at": "L6b:TAL",
      "volume": 0.6
-    },
-    {
-     "name": "yippee",
-     "at": "L6:Muschel-Tal",
-     "volume": 0.5
-    },
-    {
-     "name": "click",
-     "at": "L6b:Folg",
-     "volume": 0.55
     }
    ],
    "lines": [
     {
      "id": "L6",
-     "text": "Zum *g:Glück gibt's / *p:Muschel-Tal!",
+     "text": "Und *p:Muschel-Tal / heißt nur noch …",
      "pause": 0.15
     },
     {
      "id": "L6b",
-     "text": "*y:Folg mir – / und hol dir *g:deine *g:Hütte!",
+     "text": "*y:TAL.",
+     "pause": 0.25
+    }
+   ]
+  },
+  {
+   "id": "s07",
+   "tag": "",
+   "sfx": [
+    {
+     "name": "sparkle",
+     "at": "L7:Folg",
+     "volume": 0.6
+    },
+    {
+     "name": "click",
+     "at": "L7:Folg+0.1",
+     "volume": 0.55
+    },
+    {
+     "name": "yippee",
+     "at": "L7:spät",
+     "volume": 0.45
+    }
+   ],
+   "lines": [
+    {
+     "id": "L7",
+     "text": "*g:Folg mir – / bevor's zu *y:spät ist!",
      "pause": 0.2
     }
    ]
