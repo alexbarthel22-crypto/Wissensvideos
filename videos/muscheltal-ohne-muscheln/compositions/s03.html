@@ -62,21 +62,38 @@
     .gl1 { position: absolute; inset: 0; opacity: 0; background: repeating-linear-gradient(0deg, rgba(63,240,255,.18) 0 3px, rgba(255,61,189,0) 3px 9px); mix-blend-mode: screen; }
     .art { position: absolute; inset: 0; width: 1080px; height: 1920px; }
     .H { top: 220px; } .B { top: 1520px; }
-    #o1 { font-size: 140px; } #o2 { font-size: 150px; }
-    #dots { position: absolute; left: 160px; top: 1180px; font: 400 160px "Lilita One"; color: #fff; -webkit-text-stroke: 12px #0a0418; paint-order: stroke fill; opacity: 0; }
+    #bg3 { position: absolute; inset: 0; background: radial-gradient(circle at 50% 40%, #7a3dff, #2a0e5a 70%); }
+    #ph { position: absolute; left: 250px; top: 430px; width: 580px; height: 1060px; border-radius: 70px; background: #111; border: 14px solid #333; box-shadow: 0 30px 80px rgba(0,0,0,.5); overflow: hidden; }
+    #ph .scr { position: absolute; inset: 16px; border-radius: 52px; background: #f2f2f7; overflow: hidden; }
+    #ph .bar { height: 120px; background: #fff; border-bottom: 2px solid #ddd; display: flex; align-items: center; padding: 0 30px; font: 800 34px Inter, sans-serif; color: #111; }
+    #ph .msg { margin: 30px; padding: 20px 26px; border-radius: 30px; background: #fff; font: 700 34px/1.25 Inter, sans-serif; color: #111; width: fit-content; max-width: 420px; }
+    #ph .me { margin-left: auto; background: #3a8bff; color: #fff; }
+    #kb { position: absolute; left: 0; right: 0; bottom: 0; height: 420px; background: #d1d4db; display: grid; grid-template-columns: repeat(5, 1fr); padding: 24px; gap: 14px; }
+    #kb div { border-radius: 16px; background: #fff; display: grid; place-items: center; font-size: 56px; }
+    #kb .sh { background: #ffe4ec; box-shadow: 0 0 0 5px #ff3dbd; }
+    #trash { position: absolute; left: 720px; top: 330px; font-size: 140px; opacity: 0; }
+    #flyS { position: absolute; width: 110px; height: 110px; left: 0; top: 0; opacity: 0; }
+    #x3 { position: absolute; left: 430px; top: 1060px; font-size: 200px; opacity: 0; }
+    #e3a { top: 220px; font-size: 120px; } #e3b { top: 1560px; font-size: 104px; }
+    .neo { width: auto !important; max-width: none !important; white-space: normal !important; }
   </style>
-  <div id="root" data-composition-id="s03" data-start="0" data-duration="2.020" data-width="1080" data-height="1920">
-    <div id="s03-stage" class="clip stage" data-start="0" data-duration="2.020" data-track-index="0">
-      <svg class="art" viewBox="0 0 1080 1920"><defs><linearGradient id="g3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7fd0ff"/><stop offset=".5" stop-color="#4aa6d9"/><stop offset="1" stop-color="#2a6fa8"/></linearGradient></defs><rect width="1080" height="1920" fill="url(#g3)"/><path d="M-60 1450 q35 -18 70 0 q35 18 70 0" stroke="#9fe0ff" stroke-width="6" fill="none" opacity=".7"/><path d="M-60 1590 q35 -18 70 0 q35 18 70 0" stroke="#9fe0ff" stroke-width="6" fill="none" opacity=".7"/><path d="M-60 1730 q35 -18 70 0 q35 18 70 0" stroke="#9fe0ff" stroke-width="6" fill="none" opacity=".7"/><path d="M120 1450 q35 -18 70 0 q35 18 70 0" stroke="#9fe0ff" stroke-width="6" fill="none" opacity=".7"/><path d="M120 1590 q35 -18 70 0 q35 18 70 0" stroke="#9fe0ff" stroke-width="6" fill="none" opacity=".7"/><path d="M120 1730 q35 -18 70 0 q35 18 70 0" stroke="#9fe0ff" stroke-width="6" fill="none" opacity=".7"/><path d="M300 1450 q35 -18 70 0 q35 18 70 0" stroke="#9fe0ff" stroke-width="6" fill="none" opacity=".7"/><path d="M300 1590 q35 -18 70 0 q35 18 70 0" stroke="#9fe0ff" stroke-width="6" fill="none" opacity=".7"/><path d="M300 1730 q35 -18 70 0 q35 18 70 0" stroke="#9fe0ff" stroke-width="6" fill="none" opacity=".7"/><path d="M480 1450 q35 -18 70 0 q35 18 70 0" stroke="#9fe0ff" stroke-width="6" fill="none" opacity=".7"/><path d="M480 1590 q35 -18 70 0 q35 18 70 0" stroke="#9fe0ff" stroke-width="6" fill="none" opacity=".7"/><path d="M480 1730 q35 -18 70 0 q35 18 70 0" stroke="#9fe0ff" stroke-width="6" fill="none" opacity=".7"/><path d="M660 1450 q35 -18 70 0 q35 18 70 0" stroke="#9fe0ff" stroke-width="6" fill="none" opacity=".7"/><path d="M660 1590 q35 -18 70 0 q35 18 70 0" stroke="#9fe0ff" stroke-width="6" fill="none" opacity=".7"/><path d="M660 1730 q35 -18 70 0 q35 18 70 0" stroke="#9fe0ff" stroke-width="6" fill="none" opacity=".7"/><path d="M840 1450 q35 -18 70 0 q35 18 70 0" stroke="#9fe0ff" stroke-width="6" fill="none" opacity=".7"/><path d="M840 1590 q35 -18 70 0 q35 18 70 0" stroke="#9fe0ff" stroke-width="6" fill="none" opacity=".7"/><path d="M840 1730 q35 -18 70 0 q35 18 70 0" stroke="#9fe0ff" stroke-width="6" fill="none" opacity=".7"/><path d="M1020 1450 q35 -18 70 0 q35 18 70 0" stroke="#9fe0ff" stroke-width="6" fill="none" opacity=".7"/><path d="M1020 1590 q35 -18 70 0 q35 18 70 0" stroke="#9fe0ff" stroke-width="6" fill="none" opacity=".7"/><path d="M1020 1730 q35 -18 70 0 q35 18 70 0" stroke="#9fe0ff" stroke-width="6" fill="none" opacity=".7"/><g transform="translate(300,520) scale(3.2)"><path d="M60 0 C110 0 140 40 130 90 C122 130 90 140 80 175 C72 205 40 210 30 185" fill="#f2c39a" stroke="#a8683a" stroke-width="4"/><path d="M80 40 C105 45 110 75 92 95 C80 108 78 120 70 130" fill="none" stroke="#a8683a" stroke-width="4"/></g><g transform="translate(600,880) scale(2.4)"><path d="M0 60 Q-10 0 30 -10 Q60 -18 70 10 L60 40 Q40 30 30 50 L40 80 Q20 90 0 60Z" fill="#f2c39a" stroke="#a8683a" stroke-width="4"/><path d="M30 -10 L36 -40 Q42 -50 48 -40 L44 -6 M48 -6 L56 -36 Q62 -44 66 -34 L60 4" fill="#f2c39a" stroke="#a8683a" stroke-width="4"/></g><g id="mute" transform="translate(700,600)"><circle r="120" fill="#fff" stroke="#e8433c" stroke-width="16"/><path d="M-50 -30 L-15 -30 L25 -65 L25 65 L-15 30 L-50 30Z" fill="#2a1b12"/><path d="M-90 -90 L90 90" stroke="#e8433c" stroke-width="18"/></g></svg>
-      <div id="dots">. . .</div>
-      <div id="o1" class="big H">DAS <span class="c">MEER</span> IM OHR?</div>
-      <div id="o2" class="neo B">🔇 STUMM!</div>
+  <div id="root" data-composition-id="s03" data-start="0" data-duration="2.450" data-width="1080" data-height="1920">
+    <div id="s03-stage" class="clip stage" data-start="0" data-duration="2.450" data-track-index="0">
+      <div id="bg3"></div>
+      <div id="ph"><div class="scr"><div class="bar">💬 Beste Freundin</div>
+        <div class="msg">Strand morgen? 🏖️</div><div class="msg me">klar, ich bring die …</div>
+        <div id="kb"><div>😂</div><div>🔥</div><div>🌊</div><div class="sh" id="key">🐚</div><div>🦀</div><div>😭</div><div>💀</div><div>🫠</div><div>🌴</div><div>☀️</div></div></div></div>
+      <div id="trash">🗑️</div>
+      <svg id="flyS" viewBox="0 0 64 64"><path d="M32 54 L6 44 Q2 34 10 32 Q8 22 17 23 Q19 13 27 18 Q32 9 37 18 Q45 13 47 23 Q56 22 54 32 Q62 34 58 44 Z" fill="#ffc7b2" stroke="#e8467c" stroke-width="2.5"/></svg>
+      <div id="x3">❌</div>
+      <div id="e3a" class="big"><span class="l">MUSCHEL-EMOJI?</span></div>
+      <div id="e3b" class="neo pk">🗑️ GELÖSCHT!</div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 2.02, "L3": [0.2, 1.72], "L3.words": [["das", 0.2, 0.435], ["meer", 0.435, 0.678], ["im", 0.678, 0.905], ["ohr", 0.905, 1.14], ["stumm", 1.34, 1.72]]};
+      const C = {"__dur": 2.45, "L3": [0.2, 2.15], "L3.words": [["das", 0.2, 0.4], ["muschelemoji", 0.4, 1.38], ["gelöscht", 1.58, 2.15]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -120,12 +137,17 @@
 
       wrapBt("#s03-stage");
       const tl = gsap.timeline({ paused: true });
-      const t = line("L3")[0], S = at("L3", "Stumm");
-      tl.fromTo("#o1", { opacity: 0, scale: 3.4, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .26, ease: "back.out(2.2)" }, t - .05);
-      tl.fromTo("#dots", { opacity: 0 }, { opacity: 1, duration: .2 }, t + .5);
-      tl.fromTo("#mute", { scale: 0 }, { scale: 1, duration: .3, ease: "back.out(3)", transformOrigin: "700px 600px" }, S - .1);
-      tl.fromTo("#o2", { opacity: 0, scale: 3.4, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .26, ease: "back.out(2.2)" }, S - .05);
-      [[24,-14],[-26,12],[20,16],[-16,-12],[10,8],[0,0]].forEach(([x, y], i) => tl.to("#s03-stage", { x, y, duration: .04, ease: "none" }, S + i * .04));
+      const t = line("L3")[0], G = at("L3", "Gelöscht");
+      tl.fromTo("#ph", { y: 600, rotation: 8 }, { y: 0, rotation: 0, duration: .4, ease: "back.out(1.6)" }, t - .1);
+      tl.fromTo("#e3a", { opacity: 0, scale: 3.4, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .26, ease: "back.out(2.2)" },  t - .05);
+      tl.to("#key", { scale: 1.25, duration: .15, yoyo: true, repeat: 3 }, t + .5);
+      tl.fromTo("#trash", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .25, ease: "back.out(3)" }, G - .45);
+      tl.fromTo("#flyS", { opacity: 1, x: 640, y: 1310, scale: .8, rotation: 0 }, { x: 750, y: 360, scale: .4, rotation: 360, duration: .45, ease: "power2.in" }, G - .4);
+      tl.to("#flyS", { opacity: 0, duration: .05 }, G + .05);
+      tl.to("#key", { opacity: .15, duration: .05 }, G - .4);
+      tl.fromTo("#x3", { opacity: 0, scale: 3 }, { opacity: 1, scale: 1, duration: .25, ease: "back.out(3)" }, G);
+      tl.fromTo("#e3b", { opacity: 0, scale: 3.4, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .26, ease: "back.out(2.2)" },  G - .05);
+      [[24,-14],[-26,12],[20,16],[-16,-12],[10,8],[0,0]].forEach(([x, y], i) => tl.to("#s03-stage", { x, y, duration: .04, ease: "none" },  G + i * .04));
       tl.to("#s03-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
       window.__timelines["s03"] = tl;
     })();

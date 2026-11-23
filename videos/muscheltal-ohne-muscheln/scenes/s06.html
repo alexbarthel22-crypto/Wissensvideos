@@ -15,15 +15,29 @@
     .gl1 { position: absolute; inset: 0; opacity: 0; background: repeating-linear-gradient(0deg, rgba(63,240,255,.18) 0 3px, rgba(255,61,189,0) 3px 9px); mix-blend-mode: screen; }
     .art { position: absolute; inset: 0; width: 1080px; height: 1920px; }
     .H { top: 220px; } .B { top: 1520px; }
-    #tp { position: absolute; left: 175px; top: 760px; width: 520px; height: 170px; background: #9a9a9a; border: 6px solid #555; transform: rotate(-4deg); opacity: 0; }
-    #t1 { font-size: 104px; } #t2 { position: absolute; left: 60px; right: 190px; top: 1240px; text-align: center; font: 400 300px "Lilita One"; color: #ff3dbd; -webkit-text-stroke: 16px #0a0418; paint-order: stroke fill; opacity: 0; }
+    #bg6 { position: absolute; inset: 0; background: linear-gradient(180deg, #ffb6d9, #ff7ac0 50%, #e8c27a 51%, #d9a85a); }
+    #rl { position: absolute; left: 430px; top: 480px; width: 420px; height: 420px; border-radius: 50%; border: 34px solid #fff8d8; box-shadow: 0 0 60px #fff, inset 0 0 40px #fff; }
+    #st { position: absolute; left: 625px; top: 890px; width: 30px; height: 520px; background: #333; }
+    #cr6 { position: absolute; left: 150px; top: 1000px; width: 460px; height: 400px; }
+    #ui { position: absolute; left: 790px; top: 760px; width: 120px; display: flex; flex-direction: column; gap: 30px; align-items: center; color: #fff; text-shadow: 0 3px 6px #000; }
+    #ui div { text-align: center; font-size: 76px; line-height: 1; } #ui small { display: block; font: 900 34px Inter, sans-serif; }
+    #c6a { top: 220px; font-size: 150px; } #c6b { top: 1560px; font-size: 84px; }
+    .neo { width: auto !important; max-width: none !important; white-space: normal !important; }
   </style>
   <div id="root" data-composition-id="s06" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
     <div id="s06-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
-      <svg class="art" viewBox="0 0 1080 1920"><defs><linearGradient id="g6" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#87cdee"/><stop offset=".5" stop-color="#b7e2f5"/><stop offset="1" stop-color="#e2f2e6"/></linearGradient></defs><rect width="1080" height="1920" fill="url(#g6)"/><path d="M0 1150 Q270 980 540 1100 Q810 1220 1080 1050 L1080 1920 L0 1920Z" fill="#7fb86a"/><path d="M0 1280 Q300 1180 600 1300 Q850 1390 1080 1260 L1080 1920 L0 1920Z" fill="#6aa257"/><rect x="520" y="900" width="40" height="560" fill="#9a9a9a" stroke="#555" stroke-width="4"/><g transform="translate(540,840)"><rect x="-380" y="-130" width="760" height="260" rx="18" fill="#ffd23f" stroke="#2a1b12" stroke-width="14"/><text id="sgT" x="0" y="60" font-family="Lilita One" font-size="128" fill="#2a1b12" text-anchor="middle">MUSCHEL-TAL</text></g></svg>
-      <div id="tp"></div>
-      <div id="t1" class="big H">UND <span class="p">MUSCHEL-TAL</span><br>HEISST NUR<br>NOCH …</div>
-      <div id="t2">TAL.</div>
+      <div id="bg6"></div>
+      <div id="rl"></div><div id="st"></div>
+      <svg id="cr6" viewBox="0 0 200 170"><ellipse cx="100" cy="110" rx="70" ry="45" fill="#e2553f" stroke="#8a2a1a" stroke-width="5"/>
+        <path d="M30 110 L5 135 M38 125 L15 155 M162 110 L195 135 M170 125 L185 155" stroke="#8a2a1a" stroke-width="7" stroke-linecap="round"/>
+        <path d="M45 80 L15 40" stroke="#8a2a1a" stroke-width="7"/><path d="M155 80 L185 40" stroke="#8a2a1a" stroke-width="7"/>
+        <path d="M0 40 Q15 15 30 40 Q15 32 0 40Z" fill="#e2553f" stroke="#8a2a1a" stroke-width="4"/><path d="M170 40 Q185 15 200 40 Q185 32 170 40Z" fill="#e2553f" stroke="#8a2a1a" stroke-width="4"/>
+        <circle cx="80" cy="95" r="10" fill="#fff"/><circle cx="120" cy="95" r="10" fill="#fff"/><circle cx="80" cy="97" r="4" fill="#111"/><circle cx="120" cy="97" r="4" fill="#111"/>
+        <path d="M78 122 Q100 142 122 122" stroke="#5a1a10" stroke-width="5" fill="#fff"/>
+        <rect x="70" y="58" width="60" height="10" rx="5" fill="#ff3dbd"/></svg>
+      <div id="ui"><div>❤️<small>0</small></div><div>💬<small>0</small></div><div>↗️<small>0</small></div></div>
+      <div id="c6a" class="big"><span class="p">KRABBEN</span></div>
+      <div id="c6b" class="neo pk">📱 BETTELN UM LIKES!</div>
     </div>
   </div>
   <script>
@@ -32,11 +46,12 @@
       /*__COMMON_JS__*/
       wrapBt("#s06-stage");
       const tl = gsap.timeline({ paused: true });
-      const t = line("L6")[0], T = line("L6b")[0];
-      tl.fromTo("#t1", { opacity: 0, scale: 3.4, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .26, ease: "back.out(2.2)" }, t - .05);
-      tl.fromTo("#tp", { opacity: 0, y: -300, rotation: -30 }, { opacity: 1, y: 0, rotation: -4, duration: .3, ease: "power3.in" }, T - .3);
-      tl.fromTo("#t2", { opacity: 0, scale: 3.4, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .26, ease: "back.out(2.2)" }, T - .02);
-      [[24,-14],[-26,12],[20,16],[-16,-12],[10,8],[0,0]].forEach(([x, y], i) => tl.to("#s06-stage", { x, y, duration: .04, ease: "none" }, T + i * .04));
+      const t = line("L6")[0], Lk = at("L6", "Likes");
+      tl.fromTo("#c6a", { opacity: 0, scale: 3.4, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .26, ease: "back.out(2.2)" },  t - .05);
+      tl.fromTo("#cr6", { y: 0, rotation: -8 }, { y: -40, rotation: 8, duration: .18, yoyo: true, repeat: 11, ease: "sine.inOut" }, t);
+      tl.fromTo("#rl", { boxShadow: "0 0 20px #fff" }, { boxShadow: "0 0 120px #fff", duration: .3, yoyo: true, repeat: 5 }, t);
+      tl.fromTo("#c6b", { opacity: 0, scale: 3.4, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .26, ease: "back.out(2.2)" }, at("L6", "TikTok") - .05);
+      tl.to("#ui", { scale: 1.15, duration: .15, yoyo: true, repeat: 3 }, Lk);
       tl.to("#s06-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
       window.__timelines["s06"] = tl;
     })();
