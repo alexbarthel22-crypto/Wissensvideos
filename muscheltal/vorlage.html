@@ -4948,8 +4948,8 @@ $('popx').onclick=()=>{q.value='';$('qx').hidden=true;unsel();setTimeout(meinNam
 const zoomWK=f=>{WK.zf=Math.max(.2,Math.min(2.4,(WK.zf||1)*f));};/* 21.11.: beim Erkunden deutlich weiter rauszoomen (auch per Pinch) */
 // 🎵 Musik aus den Videos (Tag 4 + Tag 5 im Wechsel) mit Meeresrauschen – startet immer aus, Knopf unter Zoom
 const SND={an:false,i:0,mus:null,meer:null};
-function sndSpiel(){const L=['musik/suedsee_tag4.mp3','musik/suedsee_tag5.mp3'];if(!SND.mus){SND.mus=new Audio();SND.mus.volume=.5;SND.mus.preload='auto';SND.mus.onended=()=>{SND.i=(SND.i+1)%L.length;SND.mus.src=L[SND.i];if(SND.an)SND.mus.play().catch(()=>{});};SND.mus.src=L[0];
- SND.meer=new Audio('musik/meer_gleich.mp3');SND.meer.loop=true;SND.meer.volume=.22;}SND.mus.play().catch(()=>{});SND.meer.play().catch(()=>{});}
+function sndSpiel(){/* 23.11.: ein langes Stück (ca. 10 Min., beide Südsee-Tracks im Wechsel, nahtlos) + 5 Min. Meeresrauschen, Lautstärke fest in den Dateien (iPhone ignoriert .volume) – nichts schwankt */if(!SND.mus){SND.mus=new Audio('musik/suedsee_lang.mp3');SND.mus.loop=true;SND.mus.preload='auto';SND.mus.volume=1;
+ SND.meer=new Audio('musik/meer_lang.mp3');SND.meer.loop=true;SND.meer.volume=1;}SND.mus.play().catch(()=>{});SND.meer.play().catch(()=>{});}
 function sndSetz(an){SND.an=an;const b=$('snd');b.textContent=an?'🔊':'🔇';b.classList.toggle('an',an);b.setAttribute('aria-pressed',an);b.setAttribute('aria-label',an?'Musik ausschalten':'Musik einschalten');if(an)sndSpiel();else if(SND.mus){SND.mus.pause();SND.meer.pause();}}
 $('snd').onclick=()=>sndSetz(!SND.an);
 document.addEventListener('visibilitychange',()=>{if(!SND.mus||!SND.an)return;if(document.hidden){SND.mus.pause();SND.meer.pause();}else sndSpiel();});
