@@ -126,15 +126,15 @@ CMT_ = ""
 
 # s01 – Hook: Satz ab Frame 0 sichtbar, gesprochenes Wort blitzt riesig auf
 scene("s01", NEO + """
-    #hk { position: absolute; left: 60px; right: 60px; top: 300px; text-align: center; font-family: "Lilita One", sans-serif; line-height: 1.0; -webkit-text-stroke: 18px #0a0418; paint-order: stroke fill; }
+    #hk { position: absolute; left: 60px; right: 60px; top: 230px; text-align: center; font-family: "Lilita One", sans-serif; line-height: 1.0; -webkit-text-stroke: 18px #0a0418; paint-order: stroke fill; }
     #hk .w { display: inline-block; position: relative; color: #fff; font-size: 170px; margin: 0 .06em; transform-origin: 50% 60%; }
     #hk #w0 { color: #ffd23f; } #hk #w1 { color: #ffd23f; } #hk #w2 { font-size: 130px; color: #3ff0ff; } #hk #w3, #hk #w4 { color: #ff3dbd; }
     #hk #w0 { transform-origin: 10% 60%; } #hk #w1 { transform-origin: 90% 60%; }
     #g1 { top: 1000px; font-size: 66px; white-space: normal; width: 820px; }""",
-"""      <div id="hk"><span class="w" id="w0">TAG</span><span class="w" id="w1">13</span><br><span class="w" id="w2">MUSCHEL-TAL</span><br><span class="w" id="w3">WÄHLT</span><span class="w" id="w4">NEU!</span></div>
+"""      <div id="hk"><span class="w" id="w0">TAG</span><span class="w" id="w1">13</span><br><span class="w" id="w2">MUSCHEL-TAL</span><br><span class="w" id="w3">WÄHLT</span><br><span class="w" id="w4">NEU!</span></div>
       <div id="g1" class="neo pk"><small>🎁 UND DANN NOCH …</small>JEMAND GEHEIMNISVOLLES HAT EUCH WAS GESCHENKT</div>
       <div class="fl"></div>""",
-"""      const ws = [["tag",.04,.19],["13",.22,.77],["muscheltal",.89,1.31],["wählt",1.34,1.89],["neu",1.94,2.23]] /* aus narration.wav gemessen – bei neuer Stimme neu messen */, SC = [1.9, 1.9, 1.18, 1.6, 1.6], COL = ["#ffd23f", "#ffd23f", "#3ff0ff", "#ff3dbd", "#ff3dbd"];
+"""      const ws = [["tag",.04,.19],["13",.22,.77],["muscheltal",.89,1.31],["wählt",1.34,1.89],["neu",1.94,2.23]] /* aus narration.wav gemessen – bei neuer Stimme neu messen */, SC = [1.9, 1.9, 1.18, 1.45, 1.45], COL = ["#ffd23f", "#ffd23f", "#3ff0ff", "#ff3dbd", "#ff3dbd"];
       tl.fromTo("#hk", { scale: 1.2 }, { scale: 1, duration: .18, ease: "power3.out" }, 0);
       """ + FLASH(0, .9) + """
       ws.slice(0, 5).forEach((w, i) => { const id = "#w" + i, t0 = Math.max(0, w[1] - .03);
