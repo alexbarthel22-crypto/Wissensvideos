@@ -72,7 +72,6 @@
       <div id="g1" class="big">🕶️ <span class="g">SECURITY</span></div>
       <div id="g2" class="big"><span class="p">GESUCHT!</span></div>
       <div id="g3" class="neo go">✨ FÜRS GOLDEN PEARL</div>
-      <div id="g4" class="neo pk">💬 BEWERBUNGEN IN DIE KOMMENTARE!</div>
       <div class="fl"></div>
     </div>
   </div>
@@ -126,8 +125,7 @@
       const t = line("L7")[0], SE = at("L7", "Security");
       tl.fromTo("#g3", { opacity: 0, scale: 3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .24, ease: "back.out(2.2)" }, t - .05);
       tl.fromTo("#g1", { opacity: 0, scale: 3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .24, ease: "back.out(2.2)" }, SE - .05);tl.fromTo("#g2", { opacity: 0, scale: 3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .24, ease: "back.out(2.2)" }, SE + .15);[[22,-12],[-24,10],[16,14],[-12,-10],[0,0]].forEach(([x, y], i) => tl.to("#s07-stage", { x, y, duration: .04, ease: "none" }, SE + i * .04));tl.fromTo(".fl", { opacity: 0.6 }, { opacity: 0, duration: .28, immediateRender: false }, SE);
-      tl.fromTo("#g4", { opacity: 0, scale: 3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .24, ease: "back.out(2.2)" }, at("L7", "Bewerbt") - .05);
-      tl.to("#g4", { scale: 1.06, duration: .22, yoyo: true, repeat: 3, ease: "sine.inOut" }, at("L7", "Bewerbt") + .4);
+      tl.to("#g3", { scale: 1.06, duration: .22, yoyo: true, repeat: 3, ease: "sine.inOut" }, at("L7", "Bewerbt"));
       tl.to("#s07-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
       window.__timelines["s07"] = tl;
     })();

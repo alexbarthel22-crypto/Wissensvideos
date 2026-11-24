@@ -194,7 +194,7 @@ scene("s01", NEO + GULL_CSS + """
 
 # s02 – Innenansicht Tiefsee-Suite: unter Wasser wohnen + Frage
 scene("s02", NEO + """
-    #i1 { top: 200px; font-size: 84px; white-space: nowrap; }
+    #i1 { top: 210px; font-size: 68px; white-space: nowrap; }
     #iv { position: absolute; left: 220px; top: 360px; width: 640px; height: 713px; border-radius: 40px; overflow: hidden; opacity: 0;
       box-shadow: 0 0 0 8px #3ff0ff, 0 0 50px rgba(63,240,255,.8); background: url(bilder/innen.png) center / 100% 100% no-repeat; }
     #i3 { top: 1540px; font-size: 60px; }""",
@@ -250,12 +250,11 @@ scene("s05", NEO + """
     #f3 { top: 1580px; font-size: 50px; }""",
 """      <div id="f1" class="big">⛴️ FÄHRE <span class="c">SEESTERN</span></div>
       <div id="f2" class="neo go">🐚 ⇄ 🥥 ⇄ 🫧</div>
-      <div id="f3" class="neo li">🗺️ ERKUNDE DIE GANZE INSELWELT!</div>""",
+""",
 """      const t = line("L5")[0];
       """ + Z("#f1", 'at("L5", "Fähre") - .05') + """
       """ + Z("#f2", 'at("L5", "zwischen") - .05') + """
-      tl.to("#f2", { scale: 1.08, duration: .25, yoyo: true, repeat: 3, ease: "sine.inOut" }, at("L5", "zwischen") + .3);
-      """ + Z("#f3", 'at("L5", "erkunde") - .05'))
+      tl.to("#f2", { scale: 1.08, duration: .25, yoyo: true, repeat: 3, ease: "sine.inOut" }, at("L5", "zwischen") + .3);""")
 
 # s06 – Verlosung: Job bei CocoCare (Glücksrad, Python secrets)
 scene("s06", NEO + SLOT_CSS + CF_CSS + """
@@ -288,13 +287,11 @@ scene("s07", NEO + """
 """      <div id="g1" class="big">🕶️ <span class="g">SECURITY</span></div>
       <div id="g2" class="big"><span class="p">GESUCHT!</span></div>
       <div id="g3" class="neo go">✨ FÜRS GOLDEN PEARL</div>
-      <div id="g4" class="neo pk">💬 BEWERBUNGEN IN DIE KOMMENTARE!</div>
       <div class="fl"></div>""",
 """      const t = line("L7")[0], SE = at("L7", "Security");
       """ + Z("#g3", 't - .05') + """
       """ + Z("#g1", "SE - .05") + Z("#g2", "SE + .15") + SHAKE("s07", "SE") + FLASH("SE", .6) + """
-      """ + Z("#g4", 'at("L7", "Bewerbt") - .05') + """
-      tl.to("#g4", { scale: 1.06, duration: .22, yoyo: true, repeat: 3, ease: "sine.inOut" }, at("L7", "Bewerbt") + .4);""")
+      tl.to("#g3", { scale: 1.06, duration: .22, yoyo: true, repeat: 3, ease: "sine.inOut" }, at("L7", "Bewerbt"));""")
 
 # s08 – 819 / 1.000, Spielstart, Folgen ganz am Ende
 scene("s08", NEO + FOLLOW + """
