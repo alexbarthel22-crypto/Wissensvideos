@@ -655,6 +655,8 @@ export default async (req) => {
     if (!m || !(Number(m[1]) === h || Number(m[1]) === h - 1)) return json({ fehler: "Muschel" }, 400);
     const hh = String(m[1]).padStart(2, "0");
     if ((await liste(store, "b/" + nm + "/shell/" + heute + "-" + hh + "-")).length >= 10) return json({ ok: false, grund: "limit" });
+    // 24.11.: zusätzlich höchstens 20 schwebende Muscheln pro Tag (ca. 2 Stunden Spielzeit)
+    if ((await liste(store, "b/" + nm + "/shell/" + heute + "-")).length >= 20) return json({ ok: false, grund: "tag" });
     return json({ ok: await setze("shell", heute + "-" + hh + "-" + m[2] + "-" + m[3], 1) });
   }
   if (act === "erf") {
