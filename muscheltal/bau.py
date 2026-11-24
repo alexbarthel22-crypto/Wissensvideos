@@ -769,7 +769,8 @@ def baue(rows, out):
         r.append(isl_l[j])
     # Server (Bootsfahrt): Heimat-Insel je Bewohner + ab wie vielen Einwohnern eine Insel offen ist
     with open(os.path.join(HIER, "netlify", "lib", "bewohner.mjs"), "a", encoding="utf-8") as f:
-        f.write("export const INSEL = " + json.dumps({r[0].lower().lstrip("@"): isl_l[j] for j, r in enumerate(sauber)}, ensure_ascii=False) + ";\n"
+        sp_wohnt = {k.lower().lstrip("@") for k, o in (insel.get("wohnorte") or {}).items() if (o[0] if isinstance(o, list) else o) == "Sunken Pearl"}  # Bewohner von Sunken Pearl: Heimat = 99 (Heimfahrt kostenlos)
+        f.write("export const INSEL = " + json.dumps({r[0].lower().lstrip("@"): (99 if r[0].lower().lstrip("@") in sp_wohnt else isl_l[j]) for j, r in enumerate(sauber)}, ensure_ascii=False) + ";\n"
                 + "export const INSEL_AB = " + json.dumps([v["ab"] for v in insel["inseln"]]) + ";\n"
                 + "export const UMBENANNT = " + json.dumps([[u[0], u[1]] for u in insel.get("umbenannt") or []], ensure_ascii=False) + ";\n")
     import copy
