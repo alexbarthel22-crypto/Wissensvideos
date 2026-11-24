@@ -18,13 +18,13 @@ const mitCookie = (res, nm, token) => { res.headers.append("set-cookie", "mt-k="
 const json = (d, s = 200) => new Response(JSON.stringify(d), { status: s, headers: { "content-type": "application/json", "cache-control": "no-store" } });
 const NAME = /^@[a-z0-9._]{1,40}$/;
 const ERF_CLIENT = new Set(["LUPE", "AUF", "UNTER", "SCOOT", "SCHOEPFER", "WAL", "SCHILD", "MOND", "WELT", "NACHT"]);
-const STICKER = new Set(["palast", "doener", "bar", "villa", "acai", "werkstatt", "baeckerei", "nagel", "markt", "kiosk", "boba", "pizza", "tierheim", "yacht", "cocobay", "kokosbad", "coast", "kokos", "cococare", "katzencafe", "gaming", "feuer", "anleger", "gpearl", "ev_wochenmarkt", "ev_flohmarkt", "ev_konzert", "ev_feuerwerk", "sandburg", "angeln", "ev_kino", "seestern"]);
+const STICKER = new Set(["palast", "doener", "bar", "villa", "acai", "werkstatt", "baeckerei", "nagel", "markt", "kiosk", "boba", "pizza", "tierheim", "yacht", "cocobay", "kokosbad", "coast", "kokos", "cococare", "katzencafe", "sunkenpearl", "gaming", "feuer", "anleger", "gpearl", "ev_wochenmarkt", "ev_flohmarkt", "ev_konzert", "ev_feuerwerk", "sandburg", "angeln", "ev_kino", "seestern"]);
 const SERIE = [3, 5, 8, 12, 17, 23, 32];
 // 🎣 Angelstellen: je Insel 15 eigene Fänge in den Güteklassen 0 Gewöhnlich … 8 Kosmisch (kein Einzigartig). Manche beißen nur zu
 // bestimmter Tageszeit (Berlin) oder bei bestimmtem Wetter (Hamburg, vom Server geprüft). Nur selten gibt es zusätzlich 1–3 Muscheln.
 const WETTERFANG = new Set(["regen", "sturm", "sonne"]);
 const GUETE = [30, 22, 15, 11, 8, 6, 4, 2.4, 1.2, 0.4];
-export const FISCHE = {stiefel: [0, 0, ""], sardine: [0, 0, ""], qualle: [0, 0, ""], krabbe: [1, 0, ""], seestern: [1, 0, ""], kugel: [2, 0, ""], tinte: [2, 0, "nacht"], hummer: [3, 0, ""], kompass: [3, 0, "regen"], hai: [4, 0, ""], schluessel: [4, 0, "morgen"], ring: [5, 0, ""], amphore: [5, 0, "sturm"], geist: [6, 0, "nacht"], krone: [7, 0, "morgen"], mondfisch: [8, 0, "klarnacht"], treibholz: [0, 1, ""], garnele: [0, 1, ""], seegras: [0, 1, ""], schnecke: [1, 1, ""], schwamm: [1, 1, ""], clown: [2, 1, ""], kokosnuss: [2, 1, "sonne"], okto: [3, 1, ""], koralle: [3, 1, "sonne"], anker: [4, 1, ""], auster: [4, 1, "regen"], dreizack: [5, 1, ""], muenze: [5, 1, "abend"], drache: [6, 1, "sturm"], diamant: [7, 1, "nacht"], sternfisch: [8, 1, "klarnacht"]};
+export const FISCHE = {stiefel: [0, 0, ""], sardine: [0, 0, ""], qualle: [0, 0, ""], krabbe: [1, 0, ""], seestern: [1, 0, ""], kugel: [2, 0, ""], tinte: [2, 0, "nacht"], hummer: [3, 0, ""], kompass: [3, 0, "regen"], hai: [4, 0, ""], schluessel: [4, 0, "morgen"], ring: [5, 0, ""], amphore: [5, 0, "sturm"], geist: [6, 0, "nacht"], krone: [7, 0, "morgen"], mondfisch: [8, 0, "klarnacht"], treibholz: [0, 1, ""], garnele: [0, 1, ""], seegras: [0, 1, ""], schnecke: [1, 1, ""], schwamm: [1, 1, ""], clown: [2, 1, ""], kokosnuss: [2, 1, "sonne"], okto: [3, 1, ""], koralle: [3, 1, "sonne"], anker: [4, 1, ""], auster: [4, 1, "regen"], dreizack: [5, 1, ""], muenze: [5, 1, "abend"], drache: [6, 1, "sturm"], diamant: [7, 1, "nacht"], sternfisch: [8, 1, "klarnacht"], sp_falter: [0, 2, ""], sp_pottwal: [2, 2, ""], sp_laterne: [4, 2, "nacht"], sp_kiste: [5, 2, "regen"], sp_sturmperle: [6, 2, "sturm"]};
 const zz = () => crypto.getRandomValues(new Uint32Array(1))[0] / 2 ** 32;
 const PRO = {}; for (const [t, i] of Object.values(FISCHE)) PRO[i + "/" + t] = (PRO[i + "/" + t] || 0) + 1;// Fänge je Insel und Güteklasse
 let WJ = { t: 0, code: 0, wind: 0 };
@@ -728,7 +728,7 @@ export default async (req) => {
   }
   // 🎣 Angeln: 1 Fang pro Tag (der Server bestimmt den Fisch); jeder Fisch kommt ins Fisch-Album
   if (act === "angeln") {
-    const insel = Number(d.insel) === 1 ? 1 : 0, tagId = heute + "-" + insel + "_";
+    const insel = [1, 2].includes(Number(d.insel)) ? Number(d.insel) : 0, tagId = heute + "-" + insel + "_";
     const B0 = await buch(store, nm);
     if (B0.some(e => e.art === "angeln" && e.id.startsWith(tagId))) return json({ ok: false, grund: "schon" });
     const f = await fischZiehen(insel), betrag = zz() < 0.15 ? 1 + Math.floor(zz() * 3) : 0, ok = await setze("angeln", tagId + f, betrag);
@@ -864,7 +864,7 @@ export default async (req) => {
   // ⛵ Bootsfahrt zwischen den Anlegern: zu einer fremden Insel 2 🐚 (gehen in die Inselkasse), nach Hause kostenlos
   if (act === "boot") {
     const nach = Math.floor(Number(d.nach)), ab = INSEL_AB || [];
-    if (!(nach >= 0) || nach >= ab.length || !(BEWOHNER.size > ab[nach])) return json({ ok: false, grund: "insel" });
+    if (nach !== 99 && (!(nach >= 0) || nach >= ab.length || !(BEWOHNER.size > ab[nach]))) return json({ ok: false, grund: "insel" });// 99 = Sunken Pearl (immer erreichbar)
     const heim = INSEL && INSEL[nm] === nach, preis = heim ? 0 : 2;
     const B = await buch(store, nm), stand = B.reduce((s, e) => s + e.a, 0);
     if (preis > stand) return json({ ok: false, grund: "muscheln", stand });
@@ -943,7 +943,7 @@ export default async (req) => {
     const posten = B.filter(e => e.a).map(e => ({ art: e.art, id: e.id, a: e.a, t: TEXT[e.art] || e.art }))
       .sort((x, y) => (y.id > x.id ? 1 : -1)).slice(0, 60);
     return mitCookie(json({
-      ok: true, pinFehlt: !c.pin, nachbar, live, eingeladen, klopfer, geschenke, duelle, spielpreise, premium: !!premRoh, startDa: !startRoh, likes: { n: likeN }, neu: (likeN >= 25 && (await erfGib("HERZ")) ? ["HERZ"] : []).concat(erfNeu), sticker: stkL.map(k => k.split("/")[3]), fische: fisL.map(k => k.split("/")[3]), angelnHeute: Object.fromEntries([0, 1].map(i => [i, (B.find(e => e.art === "angeln" && e.id.startsWith(heute + "-" + i + "_")) || {}).id?.split("_")[1] || null])), sandHeute: !!sandRoh, geschenk: B.some(e => e.art === "geschenk" && e.id === heute), stand: B.reduce((s, e) => s + e.a, 0), serie: s,
+      ok: true, pinFehlt: !c.pin, nachbar, live, eingeladen, klopfer, geschenke, duelle, spielpreise, premium: !!premRoh, startDa: !startRoh, likes: { n: likeN }, neu: (likeN >= 25 && (await erfGib("HERZ")) ? ["HERZ"] : []).concat(erfNeu), sticker: stkL.map(k => k.split("/")[3]), fische: fisL.map(k => k.split("/")[3]), angelnHeute: Object.fromEntries([0, 1, 2].map(i => [i, (B.find(e => e.art === "angeln" && e.id.startsWith(heute + "-" + i + "_")) || {}).id?.split("_")[1] || null])), sandHeute: !!sandRoh, geschenk: B.some(e => e.art === "geschenk" && e.id === heute), stand: B.reduce((s, e) => s + e.a, 0), serie: s,
       shells: B.filter(e => e.art === "shell" && e.id.startsWith(heute) && e.id.split("-").length === 6).map(e => e.id.split("-").slice(3).map(Number).join("-")),
       questsDone: B.filter(e => e.art === "quest" && e.id.startsWith(heute)).map(e => Number(e.id.split("-").pop())),
       gespendet: -B.filter(e => e.art === "spende").reduce((s, e) => s + e.a, 0), posten, heute, inv: besitz(B), aus: JSON.parse(ausRoh || "{}")
