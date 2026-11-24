@@ -633,6 +633,7 @@ def berufe(sauber, insel, out):
     emo.setdefault("Coast & Cotton", "👗")
     emo.setdefault("KOK(O)S", "🪩")
     emo.setdefault("CocoCare", "🧴")
+    emo.setdefault("Katzencafé", "🐱")
     emo.setdefault("Game Lagoon", "🎮")
     emo.setdefault("Strand", "🛟")
     import datetime as _dt
