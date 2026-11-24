@@ -647,7 +647,7 @@ def berufe(sauber, insel, out):
         beruf, ort, bis = (list(job) + [None])[:3]
         if n.lower() in nr and bis_ok(bis):
             orte.setdefault(ort, []).append((beruf, n, bis))
-    rang = {"Bürgermeisterin": 0, "Bürgermeister": 0, "Leitung": 1, "Palast-Leitung": 1}
+    rang = {"Bürgermeisterin": 0, "Bürgermeister": 0, "Bürgermeister/in": 0, "Leitung": 1, "Palast-Leitung": 1}
     teile = []
     for ort in sorted(orte, key=lambda o: (o != "Muschelpalast", o)):
         leute = sorted(orte[ort], key=lambda x: (rang.get(x[0], 5), nr[x[1].lower()]))
