@@ -1007,12 +1007,12 @@ const KMODE={name:'Coast & Cotton',hw:46,hh:32,...kBlk(4,-1)};
 const KCLUB={name:'KOK(O)S',hw:46,hh:32,...kBlk(3,-5)};// Nachtclub, Nordostseite (grenzt an kein Gebäude, auch nicht über Eck)
 const KDROG={name:'CocoCare',hw:46,hh:32,...kBlk(0,-4)};// Drogerie, Nordseite
 const KGAME={name:'Game Lagoon',hw:46,hh:32,...kBlk(-3,0)};
-const KCAT={name:'Katzencafé',hw:46,hh:32,...kBlk(-4,-5)};// Katzencafé, Nordwesten (Bauplatz, grenzt an kein Gebäude)
+const KCAT={name:'Café Miau',hw:46,hh:32,...kBlk(-4,-5)};// Café Miau (Katzencafé), Nordwesten (Bauplatz, grenzt an kein Gebäude)
 const KKINO={name:'Freiluftkino',hw:46,hh:32,...kBlk(2,1)};// Freiluftkino (Fr & Sa 20:30–22:30 Uhr), freier Bauplatz südöstlich vom Lagerfeuer// Gaming-Laden, Westseite (grenzt an kein Gebäude, auch nicht über Eck)
 // Coco Bay: Küstenstreifen ganz im Süden – vom Weg bis ans Wasser (Ursprung = Oberkante am Weg)
 const KBAR=(()=>{const b=kBlk(0,7);let yc=b.y0;while(inside(KOKV,b.cx,yc,0)&&yc<b.y0+80)yc+=1;return{name:'Coco Bay',key:b.key,cx:b.cx,cy:b.y0+2,hw:46,dep:yc-b.y0+BEX-3};})();
 // Feste Bauten ohne GEB-Eintrag: erscheinen beim „Wachsen sehen“ erst als Ereignis (nicht von Anfang an)
-const EXG=[{o:MKT,v:MAIN,t:'🛒 Supermarkt Meerkauf eröffnet'},{o:KI,v:MAIN,t:'🍦 Kiosk-Steg im Norden: Kiosk Kunterbunt, Boba Beach & Porto Pizza eröffnen'},{o:KBAR,v:KOKV,t:'🍹 Beach Bar Coco Bay eröffnet'},{o:KBAD,v:KOKV,t:'🏊 Kokos-Bad eröffnet'},{o:KMODE,v:KOKV,t:'👗 Coast & Cotton eröffnet'},{o:KCLUB,v:KOKV,t:'🪩 Nachtclub KOK(O)S eröffnet'},{o:KDROG,v:KOKV,t:'🧴 Drogerie CocoCare eröffnet'},{o:KCAT,v:KOKV,t:'🐱 Katzencafé eröffnet'},{o:KGAME,v:KOKV,t:'🎮 Gaming-Laden Game Lagoon eröffnet'}];
+const EXG=[{o:MKT,v:MAIN,t:'🛒 Supermarkt Meerkauf eröffnet'},{o:KI,v:MAIN,t:'🍦 Kiosk-Steg im Norden: Kiosk Kunterbunt, Boba Beach & Porto Pizza eröffnen'},{o:KBAR,v:KOKV,t:'🍹 Beach Bar Coco Bay eröffnet'},{o:KBAD,v:KOKV,t:'🏊 Kokos-Bad eröffnet'},{o:KMODE,v:KOKV,t:'👗 Coast & Cotton eröffnet'},{o:KCLUB,v:KOKV,t:'🪩 Nachtclub KOK(O)S eröffnet'},{o:KDROG,v:KOKV,t:'🧴 Drogerie CocoCare eröffnet'},{o:KCAT,v:KOKV,t:'🐱 Katzencafé „Café Miau“ eröffnet'},{o:KGAME,v:KOKV,t:'🎮 Gaming-Laden Game Lagoon eröffnet'}];
 const exDa=o=>{try{if(GROWK==null)return true;const e=EXG.find(e=>e.o===o);return!(e&&GROWV===e.v&&GROWK<(e.at??1));}catch(err){return true;}};
 const KSHOPS=[KBAR,KBAD,KMODE,KCLUB,KDROG,KGAME,KKINO,KCAT],KSKEYS=new Set(KSHOPS.map(s=>s.key));
 const ksTeam=s=>PEOPLE.filter(p=>p.ort===s.name&&p.beruf).sort((a,b)=>(b.beruf==='Leitung')-(a.beruf==='Leitung'));
@@ -1286,64 +1286,86 @@ function clubGlow(glow,nl){const X=KCLUB.cx,Y=KCLUB.cy;glow(X,Y-33,26,'255,80,20
  glow(X,Y-16,14,'255,220,140',.6*nl);for(const fx of[-20.6,20.6])glow(X+fx,Y+3.4,7,'255,150,50',.7*nl);
  if(nl>.45&&!REDUCED)for(let k=0;k<2;k++){const a=Math.sin(T*.8+k*Math.PI)*.6;for(let s=1;s<=6;s++)glow(X+(k?14:-14)+Math.sin(a)*s*9,Y-34-s*9,6+s,k?'120,200,255':'255,90,220',.18*nl);}}
 
-// 🐱 Katzencafé (Nordwesten der Kokos-Küste, 24.11.) – Pastell-Fassade mit Katzenohren, Katzen im Fenster und auf der Terrasse, Kratzbaum, Kissen-Katze (Aufgabe)
-const KC_PK='#ff8fb8',KC_PK2='#e8679a',KC_INK='#4a2232';
-function catSchild(c){c.textAlign='center';c.fillStyle='#fff';c.strokeStyle=KC_PK;c.lineWidth=.5;c.beginPath();c.roundRect(-16,-36.6,32,7.4,3.7);c.fill();c.stroke();
- /* Katzenkopf-Logo */{const lx=-12.2,ly=-33.2;c.fillStyle='#f4a04a';c.beginPath();c.moveTo(lx-1.5,ly-.4);c.lineTo(lx-1.3,ly-2.3);c.lineTo(lx-.3,ly-1.2);c.lineTo(lx+.3,ly-1.2);c.lineTo(lx+1.3,ly-2.3);c.lineTo(lx+1.5,ly-.4);c.closePath();c.fill();c.beginPath();c.arc(lx,ly,1.5,0,TAU);c.fill();c.fillStyle=KC_INK;c.beginPath();c.arc(lx-.55,ly-.15,.22,0,TAU);c.arc(lx+.55,ly-.15,.22,0,TAU);c.fill();c.fillStyle=KC_PK;c.beginPath();c.arc(lx,ly+.45,.2,0,TAU);c.fill();}
- c.font='900 3px '+FONT;c.fillStyle=KC_INK;c.fillText('Katzencafé',1.4,-32);c.font='800 1px '+FONT;c.fillStyle=KC_PK2;c.fillText('KAFFEE · KUCHEN · SCHNURREN',1.4,-30.2);
- c.save();c.translate(0,-40.4);ksPlak(c,KCAT,0,KC_PK2);c.restore();}
-function catTisch(c,tx,ty,t,k){c.fillStyle='rgba(0,0,0,.14)';c.beginPath();c.ellipse(tx,ty+2.6,3.2,.8,0,0,TAU);c.fill();
- for(const s of[-1,1]){c.fillStyle='#fff';c.beginPath();c.roundRect(tx+s*4.4-1.2,ty-.6,2.4,2.2,.6);c.fill();c.strokeStyle=KC_PK;c.lineWidth=.2;c.stroke();c.fillStyle=KC_PK;c.fillRect(tx+s*4.4-1.2,ty-1.6,2.4,1);}
- c.fillStyle='#c98a5a';c.fillRect(tx-.35,ty+.4,.7,2.2);c.fillStyle='#fff';c.beginPath();c.ellipse(tx,ty,3.2,1.4,0,0,TAU);c.fill();c.strokeStyle='#e8c8b8';c.lineWidth=.2;c.stroke();
- for(const dx of[-1.2,1.1]){c.fillStyle='#fff';c.fillRect(tx+dx-.5,ty-1.1,1,.9);c.fillStyle='#8a5a3a';c.fillRect(tx+dx-.4,ty-1.1,.8,.25);if(!REDUCED){const ph=(t*.4+dx+k)%1;c.fillStyle=`rgba(255,255,255,${.5*(1-ph)})`;c.beginPath();c.arc(tx+dx+Math.sin(ph*5)*.3,ty-1.6-ph*2.4,.3+ph*.3,0,TAU);c.fill();}}
- c.fillStyle='#ffd0dc';c.beginPath();c.moveTo(tx-.2,ty+.1);c.lineTo(tx+.7,ty-.6);c.lineTo(tx+.7,ty+.1);c.closePath();c.fill();}
+// 🐱 Café Miau (Katzencafé im Nordwesten der Kokos-Küste, 24.11.) – Schokobraun & Karamell wie eine Torte: Zuckerguss-Dach, Katzenohren, Katzenkopf-Schild mit Schnurrhaaren, Wimpelkette mit Pfoten,
+// Katzen im Fenster, Katze auf dem Dach, Katzenklappe mit neugieriger Katze, Kratzbaum-Häuschen, Katzenkorb mit Kuschelkatze (Aufgabe), Wollknäuel, Tische mit Latte-Herz und Cupcakes
+const KC_BR='#7a4a2e',KC_BR2='#a8683a',KC_KA='#d9a574',KC_CR='#fff3e0',KC_PK='#ff9fbf',KC_INK='#3a2214';
+function kcKopf(c,x,y,r,col,inn){/* Katzenkopf (Kreis + Ohren) */c.fillStyle=col;c.beginPath();c.moveTo(x-r*.95,y-r*.2);c.lineTo(x-r*.85,y-r*1.35);c.lineTo(x-r*.25,y-r*.85);c.lineTo(x+r*.25,y-r*.85);c.lineTo(x+r*.85,y-r*1.35);c.lineTo(x+r*.95,y-r*.2);c.closePath();c.fill();c.beginPath();c.arc(x,y,r,0,TAU);c.fill();
+ if(inn){c.fillStyle=inn;for(const s of[-1,1]){c.beginPath();c.moveTo(x+s*.8*r,y-r*.45);c.lineTo(x+s*.78*r,y-r*1.12);c.lineTo(x+s*.38*r,y-r*.8);c.closePath();c.fill();}}}
+function kcPfote(c,x,y,s,col){c.fillStyle=col;c.beginPath();c.ellipse(x,y,.55*s,.45*s,0,0,TAU);c.fill();for(const [a,b] of[[-.6,-.7],[-.2,-.95],[.2,-.95],[.6,-.7]]){c.beginPath();c.arc(x+a*s,y+b*s,.2*s,0,TAU);c.fill();}}
+function catSchild(c){/* Schild als Katzenkopf mit Ohren und Schnurrhaaren */c.textAlign='center';
+ c.fillStyle=KC_BR;for(const s of[-1,1]){c.beginPath();c.moveTo(s*9,-36.2);c.lineTo(s*12.6,-40.4);c.lineTo(s*14.6,-35.4);c.closePath();c.fill();c.fillStyle=KC_PK;c.beginPath();c.moveTo(s*10.6,-36.4);c.lineTo(s*12.6,-38.9);c.lineTo(s*13.6,-36);c.closePath();c.fill();c.fillStyle=KC_BR;}
+ c.fillStyle=KC_BR;c.beginPath();c.roundRect(-16,-37,32,8.4,4.2);c.fill();c.fillStyle=KC_CR;c.beginPath();c.roundRect(-15.2,-36.2,30.4,6.8,3.4);c.fill();
+ c.strokeStyle=KC_BR2;c.lineWidth=.22;c.beginPath();for(const s of[-1,1])for(const d of[-.7,0,.7]){c.moveTo(s*16.4,-33+d*.6);c.lineTo(s*19.4,-33+d*1.5);}c.stroke();
+ c.font='900 3.2px '+FONT;c.fillStyle=KC_BR;c.fillText('Café Miau',0,-32.2);c.fillStyle=KC_PK;c.beginPath();c.moveTo(-.5,-35.3);c.lineTo(.5,-35.3);c.lineTo(0,-34.7);c.closePath();c.fill();
+ c.font='800 .95px '+FONT;c.fillStyle=KC_BR2;c.fillText('KATZENCAFÉ · KUCHEN · KUSCHELN',0,-30.3);
+ c.save();c.translate(0,-42.6);ksPlak(c,KCAT,0,KC_BR2);c.restore();}
+function catTisch(c,tx,ty,t,k){c.fillStyle='rgba(60,30,10,.16)';c.beginPath();c.ellipse(tx,ty+2.6,3.2,.8,0,0,TAU);c.fill();
+ for(const s of[-1,1]){const sx=tx+s*4.4;/* Stuhl mit Katzenohr-Lehne */c.fillStyle=KC_CR;c.beginPath();c.roundRect(sx-1.2,ty-.6,2.4,2.2,.6);c.fill();c.strokeStyle=KC_BR2;c.lineWidth=.2;c.stroke();kcKopf(c,sx,ty-1.6,1.1,KC_BR2,KC_PK);}
+ c.fillStyle=KC_BR;c.fillRect(tx-.35,ty+.4,.7,2.2);c.fillStyle=KC_BR2;c.beginPath();c.ellipse(tx,ty,3.2,1.4,0,0,TAU);c.fill();c.fillStyle=KC_CR;c.beginPath();c.ellipse(tx,ty-.15,2.8,1.1,0,0,TAU);c.fill();
+ /* Tassen mit Latte-Herz */for(const dx of[-1.3,1.2]){c.fillStyle='#fff';c.beginPath();c.ellipse(tx+dx,ty-.6,.7,.4,0,0,TAU);c.fill();c.fillStyle='#b8865a';c.beginPath();c.ellipse(tx+dx,ty-.65,.55,.3,0,0,TAU);c.fill();c.fillStyle='#fff3e0';c.beginPath();c.arc(tx+dx-.12,ty-.7,.13,0,TAU);c.arc(tx+dx+.12,ty-.7,.13,0,TAU);c.fill();
+  if(!REDUCED){const ph=(t*.4+dx+k)%1;c.fillStyle=`rgba(255,255,255,${.5*(1-ph)})`;c.beginPath();c.arc(tx+dx+Math.sin(ph*5)*.3,ty-1.4-ph*2.4,.3+ph*.3,0,TAU);c.fill();}}
+ /* Cupcake mit Katzenohren */c.fillStyle='#c98a5a';c.fillRect(tx-.45,ty-.6,.9,.6);c.fillStyle=KC_PK;c.beginPath();c.arc(tx,ty-.75,.55,Math.PI,0);c.fill();c.beginPath();c.moveTo(tx-.5,ty-.95);c.lineTo(tx-.4,ty-1.5);c.lineTo(tx-.1,ty-1.2);c.moveTo(tx+.5,ty-.95);c.lineTo(tx+.4,ty-1.5);c.lineTo(tx+.1,ty-1.2);c.fill();}
 function drawCat(c,nl){const t=REDUCED?0:T,X=KCAT.cx,Y=KCAT.cy;c.save();c.translate(X,Y);
- c.fillStyle='#f8ece2';c.beginPath();c.roundRect(-46,-32,92,64,4);c.fill();c.strokeStyle='rgba(200,140,120,.18)';c.lineWidth=.2;c.beginPath();for(let x=-44;x<46;x+=4){c.moveTo(x,2);c.lineTo(x,32);}for(let y=2;y<32;y+=4){c.moveTo(-46,y);c.lineTo(46,y);}c.stroke();
- c.fillStyle='rgba(0,0,0,.12)';c.fillRect(-43,1.6,86,1.6);
- // Dach: rosa Schindeln, zwei Katzenohren
- for(const s of[-1,1]){c.fillStyle=KC_PK2;c.beginPath();c.moveTo(s*24,-30.4);c.lineTo(s*29,-37);c.lineTo(s*34,-30.4);c.closePath();c.fill();c.fillStyle='#ffd0e0';c.beginPath();c.moveTo(s*26,-30.6);c.lineTo(s*29,-34.8);c.lineTo(s*32,-30.6);c.closePath();c.fill();}
- c.fillStyle=KC_PK;c.beginPath();c.roundRect(-43,-31,86,8,1.4);c.fill();c.fillStyle='rgba(255,255,255,.35)';for(let r=0;r<2;r++)for(let k=0;k<22;k++){c.beginPath();c.arc(-41+k*4+r*2,-28.6+r*3,1.4,0,Math.PI);c.fill();}
- c.fillStyle=KC_PK2;c.fillRect(-43,-24.6,86,1.6);
- // Fassade creme, rosa Sockel, Pfoten-Spuren
- c.fillStyle='#fff6ee';c.fillRect(-43,-23,86,25);c.fillStyle='#ffd9e4';c.fillRect(-43,-1,86,3);
- c.fillStyle='rgba(232,103,154,.28)';for(let k=0;k<5;k++){const px=-40+k*2.2,py=-4-k*1.5;c.beginPath();c.ellipse(px,py,.55,.45,0,0,TAU);c.fill();for(const [a,b] of[[-.6,-.7],[0,-.95],[.6,-.7]]){c.beginPath();c.arc(px+a,py+b,.22,0,TAU);c.fill();}}
- // Fenster mit Katzen auf Kissen und Regal
- for(const wx of[-25,25]){c.fillStyle='#e8c8b8';c.fillRect(wx-15.4,-17.4,30.8,15.8);c.fillStyle=nl>.5?'#ffe3a8':'#fdebd2';c.fillRect(wx-14.6,-16.6,29.2,14.4);
-  c.fillStyle='#c98a5a';c.fillRect(wx-13,-11.6,10,.6);c.fillRect(wx+3,-8.6,10,.6);c.fillStyle='#e8679a';c.beginPath();c.ellipse(wx+(wx<0?6:-7),-3.2,4,1.2,0,0,TAU);c.fill();
+ // Holzterrasse
+ c.fillStyle='#ead2b0';c.beginPath();c.roundRect(-46,-32,92,64,4);c.fill();c.strokeStyle='rgba(122,74,46,.22)';c.lineWidth=.22;c.beginPath();for(let y=4;y<32;y+=2.6){c.moveTo(-46,y);c.lineTo(46,y);}c.stroke();
+ c.fillStyle='rgba(122,74,46,.12)';for(let r=0;r<10;r++)for(let k=0;k<12;k++)if((r+k)%3===0)c.fillRect(-45+k*7.8+(r%2)*3.4,4+r*2.6,.25,2.6);
+ c.fillStyle='rgba(0,0,0,.14)';c.fillRect(-43,1.6,86,1.6);
+ // Dach: Schoko mit Zuckerguss-Tropfen, Katzenohren, Wimpelkette mit Pfoten, Katze schläft auf dem Dach
+ for(const s of[-1,1]){c.fillStyle=KC_BR;c.beginPath();c.moveTo(s*23,-30.4);c.lineTo(s*29,-38);c.lineTo(s*35,-30.4);c.closePath();c.fill();c.fillStyle=KC_PK;c.beginPath();c.moveTo(s*25.6,-30.8);c.lineTo(s*29,-35.4);c.lineTo(s*32.4,-30.8);c.closePath();c.fill();}
+ c.fillStyle=KC_BR;c.beginPath();c.roundRect(-43,-31,86,8,1.4);c.fill();c.fillStyle='rgba(255,255,255,.08)';for(let k=0;k<22;k++)c.fillRect(-42+k*4,-30.4,.4,6.6);
+ c.fillStyle=KC_CR;c.beginPath();c.moveTo(-43,-31);c.lineTo(43,-31);c.lineTo(43,-29.2);for(let k=0;k<=21;k++){const x=43-k*4.1,d=1.2+((k*7)%5)*.45;c.quadraticCurveTo(x-1,-29.2+d*1.4,x-2,-29.2);c.quadraticCurveTo(x-3,-29.4,x-4.1,-29.2);}c.lineTo(-43,-29.2);c.closePath();c.fill();
+ for(let k=0;k<9;k++){c.fillStyle=['#ff9fbf','#ffd23f','#9fd8ff','#b8f0c8'][k%4];c.fillRect(-40+k*9.6,-28.4+(k%2)*.3,.7,.35);}
+ {c.strokeStyle='#5a3418';c.lineWidth=.18;c.beginPath();c.moveTo(-29,-34);c.quadraticCurveTo(-21,-31.6,-15.6,-33.4);c.moveTo(15.6,-33.4);c.quadraticCurveTo(21,-31.6,29,-34);c.stroke();
+  for(const s of[-1,1])for(let k=0;k<4;k++){const u=(k+.5)/4,x=s*(29-u*13.4),y=-34+Math.sin(u*Math.PI)*1.9+u*.6;c.fillStyle=[KC_PK,KC_CR,KC_KA,KC_CR][k];c.beginPath();c.moveTo(x-1,y);c.lineTo(x+1,y);c.lineTo(x,y+2);c.closePath();c.fill();if(k%2)kcPfote(c,x,y+.8,.55,KC_BR2);}}
+ tierZ(c,{x:-37,y:-31.2,art:'katze',st:1,view:'side',dir:1,mv:false,sitz:1,t:t+7,sz:.75});
+ // Fassade: Creme oben, Karamell-Holz unten, Pfoten-Spur
+ c.fillStyle=KC_CR;c.fillRect(-43,-23,86,25);c.fillStyle=KC_KA;c.fillRect(-43,-6,86,8);c.strokeStyle='rgba(90,52,24,.25)';c.lineWidth=.2;c.beginPath();for(let x=-41;x<43;x+=2.6){c.moveTo(x,-6);c.lineTo(x,2);}c.stroke();c.fillStyle=KC_BR2;c.fillRect(-43,-6.8,86,.9);
+ for(let k=0;k<6;k++)kcPfote(c,-41.4+k*2.4,-20.6+k*(k%2?.4:-.2)+k*.2,.8,'rgba(168,104,58,.28)');
+ // Fenster mit Katzen auf Regalen, Pfoten-Aufklebern, Blumenkasten darunter
+ for(const wx of[-25,25]){c.fillStyle=KC_BR;c.beginPath();c.roundRect(wx-15.6,-18,31.2,14.6,1.4);c.fill();c.fillStyle=nl>.5?'#ffe0a0':'#fde9cf';c.fillRect(wx-14.6,-17,29.2,12.6);
+  c.fillStyle=KC_BR2;c.fillRect(wx-13,-12.2,10,.6);c.fillRect(wx+3,-9.2,10,.6);c.fillStyle='#f3c9a8';c.beginPath();c.ellipse(wx+(wx<0?6:-7),-5.4,4,1,0,0,TAU);c.fill();
+  /* Lichterkette im Fenster */for(let k=0;k<9;k++){c.fillStyle=nl>.4?'#ffe07a':'#ffd9a0';c.beginPath();c.arc(wx-12.6+k*3.15,-16+Math.sin(k*1.4)*.4,.3,0,TAU);c.fill();}
   const st=wx<0?[1,9,4]:[7,2,10];
-  tierZ(c,{x:wx-8,y:-12.2,art:'katze',st:st[0],view:'side',dir:1,mv:false,sitz:1,t,sz:.8});tierZ(c,{x:wx+8,y:-9.2,art:'katze',st:st[1],view:'front',dir:-1,mv:false,sitz:1,t:t+wx,sz:.8});tierZ(c,{x:wx+(wx<0?6:-7),y:-4,art:'katze',st:st[2],view:'side',dir:wx<0?-1:1,mv:false,sitz:1,t:t+3,sz:.85});
-  c.fillStyle='rgba(255,255,255,.4)';c.beginPath();c.moveTo(wx-12,-16.6);c.lineTo(wx-9,-16.6);c.lineTo(wx-14.6,-8);c.lineTo(wx-14.6,-11);c.closePath();c.fill();
-  for(let k=0;k<11;k++){c.fillStyle=k%2?'#fff':KC_PK;c.beginPath();c.moveTo(wx-15.4+k*2.8,-20.6);c.lineTo(wx-12.6+k*2.8,-20.6);c.lineTo(wx-12.6+k*2.8,-18.6);c.quadraticCurveTo(wx-14+k*2.8,-17.6,wx-15.4+k*2.8,-18.6);c.closePath();c.fill();}
-  c.fillStyle=KC_PK2;c.font='900 1.3px '+FONT;c.textAlign='center';c.fillText(wx<0?'KATZEN · KAFFEE':'MIAU! ✦',wx,-14.6);}
- // Holztür mit Bogen, Pfote und Katzenklappe
- {c.fillStyle='#e8c8b8';c.beginPath();c.moveTo(-7,1.4);c.lineTo(-7,-10);c.arc(0,-10,7,Math.PI,0);c.lineTo(7,1.4);c.closePath();c.fill();c.fillStyle='#c98a5a';c.beginPath();c.moveTo(-6.2,1.4);c.lineTo(-6.2,-10);c.arc(0,-10,6.2,Math.PI,0);c.lineTo(6.2,1.4);c.closePath();c.fill();
-  c.strokeStyle='rgba(90,50,30,.35)';c.lineWidth=.2;c.beginPath();for(const x of[-3.1,0,3.1]){c.moveTo(x,1.4);c.lineTo(x,-15);}c.stroke();c.fillStyle='#a8683a';c.beginPath();c.roundRect(-1.8,-2.4,3.6,3.4,.8);c.fill();
-  c.fillStyle='#ffd0e0';c.beginPath();c.ellipse(0,-9,1.2,1,0,0,TAU);c.fill();for(const [a,b] of[[-1.3,-1.4],[-.45,-1.9],[.45,-1.9],[1.3,-1.4]]){c.beginPath();c.arc(a,-9+b,.42,0,TAU);c.fill();}
-  c.fillStyle='#e8c56a';c.beginPath();c.arc(4.4,-5,.5,0,TAU);c.fill();c.fillStyle=KC_PK2;c.beginPath();c.roundRect(-5.6,-19.2,11.2,1.8,.6);c.fill();c.fillStyle='#fff';c.font='800 .9px '+FONT;c.textAlign='center';c.fillText('Täglich 9–19 Uhr',0,-18);}
+  tierZ(c,{x:wx-8,y:-12.8,art:'katze',st:st[0],view:'side',dir:1,mv:false,sitz:1,t,sz:.8});tierZ(c,{x:wx+8,y:-9.8,art:'katze',st:st[1],view:'front',dir:-1,mv:false,sitz:1,t:t+wx,sz:.8});tierZ(c,{x:wx+(wx<0?6:-7),y:-6.2,art:'katze',st:st[2],view:'side',dir:wx<0?-1:1,mv:false,sitz:1,t:t+3,sz:.85});
+  c.fillStyle='rgba(255,255,255,.4)';c.beginPath();c.moveTo(wx-12,-17);c.lineTo(wx-9,-17);c.lineTo(wx-14.6,-8.6);c.lineTo(wx-14.6,-11.6);c.closePath();c.fill();kcPfote(c,wx+(wx<0?12:-12),-6.4,.9,'rgba(255,159,191,.75)');
+  for(let k=0;k<11;k++){c.fillStyle=k%2?KC_CR:KC_BR2;c.beginPath();c.moveTo(wx-15.4+k*2.8,-21.2);c.lineTo(wx-12.6+k*2.8,-21.2);c.lineTo(wx-12.6+k*2.8,-19.2);c.quadraticCurveTo(wx-14+k*2.8,-18.2,wx-15.4+k*2.8,-19.2);c.closePath();c.fill();}
+  /* Blumenkasten */c.fillStyle=KC_BR;c.fillRect(wx-13,-3.6,26,1.8);for(let k=0;k<9;k++){c.fillStyle='#5fa84a';c.beginPath();c.arc(wx-11.6+k*2.9,-3.8,.7,0,TAU);c.fill();c.fillStyle=k%2?KC_PK:'#fff';c.beginPath();c.arc(wx-11.6+k*2.9,-4.3,.42,0,TAU);c.fill();}}
+ // Tür: Bogen, rundes Katzenkopf-Fenster, Katzenklappe mit neugieriger Katze
+ {c.fillStyle=KC_KA;c.beginPath();c.moveTo(-7,1.4);c.lineTo(-7,-10);c.arc(0,-10,7,Math.PI,0);c.lineTo(7,1.4);c.closePath();c.fill();c.fillStyle=KC_BR;c.beginPath();c.moveTo(-6.2,1.4);c.lineTo(-6.2,-10);c.arc(0,-10,6.2,Math.PI,0);c.lineTo(6.2,1.4);c.closePath();c.fill();
+  c.strokeStyle='rgba(30,15,5,.3)';c.lineWidth=.2;c.beginPath();for(const x of[-3.1,3.1]){c.moveTo(x,1.4);c.lineTo(x,-15.4);}c.stroke();
+  kcKopf(c,0,-9.4,2.4,KC_KA);c.fillStyle=nl>.5?'#ffe0a0':'#fde9cf';c.beginPath();c.arc(0,-9.4,1.9,0,TAU);c.fill();c.strokeStyle=KC_BR;c.lineWidth=.25;c.beginPath();c.moveTo(-1.9,-9.4);c.lineTo(1.9,-9.4);c.moveTo(0,-11.3);c.lineTo(0,-7.5);c.stroke();
+  c.fillStyle='#5a3418';c.beginPath();c.roundRect(-2,-2.8,4,3.8,.9);c.fill();{const pk=REDUCED?1:Math.max(0,Math.sin(t*.8));if(pk>.05){c.save();c.beginPath();c.roundRect(-2,-2.8,4,3.8,.9);c.clip();kcKopf(c,0,1.4-pk*2.4,1.3,'#f2a24e','#ffc8d6');c.fillStyle=KC_INK;c.beginPath();c.arc(-.45,1.2-pk*2.4,.2,0,TAU);c.arc(.45,1.2-pk*2.4,.2,0,TAU);c.fill();c.restore();}}
+  c.fillStyle='#e8c56a';c.beginPath();c.arc(4.4,-5,.5,0,TAU);c.fill();c.fillStyle=KC_BR2;c.beginPath();c.roundRect(-5.6,-19.6,11.2,1.8,.6);c.fill();c.fillStyle=KC_CR;c.font='800 .9px '+FONT;c.textAlign='center';c.fillText('Täglich 9–19 Uhr',0,-18.4);
+  c.fillStyle='#c98a5a';c.beginPath();c.roundRect(-4.6,1.6,9.2,2,.8);c.fill();c.fillStyle=KC_CR;c.font='900 .9px '+FONT;c.fillText('MIAU',0,3);}
  catSchild(c);
- // Futternäpfe vor der Tür
- for(const [nx,col] of[[-11,'#5fbfd6'],[-8.4,KC_PK]]){c.fillStyle=col;c.beginPath();c.ellipse(nx,5.2,1.2,.55,0,0,TAU);c.fill();c.fillStyle='#b8784a';c.beginPath();c.ellipse(nx,5,.8,.3,0,0,TAU);c.fill();}
- // Kratzbaum links mit Katze oben
- {const kx=-37,ky=10;c.fillStyle='rgba(0,0,0,.14)';c.beginPath();c.ellipse(kx,ky+.6,4,1,0,0,TAU);c.fill();c.fillStyle='#d9b38a';c.fillRect(kx-4,ky-1.4,8,2);c.fillStyle='#e8d2b0';c.fillRect(kx-.8,ky-11,1.6,9.8);c.strokeStyle='#b8946a';c.lineWidth=.15;c.beginPath();for(let y=ky-10.6;y<ky-1.4;y+=.6){c.moveTo(kx-.8,y);c.lineTo(kx+.8,y+.3);}c.stroke();
-  c.fillStyle='#d9b38a';c.fillRect(kx-3.4,ky-12,6.8,1.4);c.fillStyle=KC_PK;c.beginPath();c.arc(kx+2.4,ky-6,.6,0,TAU);c.fill();c.strokeStyle=KC_PK;c.lineWidth=.12;c.beginPath();c.moveTo(kx+2.4,ky-5.4);c.lineTo(kx+2.4,ky-3.6+Math.sin(t*2)*.2);c.stroke();
-  tierZ(c,{x:kx+.6,y:ky-12.8,art:'katze',st:3,view:'side',dir:1,mv:false,sitz:1,t:t+1,sz:.7});}
- // Kissen mit schlafender Katze (Aufgabe „Katze streicheln“)
- {const cx=-26,cy=11;c.fillStyle='rgba(0,0,0,.12)';c.beginPath();c.ellipse(cx,cy+.8,3.4,.9,0,0,TAU);c.fill();c.fillStyle=KC_PK;c.beginPath();c.roundRect(cx-3.2,cy-1.4,6.4,2.4,1);c.fill();c.fillStyle='#ffd0e0';c.beginPath();c.roundRect(cx-2.6,cy-1.4,5.2,1.4,.7);c.fill();
-  tierZ(c,{x:cx,y:cy-2.2,art:'katze',st:6,view:'side',dir:-1,mv:false,sitz:1,t:t+2,sz:.7});if(!REDUCED){const ph=(t*.35)%1;c.fillStyle=`rgba(74,34,50,${.6*(1-ph)})`;c.font='800 '+(1+ph*.6)+'px '+FONT;c.textAlign='center';c.fillText('z',cx+2.4+ph*1.6,cy-4-ph*3);}}
- // Terrasse: zwei Tische mit Kaffee und Kuchen, eine Katze unter dem Tisch
+ // Milch- und Futternäpfe mit Fisch-Muster
+ for(const [nx,col] of[[-11,'#fff'],[-8.4,KC_PK]]){c.fillStyle=col;c.beginPath();c.ellipse(nx,5.2,1.2,.55,0,0,TAU);c.fill();c.strokeStyle=KC_BR2;c.lineWidth=.12;c.stroke();c.fillStyle=nx<-10?'#fffaf0':'#b8784a';c.beginPath();c.ellipse(nx,5,.8,.3,0,0,TAU);c.fill();}
+ // Wollknäuel (rollen sanft hin und her)
+ for(const [wx0,wy,col,k] of[[-19,18,KC_PK,0],[-15,22,'#9fd8ff',1],[24,22,'#ffd23f',2]]){const wx=wx0+(REDUCED?0:Math.sin(t*.6+k*2)*1.2);c.fillStyle='rgba(60,30,10,.12)';c.beginPath();c.ellipse(wx,wy+.9,1.2,.35,0,0,TAU);c.fill();c.fillStyle=col;c.beginPath();c.arc(wx,wy,1,0,TAU);c.fill();c.strokeStyle='rgba(255,255,255,.6)';c.lineWidth=.14;c.beginPath();c.arc(wx,wy,.65,.3,2.4);c.moveTo(wx-.8,wy-.3);c.lineTo(wx+.7,wy+.5);c.stroke();c.strokeStyle=col;c.lineWidth=.12;c.beginPath();c.moveTo(wx+.9,wy+.4);c.quadraticCurveTo(wx+2.4,wy+1.4,wx+3.4,wy+.6);c.stroke();}
+ // Kratzbaum mit Häuschen (Katzenkopf-Eingang) und Katze oben
+ {const kx=-37,ky=10;c.fillStyle='rgba(0,0,0,.14)';c.beginPath();c.ellipse(kx,ky+.6,4,1,0,0,TAU);c.fill();c.fillStyle=KC_BR2;c.fillRect(kx-4,ky-1.4,8,2);c.fillStyle='#e8d2b0';c.fillRect(kx-.8,ky-12,1.6,4.6);c.fillRect(kx+2,ky-6,1.2,4.6);c.strokeStyle='#b8946a';c.lineWidth=.15;c.beginPath();for(let y=ky-11.6;y<ky-7.4;y+=.6){c.moveTo(kx-.8,y);c.lineTo(kx+.8,y+.3);}c.stroke();
+  c.fillStyle=KC_BR;c.beginPath();c.roundRect(kx-3.6,ky-7.4,5.6,6,.8);c.fill();kcKopf(c,kx-.8,ky-4,1.4,'#3a2214');c.fillStyle=KC_BR2;c.fillRect(kx-3.4,ky-13,6.8,1.4);c.fillStyle=KC_PK;c.beginPath();c.arc(kx+2.6,ky-9,.6,0,TAU);c.fill();c.strokeStyle=KC_PK;c.lineWidth=.12;c.beginPath();c.moveTo(kx+2.6,ky-8.4);c.lineTo(kx+2.6,ky-7+Math.sin(t*2)*.2);c.stroke();
+  tierZ(c,{x:kx+.6,y:ky-13.8,art:'katze',st:3,view:'side',dir:1,mv:false,sitz:1,t:t+1,sz:.7});}
+ // Katzenkorb mit Kuschelkatze und Herzchen (Aufgabe)
+ {const cx=-26,cy=11;c.fillStyle='rgba(0,0,0,.12)';c.beginPath();c.ellipse(cx,cy+.9,3.8,1,0,0,TAU);c.fill();kcKopf(c,cx,cy-.6,2.9,KC_BR2,KC_PK);c.fillStyle='#ffd6e2';c.beginPath();c.ellipse(cx,cy-.2,2.5,1.5,0,0,TAU);c.fill();
+  tierZ(c,{x:cx,y:cy-2.2,art:'katze',st:6,view:'side',dir:-1,mv:false,sitz:1,t:t+2,sz:.7});
+  if(!REDUCED)for(let k=0;k<2;k++){const ph=(t*.3+k*.5)%1,hx=cx+1.6+k*.8+Math.sin(ph*6)*.4,hy=cy-5-ph*4,s=.4+ph*.25;c.fillStyle=`rgba(255,120,160,${.85*(1-ph)})`;c.beginPath();c.arc(hx-s*.5,hy,s*.55,0,TAU);c.arc(hx+s*.5,hy,s*.55,0,TAU);c.moveTo(hx-s*1.05,hy+.1);c.lineTo(hx,hy+s*1.3);c.lineTo(hx+s*1.05,hy+.1);c.fill();}}
+ // Terrasse: zwei Tische, Katze unter dem Tisch
  catTisch(c,14,12,t,0);catTisch(c,30,13,t,.5);tierZ(c,{x:22,y:16.4,art:'katze',st:8,view:'side',dir:-1,mv:false,sitz:1,t:t+4,sz:.6});
+ // „Miau!“-Sprechblase ab und zu
+ if(!REDUCED){const ph=(t*.12)%1;if(ph<.25){const a=Math.min(1,Math.min(ph,.25-ph)*16);c.globalAlpha=a;c.fillStyle='#fff';c.strokeStyle=KC_BR;c.lineWidth=.2;c.beginPath();c.roundRect(24,9.6,6,2.4,1.2);c.fill();c.stroke();c.fillStyle=KC_BR;c.font='900 1.1px '+FONT;c.textAlign='center';c.fillText('Miau!',27,11.2);c.globalAlpha=1;}}
  // Gast schaut den Katzen zu
  if(S*cam.z>9){const g=ksGast(3,57);if(g&&!imSpiel(g)){const u=REDUCED?.5:((t*.03)%1),px=-4+Math.sin(u*TAU)*10,py=20,L=g.L||(g.L=look(g.k)),dir=Math.cos(u*TAU)>=0?1:-1;c.save();c.translate(px,py);c.fillStyle='rgba(0,0,0,.16)';c.beginPath();c.ellipse(0,4.4,2,.6,0,0,TAU);c.fill();c.scale(dir,1);person(c,L,Math.sin(t*8)*.8,false,0);c.restore();TAPS.push([X+px,Y+py,g]);}}
- ksTeam(KCAT).forEach((p,k)=>ksFigur(c,p,12.4+k*6,-3,KC_PK2,.3+Math.abs(Math.sin(t*2+k))*.5,X,Y));
- // weißer Zaun mit rosa Kappen, Katze auf dem Zaun; Palmen in Kübeln
- {const FY=30.6;for(const s2 of[-1,1]){c.strokeStyle='#f0e2da';c.lineWidth=.45;for(const o of[-2.4,-1.1]){c.beginPath();c.moveTo(s2*44.8,3+o);c.lineTo(s2*44.8,FY+o);c.lineTo(s2*14,FY+o);c.stroke();}
-   for(let k=0;k<=10;k++){const x=s2*(14+k*3.08);c.fillStyle='#fff';c.fillRect(x-.35,FY-3.2,.7,3.2);c.fillStyle=KC_PK;c.fillRect(x-.35,FY-3.6,.7,.5);}}}
+ ksTeam(KCAT).forEach((p,k)=>ksFigur(c,p,12.4+k*6,-3,KC_BR2,.3+Math.abs(Math.sin(t*2+k))*.5,X,Y));
+ // Holzzaun mit Katzenohr-Spitzen, Katze auf dem Zaun; Pflanzen in Töpfen
+ {const FY=30.6;for(const s2 of[-1,1]){c.strokeStyle=KC_BR2;c.lineWidth=.45;for(const o of[-2.4,-1.1]){c.beginPath();c.moveTo(s2*44.8,3+o);c.lineTo(s2*44.8,FY+o);c.lineTo(s2*14,FY+o);c.stroke();}
+   for(let k=0;k<=10;k++){const x=s2*(14+k*3.08);c.fillStyle=KC_BR;c.fillRect(x-.4,FY-3.2,.8,3.2);c.beginPath();c.moveTo(x-.45,FY-3.2);c.lineTo(x-.3,FY-4);c.lineTo(x,FY-3.5);c.lineTo(x+.3,FY-4);c.lineTo(x+.45,FY-3.2);c.closePath();c.fill();}}}
  tierZ(c,{x:30,y:28.2,art:'katze',st:5,view:'side',dir:-1,mv:false,sitz:1,t:t+5,sz:.6});
- for(const s of[-1,1]){const px=s*40.6,py=25.6;c.fillStyle='#fff';c.beginPath();c.arc(px,py,2.6,0,TAU);c.fill();c.strokeStyle=KC_PK;c.lineWidth=.3;c.stroke();c.fillStyle='#4a2e18';c.beginPath();c.arc(px,py,2,0,TAU);c.fill();c.strokeStyle='#3f9b45';c.lineWidth=.55;for(let k=0;k<7;k++){const a=k/7*TAU+t*.2;c.beginPath();c.moveTo(px,py-2);c.quadraticCurveTo(px+Math.cos(a)*2,py-4+Math.sin(a)*1.4,px+Math.cos(a)*4,py-2.6+Math.sin(a)*2);c.stroke();}}
+ for(const s of[-1,1]){const px=s*40.6,py=25.6;c.fillStyle=KC_KA;c.beginPath();c.arc(px,py,2.6,0,TAU);c.fill();c.strokeStyle=KC_BR;c.lineWidth=.3;c.stroke();c.fillStyle='#4a2e18';c.beginPath();c.arc(px,py,2,0,TAU);c.fill();c.strokeStyle='#3f9b45';c.lineWidth=.55;for(let k=0;k<7;k++){const a=k/7*TAU+t*.2;c.beginPath();c.moveTo(px,py-2);c.quadraticCurveTo(px+Math.cos(a)*2,py-4+Math.sin(a)*1.4,px+Math.cos(a)*4,py-2.6+Math.sin(a)*2);c.stroke();}}
  c.restore();}
-function auCat(c){const ax=-12,ay=11.6;c.strokeStyle='#a8683a';c.lineWidth=.4;c.beginPath();c.moveTo(ax-3,ay+3.4);c.lineTo(ax,ay-3.6);c.lineTo(ax+3,ay+3.4);c.stroke();c.fillStyle='#3a3a3a';c.beginPath();c.roundRect(ax-2.8,ay-3.2,5.6,5.2,.4);c.fill();c.strokeStyle='#c98a5a';c.lineWidth=.3;c.stroke();
- c.fillStyle='#fff';c.font='800 .8px '+FONT;c.textAlign='center';c.fillText('HEUTE',ax,ay-2);c.fillStyle='#ffd0e0';c.font='900 .85px '+FONT;c.fillText('Muschel-Latte',ax,ay-.8);c.fillStyle='#fff';c.font='700 .7px '+FONT;c.fillText('+ Katzen-Keks',ax,ay+.3);c.fillStyle='#ffd0e0';c.fillText('☕ 🐾',ax,ay+1.4);}
-function catGlow(glow,nl){const X=KCAT.cx,Y=KCAT.cy;for(const wx of[-25,25])glow(X+wx,Y-10,13,'255,220,170',.3*nl);glow(X,Y-8,8,'255,210,170',.3*nl);glow(X,Y-33,10,'255,150,190',.3*nl);}
+function auCat(c){const ax=-12,ay=11.6;c.strokeStyle=KC_BR;c.lineWidth=.4;c.beginPath();c.moveTo(ax-3,ay+3.4);c.lineTo(ax,ay-3.6);c.lineTo(ax+3,ay+3.4);c.stroke();kcKopf(c,ax,ay-1.4,3.2,KC_BR2,KC_PK);c.fillStyle='#3a3a3a';c.beginPath();c.arc(ax,ay-1.2,2.7,0,TAU);c.fill();
+ c.fillStyle='#fff';c.font='800 .7px '+FONT;c.textAlign='center';c.fillText('HEUTE',ax,ay-2.4);c.fillStyle='#ffd0e0';c.font='900 .8px '+FONT;c.fillText('Miau-Latte',ax,ay-1.3);c.fillStyle='#fff';c.font='700 .6px '+FONT;c.fillText('+ Pfoten-Keks',ax,ay-.4);c.fillStyle='#ffd0e0';c.fillText('🐾',ax,ay+.6);}
+function catGlow(glow,nl){const X=KCAT.cx,Y=KCAT.cy;for(const wx of[-25,25])glow(X+wx,Y-10,13,'255,215,160',.32*nl);glow(X,Y-9,7,'255,210,160',.3*nl);glow(X,Y-34,10,'255,190,140',.3*nl);}
 function catWalk(lx,f){if(Math.hypot(Math.abs(lx)-40.6,f-27.6)<3)return false;if(Math.abs(f-30.6)<1.3&&Math.abs(lx)>12.6)return false;if(Math.abs(Math.abs(lx)-44.8)<1.2&&f<31.9&&f>1)return false;
  if(f<2.2&&Math.abs(lx)<44)return false;// Café
  if(inRect(lx,f,-41,-33,8.4,11.4)||inRect(lx,f,-29.4,-22.6,9.4,12.2)||inRect(lx,f,-15,-9,10.6,15)||Math.hypot((lx-14)/5.6,(f-12.4)/1.8)<1||Math.hypot((lx-30)/5.6,(f-13.4)/1.8)<1)return false;// Kratzbaum, Kissen, Aufsteller, Tische
@@ -2518,7 +2540,7 @@ function klopfMeldung(L,n=0){const frei=$('pg').hidden&&(!MK.d||!MK.d.serie||MK.
 // ---------- 🧩 Sticker-Album: jeder Ort gibt beim ersten Besuch (Erkunden, verknüpfter Name) einen Sticker; alle = Erfolg „Weltenbummler“ ----------
 const STK=[['palast','🏰','Muschelpalast','#e8467c',0],['doener','🥙','Dönerbude','#e8433c',0],['bar','🍹','Strandbar','#0fa3a8',0],['villa','🏖️','Strandvilla','#f4a51c',0],['acai','🫐','Açaí-Stand','#7a3a8c',0],['werkstatt','🛵','Moped-Werkstatt','#2f5f9f',0],['baeckerei','🥐','Bäckerei','#e27d95',0],['nagel','💅','Ocean Nails','#4fc3dc',0],['markt','🛒','Meerkauf','#1f7ad8',0],['kiosk','🍦','Kiosk Kunterbunt','#2fc0c8',0],['boba','🧋','Boba Beach','#c98a45',0],['pizza','🍕','Porto Pizza','#d9442f',0],['tierheim','🐾','Tierheim Pfotenkuss','#c2643a',0],['yacht','🛥️','Yacht White Pearl','#3a6fb0',0],
  ['sandburg','🏰','Sandburg','#d9a84a',0],['angeln','🎣','Angelsteg','#3a7ab8',0],
- ['cocobay','🍹','Coco Bay','#ff8a3c',1],['kokosbad','🏊','Kokos-Bad','#3fa0e8',1],['coast','👗','Coast & Cotton','#c86a4a',1],['kokos','🪩','KOK(O)S','#9b5de5',1],['cococare','🌸','CocoCare','#5fc8a8',1],['katzencafe','🐱','Katzencafé','#ff8fb8',1],['gaming','🕹️','Game Lagoon','#ff3dbe',1],['feuer','🔥','Lagerfeuer','#ff7a1c',1],['gpearl','💎','Golden Pearl','#d4a017',1],['anleger','⚓','Kokos-Anleger','#8a5a2b',1],
+ ['cocobay','🍹','Coco Bay','#ff8a3c',1],['kokosbad','🏊','Kokos-Bad','#3fa0e8',1],['coast','👗','Coast & Cotton','#c86a4a',1],['kokos','🪩','KOK(O)S','#9b5de5',1],['cococare','🌸','CocoCare','#5fc8a8',1],['katzencafe','🐱','Café Miau','#a8683a',1],['gaming','🕹️','Game Lagoon','#ff3dbe',1],['feuer','🔥','Lagerfeuer','#ff7a1c',1],['gpearl','💎','Golden Pearl','#d4a017',1],['anleger','⚓','Kokos-Anleger','#8a5a2b',1],
  ['ev_wochenmarkt','🍎','Wochenmarkt','#3f9b45',2],['ev_flohmarkt','🧺','Flohmarkt','#f4a51c',2],['ev_konzert','🎵','Konzert der Muschelband','#e8467c',2],['ev_feuerwerk','🎆','Feuerwerk','#5a3fd0',2],['ev_kino','🎬','Freiluftkino','#3a2a6a',3],
  ['seestern','⛴️','Fähre „Seestern“','#2f7fc0',4]];/* Typ 4: gibt es bei der ersten Fahrt mit der Fähre */
 const STKEV={ev_wochenmarkt:'Mi 6–12 Uhr',ev_flohmarkt:'Sa 10–18 Uhr',ev_konzert:'So 16–19 Uhr',ev_feuerwerk:'Fr 20:00–20:30 Uhr',ev_kino:'Fr+Sa 20:30–22:30'};
@@ -6139,7 +6161,7 @@ teilen:{ic:'📲',t:'Teile deinen <a href="#" class="qpass" data-mpass="1">Musch
  kokos:{ic:'🪩',t:'Lass dich im KOK(O)S auf die Gästeliste setzen',ort:'KOK(O)S',hint:'Zum goldenen Gästeliste-Pult neben dem Türsteher vor dem KOK(O)S im Nordosten der Kokos-Küste gehen',btn:'📋 Auf die Gästeliste',em:['🪩','📋','✨','🍸','💃']},
  tierheim:{ic:'🐶',t:'Streichle einen Hund im Tierheim Pfotenkuss',ort:'Tierheim Pfotenkuss',hint:'In den Hof vom Tierheim Pfotenkuss zu den Hundehütten gehen',btn:'🐶 Streicheln',em:['🐶','🐾','💛','🦴','🥰']},
  gaming:{ic:'🕹️',t:'Zock eine Runde am Arcade-Automaten der Game Lagoon',ort:'Game Lagoon',hint:'Zu den Arcade-Automaten vor der Game Lagoon im Westen der Kokos-Küste gehen',btn:'🕹️ Losspielen',em:['🎮','🕹️','👾','🌴','🔥']},
- katzencafe:{ic:'🐱',t:'Streichle die schlafende Katze im <b>Katzencafé</b>',ort:'Katzencafé',hint:'Zum rosa Kissen mit der schlafenden Katze vor dem Katzencafé im Nordwesten der Kokos-Küste gehen',btn:'🐱 Katze streicheln',em:['🐱','💕','☕','🐾','💕']},
+ katzencafe:{ic:'🐱',t:'Kuschel mit der Katze im Körbchen vom <b>Café Miau</b>',ort:'Café Miau',hint:'Zum Katzenkörbchen vor dem Café Miau im Nordwesten der Kokos-Küste gehen',btn:'🐱 Katze kuscheln',em:['🐱','💕','☕','🐾','💕']},
  cococare:{ic:'🌸',t:'Teste ein Parfüm am Duft-Tisch von CocoCare',ort:'CocoCare',hint:'Zum Duft-Test-Tisch vor der Drogerie CocoCare im Norden der Kokos-Küste gehen',btn:'🌸 Duft testen',em:['🌸','✨','💐','🧴','💖']},
  coast:{ic:'👗',t:'Probier ein Outfit bei Coast & Cotton an',ort:'Coast & Cotton',hint:'Durch den Eingang zum Spiegel vor Coast & Cotton gehen',btn:'👗 Outfit anprobieren',em:['👗','👙','👒','✨','🛍️']},
  anleger:{ic:'⚓',t:'Schau vom Kokos-Anleger aufs Meer',ort:'',hint:'Bis an die Spitze des Kokos-Anlegers im Süden gehen',btn:'⚓ Aufs Meer schauen',em:['⚓','🌊','⛵','🐟','✨']},
@@ -6236,7 +6258,7 @@ function mkRouteS(x0,y0,x1,y1){const A=aufSteg(x0,y0),Z=aufSteg(x1,y1);if(A&&Z&&
  const s0=vorn[vorn.length-1],s1=hinten[0];const mitte=mkRoute(s0[0],s0[1],s1[0],s1[1]);return[...vorn.slice(0,-1),...mitte,...hinten.slice(1)];}
 function mkGerade(P){if(P.length<3)return P;const frei=(a,b)=>{const n=Math.ceil(Math.hypot(b[0]-a[0],b[1]-a[1])/1.5);for(let q=1;q<n;q++)if(!canWalk(a[0]+(b[0]-a[0])*q/n,a[1]+(b[1]-a[1])*q/n-4.4))return false;return true;};
  const dp=(i0,i1,o)=>{const [ax,ay]=P[i0],[bx,by]=P[i1],l=Math.hypot(bx-ax,by-ay)||1;let mx=0,mi=-1;for(let k=i0+1;k<i1;k++){const d=Math.abs((bx-ax)*(ay-P[k][1])-(ax-P[k][0])*(by-ay))/l;if(d>mx){mx=d;mi=k;}}if(mi<0||(mx<3&&frei(P[i0],P[i1]))){o.push(P[i1]);return;}dp(i0,mi,o);dp(mi,i1,o);};const o=[P[0]];dp(0,P.length-1,o);return o;}
-function mkHin(i){const id=(MK.quests||[])[i];const z=id&&mkZiel2(id);if(!z)return;MK.hin={i,z,t:0};mkHinUpd(true);const q=mkQDef(id);{const L=WK.L||{h:1},u=mkUeber(z,WK.x,WK.y+4.4*(L.h||1));if(WK.on&&u&&u.ueber!=null){mkToast('⛴️ Folge der Linie zur Anlegestelle – mit der Fähre geht’s zur '+ISL[u.ueber].name);return;}}mkToast(q.ic+' Folge der Linie'+(z.r||id==='bm'?' bis '+(id==='steg'?'auf den Steg':id==='bm'?'zur Bürgermeisterin':id==='beet'?'zum Beet':id==='werkstatt'?'zum Rolltor – mit dem 🛵 Moped':id==='bau'?'zum Bauzaun':id==='villa'?'zum Tor':id==='palast'?'zum Eingang':id==='yacht'?'ans Ufer gegenüber der Yacht':id.startsWith('nagel')?'an den Maniküre-Tisch':({kokos:'zum Gästeliste-Pult am Eingang',pearl:'zum roten Teppich vor dem Golden Pearl',gpearl:'zum Golden Pearl',kokosbad:'an den Beckenrand',coast:'zum Spiegel',cococare:'zum Duft-Tisch',katzencafe:'zum Kissen mit der schlafenden Katze',gaming:'zu den Arcade-Automaten',tierheim:'in den Hof zu den Hunden',markt:'zur Eingangstür',anleger:'bis an die Spitze des Anlegers',goldhuette:'durchs Gartentor bis vor die Tür der goldenen Hütte',gpspiel:'zum Eingang vom Golden Pearl',feuer:'zum Lagerfeuer',sandburg:'zur Sandburg',angeln:'auf den Angelsteg'})[id]||'an die Theke'):' bis zur Hütte'));}
+function mkHin(i){const id=(MK.quests||[])[i];const z=id&&mkZiel2(id);if(!z)return;MK.hin={i,z,t:0};mkHinUpd(true);const q=mkQDef(id);{const L=WK.L||{h:1},u=mkUeber(z,WK.x,WK.y+4.4*(L.h||1));if(WK.on&&u&&u.ueber!=null){mkToast('⛴️ Folge der Linie zur Anlegestelle – mit der Fähre geht’s zur '+ISL[u.ueber].name);return;}}mkToast(q.ic+' Folge der Linie'+(z.r||id==='bm'?' bis '+(id==='steg'?'auf den Steg':id==='bm'?'zur Bürgermeisterin':id==='beet'?'zum Beet':id==='werkstatt'?'zum Rolltor – mit dem 🛵 Moped':id==='bau'?'zum Bauzaun':id==='villa'?'zum Tor':id==='palast'?'zum Eingang':id==='yacht'?'ans Ufer gegenüber der Yacht':id.startsWith('nagel')?'an den Maniküre-Tisch':({kokos:'zum Gästeliste-Pult am Eingang',pearl:'zum roten Teppich vor dem Golden Pearl',gpearl:'zum Golden Pearl',kokosbad:'an den Beckenrand',coast:'zum Spiegel',cococare:'zum Duft-Tisch',katzencafe:'zum Katzenkörbchen',gaming:'zu den Arcade-Automaten',tierheim:'in den Hof zu den Hunden',markt:'zur Eingangstür',anleger:'bis an die Spitze des Anlegers',goldhuette:'durchs Gartentor bis vor die Tür der goldenen Hütte',gpspiel:'zum Eingang vom Golden Pearl',feuer:'zum Lagerfeuer',sandburg:'zur Sandburg',angeln:'auf den Angelsteg'})[id]||'an die Theke'):' bis zur Hütte'));}
 // Weg zur Aufgabe: einmal den kürzesten Weg berechnen und dann nur noch abfahren (kein Hin- und Herspringen an Kreuzungen).
 // Neu berechnet wird nur, wenn das Ziel sich bewegt oder man deutlich vom Weg abweicht.
 /* Auf welcher Insel liegt ein Punkt? (nächste Küste, relativ zur Inselgröße; Stege/Golden Pearl zählen zu ihrer Insel) */function inselVon(x,y){for(const g of STEGE){const fx=x-g.s[0],fy=y-g.s[1],u=fx*g.d[0]+fy*g.d[1],w=fx*g.n[0]+fy*g.n[1];if(u>-5&&u<g.L+40&&Math.abs(w)<g.hw+30)return g.v.i;}if(x>GP.x0-60&&x<GP.x1+20&&y>GP.y0-20&&y<GP.y1+20)return GP.v.i;let b=0,bd=1e9;for(const v of ISL){const dx=x-v.x,dy=(y-v.y)/.92,r=Math.hypot(dx,dy)/(coastAt(v,Math.atan2(dy,dx))||1);if(r<bd){bd=r;b=v.i;}}return b;}
