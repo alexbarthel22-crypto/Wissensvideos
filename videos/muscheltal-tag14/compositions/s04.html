@@ -67,21 +67,25 @@
     .nm { position: absolute; top: 1570px; width: 262px; padding: 14px 6px 16px; border-radius: 24px; background: #fff; color: #1a0f08; text-align: center; opacity: 0;
       font: 900 26px Inter, sans-serif; box-shadow: 0 0 0 6px #ff3dbd, 0 10px 0 rgba(0,0,0,.3); }
     .nm b { display: block; font: 400 46px/1 "Lilita One", sans-serif; color: #ff3dbd; margin-bottom: 4px; }
+    .wp { position: absolute; left: -140px; top: 0; width: 1360px; height: 1920px; transform: skewX(-12deg); z-index: 50;
+      background: linear-gradient(90deg, #13c8d8 0%, #3ff0ff 30%, #ff3dbd 70%, #7a3dff 100%); pointer-events: none; }
+    .wp::after { content: "🐚"; position: absolute; left: 50%; top: 50%; font-size: 200px; transform: translate(-50%, -50%) skewX(12deg); }
   </style>
-  <div id="root" data-composition-id="s04" data-start="0" data-duration="3.950" data-width="1080" data-height="1920">
-    <div id="s04-stage" class="clip stage" data-start="0" data-duration="3.950" data-track-index="0">
+  <div id="root" data-composition-id="s04" data-start="0" data-duration="4.090" data-width="1080" data-height="1920">
+    <div id="s04-stage" class="clip stage" data-start="0" data-duration="4.090" data-track-index="0">
       <div id="c1" class="big">🐱 <span class="p">CAFÉ MIAU</span></div>
       <div id="c2" class="neo li">✅ FERTIG GEBAUT!</div>
       <div id="n0" class="nm" style="left:60px"><b>LILLY ⭐</b>@lillyf.r1</div>
       <div id="n1" class="nm" style="left:344px"><b>INSA</b>@insa.t_sp</div>
       <div id="n2" class="nm" style="left:628px"><b>LILLY</b>@lillyyyy7597</div>
       <div class="fl"></div>
+      <div class="wp" data-layout-ignore></div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 3.95, "L4": [0.2, 3.77], "L4.words": [["das", 0.2, 0.415], ["café", 0.415, 0.63], ["miau", 0.63, 0.853], ["ist", 0.853, 1.068], ["fertig", 1.068, 1.498], ["", 1.498, 1.69], ["mit", 1.94, 2.119], ["lilly", 2.119, 2.47], ["insa", 2.65, 3.091], ["und", 3.091, 3.32], ["lilly", 3.32, 3.77]]};
+      const C = {"__dur": 4.09, "L4": [0.2, 3.91], "L4.words": [["und", 0.2, 0.403], ["jetzt", 0.403, 0.621], ["ist", 0.621, 0.825], ["das", 0.825, 1.028], ["café", 1.028, 1.231], ["miau", 1.231, 1.442], ["fertig", 1.442, 1.848], ["", 1.848, 2.03], ["mit", 2.26, 2.432], ["lilly", 2.432, 2.77], ["insa", 2.92, 3.31], ["und", 3.31, 3.513], ["lilly", 3.513, 3.91]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -125,11 +129,12 @@
 
       wrapBt("#s04-stage");
       const tl = gsap.timeline({ paused: true });
+      tl.fromTo("#s04-stage .wp", { xPercent: 0 }, { xPercent: -110, duration: 0.32, ease: "power2.out" }, 0);
       const t = line("L4")[0], LW = C["L4.words"].filter(w => w[0].startsWith("lilly")), IN = at("L4", "Insa");
       tl.fromTo("#c1", { opacity: 0, scale: 3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .24, ease: "back.out(2.2)" }, t - .05);
       tl.fromTo("#c2", { opacity: 0, scale: 3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .24, ease: "back.out(2.2)" }, at("L4", "fertig") - .05);tl.fromTo(".fl", { opacity: 0.5 }, { opacity: 0, duration: .28, immediateRender: false }, at("L4", "fertig"));
       [[0, LW[0][1]], [1, IN], [2, (LW[1] || LW[0])[1]]].forEach(([i, a]) => tl.fromTo("#n" + i, { opacity: 0, scale: .2, rotation: i % 2 ? 10 : -10 }, { opacity: 1, scale: 1, rotation: 0, duration: .28, ease: "back.out(2.6)" }, a - .08));
-      tl.to("#s04-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
+      tl.fromTo("#s04-stage .wp", { xPercent: 110 }, { xPercent: 0, duration: 0.22, ease: "power2.in", immediateRender: false }, C.__dur - 0.22);
       window.__timelines["s04"] = tl;
     })();
   </script>

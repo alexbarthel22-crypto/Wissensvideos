@@ -7,9 +7,17 @@ LILITA = '@font-face { font-family: "Lilita One"; src: url("assets/fonts/LilitaO
 
 V1 = ""
 
-def scene(sid, css, html, js, blur=True):
-    css = css + V1
-    end = f'tl.to("#{sid}-stage > *", {{ opacity: 0, filter: "blur(8px)", duration: 0.18 }}, C.__dur - 0.18);' if blur else ""
+def scene(sid, css, html, js, blur=True, wipe_in=True):
+    css = css + V1 + """
+    .wp { position: absolute; left: -140px; top: 0; width: 1360px; height: 1920px; transform: skewX(-12deg); z-index: 50;
+      background: linear-gradient(90deg, #13c8d8 0%, #3ff0ff 30%, #ff3dbd 70%, #7a3dff 100%); pointer-events: none; }
+    .wp::after { content: "🐚"; position: absolute; left: 50%; top: 50%; font-size: 200px; transform: translate(-50%, -50%) skewX(12deg); }"""
+    html = html + '\n      <div class="wp" data-layout-ignore></div>'
+    end = (f'tl.fromTo("#{sid}-stage .wp", {{ xPercent: 110 }}, {{ xPercent: 0, duration: 0.22, ease: "power2.in", immediateRender: false }}, C.__dur - 0.22);') if blur else ""
+    if wipe_in:
+        js = f'      tl.fromTo("#{sid}-stage .wp", {{ xPercent: 0 }}, {{ xPercent: -110, duration: 0.32, ease: "power2.out" }}, 0);\n' + js
+    else:
+        js = f'      tl.set("#{sid}-stage .wp", {{ xPercent: 110 }}, 0);\n' + js
     (D / f"{sid}.html").write_text(f"""<template>
   <style>
     /*__COMMON_CSS__*/
@@ -153,44 +161,40 @@ def gulljs(t0, dur, y0, y1):
     return (f'tl.set("#gl", {{ opacity: 1 }}, {t0}); tl.fromTo("#gl", {{ x: -800, y: {y0} }}, {{ x: 1140, y: {y1}, duration: {dur}, ease: "none" }}, {t0}); tl.set("#gl", {{ opacity: 0 }}, {t0} + {dur});\n'
             f'      for (let k = 0; k < Math.ceil({dur} / .06); k++) {{ const i = k % 8, a = {t0} + k * .06; tl.set("#gf" + i, {{ opacity: 1 }}, a); tl.set("#gf" + i, {{ opacity: 0 }}, a + .06); }}')
 
-# s01 – Hook: Etwas ist im Meer aufgetaucht → Sunken Pearl (Wortzeiten gemessen) + Muschel-Möwe
-scene("s01", NEO + GULL_CSS + """
-    #dk { position: absolute; inset: 0; background: radial-gradient(circle at 50% 55%, rgba(0,20,40,0) 20%, rgba(0,10,30,.75) 80%); }
-    #hk { position: absolute; left: 60px; right: 60px; top: 230px; text-align: center; font-family: "Lilita One", sans-serif; line-height: 1.02; -webkit-text-stroke: 18px #0a0418; paint-order: stroke fill; }
+# s01 – Hook: Ein Wolkenkratzer – aber nach unten, bis auf den Meeresgrund (Wortzeiten gemessen)
+scene("s01", NEO + """
+    #dw { position: absolute; left: 0; top: 0; width: 1080px; height: 3800px; }
+    #hk { position: absolute; left: 60px; right: 60px; top: 200px; text-align: center; font-family: "Lilita One", sans-serif; line-height: 1.02; -webkit-text-stroke: 18px #0a0418; paint-order: stroke fill; }
     #hk .w { display: inline-block; position: relative; color: #fff; font-size: 140px; margin: 0 .06em; transform-origin: 50% 60%; }
-    #hk #w2 { color: #3ff0ff; } #hk #w4 { color: #3ff0ff; } #hk #w5 { color: #ffd23f; font-size: 118px; }
-    .bb { position: absolute; border-radius: 50%; border: 4px solid rgba(255,255,255,.75); background: rgba(255,255,255,.15); opacity: 0; }
-    #s1 { top: 240px; font-size: 100px; white-space: nowrap; }
-    #s2 { top: 1440px; font-size: 56px; } #s3 { top: 1590px; font-size: 44px; }
-    #ar { position: absolute; left: 470px; top: 1050px; font-size: 120px; opacity: 0; }""",
-"""      <div id="dk"></div>
-      """ + "".join(f'<div class="bb" id="bb{i}" style="left:{x}px;top:1700px;width:{d}px;height:{d}px"></div>' for i, (x, d) in enumerate([(160, 40), (300, 26), (420, 54), (620, 34), (760, 46), (880, 28), (520, 30), (240, 22)])) + """
-      <div id="hk"><span class="w" id="w0">DA</span><span class="w" id="w1">IST</span><br><span class="w" id="w2">ETWAS</span><br><span class="w" id="w3">IM</span><span class="w" id="w4">MEER</span><br><span class="w" id="w5">AUFGETAUCHT …</span></div>
-      <div id="s1" class="big">🫧 <span class="c">SUNKEN</span> <span class="g">PEARL</span></div>
-      <div id="s2" class="neo go">🏙️ EIN WOLKENKRATZER …</div>
-      <div id="s3" class="neo pk">⬇️ NACH UNTEN INS MEER!</div>
+    #hk #w1 { color: #ffd23f; font-size: 120px; } #hk #w3, #hk #w4 { color: #ff3dbd; }
+    #ar { position: absolute; left: 820px; top: 900px; font-size: 130px; opacity: 0; }
+    #s2 { top: 1450px; font-size: 56px; }
+    #s1 { top: 230px; font-size: 104px; white-space: nowrap; }
+    #mg { position: absolute; left: 0; right: 0; top: 1300px; text-align: center; font: 400 64px "Lilita One", sans-serif; color: #fff; opacity: 0; -webkit-text-stroke: 10px #0a0418; paint-order: stroke fill; }""",
+"""      <div id="dw"><svg id="dv" viewBox="0 0 1080 3800" width="1080" height="3800"><defs><linearGradient id="wg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#bdefff"/><stop offset=".26" stop-color="#7fd8ff"/><stop offset=".3" stop-color="#2fb7e8"/><stop offset=".6" stop-color="#0a5a92"/><stop offset=".92" stop-color="#04122a"/><stop offset="1" stop-color="#04122a"/></linearGradient></defs><rect width="1080" height="3800" fill="url(#wg)"/><path d="M0 1120 Q135 1095 270 1120 T540 1120 T810 1120 T1080 1120 L1080 1150 L0 1150Z" fill="#fff" opacity=".7"/><rect x="390" y="1150" width="300" height="140" fill="#f0b39e" stroke="#c9826a" stroke-width="4"/><rect x="410" y="1180" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.95"/><rect x="480" y="1180" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.95"/><rect x="550" y="1180" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.95"/><rect x="620" y="1180" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.95"/><rect x="390" y="1290" width="300" height="140" fill="#f6c3b0" stroke="#c9826a" stroke-width="4"/><rect x="410" y="1320" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.92"/><rect x="480" y="1320" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.92"/><rect x="550" y="1320" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.92"/><rect x="620" y="1320" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.92"/><rect x="390" y="1430" width="300" height="140" fill="#f0b39e" stroke="#c9826a" stroke-width="4"/><rect x="410" y="1460" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.89"/><rect x="480" y="1460" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.89"/><rect x="550" y="1460" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.89"/><rect x="620" y="1460" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.89"/><rect x="390" y="1570" width="300" height="140" fill="#f6c3b0" stroke="#c9826a" stroke-width="4"/><rect x="410" y="1600" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.86"/><rect x="480" y="1600" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.86"/><rect x="550" y="1600" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.86"/><rect x="620" y="1600" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.86"/><rect x="390" y="1710" width="300" height="140" fill="#f0b39e" stroke="#c9826a" stroke-width="4"/><rect x="410" y="1740" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.83"/><rect x="480" y="1740" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.83"/><rect x="550" y="1740" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.83"/><rect x="620" y="1740" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.83"/><rect x="390" y="1850" width="300" height="140" fill="#f6c3b0" stroke="#c9826a" stroke-width="4"/><rect x="410" y="1880" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.80"/><rect x="480" y="1880" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.80"/><rect x="550" y="1880" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.80"/><rect x="620" y="1880" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.80"/><rect x="390" y="1990" width="300" height="140" fill="#f0b39e" stroke="#c9826a" stroke-width="4"/><rect x="410" y="2020" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.77"/><rect x="480" y="2020" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.77"/><rect x="550" y="2020" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.77"/><rect x="620" y="2020" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.77"/><rect x="390" y="2130" width="300" height="140" fill="#f6c3b0" stroke="#c9826a" stroke-width="4"/><rect x="410" y="2160" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.74"/><rect x="480" y="2160" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.74"/><rect x="550" y="2160" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.74"/><rect x="620" y="2160" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.74"/><rect x="390" y="2270" width="300" height="140" fill="#f0b39e" stroke="#c9826a" stroke-width="4"/><rect x="410" y="2300" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.71"/><rect x="480" y="2300" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.71"/><rect x="550" y="2300" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.71"/><rect x="620" y="2300" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.71"/><rect x="390" y="2410" width="300" height="140" fill="#f6c3b0" stroke="#c9826a" stroke-width="4"/><rect x="410" y="2440" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.68"/><rect x="480" y="2440" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.68"/><rect x="550" y="2440" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.68"/><rect x="620" y="2440" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.68"/><rect x="390" y="2550" width="300" height="140" fill="#f0b39e" stroke="#c9826a" stroke-width="4"/><rect x="410" y="2580" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.65"/><rect x="480" y="2580" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.65"/><rect x="550" y="2580" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.65"/><rect x="620" y="2580" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.65"/><rect x="390" y="2690" width="300" height="140" fill="#f6c3b0" stroke="#c9826a" stroke-width="4"/><rect x="410" y="2720" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.62"/><rect x="480" y="2720" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.62"/><rect x="550" y="2720" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.62"/><rect x="620" y="2720" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.62"/><rect x="390" y="2830" width="300" height="140" fill="#f0b39e" stroke="#c9826a" stroke-width="4"/><rect x="410" y="2860" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.59"/><rect x="480" y="2860" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.59"/><rect x="550" y="2860" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.59"/><rect x="620" y="2860" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.59"/><rect x="390" y="2970" width="300" height="140" fill="#f6c3b0" stroke="#c9826a" stroke-width="4"/><rect x="410" y="3000" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.56"/><rect x="480" y="3000" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.56"/><rect x="550" y="3000" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.56"/><rect x="620" y="3000" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.56"/><rect x="390" y="3110" width="300" height="140" fill="#f0b39e" stroke="#c9826a" stroke-width="4"/><rect x="410" y="3140" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.53"/><rect x="480" y="3140" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.53"/><rect x="550" y="3140" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.53"/><rect x="620" y="3140" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.53"/><rect x="390" y="3250" width="300" height="140" fill="#f6c3b0" stroke="#c9826a" stroke-width="4"/><rect x="410" y="3280" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.50"/><rect x="480" y="3280" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.50"/><rect x="550" y="3280" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.50"/><rect x="620" y="3280" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.50"/><rect x="390" y="3390" width="300" height="140" fill="#f0b39e" stroke="#c9826a" stroke-width="4"/><rect x="410" y="3420" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.47"/><rect x="480" y="3420" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.47"/><rect x="550" y="3420" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.47"/><rect x="620" y="3420" width="48" height="70" rx="20" fill="#ffe9a0" opacity="0.47"/><rect x="330" y="980" width="420" height="170" rx="10" fill="#f4b9a4" stroke="#c9826a" stroke-width="6"/><path d="M380 980 Q540 800 700 980Z" fill="#e8846a" stroke="#c9826a" stroke-width="6"/><circle cx="540" cy="830" r="34" fill="#fff"/><rect x="470" y="1040" width="140" height="110" rx="60" fill="#8a5a2b"/><text x="150" y="1300" font-size="70" opacity=".9">🐡</text><text x="860" y="1450" font-size="80" opacity=".9">🪼</text><text x="120" y="1600" font-size="70" opacity=".9">🐠</text><text x="860" y="1750" font-size="60" opacity=".9">🐠</text><text x="120" y="1900" font-size="70" opacity=".9">🦑</text><text x="200" y="2050" font-size="70" opacity=".9">🪼</text><text x="120" y="2200" font-size="80" opacity=".9">🐠</text><text x="120" y="2350" font-size="80" opacity=".9">🐠</text><text x="880" y="2500" font-size="70" opacity=".9">🐠</text><text x="880" y="2650" font-size="60" opacity=".9">🐟</text><text x="200" y="2800" font-size="80" opacity=".9">🪼</text><text x="880" y="2950" font-size="60" opacity=".9">🐠</text><text x="120" y="3100" font-size="60" opacity=".9">🐠</text><text x="200" y="3250" font-size="60" opacity=".9">🐠</text><path d="M0 3560 Q200 3500 400 3550 T800 3540 T1080 3560 L1080 3800 L0 3800Z" fill="#e8c98a"/><path d="M150 3560 q-20 -120 10 -200 M180 3560 q30 -100 0 -170 M900 3560 q-25 -140 15 -230 M930 3560 q30 -110 -5 -190" stroke="#2fae6a" stroke-width="14" fill="none" stroke-linecap="round"/><text x="230" y="3640" font-size="90">🪸</text><text x="760" y="3650" font-size="90">🪸</text><text x="600" y="3700" font-size="70">⭐</text><text x="320" y="3720" font-size="60">🐚</text><rect x="390" y="3530" width="300" height="40" fill="#c9826a"/></svg></div>
+      <div id="hk"><span class="w" id="w0">EIN</span><br><span class="w" id="w1">WOLKENKRATZER …</span><br><span class="w" id="w2">ABER</span><br><span class="w" id="w3">NACH</span><span class="w" id="w4">UNTEN!</span></div>
       <div id="ar">⬇️</div>
-      <div id="gl"><img class="gf" id="gf0" src="bilder/moewe/m0.png"><img class="gf" id="gf1" src="bilder/moewe/m1.png"><img class="gf" id="gf2" src="bilder/moewe/m2.png"><img class="gf" id="gf3" src="bilder/moewe/m3.png"><img class="gf" id="gf4" src="bilder/moewe/m4.png"><img class="gf" id="gf5" src="bilder/moewe/m5.png"><img class="gf" id="gf6" src="bilder/moewe/m6.png"><img class="gf" id="gf7" src="bilder/moewe/m7.png"></div>
+      <div id="s2" class="neo pk">🌊 BIS AUF DEN MEERESGRUND!</div>
+      <div id="s1" class="big">🫧 <span class="c">SUNKEN</span> <span class="g">PEARL</span></div>
       <div class="fl"></div>""",
-"""      const ws = [["da",.03,.17],["ist",.26,.43],["etwas",.46,.81],["im",.84,.98],["meer",1.0,1.38],["aufgetaucht",1.48,2.15]] /* aus narration.wav gemessen */, SC = [1.9, 1.9, 1.5, 1.9, 1.6, 1.08], COL = ["#ffffff", "#ffffff", "#3ff0ff", "#ffffff", "#3ff0ff", "#ffd23f"];
+"""      const ws = [["ein",.04,.38],["wolkenkratzer",.40,1.25],["aber",1.44,1.79],["nach",1.94,2.11],["unten",2.21,2.39]] /* aus narration.wav gemessen */, SC = [1.9, 1.08, 1.7, 1.8, 1.4], COL = ["#ffffff", "#ffd23f", "#ffffff", "#ff3dbd", "#ff3dbd"];
       tl.fromTo("#hk", { scale: 1.2 }, { scale: 1, duration: .18, ease: "power3.out" }, 0);
       """ + FLASH(0, .9) + """
-      for (let i = 0; i < 8; i++) tl.fromTo("#bb" + i, { opacity: .9, y: 0 }, { opacity: 0, y: -900 - i * 60, duration: 2.4 + (i % 3) * .4, ease: "power1.in" }, i * .18);
       ws.forEach((w, i) => { const id = "#w" + i, t0 = Math.max(0, w[1] - .03);
         tl.set(id, { zIndex: 5 }, t0);
-        tl.fromTo(id, { scale: 1, color: COL[i], textShadow: "0 0 0px #fff" }, { scale: SC[i], color: i === 5 ? "#ffffff" : "#ffd23f", textShadow: "0 0 50px #3ff0ff, 0 0 120px #3ff0ff", duration: .07, ease: "power4.out", immediateRender: false }, t0);
+        tl.fromTo(id, { scale: 1, color: COL[i], textShadow: "0 0 0px #fff" }, { scale: SC[i], color: i === 1 ? "#ffffff" : "#ffd23f", textShadow: "0 0 50px #3ff0ff, 0 0 120px #3ff0ff", duration: .07, ease: "power4.out", immediateRender: false }, t0);
         tl.to(id, { scale: 1, color: COL[i], textShadow: "0 0 0px #fff", duration: .2, ease: "back.out(2)" }, Math.max(t0 + .1, w[2] - .08));
         tl.set(id, { zIndex: 1 }, w[2] + .15);
         tl.fromTo(".fl", { opacity: .3 }, { opacity: 0, duration: .12, immediateRender: false }, t0);
         [[10,-6],[-12,6],[0,0]].forEach(([x, y], n) => tl.to("#s01-stage", { x, y, duration: .03, ease: "none" }, t0 + n * .03)); });
-      const B = line("L1b")[0];
-      tl.to("#hk", { opacity: 0, y: -80, duration: .2 }, B - .2);
-      tl.to("#dk", { opacity: .35, duration: .6 }, B);
-      """ + Z("#s1", "B - .05") + SHAKE("s01", "B") + FLASH("B", .8) + """
-      """ + Z("#s2", 'at("L1b", "Wolkenkratzer") - .05') + """
-      """ + Z("#s3", 'at("L1b", "nach") - .05') + """
-      tl.fromTo("#ar", { opacity: 0, y: -40 }, { opacity: 1, y: 60, duration: .4, yoyo: true, repeat: 3, ease: "sine.inOut" }, at("L1b", "nach"));
-      """ + gulljs('at("L1b", "Wolkenkratzer") - .3', 3.0, 560, 420))
+      const B = line("L1b")[0], E = C.__dur;
+      tl.fromTo("#ar", { opacity: 0, y: -40 }, { opacity: 1, y: 60, duration: .35, yoyo: true, repeat: 5, ease: "sine.inOut" }, 1.94);
+      tl.fromTo("#dw", { y: 0 }, { y: -1880, duration: B + 1.4 - 1.9, ease: "power2.inOut" }, 1.9);
+      tl.to("#hk", { opacity: 0, y: -100, duration: .25 }, B - .25);
+      """ + Z("#s2", "B - .05") + """
+      tl.fromTo("#dw", { opacity: 1 }, { opacity: 0, duration: .45, immediateRender: false }, at("L1b", "Sunken") - .2);
+      tl.to("#s2", { opacity: 0, duration: .2 }, at("L1b", "Sunken") - .1);
+      """ + Z("#s1", 'at("L1b", "Sunken") - .05') + SHAKE("s01", 'at("L1b", "Sunken")') + FLASH('at("L1b", "Sunken")', .8), wipe_in=False)
 
 # s02 – Innenansicht Tiefsee-Suite: unter Wasser wohnen + Frage
 scene("s02", NEO + """
@@ -215,7 +219,7 @@ scene("s03", NEO + """
     #pi { position: absolute; left: 60px; top: 420px; width: 830px; height: 347px; border-radius: 28px; opacity: 0; background: url(bilder/abstimmung.png) center/cover;
       box-shadow: 0 0 0 6px #ffd23f, 0 20px 50px rgba(0,0,0,.5); }
     #r3 { top: 830px; font-size: 70px; }""",
-"""      <div id="r1" class="big">🗳️ <span class="g">ERGEBNIS</span></div>
+"""      <div id="r1" class="big">🗳️ <span class="g">EURE WAHL</span></div>
       <div id="pi"></div>
       <div id="r3" class="neo pk">🐱 KATZENCAFÉ GEWINNT!</div>
       <div class="fl"></div>""",
@@ -244,16 +248,18 @@ scene("s04", NEO + """
       [[0, LW[0][1]], [1, IN], [2, (LW[1] || LW[0])[1]]].forEach(([i, a]) => tl.fromTo("#n" + i, { opacity: 0, scale: .2, rotation: i % 2 ? 10 : -10 }, { opacity: 1, scale: 1, rotation: 0, duration: .28, ease: "back.out(2.6)" }, a - .08));""")
 
 # s05 – Fähre Seestern: zwischen den Inseln, ganze Inselwelt erkunden
-scene("s05", NEO + """
+scene("s05", NEO + GULL_CSS + """
     #f1 { top: 220px; font-size: 96px; white-space: nowrap; }
     #f2 { top: 380px; font-size: 72px; }
     #f3 { top: 1580px; font-size: 50px; }""",
 """      <div id="f1" class="big">⛴️ FÄHRE <span class="c">SEESTERN</span></div>
       <div id="f2" class="neo go">🐚 ⇄ 🥥 ⇄ 🫧</div>
+      <div id="gl"><img class="gf" id="gf0" src="bilder/moewe/m0.png"><img class="gf" id="gf1" src="bilder/moewe/m1.png"><img class="gf" id="gf2" src="bilder/moewe/m2.png"><img class="gf" id="gf3" src="bilder/moewe/m3.png"><img class="gf" id="gf4" src="bilder/moewe/m4.png"><img class="gf" id="gf5" src="bilder/moewe/m5.png"><img class="gf" id="gf6" src="bilder/moewe/m6.png"><img class="gf" id="gf7" src="bilder/moewe/m7.png"></div>
 """,
 """      const t = line("L5")[0];
       """ + Z("#f1", 'at("L5", "Fähre") - .05') + """
       """ + Z("#f2", 'at("L5", "zwischen") - .05') + """
+      """ + gulljs('at("L5", "Fähre")', 3.2, 620, 520) + """
       tl.to("#f2", { scale: 1.08, duration: .25, yoyo: true, repeat: 3, ease: "sine.inOut" }, at("L5", "zwischen") + .3);""")
 
 # s06 – Verlosung: Job bei CocoCare (Glücksrad, Python secrets)
@@ -266,17 +272,16 @@ scene("s06", NEO + SLOT_CSS + CF_CSS + """
       <div id="j2" class="neo li"><small>🌸 1 JOB BEI</small>COCOCARE</div>
       """ + slot("sg", ["@leeland205", "@louisa_sel", "@mia_v005", "@zuza_.2281", "@mia2201e0", "@tinaa.793", "@litreally_nightwing", "@_ph1l0.s0ph14_", "@burgerpuffel", "@jxst_lea.tiktok", "@just_fabs_", "@minuscha99", "@alex.erklaert", "@sophieee_nrb", "@tamiajustine5", "@lea.02082009"], "@keineahnung1.7", 620, "#5fc8a8", "") + """
       <div id="j3" class="neo li">🎉 GLÜCKWUNSCH!</div>
-      <div id="j4" class="neo pk">📩 MELDE DICH BEI UNS!</div>
       <div id="cfb" style="position:absolute;inset:0"></div>
       <div class="fl"></div>""",
-"""      const t = line("L6")[0], G = at("L6", "Job"), W = line("L6b")[0];
-      """ + Z("#j1", "t - .05") + FLASH("t", .5) + """
+"""      const t = line("L6")[0], G = at("L6", "CocoCare"), W = line("L6b")[0];
+      """ + Z("#j1", 'at("L6", "Job") - .05') + FLASH('at("L6", "Job")', .5) + """
       """ + Z("#j2", 'at("L6", "Job") - .05') + """
       """ + slotjs("sg", 16, "G + .3", "W") + """
       """ + SHAKE("s06", "W") + FLASH("W", .8) + """
       """ + Z("#j3", "W") + """
-      { """ + CONF_JS.replace("BOX", "cfb").replace("SEED", "77").replace("T0", "W") + """ }
-      """ + Z("#j4", 'at("L6b", "Melde") - .05'))
+      { """ + CONF_JS.replace("BOX", "cfb").replace("SEED", "77").replace("T0", "W") + """ }"""
+      )
 
 # s07 – Security fürs Golden Pearl gesucht
 scene("s07", NEO + """
@@ -289,7 +294,7 @@ scene("s07", NEO + """
       <div id="g3" class="neo go">✨ FÜRS GOLDEN PEARL</div>
       <div class="fl"></div>""",
 """      const t = line("L7")[0], SE = at("L7", "Security");
-      """ + Z("#g3", 't - .05') + """
+      """ + Z("#g3", 'at("L7", "Golden") - .05') + """
       """ + Z("#g1", "SE - .05") + Z("#g2", "SE + .15") + SHAKE("s07", "SE") + FLASH("SE", .6) + """
       tl.to("#g3", { scale: 1.06, duration: .22, yoyo: true, repeat: 3, ease: "sine.inOut" }, at("L7", "Bewerbt"));""")
 
@@ -308,7 +313,7 @@ scene("s08", NEO + FOLLOW + """
       <div id="o9" class="big">FOLG <span class="p">MIR</span></div>
       <div id="f9" class="fbtn">+ Folgen<div class="fbtn2">✓ Eingezogen</div></div>
       <div class="fl"></div>""",
-"""      const t = line("L8")[0], F = line("L8b")[0];
+"""      const t = at("L8", "819"), F = line("L8b")[0];
       tl.fromTo("#br", { opacity: 0 }, { opacity: 1, duration: .25 }, t - .05);
       tl.fromTo("#br .fi", { width: "0%" }, { width: "81.9%", duration: 1.3, ease: "power2.out" }, t);
       count(tl, "#cn", 0, 819, t, 1.3);

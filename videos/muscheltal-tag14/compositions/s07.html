@@ -66,19 +66,23 @@
     #g2 { top: 360px; font-size: 92px; }
     #g3 { top: 560px; font-size: 56px; }
     #g4 { top: 1590px; font-size: 44px; }
+    .wp { position: absolute; left: -140px; top: 0; width: 1360px; height: 1920px; transform: skewX(-12deg); z-index: 50;
+      background: linear-gradient(90deg, #13c8d8 0%, #3ff0ff 30%, #ff3dbd 70%, #7a3dff 100%); pointer-events: none; }
+    .wp::after { content: "🐚"; position: absolute; left: 50%; top: 50%; font-size: 200px; transform: translate(-50%, -50%) skewX(12deg); }
   </style>
-  <div id="root" data-composition-id="s07" data-start="0" data-duration="3.940" data-width="1080" data-height="1920">
-    <div id="s07-stage" class="clip stage" data-start="0" data-duration="3.940" data-track-index="0">
+  <div id="root" data-composition-id="s07" data-start="0" data-duration="4.980" data-width="1080" data-height="1920">
+    <div id="s07-stage" class="clip stage" data-start="0" data-duration="4.980" data-track-index="0">
       <div id="g1" class="big">🕶️ <span class="g">SECURITY</span></div>
       <div id="g2" class="big"><span class="p">GESUCHT!</span></div>
       <div id="g3" class="neo go">✨ FÜRS GOLDEN PEARL</div>
       <div class="fl"></div>
+      <div class="wp" data-layout-ignore></div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 3.94, "L7": [0.2, 3.76], "L7.words": [["das", 0.2, 0.388], ["golden", 0.388, 0.764], ["pearl", 0.764, 0.965], ["sucht", 0.965, 1.166], ["einen", 1.166, 1.535], ["security", 1.535, 2.26], ["bewerbt", 2.51, 2.793], ["euch", 2.793, 2.937], ["in", 2.937, 3.071], ["den", 3.071, 3.209], ["kommentaren", 3.209, 3.76]]};
+      const C = {"__dur": 4.98, "L7": [0.2, 4.8], "L7.words": [["und", 0.2, 0.376], ["noch", 0.376, 0.559], ["ein", 0.559, 0.735], ["job", 0.735, 0.911], ["ist", 0.911, 1.087], ["frei", 1.087, 1.27], ["das", 1.52, 1.702], ["golden", 1.702, 2.067], ["pearl", 2.067, 2.263], ["sucht", 2.263, 2.458], ["einen", 2.458, 2.816], ["security", 2.816, 3.52], ["bewerbt", 3.77, 4.003], ["euch", 4.003, 4.122], ["in", 4.122, 4.232], ["den", 4.232, 4.346], ["kommentaren", 4.346, 4.8]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -122,11 +126,12 @@
 
       wrapBt("#s07-stage");
       const tl = gsap.timeline({ paused: true });
+      tl.fromTo("#s07-stage .wp", { xPercent: 0 }, { xPercent: -110, duration: 0.32, ease: "power2.out" }, 0);
       const t = line("L7")[0], SE = at("L7", "Security");
-      tl.fromTo("#g3", { opacity: 0, scale: 3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .24, ease: "back.out(2.2)" }, t - .05);
+      tl.fromTo("#g3", { opacity: 0, scale: 3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .24, ease: "back.out(2.2)" }, at("L7", "Golden") - .05);
       tl.fromTo("#g1", { opacity: 0, scale: 3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .24, ease: "back.out(2.2)" }, SE - .05);tl.fromTo("#g2", { opacity: 0, scale: 3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .24, ease: "back.out(2.2)" }, SE + .15);[[22,-12],[-24,10],[16,14],[-12,-10],[0,0]].forEach(([x, y], i) => tl.to("#s07-stage", { x, y, duration: .04, ease: "none" }, SE + i * .04));tl.fromTo(".fl", { opacity: 0.6 }, { opacity: 0, duration: .28, immediateRender: false }, SE);
       tl.to("#g3", { scale: 1.06, duration: .22, yoyo: true, repeat: 3, ease: "sine.inOut" }, at("L7", "Bewerbt"));
-      tl.to("#s07-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
+      tl.fromTo("#s07-stage .wp", { xPercent: 110 }, { xPercent: 0, duration: 0.22, ease: "power2.in", immediateRender: false }, C.__dur - 0.22);
       window.__timelines["s07"] = tl;
     })();
   </script>

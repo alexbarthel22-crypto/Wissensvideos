@@ -19,13 +19,17 @@
     #pi { position: absolute; left: 60px; top: 420px; width: 830px; height: 347px; border-radius: 28px; opacity: 0; background: url(bilder/abstimmung.png) center/cover;
       box-shadow: 0 0 0 6px #ffd23f, 0 20px 50px rgba(0,0,0,.5); }
     #r3 { top: 830px; font-size: 70px; }
+    .wp { position: absolute; left: -140px; top: 0; width: 1360px; height: 1920px; transform: skewX(-12deg); z-index: 50;
+      background: linear-gradient(90deg, #13c8d8 0%, #3ff0ff 30%, #ff3dbd 70%, #7a3dff 100%); pointer-events: none; }
+    .wp::after { content: "🐚"; position: absolute; left: 50%; top: 50%; font-size: 200px; transform: translate(-50%, -50%) skewX(12deg); }
   </style>
   <div id="root" data-composition-id="s03" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
     <div id="s03-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
-      <div id="r1" class="big">🗳️ <span class="g">ERGEBNIS</span></div>
+      <div id="r1" class="big">🗳️ <span class="g">EURE WAHL</span></div>
       <div id="pi"></div>
       <div id="r3" class="neo pk">🐱 KATZENCAFÉ GEWINNT!</div>
       <div class="fl"></div>
+      <div class="wp" data-layout-ignore></div>
     </div>
   </div>
   <script>
@@ -34,12 +38,13 @@
       /*__COMMON_JS__*/
       wrapBt("#s03-stage");
       const tl = gsap.timeline({ paused: true });
+      tl.fromTo("#s03-stage .wp", { xPercent: 0 }, { xPercent: -110, duration: 0.32, ease: "power2.out" }, 0);
       const t = line("L3")[0], K = at("L3", "Katzencafé");
       tl.fromTo("#r1", { opacity: 0, scale: 3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .24, ease: "back.out(2.2)" }, t - .05);
       tl.fromTo("#pi", { opacity: 0, y: 80, scale: .8 }, { opacity: 1, y: 0, scale: 1, duration: .35, ease: "back.out(2)" }, t + .2);
       tl.to("#pi", { scale: 1.04, duration: .15, yoyo: true, repeat: 1 }, at("L3", "78"));
       tl.fromTo("#r3", { opacity: 0, scale: 3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .24, ease: "back.out(2.2)" }, K - .05);[[22,-12],[-24,10],[16,14],[-12,-10],[0,0]].forEach(([x, y], i) => tl.to("#s03-stage", { x, y, duration: .04, ease: "none" }, K + i * .04));tl.fromTo(".fl", { opacity: 0.6 }, { opacity: 0, duration: .28, immediateRender: false }, K);
-      tl.to("#s03-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
+      tl.fromTo("#s03-stage .wp", { xPercent: 110 }, { xPercent: 0, duration: 0.22, ease: "power2.in", immediateRender: false }, C.__dur - 0.22);
       window.__timelines["s03"] = tl;
     })();
   </script>

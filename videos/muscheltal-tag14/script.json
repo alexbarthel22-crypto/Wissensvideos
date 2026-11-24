@@ -27,7 +27,7 @@
  "pitch": 0,
  "title": "Muschel-Tal Tag 14 – Sunken Pearl, Café Miau, Fähre Seestern, CocoCare-Verlosung, Security gesucht",
  "voice": "Gemini TTS (gemini-3.1-flash-tts-preview, Stimme Achird, --speed 1.12) – wie Video 1",
- "notes": "24.11.: Hook Sunken Pearl (Unterwasser-Wolkenkratzer, später wohnen, Würdest du hier wohnen?), Abstimmung 78/22 → Café Miau (Lilly, Insa, Lilly), Fähre Seestern, Verlosung CocoCare @keineahnung1.7 (secrets, 757 ohne Job/Amt), Security Golden Pearl gesucht, 819/1000, Folgen.",
+ "notes": "24.11.: Hook: Wolkenkratzer nach unten bis zum Meeresgrund = Sunken Pearl (Unterwasser-Wolkenkratzer, später wohnen, Würdest du hier wohnen?), Abstimmung 78/22 → Café Miau (Lilly, Insa, Lilly), Fähre Seestern, Verlosung CocoCare @keineahnung1.7 (secrets, 757 ohne Job/Amt), Security Golden Pearl gesucht, 819/1000, Folgen. Überleitungssätze zwischen den Themen, nach Verlosung kein Melde-dich.",
  "scenes": [
   {
    "id": "s01",
@@ -35,11 +35,11 @@
    "lines": [
     {
      "id": "L1",
-     "text": "Da ist *p:etwas im *p:Meer *y:aufgetaucht …"
+     "text": "Ein *y:Wolkenkratzer … / aber *p:nach *p:unten!"
     },
     {
      "id": "L1b",
-     "text": "Das *p:Sunken *p:Pearl! / Ein *y:Wolkenkratzer, / der *y:nach *y:unten ins Meer geht!"
+     "text": "*p:Bis auf den *p:Meeresgrund: / das *y:Sunken *y:Pearl!"
     }
    ],
    "sfx": [
@@ -51,22 +51,22 @@
     {
      "name": "fs_ocean",
      "at": "s01+0.0",
-     "volume": 0.45
+     "volume": 0.4
     },
     {
-     "name": "riser",
-     "at": "L1:aufgetaucht",
-     "volume": 0.25
+     "name": "platsch",
+     "at": "L1:nach",
+     "volume": 0.5
+    },
+    {
+     "name": "whoosh",
+     "at": "L1:unten",
+     "volume": 0.45
     },
     {
      "name": "impact-bass-2",
      "at": "L1b:Sunken",
      "volume": 0.6
-    },
-    {
-     "name": "fs_seagull",
-     "at": "L1b:Wolkenkratzer",
-     "volume": 0.35
     }
    ]
   },
@@ -102,18 +102,28 @@
    "lines": [
     {
      "id": "L3",
-     "text": "Und die *y:Abstimmung? / *p:78|=achtundsiebzig *p:Prozent für das *g:Katzencafé!"
+     "text": "Apropos *g:neue *g:Gebäude: / *p:78|=achtundsiebzig *p:Prozent von euch / wollten das *g:Katzencafé!"
     }
    ],
    "sfx": [
     {
-     "name": "slot-ticks",
-     "at": "L3:Abstimmung",
-     "volume": 0.3
+     "name": "notification",
+     "at": "L3:Apropos",
+     "volume": 0.4
     },
     {
-     "name": "jubel",
+     "name": "stempel",
+     "at": "L3:78",
+     "volume": 0.5
+    },
+    {
+     "name": "fs_cheer",
      "at": "L3:Katzencafé",
+     "volume": 0.4
+    },
+    {
+     "name": "sparkle",
+     "at": "L3:Katzencafé+0.2",
      "volume": 0.4
     }
    ]
@@ -124,7 +134,7 @@
    "lines": [
     {
      "id": "L4",
-     "text": "Das *p:Café *p:Miau ist *g:fertig – / mit *y:Lilly, *y:Insa und *y:Lilly!"
+     "text": "Und jetzt ist das *p:Café *p:Miau *g:fertig – / mit *y:Lilly, *y:Insa und *y:Lilly!"
     }
    ],
    "sfx": [
@@ -151,7 +161,7 @@
    "lines": [
     {
      "id": "L5",
-     "text": "*y:Neu: Die *p:Fähre *p:Seestern / fährt euch *g:zwischen den Inseln – / erkunde die *y:ganze *y:Inselwelt!"
+     "text": "Damit ihr *g:überall hinkommt: / Die *p:Fähre *p:Seestern / fährt euch *g:zwischen den Inseln – / erkunde die *y:ganze *y:Inselwelt!"
     }
    ],
    "sfx": [
@@ -159,6 +169,11 @@
      "name": "fs_ocean",
      "at": "L5:Fähre",
      "volume": 0.35
+    },
+    {
+     "name": "fs_seagull",
+     "at": "L5:Fähre+0.3",
+     "volume": 0.3
     },
     {
      "name": "whoosh",
@@ -173,19 +188,19 @@
    "lines": [
     {
      "id": "L6",
-     "text": "*y:Verlosung! / Ein *p:Job bei *p:CocoCare / geht an …"
+     "text": "Auf der *g:Kokos-Küste / wartet ein *p:Job bei *p:CocoCare – / er geht an …"
     },
     {
      "id": "L6b",
-     "text": "*g:Glückwunsch! / Melde dich bei uns!",
+     "text": "*g:Glückwunsch – / *y:willkommen im Team!",
      "pause": 0.8
     }
    ],
    "sfx": [
     {
      "name": "verlosung",
-     "at": "L6:Verlosung",
-     "volume": 0.5
+     "at": "L6:Job",
+     "volume": 0.45
     },
     {
      "name": "slot-ticks",
@@ -205,7 +220,7 @@
    "lines": [
     {
      "id": "L7",
-     "text": "Das *p:Golden *p:Pearl sucht / einen *y:Security! / *g:Bewerbt euch in den Kommentaren!"
+     "text": "Und noch ein Job ist frei: / Das *p:Golden *p:Pearl sucht einen *y:Security! / *g:Bewerbt euch in den Kommentaren!"
     }
    ],
    "sfx": [
@@ -227,7 +242,7 @@
    "lines": [
     {
      "id": "L8",
-     "text": "*y:819|=achthundertneunzehn wohnen schon hier – / bei *p:1.000|=tausend startet das *p:Spiel!"
+     "text": "Jeder Bewohner bringt uns näher: / *y:819|=achthundertneunzehn sind schon hier – / bei *p:1.000|=tausend startet das Spiel!"
     },
     {
      "id": "L8b",

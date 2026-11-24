@@ -640,9 +640,10 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - **24.11. abends, Veröffentlichung:** Startangebot jetzt **300 🐚 für 3,99 €** (+50 %, vorher 285). Beim ersten Aufruf nach dem Deploy: **Statistik komplett zurückgesetzt** (voll-6) und **alle Konten wieder auf 0** (Muscheln, Muschelbewegungen, Erfolge, Inventar, Verknüpfungen/PINs, Inselkasse-Spenden; Gründer-Erfolg bleibt, echte Käufe bleiben vermerkt) – Grund: Tests seit 23.11.
 
 ## Video Tag 14 (24.11., `videos/muscheltal-tag14/`, ~40 s)
-- **Hook Sunken Pearl:** „Da ist etwas im Meer aufgetaucht … Das Sunken Pearl! Ein Wolkenkratzer, der nach unten ins Meer geht!“ – „Hier kann man später unter Wasser wohnen!“ (Einzug bewusst offen gelassen) + Innenansicht Tiefsee-Suite + Frage „Würdest du hier wohnen?“. Muschel-Möwe (Homepage-Grafik) fliegt durchs Bild.
+- **Hook (Endfassung):** „Ein Wolkenkratzer … aber nach unten! Bis auf den Meeresgrund: das Sunken Pearl!“ (Tauchgang am Turm entlang bis zum Meeresgrund) – „Hier kann man später unter Wasser wohnen!“ (Einzug bewusst offen gelassen) + Innenansicht Tiefsee-Suite + Frage „Würdest du hier wohnen?“. Muschel-Möwe (Homepage-Grafik) fliegt durchs Bild.
 - **Abstimmung (Screenshot, ohne Profilbild):** Katzen Café 78 % · Hotel Sandkorn 22 % → **Café Miau** fertig, Team gezeigt: Lilly (@lillyf.r1, Leitung), Insa (@insa.t_sp), Lilly (@lillyyyy7597).
 - **Fähre „Seestern“** fährt ab sofort zwischen den Inseln (Haupt-Insel, Kokos-Küste, Sunken Pearl) – ganze Inselwelt erkunden.
 - **Verlosung Job CocoCare (Team):** **@keineahnung1.7** (Haupt-Insel 0:54, Gründer) – Python `secrets` unter 757 Bewohnern ohne Job/Amt/Sonder-Wohnort (alle Inseln, laut Nutzer). → Homepage: Team CocoCare eintragen; nach Regel „Kokos-Jobs wohnen auf Kokos“ zieht die Person auf die Kokos-Küste um.
 - **Security für das Golden Pearl gesucht** – Bewerbungen in die Kommentare (Entscheidungsweg nicht genannt).
-- 819 Bewohner, Spiel startet bei 1.000 Bewohnern. Schluss: „Folg mir und zieh ein!“
+- 819 Bewohner, Spiel startet bei 1.000 Bewohnern. Schluss: „Folg mir und zieh ein!“ Überleitungssätze zwischen den Themen + Wisch-Übergänge.
+- **Regel (Nutzer, 24.11.): Nach ausgelosten Jobs muss sich niemand melden** – im Video nur „Glückwunsch – willkommen im Team!“, kein „Melde dich bei uns“.

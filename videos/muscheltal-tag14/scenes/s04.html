@@ -20,6 +20,9 @@
     .nm { position: absolute; top: 1570px; width: 262px; padding: 14px 6px 16px; border-radius: 24px; background: #fff; color: #1a0f08; text-align: center; opacity: 0;
       font: 900 26px Inter, sans-serif; box-shadow: 0 0 0 6px #ff3dbd, 0 10px 0 rgba(0,0,0,.3); }
     .nm b { display: block; font: 400 46px/1 "Lilita One", sans-serif; color: #ff3dbd; margin-bottom: 4px; }
+    .wp { position: absolute; left: -140px; top: 0; width: 1360px; height: 1920px; transform: skewX(-12deg); z-index: 50;
+      background: linear-gradient(90deg, #13c8d8 0%, #3ff0ff 30%, #ff3dbd 70%, #7a3dff 100%); pointer-events: none; }
+    .wp::after { content: "🐚"; position: absolute; left: 50%; top: 50%; font-size: 200px; transform: translate(-50%, -50%) skewX(12deg); }
   </style>
   <div id="root" data-composition-id="s04" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
     <div id="s04-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
@@ -29,6 +32,7 @@
       <div id="n1" class="nm" style="left:344px"><b>INSA</b>@insa.t_sp</div>
       <div id="n2" class="nm" style="left:628px"><b>LILLY</b>@lillyyyy7597</div>
       <div class="fl"></div>
+      <div class="wp" data-layout-ignore></div>
     </div>
   </div>
   <script>
@@ -37,11 +41,12 @@
       /*__COMMON_JS__*/
       wrapBt("#s04-stage");
       const tl = gsap.timeline({ paused: true });
+      tl.fromTo("#s04-stage .wp", { xPercent: 0 }, { xPercent: -110, duration: 0.32, ease: "power2.out" }, 0);
       const t = line("L4")[0], LW = C["L4.words"].filter(w => w[0].startsWith("lilly")), IN = at("L4", "Insa");
       tl.fromTo("#c1", { opacity: 0, scale: 3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .24, ease: "back.out(2.2)" }, t - .05);
       tl.fromTo("#c2", { opacity: 0, scale: 3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .24, ease: "back.out(2.2)" }, at("L4", "fertig") - .05);tl.fromTo(".fl", { opacity: 0.5 }, { opacity: 0, duration: .28, immediateRender: false }, at("L4", "fertig"));
       [[0, LW[0][1]], [1, IN], [2, (LW[1] || LW[0])[1]]].forEach(([i, a]) => tl.fromTo("#n" + i, { opacity: 0, scale: .2, rotation: i % 2 ? 10 : -10 }, { opacity: 1, scale: 1, rotation: 0, duration: .28, ease: "back.out(2.6)" }, a - .08));
-      tl.to("#s04-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
+      tl.fromTo("#s04-stage .wp", { xPercent: 110 }, { xPercent: 0, duration: 0.22, ease: "power2.in", immediateRender: false }, C.__dur - 0.22);
       window.__timelines["s04"] = tl;
     })();
   </script>

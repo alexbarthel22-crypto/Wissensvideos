@@ -61,22 +61,28 @@
       -webkit-text-stroke: 16px #0a0418; paint-order: stroke fill; }
     .big .c { color: #3ff0ff; } .big .p { color: #ff3dbd; } .big .l { color: #b6ff3b; } .big .g { color: #ffd23f; }
     .fl { position: absolute; inset: 0; background: #fff; opacity: 0; }
-
+#gl { position: absolute; left: 0; top: 0; width: 780px; height: 450px; opacity: 0; }
+    #gl .gf { position: absolute; inset: 0; width: 780px; height: 450px; opacity: 0; }
     #f1 { top: 220px; font-size: 96px; white-space: nowrap; }
     #f2 { top: 380px; font-size: 72px; }
     #f3 { top: 1580px; font-size: 50px; }
+    .wp { position: absolute; left: -140px; top: 0; width: 1360px; height: 1920px; transform: skewX(-12deg); z-index: 50;
+      background: linear-gradient(90deg, #13c8d8 0%, #3ff0ff 30%, #ff3dbd 70%, #7a3dff 100%); pointer-events: none; }
+    .wp::after { content: "🐚"; position: absolute; left: 50%; top: 50%; font-size: 200px; transform: translate(-50%, -50%) skewX(12deg); }
   </style>
-  <div id="root" data-composition-id="s05" data-start="0" data-duration="4.910" data-width="1080" data-height="1920">
-    <div id="s05-stage" class="clip stage" data-start="0" data-duration="4.910" data-track-index="0">
+  <div id="root" data-composition-id="s05" data-start="0" data-duration="6.040" data-width="1080" data-height="1920">
+    <div id="s05-stage" class="clip stage" data-start="0" data-duration="6.040" data-track-index="0">
       <div id="f1" class="big">⛴️ FÄHRE <span class="c">SEESTERN</span></div>
       <div id="f2" class="neo go">🐚 ⇄ 🥥 ⇄ 🫧</div>
+      <div id="gl"><img class="gf" id="gf0" src="bilder/moewe/m0.png"><img class="gf" id="gf1" src="bilder/moewe/m1.png"><img class="gf" id="gf2" src="bilder/moewe/m2.png"><img class="gf" id="gf3" src="bilder/moewe/m3.png"><img class="gf" id="gf4" src="bilder/moewe/m4.png"><img class="gf" id="gf5" src="bilder/moewe/m5.png"><img class="gf" id="gf6" src="bilder/moewe/m6.png"><img class="gf" id="gf7" src="bilder/moewe/m7.png"></div>
 
+      <div class="wp" data-layout-ignore></div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 4.91, "L5": [0.2, 4.73], "L5.words": [["neu", 0.2, 0.59], ["die", 0.84, 1.01], ["fähre", 1.01, 1.344], ["seestern", 1.344, 1.697], ["fährt", 1.697, 1.879], ["euch", 1.879, 2.055], ["zwischen", 2.055, 2.408], ["den", 2.408, 2.578], ["inseln", 2.578, 2.918], ["", 2.918, 3.07], ["erkunde", 3.32, 3.784], ["die", 3.784, 3.943], ["ganze", 3.943, 4.254], ["inselwelt", 4.254, 4.73]]};
+      const C = {"__dur": 6.04, "L5": [0.2, 5.86], "L5.words": [["damit", 0.2, 0.572], ["ihr", 0.572, 0.762], ["überall", 0.762, 1.317], ["hinkommt", 1.317, 1.71], ["die", 1.96, 2.137], ["fähre", 2.137, 2.485], ["seestern", 2.485, 2.851], ["fährt", 2.851, 3.041], ["euch", 3.041, 3.224], ["zwischen", 3.224, 3.591], ["den", 3.591, 3.768], ["inseln", 3.768, 4.122], ["", 4.122, 4.28], ["erkunde", 4.53, 4.968], ["die", 4.968, 5.118], ["ganze", 5.118, 5.411], ["inselwelt", 5.411, 5.86]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -120,11 +126,14 @@
 
       wrapBt("#s05-stage");
       const tl = gsap.timeline({ paused: true });
+      tl.fromTo("#s05-stage .wp", { xPercent: 0 }, { xPercent: -110, duration: 0.32, ease: "power2.out" }, 0);
       const t = line("L5")[0];
       tl.fromTo("#f1", { opacity: 0, scale: 3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .24, ease: "back.out(2.2)" }, at("L5", "Fähre") - .05);
       tl.fromTo("#f2", { opacity: 0, scale: 3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .24, ease: "back.out(2.2)" }, at("L5", "zwischen") - .05);
+      tl.set("#gl", { opacity: 1 }, at("L5", "Fähre")); tl.fromTo("#gl", { x: -800, y: 620 }, { x: 1140, y: 520, duration: 3.2, ease: "none" }, at("L5", "Fähre")); tl.set("#gl", { opacity: 0 }, at("L5", "Fähre") + 3.2);
+      for (let k = 0; k < Math.ceil(3.2 / .06); k++) { const i = k % 8, a = at("L5", "Fähre") + k * .06; tl.set("#gf" + i, { opacity: 1 }, a); tl.set("#gf" + i, { opacity: 0 }, a + .06); }
       tl.to("#f2", { scale: 1.08, duration: .25, yoyo: true, repeat: 3, ease: "sine.inOut" }, at("L5", "zwischen") + .3);
-      tl.to("#s05-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
+      tl.fromTo("#s05-stage .wp", { xPercent: 110 }, { xPercent: 0, duration: 0.22, ease: "power2.in", immediateRender: false }, C.__dur - 0.22);
       window.__timelines["s05"] = tl;
     })();
   </script>

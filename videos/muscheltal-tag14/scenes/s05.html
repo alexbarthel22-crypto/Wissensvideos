@@ -14,16 +14,22 @@
       -webkit-text-stroke: 16px #0a0418; paint-order: stroke fill; }
     .big .c { color: #3ff0ff; } .big .p { color: #ff3dbd; } .big .l { color: #b6ff3b; } .big .g { color: #ffd23f; }
     .fl { position: absolute; inset: 0; background: #fff; opacity: 0; }
-
+#gl { position: absolute; left: 0; top: 0; width: 780px; height: 450px; opacity: 0; }
+    #gl .gf { position: absolute; inset: 0; width: 780px; height: 450px; opacity: 0; }
     #f1 { top: 220px; font-size: 96px; white-space: nowrap; }
     #f2 { top: 380px; font-size: 72px; }
     #f3 { top: 1580px; font-size: 50px; }
+    .wp { position: absolute; left: -140px; top: 0; width: 1360px; height: 1920px; transform: skewX(-12deg); z-index: 50;
+      background: linear-gradient(90deg, #13c8d8 0%, #3ff0ff 30%, #ff3dbd 70%, #7a3dff 100%); pointer-events: none; }
+    .wp::after { content: "🐚"; position: absolute; left: 50%; top: 50%; font-size: 200px; transform: translate(-50%, -50%) skewX(12deg); }
   </style>
   <div id="root" data-composition-id="s05" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
     <div id="s05-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
       <div id="f1" class="big">⛴️ FÄHRE <span class="c">SEESTERN</span></div>
       <div id="f2" class="neo go">🐚 ⇄ 🥥 ⇄ 🫧</div>
+      <div id="gl"><img class="gf" id="gf0" src="bilder/moewe/m0.png"><img class="gf" id="gf1" src="bilder/moewe/m1.png"><img class="gf" id="gf2" src="bilder/moewe/m2.png"><img class="gf" id="gf3" src="bilder/moewe/m3.png"><img class="gf" id="gf4" src="bilder/moewe/m4.png"><img class="gf" id="gf5" src="bilder/moewe/m5.png"><img class="gf" id="gf6" src="bilder/moewe/m6.png"><img class="gf" id="gf7" src="bilder/moewe/m7.png"></div>
 
+      <div class="wp" data-layout-ignore></div>
     </div>
   </div>
   <script>
@@ -32,11 +38,14 @@
       /*__COMMON_JS__*/
       wrapBt("#s05-stage");
       const tl = gsap.timeline({ paused: true });
+      tl.fromTo("#s05-stage .wp", { xPercent: 0 }, { xPercent: -110, duration: 0.32, ease: "power2.out" }, 0);
       const t = line("L5")[0];
       tl.fromTo("#f1", { opacity: 0, scale: 3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .24, ease: "back.out(2.2)" }, at("L5", "Fähre") - .05);
       tl.fromTo("#f2", { opacity: 0, scale: 3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .24, ease: "back.out(2.2)" }, at("L5", "zwischen") - .05);
+      tl.set("#gl", { opacity: 1 }, at("L5", "Fähre")); tl.fromTo("#gl", { x: -800, y: 620 }, { x: 1140, y: 520, duration: 3.2, ease: "none" }, at("L5", "Fähre")); tl.set("#gl", { opacity: 0 }, at("L5", "Fähre") + 3.2);
+      for (let k = 0; k < Math.ceil(3.2 / .06); k++) { const i = k % 8, a = at("L5", "Fähre") + k * .06; tl.set("#gf" + i, { opacity: 1 }, a); tl.set("#gf" + i, { opacity: 0 }, a + .06); }
       tl.to("#f2", { scale: 1.08, duration: .25, yoyo: true, repeat: 3, ease: "sine.inOut" }, at("L5", "zwischen") + .3);
-      tl.to("#s05-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
+      tl.fromTo("#s05-stage .wp", { xPercent: 110 }, { xPercent: 0, duration: 0.22, ease: "power2.in", immediateRender: false }, C.__dur - 0.22);
       window.__timelines["s05"] = tl;
     })();
   </script>

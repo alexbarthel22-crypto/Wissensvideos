@@ -66,19 +66,23 @@
     #pi { position: absolute; left: 60px; top: 420px; width: 830px; height: 347px; border-radius: 28px; opacity: 0; background: url(bilder/abstimmung.png) center/cover;
       box-shadow: 0 0 0 6px #ffd23f, 0 20px 50px rgba(0,0,0,.5); }
     #r3 { top: 830px; font-size: 70px; }
+    .wp { position: absolute; left: -140px; top: 0; width: 1360px; height: 1920px; transform: skewX(-12deg); z-index: 50;
+      background: linear-gradient(90deg, #13c8d8 0%, #3ff0ff 30%, #ff3dbd 70%, #7a3dff 100%); pointer-events: none; }
+    .wp::after { content: "🐚"; position: absolute; left: 50%; top: 50%; font-size: 200px; transform: translate(-50%, -50%) skewX(12deg); }
   </style>
-  <div id="root" data-composition-id="s03" data-start="0" data-duration="4.190" data-width="1080" data-height="1920">
-    <div id="s03-stage" class="clip stage" data-start="0" data-duration="4.190" data-track-index="0">
-      <div id="r1" class="big">🗳️ <span class="g">ERGEBNIS</span></div>
+  <div id="root" data-composition-id="s03" data-start="0" data-duration="4.700" data-width="1080" data-height="1920">
+    <div id="s03-stage" class="clip stage" data-start="0" data-duration="4.700" data-track-index="0">
+      <div id="r1" class="big">🗳️ <span class="g">EURE WAHL</span></div>
       <div id="pi"></div>
       <div id="r3" class="neo pk">🐱 KATZENCAFÉ GEWINNT!</div>
       <div class="fl"></div>
+      <div class="wp" data-layout-ignore></div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 4.19, "L3": [0.2, 4.01], "L3.words": [["und", 0.2, 0.401], ["die", 0.401, 0.601], ["abstimmung", 0.601, 1.21], ["78", 1.46, 2.395], ["prozent", 2.395, 2.862], ["für", 2.862, 3.092], ["das", 3.092, 3.321], ["katzencafé", 3.321, 4.01]]};
+      const C = {"__dur": 4.7, "L3": [0.2, 4.52], "L3.words": [["apropos", 0.2, 0.693], ["neue", 0.693, 0.867], ["gebäude", 0.867, 1.36], ["78", 1.61, 2.446], ["prozent", 2.446, 2.863], ["von", 2.863, 3.069], ["euch", 3.069, 3.281], ["wollten", 3.281, 3.699], ["das", 3.699, 3.904], ["katzencafé", 3.904, 4.52]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -122,12 +126,13 @@
 
       wrapBt("#s03-stage");
       const tl = gsap.timeline({ paused: true });
+      tl.fromTo("#s03-stage .wp", { xPercent: 0 }, { xPercent: -110, duration: 0.32, ease: "power2.out" }, 0);
       const t = line("L3")[0], K = at("L3", "Katzencafé");
       tl.fromTo("#r1", { opacity: 0, scale: 3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .24, ease: "back.out(2.2)" }, t - .05);
       tl.fromTo("#pi", { opacity: 0, y: 80, scale: .8 }, { opacity: 1, y: 0, scale: 1, duration: .35, ease: "back.out(2)" }, t + .2);
       tl.to("#pi", { scale: 1.04, duration: .15, yoyo: true, repeat: 1 }, at("L3", "78"));
       tl.fromTo("#r3", { opacity: 0, scale: 3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .24, ease: "back.out(2.2)" }, K - .05);[[22,-12],[-24,10],[16,14],[-12,-10],[0,0]].forEach(([x, y], i) => tl.to("#s03-stage", { x, y, duration: .04, ease: "none" }, K + i * .04));tl.fromTo(".fl", { opacity: 0.6 }, { opacity: 0, duration: .28, immediateRender: false }, K);
-      tl.to("#s03-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
+      tl.fromTo("#s03-stage .wp", { xPercent: 110 }, { xPercent: 0, duration: 0.22, ease: "power2.in", immediateRender: false }, C.__dur - 0.22);
       window.__timelines["s03"] = tl;
     })();
   </script>

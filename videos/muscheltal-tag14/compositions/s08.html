@@ -73,20 +73,24 @@
     #br .lb span:last-child { color: #b6ff3b; }
     #o9 { top: 260px; font-size: 150px; }
     #f9 { top: 480px; opacity: 0; }
+    .wp { position: absolute; left: -140px; top: 0; width: 1360px; height: 1920px; transform: skewX(-12deg); z-index: 50;
+      background: linear-gradient(90deg, #13c8d8 0%, #3ff0ff 30%, #ff3dbd 70%, #7a3dff 100%); pointer-events: none; }
+    .wp::after { content: "🐚"; position: absolute; left: 50%; top: 50%; font-size: 200px; transform: translate(-50%, -50%) skewX(12deg); }
   </style>
-  <div id="root" data-composition-id="s08" data-start="0" data-duration="6.620" data-width="1080" data-height="1920">
-    <div id="s08-stage" class="clip stage" data-start="0" data-duration="6.620" data-track-index="0">
+  <div id="root" data-composition-id="s08" data-start="0" data-duration="8.820" data-width="1080" data-height="1920">
+    <div id="s08-stage" class="clip stage" data-start="0" data-duration="8.820" data-track-index="0">
       <div id="r7" class="neo li"><small>🎮 BEI 1.000 BEWOHNERN</small>STARTET DAS SPIEL!</div>
       <div id="br"><div class="tr"><div class="fi"></div></div><div class="lb"><span id="cn">0</span><span>1.000</span></div></div>
       <div id="o9" class="big">FOLG <span class="p">MIR</span></div>
       <div id="f9" class="fbtn">+ Folgen<div class="fbtn2">✓ Eingezogen</div></div>
       <div class="fl"></div>
+      <div class="wp" data-layout-ignore></div>
     </div>
   </div>
   <script>
     (() => {
       
-      const C = {"__dur": 6.62, "L8": [0.2, 3.45], "L8.words": [["819", 0.2, 1.087], ["wohnen", 1.087, 1.432], ["schon", 1.432, 1.617], ["hier", 1.617, 1.796], ["", 1.796, 1.95], ["bei", 2.2, 2.375], ["1000", 2.375, 2.731], ["startet", 2.731, 3.088], ["das", 3.088, 3.262], ["spiel", 3.262, 3.45]], "L8b": [3.67, 5.02], "L8b.words": [["folg", 3.67, 3.946], ["mir", 3.946, 4.212], ["und", 4.212, 4.478], ["zieh", 4.478, 4.754], ["ein", 4.754, 5.02]]};
+      const C = {"__dur": 8.82, "L8": [0.2, 5.65], "L8.words": [["jeder", 0.2, 0.556], ["bewohner", 0.556, 1.093], ["bringt", 1.093, 1.293], ["uns", 1.293, 1.474], ["näher", 1.474, 1.83], ["819", 2.08, 3.189], ["sind", 3.189, 3.413], ["schon", 3.413, 3.644], ["hier", 3.644, 3.867], ["", 3.867, 4.06], ["bei", 4.17, 4.377], ["1000", 4.377, 4.799], ["startet", 4.799, 5.221], ["das", 5.221, 5.428], ["spiel", 5.428, 5.65]], "L8b": [5.87, 7.22], "L8b.words": [["folg", 5.87, 6.146], ["mir", 6.146, 6.412], ["und", 6.412, 6.678], ["zieh", 6.678, 6.954], ["ein", 6.954, 7.22]]};
       const line = (id) => C[id];
       const at = (id, word, which = 0) => {
         const ws = C[id + ".words"];
@@ -130,7 +134,8 @@
 
       wrapBt("#s08-stage");
       const tl = gsap.timeline({ paused: true });
-      const t = line("L8")[0], F = line("L8b")[0];
+      tl.fromTo("#s08-stage .wp", { xPercent: 0 }, { xPercent: -110, duration: 0.32, ease: "power2.out" }, 0);
+      const t = at("L8", "819"), F = line("L8b")[0];
       tl.fromTo("#br", { opacity: 0 }, { opacity: 1, duration: .25 }, t - .05);
       tl.fromTo("#br .fi", { width: "0%" }, { width: "81.9%", duration: 1.3, ease: "power2.out" }, t);
       count(tl, "#cn", 0, 819, t, 1.3);

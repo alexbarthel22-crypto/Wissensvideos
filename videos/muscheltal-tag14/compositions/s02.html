@@ -66,6 +66,9 @@
     #iv { position: absolute; left: 220px; top: 360px; width: 640px; height: 713px; border-radius: 40px; overflow: hidden; opacity: 0;
       box-shadow: 0 0 0 8px #3ff0ff, 0 0 50px rgba(63,240,255,.8); background: url(bilder/innen.png) center / 100% 100% no-repeat; }
     #i3 { top: 1540px; font-size: 60px; }
+    .wp { position: absolute; left: -140px; top: 0; width: 1360px; height: 1920px; transform: skewX(-12deg); z-index: 50;
+      background: linear-gradient(90deg, #13c8d8 0%, #3ff0ff 30%, #ff3dbd 70%, #7a3dff 100%); pointer-events: none; }
+    .wp::after { content: "🐚"; position: absolute; left: 50%; top: 50%; font-size: 200px; transform: translate(-50%, -50%) skewX(12deg); }
   </style>
   <div id="root" data-composition-id="s02" data-start="0" data-duration="3.520" data-width="1080" data-height="1920">
     <div id="s02-stage" class="clip stage" data-start="0" data-duration="3.520" data-track-index="0">
@@ -73,6 +76,7 @@
       <div id="iv"></div>
       <div id="i3" class="neo pk">🤔 WÜRDEST DU HIER WOHNEN?</div>
       <div class="fl"></div>
+      <div class="wp" data-layout-ignore></div>
     </div>
   </div>
   <script>
@@ -122,13 +126,14 @@
 
       wrapBt("#s02-stage");
       const tl = gsap.timeline({ paused: true });
+      tl.fromTo("#s02-stage .wp", { xPercent: 0 }, { xPercent: -110, duration: 0.32, ease: "power2.out" }, 0);
       const t = line("L2")[0], Q = line("L2b")[0];
       tl.fromTo("#i1", { opacity: 0, scale: 3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .24, ease: "back.out(2.2)" }, t - .05);
       tl.fromTo("#iv", { opacity: 0, scale: .4, rotation: -6 }, { opacity: 1, scale: 1, rotation: 0, duration: .4, ease: "back.out(1.8)" }, t + .1);
       tl.fromTo("#iv", { backgroundSize: "100% 100%" }, { backgroundSize: "114% 114%", duration: 3, ease: "none", immediateRender: false }, t + .5);
       tl.fromTo("#i3", { opacity: 0, scale: 3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .24, ease: "back.out(2.2)" }, Q - .05);tl.fromTo(".fl", { opacity: 0.5 }, { opacity: 0, duration: .28, immediateRender: false }, Q);
       tl.to("#i3", { scale: 1.07, duration: .2, yoyo: true, repeat: 3, ease: "sine.inOut" }, Q + .4);
-      tl.to("#s02-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
+      tl.fromTo("#s02-stage .wp", { xPercent: 110 }, { xPercent: 0, duration: 0.22, ease: "power2.in", immediateRender: false }, C.__dur - 0.22);
       window.__timelines["s02"] = tl;
     })();
   </script>
