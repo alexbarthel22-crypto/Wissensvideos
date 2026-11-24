@@ -2305,6 +2305,7 @@ const ZPC=new Map();function zeitplan(h){if(ZPC.has(h))return ZPC.get(h);const I
  for(const i of[0,1])for(let k=0;k<3;k++)I.push(['s'+i+'-'+k,k*1200+30,k*1200+1110,60]);
  for(const i of[0,1])for(let k=0;k<3;k++)I.push(['w'+i+'-'+k,k*1200+60,k*1200+1020,20]);
  for(let k=0;k<4;k++)I.push(['t'+k,k*900+60,k*900+840,7]);
+ for(let k=0;k<3;k++)I.push(['m'+k,k*1200+90,k*1200+1080,16]);// 🐦 Muschel-Möwe
  const frei=(a,d)=>a>=0&&a+d<=3590&&belegt.every(([b,e])=>a+d+ABST<=b||a>=e+ABST);
  for(const [key,lo,hi,d] of I){let a=-1;for(let tr=0;tr<40&&a<0;tr++){const c=lo+Math.floor(hash(h*31+tr*7,key.length*97+key.charCodeAt(0)*13+(key.charCodeAt(key.length-1)|0))*(hi-lo));if(frei(c,d))a=c;}
   for(let c=lo;a<0&&c<=hi;c+=5)if(frei(c,d))a=c;for(let c=0;a<0&&c<3590;c+=5)if(frei(c,d))a=c;if(a<0)a=lo;belegt.push([a,a+d]);P[key]=h*3600+a;}
@@ -2437,6 +2438,32 @@ async function rbTap(){if(!mitmachen('🌈','Eine Schatztruhe!'))return;
  const id=rbId(),r=await mk('regenbogen',{id});if(r&&(r.ok||r.grund==='schon')){try{localStorage.setItem('mt-regenbogen',id);}catch(e){}RBOPEN=Date.now();kick();}
  if(!r||!r.ok){popup('<div class="big">🌈</div><h2>'+(r&&r.grund==='schon'?'Schon geöffnet':r&&r.grund==='kein'?'Schon verblasst':'Hat nicht geklappt')+'</h2><p>'+(r&&r.grund==='schon'?'Diese Truhe hast du schon geleert. Beim nächsten Regenbogen gibt es neue Muscheln!':r&&r.grund==='kein'?'Der Regenbogen ist leider schon verschwunden. Nach dem nächsten Regen vielleicht!':'Bitte gleich nochmal versuchen.')+'</p>');return;}
  if(MK.d)MK.d.stand=r.stand;try{mkCard();}catch(e){}popup('<div class="rbpop">'+RBSVG+'</div><h2>Schatz gefunden! 🌈</h2><p>Am Ende des Regenbogens lag eine Truhe – <b>+5 🐚</b> für dich!</p>');mkToast('🌈 +5 🐚 gutgeschrieben');}
+// ---------- 🐦 Muschel-Möwe (24.11.): 3× pro Stunde fliegt tagsüber eine Möwe mit einer glänzenden Muschel im Schnabel über eine Insel (ca. 15 s); antippen → sie erschrickt, lässt die Muschel fallen: +1–3 🐚 (höchstens 3× am Tag) ----------
+const MWDAUER=15,MWC=new Map();
+function mwPlan(h){if(MWC.has(h))return MWC.get(h);const out=[],Z=zeitplan(h);for(let k=0;k<3;k++){const q=i=>hash(h*19+k*113,760+i),v=(ISL[1]&&ISL[1].open&&q(0)<.45)?ISL[1]:MAIN,a=q(1)*TAU,b=a+Math.PI+(q(2)-.5)*1.2,[ax,ay]=polar(v,a,coastAt(v,a)+90),[bx,by]=polar(v,b,coastAt(v,b)+90);out.push({mw:h*10+k,v,ax,ay,bx,by,start:Z['m'+k]});}if(MWC.size>40)MWC.clear();MWC.set(h,out);return out;}
+let MWW=null;const mwWeg=()=>{if(MWW)return MWW;try{MWW=JSON.parse(localStorage.getItem('mt-moewe')||'[]');}catch(e){MWW=[];}return MWW;};
+const mwMerk=mw=>{const a=mwWeg().filter(x=>x>mw-40);a.push(mw);MWW=a;try{localStorage.setItem('mt-moewe',JSON.stringify(a));}catch(e){}};
+let MWFALL=null;// fallende Muschel nach dem Antippen
+function mwAktiv(){const test=QP.get('moewe');if(!test&&(eventSperre()||nightLevel()>.55))return[];const n=TNOW(),h=Math.floor(n/3600),out=[];
+ if(test){const w=mwPlan(h)[0],t=(performance.now()/1000)%MWDAUER;return [{...w,t}];}
+ for(const hh of[h-1,h])for(const w of mwPlan(hh)){const t=n-w.start;if(t>=0&&t<MWDAUER)out.push({...w,t});}return out;}
+function mwPos(w){const u=w.t/MWDAUER,x=w.ax+(w.bx-w.ax)*u,yb=w.ay+(w.by-w.ay)*u;return{x,yb,y:yb-34+Math.sin(w.t*1.4)*4,dir:w.bx>=w.ax?1:-1};}
+function mwVogel(c,x,y,dir,t,mitMuschel,sz){c.save();c.translate(x,y);c.scale(dir*sz,sz);const fl=Math.sin(t*9);
+ c.fillStyle='#d8dde2';c.beginPath();c.moveTo(-1,0);c.quadraticCurveTo(-4,-3-fl*3,-9,-1-fl*4.5);c.quadraticCurveTo(-5,1,-1,1.2);c.fill();
+ c.fillStyle='#fff';c.beginPath();c.ellipse(0,0,4.2,1.9,0,0,TAU);c.fill();c.beginPath();c.arc(3.8,-.9,1.6,0,TAU);c.fill();c.fillStyle='#bfc6cc';c.beginPath();c.moveTo(-3.6,-.3);c.lineTo(-6.2,-1.4);c.lineTo(-6,.9);c.closePath();c.fill();
+ c.fillStyle='#2a2a2a';c.beginPath();c.arc(4.3,-1.2,.32,0,TAU);c.fill();c.fillStyle='#ffc23f';c.beginPath();c.moveTo(5.2,-.9);c.lineTo(7.4,-.5);c.lineTo(5.2,-.2);c.closePath();c.fill();c.fillStyle='#e8433c';c.fillRect(6.4,-.6,.5,.3);
+ c.fillStyle='#e9eef2';c.beginPath();c.moveTo(0,0);c.quadraticCurveTo(-2,-3.6-fl*3.6,-7.2,-2.6-fl*5.6);c.quadraticCurveTo(-3,.2,0,.8);c.fill();c.fillStyle='#4a4f55';c.beginPath();c.moveTo(-6,-2.5-fl*5.2);c.lineTo(-7.2,-2.6-fl*5.6);c.lineTo(-5.6,-1.4-fl*4.4);c.closePath();c.fill();
+ if(mitMuschel){c.save();c.translate(7.6,.2);c.fillStyle='#ffd6e4';c.strokeStyle='#e8679a';c.lineWidth=.2;c.beginPath();c.moveTo(0,1.1);c.lineTo(-1.2,-.4);c.quadraticCurveTo(0,-1.6,1.2,-.4);c.closePath();c.fill();c.stroke();const sp=Math.max(0,Math.sin(t*5));c.fillStyle=`rgba(255,255,255,${sp})`;c.fillRect(.6,-1.6,.25,.9);c.fillRect(.27,-1.27,.9,.25);c.restore();}
+ c.restore();}
+function mwZeichnen(c){const t=REDUCED?0:T,weg=mwWeg();let any=false;for(const w of mwAktiv()){any=true;const p=mwPos(w),hat=!weg.includes(w.mw);
+  c.fillStyle='rgba(0,30,50,.16)';c.beginPath();c.ellipse(p.x,p.yb+2,5,1.4,0,0,TAU);c.fill();mwVogel(c,p.x,p.y,p.dir,t+w.mw,hat,1);}
+ if(MWFALL){const u=(performance.now()-MWFALL.t0)/900;if(u>=1.6)MWFALL=null;else{const k=Math.min(1,u),x=MWFALL.x,y=MWFALL.y+(MWFALL.yb-MWFALL.y)*k*k;any=true;c.save();c.translate(x,y);c.fillStyle='#ffd6e4';c.strokeStyle='#e8679a';c.lineWidth=.25;c.beginPath();c.moveTo(0,1.6);c.lineTo(-1.8,-.6);c.quadraticCurveTo(0,-2.4,1.8,-.6);c.closePath();c.fill();c.stroke();
+  if(u>1){const g=(u-1)/.6;c.strokeStyle=`rgba(255,240,180,${1-g})`;c.lineWidth=.35;for(let q=0;q<8;q++){const a=q/8*TAU;c.beginPath();c.moveTo(Math.cos(a)*(2+g*3),Math.sin(a)*(2+g*3));c.lineTo(Math.cos(a)*(3+g*5),Math.sin(a)*(3+g*5));c.stroke();}}c.restore();}}
+ if(any&&!REDUCED)kick();}
+function mwAt(wx,wy){for(const w of mwAktiv()){if(mwWeg().includes(w.mw))continue;const p=mwPos(w);if(Math.hypot(wx-p.x,wy-p.y)<Math.max(9,22/cam.z))return w;}return null;}
+async function mwTap(w){if(!mitmachen('🐦','Muschel-Möwe'))return;const p=mwPos(w);mwMerk(w.mw);MWFALL={x:p.x+7.6*p.dir,y:p.y,yb:p.yb,t0:performance.now()};
+ const r=await mk('moewe',{mw:w.mw});if(!r||!r.ok){popup('<div class="big">🐦</div><h2>'+(r&&r.grund==='genug'?'Genug für heute':'Schon weggeflogen')+'</h2><p>'+(r&&r.grund==='genug'?'Du hast heute schon 3 Möwen erschreckt – morgen fliegen neue!':'Diese Möwe ist schon weg. Halte Ausschau nach der nächsten!')+'</p>');return;}
+ if(MK.d&&r.stand!=null)MK.d.stand=r.stand;try{mkCard();}catch(e){}setTimeout(()=>{mkToast('🐦 Kreisch! Die Möwe lässt ihre Muschel fallen – +'+r.betrag+' 🐚');},900);}
 // ---------- 🍾 Flaschenpost: 2× pro Stunde treibt an Haupt-Insel oder Kokos-Küste eine Flasche an (3 Min.); antippen → Quizfrage, richtig = +2 🐚 (max. 3 pro Tag) ----------
 const FLDAUER=180,FLC=new Map();
 function flPlan(h){if(FLC.has(h))return FLC.get(h);const out=[];for(let k=0;k<2;k++){const q=i=>hash(h*17+k*101,880+i),v=(ISL[1]&&ISL[1].open&&q(0)<.4)?ISL[1]:MAIN,start=zeitplan(h)['f'+k];
@@ -5183,7 +5210,7 @@ cv.addEventListener('pointermove',e=>{if(!pts.has(e.pointerId))return;const o=pt
  if(pts.size===1){cam.x-=(n[0]-o[0])/cam.z;cam.y-=(n[1]-o[1])/cam.z;moved+=Math.abs(n[0]-o[0])+Math.abs(n[1]-o[1]);clamp();kick();}
  else if(pts.size===2){const [a,b]=[...pts.values()];const d=Math.hypot(a[0]-b[0],a[1]-b[1]),mx=(a[0]+b[0])/2,my=(a[1]+b[1])/2;if(pinch){if(WK.on)zoomWK(d/pinch);else{if(pmid){cam.x-=(mx-pmid[0])/cam.z;cam.y-=(my-pmid[1])/cam.z;}zoomAt(d/pinch,mx,my);}}pinch=d;pmid=[mx,my];moved+=99;}});
 const up=e=>{if(!pts.has(e.pointerId))return;pts.delete(e.pointerId);if(pts.size<2){pinch=0;pmid=null;}cv.classList.remove('drag');
- if(pts.size===0&&moved<6){const [wx,wy]=s2w(e.offsetX,e.offsetY);if(goldAt(wx,wy)){goldTap();return;}if(bauSignAt(wx,wy)){zuBauprojekten();return;}{const st=sternAt(e.offsetX,e.offsetY);if(st){sternTap(st);return;}}if(tresorAt(wx,wy)){tresorTap();return;}if(walAt(wx,wy)){walTap();return;}if(skAt(wx,wy)){skTap();return;}if(rbAt(wx,wy)){rbTap();return;}{const fw=flAt(wx,wy);if(fw){flTap(fw);return;}}{const tg=tgAt(wx,wy);if(tg){tgTap(tg);return;}}{const ms=mondAt(wx,wy);if(ms){mondTap(ms);return;}}if(gsAt(wx,wy)){gsTap();return;}if(neuOrtTap(wx,wy))return;{const tr=terminAt(wx,wy);if(tr){terminTap(tr);return;}}if(thAt(wx,wy)){tierheimSeite();return;}if(lvAt(wx,wy)){lvInfo();return;}let best=null,bd=14;
+ if(pts.size===0&&moved<6){const [wx,wy]=s2w(e.offsetX,e.offsetY);if(goldAt(wx,wy)){goldTap();return;}if(bauSignAt(wx,wy)){zuBauprojekten();return;}{const st=sternAt(e.offsetX,e.offsetY);if(st){sternTap(st);return;}}if(tresorAt(wx,wy)){tresorTap();return;}if(walAt(wx,wy)){walTap();return;}if(skAt(wx,wy)){skTap();return;}if(rbAt(wx,wy)){rbTap();return;}{const mw=mwAt(wx,wy);if(mw){mwTap(mw);return;}}{const fw=flAt(wx,wy),mw0=mwAt(wx,wy);if(mw0){mwTap(mw0);return;}if(fw){flTap(fw);return;}}{const tg=tgAt(wx,wy);if(tg){tgTap(tg);return;}}{const ms=mondAt(wx,wy);if(ms){mondTap(ms);return;}}if(gsAt(wx,wy)){gsTap();return;}if(neuOrtTap(wx,wy))return;{const tr=terminAt(wx,wy);if(tr){terminTap(tr);return;}}if(thAt(wx,wy)){tierheimSeite();return;}if(lvAt(wx,wy)){lvInfo();return;}let best=null,bd=14;
   for(const v of ISL){if(Math.hypot(wx-v.x,wy-v.y)>v.R+30)continue;const gx=Math.round((wx-v.x)/S),gy=Math.round((wy-v.y)/(S*.9));for(let dx=-1;dx<=1;dx++)for(let dy=-1;dy<=1;dy++){const q=v.cell.get((gx+dx)+','+(gy+dy));if(!q||q.nr>limit)continue;const d=Math.hypot(q.p.x-wx,q.p.y-wy);if(d<bd){bd=d;best=q;}}}
   {let tb=null,td=9;for(const [tx,ty,tq] of TAPS){const d=Math.hypot(tx-wx,(ty-3)-wy);if(d<td){td=d;tb=tq;}}if(tb){zeigePass(tb,true);return;}}
   if(best)select(best);else if(sel){q.value='';$('qx').hidden=true;sg.hidden=true;unsel();}}};
@@ -6441,7 +6468,7 @@ setInterval(()=>{if(!WK.on){const b=$('mkact');if(b)b.remove();return;}mkNahe();
 {const _we=walkEnd;walkEnd=function(){_we();MK.hin=null;const c=$('mkchip');if(c)c.hidden=true;const s=$('mksheet');if(s)s.hidden=true;const b=$('mkact');if(b)b.remove();};}
 {const _ge=gibErf;gibErf=function(p,k){const r=_ge(p,k);if(r&&mkOwn(p))mk('erf',{key:k});return r;};}
 {const _sel=select;select=function(p,doFly){_sel(p,doFly);if(p&&mkOwn(p))(MK.d?Promise.resolve(MK.d):mkStand()).then(()=>{mkCard();setTimeout(()=>mkLoginCheck(),1400);});else mkCard();};}
-{const _d=draw;draw=function(){_d();mkShellDraw(ctx);mkOver();};}
+{const _d=draw;draw=function(){_d();mkShellDraw(ctx);{const c=ctx;c.save();world(c);try{mwZeichnen(c);}catch(e){}c.restore();}mkOver();};}
 if(mkClaim())mkStand();
 
 // ================= Muschel-Rangliste (Top 10 der verknüpften Namen nach Muschel-Vermögen) =================

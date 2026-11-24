@@ -703,6 +703,17 @@ export default async (req) => {
     return json({ ok, grund: ok ? null : "schon", stand: B.reduce((s, e) => s + e.a, 0) });
   }
   // 🍾 Flaschenpost: Quizfrage zu Muschel-Tal. Flasche = Stunde*10+Nr (nur aktuelle/letzte Stunde), höchstens 3 pro Tag, je Flasche 1 Versuch, richtig = +2
+  // 🐦 Muschel-Möwe: 3× pro Stunde, antippen = 1–3 Muscheln, höchstens 3× am Tag
+  if (act === "moewe") {
+    const mw = Math.floor(Number(d.mw)), hJetzt = Math.floor((Date.now() - Date.UTC(2026, 0, 1)) / 3.6e6);
+    if (!(mw >= 0) || !(mw % 10 < 3) || Math.floor(mw / 10) < hJetzt - 1 || Math.floor(mw / 10) > hJetzt) return json({ ok: false, grund: "weg" });
+    const xk = "x/moewe/" + nm + "/" + heute + "/" + mw;
+    if (await store.get(xk)) return json({ ok: false, grund: "schon" });
+    if ((await liste(store, "x/moewe/" + nm + "/" + heute + "/")).length >= 3) return json({ ok: false, grund: "genug" });
+    const betrag = 1 + Math.floor(zz() * 3); await store.set(xk, String(betrag)); await setze("moewe", heute + "-" + mw, betrag);
+    const B = await buch(store, nm);
+    return json({ ok: true, betrag, stand: B.reduce((s, e) => s + e.a, 0) });
+  }
   if (act === "flasche" || act === "flascheAntwort") {
     const fl = Math.floor(Number(d.fl)), hJetzt = Math.floor((Date.now() - Date.UTC(2026, 0, 1)) / 3.6e6);
     if (!(fl >= 0) || !(fl % 10 < 2) || Math.floor(fl / 10) < hJetzt - 1 || Math.floor(fl / 10) > hJetzt) return json({ ok: false, grund: "weg" });
