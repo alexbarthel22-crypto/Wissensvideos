@@ -22,6 +22,7 @@ const STICKER = new Set(["palast", "doener", "bar", "villa", "acai", "werkstatt"
 const SERIE = [3, 5, 8, 12, 17, 23, 32];
 // 🎣 Angelstellen: je Insel 15 eigene Fänge in den Güteklassen 0 Gewöhnlich … 8 Kosmisch (kein Einzigartig). Manche beißen nur zu
 // bestimmter Tageszeit (Berlin) oder bei bestimmtem Wetter (Hamburg, vom Server geprüft). Nur selten gibt es zusätzlich 1–3 Muscheln.
+const WETTERFANG = new Set(["regen", "sturm", "sonne"]);
 const GUETE = [30, 22, 15, 11, 8, 6, 4, 2.4, 1.2, 0.4];
 export const FISCHE = {stiefel: [0, 0, ""], sardine: [0, 0, ""], qualle: [0, 0, ""], krabbe: [1, 0, ""], seestern: [1, 0, ""], kugel: [2, 0, ""], tinte: [2, 0, "nacht"], hummer: [3, 0, ""], kompass: [3, 0, "regen"], hai: [4, 0, ""], schluessel: [4, 0, "morgen"], ring: [5, 0, ""], amphore: [5, 0, "sturm"], geist: [6, 0, "nacht"], krone: [7, 0, "morgen"], mondfisch: [8, 0, "klarnacht"], treibholz: [0, 1, ""], garnele: [0, 1, ""], seegras: [0, 1, ""], schnecke: [1, 1, ""], schwamm: [1, 1, ""], clown: [2, 1, ""], kokosnuss: [2, 1, "sonne"], okto: [3, 1, ""], koralle: [3, 1, "sonne"], anker: [4, 1, ""], auster: [4, 1, "regen"], dreizack: [5, 1, ""], muenze: [5, 1, "abend"], drache: [6, 1, "sturm"], diamant: [7, 1, "nacht"], sternfisch: [8, 1, "klarnacht"]};
 const zz = () => crypto.getRandomValues(new Uint32Array(1))[0] / 2 ** 32;
@@ -42,8 +43,10 @@ function bedingungOk(b, w, h) {
 async function fischZiehen(insel) {
   const w = await wetterJetzt(), h = Number(new Intl.DateTimeFormat("en-GB", { timeZone: TZ, hour: "2-digit", hourCycle: "h23" }).format(new Date()));
   const L = Object.entries(FISCHE).filter(([, [t, i, b]]) => i === insel && bedingungOk(b, w, h));
-  const sum = L.reduce((a, [, [t, i]]) => a + GUETE[t] / PRO[i + "/" + t], 0), r = zz() * sum; let s = 0;
-  for (const [id, [t, i]] of L) { s += GUETE[t] / PRO[i + "/" + t]; if (r < s) return id; } return L[0][0];
+  // 24.11.: Wetter-Fänge (Regen, Sturm, Sonne) sind bei ihrem Wetter 3× so wahrscheinlich – man hat ja nur einen Versuch am Tag; Tageszeit-Fänge unverändert
+  const gw = (t, i, b) => GUETE[t] / PRO[i + "/" + t] * (WETTERFANG.has(b) ? 3 : 1);
+  const sum = L.reduce((a, [, [t, i, b]]) => a + gw(t, i, b), 0), r = zz() * sum; let s = 0;
+  for (const [id, [t, i, b]] of L) { s += gw(t, i, b); if (r < s) return id; } return L[0][0];
 }
 // 🏰 Sandburg: Woche Mo–So; Sonntag ab 18 Uhr holt die Flut die Burg (dann kein Bauen)
 function flutJetzt() { const p = Object.fromEntries(new Intl.DateTimeFormat("en-US", { timeZone: "Europe/Berlin", weekday: "short", hour: "2-digit", hourCycle: "h23" }).formatToParts(new Date()).map(x => [x.type, x.value])); return p.weekday === "Sun" && +p.hour >= 18; }
