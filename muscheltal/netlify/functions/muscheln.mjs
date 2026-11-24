@@ -300,7 +300,7 @@ async function umbenennen(store) {
 // 24.11.: KOMPLETT-RESET (einmalig bei der nächsten Veröffentlichung): alle Konten, Muschelbewegungen, Erfolge, Sticker,
 // Aufgaben, Käufe/Ausrüstung, Tiere, Spielstände, Duelle, Spenden, Fahrgeld, Verknüpfungen – alles auf 0.
 // Bleibt: mit Echtgeld gekaufte Muscheln (b/<name>/euro…, x/euro/…), System-Merker; „Gründer“ wird aus der Followerliste berechnet.
-const NULL_ALLES = "x/null-alles/2026-11-24";
+const NULL_ALLES = "x/null-alles/2026-11-24b";// 24.11. abends: nochmal alles auf 0 (Tests seit 23.11.)
 async function nullAlles(store) {
   if (await store.get(NULL_ALLES)) return;
   const lk = NULL_ALLES + "-lauf", lv = Number(await store.get(lk)) || 0;

@@ -96,8 +96,8 @@ async function spieler() {
 // Einmalig (Veröffentlichung nach 18.11., erneut nach 20.11. = voll-3, erneut nach 21.11. = voll-4, erneut nach 23.11. = voll-5): Statistik nochmal komplett zurücksetzen – läuft beim ersten Aufruf nach dem Deploy
 let LEER2 = null;
 async function leeren2(store) {
-  if (await store.get("x/bereinigt/voll-5")) return;
-  await store.set("x/bereinigt/voll-2", String(Date.now())); await store.set("x/bereinigt/voll-3", String(Date.now())); await store.set("x/bereinigt/voll-4", String(Date.now())); await store.set("x/bereinigt/voll-5", String(Date.now()));
+  if (await store.get("x/bereinigt/voll-6")) return;// voll-6: erneut nach den Tests vom 23./24.11.
+  await store.set("x/bereinigt/voll-2", String(Date.now())); await store.set("x/bereinigt/voll-3", String(Date.now())); await store.set("x/bereinigt/voll-4", String(Date.now())); await store.set("x/bereinigt/voll-5", String(Date.now())); await store.set("x/bereinigt/voll-6", String(Date.now()));
   for (const k of [...await liste(store, "s/"), ...await liste(store, "agg/")]) await store.delete(k);
 }
 export default async (req) => {
