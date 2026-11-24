@@ -1,0 +1,46 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+
+    .neo { position: absolute; left: 60px; right: 190px; margin: 0 auto; width: fit-content; max-width: 830px; padding: 14px 34px 18px; border-radius: 30px; opacity: 0;
+      background: linear-gradient(160deg, rgba(24,10,48,.9), rgba(8,4,24,.92)); border: 5px solid #3ff0ff; box-shadow: 0 0 30px rgba(63,240,255,.7), inset 0 0 24px rgba(63,240,255,.25);
+      font-family: "Lilita One", sans-serif; color: #fff; text-align: center; line-height: 1.02; white-space: normal; }
+    .neo.pk { border-color: #ff3dbd; box-shadow: 0 0 30px rgba(255,61,189,.75), inset 0 0 24px rgba(255,61,189,.25); }
+    .neo.li { border-color: #b6ff3b; box-shadow: 0 0 30px rgba(182,255,59,.7), inset 0 0 24px rgba(182,255,59,.25); }
+    .neo.go { border-color: #ffd23f; box-shadow: 0 0 34px rgba(255,210,63,.8), inset 0 0 24px rgba(255,210,63,.25); }
+    .neo small { display: block; font: 900 30px Inter, sans-serif; letter-spacing: .14em; color: #3ff0ff; margin-bottom: 6px; }
+    .neo.pk small { color: #ff3dbd; } .neo.li small { color: #b6ff3b; } .neo.go small { color: #ffd23f; }
+    .big { position: absolute; left: 60px; right: 190px; text-align: center; font-family: "Lilita One", sans-serif; color: #fff; line-height: .92; opacity: 0;
+      -webkit-text-stroke: 16px #0a0418; paint-order: stroke fill; }
+    .big .c { color: #3ff0ff; } .big .p { color: #ff3dbd; } .big .l { color: #b6ff3b; } .big .g { color: #ffd23f; }
+    .fl { position: absolute; inset: 0; background: #fff; opacity: 0; }
+
+    #r1 { top: 220px; font-size: 110px; white-space: nowrap; }
+    #pi { position: absolute; left: 60px; top: 420px; width: 830px; height: 347px; border-radius: 28px; opacity: 0; background: url(bilder/abstimmung.png) center/cover;
+      box-shadow: 0 0 0 6px #ffd23f, 0 20px 50px rgba(0,0,0,.5); }
+    #r3 { top: 830px; font-size: 70px; }
+  </style>
+  <div id="root" data-composition-id="s03" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s03-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="r1" class="big">🗳️ <span class="g">ERGEBNIS</span></div>
+      <div id="pi"></div>
+      <div id="r3" class="neo pk">🐱 KATZENCAFÉ GEWINNT!</div>
+      <div class="fl"></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      /*__COMMON_JS__*/
+      wrapBt("#s03-stage");
+      const tl = gsap.timeline({ paused: true });
+      const t = line("L3")[0], K = at("L3", "Katzencafé");
+      tl.fromTo("#r1", { opacity: 0, scale: 3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .24, ease: "back.out(2.2)" }, t - .05);
+      tl.fromTo("#pi", { opacity: 0, y: 80, scale: .8 }, { opacity: 1, y: 0, scale: 1, duration: .35, ease: "back.out(2)" }, t + .2);
+      tl.to("#pi", { scale: 1.04, duration: .15, yoyo: true, repeat: 1 }, at("L3", "78"));
+      tl.fromTo("#r3", { opacity: 0, scale: 3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .24, ease: "back.out(2.2)" }, K - .05);[[22,-12],[-24,10],[16,14],[-12,-10],[0,0]].forEach(([x, y], i) => tl.to("#s03-stage", { x, y, duration: .04, ease: "none" }, K + i * .04));tl.fromTo(".fl", { opacity: 0.6 }, { opacity: 0, duration: .28, immediateRender: false }, K);
+      tl.to("#s03-stage > *", { opacity: 0, filter: "blur(8px)", duration: 0.18 }, C.__dur - 0.18);
+      window.__timelines["s03"] = tl;
+    })();
+  </script>
+</template>

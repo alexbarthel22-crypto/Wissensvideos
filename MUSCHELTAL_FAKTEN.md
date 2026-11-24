@@ -638,3 +638,11 @@ Vor jeder Arbeit: `git pull origin claude/sweet-hamilton-2bxep9` (Videos und Hom
 - **🐦 Muschel-Möwe (24.11.):** neues Zufallsereignis: 3× pro Stunde (nur tagsüber, im gemeinsamen Zeitplan) fliegt eine Möwe mit glänzender Muschel im Schnabel ca. 15 s über Haupt-Insel oder Kokos-Küste. Antippen → „Kreisch!“, die Muschel fällt glitzernd herunter: +1–3 🐚, höchstens 3× am Tag.
 - **Schwebende Muscheln: Tageslimit 20 (24.11.):** weiterhin max. 10 pro Stunde, jetzt zusätzlich höchstens 20 pro Tag (ca. 2 Stunden Spielzeit); Server prüft beides, Hinweis „x/20 heute“, bei 20: „morgen schweben wieder neue Muscheln“. Muschel-Konto-Info: „bis 20 🐚/Tag“.
 - **24.11. abends, Veröffentlichung:** Startangebot jetzt **300 🐚 für 3,99 €** (+50 %, vorher 285). Beim ersten Aufruf nach dem Deploy: **Statistik komplett zurückgesetzt** (voll-6) und **alle Konten wieder auf 0** (Muscheln, Muschelbewegungen, Erfolge, Inventar, Verknüpfungen/PINs, Inselkasse-Spenden; Gründer-Erfolg bleibt, echte Käufe bleiben vermerkt) – Grund: Tests seit 23.11.
+
+## Video Tag 14 (24.11., `videos/muscheltal-tag14/`, ~40 s)
+- **Hook Sunken Pearl:** „Da ist etwas im Meer aufgetaucht … Das Sunken Pearl! Ein Wolkenkratzer, der nach unten ins Meer geht!“ – „Hier kann man später unter Wasser wohnen!“ (Einzug bewusst offen gelassen) + Innenansicht Tiefsee-Suite + Frage „Würdest du hier wohnen?“. Muschel-Möwe (Homepage-Grafik) fliegt durchs Bild.
+- **Abstimmung (Screenshot, ohne Profilbild):** Katzen Café 78 % · Hotel Sandkorn 22 % → **Café Miau** fertig, Team gezeigt: Lilly (@lillyf.r1, Leitung), Insa (@insa.t_sp), Lilly (@lillyyyy7597).
+- **Fähre „Seestern“** fährt ab sofort zwischen den Inseln (Haupt-Insel, Kokos-Küste, Sunken Pearl) – ganze Inselwelt erkunden.
+- **Verlosung Job CocoCare (Team):** **@keineahnung1.7** (Haupt-Insel 0:54, Gründer) – Python `secrets` unter 757 Bewohnern ohne Job/Amt/Sonder-Wohnort (alle Inseln, laut Nutzer). → Homepage: Team CocoCare eintragen; nach Regel „Kokos-Jobs wohnen auf Kokos“ zieht die Person auf die Kokos-Küste um.
+- **Security für das Golden Pearl gesucht** – Bewerbungen in die Kommentare (Entscheidungsweg nicht genannt).
+- 819 Bewohner, Spiel startet bei 1.000 Bewohnern. Schluss: „Folg mir und zieh ein!“
