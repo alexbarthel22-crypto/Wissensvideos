@@ -35,7 +35,7 @@
    "lines": [
     {
      "id": "L1",
-     "text": "Ein *y:Wolkenkratzer … / aber *p:nach *p:unten!"
+     "text": "Stell dir einen *y:Wolkenkratzer vor … / aber er geht *p:in den *p:Ozean – / statt in die *g:Wolken!"
     },
     {
      "id": "L1b",
@@ -51,17 +51,22 @@
     {
      "name": "fs_ocean",
      "at": "s01+0.0",
-     "volume": 0.4
+     "volume": 0.35
     },
     {
      "name": "platsch",
-     "at": "L1:nach",
+     "at": "L1:Ozean",
      "volume": 0.5
     },
     {
      "name": "whoosh",
-     "at": "L1:unten",
+     "at": "L1:Ozean+0.2",
      "volume": 0.45
+    },
+    {
+     "name": "scratch",
+     "at": "L1:Wolken",
+     "volume": 0.35
     },
     {
      "name": "impact-bass-2",
