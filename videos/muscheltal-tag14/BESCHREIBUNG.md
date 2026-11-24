@@ -4,7 +4,7 @@ Inhalt: Hook: Wolkenkratzer nach unten bis zum Meeresgrund = Sunken Pearl (spät
 
 ## Beschreibung
 Tag 14: Stell dir einen Wolkenkratzer vor … aber er geht in den OZEAN statt in die Wolken! 🫧🌊 Das ist das Sunken Pearl.
-Würdest du hier wohnen? 👇 Und wer wird Security im Golden Pearl? Bewerbt euch in den Kommentaren! 🕶️
+Würdest du hier wohnen wollen? 👇 Und wer wird Security im Golden Pearl? Bewerbt euch in den Kommentaren! 🕶️
 #muscheltal #tag14 #sunkenpearl #fyp #fürdich
 
 ## Angepinnter Kommentar
