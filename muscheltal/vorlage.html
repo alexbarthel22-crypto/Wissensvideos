@@ -2697,6 +2697,22 @@ function spOben(c){const t=REDUCED?0:T,nl=nightLevel(),ink='#3a2414',gold='#d9a6
   c.fillStyle=TRIM;c.strokeStyle=gold;c.lineWidth=.6;c.beginPath();c.roundRect(-18,-27.6,36,6.6,3.3);c.fill();c.stroke();c.fillStyle='#b8452f';c.font='900 4px '+FONT;c.fillText('Sunken Pearl',0,-23);
   for(const s of[-1,1]){c.fillStyle='#c98a5a';c.beginPath();c.roundRect(s*34-1.6,-3.6,3.2,2.8,.5);c.fill();palm(c,{x:s*34,y:-3,s:.7,ph:s*3});}
   c.restore();}
+// 🔭 Fernrohr auf dem Vorplatz von Sunken Pearl (25.11.): Blick ganz weit hinaus auf die Schlossinsel – Echter Alex winkt. Kein Sticker, keine Aufgabe, kein eigener Erfolg.
+const FERN={x:()=>SPL.X-14,y:()=>SPL.Y+SPL.PY+SPL.PRY-3};
+const amFern=()=>{if(!WK.on)return false;const L=WK.L||{h:1},fy=WK.y+4.4*(L.h||1);return Math.hypot(WK.x-FERN.x(),fy-FERN.y())<11;};
+function fernrohr(){try{statEv('fernrohr');}catch(e){}const sv={x:cam.x,y:cam.y,z:cam.z},Wv=W,Hv=H,S=Math.round(Math.min(Wv,Hv,520)-56);
+ cam.x=SCH.x;cam.y=SCH.y-14;cam.z=3.4*S/520*1.15;try{for(let i=0;i<4;i++)draw();}catch(e){}
+ const o=document.createElement('canvas'),d=DPR;o.width=Math.round(S*d);o.height=Math.round(S*d);const c=o.getContext('2d');
+ try{c.drawImage(cv,(Wv/2-S/2)*d,(Hv/2-S/2-10)*d,S*d,S*d,0,0,S*d,S*d);}catch(e){}
+ cam.x=sv.x;cam.y=sv.y;cam.z=sv.z;try{draw();}catch(e){}
+ c.setTransform(d,0,0,d,0,0);const cx=S/2,cy=S/2,r=S/2-10;
+ c.fillStyle='rgba(180,215,235,.12)';c.fillRect(0,0,S,S);c.beginPath();c.rect(0,0,S,S);c.arc(cx,cy,r,0,TAU,true);c.fillStyle='#0b1422';c.fill();
+ const v=c.createRadialGradient(cx,cy,r*.6,cx,cy,r);v.addColorStop(0,'rgba(0,0,0,0)');v.addColorStop(1,'rgba(0,0,0,.55)');c.fillStyle=v;c.beginPath();c.arc(cx,cy,r,0,TAU);c.fill();
+ c.strokeStyle='#c9964a';c.lineWidth=12;c.beginPath();c.arc(cx,cy,r+4,0,TAU);c.stroke();c.strokeStyle='#f0c070';c.lineWidth=2.5;c.beginPath();c.arc(cx,cy,r,0,TAU);c.stroke();
+ c.strokeStyle='rgba(255,255,255,.16)';c.lineWidth=1;c.beginPath();c.moveTo(cx-r,cy);c.lineTo(cx+r,cy);c.moveTo(cx,cy-r);c.lineTo(cx,cy+r);c.stroke();
+ const ax=cx,ay=cy+S*.1;c.font='900 '+Math.round(S/30)+'px '+FONT;c.textAlign='center';const tw=c.measureText('Hallo! 👋').width+18;c.fillStyle='#fff';c.strokeStyle='#2a1b12';c.lineWidth=2;c.beginPath();c.roundRect(ax+12,ay-S*.15,tw,S/16,S/32);c.fill();c.stroke();c.fillStyle='#2a1b12';c.fillText('Hallo! 👋',ax+12+tw/2,ay-S*.15+S/22);
+ o.style.cssText='width:100%;max-width:'+S+'px;display:block;margin:4px auto 6px;border-radius:50%';
+ popup('<h2>🔭 Durchs Fernrohr</h2><div id="fernbox"></div><p>Ganz weit draußen auf dem Meer … eine Insel mit einem Schloss? Und da winkt doch jemand! 👀</p>');const b=$('fernbox');if(b)b.appendChild(o);}
 function spWalk(x,y){const f=y+4.4,lx=x-SPL.X,ly=f-SPL.Y,e=(lx/(SPL.PRX-3))**2+((ly-SPL.PY)/(SPL.PRY-3))**2;if(e>=1)return null;
  if(Math.abs(lx)<32&&ly<1.2)return false;/* Eingangshalle */for(const s of[-1,1]){if(Math.hypot(lx-s*34,ly+2)<2.6)return false;if(Math.hypot(lx-s*(SPL.PRX-8),ly-(SPL.PY-6))<3.4)return false;}/* Palmen */
  if(Math.hypot(lx+14,ly-(SPL.PY+SPL.PRY-3))<1.6)return false;/* Fernrohr */return true;}
@@ -5517,8 +5533,8 @@ function bootZeichnen(c){const B=BOOT;if(!B||B.x==null)return;const t=REDUCED?0:
 const amGP=()=>{if(!WK.on||!KOKV.open)return false;const e=gpEingang(),L=WK.L||{h:1};return Math.hypot(WK.x-e.x,WK.y+4.4*(L.h||1)-e.y)<16;};
 let THG0=null;const thVorOrt=()=>{if(!WK.on)return false;const g=THG0||(THG0=GEB.find(q=>q.typ==='tierheim'));if(!g)return false;return Math.abs(WK.x-g.cx)<(g.x1-g.x0)/2+22&&Math.abs(WK.y-g.cy)<(g.y1-g.y0)/2+26;};
 // Knöpfe am Ort (ersetzen die Aufgabe am Gebäude): Golden Pearl am Eingang, Adoptieren im Tierheim
-function ortKnoepfe(){let b=$('ortact');const w=WK.on&&!SPIELT&&!BOOT?(amGP()?'gp':thVorOrt()?'th':amSP()?'sp':amSteg()?'boot':null):null;if(!w){if(b)b.remove();return;}if(b&&b.dataset.w===w)return;if(b)b.remove();
- b=document.createElement('button');b.id='ortact';b.type='button';b.className='qact';b.dataset.w=w;b.innerHTML=w==='sp'?'<b>🔑 Sunken Pearl betreten</b><span>Nur für Bewohner</span>':w==='gp'?'<b>💎 Golden Pearl betreten</b><span>Spiele · Wochen-Rangliste</span>':w==='boot'?'<b>⛵ Boot fahren</b><span>Zu einer anderen Insel</span>':'<b>🐾 Tiere adoptieren</b><span>Tierheim Pfotenkuss</span>';$('walkui').prepend(b);b.onclick=()=>w==='sp'?spTuer():w==='gp'?gpBetreten():w==='boot'?bootFrag():tierheimSeite();}
+function ortKnoepfe(){let b=$('ortact');const w=WK.on&&!SPIELT&&!BOOT?(amGP()?'gp':thVorOrt()?'th':amSP()?'sp':amFern()?'fern':amSteg()?'boot':null):null;if(!w){if(b)b.remove();return;}if(b&&b.dataset.w===w)return;if(b)b.remove();
+ b=document.createElement('button');b.id='ortact';b.type='button';b.className='qact';b.dataset.w=w;b.innerHTML=w==='fern'?'<b>🔭 Durchs Fernrohr schauen</b><span>Was siehst du da draußen?</span>':w==='sp'?'<b>🔑 Sunken Pearl betreten</b><span>Nur für Bewohner</span>':w==='gp'?'<b>💎 Golden Pearl betreten</b><span>Spiele · Wochen-Rangliste</span>':w==='boot'?'<b>⛵ Boot fahren</b><span>Zu einer anderen Insel</span>':'<b>🐾 Tiere adoptieren</b><span>Tierheim Pfotenkuss</span>';$('walkui').prepend(b);b.onclick=()=>w==='fern'?fernrohr():w==='sp'?spTuer():w==='gp'?gpBetreten():w==='boot'?bootFrag():tierheimSeite();}
 setInterval(()=>{try{ortKnoepfe();}catch(e){}},300);
 // ---------- Golden Pearl: Spiele-Menü + Rangliste ----------
 let SPRANG={};
