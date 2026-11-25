@@ -6545,8 +6545,12 @@ let RANGART='m';const RANGE={d:null,t:0};async function rangLadenE(){if(RANGE.d&
 async function rangLaden(){if(RANG.d&&Date.now()-RANG.t<60000)return RANG.d;const c=mkClaim();try{const r=await fetch('/api/muscheln?top=1'+(c?'&name='+encodeURIComponent(c.n):''),{cache:'no-store'});if(r.ok){RANG.d=await r.json();RANG.t=Date.now();try{localStorage.setItem('mt-rang',JSON.stringify({t:RANG.t,d:RANG.d}));}catch(e){}}}catch(e){}return RANG.d;}
 /* 📈 Aufstieg in der Muschel- oder Erfolge-Rangliste → kurze Info (25.11.) */
 async function rangAufstieg(){const c=mkClaim();if(!c||document.hidden)return;let alt={};try{alt=JSON.parse(localStorage.getItem('mt-rangpl')||'{}');}catch(e){}if(alt.n!==c.n)alt={n:c.n};const neu={n:c.n},msg=[];
- for(const [k,L,nm] of[['m',rangLaden,'Muschel-Rangliste'],['e',rangLadenE,'Erfolge-Rangliste']]){let d=null;try{d=await L();}catch(e){}const p=d&&d.platz;neu[k]=p||alt[k]||null;if(p&&alt[k]&&p<alt[k])msg.push('📈 '+nm+': Du bist auf Platz '+p+' aufgestiegen!');}
- try{localStorage.setItem('mt-rangpl',JSON.stringify(neu));}catch(e){}msg.forEach((m,i)=>setTimeout(()=>{try{mkToast(m,4200);}catch(e){}},i*4600));}
+ for(const [k,L,nm] of[['m',rangLaden,'Muschel-Rangliste'],['e',rangLadenE,'Erfolge-Rangliste']]){let d=null;try{d=await L();}catch(e){}const p=d&&d.platz;neu[k]=p||alt[k]||null;if(p&&alt[k]&&p<alt[k])msg.push([k,nm,p,alt[k]]);}
+ try{localStorage.setItem('mt-rangpl',JSON.stringify(neu));}catch(e){}if(msg.length)rangAufPop(msg);}
+/* Popup mit Pokal und Knopf „Zur Rangliste“ (öffnet den passenden Reiter); wartet, falls gerade ein anderes Fenster offen ist */
+function rangAufPop(msg,n=0){if(!$('pg').hidden){if(n<20)setTimeout(()=>rangAufPop(msg,n+1),5000);return;}
+ popup('<div class="big">🏆</div><h2>Aufgestiegen! 📈</h2>'+msg.map(([k,nm,p,a])=>'<p><b>'+nm+'</b>: von Platz '+a+' auf <b>Platz '+p+'</b></p>').join('')+msg.map(([k,nm])=>'<button class="cbtn hot" type="button" data-rauf="'+k+'">'+(k==='e'?'🏅':'🏆')+' Zur '+nm+'</button>').join(''));
+ document.querySelectorAll('[data-rauf]').forEach(b=>b.onclick=()=>{RANGART=b.dataset.rauf;$('pg').hidden=true;rangSeite();});}
 setTimeout(rangAufstieg,9000);setInterval(rangAufstieg,180000);
 const rangAv=n=>{const p=byName.get(String(n).toLowerCase());return p?avatarURL(p):'';};
 const rangPfeil=d=>d==='neu'?' <span class="rup">neu</span>':d>0?' <span class="rup">▲'+d+'</span>':d<0?' <span class="rdn">▼'+(-d)+'</span>':'';
