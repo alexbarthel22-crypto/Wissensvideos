@@ -6546,12 +6546,9 @@ async function rangLaden(){if(RANG.d&&Date.now()-RANG.t<60000)return RANG.d;cons
 /* 📈 Aufstieg in der Muschel- oder Erfolge-Rangliste → kurze Info (25.11.) */
 async function rangAufstieg(){const c=mkClaim();if(!c||document.hidden)return;let alt={};try{alt=JSON.parse(localStorage.getItem('mt-rangpl')||'{}');}catch(e){}if(alt.n!==c.n)alt={n:c.n};const neu={n:c.n},msg=[];
  for(const [k,L,nm] of[['m',rangLaden,'Muschel-Rangliste'],['e',rangLadenE,'Erfolge-Rangliste']]){let d=null;try{d=await L();}catch(e){}const p=d&&d.platz;neu[k]=p||alt[k]||null;if(p&&alt[k]&&p<alt[k])msg.push([k,nm,p,alt[k]]);}
- try{localStorage.setItem('mt-rangpl',JSON.stringify(neu));}catch(e){}msg.forEach(m=>rangAufPop([m]));}
-let RAUFT=0;/* Popup mit Pokal und Knopf „Zur Rangliste“ (öffnet den passenden Reiter); wartet, falls gerade ein anderes Fenster offen ist */
-/* je Rangliste ein eigenes Popup – nur deren Veränderung und deren Knopf; ein zweites kommt erst, wenn das erste zu ist */
-function rangAufPop(msg,n=0){if(!$('pg').hidden||(RAUFT&&Date.now()-RAUFT<1500)){if(n<20)setTimeout(()=>rangAufPop(msg,n+1),5000);return;}
- RAUFT=Date.now();popup('<div class="big">'+(msg[0][0]==='e'?'🏅':'🏆')+'</div><h2>Aufgestiegen! 📈</h2>'+msg.map(([k,nm,p,a])=>'<p><b>'+nm+'</b>: von Platz '+a+' auf <b>Platz '+p+'</b></p>').join('')+msg.map(([k,nm])=>'<button class="cbtn hot" type="button" data-rauf="'+k+'">'+(k==='e'?'🏅':'🏆')+' Zur '+nm+'</button>').join(''));
- document.querySelectorAll('[data-rauf]').forEach(b=>b.onclick=()=>{RANGART=b.dataset.rauf;$('pg').hidden=true;rangSeite();});}
+ try{localStorage.setItem('mt-rangpl',JSON.stringify(neu));}catch(e){}msg.forEach((m,i)=>rangAufPop([m],i));}
+/* 📈 Info-Text (kein Popup) je Rangliste – nur deren Veränderung; antippen öffnet den passenden Reiter der Rangliste */
+function rangAufPop(msg,i=0){const [k,nm,p,a]=msg[0];setTimeout(()=>{try{mkToast('📈 '+nm+': von Platz '+a+' auf Platz '+p+' aufgestiegen! · antippen '+(k==='e'?'🏅':'🏆'),4500);const e=$('mktoast');if(e){e.style.pointerEvents='auto';e.style.cursor='pointer';e.onclick=()=>{e.classList.remove('on');RANGART=k;rangSeite();};}}catch(e){}},i*5000);}
 setTimeout(rangAufstieg,9000);setInterval(rangAufstieg,180000);
 const rangAv=n=>{const p=byName.get(String(n).toLowerCase());return p?avatarURL(p):'';};
 const rangPfeil=d=>d==='neu'?' <span class="rup">neu</span>':d>0?' <span class="rup">▲'+d+'</span>':d<0?' <span class="rdn">▼'+(-d)+'</span>':'';
