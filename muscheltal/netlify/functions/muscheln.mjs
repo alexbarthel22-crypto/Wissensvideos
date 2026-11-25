@@ -17,7 +17,7 @@ const tokOk = (c, h) => !!c && (c.h === h || (Array.isArray(c.hs) && c.hs.includ
 const mitCookie = (res, nm, token) => { res.headers.append("set-cookie", "mt-k=" + encodeURIComponent(nm + "|" + token) + "; Max-Age=157680000; Path=/api/muscheln; HttpOnly; Secure; SameSite=Lax"); return res; };
 const json = (d, s = 200) => new Response(JSON.stringify(d), { status: s, headers: { "content-type": "application/json", "cache-control": "no-store" } });
 const NAME = /^@[a-z0-9._]{1,40}$/;
-const ERF_CLIENT = new Set(["LUPE", "AUF", "UNTER", "SCOOT", "SCHOEPFER", "WAL", "SCHILD", "MOND", "WELT", "NACHT"]);
+const ERF_CLIENT = new Set(["LUPE", "AUF", "UNTER", "SCOOT", "SCHOEPFER", "WAL", "SCHILD", "MOND", "WELT", "NACHT", "FRUEH", "TIEFSEE"]);
 const STICKER = new Set(["palast", "doener", "bar", "villa", "acai", "werkstatt", "baeckerei", "nagel", "markt", "kiosk", "boba", "pizza", "tierheim", "yacht", "cocobay", "kokosbad", "coast", "kokos", "cococare", "katzencafe", "sunkenpearl", "angeln_sp", "angeln_kokos", "gaming", "feuer", "anleger", "gpearl", "ev_wochenmarkt", "ev_flohmarkt", "ev_konzert", "ev_feuerwerk", "sandburg", "angeln", "ev_kino", "seestern"]);
 const SERIE = [3, 5, 8, 12, 17, 23, 32];
 // 🎣 Angelstellen: je Insel 15 eigene Fänge in den Güteklassen 0 Gewöhnlich … 8 Kosmisch (kein Einzigartig). Manche beißen nur zu
@@ -664,6 +664,8 @@ export default async (req) => {
     // nur Erfolge, die im Browser vergeben werden (alle anderen bucht der Server selbst) – sonst ließen sich mit erfundenen Namen Muscheln erzeugen
     if (!ERF_CLIENT.has(k)) return json({ fehler: "Erfolg" }, 400);
     if (k === "NACHT" && berlinStunde() !== 3) return json({ ok: false, grund: "zeit" });// Nachteule nur zwischen 3 und 4 Uhr
+    if (k === "FRUEH" && (berlinStunde() < 6 || berlinStunde() > 9)) return json({ ok: false, grund: "zeit" });// Frühaufsteher: nur rund um den Sonnenaufgang
+    if (k === "TIEFSEE" && berlinStunde() >= 8 && berlinStunde() < 16) return json({ ok: false, grund: "zeit" });// Tiefseeblick: nur abends/nachts
     return json({ ok: await setze("erf", k, k === "WELT" ? 30 : 10) });// Weltenbummler (alle Sticker) = 30
   }
   // Tresor des Schöpfers (Schlossinsel): einmalige Verlosung je Name – 3, 5, 7 oder 10 Muscheln (je 25 %)
@@ -701,8 +703,10 @@ export default async (req) => {
   if (act === "regenbogen") {
     const id = String(d.id || "");
     if (!(await regenEnde(id))) return json({ ok: false, grund: "kein" });
-    const ok = await setze("regenbogen", id.replace(/[^0-9T]/g, ""), 5), B = await buch(store, nm);
-    return json({ ok, grund: ok ? null : "schon", stand: B.reduce((s, e) => s + e.a, 0) });
+    const ok = await setze("regenbogen", id.replace(/[^0-9T]/g, ""), 5), B0 = await buch(store, nm), erfNeu = [];
+    if (ok && B0.filter(e => e.art === "regenbogen").length >= 3 && (await erfGib("REGENBOGEN"))) erfNeu.push("REGENBOGEN");
+    const B = erfNeu.length ? await buch(store, nm) : B0;
+    return json({ ok, erfNeu, grund: ok ? null : "schon", stand: B.reduce((s, e) => s + e.a, 0) });
   }
   // 🍾 Flaschenpost: Quizfrage zu Muschel-Tal. Flasche = Stunde*10+Nr (nur aktuelle/letzte Stunde), höchstens 3 pro Tag, je Flasche 1 Versuch, richtig = +2
   // 🐦 Muschel-Möwe: 3× pro Stunde, antippen = 1–3 Muscheln, höchstens 3× am Tag
@@ -746,8 +750,11 @@ export default async (req) => {
     if (B0.some(e => e.art === "angeln" && e.id.startsWith(tagId))) return json({ ok: false, grund: "schon" });
     const f = await fischZiehen(insel), betrag = zz() < 0.15 ? 1 + Math.floor(zz() * 3) : 0, ok = await setze("angeln", tagId + f, betrag);
     if (ok) await store.set("x/fisch/" + nm + "/" + f, String(Date.now()));
+    const erfNeu = [];
+    if (ok) { const B1 = await buch(store, nm); if ([0, 1, 2].every(i => B1.some(e => e.art === "angeln" && e.id.startsWith(heute + "-" + i + "_"))) && (await erfGib("PETRI"))) erfNeu.push("PETRI");
+      if (FISCHE[f] && FISCHE[f][2] === "sturm" && (await erfGib("STURMFANG"))) erfNeu.push("STURMFANG"); }
     const B = await buch(store, nm);
-    return json({ ok, grund: ok ? null : "schon", fisch: ok ? f : null, betrag: ok ? betrag : 0, stand: B.reduce((s, e) => s + e.a, 0), fische: (await liste(store, "x/fisch/" + nm + "/")).map(k => k.split("/")[3]) });
+    return json({ ok, erfNeu, grund: ok ? null : "schon", fisch: ok ? f : null, betrag: ok ? betrag : 0, stand: B.reduce((s, e) => s + e.a, 0), fische: (await liste(store, "x/fisch/" + nm + "/")).map(k => k.split("/")[3]) });
   }
   // 🌪️ Sturm-Treibgut: nur bei echtem Sturm (Gewitter oder Wind ab 35 km/h); Kiste = Stunde*100 + Insel*10 + Nr (aktuelle/letzte Stunde), je Kiste einmal, höchstens 6 pro Tag.
   // Inhalt wird hier gezogen: 50 % leer, 40 % 1–3 🐚, 10 % Fundstück fürs Fisch-Album (falls alle schon da: 3 🐚). 5 an einem Tag = Erfolg „Sturmjäger“.
@@ -815,7 +822,11 @@ export default async (req) => {
     let duell = null;
     if (L.duell) { try { const D0 = JSON.parse((await store.get("x/duell/" + L.duell)) || "null"); if (D0) await store.set("x/duellmeld/" + D0.von + "/" + L.duell + "-" + nm, JSON.stringify({ k, n: "@" + nm, s, von_s: D0.s, gewonnen: k === "memory" ? s < D0.s : s > D0.s })); } catch (e) {}
       const dk = "x/duellerg/" + L.duell + "/" + nm, a = await store.get(dk); if (a === null || (k === "memory" ? s < Number(a) : s > Number(a))) await store.set(dk, String(s)); const I = await duellInfo(store, L.duell); if (I.ok) duell = { von: I.von, s: I.s, mein: s, gewonnen: k === "memory" ? s < I.s : s > I.s }; }
-    return json({ ok: true, neu: besser, best: besser ? s : alt.s, platz: platz || null, duell });
+    const erfNeu = [];
+    try { await store.set("x/spielt/" + nm + "/" + k, "1"); if ((await liste(store, "x/spielt/" + nm + "/")).length >= Object.keys(SPIELE).length && (await erfGib("ALLROUNDER"))) erfNeu.push("ALLROUNDER");
+      const ak = "x/spielbest/" + nm + "/" + k, ab = await store.get(ak), aw = ab === null ? null : Number(ab);
+      if (aw === null || (k === "memory" ? s < aw : s > aw)) { await store.set(ak, String(s)); if (aw !== null) { const rk = "x/rekorde/" + nm, rn = (Number(await store.get(rk)) || 0) + 1; await store.set(rk, String(rn)); if (rn >= 5 && (await erfGib("REKORD"))) erfNeu.push("REKORD"); } } } catch (e) {}
+    return json({ ok: true, neu: besser, erfNeu, best: besser ? s : alt.s, platz: platz || null, duell });
   }
   if (act === "geschenk") {
     const betrag = 1 + (crypto.getRandomValues(new Uint32Array(1))[0] % 3), ok = await setze("geschenk", heute, betrag), B = await buch(store, nm);
@@ -919,7 +930,8 @@ export default async (req) => {
       if ((await store.get(ek)) !== nm) return json({ ok: false, grund: "weg", stand });
     }
     await store.set("b/" + nm + "/kauf/" + heute + "-" + id + "/" + (-it[3]), String(Date.now()));
-    return json({ ok: true, stand: stand - it[3], inv: [...besitz(B), id] });
+    const erfNeu = it[0] === "tier" && (await erfGib("TIERFREUND")) ? ["TIERFREUND"] : [];
+    return json({ ok: true, erfNeu, stand: stand - it[3] + erfNeu.length * 10, inv: [...besitz(B), id] });
   }
   if (act === "anlegen") {
     // Slot belegen (id) oder leeren (id = null); nur eigene Items
