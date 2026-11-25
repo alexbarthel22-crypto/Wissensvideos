@@ -6548,7 +6548,7 @@ async function rangAufstieg(){const c=mkClaim();if(!c||document.hidden)return;le
  for(const [k,L,nm] of[['m',rangLaden,'Muschel-Rangliste'],['e',rangLadenE,'Erfolge-Rangliste']]){let d=null;try{d=await L();}catch(e){}const p=d&&d.platz;neu[k]=p||alt[k]||null;if(p&&alt[k]&&p<alt[k])msg.push([k,nm,p,alt[k]]);}
  try{localStorage.setItem('mt-rangpl',JSON.stringify(neu));}catch(e){}msg.forEach((m,i)=>rangAufPop([m],i));}
 /* 📈 Info-Text (kein Popup) je Rangliste – nur deren Veränderung; antippen öffnet den passenden Reiter der Rangliste */
-function rangAufPop(msg,i=0){const [k,nm,p,a]=msg[0];setTimeout(()=>{try{mkToast('📈 '+nm+': von Platz '+a+' auf Platz '+p+' aufgestiegen · '+['Stark! 💪','Super! 🌟','Wow! 🤩','Klasse! 🎉','Spitze! 🙌','Mega! 🔥'][Math.floor(Math.random()*6)]+' · antippen '+(k==='e'?'🏅':'🏆'),4500);const e=$('mktoast');if(e){e.style.pointerEvents='auto';e.style.cursor='pointer';e.onclick=()=>{e.classList.remove('on');RANGART=k;rangSeite();};}}catch(e){}},i*5000);}
+function rangAufPop(msg,i=0){const [k,nm,p,a]=msg[0];setTimeout(()=>{try{mkToast('📈 '+nm+': von Platz '+a+' auf Platz '+p+' aufgestiegen · '+['Stark! 💪','Super! 🌟','Wow! 🤩','Klasse! 🎉','Spitze! 🙌','Mega! 🔥'][Math.floor(Math.random()*6)]+' · Zur Rangliste '+(k==='e'?'🏅':'🏆'),4500);const e=$('mktoast');if(e){e.style.pointerEvents='auto';e.style.cursor='pointer';e.onclick=()=>{e.classList.remove('on');RANGART=k;rangSeite();};}}catch(e){}},i*5000);}
 setTimeout(rangAufstieg,9000);setInterval(rangAufstieg,180000);
 const rangAv=n=>{const p=byName.get(String(n).toLowerCase());return p?avatarURL(p):'';};
 const rangPfeil=d=>d==='neu'?' <span class="rup">neu</span>':d>0?' <span class="rup">▲'+d+'</span>':d<0?' <span class="rdn">▼'+(-d)+'</span>':'';
