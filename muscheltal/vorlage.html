@@ -2454,7 +2454,7 @@ function tiefTap(){let me=null;try{me=WK.on&&WK.me?WK.me:mkMe();}catch(e){}if(!m
 const PT={taf:[-36,40.2],m:[0,-13.6],w:[[-36,31],[36,31]],k:[0,-36],tuer:[-61.35,18.8]};
 const ptW=([x,y])=>[x*PAL_S,y*PAL_S];let PTSEQ=[],PTFX=[],PTOFFEN=0;
 const ptOffen=()=>{try{return localStorage.getItem('mt-tuer')==='1';}catch(e){return false;}};
-function ptAt(wx,wy){if(cam.z<1.3||Math.abs(wx)>130||wy<-90||wy>90)return false;const r=Math.max(4.5,12/cam.z),nah=p=>{const [x,y]=ptW(p);return Math.hypot(wx-x,wy-y)<r;};
+function ptAt(wx,wy){if(!WK.on||cam.z<1.3||Math.abs(wx)>130||wy<-90||wy>90)return false;const r=Math.max(4.5,12/cam.z),nah=p=>{const [x,y]=ptW(p);return Math.hypot(wx-x,wy-y)<r;};
  if(nah(PT.taf)){popup('<div class="big">📜</div><h2>Eine alte Inschrift</h2><p>In den Stein am Brunnen sind drei Zeichen geritzt:</p><p style="font-size:34px;letter-spacing:4px;margin:6px 0">🐚 → 🌊 → 👑</p><p><i>Was sie wohl bedeuten?</i></p>');return true;}
  if((ptOffen()||PTOFFEN)&&nah(PT.tuer)){ptKammer();return true;}
  const wq=PT.w.find(nah),k=nah(PT.m)?'m':wq?'w':nah(PT.k)?'k':null;if(!k)return false;
@@ -2464,7 +2464,7 @@ function ptAt(wx,wy){if(cam.z<1.3||Math.abs(wx)>130||wy<-90||wy>90)return false;
  if(PTSEQ.length===3){PTSEQ=[];PTOFFEN=performance.now();try{localStorage.setItem('mt-tuer','1');}catch(e){}setTimeout(()=>{try{mkToast('🪨 Rumms! Am Palast hat sich etwas bewegt …');}catch(e){}},500);}
  return true;}
 function ptZeichnen(c){if(Math.abs(cam.x)>400||Math.abs(cam.y)>400)return;const now=performance.now(),TW=Math.PI*2;c.save();c.scale(PAL_S,PAL_S);
- {const [x,y]=PT.taf;c.fillStyle='#a89a86';c.strokeStyle='#5a4a38';c.lineWidth=.25;c.beginPath();c.roundRect(x-2.1,y-1.2,4.2,2.4,.4);c.fill();c.stroke();c.fillStyle='rgba(60,45,30,.75)';c.font='900 1.1px sans-serif';c.textAlign='center';c.textBaseline='middle';c.fillText('· · ·',x,y);}
+ {const [x,y]=PT.taf;c.fillStyle='#a89a86';c.strokeStyle='#5a4a38';c.lineWidth=.25;c.beginPath();c.roundRect(x-2.1,y-1.2,4.2,2.4,.4);c.fill();c.stroke();c.fillStyle='rgba(60,45,30,.75)';c.font='900 1.9px sans-serif';c.textAlign='center';c.textBaseline='middle';c.fillText('?',x,y+.1);}
  {const [x,y]=PT.tuer,w=3.6,h=6.6,x0=x-w/2,y0=y-h/2+.2,auf=ptOffen()&&!PTOFFEN?1:PTOFFEN?Math.min(1,(now-PTOFFEN)/1600):0;
   if(auf>0){const g=c.createLinearGradient(0,y0,0,y0+h);g.addColorStop(0,'#3a220e');g.addColorStop(1,'#ffb84a');c.fillStyle=g;c.fillRect(x0,y0,w*auf,h);
    const gl=.35+.15*Math.sin(now/240);c.fillStyle=`rgba(255,200,90,${gl*auf})`;c.beginPath();c.ellipse(x0+w*auf/2,y0+h,w*auf*.9+.6,1.2,0,0,TW);c.fill();
