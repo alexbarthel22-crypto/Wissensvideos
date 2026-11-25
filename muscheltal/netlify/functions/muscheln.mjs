@@ -17,7 +17,7 @@ const tokOk = (c, h) => !!c && (c.h === h || (Array.isArray(c.hs) && c.hs.includ
 const mitCookie = (res, nm, token) => { res.headers.append("set-cookie", "mt-k=" + encodeURIComponent(nm + "|" + token) + "; Max-Age=157680000; Path=/api/muscheln; HttpOnly; Secure; SameSite=Lax"); return res; };
 const json = (d, s = 200) => new Response(JSON.stringify(d), { status: s, headers: { "content-type": "application/json", "cache-control": "no-store" } });
 const NAME = /^@[a-z0-9._]{1,40}$/;
-const ERF_CLIENT = new Set(["LUPE", "AUF", "UNTER", "SCOOT", "SCHOEPFER", "WAL", "SCHILD", "MOND", "WELT", "NACHT", "FRUEH", "TIEFSEE"]);
+const ERF_CLIENT = new Set(["LUPE", "AUF", "UNTER", "SCOOT", "SCHOEPFER", "WAL", "SCHILD", "MOND", "NACHT", "FRUEH", "TIEFSEE"]);
 const STICKER = new Set(["palast", "doener", "bar", "villa", "acai", "werkstatt", "baeckerei", "nagel", "markt", "kiosk", "boba", "pizza", "tierheim", "yacht", "cocobay", "kokosbad", "coast", "kokos", "cococare", "katzencafe", "sunkenpearl", "angeln_sp", "angeln_kokos", "gaming", "feuer", "anleger", "gpearl", "ev_wochenmarkt", "ev_flohmarkt", "ev_konzert", "ev_feuerwerk", "sandburg", "angeln", "ev_kino", "seestern"]);
 const SERIE = [3, 5, 8, 12, 17, 23, 32];
 // 🎣 Angelstellen: je Insel 15 eigene Fänge in den Güteklassen 0 Gewöhnlich … 8 Kosmisch (kein Einzigartig). Manche beißen nur zu
@@ -666,7 +666,7 @@ export default async (req) => {
     if (k === "NACHT" && berlinStunde() !== 3) return json({ ok: false, grund: "zeit" });// Nachteule nur zwischen 3 und 4 Uhr
     if (k === "FRUEH" && (berlinStunde() < 6 || berlinStunde() > 9)) return json({ ok: false, grund: "zeit" });// Frühaufsteher: nur rund um den Sonnenaufgang
     if (k === "TIEFSEE" && berlinStunde() >= 8 && berlinStunde() < 16) return json({ ok: false, grund: "zeit" });// Tiefseeblick: nur abends/nachts
-    return json({ ok: await setze("erf", k, k === "WELT" ? 30 : 10) });// Weltenbummler (alle Sticker) = 30
+    return json({ ok: await setze("erf", k, 10) });
   }
   // Tresor des Schöpfers (Schlossinsel): einmalige Verlosung je Name – 3, 5, 7 oder 10 Muscheln (je 25 %)
   // Geheimcode aus einem TikTok-Video: gilt nur an den angegebenen Tagen, je Name einmal; höchstens 10 Versuche pro Tag
