@@ -2699,12 +2699,14 @@ function spOben(c){const t=REDUCED?0:T,nl=nightLevel(),ink='#3a2414',gold='#d9a6
   c.restore();}
 // 🔭 Fernrohr auf dem Vorplatz von Sunken Pearl (25.11.): Blick ganz weit hinaus auf die Schlossinsel – Echter Alex winkt. Kein Sticker, keine Aufgabe, kein eigener Erfolg.
 const FERN={x:()=>SPL.X-14,y:()=>SPL.Y+SPL.PY+SPL.PRY-3};
-const amFern=()=>{if(!WK.on)return false;const L=WK.L||{h:1},fy=WK.y+4.4*(L.h||1);return Math.hypot(WK.x-FERN.x(),fy-FERN.y())<11;};
+const amFern=()=>{if(!WK.on)return false;/* wer Echter Alex auf der Karte entdeckt hat (Erfolg „Schöpfer-Kontakt“), kann das Fernrohr nicht mehr nutzen */if(WK.me&&hatErf(WK.me,'SCHOEPFER'))return false;const L=WK.L||{h:1},fy=WK.y+4.4*(L.h||1);return Math.hypot(WK.x-FERN.x(),fy-FERN.y())<11;};
 function fernrohr(){try{statEv('fernrohr');}catch(e){}const sv={x:cam.x,y:cam.y,z:cam.z},Wv=W,Hv=H,S=Math.round(Math.min(Wv,Hv,520)-56);
  cam.x=SCH.x;cam.y=SCH.y-14;cam.z=3.4*S/520*1.15;try{for(let i=0;i<4;i++)draw();}catch(e){}
+ /* Namensschild von Echter Alex merken (wird unten verpixelt) */let nb=null;try{const n=NAMES.find(e=>String(e[0]).toLowerCase().includes('echter.alex'));if(n){const f=n[4]||2.8,tw=txtW(ctx,n[0],'800',f)+f*1.7,sx=(n[1]-cam.x)*cam.z+Wv/2,sy=(n[2]-cam.y)*cam.z+Hv/2;nb={x:sx-tw/2*cam.z-(Wv/2-S/2),y:sy-(Hv/2-S/2-10),w:tw*cam.z,h:f*1.5*cam.z};}}catch(e){}
  const o=document.createElement('canvas'),d=DPR;o.width=Math.round(S*d);o.height=Math.round(S*d);const c=o.getContext('2d');
  try{c.drawImage(cv,(Wv/2-S/2)*d,(Hv/2-S/2-10)*d,S*d,S*d,0,0,S*d,S*d);}catch(e){}
  cam.x=sv.x;cam.y=sv.y;cam.z=sv.z;try{draw();}catch(e){}
+ if(nb){/* Name verpixeln */const px=Math.max(3,Math.round(nb.h/3.2)),bx=Math.round((nb.x-3)*d),by=Math.round((nb.y-2)*d),bw=Math.round((nb.w+6)*d),bh=Math.round((nb.h+4)*d),t=document.createElement('canvas'),k=Math.max(1,Math.round(px*d));t.width=Math.max(1,Math.round(bw/k));t.height=Math.max(1,Math.round(bh/k));const tc=t.getContext('2d');tc.drawImage(o,bx,by,bw,bh,0,0,t.width,t.height);c.save();c.imageSmoothingEnabled=false;c.drawImage(t,0,0,t.width,t.height,bx,by,bw,bh);c.restore();}
  c.setTransform(d,0,0,d,0,0);const cx=S/2,cy=S/2,r=S/2-10;
  c.fillStyle='rgba(180,215,235,.12)';c.fillRect(0,0,S,S);c.beginPath();c.rect(0,0,S,S);c.arc(cx,cy,r,0,TAU,true);c.fillStyle='#0b1422';c.fill();
  const v=c.createRadialGradient(cx,cy,r*.6,cx,cy,r);v.addColorStop(0,'rgba(0,0,0,0)');v.addColorStop(1,'rgba(0,0,0,.55)');c.fillStyle=v;c.beginPath();c.arc(cx,cy,r,0,TAU);c.fill();
