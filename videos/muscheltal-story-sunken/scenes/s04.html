@@ -1,0 +1,51 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+
+    .neo { position: absolute; left: 60px; right: 190px; margin: 0 auto; width: fit-content; max-width: 830px; padding: 14px 34px 18px; border-radius: 30px; opacity: 0;
+      background: linear-gradient(160deg, rgba(24,10,48,.9), rgba(8,4,24,.92)); border: 5px solid #3ff0ff; box-shadow: 0 0 30px rgba(63,240,255,.7), inset 0 0 24px rgba(63,240,255,.25);
+      font-family: "Lilita One", sans-serif; color: #fff; text-align: center; line-height: 1.02; white-space: normal; }
+    .neo.pk { border-color: #ff3dbd; box-shadow: 0 0 30px rgba(255,61,189,.75), inset 0 0 24px rgba(255,61,189,.25); }
+    .neo.li { border-color: #b6ff3b; box-shadow: 0 0 30px rgba(182,255,59,.7), inset 0 0 24px rgba(182,255,59,.25); }
+    .neo.go { border-color: #ffd23f; box-shadow: 0 0 34px rgba(255,210,63,.8), inset 0 0 24px rgba(255,210,63,.25); }
+    .neo small { display: block; font: 900 30px Inter, sans-serif; letter-spacing: .14em; color: #3ff0ff; margin-bottom: 6px; }
+    .neo.pk small { color: #ff3dbd; } .neo.li small { color: #b6ff3b; } .neo.go small { color: #ffd23f; }
+    .big { position: absolute; left: 60px; right: 190px; text-align: center; font-family: "Lilita One", sans-serif; color: #fff; line-height: .92; opacity: 0;
+      -webkit-text-stroke: 16px #0a0418; paint-order: stroke fill; }
+    .big .c { color: #3ff0ff; } .big .p { color: #ff3dbd; } .big .l { color: #b6ff3b; } .big .g { color: #ffd23f; }
+    .fl { position: absolute; inset: 0; background: #fff; opacity: 0; }
+    .fbtn { position: absolute; left: 0; right: 0; margin: 0 auto; width: 420px; height: 120px; border-radius: 60px; background: #fe2c55; color: #fff;
+      font-family: "Inter", sans-serif; font-weight: 900; font-size: 56px; display: grid; place-items: center; box-shadow: 0 0 0 5px #2a1b12, 0 12px 0 rgba(0,0,0,.25); }
+    .fbtn2 { position: absolute; inset: 0; border-radius: 60px; background: #fff; color: #0a78c2; display: grid; place-items: center; opacity: 0; }
+    .fhand { position: absolute; font-size: 120px; }
+    #s1 { top: 250px; font-size: 120px; }
+    #fb { top: 560px; opacity: 0; }
+    .wp { position: absolute; left: -140px; top: 0; width: 1360px; height: 1920px; transform: skewX(-12deg); z-index: 50;
+      background: linear-gradient(90deg, #13c8d8 0%, #3ff0ff 30%, #ff3dbd 70%, #7a3dff 100%); pointer-events: none; }
+    .wp::after { content: "🐚"; position: absolute; left: 50%; top: 50%; font-size: 200px; transform: translate(-50%, -50%) skewX(12deg); }
+  </style>
+  <div id="root" data-composition-id="s04" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s04-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="s1" class="big">🎮 BALD<br><span class="g">GEHT'S LOS!</span></div>
+      <div id="fb" class="fbtn">+ Folgen<div class="fbtn2">✓ Eingezogen</div></div>
+      <div class="fl"></div>
+      <div class="wp" data-layout-ignore></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      /*__COMMON_JS__*/
+      wrapBt("#s04-stage");
+      const tl = gsap.timeline({ paused: true });
+      tl.fromTo("#s04-stage .wp", { xPercent: 0 }, { xPercent: -110, duration: 0.32, ease: "power2.out" }, 0);
+      const t = line("L4")[0];
+      tl.fromTo("#s1", { opacity: 0, scale: 3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .24, ease: "back.out(2.2)" }, at("L4", "Spiel") - .05);tl.fromTo(".fl", { opacity: 0.6 }, { opacity: 0, duration: .28, immediateRender: false }, at("L4", "Spiel"));[[22,-12],[-24,10],[16,14],[-12,-10],[0,0]].forEach(([x, y], i) => tl.to("#s04-stage", { x, y, duration: .04, ease: "none" }, at("L4", "Spiel") + i * .04));
+      tl.to("#s1", { scale: 1.07, duration: .25, yoyo: true, repeat: 5, ease: "sine.inOut" }, at("L4", "bald") + .2);
+      tl.fromTo("#fb", { opacity: 0, scale: 3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .24, ease: "back.out(2.2)" }, at("L4", "bald") + .3);
+      tl.to("#fb .fbtn2", { opacity: 1, duration: .15 }, at("L4", "bald") + 1.3);
+      
+      window.__timelines["s04"] = tl;
+    })();
+  </script>
+</template>

@@ -1,0 +1,51 @@
+<template>
+  <style>
+    /*__COMMON_CSS__*/
+
+    .neo { position: absolute; left: 60px; right: 190px; margin: 0 auto; width: fit-content; max-width: 830px; padding: 14px 34px 18px; border-radius: 30px; opacity: 0;
+      background: linear-gradient(160deg, rgba(24,10,48,.9), rgba(8,4,24,.92)); border: 5px solid #3ff0ff; box-shadow: 0 0 30px rgba(63,240,255,.7), inset 0 0 24px rgba(63,240,255,.25);
+      font-family: "Lilita One", sans-serif; color: #fff; text-align: center; line-height: 1.02; white-space: normal; }
+    .neo.pk { border-color: #ff3dbd; box-shadow: 0 0 30px rgba(255,61,189,.75), inset 0 0 24px rgba(255,61,189,.25); }
+    .neo.li { border-color: #b6ff3b; box-shadow: 0 0 30px rgba(182,255,59,.7), inset 0 0 24px rgba(182,255,59,.25); }
+    .neo.go { border-color: #ffd23f; box-shadow: 0 0 34px rgba(255,210,63,.8), inset 0 0 24px rgba(255,210,63,.25); }
+    .neo small { display: block; font: 900 30px Inter, sans-serif; letter-spacing: .14em; color: #3ff0ff; margin-bottom: 6px; }
+    .neo.pk small { color: #ff3dbd; } .neo.li small { color: #b6ff3b; } .neo.go small { color: #ffd23f; }
+    .big { position: absolute; left: 60px; right: 190px; text-align: center; font-family: "Lilita One", sans-serif; color: #fff; line-height: .92; opacity: 0;
+      -webkit-text-stroke: 16px #0a0418; paint-order: stroke fill; }
+    .big .c { color: #3ff0ff; } .big .p { color: #ff3dbd; } .big .l { color: #b6ff3b; } .big .g { color: #ffd23f; }
+    .fl { position: absolute; inset: 0; background: #fff; opacity: 0; }
+
+    #n1 { top: 220px; font-size: 92px; white-space: nowrap; }
+    #nb { position: absolute; left: 110px; width: 720px; top: 420px; height: 300px; opacity: 0; }
+    .hu { position: absolute; top: 0; width: 280px; text-align: center; }
+    .hu b { display: block; font-size: 170px; line-height: 1; }
+    .hu i { display: inline-block; margin-top: 8px; padding: 6px 18px 10px; border-radius: 18px; background: #fff; color: #1a0f08; font: 900 30px Inter, sans-serif; font-style: normal; box-shadow: 0 0 0 5px var(--c); }
+    #hz { position: absolute; left: 300px; top: 40px; width: 120px; text-align: center; font-size: 110px; }
+    .wp { position: absolute; left: -140px; top: 0; width: 1360px; height: 1920px; transform: skewX(-12deg); z-index: 50;
+      background: linear-gradient(90deg, #13c8d8 0%, #3ff0ff 30%, #ff3dbd 70%, #7a3dff 100%); pointer-events: none; }
+    .wp::after { content: "🐚"; position: absolute; left: 50%; top: 50%; font-size: 200px; transform: translate(-50%, -50%) skewX(12deg); }
+  </style>
+  <div id="root" data-composition-id="s03" data-start="0" data-duration="__DUR__" data-width="1080" data-height="1920">
+    <div id="s03-stage" class="clip stage" data-start="0" data-duration="__DUR__" data-track-index="0">
+      <div id="n1" class="big">👯 <span class="l">LAD FREUNDE EIN</span></div>
+      <div id="nb"><div class="hu" style="left:0;--c:#3ff0ff"><b>🛖</b><i>DU</i></div><div id="hz">💞</div><div class="hu" style="left:440px;--c:#ff3dbd"><b>🛖</b><i>DEIN FREUND</i></div></div>
+      <div class="wp" data-layout-ignore></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      /*__CUE_HELPERS__*/
+      /*__COMMON_JS__*/
+      wrapBt("#s03-stage");
+      const tl = gsap.timeline({ paused: true });
+      tl.fromTo("#s03-stage .wp", { xPercent: 0 }, { xPercent: -110, duration: 0.32, ease: "power2.out" }, 0);
+      const t = line("L3")[0], NB = at("L3", "Nachbarn");
+      tl.fromTo("#n1", { opacity: 0, scale: 3, filter: "blur(10px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .24, ease: "back.out(2.2)" }, t - .05);
+      tl.fromTo("#nb", { opacity: 0, y: 80 }, { opacity: 1, y: 0, duration: .35, ease: "back.out(2)" }, t + .3);
+      tl.fromTo("#hz", { scale: .3 }, { scale: 1.3, duration: .25, ease: "back.out(3)", yoyo: true, repeat: 3 }, NB - .05);
+      [[22,-12],[-24,10],[16,14],[-12,-10],[0,0]].forEach(([x, y], i) => tl.to("#s03-stage", { x, y, duration: .04, ease: "none" }, NB + i * .04));
+      tl.fromTo("#s03-stage .wp", { xPercent: 110 }, { xPercent: 0, duration: 0.22, ease: "power2.in", immediateRender: false }, C.__dur - 0.22);
+      window.__timelines["s03"] = tl;
+    })();
+  </script>
+</template>
